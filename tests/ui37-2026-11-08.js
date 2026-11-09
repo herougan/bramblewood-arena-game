@@ -19,12 +19,13 @@ ok(blk.length > 1000, 'the UI37_PROS block is in arena_app.js');
   const maps = [{n: 0, list: ['a', 'b'], yes: [], no: []}, {n: 1, list: ['c'], yes: ['x'], no: ['c']}, {n: 2, list: ['d'], yes: [], no: []}, {n: 3, list: ['e'], yes: ['b'], no: []}];
   const at2 = f(2, maps), at4 = f(4, maps), at0 = f(0, maps);
   ok(at0.size === 0, 'Map 0: nothing is carried');
-  ok(at2.get('a') === 0 && at2.get('b') === 0, 'an unflagged card on an earlier MAP list is Carried (from that map)');
+  // 2026-11-09 (UI42, owner 22:48): only a card flagged Yes on an earlier main map is Carried; unflagged list cards no longer count (replaces UI37-1)
+  ok(!at2.has('a') && !at2.has('b'), 'an unflagged card on an earlier MAP list is NOT Carried (UI42)');
   ok(at2.get('x') === 1, 'a card flagged Yes on an earlier map is Carried from it, list or not');
-  ok(!at2.has('c'), 'a card flagged No on the only earlier map that lists it is NEW!');
-  ok(!at2.has('d') && at4.get('d') === 2, 'a map does not carry its own cards; the next map does');
-  ok(at4.get('b') === 0, 'the earliest giver is named');
-  const flip = f(2, [{n: 0, list: ['a'], yes: [], no: ['a']}, {n: 1, list: ['a'], yes: [], no: []}]); ok(flip.get('a') === 1, 'No on one map, still listed on a later earlier map: Carried from that one'); }
+  ok(!at2.has('c'), 'a card flagged No (or unflagged) is NEW!');
+  ok(!at4.has('d') && at4.get('b') === 3 - 0 && at4.get('b') !== 0, 'only Yes counts; b is Yes on Map 3');
+  ok(at4.get('x') === 1, 'the earliest giver is named');
+  const two = f(3, [{n: 0, list: [], yes: ['a'], no: []}, {n: 1, list: [], yes: ['a'], no: []}]); ok(two.get('a') === 0, 'Yes on two maps: Carried from the earlier one'); }
 
 // 2. wiring
 ok(/function ui37Mount\(ov, top, mapId, ok\)\{\n  ui37Live = null;\n  if\(!adminModeEnabled \|\| mpIsSub\(mapId\)\) return;/.test(blk), 'the view is admin-only and never on a submap window');

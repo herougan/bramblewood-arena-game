@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-09 Package UI42 (Map cards: default No, owner 22:48 "default is NO, then I'll click the Yes")
+- Players see: nothing (admin Map cards window only). Every card without a flag shows No selected; Yes sets Yes, No on a Yes card goes back to No. Exports (.json / .csv, concepts) list unflagged cards as no. The "NEW! flagged" / "Carried flagged" counters count Yes only (already did).
+- Carried rule changed (replaces UI37-1's "unflagged list cards count"): a card is Carried on a later main map only if flagged Yes on an earlier main map (`ui37CarriedIndex`). Carried can be short until you flag Yes; `ui37CarriedPool` (the old wider reading) still tops Carried up to its minimum from earlier maps' list cards, shown as No.
+- Files: arena_app.js (UI37 block), tests/ui37-2026-11-08.js (rule), tests/ui42-2026-11-09.js, tests/run-all.sh. Storage unchanged; no texts, card data or decisions.json touched.
+
 ## 2026-11-09 Package UI41 (Map cards window: 7 per row, no faction cards, dark number boxes, Yes / No)
 - Players see: nothing (admin Map cards window only). The cards show 7 per row on a wide window (the window is wider; fewer per row as it narrows). Faction cards (Cobalt Talon Fledgling, Crimson Wing Recruit, Greyplume Fledgling, Mosswing Laborer and the other hummingbird faction cards) are no longer proposed from any source unless flagged Yes; NEW! is topped up to 30+. The NEW! / Carried target boxes follow dark mode. Yes carries the Keep emoji, No the Cut scissors; the old Cut / Keep button, its X/N count and the Carried / Unique pill are gone from the view. The 2-per-animal cap now also holds for Claude's picks and Maybe cards (not for cards on the map's list or flagged Yes). Proposed concept cards unchanged.
 - Files: arena_app.js (UI37 / UI38 blocks), arena_template.html, tests/ui41-2026-11-09.js, tests/e2e/ui41_2026_11_09.py. No card data, budget or target defaults changed.
