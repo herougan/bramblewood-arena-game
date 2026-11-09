@@ -92,7 +92,7 @@ const SEEDS = 40;
   const ps = rd('docs/project-state.md'); ok(/Targeting picks at random, never by priority[^\n]*\*\*Built \(ENG38, 2026-11-09\)\.\*\*/.test(ps), 'project-state: the bullet reads Built (ENG38)');
   const d = J('docs/decisions.json'), it = (d.items || []).find(x=> x.id === 'ENG38-1');
   ok(it && (it.status === 'YET' || it.status === 'DONE') && it.default === 'a' && (it.body || '').split(/\s+/).length < 100 && it.options.length === 2, 'decision ENG38-1: YET or DONE (decided 11-09), default a, under 100 words');
-  ok(/ENG38/.test(rd('docs/CHANGELOG.md').slice(0, 6000)), 'CHANGELOG entry at the top');
+  ok(/^## 2026-11-09 Package ENG38/m.test(rd('docs/CHANGELOG.md')), 'CHANGELOG entry'); // 2026-11-09 (ENG40): was the first 6000 characters, which later entries push it out of
   ok(/eng38-2026-11-09\.js/.test(rd('tests/run-all.sh')), 'run-all.sh runs this test');
   ok(/ENG38/.test(rd('docs/effects-catalogue.md')), 'effects-catalogue mentions ENG38'); }
 

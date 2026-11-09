@@ -162,6 +162,10 @@
         // top (measured, skill-costs.json shellWhen); any other value costs nothing (the default rule); nothing without a Shell.
         if(k === 'shellWhen'){ const m = SK.shellWhen && +SK.shellWhen.afterAttackMult || 0, c = v === 'afterAttack' && effects.shell ? r2(m * (skillCost('shell', effects.shell) || 0)) : 0; S += c; parts.push(['skill', k, c, v === 'afterAttack' ? 'x' + m + ' of shell (after attacking)' : 'default']); return; }
         if(k === 'diveUses'){ const c = effects.dive ? r2(Math.max(0, numOf(v) - 1) * (skillCost('dive', effects.dive) || 0)) : 0; S += c; parts.push(['skill', k, c, 'extra dives']); return; }
+        // ENG40 (2026-11-09): Esprit {v: 0, hp: N} costs only its Health part (bramblewood-budget.js zeroFree); Hoard N by its resource
+        // (every 3 Lumber / 2 Stone / 1 Metal: the table's hoard price x bramblewood-budget.js HOARD_RES_MULT)
+        if(BB.zeroFree && BB.zeroFree(k, v)){ parts.push(['skill', k, 0, 'v 0: its parameters carry it (ENG40)']); return; }
+        { const hs = BB.hoardS && SK.hoard ? BB.hoardS(k, v, effects, skillCost('hoard', 1)) : null; if(hs){ S += hs.S; parts.push(['skill', k, hs.S, 'x' + hs.mult + ' (' + hs.res + ', ENG40)']); return; } }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
         if(lm !== 1 && LHK.has(k) && (!effects.deliveryRes || effects.deliveryRes === 'lumber' || (BB.LUMBER_MAKER_KEYS || []).includes(k))){ c = r2(c * lm); S += c; parts.push(['skill', k, c, 'x' + lm + ' at home (BAL12)']); return; } // BAL12 (2026-11-02): On Ready Lumber at its lists' mean cost
         { const zm = BB.zeitDrawbackMult ? BB.zeitDrawbackMult(k, home) : 1; if(zm !== 1){ c = r2(c * zm); S += c; parts.push(['skill', k, c, 'x' + zm + ' at home (BAL11)']); return; } } // BAL11 (2026-11-02): Nightblind / Sunshy at their home share

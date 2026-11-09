@@ -1,5 +1,5 @@
 {
- "_about": "ENG34 (2026-11-07, owner 19:25: \"classify skills as melee or ranged. Then a lot of effects will be based on whether they are melee or ranged\"). delivery: every skill (and each damage-dealing custom action, as action:<key>) is melee (a swing or contact strike), ranged (a shot, throw or remote hit) or none (no hit of its own: auras, Armor, Regeneration, field and tick damage, riders). swing: skills that make the unit's OWN swing a ranged attack. rides: for an on-hit or on-being-hit effect, which hits carry it (melee = every melee hit: the swing and every melee-class skill hit; ranged = every ranged hit; any = every hit; swing = the unit's own swing only). against: for a defence, which hits it answers or stops. Effect keys that are not skills in the list (venomous, puncture, freeze, sleep, paralyze, blind, tipsy, confuse, shock, stagger, scar) are old or card-only effect keys the engine still reads. notes: why, for the edge cases. The engine reads this file (bramblewood-engine.js SKILL_DELIVERY); the workbook's Skills tab shows it. The basic lane attack is \"attack\": melee. ENG35 (2026-11-07): the delivery lists the fused keys only (canonical/skill-params.json); a part of a skill (almanacGrant, arrowPoison, deliveryRes ...) is delivered as its skill is (the engine's skillDeliveryOf reads the alias). ENG39 (2026-11-09, decision DES2-3 a): a kind (a family's named version in canonical/skill-params.json: weaken, requiem, fireBolt ...) keeps its own entry here, the same as its family's (tools read the old keys); the engine falls back to the family (skillDeliveryOf, rootOf) for a key not listed.",
+ "_about": "ENG34 (2026-11-07, owner 19:25: \"classify skills as melee or ranged. Then a lot of effects will be based on whether they are melee or ranged\"). delivery: every skill (and each damage-dealing custom action, as action:<key>) is melee (a swing or contact strike), ranged (a shot, throw or remote hit) or none (no hit of its own: auras, Armor, Regeneration, field and tick damage, riders). swing: skills that make the unit's OWN swing a ranged attack. rides: for an on-hit or on-being-hit effect, which hits carry it (melee = every melee hit: the swing and every melee-class skill hit; ranged = every ranged hit; any = every hit; swing = the unit's own swing only). against: for a defence, which hits it answers or stops. Effect keys that are not skills in the list (venomous, puncture, freeze, sleep, paralyze, blind, tipsy, confuse, shock, stagger, scar) are old or card-only effect keys the engine still reads. notes: why, for the edge cases. The engine reads this file (bramblewood-engine.js SKILL_DELIVERY); the workbook's Skills tab shows it. The basic lane attack is \"attack\": melee. ENG35 (2026-11-07): the delivery lists the fused keys only (canonical/skill-params.json); a part of a skill (almanacGrant, arrowPoison, deliveryRes ...) is delivered as its skill is (the engine's skillDeliveryOf reads the alias). ENG39 (2026-11-09, decision DES2-3 a): a kind (a family's named version in canonical/skill-params.json: weaken, requiem, fireBolt ...) keeps its own entry here, the same as its family's (tools read the old keys); the engine falls back to the family (skillDeliveryOf, rootOf) for a key not listed. ENG40 (2026-11-09, owner ENG34-1 b: \"(fletcher only works for arrows). But reach counts as melee.\"): Reach left swing (melee again); a ranged swing carries no melee rider; Fletcher and Weapon Master add to arrows only (ENG34-3 c).",
  "delivery": {
   "absoluteZero": "none",
   "acidBolt": "ranged",
@@ -276,7 +276,7 @@
   "rainrunner": "none",
   "rally": "none",
   "rampart": "none",
-  "reach": "ranged",
+  "reach": "melee",
   "rebuild": "none",
   "recoil": "none",
   "reflect": "none",
@@ -406,7 +406,6 @@
   "worthy": "none"
  },
  "swing": [
-  "reach",
   "boomerang",
   "bananarang",
   "antiAir"
@@ -509,13 +508,13 @@
   "arrowCount": "how many arrows its Arrow looses",
   "arrowPoison": "rides its Arrow",
   "assault": "+Attack on its own swings only",
-  "attack": "the basic lane swing (a Reach or Boomerang unit's swing counts as ranged for dodges: see swing)",
+  "attack": "the basic lane swing (melee; a Boomerang / Bananarang unit's swing is ranged and carries no melee rider: see swing, ENG40; Reach is melee, ENG40)",
   "avalanche": "area, on arrival",
   "backstab": "its swing, aimed at the nearest unit",
   "banana": "the throw (eating is no hit)",
-  "bananarang": "a Boomerang (ranged swing)",
+  "bananarang": "a Boomerang (ranged swing: no melee riders, ENG40)",
   "bloodlust": "its swing, leaping to the next enemy",
-  "boomerang": "its swing is a throw (ranged): Mach, Flying and Canopy Cover treat it as ranged",
+  "boomerang": "its swing is a throw (ranged): Mach, Flying and Canopy Cover treat it as ranged. ENG40 (2026-11-09, owner ENG34-1 b: \"fletcher only works for arrows\"): a ranged swing carries no melee rider (Bleed, Venom, Daunt, Leech, the status rolls, On Hit triggers ...) and gets no Fletcher (arrows only); the swing-only riders (Wave, the lightning arcs, Swipe, Overwhelm, Momentum) and any-hit ones (Crit, King Slayer, Sunder) stay",
   "chainLightning": "its melee hits call it; the chain is a separate ranged hit",
   "charge": "a clock that fires a custom action: the action decides (Deal damage is ranged)",
   "constrict": "ENG36 (2026-11-08): Constrict N, an advanced Strangle: like Strangle it rides every melee hit (the swing, Cleave, prongs, Pounce, Ambush ...). As an action (do: constrict / strangle) it lays its hold on its target with no hit of its own.",
@@ -554,7 +553,7 @@
   "psychic": "rides every melee hit: 1 psychic damage on each",
   "puncture": "the old Puncture: reads as Breach",
   "punish": "answers every hit at it at round end (reserved)",
-  "reach": "its swing counts as ranged: it reaches flyers (Mach, Flying and Canopy Cover treat it as ranged). ENG37 (2026-11-08, owner 09:27): as an attacker it is Flying level 1 on the flying meter (a Flyer never dodges it, a Mach unit 1 in 2); with nothing opposite it, its swing strikes an enemy unit in the lane beside its own (the one with less Health; a tie, a coin flip) instead of the bramble. Still one swing: a ranged one.",
+  "reach": "ENG40 (2026-11-09, owner ENG34-1 b: \"reach counts as melee\"): its swing is a melee swing again (off the swing list): it carries the unit's melee riders (Bleed, Venom, Daunt ...), Thorns answer it, and Canopy Cover no longer dodges it. ENG37 (2026-11-08, owner 09:27): as an attacker it is Flying level 1 on the flying meter (a Flyer never dodges it, a Mach unit 1 in 2); with nothing opposite it, its swing strikes an enemy unit in the lane beside its own (the one with less Health; a tie, a coin flip) instead of the bramble. Was (ENG34, 2026-11-07): a ranged swing.",
   "recoil": "hurts itself",
   "render": "Daunt on the foe facing it on arrival: no damage, so it carries no other effect",
   "retribution": "a remote hit on a random enemy when an ally dies",
@@ -573,6 +572,8 @@
   "twinStrike": "a second swing",
   "venomous": "the old Venomous: reads as Venomous N (poison)",
   "wave": "pushes on its swing; the crash is no hit of its own",
-  "worthy": "a retired, empty slot"
+  "worthy": "a retired, empty slot",
+  "fletcher": "ENG40 (2026-11-09, owner ENG34-3 c / ENG34-1 b: \"fletcher only works for arrows\"): the arrow form of the Arrow family only (Arrow, Fire Arrow, Ice Arrow, Archer's shot, Twin Shot / Volley arrows, Barrage's physical arrows, an Arrow action); not the Bolts (the bolt form), spits, Snipe, Rocket, Missile, Deal damage or a thrown swing. rides stays 'ranged' (an arrow is a ranged shot); the engine narrows it (bramblewood-engine.js eng40ArrowShot)",
+  "weaponMaster": "ENG40: its arrow bonus as Fletcher's: arrows only (see fletcher)"
  }
 }

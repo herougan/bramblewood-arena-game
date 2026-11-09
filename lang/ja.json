@@ -4384,5 +4384,11 @@
  "{att} puts {n} Vulnerable token{s} on {name}.": "{att}が{name}に脆弱化トークンを{n}個置く。",
  "{name} is Vulnerable: +{b} damage ({n} left).": "{name}は脆弱化：+{b}ダメージ（残り{n}）。",
  "No enemy units left to strike {name}: its Vulnerable tokens fade.": "{name}を打つ敵ユニットがいない：脆弱化トークンが消える。",
- "Version": "バージョン"
+ "Version": "バージョン",
+ "+{n}/+{n} for every 3 Lumber you hold.": "所持している木材3つにつき+{n}/+{n}。",
+ "+{n}/+{n} for every 2 Stone you hold.": "所持している石2つにつき+{n}/+{n}。",
+ "+{n}/+{n} for each Metal you hold.": "所持している金属1つにつき+{n}/+{n}。",
+ "Your side's arrows deal {n} more; your equipped units get +1/+1.": "味方の矢のダメージ +{n}。装備した味方ユニットは +1/+1。",
+ "Your units' arrows deal {n} more damage.": "味方ユニットの矢のダメージが{n}増える。",
+ "While it is on the field, your units' arrows deal {n} more damage (its own too). Bolts, spits and other shots don't.": "場にいる間、味方ユニットの矢のダメージが{n}増える（自身のものも）。弾や吐きかけ、その他の射撃は対象外。"
 }

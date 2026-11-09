@@ -4385,5 +4385,11 @@
  "{att} puts {n} Vulnerable token{s} on {name}.": "{att} memasang {n} token Rentan pada {name}.",
  "{name} is Vulnerable: +{b} damage ({n} left).": "{name} rentan: +{b} kerusakan (sisa {n}).",
  "No enemy units left to strike {name}: its Vulnerable tokens fade.": "Tak ada unit musuh tersisa untuk menyerang {name}: token Rentannya memudar.",
- "Version": "Versi"
+ "Version": "Versi",
+ "+{n}/+{n} for every 3 Lumber you hold.": "+{n}/+{n} untuk setiap 3 Kayu yang kamu punya.",
+ "+{n}/+{n} for every 2 Stone you hold.": "+{n}/+{n} untuk setiap 2 Batu yang kamu punya.",
+ "+{n}/+{n} for each Metal you hold.": "+{n}/+{n} untuk setiap Logam yang kamu punya.",
+ "Your side's arrows deal {n} more; your equipped units get +1/+1.": "Panah pihakmu memberi {n} lebih; unitmu yang berperlengkapan mendapat +1/+1.",
+ "Your units' arrows deal {n} more damage.": "Panah unitmu memberi {n} kerusakan lebih.",
+ "While it is on the field, your units' arrows deal {n} more damage (its own too). Bolts, spits and other shots don't.": "Selama ia di arena, panah unitmu memberi {n} kerusakan lebih (miliknya juga). Peluru, semburan, dan tembakan lain tidak."
 }

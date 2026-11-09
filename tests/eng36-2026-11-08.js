@@ -87,7 +87,7 @@ function wallsOf(id){ const {e, P} = mk(); const h = {uid: 9500, defId:id}; P[1]
 { const w10 = wallsOf('e36-bul@10'), w1 = wallsOf('e36-bul@1'), w0 = wallsOf('e36-bul@0'), wn = wallsOf('e36-bul');
   ok(wn.length === 1 && wn[0].hp === 4, `a summoner with no level: the Log Wall as printed, 0/4 (${wn.map(c=> c.atk + '/' + c.hp)})`);
   ok(w1.length === 1 && w1[0].hp === 4, `Level 1 Bulwark: 0/4 (${w1.map(c=> c.atk + '/' + c.hp)})`);
-  ok(w10.length === 1 && w10[0].hp === 8 && (w10[0].atk | 0) === 0, `Level 10 Bulwark: 0/8 on the level curve (${w10.map(c=> c.atk + '/' + c.hp)})`);
+  ok(w10.length === 1 && w10[0].hp === 6 && (w10[0].atk | 0) === 0, `Level 10 Bulwark: 0/6, half the level curve's growth (ENG40, decision ENG36-3 b; was 0/8) (${w10.map(c=> c.atk + '/' + c.hp)})`);
   ok(w0.length === 1 && w0[0].hp === 3, `Level 0 Bulwark: 0/3 (x0.85, a hatchling) (${w0.map(c=> c.atk + '/' + c.hp)})`); }
 { const BB = require(path.join(ROOT, 'bramblewood-budget.js')); const c = BB.forgeCurve({id:'bulwark-wall', attack:0, health:4, wait:0, cost:0, rarity:'common', token:true, effects:{guardian:true}, obtainMap:0}, 1, 11);
   ok(c.rows[10].health === 8 && c.rows[4].health === 5, 'the wall follows the Forge curve (bramblewood-budget.js forgeCurve): L4 0/5, L10 0/8');
@@ -138,15 +138,16 @@ function wallsOf(id){ const {e, P} = mk(); const h = {uid: 9500, defId:id}; P[1]
   const sc = J('canonical/skill-costs.json'); ok(sc.skills.some(s=> s.id === 'constrict' && (s.value === 8 || (s.bal32Was && s.bal32Was.value === 8 && s.bal32Was.scale === 'half'))) && /* 2026-11-09 (FIX11): BAL32 repriced Constrict on purpose (scale n, value x N^pow); ENG36's price 8 half scale is kept in bal32Was */['strangle', 'constrict', 'strangle.amount', 'constrict.amount'].every(id=> sc.actions.some(a=> a.id === id)), 'Constrict is priced (skill 8, half scale) and both actions'); }
 
 // ================= 5. Hoard N = +N/+N a Lumber =================
-{ const {e, P} = mk(); const c = put(e, P, 1, 'e36-hoard1', 0); P[1].lumber = 2; e.syncPhaseStats(P, so, []); ok(e.effAtkOf ? true : true, '');
-  const atk = c.atk + (c.phaseAtk || 0); ok(c.phaseAtk === 2 && c.maxHp === 12, `Hoard 1 with 2 Lumber: +2/+2 (${c.phaseAtk}, max ${c.maxHp})`); void atk;
-  P[1].lumber = 0; e.syncPhaseStats(P, so, []); ok(c.phaseAtk === 0 && c.maxHp === 10, 'with no Lumber: nothing'); }
-{ const {e, P} = mk(); const c = put(e, P, 1, 'e36-hoard34', 0); P[1].lumber = 4; e.syncPhaseStats(P, so, []); ok(c.phaseAtk === 3 && c.maxHp === 13, `Hoard 0.75 with 4 Lumber: +3/+3, rounded down (${c.phaseAtk}, ${c.maxHp})`);
-  P[1].lumber = 1; e.syncPhaseStats(P, so, []); ok(c.phaseAtk === 0, 'with 1 Lumber: 0.75 rounds down to 0'); }
+// ENG40 (2026-11-09, owner on ENG36-1): Hoard N is +N/+N for every 3 Lumber now (tests/eng40-2026-11-09.js); these pins read the new rule
+{ const {e, P} = mk(); const c = put(e, P, 1, 'e36-hoard1', 0); P[1].lumber = 6; e.syncPhaseStats(P, so, []); ok(e.effAtkOf ? true : true, '');
+  const atk = c.atk + (c.phaseAtk || 0); ok(c.phaseAtk === 2 && c.maxHp === 12, `Hoard 1 with 6 Lumber: +2/+2 (${c.phaseAtk}, max ${c.maxHp})`); void atk;
+  P[1].lumber = 0; e.syncPhaseStats(P, so, []); ok(!(c.phaseAtk > 0) && c.maxHp === 10, 'with no Lumber: nothing'); }
+{ const {e, P} = mk(); const c = put(e, P, 1, 'e36-hoard34', 0); P[1].lumber = 6; e.syncPhaseStats(P, so, []); ok(c.phaseAtk === 1 && c.maxHp === 11, `Hoard 0.75 with 6 Lumber: 0.75 x 2 = +1/+1, rounded down (${c.phaseAtk}, ${c.maxHp})`);
+  P[1].lumber = 3; e.syncPhaseStats(P, so, []); ok(!(c.phaseAtk > 0), 'with 3 Lumber: 0.75 rounds down to 0'); }
 { const cards = J('canonical/cards.json'), by = id=> cards.find(c=> c.id === id);
   ok(by('tax-collector-teal').effects.hoard === 0.75 && by('magnate-duck').effects.hoard === 0.25, 'the two Hoard cards were converted (Teal 1 -> 0.75, Magnate Duck 3 -> 0.25)');
   ok(by('tax-collector-teal').attack === 1 && by('tax-collector-teal').health === 4 && by('magnate-duck').attack === 2 && by('magnate-duck').health === 37, 'their base stats are unchanged');
-  const sc = J('canonical/skill-costs.json'), h = sc.skills.find(s=> s.id === 'hoard'); ok(h.perN === 3 && h.pow == null, 'Hoard is priced 3 x N (perN, Timber\'s +1/+1 a Lumber)'); }
+  const sc = J('canonical/skill-costs.json'), h = sc.skills.find(s=> s.id === 'hoard'); ok(h.perN === 1 && h.pow == null && h.eng40Was && h.eng40Was.perN === 3, 'Hoard is priced 1 x N (ENG40; was 3 x N, kept in eng40Was)'); }
 
 // ================= texts, translations, docs =================
 { global.window = global; const T = require(path.join(ROOT, 'bramblewood-texts.js')); void T; const src = rd('bramblewood-texts.js');
@@ -154,7 +155,7 @@ function wallsOf(id){ const {e, P} = mk(); const h = {uid: 9500, defId:id}; P[1]
   const miss = keys.filter(k=> !src.includes('"' + k + '"')); ok(!miss.length, 'the TX keys exist: ' + miss.join(', '));
   const en = {}; src.split('\n').forEach(l=>{ const m = /^\s*"([^"]+)":\s*"((?:[^"\\]|\\.)*)"/.exec(l); if(m) en[m[1]] = JSON.parse('"' + m[2] + '"'); });
   ok(/floats up/.test(en['ui.eng33-thanatosis']) && /pass through/.test(en['ui.eng33-thanatosis-codex']), 'the Thanatosis texts describe the rework');
-  ok(/\+\{n\}\/\+\{n\} for each Lumber/.test(en['ui.eng36-hoard']), 'Hoard reads +N/+N for each Lumber');
+  ok(/\+\{n\}\/\+\{n\} for every 3 Lumber/.test(en['ui.eng36-hoard']), 'Hoard reads +N/+N for every 3 Lumber (ENG40)');
   for(const code of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']){ const d = J('lang/' + code + '.json'); const core = t=> t.trim().replace(/^[\s\u00a0\p{Extended_Pictographic}\uFE0F\u200D]+/u, ''); /* a pack key has no leading emoji */ const m2 = keys.concat(['ui.eng33-thanatosis', 'ui.eng33-thanatosis-codex', 'ui.eng33-log-wake']).filter(k=> en[k] && !d[core(en[k])]);
     ok(!m2.length, `lang/${code}.json has every ENG36 text (${m2.join(', ')})`); } }
 { const dec = J('docs/decisions.json'), list = Array.isArray(dec) ? dec : (dec.decisions || dec.items || []); const d1 = list.find(d=> d.id === 'ENG36-1');

@@ -1636,7 +1636,7 @@ The rules as built (engine: `poisonOn`, `eng33PlayDead` / `eng33Wake`, `eng33Poi
 - **Timbered 🪵🪵 / Bedrock 🪨🪨 / Forged 🔩🔩 / Last Stand 🏳️**: the editor's "Gives" field picks a Stat bonus (Attack / Health; Bedrock: Armor N) or Skills (the braces). Both are stored in `<k>Grant`.
 
 ## 2026-11-07 ENG34: melee and ranged
-The engine decides; this only describes. Every skill is melee, ranged or none (`canonical/skill-delivery.json`, shown in the workbook's Skills tab). On-hit effects that ride melee hits (Bleed, Venomous, Daunt, Breach, Leech, Decay, Corrode, Toxin and the rest listed there) now land on every melee hit: the swing, Cleave's side hits, prongs and lashes, Pounce, Ambush, Counterattack and a Parasite's feed; their events carry `via` ('cleave', 'prong', 'pounce', 'ambush', 'counter', 'feed', 'gorge') and `eng34: true`, so a skill hit's Bleed / Venom / Daunt pip plays as the swing's does. Thorns now answers those hits too (`thorns` event with `via`). Fletcher and Weapon Master add to every ranged shot (a Cinder or a Snipe now hits for 1 more beside Fletcher). A Reach swing is a ranged swing: Canopy Cover dodges it 1 in 2 (`evaded` reason `canopyCover`).
+The engine decides; this only describes. Every skill is melee, ranged or none (`canonical/skill-delivery.json`, shown in the workbook's Skills tab). On-hit effects that ride melee hits (Bleed, Venomous, Daunt, Breach, Leech, Decay, Corrode, Toxin and the rest listed there) now land on every melee hit: the swing, Cleave's side hits, prongs and lashes, Pounce, Ambush, Counterattack and a Parasite's feed; their events carry `via` ('cleave', 'prong', 'pounce', 'ambush', 'counter', 'feed', 'gorge') and `eng34: true`, so a skill hit's Bleed / Venom / Daunt pip plays as the swing's does. Thorns now answers those hits too (`thorns` event with `via`). Fletcher and Weapon Master add to every ranged shot (a Cinder or a Snipe now hits for 1 more beside Fletcher). A Reach swing is a ranged swing: Canopy Cover dodges it 1 in 2 (`evaded` reason `canopyCover`). ENG40 (2026-11-09) changed both: see below.
 
 ## 2026-11-07 (package ENG35): one skill per idea, its variants are parameters
 
@@ -1661,7 +1661,7 @@ The engine decides; this describes. Decision DES2-3 a (docs/design/skill-plan-ma
 | Puncture (`puncture`) | kind: breach = `breach` |
 | Momentum (`momentum`) | stat: hp = `spoils` |
 | Felling (`felling`) | kind: midas = `midas`; res: metal = `prospector` |
-| Hoard (`hoard`) | kind: timber = `timber` |
+| Hoard (`hoard`) | kind: timber = `timber`; res (ENG40): lumber (default, every 3) / stone (every 2) / metal (every 1), a parameter (`hoardRes`), not a kind |
 | Carnage (`carnage`) | who: any = `requiem`; who: yours = `dirge`; who: foes = `tally` (its `gives` part rides along) |
 | Throng (`throng`) | who: yours = `muster`; who: theirs = `beset` |
 | Formation (`formation`) | range: 2 = `sociable` |
@@ -1674,10 +1674,10 @@ Names: Exploit's tokens are shown as **Vulnerable** (`ui.skn-exploit`, the statu
 
 The engine decides; this describes.
 - **Status Resist / Weakness / Immune** (`'status:<key>'` in `effects.resist` / `weakness` / `immune`; the list is `ENG36_STATUS`, 30 statuses). Damage over time (Venom, Toxin, Bleed, Burn, Decay, Strangle's squeeze, Wither): Resist halves each tick (rounded down), Weakness doubles, Immune: no tick, counters cleared. Other statuses: Resist -50 points on the landing chance, Weakness +50, Immune never. Held off: `statusFx` kind `eng36Resist` {status, immune}, a 🛡️ float. Decision ENG36-2.
-- **Summons at the summoner's level**: `eng36SummonDefId` makes `<token>~lv<L>` on the Forge curve for Log Walls, Spawn actions, Spawner tokens, On Death / On Attacked spawns. A Log Wall is 0/4 at Level 1, 0/8 at Level 10. Decision ENG36-3.
+- **Summons at the summoner's level**: `eng36SummonDefId` makes `<token>~lv<L>` on the Forge curve for Log Walls, Spawn actions, Spawner tokens, On Death / On Attacked spawns. A Log Wall is 0/4 at Level 1, 0/8 at Level 10. Decision ENG36-3. ENG40: half the growth, 0/6 at Level 10 (below).
 - **Thanatosis** (rework): while it plays dead, swings pass through to its bramble (`resolveLiveTarget`), aimed skills miss it, a random pick can hit it (`eng36RandUid`). It floats up at the next round start (`.eng36-floatup`, not under reduced motion). The 😵 chip greys as used.
 - **Constrict N** (`constrict`, 🐍): its melee hits Bind and squeeze (N) for a round, and the held unit skips its turn and loses its skills and triggers (Silence through `sk3Apply`). Status `constricted`, skip reason `constricted`, `statusFx` kind `constrict`. Actions `strangle` / `constrict` (amount = squeeze, who / sub / targets).
-- **Hoard N**: +N/+N for each Lumber held, floor(Lumber x N), N may be a fraction (in `condStatsOf`, like Timber). Decision ENG36-1.
+- **Hoard N**: +N/+N for each Lumber held, floor(Lumber x N), N may be a fraction (in `condStatsOf`, like Timber). Decision ENG36-1. ENG40: every 3 Lumber (below).
 
 ## 2026-11-09 (package ENG38): targeting picks at random
 
@@ -1687,3 +1687,14 @@ The engine decides; this describes (owner 2026-11-09 21:36 on ENG37-1: "Never ha
 - **No rule in the text, now random** (`eng38Pick`): Amore's mate (was the nearest), Dismantle's loose piece (was the nearest).
 - Already random before: Arrow / Bolts / Bola / Lasso "facing, else nearest" ties, Bloodlust's leap, Restless, Guardian, Spellward, Taunt ties, Nursing ties, Rocket ties, Missile, Snipe, Spitfire.
 - Not changed: the CPU's choices (where it plays, Equipment, hazards, Parasites, Devour, its Aimed Bolt) are strategy; the old row ("gravity") board's left-hand facing convention; the raid file's own picks. Call ENG38-1: whether the named rules go random too.
+
+## 2026-11-09 (package ENG40): Hoard by resource, gentler summons, ranged swings, arrows-only Fletcher, Flora
+
+The engine decides; this describes (owner decisions 2026-11-09 23:05 / 23:07; `docs/project-state.md`).
+- **Hoard N**: +N/+N for every 3 Lumber you hold (`HOARD_PER`, `hoardStatsOf`: N x floor(held / per), the product rounded down); `"hoard": {"v": N, "res": "stone"}` counts every 2 Stone, `"res": "metal"` every Metal (`effects.hoardRes`). Timber (`hoard {kind: timber}`) keeps +1/+1 a Lumber. Card line: `ui.eng36-hoard` ("+{n}/+{n} for every 3 Lumber you hold."); `ui.eng40-hoard-stone` / `ui.eng40-hoard-metal` are ready for the app's Stone / Metal line (no card uses them yet). Priced 1 x N (Lumber), x0.8 (Stone), x2 (Metal): `bramblewood-budget.js` `hoardS` / `HOARD_RES_MULT`.
+- **Summons**: half the normal level curve's growth, each stat rounded down (`ENG40_SUMMON_GROWTH` in `eng36StatsAt`): Log Wall 0/4 at Levels 1-6, 0/5 at 7-9, 0/6 at 10-11.
+- **Ranged swings**: a Boomerang / Bananarang swing (the `swing` list in `canonical/skill-delivery.json`) carries no melee rider: `eng40MeleeSwing` gates the swing's Bleed, Venom, Greater Poison, Hemorrhage, Decay, Daunt, Corrode, Scar, Perforate, Breach, Pry, Pulverise, Desecrate, Bludgeon, Toxin / Weaken / Bulldoze / Tangleweed / Strangle, Web, Brittle, Wither, Psychic, Sequestration, Leech, the status rolls and On Hit triggers (Expose, Exploit, Skitter ...). Wave, the lightning arcs, Swipe, Overwhelm, Momentum, Sunder, Crit and King Slayer stay. Thorns, Poison Barbs, Ichor and Spiteful still answer the swing (unchanged).
+- **Reach** is melee again (off the `swing` list): its swing carries the melee riders; Canopy Cover no longer dodges it. It stays Flying level 1 on the flying meter (ENG37): a Flyer never dodges it, a Mach unit 1 in 2.
+- **Fletcher and Weapon Master**: arrows only (`eng40ArrowShot` marks the hit, `fireDamageAction` reads the mark once): Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, an Archer's shot and the Arrow action (`bxArrowShot`), Barrage's physical arrows. Not the Bolts (the bolt form), Spitfire, Bola, Lasso, Snipe, Rocket, Missile, Deal damage.
+- **Flora**: Ent, Bramble Sprout, Thornvine Lasher, Elder Willow, Strangler Vine, Cypress Root Lurker and Pinecone Sapper are species Plant (Flora phylum), no longer Elemental: Nature's Force (+N/+N to Elementals) and any Elemental type match (Kinship Elemental, an Elemental filter, Esprit kin with Elementals) stop counting them; they were already Flora through their Tree / Vine / Flora types, and Psychic still can't hurt them (Plant is mindless too).
+- **Esprit {v: 0, hp: N}**: +0/+N per kin; priced as its Health part only (`zeroFree`). Sunthroat Courier is written that way.

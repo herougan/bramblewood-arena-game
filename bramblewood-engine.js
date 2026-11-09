@@ -2784,6 +2784,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // with shot = true: arrows, bolts and spits (Cinder, Acid, Frost, Shock), Spitfire, Snipe, a thrown banana, Rocket's main hit, Missile,
   // a Deal damage action's aimed hit, Barrage (every element now). Area skills (Fireball, Earthquake ...) are ranged but not shots (call
   // ENG34-3). The Wildpath "Fletcher's Eye" perk stays on Arrow (it is an arrow perk).
+  // ENG40 (2026-11-09, owner ENG34-3 c "Back to arrows only", ENG34-1 b "fletcher only works for arrows"): Fletcher N and Weapon Master N
+  // add to the arrow form of the Arrow family only: Arrow, Fire Arrow, Ice Arrow (ENG39's {type} kinds, form arrow), Twin Shot, Volley,
+  // an Archer's shot and the Arrow action (bxArrowShot), Barrage's physical arrows. Not the bolt form (Fire / Ice / Acid / Poison / Shock
+  // Bolt), spits, Spitfire, Bola, Lasso, Snipe, Rocket, Missile, Deal damage or a thrown swing. The caller marks an arrow with
+  // eng40ArrowShot(() => fireDamageAction(...)); fireDamageAction reads the mark once (eng40ArrowNow) and clears it.
+  let eng40ArrowNow = false;
+  function eng40ArrowShot(fn){ const was = eng40ArrowNow; eng40ArrowNow = true; try{ return fn(); } finally{ eng40ArrowNow = was; } }
   function eng34FletchOf(pl){ if(!pl) return 0; return (skillRidesOn('fletcher') === 'ranged' ? auraN(pl, 'fletcher') : 0) + (skillRidesOn('weaponMaster') === 'ranged' ? eqArrowBonus(pl) : 0); }
   // ENG9 (2026-10-26, owner #40: "elemental poison/bleed and other attack types replaced by status-types dont deal damage anymore and just
   // deal everything in counters, not both"): a "– poison" / "– bleed" shot or action (Arrow, Fire Arrow, Fire Bolt, Missile, Deal damage
@@ -2818,7 +2825,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function en5Woods(){ return !!(rules.woods || rules.canopy || rules.undergrowth || (rules.terrain && rules.terrain.biome === 'forest')); }
   function en5CanopyCover(c){ if(!c || !en5Woods()) return false; const e = effectsOf(c); return !!e.canopyCover && (!e.flying || ashyNow()); }
   // ENG13 (2026-10-29): which swings the canopy covers: a Flying attacker's or a thrown one (Boomerang, Bananarang); see combatHitLands.
-  function en5FromAbove(ad){ return !!(ad && (ad.flying || rangedSwingOf(ad))); } // ENG34 (2026-11-07): every ranged swing (skill-delivery.json swing: Reach too, as the owner's "ranged and flying attacks" reads)
+  function en5FromAbove(ad){ return !!(ad && (ad.flying || rangedSwingOf(ad))); } // ENG34 (2026-11-07): every ranged swing (skill-delivery.json swing); ENG40 (2026-11-09, owner ENG34-1 b: "reach counts as melee"): Reach left the swing list, so the canopy no longer covers a Reach swing
+  // ENG40 (2026-11-09, owner ENG34-1 b: "(fletcher only works for arrows). But reach counts as melee."): a unit's own swing is melee unless a
+  // skill on canonical/skill-delivery.json's swing list throws it (Boomerang, Bananarang, the old Anti-air). A ranged swing carries no melee
+  // rider (rides: 'melee': Bleed, Venom, Daunt, Breach, Leech, the status rolls, On Hit triggers ...); the swing-only riders (Wave, the
+  // lightning arcs, Swipe, Overwhelm, Momentum) and the any-hit ones (Crit, King Slayer, Sunder) stay. Reach is melee again (was ranged, ENG34).
+  function eng40MeleeSwing(att, attDef){ return !(rangedSwingOf(att ? effectsOf(att) : null) || rangedSwingOf(attDef && attDef.effects)); }
   //   State skills (owner 03:12: "New state-like skills like Tide: ____ - {}, as in, {} activates if ____ is met ... One if wood=3+, one if
   //     stone=2+, one if metal=1+. Help me define the default as well."; 03:12b: "When your bramble health is low - {} is gained. By default,
   //     the unit gains +1/+1."): while the side's state holds, the braces (effects.<k>Grant), or the default when a card prints the plain
@@ -3012,8 +3024,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'crepuscularDay', 'crepuscularNight' /* ENG23 */, 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'plentyGrant', 'scarcityGrant', 'foePlentyGrant', 'foeScarcityGrant', 'heatGrant', 'frostGrant', 'rainGrant', 'stormGrant', 'fogGrant', 'saltGrant', 'droughtGrant', 'seasonGrant', 'requiemGrant', 'dirgeGrant', 'carnageGrant', 'musterGrant', 'besetGrant', 'throngGrant' /* ENG10 */, 'tallyGrant', 'almanacGrant', 'onslaughtGrant', 'riledGrant', 'deliveryRes' /* ENG22 */, 'tribeDeliveryRes' /* ENG25 */, 'arrowBramble', 'fireArrowBramble', 'fireBoltBramble' /* EN6 (2026-10-24) */, 'arrowPoison', 'arrowBleed', 'fireArrowPoison', 'fireArrowBleed', 'fireBoltPoison', 'fireBoltBleed', 'diveUses' /* EN7 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
-  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant', 'crepuscularDay', 'crepuscularNight' /* ENG23 */], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */, plenty:['plentyGrant'], scarcity:['scarcityGrant'], foePlenty:['foePlentyGrant'], foeScarcity:['foeScarcityGrant'], heat:['heatGrant'], frost:['frostGrant'], rain:['rainGrant'], storm:['stormGrant'], fog:['fogGrant'], salt:['saltGrant'], drought:['droughtGrant'], season:['seasonGrant'], requiem:['requiemGrant'], dirge:['dirgeGrant'], carnage:['carnageGrant'], muster:['musterGrant'], beset:['besetGrant'], throng:['throngGrant'] /* ENG10 */, tally:['tallyGrant'], almanac:['almanacGrant'], onslaught:['onslaughtGrant'], riled:['riledGrant'], delivery:['deliveryRes'], tribeDelivery:['tribeDeliveryRes'] /* ENG25 */, deliveryEvery:['deliveryRes'] /* ENG22 */, arrow:['arrowBramble', 'arrowPoison', 'arrowBleed'], fireArrow:['fireArrowBramble', 'fireArrowPoison', 'fireArrowBleed'], fireBolt:['fireBoltBramble', 'fireBoltPoison', 'fireBoltBleed'] /* EN6; + EN7's – poison / – bleed */, dive:['diveUses'] /* EN7 */};
+  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'crepuscularDay', 'crepuscularNight' /* ENG23 */, 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'plentyGrant', 'scarcityGrant', 'foePlentyGrant', 'foeScarcityGrant', 'heatGrant', 'frostGrant', 'rainGrant', 'stormGrant', 'fogGrant', 'saltGrant', 'droughtGrant', 'seasonGrant', 'requiemGrant', 'dirgeGrant', 'carnageGrant', 'musterGrant', 'besetGrant', 'throngGrant' /* ENG10 */, 'tallyGrant', 'almanacGrant', 'onslaughtGrant', 'riledGrant', 'deliveryRes' /* ENG22 */, 'tribeDeliveryRes' /* ENG25 */, 'hoardRes' /* ENG40 */, 'arrowBramble', 'fireArrowBramble', 'fireBoltBramble' /* EN6 (2026-10-24) */, 'arrowPoison', 'arrowBleed', 'fireArrowPoison', 'fireArrowBleed', 'fireBoltPoison', 'fireBoltBleed', 'diveUses' /* EN7 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
+  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant', 'crepuscularDay', 'crepuscularNight' /* ENG23 */], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */, plenty:['plentyGrant'], scarcity:['scarcityGrant'], foePlenty:['foePlentyGrant'], foeScarcity:['foeScarcityGrant'], heat:['heatGrant'], frost:['frostGrant'], rain:['rainGrant'], storm:['stormGrant'], fog:['fogGrant'], salt:['saltGrant'], drought:['droughtGrant'], season:['seasonGrant'], requiem:['requiemGrant'], dirge:['dirgeGrant'], carnage:['carnageGrant'], muster:['musterGrant'], beset:['besetGrant'], throng:['throngGrant'] /* ENG10 */, tally:['tallyGrant'], almanac:['almanacGrant'], onslaught:['onslaughtGrant'], riled:['riledGrant'], delivery:['deliveryRes'], tribeDelivery:['tribeDeliveryRes'] /* ENG25 */, hoard:['hoardRes'] /* ENG40 */, deliveryEvery:['deliveryRes'] /* ENG22 */, arrow:['arrowBramble', 'arrowPoison', 'arrowBleed'], fireArrow:['fireArrowBramble', 'fireArrowPoison', 'fireArrowBleed'], fireBolt:['fireBoltBramble', 'fireBoltPoison', 'fireBoltBleed'] /* EN6; + EN7's – poison / – bleed */, dive:['diveUses'] /* EN7 */};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
     Object.keys(e).forEach(k=>{ if(IRR_NOT_SKILLS.has(k)) return; const v = e[k]; if(v === false || v == null || v === 0 || v === '' || (Array.isArray(v) && !v.length)) return; out.push({key:k}); });
@@ -3156,7 +3168,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)){ add(e.usurper || 0); addGrant(e.usurperGrant); ctx25.push('usurper'); }
     c._ctxOn = ctx25.join(',');
     if(e.timber){ const n = Math.max(0, pl.lumber||0); a += n; h += n; }
-    if(e.hoard){ const n = hoardStatsOf(e, pl); a += n; h += n; } // ENG36 (2026-11-08): Hoard N, +N/+N a Lumber
+    if(e.hoard){ const n = hoardStatsOf(e, pl); a += n; h += n; } // ENG36 (2026-11-08): Hoard N; ENG40 (2026-11-09): +N/+N for every 3 Lumber / 2 Stone / 1 Metal (hoardStatsOf)
     // Swimmer's Flow list (2026-10-12): the skills it gets while the tide is in Flow.
     // Swimmer (reworked 2026-10-12, 09:48: "Change it to be a If Tide -> { } is enabled ... {Extra Attack} or {Quick Attack} or
     // {Evade}"): on a rising tide it gets the one thing it was given. Quick Attack is the Fast Forward turn (in resolveCombat).
@@ -3710,7 +3722,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // levelStats win. The summon is a derived def '<id>~lv<L>' (derivedFrom the token, every flag kept, so the app and the AI read it as the
   // token). A summoner with no level (a base-level card, the card matrix's fights) summons the token as printed: nothing changes there.
   // Copies of the summoner itself (Duplicate, Meiosis, Hydra, Bloom, Offspring) are made from its own levelled def already and are left alone.
-  // Log Wall: 0/4 at Level 1 (ENG33_DEF.bulwarkWallHp, unchanged), 0/5 at 4-6, 0/7 at 7-9, 0/8 at 10, 0/9 at 11 (decision ENG36-3).
+  // Log Wall: 0/4 at Level 1 (ENG33_DEF.bulwarkWallHp, unchanged); ENG40 (2026-11-09, decision ENG36-3 b): half the normal growth, 0/5 at 7-9,
+  // 0/6 at 10 (was the normal curve: 0/5 at 4-6, 0/7 at 7-9, 0/8 at 10, 0/9 at 11).
+  const ENG40_SUMMON_GROWTH = 0.5;
   let eng36BBc = null;
   function eng36BB(){ if(eng36BBc) return eng36BBc; eng36BBc = (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget) || (()=>{ try{ return typeof require === 'function' ? require('./bramblewood-budget.js') : null; }catch(e){ return null; } })(); return eng36BBc; }
   function eng36BaseLevel(d){ // arena_app.js cardBaseLevel, inline (the engine has no app)
@@ -3725,7 +3739,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(L < base){ const r = v=> v == null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85)); return {attack: r(A0), health: r(H0)}; }
     const BB = eng36BB(); if(!BB || !BB.forgeCurve) return {attack: A0, health: H0};
     const row = BB.forgeCurve(Object.assign({}, td, {obtainMap: td.obtainMap || 0}), base, L).rows[L];
-    return {attack: row ? row.attack : A0, health: row ? row.health : H0};
+    // ENG40 (2026-11-09, owner on ENG36-3: "Log wall should be 0/6 at lvl 10. 0/8 is too much, it's twice!"): a summon grows half as fast
+    // as the normal curve (ENG40_SUMMON_GROWTH), each stat rounded down: Log Wall 0/4 at Levels 1-6, 0/5 at 7-9, 0/6 at 10-11 (was 0/8 at 10).
+    const g = (v0, v)=> (v0 == null || v == null) ? v : v0 + Math.max(0, Math.floor((v - v0) * ENG40_SUMMON_GROWTH + 1e-9));
+    return {attack: row ? g(A0, row.attack) : A0, health: row ? g(H0, row.health) : H0};
   }
   // the def id a summon of defId by src comes out as (defId itself when there is nothing to scale)
   function eng36SummonDefId(defId, src){
@@ -5664,7 +5681,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // rule): lightning (shock) damage aimed at a castle (the sky bolt, a Shock Bolt or any lightning skill with no unit to strike) deals
     // its damage as usual, but a castle is never Shocked (nor gets any status) and the Wet bonus never applies to it: the castle branch
     // below adds nothing to the amount and returns no card, so the callers' status steps (applyShotStatus) skip it.
-    if(shot && attUid != null && typeof amount === 'number' && amount > 0) amount += eng34FletchOf(players[ownerId]); // ENG34 (2026-11-07): Fletcher / Weapon Master, every ranged shot of the side (rides: 'ranged')
+    const e40Arrow = eng40ArrowNow; eng40ArrowNow = false; // ENG40: read once, so a shot this one sets off (a kill trigger's Missile ...) is not an arrow
+    if(shot && e40Arrow && attUid != null && typeof amount === 'number' && amount > 0) amount += eng34FletchOf(players[ownerId]); // ENG34 (2026-11-07): Fletcher / Weapon Master, every ranged shot of the side (rides: 'ranged'); ENG40 (2026-11-09, ENG34-3 c): arrows only (eng40ArrowShot)
     if(shot && target && target.kind === 'card' && target.card){ const rf = reflectShotOf(players, sideOf, ownerId, target.card, events);
       if(rf) return fireDamageAction(players, sideOf, rf.pid, rf.src.defId, amount, dmgType, rf.target, stats, events, killCredit, rf.src.uid, false, armored); }
     const owner = players[ownerId], enemy = players[otherId(ownerId)];
@@ -6524,8 +6542,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (the situational +A/+H, so the Health moves with your Lumber too). N may be a fraction: +1/+1 for every 1/N Lumber, floor(Lumber x N)
   // (Hoard 0.5 = +1/+1 for every 2 Lumber). Plain Hoard (true) is N 1. The old cards were converted (decision ENG36-1). Was:
   //   function hoardBonus(card){ ... floor(Lumber / max(1, N)) } (+1 Attack per N Lumber, live in effAtk)
+  // ENG40 (2026-11-09, owner on ENG36-1: "by default, Hoard N gives +N/+N per 3 lumber. For stone, per 2, for metal, per 1."): Hoard N is
+  // +N/+N for every 3 Lumber its side holds (the default resource), every 2 Stone, or every Metal: the resource is a parameter
+  // ("hoard": {"v": 1, "res": "stone"}, canonical/skill-params.json, read as effects.hoardRes), rounded down: N x floor(held / per), and
+  // the product rounded down for a fractional N. Plain Hoard (true) is N 1. Timber (Hoard {kind: timber}) keeps its own rule (+1/+1 a
+  // Lumber). Was (ENG36): floor(Lumber x N), +N/+N for each Lumber.
+  const HOARD_PER = {lumber: 3, stone: 2, metal: 1};
   function hoardN(e){ const v = e && e.hoard; if(!v) return 0; return v === true ? 1 : Math.max(0, Number(v) || 0); }
-  function hoardStatsOf(e, pl){ const n = hoardN(e); if(!(n > 0) || !pl) return 0; return Math.floor(Math.max(0, pl.lumber || 0) * n + 1e-9); }
+  function hoardResOf(e){ const r = e && e.hoardRes; return (r === 'stone' || r === 'metal') ? r : 'lumber'; }
+  function hoardStatsOf(e, pl){ const n = hoardN(e); if(!(n > 0) || !pl) return 0; const r = hoardResOf(e); return Math.floor(n * Math.floor(Math.max(0, pl[r] || 0) / HOARD_PER[r]) + 1e-9); }
   function hoardBonus(card){ return 0; } // ENG36: Hoard is in condStatsOf now (its Attack and Health)
   // Venom Master N (2026-10-17, user: "Increase status power of allies"): your units' hits that add Poison or Bleed add N more (melee
   // hits, prongs, and the Poison Bolt). Fletcher N ("Make Arrow ... stronger"): your units' arrows (Arrow, Fire Arrow, Ice Arrow,
@@ -6952,7 +6977,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       return true; }
     if(t.do === 'barrage'){ const dt = t.dmgType || 'physical', plus = 0; /* ENG34 (2026-11-07): Fletcher comes in fireDamageAction (a shot), every element now */
       ev({type:'statusFx', kind:'barrage', side, attDefId:src.defId, attUid:src.uid, targetSide:sideOf(otherId(pid)), amount:n, dmgType:dt});
-      allBoardCards(players[otherId(pid)]).filter(sk3Live).forEach(c=> fireDamageAction(players, sideOf, pid, src.defId, n + plus, dt, {kind:'card', card:c}, stats, events, null, src.uid, true));
+      allBoardCards(players[otherId(pid)]).filter(sk3Live).forEach(c=>{ const fd = ()=> fireDamageAction(players, sideOf, pid, src.defId, n + plus, dt, {kind:'card', card:c}, stats, events, null, src.uid, true); if(dt === 'physical') eng40ArrowShot(fd); else fd(); }); // ENG40 (2026-11-09, ENG34-3 c): Fletcher on its physical arrows only (as before ENG34)
       return true; }
     if(t.do === 'graveCall'){ return sk3GraveCall(players, sideOf, pid, src, t, stats, events), true; }
     // the statuses
@@ -8018,6 +8043,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(hasShotSkill(c) && confusedFumbles(c, sideOf(pid), events, 'shot')) return false; // Confused (2026-10-19, package FZ): the shot action fumbles 1 in 2
         const shots = [];
         const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
+        const eng40IsArrow = sh=> !sh.bolt && !sh.bola && !sh.lasso && !sh.spitfire; // ENG40 (2026-11-09, ENG34-3 c): Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley
         const fl17 = eng34FletchOf(pl); // Fletcher N (2026-10-17) + Weapon Master N (EQ, 2026-10-19); ENG34 (2026-11-07): fireDamageAction adds it to every shot now (eng34FletchOf), so the shots below no longer carry it, except a status-only shot's counters (below)
         // 2026-10-17 (user: "First creature to have 2x Arrow 2."): a skill can't sit on a card twice (effects is one key each), so
         // effects.arrowCount N says how many Arrow shots it looses: War Elephant has Arrow 2 and arrowCount 2, two arrows of 2 a round,
@@ -8065,7 +8091,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(recordEvents && events) events.push({type:'arrow', snipe:true, side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: t.uid, targetDefId: t.defId, amount: amt, headwind: sr > 0 || undefined});
             fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(eng28DarkShotMiss(c, pid, tg)){ if(recordEvents && events) events.push({type:'blindMiss', side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetKind:'card', targetUid:tg.card.uid, night:true, ranged:true, eng28:true}); } else if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, killCredit, c.uid, true, true); }
             if(sr === 0 && hwTwice()) sn = 2; } } } }
-        shots.forEach(sh=>{ if(sh.tip && sh.amount > 0 && sh.at !== 'hq'){ sh.n = sh.amount + fl17; /* ENG34: Fletcher's N joins a status-only shot's counters, as it did */ sh.tip = Object.assign({}, sh.tip, {n: Math.round(sh.amount)}); sh.amount = 0; sh.statusOnly = true; } }); // ENG9 (2026-10-26, #40): a – poison / – bleed shot deals counters, not damage (a unit target; the bramble takes its N)
+        shots.forEach(sh=>{ if(sh.tip && sh.amount > 0 && sh.at !== 'hq'){ sh.n = sh.amount + (eng40IsArrow(sh) ? fl17 : 0); /* ENG34: Fletcher's N joins a status-only shot's counters, as it did; ENG40: an arrow's only (not Fire Bolt's) */ sh.tip = Object.assign({}, sh.tip, {n: Math.round(sh.amount)}); sh.amount = 0; sh.statusOnly = true; } }); // ENG9 (2026-10-26, #40): a – poison / – bleed shot deals counters, not damage (a unit target; the bramble takes its N)
         if(shots.length && hwTwice()) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice (not under Quiet Contemplation, 2026-10-19)
         if(shots.length && fx.doubleTime && !quietStills(c, sideOf(pid), events, 'doubleTime')) shots.push(...shots.map(x=> Object.assign({}, x))); // Double Time (ENG27): its shots twice
         if(shots.length && fx.coffee && c._coffeeShot !== combatNo && coffeeRound(c, sideOf(pid), events)){ c._coffeeShot = combatNo; if(!coffeeStill(c, sideOf(pid), events)) shots.push(...shots.map(x=> Object.assign({}, x))); } // Coffee N (ENG11, K2): its shots twice
@@ -8085,7 +8111,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(eng28DarkShotMiss(c, pid, target)){ if(recordEvents && events) events.push({type:'blindMiss', side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetKind:target.kind, targetUid: target.kind === 'card' && target.card ? target.card.uid : undefined, night:true, ranged:true, eng28:true}); return; } // ENG28: the dark
           if(helmetDeflects(target, sideOf(otherId(pid)), events)) return;
           let hitCard = null; shotBounced = false;
-          if(shot.amount > 0 || target.kind !== 'card') hitCard = fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, killCredit, c.uid, true, true); // true: a shot, Reflect bounces it (2026-10-17)
+          if(shot.amount > 0 || target.kind !== 'card'){ const fd = ()=> fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, killCredit, c.uid, true, true); hitCard = eng40IsArrow(shot) ? eng40ArrowShot(fd) : fd(); } // true: a shot, Reflect bounces it (2026-10-17); ENG40: Fletcher on the arrows only
           else { // a no-damage spit (Poison Bolt): it can still be dodged (no Guardian since GD2)
             const rf = reflectShotOf(players, sideOf, pid, target.card, events); // Reflect (2026-10-17): the spit bounces back at the spitter's side
             if(rf){ if(rf.target.kind === 'hq') fireDamageAction(players, sideOf, rf.pid, rf.src.defId, shot.n, shot.dmgType, rf.target, stats, events, killCredit, rf.src.uid);
@@ -9820,7 +9846,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       amount, archer: how === 'archer' || undefined, style: (effectsOf(c).archerStyle || undefined), guardianRedirect: pulled === 'guardian' || undefined, taunted: pulled === 'taunt' || undefined});
     if(helmetDeflects(target, sideOf(otherId(pid)), events)) return true;
     const [amt2, tip2] = en7StatusOnly(tip, amount, target); // ENG9: – poison / – bleed: counters only
-    const hit = fireDamageAction(players, sideOf, pid, c.defId, amt2, 'physical', target, stats, events, bxBook, c.uid, true, true); // true: a shot (Reflect, Evasive); true: Armor stops it (ENG10)
+    const hit = eng40ArrowShot(()=> fireDamageAction(players, sideOf, pid, c.defId, amt2, 'physical', target, stats, events, bxBook, c.uid, true, true)); // true: a shot (Reflect, Evasive); true: Armor stops it (ENG10); ENG40: an arrow (Fletcher)
     if(hit && tip2 && ownerPidOfCard(hit) !== pid) en7HitStatuses(c, hit, sideOf(pid), sideOf(otherId(pid)), events, 'shot', tip2); // EN7 (2026-10-24): Arrow N – poison / – bleed
     return true;
   }
@@ -11768,17 +11794,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
         if(kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:kingSlayerBonus});
         fireHitLands(a.att, defCard, mySide, sideOf(a.enemyId), players[a.enemyId], aStat, stats, events); // Fire on hit (2026-10-16)
-        psychicHit(otherId(a.enemyId), a.att, defCard, sideOf, stats, events); // Psychic N (2026-10-14)
+        const e40M = eng40MeleeSwing(a.att, attDef); // ENG40 (2026-11-09, owner ENG34-1 b: "fletcher only works for arrows. But reach counts as melee"): a ranged swing (Boomerang, Bananarang, the old Anti-air throw) carries no melee rider below; Reach's swing is melee again
+        if(e40M) psychicHit(otherId(a.enemyId), a.att, defCard, sideOf, stats, events); // Psychic N (2026-10-14)
         // Pierce (2026-09-17, per explicit request: "pierce... should also hit the castle"):
         // a flat, unconditional chunk of extra damage punches straight through to the enemy
         // castle on every landed melee hit, on top of whatever this hit did to defCard —
         // independent of whether defCard survives.
         const punctureN = attDef.effects ? (Number(attDef.effects.perforate)||0) : 0; // Perforate's N to the bramble (Puncture reads as Breach since ENG25, 2026-11-05: en5Breach below)
-        if(punctureN > 0){
+        if(e40M && punctureN > 0){
           const pierceDmg = damageHQ(players[a.enemyId], punctureN);
           if(pierceDmg>0 && recordEvents && events) events.push({type:'pierceHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:pierceDmg});
         }
-        en5Breach(players, a.att, attDef, a.enemyId, mySide, sideOf(a.enemyId), events); // Breach N (EN5, 2026-10-24): N to the enemy bramble on every landed hit
+        if(e40M) en5Breach(players, a.att, attDef, a.enemyId, mySide, sideOf(a.enemyId), events); // Breach N (EN5, 2026-10-24): N to the enemy bramble on every landed hit
         // Chained (Devilry, 2026-09-17, per explicit request: "the simplest of which is getting
         // hit by any damage >1"): checked on every landed melee hit, same "breaks on ANY
         // damage taken" convention Sleep already uses, just gated to a configurable threshold.
@@ -11813,32 +11840,32 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Reflect bounces shots now, see reflectShotOf.)
         // 2026-10-12 (user: "If a poison-ing unit hits an enemy and deals no combat damage (e.g. too much armour), it does not
         // deal poison"): only a hit that got through (or converted into poison stacks) leaves poison.
-        { const pre = defCard.poison|0; const pz0 = poisonOn(attDef), pz = pz0 > 0 ? pz0 + venomBoost(a.attId) : 0; if(pz && defCard.hp>0 && (dmg > 0 || elementalAmount > 0)){ // + Rabid's 2 (2026-10-14); + Venom Master (2026-10-17)
+        if(e40M) { const pre = defCard.poison|0; const pz0 = poisonOn(attDef), pz = pz0 > 0 ? pz0 + venomBoost(a.attId) : 0; if(pz && defCard.hp>0 && (dmg > 0 || elementalAmount > 0)){ // + Rabid's 2 (2026-10-14); + Venom Master (2026-10-17)
           aStat.poisonApplied += addPoison(defCard, pz); // Structures are immune to poison (2026-10-15)
         }
           en4GreaterPoison(a.att, attDef, defCard, pre, (dmg > 0 || elementalAmount > 0), mySide, sideOf(a.enemyId), events); } // EN4 (2026-10-23): Greater Poison converts the Poison it had before this hit
-        if(attDef.effects && attDef.effects.desecrate) curseCell(players, a.enemyId, defCard, Number(attDef.effects.desecrate), events); // Desecrate N: curse the cell the target stands on
+        if(e40M && attDef.effects && attDef.effects.desecrate) curseCell(players, a.enemyId, defCard, Number(attDef.effects.desecrate), events); // Desecrate N: curse the cell the target stands on
         // Decay (passive, 2026-09-29): mirrors Poison's on-hit stacking exactly, but as its own
         // separate stack (card.decay, ticked by applyDecayTicks) — see that function's comment
         // for how it differs from Poison at tick time (Decay also saps Attack, not just HP).
-        if(attDef.effects && attDef.effects.decay && defCard.hp>0 && !immunityOf(defCard) /* ENG24 */){
+        if(e40M && attDef.effects && attDef.effects.decay && defCard.hp>0 && !immunityOf(defCard) /* ENG24 */){
           defCard.decay = (defCard.decay||0) + attDef.effects.decay;
         }
-        if(attDef.effects && Number(attDef.effects.daunt) > 0 && defCard.hp>0 && eng36Lands(defCard, 'daunt') /* ENG36 (2026-11-08) */){
+        if(e40M && attDef.effects && Number(attDef.effects.daunt) > 0 && defCard.hp>0 && eng36Lands(defCard, 'daunt') /* ENG36 (2026-11-08) */){
           (defCard.daunts = defCard.daunts || []).push({n: Number(attDef.effects.daunt), until: combatNo + 1});
           if(recordEvents && events) events.push({type:'statusFx', kind:'daunt', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:Number(attDef.effects.daunt)});
         }
         // Bleed (passive): this card's attack also stacks Bleed on the target, mirroring Poison.
-        { const hw = en4Hemorrhage(attDef, defCard); // EN4 (2026-10-23): Hemorrhage doubles the Bleed it already has, before this hit's own Bleed
+        if(e40M) { const hw = en4Hemorrhage(attDef, defCard); // EN4 (2026-10-23): Hemorrhage doubles the Bleed it already has, before this hit's own Bleed
           const bl = attDef.effects ? (Number(attDef.effects.bleed)||0) + en5HemoN(attDef) /* EN5 (2026-10-24): Hemorrhage N's own Bleed, after the doubling */ + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0) : 0;
           if(bl > 0 && defCard.hp>0 && !isGhost(defCard)) defCard.bleed = (defCard.bleed||0) + bl + venomBoost(a.attId);
           en4HemorrhageEv(a.att, defCard, hw, mySide, sideOf(a.enemyId), events); } // Ghosts don't bleed (2026-10-14); + Venom Master (2026-10-17)
         // (Bloodlust's 2026-10-15 rule, +N Attack for drawing blood, became the leap on a kill on 2026-10-17: see bloodlustLeap.)
         // Perforate N (2026-10-11): the hit also strips N of the target's Armor for good.
-        if(attDef.effects && attDef.effects.perforate > 0 && defCard.hp>0){ const d0 = CARD_DEFS[defCard.defId]; const base = (d0 && d0.effects && d0.effects.armor) || 0;
+        if(e40M && attDef.effects && attDef.effects.perforate > 0 && defCard.hp>0){ const d0 = CARD_DEFS[defCard.defId]; const base = (d0 && d0.effects && d0.effects.armor) || 0;
           if(base - (defCard.armorLoss||0) > 0){ defCard.armorLoss = Math.min(base, (defCard.armorLoss||0) + attDef.effects.perforate); if(recordEvents && events) events.push({type:'statusFx', kind:'armorShred', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.perforate}); } }
-        eqPryHit(attDef, a.att, defCard, mySide, sideOf(a.enemyId), events); // Pry N (EQ, 2026-10-19): strips N Armor for good
-        pulveriseHit(players, attDef, a.att, defCard, mySide, sideOf(a.enemyId), events, sideOf); // CONTENT3 (2026-10-26, OWN-Q5)
+        if(e40M) eqPryHit(attDef, a.att, defCard, mySide, sideOf(a.enemyId), events); // Pry N (EQ, 2026-10-19): strips N Armor for good
+        if(e40M) pulveriseHit(players, attDef, a.att, defCard, mySide, sideOf(a.enemyId), events, sideOf); // CONTENT3 (2026-10-26, OWN-Q5)
         eqSunderHit(players, sideOf, a.att, defCard, events); // ENG10 (2026-10-26, PROP1-1): Sunder, 50% to break a Hardy life
         // Corrode (status, 2026-09-17): stacks like Poison/Bleed, but saps effective Attack
         // instead of dealing damage — see effAtk/endOfRoundUpkeep for the read/decay sides.
@@ -11846,7 +11873,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Corrode pushes its own statusFx on application — same convention Scar (the other
         // permanent/stacking mark) already uses — since there's no periodic tick moment of its
         // own to visualize the debuff landing.
-        if(attDef.effects && attDef.effects.corrode && defCard.hp>0 && eng36Lands(defCard, 'corrode') /* ENG36 */){
+        if(e40M && attDef.effects && attDef.effects.corrode && defCard.hp>0 && eng36Lands(defCard, 'corrode') /* ENG36 */){
           defCard.corrode = (defCard.corrode||0) + attDef.effects.corrode;
           defCard._corrodeJustSet = true;
           if(recordEvents && events) events.push({type:'statusFx', kind:'corrode', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.corrode});
@@ -11858,28 +11885,28 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // decrease by 1."): N counters, added after this hit (so this hit isn't one of them); each later hit crits and uses one.
         // 2026-10-19 (package SK1, owner 21:36): Expose N now leaves the target Exposed for N rounds (its hiding stripped), and the
         // counters' extra damage is Exploit N's tokens; with Venom Pulse, all three are sk1OnHit (after this hit's own Poison).
-        if(defCard.hp>0) sk1OnHit(players, sideOf, otherId(a.enemyId), a.att, attDef, defCard, stats, events);
-        else if(a.att && effectsOf(a.att).skitter) eng23SkitterMark(a.att, otherId(a.enemyId), sideOf, events); // ENG23: a killing hit is a hit too
+        if(e40M && defCard.hp>0) sk1OnHit(players, sideOf, otherId(a.enemyId), a.att, attDef, defCard, stats, events);
+        else if(e40M && a.att && effectsOf(a.att).skitter) eng23SkitterMark(a.att, otherId(a.enemyId), sideOf, events); // ENG23: a killing hit is a hit too
         // Scar (permanent, stacking Expose — see computeHitDamage): applied the same way as
         // Expose/Poison/Bleed, but on a SURVIVING target only makes sense the same as those.
-        if(attDef.effects && attDef.effects.scar && defCard.hp>0 && eng36Lands(defCard, 'scar') /* ENG36 */){
+        if(e40M && attDef.effects && attDef.effects.scar && defCard.hp>0 && eng36Lands(defCard, 'scar') /* ENG36 */){
           defCard.scar = (defCard.scar||0) + attDef.effects.scar;
           if(recordEvents && events) events.push({type:'statusFx', kind:'scar', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.scar});
         }
         // Bludgeon (2026-10-13, user: "Destroys either armour, removes flying or swimming or burrow - and in the future, anything
         // like that"): each landed hit knocks out one defence the target still has, picked at random with equal odds.
-        if(attDef.effects && attDef.effects.bludgeon && defCard.hp>0) bludgeonHit(a.att, defCard, mySide, sideOf(a.enemyId), events);
-        w2OnHit(a.att, attDef, defCard, dmg, mySide, sideOf(a.enemyId), events, aStat); // Venomous, Toxin, Weaken, Bulldoze, Tangleweed, Strangle (2026-10-16)
-        if(attDef.effects && attDef.effects.web && defCard.hp > 0) webUnit(a.att, defCard, numN(attDef.effects.web, S17_DEF.web), mySide, sideOf(a.enemyId), events); // Web N (2026-10-17)
-        if(attDef.effects && attDef.effects.brittle && defCard.hp > 0) brittleUnit(a.att, defCard, numN(attDef.effects.brittle, 1), mySide, sideOf(a.enemyId), events); // Brittle N (2026-10-19, package GI)
+        if(e40M && attDef.effects && attDef.effects.bludgeon && defCard.hp>0) bludgeonHit(a.att, defCard, mySide, sideOf(a.enemyId), events);
+        if(e40M) w2OnHit(a.att, attDef, defCard, dmg, mySide, sideOf(a.enemyId), events, aStat); // Venomous, Toxin, Weaken, Bulldoze, Tangleweed, Strangle (2026-10-16)
+        if(e40M && attDef.effects && attDef.effects.web && defCard.hp > 0) webUnit(a.att, defCard, numN(attDef.effects.web, S17_DEF.web), mySide, sideOf(a.enemyId), events); // Web N (2026-10-17)
+        if(e40M && attDef.effects && attDef.effects.brittle && defCard.hp > 0) brittleUnit(a.att, defCard, numN(attDef.effects.brittle, 1), mySide, sideOf(a.enemyId), events); // Brittle N (2026-10-19, package GI)
         if(!nullHit) wiltOnHit(defCard, sideOf(a.enemyId), events); // Wilting (2026-10-16): the unit that was hit
         if(attDef.effects && attDef.effects.wave && defCard.hp>0) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats, killCredit); // Wave (2026-10-14): push it a column; 2026-10-18: its crash kills go in this swing's book, swept with the swing
-        if(attDef.effects && attDef.effects.wither && defCard.hp>0) applyWither(otherId(a.enemyId), a.att, defCard, numN(attDef.effects.wither, 1), sideOf, events); // Wither N (2026-10-14)
+        if(e40M && attDef.effects && attDef.effects.wither && defCard.hp>0) applyWither(otherId(a.enemyId), a.att, defCard, numN(attDef.effects.wither, 1), sideOf, events); // Wither N (2026-10-14)
         if(attDef.effects && attDef.effects.dragonLightning) dragonLightningStrike(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.dragonLightning, 1), stats, events, killCredit); // Dragon Lightning N (2026-10-14)
         if(attDef.effects && attDef.effects.electricity) electricityArc(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.electricity, 1), stats, events, killCredit); // Electricity N (2026-10-14)
         if(attDef.effects && attDef.effects.chainLightning) chainLightningStrike(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.chainLightning, 2), stats, events, killCredit); // Chain Lightning N (2026-10-17; true = 2, as the editor)
         // Elemental status effects (Frozen/Asleep/Paralyzed/Stun-on-hit) — see rollStatusOnHit.
-        if(attDef.effects){
+        if(e40M && attDef.effects){
           rollStatusOnHit('freeze', attDef.effects.freeze, defCard, mySide, a.att, sideOf, a.enemyId, events);
           rollStatusOnHit('sleep', attDef.effects.sleep, defCard, mySide, a.att, sideOf, a.enemyId, events);
           rollStatusOnHit('paralyze', attDef.effects.paralyze, defCard, mySide, a.att, sideOf, a.enemyId, events);
@@ -11890,12 +11917,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           rollStatusOnHit('shock', attDef.effects.shock, defCard, mySide, a.att, sideOf, a.enemyId, events);
           rollStatusOnHit('stagger', attDef.effects.stagger, defCard, mySide, a.att, sideOf, a.enemyId, events);
         }
-        if(!nullHit && defCard.hp > 0 && effectsOf(a.att).sequestration) eng24Sequester(a.att, defCard, mySide, sideOf(a.enemyId), events); // ENG24
+        if(e40M && !nullHit && defCard.hp > 0 && effectsOf(a.att).sequestration) eng24Sequester(a.att, defCard, mySide, sideOf(a.enemyId), events); // ENG24
         // Sap (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Leech"): heals the
         // attacker for the damage it just dealt, capped at its own max HP. Fires whether or
         // not the target survived — draining life is a property of landing the hit, not of
         // the target's fate.
-        if(attDef.effects && attDef.effects.sap && dmg>0){
+        if(e40M && attDef.effects && attDef.effects.sap && dmg>0){
           const healed = Math.min(a.att.maxHp - a.att.hp, sapHealOf(attDef.effects, dmg) /* ENG35: Leech N */);
           if(healed>0){
             a.att.hp += healed;
@@ -12193,7 +12220,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, c18HabitatBonus /* CONTENT18 (2026-11-08): the app's wave summons and its test */, endOfRoundUpkeep, applyDecayTicks, swingSpeedOf, shotSpeedOf, flyLevelOf, isRaging, damageHQ /* 2026-11-06 (package ENG27): for its test */, isMagicDmg, blockerReady, reviveFromGrave, spendOnReady /* 2026-10-26 (package ENG9): for its test */, fortifyParts, buildSizeOf, deliveryResOf, shotRedirect /* 2026-11-03 (package ENG22): for the app and its test */, boonState: players=> boonStateOf(players && players[boonPid()]) /* 2026-10-24 (package DF3): the selfish boon's count */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, ownedCells /* COOP3 */, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, zeitPhase /* ENG11 (K6) */, scorchingOn /* ENG11 (K10) */, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, eng32DiveBonus /* ENG32 (2026-11-07) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */, EN8_DEF, pearlSettle, pearlGap, aiUsefulNow, aiResourceGap, aiLethalBlock, aiLosingBadly, aiFreeCard, AI_PLAN: ()=> ({reach: AI_PLAN_REACH, turns: AI_PLAN_TURNS, value: AI_PLAN_VALUE}) /* ENG14 (2026-10-30, X24) */, mirageOwnerKey, bolaPinnable /* ENG14 */, aiIncomingOnBramble, hasThornsNow, magicArmorOf, redirectToGuardian /* EN8 (2026-10-24) */, EN20, en20HpAfter, en20IsLeader, getWindKind: ()=> windNow ? windKind : null, isCrosswind, isHeavyWind, aiDevourPlan /* ENG20 (2026-11-02) */, crepuscularParts, eng23SkitterOn, eng23GrantFF, feedBramble, aimedBolt, eng23CanFeed, eng23CanAim, eng23FeedCfg, ENG23_FEED_DEF, eng23AiBramble /* ENG23 (2026-11-04) */, relictOf, immunityOf, eng24MeldFrom, eng24Sequester, eng24SeqExpire, eng24SeqKeysOf, ENG24_SEQ_KEYS, eng24HerbCfg /* ENG24 (2026-11-04) */, eng30Ground, ENG30_KEYS /* ENG30 (2026-11-07) */, ENG33_DEF, eng33PoisonousN, eng33CanPlayDead, BULWARK_WALL_ID /* ENG33 (2026-11-07) */, ENG36_STATUS, ENG36_PREFIX, eng36Rel, eng36Dot, eng36Chance, eng36SummonDefId, eng36StatsAt, eng36BaseLevel, constrictUnit, hoardN, hoardStatsOf /* ENG36 (2026-11-08) */, eng38Pick, eng38Best, eng38TopN /* ENG38 (2026-11-09): for its test */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, ownedCells /* COOP3 */, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, zeitPhase /* ENG11 (K6) */, scorchingOn /* ENG11 (K10) */, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, eng32DiveBonus /* ENG32 (2026-11-07) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */, EN8_DEF, pearlSettle, pearlGap, aiUsefulNow, aiResourceGap, aiLethalBlock, aiLosingBadly, aiFreeCard, AI_PLAN: ()=> ({reach: AI_PLAN_REACH, turns: AI_PLAN_TURNS, value: AI_PLAN_VALUE}) /* ENG14 (2026-10-30, X24) */, mirageOwnerKey, bolaPinnable /* ENG14 */, aiIncomingOnBramble, hasThornsNow, magicArmorOf, redirectToGuardian /* EN8 (2026-10-24) */, EN20, en20HpAfter, en20IsLeader, getWindKind: ()=> windNow ? windKind : null, isCrosswind, isHeavyWind, aiDevourPlan /* ENG20 (2026-11-02) */, crepuscularParts, eng23SkitterOn, eng23GrantFF, feedBramble, aimedBolt, eng23CanFeed, eng23CanAim, eng23FeedCfg, ENG23_FEED_DEF, eng23AiBramble /* ENG23 (2026-11-04) */, relictOf, immunityOf, eng24MeldFrom, eng24Sequester, eng24SeqExpire, eng24SeqKeysOf, ENG24_SEQ_KEYS, eng24HerbCfg /* ENG24 (2026-11-04) */, eng30Ground, ENG30_KEYS /* ENG30 (2026-11-07) */, ENG33_DEF, eng33PoisonousN, eng33CanPlayDead, BULWARK_WALL_ID /* ENG33 (2026-11-07) */, ENG36_STATUS, ENG36_PREFIX, eng36Rel, eng36Dot, eng36Chance, eng36SummonDefId, eng36StatsAt, eng36BaseLevel, constrictUnit, hoardN, hoardStatsOf /* ENG36 (2026-11-08) */, HOARD_PER, hoardResOf, eng40MeleeSwing, eng40ArrowShot, ENG40_SUMMON_GROWTH /* ENG40 (2026-11-09) */, eng38Pick, eng38Best, eng38TopN /* ENG38 (2026-11-09): for its test */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

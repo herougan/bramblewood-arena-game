@@ -4384,5 +4384,11 @@
  "{att} puts {n} Vulnerable token{s} on {name}.": "{att}在{name}身上放了{n}個易傷標記。",
  "{name} is Vulnerable: +{b} damage ({n} left).": "{name}易傷：+{b}傷害（剩{n}個）。",
  "No enemy units left to strike {name}: its Vulnerable tokens fade.": "已沒有敵方單位能攻擊{name}：它的易傷標記消散了。",
- "Version": "版本"
+ "Version": "版本",
+ "+{n}/+{n} for every 3 Lumber you hold.": "你每持有3木材+{n}/+{n}。",
+ "+{n}/+{n} for every 2 Stone you hold.": "你每持有2岩石+{n}/+{n}。",
+ "+{n}/+{n} for each Metal you hold.": "你每持有1金屬+{n}/+{n}。",
+ "Your side's arrows deal {n} more; your equipped units get +1/+1.": "你方的箭多造成 {n} 點傷害；你方裝備中的單位 +1/+1。",
+ "Your units' arrows deal {n} more damage.": "你方單位的箭多造成 {n} 點傷害。",
+ "While it is on the field, your units' arrows deal {n} more damage (its own too). Bolts, spits and other shots don't.": "它在場時，你方單位的箭多造成 {n} 點傷害（包括它自己的）。彈、噴吐和其他射擊不算。"
 }

@@ -181,7 +181,9 @@ ok(/tests\/eng39-2026-11-09\.js/.test(rd('tests/run-all.sh')), 'in run-all.sh');
 // ---- G: ENG35-3 b would change a price: not done
 { const SC = require('../tools/skill_costs.js'), T = SC.make(J('canonical/skill-costs.json')), c = byId['sunthroat-courier'];
   const a = T.budget(c), b = T.budget(Object.assign({}, c, {effects: Object.assign({}, c.effects, {esprit: {v: 0, hp: 1}})}));
-  ok(eq(c.effects.esprit, {v: null, hp: 1}) && a.S !== b.S, `Sunthroat Courier keeps "esprit": {"v": null, "hp": 1}: the plain form prices differently (S ${a.S} vs ${b.S})`);
+  // ENG40 (2026-11-09, decision ENG39-3 b): the budget prices Esprit {v: 0} as its Health part only, and the Courier is written {v: 0, hp: 1}
+  const cNull = Object.assign({}, c, {effects: Object.assign({}, c.effects, {esprit: {v: null, hp: 1}})}), n0 = T.budget(cNull);
+  ok(eq(c.effects.esprit, {v: 0, hp: 1}) && a.S === n0.S && a.S === b.S, `Sunthroat Courier is "esprit": {"v": 0, "hp": 1} at the same price as {v: null} (S ${a.S} vs ${n0.S}; ENG40)`);
   const items = J('docs/decisions.json').items, d2 = items.find(x=> x.id === 'ENG39-2'), d3 = items.find(x=> x.id === 'ENG39-3');
   ok(d2 && d2.status !== undefined && /Rimefire/.test(d2.body) && d3 && d3.status !== undefined && /Sunthroat/.test(d3.body) && [d2, d3].every(d=> d.body.split(/\s+/).length < 100), 'decisions ENG39-2 (a card with two shots) and ENG39-3 (Sunthroat\'s plain Esprit) are asked, under 100 words'); }
 { const F = J('docs/decisions.json').items.find(x=> x.id === 'ENG39-1'); ok(F && F.status !== undefined && /Tangleweed/.test(F.body) && /Darksight/.test(F.body) && F.body.split(/\s+/).length < 100, 'decision ENG39-1 (retire Tangleweed / Darksight for real), under 100 words'); }

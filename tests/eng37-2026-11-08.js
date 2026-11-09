@@ -109,7 +109,7 @@ ok(E.makeSimEngine(defs, E.mulberry32(1), {}).flyLevelOf({reach:true}) === 0, 'a
   ok(x.shield === 4 && x.shieldArmor === 1 && x.shell === 2 && x.shellWhen === 'afterAttack', 'the fused objects expand to the flat keys');
   ok(JSON.stringify(SP.fuse({shield:3, shieldArmor:2})) === JSON.stringify({shield:{v:3, armor:2}}), 'the flat keys fuse back');
   const sd = J('canonical/skill-delivery.json'); ok(/ENG37/.test(sd.notes.reach) && /ENG37/.test(sd.notes.shell) && /ENG37/.test(sd.notes.shield), 'skill-delivery.json notes: reach, shell, shield');
-  ok(sd.swing.includes('reach') && sd.delivery.reach === 'ranged', 'Reach is still a ranged swing');
+  ok(!sd.swing.includes('reach') && sd.delivery.reach === 'melee', 'Reach is a melee swing again (ENG40, 2026-11-09, ENG34-1 b; was ranged)');
   const sc = J('canonical/skill-counters.json'); ok(sc.counters.flying.counters.some(c=> c.skill === 'reach' && /Flying 1/.test(c.why)), 'skill-counters: Reach answers Flying (Flying 1)');
   ok(sc.counters.shell.counters.some(c=> c.skill === 'quick'), 'skill-counters: Quick answers Shell (after attacking)'); }
 // 2. the Cormorant

@@ -4386,5 +4386,11 @@
  "{att} puts {n} Vulnerable token{s} on {name}.": "{att}이(가) {name}에게 취약 토큰 {n}개를 놓아요.",
  "{name} is Vulnerable: +{b} damage ({n} left).": "{name}이(가) 취약해요: 피해 +{b} (남은 {n}).",
  "No enemy units left to strike {name}: its Vulnerable tokens fade.": "{name}을(를) 칠 적 유닛이 없어요: 취약 토큰이 사라져요.",
- "Version": "버전"
+ "Version": "버전",
+ "+{n}/+{n} for every 3 Lumber you hold.": "보유한 목재 3개마다 +{n}/+{n}.",
+ "+{n}/+{n} for every 2 Stone you hold.": "보유한 돌 2개마다 +{n}/+{n}.",
+ "+{n}/+{n} for each Metal you hold.": "보유한 금속 1개마다 +{n}/+{n}.",
+ "Your side's arrows deal {n} more; your equipped units get +1/+1.": "아군의 화살이 {n} 더 피해를 줍니다. 장비한 아군 유닛은 +1/+1.",
+ "Your units' arrows deal {n} more damage.": "아군 유닛의 화살이 {n} 더 피해를 줘요.",
+ "While it is on the field, your units' arrows deal {n} more damage (its own too). Bolts, spits and other shots don't.": "필드에 있는 동안 아군 유닛의 화살이 {n} 더 피해를 줘요(자신의 것도). 탄, 침, 다른 원거리 공격은 아니에요."
 }

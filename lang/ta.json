@@ -4386,5 +4386,11 @@
  "{att} puts {n} Vulnerable token{s} on {name}.": "{att} {name} மீது {n} பாதிப்பு வில்லைகளை வைக்கிறது.",
  "{name} is Vulnerable: +{b} damage ({n} left).": "{name} பாதிக்கப்படக்கூடியது: +{b} சேதம் ({n} மீதம்).",
  "No enemy units left to strike {name}: its Vulnerable tokens fade.": "{name}-ஐத் தாக்க எதிரி அலகுகள் இல்லை: அதன் பாதிப்பு வில்லைகள் மறைகின்றன.",
- "Version": "பதிப்பு"
+ "Version": "பதிப்பு",
+ "+{n}/+{n} for every 3 Lumber you hold.": "உங்களிடம் உள்ள ஒவ்வொரு 3 மரத்துக்கும் +{n}/+{n}.",
+ "+{n}/+{n} for every 2 Stone you hold.": "உங்களிடம் உள்ள ஒவ்வொரு 2 கல்லுக்கும் +{n}/+{n}.",
+ "+{n}/+{n} for each Metal you hold.": "உங்களிடம் உள்ள ஒவ்வொரு உலோகத்துக்கும் +{n}/+{n}.",
+ "Your side's arrows deal {n} more; your equipped units get +1/+1.": "உங்கள் பக்கத்தின் அம்புகள் {n} கூடுதல் சேதம் செய்யும்; உபகரணம் அணிந்த உங்கள் அலகுகள் +1/+1 பெறும்.",
+ "Your units' arrows deal {n} more damage.": "உங்கள் அலகுகளின் அம்புகள் {n} கூடுதல் சேதம் செய்யும்.",
+ "While it is on the field, your units' arrows deal {n} more damage (its own too). Bolts, spits and other shots don't.": "அது களத்தில் இருக்கும்வரை, உங்கள் அலகுகளின் அம்புகள் {n} கூடுதல் சேதம் செய்யும் (அதனுடையதும்). எறிகணைகள், உமிழ்வுகள், பிற தாக்குகள் அல்ல."
 }

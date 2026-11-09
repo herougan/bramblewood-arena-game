@@ -25,13 +25,13 @@ const missing = [...keys].filter(k=> !(k in D.delivery) && !(SPL.aliasOf(k) && S
 ok(!missing.length, `every skill has a delivery (${missing.slice(0, 12).join(', ')})`);
 ok(Object.values(D.delivery).every(v=> ['melee', 'ranged', 'none'].includes(v)), 'each delivery is melee, ranged or none');
 for(const [k, v] of [['attack', 'melee'], ['twinStrike', 'melee'], ['pounce', 'melee'], ['sweep', 'melee'], ['ambush', 'melee'], ['crabClaws', 'melee'], ['counterattack', 'melee'],
-  ['arrow', 'ranged'], ['fireArrow', 'ranged'], ['acidBolt', 'ranged'], ['boomerang', 'ranged'], ['reach', 'ranged'], ['volley', 'ranged'], ['shockBolt', 'ranged'], ['fireball', 'ranged'], ['tsunami', 'ranged'],
+  ['arrow', 'ranged'], ['fireArrow', 'ranged'], ['acidBolt', 'ranged'], ['boomerang', 'ranged'], ['reach', 'melee'] /* ENG40 (2026-11-09, ENG34-1 b: "reach counts as melee"; was ranged) */, ['volley', 'ranged'], ['shockBolt', 'ranged'], ['fireball', 'ranged'], ['tsunami', 'ranged'],
   ['armor', 'none'], ['regen', 'none'], ['tide', 'none'], ['swarm', 'none'], ['flying', 'none'], ['bleed', 'none'], ['immolation', 'none'], ['action:damage', 'ranged'], ['action:fireHit', 'melee']])
   ok(D.delivery[k] === v, `${k} is ${v} (${D.delivery[k]})`);
 ok(D.rides.bleed === 'melee' && D.rides.poison === 'melee' && D.rides.daunt === 'melee' && D.rides.breach === 'melee' && D.rides.sap === 'melee', 'Bleed, Venomous, Daunt, Breach and Leech ride every melee hit');
 ok(D.rides.fletcher === 'ranged' && D.rides.weaponMaster === 'ranged', 'Fletcher and Weapon Master ride every ranged hit');
 ok(D.against.thorns === 'melee' && D.against.reflect === 'ranged' && D.against.mach === 'ranged' && D.against.canopyCover === 'ranged', 'the defences name the hits they answer');
-ok(['reach', 'boomerang', 'bananarang'].every(k=> D.swing.includes(k)), 'Reach, Boomerang and Bananarang make the swing ranged');
+ok(['boomerang', 'bananarang'].every(k=> D.swing.includes(k)) && !D.swing.includes('reach'), 'Boomerang and Bananarang make the swing ranged; Reach does not (ENG40, ENG34-1 b)');
 ok(Object.keys(D.notes).length >= 30, `edge cases carry a note (${Object.keys(D.notes).length})`);
 ok(E.skillDeliveryOf('arrow') === 'ranged' && E.skillDeliveryOf('pounce') === 'melee' && E.skillRidesOn('bleed') === 'melee', 'the engine reads the file');
 ok(/__SKILL_DELIVERY__/.test(rd('assemble_arena.py')) && /var __SKILL_DELIVERY__ = /.test(rd('index.html')), 'the build puts it ahead of the engine');
@@ -80,24 +80,24 @@ const swing = (e, P, c, ev)=>{ ev = ev || []; e.debugAttack(P, so, c.uid, {}, ev
   ok(hq0 - P[2].hq.hp === 2, `Pounce: Breach 2 to the bramble (${hq0 - P[2].hq.hp})`); }
 // Counterattack: its strike carries Bleed
 { const {e, P} = mk(); const c = put(e, P, 2, 'e34-counter', 0), a = put(e, P, 1, 'e34-hitter', 0); void c; swing(e, P, a); ok(a.bleed === 2, `Counterattack's strike (melee) carries Bleed 2 (${a.bleed || 0})`); }
-// Fletcher: every ranged shot (a Cinder now, an Arrow as before)
-for(const [id, base] of [['e34-cinder', 2], ['e34-arrow', 2]]){
+// Fletcher: an Arrow (ENG40, 2026-11-09, ENG34-3 c: arrows only again; a Cinder bolt no longer gets it, tests/eng40-2026-11-09.js)
+for(const [id, base, plus] of [['e34-cinder', 2, 0], ['e34-arrow', 2, 1]]){
   const shoot = fl=>{ const {e, P} = mk(); const s = put(e, P, 1, id, 0); if(fl) put(e, P, 1, 'e34-fletcher', 1); const t = put(e, P, 2, 'e34-wall', 0); const hp0 = t.hp;
     e.resolveCombat(P, so, {}, [], 1); return hp0 - t.hp; };
   const a0 = shoot(false), a1 = shoot(true);
-  ok(a0 === base && a1 === base + 1, `${id}: ${a0} alone, ${a1} beside Fletcher 1 (a ranged shot)`); }
-// A ranged swing (Reach) is covered by Canopy Cover in the woods; a plain ground swing is not
+  ok(a0 === base && a1 === base + plus, `${id}: ${a0} alone, ${a1} beside Fletcher 1 (+${plus})`); }
+// ENG40 (2026-11-09, ENG34-1 b): Reach is melee again, so Canopy Cover no longer covers it (was about half); a plain ground swing never
 { let reachMiss = 0, plainMiss = 0;
   for(let s = 1; s <= 40; s++){
     { const {e, P} = mk(s, {woods:true}); const a = put(e, P, 1, 'e34-reach', 0); put(e, P, 2, 'e34-cover', 0); const ev = swing(e, P, a); if(ev.some(x=> x.type === 'evaded' && x.reason === 'canopyCover')) reachMiss++; }
     { const {e, P} = mk(s, {woods:true}); const a = put(e, P, 1, 'e34-plain1', 0); put(e, P, 2, 'e34-cover', 0); const ev = swing(e, P, a); if(ev.some(x=> x.type === 'evaded' && x.reason === 'canopyCover')) plainMiss++; } }
-  ok(reachMiss >= 8 && reachMiss <= 32, `a Reach swing (ranged) is dodged under the canopy about half the time (${reachMiss}/40)`); ok(plainMiss === 0, `a plain melee swing is not (${plainMiss}/40)`); }
+  ok(reachMiss === 0, `a Reach swing (melee, ENG40) is not dodged under the canopy (${reachMiss}/40)`); ok(plainMiss === 0, `a plain melee swing is not (${plainMiss}/40)`); }
 
 // ---- texts and translations
 const tx = rd('bramblewood-texts.js'), txv = k=> (tx.match(new RegExp('"' + k.replace(/[.]/g, '\\.') + '":\\s*"([^"]*)"')) || [])[1];
 const T = {'ui.eng33-venomous': 'Every melee hit it lands adds {n} Venom.', 'ui.eng34-bleed': 'Every melee hit it lands adds {n} Bleed.',
   'ui.ui31-daunt': 'On every melee hit it lands, the target loses {n} Attack until the end of next round. Stacks.', 'ui.sk-breach': 'Every melee hit it lands also deals {n} damage to the enemy bramble.',
-  'ui.eng34-fletcher': "Your units' ranged shots deal {n} more damage.", 'ui.sk-weapon-master': "Your side's ranged shots deal {n} more; your equipped units get +1/+1."};
+  'ui.eng34-fletcher': "Your units' arrows deal {n} more damage.", 'ui.sk-weapon-master': "Your side's arrows deal {n} more; your equipped units get +1/+1." /* ENG40 (2026-11-09, ENG34-3 c): arrows only */};
 for(const [k, v] of Object.entries(T)) ok(txv(k) === v, `${k}: "${txv(k)}"`);
 ok(/TX\('ui\.eng34-bleed'/.test(app) && /TX\('ui\.eng34-fletcher'/.test(app), 'the card line and the editor read the new keys');
 for(const code of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']){ const L = J('lang/' + code + '.json');

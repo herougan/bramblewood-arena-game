@@ -4383,5 +4383,11 @@
  "{att} puts {n} Vulnerable token{s} on {name}.": "{att} pone {n} ficha(s) de Vulnerable en {name}.",
  "{name} is Vulnerable: +{b} damage ({n} left).": "{name} es vulnerable: +{b} de daño (quedan {n}).",
  "No enemy units left to strike {name}: its Vulnerable tokens fade.": "No quedan unidades enemigas para golpear a {name}: sus fichas de Vulnerable se desvanecen.",
- "Version": "Versión"
+ "Version": "Versión",
+ "+{n}/+{n} for every 3 Lumber you hold.": "+{n}/+{n} por cada 3 de Madera que tengas.",
+ "+{n}/+{n} for every 2 Stone you hold.": "+{n}/+{n} por cada 2 de Piedra que tengas.",
+ "+{n}/+{n} for each Metal you hold.": "+{n}/+{n} por cada Metal que tengas.",
+ "Your side's arrows deal {n} more; your equipped units get +1/+1.": "Las flechas de tu bando infligen {n} más; tus unidades equipadas obtienen +1/+1.",
+ "Your units' arrows deal {n} more damage.": "Las flechas de tus unidades infligen {n} de daño más.",
+ "While it is on the field, your units' arrows deal {n} more damage (its own too). Bolts, spits and other shots don't.": "Mientras está en el campo, las flechas de tus unidades infligen {n} de daño más (también las suyas). Los proyectiles, escupitajos y otros disparos no."
 }

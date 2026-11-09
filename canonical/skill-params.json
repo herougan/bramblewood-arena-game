@@ -10,7 +10,7 @@
   "who": "which units count: kin / any (Esprit); ally (Harbinger); any / yours / foes (Carnage); yours / theirs (Throng); weakest / random (Heal)",
   "n": "amount per counted unit",
   "species": "a brood token's Swarm parameter",
-  "res": "the resource delivered or gained (Delivery: res; Felling: metal = Prospector)",
+  "res": "the resource delivered or gained (Delivery: res; Felling: metal = Prospector); the resource Hoard counts (lumber default, stone, metal; ENG40)",
   "bramble": "aims the shot at the enemy bramble",
   "poison": "the shot carries the unit's Poison",
   "bleed": "the shot carries the unit's Bleed",
@@ -1264,17 +1264,21 @@
    "about": "Felling N. kind midas = Midas Touch; res metal = Prospector (Metal on a kill). (ENG39, decision DES2-3)"
   },
   "hoard": {
-   "params": {},
+   "params": {
+    "res": "hoardRes"
+   },
    "kinds": {
     "kind": {
      "timber": "timber"
     }
    },
-   "default": "+N/+N for each Lumber you hold",
-   "number": 2,
-   "stat": null,
+   "default": "+1/+1 for every 3 Lumber you hold",
+   "number": 1,
+   "stat": {
+    "v": 2
+   },
    "ability": null,
-   "about": "Hoard N. kind timber = Timber (+1/+1 a Lumber, its own price). (ENG39, decision DES2-3)"
+   "about": "Hoard N: +N/+N for every 3 Lumber you hold (ENG40, 2026-11-09, owner on ENG36-1: \"by default, Hoard N gives +N/+N per 3 lumber. For stone, per 2, for metal, per 1.\"); res stone = every 2 Stone, res metal = every Metal (rounded down). kind timber = Timber (+1/+1 a Lumber, its own price). (ENG39, decision DES2-3)"
   },
   "formation": {
    "params": {},
