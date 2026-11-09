@@ -1,0 +1,2 @@
+14-5 target 70 space 1227 read 1227 range 18.3 - 60 | 200 games: 48.5 -> 57 KEEP {"deck":{"acacia-giraffe":1,"ant-hill":1,"dust-hyena":3,"grave-grin-hyena":4,"marula-elephant":4,"mouse-sapper":1,"savanna-cheetah":1,"springbok-pronker":5},"leaders":["acacia-giraffe"],"shieldOverride":0} 1298s
+14-3 target 80 space 178 read 178 range 26.7 - 76.7 | 200 games: 70.5 -> 71.5 no {"deck":{"acacia-giraffe":1,"dust-hyena":1,"hoopoe-herald":3,"marula-elephant":4,"spitting-cobra":2,"springbok-pronker":4},"leaders":["marula-elephant"],"shieldOverride":0} 288s

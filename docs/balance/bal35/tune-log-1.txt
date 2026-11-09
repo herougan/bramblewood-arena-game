@@ -1,0 +1,15 @@
+1-4 target 60 | 200 games: 94 -> 94 no | start | 13s
+2-1 1 gull-thief -1 -> oystercatcher 60 7
+2-1 target 90 | 200 games: 56.5 -> 53.5 no | start; gull-thief -1 -> oystercatcher | 33s
+14-1 target 90 | 200 games: 56 -> 56 no | start | 19s
+14-6 1 leader spitting-cobra -> marula-elephant 58.3 10.65
+14-6 target 65 | 200 games: 56.5 -> 49 no | start; leader spitting-cobra -> marula-elephant | 32s
+19-A-3 target 72.5 | 200 games: 55 -> 55 no | start | 12s
+19-A-8 target 63.800000000000004 | 200 games: 23.5 -> 23.5 no | start | 16s
+0-B-1 target 90 | 200 games: 72 -> 72 no | start | 4s
+14-2 1 grave-grin-hyena -2 -> spitting-cobra 85 11.32
+14-2 target 85 | 200 games: 77 -> 80 KEEP | start; grave-grin-hyena -2 -> spitting-cobra | 32s
+2-4 1 gull-thief -2 -> conch-herald 60 8.37
+2-4 target 60 | 200 games: 48.5 -> 47 no | start; gull-thief -2 -> conch-herald | 19s
+19-A-5 target 75 | 200 games: 73 -> 73 no | start | 5s
+0-B-4 target 40 | 200 games: 40 -> 40 no | start | 6s

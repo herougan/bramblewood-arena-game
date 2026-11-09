@@ -1,0 +1,145 @@
+{
+ "about": "BAL35 whole-space search (tools/bal35/road_space_2026_11_10.js)",
+ "code": "1-4",
+ "map": "mf",
+ "mapName": "Thistlewood",
+ "kind": "skirmish",
+ "name": "Sapper Hedge",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "ant-scout",
+  "bee-forager",
+  "bramble-sprout",
+  "chipmunk-cavalry",
+  "cottontail",
+  "dormouse",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "honey-bee",
+  "meadow-rabbit",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 1,
+ "shieldOverride": null,
+ "space": 5653,
+ "truncated": false,
+ "screened": 400,
+ "top": [
+  {
+   "deck": {
+    "cottontail": 1,
+    "dormouse": 3,
+    "field-mouse": 4,
+    "field-vole": 4,
+    "slow-worm": 4,
+    "woodcock-lookout": 4
+   },
+   "tune60": 93.3
+  },
+  {
+   "deck": {
+    "dormouse": 4,
+    "field-mouse": 4,
+    "field-vole": 3,
+    "hedgerow-shrew": 2,
+    "slow-worm": 3,
+    "woodcock-lookout": 4
+   },
+   "tune60": 95
+  },
+  {
+   "deck": {
+    "bramble-sprout": 4,
+    "dormouse": 3,
+    "field-mouse": 3,
+    "field-vole": 5,
+    "honey-bee": 1,
+    "woodcock-lookout": 4
+   },
+   "tune60": 95
+  },
+  {
+   "deck": {
+    "ant-scout": 1,
+    "dormouse": 3,
+    "field-mouse": 4,
+    "field-vole": 4,
+    "slow-worm": 4,
+    "woodcock-lookout": 4
+   },
+   "tune60": 95
+  },
+  {
+   "deck": {
+    "bee-forager": 1,
+    "bramble-sprout": 5,
+    "field-mouse": 3,
+    "field-vole": 5,
+    "hedgerow-shrew": 4,
+    "slow-worm": 2
+   },
+   "tune60": 95
+  },
+  {
+   "deck": {
+    "bramble-sprout": 2,
+    "field-mouse": 4,
+    "field-vole": 5,
+    "hedgerow-shrew": 4,
+    "slow-worm": 3,
+    "woodcock-lookout": 2
+   },
+   "tune60": 96.7
+  }
+ ],
+ "before": {
+  "deck": {
+   "field-mouse": 4,
+   "field-vole": 5,
+   "bramble-sprout": 5,
+   "cottontail": 1,
+   "hedgerow-shrew": 4,
+   "chipmunk-cavalry": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 94
+ },
+ "pick": {
+  "deck": {
+   "cottontail": 1,
+   "dormouse": 3,
+   "field-mouse": 4,
+   "field-vole": 4,
+   "slow-worm": 4,
+   "woodcock-lookout": 4
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 97.5,
+  "tune60": 93.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 94
+  },
+  {
+   "move": "space pick",
+   "win": 97.5
+  }
+ ],
+ "sec": 92
+}

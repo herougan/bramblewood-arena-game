@@ -1,0 +1,15 @@
+1-3 target 70 | 200 games: 96 -> 96 no | start | 13s
+1-5 1 dormouse -3 -> robin-redbreast 40 7.12
+1-5 target 40 | 200 games: 45 -> 36.5 no | start; dormouse -3 -> robin-redbreast | 41s
+2-2 target 80 | 200 games: 62 -> 62 no | start | 16s
+14-5 target 70 | 200 games: 36.5 -> 36.5 no | start | 28s
+19-A-2 target 86.3 | 200 games: 78 -> 78 no | start | 15s
+19-A-7 target 67.5 | 200 games: 18.5 -> 18.5 no | start | 4s
+19-A-10 target 40 | 200 games: 24 -> 24 no | start | 11s
+0-B-2 target 75 | 200 games: 62.5 -> 62.5 no | start | 4s
+1-1 target 90 | 200 games: 94 -> 94 no | start | 3s
+2-5 1 leader conch-herald -> open-ocean-hermit-crab 41.7 7.28
+2-5 target 40 | 200 games: 25.5 -> 37.5 KEEP | start; leader conch-herald -> open-ocean-hermit-crab | 24s
+0-B-3 1 shield 17 -> 8 56.7 8
+0-B-3 target 60 | 200 games: 49.5 -> 53 KEEP | start; shield 17 -> 8 | 9s
+14-3 target 80 | 200 games: 70.5 -> 70.5 no | start | 5s

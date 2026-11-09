@@ -1,0 +1,174 @@
+{
+ "about": "BAL35 whole-space search (tools/bal35/road_space_2026_11_10.js)",
+ "code": "1-5",
+ "map": "mf",
+ "mapName": "Thistlewood",
+ "kind": "elite",
+ "name": "The Thistle Baron",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "ant-scout",
+  "badger-lumberjack",
+  "bee-forager",
+  "bramble-sprout",
+  "chipmunk-cavalry",
+  "compost-grub",
+  "cottontail",
+  "cricket-drummer",
+  "dormouse",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "hollow-belly-rat",
+  "honey-bee",
+  "meadow-rabbit",
+  "robin-redbreast",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [
+  "badger-lumberjack"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "compost-grub"
+ ],
+ "namesake": false,
+ "shieldRule": 2,
+ "shieldOverride": 3,
+ "space": 400001,
+ "truncated": true,
+ "screened": 400,
+ "top": [
+  {
+   "deck": {
+    "ant-scout": 1,
+    "badger-lumberjack": 4,
+    "bramble-sprout": 2,
+    "cricket-drummer": 4,
+    "hedgerow-shrew": 3,
+    "hollow-belly-rat": 1,
+    "slow-worm": 2,
+    "woodcock-lookout": 3
+   },
+   "tune60": 41.7
+  },
+  {
+   "deck": {
+    "ant-scout": 1,
+    "badger-lumberjack": 4,
+    "bramble-sprout": 3,
+    "compost-grub": 1,
+    "cricket-drummer": 1,
+    "field-vole": 3,
+    "hedgerow-shrew": 3,
+    "robin-redbreast": 4
+   },
+   "tune60": 31.7
+  },
+  {
+   "deck": {
+    "ant-scout": 1,
+    "badger-lumberjack": 4,
+    "bee-forager": 1,
+    "chipmunk-cavalry": 1,
+    "dormouse": 2,
+    "field-vole": 4,
+    "robin-redbreast": 3,
+    "slow-worm": 4
+   },
+   "tune60": 30
+  },
+  {
+   "deck": {
+    "ant-scout": 1,
+    "badger-lumberjack": 4,
+    "chipmunk-cavalry": 1,
+    "compost-grub": 3,
+    "cricket-drummer": 3,
+    "dormouse": 3,
+    "field-vole": 3,
+    "woodcock-lookout": 2
+   },
+   "tune60": 26.7
+  },
+  {
+   "deck": {
+    "ant-scout": 1,
+    "badger-lumberjack": 4,
+    "bramble-sprout": 3,
+    "chipmunk-cavalry": 1,
+    "cottontail": 1,
+    "dormouse": 4,
+    "robin-redbreast": 2,
+    "woodcock-lookout": 4
+   },
+   "tune60": 25
+  },
+  {
+   "deck": {
+    "ant-scout": 1,
+    "badger-lumberjack": 4,
+    "compost-grub": 4,
+    "cottontail": 1,
+    "dormouse": 1,
+    "field-vole": 2,
+    "robin-redbreast": 3,
+    "slow-worm": 4
+   },
+   "tune60": 23.3
+  }
+ ],
+ "before": {
+  "deck": {
+   "bramble-sprout": 4,
+   "compost-grub": 4,
+   "cricket-drummer": 2,
+   "meadow-rabbit": 1,
+   "badger-lumberjack": 1,
+   "dormouse": 3,
+   "hedgerow-shrew": 4,
+   "ant-scout": 1
+  },
+  "leaders": [
+   "compost-grub"
+  ],
+  "shieldOverride": 3,
+  "win200": 45
+ },
+ "pick": {
+  "deck": {
+   "ant-scout": 1,
+   "badger-lumberjack": 4,
+   "bramble-sprout": 2,
+   "cricket-drummer": 4,
+   "hedgerow-shrew": 3,
+   "hollow-belly-rat": 1,
+   "slow-worm": 2,
+   "woodcock-lookout": 3
+  },
+  "leaders": [
+   "compost-grub"
+  ],
+  "shieldOverride": 3,
+  "win200": 30.5,
+  "tune60": 41.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 45
+  },
+  {
+   "move": "space pick",
+   "win": 30.5
+  }
+ ],
+ "sec": 141
+}

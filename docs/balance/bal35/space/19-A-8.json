@@ -1,0 +1,161 @@
+{
+ "about": "BAL35 whole-space search (tools/bal35/road_space_2026_11_10.js)",
+ "code": "19-A-8",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "elite",
+ "name": "Titan's Shadow",
+ "band": {
+  "lo": 55.800000000000004,
+  "hi": 71.8,
+  "target": 63.800000000000004
+ },
+ "list": [
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "beaver-lumberjack",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "phoenix-fledgling",
+  "quill-volley",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 2,
+ "leaders": [
+  "tide-spirit"
+ ],
+ "namesake": false,
+ "shieldRule": 35,
+ "shieldOverride": 8,
+ "space": 95,
+ "truncated": false,
+ "screened": 95,
+ "top": [
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 5,
+    "cinder-gecko": 1,
+    "cinder-stoker": 3,
+    "phoenix-fledgling": 4,
+    "quill-volley": 2,
+    "tide-spirit": 2
+   },
+   "tune60": 30
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 5,
+    "cinder-gecko": 1,
+    "cinder-stoker": 3,
+    "phoenix-fledgling": 3,
+    "quill-volley": 3,
+    "tide-spirit": 2
+   },
+   "tune60": 30
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 5,
+    "cinder-stoker": 4,
+    "phoenix-fledgling": 4,
+    "quill-volley": 2,
+    "tide-spirit": 2
+   },
+   "tune60": 26.7
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 5,
+    "cinder-gecko": 1,
+    "cinder-stoker": 4,
+    "phoenix-fledgling": 2,
+    "quill-volley": 3,
+    "tide-spirit": 2
+   },
+   "tune60": 21.7
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 5,
+    "cinder-gecko": 1,
+    "cinder-stoker": 3,
+    "phoenix-fledgling": 4,
+    "quill-volley": 3,
+    "tide-spirit": 1
+   },
+   "tune60": 21.7
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 5,
+    "cinder-stoker": 4,
+    "phoenix-fledgling": 4,
+    "quill-volley": 3,
+    "tide-spirit": 1
+   },
+   "tune60": 16.7
+  }
+ ],
+ "before": {
+  "deck": {
+   "ash-cloud-condor": 1,
+   "ashbone-ghoul": 1,
+   "beaver-lumberjack": 5,
+   "cinder-gecko": 1,
+   "cinder-stoker": 3,
+   "phoenix-fledgling": 3,
+   "quill-volley": 3,
+   "tide-spirit": 2
+  },
+  "leaders": [
+   "tide-spirit"
+  ],
+  "shieldOverride": 8,
+  "win200": 23.5
+ },
+ "pick": {
+  "deck": {
+   "ash-cloud-condor": 1,
+   "ashbone-ghoul": 1,
+   "beaver-lumberjack": 5,
+   "cinder-gecko": 1,
+   "cinder-stoker": 3,
+   "phoenix-fledgling": 4,
+   "quill-volley": 2,
+   "tide-spirit": 2
+  },
+  "leaders": [
+   "tide-spirit"
+  ],
+  "shieldOverride": 0,
+  "win200": 23,
+  "tune60": 30
+ },
+ "keep": false,
+ "k14After": 2,
+ "trail": [
+  {
+   "move": "start",
+   "win": 23.5
+  },
+  {
+   "move": "space pick",
+   "win": 23
+  }
+ ],
+ "sec": 41
+}

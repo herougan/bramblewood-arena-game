@@ -1,0 +1,157 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "14-2",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "skirmish",
+ "name": "Hyena Chorus",
+ "band": {
+  "lo": 77,
+  "hi": 93,
+  "target": 85
+ },
+ "list": [
+  "acacia-giraffe",
+  "ant-hill",
+  "dust-hyena",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "marula-elephant",
+  "spitting-cobra",
+  "springbok-pronker"
+ ],
+ "firstClear": [
+  "grave-grin-hyena"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "ant-hill"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": null,
+ "space": 6938,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 21.7,
+  "max": 80
+ },
+ "top": [
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "ant-hill": 4,
+    "grave-grin-hyena": 1,
+    "marula-elephant": 4,
+    "spitting-cobra": 2,
+    "springbok-pronker": 3
+   },
+   "leaders": null,
+   "tune200": 84.5
+  },
+  {
+   "deck": {
+    "ant-hill": 4,
+    "grave-grin-hyena": 1,
+    "hoopoe-herald": 1,
+    "marula-elephant": 4,
+    "spitting-cobra": 3,
+    "springbok-pronker": 2
+   },
+   "leaders": null,
+   "tune200": 80
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "ant-hill": 4,
+    "grave-grin-hyena": 2,
+    "marula-elephant": 3,
+    "spitting-cobra": 1,
+    "springbok-pronker": 4
+   },
+   "leaders": null,
+   "tune200": 78.5
+  },
+  {
+   "deck": {
+    "spitting-cobra": 1,
+    "grave-grin-hyena": 3,
+    "marula-elephant": 4,
+    "ant-hill": 1,
+    "springbok-pronker": 5,
+    "acacia-giraffe": 1
+   },
+   "leaders": null,
+   "tune200": 77.5
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "ant-hill": 3,
+    "dust-hyena": 2,
+    "grave-grin-hyena": 1,
+    "marula-elephant": 4,
+    "springbok-pronker": 4
+   },
+   "leaders": null,
+   "tune200": 77.5
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "ant-hill": 3,
+    "grave-grin-hyena": 4,
+    "marula-elephant": 4,
+    "springbok-pronker": 3
+   },
+   "leaders": null,
+   "tune200": 76.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "spitting-cobra": 1,
+   "grave-grin-hyena": 3,
+   "marula-elephant": 4,
+   "ant-hill": 1,
+   "springbok-pronker": 5,
+   "acacia-giraffe": 1
+  },
+  "leaders": [
+   "ant-hill"
+  ],
+  "shieldOverride": null,
+  "win200": 77
+ },
+ "pick": {
+  "deck": {
+   "acacia-giraffe": 1,
+   "ant-hill": 4,
+   "grave-grin-hyena": 1,
+   "marula-elephant": 4,
+   "spitting-cobra": 2,
+   "springbok-pronker": 3
+  },
+  "leaders": [
+   "ant-hill"
+  ],
+  "shieldOverride": 0,
+  "win200": 87.5,
+  "tune200": 84.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 77
+  },
+  {
+   "move": "whole-space pick",
+   "win": 87.5
+  }
+ ],
+ "sec": 454
+}

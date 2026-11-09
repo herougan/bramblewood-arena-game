@@ -51,6 +51,7 @@ const files = {}; ['space', 'space-r2', 'tune'].forEach(d => { const dir = path.
 const retuned = [...lines.entries()].filter(([, l]) => /2026-11-09 \(BAL33\): retuned/.test(l));
 ok(retuned.length === 5, 'BAL33 retuned the five Canopy fights: ' + retuned.length);
 for (const [code, l] of retuned) {
+  if (/2026-11-10 \(BAL35\): retuned/.test(l)) continue; // 2026-11-10 (BAL35): retuned again (the worst road maps); tests/bal35-2026-11-10.js checks and pins it now
   ok(/^14-A-[1-5]$/.test(code), code + ': a Canopy fight');
   const now = fields(l), n0 = node(code), x = (files[code] || []).find(y => y.keep && keyOf(y.pick.deck) === keyOf(now.deck)), orig = (files[code] || []).find(y => y.dir === 'space');
   ok(x && orig && n0, code + ': the deck is a kept BAL33 pick'); if (!x || !orig || !n0) continue;
@@ -71,7 +72,8 @@ for (const [code, l] of retuned) {
 }
 // ---- 4. pins ----
 const PINS = require('./bal33-pins-2026-11-09.json');
-for (const [code, p] of Object.entries(PINS)) { const f = fields(lines.get(code) || '');
+for (const [code, p] of Object.entries(PINS)) { const f = fields(lines.get(code) || ''); if (/2026-11-10 \(BAL35\): retuned/.test(lines.get(code) || '')) continue; // 2026-11-10 (BAL35): pinned in tests/bal35-2026-11-10.js if retuned again
+ 
   ok(keyOf(f.deck) === keyOf(p.deck) && JSON.stringify(f.leaders) === JSON.stringify(p.leaders) && f.shield === p.shield, code + ': pinned deck / leader / Shield'); }
 // ---- 5. untouched, files, decisions ----
 ok(!/BAL33/.test(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), 'cards.json carries no BAL33 edit');

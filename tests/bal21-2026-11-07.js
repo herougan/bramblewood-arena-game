@@ -31,6 +31,7 @@ const tune = {}; tdirs.forEach(d => fs.readdirSync(d).filter(f => f.endsWith('.j
 const bal21Lines = [...lines.entries()].filter(([, l]) => /2026-11-07 \(BAL21\)/.test(l));
 ok(bal21Lines.length >= 1, 'BAL21 retuned some road fights: ' + bal21Lines.length);
 for (const [code, l] of bal21Lines) {
+  if (/2026-11-10 \(BAL35\): retuned/.test(l)) continue; // 2026-11-10 (BAL35): retuned again (the worst road maps); tests/bal35-2026-11-10.js checks and pins it now
   if (/2026-11-09 \(BAL33\)/.test(l)) continue; // 2026-11-09 (BAL33): a Canopy fight BAL33 moved (BAL28-2 b: Sloth Boughs now in slot 14-A-1) or retuned; tests/bal33-2026-11-09.js checks it
   const x = tune[code], f = find(code); ok(x && f, code + ': kept in a BAL21 tune file and in CONQUEST_MAPS'); if (!x || !f) continue;
   // 2026-11-07 (BAL26): a fight BAL26 retuned again (its line carries a BAL26 comment) is checked here on BAL21's pick; tests/bal26-2026-11-07.js checks its deck now

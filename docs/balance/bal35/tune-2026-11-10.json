@@ -1,0 +1,746 @@
+{
+ "about": "BAL35 road retune summary (tools/bal35/summary_2026_11_10.js); 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "14-1",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "skirmish",
+   "name": "Zebra Stampede",
+   "target": 90,
+   "before200": 56,
+   "after200": 56,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 56,
+     "pick200": 56,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 56,
+     "pick200": 54,
+     "keep": false,
+     "space": 40
+    },
+    {
+     "tool": "exhaust",
+     "before200": 56,
+     "pick200": 56,
+     "keep": false,
+     "space": 40,
+     "range": {
+      "min": 23.3,
+      "max": 55
+     }
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "14-2",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "skirmish",
+   "name": "Hyena Chorus",
+   "target": 85,
+   "before200": 77,
+   "after200": 87.5,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 77,
+     "pick200": 80,
+     "keep": true
+    },
+    {
+     "tool": "space",
+     "before200": 77,
+     "pick200": 74.5,
+     "keep": false,
+     "space": 6938
+    },
+    {
+     "tool": "exhaust",
+     "before200": 77,
+     "pick200": 87.5,
+     "keep": true,
+     "space": 6938,
+     "range": {
+      "min": 21.7,
+      "max": 80
+     }
+    }
+   ],
+   "applied": true
+  },
+  {
+   "code": "14-3",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "skirmish",
+   "name": "Howler Canopy",
+   "target": 80,
+   "before200": 70.5,
+   "after200": 70.5,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 70.5,
+     "pick200": 70.5,
+     "keep": false
+    },
+    {
+     "tool": "exhaust-r2",
+     "before200": 70.5,
+     "pick200": 71.5,
+     "keep": false,
+     "space": 178,
+     "range": {
+      "min": 26.7,
+      "max": 76.7
+     }
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "14-5",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "elite",
+   "name": "Giraffe Vanguard",
+   "target": 70,
+   "before200": 36.5,
+   "after200": 57,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 36.5,
+     "pick200": 36.5,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 36.5,
+     "pick200": 35.5,
+     "keep": false,
+     "space": 1227
+    },
+    {
+     "tool": "exhaust",
+     "before200": 36.5,
+     "pick200": 48.5,
+     "keep": true,
+     "space": 1227,
+     "range": {
+      "min": 20,
+      "max": 51.7
+     }
+    },
+    {
+     "tool": "exhaust-r2",
+     "before200": 48.5,
+     "pick200": 57,
+     "keep": true,
+     "space": 1227,
+     "range": {
+      "min": 18.3,
+      "max": 60
+     }
+    }
+   ],
+   "applied": true
+  },
+  {
+   "code": "14-6",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "elite",
+   "name": "Jaguar Run",
+   "target": 65,
+   "before200": 56.5,
+   "after200": 56.5,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 56.5,
+     "pick200": 49,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 56.5,
+     "pick200": 50.5,
+     "keep": false,
+     "space": 272
+    },
+    {
+     "tool": "exhaust",
+     "before200": 56.5,
+     "pick200": 55,
+     "keep": false,
+     "space": 272,
+     "range": {
+      "min": 16.7,
+      "max": 61.7
+     }
+    },
+    {
+     "tool": "exhaust-r2",
+     "before200": 56.5,
+     "pick200": 55,
+     "keep": false,
+     "space": 272,
+     "range": {
+      "min": 16.7,
+      "max": 61.7
+     }
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "19-A-2",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "skirmish",
+   "name": "Salamander Vents",
+   "target": 86.3,
+   "before200": 78,
+   "after200": 78,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 78,
+     "pick200": 78,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 78,
+     "pick200": 78,
+     "keep": false,
+     "space": 42
+    },
+    {
+     "tool": "exhaust",
+     "before200": 78,
+     "pick200": 78,
+     "keep": false,
+     "space": 42,
+     "range": {
+      "min": 13.3,
+      "max": 80
+     }
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "19-A-3",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "skirmish",
+   "name": "Slag Runners",
+   "target": 72.5,
+   "before200": 55,
+   "after200": 55,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 55,
+     "pick200": 55,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 55,
+     "pick200": 44.5,
+     "keep": false,
+     "space": 18
+    },
+    {
+     "tool": "exhaust",
+     "before200": 55,
+     "pick200": 55,
+     "keep": false,
+     "space": 18,
+     "range": {
+      "min": 33.3,
+      "max": 56.7
+     }
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "19-A-5",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "skirmish",
+   "name": "Ashfall Line",
+   "target": 75,
+   "before200": 73,
+   "after200": 73,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 73,
+     "pick200": 73,
+     "keep": false
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "19-A-7",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "elite",
+   "name": "Basalt Vanguard",
+   "target": 67.5,
+   "before200": 18.5,
+   "after200": 18.5,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 18.5,
+     "pick200": 18.5,
+     "keep": false
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "19-A-8",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "elite",
+   "name": "Titan's Shadow",
+   "target": 63.800000000000004,
+   "before200": 23.5,
+   "after200": 23.5,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 23.5,
+     "pick200": 23.5,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 23.5,
+     "pick200": 23,
+     "keep": false,
+     "space": 95
+    },
+    {
+     "tool": "exhaust",
+     "before200": 23.5,
+     "pick200": 23,
+     "keep": false,
+     "space": 95,
+     "range": {
+      "min": 5,
+      "max": 30
+     }
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "19-A-10",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "boss",
+   "name": "The Phoenix Ember King",
+   "target": 40,
+   "before200": 24,
+   "after200": 31,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 24,
+     "pick200": 24,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 24,
+     "pick200": 25,
+     "keep": false,
+     "space": 60
+    },
+    {
+     "tool": "exhaust",
+     "before200": 24,
+     "pick200": 31,
+     "keep": true,
+     "space": 60,
+     "range": {
+      "min": 20,
+      "max": 35
+     }
+    },
+    {
+     "tool": "tune-r2",
+     "before200": 31,
+     "pick200": 31,
+     "keep": false
+    }
+   ],
+   "applied": true
+  },
+  {
+   "code": "2-1",
+   "map": "mb",
+   "mapName": "Pebble Beach",
+   "kind": "skirmish",
+   "name": "Rock Pool Raiders",
+   "target": 90,
+   "before200": 56.5,
+   "after200": 59.5,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 56.5,
+     "pick200": 53.5,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 56.5,
+     "pick200": 59.5,
+     "keep": true,
+     "space": 696
+    },
+    {
+     "tool": "exhaust",
+     "before200": 56.5,
+     "pick200": 59.5,
+     "keep": true,
+     "space": 696,
+     "range": {
+      "min": 18.3,
+      "max": 68.3
+     }
+    },
+    {
+     "tool": "tune-r2",
+     "before200": 59.5,
+     "pick200": 59.5,
+     "keep": false
+    }
+   ],
+   "applied": true
+  },
+  {
+   "code": "2-2",
+   "map": "mb",
+   "mapName": "Pebble Beach",
+   "kind": "skirmish",
+   "name": "Gull Gang",
+   "target": 80,
+   "before200": 62,
+   "after200": 62,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 62,
+     "pick200": 62,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 62,
+     "pick200": 57.5,
+     "keep": false,
+     "space": 606
+    },
+    {
+     "tool": "exhaust",
+     "before200": 62,
+     "pick200": 59,
+     "keep": false,
+     "space": 606,
+     "range": {
+      "min": 36.7,
+      "max": 68.3
+     }
+    },
+    {
+     "tool": "exhaust-r2",
+     "before200": 62,
+     "pick200": 59.5,
+     "keep": false,
+     "space": 606,
+     "range": {
+      "min": 35,
+      "max": 68.3
+     }
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "2-4",
+   "map": "mb",
+   "mapName": "Pebble Beach",
+   "kind": "skirmish",
+   "name": "Pelican Point",
+   "target": 60,
+   "before200": 48.5,
+   "after200": 53,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 48.5,
+     "pick200": 47,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 48.5,
+     "pick200": 47,
+     "keep": false,
+     "space": 241
+    },
+    {
+     "tool": "exhaust",
+     "before200": 48.5,
+     "pick200": 53,
+     "keep": true,
+     "space": 241,
+     "range": {
+      "min": 18.3,
+      "max": 50
+     }
+    },
+    {
+     "tool": "tune-r2",
+     "before200": 53,
+     "pick200": 53,
+     "keep": false
+    }
+   ],
+   "applied": true
+  },
+  {
+   "code": "2-5",
+   "map": "mb",
+   "mapName": "Pebble Beach",
+   "kind": "elite",
+   "name": "The Old Shell",
+   "target": 40,
+   "before200": 25.5,
+   "after200": 37.5,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 25.5,
+     "pick200": 37.5,
+     "keep": true
+    },
+    {
+     "tool": "tune-r2",
+     "before200": 37.5,
+     "pick200": 37.5,
+     "keep": false
+    }
+   ],
+   "applied": true
+  },
+  {
+   "code": "1-1",
+   "map": "mf",
+   "mapName": "Thistlewood",
+   "kind": "skirmish",
+   "name": "Hedgerow Scouts",
+   "target": 90,
+   "before200": 94,
+   "after200": 94,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 94,
+     "pick200": 94,
+     "keep": false
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "1-3",
+   "map": "mf",
+   "mapName": "Thistlewood",
+   "kind": "skirmish",
+   "name": "Burrow Line",
+   "target": 70,
+   "before200": 96,
+   "after200": 96,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 96,
+     "pick200": 96,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 96,
+     "pick200": 94.5,
+     "keep": false,
+     "space": 56192
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "1-4",
+   "map": "mf",
+   "mapName": "Thistlewood",
+   "kind": "skirmish",
+   "name": "Sapper Hedge",
+   "target": 60,
+   "before200": 94,
+   "after200": 94,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 94,
+     "pick200": 94,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 94,
+     "pick200": 97.5,
+     "keep": false,
+     "space": 5653
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "1-5",
+   "map": "mf",
+   "mapName": "Thistlewood",
+   "kind": "elite",
+   "name": "The Thistle Baron",
+   "target": 40,
+   "before200": 45,
+   "after200": 38.5,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 45,
+     "pick200": 36.5,
+     "keep": false
+    },
+    {
+     "tool": "space",
+     "before200": 45,
+     "pick200": 30.5,
+     "keep": false,
+     "space": 400001
+    },
+    {
+     "tool": "exhaust-r2",
+     "before200": 45,
+     "pick200": 38.5,
+     "keep": true,
+     "space": 400001,
+     "range": {
+      "min": 13.3,
+      "max": 60
+     }
+    }
+   ],
+   "applied": true
+  },
+  {
+   "code": "0-B-1",
+   "map": "mo",
+   "mapName": "The Old Bramble",
+   "kind": "skirmish",
+   "name": "Thorn Path",
+   "target": 90,
+   "before200": 72,
+   "after200": 72,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 72,
+     "pick200": 72,
+     "keep": false
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "0-B-2",
+   "map": "mo",
+   "mapName": "The Old Bramble",
+   "kind": "skirmish",
+   "name": "The Briar Ring",
+   "target": 75,
+   "before200": 62.5,
+   "after200": 62.5,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 62.5,
+     "pick200": 62.5,
+     "keep": false
+    }
+   ],
+   "applied": false
+  },
+  {
+   "code": "0-B-3",
+   "map": "mo",
+   "mapName": "The Old Bramble",
+   "kind": "skirmish",
+   "name": "Root Gate",
+   "target": 60,
+   "before200": 49.5,
+   "after200": 53,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 49.5,
+     "pick200": 53,
+     "keep": true
+    },
+    {
+     "tool": "tune-r2",
+     "before200": 53,
+     "pick200": 53,
+     "keep": false
+    }
+   ],
+   "applied": true
+  },
+  {
+   "code": "0-B-4",
+   "map": "mo",
+   "mapName": "The Old Bramble",
+   "kind": "boss",
+   "name": "The Old Bramble",
+   "target": 40,
+   "before200": 40,
+   "after200": 40,
+   "reads": [
+    {
+     "tool": "tune",
+     "before200": 40,
+     "pick200": 40,
+     "keep": false
+    }
+   ],
+   "applied": false
+  }
+ ]
+}

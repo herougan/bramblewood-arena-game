@@ -1,0 +1,84 @@
+{
+ "about": "BAL35 road retune (tools/bal35/road_tune_2026_11_10.js)",
+ "code": "2-5",
+ "map": "mb",
+ "mapName": "Pebble Beach",
+ "kind": "elite",
+ "name": "The Old Shell",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "conch-herald",
+  "driftwood-crab",
+  "gull-thief",
+  "moon-jelly",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin",
+  "rock-pool-starfish"
+ ],
+ "firstClear": [
+  "old-shell",
+  "driftwood-crab"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "conch-herald"
+ ],
+ "namesake": false,
+ "shieldRule": 3,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "conch-herald": 4,
+   "gull-thief": 2,
+   "open-ocean-hermit-crab": 5,
+   "pincushion-urchin": 4,
+   "rock-pool-starfish": 2
+  },
+  "leaders": [
+   "conch-herald"
+  ],
+  "shieldOverride": null,
+  "win200": 25.5,
+  "shown": 2
+ },
+ "pick": {
+  "deck": {
+   "conch-herald": 4,
+   "gull-thief": 2,
+   "open-ocean-hermit-crab": 5,
+   "pincushion-urchin": 4,
+   "rock-pool-starfish": 2
+  },
+  "leaders": [
+   "open-ocean-hermit-crab"
+  ],
+  "shieldOverride": null,
+  "win200": 37.5,
+  "shown": 2,
+  "tune60": 41.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 31.7,
+   "hpLost": 75.4,
+   "rounds": 7.13
+  },
+  {
+   "move": "leader conch-herald -> open-ocean-hermit-crab",
+   "win": 41.7,
+   "hpLost": 63.9,
+   "rounds": 7.28,
+   "trials": 53
+  }
+ ],
+ "trials": 58,
+ "sec": 24
+}

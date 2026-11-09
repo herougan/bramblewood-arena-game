@@ -1,0 +1,164 @@
+{
+ "about": "BAL35 whole-space search (tools/bal35/road_space_2026_11_10.js)",
+ "code": "19-A-10",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "boss",
+ "name": "The Phoenix Ember King",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "beaver-lumberjack",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "ember-revenant",
+  "fire-salamander",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [
+  "ember-revenant"
+ ],
+ "k14Before": 1,
+ "leaders": [
+  "ember-revenant"
+ ],
+ "namesake": true,
+ "shieldRule": 69,
+ "shieldOverride": 0,
+ "space": 60,
+ "truncated": false,
+ "screened": 60,
+ "top": [
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 3,
+    "cinder-stoker": 4,
+    "ember-revenant": 2,
+    "fire-salamander": 4,
+    "phoenix-fledgling": 4
+   },
+   "tune60": 33.3
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 3,
+    "cinder-stoker": 4,
+    "ember-revenant": 2,
+    "fire-salamander": 4,
+    "phoenix-fledgling": 3,
+    "tide-spirit": 1
+   },
+   "tune60": 33.3
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 2,
+    "cinder-gecko": 1,
+    "cinder-stoker": 4,
+    "ember-revenant": 2,
+    "fire-salamander": 4,
+    "phoenix-fledgling": 4
+   },
+   "tune60": 33.3
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "beaver-lumberjack": 3,
+    "cinder-gecko": 1,
+    "cinder-stoker": 4,
+    "ember-jackal": 1,
+    "ember-revenant": 1,
+    "fire-salamander": 4,
+    "phoenix-fledgling": 4
+   },
+   "tune60": 30
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 3,
+    "cinder-stoker": 4,
+    "ember-jackal": 1,
+    "ember-revenant": 1,
+    "fire-salamander": 4,
+    "phoenix-fledgling": 4
+   },
+   "tune60": 28.3
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 1,
+    "beaver-lumberjack": 3,
+    "cinder-gecko": 1,
+    "cinder-stoker": 4,
+    "ember-revenant": 2,
+    "fire-salamander": 3,
+    "phoenix-fledgling": 4,
+    "tide-spirit": 1
+   },
+   "tune60": 28.3
+  }
+ ],
+ "before": {
+  "deck": {
+   "ash-cloud-condor": 1,
+   "ashbone-ghoul": 1,
+   "fire-salamander": 4,
+   "cinder-gecko": 1,
+   "cinder-stoker": 3,
+   "beaver-lumberjack": 3,
+   "phoenix-fledgling": 4,
+   "ember-revenant": 2
+  },
+  "leaders": [
+   "ember-revenant"
+  ],
+  "shieldOverride": 0,
+  "win200": 24
+ },
+ "pick": {
+  "deck": {
+   "ash-cloud-condor": 1,
+   "ashbone-ghoul": 1,
+   "beaver-lumberjack": 3,
+   "cinder-stoker": 4,
+   "ember-revenant": 2,
+   "fire-salamander": 4,
+   "phoenix-fledgling": 4
+  },
+  "leaders": [
+   "ember-revenant"
+  ],
+  "shieldOverride": 0,
+  "win200": 25,
+  "tune60": 33.3
+ },
+ "keep": false,
+ "k14After": 1,
+ "trail": [
+  {
+   "move": "start",
+   "win": 24
+  },
+  {
+   "move": "space pick",
+   "win": 25
+  }
+ ],
+ "sec": 30
+}

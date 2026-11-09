@@ -1,0 +1,130 @@
+{
+ "0-B-3": {
+  "deck": {
+   "ant-scout": 5,
+   "bramblewood-lynx": 1,
+   "cottontail": 1,
+   "forager-ant": 5,
+   "gatling-hog": 1,
+   "meadow-rabbit": 1,
+   "pond-duck": 1,
+   "thorn-shrike": 1
+  },
+  "leaders": null,
+  "shield": "8",
+  "hqHp": null,
+  "characterId": null
+ },
+ "1-5": {
+  "deck": {
+   "ant-scout": 1,
+   "badger-lumberjack": 4,
+   "bramble-sprout": 3,
+   "dormouse": 4,
+   "field-mouse": 3,
+   "hedgerow-shrew": 1,
+   "slow-worm": 4
+  },
+  "leaders": [
+   "field-vole"
+  ],
+  "shield": "3",
+  "hqHp": "12",
+  "characterId": null
+ },
+ "14-2": {
+  "deck": {
+   "acacia-giraffe": 1,
+   "ant-hill": 4,
+   "grave-grin-hyena": 1,
+   "marula-elephant": 4,
+   "spitting-cobra": 2,
+   "springbok-pronker": 3
+  },
+  "leaders": [
+   "ant-hill"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "14-5": {
+  "deck": {
+   "acacia-giraffe": 1,
+   "ant-hill": 1,
+   "dust-hyena": 3,
+   "grave-grin-hyena": 4,
+   "marula-elephant": 4,
+   "mouse-sapper": 1,
+   "savanna-cheetah": 1,
+   "springbok-pronker": 5
+  },
+  "leaders": [
+   "acacia-giraffe"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "19-A-10": {
+  "deck": {
+   "ashbone-ghoul": 1,
+   "beaver-lumberjack": 3,
+   "cinder-gecko": 1,
+   "cinder-stoker": 3,
+   "ember-revenant": 2,
+   "fire-salamander": 4,
+   "phoenix-fledgling": 4,
+   "tide-spirit": 1
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "2-1": {
+  "deck": {
+   "gull-thief": 4,
+   "moon-jelly": 3,
+   "open-ocean-hermit-crab": 5,
+   "oystercatcher": 3,
+   "pincushion-urchin": 2,
+   "rock-pool-starfish": 3
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "2-4": {
+  "deck": {
+   "conch-herald": 3,
+   "gull-thief": 2,
+   "moon-jelly": 4,
+   "open-ocean-hermit-crab": 4,
+   "oystercatcher": 4,
+   "pincushion-urchin": 2
+  },
+  "leaders": [
+   "oystercatcher"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "2-5": {
+  "deck": {
+   "conch-herald": 4,
+   "gull-thief": 2,
+   "open-ocean-hermit-crab": 5,
+   "pincushion-urchin": 4,
+   "rock-pool-starfish": 2
+  },
+  "leaders": [
+   "open-ocean-hermit-crab"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ }
+}

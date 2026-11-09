@@ -1,0 +1,99 @@
+{
+ "about": "BAL35 road retune (tools/bal35/road_tune_2026_11_10.js)",
+ "code": "1-5",
+ "map": "mf",
+ "mapName": "Thistlewood",
+ "kind": "elite",
+ "name": "The Thistle Baron",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "ant-scout",
+  "badger-lumberjack",
+  "bee-forager",
+  "bramble-sprout",
+  "chipmunk-cavalry",
+  "compost-grub",
+  "cottontail",
+  "cricket-drummer",
+  "dormouse",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "hollow-belly-rat",
+  "honey-bee",
+  "meadow-rabbit",
+  "robin-redbreast",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [
+  "badger-lumberjack"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "compost-grub"
+ ],
+ "namesake": false,
+ "shieldRule": 2,
+ "shieldOverride": 3,
+ "before": {
+  "deck": {
+   "bramble-sprout": 4,
+   "compost-grub": 4,
+   "cricket-drummer": 2,
+   "meadow-rabbit": 1,
+   "badger-lumberjack": 1,
+   "dormouse": 3,
+   "hedgerow-shrew": 4,
+   "ant-scout": 1
+  },
+  "leaders": [
+   "compost-grub"
+  ],
+  "shieldOverride": 3,
+  "win200": 45,
+  "shown": 2
+ },
+ "pick": {
+  "deck": {
+   "bramble-sprout": 4,
+   "compost-grub": 4,
+   "cricket-drummer": 2,
+   "meadow-rabbit": 1,
+   "badger-lumberjack": 1,
+   "hedgerow-shrew": 4,
+   "ant-scout": 1,
+   "robin-redbreast": 3
+  },
+  "leaders": [
+   "compost-grub"
+  ],
+  "shieldOverride": 3,
+  "win200": 36.5,
+  "shown": 2,
+  "tune60": 40
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 35,
+   "hpLost": 75,
+   "rounds": 7.15
+  },
+  {
+   "move": "dormouse -3 -> robin-redbreast",
+   "win": 40,
+   "hpLost": 73,
+   "rounds": 7.12,
+   "trials": 94
+  }
+ ],
+ "trials": 99,
+ "sec": 41
+}

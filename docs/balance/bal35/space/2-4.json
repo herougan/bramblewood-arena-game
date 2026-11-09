@@ -1,0 +1,145 @@
+{
+ "about": "BAL35 whole-space search (tools/bal35/road_space_2026_11_10.js)",
+ "code": "2-4",
+ "map": "mb",
+ "mapName": "Pebble Beach",
+ "kind": "skirmish",
+ "name": "Pelican Point",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "conch-herald",
+  "gull-thief",
+  "moon-jelly",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin"
+ ],
+ "firstClear": [
+  "conch-herald"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "conch-herald"
+ ],
+ "namesake": false,
+ "shieldRule": 2,
+ "shieldOverride": null,
+ "space": 241,
+ "truncated": false,
+ "screened": 241,
+ "top": [
+  {
+   "deck": {
+    "conch-herald": 4,
+    "gull-thief": 2,
+    "moon-jelly": 3,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 2
+   },
+   "tune60": 43.3
+  },
+  {
+   "deck": {
+    "conch-herald": 4,
+    "gull-thief": 3,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 3,
+    "pincushion-urchin": 1
+   },
+   "tune60": 40
+  },
+  {
+   "deck": {
+    "conch-herald": 1,
+    "gull-thief": 3,
+    "moon-jelly": 3,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 4
+   },
+   "tune60": 40
+  },
+  {
+   "deck": {
+    "conch-herald": 4,
+    "gull-thief": 3,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4
+   },
+   "tune60": 40
+  },
+  {
+   "deck": {
+    "conch-herald": 1,
+    "gull-thief": 4,
+    "moon-jelly": 3,
+    "open-ocean-hermit-crab": 3,
+    "oystercatcher": 4,
+    "pincushion-urchin": 4
+   },
+   "tune60": 36.7
+  },
+  {
+   "deck": {
+    "conch-herald": 4,
+    "gull-thief": 3,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 3,
+    "oystercatcher": 4,
+    "pincushion-urchin": 1
+   },
+   "tune60": 35
+  }
+ ],
+ "before": {
+  "deck": {
+   "conch-herald": 1,
+   "gull-thief": 2,
+   "moon-jelly": 4,
+   "open-ocean-hermit-crab": 4,
+   "oystercatcher": 4,
+   "pincushion-urchin": 4
+  },
+  "leaders": [
+   "conch-herald"
+  ],
+  "shieldOverride": null,
+  "win200": 48.5
+ },
+ "pick": {
+  "deck": {
+   "conch-herald": 4,
+   "gull-thief": 2,
+   "moon-jelly": 3,
+   "open-ocean-hermit-crab": 4,
+   "oystercatcher": 4,
+   "pincushion-urchin": 2
+  },
+  "leaders": [
+   "conch-herald"
+  ],
+  "shieldOverride": 0,
+  "win200": 47,
+  "tune60": 43.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 48.5
+  },
+  {
+   "move": "space pick",
+   "win": 47
+  }
+ ],
+ "sec": 94
+}

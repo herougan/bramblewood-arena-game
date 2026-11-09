@@ -1,0 +1,148 @@
+{
+ "about": "BAL35 whole-space search (tools/bal35/road_space_2026_11_10.js)",
+ "code": "14-6",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "elite",
+ "name": "Jaguar Run",
+ "band": {
+  "lo": 57.00000000000001,
+  "hi": 73,
+  "target": 65
+ },
+ "list": [
+  "acacia-giraffe",
+  "dust-hyena",
+  "hoopoe-herald",
+  "house-cat",
+  "marula-elephant",
+  "spitting-cobra",
+  "springbok-pronker"
+ ],
+ "firstClear": [
+  "spitting-cobra"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "spitting-cobra"
+ ],
+ "namesake": false,
+ "shieldRule": 21,
+ "shieldOverride": 0,
+ "space": 272,
+ "truncated": false,
+ "screened": 272,
+ "top": [
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 3,
+    "hoopoe-herald": 2,
+    "marula-elephant": 4,
+    "spitting-cobra": 3,
+    "springbok-pronker": 4
+   },
+   "tune60": 61.7
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 4,
+    "house-cat": 1,
+    "marula-elephant": 4,
+    "spitting-cobra": 3,
+    "springbok-pronker": 4
+   },
+   "tune60": 56.7
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 3,
+    "hoopoe-herald": 2,
+    "marula-elephant": 4,
+    "spitting-cobra": 2,
+    "springbok-pronker": 5
+   },
+   "tune60": 56.7
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 4,
+    "hoopoe-herald": 1,
+    "marula-elephant": 3,
+    "spitting-cobra": 3,
+    "springbok-pronker": 5
+   },
+   "tune60": 55
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 3,
+    "hoopoe-herald": 1,
+    "house-cat": 1,
+    "marula-elephant": 4,
+    "spitting-cobra": 3,
+    "springbok-pronker": 4
+   },
+   "tune60": 55
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 4,
+    "house-cat": 1,
+    "marula-elephant": 4,
+    "spitting-cobra": 2,
+    "springbok-pronker": 5
+   },
+   "tune60": 53.3
+  }
+ ],
+ "before": {
+  "deck": {
+   "spitting-cobra": 3,
+   "marula-elephant": 4,
+   "house-cat": 1,
+   "springbok-pronker": 5,
+   "acacia-giraffe": 1,
+   "hoopoe-herald": 3
+  },
+  "leaders": [
+   "spitting-cobra"
+  ],
+  "shieldOverride": 0,
+  "win200": 56.5
+ },
+ "pick": {
+  "deck": {
+   "acacia-giraffe": 1,
+   "dust-hyena": 3,
+   "hoopoe-herald": 2,
+   "marula-elephant": 4,
+   "spitting-cobra": 3,
+   "springbok-pronker": 4
+  },
+  "leaders": [
+   "spitting-cobra"
+  ],
+  "shieldOverride": 0,
+  "win200": 50.5,
+  "tune60": 61.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 56.5
+  },
+  {
+   "move": "space pick",
+   "win": 50.5
+  }
+ ],
+ "sec": 146
+}

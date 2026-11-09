@@ -1,0 +1,74 @@
+{
+ "about": "BAL35 road retune (tools/bal35/road_tune_2026_11_10.js)",
+ "code": "14-1",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "skirmish",
+ "name": "Zebra Stampede",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "acacia-giraffe",
+  "dust-hyena",
+  "hoopoe-herald",
+  "marula-elephant",
+  "mouse-sapper",
+  "springbok-pronker"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "marula-elephant"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "acacia-giraffe": 1,
+   "dust-hyena": 1,
+   "hoopoe-herald": 5,
+   "marula-elephant": 4,
+   "mouse-sapper": 1,
+   "springbok-pronker": 4
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": 0,
+  "win200": 56,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "acacia-giraffe": 1,
+   "dust-hyena": 1,
+   "hoopoe-herald": 5,
+   "marula-elephant": 4,
+   "mouse-sapper": 1,
+   "springbok-pronker": 4
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": 0,
+  "win200": 56,
+  "shown": 0,
+  "tune60": 61.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 61.7,
+   "hpLost": 62,
+   "rounds": 10.62
+  }
+ ],
+ "trials": 19,
+ "sec": 19
+}

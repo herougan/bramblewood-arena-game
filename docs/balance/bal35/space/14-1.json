@@ -1,0 +1,144 @@
+{
+ "about": "BAL35 whole-space search (tools/bal35/road_space_2026_11_10.js)",
+ "code": "14-1",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "skirmish",
+ "name": "Zebra Stampede",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "acacia-giraffe",
+  "dust-hyena",
+  "hoopoe-herald",
+  "marula-elephant",
+  "mouse-sapper",
+  "springbok-pronker"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "marula-elephant"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": 0,
+ "space": 40,
+ "truncated": false,
+ "screened": 40,
+ "top": [
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 3,
+    "hoopoe-herald": 3,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "springbok-pronker": 4
+   },
+   "tune60": 55
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 1,
+    "hoopoe-herald": 5,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "springbok-pronker": 4
+   },
+   "tune60": 55
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 2,
+    "hoopoe-herald": 4,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "springbok-pronker": 4
+   },
+   "tune60": 53.3
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 4,
+    "hoopoe-herald": 2,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "springbok-pronker": 4
+   },
+   "tune60": 50
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 4,
+    "hoopoe-herald": 3,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "springbok-pronker": 3
+   },
+   "tune60": 46.7
+  },
+  {
+   "deck": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 4,
+    "hoopoe-herald": 5,
+    "marula-elephant": 3,
+    "mouse-sapper": 1,
+    "springbok-pronker": 2
+   },
+   "tune60": 40
+  }
+ ],
+ "before": {
+  "deck": {
+   "acacia-giraffe": 1,
+   "dust-hyena": 1,
+   "hoopoe-herald": 5,
+   "marula-elephant": 4,
+   "mouse-sapper": 1,
+   "springbok-pronker": 4
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": 0,
+  "win200": 56
+ },
+ "pick": {
+  "deck": {
+   "acacia-giraffe": 1,
+   "dust-hyena": 3,
+   "hoopoe-herald": 3,
+   "marula-elephant": 4,
+   "mouse-sapper": 1,
+   "springbok-pronker": 4
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": 0,
+  "win200": 54,
+  "tune60": 55
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 56
+  },
+  {
+   "move": "space pick",
+   "win": 54
+  }
+ ],
+ "sec": 49
+}

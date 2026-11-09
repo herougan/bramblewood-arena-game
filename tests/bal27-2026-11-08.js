@@ -30,6 +30,7 @@ const tune = {}, first = {};
 const bal27Lines = [...lines.entries()].filter(([, l]) => /2026-11-08 \(BAL27\)/.test(l));
 ok(bal27Lines.length >= 1, 'BAL27 retuned some road fights: ' + bal27Lines.length);
 for (const [code, l] of bal27Lines) {
+  if (/2026-11-10 \(BAL35\): retuned/.test(l)) continue; // 2026-11-10 (BAL35): retuned again (the worst road maps); tests/bal35-2026-11-10.js checks and pins it now
   const x = tune[code], f = find(code); ok(x && f, code + ': kept in a BAL27 tune file and in CONQUEST_MAPS'); if (!x || !f) continue;
   const now = fields(l), MAP = f.m.id, mapNo = G.mapNumberOf(MAP), kind = f.n.kind || 'skirmish', was = x.before.deck, d = now.deck;
   ok(mapNo != null && mapNo <= 20, code + ': on Maps 0-20');
@@ -70,6 +71,7 @@ const PINS = {
 };
 for (const [code, p] of Object.entries(PINS)) {
   const l = lines.get(code); ok(!!l, code + ': pinned fight found'); if (!l) continue; const now = fields(l);
+  if (/2026-11-10 \(BAL35\): retuned/.test(l)) continue; // 2026-11-10 (BAL35): retuned again (the worst road maps); tests/bal35-2026-11-10.js checks and pins it now
   ok(keyOf(now.deck) === keyOf(p.deck), `${code}: pinned deck ${JSON.stringify(p.deck)} (now ${JSON.stringify(now.deck)})`);
   if (p.leaders) ok((now.leaders ? JSON.parse(now.leaders) : null) + '' === p.leaders + '', `${code}: pinned leaders ${p.leaders}`);
   if (p.shield != null) ok(now.shield != null && +now.shield === p.shield, `${code}: pinned Shield override ${p.shield}`);

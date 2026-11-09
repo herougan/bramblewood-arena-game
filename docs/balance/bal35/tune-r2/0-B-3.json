@@ -1,0 +1,74 @@
+{
+ "about": "BAL35 road retune (tools/bal35/road_tune_2026_11_10.js)",
+ "code": "0-B-3",
+ "map": "mo",
+ "mapName": "The Old Bramble",
+ "kind": "skirmish",
+ "name": "Root Gate",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "ant-scout",
+  "bramblewood-lynx",
+  "cottontail",
+  "forager-ant",
+  "gatling-hog",
+  "meadow-rabbit",
+  "pond-duck",
+  "thorn-shrike"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": 8,
+ "before": {
+  "deck": {
+   "ant-scout": 5,
+   "bramblewood-lynx": 1,
+   "cottontail": 1,
+   "forager-ant": 5,
+   "gatling-hog": 1,
+   "meadow-rabbit": 1,
+   "pond-duck": 1,
+   "thorn-shrike": 1
+  },
+  "leaders": [],
+  "shieldOverride": 8,
+  "win200": 53,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "ant-scout": 5,
+   "bramblewood-lynx": 1,
+   "cottontail": 1,
+   "forager-ant": 5,
+   "gatling-hog": 1,
+   "meadow-rabbit": 1,
+   "pond-duck": 1,
+   "thorn-shrike": 1
+  },
+  "leaders": [],
+  "shieldOverride": 8,
+  "win200": 53,
+  "shown": 4,
+  "tune60": 51.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 51.7,
+   "hpLost": 68.3,
+   "rounds": 7.97
+  }
+ ],
+ "trials": 9,
+ "sec": 8
+}
