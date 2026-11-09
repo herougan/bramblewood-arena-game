@@ -1,0 +1,1 @@
+20-9 target 50 space 75187 read 401 range 66.7 - 100 | 200 games: 69.5 -> 73 no {"deck":{"ancient-sloth-titan":2,"ash-cloud-condor":3,"ashbone-ghoul":5,"cinder-skeleton":4,"cinder-stoker":1,"magma-salamander":2,"obsidian-scorpion":1,"pumice-beetle":1},"leaders":["ancient-sloth-titan"],"shieldOverride":null} 836s

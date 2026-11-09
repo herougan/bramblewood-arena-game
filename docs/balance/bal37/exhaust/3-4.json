@@ -1,0 +1,169 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "3-4",
+ "map": "mc",
+ "mapName": "Gannet Cliffs",
+ "kind": "skirmish",
+ "name": "Condor Thermals",
+ "band": {
+  "lo": 64,
+  "hi": 80,
+  "target": 72
+ },
+ "list": [
+  "conch-crawler",
+  "cormorant",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "oystercatcher",
+  "peak-condor",
+  "peregrine-stooper",
+  "pincushion-urchin",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "peregrine-stooper"
+ ],
+ "namesake": false,
+ "shieldRule": 3,
+ "shieldOverride": null,
+ "space": 399186,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 28.3,
+  "max": 98.3
+ },
+ "top": [
+  {
+   "deck": {
+    "cormorant": 3,
+    "gannet-nestweaver": 3,
+    "gull-thief": 1,
+    "kittiwake-flock": 2,
+    "peregrine-stooper": 2,
+    "razorbill": 3
+   },
+   "leaders": null,
+   "tune200": 72.5
+  },
+  {
+   "deck": {
+    "cormorant": 4,
+    "gannet-nestweaver": 3,
+    "golden-eagle-diver": 1,
+    "hawk-arrowkeeper": 1,
+    "oystercatcher": 1,
+    "peak-condor": 2,
+    "red-billed-chough": 2
+   },
+   "leaders": null,
+   "tune200": 72.5
+  },
+  {
+   "deck": {
+    "cormorant": 3,
+    "gannet-nestweaver": 3,
+    "gull-thief": 1,
+    "kittiwake-flock": 2,
+    "peregrine-stooper": 2,
+    "razorbill": 3
+   },
+   "leaders": [
+    "cormorant"
+   ],
+   "tune200": 71.5
+  },
+  {
+   "deck": {
+    "cormorant": 3,
+    "gannet-nestweaver": 3,
+    "gull-thief": 1,
+    "kittiwake-flock": 2,
+    "peregrine-stooper": 2,
+    "razorbill": 3
+   },
+   "leaders": [
+    "hawk-arrowkeeper"
+   ],
+   "tune200": 71.5
+  },
+  {
+   "deck": {
+    "cormorant": 3,
+    "gannet-nestweaver": 3,
+    "gull-thief": 1,
+    "kittiwake-flock": 2,
+    "peregrine-stooper": 2,
+    "razorbill": 3
+   },
+   "leaders": [
+    "pincushion-urchin"
+   ],
+   "tune200": 72.5
+  },
+  {
+   "deck": {
+    "cormorant": 3,
+    "gannet-nestweaver": 3,
+    "gull-thief": 1,
+    "kittiwake-flock": 2,
+    "peregrine-stooper": 2,
+    "razorbill": 3
+   },
+   "leaders": [],
+   "tune200": 71.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "gannet-nestweaver": 3,
+   "golden-eagle-diver": 1,
+   "kittiwake-flock": 1,
+   "peak-condor": 3,
+   "peregrine-stooper": 2,
+   "razorbill": 2,
+   "red-billed-chough": 2
+  },
+  "leaders": [
+   "peregrine-stooper"
+  ],
+  "shieldOverride": null,
+  "win200": 72.5
+ },
+ "pick": {
+  "deck": {
+   "cormorant": 3,
+   "gannet-nestweaver": 3,
+   "gull-thief": 1,
+   "kittiwake-flock": 2,
+   "peregrine-stooper": 2,
+   "razorbill": 3
+  },
+  "leaders": [
+   "peregrine-stooper"
+  ],
+  "shieldOverride": null,
+  "win200": 68.5,
+  "tune200": 72.5
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 72.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 68.5
+  }
+ ],
+ "sec": 746
+}

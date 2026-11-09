@@ -1,0 +1,91 @@
+{
+ "about": "BAL35 road retune (tools/bal35/road_tune_2026_11_10.js)",
+ "code": "20-4",
+ "map": "m11",
+ "mapName": "The Sundered Peak",
+ "kind": "skirmish",
+ "name": "Shrine Steps",
+ "band": {
+  "lo": 59.10000000000001,
+  "hi": 75.1,
+  "target": 67.10000000000001
+ },
+ "list": [
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "magma-salamander",
+  "magma-titan",
+  "magma-wraith",
+  "obsidian-scorpion",
+  "pumice-beetle",
+  "talus-pika"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "magma-salamander"
+ ],
+ "namesake": false,
+ "shieldRule": 20,
+ "shieldOverride": 1,
+ "before": {
+  "deck": {
+   "ashbone-ghoul": 5,
+   "cave-warlord": 4,
+   "cinder-skeleton": 4,
+   "magma-salamander": 2,
+   "magma-wraith": 4,
+   "obsidian-scorpion": 1
+  },
+  "leaders": [
+   "magma-salamander"
+  ],
+  "shieldOverride": 1,
+  "win200": 81.5,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "ashbone-ghoul": 5,
+   "cave-warlord": 4,
+   "cinder-skeleton": 4,
+   "magma-salamander": 2,
+   "magma-wraith": 4,
+   "obsidian-scorpion": 1
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": 1,
+  "win200": 81.5,
+  "shown": 1,
+  "tune60": 70
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 78.3,
+   "hpLost": 45.3,
+   "rounds": 10.47
+  },
+  {
+   "move": "leader magma-salamander -> obsidian-scorpion",
+   "win": 70,
+   "hpLost": 49.1,
+   "rounds": 10.6,
+   "trials": 22
+  }
+ ],
+ "trials": 27,
+ "sec": 33
+}

@@ -1,0 +1,1 @@
+20-4 target 67.10000000000001 | 200 games: 81.5 -> 73 KEEP {"deck":{"ashbone-ghoul":5,"cave-warlord":4,"cinder-skeleton":4,"magma-salamander":2,"magma-wraith":4,"obsidian-scorpion":1},"leaders":["obsidian-scorpion"],"shieldOverride":20}

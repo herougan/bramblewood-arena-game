@@ -1,0 +1,94 @@
+{
+ "about": "BAL35 road retune (tools/bal35/road_tune_2026_11_10.js)",
+ "code": "3-5",
+ "map": "mc",
+ "mapName": "Gannet Cliffs",
+ "kind": "elite",
+ "name": "Eagle Stoop",
+ "band": {
+  "lo": 58.00000000000001,
+  "hi": 74,
+  "target": 66
+ },
+ "list": [
+  "conch-crawler",
+  "cormorant",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "oystercatcher",
+  "peak-condor",
+  "peregrine-stooper",
+  "pincushion-urchin",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "firstClear": [
+  "peregrine-stooper"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "golden-eagle-diver"
+ ],
+ "namesake": true,
+ "shieldRule": 5,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "conch-crawler": 1,
+   "gannet-nestweaver": 4,
+   "golden-eagle-diver": 2,
+   "gull-thief": 1,
+   "kittiwake-flock": 4,
+   "peak-condor": 3,
+   "peregrine-stooper": 1,
+   "razorbill": 3
+  },
+  "leaders": [
+   "golden-eagle-diver"
+  ],
+  "shieldOverride": 0,
+  "win200": 60.5,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "conch-crawler": 1,
+   "gannet-nestweaver": 4,
+   "golden-eagle-diver": 2,
+   "kittiwake-flock": 4,
+   "peak-condor": 3,
+   "peregrine-stooper": 1,
+   "razorbill": 3,
+   "pincushion-urchin": 1
+  },
+  "leaders": [
+   "golden-eagle-diver"
+  ],
+  "shieldOverride": 0,
+  "win200": 61,
+  "shown": 0,
+  "tune60": 65
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 58.3,
+   "hpLost": 58.1,
+   "rounds": 8.1
+  },
+  {
+   "move": "gull-thief -1 -> pincushion-urchin",
+   "win": 65,
+   "hpLost": 55.8,
+   "rounds": 8.27,
+   "trials": 61
+  }
+ ],
+ "trials": 66,
+ "sec": 33
+}

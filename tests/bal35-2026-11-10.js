@@ -29,6 +29,7 @@ const files = {}; ['tune', 'space', 'exhaust', 'tune-r2', 'exhaust-r2'].forEach(
 const retuned = [...lines.entries()].filter(([, l]) => /2026-11-10 \(BAL35\): retuned/.test(l));
 ok(retuned.length >= 1, 'BAL35 retuned some road fights: ' + retuned.length);
 for (const [code, l] of retuned) {
+  if (/2026-11-10 \(BAL37\): retuned/.test(l)) continue; // 2026-11-10 (BAL37): retuned again (14-5); tests/bal37-2026-11-10.js checks and pins it now
   const f = find(code); ok(f, code + ': in CONQUEST_MAPS'); if (!f) continue;
   const MAP = f.m.id, mapNo = G.mapNumberOf(MAP), kind = f.n.kind || 'skirmish', now = fields(l);
   ok(mapNo != null && mapNo <= 20, code + ': on Maps 0-20');
@@ -56,6 +57,7 @@ const PINS = J('tests/bal35-pins-2026-11-10.json');
 ok(Object.keys(PINS).length === retuned.length && retuned.every(([c]) => PINS[c]), 'the pins list exactly the retuned fights');
 // ---- 2. pins ----
 for (const [code, p] of Object.entries(PINS)) { const f = fields(lines.get(code) || '');
+  if (/2026-11-10 \(BAL37\): retuned/.test(lines.get(code) || '')) continue; // 2026-11-10 (BAL37): 14-5 retuned again, pinned by tests/bal37-pins-2026-11-10.json
   ok(keyOf(f.deck) === keyOf(p.deck) && JSON.stringify(f.leaders) === JSON.stringify(p.leaders) && f.shield === p.shield, code + ': pinned deck / leader / Shield');
   ok(f.hqHp === p.hqHp && f.characterId === p.characterId, code + ': bramble Health and bramble as before BAL35'); }
 // ---- 3. untouched, files, decisions ----

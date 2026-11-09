@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Package BAL37 (Gannet Cliffs, Savanna Reaches, The Sundered Peak retuned; decision BAL37-1)
+- Players see: five road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health or level touched). 200 games on the road seeds: Eagle Stoop 3-5 56 -> 60.5% (target 66), Avalanche Pass 3-6 64.5 -> 57.5 (60), Giraffe Vanguard 14-5 57 -> 61 (70), Shrine Steps 20-4 81.5 -> 73 (67.1; leader Obsidian Scorpion, Shield 1 -> 20, the rule), The Blessed Avatar 20-7 75.5 -> 63 (64.3).
+- Road (`skirmish_pass measure 40 --maxmap=20`, bal36 -> bal37): in band 163 -> 164, within 10 178 -> 181, beyond 20 10 -> 9, mean 67.7 -> 67.5. Gannet Cliffs and The Sundered Peak leave the worst 8. Already near target at 200 games, left: 3-4 72.5 (72), 20-5 75 (72.9), 20-6 67.5 (68.6). Not reachable: 14-3 70.5 (80), 14-5 61 (70), 20-9 69.5 (50; only cutting both Titans gets there, and the boss would then be led by a Magma Salamander, refused): BAL37-1.
+- Tools: `tools/bal37/road_exhaust_2026_11_10.js` (BAL35's exhaust, a fight with no named leaders keeps its showcase leader), `pick_2026_11_10.js` (one named pick under the tuner's rules and keep rule: 20-4's leader + Shield together), `apply_2026_11_10.js`, `summary_2026_11_10.js`; output `docs/balance/bal37/`.
+- Tests: new tests/bal37-2026-11-10.js (+ pins); bal21 and bal35 skip the fights BAL37 retuned (3-5, 20-7; 14-5).
+
 ## 2026-11-10 Package BAL36 (The Canopy, Smugglers' Grotto, The Mycelium Deep retuned; decision BAL36-1)
 - Players see: three road fights play nearer their targets (deck from the fight's own list only; no card, list, field, bramble Health or level touched). 200 games on the road seeds: Drip Tunnel 2-B-1 96 -> 89.5% (target 90), The Grotto Keeper 2-B-4 45 -> 39 (40), Glowcap Grotto 7-A-2 78 -> 66 (70).
 - Road (`skirmish_pass measure 40 --maxmap=20`, bal35 -> bal36): in band 161 -> 163, within 10 176 -> 178, beyond 20 10 -> 10, mean 67.8 -> 67.7. Smugglers' Grotto and The Mycelium Deep leave the worst 8. The Canopy 14-A-1 (69%, target 90) and 14-A-3 (53.5%, 70) cannot be reached with these levers (every legal deck and leader at Shield 0): BAL36-1.

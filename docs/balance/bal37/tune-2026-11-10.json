@@ -1,0 +1,536 @@
+{
+ "about": "BAL37 road retune summary (tools/bal37/summary_2026_11_10.js); 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "20-4",
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "kind": "skirmish",
+   "name": "Shrine Steps",
+   "target": 67.10000000000001,
+   "before200": 81.5,
+   "after200": 73,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 81.5,
+     "pick200": 81.5,
+     "keep": false,
+     "space": 765,
+     "range": {
+      "min": 73.3,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "ashbone-ghoul": 5,
+       "cave-warlord": 4,
+       "cinder-skeleton": 4,
+       "magma-salamander": 2,
+       "magma-wraith": 4,
+       "obsidian-scorpion": 1
+      },
+      "leaders": [
+       "obsidian-scorpion"
+      ],
+      "shieldOverride": 1
+     }
+    },
+    {
+     "tool": "tune",
+     "before200": 81.5,
+     "pick200": 81.5,
+     "keep": false,
+     "pick": {
+      "deck": {
+       "ashbone-ghoul": 5,
+       "cave-warlord": 4,
+       "cinder-skeleton": 4,
+       "magma-salamander": 2,
+       "magma-wraith": 4,
+       "obsidian-scorpion": 1
+      },
+      "leaders": [
+       "obsidian-scorpion"
+      ],
+      "shieldOverride": 1
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 81.5,
+     "pick200": 73,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "ashbone-ghoul": 5,
+       "cave-warlord": 4,
+       "cinder-skeleton": 4,
+       "magma-salamander": 2,
+       "magma-wraith": 4,
+       "obsidian-scorpion": 1
+      },
+      "leaders": [
+       "obsidian-scorpion"
+      ],
+      "shieldOverride": 20
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "20-5",
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "kind": "elite",
+   "name": "Cave Warlord's Guard",
+   "target": 72.89999999999999,
+   "before200": 75,
+   "after200": 75,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 75,
+     "pick200": 68.5,
+     "keep": false,
+     "space": 399991,
+     "range": {
+      "min": 26.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "alpine-swift": 1,
+       "ash-cloud-condor": 3,
+       "ashbone-ghoul": 3,
+       "cave-warlord": 3,
+       "cinder-skeleton": 2,
+       "cinder-stoker": 1,
+       "pack-mule": 2,
+       "pumice-beetle": 1
+      },
+      "leaders": [
+       "cave-warlord"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "20-6",
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "kind": "elite",
+   "name": "The Constrictor Sovereign",
+   "target": 68.60000000000001,
+   "before200": 67.5,
+   "after200": 67.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 67.5,
+     "pick200": 68.5,
+     "keep": false,
+     "space": 400001,
+     "range": {
+      "min": 60,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "alpine-swift": 1,
+       "ash-cloud-condor": 3,
+       "ashbone-ghoul": 3,
+       "cave-warlord": 3,
+       "cinder-skeleton": 4,
+       "cinder-stoker": 1,
+       "magma-wraith": 3,
+       "ossuary-lammergeier": 1
+      },
+      "leaders": [
+       "obsidian-scorpion"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "20-7",
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "kind": "elite",
+   "name": "The Blessed Avatar",
+   "target": 64.3,
+   "before200": 75.5,
+   "after200": 63,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 75.5,
+     "pick200": 63,
+     "keep": true,
+     "space": 237076,
+     "range": {
+      "min": 46.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "alpine-swift": 1,
+       "apollo-butterfly": 1,
+       "cave-warlord": 2,
+       "fumarole-ibex": 1,
+       "magma-salamander": 2,
+       "magma-wraith": 4,
+       "obsidian-scorpion": 1,
+       "ossuary-lammergeier": 1
+      },
+      "leaders": [
+       "ossuary-lammergeier"
+      ],
+      "shieldOverride": 25
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "20-9",
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "kind": "boss",
+   "name": "The Ancient Sloth Titan",
+   "target": 50,
+   "before200": 69.5,
+   "after200": 69.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 69.5,
+     "pick200": 49.5,
+     "keep": true,
+     "space": 94562,
+     "range": {
+      "min": 25,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "apollo-butterfly": 1,
+       "ash-cloud-condor": 3,
+       "ashbone-ghoul": 5,
+       "cinder-skeleton": 3,
+       "deep-cave-troll": 3,
+       "fumarole-ibex": 1,
+       "magma-salamander": 2,
+       "talus-pika": 1
+      },
+      "leaders": [
+       "ancient-sloth-titan"
+      ],
+      "shieldOverride": null
+     }
+    },
+    {
+     "tool": "exhaust-r2",
+     "before200": 69.5,
+     "pick200": 73,
+     "keep": false,
+     "space": 75187,
+     "range": {
+      "min": 66.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "ancient-sloth-titan": 2,
+       "ash-cloud-condor": 3,
+       "ashbone-ghoul": 5,
+       "cinder-skeleton": 4,
+       "cinder-stoker": 1,
+       "magma-salamander": 2,
+       "obsidian-scorpion": 1,
+       "pumice-beetle": 1
+      },
+      "leaders": [
+       "ancient-sloth-titan"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "14-3",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "skirmish",
+   "name": "Howler Canopy",
+   "target": 80,
+   "before200": 70.5,
+   "after200": 70.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 70.5,
+     "pick200": 71.5,
+     "keep": false,
+     "space": 178,
+     "range": {
+      "min": 26.7,
+      "max": 76.7
+     },
+     "pick": {
+      "deck": {
+       "acacia-giraffe": 1,
+       "dust-hyena": 1,
+       "hoopoe-herald": 3,
+       "marula-elephant": 4,
+       "spitting-cobra": 2,
+       "springbok-pronker": 4
+      },
+      "leaders": [
+       "marula-elephant"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "tune",
+     "before200": 70.5,
+     "pick200": 70.5,
+     "keep": false,
+     "pick": {
+      "deck": {
+       "spitting-cobra": 3,
+       "marula-elephant": 4,
+       "springbok-pronker": 3,
+       "acacia-giraffe": 1,
+       "hoopoe-herald": 4
+      },
+      "leaders": [
+       "marula-elephant"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "14-5",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "elite",
+   "name": "Giraffe Vanguard",
+   "target": 70,
+   "before200": 57,
+   "after200": 61,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 57,
+     "pick200": 61,
+     "keep": true,
+     "space": 7246,
+     "range": {
+      "min": 21.7,
+      "max": 75
+     },
+     "pick": {
+      "deck": {
+       "acacia-giraffe": 4,
+       "ant-hill": 1,
+       "dust-hyena": 3,
+       "marula-elephant": 4,
+       "mouse-sapper": 1,
+       "savanna-cheetah": 2,
+       "springbok-pronker": 5
+      },
+      "leaders": [
+       "acacia-giraffe"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "tune-r2",
+     "before200": 61,
+     "pick200": 61,
+     "keep": false,
+     "pick": {
+      "deck": {
+       "acacia-giraffe": 4,
+       "ant-hill": 1,
+       "dust-hyena": 3,
+       "marula-elephant": 4,
+       "mouse-sapper": 1,
+       "savanna-cheetah": 2,
+       "springbok-pronker": 5
+      },
+      "leaders": [
+       "acacia-giraffe"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "3-4",
+   "map": "mc",
+   "mapName": "Gannet Cliffs",
+   "kind": "skirmish",
+   "name": "Condor Thermals",
+   "target": 72,
+   "before200": 72.5,
+   "after200": 72.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 72.5,
+     "pick200": 68.5,
+     "keep": false,
+     "space": 399186,
+     "range": {
+      "min": 28.3,
+      "max": 98.3
+     },
+     "pick": {
+      "deck": {
+       "cormorant": 3,
+       "gannet-nestweaver": 3,
+       "gull-thief": 1,
+       "kittiwake-flock": 2,
+       "peregrine-stooper": 2,
+       "razorbill": 3
+      },
+      "leaders": [
+       "peregrine-stooper"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "3-5",
+   "map": "mc",
+   "mapName": "Gannet Cliffs",
+   "kind": "elite",
+   "name": "Eagle Stoop",
+   "target": 66,
+   "before200": 56,
+   "after200": 60.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 56,
+     "pick200": 60.5,
+     "keep": true,
+     "space": 264920,
+     "range": {
+      "min": 30,
+      "max": 88.3
+     },
+     "pick": {
+      "deck": {
+       "conch-crawler": 1,
+       "gannet-nestweaver": 4,
+       "golden-eagle-diver": 2,
+       "gull-thief": 1,
+       "kittiwake-flock": 4,
+       "peak-condor": 3,
+       "peregrine-stooper": 1,
+       "razorbill": 3
+      },
+      "leaders": [
+       "golden-eagle-diver"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "tune-r2",
+     "before200": 60.5,
+     "pick200": 61,
+     "keep": false,
+     "pick": {
+      "deck": {
+       "conch-crawler": 1,
+       "gannet-nestweaver": 4,
+       "golden-eagle-diver": 2,
+       "kittiwake-flock": 4,
+       "peak-condor": 3,
+       "peregrine-stooper": 1,
+       "razorbill": 3,
+       "pincushion-urchin": 1
+      },
+      "leaders": [
+       "golden-eagle-diver"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "3-6",
+   "map": "mc",
+   "mapName": "Gannet Cliffs",
+   "kind": "elite",
+   "name": "Avalanche Pass",
+   "target": 60,
+   "before200": 64.5,
+   "after200": 57.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 64.5,
+     "pick200": 57.5,
+     "keep": true,
+     "space": 360361,
+     "range": {
+      "min": 50,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "golden-eagle-diver": 1,
+       "gull-thief": 1,
+       "hawk-arrowkeeper": 4,
+       "kittiwake-flock": 4,
+       "peak-condor": 2,
+       "pincushion-urchin": 1,
+       "razorbill": 3
+      },
+      "leaders": [
+       "mountain-goat-climber"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  }
+ ]
+}

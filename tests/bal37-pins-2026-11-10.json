@@ -1,0 +1,84 @@
+{
+ "14-5": {
+  "deck": {
+   "acacia-giraffe": 4,
+   "ant-hill": 1,
+   "dust-hyena": 3,
+   "marula-elephant": 4,
+   "mouse-sapper": 1,
+   "savanna-cheetah": 2,
+   "springbok-pronker": 5
+  },
+  "leaders": [
+   "acacia-giraffe"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "20-4": {
+  "deck": {
+   "ashbone-ghoul": 5,
+   "cave-warlord": 4,
+   "cinder-skeleton": 4,
+   "magma-salamander": 2,
+   "magma-wraith": 4,
+   "obsidian-scorpion": 1
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shield": "20",
+  "hqHp": null,
+  "characterId": null
+ },
+ "20-7": {
+  "deck": {
+   "alpine-swift": 1,
+   "apollo-butterfly": 1,
+   "cave-warlord": 2,
+   "fumarole-ibex": 1,
+   "magma-salamander": 2,
+   "magma-wraith": 4,
+   "obsidian-scorpion": 1,
+   "ossuary-lammergeier": 1
+  },
+  "leaders": null,
+  "shield": "25",
+  "hqHp": null,
+  "characterId": null
+ },
+ "3-5": {
+  "deck": {
+   "conch-crawler": 1,
+   "gannet-nestweaver": 4,
+   "golden-eagle-diver": 2,
+   "gull-thief": 1,
+   "kittiwake-flock": 4,
+   "peak-condor": 3,
+   "peregrine-stooper": 1,
+   "razorbill": 3
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "3-6": {
+  "deck": {
+   "golden-eagle-diver": 1,
+   "gull-thief": 1,
+   "hawk-arrowkeeper": 4,
+   "kittiwake-flock": 4,
+   "peak-condor": 2,
+   "pincushion-urchin": 1,
+   "razorbill": 3
+  },
+  "leaders": [
+   "mountain-goat-climber"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ }
+}

@@ -1,0 +1,184 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "20-9",
+ "map": "m11",
+ "mapName": "The Sundered Peak",
+ "kind": "boss",
+ "name": "The Ancient Sloth Titan",
+ "band": {
+  "lo": 42,
+  "hi": 57.99999999999999,
+  "target": 50
+ },
+ "list": [
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "magma-salamander",
+  "magma-titan",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pumice-beetle",
+  "talus-pika"
+ ],
+ "firstClear": [
+  "magma-salamander"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "ancient-sloth-titan"
+ ],
+ "namesake": true,
+ "shieldRule": 60,
+ "shieldOverride": null,
+ "space": 94562,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 25,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "ash-cloud-condor": 3,
+    "ashbone-ghoul": 5,
+    "cinder-skeleton": 3,
+    "deep-cave-troll": 3,
+    "fumarole-ibex": 1,
+    "magma-salamander": 2,
+    "talus-pika": 1
+   },
+   "leaders": null,
+   "tune200": 49
+  },
+  {
+   "deck": {
+    "alpine-swift": 1,
+    "ash-cloud-condor": 3,
+    "ashbone-ghoul": 4,
+    "cinder-skeleton": 4,
+    "cinder-stoker": 1,
+    "deep-cave-troll": 3,
+    "magma-salamander": 2,
+    "talus-pika": 1
+   },
+   "leaders": null,
+   "tune200": 51
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "ash-cloud-condor": 3,
+    "ashbone-ghoul": 4,
+    "cinder-skeleton": 3,
+    "deep-cave-troll": 4,
+    "fumarole-ibex": 1,
+    "magma-salamander": 2,
+    "talus-pika": 1
+   },
+   "leaders": null,
+   "tune200": 51.5
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 3,
+    "ashbone-ghoul": 4,
+    "cave-warlord": 4,
+    "cinder-skeleton": 2,
+    "deep-cave-troll": 2,
+    "granite-ox-golem": 1,
+    "magma-salamander": 2,
+    "ossuary-lammergeier": 1
+   },
+   "leaders": null,
+   "tune200": 53.5
+  },
+  {
+   "deck": {
+    "ashbone-ghoul": 5,
+    "cave-warlord": 1,
+    "cinder-skeleton": 4,
+    "cinder-stoker": 1,
+    "deep-cave-troll": 4,
+    "granite-ox-golem": 1,
+    "magma-salamander": 2,
+    "ossuary-lammergeier": 1
+   },
+   "leaders": null,
+   "tune200": 54
+  },
+  {
+   "deck": {
+    "alpine-swift": 1,
+    "ash-cloud-condor": 3,
+    "ashbone-ghoul": 4,
+    "cave-warlord": 3,
+    "cinder-skeleton": 4,
+    "magma-salamander": 2,
+    "magma-titan": 1,
+    "pumice-beetle": 1
+   },
+   "leaders": null,
+   "tune200": 54
+  }
+ ],
+ "before": {
+  "deck": {
+   "ancient-sloth-titan": 2,
+   "ashbone-ghoul": 5,
+   "ash-cloud-condor": 3,
+   "ossuary-lammergeier": 1,
+   "magma-salamander": 2,
+   "cinder-skeleton": 4,
+   "obsidian-scorpion": 1,
+   "apollo-butterfly": 1
+  },
+  "leaders": [
+   "ancient-sloth-titan"
+  ],
+  "shieldOverride": null,
+  "win200": 69.5
+ },
+ "pick": {
+  "deck": {
+   "apollo-butterfly": 1,
+   "ash-cloud-condor": 3,
+   "ashbone-ghoul": 5,
+   "cinder-skeleton": 3,
+   "deep-cave-troll": 3,
+   "fumarole-ibex": 1,
+   "magma-salamander": 2,
+   "talus-pika": 1
+  },
+  "leaders": [
+   "ancient-sloth-titan"
+  ],
+  "shieldOverride": null,
+  "win200": 49.5,
+  "tune200": 49
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 69.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 49.5
+  }
+ ],
+ "sec": 869,
+ "rejected": "BAL37: not applied. With no explicit leaders the deck showcase leads the boss; this pick cuts both Ancient Sloth Titans, so The Ancient Sloth Titan would be led by a Magma Salamander (the leaders field above is the one read at the start). Re-read with the leader kept: exhaust-r2/20-9.json."
+}

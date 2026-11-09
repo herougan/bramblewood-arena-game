@@ -1,0 +1,179 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "20-5",
+ "map": "m11",
+ "mapName": "The Sundered Peak",
+ "kind": "elite",
+ "name": "Cave Warlord's Guard",
+ "band": {
+  "lo": 64.9,
+  "hi": 80.89999999999999,
+  "target": 72.89999999999999
+ },
+ "list": [
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "magma-titan",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pack-mule",
+  "pumice-beetle",
+  "talus-pika"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "cave-warlord"
+ ],
+ "namesake": true,
+ "shieldRule": 30,
+ "shieldOverride": null,
+ "space": 399991,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 26.7,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "alpine-swift": 1,
+    "ash-cloud-condor": 3,
+    "ashbone-ghoul": 3,
+    "cave-warlord": 3,
+    "cinder-skeleton": 2,
+    "cinder-stoker": 1,
+    "pack-mule": 2,
+    "pumice-beetle": 1
+   },
+   "leaders": null,
+   "tune200": 73
+  },
+  {
+   "deck": {
+    "alpine-swift": 1,
+    "ash-cloud-condor": 3,
+    "ashbone-ghoul": 1,
+    "cave-warlord": 4,
+    "cinder-skeleton": 3,
+    "cinder-stoker": 1,
+    "pack-mule": 3
+   },
+   "leaders": null,
+   "tune200": 75
+  },
+  {
+   "deck": {
+    "alpine-swift": 1,
+    "ash-cloud-condor": 3,
+    "cave-warlord": 2,
+    "cinder-skeleton": 4,
+    "deep-cave-troll": 2,
+    "magma-titan": 1,
+    "obsidian-scorpion": 1,
+    "pack-mule": 2
+   },
+   "leaders": null,
+   "tune200": 69.5
+  },
+  {
+   "deck": {
+    "alpine-swift": 1,
+    "ancient-sloth-titan": 1,
+    "apollo-butterfly": 1,
+    "ashbone-ghoul": 4,
+    "deep-cave-troll": 4,
+    "fumarole-ibex": 1,
+    "magma-titan": 1,
+    "pack-mule": 3
+   },
+   "leaders": null,
+   "tune200": 77
+  },
+  {
+   "deck": {
+    "alpine-swift": 1,
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 3,
+    "cave-warlord": 1,
+    "cinder-skeleton": 2,
+    "deep-cave-troll": 4,
+    "magma-titan": 1,
+    "pack-mule": 3
+   },
+   "leaders": null,
+   "tune200": 77.5
+  },
+  {
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 4,
+    "cinder-skeleton": 3,
+    "fumarole-ibex": 1,
+    "ossuary-lammergeier": 1,
+    "pumice-beetle": 1,
+    "talus-pika": 1
+   },
+   "leaders": null,
+   "tune200": 77.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "cave-warlord": 4,
+   "pack-mule": 4,
+   "ash-cloud-condor": 2,
+   "ossuary-lammergeier": 1,
+   "ashbone-ghoul": 2,
+   "magma-titan": 1,
+   "deep-cave-troll": 2
+  },
+  "leaders": [
+   "cave-warlord"
+  ],
+  "shieldOverride": null,
+  "win200": 75
+ },
+ "pick": {
+  "deck": {
+   "alpine-swift": 1,
+   "ash-cloud-condor": 3,
+   "ashbone-ghoul": 3,
+   "cave-warlord": 3,
+   "cinder-skeleton": 2,
+   "cinder-stoker": 1,
+   "pack-mule": 2,
+   "pumice-beetle": 1
+  },
+  "leaders": [
+   "cave-warlord"
+  ],
+  "shieldOverride": null,
+  "win200": 68.5,
+  "tune200": 73
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 75
+  },
+  {
+   "move": "whole-space pick",
+   "win": 68.5
+  }
+ ],
+ "sec": 911
+}
