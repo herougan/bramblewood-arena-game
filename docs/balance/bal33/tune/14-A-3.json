@@ -1,0 +1,79 @@
+{
+ "about": "BAL33 road retune (tools/bal33/road_tune_2026_11_09.js)",
+ "code": "14-A-3",
+ "map": "my",
+ "mapName": "The Canopy",
+ "kind": "skirmish",
+ "name": "Dart Frogs",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "hoopoe-herald",
+  "kinkajou-lurker",
+  "leafcutter-gardener",
+  "pangolin-roller",
+  "proboscis-monkey",
+  "redwood-woodpecker",
+  "weaver-bird"
+ ],
+ "firstClear": [
+  "kinkajou-lurker"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "camouflage-frog"
+ ],
+ "namesake": false,
+ "shieldRule": 18,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "camouflage-frog": 4,
+   "hoopoe-herald": 3,
+   "kinkajou-lurker": 4,
+   "pangolin-roller": 1,
+   "proboscis-monkey": 1,
+   "weaver-bird": 3
+  },
+  "leaders": [
+   "camouflage-frog"
+  ],
+  "shieldOverride": 0,
+  "win200": 39.5,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "camouflage-frog": 4,
+   "hoopoe-herald": 3,
+   "kinkajou-lurker": 4,
+   "pangolin-roller": 1,
+   "proboscis-monkey": 1,
+   "weaver-bird": 3
+  },
+  "leaders": [
+   "camouflage-frog"
+  ],
+  "shieldOverride": 0,
+  "win200": 39.5,
+  "shown": 0,
+  "tune60": 41.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 41.7,
+   "hpLost": 74.2,
+   "rounds": 11.35
+  }
+ ],
+ "trials": 30,
+ "sec": 67
+}
