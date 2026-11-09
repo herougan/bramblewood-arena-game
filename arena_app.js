@@ -33937,8 +33937,9 @@ function pk1OpenMapCards(mapId){
 // no on a pill toggle ... when I load a map, it knows all changes I've made so far, so what is New! now, what isn't."): a Prospects view in the admin 🃏 Map cards
 // window of a MAIN map (a submap's window has none). Prospects = the map's MAP list, the review's Maybe cards (canonical/map-review.json), Claude's picks for the map
 // (CLAUDE_NEW: THEME5, SKILLREC1 and CONTENT17's theme groups, the main map's own entries only, never its submaps'), and any card already flagged here. NEW! = not
-// carried from an earlier main map; Carried = an earlier main map gives it (ui37CarriedIndex: per earlier main map, a card flagged Yes there counts, one flagged No
-// there does not, an unflagged one counts when it is on that map's MAP list today). Cards flagged Yes on earlier maps that are not prospects here sit under Carried
+// carried from an earlier main map; Carried = an earlier main map gives it (ui37CarriedIndex: ONLY a card flagged Yes on an earlier main map counts; 2026-11-09 package UI42,
+// owner 22:48 "default is NO, then I'll click the Yes": an unflagged card reads as No everywhere and no longer counts, which replaces UI37-1's "unflagged list cards count".
+// ui37CarriedPool keeps the old wide reading (earlier maps' list cards + Yes, minus explicit No) only as the pool ui38Fill tops Carried up from, so the owner still has cards to pick from). Cards flagged Yes on earlier maps that are not prospects here sit under Carried
 // in a fold. Targets: decision THEME6-1 (own / carried per main map, th6Targets), editable per map. Flags are kept in this browser (bw_ui37_map_picks_v1) and, for a
 // signed-in admin, published as card_overrides rows `__cfg:map-picks:<mainMapId>` (data: {kind:'map-picks', mapId, mapNo, yes, no, targets}; the existing jsonb
 // column, no schema change); the game reads nothing from them (applyCloudMapPicks only feeds this view). "Export picks" downloads every map's flags (JSON / CSV).
@@ -33948,8 +33949,17 @@ function ui37Save(){ try{ localStorage.setItem(UI37_KEY, JSON.stringify(ui37Pick
 function ui37Arr(a){ return [...new Set((Array.isArray(a) ? a : []).filter(x=> typeof x === 'string' && x))]; }
 function ui37Ent(top){ const e = ui37Picks[top] || {}; return {yes: ui37Arr(e.yes), no: ui37Arr(e.no), t: (e.t && typeof e.t === 'object') ? e.t : {}, localAt: e.localAt || 0}; }
 function ui37FlagOf(top, id){ const e = ui37Ent(top); return e.yes.includes(id) ? 'yes' : e.no.includes(id) ? 'no' : ''; }
+// 2026-11-09 (package UI42, owner 22:48): what the owner sees and exports: no flag reads as No
+function ui42Shown(top, id){ return ui37FlagOf(top, id) === 'yes' ? 'yes' : 'no'; }
 // the pure rule (tests/ui37-2026-11-08.js lifts it): maps = [{n, list, yes, no}] (main maps, n = map number); returns Map(card id -> the earliest map number before n that gives it)
+// 2026-11-09 (UI42): Carried = flagged Yes on an earlier main map (unflagged and No do not count)
 function ui37CarriedIndex(n, maps){
+  const out = new Map();
+  (maps || []).filter(m=> m && m.n != null && m.n < n).sort((a, b)=> a.n - b.n).forEach(m=>{ (m.yes || []).forEach(id=>{ if(!out.has(id)) out.set(id, m.n); }); });
+  return out;
+}
+// 2026-11-09 (UI42): the pool Carried is topped up from (the pre-UI42 rule): earlier main maps' list cards and Yes cards, minus explicit No. Not a Carried rule.
+function ui37CarriedPool(n, maps){
   const out = new Map();
   (maps || []).filter(m=> m && m.n != null && m.n < n).sort((a, b)=> a.n - b.n).forEach(m=>{
     const yes = new Set(m.yes || []), no = new Set(m.no || []);
@@ -33992,15 +34002,15 @@ function ui41Cap(top, list, defs){
 // 2026-11-09 (package UI38, owner 03:55): the closed "More cards from earlier maps" fold is gone; ui38Fill tops NEW! up to 30+ (cards that fit the map, then
 // proposed concepts) and Carried up to 20+ (earlier main maps' cards, best fit first). extra stays an empty list for callers.
 function ui37Split(top, defs, ok){
-  const n = mapNumberOf(top), maps = ui37MapsData(), idx = ui37CarriedIndex(n, maps), pros = ui37Prospects(top, defs, ok), neu = [], car = [];
+  const n = mapNumberOf(top), maps = ui37MapsData(), idx = ui37CarriedIndex(n, maps), pool = ui37CarriedPool(n, maps), pros = ui37Prospects(top, defs, ok), neu = [], car = [];
   const SRC = {list: 0, maybe: 1, claude: 2, newcard: 3, flag: 4}, rank = p=> Math.min(...[...p.src].map(s=> SRC[s] == null ? 9 : SRC[s]));
   const nm = id=> String(ui38Concept(id) ? ui38Concept(id).name : defs[id].name), rs = id=> ui38Concept(id) ? roadRarityStep(ui38Concept(id).rarity) : roadRarityStep(defs[id].rarity);
   const by = (a, b)=> rank(a) - rank(b) || rs(a.id) - rs(b.id) || nm(a.id).localeCompare(nm(b.id));
   pros.forEach(p=> (idx.has(p.id) ? car : neu).push(p));
   neu.sort(by); car.sort(by);
   const neu2 = ui41Cap(top, neu, defs), car2 = ui41Cap(top, car, defs); neu.length = 0; car.length = 0; neu.push(...neu2); car.push(...car2); // 2026-11-09 (UI41)
-  ui38Fill(top, defs, ok, idx, neu, car);
-  return {n, neu, car, extra: [], idx};
+  ui38Fill(top, defs, ok, pool, neu, car); // 2026-11-09 (UI42): the fill draws from the wide pool, the Carried test above is Yes only
+  return {n, neu, car, extra: [], idx: new Map([...pool, ...idx])}; // idx: the "Map N" pill of every Carried card
 }
 let ui37Status = null, ui37Live = null; const ui37Timers = {};
 function ui37StatusText(){ return !ui37Status ? '' : ui37Status.ok ? '☁️ ' + TX('ui.ui37-saved-cloud') : '💾 ' + TX('ui.ui37-saved-local'); }
@@ -34031,7 +34041,9 @@ function ui37SetTarget(top, k, v){ const e = ui37Ent(top), t = Object.assign({},
 function ui37ExportRows(){
   const defs = getCardDefs(), rows = [], maps = ui37MapsData();
   maps.forEach(m=>{ const e = ui37Ent(m.id); if(!e.yes.length && !e.no.length) return; const idx = ui37CarriedIndex(m.n, maps), tg = ui37Targets(m.id);
-    e.yes.map(id=> [id, 'yes']).concat(e.no.map(id=> [id, 'no'])).forEach(([id, flag])=>{ const c = ui38Concept(id); /* 2026-11-09 (UI38): a concept row carries its fields */
+    let shown = []; try{ const ok0 = id=> !!defs[id] && ui41Allowed(id, defs), sp = ui37Split(m.id, defs, ok0); shown = sp.neu.concat(sp.car).map(p=> p.id); }catch(x){} // 2026-11-09 (UI42): every card the map shows, unflagged ones as no
+    const have = new Set(e.yes);
+    e.yes.map(id=> [id, 'yes']).concat([...new Set(e.no.concat(shown))].filter(id=> !have.has(id)).map(id=> [id, 'no'])).forEach(([id, flag])=>{ const c = ui38Concept(id); /* 2026-11-09 (UI38): a concept row carries its fields */
       rows.push(Object.assign({mapNo: m.n, mapId: m.id, map: m.name, cardId: id, card: c ? c.name : (defs[id] && defs[id].name) || id, flag, group: idx.has(id) ? 'carried' : 'new', carriedFrom: idx.has(id) ? idx.get(id) : null, targetNew: tg.n, targetCarried: tg.c},
         c ? {concept: true, animal: c.animal, family: c.family, element: c.element, rarity: c.rarity, role: c.role, conceptMap: c.mapNo} : {concept: false})); }); });
   return rows;
@@ -34050,10 +34062,10 @@ const UI37_SRC_TX = {list: ()=> TX('ui.ui37-src-list'), maybe: ()=> TX('ui.ui37-
 // skills, the review pills, ✂ Cut / Keep, ✏️ edit), any other card the same full card with ✏️ (data-rv-kind "ui39"), a proposed concept a card-shaped placeholder
 // (ui39ConceptCardHTML); under it UI38's source pills and the Yes / No toggle. rvMap = card id -> {e, kind} of the map's review (chosen / maybe / cut).
 function ui37TileHTML(top, p, kind, defs, idx, rvMap){
-  const f = ui37FlagOf(top, p.id), c = ui38Concept(p.id), d = c || defs[p.id], from = idx.get(p.id), rv = rvMap && rvMap.get(p.id);
+  const f = ui37FlagOf(top, p.id), fs = f === 'yes' ? 'yes' : 'no' /* 2026-11-09 (UI42): unflagged = No */, c = ui38Concept(p.id), d = c || defs[p.id], from = idx.get(p.id), rv = rvMap && rvMap.get(p.id);
   const src = [...p.src].filter(s=> s !== 'flag' || p.src.size === 1).map(s=> `<b class="ui37-src is-${s}">${escapeHtml(UI37_SRC_TX[s] ? UI37_SRC_TX[s]() : s)}</b>`).join('');
   const fromPill = kind !== 'new' && from != null ? `<b class="ui37-from" title="${escapeAttr(TX('ui.ui37-from-tip', {n: from}))}">${escapeHtml(TX('ui.ui37-from', {n: from}))}</b>` : '';
-  const btn = (k, lab)=> `<button type="button" class="ui37-yn-b is-${k}${f === k ? ' on' : ''}" data-ui37-flag="${k}" aria-pressed="${f === k ? 'true' : 'false'}">${escapeHtml(lab)}</button>`;
+  const btn = (k, lab)=> `<button type="button" class="ui37-yn-b is-${k}${fs === k ? ' on' : ''}" data-ui37-flag="${k}" aria-pressed="${fs === k ? 'true' : 'false'}">${escapeHtml(lab)}</button>`;
   const card = c ? ui39ConceptCardHTML(c) : rv ? rv1TileHTML(rv.e, rv.kind, defs, 'cards') : ui39PlainTileHTML(p.id, defs, p.why || '');
   return `<div class="ui37-tile ui39-tile is-${f || 'none'}${c ? ' is-concept' : ''}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${card}<span class="ui37-pills">${src}${fromPill}</span>`
     + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', '↩ ' + TX('ui.ui37-yes'))}${btn('no', '✂ ' + TX('ui.ui37-no'))}</span></div>`;
@@ -34121,7 +34133,7 @@ function ui37Mount(ov, top, mapId, ok){
   const draw = ()=>{ const keep = modal.scrollTop, defs = getCardDefs(), ok2 = id=> ok(id) && ui41Allowed(id, defs) /* 2026-11-09 (UI41): no faction cards */, sp = ui37Split(top, defs, ok2); head.innerHTML = ui37HeadHTML(top, sp); wrap.innerHTML = ui37GroupsHTML(top, defs, sp, ui39ReviewMap(top, ok2)); try{ wireRewardZoom(wrap); }catch(e){} rv2Update(ov); modal.scrollTop = keep; };
   const onClick = e=>{
     const t = e.target; let b;
-    if((b = t.closest('[data-ui37-flag]'))){ e.stopPropagation(); const tile = b.closest('.ui37-tile'), id = tile.dataset.ui37Id, cur = ui37FlagOf(top, id); ui37SetFlag(top, id, cur === b.dataset.ui37Flag ? '' : b.dataset.ui37Flag); draw(); return; }
+    if((b = t.closest('[data-ui37-flag]'))){ e.stopPropagation(); const tile = b.closest('.ui37-tile'), id = tile.dataset.ui37Id, cur = ui42Shown(top, id), want = b.dataset.ui37Flag; if(cur !== want) ui37SetFlag(top, id, want === 'yes' ? 'yes' : ''); draw(); return; } // 2026-11-09 (UI42): Yes sets Yes, No goes back to No (no flag)
     if((b = t.closest('[data-ui37-go]'))){ e.stopPropagation(); pk1OpenMapCards(b.dataset.ui37Go); return; }
     if((b = t.closest('[data-ui37-export]'))){ e.stopPropagation(); ui37ExportFile(b.dataset.ui37Export); return; }
   };
@@ -34183,7 +34195,7 @@ function ui38ConceptChipHTML(c){
   return `<span class="vis4-mc-card is-chip ui38-concept" role="img" tabindex="0" data-zoom-tip="${escapeAttr(tip)}" aria-label="${escapeAttr(c.name)}">${cardChipHTML({name: c.name, rarity: c.rarity, icon: ' '}, {noDefid: true, extraClass: 'ui38-cchip'})}</span>`;
 }
 // Export: every concept with its fields and the flag it has on its map
-function ui38ExportConcepts(){ return Object.values(UI38_CONCEPTS).map(c=> ({id: c.id, mapNo: c.mapNo, mapId: c.mapId, name: c.name, animal: c.animal, family: c.family, element: c.element, rarity: c.rarity, role: c.role, flag: ui37FlagOf(c.mapId, c.id) || ''})); }
+function ui38ExportConcepts(){ return Object.values(UI38_CONCEPTS).map(c=> ({id: c.id, mapNo: c.mapNo, mapId: c.mapId, name: c.name, animal: c.animal, family: c.family, element: c.element, rarity: c.rarity, role: c.role, flag: ui42Shown(c.mapId, c.id)})); }
 // the view's few extra styles (kept here with the block)
 function ui38Css(){
   if(document.getElementById('ui38Css')) return;
