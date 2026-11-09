@@ -1,6 +1,6 @@
 {
  "tool": "tools/bal31/additivity_2026_11_08.js 1.0.0 (2026-11-08, BAL31)",
- "generated": "2026-11-09T14:23:09.679Z",
+ "generated": "2026-11-09T17:08:17.250Z",
  "fingerprint": "e1e0eac2f628",
  "games": 800,
  "level": 9,
@@ -17,29 +17,29 @@
   "L5": 3.09
  },
  "totals": {
-  "pairs": 454,
+  "pairs": 630,
   "skillsCovered": 113,
   "skills": 113,
-  "minPairs": 4,
-  "within1": 0.73,
-  "ciHas0": 0.64,
-  "meanAbsI": 0.81,
-  "meanI": 0.52,
-  "noiseFloor": 0.39,
-  "gapWithin1": 0.61,
+  "minPairs": 8,
+  "within1": 0.75,
+  "ciHas0": 0.65,
+  "meanAbsI": 0.79,
+  "meanI": 0.48,
+  "noiseFloor": 0.38,
+  "gapWithin1": 0.62,
   "meanAbsGap": 1.33,
-  "meanGap": -0.34,
+  "meanGap": -0.35,
   "within2": 0.94,
-  "flag85": 6,
-  "bigPos": 15,
-  "bigNeg": 9,
-  "sdObserved": 0.94,
+  "flag85": 9,
+  "bigPos": 18,
+  "bigNeg": 14,
+  "sdObserved": 0.93,
   "sdNoise": 0.49,
   "sdTrue": 0.8,
-  "centredWithin1": 0.85,
-  "slopeOnSize": -0.02,
-  "corrOnSize": -0.08,
-  "bodyClash": 0.46,
+  "centredWithin1": 0.84,
+  "slopeOnSize": -0.01,
+  "corrOnSize": -0.07,
+  "bodyClash": 0.48,
   "placebo2": {
    "m": 0.36,
    "lo": -0.28,
@@ -73,7 +73,7 @@
    "id": 4,
    "name": "matching rounds 4-8",
    "planned": 276,
-   "measured": 100
+   "measured": 276
   }
  ],
  "skills": [
@@ -88,11 +88,11 @@
     7.11
    ],
    "best": 7.11,
-   "pairs": 24,
-   "meanAbsI": 0.88,
-   "meanI": 0.66,
-   "meanGap": -0.94,
-   "within1": 0.67,
+   "pairs": 26,
+   "meanAbsI": 0.87,
+   "meanI": 0.67,
+   "meanGap": -0.93,
+   "within1": 0.65,
    "ciHas0": 0.58,
    "worst": [
     "swarm +2.36",
@@ -110,15 +110,15 @@
     0.06
    ],
    "best": 0.56,
-   "pairs": 21,
+   "pairs": 25,
    "meanAbsI": 0.48,
    "meanI": 0.48,
    "meanGap": 0.43,
    "within1": 1,
-   "ciHas0": 0.86,
+   "ciHas0": 0.84,
    "worst": [
-    "delivery +0.81",
-    "flying +0.72"
+    "scare +0.97",
+    "delivery +0.81"
    ]
   },
   {
@@ -132,12 +132,12 @@
     2.61
    ],
    "best": 11.14,
-   "pairs": 23,
-   "meanAbsI": 0.76,
-   "meanI": 0.36,
-   "meanGap": -1.15,
-   "within1": 0.87,
-   "ciHas0": 0.74,
+   "pairs": 25,
+   "meanAbsI": 0.74,
+   "meanI": 0.33,
+   "meanGap": -1.24,
+   "within1": 0.88,
+   "ciHas0": 0.76,
    "worst": [
     "pounce +3.28",
     "thorns -1.96"
@@ -154,12 +154,12 @@
     -5.5
    ],
    "best": 2.92,
-   "pairs": 23,
-   "meanAbsI": 0.81,
-   "meanI": 0.57,
-   "meanGap": 0.06,
-   "within1": 0.78,
-   "ciHas0": 0.74,
+   "pairs": 25,
+   "meanAbsI": 0.82,
+   "meanI": 0.6,
+   "meanGap": -0.33,
+   "within1": 0.76,
+   "ciHas0": 0.72,
    "worst": [
     "thorns +3.22",
     "evasive +3.12"
@@ -176,11 +176,11 @@
     6.94
    ],
    "best": 6.94,
-   "pairs": 23,
-   "meanAbsI": 1.06,
-   "meanI": 0.65,
-   "meanGap": -1.5,
-   "within1": 0.57,
+   "pairs": 26,
+   "meanAbsI": 1.02,
+   "meanI": 0.64,
+   "meanGap": -1.59,
+   "within1": 0.58,
    "ciHas0": 0.65,
    "worst": [
     "guardian +3.12",
@@ -198,11 +198,11 @@
     5.44
    ],
    "best": 5.44,
-   "pairs": 23,
-   "meanAbsI": 0.93,
-   "meanI": 0.86,
-   "meanGap": -1.06,
-   "within1": 0.57,
+   "pairs": 26,
+   "meanAbsI": 0.91,
+   "meanI": 0.83,
+   "meanGap": -1.03,
+   "within1": 0.54,
    "ciHas0": 0.35,
    "worst": [
     "guardian +2.08",
@@ -220,12 +220,12 @@
     2.81
    ],
    "best": 3.14,
-   "pairs": 22,
-   "meanAbsI": 0.78,
-   "meanI": 0.72,
-   "meanGap": 0.78,
-   "within1": 0.68,
-   "ciHas0": 0.73,
+   "pairs": 25,
+   "meanAbsI": 0.75,
+   "meanI": 0.7,
+   "meanGap": 0.69,
+   "within1": 0.72,
+   "ciHas0": 0.76,
    "worst": [
     "poison +3.28",
     "bleed +1.9"
@@ -242,12 +242,12 @@
     0.94
    ],
    "best": 3.5,
-   "pairs": 23,
-   "meanAbsI": 0.76,
-   "meanI": 0.73,
+   "pairs": 25,
+   "meanAbsI": 0.75,
+   "meanI": 0.72,
    "meanGap": 0.35,
-   "within1": 0.65,
-   "ciHas0": 0.61,
+   "within1": 0.68,
+   "ciHas0": 0.64,
    "worst": [
     "wither +1.24",
     "armor +1.22"
@@ -264,12 +264,12 @@
     1.36
    ],
    "best": 4.78,
-   "pairs": 24,
-   "meanAbsI": 0.76,
-   "meanI": 0.57,
-   "meanGap": -0.12,
-   "within1": 0.67,
-   "ciHas0": 0.67,
+   "pairs": 27,
+   "meanAbsI": 0.79,
+   "meanI": 0.62,
+   "meanGap": -0.07,
+   "within1": 0.63,
+   "ciHas0": 0.63,
    "worst": [
     "pounce +1.9",
     "sweep +1.72"
@@ -286,15 +286,15 @@
     4.17
    ],
    "best": 11.69,
-   "pairs": 23,
-   "meanAbsI": 0.95,
+   "pairs": 26,
+   "meanAbsI": 0.94,
    "meanI": 0.75,
-   "meanGap": -0.89,
-   "within1": 0.61,
-   "ciHas0": 0.61,
+   "meanGap": -0.98,
+   "within1": 0.62,
+   "ciHas0": 0.58,
    "worst": [
     "gash +2.06",
-    "armor +1.47"
+    "fork +1.5"
    ]
   },
   {
@@ -308,12 +308,12 @@
     0.67
    ],
    "best": 2.47,
-   "pairs": 23,
-   "meanAbsI": 0.73,
-   "meanI": 0.73,
-   "meanGap": 0.35,
-   "within1": 0.74,
-   "ciHas0": 0.57,
+   "pairs": 25,
+   "meanAbsI": 0.71,
+   "meanI": 0.71,
+   "meanGap": 0.39,
+   "within1": 0.76,
+   "ciHas0": 0.6,
    "worst": [
     "skitter +1.19",
     "flying +1.18"
@@ -330,12 +330,12 @@
     6.17
    ],
    "best": 6.17,
-   "pairs": 21,
-   "meanAbsI": 0.74,
-   "meanI": 0.55,
-   "meanGap": -1.61,
-   "within1": 0.71,
-   "ciHas0": 0.62,
+   "pairs": 25,
+   "meanAbsI": 0.7,
+   "meanI": 0.46,
+   "meanGap": -1.49,
+   "within1": 0.72,
+   "ciHas0": 0.64,
    "worst": [
     "swarm +1.72",
     "sweep +1.42"
@@ -352,12 +352,12 @@
     2.25
    ],
    "best": 14.25,
-   "pairs": 23,
-   "meanAbsI": 1.23,
-   "meanI": 0.2,
-   "meanGap": -1.48,
-   "within1": 0.48,
-   "ciHas0": 0.48,
+   "pairs": 26,
+   "meanAbsI": 1.14,
+   "meanI": 0.23,
+   "meanGap": -1.31,
+   "within1": 0.54,
+   "ciHas0": 0.54,
    "worst": [
     "reload -4.28",
     "daunt +2.81"
@@ -374,12 +374,12 @@
     1.67
    ],
    "best": 10.97,
-   "pairs": 23,
-   "meanAbsI": 1.2,
-   "meanI": 0,
-   "meanGap": -1.99,
-   "within1": 0.48,
-   "ciHas0": 0.43,
+   "pairs": 26,
+   "meanAbsI": 1.16,
+   "meanI": 0.02,
+   "meanGap": -1.94,
+   "within1": 0.54,
+   "ciHas0": 0.42,
    "worst": [
     "guardian +3.22",
     "avalanche -2.4"
@@ -396,15 +396,15 @@
     1.5
    ],
    "best": 1.5,
-   "pairs": 22,
-   "meanAbsI": 0.46,
-   "meanI": 0.41,
-   "meanGap": -0.44,
-   "within1": 1,
-   "ciHas0": 0.86,
+   "pairs": 24,
+   "meanAbsI": 0.47,
+   "meanI": 0.42,
+   "meanGap": -0.45,
+   "within1": 0.96,
+   "ciHas0": 0.83,
    "worst": [
-    "poison +0.75",
-    "delivery +0.75"
+    "poisonBolt +1.01",
+    "poison +0.75"
    ]
   },
   {
@@ -418,12 +418,12 @@
     2.22
    ],
    "best": 2.22,
-   "pairs": 23,
+   "pairs": 25,
    "meanAbsI": 0.83,
    "meanI": 0.83,
-   "meanGap": 0.61,
-   "within1": 0.78,
-   "ciHas0": 0.43,
+   "meanGap": 0.6,
+   "within1": 0.8,
+   "ciHas0": 0.44,
    "worst": [
     "herbalist +3.18",
     "armor +1.18"
@@ -440,12 +440,12 @@
     0.5
    ],
    "best": 8.94,
-   "pairs": 23,
-   "meanAbsI": 1.07,
-   "meanI": 0.81,
-   "meanGap": -0.15,
+   "pairs": 27,
+   "meanAbsI": 1.06,
+   "meanI": 0.64,
+   "meanGap": -0.28,
    "within1": 0.48,
-   "ciHas0": 0.43,
+   "ciHas0": 0.44,
    "worst": [
     "twinStrike +3.54",
     "flying +2.36"
@@ -462,11 +462,11 @@
     -3.08
    ],
    "best": 1.81,
-   "pairs": 24,
-   "meanAbsI": 0.61,
-   "meanI": 0.22,
-   "meanGap": -0.8,
-   "within1": 0.83,
+   "pairs": 25,
+   "meanAbsI": 0.59,
+   "meanI": 0.21,
+   "meanGap": -0.77,
+   "within1": 0.84,
    "ciHas0": 0.92,
    "worst": [
     "armor +1.47",
@@ -484,12 +484,12 @@
     1.17
    ],
    "best": 1.89,
-   "pairs": 22,
+   "pairs": 25,
    "meanAbsI": 0.78,
    "meanI": 0.77,
    "meanGap": 0.91,
-   "within1": 0.73,
-   "ciHas0": 0.55,
+   "within1": 0.76,
+   "ciHas0": 0.52,
    "worst": [
     "sweep +2.81",
     "pounce +1.28"
@@ -506,12 +506,12 @@
     2.17
    ],
    "best": 2.22,
-   "pairs": 24,
-   "meanAbsI": 0.68,
-   "meanI": 0.68,
-   "meanGap": 0.77,
-   "within1": 0.83,
-   "ciHas0": 0.71,
+   "pairs": 26,
+   "meanAbsI": 0.64,
+   "meanI": 0.64,
+   "meanGap": 0.76,
+   "within1": 0.85,
+   "ciHas0": 0.73,
    "worst": [
     "delivery +2.06",
     "scavenge +1.87"
@@ -528,15 +528,15 @@
     1
    ],
    "best": 10.06,
-   "pairs": 4,
-   "meanAbsI": 0.96,
-   "meanI": -0.47,
-   "meanGap": -1.29,
-   "within1": 0.75,
-   "ciHas0": 0.75,
+   "pairs": 8,
+   "meanAbsI": 1.01,
+   "meanI": 0.29,
+   "meanGap": -1.01,
+   "within1": 0.5,
+   "ciHas0": 0.63,
    "worst": [
     "poisonBolt -1.99",
-    "greaterPoison -0.87"
+    "fork +1.65"
    ]
   },
   {
@@ -550,15 +550,15 @@
     1.28
    ],
    "best": 1.47,
-   "pairs": 5,
-   "meanAbsI": 0.29,
-   "meanI": 0.28,
-   "meanGap": 0.18,
+   "pairs": 8,
+   "meanAbsI": 0.33,
+   "meanI": 0.32,
+   "meanGap": 0.33,
    "within1": 1,
    "ciHas0": 1,
    "worst": [
-    "diurnal +0.56",
-    "sonar +0.43"
+    "repair +0.65",
+    "diurnal +0.56"
    ]
   },
   {
@@ -572,12 +572,12 @@
     0.86
    ],
    "best": 5.44,
-   "pairs": 5,
-   "meanAbsI": 0.77,
-   "meanI": 0.43,
-   "meanGap": -0.49,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.75,
+   "meanI": 0.34,
+   "meanGap": -0.35,
+   "within1": 0.88,
+   "ciHas0": 0.75,
    "worst": [
     "requiem +1.25",
     "keenSense +0.9"
@@ -594,12 +594,12 @@
     -3.53
    ],
    "best": -0.14,
-   "pairs": 5,
-   "meanAbsI": 0.57,
-   "meanI": 0.57,
-   "meanGap": -0.38,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.49,
+   "meanI": 0.43,
+   "meanGap": -0.23,
+   "within1": 0.88,
+   "ciHas0": 0.75,
    "worst": [
     "taunt +1.14",
     "haste +0.87"
@@ -616,15 +616,15 @@
     0
    ],
    "best": 0,
-   "pairs": 5,
-   "meanAbsI": 0.41,
-   "meanI": 0.41,
-   "meanGap": 0.5,
+   "pairs": 8,
+   "meanAbsI": 0.46,
+   "meanI": 0.46,
+   "meanGap": 0.61,
    "within1": 1,
-   "ciHas0": 0.8,
+   "ciHas0": 0.75,
    "worst": [
-    "almanac +0.72",
-    "scavenge +0.53"
+    "meiosis +0.75",
+    "almanac +0.72"
    ]
   },
   {
@@ -638,15 +638,15 @@
     1.78
    ],
    "best": 10.58,
-   "pairs": 5,
-   "meanAbsI": 0.74,
-   "meanI": 0.48,
-   "meanGap": -0.75,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.81,
+   "meanI": 0.5,
+   "meanGap": -1.03,
+   "within1": 0.75,
+   "ciHas0": 0.5,
    "worst": [
     "relict +1.64",
-    "frost +0.89"
+    "tally +1.29"
    ]
   },
   {
@@ -660,11 +660,11 @@
     0.72
    ],
    "best": 3.72,
-   "pairs": 4,
-   "meanAbsI": 0.92,
-   "meanI": 0.92,
-   "meanGap": -1.16,
-   "within1": 0.75,
+   "pairs": 8,
+   "meanAbsI": 0.78,
+   "meanI": 0.78,
+   "meanGap": -0.67,
+   "within1": 0.88,
    "ciHas0": 0.75,
    "worst": [
     "twinStrike +1.14",
@@ -682,15 +682,15 @@
     3.56
    ],
    "best": 3.56,
-   "pairs": 5,
-   "meanAbsI": 1.06,
-   "meanI": 1.06,
-   "meanGap": 1.34,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "pairs": 9,
+   "meanAbsI": 1.18,
+   "meanI": 1.18,
+   "meanGap": 1.3,
+   "within1": 0.44,
+   "ciHas0": 0.44,
    "worst": [
     "meiosis +2.24",
-    "carrion +1.47"
+    "shield +1.74"
    ]
   },
   {
@@ -704,15 +704,15 @@
     0.33
    ],
    "best": 0.33,
-   "pairs": 5,
-   "meanAbsI": 0.42,
-   "meanI": 0.33,
-   "meanGap": 0.46,
+   "pairs": 8,
+   "meanAbsI": 0.5,
+   "meanI": 0.44,
+   "meanGap": 0.5,
    "within1": 1,
-   "ciHas0": 1,
+   "ciHas0": 0.75,
    "worst": [
-    "iceArrow +0.61",
-    "rage +0.53"
+    "lumberjack +0.75",
+    "nova +0.67"
    ]
   },
   {
@@ -726,15 +726,15 @@
     1.06
    ],
    "best": 1.06,
-   "pairs": 5,
-   "meanAbsI": 0.29,
-   "meanI": 0.29,
-   "meanGap": 0.02,
+   "pairs": 8,
+   "meanAbsI": 0.44,
+   "meanI": 0.44,
+   "meanGap": 0.12,
    "within1": 1,
-   "ciHas0": 0.8,
+   "ciHas0": 0.75,
    "worst": [
-    "spitfire +0.82",
-    "flying +0.26"
+    "mighty +0.85",
+    "spitfire +0.82"
    ]
   },
   {
@@ -748,15 +748,15 @@
     6.25
    ],
    "best": 6.25,
-   "pairs": 4,
-   "meanAbsI": 1.06,
-   "meanI": 0.52,
-   "meanGap": -2.58,
-   "within1": 0.5,
-   "ciHas0": 0.25,
+   "pairs": 8,
+   "meanAbsI": 0.98,
+   "meanI": 0.4,
+   "meanGap": -1.72,
+   "within1": 0.63,
+   "ciHas0": 0.13,
    "worst": [
     "sweep +1.39",
-    "evasive -1.07"
+    "purblind -1.24"
    ]
   },
   {
@@ -770,15 +770,15 @@
     0
    ],
    "best": 0,
-   "pairs": 5,
-   "meanAbsI": 0.37,
-   "meanI": 0.37,
-   "meanGap": 0.44,
+   "pairs": 8,
+   "meanAbsI": 0.43,
+   "meanI": 0.43,
+   "meanGap": 0.49,
    "within1": 1,
    "ciHas0": 1,
    "worst": [
-    "repair +0.56",
-    "arrow +0.5"
+    "greaterPoison +0.58",
+    "repair +0.56"
    ]
   },
   {
@@ -792,12 +792,12 @@
     0.11
    ],
    "best": 0.11,
-   "pairs": 5,
-   "meanAbsI": 0.42,
-   "meanI": 0.42,
+   "pairs": 8,
+   "meanAbsI": 0.31,
+   "meanI": 0.3,
    "meanGap": 0.34,
    "within1": 1,
-   "ciHas0": 0.8,
+   "ciHas0": 0.88,
    "worst": [
     "evasive +0.72",
     "onslaught +0.42"
@@ -814,12 +814,12 @@
     1.36
    ],
    "best": 1.36,
-   "pairs": 5,
-   "meanAbsI": 0.57,
-   "meanI": 0.57,
-   "meanGap": 0.38,
+   "pairs": 8,
+   "meanAbsI": 0.43,
+   "meanI": 0.39,
+   "meanGap": 0.06,
    "within1": 1,
-   "ciHas0": 0.8,
+   "ciHas0": 0.88,
    "worst": [
     "brood +0.99",
     "scare +0.65"
@@ -836,12 +836,12 @@
     -7.42
    ],
    "best": -0.67,
-   "pairs": 5,
-   "meanAbsI": 2.37,
-   "meanI": -0.96,
-   "meanGap": -3.94,
-   "within1": 0.2,
-   "ciHas0": 0.2,
+   "pairs": 8,
+   "meanAbsI": 1.71,
+   "meanI": -0.81,
+   "meanGap": -3.39,
+   "within1": 0.38,
+   "ciHas0": 0.38,
    "worst": [
     "sweep -4.28",
     "recoil +3.4"
@@ -858,15 +858,15 @@
     0.61
    ],
    "best": 0.61,
-   "pairs": 5,
-   "meanAbsI": 0.42,
-   "meanI": 0.42,
-   "meanGap": 0.51,
+   "pairs": 8,
+   "meanAbsI": 0.4,
+   "meanI": 0.4,
+   "meanGap": 0.44,
    "within1": 1,
    "ciHas0": 1,
    "worst": [
     "weaken +0.58",
-    "scar +0.49"
+    "wither +0.53"
    ]
   },
   {
@@ -880,12 +880,12 @@
     0.17
    ],
    "best": 0.17,
-   "pairs": 5,
-   "meanAbsI": 0.67,
-   "meanI": 0.67,
-   "meanGap": 0.69,
+   "pairs": 8,
+   "meanAbsI": 0.61,
+   "meanI": 0.61,
+   "meanGap": 0.63,
    "within1": 1,
-   "ciHas0": 0.4,
+   "ciHas0": 0.5,
    "worst": [
     "flying +0.85",
     "pickpocket +0.83"
@@ -902,15 +902,15 @@
     5.67
    ],
    "best": 10.97,
-   "pairs": 5,
-   "meanAbsI": 0.75,
-   "meanI": -0.21,
-   "meanGap": -0.69,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.98,
+   "meanI": -0.35,
+   "meanGap": -1.03,
+   "within1": 0.63,
+   "ciHas0": 0.5,
    "worst": [
-    "nightblind -1.42",
-    "twinShot -0.97"
+    "spitfire -2.26",
+    "nightblind -1.42"
    ]
   },
   {
@@ -924,15 +924,15 @@
     3.11
    ],
    "best": 3.11,
-   "pairs": 5,
-   "meanAbsI": 0.95,
-   "meanI": 0.95,
-   "meanGap": 0.8,
-   "within1": 0.6,
-   "ciHas0": 0.2,
+   "pairs": 8,
+   "meanAbsI": 0.96,
+   "meanI": 0.66,
+   "meanGap": 0.45,
+   "within1": 0.63,
+   "ciHas0": 0.25,
    "worst": [
-    "crepuscular +1.12",
-    "swarm +1.1"
+    "drunk -1.19",
+    "crepuscular +1.12"
    ]
   },
   {
@@ -946,12 +946,12 @@
     14.5
    ],
    "best": 15.75,
-   "pairs": 5,
-   "meanAbsI": 1.08,
-   "meanI": -0.84,
-   "meanGap": -1.86,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.84,
+   "meanI": -0.55,
+   "meanGap": -1.51,
+   "within1": 0.75,
+   "ciHas0": 0.75,
    "worst": [
     "thorns -2.4",
     "meiosis -2.4"
@@ -968,12 +968,12 @@
     0.06
    ],
    "best": 0.06,
-   "pairs": 4,
-   "meanAbsI": 0.63,
-   "meanI": 0.63,
-   "meanGap": 0.86,
+   "pairs": 8,
+   "meanAbsI": 0.5,
+   "meanI": 0.5,
+   "meanGap": 0.67,
    "within1": 1,
-   "ciHas0": 0.5,
+   "ciHas0": 0.75,
    "worst": [
     "scare +0.86",
     "flying +0.81"
@@ -990,15 +990,15 @@
     1.94
    ],
    "best": 9.83,
-   "pairs": 4,
-   "meanAbsI": 0.75,
-   "meanI": -0.41,
-   "meanGap": -0.98,
-   "within1": 0.75,
-   "ciHas0": 0.75,
+   "pairs": 8,
+   "meanAbsI": 0.56,
+   "meanI": -0.15,
+   "meanGap": -0.69,
+   "within1": 0.88,
+   "ciHas0": 0.88,
    "worst": [
     "spitfire -2.32",
-    "riled +0.54"
+    "skitter +0.64"
    ]
   },
   {
@@ -1012,15 +1012,15 @@
     8.83
    ],
    "best": 15.53,
-   "pairs": 5,
-   "meanAbsI": 1.13,
-   "meanI": 0.56,
-   "meanGap": -0.9,
-   "within1": 0.4,
-   "ciHas0": 0.4,
+   "pairs": 8,
+   "meanAbsI": 1.34,
+   "meanI": 0.34,
+   "meanGap": -1.31,
+   "within1": 0.25,
+   "ciHas0": 0.38,
    "worst": [
-    "weaken +2.01",
-    "poison -1.42"
+    "pickpocket -2.58",
+    "weaken +2.01"
    ]
   },
   {
@@ -1034,15 +1034,15 @@
     1.08
    ],
    "best": 4.17,
-   "pairs": 5,
-   "meanAbsI": 0.37,
-   "meanI": 0.37,
-   "meanGap": 0.33,
+   "pairs": 8,
+   "meanAbsI": 0.39,
+   "meanI": 0.39,
+   "meanGap": 0.45,
    "within1": 1,
    "ciHas0": 1,
    "worst": [
     "nocturnal +0.68",
-    "almanac +0.47"
+    "diurnal +0.58"
    ]
   },
   {
@@ -1056,15 +1056,15 @@
     17.44
    ],
    "best": 17.44,
-   "pairs": 5,
-   "meanAbsI": 1.16,
-   "meanI": -0.82,
-   "meanGap": -2.43,
-   "within1": 0.6,
-   "ciHas0": 0.4,
+   "pairs": 8,
+   "meanAbsI": 1.33,
+   "meanI": -0.69,
+   "meanGap": -2.86,
+   "within1": 0.63,
+   "ciHas0": 0.38,
    "worst": [
-    "mighty -2.47",
-    "nova -2.21"
+    "spitfire -3.12",
+    "mighty -2.47"
    ]
   },
   {
@@ -1078,15 +1078,15 @@
     0
    ],
    "best": 0,
-   "pairs": 5,
-   "meanAbsI": 0.58,
-   "meanI": 0.58,
-   "meanGap": 0.68,
+   "pairs": 8,
+   "meanAbsI": 0.57,
+   "meanI": 0.57,
+   "meanGap": 0.69,
    "within1": 1,
-   "ciHas0": 0.8,
+   "ciHas0": 0.88,
    "worst": [
     "crepuscular +0.75",
-    "herbalist +0.61"
+    "carnage +0.69"
    ]
   },
   {
@@ -1100,15 +1100,15 @@
     0.33
    ],
    "best": 1.64,
-   "pairs": 4,
-   "meanAbsI": 0.85,
-   "meanI": 0.85,
-   "meanGap": -0.26,
+   "pairs": 8,
+   "meanAbsI": 0.77,
+   "meanI": 0.77,
+   "meanGap": -0.13,
    "within1": 0.75,
-   "ciHas0": 0.5,
+   "ciHas0": 0.63,
    "worst": [
-    "evasive +1.18",
-    "nova +1"
+    "mighty +1.6",
+    "evasive +1.18"
    ]
   },
   {
@@ -1122,12 +1122,12 @@
     2.06
    ],
    "best": 2.06,
-   "pairs": 5,
-   "meanAbsI": 0.91,
-   "meanI": 0.91,
-   "meanGap": 1.13,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.77,
+   "meanI": 0.77,
+   "meanGap": 0.9,
+   "within1": 0.75,
+   "ciHas0": 0.75,
    "worst": [
     "fork +1.47",
     "overwhelm +1.31"
@@ -1144,15 +1144,15 @@
     1.19
    ],
    "best": 6,
-   "pairs": 5,
-   "meanAbsI": 0.58,
-   "meanI": 0.53,
-   "meanGap": 0.26,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.72,
+   "meanI": 0.69,
+   "meanGap": 0.05,
+   "within1": 0.63,
+   "ciHas0": 0.5,
    "worst": [
     "ambush +1.12",
-    "delivery +0.87"
+    "moonborn +1.12"
    ]
   },
   {
@@ -1166,12 +1166,12 @@
     0.44
    ],
    "best": 0.44,
-   "pairs": 5,
-   "meanAbsI": 0.66,
-   "meanI": 0.62,
-   "meanGap": 0.68,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.58,
+   "meanI": 0.56,
+   "meanGap": 0.62,
+   "within1": 0.75,
+   "ciHas0": 0.75,
    "worst": [
     "iceArrow +1.04",
     "stealth +1.03"
@@ -1188,15 +1188,15 @@
     3.67
    ],
    "best": 13.47,
-   "pairs": 5,
-   "meanAbsI": 0.86,
-   "meanI": -0.32,
-   "meanGap": -0.67,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.8,
+   "meanI": -0.28,
+   "meanGap": -1.58,
+   "within1": 0.75,
+   "ciHas0": 0.75,
    "worst": [
     "reload -2.31",
-    "tally +0.92"
+    "lumberjack -1.01"
    ]
   },
   {
@@ -1210,15 +1210,15 @@
     -6.61
    ],
    "best": 0.14,
-   "pairs": 5,
-   "meanAbsI": 0.59,
-   "meanI": 0.03,
-   "meanGap": -1.17,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 1.59,
+   "meanI": -0.19,
+   "meanGap": -1.85,
+   "within1": 0.38,
+   "ciHas0": 0.38,
    "worst": [
-    "taunt +1.42",
-    "quick -1.26"
+    "twinStrike -4.56",
+    "stealth +4.04"
    ]
   },
   {
@@ -1232,15 +1232,15 @@
     0.5
    ],
    "best": 0.5,
-   "pairs": 5,
-   "meanAbsI": 0.35,
+   "pairs": 8,
+   "meanAbsI": 0.36,
    "meanI": 0.35,
-   "meanGap": 0.35,
+   "meanGap": 0.31,
    "within1": 1,
    "ciHas0": 1,
    "worst": [
     "twinStrike +0.83",
-    "reach +0.32"
+    "mighty +0.64"
    ]
   },
   {
@@ -1254,15 +1254,15 @@
     0
    ],
    "best": 0.25,
-   "pairs": 5,
-   "meanAbsI": 0.5,
-   "meanI": 0.5,
-   "meanGap": 0.45,
-   "within1": 1,
-   "ciHas0": 1,
+   "pairs": 9,
+   "meanAbsI": 0.52,
+   "meanI": 0.52,
+   "meanGap": 0.58,
+   "within1": 0.89,
+   "ciHas0": 0.78,
    "worst": [
-    "nocturnal +0.71",
-    "immolation +0.65"
+    "shield +1.03",
+    "healing +0.86"
    ]
   },
   {
@@ -1276,11 +1276,11 @@
     11.33
    ],
    "best": 11.33,
-   "pairs": 6,
-   "meanAbsI": 0.88,
-   "meanI": 0.29,
-   "meanGap": -2.57,
-   "within1": 0.67,
+   "pairs": 9,
+   "meanAbsI": 0.73,
+   "meanI": 0.3,
+   "meanGap": -2.01,
+   "within1": 0.78,
    "ciHas0": 0.67,
    "worst": [
     "scar +1.86",
@@ -1298,15 +1298,15 @@
     0.06
    ],
    "best": 0.83,
-   "pairs": 5,
-   "meanAbsI": 0.4,
-   "meanI": 0.39,
-   "meanGap": 0.22,
+   "pairs": 8,
+   "meanAbsI": 0.5,
+   "meanI": 0.49,
+   "meanGap": 0.27,
    "within1": 1,
-   "ciHas0": 1,
+   "ciHas0": 0.75,
    "worst": [
-    "healing +0.61",
-    "thanatosis +0.56"
+    "bulwark +1",
+    "invisible +0.68"
    ]
   },
   {
@@ -1320,15 +1320,15 @@
     1.25
    ],
    "best": 5.64,
-   "pairs": 5,
+   "pairs": 8,
    "meanAbsI": 0.72,
-   "meanI": 0.54,
-   "meanGap": 0.41,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "meanI": 0.61,
+   "meanGap": 0.66,
+   "within1": 0.75,
+   "ciHas0": 0.63,
    "worst": [
-    "wither +1.15",
-    "web +0.93"
+    "swarm +1.4",
+    "wither +1.15"
    ]
   },
   {
@@ -1342,12 +1342,12 @@
     1
    ],
    "best": 1,
-   "pairs": 4,
-   "meanAbsI": 0.73,
-   "meanI": 0.73,
-   "meanGap": -0.11,
+   "pairs": 8,
+   "meanAbsI": 0.56,
+   "meanI": 0.56,
+   "meanGap": 0.02,
    "within1": 1,
-   "ciHas0": 0.5,
+   "ciHas0": 0.75,
    "worst": [
     "fireArrow +0.89",
     "stealth +0.86"
@@ -1364,12 +1364,12 @@
     2.14
    ],
    "best": 10.14,
-   "pairs": 5,
-   "meanAbsI": 0.66,
-   "meanI": 0.31,
-   "meanGap": -1.52,
-   "within1": 0.8,
-   "ciHas0": 0.8,
+   "pairs": 8,
+   "meanAbsI": 0.55,
+   "meanI": 0.34,
+   "meanGap": -0.74,
+   "within1": 0.88,
+   "ciHas0": 0.88,
    "worst": [
     "shield +1.03",
     "inspiring -0.87"
@@ -1386,15 +1386,15 @@
     6.28
    ],
    "best": 6.28,
-   "pairs": 5,
-   "meanAbsI": 1.03,
-   "meanI": 1.03,
-   "meanGap": -0.37,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 1.11,
+   "meanI": 0.67,
+   "meanGap": -0.78,
+   "within1": 0.5,
+   "ciHas0": 0.5,
    "worst": [
-    "relict +1.56",
-    "brood +1.18"
+    "skitter -1.76",
+    "relict +1.56"
    ]
   },
   {
@@ -1408,15 +1408,15 @@
     4.39
    ],
    "best": 5.89,
-   "pairs": 5,
-   "meanAbsI": 0.63,
-   "meanI": 0.54,
-   "meanGap": -0.39,
-   "within1": 0.8,
-   "ciHas0": 0.8,
+   "pairs": 8,
+   "meanAbsI": 0.65,
+   "meanI": 0.33,
+   "meanGap": -0.02,
+   "within1": 0.75,
+   "ciHas0": 0.63,
    "worst": [
     "thanatosis +1.11",
-    "haste +0.71"
+    "taunt -1.06"
    ]
   },
   {
@@ -1430,15 +1430,15 @@
     0.22
    ],
    "best": 1.33,
-   "pairs": 4,
-   "meanAbsI": 0.34,
-   "meanI": 0.34,
-   "meanGap": 0.3,
+   "pairs": 8,
+   "meanAbsI": 0.4,
+   "meanI": 0.4,
+   "meanGap": 0.21,
    "within1": 1,
    "ciHas0": 1,
    "worst": [
-    "web +0.47",
-    "avalanche +0.46"
+    "wither +0.61",
+    "carrion +0.56"
    ]
   },
   {
@@ -1452,15 +1452,15 @@
     0.17
    ],
    "best": 0.39,
-   "pairs": 5,
-   "meanAbsI": 1.04,
-   "meanI": 1.04,
-   "meanGap": 1.14,
-   "within1": 0.8,
-   "ciHas0": 0.8,
+   "pairs": 8,
+   "meanAbsI": 0.87,
+   "meanI": 0.87,
+   "meanGap": 0.91,
+   "within1": 0.88,
+   "ciHas0": 0.75,
    "worst": [
     "regen +3.18",
-    "canopyCover +0.61"
+    "twinStrike +0.81"
    ]
   },
   {
@@ -1474,15 +1474,15 @@
     -2.28
    ],
    "best": 0.08,
-   "pairs": 5,
-   "meanAbsI": 0.26,
-   "meanI": 0.22,
-   "meanGap": -0.64,
+   "pairs": 8,
+   "meanAbsI": 0.34,
+   "meanI": 0.31,
+   "meanGap": -0.73,
    "within1": 1,
-   "ciHas0": 1,
+   "ciHas0": 0.88,
    "worst": [
-    "web +0.42",
-    "bedrock +0.36"
+    "nova +0.72",
+    "web +0.42"
    ]
   },
   {
@@ -1496,15 +1496,15 @@
     4.39
    ],
    "best": 14.31,
-   "pairs": 5,
-   "meanAbsI": 1.13,
-   "meanI": 0.2,
-   "meanGap": -0.57,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 1.14,
+   "meanI": -0.15,
+   "meanGap": -0.75,
+   "within1": 0.63,
+   "ciHas0": 0.63,
    "worst": [
     "thorns -2.33",
-    "darksight +1.04"
+    "recoil -2.33"
    ]
   },
   {
@@ -1518,12 +1518,12 @@
     0.39
    ],
    "best": 0.75,
-   "pairs": 5,
-   "meanAbsI": 0.66,
-   "meanI": 0.66,
-   "meanGap": 0.6,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.6,
+   "meanI": 0.6,
+   "meanGap": 0.56,
+   "within1": 0.88,
+   "ciHas0": 0.75,
    "worst": [
     "poisonBolt +1.01",
     "flying +0.96"
@@ -1540,12 +1540,12 @@
     -0.86
    ],
    "best": -0.86,
-   "pairs": 5,
-   "meanAbsI": 1.08,
-   "meanI": 1.08,
-   "meanGap": 0.78,
-   "within1": 0.4,
-   "ciHas0": 0.4,
+   "pairs": 8,
+   "meanAbsI": 0.79,
+   "meanI": 0.74,
+   "meanGap": 0.05,
+   "within1": 0.63,
+   "ciHas0": 0.63,
    "worst": [
     "riled +1.69",
     "gash +1.36"
@@ -1562,12 +1562,12 @@
     -7.44
    ],
    "best": -0.72,
-   "pairs": 4,
-   "meanAbsI": 0.51,
-   "meanI": 0.08,
-   "meanGap": -0.76,
-   "within1": 0.75,
-   "ciHas0": 0.75,
+   "pairs": 8,
+   "meanAbsI": 0.39,
+   "meanI": 0.07,
+   "meanGap": -0.26,
+   "within1": 0.88,
+   "ciHas0": 0.88,
    "worst": [
     "nightblind +1.15",
     "skitter -0.61"
@@ -1584,15 +1584,15 @@
     0.5
    ],
    "best": 0.5,
-   "pairs": 5,
-   "meanAbsI": 0.59,
-   "meanI": 0.59,
-   "meanGap": 0.33,
-   "within1": 1,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.81,
+   "meanI": 0.81,
+   "meanGap": 0.39,
+   "within1": 0.88,
+   "ciHas0": 0.63,
    "worst": [
-    "arrow +0.9",
-    "delivery +0.87"
+    "nightblind +2.47",
+    "arrow +0.9"
    ]
   },
   {
@@ -1606,12 +1606,12 @@
     2.56
    ],
    "best": 10.47,
-   "pairs": 4,
-   "meanAbsI": 0.71,
-   "meanI": 0.59,
-   "meanGap": -0.8,
-   "within1": 0.5,
-   "ciHas0": 0.75,
+   "pairs": 8,
+   "meanAbsI": 0.73,
+   "meanI": 0.36,
+   "meanGap": -0.68,
+   "within1": 0.63,
+   "ciHas0": 0.63,
    "worst": [
     "armor +1.35",
     "crabClaws +1.07"
@@ -1628,12 +1628,12 @@
     7.83
    ],
    "best": 7.83,
-   "pairs": 5,
-   "meanAbsI": 1.27,
-   "meanI": 0.25,
-   "meanGap": -1.11,
-   "within1": 0.4,
-   "ciHas0": 0.4,
+   "pairs": 8,
+   "meanAbsI": 1.09,
+   "meanI": 0.28,
+   "meanGap": -1.66,
+   "within1": 0.63,
+   "ciHas0": 0.38,
    "worst": [
     "avalanche -2.4",
     "fork +2.24"
@@ -1650,12 +1650,12 @@
     6.89
    ],
    "best": 6.89,
-   "pairs": 5,
-   "meanAbsI": 1.46,
-   "meanI": -0.28,
-   "meanGap": -1.42,
-   "within1": 0.4,
-   "ciHas0": 0.2,
+   "pairs": 8,
+   "meanAbsI": 1.3,
+   "meanI": 0.21,
+   "meanGap": -0.69,
+   "within1": 0.5,
+   "ciHas0": 0.25,
    "worst": [
     "bulwark -2.47",
     "recoil -1.9"
@@ -1672,15 +1672,15 @@
     4.33
    ],
    "best": 6.42,
-   "pairs": 5,
-   "meanAbsI": 0.42,
-   "meanI": 0.1,
-   "meanGap": -0.44,
-   "within1": 1,
-   "ciHas0": 1,
+   "pairs": 8,
+   "meanAbsI": 0.59,
+   "meanI": 0.39,
+   "meanGap": 0.07,
+   "within1": 0.88,
+   "ciHas0": 0.75,
    "worst": [
-    "foraging +0.82",
-    "poisonBolt -0.79"
+    "crepuscular +1.12",
+    "daunt +0.9"
    ]
   },
   {
@@ -1694,15 +1694,15 @@
     -4.06
    ],
    "best": -0.89,
-   "pairs": 5,
-   "meanAbsI": 0.79,
-   "meanI": -0.3,
-   "meanGap": -1.27,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.86,
+   "meanI": 0.11,
+   "meanGap": -1.16,
+   "within1": 0.63,
+   "ciHas0": 0.63,
    "worst": [
-    "almanac -1.42",
-    "injured +1.15"
+    "keenSense +2.47",
+    "almanac -1.42"
    ]
   },
   {
@@ -1716,12 +1716,12 @@
     5.39
    ],
    "best": 5.39,
-   "pairs": 5,
-   "meanAbsI": 1,
-   "meanI": 0.11,
-   "meanGap": -0.87,
-   "within1": 0.6,
-   "ciHas0": 0.4,
+   "pairs": 8,
+   "meanAbsI": 0.88,
+   "meanI": 0.33,
+   "meanGap": -0.55,
+   "within1": 0.75,
+   "ciHas0": 0.38,
    "worst": [
     "bulwark -2.21",
     "tally +1.26"
@@ -1738,12 +1738,12 @@
     0.78
    ],
    "best": 1.44,
-   "pairs": 5,
-   "meanAbsI": 0.73,
-   "meanI": 0.73,
-   "meanGap": 0.44,
-   "within1": 0.8,
-   "ciHas0": 0.8,
+   "pairs": 8,
+   "meanAbsI": 0.67,
+   "meanI": 0.67,
+   "meanGap": 0.5,
+   "within1": 0.88,
+   "ciHas0": 0.75,
    "worst": [
     "twinStrike +1.54",
     "iceArrow +0.85"
@@ -1760,15 +1760,15 @@
     2.31
    ],
    "best": 2.31,
-   "pairs": 5,
-   "meanAbsI": 0.91,
-   "meanI": 0.91,
-   "meanGap": 0.2,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.97,
+   "meanI": 0.97,
+   "meanGap": 0.38,
+   "within1": 0.63,
+   "ciHas0": 0.5,
    "worst": [
-    "requiem +1.36",
-    "carrion +1.31"
+    "scare +1.49",
+    "requiem +1.36"
    ]
   },
   {
@@ -1782,15 +1782,15 @@
     0.33
    ],
    "best": 0.33,
-   "pairs": 4,
-   "meanAbsI": 0.31,
-   "meanI": 0.31,
-   "meanGap": 0.09,
+   "pairs": 8,
+   "meanAbsI": 0.3,
+   "meanI": 0.11,
+   "meanGap": -0.5,
    "within1": 1,
    "ciHas0": 1,
    "worst": [
     "siege +0.68",
-    "shell +0.28"
+    "iceArrow -0.51"
    ]
   },
   {
@@ -1804,15 +1804,15 @@
     2.33
    ],
    "best": 13.44,
-   "pairs": 5,
-   "meanAbsI": 0.61,
-   "meanI": 0.61,
-   "meanGap": -0.62,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.93,
+   "meanI": 0.08,
+   "meanGap": -2.14,
+   "within1": 0.75,
+   "ciHas0": 0.5,
    "worst": [
-    "immolation +1.06",
-    "timbered +0.83"
+    "brood -2.58",
+    "immolation +1.06"
    ]
   },
   {
@@ -1826,12 +1826,12 @@
     2.72
    ],
    "best": 16.69,
-   "pairs": 5,
-   "meanAbsI": 1.44,
-   "meanI": 0.33,
-   "meanGap": -3,
-   "within1": 0.2,
-   "ciHas0": 0.2,
+   "pairs": 8,
+   "meanAbsI": 1.06,
+   "meanI": 0.3,
+   "meanGap": -2.3,
+   "within1": 0.38,
+   "ciHas0": 0.38,
    "worst": [
     "inspiring -1.99",
     "speed +1.83"
@@ -1848,10 +1848,10 @@
     0.17
    ],
    "best": 0.17,
-   "pairs": 5,
-   "meanAbsI": 0.44,
-   "meanI": 0.44,
-   "meanGap": 0.52,
+   "pairs": 8,
+   "meanAbsI": 0.38,
+   "meanI": 0.38,
+   "meanGap": 0.44,
    "within1": 1,
    "ciHas0": 1,
    "worst": [
@@ -1870,15 +1870,15 @@
     -9.11
    ],
    "best": -1.58,
-   "pairs": 4,
-   "meanAbsI": 0.95,
-   "meanI": -0.7,
-   "meanGap": -1.12,
-   "within1": 0.75,
-   "ciHas0": 0.75,
+   "pairs": 8,
+   "meanAbsI": 1.04,
+   "meanI": -0.9,
+   "meanGap": -1.92,
+   "within1": 0.63,
+   "ciHas0": 0.63,
    "worst": [
-    "skitter -2.04",
-    "arrow -0.85"
+    "swarm -2.21",
+    "skitter -2.04"
    ]
   },
   {
@@ -1892,15 +1892,15 @@
     2.61
    ],
    "best": 3.11,
-   "pairs": 5,
-   "meanAbsI": 0.23,
-   "meanI": 0.05,
-   "meanGap": -0.02,
-   "within1": 1,
-   "ciHas0": 1,
+   "pairs": 8,
+   "meanAbsI": 0.59,
+   "meanI": 0.48,
+   "meanGap": 0.45,
+   "within1": 0.75,
+   "ciHas0": 0.75,
    "worst": [
-    "frostbite +0.53",
-    "flying -0.25"
+    "thanatosis +2.57",
+    "armor +1.01"
    ]
   },
   {
@@ -1914,12 +1914,12 @@
     -1.11
    ],
    "best": -0.39,
-   "pairs": 5,
-   "meanAbsI": 0.59,
-   "meanI": 0.59,
-   "meanGap": 0.37,
-   "within1": 0.8,
-   "ciHas0": 0.8,
+   "pairs": 8,
+   "meanAbsI": 0.5,
+   "meanI": 0.42,
+   "meanGap": 0.18,
+   "within1": 0.88,
+   "ciHas0": 0.88,
    "worst": [
     "repair +1.12",
     "haste +0.82"
@@ -1936,15 +1936,15 @@
     -8
    ],
    "best": -2.83,
-   "pairs": 5,
-   "meanAbsI": 1.14,
-   "meanI": 0.23,
-   "meanGap": -0.56,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 1.01,
+   "meanI": -0.15,
+   "meanGap": -0.42,
+   "within1": 0.63,
+   "ciHas0": 0.63,
    "worst": [
     "reload +3.4",
-    "mighty -1.9"
+    "iceArrow -2.33"
    ]
   },
   {
@@ -1958,12 +1958,12 @@
     3.5
    ],
    "best": 3.5,
-   "pairs": 5,
-   "meanAbsI": 1.13,
-   "meanI": 1.09,
-   "meanGap": -0.36,
-   "within1": 0.4,
-   "ciHas0": 0.4,
+   "pairs": 8,
+   "meanAbsI": 0.93,
+   "meanI": 0.9,
+   "meanGap": -0.31,
+   "within1": 0.63,
+   "ciHas0": 0.63,
    "worst": [
     "fireArrow +1.64",
     "skitter +1.61"
@@ -1980,12 +1980,12 @@
     1
    ],
    "best": 5.25,
-   "pairs": 5,
-   "meanAbsI": 1.31,
-   "meanI": 1.31,
-   "meanGap": 0.4,
-   "within1": 0.4,
-   "ciHas0": 0.2,
+   "pairs": 8,
+   "meanAbsI": 1.08,
+   "meanI": 1.08,
+   "meanGap": 0.45,
+   "within1": 0.63,
+   "ciHas0": 0.38,
    "worst": [
     "evasive +2.86",
     "tornado +1.33"
@@ -2002,15 +2002,15 @@
     1.72
    ],
    "best": 3.47,
-   "pairs": 4,
-   "meanAbsI": 0.93,
-   "meanI": 0.61,
-   "meanGap": 0.4,
+   "pairs": 8,
+   "meanAbsI": 0.97,
+   "meanI": 0.81,
+   "meanGap": 0.83,
    "within1": 0.5,
    "ciHas0": 0.5,
    "worst": [
-    "overwhelm +1.36",
-    "arrow +1.25"
+    "bleed +1.44",
+    "overwhelm +1.36"
    ]
   },
   {
@@ -2024,15 +2024,15 @@
     0
    ],
    "best": 5.31,
-   "pairs": 5,
-   "meanAbsI": 0.79,
-   "meanI": 0.79,
-   "meanGap": 0.03,
-   "within1": 0.8,
-   "ciHas0": 0.8,
+   "pairs": 8,
+   "meanAbsI": 0.69,
+   "meanI": 0.64,
+   "meanGap": 0.2,
+   "within1": 0.75,
+   "ciHas0": 0.75,
    "worst": [
     "immolation +1.69",
-    "shield +0.67"
+    "requiem +1.19"
    ]
   },
   {
@@ -2046,15 +2046,15 @@
     0
    ],
    "best": 0,
-   "pairs": 4,
-   "meanAbsI": 0.49,
-   "meanI": 0.49,
-   "meanGap": 0.63,
+   "pairs": 8,
+   "meanAbsI": 0.55,
+   "meanI": 0.55,
+   "meanGap": 0.57,
    "within1": 1,
    "ciHas0": 0.75,
    "worst": [
-    "skitter +0.89",
-    "fork +0.53"
+    "delivery +0.99",
+    "skitter +0.89"
    ]
   },
   {
@@ -2068,12 +2068,12 @@
     0.5
    ],
    "best": 11.83,
-   "pairs": 5,
-   "meanAbsI": 0.66,
-   "meanI": 0.6,
-   "meanGap": -3.16,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.58,
+   "meanI": 0.32,
+   "meanGap": -2.73,
+   "within1": 0.88,
+   "ciHas0": 0.75,
    "worst": [
     "fastForward +1.86",
     "invisible +0.78"
@@ -2090,15 +2090,15 @@
     9.39
    ],
    "best": 9.39,
-   "pairs": 4,
-   "meanAbsI": 0.51,
-   "meanI": 0.51,
-   "meanGap": 0.64,
-   "within1": 1,
-   "ciHas0": 0.75,
+   "pairs": 8,
+   "meanAbsI": 0.63,
+   "meanI": 0.49,
+   "meanGap": -0.45,
+   "within1": 0.88,
+   "ciHas0": 0.63,
    "worst": [
-    "bedrock +0.86",
-    "predator +0.65"
+    "overwhelm +1.49",
+    "tide +0.97"
    ]
   },
   {
@@ -2112,15 +2112,15 @@
     1.61
    ],
    "best": 4.86,
-   "pairs": 5,
-   "meanAbsI": 0.77,
-   "meanI": 0.61,
-   "meanGap": 0.67,
-   "within1": 0.8,
-   "ciHas0": 0.8,
+   "pairs": 8,
+   "meanAbsI": 0.69,
+   "meanI": 0.59,
+   "meanGap": 0.66,
+   "within1": 0.88,
+   "ciHas0": 0.88,
    "worst": [
     "gash +1.87",
-    "foeScarcity +0.57"
+    "wither +0.9"
    ]
   },
   {
@@ -2134,12 +2134,12 @@
     0.28
    ],
    "best": 0.72,
-   "pairs": 5,
-   "meanAbsI": 0.51,
-   "meanI": 0.35,
-   "meanGap": 0.33,
+   "pairs": 8,
+   "meanAbsI": 0.38,
+   "meanI": 0.29,
+   "meanGap": 0.22,
    "within1": 1,
-   "ciHas0": 0.8,
+   "ciHas0": 0.88,
    "worst": [
     "bulwark +0.86",
     "thanatosis +0.49"
@@ -2156,15 +2156,15 @@
     0.17
    ],
    "best": 0.17,
-   "pairs": 5,
-   "meanAbsI": 0.36,
-   "meanI": 0.36,
-   "meanGap": 0.37,
-   "within1": 1,
-   "ciHas0": 1,
+   "pairs": 8,
+   "meanAbsI": 0.48,
+   "meanI": 0.48,
+   "meanGap": 0.47,
+   "within1": 0.88,
+   "ciHas0": 0.88,
    "worst": [
-    "fastForward +0.67",
-    "requiem +0.47"
+    "brood +1.28",
+    "fastForward +0.67"
    ]
   },
   {
@@ -2178,15 +2178,15 @@
     10.94
    ],
    "best": 10.94,
-   "pairs": 5,
-   "meanAbsI": 0.97,
-   "meanI": 0.93,
-   "meanGap": -5.18,
-   "within1": 0.6,
-   "ciHas0": 0.4,
+   "pairs": 8,
+   "meanAbsI": 1.1,
+   "meanI": 1.08,
+   "meanGap": -3.61,
+   "within1": 0.38,
+   "ciHas0": 0.25,
    "worst": [
     "thorns +2.08",
-    "greaterPoison +1.03"
+    "fork +1.74"
    ]
   },
   {
@@ -2200,15 +2200,15 @@
     0.22
    ],
    "best": 1.5,
-   "pairs": 4,
-   "meanAbsI": 0.58,
-   "meanI": 0.58,
-   "meanGap": 0.19,
+   "pairs": 8,
+   "meanAbsI": 0.51,
+   "meanI": 0.43,
+   "meanGap": 0.06,
    "within1": 1,
-   "ciHas0": 0.75,
+   "ciHas0": 0.88,
    "worst": [
     "daunt +0.79",
-    "packLeader +0.68"
+    "decay +0.75"
    ]
   },
   {
@@ -2222,15 +2222,15 @@
     4.33
    ],
    "best": 4.33,
-   "pairs": 5,
-   "meanAbsI": 1.27,
-   "meanI": 0.21,
-   "meanGap": 0.35,
-   "within1": 0.4,
-   "ciHas0": 0.2,
+   "pairs": 8,
+   "meanAbsI": 1.22,
+   "meanI": 0.11,
+   "meanGap": -0.15,
+   "within1": 0.5,
+   "ciHas0": 0.25,
    "worst": [
     "purblind -2.04",
-    "relict +1.61"
+    "haste -1.76"
    ]
   },
   {
@@ -2244,15 +2244,15 @@
     5.72
    ],
    "best": 5.72,
-   "pairs": 6,
-   "meanAbsI": 0.85,
-   "meanI": 0.82,
-   "meanGap": -1.06,
-   "within1": 0.5,
-   "ciHas0": 0.5,
+   "pairs": 9,
+   "meanAbsI": 0.88,
+   "meanI": 0.86,
+   "meanGap": -1.45,
+   "within1": 0.56,
+   "ciHas0": 0.44,
    "worst": [
     "poisonBolt +1.83",
-    "sweep +1.53"
+    "stealth +1.75"
    ]
   },
   {
@@ -2266,15 +2266,15 @@
     3.44
    ],
    "best": 15.19,
-   "pairs": 5,
-   "meanAbsI": 1.02,
-   "meanI": 0.02,
-   "meanGap": -2.75,
-   "within1": 0.8,
-   "ciHas0": 0.2,
+   "pairs": 8,
+   "meanAbsI": 1.34,
+   "meanI": -0.63,
+   "meanGap": -3.58,
+   "within1": 0.63,
+   "ciHas0": 0.25,
    "worst": [
-    "berserk -2.32",
-    "shield +0.96"
+    "bulwark -3.12",
+    "berserk -2.32"
    ]
   },
   {
@@ -2288,15 +2288,15 @@
     10.44
    ],
    "best": 16.72,
-   "pairs": 5,
-   "meanAbsI": 0.49,
-   "meanI": 0.33,
-   "meanGap": -0.51,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 1.06,
+   "meanI": 0.96,
+   "meanGap": -0.67,
+   "within1": 0.63,
+   "ciHas0": 0.5,
    "worst": [
-    "darksight +1.03",
-    "frost +0.86"
+    "drunk +4.04",
+    "speed +1.75"
    ]
   },
   {
@@ -2310,15 +2310,15 @@
     0.78
    ],
    "best": 2.11,
-   "pairs": 5,
-   "meanAbsI": 0.89,
-   "meanI": 0.89,
-   "meanGap": 0.74,
-   "within1": 0.8,
-   "ciHas0": 0.4,
+   "pairs": 8,
+   "meanAbsI": 1.01,
+   "meanI": 1.01,
+   "meanGap": 0.69,
+   "within1": 0.63,
+   "ciHas0": 0.25,
    "worst": [
-    "nova +1.26",
-    "decay +0.92"
+    "flying +1.31",
+    "fireArrow +1.29"
    ]
   },
   {
@@ -2332,12 +2332,12 @@
     -6.89
    ],
    "best": 4.69,
-   "pairs": 5,
-   "meanAbsI": 0.79,
-   "meanI": 0.74,
+   "pairs": 8,
+   "meanAbsI": 0.72,
+   "meanI": 0.43,
    "meanGap": 0.56,
-   "within1": 0.6,
-   "ciHas0": 0.6,
+   "within1": 0.63,
+   "ciHas0": 0.63,
    "worst": [
     "drunk +1.42",
     "backstab +1.14"
@@ -2354,15 +2354,15 @@
     5.08
    ],
    "best": 5.08,
-   "pairs": 5,
-   "meanAbsI": 0.75,
-   "meanI": 0.75,
-   "meanGap": -0.63,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 0.95,
+   "meanI": 0.78,
+   "meanGap": -0.25,
+   "within1": 0.75,
+   "ciHas0": 0.63,
    "worst": [
-    "healing +1.11",
-    "ambush +0.93"
+    "rage +2.57",
+    "healing +1.11"
    ]
   },
   {
@@ -2376,15 +2376,15 @@
     1.17
    ],
    "best": 1.17,
-   "pairs": 5,
-   "meanAbsI": 0.51,
-   "meanI": 0.51,
-   "meanGap": 0.58,
-   "within1": 0.8,
-   "ciHas0": 0.8,
+   "pairs": 8,
+   "meanAbsI": 0.5,
+   "meanI": 0.5,
+   "meanGap": 0.62,
+   "within1": 0.88,
+   "ciHas0": 0.88,
    "worst": [
     "repair +1.33",
-    "purblind +0.5"
+    "relict +0.58"
    ]
   },
   {
@@ -2398,15 +2398,15 @@
     2.14
    ],
    "best": 2.14,
-   "pairs": 4,
-   "meanAbsI": 0.34,
-   "meanI": 0.34,
-   "meanGap": 0.19,
+   "pairs": 8,
+   "meanAbsI": 0.52,
+   "meanI": 0.52,
+   "meanGap": 0.62,
    "within1": 1,
-   "ciHas0": 1,
+   "ciHas0": 0.88,
    "worst": [
-    "carrion +0.68",
-    "dive +0.42"
+    "invisible +0.99",
+    "carrion +0.68"
    ]
   },
   {
@@ -2420,12 +2420,12 @@
     2.64
    ],
    "best": 11.11,
-   "pairs": 5,
-   "meanAbsI": 2.05,
-   "meanI": 1,
-   "meanGap": 1.57,
-   "within1": 0.6,
-   "ciHas0": 0.8,
+   "pairs": 9,
+   "meanAbsI": 1.33,
+   "meanI": 0.75,
+   "meanGap": 1.1,
+   "within1": 0.78,
+   "ciHas0": 0.89,
    "worst": [
     "weaponMaster +7.47",
     "delivery -1.07"
@@ -2442,15 +2442,15 @@
     11.5
    ],
    "best": 11.5,
-   "pairs": 5,
-   "meanAbsI": 1.63,
-   "meanI": 1.63,
-   "meanGap": 0.23,
-   "within1": 0.2,
-   "ciHas0": 0.2,
+   "pairs": 8,
+   "meanAbsI": 1.71,
+   "meanI": 0.52,
+   "meanGap": -1.42,
+   "within1": 0.38,
+   "ciHas0": 0.25,
    "worst": [
-    "swarm +3.54",
-    "onslaught +1.54"
+    "drunk -4.56",
+    "swarm +3.54"
    ]
   },
   {
@@ -2464,12 +2464,12 @@
     6.33
    ],
    "best": 6.33,
-   "pairs": 5,
-   "meanAbsI": 0.9,
-   "meanI": 0.9,
-   "meanGap": -2.34,
-   "within1": 0.6,
-   "ciHas0": 0.4,
+   "pairs": 8,
+   "meanAbsI": 0.8,
+   "meanI": 0.8,
+   "meanGap": -1.94,
+   "within1": 0.75,
+   "ciHas0": 0.5,
    "worst": [
     "poisonBolt +1.58",
     "wither +1.39"
@@ -2486,15 +2486,15 @@
     1.78
    ],
    "best": 4.25,
-   "pairs": 5,
-   "meanAbsI": 0.64,
-   "meanI": 0.57,
-   "meanGap": -0.13,
-   "within1": 0.8,
-   "ciHas0": 0.8,
+   "pairs": 8,
+   "meanAbsI": 0.55,
+   "meanI": 0.44,
+   "meanGap": -0.09,
+   "within1": 0.88,
+   "ciHas0": 0.88,
    "worst": [
     "brood +2.01",
-    "sonar +0.58"
+    "illuminate +0.6"
    ]
   },
   {
@@ -2508,12 +2508,12 @@
     0.06
    ],
    "best": 0.83,
-   "pairs": 5,
-   "meanAbsI": 1.83,
-   "meanI": 1.83,
-   "meanGap": 2.9,
-   "within1": 0.8,
-   "ciHas0": 0.6,
+   "pairs": 8,
+   "meanAbsI": 1.36,
+   "meanI": 1.36,
+   "meanGap": 1.9,
+   "within1": 0.88,
+   "ciHas0": 0.63,
    "worst": [
     "twinShot +7.47",
     "repair +0.69"
@@ -2530,15 +2530,15 @@
     0.11
    ],
    "best": 0.11,
-   "pairs": 5,
-   "meanAbsI": 0.52,
-   "meanI": 0.52,
-   "meanGap": 0.7,
-   "within1": 1,
-   "ciHas0": 0.8,
+   "pairs": 8,
+   "meanAbsI": 0.64,
+   "meanI": 0.64,
+   "meanGap": 0.79,
+   "within1": 0.88,
+   "ciHas0": 0.63,
    "worst": [
-    "foeScarcity +0.93",
-    "heat +0.47"
+    "almanac +1.17",
+    "foeScarcity +0.93"
    ]
   },
   {
@@ -2552,12 +2552,12 @@
     2.19
    ],
    "best": 5.33,
-   "pairs": 6,
-   "meanAbsI": 0.84,
+   "pairs": 9,
+   "meanAbsI": 0.79,
    "meanI": 0.69,
-   "meanGap": 0.53,
-   "within1": 0.5,
-   "ciHas0": 0.5,
+   "meanGap": 0.72,
+   "within1": 0.67,
+   "ciHas0": 0.67,
    "worst": [
     "undead +1.39",
     "nocturnal +1.24"
@@ -22084,6 +22084,7574 @@
    ],
    "within1": true,
    "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "scare+tide",
+   "phase": 4,
+   "a": {
+    "key": "scare",
+    "n": 2
+   },
+   "b": {
+    "key": "tide",
+    "n": true
+   },
+   "I": {
+    "m": 0.97,
+    "lo": 0.32,
+    "hi": 1.78
+   },
+   "se": 0.38,
+   "gap": {
+    "m": 0.94,
+    "lo": -0.31,
+    "hi": 2.47
+   },
+   "perBody": [
+    0.5,
+    1.44
+   ],
+   "pair": [
+    3.53,
+    10.89
+   ],
+   "aW": [
+    2.47,
+    9.39
+   ],
+   "bW": [
+    0.56,
+    0.06
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "injured+lumberjack",
+   "phase": 4,
+   "a": {
+    "key": "injured",
+    "n": 2
+   },
+   "b": {
+    "key": "lumberjack",
+    "n": true
+   },
+   "I": {
+    "m": -0.24,
+    "lo": -1.33,
+    "hi": 0.6
+   },
+   "se": 0.51,
+   "gap": {
+    "m": 0.69,
+    "lo": -0.5,
+    "hi": 1.81
+   },
+   "perBody": [
+    0.69,
+    -1.17
+   ],
+   "pair": [
+    10.44,
+    -6.06
+   ],
+   "aW": [
+    -0.72,
+    -7.44
+   ],
+   "bW": [
+    10.47,
+    2.56
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "berserk+siege",
+   "phase": 4,
+   "a": {
+    "key": "berserk",
+    "n": 2
+   },
+   "b": {
+    "key": "siege",
+    "n": 1
+   },
+   "I": {
+    "m": 0.08,
+    "lo": -0.75,
+    "hi": 1.08
+   },
+   "se": 0.48,
+   "gap": {
+    "m": -0.17,
+    "lo": -1.17,
+    "hi": 0.83
+   },
+   "perBody": [
+    -0.17,
+    0.33
+   ],
+   "pair": [
+    11.17,
+    2.5
+   ],
+   "aW": [
+    9.83,
+    1.94
+   ],
+   "bW": [
+    1.5,
+    0.22
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "invisible+purblind",
+   "phase": 4,
+   "a": {
+    "key": "invisible",
+    "n": 2
+   },
+   "b": {
+    "key": "purblind",
+    "n": true
+   },
+   "I": {
+    "m": -1.24,
+    "lo": -2.04,
+    "hi": -0.29
+   },
+   "se": 0.45,
+   "gap": {
+    "m": -5.42,
+    "lo": -6.92,
+    "hi": -4
+   },
+   "perBody": [
+    0.33,
+    -2.81
+   ],
+   "pair": [
+    -0.75,
+    -5.67
+   ],
+   "aW": [
+    0.5,
+    6.25
+   ],
+   "bW": [
+    -1.58,
+    -9.11
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "frost+heat",
+   "phase": 4,
+   "a": {
+    "key": "frost",
+    "n": true
+   },
+   "b": {
+    "key": "heat",
+    "n": true
+   },
+   "I": {
+    "m": 0.39,
+    "lo": -0.28,
+    "hi": 1.19
+   },
+   "se": 0.39,
+   "gap": {
+    "m": -0.5,
+    "lo": -1.17,
+    "hi": 0.89
+   },
+   "perBody": [
+    0.33,
+    0.44
+   ],
+   "pair": [
+    1.83,
+    1.67
+   ],
+   "aW": [
+    0.17,
+    1
+   ],
+   "bW": [
+    1.33,
+    0.22
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "quick+trap",
+   "phase": 4,
+   "a": {
+    "key": "quick",
+    "n": true
+   },
+   "b": {
+    "key": "trap",
+    "n": 4
+   },
+   "I": {
+    "m": 0.67,
+    "lo": -0.12,
+    "hi": 1.49
+   },
+   "se": 0.43,
+   "gap": {
+    "m": 1.08,
+    "lo": -0.25,
+    "hi": 2.47
+   },
+   "perBody": [
+    0.25,
+    1.08
+   ],
+   "pair": [
+    2.81,
+    9.39
+   ],
+   "aW": [
+    1,
+    6.17
+   ],
+   "bW": [
+    1.56,
+    2.14
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "delivery+salt",
+   "phase": 4,
+   "a": {
+    "key": "delivery",
+    "n": 1
+   },
+   "b": {
+    "key": "salt",
+    "n": true
+   },
+   "I": {
+    "m": 0.99,
+    "lo": 0.33,
+    "hi": 1.78
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.92,
+    "lo": 0.22,
+    "hi": 1.58
+   },
+   "perBody": [
+    0.97,
+    1
+   ],
+   "pair": [
+    12.61,
+    5.17
+   ],
+   "aW": [
+    11.69,
+    4.17
+   ],
+   "bW": [
+    -0.06,
+    0
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "foraging+requiem",
+   "phase": 4,
+   "a": {
+    "key": "foraging",
+    "n": 1
+   },
+   "b": {
+    "key": "requiem",
+    "n": 4
+   },
+   "I": {
+    "m": 0.78,
+    "lo": -0.07,
+    "hi": 1.74
+   },
+   "se": 0.48,
+   "gap": {
+    "m": 0.83,
+    "lo": -0.39,
+    "hi": 1.86
+   },
+   "perBody": [
+    0.83,
+    0.72
+   ],
+   "pair": [
+    8.03,
+    3.17
+   ],
+   "aW": [
+    3.72,
+    0.72
+   ],
+   "bW": [
+    3.47,
+    1.72
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "carnage+packLeader",
+   "phase": 4,
+   "a": {
+    "key": "carnage",
+    "n": 3
+   },
+   "b": {
+    "key": "packLeader",
+    "n": true
+   },
+   "I": {
+    "m": 0.22,
+    "lo": -0.58,
+    "hi": 1.1
+   },
+   "se": 0.41,
+   "gap": {
+    "m": -0.53,
+    "lo": -1.44,
+    "hi": 0.81
+   },
+   "perBody": [
+    0.06,
+    0.39
+   ],
+   "pair": [
+    1.44,
+    1.06
+   ],
+   "aW": [
+    1.64,
+    0.33
+   ],
+   "bW": [
+    -0.25,
+    0.33
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "inspiring+swarm",
+   "phase": 4,
+   "a": {
+    "key": "inspiring",
+    "n": 1
+   },
+   "b": {
+    "key": "swarm",
+    "n": true
+   },
+   "I": {
+    "m": 0.06,
+    "lo": -0.87,
+    "hi": 1.44
+   },
+   "se": 0.59,
+   "gap": {
+    "m": -0.72,
+    "lo": -2.39,
+    "hi": 0.86
+   },
+   "perBody": [
+    -0.72,
+    0.83
+   ],
+   "pair": [
+    18.28,
+    2.33
+   ],
+   "aW": [
+    10.06,
+    1
+   ],
+   "bW": [
+    8.94,
+    0.5
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "bedrock+twinShot",
+   "phase": 4,
+   "a": {
+    "key": "bedrock",
+    "n": true
+   },
+   "b": {
+    "key": "twinShot",
+    "n": 1
+   },
+   "I": {
+    "m": 0.53,
+    "lo": -0.19,
+    "hi": 1.25
+   },
+   "se": 0.38,
+   "gap": {
+    "m": 0.72,
+    "lo": 0.06,
+    "hi": 1.39
+   },
+   "perBody": [
+    0.78,
+    0.28
+   ],
+   "pair": [
+    11.89,
+    2.97
+   ],
+   "aW": [
+    0,
+    0.06
+   ],
+   "bW": [
+    11.11,
+    2.64
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "carnage+executioner",
+   "phase": 4,
+   "a": {
+    "key": "carnage",
+    "n": 3
+   },
+   "b": {
+    "key": "executioner",
+    "n": 2
+   },
+   "I": {
+    "m": 0.25,
+    "lo": -0.42,
+    "hi": 1.04
+   },
+   "se": 0.4,
+   "gap": {
+    "m": -0.06,
+    "lo": -0.78,
+    "hi": 0.89
+   },
+   "perBody": [
+    -0.06,
+    0.56
+   ],
+   "pair": [
+    1.83,
+    0.89
+   ],
+   "aW": [
+    1.64,
+    0.33
+   ],
+   "bW": [
+    0.25,
+    0
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "gash+sequestration",
+   "phase": 4,
+   "a": {
+    "key": "gash",
+    "n": 3
+   },
+   "b": {
+    "key": "sequestration",
+    "n": true
+   },
+   "I": {
+    "m": 0.22,
+    "lo": -0.47,
+    "hi": 1.03
+   },
+   "se": 0.38,
+   "gap": {
+    "m": 0.67,
+    "lo": -0.36,
+    "hi": 1.44
+   },
+   "perBody": [
+    0.67,
+    -0.22
+   ],
+   "pair": [
+    3.61,
+    2.22
+   ],
+   "aW": [
+    2.22,
+    2.17
+   ],
+   "bW": [
+    0.72,
+    0.28
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "arrow+pickpocket",
+   "phase": 4,
+   "a": {
+    "key": "arrow",
+    "n": 1
+   },
+   "b": {
+    "key": "pickpocket",
+    "n": 1
+   },
+   "I": {
+    "m": -0.83,
+    "lo": -1.71,
+    "hi": 0.17
+   },
+   "se": 0.54,
+   "gap": {
+    "m": -1.86,
+    "lo": -3.25,
+    "hi": -0.58
+   },
+   "perBody": [
+    -1.86,
+    0.19
+   ],
+   "pair": [
+    17.03,
+    3.39
+   ],
+   "aW": [
+    5.44,
+    0.86
+   ],
+   "bW": [
+    13.44,
+    2.33
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "immolation+stealth",
+   "phase": 4,
+   "a": {
+    "key": "immolation",
+    "n": 1
+   },
+   "b": {
+    "key": "stealth",
+    "n": true
+   },
+   "I": {
+    "m": 0.25,
+    "lo": -0.86,
+    "hi": 1.36
+   },
+   "se": 0.56,
+   "gap": {
+    "m": -1.17,
+    "lo": -2.83,
+    "hi": 0.19
+   },
+   "perBody": [
+    -0.25,
+    0.75
+   ],
+   "pair": [
+    14.69,
+    10.33
+   ],
+   "aW": [
+    -1.78,
+    -0.86
+   ],
+   "bW": [
+    16.72,
+    10.44
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "herbalist+twinStrike",
+   "phase": 4,
+   "a": {
+    "key": "herbalist",
+    "n": 1
+   },
+   "b": {
+    "key": "twinStrike",
+    "n": true
+   },
+   "I": {
+    "m": 0.81,
+    "lo": 0.14,
+    "hi": 1.56
+   },
+   "se": 0.38,
+   "gap": {
+    "m": 0.83,
+    "lo": -0.44,
+    "hi": 2.33
+   },
+   "perBody": [
+    0.56,
+    1.06
+   ],
+   "pair": [
+    7.19,
+    12.72
+   ],
+   "aW": [
+    0.39,
+    0.17
+   ],
+   "bW": [
+    6.25,
+    11.5
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "fireArrow+reload",
+   "phase": 4,
+   "a": {
+    "key": "fireArrow",
+    "n": 1
+   },
+   "b": {
+    "key": "reload",
+    "n": 1
+   },
+   "I": {
+    "m": -0.57,
+    "lo": -1.54,
+    "hi": 0.54
+   },
+   "se": 0.58,
+   "gap": {
+    "m": -1.44,
+    "lo": -2.92,
+    "hi": -0.03
+   },
+   "perBody": [
+    -1.44,
+    0.31
+   ],
+   "pair": [
+    8.47,
+    -5.33
+   ],
+   "aW": [
+    10.58,
+    1.78
+   ],
+   "bW": [
+    -0.67,
+    -7.42
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "haste+weaponMaster",
+   "phase": 4,
+   "a": {
+    "key": "haste",
+    "n": true
+   },
+   "b": {
+    "key": "weaponMaster",
+    "n": 1
+   },
+   "I": {
+    "m": 0.61,
+    "lo": -0.11,
+    "hi": 1.33
+   },
+   "se": 0.39,
+   "gap": {
+    "m": 0.11,
+    "lo": -1.06,
+    "hi": 1.5
+   },
+   "perBody": [
+    0.33,
+    0.89
+   ],
+   "pair": [
+    3.22,
+    7.22
+   ],
+   "aW": [
+    2.06,
+    6.28
+   ],
+   "bW": [
+    0.83,
+    0.06
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "guardian+relict",
+   "phase": 4,
+   "a": {
+    "key": "guardian",
+    "n": true
+   },
+   "b": {
+    "key": "relict",
+    "n": true
+   },
+   "I": {
+    "m": 0.57,
+    "lo": -0.28,
+    "hi": 1.58
+   },
+   "se": 0.52,
+   "gap": {
+    "m": -2.28,
+    "lo": -3.56,
+    "hi": -1.03
+   },
+   "perBody": [
+    1.14,
+    0
+   ],
+   "pair": [
+    4.14,
+    -2
+   ],
+   "aW": [
+    2.92,
+    -5.5
+   ],
+   "bW": [
+    0.08,
+    3.5
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "purblind+thorns",
+   "phase": 4,
+   "a": {
+    "key": "purblind",
+    "n": true
+   },
+   "b": {
+    "key": "thorns",
+    "n": 2
+   },
+   "I": {
+    "m": -0.99,
+    "lo": -2.06,
+    "hi": 0.17
+   },
+   "se": 0.57,
+   "gap": {
+    "m": -1.53,
+    "lo": -3,
+    "hi": 0.11
+   },
+   "perBody": [
+    -1.53,
+    -0.44
+   ],
+   "pair": [
+    7.86,
+    -7.89
+   ],
+   "aW": [
+    -1.58,
+    -9.11
+   ],
+   "bW": [
+    10.97,
+    1.67
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "darksight+predator",
+   "phase": 4,
+   "a": {
+    "key": "darksight",
+    "n": true
+   },
+   "b": {
+    "key": "predator",
+    "n": 1
+   },
+   "I": {
+    "m": 0.33,
+    "lo": -0.31,
+    "hi": 1.18
+   },
+   "se": 0.41,
+   "gap": {
+    "m": 0.25,
+    "lo": -0.83,
+    "hi": 1.78
+   },
+   "perBody": [
+    0.42,
+    0.25
+   ],
+   "pair": [
+    0.64,
+    2.06
+   ],
+   "aW": [
+    0.17,
+    0.44
+   ],
+   "bW": [
+    0.06,
+    1.36
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "fork+trap",
+   "phase": 4,
+   "a": {
+    "key": "fork",
+    "n": true
+   },
+   "b": {
+    "key": "trap",
+    "n": 4
+   },
+   "I": {
+    "m": 0.44,
+    "lo": -0.29,
+    "hi": 1.39
+   },
+   "se": 0.47,
+   "gap": {
+    "m": 0.64,
+    "lo": -0.61,
+    "hi": 2.17
+   },
+   "perBody": [
+    0.25,
+    0.64
+   ],
+   "pair": [
+    4.5,
+    6.33
+   ],
+   "aW": [
+    2.69,
+    3.56
+   ],
+   "bW": [
+    1.56,
+    2.14
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "iceArrow+packLeader",
+   "phase": 4,
+   "a": {
+    "key": "iceArrow",
+    "n": 2
+   },
+   "b": {
+    "key": "packLeader",
+    "n": true
+   },
+   "I": {
+    "m": -0.51,
+    "lo": -1.71,
+    "hi": 0.6
+   },
+   "se": 0.6,
+   "gap": {
+    "m": -1.89,
+    "lo": -3.25,
+    "hi": -0.61
+   },
+   "perBody": [
+    -1.31,
+    0.28
+   ],
+   "pair": [
+    12.75,
+    5
+   ],
+   "aW": [
+    14.31,
+    4.39
+   ],
+   "bW": [
+    -0.25,
+    0.33
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "repair+web",
+   "phase": 4,
+   "a": {
+    "key": "repair",
+    "n": 1
+   },
+   "b": {
+    "key": "web",
+    "n": 1
+   },
+   "I": {
+    "m": 0.92,
+    "lo": 0.11,
+    "hi": 1.67
+   },
+   "se": 0.42,
+   "gap": {
+    "m": 0.89,
+    "lo": -0.31,
+    "hi": 1.83
+   },
+   "perBody": [
+    0.94,
+    0.89
+   ],
+   "pair": [
+    6.25,
+    2
+   ],
+   "aW": [
+    5.25,
+    1
+   ],
+   "bW": [
+    0.06,
+    0.11
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "nocturnal+twinShot",
+   "phase": 4,
+   "a": {
+    "key": "nocturnal",
+    "n": 1
+   },
+   "b": {
+    "key": "twinShot",
+    "n": 1
+   },
+   "I": {
+    "m": 0.51,
+    "lo": -0.53,
+    "hi": 1.57
+   },
+   "se": 0.55,
+   "gap": {
+    "m": 0.67,
+    "lo": -0.56,
+    "hi": 2.03
+   },
+   "perBody": [
+    0.67,
+    0.36
+   ],
+   "pair": [
+    15.28,
+    3.94
+   ],
+   "aW": [
+    3.5,
+    0.94
+   ],
+   "bW": [
+    11.11,
+    2.64
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "almanac+scar",
+   "phase": 4,
+   "a": {
+    "key": "almanac",
+    "n": 4
+   },
+   "b": {
+    "key": "scar",
+    "n": 2
+   },
+   "I": {
+    "m": -0.69,
+    "lo": -1.81,
+    "hi": 0.57
+   },
+   "se": 0.56,
+   "gap": {
+    "m": -1.94,
+    "lo": -3.67,
+    "hi": -0.31
+   },
+   "perBody": [
+    -1.94,
+    0.56
+   ],
+   "pair": [
+    20.86,
+    6.72
+   ],
+   "aW": [
+    10.97,
+    5.67
+   ],
+   "bW": [
+    11.83,
+    0.5
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "crepuscular+daunt",
+   "phase": 4,
+   "a": {
+    "key": "crepuscular",
+    "n": 1
+   },
+   "b": {
+    "key": "daunt",
+    "n": 1
+   },
+   "I": {
+    "m": 0.71,
+    "lo": -0.1,
+    "hi": 1.69
+   },
+   "se": 0.49,
+   "gap": {
+    "m": 0.97,
+    "lo": -0.42,
+    "hi": 2.14
+   },
+   "perBody": [
+    0.97,
+    0.44
+   ],
+   "pair": [
+    8.86,
+    2.81
+   ],
+   "aW": [
+    6,
+    1.19
+   ],
+   "bW": [
+    1.89,
+    1.17
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "reach+siege",
+   "phase": 4,
+   "a": {
+    "key": "reach",
+    "n": true
+   },
+   "b": {
+    "key": "siege",
+    "n": 1
+   },
+   "I": {
+    "m": -0.33,
+    "lo": -1.19,
+    "hi": 0.47
+   },
+   "se": 0.42,
+   "gap": {
+    "m": -1.06,
+    "lo": -2.11,
+    "hi": 0.47
+   },
+   "perBody": [
+    -1.06,
+    0.39
+   ],
+   "pair": [
+    0.06,
+    -0.5
+   ],
+   "aW": [
+    -0.39,
+    -1.11
+   ],
+   "bW": [
+    1.5,
+    0.22
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "avalanche+thanatosis",
+   "phase": 4,
+   "a": {
+    "key": "avalanche",
+    "n": 1
+   },
+   "b": {
+    "key": "thanatosis",
+    "n": true
+   },
+   "I": {
+    "m": -0.69,
+    "lo": -1.49,
+    "hi": 0.24
+   },
+   "se": 0.47,
+   "gap": {
+    "m": -2.83,
+    "lo": -4.61,
+    "hi": -0.61
+   },
+   "perBody": [
+    0.19,
+    -1.58
+   ],
+   "pair": [
+    16.42,
+    18
+   ],
+   "aW": [
+    15.75,
+    14.5
+   ],
+   "bW": [
+    0.47,
+    5.08
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "backstab+riled",
+   "phase": 4,
+   "a": {
+    "key": "backstab",
+    "n": 2
+   },
+   "b": {
+    "key": "riled",
+    "n": 3
+   },
+   "I": {
+    "m": -0.21,
+    "lo": -0.93,
+    "hi": 0.69
+   },
+   "se": 0.42,
+   "gap": {
+    "m": -0.81,
+    "lo": -1.92,
+    "hi": 0.56
+   },
+   "perBody": [
+    -0.81,
+    0.39
+   ],
+   "pair": [
+    4.36,
+    -3.14
+   ],
+   "aW": [
+    -0.14,
+    -3.53
+   ],
+   "bW": [
+    5.31,
+    0
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "brood+shatter",
+   "phase": 4,
+   "a": {
+    "key": "brood",
+    "n": 2
+   },
+   "b": {
+    "key": "shatter",
+    "n": 2
+   },
+   "I": {
+    "m": 1.28,
+    "lo": 0.47,
+    "hi": 2.06
+   },
+   "se": 0.39,
+   "gap": {
+    "m": 1.11,
+    "lo": 0.28,
+    "hi": 1.83
+   },
+   "perBody": [
+    1.28,
+    1.28
+   ],
+   "pair": [
+    16.81,
+    10.28
+   ],
+   "aW": [
+    15.53,
+    8.83
+   ],
+   "bW": [
+    0,
+    0.17
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "illuminate+weaken",
+   "phase": 4,
+   "a": {
+    "key": "illuminate",
+    "n": true
+   },
+   "b": {
+    "key": "weaken",
+    "n": 1
+   },
+   "I": {
+    "m": 0.6,
+    "lo": -0.04,
+    "hi": 1.36
+   },
+   "se": 0.42,
+   "gap": {
+    "m": 0.81,
+    "lo": 0.14,
+    "hi": 1.58
+   },
+   "perBody": [
+    0.81,
+    0.39
+   ],
+   "pair": [
+    5.81,
+    2.56
+   ],
+   "aW": [
+    0.75,
+    0.39
+   ],
+   "bW": [
+    4.25,
+    1.78
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "scavenge+wither",
+   "phase": 4,
+   "a": {
+    "key": "scavenge",
+    "n": 1
+   },
+   "b": {
+    "key": "wither",
+    "n": 1
+   },
+   "I": {
+    "m": 0.9,
+    "lo": -0.03,
+    "hi": 1.94
+   },
+   "se": 0.5,
+   "gap": {
+    "m": 1.67,
+    "lo": 0.19,
+    "hi": 3
+   },
+   "perBody": [
+    1.67,
+    0.14
+   ],
+   "pair": [
+    11.86,
+    3.94
+   ],
+   "aW": [
+    4.86,
+    1.61
+   ],
+   "bW": [
+    5.33,
+    2.19
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "evasive+inspiring",
+   "phase": 4,
+   "a": {
+    "key": "evasive",
+    "n": true
+   },
+   "b": {
+    "key": "inspiring",
+    "n": 1
+   },
+   "I": {
+    "m": 1.26,
+    "lo": 0.25,
+    "hi": 2.58
+   },
+   "se": 0.59,
+   "gap": {
+    "m": -3.56,
+    "lo": -5.5,
+    "hi": -1.5
+   },
+   "perBody": [
+    0.89,
+    1.64
+   ],
+   "pair": [
+    13.44,
+    9.58
+   ],
+   "aW": [
+    2.5,
+    6.94
+   ],
+   "bW": [
+    10.06,
+    1
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "fletcher+invisible",
+   "phase": 4,
+   "a": {
+    "key": "fletcher",
+    "n": 1
+   },
+   "b": {
+    "key": "invisible",
+    "n": 2
+   },
+   "I": {
+    "m": 0.68,
+    "lo": 0.06,
+    "hi": 1.42
+   },
+   "se": 0.36,
+   "gap": {
+    "m": 0.25,
+    "lo": -0.92,
+    "hi": 1.61
+   },
+   "perBody": [
+    0.33,
+    1.03
+   ],
+   "pair": [
+    1.67,
+    7.33
+   ],
+   "aW": [
+    0.83,
+    0.06
+   ],
+   "bW": [
+    0.5,
+    6.25
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "ambush+drunk",
+   "phase": 4,
+   "a": {
+    "key": "ambush",
+    "n": 4
+   },
+   "b": {
+    "key": "drunk",
+    "n": true
+   },
+   "I": {
+    "m": -1.19,
+    "lo": -2.14,
+    "hi": -0.26
+   },
+   "se": 0.47,
+   "gap": {
+    "m": -1.72,
+    "lo": -2.94,
+    "hi": -0.72
+   },
+   "perBody": [
+    -0.64,
+    -1.75
+   ],
+   "pair": [
+    1.53,
+    -5.25
+   ],
+   "aW": [
+    2.03,
+    3.11
+   ],
+   "bW": [
+    0.14,
+    -6.61
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "dry+mighty",
+   "phase": 4,
+   "a": {
+    "key": "dry",
+    "n": true
+   },
+   "b": {
+    "key": "mighty",
+    "n": true
+   },
+   "I": {
+    "m": 0.64,
+    "lo": -0.06,
+    "hi": 1.46
+   },
+   "se": 0.42,
+   "gap": {
+    "m": 0.83,
+    "lo": -0.53,
+    "hi": 2.06
+   },
+   "perBody": [
+    0.44,
+    0.83
+   ],
+   "pair": [
+    5.08,
+    8.22
+   ],
+   "aW": [
+    0.36,
+    0.5
+   ],
+   "bW": [
+    4.28,
+    6.89
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "skitter+tally",
+   "phase": 4,
+   "a": {
+    "key": "skitter",
+    "n": true
+   },
+   "b": {
+    "key": "tally",
+    "n": 3
+   },
+   "I": {
+    "m": 0.99,
+    "lo": 0.18,
+    "hi": 1.97
+   },
+   "se": 0.46,
+   "gap": {
+    "m": 0.17,
+    "lo": -0.78,
+    "hi": 1.83
+   },
+   "perBody": [
+    0.47,
+    1.5
+   ],
+   "pair": [
+    6.17,
+    6.61
+   ],
+   "aW": [
+    3.58,
+    4.33
+   ],
+   "bW": [
+    2.11,
+    0.78
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "quick+shell",
+   "phase": 4,
+   "a": {
+    "key": "quick",
+    "n": true
+   },
+   "b": {
+    "key": "shell",
+    "n": 4
+   },
+   "I": {
+    "m": -0.03,
+    "lo": -0.69,
+    "hi": 0.9
+   },
+   "se": 0.42,
+   "gap": {
+    "m": 0.03,
+    "lo": -1.31,
+    "hi": 1.39
+   },
+   "perBody": [
+    -0.28,
+    0.22
+   ],
+   "pair": [
+    2.19,
+    7.67
+   ],
+   "aW": [
+    1,
+    6.17
+   ],
+   "bW": [
+    1.47,
+    1.28
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "pierce+sweep",
+   "phase": 4,
+   "a": {
+    "key": "pierce",
+    "n": 1
+   },
+   "b": {
+    "key": "sweep",
+    "n": 2
+   },
+   "I": {
+    "m": 0.35,
+    "lo": -0.36,
+    "hi": 1.15
+   },
+   "se": 0.41,
+   "gap": {
+    "m": 0.56,
+    "lo": -0.11,
+    "hi": 1.22
+   },
+   "perBody": [
+    0.64,
+    0.06
+   ],
+   "pair": [
+    14.92,
+    2.42
+   ],
+   "aW": [
+    0.03,
+    0.11
+   ],
+   "bW": [
+    14.25,
+    2.25
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "lumberjack+overwhelm",
+   "phase": 4,
+   "a": {
+    "key": "lumberjack",
+    "n": true
+   },
+   "b": {
+    "key": "overwhelm",
+    "n": true
+   },
+   "I": {
+    "m": 0.99,
+    "lo": 0.26,
+    "hi": 1.74
+   },
+   "se": 0.42,
+   "gap": {
+    "m": -1.42,
+    "lo": -2.44,
+    "hi": -0.44
+   },
+   "perBody": [
+    0.89,
+    1.08
+   ],
+   "pair": [
+    11.36,
+    5.94
+   ],
+   "aW": [
+    10.47,
+    2.56
+   ],
+   "bW": [
+    0,
+    2.31
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "armor+rage",
+   "phase": 4,
+   "a": {
+    "key": "armor",
+    "n": 1
+   },
+   "b": {
+    "key": "rage",
+    "n": true
+   },
+   "I": {
+    "m": 1.01,
+    "lo": 0.22,
+    "hi": 1.96
+   },
+   "se": 0.48,
+   "gap": {
+    "m": 1.39,
+    "lo": -0.06,
+    "hi": 2.94
+   },
+   "perBody": [
+    0.14,
+    1.89
+   ],
+   "pair": [
+    4.64,
+    9.94
+   ],
+   "aW": [
+    1.39,
+    5.44
+   ],
+   "bW": [
+    3.11,
+    2.61
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "greaterPoison+healing",
+   "phase": 4,
+   "a": {
+    "key": "greaterPoison",
+    "n": 1
+   },
+   "b": {
+    "key": "healing",
+    "n": 1
+   },
+   "I": {
+    "m": 0.12,
+    "lo": -0.86,
+    "hi": 1.25
+   },
+   "se": 0.56,
+   "gap": {
+    "m": 0.5,
+    "lo": -0.92,
+    "hi": 2.11
+   },
+   "perBody": [
+    0.5,
+    -0.25
+   ],
+   "pair": [
+    16.53,
+    6.28
+   ],
+   "aW": [
+    10.14,
+    2.14
+   ],
+   "bW": [
+    5.89,
+    4.39
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "berserk+bleed",
+   "phase": 4,
+   "a": {
+    "key": "berserk",
+    "n": 2
+   },
+   "b": {
+    "key": "bleed",
+    "n": 1
+   },
+   "I": {
+    "m": 0.26,
+    "lo": -0.56,
+    "hi": 1.4
+   },
+   "se": 0.53,
+   "gap": {
+    "m": 0.53,
+    "lo": -0.72,
+    "hi": 1.97
+   },
+   "perBody": [
+    0.53,
+    0
+   ],
+   "pair": [
+    15.14,
+    3.31
+   ],
+   "aW": [
+    9.83,
+    1.94
+   ],
+   "bW": [
+    4.78,
+    1.36
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "bulldoze+diurnal",
+   "phase": 4,
+   "a": {
+    "key": "bulldoze",
+    "n": 1
+   },
+   "b": {
+    "key": "diurnal",
+    "n": 1
+   },
+   "I": {
+    "m": 0.58,
+    "lo": -0.17,
+    "hi": 1.6
+   },
+   "se": 0.47,
+   "gap": {
+    "m": 0.89,
+    "lo": -0.33,
+    "hi": 2.06
+   },
+   "perBody": [
+    0.89,
+    0.28
+   ],
+   "pair": [
+    7.53,
+    2.03
+   ],
+   "aW": [
+    4.17,
+    1.08
+   ],
+   "bW": [
+    2.47,
+    0.67
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "prey+tornado",
+   "phase": 4,
+   "a": {
+    "key": "prey",
+    "n": true
+   },
+   "b": {
+    "key": "tornado",
+    "n": 1
+   },
+   "I": {
+    "m": 0.33,
+    "lo": -0.39,
+    "hi": 1.11
+   },
+   "se": 0.42,
+   "gap": {
+    "m": 0.36,
+    "lo": -0.67,
+    "hi": 1.5
+   },
+   "perBody": [
+    0.44,
+    0.22
+   ],
+   "pair": [
+    1.69,
+    1.56
+   ],
+   "aW": [
+    0.17,
+    0.17
+   ],
+   "bW": [
+    1.08,
+    1.17
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "meiosis+poison",
+   "phase": 4,
+   "a": {
+    "key": "meiosis",
+    "n": 1
+   },
+   "b": {
+    "key": "poison",
+    "n": 2
+   },
+   "I": {
+    "m": -0.69,
+    "lo": -1.57,
+    "hi": 0.22
+   },
+   "se": 0.48,
+   "gap": {
+    "m": -5,
+    "lo": -6.36,
+    "hi": -3.56
+   },
+   "perBody": [
+    -2.44,
+    1.06
+   ],
+   "pair": [
+    13.97,
+    11.5
+   ],
+   "aW": [
+    5.28,
+    7.83
+   ],
+   "bW": [
+    11.14,
+    2.61
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "pounce+undead",
+   "phase": 4,
+   "a": {
+    "key": "pounce",
+    "n": 2
+   },
+   "b": {
+    "key": "undead",
+    "n": true
+   },
+   "I": {
+    "m": 0.64,
+    "lo": -0.35,
+    "hi": 1.6
+   },
+   "se": 0.52,
+   "gap": {
+    "m": 1.22,
+    "lo": -0.5,
+    "hi": 2.86
+   },
+   "perBody": [
+    -0.28,
+    1.56
+   ],
+   "pair": [
+    3.47,
+    10.69
+   ],
+   "aW": [
+    3.14,
+    2.81
+   ],
+   "bW": [
+    0.61,
+    6.33
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "carrion+dive",
+   "phase": 4,
+   "a": {
+    "key": "carrion",
+    "n": 2
+   },
+   "b": {
+    "key": "dive",
+    "n": 2
+   },
+   "I": {
+    "m": 0.5,
+    "lo": -0.17,
+    "hi": 1.17
+   },
+   "se": 0.37,
+   "gap": {
+    "m": 0.61,
+    "lo": -0.33,
+    "hi": 1.83
+   },
+   "perBody": [
+    0.39,
+    0.61
+   ],
+   "pair": [
+    1.72,
+    2.67
+   ],
+   "aW": [
+    1.33,
+    2.06
+   ],
+   "bW": [
+    0,
+    0
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "canopyCover+taunt",
+   "phase": 4,
+   "a": {
+    "key": "canopyCover",
+    "n": true
+   },
+   "b": {
+    "key": "taunt",
+    "n": true
+   },
+   "I": {
+    "m": 0.46,
+    "lo": -0.28,
+    "hi": 1.15
+   },
+   "se": 0.39,
+   "gap": {
+    "m": 0.89,
+    "lo": 0.17,
+    "hi": 1.56
+   },
+   "perBody": [
+    0.89,
+    0.03
+   ],
+   "pair": [
+    5.58,
+    -6.86
+   ],
+   "aW": [
+    0,
+    0
+   ],
+   "bW": [
+    4.69,
+    -6.89
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "decay+scare",
+   "phase": 4,
+   "a": {
+    "key": "decay",
+    "n": 1
+   },
+   "b": {
+    "key": "scare",
+    "n": 2
+   },
+   "I": {
+    "m": -0.33,
+    "lo": -1.15,
+    "hi": 0.5
+   },
+   "se": 0.45,
+   "gap": {
+    "m": -8.36,
+    "lo": -9.56,
+    "hi": -6.58
+   },
+   "perBody": [
+    -1.44,
+    0.78
+   ],
+   "pair": [
+    14.5,
+    13.83
+   ],
+   "aW": [
+    13.47,
+    3.67
+   ],
+   "bW": [
+    2.47,
+    9.39
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "bulwark+spitfire",
+   "phase": 4,
+   "a": {
+    "key": "bulwark",
+    "n": 2
+   },
+   "b": {
+    "key": "spitfire",
+    "n": 1
+   },
+   "I": {
+    "m": -3.12,
+    "lo": -4.31,
+    "hi": -1.68
+   },
+   "se": 0.67,
+   "gap": {
+    "m": -10.36,
+    "lo": -12.47,
+    "hi": -8.03
+   },
+   "perBody": [
+    -5.39,
+    -0.86
+   ],
+   "pair": [
+    22.28,
+    20.03
+   ],
+   "aW": [
+    12.47,
+    17.44
+   ],
+   "bW": [
+    15.19,
+    3.44
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": true
+  },
+  {
+   "key": "hibernate+nova",
+   "phase": 4,
+   "a": {
+    "key": "hibernate",
+    "n": true
+   },
+   "b": {
+    "key": "nova",
+    "n": 3
+   },
+   "I": {
+    "m": 0.72,
+    "lo": 0.03,
+    "hi": 1.5
+   },
+   "se": 0.4,
+   "gap": {
+    "m": -1.19,
+    "lo": -1.83,
+    "hi": 0.67
+   },
+   "perBody": [
+    0.28,
+    1.17
+   ],
+   "pair": [
+    4.22,
+    4.28
+   ],
+   "aW": [
+    0.08,
+    -2.28
+   ],
+   "bW": [
+    3.86,
+    5.39
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "mountainClimber+poisonBolt",
+   "phase": 4,
+   "a": {
+    "key": "mountainClimber",
+    "n": true
+   },
+   "b": {
+    "key": "poisonBolt",
+    "n": 2
+   },
+   "I": {
+    "m": 1.01,
+    "lo": 0.28,
+    "hi": 1.97
+   },
+   "se": 0.45,
+   "gap": {
+    "m": -0.67,
+    "lo": -1.72,
+    "hi": 0.28
+   },
+   "perBody": [
+    1,
+    1.03
+   ],
+   "pair": [
+    17.53,
+    5.25
+   ],
+   "aW": [
+    -0.17,
+    1.5
+   ],
+   "bW": [
+    16.69,
+    2.72
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "foeScarcity+swarm",
+   "phase": 4,
+   "a": {
+    "key": "foeScarcity",
+    "n": true
+   },
+   "b": {
+    "key": "swarm",
+    "n": true
+   },
+   "I": {
+    "m": 1.4,
+    "lo": 0.35,
+    "hi": 2.67
+   },
+   "se": 0.6,
+   "gap": {
+    "m": 2.19,
+    "lo": 0.67,
+    "hi": 3.89
+   },
+   "perBody": [
+    2.19,
+    0.61
+   ],
+   "pair": [
+    16.78,
+    2.36
+   ],
+   "aW": [
+    5.64,
+    1.25
+   ],
+   "bW": [
+    8.94,
+    0.5
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "fastForward+speed",
+   "phase": 4,
+   "a": {
+    "key": "fastForward",
+    "n": 1
+   },
+   "b": {
+    "key": "speed",
+    "n": 2
+   },
+   "I": {
+    "m": 0.22,
+    "lo": -0.86,
+    "hi": 1.25
+   },
+   "se": 0.55,
+   "gap": {
+    "m": 0.11,
+    "lo": -1.61,
+    "hi": 1.78
+   },
+   "perBody": [
+    0.33,
+    0.11
+   ],
+   "pair": [
+    2.17,
+    17.17
+   ],
+   "aW": [
+    1.22,
+    11.33
+   ],
+   "bW": [
+    0.61,
+    5.72
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "foraging+frostbite",
+   "phase": 4,
+   "a": {
+    "key": "foraging",
+    "n": 1
+   },
+   "b": {
+    "key": "frostbite",
+    "n": 1
+   },
+   "I": {
+    "m": 0.44,
+    "lo": -0.28,
+    "hi": 1.22
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.22,
+    "lo": -0.56,
+    "hi": 0.83
+   },
+   "perBody": [
+    0.22,
+    0.67
+   ],
+   "pair": [
+    4.28,
+    1.72
+   ],
+   "aW": [
+    3.72,
+    0.72
+   ],
+   "bW": [
+    0.33,
+    0.33
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "frost+sonar",
+   "phase": 4,
+   "a": {
+    "key": "frost",
+    "n": true
+   },
+   "b": {
+    "key": "sonar",
+    "n": true
+   },
+   "I": {
+    "m": 0.25,
+    "lo": -0.44,
+    "hi": 1.03
+   },
+   "se": 0.39,
+   "gap": {
+    "m": 0.11,
+    "lo": -0.75,
+    "hi": 1.47
+   },
+   "perBody": [
+    0.39,
+    0.11
+   ],
+   "pair": [
+    1.03,
+    1.72
+   ],
+   "aW": [
+    0.17,
+    1
+   ],
+   "bW": [
+    0.47,
+    0.61
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "injured+tide",
+   "phase": 4,
+   "a": {
+    "key": "injured",
+    "n": 2
+   },
+   "b": {
+    "key": "tide",
+    "n": true
+   },
+   "I": {
+    "m": 0.12,
+    "lo": -0.43,
+    "hi": 0.87
+   },
+   "se": 0.37,
+   "gap": {
+    "m": 0.36,
+    "lo": -0.33,
+    "hi": 1.11
+   },
+   "perBody": [
+    0.36,
+    -0.11
+   ],
+   "pair": [
+    0.19,
+    -7.5
+   ],
+   "aW": [
+    -0.72,
+    -7.44
+   ],
+   "bW": [
+    0.56,
+    0.06
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "immunity+requiem",
+   "phase": 4,
+   "a": {
+    "key": "immunity",
+    "n": true
+   },
+   "b": {
+    "key": "requiem",
+    "n": 4
+   },
+   "I": {
+    "m": 0.6,
+    "lo": -0.12,
+    "hi": 1.46
+   },
+   "se": 0.43,
+   "gap": {
+    "m": 0.11,
+    "lo": -0.56,
+    "hi": 1.06
+   },
+   "perBody": [
+    0.69,
+    0.5
+   ],
+   "pair": [
+    4.64,
+    3.28
+   ],
+   "aW": [
+    0.47,
+    1.06
+   ],
+   "bW": [
+    3.47,
+    1.72
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "moonborn+salt",
+   "phase": 4,
+   "a": {
+    "key": "moonborn",
+    "n": 4
+   },
+   "b": {
+    "key": "salt",
+    "n": true
+   },
+   "I": {
+    "m": 0.58,
+    "lo": -0.03,
+    "hi": 1.28
+   },
+   "se": 0.36,
+   "gap": {
+    "m": 0.33,
+    "lo": -0.28,
+    "hi": 1.17
+   },
+   "perBody": [
+    0.39,
+    0.78
+   ],
+   "pair": [
+    6.75,
+    5.11
+   ],
+   "aW": [
+    6.42,
+    4.33
+   ],
+   "bW": [
+    -0.06,
+    0
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "keenSense+nightblind",
+   "phase": 4,
+   "a": {
+    "key": "keenSense",
+    "n": true
+   },
+   "b": {
+    "key": "nightblind",
+    "n": true
+   },
+   "I": {
+    "m": 2.47,
+    "lo": 1.56,
+    "hi": 3.5
+   },
+   "se": 0.52,
+   "gap": {
+    "m": 0.86,
+    "lo": -0.08,
+    "hi": 2.44
+   },
+   "perBody": [
+    1.22,
+    3.72
+   ],
+   "pair": [
+    0.47,
+    0.17
+   ],
+   "aW": [
+    0.14,
+    0.5
+   ],
+   "bW": [
+    -0.89,
+    -4.06
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "heat+onslaught",
+   "phase": 4,
+   "a": {
+    "key": "heat",
+    "n": true
+   },
+   "b": {
+    "key": "onslaught",
+    "n": 3
+   },
+   "I": {
+    "m": 0.31,
+    "lo": -0.47,
+    "hi": 1.11
+   },
+   "se": 0.39,
+   "gap": {
+    "m": 0.33,
+    "lo": -0.33,
+    "hi": 1.06
+   },
+   "perBody": [
+    0.33,
+    0.28
+   ],
+   "pair": [
+    3.11,
+    1.28
+   ],
+   "aW": [
+    1.33,
+    0.22
+   ],
+   "bW": [
+    1.44,
+    0.78
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "bedrock+recoil",
+   "phase": 4,
+   "a": {
+    "key": "bedrock",
+    "n": true
+   },
+   "b": {
+    "key": "recoil",
+    "n": 2
+   },
+   "I": {
+    "m": -0.03,
+    "lo": -0.72,
+    "hi": 0.69
+   },
+   "se": 0.35,
+   "gap": {
+    "m": 0.33,
+    "lo": -0.28,
+    "hi": 0.89
+   },
+   "perBody": [
+    0.39,
+    -0.44
+   ],
+   "pair": [
+    -2.44,
+    -8.39
+   ],
+   "aW": [
+    0,
+    0.06
+   ],
+   "bW": [
+    -2.83,
+    -8
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "keenEye+timbered",
+   "phase": 4,
+   "a": {
+    "key": "keenEye",
+    "n": true
+   },
+   "b": {
+    "key": "timbered",
+    "n": true
+   },
+   "I": {
+    "m": 0.42,
+    "lo": -0.22,
+    "hi": 1.19
+   },
+   "se": 0.38,
+   "gap": {
+    "m": 0.44,
+    "lo": -0.19,
+    "hi": 1.78
+   },
+   "perBody": [
+    0.39,
+    0.44
+   ],
+   "pair": [
+    0.36,
+    0.61
+   ],
+   "aW": [
+    0,
+    0
+   ],
+   "bW": [
+    -0.03,
+    0.17
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "executioner+shield",
+   "phase": 4,
+   "a": {
+    "key": "executioner",
+    "n": 2
+   },
+   "b": {
+    "key": "shield",
+    "n": 4
+   },
+   "I": {
+    "m": 1.03,
+    "lo": 0.4,
+    "hi": 1.83
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 1.31,
+    "lo": 0.08,
+    "hi": 2.67
+   },
+   "perBody": [
+    0.5,
+    1.56
+   ],
+   "pair": [
+    1.56,
+    12.5
+   ],
+   "aW": [
+    0.25,
+    0
+   ],
+   "bW": [
+    0.81,
+    10.94
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "fork+inspiring",
+   "phase": 4,
+   "a": {
+    "key": "fork",
+    "n": true
+   },
+   "b": {
+    "key": "inspiring",
+    "n": 1
+   },
+   "I": {
+    "m": 1.65,
+    "lo": 0.57,
+    "hi": 2.9
+   },
+   "se": 0.6,
+   "gap": {
+    "m": 1.89,
+    "lo": -0.11,
+    "hi": 3.36
+   },
+   "perBody": [
+    2.75,
+    0.56
+   ],
+   "pair": [
+    15.5,
+    5.11
+   ],
+   "aW": [
+    2.69,
+    3.56
+   ],
+   "bW": [
+    10.06,
+    1
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "scavenge+spitfire",
+   "phase": 4,
+   "a": {
+    "key": "scavenge",
+    "n": 1
+   },
+   "b": {
+    "key": "spitfire",
+    "n": 1
+   },
+   "I": {
+    "m": 0.24,
+    "lo": -0.81,
+    "hi": 1.35
+   },
+   "se": 0.56,
+   "gap": {
+    "m": -0.31,
+    "lo": -1.75,
+    "hi": 1.14
+   },
+   "perBody": [
+    -0.31,
+    0.78
+   ],
+   "pair": [
+    19.75,
+    5.83
+   ],
+   "aW": [
+    4.86,
+    1.61
+   ],
+   "bW": [
+    15.19,
+    3.44
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "injured+tornado",
+   "phase": 4,
+   "a": {
+    "key": "injured",
+    "n": 2
+   },
+   "b": {
+    "key": "tornado",
+    "n": 1
+   },
+   "I": {
+    "m": 0.56,
+    "lo": -0.5,
+    "hi": 1.42
+   },
+   "se": 0.52,
+   "gap": {
+    "m": 0.69,
+    "lo": -1.5,
+    "hi": 1.5
+   },
+   "perBody": [
+    0.78,
+    0.33
+   ],
+   "pair": [
+    1.14,
+    -5.94
+   ],
+   "aW": [
+    -0.72,
+    -7.44
+   ],
+   "bW": [
+    1.08,
+    1.17
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "almanac+web",
+   "phase": 4,
+   "a": {
+    "key": "almanac",
+    "n": 4
+   },
+   "b": {
+    "key": "web",
+    "n": 1
+   },
+   "I": {
+    "m": 1.17,
+    "lo": 0.39,
+    "hi": 1.97
+   },
+   "se": 0.41,
+   "gap": {
+    "m": 1.44,
+    "lo": 0.33,
+    "hi": 2.33
+   },
+   "perBody": [
+    1.5,
+    0.83
+   ],
+   "pair": [
+    12.53,
+    6.61
+   ],
+   "aW": [
+    10.97,
+    5.67
+   ],
+   "bW": [
+    0.06,
+    0.11
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "salt+weaken",
+   "phase": 4,
+   "a": {
+    "key": "salt",
+    "n": true
+   },
+   "b": {
+    "key": "weaken",
+    "n": 1
+   },
+   "I": {
+    "m": 0.33,
+    "lo": -0.29,
+    "hi": 1.11
+   },
+   "se": 0.39,
+   "gap": {
+    "m": 0.44,
+    "lo": -0.17,
+    "hi": 1.06
+   },
+   "perBody": [
+    0.5,
+    0.17
+   ],
+   "pair": [
+    4.69,
+    1.94
+   ],
+   "aW": [
+    -0.06,
+    0
+   ],
+   "bW": [
+    4.25,
+    1.78
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "flying+tally",
+   "phase": 4,
+   "a": {
+    "key": "flying",
+    "n": true
+   },
+   "b": {
+    "key": "tally",
+    "n": 3
+   },
+   "I": {
+    "m": 1.31,
+    "lo": 0.47,
+    "hi": 2.25
+   },
+   "se": 0.46,
+   "gap": {
+    "m": 0.14,
+    "lo": -1.22,
+    "hi": 1.89
+   },
+   "perBody": [
+    1.14,
+    1.47
+   ],
+   "pair": [
+    6.06,
+    9.36
+   ],
+   "aW": [
+    2.81,
+    7.11
+   ],
+   "bW": [
+    2.11,
+    0.78
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "armor+crepuscular",
+   "phase": 4,
+   "a": {
+    "key": "armor",
+    "n": 1
+   },
+   "b": {
+    "key": "crepuscular",
+    "n": 1
+   },
+   "I": {
+    "m": 1.06,
+    "lo": 0.28,
+    "hi": 1.97
+   },
+   "se": 0.44,
+   "gap": {
+    "m": -3.17,
+    "lo": -4.11,
+    "hi": -1.53
+   },
+   "perBody": [
+    0.89,
+    1.22
+   ],
+   "pair": [
+    8.28,
+    7.86
+   ],
+   "aW": [
+    1.39,
+    5.44
+   ],
+   "bW": [
+    6,
+    1.19
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "illuminate+pounce",
+   "phase": 4,
+   "a": {
+    "key": "illuminate",
+    "n": true
+   },
+   "b": {
+    "key": "pounce",
+    "n": 2
+   },
+   "I": {
+    "m": 0.21,
+    "lo": -0.62,
+    "hi": 1.08
+   },
+   "se": 0.45,
+   "gap": {
+    "m": 0.06,
+    "lo": -0.83,
+    "hi": 1.53
+   },
+   "perBody": [
+    0.06,
+    0.36
+   ],
+   "pair": [
+    3.94,
+    3.56
+   ],
+   "aW": [
+    0.75,
+    0.39
+   ],
+   "bW": [
+    3.14,
+    2.81
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "overwhelm+scare",
+   "phase": 4,
+   "a": {
+    "key": "overwhelm",
+    "n": true
+   },
+   "b": {
+    "key": "scare",
+    "n": 2
+   },
+   "I": {
+    "m": 1.49,
+    "lo": 0.78,
+    "hi": 2.37
+   },
+   "se": 0.42,
+   "gap": {
+    "m": 2.53,
+    "lo": 1.17,
+    "hi": 4
+   },
+   "perBody": [
+    0.44,
+    2.53
+   ],
+   "pair": [
+    2.92,
+    14.22
+   ],
+   "aW": [
+    0,
+    2.31
+   ],
+   "bW": [
+    2.47,
+    9.39
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "predator+reload",
+   "phase": 4,
+   "a": {
+    "key": "predator",
+    "n": 1
+   },
+   "b": {
+    "key": "reload",
+    "n": 1
+   },
+   "I": {
+    "m": 0.08,
+    "lo": -0.65,
+    "hi": 0.82
+   },
+   "se": 0.41,
+   "gap": {
+    "m": -0.86,
+    "lo": -1.58,
+    "hi": 0.03
+   },
+   "perBody": [
+    0.44,
+    -0.28
+   ],
+   "pair": [
+    -0.17,
+    -6.33
+   ],
+   "aW": [
+    0.06,
+    1.36
+   ],
+   "bW": [
+    -0.67,
+    -7.42
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "repair+shell",
+   "phase": 4,
+   "a": {
+    "key": "repair",
+    "n": 1
+   },
+   "b": {
+    "key": "shell",
+    "n": 4
+   },
+   "I": {
+    "m": 0.65,
+    "lo": -0.11,
+    "hi": 1.5
+   },
+   "se": 0.44,
+   "gap": {
+    "m": 0.42,
+    "lo": -0.61,
+    "hi": 1.25
+   },
+   "perBody": [
+    0.42,
+    0.89
+   ],
+   "pair": [
+    7.14,
+    3.17
+   ],
+   "aW": [
+    5.25,
+    1
+   ],
+   "bW": [
+    1.47,
+    1.28
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "immolation+scar",
+   "phase": 4,
+   "a": {
+    "key": "immolation",
+    "n": 1
+   },
+   "b": {
+    "key": "scar",
+    "n": 2
+   },
+   "I": {
+    "m": -0.18,
+    "lo": -1.17,
+    "hi": 0.97
+   },
+   "se": 0.53,
+   "gap": {
+    "m": -2.53,
+    "lo": -4.42,
+    "hi": -1.25
+   },
+   "perBody": [
+    -1.61,
+    1.25
+   ],
+   "pair": [
+    8.44,
+    0.89
+   ],
+   "aW": [
+    -1.78,
+    -0.86
+   ],
+   "bW": [
+    11.83,
+    0.5
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "iceArrow+recoil",
+   "phase": 4,
+   "a": {
+    "key": "iceArrow",
+    "n": 2
+   },
+   "b": {
+    "key": "recoil",
+    "n": 2
+   },
+   "I": {
+    "m": -2.33,
+    "lo": -3.56,
+    "hi": -1.12
+   },
+   "se": 0.62,
+   "gap": {
+    "m": -1.22,
+    "lo": -2.64,
+    "hi": 0.06
+   },
+   "perBody": [
+    -1.22,
+    -3.44
+   ],
+   "pair": [
+    10.25,
+    -7.06
+   ],
+   "aW": [
+    14.31,
+    4.39
+   ],
+   "bW": [
+    -2.83,
+    -8
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "daunt+moonborn",
+   "phase": 4,
+   "a": {
+    "key": "daunt",
+    "n": 1
+   },
+   "b": {
+    "key": "moonborn",
+    "n": 4
+   },
+   "I": {
+    "m": 0.9,
+    "lo": 0.01,
+    "hi": 1.76
+   },
+   "se": 0.43,
+   "gap": {
+    "m": 1.19,
+    "lo": 0.14,
+    "hi": 2.36
+   },
+   "perBody": [
+    1.19,
+    0.61
+   ],
+   "pair": [
+    9.5,
+    6.11
+   ],
+   "aW": [
+    1.89,
+    1.17
+   ],
+   "bW": [
+    6.42,
+    4.33
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "shatter+thanatosis",
+   "phase": 4,
+   "a": {
+    "key": "shatter",
+    "n": 2
+   },
+   "b": {
+    "key": "thanatosis",
+    "n": true
+   },
+   "I": {
+    "m": 0.56,
+    "lo": -0.1,
+    "hi": 1.32
+   },
+   "se": 0.36,
+   "gap": {
+    "m": 0.61,
+    "lo": -0.33,
+    "hi": 1.97
+   },
+   "perBody": [
+    0.5,
+    0.61
+   ],
+   "pair": [
+    0.97,
+    5.86
+   ],
+   "aW": [
+    0,
+    0.17
+   ],
+   "bW": [
+    0.47,
+    5.08
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "fireArrow+speed",
+   "phase": 4,
+   "a": {
+    "key": "fireArrow",
+    "n": 1
+   },
+   "b": {
+    "key": "speed",
+    "n": 2
+   },
+   "I": {
+    "m": 0.86,
+    "lo": 0.06,
+    "hi": 1.89
+   },
+   "se": 0.5,
+   "gap": {
+    "m": -4.56,
+    "lo": -6.08,
+    "hi": -2.97
+   },
+   "perBody": [
+    0.56,
+    1.17
+   ],
+   "pair": [
+    11.75,
+    8.67
+   ],
+   "aW": [
+    10.58,
+    1.78
+   ],
+   "bW": [
+    0.61,
+    5.72
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "poisonBolt+rage",
+   "phase": 4,
+   "a": {
+    "key": "poisonBolt",
+    "n": 2
+   },
+   "b": {
+    "key": "rage",
+    "n": true
+   },
+   "I": {
+    "m": 0,
+    "lo": -0.94,
+    "hi": 1.08
+   },
+   "se": 0.5,
+   "gap": {
+    "m": -1.06,
+    "lo": -2.33,
+    "hi": -0.11
+   },
+   "perBody": [
+    -1.06,
+    1.06
+   ],
+   "pair": [
+    18.75,
+    6.39
+   ],
+   "aW": [
+    16.69,
+    2.72
+   ],
+   "bW": [
+    3.11,
+    2.61
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "bulldoze+prey",
+   "phase": 4,
+   "a": {
+    "key": "bulldoze",
+    "n": 1
+   },
+   "b": {
+    "key": "prey",
+    "n": true
+   },
+   "I": {
+    "m": 0.18,
+    "lo": -0.49,
+    "hi": 0.97
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.22,
+    "lo": -0.44,
+    "hi": 0.89
+   },
+   "perBody": [
+    0.22,
+    0.14
+   ],
+   "pair": [
+    4.56,
+    1.39
+   ],
+   "aW": [
+    4.17,
+    1.08
+   ],
+   "bW": [
+    0.17,
+    0.17
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "delivery+twinStrike",
+   "phase": 4,
+   "a": {
+    "key": "delivery",
+    "n": 1
+   },
+   "b": {
+    "key": "twinStrike",
+    "n": true
+   },
+   "I": {
+    "m": -0.21,
+    "lo": -1.58,
+    "hi": 1.15
+   },
+   "se": 0.71,
+   "gap": {
+    "m": -5.5,
+    "lo": -7.19,
+    "hi": -3.56
+   },
+   "perBody": [
+    -0.25,
+    -0.17
+   ],
+   "pair": [
+    17.69,
+    15.5
+   ],
+   "aW": [
+    11.69,
+    4.17
+   ],
+   "bW": [
+    6.25,
+    11.5
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "avalanche+dry",
+   "phase": 4,
+   "a": {
+    "key": "avalanche",
+    "n": 1
+   },
+   "b": {
+    "key": "dry",
+    "n": true
+   },
+   "I": {
+    "m": -0.07,
+    "lo": -0.83,
+    "hi": 0.69
+   },
+   "se": 0.41,
+   "gap": {
+    "m": -0.5,
+    "lo": -1.22,
+    "hi": 0.94
+   },
+   "perBody": [
+    -0.36,
+    0.22
+   ],
+   "pair": [
+    15.75,
+    15.22
+   ],
+   "aW": [
+    15.75,
+    14.5
+   ],
+   "bW": [
+    0.36,
+    0.5
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "packLeader+sequestration",
+   "phase": 4,
+   "a": {
+    "key": "packLeader",
+    "n": true
+   },
+   "b": {
+    "key": "sequestration",
+    "n": true
+   },
+   "I": {
+    "m": 0.17,
+    "lo": -0.56,
+    "hi": 0.89
+   },
+   "se": 0.4,
+   "gap": {
+    "m": -0.22,
+    "lo": -1.06,
+    "hi": 1.28
+   },
+   "perBody": [
+    0.11,
+    0.22
+   ],
+   "pair": [
+    0.58,
+    0.83
+   ],
+   "aW": [
+    -0.25,
+    0.33
+   ],
+   "bW": [
+    0.72,
+    0.28
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "bedrock+reach",
+   "phase": 4,
+   "a": {
+    "key": "bedrock",
+    "n": true
+   },
+   "b": {
+    "key": "reach",
+    "n": true
+   },
+   "I": {
+    "m": 0.36,
+    "lo": -0.36,
+    "hi": 1.08
+   },
+   "se": 0.37,
+   "gap": {
+    "m": 0.28,
+    "lo": -0.28,
+    "hi": 1.22
+   },
+   "perBody": [
+    0.33,
+    0.39
+   ],
+   "pair": [
+    -0.06,
+    -0.67
+   ],
+   "aW": [
+    0,
+    0.06
+   ],
+   "bW": [
+    -0.39,
+    -1.11
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "decay+siege",
+   "phase": 4,
+   "a": {
+    "key": "decay",
+    "n": 1
+   },
+   "b": {
+    "key": "siege",
+    "n": 1
+   },
+   "I": {
+    "m": 0.75,
+    "lo": -0.19,
+    "hi": 1.67
+   },
+   "se": 0.48,
+   "gap": {
+    "m": 1.33,
+    "lo": 0.06,
+    "hi": 2.5
+   },
+   "perBody": [
+    1.33,
+    0.17
+   ],
+   "pair": [
+    16.31,
+    4.06
+   ],
+   "aW": [
+    13.47,
+    3.67
+   ],
+   "bW": [
+    1.5,
+    0.22
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "crabClaws+pierce",
+   "phase": 4,
+   "a": {
+    "key": "crabClaws",
+    "n": true
+   },
+   "b": {
+    "key": "pierce",
+    "n": 1
+   },
+   "I": {
+    "m": -0.01,
+    "lo": -0.76,
+    "hi": 0.64
+   },
+   "se": 0.36,
+   "gap": {
+    "m": 0.17,
+    "lo": -0.56,
+    "hi": 0.89
+   },
+   "perBody": [
+    0.25,
+    -0.28
+   ],
+   "pair": [
+    2.08,
+    -3.25
+   ],
+   "aW": [
+    1.81,
+    -3.08
+   ],
+   "bW": [
+    0.03,
+    0.11
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "ambush+regen",
+   "phase": 4,
+   "a": {
+    "key": "ambush",
+    "n": 4
+   },
+   "b": {
+    "key": "regen",
+    "n": 1
+   },
+   "I": {
+    "m": 1,
+    "lo": 0.36,
+    "hi": 1.85
+   },
+   "se": 0.42,
+   "gap": {
+    "m": 1.28,
+    "lo": 0,
+    "hi": 2.67
+   },
+   "perBody": [
+    0.72,
+    1.28
+   ],
+   "pair": [
+    4.14,
+    6.61
+   ],
+   "aW": [
+    2.03,
+    3.11
+   ],
+   "bW": [
+    1.39,
+    2.22
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "dive+taunt",
+   "phase": 4,
+   "a": {
+    "key": "dive",
+    "n": 2
+   },
+   "b": {
+    "key": "taunt",
+    "n": true
+   },
+   "I": {
+    "m": 0.35,
+    "lo": -0.4,
+    "hi": 1.01
+   },
+   "se": 0.37,
+   "gap": {
+    "m": 0.83,
+    "lo": 0.22,
+    "hi": 1.56
+   },
+   "perBody": [
+    0.83,
+    -0.14
+   ],
+   "pair": [
+    5.53,
+    -7.03
+   ],
+   "aW": [
+    0,
+    0
+   ],
+   "bW": [
+    4.69,
+    -6.89
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "backstab+tide",
+   "phase": 4,
+   "a": {
+    "key": "backstab",
+    "n": 2
+   },
+   "b": {
+    "key": "tide",
+    "n": true
+   },
+   "I": {
+    "m": 0.42,
+    "lo": -0.26,
+    "hi": 1.17
+   },
+   "se": 0.37,
+   "gap": {
+    "m": 0.22,
+    "lo": -0.56,
+    "hi": 0.94
+   },
+   "perBody": [
+    0.22,
+    0.61
+   ],
+   "pair": [
+    0.64,
+    -2.86
+   ],
+   "aW": [
+    -0.14,
+    -3.53
+   ],
+   "bW": [
+    0.56,
+    0.06
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "foeScarcity+twinShot",
+   "phase": 4,
+   "a": {
+    "key": "foeScarcity",
+    "n": true
+   },
+   "b": {
+    "key": "twinShot",
+    "n": 1
+   },
+   "I": {
+    "m": 0.26,
+    "lo": -0.76,
+    "hi": 1.31
+   },
+   "se": 0.56,
+   "gap": {
+    "m": 0.25,
+    "lo": -1.28,
+    "hi": 1.89
+   },
+   "perBody": [
+    0.25,
+    0.28
+   ],
+   "pair": [
+    17,
+    4.17
+   ],
+   "aW": [
+    5.64,
+    1.25
+   ],
+   "bW": [
+    11.11,
+    2.64
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "sonar+wither",
+   "phase": 4,
+   "a": {
+    "key": "sonar",
+    "n": true
+   },
+   "b": {
+    "key": "wither",
+    "n": 1
+   },
+   "I": {
+    "m": 0.53,
+    "lo": -0.4,
+    "hi": 1.46
+   },
+   "se": 0.47,
+   "gap": {
+    "m": 0.67,
+    "lo": -0.44,
+    "hi": 1.53
+   },
+   "perBody": [
+    0.81,
+    0.25
+   ],
+   "pair": [
+    6.61,
+    3.06
+   ],
+   "aW": [
+    0.47,
+    0.61
+   ],
+   "bW": [
+    5.33,
+    2.19
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "drunk+stealth",
+   "phase": 4,
+   "a": {
+    "key": "drunk",
+    "n": true
+   },
+   "b": {
+    "key": "stealth",
+    "n": true
+   },
+   "I": {
+    "m": 4.04,
+    "lo": 3.01,
+    "hi": 4.94
+   },
+   "se": 0.51,
+   "gap": {
+    "m": 0.64,
+    "lo": -0.64,
+    "hi": 1.83
+   },
+   "perBody": [
+    0.64,
+    7.44
+   ],
+   "pair": [
+    17.5,
+    11.28
+   ],
+   "aW": [
+    0.14,
+    -6.61
+   ],
+   "bW": [
+    16.72,
+    10.44
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "bleed+haste",
+   "phase": 4,
+   "a": {
+    "key": "bleed",
+    "n": 1
+   },
+   "b": {
+    "key": "haste",
+    "n": true
+   },
+   "I": {
+    "m": 1.36,
+    "lo": 0.51,
+    "hi": 2.32
+   },
+   "se": 0.5,
+   "gap": {
+    "m": -1.92,
+    "lo": -3.31,
+    "hi": 0.22
+   },
+   "perBody": [
+    1.22,
+    1.5
+   ],
+   "pair": [
+    8.06,
+    9.14
+   ],
+   "aW": [
+    4.78,
+    1.36
+   ],
+   "bW": [
+    2.06,
+    6.28
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "executioner+healing",
+   "phase": 4,
+   "a": {
+    "key": "executioner",
+    "n": 2
+   },
+   "b": {
+    "key": "healing",
+    "n": 1
+   },
+   "I": {
+    "m": 0.86,
+    "lo": 0.01,
+    "hi": 1.85
+   },
+   "se": 0.43,
+   "gap": {
+    "m": 1.33,
+    "lo": 0.31,
+    "hi": 2.33
+   },
+   "perBody": [
+    1.33,
+    0.39
+   ],
+   "pair": [
+    7.47,
+    4.78
+   ],
+   "aW": [
+    0.25,
+    0
+   ],
+   "bW": [
+    5.89,
+    4.39
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "arrow+onslaught",
+   "phase": 4,
+   "a": {
+    "key": "arrow",
+    "n": 1
+   },
+   "b": {
+    "key": "onslaught",
+    "n": 3
+   },
+   "I": {
+    "m": 0.68,
+    "lo": -0.07,
+    "hi": 1.58
+   },
+   "se": 0.47,
+   "gap": {
+    "m": 0.86,
+    "lo": -0.11,
+    "hi": 1.89
+   },
+   "perBody": [
+    0.86,
+    0.5
+   ],
+   "pair": [
+    7.75,
+    2.14
+   ],
+   "aW": [
+    5.44,
+    0.86
+   ],
+   "bW": [
+    1.44,
+    0.78
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "brood+pickpocket",
+   "phase": 4,
+   "a": {
+    "key": "brood",
+    "n": 2
+   },
+   "b": {
+    "key": "pickpocket",
+    "n": 1
+   },
+   "I": {
+    "m": -2.58,
+    "lo": -3.85,
+    "hi": -1.29
+   },
+   "se": 0.66,
+   "gap": {
+    "m": -6.61,
+    "lo": -8.36,
+    "hi": -4.92
+   },
+   "perBody": [
+    -6.61,
+    1.44
+   ],
+   "pair": [
+    22.36,
+    12.61
+   ],
+   "aW": [
+    15.53,
+    8.83
+   ],
+   "bW": [
+    13.44,
+    2.33
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "keenSense+nova",
+   "phase": 4,
+   "a": {
+    "key": "keenSense",
+    "n": true
+   },
+   "b": {
+    "key": "nova",
+    "n": 3
+   },
+   "I": {
+    "m": 0.67,
+    "lo": -0.01,
+    "hi": 1.54
+   },
+   "se": 0.41,
+   "gap": {
+    "m": 0.39,
+    "lo": -0.67,
+    "hi": 1.56
+   },
+   "perBody": [
+    0.94,
+    0.39
+   ],
+   "pair": [
+    4.94,
+    6.28
+   ],
+   "aW": [
+    0.14,
+    0.5
+   ],
+   "bW": [
+    3.86,
+    5.39
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "canopyCover+carnage",
+   "phase": 4,
+   "a": {
+    "key": "canopyCover",
+    "n": true
+   },
+   "b": {
+    "key": "carnage",
+    "n": 3
+   },
+   "I": {
+    "m": 0.69,
+    "lo": -0.03,
+    "hi": 1.5
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.67,
+    "lo": -0.11,
+    "hi": 1.39
+   },
+   "perBody": [
+    0.67,
+    0.72
+   ],
+   "pair": [
+    2.31,
+    1.06
+   ],
+   "aW": [
+    0,
+    0
+   ],
+   "bW": [
+    1.64,
+    0.33
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "hibernate+weaponMaster",
+   "phase": 4,
+   "a": {
+    "key": "hibernate",
+    "n": true
+   },
+   "b": {
+    "key": "weaponMaster",
+    "n": 1
+   },
+   "I": {
+    "m": 0.42,
+    "lo": -0.28,
+    "hi": 1.25
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.33,
+    "lo": -0.39,
+    "hi": 1
+   },
+   "perBody": [
+    0.33,
+    0.5
+   ],
+   "pair": [
+    1.25,
+    -1.72
+   ],
+   "aW": [
+    0.08,
+    -2.28
+   ],
+   "bW": [
+    0.83,
+    0.06
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "immunity+mighty",
+   "phase": 4,
+   "a": {
+    "key": "immunity",
+    "n": true
+   },
+   "b": {
+    "key": "mighty",
+    "n": true
+   },
+   "I": {
+    "m": 0.85,
+    "lo": 0.08,
+    "hi": 1.61
+   },
+   "se": 0.44,
+   "gap": {
+    "m": 0.83,
+    "lo": -0.56,
+    "hi": 2.33
+   },
+   "perBody": [
+    0.86,
+    0.83
+   ],
+   "pair": [
+    5.61,
+    8.78
+   ],
+   "aW": [
+    0.47,
+    1.06
+   ],
+   "bW": [
+    4.28,
+    6.89
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "darksight+sweep",
+   "phase": 4,
+   "a": {
+    "key": "darksight",
+    "n": true
+   },
+   "b": {
+    "key": "sweep",
+    "n": 2
+   },
+   "I": {
+    "m": 0.61,
+    "lo": -0.19,
+    "hi": 1.61
+   },
+   "se": 0.48,
+   "gap": {
+    "m": 0.81,
+    "lo": -0.08,
+    "hi": 1.86
+   },
+   "perBody": [
+    1.08,
+    0.14
+   ],
+   "pair": [
+    15.5,
+    2.83
+   ],
+   "aW": [
+    0.17,
+    0.44
+   ],
+   "bW": [
+    14.25,
+    2.25
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "meiosis+thorns",
+   "phase": 4,
+   "a": {
+    "key": "meiosis",
+    "n": 1
+   },
+   "b": {
+    "key": "thorns",
+    "n": 2
+   },
+   "I": {
+    "m": 0.94,
+    "lo": 0.15,
+    "hi": 1.96
+   },
+   "se": 0.48,
+   "gap": {
+    "m": -3.67,
+    "lo": -5.17,
+    "hi": -2.06
+   },
+   "perBody": [
+    -1.11,
+    3
+   ],
+   "pair": [
+    15.14,
+    12.5
+   ],
+   "aW": [
+    5.28,
+    7.83
+   ],
+   "bW": [
+    10.97,
+    1.67
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "berserk+skitter",
+   "phase": 4,
+   "a": {
+    "key": "berserk",
+    "n": 2
+   },
+   "b": {
+    "key": "skitter",
+    "n": true
+   },
+   "I": {
+    "m": 0.64,
+    "lo": -0.35,
+    "hi": 1.76
+   },
+   "se": 0.56,
+   "gap": {
+    "m": -0.53,
+    "lo": -2.39,
+    "hi": 0.94
+   },
+   "perBody": [
+    0.22,
+    1.06
+   ],
+   "pair": [
+    13.64,
+    7.33
+   ],
+   "aW": [
+    9.83,
+    1.94
+   ],
+   "bW": [
+    3.58,
+    4.33
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "greaterPoison+keenEye",
+   "phase": 4,
+   "a": {
+    "key": "greaterPoison",
+    "n": 1
+   },
+   "b": {
+    "key": "keenEye",
+    "n": true
+   },
+   "I": {
+    "m": 0.58,
+    "lo": -0.03,
+    "hi": 1.31
+   },
+   "se": 0.37,
+   "gap": {
+    "m": 0.72,
+    "lo": 0.11,
+    "hi": 1.39
+   },
+   "perBody": [
+    0.72,
+    0.44
+   ],
+   "pair": [
+    10.86,
+    2.58
+   ],
+   "aW": [
+    10.14,
+    2.14
+   ],
+   "bW": [
+    0,
+    0
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "bulwark+fletcher",
+   "phase": 4,
+   "a": {
+    "key": "bulwark",
+    "n": 2
+   },
+   "b": {
+    "key": "fletcher",
+    "n": 1
+   },
+   "I": {
+    "m": 1,
+    "lo": 0.31,
+    "hi": 1.75
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.67,
+    "lo": -0.39,
+    "hi": 2.17
+   },
+   "perBody": [
+    0.56,
+    1.44
+   ],
+   "pair": [
+    13.86,
+    18.94
+   ],
+   "aW": [
+    12.47,
+    17.44
+   ],
+   "bW": [
+    0.83,
+    0.06
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": true
+  },
+  {
+   "key": "evasive+nightblind",
+   "phase": 4,
+   "a": {
+    "key": "evasive",
+    "n": true
+   },
+   "b": {
+    "key": "nightblind",
+    "n": true
+   },
+   "I": {
+    "m": -0.28,
+    "lo": -1.39,
+    "hi": 1.06
+   },
+   "se": 0.64,
+   "gap": {
+    "m": -4,
+    "lo": -5.5,
+    "hi": -1.81
+   },
+   "perBody": [
+    0.44,
+    -1
+   ],
+   "pair": [
+    2.06,
+    1.89
+   ],
+   "aW": [
+    2.5,
+    6.94
+   ],
+   "bW": [
+    -0.89,
+    -4.06
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "quick+undead",
+   "phase": 4,
+   "a": {
+    "key": "quick",
+    "n": true
+   },
+   "b": {
+    "key": "undead",
+    "n": true
+   },
+   "I": {
+    "m": 0.25,
+    "lo": -0.67,
+    "hi": 1.19
+   },
+   "se": 0.5,
+   "gap": {
+    "m": 0.56,
+    "lo": -1.11,
+    "hi": 2.28
+   },
+   "perBody": [
+    -0.06,
+    0.56
+   ],
+   "pair": [
+    1.56,
+    13.06
+   ],
+   "aW": [
+    1,
+    6.17
+   ],
+   "bW": [
+    0.61,
+    6.33
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "purblind+swarm",
+   "phase": 4,
+   "a": {
+    "key": "purblind",
+    "n": true
+   },
+   "b": {
+    "key": "swarm",
+    "n": true
+   },
+   "I": {
+    "m": -2.21,
+    "lo": -3.07,
+    "hi": -1.18
+   },
+   "se": 0.55,
+   "gap": {
+    "m": -4.31,
+    "lo": -5.75,
+    "hi": -2.86
+   },
+   "perBody": [
+    -4.31,
+    -0.11
+   ],
+   "pair": [
+    3.06,
+    -8.72
+   ],
+   "aW": [
+    -1.58,
+    -9.11
+   ],
+   "bW": [
+    8.94,
+    0.5
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "invisible+trap",
+   "phase": 4,
+   "a": {
+    "key": "invisible",
+    "n": 2
+   },
+   "b": {
+    "key": "trap",
+    "n": 4
+   },
+   "I": {
+    "m": 0.99,
+    "lo": 0.31,
+    "hi": 1.81
+   },
+   "se": 0.42,
+   "gap": {
+    "m": 1.53,
+    "lo": 0.11,
+    "hi": 3.11
+   },
+   "perBody": [
+    0.44,
+    1.53
+   ],
+   "pair": [
+    2.5,
+    9.92
+   ],
+   "aW": [
+    0.5,
+    6.25
+   ],
+   "bW": [
+    1.56,
+    2.14
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "carrion+heat",
+   "phase": 4,
+   "a": {
+    "key": "carrion",
+    "n": 2
+   },
+   "b": {
+    "key": "heat",
+    "n": true
+   },
+   "I": {
+    "m": 0.56,
+    "lo": -0.11,
+    "hi": 1.25
+   },
+   "se": 0.37,
+   "gap": {
+    "m": -0.33,
+    "lo": -1.08,
+    "hi": 1.19
+   },
+   "perBody": [
+    0.33,
+    0.78
+   ],
+   "pair": [
+    3,
+    3.06
+   ],
+   "aW": [
+    1.33,
+    2.06
+   ],
+   "bW": [
+    1.33,
+    0.22
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "herbalist+relict",
+   "phase": 4,
+   "a": {
+    "key": "herbalist",
+    "n": 1
+   },
+   "b": {
+    "key": "relict",
+    "n": true
+   },
+   "I": {
+    "m": 0.58,
+    "lo": -0.11,
+    "hi": 1.39
+   },
+   "se": 0.41,
+   "gap": {
+    "m": 0.56,
+    "lo": -0.78,
+    "hi": 2
+   },
+   "perBody": [
+    0.39,
+    0.78
+   ],
+   "pair": [
+    0.86,
+    4.44
+   ],
+   "aW": [
+    0.39,
+    0.17
+   ],
+   "bW": [
+    0.08,
+    3.5
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "fastForward+foraging",
+   "phase": 4,
+   "a": {
+    "key": "fastForward",
+    "n": 1
+   },
+   "b": {
+    "key": "foraging",
+    "n": 1
+   },
+   "I": {
+    "m": 0.92,
+    "lo": 0.08,
+    "hi": 1.57
+   },
+   "se": 0.41,
+   "gap": {
+    "m": -2.06,
+    "lo": -3.47,
+    "hi": -0.58
+   },
+   "perBody": [
+    0.89,
+    0.94
+   ],
+   "pair": [
+    5.83,
+    13
+   ],
+   "aW": [
+    1.22,
+    11.33
+   ],
+   "bW": [
+    3.72,
+    0.72
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "frostbite+lumberjack",
+   "phase": 4,
+   "a": {
+    "key": "frostbite",
+    "n": 1
+   },
+   "b": {
+    "key": "lumberjack",
+    "n": true
+   },
+   "I": {
+    "m": 0.75,
+    "lo": 0.06,
+    "hi": 1.56
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.78,
+    "lo": -0.06,
+    "hi": 1.39
+   },
+   "perBody": [
+    0.78,
+    0.72
+   ],
+   "pair": [
+    11.58,
+    3.61
+   ],
+   "aW": [
+    0.33,
+    0.33
+   ],
+   "bW": [
+    10.47,
+    2.56
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "requiem+riled",
+   "phase": 4,
+   "a": {
+    "key": "requiem",
+    "n": 4
+   },
+   "b": {
+    "key": "riled",
+    "n": 3
+   },
+   "I": {
+    "m": 1.19,
+    "lo": 0.39,
+    "hi": 2.06
+   },
+   "se": 0.44,
+   "gap": {
+    "m": 1.72,
+    "lo": 0.72,
+    "hi": 2.83
+   },
+   "perBody": [
+    1.72,
+    0.67
+   ],
+   "pair": [
+    10.5,
+    2.39
+   ],
+   "aW": [
+    3.47,
+    1.72
+   ],
+   "bW": [
+    5.31,
+    0
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "frost+timbered",
+   "phase": 4,
+   "a": {
+    "key": "frost",
+    "n": true
+   },
+   "b": {
+    "key": "timbered",
+    "n": true
+   },
+   "I": {
+    "m": 0.42,
+    "lo": -0.19,
+    "hi": 1.22
+   },
+   "se": 0.37,
+   "gap": {
+    "m": 0.44,
+    "lo": -0.5,
+    "hi": 1.75
+   },
+   "perBody": [
+    0.39,
+    0.44
+   ],
+   "pair": [
+    0.53,
+    1.61
+   ],
+   "aW": [
+    0.17,
+    1
+   ],
+   "bW": [
+    -0.03,
+    0.17
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "fork+shield",
+   "phase": 4,
+   "a": {
+    "key": "fork",
+    "n": true
+   },
+   "b": {
+    "key": "shield",
+    "n": 4
+   },
+   "I": {
+    "m": 1.74,
+    "lo": 0.85,
+    "hi": 2.78
+   },
+   "se": 0.52,
+   "gap": {
+    "m": 3,
+    "lo": 1.28,
+    "hi": 4.78
+   },
+   "perBody": [
+    0.47,
+    3
+   ],
+   "pair": [
+    3.97,
+    17.5
+   ],
+   "aW": [
+    2.69,
+    3.56
+   ],
+   "bW": [
+    0.81,
+    10.94
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "scar+sweep",
+   "phase": 4,
+   "a": {
+    "key": "scar",
+    "n": 2
+   },
+   "b": {
+    "key": "sweep",
+    "n": 2
+   },
+   "I": {
+    "m": 0.43,
+    "lo": -1.06,
+    "hi": 1.79
+   },
+   "se": 0.66,
+   "gap": {
+    "m": -1.56,
+    "lo": -3.58,
+    "hi": 0.19
+   },
+   "perBody": [
+    -1.56,
+    2.42
+   ],
+   "pair": [
+    24.53,
+    5.17
+   ],
+   "aW": [
+    11.83,
+    0.5
+   ],
+   "bW": [
+    14.25,
+    2.25
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "iceArrow+immunity",
+   "phase": 4,
+   "a": {
+    "key": "iceArrow",
+    "n": 2
+   },
+   "b": {
+    "key": "immunity",
+    "n": true
+   },
+   "I": {
+    "m": 0.65,
+    "lo": -0.21,
+    "hi": 1.37
+   },
+   "se": 0.46,
+   "gap": {
+    "m": -0.03,
+    "lo": -0.97,
+    "hi": 0.69
+   },
+   "perBody": [
+    0.56,
+    0.75
+   ],
+   "pair": [
+    15.33,
+    6.19
+   ],
+   "aW": [
+    14.31,
+    4.39
+   ],
+   "bW": [
+    0.47,
+    1.06
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "pickpocket+undead",
+   "phase": 4,
+   "a": {
+    "key": "pickpocket",
+    "n": 1
+   },
+   "b": {
+    "key": "undead",
+    "n": true
+   },
+   "I": {
+    "m": 0.99,
+    "lo": 0.07,
+    "hi": 2.12
+   },
+   "se": 0.49,
+   "gap": {
+    "m": -5.58,
+    "lo": -7.36,
+    "hi": -4.25
+   },
+   "perBody": [
+    0.14,
+    1.83
+   ],
+   "pair": [
+    14.19,
+    10.5
+   ],
+   "aW": [
+    13.44,
+    2.33
+   ],
+   "bW": [
+    0.61,
+    6.33
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "haste+skitter",
+   "phase": 4,
+   "a": {
+    "key": "haste",
+    "n": true
+   },
+   "b": {
+    "key": "skitter",
+    "n": true
+   },
+   "I": {
+    "m": -1.76,
+    "lo": -2.78,
+    "hi": -0.69
+   },
+   "se": 0.53,
+   "gap": {
+    "m": -2.56,
+    "lo": -4.17,
+    "hi": -1.06
+   },
+   "perBody": [
+    -0.97,
+    -2.56
+   ],
+   "pair": [
+    4.67,
+    8.06
+   ],
+   "aW": [
+    2.06,
+    6.28
+   ],
+   "bW": [
+    3.58,
+    4.33
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "carrion+shell",
+   "phase": 4,
+   "a": {
+    "key": "carrion",
+    "n": 2
+   },
+   "b": {
+    "key": "shell",
+    "n": 4
+   },
+   "I": {
+    "m": 0.51,
+    "lo": -0.19,
+    "hi": 1.35
+   },
+   "se": 0.41,
+   "gap": {
+    "m": 1.25,
+    "lo": -0.28,
+    "hi": 2.61
+   },
+   "perBody": [
+    -0.42,
+    1.44
+   ],
+   "pair": [
+    2.39,
+    4.78
+   ],
+   "aW": [
+    1.33,
+    2.06
+   ],
+   "bW": [
+    1.47,
+    1.28
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "frost+web",
+   "phase": 4,
+   "a": {
+    "key": "frost",
+    "n": true
+   },
+   "b": {
+    "key": "web",
+    "n": 1
+   },
+   "I": {
+    "m": 0.47,
+    "lo": -0.17,
+    "hi": 1.25
+   },
+   "se": 0.38,
+   "gap": {
+    "m": 0.5,
+    "lo": -0.44,
+    "hi": 1.89
+   },
+   "perBody": [
+    0.44,
+    0.5
+   ],
+   "pair": [
+    0.67,
+    1.61
+   ],
+   "aW": [
+    0.17,
+    1
+   ],
+   "bW": [
+    0.06,
+    0.11
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "invisible+weaponMaster",
+   "phase": 4,
+   "a": {
+    "key": "invisible",
+    "n": 2
+   },
+   "b": {
+    "key": "weaponMaster",
+    "n": 1
+   },
+   "I": {
+    "m": 0.68,
+    "lo": 0.06,
+    "hi": 1.42
+   },
+   "se": 0.36,
+   "gap": {
+    "m": 0.25,
+    "lo": -0.92,
+    "hi": 1.61
+   },
+   "perBody": [
+    0.33,
+    1.03
+   ],
+   "pair": [
+    1.67,
+    7.33
+   ],
+   "aW": [
+    0.5,
+    6.25
+   ],
+   "bW": [
+    0.83,
+    0.06
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "overwhelm+trap",
+   "phase": 4,
+   "a": {
+    "key": "overwhelm",
+    "n": true
+   },
+   "b": {
+    "key": "trap",
+    "n": 4
+   },
+   "I": {
+    "m": 0.67,
+    "lo": -0.06,
+    "hi": 1.39
+   },
+   "se": 0.39,
+   "gap": {
+    "m": 0.94,
+    "lo": -0.22,
+    "hi": 2.36
+   },
+   "perBody": [
+    0.39,
+    0.94
+   ],
+   "pair": [
+    1.94,
+    5.39
+   ],
+   "aW": [
+    0,
+    2.31
+   ],
+   "bW": [
+    1.56,
+    2.14
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "heat+wither",
+   "phase": 4,
+   "a": {
+    "key": "heat",
+    "n": true
+   },
+   "b": {
+    "key": "wither",
+    "n": 1
+   },
+   "I": {
+    "m": 0.61,
+    "lo": -0.11,
+    "hi": 1.5
+   },
+   "se": 0.44,
+   "gap": {
+    "m": 1,
+    "lo": 0.11,
+    "hi": 2
+   },
+   "perBody": [
+    1,
+    0.22
+   ],
+   "pair": [
+    7.67,
+    2.64
+   ],
+   "aW": [
+    1.33,
+    0.22
+   ],
+   "bW": [
+    5.33,
+    2.19
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "executioner+purblind",
+   "phase": 4,
+   "a": {
+    "key": "executioner",
+    "n": 2
+   },
+   "b": {
+    "key": "purblind",
+    "n": true
+   },
+   "I": {
+    "m": 0.04,
+    "lo": -0.58,
+    "hi": 0.83
+   },
+   "se": 0.41,
+   "gap": {
+    "m": 0.36,
+    "lo": -0.39,
+    "hi": 1.17
+   },
+   "perBody": [
+    0.36,
+    -0.28
+   ],
+   "pair": [
+    -0.97,
+    -9.39
+   ],
+   "aW": [
+    0.25,
+    0
+   ],
+   "bW": [
+    -1.58,
+    -9.11
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "arrow+illuminate",
+   "phase": 4,
+   "a": {
+    "key": "arrow",
+    "n": 1
+   },
+   "b": {
+    "key": "illuminate",
+    "n": true
+   },
+   "I": {
+    "m": 0.67,
+    "lo": -0.03,
+    "hi": 1.54
+   },
+   "se": 0.43,
+   "gap": {
+    "m": 0.61,
+    "lo": -0.19,
+    "hi": 1.56
+   },
+   "perBody": [
+    0.61,
+    0.72
+   ],
+   "pair": [
+    6.81,
+    1.97
+   ],
+   "aW": [
+    5.44,
+    0.86
+   ],
+   "bW": [
+    0.75,
+    0.39
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "bedrock+evasive",
+   "phase": 4,
+   "a": {
+    "key": "bedrock",
+    "n": true
+   },
+   "b": {
+    "key": "evasive",
+    "n": true
+   },
+   "I": {
+    "m": 0.58,
+    "lo": 0,
+    "hi": 1.25
+   },
+   "se": 0.37,
+   "gap": {
+    "m": 0.61,
+    "lo": -0.56,
+    "hi": 1.89
+   },
+   "perBody": [
+    0.56,
+    0.61
+   ],
+   "pair": [
+    3.06,
+    7.61
+   ],
+   "aW": [
+    0,
+    0.06
+   ],
+   "bW": [
+    2.5,
+    6.94
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "darksight+greaterPoison",
+   "phase": 4,
+   "a": {
+    "key": "darksight",
+    "n": true
+   },
+   "b": {
+    "key": "greaterPoison",
+    "n": 1
+   },
+   "I": {
+    "m": 0.43,
+    "lo": -0.21,
+    "hi": 1.21
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.5,
+    "lo": -0.31,
+    "hi": 1.33
+   },
+   "perBody": [
+    0.78,
+    0.08
+   ],
+   "pair": [
+    11.08,
+    2.67
+   ],
+   "aW": [
+    0.17,
+    0.44
+   ],
+   "bW": [
+    10.14,
+    2.14
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "nightblind+shatter",
+   "phase": 4,
+   "a": {
+    "key": "nightblind",
+    "n": true
+   },
+   "b": {
+    "key": "shatter",
+    "n": 2
+   },
+   "I": {
+    "m": 0.19,
+    "lo": -0.58,
+    "hi": 1.06
+   },
+   "se": 0.41,
+   "gap": {
+    "m": 0.22,
+    "lo": -0.39,
+    "hi": 0.89
+   },
+   "perBody": [
+    0.39,
+    0
+   ],
+   "pair": [
+    -0.5,
+    -3.89
+   ],
+   "aW": [
+    -0.89,
+    -4.06
+   ],
+   "bW": [
+    0,
+    0.17
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "almanac+spitfire",
+   "phase": 4,
+   "a": {
+    "key": "almanac",
+    "n": 4
+   },
+   "b": {
+    "key": "spitfire",
+    "n": 1
+   },
+   "I": {
+    "m": -2.26,
+    "lo": -3.44,
+    "hi": -0.96
+   },
+   "se": 0.64,
+   "gap": {
+    "m": -4.25,
+    "lo": -6.17,
+    "hi": -2.58
+   },
+   "perBody": [
+    -4.25,
+    -0.28
+   ],
+   "pair": [
+    21.92,
+    8.83
+   ],
+   "aW": [
+    10.97,
+    5.67
+   ],
+   "bW": [
+    15.19,
+    3.44
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "prey+reach",
+   "phase": 4,
+   "a": {
+    "key": "prey",
+    "n": true
+   },
+   "b": {
+    "key": "reach",
+    "n": true
+   },
+   "I": {
+    "m": 0.33,
+    "lo": -0.39,
+    "hi": 1.11
+   },
+   "se": 0.39,
+   "gap": {
+    "m": 0.33,
+    "lo": -0.33,
+    "hi": 1.25
+   },
+   "perBody": [
+    0.33,
+    0.33
+   ],
+   "pair": [
+    0.11,
+    -0.61
+   ],
+   "aW": [
+    0.17,
+    0.17
+   ],
+   "bW": [
+    -0.39,
+    -1.11
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "thorns+timbered",
+   "phase": 4,
+   "a": {
+    "key": "thorns",
+    "n": 2
+   },
+   "b": {
+    "key": "timbered",
+    "n": true
+   },
+   "I": {
+    "m": 0.68,
+    "lo": 0.06,
+    "hi": 1.47
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.67,
+    "lo": 0,
+    "hi": 1.5
+   },
+   "perBody": [
+    0.86,
+    0.5
+   ],
+   "pair": [
+    11.81,
+    2.33
+   ],
+   "aW": [
+    10.97,
+    1.67
+   ],
+   "bW": [
+    -0.03,
+    0.17
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "ambush+nocturnal",
+   "phase": 4,
+   "a": {
+    "key": "ambush",
+    "n": 4
+   },
+   "b": {
+    "key": "nocturnal",
+    "n": 1
+   },
+   "I": {
+    "m": 0.74,
+    "lo": -0.21,
+    "hi": 1.65
+   },
+   "se": 0.47,
+   "gap": {
+    "m": 0.06,
+    "lo": -1.33,
+    "hi": 1.33
+   },
+   "perBody": [
+    1.14,
+    0.33
+   ],
+   "pair": [
+    6.67,
+    4.39
+   ],
+   "aW": [
+    2.03,
+    3.11
+   ],
+   "bW": [
+    3.5,
+    0.94
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "bulldoze+foeScarcity",
+   "phase": 4,
+   "a": {
+    "key": "bulldoze",
+    "n": 1
+   },
+   "b": {
+    "key": "foeScarcity",
+    "n": true
+   },
+   "I": {
+    "m": 0.51,
+    "lo": -0.51,
+    "hi": 1.54
+   },
+   "se": 0.52,
+   "gap": {
+    "m": 0.81,
+    "lo": -0.36,
+    "hi": 2.22
+   },
+   "perBody": [
+    0.81,
+    0.22
+   ],
+   "pair": [
+    10.61,
+    2.56
+   ],
+   "aW": [
+    4.17,
+    1.08
+   ],
+   "bW": [
+    5.64,
+    1.25
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "speed+stealth",
+   "phase": 4,
+   "a": {
+    "key": "speed",
+    "n": 2
+   },
+   "b": {
+    "key": "stealth",
+    "n": true
+   },
+   "I": {
+    "m": 1.75,
+    "lo": 0.76,
+    "hi": 2.83
+   },
+   "se": 0.52,
+   "gap": {
+    "m": -2.28,
+    "lo": -3.75,
+    "hi": -0.75
+   },
+   "perBody": [
+    2.83,
+    0.67
+   ],
+   "pair": [
+    20.17,
+    16.83
+   ],
+   "aW": [
+    0.61,
+    5.72
+   ],
+   "bW": [
+    16.72,
+    10.44
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "packLeader+poisonBolt",
+   "phase": 4,
+   "a": {
+    "key": "packLeader",
+    "n": true
+   },
+   "b": {
+    "key": "poisonBolt",
+    "n": 2
+   },
+   "I": {
+    "m": -0.28,
+    "lo": -1.46,
+    "hi": 0.69
+   },
+   "se": 0.56,
+   "gap": {
+    "m": -1.69,
+    "lo": -3.14,
+    "hi": -0.47
+   },
+   "perBody": [
+    -1.11,
+    0.56
+   ],
+   "pair": [
+    15.33,
+    3.61
+   ],
+   "aW": [
+    -0.25,
+    0.33
+   ],
+   "bW": [
+    16.69,
+    2.72
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "dry+twinShot",
+   "phase": 4,
+   "a": {
+    "key": "dry",
+    "n": true
+   },
+   "b": {
+    "key": "twinShot",
+    "n": 1
+   },
+   "I": {
+    "m": 0.46,
+    "lo": -0.44,
+    "hi": 1.36
+   },
+   "se": 0.43,
+   "gap": {
+    "m": 0.39,
+    "lo": -0.5,
+    "hi": 1.06
+   },
+   "perBody": [
+    0.53,
+    0.39
+   ],
+   "pair": [
+    12,
+    3.53
+   ],
+   "aW": [
+    0.36,
+    0.5
+   ],
+   "bW": [
+    11.11,
+    2.64
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "backstab+diurnal",
+   "phase": 4,
+   "a": {
+    "key": "backstab",
+    "n": 2
+   },
+   "b": {
+    "key": "diurnal",
+    "n": 1
+   },
+   "I": {
+    "m": 0.44,
+    "lo": -0.26,
+    "hi": 1.31
+   },
+   "se": 0.43,
+   "gap": {
+    "m": 0.67,
+    "lo": -0.42,
+    "hi": 1.86
+   },
+   "perBody": [
+    0.67,
+    0.22
+   ],
+   "pair": [
+    3,
+    -2.64
+   ],
+   "aW": [
+    -0.14,
+    -3.53
+   ],
+   "bW": [
+    2.47,
+    0.67
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "guardian+shield",
+   "phase": 4,
+   "a": {
+    "key": "guardian",
+    "n": true
+   },
+   "b": {
+    "key": "shield",
+    "n": 4
+   },
+   "I": {
+    "m": 1.21,
+    "lo": 0.18,
+    "hi": 2.37
+   },
+   "se": 0.55,
+   "gap": {
+    "m": -7.31,
+    "lo": -8.83,
+    "hi": -5.36
+   },
+   "perBody": [
+    1.31,
+    1.11
+   ],
+   "pair": [
+    5.03,
+    6.56
+   ],
+   "aW": [
+    2.92,
+    -5.5
+   ],
+   "bW": [
+    0.81,
+    10.94
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "relict+tornado",
+   "phase": 4,
+   "a": {
+    "key": "relict",
+    "n": true
+   },
+   "b": {
+    "key": "tornado",
+    "n": 1
+   },
+   "I": {
+    "m": 0.58,
+    "lo": -0.43,
+    "hi": 1.67
+   },
+   "se": 0.57,
+   "gap": {
+    "m": 1.06,
+    "lo": -1.28,
+    "hi": 2.67
+   },
+   "perBody": [
+    0.11,
+    1.06
+   ],
+   "pair": [
+    1.28,
+    5.72
+   ],
+   "aW": [
+    0.08,
+    3.5
+   ],
+   "bW": [
+    1.08,
+    1.17
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "scare+weaken",
+   "phase": 4,
+   "a": {
+    "key": "scare",
+    "n": 2
+   },
+   "b": {
+    "key": "weaken",
+    "n": 1
+   },
+   "I": {
+    "m": -0.24,
+    "lo": -1.03,
+    "hi": 0.76
+   },
+   "se": 0.45,
+   "gap": {
+    "m": -1.31,
+    "lo": -2.89,
+    "hi": 0.5
+   },
+   "perBody": [
+    -1.64,
+    1.17
+   ],
+   "pair": [
+    5.08,
+    12.33
+   ],
+   "aW": [
+    2.47,
+    9.39
+   ],
+   "bW": [
+    4.25,
+    1.78
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "fireArrow+tally",
+   "phase": 4,
+   "a": {
+    "key": "fireArrow",
+    "n": 1
+   },
+   "b": {
+    "key": "tally",
+    "n": 3
+   },
+   "I": {
+    "m": 1.29,
+    "lo": 0.46,
+    "hi": 2.25
+   },
+   "se": 0.48,
+   "gap": {
+    "m": 1.53,
+    "lo": 0.25,
+    "hi": 2.67
+   },
+   "perBody": [
+    1.53,
+    1.06
+   ],
+   "pair": [
+    14.22,
+    3.61
+   ],
+   "aW": [
+    10.58,
+    1.78
+   ],
+   "bW": [
+    2.11,
+    0.78
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "drunk+twinStrike",
+   "phase": 4,
+   "a": {
+    "key": "drunk",
+    "n": true
+   },
+   "b": {
+    "key": "twinStrike",
+    "n": true
+   },
+   "I": {
+    "m": -4.56,
+    "lo": -5.65,
+    "hi": -3.11
+   },
+   "se": 0.68,
+   "gap": {
+    "m": -7.86,
+    "lo": -9.81,
+    "hi": -5.83
+   },
+   "perBody": [
+    -2.61,
+    -6.5
+   ],
+   "pair": [
+    3.78,
+    -1.61
+   ],
+   "aW": [
+    0.14,
+    -6.61
+   ],
+   "bW": [
+    6.25,
+    11.5
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "carnage+mighty",
+   "phase": 4,
+   "a": {
+    "key": "carnage",
+    "n": 3
+   },
+   "b": {
+    "key": "mighty",
+    "n": true
+   },
+   "I": {
+    "m": 1.6,
+    "lo": 0.81,
+    "hi": 2.51
+   },
+   "se": 0.45,
+   "gap": {
+    "m": -0.08,
+    "lo": -1,
+    "hi": 1.92
+   },
+   "perBody": [
+    1.97,
+    1.22
+   ],
+   "pair": [
+    7.89,
+    8.44
+   ],
+   "aW": [
+    1.64,
+    0.33
+   ],
+   "bW": [
+    4.28,
+    6.89
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "foraging+poison",
+   "phase": 4,
+   "a": {
+    "key": "foraging",
+    "n": 1
+   },
+   "b": {
+    "key": "poison",
+    "n": 2
+   },
+   "I": {
+    "m": 0.44,
+    "lo": -0.44,
+    "hi": 1.57
+   },
+   "se": 0.52,
+   "gap": {
+    "m": 0.28,
+    "lo": -1,
+    "hi": 1.97
+   },
+   "perBody": [
+    0.28,
+    0.61
+   ],
+   "pair": [
+    15.14,
+    3.94
+   ],
+   "aW": [
+    3.72,
+    0.72
+   ],
+   "bW": [
+    11.14,
+    2.61
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "mountainClimber+sequestration",
+   "phase": 4,
+   "a": {
+    "key": "mountainClimber",
+    "n": true
+   },
+   "b": {
+    "key": "sequestration",
+    "n": true
+   },
+   "I": {
+    "m": 0.14,
+    "lo": -0.61,
+    "hi": 0.97
+   },
+   "se": 0.4,
+   "gap": {
+    "m": -0.33,
+    "lo": -1.44,
+    "hi": 1.17
+   },
+   "perBody": [
+    0.17,
+    0.11
+   ],
+   "pair": [
+    0.72,
+    1.89
+   ],
+   "aW": [
+    -0.17,
+    1.5
+   ],
+   "bW": [
+    0.72,
+    0.28
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "injured+predator",
+   "phase": 4,
+   "a": {
+    "key": "injured",
+    "n": 2
+   },
+   "b": {
+    "key": "predator",
+    "n": 1
+   },
+   "I": {
+    "m": -0.18,
+    "lo": -0.94,
+    "hi": 0.78
+   },
+   "se": 0.42,
+   "gap": {
+    "m": -0.81,
+    "lo": -1.53,
+    "hi": 0.25
+   },
+   "perBody": [
+    0.5,
+    -0.86
+   ],
+   "pair": [
+    -0.17,
+    -6.94
+   ],
+   "aW": [
+    -0.72,
+    -7.44
+   ],
+   "bW": [
+    0.06,
+    1.36
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "avalanche+scavenge",
+   "phase": 4,
+   "a": {
+    "key": "avalanche",
+    "n": 1
+   },
+   "b": {
+    "key": "scavenge",
+    "n": 1
+   },
+   "I": {
+    "m": 0.54,
+    "lo": -0.47,
+    "hi": 1.67
+   },
+   "se": 0.56,
+   "gap": {
+    "m": 0.58,
+    "lo": -0.89,
+    "hi": 2.11
+   },
+   "perBody": [
+    0.58,
+    0.5
+   ],
+   "pair": [
+    21.19,
+    16.61
+   ],
+   "aW": [
+    15.75,
+    14.5
+   ],
+   "bW": [
+    4.86,
+    1.61
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "dive+meiosis",
+   "phase": 4,
+   "a": {
+    "key": "dive",
+    "n": 2
+   },
+   "b": {
+    "key": "meiosis",
+    "n": 1
+   },
+   "I": {
+    "m": 0.75,
+    "lo": 0.08,
+    "hi": 1.5
+   },
+   "se": 0.38,
+   "gap": {
+    "m": 0.89,
+    "lo": -0.28,
+    "hi": 2.11
+   },
+   "perBody": [
+    0.61,
+    0.89
+   ],
+   "pair": [
+    5.89,
+    8.72
+   ],
+   "aW": [
+    0,
+    0
+   ],
+   "bW": [
+    5.28,
+    7.83
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "gash+riled",
+   "phase": 4,
+   "a": {
+    "key": "gash",
+    "n": 3
+   },
+   "b": {
+    "key": "riled",
+    "n": 3
+   },
+   "I": {
+    "m": 0.18,
+    "lo": -0.61,
+    "hi": 1.1
+   },
+   "se": 0.45,
+   "gap": {
+    "m": 0.53,
+    "lo": -0.83,
+    "hi": 1.53
+   },
+   "perBody": [
+    0.53,
+    -0.17
+   ],
+   "pair": [
+    8.06,
+    2
+   ],
+   "aW": [
+    2.22,
+    2.17
+   ],
+   "bW": [
+    5.31,
+    0
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "bulwark+pounce",
+   "phase": 4,
+   "a": {
+    "key": "bulwark",
+    "n": 2
+   },
+   "b": {
+    "key": "pounce",
+    "n": 2
+   },
+   "I": {
+    "m": 0.69,
+    "lo": -0.47,
+    "hi": 1.87
+   },
+   "se": 0.6,
+   "gap": {
+    "m": -1.08,
+    "lo": -2.5,
+    "hi": 0.53
+   },
+   "perBody": [
+    2.14,
+    -0.75
+   ],
+   "pair": [
+    17.75,
+    19.5
+   ],
+   "aW": [
+    12.47,
+    17.44
+   ],
+   "bW": [
+    3.14,
+    2.81
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": true
+  },
+  {
+   "key": "frostbite+nova",
+   "phase": 4,
+   "a": {
+    "key": "frostbite",
+    "n": 1
+   },
+   "b": {
+    "key": "nova",
+    "n": 3
+   },
+   "I": {
+    "m": 0.67,
+    "lo": 0.03,
+    "hi": 1.47
+   },
+   "se": 0.39,
+   "gap": {
+    "m": 0.72,
+    "lo": -0.56,
+    "hi": 1.94
+   },
+   "perBody": [
+    0.61,
+    0.72
+   ],
+   "pair": [
+    4.81,
+    6.44
+   ],
+   "aW": [
+    0.33,
+    0.33
+   ],
+   "bW": [
+    3.86,
+    5.39
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "armor+fastForward",
+   "phase": 4,
+   "a": {
+    "key": "armor",
+    "n": 1
+   },
+   "b": {
+    "key": "fastForward",
+    "n": 1
+   },
+   "I": {
+    "m": -0.18,
+    "lo": -0.97,
+    "hi": 0.76
+   },
+   "se": 0.43,
+   "gap": {
+    "m": -0.72,
+    "lo": -2.17,
+    "hi": 0.89
+   },
+   "perBody": [
+    0.36,
+    -0.72
+   ],
+   "pair": [
+    2.97,
+    16.06
+   ],
+   "aW": [
+    1.39,
+    5.44
+   ],
+   "bW": [
+    1.22,
+    11.33
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "delivery+fork",
+   "phase": 4,
+   "a": {
+    "key": "delivery",
+    "n": 1
+   },
+   "b": {
+    "key": "fork",
+    "n": true
+   },
+   "I": {
+    "m": 1.5,
+    "lo": 0.18,
+    "hi": 2.89
+   },
+   "se": 0.7,
+   "gap": {
+    "m": -0.56,
+    "lo": -2.53,
+    "hi": 0.92
+   },
+   "perBody": [
+    0.31,
+    2.69
+   ],
+   "pair": [
+    14.69,
+    10.42
+   ],
+   "aW": [
+    11.69,
+    4.17
+   ],
+   "bW": [
+    2.69,
+    3.56
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "daunt+onslaught",
+   "phase": 4,
+   "a": {
+    "key": "daunt",
+    "n": 1
+   },
+   "b": {
+    "key": "onslaught",
+    "n": 3
+   },
+   "I": {
+    "m": 0.72,
+    "lo": 0.06,
+    "hi": 1.56
+   },
+   "se": 0.43,
+   "gap": {
+    "m": 0.61,
+    "lo": -0.17,
+    "hi": 1.5
+   },
+   "perBody": [
+    0.61,
+    0.83
+   ],
+   "pair": [
+    3.94,
+    2.78
+   ],
+   "aW": [
+    1.89,
+    1.17
+   ],
+   "bW": [
+    1.44,
+    0.78
+   ],
+   "within1": true,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "fletcher+sonar",
+   "phase": 4,
+   "a": {
+    "key": "fletcher",
+    "n": 1
+   },
+   "b": {
+    "key": "sonar",
+    "n": true
+   },
+   "I": {
+    "m": 0.28,
+    "lo": -0.44,
+    "hi": 1.06
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.19,
+    "lo": -0.58,
+    "hi": 1.06
+   },
+   "perBody": [
+    0.33,
+    0.22
+   ],
+   "pair": [
+    1.64,
+    0.89
+   ],
+   "aW": [
+    0.83,
+    0.06
+   ],
+   "bW": [
+    0.47,
+    0.61
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "flying+hibernate",
+   "phase": 4,
+   "a": {
+    "key": "flying",
+    "n": true
+   },
+   "b": {
+    "key": "hibernate",
+    "n": true
+   },
+   "I": {
+    "m": 0.26,
+    "lo": -0.46,
+    "hi": 1.15
+   },
+   "se": 0.46,
+   "gap": {
+    "m": -1.75,
+    "lo": -3.44,
+    "hi": -0.22
+   },
+   "perBody": [
+    -0.08,
+    0.61
+   ],
+   "pair": [
+    2.81,
+    5.44
+   ],
+   "aW": [
+    2.81,
+    7.11
+   ],
+   "bW": [
+    0.08,
+    -2.28
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "canopyCover+keenEye",
+   "phase": 4,
+   "a": {
+    "key": "canopyCover",
+    "n": true
+   },
+   "b": {
+    "key": "keenEye",
+    "n": true
+   },
+   "I": {
+    "m": 0.53,
+    "lo": -0.22,
+    "hi": 1.28
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.56,
+    "lo": -0.06,
+    "hi": 1.94
+   },
+   "perBody": [
+    0.56,
+    0.5
+   ],
+   "pair": [
+    0.56,
+    0.5
+   ],
+   "aW": [
+    0,
+    0
+   ],
+   "bW": [
+    0,
+    0
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "decay+lumberjack",
+   "phase": 4,
+   "a": {
+    "key": "decay",
+    "n": 1
+   },
+   "b": {
+    "key": "lumberjack",
+    "n": true
+   },
+   "I": {
+    "m": -1.01,
+    "lo": -2.19,
+    "hi": 0.18
+   },
+   "se": 0.63,
+   "gap": {
+    "m": -2.25,
+    "lo": -4.11,
+    "hi": -0.44
+   },
+   "perBody": [
+    -2.25,
+    0.22
+   ],
+   "pair": [
+    21.69,
+    6.44
+   ],
+   "aW": [
+    13.47,
+    3.67
+   ],
+   "bW": [
+    10.47,
+    2.56
+   ],
+   "within1": false,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "brood+inspiring",
+   "phase": 4,
+   "a": {
+    "key": "brood",
+    "n": 2
+   },
+   "b": {
+    "key": "inspiring",
+    "n": 1
+   },
+   "I": {
+    "m": 1.24,
+    "lo": -0.08,
+    "hi": 2.43
+   },
+   "se": 0.71,
+   "gap": {
+    "m": -0.53,
+    "lo": -2.56,
+    "hi": 1.33
+   },
+   "perBody": [
+    -0.53,
+    3
+   ],
+   "pair": [
+    25.06,
+    12.83
+   ],
+   "aW": [
+    15.53,
+    8.83
+   ],
+   "bW": [
+    10.06,
+    1
+   ],
+   "within1": false,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "healing+taunt",
+   "phase": 4,
+   "a": {
+    "key": "healing",
+    "n": 1
+   },
+   "b": {
+    "key": "taunt",
+    "n": true
+   },
+   "I": {
+    "m": -1.06,
+    "lo": -2.22,
+    "hi": -0.04
+   },
+   "se": 0.56,
+   "gap": {
+    "m": -0.08,
+    "lo": -1.94,
+    "hi": 1.61
+   },
+   "perBody": [
+    -0.08,
+    -2.03
+   ],
+   "pair": [
+    10.5,
+    -4.53
+   ],
+   "aW": [
+    5.89,
+    4.39
+   ],
+   "bW": [
+    4.69,
+    -6.89
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "herbalist+keenSense",
+   "phase": 4,
+   "a": {
+    "key": "herbalist",
+    "n": 1
+   },
+   "b": {
+    "key": "keenSense",
+    "n": true
+   },
+   "I": {
+    "m": 0.36,
+    "lo": -0.39,
+    "hi": 1.14
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.19,
+    "lo": -0.39,
+    "hi": 1.39
+   },
+   "perBody": [
+    0.56,
+    0.17
+   ],
+   "pair": [
+    1.08,
+    0.83
+   ],
+   "aW": [
+    0.39,
+    0.17
+   ],
+   "bW": [
+    0.14,
+    0.5
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "quick+reload",
+   "phase": 4,
+   "a": {
+    "key": "quick",
+    "n": true
+   },
+   "b": {
+    "key": "reload",
+    "n": 1
+   },
+   "I": {
+    "m": -1.15,
+    "lo": -2.11,
+    "hi": -0.21
+   },
+   "se": 0.5,
+   "gap": {
+    "m": -5.14,
+    "lo": -6.44,
+    "hi": -3.69
+   },
+   "perBody": [
+    0.03,
+    -2.33
+   ],
+   "pair": [
+    0.36,
+    -3.58
+   ],
+   "aW": [
+    1,
+    6.17
+   ],
+   "bW": [
+    -0.67,
+    -7.42
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "rage+thanatosis",
+   "phase": 4,
+   "a": {
+    "key": "rage",
+    "n": true
+   },
+   "b": {
+    "key": "thanatosis",
+    "n": true
+   },
+   "I": {
+    "m": 2.57,
+    "lo": 1.57,
+    "hi": 3.67
+   },
+   "se": 0.53,
+   "gap": {
+    "m": 3.31,
+    "lo": 1.39,
+    "hi": 5.03
+   },
+   "perBody": [
+    1.33,
+    3.81
+   ],
+   "pair": [
+    4.92,
+    11.5
+   ],
+   "aW": [
+    3.11,
+    2.61
+   ],
+   "bW": [
+    0.47,
+    5.08
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "regen+siege",
+   "phase": 4,
+   "a": {
+    "key": "regen",
+    "n": 1
+   },
+   "b": {
+    "key": "siege",
+    "n": 1
+   },
+   "I": {
+    "m": 0.6,
+    "lo": -0.12,
+    "hi": 1.5
+   },
+   "se": 0.42,
+   "gap": {
+    "m": -0.42,
+    "lo": -1.08,
+    "hi": 1.33
+   },
+   "perBody": [
+    0.42,
+    0.78
+   ],
+   "pair": [
+    3.31,
+    3.22
+   ],
+   "aW": [
+    1.39,
+    2.22
+   ],
+   "bW": [
+    1.5,
+    0.22
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "immolation+tide",
+   "phase": 4,
+   "a": {
+    "key": "immolation",
+    "n": 1
+   },
+   "b": {
+    "key": "tide",
+    "n": true
+   },
+   "I": {
+    "m": 0.46,
+    "lo": -0.21,
+    "hi": 1.31
+   },
+   "se": 0.41,
+   "gap": {
+    "m": 0.17,
+    "lo": -0.97,
+    "hi": 1.58
+   },
+   "perBody": [
+    0.25,
+    0.67
+   ],
+   "pair": [
+    -0.97,
+    -0.14
+   ],
+   "aW": [
+    -1.78,
+    -0.86
+   ],
+   "bW": [
+    0.56,
+    0.06
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "berserk+swarm",
+   "phase": 4,
+   "a": {
+    "key": "berserk",
+    "n": 2
+   },
+   "b": {
+    "key": "swarm",
+    "n": true
+   },
+   "I": {
+    "m": -0.49,
+    "lo": -1.37,
+    "hi": 0.75
+   },
+   "se": 0.56,
+   "gap": {
+    "m": -1.42,
+    "lo": -2.75,
+    "hi": 0.14
+   },
+   "perBody": [
+    -1.42,
+    0.44
+   ],
+   "pair": [
+    17.36,
+    2.89
+   ],
+   "aW": [
+    9.83,
+    1.94
+   ],
+   "bW": [
+    8.94,
+    0.5
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "crepuscular+moonborn",
+   "phase": 4,
+   "a": {
+    "key": "crepuscular",
+    "n": 1
+   },
+   "b": {
+    "key": "moonborn",
+    "n": 4
+   },
+   "I": {
+    "m": 1.12,
+    "lo": 0.12,
+    "hi": 2.04
+   },
+   "se": 0.49,
+   "gap": {
+    "m": 1.25,
+    "lo": -0.22,
+    "hi": 2.67
+   },
+   "perBody": [
+    1.25,
+    1
+   ],
+   "pair": [
+    13.67,
+    6.53
+   ],
+   "aW": [
+    6,
+    1.19
+   ],
+   "bW": [
+    6.42,
+    4.33
+   ],
+   "within1": false,
+   "ciHas0": false,
+   "gapWithin1": false,
+   "flag85": false
+  },
+  {
+   "key": "repair+salt",
+   "phase": 4,
+   "a": {
+    "key": "repair",
+    "n": 1
+   },
+   "b": {
+    "key": "salt",
+    "n": true
+   },
+   "I": {
+    "m": 0.5,
+    "lo": -0.17,
+    "hi": 1.28
+   },
+   "se": 0.4,
+   "gap": {
+    "m": 0.33,
+    "lo": -0.33,
+    "hi": 1.06
+   },
+   "perBody": [
+    0.39,
+    0.61
+   ],
+   "pair": [
+    5.58,
+    1.61
+   ],
+   "aW": [
+    5.25,
+    1
+   ],
+   "bW": [
+    -0.06,
+    0
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "pierce+recoil",
+   "phase": 4,
+   "a": {
+    "key": "pierce",
+    "n": 1
+   },
+   "b": {
+    "key": "recoil",
+    "n": 2
+   },
+   "I": {
+    "m": -0.01,
+    "lo": -0.72,
+    "hi": 0.75
+   },
+   "se": 0.36,
+   "gap": {
+    "m": 0.33,
+    "lo": -0.33,
+    "hi": 0.89
+   },
+   "perBody": [
+    0.42,
+    -0.44
+   ],
+   "pair": [
+    -2.39,
+    -8.33
+   ],
+   "aW": [
+    0.03,
+    0.11
+   ],
+   "bW": [
+    -2.83,
+    -8
+   ],
+   "within1": true,
+   "ciHas0": true,
+   "gapWithin1": true,
+   "flag85": false
+  },
+  {
+   "key": "bleed+requiem",
+   "phase": 4,
+   "a": {
+    "key": "bleed",
+    "n": 1
+   },
+   "b": {
+    "key": "requiem",
+    "n": 4
+   },
+   "I": {
+    "m": 1.44,
+    "lo": 0.53,
+    "hi": 2.43
+   },
+   "se": 0.5,
+   "gap": {
+    "m": 2.36,
+    "lo": 0.94,
+    "hi": 3.81
+   },
+   "perBody": [
+    2.36,
+    0.53
+   ],
+   "pair": [
+    10.61,
+    3.61
+   ],
+   "aW": [
+    4.78,
+    1.36
+   ],
+   "bW": [
+    3.47,
+    1.72
+   ],
+   "within1": false,
+   "ciHas0": false,
    "gapWithin1": false,
    "flag85": false
   }
