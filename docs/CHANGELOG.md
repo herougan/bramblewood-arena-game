@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-09 Package UI41 (Map cards window: 7 per row, no faction cards, dark number boxes, Yes / No)
+- Players see: nothing (admin Map cards window only). The cards show 7 per row on a wide window (the window is wider; fewer per row as it narrows). Faction cards (Cobalt Talon Fledgling, Crimson Wing Recruit, Greyplume Fledgling, Mosswing Laborer and the other hummingbird faction cards) are no longer proposed from any source unless flagged Yes; NEW! is topped up to 30+. The NEW! / Carried target boxes follow dark mode. Yes carries the Keep emoji, No the Cut scissors; the old Cut / Keep button, its X/N count and the Carried / Unique pill are gone from the view. The 2-per-animal cap now also holds for Claude's picks and Maybe cards (not for cards on the map's list or flagged Yes). Proposed concept cards unchanged.
+- Files: arena_app.js (UI37 / UI38 blocks), arena_template.html, tests/ui41-2026-11-09.js, tests/e2e/ui41_2026_11_09.py. No card data, budget or target defaults changed.
+
 ## 2026-11-09 Package FIX11 (five tests that failed on release 4093e677)
 - Players see: nothing; no game file changed.
 - Stale pins updated: eng28 / eng37 read a wider CHANGELOG window (newer entries sit above theirs); eng36 accepts BAL32's intended Constrict reprice (ENG36's price 8, half scale, kept in `bal32Was`).

@@ -15223,6 +15223,16 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
 .ui37-ct.is-new{border-color:#d9a82b;} .ui37-ct.is-car{border-color:#5b86b8;}
 .ui37-ct.is-met{background:#3f7d4e; color:#fff; border-color:transparent;} .ui37-ct.is-over{background:#d98a2b; color:#241405; border-color:transparent;}
 .ui37-ct input{width:3.2em; font:inherit; padding:1px 4px; border-radius:6px; border:1px solid var(--surface-border); background:var(--surface-1, #fff); color:var(--ink);}
+/* 2026-11-09 (package UI41, owner 21:36 #4: the target number boxes had no dark mode): the game's input pattern (--surface, --ink, --surface-border), dark colour scheme for the spinner */
+.ui37-ct input, .pk1-mc-modal input[type="number"], .pk1-mc-modal input[type="text"], .pk1-mc-modal input[type="search"], .pk1-mc-modal select{background:var(--surface); color:var(--ink); border-color:var(--surface-border); color-scheme:light;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .ui37-ct input, :root:not([data-theme="light"]) .pk1-mc-modal input, :root:not([data-theme="light"]) .pk1-mc-modal select{color-scheme:dark;} }
+:root[data-theme="dark"] .ui37-ct input, :root[data-theme="dark"] .pk1-mc-modal input, :root[data-theme="dark"] .pk1-mc-modal select{color-scheme:dark;}
+.ui37-ct input:focus-visible{outline:2px solid var(--focus); outline-offset:1px;}
+/* 2026-11-09 (UI41, owner UI39-1 / UI39-2): the old Cut / Keep button, its X/N count line and the old Carried / Unique pill are gone from the combined view (Yes / No replaces them) */
+.pk1-mc-modal[data-ui39] .rv1-act:not([data-rv-act="remove-added"]), .pk1-mc-modal[data-ui39] .rv2-cl[data-rv2-count], .pk1-mc-modal[data-ui39] .rv2-pill.is-carried, .pk1-mc-modal[data-ui39] .rv2-pill.is-unique{display:none !important;}
+/* 2026-11-09 (UI41, owner #2): 7 cards per row on a wide window (about 1900 px), fewer as it narrows; the card keeps the Full size */
+.pk1-mc-modal[data-ui39]{max-width:min(1180px, 98vw);}
+
 .ui37-exp{display:inline-flex; gap:4px;}
 .ui37-sub{margin:2px 0 6px;}
 .ui37-grp.is-new > h3{color:#b07d10;} .ui37-grp.is-car > h3{color:#3f6a9c;}
