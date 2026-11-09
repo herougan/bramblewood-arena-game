@@ -40,6 +40,7 @@ Docs named `*-2026-10-*.md` are dated snapshots (history). When one disagrees wi
   - `node tests/run.js --full --e2e`: release only.
 - Merge a package branch: `bash tools/merge/merge_pkg.sh <branch>`. It resolves generated files, the language packs, the CHANGELOG and run-all.sh, then rebuilds. It stops on any other conflict. Never union `.js` files.
 - Release (push and deploy, then republish the hub): once per finished batch, never per package. Steps: `docs/workflows/release.md`.
+- Deploy first, test after (owner 2026-11-09 16:56: "you can push deploy before the test suite. Testing should always happen off-claude + never let my computer idle"): on an approved release, smoke + package tests, push, republish the hub; the full suite and the baseline comparison run afterwards in the background, with fixes in the next batch.
 
 ## Workflows: read the one for your task
 | Task | File |

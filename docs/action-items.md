@@ -13,7 +13,8 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 |---|---|---|
 | 1 | Thematic Recommendation and "Keyword of the map" cards: same full-card format as the list groups | UI40 |
 | 2 | Owner asks: is Maybe fused with Chosen? | answered: yes since UI38/UI39 (Maybe cards sit in NEW! / Carried with a Maybe pill) |
-| 3 | Update this and push all | release 11-09 |
+| 3 | Update this and push all | ✅ released 4093e677, hub v237 |
+| 4 | Push / deploy before the full test suite; tests run off the critical path; never let the machine idle | rule (CLAUDE.md) |
 
 ## 11-09 10:17: Owner notes
 | # | Note | Package |
