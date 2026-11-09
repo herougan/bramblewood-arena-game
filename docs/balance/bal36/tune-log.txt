@@ -1,0 +1,5 @@
+7-A-3 target 70 | 200 games: 75.5 -> 75.5 no | start | 10s
+14-A-3 target 70 | 200 games: 53.5 -> 53.5 no | start | 29s
+14-A-1 1 proboscis-monkey -1 -> camouflage-frog 59.2 12.67
+14-A-1 target 90 | 200 games: 69 -> 48 no | start; proboscis-monkey -1 -> camouflage-frog | 53s
+14-A-5 target 40 | 200 games: 30.5 -> 30.5 no | start | 26s

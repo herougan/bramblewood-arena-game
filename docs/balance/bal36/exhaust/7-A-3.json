@@ -1,0 +1,169 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "7-A-3",
+ "map": "mz",
+ "mapName": "The Mycelium Deep",
+ "kind": "elite",
+ "name": "Silk Gallery",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "ant-warrior",
+  "bombardier-beetle",
+  "dung-beetle",
+  "fungal-colossus",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "sleepless-shrew"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "fungal-colossus"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": null,
+ "space": 71422,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 6.7,
+  "max": 96.7
+ },
+ "top": [
+  {
+   "deck": {
+    "ant-warrior": 2,
+    "bombardier-beetle": 1,
+    "dung-beetle": 3,
+    "fungal-colossus": 2,
+    "garden-snail": 1,
+    "hawthorn-shieldbug": 1,
+    "planarian-splitter": 4,
+    "sleepless-shrew": 3
+   },
+   "leaders": null,
+   "tune200": 70.5
+  },
+  {
+   "deck": {
+    "ant-warrior": 2,
+    "bombardier-beetle": 2,
+    "dung-beetle": 4,
+    "fungal-colossus": 3,
+    "garden-snail": 1,
+    "hawthorn-shieldbug": 4,
+    "sleepless-shrew": 1
+   },
+   "leaders": null,
+   "tune200": 69
+  },
+  {
+   "deck": {
+    "ant-warrior": 3,
+    "bombardier-beetle": 1,
+    "dung-beetle": 3,
+    "fungal-colossus": 3,
+    "hawthorn-shieldbug": 4,
+    "planarian-splitter": 1,
+    "sleepless-shrew": 2
+   },
+   "leaders": null,
+   "tune200": 72
+  },
+  {
+   "deck": {
+    "bombardier-beetle": 1,
+    "dung-beetle": 4,
+    "fungal-colossus": 2,
+    "garden-snail": 1,
+    "hawthorn-shieldbug": 1,
+    "leafcutter-gardener": 2,
+    "planarian-splitter": 3,
+    "sleepless-shrew": 3
+   },
+   "leaders": null,
+   "tune200": 67.5
+  },
+  {
+   "deck": {
+    "ant-warrior": 2,
+    "bombardier-beetle": 1,
+    "dung-beetle": 3,
+    "fungal-colossus": 2,
+    "garden-snail": 1,
+    "hawthorn-shieldbug": 1,
+    "planarian-splitter": 4,
+    "sleepless-shrew": 3
+   },
+   "leaders": [
+    "garden-snail"
+   ],
+   "tune200": 67.5
+  },
+  {
+   "deck": {
+    "ant-warrior": 1,
+    "bombardier-beetle": 3,
+    "fungal-colossus": 4,
+    "hawthorn-shieldbug": 3,
+    "planarian-splitter": 3,
+    "sleepless-shrew": 3
+   },
+   "leaders": null,
+   "tune200": 66.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "sleepless-shrew": 3,
+   "planarian-splitter": 4,
+   "garden-snail": 1,
+   "fungal-colossus": 4,
+   "ant-warrior": 3,
+   "bombardier-beetle": 2
+  },
+  "leaders": [
+   "fungal-colossus"
+  ],
+  "shieldOverride": null,
+  "win200": 75.5
+ },
+ "pick": {
+  "deck": {
+   "ant-warrior": 2,
+   "bombardier-beetle": 1,
+   "dung-beetle": 3,
+   "fungal-colossus": 2,
+   "garden-snail": 1,
+   "hawthorn-shieldbug": 1,
+   "planarian-splitter": 4,
+   "sleepless-shrew": 3
+  },
+  "leaders": [
+   "fungal-colossus"
+  ],
+  "shieldOverride": null,
+  "win200": 61,
+  "tune200": 70.5
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 75.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 61
+  }
+ ],
+ "sec": 793
+}

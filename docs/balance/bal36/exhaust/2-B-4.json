@@ -1,0 +1,171 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "2-B-4",
+ "map": "mg",
+ "mapName": "Smugglers' Grotto",
+ "kind": "elite",
+ "name": "The Grotto Keeper",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "conch-crawler",
+  "gallery-orb-weaver",
+  "grey-seal-bull",
+  "gull-thief",
+  "octopus-tactician",
+  "open-ocean-hermit-crab",
+  "pelican-diver",
+  "pincushion-urchin",
+  "tide-pool-crab",
+  "tidepool-trapper-crab",
+  "trash-panda-trickster"
+ ],
+ "firstClear": [
+  "octopus-tactician"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "gallery-orb-weaver"
+ ],
+ "namesake": false,
+ "shieldRule": 11,
+ "shieldOverride": null,
+ "space": 243585,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 26.7,
+  "max": 78.3
+ },
+ "top": [
+  {
+   "deck": {
+    "conch-crawler": 3,
+    "gallery-orb-weaver": 4,
+    "grey-seal-bull": 3,
+    "octopus-tactician": 3,
+    "pelican-diver": 1,
+    "pincushion-urchin": 1,
+    "tide-pool-crab": 1,
+    "trash-panda-trickster": 1
+   },
+   "leaders": null,
+   "tune200": 42
+  },
+  {
+   "deck": {
+    "conch-crawler": 3,
+    "gallery-orb-weaver": 4,
+    "gull-thief": 2,
+    "octopus-tactician": 1,
+    "open-ocean-hermit-crab": 2,
+    "pelican-diver": 3,
+    "tidepool-trapper-crab": 1,
+    "trash-panda-trickster": 1
+   },
+   "leaders": null,
+   "tune200": 43
+  },
+  {
+   "deck": {
+    "conch-crawler": 4,
+    "gallery-orb-weaver": 3,
+    "grey-seal-bull": 1,
+    "gull-thief": 1,
+    "octopus-tactician": 4,
+    "open-ocean-hermit-crab": 4
+   },
+   "leaders": null,
+   "tune200": 44.5
+  },
+  {
+   "deck": {
+    "conch-crawler": 3,
+    "gallery-orb-weaver": 3,
+    "grey-seal-bull": 3,
+    "gull-thief": 1,
+    "octopus-tactician": 2,
+    "tide-pool-crab": 3,
+    "tidepool-trapper-crab": 1,
+    "trash-panda-trickster": 1
+   },
+   "leaders": null,
+   "tune200": 49
+  },
+  {
+   "deck": {
+    "conch-crawler": 3,
+    "gallery-orb-weaver": 1,
+    "grey-seal-bull": 3,
+    "octopus-tactician": 2,
+    "pelican-diver": 1,
+    "pincushion-urchin": 3,
+    "trash-panda-trickster": 4
+   },
+   "leaders": null,
+   "tune200": 49.5
+  },
+  {
+   "deck": {
+    "conch-crawler": 4,
+    "gull-thief": 1,
+    "octopus-tactician": 4,
+    "open-ocean-hermit-crab": 1,
+    "pelican-diver": 2,
+    "pincushion-urchin": 2,
+    "tidepool-trapper-crab": 3
+   },
+   "leaders": null,
+   "tune200": 49.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "gull-thief": 1,
+   "octopus-tactician": 3,
+   "pelican-diver": 4,
+   "tidepool-trapper-crab": 4,
+   "conch-crawler": 1,
+   "trash-panda-trickster": 4
+  },
+  "leaders": [
+   "gallery-orb-weaver"
+  ],
+  "shieldOverride": null,
+  "win200": 45
+ },
+ "pick": {
+  "deck": {
+   "conch-crawler": 3,
+   "gallery-orb-weaver": 4,
+   "grey-seal-bull": 3,
+   "octopus-tactician": 3,
+   "pelican-diver": 1,
+   "pincushion-urchin": 1,
+   "tide-pool-crab": 1,
+   "trash-panda-trickster": 1
+  },
+  "leaders": [
+   "gallery-orb-weaver"
+  ],
+  "shieldOverride": null,
+  "win200": 39,
+  "tune200": 42
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 45
+  },
+  {
+   "move": "whole-space pick",
+   "win": 39
+  }
+ ],
+ "sec": 450
+}

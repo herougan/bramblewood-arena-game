@@ -1,0 +1,186 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "2-B-3",
+ "map": "mg",
+ "mapName": "Smugglers' Grotto",
+ "kind": "elite",
+ "name": "The Glowing Pool",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "conch-crawler",
+  "driftwood-crab",
+  "duckling",
+  "gallery-orb-weaver",
+  "grey-seal-bull",
+  "gull-thief",
+  "open-ocean-hermit-crab",
+  "pelican-diver",
+  "pincushion-urchin",
+  "tide-pool-crab",
+  "tidepool-trapper-crab",
+  "trash-panda-trickster"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "pelican-diver"
+ ],
+ "namesake": false,
+ "shieldRule": 11,
+ "shieldOverride": null,
+ "space": 400001,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 35,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "conch-crawler": 3,
+    "driftwood-crab": 3,
+    "gallery-orb-weaver": 1,
+    "grey-seal-bull": 4,
+    "gull-thief": 1,
+    "open-ocean-hermit-crab": 2,
+    "pelican-diver": 4,
+    "tide-pool-crab": 2
+   },
+   "leaders": [
+    "gallery-orb-weaver"
+   ],
+   "tune200": 60
+  },
+  {
+   "deck": {
+    "conch-crawler": 3,
+    "driftwood-crab": 3,
+    "gallery-orb-weaver": 1,
+    "grey-seal-bull": 4,
+    "gull-thief": 1,
+    "open-ocean-hermit-crab": 2,
+    "pelican-diver": 4,
+    "tide-pool-crab": 2
+   },
+   "leaders": [
+    "pincushion-urchin"
+   ],
+   "tune200": 60
+  },
+  {
+   "deck": {
+    "conch-crawler": 3,
+    "driftwood-crab": 4,
+    "gallery-orb-weaver": 1,
+    "grey-seal-bull": 4,
+    "pelican-diver": 1,
+    "tide-pool-crab": 3,
+    "tidepool-trapper-crab": 1,
+    "trash-panda-trickster": 3
+   },
+   "leaders": [
+    "driftwood-crab"
+   ],
+   "tune200": 60.5
+  },
+  {
+   "deck": {
+    "conch-crawler": 4,
+    "driftwood-crab": 1,
+    "duckling": 1,
+    "gallery-orb-weaver": 1,
+    "gull-thief": 4,
+    "pelican-diver": 3,
+    "pincushion-urchin": 4,
+    "trash-panda-trickster": 2
+   },
+   "leaders": null,
+   "tune200": 61.5
+  },
+  {
+   "deck": {
+    "conch-crawler": 4,
+    "driftwood-crab": 1,
+    "duckling": 1,
+    "gallery-orb-weaver": 1,
+    "gull-thief": 4,
+    "pelican-diver": 3,
+    "pincushion-urchin": 4,
+    "trash-panda-trickster": 2
+   },
+   "leaders": [
+    "gallery-orb-weaver"
+   ],
+   "tune200": 61.5
+  },
+  {
+   "deck": {
+    "conch-crawler": 3,
+    "driftwood-crab": 4,
+    "gallery-orb-weaver": 1,
+    "grey-seal-bull": 4,
+    "pelican-diver": 1,
+    "tide-pool-crab": 3,
+    "tidepool-trapper-crab": 1,
+    "trash-panda-trickster": 3
+   },
+   "leaders": [
+    "gull-thief"
+   ],
+   "tune200": 58
+  }
+ ],
+ "before": {
+  "deck": {
+   "driftwood-crab": 2,
+   "duckling": 1,
+   "gull-thief": 3,
+   "open-ocean-hermit-crab": 3,
+   "pelican-diver": 4,
+   "pincushion-urchin": 4,
+   "tide-pool-crab": 2,
+   "trash-panda-trickster": 1
+  },
+  "leaders": [
+   "pelican-diver"
+  ],
+  "shieldOverride": null,
+  "win200": 63.5
+ },
+ "pick": {
+  "deck": {
+   "conch-crawler": 3,
+   "driftwood-crab": 3,
+   "gallery-orb-weaver": 1,
+   "grey-seal-bull": 4,
+   "gull-thief": 1,
+   "open-ocean-hermit-crab": 2,
+   "pelican-diver": 4,
+   "tide-pool-crab": 2
+  },
+  "leaders": [
+   "gallery-orb-weaver"
+  ],
+  "shieldOverride": null,
+  "win200": 56,
+  "tune200": 60
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 63.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 56
+  }
+ ],
+ "sec": 906
+}

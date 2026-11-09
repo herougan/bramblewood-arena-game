@@ -1,0 +1,47 @@
+{
+ "2-B-1": {
+  "deck": {
+   "conch-crawler": 4,
+   "gallery-orb-weaver": 1,
+   "gull-thief": 2,
+   "open-ocean-hermit-crab": 1,
+   "pincushion-urchin": 4,
+   "tidepool-trapper-crab": 3
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "2-B-4": {
+  "deck": {
+   "conch-crawler": 3,
+   "gallery-orb-weaver": 4,
+   "grey-seal-bull": 3,
+   "octopus-tactician": 3,
+   "pelican-diver": 1,
+   "pincushion-urchin": 1,
+   "tide-pool-crab": 1,
+   "trash-panda-trickster": 1
+  },
+  "leaders": [
+   "gallery-orb-weaver"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "7-A-2": {
+  "deck": {
+   "ant-warrior": 3,
+   "bombardier-beetle": 4,
+   "fungal-colossus": 4,
+   "hawthorn-shieldbug": 3,
+   "sleepless-shrew": 3
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ }
+}

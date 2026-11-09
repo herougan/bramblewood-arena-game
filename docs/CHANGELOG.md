@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Package BAL36 (The Canopy, Smugglers' Grotto, The Mycelium Deep retuned; decision BAL36-1)
+- Players see: three road fights play nearer their targets (deck from the fight's own list only; no card, list, field, bramble Health or level touched). 200 games on the road seeds: Drip Tunnel 2-B-1 96 -> 89.5% (target 90), The Grotto Keeper 2-B-4 45 -> 39 (40), Glowcap Grotto 7-A-2 78 -> 66 (70).
+- Road (`skirmish_pass measure 40 --maxmap=20`, bal35 -> bal36): in band 161 -> 163, within 10 176 -> 178, beyond 20 10 -> 10, mean 67.8 -> 67.7. Smugglers' Grotto and The Mycelium Deep leave the worst 8. The Canopy 14-A-1 (69%, target 90) and 14-A-3 (53.5%, 70) cannot be reached with these levers (every legal deck and leader at Shield 0): BAL36-1.
+- Tools: BAL35's `road_exhaust` / `road_tune` reused (output `docs/balance/bal36/`); `tools/bal36/apply_2026_11_10.js` (BAL35's apply, comment dated BAL36), `summary_2026_11_10.js`.
+- Tests: new tests/bal36-2026-11-10.js (+ pins); bal27 and bal3 skip the fights BAL36 retuned (2-B-4; 2-B-1, 7-A-2).
+
 ## 2026-11-10 Package BAL35 (the worst road maps of Maps 0-20 retuned; decisions BAL35-1..2)
 - Players see: eight road fights play nearer their road targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health or level touched). 200 games on the road seeds, Map reference: The Thistle Baron 1-5 45 -> 38.5% (target 40; Field Vole leads), Rock Pool Raiders 2-1 56.5 -> 59.5 (90), Pelican Point 2-4 48.5 -> 53 (60), The Old Shell 2-5 25.5 -> 37.5 (40), Hyena Chorus 14-2 77 -> 87.5 (85), Giraffe Vanguard 14-5 36.5 -> 57 (70; two rounds), The Phoenix Ember King 19-A-10 24 -> 31 (40), Root Gate 0-B-3 49.5 -> 53 (60; Shield 17 -> 8). The hidden Undercroft's floor 1 borrows 14-5's deck (40 games 15 -> 35%).
 - Road (`skirmish_pass measure 40 --maxmap=20`, bal34 -> bal35): in band 157 -> 161, within 10 173 -> 176, beyond 20 11 -> 10, mean 67.6 -> 67.8. Savanna Reaches leaves the worst 8 (|gap| 12.8 -> under 9.2); Thistlewood 18.5 -> 15.5, Basalt Foundry 16.8 -> 15.8, Pebble Beach 11.5 -> 10.5, The Old Bramble 11.3 -> 10.6.
