@@ -1,0 +1,11 @@
+bal42w200: 226 fights, 195 in band, 205 within 10, 7 beyond 20, mean win 67.2
+  worst: 2 Pebble Beach (|gap| 13.6, mean -13.6, 2/5 green); 19 m9 Basalt Foundry (|gap| 13.6, mean -13.5, 6/10 green); 14 my The Canopy (|gap| 10.5, mean -10.1, 3/5 green); 14 Savanna Reaches (|gap| 9.4, mean -8, 4/8 green); 0 mo The Old Bramble (|gap| 9.4, mean -9.4, 2/4 green); 5 ms The Sunken Grove (|gap| 7.5, mean -3.5, 3/4 green); 1 Thistlewood (|gap| 7, mean +6.4, 3/5 green); 18 mpd The Pale Desert (|gap| 6.7, mean -4.2, 6/9 green); 2 mp Lilypad Reach (|gap| 6.2, mean -2.5, 6/7 green); 13 The Redwood Deep (|gap| 5.3, mean -0.1, 5/8 green)
+bal43w200: 226 fights, 197 in band, 205 within 10, 7 beyond 20, mean win 67.3
+  worst: 2 Pebble Beach (|gap| 13.6, mean -13.6, 2/5 green); 19 m9 Basalt Foundry (|gap| 13.6, mean -13.5, 6/10 green); 14 my The Canopy (|gap| 10.5, mean -10.1, 3/5 green); 14 Savanna Reaches (|gap| 9.4, mean -8, 4/8 green); 0 mo The Old Bramble (|gap| 9.4, mean -9.4, 2/4 green); 5 ms The Sunken Grove (|gap| 7.5, mean -3.5, 3/4 green); 1 Thistlewood (|gap| 7, mean +6.4, 3/5 green); 18 mpd The Pale Desert (|gap| 6.7, mean -4.2, 6/9 green); 2 mp Lilypad Reach (|gap| 6.2, mean -2.5, 6/7 green); 6 Sable Swampmire (|gap| 5.1, mean -0.4, 8/8 green)
+main maps only bal42w200: 149 fights, 131 in band, 139 within 10, 3 beyond 20, mean win 69.3
+main maps only bal43w200: 149 fights, 133 in band, 139 within 10, 3 beyond 20, mean win 69.4
+fights whose win moved: 13-1 81.5->92.5, 13-5 61.5->69, 13-6 69.5->63
+bal42w200 Thistlewood |gap| 7.0 3/5 in band
+bal42w200 The Redwood Deep |gap| 5.2 5/8 in band
+bal43w200 Thistlewood |gap| 7.0 3/5 in band
+bal43w200 The Redwood Deep |gap| 3.2 7/8 in band
