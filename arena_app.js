@@ -34199,7 +34199,7 @@ function ui37Mount(ov, top, mapId, ok){
 // the map the game uses today (entry.afterMapCleared, "(current)") and is only SAVED (ui37Picks[subId].after, in the same `__cfg:map-picks:<subId>` row and in Export picks);
 // it does not change the game's unlock. Carried = cards flagged Yes on main maps numbered up to and including the pick (ui37CarriedIndex with n = pick + 1) plus the
 // tutorial's T-1 / T-2 cards (pill Map 0); the pill is the map that gives it. NEW! = the side map's own list(s), its review's Maybe cards, Claude's thematic proposals
-// (UI44_SIDE: docs/design/side-map-cards-2026-11-10.json, `fits` and `add` ids only, baked in by assemble_arena.py as __SIDE_PROPOSALS__ like __CLAUDE_NEW__) and
+// (UI44_SIDE: docs/design/side-map-cards-2026-11-10.json, `fits` and `add` ids only, baked in by assemble_arena.py (_side_proposals_for_game) the way CLAUDE_NEW is) and
 // cards flagged on this side map, minus what is Carried. Tile, Yes / No, grey-out, family cap 2 and the faction rule are the main maps' (ui37TileHTML, ui41Cap, ui41Allowed).
 const UI44_SIDE = __SIDE_PROPOSALS__; // {subId: {fits: [card ids], add: [{id, why}]}}
 function ui44IsSub(id){ const m = id ? mpMapById(id) : null; return !!(m && m.sub && !m.reserved && !m.endless && !m.tower && m.id !== 'mtut'); }
@@ -34237,10 +34237,10 @@ function ui44HeadHTML(subId, sp){
   const mains = mainConquestMaps().filter(x=> !x.reserved && mapNumberOf(x.id) != null && (mapNumberOf(x.id) <= 20 || x.id === cur || x.id === sp.afterId));
   const opts = mains.map(x=> `<option value="${escapeAttr(x.id)}"${x.id === sp.afterId ? ' selected' : ''}>${escapeHtml(TX('ui.ui37-from', {n: mapNumberOf(x.id)}) + ' · ' + (x.icon ? x.icon + ' ' : '') + x.name + (x.id === cur ? ' ' + TX('ui.ui44-current') : ''))}</option>`).join('');
   const ct = (k, x, t, dflt, lab, cls)=> { const tt = TX('ui.ui44-target-tip', {t: dflt}); return `<span class="ui37-ct ${cls}${x === t ? ' is-met' : x > t ? ' is-over' : ''}" data-ui37-ct="${k}">${escapeHtml(lab)} <b class="ui37-x">${x}</b> / <input type="number" min="0" max="99" inputmode="numeric" data-ui37-target="${k}" value="${t}" title="${escapeAttr(tt)}" aria-label="${escapeAttr(tt)}"></span>`; };
-  return `<div class="ui37-head ui44-head"><label class="ui44-after"><span>${escapeHtml(TX('ui.ui44-unlocks-after'))}</span> <select data-ui44-after aria-label="${escapeAttr(TX('ui.ui44-unlocks-after'))}">${opts}</select></label><b class="ui37-map">${escapeHtml(((m && m.icon) ? m.icon + ' ' : '') + (m ? m.name : subId))}</b>`
+  return `<div class="ui37-head ui44-head"><span class="ui44-sel"><label class="ui44-after"><span>${escapeHtml(TX('ui.ui44-unlocks-after'))}</span> <select data-ui44-after aria-label="${escapeAttr(TX('ui.ui44-unlocks-after'))}">${opts}</select></label><span class="panel-sub ui44-note">${escapeHtml(TX('ui.ui44-after-note'))}</span></span><b class="ui37-map">${escapeHtml(((m && m.icon) ? m.icon + ' ' : '') + (m ? m.name : subId))}</b>`
     + ct('n', yes(sp.neu), tg.n, tg.dn, TX('ui.ui37-flagged-new'), 'is-new') + ct('c', yes(sp.car), tg.c, tg.dc, TX('ui.ui37-flagged-carried'), 'is-car')
     + `<span class="ui37-exp" title="${escapeAttr(TX('ui.ui37-export-tip'))}"><button type="button" class="btn small" data-ui37-export="json">⬇ ${escapeHtml(TX('ui.ui37-export'))} .json</button><button type="button" class="btn small" data-ui37-export="csv">.csv</button></span><span class="panel-sub ui37-status" id="ui37Status" role="status">${escapeHtml(ui37StatusText())}</span></div>`
-    + `<p class="panel-sub ui44-note">${escapeHtml(TX('ui.ui44-after-note'))}</p><p class="panel-sub ui37-sub">${escapeHtml(TX('ui.ui44-sub'))}</p>`;
+    + `<p class="panel-sub ui37-sub">${escapeHtml(TX('ui.ui44-sub'))}</p>`;
 }
 // Export picks: a side map's flags, as the main maps' rows, with the chosen unlock map (mapNo = that map's number); a pick with no flags is one row with an empty card and flag "unlock"
 function ui44ExportRows(rows, defs){
@@ -34325,7 +34325,7 @@ function ui38Css(){
     + ' .ui39-cc.rar-uncommon{border-color:#6fbf73;} .ui39-cc.rar-rare{border-color:#5aa0e6;}'
     + ' .ui39-cc-name{font:800 11.5px/1.15 \'Baloo 2\',system-ui,sans-serif; color:#ffe7b0;} .ui39-cc-art{display:flex; align-items:center; justify-content:center; min-height:30px; border-radius:6px; background:rgba(0,0,0,.25); font-size:9px; opacity:.75;}'
     + ' .ui39-cc-line{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;} .ui39-cc-rar{font-weight:800; white-space:normal;} .ui39-cc-animal{text-transform:capitalize;} .ui39-cc-role{opacity:.9; display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden;}'
-    + ' .ui44-after{display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap; max-width:100%; font-weight:700;} .ui44-after select{max-width:100%; min-width:0; font:inherit; padding:3px 6px; border-radius:8px; background:var(--surface-2, #fff8e8); color:inherit; border:1px solid rgba(120,90,50,.45);} .ui44-note{margin:0 0 4px;}' // 2026-11-10 (UI44): the side map's "Unlocks after" select
+    + ' .ui44-after{display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap; max-width:100%; font-weight:700;} .ui44-after select{max-width:100%; min-width:0; font:inherit; padding:3px 6px; border-radius:8px; background:var(--surface-2, #fff8e8); color:inherit; border:1px solid rgba(120,90,50,.45);} .ui44-sel{display:flex; flex-direction:column; gap:2px; max-width:100%; min-width:0;} .ui44-note{margin:0; font-size:.85em;}' // 2026-11-10 (UI44): the side map's "Unlocks after" select
     + ' @media (max-width:560px){ .pk1-mc-modal .rv2-tip{max-width:min(240px, 62vw);} .pk1-mc-modal .rv1-bar .rv2-copy:nth-child(2) .rv2-tip{left:auto; right:0;} }'; // the Export all tip, hidden, made the window scroll sideways at 390 (as UI29 for its window)
   document.head.appendChild(st);
 }
