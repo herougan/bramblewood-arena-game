@@ -4,7 +4,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-11-10 Package BAL40 (The Briar Maze, Ashen Spurn, The Glimmer Depths, The Aerie Vault retuned; decision BAL40-1)
 - Players see: thirteen road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health or level touched). 200 games on the road seeds: Hedge Mice 12-1 79 -> 83% (target 90; Shield 0), Quill Path 12-2 71.5 -> 81 (84), Rodent Court 12-6 51.5 -> 58.5 (60), The Briar Queen 12-7 29.5 -> 43 (40; Quillguard still leads, Shield 31 -> 6), Porcupine Bastion 19-3 83.5 -> 71.5 (75), Sky Marks 19-4 77.5 -> 67 (67.5), The Frost Yeti King 19-6 59 -> 45 (40), The Echo Pool 8-A-2 84.5 -> 71.5 (75), The Gem Hoarder 8-A-4 48 -> 42.5 (40), Cliff Ledge 11-A-1 72.5 -> 80.5 (80; Shield 6 only), Feather Drifts 11-A-2 84 -> 69.5 (75), The High Roost 11-A-3 66.5 -> 58.5 (60), The Roost Mother 11-A-4 34.5 -> 38 (40).
-- Road (`skirmish_pass measure 200 --maxmap=20`, bal39w200 -> bal40w200): ROADTOTALS
+- Road (`skirmish_pass measure 200 --maxmap=20`, bal39w200 -> bal40w200): in band 181 -> 190, within 10 199 -> 203, beyond 20 8 -> 8, mean 67.6 -> 67.4; all 21 fights of the four maps now in band, and the four leave the worst 10.
 - Not reachable: Shard Gallery 8-A-3 58 (50; its Sky Ambush boon is off, Shield at the rule): BAL40-1. The Briar Queen's whole-space pick handed the boss to Woodcock Lookout; refused, the same deck led by Quillguard kept.
 - Tools: `tools/bal40/` (BAL39's baseline, pick, apply, summary); reads with `tools/bal37/road_exhaust_2026_11_10.js`; output `docs/balance/bal40/`.
 - Tests: new tests/bal40-2026-11-10.js (+ pins); bal21 skips 12-2, 19-3, 8-A-4, 11-A-3, 11-A-4.
