@@ -24,7 +24,7 @@ ok(L.players === 100 && /ref6-1 \.\. ref6-100/.test(L.seeds), 'ladder-100.json: 
 ids.forEach(id => ok(L.maps[id] && L.maps[id].decks.length === 100, id + ': 100 decks'));
 const probs = LA.problems(gm, L); ok(probs.length === 0, 'every deck legal (no faction, copy caps, owned copies, 20 cards, leader): ' + (probs.slice(0, 5).join('; ') || 'ok'));
 // the collections differ by the draws (where this machine has them cached); the decks differ where the draws reach the cards optimised decks use
-// (on 9 maps every player builds the same deck: those cards all come from fixed rewards)
+// (on 10 maps every player builds the same deck: those cards all come from fixed rewards)
 { const cf = p => path.join(LA.CACHE, 'pools', `ref6-${p}.json`);
   if (fs.existsSync(cf(1)) && fs.existsSync(cf(2))) { const a = J0(cf(1)), b = J0(cf(2)); ok(Object.keys(a.at).filter(k => +k >= 1).every(k => JSON.stringify(a.at[k]) !== JSON.stringify(b.at[k])), 'players 1 and 2 hold different collections at every arrival from Map 1'); }
   const multi = ids.filter(id => new Set(L.maps[id].decks.map(d => JSON.stringify(d.counts) + d.leader)).size > 1).length;
