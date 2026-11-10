@@ -1,0 +1,167 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "17-8",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "miniboss",
+ "name": "The Walrus Icebreaker",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "mountain-hare",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "walrus-icebreaker"
+ ],
+ "firstClear": [
+  "wolfsbane-alpha",
+  "walrus-icebreaker"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "walrus-icebreaker"
+ ],
+ "namesake": true,
+ "shieldRule": 34,
+ "shieldOverride": 0,
+ "space": 6925,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 0,
+  "max": 46.7
+ },
+ "top": [
+  {
+   "deck": {
+    "walrus-icebreaker": 1,
+    "harbor-seal": 5,
+    "alpha-howler": 1,
+    "spitting-spider": 4,
+    "snow-bunting-archer": 4,
+    "mountain-hare": 1
+   },
+   "leaders": null,
+   "tune200": 38
+  },
+  {
+   "deck": {
+    "beluga": 1,
+    "harbor-seal": 5,
+    "mountain-hare": 1,
+    "snow-bunting-archer": 4,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 1
+   },
+   "leaders": null,
+   "tune200": 28.5
+  },
+  {
+   "deck": {
+    "alpha-howler": 1,
+    "frost-hare-sprinter": 1,
+    "harbor-seal": 5,
+    "mountain-hare": 1,
+    "snow-bunting-archer": 3,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 1
+   },
+   "leaders": null,
+   "tune200": 27.5
+  },
+  {
+   "deck": {
+    "beluga": 1,
+    "frost-hare-sprinter": 1,
+    "harbor-seal": 3,
+    "mountain-hare": 1,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 1,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 1
+   },
+   "leaders": null,
+   "tune200": 19.5
+  },
+  {
+   "deck": {
+    "alpha-howler": 1,
+    "harbor-seal": 5,
+    "mountain-hare": 1,
+    "snow-bunting-archer": 2,
+    "snow-ermine": 2,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 1
+   },
+   "leaders": null,
+   "tune200": 18
+  },
+  {
+   "deck": {
+    "alpha-howler": 1,
+    "beluga": 1,
+    "frost-hare-sprinter": 1,
+    "harbor-seal": 3,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 1,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 1
+   },
+   "leaders": null,
+   "tune200": 16.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "walrus-icebreaker": 1,
+   "harbor-seal": 5,
+   "alpha-howler": 1,
+   "spitting-spider": 4,
+   "snow-bunting-archer": 4,
+   "mountain-hare": 1
+  },
+  "leaders": [
+   "walrus-icebreaker"
+  ],
+  "shieldOverride": 0,
+  "win200": 35.5
+ },
+ "pick": {
+  "deck": {
+   "walrus-icebreaker": 1,
+   "harbor-seal": 5,
+   "alpha-howler": 1,
+   "spitting-spider": 4,
+   "snow-bunting-archer": 4,
+   "mountain-hare": 1
+  },
+  "leaders": [
+   "walrus-icebreaker"
+  ],
+  "shieldOverride": 0,
+  "win200": 35.5,
+  "tune200": 38
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 35.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 35.5
+  }
+ ],
+ "sec": 680
+}

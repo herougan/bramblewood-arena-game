@@ -1,0 +1,3 @@
+17-1 target 90 space 1667 read 401 range 46.7 - 100 | 200 games: 99.5 -> 93.5 KEEP {"deck":{"beluga":1,"frost-hare-sprinter":1,"harbor-seal":4,"snow-bunting-archer":4,"snow-ermine":4},"leaders":["beluga"],"shieldOverride":null} 828s
+17-8 target 40 space 6925 read 401 range 0 - 46.7 | 200 games: 35.5 -> 35.5 no {"deck":{"walrus-icebreaker":1,"harbor-seal":5,"alpha-howler":1,"spitting-spider":4,"snow-bunting-archer":4,"mountain-hare":1},"leaders":["walrus-icebreaker"],"shieldOverride":0} 680s
+EXIT 0

@@ -31,6 +31,7 @@ const tune = {}, first = {};
 const bal26Lines = [...lines.entries()].filter(([, l]) => /2026-11-07 \(BAL26\)/.test(l));
 ok(bal26Lines.length >= 1, 'BAL26 retuned some road fights: ' + bal26Lines.length);
 for (const [code, l] of bal26Lines) {
+  if (/2026-11-10 \(BAL41\): retuned/.test(l)) continue; // 2026-11-10 (BAL41): retuned again (17-2); tests/bal41-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL38\): retuned/.test(l)) continue; // 2026-11-10 (BAL38): retuned again (4-5); tests/bal38-2026-11-10.js checks and pins it now
   const x = tune[code], f = find(code); ok(x && f, code + ': kept in a BAL26 tune file and in CONQUEST_MAPS'); if (!x || !f) continue;
   // 2026-11-08 (BAL27): a fight BAL27 retuned again (its line carries a BAL27 comment) is checked here on BAL26's pick; tests/bal27-2026-11-08.js checks its deck now
@@ -80,6 +81,7 @@ const PINS = {
 };
 for (const [code, p] of Object.entries(PINS)) {
   const l = lines.get(code); ok(!!l, code + ': pinned fight found'); if (!l) continue; const now = fields(l);
+  if (/2026-11-10 \(BAL41\): retuned/.test(l)) continue; // 2026-11-10 (BAL41): 17-2 retuned again, pinned in tests/bal41-pins-2026-11-10.json
   if (!/2026-11-10 \(BAL38\): retuned/.test(l)) // 2026-11-10 (BAL38): 4-5 retuned again, pinned in tests/bal38-pins-2026-11-10.json
   if (!/2026-11-08 \(BAL27\)/.test(l)) // 2026-11-08 (BAL27): retuned again, pinned in tests/bal27-2026-11-08.js
   ok(keyOf(now.deck) === keyOf(p.deck), `${code}: pinned deck ${JSON.stringify(p.deck)} (now ${JSON.stringify(now.deck)})`);

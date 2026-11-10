@@ -1,0 +1,126 @@
+{
+ "17-1": {
+  "deck": {
+   "beluga": 1,
+   "frost-hare-sprinter": 1,
+   "harbor-seal": 4,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 4
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "17-2": {
+  "deck": {
+   "alpha-howler": 4,
+   "beluga": 3,
+   "harbor-seal": 5,
+   "lone-grey-wolf": 1,
+   "snow-ermine": 4
+  },
+  "leaders": [
+   "alpha-howler"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "17-6": {
+  "deck": {
+   "alpha-howler": 1,
+   "beluga": 1,
+   "cone-cutter-squirrel": 1,
+   "harbor-seal": 4,
+   "polar-bear": 2,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 4,
+   "spitting-spider": 3
+  },
+  "leaders": null,
+  "shield": "6",
+  "hqHp": null,
+  "characterId": null
+ },
+ "17-7": {
+  "deck": {
+   "alpha-howler": 1,
+   "beluga": 1,
+   "frost-hare-sprinter": 1,
+   "harbor-seal": 5,
+   "polar-bear": 2,
+   "snow-bunting-archer": 3,
+   "snow-ermine": 3,
+   "spitting-spider": 3
+  },
+  "leaders": null,
+  "shield": "47",
+  "hqHp": null,
+  "characterId": null
+ },
+ "9-1": {
+  "deck": {
+   "crocodile-ambusher": 1,
+   "horseshoe-crab": 4,
+   "mangrove-monitor": 4,
+   "proboscis-monkey": 3,
+   "reef-shark": 4
+  },
+  "leaders": [
+   "crocodile-ambusher"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "9-4": {
+  "deck": {
+   "conch-crawler": 1,
+   "horseshoe-crab": 3,
+   "mangrove-monitor": 4,
+   "mangrove-mudskipper": 4,
+   "reef-shark": 3,
+   "sea-turtle-elder": 1
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "9-5": {
+  "deck": {
+   "conch-crawler": 1,
+   "horseshoe-crab": 4,
+   "mangrove-manatee": 1,
+   "mangrove-monitor": 5,
+   "reef-shark": 4,
+   "sea-turtle-elder": 1,
+   "sunbittern-strider": 1
+  },
+  "leaders": [
+   "horseshoe-crab"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "9-6": {
+  "deck": {
+   "horseshoe-crab": 1,
+   "mangrove-kingfisher": 1,
+   "mangrove-manatee": 1,
+   "mangrove-monitor": 4,
+   "mangrove-mudskipper": 1,
+   "proboscis-monkey": 4,
+   "reef-shark": 4,
+   "sea-turtle-elder": 1
+  },
+  "leaders": [
+   "reef-shark"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ }
+}

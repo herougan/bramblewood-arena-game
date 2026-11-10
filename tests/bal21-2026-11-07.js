@@ -31,6 +31,7 @@ const tune = {}; tdirs.forEach(d => fs.readdirSync(d).filter(f => f.endsWith('.j
 const bal21Lines = [...lines.entries()].filter(([, l]) => /2026-11-07 \(BAL21\)/.test(l));
 ok(bal21Lines.length >= 1, 'BAL21 retuned some road fights: ' + bal21Lines.length);
 for (const [code, l] of bal21Lines) {
+  if (/2026-11-10 \(BAL41\): retuned/.test(l)) continue; // 2026-11-10 (BAL41): retuned again (17-6, 17-7); tests/bal41-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL40\): retuned/.test(l)) continue; // 2026-11-10 (BAL40): retuned again (12-2, 19-3, 8-A-4, 11-A-3, 11-A-4); tests/bal40-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL39\): retuned/.test(l)) continue; // 2026-11-10 (BAL39): retuned again (20-A-4); tests/bal39-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL38\): retuned/.test(l)) continue; // 2026-11-10 (BAL38): retuned again (4-1, 7-A-3, 7-A-4); tests/bal38-2026-11-10.js checks and pins it now

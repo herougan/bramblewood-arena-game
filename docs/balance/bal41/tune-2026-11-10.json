@@ -1,0 +1,401 @@
+{
+ "about": "BAL41 road retune summary (tools/bal41/summary_2026_11_10.js); 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "17-1",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "skirmish",
+   "name": "Ice Fang Patrol",
+   "target": 90,
+   "before200": 99.5,
+   "after200": 93.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 99.5,
+     "pick200": 93.5,
+     "keep": true,
+     "space": 1667,
+     "range": {
+      "min": 46.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "beluga": 1,
+       "frost-hare-sprinter": 1,
+       "harbor-seal": 4,
+       "snow-bunting-archer": 4,
+       "snow-ermine": 4
+      },
+      "leaders": [
+       "beluga"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "17-2",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "skirmish",
+   "name": "Frostbitten Pack",
+   "target": 85,
+   "before200": 92,
+   "after200": 85.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 92,
+     "pick200": 85.5,
+     "keep": true,
+     "space": 1800,
+     "range": {
+      "min": 51.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "alpha-howler": 4,
+       "beluga": 3,
+       "harbor-seal": 5,
+       "lone-grey-wolf": 1,
+       "snow-ermine": 4
+      },
+      "leaders": [
+       "alpha-howler"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "17-5",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "elite",
+   "name": "Musk Ox Bulwark",
+   "target": 70,
+   "before200": 74.5,
+   "after200": 74.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 74.5,
+     "pick200": 67,
+     "keep": false,
+     "space": 28271,
+     "range": {
+      "min": 5,
+      "max": 96.7
+     },
+     "pick": {
+      "deck": {
+       "alpha-howler": 2,
+       "beluga": 2,
+       "frost-hare-sprinter": 1,
+       "harbor-seal": 1,
+       "mountain-hare": 1,
+       "snow-bunting-archer": 4,
+       "snow-ermine": 3,
+       "spitting-spider": 1
+      },
+      "leaders": [
+       "alpha-howler"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "17-6",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "elite",
+   "name": "Glacier Herd",
+   "target": 65,
+   "before200": 77,
+   "after200": 57.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 77,
+     "pick200": 57.5,
+     "keep": true,
+     "space": 422,
+     "range": {
+      "min": 31.7,
+      "max": 95
+     },
+     "pick": {
+      "deck": {
+       "alpha-howler": 1,
+       "beluga": 1,
+       "cone-cutter-squirrel": 1,
+       "harbor-seal": 4,
+       "polar-bear": 2,
+       "snow-bunting-archer": 4,
+       "snow-ermine": 4,
+       "spitting-spider": 3
+      },
+      "leaders": [
+       "polar-bear"
+      ],
+      "shieldOverride": 6
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "17-7",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "elite",
+   "name": "Alpha Howler's Den",
+   "target": 60,
+   "before200": 67.5,
+   "after200": 59,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 67.5,
+     "pick200": 59,
+     "keep": true,
+     "space": 1899,
+     "range": {
+      "min": 6.7,
+      "max": 78.3
+     },
+     "pick": {
+      "deck": {
+       "alpha-howler": 1,
+       "beluga": 1,
+       "frost-hare-sprinter": 1,
+       "harbor-seal": 5,
+       "polar-bear": 2,
+       "snow-bunting-archer": 3,
+       "snow-ermine": 3,
+       "spitting-spider": 3
+      },
+      "leaders": [
+       "polar-bear"
+      ],
+      "shieldOverride": 47
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "17-8",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "miniboss",
+   "name": "The Walrus Icebreaker",
+   "target": 40,
+   "before200": 35.5,
+   "after200": 35.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 35.5,
+     "pick200": 35.5,
+     "keep": false,
+     "space": 6925,
+     "range": {
+      "min": 0,
+      "max": 46.7
+     },
+     "pick": {
+      "deck": {
+       "walrus-icebreaker": 1,
+       "harbor-seal": 5,
+       "alpha-howler": 1,
+       "spitting-spider": 4,
+       "snow-bunting-archer": 4,
+       "mountain-hare": 1
+      },
+      "leaders": [
+       "walrus-icebreaker"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "9-1",
+   "map": "mk",
+   "mapName": "The Kelp Mangroves",
+   "kind": "skirmish",
+   "name": "Mudflat Skippers",
+   "target": 90,
+   "before200": 74.5,
+   "after200": 87.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 74.5,
+     "pick200": 87.5,
+     "keep": true,
+     "space": 773,
+     "range": {
+      "min": 61.7,
+      "max": 91.7
+     },
+     "pick": {
+      "deck": {
+       "crocodile-ambusher": 1,
+       "horseshoe-crab": 4,
+       "mangrove-monitor": 4,
+       "proboscis-monkey": 3,
+       "reef-shark": 4
+      },
+      "leaders": [
+       "crocodile-ambusher"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "9-4",
+   "map": "mk",
+   "mapName": "The Kelp Mangroves",
+   "kind": "skirmish",
+   "name": "Kelp Curtains",
+   "target": 62,
+   "before200": 54.5,
+   "after200": 62.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 54.5,
+     "pick200": 62.5,
+     "keep": true,
+     "space": 93,
+     "range": {
+      "min": 55,
+      "max": 86.7
+     },
+     "pick": {
+      "deck": {
+       "conch-crawler": 1,
+       "horseshoe-crab": 3,
+       "mangrove-monitor": 4,
+       "mangrove-mudskipper": 4,
+       "reef-shark": 3,
+       "sea-turtle-elder": 1
+      },
+      "leaders": [
+       "reef-shark"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "9-5",
+   "map": "mk",
+   "mapName": "The Kelp Mangroves",
+   "kind": "elite",
+   "name": "Moray Den",
+   "target": 66,
+   "before200": 49.5,
+   "after200": 62,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 49.5,
+     "pick200": 62,
+     "keep": true,
+     "space": 74187,
+     "range": {
+      "min": 11.7,
+      "max": 65
+     },
+     "pick": {
+      "deck": {
+       "conch-crawler": 1,
+       "horseshoe-crab": 4,
+       "mangrove-manatee": 1,
+       "mangrove-monitor": 5,
+       "reef-shark": 4,
+       "sea-turtle-elder": 1,
+       "sunbittern-strider": 1
+      },
+      "leaders": [
+       "horseshoe-crab"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "9-6",
+   "map": "mk",
+   "mapName": "The Kelp Mangroves",
+   "kind": "elite",
+   "name": "Drifting Shell",
+   "target": 60,
+   "before200": 55,
+   "after200": 59,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 55,
+     "pick200": 59,
+     "keep": true,
+     "space": 100808,
+     "range": {
+      "min": 10,
+      "max": 61.7
+     },
+     "pick": {
+      "deck": {
+       "horseshoe-crab": 1,
+       "mangrove-kingfisher": 1,
+       "mangrove-manatee": 1,
+       "mangrove-monitor": 4,
+       "mangrove-mudskipper": 1,
+       "proboscis-monkey": 4,
+       "reef-shark": 4,
+       "sea-turtle-elder": 1
+      },
+      "leaders": [
+       "reef-shark"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  }
+ ]
+}

@@ -1,0 +1,181 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "17-6",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "elite",
+ "name": "Glacier Herd",
+ "band": {
+  "lo": 57.00000000000001,
+  "hi": 73,
+  "target": 65
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "mountain-hare",
+  "polar-bear",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider"
+ ],
+ "firstClear": [
+  "polar-bear"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "polar-bear"
+ ],
+ "namesake": false,
+ "shieldRule": 26,
+ "shieldOverride": 6,
+ "space": 422,
+ "read": 400,
+ "g1": 60,
+ "range": {
+  "min": 31.7,
+  "max": 95
+ },
+ "top": [
+  {
+   "deck": {
+    "alpha-howler": 1,
+    "beluga": 1,
+    "cone-cutter-squirrel": 1,
+    "harbor-seal": 4,
+    "polar-bear": 2,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 4,
+    "spitting-spider": 3
+   },
+   "leaders": null,
+   "tune200": 64.5
+  },
+  {
+   "deck": {
+    "alpha-howler": 1,
+    "beluga": 1,
+    "cone-cutter-squirrel": 1,
+    "harbor-seal": 4,
+    "polar-bear": 2,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 4,
+    "spitting-spider": 3
+   },
+   "leaders": [
+    "harbor-seal"
+   ],
+   "tune200": 64.5
+  },
+  {
+   "deck": {
+    "alpha-howler": 1,
+    "beluga": 1,
+    "cone-cutter-squirrel": 1,
+    "harbor-seal": 4,
+    "polar-bear": 2,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 4,
+    "spitting-spider": 3
+   },
+   "leaders": [
+    "mountain-hare"
+   ],
+   "tune200": 64.5
+  },
+  {
+   "deck": {
+    "beluga": 3,
+    "harbor-seal": 4,
+    "mountain-hare": 1,
+    "polar-bear": 1,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 3,
+    "spitting-spider": 4
+   },
+   "leaders": null,
+   "tune200": 63.5
+  },
+  {
+   "deck": {
+    "alpha-howler": 1,
+    "beluga": 3,
+    "harbor-seal": 4,
+    "mountain-hare": 1,
+    "polar-bear": 2,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 3,
+    "spitting-spider": 2
+   },
+   "leaders": [
+    "beluga"
+   ],
+   "tune200": 63.5
+  },
+  {
+   "deck": {
+    "beluga": 3,
+    "harbor-seal": 4,
+    "mountain-hare": 1,
+    "polar-bear": 1,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 3,
+    "spitting-spider": 4
+   },
+   "leaders": [
+    "harbor-seal"
+   ],
+   "tune200": 62.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "polar-bear": 2,
+   "spitting-spider": 4,
+   "harbor-seal": 4,
+   "alpha-howler": 1,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 4,
+   "mountain-hare": 1
+  },
+  "leaders": [
+   "polar-bear"
+  ],
+  "shieldOverride": 6,
+  "win200": 77
+ },
+ "pick": {
+  "deck": {
+   "alpha-howler": 1,
+   "beluga": 1,
+   "cone-cutter-squirrel": 1,
+   "harbor-seal": 4,
+   "polar-bear": 2,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 4,
+   "spitting-spider": 3
+  },
+  "leaders": [
+   "polar-bear"
+  ],
+  "shieldOverride": 6,
+  "win200": 57.5,
+  "tune200": 64.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 77
+  },
+  {
+   "move": "whole-space pick",
+   "win": 57.5
+  }
+ ],
+ "sec": 1887
+}

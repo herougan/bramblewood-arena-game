@@ -1,0 +1,157 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "9-1",
+ "map": "mk",
+ "mapName": "The Kelp Mangroves",
+ "kind": "skirmish",
+ "name": "Mudflat Skippers",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "conch-crawler",
+  "crocodile-ambusher",
+  "fiddler-crab-swarm",
+  "horseshoe-crab",
+  "mangrove-monitor",
+  "mangrove-mudskipper",
+  "proboscis-monkey",
+  "reef-shark",
+  "sea-turtle-elder",
+  "sunbittern-strider"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "proboscis-monkey"
+ ],
+ "namesake": false,
+ "shieldRule": 9,
+ "shieldOverride": null,
+ "space": 773,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 61.7,
+  "max": 91.7
+ },
+ "top": [
+  {
+   "deck": {
+    "crocodile-ambusher": 1,
+    "horseshoe-crab": 4,
+    "mangrove-monitor": 4,
+    "proboscis-monkey": 3,
+    "reef-shark": 4
+   },
+   "leaders": [
+    "crocodile-ambusher"
+   ],
+   "tune200": 90
+  },
+  {
+   "deck": {
+    "crocodile-ambusher": 1,
+    "horseshoe-crab": 4,
+    "mangrove-monitor": 4,
+    "proboscis-monkey": 3,
+    "reef-shark": 4
+   },
+   "leaders": [
+    "reef-shark"
+   ],
+   "tune200": 90
+  },
+  {
+   "deck": {
+    "conch-crawler": 1,
+    "crocodile-ambusher": 1,
+    "horseshoe-crab": 3,
+    "mangrove-monitor": 4,
+    "proboscis-monkey": 3,
+    "reef-shark": 4
+   },
+   "leaders": null,
+   "tune200": 89.5
+  },
+  {
+   "deck": {
+    "crocodile-ambusher": 1,
+    "horseshoe-crab": 4,
+    "mangrove-monitor": 4,
+    "proboscis-monkey": 3,
+    "reef-shark": 4
+   },
+   "leaders": [
+    "sea-turtle-elder"
+   ],
+   "tune200": 90.5
+  },
+  {
+   "deck": {
+    "crocodile-ambusher": 1,
+    "horseshoe-crab": 4,
+    "mangrove-monitor": 4,
+    "proboscis-monkey": 3,
+    "reef-shark": 4
+   },
+   "leaders": [],
+   "tune200": 90.5
+  },
+  {
+   "deck": {
+    "crocodile-ambusher": 1,
+    "horseshoe-crab": 4,
+    "mangrove-monitor": 4,
+    "proboscis-monkey": 3,
+    "reef-shark": 4
+   },
+   "leaders": null,
+   "tune200": 88.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "mangrove-monitor": 4,
+   "mangrove-mudskipper": 2,
+   "reef-shark": 4,
+   "horseshoe-crab": 4,
+   "proboscis-monkey": 2
+  },
+  "leaders": [
+   "proboscis-monkey"
+  ],
+  "shieldOverride": null,
+  "win200": 74.5
+ },
+ "pick": {
+  "deck": {
+   "crocodile-ambusher": 1,
+   "horseshoe-crab": 4,
+   "mangrove-monitor": 4,
+   "proboscis-monkey": 3,
+   "reef-shark": 4
+  },
+  "leaders": [
+   "crocodile-ambusher"
+  ],
+  "shieldOverride": 0,
+  "win200": 87.5,
+  "tune200": 90
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 74.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 87.5
+  }
+ ],
+ "sec": 980
+}
