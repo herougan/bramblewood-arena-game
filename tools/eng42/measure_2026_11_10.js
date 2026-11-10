@@ -10,13 +10,14 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const B = require('../lib_bramble.js'), G = B.G, D = B.CARD_DEFS_BASELINE, E = require(path.join(ROOT, 'bramblewood-engine.js'));
 const a = process.argv.slice(2), arg = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; };
 const LABEL = arg('--label', 'after'), GAMES = +arg('--games', 200), SEED0 = 9100;
+const CODES = (arg('--codes', '') || '').split(',').filter(Boolean); // --codes 23-5 --all: only these fights
 const BOONS = ['risingTide', 'wildRage', 'siegeTrain', 'skyAmbush'];
 const DX = JSON.parse(JSON.stringify(D)); if (E.SKILL_PARAMS_LIB) E.SKILL_PARAMS_LIB.expandDefsInPlace(DX);
 const rows = [];
 for (const m of G.CONQUEST_MAPS) {
   if (m.reserved || m.tower || m.endless) continue; const no = G.mapNumberOf(m.id);
   for (const n of m.nodes || []) {
-    const id = n.rules && n.rules.boon; if (!id || !BOONS.includes(id) || !n.deck) continue;
+    const id = n.rules && n.rules.boon; if (!id || !BOONS.includes(id) || !n.deck || (CODES.length && !CODES.includes(n.key))) continue;
     const st = E.selfishBoonCount(DX, n.deck, id), road = no != null && no <= 20; let win = null;
     if (road || a.includes('--all')) { G.NODE_MAP_HINT.set(n, m.id); const ctx = G.referenceFightSetup(m.id, n, { seed0: SEED0 }); let w = 0;
       for (let g = 0; g < GAMES; g++) if (G.playReferenceGame(ctx, g).win) w++; win = Math.round(w / GAMES * 1000) / 10; }

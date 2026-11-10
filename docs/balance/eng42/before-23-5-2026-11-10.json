@@ -1,0 +1,18 @@
+{
+ "about": "ENG42 before-23-5 (tools/eng42/measure_2026_11_10.js): 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "23-5",
+   "map": "m23",
+   "mapNo": 23,
+   "name": "Under the Walls",
+   "boon": "siegeTrain",
+   "have": 8,
+   "total": 16,
+   "need": 8,
+   "on": true,
+   "win200": 53,
+   "target": 60
+  }
+ ]
+}

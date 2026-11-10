@@ -172,7 +172,7 @@ const SK2_DEFAULTS = Object.freeze({
 // like +stats ... more like blind cards do 2x dmg if most the cards inside are blind - a synergy not available to the player").
 // A fight sets rules.boon to an id below. It helps one side only, the CPU (side B; rules.boonSide 'A' turns it round, for tests), and is
 // ON when at least half the copies of that side's deck as dealt (pl.deckCounts) share its theme (theme.types: counts as one of these Types,
-// TAXONOMY.isA; theme.skills: has one of these skills). It counts that side's own deck only, so a player who copies the deck gains nothing.
+// TAXONOMY.isA; theme.skills: has one of these skills, unused since ENG42 2026-11-10: a theme is name and art). It counts that side's own deck only, so a player who copies the deck gains nothing.
 // While it is on, every unit of that side that `who` names is marked as it arrives (c.boon = id) and the hooks below read the mark:
 //   blindFury     a unit that fights blind (Blind, Purblind, or blind in Darkness / by day / at night: sightMiss) hits 2x (its swings)
 //   hiveChorus    Swarm counts every ally twice
@@ -190,19 +190,34 @@ const SK2_DEFAULTS = Object.freeze({
 // 'ui.df3-<id>' and 'ui.df3-<id>-name' in bramblewood-texts.js; worth by the owner's 4-round rule and the measured fights in
 // docs/balance/df3-boons-2026-10-24.md; where they are placed: docs/skirmish-tuning-guide.md (field effects).
 const SELFISH_BURROWERS = ['Rodent', 'Hedgehog', 'Rabbit', 'Mole', 'Worm', 'Badger'];
+// 2026-11-10 (package ENG42, owner 11-10 11:31: "Thematic wise - don't care about the skills first ... just focus on art description and
+// name. We can retroactively change the skills."): the four boons whose theme was a skill (tide, rage / berserk, siege, flying) count
+// taxonomy Types now, the species and archetypes a card's name and art give it (bramblewood-taxonomy.js). No boon's theme reads a skill;
+// `who` (the units the effect lands on) is unchanged. Before / after: docs/balance/eng42/.
+//   Rising Tide   sea, shore and river creatures: everything Aquatic (Ocean, River, Pond, Coral Reef, fish, cephalopods, cetaceans ...),
+//                 the Coastal and Mangrove animals, crabs, lobsters, shrimp, barnacles, seals, sea and snapping turtles, crocodiles, and
+//                 the river mammals (otter, beaver, water vole, muskrat, platypus)
+//   Wild Rage     the fierce beasts: boars, bears, wolverines, honey badgers, Tasmanian devils, wolves, hyenas, big cats
+//   Siege Train   builders, sappers and war beasts: beavers, termites, badgers, moles, Structures; elephants, rhinos, oxen, horses
+//   Sky Ambush    birds and other winged animals: birds, bats, butterflies, moths, bees, wasps, flies, mayflies
+const SELFISH_TIDE_TYPES = ['Aquatic', 'Coastal', 'Mangrove', 'Crab', 'Lobster', 'Shrimp', 'Barnacle', 'Pinniped', 'Sea Turtle', 'Snapping Turtle', 'Crocodile',
+  'Otter', 'Beaver', 'Water Vole', 'Muskrat', 'Platypus'];
+const SELFISH_RAGE_TYPES = ['Suid', 'Ursid', 'Wolverine', 'Honey Badger', 'Tasmanian Devil', 'Wolf', 'Hyaenid', 'Big Cat'];
+const SELFISH_SIEGE_TYPES = ['Beaver', 'Termite', 'Badger', 'Mole', 'Structure', 'Elephant', 'Rhino', 'Ox', 'Equid'];
+const SELFISH_SKY_TYPES = ['Bird', 'Bat', 'Butterfly', 'Moth', 'Bee', 'Wasp', 'Fly', 'Mayfly'];
 const SELFISH_BOONS = Object.freeze({
   blindFury:    {icon:'🦇', theme:{types:['Cave']}, who:'all'},
   hiveChorus:   {icon:'🐜', theme:{types:['Insect']}, who:{skills:['swarm']}},
-  risingTide:   {icon:'🌊', theme:{skills:['tide']}, who:{skills:['tide']}},
+  risingTide:   {icon:'🌊', theme:{types:SELFISH_TIDE_TYPES}, who:{skills:['tide']}}, // ENG42: was theme {skills:['tide']}
   secondBurrow: {icon:'🕳️', theme:{types:SELFISH_BURROWERS}, who:'theme'},
-  wildRage:     {icon:'🐗', theme:{skills:['rage', 'berserk']}, who:{skills:['rage']}},
+  wildRage:     {icon:'🐗', theme:{types:SELFISH_RAGE_TYPES}, who:{skills:['rage']}}, // ENG42: was theme {skills:['rage', 'berserk']}
   snowVeil:     {icon:'🌨️', theme:{types:['Tundra', 'Taiga', 'Frost']}, who:{skills:['evasive']}},
   sandVeil:     {icon:'🏜️', theme:{types:['Desert']}, who:'theme'},
   restlessDead: {icon:'💀', theme:{types:['Undead']}, who:{skills:['undead']} /* ENG9: Undead is the self-return now */},
   emberBorn:    {icon:'🌋', theme:{types:['Volcanic']}, who:'theme', grant:{immune:['heat']}},
-  siegeTrain:   {icon:'🏰', theme:{skills:['siege']}, who:{skills:['siege']}, double:['siege']},
+  siegeTrain:   {icon:'🏰', theme:{types:SELFISH_SIEGE_TYPES}, who:{skills:['siege']}, double:['siege']}, // ENG42: was theme {skills:['siege']}
   venomGlands:  {icon:'🐍', theme:{types:['Reptile']}, who:{skills:['poison']}, double:['poison']},
-  skyAmbush:    {icon:'🦅', theme:{skills:['flying']}, who:{skills:['flying']}, grant:{quick:true}},
+  skyAmbush:    {icon:'🦅', theme:{types:SELFISH_SKY_TYPES}, who:{skills:['flying']}, grant:{quick:true}}, // ENG42: was theme {skills:['flying']}
 });
 function selfishBoonThemeOf(def, b){ if(!def || !b) return false; const t = b.theme || {}, e = def.effects || {};
   return ((t.types || []).length && txIsAny(def, t.types)) || (t.skills || []).some(k=> !!e[k]); }
