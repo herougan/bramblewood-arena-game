@@ -1,0 +1,157 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "8-7",
+ "map": "m4",
+ "mapName": "Caves & Alcoves",
+ "kind": "elite",
+ "name": "The Roost Above",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "blind-cave-fish",
+  "cave-olm",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "hollow-belly-rat",
+  "malachite-golem",
+  "stalactite-golem",
+  "sulfur-cinder-moth"
+ ],
+ "firstClear": [
+  "giant-cave-huntsman"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "malachite-golem"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": 6,
+ "space": 7127,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 6.7,
+  "max": 93.3
+ },
+ "top": [
+  {
+   "deck": {
+    "blind-cave-fish": 2,
+    "cave-olm": 1,
+    "gallery-orb-weaver": 4,
+    "giant-cave-huntsman": 3,
+    "hollow-belly-rat": 1,
+    "malachite-golem": 3
+   },
+   "leaders": null,
+   "tune200": 60.5
+  },
+  {
+   "deck": {
+    "gallery-orb-weaver": 4,
+    "giant-cave-huntsman": 1,
+    "malachite-golem": 3,
+    "stalactite-golem": 4,
+    "sulfur-cinder-moth": 2
+   },
+   "leaders": null,
+   "tune200": 63.5
+  },
+  {
+   "deck": {
+    "blind-cave-fish": 2,
+    "cave-olm": 2,
+    "gallery-orb-weaver": 4,
+    "giant-cave-huntsman": 3,
+    "malachite-golem": 3
+   },
+   "leaders": null,
+   "tune200": 56.5
+  },
+  {
+   "deck": {
+    "blind-cave-fish": 5,
+    "cave-olm": 3,
+    "gallery-orb-weaver": 1,
+    "giant-cave-huntsman": 1,
+    "malachite-golem": 2,
+    "sulfur-cinder-moth": 2
+   },
+   "leaders": null,
+   "tune200": 64
+  },
+  {
+   "deck": {
+    "blind-cave-fish": 2,
+    "cave-olm": 2,
+    "giant-cave-huntsman": 1,
+    "malachite-golem": 3,
+    "stalactite-golem": 3,
+    "sulfur-cinder-moth": 3
+   },
+   "leaders": null,
+   "tune200": 56
+  },
+  {
+   "deck": {
+    "blind-cave-fish": 2,
+    "cave-olm": 2,
+    "gallery-orb-weaver": 4,
+    "giant-cave-huntsman": 1,
+    "hollow-belly-rat": 1,
+    "malachite-golem": 2,
+    "stalactite-golem": 2
+   },
+   "leaders": null,
+   "tune200": 54.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "giant-cave-huntsman": 1,
+   "hollow-belly-rat": 1,
+   "malachite-golem": 1,
+   "blind-cave-fish": 5,
+   "stalactite-golem": 4,
+   "gallery-orb-weaver": 2
+  },
+  "leaders": [
+   "malachite-golem"
+  ],
+  "shieldOverride": 6,
+  "win200": 66
+ },
+ "pick": {
+  "deck": {
+   "blind-cave-fish": 2,
+   "cave-olm": 1,
+   "gallery-orb-weaver": 4,
+   "giant-cave-huntsman": 3,
+   "hollow-belly-rat": 1,
+   "malachite-golem": 3
+  },
+  "leaders": [
+   "malachite-golem"
+  ],
+  "shieldOverride": 6,
+  "win200": 46.5,
+  "tune200": 60.5
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 66
+  },
+  {
+   "move": "whole-space pick",
+   "win": 46.5
+  }
+ ],
+ "sec": 602
+}

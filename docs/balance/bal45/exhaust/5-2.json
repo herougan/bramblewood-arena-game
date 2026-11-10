@@ -1,0 +1,162 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "5-2",
+ "map": "mw",
+ "mapName": "Gatorback Swamp",
+ "kind": "skirmish",
+ "name": "Toad Hollow",
+ "band": {
+  "lo": 76,
+  "hi": 92,
+  "target": 84
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "nutria-reedcutter",
+  "swamp-alligator"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "bog-leech"
+ ],
+ "namesake": false,
+ "shieldRule": 5,
+ "shieldOverride": null,
+ "space": 2617,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 31.7,
+  "max": 81.7
+ },
+ "top": [
+  {
+   "deck": {
+    "bog-leech": 1,
+    "constrictor-coil": 1,
+    "crocodile-ambusher": 4,
+    "nutria-reedcutter": 4,
+    "swamp-alligator": 4
+   },
+   "leaders": [
+    "constrictor-coil"
+   ],
+   "tune200": 84
+  },
+  {
+   "deck": {
+    "bog-leech": 1,
+    "constrictor-coil": 1,
+    "crocodile-ambusher": 4,
+    "nutria-reedcutter": 4,
+    "swamp-alligator": 4
+   },
+   "leaders": [
+    "crocodile-ambusher"
+   ],
+   "tune200": 84.5
+  },
+  {
+   "deck": {
+    "bog-leech": 1,
+    "constrictor-coil": 1,
+    "crocodile-ambusher": 4,
+    "nutria-reedcutter": 4,
+    "swamp-alligator": 4
+   },
+   "leaders": [
+    "cypress-root-lurker"
+   ],
+   "tune200": 83
+  },
+  {
+   "deck": {
+    "bog-leech": 1,
+    "constrictor-coil": 1,
+    "crocodile-ambusher": 4,
+    "nutria-reedcutter": 4,
+    "swamp-alligator": 4
+   },
+   "leaders": [
+    "nutria-reedcutter"
+   ],
+   "tune200": 83
+  },
+  {
+   "deck": {
+    "bog-leech": 1,
+    "box-turtle": 1,
+    "constrictor-coil": 4,
+    "crocodile-ambusher": 4,
+    "nutria-reedcutter": 1,
+    "swamp-alligator": 3
+   },
+   "leaders": [
+    "nutria-reedcutter"
+   ],
+   "tune200": 82.5
+  },
+  {
+   "deck": {
+    "bog-leech": 1,
+    "constrictor-coil": 1,
+    "crocodile-ambusher": 4,
+    "nutria-reedcutter": 4,
+    "swamp-alligator": 4
+   },
+   "leaders": [
+    "swamp-alligator"
+   ],
+   "tune200": 85.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "bog-leech": 1,
+   "swamp-alligator": 3,
+   "cypress-root-lurker": 2,
+   "crocodile-ambusher": 3,
+   "constrictor-coil": 5
+  },
+  "leaders": [
+   "bog-leech"
+  ],
+  "shieldOverride": null,
+  "win200": 78
+ },
+ "pick": {
+  "deck": {
+   "bog-leech": 1,
+   "constrictor-coil": 1,
+   "crocodile-ambusher": 4,
+   "nutria-reedcutter": 4,
+   "swamp-alligator": 4
+  },
+  "leaders": [
+   "constrictor-coil"
+  ],
+  "shieldOverride": 0,
+  "win200": 92,
+  "tune200": 84
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 78
+  },
+  {
+   "move": "whole-space pick",
+   "win": 92
+  }
+ ],
+ "sec": 507
+}

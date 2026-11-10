@@ -1,0 +1,157 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "12-1",
+ "map": "mh",
+ "mapName": "The Briar Maze",
+ "kind": "skirmish",
+ "name": "Hedge Mice",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "bramble-hoglet",
+  "carrion-crow",
+  "dormouse",
+  "field-mouse",
+  "hollow-belly-rat",
+  "mouse-sapper",
+  "thorn-shrike",
+  "woodcock-lookout"
+ ],
+ "firstClear": [
+  "bramble-hoglet"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "thorn-shrike"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": 0,
+ "space": 76,
+ "read": 76,
+ "g1": 60,
+ "range": {
+  "min": 66.7,
+  "max": 86.7
+ },
+ "top": [
+  {
+   "deck": {
+    "bramble-hoglet": 5,
+    "carrion-crow": 4,
+    "hollow-belly-rat": 1,
+    "mouse-sapper": 4,
+    "thorn-shrike": 3
+   },
+   "leaders": [
+    "hollow-belly-rat"
+   ],
+   "tune200": 86.5
+  },
+  {
+   "deck": {
+    "bramble-hoglet": 5,
+    "carrion-crow": 4,
+    "dormouse": 1,
+    "mouse-sapper": 3,
+    "thorn-shrike": 3,
+    "woodcock-lookout": 1
+   },
+   "leaders": null,
+   "tune200": 86
+  },
+  {
+   "deck": {
+    "bramble-hoglet": 5,
+    "carrion-crow": 4,
+    "hollow-belly-rat": 1,
+    "mouse-sapper": 4,
+    "thorn-shrike": 3
+   },
+   "leaders": null,
+   "tune200": 85.5
+  },
+  {
+   "deck": {
+    "bramble-hoglet": 5,
+    "carrion-crow": 4,
+    "dormouse": 1,
+    "mouse-sapper": 3,
+    "thorn-shrike": 3,
+    "woodcock-lookout": 1
+   },
+   "leaders": [
+    "hollow-belly-rat"
+   ],
+   "tune200": 85
+  },
+  {
+   "deck": {
+    "bramble-hoglet": 5,
+    "carrion-crow": 4,
+    "hollow-belly-rat": 1,
+    "mouse-sapper": 4,
+    "thorn-shrike": 3
+   },
+   "leaders": [],
+   "tune200": 85
+  },
+  {
+   "deck": {
+    "bramble-hoglet": 5,
+    "carrion-crow": 4,
+    "dormouse": 1,
+    "mouse-sapper": 3,
+    "thorn-shrike": 3,
+    "woodcock-lookout": 1
+   },
+   "leaders": [],
+   "tune200": 84
+  }
+ ],
+ "before": {
+  "deck": {
+   "bramble-hoglet": 5,
+   "carrion-crow": 3,
+   "mouse-sapper": 5,
+   "thorn-shrike": 3,
+   "hollow-belly-rat": 1
+  },
+  "leaders": [
+   "thorn-shrike"
+  ],
+  "shieldOverride": 0,
+  "win200": 83
+ },
+ "pick": {
+  "deck": {
+   "bramble-hoglet": 5,
+   "carrion-crow": 4,
+   "hollow-belly-rat": 1,
+   "mouse-sapper": 4,
+   "thorn-shrike": 3
+  },
+  "leaders": [
+   "hollow-belly-rat"
+  ],
+  "shieldOverride": 0,
+  "win200": 80,
+  "tune200": 86.5
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 83
+  },
+  {
+   "move": "whole-space pick",
+   "win": 80
+  }
+ ],
+ "sec": 299
+}

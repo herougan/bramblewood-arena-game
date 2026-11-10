@@ -1,0 +1,179 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "3-7",
+ "map": "mc",
+ "mapName": "Gannet Cliffs",
+ "kind": "elite",
+ "name": "The Gannet Queen",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "conch-crawler",
+  "cormorant",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "oystercatcher",
+  "peak-condor",
+  "pincushion-urchin",
+  "puffin-diver",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "firstClear": [
+  "golden-eagle-diver",
+  "razorbill"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "peak-condor"
+ ],
+ "namesake": false,
+ "shieldRule": 5,
+ "shieldOverride": 7,
+ "space": 180413,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 10,
+  "max": 68.3
+ },
+ "top": [
+  {
+   "deck": {
+    "cormorant": 4,
+    "golden-eagle-diver": 2,
+    "kittiwake-flock": 3,
+    "oystercatcher": 1,
+    "puffin-diver": 4,
+    "razorbill": 4,
+    "red-billed-chough": 1
+   },
+   "leaders": [
+    "puffin-diver"
+   ],
+   "tune200": 40
+  },
+  {
+   "deck": {
+    "conch-crawler": 1,
+    "cormorant": 4,
+    "golden-eagle-diver": 1,
+    "hawk-arrowkeeper": 2,
+    "puffin-diver": 3,
+    "razorbill": 4,
+    "red-billed-chough": 4
+   },
+   "leaders": [
+    "oystercatcher"
+   ],
+   "tune200": 40
+  },
+  {
+   "deck": {
+    "conch-crawler": 1,
+    "golden-eagle-diver": 3,
+    "hawk-arrowkeeper": 4,
+    "kittiwake-flock": 2,
+    "puffin-diver": 2,
+    "razorbill": 3,
+    "red-billed-chough": 4
+   },
+   "leaders": null,
+   "tune200": 39.5
+  },
+  {
+   "deck": {
+    "conch-crawler": 1,
+    "golden-eagle-diver": 3,
+    "hawk-arrowkeeper": 4,
+    "kittiwake-flock": 2,
+    "puffin-diver": 2,
+    "razorbill": 3,
+    "red-billed-chough": 4
+   },
+   "leaders": [
+    "gannet-nestweaver"
+   ],
+   "tune200": 40.5
+  },
+  {
+   "deck": {
+    "cormorant": 4,
+    "golden-eagle-diver": 2,
+    "kittiwake-flock": 3,
+    "oystercatcher": 1,
+    "puffin-diver": 4,
+    "razorbill": 4,
+    "red-billed-chough": 1
+   },
+   "leaders": [
+    "hawk-arrowkeeper"
+   ],
+   "tune200": 40.5
+  },
+  {
+   "deck": {
+    "cormorant": 4,
+    "golden-eagle-diver": 2,
+    "kittiwake-flock": 3,
+    "oystercatcher": 1,
+    "puffin-diver": 4,
+    "razorbill": 4,
+    "red-billed-chough": 1
+   },
+   "leaders": null,
+   "tune200": 39
+  }
+ ],
+ "before": {
+  "deck": {
+   "kittiwake-flock": 2,
+   "puffin-diver": 3,
+   "red-billed-chough": 4,
+   "golden-eagle-diver": 4,
+   "razorbill": 4,
+   "hawk-arrowkeeper": 2
+  },
+  "leaders": [
+   "peak-condor"
+  ],
+  "shieldOverride": 7,
+  "win200": 47
+ },
+ "pick": {
+  "deck": {
+   "cormorant": 4,
+   "golden-eagle-diver": 2,
+   "kittiwake-flock": 3,
+   "oystercatcher": 1,
+   "puffin-diver": 4,
+   "razorbill": 4,
+   "red-billed-chough": 1
+  },
+  "leaders": [
+   "puffin-diver"
+  ],
+  "shieldOverride": 7,
+  "win200": 34.5,
+  "tune200": 40
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 47
+  },
+  {
+   "move": "whole-space pick",
+   "win": 34.5
+  }
+ ],
+ "sec": 615
+}

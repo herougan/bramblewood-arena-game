@@ -1,0 +1,151 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "8-4",
+ "map": "m4",
+ "mapName": "Caves & Alcoves",
+ "kind": "skirmish",
+ "name": "Echo Chamber",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "blind-cave-fish",
+  "cave-olm",
+  "gallery-orb-weaver",
+  "hollow-belly-rat",
+  "stalactite-golem",
+  "sulfur-cinder-moth"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "hollow-belly-rat"
+ ],
+ "namesake": false,
+ "shieldRule": 8,
+ "shieldOverride": null,
+ "space": 1206,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 23.3,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "blind-cave-fish": 3,
+    "cave-olm": 2,
+    "gallery-orb-weaver": 4,
+    "hollow-belly-rat": 1,
+    "stalactite-golem": 1,
+    "sulfur-cinder-moth": 1
+   },
+   "leaders": [],
+   "tune200": 75
+  },
+  {
+   "deck": {
+    "blind-cave-fish": 3,
+    "cave-olm": 2,
+    "gallery-orb-weaver": 2,
+    "hollow-belly-rat": 4,
+    "sulfur-cinder-moth": 1
+   },
+   "leaders": null,
+   "tune200": 75.5
+  },
+  {
+   "deck": {
+    "cave-olm": 1,
+    "gallery-orb-weaver": 2,
+    "hollow-belly-rat": 3,
+    "stalactite-golem": 2,
+    "sulfur-cinder-moth": 4
+   },
+   "leaders": null,
+   "tune200": 74.5
+  },
+  {
+   "deck": {
+    "blind-cave-fish": 3,
+    "cave-olm": 2,
+    "gallery-orb-weaver": 4,
+    "hollow-belly-rat": 1,
+    "stalactite-golem": 1,
+    "sulfur-cinder-moth": 1
+   },
+   "leaders": [
+    "stalactite-golem"
+   ],
+   "tune200": 76
+  },
+  {
+   "deck": {
+    "blind-cave-fish": 3,
+    "cave-olm": 2,
+    "gallery-orb-weaver": 4,
+    "hollow-belly-rat": 1,
+    "stalactite-golem": 1,
+    "sulfur-cinder-moth": 1
+   },
+   "leaders": null,
+   "tune200": 76.5
+  },
+  {
+   "deck": {
+    "blind-cave-fish": 2,
+    "cave-olm": 2,
+    "gallery-orb-weaver": 4,
+    "hollow-belly-rat": 2,
+    "stalactite-golem": 1,
+    "sulfur-cinder-moth": 1
+   },
+   "leaders": null,
+   "tune200": 77
+  }
+ ],
+ "before": {
+  "deck": {
+   "blind-cave-fish": 5,
+   "gallery-orb-weaver": 4,
+   "hollow-belly-rat": 1,
+   "cave-olm": 1,
+   "sulfur-cinder-moth": 1
+  },
+  "leaders": [
+   "hollow-belly-rat"
+  ],
+  "shieldOverride": null,
+  "win200": 68
+ },
+ "pick": {
+  "deck": {
+   "blind-cave-fish": 3,
+   "cave-olm": 2,
+   "gallery-orb-weaver": 4,
+   "hollow-belly-rat": 1,
+   "stalactite-golem": 1,
+   "sulfur-cinder-moth": 1
+  },
+  "leaders": [],
+  "shieldOverride": 0,
+  "win200": 78,
+  "tune200": 75
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 68
+  },
+  {
+   "move": "whole-space pick",
+   "win": 78
+  }
+ ],
+ "sec": 406
+}

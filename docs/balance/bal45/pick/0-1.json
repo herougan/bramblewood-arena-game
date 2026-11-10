@@ -1,0 +1,78 @@
+{
+ "about": "BAL45 named pick (tools/bal45/pick_2026_11_10.js)",
+ "code": "0-1",
+ "map": "m1",
+ "mapName": "Bramblewood Outskirts",
+ "kind": "skirmish",
+ "name": "Pond Patrol",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "ant-scout",
+  "beaver-lumberjack",
+  "chipmunk-forager",
+  "chipmunk-skirmisher",
+  "cottontail",
+  "crossed-eyes",
+  "duck-paddler",
+  "duckling",
+  "earthworm",
+  "garden-snail",
+  "honey-bee",
+  "pond-duck",
+  "silver-minnow",
+  "soldier-ant",
+  "worker-ant"
+ ],
+ "firstClear": [
+  "chipmunk-skirmisher"
+ ],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 0,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "crossed-eyes": 3,
+   "duckling": 3,
+   "garden-snail": 4,
+   "honey-bee": 4,
+   "pond-duck": 3,
+   "silver-minnow": 3
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 96,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "crossed-eyes": 3,
+   "duck-paddler": 3,
+   "garden-snail": 4,
+   "honey-bee": 4,
+   "pond-duck": 3,
+   "silver-minnow": 3
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 92.5,
+  "shown": 0
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 96
+  },
+  {
+   "move": "named pick",
+   "win": 92.5
+  }
+ ]
+}

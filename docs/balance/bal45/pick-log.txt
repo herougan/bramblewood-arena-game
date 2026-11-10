@@ -1,0 +1,6 @@
+0-1 target 90 | 200 games: 96 -> 86 KEEP {"deck":{"crossed-eyes":3,"duckling":3,"garden-snail":4,"duck-paddler":4,"pond-duck":3,"silver-minnow":3},"leaders":[],"shieldOverride":null}
+0-1 target 90 | 200 games: 96 -> 93.5 KEEP {"deck":{"crossed-eyes":3,"duckling":3,"garden-snail":4,"honey-bee":4,"pond-duck":3,"duck-paddler":3},"leaders":[],"shieldOverride":null}
+0-1 target 90 | 200 games: 96 -> 92.5 KEEP {"deck":{"crossed-eyes":3,"duck-paddler":3,"garden-snail":4,"honey-bee":4,"pond-duck":3,"silver-minnow":3},"leaders":[],"shieldOverride":null}
+0-1 target 90 | 200 games: 96 -> 97 no {"deck":{"beaver-lumberjack":3,"duckling":3,"garden-snail":4,"honey-bee":4,"pond-duck":3,"silver-minnow":3},"leaders":[],"shieldOverride":null}
+0-1 target 90 | 200 games: 96 -> 94 KEEP {"deck":{"duck-paddler":3,"duckling":3,"garden-snail":4,"honey-bee":4,"pond-duck":3,"silver-minnow":3},"leaders":[],"shieldOverride":null}
+0-1 chosen: duckling 3 -> duck-paddler 3 (92.5, smallest change, pond theme kept); also read honey-bee->paddler 86, minnow->paddler 93.5, crossed-eyes->paddler 94, beaver for crossed-eyes 97; exhaust whole-deck swap 86.5 not taken (Map 0 stays simple)

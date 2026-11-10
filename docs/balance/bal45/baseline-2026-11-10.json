@@ -1,0 +1,105 @@
+{
+ "about": "BAL45 baseline (tools/bal45/baseline_2026_11_10.js): 200 games on the road seeds, the Map reference",
+ "rows": {
+  "0-1": {
+   "code": "0-1",
+   "map": "m1",
+   "mapName": "Bramblewood Outskirts",
+   "name": "Pond Patrol",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "win200": 96,
+   "gap": 6,
+   "space": 400001,
+   "leaders": [],
+   "shieldRule": 0,
+   "shieldOverride": null
+  },
+  "3-7": {
+   "code": "3-7",
+   "map": "mc",
+   "mapName": "Gannet Cliffs",
+   "name": "The Gannet Queen",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 47,
+   "gap": 7,
+   "space": 180413,
+   "leaders": [
+    "peak-condor"
+   ],
+   "shieldRule": 5,
+   "shieldOverride": 7
+  },
+  "5-2": {
+   "code": "5-2",
+   "map": "mw",
+   "mapName": "Gatorback Swamp",
+   "name": "Toad Hollow",
+   "target": 84,
+   "lo": 76,
+   "hi": 92,
+   "win200": 78,
+   "gap": -6,
+   "space": 20415,
+   "leaders": [
+    "bog-leech"
+   ],
+   "shieldRule": 5,
+   "shieldOverride": null
+  },
+  "5-4": {
+   "code": "5-4",
+   "map": "mw",
+   "mapName": "Gatorback Swamp",
+   "name": "Snapping Reeds",
+   "target": 72,
+   "lo": 64,
+   "hi": 80,
+   "win200": 64.5,
+   "gap": -7.5,
+   "space": 24822,
+   "leaders": [
+    "fen-mink"
+   ],
+   "shieldRule": 5,
+   "shieldOverride": 1
+  },
+  "5-5": {
+   "code": "5-5",
+   "map": "mw",
+   "mapName": "Gatorback Swamp",
+   "name": "Gator Slide",
+   "target": 66,
+   "lo": 58.00000000000001,
+   "hi": 74,
+   "win200": 60,
+   "gap": -6,
+   "space": 30262,
+   "leaders": [
+    "fire-ant-raft"
+   ],
+   "shieldRule": 8,
+   "shieldOverride": null
+  },
+  "8-4": {
+   "code": "8-4",
+   "map": "m4",
+   "mapName": "Caves & Alcoves",
+   "name": "Echo Chamber",
+   "target": 75,
+   "lo": 67,
+   "hi": 83,
+   "win200": 68,
+   "gap": -7,
+   "space": 1381,
+   "leaders": [
+    "hollow-belly-rat"
+   ],
+   "shieldRule": 8,
+   "shieldOverride": null
+  }
+ }
+}

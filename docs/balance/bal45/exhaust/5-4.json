@@ -1,0 +1,165 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "5-4",
+ "map": "mw",
+ "mapName": "Gatorback Swamp",
+ "kind": "skirmish",
+ "name": "Snapping Reeds",
+ "band": {
+  "lo": 64,
+  "hi": 80,
+  "target": 72
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fen-mink",
+  "fire-ant-raft",
+  "grass-viper",
+  "nutria-reedcutter",
+  "swamp-alligator"
+ ],
+ "firstClear": [
+  "grass-viper"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "fen-mink"
+ ],
+ "namesake": false,
+ "shieldRule": 5,
+ "shieldOverride": 1,
+ "space": 6755,
+ "read": 400,
+ "g1": 60,
+ "range": {
+  "min": 53.3,
+  "max": 98.3
+ },
+ "top": [
+  {
+   "deck": {
+    "constrictor-coil": 4,
+    "crocodile-ambusher": 4,
+    "fen-mink": 3,
+    "grass-viper": 4,
+    "nutria-reedcutter": 3
+   },
+   "leaders": null,
+   "tune200": 72
+  },
+  {
+   "deck": {
+    "constrictor-coil": 2,
+    "cypress-root-lurker": 3,
+    "fen-mink": 4,
+    "grass-viper": 3,
+    "nutria-reedcutter": 3,
+    "swamp-alligator": 3
+   },
+   "leaders": null,
+   "tune200": 72.5
+  },
+  {
+   "deck": {
+    "constrictor-coil": 2,
+    "cypress-root-lurker": 3,
+    "fen-mink": 4,
+    "grass-viper": 3,
+    "nutria-reedcutter": 3,
+    "swamp-alligator": 3
+   },
+   "leaders": [
+    "anhinga-spearbird"
+   ],
+   "tune200": 71.5
+  },
+  {
+   "deck": {
+    "constrictor-coil": 2,
+    "cypress-root-lurker": 3,
+    "fen-mink": 4,
+    "grass-viper": 3,
+    "nutria-reedcutter": 3,
+    "swamp-alligator": 3
+   },
+   "leaders": [
+    "fire-ant-raft"
+   ],
+   "tune200": 71.5
+  },
+  {
+   "deck": {
+    "constrictor-coil": 3,
+    "cypress-root-lurker": 2,
+    "fen-mink": 4,
+    "grass-viper": 3,
+    "nutria-reedcutter": 2,
+    "swamp-alligator": 4
+   },
+   "leaders": null,
+   "tune200": 71
+  },
+  {
+   "deck": {
+    "constrictor-coil": 2,
+    "cypress-root-lurker": 3,
+    "fen-mink": 4,
+    "grass-viper": 3,
+    "nutria-reedcutter": 3,
+    "swamp-alligator": 3
+   },
+   "leaders": [
+    "cypress-root-lurker"
+   ],
+   "tune200": 71
+  }
+ ],
+ "before": {
+  "deck": {
+   "fen-mink": 3,
+   "grass-viper": 4,
+   "cypress-root-lurker": 1,
+   "swamp-alligator": 4,
+   "nutria-reedcutter": 3,
+   "constrictor-coil": 3
+  },
+  "leaders": [
+   "fen-mink"
+  ],
+  "shieldOverride": 1,
+  "win200": 64.5
+ },
+ "pick": {
+  "deck": {
+   "constrictor-coil": 4,
+   "crocodile-ambusher": 4,
+   "fen-mink": 3,
+   "grass-viper": 4,
+   "nutria-reedcutter": 3
+  },
+  "leaders": [
+   "fen-mink"
+  ],
+  "shieldOverride": 0,
+  "win200": 80,
+  "tune200": 72
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 64.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 80
+  }
+ ],
+ "sec": 602
+}

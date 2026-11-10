@@ -1,0 +1,6 @@
+0-1      target 90 | 200 games 96 | gap 6 | space 400001
+3-7      target 40 | 200 games 47 | gap 7 | space 180413
+5-2      target 84 | 200 games 78 | gap -6 | space 20415
+5-4      target 72 | 200 games 64.5 | gap -7.5 | space 24822
+5-5      target 66 | 200 games 60 | gap -6 | space 30262
+8-4      target 75 | 200 games 68 | gap -7 | space 1381
