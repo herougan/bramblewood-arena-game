@@ -30,9 +30,8 @@ By kind of change:
 - Balance tools: `tools/pipeline/run.sh test` (smoke + the balance set; known failures listed in `tools/pipeline/config.json`).
 
 ## Keep runs short
-- **Reuse the main checkout's cache in a fresh worktree.** The cache key is each test's relative input paths and file hashes (and the Node version), and the build is deterministic (the build id is a content hash), so a copied entry skips only a test whose inputs are byte-identical:
-  `mkdir -p tests/out && cp /home/claude/bramblewood-arena-game/tests/out/test-cache.json /home/claude/bramblewood-arena-game/tests/out/test-timings.json tests/out/`
-  Copy it before your first run (tried 2026-11-11: 5 of the 7 smoke tests, two-player and scenarios included, came up cached in a fresh worktree). Report skipped tests as "cached", never "passed".
+- **The pass cache is shared by every worktree** (2026-11-11, TOOLS1): `tests/run.js` keeps it in `$(git rev-parse --git-common-dir)/bw-test-cache/test-cache.json`, so a fresh worktree needs no copying and a pass in one worktree is a "skipped" in another whenever the inputs are byte-identical. `node tests/run.js --cache-dir` prints the path; `BW_TEST_CACHE_DIR=<dir>` overrides it; without git it falls back to `tests/out/`. The key is unchanged (each test's relative input paths and file hashes, the Node version, the build is deterministic); a test keeps its last 12 passing keys, so worktrees on different sources do not push each other out. The first run folds the old `tests/out/test-cache.json` into the shared file (the main checkout's when the file is new, this checkout's always; this checkout's is then deleted). Timings stay in `tests/out/`. Report skipped tests as "cached", never "passed".
+- Inputs of a test are the repo files it names, now including `electron/` (not `node_modules`, `game`, `dist`) and `.github/workflows/*.yml` when it names them (desk2 stayed cached after those changed).
 - A test that names no repo file depends on every source file: name the files it reads, so it can be cached.
 - Do not run the full suite between merges or per package; the coordinator runs it once per release (`docs/workflows/release.md`), in the background after the push.
 - Never run a test suite next to a balance sim (2 cores); `tools/pipeline/run.sh` takes a lock for heavy steps.

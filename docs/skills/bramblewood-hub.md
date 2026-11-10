@@ -3,6 +3,8 @@ name: bramblewood-hub
 description: Use when the Bramblewood Effects Lab, Visual Library, Master doc, changelog or Claude's guide changed and the Master hub artifact needs rebuilding and republishing.
 ---
 
+> Superseded 2026-11-11 (TOOLS1): the maintained skill is `.claude/skills/hub/SKILL.md`; this copy is kept for the hub's guide tab.
+
 # Rebuild and publish the Master hub
 
 The hub is one artifact with tabs: Master, Changelog, Effects Lab, Visual Library and Claude's guide.

@@ -3,6 +3,8 @@ name: bramblewood-ship
 description: Use when changing the Bramblewood Arena game code (arena_app.js, arena_template.html, bramblewood-*.js) and you need to build, test, screenshot, commit and deploy it.
 ---
 
+> Superseded 2026-11-11 (TOOLS1): the maintained skills are `.claude/skills/ship-change/SKILL.md` (build, test, look, commit) and `.claude/skills/release/SKILL.md` (push and deploy); this copy is kept for the hub's guide tab. It still names the retired `MASTER.md`.
+
 # Ship a Bramblewood change
 
 The repo is `herougan/bramblewood-arena-game`, cloned at `/home/claude/bramblewood-arena-game`. Pushing to `main` deploys to https://bramblewood-arena.vercel.app automatically.

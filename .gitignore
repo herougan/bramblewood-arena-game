@@ -12,9 +12,10 @@ graphify-out/
 # stray test screenshots in the repo root (2026-10-08)
 /*.png
 __pycache__/
-# 2026-11-11 (package GUIDE1): worktrees and local settings stay out; the shared subagent definitions are committed
+# 2026-11-11 (package GUIDE1): worktrees and local settings stay out; the shared subagent definitions and project skills are committed
 .claude/*
 !.claude/agents/
+!.claude/skills/
 
 # emoji build cache (2026-10-17, tools/emoji/build_sets.py)
 tools/emoji/.src/

@@ -8,12 +8,14 @@ without writing a new Playwright script each time.
     python3 tools/shot.py --js "openSkirmishGallery()"     # any page-side call that opens a screen
     python3 tools/shot.py --js "switchTab('play'); startConquestMatch('m1','0-2')" --wait 2500 --name fight
     python3 tools/shot.py --widths 390 --full              # one width, full page
+    python3 tools/shot.py --screen forge --clip ".forge-panel" --widths 390   # one element only: a fraction of the picture tokens
+    python3 tools/shot.py --screen codex --dark            # dark mode (prefers-color-scheme: dark; the game has no other switch)
 
-Writes tests/out/shots/<name>-<width>.png (gitignored) and prints the paths and any page errors. Build first.
+Writes tests/out/shots/<name>-<width>.png (gitignored; `-clip` and `-dark` are added to the name when those options are used)
+and prints the paths and any page errors. Build first.
 Fonts: served over local http so the real fonts load (file:// falls back to system fonts).
 """
 import argparse, asyncio, http.server, os, socketserver, threading, functools
-from playwright.async_api import async_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CHROME = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell'
@@ -36,7 +38,8 @@ def serve():
     return httpd
 
 async def main(a):
-    httpd = serve()
+    from playwright.async_api import async_playwright  # imported here so --help works without Playwright
+    httpd = serve(); failed = False
     url = f'http://127.0.0.1:{httpd.server_address[1]}/index.html'
     out = os.path.join(ROOT, 'tests', 'out', 'shots'); os.makedirs(out, exist_ok=True)
     async with async_playwright() as p:
@@ -44,7 +47,7 @@ async def main(a):
         b = await p.chromium.launch(executable_path=exe, args=['--enable-unsafe-swiftshader', '--use-angle=swiftshader', '--ignore-gpu-blocklist'])
         for w in [int(x) for x in a.widths.split(',')]:
             h = 844 if w < 700 else 860
-            pg = await b.new_page(viewport={'width': w, 'height': h})
+            pg = await b.new_page(viewport={'width': w, 'height': h}, **({'color_scheme': 'dark'} if a.dark else {}))
             errs = []; pg.on('pageerror', lambda e: errs.append(str(e)))
             await pg.route('**/gsap.min.js', lambda r: r.fulfill(path=os.path.join(ROOT, 'gsap.min.js')) if os.path.exists(os.path.join(ROOT, 'gsap.min.js')) else r.continue_())
             await pg.add_init_script(SKIP_INTRO)
@@ -55,16 +58,22 @@ async def main(a):
             if a.tab: await pg.evaluate(f"switchTab({a.tab!r})")
             if a.js: await pg.evaluate(f"(async()=>{{ {a.js} }})()")
             await pg.wait_for_timeout(a.wait)
-            f = os.path.join(out, f'{a.name or a.screen or a.tab or "home"}-{w}.png')
-            await pg.screenshot(path=f, full_page=a.full, timeout=120000, animations='disabled')
+            f = os.path.join(out, f'{a.name or a.screen or a.tab or "home"}-{w}{"-clip" if a.clip else ""}{"-dark" if a.dark else ""}.png')
+            if a.clip and await pg.locator(a.clip).count() == 0:
+                print(f'no element matches --clip {a.clip!r} at width {w}'); failed = True; await pg.close(); continue
+            if a.clip: await pg.locator(a.clip).first.screenshot(path=f, timeout=120000, animations='disabled')
+            else: await pg.screenshot(path=f, full_page=a.full, timeout=120000, animations='disabled')
             print(f, ('ERRORS: ' + ' | '.join(errs[:3])) if errs else '')
             await pg.close()
         await b.close()
     httpd.shutdown()
+    return 1 if failed else 0
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--screen', choices=sorted(SCREENS)); ap.add_argument('--tab'); ap.add_argument('--js'); ap.add_argument('--name')
     ap.add_argument('--widths', default='390,1366'); ap.add_argument('--wait', type=int, default=900)
     ap.add_argument('--full', action='store_true'); ap.add_argument('--locked', action='store_true', help='keep features locked (a new player)')
-    asyncio.run(main(ap.parse_args()))
+    ap.add_argument('--clip', metavar='SELECTOR', help='screenshot only the first element matching this CSS selector (taken after --screen/--tab/--js and --wait)')
+    ap.add_argument('--dark', action='store_true', help='emulate prefers-color-scheme: dark (the dark-mode check of docs/style-guideline.md)')
+    raise SystemExit(asyncio.run(main(ap.parse_args())))
