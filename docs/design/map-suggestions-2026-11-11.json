@@ -1,0 +1,3797 @@
+{
+ "about": "THEME8 (2026-11-11): suggested Yes lists for main Maps 12-20, admin adds for Maps 0-11, side-map lists up to the Map 20 region, skills per map, the Sea Bass and the monster set pieces. Design only: nothing applied. Built by tools/theme8/build_suggestions_2026_11_11.py from tools/theme8/picks_2026_11_11.py. suggest = NEW to the road (no earlier main map gives it, admin adds counted), carried = given earlier. Maps 0-11: suggest/carried split the owner's Yes; adminAdd is Claude's. usage = main Maps 0-20 (owner Yes + adminAdd + suggestions).",
+ "built": "2026-11-11",
+ "rules": {
+  "familyCap": 2,
+  "mixMinimum": "tools/theme8/deckmix_2026_11_11.py MIN",
+  "noStoneBefore": 21
+ },
+ "maps": {
+  "m1": {
+   "mapNo": 0,
+   "name": "Bramblewood Outskirts",
+   "suggest": [
+    "ant-scout",
+    "duckling",
+    "duck-paddler",
+    "crossed-eyes",
+    "honey-bee",
+    "earthworm",
+    "house-cat",
+    "silver-minnow",
+    "cottontail",
+    "rabbit-kit",
+    "soldier-ant",
+    "bee-forager",
+    "bee-sentry",
+    "farm-dog",
+    "chipmunk-forager",
+    "worker-ant"
+   ],
+   "carried": [],
+   "ownerYes": [
+    "ant-scout",
+    "duckling",
+    "duck-paddler",
+    "crossed-eyes",
+    "honey-bee",
+    "earthworm",
+    "house-cat",
+    "silver-minnow",
+    "cottontail",
+    "rabbit-kit",
+    "soldier-ant",
+    "bee-forager",
+    "bee-sentry",
+    "farm-dog",
+    "chipmunk-forager",
+    "worker-ant"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "hazel-coppice",
+    "nightjar-drifter"
+   ],
+   "adminWhy": {
+    "hazel-coppice": "a 1-Lumber card that grows Lumber (Coppice): the map has no Lumber maker and no card that costs Lumber",
+    "nightjar-drifter": "a plain 1-Lumber, no-wait body for the outskirts at dusk"
+   },
+   "skills": [
+    {
+     "key": "swarm",
+     "name": "Swarm",
+     "carriers": [
+      "ant-scout",
+      "soldier-ant"
+     ]
+    },
+    {
+     "key": "quick",
+     "name": "Quick",
+     "carriers": [
+      "cottontail"
+     ]
+    },
+    {
+     "key": "regen",
+     "name": "Regenerate",
+     "carriers": [
+      "earthworm"
+     ]
+    },
+    {
+     "key": "evasive",
+     "name": "Evasive",
+     "carriers": [
+      "rabbit-kit"
+     ]
+    }
+   ],
+   "gaps": [
+    "Guardian (DES2's Map 0 pick) has no carrier: it arrives on Map 1 (Terrier Pup), fine."
+   ],
+   "mix": {
+    "cost1": 2,
+    "cost0": 16,
+    "wait1": 3,
+    "wait0": 15,
+    "lumber": 1,
+    "plain": 9,
+    "status": 1,
+    "stone": 0
+   },
+   "usage": {
+    "ant-scout": 2,
+    "duckling": 1,
+    "duck-paddler": 4,
+    "crossed-eyes": 1,
+    "honey-bee": 2,
+    "earthworm": 2,
+    "house-cat": 2,
+    "silver-minnow": 1,
+    "cottontail": 1,
+    "rabbit-kit": 1,
+    "soldier-ant": 2,
+    "bee-forager": 1,
+    "bee-sentry": 1,
+    "farm-dog": 1,
+    "chipmunk-forager": 1,
+    "worker-ant": 1,
+    "hazel-coppice": 1,
+    "nightjar-drifter": 1
+   }
+  },
+  "mf": {
+   "mapNo": 1,
+   "name": "Thistlewood",
+   "suggest": [
+    "bramble-sprout",
+    "terrier-pup",
+    "cricket-drummer",
+    "chipmunk-skirmisher",
+    "chipmunk-cavalry",
+    "hedgerow-shrew",
+    "meadow-rabbit",
+    "moonlit-hare",
+    "dormouse",
+    "puddle-skimmer",
+    "bee-knight",
+    "robin-redbreast"
+   ],
+   "carried": [
+    "soldier-ant",
+    "ant-scout",
+    "honey-bee",
+    "house-cat",
+    "duck-paddler"
+   ],
+   "ownerYes": [
+    "bramble-sprout",
+    "terrier-pup",
+    "cricket-drummer",
+    "chipmunk-skirmisher",
+    "chipmunk-cavalry",
+    "hedgerow-shrew",
+    "meadow-rabbit",
+    "moonlit-hare",
+    "dormouse",
+    "puddle-skimmer",
+    "soldier-ant",
+    "ant-scout",
+    "bee-knight",
+    "honey-bee",
+    "house-cat",
+    "duck-paddler",
+    "robin-redbreast"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "monarch-wingblade",
+    "pack-rat-looter"
+   ],
+   "adminWhy": {
+    "monarch-wingblade": "the only status option (Venomous); a thistle butterfly; Rare, a low map breaking its limit once",
+    "pack-rat-looter": "a 1-Lumber card that wins Lumber on a kill: the map has one Lumber maker"
+   },
+   "skills": [
+    {
+     "key": "guardian",
+     "name": "Guardian",
+     "carriers": [
+      "terrier-pup"
+     ]
+    },
+    {
+     "key": "thorns",
+     "name": "Thorns",
+     "carriers": [
+      "bramble-sprout"
+     ]
+    },
+    {
+     "key": "inspiring",
+     "name": "Inspiring",
+     "carriers": [
+      "cricket-drummer"
+     ]
+    },
+    {
+     "key": "foraging",
+     "name": "Foraging",
+     "carriers": [
+      "hedgerow-shrew"
+     ]
+    }
+   ],
+   "gaps": [
+    "Thorns and Foraging are on 1 card each: Field Vole (Foraging, on today's list) or Inside-Out Hedgehog (Thorns) would make 2."
+   ],
+   "mix": {
+    "cost1": 3,
+    "cost0": 16,
+    "wait1": 5,
+    "wait0": 14,
+    "lumber": 2,
+    "plain": 6,
+    "status": 1,
+    "stone": 0
+   },
+   "usage": {
+    "bramble-sprout": 1,
+    "terrier-pup": 2,
+    "cricket-drummer": 2,
+    "chipmunk-skirmisher": 2,
+    "chipmunk-cavalry": 2,
+    "hedgerow-shrew": 3,
+    "meadow-rabbit": 1,
+    "moonlit-hare": 2,
+    "dormouse": 2,
+    "puddle-skimmer": 2,
+    "soldier-ant": 2,
+    "ant-scout": 2,
+    "bee-knight": 1,
+    "honey-bee": 2,
+    "house-cat": 2,
+    "duck-paddler": 4,
+    "robin-redbreast": 2,
+    "monarch-wingblade": 1,
+    "pack-rat-looter": 2
+   }
+  },
+  "mb": {
+   "mapNo": 2,
+   "name": "Pebble Beach",
+   "suggest": [
+    "beaver-lumberjack",
+    "driftwood-crab",
+    "gull-thief",
+    "open-ocean-hermit-crab",
+    "oystercatcher",
+    "pincushion-urchin",
+    "dolphin-knight",
+    "conch-herald",
+    "rock-pool-starfish",
+    "beachcomber-sanderling",
+    "limpet-clinger"
+   ],
+   "carried": [
+    "puddle-skimmer",
+    "duck-paddler",
+    "hedgerow-shrew",
+    "moonlit-hare",
+    "robin-redbreast"
+   ],
+   "ownerYes": [
+    "beaver-lumberjack",
+    "driftwood-crab",
+    "gull-thief",
+    "open-ocean-hermit-crab",
+    "oystercatcher",
+    "pincushion-urchin",
+    "dolphin-knight",
+    "conch-herald",
+    "rock-pool-starfish",
+    "beachcomber-sanderling",
+    "limpet-clinger",
+    "puddle-skimmer",
+    "duck-paddler",
+    "hedgerow-shrew",
+    "moonlit-hare",
+    "robin-redbreast"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "great-skua",
+    "bloodworm"
+   ],
+   "adminWhy": {
+    "great-skua": "a beach pirate bird with Hemorrhage: the map has no status option; costs 1 Lumber",
+    "bloodworm": "a beach worm with Venomous + Bleed: a second status option, no Lumber"
+   },
+   "skills": [
+    {
+     "key": "crabClaws",
+     "name": "Crab Claws",
+     "carriers": [
+      "driftwood-crab",
+      "open-ocean-hermit-crab"
+     ]
+    },
+    {
+     "key": "armor",
+     "name": "Armor",
+     "carriers": [
+      "open-ocean-hermit-crab"
+     ]
+    },
+    {
+     "key": "pierce",
+     "name": "Pierce",
+     "carriers": [
+      "oystercatcher"
+     ]
+    },
+    {
+     "key": "shell",
+     "name": "Shell",
+     "carriers": [
+      "limpet-clinger"
+     ]
+    }
+   ],
+   "gaps": [
+    "Armor and its answer Pierce come as a pair (Hermit Crab / Oystercatcher). Tide (minor) on 6 cards."
+   ],
+   "mix": {
+    "cost1": 4,
+    "cost0": 14,
+    "wait1": 12,
+    "wait0": 6,
+    "lumber": 4,
+    "plain": 3,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "beaver-lumberjack": 4,
+    "driftwood-crab": 3,
+    "gull-thief": 2,
+    "open-ocean-hermit-crab": 1,
+    "oystercatcher": 1,
+    "pincushion-urchin": 2,
+    "dolphin-knight": 3,
+    "conch-herald": 2,
+    "rock-pool-starfish": 1,
+    "beachcomber-sanderling": 1,
+    "limpet-clinger": 2,
+    "puddle-skimmer": 2,
+    "duck-paddler": 4,
+    "hedgerow-shrew": 3,
+    "moonlit-hare": 2,
+    "robin-redbreast": 2,
+    "great-skua": 2,
+    "bloodworm": 1
+   }
+  },
+  "mc": {
+   "mapNo": 3,
+   "name": "Gannet Cliffs",
+   "suggest": [
+    "conch-crawler",
+    "cormorant",
+    "fiddler-crab-swarm",
+    "kittiwake-flock",
+    "puffin-diver",
+    "peak-condor",
+    "gannet-nestweaver",
+    "feral-tomcat",
+    "peregrine-stooper",
+    "eagle-sharpshooter",
+    "pika-hoarder"
+   ],
+   "carried": [
+    "chipmunk-cavalry",
+    "limpet-clinger",
+    "conch-herald",
+    "beaver-lumberjack",
+    "gull-thief"
+   ],
+   "ownerYes": [
+    "conch-crawler",
+    "cormorant",
+    "fiddler-crab-swarm",
+    "kittiwake-flock",
+    "puffin-diver",
+    "peak-condor",
+    "gannet-nestweaver",
+    "feral-tomcat",
+    "peregrine-stooper",
+    "eagle-sharpshooter",
+    "chipmunk-cavalry",
+    "limpet-clinger",
+    "conch-herald",
+    "beaver-lumberjack",
+    "gull-thief",
+    "pika-hoarder"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "razorbill",
+    "great-skua",
+    "hawk-arrowkeeper"
+   ],
+   "adminWhy": {
+    "razorbill": "the cliffs' Bleed bird (on today's list): no status option among the picks",
+    "great-skua": "a second status option (Hemorrhage), a cliff-nesting pirate bird",
+    "hawk-arrowkeeper": "a plain cliff hawk: no plain body among the picks"
+   },
+   "skills": [
+    {
+     "key": "pounce",
+     "name": "Pounce",
+     "carriers": [
+      "peregrine-stooper"
+     ]
+    },
+    {
+     "key": "dive",
+     "name": "Dive",
+     "carriers": [
+      "puffin-diver"
+     ]
+    },
+    {
+     "key": "reach",
+     "name": "Reach",
+     "carriers": [
+      "cormorant"
+     ]
+    },
+    {
+     "key": "arrow",
+     "name": "Arrow",
+     "carriers": [
+      "eagle-sharpshooter"
+     ]
+    }
+   ],
+   "gaps": [
+    "Each on 1 card; Pounce returns on 4 cards at Map 11, Dive on the Harbor Seal (Map 17), Reach on the Mallard Halberdier (Map 15).",
+    "deck mix short: plain"
+   ],
+   "mix": {
+    "cost1": 9,
+    "cost0": 10,
+    "wait1": 12,
+    "wait0": 7,
+    "lumber": 3,
+    "plain": 1,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "conch-crawler": 3,
+    "cormorant": 1,
+    "fiddler-crab-swarm": 2,
+    "kittiwake-flock": 3,
+    "puffin-diver": 1,
+    "peak-condor": 2,
+    "gannet-nestweaver": 2,
+    "feral-tomcat": 1,
+    "peregrine-stooper": 2,
+    "eagle-sharpshooter": 2,
+    "chipmunk-cavalry": 2,
+    "limpet-clinger": 2,
+    "conch-herald": 2,
+    "beaver-lumberjack": 4,
+    "gull-thief": 2,
+    "pika-hoarder": 2,
+    "razorbill": 1,
+    "great-skua": 2,
+    "hawk-arrowkeeper": 2
+   }
+  },
+  "m2": {
+   "mapNo": 4,
+   "name": "Sunken Hollow",
+   "suggest": [
+    "pond-algae",
+    "slow-worm",
+    "water-shrew",
+    "snapstick-turtle",
+    "shoal-shark",
+    "platypus-spur",
+    "muskrat-lodgekeeper",
+    "grass-snake",
+    "river-mink",
+    "planarian-splitter"
+   ],
+   "carried": [
+    "dolphin-knight",
+    "beaver-lumberjack",
+    "kittiwake-flock",
+    "duck-paddler",
+    "conch-crawler"
+   ],
+   "ownerYes": [
+    "pond-algae",
+    "slow-worm",
+    "water-shrew",
+    "snapstick-turtle",
+    "shoal-shark",
+    "platypus-spur",
+    "muskrat-lodgekeeper",
+    "grass-snake",
+    "river-mink",
+    "planarian-splitter",
+    "dolphin-knight",
+    "beaver-lumberjack",
+    "kittiwake-flock",
+    "duck-paddler",
+    "conch-crawler"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "beaver-feller",
+    "water-vole"
+   ],
+   "adminWhy": {
+    "beaver-feller": "a river Lumber maker (Felling): only the Beaver Lumberjack makes Lumber here",
+    "water-vole": "a no-wait, no-Lumber body: only 2 no-wait cards"
+   },
+   "skills": [
+    {
+     "key": "poison",
+     "name": "Venomous",
+     "carriers": [
+      "water-shrew",
+      "platypus-spur"
+     ]
+    },
+    {
+     "key": "thanatosis",
+     "name": "Thanatosis",
+     "carriers": [
+      "slow-worm",
+      "grass-snake"
+     ]
+    },
+    {
+     "key": "bulwark",
+     "name": "Bulwark",
+     "carriers": [
+      "muskrat-lodgekeeper"
+     ]
+    },
+    {
+     "key": "bloomCopy",
+     "name": "Bloom",
+     "carriers": [
+      "pond-algae"
+     ]
+    }
+   ],
+   "gaps": [
+    "DES2's Bleed is not here: it arrives on Map 5 (Mosquito Cloud, Alley Cat)."
+   ],
+   "mix": {
+    "cost1": 7,
+    "cost0": 10,
+    "wait1": 14,
+    "wait0": 3,
+    "lumber": 2,
+    "plain": 4,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "pond-algae": 2,
+    "slow-worm": 1,
+    "water-shrew": 2,
+    "snapstick-turtle": 2,
+    "shoal-shark": 2,
+    "platypus-spur": 2,
+    "muskrat-lodgekeeper": 2,
+    "grass-snake": 1,
+    "river-mink": 1,
+    "planarian-splitter": 2,
+    "dolphin-knight": 3,
+    "beaver-lumberjack": 4,
+    "kittiwake-flock": 3,
+    "duck-paddler": 4,
+    "conch-crawler": 3,
+    "beaver-feller": 1,
+    "water-vole": 1
+   }
+  },
+  "mw": {
+   "mapNo": 5,
+   "name": "Gatorback Swamp",
+   "suggest": [
+    "newt-doctor",
+    "mosquito-cloud",
+    "alley-cat",
+    "marsh-mallow-hare",
+    "mudpuppy",
+    "muskrat-reedgatherer",
+    "swamp-alligator",
+    "raft-spider",
+    "fire-ant-raft",
+    "constrictor-coil"
+   ],
+   "carried": [
+    "shoal-shark",
+    "platypus-spur",
+    "muskrat-lodgekeeper",
+    "snapstick-turtle",
+    "planarian-splitter"
+   ],
+   "ownerYes": [
+    "shoal-shark",
+    "newt-doctor",
+    "mosquito-cloud",
+    "platypus-spur",
+    "alley-cat",
+    "marsh-mallow-hare",
+    "mudpuppy",
+    "muskrat-reedgatherer",
+    "swamp-alligator",
+    "raft-spider",
+    "muskrat-lodgekeeper",
+    "snapstick-turtle",
+    "planarian-splitter",
+    "fire-ant-raft",
+    "constrictor-coil"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "caiman-hatchling",
+    "peat-cutter-vole"
+   ],
+   "adminWhy": {
+    "caiman-hatchling": "a second gator for the Gatorback fights (only the Swamp Alligator), no-wait, and Ambush, the swamp's missing skill",
+    "peat-cutter-vole": "a swamp Lumber maker (Delivery): only one Lumber maker"
+   },
+   "skills": [
+    {
+     "key": "bleed",
+     "name": "Bleed",
+     "carriers": [
+      "mosquito-cloud",
+      "alley-cat"
+     ]
+    },
+    {
+     "key": "healing",
+     "name": "Healing",
+     "carriers": [
+      "newt-doctor"
+     ]
+    },
+    {
+     "key": "cure",
+     "name": "Cure",
+     "carriers": [
+      "marsh-mallow-hare"
+     ]
+    },
+    {
+     "key": "ambush",
+     "name": "Ambush",
+     "carriers": [
+      "caiman-hatchling"
+     ]
+    }
+   ],
+   "gaps": [
+    "Ambush (the gators, DES2) had no carrier: Caiman Hatchling (admin add) closes it."
+   ],
+   "mix": {
+    "cost1": 9,
+    "cost0": 8,
+    "wait1": 14,
+    "wait0": 3,
+    "lumber": 2,
+    "plain": 4,
+    "status": 4,
+    "stone": 0
+   },
+   "usage": {
+    "shoal-shark": 2,
+    "newt-doctor": 2,
+    "mosquito-cloud": 2,
+    "platypus-spur": 2,
+    "alley-cat": 2,
+    "marsh-mallow-hare": 1,
+    "mudpuppy": 1,
+    "muskrat-reedgatherer": 1,
+    "swamp-alligator": 1,
+    "raft-spider": 1,
+    "muskrat-lodgekeeper": 2,
+    "snapstick-turtle": 2,
+    "planarian-splitter": 2,
+    "fire-ant-raft": 2,
+    "constrictor-coil": 3,
+    "caiman-hatchling": 1,
+    "peat-cutter-vole": 1
+   }
+  },
+  "m8": {
+   "mapNo": 6,
+   "name": "Sable Swampmire",
+   "suggest": [
+    "cypress-root-lurker",
+    "lamprey",
+    "alligator-gar",
+    "camouflage-frog",
+    "adder-ambusher",
+    "anhinga-spearbird",
+    "booming-bittern",
+    "nutria-reedcutter",
+    "grass-viper"
+   ],
+   "carried": [
+    "newt-doctor",
+    "pond-algae",
+    "water-shrew",
+    "mosquito-cloud",
+    "constrictor-coil"
+   ],
+   "ownerYes": [
+    "cypress-root-lurker",
+    "lamprey",
+    "alligator-gar",
+    "camouflage-frog",
+    "adder-ambusher",
+    "anhinga-spearbird",
+    "booming-bittern",
+    "nutria-reedcutter",
+    "newt-doctor",
+    "pond-algae",
+    "water-shrew",
+    "grass-viper",
+    "mosquito-cloud",
+    "constrictor-coil"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "sunbittern-strider",
+    "bone-diviner",
+    "owl-sentinel"
+   ],
+   "adminWhy": {
+    "sunbittern-strider": "a plain wader: only one plain body",
+    "bone-diviner": "a swamp raven that wins Lumber on a kill: only one Lumber maker",
+    "owl-sentinel": "True Sight, the answer to the Booming Bittern's Invisible (no answer on the map)"
+   },
+   "skills": [
+    {
+     "key": "daunt",
+     "name": "Daunt",
+     "carriers": [
+      "lamprey",
+      "booming-bittern"
+     ]
+    },
+    {
+     "key": "invisible",
+     "name": "Invisible",
+     "carriers": [
+      "booming-bittern"
+     ]
+    },
+    {
+     "key": "keenEye",
+     "name": "True Sight",
+     "carriers": [
+      "owl-sentinel"
+     ]
+    },
+    {
+     "key": "repair",
+     "name": "Repair",
+     "carriers": [
+      "cypress-root-lurker"
+     ]
+    }
+   ],
+   "gaps": [
+    "Invisible had no answer: Owl Sentinel (True Sight, admin add). DES2's Leech has no fitting carrier on the list (Vampire Bat is the Glimmer Depths')."
+   ],
+   "mix": {
+    "cost1": 11,
+    "cost0": 6,
+    "wait1": 13,
+    "wait0": 4,
+    "lumber": 2,
+    "plain": 2,
+    "status": 7,
+    "stone": 0
+   },
+   "usage": {
+    "cypress-root-lurker": 2,
+    "lamprey": 2,
+    "alligator-gar": 2,
+    "camouflage-frog": 2,
+    "adder-ambusher": 3,
+    "anhinga-spearbird": 1,
+    "booming-bittern": 2,
+    "nutria-reedcutter": 2,
+    "newt-doctor": 2,
+    "pond-algae": 2,
+    "water-shrew": 2,
+    "grass-viper": 1,
+    "mosquito-cloud": 2,
+    "constrictor-coil": 3,
+    "sunbittern-strider": 2,
+    "bone-diviner": 1,
+    "owl-sentinel": 1
+   }
+  },
+  "mu": {
+   "mapNo": 7,
+   "name": "The Morel Hollow",
+   "suggest": [
+    "hawthorn-shieldbug",
+    "corpse-flower-beetle",
+    "wolf-spider-mother",
+    "fungus-gnat-cloud",
+    "rot-swollen-carcass",
+    "puffball-bombardier",
+    "crocodile-ambusher",
+    "compost-grub",
+    "leopard-slug",
+    "amber-cicada"
+   ],
+   "carried": [
+    "cypress-root-lurker",
+    "earthworm",
+    "adder-ambusher",
+    "lamprey",
+    "camouflage-frog"
+   ],
+   "ownerYes": [
+    "hawthorn-shieldbug",
+    "corpse-flower-beetle",
+    "wolf-spider-mother",
+    "fungus-gnat-cloud",
+    "rot-swollen-carcass",
+    "puffball-bombardier",
+    "cypress-root-lurker",
+    "earthworm",
+    "crocodile-ambusher",
+    "adder-ambusher",
+    "lamprey",
+    "camouflage-frog",
+    "compost-grub",
+    "leopard-slug",
+    "amber-cicada"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "truffle-piglet",
+    "leafcutter-gardener",
+    "nightshade-moth"
+   ],
+   "adminWhy": {
+    "truffle-piglet": "truffles: a fungal Lumber maker (the map has none)",
+    "leafcutter-gardener": "ants that farm fungus: a second Lumber maker, no-wait",
+    "nightshade-moth": "Sleep, the spore skill the map is missing"
+   },
+   "skills": [
+    {
+     "key": "wither",
+     "name": "Wither",
+     "carriers": [
+      "corpse-flower-beetle"
+     ]
+    },
+    {
+     "key": "brood",
+     "name": "Brood",
+     "carriers": [
+      "wolf-spider-mother"
+     ]
+    },
+    {
+     "key": "onDeathSpawn",
+     "name": "On Death: spawn",
+     "carriers": [
+      "rot-swollen-carcass"
+     ]
+    },
+    {
+     "key": "sleep",
+     "name": "Sleep",
+     "carriers": [
+      "nightshade-moth"
+     ]
+    }
+   ],
+   "gaps": [
+    "Sleep (the spores, DES2) had no carrier: Nightshade Moth (admin add). Paralyze has no card."
+   ],
+   "mix": {
+    "cost1": 12,
+    "cost0": 6,
+    "wait1": 12,
+    "wait0": 6,
+    "lumber": 2,
+    "plain": 2,
+    "status": 5,
+    "stone": 0
+   },
+   "usage": {
+    "hawthorn-shieldbug": 3,
+    "corpse-flower-beetle": 3,
+    "wolf-spider-mother": 2,
+    "fungus-gnat-cloud": 1,
+    "rot-swollen-carcass": 2,
+    "puffball-bombardier": 1,
+    "cypress-root-lurker": 2,
+    "earthworm": 2,
+    "crocodile-ambusher": 2,
+    "adder-ambusher": 3,
+    "lamprey": 2,
+    "camouflage-frog": 2,
+    "compost-grub": 1,
+    "leopard-slug": 1,
+    "amber-cicada": 1,
+    "truffle-piglet": 2,
+    "leafcutter-gardener": 1,
+    "nightshade-moth": 1
+   }
+  },
+  "m4": {
+   "mapNo": 8,
+   "name": "Caves & Alcoves",
+   "suggest": [
+    "quarry-mole",
+    "cave-olm",
+    "sulfur-cinder-moth",
+    "star-nosed-mole",
+    "stalactite-golem",
+    "echo-screecher",
+    "giant-cave-huntsman",
+    "gallery-orb-weaver",
+    "barrow-leech-bat"
+   ],
+   "carried": [
+    "corpse-flower-beetle",
+    "rot-swollen-carcass",
+    "wolf-spider-mother",
+    "hawthorn-shieldbug",
+    "driftwood-crab"
+   ],
+   "ownerYes": [
+    "quarry-mole",
+    "cave-olm",
+    "sulfur-cinder-moth",
+    "star-nosed-mole",
+    "stalactite-golem",
+    "echo-screecher",
+    "giant-cave-huntsman",
+    "gallery-orb-weaver",
+    "barrow-leech-bat",
+    "corpse-flower-beetle",
+    "rot-swollen-carcass",
+    "wolf-spider-mother",
+    "hawthorn-shieldbug",
+    "driftwood-crab"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "upside-down-bat",
+    "blind-cave-fish"
+   ],
+   "adminWhy": {
+    "upside-down-bat": "a plain, no-Lumber, no-wait bat: the map has 2 no-Lumber cards and 1 plain body",
+    "blind-cave-fish": "a no-Lumber, no-wait cave fish (Keen Sense): cheap bodies for the cave fights"
+   },
+   "skills": [
+    {
+     "key": "illuminate",
+     "name": "Illuminate",
+     "carriers": [
+      "sulfur-cinder-moth"
+     ]
+    },
+    {
+     "key": "keenSense",
+     "name": "Keen Sense",
+     "carriers": [
+      "quarry-mole",
+      "blind-cave-fish"
+     ]
+    },
+    {
+     "key": "web",
+     "name": "Web",
+     "carriers": [
+      "gallery-orb-weaver"
+     ]
+    },
+    {
+     "key": "nocturnal",
+     "name": "Nocturnal (minor, review)",
+     "carriers": [
+      "echo-screecher",
+      "barrow-leech-bat"
+     ]
+    }
+   ],
+   "gaps": [
+    "Two light/dark answers on 1 card each (Sulfur Cinder Moth, Quarry Mole; Blind Cave Fish, admin add, is a second Keen Sense). Sonar (DES2) has no cave carrier: Whip Spider (Glimmer Depths).",
+    "deck mix short: lumber"
+   ],
+   "mix": {
+    "cost1": 12,
+    "cost0": 4,
+    "wait1": 11,
+    "wait0": 5,
+    "lumber": 1,
+    "plain": 2,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "quarry-mole": 1,
+    "cave-olm": 1,
+    "sulfur-cinder-moth": 2,
+    "star-nosed-mole": 1,
+    "stalactite-golem": 1,
+    "echo-screecher": 1,
+    "giant-cave-huntsman": 2,
+    "gallery-orb-weaver": 1,
+    "barrow-leech-bat": 1,
+    "corpse-flower-beetle": 3,
+    "rot-swollen-carcass": 2,
+    "wolf-spider-mother": 2,
+    "hawthorn-shieldbug": 3,
+    "driftwood-crab": 3,
+    "upside-down-bat": 1,
+    "blind-cave-fish": 1
+   }
+  },
+  "mk": {
+   "mapNo": 9,
+   "name": "The Kelp Mangroves",
+   "suggest": [
+    "banded-sea-krait",
+    "mangrove-mudskipper",
+    "mangrove-monitor",
+    "horseshoe-crab",
+    "proboscis-monkey",
+    "ironclaw-fiddler",
+    "fishing-cat",
+    "tide-spirit",
+    "voltaic-eel"
+   ],
+   "carried": [
+    "alligator-gar",
+    "booming-bittern",
+    "fiddler-crab-swarm",
+    "driftwood-crab",
+    "alley-cat",
+    "giant-cave-huntsman"
+   ],
+   "ownerYes": [
+    "banded-sea-krait",
+    "mangrove-mudskipper",
+    "mangrove-monitor",
+    "horseshoe-crab",
+    "proboscis-monkey",
+    "ironclaw-fiddler",
+    "fishing-cat",
+    "tide-spirit",
+    "voltaic-eel",
+    "alligator-gar",
+    "booming-bittern",
+    "fiddler-crab-swarm",
+    "driftwood-crab",
+    "alley-cat",
+    "giant-cave-huntsman"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "nutria-reedcutter",
+    "sunbittern-strider"
+   ],
+   "adminWhy": {
+    "nutria-reedcutter": "a reed-cutting Lumber maker: only the Driftwood Crab makes Lumber",
+    "sunbittern-strider": "a plain mangrove wader for the skirmish fill"
+   },
+   "skills": [
+    {
+     "key": "armor",
+     "name": "Armor wall (review)",
+     "carriers": [
+      "horseshoe-crab",
+      "ironclaw-fiddler",
+      "alligator-gar"
+     ]
+    },
+    {
+     "key": "skitter",
+     "name": "Skitter",
+     "carriers": [
+      "mangrove-mudskipper"
+     ]
+    },
+    {
+     "key": "taunt",
+     "name": "Taunt",
+     "carriers": [
+      "proboscis-monkey"
+     ]
+    },
+    {
+     "key": "chainLightning",
+     "name": "Chain Lightning",
+     "carriers": [
+      "voltaic-eel"
+     ]
+    }
+   ],
+   "gaps": [
+    "Strangle (the kelp, DES2) has no kelp card in the game: a skill edit later. Pressure (DES2-1) is not built."
+   ],
+   "mix": {
+    "cost1": 12,
+    "cost0": 5,
+    "wait1": 13,
+    "wait0": 4,
+    "lumber": 2,
+    "plain": 3,
+    "status": 5,
+    "stone": 0
+   },
+   "usage": {
+    "banded-sea-krait": 1,
+    "mangrove-mudskipper": 1,
+    "mangrove-monitor": 2,
+    "horseshoe-crab": 1,
+    "proboscis-monkey": 1,
+    "ironclaw-fiddler": 2,
+    "fishing-cat": 1,
+    "tide-spirit": 2,
+    "voltaic-eel": 2,
+    "alligator-gar": 2,
+    "booming-bittern": 2,
+    "fiddler-crab-swarm": 2,
+    "driftwood-crab": 3,
+    "alley-cat": 2,
+    "giant-cave-huntsman": 2,
+    "nutria-reedcutter": 2,
+    "sunbittern-strider": 2
+   }
+  },
+  "m7": {
+   "mapNo": 10,
+   "name": "Coral Current",
+   "suggest": [
+    "coral-current-eel",
+    "riptide-eel",
+    "krill-swarm",
+    "moon-jelly",
+    "sea-turtle-elder",
+    "reef-shark",
+    "clownfish-scout",
+    "crown-of-thorns-star",
+    "giant-clam"
+   ],
+   "carried": [
+    "voltaic-eel",
+    "dolphin-knight",
+    "ironclaw-fiddler",
+    "pincushion-urchin",
+    "conch-crawler",
+    "tide-spirit"
+   ],
+   "ownerYes": [
+    "coral-current-eel",
+    "riptide-eel",
+    "krill-swarm",
+    "voltaic-eel",
+    "dolphin-knight",
+    "ironclaw-fiddler",
+    "moon-jelly",
+    "sea-turtle-elder",
+    "reef-shark",
+    "clownfish-scout",
+    "crown-of-thorns-star",
+    "giant-clam",
+    "pincushion-urchin",
+    "conch-crawler",
+    "tide-spirit"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "coral-polyp-colony",
+    "nautilus-drifter"
+   ],
+   "adminWhy": {
+    "coral-polyp-colony": "a reef Lumber maker every round: the map has none",
+    "nautilus-drifter": "a second reef Lumber maker, high-cost (Very Rare from Map 10)"
+   },
+   "skills": [
+    {
+     "key": "wave",
+     "name": "Wave (Sea Bass)",
+     "carriers": [
+      "sea-bass"
+     ]
+    },
+    {
+     "key": "swarm",
+     "name": "Swarm (Fish)",
+     "carriers": [
+      "krill-swarm",
+      "sea-bass"
+     ]
+    },
+    {
+     "key": "chainLightning",
+     "name": "Chain Lightning (review)",
+     "carriers": [
+      "voltaic-eel"
+     ]
+    },
+    {
+     "key": "reload",
+     "name": "Reload (review)",
+     "carriers": [
+      "riptide-eel"
+     ]
+    }
+   ],
+   "gaps": [
+    "The owner's picks bring no skill new to the road: the Sea Bass (Wave) closes it. DES2's Fork lives on the Kraken Spawnling (now a Sunken Depths monster)."
+   ],
+   "mix": {
+    "cost1": 10,
+    "cost0": 8,
+    "wait1": 14,
+    "wait0": 4,
+    "lumber": 2,
+    "plain": 4,
+    "status": 3,
+    "stone": 0
+   },
+   "usage": {
+    "coral-current-eel": 1,
+    "riptide-eel": 1,
+    "krill-swarm": 2,
+    "voltaic-eel": 2,
+    "dolphin-knight": 3,
+    "ironclaw-fiddler": 2,
+    "moon-jelly": 1,
+    "sea-turtle-elder": 1,
+    "reef-shark": 1,
+    "clownfish-scout": 1,
+    "crown-of-thorns-star": 1,
+    "giant-clam": 1,
+    "pincushion-urchin": 2,
+    "conch-crawler": 3,
+    "tide-spirit": 2,
+    "coral-polyp-colony": 1,
+    "nautilus-drifter": 1
+   },
+   "newCard": "sea-bass"
+  },
+  "m10": {
+   "mapNo": 11,
+   "name": "Eyrie Heights",
+   "suggest": [
+    "stonedrop-vulture",
+    "anvil-thrush",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "golden-eagle-diver",
+    "chamois-leaper",
+    "mountain-hare",
+    "chipmunk-hoarder",
+    "the-gannet-queen"
+   ],
+   "carried": [
+    "gannet-nestweaver",
+    "peregrine-stooper",
+    "pika-hoarder",
+    "peak-condor",
+    "beaver-lumberjack",
+    "eagle-sharpshooter",
+    "kittiwake-flock"
+   ],
+   "ownerYes": [
+    "stonedrop-vulture",
+    "anvil-thrush",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "golden-eagle-diver",
+    "chamois-leaper",
+    "mountain-hare",
+    "chipmunk-hoarder",
+    "gannet-nestweaver",
+    "the-gannet-queen",
+    "peregrine-stooper",
+    "pika-hoarder",
+    "peak-condor",
+    "beaver-lumberjack",
+    "eagle-sharpshooter",
+    "kittiwake-flock"
+   ],
+   "baby": [],
+   "adminAdd": [
+    "hawk-arrowkeeper",
+    "alpine-marmot"
+   ],
+   "adminWhy": {
+    "hawk-arrowkeeper": "a plain eyrie hawk: no plain body among the picks",
+    "alpine-marmot": "a Guardian: the map has none"
+   },
+   "skills": [
+    {
+     "key": "pounce",
+     "name": "Pounce (mastery)",
+     "carriers": [
+      "golden-eagle-diver",
+      "chamois-leaper",
+      "the-gannet-queen",
+      "peregrine-stooper"
+     ]
+    },
+    {
+     "key": "arrow",
+     "name": "Arrow (mastery)",
+     "carriers": [
+      "stonedrop-vulture",
+      "eagle-owl-quartermaster",
+      "eagle-sharpshooter"
+     ]
+    },
+    {
+     "key": "fletcher",
+     "name": "Fletcher",
+     "carriers": [
+      "eagle-owl-quartermaster"
+     ]
+    },
+    {
+     "key": "mountainClimber",
+     "name": "Mountain Climber",
+     "carriers": [
+      "chamois-leaper"
+     ]
+    }
+   ],
+   "gaps": [
+    "Arrow x3 + Fletcher (Eagle-Owl Quartermaster): the first arrow synergy. Mountain Climber is on 1 card (Chamois Leaper). DES2's Vulnerable has no fitting carrier.",
+    "deck mix short: plain"
+   ],
+   "mix": {
+    "cost1": 10,
+    "cost0": 8,
+    "wait1": 14,
+    "wait0": 4,
+    "lumber": 3,
+    "plain": 1,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "stonedrop-vulture": 3,
+    "anvil-thrush": 1,
+    "eagle-owl-quartermaster": 2,
+    "eyrie-warden": 1,
+    "golden-eagle-diver": 2,
+    "chamois-leaper": 2,
+    "mountain-hare": 2,
+    "chipmunk-hoarder": 3,
+    "gannet-nestweaver": 2,
+    "the-gannet-queen": 1,
+    "peregrine-stooper": 2,
+    "pika-hoarder": 2,
+    "peak-condor": 2,
+    "beaver-lumberjack": 4,
+    "eagle-sharpshooter": 2,
+    "kittiwake-flock": 3,
+    "hawk-arrowkeeper": 2,
+    "alpine-marmot": 1
+   }
+  },
+  "mh": {
+   "mapNo": 12,
+   "name": "The Briar Maze",
+   "suggest": [
+    "quillguard",
+    "barkplate-beetle",
+    "quill-thorn-boar",
+    "briarback-hedgehog",
+    "bramble-hoglet",
+    "cunning-vixen",
+    "lyrebird-mimic",
+    "thorn-shrike",
+    "mouse-sapper",
+    "hedge-weasel",
+    "carrion-crow"
+   ],
+   "carried": [
+    "hedgerow-shrew",
+    "dormouse",
+    "hawthorn-shieldbug",
+    "terrier-pup",
+    "pack-rat-looter"
+   ],
+   "ownerYes": [
+    "quillguard",
+    "barkplate-beetle",
+    "quill-thorn-boar"
+   ],
+   "baby": [],
+   "adminAdd": [],
+   "adminWhy": {},
+   "skills": [
+    {
+     "key": "brambleArmor",
+     "name": "Bramble Armor",
+     "carriers": [
+      "barkplate-beetle",
+      "briarback-hedgehog"
+     ]
+    },
+    {
+     "key": "backstab",
+     "name": "Backstab",
+     "carriers": [
+      "cunning-vixen"
+     ]
+    },
+    {
+     "key": "confuse",
+     "name": "Confuse",
+     "carriers": [
+      "lyrebird-mimic"
+     ]
+    },
+    {
+     "key": "siege",
+     "name": "Siege",
+     "carriers": [
+      "mouse-sapper"
+     ]
+    }
+   ],
+   "gaps": [
+    "Backstab and Confuse on 1 card each: Stoat Cutthroat (Backstab, Map 15's list) or a magpie re-skilled to Confuse would make 2."
+   ],
+   "mix": {
+    "cost1": 10,
+    "cost0": 6,
+    "wait1": 11,
+    "wait0": 5,
+    "lumber": 2,
+    "plain": 2,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "quillguard": 2,
+    "barkplate-beetle": 1,
+    "quill-thorn-boar": 2,
+    "briarback-hedgehog": 1,
+    "bramble-hoglet": 2,
+    "cunning-vixen": 2,
+    "lyrebird-mimic": 2,
+    "thorn-shrike": 2,
+    "mouse-sapper": 2,
+    "hedge-weasel": 2,
+    "carrion-crow": 1,
+    "hedgerow-shrew": 3,
+    "dormouse": 2,
+    "hawthorn-shieldbug": 3,
+    "terrier-pup": 2,
+    "pack-rat-looter": 2
+   }
+  },
+  "mr": {
+   "mapNo": 13,
+   "name": "The Redwood Deep",
+   "suggest": [
+    "grizzly-vanguard",
+    "stag-knight",
+    "fawn-scout",
+    "berserker-boar",
+    "badger-lumberjack",
+    "redwood-woodpecker",
+    "pine-marten",
+    "sergeant-bramblefox",
+    "owl-nightwatch",
+    "heartwood-treant"
+   ],
+   "carried": [
+    "quill-thorn-boar",
+    "corpse-flower-beetle",
+    "cunning-vixen",
+    "bramble-hoglet",
+    "chipmunk-skirmisher",
+    "lyrebird-mimic"
+   ],
+   "ownerYes": [],
+   "baby": [
+    "bear-cub"
+   ],
+   "adminAdd": [],
+   "adminWhy": {},
+   "skills": [
+    {
+     "key": "rage",
+     "name": "Rage",
+     "carriers": [
+      "berserker-boar"
+     ]
+    },
+    {
+     "key": "canopyCover",
+     "name": "Canopy Cover",
+     "carriers": [
+      "fawn-scout"
+     ]
+    },
+    {
+     "key": "hoard",
+     "name": "Hoard (Timber)",
+     "carriers": [
+      "heartwood-treant"
+     ]
+    },
+    {
+     "key": "milling",
+     "name": "Milling",
+     "carriers": [
+      "redwood-woodpecker"
+     ]
+    }
+   ],
+   "gaps": [
+    "Rage and Canopy Cover on 1 card each (Berserker Boar, Fawn Scout); Hoard (Heartwood Treant) is the first Lumber payoff."
+   ],
+   "mix": {
+    "cost1": 13,
+    "cost0": 3,
+    "wait1": 12,
+    "wait0": 4,
+    "lumber": 2,
+    "plain": 2,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "grizzly-vanguard": 2,
+    "stag-knight": 1,
+    "fawn-scout": 1,
+    "berserker-boar": 2,
+    "badger-lumberjack": 1,
+    "redwood-woodpecker": 2,
+    "pine-marten": 1,
+    "sergeant-bramblefox": 1,
+    "owl-nightwatch": 2,
+    "heartwood-treant": 1,
+    "quill-thorn-boar": 2,
+    "corpse-flower-beetle": 3,
+    "cunning-vixen": 2,
+    "bramble-hoglet": 2,
+    "chipmunk-skirmisher": 2,
+    "lyrebird-mimic": 2,
+    "bear-cub": 1
+   }
+  },
+  "m5": {
+   "mapNo": 14,
+   "name": "Savanna Reaches",
+   "suggest": [
+    "plains-zebra",
+    "springbok-pronker",
+    "savanna-cheetah",
+    "grave-grin-hyena",
+    "dust-hyena",
+    "acacia-giraffe",
+    "marula-elephant",
+    "meerkat-sentry",
+    "termite-forager",
+    "weaver-bird",
+    "hoopoe-herald"
+   ],
+   "carried": [
+    "golden-eagle-diver",
+    "stonedrop-vulture",
+    "adder-ambusher",
+    "crocodile-ambusher",
+    "mangrove-monitor"
+   ],
+   "ownerYes": [],
+   "baby": [],
+   "adminAdd": [],
+   "adminWhy": {},
+   "skills": [
+    {
+     "key": "prey",
+     "name": "Prey",
+     "carriers": [
+      "springbok-pronker"
+     ]
+    },
+    {
+     "key": "executioner",
+     "name": "Executioner",
+     "carriers": [
+      "grave-grin-hyena"
+     ]
+    },
+    {
+     "key": "carnage",
+     "name": "Carnage",
+     "carriers": [
+      "dust-hyena"
+     ]
+    },
+    {
+     "key": "evasive",
+     "name": "Evasive herd (review)",
+     "carriers": [
+      "plains-zebra",
+      "acacia-giraffe"
+     ]
+    }
+   ],
+   "gaps": [
+    "Predator (DES2) has no savanna carrier: a skill edit (Savanna Cheetah) later."
+   ],
+   "mix": {
+    "cost1": 11,
+    "cost0": 5,
+    "wait1": 8,
+    "wait0": 8,
+    "lumber": 2,
+    "plain": 2,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "plains-zebra": 1,
+    "springbok-pronker": 1,
+    "savanna-cheetah": 2,
+    "grave-grin-hyena": 1,
+    "dust-hyena": 2,
+    "acacia-giraffe": 1,
+    "marula-elephant": 1,
+    "meerkat-sentry": 2,
+    "termite-forager": 2,
+    "weaver-bird": 1,
+    "hoopoe-herald": 1,
+    "golden-eagle-diver": 2,
+    "stonedrop-vulture": 3,
+    "adder-ambusher": 3,
+    "crocodile-ambusher": 2,
+    "mangrove-monitor": 2
+   }
+  },
+  "ml": {
+   "mapNo": 15,
+   "name": "The Long Grass",
+   "suggest": [
+    "squires-mount",
+    "warhorse-charger",
+    "war-hound",
+    "border-collie",
+    "shepherds-bark",
+    "pronghorn-racer",
+    "bison-bulldozer",
+    "goose-sentry",
+    "land-tiller",
+    "mallard-halberdier"
+   ],
+   "carried": [
+    "truffle-piglet",
+    "cricket-drummer",
+    "fire-ant-raft",
+    "hedge-weasel",
+    "mouse-sapper",
+    "thorn-shrike"
+   ],
+   "ownerYes": [],
+   "baby": [],
+   "adminAdd": [],
+   "adminWhy": {},
+   "skills": [
+    {
+     "key": "speed",
+     "name": "Speed",
+     "carriers": [
+      "pronghorn-racer"
+     ]
+    },
+    {
+     "key": "sentry",
+     "name": "Sentry",
+     "carriers": [
+      "goose-sentry"
+     ]
+    },
+    {
+     "key": "converge",
+     "name": "Converge",
+     "carriers": [
+      "border-collie"
+     ]
+    },
+    {
+     "key": "bulldoze",
+     "name": "Bulldoze",
+     "carriers": [
+      "bison-bulldozer"
+     ]
+    }
+   ],
+   "gaps": [
+    "Stampede (DES2) is on no card in the game: a skill edit (Warhorse Charger) later."
+   ],
+   "mix": {
+    "cost1": 13,
+    "cost0": 3,
+    "wait1": 13,
+    "wait0": 3,
+    "lumber": 2,
+    "plain": 3,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "squires-mount": 1,
+    "warhorse-charger": 1,
+    "war-hound": 1,
+    "border-collie": 1,
+    "shepherds-bark": 1,
+    "pronghorn-racer": 1,
+    "bison-bulldozer": 1,
+    "goose-sentry": 1,
+    "land-tiller": 1,
+    "mallard-halberdier": 1,
+    "truffle-piglet": 2,
+    "cricket-drummer": 2,
+    "fire-ant-raft": 2,
+    "hedge-weasel": 2,
+    "mouse-sapper": 2,
+    "thorn-shrike": 2
+   }
+  },
+  "mt": {
+   "mapNo": 16,
+   "name": "The Pinewood Taiga",
+   "suggest": [
+    "timber-wolf-pack",
+    "dhole-matriarch",
+    "dhole-runner",
+    "taiga-lynx",
+    "snowshoe-hare",
+    "boreal-elk",
+    "woodland-caribou",
+    "cone-cutter-squirrel",
+    "pinecone-crossbill",
+    "bramblewood-lynx"
+   ],
+   "carried": [
+    "grizzly-vanguard",
+    "redwood-woodpecker",
+    "owl-nightwatch",
+    "berserker-boar",
+    "mountain-hare"
+   ],
+   "ownerYes": [],
+   "baby": [],
+   "adminAdd": [],
+   "adminWhy": {},
+   "skills": [
+    {
+     "key": "pack",
+     "name": "Pack",
+     "carriers": [
+      "dhole-runner"
+     ]
+    },
+    {
+     "key": "packLeader",
+     "name": "Pack Leader",
+     "carriers": [
+      "dhole-matriarch"
+     ]
+    },
+    {
+     "key": "almanac",
+     "name": "Almanac",
+     "carriers": [
+      "cone-cutter-squirrel"
+     ]
+    },
+    {
+     "key": "frostbite",
+     "name": "Frostbite (review)",
+     "carriers": [
+      "woodland-caribou",
+      "mountain-hare"
+     ]
+    }
+   ],
+   "gaps": [
+    "Pack + Pack Leader shown as a pair (Dhole Runner, Dhole Matriarch)."
+   ],
+   "mix": {
+    "cost1": 11,
+    "cost0": 4,
+    "wait1": 12,
+    "wait0": 3,
+    "lumber": 2,
+    "plain": 2,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "timber-wolf-pack": 2,
+    "dhole-matriarch": 1,
+    "dhole-runner": 1,
+    "taiga-lynx": 2,
+    "snowshoe-hare": 1,
+    "boreal-elk": 1,
+    "woodland-caribou": 2,
+    "cone-cutter-squirrel": 2,
+    "pinecone-crossbill": 1,
+    "bramblewood-lynx": 1,
+    "grizzly-vanguard": 2,
+    "redwood-woodpecker": 2,
+    "owl-nightwatch": 2,
+    "berserker-boar": 2,
+    "mountain-hare": 2
+   }
+  },
+  "m6": {
+   "mapNo": 17,
+   "name": "Wolfsbane Tundra",
+   "suggest": [
+    "polar-bear",
+    "walrus-icebreaker",
+    "arctic-fox-raider",
+    "tundra-musk-ox",
+    "glacier-yak",
+    "frostbitten-wolverine",
+    "ice-crevasse-wolf",
+    "ringed-seal",
+    "arctic-tern",
+    "lemming-swarm",
+    "talus-pika"
+   ],
+   "carried": [
+    "timber-wolf-pack",
+    "taiga-lynx",
+    "woodland-caribou",
+    "krill-swarm",
+    "cone-cutter-squirrel"
+   ],
+   "ownerYes": [],
+   "baby": [
+    "musk-ox-calf"
+   ],
+   "adminAdd": [],
+   "adminWhy": {},
+   "skills": [
+    {
+     "key": "freeze",
+     "name": "Freeze",
+     "carriers": [
+      "walrus-icebreaker",
+      "glacier-yak"
+     ]
+    },
+    {
+     "key": "shatter",
+     "name": "Shatter",
+     "carriers": [
+      "walrus-icebreaker"
+     ]
+    },
+    {
+     "key": "hibernate",
+     "name": "Hibernate",
+     "carriers": [
+      "polar-bear"
+     ]
+    },
+    {
+     "key": "frostbite",
+     "name": "Frostbite (review)",
+     "carriers": [
+      "frostbitten-wolverine",
+      "woodland-caribou"
+     ]
+    }
+   ],
+   "gaps": [
+    "Shatter and Hibernate on 1 card each (Walrus, Polar Bear); no second carrier in the game."
+   ],
+   "mix": {
+    "cost1": 11,
+    "cost0": 5,
+    "wait1": 11,
+    "wait0": 5,
+    "lumber": 2,
+    "plain": 2,
+    "status": 5,
+    "stone": 0
+   },
+   "usage": {
+    "polar-bear": 1,
+    "walrus-icebreaker": 1,
+    "arctic-fox-raider": 1,
+    "tundra-musk-ox": 1,
+    "glacier-yak": 1,
+    "frostbitten-wolverine": 1,
+    "ice-crevasse-wolf": 1,
+    "ringed-seal": 1,
+    "arctic-tern": 1,
+    "lemming-swarm": 1,
+    "talus-pika": 3,
+    "timber-wolf-pack": 2,
+    "taiga-lynx": 2,
+    "woodland-caribou": 2,
+    "krill-swarm": 2,
+    "cone-cutter-squirrel": 2,
+    "musk-ox-calf": 1
+   }
+  },
+  "md": {
+   "mapNo": 18,
+   "name": "The Glass Dunes",
+   "suggest": [
+    "antlion-pit",
+    "glasswing-moth",
+    "caustic-scorpion",
+    "dune-jackal",
+    "dune-jackal-scout",
+    "fennec-fox",
+    "sandfish",
+    "horned-lizard",
+    "roadrunner-courier",
+    "armadillo-guard",
+    "sand-widow"
+   ],
+   "carried": [
+    "dust-hyena",
+    "termite-forager",
+    "savanna-cheetah",
+    "stonedrop-vulture",
+    "meerkat-sentry"
+   ],
+   "ownerYes": [],
+   "baby": [],
+   "adminAdd": [],
+   "adminWhy": {},
+   "skills": [
+    {
+     "key": "trap",
+     "name": "Trap",
+     "carriers": [
+      "antlion-pit"
+     ]
+    },
+    {
+     "key": "brittle",
+     "name": "Brittle",
+     "carriers": [
+      "glasswing-moth"
+     ]
+    },
+    {
+     "key": "dry",
+     "name": "Dry",
+     "carriers": [
+      "dune-jackal",
+      "dune-jackal-scout",
+      "fennec-fox"
+     ]
+    },
+    {
+     "key": "blind",
+     "name": "Blind",
+     "carriers": [
+      "horned-lizard"
+     ]
+    }
+   ],
+   "gaps": [
+    "Trap and Brittle on 1 card each; the second Trap (Quicksand Queen) is the Pale Desert's boss.",
+    "deck mix short: plain"
+   ],
+   "mix": {
+    "cost1": 13,
+    "cost0": 3,
+    "wait1": 8,
+    "wait0": 8,
+    "lumber": 2,
+    "plain": 0,
+    "status": 4,
+    "stone": 0
+   },
+   "usage": {
+    "antlion-pit": 1,
+    "glasswing-moth": 1,
+    "caustic-scorpion": 1,
+    "dune-jackal": 1,
+    "dune-jackal-scout": 1,
+    "fennec-fox": 1,
+    "sandfish": 1,
+    "horned-lizard": 1,
+    "roadrunner-courier": 1,
+    "armadillo-guard": 1,
+    "sand-widow": 1,
+    "dust-hyena": 2,
+    "termite-forager": 2,
+    "savanna-cheetah": 2,
+    "stonedrop-vulture": 3,
+    "meerkat-sentry": 2
+   }
+  },
+  "m3": {
+   "mapNo": 19,
+   "name": "Ashen Spurn",
+   "suggest": [
+    "fire-salamander",
+    "cinder-stoker",
+    "cinder-hornet",
+    "sulfur-vent-crab",
+    "ashwing-ptarmigan",
+    "ember-wisp",
+    "obsidian-scorpion",
+    "smoke-raccoon",
+    "honey-badger-fury",
+    "quillback-elder",
+    "basalt-boar"
+   ],
+   "carried": [
+    "quillguard",
+    "eagle-owl-quartermaster",
+    "sulfur-cinder-moth",
+    "chipmunk-hoarder",
+    "talus-pika"
+   ],
+   "ownerYes": [],
+   "baby": [],
+   "adminAdd": [],
+   "adminWhy": {},
+   "skills": [
+    {
+     "key": "immolation",
+     "name": "Immolation",
+     "carriers": [
+      "ember-wisp"
+     ]
+    },
+    {
+     "key": "smokeBomb",
+     "name": "Smoke Bomb",
+     "carriers": [
+      "smoke-raccoon"
+     ]
+    },
+    {
+     "key": "spitfire",
+     "name": "Spitfire",
+     "carriers": [
+      "fire-salamander"
+     ]
+    },
+    {
+     "key": "stunOnHit",
+     "name": "Stun on hit",
+     "carriers": [
+      "cinder-hornet"
+     ]
+    }
+   ],
+   "gaps": [
+    "Each on 1 card. The \"only the toughest hides\" theme reads in the Quillback / Quillguard / Basalt Boar bodies."
+   ],
+   "mix": {
+    "cost1": 11,
+    "cost0": 5,
+    "wait1": 9,
+    "wait0": 7,
+    "lumber": 2,
+    "plain": 3,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "fire-salamander": 1,
+    "cinder-stoker": 2,
+    "cinder-hornet": 2,
+    "sulfur-vent-crab": 1,
+    "ashwing-ptarmigan": 1,
+    "ember-wisp": 1,
+    "obsidian-scorpion": 2,
+    "smoke-raccoon": 1,
+    "honey-badger-fury": 1,
+    "quillback-elder": 1,
+    "basalt-boar": 1,
+    "quillguard": 2,
+    "eagle-owl-quartermaster": 2,
+    "sulfur-cinder-moth": 2,
+    "chipmunk-hoarder": 3,
+    "talus-pika": 3
+   }
+  },
+  "m11": {
+   "mapNo": 20,
+   "name": "The Sundered Peak",
+   "suggest": [
+    "caldera-snow-leopard",
+    "ossuary-lammergeier",
+    "ash-cloud-condor",
+    "magma-wraith",
+    "cinder-skeleton",
+    "ashbone-ghoul",
+    "magma-salamander",
+    "fumarole-ibex",
+    "phoenix-fledgling",
+    "deep-cave-troll"
+   ],
+   "carried": [
+    "chamois-leaper",
+    "constrictor-coil",
+    "cinder-stoker",
+    "talus-pika",
+    "chipmunk-hoarder",
+    "cinder-hornet",
+    "obsidian-scorpion"
+   ],
+   "ownerYes": [],
+   "baby": [],
+   "adminAdd": [],
+   "adminWhy": {},
+   "skills": [
+    {
+     "key": "undead",
+     "name": "Undead",
+     "carriers": [
+      "cinder-skeleton"
+     ]
+    },
+    {
+     "key": "carrion",
+     "name": "Carrion",
+     "carriers": [
+      "ossuary-lammergeier"
+     ]
+    },
+    {
+     "key": "remember",
+     "name": "Remember",
+     "carriers": [
+      "ashbone-ghoul"
+     ]
+    },
+    {
+     "key": "renewal",
+     "name": "Renewal",
+     "carriers": [
+      "phoenix-fledgling"
+     ]
+    }
+   ],
+   "gaps": [
+    "Earthquake and Fireball (DES2) live only on monsters / Epics: they go to the Volcano Lair (Gorge Wyrm, Salamander Pyromancer)."
+   ],
+   "mix": {
+    "cost1": 13,
+    "cost0": 4,
+    "wait1": 13,
+    "wait0": 4,
+    "lumber": 2,
+    "plain": 2,
+    "status": 2,
+    "stone": 0
+   },
+   "usage": {
+    "caldera-snow-leopard": 1,
+    "ossuary-lammergeier": 1,
+    "ash-cloud-condor": 1,
+    "magma-wraith": 1,
+    "cinder-skeleton": 1,
+    "ashbone-ghoul": 1,
+    "magma-salamander": 1,
+    "fumarole-ibex": 1,
+    "phoenix-fledgling": 1,
+    "deep-cave-troll": 1,
+    "chamois-leaper": 2,
+    "constrictor-coil": 3,
+    "cinder-stoker": 2,
+    "talus-pika": 3,
+    "chipmunk-hoarder": 3,
+    "cinder-hornet": 2,
+    "obsidian-scorpion": 2
+   }
+  }
+ },
+ "seaBass": {
+  "id": "sea-bass",
+  "name": "Sea Bass",
+  "altName": "Surf Bass",
+  "map": "m7",
+  "mapNo": 10,
+  "family": "fish",
+  "animal": "sea bass",
+  "species": [
+   "Fish"
+  ],
+  "archetypes": [
+   "Ocean",
+   "Coral Reef"
+  ],
+  "element": "water (Tide); damage physical, as the other reef fish",
+  "rarity": "common",
+  "cost": 1,
+  "wait": 1,
+  "attack": 3,
+  "health": 7,
+  "effects": {
+   "tide": true,
+   "wave": 1,
+   "swarm": [
+    "Fish"
+   ]
+  },
+  "skills": [
+   "Tide (minor, does not count)",
+   "Wave 1: hits push the target 1 column; a crash deals 1 to both (the surf it hunts in)",
+   "Swarm (Fish): +1 Attack for every Fish ally (it runs in loose packs)"
+  ],
+  "why": "Wave is new to the road here: the owner's Map 10 picks bring no new skill, and Coral Current is the fast-current map. Swarm (Fish) pays off the map's fish (Clownfish Scout, Reef Shark, the eels).",
+  "flavor": "The fishermen call it the wolf of the sea. It hunts the surf in loose packs and never fights the current.",
+  "art": "Pixel art, 32-bit era game sprite style, crisp hard edges, limited palette, dark 1-pixel outline, soft light from the upper left, warm muted woodland colours (moss green, bark brown, river teal, berry red) with one bright accent, cute expressive animal character with a slightly large head, clean readable silhouette, no text, no watermark, no signature. Full-body character in a small scene, centred, slight low angle: a cute silver sea bass with big bright eyes and a dark spot on its gill cover, sleek silver body with faint dark lines along its flanks, riding the white curl of a breaking wave over a reef wall, two smaller sea bass glinting in the water behind it, sunlit teal shallows background with coral heads and a pale sandy bottom, one bright coral-orange accent. Natural animal anatomy, not anthropomorphic, no hands, anatomically correct fish: one streamlined body with no limbs, two dorsal fins, a pair of pectoral fins, a pair of pelvic fins, one anal fin and a forked tail fin.",
+  "genre": "Cute (common, Attack + Health 10)"
+ },
+ "submapMonsters": [
+  {
+   "id": "humpback-elder",
+   "name": "Humpback Elder",
+   "rarity": "common",
+   "stats": "2/18",
+   "submap": "mj",
+   "submapName": "The Sunken Depths",
+   "biome": "deep open water past the reef wall: its song carries through the wreck",
+   "onList": true
+  },
+  {
+   "id": "sperm-whale-elder",
+   "name": "Sperm Whale Elder",
+   "rarity": "epic",
+   "stats": "5/13",
+   "submap": "mj",
+   "submapName": "The Sunken Depths",
+   "biome": "the deepest dive on the road; Epic, beyond the main ladder",
+   "onList": true
+  },
+  {
+   "id": "whale-shark",
+   "name": "Whale Shark",
+   "rarity": "rare",
+   "stats": "1/21",
+   "submap": "mj",
+   "submapName": "The Sunken Depths",
+   "biome": "a slow giant drifting through the sunken ferry's current",
+   "onList": true
+  },
+  {
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling",
+   "rarity": "common",
+   "stats": "2/16",
+   "submap": "mj",
+   "submapName": "The Sunken Depths",
+   "biome": "a young kraken in the wreck's hold (Fork, the arms Coral Current lacks)",
+   "onList": true
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "rarity": "veryrare",
+   "stats": "4/23",
+   "submap": "mj",
+   "submapName": "The Sunken Depths",
+   "biome": "the deep water's top end",
+   "onList": true
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "rarity": "rare",
+   "stats": "1/16",
+   "submap": "mi",
+   "submapName": "The Ice Hollow",
+   "biome": "a white whale under the blue ice",
+   "onList": true
+  },
+  {
+   "id": "greenland-shark",
+   "name": "Greenland Shark",
+   "rarity": "rare",
+   "stats": "1/23",
+   "submap": "mi",
+   "submapName": "The Ice Hollow",
+   "biome": "the slow cold-water scavenger",
+   "onList": true
+  },
+  {
+   "id": "glacial-ape-king",
+   "name": "Glacial Ape-King",
+   "rarity": "common",
+   "stats": "6/40",
+   "submap": "mi",
+   "submapName": "The Ice Hollow",
+   "biome": "the ice cave's king (Earthquake)",
+   "onList": true
+  },
+  {
+   "id": "yeti-chieftain",
+   "name": "Yeti Chieftain",
+   "rarity": "veryrare",
+   "stats": "4/20",
+   "submap": "mi",
+   "submapName": "The Ice Hollow",
+   "biome": "the Ice Hollow's boss",
+   "onList": true
+  },
+  {
+   "id": "permafrost-mammoth",
+   "name": "Permafrost Mammoth",
+   "rarity": "common",
+   "stats": "8/7",
+   "submap": "mi",
+   "submapName": "The Ice Hollow",
+   "biome": "frozen in the cave wall, awake again",
+   "onList": true
+  },
+  {
+   "id": "yeti",
+   "name": "Yeti",
+   "rarity": "common",
+   "stats": "5/29",
+   "submap": "mi",
+   "submapName": "The Ice Hollow",
+   "biome": "a second yeti for the Ice Hollow (it leads Ashen Spurn's boss fight today: keep it there as SPECIAL)",
+   "onList": false
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "rarity": "common",
+   "stats": "1/22",
+   "submap": "ms",
+   "submapName": "The Sunken Grove",
+   "biome": "the drowned forest's venom lord",
+   "onList": true
+  },
+  {
+   "id": "cottonmouth-matriarch",
+   "name": "Cottonmouth Matriarch",
+   "rarity": "rare",
+   "stats": "2/11",
+   "submap": "ms",
+   "submapName": "The Sunken Grove",
+   "biome": "a venom matriarch for the Sunken Grove",
+   "onList": true
+  },
+  {
+   "id": "bog-behemoth",
+   "name": "Bog Behemoth",
+   "rarity": "common",
+   "stats": "1/26",
+   "submap": "ms",
+   "submapName": "The Sunken Grove",
+   "biome": "the bog that walks",
+   "onList": true
+  },
+  {
+   "id": "anaconda-coil",
+   "name": "Anaconda Coil",
+   "rarity": "rare",
+   "stats": "4/9",
+   "submap": "ms",
+   "submapName": "The Sunken Grove",
+   "biome": "a constrictor sovereign (Strangle), or the 20-6 boss as SPECIAL",
+   "onList": false
+  },
+  {
+   "id": "ancient-sloth-titan",
+   "name": "Ancient Sloth Titan",
+   "rarity": "common",
+   "stats": "2/31",
+   "submap": "my",
+   "submapName": "The Canopy",
+   "biome": "the giant sloth of the canopy (it is Map 20's boss leader today: keep it there as SPECIAL)",
+   "onList": true
+  },
+  {
+   "id": "malachite-golem",
+   "name": "Malachite Golem",
+   "rarity": "rare",
+   "stats": "2/23",
+   "submap": "m9",
+   "submapName": "Basalt Foundry",
+   "biome": "a stone golem in the foundry (needs Stone, opens 23); the Glimmer Depths if its Stone cost goes",
+   "onList": true
+  },
+  {
+   "id": "glass-golem",
+   "name": "Glass Golem",
+   "rarity": "rare",
+   "stats": "6/5",
+   "submap": "mpd",
+   "submapName": "The Pale Desert",
+   "biome": "a golem of fused desert glass",
+   "onList": true
+  },
+  {
+   "id": "komodo-warlord",
+   "name": "Komodo Warlord",
+   "rarity": "common",
+   "stats": "1/27",
+   "submap": "mpd",
+   "submapName": "The Pale Desert",
+   "biome": "the dragon-lizard of the white sand (Komodo Wallow 18-6 keeps it as SPECIAL)",
+   "onList": true
+  },
+  {
+   "id": "sphinx",
+   "name": "Sphinx",
+   "rarity": "mythic",
+   "stats": "9/33",
+   "submap": "mpd",
+   "submapName": "The Pale Desert",
+   "biome": "the riddle at the desert's end; Mythic, a challenge reward only",
+   "onList": false
+  },
+  {
+   "id": "granite-ox-golem",
+   "name": "Granite Ox Golem",
+   "rarity": "rare",
+   "stats": "3/17",
+   "submap": "mx",
+   "submapName": "Volcano Lair",
+   "biome": "a lava-forged golem in the lair",
+   "onList": true
+  },
+  {
+   "id": "gorge-wyrm",
+   "name": "Gorge Wyrm",
+   "rarity": "common",
+   "stats": "2/26",
+   "submap": "mx",
+   "submapName": "Volcano Lair",
+   "biome": "a wyrm that shakes the gorge (Earthquake, Map 20's missing skill)",
+   "onList": true
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "name": "Pyroclast Wyrm",
+   "rarity": "common",
+   "stats": "3/12",
+   "submap": "mx",
+   "submapName": "Volcano Lair",
+   "biome": "a young fire wyrm",
+   "onList": true
+  },
+  {
+   "id": "fire-drake-hatchling",
+   "name": "Fire Drake Hatchling",
+   "rarity": "heroic",
+   "stats": "6/11",
+   "submap": "mx",
+   "submapName": "Volcano Lair",
+   "biome": "the dragon of the lair (Heroic)",
+   "onList": true
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer",
+   "rarity": "epic",
+   "stats": "2/12",
+   "submap": "mx",
+   "submapName": "Volcano Lair",
+   "biome": "the lair's Fireball (Epic)",
+   "onList": true
+  },
+  {
+   "id": "thunder-lizard",
+   "name": "Thunder Lizard",
+   "rarity": "epic",
+   "stats": "5/18",
+   "submap": "mx",
+   "submapName": "Volcano Lair",
+   "biome": "a storm lizard in the lair (Epic)",
+   "onList": true
+  },
+  {
+   "id": "caldera-wyrm",
+   "name": "The Caldera Wyrm",
+   "rarity": "heroic",
+   "stats": "4/7",
+   "submap": "mx",
+   "submapName": "Volcano Lair",
+   "biome": "the lair's boss (Heroic; costs Stone + Metal: SPECIAL leader only)",
+   "onList": false
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord",
+   "rarity": "common",
+   "stats": "6/28",
+   "submap": "me",
+   "submapName": "Eye of the Volcano",
+   "biome": "the crater's warlord (Cave Warlord's Guard 20-5 keeps it as SPECIAL)",
+   "onList": true
+  },
+  {
+   "id": "rimeheart-colossus",
+   "name": "Rimeheart Mammoth",
+   "rarity": "epic",
+   "stats": "3/19",
+   "submap": "me",
+   "submapName": "Eye of the Volcano",
+   "biome": "a fire-and-ice mammoth in the crater (Epic)",
+   "onList": true
+  },
+  {
+   "id": "the-contradiction",
+   "name": "The Contradiction",
+   "rarity": "epic",
+   "stats": "2/16",
+   "submap": "me",
+   "submapName": "Eye of the Volcano",
+   "biome": "the crater's oddity, a polar bear in the fire (Epic)",
+   "onList": true
+  },
+  {
+   "id": "ashmantle-fiend",
+   "name": "Ashmantle Fiend",
+   "rarity": "unique",
+   "stats": "5/22",
+   "submap": "me",
+   "submapName": "Eye of the Volcano",
+   "biome": "Unique: a later crater challenge",
+   "onList": false
+  },
+  {
+   "id": "tunnel-wyrm",
+   "name": "Tunnel Wyrm",
+   "rarity": "uncommon",
+   "stats": "4/16",
+   "submap": "mz",
+   "submapName": "The Mycelium Deep",
+   "biome": "a wyrm in the root tunnels",
+   "onList": true
+  },
+  {
+   "id": "fungal-colossus",
+   "name": "Fungal Colossus",
+   "rarity": "uncommon",
+   "stats": "2/14",
+   "submap": "mz",
+   "submapName": "The Mycelium Deep",
+   "biome": "the mycelium's giant",
+   "onList": true
+  },
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "rarity": "common",
+   "stats": "0/36",
+   "submap": "mo",
+   "submapName": "The Old Bramble",
+   "biome": "the oldest tree in the thorns",
+   "onList": true
+  },
+  {
+   "id": "ent",
+   "name": "Ent",
+   "rarity": "rare",
+   "stats": "2/22",
+   "submap": "mo",
+   "submapName": "The Old Bramble",
+   "biome": "The Old Bramble's boss",
+   "onList": true
+  },
+  {
+   "id": "grovebearer-dragon-turtle",
+   "name": "Grovebearer Dragon-Turtle",
+   "rarity": "legendary",
+   "stats": "6/6",
+   "submap": "mo",
+   "submapName": "The Old Bramble",
+   "biome": "Legendary: a later Old Bramble challenge",
+   "onList": false
+  }
+ ],
+ "submaps": {
+  "mp": {
+   "name": "Lilypad Reach",
+   "parent": "mb",
+   "parentNo": 2,
+   "unlockAfter": "m8",
+   "unlockAfterNo": 6,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "pond-duck",
+    "lotus-frog",
+    "victoria-regia",
+    "mayfly-dancer",
+    "dam-keeper-beaver",
+    "lodge-engineer",
+    "box-turtle",
+    "old-sturgeon",
+    "river-carp",
+    "pyrenean-desman"
+   ],
+   "carried": [
+    "duckling",
+    "muskrat-lodgekeeper",
+    "snapstick-turtle",
+    "pond-algae",
+    "muskrat-reedgatherer",
+    "platypus-spur",
+    "water-shrew"
+   ],
+   "monsters": [],
+   "mix": {
+    "cost1": 8,
+    "cost0": 9,
+    "wait1": 12,
+    "wait0": 5,
+    "lumber": 2,
+    "plain": 5,
+    "status": 2,
+    "stone": 0
+   },
+   "gaps": [],
+   "note": null
+  },
+  "mg": {
+   "name": "Smugglers' Grotto",
+   "parent": "mb",
+   "parentNo": 2,
+   "unlockAfter": "mu",
+   "unlockAfterNo": 7,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "octopus-tactician",
+    "trash-panda-trickster",
+    "smuggler-slingrat",
+    "coffer-mimic",
+    "salvager-hermit-crab",
+    "glow-worm",
+    "moray-ambusher",
+    "raccoon-nightcrew",
+    "tide-pool-crab",
+    "grey-seal-bull"
+   ],
+   "carried": [
+    "gull-thief",
+    "rock-pool-starfish",
+    "pincushion-urchin",
+    "limpet-clinger",
+    "bloodworm"
+   ],
+   "monsters": [],
+   "mix": {
+    "cost1": 6,
+    "cost0": 9,
+    "wait1": 11,
+    "wait0": 4,
+    "lumber": 2,
+    "plain": 1,
+    "status": 1,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: plain, status"
+   ],
+   "note": null
+  },
+  "mz": {
+   "name": "The Mycelium Deep",
+   "parent": "mu",
+   "parentNo": 7,
+   "unlockAfter": "m4",
+   "unlockAfterNo": 8,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "rootworm-colony",
+    "dung-beetle",
+    "fungal-colossus",
+    "ant-warrior",
+    "bombardier-beetle",
+    "garden-snail",
+    "springtail-hopper",
+    "millipede-hauler",
+    "pill-bug",
+    "tunnel-wyrm"
+   ],
+   "carried": [
+    "wolf-spider-mother",
+    "fungus-gnat-cloud",
+    "leopard-slug",
+    "puffball-bombardier",
+    "rot-swollen-carcass",
+    "leafcutter-gardener",
+    "truffle-piglet"
+   ],
+   "monsters": [
+    "fungal-colossus",
+    "tunnel-wyrm"
+   ],
+   "mix": {
+    "cost1": 8,
+    "cost0": 9,
+    "wait1": 10,
+    "wait0": 7,
+    "lumber": 2,
+    "plain": 1,
+    "status": 2,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: plain"
+   ],
+   "note": null
+  },
+  "mj": {
+   "name": "The Sunken Depths",
+   "parent": "m7",
+   "parentNo": 10,
+   "unlockAfter": "m10",
+   "unlockAfterNo": 11,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "humpback-elder",
+    "sperm-whale-elder",
+    "whale-shark",
+    "kraken-spawnling",
+    "colossal-squid",
+    "blue-ringed-octopus",
+    "hagfish-silencer",
+    "conger-eel",
+    "abyss-lantern-squid",
+    "barnacle-fortress",
+    "great-barracuda"
+   ],
+   "carried": [
+    "riptide-eel",
+    "giant-clam",
+    "moon-jelly",
+    "clownfish-scout",
+    "coral-polyp-colony",
+    "nautilus-drifter"
+   ],
+   "monsters": [
+    "humpback-elder",
+    "sperm-whale-elder",
+    "whale-shark",
+    "kraken-spawnling",
+    "colossal-squid"
+   ],
+   "mix": {
+    "cost1": 14,
+    "cost0": 3,
+    "wait1": 16,
+    "wait0": 1,
+    "lumber": 2,
+    "plain": 1,
+    "status": 2,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: wait0, plain"
+   ],
+   "note": null
+  },
+  "mq": {
+   "name": "Clovermead",
+   "parent": "mf",
+   "parentNo": 1,
+   "unlockAfter": "mh",
+   "unlockAfterNo": 12,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "lucky-hopper",
+    "jackrabbit-sprinter",
+    "field-mouse",
+    "harvest-mouse",
+    "field-vole",
+    "clover-butterfly",
+    "ladybird-guard",
+    "ant-hill",
+    "bee-drone",
+    "seed-cache-squirrel"
+   ],
+   "carried": [
+    "bee-sentry",
+    "cricket-drummer",
+    "robin-redbreast",
+    "slow-worm",
+    "earthworm",
+    "monarch-wingblade"
+   ],
+   "monsters": [],
+   "mix": {
+    "cost1": 5,
+    "cost0": 11,
+    "wait1": 4,
+    "wait0": 12,
+    "lumber": 1,
+    "plain": 4,
+    "status": 2,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: lumber"
+   ],
+   "note": null
+  },
+  "ms": {
+   "name": "The Sunken Grove",
+   "parent": "mw",
+   "parentNo": 5,
+   "unlockAfter": "mr",
+   "unlockAfterNo": 13,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "venomlord-serpent",
+    "bog-behemoth",
+    "cottonmouth-matriarch",
+    "fen-mink",
+    "roseate-spoonbill",
+    "mudflat-godwit",
+    "signal-crayfish",
+    "matamata",
+    "mossmother-newt",
+    "snapper-hatchling"
+   ],
+   "carried": [
+    "cypress-root-lurker",
+    "swamp-alligator",
+    "anhinga-spearbird",
+    "nutria-reedcutter",
+    "newt-doctor",
+    "caiman-hatchling",
+    "peat-cutter-vole"
+   ],
+   "monsters": [
+    "venomlord-serpent",
+    "bog-behemoth",
+    "cottonmouth-matriarch"
+   ],
+   "mix": {
+    "cost1": 10,
+    "cost0": 7,
+    "wait1": 15,
+    "wait0": 2,
+    "lumber": 2,
+    "plain": 2,
+    "status": 2,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: wait0"
+   ],
+   "note": null
+  },
+  "mv": {
+   "name": "The Aerie Vault",
+   "parent": "m10",
+   "parentNo": 11,
+   "unlockAfter": "ml",
+   "unlockAfterNo": 15,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "ibex-rockcaller",
+    "alpine-swift",
+    "gale-swift",
+    "apollo-butterfly",
+    "wallcreeper",
+    "red-billed-chough",
+    "great-horned-owl",
+    "sparrow-chick",
+    "alpine-salamander",
+    "wound-reaver"
+   ],
+   "carried": [
+    "eyrie-warden",
+    "eagle-owl-quartermaster",
+    "chamois-leaper",
+    "chipmunk-hoarder",
+    "the-gannet-queen",
+    "hawk-arrowkeeper"
+   ],
+   "monsters": [],
+   "mix": {
+    "cost1": 9,
+    "cost0": 7,
+    "wait1": 14,
+    "wait0": 2,
+    "lumber": 1,
+    "plain": 2,
+    "status": 2,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: wait0, lumber"
+   ],
+   "note": null
+  },
+  "mn": {
+   "name": "The Glimmer Depths",
+   "parent": "m4",
+   "parentNo": 8,
+   "unlockAfter": "mt",
+   "unlockAfterNo": 16,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "lantern-spark-fly",
+    "vampire-bat",
+    "whip-spider",
+    "glimmer-spider",
+    "grotto-lobster",
+    "cave-swiftlet",
+    "oilbird",
+    "glintsnatch-magpie",
+    "magpie-collector"
+   ],
+   "carried": [
+    "cave-olm",
+    "quarry-mole",
+    "star-nosed-mole",
+    "stalactite-golem",
+    "blind-cave-fish",
+    "upside-down-bat"
+   ],
+   "monsters": [],
+   "mix": {
+    "cost1": 8,
+    "cost0": 7,
+    "wait1": 11,
+    "wait0": 4,
+    "lumber": 0,
+    "plain": 1,
+    "status": 2,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: lumber, plain"
+   ],
+   "note": "Malachite Golem fits best by name (a shining green mineral) but costs Stone: here only if its Stone cost goes; else the Basalt Foundry (opens 23)."
+  },
+  "my": {
+   "name": "The Canopy",
+   "parent": "m5",
+   "parentNo": 14,
+   "unlockAfter": "md",
+   "unlockAfterNo": 18,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "ancient-sloth-titan",
+    "hanging-loafer",
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "poison-dart-croaker",
+    "poison-dart-frog",
+    "slow-loris",
+    "howler-monkey",
+    "toucan-courier",
+    "war-drum-mandrill",
+    "leaf-chameleon"
+   ],
+   "carried": [
+    "lyrebird-mimic",
+    "amber-cicada",
+    "mosquito-cloud",
+    "fishing-cat",
+    "leafcutter-gardener"
+   ],
+   "monsters": [
+    "ancient-sloth-titan"
+   ],
+   "mix": {
+    "cost1": 11,
+    "cost0": 5,
+    "wait1": 10,
+    "wait0": 6,
+    "lumber": 1,
+    "plain": 2,
+    "status": 4,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: lumber"
+   ],
+   "note": "The Canopy's rainforest animals are held (project-state 7, RP5): these wait for the release."
+  },
+  "mpd": {
+   "name": "The Pale Desert",
+   "parent": "md",
+   "parentNo": 18,
+   "unlockAfter": "m3",
+   "unlockAfterNo": 19,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "quicksand-queen",
+    "skull-vulture",
+    "dromedary",
+    "dune-packrat",
+    "trapdoor-spider",
+    "pale-oryx",
+    "moon-jerboa",
+    "sand-flinger-antlion",
+    "sandstorm-roc",
+    "glass-golem",
+    "komodo-warlord"
+   ],
+   "carried": [
+    "antlion-pit",
+    "caustic-scorpion",
+    "sand-widow",
+    "roadrunner-courier",
+    "fennec-fox",
+    "dust-hyena"
+   ],
+   "monsters": [
+    "glass-golem",
+    "komodo-warlord"
+   ],
+   "mix": {
+    "cost1": 14,
+    "cost0": 3,
+    "wait1": 15,
+    "wait0": 2,
+    "lumber": 2,
+    "plain": 1,
+    "status": 6,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: wait0, plain"
+   ],
+   "note": null
+  },
+  "me": {
+   "name": "Eye of the Volcano",
+   "parent": "m11",
+   "parentNo": 20,
+   "unlockAfter": "m11",
+   "unlockAfterNo": 20,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "the-contradiction",
+    "cave-warlord",
+    "rimeheart-colossus",
+    "ash-moth",
+    "cinder-imp",
+    "ash-imp",
+    "flagellant-vulture",
+    "brimstone-hound",
+    "obsidian-lich",
+    "pall-wraith"
+   ],
+   "carried": [
+    "bone-diviner",
+    "cinder-skeleton",
+    "ashbone-ghoul",
+    "ossuary-lammergeier",
+    "magma-wraith",
+    "obsidian-scorpion"
+   ],
+   "monsters": [
+    "the-contradiction",
+    "cave-warlord",
+    "rimeheart-colossus"
+   ],
+   "mix": {
+    "cost1": 12,
+    "cost0": 4,
+    "wait1": 12,
+    "wait0": 4,
+    "lumber": 1,
+    "plain": 1,
+    "status": 3,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: lumber, plain"
+   ],
+   "note": null
+  },
+  "mx": {
+   "name": "Volcano Lair",
+   "parent": "m11",
+   "parentNo": 20,
+   "unlockAfter": "m11",
+   "unlockAfterNo": 20,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "fire-drake-hatchling",
+    "salamander-pyromancer",
+    "pyroclast-wyrm",
+    "gorge-wyrm",
+    "granite-ox-golem",
+    "magma-titan",
+    "ember-jackal",
+    "ember-centipede",
+    "lava-waders",
+    "thunder-lizard"
+   ],
+   "carried": [
+    "magma-salamander",
+    "phoenix-fledgling",
+    "ember-wisp",
+    "ash-cloud-condor",
+    "cinder-stoker",
+    "cinder-hornet"
+   ],
+   "monsters": [
+    "fire-drake-hatchling",
+    "salamander-pyromancer",
+    "pyroclast-wyrm",
+    "gorge-wyrm",
+    "granite-ox-golem",
+    "thunder-lizard"
+   ],
+   "mix": {
+    "cost1": 13,
+    "cost0": 3,
+    "wait1": 11,
+    "wait0": 5,
+    "lumber": 0,
+    "plain": 2,
+    "status": 2,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: lumber"
+   ],
+   "note": "The Caldera Wyrm (the lair's boss) costs Stone and Metal: kept as the boss fight's SPECIAL leader only, or its Stone cost goes."
+  },
+  "mi": {
+   "name": "The Ice Hollow",
+   "parent": "m6",
+   "parentNo": 17,
+   "unlockAfter": "m21",
+   "unlockAfterNo": 21,
+   "suggestUnlock": "m6",
+   "suggestUnlockWhy": "opens after Map 21 today; after Map 17 (its parent, Wolfsbane Tundra) its monsters arrive inside the 0-20 road",
+   "suggest": [
+    "glacial-ape-king",
+    "yeti-chieftain",
+    "permafrost-mammoth",
+    "beluga",
+    "greenland-shark",
+    "ravenous-wolverine",
+    "harp-seal-pup",
+    "frost-thistle-lynx",
+    "snow-owl-sentinel"
+   ],
+   "carried": [
+    "polar-bear",
+    "walrus-icebreaker",
+    "frostbitten-wolverine",
+    "ringed-seal",
+    "lemming-swarm",
+    "talus-pika",
+    "arctic-tern"
+   ],
+   "monsters": [
+    "glacial-ape-king",
+    "yeti-chieftain",
+    "permafrost-mammoth",
+    "beluga",
+    "greenland-shark"
+   ],
+   "mix": {
+    "cost1": 12,
+    "cost0": 4,
+    "wait1": 12,
+    "wait0": 4,
+    "lumber": 1,
+    "plain": 1,
+    "status": 5,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: lumber, plain"
+   ],
+   "note": null
+  },
+  "mo": {
+   "name": "The Old Bramble",
+   "parent": "m1",
+   "parentNo": 0,
+   "unlockAfter": "m21",
+   "unlockAfterNo": 21,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "ent",
+    "elder-willow",
+    "echidna-quillshot",
+    "gatling-hog",
+    "hedgehog-herbalist",
+    "thornwood-palisade",
+    "quill-volley",
+    "porcupine-roller",
+    "shimmerwing-stag"
+   ],
+   "carried": [
+    "bramblewood-lynx",
+    "quillguard",
+    "quill-thorn-boar",
+    "barkplate-beetle",
+    "thorn-shrike",
+    "hazel-coppice",
+    "bramble-sprout"
+   ],
+   "monsters": [
+    "ent",
+    "elder-willow"
+   ],
+   "mix": {
+    "cost1": 13,
+    "cost0": 3,
+    "wait1": 12,
+    "wait0": 4,
+    "lumber": 2,
+    "plain": 2,
+    "status": 1,
+    "stone": 0
+   },
+   "gaps": [
+    "deck mix short: status"
+   ],
+   "note": null
+  },
+  "m9": {
+   "name": "Basalt Foundry",
+   "parent": "m3",
+   "parentNo": 19,
+   "unlockAfter": "m23",
+   "unlockAfterNo": 23,
+   "suggestUnlock": null,
+   "suggestUnlockWhy": null,
+   "suggest": [
+    "malachite-golem",
+    "ember-revenant",
+    "ore-smelter-mole",
+    "cinder-gecko",
+    "grindstone-boar",
+    "pumice-beetle",
+    "ember-tetra",
+    "hellbender",
+    "chained-binturong"
+   ],
+   "carried": [
+    "anvil-thrush",
+    "fire-salamander",
+    "sulfur-vent-crab",
+    "smoke-raccoon",
+    "cinder-hornet"
+   ],
+   "monsters": [
+    "malachite-golem"
+   ],
+   "mix": {
+    "cost1": 9,
+    "cost0": 5,
+    "wait1": 10,
+    "wait0": 4,
+    "lumber": 0,
+    "plain": 1,
+    "status": 1,
+    "stone": 3
+   },
+   "gaps": [
+    "deck mix short: lumber, plain, status"
+   ],
+   "note": null
+  }
+ },
+ "outOfScope": {
+  "mtut": "the tutorial",
+  "mm": "Murgle Mayhem, a daily dungeon",
+  "muc": "The Undercroft, a daily dungeon (a many-land list)",
+  "mlb": "The Long Burrow, Map 22"
+ },
+ "usage": {
+  "beaver-lumberjack": 4,
+  "duck-paddler": 4,
+  "adder-ambusher": 3,
+  "chipmunk-hoarder": 3,
+  "conch-crawler": 3,
+  "constrictor-coil": 3,
+  "corpse-flower-beetle": 3,
+  "dolphin-knight": 3,
+  "driftwood-crab": 3,
+  "hawthorn-shieldbug": 3,
+  "hedgerow-shrew": 3,
+  "kittiwake-flock": 3,
+  "stonedrop-vulture": 3,
+  "talus-pika": 3,
+  "alley-cat": 2,
+  "alligator-gar": 2,
+  "ant-scout": 2,
+  "berserker-boar": 2,
+  "booming-bittern": 2,
+  "bramble-hoglet": 2,
+  "camouflage-frog": 2,
+  "chamois-leaper": 2,
+  "chipmunk-cavalry": 2,
+  "chipmunk-skirmisher": 2,
+  "cinder-hornet": 2,
+  "cinder-stoker": 2,
+  "conch-herald": 2,
+  "cone-cutter-squirrel": 2,
+  "cricket-drummer": 2,
+  "crocodile-ambusher": 2,
+  "cunning-vixen": 2,
+  "cypress-root-lurker": 2,
+  "dormouse": 2,
+  "dust-hyena": 2,
+  "eagle-owl-quartermaster": 2,
+  "eagle-sharpshooter": 2,
+  "earthworm": 2,
+  "fiddler-crab-swarm": 2,
+  "fire-ant-raft": 2,
+  "gannet-nestweaver": 2,
+  "giant-cave-huntsman": 2,
+  "golden-eagle-diver": 2,
+  "great-skua": 2,
+  "grizzly-vanguard": 2,
+  "gull-thief": 2,
+  "hawk-arrowkeeper": 2,
+  "hedge-weasel": 2,
+  "honey-bee": 2,
+  "house-cat": 2,
+  "ironclaw-fiddler": 2,
+  "krill-swarm": 2,
+  "lamprey": 2,
+  "limpet-clinger": 2,
+  "lyrebird-mimic": 2,
+  "mangrove-monitor": 2,
+  "meerkat-sentry": 2,
+  "moonlit-hare": 2,
+  "mosquito-cloud": 2,
+  "mountain-hare": 2,
+  "mouse-sapper": 2,
+  "muskrat-lodgekeeper": 2,
+  "newt-doctor": 2,
+  "nutria-reedcutter": 2,
+  "obsidian-scorpion": 2,
+  "owl-nightwatch": 2,
+  "pack-rat-looter": 2,
+  "peak-condor": 2,
+  "peregrine-stooper": 2,
+  "pika-hoarder": 2,
+  "pincushion-urchin": 2,
+  "planarian-splitter": 2,
+  "platypus-spur": 2,
+  "pond-algae": 2,
+  "puddle-skimmer": 2,
+  "quill-thorn-boar": 2,
+  "quillguard": 2,
+  "redwood-woodpecker": 2,
+  "robin-redbreast": 2,
+  "rot-swollen-carcass": 2,
+  "savanna-cheetah": 2,
+  "shoal-shark": 2,
+  "snapstick-turtle": 2,
+  "soldier-ant": 2,
+  "sulfur-cinder-moth": 2,
+  "sunbittern-strider": 2,
+  "taiga-lynx": 2,
+  "termite-forager": 2,
+  "terrier-pup": 2,
+  "thorn-shrike": 2,
+  "tide-spirit": 2,
+  "timber-wolf-pack": 2,
+  "truffle-piglet": 2,
+  "voltaic-eel": 2,
+  "water-shrew": 2,
+  "wolf-spider-mother": 2,
+  "woodland-caribou": 2,
+  "acacia-giraffe": 1,
+  "alpine-marmot": 1,
+  "amber-cicada": 1,
+  "anhinga-spearbird": 1,
+  "antlion-pit": 1,
+  "anvil-thrush": 1,
+  "arctic-fox-raider": 1,
+  "arctic-tern": 1,
+  "armadillo-guard": 1,
+  "ash-cloud-condor": 1,
+  "ashbone-ghoul": 1,
+  "ashwing-ptarmigan": 1,
+  "badger-lumberjack": 1,
+  "banded-sea-krait": 1,
+  "barkplate-beetle": 1,
+  "barrow-leech-bat": 1,
+  "basalt-boar": 1,
+  "beachcomber-sanderling": 1,
+  "bear-cub": 1,
+  "beaver-feller": 1,
+  "bee-forager": 1,
+  "bee-knight": 1,
+  "bee-sentry": 1,
+  "bison-bulldozer": 1,
+  "blind-cave-fish": 1,
+  "bloodworm": 1,
+  "bone-diviner": 1,
+  "border-collie": 1,
+  "boreal-elk": 1,
+  "bramble-sprout": 1,
+  "bramblewood-lynx": 1,
+  "briarback-hedgehog": 1,
+  "caiman-hatchling": 1,
+  "caldera-snow-leopard": 1,
+  "carrion-crow": 1,
+  "caustic-scorpion": 1,
+  "cave-olm": 1,
+  "chipmunk-forager": 1,
+  "cinder-skeleton": 1,
+  "clownfish-scout": 1,
+  "compost-grub": 1,
+  "coral-current-eel": 1,
+  "coral-polyp-colony": 1,
+  "cormorant": 1,
+  "cottontail": 1,
+  "crossed-eyes": 1,
+  "crown-of-thorns-star": 1,
+  "deep-cave-troll": 1,
+  "dhole-matriarch": 1,
+  "dhole-runner": 1,
+  "duckling": 1,
+  "dune-jackal": 1,
+  "dune-jackal-scout": 1,
+  "echo-screecher": 1,
+  "ember-wisp": 1,
+  "eyrie-warden": 1,
+  "farm-dog": 1,
+  "fawn-scout": 1,
+  "fennec-fox": 1,
+  "feral-tomcat": 1,
+  "fire-salamander": 1,
+  "fishing-cat": 1,
+  "frostbitten-wolverine": 1,
+  "fumarole-ibex": 1,
+  "fungus-gnat-cloud": 1,
+  "gallery-orb-weaver": 1,
+  "giant-clam": 1,
+  "glacier-yak": 1,
+  "glasswing-moth": 1,
+  "goose-sentry": 1,
+  "grass-snake": 1,
+  "grass-viper": 1,
+  "grave-grin-hyena": 1,
+  "hazel-coppice": 1,
+  "heartwood-treant": 1,
+  "honey-badger-fury": 1,
+  "hoopoe-herald": 1,
+  "horned-lizard": 1,
+  "horseshoe-crab": 1,
+  "ice-crevasse-wolf": 1,
+  "land-tiller": 1,
+  "leafcutter-gardener": 1,
+  "lemming-swarm": 1,
+  "leopard-slug": 1,
+  "magma-salamander": 1,
+  "magma-wraith": 1,
+  "mallard-halberdier": 1,
+  "mangrove-mudskipper": 1,
+  "marsh-mallow-hare": 1,
+  "marula-elephant": 1,
+  "meadow-rabbit": 1,
+  "monarch-wingblade": 1,
+  "moon-jelly": 1,
+  "mudpuppy": 1,
+  "musk-ox-calf": 1,
+  "muskrat-reedgatherer": 1,
+  "nautilus-drifter": 1,
+  "nightjar-drifter": 1,
+  "nightshade-moth": 1,
+  "open-ocean-hermit-crab": 1,
+  "ossuary-lammergeier": 1,
+  "owl-sentinel": 1,
+  "oystercatcher": 1,
+  "peat-cutter-vole": 1,
+  "phoenix-fledgling": 1,
+  "pine-marten": 1,
+  "pinecone-crossbill": 1,
+  "plains-zebra": 1,
+  "polar-bear": 1,
+  "proboscis-monkey": 1,
+  "pronghorn-racer": 1,
+  "puffball-bombardier": 1,
+  "puffin-diver": 1,
+  "quarry-mole": 1,
+  "quillback-elder": 1,
+  "rabbit-kit": 1,
+  "raft-spider": 1,
+  "razorbill": 1,
+  "reef-shark": 1,
+  "ringed-seal": 1,
+  "riptide-eel": 1,
+  "river-mink": 1,
+  "roadrunner-courier": 1,
+  "rock-pool-starfish": 1,
+  "sand-widow": 1,
+  "sandfish": 1,
+  "sea-turtle-elder": 1,
+  "sergeant-bramblefox": 1,
+  "shepherds-bark": 1,
+  "silver-minnow": 1,
+  "slow-worm": 1,
+  "smoke-raccoon": 1,
+  "snowshoe-hare": 1,
+  "springbok-pronker": 1,
+  "squires-mount": 1,
+  "stag-knight": 1,
+  "stalactite-golem": 1,
+  "star-nosed-mole": 1,
+  "sulfur-vent-crab": 1,
+  "swamp-alligator": 1,
+  "the-gannet-queen": 1,
+  "tundra-musk-ox": 1,
+  "upside-down-bat": 1,
+  "walrus-icebreaker": 1,
+  "war-hound": 1,
+  "warhorse-charger": 1,
+  "water-vole": 1,
+  "weaver-bird": 1,
+  "worker-ant": 1
+ },
+ "usageSubmaps": {
+  "cinder-hornet": 2,
+  "leafcutter-gardener": 2,
+  "abyss-lantern-squid": 1,
+  "alpine-salamander": 1,
+  "alpine-swift": 1,
+  "amber-cicada": 1,
+  "ancient-sloth-titan": 1,
+  "anhinga-spearbird": 1,
+  "ant-hill": 1,
+  "ant-warrior": 1,
+  "antlion-pit": 1,
+  "anvil-thrush": 1,
+  "apollo-butterfly": 1,
+  "arctic-tern": 1,
+  "ash-cloud-condor": 1,
+  "ash-imp": 1,
+  "ash-moth": 1,
+  "ashbone-ghoul": 1,
+  "barkplate-beetle": 1,
+  "barnacle-fortress": 1,
+  "bee-drone": 1,
+  "bee-sentry": 1,
+  "beluga": 1,
+  "blind-cave-fish": 1,
+  "bloodworm": 1,
+  "blue-ringed-octopus": 1,
+  "bog-behemoth": 1,
+  "bombardier-beetle": 1,
+  "bone-diviner": 1,
+  "box-turtle": 1,
+  "bramble-sprout": 1,
+  "bramblewood-lynx": 1,
+  "brimstone-hound": 1,
+  "caiman-hatchling": 1,
+  "caustic-scorpion": 1,
+  "cave-olm": 1,
+  "cave-swiftlet": 1,
+  "cave-warlord": 1,
+  "chained-binturong": 1,
+  "chamois-leaper": 1,
+  "chipmunk-hoarder": 1,
+  "cinder-gecko": 1,
+  "cinder-imp": 1,
+  "cinder-skeleton": 1,
+  "cinder-stoker": 1,
+  "clover-butterfly": 1,
+  "clownfish-scout": 1,
+  "coffer-mimic": 1,
+  "colossal-squid": 1,
+  "conger-eel": 1,
+  "coral-polyp-colony": 1,
+  "cottonmouth-matriarch": 1,
+  "cricket-drummer": 1,
+  "cypress-root-lurker": 1,
+  "dam-keeper-beaver": 1,
+  "dromedary": 1,
+  "duckling": 1,
+  "dune-packrat": 1,
+  "dung-beetle": 1,
+  "dust-hyena": 1,
+  "eagle-owl-quartermaster": 1,
+  "earthworm": 1,
+  "echidna-quillshot": 1,
+  "elder-willow": 1,
+  "ember-centipede": 1,
+  "ember-jackal": 1,
+  "ember-revenant": 1,
+  "ember-tetra": 1,
+  "ember-wisp": 1,
+  "ent": 1,
+  "eyrie-warden": 1,
+  "fen-mink": 1,
+  "fennec-fox": 1,
+  "field-mouse": 1,
+  "field-vole": 1,
+  "fire-drake-hatchling": 1,
+  "fire-salamander": 1,
+  "fishing-cat": 1,
+  "flagellant-vulture": 1,
+  "frost-thistle-lynx": 1,
+  "frostbitten-wolverine": 1,
+  "fungal-colossus": 1,
+  "fungus-gnat-cloud": 1,
+  "gale-swift": 1,
+  "garden-snail": 1,
+  "gatling-hog": 1,
+  "giant-clam": 1,
+  "glacial-ape-king": 1,
+  "glass-golem": 1,
+  "glimmer-spider": 1,
+  "glintsnatch-magpie": 1,
+  "glow-worm": 1,
+  "gorge-wyrm": 1,
+  "granite-ox-golem": 1,
+  "great-barracuda": 1,
+  "great-horned-owl": 1,
+  "greenland-shark": 1,
+  "grey-seal-bull": 1,
+  "grindstone-boar": 1,
+  "grotto-lobster": 1,
+  "gull-thief": 1,
+  "hagfish-silencer": 1,
+  "hanging-loafer": 1,
+  "harp-seal-pup": 1,
+  "harvest-mouse": 1,
+  "hawk-arrowkeeper": 1,
+  "hazel-coppice": 1,
+  "hedgehog-herbalist": 1,
+  "hellbender": 1,
+  "howler-monkey": 1,
+  "humpback-elder": 1,
+  "ibex-rockcaller": 1,
+  "jackrabbit-sprinter": 1,
+  "jaguar-stalker": 1,
+  "kinkajou-lurker": 1,
+  "komodo-warlord": 1,
+  "kraken-spawnling": 1,
+  "ladybird-guard": 1,
+  "lantern-spark-fly": 1,
+  "lava-waders": 1,
+  "leaf-chameleon": 1,
+  "lemming-swarm": 1,
+  "leopard-slug": 1,
+  "limpet-clinger": 1,
+  "lodge-engineer": 1,
+  "lotus-frog": 1,
+  "lucky-hopper": 1,
+  "lyrebird-mimic": 1,
+  "magma-salamander": 1,
+  "magma-titan": 1,
+  "magma-wraith": 1,
+  "magpie-collector": 1,
+  "malachite-golem": 1,
+  "matamata": 1,
+  "mayfly-dancer": 1,
+  "millipede-hauler": 1,
+  "monarch-wingblade": 1,
+  "moon-jelly": 1,
+  "moon-jerboa": 1,
+  "moray-ambusher": 1,
+  "mosquito-cloud": 1,
+  "mossmother-newt": 1,
+  "mudflat-godwit": 1,
+  "muskrat-lodgekeeper": 1,
+  "muskrat-reedgatherer": 1,
+  "nautilus-drifter": 1,
+  "newt-doctor": 1,
+  "nutria-reedcutter": 1,
+  "obsidian-lich": 1,
+  "obsidian-scorpion": 1,
+  "octopus-tactician": 1,
+  "oilbird": 1,
+  "old-sturgeon": 1,
+  "ore-smelter-mole": 1,
+  "ossuary-lammergeier": 1,
+  "pale-oryx": 1,
+  "pall-wraith": 1,
+  "peat-cutter-vole": 1,
+  "permafrost-mammoth": 1,
+  "phoenix-fledgling": 1,
+  "pill-bug": 1,
+  "pincushion-urchin": 1,
+  "platypus-spur": 1,
+  "poison-dart-croaker": 1,
+  "poison-dart-frog": 1,
+  "polar-bear": 1,
+  "pond-algae": 1,
+  "pond-duck": 1,
+  "porcupine-roller": 1,
+  "puffball-bombardier": 1,
+  "pumice-beetle": 1,
+  "pyrenean-desman": 1,
+  "pyroclast-wyrm": 1,
+  "quarry-mole": 1,
+  "quicksand-queen": 1,
+  "quill-thorn-boar": 1,
+  "quill-volley": 1,
+  "quillguard": 1,
+  "raccoon-nightcrew": 1,
+  "ravenous-wolverine": 1,
+  "red-billed-chough": 1,
+  "rimeheart-colossus": 1,
+  "ringed-seal": 1,
+  "riptide-eel": 1,
+  "river-carp": 1,
+  "roadrunner-courier": 1,
+  "robin-redbreast": 1,
+  "rock-pool-starfish": 1,
+  "rootworm-colony": 1,
+  "roseate-spoonbill": 1,
+  "rot-swollen-carcass": 1,
+  "salamander-pyromancer": 1,
+  "salvager-hermit-crab": 1,
+  "sand-flinger-antlion": 1,
+  "sand-widow": 1,
+  "sandstorm-roc": 1,
+  "seed-cache-squirrel": 1,
+  "shimmerwing-stag": 1,
+  "signal-crayfish": 1,
+  "skull-vulture": 1,
+  "slow-loris": 1,
+  "slow-worm": 1,
+  "smoke-raccoon": 1,
+  "smuggler-slingrat": 1,
+  "snapper-hatchling": 1,
+  "snapstick-turtle": 1,
+  "snow-owl-sentinel": 1,
+  "sparrow-chick": 1,
+  "sperm-whale-elder": 1,
+  "springtail-hopper": 1,
+  "stalactite-golem": 1,
+  "star-nosed-mole": 1,
+  "sulfur-vent-crab": 1,
+  "swamp-alligator": 1,
+  "talus-pika": 1,
+  "the-contradiction": 1,
+  "the-gannet-queen": 1,
+  "thorn-shrike": 1,
+  "thornwood-palisade": 1,
+  "thunder-lizard": 1,
+  "tide-pool-crab": 1,
+  "toucan-courier": 1,
+  "trapdoor-spider": 1,
+  "trash-panda-trickster": 1,
+  "truffle-piglet": 1,
+  "tunnel-wyrm": 1,
+  "upside-down-bat": 1,
+  "vampire-bat": 1,
+  "venomlord-serpent": 1,
+  "victoria-regia": 1,
+  "wallcreeper": 1,
+  "walrus-icebreaker": 1,
+  "war-drum-mandrill": 1,
+  "water-shrew": 1,
+  "whale-shark": 1,
+  "whip-spider": 1,
+  "wolf-spider-mother": 1,
+  "wound-reaver": 1,
+  "yeti-chieftain": 1
+ }
+}
