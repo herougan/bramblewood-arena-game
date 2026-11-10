@@ -4400,5 +4400,15 @@
  "(current)": "(saat ini)",
  "Saved as your pick; Claude folds it into the map later.": "Disimpan sebagai pilihanmu; Claude akan memasukkannya ke peta nanti.",
  "Target for this side map: {t}. Change it; clear it to go back.": "Target untuk peta sampingan ini: {t}. Ubah; kosongkan untuk kembali.",
- "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "BARU!: daftar milik peta sampingan ini, usulan tematik Claude untuknya, dan kartu yang kamu tandai. Terbawa: kartu bertanda Ya di peta utama hingga peta pembuka yang kamu pilih, ditambah kartu T-1 / T-2 dari tutorial. Tandai tiap kartu Ya atau Tidak."
+ "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "BARU!: daftar milik peta sampingan ini, usulan tematik Claude untuknya, dan kartu yang kamu tandai. Terbawa: kartu bertanda Ya di peta utama hingga peta pembuka yang kamu pilih, ditambah kartu T-1 / T-2 dari tutorial. Tandai tiap kartu Ya atau Tidak.",
+ "Flagged Yes on Map {n}": "Ditandai Ya di Peta {n}",
+ "Given by the tutorial maps (T-1, T-2)": "Diberikan oleh peta tutorial (T-1, T-2)",
+ "Add card": "Tambah kartu",
+ "Search a card by name": "Cari kartu berdasarkan nama",
+ "No card matches.": "Tidak ada kartu yang cocok.",
+ "already Yes here": "sudah Ya di sini",
+ "Added {name} to {group}.": "{name} ditambahkan ke {group}.",
+ "Baby cards are not counted.": "Kartu bayi tidak dihitung.",
+ "Used on {n} main maps: {maps}": "Dipakai di {n} peta utama: {maps}",
+ "Added by Claude": "Ditambahkan oleh Claude"
 }

@@ -4400,5 +4400,15 @@
  "(current)": "(atual)",
  "Saved as your pick; Claude folds it into the map later.": "Salvo como sua escolha; Claude o incorpora ao mapa mais tarde.",
  "Target for this side map: {t}. Change it; clear it to go back.": "Meta para este mapa secundário: {t}. Altere; apague para voltar ao padrão.",
- "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "NOVO!: a lista própria deste mapa secundário, as sugestões temáticas de Claude para ele e as cartas que você marcar. Herdadas: cartas marcadas Sim nos mapas principais até o mapa de desbloqueio escolhido, mais as cartas T-1 / T-2 do tutorial. Marque cada uma com Sim ou Não."
+ "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "NOVO!: a lista própria deste mapa secundário, as sugestões temáticas de Claude para ele e as cartas que você marcar. Herdadas: cartas marcadas Sim nos mapas principais até o mapa de desbloqueio escolhido, mais as cartas T-1 / T-2 do tutorial. Marque cada uma com Sim ou Não.",
+ "Flagged Yes on Map {n}": "Marcada Sim no mapa {n}",
+ "Given by the tutorial maps (T-1, T-2)": "Dada pelos mapas do tutorial (T-1, T-2)",
+ "Add card": "Adicionar carta",
+ "Search a card by name": "Procurar uma carta pelo nome",
+ "No card matches.": "Nenhuma carta corresponde.",
+ "already Yes here": "já é Sim aqui",
+ "Added {name} to {group}.": "{name} adicionada a {group}.",
+ "Baby cards are not counted.": "As cartas bebê não contam.",
+ "Used on {n} main maps: {maps}": "Usada em {n} mapas principais: {maps}",
+ "Added by Claude": "Adicionada pelo Claude"
 }

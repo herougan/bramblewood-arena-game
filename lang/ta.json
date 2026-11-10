@@ -4401,5 +4401,15 @@
  "(current)": "(தற்போதையது)",
  "Saved as your pick; Claude folds it into the map later.": "உங்கள் தேர்வாகச் சேமிக்கப்பட்டது; Claude பின்னர் வரைபடத்தில் சேர்க்கும்.",
  "Target for this side map: {t}. Change it; clear it to go back.": "இந்தத் துணை வரைபடத்தின் இலக்கு: {t}. மாற்றலாம்; திரும்பிச் செல்ல அதை அழிக்கவும்.",
- "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "புதியது!: இந்தத் துணை வரைபடத்தின் சொந்தப் பட்டியல், அதற்கான Claude-இன் கருப்பொருள் பரிந்துரைகள், நீங்கள் குறிக்கும் அட்டைகள். கொண்டுவரப்பட்டவை: நீங்கள் தேர்ந்த திறப்பு வரைபடம் வரையிலான முதன்மை வரைபடங்களில் ஆம் எனக் குறிக்கப்பட்ட அட்டைகள், மற்றும் பயிற்சியின் T-1 / T-2 அட்டைகள். ஒவ்வொன்றையும் ஆம் அல்லது இல்லை எனக் குறிக்கவும்."
+ "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "புதியது!: இந்தத் துணை வரைபடத்தின் சொந்தப் பட்டியல், அதற்கான Claude-இன் கருப்பொருள் பரிந்துரைகள், நீங்கள் குறிக்கும் அட்டைகள். கொண்டுவரப்பட்டவை: நீங்கள் தேர்ந்த திறப்பு வரைபடம் வரையிலான முதன்மை வரைபடங்களில் ஆம் எனக் குறிக்கப்பட்ட அட்டைகள், மற்றும் பயிற்சியின் T-1 / T-2 அட்டைகள். ஒவ்வொன்றையும் ஆம் அல்லது இல்லை எனக் குறிக்கவும்.",
+ "Flagged Yes on Map {n}": "வரைபடம் {n}-இல் ஆம் எனக் குறிக்கப்பட்டது",
+ "Given by the tutorial maps (T-1, T-2)": "பயிற்சி வரைபடங்கள் (T-1, T-2) தருகின்றன",
+ "Add card": "அட்டை சேர்",
+ "Search a card by name": "பெயரால் அட்டையைத் தேடு",
+ "No card matches.": "பொருந்தும் அட்டை இல்லை.",
+ "already Yes here": "இங்கே ஏற்கனவே ஆம்",
+ "Added {name} to {group}.": "{name} {group}-இல் சேர்க்கப்பட்டது.",
+ "Baby cards are not counted.": "குட்டி அட்டைகள் கணக்கில் வராது.",
+ "Used on {n} main maps: {maps}": "{n} முக்கிய வரைபடங்களில் பயன்பாடு: {maps}",
+ "Added by Claude": "Claude சேர்த்தது"
 }

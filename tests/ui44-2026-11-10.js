@@ -26,11 +26,11 @@ const MAPS_DATA = [{id: 'm0', n: 0, yes: [], no: []}, {id: 'm1', n: 1, yes: ['f'
 const ui37MapsData = ()=> MAPS_DATA.map(m=> Object.assign({}, m, {yes: (ui37Picks[m.id] && ui37Picks[m.id].yes) || m.yes}));
 const mpEntry2 = id=> id === 'm1' ? {cards: [], submaps: {sq: ['d', 'e']}} : {cards: [], submaps: {}};
 const rv1ReviewOf = ()=> null, ui38Concept = ()=> null, ui38Family = (id, d)=> d[id] && d[id].animal, roadRarityStep = ()=> 0, UI38_PROS = {rules: {familyCap: 2}};
-const ui43TutorialCards = ()=> ['t1', 't2'];
-const body = ['ui37Arr', 'ui37Ent', 'ui37FlagOf', 'ui37CarriedIndex', 'ui41Cap', 'ui44IsSub', 'ui44ProsSubs', 'ui44MainByNo', 'ui44CurrentAfter', 'ui44After', 'ui44SetAfter', 'ui44UnlockPicks', 'ui44Split', 'ui37Targets'].map(fn).join('\n');
+const ui43TutorialCards = ()=> ['t1', 't2'], UI47_TUT = -1, UI47_SUGGEST = {}, UI47_ADMIN_ADD = {}; // 2026-11-11 (UI47)
+const body = ['ui37Arr', 'ui37Ent', 'ui47AdminOf', 'ui47IsAdminAdded', 'ui47YesList', 'ui47SuggestedOf', 'ui37FlagOf', 'ui37CarriedIndex', 'ui41Cap', 'ui44IsSub', 'ui44ProsSubs', 'ui44MainByNo', 'ui44CurrentAfter', 'ui44After', 'ui44SetAfter', 'ui44UnlockPicks', 'ui44Split', 'ui37Targets'].map(fn).join('\n');
 const th6Targets = n=> ({own: 10, carried: 5});
-const F = new Function('CONQUEST_MAPS', 'mpMapById', 'mainConquestMaps', 'mapNumberOf', 'mpTopOf', 'mapUnlockNumberOf', 'ui37Picks', 'ui37Save', 'ui37Publish', 'UI44_SIDE', 'mpEntry', 'ui37MapsData', 'rv1ReviewOf', 'ui38Concept', 'ui38Family', 'roadRarityStep', 'UI38_PROS', 'ui43TutorialCards', 'th6Targets',
-  body + '; return {ui44IsSub, ui44ProsSubs, ui44CurrentAfter, ui44After, ui44SetAfter, ui44Split, ui37Targets, ui44UnlockPicks};')(CONQUEST_MAPS, mpMapById, mainConquestMaps, mapNumberOf, mpTopOf, mapUnlockNumberOf, ui37Picks, ui37Save, ui37Publish, E1, mpEntry2, ui37MapsData, rv1ReviewOf, ui38Concept, ui38Family, roadRarityStep, UI38_PROS, ui43TutorialCards, th6Targets);
+const F = new Function('CONQUEST_MAPS', 'mpMapById', 'mainConquestMaps', 'mapNumberOf', 'mpTopOf', 'mapUnlockNumberOf', 'ui37Picks', 'ui37Save', 'ui37Publish', 'UI44_SIDE', 'mpEntry', 'ui37MapsData', 'rv1ReviewOf', 'ui38Concept', 'ui38Family', 'roadRarityStep', 'UI38_PROS', 'ui43TutorialCards', 'th6Targets', 'UI47_TUT', 'UI47_SUGGEST', 'UI47_ADMIN_ADD',
+  body + '; return {ui44IsSub, ui44ProsSubs, ui44CurrentAfter, ui44After, ui44SetAfter, ui44Split, ui37Targets, ui44UnlockPicks};')(CONQUEST_MAPS, mpMapById, mainConquestMaps, mapNumberOf, mpTopOf, mapUnlockNumberOf, ui37Picks, ui37Save, ui37Publish, E1, mpEntry2, ui37MapsData, rv1ReviewOf, ui38Concept, ui38Family, roadRarityStep, UI38_PROS, ui43TutorialCards, th6Targets, -1, {}, {});
 const okAll = ()=> true;
 
 ok(F.ui44ProsSubs().map(m=> m.id).join() === 'sq,sm', 'side maps get the view: not the Tutorial, endless dungeons, tower or reserved');
@@ -41,7 +41,7 @@ let sp = F.ui44Split('sq', defs, okAll);
 const ids = l=> l.map(p=> p.id).sort().join();
 ok(sp.n === 2 && sp.afterId === 'm2', 'split reads the default unlock map');
 ok(ids(sp.car) === 'f,g,i,t1,t2' && !sp.car.some(p=> p.id === 'h'), 'Carried = Yes on Maps 0-2 (f, g, i) + the tutorial cards; the Map 3 Yes (h) is not');
-ok(sp.idx.get('t1') === 0 && sp.idx.get('f') === 1 && sp.idx.get('g') === 2, 'pill numbers: tutorial 0, then the map that gives it');
+ok(sp.idx.get('t1') === -1 && sp.idx.get('f') === 1 && sp.idx.get('g') === 2, 'pill numbers: tutorial -1 (UI47), then the map that gives it');
 ok(['d', 'e'].every(i=> sp.neu.some(p=> p.id === i && p.src.has('list'))), 'NEW! has the side map\'s own list');
 ok(sp.neu.some(p=> p.id === 'a' && p.src.has('claude')) && sp.neu.some(p=> p.id === 'c' && p.why === 'meadow'), 'NEW! has Claude\'s fits and add (the why carried)');
 ok(!sp.neu.some(p=> p.id === 'nope' || p.id === 'zzz'), 'ids that are not card defs are dropped');

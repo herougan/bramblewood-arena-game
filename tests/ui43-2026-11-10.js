@@ -14,15 +14,15 @@ ok(/\.ui39-tile\.ui43-no > :first-child\{filter:grayscale\(1\)/.test(app), 'the 
 // tutorial cards Carried
 // 2026-11-10 (UI44, owner 16:02): the tutorial's cards are the T-1 / T-2 list (mtut12), read through mapPoolSections, not the fight decks (T-3 to T-5)
 const mpTopOf = id=> 'm1', mapPoolSections = top=> [{key: 'cards', ids: ['z']}, {key: 'sub:mtut12', sub: 'mtut12', ids: ['a', 'b', 'c']}, {key: 'sub:mtut', sub: 'mtut', ids: ['d']}, {key: 'special', ids: ['e']}];
-const F = new Function('mpTopOf', 'mapPoolSections', fn('ui43TutorialCards') + fn('ui37CarriedIndex') + '; return {ui43TutorialCards, ui37CarriedIndex};')(mpTopOf, mapPoolSections);
+const F = new Function('mpTopOf', 'mapPoolSections', 'const UI47_TUT = -1;' + fn('ui43TutorialCards') + fn('ui37CarriedIndex') + '; return {ui43TutorialCards, ui37CarriedIndex};')(mpTopOf, mapPoolSections);
 ok(F.ui43TutorialCards().sort().join() === 'a,b,c', 'the tutorial cards are the T-1 / T-2 list only (not the T-3 to T-5 list or the fight decks)');
 const maps = [{n: 0, list: ['x'], yes: ['y'], no: []}];
 const i1 = F.ui37CarriedIndex(1, maps);
-ok(['a', 'b', 'c', 'y'].every(id=> i1.has(id)) && i1.get('a') === 0, 'Thistlewood (Map 1) carries the tutorial cards (pill Map 0) and earlier Yes cards');
-ok(F.ui37CarriedIndex(0, maps).size === 0, 'Map 0 carries nothing');
+ok(['a', 'b', 'c', 'y'].every(id=> i1.has(id)) && i1.get('a') === -1, 'Thistlewood (Map 1) carries the tutorial cards (pill Tutorial, index -1 since UI47) and earlier Yes cards');
+ok(F.ui37CarriedIndex(0, maps).size === 3 && !F.ui37CarriedIndex(0, maps).has('y'), 'Map 0 carries the tutorial cards (UI47 #1) and no Yes card of its own');
 ok(F.ui37CarriedIndex(5, maps).has('c'), 'later maps keep them Carried');
 const pros = fn('ui37Prospects');
-ok(/if\(n === 1\) ui43TutorialCards\(\)\.forEach\(id=> add\(id, 'tut'\)\)/.test(pros), 'Thistlewood shows them');
+ok(/if\(n != null && n >= 0\) ui43TutorialCards\(\)\.forEach\(id=> add\(id, 'tut'\)\)/.test(pros), 'Map 0 and Thistlewood show them (UI47)');
 ok(/src !== 'tut' && side\.has\(id\)/.test(pros), 'past the side-map filter');
 ok(/p\.src\.has\('tut'\)/.test(fn('ui41Cap')), 'past the family cap');
 ok(/tut: \(\)=> TX\('tutorial\.tutorial'\)/.test(app), 'pill reads Tutorial (an existing, translated text)');
