@@ -1,0 +1,73 @@
+{
+ "about": "BAL44 named pick (tools/bal44/pick_2026_11_10.js)",
+ "code": "0-3",
+ "map": "m1",
+ "mapName": "Bramblewood Outskirts",
+ "kind": "skirmish",
+ "name": "Raccoon Heist",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "ant-scout",
+  "beaver-lumberjack",
+  "chipmunk-forager",
+  "chipmunk-skirmisher",
+  "cottontail",
+  "duck-paddler",
+  "earthworm",
+  "house-cat",
+  "meadow-rabbit",
+  "silver-minnow",
+  "soldier-ant",
+  "worker-ant"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 0,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "chipmunk-forager": 4,
+   "cottontail": 5,
+   "house-cat": 3,
+   "meadow-rabbit": 4,
+   "duck-paddler": 3,
+   "chipmunk-skirmisher": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 69.5,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "chipmunk-forager": 3,
+   "cottontail": 4,
+   "house-cat": 4,
+   "meadow-rabbit": 4,
+   "duck-paddler": 3,
+   "chipmunk-skirmisher": 2
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 59,
+  "shown": 0
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 69.5
+  },
+  {
+   "move": "named pick",
+   "win": 59
+  }
+ ]
+}

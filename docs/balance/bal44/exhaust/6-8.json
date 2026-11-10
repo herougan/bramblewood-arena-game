@@ -1,0 +1,171 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "6-8",
+ "map": "m8",
+ "mapName": "Sable Swampmire",
+ "kind": "miniboss",
+ "name": "The Alligator King",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "adder-ambusher",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "lamprey",
+  "marsh-harrier",
+  "nutria-reedcutter",
+  "raven-scout",
+  "venomlord-serpent"
+ ],
+ "firstClear": [
+  "adder-ambusher",
+  "heron-hag"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "adder-ambusher"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": 24,
+ "space": 2040,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 8.3,
+  "max": 86.7
+ },
+ "top": [
+  {
+   "deck": {
+    "adder-ambusher": 2,
+    "camouflage-frog": 2,
+    "fire-ant-raft": 1,
+    "lamprey": 4,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "raven-scout": 3,
+    "venomlord-serpent": 5
+   },
+   "leaders": null,
+   "tune200": 40
+  },
+  {
+   "deck": {
+    "adder-ambusher": 3,
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "lamprey": 4,
+    "raven-scout": 3,
+    "venomlord-serpent": 3
+   },
+   "leaders": null,
+   "tune200": 38
+  },
+  {
+   "deck": {
+    "adder-ambusher": 3,
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "raven-scout": 1,
+    "venomlord-serpent": 2
+   },
+   "leaders": null,
+   "tune200": 37.5
+  },
+  {
+   "deck": {
+    "adder-ambusher": 2,
+    "camouflage-frog": 4,
+    "constrictor-coil": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 4,
+    "marsh-harrier": 1,
+    "raven-scout": 3,
+    "venomlord-serpent": 3
+   },
+   "leaders": null,
+   "tune200": 44
+  },
+  {
+   "deck": {
+    "adder-ambusher": 3,
+    "camouflage-frog": 4,
+    "constrictor-coil": 1,
+    "lamprey": 5,
+    "raven-scout": 3,
+    "venomlord-serpent": 3
+   },
+   "leaders": null,
+   "tune200": 36
+  },
+  {
+   "deck": {
+    "adder-ambusher": 3,
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 3,
+    "nutria-reedcutter": 1,
+    "raven-scout": 2,
+    "venomlord-serpent": 3
+   },
+   "leaders": null,
+   "tune200": 34
+  }
+ ],
+ "before": {
+  "deck": {
+   "adder-ambusher": 2,
+   "lamprey": 5,
+   "venomlord-serpent": 5,
+   "nutria-reedcutter": 1,
+   "camouflage-frog": 5,
+   "constrictor-coil": 1
+  },
+  "leaders": [
+   "adder-ambusher"
+  ],
+  "shieldOverride": 24,
+  "win200": 31
+ },
+ "pick": {
+  "deck": {
+   "adder-ambusher": 2,
+   "camouflage-frog": 2,
+   "fire-ant-raft": 1,
+   "lamprey": 4,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "raven-scout": 3,
+   "venomlord-serpent": 5
+  },
+  "leaders": [
+   "adder-ambusher"
+  ],
+  "shieldOverride": 0,
+  "win200": 42.5,
+  "tune200": 40
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 31
+  },
+  {
+   "move": "whole-space pick",
+   "win": 42.5
+  }
+ ],
+ "sec": 511
+}

@@ -1,0 +1,79 @@
+{
+ "about": "BAL44 named pick (tools/bal44/pick_2026_11_10.js)",
+ "code": "6-5",
+ "map": "m8",
+ "mapName": "Sable Swampmire",
+ "kind": "elite",
+ "name": "Venomlord's Coil",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "booming-bittern",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "marsh-harrier",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "raven-scout",
+  "venomlord-serpent"
+ ],
+ "firstClear": [
+  "newt-doctor"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "venomlord-serpent"
+ ],
+ "namesake": true,
+ "shieldRule": 9,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "booming-bittern": 2,
+   "camouflage-frog": 4,
+   "newt-doctor": 4,
+   "raven-scout": 1,
+   "venomlord-serpent": 2,
+   "fire-ant-raft": 1
+  },
+  "leaders": [
+   "venomlord-serpent"
+  ],
+  "shieldOverride": null,
+  "win200": 66,
+  "shown": 5
+ },
+ "pick": {
+  "deck": {
+   "booming-bittern": 2,
+   "camouflage-frog": 4,
+   "newt-doctor": 4,
+   "raven-scout": 1,
+   "venomlord-serpent": 2,
+   "fire-ant-raft": 1
+  },
+  "leaders": [
+   "venomlord-serpent"
+  ],
+  "shieldOverride": 2,
+  "win200": 70.5,
+  "shown": 1
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 66
+  },
+  {
+   "move": "named pick",
+   "win": 70.5
+  }
+ ]
+}
