@@ -18,7 +18,7 @@ const mount = fn('ui37Mount');
 // 1 one view
 ok(mount.length > 500 && !/ui37-switch|data-ui37-view|setView/.test(b37), 'no Lists / Prospects switch');
 ok(/localStorage\.removeItem\(UI37_VIEW_KEY\)/.test(mount), 'the old view choice is cleared');
-ok(/if\(!adminModeEnabled \|\| mpIsSub\(mapId\)\) return;/.test(mount) && /ui37MapsData\(\)\.some\(m=> m\.id === top\)/.test(mount), 'admin, main maps only (a side map keeps its own lists)');
+ok(/if\(!adminModeEnabled \|\| \(mpIsSub\(mapId\) && !isSub\)\) return;/.test(mount) && /ui37MapsData\(\)\.some\(m=> m\.id === top\)/.test(mount), 'admin, main maps only (UI44: and the side maps, which have their own view; the Tutorial, endless dungeons and tower keep their lists)');
 // 2 the list section becomes the groups
 ok(/\['data-rv-i', 'data-rv-n', 'data-rv-m', 'data-rv-label'\]\.forEach/.test(mount) && /classList\.add\('has-rv1'\)/.test(mount) && /old\.replaceWith\(wrap\)/.test(mount), 'the MAP list section is replaced, its data-rv-* and has-rv1 kept (counts, Copy my picks, Export all)');
 ok(/rv2Update\(ov\)/.test(mount), 'a redraw refreshes the Cut / Keep counts');

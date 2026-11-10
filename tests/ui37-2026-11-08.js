@@ -28,7 +28,7 @@ ok(blk.length > 1000, 'the UI37_PROS block is in arena_app.js');
   const two = f(3, [{n: 0, list: [], yes: ['a'], no: []}, {n: 1, list: [], yes: ['a'], no: []}]); ok(two.get('a') === 0, 'Yes on two maps: Carried from the earlier one'); }
 
 // 2. wiring
-ok(/function ui37Mount\(ov, top, mapId, ok\)\{\n  ui37Live = null;\n  if\(!adminModeEnabled \|\| mpIsSub\(mapId\)\) return;/.test(blk), 'the view is admin-only and never on a submap window');
+ok(/function ui37Mount\(ov, top, mapId, ok\)\{\n  ui37Live = null;\n  if\(!adminModeEnabled \|\| \(mpIsSub\(mapId\) && !isSub\)\) return;/.test(blk.replace(/\n  const isSub = [^\n]*\n/, '\n')), 'the view is admin-only and never on a submap window (UI44: except a side map, which has its own view)');
 ok(/try\{ ui37Mount\(ov, top, mapId, ok\); \}catch\(e\)\{\}/.test(app.slice(app.indexOf('function pk1OpenMapCards'), app.indexOf('// UI29_PE:START'))), 'pk1OpenMapCards mounts it');
 { const f = blk.slice(blk.indexOf('function ui37Prospects'), blk.indexOf('// one map\'s split'));
   ok(/mpEntry\(top\)\.cards\.forEach\(id=> add\(id, 'list'\)\)/.test(f), 'prospects: the MAP list (not the submap lists)');
