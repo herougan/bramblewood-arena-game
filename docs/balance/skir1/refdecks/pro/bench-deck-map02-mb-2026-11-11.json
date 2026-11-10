@@ -1,0 +1,742 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T19:41:19.820Z",
+ "fingerprint": "70bb0acabad2",
+ "map": {
+  "id": "mb",
+  "num": 2,
+  "name": "Pebble Beach"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "beachcomber-sanderling",
+  "beaver-lumberjack",
+  "bee-forager",
+  "bloodworm",
+  "bramble-sprout",
+  "burrow-rabbit",
+  "conch-herald",
+  "cricket-drummer",
+  "driftwood-crab",
+  "duck-paddler",
+  "duckling",
+  "fleetfootd",
+  "great-skua",
+  "gull-thief",
+  "hedgerow-shrew",
+  "limpet-clinger",
+  "meadow-frog",
+  "moonlit-hare",
+  "old-shell",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin",
+  "pond-duck",
+  "puddle-skimmer",
+  "river-carp",
+  "robin-redbreast",
+  "rock-pool-starfish",
+  "slow-worm",
+  "terrier-pup"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Beachcomber Sanderling",
+  "Beaver Lumberjack",
+  "Bee Forager",
+  "Bloodworm",
+  "Bramble Sprout",
+  "Burrow Rabbit",
+  "Conch Herald",
+  "Cricket Drummer",
+  "Driftwood Crab",
+  "Duck Paddler",
+  "Duckling",
+  "Fleetfoot'd",
+  "Great Skua",
+  "Gull Thief",
+  "Hedgerow Shrew",
+  "Limpet Clinger",
+  "Meadow Frog",
+  "Moonlit Hare",
+  "The Old Shell",
+  "Open-Ocean Hermit Crab",
+  "Oystercatcher",
+  "Pincushion Urchin",
+  "Pond Duck",
+  "Puddle Skimmer",
+  "River Carp",
+  "Robin Redbreast",
+  "Rock Pool Starfish",
+  "Slow-worm",
+  "Terrier Pup"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "beachcomber-sanderling",
+   "beaver-lumberjack",
+   "bloodworm",
+   "conch-herald",
+   "driftwood-crab",
+   "duck-paddler",
+   "great-skua",
+   "gull-thief",
+   "hedgerow-shrew",
+   "limpet-clinger",
+   "moonlit-hare",
+   "old-shell",
+   "open-ocean-hermit-crab",
+   "oystercatcher",
+   "pincushion-urchin",
+   "puddle-skimmer",
+   "robin-redbreast",
+   "rock-pool-starfish"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 1200,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-1",
+   "label": "vs 2-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:2-2",
+   "label": "vs 2-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:2-3",
+   "label": "vs 2-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:2-4",
+   "label": "vs 2-4 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:2-5",
+   "label": "vs 2-5 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 2-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road2",
+   "label": "vs reference deck (Map 2) under 2-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "beachcomber-sanderling",
+    "driftwood-crab",
+    "gull-thief"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "conch-herald",
+    "fleetfootd",
+    "limpet-clinger",
+    "meadow-frog",
+    "open-ocean-hermit-crab",
+    "pincushion-urchin",
+    "rock-pool-starfish"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "bee-forager",
+    "great-skua",
+    "gull-thief",
+    "oystercatcher",
+    "robin-redbreast"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 1,
+   "moves": 1,
+   "games": 320,
+   "apartFromEarlier": 15
+  },
+  {
+   "focus": "family:tide",
+   "steps": 1,
+   "moves": 0,
+   "games": 464,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:flying",
+   "steps": 1,
+   "moves": 0,
+   "games": 368,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "open",
+   "steps": 1,
+   "moves": 1,
+   "games": 384,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 315,
+ "games": 2048,
+ "decks": [
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "tide x8",
+    "flying x8"
+   ],
+   "deck": {
+    "bloodworm": 4,
+    "conch-herald": 4,
+    "fleetfootd": 4,
+    "gull-thief": 4,
+    "robin-redbreast": 4
+   },
+   "cards": [
+    {
+     "id": "bloodworm",
+     "name": "Bloodworm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fleetfootd",
+     "name": "Fleetfoot'd",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7378,
+    0.8456
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-1",
+     "label": "vs 2-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-2",
+     "label": "vs 2-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-3",
+     "label": "vs 2-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-4",
+     "label": "vs 2-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-5",
+     "label": "vs 2-5 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road2",
+     "label": "vs reference deck (Map 2) under 2-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (18 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "flying x10"
+   ],
+   "deck": {
+    "alley-cat": 3,
+    "bramble-sprout": 3,
+    "cricket-drummer": 4,
+    "gull-thief": 4,
+    "oystercatcher": 2,
+    "robin-redbreast": 4
+   },
+   "cards": [
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "oystercatcher",
+     "name": "Oystercatcher",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7376,
+    0.8457
+   ],
+   "avgLumber": 0.1,
+   "avgWait": 0.1,
+   "curve": {
+    "0": 18,
+    "1": 2
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-1",
+     "label": "vs 2-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-2",
+     "label": "vs 2-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-3",
+     "label": "vs 2-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-4",
+     "label": "vs 2-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-5",
+     "label": "vs 2-5 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road2",
+     "label": "vs reference deck (Map 2) under 2-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 18
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "bleed x6",
+    "tide x6"
+   ],
+   "deck": {
+    "alley-cat": 2,
+    "bloodworm": 4,
+    "conch-herald": 2,
+    "driftwood-crab": 4,
+    "duck-paddler": 4,
+    "fleetfootd": 4
+   },
+   "cards": [
+    {
+     "id": "bloodworm",
+     "name": "Bloodworm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "fleetfootd",
+     "name": "Fleetfoot'd",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7292,
+   "ci": [
+    0.673,
+    0.7853
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "bleed",
+     "n": 6
+    },
+    {
+     "f": "tide",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-1",
+     "label": "vs 2-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-2",
+     "label": "vs 2-2 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-3",
+     "label": "vs 2-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-4",
+     "label": "vs 2-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-5",
+     "label": "vs 2-5 elite's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road2",
+     "label": "vs reference deck (Map 2) under 2-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "beachcomber-sanderling": 4,
+    "bloodworm": 4,
+    "great-skua": 3,
+    "gull-thief": 2,
+    "meadow-frog": 4,
+    "old-shell": 3
+   },
+   "cards": [
+    {
+     "id": "beachcomber-sanderling",
+     "name": "Beachcomber Sanderling",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "bloodworm",
+     "name": "Bloodworm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "great-skua",
+     "name": "Great Skua",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "old-shell",
+     "name": "The Old Shell",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6719,
+   "ci": [
+    0.6094,
+    0.7344
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 6,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-1",
+     "label": "vs 2-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-2",
+     "label": "vs 2-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-3",
+     "label": "vs 2-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-4",
+     "label": "vs 2-4 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-5",
+     "label": "vs 2-5 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road2",
+     "label": "vs reference deck (Map 2) under 2-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mb --pool alley-cat,beachcomber-sanderling,beaver-lumberjack,bee-forager,bloodworm,bramble-sprout,burrow-rabbit,conch-herald,cricket-drummer,driftwood-crab,duck-paddler,duckling,fleetfootd,great-skua,gull-thief,hedgerow-shrew,limpet-clinger,meadow-frog,moonlit-hare,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,pond-duck,puddle-skimmer,river-carp,robin-redbreast,rock-pool-starfish,slow-worm,terrier-pup --max-unique 6 --max-copies 4 --budget 1200 --final-games 24 --seed skir1-pro --focus economy,family:tide,family:flying,open --anchor beachcomber-sanderling,beaver-lumberjack,bloodworm,conch-herald,driftwood-crab,duck-paddler,great-skua,gull-thief,hedgerow-shrew,limpet-clinger,moonlit-hare,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,puddle-skimmer,robin-redbreast,rock-pool-starfish --anchor-min 10 --level 1 --mode map-true"
+}

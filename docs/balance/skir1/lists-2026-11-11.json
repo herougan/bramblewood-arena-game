@@ -643,12 +643,11 @@
    "name": "Savanna Reaches",
    "rule": "UI47_SUGGEST (provisional)",
    "before": 13,
-   "after": 16,
+   "after": 15,
    "added": [
     "plains-zebra",
     "meerkat-sentry",
     "termite-forager",
-    "weaver-bird",
     "stonedrop-vulture",
     "adder-ambusher",
     "crocodile-ambusher",
@@ -671,7 +670,6 @@
     "marula-elephant",
     "meerkat-sentry",
     "termite-forager",
-    "weaver-bird",
     "hoopoe-herald",
     "golden-eagle-diver",
     "stonedrop-vulture",
@@ -1185,11 +1183,10 @@
    "parent": "mw",
    "unlockAfterNo": 13,
    "before": 13,
-   "after": 17,
+   "after": 16,
    "added": [
     "bog-behemoth",
     "cottonmouth-matriarch",
-    "roseate-spoonbill",
     "mudflat-godwit",
     "signal-crayfish",
     "matamata",
@@ -1211,7 +1208,6 @@
     "bog-behemoth",
     "cottonmouth-matriarch",
     "fen-mink",
-    "roseate-spoonbill",
     "mudflat-godwit",
     "signal-crayfish",
     "matamata",
@@ -1231,9 +1227,8 @@
    "parent": "m10",
    "unlockAfterNo": 15,
    "before": 13,
-   "after": 16,
+   "after": 15,
    "added": [
-    "wallcreeper",
     "red-billed-chough",
     "great-horned-owl",
     "sparrow-chick",
@@ -1250,7 +1245,6 @@
     "alpine-swift",
     "gale-swift",
     "apollo-butterfly",
-    "wallcreeper",
     "red-billed-chough",
     "great-horned-owl",
     "sparrow-chick",
@@ -1397,16 +1391,11 @@
    "parent": "m11",
    "unlockAfterNo": 20,
    "before": 11,
-   "after": 16,
+   "after": 11,
    "added": [
     "rimeheart-colossus",
-    "cinder-imp",
-    "ash-imp",
-    "flagellant-vulture",
-    "brimstone-hound",
     "obsidian-lich",
-    "pall-wraith",
-    "bone-diviner"
+    "pall-wraith"
    ],
    "removed": [
     "cinder-stoker",
@@ -1418,13 +1407,8 @@
     "cave-warlord",
     "rimeheart-colossus",
     "ash-moth",
-    "cinder-imp",
-    "ash-imp",
-    "flagellant-vulture",
-    "brimstone-hound",
     "obsidian-lich",
     "pall-wraith",
-    "bone-diviner",
     "cinder-skeleton",
     "ashbone-ghoul",
     "ossuary-lammergeier",
@@ -1480,9 +1464,8 @@
    "parent": "m6",
    "unlockAfterNo": 21,
    "before": 11,
-   "after": 16,
+   "after": 15,
    "added": [
-    "glacial-ape-king",
     "yeti-chieftain",
     "permafrost-mammoth",
     "beluga",
@@ -1503,7 +1486,6 @@
     "spitting-spider"
    ],
    "list": [
-    "glacial-ape-king",
     "yeti-chieftain",
     "permafrost-mammoth",
     "beluga",
@@ -1628,6 +1610,27 @@
   "batch": {
    "m7": {
     "sea-bass": "CONTENT19 (2026-11-11): the Sea Bass, THEME8's Wave / Swarm (Fish) card for Coral Current"
+   }
+  },
+  "drop": {
+   "mi": {
+    "glacial-ape-king": "CUT3-1 (owner 11-03): cut from Maps 0-20 and their side maps"
+   },
+   "me": {
+    "cinder-imp": "LIST-1104: an archetype card (Devilry / Ecclesia / Evomax) on Map 20+",
+    "ash-imp": "LIST-1104",
+    "flagellant-vulture": "LIST-1104",
+    "brimstone-hound": "LIST-1104",
+    "bone-diviner": "LIST-1104 (Evomax)"
+   },
+   "m5": {
+    "weaver-bird": "LISTFIX2: the owner cut it from Map 14 (11-01)"
+   },
+   "ms": {
+    "roseate-spoonbill": "a pool card (not in the game yet): THEME8 suggested it for The Sunken Grove"
+   },
+   "mv": {
+    "wallcreeper": "a pool card (not in the game yet): THEME8 suggested it for The Aerie Vault"
    }
   }
  },

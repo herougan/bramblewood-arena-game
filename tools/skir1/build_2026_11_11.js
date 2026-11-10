@@ -155,7 +155,9 @@ function planMap(m) {
 if (CMD === 'plan') {
   const want = arg('--maps') ? new Set(arg('--maps').split(',')) : null;
   const res = { about: 'SKIR1 build plan (tools/skir1/build_2026_11_11.js): every road fight of Maps 0-20 and their side maps rebuilt from its map list (THEME5 plan)', built: '2026-11-11', maps: [] };
-  for (const m of L.maps()) { if (want && !want.has(m.id)) continue; const p = planMap(m); res.maps.push(p);
+  // a map already rebuilt (its lines carry a SKIR1 comment) is never planned again: its plan entry keeps the pre-SKIR1 decks
+  const SRC0 = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), rebuilt = m => L.fightsOf(m).some(n => new RegExp(`^\\s*\\{ ?key:\\s*"${n.key.replace(/-/g, '\\-')}",.*\\(SKIR1`, 'm').test(SRC0));
+  for (const m of L.maps()) { if (want && !want.has(m.id)) continue; if (rebuilt(m)) { console.log(m.id + ': already rebuilt, not planned again'); if (want) want.delete(m.id); continue; } const p = planMap(m); res.maps.push(p);
     const bad = p.fights.filter(x => x.problems.length);
     console.log(`${p.side ? '  side' : 'Map'} ${p.mapNo} ${p.id}: ${p.fights.length} fights, peaks ${p.peaks.join('/')} <- ${p.strategies.map(s => s.id).reverse().join(', ')}; repairs ${p.repairs.length}; mix ${Object.entries(p.mix).map(([k, v]) => k + ' ' + v.shown + '/' + v.list).join(' ')}${bad.length ? ' | PROBLEMS ' + bad.map(x => x.code + ': ' + x.problems.join('; ')).join(' | ') : ''}`); }
   // --maps: those maps are planned again and replace their entries; the others stay as planned before (the plan holds every fight's pre-SKIR1 deck)
@@ -167,13 +169,37 @@ if (CMD === 'plan') {
   for (const p of plan.maps.filter(q => !only || only.has(q.id))) for (const x of p.fights) {
     if (x.problems && x.problems.length) { console.log('skip', x.code, x.problems.join('; ')); continue; }
     if (L.keyOf(x.deck) === L.keyOf(x.old)) continue;
+    { const cur = (s.match(new RegExp(`^\\s*\\{ ?key:\\s*"${x.code.replace(/-/g, '\\-')}",.*$`, 'm')) || [''])[0], cd = (cur.match(/deck:(\{[^}]*\})/) || [0, '{}'])[1];
+      if (L.keyOf(JSON.parse(cd)) !== L.keyOf(x.old)) continue; } // only a line that still holds its pre-SKIR1 deck (never over a fit)
     const re = new RegExp(`^(\\s*\\{ ?key:\\s*"${x.code.replace(/-/g, '\\-')}",.*)$`, 'm'), mm = s.match(re); if (!mm) throw new Error('node not found ' + x.code);
     const deck = Object.fromEntries(Object.keys(x.deck).sort().map(k => [k, x.deck[k]]));
     const why = x.role === 'peak' ? `peak strategy ${x.strategy} (${x.focus}), slightly down-tuned` : x.role === 'boss' ? 'a blend of the list\'s cards (boss / ender; leader kept)' : 'a blend of the list\'s cards';
     const line = mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(deck) + ` /* 2026-11-11 (SKIR1): rebuilt from the map's 2026-11-11 list, THEME5 plan: ${why}; deck (was ${JSON.stringify(x.old)}) */`);
     s = s.replace(mm[1], line); n++;
   }
-  fs.writeFileSync(APP, s); console.log('applied', n, 'decks');
+  fs.writeFileSync(APP + '.skir1tmp', s); fs.renameSync(APP + '.skir1tmp', APP); console.log('applied', n, 'decks'); // written whole, then renamed: a sim starting meanwhile never reads half a file
+}
+// purge: a card a later list change took off (a SKIR1 drop: CUT3, LIST-1104, LISTFIX2) or a leader card that was never in the fight's deck
+// leaves every rebuilt deck; its copies go to the deck's own card nearest its stat score (or a pool card) as legality allows. The fights it
+// touched are printed for a fit pass.
+if (CMD === 'purge') {
+  const plan = JSON.parse(fs.readFileSync(PLAN, 'utf8')), APP = path.join(ROOT, 'arena_app.js'); let s = fs.readFileSync(APP, 'utf8'); const touched = [];
+  const byCode = {}; plan.maps.forEach(p => p.fights.forEach(x => { byCode[x.code] = x; }));
+  for (const m of L.maps()) for (const n of L.fightsOf(m)) { const x = byCode[n.key]; if (!x) continue;
+    const n0 = Object.assign({}, n, { deck: x.old }); G.NODE_MAP_HINT.set(n0, m.id); // the fight's rules read from its pre-SKIR1 deck (what it kept then)
+    const f = L.fight(m, n0), firsts = (G.nodeFirstClearCardIds || G.nodeRewardCardIds)(m.id, n.key) || [];
+    const okId = id => f.list.has(id) || f.own.includes(id) || (x.old[id] && (firsts.includes(id) || (x.leaders0 || []).includes(id) || id === x.showcase));
+    const bad = Object.keys(n.deck).filter(id => !okId(id)); if (!bad.length) continue;
+    const d = Object.assign({}, n.deck);
+    for (const b of bad) { let k = d[b]; delete d[b];
+      const order = Object.keys(d).concat(f.pool.filter(id => !d[id] && okId(id))).filter(id => okId(id)).sort((p, q) => Math.abs(score(p) - score(b)) - Math.abs(score(q) - score(b)));
+      for (const id of order) { while (k > 0) { const t = Object.assign({}, d); t[id] = (t[id] || 0) + 1; if (t[id] > f.cap(id) || f.k14(t).length || Object.keys(t).length > f.dMax) break; d[id] = t[id]; k--; } if (!k) break; } }
+    if (!f.legal(d)) { console.log('purge: no legal deck for', n.key, f.problems(d).join('; ')); continue; }
+    const re = new RegExp(`^(\\s*\\{ ?key:\\s*"${n.key.replace(/-/g, '\\-')}",.*)$`, 'm'), mm = s.match(re);
+    const deck = Object.fromEntries(Object.keys(d).sort().map(k => [k, d[k]]));
+    s = s.replace(mm[1], mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(deck) + ` /* 2026-11-11 (SKIR1): ${bad.join(', ')} out (off the list by a standing owner rule, or a leader never in this deck); deck (was ${JSON.stringify(n.deck)}) */`));
+    touched.push(n.key); console.log('purged', n.key, bad.join(','), JSON.stringify(deck)); }
+  fs.writeFileSync(APP + '.skir1tmp', s); fs.renameSync(APP + '.skir1tmp', APP); console.log('touched:', touched.join(','));
 }
 // apply and pin: a fight led by its Auto showcase (no explicit leaders, no showcase field) gets that card written as its `showcase`, so the
 // leader stays the same card whatever else its deck holds (the panel and the CPU already used it; tools/skir1/lib_fight pin)
@@ -186,6 +212,6 @@ if (CMD === 'apply' || CMD === 'pin') {
     const head = mm[1].split('/*')[0]; if (/showcase:"/.test(head) || !/\(SKIR1/.test(mm[1])) continue;
     s = s.replace(mm[1], mm[1].replace(/deck:\{/, `showcase:"${x.leaders0[0]}" /* 2026-11-11 (SKIR1): its Auto showcase leader, pinned */, deck:{`)); n++;
   }
-  fs.writeFileSync(APP, s); console.log('pinned', n, 'showcase leaders');
+  fs.writeFileSync(APP + '.skir1tmp', s); fs.renameSync(APP + '.skir1tmp', APP); console.log('pinned', n, 'showcase leaders');
 }
 module.exports = { planMap, fill, spread, family, score };

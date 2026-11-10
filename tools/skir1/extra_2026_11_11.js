@@ -13,4 +13,14 @@ module.exports = {
   sub: {},
   // the batch's own list adds that landed while SKIR1 ran (kept on top of the fold): CONTENT19's Sea Bass on Map 10 (THEME8's Map 10 suggestion)
   batch: { m7: { 'sea-bass': 'CONTENT19 (2026-11-11): the Sea Bass, THEME8\'s Wave / Swarm (Fish) card for Coral Current' } },
+  // a suggestion that goes against a standing owner decision stays off the list (owner 11-03, CUT3-1: "Cut Glacial ape-king from Map 0-20";
+  // THEME8 suggested it as The Ice Hollow's set piece; tests/cut3-2026-11-03.js)
+  drop: { mi: { 'glacial-ape-king': 'CUT3-1 (owner 11-03): cut from Maps 0-20 and their side maps' },
+    // LIST-1104 (owner 11-04, tests/content10-2026-11-05.js): no archetype card (Devilry, Ecclesia, Evomax ...) on a Map 20+ list
+    me: { 'cinder-imp': 'LIST-1104: an archetype card (Devilry / Ecclesia / Evomax) on Map 20+', 'ash-imp': 'LIST-1104', 'flagellant-vulture': 'LIST-1104', 'brimstone-hound': 'LIST-1104', 'bone-diviner': 'LIST-1104 (Evomax)' },
+    // LISTFIX2 (owner 11-01 cuts, tests/content10-2026-11-05.js LF2): the Weaver Bird stays off Savanna Reaches
+    m5: { 'weaver-bird': 'LISTFIX2: the owner cut it from Map 14 (11-01)' },
+    // a card still in the card pool (pool: true, not in the game's defs yet) cannot sit on a list: THEME8 suggested two for side maps
+    ms: { 'roseate-spoonbill': 'a pool card (not in the game yet): THEME8 suggested it for The Sunken Grove' },
+    mv: { 'wallcreeper': 'a pool card (not in the game yet): THEME8 suggested it for The Aerie Vault' } },
 };

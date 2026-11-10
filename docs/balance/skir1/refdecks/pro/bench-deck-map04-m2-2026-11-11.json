@@ -1,0 +1,746 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T19:55:45.597Z",
+ "fingerprint": "70bb0acabad2",
+ "map": {
+  "id": "m2",
+  "num": 4,
+  "name": "Sunken Hollow"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "beaver-feller",
+  "beaver-lumberjack",
+  "bee-forager",
+  "bramble-sprout",
+  "conch-crawler",
+  "driftwood-crab",
+  "drowned-matriarch",
+  "duck-paddler",
+  "fleetfootd",
+  "gannet-nestweaver",
+  "grass-snake",
+  "kittiwake-flock",
+  "meadow-frog",
+  "muskrat-lodgekeeper",
+  "pincushion-urchin",
+  "planarian-splitter",
+  "platypus-spur",
+  "pond-algae",
+  "pond-duck",
+  "puffin-diver",
+  "river-carp",
+  "river-mink",
+  "rock-pool-starfish",
+  "shoal-shark",
+  "slow-worm",
+  "snapstick-turtle",
+  "water-shrew",
+  "water-vole"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Beaver Feller",
+  "Beaver Lumberjack",
+  "Bee Forager",
+  "Bramble Sprout",
+  "Conch Crawler",
+  "Driftwood Crab",
+  "The Drowned Matriarch",
+  "Duck Paddler",
+  "Fleetfoot'd",
+  "Gannet Nestweaver",
+  "Grass Snake",
+  "Kittiwake Flock",
+  "Meadow Frog",
+  "Muskrat Lodgekeeper",
+  "Pincushion Urchin",
+  "Planarian Splitter",
+  "Platypus Spur",
+  "Pond Algae",
+  "Pond Duck",
+  "Puffin Diver",
+  "River Carp",
+  "River Mink",
+  "Rock Pool Starfish",
+  "Shoal Shark",
+  "Slow-worm",
+  "Snapstick Turtle",
+  "Water Shrew",
+  "Water Vole"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "beaver-feller",
+   "beaver-lumberjack",
+   "conch-crawler",
+   "drowned-matriarch",
+   "duck-paddler",
+   "grass-snake",
+   "kittiwake-flock",
+   "muskrat-lodgekeeper",
+   "planarian-splitter",
+   "platypus-spur",
+   "pond-algae",
+   "river-mink",
+   "shoal-shark",
+   "slow-worm",
+   "snapstick-turtle",
+   "water-shrew",
+   "water-vole"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 1200,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:4-1",
+   "label": "vs 4-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:4-2",
+   "label": "vs 4-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:4-3",
+   "label": "vs 4-3 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:4-4",
+   "label": "vs 4-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:4-5",
+   "label": "vs 4-5 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 4-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road4",
+   "label": "vs reference deck (Map 4) under 4-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "beaver-feller",
+    "driftwood-crab",
+    "gannet-nestweaver"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "conch-crawler",
+    "drowned-matriarch",
+    "fleetfootd",
+    "meadow-frog",
+    "muskrat-lodgekeeper",
+    "pincushion-urchin",
+    "puffin-diver",
+    "river-mink",
+    "rock-pool-starfish",
+    "shoal-shark",
+    "snapstick-turtle",
+    "water-vole"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "bee-forager",
+    "gannet-nestweaver",
+    "kittiwake-flock",
+    "puffin-diver"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 1,
+   "moves": 1,
+   "games": 464,
+   "apartFromEarlier": 16
+  },
+  {
+   "focus": "family:tide",
+   "steps": 1,
+   "moves": 1,
+   "games": 304,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:flying",
+   "steps": 1,
+   "moves": 1,
+   "games": 336,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 1,
+   "moves": 1,
+   "games": 384,
+   "apartFromEarlier": 13
+  }
+ ],
+ "apart": 10,
+ "seconds": 413,
+ "games": 2000,
+ "decks": [
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (18 copies at 0 Lumber)",
+    "tide x13"
+   ],
+   "deck": {
+    "bramble-sprout": 3,
+    "drowned-matriarch": 2,
+    "fleetfootd": 4,
+    "kittiwake-flock": 4,
+    "rock-pool-starfish": 3,
+    "water-vole": 4
+   },
+   "cards": [
+    {
+     "id": "fleetfootd",
+     "name": "Fleetfoot'd",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "water-vole",
+     "name": "Water Vole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "rock-pool-starfish",
+     "name": "Rock Pool Starfish",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "drowned-matriarch",
+     "name": "The Drowned Matriarch",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8229,
+   "ci": [
+    0.7712,
+    0.8746
+   ],
+   "avgLumber": 0.1,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 18,
+    "1": 2
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 13
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:4-1",
+     "label": "vs 4-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-2",
+     "label": "vs 4-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-3",
+     "label": "vs 4-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-4",
+     "label": "vs 4-4 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-5",
+     "label": "vs 4-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 4-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road4",
+     "label": "vs reference deck (Map 4) under 4-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (6 resource makers)",
+    "tide x8"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "beaver-feller": 4,
+    "driftwood-crab": 2,
+    "fleetfootd": 4,
+    "river-mink": 4,
+    "water-shrew": 2
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "beaver-feller",
+     "name": "Beaver Feller",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fleetfootd",
+     "name": "Fleetfoot'd",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "river-mink",
+     "name": "River Mink",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "water-shrew",
+     "name": "Water Shrew",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7969,
+   "ci": [
+    0.7432,
+    0.8506
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:4-1",
+     "label": "vs 4-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-2",
+     "label": "vs 4-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-3",
+     "label": "vs 4-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-4",
+     "label": "vs 4-4 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-5",
+     "label": "vs 4-5 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 4-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road4",
+     "label": "vs reference deck (Map 4) under 4-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "tide x8",
+    "flying x8"
+   ],
+   "deck": {
+    "bee-forager": 4,
+    "conch-crawler": 4,
+    "drowned-matriarch": 4,
+    "kittiwake-flock": 4,
+    "pond-algae": 4
+   },
+   "cards": [
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "drowned-matriarch",
+     "name": "The Drowned Matriarch",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pond-algae",
+     "name": "Pond Algae",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7604,
+   "ci": [
+    0.7028,
+    0.818
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:4-1",
+     "label": "vs 4-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-2",
+     "label": "vs 4-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-3",
+     "label": "vs 4-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-4",
+     "label": "vs 4-4 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-5",
+     "label": "vs 4-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 4-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road4",
+     "label": "vs reference deck (Map 4) under 4-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "flying x9",
+    "tide x6"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "beaver-lumberjack": 4,
+    "bee-forager": 2,
+    "kittiwake-flock": 4,
+    "puffin-diver": 3,
+    "shoal-shark": 3
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "puffin-diver",
+     "name": "Puffin Diver",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "shoal-shark",
+     "name": "Shoal Shark",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.7083,
+   "ci": [
+    0.6466,
+    0.7701
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.65,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 9
+    },
+    {
+     "f": "tide",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:4-1",
+     "label": "vs 4-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-2",
+     "label": "vs 4-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-3",
+     "label": "vs 4-3 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-4",
+     "label": "vs 4-4 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-5",
+     "label": "vs 4-5 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 4-1's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road4",
+     "label": "vs reference deck (Map 4) under 4-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m2 --pool alley-cat,beaver-feller,beaver-lumberjack,bee-forager,bramble-sprout,conch-crawler,driftwood-crab,drowned-matriarch,duck-paddler,fleetfootd,gannet-nestweaver,grass-snake,kittiwake-flock,meadow-frog,muskrat-lodgekeeper,pincushion-urchin,planarian-splitter,platypus-spur,pond-algae,pond-duck,puffin-diver,river-carp,river-mink,rock-pool-starfish,shoal-shark,slow-worm,snapstick-turtle,water-shrew,water-vole --max-unique 6 --max-copies 4 --budget 1200 --final-games 24 --seed skir1-pro --focus economy,family:tide,family:flying,open --anchor beaver-feller,beaver-lumberjack,conch-crawler,drowned-matriarch,duck-paddler,grass-snake,kittiwake-flock,muskrat-lodgekeeper,planarian-splitter,platypus-spur,pond-algae,river-mink,shoal-shark,slow-worm,snapstick-turtle,water-shrew,water-vole --anchor-min 10 --level 1 --mode map-true"
+}

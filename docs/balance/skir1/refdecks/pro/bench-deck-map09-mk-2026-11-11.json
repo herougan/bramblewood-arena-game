@@ -1,0 +1,839 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T20:35:43.778Z",
+ "fingerprint": "70bb0acabad2",
+ "map": {
+  "id": "mk",
+  "num": 9,
+  "name": "The Kelp Mangroves"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "alligator-gar",
+  "anhinga-spearbird",
+  "banded-sea-krait",
+  "booming-bittern",
+  "driftwood-crab",
+  "dung-beetle",
+  "fiddler-crab-swarm",
+  "fishing-cat",
+  "giant-cave-huntsman",
+  "grey-seal-bull",
+  "horseshoe-crab",
+  "ironclaw-fiddler",
+  "mangrove-monitor",
+  "mangrove-mudskipper",
+  "mudpuppy",
+  "muskrat-lodgekeeper",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "old-sturgeon",
+  "otter-centurion",
+  "pincushion-urchin",
+  "planarian-splitter",
+  "proboscis-monkey",
+  "raft-spider",
+  "sunbittern-strider",
+  "voltaic-eel",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Alligator Gar",
+  "Anhinga Spearbird",
+  "Banded Sea Krait",
+  "Booming Bittern",
+  "Driftwood Crab",
+  "Dung Beetle",
+  "Fiddler Crab Swarm",
+  "Fishing Cat",
+  "Giant Cave Huntsman",
+  "Grey Seal Bull",
+  "Horseshoe Crab",
+  "Ironclaw Fiddler",
+  "Mangrove Monitor",
+  "Mangrove Mudskipper",
+  "Mudpuppy",
+  "Muskrat Lodgekeeper",
+  "Newt Doctor",
+  "Nutria Reedcutter",
+  "Old Sturgeon",
+  "Otter Centurion",
+  "Pincushion Urchin",
+  "Planarian Splitter",
+  "Proboscis Monkey",
+  "Raft Spider",
+  "Sunbittern Strider",
+  "Voltaic Eel",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "alley-cat",
+   "alligator-gar",
+   "banded-sea-krait",
+   "booming-bittern",
+   "driftwood-crab",
+   "fiddler-crab-swarm",
+   "fishing-cat",
+   "giant-cave-huntsman",
+   "horseshoe-crab",
+   "ironclaw-fiddler",
+   "mangrove-monitor",
+   "mangrove-mudskipper",
+   "nutria-reedcutter",
+   "proboscis-monkey",
+   "sunbittern-strider",
+   "voltaic-eel"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 1200,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:9-1",
+   "label": "vs 9-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:9-2",
+   "label": "vs 9-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:9-3",
+   "label": "vs 9-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:9-4",
+   "label": "vs 9-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:9-5",
+   "label": "vs 9-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:9-6",
+   "label": "vs 9-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:9-7",
+   "label": "vs 9-7 miniboss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 9-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road9",
+   "label": "vs reference deck (Map 9) under 9-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "alligator-gar",
+    "fiddler-crab-swarm",
+    "grey-seal-bull",
+    "ironclaw-fiddler",
+    "mangrove-mudskipper",
+    "muskrat-lodgekeeper",
+    "old-sturgeon",
+    "pincushion-urchin",
+    "proboscis-monkey",
+    "raft-spider",
+    "voltaic-eel"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "alligator-gar",
+    "driftwood-crab",
+    "fiddler-crab-swarm",
+    "horseshoe-crab",
+    "ironclaw-fiddler",
+    "old-sturgeon"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "alligator-gar",
+    "anhinga-spearbird",
+    "banded-sea-krait",
+    "booming-bittern",
+    "driftwood-crab",
+    "fishing-cat",
+    "giant-cave-huntsman",
+    "grey-seal-bull",
+    "horseshoe-crab",
+    "ironclaw-fiddler",
+    "mangrove-monitor",
+    "muskrat-lodgekeeper",
+    "old-sturgeon",
+    "planarian-splitter",
+    "proboscis-monkey",
+    "raft-spider",
+    "sunbittern-strider",
+    "voltaic-eel",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:tide",
+   "steps": 1,
+   "moves": 0,
+   "games": 420,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:armor",
+   "steps": 1,
+   "moves": 1,
+   "games": 340,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 1,
+   "moves": 1,
+   "games": 460,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "open",
+   "steps": 1,
+   "moves": 1,
+   "games": 560,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 412,
+ "games": 2420,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)"
+   ],
+   "deck": {
+    "alligator-gar": 1,
+    "dung-beetle": 4,
+    "giant-cave-huntsman": 3,
+    "nutria-reedcutter": 4,
+    "planarian-splitter": 4,
+    "sunbittern-strider": 4
+   },
+   "cards": [
+    {
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "planarian-splitter",
+     "name": "Planarian Splitter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.925,
+   "ci": [
+    0.8965,
+    0.9535
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:9-1",
+     "label": "vs 9-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-2",
+     "label": "vs 9-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-3",
+     "label": "vs 9-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-4",
+     "label": "vs 9-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-5",
+     "label": "vs 9-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-6",
+     "label": "vs 9-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-7",
+     "label": "vs 9-7 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 9-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road9",
+     "label": "vs reference deck (Map 9) under 9-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.1)",
+    "economy (4 resource makers)",
+    "tide x10",
+    "guard x8"
+   ],
+   "deck": {
+    "alligator-gar": 3,
+    "driftwood-crab": 4,
+    "giant-cave-huntsman": 3,
+    "grey-seal-bull": 4,
+    "planarian-splitter": 3,
+    "voltaic-eel": 3
+   },
+   "cards": [
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "planarian-splitter",
+     "name": "Planarian Splitter",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "voltaic-eel",
+     "name": "Voltaic Eel",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8583,
+   "ci": [
+    0.8202,
+    0.8965
+   ],
+   "avgLumber": 1.15,
+   "avgWait": 1.35,
+   "curve": {
+    "1": 17,
+    "2": 3
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "tide",
+     "n": 10
+    },
+    {
+     "f": "guard",
+     "n": 8
+    },
+    {
+     "f": "armor",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:9-1",
+     "label": "vs 9-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-2",
+     "label": "vs 9-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-3",
+     "label": "vs 9-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-4",
+     "label": "vs 9-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-5",
+     "label": "vs 9-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-6",
+     "label": "vs 9-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-7",
+     "label": "vs 9-7 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 9-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road9",
+     "label": "vs reference deck (Map 9) under 9-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "economy (4 resource makers)",
+    "armor x11",
+    "guard x9"
+   ],
+   "deck": {
+    "alligator-gar": 3,
+    "driftwood-crab": 4,
+    "dung-beetle": 4,
+    "fiddler-crab-swarm": 4,
+    "muskrat-lodgekeeper": 1,
+    "planarian-splitter": 4
+   },
+   "cards": [
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "planarian-splitter",
+     "name": "Planarian Splitter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "muskrat-lodgekeeper",
+     "name": "Muskrat Lodgekeeper",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8208,
+   "ci": [
+    0.7819,
+    0.8598
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "armor",
+     "n": 11
+    },
+    {
+     "f": "guard",
+     "n": 9
+    },
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:9-1",
+     "label": "vs 9-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-2",
+     "label": "vs 9-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-3",
+     "label": "vs 9-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-4",
+     "label": "vs 9-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-5",
+     "label": "vs 9-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-6",
+     "label": "vs 9-6 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-7",
+     "label": "vs 9-7 miniboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 9-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road9",
+     "label": "vs reference deck (Map 9) under 9-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+     "p": 0.25,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.9)",
+    "strike-first x7",
+    "armor x6"
+   ],
+   "deck": {
+    "alligator-gar": 3,
+    "anhinga-spearbird": 4,
+    "booming-bittern": 3,
+    "dung-beetle": 4,
+    "giant-cave-huntsman": 3,
+    "ironclaw-fiddler": 3
+   },
+   "cards": [
+    {
+     "id": "anhinga-spearbird",
+     "name": "Anhinga Spearbird",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "booming-bittern",
+     "name": "Booming Bittern",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ironclaw-fiddler",
+     "name": "Ironclaw Fiddler",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7292,
+   "ci": [
+    0.682,
+    0.7763
+   ],
+   "avgLumber": 0.95,
+   "avgWait": 1.4,
+   "curve": {
+    "0": 4,
+    "1": 13,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 7
+    },
+    {
+     "f": "armor",
+     "n": 6
+    },
+    {
+     "f": "tide",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:9-1",
+     "label": "vs 9-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-2",
+     "label": "vs 9-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-3",
+     "label": "vs 9-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-4",
+     "label": "vs 9-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-5",
+     "label": "vs 9-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-6",
+     "label": "vs 9-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-7",
+     "label": "vs 9-7 miniboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 9-1's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road9",
+     "label": "vs reference deck (Map 9) under 9-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+     "p": 0.25,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,anhinga-spearbird,banded-sea-krait,booming-bittern,driftwood-crab,dung-beetle,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,grey-seal-bull,horseshoe-crab,ironclaw-fiddler,mangrove-monitor,mangrove-mudskipper,mudpuppy,muskrat-lodgekeeper,newt-doctor,nutria-reedcutter,old-sturgeon,otter-centurion,pincushion-urchin,planarian-splitter,proboscis-monkey,raft-spider,sunbittern-strider,voltaic-eel,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 1200 --final-games 24 --seed skir1-pro --focus family:tide,family:armor,big,open --anchor alley-cat,alligator-gar,banded-sea-krait,booming-bittern,driftwood-crab,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,horseshoe-crab,ironclaw-fiddler,mangrove-monitor,mangrove-mudskipper,nutria-reedcutter,proboscis-monkey,sunbittern-strider,voltaic-eel --anchor-min 10 --level 1 --mode map-true"
+}

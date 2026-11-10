@@ -16,5 +16,8 @@ clear.forEach(c => { delete c.unattainable; }); set.forEach(c => { c.unattainabl
 console.log(`clear ${clear.length}: ${clear.map(c => c.id).join(' ')}\nset ${set.length}: ${set.map(c => c.id).join(' ')}`);
 if (!process.argv.includes('--dry')) {
   fs.writeFileSync(F, JSON.stringify(cards, null, 2).replace(/[\u0080-￿]/g, ch => '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0')) + '\n');
-  fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'skir1', 'flags-2026-11-11.json'), JSON.stringify({ about: 'SKIR1: unattainable flags after the 2026-11-11 lists (tools/skir1/flags_2026_11_11.js)', cleared: clear.map(c => c.id), set: set.map(c => c.id) }, null, 1) + '\n');
+  // the record is the whole change since SKIR1 began (commit 1137b281), so a re-run after a later list change keeps it complete
+  const was = {}; JSON.parse(require('child_process').execSync('git show 1137b281:canonical/cards.json', { cwd: ROOT, maxBuffer: 1 << 28 }).toString()).forEach(c => { was[c.id] = !!c.unattainable; });
+  fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'skir1', 'flags-2026-11-11.json'), JSON.stringify({ about: 'SKIR1: unattainable flags after the 2026-11-11 lists (tools/skir1/flags_2026_11_11.js), against the batch when SKIR1 began',
+    cleared: cards.filter(c => was[c.id] && !c.unattainable).map(c => c.id), set: cards.filter(c => c.id in was && !was[c.id] && c.unattainable).map(c => c.id) }, null, 1) + '\n');
 }

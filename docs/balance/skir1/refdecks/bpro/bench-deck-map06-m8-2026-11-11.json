@@ -1,0 +1,795 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T18:44:31.451Z",
+ "fingerprint": "aaef444fef7b",
+ "map": {
+  "id": "m8",
+  "num": 6,
+  "name": "Sable Swampmire"
+ },
+ "level": 1,
+ "pool": [
+  "adder-ambusher",
+  "alligator-gar",
+  "anhinga-spearbird",
+  "bone-diviner",
+  "booming-bittern",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "grass-viper",
+  "heron-hag",
+  "lamprey",
+  "mosquito-cloud",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "owl-sentinel",
+  "pond-algae",
+  "sunbittern-strider",
+  "venomlord-serpent",
+  "water-shrew"
+ ],
+ "poolNames": [
+  "Adder Ambusher",
+  "Alligator Gar",
+  "Anhinga Spearbird",
+  "Bone Diviner",
+  "Booming Bittern",
+  "Camouflage Frog",
+  "Constrictor Coil",
+  "Cypress Root Lurker",
+  "Grass Viper",
+  "The Heron Hag",
+  "Lamprey",
+  "Mosquito Cloud",
+  "Newt Doctor",
+  "Nutria Reedcutter",
+  "Owl Sentinel",
+  "Pond Algae",
+  "Sunbittern Strider",
+  "Venomlord Serpent",
+  "Water Shrew"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 2000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:6-1",
+   "label": "vs 6-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-2",
+   "label": "vs 6-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-3",
+   "label": "vs 6-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-4",
+   "label": "vs 6-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-5",
+   "label": "vs 6-5 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-6",
+   "label": "vs 6-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-7",
+   "label": "vs 6-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-8",
+   "label": "vs 6-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 6-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road6",
+   "label": "vs reference deck (Map 6) under 6-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:poison",
+   "label": "poison (skill family)",
+   "cards": [
+    "adder-ambusher",
+    "grass-viper",
+    "heron-hag",
+    "venomlord-serpent",
+    "water-shrew"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "bone-diviner",
+    "heron-hag",
+    "mosquito-cloud",
+    "owl-sentinel"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "bone-diviner",
+    "constrictor-coil",
+    "venomlord-serpent"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:poison",
+   "steps": 1,
+   "moves": 1,
+   "games": 638,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:flying",
+   "steps": 1,
+   "moves": 1,
+   "games": 506,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 1,
+   "moves": 1,
+   "games": 616,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "open",
+   "steps": 1,
+   "moves": 1,
+   "games": 528,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 451,
+ "games": 2992,
+ "decks": [
+  {
+   "focus": "family:poison",
+   "labels": [
+    "poison x11",
+    "flying x7"
+   ],
+   "deck": {
+    "alligator-gar": 1,
+    "cypress-root-lurker": 4,
+    "grass-viper": 4,
+    "heron-hag": 3,
+    "mosquito-cloud": 4,
+    "water-shrew": 4
+   },
+   "cards": [
+    {
+     "id": "cypress-root-lurker",
+     "name": "Cypress Root Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "grass-viper",
+     "name": "Grass Viper",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mosquito-cloud",
+     "name": "Mosquito Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "water-shrew",
+     "name": "Water Shrew",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "heron-hag",
+     "name": "The Heron Hag",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8674,
+   "ci": [
+    0.8341,
+    0.9007
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "poison",
+     "n": 11
+    },
+    {
+     "f": "flying",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:6-1",
+     "label": "vs 6-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-2",
+     "label": "vs 6-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-3",
+     "label": "vs 6-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-4",
+     "label": "vs 6-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-5",
+     "label": "vs 6-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-6",
+     "label": "vs 6-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-7",
+     "label": "vs 6-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-8",
+     "label": "vs 6-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 6-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 6-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "flying x11",
+    "poison x9"
+   ],
+   "deck": {
+    "adder-ambusher": 3,
+    "heron-hag": 3,
+    "lamprey": 3,
+    "mosquito-cloud": 4,
+    "owl-sentinel": 4,
+    "water-shrew": 3
+   },
+   "cards": [
+    {
+     "id": "mosquito-cloud",
+     "name": "Mosquito Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "owl-sentinel",
+     "name": "Owl Sentinel",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "heron-hag",
+     "name": "The Heron Hag",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "lamprey",
+     "name": "Lamprey",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "water-shrew",
+     "name": "Water Shrew",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8258,
+   "ci": [
+    0.7903,
+    0.8612
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    },
+    {
+     "f": "poison",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:6-1",
+     "label": "vs 6-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-2",
+     "label": "vs 6-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-3",
+     "label": "vs 6-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-4",
+     "label": "vs 6-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-5",
+     "label": "vs 6-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-6",
+     "label": "vs 6-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-7",
+     "label": "vs 6-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-8",
+     "label": "vs 6-8 miniboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 6-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 6-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+     "p": 0.2917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.8 Lumber)"
+   ],
+   "deck": {
+    "adder-ambusher": 3,
+    "cypress-root-lurker": 3,
+    "mosquito-cloud": 4,
+    "newt-doctor": 4,
+    "sunbittern-strider": 4,
+    "venomlord-serpent": 2
+   },
+   "cards": [
+    {
+     "id": "mosquito-cloud",
+     "name": "Mosquito Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "name": "Cypress Root Lurker",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "venomlord-serpent",
+     "name": "Venomlord Serpent",
+     "copies": 2,
+     "cost": 3,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7538,
+   "ci": [
+    0.7127,
+    0.7949
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 8,
+    "1": 10,
+    "3": 2
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:6-1",
+     "label": "vs 6-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-2",
+     "label": "vs 6-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-3",
+     "label": "vs 6-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-4",
+     "label": "vs 6-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-5",
+     "label": "vs 6-5 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-6",
+     "label": "vs 6-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-7",
+     "label": "vs 6-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-8",
+     "label": "vs 6-8 miniboss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 6-1's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 6-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+     "p": 0.25,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.2)",
+    "poison x8",
+    "guard x8"
+   ],
+   "deck": {
+    "bone-diviner": 2,
+    "constrictor-coil": 2,
+    "cypress-root-lurker": 4,
+    "grass-viper": 4,
+    "newt-doctor": 4,
+    "venomlord-serpent": 4
+   },
+   "cards": [
+    {
+     "id": "cypress-root-lurker",
+     "name": "Cypress Root Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "grass-viper",
+     "name": "Grass Viper",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "venomlord-serpent",
+     "name": "Venomlord Serpent",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "bone-diviner",
+     "name": "Bone Diviner",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "constrictor-coil",
+     "name": "Constrictor Coil",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7083,
+   "ci": [
+    0.6663,
+    0.7504
+   ],
+   "avgLumber": 1.2,
+   "avgWait": 1.6,
+   "curve": {
+    "0": 8,
+    "1": 4,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 2,
+   "families": [
+    {
+     "f": "poison",
+     "n": 8
+    },
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:6-1",
+     "label": "vs 6-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-2",
+     "label": "vs 6-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-3",
+     "label": "vs 6-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-4",
+     "label": "vs 6-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-5",
+     "label": "vs 6-5 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-6",
+     "label": "vs 6-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-7",
+     "label": "vs 6-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-8",
+     "label": "vs 6-8 miniboss's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 6-1's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 6-2's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+     "p": 0.25,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m8 --pool adder-ambusher,alligator-gar,anhinga-spearbird,bone-diviner,booming-bittern,camouflage-frog,constrictor-coil,cypress-root-lurker,grass-viper,heron-hag,lamprey,mosquito-cloud,newt-doctor,nutria-reedcutter,owl-sentinel,pond-algae,sunbittern-strider,venomlord-serpent,water-shrew --max-unique 6 --max-copies 4 --budget 2000 --final-games 24 --seed skir1-bpro --focus family:poison,family:flying,big,open --level 1 --mode map-true"
+}

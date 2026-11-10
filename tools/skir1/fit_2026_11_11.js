@@ -19,7 +19,7 @@ const L = require('./lib_fight_2026_11_11.js'), G = L.G, D = L.D, M = L.M;
 const a = process.argv.slice(2), CMD = a[0] || 'run', arg = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; };
 const CODES = (arg('--codes', '') || '').split(',').filter(Boolean), SH = +arg('--shard', 0), NSH = +arg('--shards', 1);
 const G1 = +arg('--g1', 24), G2 = +arg('--g2', 100), G3 = +arg('--g3', 200), NC = +arg('--cands', 12), TOP = +arg('--top', 2), ROUNDS = +arg('--rounds', 4), SEED = +arg('--seed0', 11300);
-const DIR = path.join(ROOT, 'docs', 'balance', 'skir1', arg('--dir', 'fit')), FROM = arg('--from', null);
+const DIR = path.join(ROOT, 'docs', 'balance', 'skir1', arg('--dir', 'fit')), FROM = arg('--from', null), SLACK = +arg('--slack', 0);
 const MIN = { cost1: 4, cost0: 3, wait1: 4, wait0: 3, lumber: 2, plain: 2, status: 2 };
 const UT = {}; JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'unit-themes.json'), 'utf8')).units.forEach(u => { UT[u.id] = u; });
 const AT = {}; JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'animal-tags.json'), 'utf8')).cards.forEach(t => { AT[t.id] = t; });
@@ -38,7 +38,7 @@ function mapState(m, code) { // the other fights' decks of the map: usage (a fig
   const fs2 = L.fightsOf(m), F2 = fs2.map(x => L.fight(m, x)), others = fs2.filter(x => x.key !== code), usage = {};
   F2.filter(f => f.code !== code).forEach(f => Object.keys(f.n.deck).forEach(id => { if (!f.keep.has(id)) usage[id] = (usage[id] || 0) + 1; }));
   const listAll = [...new Set([].concat(...F2.map(f => f.pool)))], fam = {}; listAll.forEach(id => { fam[family(id)] = (fam[family(id)] || 0) + 1; });
-  return { usage, ucap: Math.max(2, Math.ceil(fs2.length / 2)), others, listAll, pairFam: id => fam[family(id)] === 2 ? family(id) : null };
+  return { usage, ucap: Math.max(2, Math.ceil(fs2.length / 2)) + SLACK, others, listAll, pairFam: id => fam[family(id)] === 2 ? family(id) : null }; // --slack: a later pass may let a card into 1 more fight
 }
 function fit(code) {
   const { m, n } = find(code), f = L.fight(m, n), st = mapState(m, code), band = bandOf(m, n), t0 = Date.now();
@@ -92,6 +92,8 @@ function fit(code) {
   const keep = changed && was != null && gap(now) + 2 <= gap(was);
   const res = { about: 'SKIR1 fit (tools/skir1/fit_2026_11_11.js)', code, map: m.id, mapNo: f.mapNo, side: f.side, kind: f.kind, name: n.name, band, shieldRule: rule, shieldOverride: ov0, games: G3,
     before: { deck: start.deck, win: was }, pick: { deck: cur.deck, shield: cur.shield, win: now }, keep, trail, sec: Math.round((Date.now() - t0) / 1000) };
+  // the pick stands in for the deck in this process, so the map's later fights read the usage and mix it leaves (one run fits a whole map)
+  if (keep) { n.deck = cur.deck; if (cur.shield != null) n.shieldOverride = cur.shield; }
   fs.mkdirSync(DIR, { recursive: true }); fs.writeFileSync(path.join(DIR, code + '.json'), JSON.stringify(res) + '\n');
   console.log(`${code} t ${band.t.toFixed(1)} | ${G3}: ${was} -> ${now} ${keep ? 'KEEP' : 'no'} | ${trail.slice(1).map(x => x.move).join('; ')} | ${res.sec}s`);
   return res;
@@ -112,6 +114,31 @@ if (CMD === 'run') {
     line = line.replace(/(deck:\{[^}]*\})/, `$1 /* 2026-11-11 (SKIR1 fit): toward the road curve (target ${Math.round(x.band.t * 10) / 10}), ${x.before.win}% -> ${x.pick.win}% at ${x.games} games on the road seeds; ${what.join('; ')} */`);
     s = s.replace(mm[1], line); k++;
   }
-  fs.writeFileSync(APP, s); console.log('applied', k);
+  fs.writeFileSync(APP + '.skir1tmp', s); fs.renameSync(APP + '.skir1tmp', APP); console.log('applied', k); // whole file, then renamed (sims may be starting)
+}
+else if (CMD === 'repair') {
+  // fits that ran side by side each read the others' old decks: a card can end up in more of a map's fights than the cap, or two cards of a
+  // two-card family in one fight. Each excess copy set moves to the pool card nearest its stat score (a new card, or more copies of one the deck
+  // holds) that keeps the fight legal and the map's rules; the fights touched are listed for a re-fit.
+  const APP = path.join(ROOT, 'arena_app.js'); let s = fs.readFileSync(APP, 'utf8'); const touched = [];
+  const maps = L.maps().filter(m => !CODES.length || CODES.includes(m.id));
+  for (const m of maps) {
+    const fs2 = L.fightsOf(m), ucap = Math.max(2, Math.ceil(fs2.length / 2)), F2 = fs2.map(x => L.fight(m, x));
+    const listAll = [...new Set([].concat(...F2.map(f => f.pool)))], fam = {}; listAll.forEach(id => { fam[family(id)] = (fam[family(id)] || 0) + 1; });
+    const pairFam = id => fam[family(id)] === 2 ? family(id) : null;
+    const usage = () => { const u = {}; F2.forEach(f => Object.keys(f.n.deck).forEach(id => { if (!f.keep.has(id)) u[id] = (u[id] || 0) + 1; })); return u; };
+    const pairBad = (f, d) => Object.keys(d).filter(id => !f.keep.has(id) && pairFam(id) && Object.keys(d).some(x => x !== id && family(x) === pairFam(id)));
+    const swap = (f, id, why) => { const d0 = f.n.deck, k = d0[id], u = usage(), opts = [];
+      for (const c of f.pool) { if (c === id) continue; const d = Object.assign({}, d0); delete d[id]; d[c] = (d[c] || 0) + k;
+        if (!d0[c] && !f.keep.has(c) && (u[c] || 0) + 1 > ucap) continue; if (!f.legal(d) || pairBad(f, d).length) continue; opts.push({ c, d, cost: Math.abs(score(c) - score(id)) }); }
+      const best = opts.sort((p, q) => p.cost - q.cost)[0]; if (!best) { console.log('repair: no move for', f.code, id, '(' + why + ')'); return false; }
+      const re = new RegExp(`^(\\s*\\{ ?key:\\s*"${f.code.replace(/-/g, '\\-')}",.*)$`, 'm'), mm = s.match(re), deck = Object.fromEntries(Object.keys(best.d).sort().map(x => [x, best.d[x]]));
+      s = s.replace(mm[1], mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(deck) + ` /* 2026-11-11 (SKIR1 repair): ${id} x${k} -> ${best.c} (${why}); deck (was ${JSON.stringify(d0)}) */`));
+      f.n.deck = best.d; touched.push(f.code); console.log('repair', f.code, id, 'x' + k, '->', best.c, '(' + why + ')'); return true; };
+    for (const f of F2) for (const id of pairBad(f, f.n.deck).sort((x, y) => f.n.deck[x] - f.n.deck[y]).slice(0, 1)) swap(f, id, 'two of a two-card family in one fight');
+    for (const [id, k] of Object.entries(usage())) { let over = k - ucap; if (over <= 0) continue;
+      for (const f of F2.filter(f => f.n.deck[id] && !f.keep.has(id)).sort((p, q) => p.n.deck[id] - q.n.deck[id])) { if (over <= 0) break; if (swap(f, id, `a card in at most ${ucap} of the map's fights`)) over--; } }
+  }
+  if (!a.includes('--dry')) { fs.writeFileSync(APP + '.skir1tmp', s); fs.renameSync(APP + '.skir1tmp', APP); } console.log('touched: ' + [...new Set(touched)].join(','));
 }
 module.exports = { fit, measure, bandOf };

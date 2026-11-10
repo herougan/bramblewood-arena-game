@@ -1,0 +1,850 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T20:36:32.600Z",
+ "fingerprint": "861d82965416",
+ "map": {
+  "id": "m5",
+  "num": 14,
+  "name": "Savanna Reaches"
+ },
+ "level": 1,
+ "pool": [
+  "acacia-giraffe",
+  "adder-ambusher",
+  "alpine-swift",
+  "banded-sea-krait",
+  "blue-ringed-octopus",
+  "caiman-hatchling",
+  "chamois-leaper",
+  "crocodile-ambusher",
+  "cunning-vixen",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "golden-eagle-diver",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "ibex-rockcaller",
+  "mangrove-monitor",
+  "marula-elephant",
+  "meerkat-sentry",
+  "peregrine-stooper",
+  "plains-zebra",
+  "pride-queen",
+  "savanna-cheetah",
+  "springbok-pronker",
+  "stonedrop-vulture",
+  "termite-forager",
+  "tide-spirit",
+  "upside-down-bat",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Acacia Giraffe",
+  "Adder Ambusher",
+  "Alpine Swift",
+  "Banded Sea Krait",
+  "Blue-ringed Octopus",
+  "Caiman Hatchling",
+  "Chamois Leaper",
+  "Crocodile Ambusher",
+  "Cunning Vixen",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Golden Eagle Diver",
+  "Grave-Grin Hyena",
+  "Hoopoe Herald",
+  "Ibex Rockcaller",
+  "Mangrove Monitor",
+  "Marula Elephant",
+  "Meerkat Sentry",
+  "Peregrine Stooper",
+  "Plains Zebra",
+  "Pride Queen",
+  "Savanna Cheetah",
+  "Springbok Pronker",
+  "Stonedrop Vulture",
+  "Termite Forager",
+  "Tide Seahorse",
+  "Upside-Down Bat",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "acacia-giraffe",
+   "adder-ambusher",
+   "crocodile-ambusher",
+   "dust-hyena",
+   "golden-eagle-diver",
+   "grave-grin-hyena",
+   "hoopoe-herald",
+   "mangrove-monitor",
+   "marula-elephant",
+   "meerkat-sentry",
+   "plains-zebra",
+   "pride-queen",
+   "savanna-cheetah",
+   "springbok-pronker",
+   "stonedrop-vulture",
+   "termite-forager"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 1200,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:14-1",
+   "label": "vs 14-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-2",
+   "label": "vs 14-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-3",
+   "label": "vs 14-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-4",
+   "label": "vs 14-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-5",
+   "label": "vs 14-5 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-6",
+   "label": "vs 14-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-7",
+   "label": "vs 14-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-8",
+   "label": "vs 14-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 14-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road14",
+   "label": "vs reference deck (Map 14) under 14-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "alpine-swift",
+    "chamois-leaper",
+    "cunning-vixen",
+    "golden-eagle-diver",
+    "peregrine-stooper",
+    "pride-queen",
+    "savanna-cheetah"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "alpine-swift",
+    "eagle-owl-quartermaster",
+    "golden-eagle-diver",
+    "peregrine-stooper",
+    "stonedrop-vulture",
+    "upside-down-bat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "acacia-giraffe",
+    "adder-ambusher",
+    "banded-sea-krait",
+    "blue-ringed-octopus",
+    "chamois-leaper",
+    "crocodile-ambusher",
+    "cunning-vixen",
+    "eagle-owl-quartermaster",
+    "golden-eagle-diver",
+    "ibex-rockcaller",
+    "mangrove-monitor",
+    "marula-elephant",
+    "meerkat-sentry",
+    "peregrine-stooper",
+    "pride-queen",
+    "savanna-cheetah",
+    "springbok-pronker",
+    "stonedrop-vulture",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:strike-first",
+   "steps": 1,
+   "moves": 1,
+   "games": 484,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:flying",
+   "steps": 1,
+   "moves": 1,
+   "games": 506,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "big",
+   "steps": 1,
+   "moves": 1,
+   "games": 484,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "open",
+   "steps": 1,
+   "moves": 1,
+   "games": 506,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 402,
+ "games": 2684,
+ "decks": [
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "strike-first x8",
+    "flying x8"
+   ],
+   "deck": {
+    "alpine-swift": 4,
+    "banded-sea-krait": 4,
+    "hoopoe-herald": 4,
+    "pride-queen": 2,
+    "savanna-cheetah": 2,
+    "stonedrop-vulture": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "banded-sea-krait",
+     "name": "Banded Sea Krait",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pride-queen",
+     "name": "Pride Queen",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8295,
+   "ci": [
+    0.7888,
+    0.8703
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "strike-first x6"
+   ],
+   "deck": {
+    "banded-sea-krait": 4,
+    "blue-ringed-octopus": 2,
+    "caiman-hatchling": 4,
+    "golden-eagle-diver": 4,
+    "hoopoe-herald": 4,
+    "savanna-cheetah": 2
+   },
+   "cards": [
+    {
+     "id": "banded-sea-krait",
+     "name": "Banded Sea Krait",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "caiman-hatchling",
+     "name": "Caiman Hatchling",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8258,
+   "ci": [
+    0.7851,
+    0.8664
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "evasion x7"
+   ],
+   "deck": {
+    "banded-sea-krait": 3,
+    "caiman-hatchling": 3,
+    "grave-grin-hyena": 4,
+    "plains-zebra": 4,
+    "savanna-cheetah": 2,
+    "springbok-pronker": 4
+   },
+   "cards": [
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "plains-zebra",
+     "name": "Plains Zebra",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "springbok-pronker",
+     "name": "Springbok Pronker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "banded-sea-krait",
+     "name": "Banded Sea Krait",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "caiman-hatchling",
+     "name": "Caiman Hatchling",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7992,
+   "ci": [
+    0.7595,
+    0.839
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.8)",
+    "flying x11",
+    "ranged x7"
+   ],
+   "deck": {
+    "alpine-swift": 4,
+    "eagle-owl-quartermaster": 3,
+    "mangrove-monitor": 4,
+    "meerkat-sentry": 4,
+    "savanna-cheetah": 1,
+    "stonedrop-vulture": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mangrove-monitor",
+     "name": "Mangrove Monitor",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "meerkat-sentry",
+     "name": "Meerkat Sentry",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7803,
+   "ci": [
+    0.736,
+    0.8246
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    },
+    {
+     "f": "ranged",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 19
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m5 --pool acacia-giraffe,adder-ambusher,alpine-swift,banded-sea-krait,blue-ringed-octopus,caiman-hatchling,chamois-leaper,crocodile-ambusher,cunning-vixen,dust-hyena,eagle-owl-quartermaster,golden-eagle-diver,grave-grin-hyena,hoopoe-herald,ibex-rockcaller,mangrove-monitor,marula-elephant,meerkat-sentry,peregrine-stooper,plains-zebra,pride-queen,savanna-cheetah,springbok-pronker,stonedrop-vulture,termite-forager,tide-spirit,upside-down-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 1200 --final-games 24 --seed skir1-pro --focus family:strike-first,family:flying,big,open --anchor acacia-giraffe,adder-ambusher,crocodile-ambusher,dust-hyena,golden-eagle-diver,grave-grin-hyena,hoopoe-herald,mangrove-monitor,marula-elephant,meerkat-sentry,plains-zebra,pride-queen,savanna-cheetah,springbok-pronker,stonedrop-vulture,termite-forager --anchor-min 10 --level 1 --mode map-true"
+}

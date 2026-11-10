@@ -1,0 +1,752 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T18:50:31.739Z",
+ "fingerprint": "aaef444fef7b",
+ "map": {
+  "id": "mt",
+  "num": 16,
+  "name": "The Pinewood Taiga"
+ },
+ "level": 1,
+ "pool": [
+  "berserker-boar",
+  "boreal-elk",
+  "bramblewood-lynx",
+  "cone-cutter-squirrel",
+  "dhole-matriarch",
+  "dhole-runner",
+  "grizzly-vanguard",
+  "mountain-hare",
+  "owl-nightwatch",
+  "pinecone-crossbill",
+  "redwood-woodpecker",
+  "snowshoe-hare",
+  "taiga-lynx",
+  "timber-wolf-pack",
+  "woodland-caribou"
+ ],
+ "poolNames": [
+  "Berserker Boar",
+  "Boreal Elk",
+  "Bramblewood Lynx",
+  "Cone-cutter Squirrel",
+  "Dhole Matriarch",
+  "Dhole Runner",
+  "Grizzly Vanguard",
+  "Mountain Hare",
+  "Owl Nightwatch",
+  "Pinecone Crossbill",
+  "Redwood Woodpecker",
+  "Snowshoe Hare",
+  "Taiga Lynx",
+  "Timber Wolf Pack Leader",
+  "Woodland Caribou"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 2000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:16-1",
+   "label": "vs 16-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:16-2",
+   "label": "vs 16-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:16-3",
+   "label": "vs 16-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:16-4",
+   "label": "vs 16-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:16-5",
+   "label": "vs 16-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:16-6",
+   "label": "vs 16-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:16-7",
+   "label": "vs 16-7 miniboss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 16-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road16",
+   "label": "vs reference deck (Map 16) under 16-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "cone-cutter-squirrel",
+    "redwood-woodpecker"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:evasion",
+   "label": "evasion (skill family)",
+   "cards": [
+    "mountain-hare",
+    "owl-nightwatch",
+    "snowshoe-hare",
+    "taiga-lynx"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:cleave",
+   "label": "cleave (skill family)",
+   "cards": [
+    "boreal-elk",
+    "grizzly-vanguard"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 1,
+   "moves": 1,
+   "games": 580,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:evasion",
+   "steps": 2,
+   "moves": 2,
+   "games": 800,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:cleave",
+   "steps": 1,
+   "moves": 0,
+   "games": 560,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 2,
+   "moves": 2,
+   "games": 760,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 592,
+ "games": 3340,
+ "decks": [
+  {
+   "focus": "family:evasion",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)",
+    "economy (4 resource makers)",
+    "evasion x10"
+   ],
+   "deck": {
+    "berserker-boar": 3,
+    "bramblewood-lynx": 3,
+    "cone-cutter-squirrel": 4,
+    "mountain-hare": 4,
+    "owl-nightwatch": 2,
+    "snowshoe-hare": 4
+   },
+   "cards": [
+    {
+     "id": "cone-cutter-squirrel",
+     "name": "Cone-cutter Squirrel",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snowshoe-hare",
+     "name": "Snowshoe Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "berserker-boar",
+     "name": "Berserker Boar",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "owl-nightwatch",
+     "name": "Owl Nightwatch",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7833,
+   "ci": [
+    0.7363,
+    0.8304
+   ],
+   "avgLumber": 0.55,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 12,
+    "1": 5,
+    "2": 3
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:16-1",
+     "label": "vs 16-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-2",
+     "label": "vs 16-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-3",
+     "label": "vs 16-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-4",
+     "label": "vs 16-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-5",
+     "label": "vs 16-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-6",
+     "label": "vs 16-6 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-7",
+     "label": "vs 16-7 miniboss's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 16-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 16-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (6 resource makers)",
+    "evasion x10"
+   ],
+   "deck": {
+    "cone-cutter-squirrel": 2,
+    "mountain-hare": 4,
+    "pinecone-crossbill": 4,
+    "redwood-woodpecker": 4,
+    "snowshoe-hare": 4,
+    "taiga-lynx": 2
+   },
+   "cards": [
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pinecone-crossbill",
+     "name": "Pinecone Crossbill",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "redwood-woodpecker",
+     "name": "Redwood Woodpecker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "snowshoe-hare",
+     "name": "Snowshoe Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cone-cutter-squirrel",
+     "name": "Cone-cutter Squirrel",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "taiga-lynx",
+     "name": "Taiga Lynx",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7458,
+   "ci": [
+    0.6949,
+    0.7968
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:16-1",
+     "label": "vs 16-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-2",
+     "label": "vs 16-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-3",
+     "label": "vs 16-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-4",
+     "label": "vs 16-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-5",
+     "label": "vs 16-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-6",
+     "label": "vs 16-6 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-7",
+     "label": "vs 16-7 miniboss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 16-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 16-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (14 copies at 1+ Lumber, average 1.0)",
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "berserker-boar": 2,
+    "boreal-elk": 4,
+    "cone-cutter-squirrel": 2,
+    "dhole-runner": 4,
+    "pinecone-crossbill": 4,
+    "redwood-woodpecker": 4
+   },
+   "cards": [
+    {
+     "id": "boreal-elk",
+     "name": "Boreal Elk",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "dhole-runner",
+     "name": "Dhole Runner",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "pinecone-crossbill",
+     "name": "Pinecone Crossbill",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "redwood-woodpecker",
+     "name": "Redwood Woodpecker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "berserker-boar",
+     "name": "Berserker Boar",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "cone-cutter-squirrel",
+     "name": "Cone-cutter Squirrel",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.5708,
+   "ci": [
+    0.5178,
+    0.6239
+   ],
+   "avgLumber": 1,
+   "avgWait": 1,
+   "curve": {
+    "0": 6,
+    "1": 8,
+    "2": 6
+   },
+   "resourceMakers": 6,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:16-1",
+     "label": "vs 16-1 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-2",
+     "label": "vs 16-2 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-3",
+     "label": "vs 16-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-4",
+     "label": "vs 16-4 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-5",
+     "label": "vs 16-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-6",
+     "label": "vs 16-6 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-7",
+     "label": "vs 16-7 miniboss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 16-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 16-2's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field",
+     "p": 0.2083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:cleave",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 1.0)",
+    "cleave x8",
+    "guard x6"
+   ],
+   "deck": {
+    "boreal-elk": 4,
+    "dhole-matriarch": 2,
+    "grizzly-vanguard": 4,
+    "mountain-hare": 4,
+    "pinecone-crossbill": 4,
+    "snowshoe-hare": 2
+   },
+   "cards": [
+    {
+     "id": "boreal-elk",
+     "name": "Boreal Elk",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "grizzly-vanguard",
+     "name": "Grizzly Vanguard",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pinecone-crossbill",
+     "name": "Pinecone Crossbill",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dhole-matriarch",
+     "name": "Dhole Matriarch",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "snowshoe-hare",
+     "name": "Snowshoe Hare",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.4,
+   "ci": [
+    0.3473,
+    0.4527
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 10,
+    "2": 10
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "cleave",
+     "n": 8
+    },
+    {
+     "f": "guard",
+     "n": 6
+    },
+    {
+     "f": "evasion",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:16-1",
+     "label": "vs 16-1 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-2",
+     "label": "vs 16-2 skirmish's deck",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-3",
+     "label": "vs 16-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-4",
+     "label": "vs 16-4 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-5",
+     "label": "vs 16-5 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-6",
+     "label": "vs 16-6 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-7",
+     "label": "vs 16-7 miniboss's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 16-1's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 16-2's field",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field",
+     "p": 0,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mt --pool berserker-boar,boreal-elk,bramblewood-lynx,cone-cutter-squirrel,dhole-matriarch,dhole-runner,grizzly-vanguard,mountain-hare,owl-nightwatch,pinecone-crossbill,redwood-woodpecker,snowshoe-hare,taiga-lynx,timber-wolf-pack,woodland-caribou --max-unique 6 --max-copies 4 --budget 2000 --final-games 24 --seed skir1-bpro --focus economy,family:evasion,family:cleave,open --level 1 --mode map-true"
+}

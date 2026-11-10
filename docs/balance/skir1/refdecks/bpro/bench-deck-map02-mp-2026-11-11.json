@@ -1,0 +1,728 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T19:20:22.858Z",
+ "fingerprint": "97bb9d28f904",
+ "map": {
+  "id": "mp",
+  "num": 2,
+  "name": "Lilypad Reach"
+ },
+ "level": 1,
+ "pool": [
+  "box-turtle",
+  "dam-keeper-beaver",
+  "lodge-engineer",
+  "lotus-frog",
+  "mayfly-dancer",
+  "muskrat-lodgekeeper",
+  "muskrat-reedgatherer",
+  "old-shell",
+  "old-sturgeon",
+  "platypus-spur",
+  "pond-algae",
+  "pond-duck",
+  "pyrenean-desman",
+  "river-carp",
+  "snapstick-turtle",
+  "victoria-regia",
+  "water-shrew"
+ ],
+ "poolNames": [
+  "Box Turtle",
+  "Dam-Keeper Beaver",
+  "Lodge Engineer",
+  "Lotus Frog",
+  "Mayfly Dancer",
+  "Muskrat Lodgekeeper",
+  "Muskrat Reedgatherer",
+  "The Old Shell",
+  "Old Sturgeon",
+  "Platypus Spur",
+  "Pond Algae",
+  "Pond Duck",
+  "Pyrenean Desman",
+  "River Carp",
+  "Snapstick Turtle",
+  "Victoria Regia",
+  "Water Shrew"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 1500,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-A-1",
+   "label": "vs 2-A-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-2",
+   "label": "vs 2-A-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-3",
+   "label": "vs 2-A-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-4",
+   "label": "vs 2-A-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-5",
+   "label": "vs 2-A-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-6",
+   "label": "vs 2-A-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-7",
+   "label": "vs 2-A-7 boss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 2-A-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road6",
+   "label": "vs reference deck (Map 6) under 2-A-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "muskrat-lodgekeeper",
+    "old-sturgeon",
+    "pyrenean-desman",
+    "snapstick-turtle"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:guard",
+   "label": "guard (skill family)",
+   "cards": [
+    "dam-keeper-beaver",
+    "muskrat-lodgekeeper",
+    "old-shell"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "dam-keeper-beaver",
+    "lodge-engineer",
+    "lotus-frog",
+    "muskrat-lodgekeeper",
+    "old-shell",
+    "old-sturgeon",
+    "platypus-spur",
+    "snapstick-turtle",
+    "victoria-regia"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:tide",
+   "steps": 1,
+   "moves": 1,
+   "games": 580,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:guard",
+   "steps": 1,
+   "moves": 1,
+   "games": 520,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 1,
+   "moves": 1,
+   "games": 440,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "open",
+   "steps": 1,
+   "moves": 1,
+   "games": 420,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 867,
+ "games": 2600,
+ "decks": [
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "tide x8"
+   ],
+   "deck": {
+    "box-turtle": 3,
+    "mayfly-dancer": 3,
+    "pyrenean-desman": 4,
+    "river-carp": 4,
+    "snapstick-turtle": 4,
+    "water-shrew": 2
+   },
+   "cards": [
+    {
+     "id": "pyrenean-desman",
+     "name": "Pyrenean Desman",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "river-carp",
+     "name": "River Carp",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "snapstick-turtle",
+     "name": "Snapstick Turtle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mayfly-dancer",
+     "name": "Mayfly Dancer",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "water-shrew",
+     "name": "Water Shrew",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8083,
+   "ci": [
+    0.7781,
+    0.8386
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.1667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)"
+   ],
+   "deck": {
+    "box-turtle": 4,
+    "lotus-frog": 4,
+    "muskrat-reedgatherer": 4,
+    "old-shell": 4,
+    "pond-duck": 4
+   },
+   "cards": [
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lotus-frog",
+     "name": "Lotus Frog",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "name": "Muskrat Reedgatherer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "old-shell",
+     "name": "The Old Shell",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pond-duck",
+     "name": "Pond Duck",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7527,
+    0.8306
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 1,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.25,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)"
+   ],
+   "deck": {
+    "box-turtle": 4,
+    "muskrat-reedgatherer": 4,
+    "old-sturgeon": 4,
+    "platypus-spur": 4,
+    "river-carp": 4
+   },
+   "cards": [
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "name": "Muskrat Reedgatherer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "old-sturgeon",
+     "name": "Old Sturgeon",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "platypus-spur",
+     "name": "Platypus Spur",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "river-carp",
+     "name": "River Carp",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.7583,
+   "ci": [
+    0.723,
+    0.7937
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.1667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:guard",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "guard x8"
+   ],
+   "deck": {
+    "box-turtle": 3,
+    "dam-keeper-beaver": 4,
+    "mayfly-dancer": 4,
+    "old-shell": 4,
+    "old-sturgeon": 1,
+    "pyrenean-desman": 4
+   },
+   "cards": [
+    {
+     "id": "dam-keeper-beaver",
+     "name": "Dam-Keeper Beaver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "mayfly-dancer",
+     "name": "Mayfly Dancer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "old-shell",
+     "name": "The Old Shell",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pyrenean-desman",
+     "name": "Pyrenean Desman",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "old-sturgeon",
+     "name": "Old Sturgeon",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.65,
+   "ci": [
+    0.6072,
+    0.6928
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mp --pool box-turtle,dam-keeper-beaver,lodge-engineer,lotus-frog,mayfly-dancer,muskrat-lodgekeeper,muskrat-reedgatherer,old-shell,old-sturgeon,platypus-spur,pond-algae,pond-duck,pyrenean-desman,river-carp,snapstick-turtle,victoria-regia,water-shrew --max-unique 6 --max-copies 4 --budget 1500 --final-games 24 --seed skir1-bpro --focus family:tide,family:guard,big,open --level 1 --mode map-true"
+}

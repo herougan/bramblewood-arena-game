@@ -1,0 +1,777 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T19:06:10.883Z",
+ "fingerprint": "aaef444fef7b",
+ "map": {
+  "id": "m4",
+  "num": 8,
+  "name": "Caves & Alcoves"
+ },
+ "level": 1,
+ "pool": [
+  "barrow-leech-bat",
+  "blind-cave-fish",
+  "cave-olm",
+  "corpse-flower-beetle",
+  "driftwood-crab",
+  "echo-matriarch",
+  "echo-screecher",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "hawthorn-shieldbug",
+  "quarry-mole",
+  "rot-swollen-carcass",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "sulfur-cinder-moth",
+  "upside-down-bat",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Barrow Leech",
+  "Blind Cave Fish",
+  "Cave Olm",
+  "Corpse-flower Beetle",
+  "Driftwood Crab",
+  "Echo Matriarch",
+  "Echo Screecher",
+  "Gallery Orb-Weaver",
+  "Giant Cave Huntsman",
+  "Hawthorn Shieldbug",
+  "Quarry Mole",
+  "Rot-Swollen Carcass",
+  "Stalactite Pill Bug",
+  "Star-nosed Mole",
+  "Sulfur Cinder Moth",
+  "Upside-Down Bat",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 2000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:8-1",
+   "label": "vs 8-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-2",
+   "label": "vs 8-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-3",
+   "label": "vs 8-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-4",
+   "label": "vs 8-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-5",
+   "label": "vs 8-5 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-6",
+   "label": "vs 8-6 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-7",
+   "label": "vs 8-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-8",
+   "label": "vs 8-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 8-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road8",
+   "label": "vs reference deck (Map 8) under 8-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "barrow-leech-bat",
+    "echo-matriarch",
+    "echo-screecher",
+    "sulfur-cinder-moth",
+    "upside-down-bat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "driftwood-crab",
+    "hawthorn-shieldbug",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "rot-swollen-carcass",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 1,
+   "moves": 1,
+   "games": 638,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:armor",
+   "steps": 1,
+   "moves": 0,
+   "games": 594,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 1,
+   "moves": 1,
+   "games": 616,
+   "apartFromEarlier": 15
+  },
+  {
+   "focus": "open",
+   "steps": 2,
+   "moves": 1,
+   "games": 660,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 599,
+ "games": 3212,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "economy (4 resource makers)",
+    "flying x11"
+   ],
+   "deck": {
+    "cave-olm": 2,
+    "driftwood-crab": 4,
+    "echo-matriarch": 3,
+    "giant-cave-huntsman": 3,
+    "sulfur-cinder-moth": 4,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "cave-olm",
+     "name": "Cave Olm",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9735,
+   "ci": [
+    0.9544,
+    0.9926
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 6,
+    "1": 14
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "economy (4 resource makers)",
+    "armor x8",
+    "guard x8"
+   ],
+   "deck": {
+    "cave-olm": 4,
+    "driftwood-crab": 4,
+    "hawthorn-shieldbug": 4,
+    "star-nosed-mole": 4,
+    "sulfur-cinder-moth": 4
+   },
+   "cards": [
+    {
+     "id": "cave-olm",
+     "name": "Cave Olm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9432,
+   "ci": [
+    0.9162,
+    0.9702
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    },
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "flying x10",
+    "night x6"
+   ],
+   "deck": {
+    "barrow-leech-bat": 3,
+    "corpse-flower-beetle": 3,
+    "echo-matriarch": 3,
+    "giant-cave-huntsman": 3,
+    "stalactite-golem": 4,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "barrow-leech-bat",
+     "name": "Barrow Leech",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "corpse-flower-beetle",
+     "name": "Corpse-flower Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.839,
+   "ci": [
+    0.7996,
+    0.8784
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.5,
+   "curve": {
+    "0": 4,
+    "1": 12,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    },
+    {
+     "f": "night",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.5625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.1)"
+   ],
+   "deck": {
+    "blind-cave-fish": 3,
+    "driftwood-crab": 1,
+    "rot-swollen-carcass": 4,
+    "stalactite-golem": 4,
+    "star-nosed-mole": 4,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "rot-swollen-carcass",
+     "name": "Rot-Swollen Carcass",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6402,
+   "ci": [
+    0.5911,
+    0.6892
+   ],
+   "avgLumber": 1.05,
+   "avgWait": 1.05,
+   "curve": {
+    "0": 11,
+    "1": 1,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 1,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.125,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m4 --pool barrow-leech-bat,blind-cave-fish,cave-olm,corpse-flower-beetle,driftwood-crab,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,hawthorn-shieldbug,quarry-mole,rot-swollen-carcass,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,upside-down-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 2000 --final-games 24 --seed skir1-bpro --focus family:flying,family:armor,big,open --level 1 --mode map-true"
+}

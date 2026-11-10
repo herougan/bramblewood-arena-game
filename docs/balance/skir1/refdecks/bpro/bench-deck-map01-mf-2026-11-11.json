@@ -1,0 +1,678 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T17:57:17.649Z",
+ "fingerprint": "aaef444fef7b",
+ "map": {
+  "id": "mf",
+  "num": 1,
+  "name": "Thistlewood"
+ },
+ "level": 1,
+ "pool": [
+  "ant-scout",
+  "bee-knight",
+  "bramble-sprout",
+  "chipmunk-cavalry",
+  "chipmunk-skirmisher",
+  "cottontail",
+  "cricket-drummer",
+  "dormouse",
+  "duck-paddler",
+  "hedgerow-shrew",
+  "honey-bee",
+  "house-cat",
+  "meadow-rabbit",
+  "moonlit-hare",
+  "pack-rat-looter",
+  "puddle-skimmer",
+  "robin-redbreast",
+  "soldier-ant",
+  "terrier-pup"
+ ],
+ "poolNames": [
+  "Ant Scout",
+  "Bee Warden",
+  "Bramble Sprout",
+  "Chipmunk Cavalry",
+  "Chipmunk Skirmisher",
+  "Cottontail",
+  "Cricket Drummer",
+  "Dormouse",
+  "Duck Paddler",
+  "Hedgerow Shrew",
+  "Honey Bee",
+  "House Cat",
+  "Meadow Rabbit",
+  "Moonlit Hare",
+  "Pack Rat Looter",
+  "Puddle Skimmer",
+  "Robin Redbreast",
+  "Soldier Ant",
+  "Terrier Pup"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 2000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:1-1",
+   "label": "vs 1-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-2",
+   "label": "vs 1-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-3",
+   "label": "vs 1-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-4",
+   "label": "vs 1-4 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-5",
+   "label": "vs 1-5 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 1-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road1",
+   "label": "vs reference deck (Map 1) under 1-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "chipmunk-skirmisher",
+    "pack-rat-looter"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "honey-bee",
+    "robin-redbreast"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:night",
+   "label": "night (skill family)",
+   "cards": [
+    "dormouse",
+    "moonlit-hare"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 2,
+   "moves": 1,
+   "games": 720,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:flying",
+   "steps": 2,
+   "moves": 1,
+   "games": 640,
+   "apartFromEarlier": 14
+  },
+  {
+   "focus": "family:night",
+   "steps": 2,
+   "moves": 2,
+   "games": 624,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 2,
+   "moves": 2,
+   "games": 576,
+   "apartFromEarlier": 16
+  }
+ ],
+ "apart": 10,
+ "seconds": 544,
+ "games": 3072,
+ "decks": [
+  {
+   "focus": "family:night",
+   "labels": [
+    "swarm (20 copies at 0 Lumber)",
+    "night x8"
+   ],
+   "deck": {
+    "bramble-sprout": 1,
+    "cricket-drummer": 4,
+    "dormouse": 4,
+    "moonlit-hare": 4,
+    "puddle-skimmer": 3,
+    "robin-redbreast": 4
+   },
+   "cards": [
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dormouse",
+     "name": "Dormouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "moonlit-hare",
+     "name": "Moonlit Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "puddle-skimmer",
+     "name": "Puddle Skimmer",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8802,
+   "ci": [
+    0.8387,
+    0.9218
+   ],
+   "avgLumber": 0,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 20
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "night",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-1",
+     "label": "vs 1-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-2",
+     "label": "vs 1-2 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-3",
+     "label": "vs 1-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-4",
+     "label": "vs 1-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-5",
+     "label": "vs 1-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road1",
+     "label": "vs reference deck (Map 1) under 1-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (17 copies at 0 Lumber)",
+    "flying x8"
+   ],
+   "deck": {
+    "bee-knight": 2,
+    "bramble-sprout": 4,
+    "cricket-drummer": 3,
+    "honey-bee": 4,
+    "pack-rat-looter": 3,
+    "robin-redbreast": 4
+   },
+   "cards": [
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "honey-bee",
+     "name": "Honey Bee",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pack-rat-looter",
+     "name": "Pack Rat Looter",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "bee-knight",
+     "name": "Bee Warden",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8281,
+   "ci": [
+    0.7772,
+    0.879
+   ],
+   "avgLumber": 0.15,
+   "avgWait": 0,
+   "curve": {
+    "0": 17,
+    "1": 3
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-1",
+     "label": "vs 1-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-2",
+     "label": "vs 1-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-3",
+     "label": "vs 1-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-4",
+     "label": "vs 1-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-5",
+     "label": "vs 1-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road1",
+     "label": "vs reference deck (Map 1) under 1-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (6 resource makers)",
+    "night x6"
+   ],
+   "deck": {
+    "chipmunk-skirmisher": 2,
+    "cricket-drummer": 4,
+    "dormouse": 4,
+    "hedgerow-shrew": 4,
+    "moonlit-hare": 2,
+    "pack-rat-looter": 4
+   },
+   "cards": [
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dormouse",
+     "name": "Dormouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hedgerow-shrew",
+     "name": "Hedgerow Shrew",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pack-rat-looter",
+     "name": "Pack Rat Looter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "chipmunk-skirmisher",
+     "name": "Chipmunk Skirmisher",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "moonlit-hare",
+     "name": "Moonlit Hare",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7401,
+    0.8432
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.1,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "night",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-1",
+     "label": "vs 1-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-2",
+     "label": "vs 1-2 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-3",
+     "label": "vs 1-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-4",
+     "label": "vs 1-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-5",
+     "label": "vs 1-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road1",
+     "label": "vs reference deck (Map 1) under 1-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 18
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "chipmunk-cavalry": 4,
+    "duck-paddler": 4,
+    "meadow-rabbit": 4,
+    "moonlit-hare": 4,
+    "soldier-ant": 4
+   },
+   "cards": [
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "meadow-rabbit",
+     "name": "Meadow Rabbit",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "moonlit-hare",
+     "name": "Moonlit Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7552,
+   "ci": [
+    0.7017,
+    0.8088
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-1",
+     "label": "vs 1-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-2",
+     "label": "vs 1-2 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-3",
+     "label": "vs 1-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-4",
+     "label": "vs 1-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-5",
+     "label": "vs 1-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road1",
+     "label": "vs reference deck (Map 1) under 1-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mf --pool ant-scout,bee-knight,bramble-sprout,chipmunk-cavalry,chipmunk-skirmisher,cottontail,cricket-drummer,dormouse,duck-paddler,hedgerow-shrew,honey-bee,house-cat,meadow-rabbit,moonlit-hare,pack-rat-looter,puddle-skimmer,robin-redbreast,soldier-ant,terrier-pup --max-unique 6 --max-copies 4 --budget 2000 --final-games 24 --seed skir1-bpro --focus economy,family:flying,family:night,open --level 1 --mode map-true"
+}

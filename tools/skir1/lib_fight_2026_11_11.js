@@ -55,7 +55,9 @@ function fight(m, n) {
   // panel already showed and the CPU already summoned), so a stronger card in the deck no longer takes the lead (pin = that card, else null)
   const pin = !explicit && L0.length === 1 && !(n.showcase && old[n.showcase]) ? L0[0] : null;
   const outranks = () => false;
-  const pool = [...new Set([...list].concat(own, L0, [...keep.keys()]))].filter(id => allowedIn(id) && !outranks(id) && !stoneOut(id)).sort();
+  // a leader card joins the deck only when it was there before (keep): the fight's leader may sit outside its deck (CONTENT12-2), and a cut card
+  // that only leads (6-6's Marsh Wisp, LISTFIX2) stays out of the deck
+  const pool = [...new Set([...list].concat(own, [...keep.keys()]))].filter(id => allowedIn(id) && !outranks(id) && !stoneOut(id)).sort();
   // a challenge deck's boon-theme cards may hold their rarity's full copy cap (the road's 5 Commons): Shrine Steps 20-4 has only two themed cards left
   const themedBoon = id => !!(n.rules && n.rules.boon) && ENG.selfishBoonCount(DX, { [id]: 1 }, n.rules.boon).have === 1;
   const cap = id => Math.max(keep.get(id) || 0, themedBoon(id) ? G.maxCopiesForRarity(D[id].rarity) : Math.min(4, G.maxCopiesForRarity(D[id].rarity)));

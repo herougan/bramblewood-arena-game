@@ -1,0 +1,619 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T17:47:24.910Z",
+ "fingerprint": "aaef444fef7b",
+ "map": {
+  "id": "m1",
+  "num": 0,
+  "name": "Bramblewood Outskirts"
+ },
+ "level": 1,
+ "pool": [
+  "ant-scout",
+  "bee-forager",
+  "bee-sentry",
+  "chipmunk-forager",
+  "cottontail",
+  "crossed-eyes",
+  "duck-paddler",
+  "earthworm",
+  "farm-dog",
+  "hazel-coppice",
+  "honey-bee",
+  "house-cat",
+  "nightjar-drifter",
+  "silver-minnow",
+  "soldier-ant",
+  "worker-ant"
+ ],
+ "poolNames": [
+  "Ant Scout",
+  "Bee Forager",
+  "Bee Sentry",
+  "Chipmunk Forager",
+  "Cottontail",
+  "Crossed-Eyes",
+  "Duck Paddler",
+  "Earthworm",
+  "Farm Dog",
+  "Hazel Coppice",
+  "Honey Bee",
+  "House Cat",
+  "Nightjar Drifter",
+  "Silver Minnow",
+  "Soldier Ant",
+  "Worker Ant"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:0-1",
+   "label": "vs 0-1 skirmish's deck",
+   "weight": 0.1667
+  },
+  {
+   "key": "mirror|fight:0-2",
+   "label": "vs 0-2 skirmish's deck",
+   "weight": 0.1667
+  },
+  {
+   "key": "mirror|fight:0-3",
+   "label": "vs 0-3 skirmish's deck",
+   "weight": 0.1667
+  },
+  {
+   "key": "mirror|fight:0-4",
+   "label": "vs 0-4 skirmish's deck",
+   "weight": 0.1667
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 0-1's field",
+   "weight": 0.1667
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+   "weight": 0.1667
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "bee-forager",
+    "bee-sentry",
+    "honey-bee"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "hazel-coppice",
+    "nightjar-drifter"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "ant-scout",
+    "bee-forager",
+    "bee-sentry",
+    "chipmunk-forager",
+    "cottontail",
+    "crossed-eyes",
+    "duck-paddler",
+    "earthworm",
+    "farm-dog",
+    "honey-bee",
+    "house-cat",
+    "silver-minnow",
+    "soldier-ant",
+    "worker-ant"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 9,
+   "moves": 3,
+   "games": 1512,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 8,
+   "moves": 2,
+   "games": 1668,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "swarm",
+   "steps": 10,
+   "moves": 5,
+   "games": 1500,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 9,
+   "moves": 4,
+   "games": 1500,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 926,
+ "games": 6564,
+ "decks": [
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (20 copies at 0 Lumber)",
+    "swarm x8"
+   ],
+   "deck": {
+    "ant-scout": 4,
+    "bee-sentry": 3,
+    "cottontail": 4,
+    "farm-dog": 1,
+    "house-cat": 4,
+    "soldier-ant": 4
+   },
+   "cards": [
+    {
+     "id": "ant-scout",
+     "name": "Ant Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "cottontail",
+     "name": "Cottontail",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "farm-dog",
+     "name": "Farm Dog",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9097,
+   "ci": [
+    0.8665,
+    0.9529
+   ],
+   "avgLumber": 0,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 20
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "swarm",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (20 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "bee-sentry": 4,
+    "chipmunk-forager": 4,
+    "crossed-eyes": 4,
+    "duck-paddler": 4,
+    "soldier-ant": 4
+   },
+   "cards": [
+    {
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "chipmunk-forager",
+     "name": "Chipmunk Forager",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "crossed-eyes",
+     "name": "Crossed-Eyes",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9028,
+   "ci": [
+    0.8574,
+    0.9481
+   ],
+   "avgLumber": 0,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 20
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (20 copies at 0 Lumber)",
+    "flying x8"
+   ],
+   "deck": {
+    "bee-forager": 4,
+    "bee-sentry": 4,
+    "earthworm": 1,
+    "farm-dog": 4,
+    "soldier-ant": 4,
+    "worker-ant": 3
+   },
+   "cards": [
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "farm-dog",
+     "name": "Farm Dog",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "worker-ant",
+     "name": "Worker Ant",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.8264,
+   "ci": [
+    0.7679,
+    0.8848
+   ],
+   "avgLumber": 0,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 20
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "bee-sentry": 3,
+    "farm-dog": 3,
+    "hazel-coppice": 4,
+    "house-cat": 4,
+    "nightjar-drifter": 4,
+    "soldier-ant": 2
+   },
+   "cards": [
+    {
+     "id": "hazel-coppice",
+     "name": "Hazel Coppice",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "nightjar-drifter",
+     "name": "Nightjar Drifter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "farm-dog",
+     "name": "Farm Dog",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6181,
+   "ci": [
+    0.5444,
+    0.6917
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.25,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 15
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m1 --pool ant-scout,bee-forager,bee-sentry,chipmunk-forager,cottontail,crossed-eyes,duck-paddler,earthworm,farm-dog,hazel-coppice,honey-bee,house-cat,nightjar-drifter,silver-minnow,soldier-ant,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:flying,big,swarm,open --level 1 --mode map-true"
+}

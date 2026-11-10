@@ -30,7 +30,7 @@ const uniq = a => [...new Set(a)];
 function newMainList(id, m) {
   const no = m.mapNo, yes = (PICKS[id] || {}).yes || [];
   const base = no <= 11 ? yes.concat(UI47_ADMIN_ADD[id] || []) : no === 12 ? yes.concat(UI47_SUGGEST[id] || []) : (UI47_SUGGEST[id] || []);
-  return uniq(base.concat(Object.keys((EXTRA.main || {})[id] || {}), Object.keys((EXTRA.batch || {})[id] || {})));
+  return uniq(base.concat(Object.keys((EXTRA.main || {})[id] || {}), Object.keys((EXTRA.batch || {})[id] || {}))).filter(x => !((EXTRA.drop || {})[id] || {})[x]);
 }
 const out = { about: 'SKIR1 phase A (tools/skir1/fold_lists_2026_11_11.js): the MAP tier of main maps 0-20 and the SUBMAP lists of the THEME8 side maps, before -> after', built: '2026-11-11', main: {}, submaps: {}, extra: EXTRA, missing: [] };
 for (const [id, m] of Object.entries(SUG.maps)) {
@@ -46,7 +46,7 @@ for (const [sid, sm] of Object.entries(SUG.submaps)) {
   const e = pools.maps[sm.parent]; if (!e) throw new Error('no parent entry ' + sm.parent);
   e.submaps = e.submaps || {};
   const bs = ((before[sm.parent] || {}).submaps || {})[sid], was = Array.isArray(bs) ? bs : (bs && bs.cards) || [];
-  const now = uniq((UI47_SUGGEST[sid] || []).concat(Object.keys((EXTRA.sub || {})[sid] || {})));
+  const now = uniq((UI47_SUGGEST[sid] || []).concat(Object.keys((EXTRA.sub || {})[sid] || {}))).filter(x => !((EXTRA.drop || {})[sid] || {})[x]);
   const missing = now.filter(x => !CARDS[x]); if (missing.length) out.missing.push({ map: sid, missing });
   const list = now.filter(x => CARDS[x]);
   out.submaps[sid] = { name: sm.name, parent: sm.parent, unlockAfterNo: sm.unlockAfterNo, before: was.length, after: list.length, added: list.filter(x => !was.includes(x)), removed: was.filter(x => !list.includes(x)), list };

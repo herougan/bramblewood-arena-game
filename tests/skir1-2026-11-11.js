@@ -26,10 +26,10 @@ const same = (x, y) => JSON.stringify([...new Set(x)].sort()) === JSON.stringify
 // ---- 1. the lists ----
 for (const [id, m] of Object.entries(SUG.maps)) {
   const yes = (PICKS[id] || {}).yes || [], want = (m.mapNo <= 11 ? yes.concat(UI47_ADMIN_ADD[id] || []) : m.mapNo === 12 ? yes.concat(UI47_SUGGEST[id] || []) : UI47_SUGGEST[id] || [])
-    .concat(Object.keys((EXTRA.main || {})[id] || {}), Object.keys((EXTRA.batch || {})[id] || {})).filter(x => D[x]);
+    .concat(Object.keys((EXTRA.main || {})[id] || {}), Object.keys((EXTRA.batch || {})[id] || {})).filter(x => D[x] && !((EXTRA.drop || {})[id] || {})[x]);
   ok(same(pools[id].cards, want), `Map ${m.mapNo} (${id}): the MAP tier is ${m.mapNo <= 11 ? 'the owner\'s Yes + admin adds' : m.mapNo === 12 ? 'his 3 + the suggestions' : 'the suggestions'}`);
 }
-for (const [sid, sm] of Object.entries(SUG.submaps)) ok(same(((pools[sm.parent] || {}).submaps || {})[sid] || [], (UI47_SUGGEST[sid] || []).concat(Object.keys((EXTRA.sub || {})[sid] || {})).filter(x => D[x])), `${sm.name} (${sid}): its list is its suggestions`);
+for (const [sid, sm] of Object.entries(SUG.submaps)) ok(same(((pools[sm.parent] || {}).submaps || {})[sid] || [], (UI47_SUGGEST[sid] || []).concat(Object.keys((EXTRA.sub || {})[sid] || {})).filter(x => D[x] && !((EXTRA.drop || {})[sid] || {})[x])), `${sm.name} (${sid}): its list is its suggestions`);
 const unlockAt = {}; L.maps().forEach(m => { unlockAt[m.id] = L.unlockOf(m); });
 Object.entries(pools).forEach(([id, e]) => { const no = G.mapNumberOf(id); if (no == null || no > 20) return;
   const stone = (e.cards || []).filter(x => M.stone(D[x])); ok(!stone.length, `Map ${no} (${id}): no Stone card on its list (${stone.join(', ')})`);

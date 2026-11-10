@@ -1,5 +1,5 @@
 {
- "about": "SKIR1: unattainable flags after the 2026-11-11 lists (tools/skir1/flags_2026_11_11.js)",
+ "about": "SKIR1: unattainable flags after the 2026-11-11 lists (tools/skir1/flags_2026_11_11.js), against the batch when SKIR1 began",
  "cleared": [
   "great-horned-owl",
   "tunnel-wyrm",
@@ -102,6 +102,7 @@
   "raven-scout",
   "alpha-howler",
   "cataphract-destrier",
+  "glacial-ape-king",
   "coral-reef-shark",
   "pelican-diver",
   "frost-hare-sprinter",
@@ -116,6 +117,7 @@
   "tasmanian-devil",
   "snow-bunting-archer",
   "spitting-spider",
+  "weaver-bird",
   "supernova-jelly",
   "woodcock-lookout",
   "marsh-harrier",
