@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// Package BAL41 (2026-11-10): the off-target road fights of The Kelp Mangroves (mk), Wolfsbane Tundra (m6), Lilypad Reach (mp) and The Pale
-// Desert (mpd) retuned with BAL35-40's levers and tools (the fight's own list, leader, Shield; tools/bal41/exhaust = BAL37's road_exhaust (the
+// Package BAL41 (2026-11-10): the off-target road fights of The Kelp Mangroves (mk) and Wolfsbane Tundra (m6) retuned (owner 11:57: side
+// maps later, so Lilypad Reach and The Pale Desert were dropped from the brief) with BAL35-40's levers and tools (the fight's own list, leader, Shield; tools/bal41/exhaust = BAL37's road_exhaust (the
 // showcase leader kept) with the boon count on the expanded defs (FIX12), tools/bal41/pick and apply; keep rule unchanged; baseline the
 // 200-game road measure bal40w200). No games are played. Same checks as tests/bal40-2026-11-10.js: a boss or miniboss keeps its leaders and
 // its leader cards; the fights named unreachable in BAL35-2 / BAL36-1 / BAL37-1 / BAL39-1 / BAL40-1 are not retuned.
-//   1. every fight with a dated BAL41 retune comment is on one of those four maps and holds a kept pick from docs/balance/bal41/{exhaust,
+//   1. every fight with a dated BAL41 retune comment is on one of those two maps and holds a kept pick from docs/balance/bal41/{exhaust,
 //      exhaust-r2,tune,tune-r2,pick}: 2+ points nearer its target at 200 games on the road seeds; new cards on the fight's list, within the
 //      road's rarity cap, not another fight's reward; size and first-clear cards kept; K14 no worse; Shield not above the rule; no bramble
 //      Health, level or bramble override added; a named leader is in the deck, led before, or (not a challenge fight) on the fight's list;
@@ -37,7 +37,7 @@ ok(retuned.length >= 1, 'BAL41 retuned some road fights: ' + retuned.length);
 for (const [code, l] of retuned) {
   const f = find(code); ok(f, code + ': in CONQUEST_MAPS'); if (!f) continue;
   const MAP = f.m.id, mapNo = G.mapNumberOf(MAP), kind = f.n.kind || 'skirmish', now = fields(l);
-  ok(['mk', 'm6', 'mp', 'mpd'].includes(MAP), code + ': on The Kelp Mangroves, Wolfsbane Tundra, Lilypad Reach or The Pale Desert');
+  ok(['mk', 'm6'].includes(MAP), code + ': on The Kelp Mangroves or Wolfsbane Tundra (side maps later, owner 11:57)');
   ok(!UNREACHABLE.includes(code), code + ': not a fight named unreachable in BAL35-2 / BAL36-1 / BAL37-1 / BAL39-1 / BAL40-1');
   const x = (files[code] || []).find(y => y.keep && keyOf(y.pick.deck) === keyOf(now.deck) && (y.pick.shieldOverride == null ? null : String(y.pick.shieldOverride)) === now.shield);
   ok(x, code + ': the deck and Shield are a kept BAL41 pick'); if (!x) continue;

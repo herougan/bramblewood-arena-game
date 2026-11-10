@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// 2026-11-10 (package BAL41): BAL37's summary (tools/bal37/summary_2026_11_10.js, same rows) for BAL41's reads of The Kelp Mangroves, Wolfsbane Tundra,
-// Lilypad Reach and The Pale Desert: docs/balance/bal41/tune-2026-11-10.json (every fight read, before / after at 200 games on the road seeds, each tool's pick) and
+// 2026-11-10 (package BAL41): BAL37's summary (tools/bal37/summary_2026_11_10.js, same rows) for BAL41's reads of The Kelp Mangroves and Wolfsbane Tundra
+// (side maps later, owner 11:57): docs/balance/bal41/tune-2026-11-10.json (every fight read, before / after at 200 games on the road seeds, each tool's pick) and
 // tests/bal41-pins-2026-11-10.json (the applied fights as arena_app.js now has them).
 //   node tools/bal41/summary_2026_11_10.js
 'use strict';

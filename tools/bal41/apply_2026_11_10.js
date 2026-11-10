@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 2026-11-10 (package BAL41): BAL37's apply for BAL41's kept picks (The Kelp Mangroves 9-*, Wolfsbane Tundra 17-*, Lilypad Reach 2-A-*, The Pale Desert 18-A-*), from docs/balance/bal41/<dir>, comment dated BAL41.
+// 2026-11-10 (package BAL41): BAL37's apply for BAL41's kept picks (The Kelp Mangroves 9-*, Wolfsbane Tundra 17-*; side maps later, owner 11:57), from docs/balance/bal41/<dir>, comment dated BAL41.
 // BAL37's header: applies the kept picks with BAL35's
 // tuner unchanged (tools/bal35/road_tune_2026_11_10.js apply --dir ../bal37/<dir>: deck from the fight's own list, leader, Shield; kept only
 // when 2+ points nearer the target at 200 games on the road seeds), then re-dates the comment it writes on those lines to BAL37 (the one right after deck:{...}: a line BAL35 already
