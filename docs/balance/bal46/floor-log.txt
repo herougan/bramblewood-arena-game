@@ -1,0 +1,5 @@
+7-6 target 40 space 514 before 49.3
+  38.3 46.3 46.3 {"corpse-flower-beetle":3,"dung-beetle":4,"earthworm":1,"leafcutter-gardener":3,"planarian-splitter":4,"wolf-spider-mother":3,"worker-ant":1}
+  38.3 46.8 49.3 {"corpse-flower-beetle":3,"dung-beetle":4,"earthworm":1,"leafcutter-gardener":4,"planarian-splitter":3,"wolf-spider-mother":3,"worker-ant":1}
+  38.3 49.5 54 {"corpse-flower-beetle":3,"dung-beetle":4,"earthworm":1,"hawthorn-shieldbug":1,"leafcutter-gardener":4,"planarian-splitter":2,"wolf-spider-mother":3,"worker-ant":1}
+  38.3 49.5 48.3 {"corpse-flower-beetle":2,"dung-beetle":4,"earthworm":1,"hawthorn-shieldbug":1,"leafcutter-gardener":3,"planarian-splitter":4,"wolf-spider-mother":3,"worker-ant":1}

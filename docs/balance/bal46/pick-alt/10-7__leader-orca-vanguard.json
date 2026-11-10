@@ -1,0 +1,76 @@
+{
+ "about": "BAL46 named pick (tools/bal46/pick_2026_11_10.js)",
+ "code": "10-7",
+ "map": "m7",
+ "mapName": "Coral Current",
+ "kind": "elite",
+ "name": "Eel Nest",
+ "band": {
+  "lo": 56.300000000000004,
+  "hi": 72.3,
+  "target": 64.3
+ },
+ "list": [
+  "clownfish-scout",
+  "coral-reef-shark",
+  "dolphin-knight",
+  "horseshoe-crab",
+  "kraken-spawnling",
+  "open-ocean-hermit-crab",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-shark",
+  "riptide-eel",
+  "supernova-jelly"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "riptide-eel"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "coral-reef-shark": 2,
+   "kraken-spawnling": 4,
+   "orca-vanguard": 2,
+   "riptide-eel": 3,
+   "supernova-jelly": 3
+  },
+  "leaders": [
+   "riptide-eel"
+  ],
+  "shieldOverride": null,
+  "win200": 74.3,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "coral-reef-shark": 2,
+   "kraken-spawnling": 4,
+   "orca-vanguard": 2,
+   "riptide-eel": 3,
+   "supernova-jelly": 3
+  },
+  "leaders": [
+   "orca-vanguard"
+  ],
+  "shieldOverride": null,
+  "win200": 81,
+  "shown": 8
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 74.3
+  },
+  {
+   "move": "named pick",
+   "win": 81
+  }
+ ]
+}

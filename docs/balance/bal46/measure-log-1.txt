@@ -1,0 +1,3 @@
+fights 241 mine 120
+done
+EXIT 0

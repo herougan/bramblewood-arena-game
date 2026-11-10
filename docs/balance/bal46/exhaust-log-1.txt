@@ -1,0 +1,1 @@
+10-7 target 64.3 space 63807 read 401 range 0 - 80 | 200 games: 74.3 -> 64 KEEP {"deck":{"coral-reef-shark":1,"horseshoe-crab":1,"kraken-spawnling":3,"orca-vanguard":4,"parrotfish":2,"riptide-eel":1,"supernova-jelly":2},"leaders":["coral-reef-shark"],"shieldOverride":null} 835s

@@ -1,0 +1,79 @@
+{
+ "about": "BAL46 named pick (tools/bal46/pick_2026_11_10.js)",
+ "code": "7-6",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "miniboss",
+ "name": "The Morel Monarch",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "corpse-flower-beetle",
+  "dung-beetle",
+  "earthworm",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "wolf-spider-mother",
+  "worker-ant"
+ ],
+ "firstClear": [
+  "wolf-spider-mother"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "corpse-flower-beetle"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": 18,
+ "before": {
+  "deck": {
+   "corpse-flower-beetle": 3,
+   "dung-beetle": 4,
+   "earthworm": 1,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 3,
+   "wolf-spider-mother": 3,
+   "worker-ant": 1
+  },
+  "leaders": [
+   "corpse-flower-beetle"
+  ],
+  "shieldOverride": 18,
+  "win200": 49.3,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "corpse-flower-beetle": 3,
+   "dung-beetle": 4,
+   "earthworm": 1,
+   "leafcutter-gardener": 3,
+   "planarian-splitter": 4,
+   "wolf-spider-mother": 3,
+   "worker-ant": 1
+  },
+  "leaders": [
+   "corpse-flower-beetle"
+  ],
+  "shieldOverride": 18,
+  "win200": 46.3,
+  "shown": 9
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 49.3
+  },
+  {
+   "move": "named pick",
+   "win": 46.3
+  }
+ ]
+}

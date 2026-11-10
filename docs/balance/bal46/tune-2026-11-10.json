@@ -1,0 +1,182 @@
+{
+ "about": "BAL46 road retune summary (tools/bal46/summary_2026_11_10.js); 400 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "10-7",
+   "map": "m7",
+   "mapName": "Coral Current",
+   "kind": "elite",
+   "name": "Eel Nest",
+   "target": 64.3,
+   "before200": 74.3,
+   "after200": 64.3,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 74.3,
+     "pick200": 64,
+     "keep": true,
+     "space": 63807,
+     "range": {
+      "min": 0,
+      "max": 80
+     },
+     "pick": {
+      "deck": {
+       "coral-reef-shark": 1,
+       "horseshoe-crab": 1,
+       "kraken-spawnling": 3,
+       "orca-vanguard": 4,
+       "parrotfish": 2,
+       "riptide-eel": 1,
+       "supernova-jelly": 2
+      },
+      "leaders": [
+       "coral-reef-shark"
+      ],
+      "shieldOverride": null
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 74.3,
+     "pick200": 64.3,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "coral-reef-shark": 2,
+       "kraken-spawnling": 4,
+       "orca-vanguard": 2,
+       "riptide-eel": 3,
+       "supernova-jelly": 3
+      },
+      "leaders": [
+       "supernova-jelly"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "7-6",
+   "map": "mu",
+   "mapName": "The Morel Hollow",
+   "kind": "miniboss",
+   "name": "The Morel Monarch",
+   "target": 40,
+   "before200": 49.3,
+   "after200": 46.3,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 49.3,
+     "pick200": 50,
+     "keep": false,
+     "space": 488,
+     "range": {
+      "min": 31.7,
+      "max": 66.7
+     },
+     "pick": {
+      "deck": {
+       "corpse-flower-beetle": 2,
+       "dung-beetle": 4,
+       "earthworm": 1,
+       "leafcutter-gardener": 4,
+       "planarian-splitter": 4,
+       "wolf-spider-mother": 3,
+       "worker-ant": 1
+      },
+      "leaders": [
+       "corpse-flower-beetle"
+      ],
+      "shieldOverride": 18
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 49.3,
+     "pick200": 46.3,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "corpse-flower-beetle": 3,
+       "dung-beetle": 4,
+       "earthworm": 1,
+       "leafcutter-gardener": 3,
+       "planarian-splitter": 4,
+       "wolf-spider-mother": 3,
+       "worker-ant": 1
+      },
+      "leaders": [
+       "corpse-flower-beetle"
+      ],
+      "shieldOverride": 18
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "5-2",
+   "map": "mw",
+   "mapName": "Gatorback Swamp",
+   "kind": "skirmish",
+   "name": "Toad Hollow",
+   "target": 84,
+   "before200": 74.3,
+   "after200": 82,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 74.3,
+     "pick200": 83,
+     "keep": true,
+     "space": 2617,
+     "range": {
+      "min": 31.7,
+      "max": 83.3
+     },
+     "pick": {
+      "deck": {
+       "bog-leech": 1,
+       "constrictor-coil": 5,
+       "crocodile-ambusher": 4,
+       "cypress-root-lurker": 2,
+       "swamp-alligator": 2
+      },
+      "leaders": [
+       "nutria-reedcutter"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 74.3,
+     "pick200": 82,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "bog-leech": 1,
+       "swamp-alligator": 3,
+       "cypress-root-lurker": 2,
+       "crocodile-ambusher": 3,
+       "constrictor-coil": 5
+      },
+      "leaders": [
+       "box-turtle"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  }
+ ]
+}

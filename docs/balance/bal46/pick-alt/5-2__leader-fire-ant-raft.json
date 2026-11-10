@@ -1,0 +1,74 @@
+{
+ "about": "BAL46 named pick (tools/bal46/pick_2026_11_10.js)",
+ "code": "5-2",
+ "map": "mw",
+ "mapName": "Gatorback Swamp",
+ "kind": "skirmish",
+ "name": "Toad Hollow",
+ "band": {
+  "lo": 76,
+  "hi": 92,
+  "target": 84
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "nutria-reedcutter",
+  "swamp-alligator"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "bog-leech"
+ ],
+ "namesake": false,
+ "shieldRule": 5,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "bog-leech": 1,
+   "swamp-alligator": 3,
+   "cypress-root-lurker": 2,
+   "crocodile-ambusher": 3,
+   "constrictor-coil": 5
+  },
+  "leaders": [
+   "bog-leech"
+  ],
+  "shieldOverride": 0,
+  "win200": 74.3,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "bog-leech": 1,
+   "swamp-alligator": 3,
+   "cypress-root-lurker": 2,
+   "crocodile-ambusher": 3,
+   "constrictor-coil": 5
+  },
+  "leaders": [
+   "fire-ant-raft"
+  ],
+  "shieldOverride": 0,
+  "win200": 93,
+  "shown": 0
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 74.3
+  },
+  {
+   "move": "named pick",
+   "win": 93
+  }
+ ]
+}

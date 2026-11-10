@@ -1,0 +1,56 @@
+{
+ "about": "BAL46 baseline (tools/bal46/baseline_2026_11_10.js): 400 games on the road seeds, the Map reference",
+ "rows": {
+  "5-2": {
+   "code": "5-2",
+   "map": "mw",
+   "mapName": "Gatorback Swamp",
+   "name": "Toad Hollow",
+   "target": 84,
+   "lo": 76,
+   "hi": 92,
+   "win200": 74.3,
+   "gap": -9.7,
+   "space": 20415,
+   "leaders": [
+    "bog-leech"
+   ],
+   "shieldRule": 5,
+   "shieldOverride": 0
+  },
+  "7-6": {
+   "code": "7-6",
+   "map": "mu",
+   "mapName": "The Morel Hollow",
+   "name": "The Morel Monarch",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 49.3,
+   "gap": 9.3,
+   "space": 514,
+   "leaders": [
+    "corpse-flower-beetle"
+   ],
+   "shieldRule": 14,
+   "shieldOverride": 18
+  },
+  "10-7": {
+   "code": "10-7",
+   "map": "m7",
+   "mapName": "Coral Current",
+   "name": "Eel Nest",
+   "target": 64.3,
+   "lo": 56.300000000000004,
+   "hi": 72.3,
+   "win200": 74.3,
+   "gap": 10,
+   "space": 84282,
+   "leaders": [
+    "riptide-eel"
+   ],
+   "shieldRule": 15,
+   "shieldOverride": null
+  }
+ }
+}
