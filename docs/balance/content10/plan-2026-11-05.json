@@ -1775,7 +1775,12 @@
     "own": 10,
     "carried": 6
    },
-   "short": null
+   "short": null,
+   "later": {
+    "own": 1,
+    "carried": 0,
+    "why": "2026-11-11 (CONTENT19): the owner's Sea Bass went on the Coral Current list (own), after this plan; 'after' stays CONTENT10's count"
+   }
   },
   "m10": {
    "no": 11,

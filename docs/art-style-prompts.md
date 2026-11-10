@@ -256,3 +256,10 @@ Card art for the CONTENT18 shooters (on no list) and the Bloom star path's card,
 
 ### Canopy Bower (bramble)
 > A small scene, centred, slight low angle: a cosy platform of woven lianas and branches high in a rainforest tree, a round roof of broad green leaves, rope bridges leading off to other trees, hanging flowers and vines, a toucan perched on the railing and a monkey peeking out, misty green rainforest canopy background with light rain and soft rays of sun through the leaves.
+
+## New card prompt (2026-11-11, package CONTENT19)
+
+Card art for the Sea Bass (Map 10, Coral Current; owner: "Add a new card, Sea Bass for Map 10"): paste the base prompt first, then the line below. Run the pixel pass at 128 px. The game shows the card's emoji (🐟) until the art lands. Genre Cute (Common, 3/6). The body plan rule (owner 2026-11-11) is in the line: a fish has no limbs, and a sea bass has two separate dorsal fins, one pair of pectoral and one pair of pelvic fins, one anal fin and a forked tail. Reject variations with legs, one long dorsal fin or a rounded tail.
+
+### Sea Bass
+> Full-body character in a small scene, centred, slight low angle: a cute silver sea bass with big bright eyes and a dark spot on its gill cover, sleek silver body with faint dark lines along its flanks, riding the white curl of a breaking wave over a reef wall, two smaller sea bass glinting in the water behind it, sunlit teal shallows background with coral heads and a pale sandy bottom, one bright coral-orange accent. Natural animal anatomy, not anthropomorphic, no hands, anatomically correct fish: one streamlined body with no limbs, two dorsal fins, a pair of pectoral fins, a pair of pelvic fins, one anal fin and a forked tail fin.

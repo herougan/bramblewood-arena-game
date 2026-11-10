@@ -69,7 +69,7 @@
    "special": []
   },
   "m7": {
-   "cards": ["colossal-squid", "electric-ray", "great-barracuda", "clownfish-scout", "parrotfish", "riptide-eel", "coral-reef-shark", "kraken-spawnling", "reef-shark", "banded-sea-krait", "mangrove-manatee", "open-ocean-hermit-crab", "supernova-jelly", "dolphin-knight", "horseshoe-crab"],
+   "cards": ["colossal-squid", "electric-ray", "great-barracuda", "clownfish-scout", "parrotfish", "riptide-eel", "coral-reef-shark", "kraken-spawnling", "reef-shark", "banded-sea-krait", "mangrove-manatee", "open-ocean-hermit-crab", "supernova-jelly", "dolphin-knight", "horseshoe-crab", "sea-bass"],
    "submaps": {
     "mj": ["blue-ringed-octopus", "orca-vanguard", "nautilus-drifter", "clownfish-scout", "kraken-spawnling", "parrotfish", "coral-reef-shark", "mangrove-manatee", "riptide-eel", "colossal-squid", "coral-polyp-colony", "electric-ray", "great-barracuda", "hagfish-silencer", "nudibranch"]
    },

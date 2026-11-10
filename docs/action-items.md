@@ -8,6 +8,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-11: Package CONTENT19 (on its branch, not released)
+- Done (owner: "Add a new card, Sea Bass for Map 10"): the Sea Bass (Common 3/6, 1 Lumber, Wait 1; Tide, Wave 1, Swarm (Fish); types Coral Reef + Fish) is on Map 10's list (Coral Current, main map m7), a basic-pack card of Pack 2; name and flavour in the 12 packs. Skirmish decks untouched (a later package rebuilds them).
+- Art needed: **Sea Bass** card art (the game shows 🐟 until then). Prompt with the fish body plan in `docs/art-style-prompts.md` (CONTENT19); run on the owner's computer, then the pixel pass at 128 px.
+- Notes for the owner: THEME8's 3/7 is over the game's budget at the Map 7 term a Pack 2 card is priced at (21.78 > 21.5), so Health 7 -> 6 (3/6 reads 20.78 of 21.5). Swarm (Fish) counts Types, so the card lists Fish; on Map 10's list only Parrotfish, Great Barracuda, Electric Ray and Reef Shark are Fish-typed (Clownfish Scout, Riptide Eel and Coral Reef Shark are not).
+
 ## 11-10 09:26-10:33: Owner notes
 | # | Note | Package |
 |---|---|---|
