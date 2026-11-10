@@ -1,0 +1,48 @@
+{
+ "13-1": {
+  "deck": {
+   "berserker-boar": 2,
+   "bramblewood-lynx": 3,
+   "fawn-scout": 1,
+   "fox-kit": 3,
+   "grizzly-vanguard": 5,
+   "swift-fox": 4,
+   "tasmanian-devil": 1
+  },
+  "leaders": [
+   "berserker-boar"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "13-5": {
+  "deck": {
+   "berserker-boar": 4,
+   "bramblewood-lynx": 3,
+   "fawn-scout": 3,
+   "fox-kit": 4,
+   "grizzly-vanguard": 1,
+   "shimmerwing-stag": 2
+  },
+  "leaders": null,
+  "shield": "8",
+  "hqHp": null,
+  "characterId": null
+ },
+ "13-6": {
+  "deck": {
+   "berserker-boar": 1,
+   "bramblewood-lynx": 3,
+   "fawn-scout": 1,
+   "fox-kit": 4,
+   "grizzly-vanguard": 2,
+   "swift-fox": 2,
+   "tasmanian-devil": 4
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ }
+}

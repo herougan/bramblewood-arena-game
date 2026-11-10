@@ -1,0 +1,76 @@
+{
+ "about": "BAL43 named pick (tools/bal43/pick_2026_11_10.js)",
+ "code": "13-5",
+ "map": "mr",
+ "mapName": "The Redwood Deep",
+ "kind": "elite",
+ "name": "Badger Setts",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "berserker-boar",
+  "bramblewood-lynx",
+  "fawn-scout",
+  "fox-kit",
+  "grizzly-vanguard",
+  "shimmerwing-stag",
+  "swift-fox",
+  "tasmanian-devil"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "shimmerwing-stag"
+ ],
+ "namesake": false,
+ "shieldRule": 20,
+ "shieldOverride": 16,
+ "before": {
+  "deck": {
+   "bramblewood-lynx": 3,
+   "fawn-scout": 2,
+   "fox-kit": 4,
+   "grizzly-vanguard": 3,
+   "shimmerwing-stag": 1,
+   "swift-fox": 2,
+   "tasmanian-devil": 2
+  },
+  "leaders": [
+   "shimmerwing-stag"
+  ],
+  "shieldOverride": 16,
+  "win200": 61.5,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "berserker-boar": 4,
+   "bramblewood-lynx": 3,
+   "fawn-scout": 3,
+   "fox-kit": 4,
+   "grizzly-vanguard": 1,
+   "shimmerwing-stag": 2
+  },
+  "leaders": [
+   "shimmerwing-stag"
+  ],
+  "shieldOverride": 8,
+  "win200": 69,
+  "shown": 4
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 61.5
+  },
+  {
+   "move": "named pick",
+   "win": 69
+  }
+ ]
+}

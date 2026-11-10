@@ -1,0 +1,163 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "1-3",
+ "map": "mf",
+ "mapName": "Thistlewood",
+ "kind": "skirmish",
+ "name": "Burrow Line",
+ "band": {
+  "lo": 77,
+  "hi": 93,
+  "target": 85
+ },
+ "list": [
+  "ant-scout",
+  "bee-forager",
+  "bramble-sprout",
+  "chipmunk-cavalry",
+  "cottontail",
+  "dormouse",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "honey-bee",
+  "meadow-frog",
+  "meadow-rabbit",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 1,
+ "shieldOverride": null,
+ "space": 56192,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 90,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "bramble-sprout": 3,
+    "dormouse": 4,
+    "field-mouse": 4,
+    "field-vole": 4,
+    "hedgerow-shrew": 3,
+    "honey-bee": 1,
+    "meadow-frog": 1
+   },
+   "leaders": null,
+   "tune200": 93.5
+  },
+  {
+   "deck": {
+    "bramble-sprout": 5,
+    "chipmunk-cavalry": 1,
+    "dormouse": 4,
+    "field-vole": 3,
+    "hedgerow-shrew": 2,
+    "meadow-rabbit": 1,
+    "slow-worm": 4
+   },
+   "leaders": null,
+   "tune200": 94.5
+  },
+  {
+   "deck": {
+    "ant-scout": 1,
+    "dormouse": 5,
+    "field-mouse": 3,
+    "hedgerow-shrew": 4,
+    "meadow-rabbit": 1,
+    "slow-worm": 2,
+    "woodcock-lookout": 4
+   },
+   "leaders": null,
+   "tune200": 94.5
+  },
+  {
+   "deck": {
+    "bramble-sprout": 5,
+    "chipmunk-cavalry": 1,
+    "dormouse": 5,
+    "field-mouse": 4,
+    "honey-bee": 1,
+    "meadow-frog": 1,
+    "slow-worm": 3
+   },
+   "leaders": null,
+   "tune200": 95
+  },
+  {
+   "deck": {
+    "dormouse": 3,
+    "field-mouse": 4,
+    "field-vole": 4,
+    "hedgerow-shrew": 4,
+    "honey-bee": 1,
+    "slow-worm": 4
+   },
+   "leaders": null,
+   "tune200": 95
+  },
+  {
+   "deck": {
+    "bramble-sprout": 2,
+    "dormouse": 1,
+    "field-mouse": 4,
+    "field-vole": 4,
+    "hedgerow-shrew": 4,
+    "honey-bee": 1,
+    "slow-worm": 4
+   },
+   "leaders": null,
+   "tune200": 95.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "bramble-sprout": 5,
+   "field-mouse": 3,
+   "cottontail": 1,
+   "dormouse": 5,
+   "meadow-frog": 1,
+   "hedgerow-shrew": 4,
+   "chipmunk-cavalry": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 96
+ },
+ "pick": {
+  "deck": {
+   "bramble-sprout": 3,
+   "dormouse": 4,
+   "field-mouse": 4,
+   "field-vole": 4,
+   "hedgerow-shrew": 3,
+   "honey-bee": 1,
+   "meadow-frog": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 95.5,
+  "tune200": 93.5
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 96
+  },
+  {
+   "move": "whole-space pick",
+   "win": 95.5
+  }
+ ],
+ "sec": 513
+}

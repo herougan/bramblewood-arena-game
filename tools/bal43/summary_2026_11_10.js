@@ -21,7 +21,9 @@ for (const r of Object.values(rows)) {
   // BAL42: and whose leaders are the line's (18-6: the exhaust and the named pick kept the same deck, led by Antlion Pit / Komodo Warlord)
   const lineLeaders = JSON.stringify(JSON.parse((l.match(/leaders:(\[[^\]]*\])/) || [0, 'null'])[1]));
   const sameDeck = kept.filter(x => JSON.stringify(x.pick.deck, Object.keys(x.pick.deck).sort()) === lineDeck);
-  const used = sameDeck.find(x => JSON.stringify(x.pick.leaders) === lineLeaders) || sameDeck[0] || kept[kept.length - 1];
+  // BAL43: and whose Shield is the line's (13-5: the exhaust kept the deck at Shield 0, the named pick the same deck at Shield 8)
+  const lineShield = (l.match(/shieldOverride:(\d+)/) || [0, null])[1], sameShield = sameDeck.filter(x => (x.pick.shieldOverride == null ? null : String(x.pick.shieldOverride)) === lineShield);
+  const used = sameShield.find(x => JSON.stringify(x.pick.leaders) === lineLeaders) || sameShield[0] || sameDeck.find(x => JSON.stringify(x.pick.leaders) === lineLeaders) || sameDeck[0] || kept[kept.length - 1];
   r.applied = applied; r.appliedFrom = applied ? used.tool : null; r.after200 = applied ? used.pick200 : r.before200;
   if (applied) pins[r.code] = { deck: JSON.parse((l.match(/deck:(\{[^}]*\})/) || [0, '{}'])[1]), leaders: JSON.parse((l.match(/leaders:(\[[^\]]*\])/) || [0, 'null'])[1]), shield: (l.match(/shieldOverride:(\d+)/) || [0, null])[1],
     hqHp: (l.split('/*')[0].match(/hqHp:(\d+)/) || [0, null])[1], characterId: (l.split('/*')[0].match(/characterId:"([^"]+)"/) || [0, null])[1] };

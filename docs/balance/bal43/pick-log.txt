@@ -1,0 +1,3 @@
+13-5 target 70 | 200 games: 61.5 -> 69 KEEP {"deck":{"berserker-boar":4,"bramblewood-lynx":3,"fawn-scout":3,"fox-kit":4,"grizzly-vanguard":1,"shimmerwing-stag":2},"leaders":["shimmerwing-stag"],"shieldOverride":8}
+13-5 target 70 | 200 games: 61.5 -> 71 KEEP {"deck":{"berserker-boar":4,"bramblewood-lynx":3,"fawn-scout":3,"fox-kit":4,"grizzly-vanguard":1,"shimmerwing-stag":2},"leaders":["shimmerwing-stag"],"shieldOverride":4}
+13-1 target 90 | 200 games: 81.5 -> 86 KEEP {"deck":{"berserker-boar":2,"bramblewood-lynx":3,"fawn-scout":1,"fox-kit":3,"grizzly-vanguard":5,"swift-fox":4,"tasmanian-devil":1},"leaders":["bramblewood-lynx"],"shieldOverride":null}

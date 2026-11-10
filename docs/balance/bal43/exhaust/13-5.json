@@ -1,0 +1,173 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "13-5",
+ "map": "mr",
+ "mapName": "The Redwood Deep",
+ "kind": "elite",
+ "name": "Badger Setts",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "berserker-boar",
+  "bramblewood-lynx",
+  "fawn-scout",
+  "fox-kit",
+  "grizzly-vanguard",
+  "shimmerwing-stag",
+  "swift-fox",
+  "tasmanian-devil"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "shimmerwing-stag"
+ ],
+ "namesake": false,
+ "shieldRule": 20,
+ "shieldOverride": 16,
+ "space": 8716,
+ "read": 400,
+ "g1": 60,
+ "range": {
+  "min": 45,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "berserker-boar": 4,
+    "bramblewood-lynx": 3,
+    "fawn-scout": 3,
+    "fox-kit": 4,
+    "grizzly-vanguard": 1,
+    "shimmerwing-stag": 2
+   },
+   "leaders": null,
+   "tune200": 69.5
+  },
+  {
+   "deck": {
+    "berserker-boar": 2,
+    "bramblewood-lynx": 2,
+    "fawn-scout": 3,
+    "fox-kit": 4,
+    "grizzly-vanguard": 2,
+    "shimmerwing-stag": 2,
+    "swift-fox": 1,
+    "tasmanian-devil": 1
+   },
+   "leaders": [
+    "berserker-boar"
+   ],
+   "tune200": 70.5
+  },
+  {
+   "deck": {
+    "berserker-boar": 2,
+    "bramblewood-lynx": 2,
+    "fawn-scout": 3,
+    "fox-kit": 4,
+    "grizzly-vanguard": 2,
+    "shimmerwing-stag": 2,
+    "swift-fox": 1,
+    "tasmanian-devil": 1
+   },
+   "leaders": [
+    "grizzly-vanguard"
+   ],
+   "tune200": 70.5
+  },
+  {
+   "deck": {
+    "berserker-boar": 2,
+    "bramblewood-lynx": 2,
+    "fawn-scout": 3,
+    "fox-kit": 4,
+    "grizzly-vanguard": 2,
+    "shimmerwing-stag": 2,
+    "swift-fox": 1,
+    "tasmanian-devil": 1
+   },
+   "leaders": [
+    "tasmanian-devil"
+   ],
+   "tune200": 70.5
+  },
+  {
+   "deck": {
+    "berserker-boar": 3,
+    "bramblewood-lynx": 3,
+    "fox-kit": 3,
+    "shimmerwing-stag": 2,
+    "swift-fox": 3,
+    "tasmanian-devil": 3
+   },
+   "leaders": [
+    "grizzly-vanguard"
+   ],
+   "tune200": 69.5
+  },
+  {
+   "deck": {
+    "berserker-boar": 2,
+    "bramblewood-lynx": 2,
+    "fawn-scout": 3,
+    "fox-kit": 4,
+    "grizzly-vanguard": 2,
+    "shimmerwing-stag": 2,
+    "swift-fox": 1,
+    "tasmanian-devil": 1
+   },
+   "leaders": null,
+   "tune200": 69
+  }
+ ],
+ "before": {
+  "deck": {
+   "bramblewood-lynx": 3,
+   "fawn-scout": 2,
+   "fox-kit": 4,
+   "grizzly-vanguard": 3,
+   "shimmerwing-stag": 1,
+   "swift-fox": 2,
+   "tasmanian-devil": 2
+  },
+  "leaders": [
+   "shimmerwing-stag"
+  ],
+  "shieldOverride": 16,
+  "win200": 61.5
+ },
+ "pick": {
+  "deck": {
+   "berserker-boar": 4,
+   "bramblewood-lynx": 3,
+   "fawn-scout": 3,
+   "fox-kit": 4,
+   "grizzly-vanguard": 1,
+   "shimmerwing-stag": 2
+  },
+  "leaders": [
+   "shimmerwing-stag"
+  ],
+  "shieldOverride": 0,
+  "win200": 73,
+  "tune200": 69.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 61.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 73
+  }
+ ],
+ "sec": 568
+}

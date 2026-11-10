@@ -1,0 +1,155 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "1-4",
+ "map": "mf",
+ "mapName": "Thistlewood",
+ "kind": "skirmish",
+ "name": "Sapper Hedge",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "ant-scout",
+  "bee-forager",
+  "bramble-sprout",
+  "chipmunk-cavalry",
+  "cottontail",
+  "dormouse",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "honey-bee",
+  "meadow-rabbit",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 1,
+ "shieldOverride": null,
+ "space": 5653,
+ "read": 400,
+ "g1": 60,
+ "range": {
+  "min": 86.7,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "bramble-sprout": 4,
+    "dormouse": 4,
+    "field-mouse": 3,
+    "field-vole": 5,
+    "hedgerow-shrew": 3,
+    "honey-bee": 1
+   },
+   "leaders": null,
+   "tune200": 91
+  },
+  {
+   "deck": {
+    "bramble-sprout": 3,
+    "chipmunk-cavalry": 1,
+    "dormouse": 3,
+    "field-mouse": 4,
+    "field-vole": 5,
+    "hedgerow-shrew": 4
+   },
+   "leaders": null,
+   "tune200": 91.5
+  },
+  {
+   "deck": {
+    "bramble-sprout": 5,
+    "cottontail": 1,
+    "dormouse": 4,
+    "field-mouse": 2,
+    "field-vole": 4,
+    "hedgerow-shrew": 4
+   },
+   "leaders": null,
+   "tune200": 92.5
+  },
+  {
+   "deck": {
+    "bramble-sprout": 5,
+    "dormouse": 4,
+    "field-vole": 4,
+    "hedgerow-shrew": 4,
+    "honey-bee": 1,
+    "slow-worm": 2
+   },
+   "leaders": null,
+   "tune200": 93
+  },
+  {
+   "deck": {
+    "dormouse": 4,
+    "field-mouse": 3,
+    "field-vole": 5,
+    "hedgerow-shrew": 4,
+    "honey-bee": 1,
+    "woodcock-lookout": 3
+   },
+   "leaders": null,
+   "tune200": 93
+  },
+  {
+   "deck": {
+    "dormouse": 4,
+    "field-mouse": 4,
+    "field-vole": 4,
+    "hedgerow-shrew": 4,
+    "honey-bee": 1,
+    "woodcock-lookout": 3
+   },
+   "leaders": null,
+   "tune200": 93.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "field-mouse": 4,
+   "field-vole": 5,
+   "bramble-sprout": 5,
+   "cottontail": 1,
+   "hedgerow-shrew": 4,
+   "chipmunk-cavalry": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 94
+ },
+ "pick": {
+  "deck": {
+   "bramble-sprout": 4,
+   "dormouse": 4,
+   "field-mouse": 3,
+   "field-vole": 5,
+   "hedgerow-shrew": 3,
+   "honey-bee": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 93.5,
+  "tune200": 91
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 94
+  },
+  {
+   "move": "whole-space pick",
+   "win": 93.5
+  }
+ ],
+ "sec": 581
+}
