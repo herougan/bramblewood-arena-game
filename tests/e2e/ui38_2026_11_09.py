@@ -30,7 +30,7 @@ OPEN = "adminModeEnabled = true; pk1OpenMapCards(%s); await new Promise(r=> setT
 STATE = """const g = k=> [...document.querySelectorAll('#ui37Pros [data-ui37-grp="' + k + '"] .ui37-tile')].map(t=> t.dataset.ui37Id);
   const m = document.querySelector('.pk1-mc-modal'), shown = g('new').concat(g('carried')), side = ui38SideOnly(ui37Live && ui37Live.top);
   return {view: m && m.dataset.ui39 === '1' ? 'pros' : 'lists', /* 2026-11-09 (UI39): one view */ neu: g('new'), car: g('carried'), concepts: shown.filter(id=> id.startsWith('concept-')).length, fold: !!document.querySelector('#ui37Pros details'),
-    sideShown: shown.filter(id=> side.has(id)), visibleSecs: [...m.children].filter(x=> x.offsetParent !== null).map(x=> x.className).join(' | '), map: (document.querySelector('.ui37-map') || {}).textContent};"""
+    sideShown: shown.filter(id=> side.has(id) && !ui43TutorialCards().includes(id)) /* 2026-11-10: the tutorial's cards pass (UI43) */, visibleSecs: [...m.children].filter(x=> x.offsetParent !== null).map(x=> x.className).join(' | '), map: (document.querySelector('.ui37-map') || {}).textContent};"""
 
 async def main():
     h = serve(); url = f'http://127.0.0.1:{h.server_address[1]}/index.html'
@@ -46,8 +46,8 @@ async def main():
         for m in mains:
             await pg.evaluate(E(OPEN % json.dumps(m['id']) + "return 1;"))
             s = await pg.evaluate(E(STATE)); sizes.append((m['n'], len(s['neu']), len(s['car']), s['concepts']))
-            ok(len(s['neu']) >= 30, f"Map {m['n']}: NEW! {len(s['neu'])} >= 30 ({s['concepts']} concepts)")
-            if m['n'] >= 2: ok(len(s['car']) >= 19, f"Map {m['n']}: Carried {len(s['car'])} >= 20 (Map 2: 19, its two earlier maps' families run out)")
+            ok(len(s['neu']) >= 45, f"Map {m['n']}: NEW! {len(s['neu'])} >= 45 ({s['concepts']} concepts)")  # 2026-11-10 (UI45): was 30
+            ok(len(s['car']) <= 7, f"Map {m['n']}: Carried {len(s['car'])} (no fill: only the tutorial's cards with no flags)")  # 2026-11-10 (UI45): was >= 19 from a top-up
             ok(not s['fold'] and not s['sideShown'], f"Map {m['n']}: no fold, no side-map card")
         print('   sizes (map, NEW!, Carried, concepts):', sizes)
         # 2 Maps 0, 5, 14: screenshots; only the head, switch and Prospects are visible
@@ -83,7 +83,8 @@ async def main():
             ok(bool(row and row['concept'] and row['animal'] and row['role']) and bool(con and con['flag'] == 'yes'), 'Export .json: the concept row carries its fields, and the concepts list has it flagged')
             async with pg.expect_download() as dl: await pg.click('[data-ui37-export=csv]')
             await dl.value; body = await pg.evaluate("window.__ui37Last.body")
-            ok(body.split('\n')[0].endswith('concept,animal,family,element,rarity,role') and cid in body, 'Export .csv has the concept columns')
+            ok('concept,animal,family,element,rarity,role' in body.split('\n')[0]  # 2026-11-10 (UI45): UI44 added columns after the concept ones
+                and cid in body, 'Export .csv has the concept columns')
             await pg.evaluate(E(OPEN % json.dumps(m15['id']) + "return 1;"))
             s = await pg.evaluate(E(STATE)); ok(cid in s['car'], f'the concept flagged Yes on Map 14 is Carried on Map 15')
         # 4 phone

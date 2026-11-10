@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""2026-11-09 (package UI38, owner 03:55: "show me a bigger pool each map, e.g. 30+ cards for unique, 20+ cards for carried. Then I'll toggle on/off"):
+"""2026-11-09 (package UI38, owner 03:55: "show me a bigger pool each map, e.g. 30+ cards for unique, 20+ cards for carried. Then I'll toggle on/off"; UI45 2026-11-10: NEW! 45+, Carried only the Yes cards):
 build docs/design/map-prospects-2026-11-09.json, the admin Map cards window's bigger Prospects pool for main Maps 0-20.
 
 Per main map:
@@ -26,9 +26,9 @@ sys.path.insert(0, os.path.dirname(__file__))
 from concepts_2026_11_09 import CONCEPTS, EXOTIC_WORDS, EXOTIC_ANIMALS  # noqa: E402
 
 OUT = os.path.join(ROOT, 'docs', 'design', 'map-prospects-2026-11-09.json')
-NEW_TARGET, CAR_TARGET, FAMILY_CAP, NEW_MIN_SCORE, CAR_MIN_SCORE = 30, 20, 2, 4, 1
-NEW_MAX = 40  # the NEW! group stops taking existing fit cards here (the best-fitting first); concepts only fill up to NEW_TARGET + NEW_MARGIN
-NEW_MARGIN = 2  # concepts sized so the no-flag NEW! group reaches NEW_TARGET + NEW_MARGIN (a few Yes flags on earlier maps keep it at 30+)
+NEW_TARGET, CAR_TARGET, FAMILY_CAP, NEW_MIN_SCORE, CAR_MIN_SCORE = 45, 0, 2, 4, 1  # 2026-11-10 (UI45, owner 21:11): NEW! 45+ (was 30), Carried has no minimum or fill (only cards flagged Yes on an earlier map)
+NEW_MAX = 60  # the NEW! group stops taking existing fit cards here (the best-fitting first); concepts only fill up to NEW_TARGET + NEW_MARGIN
+NEW_MARGIN = 2  # concepts sized so the no-flag NEW! group reaches NEW_TARGET + NEW_MARGIN (a few Yes flags on earlier maps keep it at 45+)
 ELEMENT = {'volcanic-ash': 'heat', 'desert-glass': 'heat', 'pale-desert': 'heat', 'tundra-ice': 'cold', 'taiga': 'cold', 'caves': 'stone', 'reef-ocean': 'water', 'mangrove': 'water', 'swamp': 'poison', 'fungal': 'decay'}
 FACTION_THEMES = {'otters', 'hummingbirds', 'ecclesia'}
 SKIP_FLAGS = ('token', 'test', 'easterEgg', 'raid', 'hidden', 'worldBoss', 'eggKind', 'spell', 'equip', 'field', 'hazard', 'darkSummon', 'basic', 'hallOfFame', 'token')
@@ -132,7 +132,7 @@ def main(check=False):
         # the no-flag split, as the game draws it
         cur = [i for i in pools.get(mid, {}).get('cards', []) if i in cards]
         gb = given_before[mid]
-        cur_new = [i for i in cur if i not in gb and not cards[i].get('token') and not cards[i].get('test')]
+        cur_new = [i for i in cur if not cards[i].get('token') and not cards[i].get('test')]  # 2026-11-10 (UI45): earlier maps' list cards are NEW! until flagged Yes
         cur_car = [i for i in cur if i in gb]
         for i in cur:
             fam_all[i] = family(i)
@@ -140,7 +140,7 @@ def main(check=False):
         over_cur = sorted(f for f, n in fam_new.items() if f and n > FAMILY_CAP)
         new_pool = list(cur_new)
         for cid, s, codes in fit:
-            if cid in gb or cid in new_pool or s < NEW_MIN_SCORE or len(new_pool) >= NEW_MAX:
+            if cid in new_pool or s < NEW_MIN_SCORE or len(new_pool) >= NEW_MAX:
                 continue
             f = family(cid)
             if f and fam_new[f] >= FAMILY_CAP:
@@ -153,12 +153,15 @@ def main(check=False):
             if len(kept) >= need:
                 break
             f = c['family']
+            if c['name'].lower() in card_names:
+                problems.append(f'{mid}: concept {c["name"]} skipped, its name is a card')  # 2026-11-10 (UI45): a bigger NEW! reaches further down the concept lists
+                continue
             if fam_new[f] >= FAMILY_CAP:
                 problems.append(f'{mid}: concept {c["name"]} skipped, family {f} already {fam_new[f]}')
                 continue
             fam_new[f] += 1; kept.append(c)
         if len(kept) < need:
-            problems.append(f'{mid} (Map {m["no"]}): short of concepts: need {need}, have {len(kept)}')
+            problems.append(f'{mid} (Map {m["no"]}): short of concepts: need {need}, have {len(kept)}, NEW! reaches {len(new_pool) + len(kept)} of {NEW_TARGET}')  # 2026-11-10 (UI45): reported, not fatal; the owner asked to be told which maps stay short
         for c in kept:
             c['id'] = 'concept-' + re.sub(r'[^a-z0-9]+', '-', c['name'].lower()).strip('-')
             if c['id'] in concept_ids:
@@ -172,18 +175,8 @@ def main(check=False):
             for w in EXOTIC_WORDS:
                 if w in (c['name'] + ' ' + c['animal']).lower():
                     problems.append(f'{c["name"]}: not a simple common animal ({w})')
-        car_pool = list(cur_car)
-        fam_car = collections.Counter(family(i) for i in cur_car)
-        # then every other card an earlier main map gives (score 0), the most recent map first, as the game does when the fit list runs out
-        fitted = {x[0] for x in fit}
-        order = [x for x in fit if x[0] in gb] + [[i, 0, ''] for mm2 in reversed([mm for mm in mains if mm['no'] < m['no']]) for i in pools.get(mm2['id'], {}).get('cards', []) if i not in fitted and eligible(i) and (cards[i].get('animal') or '').lower() not in EXOTIC_ANIMALS]
-        for cid, s, codes in order:
-            if cid not in gb or cid in car_pool or len(car_pool) >= CAR_TARGET + 2:
-                continue
-            f = family(cid)
-            if f and fam_car[f] >= FAMILY_CAP:
-                continue
-            car_pool.append(cid); fam_car[f] += 1
+        car_pool = []  # 2026-11-10 (UI45): with no flags nothing is carried; Carried is only the cards flagged Yes on an earlier map (the game's ui37CarriedIndex)
+        cur_car = []
         out_maps[mid] = {'no': m['no'], 'name': m['name'], 'biome': b, 'element': el, 'fit': fit,
                          'concepts': [{k: c[k] for k in ('id', 'name', 'animal', 'family', 'element', 'rarity', 'role')} for c in kept],
                          'static': {'new': len(new_pool) + len(kept), 'newListed': len(cur_new), 'newExisting': len(new_pool) - len(cur_new), 'newConcepts': len(kept),
@@ -192,11 +185,11 @@ def main(check=False):
         report.append(out_maps[mid])
     # families spread across maps (concepts)
     spread = collections.Counter(c['family'] for mm in out_maps.values() for c in mm['concepts'])
-    doc = {'_about': 'UI38 (2026-11-09, owner 03:55): the admin Map cards window\'s bigger Prospects pool for main Maps 0-20 (NEW! 30+, Carried 20+). '
+    doc = {'_about': 'UI38 (2026-11-09, owner 03:55): the admin Map cards window\'s bigger Prospects pool for main Maps 0-20 (NEW! 45+, Carried = Yes cards only). '
                      'fit = existing cards ranked by theme fit (codes: b biome, k kin biome, c CONTENT17, t THEME5, s SKILLREC1, g signature skill, e element); '
                      'concepts = proposed new cards with no stats or skills yet (designed after the owner picks); family = animal family for the cap of '
                      f'{FAMILY_CAP} per group. Generated by tools/ui38/map_prospects_2026_11_09.py; concepts are written in tools/ui38/concepts_2026_11_09.py.',
-           'built': '2026-11-09', 'rules': {'newTarget': NEW_TARGET, 'carriedTarget': CAR_TARGET, 'familyCap': FAMILY_CAP, 'newMinScore': NEW_MIN_SCORE, 'newMax': NEW_MAX, 'carriedFill': CAR_TARGET + 2},
+           'built': '2026-11-09', 'rules': {'newTarget': NEW_TARGET, 'carriedTarget': CAR_TARGET, 'familyCap': FAMILY_CAP, 'newMinScore': NEW_MIN_SCORE, 'newMax': NEW_MAX, 'carriedFill': 0},
            'maps': out_maps, 'family': dict(sorted(fam_all.items())), 'exotic': sorted(i for i, c in cards.items() if (c.get('animal') or '').lower() in EXOTIC_ANIMALS), 'conceptFamilySpread': dict(spread.most_common())}
     for mm in report:
         st = mm['static']
@@ -209,7 +202,7 @@ def main(check=False):
             json.dump(doc, f, ensure_ascii=False, indent=1)
             f.write('\n')
         print('wrote', os.path.relpath(OUT, ROOT))
-    return 1 if any('short of' in p or 'clash' in p or 'duplicate' in p or 'twice' in p or 'not a simple' in p for p in problems) else 0
+    return 1 if any('clash' in p or 'duplicate' in p or 'twice' in p or 'not a simple' in p for p in problems) else 0
 
 
 if __name__ == '__main__':

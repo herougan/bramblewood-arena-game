@@ -20,11 +20,11 @@ const D = JSON.parse(rd('docs/design/map-prospects-2026-11-09.json')), R = D.rul
 const cards = JSON.parse(rd('canonical/cards.json')), names = new Set(cards.map(c=> c.name.toLowerCase()));
 const MAIN = ['m1', 'mf', 'mb', 'mc', 'm2', 'mw', 'm8', 'mu', 'm4', 'mk', 'm7', 'm10', 'mh', 'mr', 'm5', 'ml', 'mt', 'm6', 'md', 'm3', 'm11'];
 ok(MAIN.every(k=> D.maps[k]) && Object.keys(D.maps).length === 21, 'one entry per main map 0-20, no side map');
-ok(R.newTarget === 30 && R.carriedTarget === 20 && R.familyCap === 2, 'rules: NEW! 30+, Carried 20+, family cap 2');
+ok(R.newTarget === 45 && R.newMax === 60 && R.carriedTarget === 0 && R.carriedFill === 0 && R.familyCap === 2, 'rules (UI45): NEW! 45+ up to 60, no Carried minimum or fill, family cap 2');
 const seen = new Set(), cnames = new Set();
 MAIN.forEach(k=>{ const m = D.maps[k], st = m.static;
-  ok(st.new >= R.newTarget, `Map ${m.no}: NEW! ${st.new} >= ${R.newTarget} with no flags`);
-  if(m.no >= 3) ok(st.carried >= R.carriedTarget, `Map ${m.no}: Carried ${st.carried} >= ${R.carriedTarget} with no flags`);
+  ok(st.new >= 35, `Map ${m.no}: static NEW! ${st.new} >= 35 with no flags (the game tops it up to ${R.newTarget} with sub-floor fits; tests/e2e/ui45 measures the real 45)`);
+  ok(st.carried === 0, `Map ${m.no}: static Carried is 0 with no flags`);
   m.concepts.forEach(c=>{
     ok(/^concept-[a-z0-9-]+$/.test(c.id) && !seen.has(c.id), 'concept id stable and unique: ' + c.id); seen.add(c.id);
     ok(['name', 'animal', 'family', 'element', 'rarity', 'role'].every(f=> typeof c[f] === 'string' && c[f]), c.id + ' has name, animal, family, element, rarity, role');
@@ -38,7 +38,7 @@ MAIN.forEach(k=>{ const m = D.maps[k], st = m.static;
 { const r = cp.spawnSync('python3', [path.join(ROOT, 'tools/ui38/map_prospects_2026_11_09.py'), '--check'], {encoding: 'utf8'}); ok(r.status === 0, 'the generator check passes (no clash, no shortfall): ' + (r.stdout || '').split('\n').filter(l=> l.includes('!')).join(' | ')); }
 
 // 2. ui38Fill on a small case
-{ const P = {rules: {familyCap: 2, newMinScore: 4, newMax: 6, carriedFill: 3, newTarget: 5, carriedTarget: 20},
+{ const P = {rules: {familyCap: 2, newMinScore: 4, newMax: 6, carriedFill: 0, newTarget: 5, carriedTarget: 0},
     family: {a1: 'croc', a2: 'croc', a3: 'croc', a4: 'frog', a5: 'heron', s1: 'snake', e1: 'croc', e2: 'bat', e3: 'mole', e4: 'owl', w1: 'frog'},
     maps: {mx: {fit: [['a1', 9, 'bc'], ['a2', 8, 'b'], ['a3', 8, 'b'], ['s1', 8, 'b'], ['a4', 3, 'k'], ['a5', 6, 'b'], ['e1', 5, 'b'], ['w1', 4, 'b']], concepts: [{id: 'concept-x', name: 'X', animal: 'x', family: 'x', element: 'physical', rarity: 'common', role: 'r'}]}}};
   const src = blk.replace('__MAP_PROSPECTS__', JSON.stringify(P));
@@ -48,19 +48,19 @@ MAIN.forEach(k=>{ const m = D.maps[k], st = m.static;
     const TX = k=> k, ui37FlagOf = ()=> '', escapeAttr = s=> s, cardChipHTML = ()=> '';`;
   const f = new Function(env + src + '; return {ui38Fill, ui38SideOnly, ui38Concept};')();
   const defs = {}; ['a1', 'a2', 'a3', 'a4', 'a5', 's1', 'e1', 'e2', 'e3', 'e4', 'w1'].forEach(id=> defs[id] = {name: id, animal: P.family[id]});
-  const idx = new Map([['e1', 0], ['e2', 0], ['e3', 1], ['e4', 1]]), neu = [{id: 'w1', src: new Set(['list'])}], car = [];
+  const idx = new Map([['e2', 0]]), neu = [{id: 'w1', src: new Set(['list'])}], car = [];
   f.ui38Fill('mx', defs, ()=> true, idx, neu, car);
   const ids = l=> l.map(p=> p.id);
   ok(f.ui38SideOnly().has('s1'), 'a card only on a side map\'s list is side-only');
   ok(f.ui38SideOnly('mx').has('e3') && !f.ui38SideOnly('m1').has('e3') && !f.ui38SideOnly('mx').has('e1'), "a card on the map's own side map's list is left out on that map only");
   ok(JSON.stringify(ids(neu)) === JSON.stringify(['w1', 'a1', 'a2', 'a5', 'concept-x']), 'NEW!: list first, fit by score, family cap 2 (a3 left out), score < 4 left out, side-only s1 left out, concepts last: ' + ids(neu).join(','));
   ok(neu[1].src.has('fit') && neu[4].src.has('concept') && neu[1].why.length > 0, 'fit / concept sources and a why text');
-  ok(JSON.stringify(ids(car)) === JSON.stringify(['e1', 'e2', 'e4']), 'Carried: fit first (e1), then the Yes-earlier card (e2), then the most recent map (Map 1; e3 is on this map\'s side map): ' + ids(car).join(','));
-  ok(car[1].src.has('earlier') && !car[2].src.has('earlier'), 'only a card flagged Yes on an earlier map gets the "Yes earlier" pill');
+  ok(JSON.stringify(ids(car)) === JSON.stringify(['e2']), 'Carried (UI45): only the card flagged Yes on an earlier map (e2); e1 and e4 are on earlier lists but not Yes, so they are not carried: ' + ids(car).join(','));
+  ok(car.length === 1 && car[0].src.has('earlier'), 'a card flagged Yes on an earlier map gets the "Yes earlier" pill');
   ok(f.ui38Concept('concept-x').mapId === 'mx' && f.ui38Concept('a1') === null, 'concept lookup by id'); }
 
 // 3. wiring
-ok(/ui38Fill\(top, defs, ok, pool, neu, car\);[^\n]*\n  return \{n, neu, car, extra: \[\], idx: /.test(b37), 'ui37Split fills both groups with ui38Fill; no fold list');
+ok(/ui38Fill\(top, defs, ok, idx, neu, car\);[^\n]*\n  return \{n, neu, car, extra: \[\], idx\}/.test(b37), 'ui37Split fills both groups with ui38Fill; no fold list');
 ok(!/details class="pk1-mc-sec rv2-panel ui37-grp ui37-extra"/.test(b37) && !/ui37-earlier/.test(b37), 'the closed "More cards from earlier maps" fold is gone');
 ok(/src !== 'flag' && (src !== 'tut' && )?side\.has\(id\)/.test(b37) /* 2026-11-10 (UI43): the tutorial's cards pass */, 'prospects leave out side-map-only cards (unless already flagged)');
 ok(/ui38Concept\(id\) \|\| \(defs\[id\] && ok\(id\)\)/.test(b37), 'a flagged concept id is a prospect');

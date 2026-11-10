@@ -33975,7 +33975,7 @@ function pk1OpenMapCards(mapId){
 // (CLAUDE_NEW: THEME5, SKILLREC1 and CONTENT17's theme groups, the main map's own entries only, never its submaps'), and any card already flagged here. NEW! = not
 // carried from an earlier main map; Carried = an earlier main map gives it (ui37CarriedIndex: ONLY a card flagged Yes on an earlier main map counts; 2026-11-09 package UI42,
 // owner 22:48 "default is NO, then I'll click the Yes": an unflagged card reads as No everywhere and no longer counts, which replaces UI37-1's "unflagged list cards count".
-// ui37CarriedPool keeps the old wide reading (earlier maps' list cards + Yes, minus explicit No) only as the pool ui38Fill tops Carried up from, so the owner still has cards to pick from). Cards flagged Yes on earlier maps that are not prospects here sit under Carried
+// 2026-11-10 (UI45): ui37CarriedPool is gone: Carried is never topped up. Cards flagged Yes on earlier maps that are not prospects here sit under Carried
 // in a fold. Targets: decision THEME6-1 (own / carried per main map, th6Targets), editable per map. Flags are kept in this browser (bw_ui37_map_picks_v1) and, for a
 // signed-in admin, published as card_overrides rows `__cfg:map-picks:<mainMapId>` (data: {kind:'map-picks', mapId, mapNo, yes, no, targets}; the existing jsonb
 // column, no schema change); the game reads nothing from them (applyCloudMapPicks only feeds this view). "Export picks" downloads every map's flags (JSON / CSV).
@@ -33998,15 +33998,6 @@ function ui37CarriedIndex(n, maps){
   const out = new Map();
   if(n != null && n >= 1) ui43TutorialCards().forEach(id=>{ if(!out.has(id)) out.set(id, 0); });
   (maps || []).filter(m=> m && m.n != null && m.n < n).sort((a, b)=> a.n - b.n).forEach(m=>{ (m.yes || []).forEach(id=>{ if(!out.has(id)) out.set(id, m.n); }); });
-  return out;
-}
-// 2026-11-09 (UI42): the pool Carried is topped up from (the pre-UI42 rule): earlier main maps' list cards and Yes cards, minus explicit No. Not a Carried rule.
-function ui37CarriedPool(n, maps){
-  const out = new Map();
-  (maps || []).filter(m=> m && m.n != null && m.n < n).sort((a, b)=> a.n - b.n).forEach(m=>{
-    const yes = new Set(m.yes || []), no = new Set(m.no || []);
-    (m.list || []).concat(m.yes || []).forEach(id=>{ if(!yes.has(id) && no.has(id)) return; if(!out.has(id)) out.set(id, m.n); });
-  });
   return out;
 }
 function ui37MapsData(){
@@ -34045,15 +34036,15 @@ function ui41Cap(top, list, defs){
 // 2026-11-09 (package UI38, owner 03:55): the closed "More cards from earlier maps" fold is gone; ui38Fill tops NEW! up to 30+ (cards that fit the map, then
 // proposed concepts) and Carried up to 20+ (earlier main maps' cards, best fit first). extra stays an empty list for callers.
 function ui37Split(top, defs, ok){
-  const n = mapNumberOf(top), maps = ui37MapsData(), idx = ui37CarriedIndex(n, maps), pool = ui37CarriedPool(n, maps), pros = ui37Prospects(top, defs, ok), neu = [], car = [];
+  const n = mapNumberOf(top), maps = ui37MapsData(), idx = ui37CarriedIndex(n, maps), pros = ui37Prospects(top, defs, ok), neu = [], car = [];
   const SRC = {list: 0, maybe: 1, claude: 2, newcard: 3, flag: 4}, rank = p=> Math.min(...[...p.src].map(s=> SRC[s] == null ? 9 : SRC[s]));
   const nm = id=> String(ui38Concept(id) ? ui38Concept(id).name : defs[id].name), rs = id=> ui38Concept(id) ? roadRarityStep(ui38Concept(id).rarity) : roadRarityStep(defs[id].rarity);
   const by = (a, b)=> rank(a) - rank(b) || rs(a.id) - rs(b.id) || nm(a.id).localeCompare(nm(b.id));
   pros.forEach(p=> (idx.has(p.id) ? car : neu).push(p));
   neu.sort(by); car.sort(by);
   const neu2 = ui41Cap(top, neu, defs), car2 = ui41Cap(top, car, defs); neu.length = 0; car.length = 0; neu.push(...neu2); car.push(...car2); // 2026-11-09 (UI41)
-  ui38Fill(top, defs, ok, pool, neu, car); // 2026-11-09 (UI42): the fill draws from the wide pool, the Carried test above is Yes only
-  return {n, neu, car, extra: [], idx: new Map([...pool, ...idx])}; // idx: the "Map N" pill of every Carried card
+  ui38Fill(top, defs, ok, idx, neu, car); // 2026-11-10 (UI45): Yes-only index; every other fitting card is NEW!, Carried is never topped up
+  return {n, neu, car, extra: [], idx}; // idx: the "Map N" pill of every Carried card (Yes on an earlier map, or a tutorial card)
 }
 let ui37Status = null, ui37Live = null; const ui37Timers = {};
 function ui37StatusText(){ return !ui37Status ? '' : ui37Status.ok ? '☁️ ' + TX('ui.ui37-saved-cloud') : '💾 ' + TX('ui.ui37-saved-local'); }
@@ -34150,8 +34141,8 @@ function ui39ReviewMap(top, ok, sec){ // 2026-11-10 (UI44): sec = a submap's lis
 }
 // NEW! then Carried (both open), then any review entry neither group shows (a cut card, say) in the Lists view's own parts, so nothing on the list is lost
 function ui37GroupsHTML(top, defs, sp, rvMap, secKey){ secKey = secKey || 'cards'; // 2026-11-10 (UI44): a submap's review rows use its own section key
-  const rl = (UI38_PROS && UI38_PROS.rules) || {}, mn = {new: rl.newTarget || 30, carried: rl.carriedTarget || 20}; // 2026-11-09 (UI38): the pool size and its minimum
-  const grp = (cls, title, list, kind)=> `<section class="pk1-mc-sec rv2-panel ui37-grp ${cls}" data-ui37-grp="${kind}"><h3>${escapeHtml(title)} <small data-ui38-n="${list.length}">${list.length}</small> <small class="ui38-min">${escapeHtml(TX('ui.ui38-min', {n: mn[kind]}))}</small></h3><div class="vis4-mc-row rv1-row ui37-row">${list.length ? list.map(p=> ui37TileHTML(top, p, kind, defs, sp.idx, rvMap)).join('') : '<span class="panel-sub">–</span>'}</div></section>`;
+  const rl = (UI38_PROS && UI38_PROS.rules) || {}, mn = {new: rl.newTarget || 45}; // 2026-11-09 (UI38): the pool size and its minimum
+  const grp = (cls, title, list, kind)=> `<section class="pk1-mc-sec rv2-panel ui37-grp ${cls}" data-ui37-grp="${kind}"><h3>${escapeHtml(title)} <small data-ui38-n="${list.length}">${list.length}</small> ${kind === 'new' ? `<small class="ui38-min">${escapeHtml(TX('ui.ui38-min', {n: mn.new}))}</small>` : ''}</h3><div class="vis4-mc-row rv1-row ui37-row">${list.length ? list.map(p=> ui37TileHTML(top, p, kind, defs, sp.idx, rvMap)).join('') : '<span class="panel-sub">–</span>'}</div></section>`;
   const shown = new Set(sp.neu.concat(sp.car).map(p=> p.id)), rest = {chosen: [], maybe: [], cut: []};
   rvMap.forEach((v, id)=>{ if(!shown.has(id)) rest[v.kind].push(v.e); });
   const part = (kind, label)=> rest[kind].length ? `<div class="rv1-part is-${kind}" data-ui39-rest="${kind}"><h4>${escapeHtml(label)} <small>${rest[kind].length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(rest[kind], kind, defs, secKey)}</div></div>` : '';
@@ -34260,7 +34251,7 @@ function ui44ExportRows(rows, defs){
 // NEW! = UI37's prospects that no earlier main map gives, then existing cards that fit the map (biome, CONTENT17 / THEME5 / SKILLREC1, signature skill, element;
 // score >= rules.newMinScore) up to rules.newMax, then the map's proposed concepts (name, animal, element, rarity, role; no stats or skills: a "Proposed" pill and a
 // plain placeholder chip, the hover shows the concept). Carried = UI37's carried prospects, then earlier main maps' cards by fit, then the rest of them (the most
-// recent map first) up to rules.carriedFill. A proposed card is not added once its animal family is in its group rules.familyCap times. The split follows the
+// recent map first) A proposed card is not added once its animal family is in its group rules.familyCap times. The split follows the
 // flags as UI37 does (ui37CarriedIndex); a concept is flagged by its stable id (concept-<name>) in the same `__cfg:map-picks:<map>` row. No side-map cards.
 const UI38_PROS = __MAP_PROSPECTS__;
 const UI38_CONCEPTS = (()=>{ const o = {}; try{ Object.keys(UI38_PROS.maps || {}).forEach(mid=> (UI38_PROS.maps[mid].concepts || []).forEach(c=>{ if(c && c.id) o[c.id] = Object.assign({mapId: mid, mapNo: mapNumberOf(mid)}, c); })); }catch(e){} return o; })();
@@ -34279,25 +34270,17 @@ const UI38_WHY = {b: ()=> TX('ui.ui38-why-b'), k: ()=> TX('ui.ui38-why-k'), c: (
 function ui38WhyText(codes){ return String(codes || '').split('').filter(k=> UI38_WHY[k]).map(k=> UI38_WHY[k]()).join(' · '); }
 // tops up a map's two groups in place (neu / car arrive with UI37's prospects, sorted)
 function ui38Fill(top, defs, ok, idx, neu, car){
-  const R = UI38_PROS.rules || {}, cap = R.familyCap || 2, minS = R.newMinScore || 4, newMax = R.newMax || 40, carFill = R.carriedFill || 22, M = (UI38_PROS.maps || {})[top] || {fit: [], concepts: []};
+  const R = UI38_PROS.rules || {}, cap = R.familyCap || 2, minS = R.newMinScore || 4, newMax = R.newMax || 60, M = (UI38_PROS.maps || {})[top] || {fit: [], concepts: []};
   const side = ui38SideOnly(top), have = new Set(neu.concat(car).map(p=> p.id)), fam = l=>{ const c = {}; l.forEach(p=>{ const f = ui38Family(p.id, defs); if(f) c[f] = (c[f] || 0) + 1; }); return c; };
   const fn = fam(neu), fc = fam(car), usable = id=> !have.has(id) && !side.has(id) && !!defs[id] && ok(id);
   const take = (list, cnt, id, src, why)=>{ const f = ui38Family(id, defs); if(f && (cnt[f] || 0) >= cap) return false; if(f) cnt[f] = (cnt[f] || 0) + 1; have.add(id); list.push({id, src: new Set([src]), why: why || ''}); return true; };
   const concepts = (M.concepts || []).filter(c=> !have.has(c.id) && !idx.has(c.id));
   (M.fit || []).forEach(([id, sc, codes])=>{ if(neu.length + concepts.length >= newMax || sc < minS || idx.has(id) || !usable(id)) return; take(neu, fn, id, 'fit', ui38WhyText(codes)); });
   // 2026-11-09 (package UI41, owner 21:36 #3): faction cards no longer count, so NEW! is topped up to its minimum (rules.newTarget) with the next-best fits below the score floor
-  (M.fit || []).forEach(([id, sc, codes])=>{ if(neu.length + concepts.length >= (R.newTarget || 30) || idx.has(id) || !usable(id)) return; take(neu, fn, id, 'fit', ui38WhyText(codes)); });
+  (M.fit || []).forEach(([id, sc, codes])=>{ if(neu.length + concepts.length >= (R.newTarget || 45) || idx.has(id) || !usable(id)) return; take(neu, fn, id, 'fit', ui38WhyText(codes)); });
   concepts.forEach(c=>{ have.add(c.id); neu.push({id: c.id, src: new Set(['concept']), why: c.role || ''}); }); // the map's concepts always show (sized by the generator; their families were capped there)
-  const fitted = new Set(), n = mapNumberOf(top), before = ui37MapsData().filter(m=> m.n < n).sort((a, b)=> a.n - b.n), yesEarlier = new Set(before.flatMap(m=> m.yes));
-  // the previous main map's Yes cards and concepts always show first (the next map carries them most naturally; a concept has no fit row of its own here)
-  ((before[before.length - 1] || {}).yes || []).forEach(id=>{ if(idx.has(id) && !have.has(id) && (ui38Concept(id) || usable(id))){ const f = ui38Family(id, defs); if(f) fc[f] = (fc[f] || 0) + 1; have.add(id); car.push({id, src: new Set([ui38Concept(id) ? 'concept' : 'earlier', 'earlier']), why: ''}); } });
-  (M.fit || []).forEach(([id, sc, codes])=>{ fitted.add(id); if(car.length >= carFill || !idx.has(id) || !usable(id)) return; if(take(car, fc, id, 'fit', ui38WhyText(codes)) && yesEarlier.has(id)) car[car.length - 1].src.add('earlier'); });
-  if(car.length < carFill){ // then every other card (or concept) an earlier main map gives: the ones flagged Yes there first, then the most recent map first
-    const exotic = new Set(UI38_PROS.exotic || []); // not too rare or strange an animal for Maps 0-20 (owner 03:55), unless flagged Yes on an earlier map
-    const rest = [...idx.keys()].filter(id=> !fitted.has(id) && !have.has(id) && (ui38Concept(id) || usable(id)) && (!exotic.has(id) || yesEarlier.has(id))), y = id=> yesEarlier.has(id) ? 0 : 1;
-    rest.sort((a, b)=> y(a) - y(b) || idx.get(b) - idx.get(a) || String((ui38Concept(a) || defs[a]).name).localeCompare(String((ui38Concept(b) || defs[b]).name)));
-    rest.forEach(id=>{ if(car.length >= carFill) return; if(take(car, fc, id, ui38Concept(id) ? 'concept' : 'earlier', '') && !yesEarlier.has(id)) car[car.length - 1].src.delete('earlier'); });
-  }
+  // 2026-11-10 (package UI45, owner 21:11): Carried = ONLY cards flagged Yes on an earlier main map (and, Map 1+, the tutorial cards); no top-up fill. The previous map's Yes cards first, then the older ones.
+  [...idx.keys()].filter(id=> !have.has(id) && (ui38Concept(id) || usable(id))).sort((a, b)=> idx.get(b) - idx.get(a)).forEach(id=>{ have.add(id); car.push({id, src: new Set([ui38Concept(id) ? 'concept' : 'earlier', 'earlier']), why: ''}); });
 }
 // a concept's chip: the chip shape with a plain disc (no art); the hover shows the concept
 function ui38ConceptChipHTML(c){
