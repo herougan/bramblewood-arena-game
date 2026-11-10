@@ -1,1 +1,2 @@
 12-6 target 60 space 6081 read 401 range 31.7 - 93.3 | 200 games: 51.5 -> 58.5 KEEP {"deck":{"carrion-crow":3,"cunning-vixen":2,"dormouse":1,"hollow-belly-rat":1,"mouse-sapper":3,"quill-thorn-boar":2,"quillguard":1,"thorn-shrike":3},"leaders":["hollow-belly-rat"],"shieldOverride":0} 1002s
+12-7 target 40 space 11125 read 401 range 33.3 - 81.7 | 200 games: 29.5 -> 44 KEEP {"deck":{"carrion-crow":2,"field-mouse":1,"hedge-weasel":3,"hollow-belly-rat":1,"lyrebird-mimic":4,"mouse-sapper":4,"quillguard":2,"thorn-shrike":3},"leaders":["woodcock-lookout"],"shieldOverride":0} 1600s

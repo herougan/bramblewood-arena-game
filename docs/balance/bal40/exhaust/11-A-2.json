@@ -1,0 +1,163 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "11-A-2",
+ "map": "mv",
+ "mapName": "The Aerie Vault",
+ "kind": "skirmish",
+ "name": "Feather Drifts",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "alpine-salamander",
+  "alpine-swift",
+  "apollo-butterfly",
+  "chipmunk-hoarder",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gale-swift",
+  "golden-eagle-diver",
+  "swamp-alligator",
+  "vigil-owl"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "eagle-owl-quartermaster"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": null,
+ "space": 9755,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 45,
+  "max": 98.3
+ },
+ "top": [
+  {
+   "deck": {
+    "alpine-salamander": 4,
+    "apollo-butterfly": 2,
+    "chipmunk-hoarder": 3,
+    "eagle-owl-quartermaster": 1,
+    "eyrie-warden": 2,
+    "gale-swift": 2
+   },
+   "leaders": [
+    "eyrie-warden"
+   ],
+   "tune200": 75
+  },
+  {
+   "deck": {
+    "alpine-salamander": 4,
+    "apollo-butterfly": 2,
+    "chipmunk-hoarder": 3,
+    "eagle-owl-quartermaster": 1,
+    "eyrie-warden": 2,
+    "gale-swift": 2
+   },
+   "leaders": [
+    "vigil-owl"
+   ],
+   "tune200": 75
+  },
+  {
+   "deck": {
+    "alpine-salamander": 4,
+    "apollo-butterfly": 2,
+    "chipmunk-hoarder": 3,
+    "eagle-owl-quartermaster": 1,
+    "eyrie-warden": 2,
+    "gale-swift": 2
+   },
+   "leaders": [],
+   "tune200": 75
+  },
+  {
+   "deck": {
+    "alpine-swift": 4,
+    "chipmunk-hoarder": 2,
+    "eagle-owl-quartermaster": 3,
+    "gale-swift": 4,
+    "golden-eagle-diver": 1
+   },
+   "leaders": null,
+   "tune200": 75.5
+  },
+  {
+   "deck": {
+    "alpine-salamander": 4,
+    "apollo-butterfly": 2,
+    "chipmunk-hoarder": 3,
+    "eagle-owl-quartermaster": 1,
+    "eyrie-warden": 2,
+    "gale-swift": 2
+   },
+   "leaders": null,
+   "tune200": 75.5
+  },
+  {
+   "deck": {
+    "alpine-salamander": 3,
+    "apollo-butterfly": 4,
+    "chipmunk-hoarder": 1,
+    "eagle-owl-quartermaster": 2,
+    "eyrie-warden": 1,
+    "gale-swift": 3
+   },
+   "leaders": [
+    "swamp-alligator"
+   ],
+   "tune200": 75.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "chipmunk-hoarder": 4,
+   "eyrie-warden": 5,
+   "golden-eagle-diver": 1,
+   "eagle-owl-quartermaster": 2,
+   "swamp-alligator": 1,
+   "alpine-salamander": 1
+  },
+  "leaders": [
+   "eagle-owl-quartermaster"
+  ],
+  "shieldOverride": null,
+  "win200": 84
+ },
+ "pick": {
+  "deck": {
+   "alpine-salamander": 4,
+   "apollo-butterfly": 2,
+   "chipmunk-hoarder": 3,
+   "eagle-owl-quartermaster": 1,
+   "eyrie-warden": 2,
+   "gale-swift": 2
+  },
+  "leaders": [
+   "eyrie-warden"
+  ],
+  "shieldOverride": null,
+  "win200": 69.5,
+  "tune200": 75
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 84
+  },
+  {
+   "move": "whole-space pick",
+   "win": 69.5
+  }
+ ],
+ "sec": 1936
+}

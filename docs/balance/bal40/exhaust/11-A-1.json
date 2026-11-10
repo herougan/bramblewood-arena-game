@@ -1,0 +1,160 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "11-A-1",
+ "map": "mv",
+ "mapName": "The Aerie Vault",
+ "kind": "skirmish",
+ "name": "Cliff Ledge",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "alpine-salamander",
+  "alpine-swift",
+  "apollo-butterfly",
+  "chipmunk-hoarder",
+  "eyrie-warden",
+  "gale-swift",
+  "vigil-owl",
+  "wound-reaver"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "wound-reaver"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": null,
+ "space": 2779,
+ "read": 400,
+ "g1": 60,
+ "range": {
+  "min": 45,
+  "max": 96.7
+ },
+ "top": [
+  {
+   "deck": {
+    "alpine-salamander": 4,
+    "alpine-swift": 3,
+    "apollo-butterfly": 4,
+    "eyrie-warden": 3,
+    "gale-swift": 1,
+    "wound-reaver": 2
+   },
+   "leaders": null,
+   "tune200": 80
+  },
+  {
+   "deck": {
+    "alpine-salamander": 4,
+    "alpine-swift": 3,
+    "apollo-butterfly": 4,
+    "eyrie-warden": 3,
+    "gale-swift": 1,
+    "wound-reaver": 2
+   },
+   "leaders": [
+    "apollo-butterfly"
+   ],
+   "tune200": 80
+  },
+  {
+   "deck": {
+    "alpine-swift": 3,
+    "chipmunk-hoarder": 4,
+    "eyrie-warden": 4,
+    "gale-swift": 2,
+    "vigil-owl": 1,
+    "wound-reaver": 3
+   },
+   "leaders": null,
+   "tune200": 81
+  },
+  {
+   "deck": {
+    "alpine-salamander": 4,
+    "alpine-swift": 3,
+    "apollo-butterfly": 4,
+    "chipmunk-hoarder": 1,
+    "eyrie-warden": 3,
+    "wound-reaver": 2
+   },
+   "leaders": null,
+   "tune200": 82
+  },
+  {
+   "deck": {
+    "alpine-salamander": 3,
+    "alpine-swift": 4,
+    "apollo-butterfly": 3,
+    "chipmunk-hoarder": 2,
+    "eyrie-warden": 3,
+    "wound-reaver": 2
+   },
+   "leaders": null,
+   "tune200": 82.5
+  },
+  {
+   "deck": {
+    "alpine-swift": 3,
+    "chipmunk-hoarder": 4,
+    "eyrie-warden": 4,
+    "gale-swift": 2,
+    "vigil-owl": 1,
+    "wound-reaver": 3
+   },
+   "leaders": [
+    "eyrie-warden"
+   ],
+   "tune200": 82.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "wound-reaver": 1,
+   "apollo-butterfly": 4,
+   "eyrie-warden": 4,
+   "alpine-salamander": 4,
+   "alpine-swift": 1,
+   "vigil-owl": 3
+  },
+  "leaders": [
+   "wound-reaver"
+  ],
+  "shieldOverride": null,
+  "win200": 72.5
+ },
+ "pick": {
+  "deck": {
+   "alpine-salamander": 4,
+   "alpine-swift": 3,
+   "apollo-butterfly": 4,
+   "eyrie-warden": 3,
+   "gale-swift": 1,
+   "wound-reaver": 2
+  },
+  "leaders": [
+   "wound-reaver"
+  ],
+  "shieldOverride": 0,
+  "win200": 70,
+  "tune200": 80
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 72.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 70
+  }
+ ],
+ "sec": 713
+}
