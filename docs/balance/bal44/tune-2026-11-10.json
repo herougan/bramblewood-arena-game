@@ -1,0 +1,523 @@
+{
+ "about": "BAL44 road retune summary (tools/bal44/summary_2026_11_10.js); 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "0-3",
+   "map": "m1",
+   "mapName": "Bramblewood Outskirts",
+   "kind": "skirmish",
+   "name": "Raccoon Heist",
+   "target": 60,
+   "before200": 69.5,
+   "after200": 59,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 69.5,
+     "pick200": 52.5,
+     "keep": true,
+     "space": 159654,
+     "range": {
+      "min": 21.7,
+      "max": 98.3
+     },
+     "pick": {
+      "deck": {
+       "beaver-lumberjack": 3,
+       "chipmunk-skirmisher": 4,
+       "earthworm": 3,
+       "house-cat": 4,
+       "soldier-ant": 3,
+       "worker-ant": 3
+      },
+      "leaders": [],
+      "shieldOverride": null
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 69.5,
+     "pick200": 59,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "chipmunk-forager": 3,
+       "cottontail": 4,
+       "house-cat": 4,
+       "meadow-rabbit": 4,
+       "duck-paddler": 3,
+       "chipmunk-skirmisher": 2
+      },
+      "leaders": [],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "11-10",
+   "map": "m10",
+   "mapName": "Eyrie Heights",
+   "kind": "miniboss",
+   "name": "The Avalanche Colossus",
+   "target": 40,
+   "before200": 53,
+   "after200": 37,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 53,
+     "pick200": 37,
+     "keep": true,
+     "space": 52266,
+     "range": {
+      "min": 3.3,
+      "max": 86.7
+     },
+     "pick": {
+      "deck": {
+       "alpine-salamander": 1,
+       "alpine-swift": 5,
+       "chipmunk-hoarder": 3,
+       "eyrie-warden": 1,
+       "gannet-nestweaver": 1,
+       "ibex-rockcaller": 2,
+       "red-billed-chough": 2,
+       "swamp-alligator": 1
+      },
+      "leaders": [
+       "red-billed-chough"
+      ],
+      "shieldOverride": 21
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "6-1",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "kind": "skirmish",
+   "name": "Leech Bog",
+   "target": 90,
+   "before200": 86,
+   "after200": 92,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 86,
+     "pick200": 92,
+     "keep": true,
+     "space": 1814,
+     "range": {
+      "min": 51.7,
+      "max": 98.3
+     },
+     "pick": {
+      "deck": {
+       "camouflage-frog": 4,
+       "constrictor-coil": 1,
+       "cypress-root-lurker": 1,
+       "fire-ant-raft": 1,
+       "lamprey": 4,
+       "poison-dart-croaker": 4,
+       "venomlord-serpent": 3
+      },
+      "leaders": [
+       "lamprey"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "6-2",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "kind": "skirmish",
+   "name": "Mire Ambush",
+   "target": 85,
+   "before200": 90.5,
+   "after200": 81.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 90.5,
+     "pick200": 81.5,
+     "keep": true,
+     "space": 50,
+     "range": {
+      "min": 91.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "booming-bittern": 4,
+       "camouflage-frog": 5,
+       "cypress-root-lurker": 1,
+       "lamprey": 5,
+       "marsh-harrier": 1,
+       "nutria-reedcutter": 1,
+       "venomlord-serpent": 3
+      },
+      "leaders": [
+       "cypress-root-lurker"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "6-3",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "kind": "skirmish",
+   "name": "Toad Chorus",
+   "target": 80,
+   "before200": 87.5,
+   "after200": 79,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 87.5,
+     "pick200": 79,
+     "keep": true,
+     "space": 325,
+     "range": {
+      "min": 73.3,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "booming-bittern": 4,
+       "camouflage-frog": 5,
+       "constrictor-coil": 1,
+       "fire-ant-raft": 1,
+       "lamprey": 5,
+       "marsh-harrier": 1,
+       "nutria-reedcutter": 1
+      },
+      "leaders": [
+       "lamprey"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "6-4",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "kind": "skirmish",
+   "name": "Root Snare",
+   "target": 75,
+   "before200": 81,
+   "after200": 78,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 81,
+     "pick200": 78,
+     "keep": true,
+     "space": 90,
+     "range": {
+      "min": 43.3,
+      "max": 91.7
+     },
+     "pick": {
+      "deck": {
+       "camouflage-frog": 4,
+       "constrictor-coil": 1,
+       "cypress-root-lurker": 1,
+       "fire-ant-raft": 2,
+       "marsh-harrier": 1,
+       "nutria-reedcutter": 1,
+       "venomlord-serpent": 3
+      },
+      "leaders": [
+       "fire-ant-raft"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "6-5",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "kind": "elite",
+   "name": "Venomlord's Coil",
+   "target": 70,
+   "before200": 66,
+   "after200": 70.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 66,
+     "pick200": 63.5,
+     "keep": false,
+     "space": 5657,
+     "range": {
+      "min": 23.3,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "booming-bittern": 3,
+       "camouflage-frog": 2,
+       "constrictor-coil": 1,
+       "fire-ant-raft": 1,
+       "marsh-harrier": 1,
+       "newt-doctor": 3,
+       "raven-scout": 1,
+       "venomlord-serpent": 2
+      },
+      "leaders": [
+       "venomlord-serpent"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 66,
+     "pick200": 70.5,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "booming-bittern": 2,
+       "camouflage-frog": 4,
+       "newt-doctor": 4,
+       "raven-scout": 1,
+       "venomlord-serpent": 2,
+       "fire-ant-raft": 1
+      },
+      "leaders": [
+       "venomlord-serpent"
+      ],
+      "shieldOverride": 2
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "6-6",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "kind": "elite",
+   "name": "Crocodile Run",
+   "target": 65,
+   "before200": 61,
+   "after200": 65.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 61,
+     "pick200": 56.5,
+     "keep": false,
+     "space": 865,
+     "range": {
+      "min": 11.7,
+      "max": 95
+     },
+     "pick": {
+      "deck": {
+       "booming-bittern": 4,
+       "camouflage-frog": 4,
+       "constrictor-coil": 1,
+       "fire-ant-raft": 1,
+       "nutria-reedcutter": 1,
+       "raven-scout": 1,
+       "venomlord-serpent": 3
+      },
+      "leaders": [
+       "fire-ant-raft"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 61,
+     "pick200": 65.5,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "booming-bittern": 4,
+       "camouflage-frog": 4,
+       "fire-ant-raft": 1,
+       "marsh-harrier": 1,
+       "nutria-reedcutter": 1,
+       "raven-scout": 1,
+       "venomlord-serpent": 3
+      },
+      "leaders": [
+       "marsh-wisp"
+      ],
+      "shieldOverride": 4
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "6-8",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "kind": "miniboss",
+   "name": "The Alligator King",
+   "target": 40,
+   "before200": 31,
+   "after200": 39.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 31,
+     "pick200": 42.5,
+     "keep": true,
+     "space": 2040,
+     "range": {
+      "min": 8.3,
+      "max": 86.7
+     },
+     "pick": {
+      "deck": {
+       "adder-ambusher": 2,
+       "camouflage-frog": 2,
+       "fire-ant-raft": 1,
+       "lamprey": 4,
+       "marsh-harrier": 1,
+       "nutria-reedcutter": 1,
+       "raven-scout": 3,
+       "venomlord-serpent": 5
+      },
+      "leaders": [
+       "adder-ambusher"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 31,
+     "pick200": 39.5,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "adder-ambusher": 2,
+       "lamprey": 5,
+       "venomlord-serpent": 5,
+       "nutria-reedcutter": 1,
+       "camouflage-frog": 4,
+       "constrictor-coil": 1,
+       "raven-scout": 1
+      },
+      "leaders": [
+       "adder-ambusher"
+      ],
+      "shieldOverride": 12
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "3-2",
+   "map": "mc",
+   "mapName": "Gannet Cliffs",
+   "kind": "skirmish",
+   "name": "Hawk Watch",
+   "target": 84,
+   "before200": 95,
+   "after200": 86.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 95,
+     "pick200": 86.5,
+     "keep": true,
+     "space": 25757,
+     "range": {
+      "min": 51.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "conch-crawler": 1,
+       "cormorant": 3,
+       "peak-condor": 2,
+       "pincushion-urchin": 1,
+       "puffin-diver": 1,
+       "razorbill": 4
+      },
+      "leaders": [
+       "razorbill"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "16-1",
+   "map": "mt",
+   "mapName": "The Pinewood Taiga",
+   "kind": "skirmish",
+   "name": "Snowshoe Tracks",
+   "target": 90,
+   "before200": 70,
+   "after200": 89,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 70,
+     "pick200": 89,
+     "keep": true,
+     "space": 3465,
+     "range": {
+      "min": 56.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "alpha-howler": 4,
+       "boreal-elk": 2,
+       "bramblewood-lynx": 3,
+       "cone-cutter-squirrel": 3,
+       "lunar-howler": 1,
+       "snowshoe-hare": 3
+      },
+      "leaders": [
+       "bramblewood-lynx"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  }
+ ]
+}

@@ -1,0 +1,174 @@
+{
+ "0-3": {
+  "deck": {
+   "chipmunk-forager": 3,
+   "cottontail": 4,
+   "house-cat": 4,
+   "meadow-rabbit": 4,
+   "duck-paddler": 3,
+   "chipmunk-skirmisher": 2
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "11-10": {
+  "deck": {
+   "alpine-salamander": 1,
+   "alpine-swift": 5,
+   "chipmunk-hoarder": 3,
+   "eyrie-warden": 1,
+   "gannet-nestweaver": 1,
+   "ibex-rockcaller": 2,
+   "red-billed-chough": 2,
+   "swamp-alligator": 1
+  },
+  "leaders": [
+   "red-billed-chough"
+  ],
+  "shield": "21",
+  "hqHp": null,
+  "characterId": null
+ },
+ "16-1": {
+  "deck": {
+   "alpha-howler": 4,
+   "boreal-elk": 2,
+   "bramblewood-lynx": 3,
+   "cone-cutter-squirrel": 3,
+   "lunar-howler": 1,
+   "snowshoe-hare": 3
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "3-2": {
+  "deck": {
+   "conch-crawler": 1,
+   "cormorant": 3,
+   "peak-condor": 2,
+   "pincushion-urchin": 1,
+   "puffin-diver": 1,
+   "razorbill": 4
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "6-1": {
+  "deck": {
+   "camouflage-frog": 4,
+   "constrictor-coil": 1,
+   "cypress-root-lurker": 1,
+   "fire-ant-raft": 1,
+   "lamprey": 4,
+   "poison-dart-croaker": 4,
+   "venomlord-serpent": 3
+  },
+  "leaders": [
+   "lamprey"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "6-2": {
+  "deck": {
+   "booming-bittern": 4,
+   "camouflage-frog": 5,
+   "cypress-root-lurker": 1,
+   "lamprey": 5,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "venomlord-serpent": 3
+  },
+  "leaders": [
+   "cypress-root-lurker"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "6-3": {
+  "deck": {
+   "booming-bittern": 4,
+   "camouflage-frog": 5,
+   "constrictor-coil": 1,
+   "fire-ant-raft": 1,
+   "lamprey": 5,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1
+  },
+  "leaders": [
+   "lamprey"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "6-4": {
+  "deck": {
+   "camouflage-frog": 4,
+   "constrictor-coil": 1,
+   "cypress-root-lurker": 1,
+   "fire-ant-raft": 2,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "venomlord-serpent": 3
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "6-5": {
+  "deck": {
+   "booming-bittern": 2,
+   "camouflage-frog": 4,
+   "newt-doctor": 4,
+   "raven-scout": 1,
+   "venomlord-serpent": 2,
+   "fire-ant-raft": 1
+  },
+  "leaders": null,
+  "shield": "2",
+  "hqHp": null,
+  "characterId": null
+ },
+ "6-6": {
+  "deck": {
+   "booming-bittern": 4,
+   "camouflage-frog": 4,
+   "fire-ant-raft": 1,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "raven-scout": 1,
+   "venomlord-serpent": 3
+  },
+  "leaders": [
+   "marsh-wisp"
+  ],
+  "shield": "4",
+  "hqHp": null,
+  "characterId": null
+ },
+ "6-8": {
+  "deck": {
+   "adder-ambusher": 2,
+   "lamprey": 5,
+   "venomlord-serpent": 5,
+   "nutria-reedcutter": 1,
+   "camouflage-frog": 4,
+   "constrictor-coil": 1,
+   "raven-scout": 1
+  },
+  "leaders": null,
+  "shield": "12",
+  "hqHp": null,
+  "characterId": null
+ }
+}
