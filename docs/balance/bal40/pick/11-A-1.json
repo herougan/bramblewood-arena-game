@@ -1,0 +1,75 @@
+{
+ "about": "BAL40 named pick (tools/bal40/pick_2026_11_10.js)",
+ "code": "11-A-1",
+ "map": "mv",
+ "mapName": "The Aerie Vault",
+ "kind": "skirmish",
+ "name": "Cliff Ledge",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "alpine-salamander",
+  "alpine-swift",
+  "apollo-butterfly",
+  "chipmunk-hoarder",
+  "eyrie-warden",
+  "gale-swift",
+  "vigil-owl",
+  "wound-reaver"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "wound-reaver"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "wound-reaver": 1,
+   "apollo-butterfly": 4,
+   "eyrie-warden": 4,
+   "alpine-salamander": 4,
+   "alpine-swift": 1,
+   "vigil-owl": 3
+  },
+  "leaders": [
+   "wound-reaver"
+  ],
+  "shieldOverride": null,
+  "win200": 72.5,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "wound-reaver": 1,
+   "apollo-butterfly": 4,
+   "eyrie-warden": 4,
+   "alpine-salamander": 4,
+   "alpine-swift": 1,
+   "vigil-owl": 3
+  },
+  "leaders": [
+   "wound-reaver"
+  ],
+  "shieldOverride": 6,
+  "win200": 80.5,
+  "shown": 3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 72.5
+  },
+  {
+   "move": "named pick",
+   "win": 80.5
+  }
+ ]
+}

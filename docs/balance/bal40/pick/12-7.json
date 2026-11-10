@@ -1,0 +1,84 @@
+{
+ "about": "BAL40 named pick (tools/bal40/pick_2026_11_10.js)",
+ "code": "12-7",
+ "map": "mh",
+ "mapName": "The Briar Maze",
+ "kind": "miniboss",
+ "name": "The Briar Queen",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "carrion-crow",
+  "cunning-vixen",
+  "dormouse",
+  "field-mouse",
+  "hedge-weasel",
+  "hollow-belly-rat",
+  "lyrebird-mimic",
+  "mouse-sapper",
+  "quillguard",
+  "thorn-shrike",
+  "woodcock-lookout"
+ ],
+ "firstClear": [
+  "quillguard"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "quillguard"
+ ],
+ "namesake": false,
+ "shieldRule": 24,
+ "shieldOverride": 31,
+ "before": {
+  "deck": {
+   "carrion-crow": 3,
+   "cunning-vixen": 1,
+   "field-mouse": 1,
+   "hedge-weasel": 3,
+   "lyrebird-mimic": 3,
+   "mouse-sapper": 3,
+   "quillguard": 3,
+   "thorn-shrike": 3
+  },
+  "leaders": [
+   "quillguard"
+  ],
+  "shieldOverride": 31,
+  "win200": 29.5,
+  "shown": 16
+ },
+ "pick": {
+  "deck": {
+   "carrion-crow": 2,
+   "field-mouse": 1,
+   "hedge-weasel": 3,
+   "hollow-belly-rat": 1,
+   "lyrebird-mimic": 4,
+   "mouse-sapper": 4,
+   "quillguard": 2,
+   "thorn-shrike": 3
+  },
+  "leaders": [
+   "quillguard"
+  ],
+  "shieldOverride": 6,
+  "win200": 43,
+  "shown": 3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 29.5
+  },
+  {
+   "move": "named pick",
+   "win": 43
+  }
+ ]
+}

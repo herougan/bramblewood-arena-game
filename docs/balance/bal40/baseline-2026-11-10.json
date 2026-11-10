@@ -1,0 +1,294 @@
+{
+ "about": "BAL40 baseline (tools/bal40/baseline_2026_11_10.js): 200 games on the road seeds, the Map reference",
+ "rows": {
+  "12-1": {
+   "code": "12-1",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "name": "Hedge Mice",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "win200": 79,
+   "gap": -11,
+   "space": 80,
+   "leaders": [
+    "thorn-shrike"
+   ],
+   "shieldRule": 12,
+   "shieldOverride": null
+  },
+  "12-2": {
+   "code": "12-2",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "name": "Quill Path",
+   "target": 84,
+   "lo": 76,
+   "hi": 92,
+   "win200": 71.5,
+   "gap": -12.5,
+   "space": 191,
+   "leaders": [
+    "thorn-shrike"
+   ],
+   "shieldRule": 12,
+   "shieldOverride": null
+  },
+  "12-6": {
+   "code": "12-6",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "name": "Rodent Court",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "win200": 51.5,
+   "gap": -8.5,
+   "space": 7165,
+   "leaders": [
+    "quillguard"
+   ],
+   "shieldRule": 18,
+   "shieldOverride": null
+  },
+  "12-7": {
+   "code": "12-7",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "name": "The Briar Queen",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 29.5,
+   "gap": -10.5,
+   "space": 11125,
+   "leaders": [
+    "quillguard"
+   ],
+   "shieldRule": 24,
+   "shieldOverride": 31
+  },
+  "19-3": {
+   "code": "19-3",
+   "map": "m3",
+   "mapName": "Ashen Spurn",
+   "name": "Porcupine Bastion",
+   "target": 75,
+   "lo": 67,
+   "hi": 83,
+   "win200": 83.5,
+   "gap": 8.5,
+   "space": 36926,
+   "leaders": [
+    "granite-ox-golem"
+   ],
+   "shieldRule": 29,
+   "shieldOverride": null
+  },
+  "19-4": {
+   "code": "19-4",
+   "map": "m3",
+   "mapName": "Ashen Spurn",
+   "name": "Sky Marks",
+   "target": 67.5,
+   "lo": 59.50000000000001,
+   "hi": 75.5,
+   "win200": 77.5,
+   "gap": 10,
+   "space": 12000,
+   "leaders": [
+    "pit-glutton"
+   ],
+   "shieldRule": 29,
+   "shieldOverride": null
+  },
+  "19-6": {
+   "code": "19-6",
+   "map": "m3",
+   "mapName": "Ashen Spurn",
+   "name": "The Frost Yeti King",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 59,
+   "gap": 19,
+   "space": 17889,
+   "leaders": [
+    "yeti"
+   ],
+   "shieldRule": 38,
+   "shieldOverride": null
+  },
+  "8-A-2": {
+   "code": "8-A-2",
+   "map": "mn",
+   "mapName": "The Glimmer Depths",
+   "name": "The Echo Pool",
+   "target": 75,
+   "lo": 67,
+   "hi": 83,
+   "win200": 84.5,
+   "gap": 9.5,
+   "space": 59990,
+   "leaders": [
+    "echo-screecher"
+   ],
+   "shieldRule": 16,
+   "shieldOverride": null
+  },
+  "8-A-3": {
+   "code": "8-A-3",
+   "map": "mn",
+   "mapName": "The Glimmer Depths",
+   "name": "Shard Gallery",
+   "target": 50,
+   "lo": 42,
+   "hi": 57.99999999999999,
+   "win200": 58,
+   "gap": 8,
+   "space": 0,
+   "leaders": [
+    "echo-screecher"
+   ],
+   "shieldRule": 16,
+   "shieldOverride": null
+  },
+  "8-A-4": {
+   "code": "8-A-4",
+   "map": "mn",
+   "mapName": "The Glimmer Depths",
+   "name": "The Gem Hoarder",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 48,
+   "gap": 8,
+   "space": 201653,
+   "leaders": [
+    "malachite-golem"
+   ],
+   "shieldRule": 48,
+   "shieldOverride": null
+  },
+  "11-A-1": {
+   "code": "11-A-1",
+   "map": "mv",
+   "mapName": "The Aerie Vault",
+   "name": "Cliff Ledge",
+   "target": 80,
+   "lo": 72.00000000000001,
+   "hi": 88,
+   "win200": 72.5,
+   "gap": -7.5,
+   "space": 4914,
+   "leaders": [
+    "wound-reaver"
+   ],
+   "shieldRule": 15,
+   "shieldOverride": null
+  },
+  "11-A-2": {
+   "code": "11-A-2",
+   "map": "mv",
+   "mapName": "The Aerie Vault",
+   "name": "Feather Drifts",
+   "target": 75,
+   "lo": 67,
+   "hi": 83,
+   "win200": 84,
+   "gap": 9,
+   "space": 36176,
+   "leaders": [
+    "eagle-owl-quartermaster"
+   ],
+   "shieldRule": 15,
+   "shieldOverride": null
+  },
+  "11-A-3": {
+   "code": "11-A-3",
+   "map": "mv",
+   "mapName": "The Aerie Vault",
+   "name": "The High Roost",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "win200": 66.5,
+   "gap": 6.5,
+   "space": 16168,
+   "leaders": [
+    "ibex-rockcaller"
+   ],
+   "shieldRule": 15,
+   "shieldOverride": 18
+  },
+  "11-A-4": {
+   "code": "11-A-4",
+   "map": "mv",
+   "mapName": "The Aerie Vault",
+   "name": "The Roost Mother",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 34.5,
+   "gap": -5.5,
+   "space": 48897,
+   "leaders": [
+    "wound-reaver"
+   ],
+   "shieldRule": 45,
+   "shieldOverride": null
+  },
+  "19-5": {
+   "code": "19-5",
+   "map": "m3",
+   "mapName": "Ashen Spurn",
+   "name": "Sky Scraper Sentinel",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "win200": 55.5,
+   "gap": -4.5,
+   "space": 1091,
+   "leaders": [
+    "granite-ox-golem"
+   ],
+   "shieldRule": 29,
+   "shieldOverride": null
+  },
+  "12-3": {
+   "code": "12-3",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "name": "Warren Run",
+   "target": 68,
+   "lo": 60.00000000000001,
+   "hi": 76,
+   "win200": 65.5,
+   "gap": -2.5,
+   "space": 7554,
+   "leaders": [
+    "lyrebird-mimic"
+   ],
+   "shieldRule": 12,
+   "shieldOverride": null
+  },
+  "19-2": {
+   "code": "19-2",
+   "map": "m3",
+   "mapName": "Ashen Spurn",
+   "name": "Quill Line",
+   "target": 82.5,
+   "lo": 74.5,
+   "hi": 90.49999999999999,
+   "win200": 87,
+   "gap": 4.5,
+   "space": 3126,
+   "leaders": [
+    "quill-volley"
+   ],
+   "shieldRule": 19,
+   "shieldOverride": null
+  }
+ }
+}

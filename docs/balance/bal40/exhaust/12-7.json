@@ -1,0 +1,190 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "12-7",
+ "map": "mh",
+ "mapName": "The Briar Maze",
+ "kind": "miniboss",
+ "name": "The Briar Queen",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "carrion-crow",
+  "cunning-vixen",
+  "dormouse",
+  "field-mouse",
+  "hedge-weasel",
+  "hollow-belly-rat",
+  "lyrebird-mimic",
+  "mouse-sapper",
+  "quillguard",
+  "thorn-shrike",
+  "woodcock-lookout"
+ ],
+ "firstClear": [
+  "quillguard"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "quillguard"
+ ],
+ "namesake": false,
+ "shieldRule": 24,
+ "shieldOverride": 31,
+ "space": 11125,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 33.3,
+  "max": 81.7
+ },
+ "top": [
+  {
+   "deck": {
+    "carrion-crow": 2,
+    "field-mouse": 1,
+    "hedge-weasel": 3,
+    "hollow-belly-rat": 1,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 4,
+    "quillguard": 2,
+    "thorn-shrike": 3
+   },
+   "leaders": [
+    "woodcock-lookout"
+   ],
+   "tune200": 40
+  },
+  {
+   "deck": {
+    "carrion-crow": 2,
+    "field-mouse": 1,
+    "hedge-weasel": 3,
+    "hollow-belly-rat": 1,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 4,
+    "quillguard": 2,
+    "thorn-shrike": 3
+   },
+   "leaders": [
+    "field-mouse"
+   ],
+   "tune200": 40.5
+  },
+  {
+   "deck": {
+    "carrion-crow": 4,
+    "dormouse": 1,
+    "field-mouse": 1,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 4,
+    "quillguard": 2,
+    "thorn-shrike": 3,
+    "woodcock-lookout": 1
+   },
+   "leaders": [
+    "dormouse"
+   ],
+   "tune200": 40.5
+  },
+  {
+   "deck": {
+    "carrion-crow": 4,
+    "dormouse": 1,
+    "field-mouse": 1,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 4,
+    "quillguard": 2,
+    "thorn-shrike": 3,
+    "woodcock-lookout": 1
+   },
+   "leaders": [
+    "field-mouse"
+   ],
+   "tune200": 40.5
+  },
+  {
+   "deck": {
+    "carrion-crow": 2,
+    "field-mouse": 1,
+    "hedge-weasel": 3,
+    "hollow-belly-rat": 1,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 4,
+    "quillguard": 2,
+    "thorn-shrike": 3
+   },
+   "leaders": [
+    "thorn-shrike"
+   ],
+   "tune200": 41
+  },
+  {
+   "deck": {
+    "carrion-crow": 2,
+    "cunning-vixen": 1,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 3,
+    "mouse-sapper": 4,
+    "quillguard": 3,
+    "thorn-shrike": 3,
+    "woodcock-lookout": 1
+   },
+   "leaders": [
+    "field-mouse"
+   ],
+   "tune200": 41
+  }
+ ],
+ "before": {
+  "deck": {
+   "carrion-crow": 3,
+   "cunning-vixen": 1,
+   "field-mouse": 1,
+   "hedge-weasel": 3,
+   "lyrebird-mimic": 3,
+   "mouse-sapper": 3,
+   "quillguard": 3,
+   "thorn-shrike": 3
+  },
+  "leaders": [
+   "quillguard"
+  ],
+  "shieldOverride": 31,
+  "win200": 29.5
+ },
+ "pick": {
+  "deck": {
+   "carrion-crow": 2,
+   "field-mouse": 1,
+   "hedge-weasel": 3,
+   "hollow-belly-rat": 1,
+   "lyrebird-mimic": 4,
+   "mouse-sapper": 4,
+   "quillguard": 2,
+   "thorn-shrike": 3
+  },
+  "leaders": [
+   "woodcock-lookout"
+  ],
+  "shieldOverride": 0,
+  "win200": 44,
+  "tune200": 40
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 29.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 44
+  }
+ ],
+ "sec": 1600,
+ "refused": "BAL40: the pick names Woodcock Lookout to lead the boss in place of its own leader Quillguard; refused by the brief. The same deck led by Quillguard at Shield 6 is docs/balance/bal40/pick/12-7.json"
+}

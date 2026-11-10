@@ -1,0 +1,171 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "11-A-4",
+ "map": "mv",
+ "mapName": "The Aerie Vault",
+ "kind": "boss",
+ "name": "The Roost Mother",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "alpine-salamander",
+  "alpine-swift",
+  "apollo-butterfly",
+  "chipmunk-hoarder",
+  "eyrie-warden",
+  "gale-swift",
+  "swamp-alligator",
+  "vigil-owl",
+  "wound-reaver"
+ ],
+ "firstClear": [
+  "wound-reaver"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "wound-reaver"
+ ],
+ "namesake": false,
+ "shieldRule": 45,
+ "shieldOverride": null,
+ "space": 48897,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 20,
+  "max": 91.7
+ },
+ "top": [
+  {
+   "deck": {
+    "alpine-salamander": 2,
+    "alpine-swift": 1,
+    "apollo-butterfly": 2,
+    "chipmunk-hoarder": 4,
+    "eyrie-warden": 4,
+    "swamp-alligator": 1,
+    "wound-reaver": 2
+   },
+   "leaders": null,
+   "tune200": 40.5
+  },
+  {
+   "deck": {
+    "alpine-swift": 3,
+    "apollo-butterfly": 4,
+    "gale-swift": 4,
+    "swamp-alligator": 1,
+    "vigil-owl": 1,
+    "wound-reaver": 3
+   },
+   "leaders": null,
+   "tune200": 41
+  },
+  {
+   "deck": {
+    "alpine-salamander": 2,
+    "apollo-butterfly": 2,
+    "chipmunk-hoarder": 2,
+    "eyrie-warden": 2,
+    "gale-swift": 2,
+    "swamp-alligator": 1,
+    "vigil-owl": 2,
+    "wound-reaver": 3
+   },
+   "leaders": [
+    "alpine-salamander"
+   ],
+   "tune200": 41
+  },
+  {
+   "deck": {
+    "alpine-salamander": 2,
+    "apollo-butterfly": 2,
+    "chipmunk-hoarder": 2,
+    "eyrie-warden": 2,
+    "gale-swift": 2,
+    "swamp-alligator": 1,
+    "vigil-owl": 2,
+    "wound-reaver": 3
+   },
+   "leaders": null,
+   "tune200": 37.5
+  },
+  {
+   "deck": {
+    "alpine-salamander": 3,
+    "alpine-swift": 1,
+    "apollo-butterfly": 1,
+    "eyrie-warden": 3,
+    "gale-swift": 4,
+    "vigil-owl": 2,
+    "wound-reaver": 2
+   },
+   "leaders": null,
+   "tune200": 43
+  },
+  {
+   "deck": {
+    "alpine-swift": 3,
+    "apollo-butterfly": 4,
+    "gale-swift": 4,
+    "swamp-alligator": 1,
+    "vigil-owl": 1,
+    "wound-reaver": 3
+   },
+   "leaders": [
+    "gale-swift"
+   ],
+   "tune200": 43.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "wound-reaver": 2,
+   "eyrie-warden": 5,
+   "vigil-owl": 1,
+   "alpine-swift": 5,
+   "swamp-alligator": 1,
+   "alpine-salamander": 1,
+   "gale-swift": 1
+  },
+  "leaders": [
+   "wound-reaver"
+  ],
+  "shieldOverride": null,
+  "win200": 34.5
+ },
+ "pick": {
+  "deck": {
+   "alpine-salamander": 2,
+   "alpine-swift": 1,
+   "apollo-butterfly": 2,
+   "chipmunk-hoarder": 4,
+   "eyrie-warden": 4,
+   "swamp-alligator": 1,
+   "wound-reaver": 2
+  },
+  "leaders": [
+   "wound-reaver"
+  ],
+  "shieldOverride": 0,
+  "win200": 38,
+  "tune200": 40.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 34.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 38
+  }
+ ],
+ "sec": 1001
+}

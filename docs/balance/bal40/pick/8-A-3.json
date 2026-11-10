@@ -1,0 +1,74 @@
+{
+ "about": "BAL40 named pick (tools/bal40/pick_2026_11_10.js)",
+ "code": "8-A-3",
+ "map": "mn",
+ "mapName": "The Glimmer Depths",
+ "kind": "skirmish",
+ "name": "Shard Gallery",
+ "band": {
+  "lo": 42,
+  "hi": 57.99999999999999,
+  "target": 50
+ },
+ "list": [
+  "badger-stonemason",
+  "blind-cave-fish",
+  "cave-olm",
+  "echo-screecher",
+  "glimmer-spider",
+  "prospector-mole",
+  "stalactite-golem",
+  "sulfur-cinder-moth",
+  "whip-spider"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "echo-screecher"
+ ],
+ "namesake": false,
+ "shieldRule": 16,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "sulfur-cinder-moth": 4,
+   "echo-screecher": 3,
+   "blind-cave-fish": 3,
+   "whip-spider": 4,
+   "cave-olm": 5
+  },
+  "leaders": [
+   "echo-screecher"
+  ],
+  "shieldOverride": null,
+  "win200": 58,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "sulfur-cinder-moth": 4,
+   "echo-screecher": 3,
+   "blind-cave-fish": 3,
+   "whip-spider": 4,
+   "cave-olm": 5
+  },
+  "leaders": [
+   "echo-screecher"
+  ],
+  "shieldOverride": 16,
+  "win200": 58,
+  "shown": 8
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 58
+  },
+  {
+   "move": "named pick",
+   "win": 58
+  }
+ ]
+}

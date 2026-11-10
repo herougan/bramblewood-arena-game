@@ -1,0 +1,6 @@
+8-A-4 target 40 space 94068 read 401 range 0 - 96.7 | 200 games: 48 -> 42.5 KEEP {"deck":{"blind-cave-fish":2,"grotto-lobster":1,"lantern-spark-fly":1,"malachite-golem":3,"prospector-mole":1,"sulfur-cinder-moth":2,"vampire-bat":1},"leaders":["malachite-golem"],"shieldOverride":null} 1005s
+11-A-1 target 80 space 2779 read 400 range 45 - 96.7 | 200 games: 72.5 -> 70 no {"deck":{"alpine-salamander":4,"alpine-swift":3,"apollo-butterfly":4,"eyrie-warden":3,"gale-swift":1,"wound-reaver":2},"leaders":["wound-reaver"],"shieldOverride":0} 713s
+11-A-2 target 75 space 9755 read 401 range 45 - 98.3 | 200 games: 84 -> 69.5 KEEP {"deck":{"alpine-salamander":4,"apollo-butterfly":2,"chipmunk-hoarder":3,"eagle-owl-quartermaster":1,"eyrie-warden":2,"gale-swift":2},"leaders":["eyrie-warden"],"shieldOverride":null} 1936s
+11-A-3 target 60 space 5950 read 401 range 1.7 - 65 | 200 games: 66.5 -> 58.5 KEEP {"deck":{"alpine-salamander":3,"alpine-swift":3,"apollo-butterfly":3,"chipmunk-hoarder":5,"ibex-rockcaller":1,"vigil-owl":3},"leaders":["ibex-rockcaller"],"shieldOverride":18} 1015s
+11-A-4 target 40 space 48897 read 401 range 20 - 91.7 | 200 games: 34.5 -> 38 KEEP {"deck":{"alpine-salamander":2,"alpine-swift":1,"apollo-butterfly":2,"chipmunk-hoarder":4,"eyrie-warden":4,"swamp-alligator":1,"wound-reaver":2},"leaders":["wound-reaver"],"shieldOverride":0} 1001s
+EXIT 0

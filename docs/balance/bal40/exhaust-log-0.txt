@@ -1,0 +1,2 @@
+12-1 target 90 space 76 read 76 range 66.7 - 86.7 | 200 games: 79 -> 80 no {"deck":{"bramble-hoglet":5,"carrion-crow":4,"hollow-belly-rat":1,"mouse-sapper":4,"thorn-shrike":3},"leaders":["hollow-belly-rat"],"shieldOverride":0} 218s
+12-2 target 84 space 163 read 163 range 68.3 - 90 | 200 games: 71.5 -> 81 KEEP {"deck":{"carrion-crow":5,"cunning-vixen":3,"lyrebird-mimic":4,"mouse-sapper":3,"thorn-shrike":3},"leaders":["thorn-shrike"],"shieldOverride":0} 219s

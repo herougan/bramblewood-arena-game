@@ -1,0 +1,173 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "19-6",
+ "map": "m3",
+ "mapName": "Ashen Spurn",
+ "kind": "miniboss",
+ "name": "The Frost Yeti King",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "cinder-stoker",
+  "glacier-wolf-pack",
+  "granite-ox-golem",
+  "magma-titan",
+  "obsidian-scorpion",
+  "pit-glutton",
+  "pumice-beetle",
+  "snow-ermine",
+  "sulfur-cinder-moth",
+  "talus-pika",
+  "yeti"
+ ],
+ "firstClear": [
+  "yeti",
+  "anvilwhisker-otter"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "yeti"
+ ],
+ "namesake": true,
+ "shieldRule": 38,
+ "shieldOverride": null,
+ "space": 17889,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 26.7,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "cinder-stoker": 5,
+    "glacier-wolf-pack": 4,
+    "magma-titan": 2,
+    "obsidian-scorpion": 1,
+    "pumice-beetle": 1,
+    "sulfur-cinder-moth": 1,
+    "yeti": 4
+   },
+   "leaders": null,
+   "tune200": 39.5
+  },
+  {
+   "deck": {
+    "cinder-stoker": 4,
+    "glacier-wolf-pack": 4,
+    "magma-titan": 4,
+    "obsidian-scorpion": 1,
+    "pit-glutton": 1,
+    "snow-ermine": 1,
+    "talus-pika": 1,
+    "yeti": 2
+   },
+   "leaders": null,
+   "tune200": 41
+  },
+  {
+   "deck": {
+    "cinder-stoker": 5,
+    "glacier-wolf-pack": 4,
+    "magma-titan": 4,
+    "pit-glutton": 1,
+    "snow-ermine": 1,
+    "yeti": 3
+   },
+   "leaders": null,
+   "tune200": 42
+  },
+  {
+   "deck": {
+    "cinder-stoker": 4,
+    "glacier-wolf-pack": 2,
+    "magma-titan": 3,
+    "obsidian-scorpion": 1,
+    "pumice-beetle": 3,
+    "snow-ermine": 1,
+    "talus-pika": 1,
+    "yeti": 3
+   },
+   "leaders": null,
+   "tune200": 44
+  },
+  {
+   "deck": {
+    "cinder-stoker": 4,
+    "glacier-wolf-pack": 3,
+    "magma-titan": 3,
+    "obsidian-scorpion": 1,
+    "pit-glutton": 1,
+    "pumice-beetle": 2,
+    "talus-pika": 1,
+    "yeti": 3
+   },
+   "leaders": null,
+   "tune200": 44
+  },
+  {
+   "deck": {
+    "cinder-stoker": 4,
+    "glacier-wolf-pack": 4,
+    "obsidian-scorpion": 1,
+    "pumice-beetle": 4,
+    "sulfur-cinder-moth": 1,
+    "talus-pika": 1,
+    "yeti": 3
+   },
+   "leaders": null,
+   "tune200": 45
+  }
+ ],
+ "before": {
+  "deck": {
+   "cinder-stoker": 5,
+   "glacier-wolf-pack": 3,
+   "granite-ox-golem": 1,
+   "pit-glutton": 1,
+   "pumice-beetle": 4,
+   "sulfur-cinder-moth": 1,
+   "talus-pika": 1,
+   "yeti": 2
+  },
+  "leaders": [
+   "yeti"
+  ],
+  "shieldOverride": null,
+  "win200": 59
+ },
+ "pick": {
+  "deck": {
+   "cinder-stoker": 5,
+   "glacier-wolf-pack": 4,
+   "magma-titan": 2,
+   "obsidian-scorpion": 1,
+   "pumice-beetle": 1,
+   "sulfur-cinder-moth": 1,
+   "yeti": 4
+  },
+  "leaders": [
+   "yeti"
+  ],
+  "shieldOverride": null,
+  "win200": 45,
+  "tune200": 39.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 59
+  },
+  {
+   "move": "whole-space pick",
+   "win": 45
+  }
+ ],
+ "sec": 862
+}
