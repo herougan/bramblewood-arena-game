@@ -18,7 +18,7 @@ const rw = grab('ui22McRewardsHTML');
 ok(/nodeRewardCardIds\(/.test(rw) && /nodeFirstPackCardIds\(/.test(rw) && /cardRewardIsChallenge\(/.test(rw), '1. rewards come from nodeRewardCardIds, nodeFirstPackCardIds and cardRewardIsChallenge');
 ok(/skirmishCode\(/.test(rw) && /ui22-cap/.test(rw), '1. each fight has its code and name as caption');
 ok(/mpSubsOf\(top\)/.test(grab('ui22McMaps')) && /mpIsSub\(mapId\)/.test(grab('ui22McMaps')), '1. a main map includes its side maps; a side map its own fights');
-ok(/vis4MapCardTilesHTML/.test(grab('ui22McTile')), '1. same card tiles as the other sections');
+ok(/ui39PlainTileHTML/.test(grab('ui22McTile')), '1. same card tiles as the other sections');
 const cn = grab('ui22McClaudeNewHTML'), cn2 = grab('ui22McClaudeNew');
 ok(/ui22-pill/.test(cn) && /TX\('ui\.ui22-claude-new'\)/.test(cn), '2. tiles wear a Claude New pill (TX key)');
 ok(!/rv1-tile|data-rv-/.test(cn) && !/mapPoolAdd|mpMutate|mapPoolMove/.test(cn + cn2 + rw), '2. not a review tile, no list function called');

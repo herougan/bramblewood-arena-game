@@ -47,7 +47,7 @@ async def main():
         b = await p.chromium.launch(executable_path=CHROME if os.path.exists(CHROME) else None, args=['--no-sandbox'])
         ctx = await b.new_context(viewport={'width': 1366, 'height': 900}, accept_downloads=True)
         pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)))
-        await pg.add_init_script(SKIP); await pg.goto(url); await pg.wait_for_timeout(1800)
+        await pg.add_init_script(SKIP); await pg.goto(url); await pg.wait_for_function("typeof ui37Picks !== 'undefined'", timeout=120000); await pg.wait_for_timeout(1800)  # 2026-11-11 (UI47): wait for the page script (was a fixed sleep: "ui37Picks is not defined")
         await pg.evaluate("localStorage.removeItem('bw_ui37_map_picks_v1'); for(const k in ui37Picks) delete ui37Picks[k];")
         mains = await pg.evaluate("ui37MapsData().filter(m=> m.n <= 20).map(m=> ({id: m.id, n: m.n, name: m.name}))")
         # 1 every main map 0-20

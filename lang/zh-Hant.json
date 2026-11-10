@@ -4399,5 +4399,15 @@
  "(current)": "(目前)",
  "Saved as your pick; Claude folds it into the map later.": "已儲存為你的選擇;Claude 稍後會把它併入地圖。",
  "Target for this side map: {t}. Change it; clear it to go back.": "此支線地圖的目標:{t}。可修改;清空即恢復預設。",
- "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "新!:這張支線地圖自己的清單、Claude 為它提出的主題推薦,以及你標記的卡牌。繼承:在你所選解鎖地圖之前(含)的主線地圖上標為「是」的卡牌,加上教學的 T-1 / T-2 卡牌。請將每張卡標為「是」或「否」。"
+ "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "新!:這張支線地圖自己的清單、Claude 為它提出的主題推薦,以及你標記的卡牌。繼承:在你所選解鎖地圖之前(含)的主線地圖上標為「是」的卡牌,加上教學的 T-1 / T-2 卡牌。請將每張卡標為「是」或「否」。",
+ "Flagged Yes on Map {n}": "在地圖 {n} 標記為「是」",
+ "Given by the tutorial maps (T-1, T-2)": "由教學地圖（T-1、T-2）提供",
+ "Add card": "新增卡牌",
+ "Search a card by name": "依名稱搜尋卡牌",
+ "No card matches.": "沒有符合的卡牌。",
+ "already Yes here": "此處已是「是」",
+ "Added {name} to {group}.": "已將 {name} 加入 {group}。",
+ "Baby cards are not counted.": "幼崽卡牌不計入。",
+ "Used on {n} main maps: {maps}": "用於 {n} 張主地圖：{maps}",
+ "Added by Claude": "Claude 追加"
 }

@@ -28,7 +28,7 @@ async def run(b, url, w):
     await pg.evaluate("(()=>{ " + V.OWN + " adminModeEnabled = true; })()")
     r = await pg.evaluate("""(()=>{ const out = []; for(const m of mainConquestMaps().slice(0, 12)){ pk1OpenMapCards(m.id); const ov = document.getElementById('pk1MapCardsOverlay');
       const rw = ov.querySelector('#ui22McRewards'), cl = ov.querySelector('#ui22McClaude'), lists = new Set(mapPoolSections(m.id).flatMap(s=> s.ids || []));
-      out.push({id: m.id, fights: rw ? rw.querySelectorAll('.ui22-fight').length : -1, caps: rw ? rw.querySelectorAll('.ui22-cap').length : 0, roles: rw ? rw.querySelectorAll('.ui22-rw-role').length : 0,
+      out.push({id: m.id, fights: rw ? rw.querySelectorAll('.ui22-fight').length : -1, caps: rw ? rw.querySelectorAll('.ui22-cap').length : 0, roles: rw ? rw.querySelectorAll('.ui47-role').length : 0,
         claude: cl ? cl.querySelectorAll('[data-ui22-claude-new]').length : 0, pills: cl ? [...cl.querySelectorAll('.ui22-pill')].map(x=> x.textContent) : [],
         onList: cl ? [...cl.querySelectorAll('[data-ui22-claude-new]')].filter(x=> lists.has(x.dataset.ui22ClaudeNew)).length : 0,
         inRv: cl ? cl.querySelectorAll('.rv1-tile').length : 0, skills: !!ov.querySelector('#ui19McSkills'), modalScroll: getComputedStyle(ov.querySelector('.pk1-mc-modal')).overflowY});

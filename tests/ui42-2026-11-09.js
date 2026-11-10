@@ -8,13 +8,13 @@ let fail = 0, pass = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  x', 
 const app = rd('arena_app.js'), html = rd('index.html');
 const fn = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0) return ''; const j = app.indexOf('\n}\n', i), k = app.indexOf('\n', i); const e = (app[k - 1] === '}' && (j < 0 || j > k)) ? k : j + 2; return app.slice(i, e); };
 // pure rules
-const F = new Function('function ui43TutorialCards(){ return []; }' /* 2026-11-10 (UI43): the tutorial's cards are tested in ui43 */ + fn('ui37CarriedIndex') + '; return {ui37CarriedIndex};')();
+const F = new Function('const UI47_TUT = -1, UI47_ADMIN_ADD = {}; function ui47AdminOf(t){ return []; } function ui47IsAdminAdded(t, id){ return false; } function ui43TutorialCards(){ return []; }' /* 2026-11-10 (UI43): the tutorial's cards are tested in ui43 */ + fn('ui37CarriedIndex') + '; return {ui37CarriedIndex};')();
 const maps = [{n: 0, list: ['a', 'b', 'c'], yes: ['a'], no: ['c']}, {n: 1, list: ['d'], yes: [], no: []}];
 ok([...F.ui37CarriedIndex(2, maps).keys()].join() === 'a', 'Carried: only the Yes card of an earlier map');
 ok(!app.includes('function ui37CarriedPool'), 'the wide Carried pool is gone (UI45)');
 ok(F.ui37CarriedIndex(1, maps).size === 1 && F.ui37CarriedIndex(0, maps).size === 0, 'a map never carries its own');
 // shown flag
-const sh = new Function('ui37Ent', fn('ui37FlagOf') + fn('ui42Shown') + '; return ui42Shown;')(t=> t === 'm' ? {yes: ['y'], no: ['n']} : {yes: [], no: []});
+const sh = new Function('ui37Ent', 'ui47IsAdminAdded', fn('ui37FlagOf') + fn('ui42Shown') + '; return ui42Shown;')(t=> t === 'm' ? {yes: ['y'], no: ['n']} : {yes: [], no: []}, ()=> false);
 ok(sh('m', 'y') === 'yes' && sh('m', 'n') === 'no' && sh('m', 'z') === 'no', 'unflagged and explicit no both read as no');
 // wiring
 ok(/fs = f === 'yes' \? 'yes' : 'no'/.test(fn('ui37TileHTML')) && /\$\{fs === k \? ' on' : ''\}/.test(fn('ui37TileHTML')), 'the No button is selected on an unflagged card');

@@ -3715,7 +3715,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui39-c-noart": "No art yet",
   "ui.ui39-c-rarity": "Suggested: {rarity}",
   "ui.eng39-version": "Version",
-  "ui.eng39-bramble": "Bramble"
+  "ui.eng39-bramble": "Bramble",
+  "ui.ui47-suggested": "Suggested",
+  "ui.ui47-from-tip": "Flagged Yes on Map {n}",
+  "ui.ui47-from-tut-tip": "Given by the tutorial maps (T-1, T-2)",
+  "ui.ui47-add": "Add card",
+  "ui.ui47-add-ph": "Search a card by name",
+  "ui.ui47-add-none": "No card matches.",
+  "ui.ui47-add-yes": "already Yes here",
+  "ui.ui47-added": "Added {name} to {group}.",
+  "ui.ui47-baby-note": "Baby cards are not counted.",
+  "ui.ui47-used-tip": "Used on {n} main maps: {maps}",
+  "ui.ui47-admin-added": "Added by Claude"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
