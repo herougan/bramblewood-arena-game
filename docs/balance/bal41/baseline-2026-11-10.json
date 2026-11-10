@@ -1,0 +1,481 @@
+{
+ "about": "BAL41 baseline (tools/bal41/baseline_2026_11_10.js): 200 games on the road seeds, the Map reference",
+ "rows": {
+  "9-1": {
+   "code": "9-1",
+   "map": "mk",
+   "mapName": "The Kelp Mangroves",
+   "name": "Mudflat Skippers",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "win200": 74.5,
+   "gap": -15.5,
+   "space": 4500,
+   "leaders": [
+    "proboscis-monkey"
+   ],
+   "shieldRule": 9,
+   "shieldOverride": null
+  },
+  "9-2": {
+   "code": "9-2",
+   "map": "mk",
+   "mapName": "The Kelp Mangroves",
+   "name": "Monitor Roots",
+   "target": 84,
+   "lo": 76,
+   "hi": 92,
+   "win200": 81,
+   "gap": -3,
+   "space": 13861,
+   "leaders": [
+    "sunbittern-strider"
+   ],
+   "shieldRule": 9,
+   "shieldOverride": null
+  },
+  "9-4": {
+   "code": "9-4",
+   "map": "mk",
+   "mapName": "The Kelp Mangroves",
+   "name": "Kelp Curtains",
+   "target": 62,
+   "lo": 54,
+   "hi": 70,
+   "win200": 54.5,
+   "gap": -7.5,
+   "space": 4754,
+   "leaders": [
+    "reef-shark"
+   ],
+   "shieldRule": 9,
+   "shieldOverride": 4
+  },
+  "9-5": {
+   "code": "9-5",
+   "map": "mk",
+   "mapName": "The Kelp Mangroves",
+   "name": "Moray Den",
+   "target": 66,
+   "lo": 58.00000000000001,
+   "hi": 74,
+   "win200": 49.5,
+   "gap": -16.5,
+   "space": 101849,
+   "leaders": [
+    "mangrove-manatee"
+   ],
+   "shieldRule": 14,
+   "shieldOverride": null
+  },
+  "9-6": {
+   "code": "9-6",
+   "map": "mk",
+   "mapName": "The Kelp Mangroves",
+   "name": "Drifting Shell",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "win200": 55,
+   "gap": -5,
+   "space": 149873,
+   "leaders": [
+    "mangrove-manatee"
+   ],
+   "shieldRule": 14,
+   "shieldOverride": null
+  },
+  "9-7": {
+   "code": "9-7",
+   "map": "mk",
+   "mapName": "The Kelp Mangroves",
+   "name": "The Kelp Witch",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 40.5,
+   "gap": 0.5,
+   "space": 38995,
+   "leaders": [
+    "mangrove-manatee"
+   ],
+   "shieldRule": 18,
+   "shieldOverride": null
+  },
+  "17-1": {
+   "code": "17-1",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "name": "Ice Fang Patrol",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "win200": 99.5,
+   "gap": 9.5,
+   "space": 2197,
+   "leaders": [
+    "beluga"
+   ],
+   "shieldRule": 17,
+   "shieldOverride": null
+  },
+  "17-2": {
+   "code": "17-2",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "name": "Frostbitten Pack",
+   "target": 85,
+   "lo": 77,
+   "hi": 93,
+   "win200": 92,
+   "gap": 7,
+   "space": 1800,
+   "leaders": [
+    "alpha-howler"
+   ],
+   "shieldRule": 17,
+   "shieldOverride": null
+  },
+  "17-3": {
+   "code": "17-3",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "name": "Snowshoe Line",
+   "target": 80,
+   "lo": 72.00000000000001,
+   "hi": 88,
+   "win200": 82.5,
+   "gap": 2.5,
+   "space": 1460,
+   "leaders": [
+    "polar-bear"
+   ],
+   "shieldRule": 17,
+   "shieldOverride": null
+  },
+  "17-4": {
+   "code": "17-4",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "name": "Lynx Ambush",
+   "target": 75,
+   "lo": 67,
+   "hi": 83,
+   "win200": 78.5,
+   "gap": 3.5,
+   "space": 71,
+   "leaders": [
+    "spitting-spider"
+   ],
+   "shieldRule": 17,
+   "shieldOverride": 0
+  },
+  "17-5": {
+   "code": "17-5",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "name": "Musk Ox Bulwark",
+   "target": 70,
+   "lo": 62,
+   "hi": 77.99999999999999,
+   "win200": 74.5,
+   "gap": 4.5,
+   "space": 28271,
+   "leaders": [
+    "alpha-howler"
+   ],
+   "shieldRule": 26,
+   "shieldOverride": null
+  },
+  "17-6": {
+   "code": "17-6",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "name": "Glacier Herd",
+   "target": 65,
+   "lo": 57.00000000000001,
+   "hi": 73,
+   "win200": 77,
+   "gap": 12,
+   "space": 422,
+   "leaders": [
+    "polar-bear"
+   ],
+   "shieldRule": 26,
+   "shieldOverride": 6
+  },
+  "17-7": {
+   "code": "17-7",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "name": "Alpha Howler's Den",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "win200": 67.5,
+   "gap": 7.5,
+   "space": 2473,
+   "leaders": [
+    "polar-bear"
+   ],
+   "shieldRule": 26,
+   "shieldOverride": 47
+  },
+  "17-8": {
+   "code": "17-8",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "name": "The Walrus Icebreaker",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 35.5,
+   "gap": -4.5,
+   "space": 6925,
+   "leaders": [
+    "walrus-icebreaker"
+   ],
+   "shieldRule": 34,
+   "shieldOverride": 0
+  },
+  "2-A-1": {
+   "code": "2-A-1",
+   "map": "mp",
+   "mapName": "Lilypad Reach",
+   "name": "Lily Hop",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "win200": 83,
+   "gap": -7,
+   "space": 8648,
+   "leaders": [
+    "victoria-regia"
+   ],
+   "shieldRule": 6,
+   "shieldOverride": null
+  },
+  "2-A-2": {
+   "code": "2-A-2",
+   "map": "mp",
+   "mapName": "Lilypad Reach",
+   "name": "Duck Row",
+   "target": 84,
+   "lo": 76,
+   "hi": 92,
+   "win200": 77.5,
+   "gap": -6.5,
+   "space": 4815,
+   "leaders": [
+    "lodge-engineer"
+   ],
+   "shieldRule": 6,
+   "shieldOverride": null
+  },
+  "2-A-3": {
+   "code": "2-A-3",
+   "map": "mp",
+   "mapName": "Lilypad Reach",
+   "name": "Beaver Dam",
+   "target": 78,
+   "lo": 70,
+   "hi": 86,
+   "win200": 83,
+   "gap": 5,
+   "space": 8536,
+   "leaders": [
+    "lodge-engineer"
+   ],
+   "shieldRule": 6,
+   "shieldOverride": null
+  },
+  "2-A-4": {
+   "code": "2-A-4",
+   "map": "mp",
+   "mapName": "Lilypad Reach",
+   "name": "Pike Shallows",
+   "target": 72,
+   "lo": 64,
+   "hi": 80,
+   "win200": 61,
+   "gap": -11,
+   "space": 6650,
+   "leaders": [
+    "shoal-shark"
+   ],
+   "shieldRule": 6,
+   "shieldOverride": null
+  },
+  "2-A-5": {
+   "code": "2-A-5",
+   "map": "mp",
+   "mapName": "Lilypad Reach",
+   "name": "Croaker Chorus",
+   "target": 66,
+   "lo": 58.00000000000001,
+   "hi": 74,
+   "win200": 67,
+   "gap": 1,
+   "space": 25755,
+   "leaders": [
+    "marsh-harrier"
+   ],
+   "shieldRule": 9,
+   "shieldOverride": null
+  },
+  "2-A-6": {
+   "code": "2-A-6",
+   "map": "mp",
+   "mapName": "Lilypad Reach",
+   "name": "The Lodge",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "win200": 54,
+   "gap": -6,
+   "space": 2304,
+   "leaders": [
+    "lodge-engineer"
+   ],
+   "shieldRule": 9,
+   "shieldOverride": null
+  },
+  "2-A-7": {
+   "code": "2-A-7",
+   "map": "mp",
+   "mapName": "Lilypad Reach",
+   "name": "The Lodge Matriarch",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 47,
+   "gap": 7,
+   "space": 25428,
+   "leaders": [
+    "old-sturgeon"
+   ],
+   "shieldRule": 18,
+   "shieldOverride": null
+  },
+  "18-A-1": {
+   "code": "18-A-1",
+   "map": "mpd",
+   "mapName": "The Pale Desert",
+   "name": "Bleached Flats",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "win200": 87.5,
+   "gap": -2.5,
+   "space": 3419,
+   "leaders": [
+    "dust-hyena"
+   ],
+   "shieldRule": 19,
+   "shieldOverride": null
+  },
+  "18-A-2": {
+   "code": "18-A-2",
+   "map": "mpd",
+   "mapName": "The Pale Desert",
+   "name": "Mirage Jackals",
+   "target": 85.7,
+   "lo": 77.7,
+   "hi": 93.69999999999999,
+   "win200": 80,
+   "gap": -5.7,
+   "space": 2375,
+   "leaders": [
+    "dromedary"
+   ],
+   "shieldRule": 19,
+   "shieldOverride": null
+  },
+  "18-A-3": {
+   "code": "18-A-3",
+   "map": "mpd",
+   "mapName": "The Pale Desert",
+   "name": "Dust Devils",
+   "target": 71.39999999999999,
+   "lo": 63.4,
+   "hi": 79.39999999999999,
+   "win200": 78,
+   "gap": 6.6,
+   "space": 6911,
+   "leaders": [
+    "dust-devil-kestrel"
+   ],
+   "shieldRule": 19,
+   "shieldOverride": null
+  },
+  "18-A-6": {
+   "code": "18-A-6",
+   "map": "mpd",
+   "mapName": "The Pale Desert",
+   "name": "The Salt Pan",
+   "target": 68.60000000000001,
+   "lo": 60.60000000000001,
+   "hi": 76.6,
+   "win200": 59,
+   "gap": -9.6,
+   "space": 2358,
+   "leaders": [
+    "trapdoor-spider"
+   ],
+   "shieldRule": 19,
+   "shieldOverride": null
+  },
+  "18-A-7": {
+   "code": "18-A-7",
+   "map": "mpd",
+   "mapName": "The Pale Desert",
+   "name": "Oryx Crossing",
+   "target": 64.3,
+   "lo": 56.300000000000004,
+   "hi": 72.3,
+   "win200": 69,
+   "gap": 4.7,
+   "space": 3294,
+   "leaders": [
+    "quicksand-queen"
+   ],
+   "shieldRule": 19,
+   "shieldOverride": null
+  },
+  "18-A-8": {
+   "code": "18-A-8",
+   "map": "mpd",
+   "mapName": "The Pale Desert",
+   "name": "The Dry Well",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "win200": 49,
+   "gap": -11,
+   "space": 9996,
+   "leaders": [
+    "dust-devil-kestrel"
+   ],
+   "shieldRule": 29,
+   "shieldOverride": null
+  },
+  "18-A-9": {
+   "code": "18-A-9",
+   "map": "mpd",
+   "mapName": "The Pale Desert",
+   "name": "The Quicksand Queen",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 21,
+   "gap": -19,
+   "space": 5254,
+   "leaders": [
+    "quicksand-queen"
+   ],
+   "shieldRule": 57,
+   "shieldOverride": 82
+  }
+ }
+}
