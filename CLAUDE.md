@@ -61,6 +61,7 @@ Docs named `*-2026-10-*.md` are dated snapshots (history). When one disagrees wi
   - the top model for engine design, balance and final review;
   - a cheaper model for UI from a clear spec, translations, docs and data edits;
   - the Explore agent for lookups.
+- Write the least code that works: walk the ladder in `docs/workflows/code-quality.md` (Ponytail rules, owner 2026-11-11) before writing code.
 - Code comments: a date and the reason, in the existing style. Each package adds a short entry at the top of `docs/CHANGELOG.md`.
 - Owner-facing reports: short, player-visible changes first, then decisions the owner needs to make.
 - Decisions (`docs/decisions.json` body and options): under 100 words, never over 200 (owner 2026-11-04 22:34: "Simplify the decisions btw. There's too much text for a human to read.").
