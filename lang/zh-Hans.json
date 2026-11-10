@@ -4409,5 +4409,9 @@
  "Added {name} to {group}.": "已将 {name} 加入 {group}。",
  "Baby cards are not counted.": "幼崽卡牌不计入。",
  "Used on {n} main maps: {maps}": "用于 {n} 张主地图：{maps}",
- "Added by Claude": "Claude 添加"
+ "Added by Claude": "Claude 添加",
+ "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "参考{k}：{pct}%（p10 {lo} – p90 {hi}）",
+ "Map ref {pct}%": "地图参考 {pct}%",
+ "Ref-2 {pct}%": "参考-2 {pct}%",
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "测量 {tag}，{date}：{k} 名参考玩家的卡组对此战斗，共 {g} 局（每副至少 {n} 局）；p10 / p90 已去除对局噪声。地图参考与参考-2：各 {m} 局。"
 }

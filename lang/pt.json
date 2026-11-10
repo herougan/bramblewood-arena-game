@@ -4410,5 +4410,9 @@
  "Added {name} to {group}.": "{name} adicionada a {group}.",
  "Baby cards are not counted.": "As cartas bebê não contam.",
  "Used on {n} main maps: {maps}": "Usada em {n} mapas principais: {maps}",
- "Added by Claude": "Adicionada pelo Claude"
+ "Added by Claude": "Adicionada pelo Claude",
+ "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
+ "Map ref {pct}%": "Ref. mapa {pct}%",
+ "Ref-2 {pct}%": "Ref-2 {pct}%",
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Medição {tag}, {date}: os baralhos dos {k} jogadores de referência contra esta luta, {g} partidas no total (pelo menos {n} por baralho); p10 / p90 sem o ruído das partidas. Referência do mapa e Referência-2: {m} partidas cada."
 }

@@ -26145,6 +26145,17 @@ function bal24RefLineHTML(key, weak, m){
   const tip = TX('ui.ui35-ref-tip', {date: gen || '?'});
   return `<span class="bal24-refline" data-flag="${bad ? m.flag : ''}" data-ref-pct="${pct}" title="${escapeAttr(tip)}"><b>${escapeHtml(TX(weak ? 'ui.ui35-ref-wk' : 'ui.ui35-ref-sk', {pct}))}</b> <span class="bal24-band">${escapeHtml(TX(weak ? 'ui.ui35-ref-cut-wk' : 'ui.ui35-ref-cut-sk', {cut}))}${bad && m.flagRef != null ? ' · ' + escapeHtml(TX('ui.ui35-ref-worst', {pct: Math.round(m.flagRef * 100)})) : ''}</span>${gen ? ` <small class="ui35-ref-date">${escapeHtml(gen)}</small>` : ''}</span>`;
 }
+// 2026-11-11 (package REF6, owner 00:16: "Make sure the win rates for reference decks are labelled in the skirmish for admins"): Admin Mode only, on a
+// road fight's panel: the 100 reference players' decks against this fight (their mean win rate, p10 / p90 with the game noise taken out), and the Map
+// reference and Reference-2 from the same measure. REF6_LABELS is baked by assemble_arena.py from the newest complete docs/balance/ref6/ref6-*.json
+// (node tools/ref6/measure.js --tag <t>); fights: "<mapId>:<key>" -> [mean, p10, p90, Map reference, Reference-2] in %, the games the 100 decks played.
+const REF6_LABELS = __REF6_LABELS__;
+function ref6LabelHTML(mapId, node){
+  const R = REF6_LABELS, f = adminModeEnabled && node && R && R.fights ? R.fights[mapId + ':' + node.key] : null; if(!f || f[0] == null) return '';
+  const pc = x=> Math.round(x), more = [f[3] != null ? TX('ui.ref6-mapref', {pct: pc(f[3])}) : '', f[4] != null ? TX('ui.ref6-ref2', {pct: pc(f[4])}) : ''].filter(Boolean);
+  const tip = TX('ui.ref6-tip', {tag: R.tag, date: String(R.generated || '').slice(0, 10), k: R.players, g: f[5] != null ? f[5] : '?', n: R.games, m: R.refGames});
+  return `<p class="panel-sub ref6-label" data-ref6-mean="${pc(f[0])}" title="${escapeAttr(tip)}"><b>${escapeHtml(TX('ui.ref6-label', {k: R.players, pct: pc(f[0]), lo: pc(f[1]), hi: pc(f[2])}))}</b>${more.map(t=> ` · <span style="white-space:nowrap">${escapeHtml(t)}</span>`).join('') /* a phone breaks the line between the parts, never inside "Ref-2" */}</p>`;
+}
 function proEntriesOf(ent){
   if(!ent) return []; let e = ent._skirm; if(e !== undefined) return e || [];
   const list = skirmDecksOf(ent), out = [];
@@ -29140,6 +29151,7 @@ function renderConquestSubTab(body){
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span></div>`/* 2026-10-16 (user: "Just a lock symbol is enough, no need for a emblem") */}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
+      ${ref6LabelHTML(map.id, selectedNode) /* 2026-11-11 (package REF6): the reference players' win rates on this fight, Admin only */}
       ${adminModeEnabled ? `<div class="cnp-admin-side" role="group" aria-label="Admin"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button>${c13NodeIsAdminTest(map.id) ? '' /* 2026-11-07 (CONTENT13): the Drill Grounds pay nothing and keep no progress: no Edit rewards, no Mark cleared */ : `<button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button>`}<button type="button" class="btn small ghost" id="cnpMapCards" aria-haspopup="dialog">${escapeHtml(TX('ui.pk1-map-cards-btn')) /* 2026-10-28 (package PACK1) */}</button><button type="button" class="btn small ghost" id="cnpPacks" aria-haspopup="dialog" title="${escapeAttr(TX('ui.ui29-btn-tip'))}">${escapeHtml(TX('ui.ui29-btn')) /* 2026-11-08 (package UI35, owner 09:27 #4): 📦 Packs under 🃏 Map cards */}</button></div>` : ''}
       ${vis4MapCardsHTML(map, selectedNode)}
       `;

@@ -4410,5 +4410,9 @@
  "Added {name} to {group}.": "{name} ditambahkan ke {group}.",
  "Baby cards are not counted.": "Kartu bayi tidak dihitung.",
  "Used on {n} main maps: {maps}": "Dipakai di {n} peta utama: {maps}",
- "Added by Claude": "Ditambahkan oleh Claude"
+ "Added by Claude": "Ditambahkan oleh Claude",
+ "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
+ "Map ref {pct}%": "Ref. peta {pct}%",
+ "Ref-2 {pct}%": "Ref-2 {pct}%",
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Pengukuran {tag}, {date}: deck {k} pemain referensi melawan pertarungan ini, total {g} permainan (minimal {n} per deck); p10 / p90 tanpa derau permainan. Referensi peta dan Referensi-2: masing-masing {m} permainan."
 }

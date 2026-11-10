@@ -192,9 +192,11 @@ function walk(seed, upTo, decks, opts) {
     // arriving at Map i: what the road paid before it is in; the packs it buys, the faction cards of Map i - 1, then Map i's deck and Forge
     if (i > 0) st.log.push(cur);
     cur = { map: i, cards: [], why: {}, earned: {}, src: {}, packs: {}, bought: {} };
-    if (i === upTo && !opts.finish) { buyPacks(i); break; }
+    // 2026-11-11 (package REF6): opts.arrive(i, st) sees the state at each arrival on the way (after its purchases, as walk(seed, i) returns it),
+    // so one walk to the last map gives every map's collection
+    if (i === upTo && !opts.finish) { buyPacks(i); if (opts.arrive) opts.arrive(i, st); break; }
     if (i === upTo) { buyPacks(i); forge(i, decks(i)); break; }
-    buyPacks(i); forge(i, decks(i));
+    buyPacks(i); if (opts.arrive) opts.arrive(i, st); forge(i, decks(i));
     // Map i's fights (first clears), main and side maps that open now
     (facBy[i] || []).forEach(id => own(id, 1, 'faction track'));
     rt.reach = i; const doneMaps = new Set();
