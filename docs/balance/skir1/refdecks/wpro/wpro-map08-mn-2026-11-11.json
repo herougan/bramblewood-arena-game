@@ -1,0 +1,86 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:55:33.114Z",
+ "map": {
+  "id": "mn",
+  "num": 8,
+  "name": "The Glimmer Depths"
+ },
+ "pool": [
+  "blind-cave-fish",
+  "cave-olm",
+  "cave-swiftlet",
+  "echo-matriarch",
+  "glimmer-spider",
+  "glintsnatch-magpie",
+  "grotto-lobster",
+  "lantern-spark-fly",
+  "magpie-collector",
+  "oilbird",
+  "quarry-mole",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "upside-down-bat",
+  "vampire-bat",
+  "whip-spider"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "glintsnatch-magpie": 4,
+    "magpie-collector": 4,
+    "oilbird": 4,
+    "quarry-mole": 4,
+    "stalactite-golem": 4
+   },
+   "score": 0.0119,
+   "ci": [
+    -0.0055,
+    0.0293
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "flying x8"
+   ],
+   "apartFrom": [],
+   "steps": 2,
+   "games": 728,
+   "seconds": 28
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "blind-cave-fish": 4,
+    "cave-olm": 3,
+    "echo-matriarch": 3,
+    "glimmer-spider": 2,
+    "magpie-collector": 4,
+    "stalactite-golem": 4
+   },
+   "score": 0.1845,
+   "ci": [
+    0.1281,
+    0.2409
+   ],
+   "refWins": 0.9306,
+   "labels": [
+    "big (13 copies at 1+ Lumber, average 0.8)",
+    "flying x7"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 3,
+   "games": 910,
+   "seconds": 23
+  }
+ ]
+}

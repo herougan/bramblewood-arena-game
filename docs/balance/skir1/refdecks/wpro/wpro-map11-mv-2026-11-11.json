@@ -1,0 +1,87 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:56:51.522Z",
+ "map": {
+  "id": "mv",
+  "num": 11,
+  "name": "The Aerie Vault"
+ },
+ "pool": [
+  "alpine-salamander",
+  "alpine-swift",
+  "apollo-butterfly",
+  "chamois-leaper",
+  "chipmunk-hoarder",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gale-swift",
+  "gangrenous-leech",
+  "great-horned-owl",
+  "hawk-arrowkeeper",
+  "ibex-rockcaller",
+  "red-billed-chough",
+  "swamp-alligator",
+  "the-gannet-queen",
+  "wound-reaver"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "eyrie-warden": 4,
+    "gangrenous-leech": 3,
+    "great-horned-owl": 4,
+    "hawk-arrowkeeper": 1,
+    "swamp-alligator": 4,
+    "the-gannet-queen": 4
+   },
+   "score": 0.1905,
+   "ci": [
+    0.1351,
+    0.2459
+   ],
+   "refWins": 0.8611,
+   "labels": [
+    "big (16 copies at 2+ Lumber, average 2.0)",
+    "flying x13",
+    "siege x8"
+   ],
+   "apartFrom": [],
+   "steps": 3,
+   "games": 868,
+   "seconds": 18
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "apollo-butterfly": 4,
+    "chamois-leaper": 2,
+    "chipmunk-hoarder": 4,
+    "eyrie-warden": 4,
+    "gangrenous-leech": 4,
+    "hawk-arrowkeeper": 2
+   },
+   "score": 0.3958,
+   "ci": [
+    0.3287,
+    0.4629
+   ],
+   "refWins": 0.5764,
+   "labels": [
+    "flying x10"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 2,
+   "games": 714,
+   "seconds": 35
+  }
+ ]
+}

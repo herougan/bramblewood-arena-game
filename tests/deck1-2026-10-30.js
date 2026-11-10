@@ -21,7 +21,8 @@ maps.forEach(m => { const e = file.maps[m.id]; if (!e) { ok(false, m.id + ': no 
   ok(pro.every(x => x.source && x.source.mode === 'deck1'), m.id + ': the PRO decks are DECK1\'s');
   ok(new Set(pro.map(x => x.focus)).size === pro.length, m.id + ': one focus a deck');
   ok(pro.every((x, i) => x.id === `${pre}-PRO-${i + 1}`), m.id + ': ids ' + pro.map(x => x.id).join(', '));
-  ok(pro.every((x, i) => i === 0 || x.source.score <= pro[i - 1].source.score), m.id + ': PRO-1 is the strongest on the gauntlet');
+  // 2026-11-11 (SKIR1): a PRO-1 kept by the replacement rule (kept1: the new best did not beat it head to head) leads; the rest keep the order
+  ok(pro.every((x, i) => i === 0 || x.source.score <= pro[i - 1].source.score || (i === 1 && pro[0].kept1)), m.id + ': PRO-1 is the strongest on the gauntlet (or kept by the PRO-1 replacement rule)');
   ok(pro.every(x => Object.keys(x.deck).filter(id => D1.deck1Pools(gm, m).anchor.includes(id)).reduce((t, id) => t + x.deck[id], 0) >= (D1.deck1Pools(gm, m).anchor.length ? D1.ANCHOR_MIN : 0)), m.id + ': at least 10 copies from the map\'s list');
   ok(pro.every(x => JSON.stringify(x.leaders) === JSON.stringify(P.leadersFor(gm, m, x.deck))), m.id + ': the showcase leader (from Map 2)'); });
 // 3. nothing lost: the previous PRO decks are under history

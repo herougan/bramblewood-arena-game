@@ -66,6 +66,8 @@ const MK = mm ? JSON.parse(mm[1]) : { marks: {} };
     for (const id of ids) { const m = pro.maps[id];
       for (const [decks, sfx, weak] of [[(m.bpro && m.bpro.length ? m.bpro : m.pro) || [], '-SK', false], [m.wpro || [], '-WK', true]]) { if (!decks.length) continue;
         const key = decks[0].id.replace(/-[BW]?PRO-\d+$/, '') + sfx, rs = decks.flatMap(e => rows[e.id] || []), lad = rs.filter(r => /^ladder-/.test(r.ref)), mp = rs.filter(r => r.ref === 'map');
+        // 2026-11-11 (SKIR1): decks SKIR1 searched under new ids (the Old Bramble's first BPRO) have no rows in a ladder file older than them
+        if (!lad.length && decks.every(e => (e.source || {}).package === 'SKIR1')) { console.log('  · ' + key + ': SKIR1 decks, not in ' + best.f + ' yet'); continue; }
         if (!lad.length) { ok(false, key + ': no ladder rows in ' + best.f); continue; } n++; if (weak) wpro++;
         const win = Math.round(lad.reduce((t, r) => t + r.losses, 0) / lad.reduce((t, r) => t + r.n, 0) * 1000) / 1000, mref = Math.round(mp.reduce((t, r) => t + r.wins, 0) / mp.reduce((t, r) => t + r.n, 0) * 1000) / 1000;
         // the flag is per deck: any PRO / BPRO deck the Map reference beats over 85% (N-SK), any WPRO deck under 50% (N-WK)

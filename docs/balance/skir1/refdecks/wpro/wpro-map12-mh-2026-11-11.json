@@ -1,0 +1,88 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:44:00.079Z",
+ "map": {
+  "id": "mh",
+  "num": 12,
+  "name": "The Briar Maze"
+ },
+ "pool": [
+  "barkplate-beetle",
+  "bramble-hoglet",
+  "briarback-hedgehog",
+  "carrion-crow",
+  "cunning-vixen",
+  "dormouse",
+  "hawthorn-shieldbug",
+  "hedge-weasel",
+  "hedgerow-shrew",
+  "lyrebird-mimic",
+  "mouse-sapper",
+  "pack-rat-looter",
+  "quill-thorn-boar",
+  "quillguard",
+  "terrier-pup",
+  "thorn-shrike"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "barkplate-beetle": 2,
+    "briarback-hedgehog": 4,
+    "cunning-vixen": 4,
+    "pack-rat-looter": 4,
+    "quill-thorn-boar": 3,
+    "thorn-shrike": 3
+   },
+   "score": 0.2542,
+   "ci": [
+    0.2084,
+    0.2999
+   ],
+   "refWins": 0.5556,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.1)",
+    "economy (4 resource makers)",
+    "armor x6"
+   ],
+   "apartFrom": [],
+   "steps": 2,
+   "games": 1060,
+   "seconds": 76
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "barkplate-beetle": 4,
+    "briarback-hedgehog": 4,
+    "cunning-vixen": 4,
+    "hawthorn-shieldbug": 4,
+    "terrier-pup": 4
+   },
+   "score": 0.1938,
+   "ci": [
+    0.1519,
+    0.2356
+   ],
+   "refWins": 0.7083,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.0)",
+    "armor x12",
+    "guard x8"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 2,
+   "games": 780,
+   "seconds": 59
+  }
+ ]
+}

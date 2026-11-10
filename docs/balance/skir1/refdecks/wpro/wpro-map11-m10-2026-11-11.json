@@ -1,0 +1,92 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:41:44.370Z",
+ "map": {
+  "id": "m10",
+  "num": 11,
+  "name": "Eyrie Heights"
+ },
+ "pool": [
+  "alpine-marmot",
+  "anvil-thrush",
+  "beaver-lumberjack",
+  "chamois-leaper",
+  "chipmunk-hoarder",
+  "eagle-owl-quartermaster",
+  "eagle-sharpshooter",
+  "eyrie-warden",
+  "gangrenous-leech",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "mountain-hare",
+  "peak-condor",
+  "peregrine-stooper",
+  "pika-hoarder",
+  "stonedrop-vulture",
+  "swamp-alligator",
+  "the-gannet-queen",
+  "wound-reaver"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "chamois-leaper": 4,
+    "eagle-sharpshooter": 4,
+    "eyrie-warden": 4,
+    "swamp-alligator": 4,
+    "the-gannet-queen": 4
+   },
+   "score": 0.1955,
+   "ci": [
+    0.1557,
+    0.2354
+   ],
+   "refWins": 0.9306,
+   "labels": [
+    "big (16 copies at 2+ Lumber, average 2.0)",
+    "flying x12",
+    "strike-first x8"
+   ],
+   "apartFrom": [],
+   "steps": 1,
+   "games": 1040,
+   "seconds": 107
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "anvil-thrush": 1,
+    "beaver-lumberjack": 4,
+    "chamois-leaper": 4,
+    "chipmunk-hoarder": 4,
+    "eagle-owl-quartermaster": 3,
+    "gannet-nestweaver": 4
+   },
+   "score": 0.3526,
+   "ci": [
+    0.3062,
+    0.3989
+   ],
+   "refWins": 0.6111,
+   "labels": [
+    "economy (4 resource makers)",
+    "flying x8"
+   ],
+   "apartFrom": [
+    16
+   ],
+   "steps": 1,
+   "games": 1014,
+   "seconds": 77
+  }
+ ]
+}

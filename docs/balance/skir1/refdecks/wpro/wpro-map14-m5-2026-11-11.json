@@ -1,0 +1,85 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:47:34.691Z",
+ "map": {
+  "id": "m5",
+  "num": 14,
+  "name": "Savanna Reaches"
+ },
+ "pool": [
+  "acacia-giraffe",
+  "adder-ambusher",
+  "crocodile-ambusher",
+  "dust-hyena",
+  "golden-eagle-diver",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "mangrove-monitor",
+  "marula-elephant",
+  "meerkat-sentry",
+  "plains-zebra",
+  "pride-queen",
+  "savanna-cheetah",
+  "springbok-pronker",
+  "stonedrop-vulture",
+  "termite-forager"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "acacia-giraffe": 4,
+    "adder-ambusher": 3,
+    "crocodile-ambusher": 4,
+    "mangrove-monitor": 2,
+    "marula-elephant": 4,
+    "meerkat-sentry": 3
+   },
+   "score": 0.2235,
+   "ci": [
+    0.1801,
+    0.2668
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.6)"
+   ],
+   "apartFrom": [],
+   "steps": 1,
+   "games": 814,
+   "seconds": 44
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "acacia-giraffe": 3,
+    "golden-eagle-diver": 4,
+    "hoopoe-herald": 4,
+    "mangrove-monitor": 4,
+    "marula-elephant": 4,
+    "stonedrop-vulture": 1
+   },
+   "score": 0.5265,
+   "ci": [
+    0.4751,
+    0.5779
+   ],
+   "refWins": 0.8333,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.1)"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 1,
+   "games": 836,
+   "seconds": 63
+  }
+ ]
+}

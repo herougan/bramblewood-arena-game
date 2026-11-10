@@ -1,0 +1,87 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:52:15.525Z",
+ "map": {
+  "id": "m6",
+  "num": 17,
+  "name": "Wolfsbane Tundra"
+ },
+ "pool": [
+  "arctic-fox-raider",
+  "arctic-tern",
+  "cone-cutter-squirrel",
+  "frostbitten-wolverine",
+  "glacier-yak",
+  "ice-crevasse-wolf",
+  "krill-swarm",
+  "lemming-swarm",
+  "polar-bear",
+  "ringed-seal",
+  "taiga-lynx",
+  "talus-pika",
+  "timber-wolf-pack",
+  "tundra-musk-ox",
+  "walrus-icebreaker",
+  "wolfsbane-alpha",
+  "woodland-caribou"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "arctic-fox-raider": 3,
+    "glacier-yak": 4,
+    "ringed-seal": 2,
+    "taiga-lynx": 3,
+    "timber-wolf-pack": 4,
+    "tundra-musk-ox": 4
+   },
+   "score": 0.2083,
+   "ci": [
+    0.1631,
+    0.2535
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)",
+    "evasion x8"
+   ],
+   "apartFrom": [],
+   "steps": 1,
+   "games": 836,
+   "seconds": 35
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "arctic-fox-raider": 3,
+    "cone-cutter-squirrel": 3,
+    "polar-bear": 2,
+    "ringed-seal": 4,
+    "talus-pika": 4,
+    "tundra-musk-ox": 4
+   },
+   "score": 0.6629,
+   "ci": [
+    0.6118,
+    0.714
+   ],
+   "refWins": 0.6111,
+   "labels": [
+    "evasion x9"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 1,
+   "games": 792,
+   "seconds": 31
+  }
+ ]
+}

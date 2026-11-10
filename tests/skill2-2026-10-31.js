@@ -81,7 +81,8 @@ const relaid = e => !!e && (/BAL1[0-9]|ENG2\d/.test(e.appliedAt || '') || !!e.ba
   const withB = maps.filter(e => (e.bpro || []).length && (e.bpro || []).every(x => x.source && x.source.mode === 'bpro2'));
   ok(withB.length >= 30, `5. ${withB.length} maps with SKILL2 BPRO decks`);
   ok(maps.filter(e => (e.history || []).some(h => h.package === 'SKILL2' && (h.bpro || []).length)).length >= 30, '5. the previous BPRO decks are under history');
-  ok(P.maps.mo && !(P.maps.mo.bpro || []).length, '5. the Old Bramble has no BPRO (its list is over its Common cap)'); }
+  // 2026-11-11 (SKIR1): the Old Bramble's 2026-11-11 list (THEME8's suggestions) holds cards inside its Common cap, so SKIR1 searched it a BPRO
+  ok(P.maps.mo && (!(P.maps.mo.bpro || []).length || ((P.maps.mo.bpro[0] || {}).source || {}).package === 'SKIR1'), '5. the Old Bramble has no BPRO (its list was over its Common cap) or SKIR1\'s from its new list'); }
 
 // 6. decisions, report, CHANGELOG, protocol
 { const D = rd('docs/decisions.json'); ['SKILL2-1', 'SKILL2-2', 'SKILL2-3', 'SKILL2-4'].forEach(id => ok(new RegExp('"id": "' + id + '", "status": "(YET|DONE)"').test(D), `6. ${id} asked`)); // 2026-10-31 coordinator: answered (DONE) counts too

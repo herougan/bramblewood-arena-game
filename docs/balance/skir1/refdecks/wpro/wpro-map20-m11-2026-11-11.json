@@ -1,0 +1,91 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:55:20.123Z",
+ "map": {
+  "id": "m11",
+  "num": 20,
+  "name": "The Sundered Peak"
+ },
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "caldera-snow-leopard",
+  "chamois-leaper",
+  "chipmunk-hoarder",
+  "cinder-hornet",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "constrictor-coil",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "magma-salamander",
+  "magma-wraith",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "phoenix-fledgling",
+  "stalactite-golem",
+  "talus-pika",
+  "vampire-roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "ash-cloud-condor": 1,
+    "cinder-hornet": 4,
+    "constrictor-coil": 3,
+    "phoenix-fledgling": 4,
+    "vampire-roost": 4
+   },
+   "score": 0.024,
+   "ci": [
+    0.0069,
+    0.0412
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (19 copies at 2+ Lumber, average 2.1)",
+    "flying x9"
+   ],
+   "apartFrom": [],
+   "steps": 1,
+   "games": 832,
+   "seconds": 32
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "ancient-sloth-titan": 3,
+    "ash-cloud-condor": 1,
+    "chamois-leaper": 4,
+    "constrictor-coil": 4,
+    "deep-cave-troll": 4,
+    "stalactite-golem": 4
+   },
+   "score": 0.133,
+   "ci": [
+    0.0974,
+    0.1686
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (15 copies at 2+ Lumber, average 2.1)",
+    "guard x7"
+   ],
+   "apartFrom": [
+    13
+   ],
+   "steps": 1,
+   "games": 988,
+   "seconds": 38
+  }
+ ]
+}

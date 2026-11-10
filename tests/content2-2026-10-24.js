@@ -24,6 +24,8 @@ const chk = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools', 'content2_2
 // list (the tool pins CONTENT2's placements); every other problem (a card over its budget) still fails
 // 2026-10-29 THEME3: lists follow the owner's 23:35/00:10 notes: the expected list is THEME3's (canonical/map-review.json `chosen`, written by tools/theme3_2026_10_29.py with the file), THEME2's where THEME3 has none
 const T2 = Object.assign(Object.fromEntries(J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed])), Object.fromEntries(Object.entries(JSON.parse(require('fs').readFileSync(require('path').join(ROOT, 'canonical', 'map-review.json'), 'utf8')).maps).map(([k, e])=> [k, e.chosen.map(c=> c.id)])));
+// 2026-11-11 (SKIR1): Maps 0-20's lists are the owner's 2026-11-11 picks + admin adds / THEME8's suggestions (tests/skir1-2026-11-11.js checks them)
+Object.keys(pools).forEach(k=>{ const L = require(path.join(ROOT, 'docs', 'balance', 'skir1', 'lists-2026-11-11.json')); if((L.main || {})[k]) T2[k] = pools[k].cards; });
 const placeOf = Object.fromEntries(C2.NEW.filter(s=> s.place).map(s=> [s.id, s.place[0]]));
 const probs = (chk.stdout || '').trim().split('\n').filter(l=> l && !/^(ok:|\d+ problem)/.test(l)).filter(l=>{ const m = /^not in pool (\S+)$/.exec(l); return !(m && placeOf[m[1]] && !(T2[placeOf[m[1]]] || []).includes(m[1])); });
 // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): "over budget <id>" is reported, not failed, for a card that is unplaced

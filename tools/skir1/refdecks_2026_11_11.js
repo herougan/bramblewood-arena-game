@@ -134,7 +134,7 @@ async function run(gm, opt) {
 // ---- apply
 function pickStrong(res, kept) { // hard decks (BPRO / PRO's floor rule), then the overlap rule against the ones kept before
   const best = res.decks[0].score, floor = Math.max(0.5, best - HARD_GAP), out = [], left = [];
-  res.decks.forEach((d, i) => { const why = !(i < 2 || d.score >= floor) ? `under ${Math.round(floor * 1000) / 10}%` : kept.concat(out).some(k => ovl(k.deck, d.deck) > MAX_OVERLAP) ? `shares more than ${MAX_OVERLAP} copies with a stronger deck` : out.length >= 4 ? 'a fifth deck' : null;
+  res.decks.forEach((d, i) => { const why = !(i < 2 || d.score >= floor) ? `under ${Math.round(floor * 1000) / 10}%` : out.some(k => k.focus === d.focus) ? 'a stronger deck of its kind has its focus (tests/deck1: one focus a deck)' : kept.concat(out).some(k => ovl(k.deck, d.deck) > MAX_OVERLAP) ? `shares more than ${MAX_OVERLAP} copies with a stronger deck` : out.length >= 4 ? 'a fifth deck' : null;
     if (why) left.push({ focus: d.focus, score: d.score, why }); else out.push(d); });
   return { out, left };
 }
@@ -167,11 +167,18 @@ function apply(gm, opt) {
     const keep1 = (kind, list) => { const o1 = ((old || {})[kind] || [])[0]; if (!o1 || !list.length || !h2h) return list;
       const probs = P.deckProblems(gm, o1.deck, P.leadersFor(gm, m, o1.deck)).concat(P.limitProblems(o1.deck, { maxUnique: RULE.maxUnique, maxCopies: RULE.maxCopies }),
         kind === 'bpro' ? B2.bproProblems(gm, m, o1.deck, pools1) : D1.deck1Problems(gm, m, o1.deck, pools1));
+      // tests/deck1's own anchor rule too (10+ copies of the map's list on a PRO)
+      const anc = D1.deck1Pools(gm, m).anchor, ancN = Object.keys(o1.deck).filter(id => anc.includes(id)).reduce((t, id) => t + o1.deck[id], 0);
+      if (kind === 'pro' && anc.length && ancN < D1.ANCHOR_MIN) probs.push(`${ancN} copies of the map's list (under ${D1.ANCHOR_MIN})`);
+      const LMP = require('../lib_map_pools.js'), cut = Object.keys(o1.deck).filter(id => gm.D[id] && LMP.isOutOfPlay(gm.G, gm.D[id]));
+      if (cut.length) probs.push('on no 2026-11-11 list (out of play, BAL9 JJ24): ' + cut.join(', '));
       if (probs.length) { row[kind + 'Old1'] = { id: o1.id, dropped: probs.slice(0, 6) }; return list; }
       const r = h2h(list[0].deck, o1.deck, 400); row[kind + 'Old1'] = { id: o1.id, vsNewBest: r };
       if (r.p >= 0.55 && r.ci[0] > 0.5) { row[kind + 'Old1'].replaced = true; return list; }
-      const rest = list.filter(d => ovl(d.deck, o1.deck) <= MAX_OVERLAP).slice(0, 3), K = kind.toUpperCase();
-      return [Object.assign({}, o1, { h2h: null })].concat(rest.map(d => Object.assign({}, d, { h2h: Object.assign({ vs: O.deckKey(o1.deck) }, h2h(d.deck, o1.deck, 400)) })))
+      // the kept PRO-1 is marked (kept1); the new decks' read against it sits in vsKept1 (deck1-shaped entries carry no head-to-head)
+      const rest = list.filter(d => ovl(d.deck, o1.deck) <= MAX_OVERLAP && d.focus !== o1.focus).slice(0, 3), K = kind.toUpperCase();
+      return [Object.assign({}, o1, { h2h: null, kept1: 'SKIR1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (' + Math.round(r.p * 1000) / 10 + '%)' })]
+        .concat(rest.map(d => Object.assign({}, d, { h2h: null, vsKept1: Object.assign({ vs: O.deckKey(o1.deck) }, h2h(d.deck, o1.deck, 400)) })))
         .map((d, i) => Object.assign(d, { id: `${prefix}-${K}-${i + 1}`, name: `${prefix}-${K}-${i + 1}` })); };
     bpro = keep1('bpro', bpro); pro = keep1('pro', pro);
     const prev = {}; ['pro', 'bpro', 'wpro'].forEach(k => { if ((k === 'pro' ? pro : k === 'bpro' ? bpro : wpro).length && (entry[k] || []).length) prev[k] = entry[k]; });

@@ -1,0 +1,88 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:51:08.950Z",
+ "map": {
+  "id": "mt",
+  "num": 16,
+  "name": "The Pinewood Taiga"
+ },
+ "pool": [
+  "berserker-boar",
+  "boreal-elk",
+  "bramblewood-lynx",
+  "cone-cutter-squirrel",
+  "dhole-matriarch",
+  "dhole-runner",
+  "grizzly-vanguard",
+  "mountain-hare",
+  "owl-nightwatch",
+  "pinecone-crossbill",
+  "redwood-woodpecker",
+  "snowshoe-hare",
+  "taiga-lynx",
+  "timber-wolf-pack",
+  "woodland-caribou"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "berserker-boar": 3,
+    "boreal-elk": 4,
+    "bramblewood-lynx": 3,
+    "dhole-matriarch": 2,
+    "grizzly-vanguard": 4,
+    "snowshoe-hare": 4
+   },
+   "score": 0.0625,
+   "ci": [
+    0.0329,
+    0.0921
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.4)",
+    "cleave x8",
+    "guard x6"
+   ],
+   "apartFrom": [],
+   "steps": 2,
+   "games": 940,
+   "seconds": 32
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "berserker-boar": 4,
+    "dhole-matriarch": 2,
+    "grizzly-vanguard": 4,
+    "pinecone-crossbill": 3,
+    "redwood-woodpecker": 4,
+    "taiga-lynx": 3
+   },
+   "score": 0.0917,
+   "ci": [
+    0.0581,
+    0.1252
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (17 copies at 1+ Lumber, average 1.4)",
+    "economy (4 resource makers)",
+    "guard x6"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 2,
+   "games": 1020,
+   "seconds": 50
+  }
+ ]
+}

@@ -135,6 +135,20 @@ else if (CMD === 'repair') {
       const re = new RegExp(`^(\\s*\\{ ?key:\\s*"${f.code.replace(/-/g, '\\-')}",.*)$`, 'm'), mm = s.match(re), deck = Object.fromEntries(Object.keys(best.d).sort().map(x => [x, best.d[x]]));
       s = s.replace(mm[1], mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(deck) + ` /* 2026-11-11 (SKIR1 repair): ${id} x${k} -> ${best.c} (${why}); deck (was ${JSON.stringify(d0)}) */`));
       f.n.deck = best.d; touched.push(f.code); console.log('repair', f.code, id, 'x' + k, '->', best.c, '(' + why + ')'); return true; };
+    // a card on no list (out of play; BAL9 JJ24) leaves first, one card at a time (the deck is legal only once every such card is out)
+    for (const f of F2) for (const id of Object.keys(f.n.deck).filter(f.cutOut)) { const d = Object.assign({}, f.n.deck), k = d[id]; delete d[id]; const adds = {};
+      for (let j = 0; j < k; j++) { // copy by copy: the nearest pool card that stays inside its cap, K14 and the family rule (a new card while under the minimum)
+        const ids = Object.keys(d).filter(x => !f.cutOut(x)), want = ids.length < f.dMin;
+        const c = f.pool.filter(x => !f.cutOut(x) && (d[x] || 0) + 1 <= f.cap(x) && (d[x] || ids.length < f.dMax) && !(want && d[x]))
+          .filter(x => { const e = Object.assign({}, d); e[x] = (e[x] || 0) + 1; return !f.k14(e).length && !pairBad(f, e).length; })
+          .sort((a, b) => Math.abs(score(a) - score(id)) - Math.abs(score(b) - score(id)))[0];
+        if (!c) break; d[c] = (d[c] || 0) + 1; adds[c] = (adds[c] || 0) + 1; }
+      if (L.size(d) !== L.size(f.n.deck) || (!Object.keys(d).some(f.cutOut) && !f.legal(d))) { console.log('repair: no move for', f.code, id, '(on no list)', f.problems(d).join('; ')); continue; }
+      const re = new RegExp(`^(\\s*\\{ ?key:\\s*"${f.code.replace(/-/g, '\\-')}",.*)$`, 'm'), mm = s.match(re), deck = Object.fromEntries(Object.keys(d).sort().map(x => [x, d[x]]));
+      // a showcase SKIR1 pinned on that card goes with it (the Auto leader is the new top card)
+      const pinTxt = `showcase:"${id}" /* 2026-11-11 (SKIR1): its Auto showcase leader, pinned */, `;
+      s = s.replace(mm[1], mm[1].replace(pinTxt, '').replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(deck) + ` /* 2026-11-11 (SKIR1 repair): ${id} x${k} -> ${JSON.stringify(adds)} (on no 2026-11-11 list: out of play, BAL9 JJ24${mm[1].includes(pinTxt) ? '; its pinned showcase dropped' : ''}); deck (was ${JSON.stringify(f.n.deck)}) */`));
+      f.n.deck = d; touched.push(f.code); console.log('repair', f.code, id, 'x' + k, '->', JSON.stringify(adds), '(on no list)'); }
     for (const f of F2) { const bad = pairBad(f, f.n.deck).sort((x, y) => f.n.deck[x] - f.n.deck[y]); // the smaller copy set first, else its partner
       bad.some(id => pairBad(f, f.n.deck).includes(id) && swap(f, id, 'two of a two-card family in one fight')); }
     for (const [id, k] of Object.entries(usage())) { let over = k - ucap; if (over <= 0) continue;

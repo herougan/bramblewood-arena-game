@@ -1,0 +1,87 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:50:49.678Z",
+ "map": {
+  "id": "mg",
+  "num": 2,
+  "name": "Smugglers' Grotto"
+ },
+ "pool": [
+  "bloodworm",
+  "coffer-mimic",
+  "glow-worm",
+  "grey-seal-bull",
+  "gull-thief",
+  "limpet-clinger",
+  "moray-ambusher",
+  "octopus-tactician",
+  "old-shell",
+  "pincushion-urchin",
+  "raccoon-nightcrew",
+  "rock-pool-starfish",
+  "salvager-hermit-crab",
+  "smuggler-slingrat",
+  "tide-pool-crab",
+  "trash-panda-trickster"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "coffer-mimic": 4,
+    "limpet-clinger": 4,
+    "octopus-tactician": 4,
+    "pincushion-urchin": 4,
+    "smuggler-slingrat": 4
+   },
+   "score": 0.131,
+   "ci": [
+    0.0832,
+    0.1787
+   ],
+   "refWins": 0.8472,
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.8)",
+    "tide x12",
+    "spite x8"
+   ],
+   "apartFrom": [],
+   "steps": 3,
+   "games": 840,
+   "seconds": 41
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "coffer-mimic": 4,
+    "grey-seal-bull": 4,
+    "moray-ambusher": 4,
+    "octopus-tactician": 4,
+    "old-shell": 4
+   },
+   "score": 0.2321,
+   "ci": [
+    0.1733,
+    0.291
+   ],
+   "refWins": 0.8194,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "tide x12",
+    "guard x8"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 3,
+   "games": 854,
+   "seconds": 42
+  }
+ ]
+}

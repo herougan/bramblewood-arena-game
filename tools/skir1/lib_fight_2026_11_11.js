@@ -37,13 +37,15 @@ function fight(m, n) {
   const unlock = unlockOf(m), U = m.id === 'm1' ? null : K.uniqueOf(m.id);
   // the owner's "No stone until Map 21+" wins over a kept card: a Stone card leaves the deck (an Auto showcase leader then changes; reported)
   const stoneOut = id => unlock < 21 && M.stone(D[id]);
+  // a card on no list (out of play, LISTFIX1 / BAL9 JJ24: tools/bal9/decks_2026_11_02.js cuts) leaves the deck too, even a kept one
+  const cutOut = id => !!D[id] && LP.isOutOfPlay(G, D[id]);
   const keep = new Map(); // id -> at least these copies
   firstAll.filter(id => old[id]).forEach(id => keep.set(id, 1));
   L0.filter(id => old[id]).forEach(id => keep.set(id, 1));
   if (n.showcase && old[n.showcase]) keep.set(n.showcase, 1);
   Object.entries(KEEP_MIN[n.key] || {}).forEach(([id, k]) => keep.set(id, k));
-  [...keep.keys()].filter(stoneOut).forEach(id => keep.delete(id));
-  const stoneLeader = !explicit && L0.some(stoneOut);
+  [...keep.keys()].filter(id => stoneOut(id) || cutOut(id)).forEach(id => keep.delete(id));
+  const stoneLeader = !explicit && L0.some(id => stoneOut(id) || cutOut(id)); // a Stone or out-of-play leader leaves: the Auto leader is free
   if (stoneLeader) L0 = [];
   const list = LP.fightPool(poolsCache, m.id, m.sub ? m.parent : null) || new Set();
   // another fight's reward stays out, unless this fight already fielded it before SKIR1 (Map 20's boss had 20-2's Condor and 20-10's Lammergeier)
@@ -59,7 +61,7 @@ function fight(m, n) {
   const outranks = () => false;
   // a leader card joins the deck only when it was there before (keep): the fight's leader may sit outside its deck (CONTENT12-2), and a cut card
   // that only leads (6-6's Marsh Wisp, LISTFIX2) stays out of the deck
-  const pool = [...new Set([...list].concat(own, [...keep.keys()]))].filter(id => allowedIn(id) && !outranks(id) && !stoneOut(id)).sort();
+  const pool = [...new Set([...list].concat(own, [...keep.keys()]))].filter(id => allowedIn(id) && !outranks(id) && !stoneOut(id) && !cutOut(id)).sort();
   // a challenge deck's boon-theme cards may hold their rarity's full copy cap (the road's 5 Commons): Shrine Steps 20-4 has only two themed cards left
   const themedBoon = id => !!(n.rules && n.rules.boon) && ENG.selfishBoonCount(DX, { [id]: 1 }, n.rules.boon).have === 1;
   const cap = id => Math.max(keep.get(id) || 0, themedBoon(id) ? G.maxCopiesForRarity(D[id].rarity) : Math.min(4, G.maxCopiesForRarity(D[id].rarity)));
@@ -75,7 +77,7 @@ function fight(m, n) {
     if (L0.length && !explicit && !pin && JSON.stringify(leadOf(d)) !== JSON.stringify(L0)) out.push(`the showcase leader ${L0} would become ${leadOf(d)}`);
     if (!boonOn(d)) out.push('the challenge boon ' + n.rules.boon + ' is off');
     return out; };
-  return { m, n, map: m.id, mapNo: no, unlock, side: !!m.sub, code: n.key, kind, name: n.name, old, S, n0, L0, explicit, stoneLeader, pin, keep, pool, list, own, cap, dMin, dMax, U, k14, problems, legal: d => !problems(d).length, leadOf };
+  return { m, n, map: m.id, mapNo: no, unlock, side: !!m.sub, cutOut, stoneOut, code: n.key, kind, name: n.name, old, S, n0, L0, explicit, stoneLeader, pin, keep, pool, list, own, cap, dMin, dMax, U, k14, problems, legal: d => !problems(d).length, leadOf };
 }
 // the map's usage line: a card in at most half its fights (2 at least); one fight more on a map docs/balance/skir1/slack-2026-11-11.json names
 // (a thin list, or a fight that could not reach its band inside the line: the reason is recorded there)

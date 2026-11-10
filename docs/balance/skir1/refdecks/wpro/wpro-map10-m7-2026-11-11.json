@@ -1,0 +1,92 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:38:39.918Z",
+ "map": {
+  "id": "m7",
+  "num": 10,
+  "name": "Coral Current"
+ },
+ "pool": [
+  "clownfish-scout",
+  "conch-crawler",
+  "coral-current-eel",
+  "coral-polyp-colony",
+  "crown-of-thorns-star",
+  "dolphin-knight",
+  "giant-clam",
+  "ironclaw-fiddler",
+  "krill-swarm",
+  "moon-jelly",
+  "nautilus-drifter",
+  "orca-vanguard",
+  "pincushion-urchin",
+  "reef-admiral",
+  "reef-shark",
+  "riptide-eel",
+  "sea-bass",
+  "sea-turtle-elder",
+  "tide-spirit",
+  "voltaic-eel"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "coral-polyp-colony": 1,
+    "giant-clam": 4,
+    "orca-vanguard": 4,
+    "reef-shark": 4,
+    "sea-turtle-elder": 4,
+    "voltaic-eel": 3
+   },
+   "score": 0.2986,
+   "ci": [
+    0.2507,
+    0.3465
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (15 copies at 2+ Lumber, average 1.9)",
+    "tide x20",
+    "armor x8"
+   ],
+   "apartFrom": [],
+   "steps": 1,
+   "games": 960,
+   "seconds": 62
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "coral-current-eel": 3,
+    "crown-of-thorns-star": 4,
+    "ironclaw-fiddler": 3,
+    "orca-vanguard": 4,
+    "reef-shark": 4,
+    "voltaic-eel": 2
+   },
+   "score": 0.3038,
+   "ci": [
+    0.2579,
+    0.3497
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (13 copies at 2+ Lumber, average 1.9)",
+    "tide x20"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 1,
+   "games": 960,
+   "seconds": 63
+  }
+ ]
+}
