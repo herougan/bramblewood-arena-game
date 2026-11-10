@@ -1,0 +1,190 @@
+{
+ "about": "BAL44 baseline (tools/bal44/baseline_2026_11_10.js): 200 games on the road seeds, the Map reference",
+ "rows": {
+  "0-3": {
+   "code": "0-3",
+   "map": "m1",
+   "mapName": "Bramblewood Outskirts",
+   "name": "Raccoon Heist",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "win200": 69.5,
+   "gap": 9.5,
+   "space": 159654,
+   "leaders": [],
+   "shieldRule": 0,
+   "shieldOverride": null
+  },
+  "3-2": {
+   "code": "3-2",
+   "map": "mc",
+   "mapName": "Gannet Cliffs",
+   "name": "Hawk Watch",
+   "target": 84,
+   "lo": 76,
+   "hi": 92,
+   "win200": 95,
+   "gap": 11,
+   "space": 47824,
+   "leaders": [
+    "razorbill"
+   ],
+   "shieldRule": 3,
+   "shieldOverride": null
+  },
+  "11-10": {
+   "code": "11-10",
+   "map": "m10",
+   "mapName": "Eyrie Heights",
+   "name": "The Avalanche Colossus",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 53,
+   "gap": 13,
+   "space": 52266,
+   "leaders": [
+    "red-billed-chough"
+   ],
+   "shieldRule": 22,
+   "shieldOverride": 21
+  },
+  "16-1": {
+   "code": "16-1",
+   "map": "mt",
+   "mapName": "The Pinewood Taiga",
+   "name": "Snowshoe Tracks",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "win200": 70,
+   "gap": -20,
+   "space": 4213,
+   "leaders": [
+    "bramblewood-lynx"
+   ],
+   "shieldRule": 16,
+   "shieldOverride": null
+  },
+  "6-1": {
+   "code": "6-1",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "name": "Leech Bog",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "win200": 86,
+   "gap": -4,
+   "space": 1972,
+   "leaders": [
+    "fire-ant-raft"
+   ],
+   "shieldRule": 6,
+   "shieldOverride": 0
+  },
+  "6-2": {
+   "code": "6-2",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "name": "Mire Ambush",
+   "target": 85,
+   "lo": 77,
+   "hi": 93,
+   "win200": 90.5,
+   "gap": 5.5,
+   "space": 50,
+   "leaders": [
+    "booming-bittern"
+   ],
+   "shieldRule": 6,
+   "shieldOverride": 0
+  },
+  "6-3": {
+   "code": "6-3",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "name": "Toad Chorus",
+   "target": 80,
+   "lo": 72.00000000000001,
+   "hi": 88,
+   "win200": 87.5,
+   "gap": 7.5,
+   "space": 330,
+   "leaders": [
+    "booming-bittern"
+   ],
+   "shieldRule": 6,
+   "shieldOverride": null
+  },
+  "6-4": {
+   "code": "6-4",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "name": "Root Snare",
+   "target": 75,
+   "lo": 67,
+   "hi": 83,
+   "win200": 81,
+   "gap": 6,
+   "space": 91,
+   "leaders": [
+    "fire-ant-raft"
+   ],
+   "shieldRule": 6,
+   "shieldOverride": null
+  },
+  "6-5": {
+   "code": "6-5",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "name": "Venomlord's Coil",
+   "target": 70,
+   "lo": 62,
+   "hi": 77.99999999999999,
+   "win200": 66,
+   "gap": -4,
+   "space": 6489,
+   "leaders": [
+    "venomlord-serpent"
+   ],
+   "shieldRule": 9,
+   "shieldOverride": null
+  },
+  "6-6": {
+   "code": "6-6",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "name": "Crocodile Run",
+   "target": 65,
+   "lo": 57.00000000000001,
+   "hi": 73,
+   "win200": 61,
+   "gap": -4,
+   "space": 865,
+   "leaders": [
+    "marsh-wisp"
+   ],
+   "shieldRule": 9,
+   "shieldOverride": null
+  },
+  "6-8": {
+   "code": "6-8",
+   "map": "m8",
+   "mapName": "Sable Swampmire",
+   "name": "The Alligator King",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 31,
+   "gap": -9,
+   "space": 2040,
+   "leaders": [
+    "adder-ambusher"
+   ],
+   "shieldRule": 12,
+   "shieldOverride": 24
+  }
+ }
+}

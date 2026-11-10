@@ -1,0 +1,172 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "6-6",
+ "map": "m8",
+ "mapName": "Sable Swampmire",
+ "kind": "elite",
+ "name": "Crocodile Run",
+ "band": {
+  "lo": 57.00000000000001,
+  "hi": 73,
+  "target": 65
+ },
+ "list": [
+  "booming-bittern",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "marsh-harrier",
+  "nutria-reedcutter",
+  "raven-scout",
+  "venomlord-serpent"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "marsh-wisp"
+ ],
+ "namesake": false,
+ "shieldRule": 9,
+ "shieldOverride": null,
+ "space": 865,
+ "read": 400,
+ "g1": 60,
+ "range": {
+  "min": 11.7,
+  "max": 95
+ },
+ "top": [
+  {
+   "deck": {
+    "booming-bittern": 4,
+    "camouflage-frog": 4,
+    "constrictor-coil": 1,
+    "fire-ant-raft": 1,
+    "nutria-reedcutter": 1,
+    "raven-scout": 1,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "fire-ant-raft"
+   ],
+   "tune200": 65
+  },
+  {
+   "deck": {
+    "booming-bittern": 3,
+    "camouflage-frog": 5,
+    "fire-ant-raft": 1,
+    "nutria-reedcutter": 1,
+    "raven-scout": 2,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "constrictor-coil"
+   ],
+   "tune200": 66
+  },
+  {
+   "deck": {
+    "booming-bittern": 3,
+    "camouflage-frog": 5,
+    "fire-ant-raft": 1,
+    "nutria-reedcutter": 1,
+    "raven-scout": 2,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "venomlord-serpent"
+   ],
+   "tune200": 67
+  },
+  {
+   "deck": {
+    "booming-bittern": 3,
+    "camouflage-frog": 5,
+    "fire-ant-raft": 1,
+    "nutria-reedcutter": 1,
+    "raven-scout": 2,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "camouflage-frog"
+   ],
+   "tune200": 62.5
+  },
+  {
+   "deck": {
+    "booming-bittern": 4,
+    "camouflage-frog": 4,
+    "constrictor-coil": 1,
+    "cypress-root-lurker": 1,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "cypress-root-lurker"
+   ],
+   "tune200": 68
+  },
+  {
+   "deck": {
+    "booming-bittern": 4,
+    "camouflage-frog": 4,
+    "constrictor-coil": 1,
+    "cypress-root-lurker": 1,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 3
+   },
+   "leaders": null,
+   "tune200": 61.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "booming-bittern": 3,
+   "camouflage-frog": 5,
+   "fire-ant-raft": 1,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "raven-scout": 1,
+   "venomlord-serpent": 3
+  },
+  "leaders": [
+   "marsh-wisp"
+  ],
+  "shieldOverride": null,
+  "win200": 61
+ },
+ "pick": {
+  "deck": {
+   "booming-bittern": 4,
+   "camouflage-frog": 4,
+   "constrictor-coil": 1,
+   "fire-ant-raft": 1,
+   "nutria-reedcutter": 1,
+   "raven-scout": 1,
+   "venomlord-serpent": 3
+  },
+  "leaders": [
+   "fire-ant-raft"
+  ],
+  "shieldOverride": 0,
+  "win200": 56.5,
+  "tune200": 65
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 61
+  },
+  {
+   "move": "whole-space pick",
+   "win": 56.5
+  }
+ ],
+ "sec": 1657
+}

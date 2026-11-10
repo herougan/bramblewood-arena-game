@@ -1,0 +1,179 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "6-2",
+ "map": "m8",
+ "mapName": "Sable Swampmire",
+ "kind": "skirmish",
+ "name": "Mire Ambush",
+ "band": {
+  "lo": 77,
+  "hi": 93,
+  "target": 85
+ },
+ "list": [
+  "booming-bittern",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "lamprey",
+  "marsh-harrier",
+  "nutria-reedcutter",
+  "venomlord-serpent"
+ ],
+ "firstClear": [
+  "booming-bittern"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "booming-bittern"
+ ],
+ "namesake": false,
+ "shieldRule": 6,
+ "shieldOverride": 0,
+ "space": 50,
+ "read": 50,
+ "g1": 60,
+ "range": {
+  "min": 91.7,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "booming-bittern": 4,
+    "camouflage-frog": 5,
+    "cypress-root-lurker": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "cypress-root-lurker"
+   ],
+   "tune200": 85
+  },
+  {
+   "deck": {
+    "booming-bittern": 4,
+    "camouflage-frog": 5,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "fire-ant-raft"
+   ],
+   "tune200": 84.5
+  },
+  {
+   "deck": {
+    "booming-bittern": 4,
+    "camouflage-frog": 5,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "nutria-reedcutter"
+   ],
+   "tune200": 85.5
+  },
+  {
+   "deck": {
+    "booming-bittern": 4,
+    "camouflage-frog": 5,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "lamprey"
+   ],
+   "tune200": 87
+  },
+  {
+   "deck": {
+    "booming-bittern": 4,
+    "camouflage-frog": 5,
+    "cypress-root-lurker": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "marsh-harrier"
+   ],
+   "tune200": 88
+  },
+  {
+   "deck": {
+    "booming-bittern": 4,
+    "camouflage-frog": 5,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "venomlord-serpent": 3
+   },
+   "leaders": [
+    "fire-ant-raft"
+   ],
+   "tune200": 88
+  }
+ ],
+ "before": {
+  "deck": {
+   "booming-bittern": 4,
+   "camouflage-frog": 5,
+   "fire-ant-raft": 1,
+   "lamprey": 5,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "venomlord-serpent": 3
+  },
+  "leaders": [
+   "booming-bittern"
+  ],
+  "shieldOverride": 0,
+  "win200": 90.5
+ },
+ "pick": {
+  "deck": {
+   "booming-bittern": 4,
+   "camouflage-frog": 5,
+   "cypress-root-lurker": 1,
+   "lamprey": 5,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "venomlord-serpent": 3
+  },
+  "leaders": [
+   "cypress-root-lurker"
+  ],
+  "shieldOverride": 0,
+  "win200": 81.5,
+  "tune200": 85
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 90.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 81.5
+  }
+ ],
+ "sec": 325
+}

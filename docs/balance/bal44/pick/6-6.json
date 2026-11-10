@@ -1,0 +1,78 @@
+{
+ "about": "BAL44 named pick (tools/bal44/pick_2026_11_10.js)",
+ "code": "6-6",
+ "map": "m8",
+ "mapName": "Sable Swampmire",
+ "kind": "elite",
+ "name": "Crocodile Run",
+ "band": {
+  "lo": 57.00000000000001,
+  "hi": 73,
+  "target": 65
+ },
+ "list": [
+  "booming-bittern",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "marsh-harrier",
+  "nutria-reedcutter",
+  "raven-scout",
+  "venomlord-serpent"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "marsh-wisp"
+ ],
+ "namesake": false,
+ "shieldRule": 9,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "booming-bittern": 3,
+   "camouflage-frog": 5,
+   "fire-ant-raft": 1,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "raven-scout": 1,
+   "venomlord-serpent": 3
+  },
+  "leaders": [
+   "marsh-wisp"
+  ],
+  "shieldOverride": null,
+  "win200": 61,
+  "shown": 5
+ },
+ "pick": {
+  "deck": {
+   "booming-bittern": 4,
+   "camouflage-frog": 4,
+   "fire-ant-raft": 1,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "raven-scout": 1,
+   "venomlord-serpent": 3
+  },
+  "leaders": [
+   "marsh-wisp"
+  ],
+  "shieldOverride": 4,
+  "win200": 65.5,
+  "shown": 2
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 61
+  },
+  {
+   "move": "named pick",
+   "win": 65.5
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+0-3 target 60 | 200 games: 69.5 -> 59 KEEP {"deck":{"chipmunk-forager":3,"cottontail":4,"house-cat":4,"meadow-rabbit":4,"duck-paddler":3,"chipmunk-skirmisher":2},"leaders":[],"shieldOverride":null}
+6-6 target 65 | 200 games: 61 -> 65.5 KEEP (booming-bittern 4, camouflage-frog 4, Shield 4); also read: Shield 4/3/2/0 alone 69.5/69.5/71.5/71, deck variants 87/78
+0-3 also read: 65, 63.5, 60 (earthworm deck), 58; kept the smallest change at 59
+6-5 target 70 | 200 games: 66 -> 70.5 KEEP {"deck":{"booming-bittern":2,"camouflage-frog":4,"newt-doctor":4,"raven-scout":1,"venomlord-serpent":2,"fire-ant-raft":1},"leaders":["venomlord-serpent"],"shieldOverride":2}
+6-5 also read: Shield 4 / 3 / 0: 69.5 / 69.5 / 72
+6-8 target 40 | 200 games: 31 -> 39.5 KEEP {"deck":{"adder-ambusher":2,"lamprey":5,"venomlord-serpent":5,"nutria-reedcutter":1,"camouflage-frog":4,"constrictor-coil":1,"raven-scout":1},"leaders":["adder-ambusher"],"shieldOverride":12}
+6-8 also read (Shield rule 12, override was 24): Shield 12 / 6 / 0 alone 44.5 / 54.5 / 66; Shield 12 with adder 3 + frog 4: 42.5; with marsh-harrier for the coil: 44.5

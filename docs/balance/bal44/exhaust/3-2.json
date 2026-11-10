@@ -1,0 +1,168 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "3-2",
+ "map": "mc",
+ "mapName": "Gannet Cliffs",
+ "kind": "skirmish",
+ "name": "Hawk Watch",
+ "band": {
+  "lo": 76,
+  "hi": 92,
+  "target": 84
+ },
+ "list": [
+  "conch-crawler",
+  "cormorant",
+  "gannet-nestweaver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "oystercatcher",
+  "peak-condor",
+  "pincushion-urchin",
+  "puffin-diver",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "firstClear": [
+  "puffin-diver"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "razorbill"
+ ],
+ "namesake": false,
+ "shieldRule": 3,
+ "shieldOverride": null,
+ "space": 25757,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 51.7,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "conch-crawler": 1,
+    "cormorant": 3,
+    "peak-condor": 2,
+    "pincushion-urchin": 1,
+    "puffin-diver": 1,
+    "razorbill": 4
+   },
+   "leaders": null,
+   "tune200": 84
+  },
+  {
+   "deck": {
+    "gannet-nestweaver": 4,
+    "hawk-arrowkeeper": 2,
+    "kittiwake-flock": 2,
+    "pincushion-urchin": 1,
+    "puffin-diver": 1,
+    "razorbill": 2
+   },
+   "leaders": [
+    "gannet-nestweaver"
+   ],
+   "tune200": 84
+  },
+  {
+   "deck": {
+    "gannet-nestweaver": 4,
+    "hawk-arrowkeeper": 2,
+    "kittiwake-flock": 2,
+    "pincushion-urchin": 1,
+    "puffin-diver": 1,
+    "razorbill": 2
+   },
+   "leaders": [],
+   "tune200": 84
+  },
+  {
+   "deck": {
+    "gannet-nestweaver": 4,
+    "hawk-arrowkeeper": 2,
+    "kittiwake-flock": 2,
+    "pincushion-urchin": 1,
+    "puffin-diver": 1,
+    "razorbill": 2
+   },
+   "leaders": null,
+   "tune200": 83.5
+  },
+  {
+   "deck": {
+    "conch-crawler": 1,
+    "cormorant": 3,
+    "peak-condor": 2,
+    "pincushion-urchin": 1,
+    "puffin-diver": 1,
+    "razorbill": 4
+   },
+   "leaders": [
+    "cormorant"
+   ],
+   "tune200": 83.5
+  },
+  {
+   "deck": {
+    "gannet-nestweaver": 4,
+    "hawk-arrowkeeper": 2,
+    "kittiwake-flock": 2,
+    "pincushion-urchin": 1,
+    "puffin-diver": 1,
+    "razorbill": 2
+   },
+   "leaders": [
+    "gull-thief"
+   ],
+   "tune200": 84.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "gannet-nestweaver": 2,
+   "kittiwake-flock": 2,
+   "peak-condor": 1,
+   "puffin-diver": 3,
+   "razorbill": 2,
+   "red-billed-chough": 2
+  },
+  "leaders": [
+   "razorbill"
+  ],
+  "shieldOverride": null,
+  "win200": 95
+ },
+ "pick": {
+  "deck": {
+   "conch-crawler": 1,
+   "cormorant": 3,
+   "peak-condor": 2,
+   "pincushion-urchin": 1,
+   "puffin-diver": 1,
+   "razorbill": 4
+  },
+  "leaders": [
+   "razorbill"
+  ],
+  "shieldOverride": null,
+  "win200": 86.5,
+  "tune200": 84
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 95
+  },
+  {
+   "move": "whole-space pick",
+   "win": 86.5
+  }
+ ],
+ "sec": 572
+}

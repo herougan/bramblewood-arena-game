@@ -1,0 +1,6 @@
+3-2 target 84 space 25757 read 401 range 51.7 - 100 | 200 games: 95 -> 86.5 KEEP {"deck":{"conch-crawler":1,"cormorant":3,"peak-condor":2,"pincushion-urchin":1,"puffin-diver":1,"razorbill":4},"leaders":["razorbill"],"shieldOverride":null} 572s
+6-3 target 80 space 325 read 325 range 73.3 - 100 | 200 games: 87.5 -> 79 KEEP {"deck":{"booming-bittern":4,"camouflage-frog":5,"constrictor-coil":1,"fire-ant-raft":1,"lamprey":5,"marsh-harrier":1,"nutria-reedcutter":1},"leaders":["lamprey"],"shieldOverride":null} 783s
+6-2 target 85 space 50 read 50 range 91.7 - 100 | 200 games: 90.5 -> 81.5 KEEP {"deck":{"booming-bittern":4,"camouflage-frog":5,"cypress-root-lurker":1,"lamprey":5,"marsh-harrier":1,"nutria-reedcutter":1,"venomlord-serpent":3},"leaders":["cypress-root-lurker"],"shieldOverride":0} 325s
+6-4 target 75 space 90 read 90 range 43.3 - 91.7 | 200 games: 81 -> 78 KEEP {"deck":{"camouflage-frog":4,"constrictor-coil":1,"cypress-root-lurker":1,"fire-ant-raft":2,"marsh-harrier":1,"nutria-reedcutter":1,"venomlord-serpent":3},"leaders":["fire-ant-raft"],"shieldOverride":null} 348s
+6-6 target 65 space 865 read 400 range 11.7 - 95 | 200 games: 61 -> 56.5 no {"deck":{"booming-bittern":4,"camouflage-frog":4,"constrictor-coil":1,"fire-ant-raft":1,"nutria-reedcutter":1,"raven-scout":1,"venomlord-serpent":3},"leaders":["fire-ant-raft"],"shieldOverride":0} 1657s
+EXIT 0
