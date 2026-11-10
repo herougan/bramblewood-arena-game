@@ -4409,5 +4409,9 @@
  "Added {name} to {group}.": "Naidagdag ang {name} sa {group}.",
  "Baby cards are not counted.": "Hindi binibilang ang mga baby card.",
  "Used on {n} main maps: {maps}": "Ginagamit sa {n} pangunahing mapa: {maps}",
- "Added by Claude": "Idinagdag ni Claude"
+ "Added by Claude": "Idinagdag ni Claude",
+ "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
+ "Map ref {pct}%": "Map ref {pct}%",
+ "Ref-2 {pct}%": "Ref-2 {pct}%",
+ "Measure {tag}, {date}: the {k} reference players' decks, {n} games each against this fight; p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Sukat {tag}, {date}: ang mga deck ng {k} reference player, {n} laro bawat isa laban sa labang ito; p10 / p90 nang walang ingay ng laro. Map reference at Reference-2: {m} laro bawat isa."
 }

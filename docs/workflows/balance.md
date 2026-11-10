@@ -117,6 +117,13 @@ Each main map has 1-4 hidden skirmishes, `<map>-PRO-<k>` (e.g. `3-PRO-1`), with 
 - The set file has `decks` by map (not `counts`), so `tools/opt/ref_decks.js` checks it but does not bake it into `REF_DECK_SETS`; the tools hand the map's deck in as the trial deck, which plays at `referencePlayerLevel`. Dealing it in the game needs `refSetFor` to read `decks` (a code change for a later package).
 - Re-measure the heatmap: `node tools/opt/ref_vs_optimum.js --ref map,ref2,ref-pool --games 200 --out docs/balance/bal6-ref-vs-optimum-<date>.json`; the hub's heatmap reads the BAL6 file when it exists.
 
+## Reference decks: the 100-player ladder (package REF6, owner 2026-11-11 00:16)
+"do the 100 reference player decks thing per map, and also let me know the variance in strength of the different decks"; the rule is in `docs/evaluation-protocol.md` section 2 (REF6).
+- **Re-measure (one command):** `node tools/ref6/measure.js --tag <t>` plays each map's 100 decks against every road fight (16 games a deck a fight, seeds 5300 + 37g), plus the Map reference and Reference-2 (32 games), on all cores; writes `docs/balance/ref6/ref6-<t>.json` and the owner's table `ref6-<t>.md`. Then rebuild: `assemble_arena.py` bakes the newest complete `ref6-*.json` into Admin's fight-panel label (`__REF6_LABELS__`). Cached per fight in `~/bench-cache-ref6/measure` (keyed by the map's data, cards.json and the engine), so after a change only the changed maps play again and a stopped run resumes; `--fresh` ignores the cache. `--strength` writes each deck's strength into `ladder-100.json`. `--maps 0-3` for a part (not baked: incomplete).
+- **The decks:** `node tools/ref6/ladder.js` (walks 100 players once each, collections cached in `~/bench-cache-ref6/pools`) → `docs/balance/ref6/ladder-100.json`; `node tools/ref6/ladder.js check` checks every deck (no faction, copy caps, owned copies, 20 cards, leader).
+- **Is N enough:** `node tools/ref6/measure.js --converge --maps 4,17 --players 30 --games 32` prints the spread at 4, 8, 16, 32 games a deck.
+- Timing (2 shared cores): a full measure is about `<see the REF6 report>`; the ladder build a few minutes.
+
 ## Road check (package PRO3, EN8-10)
 After an engine change that moves the CPU (EN8's pitch and guard), measure the road against the agreed schedule (`roadCurveTarget` / `skirmishTargetBand`, the "Win-rate bands" section of `docs/skirmish-tuning-guide.md`), then retune the road decks only (owner: "use our agreed philosophy and schedule, not my balancing"):
 - `node tools/skirmish_pass.js measure 40 0 2 --tag=<t>-before --maxmap=20` (and shard `1 2` alongside): every fight of Maps 0-20 and their side maps.

@@ -46906,7 +46906,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=4cad788921", "es": "assets/lang/es.js?v=7f19963d43", "fr": "assets/lang/fr.js?v=6506643639", "id": "assets/lang/id.js?v=8e72a2b994", "it": "assets/lang/it.js?v=10eb98f783", "ja": "assets/lang/ja.js?v=fc137ecba4", "ko": "assets/lang/ko.js?v=c22ed3a2a9", "pt": "assets/lang/pt.js?v=0630d7e5cb", "ta": "assets/lang/ta.js?v=c9bda096c9", "tl": "assets/lang/tl.js?v=89ebb3f1ea", "zh-Hans": "assets/lang/zh-Hans.js?v=3b70dc3cfa", "zh-Hant": "assets/lang/zh-Hant.js?v=0b1a42a7eb"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=70b9e4fe2a", "es": "assets/lang/es.js?v=4d7e7a5747", "fr": "assets/lang/fr.js?v=3a03fd5a30", "id": "assets/lang/id.js?v=849802e320", "it": "assets/lang/it.js?v=481cfe968e", "ja": "assets/lang/ja.js?v=3b339b2f3d", "ko": "assets/lang/ko.js?v=72f5bf3af2", "pt": "assets/lang/pt.js?v=f3b919d877", "ta": "assets/lang/ta.js?v=c83720b5d0", "tl": "assets/lang/tl.js?v=1698136c7a", "zh-Hans": "assets/lang/zh-Hans.js?v=30f7f3d4b6", "zh-Hant": "assets/lang/zh-Hant.js?v=a08aec57f4"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -50758,7 +50758,11 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui47-added": "Added {name} to {group}.",
   "ui.ui47-baby-note": "Baby cards are not counted.",
   "ui.ui47-used-tip": "Used on {n} main maps: {maps}",
-  "ui.ui47-admin-added": "Added by Claude"
+  "ui.ui47-admin-added": "Added by Claude",
+  "ui.ref6-label": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
+  "ui.ref6-mapref": "Map ref {pct}%",
+  "ui.ref6-ref2": "Ref-2 {pct}%",
+  "ui.ref6-tip": "Measure {tag}, {date}: the {k} reference players' decks, {n} games each against this fight; p10 / p90 without the game noise. Map reference and Reference-2: {m} games each."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -55361,7 +55365,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd22e0738f58b', BUILD_CARD_HASH = 'b8d2500e395a9256985b94b4ea9999e29a699692a0e3ec8db6769865d4194aa4';
+const BUILD_ID = 'c87f1767e872', BUILD_CARD_HASH = 'b8d2500e395a9256985b94b4ea9999e29a699692a0e3ec8db6769865d4194aa4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -77476,6 +77480,17 @@ function bal24RefLineHTML(key, weak, m){
   const tip = TX('ui.ui35-ref-tip', {date: gen || '?'});
   return `<span class="bal24-refline" data-flag="${bad ? m.flag : ''}" data-ref-pct="${pct}" title="${escapeAttr(tip)}"><b>${escapeHtml(TX(weak ? 'ui.ui35-ref-wk' : 'ui.ui35-ref-sk', {pct}))}</b> <span class="bal24-band">${escapeHtml(TX(weak ? 'ui.ui35-ref-cut-wk' : 'ui.ui35-ref-cut-sk', {cut}))}${bad && m.flagRef != null ? ' · ' + escapeHtml(TX('ui.ui35-ref-worst', {pct: Math.round(m.flagRef * 100)})) : ''}</span>${gen ? ` <small class="ui35-ref-date">${escapeHtml(gen)}</small>` : ''}</span>`;
 }
+// 2026-11-11 (package REF6, owner 00:16: "Make sure the win rates for reference decks are labelled in the skirmish for admins"): Admin Mode only, on a
+// road fight's panel: the 100 reference players' decks against this fight (their mean win rate, p10 / p90 with the game noise taken out), and the Map
+// reference and Reference-2 from the same measure. REF6_LABELS is baked by assemble_arena.py from the newest complete docs/balance/ref6/ref6-*.json
+// (node tools/ref6/measure.js --tag <t>); fights: "<mapId>:<key>" -> [mean, p10, p90, Map reference, Reference-2] in %.
+const REF6_LABELS = {"fights":{}};
+function ref6LabelHTML(mapId, node){
+  const R = REF6_LABELS, f = adminModeEnabled && node && R && R.fights ? R.fights[mapId + ':' + node.key] : null; if(!f || f[0] == null) return '';
+  const pc = x=> Math.round(x), more = [f[3] != null ? TX('ui.ref6-mapref', {pct: pc(f[3])}) : '', f[4] != null ? TX('ui.ref6-ref2', {pct: pc(f[4])}) : ''].filter(Boolean);
+  const tip = TX('ui.ref6-tip', {tag: R.tag, date: String(R.generated || '').slice(0, 10), k: R.players, n: R.games, m: R.refGames});
+  return `<p class="panel-sub ref6-label" data-ref6-mean="${pc(f[0])}" title="${escapeAttr(tip)}"><b>${escapeHtml(TX('ui.ref6-label', {k: R.players, pct: pc(f[0]), lo: pc(f[1]), hi: pc(f[2])}))}</b>${more.length ? ' · ' + escapeHtml(more.join(' · ')) : ''}</p>`;
+}
 function proEntriesOf(ent){
   if(!ent) return []; let e = ent._skirm; if(e !== undefined) return e || [];
   const list = skirmDecksOf(ent), out = [];
@@ -80471,6 +80486,7 @@ function renderConquestSubTab(body){
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span></div>`/* 2026-10-16 (user: "Just a lock symbol is enough, no need for a emblem") */}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
+      ${ref6LabelHTML(map.id, selectedNode) /* 2026-11-11 (package REF6): the reference players' win rates on this fight, Admin only */}
       ${adminModeEnabled ? `<div class="cnp-admin-side" role="group" aria-label="Admin"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button>${c13NodeIsAdminTest(map.id) ? '' /* 2026-11-07 (CONTENT13): the Drill Grounds pay nothing and keep no progress: no Edit rewards, no Mark cleared */ : `<button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button>`}<button type="button" class="btn small ghost" id="cnpMapCards" aria-haspopup="dialog">${escapeHtml(TX('ui.pk1-map-cards-btn')) /* 2026-10-28 (package PACK1) */}</button><button type="button" class="btn small ghost" id="cnpPacks" aria-haspopup="dialog" title="${escapeAttr(TX('ui.ui29-btn-tip'))}">${escapeHtml(TX('ui.ui29-btn')) /* 2026-11-08 (package UI35, owner 09:27 #4): 📦 Packs under 🃏 Map cards */}</button></div>` : ''}
       ${vis4MapCardsHTML(map, selectedNode)}
       `;

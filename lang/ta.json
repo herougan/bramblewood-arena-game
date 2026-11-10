@@ -4411,5 +4411,9 @@
  "Added {name} to {group}.": "{name} {group}-இல் சேர்க்கப்பட்டது.",
  "Baby cards are not counted.": "குட்டி அட்டைகள் கணக்கில் வராது.",
  "Used on {n} main maps: {maps}": "{n} முக்கிய வரைபடங்களில் பயன்பாடு: {maps}",
- "Added by Claude": "Claude சேர்த்தது"
+ "Added by Claude": "Claude சேர்த்தது",
+ "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
+ "Map ref {pct}%": "வரைபட மேற். {pct}%",
+ "Ref-2 {pct}%": "Ref-2 {pct}%",
+ "Measure {tag}, {date}: the {k} reference players' decks, {n} games each against this fight; p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "அளவீடு {tag}, {date}: {k} மேற்கோள் வீரர்களின் டெக்குகள், ஒவ்வொன்றும் இந்தச் சண்டைக்கு எதிராக {n} ஆட்டங்கள்; p10 / p90 ஆட்ட இரைச்சல் இல்லாமல். வரைபட மேற்கோள் மற்றும் Reference-2: தலா {m} ஆட்டங்கள்."
 }

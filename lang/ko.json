@@ -4411,5 +4411,9 @@
  "Added {name} to {group}.": "{name}을(를) {group}에 추가했습니다.",
  "Baby cards are not counted.": "새끼 카드는 세지 않습니다.",
  "Used on {n} main maps: {maps}": "메인 맵 {n}곳에서 사용: {maps}",
- "Added by Claude": "Claude가 추가함"
+ "Added by Claude": "Claude가 추가함",
+ "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "참고 {k}: {pct}% (p10 {lo} – p90 {hi})",
+ "Map ref {pct}%": "지도 기준 {pct}%",
+ "Ref-2 {pct}%": "참고-2 {pct}%",
+ "Measure {tag}, {date}: the {k} reference players' decks, {n} games each against this fight; p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "측정 {tag}, {date}: 참고 플레이어 {k}명의 덱, 각각 이 전투에 {n}판. p10 / p90은 대전 잡음을 뺀 값. 지도 기준 덱과 참고-2: 각 {m}판."
 }
