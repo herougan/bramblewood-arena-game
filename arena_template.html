@@ -7643,6 +7643,8 @@
   /* Wandering merchant deal (2026-10-12) */
   .wander-deal .wd-offer{display:flex; flex-direction:column; gap:3px; margin:8px 0; padding:8px 10px; border-radius:10px; background:rgba(200,144,42,.12);}
   .wander-deal .wd-price s{opacity:.6;} .wander-deal .wd-actions{display:flex; gap:8px; flex-wrap:wrap;}
+  /* 2026-11-11 (package UI46 #2): one row per thing on the barrow, each with its own button; a sold one is dimmed and its button disabled */
+  .wander-deal .wd-offer .btn{align-self:flex-start; margin-top:4px;} .wander-deal .wd-offer.is-sold{opacity:.65;} .wander-deal .wd-have{display:block; margin:0 0 8px; opacity:.8;}
   .te-deck-list{list-style:none; margin:6px 0 0; padding:0; font-size:12px; line-height:1.5; font-weight:400;}
   /* 2026-10-12: the tutorial editor's decks are pictures with 🃏 Edit deck; the text box hides under "Edit as text" */
   .te-deck-box{border:1px solid var(--surface-border); border-radius:12px; padding:8px 10px; min-width:0;}
@@ -13723,7 +13725,10 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 @media (pointer:coarse){ .ed-edit-card{width:30px; height:30px; font-size:14px;} }
 /* 2026-10-21 (package UI3, owner 18:43): admin card editing from more places: a skirmish's reward cards, the pack opening's review, and a fight's Edit mode */
 .cnp-rw-card.is-ed-clickable{cursor:pointer;}
-.po2-sum-card .po-ed-edit{left:auto; right:-6px; top:-6px;}
+/* 2026-11-11 (package UI46 #1, owner 00:06): the pencil sat on the "×N" copy badge (both at the top-right corner, so it hid the count). It now straddles the right edge
+   below the middle: clear of the badge (top right), the NEW! / GET! tags (they hang to about 36px from the top, even on a phone's 80px card), the cost pips (top left)
+   and the Attack / Health plates (from about 66px down on that card). 26px in the 30px gap between tags and plates; a card has a 24px minimum target. */
+.po2-sum-card .po-ed-edit{left:auto; right:-10px; top:64%; translate:0 -50%; width:26px; height:26px; font-size:13px;}
 .admin-edit-btn.is-on{background:#ffd27a; color:#2b1a05; box-shadow:0 0 0 2px #b8791a;}
 body.bw-battle-edit #handStrip .card-tile, body.bw-battle-edit .battlefield .board-card, body.bw-battle-edit .battlefield .card-tile{cursor:copy !important;}
 body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-edit #handStrip .card-tile:hover{outline:2px dashed #ffd27a; outline-offset:2px;}
@@ -13736,7 +13741,10 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
 .ed-kind-chip.ed-kind-dungeon, .ed-kind-chip.ed-kind-champion, .ed-kind-chip.ed-kind-miniboss, .ed-kind-chip.ed-kind-subboss{background:#352a4c; color:#e6dcff; border-color:#a68ce0;}
 .ed-kind-chip.ed-kind-tutorial{background:#18394a; color:#d9f2ff; border-color:#6cb8e0;}
 .ed-enemy-level small.ed-enemy-level-note{display:block; font-size:11px; opacity:.8; margin-top:2px;}
-.ed-cx-admin{display:flex; justify-content:flex-end; margin:0 0 8px;}
+/* 2026-11-11 (package UI46 #3, owner 00:06): the Codex's Create card is in the tab row, right-aligned beside 🃏 Deck (which gives up its own auto margin, or the two would
+   split the free space); at phone width only the 🆕 shows (its tooltip and aria-label say the words) and the row still wraps, never scrolls sideways. */
+.codex-sub-tabs .ed-cx-create{margin-left:auto;} .codex-sub-tabs .ed-cx-create + .subnav-right-btn{margin-left:0;}
+@media (max-width:600px){ .codex-sub-tabs .ed-cx-lbl{display:none;} }
 .ed-saving{margin:6px 0 0; font-size:13px; opacity:.85; text-align:center;}
 .winloss-card .winloss-actions button[data-ed-locked], .winloss-card .wl-corner-btn[data-ed-locked]{opacity:.55; cursor:progress;}
 .ce-art-review{display:flex; flex-direction:column; gap:4px; margin-top:8px; font-size:12.5px;}

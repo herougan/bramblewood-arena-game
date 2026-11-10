@@ -20001,29 +20001,39 @@ function visitWanderer(el){
 // its usual price struck out, today's price and what you have, with Buy and Not today.
 function openWandererDeal(w){
   w = w || wanderingMerchantToday(); if(!w) return;
-  const st = wandererState(), p = wandererDealPack();
+  const st = wandererState(), p = wandererDealPack(), mp = wandererMysteryPack();
   let ov = document.getElementById('npcPromptOverlay');
   if(!ov){ ov = document.createElement('div'); ov.id = 'npcPromptOverlay'; ov.className = 'modal-overlay npc-prompt-overlay'; document.body.appendChild(ov); }
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; };
-  if(!p){ ov.innerHTML = `<div class="npc-prompt" role="dialog" aria-label="${escapeAttr(w.name)}"><div class="npc-face"><span>${w.icon}</span></div><div class="npc-body"><b class="npc-name">${escapeHtml(w.name)}</b><p>Nothing on the barrow for you today, friend. Come find me tomorrow.</p><button type="button" class="btn primary" data-wd-close>Bye</button></div></div>`; ov.hidden = false; ov.querySelector('[data-wd-close]').onclick = close; return; }
-  const c = wandererDealCost(p), price = [c.gold ? `${mapleLeafIconHTML()} ${c.gold}` : '', c.gems ? `🍂 ${c.gems}` : ''].filter(Boolean).join(' · ');
-  const afford = canAffordPacks(Object.assign({}, p, {cost:c}), 1);
-  const have = `${mapleLeafIconHTML()} ${myCurrencies.gold||0}${(c.gems ? ` · 🍂 ${myCurrencies.gems||0}` : '')}`;
+  // 2026-11-11 (package UI46 #2, owner 00:06: "once he has already sold you something, clicking him only plays a speech line and the shop menu no longer opens"):
+  // his menu opens on every click, one row per thing on the barrow: today's deal ("Bought today" once sold) and, from Map 13, the Mystery Boosters
+  // ("Sold out" at the last one). Anything still for sale is buyable; only the speech changes.
+  const rows = [];
+  if(p) rows.push({pack:p, cost:wandererDealCost(p), name:`${p.icon} <b>${escapeHtml(p.name)}</b>`, was:packCostHTML(p), sold:!!st.bought, soldText:'Bought today', buy:()=> buyPack(p.id, null, 1, {wanderer:true})});
+  if(mp) rows.push({pack:mp, cost:mp.cost, name:wandererMysteryLineHTML(), sold:!mysteryPacksLeft(), soldText:'Sold out', buy:()=> buyPack(mp.id, null, 1)});
+  if(!rows.length){ ov.innerHTML = `<div class="npc-prompt" role="dialog" aria-label="${escapeAttr(w.name)}"><div class="npc-face"><span>${w.icon}</span></div><div class="npc-body"><b class="npc-name">${escapeHtml(w.name)}</b><p>Nothing on the barrow for you today, friend. Come find me tomorrow.</p><button type="button" class="btn primary" data-wd-close>Bye</button></div></div>`; ov.hidden = false; ov.querySelector('[data-wd-close]').onclick = close; return; }
+  const priceOf = c=> [c.gold ? `${mapleLeafIconHTML()} ${c.gold}` : '', c.gems ? `🍂 ${c.gems}` : ''].filter(Boolean).join(' · ');
+  const canPay = r=> canAffordPacks(Object.assign({}, r.pack, {cost:r.cost}), 1), live = rows.filter(r=> !r.sold);
+  const have = `${mapleLeafIconHTML()} ${myCurrencies.gold||0}${(live.some(r=> r.cost.gems) ? ` · 🍂 ${myCurrencies.gems||0}` : '')}`;
+  const speech = !p ? `“${escapeHtml(w.line)}”` : st.bought ? 'Already sold you my best today. Same road tomorrow, maybe.' : `“${escapeHtml(w.line)} One ${escapeHtml(p.name)}, a quarter off. Just the one, mind.”`;
   ov.innerHTML = `<div class="npc-prompt wander-deal" role="dialog" aria-label="${escapeAttr(w.name)}">
     <div class="npc-face"><span>${w.icon}</span></div>
     <div class="npc-body"><b class="npc-name">${escapeHtml(w.name)}</b>
-      ${st.bought ? `<p>Already sold you my best today. Same road tomorrow, maybe.</p><button type="button" class="btn primary" data-wd-close>Bye</button>` : `
-      <p>“${escapeHtml(w.line)} One ${escapeHtml(p.name)}, a quarter off. Just the one, mind.”</p>
-      <div class="wd-offer"><span class="wd-pack">${p.icon} <b>${escapeHtml(p.name)}</b></span><span class="wd-price"><s>${packCostHTML(p)}</s> <b>${price}</b></span><small>You have ${have}${afford ? '' : ' (not enough)'}</small></div>
-      <div class="wd-actions"><button type="button" class="btn primary" data-wd-buy ${afford ? '' : 'aria-disabled="true"'}>Buy it · ${price}</button><button type="button" class="btn ghost" data-wd-close>Not today</button></div>`}
+      <p>${speech}</p>
+      ${rows.map((r, i)=> `<div class="wd-offer${r.sold ? ' is-sold' : ''}"><span class="wd-pack">${r.name}</span><span class="wd-price">${r.was ? `<s>${r.was}</s> ` : ''}<b>${priceOf(r.cost)}</b></span>
+        ${r.sold ? `<button type="button" class="btn" disabled>${r.soldText}</button>` : `<button type="button" class="btn primary" data-wd-buy="${i}" ${canPay(r) ? '' : 'aria-disabled="true"'}>Buy it · ${priceOf(r.cost)}</button>`}</div>`).join('')}
+      ${live.length ? `<small class="wd-have">You have ${have}${live.some(canPay) ? '' : ' (not enough)'}</small>` : ''}
+      <div class="wd-actions"><button type="button" class="btn ${live.length ? 'ghost' : 'primary'}" data-wd-close>${live.length ? 'Not today' : 'Bye'}</button></div>
     </div></div>`;
   ov.hidden = false;
   ov.querySelectorAll('[data-wd-close]').forEach(b=> b.onclick = close);
-  const buy = ov.querySelector('[data-wd-buy]');
-  if(buy) buy.onclick = ()=>{ if(buy.getAttribute('aria-disabled') === 'true'){ denyShake(buy); return; } requireSignIn('to buy packs', ()=>{ close(); buyPack(p.id, null, 1, {wanderer:true}); }); };
-  setTimeout(()=>{ try{ (buy || ov.querySelector('[data-wd-close]')).focus(); }catch(e){} }, 40);
+  ov.querySelectorAll('[data-wd-buy]').forEach(b=> b.onclick = ()=>{ if(b.getAttribute('aria-disabled') === 'true'){ denyShake(b); return; } requireSignIn('to buy packs', ()=>{ close(); rows[+b.dataset.wdBuy].buy(); }); });
+  setTimeout(()=>{ try{ (ov.querySelector('[data-wd-buy]') || ov.querySelector('[data-wd-close]')).focus(); }catch(e){} }, 40);
   try{ fxHook('wandererDeal', ov.querySelector('.npc-prompt')); }catch(e){} // 2026-10-15 batch F: the cart rattles in
 }
+// The Mystery Boosters on the barrow (2026-11-11, UI46): a pack only while the wanderer sells them (not `anytime`, from Map 13), listed until the day's last one is sold.
+function wandererMysteryPack(){ const mp = getShopPacks().find(x=> x.id === MYSTERY_PACK_ID); return mp && !mp.anytime && (mysteryPacksLeft() || (wandererState().mystery||0)) ? mp : null; }
+function wandererMysteryLineHTML(){ return `❓ Mystery Boosters: <b>${mysteryPacksLeft()} of ${MYSTERY_PER_VISIT}</b> left this visit`; }
 function wanderingMerchantShopHTML(){
   const w = wanderingMerchantToday(); if(!w) return '';
   const st = wandererState();
@@ -20038,7 +20048,7 @@ function wanderingMerchantShopHTML(){
   return `<div class="wander-card" id="wanderCard"><span class="wc-ico" aria-hidden="true">${w.icon}</span>
     <div class="wc-body"><b>${escapeHtml(w.name)}</b><span>At ${escapeHtml(w.mapName)}, ${left}.</span>
       <span class="wc-deal">${p.icon} ${escapeHtml(p.name)} <s>${was}</s> <b>${price}</b> <em>25% off, once today</em></span>
-      ${(()=>{ const mp = getShopPacks().find(x=> x.id === MYSTERY_PACK_ID); if(!mp || mp.anytime) return ''; const left = mysteryPacksLeft(); if(!left && !(wandererState().mystery||0)) return ''; return `<span class="wc-deal">❓ Mystery Boosters: <b>${left} of ${MYSTERY_PER_VISIT}</b> left this visit</span>`; })()}</div>${btn}</div>`;
+      ${wandererMysteryPack() ? `<span class="wc-deal">${wandererMysteryLineHTML()}</span>` : ''}</div>${btn}</div>`;
 }
 function wireWanderingMerchantShop(root){
   const b = root.querySelector('[data-wander-buy]');
@@ -21503,11 +21513,14 @@ function edOpenCardEditor(id, hideEl, after){
   openCardEditor(id);
 }
 // -- The Codex's Create card (#26: "There's no more create card button in the codex"): the Admin card list's Create a Card, on the
-// Codex's card browser for admins, above the toolbar (outside it, so the toolbar's filters stay as they are).
+// Codex's card browser for admins. 2026-11-11 (package UI46 #3, owner 00:06): it sits in the row of Codex tabs, at the right end next to 🃏 Deck
+// (it was a line of its own above the toolbar); at phone width the label drops and the 🆕 stays, with the same words as its tooltip.
 function edCodexCreateBtn(body){
-  if(!body || !adminModeEnabled || body.querySelector('#edCodexCreateCard')) return;
-  body.insertAdjacentHTML('afterbegin', `<div class="ed-cx-admin"><button type="button" class="btn primary small" id="edCodexCreateCard" title="${escapeAttr(TX('ui.ed-create-card-tip'))}">🆕 ${escapeHtml(TX('ui.ed-create-card'))}</button></div>`);
-  body.querySelector('#edCodexCreateCard').addEventListener('click', ()=>{ cardEditorHooks = {closed: ()=>{ try{ if(currentTab === 'codex') renderCodexGrid(true); }catch(e){} }}; openCardEditor(null); });
+  const deck = document.getElementById('codexToDeckBtn');
+  if(!body || !adminModeEnabled || !deck || document.getElementById('edCodexCreateCard')) return;
+  const tip = escapeAttr(TX('ui.ed-create-card-tip')), lbl = TX('ui.ed-create-card');
+  deck.insertAdjacentHTML('beforebegin', `<button type="button" class="btn primary small ed-cx-create" id="edCodexCreateCard" title="${tip}" aria-label="${escapeAttr(lbl)}">🆕<span class="ed-cx-lbl"> ${escapeHtml(lbl)}</span></button>`);
+  document.getElementById('edCodexCreateCard').addEventListener('click', ()=>{ cardEditorHooks = {closed: ()=>{ try{ if(currentTab === 'codex') renderCodexGrid(true); }catch(e){} }}; openCardEditor(null); });
 }
 // -- The enemy's level (#7: "Skirmish preview of cards use my forge stats as display... the levels is predetermined to that skirmish only.
 // (Should be editable) and not tied to the player"). node.enemyLevel (set in the skirmish editor; blank = the road curve) is the level
