@@ -1,0 +1,158 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "7-1",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "skirmish",
+ "name": "Spore Drift",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "bee-forager",
+  "compost-grub",
+  "dung-beetle",
+  "earthworm",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "truffle-piglet",
+  "worker-ant"
+ ],
+ "firstClear": [
+  "truffle-piglet"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "planarian-splitter"
+ ],
+ "namesake": false,
+ "shieldRule": 7,
+ "shieldOverride": 0,
+ "space": 2444,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 65,
+  "max": 98.3
+ },
+ "top": [
+  {
+   "deck": {
+    "earthworm": 1,
+    "hawthorn-shieldbug": 4,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 1,
+    "truffle-piglet": 2
+   },
+   "leaders": null,
+   "tune200": 90
+  },
+  {
+   "deck": {
+    "compost-grub": 1,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 3,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 2,
+    "truffle-piglet": 2
+   },
+   "leaders": null,
+   "tune200": 90.5
+  },
+  {
+   "deck": {
+    "bee-forager": 1,
+    "compost-grub": 1,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 1,
+    "planarian-splitter": 4,
+    "truffle-piglet": 3
+   },
+   "leaders": null,
+   "tune200": 89.5
+  },
+  {
+   "deck": {
+    "compost-grub": 1,
+    "dung-beetle": 3,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 2,
+    "truffle-piglet": 1,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 89.5
+  },
+  {
+   "deck": {
+    "earthworm": 1,
+    "hawthorn-shieldbug": 4,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 1,
+    "truffle-piglet": 2
+   },
+   "leaders": [
+    "hawthorn-shieldbug"
+   ],
+   "tune200": 90.5
+  },
+  {
+   "deck": {
+    "compost-grub": 1,
+    "hawthorn-shieldbug": 3,
+    "leafcutter-gardener": 5,
+    "planarian-splitter": 1,
+    "truffle-piglet": 1,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 89
+  }
+ ],
+ "before": {
+  "deck": {
+   "compost-grub": 1,
+   "dung-beetle": 1,
+   "truffle-piglet": 1,
+   "bee-forager": 1,
+   "leafcutter-gardener": 5,
+   "planarian-splitter": 3
+  },
+  "leaders": [
+   "planarian-splitter"
+  ],
+  "shieldOverride": 0,
+  "win200": 83
+ },
+ "pick": {
+  "deck": {
+   "earthworm": 1,
+   "hawthorn-shieldbug": 4,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 1,
+   "truffle-piglet": 2
+  },
+  "leaders": [
+   "planarian-splitter"
+  ],
+  "shieldOverride": 0,
+  "win200": 91,
+  "tune200": 90
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 83
+  },
+  {
+   "move": "whole-space pick",
+   "win": 91
+  }
+ ],
+ "sec": 661
+}

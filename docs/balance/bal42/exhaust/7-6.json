@@ -1,0 +1,168 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "7-6",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "miniboss",
+ "name": "The Morel Monarch",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "corpse-flower-beetle",
+  "dung-beetle",
+  "earthworm",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "wolf-spider-mother",
+  "worker-ant"
+ ],
+ "firstClear": [
+  "wolf-spider-mother"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "corpse-flower-beetle"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": 18,
+ "space": 488,
+ "read": 400,
+ "g1": 60,
+ "range": {
+  "min": 31.7,
+  "max": 66.7
+ },
+ "top": [
+  {
+   "deck": {
+    "corpse-flower-beetle": 2,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4,
+    "wolf-spider-mother": 3,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 43
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 1,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 3,
+    "wolf-spider-mother": 3,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 48
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 3,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 3,
+    "wolf-spider-mother": 3
+   },
+   "leaders": null,
+   "tune200": 50
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 3,
+    "wolf-spider-mother": 3
+   },
+   "leaders": null,
+   "tune200": 50
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 2,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 4,
+    "wolf-spider-mother": 2,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 53
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "hawthorn-shieldbug": 3,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 1,
+    "wolf-spider-mother": 3,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 54
+  }
+ ],
+ "before": {
+  "deck": {
+   "wolf-spider-mother": 3,
+   "leafcutter-gardener": 3,
+   "worker-ant": 1,
+   "hawthorn-shieldbug": 2,
+   "dung-beetle": 4,
+   "planarian-splitter": 4,
+   "earthworm": 1,
+   "corpse-flower-beetle": 1
+  },
+  "leaders": [
+   "corpse-flower-beetle"
+  ],
+  "shieldOverride": 18,
+  "win200": 48
+ },
+ "pick": {
+  "deck": {
+   "corpse-flower-beetle": 2,
+   "dung-beetle": 4,
+   "earthworm": 1,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 4,
+   "wolf-spider-mother": 3,
+   "worker-ant": 1
+  },
+  "leaders": [
+   "corpse-flower-beetle"
+  ],
+  "shieldOverride": 18,
+  "win200": 46.5,
+  "tune200": 43
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 48
+  },
+  {
+   "move": "whole-space pick",
+   "win": 46.5
+  }
+ ],
+ "sec": 595
+}

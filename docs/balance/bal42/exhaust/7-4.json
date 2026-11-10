@@ -1,0 +1,150 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "7-4",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "skirmish",
+ "name": "Moonlit Gills",
+ "band": {
+  "lo": 59.50000000000001,
+  "hi": 75.5,
+  "target": 67.5
+ },
+ "list": [
+  "dung-beetle",
+  "earthworm",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "worker-ant"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "dung-beetle"
+ ],
+ "namesake": false,
+ "shieldRule": 7,
+ "shieldOverride": null,
+ "space": 18,
+ "read": 18,
+ "g1": 60,
+ "range": {
+  "min": 63.3,
+  "max": 81.7
+ },
+ "top": [
+  {
+   "deck": {
+    "dung-beetle": 3,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 3,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 67.5
+  },
+  {
+   "deck": {
+    "dung-beetle": 3,
+    "hawthorn-shieldbug": 4,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 67.5
+  },
+  {
+   "deck": {
+    "dung-beetle": 4,
+    "hawthorn-shieldbug": 3,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 67
+  },
+  {
+   "deck": {
+    "dung-beetle": 3,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 4,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4
+   },
+   "leaders": null,
+   "tune200": 69
+  },
+  {
+   "deck": {
+    "dung-beetle": 2,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 4,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 70
+  },
+  {
+   "deck": {
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 3,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 4,
+    "worker-ant": 1
+   },
+   "leaders": null,
+   "tune200": 70.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "dung-beetle": 4,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 3,
+   "hawthorn-shieldbug": 4,
+   "worker-ant": 1
+  },
+  "leaders": [
+   "dung-beetle"
+  ],
+  "shieldOverride": null,
+  "win200": 71
+ },
+ "pick": {
+  "deck": {
+   "dung-beetle": 3,
+   "earthworm": 1,
+   "hawthorn-shieldbug": 3,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 4,
+   "worker-ant": 1
+  },
+  "leaders": [
+   "dung-beetle"
+  ],
+  "shieldOverride": null,
+  "win200": 70,
+  "tune200": 67.5
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 71
+  },
+  {
+   "move": "whole-space pick",
+   "win": 70
+  }
+ ],
+ "sec": 149
+}
