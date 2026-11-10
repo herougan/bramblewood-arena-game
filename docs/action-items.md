@@ -16,7 +16,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 3 | (09:51) Map cards: grey out a card showing No | UI43 |
 | 4 | (09:52) Thistlewood carries the tutorial's cards | UI43 (20 cards, pill Tutorial / Map 0) |
 | 5 | (10:15) Big decisions only; Claude answers the rest | BAL35-1 a, 20-9 keeps its Titans (Claude) |
-| 6 | (10:33) a: the 14 unreachable fights get weaker cards from the owner (Tide cards for 5-A-2): Pebble Beach 2-1, 2-2; Savanna 14-1, 14-3, 14-5, 14-6; The Canopy 14-A-1, 14-A-3; Basalt Foundry 19-A-3, 19-A-7, 19-A-8; Old Bramble 0-B-1, 0-B-2; Hermit Row 2-3 | owner flags Yes in Map cards, then Claude folds and retunes |
+| 6 | (10:33) a: the 14 unreachable fights get weaker cards from the owner (Tide cards for 5-A-2): Pebble Beach 2-1, 2-2; Savanna 14-1, 14-3, 14-5, 14-6; The Canopy 14-A-1, 14-A-3; Basalt Foundry 19-A-3, 19-A-7, 19-A-8; Old Bramble 0-B-1, 0-B-2; Hermit Row 2-3; The Glimmer Depths 8-A-3 (Sky Ambush cards, BAL40-1) | owner flags Yes in Map cards, then Claude folds and retunes |
 | 7 | (10:33) The hub keeps only the decisions still open; release when all done | HUB: hub shows YET only |
 
 ## 11-09 23:05: Owner notes
