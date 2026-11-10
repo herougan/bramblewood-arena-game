@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Package ENG42 (boon themes by name and art, not skills)
+- Players see: Rising Tide, Wild Rage, Siege Train and Sky Ambush switch on by the creatures in the enemy deck, not by a skill (owner 11-10 11:31): Rising Tide = sea, shore and river creatures (Aquatic, Coastal, Mangrove, crabs, seals, sea / snapping turtles, crocodiles, otters, beavers ...), Wild Rage = fierce beasts (boars, bears, wolves, wolverines, honey badgers, Tasmanian devils, hyenas, big cats), Siege Train = builders and war beasts (beavers, termites, badgers, moles, Structures, elephants, rhinos, oxen, horses), Sky Ambush = winged (birds, bats, butterflies, moths, bees, wasps, flies). Who gets the effect is unchanged (Tide / Rage / Siege / Flying units). Texts in 12 packs.
+- Road (200 games, road seeds): 5-A-2 Gator Hollow's Rising Tide turns ON (4 -> 9 of 14): 74.5% -> 44.5% (target 65). 23-5 Under the Walls' Siege Train turns OFF (8 -> 7 of 16): 53% -> 57.5% (Map 23). 8-A-3 Shard Gallery stays off (7 of 19). 9-4, 10-A-2, 11-A-1, 13-4 stay on, win rates unchanged. docs/balance/eng42/.
+- Tests: eng42-2026-11-10 (new); df3's Siege Train scene deals Badger Sappers (Mouse Sappers are not builders by Type).
+
 ## 2026-11-10 Package FIX12 (nine batch-1023e test failures)
 - Players see: the Map cards window's Claude picks wear the 🏹 by the card's live delivery, so the Reach throwers (Trident Caiman, Mallard Halberdier, Tidefolk Harpooner) no longer show as ranged since ENG40 made Reach melee (`c17LiveDelivery`, arena_app.js). No fight changes.
 - Tests brought to the new rules (stale pins): skills (Hoard per 3 Lumber, ENG40), en5 / tut3 / content18 / bal3 (ENG39 kinds: Breach as Puncture, Fire Arrow / bolts as Arrow {type}, Berserk as Harbinger {who: ally}, read expanded), ui31 (ENG40's melee-swing gate on Daunt), content17 (Reach melee), bal13 (BAL33's 14-A-1 / 14-A-3 swap), bal19 (fights BAL33 / BAL35-39 retuned are checked by their own tests).

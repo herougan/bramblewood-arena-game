@@ -118,8 +118,10 @@ const mark = (s, pid)=> H.boardCards(s.players[pid]).map(c=> c.boon || null);
   const on = mk({lavaSpout: true, boon: 'emberBorn'}), off = mk({lavaSpout: true});
   ok(taken(off) > 0 && taken(on) === 0, `2. Ember-born: a Volcanic unit takes no heat from the field (${taken(off)} -> ${taken(on)})`); }
 // Siege Train and Venom Glands: the skill number doubles on the unit's card; Sky Ambush: a Flyer is Quick
-{ const s = scene({rules: {boon: 'siegeTrain'}, deckB: {'mouse-sapper': 10}, B: [{id: 'mouse-sapper'}], rounds: 0}), c = H.boardCards(s.players[2])[0];
-  ok(s.defs[c.defId].effects.siege === 2 * D0['mouse-sapper'].effects.siege, `2. Siege Train: Siege ${D0['mouse-sapper'].effects.siege} -> ${s.defs[c.defId].effects.siege}`);
+// ENG42 (2026-11-10): Siege Train's theme is builders, sappers and war beasts by Type now (owner 11-10 11:31: a theme is name and art, not
+// skills); a deck of Mouse Sappers (Type Mouse) no longer turns it on, so the scene deals Badger Sappers (Type Badger, Siege 2)
+{ const s = scene({rules: {boon: 'siegeTrain'}, deckB: {'badger-sapper': 10}, B: [{id: 'badger-sapper'}], rounds: 0}), c = H.boardCards(s.players[2])[0];
+  ok(s.defs[c.defId].effects.siege === 2 * D0['badger-sapper'].effects.siege, `2. Siege Train: Siege ${D0['badger-sapper'].effects.siege} -> ${s.defs[c.defId].effects.siege}`);
   const v = scene({rules: {boon: 'venomGlands'}, deckB: {'grass-viper': 10}, B: [{id: 'grass-viper'}], rounds: 0}), cv = H.boardCards(v.players[2])[0];
   ok(v.defs[cv.defId].effects.poison === 2 * D0['grass-viper'].effects.poison, `2. Venom Glands: Poison ${D0['grass-viper'].effects.poison} -> ${v.defs[cv.defId].effects.poison}`);
   const k = scene({rules: {boon: 'skyAmbush'}, deckB: {'cave-flitter': 10}, B: [{id: 'cave-flitter'}], rounds: 0}), ck = H.boardCards(k.players[2])[0];
