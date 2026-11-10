@@ -1,0 +1,2 @@
+18-4 target 62 space 679 read 400 range 81.7 - 100 | 200 games: 85.5 -> 84.5 no {"deck":{"caustic-scorpion":4,"dust-devil-kestrel":2,"dust-hyena":1,"roadrunner-courier":4,"sand-widow":3,"sandfish":4},"leaders":["dust-devil-kestrel"],"shieldOverride":null} 1296s
+EXIT 0
