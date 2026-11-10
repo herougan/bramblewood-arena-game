@@ -39,7 +39,8 @@ for (const [code, l] of retuned) {
   const MAP = f.m.id, mapNo = G.mapNumberOf(MAP), kind = f.n.kind || 'skirmish', now = fields(l);
   ok(['md', 'mu'].includes(MAP) && !f.m.sub, code + ': on The Glass Dunes or The Morel Hollow (main maps only)');
   ok(!UNREACHABLE.includes(code), code + ': not a fight named unreachable in BAL35-2 / BAL36-1 / BAL37-1 / BAL39-1 / BAL40-1');
-  const x = (files[code] || []).find(y => y.keep && keyOf(y.pick.deck) === keyOf(now.deck) && (y.pick.shieldOverride == null ? null : String(y.pick.shieldOverride)) === now.shield);
+  const x = (files[code] || []).find(y => y.keep && keyOf(y.pick.deck) === keyOf(now.deck) && (y.pick.shieldOverride == null ? null : String(y.pick.shieldOverride)) === now.shield
+    && (!now.leaders || JSON.stringify(y.pick.leaders) === JSON.stringify(now.leaders))); // BAL42: and the line's leaders (18-6 has two kept picks of one deck)
   ok(x, code + ': the deck and Shield are a kept BAL42 pick'); if (!x) continue;
   const was = x.before.deck, d = now.deck;
   ok(Math.abs(x.pick.win200 - x.band.target) + 2 <= Math.abs(x.before.win200 - x.band.target), `${code}: 2+ points nearer at 200 games (${x.before.win200} -> ${x.pick.win200}, target ${x.band.target})`);
