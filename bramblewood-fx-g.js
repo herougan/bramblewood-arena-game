@@ -29,7 +29,9 @@ const later = (fn, ms)=>{ const g = G(), run = ()=> call(fn); if(g) g.delayedCal
 const wait = ms=> new Promise(res=> later(res, ms));
 function layer(cls, html, host){
   const e = document.createElement('div'); e.className = 'fx' + TAG + ' ' + (cls || ''); e.setAttribute('aria-hidden', 'true');
-  if(html) e.innerHTML = html; if(host) e.style.position = 'absolute'; (host || document.body).appendChild(e); return e;
+  if(html) e.innerHTML = html; if(host) e.style.position = 'absolute'; (host || document.body).appendChild(e);
+  if(!host) try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} // 2026-11-11 (PERF2): a fixed overlay is always shown; this skips GSAP's display:block probe on its first move (see SkillFX's shown())
+  return e;
 }
 const cssDone = new Set();
 function css(key, text){

@@ -55,7 +55,9 @@ ok(/const shown = BADGE_CYCLE_TICK % pages\.length;/.test(app) && /for\(let j = 
 }
 ok(/\.badge-cycle:not\(:last-child\)::after\{display:none;\}/.test(tpl), '#1 only the last cycling slot shows the gold dot');
 // ---- 2. names on a crowded row -------------------------------------------------------------------------------------------------------
-ok(/@container \(max-width: 100px\)\{\n  \.board-row:has\(> \.board-card:nth-child\(9 of :not\(\.empty-slot\)\)\) > \.board-card \.card-tile \.nm\{display:none !important;\}/.test(tpl), '#2 9+ units and a small tile: the name scroll is hidden');
+// 2026-11-11 (package PERF2): the row marks itself and the name reads the mark through a style query (a :has() aimed at .nm restyled every
+// name on each DOM change); tests/perf2-2026-11-11.js --equiv shows the same computed display in the old and new builds.
+ok(/\.board-row:has\(> \.board-card:nth-child\(9 of :not\(\.empty-slot\)\)\)\{--eng26-many:1;\}/.test(tpl) && /@container \(max-width: 100px\)\{ @container style\(--eng26-many: 1\)\{\n  \.board-row > \.board-card \.card-tile \.nm\{display:none !important;\}/.test(tpl), '#2 9+ units and a small tile: the name scroll is hidden');
 
 // ---- 3. Bloom escalates --------------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(); const b = put(e, P, 1, 'x-bloom', 0); b.bloomKill = true;
