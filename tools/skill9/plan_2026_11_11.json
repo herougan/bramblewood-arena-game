@@ -1,0 +1,681 @@
+{
+ "_about": "SKILL9 (2026-11-11) plan to bring the skills a player meets on main Maps 0-20 under 80. Hand-written; read by tools/skill9/skill9_audit_2026_11_11.py, which counts it. how: display = already an ENG39 kind, only its name changes to 'Family - kind'; kind = becomes a kind of the family and keeps its own rule and price (ENG39's mechanism, decision DES2-3 a); rule = the rule changes too. A family counts once (the Map cards window would count the family key, not the kind). Nothing here is applied.",
+ "families": [
+  {
+   "id": "F1",
+   "head": "arrow",
+   "name": "Arrow",
+   "decision": "SKILL9-1",
+   "folds": [
+    "iceArrow",
+    "fireArrow",
+    "poisonBolt",
+    "twinShot",
+    "spitfire",
+    "archer"
+   ],
+   "how": {
+    "iceArrow": "display",
+    "fireArrow": "display",
+    "poisonBolt": "display",
+    "twinShot": "kind {shots: 2, aim: random}",
+    "spitfire": "kind {type: fire, form: bolt, aim: random, splash}",
+    "archer": "display"
+   },
+   "reads": "Arrow - fire / ice / venom spit / twin / cinder / never swings (Archer)",
+   "offRoad": [
+    "acidBolt",
+    "fireBolt",
+    "iceBolt",
+    "shockBolt",
+    "volley",
+    "snipe"
+   ],
+   "budget": "none (each kind keeps its price)",
+   "risk": "low: names in 12 language packs; the five already share the shot code"
+  },
+  {
+   "id": "F2",
+   "head": "keenSense",
+   "name": "Keen Sense",
+   "decision": "SKILL9-1",
+   "folds": [
+    "darksight",
+    "sonar"
+   ],
+   "how": {
+    "darksight": "display",
+    "sonar": "kind {sees: all} (Echolocation: also Smoke, Fog, Shadow and flyers)"
+   },
+   "reads": "Keen Sense - dark / sound",
+   "offRoad": [],
+   "budget": "none",
+   "risk": "low"
+  },
+  {
+   "id": "F3",
+   "head": "hunter",
+   "name": "Cull",
+   "decision": "SKILL9-2",
+   "folds": [
+    "predator",
+    "executioner",
+    "shatter",
+    "siege"
+   ],
+   "how": {
+    "predator": "kind {vs: less Attack}",
+    "executioner": "kind {vs: below 1/4 Health}",
+    "shatter": "kind {vs: Frozen, Brittle, Petrified, heavy Armor}",
+    "siege": "kind {vs: Structures and the bramble}"
+   },
+   "reads": "Cull N - envenomed / weak / weaker / wounded / frozen / structures",
+   "offRoad": [
+    "kingSlayer"
+   ],
+   "budget": "none as kinds (prices 0.02-1.12 kept); a later shared price would move them",
+   "risk": "low; Prey's text names Predator (see F4)"
+  },
+  {
+   "id": "F4",
+   "head": "evasive",
+   "name": "Evasive",
+   "decision": "SKILL9-1",
+   "folds": [
+    "prey",
+    "canopyCover"
+   ],
+   "how": {
+    "prey": "kind {while: an enemy Cull - weaker unit is on the field}",
+    "canopyCover": "kind {vs: shots, skills and flyers; under trees}"
+   },
+   "reads": "Evasive - hunted / canopy",
+   "offRoad": [],
+   "budget": "none",
+   "risk": "low"
+  },
+  {
+   "id": "F5",
+   "head": "daunt",
+   "name": "Daunt",
+   "decision": "SKILL9-1",
+   "folds": [
+    "weaken",
+    "bludgeon"
+   ],
+   "how": {
+    "weaken": "display",
+    "bludgeon": "kind {lasting, knocks out a skill}"
+   },
+   "reads": "Daunt - lasting / bludgeon",
+   "offRoad": [
+    "stench"
+   ],
+   "budget": "none",
+   "risk": "low"
+  },
+  {
+   "id": "F6",
+   "head": "carnage",
+   "name": "Tally",
+   "decision": "SKILL9-3",
+   "folds": [
+    "tally",
+    "requiem",
+    "dirge",
+    "onslaught",
+    "riled",
+    "almanac",
+    "foeScarcity"
+   ],
+   "how": {
+    "tally": "display",
+    "requiem": "display",
+    "dirge": "display",
+    "onslaught": "kind {counts: damage to their bramble last round}",
+    "riled": "kind {counts: damage it took last round}",
+    "almanac": "kind {counts: cards drawn}",
+    "foeScarcity": "kind {counts: cards in the foe's hand, at most}"
+   },
+   "reads": "Tally N - deaths it saw / all deaths / your deaths / enemy deaths / bramble damage / damage taken / cards drawn / foe's hand",
+   "offRoad": [
+    "muster",
+    "beset",
+    "plenty"
+   ],
+   "budget": "none as kinds; the family's prices disagree today (1.68-7.95 for the same +2/+2), re-measure as one family",
+   "risk": "medium: Carnage is the shown name today; the threshold numbers still have to be read"
+  },
+  {
+   "id": "F7",
+   "head": "delivery",
+   "name": "Delivery",
+   "decision": "SKILL9-1",
+   "folds": [
+    "deliveryEvery",
+    "milling",
+    "scavenge",
+    "driftwood"
+   ],
+   "how": {
+    "deliveryEvery": "display",
+    "milling": "kind {every: round, pays: 1 Lumber, gives: 2}",
+    "scavenge": "kind {when: another of your units dies}",
+    "driftwood": "kind {every Ebb round on a beach}"
+   },
+   "reads": "Delivery - every turn / mill / scavenge / driftwood",
+   "offRoad": [
+    "stockpile",
+    "pearl",
+    "tribeDelivery",
+    "felling",
+    "coppice",
+    "salvage"
+   ],
+   "budget": "none (Milling keeps its shorthand price, On Turn Start x Gain)",
+   "risk": "low"
+  },
+  {
+   "id": "F8",
+   "head": "regen",
+   "name": "Heal",
+   "decision": "SKILL9-4",
+   "folds": [
+    "healing",
+    "repair",
+    "carrion",
+    "herbalist"
+   ],
+   "how": {
+    "healing": "kind {who: most wounded ally} (ENG39's Heal family, with Nursing, joins)",
+    "repair": "kind {who: structure, else your bramble}",
+    "carrion": "kind {when: a unit dies}",
+    "herbalist": "kind {boosts: your heals +1}"
+   },
+   "reads": "Heal N - self (Regenerate) / ally / repair / carrion / herbalist",
+   "offRoad": [
+    "nursing",
+    "sap"
+   ],
+   "budget": "none",
+   "risk": "medium: Regenerate is a Map 0 name; option b keeps 'Regenerate' as the family name"
+  },
+  {
+   "id": "F9",
+   "head": "quick",
+   "name": "Speed",
+   "decision": "SKILL9-5",
+   "folds": [
+    "speed",
+    "haste",
+    "slow",
+    "fastForward"
+   ],
+   "how": {
+    "speed": "head joins (Quick = Speed 2; ENG39's Blitz and Swift already sit in Speed)",
+    "haste": "kind {aura: +1 to adjacent allies}",
+    "slow": "kind {slow: loses ties}",
+    "fastForward": "kind {head start: N extra turns on arrival}"
+   },
+   "reads": "Speed 2 (Quick) / Speed N / Speed - haste / slow / head start",
+   "offRoad": [
+    "blitz",
+    "swift"
+   ],
+   "budget": "none",
+   "risk": "medium: Quick is a Map 0 basic; option b keeps 'Quick' as the family name"
+  },
+  {
+   "id": "F11",
+   "head": "purblind",
+   "name": "Afflicted",
+   "decision": "SKILL9-8",
+   "folds": [
+    "nightblind",
+    "scatterbrained",
+    "drunk"
+   ],
+   "how": {
+    "nightblind": "kind {Blind, at night}",
+    "scatterbrained": "kind {Confused}",
+    "drunk": "kind {Tipsy}"
+   },
+   "reads": "Afflicted - Blind (Purblind) / Blind at night / Confused / Tipsy: a drawback, always on",
+   "offRoad": [],
+   "budget": "none",
+   "risk": "low: four drawbacks with one shape (a status that never leaves)"
+  },
+  {
+   "id": "F12",
+   "head": "poison",
+   "name": "Venomous",
+   "decision": "SKILL9-1",
+   "folds": [
+    "greaterPoison"
+   ],
+   "how": {
+    "greaterPoison": "kind {deadly}"
+   },
+   "reads": "Venomous - deadly",
+   "offRoad": [
+    "poisonous",
+    "poisonBarbs"
+   ],
+   "budget": "none",
+   "risk": "low"
+  },
+  {
+   "id": "F13",
+   "head": "decay",
+   "name": "Decay",
+   "decision": "SKILL9-1",
+   "folds": [
+    "wither"
+   ],
+   "how": {
+    "wither": "kind {wither: -max Health 3 rounds, no healing}"
+   },
+   "reads": "Decay - wither",
+   "offRoad": [
+    "corrode",
+    "toxin"
+   ],
+   "budget": "none",
+   "risk": "low (DES2 11-08 already proposed it)"
+  },
+  {
+   "id": "F14",
+   "head": "pounce",
+   "name": "Pounce",
+   "decision": "SKILL9-1",
+   "folds": [
+    "gash"
+   ],
+   "how": {
+    "gash": "kind {deals: Bleed} (like Arrow - bleed, ENG35-4)"
+   },
+   "reads": "Pounce - bleed",
+   "offRoad": [],
+   "budget": "none",
+   "risk": "low"
+  },
+  {
+   "id": "F15",
+   "head": "onDeathSpawn",
+   "name": "Progeny",
+   "decision": "SKILL9-1",
+   "folds": [
+    "meiosis"
+   ],
+   "how": {
+    "meiosis": "kind {halves of itself}"
+   },
+   "reads": "Progeny - halves",
+   "offRoad": [
+    "offspring",
+    "hydra",
+    "immortal"
+   ],
+   "budget": "none",
+   "risk": "low"
+  },
+  {
+   "id": "F16",
+   "head": "fletcher",
+   "name": "Fletcher",
+   "decision": "SKILL9-1",
+   "folds": [
+    "weaponMaster"
+   ],
+   "how": {
+    "weaponMaster": "kind {armory: equipped units +1/+1}"
+   },
+   "reads": "Fletcher - armory",
+   "offRoad": [],
+   "budget": "none",
+   "risk": "low"
+  },
+  {
+   "id": "F17",
+   "head": "thrive",
+   "name": "Thrive",
+   "decision": "SKILL9-6",
+   "folds": [
+    "frost",
+    "heat",
+    "salt",
+    "timbered",
+    "bedrock",
+    "crepuscular",
+    "rainrunner"
+   ],
+   "newHead": true,
+   "how": {
+    "frost": "kind {cold}",
+    "heat": "kind {hot}",
+    "salt": "kind {salt shore, tide out}",
+    "timbered": "kind {3+ Lumber}",
+    "bedrock": "rule: {3+ Lumber} instead of {2+ Stone} (fix H1)",
+    "crepuscular": "kind {day} / {night}",
+    "rainrunner": "kind {rain; and it goes straight for the bramble}"
+   },
+   "reads": "Thrive - cold: +0/+2 (the condition words Bloom and Encore already use)",
+   "offRoad": [
+    "storm",
+    "rain",
+    "drought",
+    "ironWill",
+    "hoard"
+   ],
+   "budget": "none as kinds; Bedrock's move to Lumber raises its uptime (Quarry Mole re-fit)",
+   "risk": "medium: a new name; the 'stateSkill' engine path is already shared"
+  },
+  {
+   "id": "F18",
+   "head": "nocturnal",
+   "name": "Nocturnal",
+   "decision": "SKILL9-1",
+   "folds": [
+    "moonborn"
+   ],
+   "how": {
+    "moonborn": "kind {moon: scales with the moon's phase}"
+   },
+   "reads": "Nocturnal - moon",
+   "offRoad": [],
+   "budget": "none",
+   "risk": "low"
+  },
+  {
+   "id": "F19",
+   "head": "shell",
+   "name": "Shell",
+   "decision": "SKILL9-1",
+   "folds": [
+    "cower"
+   ],
+   "how": {
+    "cower": "kind {hide: hit last round, it hides this round}"
+   },
+   "reads": "Shell - hide",
+   "offRoad": [],
+   "budget": "none",
+   "risk": "low (owner 11-08 11:03: 'Retreat into the shell' as a Shell parameter)"
+  },
+  {
+   "id": "F20",
+   "head": "immunity",
+   "name": "Immunity",
+   "decision": "SKILL9-1",
+   "folds": [
+    "wakeful",
+    "relict"
+   ],
+   "how": {
+    "wakeful": "kind {sleep}",
+    "relict": "kind {fields}"
+   },
+   "reads": "Immunity - sickness / sleep / fields",
+   "offRoad": [],
+   "budget": "none",
+   "risk": "low"
+  },
+  {
+   "id": "F21",
+   "head": "ambush",
+   "name": "Ambush",
+   "decision": "SKILL9-1",
+   "folds": [
+    "trap"
+   ],
+   "how": {
+    "trap": "kind {trap: once, sets on the empty slot facing it, 5 damage}"
+   },
+   "reads": "Ambush - trap",
+   "offRoad": [],
+   "budget": "none",
+   "risk": "low: same trigger (an enemy enters the slot facing it)"
+  },
+  {
+   "id": "F22",
+   "head": "inflict",
+   "name": "Inflict",
+   "decision": "SKILL9-7",
+   "newHead": true,
+   "folds": [
+    "shock",
+    "confuse",
+    "freeze"
+   ],
+   "how": {
+    "shock": "kind {Shocked}",
+    "confuse": "kind {Confused}",
+    "freeze": "kind {Frozen}"
+   },
+   "reads": "Inflict - Freeze 25% (1 round): the status rolls already share one text and one rule",
+   "offRoad": [
+    "sleep",
+    "paralyze",
+    "blind",
+    "tipsy",
+    "stagger"
+   ],
+   "budget": "none (each status keeps its price)",
+   "risk": "medium: Freeze is a known name; the status names stay as they are"
+  }
+ ],
+ "swaps": [
+  {
+   "key": "berserk",
+   "card": "Tasmanian Devil (M13)",
+   "to": "rage",
+   "why": "Rage is already met on M13; devils are famously ferocious",
+   "budget": "S +0.67 (2.34 -> 3.01); one skill before and after",
+   "decision": "SKILL9-9",
+   "fights": "13-1, 13-3, 13-4, 13-6, 13-7, 13-8, 16-7"
+  },
+  {
+   "key": "scare",
+   "card": "Yeti (M19)",
+   "to": "armor",
+   "why": "thick fur; Scare is Armor that also stops magic",
+   "budget": "S about -0.2 at 1 (2.52 -> 2.33)",
+   "decision": "SKILL9-9",
+   "fights": "19-4, 19-6 (its first-clear card)"
+  },
+  {
+   "key": "remember",
+   "card": "Ashbone Ghoul (M20)",
+   "to": "undead",
+   "why": "it is an Undead ghoul; Undead is met on M20 already; the M6 fight's off-list Remember card leaves under K14",
+   "budget": "S -2.36 (4.63 -> 2.27): more room",
+   "decision": "SKILL9-9",
+   "fights": "20-1 to 20-10 (20-3 first clear) and 6-6 (its Marsh Wisp, off-list, also has Remember: replace it under K14)"
+  },
+  {
+   "key": "packLeader",
+   "card": "Dhole Matriarch (M16)",
+   "to": "none (keeps Guardian)",
+   "why": "links Pack units, and no Pack unit is on a Maps 0-20 main list (H3); adding Pack to the wolves would add skills",
+   "budget": "none: Pack Leader is priced 0 today",
+   "decision": "SKILL9-9",
+   "fights": "16-5, 16-6, 16-7 (first clear)"
+  }
+ ],
+ "delays": [
+  {
+   "key": "sequestration",
+   "cards": "Poison Dart Croaker (M6)",
+   "why": "not in the owner's Map 6 picks; keep it for a side map or Map 21+",
+   "decision": "SKILL9-9",
+   "fights": "6-1 (deck and first clear)"
+  },
+  {
+   "key": "meld",
+   "cards": "Leafcutter Gardener (M7)",
+   "why": "not in the owner's Map 7 picks",
+   "decision": "SKILL9-9",
+   "fights": "7-1 to 7-6 (7-3 first clear): rebuilt anyway when the Map 7 picks are applied"
+  },
+  {
+   "key": "pickpocket",
+   "cards": "Field Mouse (M1)",
+   "why": "not in the owner's Map 1 picks; its side map Clovermead can keep it",
+   "decision": "SKILL9-9",
+   "fights": "1-1, 1-3, 1-4 (first clear), 1-5, 12-3, 12-7"
+  },
+  {
+   "key": "fester",
+   "cards": "Gangrenous Leech (M11 SPECIAL, enemy only)",
+   "why": "on no main list; met only in an M11 fight",
+   "decision": "SKILL9-9",
+   "fights": "11-R"
+  },
+  {
+   "key": "parasite",
+   "cards": "Gangrenous Leech (M11 SPECIAL, enemy only)",
+   "why": "as Gorge",
+   "decision": "SKILL9-9",
+   "fights": "11-R"
+  },
+  {
+   "key": "rupture",
+   "cards": "Wound Reaver (M11 SPECIAL; The Aerie Vault's card)",
+   "why": "on no main list; the side map keeps it",
+   "decision": "SKILL9-9",
+   "fights": "11-R"
+  }
+ ],
+ "adds": [],
+ "failures": [
+  {
+   "id": "H1",
+   "severity": "high",
+   "skill": "Bedrock",
+   "cards": "Quarry Mole (M8, owner pick)",
+   "problem": "Uses Stone on Map 8; the owner's rule is no Stone before Map 21 (Malachite Golem's Stone cost on the M8 list is the same problem, card data, not in the owner's picks)",
+   "fix": "mechanics: Thrive - 3+ Lumber {Armor 1}, or move the card past Map 20",
+   "decision": "SKILL9-10"
+  },
+  {
+   "id": "H2",
+   "severity": "high",
+   "skill": "Scavenge",
+   "cards": "Carrion Crow (M12)",
+   "problem": "Card text describes the retired SK2 point rule ('+1 scavenge point, every 3: 1 Lumber'); the engine runs EN8's rule (+1 Lumber when another of your units dies, bramblewood-engine.js en8DeathFeed); the Codex text is right",
+   "fix": "wording: ui.sk2-scavenge to the EN8 rule"
+  },
+  {
+   "id": "H3",
+   "severity": "high",
+   "skill": "Pack Leader",
+   "cards": "Dhole Matriarch (M16)",
+   "problem": "Links Pack units, but no card on a main list of Maps 0-20 has Pack: it does nothing on the road",
+   "fix": "data: drop Pack Leader from Dhole Matriarch (priced 0, so no budget change); Lone Wolf stays"
+  },
+  {
+   "id": "M1",
+   "severity": "medium",
+   "skill": "Map pacing",
+   "cards": "Maps 1, 3, 6, 7",
+   "problem": "By the list rule Map 1 introduces 13 skills, Maps 3, 6 and 7 nine each (rules 10-21 RP: two new a map; UI35: 2-3). After the plan Maps 1 and 3 still bring 9-10",
+   "fix": "the plan, then the pacing moves in the doc (card placement, the owner picks)"
+  },
+  {
+   "id": "M2",
+   "severity": "medium",
+   "skill": "Guardian",
+   "cards": "15 road cards",
+   "problem": "Priced 0.0 in canonical/skill-costs.json while its own note says 1.0 (half scale, ENG9, not measured)",
+   "fix": "budget: measure it (tools/skill_canon_2026_10_31.js)"
+  },
+  {
+   "id": "M3",
+   "severity": "medium",
+   "skill": "Immolation, Converge",
+   "cards": "Magma Rhino (M19), Border Collie (M15)",
+   "problem": "Priced 0 with no note",
+   "fix": "budget: measure"
+  },
+  {
+   "id": "M4",
+   "severity": "medium",
+   "skill": "Tally family",
+   "cards": "7 road cards",
+   "problem": "The same +2/+2 threshold shape costs 1.68 (Carnage, old uptime, call ENG22-5) to 7.95 (Almanac, theoretical)",
+   "fix": "budget: re-measure as one family"
+  },
+  {
+   "id": "M5",
+   "severity": "medium",
+   "skill": "Single carriers",
+   "cards": "see the JSON",
+   "problem": "Most road skills have one carrier on Maps 0-20 (owner's signature target: 2+)",
+   "fix": "the plan cuts or folds most; CONTENT work for the rest"
+  },
+  {
+   "id": "M6",
+   "severity": "medium",
+   "skill": "Crepuscular",
+   "cards": "Woodcock Lookout (M1)",
+   "problem": "Its day and night parts are the same (+1/+0 and +1/+0): a flat +1 Attack wearing a time skill",
+   "fix": "data: a real day / night split, or plain Diurnal or Nocturnal (owner's card; not in the M1 picks)"
+  },
+  {
+   "id": "M7",
+   "severity": "medium",
+   "skill": "Prey",
+   "cards": "Springbok Pronker (M14)",
+   "problem": "Dodges only while an enemy Predator is on the field; no card on the M14 list has Predator (the road's Predators are on Maps 6 and 12), so it is rarely on",
+   "fix": "mechanics: F4 (Evasive - hunted reading the Cull family) or plain Evasive"
+  },
+  {
+   "id": "L1",
+   "severity": "low",
+   "skill": "Armor",
+   "cards": "",
+   "problem": "Text says magic twice ('...but magic (never below 0). Magic goes past it.')",
+   "fix": "wording: 'Takes N less damage from every swing, arrow and spit (never below 0). Magic goes past it.'"
+  },
+  {
+   "id": "L2",
+   "severity": "low",
+   "skill": "Bedrock, Salt",
+   "cards": "",
+   "problem": "'🛡 Armor' with no number",
+   "fix": "wording: 'Armor 1'"
+  },
+  {
+   "id": "L3",
+   "severity": "low",
+   "skill": "Remember, Brood, Progeny, Foraging, Swarm",
+   "cards": "",
+   "problem": "Plurals and grammar on the card: '1 Echoes', '2 1/1 copies', '1x Bramble Sprout take', '+2 Berry', 'every ally that is Ants'",
+   "fix": "wording"
+  },
+  {
+   "id": "L4",
+   "severity": "low",
+   "skill": "Fork, Charge, Spitfire",
+   "cards": "",
+   "problem": "Fork has no full stop and says 'this unit'; Charge says 'a random opponent' (an enemy unit); Spitfire's '1 to an adjacent unit' does not say adjacent to what",
+   "fix": "wording"
+  },
+  {
+   "id": "L5",
+   "severity": "low",
+   "skill": "Naming",
+   "cards": "",
+   "problem": "'Delivery, every turn' (comma form), 'Foe's Scarcity', 'Iron-will' (hyphen); Cull's key is hunter and project-state still says Hunter N; collisions: Frost / Frostbite / Freeze / Ice, Venomous / Venom Spit / Deadly Poison / Poison Barbs, Brood / Progeny / Offspring / Sprout / Meiosis, Shield / Spellward / Ward",
+   "fix": "wording: the families' 'Family - kind' names solve most"
+  },
+  {
+   "id": "L6",
+   "severity": "low",
+   "skill": "VFX",
+   "cards": "",
+   "problem": "No named engine event or FX code found for Pickpocket, Foraging, Sequestration, the Cull and Tally families (plain hit / lit chip), Milling and Scavenge (a Lumber float), Twin Strike (a second swing), Mighty, Echolocation, Requiem",
+   "fix": "check in the Effects Lab; a grep is not proof"
+  }
+ ]
+}
