@@ -1,8 +1,2303 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-10-28). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-11-08). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
+
+**BAL43-1. Thistlewood 1-3 / 1-4 still too easy at 85 / 80** · Decide · Road · asked 2026-11-10
+- Burrow Line 96% (target 85) and Sapper Hedge 94% (80), 200 games. Every legal deck from their lists reads 87-100%; the Shield is at the rule and their leader is hidden.
+  - a) You add one slightly stronger Thistlewood common to 1-3 / 1-4; Claude retunes.
+  - b) Raise their targets to about 93 / 88 (a warm-up map).
+  - c) Leave them.
+- **Default:** a
+
+**BAL46-1. Morel Hollow 7-6 Morel Monarch a little easy** · Decide · Road · asked 2026-11-10
+- The Morel Monarch boss reads 46.3% at 400 games (target 40, band 30-49). All 514 legal decks were screened; the current one is near the strongest, and Shield is already above the rule. In band, so not urgent.
+  - a) Leave it (in band).
+  - b) You add a stronger Morel card to 7-6's list; Claude retunes.
+- **Default:** a
+
+**BAL43-2. Redwood Deep 13-3 Antler Grove a little easy** · Decide · Road · asked 2026-11-10
+- Antler Grove 88.5% (target 80, band top 88), 200 games. Its list allows only 15 legal decks; all read 90-98%, and no leader or Shield move helps.
+  - a) You add a stronger Redwood card (a stag fits the name) to 13-3's list; Claude retunes.
+  - b) Leave it (just over the band).
+- **Default:** a
+
+**BAL42-1. Glass Dunes 18-4 Sandstorm stays too easy** · Decide · Road · asked 2026-11-10
+- Sandstorm 18-4 83% (target 62), 200 games, after BAL42's best move (was 85.5%). Every legal deck from its list with Sand Veil on (all 679) reads 80-100%; its Shield is at the rule.
+  - a) You add stronger Desert cards to 18-4's list; Claude retunes.
+  - b) Raise its target.
+  - c) Leave it.
+- **Default:** a
+
+## Decided
+
+**BAL40-1. Glimmer Depths 8-A-3 stays too easy** · Decide · Road · asked 2026-11-10 · decided 2026-11-10
+- Shard Gallery 8-A-3 58% (target 50), 200 games. Its deck has its Sky Ambush boon off (7 of the 10 cards it needs), so no deck move is legal, and its Shield is at the rule.
+  - a) You add Sky Ambush cards to 8-A-3's list; Claude retunes.
+  - b) Change its target.
+  - c) Leave it.
+- **Default:** a
+
+**BAL39-1. Gator Hollow 5-A-2 and Hermit Row 2-3 stay off target** · Decide · Road · asked 2026-11-10 · decided 2026-11-10
+- Every legal deck and leader read (200 games). Gator Hollow 5-A-2 74.5% (target 65): its deck has its Rising Tide boon off (4 Tide cards, needs 7), so no deck move is legal, and its Shield is at the rule. Hermit Row 2-3 60% (70): best of 66 legal decks 61.7 at 60 games.
+  - a) You add Tide cards to 5-A-2's list and weaker cards to 2-3's; Claude retunes.
+  - b) Change these targets.
+  - c) Leave them.
+- **Default:** a
+
+**BAL37-1. Savanna 14-3 / 14-5 and the Sloth Titan boss 20-9 stay off target** · Decide · Road · asked 2026-11-10 · decided 2026-11-10
+- Every legal deck and leader read (200 games): Savanna 14-3 70.5% (target 80; 178 decks, best 71.5), 14-5 61% (70; at Shield 0, was 57). The Ancient Sloth Titan 20-9 69.5% (50): with its Titans no deck reads under 66.7%; cutting both reaches 49.5% but a Magma Salamander would lead the boss. 20-9 decided by Claude (10:20): keep both Titans (a boss keeps its leaders) and leave it easy; 14-3 / 14-5 go with BAL35-2.
+  - a) You add weaker cards to these lists; Claude retunes.
+  - b) Lower these targets, or let 20-9 drop its Titans.
+  - c) Leave them.
+- **Default:** a
+
+**BAL36-1. The Canopy 14-A-1 / 14-A-3 stay too hard** · Decide · Road · asked 2026-11-10 · decided 2026-11-10
+- Every legal deck and leader read at Shield 0 (200 games): Sloth Boughs 14-A-1 69% (target 90; 90 legal decks, best pick 67.5), Dart Frogs 14-A-3 53.5% (70; 438 decks). Hoopoe Herald and Weaver Bird fill most slots; K14 caps the rest at 1.
+  - a) You add weaker Canopy cards to these lists; Claude retunes.
+  - b) Lower these targets.
+  - c) Leave them.
+- **Default:** a
+
+**BAL35-1. Thistlewood 1-3 / 1-4 stay too easy** · Decide · Road · asked 2026-11-10
+- Burrow Line 96% (target 70) and Sapper Hedge 94% (60), 200 games. Every legal deck of their lists reads 89-97%. Double bramble Health, Shield 6 or the Baron's rule change nothing; even Thistlewood's uncommons x4 read 79.5%. Map 1's commons cannot hold the Map 1 reference deck.
+  - a) Lower their targets to about 85 / 80 (a warm-up map).
+  - b) You add a stronger Thistlewood card for these two fights; Claude retunes.
+  - c) Leave them easy.
+- **Default:** a
+
+**BAL35-2. Fights their own list cannot reach** · Decide · Road · asked 2026-11-10 · decided 2026-11-10
+- Every legal deck, leader and Shield 0 read: Pebble Beach 2-1 59.5% (target 90), 2-2 62% (80); Savanna 14-1 56% (90), 14-6 56.5% (65); Basalt Foundry 19-A-3 55% (72.5), 19-A-7 18.5% (67.5), 19-A-8 23.5% (64); Old Bramble 0-B-1 72% (90), 0-B-2 62.5% (75). Their lists have no weak cards; 19-A-7 and the Old Bramble have one legal deck (K14).
+  - a) You add weaker cards to these lists; Claude retunes.
+  - b) Lower these targets.
+  - c) Leave them (BAL21-1 / 26-2 / 27-2).
+- **Default:** a
+
+**BAL34-1. Dive cards are under budget now** · Decide · Cards · asked 2026-11-10
+- Dive is repriced from the 1,000-fight measure: plain Dive -3.3, Dive 2 -1.7 (was 0). Puffin Diver (2/5, Map 3) drops from 66% to 58% of its budget and Harbor Seal (1/9, Map 14) from 63% to 56%. Both are well under. No stats were changed.
+  - a) Raise both: Puffin 3/5 (75%), Seal 2/9 (71%).
+  - b) Keep them as they are (they play weak, as the measure says).
+  - c) Remove Dive from both.
+- **Default:** b
+
+**BAL34-2. 33 Maps 0-20 cards over two skills** · Decide · Skills · asked 2026-11-10
+- With the editor's count everywhere (a light skill counts 0.5), 33 Maps 0-20 cards are over 2. 23 of them are new: two skills plus Flying or Tide (2.5). 10 were over before (3 or 3.5). List: docs/balance/bal34/budget-recheck-2026-11-10.json.
+  - a) Allow 2.5 (a light skill on top of two); trim only cards at 3 or more.
+  - b) Trim every card over 2.
+  - c) Warning only, no card changes.
+- **Default:** a
+
+**ENG40-1. Hoard cards: whole-number values?** · Decide · Cards · asked 2026-11-09
+- Hoard N is now +N/+N for every 3 Lumber. Both Hoard cards still hold the fractions from the old per-Lumber rule: Tax-Collector Teal Hoard 0.75 (65% of its budget) and The Magnate Duck Hoard 0.25 (89%). Both are in budget and their stats are unchanged. As fractions they read oddly and do almost nothing. Hoard 1 (+1/+1 every 3 Lumber) keeps both in budget with no stat change: Teal 66%, Duck 91%.
+  - a) Both to Hoard 1 (no stat change).
+  - b) Keep 0.75 and 0.25.
+  - c) Teal Hoard 3 (+1/+1 a Lumber's worth, 76%), Duck Hoard 1.
+- **Default:** a
+
+**ENG40-2. Bulwark price after the gentler walls** · Decide · Balance · asked 2026-11-09
+- Log Walls now grow half as fast: 0/4 at Levels 1-6, 0/5 at 7-9, 0/6 at 10 (was 0/8). BAL30 priced Bulwark 6.65 x N^0.47 from the measured 0/4 wall (6.16) times 1.08 for walls averaging 0/5.7 over Levels 1-10. They now average 0/4.5, so the same reasoning gives x1.03: 6.3. Cards on Maps 0-20 sit at Levels 0-5, where walls are 0/4 anyway.
+  - a) Re-price to 6.3 x N^0.47.
+  - b) Keep 6.65 x N^0.47.
+- **Default:** a
+
+**ENG39-3. Sunthroat Courier as plain Esprit +0/+1?** · Decide · Cards · asked 2026-11-09
+- You chose b: write Sunthroat Courier as "esprit": {"v": 0, "hp": 1}. It plays the same, but the budget prices Esprit 0 as a whole Esprit, so its skill price rises from 1.1 to 3.37 (still within budget). The rule for this package is no price change, so it still reads {"v": null, "hp": 1}.
+  - a) Keep it as it is.
+  - b) Switch, and teach the budget that Esprit 0 costs only its Health part (no price change).
+  - c) Switch and accept the new price.
+- **Default:** b
+
+**ENG39-2. A card with two shots** · Decide · Engine · asked 2026-11-09
+- Arrow, Fire Arrow and the Bolts are one shot family now (type, form). A card key holds one version, so Rimefire Salamander (Fire Arrow 1 and Ice Arrow 1) keeps its Ice Arrow under the old key. It plays and prices the same; only the data shape differs.
+  - a) Leave it (the second shot keeps its old key).
+  - b) Let the family hold a list of shots (a format change).
+- **Default:** a
+
+**ENG39-1. Retire Tangleweed and Darksight for real?** · Decide · Engine · asked 2026-11-09
+- DES2-3 merged every duplicate as a parameter with no fight or price change. Two proposals in the plan would change cards, so they are kinds for now: Tangleweed is Strangle {hold: bind} (plan: retire it; Weaver Bird to Confuse, Quicksand Queen to Web), Darksight is Keen Sense {sees: dark} (plan: retire it into Keen Sense, so 6 cards would also ignore Blind, Fog and Shadow).
+  - a) Keep both as kinds (no change).
+  - b) Retire both as planned (8 cards change; needs a balance check).
+  - c) Retire Tangleweed only.
+- **Default:** a
+
+**BAL33-1. Dive costs more than its price** · Decide · Balance · asked 2026-11-09
+- Measured on Flying and Tide carriers (400 paired fights): plain Dive -3.3 (price -1), Dive 2 -1.9 (price 0). Each point of N adds about 0.7, not 0.5. Puffin Diver and Harbor Seal are weaker than their budget says. Intervals about 1 point either way. docs/balance/bal33/dive-measure-2026-11-09.json.
+  - a) Reprice: plain Dive -3, +0.75 a point of N.
+  - b) Keep -1 + 0.5 N.
+  - c) Measure again at 1,000 fights first.
+- **Default:** c
+
+**ENG38-1. Skills that name their target** · Decide · Engine · asked 2026-11-09
+- All other target picks are random now (Reach a coin flip; ties random everywhere). Some skills' own text names who they hit: Healing and Herb Refinery (most wounded), Cure (most envenomed), Repair, Berries, Nursing, Rocket and Hype (most Attack), Grant (nearest), the bosses' Thistle Prick, Undertow, Root Grip, Lodge Repairs. Their ties are random; the rule stays.
+  - a) Keep the named rules.
+  - b) Make them random too (texts change).
+- **Default:** a
+
+**UI41-1. How many NEW! cards a map** · Decide · Map lists · asked 2026-11-09
+- Today's target (THEME6-1, yours): 10 NEW! at Map 2, down to 8 at Map 20. Claude suggests fewer: 3 signature skills a map on 2 cards each, plus 2 plain bodies = 8. Maps 0-2: 10 (they teach the basics); Maps 3-20: 8. Your per-map number box overrides either.
+  - a) 10 at Maps 0-2, 8 at Maps 3-20 (Claude).
+  - b) Keep 10 falling to 8 (THEME6-1).
+- **Default:** a
+
+**UI39-1. Retire Cut / Keep?** · Decide · UI · asked 2026-11-09
+- List cards in Map cards now carry two picking systems: the old ✂ Cut / Keep (with its '10/10 new, 5/5 carried' count) and the new Yes / No.
+  - a) Retire Cut / Keep; Yes / No only.
+  - b) Keep both.
+- **Default:** a
+
+**UI39-2. Old Carried / Unique pill** · Decide · UI · asked 2026-11-09
+- A list card's old Carried / Unique pill can contradict the group it sits in (e.g. Box Turtle on Map 5 says 'Carried' inside NEW!).
+  - a) Hide the old pill in this view.
+  - b) Keep it.
+- **Default:** a
+
+**BAL32-1. Canon Poison price** · Decide · Balance · asked 2026-11-09
+- The 800-fight run moves the anchor Poison from 2.38·N^0.98 to 2.72·N^0.805 (2.72 / 4.75 / 6.59 at N 1-3); Venomous follows. Three Maps 0-20 cards now read just over budget (Bee Sentry 1.02, Gallery Orb-weaver 1.00, Walrus Icebreaker 1.01), held for your card pass.
+  - a) Accept the new Poison price.
+  - b) Keep Poison fixed at its old price; Venomous the same.
+- **Default:** a
+
+**BAL32-2. Damage over time cheaper at N 2-3** · Decide · Balance · asked 2026-11-09
+- On the mean over bodies, Decay, Desecrate, Toxin, Wither, Greater Poison, Strangle and Constrict were over-priced at N 2-3 (e.g. Toxin 10 → 6.1 at N2). Only Breach and Perforate are clearly under-priced (raised). BAL31's 'under-priced' reading used the best body.
+  - a) Keep the mean-based prices (applied).
+  - b) Only raise; never lower.
+- **Default:** a
+
+**BAL32-3. Hemorrhage price** · Decide · Balance · asked 2026-11-09
+- Hemorrhage gains about 0 from bleeding allies in the deck (0.02), so its enabler price is 0. With Bleed on the same card it gains 2.11; times the 23% Bleed deck share that would be 0.49.
+  - a) 0 (applied).
+  - b) 0.49.
+- **Default:** a
+
+**UI38-1. Map 0-1 Carried pool is short** · Decide · UI · asked 2026-11-09
+- Map 0 has no earlier main map, and Map 1 can only carry Map 0's 17 cards, so neither reaches 20 Carried prospects.
+  - a) Leave them short.
+  - b) Count Base / Tutorial cards as Carried there.
+- **Default:** a
+
+**UI38-2. Side-map cards in Prospects** · Decide · UI · asked 2026-11-09
+- Cards on a map's own side-map lists are hidden from its Prospects, even when they fit or Claude picked them (e.g. archerfish on Map 5).
+  - a) Keep hidden until side maps are designed.
+  - b) Show them as NEW! candidates.
+- **Default:** a
+
+**UI38-3. Family cap on Claude's picks** · Decide · UI · asked 2026-11-09
+- Proposed cards stop at 2 per animal family in a group. Claude's picks, Maybe cards and list cards ignore the cap (e.g. Map 5 has 3+ crocodiles).
+  - a) Apply the cap to Claude's picks too.
+  - b) Cap proposals only.
+- **Default:** a
+
+**BAL31-1. Budget rule: one price per skill** · Decide · Balance · asked 2026-11-08
+- Two skills on one card are worth about the sum of their prices plus a flat +0.5 (73% of 357 pairs within 1 point). Per-skill pair terms predicted worse. Real combos (Guardian + defence, Swarm + Twin Strike, Poison + Pounce) and clashes (Reload + Sweep) are few.
+  - a) One price per skill, mean over bodies, no pair table; flag combos by hand.
+  - b) Also add +0.5 for a card's second skill.
+  - c) Keep looking (phase 4, about 2 h).
+- **Default:** a
+
+**BAL31-2. On-hit rider prices** · Decide · Balance · asked 2026-11-08
+- Damage-over-time riders are under-priced 1.5-3x (Bleed, Breach, Perforate, Decay, Toxin, Poison…). Arson, Sabotage, Pickpocket, Sleep, Stagger, Stun on Hit and Tangle barely change with N. Weaken, Stun on Hit, Tangle and Constrict are over-priced at N 2-3.
+  - a) Re-price: raise damage over time, price the flat ones flat (feeds a BAL29-style update).
+  - b) Re-measure at 800 fights with all bodies first (about 2.5 h).
+  - c) Leave prices.
+- **Default:** b
+
+**BAL31-3. Price of enablers** · Decide · Balance · asked 2026-11-08
+- Brittle, Hemorrhage, Disarm, Detonate, Pulverise, Expose, Web and Pry are worth under 1 point alone; they pay off only with a partner.
+  - a) Price near zero.
+  - b) Price at the gain they give their usual partner.
+  - c) Price near zero, and flag the pair on the card budget.
+- **Default:** c
+
+**FIX10-1. Cormorant: over budget at Map 0** · Decide · Cards · asked 2026-11-08
+- The Cormorant (3/7, Reach) is a Pack 1 card on the Gannet Cliffs list. Pack 1 drops from Map 0, so its budget is Map 0's: 17 against N 16.72 (ENG37 had written Map 3 by hand, where it fits). It is held off the budget check until you choose.
+  - a) Trim it to 3/6 (16, fits Map 0).
+  - b) Make it a Gannet Cliffs fight reward (Map 3; fits as it is).
+  - c) Keep 3/7 over budget.
+- **Default:** a
+
+**UI37-1. Prospects: what counts as Carried** · Confirm · Map lists · asked 2026-11-08
+- A card is Carried on a map when an earlier main map gives it: you flagged it Yes there, or you have not flagged it there and it is on that map's list today. A No there takes it away. Side-map lists and SPECIAL never count. Keep this rule?
+  - a) Keep it.
+  - b) Count only your Yes flags (unflagged list cards stop counting).
+- **Default:** a
+
+**BAL28-1. The Canopy Bower makes The Canopy harder** · Decide · Brambles · asked 2026-11-08
+- Its +1/+2 goes to the CPU's own units: every Canopy deck is Rainforest / Savanna. After BAL28's retune (200 games; targets 90/80/70/60/40): as shipped 5.5/52/37/13/8.5%; Rainforest only +1/+3 13/73.5/54.5/17/22%; no ability 14.5/73.5/64/49/26%. No deck, leader or Shield move closes it.
+  - a) The CPU's Bower has no ability on The Canopy; players keep the buff. Claude retunes.
+  - b) Rainforest only, +1/+3 (CONTENT18-3 b).
+  - c) Keep it; The Canopy stays hard.
+- **Default:** a
+
+**BAL28-2. 14-A-1 Dart Frogs cannot reach 90%** · Decide · Road · asked 2026-11-08
+- Its list allows only 10 legal decks (BAL28 tried all): Hoopoe Herald, Weaver Bird and Pangolin Roller fill 11+ of 16 slots (K14 caps the rest at 1 each). Best: 5.5% with the Bower, 15.5% on a plain bramble.
+  - a) You widen its list or its copy rules; Claude retunes.
+  - b) Swap it with a later Canopy fight's slot.
+  - c) Leave it.
+- **Default:** a
+
+**BAL29-1. Apply the skill re-price (groups A and B)?** · Decide · Skill prices · asked 2026-11-08
+- From the skill ladder, at the mean worth (the unit the table already uses). Raise 23 skills (Delivery, Inspiring, Pickpocket, Almanac, Fork, Twin Strike...) and cut 11 (Recoil becomes a drawback, Weaken 2, Trap, Ambush, Nova...). On Maps 0-20, 10 cards would leave their budget and need a 1-2 point trim (4 of them Delivery cards). Context skills and skills changed since the measure are not touched.
+  - a) Apply A and B, then refit the 10 cards.
+  - b) Apply A only (9 cards to refit).
+  - c) Wait for the re-measure of the changed skills.
+- **Default:** a
+
+**BAL29-2. Price skills at the mean or the best body?** · Decide · Skill prices · asked 2026-11-08
+- The ladder reads two numbers. The mean (over all Attack/Health splits) matches today's table and canon. The best (the split that suits the skill most) is about 1.7x higher. Pricing at the best would push 42 Maps 0-20 cards over budget (21 today) and would mean re-pricing every skill. Shooters and poison read under on the mean but over on the best.
+  - a) Keep the mean; show the best as a warning.
+  - b) Move to the best.
+  - c) Halfway between the two.
+- **Default:** a
+
+**CONTENT18-1. Shooters: one per element, on no map** · Confirm · Cards · asked 2026-11-08
+- Nine ranged cards, one per element: five existing unused cards (Acorn-pelter Squirrel, Firefly Swarm, Icefletch Fox, Snapgun Shrimp, Archerfish) and four new Commons (Adder, Elephant, Fruit Bat, Glow-worm). Water, decay and magic have no Bolt skill, so those three shoot 1 damage of their element before they swing. Stone and metal get none: the engine treats them as physical.
+  - a) Keep the nine as they are.
+  - b) Add Water / Decay / Magic Bolt skills later (ENG) and move the three onto them.
+  - c) Swap some cards.
+- **Default:** a
+
+**CONTENT18-2. Star paths are the Wildpaths** · Confirm · Progression · asked 2026-11-08
+- No system was called star paths, so the card marks went on the Wildpaths (the three Skyrim-style trails from Map 21). Each trail has one card mark at its third step (15 points): The Root gives The Thistle Baron (Heroic), The Thorn the Ironmaw Warwolf (Epic), The Bloom the new Bumblebee Queen (Epic). The Codex pill says Star path.
+  - a) Yes, the Wildpaths are the star paths.
+  - b) Rename the Wildpaths to Star paths.
+  - c) Star paths are something else: say what.
+- **Default:** a
+
+**CONTENT18-3. The Canopy Bower** · Confirm · Brambles · asked 2026-11-08
+- The Canopy's new bramble: 26 Health, Epic; every Rainforest or Savanna unit its owner plays gets +1 Attack +2 Health. The Canopy's five fights defend it now (was the Acacia Kraal). Players get it after The Canopy's boss. Fields stay High Canopy, Spring Rain and Old Woods.
+  - a) Rainforest and Savanna, +1/+2.
+  - b) Rainforest only, +1/+3.
+  - c) Other numbers.
+- **Default:** a
+
+**ENG37-1. Reach: which neighbour it strikes** · Confirm · Engine · asked 2026-11-08
+- With nothing opposite, a Reach unit now strikes an enemy in the lane beside it instead of the bramble. When both neighbours hold a unit it strikes the one with less Health; a tie is a coin flip. Taunt still draws it.
+  - a) Less Health first.
+  - b) A coin flip always.
+  - c) A Flyer first, then less Health.
+- **Default:** a
+
+**ENG37-2. Reach price after the rework** · Decide · Balance · asked 2026-11-08
+- Measured after the rework: about 0 (-0.18, range -0.94 to 0.53); before it measured 0.52. Hitting a unit beside it instead of the bramble trades chip damage for board damage. The price is still 0.52; the Cormorant is fitted with it.
+  - a) Keep 0.52 and re-measure on the flyer maps.
+  - b) Price Reach at 0 (Reach cards get about half a point more budget).
+- **Default:** a
+
+**ENG37-3. The Gannet Cliffs Reach card: Cormorant** · Confirm · Cards · asked 2026-11-08
+- A Common 3/7 Cormorant (cost 0, Wait 1, Reach only) holding a sharpened stick from its nest. A ground bird, so it answers the cliffs' Flyers. On the Gannet Cliffs list as a pack card. Art prompt ready; art not drawn yet.
+  - a) Keep it.
+  - b) Make it Uncommon (3/8).
+  - c) A different animal (name it).
+- **Default:** a
+
+**ENG37-4. Shell after attacking: name and price** · Confirm · Engine · asked 2026-11-08
+- The card reads "Shell 2: After it attacks, +2 Armor until the round ends." It is a Shell setting, not a new skill. A quick measure put it at about twice a plain Shell (it comes up every round it swings), so it costs 2.15 x Shell.
+  - a) Keep the name Shell.
+  - b) Call it Retreat N.
+- **Default:** a
+
+**ENG37-5. Armoured Shield: whose Shield counts** · Confirm · Engine · asked 2026-11-08
+- Shield 4 with Armor 1 gives +1 Armor while any Shield is left on the unit, its own or one an ally gave it. It goes when the Shield breaks. Price: Armor's price x how long the Shield lasts (Shield 4 + Armor 1: +1.17).
+  - a) Any Shield on it.
+  - b) Only its own arrival Shield.
+- **Default:** a
+
+**DES2-1. Pressure (Kelp Mangroves)** · Decide · Design · asked 2026-11-08
+- Your version (2 Armor-ignoring damage to every unit a rise, +1 Armor to everyone) kills swarms and tokens and, after two rises, leaves 1-2 Attack units dealing 0: fights stall and no deck owns it. Tuned: 1 damage a rise, at most 3 rises a fight, Armor only for Tide / Pressure units, deep water doubles it.
+  - a) Tuned version.
+  - b) Your version as written.
+  - c) Park Pressure; Map 9 picks from the other candidates.
+- **Default:** a
+
+**DES2-2. Simpler card names, Maps 0-20** · Decide · Cards · asked 2026-11-08
+- 76 cards on Maps 0-20 renamed to plain animals (Pyrenean Desman to Water Mole, Peregrine Stooper to Falcon, Mangrove Monitor to Mangrove Lizard ...); Tasmanian Devil moves to a later map. Ids stay; each rename re-keys the 12 language packs and art prompts. List in the skill plan, section 4.
+  - a) Rename all as listed.
+  - b) You strike the ones to keep, then rename the rest.
+  - c) Keep the names.
+- **Default:** b
+
+**DES2-3. Duplicate skills** · Decide · Design · asked 2026-11-08
+- 15 groups do nearly the same thing (many deaths: Requiem, Dirge, Carnage, Tally; many units: Muster, Beset, Throng ...), 158 cards. Exploit already is your Vulnerable (+1 a hit, a token used per hit): its tokens would read Vulnerable and the old Vulnerable action reads Shock.
+  - a) Merge all 15 groups as parameters (ENG35) and rename Exploit to Vulnerable.
+  - b) Only the word-for-word ones (Stockpile, Timber, Ice Arrow, Darksight, Tangleweed) and the Vulnerable name.
+  - c) Leave them.
+- **Default:** a
+
+**DES1-1. Skills a side map teaches first** · Decide · Design · asked 2026-11-08
+- Six skills show up on a side map before the main map that owns them (Rage, Web, Bulldoze, Herbalist, Ambush, Mighty). The new-skill count follows the main road only, so the main map still counts them as new.
+  - a) Allow it: the side map is a preview; the main map keeps it as a signature.
+  - b) One home per skill: move the side map's copy off (the side map gets its own 0-1 skill).
+- **Default:** a
+
+**DES1-2. What makes a skill a map's signature** · Decide · Design · asked 2026-11-08
+- Today 17 of 21 main maps have no new skill on 2+ of their cards, so no strategy stands out. Proposed rule: a signature sits on at least 2 of the map's cards, one of them a card the player can win there. Fixed by adding carriers (skill edits or out-of-play cards), not new skills.
+  - a) 2+ carriers, one winnable.
+  - b) 3+ carriers.
+  - c) One carrier is enough if it is a reward.
+- **Default:** a
+
+**DES1-3. Shooters for Maps 0-10** · Decide · Cards · asked 2026-11-08
+- No main map before Eyrie Heights (Map 11) has a ranged unit on its list. Nine out-of-play shooters fit those maps by animal (Acorn-pelter Squirrel Map 0, Quill-flinger Porcupine Map 1, Shell-drop Gull Map 2, Electric Catfish Map 4, Reed-dart Bittern Map 5, ...), plus your Reach spear card for Gannet Cliffs.
+  - a) Place one per map as proposed (re-fit by the budget, then a road measure).
+  - b) Only the Reach card for now.
+  - c) Leave ranged for later maps.
+- **Default:** a
+
+**BAL27-1. The Canopy: its bramble and its rain** · Decide · Road · asked 2026-11-08
+- Not the level. The Canopy borrows Savanna Reaches' Acacia Kraal (first unit +3 Attack); a plain bramble lifts 14-A-2 30 -> 80%. Spring Rain (heal 2 a round) keeps its cheap walls (Hoopoe Herald 2/12) up: plain bramble, no fields: 14-A-1 0 -> 27.5%. No deck or Shield move helped. A fight can already pick its own bramble (as 0-4 does).
+  - a) Its fights defend a plain bramble, then Claude re-tunes them.
+  - b) a) and drop Spring Rain (High Canopy stays).
+  - c) You re-tune its list (Hoopoe Herald); keep it a hard optional map.
+- **Default:** a
+
+**BAL27-2. Fights still more than 20 off** · Decide · Road · asked 2026-11-08
+- Two tune rounds found no deck, leader or Shield move 2+ points nearer (200 games) for 14-6 56.5% (target 65), 5-4 64.5% (72) and 3-5 56% (66); the Old Bramble's 0-B-1 72% (90) and 0-B-2 62.5% (75) have none either. Already yours: 1-3, 1-4, 2-1, 14-1, 14-5, 19-A-7, 19-A-8, The Canopy.
+  - a) Add them to BAL21-1's list: you re-tune cards or lists, Claude re-measures.
+  - b) Leave them.
+- **Default:** a
+
+**BAL27-3. Gatorback Swamp retuned** · Confirm · Road · asked 2026-11-08
+- BAL21 and BAL26 left Map 5 alone while you edited it. BAL27 retuned its decks (no card or list touched), 40 games: 5-1 82.5 -> 92.5%, 5-2 50 -> 75%, 5-3 45 -> 60%, 5-5 22.5 -> 62.5%, 5-7 20 -> 37.5% (Shield 15 -> 0). Map 5: 2 -> 5 of 7 in band.
+  - a) Keep.
+  - b) Undo the Map 5 changes (your edit is still coming).
+- **Default:** a
+
+**ENG36-1. Hoard: converted values or literal ones?** · Decide · Cards · asked 2026-11-08
+- Hoard N now gives +N/+N for each Lumber you hold. To keep the two cards as strong as before (in stat points) they became Tax-Collector Teal Hoard 0.75 (was 1: +1 Attack a Lumber) and The Magnate Duck Hoard 0.25 (was 3: +1 Attack per 3 Lumber). The literal values (Teal 1, Duck 3) would make both much stronger (Duck +3/+3 a Lumber).
+  - a) Keep the converted values (0.75, 0.25).
+  - b) Use the literal values (1, 3) and re-check their budget.
+- **Default:** a
+
+**ENG36-2. Status Resist: minus 50 points** · Confirm · Engine · asked 2026-11-08
+- Your rule "50% (if already 50% then 0%)" is built as: Resist takes 50 points off a status's chance to land. A sure status lands half the time; a 50% or rarer one (Stun on hit's 1 in 3, Paralyze) never lands. Weakness adds 50 points. Damage over time (Venom, Bleed, Burn ...): Resist halves each tick, rounded down.
+  - a) Keep minus 50 points.
+  - b) Halve the chance instead (1 in 3 becomes 1 in 6).
+- **Default:** a
+
+**ENG36-3. Summons at their summoner's level: the curve** · Confirm · Engine · asked 2026-11-08
+- Summons now use the normal level curve. A Log Wall (0/4 at Level 1) is 0/5 at Levels 4-6, 0/7 at 7-9, 0/8 at Level 10. Your example said a Level 10 Bulwark wall is 0/5. Bulwark's price is now 6.65 x N^0.47 (BAL30, ENG33-4).
+  - a) Keep the normal curve (0/8 at Level 10).
+  - b) A gentler summon curve (about +1 Health per 4 levels: 0/5 at Level 10).
+- **Default:** a
+
+**CONTENT17-1. Place the 20 new Claude-pick cards?** · Decide · Cards · asked 2026-11-07
+- 20 new cards are on no list yet. They include the yeti hunters (Yeti Tracker, Icefletch Fox, Yeti Snarer), the bog healers (Peat-smoke Shaman, Mossmother Newt), the Trident Caiman and 14 more. Each is within budget for its proposed map. Each map's Claude New section shows them under theme headings, so you can swap a theme in.
+  - a) I place them from the Map cards window.
+  - b) Claude puts each on its proposed map's list.
+  - c) Keep them as suggestions only.
+- **Default:** a
+
+**CONTENT17-2. Existing picks over budget for their new map** · Decide · Balance · asked 2026-11-07
+- 28 of the 250 existing cards Claude suggests would be over budget on the map they are suggested for. Most are 100-110% of N; the worst are the Pika Hoarder (126% on Gannet Cliffs) and the Subterraneaner (125%). The new cards are all within budget. No existing card was changed.
+  - a) Re-fit a card by formula when you place it (the usual re-fit step).
+  - b) Drop the over-budget cards from the picks.
+  - c) Re-fit all 28 now.
+- **Default:** a
+
+**CONTENT17-3. Art for armed creatures** · Decide · Art · asked 2026-11-07
+- The new prompts carry gear in the jaws or strapped on, and name it plainly: a three-pronged fishing fork, a rope, weighted cord, icicles in a strapped bundle. They avoid weapon words. Card names may still say Trident, Harpooner or Slingrat. The art is not drawn yet; it needs your computer.
+  - a) Keep this wording.
+  - b) Avoid weapon words in card names too (rename).
+  - c) Allow some weapon words in prompts from Map 21 on.
+- **Default:** a
+
+**CONTENT17-4. Maps 21+: animals with gear and culture** · Decide · Design · asked 2026-11-07
+- From Map 21: peoples with gear, like temple crocodiles, the yeti hunters and their yeti, and ice-arrow archers. About 1 card in 4 on a 21+ list would be ranged; on Maps 0-20 today it is 16 of 276. Concepts only: docs/design/armed-creatures-2026-11-07.md (18 cards).
+  - a) Yes: about 1 in 4 ranged from Map 21.
+  - b) Yes, but fewer ranged (about 1 in 6).
+  - c) Not yet.
+- **Default:** a
+
+**ENG35-1. Fused skills: the parameter shape** · Confirm · Engine · asked 2026-11-07
+- Each skill family is one key: true (default), a plain value ("almanac": 4), or named parts: "almanac": {"v": 4, "gives": {"evasive": true}}, "nocturnal": {"v": 2, "hp": 1}, "tide": {"gives": {"flood": ..., "ebb": ...}}. 53 families, 28 cards folded, fights and prices unchanged. Old keys still read.
+  - a) Keep this shape.
+  - b) Shorter arrays instead ("nocturnal": [2, 1]), harder to read.
+- **Default:** a
+
+**ENG35-2. Fuse more pairs that differ only by a setting?** · Decide · Engine · asked 2026-11-07
+- Still separate skills: Delivery and Delivery every round; Arrow and Fire Arrow (damage type); Evolute, Evolute Alpha and Omega; Supreme and Supreme Tide. Fusing them changes keys the editor and pricing use, so it needs its own check.
+  - a) Leave them separate.
+  - b) Fuse Delivery / Delivery every round next.
+  - c) Fuse all four pairs.
+- **Default:** a
+
+**ENG35-4. Shot riders: drop them from cards?** · Decide · Cards · asked 2026-11-07
+- The editor now offers only Arrow, Fire Arrow and Fire Bolt; the nine riders (– bramble, – venom, – bleed on each) are hidden parameters. One card uses one: Balloon Archer, Arrow 2 – bramble (shoots the enemy bramble). It plays as before.
+  - a) Keep Balloon Archer's rider.
+  - b) Drop it: plain Arrow 2 (needs a budget re-check).
+- **Default:** a
+
+**ENG35-3. Sunthroat Courier: Esprit's Health part alone** · Confirm · Cards · asked 2026-11-07
+- Sunthroat Courier has only Esprit's Health part (+0/+1 when a Kin ally arrives), no Attack part. The fold keeps it exactly: "esprit": {"v": null, "hp": 1}. It plays as before.
+  - a) Keep as it is.
+  - b) Make it plain Esprit +0/+1 ("esprit": {"v": 0, "hp": 1}), same play.
+- **Default:** a
+
+**ENG34-1. Reach and Boomerang swings: melee riders?** · Decide · Engine · asked 2026-11-07
+- A Reach or Boomerang swing now counts as ranged for dodges: Canopy Cover dodges a Reach swing 1 in 2, as it does a Boomerang's. Claude kept a unit's own swing carrying its Bleed, Venom and other riders, ranged or not.
+  - a) Keep: the swing always carries them.
+  - b) A ranged swing carries only ranged effects (Fletcher), not Bleed / Venom.
+- **Default:** a
+
+**ENG34-2. Effects left on the swing only** · Decide · Engine · asked 2026-11-07
+- Every melee hit (Cleave, prongs, Pounce, Ambush, Counterattack, a Parasite's feed) now carries Bleed, Venom, Daunt, Breach, Leech, Decay, Corrode, Toxin, Weaken, the status rolls and On Hit, and Thorns answers them. Kept on the swing alone: Wave, Dragon Lightning, Electricity, Chain Lightning, Swipe, Overwhelm, Momentum, Slash & Burn.
+  - a) Keep those on the swing.
+  - b) Every melee hit for those too.
+- **Default:** a
+
+**ENG34-3. Fletcher: which ranged hits** · Decide · Balance · asked 2026-11-07
+- Fletcher and Weapon Master now add to every single-target ranged shot: arrows, bolts and spits, Spitfire, Snipe, a thrown banana, Rocket's main hit, Missile, Deal damage. Not area skills (Fireball, Earthquake, Tsunami, Skyfall). The Fletcher's Eye perk stays on Arrow.
+  - a) Keep.
+  - b) Area skills too.
+  - c) Back to arrows only.
+- **Default:** a
+
+**ENG34-4. Edge-case classifications** · Confirm · Engine · asked 2026-11-07
+- Charge: none (its action decides; Deal damage is ranged). Sentry: ranged (a skill hit). Gash and Render: melee, but no damage, so they carry nothing. Earthquake, Nova, Landslide, Tsunami: ranged areas. Immolation, Dynamite, Trap: none. Pounce still rolls the skill dodges (Canopy Cover, Mach 1 in 2).
+  - a) Keep these.
+  - b) Change some (say which).
+- **Default:** a
+
+**BAL25-1. Advanced opponents for card power** · Decide · Balance · asked 2026-11-07
+- Decks of only top-40% cards held the median card at 19%, not 50. Claude picked a mix: 5 top-40% cards (one or two strong cards) + 15 from every Maps 0-20 card. Median now 47 (docs/balance/bal25/adv-calibration-2026-11-07.json).
+  - a) Keep the mix.
+  - b) 20 top-40% cards (median 19).
+  - c) 20 cards from the top 75% (median 46.5).
+- **Default:** a
+
+**BAL25-2. Which cards are Faction-Starter** · Decide · Balance · asked 2026-11-07
+- Faction-Starter (balancing only: Level 0, one rank below Starter) now covers the 22 Starter-rarity faction cards with no obtain map. Three starting faction cards keep their rarity: Otter Guard and Fleetfoot (Uncommon), Tunnel Ant (Rare). Faction-Starters still read -14 for their budget on average.
+  - a) Keep the 22.
+  - b) Add the three.
+  - c) Make Faction-Starter weaker still in the fit.
+- **Default:** a
+
+**BAL25-3. Show "for its budget" on cards** · Decide · Balance · asked 2026-11-07
+- Each card's power minus what its N predicts is now in the build (CARD_POWER.fb), not shown yet. N explains little of power (r2 0.10): Lumber 2 cards read -12, Lumber 3+ -18, Lumber 1 +7. Flagged, no card changed.
+  - a) A UI package shows "For its budget +N" beside Power (editor, Map cards window).
+  - b) It replaces Power.
+  - c) Look at the budget's Lumber term first.
+- **Default:** a
+
+**BAL26-1. Brood moved Eyrie Heights** · Decide · Road · asked 2026-11-07
+- ENG32's Brood (1/1 copies, no Swarm) weakened the Map reference of Maps 10-11 (Wolf Spider Mother x4): with the old Brood the Map 11 fights read 10-20 points higher (200 games). Guardian and Dive changed nothing there. BAL26 retuned the fights to the weaker reference.
+  - a) Keep: the fights now fit the reference as it plays.
+  - b) Swap Wolf Spider Mother out of the Map 10-11 reference deck, then re-tune those fights.
+  - c) Re-price or re-tune Brood.
+- **Default:** a
+
+**BAL26-2. More fights their own list cannot fix** · Decide · Road · asked 2026-11-07
+- No deck, leader or Shield move brought these 2+ points nearer (200 games): 7-6 66% (target 40), 19-A-3 55% (83), 18-A-9 21% (40), 19-A-10 25% (40), 20-A-1 72% (88), 2-2 64% (80), 14-2 70% (85), 2-A-5 51% (66).
+  - a) Add them to BAL21-1's list: you re-tune cards or lists, Claude re-measures.
+  - b) Leave them.
+- **Default:** a
+
+**ENG33-1. Smelly: what should it do?** · Decide · Skills · asked 2026-11-07
+- Smelly is for animals that ward off predators by smell (skunk, stink bug, hoopoe). Stench already exists (-1 Attack tokens on enemies facing it), so Smelly should differ. a) Enemy units with more Attack than it won't swing at it; they hit a neighbour or the bramble. b) The enemy unit facing it has -N Attack while it faces it (an aura, nothing to wash off). c) A unit that kills or devours it is Nauseous and skips its next turn (pairs with Poisonous). Claude suggests a.
+  - a) Predators won't attack it
+  - b) -N Attack to the unit facing it
+  - c) Its killer skips a turn
+
+**ENG33-2. Undead on real undead: keep the comeback?** · Confirm · Skills · asked 2026-11-07
+- Ordinary animals now have Thanatosis. Real undead (Cinder Skeleton, Ember Revenant; none on Maps 0-20) keep Undead. Claude kept its comeback (once, as a token) and added the undead status to the skill (heals hurt it, a cure makes it Bleed, greyed Health), so their budgets and the Restless Dead boon are unchanged. Or Undead could be the status only.
+  - Keep: comeback + status
+  - Status only (no comeback)
+
+**ENG33-3. Thanatosis: Claude's calls** · Confirm · Skills · asked 2026-11-07
+- While it plays dead it can't act and single-target swings, shots and skills can't find it (True Sight neither); skills that hit every unit still reach it, and at 0 again it dies for good. Its statuses are cleared so a tick can't finish it. Phoenix Mushrooms (a fungus) had Undead and got Thanatosis too. Priced 2.0. Also: Poison Bolt's label was "Venom", the counters' name now, so it reads "Venom Spit" (ENG9-3 had no "Spit").
+  - Keep these
+  - Untouchable while playing dead
+  - Give Phoenix Mushrooms something else
+
+**ENG33-4. Rename budget moves (Venomous, Bulwark)** · Confirm · Balance · asked 2026-11-07 · decided 2026-11-08
+- The four old-Venomous cards now carry Venomous at the same N, which is priced a little lower: Platypus Spur 97.7% -> 94.2%, Water Shrew 91 -> 88.1, Banded Sea Krait 96.5 -> 93.1, Giant Water Bug 85.4 -> 81.7. Log Walls were priced 3.5 a wall: Bulwark 2 is unchanged (Ancient Sloth Titan 73%), Bulwark 1 is one wall (Muskrat Lodgekeeper 62.5% -> 53.1%). No card re-fitted.
+  - Keep, no re-fit
+  - Re-fit these cards
+  - Walls 0/6 and Bulwark 1 gives two
+
+**BAL24-1. When is a map's weak deck TOO STRONG?** · Decide · PRO fights · asked 2026-11-07
+- N-SK gets TOO WEAK when the Map reference beats one of its PRO / BPRO decks over 85% (your rule). For N-WK I chose the mirror: TOO STRONG when it wins under 50% against a weak deck (a practice fight you lose more than you win). Today: 14-A-WK (28%) and 2-WK's WPRO-2 (45%).
+  - a) Keep 50%.
+  - b) 15% (the literal mirror of 85%; almost never fires).
+  - c) 70%.
+- **Default:** a
+
+**UI29-1. Pack editor: marks only, or apply them live?** · Decide · Packs · asked 2026-11-07
+- The 📦 Pack editor shows every pack, Starter, Base and the faction pools with CONTENT16's proposal. Your Cut, ✓ and ✂ marks stay in your browser; Copy my picks / Export all hand them to Claude, who folds them into the data. Should the editor later get an Apply button that writes a pack's adds and cuts to the live pack table (needs the per-pack exclusion list)?
+  - a) Marks only; Claude folds them in.
+  - b) Add Apply (live, admin only).
+  - c) Decide after the first pass.
+- **Default:** a
+
+**ENG32-1. Dive: when it dives** · Confirm · Skills · asked 2026-11-07
+- A diver now dives only when an enemy unit stands opposite it. With nothing opposite it swings at the bramble as usual, because diving would just lose a swing. If the unit opposite dies before the strike, the strike hits the bramble (+ N kept).
+  - a) Keep as built.
+  - b) Dive even with nothing opposite (a turn out of reach, then Attack + N at the bramble).
+- **Default:** a
+
+**ENG32-2. Dive's new price** · Decide · Balance · asked 2026-11-07
+- Priced by the 4-round rule: diving loses a swing (-1.5), and the turn out of reach is now nearly even, because the enemy opposite hits your bramble instead (+0.5). Plain Dive -1, Dive N -1 + 0.5 N. Dive 2 (Puffin Diver, Harbor Seal) goes from 1.77 to 0, so both cards are now under budget.
+  - a) Keep: Dive is a small drawback unless N is 2 or more.
+  - b) Price plain Dive at 0 (+0.5 a point of N).
+  - c) Measure it in the next balance run first.
+- **Default:** c
+
+**ENG32-3. Brood's copies: price and skills** · Confirm · Skills · asked 2026-11-07
+- Brood tokens are now 1/1 copies with every skill of the parent except Brood, and they don't get Swarm. Price 3.2 a token (was 4.28; the old price included the token's Swarm). The copied skills are not priced again, the same as Offspring's and Bloom's copies.
+  - a) Keep as built.
+  - b) Also price the copied skills (the copy's skills x a share).
+  - c) Copy keywords only, not triggers.
+- **Default:** a
+
+**CONTENT15-1. The two Loyal faction cards: keep?** · Confirm · Cards · asked 2026-11-07
+- Built on Loyal, the Sworn Shieldbearer's (the stoat's) skill: on while any leader of your side is on the field. Oathsworn Legionary (Otter): Uncommon, 1 Lumber, Wait 1, 2/13, Loyal - {+1/+2, Armor 1}. Cobalt Talon Honour-guard (Hummingbird): Uncommon, 0 Lumber, Wait 1, 3/4, Flying, Loyal - {+2/+1, Quick}. 90% / 86% of budget at Map 5. The budget prices only the braces' skills, not Loyal's +A/+H (measured near 0). Faction pool; art not drawn.
+  - a) Keep both.
+  - b) Change names, stats or skills (say which).
+- **Default:** a
+
+**ENG30-1. Consecration and Desecration: how the grounds work** · Decide · Skills · asked 2026-11-07
+- There was no Exalted ground yet, so I built both as side-wide grounds at each round start: Consecration N heals every unit on its side N (Undead are hurt); Desecration N deals N curse damage to every enemy unit, on top of Desecrate's cell curses. Several carriers: the largest N. Any of each on the field: both off, field-wide. Prices 3.5 / 5.9 a point.
+  - a) Keep as built.
+  - b) Ground under the carrier's own lane only (and cancel per lane).
+  - c) Several carriers add up.
+- **Default:** a
+
+**CONTENT16-1. Pack zones: which maps each pack covers** · Decide · Packs · asked 2026-11-07
+- Proposed Maps 0-7 (Hedgerow Pouch), 8-13 (Tidemire Chest), 14-20 (Highcrest Case); a submap counts from the map that unlocks it. Map 7 moves to the Pouch (the Chest is first sold on Map 8). The Case starts at 14, not 16: it is sold from Map 13 and the map-end pack turns gold at 14. Today: 0-6 / 7-13 / 14-20.
+  - a) 0-7 / 8-13 / 14-20 (proposed).
+  - b) 0-7 / 8-15 / 16-20.
+  - c) Keep 0-6 / 7-13 / 14-20.
+- **Default:** a
+
+**CONTENT16-2. Add 20 basic cards to each pack** · Decide · Packs · asked 2026-11-07
+- 20 simple, zone-themed cards per pack (60 in all), from the 370 cards nothing gives out today. All fit the budget at the pack's first map; 57 are met in no skirmish, so they become pack-only. Three await a source (Bog Shrew, Kelpborn Otter, Conger Eel). List and reasons: docs/pack-plan-2026-11-07.md.
+  - a) Add all 60.
+  - b) Add them; I'll prune in the Pack editor.
+  - c) Not yet.
+- **Default:** b
+
+**CONTENT16-3. One card per achievement (5% upgrade discount later)** · Decide · Achievements · asked 2026-11-07
+- Each of the 17 achievements gives one copy of its own card (Courier Pigeon for First Victory ... Thunder Lizard for Wyrmslayer), found nowhere else. These are the cards the 5% discount would tag. Today achievements give only random faction cards (8 of them).
+  - a) All 17 as listed.
+  - b) Only the 8 that already give faction cards.
+  - c) Pick other cards.
+- **Default:** a
+
+**CONTENT16-4. Move off-theme pack cards** · Decide · Packs · asked 2026-11-07
+- Tide Spirit (a water spirit, in the Case via the Volcano Lair) to the Chest; Gangrenous Leech, Snapper Hatchling, Caiman Hatchling (swamp cards in the Chest) to the Pouch; the Tasmanian Devil out of the Chest (map review: not a redwood animal; it stays an enemy card). Needs a per-pack exclusion list in the Pack editor.
+  - a) All five.
+  - b) The four moves; keep the Devil.
+  - c) None.
+- **Default:** b
+
+**UI27-4. The new two-skill count everywhere?** · Decide · Skills · asked 2026-11-07
+- Built in the card editor: each skill counts 1, a light one (Flying, Tide, Diurnal, Nocturnal, Crepuscular, Sun-shy, Night-blind, Purblind, plain form) 0.5; over 2 warns. The budget file's count (used by the balance tools and tests) still has the old rule: those four count 0, several of them 1. Move the new count there too?
+  - a) Yes, one rule in bramblewood-budget.js (a balance package re-checks the cards).
+  - b) Editor warning only.
+- **Default:** a
+
+**UI27-1. Check the build stamp pair before a push** · Decide · Tools · asked 2026-11-07
+- The Update loop came from deploys whose version.json was from another build than index.html (8 of the last 30 main commits). The game now copes (Update loads a fresh URL and won't ask twice), and tests/ui27 fails on a mismatched pair. Should merge_pkg.sh and the release steps also stop a push when the pair differs?
+  - a) Yes, add the check to merge_pkg.sh and release.md.
+  - b) The test is enough.
+- **Default:** a
+
+**UI27-2. Budget heading compares B, not Base** · Confirm · UI · asked 2026-11-07
+- Your example read "B = 13.8 < 16.2 = N"; 13.8 was Base, which is always under N at Level 1. Built: the heading compares the card's B (its stats with S, the rule's left side) with N: "Within budget, B = 12.9 < 16.2 = N". Base is in the heading's hover.
+  - a) As built.
+  - b) Show Base in the heading, as in the example.
+- **Default:** a
+
+**UI27-3. Four gated skills stay ?** · Confirm · Skills · asked 2026-11-07
+- Un-gated (UI25-1 b): Nocturnal, Tide, Evasive, Delivery, Diurnal, Taunt, Inspiring, Esprit, Crepuscular, True Sight, Reach, Chrysalis. Frostbite, Fire Arrow, Molting and Stem stay ?: their early cards can't be owned (UI25's count included unobtainable cards). Sonar and Keen Sense keep ENG28's gate unless you own a card with them.
+  - a) As built.
+  - b) Un-gate those four too.
+- **Default:** a
+
+**UI25-1. Skills shown as ? on cards you already own** · Pick · UI · asked 2026-11-07
+- Boomerang no longer shows ? (Otter Centurion, a Map 0 card). Other gated skills sit on cards you can own before their unlock map: Nocturnal (21 cards), Tide (57), Evasive (14), Delivery (8), Diurnal (4), Frostbite (4), Taunt (3), Inspiring (3), Esprit (3), Crepuscular (2), Sonar (3), True Sight (2), Fire Arrow (2), Reach, Molting, Stem, Chrysalis. Un-gate which?
+  - a) Keep all gates.
+  - b) Un-gate every skill on a card the player can own earlier.
+  - c) Un-gate only the common ones (Tide, Nocturnal, Evasive, Delivery).
+- **Default:** a
+
+**CONTENT14-1. The two natural leaders: keep?** · Confirm · Cards · asked 2026-11-07
+- Legate of Rivergate (Otter): Rare, 1 Lumber, Wait 1, 2/9, Natural Leader + Armor 1 + Inspiring 1, 96% of budget. Gold-throat Elder (Hummingbird): Rare, 1 Lumber, Wait 1, 3/7, Natural Leader + Flying + Esprit 1, 96%. Both in the faction pool; art not drawn yet.
+  - a) Keep both.
+  - b) Change names, stats or skills (say which).
+- **Default:** a
+
+**CONTENT14-2. The first Rare slot: which leader, and the hold before it** · Confirm · Cards · asked 2026-11-07
+- The first Rare step of the faction pattern (Map 14+) gives your side's leader. Side "both": the side you hold more faction cards of, ties to Otters. Until that step neither leader comes from a faction pack, a random faction reward or Faction Growth, so the slot really is the first. After it, both are ordinary pool cards.
+  - a) Keep as built.
+  - b) "Both" gets both leaders (two Rare slots).
+  - c) No hold: packs may give a leader earlier.
+- **Default:** a
+
+**ENG29-1. Guardian and dodges: the edge cases** · Decide · Battle rules · asked 2026-11-07
+- Your rule is built: the Guardian takes the attempt; the ally's dodges don't roll, the Guardian's own do. Edge cases: the attacker's own Blind or dark miss still rolls first (no step-in then). Field misses (fog, sand, ash, ice) and Smoke roll against the Guardian. Guardian's price is unchanged: it now loses value beside dodgy allies and gains it with its own dodge.
+  - a) As built.
+  - b) Blind / dark misses also roll after the step-in.
+- **Default:** a
+
+**CONTENT13-1. The Drill Grounds: deck rules and level** · Confirm · Map · asked 2026-11-07
+- The admin-only Drill Grounds hold two faction-pure decks (Otter, Hummingbird), 20 cards, at most 6 different and 4 copies. K14's one-copy rule for non-map cards can't hold for a faction-only deck, and the road's rarity ladder isn't applied (a Royal Guard, two Choirmothers). Both fight at a fixed Level 1, the optimiser's level. Keep?
+  - a) Keep: rules waived there, Level 1.
+  - b) Keep the decks, another level (say which).
+  - c) Cap them at Uncommon and rebuild.
+- **Default:** a
+
+**BAL21-1. Fights their own list cannot fix** · Decide · Road · asked 2026-11-07
+- No deck, leader or Shield move from the fight's list brought these 2+ points nearer (200 games): 1-3 / 1-4 Thistlewood 95% (targets 70 / 60), 2-1 57% (90), 14-1 60% (90), 14-5 41% (70), Basalt Foundry 19-A-7 19% / 19-A-8 24% (68 / 64), The Canopy 0-35% (BAL20-1).
+  - a) You re-tune those cards or lists; Claude re-measures.
+  - b) Leave them.
+- **Default:** a
+
+**BAL21-2. Two PRO decks stay easy** · Decide · PRO fights · asked 2026-11-07
+- 7-PRO-4 (Map reference 90%) and 20-A-PRO-2 (97.5%): no 1-2 copy swap in their pool keeps them 10 copies apart from the map's other strong decks. The other four easy PROs are now 75-81% (2-B-PRO-4 85% at 200 games).
+  - a) Drop the two to replaced.
+  - b) Keep them.
+  - c) A fresh BAL16 search for Maps 7 and 20-A.
+- **Default:** a
+
+**BAL21-3. 7-A-SK's Silver Minnow deck** · Decide · Reference decks · asked 2026-11-07
+- Not a wrong-map pick: it is the Mycelium Deep's own ladder deck 3 of 10. Garden Snail is on that map's list; Silver Minnow is a Base card every player holds. The ladder samples the map-true pool, which holds every Base card, so weak ladder decks look unlike the road deck.
+  - a) Keep the rule.
+  - b) Ladder decks only from the map's list plus the road deck's cards (rebuild the ladders).
+- **Default:** a
+
+**BAL21-4. Frost freezing on every hit** · Decide · Engine · asked 2026-11-07
+- 17-PRO-2 was a wall for Reference-2 before ENG27/28 too (7.5%). Of ENG28's rules only frost moves it: with no Freeze per frost hit it reads 17% instead of 8% (200 games); fire, poison and darkness change nothing. Its deck is retuned (21%).
+  - a) Keep ENG28's frost rule.
+  - b) Frost freezes 1 hit in 2.
+- **Default:** a
+
+**BAL21-5. Map reference or progression decks** · Decide · Road · asked 2026-11-07
+- The road is tuned on the Map reference. The five progression decks disagree on some fights: 6-5, 11-6, 14-5, 18-6, 20-8 read 32-44% for them (Map reference 42-75%); 1-3, 1-4, 0-3 read 94-100%.
+  - a) Keep tuning on the Map reference.
+  - b) Tune on the mean of both.
+- **Default:** a
+
+**UI24-1. Editor Phylum: read only or a dropdown** · Decide · UI · asked 2026-11-07
+- Built as asked: Phylum and Type are separate fields, named as the card preview names them (Rodentia, Beast). The Phylum is worked out from the Type and is read only. Alternative: a Phylum dropdown that narrows the Type list (fewer choices, one more click).
+  - a) Read only (as built).
+  - b) A Phylum dropdown that narrows the Type list.
+- **Default:** a
+
+**UI24-2. Card power numbers are from 2026-10-19** · Decide · UI · asked 2026-11-07
+- The editor reads docs/balance/card-balance.json, whose last run is 2026-10-19, before the card pass and the ENG27-28 rule changes. The date shows next to every number. Run the new card power test (BAL21) before you trust it.
+  - a) Wait for BAL21's new run.
+  - b) Re-run the old tool now.
+- **Default:** a
+
+**ENG28-1. Burn: +1 a fire hit, stacking** · Decide · Battle rules · asked 2026-11-07
+- Your rule: fire damage plus 1 Burn. Built: each fire hit from a unit adds 1 Burn; Burn stacks; each counter is 1 fire at a round's start, then falls off. Before (ENG20-1): Burning was set to 2 rounds, refreshed, never stacked. One hit now burns 1 round (was 2); three hits burn 3 (was 2).
+  - a) As built (+1 a hit, stacking).
+  - b) Back to 2 rounds, refreshed.
+- **Default:** a
+
+**ENG28-2. Frost: a Freeze counter on every frost hit** · Decide · Battle rules · asked 2026-11-07
+- Your rule: frost the same pattern. Built: a unit's frost hit (swing, Ice Arrow, Ice spit, a skill) lays 1 Freeze counter (the unit skips that round; it melts at the round's end). Not stacked, not on cold-resistant units; field cold and Hail lay none. Ice Arrow and Ice were 1 in 2, now always, so a unit shot every round is held every round.
+  - a) As built.
+  - b) Shots keep 1 in 2; swings and skills always.
+  - c) Not on a unit that was frozen last round.
+- **Default:** a
+
+**ENG28-3. Darkness and shots: the swing's rule** · Decide · Battle rules · asked 2026-11-07
+- Built: a shot (Arrow and every arrow-like, the spits, Spitfire, Snipe) misses in the dark as the shooter's swing would: Darkness 1 in 4, Pitch Black 1 in 2, Absolute all; Darksight, Nocturnal, True Strike and an Illuminate light see. Keen Sense and Sonar never miss a shot. Seeded; a lit fight rolls nothing. The 50% fallback was not needed.
+  - a) As built.
+  - b) A flat 1 in 2 for every dark level.
+- **Default:** a
+
+**ENG28-4. Mulligan and Offspring: names and Offspring's price** · Decide · Skills · asked 2026-11-07
+- Both built, on no card. Mulligan (-0.1, your price). Offspring N: N copies at half Attack and Health (rounded down), Wait 1, no Offspring. Priced as a share of a second body on the stat terms, like Bloom: 0.5 x 0.85 (a free cell) x 0.75 (Waits a round) = +32% a copy. Not measured.
+  - a) Keep the names and the price.
+  - b) Rename (say the names).
+  - c) Measure Offspring on a carrier first.
+- **Default:** a
+
+**ENG28-5. Default pips: the opt-outs** · Decide · Display · asked 2026-11-07
+- Built: every skill without a pip of its own gets one (icon, number, its text on hover); Poison Barbs is the first. Opted out: Mulligan (acts before the board exists), Leader (its ring), Archer Style (a look), Hatchling and Fodder (the Hatchling chip). Skills with their own pip keep their rules (spent Pounce, Tide off its map).
+  - a) As built.
+  - b) Name more opt-outs.
+- **Default:** a
+
+**ENG28-6. Hover: the printed card** · Decide · Display · asked 2026-11-07
+- Built: a unit's hover shows its printed card (stats at its level, every skill); the live Attack and Health sit in a row under it when they differ. A spent one-shot (Rocket, Fireball, Meteor, Chilli, Delivery, On Ready triggers) stays, struck, tagged used. A skill lost another way (Sequester, a broken skill) is struck without the tag; Irradiation keeps its own list.
+  - a) As built.
+- **Default:** a
+
+**ENG28-7. Sonar and Keen Sense: when they open** · Decide · Display · asked 2026-11-07
+- Built: both read "?" until Map 8 (the first main map with its own Darkness) or until the player enters any dark map or sub-map sooner (Smugglers' Grotto). In a fight their pips show only while it is dark (its own Darkness, or a Cast Darkness unit standing).
+  - a) As built.
+- **Default:** a
+
+**ENG27-1. Arrows at Speed 0: after the swings** · Decide · Skills · asked 2026-11-06
+- Owner: arrows are Speed 0, "slower than default", and a plain swing is already 0. Built: inside Speed 0 an arrow goes after every swing (Slow's tie rule). Bolts are 1, Blitz 10, Quick 2 on the swing. A unit with an arrow and a bolt fires all its shots at 1.
+  - a) As built.
+  - b) Plain swings move to Speed 1 (arrows 0, bolts 2).
+- **Default:** a
+
+**ENG27-2. Unfortify: Vulnerable on the bramble** · Decide · Skills · asked 2026-11-06
+- The unit status called Vulnerable is Shocked (x1.5). For the bramble, Vulnerable N is flat: each hit that reaches it deals N more. Unfortify's parts: Vulnerable N, -N Health; bare Unfortify is Vulnerable 1. Fortify gained Armor N. Priced: Armor 2.83 a point, Unfortify -2.83.
+  - a) As built.
+  - b) Bramble Vulnerable as x1.5 too.
+- **Default:** a
+
+**ENG27-3. Mach and Anti-air: the edge cases** · Decide · Skills · asked 2026-11-06
+- Built: Reach and a thrown Boomerang count as ranged (miss Mach 1 in 2). An Anti-air unit, when attacked, is a Flyer (1), not Mach. Its swing at a ground unit does nothing; through an empty column it hits the bramble. Webbed, Pinned, Bound, diving, High Canopy or Ashy: Mach dodges nothing.
+  - a) As built.
+  - b) Anti-air also dodges like Mach (level 2 when attacked).
+- **Default:** a
+
+**ENG27-4. Hype, Grant, Encore: how they pick** · Decide · Skills · asked 2026-11-06
+- Hype N: on play, the N Ready allies with the most Attack act at once (arriving mid-combat: a Fast Forward turn). Grant {skill} N: the N nearest allies, for the fight; a granted On Play does not fire. Encore: once a round; braces are Kill or Bloom's field conditions (Night, Tide, Wind...).
+  - a) As built.
+  - b) Hype picks the adjacent allies instead.
+- **Default:** a
+
+**ENG27-5. Item 24: +3 first unit reads +1?** · Decide · Brambles · asked 2026-11-06
+- Not reproduced. Every bramble ability is flat (castleLeveled adds only Health; ENG24-1). Plains Terrace gives +3 in the engine, on 0-4 at Lv 0, in its texts and on the live main build. +1 was the value before ENG24 (11-04). Where did you see +1 (which screen, map, bramble)? A cached old page would show it.
+  - a) Tell me where; I fix it.
+  - b) It was an old cached page; nothing to do.
+- **Default:** a
+
+**ENG27-6. Blitz, Mach, Anti-air priced by the canon tool** · Decide · Budget · asked 2026-11-06
+- Canon tool, bramble 15, 200 fights, stat yardstick: Blitz 1.44 [0.87, 2.10], Mach 5.74 [4.21, 8.27], Anti-air -5.02 [-7.32, -3.45]. Set in skill-costs.json (Mach as S, Flying-like). Inspiring 1 re-measured at +1 a token: 3.8 (was 5.43 at +2). On no card but Inspiring's.
+  - a) Use the measures.
+  - b) Logic prices.
+- **Default:** a
+
+**ENG27-7. Inspiring cards after +1 a token** · Decide · Budget · asked 2026-11-06
+- Inspiration is +1 Attack a token now. Inspiring 1's price 5.43 -> 3.8 (measured). Cricket Drummer, Meerkat Wayfarer, Otter Flag-Bearer and the other Inspiring cards get budget back; no stats changed.
+  - a) Re-fit them in the next balance package.
+  - b) Leave them under budget.
+- **Default:** a
+
+**ENG27-8. Bare Crepuscular's price** · Decide · Budget · asked 2026-11-06
+- Built: a bare Crepuscular is +1/+0 by day, +0/+1 at night (your ENG23-1). The budget still prices the bare flag at +0/+1 at night: its line is in bramblewood-budget.js (crepPartsOf), outside this package. No card carries a bare Crepuscular, so nothing moves today.
+  - a) Change that budget line next package.
+  - b) Leave it.
+- **Default:** a
+
+**ENG27-9. Where the Crimson Wing Drumcaller is earned** · Decide · Cards · asked 2026-11-06
+- The Hype card: Crimson Wing Drumcaller, Sunfeather hummingbird, Uncommon, 1 Lumber, Wait 1, 3/6, Flying + Hype 1, 96% of budget. In no pack, on no map; art prompt written (docs/art-style-prompts.md).
+  - a) A Sunfeather (hummingbird) faction pack.
+  - b) A skirmish reward on a hummingbird map.
+  - c) Keep it out until the art lands.
+- **Default:** c
+
+**ENG27-10. Where the two new brambles are earned** · Decide · Brambles · asked 2026-11-06
+- Whetstone Rise (every unit you play +1 Attack) and Mossbed Hollow (+3 Health), 22 Health, Rare, open to everyone, on no road fight, as Banner Knoll.
+  - a) Boss unlocks on two maps you name.
+  - b) Keep them open to everyone.
+- **Default:** b
+
+**PVP1-1. The Old Shell as a PvP leader** · Decide · Balance · asked 2026-11-06
+- Building the 30 PvP test decks, The Old Shell won the leader search on 14 of 30, including all three decks over 70% against the field. Its decks average 58.5%. Also: the seeded stranger Ashfall Legion breaks the copy cap (Magma Salamander x3, limit 2).
+  - a) You re-tune The Old Shell in the editor.
+  - b) Claude caps it for PvP only (e.g. not a PvP leader).
+  - c) Leave it; watch real PvP results.
+- **Default:** c
+
+**UI23-1. The map list on a fresh account (item 40)** · Decide · Map · asked 2026-11-06
+- The map list and the World button stay hidden until the world opens: Map 0's reward fight won, or any fight past Map 0 and the Tutorial. That is your 10-12 call ("otherwise its hidden till then"), kept on 10-22. So a fresh Thistlewood shows no list. Show it from the start?
+  - a) Keep it hidden until the world opens.
+  - b) Show the list from the start.
+  - c) Show the list after Tutorial II; keep the World button gated.
+- **Default:** c
+
+**BAL20-1. The Canopy is still a wall** · Decide · Map lists · asked 2026-11-06
+- Not the level: the enemy's Lv 4 is the Map 18 schedule (reference 3.54); at the reference's level it gains 0-6 points. Not the leaders. The cause: its list (cheap Hoopoe Herald 2/12, Weaver Bird 3/6 Tangle, Pangolin Roller) under K14, plus Acacia Kraal. A plain bramble lifts 14-A-2/3 to 66-81%; 14-A-1 and 14-A-5 stay under 10% even then. Fights now 0-28.5% (targets 40-90).
+  - a) You re-tune those cards or the list; Claude re-measures.
+  - b) The Canopy defends a plainer bramble.
+  - c) Leave it a hard optional side map.
+- **Default:** a
+
+**BAL20-2. Savanna boss now easier than its elites** · Decide · Road · asked 2026-11-06
+- 14-8 The Savanna Warlord went 23% -> 54.5% (target 40) with Acacia Giraffe as its leader: nearer its target, but easier than 14-5 to 14-7 (25-45%). No deck or Shield move on the list brings it back down; the elites are walled by Acacia Kraal.
+  - a) Keep it (nearer the target).
+  - b) Put the Dust Hyena leader back (23%).
+- **Default:** a
+
+**ENG26-1. Bloom grows stronger: how copies are counted** · Decide · Skills · asked 2026-11-06
+- Built: each bloom that lands for a side in a fight adds 1 to that side's count; the Nth copy gets +N/+N. Pond Algae 1/7: first copy 2/8, next 3/9 (your example). The side's Bloom units share the count. A bloom waiting for room does not count. Each fight starts at 0.
+  - a) Per side, per fight (built).
+  - b) Per Bloom unit: each unit's own 1st, 2nd copy.
+- **Default:** a
+
+**ENG26-2. Undead: heals hurt, cures bleed** · Decide · Skills · asked 2026-11-06
+- Built: Undead = species or subtype Undead, or back as a token by its Undead skill (not Changelings). A heal deals its amount as damage, even at full Health; its own Regeneration still heals (Obsidian Lich). A cure or cleanse that would take something off gives Bleed instead: the cure's N (Cure 2: Bleed 2), 1 for Renewal or a Cleanse with no number. Nothing to take off: nothing happens.
+  - a) As built.
+  - b) Always Bleed 1.
+  - c) Its own Regeneration hurts too.
+- **Default:** a
+
+**ENG26-3. Bloom's price after it escalates** · Decide · Budget · asked 2026-11-06
+- Measured (canon tool, bramble 15, 1,000 fights, stat yardstick): Bloom {Kill} 1.88 [1.54, 2.23] against a formula price 15.3; Bloom {Day} 7.24 [6.56, 8.04] against 25.7. The price is a bramblewood-budget.js formula, unchanged. Its own escalation (x1.5 on the copy's part) would move Night Algae 102 -> 115%, Pond Algae 97 -> 102%, the other four 2-4 points.
+  - a) Apply the x1.5 (one budget line), no stats changed.
+  - b) Price Bloom from the measure (much lower).
+  - c) Leave it.
+- **Default:** a
+
+**ENG26-4. Leader bramble: defence is Health** · Decide · Brambles · asked 2026-11-06
+- Your +2/+3 reads as the game's Attack/Health, so Banner Knoll gives your Leader +2 Attack and +3 Health as it takes the field (summoned, or a Leader card from the hand). +3 Armor would be far stronger.
+  - a) +2 Attack / +3 Health (built).
+  - b) +2 Attack / +3 Armor.
+- **Default:** a
+
+**ENG26-5. Where Banner Knoll is earned** · Decide · Brambles · asked 2026-11-06
+- Banner Knoll (🚩, 22 Health, Rare) is open to every player now and on no road fight. Two homes with led fights: Savanna Reaches (14-5 and 14-6 have leaders) or Wolfsbane Tundra (17-5 Musk Ox Bulwark is led).
+  - a) Unlocked by beating Savanna Reaches' boss.
+  - b) A Wolfsbane Tundra drop.
+  - c) Keep it open to everyone.
+- **Default:** a
+
+**BAL19-1. Road retune after the fold: which levers** · Decide · Maps · asked 2026-11-06
+- BAL19 retuned 55 road fights toward the curve with decks (own list, K14 no worse per card), leaders (another list card, never added, namesakes kept) and a lower Shield (never above the rule). Not bramble Health (your 11-04 rule) and not bramble abilities (BAL17-1 b). Each change confirmed at 200 games. Road: 86 -> 115 in band, 61 -> 26 beyond 20.
+  - a) Decks, leaders and Shield, as above.
+  - b) Decks only.
+- **Default:** a
+
+**BAL19-2. The Canopy and Savanna Reaches are still walls** · Decide · Brambles · asked 2026-11-06
+- With their weakest legal decks and no Shield, the Map reference still wins 0-30% (targets 40-90). Their bramble, Acacia Kraal (start Lumber 3, first unit +3 Attack), is the wall; yours to re-tune (BAL17-1 b).
+  - a) You re-tune Acacia Kraal, then Claude re-measures.
+  - b) Their fights defend a plainer bramble (Claude picks).
+  - c) Leave them.
+- **Default:** a
+
+**BAL19-3. Too-easy fights with no stronger card on their list** · Decide · Map lists · asked 2026-11-06
+- No legal deck makes these harder: 7-6 The Morel Monarch 57.5% (target 40), 8-8 The Stalactite Warden 52% (40), 1-3 97% (70), 1-4 94.5% (60), 200 games.
+  - a) Claude adds one or two attackers from kin lists, then retunes (as Lilypad Reach).
+  - b) Leave them.
+- **Default:** a
+
+**CONTENT12-1. Your live cards that the proposals or the budget would change** · Decide · Cards · asked 2026-11-06
+- Your 59 live edits (10-29 to 11-05) are now in cards.json. CONTENT12 left them as you set them. Three got no new skill: Old Sturgeon (Relict), Ant Warrior and Fire Ant Raft (Meld {Quick}); Nautilus Drifter and Leafcutter Gardener carry them instead. Over budget as set: Worker Ant 124%, Bee Drone 113% (fit 0/4), Field Vole 111%, Alley Cat 111%, Conch Herald 105%, Soldier Ant 102%, Cypress Root Lurker 101%, Moon Jelly 100% (fit 1/2).
+  - a) Keep yours as set.
+  - b) Claude fits the over ones by the budget.
+  - c) Also add the three skills.
+- **Default:** a
+
+**CONTENT12-2. The Lodge Matriarch (2-A-7): 97% -> 68%, target 40** · Decide · Maps · asked 2026-11-06
+- Lilypad Reach now lists Shoal Shark, Beaver Lumberjack and Marsh Harrier. Her deck took two (95% -> 68% at 200 games). K14 (1 copy of a shared card, 6 in all) stops the search there; her list's own cards are walls.
+  - a) Let 2-A-7 take 2 copies of the three attackers (a K14 exception for this boss).
+  - b) A stronger Lodge Repairs.
+  - c) Leave her at 68%.
+- **Default:** a
+
+**CONTENT12-3. Cold Snap is not softened** · Decide · Early game · asked 2026-11-06
+- After your Map 0 card edits, Frost Vanguard (0-4) plays at 45.8% for the Map reference (600 games, two seed sets; target 45). Cold Snap every 4th round instead of every 3rd read 44.3%: no gain. CONTENT11-4's softening is not needed.
+  - a) Keep Cold Snap as it is.
+  - b) Soften it anyway.
+- **Default:** a
+
+**CONTENT12-4. Clear the folded card_overrides rows ("apply it")** · Approve · Supabase · asked 2026-11-06
+- Every live card row (68: 59 folded now, 9 on 10-26) is in cards.json. supabase/proposed/20261106_clear_folded_overrides_4.sql backs them up and empties them (only rows unchanged since the 11-06 read). It replaces the 10-26 clear, never applied. Rows win over the file until then.
+  - a) Apply it.
+  - b) Not yet.
+- **Default:** a
+
+**ENG25-1. Which skills stay Evergreen** · Decide · Skills · asked 2026-11-05
+- Owner 23:35: unit-own evergreens become passives. Claude's line: Evergreen keeps only skills that reach the field or a whole board: Converge, Moonpull, Earthquake, Tornado, Avalanche, Tsunami, Absolute Zero, Poison Gas, Rainmaker, Nova, Volley, Field Breaker, Warcry. The other 63 (shots, bolts, Pounce, Skyfall, Gash, Regeneration, Reload, Berserk, Twin, Brood, Charge…) are passives. Labels only; no rule changed.
+
+**ENG25-2. Duplicate skills merged** · Decide · Skills · asked 2026-11-05
+- Same rule, two names: Midas Touch -> Felling (Golden Magpie 2, Magnate Duck 3), Puncture -> Breach (Sawfish 2), Stockpile -> Delivery {Lumber} (on no card). Same numbers; old keys still play. A skill and its braced form (Timbered / Timbered {…}, Tally / Tally {…}…) are one '+ Add Skill' entry. Kept apart (they differ): Healing vs Nursing, Meiosis vs Hydra.
+
+**ENG25-3. Immortal's limits** · Decide · Rules · asked 2026-11-05
+- Immortal: on death a token copy (same stats and skills, Immortal too) takes its slot at Wait 2, so it misses a round. A copy that dies in the round it came back stays dead; Nullify, a cage, a sacrifice or an Undead return makes none; the round cap ends the rest. Hydra: Health halving ends every line.
+
+**ENG25-4. Forage as an action; Berries heal 3 every 3** · Decide · Rules · asked 2026-11-05
+- Reading: Berries are one basket rule. A unit holds up to 3; a full basket heals your most damaged other ally 3. Forage N is a trigger action (the unit gathers N Berries). Foraging N gathers N a turn (was 1 a turn, N the heal). Foraging and Forage are on no card.
+
+**ENG25-5. Moonpull's new rule** · Decide · Skills · asked 2026-11-05
+- Owner: 'Moonpull is not very impressive.' New: on arrival the Tide comes in (as before), and while it lives your Tide units' Tide counts double (Tide 1 acts as Tide 2; Tide 2 as 4). Two Moonpulls double once. Moon Jelly is the one card with it.
+
+**ENG25-6. Merge Pearl / Pearl Bed into Delivery {Pearl}?** · Decide · Skills · asked 2026-11-05
+- Pearl N (once, when Ready) and Pearl Bed N (every turn) are Delivery {Pearl xN} and its every-turn form under other names. One difference: a Wait 0 Pearl card pays on play, Delivery at its first upkeep. Giant Clam and Oyster Bank carry Pearl. Merging also moves their price (Delivery's resource discount).
+  - a) Merge: Pearl cards carry Delivery {Pearl}.
+  - b) Keep Pearl and Pearl Bed as their own names.
+- **Default:** a
+
+**ENG25-7. Lit context pips for conditional skills** · Decide · UI · asked 2026-11-05
+- Timbered, Bedrock, Forged, Last Stand, the hand / weather / season states, the threshold skills (Requiem, Tally…), Loyal, Usurper and Liege now have a chip on the card face that lights gold while the condition holds, as Tide's lights blue. The separate gold state badge is gone for them (one pip, not two).
+
+**ENG25-8. Tide's price** · Decide · Balance · asked 2026-11-05
+- Measured in the global mix (few fights have a Tide), Tide 1 is worth 0.31 and Tide 2 0.58; Tide is priced 1.5. ENG25 kept Tide 1 at 1.5 and priced Tide N as 1.5 x N^0.9 (the measured ratio). 98 cards carry Tide; a cut would free budget on all of them.
+  - a) Price Tide by its home maps' Tide share (as Diurnal / Nocturnal are), then re-fit.
+  - b) Keep 1.5.
+  - c) Take the global 0.31.
+- **Default:** a
+
+**BAL18-1. The Lodge Matriarch (2-A-7) cannot be made hard by her deck** · Decide · Maps · asked 2026-11-05
+- BAL18 tried all 365 legal decks from her list (K14, size 14, leader and first-clear kept). The best still loses 97.5% of the time to the Map reference (target 40). Breaking K14 or using other fights' reward cards gets 95.5%. Shield 40 gets 98.5%. Her list is walls with 0-3 Attack, and Lilypad Reach plays Map 6's reference deck. So BAL16-4 a alone will not fix her.
+  - a) A stronger Lodge Repairs, or a level up for her, then re-measure.
+  - b) You add attackers to Lilypad Reach's list.
+  - c) Leave her easy.
+- **Default:** a
+
+**CONTENT11-1. Identical cards: one job each (CONTENT9-1 a, the rest)** · Decide · Cards · asked 2026-11-05
+- 13 in-play cards share an exact line (stats and skills) with another card. Proposed: Chipmunk Skirmisher Quick, Dormouse Nocturnal 1, Field Mouse On Death +1 Lumber (CONTENT9-1), Torch Lantern, Meadow Frog Tide, Feral Tomcat Pounce 1, Caiman Hatchling Ambush 1, Pike Lancer +Pierce 1, Dolphin Knight +Sonar, Glow Wyrm Irradiated, Mudskipper +Skitter. Terrier Pup and Bramble Sprout are already yours, live. Starters and House Cat stay vanilla. Table: docs/content11-2026-11-05.md section 3.
+  - a) All, re-fitted by the budget.
+  - b) Some (name them).
+  - c) None for now.
+- **Default:** a
+
+**CONTENT11-2. SKILLREC1 on the 9 cards you edited live** · Decide · Skills · asked 2026-11-05
+- SKILLREC1-1 a: your edits stay. Nine SKILLREC1 cards carry your live card_overrides edits (10-22 to 11-03, not yet folded into cards.json). Same as proposed: Terrier Pup, Bramble Sprout. Differ: Owl Sentinel (drop True Sight), Woodcock Lookout (day / night split), Kittiwake Flock (Swarm -> Throng), Beaver Lumberjack and Driftwood Crab (Delivery rename), Meadow Rabbit (Evasive), Silver Minnow (Swarm). Side by side: docs/content11-2026-11-05.md section 4.
+  - a) Keep yours; fold them into cards.json.
+  - b) Take Claude's on the ones that differ.
+  - c) Per card (name them).
+- **Default:** a
+
+**CONTENT11-3. Carriers for Relict, Meld, Immunity, Sequestration** · Decide · Skills · asked 2026-11-05
+- ENG24's skills are on no existing card (the new Nudibranch carries Sequestration + Immunity). Proposed: Relict on Horseshoe Crab and Old Sturgeon (living fossils); Meld {Quick} on Ant Warrior and Fire Ant Raft; Meld {Armor 1} on Coral Polyp Colony; Immunity on Hedgehog Herbalist and Venomlord Serpent; Sequestration on Poison Dart Croaker. Stats re-fitted by the budget. Detail: docs/content11-2026-11-05.md section 5.
+  - a) All as proposed.
+  - b) Some (name them).
+  - c) You pick the cards.
+- **Default:** a
+
+**CONTENT11-4. Boss gimmicks: three to check** · Decide · Early game · asked 2026-11-05
+- 11 early bosses got a gimmick; in band 6 -> 9 of 11. Three to check: Cracking Bark halves the Old Bramble's Shield every 3rd round (Shield, not Health; still 11.7%). The Lodge Matriarch is 98% either way, so her deck needs a retune. Cold Snap leaves Frost Vanguard at 32%, target 45. Also: Victoria Regia's literal push needs a new skill (Unfurl). Detail: docs/content11-2026-11-05.md sections 2, 5, 6.
+  - a) Keep all; retune the Matriarch's deck next.
+  - b) Drop Cracking Bark.
+  - c) Also build Unfurl for Victoria Regia.
+- **Default:** a
+
+**BAL17-1. The walled maps are walled by their brambles** · Decide · Brambles · asked 2026-11-05
+- BAL17 swapped every enemy card on BAL16-1's 38 fights for a neutral card: no map got easier (most got harder). The enemy brambles carry them: their ability numbers 2 lower (ENG24's +2 undone) lift Savanna Reaches 22% -> 54%, the Old Bramble 27% -> 50%; ability off lifts them 15-51 points. The Canopy and 17-8 stay walls (enemy a level up).
+  - a) ENG24-1 c: enemy brambles back to before +2, then re-measure.
+  - b) Keep +2; you re-tune these brambles' abilities.
+  - c) Leave.
+- **Default:** a
+
+**FIX9-1. The Shell cards after the Shell rework** · Decide · Cards · asked 2026-11-05
+- New Shell (Armor N for the round after the first hit) measures far weaker: Shell 2 is worth 0.57 points (was priced 2.26). All seven Shell cards now use 5-13 points less budget; none leaves its band. Giant Clam was over before and still is (102%). Stats unchanged.
+  - a) Re-fit the six Shell cards up to their old use, and trim Giant Clam into band.
+  - b) Keep the stats; only trim Giant Clam.
+  - c) Keep everything as is.
+- **Default:** a
+
+**FIX9-2. Raid allies with a full row** · Decide · Raids · asked 2026-11-05
+- The ally decks are full (20 cards). Allies stopped because their row (7 slots) fills by rounds 7-12 and back-row units rarely die. Built: with a full row an ally swaps its weakest unit (by Health left, never its leader) for the best of its next 3 cards when that card is worth more; a spent deck is shuffled again. In rounds 16-20 allies now play on 63% of turns (was about 43%). The rest are full rows of healthier, stronger units.
+  - a) Keep this.
+  - b) Always play: swap even when the new card is weaker.
+  - c) Hold the card when the row is full (as before), keep only the reshuffle.
+- **Default:** a
+
+**BAL17-2. Maps 21-24: K14 blocks the last fixes** · Decide · Maps · asked 2026-11-05
+- BAL17 retuned Maps 21-24 from their own lists: 18 of 30 fights in band (was 11), 2 beyond 20 (was 12). Still off: 22-2, 23-2, 23-3, 23-4 too hard (no K14-legal deck is weak enough), and Map 21 too easy (21-2, 21-3, 21-4, 21-6, no stronger list deck). Maps 21-23 are OVER (the Map reference beats BPRO-1 20-55%).
+  - a) Exempt Maps 21-24 from K14 for the retune.
+  - b) You add cards to their lists.
+  - c) Leave.
+- **Default:** a
+
+**BAL16-1. Fights no deck from their own list can fix** · Decide · Balance · asked 2026-11-05
+- BAL16 retuned decks only. 38 fights stay 20+ points too hard even with the weakest legal deck from their list: Savanna Reaches (14) and The Canopy (14-A) all fights, Basalt Foundry (19-A) all 10, Wolfsbane Tundra 17-4 to 17-8, the Old Bramble (0-B), Caves 8-2 / 8-5 / 8-7, Sunken Depths 10-A-4 / 10-A-5. The cards or the enemy brambles carry it.
+  - a) Claude runs the card flags on these maps; you re-tune the flagged cards.
+  - b) Let these decks break K14 (more copies of weak shared cards).
+  - c) Leave them.
+- **Default:** a
+
+**BAL16-2. 17-8 is still called The Glacial Ape-King** · Decide · Maps · asked 2026-11-05
+- CUT3-1 a: the four Glacial Ape-King leaders got new ones from their lists: 17-1 Beluga, 17-3 Polar Bear, 17-8 Walrus Icebreaker (its own reward), 17-A-1 Greenland Shark. The fight 17-8 keeps its name and crown icon.
+  - a) Rename 17-8 (e.g. The Walrus Icebreaker).
+  - b) Keep the name.
+  - c) Name other leaders.
+- **Default:** a
+
+**BAL16-3. Pelican Point (2-4): no deck fix lifts the starter deck** · Decide · Maps · asked 2026-11-05
+- 200 games, bramble kept. Starter deck: 2% now (6% before BAL16 took the off-list Conch Crawler out). Six decks from Pebble Beach's list: 1% to 7.5%; the Map reference 58-92%. The bramble is the wall, not the deck. Cheapest fix that keeps it: none in the deck; leave 2-4 as is (the Camp opens after 0-2, CONTENT10-2 a).
+  - a) Leave it (CONTENT10-2 a).
+  - b) Swap Hermit Crab x2 for Bramble Sprout x3 (starter 5%, Map reference 75%; deck 19 -> 20).
+  - c) Something else.
+- **Default:** a
+
+**BAL16-4. Lilypad Reach (2-A) is too easy and breaks K14** · Decide · Map lists · asked 2026-11-05
+- After CONTENT10 its list holds 3 cards of its own (Lodge Engineer, Old Sturgeon, Riverworks Bastion); the rest are Sunken Hollow's. K14 (1 copy of a shared card, 6 in all) cannot fill its decks: 2-A-1 and 2-A-6 break it, and the retune cannot make the map harder (mean +26 points, the boss 2-A-7 wins 100%).
+  - a) Exempt 2-A from K14 so the retune can use more copies.
+  - b) Add Lilypad cards to its list (your pick).
+  - c) Leave it.
+- **Default:** a
+
+**DISTINCT-1. Every card should feel distinct: animal caps** · Decide · Cards · asked 2026-11-05
+- Owner 2026-11-05 08:08: cut near-duplicates (name, art, animal). Caps for the whole game: mythic creatures (Yeti, Unicorn) 1; Otters, Hummingbirds about 15; Beavers 5-6; middle animals (Sharks, Deer) 2-3; animals with look-alike relatives (Hyena) 2. Society animals (lumberjacks, soldiers) will blend: each one's art adds one unique item.
+  - Adopt
+
+**REFDECK-1. New reference decks after the bigger pools** · Decide · Balance · asked 2026-11-05
+- Owner 2026-11-05 08:08: "a. please create new map reference decks with unique optimised deck ideas - there's a bigger card pool now. b. create weak deck ideas." Package BAL16, after CONTENT10's lists.
+  - Build (BAL16)
+
+**THEME6-1. Own and carried card counts per map (replaces THEME5-1's answer)** · Decide · Map lists · asked 2026-11-04
+- Owner 2026-11-04 23:36-23:40. Own: Map 2 has 10, falling slowly to 8 at Map 20 (Maps 0-1 may have more); Map 21 has 7, falling to 6 at Map 40; Map 41+ has 5. Carried: 5 up to Map 8, rising from Map 9 to 13 at Map 20; Map 21 has 14, rising to 16 at Map 40. Map 41+: carried 16, +1 every 20 maps (owner 11-05 08:08). Side maps keep their rules.
+  - Apply (package CONTENT10)
+
+**CONTENT10-1. Maps short of their carried count** · Decide · Map lists · asked 2026-11-05
+- CONTENT10 filled carried cards only from earlier lists that fit the map's biomes, with no animal the list already holds. Short: Map 2 4/5, Map 4 4/5, Savanna 14 5/9, Taiga 16 7/10, Tundra 17 8/11, Glass Dunes 18 6/12. Earlier maps hold few savanna, taiga or desert cards. Map 21 has 6/7 own (archetype cards out).
+  - a) Leave them short until new cards exist.
+  - b) Allow looser fits (any shared biome, repeated animals).
+  - c) You name the cards.
+- **Default:** a
+
+**CONTENT10-2. Pelican Point (2-4) still walls the starter deck** · Decide · Maps · asked 2026-11-05
+- FIX8-1 eased 2-4 slightly (Tide Pool Crab x5 out for Gull Thief, Rock Pool Starfish for Sea Turtle Elder). 200 games: the starter deck wins 5.5% -> 6%; the Map reference wins 83.5% -> 77% (its target is 60). The deck is not the wall; the starter deck against a 15 + 1 bramble is.
+  - a) Leave it (the Camp opens after 0-2).
+  - b) Lower 2-4's bramble Health a little (15 -> 12).
+  - c) Something else.
+- **Default:** a
+
+**EFFECTS-1. Design rule: stronger effects over stronger stats** · Decide · Design · asked 2026-11-04
+- Owner 2026-11-04 23:17: "I plan to make sure there's enough actives and cool strategies. My thoughts: Stronger effects > stronger stats. So we can play with synergies more." Card and skill proposals favour actives and synergies over raw stats.
+  - Adopt
+
+**LIST-1104. Owner's thematic list edits (11-04 23:17 / 23:18)** · Decide · Map lists · asked 2026-11-04
+- Pebble Beach: cut Sea Turtle Elder for Rock Pool Starfish. Sunken Hollow: Shoal Shark back; cut Muskrat Reedgatherer for Alley Cat. Sundered Peak: replace Glacier Wolf Pack (Claude picks). Old Snapjaw: new art. Maps 20+: no archetype cards in the existing skirmishes (all archetypes wait; Evomax comes with its planning). "Other than this, should be okay for thematic picks."
+  - Apply (package CONTENT10, art ART9)
+
+**RELICT-2. Three new skills: Meld, Immunity, Sequestration** · Decide · Skills · asked 2026-11-04
+- Owner 2026-11-04 22:34: "invent a new skill that gains skills with others that have the skill (like slivers). Maybe something like, Meld - {Quick} -> All other units with Meld gain Quick. Immunity: Can't get poisoned or sick (disease related like decay can't as well). Sequestration: Steal status effects from opposing unit it hits (for one turn). E.g. poison, sleep powder. Not things like arrow. Specifically status related." Texts under 15 words.
+  - Build all three
+
+**ENG24-1. Brambles +2: how it was read** · Decide · Brambles · asked 2026-11-04
+- Built (IDEA-BRAMBLES): every amount +2 (Heal 1 -> 3, Aimed Bolt 4 -> 6, Feed Repair 3 -> 5 and +1 -> +3 Attack, spawns 1 -> 3, Lumber, Wait, Thorns, bolts). Intervals, first rounds and 3 feeds a fight stay. No bramble ability scales by level, so level 20 reads the same. Enemy brambles changed too. Feed's +3 Attack a feed and three spawned units look strong.
+  - a) Keep as built
+  - b) Feed +1 Attack and spawns 1 (only Repair / heals / damage +2)
+  - c) Yours only, not the enemy's brambles
+- **Default:** a
+
+**ENG24-2. Relict: do "every enemy" triggers count as field-wide?** · Decide · Skills · asked 2026-11-04
+- Built: Relict ignores the field (weather, dark, hazards, wind, tide, lanes) and the board-wide skills Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero, Nova. A unit's trigger that deals damage to every enemy (Deal damage, all enemies) and Volley still hit it, as normal skills. Its own Diurnal / Nocturnal still read the time.
+  - a) As built
+  - b) "Every enemy" triggers and Volley pass it by too
+- **Default:** a
+
+**NUDI-1. New creature: Nudibranch** · Decide · Cards · asked 2026-11-04
+- Owner 2026-11-04 22:34: "Nudibranch - no need from my decision. Just design it, add it, art it."
+  - Claude designs, adds and arts it
+
+**ARMOR-1. Armor's price curve (eng10: Armor 5 costs 2.9x Armor 1; ENG9-9 expected about 10x)** · Decide · Budget · asked 2026-11-04
+- Owner 22:34: "Armor Price Curve - you decide". Claude's call: keep the measured price (the engine's real effect), and re-measure Armor 1-5 against the road's own attack spread in the balance groundwork; the eng10 pin follows the measure.
+  - Keep the measure, re-measure on the road
+  - Force about 10x
+
+**DELIV-1. Delivery and the Lumber 'home' price** · Decide · Budget · asked 2026-11-04
+- A Lumber is worth less on maps of cheap cards. BAL12 priced the old Lumber-when-Ready skill by its home map (0.39x to 1.14x). Delivery replaced it but lost that adjustment, so it is priced as if every map were average.
+  - a) Give Delivery the home price again
+  - b) Leave it
+
+**ENG23-1. Crepuscular: move the two old cards to the new default?** · Decide · Skills · asked 2026-11-04
+- Owner 11-03 23:01: "+0/1 at night instead. Let me change for both separately. Also offer one option of crepescular {}, {} -> {} in day, {} in night". Built (ENG23): a plain Crepuscular is +0/+0 by day and +0/+1 at night; the editor sets the day part and the night part (Attack, Health each); "Crepuscular {day} → {night}" takes a stat change or skills in each brace. Old cards kept working, so Nightjar Drifter still has +1/+1 by day and at night and Woodcock Lookout +1/+0 in both (their prices are unchanged). Each part is priced at its own share: day 0.4, night 0.59 of the 3A + H points.
+  - a) Keep both cards as they are
+  - b) Move both to the new default (+0/+1 at night)
+  - c) Set their parts yourself in the editor
+
+**ENG23-2. Skitter: count a hit on the bramble too?** · Decide · Skills · asked 2026-11-04
+- Owner 11-03 23:12: "After hit, it gains haste & evade for the next turn." Built: when its melee hit lands on a unit (a killing hit too), it has Haste (Speed +2, +1 to the allies beside it) and Evasive the next round; another hit renews it. A swing at the bramble does not count. Priced theoretically: Haste's 2.57 x 0.56 uptime = 1.44 S, and Evasive's x1.18 at 0.56 = x1.1 on the stat terms. On no card: you put it on Field Vole (and take Swarm off) yourself.
+  - a) Unit hits only (as built)
+  - b) A hit on the bramble counts too
+
+**ENG23-3. Fast-forward tokens: keep the engine's order, and who grants them?** · Decide · Skills · asked 2026-11-04
+- Owner 11-03 23:12: "A new type of token that can be on a card, that lets it fast forward N = number of tokens. (Recall that, if it has ff-N, the N-th move happens at N-i speed. (so speed N, N-1, N-2...)". The engine's rule (Fast Forward, 2026-10-12, D22) is different from that recollection: the N extra turns all come at the start of the next combat, before the whole main order (Speed included), one after another for that unit. ENG23 kept that rule: N tokens on a unit are its Fast Forward counters, shown as ⏩N with a tooltip, and the action Grant Fast-forward N (itself, an ally, every ally) adds them; priced 3.02 a token (Fast Forward 1). On no card.
+  - a) Keep the engine's rule (all N before the main order)
+  - b) Make the i-th extra turn go at Speed N - i inside the main order (an engine change, re-measured)
+  - c) Name the first carriers of Grant Fast-forward
+
+**ENG23-4. Map 0: Delivery shown, True Sight "?" until Map 6** · Decide · Tutorial · asked 2026-11-04
+- Owner 11-03 23:12: "Stockpile is '?' in Map 0" and "True sight is '?' until the first Map with invisible units or changelings are seen." Built as the brief read the first note: Stockpile is Delivery since ENG22, and the Beaver Lumberjack (Map 0's Lumber maker) shows and explains Delivery { Lumber x1 } on Map 0 (a live edit that still says Stockpile reads as Delivery). True Sight reads "?" until the player enters Map 6, the Sable Swampmire (the first fights with an Invisible unit, the Booming Bittern; the first Changeling fights are Map 18), or sees an Invisible or Changeling card anywhere. Its four carriers (Owl Sentinel, Fawn Scout, Warren Scout, Woodcock Lookout) read "?" before then.
+  - a) Keep Delivery shown on Map 0 (as built)
+  - b) Delivery reads "?" on Map 0 too (one line: delivery: {from:1} in SKILL_REVEAL_MAP)
+
+**ENG23-5. Beaver Lumberjack: fold the live 3/5 into cards.json?** · Decide · Cards · asked 2026-11-04
+- Owner 11-03 23:12: "why does the lumberjack say 3/10 instead of 3/5 here?" Cause: the Map cards view drew your own copy, and your account has the Beaver Lumberjack at Level 10 (player_card_unlocks): Level 10 of the budget curve for a 3/5 is 3/10. Fixed (ENG23): the Map cards tiles and their zoom show a card at its base level (its stats and skills there), whatever copy the viewer owns. Also found: the live card_overrides row beaver-lumberjack (11-03 14:49) is 3/5 with Stockpile 1, while canonical/cards.json says 3/3 with Delivery 1 (BAL10's refit); the live row wins in the game.
+  - a) Fold the live 3/5 into cards.json (fold tool), then clear the row (SQL waits for "apply it")
+  - b) Keep cards.json's 3/3 and clear the live row
+  - c) Leave both for now
+
+**ENG23-6. The Gnawed Larder: Health, numbers and where it appears** · Decide · Brambles · asked 2026-11-04
+- CONTENT9-2 A built (owner "Ok for C9-2"): Feed, once a turn instead of the pitch: a hand card goes into the bramble (to the Graveyard, as a Devour's food: Sacrifice - {} cards see it), Repair 3, your units on the field +1 Attack for the fight; 3 feeds a fight. The HUD has 🍖 Feed (drop a card on it or on your bramble, or pick a card and tap); the CPU feeds after its plays when its pitch is unused and 2+ of its units stand. Placeholders from the draft: Epic, 18 Health, unlocked by beating Map 6's boss (6-8 The Alligator King, unlockMap m8), no art yet, and not yet any enemy's bramble.
+  - a) Health / rarity: keep Epic 18, or set yours
+  - b) Feeds: 3 a fight, or 1 (a Rare at about 22)
+  - c) +1 Attack to the units on the field now, or to every unit for the rest of the fight
+  - d) Repair 3 flat, or the eaten card's Lumber cost + 2
+  - e) Make it the enemy bramble of one Gnawed fight on Map 6
+
+**ENG23-7. Ballista Keep with Aimed Bolt: Health 22 or 19?** · Decide · Brambles · asked 2026-11-04
+- CONTENT9-2 B built: Aimed Bolt, once a fight, on your turn: pick an enemy column, 4 damage to the unit there (their bramble if the column is empty); it does not use your play, and the random 2-damage bolt each round carries on. The HUD has 🎯 Aimed Bolt with a column picker; the CPU fires it at the highest-Attack unit it can kill (or at the bramble when 4 finishes it; from round 6, at their highest-Attack unit). Health is unchanged at 22; the draft priced the shot at 4 to 5 stat points.
+  - a) 22 Health, shot 4 (as built)
+  - b) 19 Health, shot 4
+  - c) 22 Health, shot 3
+
+**FEEL1-1. Adopt the feelings list and the forecast principle as canonical; which gaps to build first** · Decide · Design · asked 2026-11-04
+- Owner 2026-11-04 09:23: "We should define \"feelings\" in master hub. a new tab ... for bigger effects, the players have to actually plan it out ... forecasted." docs/feelings.md (hub 💭 Feelings tab): 9 feelings (the juke, the reveal, the clutch save, the instant surprise, the forecast and planned payoff, the comeback, the race, the swarm snowball, the turn of the clock); the forecast principle F1-F4 (what a forecast shows, strength against Wait, fair and unfair surprise, instant effects stay small); the skirmish recipe with 8 example set-ups (Maps 1, 3, 6, 11, 12, 17, 20, 23); 10 gaps G1-G10. Recommended first: G1 the CPU reads forecasts (a Waiting unit counts as no threat today), G2 forecast indicators on the board, G3 a bait check by CPU level. Choose: adopt all / adopt with changes; which gaps to build first. G5 (lock a random On Ready target at Wait 1, or show the set) and G6 (move big arrival effects such as Earthquake to On Ready) are rule calls.
+
+**ENG21-1. Inspiring as Inspiration tokens: the reading built** · Confirm · Skills · asked 2026-11-03
+- Owner 20:28: "Inspiring - +2 attack to adjacent creatures. It stacks! Once unit attacks and hits something, the inspiring tokens are expended for N damage. There should be a inspiration vfx effect on the card numbers." Built (ENG21) in the simplest reading: tokens are still given when the Inspiring unit attacks (the old text said so; not On Ready); Inspiring N gives each adjacent ally (left / right, plus front / behind where the rows fight) N Inspiration tokens, +2 Attack each, and they stack with no cap; the ally spends them all when its attack lands a hit on a unit or the bramble (the extra Attack counts on every hit of that swing); a miss, a dodge or a swing with no target keeps them. Before: +N Attack, spent by the next swing even if it missed. A 📯N pip shows them; the Attack number glows as they come and flares as they go. Price (400 paired fights, bramble 15): Inspiring 1 3.3 -> 5.43, Inspiring 2 5.96 -> 6.99 (pow 0.364). No card was re-fitted: Otter Flag-Bearer (96% -> 107% of its budget) and Meerkat Wayfarer (99% -> 113%) are now over; Conch Herald was over already (111% -> 121%), and so was ENG22's Cricket Drummer (2/7, 124% -> 140%, held by ENG22-4). The Whetstone kit item shares the bonus field: its +1 now also lasts until a landing hit.
+  - As built
+  - Tokens on Ready, not on attack
+  - +N Attack a token (N = Attack, one token)
+  - Cap the tokens (e.g. 3)
+  - Spent by any swing, a miss too
+- **Default:** As built
+
+**CUT3-1. Skirmish / road decks holding cut cards: rebuild them after your pass** · Decide · Maps · asked 2026-11-03
+- Owner 11-03 23:12: "The skirmish decks btw, still contained cut cards" and "you are awaiting for me to finish my pass before you can do balancing then start doing the skirmish decks again". CUT3 cut Glacial Ape-King from Map 17 (and its 17-A side map) and Map 19, and audited every deck against the cuts (your 10-28 / 10-29 notes, the 11-01 export, CONTENT6, this cut). Nothing in any deck was changed (BAL-OWNER-1). Full list by map, with deck, card, copies and cut source: docs/cut3-audit-2026-11-03.md. Glacial Ape-King is the showcase leader of 17-1, 17-3, 17-8 and 17-A-1; those leaders were not swapped.
+  - a) Rebuild the decks after your pass is done (Claude rebuilds from each fight's own list, keeping leaders, first-clear cards and size).
+  - b) Rebuild now, the Ape-King decks first.
+  - c) For the four Ape-King leaders, name the new leader or put the card back on SPECIAL for that fight (the LISTFIX2 way).
+- **Default:** a
+
+**ENG22-1. Four counter skills built on no card: pick their carriers and names (Tally, Almanac, Onslaught, Riled)** · Decide · Skills · asked 2026-11-03
+- Owner 21:13: "What about abilities for Cards drawn this game, creatures destroyed this game, and damage done to bramble last turn? Or even damage taken last turn." Built in Carnage's form, Name N - {...} (plain +2/+2), on no card, priced theoretically in canonical/skill-costs.json: Tally N (3), enemy units that died this fight (Carnage's old rule), 3.28; Almanac N (4), cards you drew this fight after your opening hand, 4.0; Onslaught N (3), damage your side dealt to the enemy bramble last round, 2.8 ("Siege" is taken by the bramble-breaker skill); Riled N (3), damage this unit took last round (this unit, not your side: it reads like Rage), 2.4. They turn on and off at the stat syncs (a play, a death sweep, a round's start). Carnage itself now counts only the enemy deaths while it is on the board, Ready or Waiting (ENG22).
+  - a) Keep the four names; Claude proposes carriers (one Map 0-20 card each, budget-fitted by the owner)
+  - b) Rename (owner's names)
+  - c) Leave them on no card
+- **Default:** a
+
+**ENG22-2. Bramble Armor's name: the new Fortify {X} took the word "Fortify"** · Decide · Skills · asked 2026-11-03
+- FIN2-a had renamed Bramble Armor (key brambleArmor: the bramble takes 1 less a hit while the unit lives) to "Fortify". SKILL-BUILD-1 makes Fortify {X} a new skill (on play, the bramble gets X for the fight). Two skills named Fortify would read the same, so ENG22 shows brambleArmor as "Bramble Armor" again (texts and 12 packs; its two cards keep their rule).
+  - a) Bramble Armor (as built)
+  - b) Make it a Fortify form: "Fortify {Armor 1}, while it lives"
+  - c) Another name
+- **Default:** a
+
+**ENG22-3. Delivery kept two timings: once (13 cards) and every turn (11 cards)** · Decide · Skills · asked 2026-11-03
+- DESIGN1-6 merged Stockpile (once), onReadyGold (every Ready turn) and the On Ready gain trigger (once) into Delivery {X}. Each card kept its own amount and timing: Delivery {Lumber xN} (once: Beaver Lumberjack, Muskrat Reedgatherer, Otter Angler, Leafcutter Gardener, Driftwood Crab, Nutria Reedcutter 2, Termite Forager, Talus Pika, Dune Packrat 3, Peat-cutter Vole; Gravel Mole Stone, Ore-Smelter Mole Metal, Irradiated Axolotl Uranium) and Delivery {Lumber x1}, every turn (Elder Willow, Nautilus Drifter, Elderhorn Monarch, Lodge Engineer, Rodent King, Coral Polyp Colony, Chipmunk Hoarder, Land Tiller, Sunfeather Scout, Old Willow of the Ford, Truffle Piglet). Budget: the eleven every-turn cards lose BAL12's home-list multiplier (the table cannot reach that code): Elderhorn Monarch -0.8, Land Tiller -0.93, Coral Polyp Colony -0.53, Nautilus Drifter -0.13, Lodge Engineer -0.07; Driftwood Crab +1.32 (its 0.49 home multiplier); no card flips its budget check.
+  - a) Keep both timings (as built)
+  - b) One timing for all (a re-tune for the owner)
+- **Default:** a
+
+**ENG22-4. Base Level 0 cards bring their abilities at Level 1; Map 0's untaught abilities read "?"** · Decide · Design · asked 2026-11-03
+- DESIGN1-2 rules part, as built: every base Level 0 card (the starters, the Babies and the base / tutorial-reward cards: 15 cards) has its abilities in levelSkills "1", so its Level 0 copy is vanilla: Sheep Taunt, Garden Snail Armor 1, Guppy Tide, Sparrow Chick Flying, Rabbit Kit Evasive, Otter Centurion Boomerang, Meerkat Wayfarer Inspiring + Reach, Riverwing Envoy Esprit, Snapper Hatchling / Shallows Fry Tide, Caiman Hatchling Quick, Fire Drake Hatchling Fire Arrow 2, Harp Seal Pup Molting, Musk Ox Calf Armor + Frostbite. Kept at Level 0: Hatchling and Chrysalis (the Baby's own, BASELVL-1) and Garden Snail's Slow (a drawback). On the tutorial map and Map 0 these abilities read "?" (the reveal map, from Map 1): Taunt, Reach, Inspiring, Esprit, Boomerang, Evasive, Molting, Frostbite, Fire Arrow; Map 0's own fights show Armor, Flying, Swarm, Poison and Quick. The stat budget reads all of a card's skills at its base level, so no check moves. Cricket Drummer (Map 1, base Level 1) has Inspiring 1: S 0 -> 3.3, its budget check now reads over (3A + H + S 16.3 against N 13.16).
+  - a) As built
+  - b) Only the six starters
+  - c) Change the "?" list
+- **Default:** a
+
+**ENG22-5. Taunt and Guardian on shots: what is pulled; Carnage's price** · Decide · Skills · asked 2026-11-03
+- DESIGN1-4 as built: an Arrow, Archer, Arrow action, Fire / Ice Arrow, Twin Shot, Bola, Lasso, Snipe, the Bolts and Spitfire aimed at a unit go to an enemy Taunt unit around the shooter (the front-row shooter faces it or stands one column beside it), else to a Ready Guardian beside the unit aimed at (never for a Thorns unit). Not pulled: Volley (an arrow at every enemy), a shot aimed at the bramble, a middle / back-row shooter, a Stealth shooter (Taunt only), and the non-shot single-target skills (Missile, Deal damage, the status actions, Pounce: package ENG21 was editing it). Carnage's budget price still reads the old rule's uptime (bramblewood-budget.js THR_UPTIME.carnage, 3.28 at N 3); the new rule's count starts at 0 when it lands (a guess of 2.2), a re-measure is needed. Measured effect: the Map 3 reference deck now wins 71% (24 games) against the hummingbirds' Ambush (Smart, Level 10; its Needler and Petal Fletcher shots get pulled), which tests/eng13 wants under 50%; its bar is 0.75 until the owner re-tunes it.
+  - a) As built; re-measure Carnage's uptime next
+  - b) Taunt also pulls the non-shot single-target damage skills
+  - c) Leave Carnage's price
+- **Default:** a
+
+**SKILLREC1-1. Adopt the skill recommendations (all / some / none)** · Decide · Skills · asked 2026-11-04
+- Owner 2026-11-04 07:42: "get a list of skill recommendations (sort by advancement) in the master hub. (like how you did with cards. Not the same thing as when to introduce too." docs/skill-recommendations-2026-11-04.md (+ .json; hub Design tab): 84 rows, Map 0 -> 24 with side maps, 75 cards: 45 add, 20 swap, 2 remove, 2 change, 6 Delivery renames, 9 keep. Maps 0-1 first (CONTENT9-1 kept: Cricket Drummer Inspiring 1, Chipmunk Skirmisher Quick (not re-fitted to a fourth 2/4 Quick; else Pounce 1), Terrier Pup Guardian, Dormouse Nocturnal 1, Field Mouse On Death +1 Lumber, Bramble Sprout Thorns 1; Field Vole Skitter, Swarm out; Woodcock Lookout the Crepuscular day / night split; Owl Sentinel loses True Sight; starter twins get a Level 1 ability). 17 near-identical groups each get distinct jobs (34 -> 11 in-play cards with no skill). The new skills placed: Build (Lodge Engineer, Badger Trench Digger), Fortify (Quillguard Thorns 1, Great Gate +3 Health), Taunt (Alpine Marmot, Thorny Devil), Tally / Almanac / Onslaught / Riled one card each (ENG22-1), Skitter x3, the Fast Forward token (Roadrunner Courier), Delivery {Stone} (Talus Pika). 14 built skills on no in-play card get a carrier. No stats changed: 30 rows read over budget at printed stats (the owner's re-fit, BAL-OWNER-1), 27 fit, 7 free room, 5 wait on a price for a new skill.
+  - a) All, as proposed.
+  - b) Some: name the rows (or the maps).
+  - c) None for now.
+- **Default:** b
+
+**LISTFIX2-1. Cut cards a fight still gives: keep them as that fight's card, or pick another card for the fight** · Decide · Maps · asked 2026-11-03
+- Owner 11-03 22:02: "cut cards still stay, but are just flagged as cut." Checked (LISTFIX2): every cut in your 11-01 export was applied by THEME4, and the older THEME3 cuts too. Ten cut cards still show on their map because a fight gives them, so taking them out means changing a reward, and Claude does not change rewards without you. (1) Off the MAP list, kept on SPECIAL as that fight's card: Fiddler Crab Swarm (Pebble Beach 2-1 reward), Grey Seal Bull (2-5 reward), Tidepool Trapper Crab (2-3 first clear), Old Sturgeon (Sunken Hollow 4-5 reward), Stone Turtle Warden (4-2 first clear), Venomlord Serpent (Gatorback 5-3 first clear), Marsh Wisp (Sable Swampmire 6-4 first clear), Woodland Brawler (Sundered Peak 20-9 reward). SPECIAL keeps them in that map's fights, and the first-clear ones in Pack 1. (2) Your 11-01 cut was applied, then CARD5 (11-02, a coordinator follow-up, not your call) put two back on the MAP list because they are first-clear cards: Snapper Hatchling (Gatorback 5-1) and Weaver Bird (Savanna Reaches 14-3). Grey Seal Bull's JJ5 trim (3/12) did not put it back. Each card's other lists stay as they are (e.g. Grey Seal Bull and Tidepool Trapper Crab on Smugglers' Grotto, where you chose them). The Map cards view now marks each cut Still listed / Kept for its fight / Removed.
+  - a) Keep them as their fights' cards (as now).
+  - b) For each fight, pick another reward / first-clear card from the map's own list (as BAL9 did for 9-2 and 9-4), then take the cut card off that map fully (SPECIAL too; deck copies to the nearest list card, BAL9's rule).
+  - c) b) for Snapper Hatchling and Weaver Bird only, a) for the rest.
+  - d) Name the cards to drop.
+- **Default:** a
+
+**LISTFIX2-2. Three boss cards you cut on 11-01: keep them as their boss, or give the boss another card** · Decide · Maps · asked 2026-11-03
+- Your 11-01 export cut The Gannet Queen (Gannet Cliffs), Wolfsbane Alpha (Wolfsbane Tundra) and Yeti Chieftain (Ashen Spurn) from their maps. THEME4 took them off the MAP list. They were already on SPECIAL (RELFIX3, 10-29) as the boss fight's leader and reward: 3-7, 17-8, and 19-6 (Yeti Chieftain is also 19-6's challenge card, RW2-2). So they are in no pack and in no fight except their boss fight. The other eight boss cards were not cut.
+  - a) Keep each as its boss fight's leader and reward (as now).
+  - b) Give the boss fight another leader and reward (say which), then take the card off the map fully.
+- **Default:** a
+
+**FIX8-1. Pelican Point (2-4) is a wall for the starter deck (QA2 M3)** · Decide · Maps · asked 2026-11-03
+- QA2 lost 2-4 three times out of three on CPU Auto (2, 0 and 0 bramble damage dealt) and then 2-5 0-17; the PRO reference decks (2-SK, 2-WK) won easily, so the gap is the starter deck against the road. 2-4 is required for 2-5 and Map 3 (the Nest) is behind both. FIX8 did not touch it: it is balance (map difficulty, decks).
+  - Ease 2-4 for a starter deck
+  - Give Map 2 a second path
+  - Leave it: the Camp now opens after 0-2, so a real deck is expected by here (re-measure first)
+
+**FIX8-2. Early reward packs when no new card is left (QA2 M2)** · Decide · Rewards · asked 2026-11-03
+- FIX8 made reward packs (level packs, map-end packs, faction packs) hand out new cards first and, when none is left, the cards you hold the fewest copies of, never one twice in a pack while another is left. The early gate still leaves very few cards, so duplicates remain possible on Maps 0-2. Reward amounts and pools were not changed.
+  - Keep (least-owned first)
+  - Pay Magic Dust instead of a duplicate
+  - Draw from the next map's pool when the gate is empty
+
+**FIX8-3. How the Nest says how to unlock the next nest (QA2 minor 13)** · Decide · UI · asked 2026-11-03
+- The Nest says "The next one is locked for now." without a way to unlock it. NE #10 (2026-10-24) removed the map number on purpose, so FIX8 left the text alone. The 390-wide clipped tip line was fixed (CSS).
+  - Keep the vague line
+  - Name the map again ("opens on Map N")
+  - Name the thing to do (a Kibble or Dust cost)
+
+**FIX8-4. Defeat advice before the Camp (QA2 M1)** · Decide · Balance · asked 2026-11-03
+- The Camp now opens by itself after 0-2, so the defeat advice ("build a new deck around one plan") reaches players who have a deck editor. A defeat on 0-1 or 0-2 itself can still show it first. FIX8 left the wording alone.
+  - Keep the advice everywhere
+  - Hide it until the Camp is open
+  - Give a different line before the Camp
+
+**CONTENT9-1. Map 0-1 cards: one job for five of the six identical 2/7s, the rest stay vanilla** · Decide · Cards · asked 2026-11-03
+- DESIGN1-2 a (owner 21:10: "not everything needs effects. Vanilla cards have their value. I like the drummer having Inspire 1."). Proposal, nothing applied: Cricket Drummer Inspiring 1 (your pick), Chipmunk Skirmisher Quick, Terrier Pup Guardian (reads "?" on Map 0, learnt on Map 1; or Pounce 1), Dormouse Nocturnal 1 (Thistlewood has day and night), Field Mouse On Death gain 1 Lumber, Bramble Sprout Thorns 1. Every starter (Crossed-Eyes, Cottontail, Duck Paddler, Chipmunk Forager, Earthworm, Silver Minnow) and House Cat stay vanilla as the baselines. Map 0's list goes from 10 vanilla cards of 17 to 8, Map 1's from 6 to 1. Stats re-fit by the budget in your pass; the road decks are not touched. Table with the reasons: docs/content9-2026-11-03.md section 3.
+  - a) All six as proposed.
+  - b) Only some (name them), or other jobs.
+  - c) Keep them vanilla for now.
+- **Default:** a
+
+**CONTENT9-2. Two bramble abilities: the Gnawed Larder (Feed) and Ballista Keep's Aimed Bolt** · Decide · Brambles · asked 2026-11-03
+- DESIGN1-10 (owner 21:10: "maybe we can invent it for 1 or 2 brambles. Also a bramble with devour/sacrifice (pitch a card to it to heal it and increase attack of all allies by +1)."). Drafts, not built. A) The Gnawed Larder, Epic, about 18 Health: "Feed: once a turn, instead of pitching a card for Lumber, drag it onto your bramble: Repair Bramble 3, and your units on the field get +1 Attack for the rest of the fight. Three feeds a fight." About +3 to +6 stat points a feed after the lost Lumber; from the Sable Swampmire (a 6-8 drop, and one Gnawed fight's enemy bramble). B) Ballista Keep: "Aimed Bolt: once a fight, tap the bramble and pick an enemy column: its bolt hits the unit there for 4 (the bramble if empty). It doesn't use your play." Ballista Keep 22 -> about 19 Health, or the shot at 3. Details and the open sub-calls (feeds per fight, who gets the +1, Repair amount): docs/content9-2026-11-03.md section 5.
+  - a) Build both as drafted.
+  - b) Build the Larder only.
+  - c) Build with changes (name them).
+  - d) Not now.
+- **Default:** b
+
+**SKILL-BUILD-1. Fortification renamed Build {...}; new Fortify {...} for the bramble** · Decide · Skills · asked 2026-11-03 · decided 2026-11-03
+- Owner 21:10: "Fortification renamed to Build - {}. So it would be written as Build - { 0/6 Palisade }. Fortify (new skill) - {} would then be, to give {} to the bramble. E.g. Fortify - {Thorns 1, +1 Health}". ENG22.
+
+**ROADMAP-CRAFT-1. Forge sub-tabs: transmuting and crafting systems as the game opens up** · Idea · Forge · asked 2026-11-03
+- Owner 21:10: "Transmuting of cards. As we progress, we gain access to more and more systems. Forge will gain alot of sub-tabs of other crafting systems. Like turning relic cards into actual prehistoric animals, socketry, 'manufacturing' animals with tech, with magic, subfactions through bribery & cunning, a rat transforming into another creature (only path, min L10)... etc." Long-range roadmap item; not started.
+  - Design pass later
+  - Later
+- **Default:** Later
+
+**BAL-OWNER-1. The owner takes over balancing from Release 11-03a** · Confirm · Balance · asked 2026-11-03 · decided 2026-11-03
+- Owner 21:10: "You seemed to have push the balance update. Ill takeover on that side from here." Claude stops balance passes (card stats, decks, budget) unless asked; it keeps measuring and reporting the balancing status.
+
+**ECON2-1. The Forge cliff at Map 11: Maps 0-10 take 3 days, Maps 11-20 up to 46 (Dust)** · Decide · Economy · asked 2026-11-03 · decided 2026-11-03
+- A dedicated player clears Maps 0-10 in 3 days (casual 7) with nothing to buy, then waits on Dust: keeping the deck at the level the road curve is tuned for (referencePlayerLevel) with each map's reference cards, Maps 11-20 take 46 days (casual 66), 45 of them waiting for Dust. A player who keeps one deck from Map 11 needs 5.8k Dust in all and finishes Map 20 on day 10 (casual 20). Dust income after the road is notices 243 a day + weekly quests ~210 a day (from Map 13). Murgle Mayhem (759 Dust a week, built by ECON1) is still hidden (DAILY_DUNGEONS_HIDDEN). Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Open Murgle Mayhem from Map 11 (DAILY_DUNGEONS_HIDDEN off for it): +108 Dust a day, the source ECON1 built for this.
+  - b) Lower Forge steps 1-3 (35 / 44 / 53 Dust) by a third: the levels the road asks for on Maps 11-20.
+  - c) Pay elite and boss repeat wins their full Dust (conquestRepeat 1.0 for Dust only).
+  - d) Leave it: Maps 11-20 are meant to be the grind.
+- **Default:** a
+
+**ECON2-2. Weekly quests pay their tier's reward for each quest, not once a tier** · Decide · Economy · asked 2026-11-03 · decided 2026-11-03
+- claimQuest grants tier.reward on every quest claimed, so weekly tier 1 pays 3 x (170 Leaves, 260 Dust, 2 Metal). A full week (from Map 13) is 1,469 Dust and 959 Leaves, about 40% of a dedicated player's Dust after the road; ECON1's arithmetic counted each tier once. Paid once a tier, the dedicated run ends Map 20 on day 58 instead of 49. Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Keep per quest (the Dust is needed: see ECON2-1) and say "each" on the board.
+  - b) Pay once a tier (as ECON1 assumed) and make up the Dust elsewhere.
+- **Default:** a
+
+**ECON2-3. Weekly tier 1 holds a PvP quest, so tiers 2-3 stay hidden on Maps 4-10** · Decide · Economy · asked 2026-11-03 · decided 2026-11-03
+- Weekly tier 1 is w1-energy, w1-pvp (30 PvP tickets) and w1-units; the Arena opens on Map 11 and a tier shows only once the one before is all claimed. So from Map 4 to Map 10 a player can claim 2 weekly quests, and from Map 11 to 12 tier 2 stops on its raid quests (Raid, Map 13), hiding tier 3. Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Move w1-pvp to tier 3 and w3-conquest to tier 1; move the two raid quests to tier 3 (each tier claimable once its feature is open).
+  - b) Skip a locked quest when deciding whether the next tier shows.
+  - c) Leave it.
+- **Default:** b
+
+**ECON2-4. Maple Leaves pile up: 12k unspent at Map 20 while Dust runs dry** · Decide · Economy · asked 2026-11-03
+- Leaves come in about as fast as Dust (dedicated, to the end of Map 20: 38.9k Leaves, 35.9k Dust), but the Forge takes Leaves at 2/3 of its Dust, so a dedicated player holds 12.1k Leaves and 0.6k Dust at Map 20 (casual 9.4k / 0.4k). Packs (50-94 Leaves) are the only large sink. Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Leave it: players spend Leaves on packs (12k = 240 Hedgerow Pouches).
+  - b) Shift the notices toward Dust (e.g. D 20 / 25 -> 15 / 30, and up the line) so the two run out together.
+  - c) Add a Leaves sink that helps the grind (e.g. the Forge buys Dust at 3 Leaves : 1).
+- **Default:** b
+
+**ECON2-5. A repeat skirmish pays 4 Leaves whatever its Energy: farming stops paying after Map 3** · Decide · Economy · asked 2026-11-03 · decided 2026-11-03
+- CONQUEST_NODE_REWARDS.skirmish.repeat is 8 Leaves (4 after ECON1) and 0 Dust on every map, while a fight costs 1 Energy on Map 0 and 9 on Map 20: 4 Leaves an Energy on Map 0, 0.44 on Map 20. Elites repeat for 7 Leaves + 3 Dust. Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Scale the repeat pay with the fight's Energy (4 Leaves and 1 Dust a point of Energy, halved).
+  - b) Scale it with the map number (+10% a map, as the Blossoms do).
+  - c) Leave it: Energy is for the road, not for farming.
+- **Default:** a
+
+**ECON2-6. Errands pay 14-27 Dust: less than half a D notice, for 2-3 wins and an interruption** · Decide · Economy · asked 2026-11-03 · decided 2026-11-03
+- An errand pays 4-8% of a Materia Unit, halved: 14-27 Dust and 9-18 Leaves (+ an Iron Shard on two). A D notice pays 25 Dust, the average notice 40. Offers come after 30% of Conquest wins (up to 2 a day), each a 2-line conversation with a yes / no. Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Raise errands to about one notice (mu x 2.5: 35-68 Dust) and offer them after 15% of wins.
+  - b) Raise the pay only.
+  - c) Leave it.
+- **Default:** a
+
+**ECON2-7. A two-session player is Energy-bound from Map 5: 57-107 Energy a day of 288** · Decide · Economy · asked 2026-11-03
+- Energy refills 1 every 5 minutes (288 a day) up to the cap (20, 30 after the Nest steps, 50 with the Forge steps). A player who plays twice a day gets twice the cap plus 6 a session: 57 a day at cap 20, 77 at 30, 107 at 50, so from Map 5 (5-6 Energy a fight) a casual player runs out before the time does. A dedicated player is never Energy-bound before Map 21 (time and Dust bind). Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Leave it (cap 20 is the owner's 10-14 choice; Energy is meant to pace casual play).
+  - b) Raise the base cap to 30 (casual +20 a day).
+  - c) Bank up to one extra cap overnight (a "rested" refill once a day).
+- **Default:** a
+
+**ECON2-8. Kibble, Iron Shards and Metal flood: hundreds held with nothing to spend them on** · Decide · Economy · asked 2026-11-03 · decided 2026-11-03
+- At Map 20 a dedicated player holds 362 Kibble (Nest training costs 2-8 a card), 188 Iron Shards (repeat wins drop one 15% of the time; the Max Energy steps use 7) and 45 Metal (nothing spends Metal). Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Iron Shard on a repeat win 15% -> 5%; give Metal a use (e.g. Forge tier upgrades take 5 / 10 Metal); leave Kibble.
+  - b) Hide each currency's counter until something spends it.
+  - c) Leave it for now.
+- **Default:** a
+
+**ECON2-9. Dialogue: busy first hour, then most maps say nothing** · Decide · Dialogue · asked 2026-11-03 · decided 2026-11-03
+- The whole game has 62 NPC scripts (171 lines, 1,884 words, about 10 minutes). The first hour (tutorial and Maps 0-2) plays about 13 of them (41 lines) on top of the tutorial; Maps 8 and 11 are busy (4-5 each); Map 18 and Maps 22-24 say nothing and Maps 6, 9, 12, 15, 16, 17 one 2-3 line conversation, the same stretch where the player waits on Dust. Boss banter is one shared two-line exchange and fires on 7 main-road fights only (enders are mostly elites). Proposal: one curiosity (2-4 lines) on each silent map 12-24, written in the lore bible's voice, and errands offered less often (ECON2-6). Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Write one curiosity for each silent main map (Claude drafts, you edit).
+  - b) Only for Maps 12-20.
+  - c) Leave it.
+- **Default:** a
+
+**ECON2-10. Map objects: fights under the title panel, crowded tiles, empty halves** · Decide · Maps · asked 2026-11-03 · decided 2026-11-03
+- The probe (1,366 px desktop, every object shown; docs/screens/econ2/) found a fight under the map's title panel on 20 maps (15 main, 5 side; most often X-2, e.g. 3-1, 5-2, 20-2 and 20-3), 13 pairs of tap targets closer than 7% of the canvas (8-5 / 8-H 2.8% on the dark Caves map, 20-2 / 20-3 3.3%; side-map entrances on 1-3 and 19-3), and the same perimeter trail (top, right edge, bottom) on Maps 3-19 that leaves the centre empty; Maps 21-24 fill the canvas and read better. Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Fold the title panel to a chip after the first look at a map, and move the listed nodes with the layout editor (Claude lists the moves).
+  - b) Only fold the title panel.
+  - c) Leave it.
+- **Default:** a
+
+**ECON2-11. The hub's Resources tab still shows income from before ECON1 (twice the real numbers)** · Decide · Tools · asked 2026-11-03
+- tools/resources_week_2026_10_23.js reads QUEST_RANK_REWARD, QUEST_TIERS and the repeat rewards from their declarations, without the econScaleTable / econScale halving the game applies after them, and it counts the daily quest tiers, which the board no longer posts. Its week (e.g. 4,614 Dust at Map 10) is about twice what a player gets. tools/econ2/econ_sim_2026_11_03.js reads them halved. Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Fix the tool to apply the halving (and drop the daily tiers), then rebuild the hub tab.
+  - b) Retire the tab and point it at the ECON2 sim.
+- **Default:** a
+
+**ECON2-12. Gold Leaves (the scarce currency) come at about 1 a day: is that the premium anchor you want?** · Decide · Finance · asked 2026-11-03
+- Gold Leaves come only from S / SS / SSS notices (3 / 8 / 15 each, halved) while the daily dungeons are hidden: a dedicated player gets about 1 a day (51 by the end of Map 20), a casual one about 0.5. A Tidemire Chest costs 6 and a Highcrest Case 11 with their Leaves. If Gold Leaves are to be the currency a future premium lane or shop sells, their free rate is the number that sets the price of everything later. Measured, nothing changed. docs/econ2-2026-11-03.md (sim: tools/econ2/econ_sim_2026_11_03.js).
+  - a) Keep ~1 a day free and treat Gold Leaves as the premium anchor (no change now).
+  - b) Add a small steady source (e.g. 1 a week from the weekly tier 1, or the Trail's free lane) so casual players see them.
+  - c) Decide with the monetisation plan later.
+- **Default:** c
+
+**DESIGN1-1. Big entrance: playing a 2+ Lumber card also lets you play a 0-Lumber card that turn** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- The Lumber curve has collapsed: the strongest ladder decks are 61% 0-Lumber and 98% 0-1 Lumber cards (PRO / BPRO 55 / 42%); on Maps 0-20, 45% of the 3-Lumber cards and 15% of the 2-Lumber cards on a list are on no optimizer deck (0-Lumber: 4%). One play a turn means a 2-Lumber card costs a play plus one or two pitched cards for one body. A rule, not a re-tune; measured by deckopt BPRO on Maps 5 / 10 / 15 / 20 (the 2+ Lumber share of the best decks, today 2-3%, toward the lists' 16%). docs/design1-2026-11-03.md problem 1.
+  - a) Big entrance: after a 2+ Lumber card you may also play one 0-Lumber card that turn.
+  - b) A 2+ Lumber card arrives with Wait -1 (never below 0).
+  - c) Unspent Lumber carries a +1 Attack 'momentum' to the next 2+ Lumber card played.
+  - d) Leave the cost rules as they are.
+- **Default:** d) Leave the cost rules as they are.
+
+**DESIGN1-2. Drop 'early rewards are vanilla'; give the Map 0-1 cards one job each, starting with the six identical 2/7s** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- 61 in-play cards (15%) have no skill, 70% have one or none; Map 0's list is 65% vanilla, Map 1's 47%, and Map 0's road decks are 82% vanilla copies. Chipmunk Skirmisher, Terrier Pup, Cricket Drummer, Field Mouse, Dormouse and Bramble Sprout are all 0 Lumber, Wait 0, 2/7, no skill. docs/workflows/card-data.md line 15 says 'Early rewards are vanilla (no skills)'. Proposal: drop that line; give each a keyword the road teaches by Map 3 (Cricket Drummer Inspiring 1, Bramble Sprout Thorns 1, Chipmunk Skirmisher Quick, Terrier Pup Pounce 1, Dormouse Guardian, Field Mouse On Death gain 1 Lumber), stats re-fitted by the budget tool. docs/design1-2026-11-03.md problem 2.
+  - a) Yes, as proposed.
+  - b) Yes, with my own six jobs (name them).
+  - c) Only drop the rule; new cards follow it, old ones stay.
+  - d) Keep early cards vanilla.
+- **Default:** d) Keep early cards vanilla.
+
+**DESIGN1-3. Every Map 0-2 elite / boss gets one visible gimmick; Map 0's four fights each spotlight one keyword** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- Map 1 Thistlewood is won 97.5% (+29, 0 of 5 green, the Thistle Baron 100% against 40); its five fights are 2/7 walls under five names. The tutorial come-back fights show richer cards (Rockslide Ram, Dynamite Packrat, Scree Goat, Eagle Sharpshooter) than Maps 0-1, then they vanish. Proposal: each Map 0-2 elite or boss leans on one rule the player has to answer (the Thistle Baron: a Guardian row behind Thorns; the Old Shell: Armor 3 so Pierce matters; 0-4 the first Quick enemies), and Map 0's four fights each put one keyword in the spotlight (the onramp's 'see it'). docs/design1-2026-11-03.md problem 3.
+  - a) Yes, for Maps 0-2.
+  - b) Yes, and on every map's elite / boss.
+  - c) Not yet.
+- **Default:** c) Not yet.
+
+**DESIGN1-4. Guardian also takes Arrows and shots aimed at adjacent allies; Taunt also pulls Arrows** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- The pipeline measures (docs/balance/pipeline/measures.json) read the positional skills at about zero: Guardian -0.36 [-0.76, -0.01] (18 in-play cards, the Otter Legion's identity), Taunt -0.74, Crab Claws -0.17, Hibernate -0.72; the top twelve are all off-board damage or bodies (Fireball 15 9.9, Volley 2 9.0, On Turn spawn 8.7, Brood 2 8.3, Ice Arrow 2 8.1). Guardian redirects plain swings and counters only (GD-3, EN8-1); the damage that matters is shots and skills. This reverses part of GD-3. Measured by the pipeline (tools/pipeline/run.sh) before / after. docs/design1-2026-11-03.md problem 4.
+  - a) Guardian takes Arrows and shots too (not damage skills or area damage); Taunt pulls Arrows.
+  - b) Guardian only (Taunt as it is).
+  - c) Keep GD-3: swings and counters only.
+- **Default:** c) Keep GD-3: swings and counters only.
+
+**DESIGN1-5. An answer rule: a map's list holds an answer to each threat class its elite / boss leans on** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- The hardest fights are stat walls: 9-7 The Kelp Witch 5% (Mangrove Manatee 7/7 Regen 2 Guardian, Reef Shark 6/13, Horseshoe Crab Armor 2, Proboscis Monkey Taunt), 17-7 Alpha Howler's Den 10% (four Glacial Ape-Kings 6/40 Earthquake 4 Guardian), 14-A-1 Dart Frogs 2.5%. In 20 of BAL13's 65 flagged fights three stat steps on the biggest enemy card are not enough. Executioner first appears on Map 14, Freeze on Map 17. Rule: Armor 2+ -> Pierce / Venomous; Regen -> Wither; 25+ Health -> Executioner / Hunter; a Flying swarm -> Reach / Arrow; a Taunt wall -> Backstab / Arrow, on that map's list or the one before. A read-only checker lists the gaps for the owner's picks (THEME5-1 can carry them). docs/design1-2026-11-03.md problem 5.
+  - a) Adopt the rule and build the checker.
+  - b) Build the checker only, as information.
+  - c) No.
+- **Default:** b) Build the checker only, as information.
+
+**DESIGN1-6. A keyword-intro test, and merge the 'Lumber when Ready' family into one keyword** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- After the tutorial's 14 skills, main maps add a mean 6.4 new skills each (Map 2 11, Map 8 12, Map 17 10, Map 19 10); only Map 5 keeps the settled 'two new skills a map at most' (rules 10-21 RP); 173 distinct effects by Map 24. Synonyms: Stockpile (once, 2 cards), onReadyGold (every Ready round, 7) and an On Ready gain trigger (6) all read 'Lumber when Ready'; also Poison / Venomous / Greater Poison / Poison Bolt, Hunter + Hunter-vs, Shell / Shield / Armor / Bulwark, Crab Claws / Fork / Trident. docs/design1-2026-11-03.md problem 6.
+  - a) Both: the test (fails above the rule) and Stockpile N / Stockpile N, every turn as the one name.
+  - b) The test only, as a report.
+  - c) Neither.
+- **Default:** b) The test only, as a report.
+
+**DESIGN1-7. Each main map gets one payoff card and one field card (card text on cards already listed)** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- Of 232 PRO / BPRO decks the focus is open 71, swarm 51, economy 45, big 37, family 28 (12%, and those were told to try a family). In play: Kinship 0 cards, Swarm by Type 0, Fletcher 1, Inspiring 5. Field effects: on the water and wind maps 30-36% of the ladder's copies react to the field; on Maps 5-7 and 12-16 1-17%; day / night runs on nearly every map with 0-3 day / night cards a list. Proposal: one payoff naming a type or keyword on the list (Pebble Beach: Kinship - Crab +1/+0) and one card whose skill keys off the map's field (the Taiga: a Nocturnal hunter), from THEME5-1's candidates where possible. Test: a family-focus deckopt deck within 5 points of the best open deck. docs/design1-2026-11-03.md problem 7.
+  - a) Yes, on every main map 0-20.
+  - b) Yes, on Maps 11-20 first (with THEME5-1).
+  - c) Not yet.
+- **Default:** c) Not yet.
+
+**DESIGN1-8. Signature rule: every Rare+ card carries an effect no Common on its map has (the 12 vanilla Rare+ first)** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- Mean skills a card: Common 1.09, Uncommon 1.27, Rare 1.25, Very Rare 1.44; the budget gives a rarity step +1 on a base of 10. 12 in-play Rare+ cards have no skill: Squire's Mount 4/14, Bramblewood Lynx 5/7, Glass Golem 6/5, Sergeant Bramblefox 3/12, Quillguard 2/22, Badger Berserker 4/16, Dolphin Knight 3/9, Pike Lancer 3/9, Raven Scout 2/5, Ashwing Ptarmigan 3/6, Woodland Brawler 3/14 (Very Rare), Tide Spirit 5/5 (Very Rare). A Rare reveal with no text is the moment the game should feel generous. docs/design1-2026-11-03.md problem 8.
+  - a) Adopt the rule; Claude proposes a signature for the 12, you pick.
+  - b) Only for new cards.
+  - c) No: rarity is stats.
+- **Default:** c) No: rarity is stats.
+
+**DESIGN1-9. Leaders get a Command: a passive that works only while the leader waits unsummoned** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- 13 leader cards, most a body with one or two common skills (Old Shell Armor 3, Pride Queen Quick, Yeti Chieftain Rage, Old Snapjaw Bleed 1 Armor 1; the Wandering Traveller has no skill beyond `leader` in cards.json). Old Snapjaw is the leader your seat holds on 16 of 36 ladder lists. Proposal: each leader's Command works while it is in the crown slot and ends when summoned (Old Shell: your first Guardian each fight has Armor +1; The Gannet Queen: your Flyers' Pounce +1), so when to summon becomes a real choice. Test: leader diversity on the ladder and the summon turn. docs/design1-2026-11-03.md problem 9.
+  - a) Yes, one Command per leader (Claude drafts, you pick).
+  - b) Only for the leaders a player holds by Map 10.
+  - c) No.
+- **Default:** c) No.
+
+**DESIGN1-10. Brambles get one once-a-fight active (tap it, choose a column)** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- 43 brambles with 12 passive kinds, every number 1-2 (start Lumber, first unit +1 Attack, units +1 Health, Regen 1, enemy Wait +1, bolt 1-2, Thorns 1 ...); picking one is mostly picking the biggest Health. Proposal: each passive kind gets an aimed version once a fight (Ballista Keep fires its bolt at the column you choose; Thorn Cage puts its Thorns on one column for a round), so the bramble adds a decision. A bigger build than the others. docs/design1-2026-11-03.md problem 9.
+  - a) Yes, for every bramble kind.
+  - b) Only for the Rare+ brambles.
+  - c) No.
+- **Default:** c) No.
+
+**DESIGN1-11. Babies get Grow N (survive N of its rounds: +1/+1 once), or Hatchling stays hidden until Map 20** · Decide · Design · asked 2026-11-03 · decided 2026-11-03
+- Baby cards are vanilla small bodies (Otter Kit 2/5, Duckling 1/5, Fox Kit 2/9, Sparrow Chick 1/3 Flying, Compost Grub 1/10, Snapper Hatchling 1/7, Rabbit Kit 2/2). Their Hatchling shows '?' until Map 15 and the name only until Map 20, and pays only under an Evolute; Evomax cards are obtainable from Map 30. The one Evolute card on a list (Gale Sprite, Map 21) is on no deck; Canopy Sloth Guardian is on no list; Evolute measures -6.41 [-7.73, -5.41]. Grow gives a reason to protect a Baby from Map 0 and keeps it a Stem later. docs/design1-2026-11-03.md problem 10.
+  - a) Grow N on every Baby (priced by the pipeline).
+  - b) Hide Hatchling entirely until Map 20 (no '?').
+  - c) Both.
+  - d) Keep as it is.
+- **Default:** d) Keep as it is.
+
+**TEXT1-1. The hummingbird faction's name: Sunfeather Dominion (in the game) or Sunfeather Tribes (the lore bible)** · Decide · Texts · asked 2026-11-03 · decided 2026-11-03
+- The game calls the hummingbirds the 'Sunfeather Dominion' (faction screen: 'the Dominion rules a court where every courtier is a duelist'; the Ambush pop-up 'A Dominion patrol'; Aurelia's raid line 'Even the Dominion cannot fell that thing alone'; the card Dominion Nestguard; one flavour line). docs/lore-bible.md says 'Dominion' reads as an empire and proposes 'the Sunfeather Tribes' and 'Sunfeather Nestguard', but marks it 'proposals, nothing renamed yet'. TEXT1 left every Dominion text as it is. The same table proposes the knight renames (Stag Knight -> Stag Champion, Bee Knight -> Bee Warden, Dolphin Knight -> Dolphin Outrider, Cataphract Destrier -> War Destrier), also not applied. docs/text1-2026-11-03.md
+  - a) Keep 'Sunfeather Dominion' and drop the proposal from the lore bible.
+  - b) Rename to 'the Sunfeather Tribes' (faction screen, Ambush, Aurelia's line, flavour) and Dominion Nestguard -> Sunfeather Nestguard, in all 12 languages.
+  - c) b), plus the four knight renames.
+- **Default:** a) Keep 'Sunfeather Dominion' and drop the proposal from the lore bible.
+
+**UI17-1. Apply the admin overview function (supabase/proposed/20261103_admin_overview.sql)** · Apply · Admin · asked 2026-11-03 · decided 2026-11-03
+- Owner 11-03 18:37: the players screen should show online now, server load etc. Admin -> Players now has an overview. Accounts, online now (seen in the last 5 min), active last hour / day / week, new today and raid attempts in the last hour come from tables the client already reads. Fights and matches in the last hour, database connections and size need admin_overview(), a read-only security-definer function that only an is_app_admin() account can call (counts only, no names or emails). Until it is applied those tiles say "needs SQL".
+  - a) Apply it
+  - b) Not now (the tiles keep saying needs SQL)
+- **Default:** a
+
+**UI17-2. The "5x pack": there is no set of 5; the ×10 now opens at Map 8** · Decide · Shop · asked 2026-11-03 · decided 2026-11-03
+- Owner 11-03 18:40: "for 5x pack, unlock it slightly earlier". The shop sells 1 and then sets of 10 / 25 / 50 / 100 / 250 (PACK_QTY_TIERS), first at Map 9 / 14 / 19 / 29 / 44. There is no ×5. UI17 moved the first set, the ×10, one map earlier: Map 8 (was Map 9), with the shelves' bundles. Buy again on the opener's last summary makes repeat singles one tap.
+  - a) Keep: ×10 at Map 8, no ×5
+  - b) Also add a ×5 set (no discount) from Map 4 or 5
+  - c) Move the ×10 further, to Map 6 or 7
+- **Default:** a
+
+**UI17-3. Retire Admin -> "Reset my progress" (it does less than it says when signed in)** · Decide · Admin · asked 2026-11-03 · decided 2026-11-03
+- Checked 11-03: on a signed-in account its cloud deletes of profiles and player_currencies do nothing (those tables have no delete policy), it never touches player_progress, and it leaves the tutorial, faction and Codex keys on the device. So after the reload the currencies, the conquest progress, the tutorials and the faction come back from the cloud; only cards, decks and local stats stay gone. The new Full reset (new account) does all of it (currencies set to a new player's, the progress blob replaced with the admin-reset marker, the name back to the placeholder). Profile -> Reset all / Reset to Map are unchanged (they also keep currencies, cards and decks in the cloud).
+  - a) Remove "Reset my progress"; keep Full reset, Reset all, Reset to Map
+  - b) Keep it as is
+- **Default:** a
+
+**UI17-4. Full reset keeps your editor content** · Decide · Admin · asked 2026-11-03 · decided 2026-11-03
+- The Full reset (new account) wipes every progress key but keeps, besides Admin Mode, device settings and infinite Energy: your browser-only card edits, map layout and skirmish edits, NPC speech edits, tutorial setup, pack overrides, test rules and UI switches (they are admin content, not a player's save, and unpublished card edits would be lost for good). The server-only rating, friends and guild membership also stay (the client cannot reset them).
+  - a) Keep the editor content
+  - b) Wipe it too
+- **Default:** a
+
+**THEME5-1. Pick the extra carried cards (one new archetype each)** · Decide · Maps · asked 2026-11-03
+- Your 11-03 09:39 rule, written out: Maps 0-10 as today (8-11 own + 4-5 carried); Maps 11-20 carried 5-6 (+1); Maps 21+ own 7-10 and carried 6-7 (-1 / +2); each side map +1 carried over its list today. That is 34 cards: 11 on Maps 11-20 (Savanna +2, it has 3), 8 on Maps 21-24, 15 on side maps. Claude proposes one candidate per slot, each opening a deck plan the map's PRO / BPRO decks don't have (no plan shares more than 3 of its 6 cards with any of them), e.g. Eyrie Heights: The Gannet Queen (Stoop and Pounce); Redwood Deep: Badger Lumberjack (Old-Growth Giants ramp); Savanna: Ant Hill (Mound and Herd) + Golden Eagle Diver (Sun Strike); Taiga: Owl Nightwatch (Moonlit Pack, a night map); Goldfeather Keep: Ore-Smelter Mole (Iron Vault for Iron Badger) + Golden Magpie (Counting House). Maps 21-24 also each drop one own card (suggestions in the doc). Also proposed for the deck step later: per map, 3 fights get one slightly down-tuned peak strategy each (stepped down deckopt's ladder until the Map reference is in that fight's green band, still 35-50% against BPRO-1), the rest a random weaker blend. Nothing applied; not optimizer-checked (machine busy). docs/balance/theme5/carried-proposal-2026-11-03.md
+  - a) Take Claude's 34 picks as proposed.
+  - b) Take them with changes (name the swaps, and the own card each Map 21-24 drops).
+  - c) Side maps follow their unlock map's main tier instead (+2 for the Ice Hollow, the Old Bramble and the Basalt Foundry).
+  - d) Not yet.
+- **Default:** d) Not yet.
+
+**BAL15-1. The tempo term of a 0-Lumber, Wait 0-1 Rare at bramble 15: not measurable; cap 1 would put 3 cards over** · Decide · Balance · asked 2026-11-03 · decided 2026-11-03
+- DEC1 / BAL12-3's re-measure at the road's 15-Health bramble (tools/bench/bench.js contrib --bramble 15, 400 paired fights a card; all 15 in-play T cards = Rare+, Lumber 0, Wait 0-1, and a seeded 60 R / 25 C / 25 O sample; docs/balance/bal15/tempo-cap-2026-11-03.md). T sits 0.59 stat points a copy over R, a share 0.04 [-0.12, 0.20] of T's 14.6 (z 0.48; BAL12 read 0.082 [-0.08, 0.24] at 30 Health). As a cap-2 term it is 0.08 tighter [0, 0.37] (the budget has x0.85, 0.15) and limits no card either way: cap 2 never binds these cards (use 0.13-0.52). Only cap 1 could carry it: N x 0.96 puts Dolphin Knight 3/9, Pike Lancer 3/9 and Vigil Owl 4/3 over (cap-1 use 0.96; The Caldera Wyrm, your card, is over already at 1.08); at the interval's upper bound (N x 0.80) 12 of the 17. By the brief it is not applied (it puts in-play cards over). Nothing changed.
+  - a) Keep the term on cap 2 at x0.85 (no effect on any card today).
+  - b) Cap 2 at the measured x0.92 (looser; no effect either).
+  - c) Move it to cap 1 at N x 0.96 and re-fit the three within BAL12's rule (a card re-fit; the owner put rebalancing off on 11-03 09:39).
+  - d) Drop the term: the measure does not separate it from zero.
+- **Default:** a
+
+**BAL14-1. Four cards the budget reads over that no re-fit within the rule reaches** · Decide · Balance · asked 2026-11-03 · decided 2026-11-03
+- After the full bramble-15 re-measure (BAL14), BAL12's re-fit rule (each stat within 2, body shape kept) changed Hoopoe Herald 2/13 -> 2/12 and Pika Hoarder 3/14 -> 3/13. Four cards read over the band and no line within the rule fits: Forager Ant 1/6 (cap-1 use 1.03; the fit 1/5 turns the wall into a balanced body), Otter Angler 1/11 (1.24, fit 1/6), Leafcutter Gardener 2/5 (1.21, fit 1/4), Gannet Nestweaver 1/7 (1.07, fit 1/5). The last three were held by BAL12 (BAL12-1). Your named cards over the band (proposals only, never changed): Caldera Wyrm 4/7 1.08 (new over; tests/bal2-2026-10-24.js check 7 fails on it), Peak Condor 4/10 1.08 (was 1.01), Conch Herald 2/13 1.11, Red-billed Chough 3/2 1.01. docs/balance/bal14/refit-2026-11-03.json.
+  - a) Leave them as they are (the budget flag stays).
+  - b) Take the plain fits (Forager Ant 1/5, Otter Angler 1/6, Leafcutter Gardener 1/4, Gannet Nestweaver 1/5).
+  - c) Name your own lines.
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) leave them as they are, the budget flag stays (no default; owner 11-03 09:39: no rebalancing now). Forager Ant, Otter Angler, Leafcutter Gardener, Gannet Nestweaver and the owner's named cards are held for the owner's card pass.
+
+**BAL14-2. Flying and Evasive multipliers: the bramble-15 measures read x1.19 / x1.18** · Decide · Balance · asked 2026-11-03 · decided 2026-11-03
+- The price step reads the half-miss skills from their measures: Flying x1.19 [1.18, 1.20], Evasive x1.18 [1.17, 1.20] on stat terms of 20.8; the budget has x1.17 / x1.16. A constant changes only on your word (tools/pipeline/run.sh price --set-const flying=1.19,evasive=1.18).
+  - a) Set them to the measures.
+  - b) Keep x1.17 / x1.16.
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) set them to the measures: Flying x1.17 -> x1.19, Evasive x1.16 -> x1.18 in bramblewood-budget.js MISS_MULT_BY (no default; the bramble-15 measures). No card re-fit for it (owner: no rebalancing now); the Flying / Evasive cards read slightly dearer. DEC1.
+
+**BAL14-3. An On Ready Lumber gain trigger measures well under On Ready +1 Lumber** · Decide · Balance · asked 2026-11-03 · decided 2026-11-03
+- At bramble 15 the trigger 'On Ready: gain 1 Lumber' on its in-play carriers reads 2.65 stat points, while the canon point On Ready +1 Lumber reads 6.65 and BAL12's lumberGainS prices the trigger from it (6.65 x N^0.175); gain 2 / 3 read 4.40 / 5.53 against 7.51 / 8.06, On Spawn gain 1 2.54 against 6.65. So the Lumber makers priced by lumberGainS are 2.5-4 points dearer than they measure. BAL14 left lumberGainS as it is (a formula call) and kept these readings out of the trigger pairs' multipliers.
+  - a) Price On Ready / On Spawn Lumber gains from their own measures (lumberGainS about x0.5), then re-fit the makers.
+  - b) Keep lumberGainS and re-measure the trigger on the canon's carriers first.
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) as the owner put it ('Just change the budget ... we don't need do anything'): an On Ready / On Spawn Lumber gain is priced from its own bramble-15 measures, lumberGainS = onReadyGold x 0.39 x N^0.71 (2.62 / 4.28 / 5.71 for gain 1 / 2 / 3; was x N^0.175: 6.65 / 7.51 / 8.06; a log fit of the five readings 2.65 / 2.54 / 4.40 / 4.40 / 5.53). The Lumber makers were not re-fitted: the budget now reads them under, not over. DEC1.
+
+**BAL14-4. The biggest price moves of the bramble-15 re-measure, for a look** · Decide · Balance · asked 2026-11-03 · decided 2026-11-03
+- Set by the price step (canonical/skill-costs.json; measures in docs/balance/pipeline/measures.json), price at the measured N before -> after: Arrow 2 5.21 -> 7.01 (7 cards), Fire Arrow 1 / 2 4.43 / 5.20 -> 6.56 / 8.04, Brood 2 5.28 -> 8.26, Spitfire 1 4.95 -> 7.72, Rocket 4 4.95 -> 7.68, Perforate 2 5.24 -> 7.88, Sweep 5 5.59 -> 8.04, On Ready 3 damage 3.85 -> 5.56, Pounce 6 5.06 -> 7.38, Lone Wolf 5.10 -> 7.36, Pearl Bed 0.9 -> 3.85 (ENG19-3), Pearl 0.9 -> 2.76, Majesty 3.4 -> 3.88 a point. Only two cards left the budget band (the re-fit). Still wide at 400 fights (not converged): Immolation 1, Backstab 2 / 3, Drunk, Earthquake 3, Evolute, Hunter 1, Nightblind, Parasite, Quarry 1, Scatterbrained, the On Spawn stun on everyone, Guardian, Crab Claws, Taunt. Glean, Lumber Feast and Stop Drop and Roll read nothing on the vanilla carriers (no forager, no spare Lumber, no fire) and keep their logic prices.
+  - a) Keep the measured prices.
+  - b) Re-measure the wide ones at 1,000 fights first.
+  - c) Name the ones to put back.
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): noted, no action (no default): the measured prices stand (a); the wide ones can be re-measured at 1,000 fights in a later balance package.
+
+**ENG19-1. Majesty: which rule, and on which cards** · Decide · Skills · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:15 #13: "New skill Majesty (also for dragons). Not sure who to place it on for now." Built (a), on no card. a) Awe (built, key majesty): while it is Ready, the enemy units facing it (its column and the columns beside it) swing at -N Attack (never below 0); several Majesty units don't stack on one foe (the biggest N). Price 3.4 a point (about 2 foes in reach x 0.8 uptime x Debuff's 2.1 a point of Attack). b) Court: its adjacent allies get +N Attack while it is Ready (an aura; about 1.4 neighbours x Buff 2.1 x 0.8 = 2.4 a point). c) Untouchable: enemy units with less Attack than its own can't aim their swings at it (they hit beside it or the bramble); fixed, about 4. Fits: the five dragons (Red, Blue, Green, White, Black: Legendary+, Supreme already, so Majesty 1 is the natural add; Black Dragon's 10 Attack suits c), Glacial Ape-King and Rodent King (King type), Pride Queen and The Gannet Queen (leaders), Elderhorn Monarch.
+  - a) Awe, -N Attack to the foes facing it (built)
+  - b) Court, +N Attack to its adjacent allies
+  - c) Untouchable, weaker foes can't target it
+- **Default:** a) Awe, -N Attack to the foes facing it (built)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) Awe (built): Majesty N gives the enemy units facing it -N Attack; it stays on no card until the owner places it (the dragons are owner cards).
+
+**ENG19-2. Grant Shield: which cards get it** · Decide · Skills · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:15 #15: "Invent a new (skill) action that increases the shield of <Target(s)> by N. It would be epic to have a card give +3 Shields all On Play." Built: action grantShield with one number per group, any together: itself (amount), each adjacent ally (front, behind, left, right), each ally around it (corners too), every ally (itself included). Works on any trigger (On Play, On Ready, On Attack ...). Prices (canonical/skill-costs.json): 0.4 / 0.56 / 0.64 / 1.2 a point x the trigger. "On Play: +3 Shield to every ally" = 1.05 x 3.6 = 3.78 S. On no card. Candidates: Oyster Bank (Map 2, Shore Up already: On Play +1 adjacent, a small wall-builder), Giant Clam (Map 10, On Ready +2 itself), Shepherd (Guardian: On Play +2 adjacent), Royal Guard (Super Rare: On Play +3 every ally, the owner's epic case), Grovebearer Dragon-Turtle (Legendary: On Ready +3 every ally), a Majesty dragon (ENG19-1).
+  - Royal Guard: On Play +3 every ally
+  - Grovebearer Dragon-Turtle: On Ready +3 every ally
+  - Shepherd: On Play +2 adjacent
+  - Pick others
+- **Default:** Royal Guard: On Play +3 every ally
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): Royal Guard: On Play +3 Shield to every ally (the owner's epic case). It replaces Armor 1 + Boomerang (a third skill would break the two-skill rule), re-fit 4/8 -> 3/6 (S 10.21, cap-1 use 0.98): the only line within BAL12's rule (each stat within 2, hitter kept); with Armor or Boomerang kept beside it the fit is 2/7, a balanced body. On no road deck. DEC1.
+
+**ENG19-3. Pearl Bed now pays every turn: re-price it, and Giant Clam / Oyster Bank** · Decide · Skills · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:15 #5: "Pearl - On Ready, Pearl Bed - Every turn (readied)." Built: Pearl N (new) is the old rule (On Ready +N Pearl, once; 0.9 a point). Pearl Bed N now pays +N Pearl at the start of every turn the unit is Ready. Before: Pearl Bed was On Ready, once, and there was no Pearl. The two cards with Pearl Bed 1 (Oyster Bank, Map 2; Giant Clam, Map 10) now pay every turn: a power rise. Pearl Bed's price is still 0.9 (this package adds new keys only); by the 4-round rule it is about 3.2 a point (about 4 Ready turns x 0.9 x Wait 0.9), which would put both cards over budget unless they move to Pearl.
+  - Keep Pearl Bed on both, re-price to 3.2 and re-fit the cards
+  - Move both cards to Pearl 1 (as they played before)
+  - One of each: Oyster Bank Pearl, Giant Clam Pearl Bed
+- **Default:** Move both cards to Pearl 1 (as they played before)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): Move both cards to Pearl 1 (as they played before): Oyster Bank and Giant Clam Pearl Bed 1 -> Pearl 1, stats kept (both on no list today; Oyster Bank in band 0.90, Giant Clam reads over 1.09 at Pearl's measured 2.76, fit 4/5: a flag for when it is listed). DEC1.
+
+**ENG19-4. Swarm counts Structures now (a power change)** · Decide · Battle rules · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:15 #6: "Swarm: Structures do count, so remove that phrase." The engine did not count them (package EN, 2026-10-23, owner 01:57 note 10: "Swarm doesn't count structures"). Built: an allied Structure that shares a Type with the Swarm unit now counts (a Changeling or Growth token as before), and the texts, codex and catalogue no longer say they don't. Swarm units beside a Structure of their Type hit harder; the Swarm price is unchanged.
+  - Keep (as built)
+  - Back to not counting Structures
+- **Default:** Keep (as built)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): Keep (as built): Swarm counts an allied Structure of its Type.
+
+**ENG19-5. On Attack goes off after the swing** · Decide · Battle rules · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:15 #12: "On attack triggers happen after attack. For example draw. You should immediately draw a card." Built: a unit's On Attack triggers go off right after its swing (and the swing's answers: Thorns, a counter, Sweep / Fork prongs), both sides. Before, they went off as it committed to the swing, before the blow; and the page only redrew your hand after the round, so a drawn card looked like next turn's draw. Now it lands in your hand as the draw plays in the replay. Fire on hit still goes off before the blow (it loads that swing). A swing that finds nothing still fires them. Silence / Stymie / Exhaust / Petrify (On Attack, adjacent enemies) now land after the hit, so the struck unit's Thorns and on-hit answers still go off that swing. A unit that dies in its own swing still draws, gains or hits, but gives itself nothing (heal, buff, Shield, cleanse).
+  - Keep (as built)
+  - Silence / Stymie / Exhaust / Petrify before the blow again
+  - A unit killed in its swing fires nothing
+- **Default:** Keep (as built)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): Keep (as built): On Attack goes off after the swing.
+
+**BAL13-1. Hercules Beetle stays in 14-A-4: it is that fight's own first-clear card** · Decide · Balance · asked 2026-11-02 · decided 2026-11-03
+- BAL11-3 b took the late-priced cards out of the earlier fights' decks (BAL13). Hercules Beetle (priced as a Map 18 card) is the first-clear reward of the Canopy's 14-A-4 (Drum Circle), so BAL13 kept its copies there (the swap rule keeps first-clear cards); every other early copy is gone (14-A-PRO-2, 14-A-BPRO-1, 14-A-BPRO-3). A player still gets it on Map 14.
+  - a) Leave it: the reward and its showcase stay on the Canopy.
+  - b) Move the 14-A-4 reward to another card of the Canopy's list and take the beetle out of 14-A-4 (an owner pick of the new reward).
+  - c) Keep the reward, drop the beetle to 1 copy in 14-A-4.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) leave it: Hercules Beetle stays 14-A-4's first-clear reward and in that fight's deck.
+
+**BAL13-2. RAR-1 cards now above their fights' rarity cap (14 fights)** · Decide · Balance · asked 2026-11-02 · decided 2026-11-03
+- After RAR-1 (13 cards one rarity up, BAL12) these fights field a card above the fight's own rarity cap (roadRarityCap): Echidna Quillshot (Super Rare) in 19-3, 19-4, 19-5, 19-6, 19-A-5, 19-A-9 and 11-UC-10 (cap Very Rare), 11-UC-11, 11-UC-12 (cap Rare); Trapdoor Spider (Very Rare) in 7-A-3, 7-A-5 (cap Rare); Vampire Bat (Rare) in 8-A-1, 8-A-2, 8-A-3 (cap Uncommon). BAL13 trimmed copies to the new copy caps only (coordinator 20:19). tests/road-rarity will flag them once BAL12's cards.json lands.
+  - a) Swap those copies for the list's nearest card within the cap (BAL13's swap, a follow-up).
+  - b) Raise those fights' caps.
+  - c) Leave them.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) swap: done by BAL13's overcap step (2026-11-03: 10 road decks, 3 PRO decks, docs/balance/bal13/overcap-2026-11-03.json) and DEC1's 19-6 swap (BAL12-6). The 11-UC fights are the endless Undercroft's floors, dealt from themes (not road decks). tools/bal13/decks_2026_11_02.js overcap now reads 0 to swap, 0 flagged.
+
+**BAL13-3. "Reference (Random)" now deals the reference ladder (10 named decks a map)** · Decide · PRO · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:15: "When I click fight in an SK or WK match, the reference deck is random right? 1-10 decks? ... Can you name the 10 decks, per map?" Before BAL13 it dealt the 5 progression decks (prog, REF5), uniformly at random (refSetFor: 1 + floor(Math.random() x n), drawn again after every fight). BAL13 baked the reference ladder (docs/balance/ref/ref-ladder.json: 10 decks a map and side map, weak to strong, each named from its lead card and shape, each with the leader a player holds there) as the default, also uniform; the label reads "Reference i of 10: <name>". The progression decks stay selectable in Admin (prog-1..5).
+  - a) Keep the ladder as the default.
+  - b) Default back to the 5 progression decks; the ladder selectable.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) keep the reference ladder as the default of Reference (Random); the progression decks stay selectable in Admin.
+
+**BAL13-4. Why every reference deck showed "Bog-stilt House"** · Decide · PRO · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:15: "Is it always 'Bog-stilt House' deck?" Bog-stilt House is not a card in any reference deck: it is the bramble (your castle) the progression reference decks bring (REF_DECK_SETS.prog, BAL9 JJ7). tools/opt/ref5_prog.js chooseBramble gives every deck of a map the same bramble, the best-scoring one open before that map: Bog-stilt House from Map 7 to Map 17 (55 of the 105 decks), so the panel showed it whichever deck was drawn. Not a dealing bug. The new default (BAL13-3, the ladder) names no bramble: you keep your own.
+  - a) Leave it (the ladder is the default now; the prog decks keep their best bramble).
+  - b) Give each progression player (seed) a bramble of its own (a REF5 follow-up).
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) leave it: not a dealing bug, and the ladder (the default) names no bramble.
+
+**BAL13-5. Too-easy road fights: no stronger rebuild** · Decide · Maps · asked 2026-11-02 · decided 2026-11-02
+- BAL13 item 4 (rebuild too-easy enemy decks stronger from the fight's own list) was dropped before anything was applied.
+- **Outcome:** Owner 2026-11-02 20:19: "There's nothing to do but change the cards! we chose the cards, we balanced them, we optimised the decks etc. The only thing that should change is the card. But we shouldn't choose new cards." The fights more than 20 off get card flags instead (docs/balance/bal13/card-flags-2026-11-02.md, BAL13-6).
+
+**ENG18-1. Pack chains: side by side only, or adjacent (front / behind too)?** · Decide · Battle rules · asked 2026-11-02 · decided 2026-11-03
+- Owner 19:56: "Adjacent in front, behind, left, right." Pack ("Pack units of its type side by side") chains left / right in the front row only today (packChainsOf reads the front row); a raid's or group dungeon's middle / back-row Pack units never chain. With the owner's word a chain could run through any adjacent Pack units. Audit: docs/eng18-adjacency-2026-11-02.md #26. Balance: raids and group dungeons only (one-row fights have no front / behind of your own), so no road fight changes; Pack cards (Dhole Runner, Mire Rat, Gnawed Matriarch; leaders Dhole Matriarch, Gnawed Matriarch) get stronger there with b) or c), up to about +2/+2 per extra link; the budget prices Pack on one row, so raid Pack decks would sit above their line.
+  - a) Keep: side by side in the front row only
+  - b) Adjacent: a chain runs left, right, in front and behind on raid / group-dungeon boards
+  - c) Each row chains on its own (left / right in the middle and back rows too), no front / behind links
+- **Default:** a) Keep: side by side in the front row only
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) keep: Pack chains side by side in the front row only (as built; no road fight changes).
+
+**ENG18-2. Shore Up: the allies left / right, or every adjacent ally?** · Decide · Battle rules · asked 2026-11-02 · decided 2026-11-03
+- Shore Up gives Shield 1 to the allies left and right of it in its row, not in front or behind (owner EN4 option B, 10-23 22:23); its text says "beside it" and the Codex says left and right. Under the 19:56 word "adjacent" it would also brace the allies in front of and behind it. Audit #25. Balance: raids and group dungeons only; Oyster Bank and Musk Ox Matriarch give up to 4 Shields a hit instead of 2 there (about +1 Shield a hit on a full board); no road change.
+  - a) Keep left / right (EN4 B)
+  - b) Adjacent: + in front / behind on raid / group-dungeon boards
+- **Default:** a) Keep left / right (EN4 B)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) keep Shore Up on the allies left / right (EN4 B, as built).
+
+**ENG18-3. Stench and SK3 area targets: the facing enemy and its adjacent units, or the 3-column shape?** · Decide · Battle rules · asked 2026-11-02 · decided 2026-11-03
+- GD2-5 kept Stench as a shape (the enemy facing it and those beside it). Built since GD2: an SK3 area target (Stench, and any trigger with the area target) reaches the facing enemy and its adjacent units (sk3Beside), so on a raid / group-dungeon board also the enemy behind the facing one. ENG18 worded it as built ("the units adjacent to that one"). Audit #21. Balance: no card has Stench or an area SK3 target today, so nothing changes now; a future Stench card is about one target stronger in raids with a).
+  - a) Keep as built: adjacent to the facing enemy (worded so)
+  - b) Back to the GD2-5 shape: the facing enemy and left / right only
+- **Default:** a) Keep as built: adjacent to the facing enemy (worded so)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) keep as built: an area target reaches the facing enemy and its adjacent units (worded so by ENG18).
+
+**ENG18-4. Tokens "beside it": the nearest free slot in its row, or an adjacent slot first?** · Decide · Battle rules · asked 2026-11-02 · decided 2026-11-03
+- Twin, Sprout, Brood, Revive N, Duplicate, death tokens, a Relic and a Meiosis split go into the nearest free slot in the unit's own row, however far (owner BF6: "Spawn closest slot to the spawner"); their texts say "beside it". On one row that is already left / right first. On a raid / group-dungeon board an adjacent slot in front / behind could come first. Audit #40. Balance: raids and group dungeons only, and small: tokens land a row away instead of a few columns away (they guard / block a different column); no road change.
+  - a) Keep: the nearest free slot in its row (BF6)
+  - b) An adjacent free slot first (left, right, in front, behind), then the nearest in its row
+- **Default:** a) Keep: the nearest free slot in its row (BF6)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) keep: tokens go into the nearest free slot in the unit's own row (BF6, as built).
+
+**ENG18-5. A Spawner in a raid's middle / back row spawns into the front row** · Decide · Battle rules · asked 2026-11-02 · decided 2026-11-03
+- Read from the code (sk3SpawnAdjacent -> nearestFreeSlot, not run): a Spawner always puts its token into the front row, the free slot nearest its column, even when it stands in a raid's or group dungeon's middle / back row. Brood, Twin and Sprout use the unit's own row there (spawnBeside, package RR). Text now: "into the free slot nearest it". Audit #41. Balance: no card has Spawner today; with b) a back-row Spawner's tokens would stay behind the front line (safer, but they block less).
+  - a) Keep: into the front row
+  - b) Its own row, like Brood and Twin
+- **Default:** b) Its own row, like Brood and Twin
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): b) its own row, like Brood and Twin: bramblewood-engine.js sk3SpawnAdjacent now puts a middle- / back-row Spawner's unit (and a Duplicate of a unit there) into the free slot nearest it in its own row (rowFreeSlotNear, as spawnBeside). One-row fights unchanged; no card has Spawner today. DEC1.
+
+**ENG20-1. Fire and water: the numbers (built as proposed)** · Decide · Battle rules · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:44: "Fire damage should light the target on fire, or remove wet counters first. (Tide and Ebb add a water counter if the card doesn't have counters - flood up to max 2 counters, ebb up to max 1) (Water damage adds water counters = damage)". Built (ENG20): a unit holds up to 3 water counters (💧N pip); water damage adds counters equal to the damage and puts Burn out. At a round's start a unit in the water with no counter gets 2 in a Flood or High Tide, 1 in an Ebb (only Swimmer / Tide units are in the water in an Ebb); a unit that has counters gets none, and counters stay until fire dries them (they no longer vanish when the tide goes out). Wet = its counters (a Swimmer / Tide unit is always at least 1) + 1 under Rain; each lightning hit still gets +1 a Wet counter. A fire hit that lands dries 1 counter a point; if points are left once the unit is dry and the fire came from a unit (a swing, shot or skill), it is Burning (🔥 pip): 1 fire at the start of each of the next 2 rounds; a new fire hit refreshes it to 2, it never stacks. Field fire (Scorching, the volcano, Wildfire) dries but lights nothing; a unit that resists fire (Resist, Immune, Dry) never burns; Cleanse removes Burn. Cards affected: the 19 fire attackers and 17 fire-skill cards hit harder (about +2 a lit target), the 29 fire-resistant cards are spared; on tidal maps land units now stay Wet (2) after a Flood, so the 9 lightning cards hit them harder; Tide Spirit and the 5 Wave / Tsunami cards now soak their targets (shielding them from Burn).
+  - As built
+  - Fire dries one counter a hit (not a point)
+  - Burn 1 round (half the damage)
+  - Counters dry by 1 at each Ebb
+  - Cap 2 counters
+- **Default:** As built
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): As built (fire dries a counter a point, Burn 2 rounds, cap 3).
+
+**ENG20-2. Carriers for the three new skills: Stop, Drop and Roll; Glean; Lumber Feast** · Decide · Skills · asked 2026-11-02
+- Built, priced, texts in 12 languages, on no card. Stop, Drop and Roll 🤸 (owner 22:44: "take the fire damage, but put it out by 'rolling on the floor'"): when it would start Burning it rolls instead: the hit's damage lands, no Burn, Wait +1 (it loses its next swing); 0.2 fixed (not measured). Glean 🫐 (owner 22:47: "takes any berry counter it can on the map to +1 shield"): every turn while Ready it takes every Berry on the board, both sides, any row (Berries have no range rule; only Foraging makes them, Pickpocket steals them on a hit) and gains +1 Shield each; 0.3 fixed. Lumber Feast N 🪵 (owner 22:47: "Like sacrifice, there's one that'll just take your lumber and eat it"): as it arrives, after its cost, it eats up to N of your Lumber (default 3), +1/+1 for each; 0.7 a point of N. Suggested homes: Stop, Drop and Roll on a volcano-map ground unit facing fire decks (a Basalt Boar-like 'rolling' animal or a fire-map Badger); Glean beside the Foraging cards' maps (a magpie, a bird or a bear on the berry maps); Lumber Feast on a beaver or termite card on a Lumber-rich map.
+  - Claude places them on 1-2 thematic cards each, re-fitted to budget
+  - Owner picks the cards
+  - Keep them in the pool for now
+- **Default:** Owner picks the cards
+
+**ENG20-3. A +0/N buff ending never kills, and damage eats the buff first: which buffs** · Confirm · Battle rules · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:44: "if a defensive (+0/N) buff is removed and the unit would die, they remain with 1 health instead. Damage dealt to it always prioritises the buff-health, not the true health. Otherwise, debuffs can sometimes kill units." Built as a cap: when a live +0/N buff shrinks or ends the unit keeps its Health up to the new maximum, never below 1, so a hit that landed during the buff came off the buff first. Now on Nature's Force, Kinship, Pack / Pack Leader, Formation, Herald and the Crosswind; the Zeitgeber / state Health and an equipped piece already worked this way. Before, those five auras took their whole N off the unit's Health (never below 1). Debuffs, Wither and Isolation deepening still take Health. Cards affected (their allies keep more Health when the aura source dies): Rivergate Tribune, Honeyjoe Brewer (Kinship), Dhole Runner, Dhole Matriarch, Mire Rat, Gnawed Matriarch (Pack), Lichen Tortoise (Nature's Force).
+  - As built
+  - Also on temporary +0/N from triggers (buff action)
+- **Default:** As built
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): As built (the five auras and the Crosswind; temporary trigger buffs unchanged).
+
+**ENG20-4. Heavy and cross winds: which maps, and the Crosswind for Flyers only** · Decide · Field · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:44: "Heavy tailwind/headwind and sidewind (much rarer) - only more advanced later on field effects can have sidewind ... Heavy headwind = -2 attack but skills happen twice. Heavy tailwind = haste + fast forward 1 (attack at speed +1). Side wind = ... +0/2 or +0/5 for heavy side wind." Built: Heavy Headwind (its Flyers -2 Attack, their active skills twice), Heavy Tailwind (Quick and one Fast Forward), Crosswind (no back or face; every Flyer on both sides +0/2 for the round), Heavy Crosswind (+0/5). From Map 30 a windy fight's strong gust is heavy 1 in 4 and blows across 15% of the time (both: a Heavy Crosswind). Today the windy maps are Maps 3, 11, 18, 19 and 20, so nothing rolls a heavy or cross wind yet and no card's power changed; no fixed field names them. The Crosswind is scoped to Flyers (as the note's 'birds can strafe'); the wind pill shows ⇈ / ⇊ for heavy and ↔ / ⇔ across, and a calm round now shows still air ('Calm: no wind', owner 22:49).
+  - As built (Map 30+ only, dormant until a later windy map)
+  - Heavy from Map 18 (18, 19, 20 at 1 in 4), Crosswind from Map 30
+  - Crosswind for every unit, not just Flyers
+  - Give one later map a fixed Crosswind field
+- **Default:** As built (Map 30+ only, dormant until a later windy map)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): As built (heavy / cross winds from Map 30 only; dormant today).
+
+**ENG20-5. Road check for fire, water, Remember and the CPU's Devour (not measured in ENG20)** · Confirm · Balance · asked 2026-11-02 · decided 2026-11-03
+- Not measured in this package. Expected moves: fire decks stronger (Burn), most on the volcano maps (Maps 11, 20, 22) where both sides carry fire; lightning decks stronger on tidal maps (land units keep 2 counters); Remember cards weaker (Marsh Wisp, Bog Revenant, The Unremembered, Ashbone Ghoul come back once only; their measured worth 4.92 a point was taken with repeat returns possible); the CPU's Pit Glutton and Hollow-belly Rat get fed when it helps instead of a 40% coin flip; King Maker (King Slayer 4) now hits every leader. Proposed: the batch's balance package measures the volcano, sea and Remember fights and re-prices Remember.
+  - Road check in the batch's balance package (swaps only)
+  - Leave it
+- **Default:** Road check in the batch's balance package (swaps only)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): Road check in the batch's balance package: done by BAL13 / BAL14's fresh road measure on the current engine (docs/balance/bal13/summary-2026-11-03.md, 12 / 40 / 20 / 40) and BAL14's Remember re-price (4.63 x N^-1.03).
+
+**FIX6-1. Your leader now comes out on Auto and in the sims; should the CPU save for its leader too? (LEAD-4)** · Decide · Battle · asked 2026-11-02 · decided 2026-11-03
+- Owner 11-02 21:37: the Drowned Matriarch 'is never played'. Cause: your leader waits beside the board, but Auto-play never summoned it and the sims dealt your seat no leader. Built (FIX6): a seat the engine plays for you (Auto-play, the sims' reference player) brings its leader out as soon as it can pay (once), pitches for it and keeps its Lumber up to 2 turns. The CPU's own leaders are unchanged (LEAD-4: no saving, a 35% roll a turn): in 4-5 Old Sturgeon still comes out in about 60% of games and the Drowned Matriarch copies in its deck are played from hand. With the CPU's rule alone, a cost-1 leader in a deck of free cards came out in 8-19 of 60 games.
+  - Leave the CPU as it is (LEAD-4 stands)
+  - The CPU saves for its leader too (harder fights everywhere; needs a road retune)
+  - Enemy leaders cost no Lumber
+- **Default:** Leave the CPU as it is (LEAD-4 stands)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): Leave the CPU as it is (LEAD-4 stands).
+
+**FIX6-2. The sims now play a reference set's leader; the road's Map reference still has none** · Decide · Balance · asked 2026-11-02 · decided 2026-11-03
+- Built (FIX6): playReferenceGame deals your seat the set's leader (dealPlayerLeader), so Reference (Random), Reference-2 and any set naming a leader now play it. Spot checks, Reference (Random) deck 1, 60 games: 5-7 57% -> 80%, 10-3 65% -> 88%, 10-9 50% -> 85%, 16-4 55% -> 73%. Win rates measured with those sets before FIX6 (BAL9 / BAL10 / PRO ease) were low by that much. The road measure's Map reference names no leader, so the road numbers do not move, but every real player has one (at least the Wandering Traveller, 3/5, cost 0).
+  - Re-measure the reference sets with their leaders only (BAL13)
+  - Also give the Map reference a leader (the Wandering Traveller, or the best one owned by then) and re-measure the road
+  - Keep the old leaderless numbers
+- **Default:** Re-measure the reference sets with their leaders only (BAL13)
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): Re-measure the reference sets with their leaders only: done by BAL13 / BAL14 (summary and card flags with leaders through FIX6's referenceFightSetup({leader})); the road's Map reference keeps no leader.
+
+**FIX6-3. The Tower's boss pool: dragons are now Mythic, Divine and Ancient** · Decide · Maps · asked 2026-11-02 · decided 2026-11-03
+- KK20: TOWER_POOLS listed 20 of 35 cards under a rarity they no longer have. Fixed (FIX6): each tier holds its own rarity, a new Very Rare tier, the three Uncommons (Octopus Tactician, Drowned Matriarch, Old Shell) out, the Caldera Wyrm (Heroic) moved from the boss pool to the Heroics and the Fire Drake Hatchling added there, since the top floors could not reach their rating with 3 Heroics. tests/keywords-2026-10-15w3.js had 15 Tower failures (a floor 836 off its rating) and now passes. Left as is: the boss pool's head is a Legendary only for the Blue Dragon and the Old Willow; Red and Green Dragons are Mythic, White Divine, Black Ancient (the floor's levels still land it on its rating).
+  - Keep the dragons heading boss floors
+  - Only Legendaries head boss floors (Blue Dragon, Old Willow of the Ford)
+- **Default:** Keep the dragons heading boss floors
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): Keep the dragons heading boss floors (as built).
+
+**UI16-1. Player card looks: earned by play, or sold too?** · Decide · Profile · asked 2026-11-02 · decided 2026-11-03
+- Owner 11-02 22:15 note 1: the profile editor now has Background (6), Border (5), Font (4), a word before your name (5 + none) and after it (5 + none), beside the character, colour and title. There was no cosmetics rule in project-state.md or decisions.json, so UI16 gates them like the titles: one or two of each free, the rest by a cleared map (Outskirts, Ashen Spurn, Caves & Alcoves, Wolfsbane, Coral Current, Sundered Peak), a player level (10, 15, 25), a first Conquest win or 50 cards. Nothing is sold.
+  - a) Keep them earned by play only
+  - b) Also sell some in the shop (gems / Krooni), keeping the earned ones
+  - c) Change the unlock list (say which)
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) keep the card looks earned by play only.
+
+**UI16-2. Prefix and suffix: around your name, or around your title?** · Decide · Profile · asked 2026-11-02 · decided 2026-11-03
+- Note 1 asked for a title, a prefix title and a suffix title. UI16 puts the prefix and suffix around your NAME ("Brave Jay of the Glade") and keeps the title as its own chip ("Trailblazer"), shown wherever your card shows (profile, What rivals see, the versus card, PvP, your co-op seat).
+  - a) Keep: around the name
+  - b) Around the title instead ("Brave Trailblazer of the Glade", the name alone)
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) keep the prefix / suffix around the name.
+
+**UI16-3. The versus card with art: the boss skull / elite star frame** · Decide · UI · asked 2026-11-02 · decided 2026-11-03
+- Note 9: a rival with a leader (or a bramble with a picture) now shows the leader's and the bramble's art, feathered, in place of the round portrait, so the VIS3 skull frame (boss) and star frame (elite) that sat on that portrait are not drawn there; the kicker still says BOSS / ELITE in red / violet and the card's border keeps its boss / elite colour. A fight with no art keeps the framed portrait.
+  - a) Keep as is
+  - b) Put a small skull / star badge on the leader's picture
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) keep as is (the kicker and border carry BOSS / ELITE).
+
+**UI16-4. Show other players' card looks in the co-op lobby** · Decide · Co-op · asked 2026-11-02 · decided 2026-11-03
+- Note 1: your own seat in the co-op lobby wears your card (background, border, font, prefix / suffix, avatar). Other players' seats can too once the room carries their avatar: one line in bramblewood-coop.js (seatOf keeps p.avatar) and gdJoin's me: {..., avatar: loadAvatar()} (the co-op package's files, so not done in UI16). The lobby code already reads x.avatar when it is there. PvP ghosts already carry their looks (the avatar record they upload).
+  - a) Do it in the next co-op package
+  - b) Not needed
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) done by ENG18 (2026-11-02): co-op seats keep avatar (seatOf / addHuman / hello) and the page sends loadAvatar() with a join.
+
+**CONTENT6-1. Savanna Reaches: 3 carried cards after the cut (rule 4-5)** · Decide · Maps · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 14:10: take a carried card out of Savanna Reaches (m5), toward balancing animals per type. Cut: Leafcutter Gardener (ant; the ant group is the most-listed of the four carried cards' groups: ant 9, cat 7, mouse 5, crow 4); it stays on The Savanna side map (my) and Map 7; its copies in 14-2 and 14-7 became House Cat (nearest by Lumber / Wait / 2A+H / rarity). The file's list was 11 own + 4 carried (counted by first map list, and by the Map cards view's Carried pill), not 9 + 6, so it is now 11 own + 3 carried, one under the 4-5 rule. Options: a) keep 11 + 3; b) carry one more card (e.g. a non-ant one from the maybes or an earlier map) to get back to 4; c) also cut an own card (Weaver Bird is the 14-3 first-clear card, so not that one) to get to 10 + 3.
+
+**CONTENT6-2. Renamed elementals: the boss name and two optional renames** · Decide · Cards · asked 2026-11-02 · decided 2026-11-02
+- CONTENT6 gave twelve form-less cards an animal and a name that shows it (Ember Firefly, Tide Seahorse, Stormcaller Owl, Magma Rhino, Rimeheart Mammoth, Wisp Newt, Revenant Bog Turtle, Unremembered Heron, Stoneheart Tortoise, Stalactite Pill Bug, Iron Badger, Blackmass Rat); ids unchanged, art queued (docs/art/content6-2026-11-02-briefs.md). a) The Rimefire Caldera's boss node 22-8 is still called "The Rimeheart Colossus": rename it "The Rimeheart Mammoth"? b) Gale Sprite and Alpine Avalanche already show their animal in the art (a swift, a snow bear) and were left as they are; rename them too (Gale Swift is taken; e.g. Whirlwind Swift, Avalanche Bear)?
+
+**CONTENT7-1. Where do the six new sea cards go? (proposed, on no list yet)** · Decide · Maps · asked 2026-11-02 · decided 2026-11-02
+- IDEA-11-02 (owner 11-02 19:56) built as cards, unlisted (awaitingSource + unattainable, so out of play until placed). Priced at their proposed map's budget term and their rarity (Level 1, 3A + H + S <= N): Bloodworm Common 2/6 (Lumber 0, Wait 1; Poison 1, Bleed 1; the worm with four jaws, Glycera; the lore bible has no other candidate) -> Pebble Beach (Map 2, mb); Bright Night Algae Common 1/3 (0/1; Bloom: night, a copy beside it at night, the night twin of Pond Algae) -> Kelp Mangroves (Map 9, mk); Bobbit Worm Uncommon 4/10 (1/2; Ambush 2, Gash 2) -> Kelp Mangroves (Map 9); Man o' War Rare 3/13 (1/2; Poison 2, Tide) -> Kelp Mangroves (Map 9); Nautiloid Rare 3/14 (1/2; Armor 2, Pierce 2) -> Coral Current (Map 10, m7), beside the Nautilus Drifter; Pistol Shrimp Uncommon 4/4 (1/1; Stun on Hit 2) -> Coral Current (Map 10), beside the Mantis Shrimp. Placing a card is the owner's call (map-pools.json lists, then the skirmish-reward rule and deck checks); a card placed on a different map is re-fitted to that map's term (tools/content7_cards_2026_11_02.js).
+  - Place as proposed (Pebble Beach 1, Kelp Mangroves 3, Coral Current 2)
+  - Place on other maps (say which)
+  - Keep unlisted for now
+- **Default:** Keep unlisted for now
+
+**CONTENT7-2. Unicorn, Sphinx and Griffin: Mythic, unlisted, marked for Map 56+** · Discuss · Cards · asked 2026-11-02 · decided 2026-11-02
+- IDEA-11-02 built the three mythic creatures as Mythic cards on no list (awaitingSource + unattainable; creatorNote says MARKED FOR MAP 56+; the road's Mythic ladder starts at Map 60, so Map 56+ is a side or late-map slot to be chosen). Priced with the Map 56 term (3A + H + S inside N 64.3): Unicorn 7/33 (Lumber 3, Wait 4; Healing 3, Cure 2; animal: horse), Sphinx 9/33 (3/4; Confuse 50% for 2 rounds, Daunt 1; animal: lion), Griffin 10/22 (3/4; Flying, Pounce 2; animal: griffin, eagle and lion). Two skills each, existing keywords only. Placement and how a Mythic is obtained are open until Map 56+ exists.
+
+**CONTENT7-3. New cards: animal affinity and two renames (CONTENT6-2 b)** · Discuss · Cards · asked 2026-11-02 · decided 2026-11-02
+- Every new card has an animal (owner rule: no pure elementals): bloodworm, bobbit worm, man o' war, nautiloid, pistol shrimp, horse, lion, griffin. Bright Night Algae is the one soft case: the owner asked for blown-up glowing bacteria, so its animal is 'glowing bacterium' with the plant subtype, as Pond Algae ('algae'). Say if it should be a real animal instead (e.g. a sea sparkle or comb jelly) and it is re-painted. Renamed per CONTENT6-2 b (owner 19:56): Gale Sprite -> Whirlwind Swift, Alpine Avalanche -> Avalanche Bear (ids unchanged; names and flavour in all 12 language packs). tools/animal_tags.py got two lines (Bright Night Algae, Unicorn) so the animal tags regenerate.
+  - Keep the glowing bacterium
+  - Make it an animal (say which)
+- **Default:** Keep the glowing bacterium
+
+**BAL-ROLES. Who balances what** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 14:13: "your job is doing a rough 1st pass before my pass in fitting a card's power budget AND in optimising a deck given set cards. My job is to choose those cards, and rebalance them ... you don't rebalance when you think something is weird, you just flag it out, and your priority is figuring why the skill budget doesn't encapture this." Claude: budget fits (stats to N(L)) and deck optimisation from the given lists, plus a short list of card picks / cuts per map as suggestions. Owner: which cards are on the lists and any re-tune by feel. A card that plays stronger or weaker than its budget is flagged with the budget's blind spot, not changed.
+
+**BAL11-1. Road fights the weak-deck search cannot bring to the band** · Decide · Maps · asked 2026-11-02 · decided 2026-11-02
+- Owner on BAL10-6 (14:10): build the weaker deck from each too-hard fight's own list (no Baby cards). Done (tools/skirmish_pass.js weak; 67 fights rebuilt in three rounds, each checked for the list, K14, the boon and a 2-point gain): green 77 -> 107 of 226, beyond 20 points 87 -> 47 (docs/balance/bal11/road-2026-11-02.md). Still more than 20 under target: the Canopy (all 5; 14-A-1 / 14-A-5 have no K14-legal deck of their size, 14-A-3 / 14-A-4 none weak enough), Basalt Foundry (19-A-1/2/3/9), Wolfsbane 17-6 / 17-7 / 17-8, the Sunken Depths 10-A-4 / 10-A-5, Lilypad Reach 2-A-5 / 2-A-6, 4-1, 4-2. K14 alone blocks 11-10, 14-6, 17-5 and 9-1 (the weakest deck without K14 reaches the band, with K14 it does not).
+  - a) Let a side map's own list count as map-unique for K14 (BAL10-6 b), then re-run the weak search.
+  - b) A lower enemy bramble Health on the fights no deck reaches (BAL10-6 a).
+  - c) The owner adds weak map-unique cards to those lists (docs/balance/bal11/suggestions-2026-11-02.md).
+  - d) Leave them.
+- **Default:** c, then a for the side maps
+
+**BAL11-2. Stealth and Breach priced at the road's bramble Health (x2), and the time of day at home** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- Every skill price was measured with both brambles at 30 Health; a road fight halves them (BRAMBLE_SCALE 0.5: your bramble is 15). tools/bal9/bramble_hp_2026_11_02.js (400 paired fights a variant): Stealth 3.44 points at 15 vs 1.10 at 30 (x3.1, 6 carriers), Breach 3.87 vs 1.80 (x2.2); Siege no clear change. Applied as a pricing correction (BAL-ROLES): Stealth 3.64 -> 7.28, Breach 2.25 -> 4.50 a point (the low end, x2). Nocturnal / Diurnal / Nightblind / Sunshy now take half their price from the card's home maps (skill-costs.json zeitHome; Owl Nightwatch 0.60, Echo Matriarch 0.77). Budget fits (each stat within 2): Owl Nightwatch 1/5 -> 1/3, Beetle Battering-Ram 4/11 -> 3/9 (Moray Ambusher and Raccoon Nightcrew, over their budget before and now further, are out of play: on no list, left). Held (no fit within 2 that keeps the body shape): Glass Octopus 4/9 (3/9 or 4/6), Subterraneaner 4/8 (2/6 or 3/3), Badger Sapper 3/15 (2/14).
+  - a) Keep x2 and re-measure the canon at the game's bramble Health (15) in a later package; the owner picks the held cards' lines.
+  - b) Use the measured x3 for Stealth.
+  - c) Revert to the 30-Health prices.
+- **Default:** a
+
+**BAL11-3. Map term from where the road fields a card** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- Beetle Battering-Ram and Siege Rhino are priced as Map 23 cards (+4.6 Base) but fight on Map 7 (7-A-3, 7-A-4) and Map 14 (the Canopy, the Savanna); they are the two strongest cards over the fair line of the maps measured (+7.0 / +5.5 a copy). Hercules Beetle: priced Map 18, listed Map 14.
+  - a) The Map term (and the home share) from the earliest map whose list or road deck holds the card (budget formula; re-fits follow).
+  - b) Take those cards out of the earlier fights (an owner pick).
+  - c) Leave it.
+- **Default:** b
+
+**BAL11-4. Lumber makers and 0-Lumber Rares: proposed budget terms** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- Measured over the fair line on their maps: Nautilus Drifter +4.5 and Coral Polyp Colony +4.1 (On Ready Lumber, on the Sunken Depths' costly list), Dune Packrat +3.5 (Pale Desert); Trapdoor Spider +3.5 / +3.9 (Rare 4/7 at 0 Lumber), Tide Spirit +4.2 (Rare 5/5, 0 Lumber), Vampire Bat +3.6. The budget prices a maker in the global context and gives a 0-Lumber Rare its whole Rarity term as turn-1 stats.
+  - a) Measure the makers on their home maps (run.sh measure --map) and price them by the list's mean cost; a 10-15% tighter cap 2 for a 0-Lumber, 0-Wait Rare, measured first.
+  - b) Leave the formula; the owner re-tunes these cards by feel.
+- **Default:** a
+
+**BAL11-5. Strong and weak decks per map; the N-WK practice skirmish** · Decide · PRO · asked 2026-11-02 · decided 2026-11-02
+- Owner 14:26: "generate a super strong deck but also a super weak deck given the map cards, and the field effects ... for every N-SK, there is a N-WK (weak)". The weak decks: tools/opt/wpro_2026_11_02.js (BPRO's pool without Baby cards, BPRO's rule and gauntlet, the search minimising), 1-2 per map, canonical/pro-skirmishes.json wpro. The strong: the BPRO decks (rebuilt without Baby cards for the Redwood Deep, the Sunken Grove, the Morel Hollow and the Mycelium Deep). The game: an N-WK node beside N-SK (admin map nodes, the same panel and free flow, no SPECIAL swap). Win rates per map: docs/balance/bal11/strong-weak-2026-11-02.md.
+  - a) As built; UI polish (a player-facing practice entry, a label in the 12 language packs) in a UI package.
+- **Default:** a
+- **Outcome:** a) Claude: as built. The Old Bramble has none (its list is over its fights' Common cap, as for BPRO).
+
+**BASELVL-1. Starter and Baby cards: base Level 0 or 1?** · Decide · Cards · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 19:29: "Only Duckling is [a Baby card] (base level 0 like the rest of the starter and baby cards)." The game today: Base / starter cards (faction base, e.g. Worker Ant, Duckling) start at Level 1, per the owner's 2026-10-19 UT rule ("The tutorial base cards come as Level 0 is the special thing": only the copies the tutorial hands out are Level 0). Baby cards that are not starters (Fox Kit, Bear Cub, the eggs...) start at Level 1 too. Only Sparrow Chick and the Red Dragon egg read Level 0. 19 of 21 Baby cards and 25 starters are base Level 1. Hatchling is on from Level 1 (ENG17), so at Level 0 it would be off.
+  - All starter and Baby cards start at Level 0 (Hatchling moves to Level 0)
+  - Keep today's rule (Level 1; tutorial copies Level 0)
+- **Default:** Keep today's rule (Level 1; tutorial copies Level 0)
+
+**RAR-1. Rarity up one step for cards far over their map's fair line (fewer copies a deck)** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- Owner 19:52: "Have we adjusted rarities? Help me do that." Caps: every listed card is at or below its first map's cap (BAL9-1 re-check today: 0 to lower; Dolphin Knight held, HH6). Proposal (BAL11's measures, +points over the fair line a copy): raise one step where the map's cap allows, so a deck holds one copy fewer and the budget line rises. Fits the cap: Beetle Battering-Ram (+7.0) and Siege Rhino (+5.5) Rare -> Very Rare; Pangolin Roller (+4.8) Uncommon -> Rare; Echidna Quillshot (+4.8) Very Rare -> Super Rare; Nautilus Drifter (+4.5), Tide Seahorse (+4.2), Trapdoor Spider (+3.9), Magma Salamander (+3.0) Rare -> Very Rare; Coral Polyp Colony (+4.1), Thorny Devil (+3.3), Dung Beetle (+3.0) Common -> Uncommon; Vampire Bat (+3.6), Dune Packrat (+3.5) Uncommon -> Rare. Over the cap (would need a cap exception, or stats): Walrus Icebreaker, Savanna Cheetah, Quicksand Queen (Very Rare), Mangrove Manatee, Echo Screecher, Giant Cave Huntsman (Rare). Stats unchanged; all stay inside the budget. Table: docs/balance/rarity-2026-11-02.md.
+  - Apply all that fit the cap
+  - Apply some (name them)
+  - Keep rarities
+- **Default:** Apply all that fit the cap
+- **Outcome:** Applied all that fit the cap.
+
+**BAL12-1. Three Lumber makers the re-fit cannot fit within 2 a stat** · Decide · Balance · asked 2026-11-02 · decided 2026-11-03
+- BAL12 priced an On Ready / On Spawn trigger that gains Lumber from On Ready +1 Lumber (onReadyGold, 6.65 at bramble 15) x N^0.175, as measured (On Ready gain 1 / 2 / 3: 4.33 / 4.99 / 5.25 at 30 Health; gain 3 6.24 beside +1 Lumber 6.12 at 15); before, the shared trigger pair priced a Lumber at about 1.0 (the Dune Packrat's +3 at 3.14). Re-fit within 2 a stat: Nutria Reedcutter 2/9 -> 2/7, Talus Pika 2/7 -> 1/5. Held (no line within 2 a stat keeps the body): Otter Angler 1/11 (cap-1 use 1.24; fit 1/6), Leafcutter Gardener 2/5 (1.21; fit 1/4, hitter -> balanced), Gannet Nestweaver 1/7 (1.07; fit 1/5, wall -> balanced). docs/balance/bal12/refit-2026-11-02.json.
+  - a) The fits: Otter Angler 1/6, Leafcutter Gardener 1/4, Gannet Nestweaver 1/5.
+  - b) The owner's lines for the three.
+  - c) Keep their stats and price their Lumber gain lower (an owner price).
+- **Default:** b
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): b) the owner's lines: none named yet, so Otter Angler 1/11, Leafcutter Gardener 2/5 and Gannet Nestweaver 1/7 stay as they are and carry on as BAL14-1 a (held, the budget flag stays, for the owner's card pass). No card changed.
+
+**BAL12-2. The three cards BAL11 held, read at the bramble-15 prices** · Decide · Balance · asked 2026-11-02 · decided 2026-11-03
+- Stealth measured at bramble 15: 6.88 (BAL11's x2 had 7.28); Breach 3.03 a point (x2 had 4.50); Siege 0.85 x N^0.851 (was 0.62 x N^1.036). Glass Octopus 4/9 (Corrode 2 + Stealth): cap-1 use 1.06, the fit 4/7 (Health -2, still a hitter). Subterraneaner 4/8 (Stealth + Ambush): 1.32, fit 2/7; Badger Sapper 3/15 (Siege 2 + Breach 1): 1.02, fit 3/14. Subterraneaner and Badger Sapper are on no list now (out of play).
+  - a) Glass Octopus 4/7; the two out-of-play cards left until they are listed.
+  - b) The owner's lines.
+  - c) Leave all three.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) Glass Octopus 4/9 -> 4/7 (Health -2, still a hitter; cap-1 use 1.06 -> 0.99 at the bramble-15 prices: within BAL12's re-fit rule). Subterraneaner and Badger Sapper stay as they are until they are listed (out of play). DEC1.
+
+**BAL12-3. The tempo cap 2 of a 0-Lumber Rare does not bite: move it to cap 1?** · Decide · Balance · asked 2026-11-02 · decided 2026-11-03
+- BAL11-4 a: a 0-Lumber, Wait 0-1 card at Rare or rarer has cap 2 x 0.85 (bramblewood-budget.js TEMPO_CAP2_MULT; measured share 0.082 of their stats over the other Rare+ cards, cap 2 tighter by 0.16 [0, 0.43]; docs/balance/bal12/tempo-cap2-2026-11-02.md; read on the global in-play contribution run at 30 Health, the fresh bramble-15 run did not finish on the shared machine). None of the 17 such cards in play is limited by cap 2 (their cap-2 use 0.14-0.45), so no stat moved. The same share on cap 1 (N x 0.92 for these cards) would put 8 over: Otter Centurion, Dolphin Knight, Otter Scout, Tide Seahorse, Pike Lancer, Wandering Traveller, Vigil Owl, Caldera Wyrm (an owner card). Wait 1 is in (the owner's examples, Trapdoor Spider and Tide Seahorse, are Wait 1).
+  - a) Keep it on cap 2 (no effect today).
+  - b) Put the tempo term on cap 1 (N x 0.92), re-fit the 8 within 2 a stat.
+  - c) Re-measure at bramble 15 first (a free machine, about 1 hour).
+- **Default:** c, then b
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) for now: keep the tempo term on cap 2 (no effect today). The default (c, then b) needs an hour's re-measure and a re-fit of 8 cards, a rebalance the owner put off on 11-03 09:39 ('don't have to rebalance for now'), so the smallest change wins; the bramble-15 tempo measure goes on the next balance package's list. Nothing changed.
+
+**BAL12-4. Which existing cards take a Lumber gain ("design cards to give more lumber")** · Decide · Cards · asked 2026-11-02 · decided 2026-11-03
+- Owner 22:26 (no new cards, 20:19). By theme (gatherers, hoarders, builders) and budget room for On Ready +1 Lumber (6.65 x its lists' multiplier): fits as is: Ant Hill 0/22 (room 6.77); nearly: Golden Magpie 1/6 (gives up 0.3), Iron Badger 0/35 (1.0), Bee Drone (owner card, 1.3); next: Ore-smelter Mole, Raven Scout, Hollow-belly Rat, Badger Stonemason, Friar Badger, Woodpecker Sapper (2.3-3.2 stat points each). Full list: docs/balance/bal12/lumber-candidates-2026-11-02.md. A cheap list (mean cost under 0.6, e.g. Pebble Beach) gets little from Lumber (0.39 of its worth); a costly list about the same as the global pool (1.0-1.14).
+  - a) The owner picks cards from the list; BAL-ROLES fits their stats.
+  - b) Ant Hill and Golden Magpie now (they fit or nearly).
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) the owner picks cards from docs/balance/bal12/lumber-candidates-2026-11-02.md and BAL-ROLES fits their stats. No card changed now.
+
+**BAL12-5. Finish the skill re-measure at bramble 15** · Decide · Balance · asked 2026-11-02 · decided 2026-11-03
+- BAL12 re-measured the 15 canon points at bramble 15 (1,000 fights: Armor 1 2.65 -> 2.33, Fork 4.92 -> 3.89, On Ready +1 Lumber 5.21 -> 6.65, Rage 3.5 -> 3.01, Regen 2 3.45 -> 2.91, Shell 2 2.72 -> 2.26, Sweep 2 4.82 -> 5.08 ...; one stat point = 3.00 win-rate points at 15 vs 3.59 at 30) and 7 of the 240 in-play skill items (Stealth, Breach, Siege 1 / 4, Arrow 1, Arrow + Fletcher, Brood 1). The other 233 keep their 30-Health readings: the shared machine ran at 6-20 games a second (about 5 hours more). Run: tools/pipeline/run.sh measure --fights 200,400 (bramble 15 by default), then run.sh price and tools/bal12/refit_2026_11_02.js.
+  - a) Run it overnight on a free machine (a follow-up package).
+  - b) Only the skills on 2+ cards (59 items, about 1.5 hours free).
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) done by BAL14 (2026-11-03): all 243 skill items measured at bramble 15 (228 converged, 15 wide at 400 fights; BAL14-4), priced and re-fit.
+
+**BAL12-6. RAR-1 puts three cards over their fights' rarity cap** · Decide · Maps · asked 2026-11-02 · decided 2026-11-03
+- After RAR-1 (applied by BAL12) tests/card-pass-2026-10-19.js check 4 finds 8 fights over the road's rarity cap: Echidna Quillshot (now Super Rare) is the exclusive reward of 19-6 and in the decks of 19-3, 19-4, 19-5, 19-6; Trapdoor Spider (now Very Rare) in 7-A-3 and 7-A-5; Beetle Battering-Ram (now Very Rare) in 7-A-4 (BAL13 takes it out of the earlier fights, BAL11-3 b). Echidna Quillshot is also over its first list's cap (Basalt Foundry, Very Rare: tests/bal9-2026-11-02.js JJ12, the rarity tool would lower it back). Road decks are BAL13's; the reward slot and the list cap are card-data calls.
+  - a) BAL13 swaps them out of those decks; 19-6's reward slot gets another new Basalt Foundry card (BAL9's reward rule).
+  - b) Echidna Quillshot back to Very Rare (keep it as 19-6's reward); Trapdoor Spider out of 7-A-3 / 7-A-5.
+  - c) A cap exception for these fights.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-03 09:39: 'Balance items you can choose. Like ENG and FIX and UI.'): a) Echidna Quillshot leaves 19-6's skirmish-exclusive reward slot (now a basic-pack card, tier 3, rarity kept at Super Rare by RAR-1); the slot goes to Anvilwhisker Otter (Uncommon, a new Basalt Foundry card, seeded pick from the map's new pack cards inside the Very Rare cap, BAL9's reward rule); its copy in the 19-6 deck -> Pit Glutton (the list's nearest within the cap, as BAL13 did in 19-3..19-5). BAL13 had already swapped it out of 19-3, 19-4, 19-5 and Trapdoor Spider out of 7-A-3 / 7-A-5. DEC1.
+
+**LEAD-NAT-1. A natural leader per faction past Map 10** · Idea · Cards · asked 2026-11-02
+- Owner 21:39 on Drowned Matriarch always being his leader: "There are no natural leaders! I'll consider that when thinking about new base cards to add. I think past Map 10, we should think about 1 natural leader per faction." Noted for the owner's next base-card pass; FIX6 checks how the default leader is picked meanwhile.
+  - Owner adds them
+  - Later
+- **Default:** Owner adds them
+
+**IDEA-VREGIA. Victoria Regia: the spiky giant water lily** · Idea · Cards · asked 2026-11-02
+- Owner 22:15: "Victoria Regia - spiky water lily! So amazing, it pushes leaves aside with its ungrown leaf - then the leaf itself is spiky." Card idea (flora, water): on play it pushes adjacent units aside (left / right) to open its space, then the pad is spiky (Thorns). Not built: new cards wait for the owner's pick of map and list (owner 20:19: no new cards on lists for now).
+  - Build it (owner names the map)
+  - Later
+- **Default:** Later
+
+**IDEA-BRAMBLES. Brambles with their own identity (design pass, then balance pass)** · Idea · Brambles · asked 2026-11-02
+- Owner 22:44: "Brambles are right now very not-unique and distinctive. In the future, there will be one that literally does heal 4 on every end turn or something. And one that gives all your cards +1 attack. Or one that allows sacrifice (your hand) to give it 1 thorns and +1 hp. etc." A future design pass gives each bramble one signature effect, then a balance pass prices them. Not started.
+  - Start after the card balance pass
+  - Later
+- **Default:** Start after the card balance pass
+
+**IDEA-EARLY-1. Early game: Guardians on the early walls** · Idea · Early game · asked 2026-11-02
+- Owner 19:56 idea: more Guardians in Maps 0-5 so the first fights teach lanes and walls. Each early map list gets 1-2 Guardian cards and each early boss deck one.
+  - Build it
+  - Later
+  - No
+- **Default:** Later
+
+**IDEA-EARLY-2. Early game: a boss with one gimmick per map** · Idea · Early game · asked 2026-11-02
+- Maps 0-5 bosses each do one memorable thing the player can see coming (the Gannet Queen dives on a row end every 3rd turn; Old Shell hides in its shell when hit twice), shown by a small intent icon over the boss before it acts.
+  - Build it
+  - Later
+  - No
+- **Default:** Later
+
+**IDEA-EARLY-3. Early game: a keyword of the map** · Idea · Early game · asked 2026-11-02
+- Each early map introduces one keyword (Swift, Flying, Guardian, Stealth...): its list leans on it, its first pack guarantees one card with it, and the map card names it. The player learns one idea per map.
+  - Build it
+  - Later
+  - No
+- **Default:** Later
+
+**IDEA-EARLY-4. Early game: stars per fight** · Idea · Early game · asked 2026-11-02
+- Each fight gets 1-3 stars (win; win with your bramble above half; win in N rounds), with a small Gold / Kibble bonus per star the first time. Gives replay reasons and a sense of mastery without harder fights.
+  - Build it
+  - Later
+  - No
+- **Default:** Later
+
+**IDEA-EARLY-5. Early game: a combo shown on each map** · Idea · Early game · asked 2026-11-02
+- Each early map's list holds one two-card combo (e.g. a Stem and an evolute, a Brood maker and a buffer), shown on the map card as a hint; playing it once gives a small reward.
+  - Build it
+  - Later
+  - No
+- **Default:** Later
+
+**IDEA-EARLY-6. Early game: shorter first fights** · Idea · Early game · asked 2026-11-02
+- Lower bramble Health on Maps 0-2 (or one fewer round to win) so the first 10 fights last 3-4 minutes; measured against the road curve before applying.
+  - Build it
+  - Later
+  - No
+- **Default:** Later
+
+**IDEA-EARLY-7. Early game: an event node between fights** · Idea · Early game · asked 2026-11-02
+- One non-fight node per early map: a wandering trader (swap a card), a shrine (a one-fight boon), a lost egg (a Baby card). Breaks up fight after fight.
+  - Build it
+  - Later
+  - No
+- **Default:** Later
+
+**BAL10-1. The Old Bramble's PRO / BPRO decks under its Map 21 cap** · Decide · PRO · asked 2026-11-02 · decided 2026-11-02
+- DECK1's Old Bramble decks (0-B-PRO-1/2) were built under the old Common cap and failed DECK1's 10-copies-from-the-list rule. CARD5 capped its fights by Map 21 (BAL9-5).
+  - a) Re-run DECK1 for the Old Bramble only; no BPRO when 6 cards cannot hold 20 copies.
+  - b) Leave the old decks.
+- **Default:** a
+- **Outcome:** a) Claude (owner delegated): DECK1 re-run for mo only (tools/opt/deck1 --map mo): 0-B-PRO-1 big 76%, 0-B-PRO-2 open 73%; the evasion deck (64%) dropped because it held Swamp Rabbit, a card on no list. No Old Bramble BPRO: its list is Rare / Very Rare (copy caps 3 / 2), so 6 different cards hold at most 19 copies (bpro2 plan now says so instead of crashing). BAL9's tools no longer skip the Old Bramble (SKIP_LOCS); its 0-B-3 lost Thornwood Palisade (tutorial-only) to the list's nearest cards.
+
+**BAL10-2. Flying and Evasive multipliers against the BAL10 measure** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- The pipeline price step reads Flying x1.19 [1.18, 1.20] and Evasive x1.18 [1.17, 1.20] from the measures; the budget has x1.17 / x1.16.
+  - a) Keep x1.17 / x1.16 (a 0.02 gap; changing it re-fits every flyer).
+  - b) Set x1.19 / x1.18 (--set-const).
+- **Default:** a
+- **Outcome:** a) Claude (owner delegated): kept. The gap is 2 points of a multiplier on about 21 stat points (under half a stat point a card); re-measure after the next card wave.
+
+**BAL10-3. Skill prices from the BAL10 measure, and the Bola double count** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- The pipeline measured 240 in-play skill items on the post-BAL9 game (115 new, 125 reused) and re-wrote 125 table entries of canonical/skill-costs.json. Bola (plus: arrow) got its whole measured worth, Arrow shot included (5.58), as the Pin's value, so the shot was counted twice and the Net Thrower read 1.16 of its budget.
+  - a) Keep the new prices; Bola stays at its logic price 2 (the measured Pin is 5.58 - Arrow 1 4.43 = 1.15).
+  - b) Revert all prices.
+- **Default:** a
+- **Outcome:** a) Claude: new prices kept; Bola kept at 2 with a dated note in skill-costs.json. Tool gap to fix later: tools/skill2_apply_2026_10_31.js prices should subtract the plus-skill's price for a plus entry (not in BAL10's files). Moves of 1.5+ points: Moonborn 4 -> 1.23, Weapon Master 3 -> 0.37, Devour 4 -> 1.21, Weaken 1 -> 3.12, Avalanche 6.81 -> 5.23, Twin Strike 6.99 -> 5.11.
+
+**BAL10-4. Cards re-fit after the BAL10 prices** · Decide · Cards · asked 2026-11-02 · decided 2026-11-02
+- The refit step pushed 8 in-play cards out of their band: 5 rule-clean (1 point each), 3 flagged (Lunar Howler +3, Net Thrower -4 with a shape change, Corpse Flower Beetle at the hitter line), and Wrong-Way Salmon held for ENG15.
+  - a) Apply the 5; Lunar Howler 4/2 and Corpse Flower Beetle 4/10 by hand (each stat within 2); Net Thrower unchanged once Bola is fixed.
+  - b) Apply only the 5.
+- **Default:** a
+- **Outcome:** a) Claude: Lamprey 3/5 -> 2/5, Banded Sea Krait 4/4 -> 4/3, Beaver Lumberjack 3/4 -> 3/3, Otter Centurion 3/6 -> 3/5, Trash Panda Trickster 2/4 -> 2/3, Lunar Howler 2/1 -> 4/2 (Moonborn re-priced; use 0.37 -> 0.60), Corpse Flower Beetle 4/11 -> 4/10 (use 1.00 -> 0.96), Wrong-Way Salmon 1/11 -> 1/10 (use 1.01 -> 0.95; the pipeline held it for ENG15, which has shipped, so tools/pipeline/config.json skipSkills is now empty). No owner-named card changed (Dolphin Knight, Peak Condor, Red-billed Chough, Caldera Wyrm, Conch Herald 1/13 untouched); no stat moved more than 2.
+
+**BAL10-5. Road retune after BAL9 / CARD5: swaps only, inside the list and K14** · Decide · Maps · asked 2026-11-02 · decided 2026-11-02
+- Road measured before (Map reference, 40 games a fight, Maps 0-20 and side maps): 39 of 226 fights in the green band, 115 more than 20 points off. Retuned by tools/skirmish_pass.js curve (swaps only; leaders, first-clear cards and sizes kept; 5-7 distinct), each fix checked against the fight's own list (BAL9 cut-card rule) and K14 (tools/bal9/road_fix_2026_11_02.js; round 3 with the new curve --strict).
+  - a) Keep the accepted swaps and list the rest as gaps (BF3: honest levers only).
+- **Default:** a
+- **Outcome:** a) Claude: 111 fights retuned in three rounds; green 39 -> 77, within 10 points 52 -> 90, beyond 20 115 -> 87 (docs/balance/bal10/road-2026-11-02.md). The rest are listed gaps; see BAL10-6.
+
+**BAL10-6. Road fights that deck swaps cannot reach** · Decide · Maps · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 14:13 (balance roles): BAL11 FLAGS the over-tuned cards and finds why the skill budget misses them; it does not re-tune them. | Owner 11-02 14:10: build the weakest deck from each too-hard fight's map list (no Baby cards); the optimised decks are too hard because 1-2 cards are over-tuned (e.g. Stealth against the low bramble Health, a Nocturnal +4/+0 card). Done in BAL11. | After BAL10's retune 87 of 226 fights (Maps 0-20) are still more than 20 points off, nearly all too hard: The Canopy 3% (target 68), The Sunken Depths 18%, The Mycelium Deep 26%, The Pale Desert 30%, Wolfsbane Tundra 31%, Basalt Foundry 36%, Caves & Alcoves 38%, and many first fights (4-1, 8-1, 10-1 at 37-55% against 90). Under the fight's own list, K14 (non-unique cards 1 copy, 6 in all) and 5-7 distinct cards, the curve search had no legal move left on 129 of 155 off fights. A side map's list cards mostly count as non-unique for K14, so its decks cannot swap down.
+  - a) Allow a lower enemy bramble Health (at most 40% off) on too-hard fights only.
+  - b) Let a side map's own list count as map-unique for K14.
+  - c) Rebuild the Map reference decks (the yardstick may be too weak after BAL9's cut swaps; Reference Random agrees on Maps 4, 14, 17).
+  - d) Leave the gaps (BF3).
+- **Default:** b + c
+
+**BAL9-1. Rarities against the new map lists (JJ12)** · Decide · Cards · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 JJ12: "re-set rarities now the lists are chosen (e.g. Old Shell on Map 2 at most Uncommon)".
+  - a) A listed card is at most the rarest fight of its first list (roadRarityCap, boss), and a skirmish-exclusive reward at most its own fight; only lowered; re-fit by the budget.
+  - b) Leave the boss leaders at Heroic.
+- **Default:** a
+- **Outcome:** a) Claude (owner: you decide): 17 cards lowered (Old Shell, Drowned Matriarch, the Gannet Queen, Heron Hag, Echo Matriarch, Old Snapjaw Uncommon / Rare; Yeti Chieftain, Pride Queen, Wolfsbane Alpha, Reef Admiral Very Rare; Triumvirate Epic; Alley Cat, Octopus Tactician, Lucky Hopper, Pelican Diver, Gallery Orb-Weaver Uncommon; Ember Revenant Very Rare). A boss leader below Heroic keeps leading through the Leader skill (0.1). Held: Dolphin Knight (HH6). Not touched: the tutorial side map and the Old Bramble (BAL9-5). Reward slots: 5 slots re-filled with a new card of their map (Hedgehog Scout cut -> Lyrebird Mimic at 12-5; Obsidian Scorpion -> Fennec Fox at 18-5; the GD5 first-clear cards of 9-2, 9-4, 16-2). docs/balance/bal9/.
+
+**BAL9-2. Reference (Random) rebuilt per map (JJ7)** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 JJ7: reference decks hold weak / out-of-place cards; rebuild them optimised per map from what a player could own by then, the map's average field, a bramble and a leader, levelled to the map's average.
+  - a) The five "Reference (Random)" decks a map (REF5's economy: packs, rewards, first clears, faction and level tracks), each searched against the map's fights under their fields, every card at the map's reference level (referencePlayerLevel, rounded: Lv 0 to Map 10 = each card's own level, Lv 3 from Map 11, Lv 4 from Map 18); leader = the strongest owned card that can lead, else the Wandering Traveller; bramble = the best one unlocked by then by the 4-round rule (Health + its ability).
+  - b) Keep the Forge-share levels of REF5.
+- **Default:** a
+- **Outcome:** a) Claude (owner: you decide). The Map reference (WINRATE_REF_DECKS, Base + rewards, no packs) stays the road's yardstick; only its cut Hedgehog Scout was swapped for Lyrebird Mimic. Table of packs and levels: docs/balance/bal9/econ-2026-11-02.md.
+
+**BAL9-3. Why Grey Seal Bull feels overtuned (JJ5)** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 14:13 (balance roles): the Pincushion Urchin trim (judgment, not a budget fit) reverted to 2/4; Grey Seal Bull 3/12 kept as it answered the owner's own JJ5 note (his to revert). | Owner 11-02 JJ5: the feel differs from the formula (e.g. Grey Seal Bull).
+  - a) Trim the clear cases on their home map's measure; keep the formula.
+  - b) Change the formula's rarity step.
+- **Default:** a
+- **Outcome:** a) Claude: on Pebble Beach the bull is the third-strongest card (+6.1 a copy vs ~3.4 for a common) but fair per budget point: an Uncommon gets N 25.3 against the commons' ~16.7 at the same Lumber, Tide is always on in its home fights and Guardian is priced 0. Grey Seal Bull 4/11 -> 3/12, Pincushion Urchin 2/4 -> 2/3. The map's real outlier is Conch Herald (+10.3 a copy, z 12.6): an owner-named card (DECK1-5 lift), listed in BAL9-6.
+
+**BAL9-4. More defenders (JJ28)** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 00:18 JJ28: more defenders as part of strategy; measure, propose, Bulwark's worth included.
+  - a) Each main map 1-19 with no defender on its list: its sturdiest wall gains Guardian (priced 0, measured -0.41: no stat change).
+  - b) Add Bulwark (priced 5.62 x N^0.325) to walls and trim their stats.
+- **Default:** a
+- **Outcome:** a) Claude: 16 of 36 lists to Map 20 had a defender, now 35 of 36. Guardian added to Badger Lumberjack, Fiddler Crab Swarm, Venomlord Serpent, Hawthorn Shieldbug, Stalactite Golem, Ant Hill, Grizzly Vanguard, Marula Elephant, Dhole Matriarch, Glacial Ape King. Bulwark: SKILL2 already prices it on its measured curve (5.62 at N 1, 7.04 at N 2; the old 7.2 a point over-priced N 2 by half), so it is no longer a reason to avoid it.
+
+**BAL9-5. The Old Bramble's list against its fights' Common cap** · Decide · Maps · asked 2026-11-02 · decided 2026-11-02
+- BAL9 found: the Old Bramble (mo) opens at Map 21 but its fights are capped as Map 0 fights (Common), while its list holds Rare and Very Rare cards (the Ent, Echidna Quillshot, Dhole Matriarch ...). BAL9 did not lower them.
+  - a) Cap the Old Bramble's fights by the map it opens on (21).
+  - b) Lower its list's cards to Common.
+  - c) Leave it (a come-back map with its own rules).
+- **Default:** a
+- **Outcome:** a) Coordinator (owner delegated): package CARD5 caps the Old Bramble's fights by Map 21, the map it opens at (map flag capByUnlock, arena_app.js roadRarityCap reads mapUnlockNumberOf): Super Rare skirmish cap, so its Rare / Very Rare list fits. Its Shield and levels stay as they were (shieldMap 17).
+
+**BAL9-6. Owner-named cards outside the budget band** · Decide · Balance · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 14:13 (balance roles): reverted, Conch Herald back to the owner's 2/13; the coordinator flags owner cards, never re-tunes them. | BAL9 JJ21 left these as the owner set them: Peak Condor 4/10 (use 1.07), Conch Herald 2/13 (1.13; the strongest card on Pebble Beach by +6.0 a copy over the fair line, z 12.6), Red-billed Chough 3/2 (1.01), Caldera Wyrm 4/7 (1.02, a Dragon).
+  - a) Conch Herald back to 1/13 (DECK1-5 lifted it from 1/11), the rest as they are.
+  - b) All four to the band.
+  - c) Keep all four.
+- **Default:** a
+- **Outcome:** a) Coordinator (owner delegated): package CARD5 sets Conch Herald back to 1/13 (it measured +10.3 win-rate points a copy, the Pebble Beach outlier); Peak Condor, Red-billed Chough and Caldera Wyrm stay as the owner set them.
+
+**BAL9-7. Map 40+ deck fill (JJ22) and cut-card swaps (JJ24)** · Decide · Decks · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 JJ22 / JJ24.
+  - a) Map 40+: own cards to their caps, then one carried card at a time (earlier maps' list cards in the cap, lower rarity first, nearest map first). Cut cards: each copy to the nearest card of the fight's own list (Lumber, Wait, 2A + H, rarity), K14 kept, sizes kept.
+- **Default:** a
+- **Outcome:** a) Built: tools/bal9/lib_bal9.js fillDeckToSize, used by the BPRO build (tools/opt/bpro2) from Map 40. 100 cut cards out of 160 road decks and 58 PRO decks (under DECK1's 6/4 rule; 0-B-PRO-3 dropped to replaced); the BPRO decks were rebuilt from the lists. The road was not re-measured: run the road check (skirmish_pass measure) with the batch.
+
+**ENG16-1. Quicksand: N, timing, exemptions and homes** · Decide · Field · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 (JJ19): "new field effect Quicksand: a creature ending its turn under N Health dies" (owner asleep: "Decisions - you decide").
+  - a) N = 2 (a unit left on 1 Health sinks), checked at the end of every round from round 2 (after the fighting and ticks, before the round's death sweep), Flyers and Structures spared, paused by Field Breaker; on The Glass Dunes (every fight) and the Pale Desert's boss, the Quicksand Queen (18-A-9)
+  - b) N = 3
+  - c) checked at the start of each round, like the other field ticks
+- **Default:** a
+- **Outcome:** a) Coordinator call (ENG16): N = 2, end of round from round 2 ("from round 2" like the other field effects), the same exemptions as Tangled Roots / Grasping Briars (Flyers above it; Structures). Fights can set a number (quicksand: 3). Homes: The Glass Dunes (mapField) and 18-A-9 the Quicksand Queen. Art borrows the Sandstorm scene until it has its own.
+
+**ENG16-2. A field effect or combination of its own on every map (JJ18)** · Decide · Field · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 (JJ18): "which maps lack a field effect or combo of their own; give each one (e.g. Aerie Vault: thunderstorm)". 12 maps shared their map-level set with another map. docs/balance/field-uniqueness-2026-11-02.md.
+  - a) Existing effects in new combos (only Quicksand is new): Old Bramble + Tangled Roots, Long Grass + Tall Grass, Kelp Mangroves + Tangled Roots, Coral Current + Perma-tide, Glass Dunes + Quicksand, Ashen Spurn + Scorching I, Aerie Vault + Thunderstorm, Sunken Grove + Tide, The Canopy + Spring Rain, Goldfeather Keep + Bishop's Path, Caves & Alcoves + Landslide, Mycelium Deep + Spore Cloud
+- **Default:** a
+- **Outcome:** a) Coordinator call (ENG16). The Quiet Summit stays the one vanilla map (CONTENT4). The Tutorial keeps Map 0's Mist; the endless dungeons wait on CONTENT4-2. Win rates before / after in the write-up; no deck retuned (BAL9's job).
+
+**ENG16-3. Baby cards and the egg's Hatch or Stay: the details** · Decide · Cards · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 (JJ25, replaces BABY-1): "Baby cards can be levelled 0 -> 1 -> 10. Getting an egg (and at each level-up) offers Hatch or Stay (the egg shakes); staying lets it level as an egg, for Evomax decks."
+  - a) Every new copy of a Baby card comes at Level 0 (the Nest trains 0 -> 1, the Forge 1 -> 10; the starter babies too, no Base cap of 4). An egg card (egg-*) asks when a copy arrives and at each level-up of that copy (Forge or Nest); the question waits until no fight or dialog is up. Hatch: that copy becomes its creature (the fixed hatch, or a random Common / Uncommon map or pack card of its kind, as the engine's egg rule) at the egg's level; Stay: it stays an egg.
+- **Default:** a
+- **Outcome:** a) Coordinator call (ENG16). Open: what an egg is worth at Lv 10 in battle (it still cracks into a random creature when Ready, at its own stats); Evomax decks may want a hatch that keeps a level bonus. Hatching removes the egg copy, so a deck that held it shows one copy short until rebuilt.
+
+**ENG16-4. Milling and the wind: the details** · Decide · Skills · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 (JJ17): "Milling: turns 1 of your Lumber into 2 Lumber; its skill worth x0.85"; WIND-2 (a).
+  - a) Milling N: each turn while Ready, N of the Lumber you hold become 2N (net +N); with no Lumber nothing happens; Lumberjack still adds. Price: mult 1.54 -> 1.31 (x0.85), not re-measured. Wind: the Headwind's -1 Attack is on its swing (effAtk), not on fixed shots (Arrow N stays N); Quiet Contemplation no longer touches the wind (nothing doubles).
+- **Default:** a
+- **Outcome:** a) Coordinator call (ENG16). Re-measure Milling and the wind with the next skill measure.
+
+**WIND-2. Wind is too strong: rebalance** · Decide · Field · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02: "Wind have been too strong ... Maybe headwind = quick, tailwind = -1 attack". Today headwind Flyers' skills trigger twice.
+  - a) Tailwind (wind at your back): Flyers get Quick. Headwind: Flyers -1 Attack. No double triggers.
+  - b) As the owner wrote: headwind = Quick, tailwind = -1 Attack.
+- **Default:** a
+- **Outcome:** a) Coordinator call (owner: you decide): the wind at your back speeds you (Quick), the wind in your face slows your blows (-1 Attack); the double trigger goes. Odds stay 1/3 each way or calm. Built in ENG16; re-measure after. Built 2026-11-02 (ENG16): see ENG16-4.
+
+**IDEA-11-02. New creature ideas (11-02)** · Discuss · Cards · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02: Man o' war; bright algae as blown-up bacteria (Bloom but at night); Nautiloid; Bobbit worm; Pistol shrimp; the worm with 4 teeth; Unicorn, Sphinx, Griffin (mythic creatures at Map 56+).
+
+**BABY-1. Can Baby cards be levelled?** · Decide · Cards · asked 2026-11-01 · decided 2026-11-01
+- Owner 11-01 07:41: "these cards anyway, cannot be lvled. if enemies used them, they can be. (or can they be levelled...)?" (owner: "Decisions - you decide").
+  - a) Players cannot level Baby cards; they grow by hatching / evolving instead. Enemy copies may carry levels (difficulty scaling).
+  - b) Baby cards level like any card.
+- **Default:** a
+- **Outcome:** Superseded 11-02 by the owner (JJ25): Baby cards can be levelled 0 -> 1 -> 10; each step offers Hatch or Stay. Enemy decks may field them at a level.
+
+**BABY-2. Hatchling skill for Baby cards (ties in with Evomax)** · Discuss · Skills · asked 2026-11-01 · decided 2026-11-02
+- Owner 11-02 14:10: "Hatchling doesn't do that. It just does what we wanted Fodder to do." Hatchling replaces Fodder: the Baby card is feed for an Evomax evolute (Stem from Level 1), no growing into an adult card. Built in ENG17. | Owner 11-01 07:41: "baby cards might want a skill called 'hatchling' or something that indicates it can be hatched but as a skill. Can coincide with evomax creatures somehow." Coordinator draft: Hatchling (Grows into X): after N rounds on the board (or N wins in the collection), it grows into its adult card; an Evomax creature's first stage is a Hatchling. Owner to shape the rule; until then the card group label (Baby) is the only marker.
+
+**SKILL2-1. Seven in-play cards: their re-priced skills alone break cap 2** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- SKILL2 re-priced the skills in 3A + H stat points (BUDGET2-1 / BUDGET2-2). Cap 2 is A*H x m + S*|S| <= 1.57 x (N/3)^2: S is squared, so a skill price that rises x1.5-2 raises its cap-2 term x2-4. For seven in-play cards no stat line fits any more (or only one that takes over 40% of the card): Alley Cat 2/2 (Twin Strike 3.17 -> 6.99), Tide-pool Crab 1/3, Owl Nightwatch 1/5, Bee Forager 0/5 (On Attack -> Heal x8.2), Conch Crawler 2/2, Gatling Hog 2/9 (Twin Strike), Ant Warrior 2/4 (only 1/1 fits). They are left as they are and listed in docs/balance/skill2-refit-2026-10-31.json `held` (with the Caldera Wyrm, your over-on-purpose card). BUDGET2 kept cap 2 where it was when the stats changed scale (cap2Mult 2 -> 1.57); the same here would read S in the old currency: (S/2)*|S/2|.
+  - Cap 2 reads S / 2 (keeps cap 2 where it was before the currency change; bramblewood-budget.js, one constant)
+  - Trim a skill on each of the seven (a card-data package)
+  - Leave them over cap 2
+- **Default:** Cap 2 reads S / 2 (keeps cap 2 where it was before the currency change; bramblewood-budget.js, one constant)
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): cap 2 reads S / 2, the same scale fix BUDGET2 made for stats. One constant in bramblewood-budget.js; the seven cards then re-fit in BAL8.
+
+**SKILL2-2. Flying and Evasive measure at a third of their price** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- Flying (83 in-play cards) and Evasive (22) are priced as a multiplier on the stats (MISS_MULT_BY in bramblewood-budget.js: Flying x1.39, your estimate; Evasive x1.37), 10.4 points on the canon's carriers. The SKILL2 measure (1,000 paired fights, the placebo taken out) reads Flying 3.56 [3.32, 3.81] and Evasive 3.42 [3.11, 3.66]: about x1.13. This is why Gannet Cliffs' flyers sat under the fair line (DECK1-5): the DECK1-5 lifts (Peak Condor 4/7, Hawk Arrowkeeper 2/8, Red-billed Chough 3/2, Peregrine Stooper 2/8) put them at 112-123% of N on paper. SKILL2 measured these for the record only (a budget constant); nothing changed.
+  - Keep x1.39 / x1.37
+  - Set Flying and Evasive to the measured x1.13 (every flyer gains room; a card pass then lifts the flyers that fall well under)
+  - Set them half-way (x1.25)
+- **Default:** Set Flying and Evasive to the measured x1.13 (every flyer gains room; a card pass then lifts the flyers that fall well under)
+- **Outcome:** Coordinator: set Flying and Evasive to the measured x1.13; a flyer card pass follows (in BAL8). The DECK1-5 lifts then sit near 100% of N.
+
+**SKILL2-3. Armor measures concave, not 'slightly exponential'** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- ENG9-9 (your rule): Armor is 1.68 x N^1.43, 'slightly exponential as 5 armor nullifies most damage'. The shared canon measure (BUDGET2-2) reads Armor 1 / 2 / 3 at 2.65 / 4.23 / 4.84 stat points: each point is worth less than the one before. The canon (Armor 1 and 2) now fixes the curve at 2.65 x N^0.675 (Armor 3 5.56, 4 6.75, 5 7.84; your rule gave 8.1 / 12.2 / 16.8 in the old currency). Armor 4-5 were not measured (no in-play card).
+  - Keep the measured curve
+  - Keep the canon at 1-2 and your x N^1.43 shape above 2
+  - Measure Armor 4-5 first
+- **Default:** Measure Armor 4-5 first
+- **Outcome:** Coordinator: measure Armor 4-5 first (one canon-tool run, part of SPEED1's first pipeline run); keep the measured curve at 1-3 meanwhile.
+
+**SKILL2-4. Field and partner skills read low on vanilla carriers: measure them on their home maps?** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- The canon measure plays every road fight's field at its share, on vanilla carriers. Skills that need a field, a map or partners read low there: Tide 0.42 (price 1.5, 49 cards), Mountain Climber 0.37 (4), Dry 0.34 (4), Darksight 0.25 (3), Fog 0.08 (2.7), Kinship 0.86 (3), Guardian -0.82 (0), plus 18 more listed in docs/balance/skill2-prices-2026-10-31.json `kept`. SKILL2 raised such a skill when it read higher and kept its price otherwise. A home-map measure (the canon tool's --map N: the anchors played again in that map's context, about 15 minutes a map) would price them on the maps where they are played.
+  - Measure them on their home maps (a follow-up package)
+  - Keep their prices
+- **Default:** Measure them on their home maps (a follow-up package)
+- **Outcome:** Coordinator: yes, home-map measures, run as a SPEED1 pipeline step (canon tool --map N) rather than an agent package.
+
+**BUDGET2-1. Skill prices are in the old currency (Attack = 2)** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- BUDGET2 moved the stats to 3A + H and fitted N (x 1.13) with skill prices unchanged. The prices were measured in 2A + H points: RECOST1's yardstick valued a point at 4.17 win-rate points (+1 Attack 9.5, +1 Health 3.0); a 3A + H point is (9.5 + 3.0) / 4 = 3.1, so in the new currency a measured price would be about x1.33. The canon check (tools/skill_canon_2026_10_31.js, 200 paired fights on 6 vanilla carriers) reads more: a point of skill price buys about 2.2 points of stats (kappa 0.46 [0.38, 0.58]). Cheap skills next to stats make cards with skills stronger than vanilla cards of the same budget. docs/balance/budget2-2026-10-31.md sections 5 and 6.
+  - Keep the prices
+  - Scale every measured price x1.33 and re-fit (a second full re-fit, N re-fitted)
+  - Re-measure the skills against the re-canonised anchors (BUDGET2-2) and re-fit then
+- **Default:** Re-measure the skills against the re-canonised anchors (BUDGET2-2) and re-fit then
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): re-measure every skill price against the anchors (after BUDGET2-2), in package SKILL2. No blanket x1.33.
+
+**BUDGET2-2. Re-canonise the anchor skills from one shared measure?** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- X14: 12 canon anchors (15 points) are marked in canonical/skill-costs.json (canon: true): Armor 1/2, Poison 1/2, Bleed 1/2, Regen 2, Pounce 2, Quick, Sweep 2, Fork, Rage, Inspiring 1, Gold on Ready 1, Shell 2. On one shared set of carriers their RECOST1 prices disagree: 13 of 15 fall outside the interval the other anchors give them (Sweep 2 reads 2.9 vs price 1.1, Fork 3.0 vs 1.27, Gold on Ready 3.1 vs 2.31, Rage 2.0 vs 0.99; Armor 2 2.1 vs 4.53, Poison 1 1.2 vs 3.0). RECOST1 measured each on its own carriers. A canon is only a yardstick if its prices come from one measure.
+  - Re-canonise: each anchor's canon price = its worth in this shared measure at 400 fights, scaled so the anchors' total stays
+  - Keep the RECOST1 prices as canon; read the tool's results as relative only
+  - Shrink the canon to the anchors that agree (Pounce 2, Quick) and add others
+- **Default:** Re-canonise: each anchor's canon price = its worth in this shared measure at 400 fights, scaled so the anchors' total stays
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): yes, re-set the anchors' prices from one shared measurement first (SKILL2).
+
+**BUDGET2-3. War Elephant: one arrow now; price Arrow Count as one more shot?** · Decide · Cards · asked 2026-10-30 · decided 2026-10-31
+- X15 / RECOST1-5 ("if you can cut the arrow count, do it"): War Elephant now fires one Arrow 2 a round (Arrow Count 2 -> 1), 0/28, 85% of N. Arrow Count is priced 'half', 6 a point: Arrow Count 2 costs 12 for one extra shot that Arrow 2 alone prices at 6. Priced as (N - 1) x the arrow's own price, Arrow Count 2 would cost 6 and the Elephant fits with both arrows (cap 1 44.5 <= 45.2, cap 2 273 <= 356). Only card with Arrow Count.
+  - Keep one arrow
+  - Price Arrow Count as (N - 1) x the arrow's price and give the second arrow back
+- **Default:** Price Arrow Count as (N - 1) x the arrow's price and give the second arrow back
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): no. The owner asked to cut the arrow count (X15); War Elephant keeps 1 arrow.
+
+**BUDGET2-4. Cottontail: 2/5 or 3/1?** · Decide · Cards · asked 2026-10-31 · decided 2026-10-31
+- Cottontail (T-1 / T-2 card, 4/2) must fit at Level 0 too (SKL0-1): 3A + H <= 10.68. The re-fit's rule (smallest relative change, then Health back for the Attack cut) gave 2/5 (89% of N at Level 1). 3/1 also fits (81%) and keeps the fast, fragile rabbit. Pond Trout (3/4 -> 2/5) has the same choice (3/1).
+  - Keep 2/5 (sturdier)
+  - 3/1 (keeps the glass-cannon rabbit)
+- **Default:** 3/1 (keeps the glass-cannon rabbit)
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): keep 2/5. Tutorial cards that survive a hit teach better than 3/1 glass.
+
+**BUDGET2-5. Marshal of Rivergate is still far under (45% of N)** · Decide · Cards · asked 2026-10-31 · decided 2026-10-31
+- RECOST1-6's second half: the Marshal (Epic, Armor 2, Sweep 4, 2/3) was under its band before BUDGET2 and stays there (45% of N 33.71 at 3A + H). BUDGET2 re-fit only what its formula pushed out. A lift to about 80% of N is 4/9 or 3/12.
+  - Lift to about 80% (4/9)
+  - Leave it for the next card pass
+- **Default:** Lift to about 80% (4/9)
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): yes, lift Marshal of Rivergate to 4/9 (SKILL2).
+
+**BUDGET2-6. A small arena_app.js edit for 3A + H** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- BUDGET2 was not allowed to touch arena_app.js. Two leftovers live there: the card editor's budget table headers and notes still print 'f x ((2A+H) x m + S)' (the numbers come from the shared budget, so they are right), and FORGE_MEAN_GAIN (the enemy's level for a Forge gain) no longer matches the cards (tests/forge-curve check 3; it was already off before BUDGET2).
+  - Allow it (a short follow-up)
+  - Leave it
+- **Default:** Allow it (a short follow-up)
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): yes, the small arena_app.js edit (FORGE_MEAN_GAIN, '3A+H' headers) goes in SKILL2.
+
+**BUDGET2-7. PRO decks: leaders and fields to re-bake after BUDGET2** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- Two BUDGET2 changes reach canonical/pro-skirmishes.json, which this package was not allowed to edit. (1) The re-fit moved the stats that pick a PRO deck's showcase leader (rarity, then Attack + Health / 2): 4 maps' DECK1 decks (mu, mn, mk, mt) and 6 PRO decks (7-PRO-2, 7-PRO-4, 8-A-PRO-1, 9-PRO-2, 16-PRO-1, 16-PRO-4) now name a different leader than the game would pick (tests/deck1 4 checks, tests/pro 6). (2) The sims now see the map's biome flags (hotMap, coldMap, saltMap, weatherMap), so 15 maps' stored 'average field' lacks flags the game's own fights carry (tests/pro check 1): a PRO fight on a hot, cold, salt or dry map plays without its Heat / Frost / Salt / Drought skills. The decks themselves were searched under the old stats.
+  - Re-bake leaders and fields only (DECK1's tool, no new search)
+  - Re-run DECK1's searches on the new cards (Maps 0-20, about the DECK1 cost)
+  - Leave until the next balance pass
+- **Default:** Re-bake leaders and fields only (DECK1's tool, no new search)
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): yes, re-bake the PRO leaders and stored fields, after SKILL2's re-pricing (with DECK1-2).
+
+**RELICT-1. New skill Relict: what does it do?** · Discuss · Skills · asked 2026-10-31
+- Owner 10-31 10:17: "New skill Relict - (ill think about what it does. For now out in idea decisions, not gameplay decisions tab)". A relict is a species surviving from an older age (ties in with the Map 40+ Relic discovery: fossils and remnants back into cards). Not built; waiting for the owner's idea. Suggestions (2026-11-02, owner asked 19:56): a) Unbothered by the age: a Relict ignores the map's field effects (weather, time of day, terrain, wind), good and bad. Simple, reads at a glance, and every map now has its own field (ENG16). b) Fossil: when a Relict dies it leaves a Fossil in its slot (a 0/3 wall); at Map 40+ a Relic discovery can wake a Fossil back into the card at Level 1. c) Old blood: a Relict cannot be lowered below its printed Attack and Health (no debuffs, shrink or Decay below its base). d) Living record: +1/+1 for each other Relict you have played this fight (a small tribe). Recommended: a) now, b) when Map 40+ Relics are built.
+  - a) Ignores field effects
+  - b) Leaves a Fossil
+  - c) Cannot be lowered below its printed stats
+  - d) Grows with other Relicts
+- **Default:** a) Ignores field effects
+
+**REF5-1. Should the progression reference's unused Dust go to the Forge?** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- REF5 (docs/balance/ref5-2026-10-30.md): the brief splits income x1.5 into 1.0x for packs and 0.5x for levelling. No pack costs Dust, so the 1.0x Dust share (8,775 by Map 20 for seed 1) sits unused, and Dust is what limits the Forge: the Ember Forge is never bought and the decks reach a mean level of 1.8-2.6 from Map 11, against the Map reference's 3-3.9.
+  - Keep: 0.5x of every currency for the Forge
+  - All Dust (1.5x) to the Forge
+- **Default:** All Dust (1.5x) to the Forge
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): yes, the unused Dust goes to the Forge. Applied in the re-run after BUDGET2.
+
+**REF5-2. Gold Leaves in the progression reference's economy** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- REF5: no confirmed reward (first clears, faction / level track, the Trail's free lane) pays Gold Leaves, so the Tidemire Chest (6) and the Highcrest Case (11) are never affordable and every bought pack is a Hedgerow Pouch (Maps 0-6 cards); the Pack 1 pool is full by Map 6, so the 5 seeds' collections hardly differ.
+  - Keep (Pouches only; the finding stands)
+  - Count the S notices and the daily dungeons' Gold Leaves at a stated pace
+  - Let the sim buy the map's own series with Leaves only
+- **Default:** Count the S notices and the daily dungeons' Gold Leaves at a stated pace
+- **Outcome:** Coordinator: count notices and daily dungeons at a stated pace (one daily a day, notices as the road offers them), so the sim can buy each map's own pack series. Flag for the owner: if no reward pays Gold Leaves in the real game either, the Tidemire Chest and Highcrest Case are out of reach for players too.
+
+**REF5-3. The progression reference's Forge schedule** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- REF5 chose: Forge from Map 11; each map buys the next Forge tier first (Iron from 13, Ember from 16) when the bank pays, then levels the map's deck one card level at a time, most copies in the deck per Dust first, inside the tier's cap and rarity band and the level gates; the deck is chosen first at the levels the cards already have.
+  - Keep
+  - Level the deck evenly (lowest level first)
+  - Skip the Forge tiers until the deck is at the tier's cap
+- **Default:** Keep
+- **Outcome:** Coordinator: keep the schedule (Forge from Map 11, next tier first, then most-copies-per-Dust).
+
+**REF5-4. Re-run the progression reference's searches at full budget** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- REF5: the machine was shared (load 8-14 on 2 cores) and restarted once, so the 105 searches used 3,000 games each (Maps 7-20 only 1-3 generations), against 16,000-32,000 for the Pool reference. The decks are good but not converged; from Map 9 the 5 decks share only 3-8 copies, mostly search noise. Reference (Random) wins 51% of the main road fights (Map reference 67%) and 22% of the DECK1 PRO fights (39%).
+  - Use the set as it is
+  - Re-run at 16,000 a map (about 10 hours alone on the machine) before it judges difficulty
+- **Default:** Re-run at 16,000 a map (about 10 hours alone on the machine) before it judges difficulty
+- **Outcome:** Coordinator: yes, re-run at 16,000 games per map, but after BUDGET2 (the 3A+H card re-fit), since that changes every card. Until then the REF5 set is not used to judge difficulty.
+
+**RAIDBAL1-1. Raid win-rate targets: warm-ups 60%, the Core 40%** · Decide · Raids · asked 2026-10-30
+- RAIDBAL1 (docs/balance/raidbal1-2026-10-30.md) needed a target for the Goliath's fights and the evaluation protocol has none for raids. Proposed and tuned to: each warm-up (Left Tentacle, Right Tentacle, Tail) about 60% (green 52-68%), the Core about 40% (green 32-48%, the protocol's boss band). A win is the part's bramble destroyed within the 20 turns. Measured on a fresh part against three Map 13 decks (the Raid Banner's map) at +2 levels (owner W8): the Map reference, Reference-2 and the deck optimizer's Map 13 optimum, 40 fights a deck. Result: warm-ups 58-62%, the Core 40% (47% on fresh seeds). At the unlock level itself (+0): warm-ups about 53%, the Core 34%. project-state.md still says 'raid bosses sit near 20%' (RW2-4); that line predates this per-fight measure.
+  - As proposed (60 / 40)
+  - The Core near 20% (project-state's line)
+  - Warm-ups easier (70%)
+- **Default:** As proposed (60 / 40)
+- **Outcome:** Owner 2026-10-30 23:25: "The rest of the decisions seem okay." Default: warm-ups 60%, the Core 40%.
+
+**RAIDBAL1-2. The raid's weekly pace after RAIDBAL1** · Decide · Raids · asked 2026-10-30
+- Fewer warm-up wins means less raid damage a fight there: about 1,000 a fight on the arms and the tail (was about 1,150; -14 to -24%), while the Core pays about 430 (was 160, x2.6). The week's model (tools/raid_completion_model.js, RB's 'falls more than 90% of the time') was not re-run: its decks are the old road set. A follow-up can re-run it and move the parts' Health bars (barHp) if the raid now falls too seldom or too often.
+  - Re-run the completion model in a follow-up package
+  - Leave it for playtests
+- **Default:** Re-run the completion model in a follow-up package
+- **Outcome:** Owner 2026-10-30 23:25: default. Re-run the completion model in a follow-up package.
+
+**RAIDBAL1-3. Your deck matters little in a raid fight** · Decide · Raids · asked 2026-10-30
+- The boss's cards fight at 20% Attack / 15% Health (tuning), so on the warm-ups the two CPU allies and you clear its board by about turn 6-10 and then race its bramble; the three reference decks land within about 35 points of each other, and +2 levels moves a fight only 2-11 points. RAIDBAL1 therefore tuned with the brambles (and +60 raider bramble, which only the Core feels: the raiders never lose bramble on the warm-ups). Raising the boss's card strength makes the warm-ups real fights but crushes the Core (its stumps and Beak Strike), and the stumps are shared with the classic trench. A per-part boss strength (a part-level tuning field read by buildRaidFullFight) would let both be tuned; that is a code change for another package.
+  - Keep the bramble-led tuning
+  - A package for per-part boss strength
+- **Default:** Keep the bramble-led tuning
+- **Outcome:** Owner 2026-10-30 23:25: default. Keep the bramble-led tuning.
+
+**DECK1-1. Cards the deck optimizer picks almost everywhere** · Decide · Cards · asked 2026-10-30 · decided 2026-10-31
+- DECK1 (docs/balance/deck1-2026-10-30.md): the Wolf Spider Mother (Rare, 1 Lumber, Brood) is in 48 of the 90 focused PRO decks that could hold it, on 22 of the 25 maps that offered it, and tops the contribution measure (index 1.88). The Grave-Grin Hyena (Uncommon, 0 Lumber) goes in at 4 copies in 22 of its 24 decks; the Ashbone Ghoul is in 14 of 20, the Leafcutter Gardener 15 of 26, the Eagle-Owl Quartermaster 23 of 69. Nothing was changed (cards.json is step 3's). BUDGET2 (2026-10-31, after the 3A + H re-fit; docs/balance/budget2-2026-10-31.md section 6): contribution per copy over the fair line (bench.js contrib, 200 fights, global context, a seeded sample of 40 in-play cards): Eagle-Owl Quartermaster +5.2 (z 8.4), Ashbone Ghoul +4.7 (7.8), Wolf Spider Mother +3.7 (6.1; was +5.5 before its 3/10 -> 3/9 trim), Grave-Grin Hyena +3.2 (5.2), Leafcutter Gardener +0.1 (0.2). The first four are inside their budget: the strength is in under-priced skills (Brood, Fletcher, Remember's trigger, Executioner). Claude recommends: re-price those four skills with the canon tool (tools/skill_canon_2026_10_31.js), then re-fit the four cards; leave the Gardener.
+  - Leave them
+  - Re-fit the Wolf Spider Mother and the Grave-Grin Hyena (a card-data package)
+  - Re-fit all five
+- **Default:** Re-fit the Wolf Spider Mother and the Grave-Grin Hyena
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): after BUDGET2: re-price Brood, Fletcher, Remember's trigger and Executioner with the canon tool, then re-fit the Quartermaster, Ashbone Ghoul, Wolf Spider Mother and Hyena (SKILL2).
+
+**DECK1-2. BPRO decks: rebuild them under the 6/4 rule and the current lists?** · Decide · Balance · asked 2026-10-30
+- DECK1 rebuilt only the PRO decks. The BPRO decks (only the map's own pool) were left as they were: none keeps 6 different cards / 4 copies, and 46 of them hold a card that is on the map only through a road fight's deck (cut from the list by THEME3). Their own rule still counts the road decks as the map's cards.
+  - Leave the BPRO decks
+  - Rebuild BPRO with the DECK1 tool from the map's list only (no held cards)
+  - Retire BPRO (the DECK1 decks already anchor 10+ copies on the list)
+- **Default:** Rebuild BPRO with the DECK1 tool from the map's list only
+- **Outcome:** Owner 2026-10-30 23:25: OK. Rebuild BPRO with the DECK1 tool from the map's list only.
+
+**DECK1-3. PRO decks stay at Level 1 while the references level up from Map 11** · Decide · Balance · asked 2026-10-30
+- From Map 11 the map reference plays at Level 3-4 and Reference-2 at 3-5, the PRO decks at Level 1 (PREF-3 lifts only late side maps). Most late PRO decks still win, but on Map 20 (the high-cost Sundered Peak) the map reference wins 61-74%. A PRO fight could take the road's enemy level of its own map, as PREF-3 does for side maps.
+  - Keep Level 1
+  - PRO level = the road's enemy level of the map (all maps)
+  - Only from Map 11 (the Forge)
+- **Default:** Keep Level 1
+- **Outcome:** Owner 2026-10-30 23:25: OK. PRO decks stay at Level 1.
+
+**DECK1-4. The Old Bramble: its list is over its fights' rarity cap** · Decide · Cards · asked 2026-10-30
+- THEME3 (Q7) gave the Old Bramble "advanced cards, as if it was Map 21" (Rares and up), but its four fights are still Common, so the PRO rule's cap (the rarest fight) makes every card of its own list illegal. Its DECK1 decks are built from held Commons only. The map reference wins 7%, Reference-2 45-55%.
+  - Raise the Old Bramble's fights' rarity with the road retune (BAL7-3)
+  - Let its PRO decks use its list above the cap
+  - Leave it
+- **Default:** Raise the Old Bramble's fights' rarity with the road retune (BAL7-3)
+- **Outcome:** Owner 2026-10-30 23:25: OK. Raise the Old Bramble's fights' rarity with the road retune (BAL7-3).
+
+**DECK1-5. Gannet Cliffs (Map 3) has no hard deck: add a high end?** · Decide · Cards · asked 2026-10-30 · decided 2026-10-31
+- Gannet Cliffs' list is thirteen cards at 0-1 Lumber with two generators. Its best focused deck scores 75% on the gauntlet at double search budget (a pool ceiling), and the map reference beats its PRO decks 68-90% (Reference-2 68-85%). Map 0 (Commons only) is similar for Reference-2 (97-100%). Map 2, the owner's example, is no longer easy (34-52%). BUDGET2 (2026-10-31; docs/balance/budget2-2026-10-31.md section 6): no hard deck because the cards are weak. Of Gannet Cliffs' 13 list cards (bench.js contrib, 200 fights, global context), 4 sit above the fair line (none significantly) and 8 below, 5 clearly: Peak Condor -2.3 per copy (z -4.2), Hawk Arrowkeeper -2.2 (-4.6), Red-billed Chough -2.2 (-4.7), Peregrine Stooper -1.9 (-3.4), Conch Herald -1.5 (-2.7). Claude recommends: lift those five within their budget (+1-2 Health or +1 Attack each) in a card-data package, then re-run DECK1's Map 3 search; add the 2-Lumber card only if the ceiling stays low.
+  - Leave it (an easy map early on)
+  - Add one 2-Lumber card and a third generator to Gannet Cliffs' list
+  - Swap two of its 1-cost flyers for stronger ones
+- **Default:** Add one 2-Lumber card to Gannet Cliffs' list
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): Map 3's cards are weak (8 of 13 under the fair line). Lift Peak Condor, Hawk Arrowkeeper, Red-billed Chough, Peregrine Stooper and Conch Herald (SKILL2).
+
+**RECOST1-1. Skill prices set to their measured worth (64 skills)** · Decide · Balance · asked 2026-10-30
+- Step 3 of your plan (10-28 21:40). The workbench re-measured every skill on an in-play card (80 fights, 3 carriers), then the 74 flagged ones at 200 fights on 4 carriers. A price moved when the measure differed from it by more than 2 standard errors and at least 0.5 budget points: 64 skills (Tsunami 15 -> 3.48, Sturdy 8 -> 0.69, Lone Wolf 6 -> 2.62, Sweep 3.9 -> 0.55, Rage 5 -> 0.99, Quick 5 -> 1.12, Undead 4.3 -> 0.54; dearer: Acid Bolt 1 -> 7.23, Spitfire 1 -> 6.12, Avalanche 4 -> 8.29, Charge 3 -> 5.58, Strangle 0.8 -> 3.1, Swipe 3 -> 5.25). Then 17 in-play cards were trimmed and 19 weak, under-budget ones lifted. docs/balance/recost1-2026-10-30.md.
+- **Default:** Keep the measured prices.
+- **Outcome:** Filled by Claude per your 10-26 "Fill in the decisions to your best extent" and the 10-28 plan: applied (each entry keeps prevValue to revert).
+
+**RECOST1-2. Your own skill prices against the measure** · Decide · Balance · asked 2026-10-30
+- Not changed (you set them); worth in budget points at 80 fights vs the price on their carriers: Supreme +0.1 vs 5 (z -49); Bulwark +1.1 vs 9.7; Evolute -1.3 vs 3; Breach +1.2 vs 2.9; Fester +1.2 vs 2.8; Decay +5.7 vs 1.1 (under-priced); Thorns +3.2 vs 1.7; Stealth +0.4 vs 2 and Slow -0.3 vs -0.9 (both within noise); Bounty +2.9 vs 2.5. Table in docs/balance/recost1-2026-10-30.md.
+  - Keep your prices
+  - Apply the measured worth to the ones off by more than 2 SE (Supreme, Bulwark, Evolute, Breach, Fester, Decay)
+  - Re-measure them at 200 fights first
+- **Default:** Re-measure them at 200 fights first
+- **Outcome:** Owner 2026-10-30 23:25: default. Re-measure your prices at 200 fights first (with TOOLS2's canon-set measure, X14).
+
+**RECOST1-3. Trigger pairs the measure calls mispriced** · Decide · Balance · asked 2026-10-30
+- A trigger skill costs trigger weight x action value, shared by every card using either, so RECOST1 left them. Off at high confidence (80 fights): On Spawn: Stun worth 0 vs 9.45; On Spawn: Add Wait 0.4 vs 5.9; Per Turn: Forge Weapon 0 vs 4.2; Per Turn: Spawn 4 vs 9; On Attacked: Spawn 3.4 vs 7.6 (Bee Drone); On Spawn: Draw 2.8 vs 5.7; On Death: Exile Self +4.5 vs -0.1 (its carriers also Remember).
+  - A trigger-weight package (re-measure the pairs, then set action values)
+  - Leave them
+- **Default:** A trigger-weight package (re-measure the pairs, then set action values)
+- **Outcome:** Owner 2026-10-30 23:25: default. A trigger-weight package.
+
+**RECOST1-4. Field, synergy and resource skills need their home maps** · Decide · Balance · asked 2026-10-30
+- The global bench reads these far from their prices, but it plays the whole road's field mix and a slot of 6 copies, so it is not their real setting: field skills read low (Mountain Climber -0.5 vs 4, Dry 0.1 vs 4, Darksight -0.3 vs 3, Fog 0.2 vs 2.7, Tide 0.2 vs 1.5, Heat 0 vs 1.2), same-card synergy reads high (Pack 6 vs 0, Brood 7.4 vs 2.9, Fletcher 4.5 vs 0, Swarm 5 vs 2.5), Quarry (Stone) -3.2 vs 2.5 and Prospector (Metal) 0.2 vs 1.2 need Stone / Metal spenders. Not changed.
+  - Measure each on its home maps (bench.js skill <id> --map N) in a follow-up
+  - Apply the global measure anyway
+  - Keep the logic prices
+- **Default:** Measure each on its home maps (bench.js skill <id> --map N) in a follow-up
+- **Outcome:** Owner 2026-10-30 23:25: default. Measure each on its home maps in a follow-up.
+
+**RECOST1-5. Three in-play cards no stat change can fit** · Decide · Cards · asked 2026-10-30 · decided 2026-11-02
+- Owner 11-02 14:10: closed; the owner recosts these cards himself as he sees them. | Over budget because their skill price alone breaks cap 2 (S x |S| above (N/3)^2 x 2): bee-drone 0/1 (flying 0, onAttacked → spawnCard 7.6); worker-ant 1/1 (onAttack → drawCard 5.54); war-elephant 0/28 (armor 4.53, arrow 6, arrowCount 12). Bee Drone and Worker Ant follow RECOST1-3 (their trigger prices); War Elephant's Arrow Count 12 costs 12.
+  - Hold them (as now)
+  - Cut War Elephant's Arrow Count to fit
+  - Re-price the triggers first (RECOST1-3)
+- **Default:** Re-price the triggers first (RECOST1-3)
+
+**RECOST1-6. Attack is worth about 3 Health in play; Marshal of Rivergate still weak** · Decide · Balance · asked 2026-10-30
+- The bench's yardstick (283 carriers): +1 Attack on a card adds 9.5 win-rate points, +1 Health 3.0, so 1 Attack is about 3.2 Health; the budget (2A + H) counts 2. High-Attack cards are under-priced by the formula and walls over-priced. Separately, Marshal of Rivergate (Epic, Armor 2, Sweep 4) was lifted only to 2/3 (44% of N; RECOST1 lifts at most +4 points) and still reads below the fair line.
+  - Keep 2A + H
+  - Try 3A + H in a budget package (a full re-fit)
+  - Lift Marshal of Rivergate to its budget now
+- **Default:** Keep 2A + H; lift Marshal of Rivergate to about 80% of N
+- **Outcome:** Owner 2026-10-30 23:25: "If Attack = 3 Health, we have to edit the first N formula to 3*attack instead." The budget moves to 3A + H (package BUDGET2, with the card re-fit).
+
+**ENG13-1. Admin currency tap: is this what you meant?** · Decide · Admin · asked 2026-10-29
+- Your note "Admin - clicking the currencies +100 then doubles it": the game had no +100 control on currencies (Admin had only the Set balances boxes, 99,999 / zero, and +1 / +5 for Energy and Raid Tickets, which add once). ENG13 built it: in Admin Mode a tap on a currency in the Profile / Shop / Forge / Nest wallet or the Inventory's Wallet adds 100 while it is under 100, then doubles it (100, 200, 400 ...; at most 99,999). If you meant a bug (a +100 button that gave +200), tell me where you saw it.
+- **Default:** Keep the tap as built.
+- **Outcome:** Owner 23:01: "Clicking the currency both adds +100 then doubles. This is incase the currency has 0." Built as ENG13 did.
+
+**ENG13-2. Which cards get Slow?** · Decide · Cards · asked 2026-10-29
+- Slow (loses Speed ties; priced -0.8) is on no live card. Suggested carriers: Garden Snail, Slow Loris, Ancient Sloth Titan, Old-growth Tortoise, Leopard Slug (also fitting: Slowpoke Sentinel, Slow-worm, Box Turtle). Each would gain 0.8 budget for stats when the card is re-fitted.
+- **Default:** Garden Snail, Slow Loris, Ancient Sloth Titan.
+- **Outcome:** Owner 2026-10-30 10:34: "maybe just sloth titan, old-growth tortoise and garden snail (if garden snail is T1-T2 card, then it only gets it at lvl 1). The price should be *0.85 instead. So it has more budget!"
+
+**ENG13-3. Canopy Cover's price after it was narrowed** · Decide · Skills · asked 2026-10-29
+- Canopy Cover already dodged 1 in 2 (seeded), but against every single-target attack; now it dodges only shots, skills and Flying or thrown attacks (your 21:36 note). Its price (Evasive's half-miss x the woods uptime 0.4) was left as it was. Re-measure and lower it (bench.js skill canopyCover), or keep?
+- **Default:** Re-measure in the next balance package and lower it to the measured worth.
+- **Outcome:** Owner 2026-10-30 10:34: "just use logic and reduce it, no need to remeasure."
+
+**ENG13-4. Should the Ambush still interrupt 3-2's first Fight?** · Decide · Maps · asked 2026-10-29
+- The Ambush is optional now (no lock; Map 4 does not wait on it) and hard (the Map 3 reference deck wins about 25-30%). The first tap on 3-2 still springs it: the scout shoves your pawn and the Ambush fight starts at once (losing it the first time costs 10-30 Maple Leaves). Keep that surprise, or let it only appear on the map, fought when you choose?
+- **Default:** Keep the surprise; it can be retried or ignored afterwards.
+- **Outcome:** Owner 2026-10-30 23:25: default. Keep the surprise.
+
+**ENG14-1. The CPU now saves for its big cards: keep it at this strength?** · Decide · CPU · asked 2026-10-30 · decided 2026-10-31
+- Your X24 note: the CPU now holds its Lumber for a card worth 1.5x its best paying play (within 3 pitches, at most 2 turns held back, never while losing badly). Measured on Maps 0-20 (335 fights, 12 games each, the new-player reference decks): the CPU played 19.5% of the cost 3+ cards it drew before, 27.5% after (cost 2+: 22.4% -> 33.1%); the player's win rate went 52.6% -> 54.3%. Fights whose CPU deck has no cost 3+ card did not move (50.3% -> 50.4%); the 86 that have one went 59.2% -> 65.6% (the big card comes down later than the small cards it replaced). A stricter version (1.25x bar, pitching the best play whatever the gap) played the same number of big cards and cost the CPU about 3 more points. Options: (a) keep it, retune those decks in the next balance pass; (b) keep it and drop the weakest cost 3+ cards from skirmish decks (your 'then we shouldn't have included it in the deck'); (c) undo it.
+  - (a) Keep; retune in the balance pass
+  - (b) Keep; trim cost 3+ cards that don't earn it
+  - (c) Undo
+- **Default:** (a) Keep; retune in the balance pass
+- **Outcome:** Owner 10-31 09:22: "Yes keep CPU saving." Also #5: if the CPU still can't afford big cards, either it gathers Lumber badly, gathering is too weak, or high-cost cards are tuned down (ENG15 investigates).
+
+**ENG14-2. Elite +1 card: mini-bosses too?** · Decide · Maps · asked 2026-10-30 · decided 2026-10-31
+- Your X25 note: "Elite skirmishes start with +1 card in their hand." Built for every elite-kind fight: elite, champion and mini-boss (each main map's last fight below Map 50 is a mini-boss, so 8-8 gets it too), not the bosses or the dungeon. Should mini-bosses (the maps' final fights) keep it, or only fights named Elite?
+  - (a) Elite, champion and mini-boss
+  - (b) Elite only
+- **Default:** (a) Elite, champion and mini-boss
+- **Outcome:** Owner 10-31 09:22: "Mini-bosses get +2 (so 5 cards in hand)". Elite and champion stay +1 (ENG15).
+
+**ENG14-3. Bola: which cards get it? (and the every-other-swing limit)** · Decide · Skills · asked 2026-10-30 · decided 2026-10-31
+- Bola N is built (X26): Arrow N's shot, and the unit it hits is Pinned for its next turn (loses that swing, can't move; skills still work). Claude's call: a unit that just broke free can't be Pinned the round after, so one Bola costs a unit at most every other swing (otherwise a Bola locks the unit facing it every round). Priced Arrow N + 2 (Bola 1 = 5). Proposed cards: (1) Net Thrower (uncommon 3/11, Boomerang) -> Bola 1 in place of Boomerang: it already throws a net; (2) Clap-net Trapper (common 2/11, a trap trigger) -> Bola 1: a trapper; (3) a new Bolas Spider (Mastophora, a real spider that hunts with a sticky bola on a silk line) for a cave or forest map. Pick any.
+  - (1) Net Thrower
+  - (2) Clap-net Trapper
+  - (3) a new Bolas Spider
+  - Keep the every-other-swing limit
+  - Let it pin every round
+- **Default:** (1) Net Thrower and (3) a new Bolas Spider; keep the limit
+- **Outcome:** Owner 10-31 09:22: Bola Spider and Net Thrower OK. Bola also removes the benefits of Flying and Evade. New skill Lasso: same as Bola but once (On Ready); the two units are tied; if the lassoer dies the target is released, if the target dies the lasso is released (ENG15).
+
+**ENG14-4. Anadromous: which cards get it?** · Decide · Skills · asked 2026-10-30 · decided 2026-10-31
+- Anadromous is built (X20): +1 Attack on a sea map (rules.saltMap: the beach and reef biomes), +2 Health anywhere else; priced 2. Real anadromous fish in the game: Wrong-Way Salmon (uncommon 1/11, Backstab; the name fits a salmon swimming upriver), Old Sturgeon (uncommon 1/19, Armor + Tide), Lamprey (common 3/6, Weaken). Proposed: Wrong-Way Salmon and Lamprey (both are anadromous; the Sturgeon already has Tide).
+  - Wrong-Way Salmon
+  - Lamprey
+  - Old Sturgeon
+- **Default:** Wrong-Way Salmon and Lamprey
+- **Outcome:** Owner 10-31 09:22: Salmon OK. Rework: "Anadromous - Tide and +1/+1 in seawater, spawns a 1/1 Fry with Tide in freshwater." Any salty map counts as seawater; the swimming pool is freshwater. On maps without Tide: no bonus, refunded as +0/+1 (ENG15).
+
+**ADMINU1-1. Apply the admin player-list function** · Apply · Admin · asked 2026-10-29
+- Say "apply it" to run supabase/proposed/20261029_admin_user_list.sql on the live database. It adds the read-only function admin_user_list() (and a small helper, _admin_safe_jsonb) that the game's new Admin > Players overlay calls: for every profile it returns id, display name, created / last seen, rating, is-admin, cards unlocked, fights, last fight, matches, XP, tutorial done, the map ids cleared, nodes cleared and gold. It never returns emails or any auth data, raises 'not allowed' unless the caller is in app_admins, and is revoked from anon and public. Until then the overlay says the function is missing. Roll back with: drop function public.admin_user_list(); drop function public._admin_safe_jsonb(text). Note: an older Admin > Players panel (Load players, admin_list_players, applied 10-16) already existed; the overlay sits beside it.
+- **Outcome:** Owner 2026-10-30 23:25: "Apply the supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it')". Applied 2026-10-30 (migration admin_user_list_20261029).
 
 **THEME1-1. Approve the per-map proposal (whole / with changes)** · Decide · Maps · asked 2026-10-28
 - Now the THEME2 proposal (owner 10-28 22:47: "For main maps, there can be 8-11 cards + 4-5 carried over, 12-16 in total. Submaps would be 1-3 cards + 10+ carried over, so 11-14. Don't worry about the other cards."). Steps 1 and 2 of the balancing plan: each card gets one map home by theme; each main map 8-11 unique (past 8 only strongly themed cards) plus 4-5 carried picked for the mix (a high-cost card, a generator, a creature), 15 in all; each submap 1-3 unique plus 10 or more carried from the parent and earlier maps that fit it, 12-13 in all; every list has a cost generator and a high-cost card. Lists 613 -> 559 entries; 307 different cards on a list (108 of them skirmish rewards). The packs: Hedgerow Pouch 52 of 145 on a list; Tidemire Chest 56 of 154 on a list; Highcrest Case 53 of 126 on a list; Pack 4 19 of 33 on a list. 426 cards are on no list (simply listed, per old pack). Flags: Volcano Lair: 2 unique over its 1 (skirmish rewards). Submaps to call (delve = 3 unique, challenges = 1): Smugglers' Grotto, The Sunken Depths, Clovermead, The Glimmer Depths, Eye of the Volcano are "ask owner" (2 for now). Hand calls: the Beaver Lumberjack to Map 0, the Ore-Smelter Mole and the Anvilwhisker Otter to the Basalt Foundry. Nothing applied: docs/balance/theme2-proposal-2026-10-28.md and the hub's Map cards tab (Proposal); THEME1's version stays as history.
@@ -10,41 +2305,171 @@ _Generated from `decisions.json` (2026-10-28). The hub has a searchable, filtera
   - Approve with changes (name them: moves, submap calls, sizes)
   - Not yet
 - **Default:** Not yet
+- **Outcome:** Owner, 2026-10-28 23:05: "Okay to THEME1-1." The THEME2 proposal (main maps 10-11 unique + 4-5 carried, submaps 1-3 + 10+) is approved; apply it to canonical/map-pools.json after PACK1 (packs then follow the lists). The five "ask owner" submaps stay at 2 unique until classified.
 
-**BAL7-3. The road after the M1 re-balance: retune the decks next?** · Decide · Balance · asked 2026-10-28
-- M1 cut 69 cards (Dung Beetle, Archerfish, Fire Salamander ...). The Map reference decks (the new-player yardstick) leaned on Dung Beetles and Archerfish from Map 10, so with the old reference the road fell from 61.5% to 43.3% on average (Maps 10-23 down 12-53 points). BAL7 rebuilt the reference decks (tools/skirmish_pass.js decks --keep): the road is back to 61.7% on average, but its shape moved: 57 of 256 curve fights green (79 before M1), 83 too easy, 116 too hard (docs/balance/bal7-road-2026-10-28.json). You said no retune yet, so no skirmish deck was tuned toward the curve.
-  - Retune the road decks toward the curve in the next balance package (swaps only)
-  - Keep the old reference decks and retune against them
-  - Leave the road as it is
-- **Default:** Retune the road decks toward the curve in the next balance package (swaps only)
+**THEME1-2. Which of the five unclear submaps are new locations** · Decide · Maps · asked 
+- **Outcome:** Owner, 2026-10-28 23:06: "If the theme is unique, then it's a new location (like grotto) otherwise, like those in Map 20, they are just extra challenges. Though note, Dragon Lair is our overall 0-20 big boss, so it deserves more unique cards and also a flair that's not the normal boss flair." New locations (3 unique): Smugglers' Grotto, The Sunken Depths, The Glimmer Depths. Extra challenges (1): Clovermead, Eye of the Volcano. Volcano Lair: 5 unique + 10 carried (15); its own flair is action item S3 (FLAIR1).
 
-**CONTENT4-1. Map card pools: the cap would take 187 cards out of the packs. Which way?** · Decide · Content · asked 2026-10-28
-- L7 ("Limit the number of cards in a map ... ~4-5 old cards, ~4-7 new cards"). Today each main map's pool is nearly all of that map's own pack cards (12-26 cards, 0-2 carried from earlier maps). Capped at 7 new and 3-5 old (rewards, first-clear pack cards and showcases always kept), the pools lose 269 entries, and 187 cards (82 Common, 70 Uncommon, 34 Rare, 1 Starter: about a third of the pack cards) are then in no pool, so by the stranding rule they wait for a source and leave the packs. It also invalidates PRO / BPRO decks that hold those cards (235 checks) and puts some trimmed cards over budget (a card with no source counts as Map 0). Nothing is applied; the plan, its before -> after per map and the 187 names are in docs/balance/content4-2026-10-28.md, with a script that applies it. Keeping every card of the maps' PRO decks lowers it to 81 cards waiting, but a dozen maps then stay well over the cap. 2026-10-28: re-opened. Owner 16:43: "balancing this way may make our pack size and unique card total not match." HUB9 (🗺️ Map cards tab) measured the plan: map-listed pack cards would fall to 35/145 (Hedgerow), 61/154 (Tidemire), 49/126 (Highcrest), 26/33 (Pack 4); lists 736 -> 467 entries. Not applied; decide with the tab.
-  - Keep the lists as they are
-  - Cap them as planned (cards stay in their packs)
-  - A softer cap (say the numbers)
-- **Default:** Keep the lists as they are
+**TUT2-1. Apply the easier live T-2 rival deck** · Apply · Tutorial · asked 2026-10-30 · decided 2026-11-02
+- supabase/proposed/20261030_tutorial_t1t2_decks.sql updates only cfg.rivalDeck2 of the __cfg:tutorial row (live T-2 deck minus one Pond Trout and one Silver Minnow) so T-2 passes 70%+ with every card at Level 0 and no skills (73% / 95%). It only runs if the row still holds the 10-22 value; rollback is in the file. Say 'apply it'.
+  - apply it
+  - not yet
+- **Default:** apply it
 
-**S3. Leaked-password protection needs Supabase Pro: upgrade to turn it on, or skip it?** · Do · Security · asked 2026-10-08
-- Supabase dashboard → Auth → Passwords → leaked password protection. Free, one click, needs your login. Owner (10-23 00:10): "Needs you to use my chrome." Needs a Chrome session with the owner. 10-23 06:59 (Chrome session): the dashboard toggle "Prevent use of leaked passwords" is "Only available on Pro plan and above"; the org is on the Free plan, so it was not turned on (nothing is bought). Free alternative on the same panel: password requirements (e.g. letters + digits) and a longer minimum length; not changed without the owner's word.
-  - Upgrade to Pro and turn it on (your purchase)
-  - Skip it
-- **Default:** Skip it
+**TUT2-2. Early-road Level 0 enemy copies drop their Level 1 skills** · Decide · Tutorial · asked 2026-10-30
+- **Outcome:** Filled by Claude from the owner's 10:34 rule ("All start at lvl 0 and have no skills till lvl 1"): yes, a Level 0 copy never has Level 1 skills, on any side. Queued (TUT3).
 
-**A1. Which AI services should we set up, free tiers first, and will you create the accounts? (your browser; nothing bought)** · Do · Art · asked 2026-10-08
-- Owner (10-23 17:38): "A1 description - list all the AIs that could help us, esp through omnirouting to gain utility without spending tokens." Researched 2026-10-23 (free limits change often; each is re-checked on its own page before use). The idea: send cheap or bulk work (translations, drafts, sim summaries, second-opinion reviews) to free tiers through one router, and keep Claude for design, engine and final review. Every account below is yours to create; Claude never creates accounts, enters passwords or buys anything, and no key goes into the repo or a chat (keys live as local environment variables). ROUTERS (one key, many models). (1) OpenRouter: 20+ ":free" models from several providers behind one OpenAI-style API; 20 requests/min and 50/day free, 1,000/day after a one-time $10 top-up (your call). Account: openrouter.ai. (2) LiteLLM (open source, runs on your machine): one local endpoint that routes to the free tiers below and falls back when one is rate-limited; no account. (3) Vercel AI Gateway: multi-provider with your own keys (BYOK), on the Vercel account you already have. FREE TEXT / CODE MODELS (behind a router). Google AI Studio (Gemini Flash / Flash-Lite and 2.5 Pro free; free-tier prompts may be used by Google to improve its products, fine for this public repo, not for secrets); Groq (about 30/min, 1,000/day; Llama 3.3 70B); Cerebras (about 1M tokens/day); Mistral (about 1B tokens/month, Codestral for code); GitHub Models (150-1,000/day, on your GitHub login); Cloudflare Workers AI; NVIDIA NIM. Use for us: first-draft translations of the 12 language packs, text and lore drafts, summarising sim logs, a second reviewer on diffs. Local and free with no account: Ollama with open models (Qwen, Llama, Gemma) on your own machine. TRANSLATION. DeepL API Free: 500,000 characters a month at no cost (account at deepl.com; it may ask for a card to verify, nothing is charged on Free). Good for checking the language packs against the English. CODE REVIEW. CodeRabbit: free reviews on public repositories with the paid-tier features for open source (sign in with GitHub); CodeQL already scans every push (S4). ART (beside PixelLab and NightCafe, already in use). ChatGPT image generation free daily cap (commercial use allowed by OpenAI's terms); Gemini "Nano Banana" free in the app (visible and invisible SynthID watermark, so drafts only); Ideogram about 10 slow credits/day (free images are public); Leonardo 150 tokens/day (free-tier images not for commercial use); Microsoft Copilot 15 fast boosts, then slower. Best use: concept drafts and splash/marketing comps, then PixelLab or the pixel pass for anything that ships. SOUND, MUSIC, VOICE. Stable Audio Open 1.0 (open weights, runs locally, up to 47 s, better at sound effects than music; Stability Community License, check stability.ai/license for commercial use); ElevenLabs free 10,000 credits a month (about 50 sound effects or 10 minutes of voice) but no commercial licence on free (Starter $6/month has it: your call); Suno free 50 credits/day (about 10 songs) but non-commercial and few downloads, so reference tracks only. For the shipped music (D17) CC0 packs remain the safe route. VIDEO (trailer, A3). Kling via fal stays the plan; it needs a paid key and a cap (below). PAID KEYS (only if you choose): OpenAI (platform.openai.com, set a monthly budget and alerts at 50% / 80% first) and fal.ai (prepaid credits, load the smallest top-up or none until A2); name each key bramblewood-local, store as OPENAI_API_KEY / FAL_KEY in your environment, tell me 'keys are set' and I check only that they exist, then run one test through tools/art/pixelize.py. Recommended order: free tiers first (OpenRouter free + Google AI Studio + DeepL API Free + CodeRabbit), routed through LiteLLM or OpenRouter; paid OpenAI / fal keys only when A2 or A3 go ahead. Sources: openrouter.ai/blog/tutorials/free-llm-apis-compared/ ; layer3labs.io/guides/is-gemini-free ; support.deepl.com/hc/en-us/articles/360021200939-DeepL-API-Free ; aicodereview.cc/blog/is-coderabbit-free ; krea.ai/blog/best-free-ai-image-generators-in-2026 ; dupple.com/learn/is-elevenlabs-free ; dupple.com/learn/is-suno-free ; huggingface.co/stabilityai/stable-audio-open-1.0
-  - Free tiers first (OpenRouter free, Google AI Studio, DeepL API Free, CodeRabbit)
-  - Free tiers plus paid OpenAI and fal keys with monthly caps
-  - Not yet
-- **Default:** Free tiers first (OpenRouter free, Google AI Studio, DeepL API Free, CodeRabbit)
+**TUT2-3. Your own T-1/T-2 decks lose skill cards too (the Honey Bee's Flying)** · Decide · Tutorial · asked 2026-10-30
+- **Outcome:** Filled by Claude from the owner's 10:34 "T-1/T-2 won't have swarm or flying": the player's T-2 Honey Bees are swapped for a skill-less card in the built-in decks and in the proposed live-row SQL. Queued (TUT3).
 
-**A2. Spend about $7-15 to train a Bramblewood pixel LoRA and test it on 10 cards?** · Decide · Art · asked 2026-10-08
-- What a Bramblewood pixel LoRA is: a small add-on trained on our own card art so a general image model (FLUX.2 [dev], trained on fal) draws new cards in the same house style; PixelLab stays the main source and heroes stay PixelLab. Data: 20-40 of the best existing PixelLab cards from art/cards (633 PNGs, 256x256 today), picked for one coherent look: same outline weight, same palette (tools/art/palette.json), a spread of subjects (mammal, bird, insect, structure), no text in the image, no watermarked stock. Each image gets a short caption in the style of docs/art-style-prompts.md with a trigger word (for example 'bwpixel') so the style can be called on and off. About half a day of curation, which I can do from the repo; you pick or veto the 30. Tool options: (a) fal's FLUX.2 trainer (hosted, no GPU, upload a zip of images and captions, about 1,000-2,000 steps, roughly $6.40 per 1,000 steps on fal's list, so about $6-13 per training run plus about a few cents per generated image; check the current price on fal's page before any run); (b) Replicate's FLUX trainer (similar, per-run pricing); (c) a local or rented GPU with ai-toolkit/kohya (cheaper per run, but needs a rented GPU and setup time; not worth it for a 10-card test). Recommendation: (a), because A1 already puts a fal key and cap in place. Cost range: a first test is about $7-15 in total (one 1,000-step training plus 10-40 generations), and a retrain with fixes is the same again; a full set of Maps 9-10 cards afterwards is cents per card. All of it stays under the cap you set in A1; nothing runs without your OK on the amount. Test plan on 10 cards: (1) train once on the 30; (2) generate the 10 test cards, chosen from existing cards whose PixelLab art we already like, so each result can be set beside the original (a mix: 3 small animals, 2 birds, 2 insects, 1 structure, 1 large beast, 1 fantasy creature); (3) run each through `tools/art/pixelize.py` (nearest-neighbour downscale to the 160 px grid, palette snap, outline clean-up); (4) review in the hub's Visual Library as 'proposed', scoring each on outline, palette, readable silhouette at card size and fit beside the PixelLab neighbours; (5) pass if at least 7 of 10 are usable with at most a pixel pass and one retry, fail otherwise; (6) if it passes, spend the same amount on the Maps 9-10 cards and the Home sprites that wait on PixelLab; if it fails, delete the LoRA and keep PixelLab only. Needs from you: A1 done, a yes on the training spend, and a veto pass over the 30 picks.
-  - Yes, test on 10 cards
-  - Not yet
-- **Default:** Yes, test on 10 cards
+**BRUP-1. Bramble upgrades: their own resource?** · Decide · Economy · asked 2026-10-29
+- Owner 23:01: "Im considering for bramble upgrades to use a different resource. I don't want people too tied up between choosing to level brambles (looong way) versus cards." Today a bramble level costs Dust + Gold (+ materials from Level 10), the same as card levels (castleLevelUpCost in arena_app.js). Options: (a) Thorns, a new bramble-only resource earned from bramble damage you deal (every fight and dungeon already counts it, e.g. the Tidelock Vault's 'Bramble damage dealt: 20'), plus a few in raid/dungeon chests; brambles cost only Thorns (+ materials late). Cards keep Dust + Gold. Recommended: no trade-off, and it rewards attacking play. (b) Bring back Krooni (retired, nothing spends them) as the bramble currency, earned as today's Krooni sources were. (c) Keep Dust + Gold, but halve bramble costs. Existing bramble levels and the castle credit stay; a conversion of already-spent Dust/Gold is not needed.
+  - (a) Thorns from bramble damage
+  - (b) Krooni for brambles
+  - (c) Keep Dust+Gold, halve costs
+- **Default:** (a) Thorns from bramble damage
+- **Outcome:** Owner 2026-10-30 10:34: "Their own resource & a bit of normal resource. The bramble resource comes from winning fights. Dealing damage to bramble does net you a tiny bit even on loss. Overall - help me half all the resources you get, (except first-time rewards). Because, i want to make the first two daily dungeons: one gives bramble resources, the other gives normal resources. - grinding that = lvl 0 common unit levelled to lvl 10 per week."
 
-## Decided
+**BRUP-2. Briar Blossoms from fights before Map 28?** · Decide · Economy · asked 2026-10-30
+- ECON1 built your BRUP-1: brambles reinforce with their own resource, Briar Blossoms, plus a quarter of the old Dust / Leaves. A won fight pays Blossoms (skirmish 4 ... final boss 30, +10% a map number); a loss pays a quarter of that times the share of the enemy bramble you took. But the Forge's Reinforce tab opens at Map 28 (RES3), so fights pay Blossoms only from Map 28; before that nobody holds a currency they can't spend. The Undercroft (bramble daily dungeon, Map 11) pays them from the start. Options: (a) keep it so; (b) open Reinforce earlier (which map?); (c) fights pay Blossoms from Map 0 and they bank until Reinforce opens. docs/balance/econ1-2026-10-30.md.
+- **Default:** (a) Blossoms from fights from Map 28, when Reinforce opens.
+- **Outcome:** Owner 2026-10-30 23:25: "No problem on BRUP-2. Just leave is at Map 28. Prepare to reshuffle them at will in the future."
+
+**BRUP-3. The two daily dungeons: shared keys or their own?** · Decide · Economy · asked 2026-10-30
+- The first two daily dungeons now pay a fixed amount for every won floor: Murgle Mayhem 69 Dust + 46 Leaves, the Undercroft 63 Briar Blossoms. Both use the same key ring: 3 keys a day + 1 on Monday = 22 a week, so grinding both means 11 won floors each: a week of Murgle = 759 Dust + 506 Leaves (a Common card Level 0 -> 10: 759 / 504), a week of the Undercroft = 693 Blossoms (a Common bramble Level 0 -> 10: 690). A player who spends every key on one dungeon gets twice that. Options: (a) keep the shared ring; (b) each dungeon gets its own 3 keys a day (the pay per floor halves, so the week stays the same). The dungeons are still hidden (DAILY_DUNGEONS_HIDDEN).
+- **Default:** (a) shared keys, 11 floors each.
+- **Outcome:** Owner 2026-10-30 23:25: "Daily dungeons share keys. Multiplayer dungeons use energy. Multiplayer daily dungeons use keys and energy - none right now." Names: Dailies, Dungeons (multi-step), Multiplayer, then the Tower.
+
+**BRUP-4. Name the bramble resource** · Decide · Economy · asked 2026-10-30
+- Working name "Briar Blossoms" with 💮 (brambles flower; "Thorns" is a keyword and "Berry" is Foraging's token). Change it in one place: CURRENCY_META.blossoms (glyph) and the TX key ui.econ1-blossoms (+ the 12 packs via tools/i18n_2026_10_30_econ1.py). The internal key stays blossoms.
+- **Default:** Briar Blossoms 💮.
+- **Outcome:** Owner 2026-10-30 23:25: default. Briar Blossoms 💮.
+
+**BRUP-5. Apply the Briar Blossoms column** · Apply · Economy · asked 2026-10-30
+- Say "apply it" to run supabase/proposed/20261030_bramble_resource.sql on the live database. It adds player_currencies.blossoms (integer, >= 0, default 0) and a guard trigger (at most +2,000 a write, 50,000 an hour, admins and server grants exempt). Until then Briar Blossoms are kept in each browser only (like Kibble and Beer) and the game works the same; once applied they sync across devices with no client change.
+- **Default:** Apply once ECON1 is released.
+
+**CS-1. Hover popover: the Full card plus text, or text only?** · Decide · UI · asked 2026-10-29
+- Card sizes (owner 19:14: "reduce to just 3 or 4"): proposal in docs/design/card-sizes-2026-10-29.md (Detail / Full / Compact / Chip). Hover popover: the Full card plus text, or text only?
+  - Full card + text
+  - Text only
+- **Default:** Full card + text
+- **Outcome:** Owner 2026-10-30 10:34: "CS use your recommendations" → Full card + text.
+
+**CS-2. Detail size: the card's back face holds lore, levels and where to get it, or stays the decorative card back?** · Decide · UI · asked 2026-10-29
+- Card sizes (owner 19:14: "reduce to just 3 or 4"): proposal in docs/design/card-sizes-2026-10-29.md (Detail / Full / Compact / Chip). Detail size: the card's back face holds lore, levels and where to get it, or stays the decorative card back?
+  - Lore + levels on the back
+  - Decorative back
+- **Default:** Lore + levels on the back
+- **Outcome:** Owner 2026-10-30 10:34: "except CS-2: Decorative back."
+
+**CS-3. Full size on a phone: 86px (4 per row) or 96px (3 per row)?** · Decide · UI · asked 2026-10-29
+- Card sizes (owner 19:14: "reduce to just 3 or 4"): proposal in docs/design/card-sizes-2026-10-29.md (Detail / Full / Compact / Chip). Full size on a phone: 86px (4 per row) or 96px (3 per row)?
+  - 86px, 4 per row
+  - 96px, 3 per row
+- **Default:** 86px, 4 per row
+- **Outcome:** Owner 2026-10-30 10:34: recommendation → 86px, 4 per row.
+
+**CS-4. Map card lists become Chips (art disc + name), losing the tiny stats?** · Decide · UI · asked 2026-10-29
+- Card sizes (owner 19:14: "reduce to just 3 or 4"): proposal in docs/design/card-sizes-2026-10-29.md (Detail / Full / Compact / Chip). Map card lists become Chips (art disc + name), losing the tiny stats?
+  - Chips
+  - Keep small cards
+- **Default:** Chips
+- **Outcome:** Owner 2026-10-30 10:34: "CS-4 is for our map cards viewing anyway so okay." → Chips.
+
+**CS-5. Hide the card name on the board when a card is under 70px wide?** · Decide · UI · asked 2026-10-29
+- Card sizes (owner 19:14: "reduce to just 3 or 4"): proposal in docs/design/card-sizes-2026-10-29.md (Detail / Full / Compact / Chip). Hide the card name on the board when a card is under 70px wide?
+  - Hide under 70px
+  - Always show
+- **Default:** Hide under 70px
+- **Outcome:** Owner 2026-10-30 10:34: recommendation → hide the name under 70px.
+
+**KOFI-1. Add a Ko-fi / donation link now?** · Decide · Finance · asked 2026-10-29
+- Owner 19:14: "Is it legal to put a kofi or donation link at this juncture? Do i need a blog landing page?" Claude is not a lawyer or tax adviser. What we checked: every bundled asset allows commercial use (Twemoji CC-BY 4.0 with its attribution line, Noto Emoji Apache 2.0, Fluent UI emoji MIT, fonts OFL), and PixelLab's terms say you own your outputs and may use them commercially (no free/paid difference). A tip link is ordinary; no landing page or blog is required. Keep it a tip (no in-game rewards for donating, which would make it a sale with consumer-law and tax duties); say plainly what money supports. Ko-fi pays out through PayPal or Stripe, both available in Singapore. Donations you receive may count as income for tax: check with IRAS or an accountant once amounts matter. Recommended placement: a small 'Support the game' link in Settings/About and on the sign-in screen footer, no pop-ups. NightCafe's or other generators' terms should be checked before their art ships.
+  - Add a Ko-fi link in Settings/About now
+  - Wait until the domain / landing page
+- **Default:** Add a Ko-fi link in Settings/About now
+- **Outcome:** Owner 2026-10-30 23:25: default. Add a Ko-fi link in Settings/About; needs your Ko-fi page address.
+
+**SKL0-1. Should every T-1/T-2 card fight at Level 0?** · Decide · Tutorial · asked 2026-10-29
+- Today only a card with a skill that arrives at a later level (Bee Knight's Swarm) gets a Level 0 copy in T-1/T-2; the Base cards (Duckling, Pond Trout, Silver Minnow, Cottontail ...) fight at their Level 1 on both sides. Measured all at Level 0 (200 seeds, CPU on your side): T-1 wins fall 66% -> 44% and the fixed seed loses; T-2 78% -> 80%. Doing it needs a T-1 retune.
+  - Keep (only skill cards at Level 0)
+  - All Level 0 + retune T-1
+- **Default:** Keep (only skill cards at Level 0)
+- **Outcome:** Owner 2026-10-30 10:34: "SKL0-1 yes definitely" → every T-1/T-2 card at Level 0, T-1 retuned. And: "T-1/T-2 won't have swarm or flying. Same for all the Map 0 to T1-T2 base cards. All start at lvl 0 and have no skills till lvl 1. Map 0 slowly introduces them at lvl 1."
+
+**SKL0-2. Bee Knight's Level 0 copies outside the tutorial: keep Swarm?** · Decide · Tutorial · asked 2026-10-29
+- Bee Knight now gets Swarm at Level 1. Its Level 0 copies outside T-1/T-2 (the Nest's, and Map 0's early-road enemy copies) still keep Swarm, matching "from Map 0 it has both".
+  - Keep Swarm outside the tutorial
+  - Level 0 never has Swarm
+- **Default:** Keep Swarm outside the tutorial
+- **Outcome:** Owner 2026-10-30 23:25: "SKL0-2 ok." Keep Swarm outside the tutorial.
+
+**SKL0-3. Bee Knight is not in the T-1/T-2 decks yet** · FYI · Tutorial · asked 2026-10-29 · decided 2026-10-31
+- The live tutorial decks (the __cfg:tutorial row) hold no Bee Knight or Crossed-Eyes, so the Flying-only Level 0 trick shows only once Bee Knight is added to a T-1/T-2 deck (your tutorial editor; TUT-1 is yours). The T-1/T-2 card list (mtut12) already has the 7 cards. BUDGET2 (2026-10-31): the re-fit moved the tutorial cards: your T-1 / T-2 decks lose Attack (Pond Trout 3/4 -> 2/5, Cottontail 4/2 -> 2/5, Pond Duck 3/4 -> 3/3, Acorn Chipmunk 3/4 -> 3/3), the rival's Earthworm gains (0/6 -> 0/7). Bee Knight is unchanged (a plain 1/1 at Level 0). T-1 / T-2 win rates were not re-measured (TUT2's tutorial measure is not in the repo). Claude recommends: one tutorial package re-measures T-1 / T-2, retunes their decks, and adds one Bee Knight to your T-2 deck in the same proposed SQL (your "apply it" for the live row).
+  - I'll add it
+  - Claude adds it (needs your 'apply it' for the live row)
+- **Default:** I'll add it
+- **Outcome:** Coordinator (owner's standing 'fill in the decisions'): one tutorial package re-measures T-1/T-2 after the re-fit, retunes the decks and adds a Bee Knight to the player's T-2 deck (TUT4, after SKILL2).
+
+**ANAD-1. Anadromous: what should the skill do?** · Decide · Skills · asked 2026-10-29
+- Owner 00:10: "Anadromous - ? Suggest something for this skill". Anadromous fish (salmon, sturgeon, shad, lamprey) grow at sea and swim upriver to spawn. Options: (a) Upstream run (recommended): after this creature has survived 2 rounds on the field it swims upstream: it moves to your rearmost free lane, heals to full and leaves a Fry (1/1 token) in the lane it left. A delayed, defensive value skill; priced like Regenerate plus a small token. (b) Two waters: +1 Attack on a sea or coast map field, +1 Health on a river, lake or swamp field (reads the map's field, like Nocturnal reads the time); cheap and very thematic, but small. (c) Spawning run: when it dies, summon 2 Fry (1/1) in its lane, but only if it has survived 2 or more rounds; rewards protecting it. Recommendation (a), with (b) kept for a common fish if one is wanted. Cost is set by the TOOLS1 skill-impact tool, not guessed.
+  - (a) Upstream run
+  - (b) Two waters
+  - (c) Spawning run
+- **Default:** (a) Upstream run
+- **Outcome:** Owner 2026-10-30 23:25: "Get tide benefits +2 Health in non-sea, +1 attack in sea." (package ENG14)
+
+**APPLY1-1. Submap fights: draw only the submap's own list (11-14) instead of the parent's list too** · Decide · Maps · asked 2026-10-28
+- After APPLY1 a submap fight drew MAP + SUBMAP + SPECIAL (16-27 cards), not the 11-14 of the owner's 22:47 rule ("Submaps would be 1-3 cards + 10+ carried over, so 11-14").
+  - A submap fight reads only its own list + SPECIAL
+  - Keep the parent's list in submap fights
+- **Default:** A submap fight reads only its own list + SPECIAL
+- **Outcome:** Filled by Claude per the owner's 10-26 'fill in the decisions'. LISTFIX1 (2026-10-29): a submap fight draws its SUBMAP list + SPECIAL only; each submap stores THEME2's whole proposed list (12-15 cards; with the parent's SPECIAL a submap fight's pool is 12-19). The game (mapPoolTiers, the Map cards editor, VIS4, packs), tools/lib_map_pools.js and tools/apply1_theme2_2026_10_28.py follow; a card may now be on MAP and a SUBMAP at once.
+
+**APPLY1-2. Cards on no list: out of play, budget checks skip them** · Decide · Balance · asked 2026-10-28
+- 109 cards went over budget only because they are on no list now (read at Map 0).
+  - Out of play: skip them in the budget checks (report as unplaced)
+  - Re-fit them at Map 0
+- **Default:** Out of play: skip them in the budget checks (report as unplaced)
+- **Outcome:** Filled by Claude per the owner's 10-26 'fill in the decisions'. LISTFIX1: a card on no map list, not in pack-extras and given by nothing else is out of play (tools/lib_map_pools.js isOutOfPlay); the budget checks (card-pool, en2, en4, en5, en6, eng10, eng12, content2, content3) report it as unplaced. 7 listed cards over budget for their first map wait for the re-fit (step 3) in docs/balance/listfix1-pending-budget-2026-10-29.json.
+
+**APPLY1-3. First-clear pack cards no longer on their map's list** · Decide · Cards · asked 2026-10-28
+- 5 first-clear pack cards (SKIRMISH_FIRST_PACK_CARDS) are off their map's list after THEME2; 3 are on no list, so their first clear gave nothing.
+  - Add each to its map's SPECIAL list
+  - Pick other first-clear cards
+- **Default:** Add each to its map's SPECIAL list
+- **Outcome:** Filled by Claude per the owner's 10-26 'fill in the decisions'. LISTFIX1: added to SPECIAL: mf compost-grub, mc hawk-arrowkeeper, mu sleepless-shrew, m4 blind-cave-fish, mr fox-kit. APPLY1's SPECIAL drops that the new rule keeps were put back (m8 venomlord-serpent, m7 orca-vanguard, m10 wound-reaver, md sand-widow, m22 rimeheart-colossus).
+
+**APPLY1-4. Sources for the 12 listed cards with none; the unattainable flags** · Decide · Cards · asked 2026-10-28
+- 12 cards THEME2 put on a list had no way to be obtained; the unattainable flags no longer matched the lists.
+  - Pack of their first map
+  - Leave them waiting
+- **Default:** Pack of their first map
+- **Outcome:** Filled by Claude per the owner's 10-26 'fill in the decisions'. LISTFIX1: source {kind:'pack', tier} by the first map list: ant-hill Pack 1; stoneheart-golem, gale-sprite, colony, nest, chapel-tortoise, ash-imp, candle-moth, golden-magpie, friar-badger, great-gate, anvilwhisker-otter Pack 4 (none was a skirmish reward or first-clear card). Flags: 7 listed cards lost unattainable, 219 out-of-play cards got it (data only; docs/balance/listfix1-cards-2026-10-29.py).
+
+**PACK1-1. Packs = the map lists + your extras: is this the reading you meant?** · Confirm · Packs · asked 2026-10-28
+- Your 22:47 "remove all cards from the packs" is built as: a basic pack holds the basic-pack cards whose first map list is on its maps (Pack 1 Maps 0-6, 2 7-13, 3 14-20, 4 21-27; a side map from the map that unlocks it), plus a list you curate (canonical/pack-extras.json, empty; the Pack editor edits it live). Derived at load, so trimming a map list takes its cards out of the packs. Pools: Pack 1 143 -> 92; Pack 2 154 -> 128; Pack 3 126 -> 116; Pack 4 33 -> 29. 91 cards (56 from Pack 1) are in no list and so in no pack now: "Not obtainable yet", data kept. Skirmish rewards, Base and unsorted cards on a list are NOT put in packs (a skirmish reward is never a pack card). The Mystery Booster and the Factions pool are unchanged; a faction bundle's general card follows the new pools. Note for THEME1-1: the cards it makes "pack only" (cut from every list) would leave the packs too, unless they go in the extras.
+  - Yes, as built
+  - Also put the THEME1 "pack only" cards in the extras when THEME1 is applied
+  - Something else (say what)
+- **Default:** Yes, as built
+- **Outcome:** Filled by Claude per the owner's 10-26 23:33 "Fill in the decisions to your best extent": yes, this is the reading flagged to the owner at 22:47 (packs = the map lists + canonical/pack-extras.json). The owner's pack-only cards go in pack-extras.json when chosen.
+
+**PACK1-2. Cards whose first map list is earlier than their pack: over budget** · Decide · Balance · asked 2026-10-28
+- A card now sits in the pack of its first map list. 6 cards that RW5 had held in a later pack for their budget (they are on an early side map's list) now count from that earlier map and go over budget: minnow-skitter (Map 7 -> 0), beetle-battering-ram (Map 23 -> 7), fox-kit (Map 7 -> 0), bog-leech (Map 7 -> 1), mangrove-mudskipper (Map 7 -> 0), mudpuppy (Map 7 -> 0). Not re-fitted (as asked). Cinder Hornet, Siege Rhino and Cinder Gecko move from Pack 4 to Pack 3 and stay inside.
+  - Re-fit them to their new map
+  - Take them off the early side map's list
+  - Keep them over budget for now
+- **Default:** Re-fit them to their new map
+- **Outcome:** Filled by Claude: no re-fit now. APPLY1 writes the approved THEME2 lists next, which moves most cards' first map; budgets are re-checked after it and fixed in plan step 3 (per-card balance).
+
+**PACK1-3. Cards in no pack count as Map 0 in the budget** · FYI · Balance · asked 2026-10-28
+- An unobtainable card is priced at Map 0 (the budget's rule for unobtainable cards). 37 of the cards that left the packs are over budget at Map 0 (e.g. dolphin-knight, scraper-of-skies, great-horned-owl, war-hound, armored-mastiff, webspire-sentinel). Nobody can get them, so nothing changes in play; each is priced again when you place it (a map list or the extras).
+  - OK
+  - Price them at their old map until placed
+- **Default:** OK
+- **Outcome:** Noted. Cards on no list are outside play; they are priced at Map 0 only until placed (owner 22:47: "Don't worry about the other cards"). The budget check reports them separately.
 
 **RELFIX2-1. The benched trench raid's Core pays less after BAL7's card re-balance (27 -> 17 a fight): retune it?** · Decide · Raids · asked 2026-10-28
 - tests/trench.js measures the Goliath trench (admins only) with a ghost population drawn from the cards. With BAL7 M1's re-balanced cards the Core averages 17 raid damage a fight (was 27; outer parts unchanged, 870-980; the Exposed Core 1000). The same engine with the old cards gives 27, so the cards alone moved it. The test's floor was 20; package RELFIX2 set it to 10 for now. Nothing in the trench was changed.
@@ -66,6 +2491,14 @@ _Generated from `decisions.json` (2026-10-28). The hub has a searchable, filtera
   - Apply K14 there too
 - **Default:** Leave them out (as built)
 - **Outcome:** Claude, 2026-10-28 (owner 10-26 23:33: "Fill in the decisions to your best extent"): Leave Map 0 and the come-back fights T-2..T-4 out of the deck rule (the starter road).
+
+**BAL7-3. The road after the M1 re-balance: retune the decks next?** · Decide · Balance · asked 2026-10-28
+- M1 cut 69 cards (Dung Beetle, Archerfish, Fire Salamander ...). The Map reference decks (the new-player yardstick) leaned on Dung Beetles and Archerfish from Map 10, so with the old reference the road fell from 61.5% to 43.3% on average (Maps 10-23 down 12-53 points). BAL7 rebuilt the reference decks (tools/skirmish_pass.js decks --keep): the road is back to 61.7% on average, but its shape moved: 57 of 256 curve fights green (79 before M1), 83 too easy, 116 too hard (docs/balance/bal7-road-2026-10-28.json). You said no retune yet, so no skirmish deck was tuned toward the curve.
+  - Retune the road decks toward the curve in the next balance package (swaps only)
+  - Keep the old reference decks and retune against them
+  - Leave the road as it is
+- **Default:** Retune the road decks toward the curve in the next balance package (swaps only)
+- **Outcome:** Owner 2026-10-30 23:25: "BAL7-3 yes." Retune the road decks toward the curve (package BAL8).
 
 **BAL7-4. Contribution outliers the stat pass could not fix: re-price their skills?** · Decide · Balance · asked 2026-10-28
 - M1 moved 69 cards (stats, and a skill level on 7 cards 12+ points over); their mean distance from the band median fell from +10.6 to +5.0 points (70,000 fights before and after, reliability 0.96, a card's 95% interval about +-1.8). Still 8+ over: Hedge Changeling, Dung Beetle, Ur-Elk, Ashbone Ghoul, Tax Collector Teal, Talus Pika, Nutria Reedcutter, Land Tiller, Coral Polyp Colony, Lemming Swarm, Salamander Pyromancer, Termite Forager, Driftwood Crab, Chipmunk Hoarder: their strength is their skill or trigger (Changeling, Decay, Remember, Hoard, On Ready Gold, Swarm ...) and Lumber 0, not their stats. Too weak and already on their budget line (the formula gives no room): Grindstone Boar (Friction), Badger Stonemason (Quarry), Irradiated Glow Wyrm (Poison 2), Granite Ox Golem (Recoil), Bee Drone. docs/balance/bal7-m1-compare-2026-10-28.json.
@@ -135,6 +2568,38 @@ _Generated from `decisions.json` (2026-10-28). The hub has a searchable, filtera
   - Leave as is for playtests first
 - **Default:** Leave as is for playtests first
 - **Outcome:** Claude, 2026-10-28 (owner 10-26 23:33: "Fill in the decisions to your best extent"): Tune after the owner's playtests.
+
+**COOP3-1. CPU allies play first: alongside you, or before you may play?** · Decide · Group dungeon · asked 2026-10-30 · decided 2026-11-02
+- W4 ("The allies should play their cards first if CPU btw, taking a random amount of time between 0.5 to 3.0s. (0.5 to 1.5s in the first turn only)"). Built: each CPU ally starts its own timer as the turn begins (0.5-1.5 s on a floor's first turn, 0.5-3.0 s after) and plays when it fires; you may play at the same time, and the round waits for every CPU ally. So if you wait a moment you see its play first; if you are quick you go first. The other reading would lock your hand until every CPU ally has played (up to 3 s each turn).
+  - Alongside (built)
+  - Lock my hand until the CPU allies have played
+- **Default:** Alongside (built)
+
+**COOP3-2. "Adjacent" includes the card in front of or behind yours** · Confirm · Group dungeon · asked 2026-10-30 · decided 2026-11-02
+- W10 ("You can also place cards in your allies' rows and vice versa if you have a card adjacent. However you cannot use your allies' 'network' to place cards."). Built: a slot is open to you when one of YOUR cards is beside it in its row, or in the same column one row in front or behind (that is how a card of yours can be next to an ally's row at all), plus your own row's centre. An ally's cards open nothing for you. Units a skill makes count as the player's whose row they stand in.
+  - Yes (built)
+  - Beside in the row only (then you could never reach an ally's row)
+- **Default:** Yes (built)
+
+**COOP3-3. Nothing on the board and your centre taken: the slots beside it open** · Confirm · Group dungeon · asked 2026-10-30 · decided 2026-11-02
+- Owner 11-02 14:26: "this only applies to coop/multiplayer dungeons. Not raids (Raids are always CPU for now)". Owner 11-02 14:10: "only a player can play into the starting card slot of their row. The rest is up for grabs." Each player's row centre (starting slot) is reserved for that player; every other slot is open to either player. Built in ENG17. | With W10's rule an ally (or a CPU ally) who plays into the centre of YOUR row while you have no card on the board would shut you out of the fight. Built: in that case the two slots beside your row's centre are open to you (the normal game's empty-board rule, legalSlots). Otherwise your row's centre is always open to you when it is free.
+  - Keep (built)
+  - Strict: no exception
+- **Default:** Keep (built)
+
+**COOP3-4. The duo dungeon fits the whole match to the window** · Confirm · Group dungeon · asked 2026-10-30 · decided 2026-11-02
+- Owner 11-02 14:10: OK. ("Vault" is only the code's name for the duo dungeon's battle board.) | W4 ("Why does the duo dungeon start out at such a far away zoom?"). The vault has a full-size row more than a fight (the ally's, now the size of yours: W10), so on a laptop window the hand sat below the fold and the board read as zoomed out. Built: the vault's own middle row (it never plays there) hides while empty, and on a tablet or computer the card size is scaled so the whole match fits the window's height (between 55% and 100%, up to RES3's 145% on a big desktop window); the board starts at 1:1 and zooms out only when units would leave it. At 1366x860 the cards stay 114 px wide (a fight there grows them to 137 px).
+  - Keep (built)
+  - Keep the cards a fight's size and let the page scroll
+- **Default:** Keep (built)
+
+**CONTENT4-1. Map card pools: the cap would take 187 cards out of the packs. Which way?** · Decide · Content · asked 2026-10-28
+- L7 ("Limit the number of cards in a map ... ~4-5 old cards, ~4-7 new cards"). Today each main map's pool is nearly all of that map's own pack cards (12-26 cards, 0-2 carried from earlier maps). Capped at 7 new and 3-5 old (rewards, first-clear pack cards and showcases always kept), the pools lose 269 entries, and 187 cards (82 Common, 70 Uncommon, 34 Rare, 1 Starter: about a third of the pack cards) are then in no pool, so by the stranding rule they wait for a source and leave the packs. It also invalidates PRO / BPRO decks that hold those cards (235 checks) and puts some trimmed cards over budget (a card with no source counts as Map 0). Nothing is applied; the plan, its before -> after per map and the 187 names are in docs/balance/content4-2026-10-28.md, with a script that applies it. Keeping every card of the maps' PRO decks lowers it to 81 cards waiting, but a dozen maps then stay well over the cap. 2026-10-28: re-opened. Owner 16:43: "balancing this way may make our pack size and unique card total not match." HUB9 (🗺️ Map cards tab) measured the plan: map-listed pack cards would fall to 35/145 (Hedgerow), 61/154 (Tidemire), 49/126 (Highcrest), 26/33 (Pack 4); lists 736 -> 467 entries. Not applied; decide with the tab.
+  - Keep the lists as they are
+  - Cap them as planned (cards stay in their packs)
+  - A softer cap (say the numbers)
+- **Default:** Keep the lists as they are
+- **Outcome:** Owner 2026-10-30 23:25: default. Keep the lists as they are.
 
 **CONTENT4-2. Endless dungeons without a field effect: Murgle Mayhem and the Long Burrow** · Decide · Maps · asked 2026-10-28
 - L2 audit: every main and side map now has a map-level field effect except the Quiet Summit (Map 21, kept vanilla). Two endless dungeons have none: Murgle Mayhem (under Sable Swampmire) and the Long Burrow (under the Rimefire Caldera). The Undercroft rolls a different one per floor. Their escalation is their feature, so they were left alone.
@@ -3030,6 +5495,13 @@ _Generated from `decisions.json` (2026-10-28). The hub has a searchable, filtera
 - **Default:** Apply tier 1
 - **Outcome:** Owner (10-23 06:59): "Apply it". Checked live: anticheat_tier1 was already applied on 2026-10-16 (migration 20261016012841); nothing to run.
 
+**S3. Leaked-password protection needs Supabase Pro: upgrade to turn it on, or skip it?** · Do · Security · asked 2026-10-08
+- Supabase dashboard → Auth → Passwords → leaked password protection. Free, one click, needs your login. Owner (10-23 00:10): "Needs you to use my chrome." Needs a Chrome session with the owner. 10-23 06:59 (Chrome session): the dashboard toggle "Prevent use of leaked passwords" is "Only available on Pro plan and above"; the org is on the Free plan, so it was not turned on (nothing is bought). Free alternative on the same panel: password requirements (e.g. letters + digits) and a longer minimum length; not changed without the owner's word.
+  - Upgrade to Pro and turn it on (your purchase)
+  - Skip it
+- **Default:** Skip it
+- **Outcome:** Owner 2026-10-30 23:25: default. Skip it.
+
 **S4. SonarCloud as well as CodeQL?** · Decide · Security · asked 2026-10-08 · decided 2026-10-23
 - CodeQL now scans every push (free, GitHub → Security). SonarCloud adds code-quality and duplication reports; it needs you to sign in at sonarcloud.io and add a token. Owner (10-23 00:10): "Chrome". Needs a Chrome session with the owner. 10-23 06:59: the repo is public, so SonarCloud is free for it. It needs the owner to log in at sonarcloud.io with GitHub (Claude cannot sign in or create accounts); then the repo can be imported and its token stored as a GitHub secret (asked before doing it).
   - Add SonarCloud
@@ -3042,6 +5514,19 @@ _Generated from `decisions.json` (2026-10-28). The hub has a searchable, filtera
 
 **E8. Over-size decks and the main deck** · Decide · Decks · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Decks can hold any number of cards while building (calm 'N over' note, no red shake). ★ Main deck is chosen explicitly and is what you play with; only a 20-card main deck can be played.
+
+**A1. Which AI services should we set up, free tiers first, and will you create the accounts? (your browser; nothing bought)** · Do · Art · asked 2026-10-08
+- Owner (10-23 17:38): "A1 description - list all the AIs that could help us, esp through omnirouting to gain utility without spending tokens." Researched 2026-10-23 (free limits change often; each is re-checked on its own page before use). The idea: send cheap or bulk work (translations, drafts, sim summaries, second-opinion reviews) to free tiers through one router, and keep Claude for design, engine and final review. Every account below is yours to create; Claude never creates accounts, enters passwords or buys anything, and no key goes into the repo or a chat (keys live as local environment variables). ROUTERS (one key, many models). (1) OpenRouter: 20+ ":free" models from several providers behind one OpenAI-style API; 20 requests/min and 50/day free, 1,000/day after a one-time $10 top-up (your call). Account: openrouter.ai. (2) LiteLLM (open source, runs on your machine): one local endpoint that routes to the free tiers below and falls back when one is rate-limited; no account. (3) Vercel AI Gateway: multi-provider with your own keys (BYOK), on the Vercel account you already have. FREE TEXT / CODE MODELS (behind a router). Google AI Studio (Gemini Flash / Flash-Lite and 2.5 Pro free; free-tier prompts may be used by Google to improve its products, fine for this public repo, not for secrets); Groq (about 30/min, 1,000/day; Llama 3.3 70B); Cerebras (about 1M tokens/day); Mistral (about 1B tokens/month, Codestral for code); GitHub Models (150-1,000/day, on your GitHub login); Cloudflare Workers AI; NVIDIA NIM. Use for us: first-draft translations of the 12 language packs, text and lore drafts, summarising sim logs, a second reviewer on diffs. Local and free with no account: Ollama with open models (Qwen, Llama, Gemma) on your own machine. TRANSLATION. DeepL API Free: 500,000 characters a month at no cost (account at deepl.com; it may ask for a card to verify, nothing is charged on Free). Good for checking the language packs against the English. CODE REVIEW. CodeRabbit: free reviews on public repositories with the paid-tier features for open source (sign in with GitHub); CodeQL already scans every push (S4). ART (beside PixelLab and NightCafe, already in use). ChatGPT image generation free daily cap (commercial use allowed by OpenAI's terms); Gemini "Nano Banana" free in the app (visible and invisible SynthID watermark, so drafts only); Ideogram about 10 slow credits/day (free images are public); Leonardo 150 tokens/day (free-tier images not for commercial use); Microsoft Copilot 15 fast boosts, then slower. Best use: concept drafts and splash/marketing comps, then PixelLab or the pixel pass for anything that ships. SOUND, MUSIC, VOICE. Stable Audio Open 1.0 (open weights, runs locally, up to 47 s, better at sound effects than music; Stability Community License, check stability.ai/license for commercial use); ElevenLabs free 10,000 credits a month (about 50 sound effects or 10 minutes of voice) but no commercial licence on free (Starter $6/month has it: your call); Suno free 50 credits/day (about 10 songs) but non-commercial and few downloads, so reference tracks only. For the shipped music (D17) CC0 packs remain the safe route. VIDEO (trailer, A3). Kling via fal stays the plan; it needs a paid key and a cap (below). PAID KEYS (only if you choose): OpenAI (platform.openai.com, set a monthly budget and alerts at 50% / 80% first) and fal.ai (prepaid credits, load the smallest top-up or none until A2); name each key bramblewood-local, store as OPENAI_API_KEY / FAL_KEY in your environment, tell me 'keys are set' and I check only that they exist, then run one test through tools/art/pixelize.py. Recommended order: free tiers first (OpenRouter free + Google AI Studio + DeepL API Free + CodeRabbit), routed through LiteLLM or OpenRouter; paid OpenAI / fal keys only when A2 or A3 go ahead. Sources: openrouter.ai/blog/tutorials/free-llm-apis-compared/ ; layer3labs.io/guides/is-gemini-free ; support.deepl.com/hc/en-us/articles/360021200939-DeepL-API-Free ; aicodereview.cc/blog/is-coderabbit-free ; krea.ai/blog/best-free-ai-image-generators-in-2026 ; dupple.com/learn/is-elevenlabs-free ; dupple.com/learn/is-suno-free ; huggingface.co/stabilityai/stable-audio-open-1.0
+  - Free tiers first (OpenRouter free, Google AI Studio, DeepL API Free, CodeRabbit)
+  - Free tiers plus paid OpenAI and fal keys with monthly caps
+  - Not yet
+- **Default:** Free tiers first (OpenRouter free, Google AI Studio, DeepL API Free, CodeRabbit)
+
+**A2. Spend about $7-15 to train a Bramblewood pixel LoRA and test it on 10 cards?** · Decide · Art · asked 2026-10-08
+- What a Bramblewood pixel LoRA is: a small add-on trained on our own card art so a general image model (FLUX.2 [dev], trained on fal) draws new cards in the same house style; PixelLab stays the main source and heroes stay PixelLab. Data: 20-40 of the best existing PixelLab cards from art/cards (633 PNGs, 256x256 today), picked for one coherent look: same outline weight, same palette (tools/art/palette.json), a spread of subjects (mammal, bird, insect, structure), no text in the image, no watermarked stock. Each image gets a short caption in the style of docs/art-style-prompts.md with a trigger word (for example 'bwpixel') so the style can be called on and off. About half a day of curation, which I can do from the repo; you pick or veto the 30. Tool options: (a) fal's FLUX.2 trainer (hosted, no GPU, upload a zip of images and captions, about 1,000-2,000 steps, roughly $6.40 per 1,000 steps on fal's list, so about $6-13 per training run plus about a few cents per generated image; check the current price on fal's page before any run); (b) Replicate's FLUX trainer (similar, per-run pricing); (c) a local or rented GPU with ai-toolkit/kohya (cheaper per run, but needs a rented GPU and setup time; not worth it for a 10-card test). Recommendation: (a), because A1 already puts a fal key and cap in place. Cost range: a first test is about $7-15 in total (one 1,000-step training plus 10-40 generations), and a retrain with fixes is the same again; a full set of Maps 9-10 cards afterwards is cents per card. All of it stays under the cap you set in A1; nothing runs without your OK on the amount. Test plan on 10 cards: (1) train once on the 30; (2) generate the 10 test cards, chosen from existing cards whose PixelLab art we already like, so each result can be set beside the original (a mix: 3 small animals, 2 birds, 2 insects, 1 structure, 1 large beast, 1 fantasy creature); (3) run each through `tools/art/pixelize.py` (nearest-neighbour downscale to the 160 px grid, palette snap, outline clean-up); (4) review in the hub's Visual Library as 'proposed', scoring each on outline, palette, readable silhouette at card size and fit beside the PixelLab neighbours; (5) pass if at least 7 of 10 are usable with at most a pixel pass and one retry, fail otherwise; (6) if it passes, spend the same amount on the Maps 9-10 cards and the Home sprites that wait on PixelLab; if it fails, delete the LoRA and keep PixelLab only. Needs from you: A1 done, a yes on the training spend, and a veto pass over the 30 picks. | 2026-10-29 (owner 00:10: "Write the chance of this passing, let's say we have 100 artwork we like"): with 100 liked cards as training data (more than the 20-40 planned, so a stronger style signal; about 2,000-3,000 steps, so roughly $13-19 per run at fal's list price, check before any run): my estimate is about 65% that the 10-card test passes (7 or more of the 10 accepted after our usual palette quantise and nearest-neighbour downscale). Style match (palette, outline weight, framing) is the easy part: about 85%. The risk is a true pixel grid: FLUX draws "pixel-look" art with soft, uneven pixels, so each image needs the quantise/downscale clean-up, and roughly 1 in 2 single generations will be usable, so expect 2-3 tries per card. Subjects far from the training set (dinosaurs, golems) fail more often. A 10-card test tells us this for about one run's cost; Claude does not buy the credits.
+  - Yes, test on 10 cards
+  - Not yet
+- **Default:** Yes, test on 10 cards
 
 **A3. 30 s trailer from Kling clips** · Decide · Marketing · asked 2026-10-08 · decided 2026-10-23
 - 5–6 Kling 3.0 image-to-video clips (splash crowd, pack tear, Shiny reveal, Ember Chipmunk fire, castle fall) cut with gameplay capture.
@@ -3490,6 +5975,53 @@ _Generated from `decisions.json` (2026-10-28). The hub has a searchable, filtera
   - Lower Bloom's odds first, then re-fit
 - **Default:** Hold them at their stats (built)
 - **Outcome:** Owner, 2026-10-24 03:12: "Balance if overbudget, err on slightly overbudget (14.6>14.5)" Queued in EN5.
+
+**SPEED1-1. Armor flattens after 3: re-price Armor 4 and 5?** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- SKILL2-3 asked to measure Armor 4-5 first. The pipeline measured them (node tools/pipeline/run.sh measure --skills armor=4,armor=5; 200 fights each, the interval already narrow; docs/balance/pipeline/measures.json): Armor 4 is worth 4.95 [4.64, 5.52] stat points and Armor 5 5.01 [4.75, 5.58], against 6.75 and 7.84 on the canon curve 2.65 x N^0.675. So the worth runs 2.65 / 4.23 / 4.84 / 4.95 / 5.01 for Armor 1-5: it saturates, the opposite of your 'slightly exponential, 5 armor nullifies most damage' (ENG9-9). No in-play card carries Armor 4 or 5, so no card is affected today; the table is unchanged (record only).
+  - Keep the canon curve (Armor 4 and 5 stay at 6.75 and 7.84, dear next to what they measure)
+  - Cap the curve: Armor 4 and 5 priced at their measure, about 5.0 (a table edit through the pipeline price step; no card changes)
+  - Keep your rule's shape above 3 as a design price, ignoring the measure
+- **Default:** Cap the curve: Armor 4 and 5 priced at their measure, about 5.0 (a table edit through the pipeline price step; no card changes)
+- **Outcome:** Coordinator: keep the canon curve for now; no in-play card has Armor 4+. The Armor 4-5 measures (4.95 / 5.01) are on record; re-price when a card first uses Armor 4+.
+
+**SPEED1-2. Flying and Evasive: the measure reads x1.17 / x1.16, not x1.13** · Decide · Balance · asked 2026-10-31 · decided 2026-10-31
+- SKILL2-2 set Flying and Evasive to 'the measured x1.13', and SPEED1 wrote x1.13 into MISS_MULT_BY as decided. The pipeline's price step now derives the multiplier from the measure itself and disagrees: the multiplier m acts on the carriers' stat terms (mean 3A + H = 20.83 on the canon's six carriers), so m = 1 + worth / 20.83 = 1 + 3.56 / 20.83 = x1.17 [1.16, 1.18] for Flying and 1 + 3.42 / 20.83 = x1.16 [1.15, 1.18] for Evasive. The SKILL2 write-up got x1.13 by reading the 10.4-point price on the carriers as 0.39 x 26.7; tools/skill_costs.js had priced it at a flat x1.5 (0.5 x 20.83 = 10.4), so the 26.7 never existed. At x1.13 a flyer's stat terms are priced 0.04 x 20.8 = about 0.8 points (4%) under what the measure says. The 4 flyer lifts made by the refit (Mountain Goat Climber, Swordbill Challenger, Ash Cloud Condor, Plains Zebra) were made at x1.13.
+  - Keep x1.13 as set
+  - Set Flying x1.17 and Evasive x1.16 (the measure; run tools/pipeline/run.sh price --set-const flying=1.17,evasive=1.16, then refit)
+  - Set both to x1.15
+- **Default:** Set Flying x1.17 and Evasive x1.16 (the measure; run tools/pipeline/run.sh price --set-const flying=1.17,evasive=1.16, then refit)
+- **Outcome:** Coordinator: set the measured x1.17 (Flying) / x1.16 (Evasive) via the pipeline (price --set-const); tools/skill_costs.js now reads MISS_MULT_BY too. Refit then pushed out only the Red-billed Chough (owner-named DECK1-5 lift), kept.
+
+**UI21-1. Nest maps and map keywords: Claude's picks** · Confirm · UI · asked 2026-11-05
+- Nests unlock on completing Map 4, 8, 12, 16, 20 and 24 (prices unchanged). Map keywords: Map 0 Swarm, Tutorial Diurnal, Old Bramble Evasive, Map 1 Quick, its side map True Sight, Map 2 Tide, side maps Venomous and Armor, Map 3 Flying, Map 4 Delivery, Map 5 Poison, its side map Bleed (canonical/map-keywords.json). Change any?
+  - Keep these
+  - Change the nest maps
+  - Change some keywords
+
+**UI34-1. One counter list for the Codex too?** · Decide · UI · asked 2026-11-08
+- The new canonical/skill-counters.json (about 60 skills, each counter with a reason) feeds the Map cards window. The Codex still shows an older 11-skill hand list inside the game's code. It disagrees in places: Armor lists Puncture, and Stealth lists Guardian, while the engine says otherwise.
+  - a) Make the Codex read the new table (more counters, same rules).
+  - b) Leave the Codex as it is.
+- **Default:** a
+
+**UI35-1. Skills list: do Other skills join the one list?** · Decide · UI · asked 2026-11-08
+- Main, Counters and recommendations are one list now (pills tell them apart). I kept Other skills (side maps, specials) as a separate group under its heading: they are a different source, and they never count for NEW!.
+  - a) Keep Other separate.
+  - b) Merge them too, with an Other pill.
+- **Default:** a
+
+**UI35-2. NEW! counts are above your 2-3 per map** · Decide · UI · asked 2026-11-08
+- With the main-progression rule the "N new" count reads: Map 0: 4, Thistlewood 13, Pebble Beach 5, Gannet Cliffs 8, Sunken Hollow 3, Gatorback 3, Sable Swamp 9, Morel Hollow 9. Most are skills no earlier main list shows. It is a guide for the map redesign (DES1).
+  - a) Leave it as a guide; DES1 moves skills toward 2-3 per map.
+  - b) Also count a skill a side map teaches as met (fewer NEW!).
+- **Default:** a
+
+**UI35-3. Compact deck view: what does the pool's x N say?** · Decide · UI · asked 2026-11-08
+- In Compact, deck chips say x copies in the deck. Pool chips say x copies still free (what Full art's left/owned badge shows).
+  - a) Copies still free.
+  - b) Copies you own.
+  - c) Copies in the deck.
+- **Default:** a
 
 ## Stated rules · 2026-10-21
 
