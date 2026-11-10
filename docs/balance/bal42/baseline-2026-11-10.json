@@ -1,0 +1,226 @@
+{
+ "about": "BAL42 baseline (tools/bal42/baseline_2026_11_10.js): 200 games on the road seeds, the Map reference",
+ "rows": {
+  "18-4": {
+   "code": "18-4",
+   "map": "md",
+   "mapName": "The Glass Dunes",
+   "name": "Sandstorm",
+   "target": 62,
+   "lo": 54,
+   "hi": 70,
+   "win200": 85.5,
+   "gap": 23.5,
+   "space": 1229,
+   "leaders": [
+    "dust-devil-kestrel"
+   ],
+   "shieldRule": 18,
+   "shieldOverride": null
+  },
+  "18-6": {
+   "code": "18-6",
+   "map": "md",
+   "mapName": "The Glass Dunes",
+   "name": "Komodo Wallow",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "win200": 66,
+   "gap": 6,
+   "space": 165724,
+   "leaders": [
+    "dust-devil-kestrel"
+   ],
+   "shieldRule": 27,
+   "shieldOverride": null
+  },
+  "18-5": {
+   "code": "18-5",
+   "map": "md",
+   "mapName": "The Glass Dunes",
+   "name": "Obsidian Nest",
+   "target": 66,
+   "lo": 58.00000000000001,
+   "hi": 74,
+   "win200": 69.5,
+   "gap": 3.5,
+   "space": 23431,
+   "leaders": [
+    "dust-devil-kestrel"
+   ],
+   "shieldRule": 27,
+   "shieldOverride": null
+  },
+  "18-3": {
+   "code": "18-3",
+   "map": "md",
+   "mapName": "The Glass Dunes",
+   "name": "Widow's Web",
+   "target": 78,
+   "lo": 70,
+   "hi": 86,
+   "win200": 81.5,
+   "gap": 3.5,
+   "space": 6617,
+   "leaders": [
+    "caustic-scorpion"
+   ],
+   "shieldRule": 18,
+   "shieldOverride": null
+  },
+  "18-2": {
+   "code": "18-2",
+   "map": "md",
+   "mapName": "The Glass Dunes",
+   "name": "Scorpion Flats",
+   "target": 84,
+   "lo": 76,
+   "hi": 92,
+   "win200": 86.5,
+   "gap": 2.5,
+   "space": 5331,
+   "leaders": [
+    "meerkat-burrower"
+   ],
+   "shieldRule": 18,
+   "shieldOverride": null
+  },
+  "18-7": {
+   "code": "18-7",
+   "map": "md",
+   "mapName": "The Glass Dunes",
+   "name": "The Sand Widow Queen",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 43,
+   "gap": 3,
+   "space": 5474,
+   "leaders": [
+    "sand-widow"
+   ],
+   "shieldRule": 36,
+   "shieldOverride": null
+  },
+  "18-1": {
+   "code": "18-1",
+   "map": "md",
+   "mapName": "The Glass Dunes",
+   "name": "Dune Jackals",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "win200": 89.5,
+   "gap": -0.5,
+   "space": 3808,
+   "leaders": [
+    "thorny-devil"
+   ],
+   "shieldRule": 18,
+   "shieldOverride": null
+  },
+  "7-1": {
+   "code": "7-1",
+   "map": "mu",
+   "mapName": "The Morel Hollow",
+   "name": "Spore Drift",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "win200": 83,
+   "gap": -7,
+   "space": 3252,
+   "leaders": [
+    "planarian-splitter"
+   ],
+   "shieldRule": 7,
+   "shieldOverride": 0
+  },
+  "7-5": {
+   "code": "7-5",
+   "map": "mu",
+   "mapName": "The Morel Hollow",
+   "name": "The Oath Ring",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "win200": 68.5,
+   "gap": 8.5,
+   "space": 3951,
+   "leaders": [
+    "planarian-splitter"
+   ],
+   "shieldRule": 11,
+   "shieldOverride": 8
+  },
+  "7-6": {
+   "code": "7-6",
+   "map": "mu",
+   "mapName": "The Morel Hollow",
+   "name": "The Morel Monarch",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "win200": 48,
+   "gap": 8,
+   "space": 514,
+   "leaders": [
+    "corpse-flower-beetle"
+   ],
+   "shieldRule": 14,
+   "shieldOverride": 18
+  },
+  "7-4": {
+   "code": "7-4",
+   "map": "mu",
+   "mapName": "The Morel Hollow",
+   "name": "Moonlit Gills",
+   "target": 67.5,
+   "lo": 59.50000000000001,
+   "hi": 75.5,
+   "win200": 71,
+   "gap": 3.5,
+   "space": 18,
+   "leaders": [
+    "dung-beetle"
+   ],
+   "shieldRule": 7,
+   "shieldOverride": null
+  },
+  "7-3": {
+   "code": "7-3",
+   "map": "mu",
+   "mapName": "The Morel Hollow",
+   "name": "Web Hollow",
+   "target": 75,
+   "lo": 67,
+   "hi": 83,
+   "win200": 77.5,
+   "gap": 2.5,
+   "space": 176,
+   "leaders": [
+    "dung-beetle"
+   ],
+   "shieldRule": 7,
+   "shieldOverride": null
+  },
+  "7-2": {
+   "code": "7-2",
+   "map": "mu",
+   "mapName": "The Morel Hollow",
+   "name": "Grub Tunnels",
+   "target": 82.5,
+   "lo": 74.5,
+   "hi": 90.49999999999999,
+   "win200": 84.5,
+   "gap": 2,
+   "space": 1241,
+   "leaders": [
+    "dung-beetle"
+   ],
+   "shieldRule": 7,
+   "shieldOverride": null
+  }
+ }
+}
