@@ -4394,5 +4394,10 @@
  "sea, shore or river creatures": "nilalang ng dagat, baybayin o ilog",
  "fierce beasts": "mababangis na hayop",
  "builders or war beasts": "tagapagtayo o hayop pandigma",
- "winged": "may pakpak"
+ "winged": "may pakpak",
+ "Unlocks after:": "Magbubukas pagkatapos ng:",
+ "(current)": "(kasalukuyan)",
+ "Saved as your pick; Claude folds it into the map later.": "Nai-save bilang pinili mo; isasama ito ni Claude sa mapa mamaya.",
+ "Target for this side map: {t}. Change it; clear it to go back.": "Target para sa side map na ito: {t}. Baguhin ito; burahin para bumalik.",
+ "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "BAGO!: ang sariling listahan ng side map na ito, ang mga temang mungkahi ni Claude para rito, at mga card na minarkahan mo. Dala: mga card na minarkahang Oo sa mga pangunahing mapa hanggang sa piniling mapa ng pagbubukas, kasama ang mga card na T-1 / T-2 ng tutorial. Markahan ang bawat isa ng Oo o Hindi."
 }

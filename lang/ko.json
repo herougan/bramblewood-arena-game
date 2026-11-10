@@ -4396,5 +4396,10 @@
  "sea, shore or river creatures": "바다·해안·강의 생물",
  "fierce beasts": "사나운 짐승",
  "builders or war beasts": "건축가나 전쟁 짐승",
- "winged": "날개 달린 생물"
+ "winged": "날개 달린 생물",
+ "Unlocks after:": "해금 조건:",
+ "(current)": "(현재)",
+ "Saved as your pick; Claude folds it into the map later.": "내 선택으로 저장했습니다. Claude가 나중에 맵에 반영합니다.",
+ "Target for this side map: {t}. Change it; clear it to go back.": "이 사이드 맵의 목표: {t}. 변경할 수 있으며, 비우면 원래대로 돌아갑니다.",
+ "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "NEW!: 이 사이드 맵 자체 목록, 이를 위한 Claude의 테마 추천, 그리고 직접 표시한 카드. 이월: 선택한 해금 맵까지의 메인 맵에서 예로 표시한 카드와 튜토리얼의 T-1 / T-2 카드. 각 카드를 예 또는 아니오로 표시하세요."
 }

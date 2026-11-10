@@ -4394,5 +4394,10 @@
  "sea, shore or river creatures": "海・浜・川の生き物",
  "fierce beasts": "猛獣",
  "builders or war beasts": "建築家か軍獣",
- "winged": "翼を持つもの"
+ "winged": "翼を持つもの",
+ "Unlocks after:": "解放条件:",
+ "(current)": "(現在)",
+ "Saved as your pick; Claude folds it into the map later.": "あなたの選択として保存しました。Claude が後でマップに反映します。",
+ "Target for this side map: {t}. Change it; clear it to go back.": "このサイドマップの目標: {t}。変更できます。空にすると元に戻ります。",
+ "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "NEW!: このサイドマップ自身のリスト、Claude のテーマ別提案、あなたがフラグを付けたカード。引き継ぎ: 選んだ解放マップまでのメインマップで「はい」にしたカードと、チュートリアルの T-1 / T-2 のカード。各カードを「はい」か「いいえ」にしてください。"
 }

@@ -496,6 +496,11 @@ def _map_prospects_for_game(p):
     d = json.load(open(p, encoding="utf-8"))
     return {"rules": d.get("rules", {}), "family": d.get("family", {}), "exotic": d.get("exotic", []), "maps": {k: {"fit": m.get("fit", []), "concepts": m.get("concepts", [])} for k, m in (d.get("maps") or {}).items()}}
 app_src = sub_once(app_src, "__MAP_PROSPECTS__", json.dumps(_map_prospects_for_game(SCRATCH + "docs/design/map-prospects-2026-11-09.json"), ensure_ascii=False, separators=(",", ":")))
+# 2026-11-10 (package UI44): Claude's thematic card proposals for the side maps (docs/design/side-map-cards-2026-11-10.json): only `fits` (card ids) and `add` ({id, why}) per side map
+def _side_proposals_for_game(p):
+    d = json.load(open(p, encoding="utf-8"))
+    return {k: {"fits": [x for x in (m.get("fits") or []) if isinstance(x, str)], "add": [{"id": e.get("id"), "why": e.get("why", "")} for e in (m.get("add") or []) if isinstance(e, dict) and e.get("id")]} for k, m in d.items() if isinstance(m, dict)}
+app_src = sub_once(app_src, "__SIDE_PROPOSALS__", json.dumps(_side_proposals_for_game(SCRATCH + "docs/design/side-map-cards-2026-11-10.json"), ensure_ascii=False, separators=(",", ":")))
 # 2026-10-24 (package PRO, owner 00:28): the hidden N-PRO-k fights per map (canonical/pro-skirmishes.json, written by tools/opt/pro_skirmishes.js --apply);
 # only what the game reads is baked in (not the replaced decks, the skipped candidates or the tool's notes)
 def _pro_for_game(d):

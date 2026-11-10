@@ -18,7 +18,7 @@ const sh = new Function('ui37Ent', fn('ui37FlagOf') + fn('ui42Shown') + '; retur
 ok(sh('m', 'y') === 'yes' && sh('m', 'n') === 'no' && sh('m', 'z') === 'no', 'unflagged and explicit no both read as no');
 // wiring
 ok(/fs = f === 'yes' \? 'yes' : 'no'/.test(fn('ui37TileHTML')) && /\$\{fs === k \? ' on' : ''\}/.test(fn('ui37TileHTML')), 'the No button is selected on an unflagged card');
-ok(/cur = ui42Shown\(top, id\)/.test(app) && /ui37SetFlag\(top, id, want === 'yes' \? 'yes' : ''\)/.test(app), 'Yes sets Yes; No goes back to no flag');
+ok(/cur = ui42Shown\(top, id\)/.test(app) && /ui37SetFlag\(key, id, want === 'yes' \? 'yes' : ''\)/.test(app), 'Yes sets Yes; No goes back to no flag');
 ok(/ui38Fill\(top, defs, ok, pool, neu, car\)/.test(fn('ui37Split')) && /idx = ui37CarriedIndex\(n, maps\)/.test(fn('ui37Split')), 'the split classifies by Yes only and fills Carried from the pool');
 ok(/flag: ui42Shown\(c\.mapId, c\.id\)/.test(fn('ui38ExportConcepts')) && /ui37Split\(m\.id, defs, ok0\)/.test(fn('ui37ExportRows')), 'exports report unflagged cards as no');
 ok(/yes = l=> l\.filter\(p=> ui37FlagOf\(top, p\.id\) === 'yes'\)\.length/.test(fn('ui37HeadHTML')), 'both counters count Yes only');
