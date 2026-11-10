@@ -1,0 +1,333 @@
+{
+ "about": "BAL43 road retune summary (tools/bal43/summary_2026_11_10.js); 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "1-1",
+   "map": "mf",
+   "mapName": "Thistlewood",
+   "kind": "skirmish",
+   "name": "Hedgerow Scouts",
+   "target": 90,
+   "before200": 94,
+   "after200": 94,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 94,
+     "pick200": 94.5,
+     "keep": false,
+     "space": 56317,
+     "range": {
+      "min": 80,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "bee-forager": 1,
+       "cricket-drummer": 5,
+       "dormouse": 3,
+       "field-vole": 3,
+       "hedgerow-shrew": 4,
+       "meadow-rabbit": 1,
+       "slow-worm": 3
+      },
+      "leaders": [],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "1-2",
+   "map": "mf",
+   "mapName": "Thistlewood",
+   "kind": "skirmish",
+   "name": "Cricket Chorus",
+   "target": 80,
+   "before200": 84.5,
+   "after200": 84.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 84.5,
+     "pick200": 85,
+     "keep": false,
+     "space": 209127,
+     "range": {
+      "min": 75,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "ant-scout": 1,
+       "bramble-sprout": 5,
+       "chipmunk-cavalry": 1,
+       "cricket-drummer": 5,
+       "dormouse": 4,
+       "field-vole": 2,
+       "woodcock-lookout": 2
+      },
+      "leaders": [],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "1-3",
+   "map": "mf",
+   "mapName": "Thistlewood",
+   "kind": "skirmish",
+   "name": "Burrow Line",
+   "target": 85,
+   "before200": 96,
+   "after200": 96,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 96,
+     "pick200": 95.5,
+     "keep": false,
+     "space": 56192,
+     "range": {
+      "min": 90,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "bramble-sprout": 3,
+       "dormouse": 4,
+       "field-mouse": 4,
+       "field-vole": 4,
+       "hedgerow-shrew": 3,
+       "honey-bee": 1,
+       "meadow-frog": 1
+      },
+      "leaders": [],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "1-4",
+   "map": "mf",
+   "mapName": "Thistlewood",
+   "kind": "skirmish",
+   "name": "Sapper Hedge",
+   "target": 80,
+   "before200": 94,
+   "after200": 94,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 94,
+     "pick200": 93.5,
+     "keep": false,
+     "space": 5653,
+     "range": {
+      "min": 86.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "bramble-sprout": 4,
+       "dormouse": 4,
+       "field-mouse": 3,
+       "field-vole": 5,
+       "hedgerow-shrew": 3,
+       "honey-bee": 1
+      },
+      "leaders": [],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "13-1",
+   "map": "mr",
+   "mapName": "The Redwood Deep",
+   "kind": "skirmish",
+   "name": "Cub Clearing",
+   "target": 90,
+   "before200": 81.5,
+   "after200": 92.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 81.5,
+     "pick200": 92.5,
+     "keep": true,
+     "space": 5274,
+     "range": {
+      "min": 63.3,
+      "max": 98.3
+     },
+     "pick": {
+      "deck": {
+       "berserker-boar": 2,
+       "bramblewood-lynx": 3,
+       "fawn-scout": 1,
+       "fox-kit": 3,
+       "grizzly-vanguard": 5,
+       "swift-fox": 4,
+       "tasmanian-devil": 1
+      },
+      "leaders": [
+       "berserker-boar"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "13-3",
+   "map": "mr",
+   "mapName": "The Redwood Deep",
+   "kind": "skirmish",
+   "name": "Antler Grove",
+   "target": 80,
+   "before200": 88.5,
+   "after200": 88.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 88.5,
+     "pick200": 89.5,
+     "keep": false,
+     "space": 15,
+     "range": {
+      "min": 90,
+      "max": 98.3
+     },
+     "pick": {
+      "deck": {
+       "berserker-boar": 4,
+       "bramblewood-lynx": 3,
+       "grizzly-vanguard": 2,
+       "swift-fox": 4,
+       "tasmanian-devil": 4
+      },
+      "leaders": [
+       "bramblewood-lynx"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "13-5",
+   "map": "mr",
+   "mapName": "The Redwood Deep",
+   "kind": "elite",
+   "name": "Badger Setts",
+   "target": 70,
+   "before200": 61.5,
+   "after200": 69,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 61.5,
+     "pick200": 73,
+     "keep": true,
+     "space": 8716,
+     "range": {
+      "min": 45,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "berserker-boar": 4,
+       "bramblewood-lynx": 3,
+       "fawn-scout": 3,
+       "fox-kit": 4,
+       "grizzly-vanguard": 1,
+       "shimmerwing-stag": 2
+      },
+      "leaders": [
+       "shimmerwing-stag"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 61.5,
+     "pick200": 69,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "berserker-boar": 4,
+       "bramblewood-lynx": 3,
+       "fawn-scout": 3,
+       "fox-kit": 4,
+       "grizzly-vanguard": 1,
+       "shimmerwing-stag": 2
+      },
+      "leaders": [
+       "shimmerwing-stag"
+      ],
+      "shieldOverride": 8
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "13-6",
+   "map": "mr",
+   "mapName": "The Redwood Deep",
+   "kind": "elite",
+   "name": "Grizzly Ridge",
+   "target": 65,
+   "before200": 69.5,
+   "after200": 63,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 69.5,
+     "pick200": 63,
+     "keep": true,
+     "space": 10536,
+     "range": {
+      "min": 45,
+      "max": 96.7
+     },
+     "pick": {
+      "deck": {
+       "berserker-boar": 1,
+       "bramblewood-lynx": 3,
+       "fawn-scout": 1,
+       "fox-kit": 4,
+       "grizzly-vanguard": 2,
+       "swift-fox": 2,
+       "tasmanian-devil": 4
+      },
+      "leaders": [
+       "grizzly-vanguard"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  }
+ ]
+}

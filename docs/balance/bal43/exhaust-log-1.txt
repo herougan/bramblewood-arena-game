@@ -1,0 +1,5 @@
+1-4 target 80 space 5653 read 400 range 86.7 - 100 | 200 games: 94 -> 93.5 no {"deck":{"bramble-sprout":4,"dormouse":4,"field-mouse":3,"field-vole":5,"hedgerow-shrew":3,"honey-bee":1},"leaders":[],"shieldOverride":null} 581s
+13-3 target 80 space 15 read 15 range 90 - 98.3 | 200 games: 88.5 -> 89.5 no {"deck":{"berserker-boar":4,"bramblewood-lynx":3,"grizzly-vanguard":2,"swift-fox":4,"tasmanian-devil":4},"leaders":["bramblewood-lynx"],"shieldOverride":null} 120s
+1-2 target 80 space 209127 read 401 range 75 - 100 | 200 games: 84.5 -> 85 no {"deck":{"ant-scout":1,"bramble-sprout":5,"chipmunk-cavalry":1,"cricket-drummer":5,"dormouse":4,"field-vole":2,"woodcock-lookout":2},"leaders":[],"shieldOverride":null} 340s
+13-6 target 65 space 10536 read 401 range 45 - 96.7 | 200 games: 69.5 -> 63 KEEP {"deck":{"berserker-boar":1,"bramblewood-lynx":3,"fawn-scout":1,"fox-kit":4,"grizzly-vanguard":2,"swift-fox":2,"tasmanian-devil":4},"leaders":["grizzly-vanguard"],"shieldOverride":null} 507s
+EXIT 0

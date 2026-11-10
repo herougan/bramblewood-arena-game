@@ -1,0 +1,162 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "1-2",
+ "map": "mf",
+ "mapName": "Thistlewood",
+ "kind": "skirmish",
+ "name": "Cricket Chorus",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "ant-scout",
+  "bee-forager",
+  "bramble-sprout",
+  "chipmunk-cavalry",
+  "cottontail",
+  "cricket-drummer",
+  "dormouse",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "honey-bee",
+  "meadow-rabbit",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 1,
+ "shieldOverride": null,
+ "space": 209127,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 75,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "ant-scout": 1,
+    "bramble-sprout": 5,
+    "chipmunk-cavalry": 1,
+    "cricket-drummer": 5,
+    "dormouse": 4,
+    "field-vole": 2,
+    "woodcock-lookout": 2
+   },
+   "leaders": null,
+   "tune200": 83
+  },
+  {
+   "deck": {
+    "bramble-sprout": 5,
+    "chipmunk-cavalry": 1,
+    "cricket-drummer": 4,
+    "dormouse": 3,
+    "field-vole": 4,
+    "slow-worm": 1,
+    "woodcock-lookout": 2
+   },
+   "leaders": null,
+   "tune200": 83
+  },
+  {
+   "deck": {
+    "bee-forager": 1,
+    "cricket-drummer": 5,
+    "dormouse": 4,
+    "field-mouse": 3,
+    "field-vole": 3,
+    "hedgerow-shrew": 2,
+    "woodcock-lookout": 2
+   },
+   "leaders": null,
+   "tune200": 85
+  },
+  {
+   "deck": {
+    "cricket-drummer": 5,
+    "dormouse": 3,
+    "field-mouse": 3,
+    "field-vole": 5,
+    "slow-worm": 4
+   },
+   "leaders": null,
+   "tune200": 85
+  },
+  {
+   "deck": {
+    "bramble-sprout": 5,
+    "cricket-drummer": 4,
+    "dormouse": 4,
+    "field-mouse": 1,
+    "field-vole": 3,
+    "honey-bee": 1,
+    "woodcock-lookout": 2
+   },
+   "leaders": null,
+   "tune200": 85.5
+  },
+  {
+   "deck": {
+    "bramble-sprout": 2,
+    "cricket-drummer": 5,
+    "dormouse": 4,
+    "field-mouse": 1,
+    "field-vole": 5,
+    "slow-worm": 1,
+    "woodcock-lookout": 2
+   },
+   "leaders": null,
+   "tune200": 85.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "dormouse": 2,
+   "cricket-drummer": 5,
+   "meadow-rabbit": 1,
+   "cottontail": 1,
+   "ant-scout": 1,
+   "field-vole": 5,
+   "bramble-sprout": 5
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 84.5
+ },
+ "pick": {
+  "deck": {
+   "ant-scout": 1,
+   "bramble-sprout": 5,
+   "chipmunk-cavalry": 1,
+   "cricket-drummer": 5,
+   "dormouse": 4,
+   "field-vole": 2,
+   "woodcock-lookout": 2
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 85,
+  "tune200": 83
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 84.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 85
+  }
+ ],
+ "sec": 340
+}
