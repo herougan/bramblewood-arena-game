@@ -17,6 +17,9 @@ const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
 const DRY = process.argv.includes('--dry');
 const SUG = J('docs/design/map-suggestions-2026-11-11.json'), PICKS = J('docs/design/map-picks-owner-2026-11-11.json').maps;
 const POOLS_FILE = path.join(ROOT, 'canonical', 'map-pools.json'), pools = JSON.parse(fs.readFileSync(POOLS_FILE, 'utf8'));
+// 'before' is the batch's lists when SKIR1 began (commit 1137b281, --base), so a re-run keeps the whole change on record
+const BASE = (() => { const i = process.argv.indexOf('--base'); return i >= 0 ? process.argv[i + 1] : '1137b281'; })();
+const before = JSON.parse(require('child_process').execSync('git show ' + BASE + ':canonical/map-pools.json', { cwd: ROOT, maxBuffer: 1 << 26 }).toString()).maps;
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 const grab = name => JSON.parse((src.match(new RegExp('const ' + name + ' = (\\{.*?\\});\\n')) || [0, '{}'])[1]);
 const UI47_SUGGEST = grab('UI47_SUGGEST'), UI47_ADMIN_ADD = grab('UI47_ADMIN_ADD');
@@ -32,7 +35,7 @@ function newMainList(id, m) {
 const out = { about: 'SKIR1 phase A (tools/skir1/fold_lists_2026_11_11.js): the MAP tier of main maps 0-20 and the SUBMAP lists of the THEME8 side maps, before -> after', built: '2026-11-11', main: {}, submaps: {}, extra: EXTRA, missing: [] };
 for (const [id, m] of Object.entries(SUG.maps)) {
   const e = pools.maps[id]; if (!e) throw new Error('no map-pools entry ' + id);
-  const now = newMainList(id, m), was = e.cards || [];
+  const now = newMainList(id, m), was = (before[id] || {}).cards || [];
   const missing = now.filter(x => !CARDS[x]); if (missing.length) out.missing.push({ map: id, missing });
   const list = now.filter(x => CARDS[x]);
   out.main[id] = { mapNo: m.mapNo, name: m.name, rule: m.mapNo <= 11 ? 'owner Yes + UI47_ADMIN_ADD' : m.mapNo === 12 ? "owner's 3 + UI47_SUGGEST" : 'UI47_SUGGEST (provisional)',
@@ -42,7 +45,7 @@ for (const [id, m] of Object.entries(SUG.maps)) {
 for (const [sid, sm] of Object.entries(SUG.submaps)) {
   const e = pools.maps[sm.parent]; if (!e) throw new Error('no parent entry ' + sm.parent);
   e.submaps = e.submaps || {};
-  const was = Array.isArray(e.submaps[sid]) ? e.submaps[sid] : (e.submaps[sid] && e.submaps[sid].cards) || [];
+  const bs = ((before[sm.parent] || {}).submaps || {})[sid], was = Array.isArray(bs) ? bs : (bs && bs.cards) || [];
   const now = uniq((UI47_SUGGEST[sid] || []).concat(Object.keys((EXTRA.sub || {})[sid] || {})));
   const missing = now.filter(x => !CARDS[x]); if (missing.length) out.missing.push({ map: sid, missing });
   const list = now.filter(x => CARDS[x]);

@@ -45,7 +45,7 @@
    "name": "Thistlewood",
    "rule": "owner Yes + UI47_ADMIN_ADD",
    "before": 17,
-   "after": 19,
+   "after": 20,
    "added": [
     "terrier-pup",
     "meadow-rabbit",
@@ -57,7 +57,8 @@
     "house-cat",
     "duck-paddler",
     "monarch-wingblade",
-    "pack-rat-looter"
+    "pack-rat-looter",
+    "hazel-coppice"
    ],
    "removed": [
     "badger-lumberjack",
@@ -89,7 +90,8 @@
     "duck-paddler",
     "robin-redbreast",
     "monarch-wingblade",
-    "pack-rat-looter"
+    "pack-rat-looter",
+    "hazel-coppice"
    ]
   },
   "mb": {
@@ -368,7 +370,7 @@
    "name": "Caves & Alcoves",
    "rule": "owner Yes + UI47_ADMIN_ADD",
    "before": 13,
-   "after": 16,
+   "after": 18,
    "added": [
     "barrow-leech-bat",
     "corpse-flower-beetle",
@@ -377,7 +379,9 @@
     "hawthorn-shieldbug",
     "driftwood-crab",
     "upside-down-bat",
-    "blind-cave-fish"
+    "blind-cave-fish",
+    "pack-rat-looter",
+    "bone-diviner"
    ],
    "removed": [
     "octopus-tactician",
@@ -402,7 +406,9 @@
     "hawthorn-shieldbug",
     "driftwood-crab",
     "upside-down-bat",
-    "blind-cave-fish"
+    "blind-cave-fish",
+    "pack-rat-looter",
+    "bone-diviner"
    ]
   },
   "mk": {
@@ -410,7 +416,7 @@
    "name": "The Kelp Mangroves",
    "rule": "owner Yes + UI47_ADMIN_ADD",
    "before": 15,
-   "after": 17,
+   "after": 18,
    "added": [
     "ironclaw-fiddler",
     "fishing-cat",
@@ -420,7 +426,8 @@
     "driftwood-crab",
     "alley-cat",
     "giant-cave-huntsman",
-    "nutria-reedcutter"
+    "nutria-reedcutter",
+    "salvager-hermit-crab"
    ],
    "removed": [
     "mangrove-kingfisher",
@@ -448,7 +455,8 @@
     "alley-cat",
     "giant-cave-huntsman",
     "nutria-reedcutter",
-    "sunbittern-strider"
+    "sunbittern-strider",
+    "salvager-hermit-crab"
    ]
   },
   "m7": {
@@ -1602,7 +1610,18 @@
   }
  },
  "extra": {
-  "main": {},
+  "main": {
+   "mf": {
+    "hazel-coppice": "a second Lumber maker for Thistlewood (only the Pack Rat Looter makes Lumber in its fights; the Chipmunk Skirmisher is 0-1's reward): carried from Map 0, a hazel thicket under the first big trees; also a fourth 1-Lumber card"
+   },
+   "m4": {
+    "pack-rat-looter": "Caves & Alcoves had no Lumber maker its fights may field (the Driftwood Crab is 2-5's reward): a rat that hoards in the alcoves, carried from Map 1",
+    "bone-diviner": "a second Lumber maker for the caves: the barrow crow (Map 6's admin add) next to the Barrow Leech Bat"
+   },
+   "mk": {
+    "salvager-hermit-crab": "a second Lumber maker for the Kelp Mangroves (only the Nutria Reedcutter; the Driftwood Crab is 2-5's reward): a salvaging crab among the fiddlers, carried from Smugglers' Grotto (Map 7)"
+   }
+  },
   "sub": {}
  },
  "missing": []

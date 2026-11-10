@@ -30,7 +30,7 @@ const tune = {}, first = {};
   fs.readdirSync(tdir).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(tdir, f), 'utf8')); if (x.keep) { tune[x.code] = x; if (!first[x.code]) first[x.code] = x; } }));
 const bal26Lines = [...lines.entries()].filter(([, l]) => /2026-11-07 \(BAL26\)/.test(l));
 ok(bal26Lines.length >= 1, 'BAL26 retuned some road fights: ' + bal26Lines.length);
-for (const [code, l] of bal26Lines) {
+for (const [code, l] of bal26Lines) { if (/\(SKIR1( fit)?\): /.test(l)) continue; /* 2026-11-11 (SKIR1): rebuilt from the new map lists; tests/skir1-2026-11-11.js checks it now */
   if (/2026-11-10 \(BAL44\): retuned/.test(l)) continue; // 2026-11-10 (BAL44): retuned again (11-10); tests/bal44-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL41\): retuned/.test(l)) continue; // 2026-11-10 (BAL41): retuned again (17-2); tests/bal41-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL38\): retuned/.test(l)) continue; // 2026-11-10 (BAL38): retuned again (4-5); tests/bal38-2026-11-10.js checks and pins it now
@@ -80,7 +80,7 @@ const PINS = {
   "1-A-4": {"deck":{"field-vole":5,"ant-scout":1,"field-mouse":4,"bee-forager":1,"slow-worm":4,"meadow-rabbit":1},"shield":6},
   "10-A-2": {"deck":{"coral-reef-shark":2,"orca-vanguard":4,"kraken-spawnling":4,"hagfish-silencer":1,"nudibranch":1},"shield":2}
 };
-for (const [code, p] of Object.entries(PINS)) {
+for (const [code, p] of Object.entries(PINS)) { if (/\(SKIR1( fit)?\): /.test(lines.get(code) || "")) continue; /* 2026-11-11 (SKIR1): rebuilt, checked by tests/skir1-2026-11-11.js */
   const l = lines.get(code); ok(!!l, code + ': pinned fight found'); if (!l) continue; const now = fields(l);
   if (/2026-11-10 \(BAL44\): retuned/.test(l)) continue; // 2026-11-10 (BAL44): 11-10 retuned again, pinned in tests/bal44-pins-2026-11-10.json
   if (/2026-11-10 \(BAL41\): retuned/.test(l)) continue; // 2026-11-10 (BAL41): 17-2 retuned again, pinned in tests/bal41-pins-2026-11-10.json

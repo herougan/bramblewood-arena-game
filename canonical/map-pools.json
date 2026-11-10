@@ -11,7 +11,7 @@
    "special": []
   },
   "mf": {
-   "cards": ["bramble-sprout", "terrier-pup", "cricket-drummer", "chipmunk-skirmisher", "chipmunk-cavalry", "hedgerow-shrew", "meadow-rabbit", "moonlit-hare", "dormouse", "puddle-skimmer", "soldier-ant", "ant-scout", "bee-knight", "honey-bee", "house-cat", "duck-paddler", "robin-redbreast", "monarch-wingblade", "pack-rat-looter"],
+   "cards": ["bramble-sprout", "terrier-pup", "cricket-drummer", "chipmunk-skirmisher", "chipmunk-cavalry", "hedgerow-shrew", "meadow-rabbit", "moonlit-hare", "dormouse", "puddle-skimmer", "soldier-ant", "ant-scout", "bee-knight", "honey-bee", "house-cat", "duck-paddler", "robin-redbreast", "monarch-wingblade", "pack-rat-looter", "hazel-coppice"],
    "submaps": {
     "mq": ["lucky-hopper", "jackrabbit-sprinter", "field-mouse", "harvest-mouse", "field-vole", "clover-butterfly", "ladybird-guard", "ant-hill", "bee-drone", "seed-cache-squirrel", "bee-sentry", "cricket-drummer", "robin-redbreast", "slow-worm", "earthworm", "monarch-wingblade"]
    },
@@ -57,14 +57,14 @@
    "special": ["sleepless-shrew"]
   },
   "m4": {
-   "cards": ["quarry-mole", "cave-olm", "sulfur-cinder-moth", "star-nosed-mole", "stalactite-golem", "echo-screecher", "giant-cave-huntsman", "gallery-orb-weaver", "barrow-leech-bat", "corpse-flower-beetle", "rot-swollen-carcass", "wolf-spider-mother", "hawthorn-shieldbug", "driftwood-crab", "upside-down-bat", "blind-cave-fish"],
+   "cards": ["quarry-mole", "cave-olm", "sulfur-cinder-moth", "star-nosed-mole", "stalactite-golem", "echo-screecher", "giant-cave-huntsman", "gallery-orb-weaver", "barrow-leech-bat", "corpse-flower-beetle", "rot-swollen-carcass", "wolf-spider-mother", "hawthorn-shieldbug", "driftwood-crab", "upside-down-bat", "blind-cave-fish", "pack-rat-looter", "bone-diviner"],
    "submaps": {
     "mn": ["lantern-spark-fly", "vampire-bat", "whip-spider", "glimmer-spider", "grotto-lobster", "cave-swiftlet", "oilbird", "glintsnatch-magpie", "magpie-collector", "cave-olm", "quarry-mole", "star-nosed-mole", "stalactite-golem", "blind-cave-fish", "upside-down-bat"]
    },
    "special": ["blind-cave-fish", "echo-matriarch"]
   },
   "mk": {
-   "cards": ["banded-sea-krait", "mangrove-mudskipper", "mangrove-monitor", "horseshoe-crab", "proboscis-monkey", "ironclaw-fiddler", "fishing-cat", "tide-spirit", "voltaic-eel", "alligator-gar", "booming-bittern", "fiddler-crab-swarm", "driftwood-crab", "alley-cat", "giant-cave-huntsman", "nutria-reedcutter", "sunbittern-strider"],
+   "cards": ["banded-sea-krait", "mangrove-mudskipper", "mangrove-monitor", "horseshoe-crab", "proboscis-monkey", "ironclaw-fiddler", "fishing-cat", "tide-spirit", "voltaic-eel", "alligator-gar", "booming-bittern", "fiddler-crab-swarm", "driftwood-crab", "alley-cat", "giant-cave-huntsman", "nutria-reedcutter", "sunbittern-strider", "salvager-hermit-crab"],
    "submaps": {},
    "special": []
   },
