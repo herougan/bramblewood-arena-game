@@ -162,7 +162,7 @@ function wallsOf(id){ const {e, P} = mk(); const h = {uid: 9500, defId:id}; P[1]
   ok(!!d1, 'decision ENG36-1 (Hoard: keep the converted values or the literal ones)');
   const words = d=> String((d.body || d.question || '') + ' ' + JSON.stringify(d.options || [])).split(/\s+/).length;
   ok(list.filter(d=> /^ENG36-/.test(d.id)).every(d=> words(d) < 200), 'ENG36 decisions are short'); }
-{ const cl = rd('docs/CHANGELOG.md'); ok(/ENG36/.test(cl.slice(0, 20000)), 'a CHANGELOG entry at the top'); }
+{ const cl = rd('docs/CHANGELOG.md'); ok(/ENG36/.test(cl), 'a CHANGELOG entry'); } // 2026-11-10 (coordinator): later entries pushed it past the first 20000 characters; search the whole file
 ok(rd('tests/run-all.sh').includes('tests/eng36-2026-11-08.js'), 'listed in tests/run-all.sh');
 
 console.log(`eng36: ${pass} passed, ${fail} failed`);
