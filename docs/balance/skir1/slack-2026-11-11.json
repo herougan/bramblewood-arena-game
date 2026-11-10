@@ -1,8 +1,19 @@
 {
- "about": "SKIR1 (2026-11-11): maps whose usage line is half their fights plus one (tools/skir1/lib_fight_2026_11_11.js ucapOf; tests/skir1-2026-11-11.js), each with its reason. Owner 00:16: 'try not to use a card too much' (decision SKIR1-8).",
+ "about": "SKIR1 (2026-11-11): maps whose usage line is half their fights plus one (tools/skir1/lib_fight_2026_11_11.js ucapOf; tests/skir1-2026-11-11.js), each with its reason: a thin list, or a fight that reached its band (at 200 road games, fit --slack 1) only with a card one fight over the line. Owner 00:16: 'try not to use a card too much' (decision SKIR1-8).",
  "maps": {
+  "mo": "The Old Bramble (side, Map 0): 4 fights, half is 2; Gatling Hog, Hazel Coppice and Thornwood Palisade (its Lumber and wall cards) each in 3",
+  "mg": "Smugglers' Grotto (side, Map 2): 4 fights; the Salvager Hermit Crab is the Lumber maker its fights may field, in 3",
+  "mb": "Pebble Beach (Map 2): its fights read too hard before SKIR1 too; the weakest cards (Great Skua, Puddle Skimmer, Pincushion Urchin) sit in 4 of 5 (2-5 fit: 26.8% -> 35%, band 32-48)",
+  "mw": "Gatorback Swamp (Map 5): 5-6 reached 58% (target 60) with a Raft Spider, then in 5 of 7",
+  "m8": "Sable Swampmire (Map 6): 6-2 reached 85.5% (target 85) with the Venomlord Serpent, then in 5 of 8",
+  "m4": "Caves & Alcoves (Map 8): 8-1 and 8-2 (too hard) eased with the Stalactite Golem, then in 5 of 8",
+  "m7": "Coral Current (Map 10): 10-2 reaches its band (86%) only with the list's plain fillers (Reef Shark, Sea Turtle Elder), already in 5 of 9 fights",
+  "m10": "Eyrie Heights (Map 11): 11-7 reached 65% (target 67.5) with the Gangrenous Leech, then in 6 of 10",
   "mr": "The Redwood Deep (Map 13): 10 usable cards for 8 fights of 5-7 different cards; half the fights (4) cannot cover the slots",
-  "m7": "Coral Current (Map 10): 10-2 reaches its band (86%) only with the list's plain fillers (Orca Vanguard, Reef Shark, Sea Turtle Elder), already in 5 of 9 fights",
+  "m5": "Savanna Reaches (Map 14): 14-6 reached 67.5% (target 65) with the Acacia Giraffe, then in 5 of 8",
+  "mt": "The Pinewood Taiga (Map 16): 16-4 (37.5%, target 72) eased with the Timber Wolf Pack, then in 5 of 7",
+  "m6": "Wolfsbane Tundra (Map 17): 17-3 (45%, target 80) eased with the Ringed Seal, then in 5 of 8",
+  "m3": "Ashen Spurn (Map 19): 19-2 (52%, target 82.5) eased with the Honey Badger Fury, then in 4 of 6",
   "m11": "The Sundered Peak (Map 20): the boss 20-9 read 100% on the rebuilt deck; its pre-SKIR1 cards (Ashbone Ghoul, Cinder Skeleton, Obsidian Scorpion) were each in 5 of 10 fights"
  }
 }

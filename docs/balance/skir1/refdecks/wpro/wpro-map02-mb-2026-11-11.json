@@ -1,0 +1,89 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:11:01.354Z",
+ "map": {
+  "id": "mb",
+  "num": 2,
+  "name": "Pebble Beach"
+ },
+ "pool": [
+  "beachcomber-sanderling",
+  "beaver-lumberjack",
+  "bloodworm",
+  "conch-herald",
+  "driftwood-crab",
+  "duck-paddler",
+  "great-skua",
+  "gull-thief",
+  "hedgerow-shrew",
+  "limpet-clinger",
+  "moonlit-hare",
+  "old-shell",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin",
+  "puddle-skimmer",
+  "robin-redbreast",
+  "rock-pool-starfish"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "duck-paddler": 4,
+    "great-skua": 4,
+    "gull-thief": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 4
+   },
+   "score": 0.3646,
+   "ci": [
+    0.3074,
+    0.4218
+   ],
+   "refWins": 0.5417,
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "economy (4 resource makers)",
+    "flying x12"
+   ],
+   "apartFrom": [],
+   "steps": 2,
+   "games": 880,
+   "seconds": 82
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "beachcomber-sanderling": 4,
+    "beaver-lumberjack": 4,
+    "bloodworm": 4,
+    "great-skua": 4,
+    "oystercatcher": 4
+   },
+   "score": 0.4115,
+   "ci": [
+    0.3526,
+    0.4704
+   ],
+   "refWins": 0.5556,
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "economy (4 resource makers)",
+    "flying x8"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 2,
+   "games": 736,
+   "seconds": 100
+  }
+ ]
+}

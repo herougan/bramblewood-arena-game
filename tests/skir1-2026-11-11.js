@@ -51,7 +51,7 @@ for (const m of L.maps()) for (const n of L.fightsOf(m)) {
   if (f.unlock < 21) ids.forEach(id => ok(!M.stone(D[id]), `${code}: no Stone card before Map 21 (${id})`));
   G.NODE_MAP_HINT.set(n, m.id); const now = G.skirmishLeadersOf(n, m.id) || [];
   ok(p.stoneLeader || JSON.stringify(now) === JSON.stringify(p.leaders0), `${code}: its leaders are kept (${p.leaders0} -> ${now})`);
-  if (/boss/.test(n.kind || '')) ok(JSON.stringify(now) === JSON.stringify(p.leaders0), `${code}: a boss keeps its leader`);
+  if (/boss/.test(n.kind || '')) ok(p.stoneLeader || JSON.stringify(now) === JSON.stringify(p.leaders0), `${code}: a boss keeps its leader (a Stone leader left before Map 21)`);
   ok((n.showcase || null) === p.showcase || (!p.showcase && !p.explicitLeaders && p.leaders0.length === 1 && n.showcase === p.leaders0[0] && /Auto showcase leader, pinned/.test(lineOf(code))), `${code}: its showcase is kept (${p.showcase}), or its Auto showcase leader pinned (${n.showcase})`);
   ((G.nodeFirstClearCardIds || G.nodeRewardCardIds)(m.id, code) || []).filter(id => p.old[id] && !(f.unlock < 21 && M.stone(D[id]))).forEach(id => ok(d[id] > 0, `${code}: first-clear card ${id} kept in the deck`));
 }

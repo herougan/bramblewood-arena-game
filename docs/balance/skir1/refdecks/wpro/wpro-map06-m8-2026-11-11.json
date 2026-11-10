@@ -1,0 +1,89 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:28:47.818Z",
+ "map": {
+  "id": "m8",
+  "num": 6,
+  "name": "Sable Swampmire"
+ },
+ "pool": [
+  "adder-ambusher",
+  "alligator-gar",
+  "anhinga-spearbird",
+  "bone-diviner",
+  "booming-bittern",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "grass-viper",
+  "heron-hag",
+  "lamprey",
+  "mosquito-cloud",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "owl-sentinel",
+  "pond-algae",
+  "sunbittern-strider",
+  "venomlord-serpent",
+  "water-shrew"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "anhinga-spearbird": 4,
+    "bone-diviner": 4,
+    "camouflage-frog": 4,
+    "lamprey": 4,
+    "venomlord-serpent": 4
+   },
+   "score": 0.1288,
+   "ci": [
+    0.0983,
+    0.1592
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)",
+    "economy (4 resource makers)"
+   ],
+   "apartFrom": [],
+   "steps": 1,
+   "games": 792,
+   "seconds": 79
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "adder-ambusher": 3,
+    "anhinga-spearbird": 4,
+    "booming-bittern": 4,
+    "camouflage-frog": 1,
+    "constrictor-coil": 4,
+    "venomlord-serpent": 4
+   },
+   "score": 0.2689,
+   "ci": [
+    0.2273,
+    0.3106
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)",
+    "poison x7"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 1,
+   "games": 814,
+   "seconds": 85
+  }
+ ]
+}

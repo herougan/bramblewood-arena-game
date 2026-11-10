@@ -1,0 +1,88 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:22:31.537Z",
+ "map": {
+  "id": "m2",
+  "num": 4,
+  "name": "Sunken Hollow"
+ },
+ "pool": [
+  "beaver-feller",
+  "beaver-lumberjack",
+  "conch-crawler",
+  "drowned-matriarch",
+  "duck-paddler",
+  "grass-snake",
+  "kittiwake-flock",
+  "muskrat-lodgekeeper",
+  "planarian-splitter",
+  "platypus-spur",
+  "pond-algae",
+  "river-mink",
+  "shoal-shark",
+  "slow-worm",
+  "snapstick-turtle",
+  "water-shrew",
+  "water-vole"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "grass-snake": 4,
+    "muskrat-lodgekeeper": 4,
+    "platypus-spur": 4,
+    "pond-algae": 4,
+    "river-mink": 4
+   },
+   "score": 0.3229,
+   "ci": [
+    0.2632,
+    0.3827
+   ],
+   "refWins": 0.6806,
+   "labels": [
+    "big (16 copies at 1 Lumber, average 0.8)",
+    "tide x8"
+   ],
+   "apartFrom": [],
+   "steps": 2,
+   "games": 736,
+   "seconds": 128
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "conch-crawler": 4,
+    "duck-paddler": 2,
+    "grass-snake": 4,
+    "muskrat-lodgekeeper": 4,
+    "platypus-spur": 2,
+    "water-shrew": 4
+   },
+   "score": 0.276,
+   "ci": [
+    0.225,
+    0.3271
+   ],
+   "refWins": 0.7639,
+   "labels": [
+    "big (10 copies at 1 Lumber, average 0.5)",
+    "guard x8",
+    "tide x8"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 2,
+   "games": 784,
+   "seconds": 174
+  }
+ ]
+}

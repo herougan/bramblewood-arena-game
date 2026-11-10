@@ -1,0 +1,736 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T22:36:45.968Z",
+ "fingerprint": "fa1691d39923",
+ "map": {
+  "id": "mx",
+  "num": 20,
+  "name": "Volcano Lair"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "cinder-hornet",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "eagle-owl-quartermaster",
+  "ember-centipede",
+  "ember-jackal",
+  "ember-wisp",
+  "fire-drake-hatchling",
+  "fire-salamander",
+  "fumarole-ibex",
+  "gorge-wyrm",
+  "granite-ox-golem",
+  "grave-grin-hyena",
+  "ibex-rockcaller",
+  "lava-waders",
+  "magma-salamander",
+  "magma-titan",
+  "magma-wraith",
+  "phoenix-fledgling",
+  "pyroclast-wyrm",
+  "salamander-pyromancer",
+  "squires-mount",
+  "stalactite-golem",
+  "stonedrop-vulture",
+  "thunder-lizard",
+  "tide-spirit",
+  "vampire-roost",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Ancient Sloth Titan",
+  "Ash Cloud Condor",
+  "Ashbone Ghoul",
+  "Cinder Hornet",
+  "Cinder Skeleton",
+  "Cinder Stoker",
+  "Cave Bear",
+  "Eagle-Owl Quartermaster",
+  "Ember Centipede",
+  "Ember Jackal",
+  "Ember Firefly",
+  "Fire Drake Hatchling",
+  "Fire Salamander",
+  "Fumarole Ibex",
+  "Gorge Wyrm",
+  "Granite Ox Golem",
+  "Grave-Grin Hyena",
+  "Ibex Rockcaller",
+  "Lava Waders",
+  "Magma Salamander",
+  "Magma Rhino",
+  "Magma Wraith",
+  "Phoenix Fledgling",
+  "Pyroclast Wyrm",
+  "Salamander Pyromancer",
+  "Squire's Mount",
+  "Stalactite Pill Bug",
+  "Stonedrop Vulture",
+  "Thunder Lizard",
+  "Tide Seahorse",
+  "Vampire Roost",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "ancient-sloth-titan",
+   "ash-cloud-condor",
+   "cinder-hornet",
+   "cinder-stoker",
+   "deep-cave-troll",
+   "ember-centipede",
+   "ember-jackal",
+   "ember-wisp",
+   "fire-drake-hatchling",
+   "gorge-wyrm",
+   "granite-ox-golem",
+   "lava-waders",
+   "magma-salamander",
+   "magma-titan",
+   "phoenix-fledgling",
+   "pyroclast-wyrm",
+   "salamander-pyromancer",
+   "stalactite-golem",
+   "thunder-lizard",
+   "vampire-roost"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 1200,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-B-1",
+   "label": "vs 20-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-2",
+   "label": "vs 20-B-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-3",
+   "label": "vs 20-B-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-4",
+   "label": "vs 20-B-4 worldboss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:ranged",
+   "label": "ranged (skill family)",
+   "cards": [
+    "eagle-owl-quartermaster",
+    "fire-drake-hatchling",
+    "magma-salamander",
+    "magma-wraith",
+    "pyroclast-wyrm",
+    "stonedrop-vulture"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "ash-cloud-condor",
+    "cinder-hornet",
+    "eagle-owl-quartermaster",
+    "phoenix-fledgling",
+    "stonedrop-vulture"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "ancient-sloth-titan",
+    "cinder-hornet",
+    "deep-cave-troll",
+    "fire-drake-hatchling",
+    "gorge-wyrm",
+    "granite-ox-golem",
+    "magma-titan",
+    "phoenix-fledgling",
+    "pyroclast-wyrm",
+    "stalactite-golem",
+    "thunder-lizard",
+    "vampire-roost"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:ranged",
+   "steps": 1,
+   "moves": 1,
+   "games": 392,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:flying",
+   "steps": 1,
+   "moves": 1,
+   "games": 322,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 1,
+   "moves": 1,
+   "games": 322,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "open",
+   "steps": 2,
+   "moves": 2,
+   "games": 392,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 175,
+ "games": 1876,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.5 Lumber)"
+   ],
+   "deck": {
+    "ashbone-ghoul": 4,
+    "cinder-stoker": 4,
+    "ember-jackal": 3,
+    "ember-wisp": 3,
+    "ibex-rockcaller": 2,
+    "stonedrop-vulture": 4
+   },
+   "cards": [
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ember-jackal",
+     "name": "Ember Jackal",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ember-wisp",
+     "name": "Ember Firefly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8155,
+   "ci": [
+    0.7597,
+    0.8712
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:ranged",
+   "labels": [
+    "flying x11",
+    "ranged x9"
+   ],
+   "deck": {
+    "cinder-hornet": 4,
+    "cinder-stoker": 4,
+    "eagle-owl-quartermaster": 3,
+    "grave-grin-hyena": 3,
+    "magma-salamander": 2,
+    "stonedrop-vulture": 4
+   },
+   "cards": [
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.6905,
+   "ci": [
+    0.6262,
+    0.7547
+   ],
+   "avgLumber": 0.85,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 7,
+    "1": 9,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    },
+    {
+     "f": "ranged",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "flying x10",
+    "ranged x7"
+   ],
+   "deck": {
+    "ash-cloud-condor": 3,
+    "cinder-stoker": 3,
+    "eagle-owl-quartermaster": 3,
+    "ember-centipede": 4,
+    "ember-wisp": 3,
+    "stonedrop-vulture": 4
+   },
+   "cards": [
+    {
+     "id": "ember-centipede",
+     "name": "Ember Centipede",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ash-cloud-condor",
+     "name": "Ash Cloud Condor",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ember-wisp",
+     "name": "Ember Firefly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6845,
+   "ci": [
+    0.6205,
+    0.7486
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    },
+    {
+     "f": "ranged",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)",
+    "fire x8",
+    "flying x6"
+   ],
+   "deck": {
+    "cinder-skeleton": 3,
+    "ember-jackal": 3,
+    "fire-salamander": 4,
+    "magma-titan": 4,
+    "phoenix-fledgling": 4,
+    "stonedrop-vulture": 2
+   },
+   "cards": [
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "magma-titan",
+     "name": "Magma Rhino",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "phoenix-fledgling",
+     "name": "Phoenix Fledgling",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-skeleton",
+     "name": "Cinder Skeleton",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "ember-jackal",
+     "name": "Ember Jackal",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.2917,
+   "ci": [
+    0.2267,
+    0.3567
+   ],
+   "avgLumber": 1.6,
+   "avgWait": 0.9,
+   "curve": {
+    "1": 12,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "fire",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.25,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 15
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mx --pool ancient-sloth-titan,ash-cloud-condor,ashbone-ghoul,cinder-hornet,cinder-skeleton,cinder-stoker,deep-cave-troll,eagle-owl-quartermaster,ember-centipede,ember-jackal,ember-wisp,fire-drake-hatchling,fire-salamander,fumarole-ibex,gorge-wyrm,granite-ox-golem,grave-grin-hyena,ibex-rockcaller,lava-waders,magma-salamander,magma-titan,magma-wraith,phoenix-fledgling,pyroclast-wyrm,salamander-pyromancer,squires-mount,stalactite-golem,stonedrop-vulture,thunder-lizard,tide-spirit,vampire-roost,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 1200 --final-games 24 --seed skir1-pro --focus family:ranged,family:flying,big,open --anchor ancient-sloth-titan,ash-cloud-condor,cinder-hornet,cinder-stoker,deep-cave-troll,ember-centipede,ember-jackal,ember-wisp,fire-drake-hatchling,gorge-wyrm,granite-ox-golem,lava-waders,magma-salamander,magma-titan,phoenix-fledgling,pyroclast-wyrm,salamander-pyromancer,stalactite-golem,thunder-lizard,vampire-roost --anchor-min 10 --level 1 --mode map-true"
+}

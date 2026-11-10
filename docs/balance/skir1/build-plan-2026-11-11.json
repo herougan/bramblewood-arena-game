@@ -8672,6 +8672,1059 @@
     "pale-oryx": 3,
     "trapdoor-spider": 2
    }
+  },
+  {
+   "id": "mv",
+   "mapNo": 11,
+   "side": true,
+   "name": "The Aerie Vault",
+   "strategies": [
+    {
+     "id": "BPRO",
+     "focus": "family:flying"
+    },
+    {
+     "id": "BPRO",
+     "focus": "family:strike-first"
+    },
+    {
+     "id": "BPRO",
+     "focus": "open"
+    }
+   ],
+   "peaks": [
+    "11-A-1",
+    "11-A-2",
+    "11-A-3"
+   ],
+   "usageCap": 2,
+   "repairs": [],
+   "mix": {
+    "cost1": {
+     "shown": 8,
+     "list": 8
+    },
+    "cost0": {
+     "shown": 5,
+     "list": 5
+    },
+    "wait1": {
+     "shown": 12,
+     "list": 12
+    },
+    "wait0": {
+     "shown": 1,
+     "list": 1
+    },
+    "lumber": {
+     "shown": 1,
+     "list": 1
+    },
+    "plain": {
+     "shown": 1,
+     "list": 1
+    },
+    "status": {
+     "shown": 3,
+     "list": 3
+    },
+    "stone": {
+     "shown": 0,
+     "list": 0
+    }
+   },
+   "fights": [
+    {
+     "code": "11-A-1",
+     "kind": "skirmish",
+     "size": 17,
+     "old": {
+      "wound-reaver": 1,
+      "apollo-butterfly": 4,
+      "eyrie-warden": 4,
+      "alpine-salamander": 4,
+      "alpine-swift": 1,
+      "vigil-owl": 3
+     },
+     "leaders0": [
+      "wound-reaver"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "open",
+     "deck": {
+      "wound-reaver": 2,
+      "gale-swift": 5,
+      "chipmunk-hoarder": 3,
+      "gangrenous-leech": 3,
+      "great-horned-owl": 4
+     },
+     "problems": []
+    },
+    {
+     "code": "11-A-2",
+     "kind": "skirmish",
+     "size": 14,
+     "old": {
+      "alpine-salamander": 4,
+      "apollo-butterfly": 2,
+      "chipmunk-hoarder": 3,
+      "eagle-owl-quartermaster": 1,
+      "eyrie-warden": 2,
+      "gale-swift": 2
+     },
+     "leaders0": [
+      "eyrie-warden"
+     ],
+     "explicitLeaders": true,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:strike-first",
+     "deck": {
+      "eyrie-warden": 2,
+      "alpine-salamander": 4,
+      "gangrenous-leech": 4,
+      "alpine-swift": 3,
+      "swamp-alligator": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "11-A-3",
+     "kind": "skirmish",
+     "size": 18,
+     "old": {
+      "alpine-salamander": 3,
+      "alpine-swift": 3,
+      "apollo-butterfly": 3,
+      "chipmunk-hoarder": 5,
+      "ibex-rockcaller": 1,
+      "vigil-owl": 3
+     },
+     "leaders0": [
+      "ibex-rockcaller"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:flying",
+     "deck": {
+      "ibex-rockcaller": 2,
+      "great-horned-owl": 4,
+      "alpine-salamander": 4,
+      "gale-swift": 4,
+      "red-billed-chough": 4
+     },
+     "problems": []
+    },
+    {
+     "code": "11-A-4",
+     "kind": "boss",
+     "size": 16,
+     "old": {
+      "alpine-salamander": 2,
+      "alpine-swift": 1,
+      "apollo-butterfly": 2,
+      "chipmunk-hoarder": 4,
+      "eyrie-warden": 4,
+      "swamp-alligator": 1,
+      "wound-reaver": 2
+     },
+     "leaders0": [
+      "wound-reaver"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "boss",
+     "deck": {
+      "wound-reaver": 3,
+      "apollo-butterfly": 3,
+      "red-billed-chough": 3,
+      "alpine-swift": 3,
+      "chipmunk-hoarder": 2,
+      "hawk-arrowkeeper": 1,
+      "eyrie-warden": 1
+     },
+     "problems": []
+    }
+   ],
+   "usage": {
+    "gale-swift": 2,
+    "chipmunk-hoarder": 2,
+    "gangrenous-leech": 2,
+    "great-horned-owl": 2,
+    "alpine-salamander": 2,
+    "alpine-swift": 2,
+    "red-billed-chough": 2,
+    "swamp-alligator": 1,
+    "apollo-butterfly": 1,
+    "hawk-arrowkeeper": 1,
+    "eyrie-warden": 1
+   }
+  },
+  {
+   "id": "mn",
+   "mapNo": 8,
+   "side": true,
+   "name": "The Glimmer Depths",
+   "strategies": [
+    {
+     "id": "BPRO",
+     "focus": "family:flying"
+    },
+    {
+     "id": "BPRO",
+     "focus": "swarm"
+    },
+    {
+     "id": "BPRO",
+     "focus": "big"
+    }
+   ],
+   "peaks": [
+    "8-A-1",
+    "8-A-2",
+    "8-A-3"
+   ],
+   "usageCap": 2,
+   "repairs": [],
+   "mix": {
+    "cost1": {
+     "shown": 8,
+     "list": 8
+    },
+    "cost0": {
+     "shown": 6,
+     "list": 6
+    },
+    "wait1": {
+     "shown": 11,
+     "list": 11
+    },
+    "wait0": {
+     "shown": 3,
+     "list": 3
+    },
+    "lumber": {
+     "shown": 0,
+     "list": 0
+    },
+    "plain": {
+     "shown": 1,
+     "list": 1
+    },
+    "status": {
+     "shown": 2,
+     "list": 2
+    },
+    "stone": {
+     "shown": 0,
+     "list": 0
+    }
+   },
+   "fights": [
+    {
+     "code": "8-A-1",
+     "kind": "skirmish",
+     "size": 14,
+     "old": {
+      "bat-swarmling": 1,
+      "blind-cave-fish": 3,
+      "cave-olm": 5,
+      "prospector-mole": 1,
+      "whip-spider": 4
+     },
+     "leaders0": [
+      "whip-spider"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "big",
+     "deck": {
+      "whip-spider": 2,
+      "upside-down-bat": 4,
+      "magpie-collector": 1,
+      "cave-olm": 3,
+      "oilbird": 4
+     },
+     "problems": []
+    },
+    {
+     "code": "8-A-2",
+     "kind": "skirmish",
+     "size": 20,
+     "old": {
+      "bat-swarmling": 1,
+      "echo-screecher": 3,
+      "glimmer-spider": 3,
+      "prospector-mole": 4,
+      "stalactite-golem": 1,
+      "sulfur-cinder-moth": 4,
+      "whip-spider": 4
+     },
+     "leaders0": [
+      "echo-screecher"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "swarm",
+     "deck": {
+      "echo-screecher": 3,
+      "glintsnatch-magpie": 4,
+      "blind-cave-fish": 4,
+      "cave-olm": 4,
+      "cave-swiftlet": 4,
+      "stalactite-golem": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "8-A-3",
+     "kind": "skirmish",
+     "size": 19,
+     "old": {
+      "sulfur-cinder-moth": 4,
+      "echo-screecher": 3,
+      "blind-cave-fish": 3,
+      "whip-spider": 4,
+      "cave-olm": 5
+     },
+     "leaders0": [
+      "echo-screecher"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:flying",
+     "deck": {
+      "echo-screecher": 3,
+      "blind-cave-fish": 4,
+      "oilbird": 4,
+      "upside-down-bat": 4,
+      "whip-spider": 4
+     },
+     "problems": []
+    },
+    {
+     "code": "8-A-4",
+     "kind": "boss",
+     "size": 11,
+     "old": {
+      "blind-cave-fish": 2,
+      "grotto-lobster": 1,
+      "lantern-spark-fly": 1,
+      "malachite-golem": 3,
+      "prospector-mole": 1,
+      "sulfur-cinder-moth": 2,
+      "vampire-bat": 1
+     },
+     "leaders0": [
+      "malachite-golem"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": true,
+     "role": "boss",
+     "deck": {
+      "lantern-spark-fly": 1,
+      "vampire-bat": 2,
+      "cave-swiftlet": 4,
+      "grotto-lobster": 2,
+      "glimmer-spider": 1,
+      "stalactite-golem": 1
+     },
+     "problems": []
+    }
+   ],
+   "usage": {
+    "upside-down-bat": 2,
+    "cave-olm": 2,
+    "oilbird": 2,
+    "blind-cave-fish": 2,
+    "cave-swiftlet": 2,
+    "stalactite-golem": 2,
+    "magpie-collector": 1,
+    "glintsnatch-magpie": 1,
+    "whip-spider": 1,
+    "vampire-bat": 1,
+    "grotto-lobster": 1,
+    "glimmer-spider": 1
+   }
+  },
+  {
+   "id": "my",
+   "mapNo": 14,
+   "side": true,
+   "name": "The Canopy",
+   "strategies": [
+    {
+     "id": "BPRO",
+     "focus": "open"
+    },
+    {
+     "id": "BPRO",
+     "focus": "family:strike-first"
+    },
+    {
+     "id": "BPRO",
+     "focus": "family:night"
+    }
+   ],
+   "peaks": [
+    "14-A-2",
+    "14-A-3",
+    "14-A-4"
+   ],
+   "usageCap": 3,
+   "repairs": [],
+   "mix": {
+    "cost1": {
+     "shown": 11,
+     "list": 11
+    },
+    "cost0": {
+     "shown": 7,
+     "list": 7
+    },
+    "wait1": {
+     "shown": 11,
+     "list": 11
+    },
+    "wait0": {
+     "shown": 7,
+     "list": 7
+    },
+    "lumber": {
+     "shown": 1,
+     "list": 1
+    },
+    "plain": {
+     "shown": 2,
+     "list": 2
+    },
+    "status": {
+     "shown": 2,
+     "list": 2
+    },
+    "stone": {
+     "shown": 0,
+     "list": 0
+    }
+   },
+   "fights": [
+    {
+     "code": "14-A-1",
+     "kind": "skirmish",
+     "size": 14,
+     "old": {
+      "apollo-butterfly": 1,
+      "hoopoe-herald": 4,
+      "leafcutter-gardener": 1,
+      "proboscis-monkey": 1,
+      "redwood-woodpecker": 1,
+      "vampire-bat": 2,
+      "weaver-bird": 4
+     },
+     "leaders0": [
+      "vampire-bat"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "blend",
+     "deck": {
+      "vampire-bat": 3,
+      "war-drum-mandrill": 4,
+      "hanging-loafer": 4,
+      "mosquito-cloud": 1,
+      "toucan-courier": 2
+     },
+     "problems": []
+    },
+    {
+     "code": "14-A-2",
+     "kind": "skirmish",
+     "size": 12,
+     "old": {
+      "camouflage-frog": 1,
+      "hoopoe-herald": 4,
+      "proboscis-monkey": 1,
+      "redwood-woodpecker": 1,
+      "vampire-bat": 3,
+      "weaver-bird": 2
+     },
+     "leaders0": [
+      "vampire-bat"
+     ],
+     "explicitLeaders": false,
+     "showcase": "ancient-sloth-titan",
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:night",
+     "deck": {
+      "vampire-bat": 2,
+      "toucan-courier": 4,
+      "slow-loris": 4,
+      "howler-monkey": 1,
+      "amber-cicada": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "14-A-3",
+     "kind": "skirmish",
+     "size": 16,
+     "old": {
+      "camouflage-frog": 4,
+      "hoopoe-herald": 2,
+      "kinkajou-lurker": 4,
+      "pangolin-roller": 1,
+      "proboscis-monkey": 1,
+      "weaver-bird": 4
+     },
+     "leaders0": [
+      "camouflage-frog"
+     ],
+     "explicitLeaders": true,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:strike-first",
+     "deck": {
+      "kinkajou-lurker": 2,
+      "camouflage-frog": 3,
+      "fishing-cat": 1,
+      "howler-monkey": 4,
+      "slow-loris": 4,
+      "hoopoe-herald": 2
+     },
+     "problems": []
+    },
+    {
+     "code": "14-A-4",
+     "kind": "elite",
+     "size": 17,
+     "old": {
+      "apollo-butterfly": 1,
+      "hercules-beetle": 2,
+      "hoopoe-herald": 4,
+      "jaguar-stalker": 3,
+      "leafcutter-gardener": 1,
+      "proboscis-monkey": 1,
+      "redwood-woodpecker": 1,
+      "weaver-bird": 4
+     },
+     "leaders0": [
+      "vampire-bat"
+     ],
+     "explicitLeaders": true,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "open",
+     "deck": {
+      "hercules-beetle": 2,
+      "leaf-chameleon": 4,
+      "howler-monkey": 4,
+      "leafcutter-gardener": 1,
+      "slow-loris": 4,
+      "ancient-sloth-titan": 2
+     },
+     "problems": []
+    },
+    {
+     "code": "14-A-5",
+     "kind": "boss",
+     "size": 20,
+     "old": {
+      "apollo-butterfly": 1,
+      "camouflage-frog": 1,
+      "hoopoe-herald": 5,
+      "jaguar-stalker": 3,
+      "pangolin-roller": 3,
+      "proboscis-monkey": 1,
+      "redwood-woodpecker": 1,
+      "weaver-bird": 5
+     },
+     "leaders0": [
+      "jaguar-stalker"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "boss",
+     "deck": {
+      "jaguar-stalker": 3,
+      "hoopoe-herald": 4,
+      "leafcutter-gardener": 1,
+      "mosquito-cloud": 1,
+      "amber-cicada": 1,
+      "leaf-chameleon": 4,
+      "poison-dart-frog": 4,
+      "war-drum-mandrill": 2
+     },
+     "problems": []
+    }
+   ],
+   "usage": {
+    "slow-loris": 3,
+    "howler-monkey": 3,
+    "toucan-courier": 2,
+    "amber-cicada": 2,
+    "hoopoe-herald": 2,
+    "leaf-chameleon": 2,
+    "leafcutter-gardener": 2,
+    "mosquito-cloud": 2,
+    "war-drum-mandrill": 2,
+    "fishing-cat": 1,
+    "ancient-sloth-titan": 1,
+    "poison-dart-frog": 1,
+    "hanging-loafer": 1
+   }
+  },
+  {
+   "id": "mj",
+   "mapNo": 10,
+   "side": true,
+   "name": "The Sunken Depths",
+   "strategies": [
+    {
+     "id": "BPRO",
+     "focus": "family:tide"
+    },
+    {
+     "id": "BPRO",
+     "focus": "open"
+    },
+    {
+     "id": "BPRO",
+     "focus": "family:cleave"
+    }
+   ],
+   "peaks": [
+    "10-A-2",
+    "10-A-3",
+    "10-A-4"
+   ],
+   "usageCap": 3,
+   "repairs": [
+    {
+     "kind": "lumber",
+     "fight": "10-A-4",
+     "out": "abyss-lantern-squid",
+     "in": "nautilus-drifter"
+    }
+   ],
+   "mix": {
+    "cost1": {
+     "shown": 12,
+     "list": 13
+    },
+    "cost0": {
+     "shown": 3,
+     "list": 3
+    },
+    "wait1": {
+     "shown": 14,
+     "list": 15
+    },
+    "wait0": {
+     "shown": 1,
+     "list": 1
+    },
+    "lumber": {
+     "shown": 2,
+     "list": 2
+    },
+    "plain": {
+     "shown": 2,
+     "list": 2
+    },
+    "status": {
+     "shown": 2,
+     "list": 2
+    },
+    "stone": {
+     "shown": 0,
+     "list": 0
+    }
+   },
+   "fights": [
+    {
+     "code": "10-A-1",
+     "kind": "skirmish",
+     "size": 10,
+     "old": {
+      "coral-reef-shark": 1,
+      "kraken-spawnling": 1,
+      "orca-vanguard": 3,
+      "riptide-eel": 3,
+      "hagfish-silencer": 2
+     },
+     "leaders0": [
+      "kraken-spawnling"
+     ],
+     "explicitLeaders": true,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "blend",
+     "deck": {
+      "kraken-spawnling": 3,
+      "conger-eel": 2,
+      "giant-clam": 2,
+      "hagfish-silencer": 2,
+      "moon-jelly": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "10-A-2",
+     "kind": "skirmish",
+     "size": 12,
+     "old": {
+      "coral-reef-shark": 2,
+      "orca-vanguard": 4,
+      "kraken-spawnling": 4,
+      "hagfish-silencer": 1,
+      "nudibranch": 1
+     },
+     "leaders0": [
+      "coral-reef-shark"
+     ],
+     "explicitLeaders": false,
+     "showcase": "coral-reef-shark",
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:cleave",
+     "deck": {
+      "coral-reef-shark": 2,
+      "kraken-spawnling": 4,
+      "orca-vanguard": 3,
+      "hagfish-silencer": 2,
+      "coral-polyp-colony": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "10-A-3",
+     "kind": "skirmish",
+     "size": 12,
+     "old": {
+      "blue-ringed-octopus": 2,
+      "kraken-spawnling": 4,
+      "riptide-eel": 2,
+      "orca-vanguard": 3,
+      "hagfish-silencer": 1
+     },
+     "leaders0": [
+      "hagfish-silencer"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "open",
+     "deck": {
+      "hagfish-silencer": 1,
+      "barnacle-fortress": 3,
+      "abyss-lantern-squid": 4,
+      "giant-clam": 3,
+      "coral-polyp-colony": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "10-A-4",
+     "kind": "elite",
+     "size": 12,
+     "old": {
+      "hagfish-silencer": 1,
+      "orca-vanguard": 4,
+      "kraken-spawnling": 4,
+      "nudibranch": 2,
+      "coral-reef-shark": 1
+     },
+     "leaders0": [
+      "coral-reef-shark"
+     ],
+     "explicitLeaders": true,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:tide",
+     "deck": {
+      "coral-reef-shark": 1,
+      "coral-polyp-colony": 4,
+      "riptide-eel": 2,
+      "hagfish-silencer": 2,
+      "clownfish-scout": 1,
+      "nautilus-drifter": 2
+     },
+     "problems": []
+    },
+    {
+     "code": "10-A-5",
+     "kind": "boss",
+     "size": 20,
+     "old": {
+      "blue-ringed-octopus": 3,
+      "hagfish-silencer": 2,
+      "kraken-spawnling": 5,
+      "orca-vanguard": 5,
+      "coral-reef-shark": 4,
+      "riptide-eel": 1
+     },
+     "leaders0": [
+      "hagfish-silencer"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "boss",
+     "deck": {
+      "blue-ringed-octopus": 3,
+      "hagfish-silencer": 3,
+      "abyss-lantern-squid": 4,
+      "giant-clam": 4,
+      "humpback-elder": 4,
+      "barnacle-fortress": 2
+     },
+     "problems": []
+    }
+   ],
+   "usage": {
+    "hagfish-silencer": 3,
+    "coral-polyp-colony": 3,
+    "giant-clam": 3,
+    "barnacle-fortress": 2,
+    "abyss-lantern-squid": 2,
+    "kraken-spawnling": 1,
+    "orca-vanguard": 1,
+    "riptide-eel": 1,
+    "clownfish-scout": 1,
+    "humpback-elder": 1,
+    "conger-eel": 1,
+    "moon-jelly": 1,
+    "nautilus-drifter": 1
+   }
+  },
+  {
+   "id": "mi",
+   "mapNo": 17,
+   "side": true,
+   "name": "The Ice Hollow",
+   "strategies": [
+    {
+     "id": "BPRO",
+     "focus": "family:cold"
+    },
+    {
+     "id": "BPRO",
+     "focus": "open"
+    },
+    {
+     "id": "BPRO",
+     "focus": "big"
+    }
+   ],
+   "peaks": [
+    "17-A-1",
+    "17-A-2",
+    "17-A-3"
+   ],
+   "usageCap": 2,
+   "repairs": [],
+   "mix": {
+    "cost1": {
+     "shown": 8,
+     "list": 8
+    },
+    "cost0": {
+     "shown": 3,
+     "list": 3
+    },
+    "wait1": {
+     "shown": 8,
+     "list": 8
+    },
+    "wait0": {
+     "shown": 3,
+     "list": 3
+    },
+    "lumber": {
+     "shown": 1,
+     "list": 1
+    },
+    "plain": {
+     "shown": 1,
+     "list": 1
+    },
+    "status": {
+     "shown": 3,
+     "list": 3
+    },
+    "stone": {
+     "shown": 0,
+     "list": 0
+    }
+   },
+   "fights": [
+    {
+     "code": "17-A-1",
+     "kind": "skirmish",
+     "size": 16,
+     "old": {
+      "frost-hare-sprinter": 1,
+      "greenland-shark": 3,
+      "harbor-seal": 5,
+      "ravenous-wolverine": 1,
+      "talus-pika": 2,
+      "snow-bunting-archer": 4
+     },
+     "leaders0": [
+      "greenland-shark"
+     ],
+     "explicitLeaders": false,
+     "showcase": "greenland-shark",
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "big",
+     "deck": {
+      "greenland-shark": 2,
+      "frost-thistle-lynx": 5,
+      "arctic-tern": 4,
+      "permafrost-mammoth": 4,
+      "lemming-swarm": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "17-A-2",
+     "kind": "skirmish",
+     "size": 20,
+     "old": {
+      "harbor-seal": 5,
+      "lone-grey-wolf": 2,
+      "snow-bunting-archer": 4,
+      "snow-ermine": 4,
+      "talus-pika": 5
+     },
+     "leaders0": [
+      "lone-grey-wolf"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "open",
+     "deck": {
+      "lone-grey-wolf": 2,
+      "ravenous-wolverine": 3,
+      "ringed-seal": 4,
+      "talus-pika": 4,
+      "frost-thistle-lynx": 4,
+      "lemming-swarm": 3
+     },
+     "problems": []
+    },
+    {
+     "code": "17-A-3",
+     "kind": "skirmish",
+     "size": 20,
+     "old": {
+      "greenland-shark": 3,
+      "harbor-seal": 4,
+      "lone-grey-wolf": 2,
+      "snow-bunting-archer": 4,
+      "snow-ermine": 5,
+      "talus-pika": 2
+     },
+     "leaders0": [
+      "ravenous-wolverine"
+     ],
+     "explicitLeaders": true,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:cold",
+     "deck": {
+      "permafrost-mammoth": 4,
+      "frostbitten-wolverine": 4,
+      "talus-pika": 4,
+      "beluga": 3,
+      "arctic-tern": 4,
+      "ringed-seal": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "17-A-4",
+     "kind": "boss",
+     "size": 16,
+     "old": {
+      "frost-hare-sprinter": 1,
+      "harbor-seal": 4,
+      "lone-grey-wolf": 1,
+      "ravenous-wolverine": 2,
+      "snow-ermine": 3,
+      "talus-pika": 5
+     },
+     "leaders0": [
+      "lone-grey-wolf"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "boss",
+     "deck": {
+      "lone-grey-wolf": 1,
+      "lemming-swarm": 3,
+      "arctic-tern": 3,
+      "talus-pika": 3,
+      "greenland-shark": 2,
+      "beluga": 2,
+      "ravenous-wolverine": 2
+     },
+     "problems": []
+    }
+   ],
+   "usage": {
+    "arctic-tern": 3,
+    "lemming-swarm": 3,
+    "talus-pika": 3,
+    "frost-thistle-lynx": 2,
+    "permafrost-mammoth": 2,
+    "ravenous-wolverine": 2,
+    "ringed-seal": 2,
+    "beluga": 2,
+    "frostbitten-wolverine": 1,
+    "greenland-shark": 1
+   }
   }
  ]
 }
