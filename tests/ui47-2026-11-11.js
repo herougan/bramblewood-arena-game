@@ -7,7 +7,11 @@ const rd = f=> fs.readFileSync(path.join(ROOT, f), 'utf8');
 let fail = 0, pass = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  x', m); } else pass++; };
 const app = rd('arena_app.js'), html = rd('index.html'), texts = rd('bramblewood-texts.js');
 const fn = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0) return ''; const k = app.indexOf('\n', i), line = app.slice(i, k); if(/\}\s*(\/\/.*)?$/.test(line) && !/\{\s*(\/\/.*)?$/.test(line)) return line; const j = app.indexOf('\n}\n', i); return app.slice(i, j + 2); };
-ok(/const UI47_SUGGEST = \{\};/.test(app) && /const UI47_ADMIN_ADD = \{\};/.test(app), 'UI47_SUGGEST and UI47_ADMIN_ADD exist and are empty');
+// 2026-11-11: THEME8 filled both lists; check they parse and name only real cards.
+{ const cj = require('../canonical/cards.json'), ids = new Set(Array.isArray(cj) ? cj.map(c=> c.id) : Object.keys(cj));
+  const lst = n=> { const m = app.match(new RegExp('const ' + n + ' = (\\{.*\\});')); return m ? JSON.parse(m[1]) : null; };
+  const sg = lst('UI47_SUGGEST'), ad = lst('UI47_ADMIN_ADD'), bad = [sg, ad].filter(Boolean).flatMap(o=> Object.values(o).flat()).filter(id=> !ids.has(id));
+  ok(sg && ad && !bad.length, 'UI47_SUGGEST and UI47_ADMIN_ADD parse and name only real cards ' + bad.slice(0, 3)); }
 ok(/const UI47_TUT = -1;/.test(app) && /n >= 0\) ui43TutorialCards\(\)\.forEach\(id=>\{ if\(!out\.has\(id\)\) out\.set\(id, UI47_TUT\)/.test(app), 'ui37CarriedIndex: Map 0 on, tutorial index -1');
 ok(/if\(n != null && n >= 0\) ui43TutorialCards\(\)\.forEach\(id=> add\(id, 'tut'\)\)/.test(app), 'ui37Prospects: tutorial cards are prospects from Map 0');
 // the pure rule, lifted
