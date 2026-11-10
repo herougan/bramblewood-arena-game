@@ -175,7 +175,9 @@ ok(byId['piranha-shoal'].effects.bloodlust === true, 'cards: Piranha Shoal is Bl
 
 // ---- Hoard N (default 2), Shatter N (default 2)
 { const {e, P} = mk(); const Hd = put(e, P, 1, 's7-hoard', 0); const W = put(e, P, 2, 's7-wall', 0); P[1].lumber = 7; e.syncPhaseStats(P, so, []); e.debugAttack(P, so, Hd.uid, {}, []);
-  ok(W.hp === 496 && Hd.maxHp === 500 + 3, `Hoard 0.5: +3/+3 with 7 Lumber (ENG36: +N/+N a Lumber, rounded down) (7 Lumber: 1 + 3 = ${500 - W.hp}, max ${Hd.maxHp})`); }
+  // FIX12 (2026-11-10): ENG40 (2026-11-09, owner on ENG36-1) made Hoard N +N/+N for every 3 Lumber, so Hoard 0.5 with 7 Lumber is
+  // floor(0.5 x floor(7 / 3)) = +1/+1. Was (ENG36): +3/+3 (floor(7 x 0.5)).
+  ok(W.hp === 498 && Hd.maxHp === 500 + 1, `Hoard 0.5: +1/+1 with 7 Lumber (ENG40: +N/+N per 3 Lumber, rounded down) (7 Lumber: 1 + 1 = ${500 - W.hp}, max ${Hd.maxHp})`); }
 { const {e, P} = mk(); const Sh = put(e, P, 1, 's7-shatter', 0); const W = put(e, P, 2, 's7-wall', 0); e.debugAttack(P, so, Sh.uid, {}, []); const d0 = 500 - W.hp;
   W.frozen = 3; e.debugAttack(P, so, Sh.uid, {}, []); const d1 = 500 - W.hp - d0; ok(d0 === 3 && d1 === 5, `Shatter: +2 on a Frozen unit (${d0}, then ${d1})`); }
 

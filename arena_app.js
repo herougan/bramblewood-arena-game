@@ -33854,8 +33854,14 @@ function ui22McClaudeNew(mapId, onLists, ok, defs){
 // awaiting a map) says so in its pill.
 function c17McGroups(mapId, onLists, ok, defs, seen){
   const e = (CLAUDE_NEW.content17 || {})[mapId]; let left = 15;
-  return ((e && e.groups) || []).map(g=> ({theme: g.theme, current: !!g.current, picks: (g.picks || []).filter(p=>{ if(!p || left <= 0 || seen.has(p.id) || onLists.has(p.id) || !defs[p.id] || !ok(p.id)) return false; seen.add(p.id); left--; return true; })})).filter(g=> g.picks.length);
+  return ((e && e.groups) || []).map(g=> ({theme: g.theme, current: !!g.current, picks: (g.picks || []).filter(p=>{ if(!p || left <= 0 || seen.has(p.id) || onLists.has(p.id) || !defs[p.id] || !ok(p.id)) return false; seen.add(p.id); left--; return true; }).map(p=> Object.assign({}, p, {delivery: c17LiveDelivery(p, defs[p.id])}))})).filter(g=> g.picks.length);
 }
+// FIX12 (2026-11-10): the 🏹 reads the card's delivery now (canonical/skill-delivery.json, as the engine does), not the pick's stored one: ENG40
+// (2026-11-09, owner ENG34-1 b "reach counts as melee") made Reach melee again, so a Reach thrower (Trident Caiman, Mallard Halberdier, Tidefolk
+// Harpooner) stored 'ranged' by CONTENT17 no longer wears it
+function c17LiveDelivery(p, d){ try{ if(!d || typeof skillDeliveryOf !== 'function') return p.delivery; const e = d.effects || {};
+  const rng = Object.keys(e).some(k=> skillDeliveryOf(k) === 'ranged') || (typeof rangedSwingOf === 'function' && rangedSwingOf(e));
+  return rng ? 'ranged' : (Number(d.attack) > 0 ? 'melee' : 'none'); }catch(err){ return p.delivery; } }
 function ui22McClaudeNewHTML(mapId, defs, ok, onLists){
   const list = ui22McClaudeNew(mapId, onLists, ok, defs), groups = c17McGroups(mapId, onLists, ok, defs, new Set(list.map(e=> e.id)));
   if(!list.length && !groups.length) return '';

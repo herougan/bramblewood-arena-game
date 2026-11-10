@@ -24,7 +24,9 @@ late.rows.forEach(r => ok(tot(r.after) === tot(r.before), r.where + ': size kept
 late.rows.filter(r => r.pro).forEach(r => { const x = (pro.maps[r.loc][r.pro.kind] || []).find(y => y.id === r.pro.id);
   ok(x && (/BAL13/.test(x.bal13 || '') || (['mb', 'm2', 'm7', 'm5', 'my'].includes(r.loc) && !Object.keys(x.deck).some(id => ['beetle-battering-ram', 'siege-rhino', 'hercules-beetle'].includes(id)))), r.where + ': dated bal13 note'); ok(x && Object.keys(x.deck).length <= 6 && Object.values(x.deck).every(k => k <= 4), r.where + ': 6/4 rule'); });
 const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
-late.rows.filter(r => !r.pro).forEach(r => ok(new RegExp(`key:"${r.key}"[^\\n]*BAL13, owner 19:56 on BAL11-3 b`).test(app), r.where + ': dated comment on the deck'));
+// FIX12 (2026-11-10): BAL33 (BAL28-2 b) swapped The Canopy's slots 1 and 3, so the Dart Frogs deck BAL13 changed is 14-A-3 now (was 14-A-1)
+const BAL33_MOVED = {'my:14-A-1': '14-A-3'};
+late.rows.filter(r => !r.pro).forEach(r => ok(new RegExp(`key:"${BAL33_MOVED[r.loc + ':' + r.key] || r.key}"[^\\n]*BAL13, owner 19:56 on BAL11-3 b`).test(app), r.where + ': dated comment on the deck'));
 
 // 2. the reference ladder
 const set = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'ref', 'ref-ladder.json'), 'utf8'));

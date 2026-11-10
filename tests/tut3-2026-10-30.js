@@ -33,7 +33,9 @@ lsCards.forEach(c=>{ const b = base[c.id], keys = lvSkillKeys(c);
   // the helper
   const f0 = R.effectsAtLevel(b, 0), f1 = R.effectsAtLevel(b, 1);
   ok(!hasLv1Fx(f0, c).length, `1. effectsAtLevel(${c.id}, 0) has none of ${keys.join(',')} (${JSON.stringify(f0)})`);
-  ok(keys.filter(k=> !LV_ONLY.has(k)).every(k=> !(k in (b.effects || {})) || f1[k] === b.effects[k] || f1[k] === c.levelSkills[1][k]), `1. effectsAtLevel(${c.id}, 1) has them back (${JSON.stringify(f1)})`);
+  // FIX12 (2026-11-10): ENG39 (DES2-3 a) stores a kind as an object ({arrow: {v: 2, type: 'fire'}}, was fireArrow: 2), so compare by value
+  const same = (x, y)=> x === y || JSON.stringify(x) === JSON.stringify(y);
+  ok(keys.filter(k=> !LV_ONLY.has(k)).every(k=> !(k in (b.effects || {})) || same(f1[k], b.effects[k]) || same(f1[k], c.levelSkills[1][k])), `1. effectsAtLevel(${c.id}, 1) has them back (${JSON.stringify(f1)})`);
   // a reference-deck copy at Level 0, an editor def at Level 0, an EB / editor Level 0 enemy copy, the tutorial's copy
   const rp = R.refPartsDeck([[c.id, 1, 0]], base, {}), ro = {}; R.refPartsDeck([[c.id, 1, 0]], base, ro);
   // refPartsDeck keeps a card as it is when its own level is >= the asked one; only a card whose base level is above 0 gets a copy, so check the ones it builds

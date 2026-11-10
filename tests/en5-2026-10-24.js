@@ -134,7 +134,9 @@ const bv = sk('bleed').value, pv = sk('poison').value;
   // 2026-11-10 (BAL34, UI27-4 a): the editor's count (a plain light skill 0.5) puts Siege + Nocturnal + Breach at 2.5; the cards over 2 are listed
   // in docs/balance/bal34/budget-recheck-2026-11-10.json for the owner (no card is cut here)
   const BAL34_OVER = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/bal34/budget-recheck-2026-11-10.json'), 'utf8')).twoSkill.overAnyMap);
-  Object.entries(want).forEach(([id, k])=>{ const x = c(id), b = x && T.budget(x, {level: 1}); ok(x && x.effects[k] && b && (b.ok || HOLD(id)), `${id}: ${k}, inside the budget (${x && x.attack}/${x && x.health}, ${b && b.x1} <= ${b && b.N})`);
+  // FIX12 (2026-11-10): ENG39 (DES2-3 a) stores Breach as a kind of Puncture ({puncture: {v, kind: 'breach'}}); either form counts
+  const hasK = (e, k)=> !!(e && (e[k] || Object.values(e).some(v=> v && typeof v === 'object' && v.kind === k)));
+  Object.entries(want).forEach(([id, k])=>{ const x = c(id), b = x && T.budget(x, {level: 1}); ok(x && hasK(x.effects, k) && b && (b.ok || HOLD(id)), `${id}: ${k}, inside the budget (${x && x.attack}/${x && x.health}, ${b && b.x1} <= ${b && b.N})`);
     ok(x && (BB.skillCountOf(x.effects) <= 2 || BAL34_OVER.has(id)), `${id}: two skills at most, or on BAL34's list (${x && BB.skillCountOf(x.effects)})`); });
   const rf = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/en5-refit-2026-10-24.json'), 'utf8'));
   ok(Array.isArray(rf.up) && Array.isArray(rf.down) && Array.isArray(rf.held), `the re-fit is filed (${rf.up.length} up, ${rf.down.length} down, ${rf.held.length} held)`);

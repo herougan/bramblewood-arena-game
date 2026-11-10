@@ -39,7 +39,9 @@ const BOLT_EL = {fireBolt: 'heat', fireArrow: 'heat', iceBolt: 'cold', iceArrow:
 C.SHOOTERS.forEach(s=>{
   const c = by[s.id]; ok(!!c, `1 ${s.id} exists`); if(!c) return;
   ok(ranged(c.effects), `1 ${s.id} is ranged (canonical/skill-delivery.json)`);
-  const fx = c.effects || {}, el = Object.keys(fx).map(k=> BOLT_EL[k]).find(Boolean) || ((fx.triggers || []).find(t=> (t.do || t.action) === 'damage') || {}).dmgType;
+  // FIX12 (2026-11-10): ENG39 (DES2-3 a) stores the bolts and arrows as kinds of Arrow ({arrow: {v, type, form}}); read the element from the
+  // expanded keys (fireBolt, iceArrow ...), as the build and the engine do
+  const fx = c.effects || {}, fxX = require(path.join(ROOT, 'bramblewood-skillparams.js')).expand(fx), el = Object.keys(fxX).map(k=> BOLT_EL[k]).find(Boolean) || ((fx.triggers || []).find(t=> (t.do || t.action) === 'damage') || {}).dmgType;
   ok(el === s.element, `1 ${s.id} shoots ${s.element} (${el})`);
   ok(!roadListed.has(s.id) && !inExtras(s.id), `1 ${s.id} is on no map list (the endless dungeons' / tower's mixed lists aside) and in no pack's extras`);
   ok(L.budgetHold(s.id) === 'unplaced', `1 ${s.id} is out of play (unplaced)`);

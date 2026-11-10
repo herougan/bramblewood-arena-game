@@ -40,7 +40,11 @@ MAPS.forEach(m=>{
   const lists = ownLists(m);
   picks.forEach(p=>{ const c = by[p.id]; ok(!!c, `${m}: ${p.id} is in cards.json`); if(!c) return;
     const want = isRanged(c) ? 'ranged' : (Number(c.attack) > 0 ? 'melee' : 'none');
-    ok(p.delivery === want, `${m}: ${p.id} delivery ${p.delivery} (skill-delivery says ${want})`);
+    // FIX12 (2026-11-10): ENG40 (owner ENG34-1 b "reach counts as melee") made Reach melee again; CONTENT17 stored 'ranged' for its Reach
+    // throwers, and the Map cards window reads the live delivery now (c17LiveDelivery), so that stored label is stale, not wrong
+    const eng40Reach = p.delivery === 'ranged' && want === 'melee' && c.effects.reach === true;
+    ok(p.delivery === want || eng40Reach, `${m}: ${p.id} delivery ${p.delivery} (skill-delivery says ${want})`);
+    if(eng40Reach) p.delivery = want; // the live label, for the ranged count below
     ok(p.source === (newIds.has(p.id) ? 'new' : 'existing'), `${m}: ${p.id} source ${p.source}`);
     ok(typeof p.why === 'string' && p.why.trim().length > 3, `${m}: ${p.id} has a why`);
     ok(!lists.has(p.id), `${m}: ${p.id} is not already on this map's lists`); });
@@ -73,7 +77,9 @@ C17.NEW.forEach(s=>{ const c = by[s.id]; ok(!!c, `${s.id}: in cards.json`); if(!
     BANNED.forEach(w=> ok(!body.includes(w), `${s.id}: the prompt avoids "${w}"`)); }
 });
 ['yeti-tracker', 'icefletch-fox', 'yeti-snarer'].forEach(id=> ok(by[id] && isRanged(by[id]), `2: yeti hunter ${id} is ranged`));
-ok(by['trident-caiman'] && by['trident-caiman'].effects.reach === true && isRanged(by['trident-caiman']), '2: the Trident Caiman throws (Reach: its swing is ranged)');
+// FIX12 (2026-11-10): ENG40 (2026-11-09, owner ENG34-1 b "reach counts as melee"): Reach left skill-delivery.json's swing list; was "the Trident Caiman throws (Reach: its swing is ranged)"
+ok(by['trident-caiman'] && by['trident-caiman'].effects.reach === true && !isRanged(by['trident-caiman']), '2: the Trident Caiman keeps Reach, a melee swing since ENG40');
+ok(/function c17LiveDelivery\(/.test(R('arena_app.js')) && /delivery: c17LiveDelivery\(p, defs\[p\.id\]\)/.test(R('arena_app.js')), '3: the Map cards window marks a pick by its live delivery (FIX12, after ENG40)');
 ok(by['icefletch-fox'] && Number(by['icefletch-fox'].effects.iceArrow) > 0, '2: an ice animal with Ice Arrow');
 ok(['peat-smoke-shaman', 'mossmother-newt'].every(id=> by[id] && by[id].effects.healing), '2: the bog healers heal');
 

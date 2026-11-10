@@ -29,6 +29,10 @@ const find = code => { for (const m of G.CONQUEST_MAPS) { if (m.reserved || m.to
 let kept = 0;
 for (const r of rows) {
   const l = lineOf(r.code), now = fields(l), f = find(r.code); ok(l && f, r.code + ': in arena_app.js'); if (!l || !f) continue;
+  // FIX12 (2026-11-10): a fight a newer package retuned again (or moved) is checked and pinned by that package's test, K14 against the deck it
+  // started from (tests/bal33 / bal35 / bal37 / bal39); BAL19's snapshot (its decks, leaders, deck size) no longer applies. The current decks
+  // pass the K14 rule itself (tools/bal7_k14_decks_2026_10_28.js: the high counts are the fights' leaders).
+  if (/2026-11-09 \(BAL33\)|2026-11-10 \(BAL3[5-9]\): retuned/.test(l)) { if (r.keep) kept++; continue; }
   if (!r.keep) { ok(JSON.stringify(now.deck) === JSON.stringify(r.was.deck) && now.leaders === r.was.leaders && now.shield === r.was.shield, r.code + ': reverted to the fight as it was'); continue; }
   kept++;
   ok(Math.abs(r.after200 - r.target) + 2 <= Math.abs(r.before200 - r.target), `${r.code}: 2+ points nearer the target (${r.before200} -> ${r.after200}, target ${r.target})`);

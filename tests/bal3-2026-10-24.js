@@ -82,12 +82,15 @@ let road = null; try{ road = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 
 ok(road && road.main && road.main.fights === 179, '5. the road table measures Maps 0-24 (179 fights)');
 ok(road && road.main.greenAfter > road.main.greenBefore, `5. more fights green after (${road && road.main.greenBefore} -> ${road && road.main.greenAfter})`);
 { const bad = [];
+  // FIX12 (2026-11-10): ENG39 (DES2-3 a) stores Berserk as Harbinger {who: 'ally'} in cards.json; the build and makeSimEngine expand the
+  // kinds to their flat keys before a fight reads them, so the boon count reads the expanded defs (as the page and the engine do)
+  const DX = JSON.parse(JSON.stringify(D)); if(E.SKILL_PARAMS_LIB) E.SKILL_PARAMS_LIB.expandDefsInPlace(DX);
   MAPS.forEach(m=>{ if(!roadMap(m)) return; const no = G.mapNumberOf(m.id); if(no == null || no > 24 || (m.sub && m.id !== 'mpd')) return;
     (m.nodes || []).forEach(n=>{ if(!n.deck || n.kind === 'tutorial' || n.kind === 'raidboss') return; G.NODE_MAP_HINT.set(n, m.id); const ids = Object.keys(n.deck);
       ids.forEach(id=>{ if(!D[id]) bad.push(`${n.key} unknown ${id}`); else if(n.deck[id] > G.maxCopiesForRarity(D[id].rarity)) bad.push(`${n.key} ${id} x${n.deck[id]} over the ladder`); });
       if((n.kind || 'skirmish') === 'skirmish' && (ids.length < 5 || ids.length > 7)) bad.push(`${n.key} ${ids.length} different cards`);
       (G.skirmishLeadersOf(n, m.id) || []).forEach(id=>{ if(!n.deck[id] && !(n.leaders || []).includes(id)) bad.push(`${n.key} leader ${id} not in its deck`); });
-      if(n.rules && n.rules.boon && !E.selfishBoonCount(D, n.deck, n.rules.boon).on) bad.push(`${n.key} boon ${n.rules.boon} off`); }); });
+      if(n.rules && n.rules.boon && !E.selfishBoonCount(DX, n.deck, n.rules.boon).on) bad.push(`${n.key} boon ${n.rules.boon} off`); }); });
   ok(!bad.length, '5. the road decks keep the rules: ' + bad.slice(0, 10).join('; ')); }
 
 console.log(`bal3-2026-10-24: ${checks - fail}/${checks} passed${fail ? `, ${fail} failed` : ''}`);
