@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-11 Package TOOLS1 (cheaper, faster routine work: shared test cache, i18n_add, shot options, merge tool, project skills)
+- Players see: nothing (tooling and docs only).
+- `tests/run.js`: the pass cache is one file in the git common dir (`bw-test-cache/`), shared by every worktree; a test keeps its last 12 passing keys; temp file + rename; `--cache-dir` prints it, `BW_TEST_CACHE_DIR` overrides it, no git falls back to `tests/out/`. The old `tests/out/test-cache.json` is folded in on first use. `electron/` and `.github/workflows/*.yml` are inputs of a test that names them (desk2 stayed cached after they changed).
+- Smoke in a fresh worktree, 2 cores at load average 13-23 (other agents' suites): cold 492 s before; 26 s on the first run after (2 of 7 reran: they name `tools/`, which changed), 0 s on the second, 1.6 s in a second fresh worktree (7 of 7 cached).
+- `tools/i18n_add.py`: one table (JSON or Python) of TX keys, card names, flavour and pack-only rows with 12 translations; validates codes and `{placeholders}`, writes nothing on a bad entry, keeps existing rows (`--overwrite` replaces), `--keyify`, `--no-export`. Old dated scripts untouched.
+- `tools/shot.py`: `--clip <selector>` (one element) and `--dark`; defaults unchanged; `--help` works without Playwright.
+- `tools/merge/merge_pkg.sh`: a conflict in `docs/code-map.md` or `docs/guides/arena-app-index.md` is regenerated with `tools/code_map.py` (exit 7 if that fails) instead of stopping.
+- `.claude/skills/`: merge-and-test, release, add-texts, ship-change, add-effect, hub; `.gitignore` keeps them tracked; `docs/skills/*.md` stay, with a pointer line after the frontmatter.
+- Docs: `docs/guides/i18n.md`, `testing.md`, `token-savings.md` (recommendations 1, 3, 4, 5, 10, 11 marked done).
+- Tests: new `tests/tools1-2026-11-11.js` (78 checks, about 15 s, temp repos and copies only).
+
 ## 2026-11-11 Package UI47 (Map cards window: tutorial on Map 0, Add card, Suggested, usage chip)
 - Players see (admin Map cards window): Map 0 now shows the tutorial's cards under Carried; a tutorial card's pill reads "Tutorial" (it read "Map 0", which is also Bramblewood Outskirts, so it looked like a Yes on Map 0). Pills now say "Flagged Yes on Map N". Checked with the owner's Maps 0-12 picks: Beaver Lumberjack, Hollow-belly Rat and Alley Cat behave as the rule says (Carried only for a Yes on an earlier main map or a tutorial card; every other card is NEW!); the reported cases came from the pre-UI45 top-up fill.
 - "Skills on these cards" counts only the cards flagged Yes. Baby cards still show and can be flagged but do not count toward the NEW! flagged count or the 45 / 60 pool size.
