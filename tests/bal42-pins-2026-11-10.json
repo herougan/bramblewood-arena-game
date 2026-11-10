@@ -1,0 +1,79 @@
+{
+ "18-4": {
+  "deck": {
+   "caustic-scorpion": 4,
+   "dust-devil-kestrel": 2,
+   "dust-hyena": 1,
+   "roadrunner-courier": 5,
+   "sand-widow": 2,
+   "sandfish": 4
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "18-6": {
+  "deck": {
+   "antlion-pit": 3,
+   "caustic-scorpion": 3,
+   "dust-devil-kestrel": 1,
+   "dust-hyena": 1,
+   "fennec-fox": 3,
+   "hollow-belly-rat": 1,
+   "roadrunner-courier": 3,
+   "sand-widow": 1
+  },
+  "leaders": [
+   "komodo-warlord"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "7-1": {
+  "deck": {
+   "earthworm": 1,
+   "hawthorn-shieldbug": 4,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 1,
+   "truffle-piglet": 2
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "7-5": {
+  "deck": {
+   "bee-forager": 1,
+   "corpse-flower-beetle": 1,
+   "dung-beetle": 1,
+   "hawthorn-shieldbug": 3,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 4,
+   "truffle-piglet": 4
+  },
+  "leaders": [
+   "dung-beetle"
+  ],
+  "shield": "8",
+  "hqHp": null,
+  "characterId": null
+ },
+ "7-6": {
+  "deck": {
+   "corpse-flower-beetle": 3,
+   "dung-beetle": 4,
+   "earthworm": 1,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 3,
+   "wolf-spider-mother": 3,
+   "worker-ant": 1
+  },
+  "leaders": null,
+  "shield": "18",
+  "hqHp": null,
+  "characterId": null
+ }
+}

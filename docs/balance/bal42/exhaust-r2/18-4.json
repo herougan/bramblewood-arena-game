@@ -1,0 +1,157 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "18-4",
+ "map": "md",
+ "mapName": "The Glass Dunes",
+ "kind": "skirmish",
+ "name": "Sandstorm",
+ "band": {
+  "lo": 54,
+  "hi": 70,
+  "target": 62
+ },
+ "list": [
+  "caustic-scorpion",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "hollow-belly-rat",
+  "komodo-warlord",
+  "meerkat-burrower",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "dust-devil-kestrel"
+ ],
+ "namesake": false,
+ "shieldRule": 18,
+ "shieldOverride": null,
+ "space": 679,
+ "read": 679,
+ "g1": 60,
+ "range": {
+  "min": 80,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "caustic-scorpion": 4,
+    "dust-devil-kestrel": 2,
+    "dust-hyena": 1,
+    "roadrunner-courier": 5,
+    "sand-widow": 2,
+    "sandfish": 4
+   },
+   "leaders": null,
+   "tune200": 86
+  },
+  {
+   "deck": {
+    "caustic-scorpion": 4,
+    "dust-devil-kestrel": 2,
+    "dust-hyena": 1,
+    "roadrunner-courier": 4,
+    "sand-widow": 3,
+    "sandfish": 4
+   },
+   "leaders": null,
+   "tune200": 86
+  },
+  {
+   "deck": {
+    "caustic-scorpion": 4,
+    "dust-devil-kestrel": 2,
+    "hollow-belly-rat": 1,
+    "roadrunner-courier": 5,
+    "sand-widow": 3,
+    "sandfish": 3
+   },
+   "leaders": null,
+   "tune200": 86.5
+  },
+  {
+   "deck": {
+    "caustic-scorpion": 4,
+    "dust-devil-kestrel": 2,
+    "hollow-belly-rat": 1,
+    "roadrunner-courier": 5,
+    "sand-widow": 2,
+    "sandfish": 4
+   },
+   "leaders": null,
+   "tune200": 86.5
+  },
+  {
+   "deck": {
+    "caustic-scorpion": 4,
+    "dust-devil-kestrel": 2,
+    "meerkat-burrower": 1,
+    "roadrunner-courier": 5,
+    "sand-widow": 3,
+    "sandfish": 3
+   },
+   "leaders": null,
+   "tune200": 86.5
+  },
+  {
+   "deck": {
+    "caustic-scorpion": 4,
+    "dust-devil-kestrel": 2,
+    "meerkat-burrower": 1,
+    "roadrunner-courier": 5,
+    "sand-widow": 2,
+    "sandfish": 4
+   },
+   "leaders": null,
+   "tune200": 86.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "caustic-scorpion": 2,
+   "dust-devil-kestrel": 2,
+   "hollow-belly-rat": 1,
+   "roadrunner-courier": 5,
+   "sand-widow": 3,
+   "sandfish": 5
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 85.5
+ },
+ "pick": {
+  "deck": {
+   "caustic-scorpion": 4,
+   "dust-devil-kestrel": 2,
+   "dust-hyena": 1,
+   "roadrunner-courier": 5,
+   "sand-widow": 2,
+   "sandfish": 4
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 83,
+  "tune200": 86
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 85.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 83
+  }
+ ],
+ "sec": 1934
+}

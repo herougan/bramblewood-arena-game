@@ -1,0 +1,163 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "18-3",
+ "map": "md",
+ "mapName": "The Glass Dunes",
+ "kind": "skirmish",
+ "name": "Widow's Web",
+ "band": {
+  "lo": 70,
+  "hi": 86,
+  "target": 78
+ },
+ "list": [
+  "antlion-pit",
+  "caustic-scorpion",
+  "dust-hyena",
+  "hollow-belly-rat",
+  "komodo-warlord",
+  "meerkat-burrower",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "caustic-scorpion"
+ ],
+ "namesake": false,
+ "shieldRule": 18,
+ "shieldOverride": null,
+ "space": 5193,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 53.3,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "antlion-pit": 4,
+    "caustic-scorpion": 3,
+    "hollow-belly-rat": 1,
+    "roadrunner-courier": 3,
+    "sand-widow": 1,
+    "sandfish": 3
+   },
+   "leaders": [
+    "sand-widow"
+   ],
+   "tune200": 78
+  },
+  {
+   "deck": {
+    "antlion-pit": 4,
+    "caustic-scorpion": 3,
+    "hollow-belly-rat": 1,
+    "roadrunner-courier": 3,
+    "sand-widow": 1,
+    "sandfish": 3
+   },
+   "leaders": null,
+   "tune200": 78.5
+  },
+  {
+   "deck": {
+    "antlion-pit": 4,
+    "caustic-scorpion": 3,
+    "hollow-belly-rat": 1,
+    "roadrunner-courier": 3,
+    "sand-widow": 1,
+    "sandfish": 3
+   },
+   "leaders": [],
+   "tune200": 77.5
+  },
+  {
+   "deck": {
+    "antlion-pit": 4,
+    "caustic-scorpion": 1,
+    "roadrunner-courier": 4,
+    "sand-widow": 2,
+    "sandfish": 4
+   },
+   "leaders": [
+    "meerkat-burrower"
+   ],
+   "tune200": 78.5
+  },
+  {
+   "deck": {
+    "antlion-pit": 4,
+    "caustic-scorpion": 1,
+    "roadrunner-courier": 4,
+    "sand-widow": 2,
+    "sandfish": 4
+   },
+   "leaders": [
+    "roadrunner-courier"
+   ],
+   "tune200": 78.5
+  },
+  {
+   "deck": {
+    "antlion-pit": 4,
+    "caustic-scorpion": 3,
+    "hollow-belly-rat": 1,
+    "roadrunner-courier": 3,
+    "sand-widow": 1,
+    "sandfish": 3
+   },
+   "leaders": [
+    "komodo-warlord"
+   ],
+   "tune200": 79
+  }
+ ],
+ "before": {
+  "deck": {
+   "antlion-pit": 2,
+   "caustic-scorpion": 2,
+   "hollow-belly-rat": 1,
+   "roadrunner-courier": 5,
+   "sandfish": 3,
+   "sand-widow": 2
+  },
+  "leaders": [
+   "caustic-scorpion"
+  ],
+  "shieldOverride": null,
+  "win200": 81.5
+ },
+ "pick": {
+  "deck": {
+   "antlion-pit": 4,
+   "caustic-scorpion": 3,
+   "hollow-belly-rat": 1,
+   "roadrunner-courier": 3,
+   "sand-widow": 1,
+   "sandfish": 3
+  },
+  "leaders": [
+   "sand-widow"
+  ],
+  "shieldOverride": null,
+  "win200": 80,
+  "tune200": 78
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 81.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 80
+  }
+ ],
+ "sec": 984
+}
