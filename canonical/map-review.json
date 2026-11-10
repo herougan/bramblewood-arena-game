@@ -1561,6 +1561,11 @@
      "id": "horseshoe-crab",
      "why": "Carried from The Kelp Mangroves (Map 9); the map's own biome; thematic fit, active skills (salt); CONTENT10 (11-05) (THEME6-1: carried 6 on Map 10)",
      "by": "claude"
+    },
+    {
+     "id": "sea-bass",
+     "why": "CONTENT19 (owner, 11-11: \"Add a new card, Sea Bass for Map 10\"): a new reef fish, Wave 1 and Swarm (Fish) in surf packs; a Pack 2 card of Map 10",
+     "by": "owner"
     }
    ],
    "cut": [],

@@ -370,8 +370,8 @@
       "why": "Swamp vole that cuts peat (Delivery): early Lumber for the build-up",
       "budget": {
        "map": 0,
-       "use": 93,
-       "verdict": "ok"
+       "use": 109,
+       "verdict": "OVER"
       }
      },
      {
@@ -388,7 +388,7 @@
       "why": "Swamp insects (Flying, Bleed): the bog's own nuisance",
       "budget": {
        "map": 0,
-       "use": 84,
+       "use": 87,
        "verdict": "ok"
       }
      },
@@ -419,7 +419,7 @@
       "why": "A swamp leech first listed on Eyrie Heights (Map 11): it belongs with the swamps (budget fits at Map 0)",
       "budget": {
        "map": 1,
-       "use": 96,
+       "use": 97,
        "verdict": "ok"
       }
      },
@@ -439,7 +439,7 @@
       "why": "A swamp hatchling from the Sunken Grove, as above: swamp zone (fits at Map 0)",
       "budget": {
        "map": 0,
-       "use": 96,
+       "use": 90,
        "verdict": "ok"
       }
      }
@@ -456,7 +456,7 @@
    "todayRule": "Pack 2: first map list on Maps 7-13, plus pack-extras \"2\" (empty)",
    "zone": "B",
    "current": {
-    "count": 60,
+    "count": 61,
     "cards": [
      "alpine-salamander",
      "alpine-swift",
@@ -505,6 +505,7 @@
      "redwood-woodpecker",
      "reef-shark",
      "riptide-eel",
+     "sea-bass",
      "sea-turtle-elder",
      "sleepless-shrew",
      "snapper-hatchling",
@@ -521,7 +522,7 @@
     ]
    },
    "inProposedZone": {
-    "count": 45,
+    "count": 46,
     "cards": [
      "alpine-salamander",
      "alpine-swift",
@@ -560,6 +561,7 @@
      "redwood-woodpecker",
      "reef-shark",
      "riptide-eel",
+     "sea-bass",
      "snapper-hatchling",
      "stalactite-golem",
      "sulfur-cinder-moth",
@@ -577,7 +579,7 @@
       "why": "Cave arachnid (Poison): a small Caves & Alcoves hunter",
       "budget": {
        "map": 8,
-       "use": 84,
+       "use": 86,
        "verdict": "ok"
       }
      },
@@ -595,8 +597,8 @@
       "why": "The Hollow Kin's gravel digger (Delivery of Stone): the lore's Stone maker for the caves",
       "budget": {
        "map": 8,
-       "use": 86,
-       "verdict": "ok"
+       "use": 101,
+       "verdict": "OVER"
       }
      },
      {
@@ -622,7 +624,7 @@
       "why": "Cave centipede (Poison): a cave-floor attacker",
       "budget": {
        "map": 8,
-       "use": 93,
+       "use": 95,
        "verdict": "ok"
       }
      },
@@ -640,7 +642,7 @@
       "why": "Tidefolk eel (Tide, Fork): CONTENT2 proposed Coral Current; awaiting a source",
       "budget": {
        "map": 8,
-       "use": 85,
+       "use": 89,
        "verdict": "ok"
       }
      },
@@ -667,7 +669,7 @@
       "why": "Coral reef lionfish (Tide, Thorns): a reef defender",
       "budget": {
        "map": 8,
-       "use": 92,
+       "use": 94,
        "verdict": "ok"
       }
      },
@@ -721,7 +723,7 @@
       "why": "Redwood woodpecker (Perforate): a Redwood Deep attacker",
       "budget": {
        "map": 8,
-       "use": 96,
+       "use": 99,
        "verdict": "ok"
       }
      },
@@ -787,7 +789,7 @@
      }
     ]
    },
-   "proposedCount": 62
+   "proposedCount": 63
   },
   "gold": {
    "kind": "shop",
@@ -939,8 +941,8 @@
       "why": "Savanna termite (Delivery): Lumber for the plains",
       "budget": {
        "map": 14,
-       "use": 84,
-       "verdict": "ok"
+       "use": 100,
+       "verdict": "OVER"
       }
      },
      {
@@ -975,7 +977,7 @@
       "why": "Marula monkey (Tipsy): pairs with the savanna's Marula Elephant",
       "budget": {
        "map": 14,
-       "use": 96,
+       "use": 91,
        "verdict": "ok"
       }
      },
@@ -1020,7 +1022,7 @@
       "why": "Tundra seal (Tide, Invisible): an ice-floe body",
       "budget": {
        "map": 14,
-       "use": 67,
+       "use": 70,
        "verdict": "ok"
       }
      },
@@ -1029,7 +1031,7 @@
       "why": "Tundra musk ox (Thorns), 2/20: a cold-land wall",
       "budget": {
        "map": 14,
-       "use": 98,
+       "use": 100,
        "verdict": "ok"
       }
      },
@@ -1038,7 +1040,7 @@
       "why": "Taiga and tundra calf (Armor, Frostbite)",
       "budget": {
        "map": 14,
-       "use": 90,
+       "use": 89,
        "verdict": "ok"
       }
      },
@@ -1083,7 +1085,7 @@
       "why": "Desert moth (Brittle): a Glass Dunes insect",
       "budget": {
        "map": 14,
-       "use": 99,
+       "use": 88,
        "verdict": "ok"
       }
      },
@@ -1713,11 +1715,11 @@
   }
  },
  "summary": {
-  "liveCards": 834,
+  "liveCards": 835,
   "sourcesToday": {
    "starter": 16,
    "skirmish-unique": 108,
-   "pack": 193,
+   "pack": 194,
    "base": 25,
    "none": 392,
    "faction": 57,
@@ -1728,7 +1730,7 @@
   "sourcesProposed": {
    "starter": 16,
    "skirmish-unique": 108,
-   "pack": 195,
+   "pack": 196,
    "base": 25,
    "none": 314,
    "faction": 59,
@@ -1747,12 +1749,12 @@
     "proposed": 89
    },
    "silver": {
-    "now": 60,
-    "inProposedZone": 45,
+    "now": 61,
+    "inProposedZone": 46,
     "add": 20,
     "remove": 4,
     "movedIn": 1,
-    "proposed": 62
+    "proposed": 63
    },
    "gold": {
     "now": 58,
@@ -1927,7 +1929,11 @@
    "conger-eel",
    "crimson-wing-drumcaller"
   ],
-  "budgetOverInProposal": [],
+  "budgetOverInProposal": [
+   "peat-cutter-vole (bronze, Map 0, 109%)",
+   "gravel-mole (silver, Map 8, 101%)",
+   "termite-forager (gold, Map 14, 100%)"
+  ],
   "proposalNotOrphan": []
  },
  "sources": {
@@ -8208,6 +8214,13 @@
    "source": "special",
    "where": [
     "starpath"
+   ]
+  },
+  "sea-bass": {
+   "source": "pack",
+   "where": [
+    "pack:silver",
+    "list:m7@10"
    ]
   }
  }
