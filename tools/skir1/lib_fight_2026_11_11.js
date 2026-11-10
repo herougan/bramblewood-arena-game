@@ -51,8 +51,10 @@ function fight(m, n) {
     && !(M.stone(D[id]) && unlock < 21) && (D[id].kind !== 'baby' || ADMIN.has(id))));
   const leadOf = d => { if (explicit) return L0; const nn = Object.assign({}, n, { deck: d }); G.NODE_MAP_HINT.set(nn, m.id); try { return G.skirmishLeadersOf(nn, m.id) || []; } catch (e) { return []; } };
   // an Auto showcase leader (no explicit leaders, no showcase field) stays the deck's top card: a card that would outrank it stays out
-  const autoLead = !explicit && L0.length === 1 && !(n.showcase && old[n.showcase]);
-  const outranks = id => autoLead && id !== L0[0] && JSON.stringify(leadOf({ [L0[0]]: 1, [id]: 1 })) !== JSON.stringify(L0);
+  // an Auto showcase leader (no explicit leaders, no showcase field) is pinned: the build writes it as the fight's `showcase` (the card the
+  // panel already showed and the CPU already summoned), so a stronger card in the deck no longer takes the lead (pin = that card, else null)
+  const pin = !explicit && L0.length === 1 && !(n.showcase && old[n.showcase]) ? L0[0] : null;
+  const outranks = () => false;
   const pool = [...new Set([...list].concat(own, L0, [...keep.keys()]))].filter(id => allowedIn(id) && !outranks(id) && !stoneOut(id)).sort();
   // a challenge deck's boon-theme cards may hold their rarity's full copy cap (the road's 5 Commons): Shrine Steps 20-4 has only two themed cards left
   const themedBoon = id => !!(n.rules && n.rules.boon) && ENG.selfishBoonCount(DX, { [id]: 1 }, n.rules.boon).have === 1;
@@ -66,9 +68,9 @@ function fight(m, n) {
     ids.forEach(id => { if (!(d[id] >= 1)) out.push(id + ' x' + d[id]); else if (d[id] > cap(id)) out.push(`${id} x${d[id]} over ${cap(id)}`); if (!pool.includes(id)) out.push(id + ' not in the fight\'s pool'); });
     keep.forEach((k, id) => { if ((d[id] || 0) < k) out.push(`kept card ${id} x${d[id] || 0} (needs ${k})`); });
     out.push(...k14(d));
-    if (L0.length && !explicit && JSON.stringify(leadOf(d)) !== JSON.stringify(L0)) out.push(`the showcase leader ${L0} would become ${leadOf(d)}`);
+    if (L0.length && !explicit && !pin && JSON.stringify(leadOf(d)) !== JSON.stringify(L0)) out.push(`the showcase leader ${L0} would become ${leadOf(d)}`);
     if (!boonOn(d)) out.push('the challenge boon ' + n.rules.boon + ' is off');
     return out; };
-  return { m, n, map: m.id, mapNo: no, unlock, side: !!m.sub, code: n.key, kind, name: n.name, old, S, n0, L0, explicit, stoneLeader, keep, pool, list, own, cap, dMin, dMax, U, k14, problems, legal: d => !problems(d).length, leadOf };
+  return { m, n, map: m.id, mapNo: no, unlock, side: !!m.sub, code: n.key, kind, name: n.name, old, S, n0, L0, explicit, stoneLeader, pin, keep, pool, list, own, cap, dMin, dMax, U, k14, problems, legal: d => !problems(d).length, leadOf };
 }
 module.exports = { maps, fightsOf, fight, isBoss, size, keyOf, unlockOf, G, D, DX, M, ADMIN, KEEP_MIN };

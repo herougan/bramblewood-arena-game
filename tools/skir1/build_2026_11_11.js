@@ -35,7 +35,9 @@ function fill(f, want, weight, R, avoid) {
   const d = {}, add = (id, k) => { d[id] = (d[id] || 0) + k; };
   const nonU = id => f.U && !f.U.has(id) && !f.L0.includes(id), nonUTot = () => Object.keys(d).filter(nonU).reduce((t, id) => t + d[id], 0);
   f.keep.forEach((k, id) => add(id, nonU(id) ? 1 : Math.max(k, Math.min(f.old[id] || k, f.cap(id), k + 1))));
-  const room = id => { const c = f.cap(id) - (d[id] || 0); if (c <= 0) return 0; if (nonU(id)) return d[id] ? 0 : (nonUTot() < 6 ? 1 : 0); return c; };
+  // a kept first-clear or showcase card keeps the copies it had (a boss reward is often its strongest card); a leader may grow
+  const lim = id => f.keep.has(id) && !f.L0.includes(id) ? Math.max(f.keep.get(id), Math.min(f.old[id] || 1, f.cap(id))) : f.cap(id);
+  const room = id => { const c = lim(id) - (d[id] || 0); if (c <= 0) return 0; if (nonU(id)) return d[id] ? 0 : (nonUTot() < 6 ? 1 : 0); return c; };
   const clash = id => avoid && avoid(d, id);
   // wanted cards first (most wanted first)
   Object.entries(want).sort((p, q) => q[1] - p[1] || (p[0] < q[0] ? -1 : 1)).forEach(([id, w]) => {
@@ -172,5 +174,18 @@ if (CMD === 'plan') {
     s = s.replace(mm[1], line); n++;
   }
   fs.writeFileSync(APP, s); console.log('applied', n, 'decks');
+}
+// apply and pin: a fight led by its Auto showcase (no explicit leaders, no showcase field) gets that card written as its `showcase`, so the
+// leader stays the same card whatever else its deck holds (the panel and the CPU already used it; tools/skir1/lib_fight pin)
+if (CMD === 'apply' || CMD === 'pin') {
+  const plan = JSON.parse(fs.readFileSync(PLAN, 'utf8')), APP = path.join(ROOT, 'arena_app.js'); let s = fs.readFileSync(APP, 'utf8'), n = 0;
+  const only = arg('--maps') ? new Set(arg('--maps').split(',')) : null;
+  for (const p of plan.maps.filter(q => !only || only.has(q.id))) for (const x of p.fights) {
+    if (x.explicitLeaders || x.showcase || x.stoneLeader || !x.leaders0 || x.leaders0.length !== 1) continue;
+    const re = new RegExp(`^(\\s*\\{ ?key:\\s*"${x.code.replace(/-/g, '\\-')}",.*)$`, 'm'), mm = s.match(re); if (!mm) throw new Error('node not found ' + x.code);
+    const head = mm[1].split('/*')[0]; if (/showcase:"/.test(head) || !/\(SKIR1/.test(mm[1])) continue;
+    s = s.replace(mm[1], mm[1].replace(/deck:\{/, `showcase:"${x.leaders0[0]}" /* 2026-11-11 (SKIR1): its Auto showcase leader, pinned */, deck:{`)); n++;
+  }
+  fs.writeFileSync(APP, s); console.log('pinned', n, 'showcase leaders');
 }
 module.exports = { planMap, fill, spread, family, score };
