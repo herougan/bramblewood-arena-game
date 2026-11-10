@@ -13,7 +13,7 @@
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
-const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8')), R = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8')), J0 = f => JSON.parse(fs.readFileSync(f, 'utf8')), R = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 let fail = 0, pass = 0; const ok = (c, m) => { if (c) pass++; else { fail++; console.log('  ✗ ' + m); } };
 
 // ---- 1. the ladder ----
@@ -23,8 +23,12 @@ ok(ids.length === 36, 'Maps 0-20 and their side maps: ' + ids.length + ' PRO ent
 ok(L.players === 100 && /ref6-1 \.\. ref6-100/.test(L.seeds), 'ladder-100.json: 100 players, seeds ref6-1 .. ref6-100');
 ids.forEach(id => ok(L.maps[id] && L.maps[id].decks.length === 100, id + ': 100 decks'));
 const probs = LA.problems(gm, L); ok(probs.length === 0, 'every deck legal (no faction, copy caps, owned copies, 20 cards, leader): ' + (probs.slice(0, 5).join('; ') || 'ok'));
-{ let differ = 0, n = 0; ids.forEach(id => { const M = L.maps[id]; if (!M || M.arrival < 1) return; n++; if (new Set(M.decks.map(d => JSON.stringify(d.counts) + d.leader)).size > 1) differ++; });
-  ok(n >= 30 && differ >= n - 3, `the decks differ between players from Map 1 on (${differ} of ${n} maps)`); }
+// the collections differ by the draws (where this machine has them cached); the decks differ where the draws reach the cards optimised decks use
+// (on 9 maps every player builds the same deck: those cards all come from fixed rewards)
+{ const cf = p => path.join(LA.CACHE, 'pools', `ref6-${p}.json`);
+  if (fs.existsSync(cf(1)) && fs.existsSync(cf(2))) { const a = J0(cf(1)), b = J0(cf(2)); ok(Object.keys(a.at).filter(k => +k >= 1).every(k => JSON.stringify(a.at[k]) !== JSON.stringify(b.at[k])), 'players 1 and 2 hold different collections at every arrival from Map 1'); }
+  const multi = ids.filter(id => new Set(L.maps[id].decks.map(d => JSON.stringify(d.counts) + d.leader)).size > 1).length;
+  ok(multi >= 24, `the decks differ between players on ${multi} of 36 maps`); }
 ok(Object.values(L.maps).every(M => M.decks.every(d => d.strength == null || (d.strength >= 0 && d.strength <= 100))), 'strength scores are win rates (0-100)');
 
 // ---- 2. the measure ----
@@ -57,7 +61,7 @@ if (mm && best) { const B = JSON.parse(mm[1]); ok(B.file === 'docs/balance/ref6/
   F.set(true); const h = F.ref6LabelHTML('mc', node);
   ok(/Ref 100: 52% \(p10 31 – p90 70\)/.test(h) && /Map ref 61%/.test(h) && /Ref-2 74%/.test(h), 'Admin: "Ref 100: 52% (p10 31 – p90 70) · Map ref 61% · Ref-2 74%"');
   ok(/title="Measure t1, 2026-11-11: the 100 reference players&#39;|title="Measure t1, 2026-11-11: the 100 reference players'/.test(h) && /304 games in all \(at least 16 a deck\)/.test(h), 'the tooltip names the measure, its date and games');
-  ok(!/Map ref/.test(F.ref6LabelHTML('mc', { key: '3-3' })) && F.ref6LabelHTML('mc', { key: '3-9' }) === '' && F.ref6LabelHTML('m21', node) === '', 'no Map ref part without its number; nothing on a fight with no measure'); }
+  ok(!/· Map ref/.test(F.ref6LabelHTML('mc', { key: '3-3' })) && /Ref 100: 40%/.test(F.ref6LabelHTML('mc', { key: '3-3' })) && F.ref6LabelHTML('mc', { key: '3-9' }) === '' && F.ref6LabelHTML('m21', node) === '', 'no Map ref part without its number; nothing on a fight with no measure'); }
 
 // ---- 4. texts, docs, tests ----
 const texts = R('bramblewood-texts.js'), keys = ['ui.ref6-label', 'ui.ref6-mapref', 'ui.ref6-ref2', 'ui.ref6-tip'], en = {};

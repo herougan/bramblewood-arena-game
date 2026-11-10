@@ -51,7 +51,8 @@ async def run(b, url, w):
             # a reward pack the cleared maps opened can sit over the panel: hide any open overlay for the shot
             await pg.add_style_tag(content='#packOpenOverlay, [class*="toast"]{display:none !important}'); await pg.wait_for_timeout(300)  # and the level-up toasts
             await pg.evaluate("(()=>{ const l = document.querySelector('#conquestNodePanel .ref6-label'); if(l) l.scrollIntoView({block: 'center'}); })()"); await pg.wait_for_timeout(400)
-            await pg.screenshot(path=os.path.join(OUT, f'panel-admin-{w}.png'))
+            box = await pg.evaluate("(()=>{ const r = document.getElementById('conquestNodePanel').getBoundingClientRect(), l = document.querySelector('#conquestNodePanel .ref6-label'), lr = l ? l.getBoundingClientRect() : r; const top = Math.max(0, Math.min(r.top, lr.top - 260)); return {x: Math.max(0, r.left), y: top, width: Math.min(innerWidth, r.right) - Math.max(0, r.left), height: Math.min(innerHeight, lr.bottom + 60) - top}; })()")
+            await pg.screenshot(path=os.path.join(OUT, f'panel-admin-{w}.png'), clip=box)  # the panel around the label only (small files)
             r21 = await pg.evaluate(OPEN % ('true', 21, 21))
             ok(r21['text'] is None, f"{r21['map']}: no label on a map with no measure")
         else:

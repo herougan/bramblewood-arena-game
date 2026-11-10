@@ -31,6 +31,7 @@ const ROOT = path.resolve(__dirname, '..', '..'), VERSION = '1.0.0 (2026-11-11, 
 const DIR = path.join(ROOT, 'docs', 'balance', 'ref6'), MDIR = path.join(LA.CACHE, 'measure');
 const argv = process.argv.slice(2), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; }, has = k => argv.includes(k);
 const r1 = x => x == null ? null : Math.round(x * 10) / 10;
+const localIso = () => { const d = new Date(), o = -d.getTimezoneOffset(), p = n => String(Math.floor(Math.abs(n))).padStart(2, '0'); return new Date(d.getTime() + o * 60000).toISOString().slice(0, 19) + (o >= 0 ? '+' : '-') + p(o / 60) + ':' + p(o % 60); }; // the day the owner reads
 const TAG = arg('--tag', has('--converge') ? 'conv' : null), N = +arg('--games', 16), NR = +arg('--ref-games', 32), NF = +arg('--fight-games', 160);
 
 let _gm = null; const game = () => _gm || (_gm = require('../opt/deckopt.js').loadGame(ROOT));
@@ -127,7 +128,7 @@ function collect() {
   }
   const complete = !missing.length && !arg('--maps', null);
   const doc = { about: 'Package REF6: the 100 reference players\' decks (docs/balance/ref6/ladder-100.json) against every road fight of their map (tools/ref6/measure.js header). Win rates in %. Per fight: the players\' mean, SD, p10 / p50 / p90 over the 100 decks, sdTrue / p10e / p90e with the game noise taken out, the Map reference (mapRef) and Reference-2 (ref2) over refGames games. Per map: strength = each deck\'s mean over the map\'s road fights (decks: player 1..100).',
-    tool: 'tools/ref6/measure.js ' + VERSION, tag: TAG, generated: new Date().toISOString(), games: N, fightGames: NF, refGames: NR, seeds: SEED0 + ' + 37g', complete, missing,
+    tool: 'tools/ref6/measure.js ' + VERSION, tag: TAG, generated: localIso(), games: N, fightGames: NF, refGames: NR, seeds: SEED0 + ' + 37g', complete, missing,
     ladder: { file: path.relative(ROOT, LA.OUT), built: L.built, players: L.players, tool: L.tool }, maps: out };
   fs.mkdirSync(DIR, { recursive: true });
   const jf = path.join(DIR, `ref6-${TAG}.json`); fs.writeFileSync(jf, JSON.stringify(doc) + '\n');
@@ -143,7 +144,7 @@ function md(doc) {
   ids.forEach(id => { const x = s(id), F = M[id].fights, w = Object.keys(F).sort((a, b) => F[a].mean - F[b].mean)[0];
     L.push(`| ${id} (${M[id].map}${M[id].side ? ' side' : ''}) | ${M[id].name} | ${f(x.mean)} | ${f(x.sd)} (${f(x.sdTrue)}) | ${f(x.p10)} – ${f(x.p90)} | ${f(x.min)} – ${f(x.max)} | ${w ? w + ' (' + F[w].mean + ')' : '–'} | ${M[id].unique} |`); });
   const sds = ids.map(id => s(id).sdTrue).filter(x => x != null).sort((a, b) => a - b);
-  L.push('', `Median true SD ${sds[Math.floor((sds.length - 1) / 2)]} points; widest ${ids.sort((a, b) => s(b).sdTrue - s(a).sdTrue).slice(0, 3).map(id => id + ' ' + s(id).sdTrue).join(', ')}.`, '',
+  L.push('', `Median true SD ${sds[Math.floor((sds.length - 1) / 2)]} points; widest ${ids.slice().sort((a, b) => s(b).sdTrue - s(a).sdTrue).slice(0, 3).map(id => id + ' ' + s(id).sdTrue).join(', ')}.`, '',
     '## Main maps, per road fight', '', 'Mean over the 100 decks, p10 – p90 (game noise taken out), the road-curve target, the Map reference and Reference-2.', '', '| Fight | kind | Ref 100 mean | p10 – p90 (est.) | target | Map ref | Ref-2 |', '|---|---|---|---|---|---|---|');
   ids.filter(id => !M[id].side).sort((a, b) => M[a].map - M[b].map).forEach(id => Object.keys(M[id].fights).forEach(k => { const x = M[id].fights[k];
     L.push(`| ${k} | ${x.kind} | ${f(x.mean)} | ${f(x.p10e)} – ${f(x.p90e)} | ${x.target != null ? x.target + (x.band ? ' (' + x.band[0] + '–' + x.band[1] + ')' : '') : '–'} | ${f(x.mapRef)} | ${f(x.ref2)} |`); }));
