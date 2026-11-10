@@ -1698,3 +1698,91 @@ The engine decides; this describes (owner decisions 2026-11-09 23:05 / 23:07; `d
 - **Fletcher and Weapon Master**: arrows only (`eng40ArrowShot` marks the hit, `fireDamageAction` reads the mark once): Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, an Archer's shot and the Arrow action (`bxArrowShot`), Barrage's physical arrows. Not the Bolts (the bolt form), Spitfire, Bola, Lasso, Snipe, Rocket, Missile, Deal damage.
 - **Flora**: Ent, Bramble Sprout, Thornvine Lasher, Elder Willow, Strangler Vine, Cypress Root Lurker and Pinecone Sapper are species Plant (Flora phylum), no longer Elemental: Nature's Force (+N/+N to Elementals) and any Elemental type match (Kinship Elemental, an Elemental filter, Esprit kin with Elementals) stop counting them; they were already Flora through their Tree / Vine / Flora types, and Psychic still can't hurt them (Plant is mindless too).
 - **Esprit {v: 0, hp: N}**: +0/+N per kin; priced as its Health part only (`zeroFree`). Sunthroat Courier is written that way.
+
+## Effects Lab, 2026-11-11 (package LAB3): the "Ideas 11-11" tab
+
+Owner: "add much more vfx we can consider adding to our game in the master hub."
+
+**Where to pick:** the hub's ✨ Effects Lab, tab **💡 Ideas 11-11** (`tools/effects-lab/fxlab-ideas2.js`, on LAB2's tab engine). 47 candidate
+effects, three looks each (the crit has three looks for each of the 11 damage types), grouped by category with filter chips, each with a ▶ per
+look, its one-line "Used for" and the badge **Lab only (not used yet)**. The effects are `window.IdeasFX2` in `bramblewood-fx-ideas2.js`.
+**Not wired:** the file is loaded by the Lab only (`tools/effects-lab/build.py`); `assemble_arena.py` and `arena_app.js` do not know it.
+To use one: add the file to the bundle, call `IdeasFX2.<name>(target, {v, ...})` where the moment happens (an `onEvent` or `fxHook` line, as
+in `docs/effects-lab-contract.md`), and change its row below and its `add(...)` line in `fxlab-ideas2.js` to "In game: <where>".
+`python3 tools/hub/build.py` now rebuilds the Lab first, so the hub shows this tab (its check fails if the tab is missing).
+
+Rules for all of them (as Ideas 10-21): GSAP only, transform and opacity, no CSS filter, no blend mode, no full-screen layer (field and map
+looks cover the box they are given), at most 38 overlay nodes alive (`node()` hands back a detached node past that), battle and UI beats 2 s
+at most, big moments 3 s at most, one still glyph under reduced motion. Every function takes a node, a list of nodes or a box, honours
+`onImpact` / `onDone`, resolves once every node it added is gone, and puts back a card it moved (`clearProps`). No words on screen: glyphs and
+numbers only (`bossIntro` shows a name the caller passes, translated).
+
+### What the game already has, and the gaps (audit, 2026-11-11)
+
+- **Libraries:** `docs/effects-inventory-2026-10-15.json` (1041 moments: 957 live, 51 Lab only); `FX.A` to `FX.G` (about 400 functions),
+  `SkillFX` (about 110), `UnitFX` (hit styles and skins), `ProcFX` (cracks, crumble, shatter), `WarFX` (16, Lab only), `IdeasFX` (29, Lab only).
+- **Skills with no look of their own:** the skill table above lists 39 as "none (a rule or stat with no moment of its own)"; later packages
+  left Sequestration (the log), Hoard / Timber / Venom Master / Fletcher / Herbalist (the chip), Majesty, Meld, Lone Wolf, Ghost, Mulligan
+  (the log), Encore (a float) and Consecration (the heal float) without a moment of their own.
+- **One look for many moments:** every crit shares `critBurst` and the CRIT stamp whatever the damage type; every ordinary unit lands the same way
+  whatever it is (`playLandingImpact`: a squash-thud, a ripple on water maps; `SkillFX.summonPortal` for spawns; only dragons, bosses, huge
+  units and Skyfall have their own); a unit sent back to the hand just vanishes; buffs and debuffs that stack show
+  only a bigger number; the forecast is a pill, never on the field.
+- **Nothing yet:** a rainbow after rain, an aurora on cold nights, road progress as a bar, a boss phase beyond the stage chip, a button press
+  outside the home menu, a "hand full" warning before the auto-pitch, a notification ping, idle visitors on the board.
+
+### The 47 (all Lab only, not used yet)
+
+| Group | Name | Call | Used for | Looks (v 0 / 1 / 2) | Nearest look in the game |
+|---|---|---|---|---|---|
+| Skills | Sequestration | `IdeasFX2.sequesterGrab(victim, {from, icons, v})` | Sequestration takes the hit unit's status skills for a turn | a paw grabs the chips / a jar scoops them / they fly home (expire) | none (a log line) |
+| Skills | Hoard and Timber | `IdeasFX2.hoardStash(unit, {n, v})` | Hoard N and Timber growing with the stash | acorns heap up / a sack swells with coins / logs stack | none (the chip) |
+| Skills | Venom Master, Fletcher, Herbalist | `IdeasFX2.masteryOrbit(unit, {v})` | the "master" passives boosting | vials orbit and dive in / feathers fletch an arrow / leaves | none |
+| Skills | Lone Wolf | `IdeasFX2.loneWolfHowl(unit, {v})` | Lone Wolf alone in its row | a moon and howl rings / a lone spotlight / a leaf on the breeze | none (`FX.A.packHowl` is the Pack bonus) |
+| Skills | Ghost | `IdeasFX2.ghostDrift(unit, {from, v})` | Ghost: see-through, swings pass through | a sheet rises and sways / a swing passes through / "boo!" with puffs | `FX.A.shadowPass`, `FX.C.deathGhost` (other moments) |
+| Skills | Majesty | `IdeasFX2.majestyBow(unit, {foes, v})` | Majesty N: the facing enemies swing weaker | golden rays and the foes bow / a bell and gold rings / a red carpet rolls to them | none |
+| Skills | Consecration | `IdeasFX2.exaltedGround(sideUnits, {v})` | Consecration: its side's ground is Exalted | a golden glow under each unit / halos settle / petals and a bell | the ✨ heal float |
+| Skills | Encore | `IdeasFX2.encoreCurtain(unit, {v})` | Encore: one more swing | a curtain call with roses / a spotlight and claps / a replay arrow and a second lunge | the "🔁 Encore" float |
+| Skills | Meld | `IdeasFX2.meldLink(meldUnits, {v})` | Meld units sharing the grant | beads run between them / puzzle pieces click / rings pulse in turn | none |
+| Crits | Crit by damage type | `IdeasFX2.critElement(target, {element, v})` | a crit, in its damage type's colours, glyph and bits (all 11: physical, fire, cold, acid, venomous, decay, magic, water, stone, metal, lightning) | a starburst with the element's glyph / two crossing slashes / three rings and a squash | `critBurst` + CRIT stamp, `FX.A.critSparks` (one look for all) |
+| Heal | Heal | `IdeasFX2.healHearts(unit, {v})` | heals (Healing, Heal, Regeneration) | hearts in bubbles / a flower blooms / a plaster slaps on and peels off | `SkillFX.heal`, `healPlus`, the "+N❤" float |
+| Heal | Heal from a healer | `IdeasFX2.lifeLink(target, {from, v})` | one unit healing another (Bloom, Herb Refinery, heal actions) | hearts arc over / a green orb hops over / a little cloud rains on it | `SkillFX.bloomPollen` |
+| Heal | Shield | `IdeasFX2.shieldBubble(unit, {v})` | Shield gained, Shield breaks | a soap bubble forms / it pops (breaks) / a leaf curls in front | `SkillFX.shieldUp`, `FX.A.shieldFlare` / `shieldShatter` |
+| Heal | Cleanse | `IdeasFX2.cleanseWash(unit, {v})` | Cleanse and Cure | a foamy rinse sweeps across / soap bubbles scrub / a sunburst dries the grime | `cleanseVfx` (a rising band), `SkillFX.cure` |
+| Arrivals | Birds and flyers | `IdeasFX2.arriveSwoop(unit, {v})` | a Flyer or bird played or summoned | an arc swoop and feathers / a dive from high / a spiral glide | the shared landing; `SkillFX.swoop` is an attack |
+| Arrivals | Burrowers | `IdeasFX2.arriveBurrow(unit, {v})` | a digger played or summoned | a mound pops / a tunnel of bumps runs to the slot / a sand swirl | the shared landing |
+| Arrivals | Swimmers | `IdeasFX2.arriveSplash(unit, {v})` | a Swimmer, fish or Tide unit arriving | it leaps out of a splash / it floats up in a bubble / a wave carries it in | "Card landing ripple on water" |
+| Arrivals | Hatchlings | `IdeasFX2.arriveHatch(unit, {v})` | a Hatchling or egg-laid token arriving | the shell halves fall apart / it hops twice and the top flies off / a popcorn pop | `eggCrackVfx` (the board egg) |
+| Arrivals | Insects | `IdeasFX2.arriveSkitter(unit, {v})` | an insect, spider or Swarm unit arriving | a swarm runs together / it lowers on a silk thread / a leaf lifts off it | the shared landing |
+| Leaving | Return to hand | `IdeasFX2.returnToHand(unit, {to, v})` | a unit bounced back to its owner's hand | a boing arc / a rewind / a string yanks it down | none (it vanishes) |
+| Leaving | Exile | `IdeasFX2.exileFold(unit, {v})` | Exile from the board | it folds into a paper star / a vortex and a lock / it floats off in a bubble | `FX.C.deathExile`, `FX.A.exileWisp` |
+| Leaving | Cute death | `IdeasFX2.deathPoof(unit, {v})` | an ordinary death (gentler options: Tutorial, low Effects, tokens) | a poof and a halo / it squashes flat and sees stars / it sinks and a flower grows | the smooth topple (`fallDeathVfx`) |
+| Stacks | Buff stacks | `IdeasFX2.buffStack(unit, {n, v})` | a buff stacking again (Inspired, Momentum, Grit, Swarm, Rally) | a chevron tower / an orb per stack in orbit / a corner badge counts up | the gold float and `statPillPulse` |
+| Stacks | Debuff stacks | `IdeasFX2.debuffStack(unit, {n, v})` | a debuff stacking again (Weaken, Vulnerable, Scar, Daunt) | chain links hang down / a raincloud grows and drips / rocks pile on and squash it | the debuff float |
+| Field | Lane surge | `IdeasFX2.laneSurge(columnCards, {v})` | a column that matters (column skills, Rook's Row, Arrow Slits, Rampart, a lane hit's wind-up) | runway lights / a glowing seam / wind streaks | `#rowMine.turn-glow` (a whole row) |
+| Field | Rainbow | `IdeasFX2.fieldRainbow(fieldBox, {v})` | rain stops, Spring Rain ends | a rainbow arc / puddles shine and dry / clouds part and the sun peeks out | `FX.B.rainStartStop` |
+| Field | Aurora | `IdeasFX2.fieldAurora(fieldBox, {v})` | night on a cold map (Frigid, tundra, Hail at night) | green ribbons / pink and violet / a quick shimmering curtain | none |
+| Field | Field omen | `IdeasFX2.fieldOmen(fieldBox, {v})` | the forecast on the field a round ahead (quake, storm, flood) | pebbles hop and cracks flicker / dark clouds gather / the water rises | `FX.B.forecastPop` (the pill) |
+| Map | Road progress | `IdeasFX2.roadProgress(box, {from, to, v})` | progress along the road (fights won, the level track) | a hedgehog walks the bar / flags pop at milestones / lanterns light | `FX.E.trailDraw`, `pawnTrail` |
+| Map | Map transition | `IdeasFX2.mapTransition(mapBox, {at, v})` | map to map, into a sub-map and back | a circle wipe / clouds roll over and part / the map folds like paper | the leaf sweep, `inkWash`, the slide |
+| Packs | Rarity climb | `IdeasFX2.rarityClimb(card, {rarity, v})` | before a pack card flips | the glow climbs colour by colour / its stars pop / its gem drops in | `FX.D.packTease`, the rarity teases |
+| Packs | Shiny | `IdeasFX2.shinyGlint(card, {v})` | a Shiny pull | corner glints / a rainbow ring of dots / a wand tap and rainbow sparks | `FX.D.revealShiny` (a hue sweep) |
+| Packs | Legendary | `IdeasFX2.legendaryWings(card, {v})` | a Legendary pull | golden wings unfold / a pillar of light / a ring of stars becomes a crown | `FX.D.revealLegendary` (coins and a crown) |
+| Results | Victory cheer | `IdeasFX2.victoryCheer(yourUnits, {v})` | a win, on your units | a wave hop with confetti / balloons / poppers | the Victory toss |
+| Results | Defeat droop | `IdeasFX2.defeatDroop(yourUnits, {v})` | a loss, gently | a little raincloud / a white flag / a wilted flower | the scatter, `.wl-dusk` ash |
+| Results | Level up | `IdeasFX2.levelUpSpring(card, {level, v})` | a card levelling up (temper, Kibble, a summon's level) | it springs up trailing chevrons / a star climbs steps / balloons lift the number | `SkillFX.levelUp`, `FX.F.accountLevel` |
+| Results | Map cleared | `IdeasFX2.mapClearFlag(mapBoxOrNode, {v})` | a whole map cleared | a flag planted / a gold seal stamps down / the sun rises with birds | `FX.E.mapCleared` (a banner) |
+| Boss | Boss intro | `IdeasFX2.bossIntro(boss, {box, name, v})` | a boss or raid boss entering | letterbox bars and a name plate / a silhouette whose eyes glint / spotlights lock on | the quake and "BOSS" title, `FX.F.bossRoar` |
+| Boss | Boss phase | `IdeasFX2.bossPhase(boss, {phase, v})` | a boss's next phase (Enraged, a raid stage) | a glowing seam and shed bits / rage steam and red pulses / an hourglass flips | the stage-name chip, `FX.F.raidStageChange` |
+| UI | Button press | `IdeasFX2.buttonSquish(button, {at, v})` | any button press | a jelly squash and ripple / an ink ring and stars / a confetti pop | `menuBtnClickPop` (home menu only) |
+| UI | Lumber lands | `IdeasFX2.lumberGain(pill, {from, n, v})` | Lumber or any resource gained | logs hop onto a woodpile that slides in / an axe chops and a log rolls over / a beaver carries it | `hudPillBing`, `FX.F.resourceGain` |
+| UI | Card drawn | `IdeasFX2.cardDraw(handCard, {from, hand, v})` | a card drawn into the hand | a sparkle swish (the hand makes room) / it springs out of the deck / a bird drops it in | `drawFlipVfx` (a face-down flip) |
+| UI | Hand full | `IdeasFX2.handFull(handCards, {v})` | the hand is full: the next draw is pitched | they jostle and sweat / a gate shuts / a ghost card puffs away | `animateOverdraw` (after the fact) |
+| UI | Something new | `IdeasFX2.notifyPing(button, {v})` | a button or tab with something new | a red dot and ripples / an envelope hops / a bell jingles | the "!" on a map spot |
+| UI | Mulligan | `IdeasFX2.mulliganSwap(handCard, {v})` | the opening-hand swap | it slides out and back / a shuffle flip in a spinning arrow / a die tumbles | none (a log line) |
+| Idle | Visitor | `IdeasFX2.idleVisitor(card, {v})` | now and then on a calm board or menu (decor, never on a control) | a butterfly lands / a ladybird walks the edge / a leaf drifts and slides off | the map critters (maps only) |
+| Idle | Yawn | `IdeasFX2.idleYawn(card, {v})` | a unit that has waited a long time (long Wait, Hibernate) | a stretch and yawn / it nods off and jolts awake / a cat stretch | the idle breathing |
+
+Checks: `tests/lab3-2026-11-11.js` (every look in a fake DOM: resolves, callbacks once, nodes gone, 38 at most, the card put back, reduced
+motion one still node) and `tests/e2e/lab3_2026_11_11.py` (every look played in the built Lab at 1366, the first of each at 390, and under
+reduced motion: no page error, fewer than 40 overlays on any frame, none left).
