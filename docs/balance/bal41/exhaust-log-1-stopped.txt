@@ -1,0 +1,2 @@
+9-5 target 66 space 74187 read 401 range 11.7 - 65 | 200 games: 49.5 -> 62 KEEP {"deck":{"conch-crawler":1,"horseshoe-crab":4,"mangrove-manatee":1,"mangrove-monitor":5,"reef-shark":4,"sea-turtle-elder":1,"sunbittern-strider":1},"leaders":["horseshoe-crab"],"shieldOverride":0} 1570s
+17-6 target 65 space 422 read 400 range 31.7 - 95 | 200 games: 77 -> 57.5 KEEP {"deck":{"alpha-howler":1,"beluga":1,"cone-cutter-squirrel":1,"harbor-seal":4,"polar-bear":2,"snow-bunting-archer":4,"snow-ermine":4,"spitting-spider":3},"leaders":["polar-bear"],"shieldOverride":6} 1887s
