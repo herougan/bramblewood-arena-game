@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-11 Package DESK2 (desktop copy up to date, CI builds for Windows / Mac / Linux)
+- Players see (desktop app only, the website is unchanged): Chinese, Japanese and Korean text uses the bundled font again for every character. The fonts were missing 325-690 characters each after new translations; rebuilt with `electron/fonts/build_fonts.py`, 2.2 -> 3.1 MB.
+- Checked: today's build runs offline in Electron 44.10.2. It loads, plays a quick fight, keeps Gold and the language across a restart, loads fonts from the app, and logs no console errors besides the failed Supabase calls. A packaged Linux build (fuses on) also starts offline. Windows and macOS are built only by CI so far.
+- Security: the desktop CSP allows nothing remote except Supabase (Google Fonts removed; images limited to Supabase and Google profile photos). Packaged builds flip Electron's fuses: no `ELECTRON_RUN_AS_NODE`, `NODE_OPTIONS` or `--inspect`, and app code loads only from the asar.
+- CI: new `.github/workflows/desktop-build.yml` (run by hand, or on a `desktop-v*` tag). It stages the committed build and packages Windows (zip x64), macOS (zip arm64 + x64, ad-hoc signed) and Linux (tar.gz x64) as the run's artifacts. Unsigned; the signing steps are comments that read secrets added later. `electron/package-lock.json` is committed for `npm ci`.
+- Plan and owner calls: `docs/desktop-plan-2026-11-11.md`.
+- Tests: new `tests/desk2-2026-11-11.js`, static in the suite. Its `--launch` option starts the staged app with Playwright's `_electron`; it passed 62/62 offline here.
+
 ## 2026-11-10 Package UI45 (Map cards: Carried is only what you flagged Yes, NEW! is big)
 - Players see (admin Map cards window): Carried now shows ONLY cards flagged Yes on an earlier main map, plus the tutorial's cards on Map 1+ (with the "Map N" pill); it is no longer topped up with unconfirmed list cards and can be small. Every other fitting card, including cards on earlier maps' lists that were not flagged Yes there, is in NEW! for a Yes / No pick: 45 or more on every main map 0-20 (was 36-41), up to 60. A Yes on map N moves the card from NEW! to Carried on all later maps. The "min" label is gone from Carried.
 - Counts, no flags (NEW! / Carried), before -> after: Map 0 40/0 -> 60/0, Map 1 40/15 -> 60/7, Maps 2-18 36-41/22 -> 45/5 (Wolfsbane Tundra, Map 17 / id m6: 38/22 -> 45/5), Map 19 40/22 -> 52/5, Map 20 40/22 -> 49/5. All 21 maps reach 45 (the generator's static count shows 35-42 on some maps; the game tops NEW! up with the next-best fits below the score floor). Carried 5 = the tutorial's cards.
