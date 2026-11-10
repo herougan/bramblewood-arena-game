@@ -1547,8 +1547,14 @@ M.dragonArrive = function(el, opts){
     const c = centre(t), bf = host ? host.getBoundingClientRect() : {left:0, top:0, width:innerWidth, height:innerHeight};
     const dark = mk('fxc-flash'); dark.style.mixBlendMode = 'multiply'; dark.style.borderRadius = '0'; dark.style.background = 'rgba(20,10,30,.55)';
     tl.set(dark, {x:bf.left, y:bf.top, width:bf.width, height:bf.height, opacity:0}, 0).to(dark, {opacity:1, duration:.3}, 0).to(dark, {opacity:0, duration:.4}, 1.2);
+    // 2026-11-10 (owner 21:11: "doesn't move past the screen but instead the shadow stays on the right awkwardly ... make the dragon move slower across, slowly
+    // enlarging, but go off the screen"): the shadow now starts off the window's left edge and ends past its right edge (the window, not the battlefield, so a side
+    // panel can't catch it), over 2.4 s, growing from 1x to 2.6x, and fades only once it is off screen.
     const sh = mk('fxc-g', '🐉'); sh.style.fontSize = '90px'; sh.style.filter = 'brightness(0) blur(2px)'; sh.style.opacity = '.5';
-    tl.set(sh, {x:bf.left - 100, y:bf.top + bf.height*.3, xPercent:-50, yPercent:-50, scaleX:-1}, .1).to(sh, {x:bf.left + bf.width + 100, duration:.8, ease:'sine.inOut'}, .1);
+    const vw = innerWidth || document.documentElement.clientWidth || (bf.left + bf.width);
+    tl.set(sh, {x:-160, y:bf.top + bf.height*.3, xPercent:-50, yPercent:-50, scaleX:-1, scaleY:1}, .1)
+      .to(sh, {x:vw + 160*2.6, scaleX:-2.6, scaleY:2.6, y:bf.top + bf.height*.22, duration:2.4, ease:'none'}, .1)
+      .to(sh, {opacity:0, duration:.15}, 2.5);
     tl.fromTo(t, {y:-160, opacity:0, scale:1.3}, {y:0, opacity:1, scale:1, duration:.35, ease:'power3.in', clearProps:'transform,opacity'}, .8);
     if(host && opts.shake !== false) tl.fromTo(host, {y:0}, {keyframes:[{y:8}, {y:-6}, {y:3}, {y:0}], duration:.4, ease:'none', clearProps:'transform'}, 1.15); // shake: 2026-10-18, off below High
     puffs(tl, mk, 1.15, c.x, c.r.bottom - 6, {n:7, color:'rgba(120,100,80,.7)', w:c.w*1.5, rise:-14, drift:50, size:[18, 30], stagger:.02});
