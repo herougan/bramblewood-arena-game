@@ -173,7 +173,7 @@
   "win200": 44,
   "tune200": 40
  },
- "keep": true,
+ "keep": false,
  "k14After": 0,
  "trail": [
   {
@@ -185,5 +185,6 @@
    "win": 44
   }
  ],
- "sec": 1600
+ "sec": 1600,
+ "refused": "BAL40: the pick names Woodcock Lookout to lead the boss in place of its own leader Quillguard; refused by the brief. The same deck led by Quillguard at Shield 6 is docs/balance/bal40/pick/12-7.json"
 }
