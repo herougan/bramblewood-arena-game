@@ -259,6 +259,12 @@ them, then a "genre" decides the mood.
 - **Natural animal anatomy.** Not anthropomorphic: no hands, no standing upright like a person,
   no human clothing by default. Animals without legs (fish, snakes, worms, whales) never get legs;
   birds perch or fly; quadrupeds stay on four legs.
+- **True body plan, even when chibi** (owner 2026-11-11 00:06). Cute proportions (big head, big eyes) never change the
+  creature's real structure: spiders have two body segments (cephalothorax + abdomen) with all 8 legs coming from the
+  front segment; insects have three segments (head, thorax, abdomen) with 6 legs from the thorax; crabs have 10 legs
+  including the claws; octopuses 8 arms; birds 2 legs and 2 wings; snakes, fish and worms no limbs. Count the legs and
+  check where they attach before accepting a variation; regenerate if they are wrong. Prompts name it, e.g.
+  "anatomically correct spider: two body segments, eight legs all from the front segment".
 - **Gear fits the animal's body.** "Knight"/"armoured" cards wear armour shaped to the creature
   (a helmet and back-plate on a dolphin, a gold chest plate on a bee) — never a human suit of
   armour, never a weapon held in hands. A weapon, if any, is strapped on.
@@ -290,7 +296,7 @@ are Cute, the Dominion Nestguard and Sunspire Envoy are Menacing.
 
 ### Prompt template
 `<genre prefix>` + `natural animal anatomy, not anthropomorphic, no hands, never standing upright
-like a human,` + `<subject + pose>, <equipment>, <scene>, <background>`.
+like a human, anatomically correct <animal>: <segments, number of legs and where they attach>,` + `<subject + pose>, <equipment>, <scene>, <background>`.
 Genre prefixes and the generation/download technique live in `pixellab-art-batch-status.md`.
 Generate at 128×128 (Pro returns four variations) with background removal OFF, pick the variation
 with the clearest silhouette and the most distinct story beat, and crop it with

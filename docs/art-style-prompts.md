@@ -10,6 +10,8 @@ Cosy woodland pixel art: chunky, readable silhouettes with a dark outline and so
 
 > Pixel art, 32-bit era game sprite style, crisp hard edges, limited palette, dark 1-pixel outline, soft light from the upper left, warm muted woodland colours (moss green, bark brown, river teal, berry red) with one bright accent, cute expressive animal character with a slightly large head, clean readable silhouette, no text, no watermark, no signature.
 
+**Body plan rule (owner 2026-11-11):** after the subject, always add the creature's true body plan, even for chibi art, e.g. "anatomically correct spider: two body segments, eight legs all from the front segment" or "anatomically correct beetle: three body segments, six legs from the middle segment". Reject variations with the wrong leg count or attachment. Full rule: style guideline section 9.
+
 ## Per asset type
 
 | Asset | Size after the pixel pass | Add to the prompt | Background |
