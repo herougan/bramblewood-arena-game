@@ -4395,5 +4395,10 @@
  "sea, shore or river creatures": "creature di mare, di costa o di fiume",
  "fierce beasts": "bestie feroci",
  "builders or war beasts": "costruttori o bestie da guerra",
- "winged": "alati"
+ "winged": "alati",
+ "Unlocks after:": "Si sblocca dopo:",
+ "(current)": "(attuale)",
+ "Saved as your pick; Claude folds it into the map later.": "Salvato come tua scelta; Claude lo integrerà nella mappa più tardi.",
+ "Target for this side map: {t}. Change it; clear it to go back.": "Obiettivo per questa mappa secondaria: {t}. Modificalo; cancellalo per tornare al valore originale.",
+ "NEW!: this side map's own list, Claude's thematic picks for it and cards you flag. Carried: cards flagged Yes on the main maps up to the unlock map you choose, plus the tutorial's T-1 / T-2 cards. Flag each Yes or No.": "NUOVO!: la lista propria di questa mappa secondaria, le proposte tematiche di Claude per essa e le carte che segni. Riportate: carte segnate Sì sulle mappe principali fino alla mappa di sblocco scelta, più le carte T-1 / T-2 del tutorial. Segna ogni carta Sì o No."
 }
