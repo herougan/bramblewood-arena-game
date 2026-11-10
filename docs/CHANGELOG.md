@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Package BAL42 (The Glass Dunes and The Morel Hollow retuned, main maps; decision BAL42-1)
+- Players see: five road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health, level, side map or boss leader touched). 200 games on the road seeds: Spore Drift 7-1 83 -> 91% (target 90), The Oath Ring 7-5 68.5 -> 59.5 (60; leader Dung Beetle), The Morel Monarch 7-6 48 -> 45 (40; still led by its Corpse Flower Beetle), Sandstorm 18-4 85.5 -> 83 (62; Sand Veil still on), Komodo Wallow 18-6 66 -> 61 (60; now led by the Komodo Warlord).
+- Read, no pick 2+ nearer (all in band): 7-4 71 (67.5; all 18 legal decks), 18-3 81.5 (78), 18-5 69.5 (66), 18-7 43 (40). Not reachable: Sandstorm 18-4 (all 679 legal decks with Sand Veil on read 80-100%, Shield at the rule): BAL42-1.
+- Road (`skirmish_pass measure 200 --maxmap=20`, bal41w200 -> bal42w200): in band 194 -> 195, within 10 206 -> 205, beyond 20 6 -> 7 (5-A-2 Gator Hollow 74.5 -> 44.5 from ENG42's Rising Tide, not BAL42), mean 67.4 -> 67.2. Main maps only: in band 130 -> 131, within 10 139 -> 139, beyond 20 3 -> 3. The Glass Dunes |gap| 6.1 -> 5.0, The Morel Hollow 5.3 -> 2.4; both leave the worst 10.
+- Tools: `tools/bal42/` (BAL41's, plus `rules_2026_11_10.js`: a boss or miniboss gets no leader move); output `docs/balance/bal42/`.
+- Tests: new tests/bal42-2026-11-10.js (+ pins); bal19 skips BAL40-42 lines (7-5, 7-6, 18-4; also 17-2 from BAL41); bal21 skips 7-1, 18-6; bal27 skips 7-6.
+
 ## 2026-11-10 Package ENG42 (boon themes by name and art, not skills)
 - Players see: Rising Tide, Wild Rage, Siege Train and Sky Ambush switch on by the creatures in the enemy deck, not by a skill (owner 11-10 11:31): Rising Tide = sea, shore and river creatures (Aquatic, Coastal, Mangrove, crabs, seals, sea / snapping turtles, crocodiles, otters, beavers ...), Wild Rage = fierce beasts (boars, bears, wolves, wolverines, honey badgers, Tasmanian devils, hyenas, big cats), Siege Train = builders and war beasts (beavers, termites, badgers, moles, Structures, elephants, rhinos, oxen, horses), Sky Ambush = winged (birds, bats, butterflies, moths, bees, wasps, flies). Who gets the effect is unchanged (Tide / Rage / Siege / Flying units). Texts in 12 packs.
 - Road (200 games, road seeds): 5-A-2 Gator Hollow's Rising Tide turns ON (4 -> 9 of 14): 74.5% -> 44.5% (target 65). 23-5 Under the Walls' Siege Train turns OFF (8 -> 7 of 16): 53% -> 57.5% (Map 23). 8-A-3 Shard Gallery stays off (7 of 19). 9-4, 10-A-2, 11-A-1, 13-4 stay on, win rates unchanged. docs/balance/eng42/.
