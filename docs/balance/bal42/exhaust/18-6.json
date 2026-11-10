@@ -1,0 +1,181 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "18-6",
+ "map": "md",
+ "mapName": "The Glass Dunes",
+ "kind": "elite",
+ "name": "Komodo Wallow",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "antlion-pit",
+  "caustic-scorpion",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "fennec-fox",
+  "hollow-belly-rat",
+  "komodo-warlord",
+  "meerkat-burrower",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish"
+ ],
+ "firstClear": [
+  "antlion-pit"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "dust-devil-kestrel"
+ ],
+ "namesake": false,
+ "shieldRule": 27,
+ "shieldOverride": null,
+ "space": 99584,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 33.3,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "antlion-pit": 3,
+    "caustic-scorpion": 3,
+    "dust-devil-kestrel": 1,
+    "dust-hyena": 1,
+    "fennec-fox": 3,
+    "hollow-belly-rat": 1,
+    "roadrunner-courier": 3,
+    "sand-widow": 1
+   },
+   "leaders": [
+    "antlion-pit"
+   ],
+   "tune200": 60
+  },
+  {
+   "deck": {
+    "antlion-pit": 1,
+    "caustic-scorpion": 4,
+    "dust-devil-kestrel": 2,
+    "dust-hyena": 1,
+    "fennec-fox": 4,
+    "roadrunner-courier": 3,
+    "sand-widow": 1
+   },
+   "leaders": null,
+   "tune200": 60.5
+  },
+  {
+   "deck": {
+    "antlion-pit": 1,
+    "caustic-scorpion": 1,
+    "dust-devil-kestrel": 2,
+    "fennec-fox": 2,
+    "hollow-belly-rat": 1,
+    "roadrunner-courier": 4,
+    "sand-widow": 1,
+    "sandfish": 4
+   },
+   "leaders": [
+    "antlion-pit"
+   ],
+   "tune200": 60.5
+  },
+  {
+   "deck": {
+    "antlion-pit": 3,
+    "caustic-scorpion": 3,
+    "dust-devil-kestrel": 1,
+    "dust-hyena": 1,
+    "fennec-fox": 3,
+    "hollow-belly-rat": 1,
+    "roadrunner-courier": 3,
+    "sand-widow": 1
+   },
+   "leaders": null,
+   "tune200": 61
+  },
+  {
+   "deck": {
+    "antlion-pit": 1,
+    "caustic-scorpion": 4,
+    "dust-devil-kestrel": 2,
+    "dust-hyena": 1,
+    "fennec-fox": 4,
+    "roadrunner-courier": 3,
+    "sand-widow": 1
+   },
+   "leaders": [
+    "antlion-pit"
+   ],
+   "tune200": 59
+  },
+  {
+   "deck": {
+    "antlion-pit": 3,
+    "caustic-scorpion": 3,
+    "dust-devil-kestrel": 1,
+    "dust-hyena": 1,
+    "fennec-fox": 3,
+    "hollow-belly-rat": 1,
+    "roadrunner-courier": 3,
+    "sand-widow": 1
+   },
+   "leaders": [
+    "roadrunner-courier"
+   ],
+   "tune200": 62.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "roadrunner-courier": 5,
+   "sandfish": 3,
+   "caustic-scorpion": 1,
+   "dust-devil-kestrel": 1,
+   "fennec-fox": 4,
+   "sand-widow": 2
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 66
+ },
+ "pick": {
+  "deck": {
+   "antlion-pit": 3,
+   "caustic-scorpion": 3,
+   "dust-devil-kestrel": 1,
+   "dust-hyena": 1,
+   "fennec-fox": 3,
+   "hollow-belly-rat": 1,
+   "roadrunner-courier": 3,
+   "sand-widow": 1
+  },
+  "leaders": [
+   "antlion-pit"
+  ],
+  "shieldOverride": null,
+  "win200": 56,
+  "tune200": 60
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 66
+  },
+  {
+   "move": "whole-space pick",
+   "win": 56
+  }
+ ],
+ "sec": 1310
+}

@@ -1,0 +1,2 @@
+7-6 target 40 space 488 read 488 range 45 - 76.7 | 200 games: 48 -> 45 KEEP {"deck":{"corpse-flower-beetle":3,"dung-beetle":4,"earthworm":1,"leafcutter-gardener":4,"planarian-splitter":3,"wolf-spider-mother":3,"worker-ant":1},"leaders":["corpse-flower-beetle"],"shieldOverride":18} 711s
+EXIT 0
