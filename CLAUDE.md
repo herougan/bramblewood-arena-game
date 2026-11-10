@@ -34,7 +34,7 @@ Docs named `*-2026-10-*.md` are dated snapshots (history). When one disagrees wi
 ## Build, test, merge, release
 - Build: `python3 assemble_arena.py && mv bramblewood-arena.html index.html`. Never edit `index.html`, `assets/lang/*.js` or `docs/game-texts.xlsx` by hand.
 - Tests (list in `tests/run-all.sh`, run with `tests/run.js`):
-  - `node tests/run.js --smoke`: about a minute; run first.
+  - `node tests/run.js --smoke`: about 1-2 minutes; run first.
   - `node tests/run.js --only '<regex>'`: the package's own and directly affected tests.
   - `node tests/run.js`: everything, skipping tests that passed on identical inputs.
   - `node tests/run.js --full --e2e`: release only.
@@ -53,7 +53,7 @@ Docs named `*-2026-10-*.md` are dated snapshots (history). When one disagrees wi
 | Testing, debugging, releases | `docs/workflows/release.md` |
 
 ## Working style
-- Search before reading: `docs/code-map.md`, then `grep -n`. `arena_app.js` is about 51k lines; read only the region you need.
+- Search before reading: `docs/code-map.md`, then `grep -n`. `arena_app.js` is about 66k lines (index: `docs/guides/arena-app-index.md`); read only the region you need.
 - Specialist agents: `.claude/agents/` (brief them by name); short guides: `docs/guides/` (start with `arena-app-index.md` and `token-savings.md`).
 - Batch work of the same kind. Run agents in parallel only if they touch different files. Most packages touch `arena_app.js` and the 12 language packs, so run those in sequence.
 - Agent briefs: name the workflow file, the exact items, and the files the agent may touch. Don't paste these rules into the brief.

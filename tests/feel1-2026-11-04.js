@@ -54,7 +54,7 @@ ok(/'feelings\.md': \('feelings', '💭 Feelings'\)/.test(lib), 'library: feelin
 // Decision, CLAUDE.md, run-all
 const decRaw = rd('docs', 'decisions.json'), dec = JSON.parse(decRaw);
 const it = dec.items.find(i=> i.id === 'FEEL1-1');
-ok(it && it.status === 'YET' && it.group === 'game', 'decisions.json: FEEL1-1 (YET, game)');
+ok(it && ['YET', 'DONE'].includes(it.status) && it.group === 'game', 'decisions.json: FEEL1-1 (YET or DONE, game)'); // 2026-11-11: the owner answered it
 ok(decRaw.split('\n').filter(l=> l.includes('"id": "FEEL1-1"')).length === 1, 'decisions.json: FEEL1-1 on one line');
 ok(/\| Skirmish feelings \/ the forecast principle \| `docs\/feelings\.md`/.test(rd('CLAUDE.md')), 'CLAUDE.md: source-of-truth row');
 ok(/^run node tests\/feel1-2026-11-04\.js/m.test(rd('tests', 'run-all.sh')), 'run-all.sh: registered');
