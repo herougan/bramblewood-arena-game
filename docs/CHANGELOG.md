@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Package BAL44 (main-map road fights retuned: 0-3, 3-2, 11-10, 16-1, Sable Swampmire)
+- Players see: eleven road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health, level, side map or boss leader touched). 200 games on the road seeds: Raccoon Heist 0-3 69.5 -> 59% (target 60; one Chipmunk Forager and one Cottontail swapped for a Chipmunk Skirmisher and a House Cat, same cards as before for new players), Hawk Watch 3-2 95 -> 86.5 (84), The Avalanche Colossus 11-10 53 -> 37 (40; still led by its Red-billed Chough, Shield 21 kept), Snowshoe Tracks 16-1 70 -> 89 (90; Shield 0). Sable Swampmire: Leech Bog 6-1 86 -> 92 (90), Mire Ambush 6-2 90.5 -> 81.5 (85), Toad Chorus 6-3 87.5 -> 79 (80), Root Snare 6-4 81 -> 78 (75), Venomlord's Coil 6-5 66 -> 70.5 (70; Shield 2), Crocodile Run 6-6 61 -> 65.5 (65; Shield 4), The Alligator King 6-8 31 -> 39.5 (40; Shield override 24 -> 12, the rule; leader Adder Ambusher kept). 6-7 (59 vs 60) unchanged.
+- Untouched as briefed: 20-9, Pebble Beach, Savanna Reaches, Thistlewood, 13-3, 18-4. Every briefed fight reached its band, so no new decision.
+- Road (`skirmish_pass measure 200 --maxmap=20`, bal43w200 -> bal44w200): in band 197 -> 201, within 10 205 -> 208, beyond 20 7 -> 7, mean 67.3 -> 67.2. Main maps only: in band 133 -> 137, within 10 139 -> 142, beyond 20 3 -> 3. Sable Swampmire |gap| 5.1 -> 1.5 (8/8 in band) leaves the worst 10.
+- Tools: `tools/bal44/` (BAL43's, with the boss / miniboss leader rule); output `docs/balance/bal44/`.
+- Tests: new tests/bal44-2026-11-10.js (+ pins); bal21 skips BAL44 lines (6-1, 6-4, 6-8), bal26 skips 11-10.
+
 ## 2026-11-10 Package BAL43 (The Redwood Deep retuned, Thistlewood read; decisions BAL43-1, BAL43-2)
 - Players see: three Redwood Deep road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health, level, side map or boss leader touched). 200 games on the road seeds: Cub Clearing 13-1 81.5 -> 92.5% (target 90; leader Berserker Boar, Shield 0), Badger Setts 13-5 61.5 -> 69 (70; Shield 16 -> 8), Grizzly Ridge 13-6 69.5 -> 63 (65; read at a 4.5 gap, gained 2.5). No Thistlewood fight changes.
 - Not reachable: Burrow Line 1-3 96 (85) and Sapper Hedge 1-4 94 (80): every legal deck reads 87-100 (BAL43-1). Antler Grove 13-3 88.5 (80): all 15 legal decks read 90-98 (BAL43-2). Read, no pick 2+ nearer: 1-1 94 (90), 1-2 84.5 (80).
