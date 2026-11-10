@@ -277,8 +277,11 @@ def _dec_md(d):
         out += ['- ' + x for x in r.get('items') or []] + ['']
     return '\n'.join(out)
 open(os.path.join(ROOT, 'docs', 'decisions.md'), 'w', encoding='utf-8').write(_dec_md(DECISIONS))
-decisions_json = _json.dumps(DECISIONS, ensure_ascii=False).replace('</', '<\\/')
-for it in DECISIONS['items']:  # 2026-10-15: decisions in the global search
+# 2026-11-10 (owner 10:33: "Only remain the remaining decisions in the hub, clear the rest."): the hub carries the open (YET) decisions only; the
+# decided ones stay in decisions.json and decisions.md (the record), not in the hub's tab or its search.
+DECISIONS_HUB = dict(DECISIONS, items=[i for i in DECISIONS['items'] if i.get('status') == 'YET'])
+decisions_json = _json.dumps(DECISIONS_HUB, ensure_ascii=False).replace('</', '<\\/')
+for it in DECISIONS_HUB['items']:  # 2026-10-15: decisions in the global search
     SEARCH.append(['Decision', f"{it['id']} · {it['title']}", ('⏳ yet' if it['status'] == 'YET' else '✅ done') + ' · ' + it.get('area', ''),
                    ' '.join(str(it.get(k) or '') for k in ('body', 'default', 'outcome')) + ' ' + ' '.join(it.get('options') or []), {'tab': 'decisions', 'dec': it['id']}])
 

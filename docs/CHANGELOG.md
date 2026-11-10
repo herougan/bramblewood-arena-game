@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Thistlewood targets, hub decisions (coordinator)
+- BAL35-1 a (Claude, owner delegated 10:15): a road fight may carry its own `curveTarget`; Thistlewood 1-3 aims at 85% and 1-4 at 80% (every legal deck of their list read 89-97%). Owner 10:33: the hub's Decisions tab and search carry the open decisions only; decided ones stay in decisions.json / decisions.md. BAL35-2, BAL36-1, BAL37-1, BAL39-1: owner a (he adds weaker cards in Map cards, Claude retunes).
+
 ## 2026-11-10 Package UI43 (Map cards: No cards greyed; the tutorial's cards Carried on Thistlewood)
 - Owner 09:51 / 09:52. A card showing No (unflagged or flagged No) is greyed out. Every card in a tutorial fight's deck (20 cards) counts as Carried from Map 1 on and shows in Thistlewood's Carried group (pill "Tutorial", Map 0). Tests: `tests/ui43-2026-11-10.js`; ui41 / ui42 tests follow.
 
