@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Package BAL43 (The Redwood Deep retuned, Thistlewood read; decisions BAL43-1, BAL43-2)
+- Players see: three Redwood Deep road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health, level, side map or boss leader touched). 200 games on the road seeds: Cub Clearing 13-1 81.5 -> 92.5% (target 90; leader Berserker Boar, Shield 0), Badger Setts 13-5 61.5 -> 69 (70; Shield 16 -> 8), Grizzly Ridge 13-6 69.5 -> 63 (65; read at a 4.5 gap, gained 2.5). No Thistlewood fight changes.
+- Not reachable: Burrow Line 1-3 96 (85) and Sapper Hedge 1-4 94 (80): every legal deck reads 87-100 (BAL43-1). Antler Grove 13-3 88.5 (80): all 15 legal decks read 90-98 (BAL43-2). Read, no pick 2+ nearer: 1-1 94 (90), 1-2 84.5 (80).
+- Road (`skirmish_pass measure 200 --maxmap=20`, bal42w200 -> bal43w200): in band 195 -> 197, within 10 205 -> 205, beyond 20 7 -> 7, mean 67.2 -> 67.3. Main maps only: in band 131 -> 133, within 10 139 -> 139, beyond 20 3 -> 3. The Redwood Deep |gap| 5.2 -> 3.2 (7/8 in band) leaves the worst 10; Thistlewood stays at 7.0.
+- Tools: `tools/bal43/` (BAL42's, with the boss / miniboss leader rule; the summary also matches the line's Shield); output `docs/balance/bal43/`.
+- Tests: new tests/bal43-2026-11-10.js (+ pins). No older test needed a skip line.
+
 ## 2026-11-10 Package BAL42 (The Glass Dunes and The Morel Hollow retuned, main maps; decision BAL42-1)
 - Players see: five road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health, level, side map or boss leader touched). 200 games on the road seeds: Spore Drift 7-1 83 -> 91% (target 90), The Oath Ring 7-5 68.5 -> 59.5 (60; leader Dung Beetle), The Morel Monarch 7-6 48 -> 45 (40; still led by its Corpse Flower Beetle), Sandstorm 18-4 85.5 -> 83 (62; Sand Veil still on), Komodo Wallow 18-6 66 -> 61 (60; now led by the Komodo Warlord).
 - Read, no pick 2+ nearer (all in band): 7-4 71 (67.5; all 18 legal decks), 18-3 81.5 (78), 18-5 69.5 (66), 18-7 43 (40). Not reachable: Sandstorm 18-4 (all 679 legal decks with Sand Veil on read 80-100%, Shield at the rule): BAL42-1.
