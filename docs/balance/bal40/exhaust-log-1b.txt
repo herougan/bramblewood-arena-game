@@ -1,0 +1,1 @@
+8-A-4 target 40 space 94068 read 401 range 0 - 96.7 | 200 games: 48 -> 42.5 KEEP {"deck":{"blind-cave-fish":2,"grotto-lobster":1,"lantern-spark-fly":1,"malachite-golem":3,"prospector-mole":1,"sulfur-cinder-moth":2,"vampire-bat":1},"leaders":["malachite-golem"],"shieldOverride":null} 1005s

@@ -1,0 +1,170 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "8-A-4",
+ "map": "mn",
+ "mapName": "The Glimmer Depths",
+ "kind": "boss",
+ "name": "The Gem Hoarder",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "badger-stonemason",
+  "blind-cave-fish",
+  "cave-olm",
+  "glimmer-spider",
+  "grotto-lobster",
+  "lantern-spark-fly",
+  "malachite-golem",
+  "prospector-mole",
+  "stalactite-golem",
+  "sulfur-cinder-moth",
+  "vampire-bat",
+  "whip-spider"
+ ],
+ "firstClear": [
+  "lantern-spark-fly"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "malachite-golem"
+ ],
+ "namesake": false,
+ "shieldRule": 48,
+ "shieldOverride": null,
+ "space": 94068,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 0,
+  "max": 96.7
+ },
+ "top": [
+  {
+   "deck": {
+    "blind-cave-fish": 2,
+    "grotto-lobster": 1,
+    "lantern-spark-fly": 1,
+    "malachite-golem": 3,
+    "prospector-mole": 1,
+    "sulfur-cinder-moth": 2,
+    "vampire-bat": 1
+   },
+   "leaders": null,
+   "tune200": 39.5
+  },
+  {
+   "deck": {
+    "badger-stonemason": 2,
+    "cave-olm": 2,
+    "lantern-spark-fly": 3,
+    "malachite-golem": 2,
+    "stalactite-golem": 1,
+    "whip-spider": 1
+   },
+   "leaders": null,
+   "tune200": 41.5
+  },
+  {
+   "deck": {
+    "badger-stonemason": 1,
+    "cave-olm": 2,
+    "glimmer-spider": 1,
+    "lantern-spark-fly": 1,
+    "malachite-golem": 1,
+    "prospector-mole": 3,
+    "sulfur-cinder-moth": 1,
+    "vampire-bat": 1
+   },
+   "leaders": [
+    "prospector-mole"
+   ],
+   "tune200": 38.5
+  },
+  {
+   "deck": {
+    "badger-stonemason": 1,
+    "cave-olm": 2,
+    "glimmer-spider": 1,
+    "lantern-spark-fly": 1,
+    "malachite-golem": 1,
+    "prospector-mole": 3,
+    "sulfur-cinder-moth": 1,
+    "vampire-bat": 1
+   },
+   "leaders": null,
+   "tune200": 37
+  },
+  {
+   "deck": {
+    "badger-stonemason": 2,
+    "blind-cave-fish": 1,
+    "lantern-spark-fly": 1,
+    "malachite-golem": 1,
+    "prospector-mole": 3,
+    "vampire-bat": 1,
+    "whip-spider": 2
+   },
+   "leaders": null,
+   "tune200": 43.5
+  },
+  {
+   "deck": {
+    "blind-cave-fish": 2,
+    "cave-olm": 3,
+    "lantern-spark-fly": 1,
+    "malachite-golem": 2,
+    "sulfur-cinder-moth": 2,
+    "vampire-bat": 1
+   },
+   "leaders": null,
+   "tune200": 36.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "lantern-spark-fly": 3,
+   "grotto-lobster": 1,
+   "glimmer-spider": 1,
+   "malachite-golem": 3,
+   "badger-stonemason": 3
+  },
+  "leaders": [
+   "malachite-golem"
+  ],
+  "shieldOverride": null,
+  "win200": 48
+ },
+ "pick": {
+  "deck": {
+   "blind-cave-fish": 2,
+   "grotto-lobster": 1,
+   "lantern-spark-fly": 1,
+   "malachite-golem": 3,
+   "prospector-mole": 1,
+   "sulfur-cinder-moth": 2,
+   "vampire-bat": 1
+  },
+  "leaders": [
+   "malachite-golem"
+  ],
+  "shieldOverride": null,
+  "win200": 42.5,
+  "tune200": 39.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 48
+  },
+  {
+   "move": "whole-space pick",
+   "win": 42.5
+  }
+ ],
+ "sec": 1005
+}
