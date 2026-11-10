@@ -1,0 +1,161 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "12-2",
+ "map": "mh",
+ "mapName": "The Briar Maze",
+ "kind": "skirmish",
+ "name": "Quill Path",
+ "band": {
+  "lo": 76,
+  "hi": 92,
+  "target": 84
+ },
+ "list": [
+  "carrion-crow",
+  "cunning-vixen",
+  "dormouse",
+  "field-mouse",
+  "hollow-belly-rat",
+  "lyrebird-mimic",
+  "mouse-sapper",
+  "thorn-shrike",
+  "woodcock-lookout"
+ ],
+ "firstClear": [
+  "cunning-vixen"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "thorn-shrike"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": null,
+ "space": 163,
+ "read": 163,
+ "g1": 60,
+ "range": {
+  "min": 68.3,
+  "max": 90
+ },
+ "top": [
+  {
+   "deck": {
+    "carrion-crow": 5,
+    "cunning-vixen": 3,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 3,
+    "thorn-shrike": 3
+   },
+   "leaders": null,
+   "tune200": 83.5
+  },
+  {
+   "deck": {
+    "carrion-crow": 5,
+    "cunning-vixen": 3,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 3,
+    "thorn-shrike": 3
+   },
+   "leaders": [
+    "lyrebird-mimic"
+   ],
+   "tune200": 84.5
+  },
+  {
+   "deck": {
+    "carrion-crow": 5,
+    "cunning-vixen": 3,
+    "hollow-belly-rat": 1,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 2,
+    "thorn-shrike": 3
+   },
+   "leaders": [
+    "mouse-sapper"
+   ],
+   "tune200": 84.5
+  },
+  {
+   "deck": {
+    "carrion-crow": 5,
+    "cunning-vixen": 4,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 2,
+    "thorn-shrike": 3
+   },
+   "leaders": [],
+   "tune200": 84.5
+  },
+  {
+   "deck": {
+    "carrion-crow": 5,
+    "cunning-vixen": 3,
+    "hollow-belly-rat": 1,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 2,
+    "thorn-shrike": 3
+   },
+   "leaders": null,
+   "tune200": 85
+  },
+  {
+   "deck": {
+    "carrion-crow": 5,
+    "cunning-vixen": 3,
+    "hollow-belly-rat": 1,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 2,
+    "thorn-shrike": 3
+   },
+   "leaders": [
+    "hollow-belly-rat"
+   ],
+   "tune200": 85
+  }
+ ],
+ "before": {
+  "deck": {
+   "cunning-vixen": 3,
+   "lyrebird-mimic": 3,
+   "dormouse": 1,
+   "mouse-sapper": 3,
+   "carrion-crow": 5,
+   "thorn-shrike": 3
+  },
+  "leaders": [
+   "thorn-shrike"
+  ],
+  "shieldOverride": null,
+  "win200": 71.5
+ },
+ "pick": {
+  "deck": {
+   "carrion-crow": 5,
+   "cunning-vixen": 3,
+   "lyrebird-mimic": 4,
+   "mouse-sapper": 3,
+   "thorn-shrike": 3
+  },
+  "leaders": [
+   "thorn-shrike"
+  ],
+  "shieldOverride": 0,
+  "win200": 81,
+  "tune200": 83.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 71.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 81
+  }
+ ],
+ "sec": 219
+}

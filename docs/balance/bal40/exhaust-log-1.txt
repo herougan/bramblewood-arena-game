@@ -1,0 +1,1 @@
+8-A-2 target 75 space 37814 read 401 range 51.7 - 100 | 200 games: 84.5 -> 71.5 KEEP {"deck":{"bat-swarmling":1,"echo-screecher":3,"glimmer-spider":3,"prospector-mole":4,"stalactite-golem":1,"sulfur-cinder-moth":4,"whip-spider":4},"leaders":["echo-screecher"],"shieldOverride":null} 467s

@@ -1,0 +1,18 @@
+12-1     target 90 | 200 games 79 | gap -11 | space 80
+12-2     target 84 | 200 games 71.5 | gap -12.5 | space 191
+12-6     target 60 | 200 games 51.5 | gap -8.5 | space 7165
+12-7     target 40 | 200 games 29.5 | gap -10.5 | space 11125
+19-3     target 75 | 200 games 83.5 | gap 8.5 | space 36926
+19-4     target 67.5 | 200 games 77.5 | gap 10 | space 12000
+19-6     target 40 | 200 games 59 | gap 19 | space 17889
+8-A-2    target 75 | 200 games 84.5 | gap 9.5 | space 59990
+8-A-3    target 50 | 200 games 58 | gap 8 | space 0
+8-A-4    target 40 | 200 games 48 | gap 8 | space 201653
+11-A-1   target 80 | 200 games 72.5 | gap -7.5 | space 4914
+11-A-2   target 75 | 200 games 84 | gap 9 | space 36176
+11-A-3   target 60 | 200 games 66.5 | gap 6.5 | space 16168
+11-A-4   target 40 | 200 games 34.5 | gap -5.5 | space 48897
+19-5     target 60 | 200 games 55.5 | gap -4.5 | space 1091
+12-3     target 68 | 200 games 65.5 | gap -2.5 | space 7554
+19-2     target 82.5 | 200 games 87 | gap 4.5 | space 3126
+EXIT 0
