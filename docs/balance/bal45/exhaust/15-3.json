@@ -1,0 +1,160 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "15-3",
+ "map": "ml",
+ "mapName": "The Long Grass",
+ "kind": "skirmish",
+ "name": "Stoat Ambush",
+ "band": {
+  "lo": 70,
+  "hi": 86,
+  "target": 78
+ },
+ "list": [
+  "bison-bulldozer",
+  "carrion-crow",
+  "cataphract-destrier",
+  "hedge-weasel",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "shepherds-bark",
+  "slow-worm",
+  "stoat-cutthroat",
+  "swift-fox",
+  "thorn-shrike"
+ ],
+ "firstClear": [
+  "stoat-cutthroat"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "stoat-cutthroat"
+ ],
+ "namesake": true,
+ "shieldRule": 15,
+ "shieldOverride": 3,
+ "space": 672,
+ "read": 400,
+ "g1": 60,
+ "range": {
+  "min": 53.3,
+  "max": 96.7
+ },
+ "top": [
+  {
+   "deck": {
+    "bison-bulldozer": 3,
+    "cataphract-destrier": 3,
+    "pronghorn-racer": 4,
+    "raccoon-bandit": 3,
+    "shepherds-bark": 2,
+    "stoat-cutthroat": 3
+   },
+   "leaders": null,
+   "tune200": 76
+  },
+  {
+   "deck": {
+    "bison-bulldozer": 4,
+    "cataphract-destrier": 3,
+    "pronghorn-racer": 4,
+    "raccoon-bandit": 2,
+    "shepherds-bark": 3,
+    "stoat-cutthroat": 2
+   },
+   "leaders": null,
+   "tune200": 80.5
+  },
+  {
+   "deck": {
+    "bison-bulldozer": 4,
+    "cataphract-destrier": 4,
+    "pronghorn-racer": 4,
+    "raccoon-bandit": 3,
+    "stoat-cutthroat": 2,
+    "thorn-shrike": 1
+   },
+   "leaders": null,
+   "tune200": 81.5
+  },
+  {
+   "deck": {
+    "cataphract-destrier": 4,
+    "pronghorn-racer": 5,
+    "raccoon-bandit": 3,
+    "shepherds-bark": 3,
+    "stoat-cutthroat": 3
+   },
+   "leaders": null,
+   "tune200": 83
+  },
+  {
+   "deck": {
+    "bison-bulldozer": 4,
+    "cataphract-destrier": 3,
+    "pronghorn-racer": 3,
+    "shepherds-bark": 4,
+    "slow-worm": 1,
+    "stoat-cutthroat": 3
+   },
+   "leaders": null,
+   "tune200": 83.5
+  },
+  {
+   "deck": {
+    "bison-bulldozer": 4,
+    "cataphract-destrier": 3,
+    "pronghorn-racer": 5,
+    "raccoon-bandit": 3,
+    "stoat-cutthroat": 2,
+    "swift-fox": 1
+   },
+   "leaders": null,
+   "tune200": 84
+  }
+ ],
+ "before": {
+  "deck": {
+   "pronghorn-racer": 5,
+   "bison-bulldozer": 4,
+   "raccoon-bandit": 3,
+   "stoat-cutthroat": 1,
+   "shepherds-bark": 4,
+   "hedge-weasel": 1
+  },
+  "leaders": [
+   "stoat-cutthroat"
+  ],
+  "shieldOverride": 3,
+  "win200": 71.5
+ },
+ "pick": {
+  "deck": {
+   "bison-bulldozer": 3,
+   "cataphract-destrier": 3,
+   "pronghorn-racer": 4,
+   "raccoon-bandit": 3,
+   "shepherds-bark": 2,
+   "stoat-cutthroat": 3
+  },
+  "leaders": [
+   "stoat-cutthroat"
+  ],
+  "shieldOverride": 0,
+  "win200": 76,
+  "tune200": 76
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 71.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 76
+  }
+ ],
+ "sec": 638
+}

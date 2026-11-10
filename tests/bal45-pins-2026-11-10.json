@@ -1,0 +1,181 @@
+{
+ "0-1": {
+  "deck": {
+   "crossed-eyes": 3,
+   "duck-paddler": 3,
+   "garden-snail": 4,
+   "honey-bee": 4,
+   "pond-duck": 3,
+   "silver-minnow": 3
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "11-8": {
+  "deck": {
+   "alpine-salamander": 4,
+   "alpine-swift": 1,
+   "eyrie-warden": 4,
+   "gannet-nestweaver": 1,
+   "kittiwake-flock": 1,
+   "mountain-hare": 2,
+   "peak-condor": 1
+  },
+  "leaders": [
+   "gannet-nestweaver"
+  ],
+  "shield": "16",
+  "hqHp": null,
+  "characterId": null
+ },
+ "11-9": {
+  "deck": {
+   "alpine-marmot": 3,
+   "alpine-salamander": 3,
+   "chamois-leaper": 4,
+   "chipmunk-hoarder": 3,
+   "eagle-owl-quartermaster": 3,
+   "gannet-nestweaver": 1,
+   "mountain-hare": 1,
+   "peak-condor": 1
+  },
+  "leaders": [
+   "chamois-leaper"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "15-2": {
+  "deck": {
+   "border-collie": 2,
+   "cataphract-destrier": 3,
+   "hedge-weasel": 1,
+   "raccoon-bandit": 3,
+   "shepherds-bark": 2,
+   "stoat-cutthroat": 1,
+   "pronghorn-racer": 4
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "15-3": {
+  "deck": {
+   "pronghorn-racer": 5,
+   "bison-bulldozer": 4,
+   "raccoon-bandit": 3,
+   "stoat-cutthroat": 1,
+   "shepherds-bark": 4,
+   "hedge-weasel": 1
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "17-6": {
+  "deck": {
+   "alpha-howler": 1,
+   "beluga": 2,
+   "harbor-seal": 4,
+   "polar-bear": 1,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 4,
+   "spitting-spider": 4
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "3-7": {
+  "deck": {
+   "kittiwake-flock": 2,
+   "puffin-diver": 3,
+   "red-billed-chough": 4,
+   "golden-eagle-diver": 3,
+   "razorbill": 4,
+   "hawk-arrowkeeper": 3
+  },
+  "leaders": [
+   "peak-condor"
+  ],
+  "shield": "7",
+  "hqHp": null,
+  "characterId": null
+ },
+ "5-2": {
+  "deck": {
+   "bog-leech": 1,
+   "swamp-alligator": 3,
+   "cypress-root-lurker": 2,
+   "crocodile-ambusher": 3,
+   "constrictor-coil": 5
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "5-4": {
+  "deck": {
+   "constrictor-coil": 2,
+   "cypress-root-lurker": 3,
+   "fen-mink": 4,
+   "grass-viper": 3,
+   "nutria-reedcutter": 3,
+   "swamp-alligator": 3
+  },
+  "leaders": null,
+  "shield": "1",
+  "hqHp": null,
+  "characterId": null
+ },
+ "5-5": {
+  "deck": {
+   "crocodile-ambusher": 4,
+   "bog-leech": 1,
+   "cypress-root-lurker": 2,
+   "constrictor-coil": 2,
+   "nutria-reedcutter": 2,
+   "fire-ant-raft": 1,
+   "swamp-alligator": 2
+  },
+  "leaders": null,
+  "shield": "4",
+  "hqHp": null,
+  "characterId": null
+ },
+ "8-4": {
+  "deck": {
+   "blind-cave-fish": 3,
+   "cave-olm": 2,
+   "gallery-orb-weaver": 4,
+   "hollow-belly-rat": 1,
+   "stalactite-golem": 1,
+   "sulfur-cinder-moth": 1
+  },
+  "leaders": [],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "8-7": {
+  "deck": {
+   "giant-cave-huntsman": 1,
+   "hollow-belly-rat": 1,
+   "malachite-golem": 1,
+   "blind-cave-fish": 5,
+   "stalactite-golem": 4,
+   "gallery-orb-weaver": 2
+  },
+  "leaders": null,
+  "shield": "12",
+  "hqHp": null,
+  "characterId": null
+ }
+}

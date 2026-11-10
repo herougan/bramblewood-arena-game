@@ -30,6 +30,7 @@ const tune = {}, first = {};
 const bal27Lines = [...lines.entries()].filter(([, l]) => /2026-11-08 \(BAL27\)/.test(l));
 ok(bal27Lines.length >= 1, 'BAL27 retuned some road fights: ' + bal27Lines.length);
 for (const [code, l] of bal27Lines) {
+  if (/2026-11-10 \(BAL45\): retuned/.test(l)) continue; // 2026-11-10 (BAL45): retuned again (5-2, 5-4, 5-5, 11-8); tests/bal45-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL42\): retuned/.test(l)) continue; // 2026-11-10 (BAL42): retuned again (7-6); tests/bal42-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL41\): retuned/.test(l)) continue; // 2026-11-10 (BAL41): retuned again (9-4); tests/bal41-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL3[56]\): retuned/.test(l)) continue; // 2026-11-10 (BAL35): retuned again (the worst road maps); tests/bal35-2026-11-10.js checks and pins it now; (BAL36): + 2-B-4, tests/bal36-2026-11-10.js
@@ -73,6 +74,7 @@ const PINS = {
 };
 for (const [code, p] of Object.entries(PINS)) {
   const l = lines.get(code); ok(!!l, code + ': pinned fight found'); if (!l) continue; const now = fields(l);
+  if (/2026-11-10 \(BAL45\): retuned/.test(l)) continue; // 2026-11-10 (BAL45): 5-4, 11-8 retuned again, pinned in tests/bal45-pins-2026-11-10.json
   if (/2026-11-10 \(BAL42\): retuned/.test(l)) continue; // 2026-11-10 (BAL42): 7-6 retuned again, pinned in tests/bal42-pins-2026-11-10.json
   if (/2026-11-10 \(BAL41\): retuned/.test(l)) continue; // 2026-11-10 (BAL41): 9-4 retuned again, pinned in tests/bal41-pins-2026-11-10.json
   if (/2026-11-10 \(BAL3[56]\): retuned/.test(l)) continue; // 2026-11-10 (BAL35): retuned again (the worst road maps); tests/bal35-2026-11-10.js checks and pins it now; (BAL36): + 2-B-4, tests/bal36-2026-11-10.js

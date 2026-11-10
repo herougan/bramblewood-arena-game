@@ -1,0 +1,83 @@
+{
+ "about": "BAL45 named pick (tools/bal45/pick_2026_11_10.js)",
+ "code": "15-2",
+ "map": "ml",
+ "mapName": "The Long Grass",
+ "kind": "skirmish",
+ "name": "Squire Road",
+ "band": {
+  "lo": 76,
+  "hi": 92,
+  "target": 84
+ },
+ "list": [
+  "bison-bulldozer",
+  "border-collie",
+  "carrion-crow",
+  "cataphract-destrier",
+  "hedge-weasel",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "shepherds-bark",
+  "slow-worm",
+  "stoat-cutthroat",
+  "swift-fox",
+  "thorn-shrike"
+ ],
+ "firstClear": [
+  "border-collie"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "stoat-cutthroat"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "border-collie": 2,
+   "cataphract-destrier": 3,
+   "hedge-weasel": 1,
+   "raccoon-bandit": 3,
+   "shepherds-bark": 2,
+   "stoat-cutthroat": 1,
+   "pronghorn-racer": 4
+  },
+  "leaders": [
+   "stoat-cutthroat"
+  ],
+  "shieldOverride": null,
+  "win200": 76.5,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "border-collie": 2,
+   "cataphract-destrier": 3,
+   "hedge-weasel": 1,
+   "raccoon-bandit": 3,
+   "shepherds-bark": 2,
+   "stoat-cutthroat": 1,
+   "pronghorn-racer": 4
+  },
+  "leaders": [
+   "stoat-cutthroat"
+  ],
+  "shieldOverride": 0,
+  "win200": 81,
+  "shown": 0
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 76.5
+  },
+  {
+   "move": "named pick",
+   "win": 81
+  }
+ ]
+}

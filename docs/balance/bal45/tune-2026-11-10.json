@@ -1,0 +1,733 @@
+{
+ "about": "BAL45 road retune summary (tools/bal45/summary_2026_11_10.js); 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "0-1",
+   "map": "m1",
+   "mapName": "Bramblewood Outskirts",
+   "kind": "skirmish",
+   "name": "Pond Patrol",
+   "target": 90,
+   "before200": 96,
+   "after200": 92.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 96,
+     "pick200": 86.5,
+     "keep": true,
+     "space": 400001,
+     "range": {
+      "min": 46.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "ant-scout": 3,
+       "beaver-lumberjack": 3,
+       "chipmunk-forager": 4,
+       "duck-paddler": 3,
+       "pond-duck": 4,
+       "worker-ant": 3
+      },
+      "leaders": [],
+      "shieldOverride": null
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 96,
+     "pick200": 92.5,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "crossed-eyes": 3,
+       "duck-paddler": 3,
+       "garden-snail": 4,
+       "honey-bee": 4,
+       "pond-duck": 3,
+       "silver-minnow": 3
+      },
+      "leaders": [],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "11-8",
+   "map": "m10",
+   "mapName": "Eyrie Heights",
+   "kind": "elite",
+   "name": "Summit Approach",
+   "target": 63.800000000000004,
+   "before200": 70,
+   "after200": 65.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 70,
+     "pick200": 65.5,
+     "keep": true,
+     "space": 13137,
+     "range": {
+      "min": 45,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "alpine-salamander": 4,
+       "alpine-swift": 1,
+       "eyrie-warden": 4,
+       "gannet-nestweaver": 1,
+       "kittiwake-flock": 1,
+       "mountain-hare": 2,
+       "peak-condor": 1
+      },
+      "leaders": [
+       "gannet-nestweaver"
+      ],
+      "shieldOverride": 16
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "11-9",
+   "map": "m10",
+   "mapName": "Eyrie Heights",
+   "kind": "elite",
+   "name": "The Condor Sovereign",
+   "target": 60,
+   "before200": 66,
+   "after200": 61.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 66,
+     "pick200": 66.5,
+     "keep": false,
+     "space": 142391,
+     "range": {
+      "min": 53.3,
+      "max": 93.3
+     },
+     "pick": {
+      "deck": {
+       "alpine-marmot": 3,
+       "alpine-salamander": 4,
+       "chamois-leaper": 1,
+       "chipmunk-hoarder": 4,
+       "eagle-owl-quartermaster": 3,
+       "eyrie-warden": 3,
+       "kittiwake-flock": 1
+      },
+      "leaders": [
+       "alpine-salamander"
+      ],
+      "shieldOverride": null
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 66,
+     "pick200": 61.5,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "alpine-marmot": 3,
+       "alpine-salamander": 3,
+       "chamois-leaper": 4,
+       "chipmunk-hoarder": 3,
+       "eagle-owl-quartermaster": 3,
+       "gannet-nestweaver": 1,
+       "mountain-hare": 1,
+       "peak-condor": 1
+      },
+      "leaders": [
+       "chamois-leaper"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "8-4",
+   "map": "m4",
+   "mapName": "Caves & Alcoves",
+   "kind": "skirmish",
+   "name": "Echo Chamber",
+   "target": 75,
+   "before200": 68,
+   "after200": 78,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 68,
+     "pick200": 78,
+     "keep": true,
+     "space": 1206,
+     "range": {
+      "min": 23.3,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "blind-cave-fish": 3,
+       "cave-olm": 2,
+       "gallery-orb-weaver": 4,
+       "hollow-belly-rat": 1,
+       "stalactite-golem": 1,
+       "sulfur-cinder-moth": 1
+      },
+      "leaders": [],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "8-7",
+   "map": "m4",
+   "mapName": "Caves & Alcoves",
+   "kind": "elite",
+   "name": "The Roost Above",
+   "target": 60,
+   "before200": 66,
+   "after200": 63,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 66,
+     "pick200": 46.5,
+     "keep": false,
+     "space": 7127,
+     "range": {
+      "min": 6.7,
+      "max": 93.3
+     },
+     "pick": {
+      "deck": {
+       "blind-cave-fish": 2,
+       "cave-olm": 1,
+       "gallery-orb-weaver": 4,
+       "giant-cave-huntsman": 3,
+       "hollow-belly-rat": 1,
+       "malachite-golem": 3
+      },
+      "leaders": [
+       "malachite-golem"
+      ],
+      "shieldOverride": 6
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 66,
+     "pick200": 63,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "giant-cave-huntsman": 1,
+       "hollow-belly-rat": 1,
+       "malachite-golem": 1,
+       "blind-cave-fish": 5,
+       "stalactite-golem": 4,
+       "gallery-orb-weaver": 2
+      },
+      "leaders": [
+       "malachite-golem"
+      ],
+      "shieldOverride": 12
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "17-6",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "elite",
+   "name": "Glacier Herd",
+   "target": 65,
+   "before200": 57.5,
+   "after200": 63,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 57.5,
+     "pick200": 61.5,
+     "keep": true,
+     "space": 422,
+     "range": {
+      "min": 33.3,
+      "max": 93.3
+     },
+     "pick": {
+      "deck": {
+       "beluga": 3,
+       "cone-cutter-squirrel": 1,
+       "harbor-seal": 4,
+       "polar-bear": 2,
+       "snow-bunting-archer": 4,
+       "snow-ermine": 2,
+       "spitting-spider": 4
+      },
+      "leaders": [
+       "polar-bear"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 57.5,
+     "pick200": 63,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "alpha-howler": 1,
+       "beluga": 2,
+       "harbor-seal": 4,
+       "polar-bear": 1,
+       "snow-bunting-archer": 4,
+       "snow-ermine": 4,
+       "spitting-spider": 4
+      },
+      "leaders": [
+       "polar-bear"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "3-7",
+   "map": "mc",
+   "mapName": "Gannet Cliffs",
+   "kind": "elite",
+   "name": "The Gannet Queen",
+   "target": 40,
+   "before200": 47,
+   "after200": 41.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 47,
+     "pick200": 34.5,
+     "keep": false,
+     "space": 180413,
+     "range": {
+      "min": 10,
+      "max": 68.3
+     },
+     "pick": {
+      "deck": {
+       "cormorant": 4,
+       "golden-eagle-diver": 2,
+       "kittiwake-flock": 3,
+       "oystercatcher": 1,
+       "puffin-diver": 4,
+       "razorbill": 4,
+       "red-billed-chough": 1
+      },
+      "leaders": [
+       "puffin-diver"
+      ],
+      "shieldOverride": 7
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 47,
+     "pick200": 41.5,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "kittiwake-flock": 2,
+       "puffin-diver": 3,
+       "red-billed-chough": 4,
+       "golden-eagle-diver": 3,
+       "razorbill": 4,
+       "hawk-arrowkeeper": 3
+      },
+      "leaders": [
+       "peak-condor"
+      ],
+      "shieldOverride": 7
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "12-1",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "kind": "skirmish",
+   "name": "Hedge Mice",
+   "target": 90,
+   "before200": 83,
+   "after200": 83,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 83,
+     "pick200": 80,
+     "keep": false,
+     "space": 76,
+     "range": {
+      "min": 66.7,
+      "max": 86.7
+     },
+     "pick": {
+      "deck": {
+       "bramble-hoglet": 5,
+       "carrion-crow": 4,
+       "hollow-belly-rat": 1,
+       "mouse-sapper": 4,
+       "thorn-shrike": 3
+      },
+      "leaders": [
+       "hollow-belly-rat"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 83,
+     "pick200": 79,
+     "keep": false,
+     "pick": {
+      "deck": {
+       "bramble-hoglet": 5,
+       "carrion-crow": 4,
+       "hollow-belly-rat": 1,
+       "mouse-sapper": 4,
+       "thorn-shrike": 3
+      },
+      "leaders": [
+       "thorn-shrike"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "15-2",
+   "map": "ml",
+   "mapName": "The Long Grass",
+   "kind": "skirmish",
+   "name": "Squire Road",
+   "target": 84,
+   "before200": 76.5,
+   "after200": 81,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 76.5,
+     "pick200": 82,
+     "keep": true,
+     "space": 22131,
+     "range": {
+      "min": 45,
+      "max": 93.3
+     },
+     "pick": {
+      "deck": {
+       "bison-bulldozer": 2,
+       "border-collie": 2,
+       "carrion-crow": 1,
+       "cataphract-destrier": 4,
+       "pronghorn-racer": 4,
+       "slow-worm": 1,
+       "stoat-cutthroat": 2
+      },
+      "leaders": [
+       "stoat-cutthroat"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 76.5,
+     "pick200": 81,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "border-collie": 2,
+       "cataphract-destrier": 3,
+       "hedge-weasel": 1,
+       "raccoon-bandit": 3,
+       "shepherds-bark": 2,
+       "stoat-cutthroat": 1,
+       "pronghorn-racer": 4
+      },
+      "leaders": [
+       "stoat-cutthroat"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "15-3",
+   "map": "ml",
+   "mapName": "The Long Grass",
+   "kind": "skirmish",
+   "name": "Stoat Ambush",
+   "target": 78,
+   "before200": 71.5,
+   "after200": 78,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 71.5,
+     "pick200": 76,
+     "keep": true,
+     "space": 672,
+     "range": {
+      "min": 53.3,
+      "max": 96.7
+     },
+     "pick": {
+      "deck": {
+       "bison-bulldozer": 3,
+       "cataphract-destrier": 3,
+       "pronghorn-racer": 4,
+       "raccoon-bandit": 3,
+       "shepherds-bark": 2,
+       "stoat-cutthroat": 3
+      },
+      "leaders": [
+       "stoat-cutthroat"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 71.5,
+     "pick200": 78,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "pronghorn-racer": 5,
+       "bison-bulldozer": 4,
+       "raccoon-bandit": 3,
+       "stoat-cutthroat": 1,
+       "shepherds-bark": 4,
+       "hedge-weasel": 1
+      },
+      "leaders": [
+       "stoat-cutthroat"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "5-2",
+   "map": "mw",
+   "mapName": "Gatorback Swamp",
+   "kind": "skirmish",
+   "name": "Toad Hollow",
+   "target": 84,
+   "before200": 78,
+   "after200": 82,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 78,
+     "pick200": 92,
+     "keep": false,
+     "space": 2617,
+     "range": {
+      "min": 31.7,
+      "max": 81.7
+     },
+     "pick": {
+      "deck": {
+       "bog-leech": 1,
+       "constrictor-coil": 1,
+       "crocodile-ambusher": 4,
+       "nutria-reedcutter": 4,
+       "swamp-alligator": 4
+      },
+      "leaders": [
+       "constrictor-coil"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 78,
+     "pick200": 82,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "bog-leech": 1,
+       "swamp-alligator": 3,
+       "cypress-root-lurker": 2,
+       "crocodile-ambusher": 3,
+       "constrictor-coil": 5
+      },
+      "leaders": [
+       "bog-leech"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "5-4",
+   "map": "mw",
+   "mapName": "Gatorback Swamp",
+   "kind": "skirmish",
+   "name": "Snapping Reeds",
+   "target": 72,
+   "before200": 64.5,
+   "after200": 72,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 64.5,
+     "pick200": 80,
+     "keep": false,
+     "space": 6755,
+     "range": {
+      "min": 53.3,
+      "max": 98.3
+     },
+     "pick": {
+      "deck": {
+       "constrictor-coil": 4,
+       "crocodile-ambusher": 4,
+       "fen-mink": 3,
+       "grass-viper": 4,
+       "nutria-reedcutter": 3
+      },
+      "leaders": [
+       "fen-mink"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 64.5,
+     "pick200": 72,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "constrictor-coil": 2,
+       "cypress-root-lurker": 3,
+       "fen-mink": 4,
+       "grass-viper": 3,
+       "nutria-reedcutter": 3,
+       "swamp-alligator": 3
+      },
+      "leaders": [
+       "fen-mink"
+      ],
+      "shieldOverride": 1
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "5-5",
+   "map": "mw",
+   "mapName": "Gatorback Swamp",
+   "kind": "elite",
+   "name": "Gator Slide",
+   "target": 66,
+   "before200": 60,
+   "after200": 66,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 60,
+     "pick200": 62.5,
+     "keep": true,
+     "space": 5514,
+     "range": {
+      "min": 31.7,
+      "max": 96.7
+     },
+     "pick": {
+      "deck": {
+       "bog-leech": 1,
+       "box-turtle": 1,
+       "constrictor-coil": 2,
+       "crocodile-ambusher": 2,
+       "cypress-root-lurker": 2,
+       "fire-ant-raft": 3,
+       "nutria-reedcutter": 1,
+       "swamp-alligator": 2
+      },
+      "leaders": [
+       "fire-ant-raft"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 60,
+     "pick200": 66,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "crocodile-ambusher": 4,
+       "bog-leech": 1,
+       "cypress-root-lurker": 2,
+       "constrictor-coil": 2,
+       "nutria-reedcutter": 2,
+       "fire-ant-raft": 1,
+       "swamp-alligator": 2
+      },
+      "leaders": [
+       "fire-ant-raft"
+      ],
+      "shieldOverride": 4
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  }
+ ]
+}

@@ -1,0 +1,80 @@
+{
+ "about": "BAL45 named pick (tools/bal45/pick_2026_11_10.js)",
+ "code": "15-3",
+ "map": "ml",
+ "mapName": "The Long Grass",
+ "kind": "skirmish",
+ "name": "Stoat Ambush",
+ "band": {
+  "lo": 70,
+  "hi": 86,
+  "target": 78
+ },
+ "list": [
+  "bison-bulldozer",
+  "carrion-crow",
+  "cataphract-destrier",
+  "hedge-weasel",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "shepherds-bark",
+  "slow-worm",
+  "stoat-cutthroat",
+  "swift-fox",
+  "thorn-shrike"
+ ],
+ "firstClear": [
+  "stoat-cutthroat"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "stoat-cutthroat"
+ ],
+ "namesake": true,
+ "shieldRule": 15,
+ "shieldOverride": 3,
+ "before": {
+  "deck": {
+   "pronghorn-racer": 5,
+   "bison-bulldozer": 4,
+   "raccoon-bandit": 3,
+   "stoat-cutthroat": 1,
+   "shepherds-bark": 4,
+   "hedge-weasel": 1
+  },
+  "leaders": [
+   "stoat-cutthroat"
+  ],
+  "shieldOverride": 3,
+  "win200": 71.5,
+  "shown": 2
+ },
+ "pick": {
+  "deck": {
+   "pronghorn-racer": 5,
+   "bison-bulldozer": 4,
+   "raccoon-bandit": 3,
+   "stoat-cutthroat": 1,
+   "shepherds-bark": 4,
+   "hedge-weasel": 1
+  },
+  "leaders": [
+   "stoat-cutthroat"
+  ],
+  "shieldOverride": 0,
+  "win200": 78,
+  "shown": 0
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 71.5
+  },
+  {
+   "move": "named pick",
+   "win": 78
+  }
+ ]
+}

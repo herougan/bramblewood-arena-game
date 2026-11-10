@@ -1,0 +1,82 @@
+{
+ "about": "BAL45 named pick (tools/bal45/pick_2026_11_10.js)",
+ "code": "17-6",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "elite",
+ "name": "Glacier Herd",
+ "band": {
+  "lo": 57.00000000000001,
+  "hi": 73,
+  "target": 65
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "mountain-hare",
+  "polar-bear",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider"
+ ],
+ "firstClear": [
+  "polar-bear"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "polar-bear"
+ ],
+ "namesake": false,
+ "shieldRule": 26,
+ "shieldOverride": 6,
+ "before": {
+  "deck": {
+   "alpha-howler": 1,
+   "beluga": 1,
+   "cone-cutter-squirrel": 1,
+   "harbor-seal": 4,
+   "polar-bear": 2,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 4,
+   "spitting-spider": 3
+  },
+  "leaders": [
+   "polar-bear"
+  ],
+  "shieldOverride": 6,
+  "win200": 57.5,
+  "shown": 3
+ },
+ "pick": {
+  "deck": {
+   "beluga": 3,
+   "cone-cutter-squirrel": 1,
+   "harbor-seal": 4,
+   "polar-bear": 2,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 2,
+   "spitting-spider": 4
+  },
+  "leaders": [
+   "polar-bear"
+  ],
+  "shieldOverride": 6,
+  "win200": 58.5,
+  "shown": 3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 57.5
+  },
+  {
+   "move": "named pick",
+   "win": 58.5
+  }
+ ]
+}

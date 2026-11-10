@@ -1,0 +1,83 @@
+{
+ "about": "BAL45 named pick (tools/bal45/pick_2026_11_10.js)",
+ "code": "3-7",
+ "map": "mc",
+ "mapName": "Gannet Cliffs",
+ "kind": "elite",
+ "name": "The Gannet Queen",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "conch-crawler",
+  "cormorant",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "oystercatcher",
+  "peak-condor",
+  "pincushion-urchin",
+  "puffin-diver",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "firstClear": [
+  "golden-eagle-diver",
+  "razorbill"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "peak-condor"
+ ],
+ "namesake": false,
+ "shieldRule": 5,
+ "shieldOverride": 7,
+ "before": {
+  "deck": {
+   "kittiwake-flock": 2,
+   "puffin-diver": 3,
+   "red-billed-chough": 4,
+   "golden-eagle-diver": 4,
+   "razorbill": 4,
+   "hawk-arrowkeeper": 2
+  },
+  "leaders": [
+   "peak-condor"
+  ],
+  "shieldOverride": 7,
+  "win200": 47,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "kittiwake-flock": 2,
+   "puffin-diver": 3,
+   "red-billed-chough": 4,
+   "golden-eagle-diver": 3,
+   "razorbill": 4,
+   "hawk-arrowkeeper": 3
+  },
+  "leaders": [
+   "peak-condor"
+  ],
+  "shieldOverride": 7,
+  "win200": 41.5,
+  "shown": 4
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 47
+  },
+  {
+   "move": "named pick",
+   "win": 41.5
+  }
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "about": "BAL45 named pick (tools/bal45/pick_2026_11_10.js)",
+ "code": "5-4",
+ "map": "mw",
+ "mapName": "Gatorback Swamp",
+ "kind": "skirmish",
+ "name": "Snapping Reeds",
+ "band": {
+  "lo": 64,
+  "hi": 80,
+  "target": 72
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fen-mink",
+  "fire-ant-raft",
+  "grass-viper",
+  "nutria-reedcutter",
+  "swamp-alligator"
+ ],
+ "firstClear": [
+  "grass-viper"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "fen-mink"
+ ],
+ "namesake": false,
+ "shieldRule": 5,
+ "shieldOverride": 1,
+ "before": {
+  "deck": {
+   "fen-mink": 3,
+   "grass-viper": 4,
+   "cypress-root-lurker": 1,
+   "swamp-alligator": 4,
+   "nutria-reedcutter": 3,
+   "constrictor-coil": 3
+  },
+  "leaders": [
+   "fen-mink"
+  ],
+  "shieldOverride": 1,
+  "win200": 64.5,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "constrictor-coil": 4,
+   "crocodile-ambusher": 4,
+   "fen-mink": 3,
+   "grass-viper": 4,
+   "nutria-reedcutter": 3
+  },
+  "leaders": [
+   "fen-mink"
+  ],
+  "shieldOverride": 1,
+  "win200": 79,
+  "shown": 1
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 64.5
+  },
+  {
+   "move": "named pick",
+   "win": 79
+  }
+ ]
+}

@@ -1,0 +1,78 @@
+{
+ "about": "BAL45 named pick (tools/bal45/pick_2026_11_10.js)",
+ "code": "5-5",
+ "map": "mw",
+ "mapName": "Gatorback Swamp",
+ "kind": "elite",
+ "name": "Gator Slide",
+ "band": {
+  "lo": 58.00000000000001,
+  "hi": 74,
+  "target": 66
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "nutria-reedcutter",
+  "swamp-alligator"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "fire-ant-raft"
+ ],
+ "namesake": false,
+ "shieldRule": 8,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "crocodile-ambusher": 4,
+   "bog-leech": 1,
+   "cypress-root-lurker": 2,
+   "constrictor-coil": 2,
+   "nutria-reedcutter": 2,
+   "fire-ant-raft": 1,
+   "swamp-alligator": 2
+  },
+  "leaders": [
+   "fire-ant-raft"
+  ],
+  "shieldOverride": null,
+  "win200": 60,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "crocodile-ambusher": 4,
+   "bog-leech": 1,
+   "cypress-root-lurker": 2,
+   "constrictor-coil": 2,
+   "nutria-reedcutter": 2,
+   "fire-ant-raft": 1,
+   "swamp-alligator": 2
+  },
+  "leaders": [
+   "fire-ant-raft"
+  ],
+  "shieldOverride": 4,
+  "win200": 66,
+  "shown": 2
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 60
+  },
+  {
+   "move": "named pick",
+   "win": 66
+  }
+ ]
+}
