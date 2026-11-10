@@ -26135,12 +26135,12 @@ function bal24RefLineHTML(key, weak, m){
 // 2026-11-11 (package REF6, owner 00:16: "Make sure the win rates for reference decks are labelled in the skirmish for admins"): Admin Mode only, on a
 // road fight's panel: the 100 reference players' decks against this fight (their mean win rate, p10 / p90 with the game noise taken out), and the Map
 // reference and Reference-2 from the same measure. REF6_LABELS is baked by assemble_arena.py from the newest complete docs/balance/ref6/ref6-*.json
-// (node tools/ref6/measure.js --tag <t>); fights: "<mapId>:<key>" -> [mean, p10, p90, Map reference, Reference-2] in %.
+// (node tools/ref6/measure.js --tag <t>); fights: "<mapId>:<key>" -> [mean, p10, p90, Map reference, Reference-2] in %, the games the 100 decks played.
 const REF6_LABELS = __REF6_LABELS__;
 function ref6LabelHTML(mapId, node){
   const R = REF6_LABELS, f = adminModeEnabled && node && R && R.fights ? R.fights[mapId + ':' + node.key] : null; if(!f || f[0] == null) return '';
   const pc = x=> Math.round(x), more = [f[3] != null ? TX('ui.ref6-mapref', {pct: pc(f[3])}) : '', f[4] != null ? TX('ui.ref6-ref2', {pct: pc(f[4])}) : ''].filter(Boolean);
-  const tip = TX('ui.ref6-tip', {tag: R.tag, date: String(R.generated || '').slice(0, 10), k: R.players, n: R.games, m: R.refGames});
+  const tip = TX('ui.ref6-tip', {tag: R.tag, date: String(R.generated || '').slice(0, 10), k: R.players, g: f[5] != null ? f[5] : '?', n: R.games, m: R.refGames});
   return `<p class="panel-sub ref6-label" data-ref6-mean="${pc(f[0])}" title="${escapeAttr(tip)}"><b>${escapeHtml(TX('ui.ref6-label', {k: R.players, pct: pc(f[0]), lo: pc(f[1]), hi: pc(f[2])}))}</b>${more.length ? ' · ' + escapeHtml(more.join(' · ')) : ''}</p>`;
 }
 function proEntriesOf(ent){

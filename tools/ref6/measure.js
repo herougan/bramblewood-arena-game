@@ -3,13 +3,15 @@
 // reference decks are labelled in the skirmish for admins"): each of the 100 reference players' decks (docs/balance/ref6/ladder-100.json,
 // tools/ref6/ladder.js) against every road fight of its map, as the game builds the fight.
 //
-//   node tools/ref6/measure.js --tag <t> [--games 16] [--ref-games 32] [--maps 0-20] [--workers 2] [--strength] [--fresh]
+//   node tools/ref6/measure.js --tag <t> [--games 16] [--fight-games 160] [--ref-games 32] [--maps 0-20] [--workers 2] [--strength] [--fresh]
 //   node tools/ref6/measure.js --tag <t> --collect      only the summary, from what is measured (a partial run says what is missing)
-//   node tools/ref6/measure.js --converge --maps 4,17 --players 30 --games 32 [--tag conv]   the stats at 4, 8, 16, 32 games a deck
+//   node tools/ref6/measure.js --converge --collect --players 100 [--maps 0-20]   is N enough: the spread at 4, 8, 16 games a deck and at all, from the cache
 //
 // A GAME: the game's own reference fight (referenceFightSetup + playReferenceGame, as simulateReferenceFight plays it): your deck at the
 // map's reference level with the player's leader, the fight's enemy deck, level, bramble and field, the CPU at its level; game g uses seed
-// 5300 + 37g (BAL24's ladder seeds), so every deck meets the same draws. Players with the same deck and leader share one measurement.
+// 5300 + 37g (BAL24's ladder seeds), so every deck meets the same draws. Players with the same deck and leader share one measurement, so a
+// deck plays max(--games, --fight-games x the share of players holding it) games: a fight gets at least --fight-games games however few
+// different decks its map has (on Maps 0-2 every player holds the same deck). More games extend the stored ones (game g keeps its seed).
 // Beside the 100 decks, the Map reference deck and Reference-2 (the owner's Ant Deck) play each fight --ref-games times (the admin label).
 // CACHE (~/bench-cache-ref6/measure): one file per fight, keyed by the map's data as the game has it (every fight's deck, field, level ...),
 // canonical/cards.json, bramblewood-engine.js, the games and the seeds; inside, one entry per deck. So a re-run with a new tag after a
@@ -29,7 +31,7 @@ const ROOT = path.resolve(__dirname, '..', '..'), VERSION = '1.0.0 (2026-11-11, 
 const DIR = path.join(ROOT, 'docs', 'balance', 'ref6'), MDIR = path.join(LA.CACHE, 'measure');
 const argv = process.argv.slice(2), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; }, has = k => argv.includes(k);
 const r1 = x => x == null ? null : Math.round(x * 10) / 10;
-const TAG = arg('--tag', has('--converge') ? 'conv' : null), N = +arg('--games', 16), NR = +arg('--ref-games', 32);
+const TAG = arg('--tag', has('--converge') ? 'conv' : null), N = +arg('--games', 16), NR = +arg('--ref-games', 32), NF = +arg('--fight-games', 160);
 
 let _gm = null; const game = () => _gm || (_gm = require('../opt/deckopt.js').loadGame(ROOT));
 const fightsOf = (gm, map) => require('../bal13/ladder_2026_11_02.js').roadFights(gm, map); // BAL24's road fights (the road-curve ones; all on a map with none)
@@ -37,7 +39,8 @@ const deckId = d => Object.keys(d.counts).sort().map(id => id + ':' + d.counts[i
 function jobList(gm, L) {
   const want = arg('--maps', null), list = LA.entries(want), players = has('--converge') ? +arg('--players', 30) : L.players, jobs = [];
   for (const e of list) { const M = L.maps[e.id]; if (!M) throw new Error(e.id + ': not in ladder-100.json'); const map = LA.mapOf(gm, e.id);
-    const decks = M.decks.slice(0, players), uniq = [...new Map(decks.map(d => [deckId(d), d])).values()];
+    const decks = M.decks.slice(0, players), cnt = {}; decks.forEach(d => { cnt[deckId(d)] = (cnt[deckId(d)] || 0) + 1; });
+    const uniq = [...new Map(decks.map(d => [deckId(d), d])).values()].map(d => Object.assign({}, d, { games: Math.max(N, Math.ceil(NF * cnt[deckId(d)] / decks.length)) }));
     fightsOf(gm, map).forEach(fx => jobs.push({ id: e.id, key: fx.key, level: M.level, uniq, cost: uniq.length * (1 + gm.G.mapNumberOf(map.id) / 10) })); }
   return jobs;
 }
@@ -49,12 +52,12 @@ const readJ = f => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catc
 // ---------------------------------------------------------------- one fight: every unique deck N games, the two reference decks NR games
 function runJob(gm, j) {
   const G = gm.G, f = jobFile(gm, j), have = (!has('--fresh') && readJ(f)) || { map: j.id, fight: j.key, games: N, decks: {}, refs: {} };
-  const map = LA.mapOf(gm, j.id), node = map.nodes.find(n => n.key === j.key), todo = j.uniq.filter(d => !have.decks[deckId(d)]);
+  const map = LA.mapOf(gm, j.id), node = map.nodes.find(n => n.key === j.key), todo = j.uniq.filter(d => (have.decks[deckId(d)] || '').length < d.games);
   if (todo.length) {
     const ctx = G.referenceFightSetup(map.id, node, { deck: todo[0].counts, level: j.level, seed0: SEED0 });
     for (const d of todo) {
       ctx.mine = G.refPartsDeck(G.levelMixDeck(d.counts, j.level), ctx.defs, ctx.defs); ctx.ref.leader = d.leader || 'wandering-traveller';
-      let bits = ''; for (let g = 0; g < N; g++) { const r = G.playReferenceGame(ctx, g); bits += r.win ? '1' : r.loss ? '0' : 'd'; }
+      let bits = have.decks[deckId(d)] || ''; for (let g = bits.length; g < d.games; g++) { const r = G.playReferenceGame(ctx, g); bits += r.win ? '1' : r.loss ? '0' : 'd'; }
       have.decks[deckId(d)] = bits;
     }
   }
@@ -67,9 +70,9 @@ function worker() {
   const gm = game(), L = LA.load(), jobs = jobList(gm, L), lockDir = path.join(MDIR, 'locks-' + TAG); fs.mkdirSync(lockDir, { recursive: true });
   for (const j of jobs) {
     const f = jobFile(gm, j), have = !has('--fresh') && readJ(f);
-    if (have && j.uniq.every(d => have.decks[deckId(d)]) && (has('--converge') || (have.refs.map && have.refs.ref2))) continue;
+    if (have && j.uniq.every(d => (have.decks[deckId(d)] || '').length >= d.games) && (has('--converge') || (have.refs.map && have.refs.ref2))) continue;
     try { fs.closeSync(fs.openSync(path.join(lockDir, path.basename(f)), 'wx')); } catch (e) { continue; } // another worker has it
-    const t = Date.now(); runJob(gm, j); process.stdout.write(`${j.id} ${j.key}: ${j.uniq.length} decks x ${N} games, ${Math.round((Date.now() - t) / 1000)} s\n`);
+    const t = Date.now(); runJob(gm, j); process.stdout.write(`${j.id} ${j.key}: ${j.uniq.length} decks, ${j.uniq.reduce((a, d) => a + d.games, 0)} games, ${Math.round((Date.now() - t) / 1000)} s\n`);
   }
 }
 
@@ -97,7 +100,7 @@ function mapStats(gm, e, M, fights, res, n, players) {
     decks.forEach((d, i) => { const b = r.decks[deckId(d)]; if (!b) return; const p = rate(b, n), m = Math.min(n, b.length);
       vals.push(p); noise.push(p * (1 - p) / Math.max(1, m - 1)); groups.push(deckId(d)); per[i].push(p); perE[i].push(half(b, n, false)); perO[i].push(half(b, n, true)); pnoise[i] += p * (1 - p) / Math.max(1, m - 1); });
     const t = (() => { try { return gm.G.skirmishTargetBand(e.id, fx.node); } catch (x) { return null; } })(), ref = k => r.refs && r.refs[k] && r.refs[k].n ? r1(r.refs[k].wins / r.refs[k].n * 100) : null;
-    F[fx.key] = Object.assign({ kind: fx.node.kind || 'skirmish', curve: !!fx.curve, target: t ? r1(t.t * 100) : null, band: t ? [r1(t.lo * 100), r1(t.hi * 100)] : null, n: Math.min(n, (Object.values(r.decks)[0] || '').length) },
+    F[fx.key] = Object.assign({ kind: fx.node.kind || 'skirmish', curve: !!fx.curve, target: t ? r1(t.t * 100) : null, band: t ? [r1(t.lo * 100), r1(t.hi * 100)] : null, n: Math.min(...[...new Set(decks.map(deckId))].map(k => Math.min(n, (r.decks[k] || '').length))), games: [...new Set(decks.map(deckId))].reduce((a, k) => a + Math.min(n, (r.decks[k] || '').length), 0) },
       spread(vals, noise, groups), { mapRef: ref('map'), ref2: ref('ref2'), refGames: (r.refs && r.refs.map && r.refs.map.n) || null });
   }
   const nf = Object.keys(F).length, ok = per.map(a => a.length === nf && nf > 0), S = per.map(mean).filter((x, i) => ok[i]), Sn = pnoise.filter((x, i) => ok[i]).map(x => x / (nf * nf));
@@ -119,12 +122,12 @@ function collect() {
   const gm = game(), L = LA.load(), jobs = jobList(gm, L), res = results(gm, L, jobs), out = {}, missing = [];
   for (const e of LA.entries(arg('--maps', null))) {
     const M = L.maps[e.id], map = LA.mapOf(gm, e.id), fights = fightsOf(gm, map), r = res[e.id] || {};
-    const miss = fights.filter(fx => !r[fx.key] || !M.decks.every(d => r[fx.key].decks[deckId(d)])); if (miss.length) missing.push(e.id + ' (' + miss.map(x => x.key).join(' ') + ')');
-    out[e.id] = mapStats(gm, e, M, fights, r, N, L.players);
+    const miss = jobs.filter(j => j.id === e.id && (!r[j.key] || !j.uniq.every(d => (r[j.key].decks[deckId(d)] || '').length >= d.games))); if (miss.length) missing.push(e.id + ' (' + miss.map(x => x.key).join(' ') + ')');
+    out[e.id] = mapStats(gm, e, M, fights, r, Infinity, L.players);
   }
   const complete = !missing.length && !arg('--maps', null);
   const doc = { about: 'Package REF6: the 100 reference players\' decks (docs/balance/ref6/ladder-100.json) against every road fight of their map (tools/ref6/measure.js header). Win rates in %. Per fight: the players\' mean, SD, p10 / p50 / p90 over the 100 decks, sdTrue / p10e / p90e with the game noise taken out, the Map reference (mapRef) and Reference-2 (ref2) over refGames games. Per map: strength = each deck\'s mean over the map\'s road fights (decks: player 1..100).',
-    tool: 'tools/ref6/measure.js ' + VERSION, tag: TAG, generated: new Date().toISOString(), games: N, refGames: NR, seeds: SEED0 + ' + 37g', complete, missing,
+    tool: 'tools/ref6/measure.js ' + VERSION, tag: TAG, generated: new Date().toISOString(), games: N, fightGames: NF, refGames: NR, seeds: SEED0 + ' + 37g', complete, missing,
     ladder: { file: path.relative(ROOT, LA.OUT), built: L.built, players: L.players, tool: L.tool }, maps: out };
   fs.mkdirSync(DIR, { recursive: true });
   const jf = path.join(DIR, `ref6-${TAG}.json`); fs.writeFileSync(jf, JSON.stringify(doc) + '\n');
@@ -135,7 +138,7 @@ function collect() {
 function md(doc) {
   const ids = Object.keys(doc.maps), M = doc.maps, s = id => M[id].strength, f = x => x == null ? '–' : String(x);
   const L = [`# REF6: how strong are the 100 reference players' decks? (${doc.tag}, ${doc.generated.slice(0, 10)})`, '',
-    `Each map's 100 simulated players (seeds ref6-1 .. ref6-100, \`docs/balance/ref6/ladder-100.json\`), each deck against every road fight of its map, ${doc.games} games a deck a fight (seeds 5300 + 37g). A deck's **strength** = its mean win rate over the map's road fights. "True SD" takes the game noise out (${doc.games} games a fight leave about ±${Math.round(100 * Math.sqrt(0.25 / doc.games))} points of noise per deck per fight). Made by \`node tools/ref6/measure.js --tag ${doc.tag}\`.`, '',
+    `Each map's 100 simulated players (seeds ref6-1 .. ref6-100, \`docs/balance/ref6/ladder-100.json\`), each deck against every road fight of its map (seeds 5300 + 37g): at least ${doc.games} games a deck, and players who share a deck share its games, so a deck plays ${doc.fightGames} x the share of players holding it when that is more (every fight gets at least ${doc.fightGames} games). A deck's **strength** = its mean win rate over the map's road fights. "True SD" takes the game noise out (${doc.games} games leave about ±${Math.round(100 * Math.sqrt(0.25 / doc.games))} points of noise per deck per fight). Made by \`node tools/ref6/measure.js --tag ${doc.tag}\`.`, '',
     '## Variance in strength of the different decks', '', '| Map | Name | mean | SD (true) | p10 – p90 | min – max | weakest fight (mean) | distinct decks |', '|---|---|---|---|---|---|---|---|'];
   ids.forEach(id => { const x = s(id), F = M[id].fights, w = Object.keys(F).sort((a, b) => F[a].mean - F[b].mean)[0];
     L.push(`| ${id} (${M[id].map}${M[id].side ? ' side' : ''}) | ${M[id].name} | ${f(x.mean)} | ${f(x.sd)} (${f(x.sdTrue)}) | ${f(x.p10)} – ${f(x.p90)} | ${f(x.min)} – ${f(x.max)} | ${w ? w + ' (' + F[w].mean + ')' : '–'} | ${M[id].unique} |`); });
@@ -155,7 +158,7 @@ function md(doc) {
 function converge() {
   const gm = game(), L = LA.load(), jobs = jobList(gm, L), res = results(gm, L, jobs), players = +arg('--players', 30), rows = [];
   for (const id of [...new Set(jobs.map(j => j.id))]) { const map = LA.mapOf(gm, id), fights = fightsOf(gm, map);
-    for (const n of [...new Set([4, 8, 16, 32, 64].filter(x => x < N).concat([N]))]) { const st = mapStats(gm, { id }, L.maps[id], fights, res[id] || {}, n, players), F = Object.values(st.fights);
+    for (const n of [4, 8, 16, Infinity]) { const st = mapStats(gm, { id }, L.maps[id], fights, res[id] || {}, n, players), F = Object.values(st.fights);
       rows.push(`${id} n=${String(n).padStart(2)}: strength mean ${st.strength.mean} sd ${st.strength.sd} true ${st.strength.sdTrue} p10e-p90e ${st.strength.p10e}-${st.strength.p90e} rel ${st.strength.reliability} | fights mean sdTrue ${r1(mean(F.map(x => x.sdTrue)))} mean sd ${r1(mean(F.map(x => x.sd)))}`); } }
   console.log(rows.join('\n'));
 }

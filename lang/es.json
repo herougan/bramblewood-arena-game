@@ -4412,5 +4412,5 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct} % (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "Ref. mapa {pct} %",
  "Ref-2 {pct}%": "Ref-2 {pct} %",
- "Measure {tag}, {date}: the {k} reference players' decks, {n} games each against this fight; p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Medición {tag}, {date}: los mazos de los {k} jugadores de referencia, {n} partidas cada uno contra este combate; p10 / p90 sin el ruido de las partidas. Referencia del mapa y Referencia-2: {m} partidas cada una."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Medición {tag}, {date}: los mazos de los {k} jugadores de referencia contra este combate, {g} partidas en total (al menos {n} por mazo); p10 / p90 sin el ruido de las partidas. Referencia del mapa y Referencia-2: {m} partidas cada una."
 }

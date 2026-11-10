@@ -4413,5 +4413,5 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "参考{k}：{pct}%（p10 {lo} – p90 {hi}）",
  "Map ref {pct}%": "マップ基準 {pct}%",
  "Ref-2 {pct}%": "参考2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks, {n} games each against this fight; p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "測定 {tag}、{date}：参考プレイヤー{k}人のデッキ、それぞれこの戦闘に{n}戦。p10 / p90 は対戦のばらつきを除いた値。マップ基準デッキと参考2：各{m}戦。"
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "測定 {tag}、{date}：参考プレイヤー{k}人のデッキでこの戦闘を計{g}戦（各デッキ最低{n}戦）。p10 / p90 は対戦のばらつきを除いた値。マップ基準デッキと参考2：各{m}戦。"
 }

@@ -559,7 +559,7 @@ def _bal24_marks(pro):
     return out
 app_src = sub_once(app_src, "__BAL24_PRO_MARKS__", json.dumps(_bal24_marks(json.load(open(_pro_file, encoding="utf-8"))) if os.path.exists(_pro_file) else {"marks": {}}, ensure_ascii=False))
 # 2026-11-11 (package REF6, owner 00:16): Admin's reference win rates on a road fight's panel, from the newest complete docs/balance/ref6/ref6-*.json
-# (by its "generated"; node tools/ref6/measure.js --tag <t>): per fight "<mapId>:<key>" -> [mean, p10, p90 (game noise taken out), Map reference, Reference-2] in %
+# (by its "generated"; node tools/ref6/measure.js --tag <t>): per fight "<mapId>:<key>" -> [mean, p10, p90 (game noise taken out), Map reference, Reference-2] in %, games
 def _ref6_labels():
     best = None
     for f in _glob.glob(SCRATCH + "docs/balance/ref6/ref6-*.json"):
@@ -570,7 +570,7 @@ def _ref6_labels():
     d = best[1]
     out = {"file": os.path.relpath(best[0], SCRATCH), "tag": d.get("tag"), "generated": d.get("generated"), "games": d.get("games"), "refGames": d.get("refGames"), "players": (d.get("ladder") or {}).get("players"), "fights": {}}
     for mid, m in (d.get("maps") or {}).items():
-        for k, x in (m.get("fights") or {}).items(): out["fights"][mid + ":" + k] = [x.get("mean"), x.get("p10e"), x.get("p90e"), x.get("mapRef"), x.get("ref2")]
+        for k, x in (m.get("fights") or {}).items(): out["fights"][mid + ":" + k] = [x.get("mean"), x.get("p10e"), x.get("p90e"), x.get("mapRef"), x.get("ref2"), x.get("games")]
     return out
 app_src = sub_once(app_src, "__REF6_LABELS__", json.dumps(_ref6_labels(), ensure_ascii=False, separators=(",", ":")))
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))

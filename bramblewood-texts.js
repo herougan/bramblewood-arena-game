@@ -3730,7 +3730,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ref6-label": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
   "ui.ref6-mapref": "Map ref {pct}%",
   "ui.ref6-ref2": "Ref-2 {pct}%",
-  "ui.ref6-tip": "Measure {tag}, {date}: the {k} reference players' decks, {n} games each against this fight; p10 / p90 without the game noise. Map reference and Reference-2: {m} games each."
+  "ui.ref6-tip": "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

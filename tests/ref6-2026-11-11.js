@@ -35,7 +35,7 @@ if (best) { const D = best.d, roadFights = require(path.join(ROOT, 'tools', 'bal
   ok(fs.existsSync(path.join(dir, best.f.replace(/\.json$/, '.md'))), best.f + ': the owner\'s table beside it');
   ok(ids.every(id => D.maps[id]), best.f + ': every map');
   ids.forEach(id => { const M = D.maps[id], map = LA.mapOf(gm, id); if (!M) return; const want = roadFights(gm, map).map(x => x.key);
-    ok(want.every(k => M.fights[k] && M.fights[k].mean != null && M.fights[k].p10e <= M.fights[k].p90e), `${id}: every road fight measured (${want.length})`);
+    ok(want.every(k => M.fights[k] && M.fights[k].mean != null && M.fights[k].p10e <= M.fights[k].p90e && M.fights[k].games >= D.fightGames && M.fights[k].n >= D.games), `${id}: every road fight measured (${want.length}), at least ${D.fightGames} games a fight and ${D.games} a deck`);
     const s = M.strength; ok(s && s.mean != null && s.sd != null && s.sdTrue <= s.sd + 1e-9 && s.p10 <= s.p90 && s.min <= s.max && M.decks.length === 100, `${id}: the strength spread of its 100 decks`); }); }
 
 // ---- 3. the bake and the label ----
@@ -47,16 +47,16 @@ const html = R('index.html'), mm = html.match(/const REF6_LABELS = (\{.*?\});\n/
 ok(!!mm, 'index.html carries the baked labels');
 if (mm && best) { const B = JSON.parse(mm[1]); ok(B.file === 'docs/balance/ref6/' + best.f && B.players === 100, 'the labels come from ' + best.f);
   let n = 0, same = 0; Object.keys(best.d.maps).forEach(id => Object.keys(best.d.maps[id].fights).forEach(k => { const x = best.d.maps[id].fights[k], b = B.fights[id + ':' + k]; n++;
-    if (b && b[0] === x.mean && b[1] === x.p10e && b[2] === x.p90e && b[3] === x.mapRef && b[4] === x.ref2) same++; }));
+    if (b && b[0] === x.mean && b[1] === x.p10e && b[2] === x.p90e && b[3] === x.mapRef && b[4] === x.ref2 && b[5] === x.games) same++; }));
   ok(n > 200 && same === n, `every road fight's label matches the measure (${same}/${n})`); }
 { const Bl = require(path.join(ROOT, 'tools', 'lib_bramble.js')), tx = require(path.join(ROOT, 'bramblewood-texts.js'));
   const T = (k, o) => String(tx.TEXT[k] || k).replace(/\{(\w+)\}/g, (a, b) => o && o[b] != null ? o[b] : a), esc = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
   const fx = new Function('REF6_LABELS', 'TX', 'escapeAttr', 'escapeHtml', 'let adminModeEnabled = false;\n' + Bl.grab('ref6LabelHTML') + '\nreturn {set: v => { adminModeEnabled = v; }, ref6LabelHTML};');
-  const F = fx({ tag: 't1', generated: '2026-11-11T02:00:00Z', games: 16, refGames: 40, players: 100, fights: { 'mc:3-2': [52.4, 31.2, 69.6, 61, 74], 'mc:3-3': [40, 30, 50, null, null] } }, T, esc, esc), node = { key: '3-2' };
+  const F = fx({ tag: 't1', generated: '2026-11-11T02:00:00Z', games: 16, refGames: 40, players: 100, fights: { 'mc:3-2': [52.4, 31.2, 69.6, 61, 74, 304], 'mc:3-3': [40, 30, 50, null, null, 160] } }, T, esc, esc), node = { key: '3-2' };
   ok(F.ref6LabelHTML('mc', node) === '', 'players see no label (Admin off)');
   F.set(true); const h = F.ref6LabelHTML('mc', node);
   ok(/Ref 100: 52% \(p10 31 – p90 70\)/.test(h) && /Map ref 61%/.test(h) && /Ref-2 74%/.test(h), 'Admin: "Ref 100: 52% (p10 31 – p90 70) · Map ref 61% · Ref-2 74%"');
-  ok(/title="Measure t1, 2026-11-11: the 100 reference players&#39;|title="Measure t1, 2026-11-11: the 100 reference players'/.test(h) && /16 games each/.test(h), 'the tooltip names the measure, its date and games');
+  ok(/title="Measure t1, 2026-11-11: the 100 reference players&#39;|title="Measure t1, 2026-11-11: the 100 reference players'/.test(h) && /304 games in all \(at least 16 a deck\)/.test(h), 'the tooltip names the measure, its date and games');
   ok(!/Map ref/.test(F.ref6LabelHTML('mc', { key: '3-3' })) && F.ref6LabelHTML('mc', { key: '3-9' }) === '' && F.ref6LabelHTML('m21', node) === '', 'no Map ref part without its number; nothing on a fight with no measure'); }
 
 // ---- 4. texts, docs, tests ----
