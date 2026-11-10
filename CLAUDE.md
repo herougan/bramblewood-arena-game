@@ -54,6 +54,7 @@ Docs named `*-2026-10-*.md` are dated snapshots (history). When one disagrees wi
 
 ## Working style
 - Search before reading: `docs/code-map.md`, then `grep -n`. `arena_app.js` is about 51k lines; read only the region you need.
+- Specialist agents: `.claude/agents/` (brief them by name); short guides: `docs/guides/` (start with `arena-app-index.md` and `token-savings.md`).
 - Batch work of the same kind. Run agents in parallel only if they touch different files. Most packages touch `arena_app.js` and the 12 language packs, so run those in sequence.
 - Agent briefs: name the workflow file, the exact items, and the files the agent may touch. Don't paste these rules into the brief.
 - Agent worktrees start from GitHub's `main`. While a batch is unpushed, the brief starts with "run `git merge main` first", or the agent works on old code.
