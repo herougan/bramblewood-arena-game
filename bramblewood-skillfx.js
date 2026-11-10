@@ -18,7 +18,15 @@ const G = ()=> (typeof gsap !== 'undefined' ? gsap : null);
 const reduce = ()=> !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 const tileOf = el=> (el && el.querySelector && el.querySelector('.card-tile')) || el;
 const centre = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width, h:r.height, r}; };
-const layer = (cls, html)=>{ const e = document.createElement('div'); e.className = 'sfx ' + cls; e.setAttribute('aria-hidden', 'true'); if(html) e.innerHTML = html; document.body.appendChild(e); return e; };
+// 2026-11-11 (package PERF2, owner 00:06: "even on my macbook, the game lags alot - playing effects"): GSAP reads an element's transform the
+// first time it moves it. For an element with no offsetParent (every position:fixed overlay) and no transform yet it then also sets
+// display:block and measures it, a check meant for display:none elements: two style passes and a layout for every spark, one spark after
+// another. An overlay here is always displayed, so shown() tells GSAP it has a box; layers() makes a whole batch first and has GSAP read
+// them all at once (prime: reads only, so one style pass for the lot) before anything moves. Nothing looks different.
+const shown = e=>{ try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} return e; };
+const layer = (cls, html)=>{ const e = document.createElement('div'); e.className = 'sfx ' + cls; e.setAttribute('aria-hidden', 'true'); if(html) e.innerHTML = html; document.body.appendChild(e); return shown(e); };
+const prime = els=>{ const g = G(); if(g) els.forEach(e=>{ try{ g.getProperty(e, 'x'); }catch(err){} }); return els; };
+const layers = (n, cls, html)=>{ const out = []; for(let i = 0; i < n; i++) out.push(layer(typeof cls === 'function' ? cls(i) : cls, html)); return prime(out); };
 const IMG = {arrow:'', fire:''};
 // The heal's plus, drawn (2026-10-16, user: "Heal's plusses look greyed out in the Effect lab - they should be green."): the ➕ emoji
 // is a grey glyph in the emoji fonts, so the rising pluses (and the heal number's icon, floatText) use this green one instead.
@@ -36,8 +44,8 @@ function aimPoint(target){
 // Splinters / sparks bursting from a point, thrown back along the shot's direction.
 function burst(x, y, ang, kind, n){
   const g = G(); if(!g || reduce()) return;
-  for(let i = 0; i < (n||8); i++){
-    const p = layer('sfx-bit sfx-bit-' + kind);
+  const pBatch = layers((n||8), 'sfx-bit sfx-bit-' + kind); for(let i = 0; i < (n||8); i++){
+    const p = pBatch[i];
     const a = (ang + 180 + (Math.random()*120 - 60)) * Math.PI/180, d = 18 + Math.random()*34;
     g.set(p, {x:x - 3, y:y - 3, rotation:Math.random()*360, opacity:1, scale:kind==='fire' ? 1.2 : 1});
     g.to(p, {x:`+=${Math.cos(a)*d}`, y:`+=${Math.sin(a)*d + (kind==='fire' ? -16 : 10)}`, rotation:`+=${Math.random()*200-100}`, opacity:0, scale:.3,
@@ -159,7 +167,7 @@ function dart(shooter, target, o){
     if(o.light) o.light(aim.x, aim.y, [0.5, 1, 0.35], false);
     if(o.onImpact) o.onImpact();
   }});
-  for(let i = 1; i < 6; i++){ const p = layer('sfx-bit sfx-bit-poison'); const t = i/6;
+  const pBatch2 = layers((6) - 1, 'sfx-bit sfx-bit-poison'); for(let i = 1; i < 6; i++){ const p = pBatch2[i - 1]; const t = i/6;
     g.set(p, {x:s.x + (aim.x - s.x)*t, y:s.y + (aim.y - s.y)*t, opacity:0});
     g.to(p, {opacity:.9, duration:.03, delay:flight/1000*t}); g.to(p, {y:'+=18', opacity:0, duration:.45, delay:flight/1000*t + .03, ease:'power1.in', onComplete:()=> p.remove()}); }
 }
@@ -205,7 +213,7 @@ function heal(target, o){
   o = o || {}; const g = G(); const c = centre(target);
   ring(c.x, c.y, 'sfx-heal', 110, 700); later(()=> ring(c.x, c.y, 'sfx-heal', 80, 600), 150);
   if(!g){ later(o.onDone, 600); return; }
-  for(let i = 0; i < 8; i++){ const p = layer('sfx-plus', GREEN_PLUS) /* the heal's plus, green (2026-10-16) */; g.set(p, {x:c.r.left + c.w*(0.15 + Math.random()*0.7), y:c.r.top + c.h*(0.5 + Math.random()*0.4), opacity:0, scale:.6});
+  const pBatch3 = layers(8, 'sfx-plus', GREEN_PLUS); for(let i = 0; i < 8; i++){ const p = pBatch3[i] /* the heal's plus, green (2026-10-16) */; g.set(p, {x:c.r.left + c.w*(0.15 + Math.random()*0.7), y:c.r.top + c.h*(0.5 + Math.random()*0.4), opacity:0, scale:.6});
     g.to(p, {y:'-=46', opacity:1, scale:1, duration:.35, delay:i*0.06, ease:'power1.out'}); g.to(p, {opacity:0, duration:.3, delay:i*0.06 + .45, onComplete:()=> p.remove()}); }
   const t = tileOf(target); g.fromTo(t, {filter:'brightness(1)'}, {filter:'brightness(1.35)', duration:.2, yoyo:true, repeat:1, clearProps:'filter', onComplete:o.onDone});
 }
@@ -235,7 +243,7 @@ const qpt = (a, m, b, t)=> ({x:(1-t)*(1-t)*a.x + 2*(1-t)*t*m.x + t*t*b.x, y:(1-t
 // Feathers knocked loose from a flier.
 function feathers(x, y, n){
   const g = G(); if(!g || reduce()) return;
-  for(let i = 0; i < (n||10); i++){ const f = layer('sfx-feather'); const a = (200 + Math.random()*140)*Math.PI/180, v = 40 + Math.random()*70;
+  const fBatch = layers((n||10), 'sfx-feather'); for(let i = 0; i < (n||10); i++){ const f = fBatch[i]; const a = (200 + Math.random()*140)*Math.PI/180, v = 40 + Math.random()*70;
     g.set(f, {x, y, rotation:Math.random()*360, opacity:1});
     g.to(f, {x:`+=${Math.cos(a)*v}`, y:`+=${Math.sin(a)*v*0.6 + 60}`, rotation:`+=${Math.random()*540-270}`, opacity:0, duration:1.1 + Math.random()*.5, ease:'power1.out', onComplete:()=> f.remove()}); }
 }
@@ -360,7 +368,7 @@ function elementDeath(target, kind, o){
   o = o || {}; const g = G(); const c = centre(target); const t = tileOf(target);
   if(!g || reduce() || !t){ o.onDone && o.onDone(); return; }
   const col = kind === 'cold' ? 'sfx-bit-ice' : kind === 'poison' ? 'sfx-bit-drip' : 'sfx-bit-ember';
-  for(let i = 0; i < 18; i++){ const p = layer('sfx-bit ' + col); const x = c.r.left + Math.random()*c.w, y = c.r.top + Math.random()*c.h;
+  const pBatch4 = layers(18, 'sfx-bit ' + col); for(let i = 0; i < 18; i++){ const p = pBatch4[i]; const x = c.r.left + Math.random()*c.w, y = c.r.top + Math.random()*c.h;
     g.set(p, {x, y, opacity:1, rotation:Math.random()*360});
     const up = kind === 'heat' ? -(40 + Math.random()*60) : kind === 'cold' ? (Math.random()*80 - 20) : 30 + Math.random()*40;
     g.to(p, {x:`+=${(Math.random()-.5)*(kind === 'cold' ? 120 : 40)}`, y:`+=${up}`, opacity:0, rotation:`+=${Math.random()*180}`, duration:.7 + Math.random()*.5, delay:Math.random()*.35, ease:'power1.out', onComplete:()=> p.remove()}); }
@@ -498,8 +506,8 @@ const ready = ()=>{ moreCss(); return !!G() && !reduce(); };
 function swarm(attacker, target, o){
   o = o || {}; if(!ready() || !attacker || !target){ later(o.onImpact, 400); return; }
   const g = G(), a = centre(attacker), b = centre(target), n = o.count || 26, fly = (o.flight || 520)/1000;
-  for(let i = 0; i < n; i++){
-    const bug = layer('sfx-bug' + (o.gold || i % 5 === 0 ? ' is-gold' : ''));
+  const bugBatch = layers(n, i=> 'sfx-bug' + (o.gold || i % 5 === 0 ? ' is-gold' : '')); for(let i = 0; i < n; i++){
+    const bug = bugBatch[i];
     const p0 = {x:a.x + rnd(-a.w*.4, a.w*.4), y:a.y + rnd(-a.h*.3, a.h*.3)};
     const p1 = {x:b.x + rnd(-b.w*.35, b.w*.35), y:b.y + rnd(-b.h*.35, b.h*.35)};
     const m = {x:(p0.x + p1.x)/2 + rnd(-90, 90), y:(p0.y + p1.y)/2 + rnd(-60, 60)};
@@ -551,15 +559,15 @@ function regen(target, o){
 function poisonCloud(target, o){
   o = o || {}; if(!ready() || !target){ later(o.onImpact, 300); return; }
   const g = G(), c = centre(target);
-  for(let i = 0; i < 8; i++){
-    const p = layer('sfx-puff'), x = c.r.left + c.w*(i/7), y = c.r.bottom - c.h*rnd(.05, .35);
+  const pBatch5 = layers(8, 'sfx-puff'); for(let i = 0; i < 8; i++){
+    const p = pBatch5[i], x = c.r.left + c.w*(i/7), y = c.r.bottom - c.h*rnd(.05, .35);
     g.set(p, {x:x - 22, y:y - 22, scale:.3, opacity:0});
     g.timeline({delay:i*0.05, onComplete:()=> p.remove()})
       .to(p, {opacity:.85, scale:1.1, duration:.35, ease:'power1.out'})
       .to(p, {x:`+=${(i/7 - .5)*50 + rnd(-10, 10)}`, y:`-=${rnd(40, 80)}`, scale:1.8, duration:1.1, ease:'sine.out'}, 0)
       .to(p, {opacity:0, duration:.5}, .85);
   }
-  for(let i = 0; i < 9; i++){ const bb = layer('sfx-bubble'); g.set(bb, {x:c.r.left + rnd(.15, .85)*c.w, y:c.r.bottom - 6, opacity:0, scale:rnd(.6, 1.3)});
+  const bbBatch = layers(9, 'sfx-bubble'); for(let i = 0; i < 9; i++){ const bb = bbBatch[i]; g.set(bb, {x:c.r.left + rnd(.15, .85)*c.w, y:c.r.bottom - 6, opacity:0, scale:rnd(.6, 1.3)});
     g.timeline({delay:.15 + i*0.08, onComplete:()=> bb.remove()}).to(bb, {opacity:1, duration:.08}).to(bb, {y:`-=${rnd(40, 90)}`, x:`+=${rnd(-8, 8)}`, duration:.7, ease:'sine.out'}, 0).to(bb, {scale:1.6, opacity:0, duration:.1}); }
   // 2026-10-15 (user: "The poison animation has a blackening effect. Lessen that effect by 40%."): the sickly dip darkens 40% less
   g.fromTo(tileOf(target), {filter:'hue-rotate(0deg) saturate(1) brightness(1)'}, {filter:'hue-rotate(40deg) saturate(1.3) brightness(.94)', duration:.3, delay:.2, yoyo:true, repeat:1, repeatDelay:.35, clearProps:'filter'});
@@ -573,8 +581,8 @@ function bleedDrip(target, o){
   g.timeline({onComplete:()=> sl.remove()}).to(sl, {scaleX:1, duration:.1, ease:'power2.out'}).to(sl, {opacity:0, duration:.4, delay:.15});
   knock(target, 146, .6); later(()=> call(o.onImpact), 100);
   g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(.85) sepia(.6) saturate(3) hue-rotate(-30deg)', duration:.12, yoyo:true, repeat:1, clearProps:'filter'});
-  for(let i = 0; i < 6; i++){
-    const d = layer('sfx-drop'), x = c.r.left + c.w*(.18 + i*.13 + rnd(-.03, .03)), y0 = c.r.bottom - 8, fall = rnd(30, 60);
+  const dBatch = layers(6, 'sfx-drop'); for(let i = 0; i < 6; i++){
+    const d = dBatch[i], x = c.r.left + c.w*(.18 + i*.13 + rnd(-.03, .03)), y0 = c.r.bottom - 8, fall = rnd(30, 60);
     g.set(d, {x:x - 3.5, y:y0 - 4, scaleY:.2, scaleX:.6, transformOrigin:'50% 0%', opacity:0});
     g.timeline({delay:.2 + i*0.12 + rnd(0, .1), onComplete:()=> d.remove()})
       .to(d, {opacity:1, scaleY:1, scaleX:1, duration:.35, ease:'power1.in'})
@@ -590,8 +598,8 @@ function thorns(defender, attacker, o){
   const g = G(), d = centre(defender), a = centre(attacker);
   const ang = Math.atan2(a.y - d.y, a.x - d.x), deg = ang*57.3;
   const ex = d.x + Math.cos(ang)*d.h*0.42, ey = d.y + Math.sin(ang)*d.h*0.42;  // the defender's edge facing the attacker
-  for(let i = 0; i < 9; i++){
-    const t = layer('sfx-thorn'), spread = (i - 4)*13 + rnd(-4, 4), len = rnd(.9, 1.5) * (1 - Math.abs(i - 4)*0.08);
+  const tBatch = layers(9, 'sfx-thorn'); for(let i = 0; i < 9; i++){
+    const t = tBatch[i], spread = (i - 4)*13 + rnd(-4, 4), len = rnd(.9, 1.5) * (1 - Math.abs(i - 4)*0.08);
     const ox = ex + Math.cos(ang + Math.PI/2)*(i - 4)*d.w*0.09, oy = ey + Math.sin(ang + Math.PI/2)*(i - 4)*d.w*0.09;
     g.set(t, {x:ox - 4.5, y:oy - 26, rotation:deg + 90 + spread, scaleY:0, opacity:1});
     g.timeline({onComplete:()=> t.remove()}).to(t, {scaleY:len*1.25, duration:.09, delay:i%2*0.03, ease:'power4.out'}).to(t, {scaleY:len, duration:.12}).to(t, {scaleY:0, opacity:0, duration:.22, delay:.3, ease:'power2.in'});
@@ -663,7 +671,7 @@ function earthquake(cards, o){
     }
     g.set(gEl, {svgOrigin:`${c.x} ${y}`});
     g.timeline().fromTo(gEl, {scaleX:0, scaleY:.3}, {scaleX:1, duration:S(.13), ease:'power3.out'}).to(gEl, {scaleY:1, duration:S(.16), ease:'back.out(3)'}, '<0.05');
-    for(let k = 0; k < 6; k++){ const p = layer('sfx-dust'); g.set(p, {x:c.r.left + c.w*k/5 - 11, y:y - 14, scale:.5, opacity:.9});
+    const pBatch6 = layers(6, 'sfx-dust'); for(let k = 0; k < 6; k++){ const p = pBatch6[k]; g.set(p, {x:c.r.left + c.w*k/5 - 11, y:y - 14, scale:.5, opacity:.9});
       g.to(p, {x:`+=${(k/5 - .5)*70}`, y:`-=${rnd(8, 24)}`, scale:2, opacity:0, duration:S(.45), ease:'power2.out', onComplete:()=> p.remove()}); }
     const t = tileOf(el);
     g.timeline().to(t, {y:-16, rotation:rnd(-6, 6), duration:S(.12), ease:'power2.out'}).to(t, {y:0, rotation:0, duration:S(.42), ease:'bounce.out', clearProps:'transform'});
@@ -678,7 +686,7 @@ function quickStrike(attacker, target, o){
   const g = G(), a = centre(attacker), b = centre(target), t = tileOf(attacker);
   const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, ux = dx/L, uy = dy/L, deg = Math.atan2(dy, dx)*57.3;
   const reach = Math.max(0, L - (a.h + b.h)*0.42);
-  for(let i = 0; i < 7; i++){ const s = layer('sfx-speed'), off = (i - 3)*a.w*0.14, len = rnd(40, 90);
+  const sBatch = layers(7, 'sfx-speed'); for(let i = 0; i < 7; i++){ const s = sBatch[i], off = (i - 3)*a.w*0.14, len = rnd(40, 90);
     g.set(s, {x:a.x - ux*len + -uy*off - len/2, y:a.y - uy*len + ux*off, width:len, rotation:deg, transformOrigin:'100% 50%', scaleX:0, opacity:.9});
     g.timeline({delay:.04 + i*0.012, onComplete:()=> s.remove()}).to(s, {scaleX:1, duration:.07}).to(s, {x:`+=${ux*reach*0.6}`, y:`+=${uy*reach*0.6}`, opacity:0, duration:.18, ease:'power1.in'}); }
   [0.28, 0.55, 0.8].forEach((k, i)=> later(()=>{ const gh = ghostOf(attacker, 'sfx-ghost' + (i === 1 ? ' is-blue' : ''));
@@ -887,7 +895,7 @@ function dynamite(thrower, target, o){
       g.to(f, {width:b.w*3.2, height:b.w*3.2, opacity:0, duration:.35, ease:'power2.out', onComplete:()=> f.remove()});
       const fb = layer('sfx-fireball'); g.set(fb, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, width:20, height:20, opacity:1});
       g.to(fb, {width:b.w*1.5, height:b.w*1.5, duration:.25, ease:'power3.out'}); g.to(fb, {opacity:0, scale:1.2, duration:.35, delay:.2, onComplete:()=> fb.remove()});
-      for(let i = 0; i < 7; i++){ const sm = layer('sfx-smoke'), ang = i/7*6.28; g.set(sm, {x:b.x - 20, y:b.y - 20, scale:.5, opacity:0});
+      const smBatch = layers(7, 'sfx-smoke'); for(let i = 0; i < 7; i++){ const sm = smBatch[i], ang = i/7*6.28; g.set(sm, {x:b.x - 20, y:b.y - 20, scale:.5, opacity:0});
         g.timeline({delay:.12, onComplete:()=> sm.remove()}).to(sm, {opacity:.85, duration:.1}).to(sm, {x:`+=${Math.cos(ang)*b.w*.6}`, y:`+=${Math.sin(ang)*b.w*.5 - 20}`, scale:2.2, duration:1, ease:'power2.out'}, 0).to(sm, {opacity:0, duration:.5}, .5); }
       ring(b.x, b.y, 'sfx-ignite', b.w*2.4, 520); ring(b.x, b.r.bottom, 'sfx-ring-dust', b.w*2, 640);
       burst(b.x, b.y, -90, 'fire', 14); burst(b.x, b.y, 90, 'wood', 10);
@@ -906,7 +914,7 @@ function helmetDeflect(target, o){
   const p = layer('sfx-ping'); g.set(p, {x:px - 15, y:py - 15, scale:.2, rotation:0, opacity:1});
   g.timeline({onComplete:()=> p.remove()}).to(p, {scale:1.6, rotation:45, duration:.1, ease:'power3.out'}).to(p, {scale:.6, opacity:0, rotation:90, duration:.2});
   ring(px, py, 'sfx-string', 40, 260);
-  for(let i = 0; i < 7; i++){ const s = layer('sfx-spark'), a = (from + 180 + rnd(-70, 70))*Math.PI/180, d = rnd(20, 44);
+  const sBatch2 = layers(7, 'sfx-spark'); for(let i = 0; i < 7; i++){ const s = sBatch2[i], a = (from + 180 + rnd(-70, 70))*Math.PI/180, d = rnd(20, 44);
     g.set(s, {x:px - 2, y:py - 2}); g.to(s, {x:`+=${Math.cos(a)*d}`, y:`+=${Math.sin(a)*d}`, opacity:0, scale:.4, duration:rnd(.2, .35), ease:'power2.out', onComplete:()=> s.remove()}); }
   const ch = layer('sfx-chip'), ra = (from + 180 + (Math.random() < .5 ? 50 : -50))*Math.PI/180;
   g.set(ch, {x:px, y:py}); g.to(ch, {x:`+=${Math.cos(ra)*90}`, y:`+=${Math.sin(ra)*90 + 30}`, rotation:540, opacity:0, duration:.6, ease:'power1.out', onComplete:()=> ch.remove()});
@@ -935,9 +943,9 @@ function darksight(target, o){
 function frostChill(target, o){
   o = o || {}; if(!ready() || !target){ call(o.onImpact); return; }
   const g = G(), c = centre(target), s = o.fromLeft === false ? -1 : 1;
-  for(let i = 0; i < 5; i++){ const m = layer('sfx-mist'); g.set(m, {x:c.x - s*c.w*1.1 - 35, y:c.y - 17 + (i - 2)*c.h*0.16, scale:.5, opacity:0});
+  const mBatch = layers(5, 'sfx-mist'); for(let i = 0; i < 5; i++){ const m = mBatch[i]; g.set(m, {x:c.x - s*c.w*1.1 - 35, y:c.y - 17 + (i - 2)*c.h*0.16, scale:.5, opacity:0});
     g.timeline({delay:i*0.05, onComplete:()=> m.remove()}).to(m, {opacity:.85, duration:.15}).to(m, {x:`+=${s*c.w*2}`, scale:1.5, duration:.9, ease:'power1.out'}, 0).to(m, {opacity:0, duration:.4}, .55); }
-  for(let i = 0; i < 10; i++){ const f = layer('sfx-flake', '❄'); g.set(f, {x:c.r.left + rnd(0, c.w), y:c.r.top - rnd(0, 20), opacity:0, rotation:rnd(0, 180)});
+  const fBatch2 = layers(10, 'sfx-flake', '❄'); for(let i = 0; i < 10; i++){ const f = fBatch2[i]; g.set(f, {x:c.r.left + rnd(0, c.w), y:c.r.top - rnd(0, 20), opacity:0, rotation:rnd(0, 180)});
     g.timeline({delay:.15 + i*0.06, onComplete:()=> f.remove()}).to(f, {opacity:1, duration:.1}).to(f, {y:`+=${c.h*rnd(.5, .9)}`, x:`+=${rnd(-12, 12)}`, rotation:'+=120', duration:1, ease:'sine.in'}, 0).to(f, {opacity:0, duration:.25}, .8); }
   // 2026-10-15 (user: "The freeze per turn effect's rectangle vfx sometimes doesnt appear on the card but offset or somewhere random on
   // the field."): the rime frame was a fixed overlay measured once, at the call; the frost tick lands while the board re-renders,
@@ -964,10 +972,10 @@ function scorch(target, o){
   setTimeout(()=>{ if(hz.isConnected) hz.remove(); }, 2400);
   // 2026-10-16: the flicker (CSS sfxFlick, a transform keyframe) sits on an inner flame; on the placed layer itself it blended
   // with GSAP's translate and threw the flames halfway across the screen on every flicker step.
-  for(let i = 0; i < 9; i++){ const f = layer('sfx-flamebox', '<i class="sfx-flame"></i>'), x = c.r.left + c.w*(i/8)*.9 + c.w*.05;
+  const fBatch3 = layers(9, 'sfx-flamebox', '<i class="sfx-flame"></i>'); for(let i = 0; i < 9; i++){ const f = fBatch3[i], x = c.r.left + c.w*(i/8)*.9 + c.w*.05;
     g.set(f, {x:x - 7, y:c.r.bottom - 26 + rnd(-4, 6), scaleY:0, opacity:1});
     g.timeline({delay:i*0.03 + rnd(0, .08), onComplete:()=> f.remove()}).to(f, {scaleY:rnd(1, 1.8), duration:.25, ease:'power2.out'}).to(f, {scaleY:rnd(.8, 1.4), duration:.3, yoyo:true, repeat:1}).to(f, {scaleY:0, opacity:0, duration:.3}); }
-  for(let i = 0; i < 10; i++){ const e = layer('sfx-bit sfx-bit-ember'); g.set(e, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.bottom - 10, opacity:0});
+  const eBatch = layers(10, 'sfx-bit sfx-bit-ember'); for(let i = 0; i < 10; i++){ const e = eBatch[i]; g.set(e, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.bottom - 10, opacity:0});
     g.timeline({delay:.15 + i*0.07, onComplete:()=> e.remove()}).to(e, {opacity:1, duration:.05}).to(e, {y:`-=${rnd(50, 100)}`, x:`+=${rnd(-14, 14)}`, opacity:0, duration:.9, ease:'power1.out'}); }
   const t = tileOf(target);
   later(()=>{ t.classList.add('sfx-scorch'); if(o.light) call(o.light, c.x, c.r.bottom, [1, .55, .18], false); call(o.onImpact); }, 250);
@@ -1083,7 +1091,7 @@ function levelUp(target, o){
   ring(c.x, c.y, 'sfx-string', c.w*1.8, 600); later(()=> ring(c.x, c.y, 'sfx-string', c.w*1.3, 500), 120);
   const rb = layer('sfx-ribbon', o.text || 'LEVEL UP!'); g.set(rb, {x:c.x, y:c.r.top - 8, xPercent:-50, yPercent:-50, scale:2.4, opacity:0, rotation:-8});
   g.timeline({onComplete:()=>{ rb.remove(); call(o.onDone); }}).to(rb, {scale:1, opacity:1, rotation:-3, duration:.22, ease:'power3.in', delay:.12}).to(rb, {y:'-=4', duration:.08, yoyo:true, repeat:1}).to(rb, {opacity:0, y:'-=18', duration:.4, delay:.7});
-  for(let i = 0; i < 12; i++){ const s = layer('sfx-star', '✦'); g.set(s, {x:c.r.left + rnd(0, c.w), y:c.r.bottom - rnd(0, c.h*.3), scale:rnd(.6, 1.3), opacity:0});
+  const sBatch3 = layers(12, 'sfx-star', '✦'); for(let i = 0; i < 12; i++){ const s = sBatch3[i]; g.set(s, {x:c.r.left + rnd(0, c.w), y:c.r.bottom - rnd(0, c.h*.3), scale:rnd(.6, 1.3), opacity:0});
     g.timeline({delay:.15 + i*0.05, onComplete:()=> s.remove()}).to(s, {opacity:1, duration:.08}).to(s, {y:`-=${rnd(60, 120)}`, x:`+=${rnd(-20, 20)}`, rotation:rnd(-90, 90), duration:.9, ease:'power1.out'}, 0).to(s, {opacity:0, duration:.3}, .65); }
   if(o.light) call(o.light, c.x, c.y, [1, .85, .4], true);
 }
@@ -1101,7 +1109,7 @@ function unlockSparkle(target, o){
       g.to(t, {filter:'grayscale(0) brightness(1.35)', duration:.35, ease:'power2.out'}); g.to(t, {filter:'grayscale(0) brightness(1)', duration:.5, delay:.35, clearProps:'filter'});
       g.timeline().to(t, {scale:1.08, duration:.12}).to(t, {scale:1, duration:.45, ease:'elastic.out(1, .45)', clearProps:'transform'});
       const sw = document.createElement('span'); sw.className = 'shine-sweep'; sw.setAttribute('aria-hidden', 'true'); if(getComputedStyle(t).position === 'static') t.style.position = 'relative'; t.appendChild(sw); later(()=> sw.remove(), 800);
-      for(let i = 0; i < 16; i++){ const s = layer('sfx-twinkle'), a = i/16*6.28 + rnd(-.15, .15), d = rnd(.55, 1.05)*Math.max(c.w, c.h)*.75;
+      const sBatch4 = layers(16, 'sfx-twinkle'); for(let i = 0; i < 16; i++){ const s = sBatch4[i], a = i/16*6.28 + rnd(-.15, .15), d = rnd(.55, 1.05)*Math.max(c.w, c.h)*.75;
         g.set(s, {x:c.x - 6, y:c.y - 6, scale:.2, opacity:1, rotation:0});
         g.timeline({onComplete:()=> s.remove()}).to(s, {x:`+=${Math.cos(a)*d}`, y:`+=${Math.sin(a)*d}`, scale:rnd(.8, 1.5), rotation:90, duration:.55, ease:'power3.out'}).to(s, {scale:0, opacity:0, duration:.3, delay:rnd(0, .25)}); }
       if(o.light) call(o.light, c.x, c.y, [1, .95, .7], false); })
@@ -1121,7 +1129,7 @@ function skyDrop(cards, o){
       .to(sh, {scale:1, opacity:.85, duration:fall, ease:'power3.in'}, 0)
       .to(t, {y:0, rotation:0, duration:fall, ease:'power3.in'}, 0)
       .add(()=>{ ring(c.x, c.r.bottom - 4, 'sfx-ring-dust', c.w*1.7, 520);
-        for(let k = 0; k < 5; k++){ const p = layer('sfx-dust'); g.set(p, {x:c.r.left + c.w*k/4 - 11, y:c.r.bottom - 14, scale:.5, opacity:.9});
+        const pBatch7 = layers(5, 'sfx-dust'); for(let k = 0; k < 5; k++){ const p = pBatch7[k]; g.set(p, {x:c.r.left + c.w*k/4 - 11, y:c.r.bottom - 14, scale:.5, opacity:.9});
           g.to(p, {x:`+=${(k/4 - .5)*60}`, y:`-=${rnd(4, 14)}`, scale:1.8, opacity:0, duration:.55, ease:'power2.out', onComplete:()=> p.remove()}); }
         if(o.light) call(o.light, c.x, c.r.bottom, [1, .9, .7], false); call(o.onEachLand, el, i); })
       .to(t, {scaleY:.8, scaleX:1.12, transformOrigin:'50% 100%', duration:.07, ease:'power2.out'})
@@ -1257,7 +1265,7 @@ function seventhCss(){ if(document.getElementById('sfx-seventh-css')) return; co
 // A grey puff that swells over a card and drifts apart.
 function smokePuff(target){
   const g = G(); if(!g || !target) return; seventhCss(); const c = centre(target);
-  for(let k = 0; k < 7; k++){ const p = layer('sfx-smoke'); g.set(p, {x:c.x - 20 + rnd(-c.w*.3, c.w*.3), y:c.y - 20 + rnd(-c.h*.25, c.h*.25), scale:.3, opacity:.95});
+  const pBatch8 = layers(7, 'sfx-smoke'); for(let k = 0; k < 7; k++){ const p = pBatch8[k]; g.set(p, {x:c.x - 20 + rnd(-c.w*.3, c.w*.3), y:c.y - 20 + rnd(-c.h*.25, c.h*.25), scale:.3, opacity:.95});
     g.to(p, {scale:rnd(1.6, 2.6), opacity:0, x:`+=${rnd(-24, 24)}`, y:`-=${rnd(6, 26)}`, duration:rnd(.8, 1.3), ease:'power1.out', onComplete:()=> p.remove()}); }
 }
 // Smoke Bomb: a lit bomb lobbed from the thrower onto the target, then it bursts into a grey cloud.
@@ -1377,7 +1385,7 @@ function flyDescend(el, o){
 function gust(target, o){
   o = o || {}; if(!go() || !target){ call(o.onDone); return; }
   const g = G(), c = centre(target), s = o.dir || 1, t = tileOf(target);
-  for(let i = 0; i < 6; i++){ const w = layer('sfx-gust'), len = rnd(50, 90);
+  const wBatch = layers(6, 'sfx-gust'); for(let i = 0; i < 6; i++){ const w = wBatch[i], len = rnd(50, 90);
     g.set(w, {x:c.x - s*c.w*.9 - len/2, y:c.r.top + c.h*(0.15 + i*0.14), width:len, opacity:0, rotation:rnd(-6, 6)});
     g.timeline({delay:i*0.04, onComplete:()=> w.remove()}).to(w, {opacity:.95, duration:.08}).to(w, {x:`+=${s*c.w*1.8}`, duration:.45, ease:'power1.inOut'}, 0).to(w, {opacity:0, duration:.15}, .32); }
   g.timeline({onComplete:()=> call(o.onDone)}).to(t, {rotation:s*4, x:s*5, duration:.15, ease:'power2.out'}).to(t, {rotation:0, x:0, duration:.45, ease:'elastic.out(1, .5)', clearProps:'transform'});
@@ -1387,7 +1395,7 @@ function splash(target, o){
   o = o || {}; if(!go() || !target){ call(o.onDone); return; }
   const g = G(), c = centre(target), y = c.r.bottom - 6;
   ring(c.x, y, 'sfx-water', c.w*1.6, 520); later(()=> ring(c.x, y, 'sfx-water', c.w*1.1, 420), 120);
-  for(let i = 0; i < 12; i++){ const d = layer('sfx-droplet'), a = rnd(-150, -30)*Math.PI/180, v = rnd(30, 70);
+  const dBatch2 = layers(12, 'sfx-droplet'); for(let i = 0; i < 12; i++){ const d = dBatch2[i], a = rnd(-150, -30)*Math.PI/180, v = rnd(30, 70);
     g.set(d, {x:c.x - 3.5 + rnd(-c.w*.3, c.w*.3), y:y - 10, opacity:1});
     g.to(d, {keyframes:[{x:`+=${Math.cos(a)*v*.6}`, y:`+=${Math.sin(a)*v}`, duration:.28, ease:'power2.out'}, {x:`+=${Math.cos(a)*v*.4}`, y:`+=${v*.9}`, opacity:0, duration:.32, ease:'power2.in'}], onComplete:()=> d.remove()}); }
   g.timeline({onComplete:()=> call(o.onDone)}).to(tileOf(target), {y:-7, duration:.14, ease:'power2.out'}).to(tileOf(target), {y:0, duration:.45, ease:'elastic.out(1, .4)', clearProps:'transform'});
@@ -1401,7 +1409,7 @@ function armorBlock(target, o){
   g.timeline({onComplete:()=> pl.remove()}).to(pl, {opacity:.95*k, scale:1, duration:.08, ease:'power3.out'}).to(pl, {backgroundPosition:'0% 0', duration:.3, ease:'power1.inOut'}, 0)
     .to(pl, {opacity:0, duration:o.shatter ? .12 : .35, delay:o.shatter ? .05 : .1*k});
   const px = c.x + Math.cos(rad)*c.w*.3, py = c.y + Math.sin(rad)*c.h*.4;
-  for(let i = 0; i < Math.round(9*k); i++){ const s = layer('sfx-spark'), a = (from + rnd(-70, 70))*Math.PI/180, d = rnd(18, 44);
+  const sBatch5 = layers(Math.round(9*k), 'sfx-spark'); for(let i = 0; i < Math.round(9*k); i++){ const s = sBatch5[i], a = (from + rnd(-70, 70))*Math.PI/180, d = rnd(18, 44);
     g.set(s, {x:px - 2, y:py - 2}); g.to(s, {x:`+=${Math.cos(a)*d}`, y:`+=${Math.sin(a)*d}`, opacity:0, scale:.4, duration:rnd(.2, .35), ease:'power2.out', onComplete:()=> s.remove()}); }
   if(o.shatter) for(let i = 0; i < 10; i++){ const ch = layer('sfx-chip'); g.set(ch, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.top + rnd(.1, .7)*c.h, rotation:rnd(0, 90)});
     g.to(ch, {x:`+=${rnd(-30, 30)}`, y:`+=${rnd(40, 80)}`, rotation:'+=360', opacity:0, duration:rnd(.45, .7), ease:'power1.in', delay:.1, onComplete:()=> ch.remove()}); }
@@ -1418,7 +1426,7 @@ function forkProngs(attacker, targets, o){
   const g = G(), a = attacker ? centre(attacker) : null, ink = o.kind === 'octolash', n = o.kind === 'pitchfork' ? 4 : o.kind === 'fork' ? 2 : 3; // tines: Fork 2 (2026-10-15), Trident 3, Pitchfork 4
   list.forEach((el, i)=> later(()=>{
     const b = centre(el), ang = a ? angTo(a, b) : Math.PI/2, ux = Math.cos(ang), uy = Math.sin(ang), px = -uy, py = ux, L = b.h*.55, deg = ang*57.3;
-    for(let k = 0; k < n; k++){ const p = layer('sfx-prong' + (ink ? ' is-ink' : '')), off = (k - (n - 1)/2)*b.w*.16;
+    const pBatch9 = layers(n, 'sfx-prong' + (ink ? ' is-ink' : '')); for(let k = 0; k < n; k++){ const p = pBatch9[k], off = (k - (n - 1)/2)*b.w*.16;
       const bx = b.x + px*off, by = b.y + py*off;
       g.set(p, {height:L, x:bx - ux*(L + b.h*.7) - 2.5, y:by - uy*(L + b.h*.7) - L, rotation:deg + 90, transformOrigin:'50% 100%', opacity:0});
       g.timeline({delay:k*0.02, onComplete:()=> p.remove()}).to(p, {opacity:1, duration:.05})
@@ -1502,9 +1510,9 @@ function paralyzeSpark(target, o){
 function acidCorrode(target, o){
   o = o || {}; if(!go() || !target){ call(o.onDone); return; }
   const g = G(), c = centre(target);
-  for(let i = 0; i < 5; i++){ const d = layer('sfx-acid'), x = c.r.left + c.w*(0.15 + i*0.17) + rnd(-4, 4); g.set(d, {x:x - 4, y:c.r.top - 14, opacity:0, scaleY:.6});
+  const dBatch3 = layers(5, 'sfx-acid'); for(let i = 0; i < 5; i++){ const d = dBatch3[i], x = c.r.left + c.w*(0.15 + i*0.17) + rnd(-4, 4); g.set(d, {x:x - 4, y:c.r.top - 14, opacity:0, scaleY:.6});
     g.timeline({delay:i*0.06, onComplete:()=> d.remove()}).to(d, {opacity:1, y:c.r.top - 2, duration:.12, ease:'power2.in'}).to(d, {y:`+=${c.h*rnd(.45, .8)}`, scaleY:1.4, duration:.55, ease:'power1.in'}).to(d, {opacity:0, duration:.15}, '-=.15'); }
-  for(let i = 0; i < 8; i++){ const b = layer('sfx-fizz'); g.set(b, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.top + rnd(.1, .8)*c.h, scale:.3, opacity:0});
+  const bBatch = layers(8, 'sfx-fizz'); for(let i = 0; i < 8; i++){ const b = bBatch[i]; g.set(b, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.top + rnd(.1, .8)*c.h, scale:.3, opacity:0});
     g.timeline({delay:.15 + i*0.06, onComplete:()=> b.remove()}).to(b, {opacity:1, scale:1, duration:.12}).to(b, {scale:1.6, opacity:0, y:'-=8', duration:.2}); }
   g.fromTo(tileOf(target), {filter:'hue-rotate(0deg) saturate(1)'}, {filter:'hue-rotate(45deg) saturate(1.6) brightness(.9)', duration:.18, yoyo:true, repeat:1, repeatDelay:.25, clearProps:'filter', onComplete:()=> call(o.onDone)});
 }
@@ -1512,7 +1520,7 @@ function acidCorrode(target, o){
 function lifeDrain(from, to, o){
   o = o || {}; if(!go() || !from || !to){ call(o.onDone); return; }
   const g = G(), a = centre(from), b = centre(to), n = 10;
-  for(let i = 0; i < n; i++){ const m = layer('sfx-mote is-red is-sap'), s = {t:0}, p0 = {x:a.x + rnd(-a.w*.3, a.w*.3), y:a.y + rnd(-a.h*.3, a.h*.3)}, mid = {x:(a.x + b.x)/2 + rnd(-50, 50), y:(a.y + b.y)/2 + rnd(-30, 30)};
+  const mBatch2 = layers(n, 'sfx-mote is-red is-sap'); for(let i = 0; i < n; i++){ const m = mBatch2[i], s = {t:0}, p0 = {x:a.x + rnd(-a.w*.3, a.w*.3), y:a.y + rnd(-a.h*.3, a.h*.3)}, mid = {x:(a.x + b.x)/2 + rnd(-50, 50), y:(a.y + b.y)/2 + rnd(-30, 30)};
     g.set(m, {x:p0.x, y:p0.y, opacity:0});
     g.timeline({delay:i*0.04, onComplete:()=> m.remove()}).to(m, {opacity:1, duration:.08}).to(s, {t:1, duration:.45, ease:'power2.in', onUpdate:()=>{ const q = qpt(p0, mid, b, s.t); g.set(m, {x:q.x, y:q.y}); }}, 0).to(m, {opacity:0, duration:.1}); }
   g.fromTo(tileOf(from), {filter:'saturate(1)'}, {filter:'saturate(.4) brightness(.85)', duration:.2, yoyo:true, repeat:1, clearProps:'filter'});
@@ -1522,7 +1530,7 @@ function lifeDrain(from, to, o){
 function bloomPollen(src, target, o){
   o = o || {}; if(!go() || !target){ call(o.onDone); return; }
   const g = G(), b = centre(target), a = src ? centre(src) : {x:b.x, y:b.y - 80, w:b.w, h:b.h};
-  for(let i = 0; i < 12; i++){ const p = layer(i % 3 ? 'sfx-petal' : 'sfx-pollen'), s = {t:0}, p0 = {x:a.x + rnd(-a.w*.3, a.w*.3), y:a.y + rnd(-a.h*.3, 0)}, mid = {x:(a.x + b.x)/2 + rnd(-30, 30), y:Math.min(a.y, b.y) - rnd(30, 70)}, end = {x:b.x + rnd(-b.w*.3, b.w*.3), y:b.y + rnd(-b.h*.3, b.h*.2)};
+  const pBatch10 = layers(12, i=> i % 3 ? 'sfx-petal' : 'sfx-pollen'); for(let i = 0; i < 12; i++){ const p = pBatch10[i], s = {t:0}, p0 = {x:a.x + rnd(-a.w*.3, a.w*.3), y:a.y + rnd(-a.h*.3, 0)}, mid = {x:(a.x + b.x)/2 + rnd(-30, 30), y:Math.min(a.y, b.y) - rnd(30, 70)}, end = {x:b.x + rnd(-b.w*.3, b.w*.3), y:b.y + rnd(-b.h*.3, b.h*.2)};
     g.set(p, {x:p0.x, y:p0.y, rotation:rnd(0, 360), opacity:0});
     g.timeline({delay:i*0.035, onComplete:()=> p.remove()}).to(p, {opacity:1, duration:.1}).to(s, {t:1, duration:.55, ease:'sine.inOut', onUpdate:()=>{ const q = qpt(p0, mid, end, s.t); g.set(p, {x:q.x, y:q.y}); }}, 0).to(p, {rotation:'+=240', duration:.55}, 0).to(p, {opacity:0, duration:.15}); }
   later(()=>{ ring(b.x, b.y, 'sfx-heal', b.w*1.3, 480); call(o.onDone); }, 600);
@@ -1560,7 +1568,7 @@ function targetMark(target, o){
 function blindInk(target, o){
   o = o || {}; if(!go() || !target){ call(o.onDone); return; }
   const g = G(), c = centre(target);
-  for(let i = 0; i < 5; i++){ const k = layer('sfx-ink'); g.set(k, {x:c.r.left + c.w*rnd(.15, .85) - 17, y:c.r.top + c.h*rnd(.2, .45) - 17, scale:0, rotation:rnd(0, 360), opacity:.95});
+  const kBatch = layers(5, 'sfx-ink'); for(let i = 0; i < 5; i++){ const k = kBatch[i]; g.set(k, {x:c.r.left + c.w*rnd(.15, .85) - 17, y:c.r.top + c.h*rnd(.2, .45) - 17, scale:0, rotation:rnd(0, 360), opacity:.95});
     g.timeline({delay:i*0.04, onComplete:()=> k.remove()}).to(k, {scale:rnd(.9, 1.5), duration:.1, ease:'back.out(3)'}).to(k, {y:'+=14', scaleY:'+=.3', duration:.5, ease:'power1.in'}).to(k, {opacity:0, duration:.3}, '-=.25'); }
   g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(.6)', duration:.15, yoyo:true, repeat:1, repeatDelay:.35, clearProps:'filter', onComplete:()=> call(o.onDone)});
 }
@@ -1584,7 +1592,7 @@ function reviveRise(target, o){
   g.fromTo(t, {filter:'grayscale(1) brightness(.6)'}, {filter:'grayscale(0) brightness(1.3)', duration:.45, delay:.18, clearProps:'filter'});
   g.timeline({delay:.2, onComplete:()=> call(o.onDone)}).to(t, {y:-10, scale:1.05, duration:.25, ease:'power2.out'}).to(t, {y:0, scale:1, duration:.4, ease:'bounce.out', clearProps:'transform'});
   later(()=> ring(c.x, c.y, 'sfx-heal', c.w*1.5, 520), 220);
-  for(let i = 0; i < 8; i++){ const s = layer('sfx-twinkle'); g.set(s, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.bottom - rnd(0, c.h*.3), opacity:0});
+  const sBatch6 = layers(8, 'sfx-twinkle'); for(let i = 0; i < 8; i++){ const s = sBatch6[i]; g.set(s, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.bottom - rnd(0, c.h*.3), opacity:0});
     g.timeline({delay:.25 + i*.05, onComplete:()=> s.remove()}).to(s, {opacity:1, duration:.08}).to(s, {y:`-=${rnd(40, 80)}`, duration:.6, ease:'power1.out'}, 0).to(s, {opacity:0, duration:.2}, .45); }
 }
 // Spawn (Brood, Twin, On Death spawns, Meiosis): a green rune circle spins open under the new card and it pops into being.
@@ -1594,14 +1602,14 @@ function summonPortal(target, o){
   g.set(r, {x:c.x, y:c.y + c.h*.1, xPercent:-50, yPercent:-50, width:D, height:D*.45, scale:.2, rotation:0, opacity:0});
   g.timeline({onComplete:()=> r.remove()}).to(r, {scale:1, opacity:1, duration:.2, ease:'back.out(2)'}).to(r, {rotation:180, duration:.6, ease:'none'}, 0).to(r, {opacity:0, scale:1.2, duration:.25}, .45);
   g.fromTo(tileOf(target), {scale:.7, opacity:.3}, {scale:1, opacity:1, duration:.4, ease:'back.out(2)', delay:.08, clearProps:'transform,opacity', onComplete:()=> call(o.onDone)});
-  for(let i = 0; i < 8; i++){ const m = layer('sfx-mote'); g.set(m, {x:c.x + rnd(-D*.4, D*.4), y:c.y + c.h*.15, opacity:0});
+  const mBatch3 = layers(8, 'sfx-mote'); for(let i = 0; i < 8; i++){ const m = mBatch3[i]; g.set(m, {x:c.x + rnd(-D*.4, D*.4), y:c.y + c.h*.15, opacity:0});
     g.timeline({delay:.05 + i*.04, onComplete:()=> m.remove()}).to(m, {opacity:1, duration:.08}).to(m, {y:`-=${rnd(40, 80)}`, duration:.55, ease:'power1.out'}, 0).to(m, {opacity:0, duration:.2}, .4); }
 }
 // Resource gain (On Ready/Spawn Lumber, Bounty; Worthy until 2026-10-16): a few logs (or coins) hop from the card to where they're banked.
 function lootArc(from, to, o){
   o = o || {}; if(!go() || !from || !to){ call(o.onDone); return; }
   const g = G(), a = centre(from), b = centre(to), n = Math.max(1, Math.min(5, o.n || 3));
-  for(let i = 0; i < n; i++){ const l = layer('sfx-loot', o.glyph || '🪵'), s = {t:0}, p0 = {x:a.x + rnd(-10, 10), y:a.y}, mid = {x:(a.x + b.x)/2 + rnd(-40, 40), y:Math.min(a.y, b.y) - rnd(60, 110)};
+  const lBatch = layers(n, 'sfx-loot', o.glyph || '🪵'); for(let i = 0; i < n; i++){ const l = lBatch[i], s = {t:0}, p0 = {x:a.x + rnd(-10, 10), y:a.y}, mid = {x:(a.x + b.x)/2 + rnd(-40, 40), y:Math.min(a.y, b.y) - rnd(60, 110)};
     g.set(l, {x:p0.x, y:p0.y, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
     g.timeline({delay:i*0.08, onComplete:()=>{ l.remove(); if(i === n - 1){ g.fromTo(tileOf(to), {scale:1}, {scale:1.12, duration:.08, yoyo:true, repeat:1, clearProps:'transform'}); ring(b.x, b.y, 'sfx-gold', Math.max(30, b.w*.8), 320); call(o.onDone); } }})
       .to(l, {opacity:1, scale:1, duration:.1}).to(s, {t:1, duration:.55, ease:'power1.inOut', onUpdate:()=>{ const q = qpt(p0, mid, b, s.t); g.set(l, {x:q.x, y:q.y}); }}, 0).to(l, {rotation:rnd(-200, 200), duration:.55}, 0).to(l, {scale:.5, duration:.1}); }
@@ -1620,7 +1628,7 @@ function espritAura(target, o){
   o = o || {}; if(!go() || !target){ call(o.onDone); return; }
   const g = G(), c = centre(target);
   ring(c.x, c.y, 'sfx-gold', c.w*1.4, 520);
-  for(let i = 0; i < 6; i++){ const v = layer('sfx-chev'); g.set(v, {x:c.x - 9 + (i % 3 - 1)*c.w*.22, y:c.r.bottom - 10, opacity:0, scale:.8});
+  const vBatch = layers(6, 'sfx-chev'); for(let i = 0; i < 6; i++){ const v = vBatch[i]; g.set(v, {x:c.x - 9 + (i % 3 - 1)*c.w*.22, y:c.r.bottom - 10, opacity:0, scale:.8});
     g.timeline({delay:i*0.07, onComplete:()=> v.remove()}).to(v, {opacity:1, duration:.08}).to(v, {y:`-=${c.h*.85}`, duration:.55, ease:'power1.out'}, 0).to(v, {opacity:0, duration:.18}, .4); }
   g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.3) saturate(1.3)', duration:.2, yoyo:true, repeat:1, clearProps:'filter', onComplete:()=> call(o.onDone)});
 }
@@ -1739,7 +1747,7 @@ function chilliHeat(target, o){
       .to(f, {scaleX:.8, duration:.07, yoyo:true, repeat:1}).to(f, {scale:.6, duration:.08}).to(f, {scale:.1, opacity:0, duration:.1}); }
   const fl = layer('sfx-chilli-flush'); g.set(fl, {x:c.r.left, y:c.r.top, width:c.w, height:c.h, opacity:0});
   g.timeline({delay:o.burn ? 0 : .35, onComplete:()=>{ fl.remove(); call(o.onDone); }}).to(fl, {opacity:1, duration:.12}).to(fl, {opacity:o.burn ? 0 : .5, duration:.25}).to(fl, {opacity:0, duration:.3});
-  for(let i = 0; i < (o.burn ? 3 : 7); i++){ const p = layer('sfx-chilli-steam'); g.set(p, {x:c.x - 15 + rnd(-c.w*.3, c.w*.3), y:c.r.top + c.h*.2, scale:.4, opacity:0});
+  const pBatch11 = layers((o.burn ? 3 : 7), 'sfx-chilli-steam'); for(let i = 0; i < (o.burn ? 3 : 7); i++){ const p = pBatch11[i]; g.set(p, {x:c.x - 15 + rnd(-c.w*.3, c.w*.3), y:c.r.top + c.h*.2, scale:.4, opacity:0});
     g.to(p, {opacity:.9, duration:.1, delay:(o.burn ? 0 : .4) + i*.06}); g.to(p, {y:`-=${rnd(26, 48)}`, x:`+=${rnd(-10, 10)}`, scale:rnd(1.4, 2.2), opacity:0, duration:rnd(.6, .9), delay:(o.burn ? .1 : .5) + i*.06, ease:'power1.out', onComplete:()=> p.remove()}); }
   g.fromTo(tileOf(target), {x:0}, {x:2, duration:.05, yoyo:true, repeat:o.burn ? 3 : 7, delay:o.burn ? 0 : .35, clearProps:'transform'});
 }
@@ -1754,7 +1762,7 @@ function bloodlustPulse(target, o){
   const g = G(), c = centre(target), beats = o.full ? 1 : 2;
   const fl = layer('sfx-blood-flush'); g.set(fl, {x:c.r.left, y:c.r.top, width:c.w, height:c.h, opacity:0});
   g.timeline({onComplete:()=> fl.remove()}).to(fl, {opacity:1, duration:.1}).to(fl, {opacity:.6, duration:.25}).to(fl, {opacity:0, duration:.35});
-  for(let i = 0; i < beats; i++){ const r = layer('sfx-blood-ring'); g.set(r, {x:c.r.left, y:c.r.top, width:c.w, height:c.h, opacity:0, scale:1});
+  const rBatch = layers(beats, 'sfx-blood-ring'); for(let i = 0; i < beats; i++){ const r = rBatch[i]; g.set(r, {x:c.r.left, y:c.r.top, width:c.w, height:c.h, opacity:0, scale:1});
     g.timeline({delay:i*.28, onComplete:()=>{ r.remove(); if(i === beats - 1) call(o.onDone); }}).to(r, {opacity:1, duration:.06}).to(r, {scale:o.full ? 1.45 : 1.3, opacity:0, duration:.5, ease:'power2.out'}); }
   const t = tileOf(target); for(let i = 0; i < beats; i++) g.fromTo(t, {scale:1}, {scale:1.06, duration:.08, yoyo:true, repeat:1, delay:i*.28, ease:'power2.out', clearProps:'transform'});
 }
@@ -1854,7 +1862,7 @@ function bulldozeShove(target, o){
   o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target), dir = o.fromAbove ? 1 : -1, t = tileOf(target);
   g.timeline({onComplete:()=>{ g.set(t, {clearProps:'transform'}); call(o.onDone); }})
     .to(t, {y:dir*18, rotation:dir*-2, duration:.12, ease:'power3.out'}).to(t, {y:dir*14, duration:.18}).to(t, {y:0, rotation:0, duration:.35, ease:'power2.inOut'});
-  for(let i = 0; i < 6; i++){ const d = layer('sfx-w2-glyph', '•'); d.style.color = 'rgba(150,120,90,.85)'; d.style.fontSize = '14px';
+  const dBatch4 = layers(6, 'sfx-w2-glyph', '•'); for(let i = 0; i < 6; i++){ const d = dBatch4[i]; d.style.color = 'rgba(150,120,90,.85)'; d.style.fontSize = '14px';
     g.set(d, {x:c.x + rnd(-c.w*.4, c.w*.4), y:dir > 0 ? c.r.bottom + 4 : c.r.top - 4, opacity:.9});
     g.to(d, {x:`+=${rnd(-20, 20)}`, y:`+=${dir*rnd(6, 18)}`, opacity:0, scale:1.6, duration:.5, delay:.08, ease:'power2.out', onComplete:()=> d.remove()}); }
 }
@@ -1902,7 +1910,7 @@ function absoluteZero(host, targets, o){
   if(host){ const hc = centre(host), fl = layer('sfx-w2-frost'); g.set(fl, {x:hc.r.left, y:hc.r.top, width:hc.w, height:hc.h, opacity:0});
     g.timeline({onComplete:()=> fl.remove()}).to(fl, {opacity:.85, duration:.12}).to(fl, {opacity:0, duration:.7}); }
   list.forEach((el, k)=>{ const c = centre(el);
-    for(let i = 0; i < 6; i++){ const f = layer('sfx-w2-flake', '❄'); g.set(f, {x:c.x + rnd(-c.w*.4, c.w*.4), y:c.y + rnd(-c.h*.35, c.h*.35), scale:0, rotation:rnd(0, 90)});
+    const fBatch4 = layers(6, 'sfx-w2-flake', '❄'); for(let i = 0; i < 6; i++){ const f = fBatch4[i]; g.set(f, {x:c.x + rnd(-c.w*.4, c.w*.4), y:c.y + rnd(-c.h*.35, c.h*.35), scale:0, rotation:rnd(0, 90)});
       g.timeline({delay:.15 + k*.05 + i*.03, onComplete:()=> f.remove()}).to(f, {scale:1.2, duration:.18, ease:'back.out(3)'}).to(f, {opacity:0, duration:.5, delay:.35}); }
     g.fromTo(tileOf(el), {filter:'brightness(1)'}, {filter:'brightness(1.4) saturate(.3) hue-rotate(180deg)', duration:.2, yoyo:true, repeat:1, delay:.15 + k*.05, clearProps:'filter'}); });
   later(o.onDone, 1100);
@@ -1937,7 +1945,7 @@ function nova(src, targets, o){
 // Crystallise: shards gather and the crystal forms.
 function crystalForm(target, o){
   o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
-  for(let i = 0; i < 8; i++){ const s = layer('sfx-w2-shard'), a = i/8*Math.PI*2, d = Math.max(c.w, c.h)*.8; g.set(s, {x:c.x + Math.cos(a)*d - 5, y:c.y + Math.sin(a)*d - 8, rotation:a*57.3 + 90, opacity:0});
+  const sBatch7 = layers(8, 'sfx-w2-shard'); for(let i = 0; i < 8; i++){ const s = sBatch7[i], a = i/8*Math.PI*2, d = Math.max(c.w, c.h)*.8; g.set(s, {x:c.x + Math.cos(a)*d - 5, y:c.y + Math.sin(a)*d - 8, rotation:a*57.3 + 90, opacity:0});
     g.timeline({delay:i*.03, onComplete:()=> s.remove()}).to(s, {opacity:1, duration:.08}).to(s, {x:c.x - 5, y:c.y - 8, duration:.35, ease:'power2.in'}, '<').to(s, {opacity:0, duration:.1}); }
   later(()=> ring(c.x, c.y, 'sfx-heal', c.w*1.3, 420), 380);
   g.fromTo(tileOf(target), {scale:.8, opacity:.4}, {scale:1, opacity:1, duration:.35, delay:.35, ease:'back.out(2)', clearProps:'transform,opacity', onComplete:o.onDone});
@@ -1946,7 +1954,7 @@ function crystalForm(target, o){
 function cure(target, o){
   o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
   w2Float(c.x, c.r.top + c.h*.35, '💊', 'sfx-w2-pill', 22);
-  for(let i = 0; i < 7; i++){ const s = layer('sfx-twinkle'); g.set(s, {x:c.r.left + rnd(.15, .85)*c.w, y:c.r.top + rnd(.4, .8)*c.h, opacity:0});
+  const sBatch8 = layers(7, 'sfx-twinkle'); for(let i = 0; i < 7; i++){ const s = sBatch8[i]; g.set(s, {x:c.r.left + rnd(.15, .85)*c.w, y:c.r.top + rnd(.4, .8)*c.h, opacity:0});
     g.timeline({delay:.12 + i*.05, onComplete:()=> s.remove()}).to(s, {opacity:1, duration:.08}).to(s, {y:`-=${rnd(30, 60)}`, duration:.55, ease:'power1.out'}, 0).to(s, {opacity:0, duration:.2}, .4); }
   g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.3) saturate(1.2)', duration:.2, yoyo:true, repeat:1, delay:.15, clearProps:'filter', onComplete:o.onDone});
 }
@@ -2036,7 +2044,7 @@ function foam17(x, y, dir){ const g = G(); if(!g) return; const f = layer('sfx-f
   g.set(f, {x:x + rnd(-4, 4), y:y + rnd(-3, 3), xPercent:-50, yPercent:-50, scale:s, opacity:.9});
   g.to(f, {x:`+=${-dir*rnd(8, 18)}`, y:`+=${rnd(2, 8)}`, scale:s*.3, opacity:0, duration:rnd(.35, .6), ease:'power1.out', onComplete:()=> f.remove()}); }
 function spray17(x, y, dir, n){ const g = G(); if(!g) return;
-  for(let i = 0; i < (n || 9); i++){ const d = layer('sfx-drop17'), a = rnd(25, 80) * Math.PI/180, v = rnd(22, 52), vx = dir*Math.abs(Math.cos(a))*v*.8 + rnd(-6, 6);
+  const dBatch5 = layers((n || 9), 'sfx-drop17'); for(let i = 0; i < (n || 9); i++){ const d = dBatch5[i], a = rnd(25, 80) * Math.PI/180, v = rnd(22, 52), vx = dir*Math.abs(Math.cos(a))*v*.8 + rnd(-6, 6);
     g.set(d, {x, y, xPercent:-50, yPercent:-50, opacity:1, rotation:dir*rnd(10, 40)});
     g.to(d, {keyframes:[{x:`+=${vx*.6}`, y:`+=${-Math.abs(Math.sin(a))*v}`, duration:.24, ease:'power2.out'}, {x:`+=${vx*.4}`, y:`+=${v*.9}`, opacity:0, duration:.3, ease:'power2.in'}], onComplete:()=> d.remove()}); } }
 // a small rock of a card's tile: up, a little lean, back down (a neighbour the water touches)

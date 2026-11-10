@@ -85,7 +85,9 @@ function css(){
   const s = document.createElement('style'); s.id = 'procfx-css'; s.textContent = CSS; (document.head || document.documentElement).appendChild(s);
 }
 css();
-const fixed = (cls)=>{ const e = document.createElement('div'); e.className = 'pfx-fixed ' + cls; e.setAttribute('aria-hidden', 'true'); document.body.appendChild(e); return e; };
+const fixed = (cls)=>{ const e = document.createElement('div'); e.className = 'pfx-fixed ' + cls; e.setAttribute('aria-hidden', 'true'); document.body.appendChild(e);
+  try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} // 2026-11-11 (PERF2): always shown; skips GSAP's display:block probe on its first move (see SkillFX's shown())
+  return e; };
 
 // =================================================================================================
 // 1. Drunken-miner cracks

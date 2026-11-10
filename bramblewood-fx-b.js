@@ -48,7 +48,9 @@ const wait = ms=> new Promise(res=> later(res, ms));
 // A fixed-position overlay on <body> (survives re-renders underneath), or an absolute one inside `host`.
 function layer(cls, html, host){
   const e = document.createElement('div'); e.className = 'fx' + TAG + ' ' + (cls || ''); e.setAttribute('aria-hidden', 'true');
-  if(html) e.innerHTML = html; if(host) e.style.position = 'absolute'; (host || document.body).appendChild(e); return e;
+  if(html) e.innerHTML = html; if(host) e.style.position = 'absolute'; (host || document.body).appendChild(e);
+  if(!host) try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} // 2026-11-11 (PERF2): a fixed overlay is always shown; this skips GSAP's display:block probe on its first move (see SkillFX's shown())
+  return e;
 }
 // Inject a named CSS chunk once into this batch's own <style> block.
 const cssDone = new Set();
@@ -83,6 +85,9 @@ function run(nodes, opts, build){
   const g = G(); nodes = (nodes || []).filter(Boolean);
   const end = ()=>{ nodes.forEach(n=>{ try{ if(g) g.killTweensOf(n); n.remove(); }catch(e){} }); call(opts && opts.onDone); };
   if(!g){ end(); return Promise.resolve(); }
+  // 2026-11-11 (package PERF2): the overlays and their particles (made before run) are read by GSAP together here, before any tween writes:
+  // one style pass, not one per particle as each tween starts.
+  nodes.forEach(n=>{ try{ g.getProperty(n, 'x'); n.querySelectorAll(':scope > .fxb-bit').forEach(b=> g.getProperty(b, 'x')); }catch(e){} });
   return new Promise(res=>{ const t = g.timeline({onComplete:()=>{ end(); res(); }}); try{ build(t, g); }catch(e){ t.kill(); end(); res(); } });
 }
 // n absolutely-positioned particles inside `box` (an overlay). make(i) returns {html, cls, style} or a glyph string.

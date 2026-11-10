@@ -956,8 +956,11 @@
      likely wrap" straight from the rendered badge count and gives the name the extra clearance
      only on those cards — everything with 3 or fewer keeps the original tight spacing. 2026-09-29:
      also covers the explicit two-row layout (.badges-2row always needs the extra clearance). */
-  .card-tile:has(.badges .abadge:nth-child(4)) .nm, .card-tile:has(.badges-2row) .nm{margin-top:34px;}
-  .card-tile:has(.badges-2row) .nm{margin-top:46px;}
+  /* 2026-11-11 (package PERF2): the :has() sits on the name itself and looks at its later siblings (the badges come after the name in every
+     tile). Written as `.card-tile:has(...) .nm`, a :has() aimed at the name made Chrome restyle every card name on the page each time
+     anything was added to it, e.g. each spark of a fight effect. Same specificity, same tiles. */
+  .card-tile > .nm:has(~ .badges .abadge:nth-child(4)), .card-tile > .nm:has(~ .badges-2row){margin-top:34px;}
+  .card-tile > .nm:has(~ .badges-2row){margin-top:46px;}
   /* Poison-on-hit stat pill (2026-09-29, per explicit request: "The poison pill I think can be
      placed lower, until it sits in the middle of the bottom border of the card"): this used to be
      just another entry in the top .badges row; it's really a third STAT (how hard this card
@@ -5080,7 +5083,10 @@
      tools/make_map_backgrounds.py). The speckle/patch layers are dropped so the art reads. */
   /*__MAP_ART_CSS__*/
   .conquest-layout[class*="map-theme-"]{image-rendering:pixelated;}
-  .conquest-layout[class*="map-theme-"] *{image-rendering:auto;}
+  /* 2026-11-11 (package PERF2, owner 00:06 "the game lags alot - playing effects"): was `.conquest-layout[class*="map-theme-"] *`. A
+     [class*=] test left of `*` made every class change on any element (each hit, flash and badge in a fight) restyle that element's whole
+     subtree. Same specificity (0,2,0), same elements: the layout always carries a map-theme-* class. */
+  .conquest-layout.conquest-layout *{image-rendering:auto;}
   .conquest-layout.has-map-art{background:
     radial-gradient(ellipse 130% 95% at 50% 45%, transparent 55%, rgba(0,0,0,.5) 100%),
     radial-gradient(ellipse 50% 42% at 22% 16%, rgba(255,240,190,.20) 0%, rgba(255,240,190,.06) 40%, transparent 72%),
@@ -8057,7 +8063,10 @@
   .board-row:has(> :nth-child(8)){gap:4px; --gapx:4px;}
   .board-row:has(> :nth-child(14)){--row-n:14;}
   .board-row:has(> :nth-child(21)){gap:0; --gapx:calc(var(--match-card-w) * -0.2); --row-n:21;}
-  .board-row:has(> :nth-child(21)) > * + *{margin-left:calc(var(--match-card-w) * -0.2);}
+  /* 2026-11-11 (package PERF2): was `> * + *`. Any :has() rule whose target is a bare `*` makes Chrome restyle the whole page under each
+     element that has a :has() rule on it (body, the rows, every card) whenever anything is added under it: every spark, number and emoji
+     of a fight restyled ~500 elements. A row holds only .board-card children; :where() keeps the old specificity. */
+  .board-row:has(> :nth-child(21)) > :where(.board-card) + :where(.board-card){margin-left:calc(var(--match-card-w) * -0.2);}
   .board-row > .board-card{width:min(var(--match-card-w), calc((100% - (var(--row-n) - 1) * var(--gapx)) / var(--row-n))); height:auto; aspect-ratio:4 / 5; flex-shrink:1; min-width:0;}
   /* 2026-10-29 (package UI2, R1): a slot row sized for the columns its units stand in (ui2SetRowSpan sets --row-n): the empty edge columns
      keep the cards' size and run past the field's edge instead of squeezing every card */
@@ -9491,7 +9500,9 @@
     .pass-card.winloss-card:has(.rw-panel){max-width:min(1000px, 94vw) !important;}
     .winloss-card:has(.rw-panel) .winloss-stats{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); column-gap:20px; align-items:start;}
     .winloss-card:has(.rw-panel) .winloss-stats > .rw-panel{grid-column:1; grid-row:1 / span 30; margin:0;}
-    .winloss-card:has(.rw-panel) .winloss-stats > :not(.rw-panel){grid-column:2;}
+    /* 2026-11-11 (package PERF2): `.winloss-card:has(.rw-panel) .winloss-stats > :not(.rw-panel){grid-column:2;}` is gone: a :has() rule
+       with a featureless target restyled the whole page on every DOM change in a fight (see .board-row above). The other children still
+       land in column 2: the panel holds column 1 rows 1-30, so grid auto-placement puts them there (.wls-compact keeps its full row). */
     .winloss-card:has(.rw-panel) .winloss-actions{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; align-items:stretch;}
     .winloss-card:has(.rw-panel) .winloss-actions > .winloss-secondary{grid-column:1 / -1;}
     .winloss-card:has(.rw-panel) .winloss-actions > .btn{margin:0 !important; width:100%;}
@@ -12420,7 +12431,7 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
   .card-tile .badges .ab-poison{color:var(--poison); font-weight:800; font-family:'Baloo 2', system-ui, sans-serif; text-shadow:0 1px 0 #000;}
   .card-tile .poison-tag{display:none !important;}
   .card-tile .pitchbadge{left:auto !important; right:6px; transform:none !important;}
-  .card-tile:has(.badges .abadge:nth-child(4)) .nm, .card-tile:has(.badges-2row) .nm{margin-top:revert-layer;}
+  .card-tile > .nm:has(~ .badges .abadge:nth-child(4)), .card-tile > .nm:has(~ .badges-2row){margin-top:revert-layer;} /* 2026-11-11 (PERF2): the name's own :has(), see the first copy */
   .board-card .card-tile .badges-bottom{bottom:calc(var(--cw, 120px) * .26) !important;}
   @container (max-width: 66px){ .board-card .card-tile .badges{display:flex !important; padding:0 3px !important;} .board-card .card-tile .badges .abadge{font-size:8px !important;} }
 
@@ -13754,7 +13765,7 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
   display:flex; flex-wrap:nowrap; justify-content:flex-start; align-items:center; gap:2px; width:max-content;
   max-width:calc(100% + 3px - 4px) !important; overflow:visible; z-index:6; pointer-events:none;}
 /* with the Wait clock in the top-right corner, the strip stops short of it */
-.board-card .card-tile:has(.waitbadge) .badges-bottom.status-chips{max-width:calc(100% + 3px - max(16px, 22cqw) - 4px) !important;}
+.board-card .card-tile > .waitbadge ~ .badges-bottom.status-chips{max-width:calc(100% + 3px - max(16px, 22cqw) - 4px) !important;} /* 2026-11-11 (PERF2): was .card-tile:has(.waitbadge) .badges-bottom: the wait clock is the tile's first child and the chips come after it; no :has() */
 .board-card .card-tile .status-chips > .abadge, .board-card .card-tile .status-chips > .sc-more{
   display:inline-flex; align-items:center; justify-content:center; gap:1px; flex:none; box-sizing:border-box;
   height:var(--sc-h); min-width:var(--sc-h); padding:0 calc(var(--sc-h) * .2) !important; border-radius:999px !important;
@@ -13821,9 +13832,13 @@ html[data-fx="none"] .board-card.is-attacking .card-tile .status-chips > .abadge
    units (empty slots not counted) whose tiles are small drops the name scroll instead of squeezing it: under 100px of the tile's content box
    (about 120px outside: a 1024 desktop with 9 units has 94px tiles, 1366 with 11 has 106px). Under 70px every board tile already drops it
    (the tiniest-tile rule); 1366 with 9 units (130px) keeps it. */
-@container (max-width: 100px){
-  .board-row:has(> .board-card:nth-child(9 of :not(.empty-slot))) > .board-card .card-tile .nm{display:none !important;}
-}
+/* 2026-11-11 (package PERF2): the row marks itself (a :has() on the row) and the name reads the mark through a style query. The old
+   `.board-row:has(...) > .board-card .card-tile .nm` was a :has() aimed at every card name, which restyled all names whenever anything was
+   added to the page (each spark of a fight effect). */
+.board-row:has(> .board-card:nth-child(9 of :not(.empty-slot))){--eng26-many:1;}
+@container (max-width: 100px){ @container style(--eng26-many: 1){
+  .board-row > .board-card .card-tile .nm{display:none !important;}
+} }
 /* ENG26 (#1): only the last cycling slot shows the gold "more" dot; an empty slot on the last page stays blank */
 .badge-cycle:not(:last-child)::after{display:none;}
 </style>
@@ -14719,7 +14734,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 }
 /* JJ15: the status chips are centred on the card's top edge (centred in the room left of the Wait clock when there is one); Poison shows its stack from 2 */
 .board-card .card-tile .badges-bottom.status-chips{left:50% !important; transform:translate(-50%, -50%) !important; justify-content:center;}
-.board-card .card-tile:has(.waitbadge) .badges-bottom.status-chips{left:calc((100% - max(16px, 22cqw) - 4px) / 2) !important;}
+.board-card .card-tile > .waitbadge ~ .badges-bottom.status-chips{left:calc((100% - max(16px, 22cqw) - 4px) / 2) !important;} /* 2026-11-11 (PERF2): no :has(), as above */
 .board-card .card-tile .status-chips > .abadge.poison.has-n{width:auto; padding:0 calc(var(--sc-h) * .2) !important;}
 /* 2026-11-07 (package UI30 #2): Poison and Bleed pips have no number; each counter that goes gives the pip a short tick (a squeeze, a flash and a ring) */
 .board-card .card-tile .status-chips > .abadge.bleed{padding:0 !important; width:var(--sc-h);}
@@ -14880,7 +14895,7 @@ html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
   --nm-reach:max(calc(max(var(--nm-cem, 0), var(--nm-wem, 0)) * var(--nm-bfs) - 1px), calc(var(--nm-ring) - 13px));
   --nm-edge:max(0px, calc(var(--nm-reach) - var(--nm-cap) - .3em));
   max-width:min(94%, calc(100% - 2 * var(--nm-edge)));}
-.card-tile:has(> .waitbadge[data-wait-total]) > .nm{--nm-ring:min(28px, max(18px, 22cqw));}
+.card-tile > .waitbadge[data-wait-total] ~ .nm{--nm-ring:min(28px, max(18px, 22cqw));} /* 2026-11-11 (PERF2): was .card-tile:has(> .waitbadge[data-wait-total]) > .nm; the live wait ring is the tile's first child, before the name, so no :has() is needed */
 /* 2026-11-05 23:39 (owner: long names broke mid-word on board cards): no break inside a word; the text shrinks until its longest word (--nm-lw em, from nmHTML) fits the
    narrowed scroll's text room (94cqw less the badge edges and the rolled caps), and wraps only between words */
 .card-tile > .nm .nmt{overflow-wrap:normal; word-break:normal; hyphens:none;

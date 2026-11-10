@@ -31,8 +31,13 @@ const wait = ms=> new Promise(res=> later(res, ms));
 // A fixed-position overlay on <body> (survives re-renders underneath), or an absolute one inside `host`.
 function layer(cls, html, host){
   const e = document.createElement('div'); e.className = 'fx' + TAG + ' ' + (cls || ''); e.setAttribute('aria-hidden', 'true');
-  if(html) e.innerHTML = html; if(host) e.style.position = 'absolute'; (host || overHost()).appendChild(e); return e;
+  if(html) e.innerHTML = html; if(host) e.style.position = 'absolute'; (host || overHost()).appendChild(e);
+  if(!host) shown(e);
+  return e;
 }
+// 2026-11-11 (package PERF2): a fixed overlay is always shown; telling GSAP it has a box skips the display:block probe GSAP runs on the first
+// move of an element with no offsetParent and no transform (two style passes and a layout per bubble). See SkillFX's shown().
+function shown(e){ try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} return e; }
 // 2026-10-15: the game's pack opener (.po2) is a fixed overlay at z-index 9500, so overlays on <body> (z ~1200) would sit
 // under it. While it is open, fixed overlays go inside it (still viewport-positioned, stacked above its cards). The lab's
 // copy (.fxl-po) is zoomed to fit its dock, so there they stay on <body>.
@@ -659,7 +664,13 @@ function psnBubble(host, o){
   i.className = 'fxd-psn-bub ' + (o.filled ? 'f' : 'o') + (host ? '' : ' fxd-psn-fly'); i.setAttribute('aria-hidden', 'true');
   i.style.width = i.style.height = sz.toFixed(1) + 'px';
   if(host){ i.style.left = (o.x - sz/2).toFixed(1) + 'px'; i.style.top = (o.y - sz/2).toFixed(1) + 'px'; host.appendChild(i); }
-  else document.body.appendChild(i);
+  else shown(document.body.appendChild(i));
+  // 2026-11-11 (package PERF2): a flurry passes o.batch: every bubble is made first, then the flurry has GSAP read them all at once and
+  // starts them (one style pass for the lot, not one per bubble).
+  if(o.batch){ o.batch.push([i, ()=> psnBubbleGo(g, i, host, o, z, sz)]); return i; }
+  psnBubbleGo(g, i, host, o, z, sz); return i;
+}
+function psnBubbleGo(g, i, host, o, z, sz){
   const rise = o.rise*z, dur = o.dur, dx = (Math.random() < .5 ? -1 : 1)*rnd(1.5, 4)*z, x0 = host ? 0 : o.x - sz/2, y0 = host ? 0 : o.y - sz/2;
   const tl = g.timeline({delay:o.delay || 0, onComplete:()=> i.remove()});
   g.set(i, {x:x0, y:y0, scale:.3, opacity:0});
@@ -704,9 +715,11 @@ M.poisonFlurry = function(el, opts){
   css('status', STATUS_CSS);
   const n = opts.n || (opts.end ? 3 + (Math.random() < .5 ? 1 : 0) : 6), look = !opts.end && t.querySelector(':scope > .fxd-st-poison:not(.fxd-st-leaving)');
   const r = t.getBoundingClientRect(), H = t.offsetHeight || r.height || 140, z = look ? 1 : (r.height/(H || 1)) || 1;
+  const W = look ? (look.offsetWidth || r.width) : 0, LH = look ? (look.offsetHeight || H) : 0, batch = []; // 2026-11-11 (PERF2): measured once, before any bubble is added
   for(let k = 0; k < n; k++){ const xf = (k + .5)/n + rnd(-.35, .35)/n, size = Math.max(2.6, H*rnd(.024, .042)), rise = H*rnd(.22, .42), dur = rnd(.5, .85), filled = (k + (opts.end ? 1 : 0)) % 2 === 0;
-    if(look){ const W = look.offsetWidth || r.width, LH = look.offsetHeight || H; psnBubble(look, {x:W*xf, y:LH*.93, size, rise, dur, filled, delay:k*rnd(.04, .08)}); }
-    else psnBubble(null, {x:r.left + r.width*xf, y:r.bottom - r.height*.06, size, rise, dur, filled, delay:k*rnd(.04, .08), z}); }
+    if(look) psnBubble(look, {x:W*xf, y:LH*.93, size, rise, dur, filled, delay:k*rnd(.04, .08), batch});
+    else psnBubble(null, {x:r.left + r.width*xf, y:r.bottom - r.height*.06, size, rise, dur, filled, delay:k*rnd(.04, .08), z, batch}); }
+  const g = G(); batch.forEach(([i])=>{ try{ g.getProperty(i, 'x'); }catch(e){} }); batch.forEach(([, go])=> go()); // PERF2: one style pass for the flurry
   M.poisonFlurry.last = {n, end:!!opts.end}; // for tests
   return n;
 };

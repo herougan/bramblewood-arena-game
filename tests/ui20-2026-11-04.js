@@ -18,7 +18,7 @@ ok(/nmHTML\(d\.name\|\|'', costParts, d\.wait\)/.test(src), '1. the full tile pa
 ok(/nmHTML\(d\.name\|\|'', null, d\.wait\)/.test(src), '1. the drag ghost passes its Wait');
 // 2
 ok(/--nm-reach:/.test(css) && /--nm-edge:/.test(css) && /max-width:min\(94%, calc\(100% - 2 \* var\(--nm-edge\)\)\)/.test(css), '2. the scroll is narrowed by the badges\' reach');
-ok(/\.card-tile:has\(> \.waitbadge\[data-wait-total\]\) > \.nm\{--nm-ring:/.test(css), '2. the live wait ring has its own reach');
+ok(/\.card-tile > \.waitbadge\[data-wait-total\] ~ \.nm\{--nm-ring:/.test(css), '2. the live wait ring has its own reach'); // 2026-11-11 (PERF2): a sibling rule, no :has()
 const blk = css.slice(css.indexOf('package UI20, owner 11-04'));
 ok(!/--nm-s\b/.test(blk.slice(0, 1800).split('2026-11-05 23:39')[0]), '2. the name is not shrunk for the badges'); // 2026-11-05 23:39 (owner: names broke mid-word): after UI20 a name shrinks only until its longest word fits (--nm-lw), so the check reads the block before that rule
 // 3

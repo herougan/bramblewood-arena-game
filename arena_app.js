@@ -52666,11 +52666,16 @@ function vis3PipOffset(img){
     if(x1 >= 0){ const fx = (x0 + x1 + 1) / 2 / N - .5, fy = (y0 + y1 + 1) / 2 / N - .5; off = (Math.abs(fx) >= .04 || Math.abs(fy) >= .04) ? [fx, fy] : null; } }catch(e){ off = null; } // (a picture from another site can't be read: left as it is)
   VIS3_PIP_OFF.set(src.key, off); return off;
 }
+// 2026-11-11 (package PERF2): every pip is measured first (vis3PipSource reads its computed background) and only then moved. Read, write,
+// read, write made the browser redo the page's styles once per pip on every board redraw.
 function vis3CentrePips(root){
-  try{ (root || document).querySelectorAll('.badges .abadge img').forEach(img=>{
-    const apply = ()=>{ const o = vis3PipOffset(img); if(o === undefined) return; if(o && o.wait){ o.wait.addEventListener('load', apply, {once: true}); return; }
-      img.style.translate = o ? `${(-o[0] * 100).toFixed(1)}% ${(-o[1] * 100).toFixed(1)}%` : ''; };
-    if(img.complete) apply(); else img.addEventListener('load', apply, {once: true}); }); }catch(e){}
+  try{ const put = (img, o)=>{ img.style.translate = o ? `${(-o[0] * 100).toFixed(1)}% ${(-o[1] * 100).toFixed(1)}%` : ''; };
+    const apply = img=>{ const o = vis3PipOffset(img); if(o === undefined) return; if(o && o.wait){ o.wait.addEventListener('load', ()=> apply(img), {once: true}); return; } put(img, o); };
+    const now = [];
+    (root || document).querySelectorAll('.badges .abadge img').forEach(img=>{
+      if(!img.complete){ img.addEventListener('load', ()=> apply(img), {once: true}); return; }
+      const o = vis3PipOffset(img); if(o === undefined) return; if(o && o.wait){ o.wait.addEventListener('load', ()=> apply(img), {once: true}); return; } now.push([img, o]); });
+    now.forEach(([img, o])=> put(img, o)); }catch(e){}
 }
 // 2026-10-31 (package UI9, BB2; owner: "the trap animation (red circles circling and diving into the middle) drops to 50% opacity, plus inward-falling
 // rosso rectangles that fade in over the first 20% of their fall ... a trap look (snapping jaws / closing frame). The '<trap emoji> <number>' label over
@@ -53807,7 +53812,9 @@ function emptyHealEvent(ev){
 const EN2_BOOM = {}, EN2_BOOM_FLIGHTS = {};
 function en2Local(el){ const s = (el && el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? bfEffScale() : 1; return s; }
 function en2Ctr(el){ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width, h:r.height}; }
-function en2Layer(html, cls){ const e = document.createElement('div'); e.className = 'sfx ' + (cls || 'sfx-boomerang'); e.setAttribute('aria-hidden', 'true'); e.innerHTML = html; document.body.appendChild(e); return e; }
+function en2Layer(html, cls){ const e = document.createElement('div'); e.className = 'sfx ' + (cls || 'sfx-boomerang'); e.setAttribute('aria-hidden', 'true'); e.innerHTML = html; document.body.appendChild(e);
+  try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} // 2026-11-11 (PERF2): a fixed overlay is always shown; skips GSAP's display:block probe on its first move (see SkillFX's shown())
+  return e; }
 function en2Ring(x, y, size){ if(!hasGsap()) return; const r = en2Layer('', 'sfx-ring sfx-ring-dust'); gsap.set(r, {x, y, xPercent:-50, yPercent:-50, width:8, height:8, opacity:.95}); gsap.to(r, {width:size||60, height:size||60, opacity:0, duration:.42, ease:'power2.out', onComplete:()=> r.remove()}); }
 function en2Knock(el, ang, k){ if(!hasGsap() || !el) return; const t = el.querySelector('.card-tile') || el; k = k || 1; const dx = Math.cos(ang*Math.PI/180)*8*k, dy = Math.sin(ang*Math.PI/180)*8*k;
   gsap.timeline().to(t, {x:dx, y:dy, duration:.06, ease:'power2.out'}).to(t, {x:0, y:0, duration:.4, ease:'elastic.out(1, 0.45)', clearProps:'transform'}); }

@@ -31,7 +31,9 @@ const wait = ms=> new Promise(res=> later(res, ms));
 // A fixed-position overlay on <body> (survives re-renders underneath), or an absolute one inside `host`.
 function layer(cls, html, host){
   const e = document.createElement('div'); e.className = 'fx' + TAG + ' ' + (cls || ''); e.setAttribute('aria-hidden', 'true');
-  if(html) e.innerHTML = html; if(host) e.style.position = 'absolute'; (host || document.body).appendChild(e); return e;
+  if(html) e.innerHTML = html; if(host) e.style.position = 'absolute'; (host || document.body).appendChild(e);
+  if(!host) try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} // 2026-11-11 (PERF2): a fixed overlay is always shown; this skips GSAP's display:block probe on its first move (see SkillFX's shown())
+  return e;
 }
 // Inject a named CSS chunk once into this batch's own <style> block.
 const cssDone = new Set();
@@ -95,6 +97,9 @@ function run(opts, build){
     const tl = g.timeline({paused:true, onComplete:fin});
     const mk = (cls, html, host)=>{ const e = layer(cls, html, host); bag.push(e); return e; };
     try{ build(tl, mk, bag); }catch(e){ if(root.__fxDebug) console.warn('FX.C', e); }
+    // 2026-11-11 (package PERF2): GSAP reads each overlay's transform when its first tween starts, in the middle of a frame that is already
+    // moving the others (one style pass per overlay). Read them all here, before anything moves: one pass for the lot.
+    bag.forEach(n=>{ if(n.nodeType === 1 && n.isConnected) try{ g.getProperty(n, 'x'); }catch(e){} });
     const sp = Math.max(.25, Math.min(4, opts.speed || 1));
     tl.timeScale(sp).play();
     later(()=>{ if(!done){ tl.kill(); fin(); } }, (tl.duration()/sp)*1000 + 1500); // nothing outlives its effect by more than a beat
