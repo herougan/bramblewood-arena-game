@@ -1,0 +1,755 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T22:00:42.962Z",
+ "fingerprint": "fa1691d39923",
+ "map": {
+  "id": "mj",
+  "num": 10,
+  "name": "The Sunken Depths"
+ },
+ "level": 1,
+ "pool": [
+  "abyss-lantern-squid",
+  "alley-cat",
+  "barnacle-fortress",
+  "blue-ringed-octopus",
+  "clownfish-scout",
+  "colossal-squid",
+  "conger-eel",
+  "coral-polyp-colony",
+  "crown-of-thorns-star",
+  "electric-ray",
+  "giant-clam",
+  "great-barracuda",
+  "grey-seal-bull",
+  "hagfish-silencer",
+  "humpback-elder",
+  "kraken-spawnling",
+  "krill-swarm",
+  "mangrove-manatee",
+  "moon-jelly",
+  "mudpuppy",
+  "nautilus-drifter",
+  "newt-doctor",
+  "orca-vanguard",
+  "otter-centurion",
+  "pincushion-urchin",
+  "reef-admiral",
+  "riptide-eel",
+  "tide-spirit",
+  "whale-shark",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Abyss Lantern Squid",
+  "Alley Cat",
+  "Barnacle Fortress",
+  "Blue-ringed Octopus",
+  "Clownfish Scout",
+  "Colossal Squid",
+  "Conger Eel",
+  "Coral Polyp Colony",
+  "Crown-of-thorns Star",
+  "Electric Ray",
+  "Giant Clam",
+  "Great Barracuda",
+  "Grey Seal Bull",
+  "Hagfish Silencer",
+  "Humpback Elder",
+  "Kraken Spawnling",
+  "Krill Swarm",
+  "Mangrove Manatee",
+  "Moon Jelly",
+  "Mudpuppy",
+  "Nautilus Drifter",
+  "Newt Doctor",
+  "Orca Vanguard",
+  "Otter Centurion",
+  "Pincushion Urchin",
+  "Reef Admiral",
+  "Riptide Eel",
+  "Tide Seahorse",
+  "Whale Shark",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "abyss-lantern-squid",
+   "barnacle-fortress",
+   "blue-ringed-octopus",
+   "clownfish-scout",
+   "colossal-squid",
+   "conger-eel",
+   "coral-polyp-colony",
+   "giant-clam",
+   "great-barracuda",
+   "hagfish-silencer",
+   "humpback-elder",
+   "kraken-spawnling",
+   "moon-jelly",
+   "nautilus-drifter",
+   "orca-vanguard",
+   "reef-admiral",
+   "riptide-eel",
+   "whale-shark"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 1200,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:10-A-1",
+   "label": "vs 10-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:10-A-2",
+   "label": "vs 10-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:10-A-3",
+   "label": "vs 10-A-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:10-A-4",
+   "label": "vs 10-A-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:10-A-5",
+   "label": "vs 10-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 10-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road11",
+   "label": "vs reference deck (Map 11) under 10-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "abyss-lantern-squid",
+    "clownfish-scout",
+    "colossal-squid",
+    "conger-eel",
+    "coral-polyp-colony",
+    "crown-of-thorns-star",
+    "giant-clam",
+    "great-barracuda",
+    "grey-seal-bull",
+    "humpback-elder",
+    "krill-swarm",
+    "mangrove-manatee",
+    "moon-jelly",
+    "orca-vanguard",
+    "pincushion-urchin",
+    "reef-admiral",
+    "riptide-eel",
+    "tide-spirit",
+    "whale-shark"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:cleave",
+   "label": "cleave (skill family)",
+   "cards": [
+    "alley-cat",
+    "colossal-squid",
+    "conger-eel",
+    "kraken-spawnling",
+    "orca-vanguard"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (3+ Lumber cards)",
+   "cards": [
+    "colossal-squid",
+    "humpback-elder",
+    "kraken-spawnling",
+    "orca-vanguard"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:tide",
+   "steps": 1,
+   "moves": 1,
+   "games": 320,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:cleave",
+   "steps": 1,
+   "moves": 0,
+   "games": 352,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "big",
+   "steps": 1,
+   "moves": 1,
+   "games": 336,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 1,
+   "moves": 0,
+   "games": 384,
+   "apartFromEarlier": 14
+  }
+ ],
+ "apart": 10,
+ "seconds": 257,
+ "games": 1904,
+ "decks": [
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.7)",
+    "tide x18"
+   ],
+   "deck": {
+    "abyss-lantern-squid": 4,
+    "coral-polyp-colony": 2,
+    "grey-seal-bull": 4,
+    "humpback-elder": 4,
+    "nautilus-drifter": 2,
+    "orca-vanguard": 4
+   },
+   "cards": [
+    {
+     "id": "abyss-lantern-squid",
+     "name": "Abyss Lantern Squid",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "humpback-elder",
+     "name": "Humpback Elder",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "orca-vanguard",
+     "name": "Orca Vanguard",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "coral-polyp-colony",
+     "name": "Coral Polyp Colony",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9323,
+   "ci": [
+    0.8998,
+    0.9648
+   ],
+   "avgLumber": 1.7,
+   "avgWait": 2.4,
+   "curve": {
+    "0": 2,
+    "1": 10,
+    "3": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 18
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-A-1",
+     "label": "vs 10-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-2",
+     "label": "vs 10-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-3",
+     "label": "vs 10-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-4",
+     "label": "vs 10-A-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-5",
+     "label": "vs 10-A-5 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 10-A-2's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 18
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.7 Lumber)"
+   ],
+   "deck": {
+    "barnacle-fortress": 4,
+    "blue-ringed-octopus": 3,
+    "clownfish-scout": 4,
+    "electric-ray": 4,
+    "nautilus-drifter": 2,
+    "otter-centurion": 3
+   },
+   "cards": [
+    {
+     "id": "barnacle-fortress",
+     "name": "Barnacle Fortress",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "electric-ray",
+     "name": "Electric Ray",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9323,
+   "ci": [
+    0.9011,
+    0.9635
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-A-1",
+     "label": "vs 10-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-2",
+     "label": "vs 10-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-3",
+     "label": "vs 10-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-4",
+     "label": "vs 10-A-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-5",
+     "label": "vs 10-A-5 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 10-A-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "tide x12"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "coral-polyp-colony": 4,
+    "giant-clam": 1,
+    "great-barracuda": 3,
+    "humpback-elder": 4,
+    "mudpuppy": 4
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "coral-polyp-colony",
+     "name": "Coral Polyp Colony",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "humpback-elder",
+     "name": "Humpback Elder",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "great-barracuda",
+     "name": "Great Barracuda",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-clam",
+     "name": "Giant Clam",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9271,
+   "ci": [
+    0.8963,
+    0.9578
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 1.25,
+   "curve": {
+    "0": 12,
+    "1": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 12
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-A-1",
+     "label": "vs 10-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-2",
+     "label": "vs 10-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-3",
+     "label": "vs 10-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-4",
+     "label": "vs 10-A-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-5",
+     "label": "vs 10-A-5 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 10-A-2's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "family:cleave",
+   "labels": [
+    "tide x11",
+    "cleave x8"
+   ],
+   "deck": {
+    "abyss-lantern-squid": 4,
+    "alley-cat": 4,
+    "hagfish-silencer": 3,
+    "nautilus-drifter": 2,
+    "orca-vanguard": 4,
+    "pincushion-urchin": 3
+   },
+   "cards": [
+    {
+     "id": "abyss-lantern-squid",
+     "name": "Abyss Lantern Squid",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "orca-vanguard",
+     "name": "Orca Vanguard",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "hagfish-silencer",
+     "name": "Hagfish Silencer",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8646,
+   "ci": [
+    0.8277,
+    0.9014
+   ],
+   "avgLumber": 1.05,
+   "avgWait": 1.6,
+   "curve": {
+    "0": 7,
+    "1": 9,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 11
+    },
+    {
+     "f": "cleave",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-A-1",
+     "label": "vs 10-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-2",
+     "label": "vs 10-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-3",
+     "label": "vs 10-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-4",
+     "label": "vs 10-A-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-5",
+     "label": "vs 10-A-5 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-A-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 10-A-2's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field",
+     "p": 0.2917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 18
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mj --pool abyss-lantern-squid,alley-cat,barnacle-fortress,blue-ringed-octopus,clownfish-scout,colossal-squid,conger-eel,coral-polyp-colony,crown-of-thorns-star,electric-ray,giant-clam,great-barracuda,grey-seal-bull,hagfish-silencer,humpback-elder,kraken-spawnling,krill-swarm,mangrove-manatee,moon-jelly,mudpuppy,nautilus-drifter,newt-doctor,orca-vanguard,otter-centurion,pincushion-urchin,reef-admiral,riptide-eel,tide-spirit,whale-shark,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 1200 --final-games 24 --seed skir1-pro --focus family:tide,family:cleave,big,open --anchor abyss-lantern-squid,barnacle-fortress,blue-ringed-octopus,clownfish-scout,colossal-squid,conger-eel,coral-polyp-colony,giant-clam,great-barracuda,hagfish-silencer,humpback-elder,kraken-spawnling,moon-jelly,nautilus-drifter,orca-vanguard,reef-admiral,riptide-eel,whale-shark --anchor-min 10 --level 1 --mode map-true"
+}

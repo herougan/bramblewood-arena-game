@@ -1,0 +1,725 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T21:56:25.530Z",
+ "fingerprint": "fa1691d39923",
+ "map": {
+  "id": "mn",
+  "num": 8,
+  "name": "The Glimmer Depths"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "blind-cave-fish",
+  "blue-ringed-octopus",
+  "cave-olm",
+  "cave-swiftlet",
+  "coffer-mimic",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "echo-matriarch",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "glimmer-spider",
+  "glintsnatch-magpie",
+  "grave-grin-hyena",
+  "grotto-lobster",
+  "lantern-spark-fly",
+  "magpie-collector",
+  "millipede-hauler",
+  "oilbird",
+  "quarry-mole",
+  "squires-mount",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "upside-down-bat",
+  "vampire-bat",
+  "whip-spider",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Blind Cave Fish",
+  "Blue-ringed Octopus",
+  "Cave Olm",
+  "Cave Swiftlet",
+  "Coffer Mimic",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Echo Matriarch",
+  "Gallery Orb-Weaver",
+  "Giant Cave Huntsman",
+  "Glimmer Spider",
+  "Glintsnatch Magpie",
+  "Grave-Grin Hyena",
+  "Grotto Lobster",
+  "Lantern Spark Fly",
+  "Magpie Collector",
+  "Millipede Hauler",
+  "Oilbird",
+  "Quarry Mole",
+  "Squire's Mount",
+  "Stalactite Pill Bug",
+  "Star-nosed Mole",
+  "Upside-Down Bat",
+  "Vampire Bat",
+  "Whip Spider",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "blind-cave-fish",
+   "cave-olm",
+   "cave-swiftlet",
+   "echo-matriarch",
+   "glimmer-spider",
+   "glintsnatch-magpie",
+   "grotto-lobster",
+   "lantern-spark-fly",
+   "magpie-collector",
+   "oilbird",
+   "quarry-mole",
+   "stalactite-golem",
+   "star-nosed-mole",
+   "upside-down-bat",
+   "vampire-bat",
+   "whip-spider"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 1200,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:8-A-1",
+   "label": "vs 8-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:8-A-2",
+   "label": "vs 8-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:8-A-3",
+   "label": "vs 8-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:8-A-4",
+   "label": "vs 8-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 8-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road16",
+   "label": "vs reference deck (Map 16) under 8-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "cave-swiftlet",
+    "eagle-owl-quartermaster",
+    "echo-matriarch",
+    "glintsnatch-magpie",
+    "lantern-spark-fly",
+    "magpie-collector",
+    "upside-down-bat",
+    "vampire-bat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "grotto-lobster",
+    "millipede-hauler",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "blue-ringed-octopus",
+    "coffer-mimic",
+    "eagle-owl-quartermaster",
+    "echo-matriarch",
+    "gallery-orb-weaver",
+    "giant-cave-huntsman",
+    "glimmer-spider",
+    "glintsnatch-magpie",
+    "grotto-lobster",
+    "magpie-collector",
+    "millipede-hauler",
+    "oilbird",
+    "quarry-mole",
+    "squires-mount",
+    "stalactite-golem",
+    "whip-spider",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 1,
+   "moves": 0,
+   "games": 336,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:armor",
+   "steps": 1,
+   "moves": 1,
+   "games": 392,
+   "apartFromEarlier": 14
+  },
+  {
+   "focus": "big",
+   "steps": 1,
+   "moves": 1,
+   "games": 392,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "open",
+   "steps": 1,
+   "moves": 1,
+   "games": 392,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 424,
+ "games": 1960,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "flying x19"
+   ],
+   "deck": {
+    "cave-swiftlet": 4,
+    "eagle-owl-quartermaster": 3,
+    "giant-cave-huntsman": 1,
+    "lantern-spark-fly": 4,
+    "magpie-collector": 4,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "cave-swiftlet",
+     "name": "Cave Swiftlet",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lantern-spark-fly",
+     "name": "Lantern Spark Fly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "magpie-collector",
+     "name": "Magpie Collector",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8274,
+   "ci": [
+    0.7751,
+    0.8797
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 19
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)",
+    "flying x12"
+   ],
+   "deck": {
+    "cave-olm": 4,
+    "cave-swiftlet": 1,
+    "dust-hyena": 4,
+    "echo-matriarch": 3,
+    "magpie-collector": 4,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "cave-olm",
+     "name": "Cave Olm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "magpie-collector",
+     "name": "Magpie Collector",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "cave-swiftlet",
+     "name": "Cave Swiftlet",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8036,
+   "ci": [
+    0.7493,
+    0.8578
+   ],
+   "avgLumber": 0.35,
+   "avgWait": 0.75,
+   "curve": {
+    "0": 13,
+    "1": 7
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 12
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (13 copies at 1+ Lumber, average 0.7)",
+    "flying x6"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "blue-ringed-octopus": 3,
+    "echo-matriarch": 3,
+    "giant-cave-huntsman": 3,
+    "lantern-spark-fly": 3,
+    "oilbird": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "oilbird",
+     "name": "Oilbird",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "lantern-spark-fly",
+     "name": "Lantern Spark Fly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.744,
+   "ci": [
+    0.6898,
+    0.7983
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 1.45,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.8)",
+    "economy (4 resource makers)",
+    "armor x9",
+    "guard x8"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "dust-hyena": 4,
+    "echo-matriarch": 3,
+    "grotto-lobster": 3,
+    "millipede-hauler": 2,
+    "stalactite-golem": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "millipede-hauler",
+     "name": "Millipede Hauler",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.6726,
+   "ci": [
+    0.6101,
+    0.7351
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 1.6,
+   "curve": {
+    "0": 8,
+    "1": 8,
+    "2": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "armor",
+     "n": 9
+    },
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.3333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mn --pool alpine-marmot,blind-cave-fish,blue-ringed-octopus,cave-olm,cave-swiftlet,coffer-mimic,dust-hyena,eagle-owl-quartermaster,echo-matriarch,gallery-orb-weaver,giant-cave-huntsman,glimmer-spider,glintsnatch-magpie,grave-grin-hyena,grotto-lobster,lantern-spark-fly,magpie-collector,millipede-hauler,oilbird,quarry-mole,squires-mount,stalactite-golem,star-nosed-mole,upside-down-bat,vampire-bat,whip-spider,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 1200 --final-games 24 --seed skir1-pro --focus family:flying,family:armor,big,open --anchor blind-cave-fish,cave-olm,cave-swiftlet,echo-matriarch,glimmer-spider,glintsnatch-magpie,grotto-lobster,lantern-spark-fly,magpie-collector,oilbird,quarry-mole,stalactite-golem,star-nosed-mole,upside-down-bat,vampire-bat,whip-spider --anchor-min 10 --level 1 --mode map-true"
+}
