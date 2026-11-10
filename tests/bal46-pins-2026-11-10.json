@@ -1,0 +1,47 @@
+{
+ "10-7": {
+  "deck": {
+   "coral-reef-shark": 2,
+   "kraken-spawnling": 4,
+   "orca-vanguard": 2,
+   "riptide-eel": 3,
+   "supernova-jelly": 3
+  },
+  "leaders": [
+   "supernova-jelly"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "5-2": {
+  "deck": {
+   "bog-leech": 1,
+   "swamp-alligator": 3,
+   "cypress-root-lurker": 2,
+   "crocodile-ambusher": 3,
+   "constrictor-coil": 5
+  },
+  "leaders": [
+   "box-turtle"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "7-6": {
+  "deck": {
+   "corpse-flower-beetle": 3,
+   "dung-beetle": 4,
+   "earthworm": 1,
+   "leafcutter-gardener": 3,
+   "planarian-splitter": 4,
+   "wolf-spider-mother": 3,
+   "worker-ant": 1
+  },
+  "leaders": null,
+  "shield": "18",
+  "hqHp": null,
+  "characterId": null
+ }
+}

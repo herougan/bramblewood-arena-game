@@ -35,6 +35,7 @@ const files = {}; ['exhaust', 'exhaust-r2', 'tune', 'tune-r2', 'pick'].forEach(d
 const retuned = [...lines.entries()].filter(([, l]) => /2026-11-10 \(BAL42\): retuned/.test(l));
 ok(retuned.length >= 1, 'BAL42 retuned some road fights: ' + retuned.length);
 for (const [code, l] of retuned) {
+  if (/2026-11-10 \(BAL46\): retuned/.test(l)) continue; // 2026-11-10 (BAL46): retuned again (7-6, at 400 games); tests/bal46-2026-11-10.js checks and pins it now
   const f = find(code); ok(f, code + ': in CONQUEST_MAPS'); if (!f) continue;
   const MAP = f.m.id, mapNo = G.mapNumberOf(MAP), kind = f.n.kind || 'skirmish', now = fields(l);
   ok(['md', 'mu'].includes(MAP) && !f.m.sub, code + ': on The Glass Dunes or The Morel Hollow (main maps only)');
@@ -66,7 +67,7 @@ for (const [code, l] of retuned) {
 const PINS = J('tests/bal42-pins-2026-11-10.json');
 ok(Object.keys(PINS).length === retuned.length && retuned.every(([c]) => PINS[c]), 'the pins list exactly the retuned fights');
 // ---- 2. pins ----
-for (const [code, p] of Object.entries(PINS)) { const f = fields(lines.get(code) || '');
+for (const [code, p] of Object.entries(PINS)) { if (/2026-11-10 \(BAL46\): retuned/.test(lines.get(code) || '')) continue; /* 2026-11-10 (BAL46): 7-6 retuned again, pinned in tests/bal46-pins-2026-11-10.json */ const f = fields(lines.get(code) || '');
   ok(keyOf(f.deck) === keyOf(p.deck) && JSON.stringify(f.leaders) === JSON.stringify(p.leaders) && f.shield === p.shield, code + ': pinned deck / leader / Shield');
   ok(f.hqHp === p.hqHp && f.characterId === p.characterId, code + ': bramble Health and bramble as before BAL42'); }
 // ---- 3. untouched, files, decisions ----

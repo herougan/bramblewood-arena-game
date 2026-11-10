@@ -1,0 +1,2 @@
+5-2 target 84 space 2617 read 401 range 31.7 - 83.3 | 200 games: 74.3 -> 83 KEEP {"deck":{"bog-leech":1,"constrictor-coil":5,"crocodile-ambusher":4,"cypress-root-lurker":2,"swamp-alligator":2},"leaders":["nutria-reedcutter"],"shieldOverride":0} 638s
+7-6 target 40 space 488 read 400 range 31.7 - 66.7 | 200 games: 49.3 -> 50 no {"deck":{"corpse-flower-beetle":2,"dung-beetle":4,"earthworm":1,"leafcutter-gardener":4,"planarian-splitter":4,"wolf-spider-mother":3,"worker-ant":1},"leaders":["corpse-flower-beetle"],"shieldOverride":18} 869s

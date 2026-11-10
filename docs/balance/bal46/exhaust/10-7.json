@@ -1,0 +1,177 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "10-7",
+ "map": "m7",
+ "mapName": "Coral Current",
+ "kind": "elite",
+ "name": "Eel Nest",
+ "band": {
+  "lo": 56.300000000000004,
+  "hi": 72.3,
+  "target": 64.3
+ },
+ "list": [
+  "clownfish-scout",
+  "coral-reef-shark",
+  "dolphin-knight",
+  "horseshoe-crab",
+  "kraken-spawnling",
+  "open-ocean-hermit-crab",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-shark",
+  "riptide-eel",
+  "supernova-jelly"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "riptide-eel"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": null,
+ "space": 63807,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 0,
+  "max": 80
+ },
+ "top": [
+  {
+   "deck": {
+    "coral-reef-shark": 1,
+    "horseshoe-crab": 1,
+    "kraken-spawnling": 3,
+    "orca-vanguard": 4,
+    "parrotfish": 2,
+    "riptide-eel": 1,
+    "supernova-jelly": 2
+   },
+   "leaders": [
+    "coral-reef-shark"
+   ],
+   "tune200": 63.8
+  },
+  {
+   "deck": {
+    "clownfish-scout": 2,
+    "horseshoe-crab": 1,
+    "kraken-spawnling": 3,
+    "orca-vanguard": 4,
+    "reef-shark": 1,
+    "riptide-eel": 1,
+    "supernova-jelly": 2
+   },
+   "leaders": [
+    "horseshoe-crab"
+   ],
+   "tune200": 65.3
+  },
+  {
+   "deck": {
+    "coral-reef-shark": 1,
+    "horseshoe-crab": 1,
+    "kraken-spawnling": 3,
+    "orca-vanguard": 4,
+    "parrotfish": 2,
+    "riptide-eel": 1,
+    "supernova-jelly": 2
+   },
+   "leaders": [
+    "horseshoe-crab"
+   ],
+   "tune200": 63.3
+  },
+  {
+   "deck": {
+    "clownfish-scout": 2,
+    "horseshoe-crab": 1,
+    "kraken-spawnling": 3,
+    "orca-vanguard": 4,
+    "reef-shark": 1,
+    "riptide-eel": 1,
+    "supernova-jelly": 2
+   },
+   "leaders": [
+    "open-ocean-hermit-crab"
+   ],
+   "tune200": 63
+  },
+  {
+   "deck": {
+    "coral-reef-shark": 4,
+    "kraken-spawnling": 2,
+    "orca-vanguard": 2,
+    "parrotfish": 1,
+    "reef-shark": 1,
+    "riptide-eel": 2,
+    "supernova-jelly": 2
+   },
+   "leaders": [
+    "orca-vanguard"
+   ],
+   "tune200": 62.5
+  },
+  {
+   "deck": {
+    "coral-reef-shark": 4,
+    "kraken-spawnling": 2,
+    "orca-vanguard": 2,
+    "parrotfish": 1,
+    "reef-shark": 1,
+    "riptide-eel": 2,
+    "supernova-jelly": 2
+   },
+   "leaders": [
+    "kraken-spawnling"
+   ],
+   "tune200": 62.3
+  }
+ ],
+ "before": {
+  "deck": {
+   "coral-reef-shark": 2,
+   "kraken-spawnling": 4,
+   "orca-vanguard": 2,
+   "riptide-eel": 3,
+   "supernova-jelly": 3
+  },
+  "leaders": [
+   "riptide-eel"
+  ],
+  "shieldOverride": null,
+  "win200": 74.3
+ },
+ "pick": {
+  "deck": {
+   "coral-reef-shark": 1,
+   "horseshoe-crab": 1,
+   "kraken-spawnling": 3,
+   "orca-vanguard": 4,
+   "parrotfish": 2,
+   "riptide-eel": 1,
+   "supernova-jelly": 2
+  },
+  "leaders": [
+   "coral-reef-shark"
+  ],
+  "shieldOverride": null,
+  "win200": 64,
+  "tune200": 63.8
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 74.3
+  },
+  {
+   "move": "whole-space pick",
+   "win": 64
+  }
+ ],
+ "sec": 835
+}

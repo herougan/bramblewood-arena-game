@@ -1,0 +1,233 @@
+{
+ "about": "BAL46 strong-end read (tools/bal46/floor_2026_11_10.js)",
+ "code": "7-6",
+ "name": "The Morel Monarch",
+ "target": 40,
+ "space": 514,
+ "g1": 60,
+ "before400": 49.3,
+ "range60": {
+  "min": 31.7,
+  "max": 66.7
+ },
+ "top": [
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 4,
+    "wolf-spider-mother": 3,
+    "worker-ant": 1
+   },
+   "r60": 38.3,
+   "tune400": 46.3,
+   "road400": 46.3
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 3,
+    "wolf-spider-mother": 3,
+    "worker-ant": 1
+   },
+   "r60": 38.3,
+   "tune400": 46.8,
+   "road400": 49.3
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 1,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 2,
+    "wolf-spider-mother": 3,
+    "worker-ant": 1
+   },
+   "r60": 38.3,
+   "tune400": 49.5,
+   "road400": 54
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 2,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 1,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 4,
+    "wolf-spider-mother": 3,
+    "worker-ant": 1
+   },
+   "r60": 38.3,
+   "tune400": 49.5,
+   "road400": 48.3
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 1,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 3,
+    "wolf-spider-mother": 3,
+    "worker-ant": 1
+   },
+   "r60": 40,
+   "tune400": 51.5
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 1,
+    "wolf-spider-mother": 3,
+    "worker-ant": 1
+   },
+   "r60": 31.7,
+   "tune400": 52.3
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 1,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4,
+    "wolf-spider-mother": 1,
+    "worker-ant": 1
+   },
+   "r60": 38.3,
+   "tune400": 53
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 1,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4,
+    "wolf-spider-mother": 2
+   },
+   "r60": 38.3,
+   "tune400": 53.8
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 2,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 3,
+    "wolf-spider-mother": 3
+   },
+   "r60": 35,
+   "tune400": 55
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 2,
+    "wolf-spider-mother": 2,
+    "worker-ant": 1
+   },
+   "r60": 38.3,
+   "tune400": 55.3
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 2,
+    "wolf-spider-mother": 3
+   },
+   "r60": 38.3,
+   "tune400": 55.3
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 2,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 4,
+    "wolf-spider-mother": 3
+   },
+   "r60": 38.3,
+   "tune400": 55.8
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 3,
+    "wolf-spider-mother": 3
+   },
+   "r60": 40,
+   "tune400": 56
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "hawthorn-shieldbug": 3,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 1,
+    "wolf-spider-mother": 3,
+    "worker-ant": 1
+   },
+   "r60": 40,
+   "tune400": 56.8
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 3,
+    "dung-beetle": 4,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4,
+    "wolf-spider-mother": 2
+   },
+   "r60": 40,
+   "tune400": 56.8
+  },
+  {
+   "deck": {
+    "corpse-flower-beetle": 2,
+    "dung-beetle": 4,
+    "earthworm": 1,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 3,
+    "wolf-spider-mother": 2,
+    "worker-ant": 1
+   },
+   "r60": 38.3,
+   "tune400": 57
+  }
+ ],
+ "sec": 208
+}
