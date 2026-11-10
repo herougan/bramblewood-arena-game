@@ -1,0 +1,258 @@
+{
+ "source": "card_overrides __cfg:map-picks:* read 2026-11-11 00:10 SGT (owner picks Maps 0-11 done, 12 WIP)",
+ "maps": {
+  "m1": {
+   "mapNo": 0,
+   "yes": [
+    "ant-scout",
+    "duckling",
+    "duck-paddler",
+    "crossed-eyes",
+    "honey-bee",
+    "earthworm",
+    "house-cat",
+    "silver-minnow",
+    "cottontail",
+    "rabbit-kit",
+    "soldier-ant",
+    "bee-forager",
+    "bee-sentry",
+    "farm-dog",
+    "chipmunk-forager",
+    "worker-ant"
+   ]
+  },
+  "mf": {
+   "mapNo": 1,
+   "yes": [
+    "bramble-sprout",
+    "terrier-pup",
+    "cricket-drummer",
+    "chipmunk-skirmisher",
+    "chipmunk-cavalry",
+    "hedgerow-shrew",
+    "meadow-rabbit",
+    "moonlit-hare",
+    "dormouse",
+    "puddle-skimmer",
+    "soldier-ant",
+    "ant-scout",
+    "bee-knight",
+    "honey-bee",
+    "house-cat",
+    "duck-paddler",
+    "robin-redbreast"
+   ]
+  },
+  "mb": {
+   "mapNo": 2,
+   "yes": [
+    "beaver-lumberjack",
+    "driftwood-crab",
+    "gull-thief",
+    "open-ocean-hermit-crab",
+    "oystercatcher",
+    "pincushion-urchin",
+    "dolphin-knight",
+    "conch-herald",
+    "rock-pool-starfish",
+    "beachcomber-sanderling",
+    "limpet-clinger",
+    "puddle-skimmer",
+    "duck-paddler",
+    "hedgerow-shrew",
+    "moonlit-hare",
+    "robin-redbreast"
+   ]
+  },
+  "mc": {
+   "mapNo": 3,
+   "yes": [
+    "conch-crawler",
+    "cormorant",
+    "fiddler-crab-swarm",
+    "kittiwake-flock",
+    "puffin-diver",
+    "peak-condor",
+    "gannet-nestweaver",
+    "feral-tomcat",
+    "peregrine-stooper",
+    "eagle-sharpshooter",
+    "chipmunk-cavalry",
+    "limpet-clinger",
+    "conch-herald",
+    "beaver-lumberjack",
+    "gull-thief",
+    "pika-hoarder"
+   ]
+  },
+  "m2": {
+   "mapNo": 4,
+   "yes": [
+    "pond-algae",
+    "slow-worm",
+    "water-shrew",
+    "snapstick-turtle",
+    "shoal-shark",
+    "platypus-spur",
+    "muskrat-lodgekeeper",
+    "grass-snake",
+    "river-mink",
+    "planarian-splitter",
+    "dolphin-knight",
+    "beaver-lumberjack",
+    "kittiwake-flock",
+    "duck-paddler",
+    "conch-crawler"
+   ]
+  },
+  "mw": {
+   "mapNo": 5,
+   "yes": [
+    "shoal-shark",
+    "newt-doctor",
+    "mosquito-cloud",
+    "platypus-spur",
+    "alley-cat",
+    "marsh-mallow-hare",
+    "mudpuppy",
+    "muskrat-reedgatherer",
+    "swamp-alligator",
+    "raft-spider",
+    "muskrat-lodgekeeper",
+    "snapstick-turtle",
+    "planarian-splitter",
+    "fire-ant-raft",
+    "constrictor-coil"
+   ]
+  },
+  "m8": {
+   "mapNo": 6,
+   "yes": [
+    "cypress-root-lurker",
+    "lamprey",
+    "alligator-gar",
+    "camouflage-frog",
+    "adder-ambusher",
+    "anhinga-spearbird",
+    "booming-bittern",
+    "nutria-reedcutter",
+    "newt-doctor",
+    "pond-algae",
+    "water-shrew",
+    "grass-viper",
+    "mosquito-cloud",
+    "constrictor-coil"
+   ]
+  },
+  "mu": {
+   "mapNo": 7,
+   "yes": [
+    "hawthorn-shieldbug",
+    "corpse-flower-beetle",
+    "wolf-spider-mother",
+    "fungus-gnat-cloud",
+    "rot-swollen-carcass",
+    "puffball-bombardier",
+    "cypress-root-lurker",
+    "earthworm",
+    "crocodile-ambusher",
+    "adder-ambusher",
+    "lamprey",
+    "camouflage-frog",
+    "compost-grub",
+    "leopard-slug",
+    "amber-cicada"
+   ]
+  },
+  "m4": {
+   "mapNo": 8,
+   "yes": [
+    "quarry-mole",
+    "cave-olm",
+    "sulfur-cinder-moth",
+    "star-nosed-mole",
+    "stalactite-golem",
+    "echo-screecher",
+    "giant-cave-huntsman",
+    "gallery-orb-weaver",
+    "barrow-leech-bat",
+    "corpse-flower-beetle",
+    "rot-swollen-carcass",
+    "wolf-spider-mother",
+    "hawthorn-shieldbug",
+    "driftwood-crab"
+   ]
+  },
+  "mk": {
+   "mapNo": 9,
+   "yes": [
+    "banded-sea-krait",
+    "mangrove-mudskipper",
+    "mangrove-monitor",
+    "horseshoe-crab",
+    "proboscis-monkey",
+    "ironclaw-fiddler",
+    "fishing-cat",
+    "tide-spirit",
+    "voltaic-eel",
+    "alligator-gar",
+    "booming-bittern",
+    "fiddler-crab-swarm",
+    "driftwood-crab",
+    "alley-cat",
+    "giant-cave-huntsman"
+   ]
+  },
+  "m7": {
+   "mapNo": 10,
+   "yes": [
+    "coral-current-eel",
+    "riptide-eel",
+    "krill-swarm",
+    "voltaic-eel",
+    "dolphin-knight",
+    "ironclaw-fiddler",
+    "moon-jelly",
+    "sea-turtle-elder",
+    "reef-shark",
+    "clownfish-scout",
+    "crown-of-thorns-star",
+    "giant-clam",
+    "pincushion-urchin",
+    "conch-crawler",
+    "tide-spirit"
+   ]
+  },
+  "m10": {
+   "mapNo": 11,
+   "yes": [
+    "stonedrop-vulture",
+    "anvil-thrush",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "golden-eagle-diver",
+    "chamois-leaper",
+    "mountain-hare",
+    "chipmunk-hoarder",
+    "gannet-nestweaver",
+    "the-gannet-queen",
+    "peregrine-stooper",
+    "pika-hoarder",
+    "peak-condor",
+    "beaver-lumberjack",
+    "eagle-sharpshooter",
+    "kittiwake-flock"
+   ]
+  },
+  "mh": {
+   "mapNo": 12,
+   "yes": [
+    "quillguard",
+    "barkplate-beetle",
+    "quill-thorn-boar"
+   ],
+   "wip": true
+  }
+ }
+}
