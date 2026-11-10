@@ -41,15 +41,17 @@ const ROOT = gameRoot();
 
 // Same policy as vercel.json, enforced here (not report-only). Inline scripts stay allowed because the game ships as one
 // self-contained HTML file. jsDelivr is deliberately NOT allowed: the Twemoji/Noto emoji option falls back to System
-// emoji until the emoji sets are bundled (roadmap §1). Google Fonts stays allowed only as the fallback for the CJK/Tamil
-// script fonts: since 2026-10-18 they ship in fonts/script/ (electron/fonts) and load locally first (roadmap P6).
+// emoji until the emoji sets are bundled (roadmap §1).
+// 2026-11-11 (DESK2): nothing remote but Supabase. Google Fonts is gone (every script font ships in fonts/script/, and an
+// unstaged run serves them from electron/fonts/), and images may come only from Supabase and Google profile photos (the
+// signed-in avatar), not any https: host. Google sign-in (accounts.google.com/gsi) stays out: it can't finish under app://.
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' blob:",
   "worker-src 'self' blob:",
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' data: https://fonts.gstatic.com",
-  "img-src 'self' data: blob: https:",
+  "style-src 'self' 'unsafe-inline'",
+  "font-src 'self' data:",
+  `img-src 'self' data: blob: https://${SUPABASE} https://*.googleusercontent.com`,
   "media-src 'self' data: blob:",
   `connect-src 'self' https://${SUPABASE} wss://${SUPABASE}`,
   "object-src 'none'", "base-uri 'self'", "form-action 'self'", "frame-ancestors 'none'",
