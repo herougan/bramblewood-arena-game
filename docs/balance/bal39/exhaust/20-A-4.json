@@ -1,0 +1,150 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "20-A-4",
+ "map": "me",
+ "mapName": "Eye of the Volcano",
+ "kind": "dungeon",
+ "name": "Heart of the Mountain",
+ "band": {
+  "lo": 26.200000000000003,
+  "hi": 44.3,
+  "target": 35.5
+ },
+ "list": [
+  "ash-moth",
+  "ashbone-ghoul",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "magma-wraith",
+  "obsidian-scorpion"
+ ],
+ "firstClear": [
+  "the-contradiction"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "obsidian-scorpion"
+ ],
+ "namesake": false,
+ "shieldRule": 32,
+ "shieldOverride": 36,
+ "space": 288,
+ "read": 288,
+ "g1": 60,
+ "range": {
+  "min": 28.3,
+  "max": 91.7
+ },
+ "top": [
+  {
+   "deck": {
+    "ash-moth": 2,
+    "ashbone-ghoul": 1,
+    "cinder-stoker": 1,
+    "magma-wraith": 3,
+    "obsidian-scorpion": 3
+   },
+   "leaders": null,
+   "tune200": 35
+  },
+  {
+   "deck": {
+    "ash-moth": 1,
+    "ashbone-ghoul": 2,
+    "cinder-skeleton": 2,
+    "cinder-stoker": 1,
+    "magma-wraith": 1,
+    "obsidian-scorpion": 3
+   },
+   "leaders": null,
+   "tune200": 34
+  },
+  {
+   "deck": {
+    "ash-moth": 1,
+    "ashbone-ghoul": 1,
+    "cinder-skeleton": 1,
+    "cinder-stoker": 1,
+    "magma-wraith": 3,
+    "obsidian-scorpion": 3
+   },
+   "leaders": null,
+   "tune200": 33
+  },
+  {
+   "deck": {
+    "ash-moth": 2,
+    "cinder-skeleton": 1,
+    "cinder-stoker": 1,
+    "magma-wraith": 4,
+    "obsidian-scorpion": 2
+   },
+   "leaders": null,
+   "tune200": 39
+  },
+  {
+   "deck": {
+    "ashbone-ghoul": 3,
+    "cinder-skeleton": 1,
+    "cinder-stoker": 1,
+    "magma-wraith": 2,
+    "obsidian-scorpion": 3
+   },
+   "leaders": null,
+   "tune200": 31
+  },
+  {
+   "deck": {
+    "ashbone-ghoul": 2,
+    "cinder-skeleton": 2,
+    "cinder-stoker": 1,
+    "magma-wraith": 2,
+    "obsidian-scorpion": 3
+   },
+   "leaders": null,
+   "tune200": 31
+  }
+ ],
+ "before": {
+  "deck": {
+   "cinder-skeleton": 1,
+   "ashbone-ghoul": 3,
+   "magma-wraith": 3,
+   "cinder-stoker": 1,
+   "obsidian-scorpion": 2
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": 36,
+  "win200": 41
+ },
+ "pick": {
+  "deck": {
+   "ash-moth": 2,
+   "ashbone-ghoul": 1,
+   "cinder-stoker": 1,
+   "magma-wraith": 3,
+   "obsidian-scorpion": 3
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": 36,
+  "win200": 37,
+  "tune200": 35
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 41
+  },
+  {
+   "move": "whole-space pick",
+   "win": 37
+  }
+ ],
+ "sec": 304
+}

@@ -1,0 +1,142 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "20-A-1",
+ "map": "me",
+ "mapName": "Eye of the Volcano",
+ "kind": "elite",
+ "name": "The Ash Ossuary",
+ "band": {
+  "lo": 80.2,
+  "hi": 96.2,
+  "target": 88.2
+ },
+ "list": [
+  "ash-moth",
+  "ashbone-ghoul",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pack-mule"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "ossuary-lammergeier"
+ ],
+ "namesake": true,
+ "shieldRule": 32,
+ "shieldOverride": 15,
+ "space": 371,
+ "read": 371,
+ "g1": 60,
+ "range": {
+  "min": 28.3,
+  "max": 98.3
+ },
+ "top": [
+  {
+   "deck": {
+    "ash-moth": 4,
+    "ashbone-ghoul": 4,
+    "cinder-skeleton": 2,
+    "ossuary-lammergeier": 1
+   },
+   "leaders": null,
+   "tune200": 88
+  },
+  {
+   "deck": {
+    "ash-moth": 4,
+    "ashbone-ghoul": 5,
+    "cinder-skeleton": 1,
+    "ossuary-lammergeier": 1
+   },
+   "leaders": null,
+   "tune200": 84.5
+  },
+  {
+   "deck": {
+    "ash-moth": 4,
+    "ashbone-ghoul": 1,
+    "cinder-skeleton": 4,
+    "cinder-stoker": 1,
+    "ossuary-lammergeier": 1
+   },
+   "leaders": null,
+   "tune200": 84.5
+  },
+  {
+   "deck": {
+    "ash-moth": 3,
+    "ashbone-ghoul": 4,
+    "ossuary-lammergeier": 1,
+    "pack-mule": 3
+   },
+   "leaders": null,
+   "tune200": 83.5
+  },
+  {
+   "deck": {
+    "ash-moth": 4,
+    "ashbone-ghoul": 1,
+    "cinder-skeleton": 2,
+    "ossuary-lammergeier": 1,
+    "pack-mule": 3
+   },
+   "leaders": null,
+   "tune200": 81.5
+  },
+  {
+   "deck": {
+    "ash-moth": 2,
+    "ashbone-ghoul": 1,
+    "cinder-skeleton": 4,
+    "ossuary-lammergeier": 1,
+    "pack-mule": 3
+   },
+   "leaders": null,
+   "tune200": 81.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "cinder-skeleton": 3,
+   "ossuary-lammergeier": 1,
+   "pack-mule": 2,
+   "ashbone-ghoul": 5
+  },
+  "leaders": [
+   "ossuary-lammergeier"
+  ],
+  "shieldOverride": 15,
+  "win200": 72
+ },
+ "pick": {
+  "deck": {
+   "ash-moth": 4,
+   "ashbone-ghoul": 4,
+   "cinder-skeleton": 2,
+   "ossuary-lammergeier": 1
+  },
+  "leaders": [
+   "ossuary-lammergeier"
+  ],
+  "shieldOverride": 0,
+  "win200": 83.5,
+  "tune200": 88
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 72
+  },
+  {
+   "move": "whole-space pick",
+   "win": 83.5
+  }
+ ],
+ "sec": 486
+}

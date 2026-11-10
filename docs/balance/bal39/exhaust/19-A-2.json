@@ -1,0 +1,153 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "19-A-2",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "skirmish",
+ "name": "Salamander Vents",
+ "band": {
+  "lo": 78.3,
+  "hi": 94.3,
+  "target": 86.3
+ },
+ "list": [
+  "anvilwhisker-otter",
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "anvilwhisker-otter"
+ ],
+ "namesake": false,
+ "shieldRule": 23,
+ "shieldOverride": 0,
+ "space": 3,
+ "read": 3,
+ "g1": 60,
+ "range": {
+  "min": 61.7,
+  "max": 80
+ },
+ "top": [
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 1,
+    "cinder-gecko": 1,
+    "cinder-stoker": 3,
+    "phoenix-fledgling": 5
+   },
+   "leaders": null,
+   "tune200": 76
+  },
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 1,
+    "cinder-gecko": 1,
+    "cinder-stoker": 3,
+    "phoenix-fledgling": 5
+   },
+   "leaders": [
+    "phoenix-fledgling"
+   ],
+   "tune200": 76
+  },
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 1,
+    "cinder-gecko": 1,
+    "cinder-stoker": 3,
+    "phoenix-fledgling": 5
+   },
+   "leaders": [],
+   "tune200": 75.5
+  },
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 1,
+    "cinder-gecko": 1,
+    "cinder-stoker": 3,
+    "phoenix-fledgling": 5
+   },
+   "leaders": [
+    "ashbone-ghoul"
+   ],
+   "tune200": 74.5
+  },
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 1,
+    "cinder-gecko": 1,
+    "cinder-stoker": 4,
+    "phoenix-fledgling": 4
+   },
+   "leaders": [
+    "ashbone-ghoul"
+   ],
+   "tune200": 62.5
+  },
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 1,
+    "cinder-gecko": 1,
+    "cinder-stoker": 4,
+    "phoenix-fledgling": 4
+   },
+   "leaders": null,
+   "tune200": 62
+  }
+ ],
+ "before": {
+  "deck": {
+   "anvilwhisker-otter": 4,
+   "phoenix-fledgling": 5,
+   "cinder-stoker": 3,
+   "ashbone-ghoul": 1,
+   "cinder-gecko": 1
+  },
+  "leaders": [
+   "anvilwhisker-otter"
+  ],
+  "shieldOverride": 0,
+  "win200": 78
+ },
+ "pick": {
+  "deck": {
+   "anvilwhisker-otter": 4,
+   "ashbone-ghoul": 1,
+   "cinder-gecko": 1,
+   "cinder-stoker": 3,
+   "phoenix-fledgling": 5
+  },
+  "leaders": [
+   "anvilwhisker-otter"
+  ],
+  "shieldOverride": 0,
+  "win200": 78,
+  "tune200": 76
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 78
+  },
+  {
+   "move": "whole-space pick",
+   "win": 78
+  }
+ ],
+ "sec": 109
+}

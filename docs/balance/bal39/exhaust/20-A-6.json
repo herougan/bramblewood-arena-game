@@ -1,0 +1,155 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "20-A-6",
+ "map": "me",
+ "mapName": "Eye of the Volcano",
+ "kind": "elite",
+ "name": "The Vent Crabs",
+ "band": {
+  "lo": 53.6,
+  "hi": 69.6,
+  "target": 61.6
+ },
+ "list": [
+  "ancient-sloth-titan",
+  "ash-moth",
+  "ashbone-ghoul",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "obsidian-scorpion",
+  "pack-mule"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "obsidian-scorpion"
+ ],
+ "namesake": false,
+ "shieldRule": 32,
+ "shieldOverride": 48,
+ "space": 2142,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 13.3,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "ancient-sloth-titan": 3,
+    "ash-moth": 1,
+    "cinder-skeleton": 2,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 3,
+    "pack-mule": 1
+   },
+   "leaders": null,
+   "tune200": 61.5
+  },
+  {
+   "deck": {
+    "ancient-sloth-titan": 3,
+    "ash-moth": 2,
+    "ashbone-ghoul": 1,
+    "cinder-skeleton": 1,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 3
+   },
+   "leaders": null,
+   "tune200": 61.5
+  },
+  {
+   "deck": {
+    "ancient-sloth-titan": 1,
+    "ash-moth": 3,
+    "cinder-skeleton": 4,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 2
+   },
+   "leaders": null,
+   "tune200": 60
+  },
+  {
+   "deck": {
+    "ancient-sloth-titan": 1,
+    "ash-moth": 2,
+    "ashbone-ghoul": 4,
+    "cinder-skeleton": 2,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 1
+   },
+   "leaders": null,
+   "tune200": 63.5
+  },
+  {
+   "deck": {
+    "ancient-sloth-titan": 1,
+    "ash-moth": 1,
+    "ashbone-ghoul": 1,
+    "cinder-skeleton": 1,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 2,
+    "pack-mule": 4
+   },
+   "leaders": null,
+   "tune200": 59.5
+  },
+  {
+   "deck": {
+    "ancient-sloth-titan": 2,
+    "ash-moth": 2,
+    "ashbone-ghoul": 1,
+    "cinder-skeleton": 3,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 2
+   },
+   "leaders": null,
+   "tune200": 65
+  }
+ ],
+ "before": {
+  "deck": {
+   "ancient-sloth-titan": 1,
+   "ashbone-ghoul": 2,
+   "cinder-skeleton": 4,
+   "cinder-stoker": 1,
+   "obsidian-scorpion": 1,
+   "pack-mule": 2
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": 48,
+  "win200": 70.5
+ },
+ "pick": {
+  "deck": {
+   "ancient-sloth-titan": 3,
+   "ash-moth": 1,
+   "cinder-skeleton": 2,
+   "cinder-stoker": 1,
+   "obsidian-scorpion": 3,
+   "pack-mule": 1
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": 48,
+  "win200": 69,
+  "tune200": 61.5
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 70.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 69
+  }
+ ],
+ "sec": 576
+}

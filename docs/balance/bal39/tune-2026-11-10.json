@@ -1,0 +1,669 @@
+{
+ "about": "BAL39 road retune summary (tools/bal39/summary_2026_11_10.js); 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "19-A-2",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "skirmish",
+   "name": "Salamander Vents",
+   "target": 86.3,
+   "before200": 78,
+   "after200": 78,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 78,
+     "pick200": 78,
+     "keep": false,
+     "space": 3,
+     "range": {
+      "min": 61.7,
+      "max": 80
+     },
+     "pick": {
+      "deck": {
+       "anvilwhisker-otter": 4,
+       "ashbone-ghoul": 1,
+       "cinder-gecko": 1,
+       "cinder-stoker": 3,
+       "phoenix-fledgling": 5
+      },
+      "leaders": [
+       "anvilwhisker-otter"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "19-A-4",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "skirmish",
+   "name": "Vent Skitter",
+   "target": 78.8,
+   "before200": 69.5,
+   "after200": 74,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 69.5,
+     "pick200": 74,
+     "keep": true,
+     "space": 90,
+     "range": {
+      "min": 26.7,
+      "max": 76.7
+     },
+     "pick": {
+      "deck": {
+       "anvilwhisker-otter": 4,
+       "ashbone-ghoul": 1,
+       "cinder-gecko": 1,
+       "cinder-stoker": 3,
+       "phoenix-fledgling": 5
+      },
+      "leaders": [],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "19-A-9",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "elite",
+   "name": "The Pyroclast Wyrm",
+   "target": 60,
+   "before200": 67,
+   "after200": 59,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 67,
+     "pick200": 59,
+     "keep": true,
+     "space": 816,
+     "range": {
+      "min": 8.3,
+      "max": 95
+     },
+     "pick": {
+      "deck": {
+       "anvilwhisker-otter": 4,
+       "ashbone-ghoul": 3,
+       "cinder-gecko": 1,
+       "ember-jackal": 1,
+       "ore-smelter-mole": 1,
+       "phoenix-fledgling": 4
+      },
+      "leaders": [
+       "ashbone-ghoul"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "19-A-10",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "boss",
+   "name": "The Phoenix Ember King",
+   "target": 40,
+   "before200": 31,
+   "after200": 31,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 31,
+     "pick200": 31,
+     "keep": false,
+     "space": 26,
+     "range": {
+      "min": 20,
+      "max": 33.3
+     },
+     "pick": {
+      "deck": {
+       "ashbone-ghoul": 1,
+       "beaver-lumberjack": 3,
+       "cinder-gecko": 1,
+       "cinder-stoker": 3,
+       "ember-revenant": 2,
+       "fire-salamander": 4,
+       "phoenix-fledgling": 4,
+       "tide-spirit": 1
+      },
+      "leaders": [
+       "ember-revenant"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "2-3",
+   "map": "mb",
+   "mapName": "Pebble Beach",
+   "kind": "skirmish",
+   "name": "Hermit Row",
+   "target": 70,
+   "before200": 60,
+   "after200": 60,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 60,
+     "pick200": 58.5,
+     "keep": false,
+     "space": 66,
+     "range": {
+      "min": 43.3,
+      "max": 61.7
+     },
+     "pick": {
+      "deck": {
+       "gull-thief": 3,
+       "moon-jelly": 4,
+       "open-ocean-hermit-crab": 4,
+       "oystercatcher": 2,
+       "pincushion-urchin": 4
+      },
+      "leaders": [
+       "oystercatcher"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "2-4",
+   "map": "mb",
+   "mapName": "Pebble Beach",
+   "kind": "skirmish",
+   "name": "Pelican Point",
+   "target": 60,
+   "before200": 53,
+   "after200": 53,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 53,
+     "pick200": 53,
+     "keep": false,
+     "space": 241,
+     "range": {
+      "min": 18.3,
+      "max": 50
+     },
+     "pick": {
+      "deck": {
+       "conch-herald": 3,
+       "gull-thief": 2,
+       "moon-jelly": 4,
+       "open-ocean-hermit-crab": 4,
+       "oystercatcher": 4,
+       "pincushion-urchin": 2
+      },
+      "leaders": [
+       "oystercatcher"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "20-A-1",
+   "map": "me",
+   "mapName": "Eye of the Volcano",
+   "kind": "elite",
+   "name": "The Ash Ossuary",
+   "target": 88.2,
+   "before200": 72,
+   "after200": 83.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 72,
+     "pick200": 83.5,
+     "keep": true,
+     "space": 371,
+     "range": {
+      "min": 28.3,
+      "max": 98.3
+     },
+     "pick": {
+      "deck": {
+       "ash-moth": 4,
+       "ashbone-ghoul": 4,
+       "cinder-skeleton": 2,
+       "ossuary-lammergeier": 1
+      },
+      "leaders": [
+       "ossuary-lammergeier"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "20-A-4",
+   "map": "me",
+   "mapName": "Eye of the Volcano",
+   "kind": "dungeon",
+   "name": "Heart of the Mountain",
+   "target": 35.5,
+   "before200": 41,
+   "after200": 37,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 41,
+     "pick200": 37,
+     "keep": true,
+     "space": 288,
+     "range": {
+      "min": 28.3,
+      "max": 91.7
+     },
+     "pick": {
+      "deck": {
+       "ash-moth": 2,
+       "ashbone-ghoul": 1,
+       "cinder-stoker": 1,
+       "magma-wraith": 3,
+       "obsidian-scorpion": 3
+      },
+      "leaders": [
+       "obsidian-scorpion"
+      ],
+      "shieldOverride": 36
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "20-A-5",
+   "map": "me",
+   "mapName": "Eye of the Volcano",
+   "kind": "elite",
+   "name": "Scorched Boars",
+   "target": 68,
+   "before200": 76.5,
+   "after200": 64,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 76.5,
+     "pick200": 64,
+     "keep": true,
+     "space": 1565,
+     "range": {
+      "min": 28.3,
+      "max": 85
+     },
+     "pick": {
+      "deck": {
+       "ash-moth": 3,
+       "ashbone-ghoul": 2,
+       "cave-warlord": 4,
+       "cinder-skeleton": 3,
+       "cinder-stoker": 1,
+       "deep-cave-troll": 4,
+       "obsidian-scorpion": 2
+      },
+      "leaders": [
+       "obsidian-scorpion"
+      ],
+      "shieldOverride": 60
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "20-A-6",
+   "map": "me",
+   "mapName": "Eye of the Volcano",
+   "kind": "elite",
+   "name": "The Vent Crabs",
+   "target": 61.6,
+   "before200": 70.5,
+   "after200": 63.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 70.5,
+     "pick200": 69,
+     "keep": false,
+     "space": 2142,
+     "range": {
+      "min": 13.3,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "ancient-sloth-titan": 3,
+       "ash-moth": 1,
+       "cinder-skeleton": 2,
+       "cinder-stoker": 1,
+       "obsidian-scorpion": 3,
+       "pack-mule": 1
+      },
+      "leaders": [
+       "obsidian-scorpion"
+      ],
+      "shieldOverride": 48
+     }
+    },
+    {
+     "tool": "exhaust-r2",
+     "before200": 70.5,
+     "pick200": 63.5,
+     "keep": true,
+     "space": 2142,
+     "range": {
+      "min": 11.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "ancient-sloth-titan": 2,
+       "ash-moth": 1,
+       "ashbone-ghoul": 2,
+       "cinder-stoker": 1,
+       "obsidian-scorpion": 3,
+       "pack-mule": 2
+      },
+      "leaders": [
+       "obsidian-scorpion"
+      ],
+      "shieldOverride": 48
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust-r2"
+  },
+  {
+   "code": "20-A-7",
+   "map": "me",
+   "mapName": "Eye of the Volcano",
+   "kind": "elite",
+   "name": "Ash Condor Roost",
+   "target": 55.400000000000006,
+   "before200": 63.5,
+   "after200": 58.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 63.5,
+     "pick200": 58.5,
+     "keep": true,
+     "space": 4734,
+     "range": {
+      "min": 13.3,
+      "max": 88.3
+     },
+     "pick": {
+      "deck": {
+       "ancient-sloth-titan": 1,
+       "ash-cloud-condor": 3,
+       "ash-moth": 4,
+       "ashbone-ghoul": 1,
+       "cinder-skeleton": 4,
+       "cinder-stoker": 1,
+       "obsidian-scorpion": 2,
+       "vampire-roost": 3
+      },
+      "leaders": [
+       "obsidian-scorpion"
+      ],
+      "shieldOverride": 36
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "0-B-3",
+   "map": "mo",
+   "mapName": "The Old Bramble",
+   "kind": "skirmish",
+   "name": "Root Gate",
+   "target": 60,
+   "before200": 53,
+   "after200": 53,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 53,
+     "pick200": 52,
+     "keep": false,
+     "space": 1,
+     "range": {
+      "min": 53.3,
+      "max": 53.3
+     },
+     "pick": {
+      "deck": {
+       "ant-scout": 5,
+       "bramblewood-lynx": 1,
+       "cottontail": 1,
+       "forager-ant": 5,
+       "gatling-hog": 1,
+       "meadow-rabbit": 1,
+       "pond-duck": 1,
+       "thorn-shrike": 1
+      },
+      "leaders": [],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "5-A-1",
+   "map": "ms",
+   "mapName": "The Sunken Grove",
+   "kind": "skirmish",
+   "name": "Rotting Roots",
+   "target": 90,
+   "before200": 95.5,
+   "after200": 90.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 95.5,
+     "pick200": 90.5,
+     "keep": true,
+     "space": 22316,
+     "range": {
+      "min": 78.3,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "anhinga-spearbird": 3,
+       "constrictor-coil": 4,
+       "grass-viper": 1,
+       "mangrove-mudskipper": 1,
+       "nutria-reedcutter": 4,
+       "venomlord-serpent": 1
+      },
+      "leaders": [
+       "anhinga-spearbird"
+      ],
+      "shieldOverride": 8
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "5-A-2",
+   "map": "ms",
+   "mapName": "The Sunken Grove",
+   "kind": "skirmish",
+   "name": "Gator Hollow",
+   "target": 65,
+   "before200": 74.5,
+   "after200": 74.5,
+   "reads": [
+    {
+     "tool": "pick",
+     "before200": 74.5,
+     "pick200": 74.5,
+     "keep": false,
+     "pick": {
+      "deck": {
+       "mangrove-mudskipper": 1,
+       "snapper-hatchling": 3,
+       "bog-leech": 4,
+       "nutria-reedcutter": 5,
+       "venomlord-serpent": 1
+      },
+      "leaders": [
+       "bog-leech"
+      ],
+      "shieldOverride": 13
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "5-A-3",
+   "map": "ms",
+   "mapName": "The Sunken Grove",
+   "kind": "skirmish",
+   "name": "Moss Weir",
+   "target": 60,
+   "before200": 70.5,
+   "after200": 67.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 70.5,
+     "pick200": 67.5,
+     "keep": true,
+     "space": 129402,
+     "range": {
+      "min": 70,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "alligator-gar": 1,
+       "bog-leech": 4,
+       "constrictor-coil": 1,
+       "mangrove-mudskipper": 1,
+       "nutria-reedcutter": 3,
+       "snapper-hatchling": 2
+      },
+      "leaders": [
+       "mangrove-mudskipper"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "5-A-4",
+   "map": "ms",
+   "mapName": "The Sunken Grove",
+   "kind": "boss",
+   "name": "The Grove Warden",
+   "target": 40,
+   "before200": 32.5,
+   "after200": 38.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 32.5,
+     "pick200": 42,
+     "keep": false,
+     "space": 223842,
+     "range": {
+      "min": 53.3,
+      "max": 96.7
+     },
+     "pick": {
+      "deck": {
+       "anhinga-spearbird": 4,
+       "bog-leech": 2,
+       "caiman-hatchling": 1,
+       "constrictor-coil": 1,
+       "hedgehog-herbalist": 3,
+       "mangrove-mudskipper": 1,
+       "snapper-hatchling": 5,
+       "swamp-alligator": 1
+      },
+      "leaders": [
+       "mangrove-mudskipper"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 32.5,
+     "pick200": 38.5,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "bog-leech": 4,
+       "hedgehog-herbalist": 2,
+       "constrictor-coil": 2,
+       "snapper-hatchling": 5,
+       "grass-viper": 2,
+       "mangrove-mudskipper": 1,
+       "caiman-hatchling": 1,
+       "nutria-reedcutter": 1
+      },
+      "leaders": [
+       "hedgehog-herbalist"
+      ],
+      "shieldOverride": 22
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  }
+ ]
+}

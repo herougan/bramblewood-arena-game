@@ -1,0 +1,162 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "2-4",
+ "map": "mb",
+ "mapName": "Pebble Beach",
+ "kind": "skirmish",
+ "name": "Pelican Point",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "conch-herald",
+  "gull-thief",
+  "moon-jelly",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin"
+ ],
+ "firstClear": [
+  "conch-herald"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "oystercatcher"
+ ],
+ "namesake": false,
+ "shieldRule": 2,
+ "shieldOverride": 0,
+ "space": 241,
+ "read": 241,
+ "g1": 60,
+ "range": {
+  "min": 18.3,
+  "max": 50
+ },
+ "top": [
+  {
+   "deck": {
+    "conch-herald": 3,
+    "gull-thief": 2,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 2
+   },
+   "leaders": null,
+   "tune200": 50
+  },
+  {
+   "deck": {
+    "conch-herald": 4,
+    "gull-thief": 1,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 2
+   },
+   "leaders": null,
+   "tune200": 49
+  },
+  {
+   "deck": {
+    "conch-herald": 3,
+    "gull-thief": 2,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 2
+   },
+   "leaders": [],
+   "tune200": 48.5
+  },
+  {
+   "deck": {
+    "conch-herald": 4,
+    "gull-thief": 1,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 2
+   },
+   "leaders": [
+    "conch-herald"
+   ],
+   "tune200": 48.5
+  },
+  {
+   "deck": {
+    "conch-herald": 3,
+    "gull-thief": 2,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 2
+   },
+   "leaders": [
+    "conch-herald"
+   ],
+   "tune200": 48
+  },
+  {
+   "deck": {
+    "conch-herald": 3,
+    "gull-thief": 2,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 2
+   },
+   "leaders": [
+    "open-ocean-hermit-crab"
+   ],
+   "tune200": 48
+  }
+ ],
+ "before": {
+  "deck": {
+   "conch-herald": 3,
+   "gull-thief": 2,
+   "moon-jelly": 4,
+   "open-ocean-hermit-crab": 4,
+   "oystercatcher": 4,
+   "pincushion-urchin": 2
+  },
+  "leaders": [
+   "oystercatcher"
+  ],
+  "shieldOverride": 0,
+  "win200": 53
+ },
+ "pick": {
+  "deck": {
+   "conch-herald": 3,
+   "gull-thief": 2,
+   "moon-jelly": 4,
+   "open-ocean-hermit-crab": 4,
+   "oystercatcher": 4,
+   "pincushion-urchin": 2
+  },
+  "leaders": [
+   "oystercatcher"
+  ],
+  "shieldOverride": 0,
+  "win200": 53,
+  "tune200": 50
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 53
+  },
+  {
+   "move": "whole-space pick",
+   "win": 53
+  }
+ ],
+ "sec": 359
+}

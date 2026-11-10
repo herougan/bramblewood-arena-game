@@ -1,0 +1,96 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "0-B-3",
+ "map": "mo",
+ "mapName": "The Old Bramble",
+ "kind": "skirmish",
+ "name": "Root Gate",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "ant-scout",
+  "bramblewood-lynx",
+  "cottontail",
+  "forager-ant",
+  "gatling-hog",
+  "meadow-rabbit",
+  "pond-duck",
+  "thorn-shrike"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": 8,
+ "space": 1,
+ "read": 1,
+ "g1": 60,
+ "range": {
+  "min": 53.3,
+  "max": 53.3
+ },
+ "top": [
+  {
+   "deck": {
+    "ant-scout": 5,
+    "bramblewood-lynx": 1,
+    "cottontail": 1,
+    "forager-ant": 5,
+    "gatling-hog": 1,
+    "meadow-rabbit": 1,
+    "pond-duck": 1,
+    "thorn-shrike": 1
+   },
+   "leaders": null,
+   "tune200": 54
+  }
+ ],
+ "before": {
+  "deck": {
+   "ant-scout": 5,
+   "bramblewood-lynx": 1,
+   "cottontail": 1,
+   "forager-ant": 5,
+   "gatling-hog": 1,
+   "meadow-rabbit": 1,
+   "pond-duck": 1,
+   "thorn-shrike": 1
+  },
+  "leaders": [],
+  "shieldOverride": 8,
+  "win200": 53
+ },
+ "pick": {
+  "deck": {
+   "ant-scout": 5,
+   "bramblewood-lynx": 1,
+   "cottontail": 1,
+   "forager-ant": 5,
+   "gatling-hog": 1,
+   "meadow-rabbit": 1,
+   "pond-duck": 1,
+   "thorn-shrike": 1
+  },
+  "leaders": [],
+  "shieldOverride": 0,
+  "win200": 52,
+  "tune200": 54
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 53
+  },
+  {
+   "move": "whole-space pick",
+   "win": 52
+  }
+ ],
+ "sec": 7
+}

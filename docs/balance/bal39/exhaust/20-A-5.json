@@ -1,0 +1,163 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "20-A-5",
+ "map": "me",
+ "mapName": "Eye of the Volcano",
+ "kind": "elite",
+ "name": "Scorched Boars",
+ "band": {
+  "lo": 60.00000000000001,
+  "hi": 76,
+  "target": 68
+ },
+ "list": [
+  "ash-moth",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "obsidian-scorpion",
+  "stalactite-golem"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "obsidian-scorpion"
+ ],
+ "namesake": false,
+ "shieldRule": 32,
+ "shieldOverride": 60,
+ "space": 1565,
+ "read": 400,
+ "g1": 60,
+ "range": {
+  "min": 28.3,
+  "max": 85
+ },
+ "top": [
+  {
+   "deck": {
+    "ash-moth": 3,
+    "ashbone-ghoul": 2,
+    "cave-warlord": 4,
+    "cinder-skeleton": 3,
+    "cinder-stoker": 1,
+    "deep-cave-troll": 4,
+    "obsidian-scorpion": 2
+   },
+   "leaders": null,
+   "tune200": 67.5
+  },
+  {
+   "deck": {
+    "ash-moth": 4,
+    "cave-warlord": 4,
+    "cinder-skeleton": 4,
+    "deep-cave-troll": 4,
+    "obsidian-scorpion": 3
+   },
+   "leaders": null,
+   "tune200": 67
+  },
+  {
+   "deck": {
+    "ash-moth": 4,
+    "ashbone-ghoul": 2,
+    "cave-warlord": 3,
+    "cinder-skeleton": 3,
+    "cinder-stoker": 1,
+    "deep-cave-troll": 4,
+    "obsidian-scorpion": 2
+   },
+   "leaders": null,
+   "tune200": 67
+  },
+  {
+   "deck": {
+    "ash-moth": 3,
+    "ashbone-ghoul": 2,
+    "cave-warlord": 3,
+    "cinder-skeleton": 4,
+    "cinder-stoker": 1,
+    "deep-cave-troll": 4,
+    "obsidian-scorpion": 1,
+    "stalactite-golem": 1
+   },
+   "leaders": null,
+   "tune200": 70
+  },
+  {
+   "deck": {
+    "ash-moth": 3,
+    "ashbone-ghoul": 4,
+    "cave-warlord": 4,
+    "cinder-skeleton": 3,
+    "cinder-stoker": 1,
+    "deep-cave-troll": 3,
+    "obsidian-scorpion": 1
+   },
+   "leaders": null,
+   "tune200": 65.5
+  },
+  {
+   "deck": {
+    "ash-moth": 4,
+    "ashbone-ghoul": 4,
+    "cave-warlord": 4,
+    "cinder-skeleton": 4,
+    "cinder-stoker": 1,
+    "deep-cave-troll": 1,
+    "obsidian-scorpion": 1
+   },
+   "leaders": null,
+   "tune200": 65
+  }
+ ],
+ "before": {
+  "deck": {
+   "ash-moth": 5,
+   "cave-warlord": 4,
+   "cinder-skeleton": 3,
+   "cinder-stoker": 1,
+   "deep-cave-troll": 4,
+   "obsidian-scorpion": 1,
+   "stalactite-golem": 1
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": 60,
+  "win200": 76.5
+ },
+ "pick": {
+  "deck": {
+   "ash-moth": 3,
+   "ashbone-ghoul": 2,
+   "cave-warlord": 4,
+   "cinder-skeleton": 3,
+   "cinder-stoker": 1,
+   "deep-cave-troll": 4,
+   "obsidian-scorpion": 2
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": 60,
+  "win200": 64,
+  "tune200": 67.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 76.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 64
+  }
+ ],
+ "sec": 514
+}

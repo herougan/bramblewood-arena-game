@@ -1,0 +1,156 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "19-A-9",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "elite",
+ "name": "The Pyroclast Wyrm",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "anvilwhisker-otter",
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "ore-smelter-mole",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "ashbone-ghoul"
+ ],
+ "namesake": false,
+ "shieldRule": 35,
+ "shieldOverride": 0,
+ "space": 816,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 8.3,
+  "max": 95
+ },
+ "top": [
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 3,
+    "cinder-gecko": 1,
+    "ember-jackal": 1,
+    "ore-smelter-mole": 1,
+    "phoenix-fledgling": 4
+   },
+   "leaders": null,
+   "tune200": 60
+  },
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 2,
+    "cinder-stoker": 1,
+    "ember-jackal": 1,
+    "ore-smelter-mole": 1,
+    "phoenix-fledgling": 5
+   },
+   "leaders": null,
+   "tune200": 60
+  },
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 3,
+    "cinder-stoker": 2,
+    "ore-smelter-mole": 1,
+    "phoenix-fledgling": 4
+   },
+   "leaders": null,
+   "tune200": 60.5
+  },
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 4,
+    "cinder-gecko": 1,
+    "cinder-stoker": 1,
+    "ember-jackal": 1,
+    "phoenix-fledgling": 3
+   },
+   "leaders": null,
+   "tune200": 59
+  },
+  {
+   "deck": {
+    "anvilwhisker-otter": 3,
+    "ashbone-ghoul": 4,
+    "cinder-gecko": 1,
+    "ember-jackal": 1,
+    "ore-smelter-mole": 1,
+    "phoenix-fledgling": 4
+   },
+   "leaders": null,
+   "tune200": 58.5
+  },
+  {
+   "deck": {
+    "anvilwhisker-otter": 3,
+    "ashbone-ghoul": 4,
+    "cinder-stoker": 1,
+    "ore-smelter-mole": 1,
+    "phoenix-fledgling": 4,
+    "tide-spirit": 1
+   },
+   "leaders": null,
+   "tune200": 56.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "phoenix-fledgling": 5,
+   "anvilwhisker-otter": 4,
+   "ore-smelter-mole": 1,
+   "ashbone-ghoul": 1,
+   "tide-spirit": 1,
+   "cinder-stoker": 1,
+   "cinder-gecko": 1
+  },
+  "leaders": [
+   "ashbone-ghoul"
+  ],
+  "shieldOverride": 0,
+  "win200": 67
+ },
+ "pick": {
+  "deck": {
+   "anvilwhisker-otter": 4,
+   "ashbone-ghoul": 3,
+   "cinder-gecko": 1,
+   "ember-jackal": 1,
+   "ore-smelter-mole": 1,
+   "phoenix-fledgling": 4
+  },
+  "leaders": [
+   "ashbone-ghoul"
+  ],
+  "shieldOverride": 0,
+  "win200": 59,
+  "tune200": 60
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 67
+  },
+  {
+   "move": "whole-space pick",
+   "win": 59
+  }
+ ],
+ "sec": 430
+}

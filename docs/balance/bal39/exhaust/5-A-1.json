@@ -1,0 +1,163 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "5-A-1",
+ "map": "ms",
+ "mapName": "The Sunken Grove",
+ "kind": "skirmish",
+ "name": "Rotting Roots",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "grass-viper",
+  "mangrove-mudskipper",
+  "nutria-reedcutter",
+  "swamp-alligator",
+  "venomlord-serpent"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "anhinga-spearbird"
+ ],
+ "namesake": false,
+ "shieldRule": 13,
+ "shieldOverride": 8,
+ "space": 22316,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 78.3,
+  "max": 100
+ },
+ "top": [
+  {
+   "deck": {
+    "anhinga-spearbird": 3,
+    "constrictor-coil": 4,
+    "grass-viper": 1,
+    "mangrove-mudskipper": 1,
+    "nutria-reedcutter": 4,
+    "venomlord-serpent": 1
+   },
+   "leaders": null,
+   "tune200": 90
+  },
+  {
+   "deck": {
+    "anhinga-spearbird": 3,
+    "constrictor-coil": 4,
+    "grass-viper": 1,
+    "mangrove-mudskipper": 1,
+    "nutria-reedcutter": 4,
+    "venomlord-serpent": 1
+   },
+   "leaders": [
+    "crocodile-ambusher"
+   ],
+   "tune200": 90
+  },
+  {
+   "deck": {
+    "anhinga-spearbird": 2,
+    "bog-leech": 3,
+    "crocodile-ambusher": 3,
+    "grass-viper": 1,
+    "nutria-reedcutter": 4,
+    "swamp-alligator": 1
+   },
+   "leaders": null,
+   "tune200": 90.5
+  },
+  {
+   "deck": {
+    "anhinga-spearbird": 1,
+    "bog-leech": 3,
+    "constrictor-coil": 2,
+    "crocodile-ambusher": 3,
+    "grass-viper": 4,
+    "venomlord-serpent": 1
+   },
+   "leaders": null,
+   "tune200": 90.5
+  },
+  {
+   "deck": {
+    "anhinga-spearbird": 3,
+    "constrictor-coil": 4,
+    "grass-viper": 1,
+    "mangrove-mudskipper": 1,
+    "nutria-reedcutter": 4,
+    "venomlord-serpent": 1
+   },
+   "leaders": [
+    "constrictor-coil"
+   ],
+   "tune200": 90.5
+  },
+  {
+   "deck": {
+    "anhinga-spearbird": 2,
+    "bog-leech": 3,
+    "crocodile-ambusher": 3,
+    "grass-viper": 1,
+    "nutria-reedcutter": 4,
+    "swamp-alligator": 1
+   },
+   "leaders": [
+    "crocodile-ambusher"
+   ],
+   "tune200": 89.5
+  }
+ ],
+ "before": {
+  "deck": {
+   "grass-viper": 1,
+   "nutria-reedcutter": 3,
+   "mangrove-mudskipper": 1,
+   "constrictor-coil": 2,
+   "anhinga-spearbird": 4,
+   "crocodile-ambusher": 3
+  },
+  "leaders": [
+   "anhinga-spearbird"
+  ],
+  "shieldOverride": 8,
+  "win200": 95.5
+ },
+ "pick": {
+  "deck": {
+   "anhinga-spearbird": 3,
+   "constrictor-coil": 4,
+   "grass-viper": 1,
+   "mangrove-mudskipper": 1,
+   "nutria-reedcutter": 4,
+   "venomlord-serpent": 1
+  },
+  "leaders": [
+   "anhinga-spearbird"
+  ],
+  "shieldOverride": 8,
+  "win200": 90.5,
+  "tune200": 90
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 95.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 90.5
+  }
+ ],
+ "sec": 502
+}

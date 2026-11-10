@@ -1,0 +1,85 @@
+{
+ "about": "BAL39 named pick (tools/bal39/pick_2026_11_10.js)",
+ "code": "5-A-4",
+ "map": "ms",
+ "mapName": "The Sunken Grove",
+ "kind": "boss",
+ "name": "The Grove Warden",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "caiman-hatchling",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "grass-viper",
+  "hedgehog-herbalist",
+  "mangrove-mudskipper",
+  "nutria-reedcutter",
+  "snapper-hatchling",
+  "swamp-alligator",
+  "venomlord-serpent"
+ ],
+ "firstClear": [
+  "hedgehog-herbalist"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "hedgehog-herbalist"
+ ],
+ "namesake": false,
+ "shieldRule": 39,
+ "shieldOverride": 34,
+ "before": {
+  "deck": {
+   "bog-leech": 4,
+   "hedgehog-herbalist": 2,
+   "constrictor-coil": 2,
+   "snapper-hatchling": 5,
+   "grass-viper": 2,
+   "mangrove-mudskipper": 1,
+   "caiman-hatchling": 1,
+   "nutria-reedcutter": 1
+  },
+  "leaders": [
+   "hedgehog-herbalist"
+  ],
+  "shieldOverride": 34,
+  "win200": 32.5,
+  "shown": 17
+ },
+ "pick": {
+  "deck": {
+   "bog-leech": 4,
+   "hedgehog-herbalist": 2,
+   "constrictor-coil": 2,
+   "snapper-hatchling": 5,
+   "grass-viper": 2,
+   "mangrove-mudskipper": 1,
+   "caiman-hatchling": 1,
+   "nutria-reedcutter": 1
+  },
+  "leaders": [
+   "hedgehog-herbalist"
+  ],
+  "shieldOverride": 22,
+  "win200": 38.5,
+  "shown": 11
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 32.5
+  },
+  {
+   "move": "named pick",
+   "win": 38.5
+  }
+ ]
+}

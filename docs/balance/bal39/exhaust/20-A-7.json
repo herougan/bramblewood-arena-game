@@ -1,0 +1,167 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "20-A-7",
+ "map": "me",
+ "mapName": "Eye of the Volcano",
+ "kind": "elite",
+ "name": "Ash Condor Roost",
+ "band": {
+  "lo": 47.400000000000006,
+  "hi": 63.4,
+  "target": 55.400000000000006
+ },
+ "list": [
+  "ancient-sloth-titan",
+  "ash-cloud-condor",
+  "ash-moth",
+  "ashbone-ghoul",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "obsidian-scorpion",
+  "vampire-roost"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "obsidian-scorpion"
+ ],
+ "namesake": false,
+ "shieldRule": 32,
+ "shieldOverride": 36,
+ "space": 4734,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 13.3,
+  "max": 88.3
+ },
+ "top": [
+  {
+   "deck": {
+    "ancient-sloth-titan": 1,
+    "ash-cloud-condor": 3,
+    "ash-moth": 4,
+    "ashbone-ghoul": 1,
+    "cinder-skeleton": 4,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 2,
+    "vampire-roost": 3
+   },
+   "leaders": null,
+   "tune200": 56.5
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 3,
+    "ash-moth": 4,
+    "ashbone-ghoul": 5,
+    "cinder-skeleton": 4,
+    "obsidian-scorpion": 1,
+    "vampire-roost": 2
+   },
+   "leaders": null,
+   "tune200": 57
+  },
+  {
+   "deck": {
+    "ancient-sloth-titan": 3,
+    "ash-cloud-condor": 3,
+    "ashbone-ghoul": 5,
+    "cinder-skeleton": 3,
+    "obsidian-scorpion": 3,
+    "vampire-roost": 2
+   },
+   "leaders": null,
+   "tune200": 57.5
+  },
+  {
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "ash-cloud-condor": 2,
+    "ash-moth": 3,
+    "ashbone-ghoul": 5,
+    "cinder-skeleton": 2,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 2
+   },
+   "leaders": null,
+   "tune200": 53
+  },
+  {
+   "deck": {
+    "ancient-sloth-titan": 1,
+    "ash-cloud-condor": 2,
+    "ash-moth": 3,
+    "ashbone-ghoul": 1,
+    "cinder-skeleton": 4,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 3,
+    "vampire-roost": 4
+   },
+   "leaders": null,
+   "tune200": 50
+  },
+  {
+   "deck": {
+    "ash-cloud-condor": 3,
+    "ash-moth": 4,
+    "ashbone-ghoul": 5,
+    "cinder-skeleton": 4,
+    "obsidian-scorpion": 1,
+    "vampire-roost": 2
+   },
+   "leaders": [
+    "cinder-stoker"
+   ],
+   "tune200": 50
+  }
+ ],
+ "before": {
+  "deck": {
+   "ancient-sloth-titan": 2,
+   "ash-cloud-condor": 3,
+   "ash-moth": 2,
+   "ashbone-ghoul": 5,
+   "cinder-skeleton": 3,
+   "cinder-stoker": 1,
+   "obsidian-scorpion": 1,
+   "vampire-roost": 2
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": 36,
+  "win200": 63.5
+ },
+ "pick": {
+  "deck": {
+   "ancient-sloth-titan": 1,
+   "ash-cloud-condor": 3,
+   "ash-moth": 4,
+   "ashbone-ghoul": 1,
+   "cinder-skeleton": 4,
+   "cinder-stoker": 1,
+   "obsidian-scorpion": 2,
+   "vampire-roost": 3
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": 36,
+  "win200": 58.5,
+  "tune200": 56.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 63.5
+  },
+  {
+   "move": "whole-space pick",
+   "win": 58.5
+  }
+ ],
+ "sec": 615
+}

@@ -1,0 +1,2 @@
+20-A-6 target 61.6 space 2142 read 401 range 11.7 - 100 | 200 games: 70.5 -> 63.5 KEEP {"deck":{"ancient-sloth-titan":2,"ash-moth":1,"ashbone-ghoul":2,"cinder-stoker":1,"obsidian-scorpion":3,"pack-mule":2},"leaders":["obsidian-scorpion"],"shieldOverride":48} 535s
+EXIT 0
