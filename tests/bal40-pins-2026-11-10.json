@@ -1,0 +1,195 @@
+{
+ "11-A-1": {
+  "deck": {
+   "wound-reaver": 1,
+   "apollo-butterfly": 4,
+   "eyrie-warden": 4,
+   "alpine-salamander": 4,
+   "alpine-swift": 1,
+   "vigil-owl": 3
+  },
+  "leaders": null,
+  "shield": "6",
+  "hqHp": null,
+  "characterId": null
+ },
+ "11-A-2": {
+  "deck": {
+   "alpine-salamander": 4,
+   "apollo-butterfly": 2,
+   "chipmunk-hoarder": 3,
+   "eagle-owl-quartermaster": 1,
+   "eyrie-warden": 2,
+   "gale-swift": 2
+  },
+  "leaders": [
+   "eyrie-warden"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "11-A-3": {
+  "deck": {
+   "alpine-salamander": 3,
+   "alpine-swift": 3,
+   "apollo-butterfly": 3,
+   "chipmunk-hoarder": 5,
+   "ibex-rockcaller": 1,
+   "vigil-owl": 3
+  },
+  "leaders": null,
+  "shield": "18",
+  "hqHp": null,
+  "characterId": null
+ },
+ "11-A-4": {
+  "deck": {
+   "alpine-salamander": 2,
+   "alpine-swift": 1,
+   "apollo-butterfly": 2,
+   "chipmunk-hoarder": 4,
+   "eyrie-warden": 4,
+   "swamp-alligator": 1,
+   "wound-reaver": 2
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "12-1": {
+  "deck": {
+   "bramble-hoglet": 5,
+   "carrion-crow": 3,
+   "mouse-sapper": 5,
+   "thorn-shrike": 3,
+   "hollow-belly-rat": 1
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "12-2": {
+  "deck": {
+   "carrion-crow": 5,
+   "cunning-vixen": 3,
+   "lyrebird-mimic": 4,
+   "mouse-sapper": 3,
+   "thorn-shrike": 3
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "12-6": {
+  "deck": {
+   "carrion-crow": 3,
+   "cunning-vixen": 2,
+   "dormouse": 1,
+   "hollow-belly-rat": 1,
+   "mouse-sapper": 3,
+   "quill-thorn-boar": 2,
+   "quillguard": 1,
+   "thorn-shrike": 3
+  },
+  "leaders": [
+   "hollow-belly-rat"
+  ],
+  "shield": "0",
+  "hqHp": null,
+  "characterId": null
+ },
+ "12-7": {
+  "deck": {
+   "carrion-crow": 2,
+   "field-mouse": 1,
+   "hedge-weasel": 3,
+   "hollow-belly-rat": 1,
+   "lyrebird-mimic": 4,
+   "mouse-sapper": 4,
+   "quillguard": 2,
+   "thorn-shrike": 3
+  },
+  "leaders": null,
+  "shield": "6",
+  "hqHp": null,
+  "characterId": null
+ },
+ "19-3": {
+  "deck": {
+   "cinder-stoker": 4,
+   "fire-salamander": 1,
+   "glacier-wolf-pack": 1,
+   "granite-ox-golem": 3,
+   "magma-titan": 3,
+   "obsidian-scorpion": 1,
+   "pumice-beetle": 1
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "19-4": {
+  "deck": {
+   "cinder-stoker": 1,
+   "glacier-wolf-pack": 3,
+   "magma-titan": 3,
+   "pit-glutton": 3,
+   "snow-ermine": 1,
+   "yeti": 4
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "19-6": {
+  "deck": {
+   "cinder-stoker": 5,
+   "glacier-wolf-pack": 4,
+   "magma-titan": 2,
+   "obsidian-scorpion": 1,
+   "pumice-beetle": 1,
+   "sulfur-cinder-moth": 1,
+   "yeti": 4
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "8-A-2": {
+  "deck": {
+   "bat-swarmling": 1,
+   "echo-screecher": 3,
+   "glimmer-spider": 3,
+   "prospector-mole": 4,
+   "stalactite-golem": 1,
+   "sulfur-cinder-moth": 4,
+   "whip-spider": 4
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "8-A-4": {
+  "deck": {
+   "blind-cave-fish": 2,
+   "grotto-lobster": 1,
+   "lantern-spark-fly": 1,
+   "malachite-golem": 3,
+   "prospector-mole": 1,
+   "sulfur-cinder-moth": 2,
+   "vampire-bat": 1
+  },
+  "leaders": null,
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ }
+}

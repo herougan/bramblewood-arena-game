@@ -1,0 +1,613 @@
+{
+ "about": "BAL40 road retune summary (tools/bal40/summary_2026_11_10.js); 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "19-3",
+   "map": "m3",
+   "mapName": "Ashen Spurn",
+   "kind": "elite",
+   "name": "Porcupine Bastion",
+   "target": 75,
+   "before200": 83.5,
+   "after200": 71.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 83.5,
+     "pick200": 71.5,
+     "keep": true,
+     "space": 26014,
+     "range": {
+      "min": 18.3,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "cinder-stoker": 4,
+       "fire-salamander": 1,
+       "glacier-wolf-pack": 1,
+       "granite-ox-golem": 3,
+       "magma-titan": 3,
+       "obsidian-scorpion": 1,
+       "pumice-beetle": 1
+      },
+      "leaders": [
+       "granite-ox-golem"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "19-4",
+   "map": "m3",
+   "mapName": "Ashen Spurn",
+   "kind": "elite",
+   "name": "Sky Marks",
+   "target": 67.5,
+   "before200": 77.5,
+   "after200": 67,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 77.5,
+     "pick200": 67,
+     "keep": true,
+     "space": 3696,
+     "range": {
+      "min": 35,
+      "max": 95
+     },
+     "pick": {
+      "deck": {
+       "cinder-stoker": 1,
+       "glacier-wolf-pack": 3,
+       "magma-titan": 3,
+       "pit-glutton": 3,
+       "snow-ermine": 1,
+       "yeti": 4
+      },
+      "leaders": [
+       "pit-glutton"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "19-6",
+   "map": "m3",
+   "mapName": "Ashen Spurn",
+   "kind": "miniboss",
+   "name": "The Frost Yeti King",
+   "target": 40,
+   "before200": 59,
+   "after200": 45,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 59,
+     "pick200": 45,
+     "keep": true,
+     "space": 17889,
+     "range": {
+      "min": 26.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "cinder-stoker": 5,
+       "glacier-wolf-pack": 4,
+       "magma-titan": 2,
+       "obsidian-scorpion": 1,
+       "pumice-beetle": 1,
+       "sulfur-cinder-moth": 1,
+       "yeti": 4
+      },
+      "leaders": [
+       "yeti"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "12-1",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "kind": "skirmish",
+   "name": "Hedge Mice",
+   "target": 90,
+   "before200": 79,
+   "after200": 83,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 79,
+     "pick200": 80,
+     "keep": false,
+     "space": 76,
+     "range": {
+      "min": 66.7,
+      "max": 86.7
+     },
+     "pick": {
+      "deck": {
+       "bramble-hoglet": 5,
+       "carrion-crow": 4,
+       "hollow-belly-rat": 1,
+       "mouse-sapper": 4,
+       "thorn-shrike": 3
+      },
+      "leaders": [
+       "hollow-belly-rat"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 79,
+     "pick200": 83,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "bramble-hoglet": 5,
+       "carrion-crow": 3,
+       "mouse-sapper": 5,
+       "thorn-shrike": 3,
+       "hollow-belly-rat": 1
+      },
+      "leaders": [
+       "thorn-shrike"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "12-2",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "kind": "skirmish",
+   "name": "Quill Path",
+   "target": 84,
+   "before200": 71.5,
+   "after200": 81,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 71.5,
+     "pick200": 81,
+     "keep": true,
+     "space": 163,
+     "range": {
+      "min": 68.3,
+      "max": 90
+     },
+     "pick": {
+      "deck": {
+       "carrion-crow": 5,
+       "cunning-vixen": 3,
+       "lyrebird-mimic": 4,
+       "mouse-sapper": 3,
+       "thorn-shrike": 3
+      },
+      "leaders": [
+       "thorn-shrike"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "12-6",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "kind": "elite",
+   "name": "Rodent Court",
+   "target": 60,
+   "before200": 51.5,
+   "after200": 58.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 51.5,
+     "pick200": 58.5,
+     "keep": true,
+     "space": 6081,
+     "range": {
+      "min": 31.7,
+      "max": 93.3
+     },
+     "pick": {
+      "deck": {
+       "carrion-crow": 3,
+       "cunning-vixen": 2,
+       "dormouse": 1,
+       "hollow-belly-rat": 1,
+       "mouse-sapper": 3,
+       "quill-thorn-boar": 2,
+       "quillguard": 1,
+       "thorn-shrike": 3
+      },
+      "leaders": [
+       "hollow-belly-rat"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "12-7",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "kind": "miniboss",
+   "name": "The Briar Queen",
+   "target": 40,
+   "before200": 29.5,
+   "after200": 43,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 29.5,
+     "pick200": 44,
+     "keep": false,
+     "space": 11125,
+     "range": {
+      "min": 33.3,
+      "max": 81.7
+     },
+     "pick": {
+      "deck": {
+       "carrion-crow": 2,
+       "field-mouse": 1,
+       "hedge-weasel": 3,
+       "hollow-belly-rat": 1,
+       "lyrebird-mimic": 4,
+       "mouse-sapper": 4,
+       "quillguard": 2,
+       "thorn-shrike": 3
+      },
+      "leaders": [
+       "woodcock-lookout"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 29.5,
+     "pick200": 43,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "carrion-crow": 2,
+       "field-mouse": 1,
+       "hedge-weasel": 3,
+       "hollow-belly-rat": 1,
+       "lyrebird-mimic": 4,
+       "mouse-sapper": 4,
+       "quillguard": 2,
+       "thorn-shrike": 3
+      },
+      "leaders": [
+       "quillguard"
+      ],
+      "shieldOverride": 6
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "8-A-2",
+   "map": "mn",
+   "mapName": "The Glimmer Depths",
+   "kind": "skirmish",
+   "name": "The Echo Pool",
+   "target": 75,
+   "before200": 84.5,
+   "after200": 71.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 84.5,
+     "pick200": 71.5,
+     "keep": true,
+     "space": 37814,
+     "range": {
+      "min": 51.7,
+      "max": 100
+     },
+     "pick": {
+      "deck": {
+       "bat-swarmling": 1,
+       "echo-screecher": 3,
+       "glimmer-spider": 3,
+       "prospector-mole": 4,
+       "stalactite-golem": 1,
+       "sulfur-cinder-moth": 4,
+       "whip-spider": 4
+      },
+      "leaders": [
+       "echo-screecher"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "8-A-3",
+   "map": "mn",
+   "mapName": "The Glimmer Depths",
+   "kind": "skirmish",
+   "name": "Shard Gallery",
+   "target": 50,
+   "before200": 58,
+   "after200": 58,
+   "reads": [
+    {
+     "tool": "pick",
+     "before200": 58,
+     "pick200": 58,
+     "keep": false,
+     "pick": {
+      "deck": {
+       "sulfur-cinder-moth": 4,
+       "echo-screecher": 3,
+       "blind-cave-fish": 3,
+       "whip-spider": 4,
+       "cave-olm": 5
+      },
+      "leaders": [
+       "echo-screecher"
+      ],
+      "shieldOverride": 16
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "8-A-4",
+   "map": "mn",
+   "mapName": "The Glimmer Depths",
+   "kind": "boss",
+   "name": "The Gem Hoarder",
+   "target": 40,
+   "before200": 48,
+   "after200": 42.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 48,
+     "pick200": 42.5,
+     "keep": true,
+     "space": 94068,
+     "range": {
+      "min": 0,
+      "max": 96.7
+     },
+     "pick": {
+      "deck": {
+       "blind-cave-fish": 2,
+       "grotto-lobster": 1,
+       "lantern-spark-fly": 1,
+       "malachite-golem": 3,
+       "prospector-mole": 1,
+       "sulfur-cinder-moth": 2,
+       "vampire-bat": 1
+      },
+      "leaders": [
+       "malachite-golem"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "11-A-1",
+   "map": "mv",
+   "mapName": "The Aerie Vault",
+   "kind": "skirmish",
+   "name": "Cliff Ledge",
+   "target": 80,
+   "before200": 72.5,
+   "after200": 80.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 72.5,
+     "pick200": 70,
+     "keep": false,
+     "space": 2779,
+     "range": {
+      "min": 45,
+      "max": 96.7
+     },
+     "pick": {
+      "deck": {
+       "alpine-salamander": 4,
+       "alpine-swift": 3,
+       "apollo-butterfly": 4,
+       "eyrie-warden": 3,
+       "gale-swift": 1,
+       "wound-reaver": 2
+      },
+      "leaders": [
+       "wound-reaver"
+      ],
+      "shieldOverride": 0
+     }
+    },
+    {
+     "tool": "pick",
+     "before200": 72.5,
+     "pick200": 80.5,
+     "keep": true,
+     "pick": {
+      "deck": {
+       "wound-reaver": 1,
+       "apollo-butterfly": 4,
+       "eyrie-warden": 4,
+       "alpine-salamander": 4,
+       "alpine-swift": 1,
+       "vigil-owl": 3
+      },
+      "leaders": [
+       "wound-reaver"
+      ],
+      "shieldOverride": 6
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "pick"
+  },
+  {
+   "code": "11-A-2",
+   "map": "mv",
+   "mapName": "The Aerie Vault",
+   "kind": "skirmish",
+   "name": "Feather Drifts",
+   "target": 75,
+   "before200": 84,
+   "after200": 69.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 84,
+     "pick200": 69.5,
+     "keep": true,
+     "space": 9755,
+     "range": {
+      "min": 45,
+      "max": 98.3
+     },
+     "pick": {
+      "deck": {
+       "alpine-salamander": 4,
+       "apollo-butterfly": 2,
+       "chipmunk-hoarder": 3,
+       "eagle-owl-quartermaster": 1,
+       "eyrie-warden": 2,
+       "gale-swift": 2
+      },
+      "leaders": [
+       "eyrie-warden"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "11-A-3",
+   "map": "mv",
+   "mapName": "The Aerie Vault",
+   "kind": "skirmish",
+   "name": "The High Roost",
+   "target": 60,
+   "before200": 66.5,
+   "after200": 58.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 66.5,
+     "pick200": 58.5,
+     "keep": true,
+     "space": 5950,
+     "range": {
+      "min": 1.7,
+      "max": 65
+     },
+     "pick": {
+      "deck": {
+       "alpine-salamander": 3,
+       "alpine-swift": 3,
+       "apollo-butterfly": 3,
+       "chipmunk-hoarder": 5,
+       "ibex-rockcaller": 1,
+       "vigil-owl": 3
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ],
+      "shieldOverride": 18
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "11-A-4",
+   "map": "mv",
+   "mapName": "The Aerie Vault",
+   "kind": "boss",
+   "name": "The Roost Mother",
+   "target": 40,
+   "before200": 34.5,
+   "after200": 38,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 34.5,
+     "pick200": 38,
+     "keep": true,
+     "space": 48897,
+     "range": {
+      "min": 20,
+      "max": 91.7
+     },
+     "pick": {
+      "deck": {
+       "alpine-salamander": 2,
+       "alpine-swift": 1,
+       "apollo-butterfly": 2,
+       "chipmunk-hoarder": 4,
+       "eyrie-warden": 4,
+       "swamp-alligator": 1,
+       "wound-reaver": 2
+      },
+      "leaders": [
+       "wound-reaver"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  }
+ ]
+}
