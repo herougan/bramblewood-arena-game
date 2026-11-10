@@ -14,7 +14,7 @@ ok(/d\.faction === 'base'/.test(fn('ui41Allowed')) && /ui41YesAnywhere\(id\)/.te
 ok(/ok2 = id=> ok\(id\) && ui41Allowed\(id, defs\)/.test(app) && /ui37Split\(top, defs, ok2\)/.test(app) && /ui39ReviewMap\(top, ok2\)/.test(app), 'the window draws with the faction filter (list, Maybe, Claude, fill and review parts)');
 ok(/R\.newTarget \|\| 30/.test(fn('ui38Fill')), 'NEW! is topped up to its 30 minimum with lower-score fits');
 // 2 cap
-const cap = fn('ui41Cap'); ok(/p\.src\.has\('list'\) \|\| yes\.has\(p\.id\)/.test(cap) && /cnt\[f\] \|\| 0\) >= cap/.test(cap), 'family cap: list cards and Yes cards stay and count first');
+const cap = fn('ui41Cap'); ok(/p\.src\.has\('list'\) \|\| (p\.src\.has\('tut'\) \|\| )?yes\.has\(p\.id\)/.test(cap) /* 2026-11-10 (UI43): + the tutorial's cards */ && /cnt\[f\] \|\| 0\) >= cap/.test(cap), 'family cap: list cards and Yes cards stay and count first');
 ok(/ui41Cap\(top, neu, defs\), car2 = ui41Cap\(top, car, defs\)/.test(fn('ui37Split')), 'the cap runs on both groups before the fill');
 // 3 Yes / No
 ok(/btn\('yes', '↩ ' \+ TX\('ui\.ui37-yes'\)\)/.test(app) && /btn\('no', '✂ ' \+ TX\('ui\.ui37-no'\)\)/.test(app), 'Yes carries the Keep emoji, No the Cut scissors');

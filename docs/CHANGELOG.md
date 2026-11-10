@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Package UI43 (Map cards: No cards greyed; the tutorial's cards Carried on Thistlewood)
+- Owner 09:51 / 09:52. A card showing No (unflagged or flagged No) is greyed out. Every card in a tutorial fight's deck (20 cards) counts as Carried from Map 1 on and shows in Thistlewood's Carried group (pill "Tutorial", Map 0). Tests: `tests/ui43-2026-11-10.js`; ui41 / ui42 tests follow.
+
 ## 2026-11-10 Package BAL39 (Eye of the Volcano, The Sunken Grove, Basalt Foundry retuned; decision BAL39-1)
 - Players see: ten road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health or level touched). 200 games on the road seeds: The Ash Ossuary 20-A-1 72 -> 83.5% (target 88.2; Shield 15 -> 0), Heart of the Mountain 20-A-4 41 -> 37 (35.5), Scorched Boars 20-A-5 76.5 -> 64 (68), The Vent Crabs 20-A-6 70.5 -> 63.5 (61.6; second read on other tune seeds), Ash Condor Roost 20-A-7 63.5 -> 58.5 (55.4), Rotting Roots 5-A-1 95.5 -> 90.5 (90), Moss Weir 5-A-3 70.5 -> 67.5 (60; leader Mangrove Mudskipper), The Grove Warden 5-A-4 32.5 -> 38.5 (40; Shield 34 -> 22 only: the deck read swapped out its leader Hedgehog Herbalist, refused), Vent Skitter 19-A-4 69.5 -> 74 (78.8; Shield 0), The Pyroclast Wyrm 19-A-9 67 -> 59 (60).
 - Road (`skirmish_pass measure 40 --maxmap=20`, bal38 -> bal39): in band 167 -> 168, within 10 184 -> 184, beyond 20 9 -> 10 (20-A-5 reads 45 on the first 40 road seeds, 64 at 200), mean 67.4 -> 67.2. The Sunken Grove leaves the worst 8. Read, no pick 2+ nearer: 19-A-2 78 (86.3), 19-A-10 31 (40), 2-4 53 (60), 0-B-3 53 (60), all in band. Not reachable: Gator Hollow 5-A-2 74.5 (65; its deck's Rising Tide boon is off, so no deck move is legal, Shield at the rule), Hermit Row 2-3 60 (70): BAL39-1.

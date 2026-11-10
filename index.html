@@ -55324,7 +55324,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '9b8c684c6aba', BUILD_CARD_HASH = 'b8d2500e395a9256985b94b4ea9999e29a699692a0e3ec8db6769865d4194aa4';
+const BUILD_ID = '211ea2184a16', BUILD_CARD_HASH = 'b8d2500e395a9256985b94b4ea9999e29a699692a0e3ec8db6769865d4194aa4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -85288,8 +85288,12 @@ function ui37FlagOf(top, id){ const e = ui37Ent(top); return e.yes.includes(id) 
 function ui42Shown(top, id){ return ui37FlagOf(top, id) === 'yes' ? 'yes' : 'no'; }
 // the pure rule (tests/ui37-2026-11-08.js lifts it): maps = [{n, list, yes, no}] (main maps, n = map number); returns Map(card id -> the earliest map number before n that gives it)
 // 2026-11-09 (UI42): Carried = flagged Yes on an earlier main map (unflagged and No do not count)
+// 2026-11-10 (owner 09:52: "Thistlewood would have the cards from the tutorial map as carried."): every card in a tutorial fight's deck is Carried
+// from Map 1 on, without a Yes (the tutorial has no map list of its own); its pill reads Map 0, the tutorial's number.
+function ui43TutorialCards(){ const s = new Set(); try{ const m = CONQUEST_MAPS.find(x=> x.id === 'mtut'); ((m && m.nodes) || []).forEach(nd=> Object.keys(nd.deck || {}).forEach(id=> s.add(id))); }catch(e){} return [...s]; }
 function ui37CarriedIndex(n, maps){
   const out = new Map();
+  if(n != null && n >= 1) ui43TutorialCards().forEach(id=>{ if(!out.has(id)) out.set(id, 0); });
   (maps || []).filter(m=> m && m.n != null && m.n < n).sort((a, b)=> a.n - b.n).forEach(m=>{ (m.yes || []).forEach(id=>{ if(!out.has(id)) out.set(id, m.n); }); });
   return out;
 }
@@ -85310,7 +85314,7 @@ function ui37Targets(top){ const n = mapNumberOf(top), d = th6Targets(n == null 
 // every prospective card of a main map: id -> {id, src: Set('list' | 'maybe' | 'claude' | 'newcard' | 'flag'), why}
 function ui37Prospects(top, defs, ok){
   const side = ui38SideOnly(top); // 2026-11-09 (package UI38, owner 03:55): no side-map cards (one only on a side map's list shows only when flagged); a proposed concept by its id
-  const out = new Map(), add = (id, src, why)=>{ if(!id || !(ui38Concept(id) || (defs[id] && ok(id))) || (src !== 'flag' && side.has(id))) return; let e = out.get(id); if(!e){ e = {id, src: new Set(), why: ''}; out.set(id, e); } e.src.add(src); if(why && !e.why) e.why = String(why); };
+  const out = new Map(), add = (id, src, why)=>{ if(!id || !(ui38Concept(id) || (defs[id] && ok(id))) || (src !== 'flag' && src !== 'tut' && side.has(id))) return; let e = out.get(id); if(!e){ e = {id, src: new Set(), why: ''}; out.set(id, e); } e.src.add(src); if(why && !e.why) e.why = String(why); };
   try{ mpEntry(top).cards.forEach(id=> add(id, 'list')); }catch(e){}
   try{ const rv = rv1ReviewOf({key: 'cards'}, top); if(rv) (rv.maybe || []).forEach(e=> e && add(e.id, 'maybe', e.why)); }catch(e){}
   const cn = (typeof CLAUDE_NEW !== 'undefined' && CLAUDE_NEW) || {}, n = mapNumberOf(top);
@@ -85318,6 +85322,7 @@ function ui37Prospects(top, defs, ok){
   if(n != null) ((cn.skillrec || {})[String(n)] || []).forEach(e=> e && add(e.id, 'claude', e.why));
   const c = (cn.content17 || {})[top]; ((c && c.groups) || []).slice().sort((a, b)=> (b.current ? 1 : 0) - (a.current ? 1 : 0)).forEach(g=> (g.picks || []).forEach(p=> p && add(p.id, p.source === 'new' ? 'newcard' : 'claude', (g.theme ? g.theme + ': ' : '') + (p.why || ''))));
   const e = ui37Ent(top); e.yes.concat(e.no).forEach(id=> add(id, 'flag'));
+  if(n === 1) ui43TutorialCards().forEach(id=> add(id, 'tut')); // 2026-11-10 (owner 09:52): Thistlewood shows the tutorial's cards, as Carried
   return out;
 }
 // 2026-11-09 (package UI41, owner 21:36 #3: "Don't include the obvious faction cards"): a faction card (cards.json `faction` set to a faction, not 'base') is no
@@ -85328,7 +85333,7 @@ function ui41Allowed(id, defs){ const d = defs[id]; return !d || !d.faction || d
 // owner flagged Yes always stay (they count first); the cap is not applied to list cards, so nothing on today's list is dropped.
 function ui41Cap(top, list, defs){
   const cap = ((UI38_PROS && UI38_PROS.rules) || {}).familyCap || 2, cnt = {}, keep = new Set(), yes = new Set(ui37Ent(top).yes);
-  const fixed = p=> p.src.has('list') || yes.has(p.id);
+  const fixed = p=> p.src.has('list') || p.src.has('tut') || yes.has(p.id); // + the tutorial's cards on Thistlewood (2026-11-10, owner 09:52)
   list.forEach(p=>{ if(fixed(p)){ keep.add(p.id); const f = ui38Family(p.id, defs); if(f) cnt[f] = (cnt[f] || 0) + 1; } });
   list.forEach(p=>{ if(keep.has(p.id)) return; const f = ui38Family(p.id, defs); if(f && (cnt[f] || 0) >= cap) return; if(f) cnt[f] = (cnt[f] || 0) + 1; keep.add(p.id); });
   return list.filter(p=> keep.has(p.id));
@@ -85391,7 +85396,7 @@ function ui37ExportFile(kind){
   try{ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], {type: kind === 'csv' ? 'text/csv' : 'application/json'})); a.download = 'bramblewood-map-picks.' + (kind === 'csv' ? 'csv' : 'json'); document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
   return body;
 }
-const UI37_SRC_TX = {list: ()=> TX('ui.ui37-src-list'), maybe: ()=> TX('ui.ui37-src-maybe'), claude: ()=> TX('ui.ui37-src-claude'), newcard: ()=> TX('ui.ui37-src-newcard'), flag: ()=> TX('ui.ui37-src-flag'), earlier: ()=> TX('ui.ui37-src-earlier'), fit: ()=> TX('ui.ui38-src-fit'), concept: ()=> TX('ui.ui38-src-concept')}; // UI38: + fit, concept // literal keys (keyify drops keys built from names)
+const UI37_SRC_TX = {tut: ()=> TX('tutorial.tutorial'), list: ()=> TX('ui.ui37-src-list'), maybe: ()=> TX('ui.ui37-src-maybe'), claude: ()=> TX('ui.ui37-src-claude'), newcard: ()=> TX('ui.ui37-src-newcard'), flag: ()=> TX('ui.ui37-src-flag'), earlier: ()=> TX('ui.ui37-src-earlier'), fit: ()=> TX('ui.ui38-src-fit'), concept: ()=> TX('ui.ui38-src-concept')}; // UI38: + fit, concept // literal keys (keyify drops keys built from names)
 // 2026-11-09 (package UI39, owner 10:17: "combine the prospects UI and the Lists UI. So I pick from there, full view. Not pill view. Combine them."): one view, no
 // Lists / Prospects switch. A prospect is the Lists view's full card: a card on the map's reviewed MAP list is its own review tile (rv1TileHTML: art, stats,
 // skills, the review pills, ✂ Cut / Keep, ✏️ edit), any other card the same full card with ✏️ (data-rv-kind "ui39"), a proposed concept a card-shaped placeholder
@@ -85402,7 +85407,7 @@ function ui37TileHTML(top, p, kind, defs, idx, rvMap){
   const fromPill = kind !== 'new' && from != null ? `<b class="ui37-from" title="${escapeAttr(TX('ui.ui37-from-tip', {n: from}))}">${escapeHtml(TX('ui.ui37-from', {n: from}))}</b>` : '';
   const btn = (k, lab)=> `<button type="button" class="ui37-yn-b is-${k}${fs === k ? ' on' : ''}" data-ui37-flag="${k}" aria-pressed="${fs === k ? 'true' : 'false'}">${escapeHtml(lab)}</button>`;
   const card = c ? ui39ConceptCardHTML(c) : rv ? rv1TileHTML(rv.e, rv.kind, defs, 'cards') : ui39PlainTileHTML(p.id, defs, p.why || '');
-  return `<div class="ui37-tile ui39-tile is-${f || 'none'}${c ? ' is-concept' : ''}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${card}<span class="ui37-pills">${src}${fromPill}</span>`
+  return `<div class="ui37-tile ui39-tile is-${f || 'none'}${fs === 'no' ? ' ui43-no' : ''}${c ? ' is-concept' : ''}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${card}<span class="ui37-pills">${src}${fromPill}</span>`
     + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', '↩ ' + TX('ui.ui37-yes'))}${btn('no', '✂ ' + TX('ui.ui37-no'))}</span></div>`;
 }
 // a card on no review: the same full card as a review tile (pack pill, power badge, ✏️ for admins), no Cut / Keep (it is on no list to cut from)
@@ -85544,6 +85549,7 @@ function ui38Css(){
     + ' .ui37-tile.ui39-tile{display:flex; flex-direction:column; align-items:center; flex-wrap:nowrap; gap:4px; padding:5px 5px 6px; border-radius:12px; width:calc(var(--card-full-w) + 12px); max-width:100%; box-sizing:border-box;}'
     + ' .ui39-tile > .rv1-tile, .ui39-tile > .ui39-ctile{width:var(--card-full-w); max-width:100%;} .ui39-ctile{display:flex; flex-direction:column;} .ui39-ctile .ui39-cc{width:100% !important; height:auto !important; margin:0; border-radius:8px; cursor:help;} .ui39-tile .ui37-pills{justify-content:center;} .ui39-tile .ui37-yn{align-self:center;}'
     + ' .ui39-tile.is-no > .rv1-tile{opacity:.6;} .ui37-tile.ui39-tile.is-no{opacity:1;}'
+    + ' .ui39-tile.ui43-no > :first-child{filter:grayscale(1); opacity:.45; transition:filter .15s, opacity .15s;} .ui39-tile.ui43-no:hover > :first-child{opacity:.7;}' // 2026-11-10 (owner 09:51: "When its \"No\", please gray out the card."): every card showing No, flagged or not
     + ' .ui39-cc{display:flex !important; flex-direction:column; gap:3px; padding:6px 6px 7px; box-sizing:border-box; text-align:left; color:#f6ead2; overflow:hidden; font:600 10px/1.25 system-ui,sans-serif;'
     + ' background:repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 6px, transparent 6px 12px), #3a2e1e; border:2px dashed rgba(255,243,220,.5); aspect-ratio:auto !important; min-height:calc(var(--card-full-w) * 1.25);}'
     + ' .ui39-cc.rar-uncommon{border-color:#6fbf73;} .ui39-cc.rar-rare{border-color:#5aa0e6;}'

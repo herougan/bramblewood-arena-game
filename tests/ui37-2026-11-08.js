@@ -15,7 +15,7 @@ ok(blk.length > 1000, 'the UI37_PROS block is in arena_app.js');
 
 // 1. the rule
 { const m = blk.match(/function ui37CarriedIndex\(n, maps\)\{[\s\S]*?\n\}\n/); ok(!!m, 'ui37CarriedIndex found');
-  const f = new Function(m[0] + '; return ui37CarriedIndex;')();
+  const f = new Function('function ui43TutorialCards(){ return []; }' /* 2026-11-10 (UI43) */ + m[0] + '; return ui37CarriedIndex;')();
   const maps = [{n: 0, list: ['a', 'b'], yes: [], no: []}, {n: 1, list: ['c'], yes: ['x'], no: ['c']}, {n: 2, list: ['d'], yes: [], no: []}, {n: 3, list: ['e'], yes: ['b'], no: []}];
   const at2 = f(2, maps), at4 = f(4, maps), at0 = f(0, maps);
   ok(at0.size === 0, 'Map 0: nothing is carried');

@@ -8,7 +8,7 @@ let fail = 0, pass = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  x', 
 const app = rd('arena_app.js'), html = rd('index.html');
 const fn = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0) return ''; const j = app.indexOf('\n}\n', i), k = app.indexOf('\n', i); const e = (app[k - 1] === '}' && (j < 0 || j > k)) ? k : j + 2; return app.slice(i, e); };
 // pure rules
-const F = new Function(fn('ui37CarriedIndex') + fn('ui37CarriedPool') + '; return {ui37CarriedIndex, ui37CarriedPool};')();
+const F = new Function('function ui43TutorialCards(){ return []; }' /* 2026-11-10 (UI43): the tutorial's cards are tested in ui43 */ + fn('ui37CarriedIndex') + fn('ui37CarriedPool') + '; return {ui37CarriedIndex, ui37CarriedPool};')();
 const maps = [{n: 0, list: ['a', 'b', 'c'], yes: ['a'], no: ['c']}, {n: 1, list: ['d'], yes: [], no: []}];
 ok([...F.ui37CarriedIndex(2, maps).keys()].join() === 'a', 'Carried: only the Yes card of an earlier map');
 ok([...F.ui37CarriedPool(2, maps).keys()].sort().join() === 'a,b,d', 'pool: list + Yes cards minus an explicit No (b, d come from lists)');
