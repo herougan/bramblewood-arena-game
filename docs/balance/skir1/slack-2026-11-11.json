@@ -1,0 +1,8 @@
+{
+ "about": "SKIR1 (2026-11-11): maps whose usage line is half their fights plus one (tools/skir1/lib_fight_2026_11_11.js ucapOf; tests/skir1-2026-11-11.js), each with its reason. Owner 00:16: 'try not to use a card too much' (decision SKIR1-8).",
+ "maps": {
+  "mr": "The Redwood Deep (Map 13): 10 usable cards for 8 fights of 5-7 different cards; half the fights (4) cannot cover the slots",
+  "m7": "Coral Current (Map 10): 10-2 reaches its band (86%) only with the list's plain fillers (Orca Vanguard, Reef Shark, Sea Turtle Elder), already in 5 of 9 fights",
+  "m11": "The Sundered Peak (Map 20): the boss 20-9 read 100% on the rebuilt deck; its pre-SKIR1 cards (Ashbone Ghoul, Cinder Skeleton, Obsidian Scorpion) were each in 5 of 10 fights"
+ }
+}

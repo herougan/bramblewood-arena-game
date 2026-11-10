@@ -7038,6 +7038,501 @@
     "lotus-frog": 1,
     "dam-keeper-beaver": 1
    }
+  },
+  {
+   "id": "mx",
+   "mapNo": 20,
+   "side": true,
+   "name": "Volcano Lair",
+   "strategies": [
+    {
+     "id": "BPRO",
+     "focus": "family:flying"
+    },
+    {
+     "id": "BPRO",
+     "focus": "big"
+    },
+    {
+     "id": "BPRO",
+     "focus": "family:fire"
+    }
+   ],
+   "peaks": [
+    "20-B-1",
+    "20-B-2",
+    "20-B-3"
+   ],
+   "usageCap": 2,
+   "repairs": [],
+   "mix": {
+    "cost1": {
+     "shown": 15,
+     "list": 15
+    },
+    "cost0": {
+     "shown": 3,
+     "list": 3
+    },
+    "wait1": {
+     "shown": 14,
+     "list": 14
+    },
+    "wait0": {
+     "shown": 4,
+     "list": 4
+    },
+    "lumber": {
+     "shown": 0,
+     "list": 0
+    },
+    "plain": {
+     "shown": 1,
+     "list": 1
+    },
+    "status": {
+     "shown": 2,
+     "list": 2
+    },
+    "stone": {
+     "shown": 0,
+     "list": 0
+    }
+   },
+   "fights": [
+    {
+     "code": "20-B-1",
+     "kind": "skirmish",
+     "size": 17,
+     "old": {
+      "ash-moth": 3,
+      "ashbone-ghoul": 1,
+      "ember-jackal": 3,
+      "fire-drake-hatchling": 1,
+      "magma-salamander": 2,
+      "pack-mule": 5,
+      "tide-spirit": 2
+     },
+     "leaders0": [
+      "fire-drake-hatchling"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:fire",
+     "deck": {
+      "fire-drake-hatchling": 1,
+      "cinder-hornet": 1,
+      "ember-centipede": 5,
+      "magma-titan": 5,
+      "salamander-pyromancer": 1,
+      "deep-cave-troll": 4
+     },
+     "problems": []
+    },
+    {
+     "code": "20-B-2",
+     "kind": "skirmish",
+     "size": 16,
+     "old": {
+      "cinder-stoker": 1,
+      "ember-centipede": 3,
+      "pack-mule": 3,
+      "obsidian-scorpion": 1,
+      "tide-spirit": 2,
+      "ash-moth": 5,
+      "magma-salamander": 1
+     },
+     "leaders0": [
+      "magma-salamander"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "big",
+     "deck": {
+      "magma-salamander": 2,
+      "ancient-sloth-titan": 4,
+      "gorge-wyrm": 4,
+      "stalactite-golem": 1,
+      "ember-jackal": 3,
+      "granite-ox-golem": 2
+     },
+     "problems": []
+    },
+    {
+     "code": "20-B-3",
+     "kind": "skirmish",
+     "size": 16,
+     "old": {
+      "ashbone-ghoul": 1,
+      "cinder-stoker": 1,
+      "magma-salamander": 2,
+      "magma-titan": 1,
+      "pack-mule": 5,
+      "tide-spirit": 1,
+      "vampire-roost": 5
+     },
+     "leaders0": [
+      "magma-salamander"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:flying",
+     "deck": {
+      "magma-salamander": 2,
+      "phoenix-fledgling": 4,
+      "ember-jackal": 3,
+      "thunder-lizard": 1,
+      "vampire-roost": 4,
+      "pyroclast-wyrm": 2
+     },
+     "problems": []
+    },
+    {
+     "code": "20-B-4",
+     "kind": "worldboss",
+     "size": 14,
+     "old": {
+      "fire-drake-hatchling": 1,
+      "magma-titan": 1,
+      "magma-salamander": 2,
+      "ember-jackal": 3,
+      "obsidian-scorpion": 1,
+      "cinder-stoker": 1,
+      "deep-cave-troll": 4,
+      "tide-spirit": 1
+     },
+     "leaders0": [
+      "caldera-wyrm"
+     ],
+     "explicitLeaders": true,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "boss",
+     "deck": {
+      "fire-drake-hatchling": 1,
+      "cinder-stoker": 1,
+      "ember-wisp": 1,
+      "gorge-wyrm": 4,
+      "granite-ox-golem": 3,
+      "cinder-hornet": 1,
+      "magma-titan": 3
+     },
+     "problems": []
+    }
+   ],
+   "usage": {
+    "cinder-hornet": 2,
+    "magma-titan": 2,
+    "gorge-wyrm": 2,
+    "ember-jackal": 2,
+    "granite-ox-golem": 2,
+    "ember-centipede": 1,
+    "salamander-pyromancer": 1,
+    "deep-cave-troll": 1,
+    "ancient-sloth-titan": 1,
+    "stalactite-golem": 1,
+    "phoenix-fledgling": 1,
+    "thunder-lizard": 1,
+    "vampire-roost": 1,
+    "pyroclast-wyrm": 1,
+    "cinder-stoker": 1,
+    "ember-wisp": 1
+   }
+  },
+  {
+   "id": "me",
+   "mapNo": 20,
+   "side": true,
+   "name": "Eye of the Volcano",
+   "strategies": [
+    {
+     "id": "BPRO",
+     "focus": "family:armor"
+    },
+    {
+     "id": "BPRO",
+     "focus": "open"
+    },
+    {
+     "id": "BPRO",
+     "focus": "big"
+    }
+   ],
+   "peaks": [
+    "20-A-2",
+    "20-A-5",
+    "20-A-7"
+   ],
+   "usageCap": 4,
+   "repairs": [],
+   "mix": {
+    "cost1": {
+     "shown": 13,
+     "list": 13
+    },
+    "cost0": {
+     "shown": 2,
+     "list": 2
+    },
+    "wait1": {
+     "shown": 12,
+     "list": 12
+    },
+    "wait0": {
+     "shown": 3,
+     "list": 3
+    },
+    "lumber": {
+     "shown": 0,
+     "list": 0
+    },
+    "plain": {
+     "shown": 2,
+     "list": 2
+    },
+    "status": {
+     "shown": 3,
+     "list": 3
+    },
+    "stone": {
+     "shown": 0,
+     "list": 0
+    }
+   },
+   "fights": [
+    {
+     "code": "20-A-1",
+     "kind": "elite",
+     "size": 11,
+     "old": {
+      "ash-moth": 4,
+      "ashbone-ghoul": 4,
+      "cinder-skeleton": 2,
+      "ossuary-lammergeier": 1
+     },
+     "leaders0": [
+      "ossuary-lammergeier"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "blend",
+     "deck": {
+      "ossuary-lammergeier": 1,
+      "vampire-roost": 4,
+      "obsidian-lich": 3,
+      "cinder-skeleton": 2,
+      "obsidian-scorpion": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "20-A-2",
+     "kind": "elite",
+     "size": 12,
+     "old": {
+      "cinder-stoker": 1,
+      "ashbone-ghoul": 4,
+      "deep-cave-troll": 5,
+      "stalactite-golem": 1,
+      "cinder-skeleton": 1
+     },
+     "leaders0": [
+      "cinder-stoker"
+     ],
+     "explicitLeaders": true,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "big",
+     "deck": {
+      "cinder-stoker": 1,
+      "cave-warlord": 3,
+      "deep-cave-troll": 2,
+      "ash-moth": 2,
+      "obsidian-scorpion": 1,
+      "pall-wraith": 2,
+      "ashbone-ghoul": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "20-A-3",
+     "kind": "elite",
+     "size": 11,
+     "old": {
+      "ash-moth": 2,
+      "ashbone-ghoul": 2,
+      "cave-warlord": 1,
+      "cinder-skeleton": 2,
+      "cinder-stoker": 1,
+      "deep-cave-troll": 1,
+      "obsidian-scorpion": 1,
+      "stalactite-golem": 1
+     },
+     "leaders0": [
+      "obsidian-scorpion"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "blend",
+     "deck": {
+      "obsidian-scorpion": 3,
+      "ancient-sloth-titan": 3,
+      "deep-cave-troll": 2,
+      "pall-wraith": 2,
+      "stalactite-golem": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "20-A-4",
+     "kind": "dungeon",
+     "size": 10,
+     "old": {
+      "ash-moth": 2,
+      "ashbone-ghoul": 1,
+      "cinder-stoker": 1,
+      "magma-wraith": 3,
+      "obsidian-scorpion": 3
+     },
+     "leaders0": [
+      "obsidian-scorpion"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "boss",
+     "deck": {
+      "obsidian-scorpion": 3,
+      "the-contradiction": 1,
+      "ash-moth": 2,
+      "rimeheart-colossus": 1,
+      "deep-cave-troll": 2,
+      "ancient-sloth-titan": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "20-A-5",
+     "kind": "elite",
+     "size": 19,
+     "old": {
+      "ash-moth": 3,
+      "ashbone-ghoul": 2,
+      "cave-warlord": 4,
+      "cinder-skeleton": 3,
+      "cinder-stoker": 1,
+      "deep-cave-troll": 4,
+      "obsidian-scorpion": 2
+     },
+     "leaders0": [
+      "obsidian-scorpion"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "open",
+     "deck": {
+      "obsidian-scorpion": 3,
+      "ancient-sloth-titan": 4,
+      "cinder-skeleton": 4,
+      "vampire-roost": 4,
+      "ashbone-ghoul": 4
+     },
+     "problems": []
+    },
+    {
+     "code": "20-A-6",
+     "kind": "elite",
+     "size": 11,
+     "old": {
+      "ancient-sloth-titan": 2,
+      "ash-moth": 1,
+      "ashbone-ghoul": 2,
+      "cinder-stoker": 1,
+      "obsidian-scorpion": 3,
+      "pack-mule": 2
+     },
+     "leaders0": [
+      "obsidian-scorpion"
+     ],
+     "explicitLeaders": true,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "blend",
+     "deck": {
+      "obsidian-scorpion": 3,
+      "ash-moth": 3,
+      "obsidian-lich": 2,
+      "pall-wraith": 2,
+      "stalactite-golem": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "20-A-7",
+     "kind": "elite",
+     "size": 19,
+     "old": {
+      "ancient-sloth-titan": 1,
+      "ash-cloud-condor": 3,
+      "ash-moth": 4,
+      "ashbone-ghoul": 1,
+      "cinder-skeleton": 4,
+      "cinder-stoker": 1,
+      "obsidian-scorpion": 2,
+      "vampire-roost": 3
+     },
+     "leaders0": [
+      "obsidian-scorpion"
+     ],
+     "explicitLeaders": false,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:armor",
+     "deck": {
+      "obsidian-scorpion": 3,
+      "obsidian-lich": 3,
+      "stalactite-golem": 1,
+      "pall-wraith": 3,
+      "ashbone-ghoul": 4,
+      "rimeheart-colossus": 1,
+      "ash-moth": 4
+     },
+     "problems": []
+    }
+   ],
+   "usage": {
+    "ash-moth": 4,
+    "pall-wraith": 4,
+    "deep-cave-troll": 3,
+    "ashbone-ghoul": 3,
+    "ancient-sloth-titan": 3,
+    "obsidian-lich": 3,
+    "stalactite-golem": 3,
+    "obsidian-scorpion": 2,
+    "cinder-skeleton": 2,
+    "vampire-roost": 2,
+    "rimeheart-colossus": 2,
+    "cave-warlord": 1,
+    "the-contradiction": 1
+   }
   }
  ]
 }

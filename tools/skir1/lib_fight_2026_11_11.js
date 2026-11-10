@@ -25,7 +25,8 @@ const unlockOf = m => { const no = G.mapNumberOf(m.id); if (!m.sub) return no; t
 function maps() { return G.CONQUEST_MAPS.filter(m => !m.reserved && !m.tower && !m.endless && !OUT_OF_SCOPE.has(m.id) && G.mapNumberOf(m.id) != null && G.mapNumberOf(m.id) <= 20 && (m.nodes || []).some(n => n.deck && Object.keys(n.deck).length)); }
 function fightsOf(m) { return (m.nodes || []).filter(n => n.deck && Object.keys(n.deck).length && !/tutorial|raid/.test(n.kind || 'skirmish')); }
 const isBoss = (n, all) => /boss|dungeon/.test(n.kind || '') || (n === all[all.length - 1] && (() => { try { const b = G.skirmishTargetBand(G.CONQUEST_MAPS.find(x => (x.nodes || []).includes(n)).id, n); return b && b.t <= 0.5; } catch (e) { return false; } })());
-let poolsCache = null;
+let poolsCache = null, oldCache = null; // each fight's deck before SKIR1 (the build plan's `old`)
+const planOld = () => { if (oldCache) return oldCache; oldCache = {}; try { JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'skir1', 'build-plan-2026-11-11.json'), 'utf8')).maps.forEach(p => p.fights.forEach(x => { oldCache[x.code] = x.old || {}; })); } catch (e) {} return oldCache; };
 function fight(m, n) {
   poolsCache = poolsCache || POOLS();
   const no = G.mapNumberOf(m.id), kind = n.kind || 'skirmish', old = Object.assign({}, n.deck), S = size(old), n0 = Object.keys(old).length;
@@ -45,7 +46,8 @@ function fight(m, n) {
   const stoneLeader = !explicit && L0.some(stoneOut);
   if (stoneLeader) L0 = [];
   const list = LP.fightPool(poolsCache, m.id, m.sub ? m.parent : null) || new Set();
-  const otherReward = id => { const s = (D[id] || {}).source; return !!(s && s.kind === 'map' && s.node && !(s.id === m.id && s.node === n.key)); };
+  // another fight's reward stays out, unless this fight already fielded it before SKIR1 (Map 20's boss had 20-2's Condor and 20-10's Lammergeier)
+  const otherReward = id => { const s = (D[id] || {}).source; return !!(s && s.kind === 'map' && s.node && !(s.id === m.id && s.node === n.key)) && !(planOld()[n.key] || {})[id]; };
   const deckable = id => { const d = D[id]; return d && !d.token && !d.test && !d.hero && !d.pool && !d.hallOfFame && !/^egg-/.test(id) && !(d.effects || {}).leader && d.cardType !== 'materia' && d.cardType !== 'equipment'; };
   const allowedIn = id => keep.has(id) || L0.includes(id) || (deckable(id) && ((list.has(id) || own.includes(id)) && G.roadRarityOk(D[id].rarity, no, kind, m.id) && !otherReward(id)
     && !(M.stone(D[id]) && unlock < 21) && (D[id].kind !== 'baby' || ADMIN.has(id))));
@@ -75,4 +77,9 @@ function fight(m, n) {
     return out; };
   return { m, n, map: m.id, mapNo: no, unlock, side: !!m.sub, code: n.key, kind, name: n.name, old, S, n0, L0, explicit, stoneLeader, pin, keep, pool, list, own, cap, dMin, dMax, U, k14, problems, legal: d => !problems(d).length, leadOf };
 }
-module.exports = { maps, fightsOf, fight, isBoss, size, keyOf, unlockOf, G, D, DX, M, ADMIN, KEEP_MIN };
+// the map's usage line: a card in at most half its fights (2 at least); one fight more on a map docs/balance/skir1/slack-2026-11-11.json names
+// (a thin list, or a fight that could not reach its band inside the line: the reason is recorded there)
+let slackCache = null;
+const slackMaps = () => { if (slackCache) return slackCache; try { slackCache = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'skir1', 'slack-2026-11-11.json'), 'utf8')).maps || {}; } catch (e) { slackCache = {}; } return slackCache; };
+const ucapOf = m => Math.max(2, Math.ceil(fightsOf(m).length / 2)) + (slackMaps()[m.id] ? 1 : 0);
+module.exports = { maps, fightsOf, fight, isBoss, size, keyOf, unlockOf, ucapOf, slackMaps, G, D, DX, M, ADMIN, KEEP_MIN };

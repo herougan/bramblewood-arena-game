@@ -38,7 +38,7 @@ function mapState(m, code) { // the other fights' decks of the map: usage (a fig
   const fs2 = L.fightsOf(m), F2 = fs2.map(x => L.fight(m, x)), others = fs2.filter(x => x.key !== code), usage = {};
   F2.filter(f => f.code !== code).forEach(f => Object.keys(f.n.deck).forEach(id => { if (!f.keep.has(id)) usage[id] = (usage[id] || 0) + 1; }));
   const listAll = [...new Set([].concat(...F2.map(f => f.pool)))], fam = {}; listAll.forEach(id => { fam[family(id)] = (fam[family(id)] || 0) + 1; });
-  return { usage, ucap: Math.max(2, Math.ceil(fs2.length / 2)) + SLACK, others, listAll, pairFam: id => fam[family(id)] === 2 ? family(id) : null }; // --slack: a later pass may let a card into 1 more fight
+  return { usage, ucap: Math.max(L.ucapOf(m), Math.max(2, Math.ceil(fs2.length / 2)) + SLACK), others, listAll, pairFam: id => fam[family(id)] === 2 ? family(id) : null }; // --slack: a later pass may let a card into 1 more fight
 }
 function fit(code) {
   const { m, n } = find(code), f = L.fight(m, n), st = mapState(m, code), band = bandOf(m, n), t0 = Date.now();
@@ -91,7 +91,7 @@ function fit(code) {
   const was = fr && fr.games >= G3 ? fr.win : T(start, G3, 9100), now = changed ? T(cur, G3, 9100) : was;
   const keep = changed && was != null && gap(now) + 2 <= gap(was);
   const res = { about: 'SKIR1 fit (tools/skir1/fit_2026_11_11.js)', code, map: m.id, mapNo: f.mapNo, side: f.side, kind: f.kind, name: n.name, band, shieldRule: rule, shieldOverride: ov0, games: G3,
-    before: { deck: start.deck, win: was }, pick: { deck: cur.deck, shield: cur.shield, win: now }, keep, trail, sec: Math.round((Date.now() - t0) / 1000) };
+    before: { deck: start.deck, win: was }, pick: { deck: cur.deck, shield: cur.shield, win: now }, keep, slack: SLACK, trail, sec: Math.round((Date.now() - t0) / 1000) };
   // the pick stands in for the deck in this process, so the map's later fights read the usage and mix it leaves (one run fits a whole map)
   if (keep) { n.deck = cur.deck; if (cur.shield != null) n.shieldOverride = cur.shield; }
   fs.mkdirSync(DIR, { recursive: true }); fs.writeFileSync(path.join(DIR, code + '.json'), JSON.stringify(res) + '\n');
@@ -123,7 +123,7 @@ else if (CMD === 'repair') {
   const APP = path.join(ROOT, 'arena_app.js'); let s = fs.readFileSync(APP, 'utf8'); const touched = [];
   const maps = L.maps().filter(m => !CODES.length || CODES.includes(m.id));
   for (const m of maps) {
-    const fs2 = L.fightsOf(m), ucap = Math.max(2, Math.ceil(fs2.length / 2)), F2 = fs2.map(x => L.fight(m, x));
+    const fs2 = L.fightsOf(m), ucap = L.ucapOf(m), F2 = fs2.map(x => L.fight(m, x));
     const listAll = [...new Set([].concat(...F2.map(f => f.pool)))], fam = {}; listAll.forEach(id => { fam[family(id)] = (fam[family(id)] || 0) + 1; });
     const pairFam = id => fam[family(id)] === 2 ? family(id) : null;
     const usage = () => { const u = {}; F2.forEach(f => Object.keys(f.n.deck).forEach(id => { if (!f.keep.has(id)) u[id] = (u[id] || 0) + 1; })); return u; };
@@ -135,7 +135,8 @@ else if (CMD === 'repair') {
       const re = new RegExp(`^(\\s*\\{ ?key:\\s*"${f.code.replace(/-/g, '\\-')}",.*)$`, 'm'), mm = s.match(re), deck = Object.fromEntries(Object.keys(best.d).sort().map(x => [x, best.d[x]]));
       s = s.replace(mm[1], mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(deck) + ` /* 2026-11-11 (SKIR1 repair): ${id} x${k} -> ${best.c} (${why}); deck (was ${JSON.stringify(d0)}) */`));
       f.n.deck = best.d; touched.push(f.code); console.log('repair', f.code, id, 'x' + k, '->', best.c, '(' + why + ')'); return true; };
-    for (const f of F2) for (const id of pairBad(f, f.n.deck).sort((x, y) => f.n.deck[x] - f.n.deck[y]).slice(0, 1)) swap(f, id, 'two of a two-card family in one fight');
+    for (const f of F2) { const bad = pairBad(f, f.n.deck).sort((x, y) => f.n.deck[x] - f.n.deck[y]); // the smaller copy set first, else its partner
+      bad.some(id => pairBad(f, f.n.deck).includes(id) && swap(f, id, 'two of a two-card family in one fight')); }
     for (const [id, k] of Object.entries(usage())) { let over = k - ucap; if (over <= 0) continue;
       for (const f of F2.filter(f => f.n.deck[id] && !f.keep.has(id)).sort((p, q) => p.n.deck[id] - q.n.deck[id])) { if (over <= 0) break; if (swap(f, id, `a card in at most ${ucap} of the map's fights`)) over--; } }
   }

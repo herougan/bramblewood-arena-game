@@ -59,11 +59,14 @@ for (const m of L.maps()) for (const n of L.fightsOf(m)) {
 const MIN = { cost1: 4, cost0: 3, wait1: 4, wait0: 3, lumber: 2, plain: 2, status: 2 };
 const UT = {}; J('canonical/unit-themes.json').units.forEach(u => { UT[u.id] = u; }); const AT = {}; J('canonical/animal-tags.json').cards.forEach(t => { AT[t.id] = t; });
 const family = id => (UT[id] || {}).animalGroup || (AT[id] || {}).group || (D[id] || {}).animal || id;
+Object.entries(L.slackMaps()).forEach(([id, why]) => ok(typeof why === 'string' && why.length > 20, `slack map ${id} says why (${why})`));
 for (const [mid, fl] of Object.entries(byMap)) {
   const shown = new Set([].concat(...fl.map(x => Object.keys(x.n.deck)))), avail = [...new Set([].concat(...fl.map(x => x.f.pool)))];
   for (const k of Object.keys(MIN)) { const a = avail.filter(id => M.kinds(D[id])[k]).length, s = [...shown].filter(id => M.kinds(D[id])[k]).length;
     ok(s >= Math.min(MIN[k], a), `${mid}: its decks show ${s} ${k} card(s) (the pools hold ${a}; minimum ${MIN[k]})`); }
-  const ucap = Math.max(2, Math.ceil(fl.length / 2)), use = {}; // a fight that keeps the card (its leader, showcase, first-clear card) does not count
+  // half the map's fights (2 at least), one more on a map docs/balance/skir1/slack-2026-11-11.json names with its reason; a fight that keeps the
+  // card (its leader, showcase, first-clear card) does not count
+  const ucap = L.ucapOf(fl[0].f.m), use = {};
   fl.forEach(x => Object.keys(x.n.deck).forEach(id => { if (!x.f.keep.has(id)) use[id] = (use[id] || 0) + 1; }));
   Object.entries(use).filter(([, k]) => k > ucap).forEach(([id, k]) => ok(false, `${mid}: ${id} in ${k} of ${fl.length} fights besides the ones that keep it (at most ${ucap})`));
   ok(true, `${mid}: no card in more than ${ucap} of its ${fl.length} fights`);

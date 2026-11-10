@@ -1,0 +1,679 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T20:40:42.287Z",
+ "fingerprint": "97bb9d28f904",
+ "map": {
+  "id": "mx",
+  "num": 20,
+  "name": "Volcano Lair"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-cloud-condor",
+  "cinder-hornet",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "ember-centipede",
+  "ember-jackal",
+  "ember-wisp",
+  "gorge-wyrm",
+  "granite-ox-golem",
+  "lava-waders",
+  "magma-salamander",
+  "magma-titan",
+  "phoenix-fledgling",
+  "pyroclast-wyrm",
+  "salamander-pyromancer",
+  "stalactite-golem",
+  "thunder-lizard",
+  "vampire-roost"
+ ],
+ "poolNames": [
+  "Ancient Sloth Titan",
+  "Ash Cloud Condor",
+  "Cinder Hornet",
+  "Cinder Stoker",
+  "Cave Bear",
+  "Ember Centipede",
+  "Ember Jackal",
+  "Ember Firefly",
+  "Gorge Wyrm",
+  "Granite Ox Golem",
+  "Lava Waders",
+  "Magma Salamander",
+  "Magma Rhino",
+  "Phoenix Fledgling",
+  "Pyroclast Wyrm",
+  "Salamander Pyromancer",
+  "Stalactite Pill Bug",
+  "Thunder Lizard",
+  "Vampire Roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 1500,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-B-1",
+   "label": "vs 20-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-2",
+   "label": "vs 20-B-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-3",
+   "label": "vs 20-B-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-4",
+   "label": "vs 20-B-4 worldboss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:fire",
+   "label": "fire (skill family)",
+   "cards": [
+    "ember-wisp",
+    "magma-titan",
+    "salamander-pyromancer"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "ash-cloud-condor",
+    "cinder-hornet",
+    "phoenix-fledgling"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "ancient-sloth-titan",
+    "cinder-hornet",
+    "deep-cave-troll",
+    "gorge-wyrm",
+    "granite-ox-golem",
+    "magma-titan",
+    "phoenix-fledgling",
+    "pyroclast-wyrm",
+    "stalactite-golem",
+    "thunder-lizard",
+    "vampire-roost"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:fire",
+   "steps": 2,
+   "moves": 1,
+   "games": 546,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:flying",
+   "steps": 2,
+   "moves": 2,
+   "games": 378,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 2,
+   "moves": 1,
+   "games": 560,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 2,
+   "moves": 1,
+   "games": 462,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 401,
+ "games": 2394,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "flying x10"
+   ],
+   "deck": {
+    "ash-cloud-condor": 3,
+    "cinder-hornet": 3,
+    "cinder-stoker": 4,
+    "ember-jackal": 3,
+    "ember-wisp": 3,
+    "phoenix-fledgling": 4
+   },
+   "cards": [
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "phoenix-fledgling",
+     "name": "Phoenix Fledgling",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "ash-cloud-condor",
+     "name": "Ash Cloud Condor",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "ember-jackal",
+     "name": "Ember Jackal",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ember-wisp",
+     "name": "Ember Firefly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6369,
+   "ci": [
+    0.5748,
+    0.6991
+   ],
+   "avgLumber": 1,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 7,
+    "1": 6,
+    "2": 7
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (10 copies at 2+ Lumber, average 1.4)",
+    "guard x6"
+   ],
+   "deck": {
+    "ancient-sloth-titan": 2,
+    "cinder-stoker": 4,
+    "ember-jackal": 3,
+    "ember-wisp": 3,
+    "gorge-wyrm": 4,
+    "stalactite-golem": 4
+   },
+   "cards": [
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gorge-wyrm",
+     "name": "Gorge Wyrm",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "ember-jackal",
+     "name": "Ember Jackal",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ember-wisp",
+     "name": "Ember Firefly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "ancient-sloth-titan",
+     "name": "Ancient Sloth Titan",
+     "copies": 2,
+     "cost": 3,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.3452,
+   "ci": [
+    0.2816,
+    0.4089
+   ],
+   "avgLumber": 1.45,
+   "avgWait": 2,
+   "curve": {
+    "0": 7,
+    "1": 3,
+    "2": 4,
+    "3": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.3333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "family:fire",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.1)",
+    "fire x8"
+   ],
+   "deck": {
+    "cinder-hornet": 4,
+    "cinder-stoker": 4,
+    "ember-centipede": 4,
+    "ember-wisp": 3,
+    "magma-titan": 4,
+    "salamander-pyromancer": 1
+   },
+   "cards": [
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ember-centipede",
+     "name": "Ember Centipede",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "magma-titan",
+     "name": "Magma Rhino",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "ember-wisp",
+     "name": "Ember Firefly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "salamander-pyromancer",
+     "name": "Salamander Pyromancer",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "epic"
+    }
+   ],
+   "score": 0.3333,
+   "ci": [
+    0.2673,
+    0.3993
+   ],
+   "avgLumber": 1.05,
+   "avgWait": 0.75,
+   "curve": {
+    "0": 11,
+    "1": 1,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "fire",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.2)",
+    "flying x7"
+   ],
+   "deck": {
+    "ash-cloud-condor": 3,
+    "cinder-hornet": 4,
+    "cinder-stoker": 4,
+    "lava-waders": 4,
+    "salamander-pyromancer": 1,
+    "vampire-roost": 4
+   },
+   "cards": [
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lava-waders",
+     "name": "Lava Waders",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "vampire-roost",
+     "name": "Vampire Roost",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "ash-cloud-condor",
+     "name": "Ash Cloud Condor",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "salamander-pyromancer",
+     "name": "Salamander Pyromancer",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "epic"
+    }
+   ],
+   "score": 0.2024,
+   "ci": [
+    0.1457,
+    0.259
+   ],
+   "avgLumber": 1.2,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 4,
+    "1": 8,
+    "2": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.1667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mx --pool ancient-sloth-titan,ash-cloud-condor,cinder-hornet,cinder-stoker,deep-cave-troll,ember-centipede,ember-jackal,ember-wisp,gorge-wyrm,granite-ox-golem,lava-waders,magma-salamander,magma-titan,phoenix-fledgling,pyroclast-wyrm,salamander-pyromancer,stalactite-golem,thunder-lizard,vampire-roost --max-unique 6 --max-copies 4 --budget 1500 --final-games 24 --seed skir1-bpro --focus family:fire,family:flying,big,open --level 1 --mode map-true"
+}
