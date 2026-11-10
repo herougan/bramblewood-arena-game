@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Package BAL41 (The Kelp Mangroves and Wolfsbane Tundra retuned; side maps later)
+- Players see: eight road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health or level touched). 200 games on the road seeds: Mudflat Skippers 9-1 74.5 -> 87.5% (target 90; leader Crocodile Ambusher, Shield 0), Kelp Curtains 9-4 54.5 -> 62.5 (62; Shield 4 -> 0, Rising Tide still on), Moray Den 9-5 49.5 -> 62 (66; leader Horseshoe Crab, Shield 0), Drifting Shell 9-6 55 -> 59 (60; leader Reef Shark, Shield 0), Ice Fang Patrol 17-1 99.5 -> 93.5 (90), Frostbitten Pack 17-2 92 -> 85.5 (85), Glacier Herd 17-6 77 -> 57.5 (65), Alpha Howler's Den 17-7 67.5 -> 59 (60).
+- Read, no pick 2+ nearer (both in band): Musk Ox Bulwark 17-5 74.5 (70), The Walrus Icebreaker 17-8 35.5 (40). Lilypad Reach and The Pale Desert dropped from the brief (owner 11:57: side maps are tuned later); nothing applied there.
+- Road: see `docs/balance/bal41/road-totals-2026-11-10.txt` (bal40w200 -> bal41w200).
+- Tools: `tools/bal41/` (BAL40's baseline, pick, apply, summary; `exhaust_2026_11_10.js` = BAL37's road_exhaust with the challenge boon counted on the expanded defs, `boon_expand_2026_11_10.js`, FIX12); output `docs/balance/bal41/`.
+- Tests: new tests/bal41-2026-11-10.js (+ pins); bal21 skips 17-6, 17-7; bal26 skips 17-2; bal27 skips 9-4.
+
 ## 2026-11-10 Package FIX12 (nine batch-1023e test failures)
 - Players see: the Map cards window's Claude picks wear the 🏹 by the card's live delivery, so the Reach throwers (Trident Caiman, Mallard Halberdier, Tidefolk Harpooner) no longer show as ranged since ENG40 made Reach melee (`c17LiveDelivery`, arena_app.js). No fight changes.
 - Tests brought to the new rules (stale pins): skills (Hoard per 3 Lumber, ENG40), en5 / tut3 / content18 / bal3 (ENG39 kinds: Breach as Puncture, Fire Arrow / bolts as Arrow {type}, Berserk as Harbinger {who: ally}, read expanded), ui31 (ENG40's melee-swing gate on Daunt), content17 (Reach melee), bal13 (BAL33's 14-A-1 / 14-A-3 swap), bal19 (fights BAL33 / BAL35-39 retuned are checked by their own tests).
