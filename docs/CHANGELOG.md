@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Package DES3 (side-map thematic cards, design proposal)
+- Players see: nothing (no game change). `docs/design/side-map-cards-2026-11-10.md` / `.json`: for each of the 17 side maps of Maps 0-20, which listed cards fit by name and art, which do not, existing cards elsewhere that would fit (weak commons/uncommon first; the hard Pebble Beach, Canopy 14-A-1/3, Basalt Foundry 19-A-3/7/8 and Old Bramble 0-B-1/2 fights, plus the Rising Tide and Sky Ambush boon fights), and 2-3 new card concepts each. No list, deck, card or `arena_app.js` change.
+
 ## 2026-11-10 Package FIX12 (nine batch-1023e test failures)
 - Players see: the Map cards window's Claude picks wear the 🏹 by the card's live delivery, so the Reach throwers (Trident Caiman, Mallard Halberdier, Tidefolk Harpooner) no longer show as ranged since ENG40 made Reach melee (`c17LiveDelivery`, arena_app.js). No fight changes.
 - Tests brought to the new rules (stale pins): skills (Hoard per 3 Lumber, ENG40), en5 / tut3 / content18 / bal3 (ENG39 kinds: Breach as Puncture, Fire Arrow / bolts as Arrow {type}, Berserk as Harbinger {who: ally}, read expanded), ui31 (ENG40's melee-swing gate on Daunt), content17 (Reach melee), bal13 (BAL33's 14-A-1 / 14-A-3 swap), bal19 (fights BAL33 / BAL35-39 retuned are checked by their own tests).

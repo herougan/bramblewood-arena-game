@@ -1,0 +1,1352 @@
+{
+ "mq": {
+  "fits": [
+   "lucky-hopper",
+   "field-mouse",
+   "field-vole",
+   "hedgerow-shrew",
+   "robin-redbreast",
+   "slow-worm",
+   "cricket-drummer",
+   "ant-hill",
+   "bee-forager",
+   "cottontail"
+  ],
+  "off": [
+   {
+    "id": "woodcock-lookout",
+    "why": "woodland bird (Forest tag), not a clover meadow"
+   },
+   {
+    "id": "bramble-sprout",
+    "why": "thicket hedgehog; belongs to the Bramble maps"
+   },
+   {
+    "id": "badger-lumberjack",
+    "why": "lumber trade, woodland badger; no meadow link"
+   }
+  ],
+  "add": [
+   {
+    "id": "meadow-rabbit",
+    "why": "starter; the rabbits of the blurb"
+   },
+   {
+    "id": "harvest-mouse",
+    "why": "starter mouse; the 1-A-4 fight is named Harvest Mice"
+   },
+   {
+    "id": "honey-bee",
+    "why": "starter bee; 1-A-3 Puddle Hop / bees"
+   },
+   {
+    "id": "clover-butterfly",
+    "why": "common; name says clover"
+   },
+   {
+    "id": "ladybird-guard",
+    "why": "common; meadow insect, tanky and cheap"
+   },
+   {
+    "id": "rabbit-kit",
+    "why": "common rabbit kit"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Skylark Singer",
+    "animal": "skylark",
+    "rarity": "uncommon",
+    "role": "support flyer",
+    "art": "A skylark mid-song above a sea of clover blossoms, thunderheads on the horizon behind it."
+   },
+   {
+    "name": "Meadow Grasshopper",
+    "animal": "grasshopper",
+    "rarity": "common",
+    "role": "cheap attacker",
+    "art": "A bright green grasshopper mid-leap over white clover, bees drifting past."
+   },
+   {
+    "name": "The Old Hare",
+    "animal": "hare",
+    "rarity": "rare",
+    "role": "boss leader for 1-A-5",
+    "art": "A grey-muzzled hare dozing upright in a hollow of long grass, one ear cocked, clover flowers in its fur."
+   }
+  ],
+  "note": "Clovermead is the cleanest map; the off-theme Woodcock Lookout and Bramble Sprout are still fight staples (1-A-1, 1-A-2, 1-A-3), so the meadow adds above are their natural replacements. The boss has no hare card."
+ },
+ "mp": {
+  "fits": [
+   "riverworks-bastion",
+   "lodge-engineer",
+   "old-sturgeon",
+   "water-shrew",
+   "box-turtle",
+   "muskrat-lodgekeeper",
+   "platypus-spur",
+   "pyrenean-desman",
+   "snapstick-turtle",
+   "water-vole",
+   "muskrat-reedgatherer",
+   "pond-algae",
+   "victoria-regia",
+   "beaver-lumberjack"
+  ],
+  "off": [
+   {
+    "id": "alley-cat",
+    "why": "city cat, no pond link"
+   },
+   {
+    "id": "shoal-shark",
+    "why": "salt-water coastal shark in a still freshwater pond"
+   },
+   {
+    "id": "marsh-harrier",
+    "why": "swamp raptor, borderline; hunts over reeds, so keep only if the Reach gets a bird slot"
+   }
+  ],
+  "add": [
+   {
+    "id": "pond-duck",
+    "why": "starter; the very territorial ducks. Already in 2-A-3/2-A-5 decks but not on the list"
+   },
+   {
+    "id": "duckling",
+    "why": "starter; same, already in four decks"
+   },
+   {
+    "id": "duck-paddler",
+    "why": "starter 2/10/1 duck"
+   },
+   {
+    "id": "great-crested-grebe",
+    "why": "common pond diver"
+   },
+   {
+    "id": "lotus-frog",
+    "why": "uncommon; lily pad frog"
+   },
+   {
+    "id": "mayfly-dancer",
+    "why": "common pond insect"
+   },
+   {
+    "id": "dam-keeper-beaver",
+    "why": "common beaver"
+   },
+   {
+    "id": "beaver-builder",
+    "why": "common beaver, cheap"
+   },
+   {
+    "id": "river-carp",
+    "why": "starter; already in 2-A-3 and 2-A-6"
+   },
+   {
+    "id": "puddle-skimmer",
+    "why": "uncommon pond skater"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Dragonfly Skimmer",
+    "animal": "dragonfly",
+    "rarity": "uncommon",
+    "role": "flyer, evasive",
+    "art": "A blue-green dragonfly skimming above lily pads, droplets trailing from its wings."
+   },
+   {
+    "name": "Tadpole Shoal",
+    "animal": "tadpole",
+    "rarity": "common",
+    "role": "swarm filler",
+    "art": "A cloud of dark tadpoles wriggling between the stems of a lily pad, sun through green water."
+   },
+   {
+    "name": "Territorial Swan",
+    "animal": "swan",
+    "rarity": "rare",
+    "role": "guard bruiser",
+    "art": "A white swan with wings half spread guarding a nest of reeds on a still pond."
+   }
+  ],
+  "note": "Pebble Beach side maps run too hard: the ducks and carp the fights already use (pond-duck, duckling, guppy, river-carp) are not on the list, and the blurb promises ducks while the list has none. The weak starters/commons above would let the fights be rebuilt weaker. Hermit Row 2-3 is a main-map (Pebble Beach) fight: its cheap shore crabs are in the Grotto adds."
+ },
+ "mg": {
+  "fits": [
+   "octopus-tactician",
+   "trash-panda-trickster",
+   "open-ocean-hermit-crab",
+   "gull-thief",
+   "pincushion-urchin",
+   "tide-pool-crab",
+   "tidepool-trapper-crab",
+   "grey-seal-bull",
+   "conch-crawler",
+   "conch-herald",
+   "gallery-orb-weaver",
+   "driftwood-crab",
+   "rock-pool-starfish"
+  ],
+  "off": [
+   {
+    "id": "sea-turtle-elder",
+    "why": "open-water reef turtle, not a cave animal"
+   },
+   {
+    "id": "pelican-diver",
+    "why": "daylight open-water bird; no cave link"
+   }
+  ],
+  "add": [
+   {
+    "id": "smuggler-slingrat",
+    "why": "uncommon; name is the map"
+   },
+   {
+    "id": "coffer-mimic",
+    "why": "uncommon hermit crab, a treasure chest in a shell"
+   },
+   {
+    "id": "salvager-hermit-crab",
+    "why": "common; scavenges wrecks"
+   },
+   {
+    "id": "glow-worm",
+    "why": "common; the Glowing Pool 2-B-3"
+   },
+   {
+    "id": "moray-ambusher",
+    "why": "common eel in rock gaps"
+   },
+   {
+    "id": "raccoon-nightcrew",
+    "why": "common night raider (thief family with Trash Panda)"
+   },
+   {
+    "id": "fiddler-crab-swarm",
+    "why": "common; cheap shore crab for Hermit Row 2-3"
+   },
+   {
+    "id": "limpet-clinger",
+    "why": "common; cheap shore mollusc for Hermit Row 2-3"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Barrel Octopus",
+    "animal": "octopus",
+    "rarity": "uncommon",
+    "role": "ambusher",
+    "art": "An octopus peeking out of a split rum barrel half buried in the wet sand of a sea cave, lantern light on its eyes."
+   },
+   {
+    "name": "Quartermaster Gull",
+    "animal": "gull",
+    "rarity": "uncommon",
+    "role": "support leader",
+    "art": "A one-eyed herring gull perched on a crate of salvage, talons on a rope, in a damp cave mouth."
+   }
+  ],
+  "note": "Hermit Row 2-3 (Pebble Beach) is too hard for its crab list: swap toward fiddler-crab-swarm, limpet-clinger, salvager-hermit-crab (all weak commons)."
+ },
+ "mo": {
+  "fits": [
+   "ent",
+   "echidna-quillshot",
+   "thorn-shrike",
+   "gatling-hog",
+   "quillguard",
+   "sergeant-bramblefox",
+   "bramblewood-lynx",
+   "wolf-spider-mother",
+   "hedgehog-herbalist"
+  ],
+  "off": [
+   {
+    "id": "taiga-lynx",
+    "why": "name and art say taiga, not bramble (Bramblewood Lynx covers the cat)"
+   },
+   {
+    "id": "dhole-matriarch",
+    "why": "Asian wild dog pack, no thorn link"
+   },
+   {
+    "id": "shimmerwing-stag",
+    "why": "shimmer/glimmer reads cave and crystal maps"
+   },
+   {
+    "id": "lucky-hopper",
+    "why": "clover rabbit, Clovermead"
+   }
+  ],
+  "add": [
+   {
+    "id": "bramble-sprout",
+    "why": "common; a bramble-covered hedgehog"
+   },
+   {
+    "id": "bramble-hoglet",
+    "why": "common hedgehog"
+   },
+   {
+    "id": "briarback-hedgehog",
+    "why": "common; briar-backed"
+   },
+   {
+    "id": "hazel-coppice",
+    "why": "common dormouse; a thicket"
+   },
+   {
+    "id": "soldier-ant",
+    "why": "common; the ant fights 0-B-1/0-B-2 already lean on ants"
+   },
+   {
+    "id": "forager-ant",
+    "why": "common; already in four decks"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Briar Wren",
+    "animal": "wren",
+    "rarity": "common",
+    "role": "cheap chip attacker",
+    "art": "A tiny wren singing from the highest thorn of a briar thicket, red berries around it."
+   },
+   {
+    "name": "Bramble Ant Queen",
+    "animal": "ant",
+    "rarity": "uncommon",
+    "role": "swarm support",
+    "art": "A large queen ant on a mound of thorns and dry leaves, workers streaming past into a bramble hedge."
+   }
+  ],
+  "note": "0-B-1 and 0-B-2 are too hard: both are ant-and-starter decks, so the cheap thorn commons above (all vanilla-friendly) are the natural weak adds. The Ent boss has no thorn-named support card."
+ },
+ "ms": {
+  "fits": [
+   "grass-viper",
+   "snapper-hatchling",
+   "constrictor-coil",
+   "alligator-gar",
+   "fen-mink",
+   "mangrove-mudskipper",
+   "swamp-alligator",
+   "caiman-hatchling",
+   "crocodile-ambusher",
+   "nutria-reedcutter",
+   "venomlord-serpent",
+   "anhinga-spearbird"
+  ],
+  "off": [
+   {
+    "id": "hedgehog-herbalist",
+    "why": "forest hedgehog with herbs; no swamp or drowned-tree link"
+   }
+  ],
+  "add": [
+   {
+    "id": "horseshoe-crab",
+    "why": "common; tidal shore, Rising Tide"
+   },
+   {
+    "id": "fiddler-crab-swarm",
+    "why": "common; mangrove shore, Rising Tide"
+   },
+   {
+    "id": "mangrove-monitor",
+    "why": "common; mangrove lizard, Rising Tide"
+   },
+   {
+    "id": "roseate-spoonbill",
+    "why": "common wading shorebird, Rising Tide"
+   },
+   {
+    "id": "mudflat-godwit",
+    "why": "uncommon tidal flats, Rising Tide"
+   },
+   {
+    "id": "signal-crayfish",
+    "why": "common river crustacean, Rising Tide"
+   },
+   {
+    "id": "river-carp",
+    "why": "starter river fish, Rising Tide"
+   },
+   {
+    "id": "cypress-root-lurker",
+    "why": "common; the drowned cypress"
+   },
+   {
+    "id": "matamata",
+    "why": "uncommon swamp turtle"
+   },
+   {
+    "id": "mossmother-newt",
+    "why": "common; moss in the flooded wood"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Egret Wader",
+    "animal": "egret",
+    "rarity": "common",
+    "role": "shore flyer",
+    "art": "A white egret wading between flooded tree trunks, moss hanging to the waterline."
+   },
+   {
+    "name": "Brackish Stingray",
+    "animal": "stingray",
+    "rarity": "uncommon",
+    "role": "shore ambusher",
+    "art": "A flat grey stingray gliding over the muddy bed between drowned roots, light in green water."
+   }
+  ],
+  "note": "For 5-A-2: the first eight adds are sea/shore/river by name and art; the boon reads them once ENG42 moves it off skills (project-state section 7). The current swamp list has almost none, so the boon would stay off."
+ },
+ "mm": {
+  "fits": [
+   "bog-leech",
+   "crocodile-ambusher",
+   "meadow-frog",
+   "puddle-hopper",
+   "swamp-alligator",
+   "willow-o-wisp"
+  ],
+  "off": [],
+  "add": [
+   {
+    "id": "marsh-wisp",
+    "why": "common; already in the deck, on no list"
+   },
+   {
+    "id": "poison-dart-croaker",
+    "why": "common frog (on the Swampmire list)"
+   },
+   {
+    "id": "camouflage-frog",
+    "why": "common frog (on the Swampmire list)"
+   },
+   {
+    "id": "marsh-gas-toad",
+    "why": "common toad"
+   },
+   {
+    "id": "bog-behemoth",
+    "why": "common 26-health frog, a fit for the boss floors"
+   },
+   {
+    "id": "cane-toad",
+    "why": "uncommon toad"
+   },
+   {
+    "id": "lotus-frog",
+    "why": "uncommon frog"
+   },
+   {
+    "id": "mosquito-cloud",
+    "why": "common; the bog swarm"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Bullfrog Chorister",
+    "animal": "bullfrog",
+    "rarity": "common",
+    "role": "cheap attacker",
+    "art": "A fat bullfrog with throat sac inflated, calling from a bog-water sinkhole rim, reeds and mist."
+   },
+   {
+    "name": "The Murgle King",
+    "animal": "bullfrog",
+    "rarity": "epic",
+    "role": "boss leader",
+    "art": "An enormous bullfrog wearing a crown of braided reeds, seated on a bog-water throne ringed by smaller frogs."
+   }
+  ],
+  "note": "'More frogs. Angrier frogs.' The six own cards fit; the dungeon needs more frog bodies, and a named boss card (The Murgle King)."
+ },
+ "mz": {
+  "fits": [
+   "rootworm-colony",
+   "dung-beetle",
+   "fungal-colossus",
+   "compost-grub",
+   "ant-warrior",
+   "planarian-splitter",
+   "bombardier-beetle",
+   "leafcutter-gardener",
+   "truffle-piglet",
+   "garden-snail"
+  ],
+  "off": [
+   {
+    "id": "owl-nightwatch",
+    "why": "surface owl; nothing underground"
+   },
+   {
+    "id": "wolf-spider-mother",
+    "why": "surface forest hunter"
+   },
+   {
+    "id": "hawthorn-shieldbug",
+    "why": "hedge and tree bug, not soil"
+   }
+  ],
+  "add": [
+   {
+    "id": "springtail-hopper",
+    "why": "common soil springtail"
+   },
+   {
+    "id": "fungus-gnat-cloud",
+    "why": "common; the name is the map"
+   },
+   {
+    "id": "millipede-hauler",
+    "why": "uncommon; leaf-litter decomposer"
+   },
+   {
+    "id": "termite-mound",
+    "why": "common structure; mound and fungus farms"
+   },
+   {
+    "id": "earthworm",
+    "why": "starter; soil"
+   },
+   {
+    "id": "leopard-slug",
+    "why": "common; damp rot"
+   },
+   {
+    "id": "pill-bug",
+    "why": "uncommon; woodlice of the leaf litter"
+   },
+   {
+    "id": "velvet-worm",
+    "why": "uncommon; damp-soil hunter"
+   },
+   {
+    "id": "phoenix-mushrooms",
+    "why": "epic; name and art are fungal (a boss-tier option)"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Mycelium Mole",
+    "animal": "mole",
+    "rarity": "uncommon",
+    "role": "tunneller",
+    "art": "A pale blind mole digging through a glowing web of white fungal threads, tiny caps blooming."
+   },
+   {
+    "name": "Cordyceps-Capped Ant",
+    "animal": "ant",
+    "rarity": "uncommon",
+    "role": "swarm attacker",
+    "art": "A worker ant with a thin orange fungal stalk rising from its head, on a mossy root underground."
+   }
+  ],
+  "note": "Cheap decomposers and fungus names are plentiful elsewhere but on no list; the Mycelium Deep list is mostly beetles and worms."
+ },
+ "mn": {
+  "fits": [
+   "lantern-spark-fly",
+   "prospector-mole",
+   "echo-screecher",
+   "sulfur-cinder-moth",
+   "cave-olm",
+   "giant-cave-huntsman",
+   "quarry-mole",
+   "stalactite-golem",
+   "vampire-bat",
+   "whip-spider",
+   "glimmer-spider",
+   "malachite-golem"
+  ],
+  "off": [
+   {
+    "id": "grotto-lobster",
+    "why": "coastal lobster; sea, not crystal cave"
+   },
+   {
+    "id": "star-nosed-mole",
+    "why": "river mole"
+   },
+   {
+    "id": "badger-stonemason",
+    "why": "mason of walls; no crystal or gem link"
+   }
+  ],
+  "add": [
+   {
+    "id": "cave-swiftlet",
+    "why": "common cave bird, Sky Ambush"
+   },
+   {
+    "id": "oilbird",
+    "why": "uncommon cave bird, Sky Ambush"
+   },
+   {
+    "id": "fruit-bat",
+    "why": "common bat, Sky Ambush"
+   },
+   {
+    "id": "baby-bat",
+    "why": "common bat, Sky Ambush"
+   },
+   {
+    "id": "voltwing-bat",
+    "why": "common bat, Sky Ambush"
+   },
+   {
+    "id": "glasswing-moth",
+    "why": "common; glassy wings, Sky Ambush"
+   },
+   {
+    "id": "nightshade-moth",
+    "why": "common moth, Sky Ambush"
+   },
+   {
+    "id": "glintsnatch-magpie",
+    "why": "uncommon; shiny things, Sky Ambush"
+   },
+   {
+    "id": "magpie-collector",
+    "why": "uncommon; shiny collector"
+   },
+   {
+    "id": "glow-worm",
+    "why": "common; cave lights"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "The Gem Hoarder",
+    "animal": "jackdaw",
+    "rarity": "rare",
+    "role": "boss leader",
+    "art": "A black jackdaw on a heap of raw crystals and glass beads in a glittering cavern, a bright stone in its beak."
+   },
+   {
+    "name": "Prism Bat",
+    "animal": "bat",
+    "rarity": "uncommon",
+    "role": "flyer, support",
+    "art": "A small bat hanging from a crystal spire, its wings scattering rainbow light on the cave wall."
+   }
+  ],
+  "note": "Sky Ambush 8-A-3: the fight's deck has 7 winged cards of 19 (Sulfur Cinder Moth x4, Echo Screecher x3), under half; for half the deck to read winged by name and art, use the first eight adds (bats, moths, cave birds, a magpie)."
+ },
+ "mj": {
+  "fits": [
+   "blue-ringed-octopus",
+   "orca-vanguard",
+   "nautilus-drifter",
+   "kraken-spawnling",
+   "coral-reef-shark",
+   "riptide-eel",
+   "colossal-squid",
+   "coral-polyp-colony",
+   "electric-ray",
+   "great-barracuda",
+   "hagfish-silencer",
+   "nudibranch"
+  ],
+  "off": [
+   {
+    "id": "mangrove-manatee",
+    "why": "shallow-water mangrove sea cow, not deep wreck water"
+   },
+   {
+    "id": "clownfish-scout",
+    "why": "bright shallow reef fish"
+   },
+   {
+    "id": "parrotfish",
+    "why": "bright shallow reef fish"
+   }
+  ],
+  "add": [
+   {
+    "id": "otter-ferryman",
+    "why": "common; the ferry crew"
+   },
+   {
+    "id": "drowned-matriarch",
+    "why": "uncommon; name says drowned"
+   },
+   {
+    "id": "abyss-lantern-squid",
+    "why": "uncommon; deep water (was in these fights once)"
+   },
+   {
+    "id": "inkcloud-squid",
+    "why": "common squid"
+   },
+   {
+    "id": "conger-eel",
+    "why": "uncommon wreck eel"
+   },
+   {
+    "id": "moray-ambusher",
+    "why": "common wreck eel"
+   },
+   {
+    "id": "giant-clam",
+    "why": "common sea-floor clam"
+   },
+   {
+    "id": "barnacle-fortress",
+    "why": "common; the hull"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Anglerfish Lantern",
+    "animal": "anglerfish",
+    "rarity": "uncommon",
+    "role": "lure ambusher",
+    "art": "A deep-sea anglerfish with its glowing lure hanging in the dark window of a sunken ferry cabin."
+   },
+   {
+    "name": "Wreck Isopod",
+    "animal": "giant isopod",
+    "rarity": "common",
+    "role": "cheap scavenger",
+    "art": "A giant pale isopod crawling across the barnacled deck of a sunken ferry, silt drifting."
+   }
+  ],
+  "note": "Every card fits except three shallow-reef ones; the map has no otter-ferry crew in its list although the blurb is about an otter ferry."
+ },
+ "mv": {
+  "fits": [
+   "eagle-owl-quartermaster",
+   "eyrie-warden",
+   "ibex-rockcaller",
+   "alpine-swift",
+   "apollo-butterfly",
+   "chamois-leaper",
+   "gale-swift",
+   "golden-eagle-diver",
+   "vigil-owl"
+  ],
+  "off": [
+   {
+    "id": "wound-reaver",
+    "why": "volcanic lizard, no nest or bird"
+   },
+   {
+    "id": "alpine-salamander",
+    "why": "ground amphibian"
+   },
+   {
+    "id": "chipmunk-hoarder",
+    "why": "ground rodent"
+   },
+   {
+    "id": "alpine-marmot",
+    "why": "ground rodent"
+   }
+  ],
+  "add": [
+   {
+    "id": "peak-condor",
+    "why": "common; high mountain raptor"
+   },
+   {
+    "id": "peregrine-stooper",
+    "why": "uncommon cliff falcon"
+   },
+   {
+    "id": "wallcreeper",
+    "why": "common cliff bird"
+   },
+   {
+    "id": "red-billed-chough",
+    "why": "common cliff crow"
+   },
+   {
+    "id": "nest-hatchling",
+    "why": "common; chick in a nest"
+   },
+   {
+    "id": "great-horned-owl",
+    "why": "common owl"
+   },
+   {
+    "id": "hawk-arrowkeeper",
+    "why": "common hawk"
+   },
+   {
+    "id": "sparrow-chick",
+    "why": "starter nestling"
+   },
+   {
+    "id": "gannet-nestweaver",
+    "why": "common; the name is nests"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Eaglet Brood",
+    "animal": "eagle",
+    "rarity": "common",
+    "role": "cheap defender",
+    "art": "Two fluffy white eaglets in a huge stick nest on a cliff ledge, mother wing shadowing them."
+   },
+   {
+    "name": "Aerie Heap",
+    "animal": "twigs (structure)",
+    "rarity": "uncommon",
+    "role": "structure, defender",
+    "art": "A vast stack of old twig nests piled on a mountain ledge, eggs and feathers wedged into its layers."
+   }
+  ],
+  "note": "The Aerie list is half ground mountain animals. Chicks and cliff birds would make it read as a nest."
+ },
+ "muc": {
+  "fits": [
+   "stone-turtle-warden",
+   "hollow-oath-keeper",
+   "owl-nightwatch",
+   "antlion-pit",
+   "echo-screecher",
+   "cave-olm",
+   "giant-cave-huntsman",
+   "whip-spider",
+   "fungal-colossus",
+   "glacier-wolf-pack"
+  ],
+  "off": [],
+  "add": [
+   {
+    "id": "great-gate",
+    "why": "common; a door guard by name"
+   },
+   {
+    "id": "chapel-tortoise",
+    "why": "uncommon; slow stone guard"
+   },
+   {
+    "id": "night-watchman",
+    "why": "common owl watch"
+   },
+   {
+    "id": "elder-tortoise",
+    "why": "common; ancient vault warden"
+   },
+   {
+    "id": "armadillo-guard",
+    "why": "common; armoured guard"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Vault Scarab",
+    "animal": "scarab",
+    "rarity": "common",
+    "role": "cheap attacker",
+    "art": "A gold-green scarab beetle on a worn stone threshold under a lantern, sand sifting through the door gap."
+   },
+   {
+    "name": "Key-Keeper Raven",
+    "animal": "raven",
+    "rarity": "uncommon",
+    "role": "support",
+    "art": "A raven holding a large iron key in its beak on a carved stone ledge in a vault corridor."
+   }
+  ],
+  "note": "Fits list shows a sample; the list is intentionally many-land and not judged card by card. The theme gap is the Vault Warden himself: vault, door and guard cards."
+ },
+ "my": {
+  "fits": [
+   "hercules-beetle",
+   "jaguar-stalker",
+   "kinkajou-lurker",
+   "weaver-bird",
+   "leafcutter-gardener",
+   "vampire-bat",
+   "lyrebird-mimic",
+   "poison-dart-croaker",
+   "camouflage-frog",
+   "proboscis-monkey"
+  ],
+  "off": [
+   {
+    "id": "pangolin-roller",
+    "why": "savanna tag; ground anteater"
+   },
+   {
+    "id": "spitting-cobra",
+    "why": "savanna cobra, ground snake"
+   },
+   {
+    "id": "redwood-woodpecker",
+    "why": "temperate redwood forest"
+   },
+   {
+    "id": "apollo-butterfly",
+    "why": "mountain butterfly"
+   }
+  ],
+  "add": [
+   {
+    "id": "hanging-loafer",
+    "why": "common sloth (14-A-1 Sloth Boughs)"
+   },
+   {
+    "id": "canopy-sloth-guardian",
+    "why": "common sloth, canopy by name (14-A-1)"
+   },
+   {
+    "id": "slowpoke-sentinel",
+    "why": "common sloth (14-A-1)"
+   },
+   {
+    "id": "slow-loris",
+    "why": "common; tree dweller (14-A-1)"
+   },
+   {
+    "id": "howler-monkey",
+    "why": "uncommon; canopy voice (14-A-1)"
+   },
+   {
+    "id": "poison-dart-frog",
+    "why": "common (14-A-3 Dart Frogs)"
+   },
+   {
+    "id": "lotus-frog",
+    "why": "uncommon frog (14-A-3)"
+   },
+   {
+    "id": "leaf-chameleon",
+    "why": "uncommon; leaf dweller (14-A-3)"
+   },
+   {
+    "id": "toucan-courier",
+    "why": "common (14-A-3)"
+   },
+   {
+    "id": "war-drum-mandrill",
+    "why": "common; the Drum Circle 14-A-4"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Harpy Eagle Lookout",
+    "animal": "harpy eagle",
+    "rarity": "rare",
+    "role": "flyer, top-tier attacker",
+    "art": "A harpy eagle perched on the emergent crown of a rainforest tree, mist below, feathered crest raised."
+   },
+   {
+    "name": "Morpho Butterfly",
+    "animal": "morpho butterfly",
+    "rarity": "common",
+    "role": "cheap evasive flyer",
+    "art": "A blue morpho butterfly resting on a broad green leaf in dappled canopy light, raindrops on the leaf."
+   },
+   {
+    "name": "Emerald Tree Boa",
+    "animal": "tree boa",
+    "rarity": "uncommon",
+    "role": "ambusher",
+    "art": "An emerald tree boa coiled on a mossy branch high in the rainforest, leaves around its head."
+   }
+  ],
+  "note": "14-A-1 and 14-A-3 are too hard: the Boughs and Dart Frogs fights name sloths and frogs while the list has two frogs and no sloths. The whole proposal sits on the held list; the weak sloth and frog commons are the quick fix for the two named fights."
+ },
+ "mi": {
+  "fits": [
+   "lone-grey-wolf",
+   "snow-ermine",
+   "frost-hare-sprinter",
+   "ravenous-wolverine",
+   "harbor-seal",
+   "polar-bear",
+   "snow-bunting-archer",
+   "walrus-icebreaker",
+   "talus-pika"
+  ],
+  "off": [
+   {
+    "id": "spitting-spider",
+    "why": "cave arachnid from warm caves"
+   },
+   {
+    "id": "greenland-shark",
+    "why": "deep ocean shark, not an ice cave"
+   }
+  ],
+  "add": [
+   {
+    "id": "lemming-swarm",
+    "why": "common tundra"
+   },
+   {
+    "id": "harp-seal-pup",
+    "why": "common ice seal"
+   },
+   {
+    "id": "ringed-seal",
+    "why": "common; lives in ice caves"
+   },
+   {
+    "id": "glacier-wolf-pack",
+    "why": "common; glacier by name"
+   },
+   {
+    "id": "icefletch-fox",
+    "why": "uncommon arctic fox"
+   },
+   {
+    "id": "frost-thistle-lynx",
+    "why": "common frost lynx"
+   },
+   {
+    "id": "ice-petrel",
+    "why": "uncommon ice bird"
+   },
+   {
+    "id": "ice-crevasse-wolf",
+    "why": "rare; crevasse is ice-cave by name"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Penguin Huddle",
+    "animal": "emperor penguin",
+    "rarity": "common",
+    "role": "cheap defender",
+    "art": "A tight huddle of penguins on blue ice inside a glowing ice cave, frost on their backs."
+   },
+   {
+    "name": "Ice Worm",
+    "animal": "ice worm",
+    "rarity": "common",
+    "role": "cheap attacker",
+    "art": "A thin black ice worm wriggling out of a crack in a wall of blue glacier ice."
+   }
+  ],
+  "note": "Fits are mostly right; the map is short of cheap cave-ice creatures and has no ice-cave bat or worm."
+ },
+ "mpd": {
+  "fits": [
+   "quicksand-queen",
+   "skull-vulture",
+   "sand-widow",
+   "dust-hyena",
+   "caustic-scorpion",
+   "roadrunner-courier",
+   "sandfish",
+   "dust-devil-kestrel",
+   "fennec-fox",
+   "thorny-devil",
+   "antlion-pit",
+   "dromedary",
+   "dune-packrat",
+   "trapdoor-spider"
+  ],
+  "off": [],
+  "add": [
+   {
+    "id": "pale-oryx",
+    "why": "uncommon; Pale by name, the 18-A-7 Oryx Crossing"
+   },
+   {
+    "id": "meerkat-sentry",
+    "why": "common; the 18-A-4 Meerkat Warrens"
+   },
+   {
+    "id": "meerkat-burrower",
+    "why": "common; Meerkat Warrens"
+   },
+   {
+    "id": "sand-flinger-antlion",
+    "why": "common antlion"
+   },
+   {
+    "id": "moon-jerboa",
+    "why": "uncommon desert rodent"
+   },
+   {
+    "id": "horned-lizard",
+    "why": "uncommon desert lizard"
+   },
+   {
+    "id": "dune-jackal",
+    "why": "common"
+   },
+   {
+    "id": "sandstorm-roc",
+    "why": "common; the sandstorm"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Sidewinder Viper",
+    "animal": "sidewinder",
+    "rarity": "common",
+    "role": "cheap attacker",
+    "art": "A pale sidewinder leaving looping tracks across bleached white sand, heat haze behind it."
+   },
+   {
+    "name": "Salt Pan Flamingo",
+    "animal": "flamingo",
+    "rarity": "uncommon",
+    "role": "flyer support",
+    "art": "A lone flamingo standing in a cracked white salt pan under a blazing sun, mirage shimmer around its legs."
+   }
+  ],
+  "note": "The 14 listed cards all fit. Two named fights (Meerkat Warrens, Oryx Crossing) use neither a meerkat nor an oryx; both exist as cards and are on no list."
+ },
+ "m9": {
+  "fits": [
+   "ember-revenant",
+   "anvilwhisker-otter",
+   "ore-smelter-mole",
+   "cinder-gecko",
+   "ember-jackal",
+   "ashbone-ghoul",
+   "fire-salamander",
+   "magma-salamander",
+   "ash-cloud-condor",
+   "phoenix-fledgling",
+   "cinder-stoker"
+  ],
+  "off": [
+   {
+    "id": "tide-spirit",
+    "why": "water seahorse in a furnace (used in 19-A-3/7/8)"
+   },
+   {
+    "id": "quill-volley",
+    "why": "porcupine with no fire or stone link (used in 19-A-8)"
+   },
+   {
+    "id": "hercules-beetle",
+    "why": "rainforest beetle"
+   }
+  ],
+  "add": [
+   {
+    "id": "cinder-imp",
+    "why": "common; replace Tide Seahorse in 19-A-3/7/8"
+   },
+   {
+    "id": "ash-imp",
+    "why": "common; same"
+   },
+   {
+    "id": "basalt-boar",
+    "why": "common; basalt by name"
+   },
+   {
+    "id": "grindstone-boar",
+    "why": "common; stone and forge"
+   },
+   {
+    "id": "ember-centipede",
+    "why": "common"
+   },
+   {
+    "id": "cinder-hornet",
+    "why": "common"
+   },
+   {
+    "id": "pumice-beetle",
+    "why": "uncommon volcanic beetle"
+   },
+   {
+    "id": "ash-moth",
+    "why": "common; ash"
+   },
+   {
+    "id": "anvil-thrush",
+    "why": "common; anvil by name"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Bellows Toad",
+    "animal": "toad",
+    "rarity": "common",
+    "role": "cheap support",
+    "art": "A large toad puffing out its throat like a forge bellows beside glowing slag, soot on its back."
+   },
+   {
+    "name": "Crucible Tortoise",
+    "animal": "tortoise",
+    "rarity": "uncommon",
+    "role": "defender",
+    "art": "A tortoise with a cracked basalt shell glowing orange along its seams, standing in a foundry channel."
+   },
+   {
+    "name": "Slag Runner Hare",
+    "animal": "hare",
+    "rarity": "common",
+    "role": "fast attacker",
+    "art": "A soot-black hare sprinting over a cooling lava crust, glowing footprints behind it."
+   }
+  ],
+  "note": "Hard fights 19-A-3/7/8 field Tide Seahorse (x1-2), Quill Volley (x3) and Beaver Lumberjack (x5), which are off-theme and heavy. Weak fire-named commons above let the decks be rebuilt on-theme and lighter. Basalt Foundry's Ashen Choir (moths, beetles, hummingbirds) also has no moth or beetle in the list besides Ash Moth."
+ },
+ "me": {
+  "fits": [
+   "the-contradiction",
+   "cinder-stoker",
+   "ashbone-ghoul",
+   "cinder-skeleton",
+   "obsidian-scorpion",
+   "ash-cloud-condor",
+   "magma-wraith",
+   "ossuary-lammergeier",
+   "ash-moth"
+  ],
+  "off": [
+   {
+    "id": "pack-mule",
+    "why": "generic pack animal"
+   },
+   {
+    "id": "cave-warlord",
+    "why": "cave bear war leader; no ash or dead link"
+   }
+  ],
+  "add": [
+   {
+    "id": "sulfur-vent-crab",
+    "why": "uncommon; the 20-A-6 Vent Crabs"
+   },
+   {
+    "id": "basalt-boar",
+    "why": "common; the 20-A-5 Scorched Boars"
+   },
+   {
+    "id": "cinder-imp",
+    "why": "common"
+   },
+   {
+    "id": "ash-imp",
+    "why": "common"
+   },
+   {
+    "id": "bone-diviner",
+    "why": "uncommon; bones and the dead"
+   },
+   {
+    "id": "flagellant-vulture",
+    "why": "uncommon; the crater scavenger"
+   },
+   {
+    "id": "brimstone-hound",
+    "why": "uncommon"
+   },
+   {
+    "id": "carrion-beetle",
+    "why": "uncommon; the dead"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Cindergrave Ram",
+    "animal": "ram",
+    "rarity": "common",
+    "role": "cheap attacker",
+    "art": "A charred skeleton of a ram standing in a field of grey ash, embers glowing in its eye sockets."
+   },
+   {
+    "name": "Kiln Lantern Fox",
+    "animal": "fox",
+    "rarity": "uncommon",
+    "role": "support",
+    "art": "A lean ash-grey fox carrying a small flickering ember lantern in its mouth in a dark crater."
+   }
+  ],
+  "note": "Two fights are named for animals not on the list: Scorched Boars (no boar) and The Vent Crabs (no crab). The Contradiction (epic polar bear) is the joke by name: it fits ironically as a crater oddity."
+ },
+ "mx": {
+  "fits": [
+   "fire-drake-hatchling",
+   "caldera-wyrm",
+   "ember-jackal",
+   "ember-centipede",
+   "magma-salamander",
+   "magma-titan",
+   "cinder-stoker",
+   "obsidian-scorpion",
+   "ash-cloud-condor",
+   "ash-moth",
+   "ashbone-ghoul",
+   "magma-wraith",
+   "granite-ox-golem",
+   "salamander-pyromancer"
+  ],
+  "off": [
+   {
+    "id": "tide-spirit",
+    "why": "water seahorse in a fire lair"
+   },
+   {
+    "id": "pack-mule",
+    "why": "generic pack animal; no fire link"
+   }
+  ],
+  "add": [
+   {
+    "id": "pyroclast-wyrm",
+    "why": "common dragon; wyrm kin"
+   },
+   {
+    "id": "cinder-hornet",
+    "why": "common"
+   },
+   {
+    "id": "cinder-imp",
+    "why": "common"
+   },
+   {
+    "id": "ash-imp",
+    "why": "common"
+   },
+   {
+    "id": "brimstone-hound",
+    "why": "uncommon"
+   },
+   {
+    "id": "fire-salamander",
+    "why": "uncommon"
+   },
+   {
+    "id": "lava-waders",
+    "why": "uncommon"
+   },
+   {
+    "id": "phoenix-fledgling",
+    "why": "common; fire"
+   }
+  ],
+  "concepts": [
+   {
+    "name": "Lava Newt",
+    "animal": "newt",
+    "rarity": "common",
+    "role": "cheap attacker",
+    "art": "A bright orange newt crawling over a black basalt ledge above a glowing lava river."
+   },
+   {
+    "name": "Hoard Warden Tortoise",
+    "animal": "tortoise",
+    "rarity": "uncommon",
+    "role": "defender",
+    "art": "A huge tortoise with a shell of cooled gold-flecked lava standing guard on a heap of treasure in a lair."
+   }
+  ],
+  "note": "Two off-theme cards (Tide Seahorse x1-2 and Pack Mule x3-5 appear in all four fights). The Caldera Wyrm and Fire Drake Hatchling are the lair's thematic top end already."
+ }
+}
