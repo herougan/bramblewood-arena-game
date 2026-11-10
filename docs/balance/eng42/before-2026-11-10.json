@@ -1,0 +1,96 @@
+{
+ "about": "ENG42 before (tools/eng42/measure_2026_11_10.js): 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "9-4",
+   "map": "mk",
+   "mapNo": 9,
+   "name": "Kelp Curtains",
+   "boon": "risingTide",
+   "have": 12,
+   "total": 16,
+   "need": 8,
+   "on": true,
+   "win200": 54.5,
+   "target": 62
+  },
+  {
+   "code": "13-4",
+   "map": "mr",
+   "mapNo": 13,
+   "name": "Boar Wallow",
+   "boon": "wildRage",
+   "have": 7,
+   "total": 14,
+   "need": 7,
+   "on": true,
+   "win200": 68.5,
+   "target": 65
+  },
+  {
+   "code": "23-5",
+   "map": "m23",
+   "mapNo": 23,
+   "name": "Under the Walls",
+   "boon": "siegeTrain",
+   "have": 8,
+   "total": 16,
+   "need": 8,
+   "on": true,
+   "win200": null,
+   "target": 60
+  },
+  {
+   "code": "10-A-2",
+   "map": "mj",
+   "mapNo": 10,
+   "name": "The Drowned Deck",
+   "boon": "risingTide",
+   "have": 6,
+   "total": 12,
+   "need": 6,
+   "on": true,
+   "win200": 75.5,
+   "target": 70
+  },
+  {
+   "code": "5-A-2",
+   "map": "ms",
+   "mapNo": 5,
+   "name": "Gator Hollow",
+   "boon": "risingTide",
+   "have": 4,
+   "total": 14,
+   "need": 7,
+   "on": false,
+   "win200": 74.5,
+   "target": 65
+  },
+  {
+   "code": "8-A-3",
+   "map": "mn",
+   "mapNo": 8,
+   "name": "Shard Gallery",
+   "boon": "skyAmbush",
+   "have": 7,
+   "total": 19,
+   "need": 10,
+   "on": false,
+   "win200": 58,
+   "target": 50
+  },
+  {
+   "code": "11-A-1",
+   "map": "mv",
+   "mapNo": 11,
+   "name": "Cliff Ledge",
+   "boon": "skyAmbush",
+   "have": 9,
+   "total": 17,
+   "need": 9,
+   "on": true,
+   "win200": 80.5,
+   "target": 80
+  }
+ ]
+}
