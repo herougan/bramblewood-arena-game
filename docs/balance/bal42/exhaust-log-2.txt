@@ -1,1 +1,6 @@
 18-6 target 60 space 99584 read 401 range 33.3 - 100 | 200 games: 66 -> 56 KEEP {"deck":{"antlion-pit":3,"caustic-scorpion":3,"dust-devil-kestrel":1,"dust-hyena":1,"fennec-fox":3,"hollow-belly-rat":1,"roadrunner-courier":3,"sand-widow":1},"leaders":["antlion-pit"],"shieldOverride":null} 1310s
+18-5 target 66 space 15698 read 401 range 15 - 85 | 200 games: 69.5 -> 64 no {"deck":{"antlion-pit":3,"dust-devil-kestrel":1,"fennec-fox":4,"hollow-belly-rat":1,"komodo-warlord":2,"meerkat-burrower":1,"sand-widow":2,"sandfish":4},"leaders":["dust-devil-kestrel"],"shieldOverride":null} 951s
+18-3 target 78 space 5193 read 401 range 53.3 - 100 | 200 games: 81.5 -> 80 no {"deck":{"antlion-pit":4,"caustic-scorpion":3,"hollow-belly-rat":1,"roadrunner-courier":3,"sand-widow":1,"sandfish":3},"leaders":["sand-widow"],"shieldOverride":null} 984s
+18-7 target 40 space 4286 read 401 range 20 - 100 | 200 games: 43 -> 33 no {"deck":{"dust-devil-kestrel":2,"hollow-belly-rat":1,"roadrunner-courier":3,"sand-widow":1,"sandfish":1,"thorny-devil":4},"leaders":["sand-widow"],"shieldOverride":null} 701s
+18-4 target 62 space 679 read 679 range 80 - 100 | 200 games: 85.5 -> 83 KEEP {"deck":{"caustic-scorpion":4,"dust-devil-kestrel":2,"dust-hyena":1,"roadrunner-courier":5,"sand-widow":2,"sandfish":4},"leaders":["dust-devil-kestrel"],"shieldOverride":null} 1934s
+EXIT 0
