@@ -464,7 +464,7 @@
    "name": "Coral Current",
    "rule": "owner Yes + UI47_ADMIN_ADD",
    "before": 15,
-   "after": 17,
+   "after": 18,
    "added": [
     "coral-current-eel",
     "krill-swarm",
@@ -478,7 +478,8 @@
     "conch-crawler",
     "tide-spirit",
     "coral-polyp-colony",
-    "nautilus-drifter"
+    "nautilus-drifter",
+    "sea-bass"
    ],
    "removed": [
     "colossal-squid",
@@ -510,7 +511,8 @@
     "conch-crawler",
     "tide-spirit",
     "coral-polyp-colony",
-    "nautilus-drifter"
+    "nautilus-drifter",
+    "sea-bass"
    ]
   },
   "m10": {
@@ -1622,7 +1624,12 @@
     "salvager-hermit-crab": "a second Lumber maker for the Kelp Mangroves (only the Nutria Reedcutter; the Driftwood Crab is 2-5's reward): a salvaging crab among the fiddlers, carried from Smugglers' Grotto (Map 7)"
    }
   },
-  "sub": {}
+  "sub": {},
+  "batch": {
+   "m7": {
+    "sea-bass": "CONTENT19 (2026-11-11): the Sea Bass, THEME8's Wave / Swarm (Fish) card for Coral Current"
+   }
+  }
  },
  "missing": []
 }

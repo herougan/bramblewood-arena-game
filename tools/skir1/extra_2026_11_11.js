@@ -11,4 +11,6 @@ module.exports = {
     mk: { 'salvager-hermit-crab': 'a second Lumber maker for the Kelp Mangroves (only the Nutria Reedcutter; the Driftwood Crab is 2-5\'s reward): a salvaging crab among the fiddlers, carried from Smugglers\' Grotto (Map 7)' },
   },
   sub: {},
+  // the batch's own list adds that landed while SKIR1 ran (kept on top of the fold): CONTENT19's Sea Bass on Map 10 (THEME8's Map 10 suggestion)
+  batch: { m7: { 'sea-bass': 'CONTENT19 (2026-11-11): the Sea Bass, THEME8\'s Wave / Swarm (Fish) card for Coral Current' } },
 };

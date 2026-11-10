@@ -4,6 +4,7 @@
 #   MERGE_TITLE="package XX (what)" COMMIT_TRAILER="<attribution lines>" bash tools/merge/merge_pkg.sh <branch>
 # Known files:
 #   generated (take ours, the rebuild regenerates them): index.html, version.json, assets/lang/*.js, docs/game-texts.xlsx, docs/dialogues-*.xlsx
+#   regenerated (2026-11-11, TOOLS1): docs/code-map.md, docs/guides/arena-app-index.md, by `python3 tools/code_map.py` once the rest is merged
 #   translation packs (3-way by key): lang/*.json, lang/ui/*.json
 #   card data: canonical/cards.json, 3-way per card and per field (tools/merge/merge_cards.py)
 #   keep both sides: docs/CHANGELOG.md, tests/run-all.sh, and keys both sides appended to bramblewood-texts.js's TEXT table
@@ -21,9 +22,10 @@ else
   if ((conflicted)) && ! git rev-parse -q --verify MERGE_HEAD >/dev/null; then echo "git merge failed before merging (untracked files in the way?):"; git merge --no-edit "$B" 2>&1 | head -5; exit 1; fi
 fi
 if ((conflicted)); then
-  manual=()
+  manual=(); regen=0
   while IFS= read -r f; do
     case "$f" in
+      docs/code-map.md|docs/guides/arena-app-index.md) regen=1; continue ;; # both come from tools/code_map.py: rewritten below, after the sources are settled
       index.html|version.json|assets/lang/*.js|docs/game-texts.xlsx|docs/dialogues-*.xlsx) git checkout --ours -- "$f" ;;
       lang/*.json|lang/ui/*.json) python3 tools/merge/merge_lang.py "$f" >/dev/null ;;
       docs/CHANGELOG.md|tests/run-all.sh) python3 tools/merge/union.py "$f" >/dev/null ;;
@@ -34,6 +36,9 @@ if ((conflicted)); then
     git add -- "$f"
   done < <(git diff --name-only --diff-filter=U)
   if ((${#manual[@]})); then printf 'NEEDS HAND RESOLUTION:\n'; printf '  %s\n' "${manual[@]}"; exit 2; fi
+  if ((regen)); then
+    python3 tools/code_map.py >/dev/null && git add -- docs/code-map.md docs/guides/arena-app-index.md || { echo "code_map.py FAILED: fix the cause, then rerun this script to resume"; exit 7; }
+  fi
 fi
 node tools/merge/prune_ui_lang.js
 python3 assemble_arena.py >/dev/null && mv bramblewood-arena.html index.html || { echo "BUILD FAILED"; exit 3; }

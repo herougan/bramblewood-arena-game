@@ -36892,5 +36892,44 @@
     "creatorNote": "2026-11-08 (package CONTENT18, owner 10:52 #14: \"some star-paths straight up just unlock cards (maybe 1 in each star path). Starpath-only cards ... At least Epic and above.\"): the bloom star path's card (Wildpaths mark b8); The Bloom (Lumber, cards and tricks; Pollen Drift: Heal heals 1 more): no unused Epic+ card fits, so a new one, Coppice (Lumber) and Heal. Source {kind: 'starpath'}: only the mark gives it. Priced with the budget (tools/skill_costs.js budget, Level 1, epic, map term Map 21): S 9.16  2A+H+S 38.16 / N 38.61: 4/17. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT18).",
     "numericId": 9225,
     "uuid": "3858c628-31fd-5362-8338-8853967f7d29"
+  },
+  {
+    "id": "sea-bass",
+    "name": "Sea Bass",
+    "icon": "\ud83d\udc1f",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 6,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Coral Reef",
+      "Fish"
+    ],
+    "species": [
+      "Fish"
+    ],
+    "animal": "sea bass",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "tide": true,
+      "wave": true,
+      "swarm": [
+        "Fish"
+      ]
+    },
+    "flavor": "The fishermen call it the wolf of the sea. It hunts the surf in loose packs and never fights the current.",
+    "source": {
+      "kind": "pack",
+      "tier": 2,
+      "map": "m7"
+    },
+    "numericId": 9226,
+    "uuid": "1e9ad345-621b-583d-908f-02fe848b4163",
+    "creatorNote": "2026-11-11 (package CONTENT19, owner: \"Add a new card, Sea Bass for Map 10\"; design THEME8, docs/design/map-suggestions-2026-11-11.md): a plain common reef fish (owner 11-08 10:52 #15: simple names, common animals), the bass that hunts the surf in loose packs: Tide (minor, does not count), Wave 1 (its hit pushes the target a column; a crash hurts both) and Swarm (Fish) (+1 Attack per Fish ally). Types Coral Reef + Fish, because Swarm counts Types (archetypes), not species: with Fish listed, a second Sea Bass and the reef Fish cards feed each other. On Map 10 list (canonical/map-pools.json m7), a basic-pack card of Pack 2; the game cardObtainMap gives it Map 7 (the pack floor). Priced with the budget (tools/skill_costs.js budget, Level 1, common, Map 7 term): S 5.78 (tide 0.5, wave 2.15, swarm 3.13), 3A + H + S 20.78 / N 21.5: 3/6. THEME8 proposed 3/7, which reads 21.78 at the Map 10 term but over the game Map 7 term, so Health 7 -> 6. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT19)."
   }
 ]

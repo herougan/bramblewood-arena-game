@@ -8,7 +8,8 @@
                                                from a published copy into tools/hub/guide-snapshot.html
     python3 tools/hub/build.py --no-shots      skip the Playwright check (size and file count are still checked)
 
-Steps: (1) tools/hub/build_hub.py writes .hub/ (HUB_URL defaults to the published hub so links to the hub become tab links);
+Steps: (0) tools/effects-lab/build.py rebuilds the Effects Lab page (.fxcat/effects.html, 2026-11-11);
+(1) tools/hub/build_hub.py writes .hub/ (HUB_URL defaults to the published hub so links to the hub become tab links);
 (2) the guide splice: Claude's guide tab shows docs that live only in the claude.ai Project ("claude/<doc>.md"). When this checkout has no
     .guide-src/ for them, their rendered pages come from tools/hub/guide-snapshot.html (committed, refreshed with --refresh-guide);
 (3) the check: index.html under 15.0 MB (served over http, because the page fetches lazy/ and search-index.json), file count under the artifact cap, every tab renders text and throws no page error.
@@ -67,6 +68,13 @@ def refresh_guide(published):
     open(SNAP, 'w', encoding='utf-8').write(''.join(old[oc[k][0]:oc[k][1]] for k in miss))
     print('guide snapshot saved:', [k[4:] for k in miss], os.path.getsize(SNAP), 'bytes')
 
+LAB_BUILD = os.path.join(ROOT, 'tools', 'effects-lab', 'build.py')
+def build_lab():
+    """2026-11-11 (package LAB3): the ✨ Effects Lab tab is .fxcat/effects.html. Rebuild it first, so the hub shows the current Lab (its
+    "Ideas 11-11" tab, bramblewood-fx-ideas2.js) and not a cache built weeks ago. A failed Lab build keeps the cached page; check() says so."""
+    r = subprocess.run([sys.executable, LAB_BUILD], cwd=ROOT, capture_output=True, text=True)
+    print('effects lab:', 'built' if r.returncode == 0 else 'build FAILED, the cached page is used: ' + (r.stderr or r.stdout).strip()[-300:])
+
 CHECK_JS = '''(tab)=>{ const p = document.querySelector('#p-' + tab); return p ? p.innerText.length : -1; }'''
 class _Quiet(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a): pass
@@ -82,6 +90,9 @@ def check(shots=True):
     print(f'check: index.html {size / 1048576:.2f} MB (limit 15 MB), {nfiles} files (cap {MAX_FILES}); largest files: ' + ', '.join(f'{n} {b / 1048576:.1f} MB' for b, n in big))
     if size >= LIMIT: print('FAIL: index.html is over 15.0 MB (the publisher refuses 16 MiB once it adds its code-highlight runtime)'); ok = False
     if nfiles > MAX_FILES: print('FAIL: too many files'); ok = False
+    lab = os.path.join(OUT, 'effects.html'); labtxt = open(lab, encoding='utf-8').read() if os.path.exists(lab) else ''
+    if 'id="ideas2"' not in labtxt or 'IdeasFX2' not in labtxt:  # 2026-11-11 (LAB3): the Lab tab has the "Ideas 11-11" candidates
+        print('FAIL: effects.html has no "Ideas 11-11" tab (IdeasFX2): python3 tools/effects-lab/build.py, then build the hub again'); ok = False
     if shots:
         from playwright.sync_api import sync_playwright
         srv, base = serve()
@@ -106,6 +117,7 @@ def main(a):
     if '--check-only' in a: return 0 if check('--no-shots' not in a) else 1
     if '--refresh-guide' in a: refresh_guide(a[a.index('--refresh-guide') + 1]); return 0
     dm = os.path.join(ROOT, 'docs', 'decisions.md'); before = open(dm, 'rb').read() if os.path.exists(dm) else b''
+    build_lab()
     r = run_build_hub()
     if r: return r
     if (open(dm, 'rb').read() if os.path.exists(dm) else b'') != before:

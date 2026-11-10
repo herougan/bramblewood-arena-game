@@ -121,7 +121,7 @@ function mount(cfg){
   }).join('');
 
   const clearAll = ()=>{
-    try{ if(W.WarFX) W.WarFX.clear(); }catch(e){} try{ if(W.IdeasFX) W.IdeasFX.clear(); }catch(e){}
+    try{ if(W.WarFX) W.WarFX.clear(); }catch(e){} try{ if(W.IdeasFX) W.IdeasFX.clear(); }catch(e){} try{ if(W.IdeasFX2) W.IdeasFX2.clear(); }catch(e){} // 2026-11-11 (LAB3): + IdeasFX2
     const g = W.gsap; try{ if(g) g.killTweensOf($$('.card-tile, .board-card, .sk-row', arena)); }catch(e){}
     arena.style.transform = ''; clearBody(); W.matchState = null; W.forgeCentreBusy = false;
     try{ document.documentElement.classList.remove('bw-upkeep'); document.body.classList.remove('bw-evo-holding'); }catch(e){}

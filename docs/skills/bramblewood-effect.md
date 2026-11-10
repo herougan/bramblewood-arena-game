@@ -3,6 +3,8 @@ name: bramblewood-effect
 description: Use when adding or changing a Bramblewood visual effect, animation, shader or sound cue, so that it matches house style and appears in the Effects Lab and catalogue.
 ---
 
+> Superseded 2026-11-11 (TOOLS1): the maintained skill is `.claude/skills/add-effect/SKILL.md`; this copy is kept for the hub's guide tab.
+
 # Add a Bramblewood effect
 
 ## Design

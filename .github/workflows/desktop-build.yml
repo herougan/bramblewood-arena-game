@@ -1,0 +1,125 @@
+# 2026-11-11 (package DESK2, owner: "a GitHub Actions workflow that builds the Electron app (Windows / Mac / Linux)").
+# Packages the committed game build (index.html + assets/, art/, fonts/: the same files Vercel serves for that commit) with
+# electron/ into desktop apps. Runs by hand (Actions tab -> "Desktop build" -> Run workflow) or when a tag desktop-v* is
+# pushed (e.g. desktop-v0.1.0). Never on an ordinary push. The apps are this run's artifacts; nothing is released or deployed.
+# Unsigned for now: Windows shows a SmartScreen warning, macOS needs right-click -> Open (ad-hoc signed only). The signing
+# steps below are comments that read secrets the owner adds later (Settings -> Secrets and variables -> Actions); no
+# secret value is ever written here. Steam builds do not need signing; SteamPipe uploads the unpacked folder.
+name: Desktop build
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'desktop-v*'
+permissions:
+  contents: read
+concurrency:
+  group: desktop-build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  stage:
+    # One copy of the game for all three builds. Sparse checkout: docs/ alone is ~850 MB and none of it ships.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            assets
+            art
+            fonts
+            licenses
+            lang
+            electron
+            tools/merge
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check the committed build (index.html and version.json are one pair)
+        run: bash tools/merge/check_build_pair.sh
+      - name: Stage what ships (electron/stage.js)
+        run: node electron/stage.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: game
+          path: electron/game/
+          retention-days: 1
+          if-no-files-found: error
+
+  package:
+    needs: stage
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: windows
+            os: windows-latest
+            args: --win zip --x64
+          - name: macos
+            os: macos-latest
+            # identity "-" = ad-hoc signature, so the app opens on Apple Silicon (an unsigned arm64 app reads as "damaged").
+            # electron-builder's default entitlements allow that (disable-library-validation). Drop the -c option once real
+            # signing is set up below.
+            args: --mac zip --arm64 --x64 -c.mac.identity=-
+          - name: linux
+            os: ubuntu-latest
+            args: --linux tar.gz --x64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: bash
+        working-directory: electron
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: electron
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: electron/package-lock.json
+      - uses: actions/download-artifact@v4
+        with:
+          name: game
+          path: electron/game
+      - name: Install Electron and electron-builder (no steamworks.js)
+        run: npm ci --no-audit --no-fund
+      - name: Package (unsigned)
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: npx electron-builder --publish never ${{ matrix.args }}
+
+      # ---- Code signing, later (owner adds the secrets first; then replace "Package (unsigned)" with these) ----
+      # Windows (only matters outside Steam: SmartScreen). A .pfx certificate, base64-encoded, as two secrets:
+      # - name: Package (signed, Windows)
+      #   if: matrix.name == 'windows'
+      #   env:
+      #     CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+      #     CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+      #   run: npx electron-builder --publish never --win zip nsis --x64
+      #   (Azure Artifact Signing instead: set build.win.azureSignOptions in package.json and pass AZURE_TENANT_ID,
+      #    AZURE_CLIENT_ID and AZURE_CLIENT_SECRET from secrets.)
+      #
+      # macOS (Apple Developer Program): a "Developer ID Application" .p12, base64, plus an App Store Connect API key
+      # (.p8) for notarisation. electron-builder signs with the hardened runtime and notarises when these are set.
+      # - name: Package (signed + notarised, macOS)
+      #   if: matrix.name == 'macos'
+      #   env:
+      #     CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+      #     CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+      #     APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+      #     APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+      #     APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY_P8 }}
+      #   run: |
+      #     printf '%s' "$APPLE_API_KEY_P8" > "$RUNNER_TEMP/apple-api-key.p8"
+      #     APPLE_API_KEY="$RUNNER_TEMP/apple-api-key.p8" npx electron-builder --publish never --mac zip dmg --arm64 --x64
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bramblewood-arena-${{ matrix.name }}
+          path: |
+            electron/dist/*.zip
+            electron/dist/*.tar.gz
+          if-no-files-found: error
+          compression-level: 0

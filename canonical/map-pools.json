@@ -69,7 +69,7 @@
    "special": []
   },
   "m7": {
-   "cards": ["coral-current-eel", "riptide-eel", "krill-swarm", "voltaic-eel", "dolphin-knight", "ironclaw-fiddler", "moon-jelly", "sea-turtle-elder", "reef-shark", "clownfish-scout", "crown-of-thorns-star", "giant-clam", "pincushion-urchin", "conch-crawler", "tide-spirit", "coral-polyp-colony", "nautilus-drifter"],
+   "cards": ["coral-current-eel", "riptide-eel", "krill-swarm", "voltaic-eel", "dolphin-knight", "ironclaw-fiddler", "moon-jelly", "sea-turtle-elder", "reef-shark", "clownfish-scout", "crown-of-thorns-star", "giant-clam", "pincushion-urchin", "conch-crawler", "tide-spirit", "coral-polyp-colony", "nautilus-drifter", "sea-bass"],
    "submaps": {
     "mj": ["humpback-elder", "sperm-whale-elder", "whale-shark", "kraken-spawnling", "colossal-squid", "blue-ringed-octopus", "hagfish-silencer", "conger-eel", "abyss-lantern-squid", "barnacle-fortress", "great-barracuda", "riptide-eel", "giant-clam", "moon-jelly", "clownfish-scout", "coral-polyp-colony", "nautilus-drifter"]
    },

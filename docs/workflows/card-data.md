@@ -11,7 +11,7 @@ For new cards, stat or skill edits, rewards, skirmish decks, card texts and name
 - Names and texts: card names go in `lang/cards`, UI text in `bramblewood-texts.js`. Translate with a dated script in the style of `tools/i18n_2026_10_19_<pkg>.py`.
 
 ## Rules the owner set
-- Every card goes through the budget: `bramblewood-budget.js` (`2A+H+S ≤ N`, `A·H+S ≤ (N/3)²`). Special monsters, Mythics and Divines too.
+- Every card goes through the budget: `bramblewood-budget.js` (cap 1 `f×((aw·A+H)×m×k+S) ≤ N`, cap 2 `f×(A·H×m+S₂) ≤ …`; read the formula in `bramblewood-budget.js` `capScores`, not this line). Special monsters, Mythics and Divines too.
 - Two skills at most, except special or thematic creatures. Early rewards are vanilla (no skills). Skirmish rewards are never pack rewards.
 - Live edits come in through Supabase `card_overrides` and the hub's db tabs. They are inputs, not the source:
   - fold them into cards.json (`tools/fold_server_overrides_2026_10_19.js`, `tools/hub/apply_balance_edits.js`);

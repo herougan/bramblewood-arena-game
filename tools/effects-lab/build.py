@@ -11,7 +11,18 @@ subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__f
 idx=open(f'{ROOT}/index.html').read()
 # every <style> block of the game, not only the first (2026-10-10: later blocks hold the newest look: rarity borders, Shock...)
 gamecss='\n'.join(m.group(1) for m in re.finditer(r'<style[^>]*>(.*?)</style>', idx, re.S))
-cards=json.load(open(f'{ROOT}/.fxcat/cards.json'))
+# 2026-11-11 (package LAB3): a worktree has no .fxcat/cards.json (capcards.py captures it from a running game into the main checkout's
+# .fxcat), so the build reads the main checkout's copy when this checkout has none, as tools/hub/build_hub.py does for .fxcat.
+def _cards_json():
+    own = f'{ROOT}/.fxcat/cards.json'
+    if os.path.exists(own): return own
+    try:
+        g = subprocess.run(['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+        main = os.path.join(os.path.dirname(g), '.fxcat', 'cards.json') if g else ''
+        if main and os.path.exists(main): return main
+    except Exception: pass
+    return own
+cards=json.load(open(_cards_json()))
 fx=open(f'{ROOT}/.fxcat/fx-src.js').read()
 # 2026-10-18: copied game code now calls TX() (the text table, e.g. the field-effect rows' text:TX('ui.fx-tide')); the lab has no
 # text table, so give it a stand-in that returns the English text from bramblewood-texts.js, or the key.
@@ -41,6 +52,10 @@ raidjs = open(f'{ROOT}/bramblewood-raid.js', encoding='utf-8').read()
 fxlab2 = open(f'{LAB}/fxlab-lab2.js', encoding='utf-8').read()
 fxbuilt = open(f'{LAB}/fxlab-built.js', encoding='utf-8').read()
 fxideas = open(f'{LAB}/fxlab-ideas.js', encoding='utf-8').read()
+# 2026-11-11 (package LAB3): + bramblewood-fx-ideas2.js (window.IdeasFX2, the candidates of the "Ideas 11-11" tab: Lab only, not in the game
+# bundle) and its tab (fxlab-ideas2.js, on LAB2's tab engine).
+fxbatches += '\n' + open(f'{ROOT}/bramblewood-fx-ideas2.js', encoding='utf-8').read()
+fxideas2 = open(f'{LAB}/fxlab-ideas2.js', encoding='utf-8').read()
 _inv = json.load(open(f'{ROOT}/docs/effects-inventory-2026-10-15.json', encoding='utf-8'))
 _INV_KEYS = ['id', 'area', 'name', 'trigger', 'current', 'quality', 'priority', 'themeNotes', 'variantsSuggested', 'future', 'batch', 'status', 'retired', 'added', 'updated', 'inGameHook']  # + status / retired / added / updated (2026-10-17); + inGameHook (2026-10-21: the catalogue's "In game: <where>" badge)
 inventory_js = json.dumps([{k: e.get(k) for k in _INV_KEYS} for e in _inv], ensure_ascii=False, separators=(',', ':'))
@@ -52,7 +67,7 @@ _mdir = f'{LAB}/manifest'
 _scr = lambda s: s.replace('</script', '<\\/script')
 # one <script> per manifest, so a syntax error in one batch's file can't take the others down
 manifests = '\n'.join(f'<script>// ---- manifest/{f} ----\n' + _scr(open(os.path.join(_mdir, f), encoding='utf-8').read()) + '\n</script>' for f in sorted(os.listdir(_mdir)) if f.endswith('.js'))
-inventory_js, fixtures_js, fxcore, fxcatalogue, fxbatches, unitfx, fxwar, raidjs, fxlab2, fxbuilt, fxideas = map(_scr, [inventory_js, fixtures_js, fxcore, fxcatalogue, fxbatches, unitfx, fxwar, raidjs, fxlab2, fxbuilt, fxideas])
+inventory_js, fixtures_js, fxcore, fxcatalogue, fxbatches, unitfx, fxwar, raidjs, fxlab2, fxbuilt, fxideas, fxideas2 = map(_scr, [inventory_js, fixtures_js, fxcore, fxcatalogue, fxbatches, unitfx, fxwar, raidjs, fxlab2, fxbuilt, fxideas, fxideas2])
 C=lambda k,v='plain': cards[k][v]
 page_css = r'''
 /* Effects Lab — the game's own stylesheet above, plus this page's layout. */
@@ -406,7 +421,7 @@ html = f'''<!doctype html>
   <p class="lede">Every animation, light, shader and sound in the game so far, live. Cards here use the game's own stylesheet and art. Hover the foil cards, press the buttons, and use headphones for the sound section. Status: <span class="st live">Live</span> in the game, <span class="st part">Partly</span> built, <span class="st idea">Idea</span> not built yet. Every effect also carries a badge (2026-10-21): <span class="ig is-game"><b>In game:</b> where</span> the game calls it today, or <span class="ig is-lab"><b>Lab only</b> (not used yet)</span> nothing calls it.</p>
 </header>
 <nav class="toc" role="tablist" aria-label="Effects">
-  <button type="button" role="tab" data-tab="catalogue">📚 Catalogue</button><button type="button" role="tab" data-tab="war">💨 Smoke &amp; war</button><button type="button" role="tab" data-tab="built">🆕 Built 10-21/23</button><button type="button" role="tab" data-tab="ideas">💡 Ideas 10-21</button><button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="procfx">Procedural FX</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
+  <button type="button" role="tab" data-tab="catalogue">📚 Catalogue</button><button type="button" role="tab" data-tab="war">💨 Smoke &amp; war</button><button type="button" role="tab" data-tab="built">🆕 Built 10-21/23</button><button type="button" role="tab" data-tab="ideas">💡 Ideas 10-21</button><button type="button" role="tab" data-tab="ideas2">💡 Ideas 11-11</button><button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="procfx">Procedural FX</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
 </nav>
 
 <section id="catalogue"><h2>Effects catalogue</h2>
@@ -459,6 +474,7 @@ html = f'''<!doctype html>
 <section id="built"></section>
 
 <section id="ideas"></section>
+<section id="ideas2"></section>
 
 <section id="skills"><h2>Combat skills <span class="st idea" style="vertical-align:middle">new</span></h2><p class="sec-sub">Choreographed skill effects. Arrow and Fire Arrow are now live in the game with this exact animation: the archer draws (leans back while the arrow is pulled along the line of fire), releases with a snap-forward recoil and a bowstring ring, the arrow arcs and accelerates, then sticks and quivers as the target is knocked back. The rest are new prototypes for skills we have, ready to wire in.</p>
 <div class="skill-arena" id="skillArena">
@@ -773,6 +789,10 @@ window.FXLAB_FIXTURES = {fixtures_js};
 </script>
 <script>
 {fxideas}
+</script>
+<script>
+// 2026-11-11 (package LAB3): the "Ideas 11-11" tab
+{fxideas2}
 </script>
 <script>
 if(window.LAB2) LAB2.initSticky();

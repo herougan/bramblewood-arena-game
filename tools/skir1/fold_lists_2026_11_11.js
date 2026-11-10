@@ -30,7 +30,7 @@ const uniq = a => [...new Set(a)];
 function newMainList(id, m) {
   const no = m.mapNo, yes = (PICKS[id] || {}).yes || [];
   const base = no <= 11 ? yes.concat(UI47_ADMIN_ADD[id] || []) : no === 12 ? yes.concat(UI47_SUGGEST[id] || []) : (UI47_SUGGEST[id] || []);
-  return uniq(base.concat(Object.keys((EXTRA.main || {})[id] || {})));
+  return uniq(base.concat(Object.keys((EXTRA.main || {})[id] || {}), Object.keys((EXTRA.batch || {})[id] || {})));
 }
 const out = { about: 'SKIR1 phase A (tools/skir1/fold_lists_2026_11_11.js): the MAP tier of main maps 0-20 and the SUBMAP lists of the THEME8 side maps, before -> after', built: '2026-11-11', main: {}, submaps: {}, extra: EXTRA, missing: [] };
 for (const [id, m] of Object.entries(SUG.maps)) {

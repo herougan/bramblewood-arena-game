@@ -2,7 +2,7 @@
 // Tiered, cached, quiet test runner (2026-10-21, workflow audit). The test LIST stays in tests/run-all.sh (one source of truth);
 // this runner reads it and adds what run-all.sh lacks:
 //   - quiet output: one summary line, plus the tail of each failing test only
-//   - a result cache: a test that passed on byte-identical inputs is skipped and reported as "cached", never as "passed"
+//   - a result cache (shared by every worktree of the repo, see cacheDir): a test that passed on byte-identical inputs is skipped and reported as "cached", never as "passed"
 //   - tiers: --smoke (about a minute), default (every listed test, cache on), --full (cache off), --e2e (adds the browser tests)
 //   - timings: tests/out/test-timings.json, so slow tests are visible
 //
@@ -19,12 +19,28 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { spawn } = require('child_process');
+const { spawn, execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'tests', 'out');
-const CACHE_FILE = path.join(OUT, 'test-cache.json');
 const TIMINGS_FILE = path.join(OUT, 'test-timings.json');
+
+// 2026-11-11 (package TOOLS1): the pass cache sits in the repo's common git dir, so every worktree reads and writes one file (a fresh
+// worktree used to start cold, up to 30 min). BW_TEST_CACHE_DIR overrides it; without git it stays in tests/out. `--cache-dir` prints it.
+let MAIN_ROOT = null; // the main checkout, whose old tests/out cache seeds the shared file once
+function cacheDir() {
+  if (process.env.BW_TEST_CACHE_DIR) return path.resolve(process.env.BW_TEST_CACHE_DIR);
+  try {
+    const common = path.resolve(ROOT, execFileSync('git', ['rev-parse', '--git-common-dir'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim());
+    const dir = path.join(common, 'bw-test-cache');
+    fs.mkdirSync(dir, { recursive: true });
+    if (path.basename(common) === '.git') MAIN_ROOT = path.dirname(common);
+    return dir;
+  } catch (e) { return OUT; }
+}
+const CACHE_DIR = cacheDir();
+const CACHE_FILE = path.join(CACHE_DIR, 'test-cache.json');
+if (process.argv.includes('--cache-dir')) { console.log(CACHE_DIR); process.exit(0); }
 
 // Fast checks that catch most breakage. Keep it near a minute; add a test here only if it is cheap.
 const SMOKE = ['syntax', 'integrity', 'card-pass-2026-10-19', 'i18n-ui-2026-10-18', 'd-2026-10-19', 'scenarios', 'two-player'];
@@ -58,12 +74,12 @@ if (MODE === 'smoke') tests = tests.filter(t => SMOKE.includes(path.basename(t.f
 if (ONLY) { const re = new RegExp(ONLY); tests = tests.filter(t => re.test(t.file)); }
 
 // ---- inputs and hashes ----
-function walk(dir, filter) {
+function walk(dir, filter, skip = []) {
   const abs = path.join(ROOT, dir);
   if (!fs.existsSync(abs)) return [];
   return fs.readdirSync(abs, { withFileTypes: true }).flatMap(e => {
     const rel = path.join(dir, e.name);
-    if (e.isDirectory()) return walk(rel, filter);
+    if (e.isDirectory()) return skip.includes(e.name) ? [] : walk(rel, filter, skip);
     return filter(rel) ? [rel] : [];
   });
 }
@@ -76,8 +92,11 @@ const CANDIDATES = [
   ...walk('tests/scenarios', () => true),
   ...walk('tools', f => /\.(js|py|json)$/.test(f) && !f.includes('node_modules')),
   ...walk('docs', f => /\.(json|xlsx)$/.test(f)),
+  // 2026-11-11 (TOOLS1): the desktop copy and the CI workflows count as inputs of a test that names them (desk2 stayed cached after they changed)
+  ...walk('electron', f => /\.(js|json|html|yml)$/.test(f), ['node_modules', 'game', 'dist']),
+  ...walk('.github', f => /\.ya?ml$/.test(f)),
 ].filter(f => !f.startsWith('tests/out'));
-const ALL_SOURCES = CANDIDATES.filter(f => !f.startsWith('tools/') && !f.startsWith('docs/'));
+const ALL_SOURCES = CANDIDATES.filter(f => !/^(tools|docs|electron|\.github)\//.test(f)); // a test that names nothing keeps the old set
 const hashCache = new Map();
 function fileHash(rel) {
   if (hashCache.has(rel)) return hashCache.get(rel);
@@ -125,13 +144,47 @@ function inputKey(t) {
 }
 
 // ---- cache ----
+// A test name maps to the input keys that passed (newest first, KEEP of them): worktrees with different sources share one entry
+// without overwriting each other. The old file held one key string per name; that still reads.
+const KEEP = 12;
+function readCache(file) {
+  let raw = {};
+  try { raw = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { }
+  return Object.fromEntries(Object.entries(raw).map(([name, v]) => [name, Array.isArray(v) ? v : [v]]));
+}
+function writeCache(cache) { // temp file + rename: a reader never sees half a file
+  const tmp = `${CACHE_FILE}.${process.pid}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(cache, null, 1));
+  fs.renameSync(tmp, CACHE_FILE);
+}
+let warned = false;
+function record(name, key, passed) { // merges into what is on disk now, so runs in two worktrees never drop each other's entries
+  try {
+    const disk = readCache(CACHE_FILE);
+    const keys = (disk[name] || []).filter(k => k !== key);
+    if (passed) keys.unshift(key);
+    if (keys.length) disk[name] = keys.slice(0, KEEP); else delete disk[name];
+    writeCache(disk);
+  } catch (e) { if (!warned) { warned = true; console.log(`warning: cannot write ${CACHE_FILE} (${e.code || e.message}); passes are not cached`); } }
+}
 fs.mkdirSync(OUT, { recursive: true });
-let cache = {};
-try { cache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8')); } catch (e) { }
+if (CACHE_DIR !== OUT && !process.env.BW_TEST_CACHE_DIR) { // fold the old per-checkout caches into the shared file
+  try {
+    const own = path.join(OUT, 'test-cache.json'); // this checkout's: always, then deleted so a stale pass cannot come back after a failure
+    const files = [MAIN_ROOT && !fs.existsSync(CACHE_FILE) ? path.join(MAIN_ROOT, 'tests', 'out', 'test-cache.json') : null, own].filter(f => f && fs.existsSync(f)); // the main checkout's: once, when the shared file is new
+    if (files.length) {
+      const merged = readCache(CACHE_FILE);
+      for (const f of files) for (const [nm, ks] of Object.entries(readCache(f))) merged[nm] = [...new Set([...(merged[nm] || []), ...ks])].slice(0, KEEP);
+      writeCache(merged);
+      if (files.includes(own)) fs.unlinkSync(own);
+    }
+  } catch (e) { }
+}
+const cache = readCache(CACHE_FILE);
 let timings = {};
 try { timings = JSON.parse(fs.readFileSync(TIMINGS_FILE, 'utf8')); } catch (e) { }
 
-const plan = tests.map(t => { const k = inputKey(t); return Object.assign(t, k, { cached: !NO_CACHE && cache[t.name] === k.key }); });
+const plan = tests.map(t => { const k = inputKey(t); return Object.assign(t, k, { cached: !NO_CACHE && (cache[t.name] || []).includes(k.key) }); });
 if (LIST) {
   plan.forEach(t => console.log(`${t.cached ? 'cached' : 'run   '}  ${t.name}  (${t.refs.length} inputs${timings[t.name] ? ', last ' + timings[t.name].toFixed(1) + 's' : ''})`));
   process.exit(0);
@@ -153,14 +206,13 @@ function runOne(t) {
       const secs = (Date.now() - t0) / 1000;
       timings[t.name] = secs;
       results.push({ t, code, secs, out });
-      if (code === 0) cache[t.name] = t.key; else delete cache[t.name];
+      record(t.name, t.key, code === 0);
       resolve();
     });
   });
 }
 async function worker() { while (queue.length) await runOne(queue.shift()); }
 Promise.all(Array.from({ length: Math.min(JOBS, queue.length || 1) }, worker)).then(() => {
-  fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 1));
   fs.writeFileSync(TIMINGS_FILE, JSON.stringify(Object.fromEntries(Object.entries(timings).sort((a, b) => b[1] - a[1])), null, 1));
   const failed = results.filter(r => r.code !== 0);
   for (const r of failed) {

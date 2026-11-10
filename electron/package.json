@@ -24,6 +24,13 @@
     "extraResources": [{ "from": "game", "to": "game" }],
     "asar": true,
     "asarUnpack": ["node_modules/steamworks.js/**"],
+    "electronFuses": {
+      "runAsNode": false,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "onlyLoadAppFromAsar": true,
+      "grantFileProtocolExtraPrivileges": false
+    },
     "icon": "build/icon.png",
     "win": { "target": ["dir"], "icon": "build/icon.ico" },
     "mac": { "target": ["dir"], "category": "public.app-category.games", "icon": "build/icon.png" },
