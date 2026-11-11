@@ -33,7 +33,10 @@ const obtainMap = J('canonical/card-obtain-maps.json').maps;
 const heldStill = id => !!PENDING[id] && (PENDING[id].obtainMap == null || obtainMap[id] === PENDING[id].obtainMap);
 
 // ---- 1. the adds ----
+// 2026-11-11 (LISTFIX3): an add that is a cut card (canonical/map-review.json cutArchive) is off its list again (tools/listfix3/lists_2026_11_11.js REMOVE: Sphagnum Vole)
+const LF3 = require(path.join(ROOT, 'tools', 'listfix3', 'lists_2026_11_11.js')).REMOVE;
 for (const [mid, adds] of Object.entries(ADDS)) for (const [id, x] of Object.entries(adds)) {
+  if ((LF3[mid] || {})[id]) { ok(!(pools[mid].cards || []).includes(id) && !(ADMIN[mid] || []).includes(id) && !(SUGGEST[mid] || []).includes(id), `${mid}: ${id} is off its list again (LISTFIX3: a cut card)`); continue; }
   ok(D[id], `${mid}: ${id} is a card`); if (!D[id]) continue;
   ok((pools[mid].cards || []).includes(id), `Map ${no(mid)} (${mid}): ${id} is on its MAP tier`);
   if (no(mid) <= 11) { ok((ADMIN[mid] || []).includes(id), `Map ${no(mid)}: ${id} in UI47_ADMIN_ADD`); ok(/^SKIR2: ./.test(((SUG.maps[mid] || {}).adminWhy || {})[id] || ''), `Map ${no(mid)}: ${id} has its reason (adminWhy)`); }
@@ -77,7 +80,9 @@ for (const m of G.CONQUEST_MAPS) {
 }
 const nRewards = seen.pack + seen.firstCard + seen.exclusive;
 ok(nRewards > 100 && seen.maps >= 39, `rewards checked: ${nRewards} on ${seen.maps} maps (${seen.pack} first-clear pack cards from the table, ${seen.firstCard} node.firstCard, ${seen.exclusive} skirmish-exclusive)${bad.length ? '; not obtainable: ' + bad.join(', ') : ''}`);
-ok(defs['sphagnum-vole'] && !G.isUnattainable(defs['sphagnum-vole']) && (pools.mw.cards || []).includes('sphagnum-vole'), "5-2's Sphagnum Vole (CONTENT3) is on Map 5's list and obtainable");
+// 2026-11-11 (LISTFIX3, draft LISTFIX3-1): 5-2 pays Raft Spider, the owner's Map 5 Yes card nearest the cut Sphagnum Vole (was: Sphagnum Vole on Map 5's list)
+const n52 = G.CONQUEST_MAPS.find(m => m.id === 'mw').nodes.find(n => n.key === '5-2');
+ok(n52.firstCard === 'raft-spider' && !G.isUnattainable(defs['raft-spider']) && (pools.mw.cards || []).includes('raft-spider') && !(pools.mw.cards || []).includes('sphagnum-vole'), "5-2 pays Raft Spider, on Map 5's list and obtainable; the cut Sphagnum Vole is off it");
 
 // ---- 4. Map 13 ----
 ['swift-fox', 'tasmanian-devil', 'bramblewood-lynx'].forEach(id => ok(pools.mr.cards.includes(id), `Map 13's list holds ${id} (SKIR1-7)`));

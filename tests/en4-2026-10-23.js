@@ -145,7 +145,9 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
     // 2026-11-04 (TESTFIX1): the lists follow THEME3 / THEME4 now (CONTENT4-1, THEME3/4 applied) and PACK1 (2026-10-28) takes a pack card's obtain map from
     // the first map list that names it (packIndex), not DF-1's pack-tier rule: the Cane Toad is first listed on a side map opening at Map 7
     const first = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G.packIndex().first[id], onT2 = !!first;
-    const placed = first ? (obtain[id] || 0) === first.n : !(obtain[id] || 0);
+    // 2026-11-11 (LISTFIX3): the obtain map is the game's (cardObtainMap: the earlier of its first list and the map its pack is paid from, Pack 1 Map 0):
+    // the 11-11 admin adds list the Great Skua on Map 2, a Pack 1 card, so Map 0 (was: its first list's number, true only after its pack's first map)
+    const LBG = require(path.join(ROOT, 'tools', 'lib_bramble.js')), placed = first ? (obtain[id] || 0) === LBG.G.cardObtainMap(LBG.CARD_DEFS_BASELINE[id]) : !(obtain[id] || 0);
     ok(x && x.effects[k] && x.source && x.source.kind === 'pack' && x.source.tier === tier && x.source.map === map && !x.awaitingSource && placed,
       `new card ${id}: ${k}, Pack ${tier} @ ${map} (Map ${mapN}), ${onT2 ? 'in its pool' : 'on no list (THEME2)'} (${x && JSON.stringify(x.source)}, obtain ${obtain[id]})`);
     ok(x && b && ((b.ok && b.x1 <= b.N) || HOLD(id)), `${id} inside the budget (${x && x.attack}/${x && x.health}, 2A+H+S ${b && b.x1} <= N ${b && b.N})`);

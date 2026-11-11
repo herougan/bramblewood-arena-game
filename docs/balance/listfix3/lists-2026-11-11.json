@@ -1,0 +1,226 @@
+{
+ "about": "LISTFIX3: cut cards taken back off the lists Claude had put them on (tools/listfix3/lists_2026_11_11.js)",
+ "built": "2026-11-11",
+ "removed": [
+  {
+   "list": "m2",
+   "card": "water-vole",
+   "from": "UI47_ADMIN_ADD",
+   "cut": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 4): cut by Claude, a second vole on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+   "cutBy": "claude",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "adminAdd"
+   ],
+   "stillOn": []
+  },
+  {
+   "list": "m7",
+   "card": "coral-polyp-colony",
+   "from": "UI47_ADMIN_ADD",
+   "cut": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 10): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+   "cutBy": "claude",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "adminAdd"
+   ],
+   "stillOn": [
+    "mj"
+   ]
+  },
+  {
+   "list": "mw",
+   "card": "caiman-hatchling",
+   "from": "UI47_ADMIN_ADD",
+   "cut": "Owner 11-01: cut",
+   "cutBy": "owner",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "adminAdd"
+   ],
+   "stillOn": [
+    "ms"
+   ]
+  },
+  {
+   "list": "mw",
+   "card": "sphagnum-vole",
+   "from": "UI47_ADMIN_ADD",
+   "cut": "Owner Q3 (already off since THEME2)",
+   "cutBy": "owner",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "adminAdd"
+   ],
+   "stillOn": []
+  },
+  {
+   "list": "m5",
+   "card": "plains-zebra",
+   "from": "UI47_SUGGEST",
+   "cut": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 14): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+   "cutBy": "claude",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "suggest"
+   ],
+   "stillOn": []
+  },
+  {
+   "list": "m6",
+   "card": "talus-pika",
+   "from": "UI47_SUGGEST",
+   "cut": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 17): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+   "cutBy": "claude",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "suggest"
+   ],
+   "stillOn": [
+    "mi",
+    "m3",
+    "m11",
+    "m21"
+   ],
+   "nowSuggestOn": "m3"
+  },
+  {
+   "list": "ml",
+   "card": "squires-mount",
+   "from": "UI47_SUGGEST",
+   "cut": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 15): cut by Claude, a second horse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+   "cutBy": "claude",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "suggest"
+   ],
+   "stillOn": []
+  },
+  {
+   "list": "ml",
+   "card": "warhorse-charger",
+   "from": "UI47_SUGGEST",
+   "cut": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 15): cut by Claude, a second horse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+   "cutBy": "claude",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "suggest"
+   ],
+   "stillOn": [
+    "muc"
+   ]
+  },
+  {
+   "list": "mp",
+   "card": "duckling",
+   "from": "UI47_SUGGEST",
+   "cut": "Owner 11-01: cut",
+   "cutBy": "owner",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "carried"
+   ],
+   "stillOn": [
+    "m1",
+    "mtut12"
+   ]
+  },
+  {
+   "list": "mr",
+   "card": "stag-knight",
+   "from": "UI47_SUGGEST",
+   "cut": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 13): cut by Claude, a second deer on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+   "cutBy": "claude",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "suggest"
+   ],
+   "stillOn": []
+  },
+  {
+   "list": "mt",
+   "card": "dhole-runner",
+   "from": "UI47_SUGGEST",
+   "cut": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 16): cut by Claude, a second dhole on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+   "cutBy": "claude",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "suggest"
+   ],
+   "stillOn": [
+    "muc"
+   ]
+  },
+  {
+   "list": "mx",
+   "card": "phoenix-fledgling",
+   "from": "UI47_SUGGEST",
+   "cut": "Owner 11-01: cut",
+   "cutBy": "owner",
+   "offList": true,
+   "offConst": true,
+   "offDoc": [
+    "carried"
+   ],
+   "stillOn": [
+    "m11",
+    "m22"
+   ]
+  }
+ ],
+ "problems": [],
+ "flags": {
+  "cleared": [],
+  "set": [
+   "stag-knight",
+   "squires-mount",
+   "warhorse-charger",
+   "dhole-runner",
+   "water-vole",
+   "sphagnum-vole"
+  ]
+ },
+ "obtainMaps": [
+  {
+   "id": "stag-knight",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "squires-mount",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "warhorse-charger",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "plains-zebra",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "dhole-runner",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "caiman-hatchling",
+   "before": null,
+   "after": 7
+  }
+ ]
+}

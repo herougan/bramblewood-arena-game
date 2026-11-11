@@ -1302,8 +1302,8 @@
      "deck": {
       "ashbone-ghoul": 4,
       "bramble-sprout": 3,
-      "dhole-runner": 4,
       "ent": 3,
+      "hazel-coppice": 4,
       "porcupine-roller": 4,
       "tide-spirit": 2
      },
@@ -1322,7 +1322,8 @@
       "generated": "2026-11-10T20:49:41.151Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): dhole-runner x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "0-B-PRO-2",
@@ -1335,10 +1336,10 @@
      "leaders": [],
      "deck": {
       "ashbone-ghoul": 3,
+      "bramblewood-lynx": 3,
       "grave-grin-hyena": 4,
       "porcupine-roller": 4,
       "quill-thorn-boar": 3,
-      "squires-mount": 3,
       "thornwood-palisade": 3
      },
      "source": {
@@ -1356,7 +1357,8 @@
       "generated": "2026-11-10T20:49:41.151Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "0-B-PRO-3",
@@ -11428,7 +11430,7 @@
       "fleetfootd": 4,
       "kittiwake-flock": 4,
       "rock-pool-starfish": 3,
-      "water-vole": 4
+      "water-shrew": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map04-m2-2026-11-11.json",
@@ -11445,7 +11447,8 @@
       "generated": "2026-11-10T19:55:45.597Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): water-vole x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "4-PRO-2",
@@ -11575,12 +11578,12 @@
       "shoal-shark"
      ],
      "deck": {
+      "conch-crawler": 2,
       "drowned-matriarch": 4,
       "kittiwake-flock": 4,
       "pond-algae": 2,
       "shoal-shark": 4,
-      "water-shrew": 4,
-      "water-vole": 2
+      "water-shrew": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map04-m2-2026-11-11.json",
@@ -11597,7 +11600,8 @@
       "generated": "2026-11-10T18:27:50.232Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): water-vole x2 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "4-BPRO-2",
@@ -11615,8 +11619,8 @@
       "conch-crawler": 4,
       "kittiwake-flock": 4,
       "planarian-splitter": 4,
-      "water-shrew": 4,
-      "water-vole": 4
+      "pond-algae": 4,
+      "water-shrew": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map04-m2-2026-11-11.json",
@@ -11633,7 +11637,8 @@
       "generated": "2026-11-10T18:27:50.232Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): water-vole x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "4-BPRO-3",
@@ -13086,8 +13091,8 @@
       "alley-cat": 3,
       "bog-leech": 2,
       "box-turtle": 4,
-      "caiman-hatchling": 4,
-      "mosquito-cloud": 3,
+      "mosquito-cloud": 4,
+      "muskrat-reedgatherer": 3,
       "planarian-splitter": 4
      },
      "source": {
@@ -13106,7 +13111,8 @@
       "generated": "2026-11-11T03:11:05.673Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): caiman-hatchling x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "5-PRO-2",
@@ -13126,7 +13132,7 @@
       "box-turtle": 3,
       "driftwood-crab": 4,
       "fire-ant-raft": 4,
-      "sphagnum-vole": 3,
+      "raft-spider": 3,
       "tunnel-ant": 3
      },
      "source": {
@@ -13145,7 +13151,8 @@
       "generated": "2026-11-11T03:11:05.673Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): sphagnum-vole x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "5-PRO-3",
@@ -14807,6 +14814,44 @@
      "h2h": null,
      "later": [],
      "renamedFrom": "5-A-PRO-2"
+    },
+    {
+     "id": "5-A-PRO-2",
+     "name": "5-A-PRO-2",
+     "focus": "big",
+     "labels": [
+      "big (9 copies at 2+ Lumber, average 1.3)",
+      "heal x7",
+      "armor x6"
+     ],
+     "level": 1,
+     "leaders": [
+      "old-snapjaw"
+     ],
+     "deck": {
+      "bog-behemoth": 3,
+      "bog-leech": 3,
+      "mudflat-godwit": 4,
+      "mudpuppy": 4,
+      "old-snapjaw": 2,
+      "swamp-alligator": 4
+     },
+     "source": {
+      "file": "docs/balance/skir2/refdecks/pro/bench-deck-map05-ms-2026-11-11.json",
+      "mode": "deck1",
+      "package": "SKIR1",
+      "run": "SKIR2",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map ms --pool alligator-gar,alpine-marmot,anhinga-spearbird,banded-sea-krait,blue-ringed-octopus,bog-behemoth,bog-leech,booming-bittern,caiman-hatchling,cottonmouth-matriarch,cypress-root-lurker,eagle-owl-quartermaster,fen-mink,fire-ant-raft,matamata,mossmother-newt,mudflat-godwit,mudpuppy,newt-doctor,nutria-reedcutter,old-snapjaw,otter-centurion,peat-cutter-vole,raft-spider,signal-crayfish,snapper-hatchling,swamp-alligator,upside-down-bat,venomlord-serpent,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:armor,family:tide,big,open --anchor anhinga-spearbird,bog-behemoth,bog-leech,caiman-hatchling,cottonmouth-matriarch,cypress-root-lurker,fen-mink,matamata,mossmother-newt,mudflat-godwit,newt-doctor,nutria-reedcutter,old-snapjaw,peat-cutter-vole,signal-crayfish,snapper-hatchling,swamp-alligator,venomlord-serpent --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.4643,
+      "ci": [
+       0.3968,
+       0.5318
+      ],
+      "avgLumber": 1.25,
+      "generated": "2026-11-11T03:13:36.864Z"
+     },
+     "listfix3": "2026-11-11 (LISTFIX3): DECK1 wants 2-4 PRO decks; SKIR2 dropped this map's PRO-1 (more than 10 copies shared with the kept BPRO-1), leaving one: the same SKIR2 search's next distinct deck (focus big; 4 copies shared with PRO-1 and with BPRO-1), not re-searched"
     }
    ],
    "bpro": [
@@ -15085,7 +15130,8 @@
     "SKILL2 BPRO: 3 focused decks from the map's list (5-A-BPRO-1 open, 5-A-BPRO-2 swarm, 5-A-BPRO-3 family:armor); the previous BPRO decks are under history",
     "BAL16: 2 PRO, 2 BPRO (distinct plans, at most 10 shared copies), 2 WPRO (weak plans low, top-heavy); the previous decks are under history",
     "SKIR1: (re-run by SKIR2 on the amended list) 2 PRO, 1 BPRO (distinct plans, at most 10 shared copies), 2 WPRO (weak plans low, top-heavy); the previous decks are under history",
-    "SKIR2: 5-A-PRO-1 dropped (shares more than 10 copies with the kept 5-A-BPRO-1); the PRO decks after it renumbered"
+    "SKIR2: 5-A-PRO-1 dropped (shares more than 10 copies with the kept 5-A-BPRO-1); the PRO decks after it renumbered",
+    "LISTFIX3: 5-A-PRO-2 added from the same SKIR2 search (focus big): DECK1 wants 2-4 PRO decks"
    ],
    "history": [
     {
@@ -16220,9 +16266,9 @@
       "adder-ambusher": 3,
       "alley-cat": 3,
       "box-turtle": 4,
-      "caiman-hatchling": 3,
       "grass-viper": 4,
-      "heron-hag": 3
+      "heron-hag": 3,
+      "water-shrew": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map06-m8-2026-11-11.json",
@@ -16239,7 +16285,8 @@
       "generated": "2026-11-10T20:10:51.954Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): caiman-hatchling x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "6-PRO-2",
@@ -16329,11 +16376,11 @@
      ],
      "deck": {
       "alley-cat": 4,
-      "caiman-hatchling": 3,
       "gannet-nestweaver": 3,
       "grass-viper": 4,
       "mosquito-cloud": 4,
-      "owl-sentinel": 2
+      "owl-sentinel": 2,
+      "water-shrew": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map06-m8-2026-11-11.json",
@@ -16350,7 +16397,8 @@
       "generated": "2026-11-10T20:10:51.954Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): caiman-hatchling x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -26189,8 +26237,8 @@
      ],
      "deck": {
       "coral-current-eel": 3,
-      "coral-polyp-colony": 4,
       "coral-reef-shark": 4,
+      "crown-of-thorns-star": 4,
       "krill-swarm": 4,
       "parrotfish": 1,
       "sea-turtle-elder": 4
@@ -26211,7 +26259,8 @@
       "generated": "2026-11-11T02:57:15.101Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): coral-polyp-colony x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-BPRO-4",
@@ -36143,11 +36192,11 @@
      "leaders": [],
      "deck": {
       "berserker-boar": 4,
+      "fox-kit": 1,
       "grizzly-vanguard": 4,
       "heartwood-treant": 3,
       "owl-nightwatch": 4,
-      "stag-knight": 4,
-      "swift-fox": 1
+      "swift-fox": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/wpro/wpro-map13-mr-2026-11-11.json",
@@ -36165,7 +36214,8 @@
       "generated": "2026-11-11T03:41:38.443Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): stag-knight x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "13-WPRO-2",
@@ -36181,9 +36231,9 @@
       "berserker-boar": 4,
       "corpse-flower-beetle": 3,
       "cunning-vixen": 4,
-      "grizzly-vanguard": 3,
+      "grizzly-vanguard": 4,
       "pine-marten": 3,
-      "stag-knight": 3
+      "swift-fox": 2
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/wpro/wpro-map13-mr-2026-11-11.json",
@@ -36201,7 +36251,8 @@
       "generated": "2026-11-11T03:41:38.443Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): stag-knight x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -36339,8 +36390,8 @@
      "deck": {
       "banded-sea-krait": 3,
       "caiman-hatchling": 3,
+      "dust-hyena": 4,
       "grave-grin-hyena": 4,
-      "plains-zebra": 4,
       "savanna-cheetah": 2,
       "springbok-pronker": 4
      },
@@ -36373,7 +36424,8 @@
        -275,
        -191
       ]
-     }
+     },
+     "listfix3": "2026-11-11 (LISTFIX3): plains-zebra x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-PRO-4",
@@ -36555,9 +36607,9 @@
      ],
      "deck": {
       "acacia-giraffe": 4,
+      "dust-hyena": 4,
       "grave-grin-hyena": 4,
       "hoopoe-herald": 4,
-      "plains-zebra": 4,
       "stonedrop-vulture": 4
      },
      "source": {
@@ -36575,7 +36627,8 @@
       "generated": "2026-11-10T20:29:43.208Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): plains-zebra x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -39199,8 +39252,8 @@
       "ibex-rockcaller": 2,
       "land-tiller": 4,
       "robin-redbreast": 4,
-      "squires-mount": 3,
-      "upside-down-bat": 4
+      "upside-down-bat": 4,
+      "war-hound": 3
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map15-ml-2026-11-11.json",
@@ -39218,7 +39271,8 @@
       "generated": "2026-11-11T03:24:58.326Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "15-PRO-2",
@@ -39229,7 +39283,7 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "war-hound"
      ],
      "deck": {
       "border-collie": 3,
@@ -39237,7 +39291,7 @@
       "grave-grin-hyena": 2,
       "hedge-weasel": 4,
       "robin-redbreast": 4,
-      "squires-mount": 3
+      "war-hound": 3
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map15-ml-2026-11-11.json",
@@ -39255,7 +39309,8 @@
       "generated": "2026-11-11T03:24:58.326Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "15-PRO-3",
@@ -39266,14 +39321,14 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "war-hound"
      ],
      "deck": {
       "cricket-drummer": 4,
+      "goose-sentry": 1,
       "hedge-weasel": 4,
       "land-tiller": 4,
       "mouse-sapper": 4,
-      "squires-mount": 1,
       "war-hound": 3
      },
      "source": {
@@ -39292,7 +39347,8 @@
       "generated": "2026-11-11T03:24:58.326Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x1 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "15-PRO-4",
@@ -39342,15 +39398,15 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "war-hound"
      ],
      "deck": {
       "border-collie": 4,
       "cricket-drummer": 4,
       "goose-sentry": 2,
       "land-tiller": 4,
-      "squires-mount": 3,
-      "truffle-piglet": 3
+      "truffle-piglet": 3,
+      "war-hound": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map15-ml-2026-11-11.json",
@@ -39368,7 +39424,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (42.5%)"
+     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (42.5%)",
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -40890,7 +40947,7 @@
       "mallard-halberdier": 3,
       "mouse-sapper": 1,
       "pronghorn-racer": 4,
-      "warhorse-charger": 4
+      "shepherds-bark": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/wpro/wpro-map15-ml-2026-11-11.json",
@@ -40908,7 +40965,8 @@
       "generated": "2026-11-11T03:42:25.138Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): warhorse-charger x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "15-WPRO-2",
@@ -40924,9 +40982,9 @@
       "bison-bulldozer": 4,
       "cataphract-destrier": 4,
       "goose-sentry": 3,
+      "mouse-sapper": 4,
       "pronghorn-racer": 1,
-      "shepherds-bark": 4,
-      "warhorse-charger": 4
+      "shepherds-bark": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/wpro/wpro-map15-ml-2026-11-11.json",
@@ -40944,7 +41002,8 @@
       "generated": "2026-11-11T03:42:25.138Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): warhorse-charger x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -42258,15 +42317,15 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "ice-crevasse-wolf"
      ],
      "deck": {
       "arctic-fox-raider": 3,
       "arctic-tern": 2,
       "cunning-vixen": 4,
+      "ice-crevasse-wolf": 3,
       "lemming-swarm": 4,
-      "snow-ermine": 4,
-      "squires-mount": 3
+      "snow-ermine": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map17-m6-2026-11-11.json",
@@ -42298,7 +42357,8 @@
        -76,
        -8
       ]
-     }
+     },
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-PRO-3",
@@ -42406,12 +42466,11 @@
       "ringed-seal"
      ],
      "deck": {
-      "cone-cutter-squirrel": 3,
-      "krill-swarm": 3,
+      "cone-cutter-squirrel": 4,
+      "krill-swarm": 4,
       "lemming-swarm": 4,
       "ringed-seal": 4,
-      "snow-ermine": 4,
-      "talus-pika": 2
+      "snow-ermine": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map17-m6-2026-11-11.json",
@@ -42443,7 +42502,8 @@
        -46,
        22
       ]
-     }
+     },
+     "listfix3": "2026-11-11 (LISTFIX3): talus-pika x2 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-BPRO-3",
@@ -43989,14 +44049,14 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "beluga"
      ],
      "deck": {
       "arctic-tern": 4,
+      "beluga": 3,
       "harp-seal-pup": 4,
       "lemming-swarm": 4,
       "ravenous-wolverine": 2,
-      "squires-mount": 3,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -44015,7 +44075,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (51.3%)"
+     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (51.3%)",
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-A-PRO-2",
@@ -44079,14 +44140,14 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "beluga"
      ],
      "deck": {
+      "beluga": 3,
       "frostbitten-wolverine": 4,
       "lemming-swarm": 2,
       "mountain-hare": 4,
       "snow-ermine": 3,
-      "squires-mount": 3,
       "talus-pika": 4
      },
      "source": {
@@ -44119,7 +44180,8 @@
        -43,
        25
       ]
-     }
+     },
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -45703,7 +45765,7 @@
       "armadillo-guard": 3,
       "horned-lizard": 4,
       "ibex-rockcaller": 2,
-      "squires-mount": 3,
+      "marula-elephant": 3,
       "stonedrop-vulture": 4,
       "termite-forager": 4
      },
@@ -45723,7 +45785,8 @@
       "generated": "2026-11-11T03:30:36.561Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "18-PRO-3",
@@ -45741,9 +45804,9 @@
      "deck": {
       "alpine-swift": 4,
       "antlion-pit": 3,
+      "horned-lizard": 3,
       "ibex-rockcaller": 2,
       "roadrunner-courier": 4,
-      "squires-mount": 3,
       "stonedrop-vulture": 4
      },
      "source": {
@@ -45762,7 +45825,8 @@
       "generated": "2026-11-11T03:30:36.561Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -52082,13 +52146,13 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "fumarole-ibex"
      ],
      "deck": {
       "ash-moth": 4,
       "chamois-leaper": 4,
       "cinder-stoker": 4,
-      "squires-mount": 2,
+      "fumarole-ibex": 2,
       "stonedrop-vulture": 4,
       "talus-pika": 2
      },
@@ -52107,7 +52171,8 @@
       "generated": "2026-11-10T22:02:19.730Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x2 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-PRO-2",
@@ -53409,7 +53474,7 @@
       "ashbone-ghoul": 4,
       "cinder-skeleton": 4,
       "ibex-rockcaller": 2,
-      "squires-mount": 3,
+      "pall-wraith": 3,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -53427,7 +53492,8 @@
       "generated": "2026-11-10T22:33:50.603Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-A-PRO-3",
@@ -54730,11 +54796,11 @@
      ],
      "deck": {
       "ash-cloud-condor": 3,
-      "cinder-hornet": 3,
+      "cinder-hornet": 4,
       "cinder-stoker": 4,
       "ember-jackal": 3,
       "ember-wisp": 3,
-      "phoenix-fledgling": 4
+      "pyroclast-wyrm": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map20-mx-2026-11-11.json",
@@ -54751,7 +54817,8 @@
       "generated": "2026-11-10T20:40:42.287Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): phoenix-fledgling x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-B-BPRO-2",
@@ -55850,9 +55917,9 @@
      "leaders": [],
      "deck": {
       "ancient-sloth-titan": 4,
+      "cinder-hornet": 4,
       "gorge-wyrm": 4,
       "magma-titan": 4,
-      "phoenix-fledgling": 4,
       "stalactite-golem": 4
      },
      "source": {
@@ -55870,7 +55937,8 @@
       "generated": "2026-11-10T23:02:52.658Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): phoenix-fledgling x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },

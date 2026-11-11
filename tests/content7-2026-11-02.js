@@ -8,13 +8,16 @@ const cards = JSON.parse(rd('canonical/cards.json')), by = id=> cards.find(c=> c
 const T = require(path.join(ROOT, 'tools', 'skill_costs.js')).make(JSON.parse(rd('canonical/skill-costs.json')));
 const IDS = {bloodworm:['common', 2], 'night-algae':['common', 9], 'bobbit-worm':['uncommon', 9], 'man-o-war':['rare', 9], nautiloid:['rare', 10], 'pistol-shrimp':['uncommon', 10], unicorn:['mythic', 56], sphinx:['mythic', 56], griffin:['mythic', 56]};
 const nums = new Set(), pools = JSON.parse(rd('canonical/map-pools.json')).maps;
+const ADMIN = JSON.parse((rd('arena_app.js').match(/const UI47_ADMIN_ADD = (\{.*?\});\n/) || [0, '{}'])[1]), SUGM = JSON.parse(rd('docs/design/map-suggestions-2026-11-11.json')).maps;
+const adminWhy = id=> Object.entries(ADMIN).some(([m, l])=> l.includes(id) && ((SUGM[m] || {}).adminWhy || {})[id]);
 for(const [id, [rar, map]] of Object.entries(IDS)){ const c = by(id); ok(c, id + ' exists'); if(!c) continue;
   ok(c.rarity === rar, id + ' rarity ' + rar); ok(c.animal && c.species && c.species.length, id + ' has an animal and species');
   const b = T.budget(Object.assign({}, c, {obtainMap:map}), {level:1}); ok((b.ok && b.x1 <= b.N) || require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetPending(id) /* 2026-11-09 (FIX11): BAL32's on-hit prices put bloodworm 99 -> 103% at Map 2; held for the owner's re-fit (docs/balance/bal32/verdict-change-2026-11-09.json unplaced) */ || id === 'night-algae'/* 2026-11-06 (ENG27, ENG26-3 a): Bloom x1.5 moved it 102 -> 115%, no re-fit (listed) */, `${id} inside the budget at Map ${map} (${b.x1} / ${b.N})`);
   ok(Object.keys(c.effects).filter(k=> !['flying', 'tide'].includes(k)).length <= 2, id + ' two skills at most');
   // 2026-11-02 (package CONTENT8): the four sea cards stay unlisted (the coordinator held the maps to the 8-11 own rule); only the three jellyfish are placed
   { ok(c.awaitingSource && c.unattainable, id + ' unlisted (awaitingSource + unattainable)');
-    ok(!Object.values(pools).some(m=> (m.cards || m).includes(id) || Object.values(m.submaps || {}).some(l=> l.includes(id)) || (m.special || []).includes(id)), id + ' on no map list'); }
+    // 2026-11-11 (LISTFIX3): or an 11-11 admin add with its reason (SKIR1, owner 00:16 allowed administrative adds; CONTENT7-1's 16-card cap is gone): Bloodworm on Map 2
+    ok(!Object.values(pools).some(m=> (m.cards || m).includes(id) || Object.values(m.submaps || {}).some(l=> l.includes(id)) || (m.special || []).includes(id)) || adminWhy(id), id + ' on no map list (or an 11-11 admin add)'); }
   ok(!nums.has(c.numericId) && cards.filter(x=> x.numericId === c.numericId).length === 1, id + ' numericId unique'); nums.add(c.numericId);
   if(rar === 'mythic') ok(/MARKED FOR MAP 56\+/.test(c.creatorNote), id + ' marked for Map 56+'); }
 ok(by('night-algae').effects.bloomCopy.when.join() === 'night', 'Bright Night Algae blooms at night');

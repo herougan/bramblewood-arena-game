@@ -131,9 +131,13 @@ const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools
 // 2026-10-29 THEME3: lists follow the owner's 23:35/00:10 notes: the expected list is THEME3's (canonical/map-review.json `chosen`, written by tools/theme3_2026_10_29.py with the file), THEME2's where THEME3 has none
 const T2 = Object.assign(Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'theme2-proposal-2026-10-28.json'), 'utf8')).maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed])), Object.fromEntries(Object.entries(JSON.parse(require('fs').readFileSync(require('path').join(ROOT, 'canonical', 'map-review.json'), 'utf8')).maps).map(([k, e])=> [k, e.chosen.map(c=> c.id)])));
 const t2Has = (map, id)=> (T2[map] || []).includes(id), placeOf = Object.fromEntries(C3.NEW.filter(s=> s.place).map(s=> [s.id, s.place[0]]));
+// 2026-11-11 (LISTFIX3): the 11-11 lists (SKIR1, owner 00:16) follow the THEME8 suggestions on Maps 13-20 and their side maps; a CONTENT3 card they
+// moved to another list (the Granite Ox Golem: Ashen Spurn -> Volcano Lair) is placed there, not missing
+const SUGGEST = JSON.parse((fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8').match(/const UI47_SUGGEST = (\{.*?\});\n/) || [0, '{}'])[1]);
+const movedBy1111 = id=> Object.values(SUGGEST).some(l=> l.includes(id)) && Object.values(pools).some(e=> (e.cards || []).includes(id) || Object.values(e.submaps || {}).some(l=> (Array.isArray(l) ? l : l.cards || []).includes(id)));
 { const r = require('child_process').spawnSync(process.execPath, [path.join(ROOT, 'tools', 'content3_2026_10_26.js'), 'check'], {encoding: 'utf8'});
   const probs = (r.stdout || '').trim().split('\n').filter(l=> l && !/^(ok:|\d+ problem)/.test(l)).filter(l=>{
-    let m = /^not in pool (\S+)$/.exec(l); if(m && placeOf[m[1]] && !t2Has(placeOf[m[1]], m[1])) return false;
+    let m = /^not in pool (\S+)$/.exec(l); if(m && placeOf[m[1]] && (!t2Has(placeOf[m[1]], m[1]) || movedBy1111(m[1]))) return false;
     m = /^not moved (\S+)$/.exec(l); const mv = m && C3.MOVE[m[1]]; if(mv && !pools[mv.from].cards.includes(m[1]) && (by[m[1]].source || {}).map === mv.to && !t2Has(mv.to, m[1])) return false;
     // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): "over budget <id>" is reported, not failed, for an unplaced card
     // (on no list) or one pending the owner's re-fit (step 3) (tools/lib_map_pools.js budgetHold)
@@ -143,7 +147,8 @@ const t2Has = (map, id)=> (T2[map] || []).includes(id), placeOf = Object.fromEnt
 ok(!pools.mu.cards.includes('hollow-oath-keeper') && pools.mr.cards.includes('hollow-oath-keeper') === t2Has('mr', 'hollow-oath-keeper') && by['hollow-oath-keeper'].source.map === 'mr', 'G3 the Hollow Oath-Keeper is a Redwood Deep card, not a Morel Hollow one (on the Redwood Deep\'s list where THEME2 puts it)');
 const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), line = k=>{ const i = app.indexOf('{ key:"' + k + '"'); return i < 0 ? '' : app.slice(i, app.indexOf('\n', i)); };
 ok(['7-2', '7-4', '7-5', '7-6'].every(k=> !/"hollow-oath-keeper"/.test(line(k).replace(/\/\*.*?\*\//g, ''))), 'G3 ... and in no Morel Hollow deck');
-ok(/firstCard:"marsh-mallow-hare"/.test(line('5-1')) && /firstCard:"sphagnum-vole"/.test(line('5-2')), 'C1 5-1 and 5-2 pay a Cure card on their first clear');
+// 2026-11-11 (LISTFIX3, draft LISTFIX3-1): the owner cut Sphagnum Vole from Map 5 (Q3, after C1) and his Map 5 picks hold no other Cure card but 5-1's, so 5-2 pays Raft Spider (was: Sphagnum Vole)
+ok(/firstCard:"marsh-mallow-hare"/.test(line('5-1')) && /firstCard:"raft-spider"/.test(line('5-2')), 'C1 5-1 pays a Cure card on its first clear; 5-2 the draft LISTFIX3-1 card');
 ok(by['marsh-mallow-hare'].effects.cure && by['sphagnum-vole'].effects.cure, 'C1 ... both Cure');
 ok(/firstCard:"sleepless-shrew"/.test(line('7-4')) && by['sleepless-shrew'].effects.wakeful, 'G5 7-4 (before 7-5) pays the Wakeful Sleepless Shrew');
 ok(/"tide":true/.test(line('5-A-2')) && /"tide":true/.test(line('10-A-2')), 'BAL3-1 5-A-2 and 10-A-2 have the Tide');

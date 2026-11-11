@@ -29,6 +29,11 @@ const MAPS = ['m1', 'mtut', 'mf', 'mb', 'mc', 'm2', 'mw', 'm8', 'mp', 'mu', 'mg'
 ok(MAPS.every(m=> C17.MAPS.some(x=> x[0] === m)) && C17.MAPS.length === MAPS.length, '1: the tool covers the 34 maps and submaps of Maps 0-20');
 const parent = {}; Object.entries(POOLS).forEach(([k, e])=> Object.keys(e.submaps || {}).forEach(s=> parent[s] = k));
 const ownLists = m=>{ const top = parent[m] || m, e = POOLS[top] || {}; return new Set([].concat(e.cards || [], e.special || [], ...Object.values(e.submaps || {}))); };
+// 2026-11-11 (LISTFIX3): the 11-11 lists (SKIR1, owner 00:16: his Yes picks, Claude's admin adds and THEME8 suggestions) took up some of these
+// picks; a pick on its map's list is fine when one of those three put it there (was: no pick on its own map's lists)
+const appSrc = R('arena_app.js'), grabC = n=> JSON.parse((appSrc.match(new RegExp('const ' + n + ' = (\\{.*?\\});\\n')) || [0, '{}'])[1]);
+const PICKS = J('docs/design/map-picks-owner-2026-11-11.json').maps, ADMIN = grabC('UI47_ADMIN_ADD'), SUGGEST = grabC('UI47_SUGGEST');
+const tookUp = (m, id)=>{ const top = parent[m] || m; return [(PICKS[top] || {}).yes, ADMIN[top], SUGGEST[top], ...Object.keys((POOLS[top] || {}).submaps || {}).map(s=> SUGGEST[s])].some(l=> (l || []).includes(id)); };
 let total = 0, ranged = 0;
 MAPS.forEach(m=>{
   const e = c17[m]; ok(!!(e && Array.isArray(e.groups)), `${m}: has content17 groups`); if(!e || !e.groups) return;
@@ -47,7 +52,7 @@ MAPS.forEach(m=>{
     if(eng40Reach) p.delivery = want; // the live label, for the ranged count below
     ok(p.source === (newIds.has(p.id) ? 'new' : 'existing'), `${m}: ${p.id} source ${p.source}`);
     ok(typeof p.why === 'string' && p.why.trim().length > 3, `${m}: ${p.id} has a why`);
-    ok(!lists.has(p.id), `${m}: ${p.id} is not already on this map's lists`); });
+    ok(!lists.has(p.id) || tookUp(m, p.id), `${m}: ${p.id} is not already on this map's lists (or the 11-11 picks / adds / suggestions put it there)`); });
   const r = picks.filter(p=> p.delivery === 'ranged').length; ranged += r; ok(r >= 1, `${m}: at least one ranged pick`);
 });
 ok(total >= 34 * 8, `1: ${total} picks in all, ${ranged} ranged`);
@@ -65,7 +70,7 @@ const firstNew = cards.findIndex(c=> newIds.has(c.id));
 ok(firstNew >= cards.length - C17.NEW.length - 12 /* 2026-11-08: room for later packages' appends (ENG37 1, CONTENT18 5) */ && cards.slice(firstNew).every(c=> newIds.has(c.id) || cards.indexOf(c) > firstNew), '2: the new cards are appended at the end');
 C17.NEW.forEach(s=>{ const c = by[s.id]; ok(!!c, `${s.id}: in cards.json`); if(!c) return;
   ok(c.awaitingSource === true && c.unattainable === true && !c.source, `${s.id}: awaitingSource + unattainable, no source`);
-  ok(!listed.has(s.id) && !JSON.stringify(extras).includes('"' + s.id + '"'), `${s.id}: on no list and in no pack's extras`);
+  ok((!listed.has(s.id) || Object.values(SUGGEST).some(l=> l.includes(s.id))) && !JSON.stringify(extras).includes('"' + s.id + '"'), `${s.id}: on no list (or a THEME8 suggestion SKIR1 listed, still awaiting the owner's placement) and in no pack's extras`); // 2026-11-11 (LISTFIX3)
   ok(Object.keys(c.effects || {}).length <= 2, `${s.id}: two skills at most`);
   const b = T.budget(Object.assign({}, c, {obtainMap: mapN[s.map]}), {level: 1});
   ok(b.ok && b.x1 <= b.N && !(b.missing && b.missing.length), `${s.id}: inside the budget at Level 1, Map ${mapN[s.map]} (${(+b.x1).toFixed(2)} / ${(+b.N).toFixed(2)})`);
@@ -105,7 +110,9 @@ ok(rows.length >= 15 && rows.length <= 20, `4: the design note has 15-20 concept
 ok(/yeti hunters/i.test(note) && /ice arrow/i.test(note) && /temple/i.test(note) && /ranged becomes common/i.test(note), '4: the note covers yeti hunters, ice-arrow archers, temple crocodiles and how ranged becomes common');
 ok(/[Yy]eti hunters/.test(R('docs/card-ideas.md')) && /yeti-tracker/.test(R('docs/card-ideas.md')), '4: docs/card-ideas.md has the yeti hunters (ideas and built)');
 const run = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools', 'content17_2026_11_07.js')], {encoding: 'utf8'});
-ok(run.status === 0 && !/PROBLEMS/.test(run.stdout), '4: a dry run of tools/content17_2026_11_07.js reports no problem');
+// 2026-11-11 (LISTFIX3): the tool's "already on this map's lists" lines are the picks the 11-11 lists took up (section 1); any other problem fails
+const runProbs = (run.stdout.split('PROBLEMS:')[1] || '').split('\n').map(l=> l.trim()).filter(Boolean).filter(l=>{ const m = l.match(/^(\w+): ([a-z0-9-]+) is already on this map's lists$/); return !(m && tookUp(m[1], m[2])); });
+ok((run.status === 0 || /PROBLEMS:/.test(run.stdout)) && !runProbs.length, `4: a dry run of tools/content17_2026_11_07.js reports no problem but picks the 11-11 lists took up (${runProbs.slice(0, 3).join('; ')})`);
 const dec = J('docs/decisions.json'), decs = JSON.stringify(dec);
 ok(/CONTENT17-1/.test(decs), '4: decisions CONTENT17-* in docs/decisions.json');
 
