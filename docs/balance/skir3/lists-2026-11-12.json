@@ -326,7 +326,7 @@
   "id": "barrel-cactus",
   "map": "md"
  },
- "cost": 91.3,
+ "cost": 91.5,
  "main": {
   "m1": {
    "mapNo": 0,
@@ -525,15 +525,6 @@
    "car": 5,
    "drops": [
     {
-     "id": "great-skua",
-     "name": "Great Skua",
-     "who": "claude",
-     "side": "NEW!",
-     "fit": 8,
-     "why": "Claude's add: no room under NEW! 10",
-     "nowOn": "no main / side list"
-    },
-    {
      "id": "bloodworm",
      "name": "Bloodworm",
      "who": "claude",
@@ -543,23 +534,32 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "beaver-lumberjack",
-     "name": "Beaver Lumberjack",
+     "id": "great-skua",
+     "name": "Great Skua",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 8,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
      "who": "owner",
      "side": "NEW!",
-     "fit": 0,
-     "why": "over NEW! 10; UI38 fit 0; still on mc, m2, m10 then",
-     "nowOn": "m2,m10"
+     "fit": 4,
+     "why": "over NEW! 10; UI38 fit 4; still on mc then",
+     "nowOn": "mc"
     }
    ],
    "list": [
+    "beaver-lumberjack",
     "driftwood-crab",
     "gull-thief",
     "open-ocean-hermit-crab",
     "oystercatcher",
     "pincushion-urchin",
     "dolphin-knight",
-    "conch-herald",
     "rock-pool-starfish",
     "beachcomber-sanderling",
     "limpet-clinger",
@@ -633,6 +633,15 @@
      "nowOn": "no main / side list"
     },
     {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 10; UI38 fit 0; still on m2, m7 then",
+     "nowOn": "m2,m7"
+    },
+    {
      "id": "fiddler-crab-swarm",
      "name": "Fiddler Crab Swarm",
      "who": "owner",
@@ -640,19 +649,9 @@
      "fit": 0,
      "why": "over NEW! 10; UI38 fit 0; still on mk then",
      "nowOn": "mk"
-    },
-    {
-     "id": "beaver-lumberjack",
-     "name": "Beaver Lumberjack",
-     "who": "owner",
-     "side": "NEW!",
-     "fit": 0,
-     "why": "over NEW! 10; UI38 fit 0; still on m2, m10 then",
-     "nowOn": "m2,m10"
     }
    ],
    "list": [
-    "conch-crawler",
     "cormorant",
     "kittiwake-flock",
     "puffin-diver",
@@ -664,6 +663,7 @@
     "chipmunk-cavalry",
     "limpet-clinger",
     "conch-herald",
+    "beaver-lumberjack",
     "gull-thief",
     "pika-hoarder"
    ],
@@ -2164,14 +2164,6 @@
      "nowOn": "mr"
     },
     {
-     "id": "clover-butterfly",
-     "name": "Clover Butterfly",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 4 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
      "id": "field-mouse",
      "name": "Field Mouse",
      "who": "list",
@@ -2180,32 +2172,16 @@
      "nowOn": "no main / side list"
     },
     {
+     "id": "clover-butterfly",
+     "name": "Clover Butterfly",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 7 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
      "id": "ladybird-guard",
      "name": "Ladybird Guard",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 4 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "bee-drone",
-     "name": "Bee Drone",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 10 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "field-vole",
-     "name": "Field Vole",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 10 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "seed-cache-squirrel",
-     "name": "Seed-cache Squirrel",
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 10 copies in its fights / reference decks",
@@ -2217,6 +2193,30 @@
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "bee-drone",
+     "name": "Bee Drone",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "seed-cache-squirrel",
+     "name": "Seed-cache Squirrel",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "field-vole",
+     "name": "Field Vole",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 16 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     }
    ],
@@ -2269,14 +2269,6 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "dam-keeper-beaver",
-     "name": "Dam-Keeper Beaver",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 7 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
      "id": "victoria-regia",
      "name": "Victoria Regia",
      "who": "list",
@@ -2293,19 +2285,11 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "lotus-frog",
-     "name": "Lotus Frog",
+     "id": "dam-keeper-beaver",
+     "name": "Dam-Keeper Beaver",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 12 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "pond-duck",
-     "name": "Pond Duck",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "why": "over NEW! 3; 9 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -2313,7 +2297,23 @@
      "name": "River Carp",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "pond-duck",
+     "name": "Pond Duck",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 15 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "lotus-frog",
+     "name": "Lotus Frog",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 17 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     }
    ],
@@ -2363,15 +2363,7 @@
      "name": "Grey Seal Bull",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 4 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "tide-pool-crab",
-     "name": "Tide Pool Crab",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 4 copies in its fights / reference decks",
+     "why": "over NEW! 3; 7 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -2379,7 +2371,7 @@
      "name": "Bloodworm",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 7 copies in its fights / reference decks",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -2395,7 +2387,15 @@
      "name": "Raccoon Nightcrew",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "tide-pool-crab",
+     "name": "Tide Pool Crab",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -2407,19 +2407,19 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "coffer-mimic",
-     "name": "Coffer Mimic",
+     "id": "smuggler-slingrat",
+     "name": "Smuggler Slingrat",
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 16 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
-     "id": "smuggler-slingrat",
-     "name": "Smuggler Slingrat",
+     "id": "coffer-mimic",
+     "name": "Coffer Mimic",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 16 copies in its fights / reference decks",
+     "why": "over NEW! 3; 19 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     }
    ],
@@ -2466,14 +2466,6 @@
      "name": "Signal Crayfish",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 0 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "cottonmouth-matriarch",
-     "name": "Cottonmouth Matriarch",
-     "who": "list",
-     "side": "NEW!",
      "why": "over NEW! 3; 3 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
@@ -2486,11 +2478,19 @@
      "nowOn": "no main / side list"
     },
     {
+     "id": "cottonmouth-matriarch",
+     "name": "Cottonmouth Matriarch",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 5 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
      "id": "mossmother-newt",
      "name": "Mossmother Newt",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 4 copies in its fights / reference decks",
+     "why": "over NEW! 3; 9 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -2498,7 +2498,7 @@
      "name": "Bog Behemoth",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 7 copies in its fights / reference decks",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -2506,7 +2506,7 @@
      "name": "Matamata",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 7 copies in its fights / reference decks",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     }
    ],
@@ -2569,11 +2569,11 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "bombardier-beetle",
-     "name": "Bombardier Beetle",
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 7 copies in its fights / reference decks",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -2581,31 +2581,7 @@
      "name": "Tunnel Wyrm",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 7 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "dung-beetle",
-     "name": "Dung Beetle",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 8 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "springtail-hopper",
-     "name": "Springtail Hopper",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 9 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "ant-warrior",
-     "name": "Ant Warrior",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 11 copies in its fights / reference decks",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -2617,11 +2593,35 @@
      "nowOn": "no main / side list"
     },
     {
+     "id": "ant-warrior",
+     "name": "Ant Warrior",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "springtail-hopper",
+     "name": "Springtail Hopper",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
      "id": "leafcutter-gardener",
      "name": "Leafcutter Gardener",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 16 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     }
    ],
@@ -2787,14 +2787,6 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "hagfish-silencer",
-     "name": "Hagfish Silencer",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 5 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
      "id": "whale-shark",
      "name": "Whale Shark",
      "who": "list",
@@ -2811,16 +2803,16 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "barnacle-fortress",
-     "name": "Barnacle Fortress",
+     "id": "hagfish-silencer",
+     "name": "Hagfish Silencer",
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 8 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
-     "id": "nautilus-drifter",
-     "name": "Nautilus Drifter",
+     "id": "barnacle-fortress",
+     "name": "Barnacle Fortress",
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 12 copies in its fights / reference decks",
@@ -2832,6 +2824,14 @@
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -2884,14 +2884,6 @@
    "car": 5,
    "drops": [
     {
-     "id": "red-billed-chough",
-     "name": "Red-billed Chough",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 4 copies in its fights / reference decks; stays on m21",
-     "nowOn": "m21"
-    },
-    {
      "id": "ibex-rockcaller",
      "name": "Ibex Rockcaller",
      "who": "list",
@@ -2900,19 +2892,11 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "hawk-arrowkeeper",
-     "name": "Hawk Arrowkeeper",
+     "id": "red-billed-chough",
+     "name": "Red-billed Chough",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 7 copies in its fights / reference decks; stays on mc SPECIAL",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "alpine-salamander",
-     "name": "Alpine Salamander",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 8 copies in its fights / reference decks; stays on m21",
+     "why": "over NEW! 3; 7 copies in its fights / reference decks; stays on m21",
      "nowOn": "m21"
     },
     {
@@ -2924,12 +2908,28 @@
      "nowOn": "no main / side list"
     },
     {
+     "id": "hawk-arrowkeeper",
+     "name": "Hawk Arrowkeeper",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 8 copies in its fights / reference decks; stays on mc SPECIAL",
+     "nowOn": "no main / side list"
+    },
+    {
      "id": "wound-reaver",
      "name": "Wound Reaver",
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 10 copies in its fights / reference decks; stays on m10 SPECIAL",
      "nowOn": "no main / side list"
+    },
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks; stays on m21",
+     "nowOn": "m21"
     }
    ],
    "list": [
@@ -2981,32 +2981,16 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "poison-dart-frog",
-     "name": "Poison Dart Frog",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 4 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "ancient-sloth-titan",
-     "name": "Ancient Sloth Titan",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 7 copies in its fights / reference decks; stays on m11 SPECIAL",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "leaf-chameleon",
-     "name": "Leaf Chameleon",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 7 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
      "id": "poison-dart-croaker",
      "name": "Poison Dart Croaker",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 8 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "poison-dart-frog",
+     "name": "Poison Dart Frog",
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 8 copies in its fights / reference decks",
@@ -3029,6 +3013,22 @@
      "nowOn": "no main / side list"
     },
     {
+     "id": "ancient-sloth-titan",
+     "name": "Ancient Sloth Titan",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 11 copies in its fights / reference decks; stays on m11 SPECIAL",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "leaf-chameleon",
+     "name": "Leaf Chameleon",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 11 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
      "id": "hanging-loafer",
      "name": "Hanging Loafer",
      "who": "list",
@@ -3037,16 +3037,16 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "leafcutter-gardener",
-     "name": "Leafcutter Gardener",
+     "id": "kinkajou-lurker",
+     "name": "Kinkajou Lurker",
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 12 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
-     "id": "kinkajou-lurker",
-     "name": "Kinkajou Lurker",
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 13 copies in its fights / reference decks",
@@ -3108,7 +3108,7 @@
      "name": "Ravenous Wolverine",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 8 copies in its fights / reference decks; stays on m22",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks; stays on m22",
      "nowOn": "no main / side list"
     },
     {
@@ -3117,14 +3117,6 @@
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 12 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "beluga",
-     "name": "Beluga",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 15 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -3141,6 +3133,14 @@
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 16 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 17 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     }
    ],
@@ -3225,27 +3225,11 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "moon-jerboa",
-     "name": "Moon Jerboa",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 10 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "skull-vulture",
-     "name": "Skull Vulture",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 10 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
      "id": "pale-oryx",
      "name": "Pale Oryx",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "why": "over NEW! 3; 15 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -3253,15 +3237,15 @@
      "name": "Dune Packrat",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 14 copies in its fights / reference decks",
+     "why": "over NEW! 3; 17 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
-     "id": "sand-flinger-antlion",
-     "name": "Sand-flinger Antlion",
+     "id": "moon-jerboa",
+     "name": "Moon Jerboa",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 19 copies in its fights / reference decks",
+     "why": "over NEW! 3; 17 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -3270,6 +3254,22 @@
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 20 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "skull-vulture",
+     "name": "Skull Vulture",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 20 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "sand-flinger-antlion",
+     "name": "Sand-flinger Antlion",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 22 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     }
    ],
@@ -3332,7 +3332,7 @@
      "name": "Malachite Golem",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 9 copies in its fights / reference decks",
+     "why": "over NEW! 3; 11 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -3340,7 +3340,7 @@
      "name": "Ember Tetra",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 11 copies in its fights / reference decks",
+     "why": "over NEW! 3; 17 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
     {
@@ -3348,7 +3348,7 @@
      "name": "Chained Binturong",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "why": "over NEW! 3; 18 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     }
    ],
@@ -3394,19 +3394,19 @@
    "car": 1,
    "drops": [
     {
-     "id": "rimeheart-colossus",
-     "name": "Rimeheart Mammoth",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 0 copies in its fights / reference decks; stays on m22, m22 SPECIAL",
-     "nowOn": "no main / side list"
-    },
-    {
      "id": "ossuary-lammergeier",
      "name": "Ossuary Lammergeier",
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 1 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "rimeheart-colossus",
+     "name": "Rimeheart Mammoth",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 1 copies in its fights / reference decks; stays on m22, m22 SPECIAL",
      "nowOn": "no main / side list"
     },
     {
@@ -3422,22 +3422,6 @@
      "name": "Cave Warlord",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 4 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "obsidian-lich",
-     "name": "Obsidian Lich",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 5 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
-     "id": "pall-wraith",
-     "name": "Pall Wraith",
-     "who": "list",
-     "side": "NEW!",
      "why": "over NEW! 3; 6 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     },
@@ -3447,6 +3431,22 @@
      "who": "list",
      "side": "NEW!",
      "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "pall-wraith",
+     "name": "Pall Wraith",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 11 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "obsidian-lich",
+     "name": "Obsidian Lich",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
      "nowOn": "no main / side list"
     }
    ],
@@ -3498,14 +3498,6 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "granite-ox-golem",
-     "name": "Granite Ox Golem",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 3 copies in its fights / reference decks",
-     "nowOn": "no main / side list"
-    },
-    {
      "id": "lava-waders",
      "name": "Lava Waders",
      "who": "list",
@@ -3522,6 +3514,14 @@
      "nowOn": "no main / side list"
     },
     {
+     "id": "granite-ox-golem",
+     "name": "Granite Ox Golem",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 6 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
      "id": "pyroclast-wyrm",
      "name": "Pyroclast Wyrm",
      "who": "list",
@@ -3530,27 +3530,27 @@
      "nowOn": "no main / side list"
     },
     {
-     "id": "magma-titan",
-     "name": "Magma Rhino",
-     "who": "list",
-     "side": "NEW!",
-     "why": "over NEW! 3; 10 copies in its fights / reference decks; stays on m21",
-     "nowOn": "m21"
-    },
-    {
      "id": "ember-wisp",
      "name": "Ember Firefly",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
      "nowOn": "no main / side list"
+    },
+    {
+     "id": "magma-titan",
+     "name": "Magma Rhino",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks; stays on m21",
+     "nowOn": "m21"
     },
     {
      "id": "cinder-hornet",
      "name": "Cinder Hornet",
      "who": "list",
      "side": "NEW!",
-     "why": "over NEW! 3; 13 copies in its fights / reference decks; stays on m22",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks; stays on m22",
      "nowOn": "m9"
     },
     {

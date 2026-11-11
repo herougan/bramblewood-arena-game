@@ -18,7 +18,7 @@
    "special": ["meadow-rabbit", "cottontail", "ant-scout", "compost-grub"]
   },
   "mb": {
-   "cards": ["driftwood-crab", "gull-thief", "open-ocean-hermit-crab", "oystercatcher", "pincushion-urchin", "dolphin-knight", "conch-herald", "rock-pool-starfish", "beachcomber-sanderling", "limpet-clinger", "puddle-skimmer", "duck-paddler", "hedgerow-shrew", "moonlit-hare", "robin-redbreast"],
+   "cards": ["beaver-lumberjack", "driftwood-crab", "gull-thief", "open-ocean-hermit-crab", "oystercatcher", "pincushion-urchin", "dolphin-knight", "rock-pool-starfish", "beachcomber-sanderling", "limpet-clinger", "puddle-skimmer", "duck-paddler", "hedgerow-shrew", "moonlit-hare", "robin-redbreast"],
    "submaps": {
     "mp": ["lodge-engineer", "box-turtle", "old-sturgeon", "muskrat-lodgekeeper", "snapstick-turtle", "pond-algae", "muskrat-reedgatherer", "platypus-spur", "water-shrew"],
     "mg": ["trash-panda-trickster", "salvager-hermit-crab", "glow-worm", "gull-thief", "rock-pool-starfish", "pincushion-urchin", "limpet-clinger"]
@@ -26,7 +26,7 @@
    "special": ["old-shell"]
   },
   "mc": {
-   "cards": ["conch-crawler", "cormorant", "kittiwake-flock", "puffin-diver", "peak-condor", "gannet-nestweaver", "feral-tomcat", "peregrine-stooper", "eagle-sharpshooter", "chipmunk-cavalry", "limpet-clinger", "conch-herald", "gull-thief", "pika-hoarder"],
+   "cards": ["cormorant", "kittiwake-flock", "puffin-diver", "peak-condor", "gannet-nestweaver", "feral-tomcat", "peregrine-stooper", "eagle-sharpshooter", "chipmunk-cavalry", "limpet-clinger", "conch-herald", "beaver-lumberjack", "gull-thief", "pika-hoarder"],
    "submaps": {},
    "special": ["hawk-arrowkeeper"]
   },

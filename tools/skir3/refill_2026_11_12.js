@@ -8,7 +8,10 @@
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..'), APP = path.join(ROOT, 'arena_app.js');
+// build_2026_11_11.js runs its own command on load (plan by default): it is loaded with a neutral argument so it only exports its builder
+const ARGV = process.argv.splice(2, process.argv.length, 'lib');
 const L = require('../skir1/lib_fight_2026_11_11.js'), B = require('../skir1/build_2026_11_11.js');
+process.argv.splice(2, 1, ...ARGV);
 const APPLY = process.argv.includes('--apply');
 function fnv(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
 function rng(seed) { let t = fnv(seed); return () => { t += 0x6D2B79F5; let r = Math.imul(t ^ t >>> 15, 1 | t); r ^= r + Math.imul(r ^ r >>> 7, 61 | r); return ((r ^ r >>> 14) >>> 0) / 4294967296; }; }

@@ -52,9 +52,12 @@ const PROS = J('docs/design/map-prospects-2026-11-09.json').maps, FIT = {};
 Object.entries(PROS).forEach(([k, m]) => { FIT[k] = {}; (m.fit || []).forEach(([id, s]) => { FIT[k][id] = s; }); });
 const fitOf = (k, id) => (FIT[k] || {})[id] || 0;
 // usage: copies in the map's road fights and its PRO / BPRO / WPRO decks
-const LB = require('../lib_bramble.js'), G = LB.G, PRO = J('canonical/pro-skirmishes.json').maps, USE = {};
+// read from the base commit (the decks before SKIR3 swapped them), so a re-run after the deck work cuts the same way
+const LB = require('../lib_bramble.js'), G = LB.G, PRO = atBase('canonical/pro-skirmishes.json').maps, USE = {};
 const useAdd = (k, deck) => Object.entries(deck || {}).forEach(([id, n]) => { (USE[k] = USE[k] || {})[id] = (USE[k][id] || 0) + n; });
-G.CONQUEST_MAPS.forEach(m => (m.nodes || []).forEach(n => useAdd(m.id, n.deck)));
+{ const mapOfKey = {}; G.CONQUEST_MAPS.forEach(m => (m.nodes || []).forEach(n => { mapOfKey[n.key] = m.id; }));
+  const base = cp.execSync('git show ' + BASE + ':arena_app.js', { cwd: ROOT, maxBuffer: 1 << 28 }).toString(), re = /^\s*\{ ?key:\s*"([^"]+)",.*?deck:(\{[^}]*\})/gm; let mm;
+  while ((mm = re.exec(base))) if (mapOfKey[mm[1]]) { try { useAdd(mapOfKey[mm[1]], JSON.parse(mm[2])); } catch (e) {} } }
 Object.entries(PRO).forEach(([k, e]) => ['pro', 'bpro', 'wpro'].forEach(t => (e[t] || []).forEach(x => useAdd(k, x.deck))));
 const useOf = (k, id) => (USE[k] || {})[id] || 0;
 // first-clear cards of a map's fights (GD-5 table, node firstCard) and the Guardian rule (BAL9 JJ28)
@@ -112,9 +115,11 @@ const forced = {}; let best = simulate(forced);
 for (let d = 0; d < best.decisions.length; d++) {
   const dec = best.decisions[d]; let pick = null;
   dec.cand.forEach(id => { const r = simulate(Object.assign({}, forced, { [dec.key]: id })); if (!pick || r.cost < pick.r.cost - 1e-9) pick = { id, r }; });
+  if (process.env.SKIR3_DEBUG && dec.key.startsWith(process.env.SKIR3_DEBUG)) dec.cand.forEach(id => console.log('debug', dec.key, id, simulate(Object.assign({}, forced, { [dec.key]: id })).cost.toFixed(2)));
   forced[dec.key] = pick.id; best = pick.r;
 }
 const final = best.final;
+if (process.env.SKIR3_DEBUG) { const onRoad = new Set([].concat(...Object.values(final))); console.log('debug off road:', [...PICKED].filter(id => !onRoad.has(id) && !tut.includes(id)).map(id => id + (OFFROAD[id] ? '(in play)' : '(OUT)')).join(' ')); }
 const rec = { about: 'SKIR3 lists (tools/skir3/lists_2026_11_12.js): the owner\'s 2026-11-12 picks under the default NEW! / Carried limits', built: '2026-11-12',
   adminBefore: ADMIN0, sideBefore: SIDE0, cactus: CACTUS, cost: +best.cost.toFixed(2), main: best.recs, side: {}, adminAfter: {}, leftPlay: [] };
 // Claude's carried adds that a road fight needs (only a Carried card, only with room under the Carried limit; listed in UI47_ADMIN_ADD)
