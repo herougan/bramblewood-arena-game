@@ -71,7 +71,9 @@ for (const [mid, fl] of Object.entries(byMap)) {
     ok(s >= Math.min(MIN[k], a), `${mid}: its decks show ${s} ${k} card(s) (the pools hold ${a}; minimum ${MIN[k]})`); }
   // half the map's fights (2 at least), one more on a map docs/balance/skir1/slack-2026-11-11.json names with its reason; a fight that keeps the
   // card (its leader, showcase, first-clear card) does not count
-  const ucap = L.ucapOf(fl[0].f.m), use = {};
+  // 2026-11-12 (SKIR3): + the extra docs/balance/skir3/slack-2026-11-12.json names for a map, with its reason (a thin 11-12 list, or a refill / search)
+  const S3SLACK = (() => { try { return J('docs/balance/skir3/slack-2026-11-12.json').maps || {}; } catch (e) { return {}; } })();
+  const ucap = L.ucapOf(fl[0].f.m) + ((S3SLACK[mid] || {}).extra || 0), use = {};
   fl.forEach(x => Object.keys(x.n.deck).forEach(id => { if (!x.f.keep.has(id)) use[id] = (use[id] || 0) + 1; }));
   Object.entries(use).filter(([, k]) => k > ucap).forEach(([id, k]) => ok(false, `${mid}: ${id} in ${k} of ${fl.length} fights besides the ones that keep it (at most ${ucap})`));
   ok(true, `${mid}: no card in more than ${ucap} of its ${fl.length} fights`);
