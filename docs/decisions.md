@@ -11,6 +11,53 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - c) Leave them.
 - **Default:** a
 
+**SKIR3-1. Six main maps have no Guardian on their list** · Decide · Balance · asked 2026-11-12
+- With your 11-12 picks, Maps 3, 10, 11, 15, 16 and 17 list no defender (Guardian / Bulwark / Taunt), which BAL9's JJ28 asks of Maps 1-19. Claude's Guardian adds (Grey Seal Bull on Map 10, Alpine Marmot on Map 11) had no room under NEW!.
+  - a) You pick a Guardian on each (it may replace one of your picks)
+  - b) Claude adds a carried Guardian where Carried has room
+  - c) Drop JJ28
+- **Default:** a
+
+**SKIR3-2. Side maps cut to 3 own cards: 75 cards left play** · Decide · Balance · asked 2026-11-12
+- Side maps now list 3 own cards (your 1-3). Their other own cards were on no other list, so 75 cards left play, among them side-map set pieces (Kraken Spawnling, Komodo Warlord, Permafrost Mammoth, Obsidian Lich). The full list is in docs/balance/skir3/drop-list-2026-11-12.md.
+  - a) Keep
+  - b) Move some to a main map's list (under its limits)
+  - c) Raise the side-map NEW! default to 5
+- **Default:** a
+
+**SKIR3-3. Two challenge fights lost their boon's cards** · Decide · Balance · asked 2026-11-12
+- 13-4 (Wild Rage) and 20-4 (Restless Dead) need half their deck to hold the boon's theme. Map 13's list has one Wild Rage card; no list up to Map 20 has an undead card. Both fights now play with the boon off; nothing else changed.
+  - a) Keep the boon off
+  - b) Add a theme card to the map
+  - c) Give the fight another boon
+- **Default:** a
+
+**SKIR3-4. Over-limit picks pile up on Maps 18-21** · Decide · Balance · asked 2026-11-12
+- A pick cut where it is NEW! but listed again later becomes NEW! on that later map. Maps 12-18 pushed cards forward, so Maps 19-21 dropped 3-5 of your picks each. One pick left play: Nightshade Moth (Map 17).
+  - a) Keep
+  - b) Raise NEW! on Maps 18-21 by 1-2
+  - c) You choose the cuts on those maps
+- **Default:** a
+
+**SKIR3-5. Carried top-ups on four side maps** · Decide · Balance · asked 2026-11-12
+- The Old Bramble, The Ice Hollow, The Pale Desert and Basalt Foundry could not build their fights from 3 own cards (K14 holds carried cards to 1 copy). Claude topped Carried up to 8; The Old Bramble got 5 of its old cards plus 3 Map 0 cards (House Cat, Earthworm, Farm Dog).
+  - a) Keep
+  - b) You pick the carried cards
+- **Default:** a
+
+**SKIR3-6. 15 first-clear cards changed** · Decide · Balance · asked 2026-11-12
+- Fifteen fights paid a pack card that is no longer on its map's list. Each now pays the nearest card on that list (GD-5), as LISTFIX3 did. Examples: 10-3 Giant Clam (was Parrotfish), 13-4 Pine Marten (was Berserker Boar), 20-4 Vampire Roost (was Cinder Skeleton).
+  - a) Keep
+  - b) You choose per fight
+- **Default:** a
+
+**SKIR3-7. Maps 13, 16 and 19 miss the road curve on the 11-12 lists** · Decide · Balance · asked 2026-11-12
+- After a night of deck and Shield moves, Map 13 has 2 of 8 fights in band (its fights are too easy: the list has few strong cards), Map 16 3 of 7 and Map 19 3 of 6 (too hard). Their Carried counts have room (13: 6 of 8, 16: 8 of 10, 19: 9 of 12).
+  - a) Claude adds 1-2 carried cards there (admin adds, within Carried) and re-tunes
+  - b) You re-pick those maps
+  - c) Accept for now
+- **Default:** a
+
 **NET1-1. Apply the database speed-ups** · Decide · Network · asked 2026-11-12
 - supabase/proposed/20261112_net1_scale.sql: 5 indexes, 19 security rules rewritten to check the player once per query (not once per row), 3 duplicate rules dropped, and card_overrides' updated_at set by the server clock (an admin with a slow clock is then never missed). No rows change. Say "apply it" to run it.
   - a) Apply it.
