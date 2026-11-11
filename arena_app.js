@@ -5069,11 +5069,63 @@ let cloudOverridesSince = '';
 // new id; supabase/proposed/20261023_rw5_clear_ember_tetra.sql deletes the row on "apply it"), and a save's copies, unlock, levels and decks move
 // to the new id once (migrateRenamedCardIds).
 const CARD_ID_RENAMED = {'ember-tetra-3caj': 'ember-tetra', 'phoenix-mushrooms-u248': 'phoenix-mushrooms' /* 2026-10-26 (CONTENT3, OVR): the owner's live card, folded */};
+// NET1_OVR:BEGIN (tests/net1-2026-11-12.js evaluates this block)
+// 2026-11-12 (package NET1, owner 00:43 "network optimisation ... support 10,000 concurrent players"): every load read the whole card_overrides
+// table (243 rows, ~310 KB of JSON, half of it deleted_snapshot copies of live cards nobody reads) and every tab asked for changes every 30 s.
+// Now this device keeps the rows it read (this build only, 12 h at most) and a load asks only for each row's id + updated_at, then reads in full
+// just the rows that changed; a row gone from the server is dropped. Admins still look every 30 s; players every 5 minutes (and on coming back
+// to the tab after 5 minutes). A reload always gets the latest.
+const NET1_OVR_CACHE_KEY = 'bw_net1_ovr_cache_v1', NET1_OVR_CACHE_MAX_MS = 12 * 3600e3, NET1_OVR_DELTA_MAX = 80, NET1_OVR_POLL_PLAYER_MS = 5 * 60e3;
+// the cached rows + the server's [{id, updated_at}] -> {keep: cached rows still current, fetch: ids to read again}, or null: read everything
+function net1OvrPlan(cache, list, build, now){
+  if(!cache || cache.build !== build || !cache.rows || typeof cache.rows !== 'object' || !(now - (Number(cache.at) || 0) < NET1_OVR_CACHE_MAX_MS) || !Array.isArray(list)) return null;
+  const keep = [], fetch = [];
+  list.forEach(r=>{ const c = r && cache.rows[r.id]; if(c && c.updated_at === r.updated_at) keep.push(c); else if(r && typeof r.id === 'string') fetch.push(r.id); });
+  return fetch.length > NET1_OVR_DELTA_MAX ? null : {keep, fetch};
+}
+// what this device keeps of a row: a deleted row keeps its snapshot (the Deleted tab restores from it); a live row's snapshot is never read
+function net1OvrSlim(r){ return r.deleted ? r : {id: r.id, data: r.data, deleted: r.deleted, deleted_snapshot: null, updated_at: r.updated_at}; }
+// NET1_OVR:END
+// at: when the whole table was last read (a delta keeps it, so the 12 h limit still forces a full read); merge: add rows to the current copy
+function net1OvrCacheWrite(rows, at, merge){
+  try{
+    let cache = merge ? JSON.parse(localStorage.getItem(NET1_OVR_CACHE_KEY) || 'null') : {build: BUILD_ID, at, rows: {}};
+    if(!cache || cache.build !== BUILD_ID || !cache.rows) return; // nothing current to add to: the next load reads everything
+    rows.forEach(r=>{ if(r && typeof r.id === 'string') cache.rows[r.id] = net1OvrSlim(r); });
+    localStorage.setItem(NET1_OVR_CACHE_KEY, JSON.stringify(cache));
+  }catch(e){ try{ localStorage.removeItem(NET1_OVR_CACHE_KEY); }catch(e2){} } // full storage: no cache, the full read as before
+}
+// the rows a load applies: from this device's copy plus the changed ones when it is current, else the whole table (null: unreachable)
+async function net1OvrLoadRows(){
+  const cols = 'id, data, deleted, deleted_snapshot, updated_at';
+  let cache = null; try{ cache = JSON.parse(localStorage.getItem(NET1_OVR_CACHE_KEY) || 'null'); }catch(e){}
+  if(cache && cache.build === BUILD_ID){
+    try{
+      const { data: list, error } = await sbClient.from('card_overrides').select('id, updated_at');
+      const plan = !error && net1OvrPlan(cache, list, BUILD_ID, Date.now());
+      if(plan){
+        let fresh = [];
+        if(plan.fetch.length){ const r = await sbClient.from('card_overrides').select(cols).in('id', plan.fetch); if(r.error || !Array.isArray(r.data)) throw r.error || new Error('no rows'); fresh = r.data; }
+        const rows = plan.keep.concat(fresh);
+        if(fresh.length || plan.keep.length !== Object.keys(cache.rows).length) net1OvrCacheWrite(rows, cache.at, false);
+        return rows;
+      }
+    }catch(e){ /* fall through to the full read */ }
+  }
+  const { data, error } = await sbClient.from('card_overrides').select(cols);
+  if(error || !Array.isArray(data)) return null;
+  net1OvrCacheWrite(data, Date.now(), false);
+  return data;
+}
+let net1OvrPolledAt = 0;
 async function pollCloudOverrides(){
   if(!sbClient || document.hidden || !cloudOverridesSince) return;
+  if(!cloudCardAdmin && Date.now() - net1OvrPolledAt < NET1_OVR_POLL_PLAYER_MS) return; // NET1: players every 5 minutes, admins every 30 s
+  net1OvrPolledAt = Date.now();
   try{
     const { data, error } = await sbClient.from('card_overrides').select('id, data, deleted, deleted_snapshot, updated_at').gt('updated_at', cloudOverridesSince);
     if(error || !Array.isArray(data) || !data.length) return;
+    net1OvrCacheWrite(data, 0, true); // NET1: this device's copy keeps up
     let cards = false, cfg = false;
     data.forEach(r=>{
       if(r.updated_at > cloudOverridesSince) cloudOverridesSince = r.updated_at;
@@ -5095,8 +5147,9 @@ const cloudOverrideIds = new Set();
 async function loadCloudCardOverrides(){
   if(!sbClient) return;
   try{
-    const { data, error } = await sbClient.from('card_overrides').select('id, data, deleted, deleted_snapshot, updated_at');
-    if(error || !Array.isArray(data)) return;
+    const data = await net1OvrLoadRows(); // NET1 (2026-11-12): only the changed rows when this device has a current copy
+    net1OvrPolledAt = Date.now();
+    if(!Array.isArray(data)) return;
     data.forEach(r=>{ if(r.updated_at && r.updated_at > cloudOverridesSince) cloudOverridesSince = r.updated_at; });
     data.forEach(r=>{
       // `__cfg:*` rows are admin-published game config (e.g. map layouts), not cards.
@@ -13798,6 +13851,7 @@ async function cloudPullState(){
     let { data: unlocks, error: unlocksErr } = await sbClient.from('player_card_unlocks').select(cloudCopiesColumn === false ? 'card_id, level' : 'card_id, level, copies').eq('profile_id', cloudUserId);
     if(unlocksErr && cloudCopiesColumn !== false && cloudCopiesColumnMissing(unlocksErr)){ cloudCopiesColumn = false; ({ data: unlocks, error: unlocksErr } = await sbClient.from('player_card_unlocks').select('card_id, level').eq('profile_id', cloudUserId)); }
     if(unlocksErr) ok = false; // UI12 (GG2)
+    else if(typeof net1CardSeed === 'function') net1CardSeed(unlocks); // NET1 (2026-11-12): what the server holds, so the next save sends only changes
     if(unlocks && unlocks.length){
       // Each row is now a true unlock record (card_id + level, level possibly 0 for an
       // unlocked-but-not-yet-leveled card) rather than the old level>0-only proxy — see
@@ -13857,8 +13911,11 @@ function cloudPushCurrencies(){
   cloudCurPushInFlight = tail;
   return p;
 }
-function cloudPushCardLevels(){
+function cloudPushCardLevels(now){
   if(!sbClient || !isSignedIn() || !cloudSyncSettled()) return; // UI12 (GG2)
+  // 2026-11-12 (package NET1): one write at a time, and a burst of saves (a fight end saves levels and unlocks one after another) becomes one
+  // more write with the state as it is when it goes out, as cloudPushCurrencies does. (typeof: tests that load this function alone run it plain.)
+  if(!now && typeof net1Serial === 'function') return net1Serial('cards', ()=> cloudPushCardLevels(true));
   // Pushes TRUE unlock state (2026-09-22, closing batch #19's own flagged gap): the row set is
   // the union of every id in myUnlockedCardIds (real unlocks, level defaults to 0) and every id
   // with a level>0 in myCardLevels (leveling only ever applies to an already-unlocked card, but
@@ -13871,9 +13928,35 @@ function cloudPushCardLevels(){
   // then the server says the column is missing, and the rows go again without it (and without it from then on, this session).
   const withCopies = cloudCopiesColumn !== false && copyModelReady;
   const rows = Array.from(ids).map(id=> Object.assign({ profile_id: cloudUserId, card_id: id, level: myCardLevels[id]||0 }, withCopies ? {copies: cloudCopiesOf(id)} : {}));
-  return sbClient.from('player_card_unlocks').upsert(rows).then(r=>{ const error = r && r.error;
-    if(error && withCopies && cloudCopiesColumnMissing(error)){ cloudCopiesColumn = false; return cloudPushCardLevels(); } }, ()=>{});
+  // 2026-11-12 (package NET1): only the rows the server doesn't hold already go up. Every save sent the whole collection (816 rows, ~60 KB for
+  // the biggest one): 416,602 row writes on the live table for 936 rows. What the server holds is known from the sign-in read (net1CardSeed)
+  // and from each write that landed; a failed write is sent again next time.
+  const sent = typeof net1CardSent === 'function' ? net1CardSent() : null, send = sent ? rows.filter(r=> sent.get(r.card_id) !== net1CardRowKey(r)) : rows;
+  if(!send.length) return Promise.resolve();
+  return sbClient.from('player_card_unlocks').upsert(send).then(r=>{ const error = r && r.error;
+    if(!error && sent) send.forEach(x=> sent.set(x.card_id, net1CardRowKey(x)));
+    if(error && withCopies && cloudCopiesColumnMissing(error)){ cloudCopiesColumn = false; return cloudPushCardLevels(true); } }, ()=>{});
 }
+// NET1_CARDS:BEGIN (tests/net1-2026-11-12.js evaluates this block)
+// 2026-11-12 (package NET1): what the server holds of this account's card rows, as card_id -> row key, for this page and account only
+let net1CardSentMap = null, net1CardSentUid = null;
+function net1CardSent(){ if(!net1CardSentMap || net1CardSentUid !== cloudUserId){ net1CardSentMap = new Map(); net1CardSentUid = cloudUserId; } return net1CardSentMap; }
+function net1Stable(v){ return Array.isArray(v) ? '[' + v.map(net1Stable).join(',') + ']' : v && typeof v === 'object' ? '{' + Object.keys(v).sort().map(k=> JSON.stringify(k) + ':' + net1Stable(v[k])).join(',') + '}' : JSON.stringify(v === undefined ? null : v); }
+// a row's level and copies (a row read or sent without the copies column says so, and never matches one with it)
+function net1CardRowKey(r){ return (Number(r.level) || 0) + '|' + (r && 'copies' in r ? net1Stable(r.copies) : '-'); }
+function net1CardSeed(rows){ const m = net1CardSent(); m.clear(); (rows || []).forEach(r=>{ if(r && r.card_id) m.set(r.card_id, net1CardRowKey(r)); }); }
+// one job at a time per key; while one runs, later calls share one queued job (it reads the state when it starts)
+const NET1_SERIAL = {};
+function net1Serial(key, job){
+  const s = NET1_SERIAL[key] || (NET1_SERIAL[key] = {flight: null, queued: null});
+  if(s.queued) return s.queued;
+  const p = (s.flight || Promise.resolve()).then(()=>{ s.queued = null; return job(); });
+  s.queued = p;
+  const tail = p.then(()=>{}, ()=>{}).then(()=>{ if(s.flight === tail) s.flight = null; });
+  s.flight = tail;
+  return p;
+}
+// NET1_CARDS:END
 var cloudCopiesColumn = null; // null: not known yet; false: the server has no player_card_unlocks.copies column (not applied yet)
 function cloudCopiesColumnMissing(error){ return !!error && (/copies/i.test(error.message || '') || error.code === 'PGRST204' || error.code === '42703'); }
 // 2026-10-19 (package SY): decks never reached the cloud. player_decks.id is a uuid, the game's deck ids were 'deck-xxxxxxx', so every
@@ -18336,7 +18419,7 @@ async function findLiveRankedMatch(){
     return;
   }
   if(!deckRankOkOrWarn(myDeckCounts, deckLeaderIds())) return; // 2026-10-22 (package DR)
-  liveQueueing = true; pollLiveQueue.fails = 0;
+  liveQueueing = true; pollLiveQueue.fails = 0; pollLiveQueue.startedAt = Date.now();
   renderArenaSubTabIfOpen();
   pollLiveQueue();
 }
@@ -18353,7 +18436,8 @@ async function pollLiveQueue(){
   // 2026-10-18 (R3-WP3): a queue that can't reach matchmaking used to spin "searching" with no word; after 3 failed polls
   // in a row say so once (it keeps trying; Cancel still works)
   if(pollLiveQueue.fails===3) showToast(TX('toast.can-t-reach-matchmaking-still-trying'), 'error');
-  if(liveQueueing) liveQueuePollTimer = setTimeout(pollLiveQueue, 2200);
+  // 2026-11-12 (NET1): every 2.2 s for the first 30 s, then every 4 s (a long queue asked the server ~27 times a minute, the deck each time)
+  if(liveQueueing) liveQueuePollTimer = setTimeout(pollLiveQueue, Date.now() - (pollLiveQueue.startedAt || 0) > 30000 ? 4000 : 2200);
 }
 
 function cancelLiveRankedQueue(){
@@ -18706,7 +18790,7 @@ function livePushProgress(force){
   }
   LiveData.progressPushPending = false;
   LiveData.progressPushedHash = h;
-  const now = Date.now();
+  const now = Date.now(); LiveData.progressPushAt = now; // NET1 (2026-11-12): the 20 s tick waits a minute between sends
   try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(now)); }catch(e){}
   // 2026-10-18 (R3-WP3): a failed push forgets its hash, so the 20 s tick sends it again instead of treating it as saved
   sbClient.from('player_progress').upsert({profile_id: uid, data: (shrinkOk && score < cloudScore) ? Object.assign({}, snap, {bw_progress_shrink_ok: '1'}) : snap, updated_at: new Date(now).toISOString()}) // 2026-11-01: the server guard (guard_progress_shrink, applied 11-01) lets a smaller blob through only with this marker, sent on the one push an admin reset makes
@@ -18714,8 +18798,11 @@ function livePushProgress(force){
         if(!error && uid === cloudUserId){ LiveData.cloudProgress = {uid, score}; if(shrinkOk) try{ localStorage.removeItem(PROGRESS_SHRINK_OK_KEY); }catch(e){} } },
       ()=>{ if(LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; });
 }
-setInterval(()=>{ try{ livePushProgress(false); }catch(e){} }, 20000);
+// 2026-11-12 (package NET1): the blob is up to ~40 KB and went up on any change every 20 s (browsing the Codex changes the seen list); now at most
+// once a minute from the tick, and at once when the tab is hidden or closed, so nothing waits on a device that is put away
+setInterval(()=>{ try{ if(Date.now() - (LiveData.progressPushAt || 0) < 60000) return; livePushProgress(false); }catch(e){} }, 20000);
 window.addEventListener('pagehide', ()=>{ try{ livePushProgress(false); }catch(e){} });
+document.addEventListener('visibilitychange', ()=>{ try{ if(document.hidden) livePushProgress(false); }catch(e){} });
 // ---- Dialogue (2026-10-03, explicit: "There is non-interrupting dialogue in the game, where
 // characters speak back-and-forth to each other, and sometimes to you! You have 30s to respond.
 // Otherwise, they will take it as you said '...' not 'yes' or 'no'."). A small stack of speech
@@ -29357,27 +29444,51 @@ async function liveRefreshRaidParts(raidId, cycle){
   if(!sbClient || LiveData.available===false) return false;
   const key = raidId+':'+cycle, cur = liveRaidParts[key];
   if(cur && Date.now() - cur.at < 60*1000) return false;
-  liveRaidParts[key] = {at: Date.now(), rows: cur ? cur.rows : []};
+  liveRaidParts[key] = Object.assign({}, cur || {}, {at: Date.now(), rows: cur ? cur.rows : []});
   try{
     // 2026-10-19 (package RB): without the x15 a fight is ~150 raid damage, so a 1,100,000-Health life takes thousands of rows, past one
     // request's rows (Supabase answers at most 1,000 a request): read your instance's rows only ("raid:part" is instance 1, "raid:part@N"
     // instance N), a page of RAID_LIVE_PAGE at a time, up to RAID_LIVE_MAX_ROWS.
+    // 2026-11-12 (package NET1): the rows never change once written, so after one full read only the newer ones are asked for (from 2 minutes
+    // before the newest held, matched by row id); a full read again every hour, on a new instance, or when nothing is held yet.
     const inst = myRaidInstance({id: raidId}, cycle), data = []; let error = null;
+    const since = net1RaidSince(cur, inst, Date.now());
     for(let from = 0; from < RAID_LIVE_MAX_ROWS; from += RAID_LIVE_PAGE){
-      let q = sbClient.from('raid_week_attempts').select('boss_id, owner_id, display_name, damage, fought_at').eq('cycle', cycle);
+      let q = sbClient.from('raid_week_attempts').select('id, boss_id, owner_id, display_name, damage, fought_at').eq('cycle', cycle);
       q = inst > 1 ? q.like('boss_id', raidId + ':%@' + inst) : q.like('boss_id', raidId + ':%').not('boss_id', 'like', '%@%');
+      if(since) q = q.gte('fought_at', since);
       const res = await q.order('fought_at', {ascending:true}).order('id', {ascending:true}).range(from, from + RAID_LIVE_PAGE - 1);
       if(res.error){ error = res.error; break; } (res.data || []).forEach(r=> data.push(r)); if(!res.data || res.data.length < RAID_LIVE_PAGE) break;
     }
     if(error && !data.length){ if(liveTableMissing(error)) LiveData.available = false; return false; }
     LiveData.available = true;
     // 2026-10-19 (package RO): "raid:part@N" is instance N's attempt ("raid:part" instance 1)
-    liveRaidParts[key] = {at: Date.now(), rows: (data||[]).map(r=>{ const k = RaidM.parsePartKey(r.boss_id); return {raidId, part: k.part, instance: k.instance, cycle, owner: r.owner_id, name: r.display_name, contribution: r.damage, at: Date.parse(r.fought_at)||0, live:true}; })};
+    const got = (data||[]).map(r=>{ const k = RaidM.parsePartKey(r.boss_id); return {raidId, part: k.part, instance: k.instance, cycle, owner: r.owner_id, name: r.display_name, contribution: r.damage, at: Date.parse(r.fought_at)||0, live:true, sid: r.id}; });
+    const rows = since ? net1RaidMerge(cur.rows, got) : got; // NET1: the newer rows added to the ones held
+    liveRaidParts[key] = {at: Date.now(), rows, inst, full: since ? cur.full : Date.now(), maxAt: rows.reduce((m, r)=> r.sid && r.at > m ? r.at : m, 0)};
     try{ await Promise.all([liveRefreshRaidRestarts(raidId, cycle), liveRaidInstance({id: raidId}, cycle, false)]); }catch(e){} // 2026-10-19: restarts and your instance
     if(myRaidInstance({id: raidId}, cycle) !== inst) liveRaidParts[key].at = 0; // 2026-10-19 (package RB): another instance: read its rows next time
     return true;
   }catch(e){ return false; }
 }
+// NET1_RAID:BEGIN (tests/net1-2026-11-12.js evaluates this block)
+// 2026-11-12 (package NET1): the raid bars read every attempt of your instance (up to 20,000 rows) every 3 minutes per open tab; now only the
+// rows written since the last read. since: the ISO time to read from (to the minute, so the request repeats and the browser's CORS check is
+// reused), or '' for a full read.
+const NET1_RAID_FULL_MS = 60 * 60e3, NET1_RAID_OVERLAP_MS = 2 * 60e3;
+function net1RaidSince(cur, inst, now){
+  if(!cur || cur.inst !== inst || !cur.full || !(now - cur.full < NET1_RAID_FULL_MS) || !(cur.maxAt > 0) || !Array.isArray(cur.rows)) return '';
+  return new Date(Math.floor((cur.maxAt - NET1_RAID_OVERLAP_MS) / 60e3) * 60e3).toISOString();
+}
+// held rows + newly read rows: a row read before (same id) is not added twice; this tab's own unsent copies (no id) give way to the server's,
+// as a full read did; kept in the server's order (time, then id)
+function net1RaidMerge(held, got){
+  const seen = new Set(), out = [];
+  (held || []).forEach(r=>{ if(r && r.sid && !seen.has(r.sid)){ seen.add(r.sid); out.push(r); } });
+  (got || []).forEach(r=>{ if(r && r.sid && !seen.has(r.sid)){ seen.add(r.sid); out.push(r); } });
+  return out.sort((a, b)=> (a.at - b.at) || (a.sid < b.sid ? -1 : a.sid > b.sid ? 1 : 0));
+}
+// NET1_RAID:END
 // ---- Raid ops (2026-10-19, package RO, owner 21:48 / 21:49 / 00:22 / 00:29; docs/raid-ops-2026-10-19.md): a fallen raid returns 24 h
 // after the kill as a fresh life (RaidM.raidGenerations), an admin can restart it, each cycle can hold several instances, rewards follow
 // participation, completing a raid opens its Auto, and fights cost tickets + 1-6 Energy. The server half is
@@ -29490,7 +29601,9 @@ async function checkWorldEvents(){
   try{ if(typeof sbClient === 'undefined' || !sbClient) return;
     let last = 0; try{ last = Number(localStorage.getItem(WORLD_EVENTS_SEEN_KEY)) || 0; }catch(e){}
     let q = sbClient.from('world_events').select('id,kind,title,body,created_at,expires_at').order('id', {ascending:true}).limit(10);
-    q = last ? q.gt('id', last) : q.gt('created_at', new Date(Date.now() - 24*3600*1000).toISOString());
+    // 2026-11-12 (NET1): the 24 h cut-off is taken to the hour, so the request repeats and the browser reuses its CORS check (a new time on
+    // every read cost a second request each time: 344 of them a day for one open tab); an expired event is still skipped below
+    q = last ? q.gt('id', last) : q.gt('created_at', new Date(Math.floor((Date.now() - 24*3600*1000) / 3600e3) * 3600e3).toISOString());
     const { data, error } = await q; if(error || !data) return;
     let delay = 0;
     data.forEach(ev=>{ last = Math.max(last, ev.id);
@@ -29506,7 +29619,15 @@ async function sendWorldEvent(kind, title, body, hours){
   const { error } = await sbClient.from('world_events').insert(row);
   return error ? {ok:false, why: /relation|does not exist|schema cache/i.test(error.message||'') ? 'The world_events table is not set up yet (needs "apply it").' : (error.message||'Error')} : {ok:true};
 }
-setTimeout(()=>{ checkRaidFalls(); checkWorldEvents(); setInterval(()=>{ checkRaidFalls(); checkWorldEvents(); }, 3*60*1000); }, 20000);
+// 2026-11-12 (NET1): a hidden tab checks every 9 minutes instead of 3 (one tab left open in the background made 346 of each read a day); that is
+// still inside the 10 minutes that count as "there when it fell", and coming back to the tab checks at once when one is due
+let net1WorldCheckAt = 0;
+function net1WorldCheck(){
+  if(typeof document !== 'undefined' && document.hidden && Date.now() - net1WorldCheckAt < 9*60*1000) return;
+  net1WorldCheckAt = Date.now(); checkRaidFalls(); checkWorldEvents();
+}
+setTimeout(()=>{ net1WorldCheck(); setInterval(net1WorldCheck, 3*60*1000); }, 20000);
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && net1WorldCheckAt && Date.now() - net1WorldCheckAt >= 3*60*1000) net1WorldCheck(); });
 // 2026-10-19 (package RO): your instance's attempts only (an attempt without one is instance 1).
 function currentRaidAttempts(def, cycle, inst){
   inst = inst || myRaidInstance(def, cycle);
@@ -62856,7 +62977,7 @@ const Social = {
   checked: false,
   myCode: null,
   rows: [],                // friendships rows involving me
-  online: new Set(),       // profile ids currently online (Realtime presence)
+  online: new Set(),       // friends seen in the last 5 minutes (NET1 2026-11-12: from last_seen_at, net1RefreshFriendsSeen; no presence channel)
   presence: null, inviteSub: null, friendSub: null,
   incomingInvites: [],     // pending invites to me
   outgoingInvite: null,    // my one pending invite (waiting screen)
@@ -62891,22 +63012,15 @@ async function socialInit(){
   }
   Social.checked = true;
   await socialRefresh();
-  // Presence: who's online right now (keyed by profile id).
+  // 2026-11-12 (package NET1): no more 'bw-online' presence channel. Every signed-in player sat in that one channel, so each join or leave was
+  // sent to everyone online: messages grow with the square of the players (about 83,000 a second at 10,000 online, against Supabase's 100-2,500
+  // a second plan limits). A friend now shows as online when the game's own heartbeat (profiles.last_seen_at, every 2 minutes while the game is
+  // on screen) was seen in the last 5 minutes (net1RefreshFriendsSeen), the same rule Admin's "online now" count uses.
+  // Live friend requests + invites: one channel for both (was two).
   try{
-    Social.presence = sbClient.channel('bw-online', {config:{presence:{key: cloudUserId}}});
-    Social.presence.on('presence', {event:'sync'}, ()=>{
-      Social.online = new Set(Object.keys(Social.presence.presenceState()||{}));
-      if(currentTab==='friends') renderFriendsListOnly();
-    });
-    Social.presence.subscribe(st=>{ if(st==='SUBSCRIBED') Social.presence.track({at: Date.now()}); });
-  }catch(e){}
-  // Live friend requests + invites.
-  try{
-    Social.friendSub = sbClient.channel('bw-friends-'+cloudUserId)
+    Social.friendSub = sbClient.channel('bw-me-'+cloudUserId)
       .on('postgres_changes', {event:'*', schema:'public', table:'friendships', filter:`addressee_id=eq.${cloudUserId}`}, p=>{ socialRefresh().then(()=>{ if(p.eventType==='INSERT' && p.new && p.new.status==='pending') showToast(TX('toast.new-friend-request-open-friends-to')); }); })
       .on('postgres_changes', {event:'*', schema:'public', table:'friendships', filter:`requester_id=eq.${cloudUserId}`}, p=>{ socialRefresh().then(()=>{ if(p.eventType==='UPDATE' && p.new && p.new.status==='accepted') showToast(TX('toast.friend-request-accepted'), 'ok'); }); })
-      .subscribe();
-    Social.inviteSub = sbClient.channel('bw-invites-'+cloudUserId)
       .on('postgres_changes', {event:'INSERT', schema:'public', table:'match_invites', filter:`to_id=eq.${cloudUserId}`}, ()=> socialLoadInvites())
       .on('postgres_changes', {event:'UPDATE', schema:'public', table:'match_invites', filter:`to_id=eq.${cloudUserId}`}, ()=> socialLoadInvites())
       .on('postgres_changes', {event:'UPDATE', schema:'public', table:'match_invites', filter:`from_id=eq.${cloudUserId}`}, p=> onMyInviteUpdated(p.new))
@@ -62914,11 +63028,37 @@ async function socialInit(){
   }catch(e){}
   socialLoadInvites();
   try{ gdListenInvites(); }catch(e){} // 2026-10-23 (package AR3): Group Dungeon invites from friends
-  // "Last seen" heartbeat while signed in.
-  const beat = ()=>{ if(sbClient && cloudUserId) sbClient.from('profiles').update({last_seen_at: new Date().toISOString()}).eq('id', cloudUserId).then(()=>{}, ()=>{}); };
-  beat(); Social.heartbeat = setInterval(beat, 120000);
+  // "Last seen" heartbeat while signed in. 2026-11-12 (NET1): only while the game is on screen (a background tab is not "online"; one left open
+  // sent 257 of these a day); coming back to the tab sends one at once (net1HeartbeatOnShow). On the Friends tab it also re-reads the friends'.
+  const beat = ()=>{ if(!sbClient || !cloudUserId || document.hidden) return; Social.beatAt = Date.now();
+    sbClient.from('profiles').update({last_seen_at: new Date().toISOString()}).eq('id', cloudUserId).then(()=>{}, ()=>{});
+    if(currentTab==='friends') net1RefreshFriendsSeen(); };
+  Social.beat = beat; beat(); Social.heartbeat = setInterval(beat, 120000);
 }
+// NET1 (2026-11-12): friends seen in the last UI17_ONLINE_MIN (5) minutes count as online
+function net1OnlineFromSeen(profiles, now){
+  const cut = now - UI17_ONLINE_MIN * 60000, out = new Set();
+  (profiles || []).forEach(p=>{ const t = p && p.last_seen_at ? Date.parse(p.last_seen_at) : 0; if(t && t >= cut) out.add(p.id); });
+  return out;
+}
+// re-reads the accepted friends' last_seen_at (at most once a minute unless forced) and redraws the Friends list
+async function net1RefreshFriendsSeen(force){
+  if(!sbClient || !Social.ready || (!force && Date.now() - (Social.seenAt || 0) < 60000)) return;
+  Social.seenAt = Date.now();
+  const ids = socialBuckets().friends.map(f=> f.other.id).filter(Boolean);
+  try{
+    for(let i = 0; i < ids.length; i += 100){
+      const { data, error } = await sbClient.from('profiles').select('id, last_seen_at').in('id', ids.slice(i, i + 100));
+      if(error) return;
+      (data || []).forEach(p=>{ const c = Registry.users._cache.get(p.id); if(c) c.last_seen_at = p.last_seen_at; });
+    }
+  }catch(e){ return; }
+  Social.online = net1OnlineFromSeen(ids.map(id=> Registry.users._cache.get(id)), Date.now());
+  if(currentTab==='friends') renderFriendsListOnly();
+}
+document.addEventListener('visibilitychange', ()=>{ try{ if(!document.hidden && Social.beat && Date.now() - (Social.beatAt || 0) >= 120000) Social.beat(); }catch(e){} });
 function socialTeardown(){
+  Social.beat = null; Social.seenAt = 0;
   ['presence','friendSub','inviteSub'].forEach(k=>{ try{ if(Social[k] && sbClient) sbClient.removeChannel(Social[k]); }catch(e){} Social[k] = null; });
   if(Social.heartbeat){ clearInterval(Social.heartbeat); Social.heartbeat = null; }
   try{ if(GD.inviteSub && sbClient) sbClient.removeChannel(GD.inviteSub); }catch(e){} try{ GD.inviteSub = null; GD.invites = []; }catch(e){} // AR3 (2026-10-23)
@@ -62935,6 +63075,7 @@ async function socialRefresh(){
   Social.rows = data || [];
   const ids = Social.rows.map(r=> r.requester_id===cloudUserId ? r.addressee_id : r.requester_id);
   await Registry.users.get(ids);
+  Social.online = net1OnlineFromSeen(socialBuckets().friends.map(f=> f.other), Date.now()); // NET1: from last_seen_at (no presence channel)
   refreshFriendsBadge();
   if(currentTab==='friends') renderFriends();
 }
@@ -63069,6 +63210,7 @@ function renderFriends(){
     if(!Social.checked) socialInit().then(()=>{ if(currentTab==='friends') renderFriends(); });
     return;
   }
+  net1RefreshFriendsSeen(); // NET1 (2026-11-12): who is online, from the friends' last seen (at most once a minute; it redraws the list)
   root.innerHTML = `<div class="panel fr-panel">
       <div class="fr-head"><h2>👥 Friends</h2>
         <div class="fr-code" title="Share this so friends can add you">Your code <b id="frMyCode">${escapeHtml(Social.myCode||'——')}</b> <button type="button" class="btn small ghost" id="frCopyCode">Copy</button></div></div>
@@ -63420,7 +63562,7 @@ function renderMarketInto(body){
       // it back), as before; the server only checks ownership.
       const args = {p_card: id, p_foil: !!copies[idx].foil, p_price: Market.sellPrice, p_currency: Market.sellCurrency};
       let { error } = await rpcV2('create_listing', args);
-      if(error && /you do not own this card/i.test(String(error.message||''))){ await cloudPushCardLevels(); ({ error } = await rpcV2('create_listing', args)); }
+      if(error && /you do not own this card/i.test(String(error.message||''))){ net1CardSent().delete(id); /* NET1: the server lacks it, so this row goes up again */ await cloudPushCardLevels(); ({ error } = await rpcV2('create_listing', args)); }
       if(error) throw error;
       copies.splice(idx, 1); saveCardCopies();
       showToast(TX('toast.listed-for', {v1: Registry.card(id).name, sellPrice: Market.sellPrice}), 'ok');
