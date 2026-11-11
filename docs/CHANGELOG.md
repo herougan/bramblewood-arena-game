@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-12 Package SKIR3 (the owner's finished map picks are the lists, under each map's unique-card limits; the road re-tuned; no card stat changed)
+- Players see: Maps 0-21 list the owner's 11-12 Yes picks (plus the new Barrel Cactus on The Glass Dunes), cut to each map's default NEW! / Carried limits (th6Targets; side maps NEW! 3 / Carried 8). Claude's admin adds went first: 2 of 33 stay (Planarian Splitter Map 7, Nutria Reedcutter Map 9). Where his picks were still over, a pick on another list went before one that would leave play, weakest UI38 fit first (a greedy pass with a look-ahead over the whole road). Side maps keep the 3 own cards their fights and reference decks used most (The Old Bramble: 3 of his 6 picks). 75 cards left play; 6 of his picks came back into play. Per map: docs/balance/skir3/drop-list-2026-11-12.md (record docs/balance/skir3/lists-2026-11-12.json).
+- Lists: tools/skir3/lists_2026_11_12.js (canonical/map-pools.json MAP tier of Maps 0-21 and 15 side lists, UI47_ADMIN_ADD, `unattainable` flags, card-obtain-maps.json; the Barrel Cactus's awaitingSource cleared). Four side maps got a Carried top-up their fights need (The Old Bramble, The Ice Hollow, The Pale Desert, Basalt Foundry). Pack plan regenerated. 15 first-clear cards swapped for the nearest card of their map's list (GD-5, tools/skir3/rewards_2026_11_12.js).
+- Road decks: every fight holding a card off its 11-12 list swapped (LISTFIX3's swap) or refilled (SKIR1's builder, nearest the old deck's stat score), Map 21 made legal only; then SKIR1's fit (deck + Shield moves), LISTFIX3's jump and a new rebuild search (tools/skir3/search_2026_11_12.js) on the fights out of band; 3 mix repairs. 13-4 and 20-4 play with their challenge boon off (no theme card on the lists, draft SKIR3-3). A card sits in one more fight than SKIR1's usage line on maps whose own cards ran out (docs/balance/skir3/slack-2026-11-12.json; thin side lists cannot hold the line).
+- Reference / PvP decks: 225 PRO / BPRO / WPRO decks swapped to the 11-12 lists (`skir3` note; not re-searched); 20 PvP test decks repaired (pvp1 apply); 14 themed ghost decks (bramblewood-ghosts.js) swapped off out-of-play cards.
+- Road (skirmish_pass measure 400): ROAD_TOTALS_LINE
+- Tests: TESTS_LINE Draft decisions SKIR3-1..7 in docs/balance/skir3/decisions-draft.json.
+
 ## 2026-11-12 Package CACTI1 (the Barrel Cactus, owner 00:38 "There is no cacti card. There should be. Dry & Thorny")
 - New card, not placed yet (awaitingSource, on no map list): Barrel Cactus, Rare Plant, 1/18, Cost 1 / Wait 2, Dry + Thorns 2; budget 0.98 of N 30.79 at Map 18. Recommended home: The Glass Dunes (md, Map 18), for SKIR3 to place.
 - Name and flavour in the 12 packs (tools/i18n_2026_11_12_cacti1.py); art prompt in docs/art-style-prompts.md, the emoji shows until drawn.
