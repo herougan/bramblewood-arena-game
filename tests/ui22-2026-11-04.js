@@ -16,7 +16,7 @@ const grab = (name)=>{ const i = src.indexOf('function ' + name + '('); if(i < 0
 
 const rw = grab('ui22McRewardsHTML');
 ok(/nodeRewardCardIds\(/.test(rw) && /nodeFirstPackCardIds\(/.test(rw) && /cardRewardIsChallenge\(/.test(rw), '1. rewards come from nodeRewardCardIds, nodeFirstPackCardIds and cardRewardIsChallenge');
-ok(/skirmishCode\(/.test(rw) && /ui22-cap/.test(rw), '1. each fight has its code and name as caption');
+ok(/skirmishCode\(/.test(rw) && /data-ui22-fight/.test(grab('ui22McTile')), '1. each card carries its fight code as a pill (2026-11-12, UI48: one grid, no caption per fight)');
 ok(/mpSubsOf\(top\)/.test(grab('ui22McMaps')) && /mpIsSub\(mapId\)/.test(grab('ui22McMaps')), '1. a main map includes its side maps; a side map its own fights');
 ok(/ui39PlainTileHTML/.test(grab('ui22McTile')), '1. same card tiles as the other sections');
 const cn = grab('ui22McClaudeNewHTML'), cn2 = grab('ui22McClaudeNew');

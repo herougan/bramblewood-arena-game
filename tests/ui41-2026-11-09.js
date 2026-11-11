@@ -12,7 +12,7 @@ const fn = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0) re
 // 1 faction cards
 ok(/d\.faction === 'base'/.test(fn('ui41Allowed')) && /ui41YesAnywhere\(id\)/.test(fn('ui41Allowed')), 'a faction card (faction set, not base) is allowed only when flagged Yes');
 ok(/ok2 = id=> ok\(id\) && ui41Allowed\(id, defs\)/.test(app) && /ui37Split\(top, defs, ok2\)/.test(app) && /ui39ReviewMap\(top, ok2\)/.test(app), 'the window draws with the faction filter (list, Maybe, Claude, fill and review parts)');
-ok(/R\.newTarget \|\| 45/.test(fn('ui38Fill')), 'NEW! is topped up to its 45 minimum with lower-score fits');
+ok(!/R\.newTarget/.test(fn('ui38Fill')), 'no top-up below the score floor (2026-11-12, UI48 #2)');
 // 2 cap
 const cap = fn('ui41Cap'); ok(/p\.src\.has\('list'\) \|\| (p\.src\.has\('tut'\) \|\| )?(p\.src\.has\('suggest'\) \/\* [^*]*\*\/ \|\| )?yes\.has\(p\.id\)/.test(cap) /* 2026-11-10 (UI43): + the tutorial's cards */ && /cnt\[f\] \|\| 0\) >= cap/.test(cap), 'family cap: list cards and Yes cards stay and count first');
 ok(/ui41Cap\(top, neu, defs\), car2 = ui41Cap\(top, car, defs\)/.test(fn('ui37Split')), 'the cap runs on both groups before the fill');

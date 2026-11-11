@@ -48,7 +48,7 @@ async def main():
             ok(s['val'] == sb['cur'] and s['cur'] == [sb['cur']], f"{tag}: default {s['val']} is the current unlock {sb['cur']}, marked (current)")
             ok(len(s['note']) > 20 and 'Claude folds it into the map later' in s['note'], f"{tag}: one-line note")
             ok(len(s['neu']) >= 8, f"{tag}: NEW! has {len(s['neu'])} cards")
-            ok(s['inp'] == ['12', '8'], f"{tag}: targets {s['inp']}")
+            ok(s['inp'] == ['3', '8'], f"{tag}: targets {s['inp']} (2026-11-12 UI48: own default 3)")
             ok(not set(s['neu']) & set(s['car']), f"{tag}: nothing both NEW! and Carried")
         # change the select on Clovermead: a Yes on a main map shows as Carried from that map on
         sid = json.dumps('mq'); s0 = await pg.evaluate(E(STATE % sid))
@@ -64,7 +64,7 @@ async def main():
         ok(r['id'] not in r['early'], f"Clovermead: a card flagged Yes on Map {r['aNo']} is not Carried when the side map opens after Map 1")
         ok(any(c[0] == r['id'] and c[1] == f"Map {r['aNo']}" for c in r['mid']), f"Clovermead: Carried with the pill Map {r['aNo']} when the pick is Map {r['aNo']}")
         ok(r['id'] in r['late'], 'Clovermead: still Carried with a later pick'); ok(r['id'] not in r['neuMid'], 'Clovermead: not also NEW!')
-        ok(all(t in r['early'] for t in r['tut']) and len(r['tut']) == 7, f"Carried always holds the 7 T-1 / T-2 tutorial cards {r['tut']}")
+        ok(not any(t in r['early'] for t in r['tut']) and len(r['tut']) == 7, f"2026-11-12 (UI48): after Map 1 the 7 T-1 / T-2 tutorial cards are no longer Carried {r['tut']}")
         ok(r['saved'] and r['saved'].get('after'), f"the pick is saved with the submap's picks {r['saved']}")
         ok(any(x['subId'] == 'mq' for x in r['jr']) and r['csvHas'], 'Export picks JSON has submapUnlocks, the CSV has the unlock columns')
         ok(not r['savedAfter'], 'choosing the current map again clears the pick (the default is not a pick)')
@@ -72,7 +72,7 @@ async def main():
         s = await pg.evaluate(E(STATE % json.dumps('m3'))); ok(s['has'] and not s['sel'] and len(s['neu']) >= 30, f"a main map has no select ({len(s['neu'])} NEW!)")
         # Thistlewood carries only T-1 / T-2
         t = await pg.evaluate(E("""adminModeEnabled = true; pk1OpenMapCards(ui44MainByNo(1).id); await new Promise(r=> setTimeout(r, 400));
-          const car = [...document.querySelectorAll('[data-ui37-grp="carried"] .ui37-tile')].filter(t=> /Map 0/.test((t.querySelector('.ui37-from') || {}).textContent || '')).map(t=> t.dataset.ui37Id); return {car, list: ui43TutorialCards()};"""))
+          const car = [...document.querySelectorAll('[data-ui37-grp="carried"] .ui37-tile')].map(t=> t.dataset.ui37Id); return {car, list: ui43TutorialCards()};"""))
         ok(all(i in t['car'] for i in t['list']) and len(t['list']) == 7 and 'bee-knight' in t['list'], f"Thistlewood: Map 0 Carried holds the T-1 / T-2 list {t['car']}")
         # screens and widths
         sid = json.dumps('mo')
