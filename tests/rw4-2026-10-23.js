@@ -36,7 +36,7 @@ ok(!/ds2-rec" aria-hidden/.test(app), '3. the star is gone from the mini cards')
 ok(/\.ds2-thumb \.card-tile\{width:46px !important; border-radius:4px;\}/.test(tpl), '3. the mini card is squarer');
 ok(/TX\('ui\.rw4-swap-good'\)/.test(app) && !/'Better card!'/.test(app), '3. "Good Choice!" instead of "Better card!"');
 ok(!/ in place of \$\{dOut\.attack/.test(app) && !/against ⚔\$\{dOut\.attack/.test(app), '3. no 2/8-against-1/6 line');
-ok(/body:has\(\.ds2-overlay\) #cardPop\{z-index:9100 !important;\}/.test(tpl), '3. the card details show over the swap window');
+ok(/body\.pg-has-ds2 #cardPop\{z-index:9100 !important;\}/ /* 2026-11-12 (PERF3): a body class, not body:has() */.test(tpl), '3. the card details show over the swap window');
 ok(!/\.ds2-thumb \.card-tile\{[^}]*pointer-events:none/.test(tpl) && !/\.ds3-row \.ds2-old \.card-tile, \.ds3-row \.ds2-new \.card-tile\{[^}]*pointer-events:none/.test(tpl), '3. the tiles take the pointer so hovering reaches the details');
 
 // ---- 5. the map banner first

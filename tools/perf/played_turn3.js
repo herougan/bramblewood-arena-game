@@ -17,9 +17,9 @@ const EXE = process.env.BW_CHROMIUM || '/opt/pw-browsers/chromium_headless_shell
 const TYPES = {'.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.webp': 'image/webp', '.png': 'image/png', '.svg': 'image/svg+xml', '.css': 'text/css'};
 function serve(page){ const http = require('http'); return new Promise(res=>{ const s = http.createServer((q, r)=>{ let p = decodeURIComponent(q.url.split('?')[0]); if(p === '/') p = '/index.html';
   const f = p === '/index.html' ? page : path.join(ROOT, p); fs.readFile(f, (e, d)=>{ if(e){ r.writeHead(404); r.end(); return; } r.writeHead(200, {'content-type': TYPES[path.extname(f)] || 'application/octet-stream'}); r.end(d); }); }); s.listen(0, '127.0.0.1', ()=> res(s)); }); }
-const STK = {};
+const STK = {}; const GS = 51379 + 1;
 function stacks(ev){ // forced style / layout passes: who asked (top page frame of the JS stack on the trace event), by cost
-  ev.filter(e=> e.ph === 'X' && (e.name === 'UpdateLayoutTree' || e.name === 'Layout') && e.args).forEach(e=>{ const st = (e.args.beginData && e.args.beginData.stackTrace) || (e.args.data && e.args.data.stackTrace) || []; const fr = st.filter(x=> x.url).slice(0, +opt('--depth', 1)); const k = e.name[0] + ' ' + (fr.length ? fr.map(f=> (f.functionName || '(anon)') + ':' + f.lineNumber).join(' < ') : '(no JS: normal frame)'); const r = STK[k] || (STK[k] = {n: 0, ms: 0}); r.n++; r.ms += (e.tdur || 0) / 1000; }); }
+  ev.filter(e=> e.ph === 'X' && (e.name === 'UpdateLayoutTree' || e.name === 'Layout') && e.args).forEach(e=>{ const st = (e.args.beginData && e.args.beginData.stackTrace) || (e.args.data && e.args.data.stackTrace) || []; const fr = st.filter(x=> x.url && (!args.includes('--nogsap') || !/index\.html$/.test(x.url) || x.lineNumber !== GS)).slice(0, +opt('--depth', 1)); const k = e.name[0] + ' ' + (fr.length ? fr.map(f=> (f.functionName || '(anon)') + ':' + f.lineNumber).join(' < ') : '(no JS: normal frame)'); const r = STK[k] || (STK[k] = {n: 0, ms: 0}); r.n++; r.ms += (e.tdur || 0) / 1000; }); }
 const SEL = {};
 function selstats(ev){ ev.filter(e=> e.name === 'SelectorStats').forEach(e=>{ ((e.args && e.args.selector_stats && e.args.selector_stats.selector_timings) || []).forEach(t=>{ const r = SEL[t['selector']] || (SEL[t['selector']] = {ns: 0, match: 0, fast: 0, n: 0}); r.ns += t['elapsed (us)'] * 1000 || 0; r.match += t['match_count'] || 0; r.fast += t['fast_reject_count'] || 0; r.n += t['match_attempts'] || 0; }); }); }
 function work(ev){ if(args.includes('--selectors')) selstats(ev); if(args.includes('--stacks')) stacks(ev);
@@ -42,6 +42,7 @@ async function once(b, url, rate, rounds){
     await new Promise(async res=>{ cdp.once('Tracing.tracingComplete', res); await cdp.send('Tracing.end'); }); cdp.off('Tracing.dataCollected', on);
     const P = await pg.evaluate("(()=>{ const f = window.__perf.frames.slice(); window.__perf.frames.length = 0; window.__perf.lt.length = 0; return f; })()");
     return Object.assign({frames: P.length, fOver33: P.filter(x=> x > 33.5).length, fMax: Math.round(Math.max(0, ...P))}, info, work(evs)); };
+  if(args.includes('--prof')){ await cdp.send('Profiler.enable'); await cdp.send('Profiler.setSamplingInterval', {interval: 500}); await cdp.send('Profiler.start'); }
   const idle = await trace(`(async()=>{ window.__perf.on = true; await new Promise(r=> setTimeout(r, 3000)); window.__perf.on = false; return {}; })()`);
   const play = [], resolve = [];
   for(let r = 0; r < rounds; r++){
@@ -52,6 +53,16 @@ async function once(b, url, rate, rounds){
       afterPlayerAction(1); while(m.round === r0 && !m.over && performance.now() - T0 < ${rate * 60000}) await W(50); for(let i = 0; i < 100 && m.resolving; i++) await W(50); P.on = false; return {wall: Math.round(performance.now() - T0), over: m.over}; })()`);
     play.push(p); resolve.push(q); if(q.over) break;
   }
+  if(args.includes('--prof')){ const {profile} = await cdp.send('Profiler.stop'), byId = new Map(profile.nodes.map(n=> [n.id, n])), parent = new Map(), dt = profile.timeDeltas, self = {}, entry = {};
+    profile.nodes.forEach(n=> (n.children || []).forEach(c=> parent.set(c, n.id)));
+    profile.samples.forEach((id, i)=>{ const cf = byId.get(id).callFrame, d = dt[i] || 0; if(cf.functionName === '(idle)') return; const k = (cf.functionName || '(anon)') + ':' + cf.lineNumber + (cf.url ? '' : ' [native]'); self[k] = (self[k] || 0) + d;
+      let p = id, e = null; while(p){ const c = byId.get(p).callFrame; if(c.url && c.functionName !== '(root)' && !/^(Al|Qd)$/.test(c.functionName)) e = c; p = parent.get(p); } const ek = e ? (e.functionName || '(anon)') + ':' + e.lineNumber : '(native/GSAP only)'; entry[ek] = (entry[ek] || 0) + d; });
+    { const tasks = []; let cur = null; profile.samples.forEach((id, i)=>{ const cf = byId.get(id).callFrame, d = dt[i] || 0; if(cf.functionName === '(idle)'){ if(cur) tasks.push(cur); cur = null; return; }
+        if(!cur) cur = {ms: 0, by: {}}; cur.ms += d; let p = id, e = null; while(p){ const c = byId.get(p).callFrame; if(c.url && c.functionName !== '(root)' && !/^(Al|Qd)$/.test(c.functionName)) e = c; p = parent.get(p); }
+        const k = e ? (e.functionName || '(anon)') + ':' + e.lineNumber : cf.functionName; cur.by[k] = (cur.by[k] || 0) + d; });
+      const long = tasks.filter(t=> t.ms > 50000).sort((a, c)=> c.ms - a.ms); console.log('  long tasks (>50 ms, profiler on): ' + long.length + ' of ' + tasks.length + '; worst:'); long.slice(0, 10).forEach(t=> console.log('   ' + Math.round(t.ms / 1000) + ' ms: ' + Object.entries(t.by).sort((a, c)=> c[1] - a[1]).slice(0, 4).map(([k, v])=> k + ' ' + Math.round(v / 1000)).join(' | '))); }
+    const pr = (o, n)=> Object.entries(o).sort((a, c)=> c[1] - a[1]).slice(0, n).forEach(([k, v])=> console.log('   ' + String(Math.round(v / 1000)).padStart(6), k));
+    console.log('  busy self time by function (ms):'); pr(self, +opt('--top', 22)); console.log('  busy time by outermost page function:'); pr(entry, 16); }
   await ctx.close(); return {rate, idle, play, resolve, errs};
 }
 (async()=>{
