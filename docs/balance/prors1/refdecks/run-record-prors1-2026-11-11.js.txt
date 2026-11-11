@@ -1,0 +1,103 @@
+#!/usr/bin/env node
+// PRORS1 (2026-11-11): re-search the PRO / BPRO / WPRO decks LISTFIX3 patched by card swaps, with SKIR1's reference-deck tool
+// (tools/skir1/refdecks_2026_11_11.js: BAL16's 6/4 focused search over deckopt's map-true / list pool and gauntlet, bpro2's DECK1 search,
+// wpro's weak descent with SKIR1's two plans, pro_skirmishes.js's PRO-1 replacement rule) run unchanged but for:
+//   - output docs/balance/prors1/refdecks/ (decks keep source.package 'SKIR1', add source.run 'PRORS1');
+//   - only the kinds of each map that hold a LISTFIX3 deck are searched and applied (a map's other kinds stay as they are);
+//   - the distinct-plans rule (strong decks at least 10 copies apart) is kept against the decks that stay: a BPRO search avoids the map's
+//     PRO decks that are not re-searched (or its current PRO-1, which the replacement rule may keep); a PRO search avoids the new BPRO decks
+//     and the current BPRO-1, or every current BPRO deck when BPRO is not re-searched;
+//   - a kept PRO-1 / BPRO-1 that was a LISTFIX3 swap loses its `listfix3` note for a `prors1` one (re-confirmed by the search).
+'use strict';
+const ROOT = process.env.PRORS1_ROOT || '/home/claude/bramblewood-arena-game/.claude/worktrees/agent-ac89a144cc06a15c6';
+const fs = require('fs'), path = require('path'), Module = require('module');
+const FILE = path.join(ROOT, 'tools', 'skir1', 'refdecks_2026_11_11.js');
+let src = fs.readFileSync(FILE, 'utf8');
+const swaps = [
+  [/path\.join\(ROOT, 'docs', 'balance', 'skir1', 'refdecks'\)/, "path.join(ROOT, 'docs', 'balance', 'prors1', 'refdecks')"],
+  [/package: 'SKIR1', tool: res\.tool/g, "package: 'SKIR1', run: 'PRORS1', tool: res.tool"],
+  [/package: 'SKIR1', plan: d\.plan/, "package: 'SKIR1', run: 'PRORS1', plan: d.plan"],
+  [/const hist = \{ package: 'SKIR1', on: DATE, why: .*\};\n/, "const hist = { package: 'PRORS1', on: DATE, why: 'replaced by PRORS1\\'s re-run of SKIR1\\'s search on the LISTFIX3 lists (the kinds that held a LISTFIX3 card swap)' };\n"],
+  [/kept1: 'SKIR1 \(PRO-1 replacement rule\)/, "kept1: 'PRORS1 (PRO-1 replacement rule)"],
+  [/entry\.notes = \(entry\.notes \|\| \[\]\)\.filter\(s => !\/\^SKIR1: \/\.test\(s\)\)\.concat\(\[`SKIR1: .*under history`\]\);/,
+    "entry.notes = (entry.notes || []).filter(s => !/^PRORS1: /.test(s)).concat([`PRORS1: re-searched on the LISTFIX3 lists by SKIR1's tool: ${[pro.length ? pro.length + ' PRO' : '', bpro.length ? bpro.length + ' BPRO' : '', wpro.length ? wpro.length + ' WPRO (weak plans ' + wpro.map(w => w.source.plan).join(', ') + ')' : ''].filter(Boolean).join(', ')}; the previous decks are under history`]);"],
+  // a map whose BPRO is not re-searched keeps its BPRO list (SKIR1 wrote [] for a list with nothing inside its cap)
+  [/if \(bpro\.length \|\| x\.bpro\.none\) entry\.bpro = bpro;/, 'if (bpro.length) entry.bpro = bpro;'],
+  [/about: 'SKIR1 reference decks per map \(apply report; tools\/skir1\/refdecks_2026_11_11\.js\)'/, "about: 'PRORS1 reference decks per map (apply report; SKIR1\\'s tools/skir1/refdecks_2026_11_11.js re-run on the LISTFIX3 lists)'"],
+  [/if \(require\.main === module\) main\(/, 'if (false) main('],
+  // a map whose BPRO is not re-searched: the new PRO decks keep the overlap rule against the BPRO decks that stay (the search's own --apart
+  // gives way when no seed is far enough: 0-B's swarm focus shared 13 copies with 0-B-BPRO-1)
+  [/pk = pickStrong\(res, bpro\); row\.proLeft = pk\.left;/, 'pk = pickStrong(res, bpro.length ? bpro : (entry.bpro || [])); row.proLeft = pk.left;'],
+];
+for (const [re, to] of swaps) { if (!re.test(src)) throw new Error('SKIR1 refdecks tool changed: ' + re); src = src.replace(re, to); }
+src += '\nmodule.exports = Object.assign(module.exports, { planAll, weakMap, apply, check, pickStrong, benchFile, outFile, DIR, PLAN, BUDGET, RULE, APART, FINAL, LEVEL, selectMaps });\n';
+const m = new Module(FILE, module); m.filename = FILE; m.paths = Module._nodeModulePaths(path.dirname(FILE)); m._compile(src, FILE);
+const S = m.exports;
+const O = require(path.join(ROOT, 'tools', 'opt', 'deckopt.js')), T3 = require(path.join(ROOT, 'tools', 'bench', 'deck.js')), BL = require(path.join(ROOT, 'tools', 'bench', 'lib.js'));
+const PRO_FILE = path.join(ROOT, 'canonical', 'pro-skirmishes.json');
+const BEFORE = path.join(S.DIR, 'pro-skirmishes-before-2026-11-11.json'); // the file as LISTFIX3 left it (a copy, for the avoid lists and the before / after read)
+// the kinds to re-search: each map's kinds holding a LISTFIX3 deck (5-A-PRO-2 is SKIR2's own search deck: left)
+const KINDS = { bpro: ['m2', 'm7', 'm5', 'ml', 'm6', 'mx'], pro: ['mo', 'm2', 'mw', 'm8', 'm5', 'ml', 'm6', 'mi', 'md', 'm11', 'me'], wpro: ['mr', 'ml', 'mx'] };
+const ALL = [...new Set([].concat(KINDS.bpro, KINDS.pro, KINDS.wpro))];
+function before() { if (!fs.existsSync(BEFORE)) { fs.mkdirSync(S.DIR, { recursive: true }); fs.copyFileSync(PRO_FILE, BEFORE); } return JSON.parse(fs.readFileSync(BEFORE, 'utf8')); }
+
+async function run(gm, kind, only, budget) {
+  const j = JSON.parse(fs.readFileSync(S.PLAN, 'utf8')), old = before(); fs.mkdirSync(path.join(S.DIR, kind), { recursive: true });
+  for (const id of KINDS[kind].filter(id => !only || only.includes(id))) {
+    const map = gm.G.CONQUEST_MAPS.find(x => x.id === id), x = j.maps[id], e = x[kind], ent = old.maps[id] || {}, t = Date.now();
+    if (e.none) { console.log(`${id}: no ${kind} (${e.none})`); continue; }
+    if (kind === 'wpro') { const f = S.outFile(gm, 'wpro', map); if (fs.existsSync(f)) continue; const decks = [];
+      for (const plan of e.plans) { const r = await S.weakMap(gm, map, e.pool, plan, decks.map(d => d.deck), budget || S.BUDGET.wpro); if (!r.none) decks.push(r); }
+      fs.writeFileSync(f, JSON.stringify({ tool: 'tools/skir1/refdecks_2026_11_11.js', run: 'PRORS1', generated: new Date().toISOString(), map: { id, num: x.num, name: map.name }, pool: e.pool, rule: S.RULE, apart: S.APART, decks }, null, 1) + '\n');
+      console.log(`${id}: weak ${decks.map(d => d.plan + ' ' + d.score).join(' / ')} (${Math.round((Date.now() - t) / 1000)} s)`); continue; }
+    const f = S.benchFile(gm, kind, map); if (fs.existsSync(f)) continue;
+    let avoid;
+    if (kind === 'bpro') avoid = KINDS.pro.includes(id) ? (ent.pro || []).slice(0, 1).map(d => d.deck) : (ent.pro || []).map(d => d.deck);
+    else { const bf = S.benchFile(gm, 'bpro', map);
+      avoid = KINDS.bpro.includes(id) ? (fs.existsSync(bf) ? JSON.parse(fs.readFileSync(bf, 'utf8')).decks.map(d => d.deck) : []).concat((ent.bpro || []).slice(0, 1).map(d => d.deck)) : (ent.bpro || []).map(d => d.deck); }
+    await T3.main({ map: id, mode: 'map-true', pool: e.pool, anchor: kind === 'pro' && e.anchor.length ? e.anchor : null, anchorMin: kind === 'pro' ? e.anchorMin : undefined, focus: e.focuses, level: S.LEVEL,
+      budget: budget || S.BUDGET[kind], finalGames: S.FINAL, maxUnique: S.RULE.maxUnique, maxCopies: S.RULE.maxCopies, size: S.RULE.size, seed: 'skir1-' + kind, workers: 2, out: path.join(S.DIR, kind), tag: '2026-11-11', quiet: true, apart: S.APART, avoid });
+    const res = JSON.parse(fs.readFileSync(f, 'utf8'));
+    console.log(`${id}: ${kind} done (${Math.round((Date.now() - t) / 1000)} s, ${res.games} games, avoid ${avoid.length}): ${res.decks.map(d => d.focus + ' ' + d.score).join(', ')}`);
+  }
+}
+
+// after SKIR1's apply: a kept LISTFIX3 deck is re-confirmed; its note says so
+function post() {
+  const file = JSON.parse(fs.readFileSync(PRO_FILE, 'utf8')); let n = 0;
+  for (const id of ALL) for (const k of ['pro', 'bpro', 'wpro']) for (const d of (file.maps[id][k] || [])) {
+    if (d.listfix3 && /^PRORS1/.test(d.kept1 || '')) { d.prors1 = '2026-11-11 (PRORS1): LISTFIX3\'s swapped deck re-confirmed by a search on the LISTFIX3 lists: ' + d.kept1.replace(/^PRORS1 \(PRO-1 replacement rule\): /, '') + '; LISTFIX3 had: ' + d.listfix3.replace(/^2026-11-11 \(LISTFIX3\): /, ''); delete d.listfix3; n++; }
+  }
+  fs.writeFileSync(PRO_FILE, JSON.stringify(file, null, 1) + '\n'); console.log(n + ' kept LISTFIX3 deck(s) re-confirmed');
+}
+
+// before / after on one scale: every deck of the re-searched kinds, before (the LISTFIX3 file) and after (today's file), on the map's gauntlet
+// (deckopt buildEntries: its fight decks and reference decks, fair mirror, Level 1, Smart CPU), 24 games an entry, one seed
+async function measure(gm, games) {
+  const old = before(), now = JSON.parse(fs.readFileSync(PRO_FILE, 'utf8')), out = { about: 'PRORS1 before / after: every deck of the re-searched kinds on its map\'s gauntlet (deckopt buildEntries, roadWeight 0: fight decks + reference decks in a fair mirror under each fight\'s field, Level 1, Smart CPU both sides), ' + games + ' games an entry, seed prors1-measure. "road" = the fight entries only; "all" = fights + reference decks (the search tools\' score).', games, maps: {} };
+  for (const id of ALL) {
+    const map = gm.G.CONQUEST_MAPS.find(x => x.id === id), kinds = ['pro', 'bpro', 'wpro'].filter(k => KINDS[k].includes(id));
+    const entries = O.buildEntries(gm, map, { roadWeight: 0 }), main = entries.map((e, i) => i).filter(i => !entries[i].neutral && entries[i].weight > 0), fightIdx = main.filter(i => !/^ref:/.test(entries[i].oppKey || ''));
+    const ev = new O.Evaluator(ROOT, 2, gm); await ev.setup({ mapId: id, level: 1, entries, seed: 'prors1-measure|' + id + '|deck', ai: 1, beeTank: false });
+    const stats = new O.Stats(entries.length), rows = [];
+    kinds.forEach(k => { (old.maps[id][k] || []).forEach(d => rows.push({ when: 'before', kind: k, id: d.id, listfix3: !!d.listfix3, deck: d.deck })); (now.maps[id][k] || []).forEach(d => rows.push({ when: 'after', kind: k, id: d.id, kept: !!d.prors1 || /^PRORS1/.test(d.kept1 || ''), deck: d.deck, same: (old.maps[id][k] || []).some(o => O.deckKey(o.deck) === O.deckKey(d.deck)) })); });
+    await O.ensure(ev, stats, O.uniqDecks(rows.map(r => r.deck)), games, main); ev.close();
+    const r4 = v => Math.round(v * 10000) / 10000;
+    rows.forEach(r => { const st = stats.get(O.deckKey(r.deck)); r.all = r4(O.fitness(entries, st, main).f); r.road = r4(O.fitness(entries, st, fightIdx.length ? fightIdx : main).f); r.n = fightIdx.reduce((t, i) => t + st.n[i], 0); });
+    out.maps[id] = { name: map.name, kinds, gauntlet: main.map(i => entries[i].key), rows }; console.log(id + ': ' + rows.map(r => `${r.when} ${r.id}${r.listfix3 ? '*' : ''}${r.kept ? '(kept)' : ''} road ${(r.road * 100).toFixed(1)} all ${(r.all * 100).toFixed(1)}`).join(' | '));
+    fs.writeFileSync(path.join(S.DIR, 'before-after-2026-11-11.json'), JSON.stringify(out, null, 1) + '\n');
+  }
+}
+
+async function main(argv) {
+  const cmd = argv[0], a = argv.slice(1), opt = {};
+  while (a.length) { const k = a.shift(); if (k === '--kind') opt.kind = a.shift(); else if (k === '--maps') opt.maps = a.shift().split(','); else if (k === '--budget') opt.budget = +a.shift(); else if (k === '--dry') opt.dry = true; else if (k === '--games') opt.games = +a.shift(); else throw new Error('unknown option ' + k); }
+  const gm = O.loadGame(ROOT);
+  if (cmd === 'plan') { before(); return S.planAll(gm, ALL.join(',')); }
+  if (cmd === 'run') return run(gm, opt.kind, opt.maps, opt.budget);
+  if (cmd === 'apply') { before(); S.apply(gm, { maps: ALL.join(','), dry: opt.dry }); if (!opt.dry) post(); return; }
+  if (cmd === 'check') { const p = S.check(gm); p.forEach(x => console.log('problem: ' + x)); console.log(p.length ? p.length + ' problem(s)' : 'ok'); return; }
+  if (cmd === 'measure') return measure(gm, opt.games || 24);
+  console.log('plan | run --kind bpro|pro|wpro [--maps a,b] [--budget N] | apply [--dry] | check | measure [--games 24]');
+}
+main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

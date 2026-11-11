@@ -1,0 +1,2414 @@
+{
+ "about": "PRORS1 before / after: every deck of the re-searched kinds on its map's gauntlet (deckopt buildEntries, roadWeight 0: fight decks + reference decks in a fair mirror under each fight's field, Level 1, Smart CPU both sides), 24 games an entry, seed prors1-measure. \"road\" = the fight entries only; \"all\" = fights + reference decks (the search tools' score).",
+ "games": 24,
+ "maps": {
+  "m2": {
+   "name": "Sunken Hollow",
+   "kinds": [
+    "pro",
+    "bpro"
+   ],
+   "gauntlet": [
+    "mirror|fight:4-1",
+    "mirror|fight:4-2",
+    "mirror|fight:4-3",
+    "mirror|fight:4-4",
+    "mirror|fight:4-5",
+    "mirror|ref:starter",
+    "mirror|ref:road4",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "4-PRO-1",
+     "listfix3": true,
+     "deck": {
+      "bramble-sprout": 3,
+      "drowned-matriarch": 2,
+      "fleetfootd": 4,
+      "kittiwake-flock": 4,
+      "rock-pool-starfish": 3,
+      "water-shrew": 4
+     },
+     "all": 0.8229,
+     "road": 0.8167,
+     "n": 120
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "4-PRO-2",
+     "listfix3": false,
+     "deck": {
+      "alley-cat": 4,
+      "beaver-feller": 4,
+      "driftwood-crab": 2,
+      "fleetfootd": 4,
+      "river-mink": 4,
+      "water-shrew": 2
+     },
+     "all": 0.7552,
+     "road": 0.7667,
+     "n": 120
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "4-PRO-3",
+     "listfix3": false,
+     "deck": {
+      "bee-forager": 4,
+      "conch-crawler": 4,
+      "drowned-matriarch": 4,
+      "kittiwake-flock": 4,
+      "pond-algae": 4
+     },
+     "all": 0.6875,
+     "road": 0.7167,
+     "n": 120
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "4-PRO-4",
+     "listfix3": false,
+     "deck": {
+      "alley-cat": 4,
+      "beaver-lumberjack": 4,
+      "bee-forager": 2,
+      "kittiwake-flock": 4,
+      "puffin-diver": 3,
+      "shoal-shark": 3
+     },
+     "all": 0.6875,
+     "road": 0.7333,
+     "n": 120
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "4-PRO-1",
+     "kept": false,
+     "deck": {
+      "alley-cat": 3,
+      "conch-crawler": 2,
+      "drowned-matriarch": 4,
+      "duck-paddler": 4,
+      "fleetfootd": 3,
+      "rock-pool-starfish": 4
+     },
+     "same": false,
+     "all": 0.8438,
+     "road": 0.8417,
+     "n": 120
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "4-PRO-2",
+     "kept": false,
+     "deck": {
+      "duck-paddler": 4,
+      "gannet-nestweaver": 4,
+      "kittiwake-flock": 4,
+      "pincushion-urchin": 4,
+      "snapstick-turtle": 4
+     },
+     "same": false,
+     "all": 0.8229,
+     "road": 0.8333,
+     "n": 120
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "4-PRO-3",
+     "kept": false,
+     "deck": {
+      "alley-cat": 4,
+      "beaver-feller": 2,
+      "conch-crawler": 4,
+      "driftwood-crab": 4,
+      "drowned-matriarch": 4,
+      "pincushion-urchin": 2
+     },
+     "same": false,
+     "all": 0.7292,
+     "road": 0.7833,
+     "n": 120
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "4-PRO-4",
+     "kept": false,
+     "deck": {
+      "driftwood-crab": 2,
+      "gannet-nestweaver": 4,
+      "grass-snake": 2,
+      "kittiwake-flock": 4,
+      "shoal-shark": 4,
+      "slow-worm": 4
+     },
+     "same": false,
+     "all": 0.7552,
+     "road": 0.7667,
+     "n": 120
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "4-BPRO-1",
+     "listfix3": true,
+     "deck": {
+      "conch-crawler": 2,
+      "drowned-matriarch": 4,
+      "kittiwake-flock": 4,
+      "pond-algae": 2,
+      "shoal-shark": 4,
+      "water-shrew": 4
+     },
+     "all": 0.7813,
+     "road": 0.7917,
+     "n": 120
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "4-BPRO-2",
+     "listfix3": true,
+     "deck": {
+      "conch-crawler": 4,
+      "kittiwake-flock": 4,
+      "planarian-splitter": 4,
+      "pond-algae": 4,
+      "water-shrew": 4
+     },
+     "all": 0.6823,
+     "road": 0.725,
+     "n": 120
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "4-BPRO-3",
+     "listfix3": false,
+     "deck": {
+      "beaver-feller": 4,
+      "beaver-lumberjack": 4,
+      "conch-crawler": 4,
+      "drowned-matriarch": 4,
+      "snapstick-turtle": 4
+     },
+     "all": 0.7344,
+     "road": 0.725,
+     "n": 120
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "4-BPRO-1",
+     "kept": true,
+     "deck": {
+      "conch-crawler": 2,
+      "drowned-matriarch": 4,
+      "kittiwake-flock": 4,
+      "pond-algae": 2,
+      "shoal-shark": 4,
+      "water-shrew": 4
+     },
+     "same": true,
+     "all": 0.7813,
+     "road": 0.7917,
+     "n": 120
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "4-BPRO-2",
+     "kept": false,
+     "deck": {
+      "beaver-feller": 1,
+      "conch-crawler": 4,
+      "duck-paddler": 3,
+      "kittiwake-flock": 4,
+      "muskrat-lodgekeeper": 4,
+      "river-mink": 4
+     },
+     "same": false,
+     "all": 0.7188,
+     "road": 0.75,
+     "n": 120
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "4-BPRO-3",
+     "kept": false,
+     "deck": {
+      "beaver-feller": 4,
+      "conch-crawler": 4,
+      "duck-paddler": 4,
+      "shoal-shark": 4,
+      "snapstick-turtle": 4
+     },
+     "same": false,
+     "all": 0.6458,
+     "road": 0.6583,
+     "n": 120
+    }
+   ]
+  },
+  "m7": {
+   "name": "Coral Current",
+   "kinds": [
+    "bpro"
+   ],
+   "gauntlet": [
+    "mirror|fight:10-1",
+    "mirror|fight:10-2",
+    "mirror|fight:10-3",
+    "mirror|fight:10-4",
+    "mirror|fight:10-5",
+    "mirror|fight:10-6",
+    "mirror|fight:10-7",
+    "mirror|fight:10-8",
+    "mirror|fight:10-9",
+    "mirror|ref:starter",
+    "mirror|ref:road10",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "10-BPRO-1",
+     "listfix3": false,
+     "deck": {
+      "clownfish-scout": 4,
+      "crown-of-thorns-star": 2,
+      "dolphin-knight": 3,
+      "krill-swarm": 3,
+      "moon-jelly": 4,
+      "parrotfish": 4
+     },
+     "all": 0.9514,
+     "road": 0.9722,
+     "n": 216
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "10-BPRO-2",
+     "listfix3": false,
+     "deck": {
+      "dolphin-knight": 3,
+      "krill-swarm": 4,
+      "parrotfish": 4,
+      "riptide-eel": 4,
+      "tide-spirit": 2,
+      "voltaic-eel": 3
+     },
+     "all": 0.9444,
+     "road": 0.9769,
+     "n": 216
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "10-BPRO-3",
+     "listfix3": true,
+     "deck": {
+      "coral-current-eel": 3,
+      "coral-reef-shark": 4,
+      "crown-of-thorns-star": 4,
+      "krill-swarm": 4,
+      "parrotfish": 1,
+      "sea-turtle-elder": 4
+     },
+     "all": 0.7569,
+     "road": 0.838,
+     "n": 216
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "10-BPRO-4",
+     "listfix3": false,
+     "deck": {
+      "clownfish-scout": 4,
+      "conch-crawler": 4,
+      "coral-current-eel": 3,
+      "dolphin-knight": 3,
+      "giant-clam": 4,
+      "pincushion-urchin": 2
+     },
+     "all": 0.8299,
+     "road": 0.8981,
+     "n": 216
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "10-BPRO-1",
+     "kept": true,
+     "deck": {
+      "clownfish-scout": 4,
+      "crown-of-thorns-star": 2,
+      "dolphin-knight": 3,
+      "krill-swarm": 3,
+      "moon-jelly": 4,
+      "parrotfish": 4
+     },
+     "same": true,
+     "all": 0.9514,
+     "road": 0.9722,
+     "n": 216
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "10-BPRO-2",
+     "kept": false,
+     "deck": {
+      "clownfish-scout": 2,
+      "conch-crawler": 3,
+      "crown-of-thorns-star": 4,
+      "dolphin-knight": 3,
+      "sea-bass": 4,
+      "sea-turtle-elder": 4
+     },
+     "same": false,
+     "all": 0.8264,
+     "road": 0.8843,
+     "n": 216
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "10-BPRO-3",
+     "kept": false,
+     "deck": {
+      "conch-crawler": 4,
+      "coral-current-eel": 3,
+      "crown-of-thorns-star": 3,
+      "dolphin-knight": 2,
+      "giant-clam": 4,
+      "parrotfish": 4
+     },
+     "same": false,
+     "all": 0.8056,
+     "road": 0.875,
+     "n": 216
+    }
+   ]
+  },
+  "m5": {
+   "name": "Savanna Reaches",
+   "kinds": [
+    "pro",
+    "bpro"
+   ],
+   "gauntlet": [
+    "mirror|fight:14-1",
+    "mirror|fight:14-2",
+    "mirror|fight:14-3",
+    "mirror|fight:14-4",
+    "mirror|fight:14-5",
+    "mirror|fight:14-6",
+    "mirror|fight:14-7",
+    "mirror|fight:14-8",
+    "mirror|ref:starter",
+    "mirror|ref:road14",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "14-PRO-1",
+     "listfix3": false,
+     "deck": {
+      "alpine-marmot": 3,
+      "alpine-swift": 4,
+      "anhinga-spearbird": 3,
+      "dust-hyena": 4,
+      "hoopoe-herald": 4,
+      "pride-queen": 2
+     },
+     "all": 0.8712,
+     "road": 0.9531,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "14-PRO-2",
+     "listfix3": false,
+     "deck": {
+      "banded-sea-krait": 4,
+      "blue-ringed-octopus": 2,
+      "caiman-hatchling": 4,
+      "golden-eagle-diver": 4,
+      "hoopoe-herald": 4,
+      "savanna-cheetah": 2
+     },
+     "all": 0.7424,
+     "road": 0.8438,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "14-PRO-3",
+     "listfix3": true,
+     "deck": {
+      "banded-sea-krait": 3,
+      "caiman-hatchling": 3,
+      "dust-hyena": 4,
+      "grave-grin-hyena": 4,
+      "savanna-cheetah": 2,
+      "springbok-pronker": 4
+     },
+     "all": 0.7652,
+     "road": 0.8906,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "14-PRO-4",
+     "listfix3": false,
+     "deck": {
+      "alpine-swift": 4,
+      "eagle-owl-quartermaster": 3,
+      "mangrove-monitor": 4,
+      "meerkat-sentry": 4,
+      "savanna-cheetah": 1,
+      "stonedrop-vulture": 4
+     },
+     "all": 0.8371,
+     "road": 0.9219,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "14-PRO-1",
+     "kept": false,
+     "deck": {
+      "alpine-marmot": 4,
+      "grave-grin-hyena": 4,
+      "hoopoe-herald": 4,
+      "stonedrop-vulture": 4,
+      "upside-down-bat": 4
+     },
+     "same": false,
+     "all": 0.9167,
+     "road": 0.9688,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "14-PRO-2",
+     "kept": false,
+     "deck": {
+      "alpine-swift": 4,
+      "dust-hyena": 4,
+      "golden-eagle-diver": 4,
+      "meerkat-sentry": 2,
+      "stonedrop-vulture": 4,
+      "tide-spirit": 2
+     },
+     "same": false,
+     "all": 0.8485,
+     "road": 0.9062,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "14-PRO-3",
+     "kept": false,
+     "deck": {
+      "dust-hyena": 4,
+      "golden-eagle-diver": 4,
+      "meerkat-sentry": 3,
+      "savanna-cheetah": 2,
+      "upside-down-bat": 4,
+      "wolf-spider-mother": 3
+     },
+     "same": false,
+     "all": 0.8826,
+     "road": 0.9219,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "14-PRO-4",
+     "kept": false,
+     "deck": {
+      "alpine-marmot": 4,
+      "dust-hyena": 3,
+      "golden-eagle-diver": 4,
+      "ibex-rockcaller": 2,
+      "marula-elephant": 3,
+      "meerkat-sentry": 4
+     },
+     "same": false,
+     "all": 0.7992,
+     "road": 0.8906,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "14-BPRO-1",
+     "listfix3": false,
+     "deck": {
+      "dust-hyena": 4,
+      "golden-eagle-diver": 4,
+      "hoopoe-herald": 4,
+      "pride-queen": 2,
+      "savanna-cheetah": 2,
+      "termite-forager": 4
+     },
+     "all": 0.9242,
+     "road": 0.974,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "14-BPRO-2",
+     "listfix3": false,
+     "deck": {
+      "dust-hyena": 4,
+      "grave-grin-hyena": 2,
+      "hoopoe-herald": 4,
+      "pride-queen": 2,
+      "springbok-pronker": 4,
+      "stonedrop-vulture": 4
+     },
+     "all": 0.8826,
+     "road": 0.9479,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "14-BPRO-3",
+     "listfix3": false,
+     "deck": {
+      "adder-ambusher": 3,
+      "dust-hyena": 4,
+      "mangrove-monitor": 4,
+      "meerkat-sentry": 3,
+      "savanna-cheetah": 2,
+      "termite-forager": 4
+     },
+     "all": 0.8864,
+     "road": 0.9687,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "14-BPRO-4",
+     "listfix3": true,
+     "deck": {
+      "acacia-giraffe": 4,
+      "dust-hyena": 4,
+      "grave-grin-hyena": 4,
+      "hoopoe-herald": 4,
+      "stonedrop-vulture": 4
+     },
+     "all": 0.8106,
+     "road": 0.901,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "14-BPRO-1",
+     "kept": true,
+     "deck": {
+      "dust-hyena": 4,
+      "golden-eagle-diver": 4,
+      "hoopoe-herald": 4,
+      "pride-queen": 2,
+      "savanna-cheetah": 2,
+      "termite-forager": 4
+     },
+     "same": true,
+     "all": 0.9242,
+     "road": 0.974,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "14-BPRO-2",
+     "kept": false,
+     "deck": {
+      "adder-ambusher": 3,
+      "dust-hyena": 3,
+      "grave-grin-hyena": 3,
+      "mangrove-monitor": 4,
+      "meerkat-sentry": 4,
+      "termite-forager": 3
+     },
+     "same": false,
+     "all": 0.8371,
+     "road": 0.9427,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "14-BPRO-3",
+     "kept": false,
+     "deck": {
+      "adder-ambusher": 2,
+      "golden-eagle-diver": 4,
+      "hoopoe-herald": 4,
+      "mangrove-monitor": 4,
+      "pride-queen": 2,
+      "stonedrop-vulture": 4
+     },
+     "same": false,
+     "all": 0.8598,
+     "road": 0.9271,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "14-BPRO-4",
+     "kept": false,
+     "deck": {
+      "acacia-giraffe": 4,
+      "adder-ambusher": 2,
+      "grave-grin-hyena": 4,
+      "hoopoe-herald": 4,
+      "meerkat-sentry": 4,
+      "pride-queen": 2
+     },
+     "same": false,
+     "all": 0.8447,
+     "road": 0.9583,
+     "n": 192
+    }
+   ]
+  },
+  "ml": {
+   "name": "The Long Grass",
+   "kinds": [
+    "pro",
+    "bpro",
+    "wpro"
+   ],
+   "gauntlet": [
+    "mirror|fight:15-1",
+    "mirror|fight:15-2",
+    "mirror|fight:15-3",
+    "mirror|fight:15-4",
+    "mirror|fight:15-5",
+    "mirror|fight:15-6",
+    "mirror|fight:15-7",
+    "mirror|ref:starter",
+    "mirror|ref:road15",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "15-PRO-1",
+     "listfix3": true,
+     "deck": {
+      "bison-bulldozer": 3,
+      "ibex-rockcaller": 2,
+      "land-tiller": 4,
+      "robin-redbreast": 4,
+      "upside-down-bat": 4,
+      "war-hound": 3
+     },
+     "all": 0.9542,
+     "road": 0.9762,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "15-PRO-2",
+     "listfix3": true,
+     "deck": {
+      "border-collie": 3,
+      "cricket-drummer": 4,
+      "grave-grin-hyena": 2,
+      "hedge-weasel": 4,
+      "robin-redbreast": 4,
+      "war-hound": 3
+     },
+     "all": 0.9375,
+     "road": 0.9464,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "15-PRO-3",
+     "listfix3": true,
+     "deck": {
+      "cricket-drummer": 4,
+      "goose-sentry": 1,
+      "hedge-weasel": 4,
+      "land-tiller": 4,
+      "mouse-sapper": 4,
+      "war-hound": 3
+     },
+     "all": 0.8625,
+     "road": 0.869,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "15-PRO-4",
+     "listfix3": false,
+     "deck": {
+      "cricket-drummer": 4,
+      "goose-sentry": 3,
+      "ladybird-guard": 4,
+      "shepherds-bark": 4,
+      "tide-spirit": 1,
+      "upside-down-bat": 4
+     },
+     "all": 0.8583,
+     "road": 0.8988,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "15-PRO-1",
+     "kept": true,
+     "deck": {
+      "bison-bulldozer": 3,
+      "ibex-rockcaller": 2,
+      "land-tiller": 4,
+      "robin-redbreast": 4,
+      "upside-down-bat": 4,
+      "war-hound": 3
+     },
+     "same": true,
+     "all": 0.9542,
+     "road": 0.9762,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "15-PRO-2",
+     "kept": false,
+     "deck": {
+      "bison-bulldozer": 4,
+      "cricket-drummer": 4,
+      "grave-grin-hyena": 4,
+      "robin-redbreast": 4,
+      "shepherds-bark": 2,
+      "upside-down-bat": 2
+     },
+     "same": false,
+     "all": 0.9125,
+     "road": 0.9643,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "15-PRO-3",
+     "kept": false,
+     "deck": {
+      "border-collie": 4,
+      "cricket-drummer": 3,
+      "hedge-weasel": 4,
+      "ibex-rockcaller": 2,
+      "truffle-piglet": 4,
+      "wolf-spider-mother": 3
+     },
+     "same": false,
+     "all": 0.8875,
+     "road": 0.9286,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "15-PRO-4",
+     "kept": false,
+     "deck": {
+      "anvil-thrush": 2,
+      "cricket-drummer": 4,
+      "ladybird-guard": 4,
+      "land-tiller": 2,
+      "shepherds-bark": 4,
+      "upside-down-bat": 4
+     },
+     "same": false,
+     "all": 0.8417,
+     "road": 0.8869,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "15-BPRO-1",
+     "listfix3": true,
+     "deck": {
+      "border-collie": 4,
+      "cricket-drummer": 4,
+      "goose-sentry": 2,
+      "land-tiller": 4,
+      "truffle-piglet": 3,
+      "war-hound": 3
+     },
+     "all": 0.8958,
+     "road": 0.9286,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "15-BPRO-1",
+     "kept": true,
+     "deck": {
+      "border-collie": 4,
+      "cricket-drummer": 4,
+      "goose-sentry": 2,
+      "land-tiller": 4,
+      "truffle-piglet": 3,
+      "war-hound": 3
+     },
+     "same": true,
+     "all": 0.8958,
+     "road": 0.9286,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "wpro",
+     "id": "15-WPRO-1",
+     "listfix3": true,
+     "deck": {
+      "cataphract-destrier": 4,
+      "fire-ant-raft": 4,
+      "mallard-halberdier": 3,
+      "mouse-sapper": 1,
+      "pronghorn-racer": 4,
+      "shepherds-bark": 4
+     },
+     "all": 0.2292,
+     "road": 0.2202,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "wpro",
+     "id": "15-WPRO-2",
+     "listfix3": true,
+     "deck": {
+      "bison-bulldozer": 4,
+      "cataphract-destrier": 4,
+      "goose-sentry": 3,
+      "mouse-sapper": 4,
+      "pronghorn-racer": 1,
+      "shepherds-bark": 4
+     },
+     "all": 0.325,
+     "road": 0.3333,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "wpro",
+     "id": "15-WPRO-1",
+     "kept": false,
+     "deck": {
+      "cataphract-destrier": 4,
+      "fire-ant-raft": 4,
+      "pronghorn-racer": 4,
+      "shepherds-bark": 4,
+      "thorn-shrike": 3,
+      "war-hound": 1
+     },
+     "same": false,
+     "all": 0.2083,
+     "road": 0.2262,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "wpro",
+     "id": "15-WPRO-2",
+     "kept": false,
+     "deck": {
+      "bison-bulldozer": 3,
+      "border-collie": 4,
+      "cataphract-destrier": 4,
+      "fire-ant-raft": 2,
+      "goose-sentry": 3,
+      "pronghorn-racer": 4
+     },
+     "same": false,
+     "all": 0.3417,
+     "road": 0.381,
+     "n": 168
+    }
+   ]
+  },
+  "m6": {
+   "name": "Wolfsbane Tundra",
+   "kinds": [
+    "pro",
+    "bpro"
+   ],
+   "gauntlet": [
+    "mirror|fight:17-1",
+    "mirror|fight:17-2",
+    "mirror|fight:17-3",
+    "mirror|fight:17-4",
+    "mirror|fight:17-5",
+    "mirror|fight:17-6",
+    "mirror|fight:17-7",
+    "mirror|fight:17-8",
+    "mirror|ref:starter",
+    "mirror|ref:road17",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "17-PRO-1",
+     "listfix3": false,
+     "deck": {
+      "arctic-tern": 4,
+      "cone-cutter-squirrel": 4,
+      "lemming-swarm": 2,
+      "mountain-hare": 4,
+      "musk-ox-calf": 4,
+      "walrus-icebreaker": 2
+     },
+     "all": 0.9583,
+     "road": 0.9687,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "17-PRO-2",
+     "listfix3": true,
+     "deck": {
+      "arctic-fox-raider": 3,
+      "arctic-tern": 2,
+      "cunning-vixen": 4,
+      "ice-crevasse-wolf": 3,
+      "lemming-swarm": 4,
+      "snow-ermine": 4
+     },
+     "all": 0.875,
+     "road": 0.9427,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "17-PRO-3",
+     "listfix3": false,
+     "deck": {
+      "glacier-yak": 4,
+      "grave-grin-hyena": 2,
+      "krill-swarm": 4,
+      "musk-ox-calf": 4,
+      "tundra-musk-ox": 4,
+      "walrus-icebreaker": 2
+     },
+     "all": 0.8636,
+     "road": 0.9167,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "17-PRO-1",
+     "kept": true,
+     "deck": {
+      "arctic-tern": 4,
+      "cone-cutter-squirrel": 4,
+      "lemming-swarm": 2,
+      "mountain-hare": 4,
+      "musk-ox-calf": 4,
+      "walrus-icebreaker": 2
+     },
+     "same": true,
+     "all": 0.9583,
+     "road": 0.9687,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "17-PRO-2",
+     "kept": false,
+     "deck": {
+      "arctic-fox-raider": 3,
+      "cone-cutter-squirrel": 4,
+      "eagle-owl-quartermaster": 3,
+      "frostbitten-wolverine": 4,
+      "krill-swarm": 4,
+      "walrus-icebreaker": 2
+     },
+     "same": false,
+     "all": 0.9129,
+     "road": 0.9479,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "17-PRO-3",
+     "kept": false,
+     "deck": {
+      "arctic-tern": 2,
+      "cunning-vixen": 3,
+      "lemming-swarm": 4,
+      "mountain-hare": 4,
+      "snow-ermine": 4,
+      "wolf-spider-mother": 3
+     },
+     "same": false,
+     "all": 0.8788,
+     "road": 0.9167,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "17-BPRO-1",
+     "listfix3": false,
+     "deck": {
+      "arctic-tern": 2,
+      "frostbitten-wolverine": 4,
+      "krill-swarm": 4,
+      "lemming-swarm": 4,
+      "walrus-icebreaker": 2,
+      "woodland-caribou": 4
+     },
+     "all": 0.9545,
+     "road": 0.974,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "17-BPRO-2",
+     "listfix3": true,
+     "deck": {
+      "cone-cutter-squirrel": 4,
+      "krill-swarm": 4,
+      "lemming-swarm": 4,
+      "ringed-seal": 4,
+      "snow-ermine": 4
+     },
+     "all": 0.9167,
+     "road": 0.9687,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "17-BPRO-3",
+     "listfix3": false,
+     "deck": {
+      "arctic-fox-raider": 3,
+      "cone-cutter-squirrel": 4,
+      "ice-crevasse-wolf": 3,
+      "lemming-swarm": 4,
+      "polar-bear": 2,
+      "woodland-caribou": 4
+     },
+     "all": 0.9091,
+     "road": 0.9635,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "17-BPRO-4",
+     "listfix3": false,
+     "deck": {
+      "arctic-tern": 2,
+      "glacier-yak": 4,
+      "lemming-swarm": 4,
+      "snow-ermine": 4,
+      "tundra-musk-ox": 4,
+      "wolfsbane-alpha": 2
+     },
+     "all": 0.8561,
+     "road": 0.9323,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "17-BPRO-1",
+     "kept": true,
+     "deck": {
+      "arctic-tern": 2,
+      "frostbitten-wolverine": 4,
+      "krill-swarm": 4,
+      "lemming-swarm": 4,
+      "walrus-icebreaker": 2,
+      "woodland-caribou": 4
+     },
+     "same": true,
+     "all": 0.9545,
+     "road": 0.974,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "17-BPRO-2",
+     "kept": false,
+     "deck": {
+      "arctic-tern": 4,
+      "cone-cutter-squirrel": 3,
+      "krill-swarm": 4,
+      "snow-ermine": 4,
+      "tundra-musk-ox": 3,
+      "walrus-icebreaker": 2
+     },
+     "same": false,
+     "all": 0.9621,
+     "road": 0.9844,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "17-BPRO-3",
+     "kept": false,
+     "deck": {
+      "arctic-fox-raider": 3,
+      "arctic-tern": 4,
+      "krill-swarm": 4,
+      "lemming-swarm": 4,
+      "polar-bear": 2,
+      "taiga-lynx": 3
+     },
+     "same": false,
+     "all": 0.9394,
+     "road": 0.974,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "17-BPRO-4",
+     "kept": false,
+     "deck": {
+      "cone-cutter-squirrel": 3,
+      "frostbitten-wolverine": 2,
+      "glacier-yak": 4,
+      "ice-crevasse-wolf": 3,
+      "lemming-swarm": 4,
+      "tundra-musk-ox": 4
+     },
+     "same": false,
+     "all": 0.8068,
+     "road": 0.9115,
+     "n": 192
+    }
+   ]
+  },
+  "mx": {
+   "name": "Volcano Lair",
+   "kinds": [
+    "bpro",
+    "wpro"
+   ],
+   "gauntlet": [
+    "mirror|fight:20-B-1",
+    "mirror|fight:20-B-2",
+    "mirror|fight:20-B-3",
+    "mirror|fight:20-B-4",
+    "mirror|ref:starter",
+    "mirror|ref:road20",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "20-B-BPRO-1",
+     "listfix3": true,
+     "deck": {
+      "ash-cloud-condor": 3,
+      "cinder-hornet": 4,
+      "cinder-stoker": 4,
+      "ember-jackal": 3,
+      "ember-wisp": 3,
+      "pyroclast-wyrm": 3
+     },
+     "all": 0.6667,
+     "road": 0.7708,
+     "n": 96
+    },
+    {
+     "when": "before",
+     "kind": "bpro",
+     "id": "20-B-BPRO-2",
+     "listfix3": false,
+     "deck": {
+      "ancient-sloth-titan": 2,
+      "cinder-stoker": 4,
+      "ember-jackal": 3,
+      "ember-wisp": 3,
+      "gorge-wyrm": 4,
+      "stalactite-golem": 4
+     },
+     "all": 0.5952,
+     "road": 0.7188,
+     "n": 96
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "20-B-BPRO-1",
+     "kept": true,
+     "deck": {
+      "ash-cloud-condor": 3,
+      "cinder-hornet": 4,
+      "cinder-stoker": 4,
+      "ember-jackal": 3,
+      "ember-wisp": 3,
+      "pyroclast-wyrm": 3
+     },
+     "same": true,
+     "all": 0.6667,
+     "road": 0.7708,
+     "n": 96
+    },
+    {
+     "when": "after",
+     "kind": "bpro",
+     "id": "20-B-BPRO-2",
+     "kept": false,
+     "deck": {
+      "cinder-stoker": 4,
+      "ember-centipede": 2,
+      "ember-jackal": 3,
+      "ember-wisp": 3,
+      "stalactite-golem": 4,
+      "vampire-roost": 4
+     },
+     "same": false,
+     "all": 0.619,
+     "road": 0.8125,
+     "n": 96
+    },
+    {
+     "when": "before",
+     "kind": "wpro",
+     "id": "20-B-WPRO-1",
+     "listfix3": false,
+     "deck": {
+      "ancient-sloth-titan": 3,
+      "cinder-hornet": 4,
+      "lava-waders": 4,
+      "magma-titan": 4,
+      "pyroclast-wyrm": 4,
+      "thunder-lizard": 1
+     },
+     "all": 0.0774,
+     "road": 0.1354,
+     "n": 96
+    },
+    {
+     "when": "before",
+     "kind": "wpro",
+     "id": "20-B-WPRO-2",
+     "listfix3": true,
+     "deck": {
+      "ancient-sloth-titan": 4,
+      "cinder-hornet": 4,
+      "gorge-wyrm": 4,
+      "magma-titan": 4,
+      "stalactite-golem": 4
+     },
+     "all": 0.0714,
+     "road": 0.125,
+     "n": 96
+    },
+    {
+     "when": "after",
+     "kind": "wpro",
+     "id": "20-B-WPRO-1",
+     "kept": false,
+     "deck": {
+      "ancient-sloth-titan": 4,
+      "deep-cave-troll": 4,
+      "gorge-wyrm": 4,
+      "granite-ox-golem": 3,
+      "magma-titan": 4,
+      "thunder-lizard": 1
+     },
+     "same": false,
+     "all": 0.0119,
+     "road": 0.0208,
+     "n": 96
+    },
+    {
+     "when": "after",
+     "kind": "wpro",
+     "id": "20-B-WPRO-2",
+     "kept": false,
+     "deck": {
+      "ancient-sloth-titan": 4,
+      "cinder-hornet": 4,
+      "gorge-wyrm": 3,
+      "lava-waders": 4,
+      "magma-titan": 1,
+      "pyroclast-wyrm": 4
+     },
+     "same": false,
+     "all": 0.0536,
+     "road": 0.0938,
+     "n": 96
+    }
+   ]
+  },
+  "mo": {
+   "name": "The Old Bramble",
+   "kinds": [
+    "pro"
+   ],
+   "gauntlet": [
+    "mirror|fight:0-B-1",
+    "mirror|fight:0-B-2",
+    "mirror|fight:0-B-3",
+    "mirror|fight:0-B-4",
+    "mirror|ref:starter",
+    "mirror|ref:road17",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "0-B-PRO-1",
+     "listfix3": true,
+     "deck": {
+      "ashbone-ghoul": 4,
+      "bramble-sprout": 3,
+      "ent": 3,
+      "hazel-coppice": 4,
+      "porcupine-roller": 4,
+      "tide-spirit": 2
+     },
+     "all": 0.6071,
+     "road": 0.6979,
+     "n": 96
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "0-B-PRO-2",
+     "listfix3": true,
+     "deck": {
+      "ashbone-ghoul": 3,
+      "bramblewood-lynx": 3,
+      "grave-grin-hyena": 4,
+      "porcupine-roller": 4,
+      "quill-thorn-boar": 3,
+      "thornwood-palisade": 3
+     },
+     "all": 0.7619,
+     "road": 0.7604,
+     "n": 96
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "0-B-PRO-3",
+     "listfix3": false,
+     "deck": {
+      "barkplate-beetle": 4,
+      "gatling-hog": 3,
+      "grave-grin-hyena": 4,
+      "hedgehog-herbalist": 3,
+      "quill-volley": 3,
+      "wolf-spider-mother": 3
+     },
+     "all": 0.6964,
+     "road": 0.7396,
+     "n": 96
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "0-B-PRO-4",
+     "listfix3": false,
+     "deck": {
+      "ashbone-ghoul": 3,
+      "barkplate-beetle": 4,
+      "elder-willow": 4,
+      "grave-grin-hyena": 4,
+      "porcupine-roller": 2,
+      "truffle-piglet": 3
+     },
+     "all": 0.6548,
+     "road": 0.6875,
+     "n": 96
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "0-B-PRO-1",
+     "kept": false,
+     "deck": {
+      "barkplate-beetle": 4,
+      "bramble-sprout": 4,
+      "ent": 3,
+      "grave-grin-hyena": 4,
+      "ibex-rockcaller": 2,
+      "wolf-spider-mother": 3
+     },
+     "same": false,
+     "all": 0.8512,
+     "road": 0.9271,
+     "n": 96
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "0-B-PRO-2",
+     "kept": false,
+     "deck": {
+      "bramble-sprout": 3,
+      "ent": 3,
+      "grave-grin-hyena": 4,
+      "porcupine-roller": 4,
+      "quill-thorn-boar": 3,
+      "quill-volley": 3
+     },
+     "same": false,
+     "all": 0.875,
+     "road": 0.9062,
+     "n": 96
+    }
+   ]
+  },
+  "mw": {
+   "name": "Gatorback Swamp",
+   "kinds": [
+    "pro"
+   ],
+   "gauntlet": [
+    "mirror|fight:5-1",
+    "mirror|fight:5-2",
+    "mirror|fight:5-3",
+    "mirror|fight:5-4",
+    "mirror|fight:5-5",
+    "mirror|fight:5-6",
+    "mirror|fight:5-7",
+    "mirror|ref:starter",
+    "mirror|ref:road5",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "5-PRO-1",
+     "listfix3": true,
+     "deck": {
+      "alley-cat": 3,
+      "bog-leech": 2,
+      "box-turtle": 4,
+      "mosquito-cloud": 4,
+      "muskrat-reedgatherer": 3,
+      "planarian-splitter": 4
+     },
+     "all": 0.8958,
+     "road": 0.9107,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "5-PRO-2",
+     "listfix3": true,
+     "deck": {
+      "alley-cat": 3,
+      "box-turtle": 3,
+      "driftwood-crab": 4,
+      "fire-ant-raft": 4,
+      "raft-spider": 3,
+      "tunnel-ant": 3
+     },
+     "all": 0.8792,
+     "road": 0.8988,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "5-PRO-3",
+     "listfix3": false,
+     "deck": {
+      "box-turtle": 3,
+      "conch-crawler": 4,
+      "driftwood-crab": 2,
+      "mudpuppy": 4,
+      "old-snapjaw": 3,
+      "shoal-shark": 4
+     },
+     "all": 0.8208,
+     "road": 0.881,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "5-PRO-1",
+     "kept": true,
+     "deck": {
+      "alley-cat": 3,
+      "bog-leech": 2,
+      "box-turtle": 4,
+      "mosquito-cloud": 4,
+      "muskrat-reedgatherer": 3,
+      "planarian-splitter": 4
+     },
+     "same": true,
+     "all": 0.8958,
+     "road": 0.9107,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "5-PRO-2",
+     "kept": false,
+     "deck": {
+      "bog-leech": 3,
+      "driftwood-crab": 4,
+      "mosquito-cloud": 2,
+      "planarian-splitter": 3,
+      "pyrenean-desman": 4,
+      "shoal-shark": 4
+     },
+     "same": false,
+     "all": 0.8917,
+     "road": 0.8929,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "5-PRO-3",
+     "kept": false,
+     "deck": {
+      "bog-leech": 4,
+      "box-turtle": 3,
+      "conch-crawler": 3,
+      "driftwood-crab": 4,
+      "mosquito-cloud": 3,
+      "old-snapjaw": 3
+     },
+     "same": false,
+     "all": 0.7958,
+     "road": 0.8095,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "5-PRO-4",
+     "kept": false,
+     "deck": {
+      "alley-cat": 4,
+      "box-turtle": 4,
+      "fire-ant-raft": 4,
+      "grass-snake": 4,
+      "otter-centurion": 2,
+      "peat-cutter-vole": 2
+     },
+     "same": false,
+     "all": 0.7458,
+     "road": 0.7619,
+     "n": 168
+    }
+   ]
+  },
+  "m8": {
+   "name": "Sable Swampmire",
+   "kinds": [
+    "pro"
+   ],
+   "gauntlet": [
+    "mirror|fight:6-1",
+    "mirror|fight:6-2",
+    "mirror|fight:6-3",
+    "mirror|fight:6-4",
+    "mirror|fight:6-5",
+    "mirror|fight:6-6",
+    "mirror|fight:6-7",
+    "mirror|fight:6-8",
+    "mirror|ref:starter",
+    "mirror|ref:road6",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "6-PRO-1",
+     "listfix3": true,
+     "deck": {
+      "adder-ambusher": 3,
+      "alley-cat": 3,
+      "box-turtle": 4,
+      "grass-viper": 4,
+      "heron-hag": 3,
+      "water-shrew": 3
+     },
+     "all": 0.9242,
+     "road": 0.9844,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "6-PRO-2",
+     "listfix3": false,
+     "deck": {
+      "adder-ambusher": 3,
+      "anhinga-spearbird": 4,
+      "box-turtle": 4,
+      "cypress-root-lurker": 3,
+      "driftwood-crab": 4,
+      "otter-centurion": 2
+     },
+     "all": 0.9053,
+     "road": 0.974,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "6-PRO-3",
+     "listfix3": false,
+     "deck": {
+      "adder-ambusher": 3,
+      "alley-cat": 4,
+      "constrictor-coil": 3,
+      "driftwood-crab": 3,
+      "gannet-nestweaver": 3,
+      "pond-algae": 4
+     },
+     "all": 0.8712,
+     "road": 0.9635,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "6-PRO-4",
+     "listfix3": true,
+     "deck": {
+      "alley-cat": 4,
+      "gannet-nestweaver": 3,
+      "grass-viper": 4,
+      "mosquito-cloud": 4,
+      "owl-sentinel": 2,
+      "water-shrew": 3
+     },
+     "all": 0.8636,
+     "road": 0.9531,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "6-PRO-1",
+     "kept": true,
+     "deck": {
+      "adder-ambusher": 3,
+      "alley-cat": 3,
+      "box-turtle": 4,
+      "grass-viper": 4,
+      "heron-hag": 3,
+      "water-shrew": 3
+     },
+     "same": true,
+     "all": 0.9242,
+     "road": 0.9844,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "6-PRO-2",
+     "kept": false,
+     "deck": {
+      "adder-ambusher": 3,
+      "alley-cat": 2,
+      "box-turtle": 4,
+      "gannet-nestweaver": 3,
+      "nutria-reedcutter": 4,
+      "owl-sentinel": 4
+     },
+     "same": false,
+     "all": 0.9091,
+     "road": 0.9896,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "6-PRO-3",
+     "kept": false,
+     "deck": {
+      "alley-cat": 4,
+      "box-turtle": 4,
+      "grass-viper": 3,
+      "mosquito-cloud": 4,
+      "owl-sentinel": 4,
+      "raft-spider": 1
+     },
+     "same": false,
+     "all": 0.9091,
+     "road": 0.9792,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "6-PRO-4",
+     "kept": false,
+     "deck": {
+      "adder-ambusher": 3,
+      "driftwood-crab": 3,
+      "gannet-nestweaver": 4,
+      "heron-hag": 3,
+      "meadow-frog": 3,
+      "newt-doctor": 4
+     },
+     "same": false,
+     "all": 0.8864,
+     "road": 0.974,
+     "n": 192
+    }
+   ]
+  },
+  "mi": {
+   "name": "The Ice Hollow",
+   "kinds": [
+    "pro"
+   ],
+   "gauntlet": [
+    "mirror|fight:17-A-1",
+    "mirror|fight:17-A-2",
+    "mirror|fight:17-A-3",
+    "mirror|fight:17-A-4",
+    "mirror|ref:starter",
+    "mirror|ref:road21",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "17-A-PRO-1",
+     "listfix3": true,
+     "deck": {
+      "arctic-tern": 4,
+      "beluga": 3,
+      "harp-seal-pup": 4,
+      "lemming-swarm": 4,
+      "ravenous-wolverine": 2,
+      "wolf-spider-mother": 3
+     },
+     "all": 0.7202,
+     "road": 0.7813,
+     "n": 96
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "17-A-PRO-2",
+     "listfix3": false,
+     "deck": {
+      "krill-swarm": 4,
+      "lemming-swarm": 4,
+      "musk-ox-calf": 1,
+      "ravenous-wolverine": 3,
+      "ringed-seal": 4,
+      "snow-ermine": 4
+     },
+     "all": 0.756,
+     "road": 0.8125,
+     "n": 96
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "17-A-PRO-3",
+     "listfix3": true,
+     "deck": {
+      "beluga": 3,
+      "frostbitten-wolverine": 4,
+      "lemming-swarm": 2,
+      "mountain-hare": 4,
+      "snow-ermine": 3,
+      "talus-pika": 4
+     },
+     "all": 0.6548,
+     "road": 0.7292,
+     "n": 96
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "17-A-PRO-1",
+     "kept": false,
+     "deck": {
+      "beluga": 3,
+      "greenland-shark": 3,
+      "krill-swarm": 4,
+      "lemming-swarm": 4,
+      "snow-ermine": 4,
+      "walrus-icebreaker": 2
+     },
+     "same": false,
+     "all": 0.8214,
+     "road": 0.8125,
+     "n": 96
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "17-A-PRO-2",
+     "kept": false,
+     "deck": {
+      "greenland-shark": 3,
+      "harp-seal-pup": 3,
+      "lemming-swarm": 4,
+      "ravenous-wolverine": 2,
+      "ringed-seal": 4,
+      "talus-pika": 4
+     },
+     "same": false,
+     "all": 0.7083,
+     "road": 0.8229,
+     "n": 96
+    }
+   ]
+  },
+  "md": {
+   "name": "The Glass Dunes",
+   "kinds": [
+    "pro"
+   ],
+   "gauntlet": [
+    "mirror|fight:18-1",
+    "mirror|fight:18-2",
+    "mirror|fight:18-3",
+    "mirror|fight:18-4",
+    "mirror|fight:18-5",
+    "mirror|fight:18-6",
+    "mirror|fight:18-7",
+    "mirror|ref:starter",
+    "mirror|ref:road18",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "18-PRO-1",
+     "listfix3": false,
+     "deck": {
+      "antlion-pit": 4,
+      "ibex-rockcaller": 2,
+      "meerkat-sentry": 4,
+      "savanna-cheetah": 2,
+      "stonedrop-vulture": 4,
+      "upside-down-bat": 4
+     },
+     "all": 0.8833,
+     "road": 0.875,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "18-PRO-2",
+     "listfix3": true,
+     "deck": {
+      "armadillo-guard": 3,
+      "horned-lizard": 4,
+      "ibex-rockcaller": 2,
+      "marula-elephant": 3,
+      "stonedrop-vulture": 4,
+      "termite-forager": 4
+     },
+     "all": 0.7583,
+     "road": 0.744,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "18-PRO-3",
+     "listfix3": true,
+     "deck": {
+      "alpine-swift": 4,
+      "antlion-pit": 3,
+      "horned-lizard": 3,
+      "ibex-rockcaller": 2,
+      "roadrunner-courier": 4,
+      "stonedrop-vulture": 4
+     },
+     "all": 0.8479,
+     "road": 0.8333,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "18-PRO-1",
+     "kept": true,
+     "deck": {
+      "antlion-pit": 4,
+      "ibex-rockcaller": 2,
+      "meerkat-sentry": 4,
+      "savanna-cheetah": 2,
+      "stonedrop-vulture": 4,
+      "upside-down-bat": 4
+     },
+     "same": true,
+     "all": 0.8833,
+     "road": 0.875,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "18-PRO-2",
+     "kept": false,
+     "deck": {
+      "armadillo-guard": 4,
+      "fennec-fox": 4,
+      "horned-lizard": 4,
+      "ibex-rockcaller": 2,
+      "roadrunner-courier": 4,
+      "walrus-icebreaker": 2
+     },
+     "same": false,
+     "all": 0.8917,
+     "road": 0.8988,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "18-PRO-3",
+     "kept": false,
+     "deck": {
+      "caustic-scorpion": 4,
+      "glasswing-moth": 4,
+      "ibex-rockcaller": 2,
+      "meerkat-sentry": 4,
+      "roadrunner-courier": 4,
+      "walrus-icebreaker": 2
+     },
+     "same": false,
+     "all": 0.8167,
+     "road": 0.8274,
+     "n": 168
+    }
+   ]
+  },
+  "m11": {
+   "name": "The Sundered Peak",
+   "kinds": [
+    "pro"
+   ],
+   "gauntlet": [
+    "mirror|fight:20-1",
+    "mirror|fight:20-2",
+    "mirror|fight:20-3",
+    "mirror|fight:20-4",
+    "mirror|fight:20-5",
+    "mirror|fight:20-6",
+    "mirror|fight:20-7",
+    "mirror|fight:20-8",
+    "mirror|fight:20-9",
+    "mirror|fight:20-10",
+    "mirror|ref:starter",
+    "mirror|ref:road20",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "20-PRO-1",
+     "listfix3": true,
+     "deck": {
+      "ash-moth": 4,
+      "chamois-leaper": 4,
+      "cinder-stoker": 4,
+      "fumarole-ibex": 2,
+      "stonedrop-vulture": 4,
+      "talus-pika": 2
+     },
+     "all": 0.6603,
+     "road": 0.7,
+     "n": 240
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "20-PRO-2",
+     "listfix3": false,
+     "deck": {
+      "cinder-stoker": 4,
+      "eagle-owl-quartermaster": 2,
+      "grave-grin-hyena": 4,
+      "magma-salamander": 2,
+      "stonedrop-vulture": 4,
+      "talus-pika": 4
+     },
+     "all": 0.7853,
+     "road": 0.8208,
+     "n": 240
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "20-PRO-3",
+     "listfix3": false,
+     "deck": {
+      "cinder-stoker": 2,
+      "grave-grin-hyena": 4,
+      "phoenix-fledgling": 4,
+      "stalactite-golem": 4,
+      "stonedrop-vulture": 4,
+      "tide-spirit": 2
+     },
+     "all": 0.7019,
+     "road": 0.7375,
+     "n": 240
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "20-PRO-4",
+     "listfix3": false,
+     "deck": {
+      "chipmunk-hoarder": 1,
+      "cinder-skeleton": 4,
+      "cinder-stoker": 4,
+      "grave-grin-hyena": 4,
+      "vampire-roost": 4,
+      "wolf-spider-mother": 3
+     },
+     "all": 0.6346,
+     "road": 0.6833,
+     "n": 240
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "20-PRO-1",
+     "kept": false,
+     "deck": {
+      "ash-cloud-condor": 3,
+      "chamois-leaper": 4,
+      "ibex-rockcaller": 2,
+      "obsidian-scorpion": 3,
+      "stonedrop-vulture": 4,
+      "upside-down-bat": 4
+     },
+     "same": false,
+     "all": 0.8301,
+     "road": 0.85,
+     "n": 240
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "20-PRO-2",
+     "kept": false,
+     "deck": {
+      "ashbone-ghoul": 4,
+      "chipmunk-hoarder": 4,
+      "cinder-stoker": 4,
+      "eagle-owl-quartermaster": 2,
+      "magma-salamander": 2,
+      "stonedrop-vulture": 4
+     },
+     "same": false,
+     "all": 0.7564,
+     "road": 0.7875,
+     "n": 240
+    }
+   ]
+  },
+  "me": {
+   "name": "Eye of the Volcano",
+   "kinds": [
+    "pro"
+   ],
+   "gauntlet": [
+    "mirror|fight:20-A-1",
+    "mirror|fight:20-A-2",
+    "mirror|fight:20-A-3",
+    "mirror|fight:20-A-4",
+    "mirror|fight:20-A-5",
+    "mirror|fight:20-A-6",
+    "mirror|fight:20-A-7",
+    "mirror|ref:starter",
+    "mirror|ref:road20",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "20-A-PRO-1",
+     "listfix3": false,
+     "deck": {
+      "grave-grin-hyena": 4,
+      "lantern-spark-fly": 4,
+      "obsidian-lich": 3,
+      "obsidian-scorpion": 3,
+      "stalactite-golem": 4,
+      "tide-spirit": 2
+     },
+     "all": 0.8417,
+     "road": 0.9524,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "20-A-PRO-2",
+     "listfix3": true,
+     "deck": {
+      "ash-moth": 4,
+      "ashbone-ghoul": 4,
+      "cinder-skeleton": 4,
+      "ibex-rockcaller": 2,
+      "pall-wraith": 3,
+      "wolf-spider-mother": 3
+     },
+     "all": 0.725,
+     "road": 0.8571,
+     "n": 168
+    },
+    {
+     "when": "before",
+     "kind": "pro",
+     "id": "20-A-PRO-3",
+     "listfix3": false,
+     "deck": {
+      "ash-moth": 4,
+      "cave-warlord": 4,
+      "lantern-spark-fly": 4,
+      "magma-wraith": 4,
+      "obsidian-lich": 3,
+      "ossuary-lammergeier": 1
+     },
+     "all": 0.7542,
+     "road": 0.8393,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "20-A-PRO-1",
+     "kept": false,
+     "deck": {
+      "ash-moth": 4,
+      "cinder-skeleton": 3,
+      "lantern-spark-fly": 4,
+      "obsidian-scorpion": 3,
+      "tide-spirit": 2,
+      "upside-down-bat": 4
+     },
+     "same": false,
+     "all": 0.9292,
+     "road": 0.9821,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "20-A-PRO-2",
+     "kept": false,
+     "deck": {
+      "lantern-spark-fly": 3,
+      "obsidian-lich": 3,
+      "obsidian-scorpion": 3,
+      "stalactite-golem": 4,
+      "upside-down-bat": 4,
+      "wolf-spider-mother": 3
+     },
+     "same": false,
+     "all": 0.8083,
+     "road": 0.8869,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "20-A-PRO-3",
+     "kept": false,
+     "deck": {
+      "ancient-sloth-titan": 4,
+      "ashbone-ghoul": 2,
+      "deep-cave-troll": 4,
+      "lantern-spark-fly": 4,
+      "tide-spirit": 2,
+      "upside-down-bat": 4
+     },
+     "same": false,
+     "all": 0.8083,
+     "road": 0.9345,
+     "n": 168
+    },
+    {
+     "when": "after",
+     "kind": "pro",
+     "id": "20-A-PRO-4",
+     "kept": false,
+     "deck": {
+      "ash-moth": 4,
+      "ashbone-ghoul": 4,
+      "lantern-spark-fly": 4,
+      "magma-wraith": 2,
+      "pall-wraith": 3,
+      "wolf-spider-mother": 3
+     },
+     "same": false,
+     "all": 0.7958,
+     "road": 0.8929,
+     "n": 168
+    }
+   ]
+  },
+  "mr": {
+   "name": "The Redwood Deep",
+   "kinds": [
+    "wpro"
+   ],
+   "gauntlet": [
+    "mirror|fight:13-1",
+    "mirror|fight:13-2",
+    "mirror|fight:13-3",
+    "mirror|fight:13-4",
+    "mirror|fight:13-5",
+    "mirror|fight:13-6",
+    "mirror|fight:13-7",
+    "mirror|fight:13-8",
+    "mirror|ref:starter",
+    "mirror|ref:road13",
+    "mirror|ref:expected"
+   ],
+   "rows": [
+    {
+     "when": "before",
+     "kind": "wpro",
+     "id": "13-WPRO-1",
+     "listfix3": true,
+     "deck": {
+      "berserker-boar": 4,
+      "fox-kit": 1,
+      "grizzly-vanguard": 4,
+      "heartwood-treant": 3,
+      "owl-nightwatch": 4,
+      "swift-fox": 4
+     },
+     "all": 0.1023,
+     "road": 0.125,
+     "n": 192
+    },
+    {
+     "when": "before",
+     "kind": "wpro",
+     "id": "13-WPRO-2",
+     "listfix3": true,
+     "deck": {
+      "berserker-boar": 4,
+      "corpse-flower-beetle": 3,
+      "cunning-vixen": 4,
+      "grizzly-vanguard": 4,
+      "pine-marten": 3,
+      "swift-fox": 2
+     },
+     "all": 0.125,
+     "road": 0.1302,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "wpro",
+     "id": "13-WPRO-1",
+     "kept": false,
+     "deck": {
+      "berserker-boar": 4,
+      "cunning-vixen": 3,
+      "grizzly-vanguard": 4,
+      "heartwood-treant": 3,
+      "owl-nightwatch": 4,
+      "tasmanian-devil": 2
+     },
+     "same": false,
+     "all": 0.0227,
+     "road": 0.0312,
+     "n": 192
+    },
+    {
+     "when": "after",
+     "kind": "wpro",
+     "id": "13-WPRO-2",
+     "kept": false,
+     "deck": {
+      "berserker-boar": 3,
+      "bramblewood-lynx": 3,
+      "grizzly-vanguard": 3,
+      "heartwood-treant": 3,
+      "lyrebird-mimic": 4,
+      "redwood-woodpecker": 4
+     },
+     "same": false,
+     "all": 0.2159,
+     "road": 0.2448,
+     "n": 192
+    }
+   ]
+  }
+ }
+}

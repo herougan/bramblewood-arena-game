@@ -1,0 +1,1024 @@
+{
+ "about": "PRORS1 reference decks per map (apply report; SKIR1's tools/skir1/refdecks_2026_11_11.js re-run on the LISTFIX3 lists)",
+ "maps": [
+  {
+   "map": "mo",
+   "num": 0,
+   "name": "The Old Bramble",
+   "proLeft": [
+    {
+     "focus": "swarm",
+     "score": 0.8988,
+     "why": "shares more than 10 copies with a stronger deck"
+    },
+    {
+     "focus": "big",
+     "score": 0.6667,
+     "why": "under 74.9%"
+    }
+   ],
+   "proOld1": {
+    "id": "0-B-PRO-1",
+    "vsNewBest": {
+     "p": 0.713,
+     "n": 400,
+     "ci": [
+      0.666,
+      0.755
+     ],
+     "elo": 158,
+     "eloCI": [
+      120,
+      195
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "0-B-PRO-1",
+     "focus": "open",
+     "score": 0.881,
+     "labels": [
+      "spite x8"
+     ]
+    },
+    {
+     "id": "0-B-PRO-2",
+     "focus": "family:spite",
+     "score": 0.8452,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "spite x10"
+     ]
+    }
+   ],
+   "bpro": [],
+   "wpro": []
+  },
+  {
+   "map": "m2",
+   "num": 4,
+   "name": "Sunken Hollow",
+   "bproLeft": [],
+   "proLeft": [],
+   "bproOld1": {
+    "id": "4-BPRO-1",
+    "vsNewBest": {
+     "p": 0.528,
+     "n": 400,
+     "ci": [
+      0.479,
+      0.576
+     ],
+     "elo": 19,
+     "eloCI": [
+      -15,
+      53
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "4-PRO-1",
+    "vsNewBest": {
+     "p": 0.628,
+     "n": 400,
+     "ci": [
+      0.579,
+      0.673
+     ],
+     "elo": 91,
+     "eloCI": [
+      55,
+      126
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "4-PRO-1",
+     "focus": "family:tide",
+     "score": 0.8958,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "tide x13",
+      "cleave x7"
+     ]
+    },
+    {
+     "id": "4-PRO-2",
+     "focus": "family:flying",
+     "score": 0.875,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "tide x8",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "4-PRO-3",
+     "focus": "open",
+     "score": 0.7813,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "economy (6 resource makers)",
+      "tide x10",
+      "armor x8"
+     ]
+    },
+    {
+     "id": "4-PRO-4",
+     "focus": "economy",
+     "score": 0.75,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "economy (6 resource makers)",
+      "flying x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "4-BPRO-1",
+     "focus": "big",
+     "score": 0.7865,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "tide x10"
+     ]
+    },
+    {
+     "id": "4-BPRO-2",
+     "focus": "family:guard",
+     "score": 0.7604,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "tide x12",
+      "guard x8"
+     ]
+    },
+    {
+     "id": "4-BPRO-3",
+     "focus": "open",
+     "score": 0.6823,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "economy (4 resource makers)",
+      "tide x12"
+     ]
+    }
+   ],
+   "wpro": []
+  },
+  {
+   "map": "mw",
+   "num": 5,
+   "name": "Gatorback Swamp",
+   "proLeft": [],
+   "proOld1": {
+    "id": "5-PRO-1",
+    "vsNewBest": {
+     "p": 0.485,
+     "n": 400,
+     "ci": [
+      0.436,
+      0.534
+     ],
+     "elo": -10,
+     "eloCI": [
+      -44,
+      24
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "5-PRO-1",
+     "focus": "open",
+     "score": 0.9375,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "bleed x8"
+     ]
+    },
+    {
+     "id": "5-PRO-2",
+     "focus": "family:tide",
+     "score": 0.9208,
+     "labels": [
+      "big (11 copies at 1+ Lumber, average 0.6)",
+      "economy (4 resource makers)",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "5-PRO-3",
+     "focus": "family:armor",
+     "score": 0.7917,
+     "labels": [
+      "economy (4 resource makers)",
+      "bleed x10",
+      "armor x10"
+     ]
+    },
+    {
+     "id": "5-PRO-4",
+     "focus": "big",
+     "score": 0.7833,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)"
+     ]
+    }
+   ],
+   "bpro": [],
+   "wpro": []
+  },
+  {
+   "map": "m8",
+   "num": 6,
+   "name": "Sable Swampmire",
+   "proLeft": [],
+   "proOld1": {
+    "id": "6-PRO-1",
+    "vsNewBest": {
+     "p": 0.525,
+     "n": 400,
+     "ci": [
+      0.476,
+      0.573
+     ],
+     "elo": 17,
+     "eloCI": [
+      -17,
+      51
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "6-PRO-1",
+     "focus": "family:poison",
+     "score": 0.928,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "poison x10"
+     ]
+    },
+    {
+     "id": "6-PRO-2",
+     "focus": "open",
+     "score": 0.9583,
+     "labels": [
+      "flying x7"
+     ]
+    },
+    {
+     "id": "6-PRO-3",
+     "focus": "family:flying",
+     "score": 0.9205,
+     "labels": [
+      "swarm (15 copies at 0 Lumber)",
+      "bleed x8",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "6-PRO-4",
+     "focus": "economy",
+     "score": 0.9053,
+     "labels": [
+      "economy (7 resource makers)",
+      "flying x7",
+      "poison x6"
+     ]
+    }
+   ],
+   "bpro": [],
+   "wpro": []
+  },
+  {
+   "map": "m7",
+   "num": 10,
+   "name": "Coral Current",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.7882,
+     "why": "under 80.8%"
+    }
+   ],
+   "bproOld1": {
+    "id": "10-BPRO-1",
+    "vsNewBest": {
+     "p": 0.398,
+     "n": 400,
+     "ci": [
+      0.351,
+      0.446
+     ],
+     "elo": -72,
+     "eloCI": [
+      -107,
+      -38
+     ]
+    }
+   },
+   "pro": [],
+   "bpro": [
+    {
+     "id": "10-BPRO-1",
+     "focus": "open",
+     "score": 0.9549,
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "tide x20",
+      "poison x6"
+     ]
+    },
+    {
+     "id": "10-BPRO-2",
+     "focus": "family:tide",
+     "score": 0.8472,
+     "labels": [
+      "tide x20",
+      "armor x7"
+     ]
+    },
+    {
+     "id": "10-BPRO-3",
+     "focus": "family:armor",
+     "score": 0.816,
+     "labels": [
+      "tide x20",
+      "armor x8"
+     ]
+    }
+   ],
+   "wpro": []
+  },
+  {
+   "map": "mr",
+   "num": 13,
+   "name": "The Redwood Deep",
+   "wproLeft": [],
+   "pro": [],
+   "bpro": [],
+   "wpro": [
+    {
+     "id": "13-WPRO-1",
+     "plan": "low",
+     "score": 0.0076,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.6)",
+      "evasion x7"
+     ]
+    },
+    {
+     "id": "13-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.1288,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.4)",
+      "economy (7 resource makers)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m5",
+   "num": 14,
+   "name": "Savanna Reaches",
+   "bproLeft": [],
+   "proLeft": [],
+   "bproOld1": {
+    "id": "14-BPRO-1",
+    "vsNewBest": {
+     "p": 0.47,
+     "n": 400,
+     "ci": [
+      0.422,
+      0.519
+     ],
+     "elo": -21,
+     "eloCI": [
+      -55,
+      13
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "14-PRO-1",
+    "vsNewBest": {
+     "p": 0.728,
+     "n": 400,
+     "ci": [
+      0.682,
+      0.769
+     ],
+     "elo": 171,
+     "eloCI": [
+      132,
+      209
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "14-PRO-1",
+     "focus": "family:flying",
+     "score": 0.9432,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "14-PRO-2",
+     "focus": "family:strike-first",
+     "score": 0.9242,
+     "labels": [
+      "big (10 copies at 1+ Lumber, average 0.5)",
+      "economy (4 resource makers)",
+      "flying x12",
+      "strike-first x8"
+     ]
+    },
+    {
+     "id": "14-PRO-3",
+     "focus": "open",
+     "score": 0.9053,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "economy (4 resource makers)",
+      "flying x8",
+      "day x8"
+     ]
+    },
+    {
+     "id": "14-PRO-4",
+     "focus": "big",
+     "score": 0.8523,
+     "labels": [
+      "big (13 copies at 1+ Lumber, average 0.8)",
+      "guard x7"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "14-BPRO-1",
+     "focus": "family:strike-first",
+     "score": 0.9205,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "economy (4 resource makers)",
+      "strike-first x8"
+     ]
+    },
+    {
+     "id": "14-BPRO-2",
+     "focus": "big",
+     "score": 0.8939,
+     "labels": [
+      "big (11 copies at 1+ Lumber, average 0.6)"
+     ]
+    },
+    {
+     "id": "14-BPRO-3",
+     "focus": "family:flying",
+     "score": 0.8788,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)",
+      "flying x8",
+      "strike-first x6"
+     ]
+    },
+    {
+     "id": "14-BPRO-4",
+     "focus": "open",
+     "score": 0.8636,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.8)"
+     ]
+    }
+   ],
+   "wpro": []
+  },
+  {
+   "map": "ml",
+   "num": 15,
+   "name": "The Long Grass",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "15-BPRO-1",
+    "vsNewBest": {
+     "p": 0.363,
+     "n": 400,
+     "ci": [
+      0.317,
+      0.411
+     ],
+     "elo": -98,
+     "eloCI": [
+      -133,
+      -63
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "15-PRO-1",
+    "vsNewBest": {
+     "p": 0.405,
+     "n": 400,
+     "ci": [
+      0.358,
+      0.454
+     ],
+     "elo": -67,
+     "eloCI": [
+      -101,
+      -32
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "15-PRO-1",
+     "focus": "family:flying",
+     "score": 0.9667,
+     "labels": [
+      "flying x8",
+      "day x8"
+     ]
+    },
+    {
+     "id": "15-PRO-2",
+     "focus": "swarm",
+     "score": 0.95,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "flying x6",
+      "day x6"
+     ]
+    },
+    {
+     "id": "15-PRO-3",
+     "focus": "open",
+     "score": 0.9042,
+     "labels": [
+      "midrange (average 0.7 Lumber)"
+     ]
+    },
+    {
+     "id": "15-PRO-4",
+     "focus": "family:guard",
+     "score": 0.8667,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "guard x8",
+      "flying x6"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "15-BPRO-1",
+     "focus": "big",
+     "score": 0.9125,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "15-WPRO-1",
+     "plan": "low",
+     "score": 0.1917,
+     "labels": [
+      "big (4 copies at 3+ Lumber, average 1.6)",
+      "strike-first x8"
+     ]
+    },
+    {
+     "id": "15-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2958,
+     "labels": [
+      "big (4 copies at 3+ Lumber, average 1.6)",
+      "strike-first x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m6",
+   "num": 17,
+   "name": "Wolfsbane Tundra",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.822,
+     "why": "under 82.4%"
+    }
+   ],
+   "bproOld1": {
+    "id": "17-BPRO-1",
+    "vsNewBest": {
+     "p": 0.4,
+     "n": 400,
+     "ci": [
+      0.353,
+      0.449
+     ],
+     "elo": -70,
+     "eloCI": [
+      -105,
+      -36
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "17-PRO-1",
+    "vsNewBest": {
+     "p": 0.398,
+     "n": 400,
+     "ci": [
+      0.351,
+      0.446
+     ],
+     "elo": -72,
+     "eloCI": [
+      -107,
+      -38
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "17-PRO-1",
+     "focus": "family:cold",
+     "score": 0.9773,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "cold x10"
+     ]
+    },
+    {
+     "id": "17-PRO-2",
+     "focus": "open",
+     "score": 0.9356,
+     "labels": [
+      "economy (4 resource makers)",
+      "cold x6"
+     ]
+    },
+    {
+     "id": "17-PRO-3",
+     "focus": "family:evasion",
+     "score": 0.9129,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "evasion x11",
+      "swarm x7"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "17-BPRO-1",
+     "focus": "family:cold",
+     "score": 0.9697,
+     "labels": [
+      "cold x10",
+      "swarm x8"
+     ]
+    },
+    {
+     "id": "17-BPRO-2",
+     "focus": "open",
+     "score": 0.9583,
+     "labels": [
+      "swarm (15 copies at 0 Lumber)"
+     ]
+    },
+    {
+     "id": "17-BPRO-3",
+     "focus": "family:evasion",
+     "score": 0.9394,
+     "labels": [
+      "swarm x8",
+      "evasion x8"
+     ]
+    },
+    {
+     "id": "17-BPRO-4",
+     "focus": "big",
+     "score": 0.8182,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.3)",
+      "cold x6"
+     ]
+    }
+   ],
+   "wpro": []
+  },
+  {
+   "map": "mi",
+   "num": 17,
+   "name": "The Ice Hollow",
+   "proLeft": [
+    {
+     "focus": "family:cold",
+     "score": 0.6071,
+     "why": "under 65.4%"
+    },
+    {
+     "focus": "big",
+     "score": 0.5952,
+     "why": "under 65.4%"
+    }
+   ],
+   "proOld1": {
+    "id": "17-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.605,
+     "n": 400,
+     "ci": [
+      0.556,
+      0.652
+     ],
+     "elo": 74,
+     "eloCI": [
+      39,
+      109
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "17-A-PRO-1",
+     "focus": "family:tide",
+     "score": 0.8036,
+     "labels": [
+      "tide x10",
+      "swarm x8"
+     ]
+    },
+    {
+     "id": "17-A-PRO-2",
+     "focus": "open",
+     "score": 0.6667,
+     "labels": [
+      "tide x7"
+     ]
+    }
+   ],
+   "bpro": [],
+   "wpro": []
+  },
+  {
+   "map": "md",
+   "num": 18,
+   "name": "The Glass Dunes",
+   "proLeft": [
+    {
+     "focus": "family:strike-first",
+     "score": 0.7042,
+     "why": "under 75%"
+    }
+   ],
+   "proOld1": {
+    "id": "18-PRO-1",
+    "vsNewBest": {
+     "p": 0.403,
+     "n": 400,
+     "ci": [
+      0.356,
+      0.451
+     ],
+     "elo": -69,
+     "eloCI": [
+      -103,
+      -34
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "18-PRO-1",
+     "focus": "family:flying",
+     "score": 0.8833,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "18-PRO-2",
+     "focus": "big",
+     "score": 0.9,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.0)"
+     ]
+    },
+    {
+     "id": "18-PRO-3",
+     "focus": "open",
+     "score": 0.8292,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)"
+     ]
+    }
+   ],
+   "bpro": [],
+   "wpro": []
+  },
+  {
+   "map": "m11",
+   "num": 20,
+   "name": "The Sundered Peak",
+   "proLeft": [
+    {
+     "focus": "open",
+     "score": 0.6603,
+     "why": "under 67.7%"
+    },
+    {
+     "focus": "big",
+     "score": 0.6506,
+     "why": "under 67.7%"
+    }
+   ],
+   "proOld1": {
+    "id": "20-PRO-1",
+    "vsNewBest": {
+     "p": 0.76,
+     "n": 400,
+     "ci": [
+      0.716,
+      0.799
+     ],
+     "elo": 200,
+     "eloCI": [
+      160,
+      240
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "20-PRO-1",
+     "focus": "family:flying",
+     "score": 0.8269,
+     "labels": [
+      "flying x11"
+     ]
+    },
+    {
+     "id": "20-PRO-2",
+     "focus": "family:ranged",
+     "score": 0.7821,
+     "labels": [
+      "ranged x8",
+      "flying x6"
+     ]
+    }
+   ],
+   "bpro": [],
+   "wpro": []
+  },
+  {
+   "map": "me",
+   "num": 20,
+   "name": "Eye of the Volcano",
+   "proLeft": [],
+   "proOld1": {
+    "id": "20-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.795,
+     "n": 400,
+     "ci": [
+      0.753,
+      0.832
+     ],
+     "elo": 235,
+     "eloCI": [
+      193,
+      278
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "20-A-PRO-1",
+     "focus": "family:flying",
+     "score": 0.9083,
+     "labels": [
+      "flying x12"
+     ]
+    },
+    {
+     "id": "20-A-PRO-2",
+     "focus": "family:armor",
+     "score": 0.8583,
+     "labels": [
+      "armor x10",
+      "flying x7"
+     ]
+    },
+    {
+     "id": "20-A-PRO-3",
+     "focus": "big",
+     "score": 0.8375,
+     "labels": [
+      "big (8 copies at 3+ Lumber, average 1.2)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "20-A-PRO-4",
+     "focus": "open",
+     "score": 0.825,
+     "labels": [
+      "flying x8"
+     ]
+    }
+   ],
+   "bpro": [],
+   "wpro": []
+  },
+  {
+   "map": "mx",
+   "num": 20,
+   "name": "Volcano Lair",
+   "bproLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "20-B-BPRO-1",
+    "vsNewBest": {
+     "p": 0.435,
+     "n": 400,
+     "ci": [
+      0.387,
+      0.484
+     ],
+     "elo": -45,
+     "eloCI": [
+      -80,
+      -11
+     ]
+    }
+   },
+   "pro": [],
+   "bpro": [
+    {
+     "id": "20-B-BPRO-1",
+     "focus": "family:flying",
+     "score": 0.6369,
+     "labels": [
+      "flying x10"
+     ]
+    },
+    {
+     "id": "20-B-BPRO-2",
+     "focus": "big",
+     "score": 0.6964,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 0.9)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "20-B-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.0417,
+     "labels": [
+      "big (20 copies at 2+ Lumber, average 2.9)",
+      "siege x8"
+     ]
+    },
+    {
+     "id": "20-B-WPRO-2",
+     "plan": "low",
+     "score": 0.0476,
+     "labels": [
+      "big (16 copies at 2+ Lumber, average 2.4)",
+      "cleave x7"
+     ]
+    }
+   ]
+  }
+ ]
+}

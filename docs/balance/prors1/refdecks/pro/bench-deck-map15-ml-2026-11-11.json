@@ -1,0 +1,798 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-11T14:00:30.223Z",
+ "fingerprint": "bdd6af63182f",
+ "map": {
+  "id": "ml",
+  "num": 15,
+  "name": "The Long Grass"
+ },
+ "level": 1,
+ "pool": [
+  "anvil-thrush",
+  "bison-bulldozer",
+  "border-collie",
+  "cataphract-destrier",
+  "cricket-drummer",
+  "eagle-owl-quartermaster",
+  "farm-dog",
+  "fire-ant-raft",
+  "goose-sentry",
+  "grave-grin-hyena",
+  "hawthorn-shieldbug",
+  "hedge-weasel",
+  "ibex-rockcaller",
+  "ladybird-guard",
+  "land-tiller",
+  "mallard-halberdier",
+  "mouse-sapper",
+  "nightjar-drifter",
+  "pronghorn-racer",
+  "robin-redbreast",
+  "shepherds-bark",
+  "thorn-shrike",
+  "tide-spirit",
+  "truffle-piglet",
+  "upside-down-bat",
+  "war-hound",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Anvil Thrush",
+  "Bison Bulldozer",
+  "Border Collie",
+  "Gilded Roadwarden",
+  "Cricket Drummer",
+  "Eagle-Owl Quartermaster",
+  "Farm Dog",
+  "Fire Ant Raft",
+  "Goose Sentry",
+  "Grave-Grin Hyena",
+  "Hawthorn Shieldbug",
+  "Hedge Weasel",
+  "Ibex Rockcaller",
+  "Ladybird Guard",
+  "Land Tiller",
+  "Mallard Halberdier",
+  "Mouse Sapper",
+  "Nightjar Drifter",
+  "Pronghorn Racer",
+  "Robin Redbreast",
+  "Shepherd",
+  "Thorn Shrike",
+  "Tide Seahorse",
+  "Truffle Piglet",
+  "Upside-Down Bat",
+  "War Hound",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "bison-bulldozer",
+   "border-collie",
+   "cataphract-destrier",
+   "cricket-drummer",
+   "fire-ant-raft",
+   "goose-sentry",
+   "hedge-weasel",
+   "land-tiller",
+   "mallard-halberdier",
+   "mouse-sapper",
+   "pronghorn-racer",
+   "shepherds-bark",
+   "thorn-shrike",
+   "truffle-piglet",
+   "war-hound"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:15-1",
+   "label": "vs 15-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-2",
+   "label": "vs 15-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-3",
+   "label": "vs 15-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-4",
+   "label": "vs 15-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-5",
+   "label": "vs 15-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-6",
+   "label": "vs 15-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-7",
+   "label": "vs 15-7 boss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 15-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road15",
+   "label": "vs reference deck (Map 15) under 15-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "anvil-thrush",
+    "eagle-owl-quartermaster",
+    "robin-redbreast",
+    "thorn-shrike",
+    "upside-down-bat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:guard",
+   "label": "guard (skill family)",
+   "cards": [
+    "goose-sentry",
+    "hawthorn-shieldbug",
+    "ladybird-guard",
+    "shepherds-bark"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "anvil-thrush",
+    "cricket-drummer",
+    "farm-dog",
+    "grave-grin-hyena",
+    "hedge-weasel",
+    "ladybird-guard",
+    "land-tiller",
+    "robin-redbreast",
+    "tide-spirit",
+    "upside-down-bat"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 7,
+   "moves": 4,
+   "games": 2080,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "family:guard",
+   "steps": 6,
+   "moves": 3,
+   "games": 2120,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "swarm",
+   "steps": 7,
+   "moves": 4,
+   "games": 2120,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "open",
+   "steps": 7,
+   "moves": 3,
+   "games": 2220,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 139,
+ "games": 9180,
+ "decks": [
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "flying x6",
+    "day x6"
+   ],
+   "deck": {
+    "bison-bulldozer": 4,
+    "cricket-drummer": 4,
+    "grave-grin-hyena": 4,
+    "robin-redbreast": 4,
+    "shepherds-bark": 2,
+    "upside-down-bat": 2
+   },
+   "cards": [
+    {
+     "id": "bison-bulldozer",
+     "name": "Bison Bulldozer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "shepherds-bark",
+     "name": "Shepherd",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.95,
+   "ci": [
+    0.9234,
+    0.9766
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 6
+    },
+    {
+     "f": "day",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.7 Lumber)"
+   ],
+   "deck": {
+    "border-collie": 4,
+    "cricket-drummer": 3,
+    "hedge-weasel": 4,
+    "ibex-rockcaller": 2,
+    "truffle-piglet": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hedge-weasel",
+     "name": "Hedge Weasel",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9042,
+   "ci": [
+    0.8693,
+    0.939
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:guard",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "guard x8",
+    "flying x6"
+   ],
+   "deck": {
+    "anvil-thrush": 2,
+    "cricket-drummer": 4,
+    "ladybird-guard": 4,
+    "land-tiller": 2,
+    "shepherds-bark": 4,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ladybird-guard",
+     "name": "Ladybird Guard",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "shepherds-bark",
+     "name": "Shepherd",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "anvil-thrush",
+     "name": "Anvil Thrush",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "land-tiller",
+     "name": "Land Tiller",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8667,
+   "ci": [
+    0.8268,
+    0.9065
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.3,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "flying x8"
+   ],
+   "deck": {
+    "anvil-thrush": 4,
+    "bison-bulldozer": 3,
+    "border-collie": 4,
+    "grave-grin-hyena": 2,
+    "land-tiller": 3,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "anvil-thrush",
+     "name": "Anvil Thrush",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bison-bulldozer",
+     "name": "Bison Bulldozer",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "land-tiller",
+     "name": "Land Tiller",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.85,
+   "ci": [
+    0.8108,
+    0.8892
+   ],
+   "avgLumber": 0.35,
+   "avgWait": 0.65,
+   "curve": {
+    "0": 13,
+    "1": 7
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map ml --pool anvil-thrush,bison-bulldozer,border-collie,cataphract-destrier,cricket-drummer,eagle-owl-quartermaster,farm-dog,fire-ant-raft,goose-sentry,grave-grin-hyena,hawthorn-shieldbug,hedge-weasel,ibex-rockcaller,ladybird-guard,land-tiller,mallard-halberdier,mouse-sapper,nightjar-drifter,pronghorn-racer,robin-redbreast,shepherds-bark,thorn-shrike,tide-spirit,truffle-piglet,upside-down-bat,war-hound,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,family:guard,swarm,open --anchor bison-bulldozer,border-collie,cataphract-destrier,cricket-drummer,fire-ant-raft,goose-sentry,hedge-weasel,land-tiller,mallard-halberdier,mouse-sapper,pronghorn-racer,shepherds-bark,thorn-shrike,truffle-piglet,war-hound --anchor-min 10 --level 1 --mode map-true"
+}

@@ -1,0 +1,90 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "run": "PRORS1",
+ "generated": "2026-11-11T14:16:02.434Z",
+ "map": {
+  "id": "mx",
+  "num": 20,
+  "name": "Volcano Lair"
+ },
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-cloud-condor",
+  "cinder-hornet",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "ember-centipede",
+  "ember-jackal",
+  "ember-wisp",
+  "gorge-wyrm",
+  "granite-ox-golem",
+  "lava-waders",
+  "magma-salamander",
+  "magma-titan",
+  "pyroclast-wyrm",
+  "salamander-pyromancer",
+  "stalactite-golem",
+  "thunder-lizard",
+  "vampire-roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "cinder-hornet": 4,
+    "gorge-wyrm": 3,
+    "lava-waders": 4,
+    "magma-titan": 1,
+    "pyroclast-wyrm": 4
+   },
+   "score": 0.0476,
+   "ci": [
+    0.0185,
+    0.0767
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (16 copies at 2+ Lumber, average 2.4)",
+    "cleave x7"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1876,
+   "seconds": 21
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "deep-cave-troll": 4,
+    "gorge-wyrm": 4,
+    "granite-ox-golem": 3,
+    "magma-titan": 4,
+    "thunder-lizard": 1
+   },
+   "score": 0.0417,
+   "ci": [
+    0.0147,
+    0.0686
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (20 copies at 2+ Lumber, average 2.9)",
+    "siege x8"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 7,
+   "games": 1750,
+   "seconds": 25
+  }
+ ]
+}
