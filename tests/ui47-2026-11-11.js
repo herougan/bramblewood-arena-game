@@ -12,13 +12,13 @@ const fn = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0) re
   const lst = n=> { const m = app.match(new RegExp('const ' + n + ' = (\\{.*\\});')); return m ? JSON.parse(m[1]) : null; };
   const sg = lst('UI47_SUGGEST'), ad = lst('UI47_ADMIN_ADD'), bad = [sg, ad].filter(Boolean).flatMap(o=> Object.values(o).flat()).filter(id=> !ids.has(id));
   ok(sg && ad && !bad.length, 'UI47_SUGGEST and UI47_ADMIN_ADD parse and name only real cards ' + bad.slice(0, 3)); }
-ok(/const UI47_TUT = -1;/.test(app) && /n >= 0\) ui43TutorialCards\(\)\.forEach\(id=>\{ if\(!out\.has\(id\)\) out\.set\(id, UI47_TUT\)/.test(app), 'ui37CarriedIndex: Map 0 on, tutorial index -1');
-ok(/if\(n != null && n >= 0\) ui43TutorialCards\(\)\.forEach\(id=> add\(id, 'tut'\)\)/.test(app), 'ui37Prospects: tutorial cards are prospects from Map 0');
+ok(/const UI47_TUT = -1;/.test(app) && /n >= 0 && n <= 1\) ui43TutorialCards\(\)\.forEach\(id=>\{ if\(!out\.has\(id\)\) out\.set\(id, UI47_TUT\)/.test(app), 'ui37CarriedIndex: Map 0 on, tutorial index -1');
+ok(/if\(n != null && n >= 0 && n <= 1\) ui43TutorialCards\(\)\.forEach\(id=> add\(id, 'tut'\)\)/.test(app), 'ui37Prospects: tutorial cards are prospects from Map 0');
 // the pure rule, lifted
 { const f = new Function("const UI47_TUT = -1; const ui43TutorialCards = ()=> ['t1', 't2'];" + fn('ui37CarriedIndex') + 'return ui37CarriedIndex;')();
   const maps = [{n: 0, yes: ['a', 't1']}, {n: 1, yes: ['b']}, {n: 2, yes: ['c']}], idx0 = f(0, maps), idx2 = f(2, maps);
   ok(idx0.get('t1') === -1 && idx0.get('t2') === -1 && idx0.size === 2, 'Map 0: Carried = the tutorial cards only: ' + [...idx0]);
-  ok(idx2.get('a') === 0 && idx2.get('b') === 1 && !idx2.has('c') && idx2.get('t1') === -1, 'Map 2: Yes cards of Maps 0-1 (pill = their map), tutorial -1, nothing from itself');
+  ok(idx2.get('a') === 0 && idx2.get('b') === 1 && !idx2.has('c') && idx2.get('t1') === 0 && !idx2.has('t2') && f(1, maps).get('t2') === -1, 'Map 2: Yes cards of Maps 0-1 (pill = their map), no tutorial card (2026-11-12 UI48; Map 1 still has it), nothing from itself');
   ok(!f(null, maps).size, 'no map number, nothing carried'); }
 // suggested / admin / baby helpers, lifted
 { const f = new Function("const UI47_SUGGEST = {m: ['s']}, UI47_ADMIN_ADD = {m: ['x']}; const ui37Ent = t=> ({yes: ['y']}); const ui38Concept = ()=> null; const ui13IsBaby = id=> id === 'baby';"

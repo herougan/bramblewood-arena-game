@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-12 Package UI48 (Map cards window: tutorial cards, rewards grid, side-map suggestions and arrows; owner 00:38)
+- Admin sees: tutorial T-1 / T-2 cards are Carried on Map 0 and Map 1 only (later maps use the normal rules). NEW! is no longer topped up with cards that fit below the score floor. Skirmish rewards are one tile grid (the fight code is a pill under each card). Each side map has 1-3 Suggested cards (first in NEW!), NEW! target 3 (was 12), Carried 8, and ‹ › buttons that step between side maps in unlock-map order. No on The Old Bramble verified, incl. an admin add.
+- Tests: ui22 / 41 / 43 / 44 / 45 / 47 updated, new ui48 (source) and ui48 e2e.
+
 ## 2026-11-11 Map cards: your No beats Claude's admin add (owner 23:27 "i cant click no")
 - Admin sees: No on a card Claude added to a map (UI47_ADMIN_ADD) now sticks: it stores an explicit No, which wins over the add (ui37FlagOf, ui47YesList, the Prospects click). Before, the add kept the card Yes. Any other No still clears the flag.
 - Found with it: Claude's 32 admin adds on Maps 0-11 count as Yes, so those maps read over their NEW! / Carried limits (decision PICKS1-1).

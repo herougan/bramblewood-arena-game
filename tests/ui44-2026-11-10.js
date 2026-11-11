@@ -27,7 +27,7 @@ const ui37MapsData = ()=> MAPS_DATA.map(m=> Object.assign({}, m, {yes: (ui37Pick
 const mpEntry2 = id=> id === 'm1' ? {cards: [], submaps: {sq: ['d', 'e']}} : {cards: [], submaps: {}};
 const rv1ReviewOf = ()=> null, ui38Concept = ()=> null, ui38Family = (id, d)=> d[id] && d[id].animal, roadRarityStep = ()=> 0, UI38_PROS = {rules: {familyCap: 2}};
 const ui43TutorialCards = ()=> ['t1', 't2'], UI47_TUT = -1, UI47_SUGGEST = {}, UI47_ADMIN_ADD = {}; // 2026-11-11 (UI47)
-const body = ['ui37Arr', 'ui37Ent', 'ui47AdminOf', 'ui47IsAdminAdded', 'ui47YesList', 'ui47SuggestedOf', 'ui37FlagOf', 'ui37CarriedIndex', 'ui41Cap', 'ui44IsSub', 'ui44ProsSubs', 'ui44MainByNo', 'ui44CurrentAfter', 'ui44After', 'ui44SetAfter', 'ui44UnlockPicks', 'ui44Split', 'ui37Targets'].map(fn).join('\n');
+const body = ['ui37Arr', 'ui37Ent', 'ui47AdminOf', 'ui47IsAdminAdded', 'ui47YesList', 'ui47SuggestedOf', 'ui47SuggestFirst', 'ui37FlagOf', 'ui37CarriedIndex', 'ui41Cap', 'ui44IsSub', 'ui44ProsSubs', 'ui44MainByNo', 'ui44CurrentAfter', 'ui44After', 'ui44SetAfter', 'ui44UnlockPicks', 'ui44Split', 'ui37Targets'].map(fn).join('\n');
 const th6Targets = n=> ({own: 10, carried: 5});
 const F = new Function('CONQUEST_MAPS', 'mpMapById', 'mainConquestMaps', 'mapNumberOf', 'mpTopOf', 'mapUnlockNumberOf', 'ui37Picks', 'ui37Save', 'ui37Publish', 'UI44_SIDE', 'mpEntry', 'ui37MapsData', 'rv1ReviewOf', 'ui38Concept', 'ui38Family', 'roadRarityStep', 'UI38_PROS', 'ui43TutorialCards', 'th6Targets', 'UI47_TUT', 'UI47_SUGGEST', 'UI47_ADMIN_ADD',
   body + '; return {ui44IsSub, ui44ProsSubs, ui44CurrentAfter, ui44After, ui44SetAfter, ui44Split, ui37Targets, ui44UnlockPicks};')(CONQUEST_MAPS, mpMapById, mainConquestMaps, mapNumberOf, mpTopOf, mapUnlockNumberOf, ui37Picks, ui37Save, ui37Publish, E1, mpEntry2, ui37MapsData, rv1ReviewOf, ui38Concept, ui38Family, roadRarityStep, UI38_PROS, ui43TutorialCards, th6Targets, -1, {}, {});
@@ -40,8 +40,8 @@ ok(F.ui44CurrentAfter('sm') === 'm2', 'a side map waiting on another side map re
 let sp = F.ui44Split('sq', defs, okAll);
 const ids = l=> l.map(p=> p.id).sort().join();
 ok(sp.n === 2 && sp.afterId === 'm2', 'split reads the default unlock map');
-ok(ids(sp.car) === 'f,g,i,t1,t2' && !sp.car.some(p=> p.id === 'h'), 'Carried = Yes on Maps 0-2 (f, g, i) + the tutorial cards; the Map 3 Yes (h) is not');
-ok(sp.idx.get('t1') === -1 && sp.idx.get('f') === 1 && sp.idx.get('g') === 2, 'pill numbers: tutorial -1 (UI47), then the map that gives it');
+ok(ids(sp.car) === 'f,g,i' && !sp.car.some(p=> p.id === 'h'), 'Carried = Yes on Maps 0-2 (f, g, i) (no tutorial cards past Map 1, 2026-11-12 UI48); the Map 3 Yes (h) is not');
+ok(!sp.idx.has('t1') && sp.idx.get('f') === 1 && sp.idx.get('g') === 2, 'pill numbers: no tutorial pill (UI48), then the map that gives it');
 ok(['d', 'e'].every(i=> sp.neu.some(p=> p.id === i && p.src.has('list'))), 'NEW! has the side map\'s own list');
 ok(sp.neu.some(p=> p.id === 'a' && p.src.has('claude')) && sp.neu.some(p=> p.id === 'c' && p.why === 'meadow'), 'NEW! has Claude\'s fits and add (the why carried)');
 ok(!sp.neu.some(p=> p.id === 'nope' || p.id === 'zzz'), 'ids that are not card defs are dropped');
@@ -54,7 +54,7 @@ ok(!sp.neu.some(p=> p.id === 'k') && sp.neu.some(p=> p.id === 'a'), 'family cap 
 // choosing the unlock map
 F.ui44SetAfter('sq', 'm1'); ok(ui37Picks.sq.after === 'm1' && ui37Picks.sq.yes.join() === 'j', 'the pick is saved beside the flags');
 sp = F.ui44Split('sq', defs, okAll);
-ok(ids(sp.car) === 'f,t1,t2' && sp.n === 1, 'an earlier pick (Map 1) drops the Map 2 Yes cards from Carried');
+ok(ids(sp.car) === 'f' && sp.n === 1, 'an earlier pick (Map 1) drops the Map 2 Yes cards from Carried');
 ok(sp.neu.some(p=> p.id === 'g') === false, 'a Yes on Map 2 is not NEW! either when it is on no list (only listed / proposed / flagged cards are NEW!)');
 F.ui44SetAfter('sq', 'm3'); sp = F.ui44Split('sq', defs, okAll); ok(sp.car.some(p=> p.id === 'h' && sp.idx.get('h') === 3), 'a later pick (Map 3) adds the Map 3 Yes cards, pill Map 3');
 F.ui44SetAfter('sq', 'm2'); ok(ui37Picks.sq.after === '', 'choosing the current map again clears the pick');
@@ -62,7 +62,7 @@ ok(JSON.stringify(F.ui44UnlockPicks()) === '[]', 'no pick: nothing to export');
 F.ui44SetAfter('sq', 'm3'); ok(F.ui44UnlockPicks()[0].unlockAfterNo === 3 && F.ui44UnlockPicks()[0].currentUnlockId === 'm2', 'the export lists the pick and the current unlock');
 ok(F.ui44After('sm') === 'm2', 'a side map without a pick uses the current one');
 // targets
-const tg = F.ui37Targets('sq'); ok(tg.n === 12 && tg.c === 8 && tg.dn === 12 && tg.dc === 8, 'side-map targets default 12 / 8');
+const tg = F.ui37Targets('sq'); ok(tg.n === 3 && tg.c === 8 && tg.dn === 3 && tg.dc === 8, 'side-map targets default 3 / 8 (2026-11-12, UI48: own was 12)');
 ui37Picks.sq.t = {n: 9}; ok(F.ui37Targets('sq').n === 9 && F.ui37Targets('sq').c === 8, 'targets are editable');
 ok(F.ui37Targets('m2').n === 10, 'a main map keeps th6Targets');
 // wiring in the source

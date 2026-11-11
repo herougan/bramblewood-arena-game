@@ -34,7 +34,7 @@ async def run(b, url, w):
         inRv: cl ? cl.querySelectorAll('.rv1-tile').length : 0, skills: !!ov.querySelector('#ui19McSkills'), modalScroll: getComputedStyle(ov.querySelector('.pk1-mc-modal')).overflowY});
       ov.hidden = true; ov.innerHTML = ''; } return out; })()""")
     print('  maps', [(x['id'], x['fights'], x['claude']) for x in r])
-    ok(all(x['fights'] > 0 and x['caps'] == x['fights'] and x['roles'] >= x['fights'] for x in r), 'each map has a Skirmish rewards section: a caption per fight, a role under each card')
+    ok(all(x['fights'] > 0 and x['roles'] == x['fights'] and x['caps'] == 0 for x in r), 'each map has a Skirmish rewards section: one grid (2026-11-12 UI48): a fight-code pill and a role under each card')
     # 2026-11-09 (UI39): a main map's window has no Recommended by Claude section (its picks are full cards in NEW! / Carried); a side map's window keeps it
     ok(all(x['claude'] == 0 for x in r), 'no Recommended by Claude section on a main map (UI39)')
     sc = await pg.evaluate("""(()=>{ let n = 0, id = null; for(const m of CONQUEST_MAPS.filter(m=> m.sub && !m.reserved)){ pk1OpenMapCards(m.id); const cl = document.getElementById('ui22McClaude'); const k = cl ? cl.querySelectorAll('[data-ui22-claude-new]').length : 0; if(k > n){ n = k; id = m.id; } } const ov = document.getElementById('pk1MapCardsOverlay'); ov.hidden = true; ov.innerHTML = ''; return {n, id}; })()""")

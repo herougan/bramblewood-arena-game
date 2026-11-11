@@ -16,7 +16,7 @@ ok(!/function ui37CarriedPool/.test(app) && !/function ui37CarriedPool/.test(htm
 const sp = fn('ui37Split'), fill = fn('ui38Fill');
 ok(/ui38Fill\(top, defs, ok, idx, neu, car\)/.test(sp) && /return \{n, neu, car, extra: \[\], idx\}/.test(sp), 'ui37Split passes the Yes-only index and returns it for the Map N pills');
 ok(!/carFill|carriedFill/.test(fill), 'ui38Fill has no Carried fill');
-ok(/newMax = R\.newMax \|\| 60/.test(fill) && /R\.newTarget \|\| 45/.test(fill), 'JS fallbacks 60 / 45');
+ok(/newMax = R\.newMax \|\| 60/.test(fill), 'JS fallback 60 (UI48: no newTarget top-up)');
 ok(/\.sort\(\(a, b\)=> idx\.get\(b\) - idx\.get\(a\)\)/.test(fill), "Carried: previous map's Yes cards first");
 ok(!/carriedTarget/.test(app), 'no Carried minimum in the window');
 ok(html.includes("R.newMax || 60") || html.includes('newMax = R.newMax || 60'), 'index.html rebuilt');
