@@ -34025,7 +34025,8 @@ const UI47_SUGGEST = {"mh": ["briarback-hedgehog", "bramble-hoglet", "cunning-vi
 const UI47_ADMIN_ADD = {"m1": ["hazel-coppice", "nightjar-drifter"], "mf": ["monarch-wingblade", "pack-rat-looter", "hazel-coppice"], "mb": ["great-skua", "bloodworm"], "mc": ["razorbill", "great-skua", "hawk-arrowkeeper"], "m2": ["beaver-feller"], "mw": ["peat-cutter-vole"], "m8": ["sunbittern-strider", "bone-diviner", "owl-sentinel"], "mu": ["truffle-piglet", "leafcutter-gardener", "nightshade-moth", "planarian-splitter"], "m4": ["upside-down-bat", "blind-cave-fish", "pack-rat-looter", "bone-diviner"], "mk": ["nutria-reedcutter", "sunbittern-strider", "salvager-hermit-crab"], "m7": ["nautilus-drifter", "grey-seal-bull", "parrotfish", "coral-reef-shark"], "m10": ["hawk-arrowkeeper", "alpine-marmot"]};
 function ui47AdminOf(top){ const l = UI47_ADMIN_ADD[top]; return Array.isArray(l) ? l.filter(x=> typeof x === 'string' && x) : []; }
 function ui47IsAdminAdded(top, id){ return ui47AdminOf(top).includes(id); }
-function ui47YesList(top){ return [...new Set(ui37Ent(top).yes.concat(ui47AdminOf(top)))]; } // the owner's Yes cards plus the administrative ones
+// the owner's Yes cards plus the administrative ones; 2026-11-11 (owner 23:27): his No on an admin add wins
+function ui47YesList(top){ const e = ui37Ent(top), no = e.no || []; return [...new Set(e.yes.concat(ui47AdminOf(top).filter(x=> !no.includes(x))))]; }
 // the usage chip: on how many main maps a card is Yes (owner picks + UI47_ADMIN_ADD) or suggested (UI47_SUGGEST). Map id -> [{id, n, name}], built once per draw.
 let ui47UsageCache = null;
 function ui47Usage(){
@@ -34070,7 +34071,8 @@ const ui37Picks = (()=>{ try{ const o = JSON.parse(localStorage.getItem(UI37_KEY
 function ui37Save(){ try{ localStorage.setItem(UI37_KEY, JSON.stringify(ui37Picks)); }catch(e){} }
 function ui37Arr(a){ return [...new Set((Array.isArray(a) ? a : []).filter(x=> typeof x === 'string' && x))]; }
 function ui37Ent(top){ const e = ui37Picks[top] || {}; return {yes: ui37Arr(e.yes), no: ui37Arr(e.no), t: (e.t && typeof e.t === 'object') ? e.t : {}, after: typeof e.after === 'string' ? e.after : '' /* 2026-11-10 (UI44): a submap's chosen unlock map (main map id) */, localAt: e.localAt || 0}; }
-function ui37FlagOf(top, id){ const e = ui37Ent(top); return (e.yes.includes(id) || ui47IsAdminAdded(top, id)) ? 'yes' : e.no.includes(id) ? 'no' : ''; }
+// 2026-11-11 (owner 23:27 "i cant click no"): the owner's No beats an admin add
+function ui37FlagOf(top, id){ const e = ui37Ent(top); return e.yes.includes(id) ? 'yes' : e.no.includes(id) ? 'no' : ui47IsAdminAdded(top, id) ? 'yes' : ''; }
 // 2026-11-09 (package UI42, owner 22:48): what the owner sees and exports: no flag reads as No
 function ui42Shown(top, id){ return ui37FlagOf(top, id) === 'yes' ? 'yes' : 'no'; }
 // the pure rule (tests/ui37-2026-11-08.js lifts it): maps = [{n, list, yes, no}] (main maps, n = map number); returns Map(card id -> the earliest map number before n that gives it)
@@ -34293,7 +34295,7 @@ function ui37Mount(ov, top, mapId, ok){
     try{ wireRewardZoom(wrap); }catch(e){} rv2Update(ov); ui32McRefreshSkills(ov); /* 2026-11-11 (UI47 #2): Skills on these cards follows the Yes flags */ modal.scrollTop = keep; };
   const onClick = e=>{
     const t = e.target; let b;
-    if((b = t.closest('[data-ui37-flag]'))){ e.stopPropagation(); const tile = b.closest('.ui37-tile'), id = tile.dataset.ui37Id, cur = ui42Shown(top, id), want = b.dataset.ui37Flag; if(cur !== want) ui37SetFlag(key, id, want === 'yes' ? 'yes' : ''); draw(); return; } // 2026-11-09 (UI42): Yes sets Yes, No goes back to No (no flag)
+    if((b = t.closest('[data-ui37-flag]'))){ e.stopPropagation(); const tile = b.closest('.ui37-tile'), id = tile.dataset.ui37Id, cur = ui42Shown(key, id), want = b.dataset.ui37Flag; if(cur !== want) ui37SetFlag(key, id, want === 'yes' ? 'yes' : ui47IsAdminAdded(key, id) ? 'no' : ''); draw(); return; } // 2026-11-09 (UI42): Yes sets Yes, No goes back to No (no flag); 2026-11-11 (owner 23:27): No on an admin add stores an explicit No, which beats the add
     if((b = t.closest('[data-ui37-go]'))){ e.stopPropagation(); pk1OpenMapCards(b.dataset.ui37Go); return; }
     if((b = t.closest('[data-ui37-export]'))){ e.stopPropagation(); ui37ExportFile(b.dataset.ui37Export); return; }
   };

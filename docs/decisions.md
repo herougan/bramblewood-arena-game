@@ -11,6 +11,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - c) Leave them.
 - **Default:** a
 
+**PICKS1-1. Maps 0-11 over your card limits because of Claude's adds** · Decide · Balance · asked 2026-11-11
+- Claude's admin adds (32 cards on Maps 0-11, put on lists to keep road fights in band: UI47, SKIR2, LISTFIX3) count as Yes, so all 12 maps are over their NEW! limit and 7 over Carried. Without them, only Maps 0-3 and 8 are over, by 1 each. Pressing No on an admin add now sticks (it did not before).
+  - a) Don't count Claude's adds in the limits; road unchanged.
+  - b) Claude removes its adds where a map is over and re-fits those fights with deck swaps.
+  - c) You press No on the adds you don't want; Claude re-fits after.
+- **Default:** c
+
 **LISTFIX3-1. New first-clear rewards for four fights** · Decide · Balance · asked 2026-11-11
 - 5-2 paid Sphagnum Vole, a card you cut; it now pays Raft Spider, your Map 5 Yes card nearest it (Common, 1 Lumber, Wait 1, 3/8), already in 5-2's deck. No other Cure card is on your Map 5 picks (CONTENT3 C1 wanted one). Three rewards were off their map's new list (a first-clear card must be on it, GD-5): 1-4 Field Mouse -> Bramble Sprout, 7-2 Dung Beetle -> Fungus Gnat Cloud, 10-5 Kraken Spawnling -> Sea Bass.
   - a) Keep.

@@ -18,7 +18,10 @@ const sh = new Function('ui37Ent', 'ui47IsAdminAdded', fn('ui37FlagOf') + fn('ui
 ok(sh('m', 'y') === 'yes' && sh('m', 'n') === 'no' && sh('m', 'z') === 'no', 'unflagged and explicit no both read as no');
 // wiring
 ok(/fs = f === 'yes' \? 'yes' : 'no'/.test(fn('ui37TileHTML')) && /\$\{fs === k \? ' on' : ''\}/.test(fn('ui37TileHTML')), 'the No button is selected on an unflagged card');
-ok(/cur = ui42Shown\(top, id\)/.test(app) && /ui37SetFlag\(key, id, want === 'yes' \? 'yes' : ''\)/.test(app), 'Yes sets Yes; No goes back to no flag');
+// 2026-11-11 (owner 23:27): No on an admin add (UI47_ADMIN_ADD) stores an explicit No, which beats the add; any other No still goes back to no flag
+ok(/cur = ui42Shown\(key, id\)/.test(app) && /ui37SetFlag\(key, id, want === 'yes' \? 'yes' : ui47IsAdminAdded\(key, id\) \? 'no' : ''\)/.test(app), 'Yes sets Yes; No goes back to no flag (an explicit No on an admin add)');
+{ const sh2 = new Function('ui37Ent', 'ui47IsAdminAdded', fn('ui37FlagOf') + '; return ui37FlagOf;')(()=> ({yes: [], no: ['x']}), (t, id)=> id === 'x' || id === 'a');
+  ok(sh2('m', 'x') === 'no' && sh2('m', 'a') === 'yes', 'the owner\'s No beats an admin add; an admin add without a No reads Yes'); }
 ok(/ui38Fill\(top, defs, ok, idx, neu, car\)/.test(fn('ui37Split')) && /idx = ui37CarriedIndex\(n, maps\)/.test(fn('ui37Split')), 'the split classifies by Yes only; Carried is not topped up (UI45)');
 ok(/flag: ui42Shown\(c\.mapId, c\.id\)/.test(fn('ui38ExportConcepts')) && /ui37Split\(m\.id, defs, ok0\)/.test(fn('ui37ExportRows')), 'exports report unflagged cards as no');
 ok(/yes = l=> l\.filter\(p=> ui37FlagOf\(top, p\.id\) === 'yes'\)\.length/.test(fn('ui37HeadHTML')), 'both counters count Yes only');

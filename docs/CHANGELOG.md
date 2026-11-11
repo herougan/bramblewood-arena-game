@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-11 Map cards: your No beats Claude's admin add (owner 23:27 "i cant click no")
+- Admin sees: No on a card Claude added to a map (UI47_ADMIN_ADD) now sticks: it stores an explicit No, which wins over the add (ui37FlagOf, ui47YesList, the Prospects click). Before, the add kept the card Yes. Any other No still clears the flag.
+- Found with it: Claude's 32 admin adds on Maps 0-11 count as Yes, so those maps read over their NEW! / Carried limits (decision PICKS1-1).
+- Tests: ui42 checks the new rule; ui37 / 43 / 44 / 45 / 47, the ui47 e2e and smoke pass.
+
 ## 2026-11-11 Package PRORS1 (the LISTFIX3-swapped PRO / BPRO / WPRO decks re-searched; no card or fight changed)
 - Admin sees: of the 30 reference decks LISTFIX3 had patched by a card swap, 23 are replaced by decks searched on the 11-11 lists, 17-A-PRO-3 leaves (The Ice Hollow keeps 2 PRO decks), and 6 stay as PRO-1 / BPRO-1 under the replacement rule (5-PRO-1, 6-PRO-1, 15-PRO-1, 4-BPRO-1, 15-BPRO-1, 20-B-BPRO-1: the new best scored 36-53% against them over 400 games; their `listfix3` note becomes `prors1`). 5-A-PRO-2 (SKIR2's own search) is unchanged. The tool rebuilds a map's whole kind, so 28 other decks of those kinds change too (old ones under `history`). 13-WPRO-1 no longer holds a Baby card (Fox Kit): the wpro check passes again.
 - How: SKIR1's tool (tools/skir1/refdecks_2026_11_11.js: the 6/4 focused search over deckopt's map-true pool for PRO, bpro2's DECK1 search for BPRO, the WPRO descent's low / top-heavy plans, the PRO-1 rule at 55%+ over 400 games) at its budgets (BPRO 6,000, PRO 8,000, WPRO 1,600 a plan games a map) on only the kinds holding a LISTFIX3 deck, keeping strong decks 10 copies from the decks that stay; run record and outputs in docs/balance/prors1/refdecks/. Not deckopt + `pro_skirmishes.js --apply`: 37 of the 38 relfix3 map-true optima break the 6/4 rule, and its apply would give DECK1 decks head-to-heads, which tests/pro rejects; its dry run is on file (docs/balance/prors1/pro-skirmishes-dryrun-2026-11-11.txt).
