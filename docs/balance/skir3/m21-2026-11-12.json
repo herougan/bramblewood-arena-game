@@ -163,6 +163,100 @@
    "leaders": [
     "snow-owl-sentinel"
    ]
+  },
+  {
+   "code": "21-1",
+   "k14": [
+    "honey-badger-fury x4 -> magma-titan x4"
+   ],
+   "after": {
+    "alpine-marmot": 1,
+    "fumarole-ibex": 1,
+    "glacier-yak": 5,
+    "honey-badger-fury": 1,
+    "magma-titan": 4,
+    "mountain-goat-climber": 1,
+    "pika-hoarder": 3
+   }
+  },
+  {
+   "code": "21-2",
+   "k14": [
+    "honey-badger-fury x4 -> magma-titan x4"
+   ],
+   "after": {
+    "alpine-marmot": 1,
+    "glacier-yak": 5,
+    "honey-badger-fury": 1,
+    "magma-titan": 4,
+    "mountain-goat-climber": 1,
+    "pika-hoarder": 5,
+    "snow-leopard": 2
+   }
+  },
+  {
+   "code": "21-3",
+   "k14": [
+    "honey-badger-fury x4 -> magma-titan x4"
+   ],
+   "after": {
+    "alpine-marmot": 1,
+    "alpine-swift": 1,
+    "fumarole-ibex": 1,
+    "glacier-yak": 5,
+    "honey-badger-fury": 1,
+    "magma-titan": 4,
+    "mountain-goat-climber": 1,
+    "snow-leopard": 2
+   }
+  },
+  {
+   "code": "21-4",
+   "k14": [
+    "honey-badger-fury x4 -> magma-titan x4"
+   ],
+   "after": {
+    "alpine-marmot": 1,
+    "alpine-swift": 1,
+    "glacier-yak": 5,
+    "honey-badger-fury": 1,
+    "magma-titan": 4,
+    "mountain-goat-climber": 1,
+    "pika-hoarder": 5,
+    "snow-leopard": 2
+   }
+  },
+  {
+   "code": "21-5",
+   "k14": [
+    "honey-badger-fury x1 -> magma-titan x1"
+   ],
+   "after": {
+    "alpine-marmot": 1,
+    "alpine-swift": 1,
+    "glacier-yak": 3,
+    "honey-badger-fury": 1,
+    "magma-titan": 1,
+    "mountain-goat-climber": 1,
+    "pika-hoarder": 5,
+    "snow-leopard": 2
+   }
+  },
+  {
+   "code": "21-6",
+   "k14": [
+    "honey-badger-fury x4 -> magma-titan x4"
+   ],
+   "after": {
+    "alpine-marmot": 1,
+    "glacier-yak": 4,
+    "honey-badger-fury": 1,
+    "magma-titan": 4,
+    "mountain-goat-climber": 1,
+    "pika-hoarder": 5,
+    "snow-leopard": 2,
+    "snow-owl-sentinel": 1
+   }
   }
  ]
 }
