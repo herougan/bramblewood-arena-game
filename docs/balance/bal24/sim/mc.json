@@ -1,0 +1,1043 @@
+{
+ "about": "Package BAL24: each simulated player's optimised deck at this map and its win rate against the map's road fights (tools/bal24/ladder_sim_2026_11_07.js measure; ladder seeds 5300 + 37g, 8 games a fight, with the player's leader).",
+ "tool": "tools/bal24/ladder_sim_2026_11_07.js 1.0.0 (2026-11-07, BAL24)",
+ "map": {
+  "id": "mc",
+  "num": 3,
+  "name": "Gannet Cliffs",
+  "side": false,
+  "arrival": 3
+ },
+ "level": 0,
+ "fights": [
+  "3-1",
+  "3-2",
+  "3-3",
+  "3-4",
+  "3-5",
+  "3-6",
+  "3-7"
+ ],
+ "players": [
+  {
+   "player": 1,
+   "seed": "bal24-1",
+   "counts": {
+    "acorn-chipmunk": 1,
+    "bee-forager": 1,
+    "cobalt-talon-fledgling": 1,
+    "cricket-drummer": 1,
+    "house-cat": 1,
+    "meadow-rabbit": 1,
+    "monarch-wingblade": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "otter-netmender": 1,
+    "pond-duck": 1,
+    "shellwright-apprentice": 1,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "acorn-chipmunk",
+     1,
+     1
+    ],
+    [
+     "bee-forager",
+     1,
+     1
+    ],
+    [
+     "cobalt-talon-fledgling",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "house-cat",
+     1,
+     1
+    ],
+    [
+     "meadow-rabbit",
+     1,
+     1
+    ],
+    [
+     "monarch-wingblade",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "otter-netmender",
+     1,
+     1
+    ],
+    [
+     "pond-duck",
+     1,
+     1
+    ],
+    [
+     "shellwright-apprentice",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 81,
+   "factionCards": 12,
+   "optScore": 0.646,
+   "optBudget": 900,
+   "optFile": "deckopt-map03-mc-bal24-p1.json",
+   "games": 8,
+   "perFight": {
+    "3-1": 100,
+    "3-2": 100,
+    "3-3": 100,
+    "3-4": 100,
+    "3-5": 75,
+    "3-6": 100,
+    "3-7": 75
+   },
+   "win": 92.9
+  },
+  {
+   "player": 2,
+   "seed": "bal24-2",
+   "counts": {
+    "clap-net-trapper": 1,
+    "cricket-drummer": 1,
+    "duckling": 1,
+    "forager-ant": 1,
+    "harvest-mouse": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "rivergate-drummer": 1,
+    "rivergate-recruit": 1,
+    "rock-pool-starfish": 1,
+    "sparrow-chick": 1,
+    "terrier-pup": 1,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "clap-net-trapper",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "duckling",
+     1,
+     0
+    ],
+    [
+     "forager-ant",
+     1,
+     1
+    ],
+    [
+     "harvest-mouse",
+     1,
+     0
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "rivergate-drummer",
+     1,
+     1
+    ],
+    [
+     "rivergate-recruit",
+     1,
+     1
+    ],
+    [
+     "rock-pool-starfish",
+     1,
+     1
+    ],
+    [
+     "sparrow-chick",
+     1,
+     0
+    ],
+    [
+     "terrier-pup",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 84,
+   "factionCards": 14,
+   "optScore": 0.729,
+   "optBudget": 900,
+   "optFile": "deckopt-map03-mc-bal24-p2.json",
+   "games": 8,
+   "perFight": {
+    "3-1": 100,
+    "3-2": 100,
+    "3-3": 87.5,
+    "3-4": 100,
+    "3-5": 75,
+    "3-6": 75,
+    "3-7": 75
+   },
+   "win": 87.5
+  },
+  {
+   "player": 3,
+   "seed": "bal24-3",
+   "counts": {
+    "cottontail": 1,
+    "cricket-drummer": 1,
+    "garden-snail": 2,
+    "house-cat": 1,
+    "limpet-clinger": 1,
+    "moonlit-hare": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "otter-lantern-bearer": 1,
+    "riverwing-envoy": 1,
+    "terrier-pup": 1,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "cottontail",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "garden-snail",
+     2,
+     0
+    ],
+    [
+     "house-cat",
+     1,
+     1
+    ],
+    [
+     "limpet-clinger",
+     1,
+     1
+    ],
+    [
+     "moonlit-hare",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "otter-lantern-bearer",
+     1,
+     1
+    ],
+    [
+     "riverwing-envoy",
+     1,
+     0
+    ],
+    [
+     "terrier-pup",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 83,
+   "factionCards": 14,
+   "optScore": 0.73,
+   "optBudget": 900,
+   "optFile": "deckopt-map03-mc-bal24-p3.json",
+   "games": 8,
+   "perFight": {
+    "3-1": 100,
+    "3-2": 100,
+    "3-3": 87.5,
+    "3-4": 87.5,
+    "3-5": 87.5,
+    "3-6": 75,
+    "3-7": 62.5
+   },
+   "win": 85.7
+  },
+  {
+   "player": 4,
+   "seed": "bal24-4",
+   "counts": {
+    "ant-scout": 1,
+    "badger-lumberjack": 1,
+    "cricket-drummer": 1,
+    "driftwood-crab": 1,
+    "house-cat": 1,
+    "mosswing-laborer": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "pond-duck": 1,
+    "riverside-peddler": 1,
+    "rock-pool-starfish": 1,
+    "terrier-pup": 1,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "ant-scout",
+     1,
+     1
+    ],
+    [
+     "badger-lumberjack",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "driftwood-crab",
+     1,
+     1
+    ],
+    [
+     "house-cat",
+     1,
+     1
+    ],
+    [
+     "mosswing-laborer",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "pond-duck",
+     1,
+     1
+    ],
+    [
+     "riverside-peddler",
+     1,
+     1
+    ],
+    [
+     "rock-pool-starfish",
+     1,
+     1
+    ],
+    [
+     "terrier-pup",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 81,
+   "factionCards": 12,
+   "optScore": 0.733,
+   "optBudget": 900,
+   "optFile": "deckopt-map03-mc-bal24-p4.json",
+   "games": 8,
+   "perFight": {
+    "3-1": 100,
+    "3-2": 62.5,
+    "3-3": 100,
+    "3-4": 87.5,
+    "3-5": 75,
+    "3-6": 100,
+    "3-7": 87.5
+   },
+   "win": 87.5
+  },
+  {
+   "player": 5,
+   "seed": "bal24-5",
+   "counts": {
+    "cricket-drummer": 1,
+    "crimson-wing-recruit": 1,
+    "driftwood-crab": 1,
+    "harvest-mouse": 1,
+    "house-cat": 1,
+    "limpet-clinger": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "rivergate-recruit": 1,
+    "riverwing-envoy": 1,
+    "sheep": 1,
+    "terrier-pup": 1,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "crimson-wing-recruit",
+     1,
+     1
+    ],
+    [
+     "driftwood-crab",
+     1,
+     1
+    ],
+    [
+     "harvest-mouse",
+     1,
+     0
+    ],
+    [
+     "house-cat",
+     1,
+     1
+    ],
+    [
+     "limpet-clinger",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "rivergate-recruit",
+     1,
+     1
+    ],
+    [
+     "riverwing-envoy",
+     1,
+     0
+    ],
+    [
+     "sheep",
+     1,
+     0
+    ],
+    [
+     "terrier-pup",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 83,
+   "factionCards": 13,
+   "optScore": 0.692,
+   "optBudget": 900,
+   "optFile": "deckopt-map03-mc-bal24-p5.json",
+   "games": 8,
+   "perFight": {
+    "3-1": 100,
+    "3-2": 100,
+    "3-3": 87.5,
+    "3-4": 100,
+    "3-5": 75,
+    "3-6": 62.5,
+    "3-7": 62.5
+   },
+   "win": 83.9
+  },
+  {
+   "player": 6,
+   "seed": "bal24-6",
+   "counts": {
+    "chipmunk-forager": 1,
+    "conch-herald": 1,
+    "cricket-drummer": 1,
+    "gull-thief": 1,
+    "limpet-clinger": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "puddle-skimmer": 1,
+    "river-carp": 1,
+    "rock-pool-starfish": 1,
+    "sheep": 1,
+    "terrier-pup": 1,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "chipmunk-forager",
+     1,
+     1
+    ],
+    [
+     "conch-herald",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "gull-thief",
+     1,
+     1
+    ],
+    [
+     "limpet-clinger",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "puddle-skimmer",
+     1,
+     1
+    ],
+    [
+     "river-carp",
+     1,
+     1
+    ],
+    [
+     "rock-pool-starfish",
+     1,
+     1
+    ],
+    [
+     "sheep",
+     1,
+     0
+    ],
+    [
+     "terrier-pup",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 82,
+   "factionCards": 13,
+   "optScore": 0.714,
+   "optBudget": 900,
+   "optFile": "deckopt-map03-mc-bal24-p6.json",
+   "games": 8,
+   "perFight": {
+    "3-1": 100,
+    "3-2": 87.5,
+    "3-3": 100,
+    "3-4": 100,
+    "3-5": 87.5,
+    "3-6": 87.5,
+    "3-7": 87.5
+   },
+   "win": 92.9
+  },
+  {
+   "player": 7,
+   "seed": "bal24-7",
+   "counts": {
+    "conch-herald": 1,
+    "cricket-drummer": 1,
+    "honey-bee": 1,
+    "meadow-frog": 1,
+    "otter-angler": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "otter-kit": 1,
+    "pack-rat-looter": 1,
+    "phoenix-mushrooms": 1,
+    "riverbed-diver": 1,
+    "terrier-pup": 1,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "conch-herald",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "honey-bee",
+     1,
+     1
+    ],
+    [
+     "meadow-frog",
+     1,
+     0
+    ],
+    [
+     "otter-angler",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "otter-kit",
+     1,
+     0
+    ],
+    [
+     "pack-rat-looter",
+     1,
+     1
+    ],
+    [
+     "phoenix-mushrooms",
+     1,
+     1
+    ],
+    [
+     "riverbed-diver",
+     1,
+     1
+    ],
+    [
+     "terrier-pup",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 80,
+   "factionCards": 12,
+   "optScore": 0.669,
+   "optBudget": 900,
+   "optFile": "deckopt-map03-mc-bal24-p7.json",
+   "games": 8,
+   "perFight": {
+    "3-1": 100,
+    "3-2": 100,
+    "3-3": 87.5,
+    "3-4": 100,
+    "3-5": 100,
+    "3-6": 87.5,
+    "3-7": 87.5
+   },
+   "win": 94.6
+  },
+  {
+   "player": 8,
+   "seed": "bal24-8",
+   "counts": {
+    "ant-scout": 1,
+    "bee-sentry": 1,
+    "burrow-rabbit": 1,
+    "cricket-drummer": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "otter-paddler": 1,
+    "otter-riverguard": 1,
+    "river-carp": 1,
+    "sparrow-chick": 2,
+    "terrier-pup": 1,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "ant-scout",
+     1,
+     1
+    ],
+    [
+     "bee-sentry",
+     1,
+     1
+    ],
+    [
+     "burrow-rabbit",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "otter-paddler",
+     1,
+     1
+    ],
+    [
+     "otter-riverguard",
+     1,
+     1
+    ],
+    [
+     "river-carp",
+     1,
+     1
+    ],
+    [
+     "sparrow-chick",
+     2,
+     0
+    ],
+    [
+     "terrier-pup",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 81,
+   "factionCards": 11,
+   "optScore": 0.655,
+   "optBudget": 900,
+   "optFile": "deckopt-map03-mc-bal24-p8.json",
+   "games": 8,
+   "perFight": {
+    "3-1": 87.5,
+    "3-2": 87.5,
+    "3-3": 100,
+    "3-4": 100,
+    "3-5": 62.5,
+    "3-6": 87.5,
+    "3-7": 87.5
+   },
+   "win": 87.5
+  },
+  {
+   "player": 9,
+   "seed": "bal24-9",
+   "counts": {
+    "acorn-chipmunk": 1,
+    "ant-scout": 1,
+    "beaver-lumberjack": 1,
+    "cottontail": 1,
+    "cricket-drummer": 1,
+    "duck-paddler": 1,
+    "greyplume-fledgling": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "rabbit-kit": 1,
+    "rock-pool-starfish": 1,
+    "terrier-pup": 1,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "acorn-chipmunk",
+     1,
+     1
+    ],
+    [
+     "ant-scout",
+     1,
+     1
+    ],
+    [
+     "beaver-lumberjack",
+     1,
+     1
+    ],
+    [
+     "cottontail",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "duck-paddler",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "rabbit-kit",
+     1,
+     0
+    ],
+    [
+     "rock-pool-starfish",
+     1,
+     1
+    ],
+    [
+     "terrier-pup",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 81,
+   "factionCards": 13,
+   "optScore": 0.692,
+   "optBudget": 900,
+   "optFile": "deckopt-map03-mc-bal24-p9.json",
+   "games": 8,
+   "perFight": {
+    "3-1": 87.5,
+    "3-2": 100,
+    "3-3": 100,
+    "3-4": 100,
+    "3-5": 50,
+    "3-6": 75,
+    "3-7": 87.5
+   },
+   "win": 85.7
+  },
+  {
+   "player": 10,
+   "seed": "bal24-10",
+   "counts": {
+    "ant-scout": 1,
+    "bramble-sprout": 1,
+    "cobalt-talon-fledgling": 1,
+    "compost-grub": 1,
+    "cricket-drummer": 1,
+    "farm-dog": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "otter-riverguard": 1,
+    "rabbit-kit": 1,
+    "sparrow-chick": 1,
+    "terrier-pup": 1,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "ant-scout",
+     1,
+     1
+    ],
+    [
+     "bramble-sprout",
+     1,
+     1
+    ],
+    [
+     "cobalt-talon-fledgling",
+     1,
+     1
+    ],
+    [
+     "compost-grub",
+     1,
+     0
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "farm-dog",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "otter-riverguard",
+     1,
+     1
+    ],
+    [
+     "rabbit-kit",
+     1,
+     0
+    ],
+    [
+     "sparrow-chick",
+     1,
+     0
+    ],
+    [
+     "terrier-pup",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 83,
+   "factionCards": 13,
+   "optScore": 0.683,
+   "optBudget": 900,
+   "optFile": "deckopt-map03-mc-bal24-p10.json",
+   "games": 8,
+   "perFight": {
+    "3-1": 87.5,
+    "3-2": 100,
+    "3-3": 100,
+    "3-4": 100,
+    "3-5": 87.5,
+    "3-6": 75,
+    "3-7": 50
+   },
+   "win": 85.7
+  }
+ ],
+ "missing": 0,
+ "measured": "2026-11-11T10:58:05.255Z"
+}

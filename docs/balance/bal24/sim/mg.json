@@ -1,0 +1,650 @@
+{
+ "about": "Package BAL24: each simulated player's optimised deck at this map and its win rate against the map's road fights (tools/bal24/ladder_sim_2026_11_07.js measure; ladder seeds 5300 + 37g, 8 games a fight, with the player's leader).",
+ "tool": "tools/bal24/ladder_sim_2026_11_07.js 1.0.0 (2026-11-07, BAL24)",
+ "map": {
+  "id": "mg",
+  "num": 2,
+  "name": "Smugglers' Grotto",
+  "side": true,
+  "arrival": 7
+ },
+ "level": 0,
+ "fights": [
+  "2-B-1",
+  "2-B-2",
+  "2-B-3",
+  "2-B-4"
+ ],
+ "players": [
+  {
+   "player": 1,
+   "seed": "bal24-1",
+   "counts": {
+    "greyplume-fledgling": 5,
+    "otter-centurion": 3,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 5
+   },
+   "parts": [
+    [
+     "greyplume-fledgling",
+     5,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     5,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 161,
+   "factionCards": 27,
+   "optScore": 0.91,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p1.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 100,
+    "2-B-2": 50,
+    "2-B-3": 37.5,
+    "2-B-4": 75
+   },
+   "win": 65.6
+  },
+  {
+   "player": 2,
+   "seed": "bal24-2",
+   "counts": {
+    "greyplume-fledgling": 4,
+    "nectar-sipper": 1,
+    "otter-centurion": 3,
+    "platypus-spur": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "nectar-sipper",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "platypus-spur",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 162,
+   "factionCards": 28,
+   "optScore": 0.821,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p2.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 100,
+    "2-B-2": 50,
+    "2-B-3": 50,
+    "2-B-4": 50
+   },
+   "win": 62.5
+  },
+  {
+   "player": 3,
+   "seed": "bal24-3",
+   "counts": {
+    "daily-post": 1,
+    "greyplume-fledgling": 4,
+    "otter-centurion": 3,
+    "pond-duck": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "daily-post",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "pond-duck",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 163,
+   "factionCards": 29,
+   "optScore": 0.875,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p3.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 100,
+    "2-B-2": 50,
+    "2-B-3": 37.5,
+    "2-B-4": 75
+   },
+   "win": 65.6
+  },
+  {
+   "player": 4,
+   "seed": "bal24-4",
+   "counts": {
+    "greyplume-fledgling": 4,
+    "harvest-mouse": 1,
+    "otter-centurion": 3,
+    "otter-shieldback": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "harvest-mouse",
+     1,
+     0
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-shieldback",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 163,
+   "factionCards": 29,
+   "optScore": 0.83,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p4.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 100,
+    "2-B-2": 50,
+    "2-B-3": 50,
+    "2-B-4": 62.5
+   },
+   "win": 65.6
+  },
+  {
+   "player": 5,
+   "seed": "bal24-5",
+   "counts": {
+    "ant-scout": 1,
+    "chipmunk-cavalry": 1,
+    "drowned-matriarch": 1,
+    "otter-centurion": 3,
+    "otter-lantern-bearer": 1,
+    "owl-sentinel": 2,
+    "soldier-ant": 5,
+    "tunnel-ant": 3,
+    "worker-ant": 3
+   },
+   "parts": [
+    [
+     "ant-scout",
+     1,
+     1
+    ],
+    [
+     "chipmunk-cavalry",
+     1,
+     1
+    ],
+    [
+     "drowned-matriarch",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-lantern-bearer",
+     1,
+     1
+    ],
+    [
+     "owl-sentinel",
+     2,
+     1
+    ],
+    [
+     "soldier-ant",
+     5,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 161,
+   "factionCards": 27,
+   "optScore": 0.921,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p5.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 100,
+    "2-B-2": 50,
+    "2-B-3": 50,
+    "2-B-4": 87.5
+   },
+   "win": 71.9
+  },
+  {
+   "player": 6,
+   "seed": "bal24-6",
+   "counts": {
+    "badger-lumberjack": 1,
+    "greyplume-fledgling": 4,
+    "otter-centurion": 3,
+    "soldier-ant": 5,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "badger-lumberjack",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "soldier-ant",
+     5,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 159,
+   "factionCards": 25,
+   "optScore": 0.854,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p6.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 100,
+    "2-B-2": 62.5,
+    "2-B-3": 37.5,
+    "2-B-4": 75
+   },
+   "win": 68.8
+  },
+  {
+   "player": 7,
+   "seed": "bal24-7",
+   "counts": {
+    "greyplume-fledgling": 4,
+    "otter-centurion": 3,
+    "soldier-ant": 5,
+    "tunnel-ant": 3,
+    "worker-ant": 5
+   },
+   "parts": [
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "soldier-ant",
+     5,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     5,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 162,
+   "factionCards": 28,
+   "optScore": 0.907,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p7.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 100,
+    "2-B-2": 62.5,
+    "2-B-3": 37.5,
+    "2-B-4": 50
+   },
+   "win": 62.5
+  },
+  {
+   "player": 8,
+   "seed": "bal24-8",
+   "counts": {
+    "bog-leech": 1,
+    "greyplume-fledgling": 4,
+    "otter-centurion": 3,
+    "otter-kit": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "bog-leech",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-kit",
+     1,
+     0
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 161,
+   "factionCards": 27,
+   "optScore": 0.876,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p8.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 100,
+    "2-B-2": 62.5,
+    "2-B-3": 50,
+    "2-B-4": 75
+   },
+   "win": 71.9
+  },
+  {
+   "player": 9,
+   "seed": "bal24-9",
+   "counts": {
+    "badger-lumberjack": 1,
+    "beaver-feller": 1,
+    "greyplume-fledgling": 2,
+    "otter-centurion": 3,
+    "otter-lantern-bearer": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 5
+   },
+   "parts": [
+    [
+     "badger-lumberjack",
+     1,
+     1
+    ],
+    [
+     "beaver-feller",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     2,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-lantern-bearer",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     5,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 164,
+   "factionCards": 30,
+   "optScore": 0.877,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p9.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 100,
+    "2-B-2": 62.5,
+    "2-B-3": 37.5,
+    "2-B-4": 75
+   },
+   "win": 68.8
+  },
+  {
+   "player": 10,
+   "seed": "bal24-10",
+   "counts": {
+    "greyplume-fledgling": 4,
+    "newt-doctor": 1,
+    "otter-centurion": 3,
+    "planarian-splitter": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "newt-doctor",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "planarian-splitter",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 164,
+   "factionCards": 30,
+   "optScore": 0.875,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p10.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 100,
+    "2-B-2": 50,
+    "2-B-3": 62.5,
+    "2-B-4": 50
+   },
+   "win": 65.6
+  }
+ ],
+ "missing": 0,
+ "measured": "2026-11-11T10:57:43.831Z"
+}
