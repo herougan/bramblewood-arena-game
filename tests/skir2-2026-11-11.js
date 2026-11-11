@@ -1,0 +1,96 @@
+#!/usr/bin/env node
+// Package SKIR2 (2026-11-11): the road after SKIR1, recovered mostly by list adds (no card stat changed). No games are played.
+//   1. the adds (tools/skir2/lists_2026_11_11.js ADDS): each on its map's MAP tier; Maps 0-11 in UI47_ADMIN_ADD (with SKIR1's Lumber adds), Maps
+//      12-20 in UI47_SUGGEST; each with its reason in docs/design/map-suggestions-2026-11-11.json; no Stone card; each within its budget at the map
+//      where it is now first obtainable; no card is listed on a later main map's list than its suggestion doc says (suggest = new to the road)
+//   2. BAL9 JJ28: Coral Current, Wolfsbane Tundra, The Glass Dunes and Ashen Spurn each list a Guardian defender, and one of their road decks holds it
+//   3. every road fight's card reward on Maps 0-20 and their side maps is obtainable (isUnattainable false): the first-clear pack card
+//      (node.firstCard, else SKIRMISH_FIRST_PACK_CARDS) and every skirmish-exclusive card (a card whose source is that fight); 5-2's Sphagnum Vole
+//      (CONTENT3) first among them
+//   4. Map 13: its list holds Swift Fox, Tasmanian Devil and Bramblewood Lynx; every fight rebuilt by SKIR2 (in its build plan, dated comment)
+//   5. the restored leaders (15-1 Cataphract Destrier, 10-A-2 Coral Reef Shark); every "(SKIR2 fit)" line is a kept fit or re-draw on record
+//   6. the record files; draft decisions SKIR2-n under 100 words, one of them "Keep SKIR2's list adds" naming every add
+//   node tests/skir2-2026-11-11.js
+'use strict';
+const fs = require('fs'), path = require('path');
+const ROOT = path.join(__dirname, '..');
+const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
+let fail = 0, pass = 0; const ok = (c, m) => { if (c) pass++; else { fail++; console.log('  ✗ ' + m); } };
+const LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = LB.G, D = LB.CARD_DEFS_BASELINE;
+const M = require(path.join(ROOT, 'tools', 'skir1', 'lib_skir1_2026_11_11.js'));
+const { ADDS, MAIN_ORDER } = require(path.join(ROOT, 'tools', 'skir2', 'lists_2026_11_11.js'));
+const EXTRA = require(path.join(ROOT, 'tools', 'skir1', 'extra_2026_11_11.js'));
+const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), grab = n => JSON.parse((src.match(new RegExp('const ' + n + ' = (\\{.*?\\});\\n')) || [0, '{}'])[1]);
+const pools = J('canonical/map-pools.json').maps, SUG = J('docs/design/map-suggestions-2026-11-11.json'), ADMIN = grab('UI47_ADMIN_ADD'), SUGGEST = grab('UI47_SUGGEST');
+const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), SCN = SC.make(J('canonical/skill-costs.json'));
+const lineOf = code => (src.match(new RegExp(`^\\s*\\{ ?key:\\s*"${code.replace(/-/g, '\\-')}",.*$`, 'm')) || [''])[0];
+const no = id => MAIN_ORDER.indexOf(id);
+
+// ---- 1. the adds ----
+for (const [mid, adds] of Object.entries(ADDS)) for (const [id, x] of Object.entries(adds)) {
+  ok(D[id], `${mid}: ${id} is a card`); if (!D[id]) continue;
+  ok((pools[mid].cards || []).includes(id), `Map ${no(mid)} (${mid}): ${id} is on its MAP tier`);
+  if (no(mid) <= 11) { ok((ADMIN[mid] || []).includes(id), `Map ${no(mid)}: ${id} in UI47_ADMIN_ADD`); ok(/^SKIR2: ./.test(((SUG.maps[mid] || {}).adminWhy || {})[id] || ''), `Map ${no(mid)}: ${id} has its reason (adminWhy)`); }
+  else { ok((SUGGEST[mid] || []).includes(id), `Map ${no(mid)}: ${id} in UI47_SUGGEST`); ok(/^SKIR2: ./.test(((SUG.maps[mid] || {}).addWhy || {})[id] || ''), `Map ${no(mid)}: ${id} has its reason (addWhy)`);
+    ok([].concat(SUG.maps[mid].suggest, SUG.maps[mid].carried).includes(id), `Map ${no(mid)}: ${id} in the suggestion doc's suggest / carried`); }
+  ok(!M.stone(D[id]), `${id}: no Stone card before Map 21`);
+  const b = SCN.budget(D[id], { level: 1 }); ok(b.ok, `${id}: within its budget at its obtain map (${b.x1} <= ${b.N})`);
+  ok(x.why && x.why.length > 15, `${id}: the add says why`);
+}
+Object.entries(EXTRA.main || {}).forEach(([mid, o]) => Object.keys(o).forEach(id => { ok((ADMIN[mid] || []).includes(id), `SKIR1's admin add ${id} (${mid}) is in UI47_ADMIN_ADD`); ok(/^SKIR1: ./.test(((SUG.maps[mid] || {}).adminWhy || {})[id] || ''), `SKIR1's admin add ${id} has its reason`); }));
+ok(/^\/\/ 2026-11-11 \(SKIR2\): admin adds named by SKIR1 \/ SKIR2.*\nconst UI47_ADMIN_ADD = /m.test(src), 'a dated comment names the admin adds above UI47_ADMIN_ADD');
+// THEME8's suggest / carried split still holds: a "suggest" card is first listed on that map (no earlier main map gives it)
+const firstAt = {}; MAIN_ORDER.forEach((mid, i) => { const m = SUG.maps[mid]; if (!m) return; [].concat(m.ownerYes, m.adminAdd, m.suggest, m.carried, m.baby).forEach(id => { if (firstAt[id] == null) firstAt[id] = i; }); });
+MAIN_ORDER.forEach((mid, i) => (SUG.maps[mid] && i >= 12 ? SUG.maps[mid].suggest : []).forEach(id => ok(firstAt[id] === i, `Map ${i}: suggested ${id} is new to the road (first on Map ${firstAt[id]})`)));
+const use = {}; Object.values(SUG.maps).forEach(m => new Set([].concat(m.ownerYes, m.adminAdd, m.suggest, m.carried, m.baby)).forEach(id => { use[id] = (use[id] || 0) + 1; }));
+ok(Object.entries(use).every(([id, k]) => SUG.usage[id] === k), 'the suggestion doc\'s usage counts follow its lists');
+
+// ---- 2. BAL9 JJ28 ----
+const L = require(path.join(ROOT, 'tools', 'skir1', 'lib_fight_2026_11_11.js'));
+for (const mid of ['m7', 'm6', 'md', 'm3']) {
+  const guards = (pools[mid].cards || []).filter(id => D[id] && (D[id].effects || {}).guardian);
+  ok(guards.length >= 1, `Map ${no(mid)} (${mid}): its list holds a Guardian defender (${guards.join(', ')})`);
+  const m = L.maps().find(x => x.id === mid); ok(L.fightsOf(m).some(n => guards.some(id => n.deck[id])), `Map ${no(mid)}: a road deck holds its Guardian`);
+}
+
+// ---- 3. every road fight's card reward is obtainable ----
+const tab = {}; ((src.match(/\/\* GD5-TABLE-START[\s\S]*?GD5-TABLE-END \*\//) || [''])[0]).replace(/'([a-z0-9]+):([^']+)':\s*'([^']+)'/g, (_, m, k, id) => { tab[m + ':' + k] = id; });
+ok(Object.keys(tab).length > 40, `the first-clear pack card table reads (${Object.keys(tab).length} rows)`);
+const defs = G.getCardDefs(); let nRewards = 0;
+for (const m of G.CONQUEST_MAPS) {
+  const n0 = G.mapNumberOf(m.id); if (n0 == null || n0 > 20 || m.reserved || m.tower) continue;
+  for (const n of m.nodes || []) {
+    const packIds = [].concat(n.firstCard != null ? n.firstCard : (tab[m.id + ':' + n.key] || []));
+    const excl = Object.keys(defs).filter(id => { const s = G.cardSourceOf(defs[id]); return s.kind === 'map' && s.id === m.id && s.node === n.key && defs[id].cardType !== 'equipment'; });
+    packIds.forEach(id => { nRewards++; ok(defs[id] && !G.isUnattainable(defs[id]), `${n.key} (${m.id}): its first-clear pack card ${id} is obtainable`); });
+    excl.forEach(id => { nRewards++; ok(!G.isUnattainable(defs[id]), `${n.key} (${m.id}): its skirmish-exclusive card ${id} is obtainable`); });
+  }
+}
+ok(nRewards > 100, `rewards checked: ${nRewards}`);
+ok(defs['sphagnum-vole'] && !G.isUnattainable(defs['sphagnum-vole']) && (pools.mw.cards || []).includes('sphagnum-vole'), "5-2's Sphagnum Vole (CONTENT3) is on Map 5's list and obtainable");
+
+// ---- 4. Map 13 ----
+['swift-fox', 'tasmanian-devil', 'bramblewood-lynx'].forEach(id => ok(pools.mr.cards.includes(id), `Map 13's list holds ${id} (SKIR1-7)`));
+const plan = J('docs/balance/skir2/build-plan-2026-11-11.json'), mr = plan.maps.find(p => p.id === 'mr');
+ok(mr && mr.fights.length === 8, 'Map 13 is in the SKIR2 build plan (8 fights)');
+(mr ? mr.fights : []).forEach(x => ok(/\(SKIR2( fit)?\): /.test(lineOf(x.code)), `${x.code}: rebuilt by SKIR2 (dated comment)`));
+
+// ---- 5. restored leaders, fits on record ----
+[['ml', '15-1', 'cataphract-destrier'], ['mj', '10-A-2', 'coral-reef-shark']].forEach(([mid, code, id]) => {
+  const m = G.CONQUEST_MAPS.find(x => x.id === mid), n = m.nodes.find(x => x.key === code); G.NODE_MAP_HINT.set(n, mid);
+  ok(JSON.stringify(G.skirmishLeadersOf(n, mid)) === JSON.stringify([id]), `${code}: led by ${id} again`); });
+const fitDirs = fs.readdirSync(path.join(ROOT, 'docs', 'balance', 'skir2')).filter(d => /^(fit|search)/.test(d) && fs.statSync(path.join(ROOT, 'docs', 'balance', 'skir2', d)).isDirectory()).map(d => path.join(ROOT, 'docs', 'balance', 'skir2', d));
+const kept = {}; fitDirs.forEach(d => fs.readdirSync(d).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(d, f), 'utf8')); if (x.keep) (kept[x.code] = kept[x.code] || []).push(x); }));
+src.split('\n').filter(l => /\(SKIR2 fit\): /.test(l)).forEach(l => { const code = (l.match(/key:\s*"([^"]+)"/) || [])[1];
+  ok(code && kept[code], `${code}: its SKIR2 fit is a kept pick on record`); });
+
+// ---- 6. files and decisions ----
+['docs/balance/skir2/lists-2026-11-11.json', 'docs/balance/skir2/build-plan-2026-11-11.json', 'docs/balance/skir2/seed-2026-11-11.json', 'docs/balance/skir2/cuts-2026-11-11.json', 'docs/balance/skir2/road-totals-skir2w400.json']
+  .forEach(f => ok(fs.existsSync(path.join(ROOT, f)), f + ' exists'));
+const words = s => String(s || '').split(/\s+/).filter(Boolean).length;
+const DEC = J('docs/balance/skir2/decisions-2026-11-11.json').items || [];
+DEC.forEach(x => ok(/^SKIR2-\d+$/.test(x.id) && words(x.body) + words((x.options || []).join(' ')) < 100 && x.default === 'a', x.id + ': body and options under 100 words, default a'));
+const keepAdds = DEC.find(x => /Keep SKIR2's list adds/.test(x.title || ''));
+ok(keepAdds, 'a draft decision "Keep SKIR2\'s list adds"');
+if (keepAdds) Object.values(ADDS).forEach(o => Object.keys(o).forEach(id => ok(keepAdds.body.includes(D[id].name), `"Keep SKIR2's list adds" names ${D[id].name}`)));
+console.log(`skir2: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

@@ -1,0 +1,86 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-11T01:05:49.402Z",
+ "map": {
+  "id": "md",
+  "num": 18,
+  "name": "The Glass Dunes"
+ },
+ "pool": [
+  "antlion-pit",
+  "armadillo-guard",
+  "caustic-scorpion",
+  "dune-jackal",
+  "dune-jackal-scout",
+  "dust-hyena",
+  "fennec-fox",
+  "glasswing-moth",
+  "horned-lizard",
+  "marula-elephant",
+  "meerkat-sentry",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "savanna-cheetah",
+  "stonedrop-vulture",
+  "termite-forager"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "dune-jackal": 4,
+    "fennec-fox": 4,
+    "marula-elephant": 4,
+    "sand-widow": 4,
+    "sandfish": 4
+   },
+   "score": 0.1375,
+   "ci": [
+    0.1048,
+    0.1702
+   ],
+   "refWins": 0.6944,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1940,
+   "seconds": 29
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "antlion-pit": 3,
+    "caustic-scorpion": 3,
+    "dune-jackal-scout": 4,
+    "marula-elephant": 4,
+    "meerkat-sentry": 2,
+    "sand-widow": 4
+   },
+   "score": 0.3042,
+   "ci": [
+    0.255,
+    0.3533
+   ],
+   "refWins": 0.5694,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)",
+    "poison x7"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 5,
+   "games": 1840,
+   "seconds": 27
+  }
+ ]
+}

@@ -1,0 +1,88 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-11T01:06:38.851Z",
+ "map": {
+  "id": "m3",
+  "num": 19,
+  "name": "Ashen Spurn"
+ },
+ "pool": [
+  "ashwing-ptarmigan",
+  "basalt-boar",
+  "chipmunk-hoarder",
+  "cinder-hornet",
+  "cinder-stoker",
+  "eagle-owl-quartermaster",
+  "ember-wisp",
+  "fire-salamander",
+  "honey-badger-fury",
+  "obsidian-scorpion",
+  "quillback-elder",
+  "quillguard",
+  "smoke-raccoon",
+  "stalactite-golem",
+  "sulfur-cinder-moth",
+  "sulfur-vent-crab",
+  "talus-pika"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "cinder-hornet": 4,
+    "honey-badger-fury": 4,
+    "quillback-elder": 4,
+    "stalactite-golem": 4,
+    "sulfur-cinder-moth": 1,
+    "sulfur-vent-crab": 3
+   },
+   "score": 0.1991,
+   "ci": [
+    0.1512,
+    0.2469
+   ],
+   "refWins": 0.9028,
+   "labels": [
+    "big (17 copies at 1+ Lumber, average 1.4)",
+    "armor x11"
+   ],
+   "apartFrom": [],
+   "steps": 6,
+   "games": 1800,
+   "seconds": 22
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "eagle-owl-quartermaster": 3,
+    "honey-badger-fury": 2,
+    "quillback-elder": 4,
+    "quillguard": 3,
+    "stalactite-golem": 4,
+    "talus-pika": 4
+   },
+   "score": 0.4259,
+   "ci": [
+    0.3675,
+    0.4844
+   ],
+   "refWins": 0.7361,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.2)",
+    "armor x8"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 6,
+   "games": 1926,
+   "seconds": 27
+  }
+ ]
+}

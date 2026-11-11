@@ -1,0 +1,33 @@
+{
+ "about": "SKIR2 BAL9 JJ28 seeds (tools/skir2/decks_2026_11_11.js seed)",
+ "seeds": [
+  {
+   "map": "m7",
+   "card": "grey-seal-bull",
+   "fight": "10-4",
+   "out": "voltaic-eel",
+   "over": 2.4000000000000057
+  },
+  {
+   "map": "m6",
+   "card": "shepherds-bark",
+   "fight": "17-4",
+   "out": "timber-wolf-pack",
+   "over": 3.799999999999997
+  },
+  {
+   "map": "md",
+   "card": "marula-elephant",
+   "fight": "18-3",
+   "out": "termite-forager",
+   "over": 3.5
+  },
+  {
+   "map": "m3",
+   "card": "stalactite-golem",
+   "fight": "19-1",
+   "out": "honey-badger-fury",
+   "over": 2.799999999999997
+  }
+ ]
+}

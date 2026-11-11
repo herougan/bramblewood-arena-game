@@ -65,7 +65,7 @@ Object.keys(data.maps).forEach(mid=>{
     if(d1){ ok(fs.existsSync(path.join(ROOT, e.source.file)), `1. ${e.id}: its DECK1 run exists (${e.source.file})`);
       const run = fs.existsSync(path.join(ROOT, e.source.file)) ? JSON.parse(rd(e.source.file)) : {decks: []};
       // 2026-11-02 (BAL9, JJ24): a deck whose cut cards BAL9 swapped out (e.bal9) is its run's deck but for those copies; it is held to the run's score and mode only
-      ok((run.decks || []).some(x=> (e.bal9 || e.bal13 || e.bal13trim || e.bal13cap /* 2026-11-02 (BAL13): late-priced cards / RAR-1 copy caps swapped, not re-searched */ || e.bal21 /* 2026-11-07 (BAL21): retuned by tools/bal21/pro_fix_2026_11_07.js, not re-searched */ || O.deckKey(x.deck) === O.deckKey(e.deck)) && x.score === e.source.score) && (run.settings || {}).mode === 'map-true', `1. ${e.id}: the deck is a deck of its DECK1 run${e.bal9 ? ' (cut cards swapped by BAL9)' : ''}${e.bal13 || e.bal13trim || e.bal13cap ? ' (swapped by BAL13)' : ''}`);
+      ok((run.decks || []).some(x=> (e.bal9 || e.bal13 || e.bal13trim || e.bal13cap /* 2026-11-02 (BAL13): late-priced cards / RAR-1 copy caps swapped, not re-searched */ || e.bal21 /* 2026-11-07 (BAL21): retuned by tools/bal21/pro_fix_2026_11_07.js, not re-searched */ || e.skir2 /* 2026-11-11 (SKIR2): a card SKIR1's lists put on no list / out of the map rule swapped (tools/skir2/decks_2026_11_11.js cuts), not re-searched */ || O.deckKey(x.deck) === O.deckKey(e.deck)) && x.score === e.source.score) && (run.settings || {}).mode === 'map-true', `1. ${e.id}: the deck is a deck of its DECK1 run${e.bal9 ? ' (cut cards swapped by BAL9)' : ''}${e.bal13 || e.bal13trim || e.bal13cap ? ' (swapped by BAL13)' : ''}`);
       ok(e.focus && e.h2h == null, `1. ${e.id}: a focus (${e.focus}), no head-to-head`);
       if(i > 0) ok(e.source.score <= L[i - 1].source.score || (i === 1 && L[0].kept1) /* 2026-11-11 (SKIR1): a PRO-1 kept by the replacement rule leads */, `1. ${e.id}: ordered by the gauntlet score`);
       return; }
@@ -127,18 +127,21 @@ Object.keys(data.maps).forEach(mid=>{
 { const before = rd(FILE), tmp = path.join(os.tmpdir(), 'pro-test-' + process.pid + '.json');
   const out = cp.execFileSync(process.execPath, [path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js'), '--maps', '0', '--games', '4'], {cwd: ROOT, encoding: 'utf8'});
   ok(/dry run: nothing written/.test(out) && /0-PRO-1/.test(out) && /0-BPRO-1/.test(out) && rd(FILE) === before, '2. a dry run prints the plan (PRO and BPRO) and writes nothing');
+  // 2026-11-11 (SKIR2): --out starts from a copy of the file: since SKIR1's lists no optimizer run passes Map 0's map rule, so an empty --out file
+  // (the tool's fresh start) leaves Map 0 with no PRO; from the copy the tool keeps the file's legal decks, which is what this check is about
+  fs.writeFileSync(tmp, before);
   cp.execFileSync(process.execPath, [path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js'), '--maps', '0', '--games', '4', '--apply', '--out', tmp, '--quiet'], {cwd: ROOT, encoding: 'utf8'});
   const t = JSON.parse(fs.readFileSync(tmp, 'utf8')); fs.rmSync(tmp, {force: true});
   ok(t.maps.m1 && t.maps.m1.pro && t.maps.m1.pro[0] && t.maps.m1.pro[0].id === '0-PRO-1' /* 2026-11-04 (TESTFIX1): a missing PRO deck fails here instead of crashing the rest */ && t.maps.m1.field && t.rule.games === 4 && rd(FILE) === before, '2. --apply --out writes that file only');
   ok(t.maps.m1.bpro && t.maps.m1.bpro[0] && t.maps.m1.bpro[0].id === '0-BPRO-1', '2. --apply --out writes the BPRO list too (PRO2)');
   // 2026-10-24 (PRO2): an old PRO that breaks the map rule (the OPT2-era 0-PRO-3 with 2 Ents) is dropped to `replaced` with its reason
   { const old = JSON.parse(before), tmp2 = path.join(os.tmpdir(), 'pro-test-old-' + process.pid + '.json');
-    old.maps.m1.pro = [{id: '0-PRO-1', name: '0-PRO-1', level: 1, leaders: [], deck: {'beetle-grunt': 5, 'duck-paddler': 4, ent: 2, 'feral-tomcat': 5, 'fox-kit': 1, 'honey-bee': 2, 'otter-guard': 1}, source: {file: 'old'}, h2h: null, later: []}];
+    old.maps.m1.pro = [{id: '0-PRO-1', name: '0-PRO-1', level: 1, leaders: [], deck: {'beetle-grunt': 5, 'duck-paddler': 4, ent: 2, 'feral-tomcat': 5, 'fox-kit': 1, 'honey-bee': 2, 'otter-guard': 1}, source: {file: 'old'}, h2h: null, later: []}].concat(old.maps.m1.pro || []); // 2026-11-11 (SKIR2): the file's legal PROs follow it, so the map is refilled from them (no map-true run passes Map 0's 2026-11-11 list)
     fs.writeFileSync(tmp2, JSON.stringify(old));
     cp.execFileSync(process.execPath, [path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js'), '--maps', '0', '--kind', 'pro', '--games', '4', '--apply', '--out', tmp2, '--quiet'], {cwd: ROOT, encoding: 'utf8'});
     const t2 = JSON.parse(fs.readFileSync(tmp2, 'utf8')); fs.rmSync(tmp2, {force: true});
     const dr = (t2.maps.m1.replaced || []).find(x=> x.kind === 'pro' && x.dropped && x.deck.ent);
-    ok(dr && dr.dropped.some(x=> /^ent: rare is over the map's rarity cap \(common\)/.test(x)) && dr.dropped.some(x=> /^otter-guard: /.test(x)) && !t2.maps.m1.pro.some(e=> e.deck.ent) && t2.maps.m1.pro.length >= 1, '2. an old PRO with Ents is dropped by the map rule (reasons kept) and the map refilled from the map-true runs ' + JSON.stringify(dr && dr.dropped)); }
+    ok(dr && dr.dropped.some(x=> /^ent: rare is over the map's rarity cap \(common\)/.test(x)) && dr.dropped.some(x=> /^otter-guard: /.test(x)) && !t2.maps.m1.pro.some(e=> e.deck.ent) && t2.maps.m1.pro.length >= 1, '2. an old PRO with Ents is dropped by the map rule (reasons kept) and the map refilled (from its legal PROs since SKIR1) ' + JSON.stringify(dr && dr.dropped)); }
   ok(/--apply/.test(cp.execFileSync(process.execPath, [path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js'), '--help'], {encoding: 'utf8'})), '2. --help');
   const map = G.CONQUEST_MAPS.find(m=> m.id === 'mc'), f = P.averageField(gm, map), opts = Object.assign(P.parseArgs([]), {games: 6});
   const e = data.maps.mc.pro[0], runJ = JSON.parse(rd(e.source.file)), runOpt = runJ.optima || runJ.decks /* 2026-10-30 (DECK1): a DECK1 run lists `decks` */, other = (runOpt[1] || runOpt[0]).deck; // 2026-10-24 (PRO2): a short run may end with one optimum

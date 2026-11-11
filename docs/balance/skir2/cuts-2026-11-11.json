@@ -1,0 +1,271 @@
+{
+ "about": "SKIR2: BAL9 JJ24 / PRO map-rule swaps outside Maps 0-20 (tools/skir2/decks_2026_11_11.js cuts)",
+ "rows": [
+  {
+   "where": "node m23:23-5",
+   "map": 23,
+   "loc": "m23",
+   "key": "23-5",
+   "before": {
+    "badger-sapper": 1,
+    "badger-trench-digger": 4,
+    "beetle-battering-ram": 2,
+    "howdah-archers": 3,
+    "lodge-engineer": 1,
+    "mouse-sapper": 3,
+    "siege-rhino": 2
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "beetle-battering-ram": 2,
+    "howdah-archers": 3,
+    "lodge-engineer": 1,
+    "mouse-sapper": 3,
+    "siege-rhino": 2
+   },
+   "moves": [
+    {
+     "cut": "badger-sapper",
+     "copies": 1,
+     "to": {
+      "badger-trench-digger": 1
+     },
+     "left": 0
+    }
+   ],
+   "boon": true
+  },
+  {
+   "where": "endless mm",
+   "map": 6,
+   "loc": "mm",
+   "key": "(base deck)",
+   "before": {
+    "meadow-frog": 5,
+    "bog-leech": 3,
+    "marsh-wisp": 3,
+    "marsh-harrier": 2
+   },
+   "after": {
+    "meadow-frog": 5,
+    "bog-leech": 3,
+    "pond-algae": 3,
+    "anhinga-spearbird": 2
+   },
+   "moves": [
+    {
+     "cut": "marsh-wisp",
+     "copies": 3,
+     "to": {
+      "pond-algae": 3
+     },
+     "left": 0
+    },
+    {
+     "cut": "marsh-harrier",
+     "copies": 2,
+     "to": {
+      "anhinga-spearbird": 2
+     },
+     "left": 0
+    }
+   ],
+   "boon": null
+  },
+  {
+   "where": "pro 21-PRO-3",
+   "map": 21,
+   "loc": "m21",
+   "pro": {
+    "kind": "pro",
+    "id": "21-PRO-3"
+   },
+   "before": {
+    "ember-centipede": 3,
+    "golden-eagle-diver": 4,
+    "mountain-goat-climber": 4,
+    "pack-mule": 4,
+    "pika-hoarder": 2,
+    "stoat-cutthroat": 3
+   },
+   "after": {
+    "ember-centipede": 3,
+    "golden-eagle-diver": 4,
+    "mountain-goat-climber": 4,
+    "pack-mule": 4,
+    "pika-hoarder": 2,
+    "pumice-beetle": 3
+   },
+   "moves": [
+    {
+     "cut": "stoat-cutthroat",
+     "copies": 3,
+     "to": {
+      "pumice-beetle": 3
+     },
+     "left": 0
+    }
+   ],
+   "problems": [],
+   "leaders": [
+    "pumice-beetle"
+   ]
+  },
+  {
+   "where": "pro 21-PRO-4",
+   "map": 21,
+   "loc": "m21",
+   "pro": {
+    "kind": "pro",
+    "id": "21-PRO-4"
+   },
+   "before": {
+    "blue-ringed-octopus": 2,
+    "pack-mule": 4,
+    "red-billed-chough": 4,
+    "stoat-cutthroat": 3,
+    "talus-pika": 4,
+    "wolf-spider-mother": 3
+   },
+   "after": {
+    "blue-ringed-octopus": 2,
+    "pack-mule": 4,
+    "red-billed-chough": 4,
+    "talus-pika": 4,
+    "wolf-spider-mother": 3,
+    "pumice-beetle": 3
+   },
+   "moves": [
+    {
+     "cut": "stoat-cutthroat",
+     "copies": 3,
+     "to": {
+      "pumice-beetle": 3
+     },
+     "left": 0
+    }
+   ],
+   "problems": [],
+   "leaders": [
+    "blue-ringed-octopus"
+   ]
+  },
+  {
+   "where": "pro 22-PRO-1",
+   "map": 22,
+   "loc": "m22",
+   "pro": {
+    "kind": "pro",
+    "id": "22-PRO-1"
+   },
+   "before": {
+    "badger-berserker": 3,
+    "cinder-gecko": 4,
+    "ember-centipede": 4,
+    "grave-grin-hyena": 3,
+    "rimefire-salamander": 3,
+    "stoat-cutthroat": 3
+   },
+   "after": {
+    "badger-berserker": 3,
+    "cinder-gecko": 4,
+    "ember-centipede": 4,
+    "grave-grin-hyena": 3,
+    "rimefire-salamander": 3,
+    "fumarole-ibex": 3
+   },
+   "moves": [
+    {
+     "cut": "stoat-cutthroat",
+     "copies": 3,
+     "to": {
+      "fumarole-ibex": 3
+     },
+     "left": 0
+    }
+   ],
+   "problems": [],
+   "leaders": [
+    "badger-berserker"
+   ]
+  },
+  {
+   "where": "pro 23-PRO-1",
+   "map": 23,
+   "loc": "m23",
+   "pro": {
+    "kind": "pro",
+    "id": "23-PRO-1"
+   },
+   "before": {
+    "badger-berserker": 3,
+    "border-collie": 4,
+    "pack-mule": 4,
+    "raccoon-bandit": 3,
+    "tide-spirit": 2,
+    "weaver-bird": 4
+   },
+   "after": {
+    "badger-berserker": 3,
+    "border-collie": 4,
+    "pack-mule": 4,
+    "raccoon-bandit": 3,
+    "tide-spirit": 2,
+    "pronghorn-racer": 4
+   },
+   "moves": [
+    {
+     "cut": "weaver-bird",
+     "copies": 4,
+     "to": {
+      "pronghorn-racer": 4
+     },
+     "left": 0
+    }
+   ],
+   "problems": [],
+   "leaders": [
+    "tide-spirit"
+   ]
+  },
+  {
+   "where": "pro 23-PRO-2",
+   "map": 23,
+   "loc": "m23",
+   "pro": {
+    "kind": "pro",
+    "id": "23-PRO-2"
+   },
+   "before": {
+    "acacia-giraffe": 3,
+    "badger-berserker": 2,
+    "house-cat": 4,
+    "howdah-archers": 3,
+    "pack-mule": 4,
+    "weaver-bird": 4
+   },
+   "after": {
+    "acacia-giraffe": 3,
+    "badger-berserker": 2,
+    "house-cat": 4,
+    "howdah-archers": 3,
+    "pack-mule": 4,
+    "pronghorn-racer": 4
+   },
+   "moves": [
+    {
+     "cut": "weaver-bird",
+     "copies": 4,
+     "to": {
+      "pronghorn-racer": 4
+     },
+     "left": 0
+    }
+   ],
+   "problems": [],
+   "leaders": [
+    "badger-berserker"
+   ]
+  }
+ ]
+}

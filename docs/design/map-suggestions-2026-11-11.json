@@ -117,7 +117,7 @@
     "farm-dog": 1,
     "chipmunk-forager": 1,
     "worker-ant": 1,
-    "hazel-coppice": 1,
+    "hazel-coppice": 2,
     "nightjar-drifter": 1
    }
   },
@@ -167,11 +167,13 @@
    "baby": [],
    "adminAdd": [
     "monarch-wingblade",
-    "pack-rat-looter"
+    "pack-rat-looter",
+    "hazel-coppice"
    ],
    "adminWhy": {
     "monarch-wingblade": "the only status option (Venomous); a thistle butterfly; Rare, a low map breaking its limit once",
-    "pack-rat-looter": "a 1-Lumber card that wins Lumber on a kill: the map has one Lumber maker"
+    "pack-rat-looter": "a 1-Lumber card that wins Lumber on a kill: the map has one Lumber maker",
+    "hazel-coppice": "SKIR1: a second Lumber maker for Thistlewood (only the Pack Rat Looter makes Lumber in its fights; the Chipmunk Skirmisher is 0-1's reward): carried from Map 0, a hazel thicket under the first big trees; also a fourth 1-Lumber card"
    },
    "skills": [
     {
@@ -235,7 +237,8 @@
     "duck-paddler": 4,
     "robin-redbreast": 2,
     "monarch-wingblade": 1,
-    "pack-rat-looter": 2
+    "pack-rat-looter": 3,
+    "hazel-coppice": 2
    }
   },
   "mb": {
@@ -574,7 +577,7 @@
     "muskrat-lodgekeeper": 2,
     "grass-snake": 1,
     "river-mink": 1,
-    "planarian-splitter": 2,
+    "planarian-splitter": 3,
     "dolphin-knight": 3,
     "beaver-lumberjack": 4,
     "kittiwake-flock": 3,
@@ -626,11 +629,13 @@
    "baby": [],
    "adminAdd": [
     "caiman-hatchling",
-    "peat-cutter-vole"
+    "peat-cutter-vole",
+    "sphagnum-vole"
    ],
    "adminWhy": {
     "caiman-hatchling": "a second gator for the Gatorback fights (only the Swamp Alligator), no-wait, and Ambush, the swamp's missing skill",
-    "peat-cutter-vole": "a swamp Lumber maker (Delivery): only one Lumber maker"
+    "peat-cutter-vole": "a swamp Lumber maker (Delivery): only one Lumber maker",
+    "sphagnum-vole": "SKIR2: 5-2's first-clear reward (CONTENT3)"
    },
    "skills": [
     {
@@ -689,11 +694,12 @@
     "raft-spider": 1,
     "muskrat-lodgekeeper": 2,
     "snapstick-turtle": 2,
-    "planarian-splitter": 2,
+    "planarian-splitter": 3,
     "fire-ant-raft": 2,
     "constrictor-coil": 3,
     "caiman-hatchling": 1,
-    "peat-cutter-vole": 1
+    "peat-cutter-vole": 1,
+    "sphagnum-vole": 1
    }
   },
   "m8": {
@@ -804,7 +810,7 @@
     "mosquito-cloud": 2,
     "constrictor-coil": 3,
     "sunbittern-strider": 2,
-    "bone-diviner": 1,
+    "bone-diviner": 2,
     "owl-sentinel": 1
    }
   },
@@ -851,12 +857,14 @@
    "adminAdd": [
     "truffle-piglet",
     "leafcutter-gardener",
-    "nightshade-moth"
+    "nightshade-moth",
+    "planarian-splitter"
    ],
    "adminWhy": {
     "truffle-piglet": "truffles: a fungal Lumber maker (the map has none)",
     "leafcutter-gardener": "ants that farm fungus: a second Lumber maker, no-wait",
-    "nightshade-moth": "Sleep, the spore skill the map is missing"
+    "nightshade-moth": "Sleep, the spore skill the map is missing",
+    "planarian-splitter": "SKIR2: 7-6's old boss card (Map 7's own pack card by source), carried from Map 4: the boss read 79.5% (target 40) without it"
    },
    "skills": [
     {
@@ -919,7 +927,8 @@
     "amber-cicada": 1,
     "truffle-piglet": 2,
     "leafcutter-gardener": 1,
-    "nightshade-moth": 1
+    "nightshade-moth": 1,
+    "planarian-splitter": 3
    }
   },
   "m4": {
@@ -962,11 +971,15 @@
    "baby": [],
    "adminAdd": [
     "upside-down-bat",
-    "blind-cave-fish"
+    "blind-cave-fish",
+    "pack-rat-looter",
+    "bone-diviner"
    ],
    "adminWhy": {
     "upside-down-bat": "a plain, no-Lumber, no-wait bat: the map has 2 no-Lumber cards and 1 plain body",
-    "blind-cave-fish": "a no-Lumber, no-wait cave fish (Keen Sense): cheap bodies for the cave fights"
+    "blind-cave-fish": "a no-Lumber, no-wait cave fish (Keen Sense): cheap bodies for the cave fights",
+    "pack-rat-looter": "SKIR1: Caves & Alcoves had no Lumber maker its fights may field (the Driftwood Crab is 2-5's reward): a rat that hoards in the alcoves, carried from Map 1",
+    "bone-diviner": "SKIR1: a second Lumber maker for the caves: the barrow crow (Map 6's admin add) next to the Barrow Leech Bat"
    },
    "skills": [
     {
@@ -1019,7 +1032,7 @@
     "cave-olm": 1,
     "sulfur-cinder-moth": 2,
     "star-nosed-mole": 1,
-    "stalactite-golem": 1,
+    "stalactite-golem": 2,
     "echo-screecher": 1,
     "giant-cave-huntsman": 2,
     "gallery-orb-weaver": 1,
@@ -1030,7 +1043,9 @@
     "hawthorn-shieldbug": 3,
     "driftwood-crab": 3,
     "upside-down-bat": 1,
-    "blind-cave-fish": 1
+    "blind-cave-fish": 1,
+    "pack-rat-looter": 3,
+    "bone-diviner": 2
    }
   },
   "mk": {
@@ -1075,11 +1090,13 @@
    "baby": [],
    "adminAdd": [
     "nutria-reedcutter",
-    "sunbittern-strider"
+    "sunbittern-strider",
+    "salvager-hermit-crab"
    ],
    "adminWhy": {
     "nutria-reedcutter": "a reed-cutting Lumber maker: only the Driftwood Crab makes Lumber",
-    "sunbittern-strider": "a plain mangrove wader for the skirmish fill"
+    "sunbittern-strider": "a plain mangrove wader for the skirmish fill",
+    "salvager-hermit-crab": "SKIR1: a second Lumber maker for the Kelp Mangroves (only the Nutria Reedcutter; the Driftwood Crab is 2-5's reward): a salvaging crab among the fiddlers, carried from Smugglers' Grotto (Map 7)"
    },
    "skills": [
     {
@@ -1143,7 +1160,8 @@
     "alley-cat": 2,
     "giant-cave-huntsman": 2,
     "nutria-reedcutter": 2,
-    "sunbittern-strider": 2
+    "sunbittern-strider": 2,
+    "salvager-hermit-crab": 1
    }
   },
   "m7": {
@@ -1188,11 +1206,17 @@
    "baby": [],
    "adminAdd": [
     "coral-polyp-colony",
-    "nautilus-drifter"
+    "nautilus-drifter",
+    "grey-seal-bull",
+    "parrotfish",
+    "coral-reef-shark"
    ],
    "adminWhy": {
     "coral-polyp-colony": "a reef Lumber maker every round: the map has none",
-    "nautilus-drifter": "a second reef Lumber maker, high-cost (Very Rare from Map 10)"
+    "nautilus-drifter": "a second reef Lumber maker, high-cost (Very Rare from Map 10)",
+    "grey-seal-bull": "SKIR2: BAL9 JJ28: a Guardian defender for Coral Current (its list had none): an Ocean seal bull carried from Smugglers' Grotto (Map 2), on no other main list",
+    "parrotfish": "SKIR2: 10-3's first-clear reward (GD5 table): on no list since SKIR1, so the fight paid nothing",
+    "coral-reef-shark": "SKIR2: 10-4's first-clear reward (GD5 table): on no list since SKIR1, so the fight paid nothing"
    },
    "skills": [
     {
@@ -1255,7 +1279,10 @@
     "conch-crawler": 3,
     "tide-spirit": 2,
     "coral-polyp-colony": 1,
-    "nautilus-drifter": 1
+    "nautilus-drifter": 1,
+    "grey-seal-bull": 1,
+    "parrotfish": 1,
+    "coral-reef-shark": 1
    },
    "newCard": "sea-bass"
   },
@@ -1470,7 +1497,7 @@
     "dormouse": 2,
     "hawthorn-shieldbug": 3,
     "terrier-pup": 2,
-    "pack-rat-looter": 2
+    "pack-rat-looter": 3
    }
   },
   "mr": {
@@ -1486,7 +1513,10 @@
     "pine-marten",
     "sergeant-bramblefox",
     "owl-nightwatch",
-    "heartwood-treant"
+    "heartwood-treant",
+    "swift-fox",
+    "tasmanian-devil",
+    "bramblewood-lynx"
    ],
    "carried": [
     "quill-thorn-boar",
@@ -1562,7 +1592,15 @@
     "bramble-hoglet": 2,
     "chipmunk-skirmisher": 2,
     "lyrebird-mimic": 2,
-    "bear-cub": 1
+    "bear-cub": 1,
+    "swift-fox": 1,
+    "tasmanian-devil": 1,
+    "bramblewood-lynx": 2
+   },
+   "addWhy": {
+    "swift-fox": "SKIR2: SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card); the suggested list left every fight at 87-99%",
+    "tasmanian-devil": "SKIR2: SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card)",
+    "bramblewood-lynx": "SKIR2: SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card, source.map mr); now first listed here, carried on Map 16"
    }
   },
   "m5": {
@@ -1643,7 +1681,7 @@
     "grave-grin-hyena": 1,
     "dust-hyena": 2,
     "acacia-giraffe": 1,
-    "marula-elephant": 1,
+    "marula-elephant": 2,
     "meerkat-sentry": 2,
     "termite-forager": 2,
     "weaver-bird": 1,
@@ -1668,7 +1706,8 @@
     "bison-bulldozer",
     "goose-sentry",
     "land-tiller",
-    "mallard-halberdier"
+    "mallard-halberdier",
+    "cataphract-destrier"
    ],
    "carried": [
     "truffle-piglet",
@@ -1730,7 +1769,7 @@
     "warhorse-charger": 1,
     "war-hound": 1,
     "border-collie": 1,
-    "shepherds-bark": 1,
+    "shepherds-bark": 2,
     "pronghorn-racer": 1,
     "bison-bulldozer": 1,
     "goose-sentry": 1,
@@ -1741,7 +1780,11 @@
     "fire-ant-raft": 2,
     "hedge-weasel": 2,
     "mouse-sapper": 2,
-    "thorn-shrike": 2
+    "thorn-shrike": 2,
+    "cataphract-destrier": 1
+   },
+   "addWhy": {
+    "cataphract-destrier": "SKIR2: 15-4's first-clear reward (GD5 table; Map 15's own pack card): on no list since SKIR1, so the fight paid nothing"
    }
   },
   "mt": {
@@ -1756,15 +1799,15 @@
     "boreal-elk",
     "woodland-caribou",
     "cone-cutter-squirrel",
-    "pinecone-crossbill",
-    "bramblewood-lynx"
+    "pinecone-crossbill"
    ],
    "carried": [
     "grizzly-vanguard",
     "redwood-woodpecker",
     "owl-nightwatch",
     "berserker-boar",
-    "mountain-hare"
+    "mountain-hare",
+    "bramblewood-lynx"
    ],
    "ownerYes": [],
    "baby": [],
@@ -1824,7 +1867,7 @@
     "woodland-caribou": 2,
     "cone-cutter-squirrel": 2,
     "pinecone-crossbill": 1,
-    "bramblewood-lynx": 1,
+    "bramblewood-lynx": 2,
     "grizzly-vanguard": 2,
     "redwood-woodpecker": 2,
     "owl-nightwatch": 2,
@@ -1846,14 +1889,18 @@
     "ringed-seal",
     "arctic-tern",
     "lemming-swarm",
-    "talus-pika"
+    "talus-pika",
+    "snow-ermine",
+    "harbor-seal",
+    "snow-bunting-archer"
    ],
    "carried": [
     "timber-wolf-pack",
     "taiga-lynx",
     "woodland-caribou",
     "krill-swarm",
-    "cone-cutter-squirrel"
+    "cone-cutter-squirrel",
+    "shepherds-bark"
    ],
    "ownerYes": [],
    "baby": [
@@ -1923,7 +1970,17 @@
     "woodland-caribou": 2,
     "krill-swarm": 2,
     "cone-cutter-squirrel": 2,
-    "musk-ox-calf": 1
+    "musk-ox-calf": 1,
+    "shepherds-bark": 2,
+    "snow-ermine": 1,
+    "harbor-seal": 1,
+    "snow-bunting-archer": 1
+   },
+   "addWhy": {
+    "shepherds-bark": "SKIR2: BAL9 JJ28: a Guardian defender for Wolfsbane Tundra (its list had none): a herding dog against the wolves, carried from Map 15, on one list before",
+    "snow-ermine": "SKIR2: 17-1's first-clear reward (GD5 table; Map 17's own pack card): on no main list since SKIR1, so the fight paid nothing",
+    "harbor-seal": "SKIR2: 17-3's first-clear reward (GD5 table; Map 17's own pack card): on no list since SKIR1, so the fight paid nothing",
+    "snow-bunting-archer": "SKIR2: 17-4's first-clear reward (GD5 table; Map 17's own pack card): on no list since SKIR1, so the fight paid nothing"
    }
   },
   "md": {
@@ -1947,7 +2004,8 @@
     "termite-forager",
     "savanna-cheetah",
     "stonedrop-vulture",
-    "meerkat-sentry"
+    "meerkat-sentry",
+    "marula-elephant"
    ],
    "ownerYes": [],
    "baby": [],
@@ -2015,7 +2073,11 @@
     "termite-forager": 2,
     "savanna-cheetah": 2,
     "stonedrop-vulture": 3,
-    "meerkat-sentry": 2
+    "meerkat-sentry": 2,
+    "marula-elephant": 2
+   },
+   "addWhy": {
+    "marula-elephant": "SKIR2: BAL9 JJ28: a Guardian defender for The Glass Dunes (its list had none): a desert-edge elephant carried from Map 14 like the list's other savanna cards, on one list before"
    }
   },
   "m3": {
@@ -2039,7 +2101,8 @@
     "eagle-owl-quartermaster",
     "sulfur-cinder-moth",
     "chipmunk-hoarder",
-    "talus-pika"
+    "talus-pika",
+    "stalactite-golem"
    ],
    "ownerYes": [],
    "baby": [],
@@ -2104,7 +2167,11 @@
     "eagle-owl-quartermaster": 2,
     "sulfur-cinder-moth": 2,
     "chipmunk-hoarder": 3,
-    "talus-pika": 3
+    "talus-pika": 3,
+    "stalactite-golem": 2
+   },
+   "addWhy": {
+    "stalactite-golem": "SKIR2: BAL9 JJ28: a Guardian defender for Ashen Spurn (its list had none): a cave wall from the lava tubes, carried from Map 8 (on Map 20's SPECIAL list too)"
    }
   },
   "m11": {
@@ -3319,14 +3386,18 @@
   "hawthorn-shieldbug": 3,
   "hedgerow-shrew": 3,
   "kittiwake-flock": 3,
+  "pack-rat-looter": 3,
+  "planarian-splitter": 3,
   "stonedrop-vulture": 3,
   "talus-pika": 3,
   "alley-cat": 2,
   "alligator-gar": 2,
   "ant-scout": 2,
   "berserker-boar": 2,
+  "bone-diviner": 2,
   "booming-bittern": 2,
   "bramble-hoglet": 2,
+  "bramblewood-lynx": 2,
   "camouflage-frog": 2,
   "chamois-leaper": 2,
   "chipmunk-cavalry": 2,
@@ -3353,6 +3424,7 @@
   "grizzly-vanguard": 2,
   "gull-thief": 2,
   "hawk-arrowkeeper": 2,
+  "hazel-coppice": 2,
   "hedge-weasel": 2,
   "honey-bee": 2,
   "house-cat": 2,
@@ -3362,6 +3434,7 @@
   "limpet-clinger": 2,
   "lyrebird-mimic": 2,
   "mangrove-monitor": 2,
+  "marula-elephant": 2,
   "meerkat-sentry": 2,
   "moonlit-hare": 2,
   "mosquito-cloud": 2,
@@ -3372,12 +3445,10 @@
   "nutria-reedcutter": 2,
   "obsidian-scorpion": 2,
   "owl-nightwatch": 2,
-  "pack-rat-looter": 2,
   "peak-condor": 2,
   "peregrine-stooper": 2,
   "pika-hoarder": 2,
   "pincushion-urchin": 2,
-  "planarian-splitter": 2,
   "platypus-spur": 2,
   "pond-algae": 2,
   "puddle-skimmer": 2,
@@ -3387,9 +3458,11 @@
   "robin-redbreast": 2,
   "rot-swollen-carcass": 2,
   "savanna-cheetah": 2,
+  "shepherds-bark": 2,
   "shoal-shark": 2,
   "snapstick-turtle": 2,
   "soldier-ant": 2,
+  "stalactite-golem": 2,
   "sulfur-cinder-moth": 2,
   "sunbittern-strider": 2,
   "taiga-lynx": 2,
@@ -3429,15 +3502,14 @@
   "bison-bulldozer": 1,
   "blind-cave-fish": 1,
   "bloodworm": 1,
-  "bone-diviner": 1,
   "border-collie": 1,
   "boreal-elk": 1,
   "bramble-sprout": 1,
-  "bramblewood-lynx": 1,
   "briarback-hedgehog": 1,
   "caiman-hatchling": 1,
   "caldera-snow-leopard": 1,
   "carrion-crow": 1,
+  "cataphract-destrier": 1,
   "caustic-scorpion": 1,
   "cave-olm": 1,
   "chipmunk-forager": 1,
@@ -3446,6 +3518,7 @@
   "compost-grub": 1,
   "coral-current-eel": 1,
   "coral-polyp-colony": 1,
+  "coral-reef-shark": 1,
   "cormorant": 1,
   "cottontail": 1,
   "crossed-eyes": 1,
@@ -3476,7 +3549,8 @@
   "grass-snake": 1,
   "grass-viper": 1,
   "grave-grin-hyena": 1,
-  "hazel-coppice": 1,
+  "grey-seal-bull": 1,
+  "harbor-seal": 1,
   "heartwood-treant": 1,
   "honey-badger-fury": 1,
   "hoopoe-herald": 1,
@@ -3492,7 +3566,6 @@
   "mallard-halberdier": 1,
   "mangrove-mudskipper": 1,
   "marsh-mallow-hare": 1,
-  "marula-elephant": 1,
   "meadow-rabbit": 1,
   "monarch-wingblade": 1,
   "moon-jelly": 1,
@@ -3506,6 +3579,7 @@
   "ossuary-lammergeier": 1,
   "owl-sentinel": 1,
   "oystercatcher": 1,
+  "parrotfish": 1,
   "peat-cutter-vole": 1,
   "phoenix-fledgling": 1,
   "pine-marten": 1,
@@ -3527,22 +3601,26 @@
   "river-mink": 1,
   "roadrunner-courier": 1,
   "rock-pool-starfish": 1,
+  "salvager-hermit-crab": 1,
   "sand-widow": 1,
   "sandfish": 1,
   "sea-turtle-elder": 1,
   "sergeant-bramblefox": 1,
-  "shepherds-bark": 1,
   "silver-minnow": 1,
   "slow-worm": 1,
   "smoke-raccoon": 1,
+  "snow-bunting-archer": 1,
+  "snow-ermine": 1,
   "snowshoe-hare": 1,
+  "sphagnum-vole": 1,
   "springbok-pronker": 1,
   "squires-mount": 1,
   "stag-knight": 1,
-  "stalactite-golem": 1,
   "star-nosed-mole": 1,
   "sulfur-vent-crab": 1,
   "swamp-alligator": 1,
+  "swift-fox": 1,
+  "tasmanian-devil": 1,
   "the-gannet-queen": 1,
   "tundra-musk-ox": 1,
   "upside-down-bat": 1,
