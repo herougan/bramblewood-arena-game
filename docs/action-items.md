@@ -18,7 +18,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
   - Done 11-11: the "Reference (Random)" set (`docs/balance/ref/ref5-prog.json`, the REF fights' default) rebuilt on the 11-11 lists; no cut card left; ref5 passes.
   - fix6 expects Lion's Mane Jelly to lead 4-5 (left play in LISTFIX3): update after LISTFIX3-2.
   - game-texts fails: 3 ui27-budget texts miss placeholders; 51 texts unused.
-  - Re-search the 30 swapped PRO / BPRO / WPRO decks.
+  - Done 11-11 (PRORS1): the 30 swapped PRO / BPRO / WPRO decks re-searched with SKIR1's tool: 23 replaced, 6 re-confirmed, 17-A-PRO-3 gone. The tool rebuilds a map's whole kind, so 28 other decks in those kinds were replaced too (old ones under `history`).
   - Seven listed cards have no source (enemy-only): Bloodworm, Glow-worm, Matamata, Mossmother Newt, Smuggler Slingrat, Pinecone Crossbill, Sand-flinger Antlion.
   - A PvP stranger deck in `bramblewood-ghosts.js` holds Stag Knight.
 
