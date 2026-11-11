@@ -1,0 +1,611 @@
+{
+ "about": "SKIR3 PvP test deck swaps (tools/skir3/pvp_2026_11_12.js)",
+ "rows": [
+  {
+   "id": "pvp1-01",
+   "out": [
+    "field-vole x3",
+    "gatling-hog x3"
+   ],
+   "to": "thorny-devil",
+   "before": {
+    "mountain-hare": 3,
+    "talus-pika": 3,
+    "rivergate-recruit": 1,
+    "helmeted-otter": 3,
+    "field-vole": 3,
+    "gatling-hog": 3,
+    "ford-kingfisher": 1,
+    "thorny-devil": 2,
+    "otter-ferryman": 1
+   },
+   "after": {
+    "mountain-hare": 5,
+    "talus-pika": 5,
+    "rivergate-recruit": 1,
+    "helmeted-otter": 3,
+    "ford-kingfisher": 1,
+    "thorny-devil": 4,
+    "otter-ferryman": 1
+   },
+   "leaderBefore": "echo-matriarch",
+   "leader": "echo-matriarch",
+   "gauntletWinBefore": 74,
+   "gauntletWin": 76.9,
+   "name": "Mountain Swarm: Mountain Hare"
+  },
+  {
+   "id": "pvp1-07",
+   "out": [
+    "dung-beetle x3"
+   ],
+   "to": "birdlime-dauber",
+   "before": {
+    "sunspire-sky-sovereign": 1,
+    "nectar-vintner": 4,
+    "planarian-splitter": 3,
+    "birdlime-dauber": 3,
+    "dung-beetle": 3,
+    "lamprey": 3,
+    "blue-ringed-octopus": 3
+   },
+   "after": {
+    "sunspire-sky-sovereign": 1,
+    "nectar-vintner": 5,
+    "planarian-splitter": 4,
+    "birdlime-dauber": 4,
+    "lamprey": 3,
+    "blue-ringed-octopus": 3
+   },
+   "leaderBefore": "old-willow-of-the-ford",
+   "leader": "old-willow-of-the-ford",
+   "gauntletWinBefore": 73.1,
+   "gauntletWin": 70.2,
+   "name": "River Tempo: Nectar Vintner"
+  },
+  {
+   "id": "pvp1-08",
+   "out": [
+    "gatling-hog x3"
+   ],
+   "to": "cricket-drummer",
+   "before": {
+    "obsidian-scorpion": 3,
+    "glass-golem": 3,
+    "pyrenean-desman": 3,
+    "gatling-hog": 3,
+    "cricket-drummer": 3,
+    "peak-condor": 3,
+    "clap-net-trapper": 2
+   },
+   "after": {
+    "obsidian-scorpion": 3,
+    "glass-golem": 3,
+    "pyrenean-desman": 4,
+    "cricket-drummer": 5,
+    "peak-condor": 3,
+    "clap-net-trapper": 2
+   },
+   "leaderBefore": "old-shell",
+   "leader": "old-shell",
+   "gauntletWinBefore": 81.3,
+   "gauntletWin": 76.9,
+   "name": "Insect Tempo: Cricket Drummer"
+  },
+  {
+   "id": "pvp1-09",
+   "out": [
+    "tide-pool-crab x5",
+    "field-vole x3"
+   ],
+   "to": "battlement-heron",
+   "before": {
+    "tide-pool-crab": 5,
+    "gilded-swan-knight": 1,
+    "raccoon-bandit": 3,
+    "gull-thief": 2,
+    "thorny-devil": 3,
+    "field-vole": 3,
+    "conch-herald": 3
+   },
+   "after": {
+    "gilded-swan-knight": 1,
+    "raccoon-bandit": 3,
+    "gull-thief": 5,
+    "thorny-devil": 4,
+    "conch-herald": 4,
+    "battlement-heron": 3
+   },
+   "leaderBefore": "fire-drake-hatchling",
+   "leader": "fire-drake-hatchling",
+   "gauntletWinBefore": 68.8,
+   "gauntletWin": 74,
+   "name": "Coastal Tempo: Gull Thief"
+  },
+  {
+   "id": "pvp1-10",
+   "out": [
+    "bombardier-beetle x3",
+    "dung-beetle x3"
+   ],
+   "to": "sunspire-sky-sovereign",
+   "before": {
+    "bombardier-beetle": 3,
+    "robin-redbreast": 3,
+    "glass-changeling": 3,
+    "cinder-hornet": 3,
+    "dung-beetle": 3,
+    "tax-collector-teal": 3,
+    "mallard-halberdier": 2
+   },
+   "after": {
+    "robin-redbreast": 4,
+    "glass-changeling": 3,
+    "cinder-hornet": 5,
+    "tax-collector-teal": 4,
+    "mallard-halberdier": 3,
+    "sunspire-sky-sovereign": 1
+   },
+   "leaderBefore": "old-shell",
+   "leader": "old-shell",
+   "gauntletWinBefore": 84.4,
+   "gauntletWin": 83.7,
+   "name": "Duck Midrange: Cinder Hornet"
+  },
+  {
+   "id": "pvp1-13",
+   "out": [
+    "kraken-spawnling x3",
+    "skull-vulture x3",
+    "vampire-bat x2"
+   ],
+   "to": "ore-smelter-mole",
+   "before": {
+    "kraken-spawnling": 3,
+    "alligator-gar": 3,
+    "bog-leech": 3,
+    "skull-vulture": 3,
+    "cone-cutter-squirrel": 3,
+    "fire-ant-raft": 3,
+    "vampire-bat": 2
+   },
+   "after": {
+    "alligator-gar": 3,
+    "bog-leech": 4,
+    "cone-cutter-squirrel": 5,
+    "fire-ant-raft": 4,
+    "ore-smelter-mole": 4
+   },
+   "leaderBefore": "old-shell",
+   "leader": "old-shell",
+   "gauntletWinBefore": 66.7,
+   "gauntletWin": 76,
+   "name": "Swamp Tempo: Cone-cutter Squirrel"
+  },
+  {
+   "id": "pvp1-14",
+   "out": [
+    "snow-bunting-archer x4"
+   ],
+   "to": "polar-bear",
+   "before": {
+    "birdlime-dauber": 4,
+    "snow-bunting-archer": 4,
+    "robin-redbreast": 4,
+    "caustic-scorpion": 3,
+    "rivergate-tribune": 1,
+    "snow-ermine": 3,
+    "snow-owl-sentinel": 1
+   },
+   "after": {
+    "birdlime-dauber": 4,
+    "robin-redbreast": 4,
+    "caustic-scorpion": 4,
+    "rivergate-tribune": 1,
+    "snow-ermine": 4,
+    "snow-owl-sentinel": 1,
+    "polar-bear": 2
+   },
+   "leaderBefore": "old-willow-of-the-ford",
+   "leader": "old-willow-of-the-ford",
+   "gauntletWinBefore": 61.5,
+   "gauntletWin": 68.3,
+   "name": "Tundra Tempo: Birdlime Dauber"
+  },
+  {
+   "id": "pvp1-15",
+   "out": [
+    "ant-warrior x3"
+   ],
+   "to": "berserker-boar",
+   "before": {
+    "ant-warrior": 3,
+    "peregrine-stooper": 3,
+    "quicksand-queen": 2,
+    "roadrunner-courier": 3,
+    "fawn-scout": 3,
+    "riverside-peddler": 3,
+    "pika-hoarder": 3
+   },
+   "after": {
+    "peregrine-stooper": 3,
+    "quicksand-queen": 2,
+    "roadrunner-courier": 3,
+    "fawn-scout": 3,
+    "riverside-peddler": 3,
+    "pika-hoarder": 3,
+    "berserker-boar": 3
+   },
+   "leaderBefore": "wolfsbane-alpha",
+   "leader": "wolfsbane-alpha",
+   "gauntletWinBefore": 75,
+   "gauntletWin": 70.2,
+   "name": "Bird Tempo: Berserker Boar"
+  },
+  {
+   "id": "pvp1-18",
+   "out": [
+    "field-vole x1"
+   ],
+   "to": "testudo-tortoise",
+   "before": {
+    "robin-redbreast": 4,
+    "ember-jackal": 3,
+    "grave-grin-hyena": 4,
+    "fathom-leviathan": 1,
+    "tide-spirit": 1,
+    "honey-bee": 3,
+    "hawthorn-shieldbug": 3,
+    "field-vole": 1
+   },
+   "after": {
+    "robin-redbreast": 4,
+    "ember-jackal": 3,
+    "grave-grin-hyena": 4,
+    "fathom-leviathan": 1,
+    "tide-spirit": 1,
+    "honey-bee": 3,
+    "hawthorn-shieldbug": 3,
+    "testudo-tortoise": 1
+   },
+   "leaderBefore": "reef-admiral",
+   "leader": "reef-admiral",
+   "gauntletWinBefore": 64.6,
+   "gauntletWin": 72.1,
+   "name": "Field Tempo: Grave-Grin Hyena"
+  },
+  {
+   "id": "pvp1-19",
+   "out": [
+    "dune-packrat x3",
+    "springbok-pronker x1"
+   ],
+   "to": "land-tiller",
+   "before": {
+    "sleepless-shrew": 1,
+    "lone-grey-wolf": 2,
+    "dune-packrat": 3,
+    "wolf-spider-mother": 3,
+    "balloon-archer": 3,
+    "springbok-pronker": 1,
+    "otter-ferryman": 5,
+    "otter-netmender": 2
+   },
+   "after": {
+    "sleepless-shrew": 1,
+    "lone-grey-wolf": 2,
+    "wolf-spider-mother": 3,
+    "balloon-archer": 3,
+    "otter-ferryman": 5,
+    "otter-netmender": 2,
+    "land-tiller": 4
+   },
+   "leaderBefore": "old-shell",
+   "leader": "old-shell",
+   "gauntletWinBefore": 90.6,
+   "gauntletWin": 84.6,
+   "name": "Village Tempo: Otter Ferryman"
+  },
+  {
+   "id": "pvp1-20",
+   "out": [
+    "leafcutter-gardener x3",
+    "gatling-hog x3"
+   ],
+   "to": "beetle-battering-ram",
+   "before": {
+    "terrier-pup": 3,
+    "pike-lancer": 3,
+    "leafcutter-gardener": 3,
+    "soldier-ant": 3,
+    "gatling-hog": 3,
+    "obsidian-scorpion": 3,
+    "acorn-chipmunk": 2
+   },
+   "after": {
+    "terrier-pup": 5,
+    "pike-lancer": 3,
+    "soldier-ant": 5,
+    "obsidian-scorpion": 3,
+    "acorn-chipmunk": 2,
+    "beetle-battering-ram": 2
+   },
+   "leaderBefore": "old-shell",
+   "leader": "old-shell",
+   "gauntletWinBefore": 84.4,
+   "gauntletWin": 86.5,
+   "name": "Insect Swarm: Soldier Ant"
+  },
+  {
+   "id": "pvp1-21",
+   "out": [
+    "hedge-weasel x3"
+   ],
+   "to": "savanna-cheetah",
+   "before": {
+    "echidna-quillshot": 1,
+    "owl-nightwatch": 4,
+    "hedge-weasel": 3,
+    "wolf-spider-mother": 3,
+    "truffle-piglet": 3,
+    "dhole-matriarch": 2,
+    "sleepless-shrew": 4
+   },
+   "after": {
+    "echidna-quillshot": 1,
+    "owl-nightwatch": 5,
+    "wolf-spider-mother": 3,
+    "truffle-piglet": 3,
+    "dhole-matriarch": 2,
+    "sleepless-shrew": 4,
+    "savanna-cheetah": 2
+   },
+   "leaderBefore": "old-shell",
+   "leader": "old-shell",
+   "gauntletWinBefore": 75,
+   "gauntletWin": 66.3,
+   "name": "Forest Midrange: Owl Nightwatch"
+  },
+  {
+   "id": "pvp1-22",
+   "out": [
+    "springbok-pronker x1"
+   ],
+   "to": "caldera-snow-leopard",
+   "before": {
+    "otter-flag-bearer": 4,
+    "mountain-hare": 4,
+    "ice-petrel": 3,
+    "helmeted-otter": 3,
+    "springbok-pronker": 1,
+    "gangrenous-leech": 1,
+    "rimefire-salamander": 2,
+    "magma-salamander": 2
+   },
+   "after": {
+    "otter-flag-bearer": 4,
+    "mountain-hare": 4,
+    "ice-petrel": 3,
+    "helmeted-otter": 3,
+    "gangrenous-leech": 1,
+    "rimefire-salamander": 2,
+    "magma-salamander": 2,
+    "caldera-snow-leopard": 1
+   },
+   "leaderBefore": "old-shell",
+   "leader": "old-shell",
+   "gauntletWinBefore": 86.5,
+   "gauntletWin": 91.3,
+   "name": "Frost Tempo: Mountain Hare"
+  },
+  {
+   "id": "pvp1-23",
+   "out": [
+    "ant-warrior x3"
+   ],
+   "to": "ferry-toll-frog",
+   "before": {
+    "mallard-halberdier": 3,
+    "siege-rhino": 2,
+    "ant-hill": 3,
+    "soldier-ant": 3,
+    "swordbill-challenger": 3,
+    "ant-warrior": 3,
+    "pangolin-roller": 3
+   },
+   "after": {
+    "mallard-halberdier": 3,
+    "siege-rhino": 2,
+    "ant-hill": 3,
+    "soldier-ant": 3,
+    "swordbill-challenger": 3,
+    "pangolin-roller": 3,
+    "ferry-toll-frog": 3
+   },
+   "leaderBefore": "wolfsbane-alpha",
+   "leader": "wolfsbane-alpha",
+   "gauntletWinBefore": 68.8,
+   "gauntletWin": 69.2,
+   "name": "Ants Tempo: Ant Hill"
+  },
+  {
+   "id": "pvp1-24",
+   "out": [
+    "leafcutter-gardener x3",
+    "sandfish x3"
+   ],
+   "to": "birdlime-dauber",
+   "before": {
+    "leafcutter-gardener": 3,
+    "birdlime-dauber": 3,
+    "stoat-cutthroat": 3,
+    "sandfish": 3,
+    "thorny-devil": 3,
+    "cottontail": 3,
+    "snail-mail": 2
+   },
+   "after": {
+    "birdlime-dauber": 4,
+    "stoat-cutthroat": 3,
+    "thorny-devil": 4,
+    "cottontail": 5,
+    "snail-mail": 4
+   },
+   "leaderBefore": "echo-matriarch",
+   "leader": "echo-matriarch",
+   "gauntletWinBefore": 75,
+   "gauntletWin": 79.8,
+   "name": "Rabbit Tempo: Cottontail"
+  },
+  {
+   "id": "pvp1-25",
+   "out": [
+    "gatling-hog x3",
+    "coral-reef-shark x3"
+   ],
+   "to": "magma-salamander",
+   "before": {
+    "gatling-hog": 3,
+    "sunspire-choirmother": 2,
+    "coral-reef-shark": 3,
+    "pond-trout": 3,
+    "apollo-butterfly": 3,
+    "dawn-bellringer": 3,
+    "coral-polyp-colony": 3
+   },
+   "after": {
+    "sunspire-choirmother": 2,
+    "pond-trout": 5,
+    "apollo-butterfly": 4,
+    "dawn-bellringer": 4,
+    "coral-polyp-colony": 3,
+    "magma-salamander": 2
+   },
+   "leaderBefore": "old-shell",
+   "leader": "old-shell",
+   "gauntletWinBefore": 71.2,
+   "gauntletWin": 68.3,
+   "name": "Hummingbird Tempo: Pond Trout"
+  },
+  {
+   "id": "pvp1-26",
+   "out": [
+    "cave-warlord x3"
+   ],
+   "to": "beaver-lumberjack",
+   "before": {
+    "ur-elk": 2,
+    "howdah-archers": 3,
+    "kittiwake-flock": 3,
+    "teatime-toad": 3,
+    "fawn-scout": 3,
+    "crossed-eyes": 3,
+    "cave-warlord": 3
+   },
+   "after": {
+    "ur-elk": 2,
+    "howdah-archers": 3,
+    "kittiwake-flock": 3,
+    "teatime-toad": 3,
+    "fawn-scout": 3,
+    "crossed-eyes": 3,
+    "beaver-lumberjack": 3
+   },
+   "leaderBefore": "old-shell",
+   "leader": "old-shell",
+   "gauntletWinBefore": 66.7,
+   "gauntletWin": 72.1,
+   "name": "Bird Swarm: Beaver Lumberjack"
+  },
+  {
+   "id": "pvp1-27",
+   "out": [
+    "ant-warrior x3"
+   ],
+   "to": "duckling-squadron",
+   "before": {
+    "magnate-duck": 1,
+    "tax-collector-teal": 4,
+    "box-turtle": 3,
+    "ant-warrior": 3,
+    "mallard-halberdier": 3,
+    "fennec-fox": 3,
+    "chipmunk-cavalry": 3
+   },
+   "after": {
+    "magnate-duck": 1,
+    "tax-collector-teal": 4,
+    "box-turtle": 3,
+    "mallard-halberdier": 3,
+    "fennec-fox": 3,
+    "chipmunk-cavalry": 3,
+    "duckling-squadron": 3
+   },
+   "leaderBefore": "heron-hag",
+   "leader": "heron-hag",
+   "gauntletWinBefore": 68.8,
+   "gauntletWin": 64.4,
+   "name": "Duck Tempo: Tax-Collector Teal"
+  },
+  {
+   "id": "pvp1-28",
+   "out": [
+    "grotto-lobster x3"
+   ],
+   "to": "ibex-rockcaller",
+   "before": {
+    "cinder-hornet": 3,
+    "mangrove-monitor": 3,
+    "pika-hoarder": 3,
+    "coral-polyp-colony": 3,
+    "mangrove-manatee": 3,
+    "grotto-lobster": 3,
+    "mangrove-mudskipper": 2
+   },
+   "after": {
+    "cinder-hornet": 4,
+    "mangrove-monitor": 3,
+    "pika-hoarder": 3,
+    "coral-polyp-colony": 3,
+    "mangrove-manatee": 3,
+    "mangrove-mudskipper": 2,
+    "ibex-rockcaller": 2
+   },
+   "leaderBefore": "wolfsbane-alpha",
+   "leader": "wolfsbane-alpha",
+   "gauntletWinBefore": 61.5,
+   "gauntletWin": 71.2,
+   "name": "Mangrove Midrange: Cinder Hornet"
+  },
+  {
+   "id": "pvp1-29",
+   "out": [
+    "hedge-weasel x4",
+    "trapdoor-spider x2"
+   ],
+   "to": "tiny-cave-dweller",
+   "before": {
+    "planarian-splitter": 4,
+    "testudo-tortoise": 3,
+    "hedge-weasel": 4,
+    "trapdoor-spider": 2,
+    "riverstone-slinger": 3,
+    "burrow-rabbit": 3,
+    "sunspire-sky-sovereign": 1
+   },
+   "after": {
+    "planarian-splitter": 4,
+    "testudo-tortoise": 3,
+    "riverstone-slinger": 3,
+    "burrow-rabbit": 5,
+    "sunspire-sky-sovereign": 1,
+    "tiny-cave-dweller": 4
+   },
+   "leaderBefore": "fire-drake-hatchling",
+   "leader": "fire-drake-hatchling",
+   "gauntletWinBefore": 58.7,
+   "gauntletWin": 70.2,
+   "name": "Rabbit Tempo: Burrow Rabbit"
+  }
+ ]
+}
