@@ -11,6 +11,209 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - c) Leave them.
 - **Default:** a
 
+**SKIR2-1. Keep SKIR2's list adds** · Decide · Balance · asked 2026-11-11
+- No card stats changed. Rewards made obtainable: Sphagnum Vole (Map 5), Parrotfish, Coral Reef Shark (10), Gilded Roadwarden (15), Snow Ermine, Harbor Seal, Snow Bunting Archer (17). Guardians (JJ28): Grey Seal Bull (10), Shepherd (17), Marula Elephant (18), Stalactite Pill Bug (19). Fights: Planarian Splitter (7), Swift Fox, Tasmanian Devil, Bramblewood Lynx (13).
+  - a) Keep.
+  - b) Drop the ones you name.
+- **Default:** a
+
+**SKIR2-2. Caves & Alcoves needs a second weak card** · Decide · Balance · asked 2026-11-11
+- 8-2 reads 66% (target 85) and 8-7 46% (target 60). Map 8's only weak card, Stalactite Pill Bug, is already in 5 of 8 fights, the most the rule allows. With it, 8-2 reads about 80%.
+  - a) Allow the Pill Bug in 6 of Map 8's fights.
+  - b) You add a weak Map 8 card.
+  - c) Leave both.
+- **Default:** a
+
+**SKIR2-3. Fights no legal deck can fix** · Decide · Balance · asked 2026-11-11
+- 2-1 (63%, target 90) and 2-2 (62%, target 80): every legal Pebble Beach deck reads about 60%. 17-8 (23%, target 40): its Walrus Icebreaker leader and the frost decide it; every deck reads 0-23%. Side 10-A-4 reads 0%.
+  - a) Allow a Health or Shield change on these.
+  - b) Leave them.
+- **Default:** a
+
+**SKIR2-4. First-clear cards missing from their fight** · Decide · Balance · asked 2026-11-11
+- 27 of 50 fights that pay a first-clear pack card no longer field that card (SKIR1's rebuild could not see the table). Players win a card they never met in that fight.
+  - a) Put each back in its fight in the next road pass.
+  - b) Leave it.
+- **Default:** a
+
+**CONTENT19-1. Sea Bass: 3/6, not 3/7** · Decide · Cards · asked 2026-11-11
+- You asked for a Sea Bass on Map 10. A Pack 2 card is priced at the pack's first map (Map 7), where 3/7 is over budget; 3/6 fits (20.8 of 21.5).
+  - a) Keep 3/6.
+  - b) 3/7, priced at Map 10 as an exception.
+- **Default:** a
+
+**PERF2-1. More effect savings (small look changes)** · Decide · Performance · asked 2026-11-11
+- PERF2 cut a fight's main-thread time by 61% and effects by 76% with no visible change. Three further cuts change the look slightly: Auto-lower steps down twice (High to Low) instead of stopping at Medium; the card-name scroll becomes a PNG strip instead of SVG (an art change); card filter flashes and the dragon's blend layer become plain overlays.
+  - a) None for now.
+  - b) Auto-lower twice only.
+  - c) All three.
+- **Default:** b
+
+**THEME8-1. When the Ice Hollow opens** · Decide · Maps · asked 2026-11-11
+- The Ice Hollow (side map of Map 17, Wolfsbane Tundra) opens after Map 21 today. Opening it after Map 17 brings its monsters (Yeti Chieftain, Permafrost Mammoth, Beluga ...) into the Maps 0-20 road, so they would be tuned with it.
+  - a) Keep: after Map 21.
+  - b) After Map 17.
+- **Default:** a
+
+**THEME8-2. Monster leaders stay on their main fights** · Decide · Maps · asked 2026-11-11
+- Some monsters THEME8 placed in side maps lead main fights today: Komodo Warlord (18-6), Yeti (19-6), Cave Warlord (20-5), Ancient Sloth Titan (20-9). The Caldera Wyrm costs Stone, so it can only lead the Volcano Lair boss as a SPECIAL leader.
+  - a) Keep them as SPECIAL leaders there (not obtainable from those fights).
+  - b) Side maps only; those fights get new leaders.
+- **Default:** a
+
+**GUIDE1-1. Claude Code hooks (needs your yes)** · Decide · Tools · asked 2026-11-11
+- Three hooks in .claude/settings.json: check a .js file's syntax after each edit; block reading the huge generated files (cards.json, index.html, language packs) and print the jq / grep way instead; warn on edits to generated files. They save tokens and catch broken edits. It is a settings change, so I wait for you.
+  - a) Add all three.
+  - b) Only the syntax check.
+  - c) None.
+- **Default:** a
+
+**SKIR1-1. K14 reads the new lists** · Decide · Balance · asked 2026-11-11
+- K14 (carried cards 1 copy, 6 in all) took 'own card' from each card's old source map. Under the new lists Ashen Spurn had 2 own cards and Map 1 had 5. Now a card first listed on a map counts as that map's own.
+  - a) Keep.
+  - b) Revert, and re-place source maps card by card.
+- **Default:** a
+
+**SKIR1-2. Skirmish rewards on later lists** · Decide · Balance · asked 2026-11-11
+- You picked some fight rewards for later maps (Terrier Pup, Cricket Drummer, Driftwood Crab, Golden Eagle Diver ...). Decks keep the rule that a reward appears only in its own fight (or a fight that already fielded it). This also leaves Map 13 with 10 usable cards.
+  - a) Keep.
+  - b) A later map's fights may use an earlier reward you listed there.
+- **Default:** a
+
+**SKIR1-3. Six cards over budget on their new map** · Decide · Balance · asked 2026-11-11
+- Moray Ambusher, Raccoon Nightcrew (Smugglers' Grotto), Mudpuppy, Peat-cutter Vole (Map 5) and Planarian Splitter (Maps 4-5) are over budget where your lists put them; Termite Forager (Map 14) is borderline (100%). They wait on a pending list for your re-fit.
+  - a) You re-fit them.
+  - b) Claude fits them by the formula.
+- **Default:** a
+
+**SKIR1-4. Stone cards left Maps 0-20** · Decide · Balance · asked 2026-11-11
+- 'No stone until Map 21+': the Malachite Golem (led 8-7 and 8-A-4) and the Pumice Beetle (19-3, 19-6) left their decks; those fights now lead with their new top card.
+  - a) Keep.
+  - b) Bring the golem back as an exception.
+- **Default:** a
+
+**SKIR1-5. Mix gaps the lists cannot fill** · Decide · Balance · asked 2026-11-11
+- Map 0 has 2 Lumber-cost and 3 Wait cards; Maps 3, 7 and 11 one plain animal; Map 11 two no-Wait cards; Map 1 no usable status card; Map 18 no plain animal. Each map's decks show what its list holds.
+  - a) Leave them.
+  - b) Claude suggests 1-2 cards per gap.
+- **Default:** a
+
+**SKIR1-6. SKIR1's Lumber admin adds** · Decide · Balance · asked 2026-11-11
+- Carried cards added for a second Lumber maker (no card's first map moved): Map 1 Hazel Coppice, Map 8 Pack Rat Looter and Bone Diviner, Map 9 Salvager Hermit Crab.
+  - a) Keep.
+  - b) Drop them.
+- **Default:** a
+
+**SKIR1-8. A card in more than half a map's fights** · Decide · Balance · asked 2026-11-11
+- Rule used: no card in more than half a map's fights. Where a fight could not reach its band inside it (Coral Current's fillers, Map 20's boss ...), one more fight was allowed. Thin lists make the line tight.
+  - a) Half, plus one where a fight needs it.
+  - b) Strictly half; those fights stay off band.
+- **Default:** a
+
+**REF6-1. How the 100 reference decks are built** · Decide · Balance · asked 2026-11-11
+- Each of the 100 simulated players' decks takes their cards in the order the map's optimised decks use them (fast). A true optimiser run per player is about 60 core-hours. Result today: the 100 decks are very close in strength (spread 0-5 points), so pack luck barely matters.
+  - a) Keep the fast method.
+  - b) Run true per-player optimisation overnight on GitHub's free runners.
+- **Default:** a
+
+**REF6-2. Rarity cap for reference decks** · Decide · Balance · asked 2026-11-11
+- The cap would remove cards every player holds early (2 rare Otter Centurions from the starter, at Map 3 where the cap is Uncommon). Faction cards are already excluded.
+  - a) No cap for reference decks (players really hold these).
+  - b) Apply the cap.
+- **Default:** a
+
+**REF6-3. Which reference ladder the game deals** · Decide · Balance · asked 2026-11-11
+- Admin "Reference (Random)" still deals the older 10-deck ladder. Since the 100 decks barely differ, 10 are enough.
+  - a) Keep dealing the 10.
+  - b) Deal from the 100.
+- **Default:** a
+
+**DESK2-1. Steam demo scope** · Decide · Desktop · asked 2026-11-11
+- The desktop app now runs the game fully offline (single-player). A Steam demo needs a cut-off point.
+  - a) Maps 0-5 and their side maps.
+  - b) Maps 0-10.
+  - c) Another cut (tell me).
+- **Default:** a
+
+**DESK2-2. Packs for guests on desktop** · Decide · Desktop · asked 2026-11-11
+- Offline, a guest can't open Shop packs today ("Sign in to open packs"), because packs are server-checked.
+  - a) Require Steam sign-in for packs (no change offline).
+  - b) Allow offline pack opening for guests (local only, no cloud sync).
+- **Default:** a
+
+**DESK2-3. Mac build on Steam** · Decide · Desktop · asked 2026-11-11
+- CI builds an ad-hoc signed Mac app (free). Apple notarisation needs a paid developer account (99 USD a year); without it, Mac players see a warning on first launch.
+  - a) Ship Windows and Linux first; Mac later.
+  - b) Ship the ad-hoc Mac build now.
+  - c) Get the Apple account (you buy it; Claude never buys).
+- **Default:** a
+
+**DESK2-4. How builds reach Steam** · Decide · Desktop · asked 2026-11-11
+- The GitHub workflow builds Windows, Mac and Linux on a desktop-v* tag.
+  - a) You upload builds to Steam by hand for now.
+  - b) Later, CI uploads to Steam (needs a Steam build account secret you add).
+- **Default:** a
+
+**SKILL9-1. Skill versions read under one family name** · Decide · Skills · asked 2026-11-11
+- Today 133 skills reach Map 20; target under 80. Group look-alikes under one name, each keeping its own rule and price (no fight changes): Arrow (Ice/Fire Arrow, Venom Spit, Twin Shot, Spitfire, Archer), Keen Sense, Evasive, Daunt, Delivery (Milling, Scavenge, Driftwood), Venomous, Decay, Pounce, Progeny, Fletcher, Nocturnal, Shell, Immunity, Ambush (Trap). Saves 23.
+  - a) Do it.
+  - b) Keep today's names.
+- **Default:** a
+
+**SKILL9-2. Cull family** · Decide · Skills · asked 2026-11-11
+- Predator, Executioner, Shatter and Siege each add damage against one kind of target, as Cull does. They become "Cull N – weaker / wounded / frozen / structures", rules and prices kept. Saves 4.
+  - a) Merge.
+  - b) Keep the four names.
+- **Default:** a
+
+**SKILL9-3. Tally family** · Decide · Skills · asked 2026-11-11
+- Carnage, Tally, Requiem, Dirge, Onslaught, Riled, Almanac and Foe's Scarcity all read "while a count reaches N: +2/+2". They become "Tally N – what it counts"; rules kept, prices re-measured as one family later. Saves 7 (without it: 80 skills).
+  - a) One family.
+  - b) Merge only Carnage's versions.
+- **Default:** a
+
+**SKILL9-4. Heal family's name** · Decide · Skills · asked 2026-11-11
+- Regenerate, Heal, Repair, Carrion and Herbalist all restore Health. One family, rules and prices kept. Saves 4.
+  - a) Call it Heal (Earthworm reads "Heal 1 – self").
+  - b) Call it Regenerate.
+- **Default:** a
+
+**SKILL9-5. Speed family's name** · Decide · Skills · asked 2026-11-11
+- Quick is Speed 2; Speed, Haste, Slow and Fast Forward are all about when a unit acts. One family. Saves 4.
+  - a) Call it Speed (Cottontail reads "Speed 2").
+  - b) Keep the name Quick.
+- **Default:** a
+
+**SKILL9-6. Thrive family** · Decide · Skills · asked 2026-11-11
+- Frost, Heat, Salt, Timbered, Bedrock, Crepuscular and Rainrunner all read "while a condition holds: +A/+H". They become "Thrive – condition". Diurnal and Nocturnal stay. Saves 5.
+  - a) Merge.
+  - b) Keep the seven names.
+- **Default:** a
+
+**SKILL9-7. Inflict family** · Decide · Skills · asked 2026-11-11
+- Freeze, Confuse and Shock share one text: "Chance% to <status> the target". They become "Inflict – Freeze 25%"; statuses keep their names, rules and prices. Saves 1-2.
+  - a) Merge.
+  - b) Keep the names.
+- **Default:** a
+
+**SKILL9-8. Afflicted family** · Decide · Skills · asked 2026-11-11
+- Purblind, Night-blind, Scatterbrained and Drunk are all a status the unit always has. They become "Afflicted – Blind / Blind at night / Confused / Tipsy", rules and prices kept. Saves 2-3.
+  - a) Merge.
+  - b) Keep the names.
+- **Default:** a
+
+**SKILL9-9. Four skill swaps, six skills off the road** · Decide · Skills · asked 2026-11-11
+- Swaps: Tasmanian Devil Berserk→Rage, Yeti Scare→Armor, Ashbone Ghoul Remember→Undead, Dhole Matriarch drops Pack Leader (no Pack units before Map 21). Off the road: Sequestration, Meld, Pickpocket (cards you didn't pick); Gorge, Parasite, Rupture (one enemy-only deck). Saves 10; a few fights get re-measured.
+  - a) Do all.
+  - b) Keep them.
+- **Default:** a
+
+**SKILL9-10. Quarry Mole needs Stone on Map 8** · Decide · Skills · asked 2026-11-11
+- Your Map 8 pick Quarry Mole gets Armor while holding 2+ Stone, which breaks "no Stone before Map 21".
+  - a) It reads "Thrive – 3+ Lumber: Armor 1" and is re-fitted to the budget.
+  - b) Move Quarry Mole past Map 20.
+- **Default:** a
+
 **BAL46-1. Morel Hollow 7-6 Morel Monarch a little easy** · Decide · Road · asked 2026-11-10
 - The Morel Monarch boss reads 46.3% at 400 games (target 40, band 30-49). All 514 legal decks were screened; the current one is near the strongest, and Shield is already above the rule. In band, so not urgent.
   - a) Leave it (in band).
