@@ -13,11 +13,11 @@
   },
   "after": {
    "fights": 149,
-   "inBand": 121,
-   "within10": 126,
-   "beyond20": 12,
-   "meanGap": 6.57,
-   "meanWin": 69.3
+   "inBand": 126,
+   "within10": 130,
+   "beyond20": 10,
+   "meanGap": 5.99,
+   "meanWin": 69.5
   }
  },
  "side": {
@@ -456,16 +456,14 @@
    },
    "after": {
     "fights": 9,
-    "inBand": 6,
-    "within10": 7,
+    "inBand": 8,
+    "within10": 8,
     "beyond20": 0,
-    "meanGap": 4.81,
-    "meanWin": 71.5
+    "meanGap": 2.76,
+    "meanWin": 69.3
    },
    "off": [
-    "10-9 29.8/40",
-    "10-5 81.8/72.9",
-    "10-7 76.3/64.3"
+    "10-9 29.8/40"
    ]
   },
   "mj": {
@@ -674,15 +672,14 @@
    },
    "after": {
     "fights": 7,
-    "inBand": 5,
-    "within10": 5,
+    "inBand": 6,
+    "within10": 6,
     "beyond20": 0,
-    "meanGap": 5.96,
-    "meanWin": 66.7
+    "meanGap": 4.71,
+    "meanWin": 65.5
    },
    "off": [
-    "16-4 61/72",
-    "16-7 52.5/40"
+    "16-4 61/72"
    ]
   },
   "m6": {
@@ -699,16 +696,14 @@
    },
    "after": {
     "fights": 8,
-    "inBand": 5,
-    "within10": 5,
-    "beyond20": 2,
-    "meanGap": 11.96,
-    "meanWin": 58.9
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 4.56,
+    "meanWin": 67.2
    },
    "off": [
-    "17-8 20/40",
-    "17-2 54.8/85",
-    "17-4 35.5/75"
+    "17-8 20/40"
    ]
   },
   "mi": {
