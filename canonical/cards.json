@@ -36962,6 +36962,11 @@
     "numericId": 9227,
     "uuid": "a41950ba-d0cd-447f-8183-aff1ca0b0779",
     "art": null,
-    "creatorNote": "2026-11-12 (package CACTI1, owner 00:38: \"There is no cacti card. There should be. Dry & Thorny\"): a squat desert Plant with Dry and Thorns 2 (two skills). Recommended home: The Glass Dunes (md, Map 18; its theme is Dry + Thorns, like Thorny Devil and Fennec Fox), Rare. Priced with the budget (tools/skill_costs.js budget, Level 1, Rare, Map 18 term, Cost 1 / Wait 2): 1/18 uses 0.98 of N 30.79; 1/20 is over (1.04). On no map list yet (SKIR3 places it). Art: the emoji until drawn; prompt in docs/art-style-prompts.md."
+    "creatorNote": "2026-11-12 (package CACTI1, owner 00:38: \"There is no cacti card. There should be. Dry & Thorny\"): a squat desert Plant with Dry and Thorns 2 (two skills). Recommended home: The Glass Dunes (md, Map 18; its theme is Dry + Thorns, like Thorny Devil and Fennec Fox), Rare. Priced with the budget (tools/skill_costs.js budget, Level 1, Rare, Map 18 term, Cost 1 / Wait 2): 1/18 uses 0.98 of N 30.79; 1/20 is over (1.04). On no map list yet (SKIR3 places it). Art: the emoji until drawn; prompt in docs/art-style-prompts.md.",
+    "source": {
+      "kind": "pack",
+      "tier": 3,
+      "map": "md"
+    }
   }
 ]

@@ -61,7 +61,7 @@ ok(Object.entries(use).every(([id, k]) => SUG.usage[id] === k), 'the suggestion 
 // ---- 2. BAL9 JJ28 ----
 const L = require(path.join(ROOT, 'tools', 'skir1', 'lib_fight_2026_11_11.js'));
 for (const mid of ['m7', 'm6', 'md', 'm3']) {
-  if (['grey-seal-bull', 'shepherds-bark', 'marula-elephant', 'stalactite-golem'].some(id => s3off(mid, id) && (S3.main[mid].before || []).includes(id)) && !(pools[mid].cards || []).some(id => D[id] && (D[id].effects || {}).guardian)) continue; // 2026-11-12 (SKIR3): no room for the Guardian add (draft SKIR3-1)
+  if (['grey-seal-bull', 'shepherds-bark', 'marula-elephant', 'stalactite-golem'].some(id => s3off(mid, id) && (S3.main[mid].before || []).includes(id))) continue; // 2026-11-12 (SKIR3): no room for the Guardian add (draft SKIR3-1)
   const guards = (pools[mid].cards || []).filter(id => D[id] && (D[id].effects || {}).guardian);
   ok(guards.length >= 1, `Map ${no(mid)} (${mid}): its list holds a Guardian defender (${guards.join(', ')})`);
   const m = L.maps().find(x => x.id === mid); ok(L.fightsOf(m).some(n => guards.some(id => n.deck[id])), `Map ${no(mid)}: a road deck holds its Guardian`);

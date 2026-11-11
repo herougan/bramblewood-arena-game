@@ -1,0 +1,21 @@
+{
+ "_about": "SKIR3 (2026-11-12): CACTI1s Barrel Cactus, placed on The Glass Dunes (Map 18) as a tier-3 pack card like the map's other pack cards, is obtainable from Map 14 (its pack zone), where its budget reads over (CACTI1 priced it at Map 18). Held for the owner's re-fit step; no stat was changed.",
+ "built": "2026-11-12",
+ "cards": [
+  {
+   "id": "barrel-cactus",
+   "name": "Barrel Cactus",
+   "stats": "1/18",
+   "obtainMap": 14,
+   "lists": [
+    "md (Map 18)",
+    "mpd (The Pale Desert)"
+   ],
+   "level1": {
+    "x1": 30.08,
+    "N": 29.85,
+    "ok": false
+   }
+  }
+ ]
+}
