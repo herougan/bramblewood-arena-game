@@ -102,7 +102,10 @@ const fnSrc = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0)
   const t2mc = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'theme2-proposal-2026-10-28.json'), 'utf8')).maps.find(m=> m.key === 'mc');
   ok(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps.mc.cards.includes('sparrow-chick') === t2mc.proposed.includes('sparrow-chick'), 'EB-1. its place on Gannet Cliffs\' list follows THEME2');
   // 2026-10-24 (package BAL2, DF-1): a Pack 1 card counts from Map 0, where the first Pack 1 is paid (was its pool map, 3)
-  ok(!JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'card-obtain-maps.json'), 'utf8')).maps['sparrow-chick'], 'EB-1. obtainable from Map 0 (Pack 1, DF-1)'); }
+  // 2026-11-11 (LISTFIX3): the 11-11 lists (SKIR1, a THEME8 suggestion) put it on The Aerie Vault, a side map opening on Map 15: Pack 3 there, Map 14 by
+  // the same DF-1 rule (cardObtainMap); was: on no list, Map 0
+  const LBG = require(path.join(ROOT, 'tools', 'lib_bramble.js')), om = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'card-obtain-maps.json'), 'utf8')).maps;
+  ok((om['sparrow-chick'] || 0) === LBG.G.cardObtainMap(LBG.CARD_DEFS_BASELINE['sparrow-chick']), `EB-1. obtainable from the map DF-1 gives (Map ${om['sparrow-chick'] || 0})`); }
 // ---- the fights: Wildfire Front on 14-6 (savanna) and 20-8 (volcano), one ground fire there
 { const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, node = (mid, k)=> G.CONQUEST_MAPS.find(m=> m.id === mid).nodes.find(n=> n.key === k);
   for(const [mid, k] of [['m5', '14-6'], ['m11', '20-8']]){ const r = G.fightRules(mid, node(mid, k));

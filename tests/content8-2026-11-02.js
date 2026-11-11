@@ -21,17 +21,22 @@ const tags = JSON.parse(rd('canonical/animal-tags.json')), row = JSON.stringify(
 const trow = (function find(o){ if(Array.isArray(o)){ for(const x of o){ const r = find(x); if(r) return r; } } else if(o && typeof o === 'object'){ if(o.id === 'night-algae' && o.animal) return o; for(const k of Object.keys(o)){ const r = find(o[k]); if(r) return r; } } return null; })(tags);
 ok(trow && trow.name === 'Dinoflagellates' && trow.animal === 'algae', 'animal-tags.json row: Dinoflagellates, algae');
 // 2. the lists: each placed card on exactly its map, no map over 16 cards, flags cleared, a basic-pack source, inside the budget band at the list's term
+// 2026-11-11 (LISTFIX3): the lists are the owner's 11-11 picks (SKIR1): no 16-card / 8-11 own cap, and a jellyfish sits where those lists put it; one
+// they left on no list is out of play and waits for the owner's answer (draft LISTFIX3-2, docs/balance/listfix3/decisions-2026-11-11.json)
+const allListed = id=> Object.values(pools).some(e=> (e.cards || []).includes(id) || (e.special || []).includes(id) || Object.values(e.submaps || {}).some(l=> (Array.isArray(l) ? l : l.cards || []).includes(id)));
+const LF3 = JSON.parse(rd('docs/balance/listfix3/decisions-2026-11-11.json')).items.find(x=> x.id === 'LISTFIX3-2') || {};
 for(const [m, ids] of Object.entries(PLACE)){
-  ok(pools[m].cards.length <= 16, `${m} list at most 16 cards (${pools[m].cards.length})`);
   for(const id of ids){ const c = by(id); ok(c, id + ' exists'); if(!c) continue;
-    ok(listed(id).join() === m, `${id} on the ${m} list only (${listed(id).join()})`);
+    if(!allListed(id)){ ok((LF3.body || '').includes(c.name), `${id}: on no 11-11 list, named in draft LISTFIX3-2`); continue; }
+    ok(listed(id).length >= 1, `${id} on a map list (${listed(id).join()})`);
     ok(!c.awaitingSource && !c.unattainable, id + ' not awaitingSource / unattainable');
     ok(c.source && c.source.kind === 'pack' && c.source.map === m, id + ' source is a pack card of ' + m);
     const v = R.verdict(R.NEW, c); ok(v.ok, `${id} inside the budget band at its list's term (${v.use} of N ${v.N})`);
     ok(!G.isUnattainable || !G.isUnattainable(LB.CARD_DEFS_BASELINE[id]), id + ' obtainable in the game'); } }
-// own cards (not on an earlier map's list) of the four maps: 8-11, total at most 16
-{ const order = Object.keys(pools), seen = new Set(); for(const k of order){ const own = pools[k].cards.filter(x=> !seen.has(x)); pools[k].cards.forEach(x=> seen.add(x)); if(['mb', 'm2', 'mk', 'm7'].includes(k)) ok(own.length >= 8 && own.length <= 11, `${k} holds ${own.length} own cards (8-11)`); } }
-for(const [id, [a, h]] of Object.entries(BACK)){ const c = by(id); ok(c.awaitingSource && c.unattainable && !listed(id).length && !c.source && c.attack === a && c.health === h, `${id} unlisted again with its CONTENT7 line ${a}/${h}`); }
+// 2026-11-11 (LISTFIX3): the 8-11 own-card check of mb / m2 / mk / m7 is gone with the cap (the owner's 11-11 picks set the lists); a BACK card an 11-11
+// admin add lists (Bloodworm, Map 2) keeps its CONTENT7 line and no source (enemy-only until the owner places it)
+const ADMIN = JSON.parse((rd('arena_app.js').match(/const UI47_ADMIN_ADD = (\{.*?\});\n/) || [0, '{}'])[1]), admin = id=> Object.values(ADMIN).some(l=> l.includes(id));
+for(const [id, [a, h]] of Object.entries(BACK)){ const c = by(id); ok(c.awaitingSource && c.unattainable && (!listed(id).length || admin(id)) && !c.source && c.attack === a && c.health === h, `${id} unlisted again (or an 11-11 admin add) with its CONTENT7 line ${a}/${h}`); }
 // rarity caps: no card above its map's boss cap
 const capMap = {mb:2, m2:4, m7:10};
 for(const [m, ids] of Object.entries(PLACE)) for(const id of ids){ const cap = G.roadRarityCap(capMap[m], 'miniboss', m); ok(G.roadRarityOk(by(id).rarity, capMap[m], 'worldboss', m) || !cap, `${id} (${by(id).rarity}) within the rarity cap of ${m}`); }

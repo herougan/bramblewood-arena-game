@@ -168,7 +168,11 @@ for(const lv of [0, 1, 2]){
   const C = require(path.join(ROOT, 'tools', 'en8_cards_2026_10_24.js'));
   // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the card's place on its map's MAP list is THEME2's (several are on no list now)
   const T2 = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/theme2-proposal-2026-10-28.json'), 'utf8')).maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));
-  C.NEW.forEach(s=>{ const c = by[s.id], m = s.place[0]; ok(c && !c.faction && (pools[m].cards || []).includes(s.id) === (T2[m] || []).includes(s.id) && c.source && c.source.map === m, `${s.id}: its source is ${m}, its place on ${m}'s list follows THEME2, no faction`); });
+  // 2026-11-11 (LISTFIX3): or the owner's 11-11 picks for that map (Yes / admin add / suggestion, SKIR1): he picked the Beachcomber Sanderling Yes on Smugglers' Grotto
+  const app11 = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), grab11 = n=> JSON.parse((app11.match(new RegExp('const ' + n + ' = (\\{.*?\\});\\n')) || [0, '{}'])[1]);
+  const PICKS11 = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/design/map-picks-owner-2026-11-11.json'), 'utf8')).maps, ADM11 = grab11('UI47_ADMIN_ADD'), SUG11 = grab11('UI47_SUGGEST');
+  const picked11 = (m, id)=> [(PICKS11[m] || {}).yes, ADM11[m], SUG11[m]].some(l=> (l || []).includes(id));
+  C.NEW.forEach(s=>{ const c = by[s.id], m = s.place[0], on = (pools[m].cards || []).includes(s.id); ok(c && !c.faction && (on === (T2[m] || []).includes(s.id) || on === picked11(m, s.id)) && c.source && c.source.map === m, `${s.id}: its source is ${m}, its place on ${m}'s list follows THEME2, no faction`); });
   const skills = ['stonecutter', 'prospector', 'felling', 'pearlBed', 'coppice', 'driftwood', 'scavenge', 'salvage', 'magicArmor'];
   skills.forEach(k=> ok(cards.some(c=> c.effects && (c.effects[k] || (k === 'pearlBed' && (c.effects.pearl || c.effects.deliveryRes === 'pearl')) /* 2026-11-06 (ENG27, ENG25-6): Delivery {Pearl} */) && !c.pool && !c.awaitingSource), `a placed card carries ${k}`)); // 2026-11-03 (DEC1, ENG19-3): the Shellfish carry Pearl (Pearl Bed's old once rule) now
   const pearls = c=> c.effects.pearl || (c.effects.delivery && c.effects.deliveryRes === 'pearl'); // 2026-11-06 (ENG27, owner ENG25-6): Delivery {Pearl x1}
