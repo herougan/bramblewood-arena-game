@@ -15,7 +15,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
   - CONTENT16's pack proposal predates the 11-11 lists: ui29 (4 proposal checks x 2 widths) and content16 (5 achievement cards now in packs, 3 over budget) fail.
   - en2: Ironclaw Fiddler over budget at Map 7 (SKIR1-3).
   - Done 11-11: BAL24's reference ladder rebuilt on the 11-11 lists (Maps 0-20: no Water Vole left; Map 22 keeps one older deck).
-  - The "Reference (Random)" set (`docs/balance/ref/ref5-prog.json`, the REF fights' default) was walked on the old lists: one Water Vole deck at Map 15; ref5 fails (saved Map 6 collection). Rebuild it.
+  - Done 11-11: the "Reference (Random)" set (`docs/balance/ref/ref5-prog.json`, the REF fights' default) rebuilt on the 11-11 lists; no cut card left; ref5 passes.
   - fix6 expects Lion's Mane Jelly to lead 4-5 (left play in LISTFIX3): update after LISTFIX3-2.
   - game-texts fails: 3 ui27-budget texts miss placeholders; 51 texts unused.
   - Re-search the 30 swapped PRO / BPRO / WPRO decks.

@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-11 "Reference (Random)" rebuilt on the LISTFIX3 lists (coordinator; no card or fight changed)
+- Admin sees: the REF fights' default set (5 decks a main map, 0-20) is rebuilt from the 5 seeded players' collections walked on the 11-11 lists. No cut card is left: Water Vole (Map 15), Dhole Runner (Maps 18, 19), and Squire's Mount, Prospector Mole and Raven Scout in the old Map 19-20 decks are gone.
+- How: `tools/opt/ref5_prog.js run --maps 0-20 --tag 2026-11-11-lf3` (105 optimiser runs at the tool's defaults), then `tools/opt/ref_decks.js --apply`.
+- Tests: ref5 passes again (its saved Map 6 collection matches today's walk). bal9's JJ7 accepts the new tag; its content checks are unchanged and pass. bal9 JJ12 / JJ21, bal14 and pref fail as before.
+
 ## 2026-11-11 BAL24 reference ladder rebuilt on the LISTFIX3 lists (coordinator; no card or fight changed)
 - Admin sees: the "Reference ladder" (10 simulated player decks a map, weak to strong) for Maps 0-20 and their side maps is rebuilt from collections re-walked on the 11-11 lists. Water Vole drops from 18 decks to 0 there, and Supernova Jelly from 15 to 0. Maps 21-24 keep their older BAL13 / BAL17 entries (one Water Vole deck at Map 22, out of the Maps 0-20 scope).
 - How: `tools/bal24/ladder_sim_2026_11_07.js` pools / opt (360 decks, fresh cache) / measure (old per-fight results cleared first) / collect, then `tools/opt/ref_decks.js --apply`. Main-map ladder mean -1.4 points; Map 18 51.1 -> 38.7; side maps moved most (20-B 12.8 -> 59.7, Smugglers' Grotto, Map 2 side, 92.2 -> 66.9).
