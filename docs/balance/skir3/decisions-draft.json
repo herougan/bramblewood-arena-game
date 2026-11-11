@@ -70,6 +70,18 @@
     "b) You choose per fight"
    ],
    "default": "a"
+  },
+  {
+   "id": "SKIR3-7",
+   "title": "Maps 13, 16 and 19 miss the road curve on the 11-12 lists",
+   "status": "YET",
+   "default": "a",
+   "body": "After a night of deck and Shield moves, Map 13 has 2 of 8 fights in band (its fights are too easy: the list has few strong cards), Map 16 3 of 7 and Map 19 3 of 6 (too hard). Their Carried counts have room (13: 6 of 8, 16: 8 of 10, 19: 9 of 12).",
+   "options": [
+    "a) Claude adds 1-2 carried cards there (admin adds, within Carried) and re-tunes",
+    "b) You re-pick those maps",
+    "c) Accept for now"
+   ]
   }
  ]
 }
