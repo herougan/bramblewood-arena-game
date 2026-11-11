@@ -1206,9 +1206,9 @@
      "leaders": [],
      "deck": {
       "bee-forager": 4,
+      "chipmunk-forager": 4,
+      "duck-paddler": 4,
       "earthworm": 4,
-      "hazel-coppice": 4,
-      "nightjar-drifter": 4,
       "silver-minnow": 4
      },
      "source": {
@@ -1226,7 +1226,8 @@
       "generated": "2026-11-10T22:05:30.914Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): hazel-coppice x4, nightjar-drifter x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "0-WPRO-2",
@@ -1242,7 +1243,7 @@
       "cottontail": 4,
       "crossed-eyes": 4,
       "earthworm": 4,
-      "nightjar-drifter": 4
+      "farm-dog": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map00-m1-2026-11-11.json",
@@ -1259,7 +1260,8 @@
       "generated": "2026-11-10T22:05:30.914Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): nightjar-drifter x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -1335,12 +1337,12 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "bramble-sprout": 3,
+      "bramble-sprout": 4,
+      "bramblewood-lynx": 3,
       "ent": 3,
       "grave-grin-hyena": 4,
-      "porcupine-roller": 4,
-      "quill-thorn-boar": 3,
-      "quill-volley": 3
+      "house-cat": 3,
+      "quill-thorn-boar": 3
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/pro/bench-deck-map00-mo-2026-11-11.json",
@@ -1358,7 +1360,8 @@
       "generated": "2026-11-11T13:48:36.081Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): porcupine-roller x4, quill-volley x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -1375,9 +1378,9 @@
       "bramble-sprout": 4,
       "bramblewood-lynx": 3,
       "ent": 3,
-      "hedgehog-herbalist": 3,
-      "porcupine-roller": 4,
-      "thornwood-palisade": 3
+      "house-cat": 4,
+      "quill-thorn-boar": 3,
+      "thorn-shrike": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map00-mo-2026-11-11.json",
@@ -1394,7 +1397,8 @@
       "generated": "2026-11-10T18:48:44.246Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): hedgehog-herbalist x3, porcupine-roller x4, thornwood-palisade x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "0-B-BPRO-2",
@@ -1409,9 +1413,9 @@
      "deck": {
       "barkplate-beetle": 4,
       "bramble-sprout": 4,
-      "echidna-quillshot": 1,
+      "bramblewood-lynx": 1,
       "elder-willow": 4,
-      "porcupine-roller": 4,
+      "house-cat": 4,
       "quill-thorn-boar": 3
      },
      "source": {
@@ -1429,7 +1433,8 @@
       "generated": "2026-11-10T18:48:44.246Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): echidna-quillshot x1, porcupine-roller x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "0-B-BPRO-3",
@@ -1445,9 +1450,9 @@
       "barkplate-beetle": 4,
       "bramble-sprout": 4,
       "bramblewood-lynx": 3,
-      "gatling-hog": 3,
-      "hazel-coppice": 4,
-      "hedgehog-herbalist": 2
+      "farm-dog": 4,
+      "quill-thorn-boar": 2,
+      "thorn-shrike": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map00-mo-2026-11-11.json",
@@ -1464,7 +1469,8 @@
       "generated": "2026-11-10T18:48:44.246Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): gatling-hog x3, hazel-coppice x4, hedgehog-herbalist x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -2396,12 +2402,12 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "barkplate-beetle": 3,
+      "bramblewood-lynx": 3,
       "elder-willow": 4,
-      "hazel-coppice": 4,
+      "farm-dog": 4,
       "quill-thorn-boar": 3,
-      "quill-volley": 3,
-      "thorn-shrike": 3,
-      "thornwood-palisade": 3
+      "thorn-shrike": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map00-mo-2026-11-11.json",
@@ -2418,7 +2424,8 @@
       "generated": "2026-11-10T22:39:46.698Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): hazel-coppice x4, quill-volley x3, thornwood-palisade x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "0-B-WPRO-2",
@@ -2432,11 +2439,11 @@
      "leaders": [],
      "deck": {
       "bramble-sprout": 4,
+      "bramblewood-lynx": 2,
       "elder-willow": 4,
-      "gatling-hog": 3,
-      "hazel-coppice": 4,
+      "farm-dog": 4,
       "quillguard": 3,
-      "shimmerwing-stag": 2
+      "thorn-shrike": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map00-mo-2026-11-11.json",
@@ -2453,7 +2460,8 @@
       "generated": "2026-11-10T22:39:46.698Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): gatling-hog x3, hazel-coppice x4, shimmerwing-stag x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -2496,8 +2504,8 @@
      "deck": {
       "alley-cat": 3,
       "burrow-rabbit": 2,
+      "chipmunk-cavalry": 4,
       "cricket-drummer": 3,
-      "pack-rat-looter": 4,
       "pond-trout": 4,
       "robin-redbreast": 4
      },
@@ -2516,7 +2524,8 @@
       "generated": "2026-11-10T18:30:10.926Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): pack-rat-looter x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "1-PRO-2",
@@ -2636,11 +2645,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "ant-scout": 4,
       "bee-knight": 2,
       "bramble-sprout": 4,
+      "chipmunk-cavalry": 3,
       "cricket-drummer": 3,
-      "honey-bee": 4,
-      "pack-rat-looter": 3,
       "robin-redbreast": 4
      },
      "source": {
@@ -2658,7 +2667,8 @@
       "generated": "2026-11-10T17:57:17.649Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): honey-bee x4, pack-rat-looter x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "1-BPRO-3",
@@ -2672,12 +2682,12 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "chipmunk-cavalry": 4,
       "chipmunk-skirmisher": 2,
       "cricket-drummer": 4,
       "dormouse": 4,
       "hedgerow-shrew": 4,
-      "moonlit-hare": 2,
-      "pack-rat-looter": 4
+      "moonlit-hare": 2
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map01-mf-2026-11-11.json",
@@ -2694,7 +2704,8 @@
       "generated": "2026-11-10T17:57:17.649Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): pack-rat-looter x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "1-BPRO-4",
@@ -3784,10 +3795,10 @@
      "leaders": [],
      "deck": {
       "ant-scout": 4,
+      "chipmunk-cavalry": 3,
       "cottontail": 1,
       "duck-paddler": 4,
       "hedgerow-shrew": 4,
-      "pack-rat-looter": 3,
       "puddle-skimmer": 4
      },
      "source": {
@@ -3805,7 +3816,8 @@
       "generated": "2026-11-10T22:07:58.635Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): pack-rat-looter x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "1-WPRO-2",
@@ -3821,8 +3833,8 @@
       "ant-scout": 4,
       "bee-knight": 4,
       "chipmunk-cavalry": 4,
-      "cottontail": 4,
-      "pack-rat-looter": 4
+      "compost-grub": 4,
+      "cottontail": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map01-mf-2026-11-11.json",
@@ -3839,7 +3851,8 @@
       "generated": "2026-11-10T22:07:58.635Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): pack-rat-looter x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -3880,11 +3893,11 @@
      "leaders": [],
      "deck": {
       "ant-scout": 4,
+      "compost-grub": 2,
       "cricket-drummer": 4,
-      "field-vole": 2,
+      "harvest-mouse": 4,
       "hawthorn-shieldbug": 4,
-      "leafcutter-gardener": 4,
-      "nightjar-drifter": 2
+      "jackrabbit-sprinter": 2
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map01-mq-2026-11-11.json",
@@ -3901,7 +3914,8 @@
       "generated": "2026-11-10T21:01:26.890Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): field-vole x2, leafcutter-gardener x4, nightjar-drifter x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "1-A-PRO-2",
@@ -3915,8 +3929,8 @@
      "leaders": [],
      "deck": {
       "alley-cat": 4,
-      "bee-drone": 4,
       "cricket-drummer": 4,
+      "earthworm": 4,
       "meadow-rabbit": 4,
       "robin-redbreast": 4
      },
@@ -3935,7 +3949,8 @@
       "generated": "2026-11-10T21:01:26.890Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bee-drone x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "1-A-PRO-3",
@@ -3984,11 +3999,11 @@
      "leaders": [],
      "deck": {
       "alley-cat": 3,
-      "bee-drone": 2,
+      "earthworm": 2,
       "hawthorn-shieldbug": 4,
+      "jackrabbit-sprinter": 4,
       "planarian-splitter": 3,
-      "robin-redbreast": 4,
-      "seed-cache-squirrel": 4
+      "robin-redbreast": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map01-mq-2026-11-11.json",
@@ -4005,7 +4020,8 @@
       "generated": "2026-11-10T21:01:26.890Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bee-drone x2, seed-cache-squirrel x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -4020,11 +4036,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "clover-butterfly": 4,
+      "compost-grub": 4,
       "cricket-drummer": 3,
+      "harvest-mouse": 4,
       "jackrabbit-sprinter": 4,
-      "ladybird-guard": 4,
-      "lucky-hopper": 1,
+      "meadow-rabbit": 1,
       "robin-redbreast": 4
      },
      "source": {
@@ -4042,7 +4058,8 @@
       "generated": "2026-11-10T18:56:46.912Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): clover-butterfly x4, ladybird-guard x4, lucky-hopper x1 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "1-A-BPRO-2",
@@ -4054,11 +4071,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "compost-grub": 4,
       "cricket-drummer": 4,
-      "field-mouse": 4,
-      "lucky-hopper": 4,
-      "robin-redbreast": 4,
-      "seed-cache-squirrel": 4
+      "harvest-mouse": 4,
+      "jackrabbit-sprinter": 4,
+      "robin-redbreast": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map01-mq-2026-11-11.json",
@@ -4075,7 +4092,8 @@
       "generated": "2026-11-10T18:56:46.912Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): field-mouse x4, lucky-hopper x4, seed-cache-squirrel x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "1-A-BPRO-3",
@@ -4089,9 +4107,9 @@
      "deck": {
       "ant-scout": 4,
       "bee-sentry": 4,
+      "compost-grub": 4,
       "cricket-drummer": 4,
-      "earthworm": 4,
-      "field-vole": 4
+      "earthworm": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map01-mq-2026-11-11.json",
@@ -4108,7 +4126,8 @@
       "generated": "2026-11-10T18:56:46.912Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): field-vole x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "1-A-BPRO-4",
@@ -4121,10 +4140,10 @@
      "leaders": [],
      "deck": {
       "ant-scout": 4,
-      "bee-drone": 4,
       "cricket-drummer": 4,
       "harvest-mouse": 4,
-      "jackrabbit-sprinter": 4
+      "jackrabbit-sprinter": 4,
+      "robin-redbreast": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map01-mq-2026-11-11.json",
@@ -4141,7 +4160,8 @@
       "generated": "2026-11-10T18:56:46.912Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bee-drone x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -4926,8 +4946,8 @@
      "deck": {
       "ant-hill": 4,
       "jackrabbit-sprinter": 4,
-      "lucky-hopper": 4,
       "meadow-rabbit": 4,
+      "robin-redbreast": 4,
       "slow-worm": 4
      },
      "source": {
@@ -4945,7 +4965,8 @@
       "generated": "2026-11-10T22:49:25.960Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): lucky-hopper x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "1-A-WPRO-2",
@@ -5063,7 +5084,7 @@
       "conch-herald"
      ],
      "deck": {
-      "bloodworm": 4,
+      "beachcomber-sanderling": 4,
       "conch-herald": 4,
       "fleetfootd": 4,
       "gull-thief": 4,
@@ -5098,7 +5119,8 @@
        -151,
        -79
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): bloodworm x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "2-PRO-3",
@@ -5166,11 +5188,11 @@
      ],
      "deck": {
       "beachcomber-sanderling": 4,
-      "bloodworm": 4,
-      "great-skua": 3,
-      "gull-thief": 2,
+      "duck-paddler": 2,
+      "gull-thief": 4,
       "meadow-frog": 4,
-      "old-shell": 3
+      "old-shell": 3,
+      "oystercatcher": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map02-mb-2026-11-11.json",
@@ -5201,7 +5223,8 @@
        -225,
        -147
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): bloodworm x4, great-skua x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -6819,8 +6842,8 @@
      "leaders": [],
      "deck": {
       "duck-paddler": 4,
-      "great-skua": 4,
       "gull-thief": 4,
+      "limpet-clinger": 4,
       "oystercatcher": 4,
       "pincushion-urchin": 4
      },
@@ -6839,7 +6862,8 @@
       "generated": "2026-11-10T22:11:01.354Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): great-skua x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "2-WPRO-2",
@@ -6854,10 +6878,10 @@
      "leaders": [],
      "deck": {
       "beachcomber-sanderling": 4,
-      "beaver-lumberjack": 4,
-      "bloodworm": 4,
-      "great-skua": 4,
-      "oystercatcher": 4
+      "duck-paddler": 4,
+      "gull-thief": 4,
+      "oystercatcher": 4,
+      "pincushion-urchin": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map02-mb-2026-11-11.json",
@@ -6874,7 +6898,8 @@
       "generated": "2026-11-10T22:11:01.354Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): beaver-lumberjack x4, bloodworm x4, great-skua x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -6956,9 +6981,9 @@
      "deck": {
       "alley-cat": 3,
       "gannet-nestweaver": 3,
+      "glow-worm": 2,
       "old-sturgeon": 4,
-      "raccoon-nightcrew": 4,
-      "salvager-hermit-crab": 2,
+      "salvager-hermit-crab": 4,
       "trash-panda-trickster": 4
      },
      "source": {
@@ -6976,7 +7001,8 @@
       "generated": "2026-11-10T21:11:13.075Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): raccoon-nightcrew x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "2-B-PRO-3",
@@ -6992,10 +7018,10 @@
      ],
      "deck": {
       "alley-cat": 4,
-      "coffer-mimic": 4,
       "glow-worm": 4,
-      "moray-ambusher": 4,
-      "muskrat-lodgekeeper": 4
+      "muskrat-lodgekeeper": 4,
+      "pincushion-urchin": 4,
+      "salvager-hermit-crab": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map02-mg-2026-11-11.json",
@@ -7012,7 +7038,8 @@
       "generated": "2026-11-10T21:11:13.075Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): coffer-mimic x4, moray-ambusher x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -7030,11 +7057,11 @@
       "old-shell"
      ],
      "deck": {
-      "glow-worm": 2,
+      "glow-worm": 4,
       "limpet-clinger": 4,
       "old-shell": 4,
-      "raccoon-nightcrew": 4,
-      "smuggler-slingrat": 4,
+      "pincushion-urchin": 4,
+      "salvager-hermit-crab": 2,
       "trash-panda-trickster": 2
      },
      "source": {
@@ -7052,7 +7079,8 @@
       "generated": "2026-11-10T19:05:55.616Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): raccoon-nightcrew x4, smuggler-slingrat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "2-B-BPRO-2",
@@ -7066,14 +7094,14 @@
      ],
      "level": 1,
      "leaders": [
-      "smuggler-slingrat"
+      "glow-worm"
      ],
      "deck": {
-      "bloodworm": 2,
+      "glow-worm": 2,
       "gull-thief": 4,
-      "raccoon-nightcrew": 2,
+      "limpet-clinger": 2,
+      "pincushion-urchin": 4,
       "salvager-hermit-crab": 4,
-      "smuggler-slingrat": 4,
       "trash-panda-trickster": 4
      },
      "source": {
@@ -7091,7 +7119,8 @@
       "generated": "2026-11-10T19:05:55.616Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bloodworm x2, raccoon-nightcrew x2, smuggler-slingrat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched; leader follows the map rule on the 11-12 list (salvager-hermit-crab -> glow-worm)"
     },
     {
      "id": "2-B-BPRO-3",
@@ -7112,7 +7141,7 @@
       "gull-thief": 4,
       "limpet-clinger": 4,
       "old-shell": 2,
-      "tide-pool-crab": 4,
+      "pincushion-urchin": 4,
       "trash-panda-trickster": 4
      },
      "source": {
@@ -7130,7 +7159,8 @@
       "generated": "2026-11-10T19:05:55.616Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): tide-pool-crab x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "2-B-BPRO-4",
@@ -7143,13 +7173,12 @@
      ],
      "level": 1,
      "leaders": [
-      "octopus-tactician"
+      "glow-worm"
      ],
      "deck": {
-      "bloodworm": 3,
       "glow-worm": 4,
-      "gull-thief": 1,
-      "octopus-tactician": 4,
+      "gull-thief": 4,
+      "limpet-clinger": 4,
       "pincushion-urchin": 4,
       "salvager-hermit-crab": 4
      },
@@ -7168,7 +7197,8 @@
       "generated": "2026-11-10T19:05:55.616Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bloodworm x3, octopus-tactician x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -8412,11 +8442,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "coffer-mimic": 4,
+      "glow-worm": 4,
+      "gull-thief": 4,
       "limpet-clinger": 4,
-      "octopus-tactician": 4,
       "pincushion-urchin": 4,
-      "smuggler-slingrat": 4
+      "trash-panda-trickster": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map02-mg-2026-11-11.json",
@@ -8433,7 +8463,8 @@
       "generated": "2026-11-10T22:50:49.678Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): coffer-mimic x4, octopus-tactician x4, smuggler-slingrat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "2-B-WPRO-2",
@@ -8447,11 +8478,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "coffer-mimic": 4,
-      "grey-seal-bull": 4,
-      "moray-ambusher": 4,
-      "octopus-tactician": 4,
-      "old-shell": 4
+      "glow-worm": 4,
+      "gull-thief": 4,
+      "old-shell": 4,
+      "pincushion-urchin": 4,
+      "salvager-hermit-crab": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map02-mg-2026-11-11.json",
@@ -8468,7 +8499,8 @@
       "generated": "2026-11-10T22:50:49.678Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): coffer-mimic x4, grey-seal-bull x4, moray-ambusher x4, octopus-tactician x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -8556,9 +8588,9 @@
      "deck": {
       "alley-cat": 4,
       "box-turtle": 4,
-      "dam-keeper-beaver": 4,
       "muskrat-lodgekeeper": 4,
-      "muskrat-reedgatherer": 4
+      "muskrat-reedgatherer": 4,
+      "pond-algae": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map02-mp-2026-11-11.json",
@@ -8575,7 +8607,8 @@
       "generated": "2026-11-10T21:30:02.483Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): dam-keeper-beaver x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -8589,15 +8622,14 @@
      ],
      "level": 1,
      "leaders": [
-      "pyrenean-desman"
+      "snapstick-turtle"
      ],
      "deck": {
-      "box-turtle": 3,
-      "mayfly-dancer": 3,
-      "pyrenean-desman": 4,
-      "river-carp": 4,
+      "box-turtle": 4,
+      "muskrat-reedgatherer": 4,
+      "pond-algae": 4,
       "snapstick-turtle": 4,
-      "water-shrew": 2
+      "water-shrew": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map02-mp-2026-11-11.json",
@@ -8614,7 +8646,8 @@
       "generated": "2026-11-10T19:20:22.858Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): mayfly-dancer x3, pyrenean-desman x4, river-carp x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "2-A-BPRO-2",
@@ -8629,10 +8662,10 @@
      ],
      "deck": {
       "box-turtle": 4,
-      "lotus-frog": 4,
       "muskrat-reedgatherer": 4,
       "old-shell": 4,
-      "pond-duck": 4
+      "old-sturgeon": 4,
+      "water-shrew": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map02-mp-2026-11-11.json",
@@ -8649,7 +8682,8 @@
       "generated": "2026-11-10T19:20:22.858Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): lotus-frog x4, pond-duck x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "2-A-BPRO-3",
@@ -8667,7 +8701,7 @@
       "muskrat-reedgatherer": 4,
       "old-sturgeon": 4,
       "platypus-spur": 4,
-      "river-carp": 4
+      "pond-algae": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map02-mp-2026-11-11.json",
@@ -8684,7 +8718,8 @@
       "generated": "2026-11-10T19:20:22.858Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): river-carp x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [],
@@ -9582,12 +9617,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "dam-keeper-beaver": 2,
       "lodge-engineer": 4,
       "muskrat-lodgekeeper": 4,
+      "muskrat-reedgatherer": 4,
       "old-shell": 4,
-      "old-sturgeon": 4,
-      "victoria-regia": 2
+      "old-sturgeon": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map02-mp-2026-11-11.json",
@@ -9604,7 +9638,8 @@
       "generated": "2026-11-10T22:52:25.968Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): dam-keeper-beaver x2, victoria-regia x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "2-A-WPRO-2",
@@ -9617,7 +9652,7 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "lotus-frog": 4,
+      "lodge-engineer": 4,
       "muskrat-lodgekeeper": 4,
       "old-sturgeon": 4,
       "pond-algae": 4,
@@ -9638,7 +9673,8 @@
       "generated": "2026-11-10T22:52:25.968Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): lotus-frog x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -9687,10 +9723,10 @@
       "conch-herald"
      ],
      "deck": {
-      "conch-crawler": 4,
       "conch-herald": 4,
       "cormorant": 4,
       "driftwood-crab": 4,
+      "gannet-nestweaver": 4,
       "peak-condor": 4
      },
      "source": {
@@ -9708,7 +9744,8 @@
       "generated": "2026-11-10T19:48:51.947Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): conch-crawler x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "3-PRO-2",
@@ -9725,7 +9762,7 @@
      "deck": {
       "alley-cat": 4,
       "conch-herald": 4,
-      "great-skua": 4,
+      "hawk-arrowkeeper": 4,
       "kittiwake-flock": 4,
       "river-carp": 4
      },
@@ -9744,7 +9781,8 @@
       "generated": "2026-11-10T19:48:51.947Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): great-skua x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "3-PRO-3",
@@ -9799,8 +9837,8 @@
       "conch-herald"
      ],
      "deck": {
-      "conch-crawler": 4,
       "conch-herald": 4,
+      "gannet-nestweaver": 4,
       "kittiwake-flock": 4,
       "peregrine-stooper": 4,
       "razorbill": 4
@@ -9821,7 +9859,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (34.3%)"
+     "kept1": "SKIR1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (34.3%)",
+     "skir3": "2026-11-12 (SKIR3): conch-crawler x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "3-BPRO-2",
@@ -11404,10 +11443,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "beaver-lumberjack": 4,
-      "conch-crawler": 4,
-      "fiddler-crab-swarm": 4,
-      "great-skua": 4,
+      "cormorant": 4,
+      "gannet-nestweaver": 4,
+      "gull-thief": 4,
+      "hawk-arrowkeeper": 4,
       "pika-hoarder": 4
      },
      "source": {
@@ -11425,7 +11464,8 @@
       "generated": "2026-11-10T22:17:28.954Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): conch-crawler x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "3-WPRO-2",
@@ -11441,7 +11481,7 @@
      "deck": {
       "chipmunk-cavalry": 4,
       "eagle-sharpshooter": 4,
-      "great-skua": 4,
+      "hawk-arrowkeeper": 4,
       "peregrine-stooper": 4,
       "razorbill": 4
      },
@@ -11460,7 +11500,8 @@
       "generated": "2026-11-10T22:17:28.954Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): great-skua x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -11585,10 +11626,10 @@
      ],
      "deck": {
       "alley-cat": 4,
-      "beaver-feller": 2,
       "conch-crawler": 4,
       "driftwood-crab": 4,
       "drowned-matriarch": 4,
+      "duck-paddler": 2,
       "pincushion-urchin": 2
      },
      "source": {
@@ -11607,7 +11648,8 @@
       "generated": "2026-11-11T13:51:43.504Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): beaver-feller x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "4-PRO-4",
@@ -11663,10 +11705,9 @@
       "shoal-shark"
      ],
      "deck": {
-      "conch-crawler": 2,
+      "conch-crawler": 4,
       "drowned-matriarch": 4,
       "kittiwake-flock": 4,
-      "pond-algae": 2,
       "shoal-shark": 4,
       "water-shrew": 4
      },
@@ -11687,7 +11728,8 @@
      "h2h": null,
      "later": [],
      "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (52.8%)",
-     "prors1": "2026-11-11 (PRORS1): LISTFIX3's swapped deck re-confirmed by a search on the LISTFIX3 lists: the new best did not beat it at 55%+ over 400 games (52.8%); LISTFIX3 had: water-vole x2 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
+     "prors1": "2026-11-11 (PRORS1): LISTFIX3's swapped deck re-confirmed by a search on the LISTFIX3 lists: the new best did not beat it at 55%+ over 400 games (52.8%); LISTFIX3 had: water-vole x2 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
+     "skir3": "2026-11-12 (SKIR3): pond-algae x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "4-BPRO-2",
@@ -11703,9 +11745,8 @@
       "river-mink"
      ],
      "deck": {
-      "beaver-feller": 1,
       "conch-crawler": 4,
-      "duck-paddler": 3,
+      "duck-paddler": 4,
       "kittiwake-flock": 4,
       "muskrat-lodgekeeper": 4,
       "river-mink": 4
@@ -11740,7 +11781,8 @@
        -151,
        -79
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): beaver-feller x1 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "4-BPRO-3",
@@ -11756,7 +11798,7 @@
       "shoal-shark"
      ],
      "deck": {
-      "beaver-feller": 4,
+      "beaver-lumberjack": 4,
       "conch-crawler": 4,
       "duck-paddler": 4,
       "shoal-shark": 4,
@@ -11792,7 +11834,8 @@
        -256,
        -174
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): beaver-feller x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -13411,10 +13454,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "beaver-lumberjack": 4,
       "grass-snake": 4,
       "muskrat-lodgekeeper": 4,
       "platypus-spur": 4,
-      "pond-algae": 4,
       "river-mink": 4
      },
      "source": {
@@ -13432,7 +13475,8 @@
       "generated": "2026-11-10T22:22:31.537Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): pond-algae x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -13627,8 +13671,8 @@
       "box-turtle": 4,
       "fire-ant-raft": 4,
       "grass-snake": 4,
-      "otter-centurion": 2,
-      "peat-cutter-vole": 2
+      "marsh-mallow-hare": 2,
+      "otter-centurion": 2
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/pro/bench-deck-map05-mw-2026-11-11.json",
@@ -13660,7 +13704,8 @@
        -461,
        -343
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): peat-cutter-vole x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -15385,11 +15430,11 @@
      ],
      "deck": {
       "blue-ringed-octopus": 3,
+      "bog-leech": 4,
       "mudflat-godwit": 4,
       "newt-doctor": 1,
       "nutria-reedcutter": 4,
-      "snapper-hatchling": 4,
-      "upside-down-bat": 4
+      "snapper-hatchling": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map05-ms-2026-11-11.json",
@@ -15408,7 +15453,8 @@
      },
      "h2h": null,
      "later": [],
-     "renamedFrom": "5-A-PRO-2"
+     "renamedFrom": "5-A-PRO-2",
+     "skir3": "2026-11-12 (SKIR3): upside-down-bat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "5-A-PRO-2",
@@ -15424,12 +15470,12 @@
       "old-snapjaw"
      ],
      "deck": {
-      "bog-behemoth": 3,
       "bog-leech": 3,
       "mudflat-godwit": 4,
       "mudpuppy": 4,
       "old-snapjaw": 2,
-      "swamp-alligator": 4
+      "swamp-alligator": 4,
+      "venomlord-serpent": 3
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map05-ms-2026-11-11.json",
@@ -15446,7 +15492,8 @@
       "avgLumber": 1.25,
       "generated": "2026-11-11T03:13:36.864Z"
      },
-     "listfix3": "2026-11-11 (LISTFIX3): DECK1 wants 2-4 PRO decks; SKIR2 dropped this map's PRO-1 (more than 10 copies shared with the kept BPRO-1), leaving one: the same SKIR2 search's next distinct deck (focus big; 4 copies shared with PRO-1 and with BPRO-1), not re-searched"
+     "listfix3": "2026-11-11 (LISTFIX3): DECK1 wants 2-4 PRO decks; SKIR2 dropped this map's PRO-1 (more than 10 copies shared with the kept BPRO-1), leaving one: the same SKIR2 search's next distinct deck (focus big; 4 copies shared with PRO-1 and with BPRO-1), not re-searched",
+     "skir3": "2026-11-12 (SKIR3): bog-behemoth x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -15459,13 +15506,13 @@
      ],
      "level": 1,
      "leaders": [
-      "matamata"
+      "mudflat-godwit"
      ],
      "deck": {
       "anhinga-spearbird": 4,
-      "matamata": 4,
-      "mossmother-newt": 4,
+      "cypress-root-lurker": 4,
       "mudflat-godwit": 4,
+      "nutria-reedcutter": 4,
       "peat-cutter-vole": 4
      },
      "source": {
@@ -15484,7 +15531,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (40%)"
+     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (40%)",
+     "skir3": "2026-11-12 (SKIR3): matamata x4, mossmother-newt x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -16756,8 +16804,8 @@
      "leaders": [],
      "deck": {
       "anhinga-spearbird": 4,
-      "bog-behemoth": 4,
-      "fen-mink": 4,
+      "bog-leech": 4,
+      "cypress-root-lurker": 4,
       "swamp-alligator": 4,
       "venomlord-serpent": 4
      },
@@ -16777,7 +16825,8 @@
       "generated": "2026-11-11T03:37:39.222Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bog-behemoth x4, fen-mink x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "5-A-WPRO-2",
@@ -16791,10 +16840,9 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "anhinga-spearbird": 2,
-      "cottonmouth-matriarch": 3,
+      "anhinga-spearbird": 4,
       "cypress-root-lurker": 4,
-      "matamata": 3,
+      "mudflat-godwit": 4,
       "swamp-alligator": 4,
       "venomlord-serpent": 4
      },
@@ -16814,7 +16862,8 @@
       "generated": "2026-11-11T03:37:39.222Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): cottonmouth-matriarch x3, matamata x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -16899,9 +16948,9 @@
       "adder-ambusher": 3,
       "alley-cat": 2,
       "box-turtle": 4,
+      "cypress-root-lurker": 4,
       "gannet-nestweaver": 3,
-      "nutria-reedcutter": 4,
-      "owl-sentinel": 4
+      "nutria-reedcutter": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/pro/bench-deck-map06-m8-2026-11-11.json",
@@ -16933,7 +16982,8 @@
        -17,
        51
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): owl-sentinel x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "6-PRO-3",
@@ -16951,9 +17001,9 @@
      "deck": {
       "alley-cat": 4,
       "box-turtle": 4,
+      "cypress-root-lurker": 4,
       "grass-viper": 3,
       "mosquito-cloud": 4,
-      "owl-sentinel": 4,
       "raft-spider": 1
      },
      "source": {
@@ -16986,7 +17036,8 @@
        -145,
        -74
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): owl-sentinel x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "6-PRO-4",
@@ -17094,10 +17145,10 @@
      ],
      "deck": {
       "adder-ambusher": 3,
+      "cypress-root-lurker": 4,
       "heron-hag": 3,
       "lamprey": 3,
       "mosquito-cloud": 4,
-      "owl-sentinel": 4,
       "water-shrew": 3
      },
      "source": {
@@ -17115,7 +17166,8 @@
       "generated": "2026-11-10T18:44:31.451Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): owl-sentinel x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "6-BPRO-3",
@@ -17130,10 +17182,10 @@
      ],
      "deck": {
       "adder-ambusher": 3,
+      "anhinga-spearbird": 4,
       "cypress-root-lurker": 3,
       "mosquito-cloud": 4,
       "newt-doctor": 4,
-      "sunbittern-strider": 4,
       "venomlord-serpent": 2
      },
      "source": {
@@ -17151,7 +17203,8 @@
       "generated": "2026-11-10T18:44:31.451Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): sunbittern-strider x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -18445,8 +18498,8 @@
      "leaders": [],
      "deck": {
       "anhinga-spearbird": 4,
-      "bone-diviner": 4,
       "camouflage-frog": 4,
+      "constrictor-coil": 4,
       "lamprey": 4,
       "venomlord-serpent": 4
      },
@@ -18465,7 +18518,8 @@
       "generated": "2026-11-10T22:28:47.818Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bone-diviner x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "6-WPRO-2",
@@ -18635,8 +18689,8 @@
      "deck": {
       "caiman-hatchling": 4,
       "camouflage-frog": 3,
+      "earthworm": 4,
       "fungus-gnat-cloud": 4,
-      "leafcutter-gardener": 4,
       "nutria-reedcutter": 2,
       "tunnel-ant": 3
      },
@@ -18670,7 +18724,8 @@
        -107,
        -38
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): leafcutter-gardener x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "7-PRO-4",
@@ -18686,8 +18741,8 @@
      ],
      "deck": {
       "adder-ambusher": 2,
+      "earthworm": 4,
       "fire-ant-raft": 3,
-      "leafcutter-gardener": 4,
       "newt-doctor": 4,
       "puffball-bombardier": 4,
       "tunnel-ant": 3
@@ -18722,7 +18777,8 @@
        -83,
        -15
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): leafcutter-gardener x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -18775,8 +18831,8 @@
      ],
      "deck": {
       "adder-ambusher": 3,
+      "earthworm": 4,
       "lamprey": 2,
-      "leafcutter-gardener": 4,
       "planarian-splitter": 4,
       "truffle-piglet": 4,
       "wolf-spider-mother": 3
@@ -18811,7 +18867,8 @@
        16,
        85
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): leafcutter-gardener x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -20436,8 +20493,8 @@
       "adder-ambusher": 2,
       "amber-cicada": 4,
       "camouflage-frog": 4,
-      "crocodile-ambusher": 4,
-      "nightshade-moth": 2,
+      "cypress-root-lurker": 4,
+      "lamprey": 2,
       "rot-swollen-carcass": 4
      },
      "source": {
@@ -20456,7 +20513,8 @@
       "generated": "2026-11-11T03:38:27.545Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): crocodile-ambusher x4, nightshade-moth x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "7-WPRO-2",
@@ -20469,10 +20527,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "crocodile-ambusher": 4,
+      "camouflage-frog": 1,
+      "cypress-root-lurker": 4,
       "earthworm": 4,
-      "lamprey": 1,
-      "nightshade-moth": 4,
+      "lamprey": 4,
       "rot-swollen-carcass": 4,
       "wolf-spider-mother": 3
      },
@@ -20492,7 +20550,8 @@
       "generated": "2026-11-11T03:38:27.545Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): crocodile-ambusher x4, nightshade-moth x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -20537,12 +20596,11 @@
       "barkplate-beetle"
      ],
      "deck": {
-      "ant-warrior": 3,
       "barkplate-beetle": 4,
       "fungus-gnat-cloud": 4,
       "millipede-hauler": 4,
       "nutria-reedcutter": 4,
-      "pill-bug": 1
+      "pill-bug": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map07-mz-2026-11-11.json",
@@ -20560,7 +20618,8 @@
       "generated": "2026-11-11T03:18:50.530Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ant-warrior x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "7-A-PRO-2",
@@ -20576,11 +20635,11 @@
      ],
      "deck": {
       "amber-cicada": 2,
-      "dung-beetle": 4,
       "fungus-gnat-cloud": 4,
       "leopard-slug": 4,
       "newt-doctor": 4,
-      "springtail-hopper": 2
+      "puffball-bombardier": 4,
+      "sleepless-shrew": 2
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map07-mz-2026-11-11.json",
@@ -20598,7 +20657,8 @@
       "generated": "2026-11-11T03:18:50.530Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): dung-beetle x4, springtail-hopper x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "7-A-PRO-3",
@@ -20613,10 +20673,10 @@
      ],
      "deck": {
       "alley-cat": 4,
-      "leafcutter-gardener": 4,
-      "millipede-hauler": 2,
+      "fungal-colossus": 1,
+      "fungus-gnat-cloud": 4,
+      "millipede-hauler": 4,
       "nutria-reedcutter": 4,
-      "tunnel-wyrm": 3,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -20635,7 +20695,8 @@
       "generated": "2026-11-11T03:18:50.530Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): leafcutter-gardener x4, tunnel-wyrm x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "7-A-PRO-4",
@@ -20652,7 +20713,7 @@
      "deck": {
       "alley-cat": 2,
       "barkplate-beetle": 4,
-      "leafcutter-gardener": 2,
+      "fungus-gnat-cloud": 2,
       "nutria-reedcutter": 4,
       "pill-bug": 4,
       "rot-swollen-carcass": 4
@@ -20673,7 +20734,8 @@
       "generated": "2026-11-11T03:18:50.530Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): leafcutter-gardener x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -20686,14 +20748,14 @@
      ],
      "level": 1,
      "leaders": [
-      "bombardier-beetle"
+      "millipede-hauler"
      ],
      "deck": {
-      "ant-warrior": 4,
-      "bombardier-beetle": 4,
       "fungus-gnat-cloud": 4,
-      "rootworm-colony": 4,
-      "truffle-piglet": 4
+      "leopard-slug": 4,
+      "millipede-hauler": 4,
+      "pill-bug": 4,
+      "puffball-bombardier": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map07-mz-2026-11-11.json",
@@ -20711,7 +20773,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (52.8%)"
+     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (52.8%)",
+     "skir3": "2026-11-12 (SKIR3): ant-warrior x4, bombardier-beetle x4, rootworm-colony x4, truffle-piglet x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "7-A-BPRO-2",
@@ -20726,11 +20789,11 @@
       "wolf-spider-mother"
      ],
      "deck": {
-      "ant-warrior": 4,
-      "bombardier-beetle": 1,
       "fungus-gnat-cloud": 4,
-      "leafcutter-gardener": 4,
-      "springtail-hopper": 4,
+      "leopard-slug": 4,
+      "millipede-hauler": 1,
+      "pill-bug": 4,
+      "sleepless-shrew": 4,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -20763,7 +20826,8 @@
        -15,
        53
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): ant-warrior x4, bombardier-beetle x1, leafcutter-gardener x4, springtail-hopper x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "7-A-BPRO-3",
@@ -20779,11 +20843,11 @@
       "millipede-hauler"
      ],
      "deck": {
-      "dung-beetle": 3,
       "fungus-gnat-cloud": 4,
       "leopard-slug": 1,
       "millipede-hauler": 4,
       "pill-bug": 4,
+      "puffball-bombardier": 3,
       "sleepless-shrew": 4
      },
      "source": {
@@ -20816,7 +20880,8 @@
        -101,
        -32
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): dung-beetle x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [],
@@ -22297,10 +22362,10 @@
      "leaders": [],
      "deck": {
       "fungal-colossus": 4,
+      "leopard-slug": 4,
       "millipede-hauler": 4,
-      "rootworm-colony": 4,
+      "pill-bug": 1,
       "rot-swollen-carcass": 4,
-      "tunnel-wyrm": 1,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -22319,7 +22384,8 @@
       "generated": "2026-11-11T03:39:44.529Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): rootworm-colony x4, tunnel-wyrm x1 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "7-A-WPRO-2",
@@ -22331,10 +22397,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "bombardier-beetle": 2,
+      "leopard-slug": 2,
+      "millipede-hauler": 2,
       "pill-bug": 4,
       "puffball-bombardier": 4,
-      "rootworm-colony": 2,
       "rot-swollen-carcass": 4,
       "sleepless-shrew": 4
      },
@@ -22354,7 +22420,8 @@
       "generated": "2026-11-11T03:39:44.529Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bombardier-beetle x2, rootworm-colony x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -22401,11 +22468,11 @@
      ],
      "deck": {
       "alley-cat": 4,
+      "blind-cave-fish": 4,
       "echo-matriarch": 3,
       "fungus-gnat-cloud": 3,
-      "leafcutter-gardener": 3,
-      "star-nosed-mole": 3,
-      "upside-down-bat": 4
+      "gallery-orb-weaver": 3,
+      "star-nosed-mole": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map08-m4-2026-11-11.json",
@@ -22422,7 +22489,8 @@
       "generated": "2026-11-10T20:28:51.187Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): leafcutter-gardener x3, upside-down-bat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "8-PRO-2",
@@ -22439,9 +22507,9 @@
      "deck": {
       "barkplate-beetle": 4,
       "blind-cave-fish": 4,
-      "bombardier-beetle": 2,
       "driftwood-crab": 4,
       "echo-matriarch": 3,
+      "gallery-orb-weaver": 2,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -22459,7 +22527,8 @@
       "generated": "2026-11-10T20:28:51.187Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bombardier-beetle x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "8-PRO-3",
@@ -22476,9 +22545,9 @@
      "deck": {
       "alley-cat": 4,
       "barkplate-beetle": 2,
+      "blind-cave-fish": 4,
       "cave-olm": 4,
       "driftwood-crab": 4,
-      "dung-beetle": 4,
       "gallery-orb-weaver": 2
      },
      "source": {
@@ -22496,7 +22565,8 @@
       "generated": "2026-11-10T20:28:51.187Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): dung-beetle x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -22513,12 +22583,12 @@
       "giant-cave-huntsman"
      ],
      "deck": {
+      "blind-cave-fish": 4,
       "cave-olm": 2,
       "driftwood-crab": 4,
       "echo-matriarch": 3,
       "giant-cave-huntsman": 3,
-      "sulfur-cinder-moth": 4,
-      "upside-down-bat": 4
+      "sulfur-cinder-moth": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map08-m4-2026-11-11.json",
@@ -22535,7 +22605,8 @@
       "generated": "2026-11-10T19:06:10.883Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): upside-down-bat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "8-BPRO-2",
@@ -22588,11 +22659,11 @@
      ],
      "deck": {
       "barrow-leech-bat": 3,
+      "blind-cave-fish": 4,
       "corpse-flower-beetle": 3,
       "echo-matriarch": 3,
       "giant-cave-huntsman": 3,
-      "stalactite-golem": 4,
-      "upside-down-bat": 4
+      "stalactite-golem": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map08-m4-2026-11-11.json",
@@ -22609,7 +22680,8 @@
       "generated": "2026-11-10T19:06:10.883Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): upside-down-bat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -23803,7 +23875,7 @@
       "giant-cave-huntsman"
      ],
      "deck": {
-      "cave-swiftlet": 4,
+      "cave-olm": 4,
       "eagle-owl-quartermaster": 3,
       "giant-cave-huntsman": 1,
       "lantern-spark-fly": 4,
@@ -23825,7 +23897,8 @@
       "generated": "2026-11-10T21:56:25.530Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): cave-swiftlet x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "8-A-PRO-2",
@@ -23840,8 +23913,8 @@
       "echo-matriarch"
      ],
      "deck": {
+      "blind-cave-fish": 1,
       "cave-olm": 4,
-      "cave-swiftlet": 1,
       "dust-hyena": 4,
       "echo-matriarch": 3,
       "magpie-collector": 4,
@@ -23862,7 +23935,8 @@
       "generated": "2026-11-10T21:56:25.530Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): cave-swiftlet x1 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "8-A-PRO-3",
@@ -23913,15 +23987,14 @@
      ],
      "level": 1,
      "leaders": [
-      "vampire-bat"
+      "oilbird"
      ],
      "deck": {
       "blind-cave-fish": 4,
-      "cave-olm": 1,
-      "lantern-spark-fly": 4,
+      "cave-olm": 4,
+      "magpie-collector": 4,
       "oilbird": 4,
-      "upside-down-bat": 4,
-      "vampire-bat": 3
+      "upside-down-bat": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map08-mn-2026-11-11.json",
@@ -23938,7 +24011,8 @@
       "generated": "2026-11-10T19:41:28.498Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): lantern-spark-fly x4, vampire-bat x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "8-A-BPRO-2",
@@ -23956,9 +24030,9 @@
       "blind-cave-fish": 2,
       "cave-olm": 4,
       "echo-matriarch": 3,
-      "glintsnatch-magpie": 3,
-      "lantern-spark-fly": 4,
-      "star-nosed-mole": 4
+      "magpie-collector": 3,
+      "star-nosed-mole": 4,
+      "upside-down-bat": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map08-mn-2026-11-11.json",
@@ -23975,7 +24049,8 @@
       "generated": "2026-11-10T19:41:28.498Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): glintsnatch-magpie x3, lantern-spark-fly x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "8-A-BPRO-3",
@@ -23988,15 +24063,15 @@
      ],
      "level": 1,
      "leaders": [
-      "grotto-lobster"
+      "echo-matriarch"
      ],
      "deck": {
       "echo-matriarch": 3,
-      "grotto-lobster": 3,
+      "magpie-collector": 3,
+      "oilbird": 3,
       "quarry-mole": 3,
       "star-nosed-mole": 4,
-      "upside-down-bat": 4,
-      "vampire-bat": 3
+      "upside-down-bat": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map08-mn-2026-11-11.json",
@@ -24013,7 +24088,8 @@
       "generated": "2026-11-10T19:41:28.498Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): grotto-lobster x3, vampire-bat x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -25209,11 +25285,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "glintsnatch-magpie": 4,
       "magpie-collector": 4,
       "oilbird": 4,
       "quarry-mole": 4,
-      "stalactite-golem": 4
+      "stalactite-golem": 4,
+      "upside-down-bat": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map08-mn-2026-11-11.json",
@@ -25230,7 +25306,8 @@
       "generated": "2026-11-10T22:55:33.114Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): glintsnatch-magpie x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "8-A-WPRO-2",
@@ -25246,8 +25323,8 @@
       "blind-cave-fish": 4,
       "cave-olm": 3,
       "echo-matriarch": 3,
-      "glimmer-spider": 2,
       "magpie-collector": 4,
+      "oilbird": 2,
       "stalactite-golem": 4
      },
      "source": {
@@ -25265,7 +25342,8 @@
       "generated": "2026-11-10T22:55:33.114Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): glimmer-spider x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -25313,8 +25391,8 @@
       "giant-cave-huntsman"
      ],
      "deck": {
+      "alley-cat": 4,
       "alligator-gar": 1,
-      "dung-beetle": 4,
       "giant-cave-huntsman": 3,
       "nutria-reedcutter": 4,
       "planarian-splitter": 4,
@@ -25335,7 +25413,8 @@
       "generated": "2026-11-10T20:35:43.778Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): dung-beetle x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "9-PRO-2",
@@ -25355,8 +25434,8 @@
       "alligator-gar": 3,
       "driftwood-crab": 4,
       "giant-cave-huntsman": 3,
-      "grey-seal-bull": 4,
       "planarian-splitter": 3,
+      "proboscis-monkey": 4,
       "voltaic-eel": 3
      },
      "source": {
@@ -25374,7 +25453,8 @@
       "generated": "2026-11-10T20:35:43.778Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): grey-seal-bull x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "9-PRO-3",
@@ -25391,9 +25471,9 @@
       "alligator-gar"
      ],
      "deck": {
+      "alley-cat": 4,
       "alligator-gar": 3,
       "driftwood-crab": 4,
-      "dung-beetle": 4,
       "fiddler-crab-swarm": 4,
       "muskrat-lodgekeeper": 1,
       "planarian-splitter": 4
@@ -25413,7 +25493,8 @@
       "generated": "2026-11-10T20:35:43.778Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): dung-beetle x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -26883,7 +26964,7 @@
      "deck": {
       "alley-cat": 1,
       "clownfish-scout": 4,
-      "grey-seal-bull": 3,
+      "crown-of-thorns-star": 3,
       "krill-swarm": 4,
       "mudpuppy": 4,
       "riptide-eel": 4
@@ -26904,7 +26985,8 @@
       "generated": "2026-11-11T03:19:51.920Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): grey-seal-bull x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-PRO-4",
@@ -26919,9 +27001,9 @@
       "ironclaw-fiddler"
      ],
      "deck": {
+      "clownfish-scout": 4,
       "dolphin-knight": 3,
       "ironclaw-fiddler": 2,
-      "parrotfish": 4,
       "pincushion-urchin": 4,
       "reef-shark": 4,
       "voltaic-eel": 3
@@ -26942,7 +27024,8 @@
       "generated": "2026-11-11T03:19:51.920Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): parrotfish x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -26961,11 +27044,11 @@
      ],
      "deck": {
       "clownfish-scout": 4,
+      "conch-crawler": 4,
       "crown-of-thorns-star": 2,
       "dolphin-knight": 3,
       "krill-swarm": 3,
-      "moon-jelly": 4,
-      "parrotfish": 4
+      "moon-jelly": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map10-m7-2026-11-11.json",
@@ -26984,7 +27067,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (39.8%)"
+     "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (39.8%)",
+     "skir3": "2026-11-12 (SKIR3): parrotfish x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-BPRO-2",
@@ -27003,7 +27087,7 @@
       "conch-crawler": 3,
       "crown-of-thorns-star": 4,
       "dolphin-knight": 3,
-      "sea-bass": 4,
+      "giant-clam": 4,
       "sea-turtle-elder": 4
      },
      "source": {
@@ -27036,7 +27120,8 @@
        -258,
        -177
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): sea-bass x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-BPRO-3",
@@ -27051,12 +27136,12 @@
       "coral-current-eel"
      ],
      "deck": {
+      "clownfish-scout": 4,
       "conch-crawler": 4,
       "coral-current-eel": 3,
       "crown-of-thorns-star": 3,
       "dolphin-knight": 2,
-      "giant-clam": 4,
-      "parrotfish": 4
+      "giant-clam": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/bpro/bench-deck-map10-m7-2026-11-11.json",
@@ -27088,7 +27173,8 @@
        -412,
        -305
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): parrotfish x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -28904,10 +28990,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "coral-reef-shark": 3,
       "giant-clam": 2,
       "orca-vanguard": 4,
       "reef-shark": 4,
+      "riptide-eel": 3,
       "sea-turtle-elder": 4,
       "voltaic-eel": 3
      },
@@ -28927,7 +29013,8 @@
       "generated": "2026-11-11T03:40:18.010Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): coral-reef-shark x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-WPRO-2",
@@ -28941,11 +29028,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "coral-reef-shark": 4,
       "crown-of-thorns-star": 4,
       "giant-clam": 4,
       "ironclaw-fiddler": 3,
       "orca-vanguard": 3,
+      "riptide-eel": 4,
       "sea-turtle-elder": 2
      },
      "source": {
@@ -28964,7 +29051,8 @@
       "generated": "2026-11-11T03:40:18.010Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): coral-reef-shark x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -29008,15 +29096,15 @@
      ],
      "level": 1,
      "leaders": [
-      "nautilus-drifter"
+      "abyss-lantern-squid"
      ],
      "deck": {
       "abyss-lantern-squid": 4,
-      "conger-eel": 4,
       "coral-polyp-colony": 2,
+      "giant-clam": 2,
       "krill-swarm": 4,
-      "nautilus-drifter": 2,
-      "pincushion-urchin": 4
+      "pincushion-urchin": 4,
+      "riptide-eel": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map10-mj-2026-11-11.json",
@@ -29034,7 +29122,8 @@
       "generated": "2026-11-11T03:21:42.402Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): conger-eel x4, nautilus-drifter x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-A-PRO-2",
@@ -29047,15 +29136,15 @@
      ],
      "level": 1,
      "leaders": [
-      "nautilus-drifter"
+      "abyss-lantern-squid"
      ],
      "deck": {
-      "abyss-lantern-squid": 3,
+      "abyss-lantern-squid": 4,
       "alley-cat": 4,
       "clownfish-scout": 4,
       "coral-polyp-colony": 3,
-      "nautilus-drifter": 2,
-      "parrotfish": 4
+      "moon-jelly": 4,
+      "riptide-eel": 1
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map10-mj-2026-11-11.json",
@@ -29073,7 +29162,8 @@
       "generated": "2026-11-11T03:21:42.402Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): nautilus-drifter x2, parrotfish x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-A-PRO-3",
@@ -29084,15 +29174,15 @@
      ],
      "level": 1,
      "leaders": [
-      "whale-shark"
+      "mangrove-manatee"
      ],
      "deck": {
+      "abyss-lantern-squid": 3,
       "clownfish-scout": 3,
       "coral-polyp-colony": 4,
       "crown-of-thorns-star": 4,
       "krill-swarm": 3,
-      "mangrove-manatee": 3,
-      "whale-shark": 3
+      "mangrove-manatee": 3
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map10-mj-2026-11-11.json",
@@ -29110,7 +29200,8 @@
       "generated": "2026-11-11T03:21:42.402Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): whale-shark x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-A-PRO-4",
@@ -29122,14 +29213,14 @@
      ],
      "level": 1,
      "leaders": [
-      "nautilus-drifter"
+      "mangrove-manatee"
      ],
      "deck": {
+      "abyss-lantern-squid": 2,
       "clownfish-scout": 4,
       "humpback-elder": 4,
       "krill-swarm": 3,
       "mangrove-manatee": 3,
-      "nautilus-drifter": 2,
       "orca-vanguard": 4
      },
      "source": {
@@ -29148,7 +29239,8 @@
       "generated": "2026-11-11T03:21:42.402Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): nautilus-drifter x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -29162,15 +29254,14 @@
      ],
      "level": 1,
      "leaders": [
-      "nautilus-drifter"
+      "abyss-lantern-squid"
      ],
      "deck": {
       "abyss-lantern-squid": 4,
       "coral-polyp-colony": 4,
       "humpback-elder": 4,
-      "kraken-spawnling": 4,
-      "nautilus-drifter": 2,
-      "whale-shark": 2
+      "orca-vanguard": 4,
+      "riptide-eel": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map10-mj-2026-11-11.json",
@@ -29188,7 +29279,8 @@
       "generated": "2026-11-11T02:58:50.259Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): kraken-spawnling x4, nautilus-drifter x2, whale-shark x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-A-BPRO-2",
@@ -29200,15 +29292,15 @@
      ],
      "level": 1,
      "leaders": [
-      "nautilus-drifter"
+      "reef-admiral"
      ],
      "deck": {
+      "abyss-lantern-squid": 2,
       "clownfish-scout": 4,
-      "conger-eel": 4,
       "coral-polyp-colony": 4,
-      "kraken-spawnling": 4,
-      "nautilus-drifter": 2,
-      "reef-admiral": 2
+      "orca-vanguard": 4,
+      "reef-admiral": 2,
+      "riptide-eel": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map10-mj-2026-11-11.json",
@@ -29226,7 +29318,8 @@
       "generated": "2026-11-11T02:58:50.259Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): conger-eel x4, kraken-spawnling x4, nautilus-drifter x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-A-BPRO-3",
@@ -29243,7 +29336,7 @@
       "abyss-lantern-squid": 4,
       "clownfish-scout": 4,
       "coral-polyp-colony": 4,
-      "hagfish-silencer": 3,
+      "giant-clam": 3,
       "reef-admiral": 1,
       "riptide-eel": 4
      },
@@ -29263,7 +29356,8 @@
       "generated": "2026-11-11T02:58:50.259Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): hagfish-silencer x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "10-A-BPRO-4",
@@ -29274,15 +29368,14 @@
      ],
      "level": 1,
      "leaders": [
-      "nautilus-drifter"
+      "abyss-lantern-squid"
      ],
      "deck": {
       "abyss-lantern-squid": 4,
-      "blue-ringed-octopus": 3,
       "clownfish-scout": 4,
-      "conger-eel": 3,
+      "coral-polyp-colony": 4,
       "giant-clam": 4,
-      "nautilus-drifter": 2
+      "riptide-eel": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map10-mj-2026-11-11.json",
@@ -29300,7 +29393,8 @@
       "generated": "2026-11-11T02:58:50.259Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): blue-ringed-octopus x3, conger-eel x3, nautilus-drifter x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -30820,10 +30914,9 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "barnacle-fortress": 2,
-      "colossal-squid": 2,
+      "abyss-lantern-squid": 4,
+      "giant-clam": 4,
       "humpback-elder": 4,
-      "kraken-spawnling": 4,
       "moon-jelly": 4,
       "orca-vanguard": 4
      },
@@ -30843,7 +30936,8 @@
       "generated": "2026-11-11T03:41:01.959Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): barnacle-fortress x2, colossal-squid x2, kraken-spawnling x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -30925,15 +31019,15 @@
      ],
      "level": 1,
      "leaders": [
-      "nautilus-drifter"
+      "stonedrop-vulture"
      ],
      "deck": {
       "alpine-marmot": 4,
       "burrow-rabbit": 2,
-      "nautilus-drifter": 2,
       "peak-condor": 4,
       "pika-hoarder": 4,
-      "stonedrop-vulture": 4
+      "stonedrop-vulture": 4,
+      "the-gannet-queen": 2
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map11-m10-2026-11-11.json",
@@ -30950,7 +31044,8 @@
       "generated": "2026-11-10T20:54:41.936Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): nautilus-drifter x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "11-PRO-3",
@@ -30968,8 +31063,8 @@
       "alley-cat": 3,
       "anhinga-spearbird": 3,
       "chamois-leaper": 4,
-      "hawk-arrowkeeper": 3,
       "kittiwake-flock": 4,
+      "peak-condor": 3,
       "robin-redbreast": 3
      },
      "source": {
@@ -30987,7 +31082,8 @@
       "generated": "2026-11-10T20:54:41.936Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): hawk-arrowkeeper x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "11-PRO-4",
@@ -31000,15 +31096,15 @@
      ],
      "level": 1,
      "leaders": [
-      "tide-spirit"
+      "stonedrop-vulture"
      ],
      "deck": {
       "eagle-sharpshooter": 4,
+      "gangrenous-leech": 2,
       "pika-hoarder": 4,
       "robin-redbreast": 2,
       "stonedrop-vulture": 4,
-      "the-gannet-queen": 4,
-      "tide-spirit": 2
+      "the-gannet-queen": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map11-m10-2026-11-11.json",
@@ -31025,7 +31121,8 @@
       "generated": "2026-11-10T20:54:41.936Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): tide-spirit x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -31118,8 +31215,8 @@
      ],
      "deck": {
       "eagle-sharpshooter": 4,
-      "hawk-arrowkeeper": 4,
       "kittiwake-flock": 4,
+      "peak-condor": 4,
       "swamp-alligator": 4,
       "the-gannet-queen": 1,
       "wound-reaver": 3
@@ -31139,7 +31236,8 @@
       "generated": "2026-11-10T18:10:43.512Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): hawk-arrowkeeper x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "11-BPRO-4",
@@ -32412,9 +32510,9 @@
       "stonedrop-vulture"
      ],
      "deck": {
+      "chipmunk-hoarder": 2,
       "dust-hyena": 3,
       "great-horned-owl": 4,
-      "hawk-arrowkeeper": 2,
       "pika-hoarder": 3,
       "stonedrop-vulture": 4,
       "the-gannet-queen": 4
@@ -32434,7 +32532,8 @@
       "generated": "2026-11-10T22:06:45.444Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): hawk-arrowkeeper x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "11-A-PRO-2",
@@ -32487,10 +32586,10 @@
      "deck": {
       "alpine-marmot": 4,
       "alpine-swift": 1,
+      "chipmunk-hoarder": 4,
       "dust-hyena": 4,
       "eagle-owl-quartermaster": 3,
-      "gangrenous-leech": 4,
-      "hawk-arrowkeeper": 4
+      "gangrenous-leech": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map11-mv-2026-11-11.json",
@@ -32507,7 +32606,8 @@
       "generated": "2026-11-10T22:06:45.444Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): hawk-arrowkeeper x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -32520,14 +32620,14 @@
      ],
      "level": 1,
      "leaders": [
-      "ibex-rockcaller"
+      "wound-reaver"
      ],
      "deck": {
-      "alpine-salamander": 3,
       "chamois-leaper": 4,
-      "gale-swift": 4,
+      "chipmunk-hoarder": 3,
       "great-horned-owl": 4,
-      "ibex-rockcaller": 2,
+      "sparrow-chick": 4,
+      "the-gannet-queen": 2,
       "wound-reaver": 3
      },
      "source": {
@@ -32545,7 +32645,8 @@
       "generated": "2026-11-10T19:54:25.322Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): alpine-salamander x3, gale-swift x4, ibex-rockcaller x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "11-A-BPRO-2",
@@ -32557,13 +32658,13 @@
      ],
      "level": 1,
      "leaders": [
-      "ibex-rockcaller"
+      "wound-reaver"
      ],
      "deck": {
-      "alpine-salamander": 4,
       "alpine-swift": 4,
+      "apollo-butterfly": 2,
+      "chipmunk-hoarder": 4,
       "gangrenous-leech": 4,
-      "ibex-rockcaller": 2,
       "the-gannet-queen": 4,
       "wound-reaver": 2
      },
@@ -32582,7 +32683,8 @@
       "generated": "2026-11-10T19:54:25.322Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): alpine-salamander x4, ibex-rockcaller x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -33855,10 +33957,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "chipmunk-hoarder": 1,
       "eyrie-warden": 4,
       "gangrenous-leech": 3,
       "great-horned-owl": 4,
-      "hawk-arrowkeeper": 1,
       "swamp-alligator": 4,
       "the-gannet-queen": 4
      },
@@ -33877,7 +33979,8 @@
       "generated": "2026-11-10T22:56:51.522Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): hawk-arrowkeeper x1 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -33926,8 +34029,8 @@
      ],
      "deck": {
       "alpine-marmot": 4,
+      "anvil-thrush": 4,
       "bramble-hoglet": 4,
-      "carrion-crow": 4,
       "hawthorn-shieldbug": 4,
       "robin-redbreast": 4
      },
@@ -33947,7 +34050,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (45.5%)"
+     "kept1": "SKIR1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (45.5%)",
+     "skir3": "2026-11-12 (SKIR3): carrion-crow x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "12-PRO-2",
@@ -33959,15 +34063,15 @@
      ],
      "level": 1,
      "leaders": [
-      "tide-spirit"
+      "blue-ringed-octopus"
      ],
      "deck": {
       "alpine-marmot": 4,
+      "anvil-thrush": 4,
+      "barrow-leech-bat": 2,
       "blue-ringed-octopus": 3,
-      "carrion-crow": 4,
-      "pack-rat-looter": 4,
-      "quill-thorn-boar": 3,
-      "tide-spirit": 2
+      "briarback-hedgehog": 4,
+      "quill-thorn-boar": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map12-mh-2026-11-11.json",
@@ -33998,7 +34102,8 @@
        -10,
        58
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): carrion-crow x4, pack-rat-looter x4, tide-spirit x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "12-PRO-3",
@@ -34014,11 +34119,11 @@
      ],
      "deck": {
       "alpine-marmot": 3,
+      "briarback-hedgehog": 4,
       "dormouse": 4,
       "eagle-owl-quartermaster": 3,
       "ibex-rockcaller": 2,
-      "lyrebird-mimic": 4,
-      "pack-rat-looter": 4
+      "lyrebird-mimic": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map12-mh-2026-11-11.json",
@@ -34049,7 +34154,8 @@
        -308,
        -219
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): pack-rat-looter x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "12-PRO-4",
@@ -34116,14 +34222,14 @@
      ],
      "level": 1,
      "leaders": [
-      "hawthorn-shieldbug"
+      "mouse-sapper"
      ],
      "deck": {
-      "bramble-hoglet": 4,
+      "anvil-thrush": 4,
       "briarback-hedgehog": 4,
-      "carrion-crow": 4,
-      "hawthorn-shieldbug": 4,
-      "hedgerow-shrew": 4
+      "chipmunk-hoarder": 4,
+      "mountain-hare": 4,
+      "mouse-sapper": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map12-mh-2026-11-11.json",
@@ -34140,7 +34246,8 @@
       "generated": "2026-11-10T18:20:33.730Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bramble-hoglet x4, carrion-crow x4, hawthorn-shieldbug x4, hedgerow-shrew x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "12-BPRO-2",
@@ -34154,11 +34261,11 @@
       "barkplate-beetle"
      ],
      "deck": {
+      "anvil-thrush": 3,
       "barkplate-beetle": 4,
-      "bramble-hoglet": 3,
-      "dormouse": 4,
-      "hawthorn-shieldbug": 1,
-      "hedgerow-shrew": 4,
+      "briarback-hedgehog": 1,
+      "chipmunk-hoarder": 4,
+      "mountain-hare": 4,
       "mouse-sapper": 4
      },
      "source": {
@@ -34176,7 +34283,8 @@
       "generated": "2026-11-10T18:20:33.730Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bramble-hoglet x3, dormouse x4, hawthorn-shieldbug x1, hedgerow-shrew x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "12-BPRO-3",
@@ -34191,11 +34299,11 @@
       "barkplate-beetle"
      ],
      "deck": {
+      "anvil-thrush": 4,
       "barkplate-beetle": 4,
-      "carrion-crow": 4,
-      "hedgerow-shrew": 4,
-      "pack-rat-looter": 4,
-      "terrier-pup": 4
+      "briarback-hedgehog": 4,
+      "chipmunk-hoarder": 4,
+      "mountain-hare": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map12-mh-2026-11-11.json",
@@ -34212,7 +34320,8 @@
       "generated": "2026-11-10T18:20:33.730Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): carrion-crow x4, hedgerow-shrew x4, pack-rat-looter x4, terrier-pup x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "12-BPRO-4",
@@ -34227,10 +34336,10 @@
       "quill-thorn-boar"
      ],
      "deck": {
-      "carrion-crow": 2,
-      "hedge-weasel": 4,
-      "hedgerow-shrew": 4,
-      "pack-rat-looter": 4,
+      "anvil-thrush": 2,
+      "bison-bulldozer": 4,
+      "briarback-hedgehog": 4,
+      "mountain-hare": 4,
       "quill-thorn-boar": 3,
       "thorn-shrike": 3
      },
@@ -34249,7 +34358,8 @@
       "generated": "2026-11-10T18:20:33.730Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): carrion-crow x2, hedge-weasel x4, hedgerow-shrew x4, pack-rat-looter x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -35317,8 +35427,8 @@
       "barkplate-beetle": 4,
       "briarback-hedgehog": 4,
       "cunning-vixen": 4,
-      "hawthorn-shieldbug": 4,
-      "terrier-pup": 4
+      "mountain-hare": 4,
+      "mouse-sapper": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map12-mh-2026-11-11.json",
@@ -35335,7 +35445,8 @@
       "generated": "2026-11-10T22:44:00.079Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): hawthorn-shieldbug x4, terrier-pup x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "12-WPRO-2",
@@ -35352,7 +35463,7 @@
       "barkplate-beetle": 2,
       "briarback-hedgehog": 4,
       "cunning-vixen": 4,
-      "pack-rat-looter": 4,
+      "mouse-sapper": 4,
       "quill-thorn-boar": 3,
       "thorn-shrike": 3
      },
@@ -35371,7 +35482,8 @@
       "generated": "2026-11-10T22:44:00.079Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): pack-rat-looter x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -35458,8 +35570,8 @@
       "bear-cub": 3,
       "chipmunk-skirmisher": 4,
       "fox-kit": 4,
+      "owl-nightwatch": 3,
       "pine-marten": 3,
-      "seed-cache-squirrel": 3,
       "sergeant-bramblefox": 3
      },
      "source": {
@@ -35492,7 +35604,8 @@
        -8,
        60
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): seed-cache-squirrel x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "13-PRO-3",
@@ -35508,11 +35621,11 @@
      ],
      "deck": {
       "badger-lumberjack": 3,
+      "bear-cub": 4,
       "chipmunk-skirmisher": 4,
       "ibex-rockcaller": 2,
-      "seed-cache-squirrel": 4,
-      "sergeant-bramblefox": 3,
-      "upside-down-bat": 4
+      "owl-nightwatch": 4,
+      "sergeant-bramblefox": 3
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map13-mr-2026-11-11.json",
@@ -35544,7 +35657,8 @@
        65,
        135
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): seed-cache-squirrel x4, upside-down-bat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "13-PRO-4",
@@ -35560,12 +35674,12 @@
       "corpse-flower-beetle"
      ],
      "deck": {
+      "bear-cub": 4,
       "corpse-flower-beetle": 2,
       "fawn-scout": 3,
       "fox-kit": 4,
       "robin-redbreast": 4,
-      "sergeant-bramblefox": 3,
-      "upside-down-bat": 4
+      "sergeant-bramblefox": 3
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map13-mr-2026-11-11.json",
@@ -35597,7 +35711,8 @@
        -51,
        17
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): upside-down-bat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -35616,10 +35731,10 @@
      "deck": {
       "badger-lumberjack": 3,
       "bramblewood-lynx": 3,
-      "chipmunk-skirmisher": 4,
       "fawn-scout": 3,
-      "sergeant-bramblefox": 3,
-      "swift-fox": 4
+      "feral-tomcat": 4,
+      "owl-nightwatch": 4,
+      "sergeant-bramblefox": 3
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map13-mr-2026-11-11.json",
@@ -35637,7 +35752,8 @@
       "generated": "2026-11-11T03:00:10.351Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): chipmunk-skirmisher x4, swift-fox x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "13-BPRO-2",
@@ -35649,15 +35765,15 @@
      ],
      "level": 1,
      "leaders": [
-      "lyrebird-mimic"
+      "redwood-woodpecker"
      ],
      "deck": {
-      "bramble-hoglet": 3,
-      "chipmunk-skirmisher": 4,
-      "lyrebird-mimic": 4,
-      "redwood-woodpecker": 2,
-      "swift-fox": 3,
-      "tasmanian-devil": 4
+      "anhinga-spearbird": 4,
+      "feral-tomcat": 4,
+      "fox-kit": 3,
+      "grass-snake": 2,
+      "owl-nightwatch": 3,
+      "redwood-woodpecker": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map13-mr-2026-11-11.json",
@@ -35675,7 +35791,8 @@
       "generated": "2026-11-11T03:00:10.351Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bramble-hoglet x3, chipmunk-skirmisher x4, lyrebird-mimic x4, swift-fox x3, tasmanian-devil x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -37224,12 +37341,12 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "anhinga-spearbird": 4,
       "berserker-boar": 4,
-      "cunning-vixen": 3,
+      "grass-snake": 1,
       "grizzly-vanguard": 4,
-      "heartwood-treant": 3,
       "owl-nightwatch": 4,
-      "tasmanian-devil": 2
+      "pine-marten": 3
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/wpro/wpro-map13-mr-2026-11-11.json",
@@ -37247,7 +37364,8 @@
       "generated": "2026-11-11T14:14:11.116Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): cunning-vixen x3, heartwood-treant x3, tasmanian-devil x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "13-WPRO-2",
@@ -37260,11 +37378,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "anhinga-spearbird": 4,
       "berserker-boar": 3,
       "bramblewood-lynx": 3,
       "grizzly-vanguard": 3,
-      "heartwood-treant": 3,
-      "lyrebird-mimic": 4,
+      "pine-marten": 3,
       "redwood-woodpecker": 4
      },
      "source": {
@@ -37283,7 +37401,8 @@
       "generated": "2026-11-11T14:14:11.116Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): heartwood-treant x3, lyrebird-mimic x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -37326,14 +37445,14 @@
      ],
      "level": 1,
      "leaders": [
-      "stonedrop-vulture"
+      "hollow-belly-rat"
      ],
      "deck": {
       "alpine-marmot": 4,
       "grave-grin-hyena": 4,
+      "hollow-belly-rat": 4,
       "hoopoe-herald": 4,
-      "stonedrop-vulture": 4,
-      "upside-down-bat": 4
+      "plains-zebra": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/pro/bench-deck-map14-m5-2026-11-11.json",
@@ -37351,7 +37470,8 @@
       "generated": "2026-11-11T13:58:11.426Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): stonedrop-vulture x4, upside-down-bat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-PRO-2",
@@ -37365,15 +37485,15 @@
      ],
      "level": 1,
      "leaders": [
-      "tide-spirit"
+      "bramblewood-macaque"
      ],
      "deck": {
       "alpine-swift": 4,
+      "bramblewood-macaque": 2,
       "dust-hyena": 4,
       "golden-eagle-diver": 4,
-      "meerkat-sentry": 2,
-      "stonedrop-vulture": 4,
-      "tide-spirit": 2
+      "hollow-belly-rat": 4,
+      "meerkat-sentry": 2
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/pro/bench-deck-map14-m5-2026-11-11.json",
@@ -37391,7 +37511,8 @@
       "generated": "2026-11-11T13:58:11.426Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): stonedrop-vulture x4, tide-spirit x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-PRO-3",
@@ -37411,8 +37532,8 @@
       "dust-hyena": 4,
       "golden-eagle-diver": 4,
       "meerkat-sentry": 3,
+      "plains-zebra": 4,
       "savanna-cheetah": 2,
-      "upside-down-bat": 4,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -37431,7 +37552,8 @@
       "generated": "2026-11-11T13:58:11.426Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): upside-down-bat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-PRO-4",
@@ -37487,12 +37609,12 @@
       "pride-queen"
      ],
      "deck": {
+      "bramble-sprout": 4,
       "dust-hyena": 4,
-      "golden-eagle-diver": 4,
       "hoopoe-herald": 4,
       "pride-queen": 2,
       "savanna-cheetah": 2,
-      "termite-forager": 4
+      "tasmanian-devil": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map14-m5-2026-11-11.json",
@@ -37510,7 +37632,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (47%)"
+     "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (47%)",
+     "skir3": "2026-11-12 (SKIR3): golden-eagle-diver x4, termite-forager x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-BPRO-2",
@@ -37521,15 +37644,15 @@
      ],
      "level": 1,
      "leaders": [
-      "adder-ambusher"
+      "bramblewood-macaque"
      ],
      "deck": {
-      "adder-ambusher": 3,
+      "bramble-sprout": 3,
+      "bramblewood-macaque": 3,
       "dust-hyena": 3,
       "grave-grin-hyena": 3,
-      "mangrove-monitor": 4,
-      "meerkat-sentry": 4,
-      "termite-forager": 3
+      "hoopoe-herald": 4,
+      "meerkat-sentry": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/bpro/bench-deck-map14-m5-2026-11-11.json",
@@ -37561,7 +37684,8 @@
        -153,
        -81
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): adder-ambusher x3, mangrove-monitor x4, termite-forager x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-BPRO-3",
@@ -37577,12 +37701,12 @@
       "pride-queen"
      ],
      "deck": {
-      "adder-ambusher": 2,
-      "golden-eagle-diver": 4,
+      "bramblewood-macaque": 2,
+      "hollow-belly-rat": 4,
       "hoopoe-herald": 4,
-      "mangrove-monitor": 4,
+      "meerkat-sentry": 4,
       "pride-queen": 2,
-      "stonedrop-vulture": 4
+      "tasmanian-devil": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/bpro/bench-deck-map14-m5-2026-11-11.json",
@@ -37614,7 +37738,8 @@
        -163,
        -91
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): adder-ambusher x2, golden-eagle-diver x4, mangrove-monitor x4, stonedrop-vulture x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-BPRO-4",
@@ -37629,7 +37754,7 @@
      ],
      "deck": {
       "acacia-giraffe": 4,
-      "adder-ambusher": 2,
+      "bramblewood-macaque": 2,
       "grave-grin-hyena": 4,
       "hoopoe-herald": 4,
       "meerkat-sentry": 4,
@@ -37665,7 +37790,8 @@
        -57,
        11
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): adder-ambusher x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -39091,11 +39217,11 @@
      "leaders": [],
      "deck": {
       "acacia-giraffe": 4,
-      "adder-ambusher": 3,
-      "crocodile-ambusher": 4,
-      "mangrove-monitor": 2,
+      "bramblewood-macaque": 3,
+      "grizzly-vanguard": 4,
+      "hoopoe-herald": 1,
       "marula-elephant": 4,
-      "meerkat-sentry": 3
+      "meerkat-sentry": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map14-m5-2026-11-11.json",
@@ -39112,7 +39238,8 @@
       "generated": "2026-11-10T22:47:34.691Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): adder-ambusher x3, crocodile-ambusher x4, mangrove-monitor x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -39160,8 +39287,8 @@
      "deck": {
       "grave-grin-hyena": 4,
       "hoopoe-herald": 3,
-      "leafcutter-gardener": 4,
-      "poison-dart-croaker": 4,
+      "mosquito-cloud": 4,
+      "toucan-courier": 4,
       "walrus-icebreaker": 2,
       "wolf-spider-mother": 3
      },
@@ -39181,7 +39308,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (38%)"
+     "kept1": "SKIR1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (38%)",
+     "skir3": "2026-11-12 (SKIR3): leafcutter-gardener x4, poison-dart-croaker x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-A-PRO-2",
@@ -39199,8 +39327,8 @@
       "fungus-gnat-cloud": 4,
       "grave-grin-hyena": 2,
       "kinkajou-lurker": 2,
-      "leafcutter-gardener": 4,
       "mosquito-cloud": 4,
+      "slow-loris": 4,
       "toucan-courier": 4
      },
      "source": {
@@ -39232,7 +39360,8 @@
        -50,
        18
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): leafcutter-gardener x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -39245,14 +39374,14 @@
      ],
      "level": 1,
      "leaders": [
-      "lyrebird-mimic"
+      "fishing-cat"
      ],
      "deck": {
-      "howler-monkey": 3,
-      "kinkajou-lurker": 4,
-      "leaf-chameleon": 2,
-      "leafcutter-gardener": 3,
-      "lyrebird-mimic": 4,
+      "amber-cicada": 4,
+      "fishing-cat": 3,
+      "hoopoe-herald": 2,
+      "howler-monkey": 4,
+      "mosquito-cloud": 3,
       "slow-loris": 4
      },
      "source": {
@@ -39270,7 +39399,8 @@
       "generated": "2026-11-10T20:03:34.470Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): kinkajou-lurker x4, leaf-chameleon x2, leafcutter-gardener x3, lyrebird-mimic x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-A-BPRO-2",
@@ -39284,10 +39414,10 @@
       "pride-queen"
      ],
      "deck": {
+      "amber-cicada": 3,
       "fishing-cat": 3,
       "hoopoe-herald": 4,
       "howler-monkey": 4,
-      "jaguar-stalker": 3,
       "pride-queen": 2,
       "slow-loris": 4
      },
@@ -39306,7 +39436,8 @@
       "generated": "2026-11-10T20:03:34.470Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): jaguar-stalker x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-A-BPRO-3",
@@ -39320,9 +39451,9 @@
       "pride-queen"
      ],
      "deck": {
+      "amber-cicada": 4,
       "howler-monkey": 4,
-      "kinkajou-lurker": 4,
-      "poison-dart-croaker": 4,
+      "mosquito-cloud": 4,
       "pride-queen": 2,
       "slow-loris": 2,
       "toucan-courier": 4
@@ -39342,7 +39473,8 @@
       "generated": "2026-11-10T20:03:34.470Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): kinkajou-lurker x4, poison-dart-croaker x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -40535,12 +40667,12 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "ancient-sloth-titan": 4,
+      "amber-cicada": 4,
       "fishing-cat": 3,
-      "hanging-loafer": 4,
-      "leaf-chameleon": 1,
-      "poison-dart-frog": 4,
-      "war-drum-mandrill": 4
+      "hoopoe-herald": 4,
+      "howler-monkey": 1,
+      "mosquito-cloud": 4,
+      "slow-loris": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map14-my-2026-11-11.json",
@@ -40557,7 +40689,8 @@
       "generated": "2026-11-10T22:58:35.499Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ancient-sloth-titan x4, hanging-loafer x4, leaf-chameleon x1, poison-dart-frog x4, war-drum-mandrill x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "14-A-WPRO-2",
@@ -40569,10 +40702,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "ancient-sloth-titan": 3,
-      "fishing-cat": 2,
-      "hanging-loafer": 4,
-      "jaguar-stalker": 3,
+      "amber-cicada": 4,
+      "fishing-cat": 3,
+      "hoopoe-herald": 3,
+      "howler-monkey": 2,
       "mosquito-cloud": 4,
       "slow-loris": 4
      },
@@ -40591,7 +40724,8 @@
       "generated": "2026-11-10T22:58:35.499Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ancient-sloth-titan x3, hanging-loafer x4, jaguar-stalker x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -40639,11 +40773,11 @@
      ],
      "deck": {
       "bison-bulldozer": 3,
+      "bramblewood-lynx": 3,
       "ibex-rockcaller": 2,
-      "land-tiller": 4,
-      "robin-redbreast": 4,
-      "upside-down-bat": 4,
-      "war-hound": 3
+      "mosquito-cloud": 4,
+      "plains-zebra": 4,
+      "robin-redbreast": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map15-ml-2026-11-11.json",
@@ -40663,7 +40797,8 @@
      "h2h": null,
      "later": [],
      "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (40.5%)",
-     "prors1": "2026-11-11 (PRORS1): LISTFIX3's swapped deck re-confirmed by a search on the LISTFIX3 lists: the new best did not beat it at 55%+ over 400 games (40.5%); LISTFIX3 had: squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
+     "prors1": "2026-11-11 (PRORS1): LISTFIX3's swapped deck re-confirmed by a search on the LISTFIX3 lists: the new best did not beat it at 55%+ over 400 games (40.5%); LISTFIX3 had: squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
+     "skir3": "2026-11-12 (SKIR3): land-tiller x4, upside-down-bat x4, war-hound x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "15-PRO-2",
@@ -40682,9 +40817,9 @@
       "bison-bulldozer": 4,
       "cricket-drummer": 4,
       "grave-grin-hyena": 4,
-      "robin-redbreast": 4,
-      "shepherds-bark": 2,
-      "upside-down-bat": 2
+      "hoopoe-herald": 2,
+      "plains-zebra": 2,
+      "robin-redbreast": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/pro/bench-deck-map15-ml-2026-11-11.json",
@@ -40716,7 +40851,8 @@
        -101,
        -32
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): shepherds-bark x2, upside-down-bat x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "15-PRO-3",
@@ -40732,7 +40868,7 @@
      "deck": {
       "border-collie": 4,
       "cricket-drummer": 3,
-      "hedge-weasel": 4,
+      "dust-hyena": 4,
       "ibex-rockcaller": 2,
       "truffle-piglet": 4,
       "wolf-spider-mother": 3
@@ -40767,7 +40903,8 @@
        -243,
        -163
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): hedge-weasel x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "15-PRO-4",
@@ -40780,15 +40917,15 @@
      ],
      "level": 1,
      "leaders": [
-      "upside-down-bat"
+      "plains-zebra"
      ],
      "deck": {
       "anvil-thrush": 2,
       "cricket-drummer": 4,
-      "ladybird-guard": 4,
-      "land-tiller": 2,
-      "shepherds-bark": 4,
-      "upside-down-bat": 4
+      "hoopoe-herald": 4,
+      "mosquito-cloud": 2,
+      "plains-zebra": 4,
+      "village-miller": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/pro/bench-deck-map15-ml-2026-11-11.json",
@@ -40820,7 +40957,8 @@
        -220,
        -143
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): ladybird-guard x4, land-tiller x2, shepherds-bark x4, upside-down-bat x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -40833,15 +40971,15 @@
      ],
      "level": 1,
      "leaders": [
-      "war-hound"
+      "bramblewood-lynx"
      ],
      "deck": {
       "border-collie": 4,
-      "cricket-drummer": 4,
-      "goose-sentry": 2,
-      "land-tiller": 4,
-      "truffle-piglet": 3,
-      "war-hound": 3
+      "bramblewood-lynx": 3,
+      "mallard-marauder": 2,
+      "mosquito-cloud": 4,
+      "tasmanian-devil": 3,
+      "village-miller": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map15-ml-2026-11-11.json",
@@ -40860,7 +40998,8 @@
      "h2h": null,
      "later": [],
      "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (36.3%)",
-     "prors1": "2026-11-11 (PRORS1): LISTFIX3's swapped deck re-confirmed by a search on the LISTFIX3 lists: the new best did not beat it at 55%+ over 400 games (36.3%); LISTFIX3 had: squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
+     "prors1": "2026-11-11 (PRORS1): LISTFIX3's swapped deck re-confirmed by a search on the LISTFIX3 lists: the new best did not beat it at 55%+ over 400 games (36.3%); LISTFIX3 had: squires-mount x3 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
+     "skir3": "2026-11-12 (SKIR3): cricket-drummer x4, goose-sentry x2, land-tiller x4, truffle-piglet x3, war-hound x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -42653,12 +42792,12 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "bramblewood-lynx": 1,
       "cataphract-destrier": 4,
-      "fire-ant-raft": 4,
-      "pronghorn-racer": 4,
-      "shepherds-bark": 4,
-      "thorn-shrike": 3,
-      "war-hound": 1
+      "hoopoe-herald": 4,
+      "mallard-marauder": 3,
+      "tasmanian-devil": 4,
+      "village-miller": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/wpro/wpro-map15-ml-2026-11-11.json",
@@ -42676,7 +42815,8 @@
       "generated": "2026-11-11T14:15:16.809Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): fire-ant-raft x4, pronghorn-racer x4, shepherds-bark x4, thorn-shrike x3, war-hound x1 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "15-WPRO-2",
@@ -42689,12 +42829,12 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "bison-bulldozer": 3,
       "border-collie": 4,
+      "bramblewood-lynx": 3,
       "cataphract-destrier": 4,
-      "fire-ant-raft": 2,
-      "goose-sentry": 3,
-      "pronghorn-racer": 4
+      "sworn-shieldbearer": 3,
+      "tasmanian-devil": 2,
+      "village-miller": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/wpro/wpro-map15-ml-2026-11-11.json",
@@ -42712,7 +42852,8 @@
       "generated": "2026-11-11T14:15:16.809Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): bison-bulldozer x3, fire-ant-raft x2, goose-sentry x3, pronghorn-racer x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -42803,7 +42944,7 @@
       "ibex-rockcaller": 2,
       "mountain-hare": 4,
       "owl-nightwatch": 4,
-      "pronghorn-racer": 4
+      "raft-spider": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map16-mt-2026-11-11.json",
@@ -42834,7 +42975,8 @@
        -131,
        -61
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): pronghorn-racer x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "16-PRO-3",
@@ -42850,8 +42992,8 @@
      ],
      "deck": {
       "cone-cutter-squirrel": 4,
-      "pinecone-crossbill": 4,
-      "pronghorn-racer": 4,
+      "farm-dog": 4,
+      "raft-spider": 4,
       "redwood-woodpecker": 4,
       "woodland-caribou": 4
      },
@@ -42884,7 +43026,8 @@
        -261,
        -179
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): pinecone-crossbill x4, pronghorn-racer x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -42902,11 +43045,11 @@
       "bramblewood-lynx"
      ],
      "deck": {
-      "berserker-boar": 3,
+      "boreal-elk": 3,
       "bramblewood-lynx": 3,
       "cone-cutter-squirrel": 4,
       "mountain-hare": 4,
-      "owl-nightwatch": 2,
+      "raft-spider": 2,
       "snowshoe-hare": 4
      },
      "source": {
@@ -42924,7 +43067,8 @@
       "generated": "2026-11-10T18:50:31.739Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): berserker-boar x3, owl-nightwatch x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "16-BPRO-2",
@@ -42940,11 +43084,11 @@
       "taiga-lynx"
      ],
      "deck": {
-      "cone-cutter-squirrel": 2,
+      "cone-cutter-squirrel": 4,
+      "farm-dog": 2,
       "mountain-hare": 4,
-      "pinecone-crossbill": 4,
-      "redwood-woodpecker": 4,
       "snowshoe-hare": 4,
+      "sworn-shieldbearer": 4,
       "taiga-lynx": 2
      },
      "source": {
@@ -42962,7 +43106,8 @@
       "generated": "2026-11-10T18:50:31.739Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): pinecone-crossbill x4, redwood-woodpecker x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -43877,11 +44022,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "berserker-boar": 3,
       "boreal-elk": 4,
       "bramblewood-lynx": 3,
       "dhole-matriarch": 2,
-      "grizzly-vanguard": 4,
+      "owl-sentinel": 4,
+      "raft-spider": 3,
       "snowshoe-hare": 4
      },
      "source": {
@@ -43899,7 +44044,8 @@
       "generated": "2026-11-10T22:51:08.950Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): berserker-boar x3, grizzly-vanguard x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "16-WPRO-2",
@@ -43913,11 +44059,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "berserker-boar": 4,
+      "boreal-elk": 4,
+      "cone-cutter-squirrel": 3,
       "dhole-matriarch": 2,
-      "grizzly-vanguard": 4,
-      "pinecone-crossbill": 3,
-      "redwood-woodpecker": 4,
+      "owl-sentinel": 4,
+      "sworn-shieldbearer": 4,
       "taiga-lynx": 3
      },
      "source": {
@@ -43935,7 +44081,8 @@
       "generated": "2026-11-10T22:51:08.950Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): berserker-boar x4, grizzly-vanguard x4, pinecone-crossbill x3, redwood-woodpecker x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -43993,10 +44140,10 @@
      ],
      "deck": {
       "arctic-tern": 4,
+      "briarback-hedgehog": 4,
       "cone-cutter-squirrel": 4,
-      "lemming-swarm": 2,
       "mountain-hare": 4,
-      "musk-ox-calf": 4,
+      "snow-ermine": 2,
       "walrus-icebreaker": 2
      },
      "source": {
@@ -44015,7 +44162,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (39.8%)"
+     "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (39.8%)",
+     "skir3": "2026-11-12 (SKIR3): lemming-swarm x2, musk-ox-calf x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-PRO-2",
@@ -44030,11 +44178,11 @@
       "walrus-icebreaker"
      ],
      "deck": {
-      "arctic-fox-raider": 3,
+      "briarback-hedgehog": 4,
       "cone-cutter-squirrel": 4,
       "eagle-owl-quartermaster": 3,
-      "frostbitten-wolverine": 4,
-      "krill-swarm": 4,
+      "ice-crevasse-wolf": 3,
+      "snow-ermine": 4,
       "walrus-icebreaker": 2
      },
      "source": {
@@ -44067,7 +44215,8 @@
        -211,
        -135
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): arctic-fox-raider x3, frostbitten-wolverine x4, krill-swarm x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-PRO-3",
@@ -44085,9 +44234,9 @@
      "deck": {
       "arctic-tern": 2,
       "cunning-vixen": 3,
-      "lemming-swarm": 4,
       "mountain-hare": 4,
       "snow-ermine": 4,
+      "snowshoe-hare": 4,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -44120,7 +44269,8 @@
        -124,
        -54
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): lemming-swarm x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -44138,9 +44288,9 @@
      ],
      "deck": {
       "arctic-tern": 2,
-      "frostbitten-wolverine": 4,
-      "krill-swarm": 4,
-      "lemming-swarm": 4,
+      "briarback-hedgehog": 4,
+      "snow-ermine": 4,
+      "snowshoe-hare": 4,
       "walrus-icebreaker": 2,
       "woodland-caribou": 4
      },
@@ -44160,7 +44310,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (40%)"
+     "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (40%)",
+     "skir3": "2026-11-12 (SKIR3): frostbitten-wolverine x4, krill-swarm x4, lemming-swarm x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-BPRO-2",
@@ -44176,10 +44327,10 @@
      "deck": {
       "arctic-tern": 4,
       "cone-cutter-squirrel": 3,
-      "krill-swarm": 4,
       "snow-ermine": 4,
-      "tundra-musk-ox": 3,
-      "walrus-icebreaker": 2
+      "snowshoe-hare": 4,
+      "walrus-icebreaker": 2,
+      "warhorse-charger": 3
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/bpro/bench-deck-map17-m6-2026-11-11.json",
@@ -44211,7 +44362,8 @@
        -105,
        -36
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): krill-swarm x4, tundra-musk-ox x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-BPRO-3",
@@ -44226,11 +44378,11 @@
       "polar-bear"
      ],
      "deck": {
-      "arctic-fox-raider": 3,
       "arctic-tern": 4,
-      "krill-swarm": 4,
-      "lemming-swarm": 4,
+      "ice-crevasse-wolf": 3,
       "polar-bear": 2,
+      "snow-ermine": 4,
+      "snowshoe-hare": 4,
       "taiga-lynx": 3
      },
      "source": {
@@ -44263,7 +44415,8 @@
        63,
        133
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): arctic-fox-raider x3, krill-swarm x4, lemming-swarm x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-BPRO-4",
@@ -44278,12 +44431,12 @@
       "ice-crevasse-wolf"
      ],
      "deck": {
+      "briarback-hedgehog": 2,
       "cone-cutter-squirrel": 3,
-      "frostbitten-wolverine": 2,
       "glacier-yak": 4,
       "ice-crevasse-wolf": 3,
-      "lemming-swarm": 4,
-      "tundra-musk-ox": 4
+      "snow-ermine": 4,
+      "warhorse-charger": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/bpro/bench-deck-map17-m6-2026-11-11.json",
@@ -44315,7 +44468,8 @@
        -204,
        -128
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): frostbitten-wolverine x2, lemming-swarm x4, tundra-musk-ox x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -46006,12 +46160,12 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "arctic-fox-raider": 3,
+      "arctic-tern": 4,
+      "briarback-hedgehog": 4,
       "glacier-yak": 4,
+      "ice-crevasse-wolf": 3,
       "ringed-seal": 4,
-      "snow-bunting-archer": 4,
-      "timber-wolf-pack": 4,
-      "tundra-musk-ox": 1
+      "warhorse-charger": 1
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/wpro/wpro-map17-m6-2026-11-11.json",
@@ -46029,7 +46183,8 @@
       "generated": "2026-11-11T03:43:24.548Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): arctic-fox-raider x3, snow-bunting-archer x4, timber-wolf-pack x4, tundra-musk-ox x1 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-WPRO-2",
@@ -46043,11 +46198,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "arctic-fox-raider": 3,
+      "arctic-tern": 1,
+      "briarback-hedgehog": 4,
       "glacier-yak": 4,
       "harbor-seal": 4,
-      "ice-crevasse-wolf": 1,
-      "shepherds-bark": 4,
+      "ice-crevasse-wolf": 3,
       "woodland-caribou": 4
      },
      "source": {
@@ -46066,7 +46221,8 @@
       "generated": "2026-11-11T03:43:24.548Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): arctic-fox-raider x3, shepherds-bark x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -46109,8 +46265,8 @@
       "walrus-icebreaker"
      ],
      "deck": {
-      "beluga": 3,
       "greenland-shark": 3,
+      "ice-crevasse-wolf": 3,
       "krill-swarm": 4,
       "lemming-swarm": 4,
       "snow-ermine": 4,
@@ -46132,7 +46288,8 @@
       "generated": "2026-11-11T14:05:00.214Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): beluga x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-A-PRO-2",
@@ -46148,8 +46305,8 @@
      "deck": {
       "greenland-shark": 3,
       "harp-seal-pup": 3,
+      "ice-crevasse-wolf": 2,
       "lemming-swarm": 4,
-      "ravenous-wolverine": 2,
       "ringed-seal": 4,
       "talus-pika": 4
      },
@@ -46169,7 +46326,8 @@
       "generated": "2026-11-11T14:05:00.214Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ravenous-wolverine x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -46182,15 +46340,15 @@
      ],
      "level": 1,
      "leaders": [
-      "yeti-chieftain"
+      "ice-crevasse-wolf"
      ],
      "deck": {
       "arctic-tern": 4,
-      "beluga": 3,
+      "glacier-yak": 1,
+      "ice-crevasse-wolf": 3,
       "lemming-swarm": 4,
-      "ravenous-wolverine": 3,
-      "talus-pika": 4,
-      "yeti-chieftain": 2
+      "ringed-seal": 4,
+      "talus-pika": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map17-mi-2026-11-11.json",
@@ -46208,7 +46366,8 @@
       "generated": "2026-11-11T03:03:51.419Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): beluga x3, ravenous-wolverine x3, yeti-chieftain x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-A-BPRO-2",
@@ -46222,11 +46381,11 @@
       "walrus-icebreaker"
      ],
      "deck": {
-      "arctic-tern": 3,
-      "beluga": 3,
-      "frostbitten-wolverine": 4,
+      "arctic-tern": 4,
+      "glacier-yak": 4,
+      "ice-crevasse-wolf": 3,
       "lemming-swarm": 4,
-      "permafrost-mammoth": 4,
+      "ringed-seal": 3,
       "walrus-icebreaker": 2
      },
      "source": {
@@ -46245,7 +46404,8 @@
       "generated": "2026-11-11T03:03:51.419Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): beluga x3, frostbitten-wolverine x4, permafrost-mammoth x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -47756,11 +47916,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "arctic-tern": 1,
-      "frost-thistle-lynx": 4,
-      "frostbitten-wolverine": 4,
+      "arctic-tern": 4,
+      "glacier-yak": 4,
       "greenland-shark": 3,
-      "permafrost-mammoth": 4,
+      "harp-seal-pup": 4,
+      "ice-crevasse-wolf": 1,
       "ringed-seal": 4
      },
      "source": {
@@ -47779,7 +47939,8 @@
       "generated": "2026-11-11T03:44:12.466Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): frost-thistle-lynx x4, frostbitten-wolverine x4, permafrost-mammoth x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "17-A-WPRO-2",
@@ -47791,10 +47952,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "beluga": 3,
+      "arctic-tern": 3,
+      "glacier-yak": 3,
       "greenland-shark": 3,
-      "permafrost-mammoth": 3,
-      "ravenous-wolverine": 3,
+      "ice-crevasse-wolf": 3,
       "ringed-seal": 4,
       "talus-pika": 4
      },
@@ -47814,7 +47975,8 @@
       "generated": "2026-11-11T03:44:12.466Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): beluga x3, permafrost-mammoth x3, ravenous-wolverine x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -47865,10 +48027,10 @@
      ],
      "deck": {
       "antlion-pit": 4,
+      "horned-lizard": 4,
       "ibex-rockcaller": 2,
-      "meerkat-sentry": 4,
+      "nightjar-drifter": 4,
       "savanna-cheetah": 2,
-      "stonedrop-vulture": 4,
       "upside-down-bat": 4
      },
      "source": {
@@ -47888,7 +48050,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (40.3%)"
+     "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (40.3%)",
+     "skir3": "2026-11-12 (SKIR3): meerkat-sentry x4, stonedrop-vulture x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "18-PRO-2",
@@ -47954,9 +48117,9 @@
      ],
      "deck": {
       "caustic-scorpion": 4,
-      "glasswing-moth": 4,
+      "chipmunk-forager": 4,
       "ibex-rockcaller": 2,
-      "meerkat-sentry": 4,
+      "nightjar-drifter": 4,
       "roadrunner-courier": 4,
       "walrus-icebreaker": 2
      },
@@ -47990,7 +48153,8 @@
        -153,
        -81
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): glasswing-moth x4, meerkat-sentry x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -48003,15 +48167,15 @@
      ],
      "level": 1,
      "leaders": [
-      "savanna-cheetah"
+      "ice-crevasse-wolf"
      ],
      "deck": {
       "antlion-pit": 4,
+      "bison-bulldozer": 3,
       "caustic-scorpion": 3,
       "horned-lizard": 4,
-      "sandfish": 4,
-      "savanna-cheetah": 2,
-      "stonedrop-vulture": 3
+      "ice-crevasse-wolf": 2,
+      "mouse-sapper": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map18-md-2026-11-11.json",
@@ -48029,7 +48193,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (42.8%)"
+     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (42.8%)",
+     "skir3": "2026-11-12 (SKIR3): sandfish x4, savanna-cheetah x2, stonedrop-vulture x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "18-BPRO-2",
@@ -48041,15 +48206,15 @@
      ],
      "level": 1,
      "leaders": [
-      "savanna-cheetah"
+      "ice-crevasse-wolf"
      ],
      "deck": {
       "armadillo-guard": 4,
       "dune-jackal": 2,
-      "meerkat-sentry": 4,
-      "roadrunner-courier": 4,
-      "savanna-cheetah": 2,
-      "stonedrop-vulture": 4
+      "horned-lizard": 4,
+      "ice-crevasse-wolf": 2,
+      "nightjar-drifter": 4,
+      "roadrunner-courier": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map18-md-2026-11-11.json",
@@ -48081,7 +48246,8 @@
        -85,
        -16
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): meerkat-sentry x4, savanna-cheetah x2, stonedrop-vulture x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -49414,10 +49580,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "barkplate-beetle": 4,
+      "chipmunk-forager": 1,
       "dune-jackal": 3,
-      "dust-hyena": 1,
       "fennec-fox": 4,
-      "marula-elephant": 4,
       "roadrunner-courier": 4,
       "sand-widow": 4
      },
@@ -49437,7 +49603,8 @@
       "generated": "2026-11-11T03:45:09.982Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): dust-hyena x1, marula-elephant x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "18-WPRO-2",
@@ -49451,11 +49618,11 @@
      "leaders": [],
      "deck": {
       "antlion-pit": 2,
+      "barkplate-beetle": 4,
       "caustic-scorpion": 4,
-      "dune-jackal-scout": 4,
-      "marula-elephant": 4,
-      "sand-widow": 4,
-      "savanna-cheetah": 2
+      "ice-crevasse-wolf": 2,
+      "nightjar-drifter": 4,
+      "sand-widow": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/wpro/wpro-map18-md-2026-11-11.json",
@@ -49473,7 +49640,8 @@
       "generated": "2026-11-11T03:45:09.982Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): dune-jackal-scout x4, marula-elephant x4, savanna-cheetah x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -49520,11 +49688,11 @@
      ],
      "deck": {
       "antlion-pit": 4,
-      "glasswing-moth": 4,
+      "armadillo-guard": 4,
+      "barrel-cactus": 2,
       "grave-grin-hyena": 4,
       "ibex-rockcaller": 2,
-      "sand-flinger-antlion": 4,
-      "trapdoor-spider": 2
+      "roadrunner-courier": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map18-mpd-2026-11-11.json",
@@ -49542,7 +49710,8 @@
       "generated": "2026-11-11T03:32:34.072Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): glasswing-moth x4, sand-flinger-antlion x4, trapdoor-spider x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "18-A-PRO-2",
@@ -49553,15 +49722,15 @@
      ],
      "level": 1,
      "leaders": [
-      "tide-spirit"
+      "barrel-cactus"
      ],
      "deck": {
       "antlion-pit": 4,
       "armadillo-guard": 3,
+      "barrel-cactus": 2,
       "dromedary": 4,
       "eagle-owl-quartermaster": 3,
-      "sand-flinger-antlion": 4,
-      "tide-spirit": 2
+      "roadrunner-courier": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map18-mpd-2026-11-11.json",
@@ -49579,7 +49748,8 @@
       "generated": "2026-11-11T03:32:34.072Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): sand-flinger-antlion x4, tide-spirit x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -49592,15 +49762,15 @@
      ],
      "level": 1,
      "leaders": [
-      "quicksand-queen"
+      "barrel-cactus"
      ],
      "deck": {
       "antlion-pit": 4,
-      "dune-packrat": 3,
-      "glass-golem": 3,
-      "quicksand-queen": 2,
-      "roadrunner-courier": 4,
-      "sand-flinger-antlion": 4
+      "armadillo-guard": 4,
+      "barrel-cactus": 3,
+      "dromedary": 2,
+      "horned-lizard": 3,
+      "roadrunner-courier": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map18-mpd-2026-11-11.json",
@@ -49618,7 +49788,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (35.3%)"
+     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (35.3%)",
+     "skir3": "2026-11-12 (SKIR3): dune-packrat x3, glass-golem x3, quicksand-queen x2, sand-flinger-antlion x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "18-A-BPRO-2",
@@ -49630,15 +49801,15 @@
      ],
      "level": 1,
      "leaders": [
-      "trapdoor-spider"
+      "barrel-cactus"
      ],
      "deck": {
+      "barrel-cactus": 2,
       "caustic-scorpion": 3,
       "dromedary": 3,
       "dust-hyena": 4,
-      "sand-flinger-antlion": 4,
-      "sand-widow": 4,
-      "trapdoor-spider": 2
+      "roadrunner-courier": 4,
+      "sand-widow": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map18-mpd-2026-11-11.json",
@@ -49670,7 +49841,8 @@
        -292,
        -206
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): sand-flinger-antlion x4, trapdoor-spider x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -51099,11 +51271,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "dromedary": 1,
-      "fennec-fox": 3,
-      "komodo-warlord": 4,
-      "moon-jerboa": 4,
-      "pale-oryx": 4,
+      "armadillo-guard": 4,
+      "dromedary": 4,
+      "horned-lizard": 4,
+      "sand-widow": 4,
       "sandstorm-roc": 4
      },
      "source": {
@@ -51122,7 +51293,8 @@
       "generated": "2026-11-11T03:46:01.000Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): fennec-fox x3, komodo-warlord x4, moon-jerboa x4, pale-oryx x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "18-A-WPRO-2",
@@ -51136,11 +51308,11 @@
      "leaders": [],
      "deck": {
       "antlion-pit": 2,
+      "armadillo-guard": 4,
       "dromedary": 2,
-      "komodo-warlord": 4,
+      "horned-lizard": 4,
       "sand-widow": 4,
-      "sandstorm-roc": 4,
-      "skull-vulture": 4
+      "sandstorm-roc": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/wpro/wpro-map18-mpd-2026-11-11.json",
@@ -51158,7 +51330,8 @@
       "generated": "2026-11-11T03:46:01.000Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): komodo-warlord x4, skull-vulture x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -51205,10 +51378,10 @@
       "ibex-rockcaller"
      ],
      "deck": {
-      "ashwing-ptarmigan": 3,
-      "cinder-stoker": 4,
-      "ember-wisp": 3,
       "ibex-rockcaller": 2,
+      "obsidian-scorpion": 3,
+      "pinecone-sapper": 4,
+      "smoke-raccoon": 3,
       "stonedrop-vulture": 4,
       "upside-down-bat": 4
      },
@@ -51228,7 +51401,8 @@
       "generated": "2026-11-11T03:34:14.159Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ashwing-ptarmigan x3, cinder-stoker x4, ember-wisp x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "19-PRO-2",
@@ -51243,11 +51417,11 @@
      ],
      "deck": {
       "alpine-marmot": 4,
-      "basalt-boar": 4,
-      "cinder-hornet": 4,
+      "armadillo-guard": 4,
       "fire-salamander": 4,
       "ibex-rockcaller": 1,
-      "obsidian-scorpion": 3
+      "obsidian-scorpion": 3,
+      "sulfur-cinder-moth": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/pro/bench-deck-map19-m3-2026-11-11.json",
@@ -51266,7 +51440,8 @@
      },
      "h2h": null,
      "later": [],
-     "renamedFrom": "19-PRO-3"
+     "renamedFrom": "19-PRO-3",
+     "skir3": "2026-11-12 (SKIR3): basalt-boar x4, cinder-hornet x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -51282,10 +51457,10 @@
       "quillguard"
      ],
      "deck": {
-      "cinder-stoker": 4,
       "fire-salamander": 3,
       "honey-badger-fury": 4,
       "obsidian-scorpion": 3,
+      "pinecone-sapper": 4,
       "quillguard": 3,
       "smoke-raccoon": 3
      },
@@ -51305,7 +51480,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (43.8%)"
+     "kept1": "SKIR2 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (43.8%)",
+     "skir3": "2026-11-12 (SKIR3): cinder-stoker x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "19-BPRO-2",
@@ -51317,15 +51493,15 @@
      ],
      "level": 1,
      "leaders": [
-      "ashwing-ptarmigan"
+      "obsidian-scorpion"
      ],
      "deck": {
-      "ashwing-ptarmigan": 3,
-      "chipmunk-hoarder": 2,
-      "cinder-hornet": 4,
-      "cinder-stoker": 4,
-      "eagle-owl-quartermaster": 3,
-      "talus-pika": 4
+      "armadillo-guard": 2,
+      "honey-badger-fury": 4,
+      "obsidian-scorpion": 3,
+      "pinecone-sapper": 4,
+      "smoke-raccoon": 3,
+      "sulfur-cinder-moth": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map19-m3-2026-11-11.json",
@@ -51357,7 +51533,8 @@
        -218,
        -141
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): ashwing-ptarmigan x3, chipmunk-hoarder x2, cinder-hornet x4, cinder-stoker x4, eagle-owl-quartermaster x3, talus-pika x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "19-BPRO-3",
@@ -51371,12 +51548,12 @@
       "quillguard"
      ],
      "deck": {
-      "basalt-boar": 4,
-      "cinder-stoker": 3,
+      "armadillo-guard": 4,
+      "honey-badger-fury": 3,
+      "pinecone-sapper": 4,
       "quillguard": 3,
       "smoke-raccoon": 3,
-      "sulfur-cinder-moth": 3,
-      "talus-pika": 4
+      "sulfur-cinder-moth": 3
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map19-m3-2026-11-11.json",
@@ -51408,7 +51585,8 @@
        -264,
        -181
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): basalt-boar x4, cinder-stoker x3, talus-pika x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "19-BPRO-4",
@@ -51423,12 +51601,12 @@
       "obsidian-scorpion"
      ],
      "deck": {
-      "basalt-boar": 3,
-      "cinder-stoker": 3,
+      "armadillo-guard": 3,
       "obsidian-scorpion": 3,
+      "pinecone-sapper": 3,
       "quillback-elder": 4,
-      "sulfur-cinder-moth": 4,
-      "sulfur-vent-crab": 3
+      "smoke-raccoon": 3,
+      "sulfur-cinder-moth": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map19-m3-2026-11-11.json",
@@ -51460,7 +51638,8 @@
        -113,
        -43
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): basalt-boar x3, cinder-stoker x3, sulfur-vent-crab x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -52821,12 +53000,12 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "cinder-hornet": 4,
+      "armadillo-guard": 1,
       "honey-badger-fury": 4,
       "quillback-elder": 4,
+      "smoke-raccoon": 3,
       "stalactite-golem": 4,
-      "sulfur-cinder-moth": 1,
-      "sulfur-vent-crab": 3
+      "sulfur-cinder-moth": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/wpro/wpro-map19-m3-2026-11-11.json",
@@ -52844,7 +53023,8 @@
       "generated": "2026-11-11T03:46:52.969Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): cinder-hornet x4, sulfur-vent-crab x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -52928,13 +53108,13 @@
      ],
      "level": 1,
      "leaders": [
-      "obsidian-lich"
+      "obsidian-scorpion"
      ],
      "deck": {
       "ashbone-ghoul": 3,
       "cinder-gecko": 4,
       "cinder-hornet": 3,
-      "obsidian-lich": 3,
+      "obsidian-scorpion": 3,
       "ore-smelter-mole": 4,
       "rimefire-salamander": 3
      },
@@ -52954,7 +53134,8 @@
       "generated": "2026-11-11T03:35:54.328Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): obsidian-lich x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "19-A-PRO-3",
@@ -53101,11 +53282,11 @@
      ],
      "deck": {
       "anvil-thrush": 4,
-      "ember-tetra": 4,
+      "cinder-gecko": 3,
       "hellbender": 3,
       "ore-smelter-mole": 2,
       "smoke-raccoon": 4,
-      "sulfur-vent-crab": 3
+      "sulfur-vent-crab": 4
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map19-m9-2026-11-11.json",
@@ -53137,7 +53318,8 @@
        -230,
        -152
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): ember-tetra x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "19-A-BPRO-4",
@@ -54324,11 +54506,11 @@
      "leaders": [],
      "deck": {
       "anvil-thrush": 4,
-      "chained-binturong": 4,
       "cinder-hornet": 4,
-      "ember-tetra": 1,
       "grindstone-boar": 4,
-      "malachite-golem": 3
+      "obsidian-scorpion": 3,
+      "ore-smelter-mole": 4,
+      "sulfur-vent-crab": 1
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/wpro/wpro-map19-m9-2026-11-11.json",
@@ -54346,7 +54528,8 @@
       "generated": "2026-11-11T03:47:36.368Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): chained-binturong x4, ember-tetra x1, malachite-golem x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "19-A-WPRO-2",
@@ -54359,11 +54542,11 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "chained-binturong": 3,
       "cinder-gecko": 2,
       "grindstone-boar": 4,
       "hellbender": 4,
-      "malachite-golem": 3,
+      "obsidian-scorpion": 3,
+      "ore-smelter-mole": 3,
       "smoke-raccoon": 4
      },
      "source": {
@@ -54382,7 +54565,8 @@
       "generated": "2026-11-11T03:47:36.368Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): chained-binturong x3, malachite-golem x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -54477,8 +54661,8 @@
      "deck": {
       "ashbone-ghoul": 4,
       "chipmunk-hoarder": 4,
-      "cinder-stoker": 4,
       "eagle-owl-quartermaster": 2,
+      "honey-badger-fury": 4,
       "magma-salamander": 2,
       "stonedrop-vulture": 4
      },
@@ -54498,7 +54682,8 @@
       "generated": "2026-11-11T14:10:52.324Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): cinder-stoker x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -54515,12 +54700,12 @@
       "magma-salamander"
      ],
      "deck": {
-      "ashbone-ghoul": 4,
-      "constrictor-coil": 3,
+      "honey-badger-fury": 4,
       "magma-salamander": 2,
-      "magma-wraith": 4,
       "obsidian-scorpion": 3,
-      "stalactite-golem": 4
+      "stalactite-golem": 4,
+      "sulfur-vent-crab": 4,
+      "vampire-roost": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map20-m11-2026-11-11.json",
@@ -54537,7 +54722,8 @@
       "generated": "2026-11-10T19:35:49.366Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ashbone-ghoul x4, constrictor-coil x3, magma-wraith x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-BPRO-2",
@@ -54549,15 +54735,15 @@
      ],
      "level": 1,
      "leaders": [
-      "caldera-snow-leopard"
+      "fumarole-ibex"
      ],
      "deck": {
-      "ashbone-ghoul": 4,
-      "caldera-snow-leopard": 1,
-      "chamois-leaper": 4,
-      "cinder-skeleton": 4,
-      "cinder-stoker": 4,
-      "fumarole-ibex": 3
+      "basalt-boar": 4,
+      "eagle-sharpshooter": 4,
+      "fumarole-ibex": 3,
+      "honey-badger-fury": 4,
+      "obsidian-scorpion": 1,
+      "sulfur-vent-crab": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map20-m11-2026-11-11.json",
@@ -54574,7 +54760,8 @@
       "generated": "2026-11-10T19:35:49.366Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ashbone-ghoul x4, caldera-snow-leopard x1, chamois-leaper x4, cinder-skeleton x4, cinder-stoker x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-BPRO-3",
@@ -54588,12 +54775,12 @@
       "magma-salamander"
      ],
      "deck": {
-      "ashbone-ghoul": 3,
-      "cinder-stoker": 4,
+      "basalt-boar": 4,
+      "berserker-boar": 4,
+      "eagle-sharpshooter": 2,
+      "honey-badger-fury": 4,
       "magma-salamander": 2,
-      "phoenix-fledgling": 4,
-      "stalactite-golem": 4,
-      "talus-pika": 3
+      "stalactite-golem": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map20-m11-2026-11-11.json",
@@ -54610,7 +54797,8 @@
       "generated": "2026-11-10T19:35:49.366Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ashbone-ghoul x3, cinder-stoker x4, phoenix-fledgling x4, talus-pika x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -55702,9 +55890,9 @@
      "deck": {
       "ancient-sloth-titan": 4,
       "ash-cloud-condor": 1,
-      "cinder-hornet": 4,
-      "constrictor-coil": 3,
-      "phoenix-fledgling": 4,
+      "berserker-boar": 4,
+      "eagle-sharpshooter": 4,
+      "stalactite-golem": 3,
       "vampire-roost": 4
      },
      "source": {
@@ -55722,7 +55910,8 @@
       "generated": "2026-11-10T22:55:20.123Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): cinder-hornet x4, constrictor-coil x3, phoenix-fledgling x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-WPRO-2",
@@ -55737,10 +55926,10 @@
      "deck": {
       "ancient-sloth-titan": 3,
       "ash-cloud-condor": 1,
-      "chamois-leaper": 4,
-      "constrictor-coil": 4,
       "deep-cave-troll": 4,
-      "stalactite-golem": 4
+      "stalactite-golem": 4,
+      "sulfur-vent-crab": 4,
+      "vampire-roost": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/wpro/wpro-map20-m11-2026-11-11.json",
@@ -55757,7 +55946,8 @@
       "generated": "2026-11-10T22:55:20.123Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): chamois-leaper x4, constrictor-coil x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -55802,14 +55992,14 @@
      ],
      "level": 1,
      "leaders": [
-      "tide-spirit"
+      "obsidian-scorpion"
      ],
      "deck": {
       "ash-moth": 4,
+      "ashbone-ghoul": 2,
       "cinder-skeleton": 3,
       "lantern-spark-fly": 4,
       "obsidian-scorpion": 3,
-      "tide-spirit": 2,
       "upside-down-bat": 4
      },
      "source": {
@@ -55828,7 +56018,8 @@
       "generated": "2026-11-11T14:13:11.320Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): tide-spirit x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-A-PRO-2",
@@ -55840,11 +56031,11 @@
      ],
      "level": 1,
      "leaders": [
-      "obsidian-lich"
+      "obsidian-scorpion"
      ],
      "deck": {
+      "ash-moth": 3,
       "lantern-spark-fly": 3,
-      "obsidian-lich": 3,
       "obsidian-scorpion": 3,
       "stalactite-golem": 4,
       "upside-down-bat": 4,
@@ -55866,7 +56057,8 @@
       "generated": "2026-11-11T14:13:11.320Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): obsidian-lich x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-A-PRO-3",
@@ -55878,14 +56070,14 @@
      ],
      "level": 1,
      "leaders": [
-      "tide-spirit"
+      "obsidian-scorpion"
      ],
      "deck": {
       "ancient-sloth-titan": 4,
       "ashbone-ghoul": 2,
       "deep-cave-troll": 4,
       "lantern-spark-fly": 4,
-      "tide-spirit": 2,
+      "obsidian-scorpion": 2,
       "upside-down-bat": 4
      },
      "source": {
@@ -55904,7 +56096,8 @@
       "generated": "2026-11-11T14:13:11.320Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): tide-spirit x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-A-PRO-4",
@@ -55915,14 +56108,14 @@
      ],
      "level": 1,
      "leaders": [
-      "pall-wraith"
+      "obsidian-scorpion"
      ],
      "deck": {
       "ash-moth": 4,
       "ashbone-ghoul": 4,
       "lantern-spark-fly": 4,
       "magma-wraith": 2,
-      "pall-wraith": 3,
+      "obsidian-scorpion": 3,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -55941,7 +56134,8 @@
       "generated": "2026-11-11T14:13:11.320Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): pall-wraith x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -55954,15 +56148,15 @@
      ],
      "level": 1,
      "leaders": [
-      "pall-wraith"
+      "obsidian-scorpion"
      ],
      "deck": {
+      "ash-moth": 4,
       "ashbone-ghoul": 4,
-      "magma-wraith": 4,
-      "obsidian-lich": 2,
+      "cinder-skeleton": 4,
       "obsidian-scorpion": 3,
-      "pall-wraith": 3,
-      "stalactite-golem": 4
+      "stalactite-golem": 4,
+      "vampire-roost": 1
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map20-me-2026-11-11.json",
@@ -55979,7 +56173,8 @@
       "generated": "2026-11-10T20:46:48.475Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): magma-wraith x4, obsidian-lich x2, pall-wraith x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-A-BPRO-2",
@@ -55990,14 +56185,14 @@
      ],
      "level": 1,
      "leaders": [
-      "the-contradiction"
+      "obsidian-scorpion"
      ],
      "deck": {
       "ancient-sloth-titan": 3,
+      "ash-moth": 4,
       "ashbone-ghoul": 4,
       "cinder-skeleton": 4,
-      "magma-wraith": 4,
-      "the-contradiction": 1,
+      "obsidian-scorpion": 1,
       "vampire-roost": 4
      },
      "source": {
@@ -56015,7 +56210,8 @@
       "generated": "2026-11-10T20:46:48.475Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): magma-wraith x4, the-contradiction x1 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -57148,9 +57344,9 @@
      "leaders": [],
      "deck": {
       "ancient-sloth-titan": 4,
-      "cave-warlord": 4,
       "cinder-skeleton": 4,
       "deep-cave-troll": 4,
+      "stalactite-golem": 4,
       "vampire-roost": 4
      },
      "source": {
@@ -57168,7 +57364,8 @@
       "generated": "2026-11-10T23:02:15.026Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): cave-warlord x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -57215,9 +57412,9 @@
       "ashbone-ghoul": 4,
       "cinder-stoker": 4,
       "ember-jackal": 3,
-      "ember-wisp": 3,
       "ibex-rockcaller": 2,
-      "stonedrop-vulture": 4
+      "stonedrop-vulture": 4,
+      "vampire-roost": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map20-mx-2026-11-11.json",
@@ -57234,7 +57431,8 @@
       "generated": "2026-11-10T22:36:45.968Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ember-wisp x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-B-PRO-2",
@@ -57249,12 +57447,12 @@
       "magma-salamander"
      ],
      "deck": {
-      "cinder-hornet": 4,
       "cinder-stoker": 4,
       "eagle-owl-quartermaster": 3,
       "grave-grin-hyena": 3,
       "magma-salamander": 2,
-      "stonedrop-vulture": 4
+      "stonedrop-vulture": 4,
+      "vampire-roost": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map20-mx-2026-11-11.json",
@@ -57271,7 +57469,8 @@
       "generated": "2026-11-10T22:36:45.968Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): cinder-hornet x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-B-PRO-3",
@@ -57283,15 +57482,15 @@
      ],
      "level": 1,
      "leaders": [
-      "ash-cloud-condor"
+      "ember-jackal"
      ],
      "deck": {
-      "ash-cloud-condor": 3,
-      "cinder-stoker": 3,
+      "cinder-stoker": 4,
       "eagle-owl-quartermaster": 3,
-      "ember-centipede": 4,
-      "ember-wisp": 3,
-      "stonedrop-vulture": 4
+      "ember-jackal": 3,
+      "stalactite-golem": 2,
+      "stonedrop-vulture": 4,
+      "vampire-roost": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/pro/bench-deck-map20-mx-2026-11-11.json",
@@ -57308,7 +57507,8 @@
       "generated": "2026-11-10T22:36:45.968Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ash-cloud-condor x3, ember-centipede x4, ember-wisp x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -57324,12 +57524,12 @@
       "ember-jackal"
      ],
      "deck": {
-      "ash-cloud-condor": 3,
-      "cinder-hornet": 4,
       "cinder-stoker": 4,
+      "deep-cave-troll": 4,
       "ember-jackal": 3,
-      "ember-wisp": 3,
-      "pyroclast-wyrm": 3
+      "gorge-wyrm": 1,
+      "stalactite-golem": 4,
+      "vampire-roost": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map20-mx-2026-11-11.json",
@@ -57348,7 +57548,8 @@
      "h2h": null,
      "later": [],
      "kept1": "PRORS1 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (43.5%)",
-     "prors1": "2026-11-11 (PRORS1): LISTFIX3's swapped deck re-confirmed by a search on the LISTFIX3 lists: the new best did not beat it at 55%+ over 400 games (43.5%); LISTFIX3 had: phoenix-fledgling x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
+     "prors1": "2026-11-11 (PRORS1): LISTFIX3's swapped deck re-confirmed by a search on the LISTFIX3 lists: the new best did not beat it at 55%+ over 400 games (43.5%); LISTFIX3 had: phoenix-fledgling x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
+     "skir3": "2026-11-12 (SKIR3): ash-cloud-condor x3, cinder-hornet x4, ember-wisp x3, pyroclast-wyrm x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-B-BPRO-2",
@@ -57363,9 +57564,9 @@
      ],
      "deck": {
       "cinder-stoker": 4,
-      "ember-centipede": 2,
+      "deep-cave-troll": 4,
       "ember-jackal": 3,
-      "ember-wisp": 3,
+      "gorge-wyrm": 1,
       "stalactite-golem": 4,
       "vampire-roost": 4
      },
@@ -57399,7 +57600,8 @@
        -80,
        -11
       ]
-     }
+     },
+     "skir3": "2026-11-12 (SKIR3): ember-centipede x2, ember-wisp x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [
@@ -58581,10 +58783,10 @@
      "deck": {
       "ancient-sloth-titan": 4,
       "deep-cave-troll": 4,
+      "ember-jackal": 3,
       "gorge-wyrm": 4,
-      "granite-ox-golem": 3,
-      "magma-titan": 4,
-      "thunder-lizard": 1
+      "stalactite-golem": 1,
+      "vampire-roost": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/wpro/wpro-map20-mx-2026-11-11.json",
@@ -58602,7 +58804,8 @@
       "generated": "2026-11-11T14:16:02.434Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): granite-ox-golem x3, magma-titan x4, thunder-lizard x1 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-B-WPRO-2",
@@ -58616,11 +58819,11 @@
      "leaders": [],
      "deck": {
       "ancient-sloth-titan": 4,
-      "cinder-hornet": 4,
-      "gorge-wyrm": 3,
-      "lava-waders": 4,
-      "magma-titan": 1,
-      "pyroclast-wyrm": 4
+      "cinder-stoker": 4,
+      "deep-cave-troll": 4,
+      "ember-jackal": 3,
+      "gorge-wyrm": 4,
+      "vampire-roost": 1
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/wpro/wpro-map20-mx-2026-11-11.json",
@@ -58638,7 +58841,8 @@
       "generated": "2026-11-11T14:16:02.434Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): cinder-hornet x4, lava-waders x4, magma-titan x1, pyroclast-wyrm x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },
@@ -58685,7 +58889,7 @@
       "mountain-hare": 4,
       "obsidian-scorpion": 3,
       "pack-mule": 4,
-      "pumice-beetle": 2
+      "smoke-raccoon": 2
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map21-m21-2026-11-05.json",
@@ -58702,7 +58906,8 @@
       "generated": "2026-11-05T04:23:11.539Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): pumice-beetle x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "21-PRO-2",
@@ -58750,15 +58955,15 @@
      ],
      "level": 1,
      "leaders": [
-      "pumice-beetle"
+      "smoke-raccoon"
      ],
      "deck": {
-      "ember-centipede": 3,
+      "alpine-swift": 3,
       "golden-eagle-diver": 4,
       "mountain-goat-climber": 4,
       "pack-mule": 4,
       "pika-hoarder": 2,
-      "pumice-beetle": 3
+      "smoke-raccoon": 3
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map21-m21-2026-11-05.json",
@@ -58776,7 +58981,8 @@
      },
      "h2h": null,
      "later": [],
-     "skir2": "2026-11-11 (SKIR2): stoat-cutthroat x3 not held by this map since SKIR1's lists (the map-true rule), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
+     "skir2": "2026-11-11 (SKIR2): stoat-cutthroat x3 not held by this map since SKIR1's lists (the map-true rule), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
+     "skir3": "2026-11-12 (SKIR3): ember-centipede x3, pumice-beetle x3 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "21-PRO-4",
@@ -58790,11 +58996,11 @@
       "blue-ringed-octopus"
      ],
      "deck": {
+      "alpine-swift": 4,
       "blue-ringed-octopus": 2,
       "pack-mule": 4,
-      "pumice-beetle": 3,
       "red-billed-chough": 4,
-      "talus-pika": 4,
+      "smoke-raccoon": 3,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -58813,7 +59019,8 @@
      },
      "h2h": null,
      "later": [],
-     "skir2": "2026-11-11 (SKIR2): stoat-cutthroat x3 not held by this map since SKIR1's lists (the map-true rule), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
+     "skir2": "2026-11-11 (SKIR2): stoat-cutthroat x3 not held by this map since SKIR1's lists (the map-true rule), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
+     "skir3": "2026-11-12 (SKIR3): pumice-beetle x3, talus-pika x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -58833,9 +59040,9 @@
      "deck": {
       "alpine-marmot": 3,
       "alpine-swift": 4,
-      "golden-eagle-diver": 4,
       "pack-mule": 3,
       "pika-hoarder": 4,
+      "smoke-raccoon": 4,
       "snow-leopard": 2
      },
      "source": {
@@ -58853,7 +59060,8 @@
       "generated": "2026-11-05T02:49:55.120Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): golden-eagle-diver x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "21-BPRO-2",
@@ -58865,7 +59073,7 @@
      ],
      "level": 1,
      "leaders": [
-      "pumice-beetle"
+      "smoke-raccoon"
      ],
      "deck": {
       "alpine-marmot": 3,
@@ -58873,7 +59081,7 @@
       "mountain-goat-climber": 4,
       "pack-mule": 4,
       "pika-hoarder": 4,
-      "pumice-beetle": 4
+      "smoke-raccoon": 4
      },
      "source": {
       "file": "docs/balance/bal16/bpro/bench-deck-map21-m21-2026-11-05.json",
@@ -58890,7 +59098,8 @@
       "generated": "2026-11-05T02:49:55.120Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): pumice-beetle x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "21-BPRO-3",
@@ -58906,8 +59115,8 @@
      ],
      "deck": {
       "alpine-marmot": 3,
-      "ashbone-ghoul": 4,
-      "eagle-sharpshooter": 4,
+      "alpine-salamander": 4,
+      "alpine-swift": 4,
       "eyrie-warden": 1,
       "peak-condor": 4,
       "pika-hoarder": 4
@@ -58927,7 +59136,8 @@
       "generated": "2026-11-05T02:49:55.120Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ashbone-ghoul x4, eagle-sharpshooter x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "21-BPRO-4",
@@ -58939,15 +59149,15 @@
      ],
      "level": 1,
      "leaders": [
-      "pumice-beetle"
+      "smoke-raccoon"
      ],
      "deck": {
       "alpine-marmot": 1,
       "alpine-swift": 4,
       "apollo-butterfly": 4,
-      "golden-eagle-diver": 4,
-      "pumice-beetle": 3,
-      "talus-pika": 4
+      "peak-condor": 3,
+      "red-billed-chough": 4,
+      "smoke-raccoon": 4
      },
      "source": {
       "file": "docs/balance/bal16/bpro/bench-deck-map21-m21-2026-11-05.json",
@@ -58964,7 +59174,8 @@
       "generated": "2026-11-05T02:49:55.120Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): golden-eagle-diver x4, pumice-beetle x3, talus-pika x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "replaced": [],
@@ -59018,12 +59229,12 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "alpine-swift": 4,
       "apollo-butterfly": 2,
-      "ashbone-ghoul": 3,
-      "ember-centipede": 4,
       "eyrie-warden": 3,
       "glacier-yak": 4,
-      "talus-pika": 4
+      "honey-badger-fury": 3,
+      "red-billed-chough": 4
      },
      "source": {
       "file": "docs/balance/bal16/wpro/wpro-map21-m21-2026-11-05.json",
@@ -59040,7 +59251,8 @@
       "generated": "2026-11-05T05:12:49.750Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir3": "2026-11-12 (SKIR3): ashbone-ghoul x3, ember-centipede x4, talus-pika x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },

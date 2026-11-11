@@ -1,0 +1,172 @@
+{
+ "about": "SKIR3: first-clear pack cards that left their map's list, swapped for the nearest card of the list (tools/skir3/rewards_2026_11_12.js)",
+ "built": "2026-11-12",
+ "swaps": [
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "fight": "6-4",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "lamprey",
+   "wasName": "Lamprey",
+   "now": "mosquito-cloud",
+   "nowName": "Mosquito Cloud",
+   "why": "Lamprey is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "fight": "7-3",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "leafcutter-gardener",
+   "wasName": "Leafcutter Gardener",
+   "now": "hawthorn-shieldbug",
+   "nowName": "Hawthorn Shieldbug",
+   "why": "Leafcutter Gardener is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "fight": "9-2",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "sunbittern-strider",
+   "wasName": "Sunbittern Strider",
+   "now": "proboscis-monkey",
+   "nowName": "Proboscis Monkey",
+   "why": "Sunbittern Strider is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "fight": "10-3",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "parrotfish",
+   "wasName": "Parrotfish",
+   "now": "giant-clam",
+   "nowName": "Giant Clam",
+   "why": "Parrotfish is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "fight": "10-4",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "coral-reef-shark",
+   "wasName": "Coral Reef Shark",
+   "now": "riptide-eel",
+   "nowName": "Riptide Eel",
+   "why": "Coral Reef Shark is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "fight": "10-5",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "sea-bass",
+   "wasName": "Sea Bass",
+   "now": "reef-shark",
+   "nowName": "Reef Shark",
+   "why": "Sea Bass is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "fight": "12-4",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "hedge-weasel",
+   "wasName": "Hedge Weasel",
+   "now": "bison-bulldozer",
+   "nowName": "Bison Bulldozer",
+   "why": "Hedge Weasel is off the map's 11-12 list"
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "fight": "13-4",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "berserker-boar",
+   "wasName": "Berserker Boar",
+   "now": "pine-marten",
+   "nowName": "Pine Marten",
+   "why": "Berserker Boar is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "fight": "14-1",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "springbok-pronker",
+   "wasName": "Springbok Pronker",
+   "now": "meerkat-sentry",
+   "nowName": "Meerkat Sentry",
+   "why": "Springbok Pronker is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "fight": "15-1",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "pronghorn-racer",
+   "wasName": "Pronghorn Racer",
+   "now": "village-miller",
+   "nowName": "Village Miller",
+   "why": "Pronghorn Racer is off the map's 11-12 list"
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "fight": "17-4",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "snow-bunting-archer",
+   "wasName": "Snow Bunting Archer",
+   "now": "arctic-tern",
+   "nowName": "Arctic Tern",
+   "why": "Snow Bunting Archer is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "fight": "18-4",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "sandfish",
+   "wasName": "Sandfish",
+   "now": "armadillo-guard",
+   "nowName": "Armadillo Guard",
+   "why": "Sandfish is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "fight": "19-1",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "cinder-stoker",
+   "wasName": "Cinder Stoker",
+   "now": "honey-badger-fury",
+   "nowName": "Honey Badger Fury",
+   "why": "Cinder Stoker is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "fight": "20-3",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "ashbone-ghoul",
+   "wasName": "Ashbone Ghoul",
+   "now": "fumarole-ibex",
+   "nowName": "Fumarole Ibex",
+   "why": "Ashbone Ghoul is off the map's 11-12 list; the fight fields it"
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "fight": "20-4",
+   "field": "SKIRMISH_FIRST_PACK_CARDS",
+   "was": "cinder-skeleton",
+   "wasName": "Cinder Skeleton",
+   "now": "vampire-roost",
+   "nowName": "Vampire Roost",
+   "why": "Cinder Skeleton is off the map's 11-12 list; the fight fields it"
+  }
+ ],
+ "none": []
+}

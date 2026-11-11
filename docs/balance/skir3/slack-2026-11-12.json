@@ -1,0 +1,151 @@
+{
+ "about": "SKIR3: maps where a kept search / jump pick (run with --slack 1) puts a card in one more fight than the usage line (tools/skir3/slack_2026_11_12.js)",
+ "built": "2026-11-12",
+ "maps": {
+  "mf": {
+   "extra": 1,
+   "thin": false,
+   "why": "chipmunk-cavalry 4/3 (1-1, 1-2, 1-3, 1-4); hedgerow-shrew 4/3 (1-1, 1-2, 1-4, 1-5); dormouse 4/3 (1-2, 1-3, 1-4, 1-5): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (1-2)"
+  },
+  "mb": {
+   "extra": 1,
+   "thin": false,
+   "why": "beaver-lumberjack 5/4 (2-1, 2-2, 2-3, 2-4, 2-5); pincushion-urchin 5/4 (2-1, 2-2, 2-3, 2-4, 2-5): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (2-1, 2-4)"
+  },
+  "mc": {
+   "extra": 1,
+   "thin": false,
+   "why": "peak-condor 5/4 (3-1, 3-2, 3-3, 3-4, 3-6); beaver-lumberjack 5/4 (3-2, 3-3, 3-4, 3-5, 3-6): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (3-4)"
+  },
+  "mu": {
+   "extra": 1,
+   "thin": false,
+   "why": "fungus-gnat-cloud 4/3 (7-2, 7-3, 7-4, 7-6): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (7-6)"
+  },
+  "m4": {
+   "extra": 1,
+   "thin": false,
+   "why": "hawthorn-shieldbug 6/5 (8-1, 8-3, 8-4, 8-5, 8-7, 8-8); stalactite-golem 6/5 (8-1, 8-2, 8-4, 8-5, 8-6, 8-7): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (8-2, 8-3, 8-7)"
+  },
+  "mk": {
+   "extra": 1,
+   "thin": false,
+   "why": "horseshoe-crab 5/4 (9-1, 9-2, 9-3, 9-4, 9-7); mangrove-monitor 5/4 (9-1, 9-2, 9-4, 9-5, 9-7): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (9-7)"
+  },
+  "mh": {
+   "extra": 1,
+   "thin": false,
+   "why": "mouse-sapper 5/4 (12-1, 12-2, 12-4, 12-6, 12-7); barkplate-beetle 5/4 (12-2, 12-3, 12-4, 12-5, 12-7); chipmunk-hoarder 5/4 (12-3, 12-4, 12-5, 12-6, 12-7): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (12-3, 12-5, 12-7)"
+  },
+  "mr": {
+   "extra": 1,
+   "thin": false,
+   "why": "beaver-feller 6/5 (13-1, 13-3, 13-4, 13-6, 13-7, 13-8); pine-marten 6/5 (13-1, 13-2, 13-5, 13-6, 13-7, 13-8): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (13-2, 13-3, 13-4, 13-5, 13-6, 13-7, 13-8)"
+  },
+  "m5": {
+   "extra": 1,
+   "thin": false,
+   "why": "tasmanian-devil 6/5 (14-1, 14-3, 14-4, 14-5, 14-6, 14-7): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (14-1)"
+  },
+  "ml": {
+   "extra": 1,
+   "thin": false,
+   "why": "elderhorn-monarch 5/4 (15-1, 15-3, 15-5, 15-6, 15-7): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (15-7)"
+  },
+  "mt": {
+   "extra": 2,
+   "thin": false,
+   "why": "cone-cutter-squirrel 7/5 (16-1, 16-2, 16-3, 16-4, 16-5, 16-6, 16-7); owl-sentinel 7/5 (16-1, 16-2, 16-3, 16-4, 16-5, 16-6, 16-7): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (16-2, 16-5, 16-7)"
+  },
+  "m6": {
+   "extra": 1,
+   "thin": false,
+   "why": "glacier-yak 6/5 (17-1, 17-2, 17-4, 17-6, 17-7, 17-8); snow-ermine 6/5 (17-1, 17-2, 17-4, 17-6, 17-7, 17-8); arctic-tern 6/5 (17-2, 17-3, 17-4, 17-5, 17-6, 17-7): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (17-4, 17-5, 17-7)"
+  },
+  "m3": {
+   "extra": 1,
+   "thin": false,
+   "why": "honey-badger-fury 5/4 (19-1, 19-2, 19-3, 19-4, 19-5); quillback-elder 5/4 (19-1, 19-3, 19-4, 19-5, 19-6); smoke-raccoon 5/4 (19-1, 19-2, 19-4, 19-5, 19-6): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (19-1, 19-5, 19-6)"
+  },
+  "m11": {
+   "extra": 1,
+   "thin": false,
+   "why": "obsidian-scorpion 7/6 (20-2, 20-3, 20-5, 20-6, 20-8, 20-9, 20-10); basalt-boar 7/6 (20-3, 20-4, 20-5, 20-6, 20-7, 20-8, 20-10): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (20-2, 20-4)"
+  },
+  "mq": {
+   "extra": 1,
+   "thin": false,
+   "why": "cottontail 4/3 (1-A-1, 1-A-3, 1-A-4, 1-A-5); harvest-mouse 4/3 (1-A-1, 1-A-2, 1-A-3, 1-A-4); meadow-rabbit 4/3 (1-A-1, 1-A-2, 1-A-4, 1-A-5): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (1-A-2)"
+  },
+  "mp": {
+   "extra": 2,
+   "thin": true,
+   "why": "box-turtle 5/4 (2-A-1, 2-A-2, 2-A-3, 2-A-6, 2-A-7); muskrat-reedgatherer 6/4 (2-A-1, 2-A-2, 2-A-3, 2-A-4, 2-A-5, 2-A-7); old-sturgeon 5/4 (2-A-1, 2-A-2, 2-A-3, 2-A-5, 2-A-6); pond-algae 6/4 (2-A-1, 2-A-3, 2-A-4, 2-A-5, 2-A-6, 2-A-7); water-shrew 6/4 (2-A-2, 2-A-3, 2-A-4, 2-A-5, 2-A-6, 2-A-7): a thin list (8 cards in its fights' pools for 7 fights of 5+ different cards: the line cannot hold)"
+  },
+  "m9": {
+   "extra": 1,
+   "thin": false,
+   "why": "cinder-hornet 6/5 (19-A-1, 19-A-2, 19-A-3, 19-A-5, 19-A-7, 19-A-8); grindstone-boar 6/5 (19-A-1, 19-A-2, 19-A-3, 19-A-4, 19-A-7, 19-A-8); hellbender 6/5 (19-A-1, 19-A-5, 19-A-6, 19-A-7, 19-A-9, 19-A-10); pumice-beetle 6/5 (19-A-2, 19-A-3, 19-A-4, 19-A-6, 19-A-8, 19-A-9); anvil-thrush 6/5 (19-A-4, 19-A-5, 19-A-6, 19-A-7, 19-A-8, 19-A-9); smoke-raccoon 6/5 (19-A-4, 19-A-5, 19-A-6, 19-A-7, 19-A-8, 19-A-10): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (19-A-1, 19-A-5, 19-A-7, 19-A-8)"
+  },
+  "mj": {
+   "extra": 1,
+   "thin": false,
+   "why": "humpback-elder 4/3 (10-A-1, 10-A-2, 10-A-3, 10-A-5); orca-vanguard 4/3 (10-A-1, 10-A-2, 10-A-3, 10-A-5); riptide-eel 4/3 (10-A-1, 10-A-3, 10-A-4, 10-A-5); moon-jelly 4/3 (10-A-2, 10-A-3, 10-A-4, 10-A-5): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (10-A-1, 10-A-2)"
+  },
+  "mg": {
+   "extra": 1,
+   "thin": false,
+   "why": "pincushion-urchin 4/3 (2-B-1, 2-B-2, 2-B-3, 2-B-4): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (2-B-1, 2-B-2)"
+  },
+  "mz": {
+   "extra": 1,
+   "thin": false,
+   "why": "fungus-gnat-cloud 4/3 (7-A-1, 7-A-2, 7-A-4, 7-A-5); millipede-hauler 4/3 (7-A-2, 7-A-3, 7-A-4, 7-A-5): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (7-A-5)"
+  },
+  "my": {
+   "extra": 1,
+   "thin": false,
+   "why": "mosquito-cloud 4/3 (14-A-1, 14-A-2, 14-A-4, 14-A-5); slow-loris 4/3 (14-A-1, 14-A-3, 14-A-4, 14-A-5); toucan-courier 4/3 (14-A-1, 14-A-2, 14-A-4, 14-A-5); howler-monkey 4/3 (14-A-2, 14-A-3, 14-A-4, 14-A-5): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (14-A-2, 14-A-4)"
+  },
+  "me": {
+   "extra": 1,
+   "thin": false,
+   "why": "cinder-skeleton 5/4 (20-A-1, 20-A-2, 20-A-3, 20-A-4, 20-A-5); ashbone-ghoul 5/4 (20-A-2, 20-A-3, 20-A-4, 20-A-5, 20-A-7): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (20-A-1, 20-A-4, 20-A-7)"
+  },
+  "mx": {
+   "extra": 1,
+   "thin": true,
+   "why": "deep-cave-troll 3/2 (20-B-1, 20-B-2, 20-B-4); ember-jackal 3/2 (20-B-1, 20-B-2, 20-B-3); gorge-wyrm 3/2 (20-B-1, 20-B-2, 20-B-3); stalactite-golem 3/2 (20-B-2, 20-B-3, 20-B-4); vampire-roost 3/2 (20-B-2, 20-B-3, 20-B-4): a thin list (9 cards in its fights' pools for 4 fights of 5+ different cards: the line cannot hold)"
+  },
+  "ms": {
+   "extra": 1,
+   "thin": false,
+   "why": "cypress-root-lurker 3/2 (5-A-2, 5-A-3, 5-A-4); peat-cutter-vole 3/2 (5-A-2, 5-A-3, 5-A-4): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (5-A-2)"
+  },
+  "mn": {
+   "extra": 1,
+   "thin": true,
+   "why": "cave-olm 3/2 (8-A-1, 8-A-2, 8-A-3); magpie-collector 3/2 (8-A-1, 8-A-2, 8-A-3); stalactite-golem 3/2 (8-A-1, 8-A-2, 8-A-4); blind-cave-fish 3/2 (8-A-2, 8-A-3, 8-A-4): a thin list (8 cards in its fights' pools for 4 fights of 5+ different cards: the line cannot hold)"
+  },
+  "mv": {
+   "extra": 1,
+   "thin": false,
+   "why": "apollo-butterfly 3/2 (11-A-1, 11-A-2, 11-A-4); chipmunk-hoarder 3/2 (11-A-1, 11-A-2, 11-A-4); gangrenous-leech 3/2 (11-A-1, 11-A-2, 11-A-3): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (11-A-2, 11-A-3, 11-A-4)"
+  },
+  "mi": {
+   "extra": 1,
+   "thin": false,
+   "why": "arctic-tern 4/3 (17-A-1, 17-A-2, 17-A-3, 17-A-4): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (17-A-1, 17-A-2, 17-A-3, 17-A-4)"
+  },
+  "mo": {
+   "extra": 1,
+   "thin": false,
+   "why": "elder-willow 4/3 (0-B-1, 0-B-2, 0-B-3, 0-B-4): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (0-B-1, 0-B-3)"
+  },
+  "mpd": {
+   "extra": 1,
+   "thin": false,
+   "why": "sand-widow 6/5 (18-A-1, 18-A-2, 18-A-3, 18-A-4, 18-A-5, 18-A-8); sandstorm-roc 6/5 (18-A-1, 18-A-2, 18-A-3, 18-A-6, 18-A-8, 18-A-9): the 11-12 list's own cards were all at the line when SKIR3 refilled / searched its fights (18-A-1, 18-A-2, 18-A-4, 18-A-9)"
+  }
+ }
+}

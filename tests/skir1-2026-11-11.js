@@ -24,12 +24,17 @@ const EXTRA = require(path.join(ROOT, 'tools', 'skir1', 'extra_2026_11_11.js')),
 const same = (x, y) => JSON.stringify([...new Set(x)].sort()) === JSON.stringify([...new Set(y)].sort());
 
 // ---- 1. the lists ----
-for (const [id, m] of Object.entries(SUG.maps)) {
+// 2026-11-12 (SKIR3): the lists are now the owner's 11-12 picks under the NEW! / Carried limits (tools/skir3/lists_2026_11_12.js): each MAP tier and
+// side list is the SKIR3 record's; SKIR1's 11-11 fold below no longer applies
+const S3 = J('docs/balance/skir3/lists-2026-11-12.json');
+Object.entries(S3.main).forEach(([id, r]) => ok(same(pools[id].cards, r.list), `Map ${r.mapNo} (${id}): the MAP tier is SKIR3's (the owner's 11-12 picks under the limits)`));
+Object.entries(S3.side).forEach(([sid, r]) => ok(same(((pools[r.parent] || {}).submaps || {})[sid] || [], r.list), `${sid}: its list is SKIR3's`));
+if (!S3) for (const [id, m] of Object.entries(SUG.maps)) {
   const yes = (PICKS[id] || {}).yes || [], want = (m.mapNo <= 11 ? yes.concat(UI47_ADMIN_ADD[id] || []) : m.mapNo === 12 ? yes.concat(UI47_SUGGEST[id] || []) : UI47_SUGGEST[id] || [])
     .concat(Object.keys((EXTRA.main || {})[id] || {}), Object.keys((EXTRA.batch || {})[id] || {})).filter(x => D[x] && !((EXTRA.drop || {})[id] || {})[x]);
   ok(same(pools[id].cards, want), `Map ${m.mapNo} (${id}): the MAP tier is ${m.mapNo <= 11 ? 'the owner\'s Yes + admin adds' : m.mapNo === 12 ? 'his 3 + the suggestions' : 'the suggestions'}`);
 }
-for (const [sid, sm] of Object.entries(SUG.submaps)) ok(same(((pools[sm.parent] || {}).submaps || {})[sid] || [], (UI47_SUGGEST[sid] || []).concat(Object.keys((EXTRA.sub || {})[sid] || {})).filter(x => D[x] && !((EXTRA.drop || {})[sid] || {})[x])), `${sm.name} (${sid}): its list is its suggestions`);
+if (!S3) for (const [sid, sm] of Object.entries(SUG.submaps)) ok(same(((pools[sm.parent] || {}).submaps || {})[sid] || [], (UI47_SUGGEST[sid] || []).concat(Object.keys((EXTRA.sub || {})[sid] || {})).filter(x => D[x] && !((EXTRA.drop || {})[sid] || {})[x])), `${sm.name} (${sid}): its list is its suggestions`);
 const unlockAt = {}; L.maps().forEach(m => { unlockAt[m.id] = L.unlockOf(m); });
 Object.entries(pools).forEach(([id, e]) => { const no = G.mapNumberOf(id); if (no == null || no > 20) return;
   const stone = (e.cards || []).filter(x => M.stone(D[x])); ok(!stone.length, `Map ${no} (${id}): no Stone card on its list (${stone.join(', ')})`);
@@ -50,7 +55,7 @@ for (const m of L.maps()) for (const n of L.fightsOf(m)) {
   ok(!f.k14(d).length, `${code}: K14 (${f.k14(d).join('; ')})`);
   if (f.unlock < 21) ids.forEach(id => ok(!M.stone(D[id]), `${code}: no Stone card before Map 21 (${id})`));
   G.NODE_MAP_HINT.set(n, m.id); const now = G.skirmishLeadersOf(n, m.id) || [];
-  ok(p.stoneLeader || p.leaders0.some(f.cutOut) || JSON.stringify(now) === JSON.stringify(p.leaders0), `${code}: its leaders are kept (${p.leaders0} -> ${now})`);
+  ok(p.stoneLeader || p.leaders0.some(f.cutOut) || p.leaders0.some(id => !f.pool.includes(id)) /* 2026-11-12 (SKIR3): a SKIR1 leader off the fight's 11-12 pool (back in play elsewhere) cannot lead here */ || JSON.stringify(now) === JSON.stringify(p.leaders0), `${code}: its leaders are kept (${p.leaders0} -> ${now})`);
   if (/boss/.test(n.kind || '')) ok(p.stoneLeader || p.leaders0.some(f.cutOut) || JSON.stringify(now) === JSON.stringify(p.leaders0), `${code}: a boss keeps its leader (a Stone leader left before Map 21)`);
   ok((n.showcase || null) === p.showcase || (!p.showcase && !p.explicitLeaders && p.leaders0.length === 1 && n.showcase === p.leaders0[0] && /Auto showcase leader, pinned/.test(lineOf(code))), `${code}: its showcase is kept (${p.showcase}), or its Auto showcase leader pinned (${n.showcase})`);
   ((G.nodeFirstClearCardIds || G.nodeRewardCardIds)(m.id, code) || []).filter(id => p.old[id] && !(f.unlock < 21 && M.stone(D[id])) && !f.cutOut(id) /* 2026-11-11: a card on no list leaves (BAL9 JJ24) */).forEach(id => ok(d[id] > 0, `${code}: first-clear card ${id} kept in the deck`));
@@ -66,7 +71,9 @@ for (const [mid, fl] of Object.entries(byMap)) {
     ok(s >= Math.min(MIN[k], a), `${mid}: its decks show ${s} ${k} card(s) (the pools hold ${a}; minimum ${MIN[k]})`); }
   // half the map's fights (2 at least), one more on a map docs/balance/skir1/slack-2026-11-11.json names with its reason; a fight that keeps the
   // card (its leader, showcase, first-clear card) does not count
-  const ucap = L.ucapOf(fl[0].f.m), use = {};
+  // 2026-11-12 (SKIR3): + the extra docs/balance/skir3/slack-2026-11-12.json names for a map, with its reason (a thin 11-12 list, or a refill / search)
+  const S3SLACK = (() => { try { return J('docs/balance/skir3/slack-2026-11-12.json').maps || {}; } catch (e) { return {}; } })();
+  const ucap = L.ucapOf(fl[0].f.m) + ((S3SLACK[mid] || {}).extra || 0), use = {};
   fl.forEach(x => Object.keys(x.n.deck).forEach(id => { if (!x.f.keep.has(id)) use[id] = (use[id] || 0) + 1; }));
   Object.entries(use).filter(([, k]) => k > ucap).forEach(([id, k]) => ok(false, `${mid}: ${id} in ${k} of ${fl.length} fights besides the ones that keep it (at most ${ucap})`));
   ok(true, `${mid}: no card in more than ${ucap} of its ${fl.length} fights`);

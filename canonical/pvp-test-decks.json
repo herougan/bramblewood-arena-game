@@ -82,27 +82,26 @@
  "decks": [
   {
    "id": "pvp1-01",
-   "name": "Mountain Swarm: Field Vole",
+   "name": "Mountain Swarm: Mountain Hare",
    "leader": "echo-matriarch",
    "cards": {
-    "mountain-hare": 3,
-    "talus-pika": 3,
+    "mountain-hare": 5,
+    "talus-pika": 5,
     "rivergate-recruit": 1,
     "helmeted-otter": 3,
-    "field-vole": 3,
-    "gatling-hog": 3,
     "ford-kingfisher": 1,
-    "thorny-devil": 2,
+    "thorny-devil": 4,
     "otter-ferryman": 1
    },
    "seed": "pvp1-01",
-   "gauntletWin": 74,
+   "gauntletWin": 76.9,
    "fieldWin": 40.9,
    "tribe": "Mountain",
    "shape": "Swarm",
    "anchor": "River",
-   "avgCost": 0.3,
-   "code": "BWD1:eyJuIjoiTW91bnRhaW4gU3dhcm06IEZpZWxkIFZvbGUiLCJjIjoiY2FzdGxlIiwibCI6ImVjaG8tbWF0cmlhcmNoIiwiZCI6eyJtb3VudGFpbi1oYXJlIjozLCJ0YWx1cy1waWthIjozLCJyaXZlcmdhdGUtcmVjcnVpdCI6MSwiaGVsbWV0ZWQtb3R0ZXIiOjMsImZpZWxkLXZvbGUiOjMsImdhdGxpbmctaG9nIjozLCJmb3JkLWtpbmdmaXNoZXIiOjEsInRob3JueS1kZXZpbCI6Miwib3R0ZXItZmVycnltYW4iOjF9fQ=="
+   "avgCost": 0.25,
+   "code": "BWD1:eyJuIjoiTW91bnRhaW4gU3dhcm06IE1vdW50YWluIEhhcmUiLCJjIjoiY2FzdGxlIiwibCI6ImVjaG8tbWF0cmlhcmNoIiwiZCI6eyJtb3VudGFpbi1oYXJlIjo1LCJ0YWx1cy1waWthIjo1LCJyaXZlcmdhdGUtcmVjcnVpdCI6MSwiaGVsbWV0ZWQtb3R0ZXIiOjMsImZvcmQta2luZ2Zpc2hlciI6MSwidGhvcm55LWRldmlsIjo0LCJvdHRlci1mZXJyeW1hbiI6MX19",
+   "skir3": "2026-11-12 (SKIR3): field-vole x3, gatling-hog x3 out of play on the owner's 11-12 lists; the copies to thorny-devil (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-02",
@@ -224,88 +223,88 @@
    "leader": "old-willow-of-the-ford",
    "cards": {
     "sunspire-sky-sovereign": 1,
-    "nectar-vintner": 4,
-    "planarian-splitter": 3,
-    "birdlime-dauber": 3,
-    "dung-beetle": 3,
+    "nectar-vintner": 5,
+    "planarian-splitter": 4,
+    "birdlime-dauber": 4,
     "lamprey": 3,
     "blue-ringed-octopus": 3
    },
    "seed": "pvp1-07",
-   "gauntletWin": 73.1,
+   "gauntletWin": 70.2,
    "fieldWin": 38.6,
    "tribe": "River",
    "shape": "Tempo",
    "anchor": "Cave",
-   "avgCost": 0.65,
-   "code": "BWD1:eyJuIjoiUml2ZXIgVGVtcG86IE5lY3RhciBWaW50bmVyIiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtd2lsbG93LW9mLXRoZS1mb3JkIiwiZCI6eyJzdW5zcGlyZS1za3ktc292ZXJlaWduIjoxLCJuZWN0YXItdmludG5lciI6NCwicGxhbmFyaWFuLXNwbGl0dGVyIjozLCJiaXJkbGltZS1kYXViZXIiOjMsImR1bmctYmVldGxlIjozLCJsYW1wcmV5IjozLCJibHVlLXJpbmdlZC1vY3RvcHVzIjozfX0=",
-   "listfix3": "2026-11-11 (LISTFIX3): spitting-spider x4 out of play since SKIR1's lists; the copies to blue-ringed-octopus (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
+   "avgCost": 0.75,
+   "code": "BWD1:eyJuIjoiUml2ZXIgVGVtcG86IE5lY3RhciBWaW50bmVyIiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtd2lsbG93LW9mLXRoZS1mb3JkIiwiZCI6eyJzdW5zcGlyZS1za3ktc292ZXJlaWduIjoxLCJuZWN0YXItdmludG5lciI6NSwicGxhbmFyaWFuLXNwbGl0dGVyIjo0LCJiaXJkbGltZS1kYXViZXIiOjQsImxhbXByZXkiOjMsImJsdWUtcmluZ2VkLW9jdG9wdXMiOjN9fQ==",
+   "listfix3": "2026-11-11 (LISTFIX3): spitting-spider x4 out of play since SKIR1's lists; the copies to blue-ringed-octopus (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's",
+   "skir3": "2026-11-12 (SKIR3): dung-beetle x3 out of play on the owner's 11-12 lists; the copies to birdlime-dauber (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-08",
-   "name": "Arachnid Tempo: Cricket Drummer",
+   "name": "Insect Tempo: Cricket Drummer",
    "leader": "old-shell",
    "cards": {
     "obsidian-scorpion": 3,
     "glass-golem": 3,
-    "pyrenean-desman": 3,
-    "gatling-hog": 3,
-    "cricket-drummer": 3,
+    "pyrenean-desman": 4,
+    "cricket-drummer": 5,
     "peak-condor": 3,
     "clap-net-trapper": 2
    },
    "seed": "pvp1-08",
-   "gauntletWin": 81.3,
+   "gauntletWin": 76.9,
    "fieldWin": 64.8,
-   "tribe": "Arachnid",
+   "tribe": "Insect",
    "shape": "Tempo",
    "anchor": "Mountain",
-   "avgCost": 0.6,
-   "code": "BWD1:eyJuIjoiQXJhY2huaWQgVGVtcG86IENyaWNrZXQgRHJ1bW1lciIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJvYnNpZGlhbi1zY29ycGlvbiI6MywiZ2xhc3MtZ29sZW0iOjMsInB5cmVuZWFuLWRlc21hbiI6MywiZ2F0bGluZy1ob2ciOjMsImNyaWNrZXQtZHJ1bW1lciI6MywicGVhay1jb25kb3IiOjMsImNsYXAtbmV0LXRyYXBwZXIiOjJ9fQ=="
+   "avgCost": 0.45,
+   "code": "BWD1:eyJuIjoiSW5zZWN0IFRlbXBvOiBDcmlja2V0IERydW1tZXIiLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsib2JzaWRpYW4tc2NvcnBpb24iOjMsImdsYXNzLWdvbGVtIjozLCJweXJlbmVhbi1kZXNtYW4iOjQsImNyaWNrZXQtZHJ1bW1lciI6NSwicGVhay1jb25kb3IiOjMsImNsYXAtbmV0LXRyYXBwZXIiOjJ9fQ==",
+   "skir3": "2026-11-12 (SKIR3): gatling-hog x3 out of play on the owner's 11-12 lists; the copies to cricket-drummer (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-09",
-   "name": "Coastal Tempo: Tide Pool Crab",
+   "name": "Coastal Tempo: Gull Thief",
    "leader": "fire-drake-hatchling",
    "cards": {
-    "tide-pool-crab": 5,
     "gilded-swan-knight": 1,
     "raccoon-bandit": 3,
-    "gull-thief": 2,
-    "thorny-devil": 3,
-    "field-vole": 3,
-    "conch-herald": 3
+    "gull-thief": 5,
+    "thorny-devil": 4,
+    "conch-herald": 4,
+    "battlement-heron": 3
    },
    "seed": "pvp1-09",
-   "gauntletWin": 68.8,
+   "gauntletWin": 74,
    "fieldWin": 60,
    "tribe": "Coastal",
    "shape": "Tempo",
    "anchor": "Coastal",
-   "avgCost": 0.35,
-   "code": "BWD1:eyJuIjoiQ29hc3RhbCBUZW1wbzogVGlkZSBQb29sIENyYWIiLCJjIjoiY2FzdGxlIiwibCI6ImZpcmUtZHJha2UtaGF0Y2hsaW5nIiwiZCI6eyJ0aWRlLXBvb2wtY3JhYiI6NSwiZ2lsZGVkLXN3YW4ta25pZ2h0IjoxLCJyYWNjb29uLWJhbmRpdCI6MywiZ3VsbC10aGllZiI6MiwidGhvcm55LWRldmlsIjozLCJmaWVsZC12b2xlIjozLCJjb25jaC1oZXJhbGQiOjN9fQ=="
+   "avgCost": 0.6,
+   "code": "BWD1:eyJuIjoiQ29hc3RhbCBUZW1wbzogR3VsbCBUaGllZiIsImMiOiJjYXN0bGUiLCJsIjoiZmlyZS1kcmFrZS1oYXRjaGxpbmciLCJkIjp7ImdpbGRlZC1zd2FuLWtuaWdodCI6MSwicmFjY29vbi1iYW5kaXQiOjMsImd1bGwtdGhpZWYiOjUsInRob3JueS1kZXZpbCI6NCwiY29uY2gtaGVyYWxkIjo0LCJiYXR0bGVtZW50LWhlcm9uIjozfX0=",
+   "skir3": "2026-11-12 (SKIR3): tide-pool-crab x5, field-vole x3 out of play on the owner's 11-12 lists; the copies to battlement-heron (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-10",
-   "name": "Insect Tempo: Bombardier Beetle",
+   "name": "Duck Midrange: Cinder Hornet",
    "leader": "old-shell",
    "cards": {
-    "bombardier-beetle": 3,
-    "robin-redbreast": 3,
+    "robin-redbreast": 4,
     "glass-changeling": 3,
-    "cinder-hornet": 3,
-    "dung-beetle": 3,
-    "tax-collector-teal": 3,
-    "mallard-halberdier": 2
+    "cinder-hornet": 5,
+    "tax-collector-teal": 4,
+    "mallard-halberdier": 3,
+    "sunspire-sky-sovereign": 1
    },
    "seed": "pvp1-10",
-   "gauntletWin": 84.4,
+   "gauntletWin": 83.7,
    "fieldWin": 68.6,
-   "tribe": "Insect",
-   "shape": "Tempo",
+   "tribe": "Duck",
+   "shape": "Midrange",
    "anchor": "Insect",
-   "avgCost": 0.7,
-   "code": "BWD1:eyJuIjoiSW5zZWN0IFRlbXBvOiBCb21iYXJkaWVyIEJlZXRsZSIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJib21iYXJkaWVyLWJlZXRsZSI6Mywicm9iaW4tcmVkYnJlYXN0IjozLCJnbGFzcy1jaGFuZ2VsaW5nIjozLCJjaW5kZXItaG9ybmV0IjozLCJkdW5nLWJlZXRsZSI6MywidGF4LWNvbGxlY3Rvci10ZWFsIjozLCJtYWxsYXJkLWhhbGJlcmRpZXIiOjJ9fQ=="
+   "avgCost": 0.85,
+   "code": "BWD1:eyJuIjoiRHVjayBNaWRyYW5nZTogQ2luZGVyIEhvcm5ldCIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJyb2Jpbi1yZWRicmVhc3QiOjQsImdsYXNzLWNoYW5nZWxpbmciOjMsImNpbmRlci1ob3JuZXQiOjUsInRheC1jb2xsZWN0b3ItdGVhbCI6NCwibWFsbGFyZC1oYWxiZXJkaWVyIjozLCJzdW5zcGlyZS1za3ktc292ZXJlaWduIjoxfX0=",
+   "skir3": "2026-11-12 (SKIR3): bombardier-beetle x3, dung-beetle x3 out of play on the owner's 11-12 lists; the copies to sunspire-sky-sovereign (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-11",
@@ -355,70 +354,71 @@
   },
   {
    "id": "pvp1-13",
-   "name": "Swamp Midrange: Alligator Gar",
+   "name": "Swamp Tempo: Cone-cutter Squirrel",
    "leader": "old-shell",
    "cards": {
-    "kraken-spawnling": 3,
     "alligator-gar": 3,
-    "bog-leech": 3,
-    "skull-vulture": 3,
-    "cone-cutter-squirrel": 3,
-    "fire-ant-raft": 3,
-    "vampire-bat": 2
+    "bog-leech": 4,
+    "cone-cutter-squirrel": 5,
+    "fire-ant-raft": 4,
+    "ore-smelter-mole": 4
    },
    "seed": "pvp1-13",
-   "gauntletWin": 66.7,
+   "gauntletWin": 76,
    "fieldWin": 42.2,
    "tribe": "Swamp",
-   "shape": "Midrange",
+   "shape": "Tempo",
    "anchor": "Swamp",
-   "avgCost": 0.9,
-   "code": "BWD1:eyJuIjoiU3dhbXAgTWlkcmFuZ2U6IEFsbGlnYXRvciBHYXIiLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsia3Jha2VuLXNwYXdubGluZyI6MywiYWxsaWdhdG9yLWdhciI6MywiYm9nLWxlZWNoIjozLCJza3VsbC12dWx0dXJlIjozLCJjb25lLWN1dHRlci1zcXVpcnJlbCI6MywiZmlyZS1hbnQtcmFmdCI6MywidmFtcGlyZS1iYXQiOjJ9fQ=="
+   "avgCost": 0.55,
+   "code": "BWD1:eyJuIjoiU3dhbXAgVGVtcG86IENvbmUtY3V0dGVyIFNxdWlycmVsIiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtc2hlbGwiLCJkIjp7ImFsbGlnYXRvci1nYXIiOjMsImJvZy1sZWVjaCI6NCwiY29uZS1jdXR0ZXItc3F1aXJyZWwiOjUsImZpcmUtYW50LXJhZnQiOjQsIm9yZS1zbWVsdGVyLW1vbGUiOjR9fQ==",
+   "skir3": "2026-11-12 (SKIR3): kraken-spawnling x3, skull-vulture x3, vampire-bat x2 out of play on the owner's 11-12 lists; the copies to ore-smelter-mole (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-14",
-   "name": "Bird Tempo: Birdlime Dauber",
+   "name": "Tundra Tempo: Birdlime Dauber",
    "leader": "old-willow-of-the-ford",
    "cards": {
     "birdlime-dauber": 4,
-    "snow-bunting-archer": 4,
     "robin-redbreast": 4,
-    "caustic-scorpion": 3,
+    "caustic-scorpion": 4,
     "rivergate-tribune": 1,
-    "snow-ermine": 3,
-    "snow-owl-sentinel": 1
+    "snow-ermine": 4,
+    "snow-owl-sentinel": 1,
+    "polar-bear": 2
    },
    "seed": "pvp1-14",
-   "gauntletWin": 61.5,
+   "gauntletWin": 68.3,
    "fieldWin": 50,
-   "tribe": "Bird",
+   "tribe": "Tundra",
    "shape": "Tempo",
    "anchor": "Tundra",
-   "avgCost": 0.75,
-   "code": "BWD1:eyJuIjoiQmlyZCBUZW1wbzogQmlyZGxpbWUgRGF1YmVyIiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtd2lsbG93LW9mLXRoZS1mb3JkIiwiZCI6eyJiaXJkbGltZS1kYXViZXIiOjQsInNub3ctYnVudGluZy1hcmNoZXIiOjQsInJvYmluLXJlZGJyZWFzdCI6NCwiY2F1c3RpYy1zY29ycGlvbiI6Mywicml2ZXJnYXRlLXRyaWJ1bmUiOjEsInNub3ctZXJtaW5lIjozLCJzbm93LW93bC1zZW50aW5lbCI6MX19",
-   "listfix3": "2026-11-11 (LISTFIX3): weaver-bird x3 out of play since SKIR1's lists; the copies to snow-owl-sentinel (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
+   "avgCost": 0.7,
+   "code": "BWD1:eyJuIjoiVHVuZHJhIFRlbXBvOiBCaXJkbGltZSBEYXViZXIiLCJjIjoiY2FzdGxlIiwibCI6Im9sZC13aWxsb3ctb2YtdGhlLWZvcmQiLCJkIjp7ImJpcmRsaW1lLWRhdWJlciI6NCwicm9iaW4tcmVkYnJlYXN0Ijo0LCJjYXVzdGljLXNjb3JwaW9uIjo0LCJyaXZlcmdhdGUtdHJpYnVuZSI6MSwic25vdy1lcm1pbmUiOjQsInNub3ctb3dsLXNlbnRpbmVsIjoxLCJwb2xhci1iZWFyIjoyfX0=",
+   "listfix3": "2026-11-11 (LISTFIX3): weaver-bird x3 out of play since SKIR1's lists; the copies to snow-owl-sentinel (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's",
+   "skir3": "2026-11-12 (SKIR3): snow-bunting-archer x4 out of play on the owner's 11-12 lists; the copies to polar-bear (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-15",
-   "name": "Bird Tempo: Ant Warrior",
+   "name": "Bird Tempo: Berserker Boar",
    "leader": "wolfsbane-alpha",
    "cards": {
-    "ant-warrior": 3,
     "peregrine-stooper": 3,
     "quicksand-queen": 2,
     "roadrunner-courier": 3,
     "fawn-scout": 3,
     "riverside-peddler": 3,
-    "pika-hoarder": 3
+    "pika-hoarder": 3,
+    "berserker-boar": 3
    },
    "seed": "pvp1-15",
-   "gauntletWin": 75,
+   "gauntletWin": 70.2,
    "fieldWin": 50.7,
    "tribe": "Bird",
    "shape": "Tempo",
    "anchor": "Desert",
-   "avgCost": 0.4,
-   "code": "BWD1:eyJuIjoiQmlyZCBUZW1wbzogQW50IFdhcnJpb3IiLCJjIjoiY2FzdGxlIiwibCI6IndvbGZzYmFuZS1hbHBoYSIsImQiOnsiYW50LXdhcnJpb3IiOjMsInBlcmVncmluZS1zdG9vcGVyIjozLCJxdWlja3NhbmQtcXVlZW4iOjIsInJvYWRydW5uZXItY291cmllciI6MywiZmF3bi1zY291dCI6Mywicml2ZXJzaWRlLXBlZGRsZXIiOjMsInBpa2EtaG9hcmRlciI6M319"
+   "avgCost": 0.7,
+   "code": "BWD1:eyJuIjoiQmlyZCBUZW1wbzogQmVyc2Vya2VyIEJvYXIiLCJjIjoiY2FzdGxlIiwibCI6IndvbGZzYmFuZS1hbHBoYSIsImQiOnsicGVyZWdyaW5lLXN0b29wZXIiOjMsInF1aWNrc2FuZC1xdWVlbiI6Miwicm9hZHJ1bm5lci1jb3VyaWVyIjozLCJmYXduLXNjb3V0IjozLCJyaXZlcnNpZGUtcGVkZGxlciI6MywicGlrYS1ob2FyZGVyIjozLCJiZXJzZXJrZXItYm9hciI6M319",
+   "skir3": "2026-11-12 (SKIR3): ant-warrior x3 out of play on the owner's 11-12 lists; the copies to berserker-boar (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-16",
@@ -477,16 +477,17 @@
     "tide-spirit": 1,
     "honey-bee": 3,
     "hawthorn-shieldbug": 3,
-    "field-vole": 1
+    "testudo-tortoise": 1
    },
    "seed": "pvp1-18",
-   "gauntletWin": 64.6,
+   "gauntletWin": 72.1,
    "fieldWin": 36.7,
    "tribe": "Field",
    "shape": "Tempo",
    "anchor": "Field",
-   "avgCost": 0.5,
-   "code": "BWD1:eyJuIjoiRmllbGQgVGVtcG86IEdyYXZlLUdyaW4gSHllbmEiLCJjIjoiY2FzdGxlIiwibCI6InJlZWYtYWRtaXJhbCIsImQiOnsicm9iaW4tcmVkYnJlYXN0Ijo0LCJlbWJlci1qYWNrYWwiOjMsImdyYXZlLWdyaW4taHllbmEiOjQsImZhdGhvbS1sZXZpYXRoYW4iOjEsInRpZGUtc3Bpcml0IjoxLCJob25leS1iZWUiOjMsImhhd3Rob3JuLXNoaWVsZGJ1ZyI6MywiZmllbGQtdm9sZSI6MX19"
+   "avgCost": 0.6,
+   "code": "BWD1:eyJuIjoiRmllbGQgVGVtcG86IEdyYXZlLUdyaW4gSHllbmEiLCJjIjoiY2FzdGxlIiwibCI6InJlZWYtYWRtaXJhbCIsImQiOnsicm9iaW4tcmVkYnJlYXN0Ijo0LCJlbWJlci1qYWNrYWwiOjMsImdyYXZlLWdyaW4taHllbmEiOjQsImZhdGhvbS1sZXZpYXRoYW4iOjEsInRpZGUtc3Bpcml0IjoxLCJob25leS1iZWUiOjMsImhhd3Rob3JuLXNoaWVsZGJ1ZyI6MywidGVzdHVkby10b3J0b2lzZSI6MX19",
+   "skir3": "2026-11-12 (SKIR3): field-vole x1 out of play on the owner's 11-12 lists; the copies to testudo-tortoise (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-19",
@@ -495,66 +496,67 @@
    "cards": {
     "sleepless-shrew": 1,
     "lone-grey-wolf": 2,
-    "dune-packrat": 3,
     "wolf-spider-mother": 3,
     "balloon-archer": 3,
-    "springbok-pronker": 1,
     "otter-ferryman": 5,
-    "otter-netmender": 2
+    "otter-netmender": 2,
+    "land-tiller": 4
    },
    "seed": "pvp1-19",
-   "gauntletWin": 90.6,
+   "gauntletWin": 84.6,
    "fieldWin": 77.2,
    "tribe": "Village",
    "shape": "Tempo",
    "anchor": "Mouse",
-   "avgCost": 0.6,
-   "code": "BWD1:eyJuIjoiVmlsbGFnZSBUZW1wbzogT3R0ZXIgRmVycnltYW4iLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsic2xlZXBsZXNzLXNocmV3IjoxLCJsb25lLWdyZXktd29sZiI6MiwiZHVuZS1wYWNrcmF0IjozLCJ3b2xmLXNwaWRlci1tb3RoZXIiOjMsImJhbGxvb24tYXJjaGVyIjozLCJzcHJpbmdib2stcHJvbmtlciI6MSwib3R0ZXItZmVycnltYW4iOjUsIm90dGVyLW5ldG1lbmRlciI6Mn19"
+   "avgCost": 0.4,
+   "code": "BWD1:eyJuIjoiVmlsbGFnZSBUZW1wbzogT3R0ZXIgRmVycnltYW4iLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsic2xlZXBsZXNzLXNocmV3IjoxLCJsb25lLWdyZXktd29sZiI6Miwid29sZi1zcGlkZXItbW90aGVyIjozLCJiYWxsb29uLWFyY2hlciI6Mywib3R0ZXItZmVycnltYW4iOjUsIm90dGVyLW5ldG1lbmRlciI6MiwibGFuZC10aWxsZXIiOjR9fQ==",
+   "skir3": "2026-11-12 (SKIR3): dune-packrat x3, springbok-pronker x1 out of play on the owner's 11-12 lists; the copies to land-tiller (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-20",
-   "name": "Ants Swarm: Gatling Hog",
+   "name": "Insect Swarm: Soldier Ant",
    "leader": "old-shell",
    "cards": {
-    "terrier-pup": 3,
+    "terrier-pup": 5,
     "pike-lancer": 3,
-    "leafcutter-gardener": 3,
-    "soldier-ant": 3,
-    "gatling-hog": 3,
+    "soldier-ant": 5,
     "obsidian-scorpion": 3,
-    "acorn-chipmunk": 2
+    "acorn-chipmunk": 2,
+    "beetle-battering-ram": 2
    },
    "seed": "pvp1-20",
-   "gauntletWin": 84.4,
+   "gauntletWin": 86.5,
    "fieldWin": 80.3,
-   "tribe": "Ants",
+   "tribe": "Insect",
    "shape": "Swarm",
    "anchor": "Arachnid",
-   "avgCost": 0.3,
-   "code": "BWD1:eyJuIjoiQW50cyBTd2FybTogR2F0bGluZyBIb2ciLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsidGVycmllci1wdXAiOjMsInBpa2UtbGFuY2VyIjozLCJsZWFmY3V0dGVyLWdhcmRlbmVyIjozLCJzb2xkaWVyLWFudCI6MywiZ2F0bGluZy1ob2ciOjMsIm9ic2lkaWFuLXNjb3JwaW9uIjozLCJhY29ybi1jaGlwbXVuayI6Mn19"
+   "avgCost": 0.25,
+   "code": "BWD1:eyJuIjoiSW5zZWN0IFN3YXJtOiBTb2xkaWVyIEFudCIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJ0ZXJyaWVyLXB1cCI6NSwicGlrZS1sYW5jZXIiOjMsInNvbGRpZXItYW50Ijo1LCJvYnNpZGlhbi1zY29ycGlvbiI6MywiYWNvcm4tY2hpcG11bmsiOjIsImJlZXRsZS1iYXR0ZXJpbmctcmFtIjoyfX0=",
+   "skir3": "2026-11-12 (SKIR3): leafcutter-gardener x3, gatling-hog x3 out of play on the owner's 11-12 lists; the copies to beetle-battering-ram (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-21",
-   "name": "Forest Tempo: Owl Nightwatch",
+   "name": "Forest Midrange: Owl Nightwatch",
    "leader": "old-shell",
    "cards": {
     "echidna-quillshot": 1,
-    "owl-nightwatch": 4,
-    "hedge-weasel": 3,
+    "owl-nightwatch": 5,
     "wolf-spider-mother": 3,
     "truffle-piglet": 3,
     "dhole-matriarch": 2,
-    "sleepless-shrew": 4
+    "sleepless-shrew": 4,
+    "savanna-cheetah": 2
    },
    "seed": "pvp1-21",
-   "gauntletWin": 75,
+   "gauntletWin": 66.3,
    "fieldWin": 47.1,
    "tribe": "Forest",
-   "shape": "Tempo",
+   "shape": "Midrange",
    "anchor": "Forest",
-   "avgCost": 0.75,
-   "code": "BWD1:eyJuIjoiRm9yZXN0IFRlbXBvOiBPd2wgTmlnaHR3YXRjaCIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJlY2hpZG5hLXF1aWxsc2hvdCI6MSwib3dsLW5pZ2h0d2F0Y2giOjQsImhlZGdlLXdlYXNlbCI6Mywid29sZi1zcGlkZXItbW90aGVyIjozLCJ0cnVmZmxlLXBpZ2xldCI6MywiZGhvbGUtbWF0cmlhcmNoIjoyLCJzbGVlcGxlc3Mtc2hyZXciOjR9fQ==",
-   "listfix3": "2026-11-11 (LISTFIX3): woodcock-lookout x4 out of play since SKIR1's lists; the copies to sleepless-shrew (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
+   "avgCost": 0.9,
+   "code": "BWD1:eyJuIjoiRm9yZXN0IE1pZHJhbmdlOiBPd2wgTmlnaHR3YXRjaCIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJlY2hpZG5hLXF1aWxsc2hvdCI6MSwib3dsLW5pZ2h0d2F0Y2giOjUsIndvbGYtc3BpZGVyLW1vdGhlciI6MywidHJ1ZmZsZS1waWdsZXQiOjMsImRob2xlLW1hdHJpYXJjaCI6Miwic2xlZXBsZXNzLXNocmV3Ijo0LCJzYXZhbm5hLWNoZWV0YWgiOjJ9fQ==",
+   "listfix3": "2026-11-11 (LISTFIX3): woodcock-lookout x4 out of play since SKIR1's lists; the copies to sleepless-shrew (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's",
+   "skir3": "2026-11-12 (SKIR3): hedge-weasel x3 out of play on the owner's 11-12 lists; the copies to savanna-cheetah (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-22",
@@ -565,20 +567,21 @@
     "mountain-hare": 4,
     "ice-petrel": 3,
     "helmeted-otter": 3,
-    "springbok-pronker": 1,
     "gangrenous-leech": 1,
     "rimefire-salamander": 2,
-    "magma-salamander": 2
+    "magma-salamander": 2,
+    "caldera-snow-leopard": 1
    },
    "seed": "pvp1-22",
-   "gauntletWin": 86.5,
+   "gauntletWin": 91.3,
    "fieldWin": 75,
    "tribe": "Frost",
    "shape": "Tempo",
    "anchor": "Frost",
    "avgCost": 0.45,
-   "code": "BWD1:eyJuIjoiRnJvc3QgVGVtcG86IE1vdW50YWluIEhhcmUiLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsib3R0ZXItZmxhZy1iZWFyZXIiOjQsIm1vdW50YWluLWhhcmUiOjQsImljZS1wZXRyZWwiOjMsImhlbG1ldGVkLW90dGVyIjozLCJzcHJpbmdib2stcHJvbmtlciI6MSwiZ2FuZ3Jlbm91cy1sZWVjaCI6MSwicmltZWZpcmUtc2FsYW1hbmRlciI6MiwibWFnbWEtc2FsYW1hbmRlciI6Mn19",
-   "listfix3": "2026-11-11 (LISTFIX3): frost-hare-sprinter x3 out of play since SKIR1's lists; the copies to magma-salamander (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
+   "code": "BWD1:eyJuIjoiRnJvc3QgVGVtcG86IE1vdW50YWluIEhhcmUiLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsib3R0ZXItZmxhZy1iZWFyZXIiOjQsIm1vdW50YWluLWhhcmUiOjQsImljZS1wZXRyZWwiOjMsImhlbG1ldGVkLW90dGVyIjozLCJnYW5ncmVub3VzLWxlZWNoIjoxLCJyaW1lZmlyZS1zYWxhbWFuZGVyIjoyLCJtYWdtYS1zYWxhbWFuZGVyIjoyLCJjYWxkZXJhLXNub3ctbGVvcGFyZCI6MX19",
+   "listfix3": "2026-11-11 (LISTFIX3): frost-hare-sprinter x3 out of play since SKIR1's lists; the copies to magma-salamander (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's",
+   "skir3": "2026-11-12 (SKIR3): springbok-pronker x1 out of play on the owner's 11-12 lists; the copies to caldera-snow-leopard (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-23",
@@ -590,66 +593,66 @@
     "ant-hill": 3,
     "soldier-ant": 3,
     "swordbill-challenger": 3,
-    "ant-warrior": 3,
-    "pangolin-roller": 3
+    "pangolin-roller": 3,
+    "ferry-toll-frog": 3
    },
    "seed": "pvp1-23",
-   "gauntletWin": 68.8,
+   "gauntletWin": 69.2,
    "fieldWin": 44,
    "tribe": "Ants",
    "shape": "Tempo",
    "anchor": "Ants",
    "avgCost": 0.7,
-   "code": "BWD1:eyJuIjoiQW50cyBUZW1wbzogQW50IEhpbGwiLCJjIjoiY2FzdGxlIiwibCI6IndvbGZzYmFuZS1hbHBoYSIsImQiOnsibWFsbGFyZC1oYWxiZXJkaWVyIjozLCJzaWVnZS1yaGlubyI6MiwiYW50LWhpbGwiOjMsInNvbGRpZXItYW50IjozLCJzd29yZGJpbGwtY2hhbGxlbmdlciI6MywiYW50LXdhcnJpb3IiOjMsInBhbmdvbGluLXJvbGxlciI6M319"
+   "code": "BWD1:eyJuIjoiQW50cyBUZW1wbzogQW50IEhpbGwiLCJjIjoiY2FzdGxlIiwibCI6IndvbGZzYmFuZS1hbHBoYSIsImQiOnsibWFsbGFyZC1oYWxiZXJkaWVyIjozLCJzaWVnZS1yaGlubyI6MiwiYW50LWhpbGwiOjMsInNvbGRpZXItYW50IjozLCJzd29yZGJpbGwtY2hhbGxlbmdlciI6MywicGFuZ29saW4tcm9sbGVyIjozLCJmZXJyeS10b2xsLWZyb2ciOjN9fQ==",
+   "skir3": "2026-11-12 (SKIR3): ant-warrior x3 out of play on the owner's 11-12 lists; the copies to ferry-toll-frog (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-24",
-   "name": "Desert Tempo: Birdlime Dauber",
+   "name": "Rabbit Tempo: Cottontail",
    "leader": "echo-matriarch",
    "cards": {
-    "leafcutter-gardener": 3,
-    "birdlime-dauber": 3,
+    "birdlime-dauber": 4,
     "stoat-cutthroat": 3,
-    "sandfish": 3,
-    "thorny-devil": 3,
-    "cottontail": 3,
-    "snail-mail": 2
+    "thorny-devil": 4,
+    "cottontail": 5,
+    "snail-mail": 4
    },
    "seed": "pvp1-24",
-   "gauntletWin": 75,
+   "gauntletWin": 79.8,
    "fieldWin": 41.6,
-   "tribe": "Desert",
+   "tribe": "Rabbit",
    "shape": "Tempo",
    "anchor": "Reptile",
-   "avgCost": 0.6,
-   "code": "BWD1:eyJuIjoiRGVzZXJ0IFRlbXBvOiBCaXJkbGltZSBEYXViZXIiLCJjIjoiY2FzdGxlIiwibCI6ImVjaG8tbWF0cmlhcmNoIiwiZCI6eyJsZWFmY3V0dGVyLWdhcmRlbmVyIjozLCJiaXJkbGltZS1kYXViZXIiOjMsInN0b2F0LWN1dHRocm9hdCI6Mywic2FuZGZpc2giOjMsInRob3JueS1kZXZpbCI6MywiY290dG9udGFpbCI6Mywic25haWwtbWFpbCI6Mn19"
+   "avgCost": 0.55,
+   "code": "BWD1:eyJuIjoiUmFiYml0IFRlbXBvOiBDb3R0b250YWlsIiwiYyI6ImNhc3RsZSIsImwiOiJlY2hvLW1hdHJpYXJjaCIsImQiOnsiYmlyZGxpbWUtZGF1YmVyIjo0LCJzdG9hdC1jdXR0aHJvYXQiOjMsInRob3JueS1kZXZpbCI6NCwiY290dG9udGFpbCI6NSwic25haWwtbWFpbCI6NH19",
+   "skir3": "2026-11-12 (SKIR3): leafcutter-gardener x3, sandfish x3 out of play on the owner's 11-12 lists; the copies to birdlime-dauber (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-25",
-   "name": "Coral Reef Tempo: Apollo Butterfly",
+   "name": "Hummingbird Tempo: Pond Trout",
    "leader": "old-shell",
    "cards": {
-    "gatling-hog": 3,
     "sunspire-choirmother": 2,
-    "coral-reef-shark": 3,
-    "pond-trout": 3,
-    "apollo-butterfly": 3,
-    "dawn-bellringer": 3,
-    "coral-polyp-colony": 3
+    "pond-trout": 5,
+    "apollo-butterfly": 4,
+    "dawn-bellringer": 4,
+    "coral-polyp-colony": 3,
+    "magma-salamander": 2
    },
    "seed": "pvp1-25",
-   "gauntletWin": 71.2,
+   "gauntletWin": 68.3,
    "fieldWin": 34.1,
-   "tribe": "Coral Reef",
+   "tribe": "Hummingbird",
    "shape": "Tempo",
    "anchor": "Coral Reef",
-   "avgCost": 0.7,
-   "code": "BWD1:eyJuIjoiQ29yYWwgUmVlZiBUZW1wbzogQXBvbGxvIEJ1dHRlcmZseSIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJnYXRsaW5nLWhvZyI6Mywic3Vuc3BpcmUtY2hvaXJtb3RoZXIiOjIsImNvcmFsLXJlZWYtc2hhcmsiOjMsInBvbmQtdHJvdXQiOjMsImFwb2xsby1idXR0ZXJmbHkiOjMsImRhd24tYmVsbHJpbmdlciI6MywiY29yYWwtcG9seXAtY29sb255IjozfX0=",
-   "listfix3": "2026-11-11 (LISTFIX3): spitting-spider x3 out of play since SKIR1's lists; the copies to coral-polyp-colony (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
+   "avgCost": 0.4,
+   "code": "BWD1:eyJuIjoiSHVtbWluZ2JpcmQgVGVtcG86IFBvbmQgVHJvdXQiLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsic3Vuc3BpcmUtY2hvaXJtb3RoZXIiOjIsInBvbmQtdHJvdXQiOjUsImFwb2xsby1idXR0ZXJmbHkiOjQsImRhd24tYmVsbHJpbmdlciI6NCwiY29yYWwtcG9seXAtY29sb255IjozLCJtYWdtYS1zYWxhbWFuZGVyIjoyfX0=",
+   "listfix3": "2026-11-11 (LISTFIX3): spitting-spider x3 out of play since SKIR1's lists; the copies to coral-polyp-colony (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's",
+   "skir3": "2026-11-12 (SKIR3): gatling-hog x3, coral-reef-shark x3 out of play on the owner's 11-12 lists; the copies to magma-salamander (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-26",
-   "name": "Bird Midrange: Cave Warlord",
+   "name": "Bird Swarm: Beaver Lumberjack",
    "leader": "old-shell",
    "cards": {
     "ur-elk": 2,
@@ -658,16 +661,17 @@
     "teatime-toad": 3,
     "fawn-scout": 3,
     "crossed-eyes": 3,
-    "cave-warlord": 3
+    "beaver-lumberjack": 3
    },
    "seed": "pvp1-26",
-   "gauntletWin": 66.7,
+   "gauntletWin": 72.1,
    "fieldWin": 58.8,
    "tribe": "Bird",
-   "shape": "Midrange",
+   "shape": "Swarm",
    "anchor": "Deer",
-   "avgCost": 0.85,
-   "code": "BWD1:eyJuIjoiQmlyZCBNaWRyYW5nZTogQ2F2ZSBXYXJsb3JkIiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtc2hlbGwiLCJkIjp7InVyLWVsayI6MiwiaG93ZGFoLWFyY2hlcnMiOjMsImtpdHRpd2FrZS1mbG9jayI6MywidGVhdGltZS10b2FkIjozLCJmYXduLXNjb3V0IjozLCJjcm9zc2VkLWV5ZXMiOjMsImNhdmUtd2FybG9yZCI6M319"
+   "avgCost": 0.25,
+   "code": "BWD1:eyJuIjoiQmlyZCBTd2FybTogQmVhdmVyIEx1bWJlcmphY2siLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsidXItZWxrIjoyLCJob3dkYWgtYXJjaGVycyI6Mywia2l0dGl3YWtlLWZsb2NrIjozLCJ0ZWF0aW1lLXRvYWQiOjMsImZhd24tc2NvdXQiOjMsImNyb3NzZWQtZXllcyI6MywiYmVhdmVyLWx1bWJlcmphY2siOjN9fQ==",
+   "skir3": "2026-11-12 (SKIR3): cave-warlord x3 out of play on the owner's 11-12 lists; the copies to beaver-lumberjack (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-27",
@@ -677,65 +681,67 @@
     "magnate-duck": 1,
     "tax-collector-teal": 4,
     "box-turtle": 3,
-    "ant-warrior": 3,
     "mallard-halberdier": 3,
     "fennec-fox": 3,
-    "chipmunk-cavalry": 3
+    "chipmunk-cavalry": 3,
+    "duckling-squadron": 3
    },
    "seed": "pvp1-27",
-   "gauntletWin": 68.8,
+   "gauntletWin": 64.4,
    "fieldWin": 30.3,
    "tribe": "Duck",
    "shape": "Tempo",
    "anchor": "Duck",
    "avgCost": 0.65,
-   "code": "BWD1:eyJuIjoiRHVjayBUZW1wbzogVGF4LUNvbGxlY3RvciBUZWFsIiwiYyI6ImNhc3RsZSIsImwiOiJoZXJvbi1oYWciLCJkIjp7Im1hZ25hdGUtZHVjayI6MSwidGF4LWNvbGxlY3Rvci10ZWFsIjo0LCJib3gtdHVydGxlIjozLCJhbnQtd2FycmlvciI6MywibWFsbGFyZC1oYWxiZXJkaWVyIjozLCJmZW5uZWMtZm94IjozLCJjaGlwbXVuay1jYXZhbHJ5IjozfX0="
+   "code": "BWD1:eyJuIjoiRHVjayBUZW1wbzogVGF4LUNvbGxlY3RvciBUZWFsIiwiYyI6ImNhc3RsZSIsImwiOiJoZXJvbi1oYWciLCJkIjp7Im1hZ25hdGUtZHVjayI6MSwidGF4LWNvbGxlY3Rvci10ZWFsIjo0LCJib3gtdHVydGxlIjozLCJtYWxsYXJkLWhhbGJlcmRpZXIiOjMsImZlbm5lYy1mb3giOjMsImNoaXBtdW5rLWNhdmFscnkiOjMsImR1Y2tsaW5nLXNxdWFkcm9uIjozfX0=",
+   "skir3": "2026-11-12 (SKIR3): ant-warrior x3 out of play on the owner's 11-12 lists; the copies to duckling-squadron (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-28",
-   "name": "Mangrove Tempo: Cinder Hornet",
+   "name": "Mangrove Midrange: Cinder Hornet",
    "leader": "wolfsbane-alpha",
    "cards": {
-    "cinder-hornet": 3,
+    "cinder-hornet": 4,
     "mangrove-monitor": 3,
     "pika-hoarder": 3,
     "coral-polyp-colony": 3,
     "mangrove-manatee": 3,
-    "grotto-lobster": 3,
-    "mangrove-mudskipper": 2
+    "mangrove-mudskipper": 2,
+    "ibex-rockcaller": 2
    },
    "seed": "pvp1-28",
-   "gauntletWin": 61.5,
+   "gauntletWin": 71.2,
    "fieldWin": 42.6,
    "tribe": "Mangrove",
-   "shape": "Tempo",
+   "shape": "Midrange",
    "anchor": "Mangrove",
-   "avgCost": 0.75,
-   "code": "BWD1:eyJuIjoiTWFuZ3JvdmUgVGVtcG86IENpbmRlciBIb3JuZXQiLCJjIjoiY2FzdGxlIiwibCI6IndvbGZzYmFuZS1hbHBoYSIsImQiOnsiY2luZGVyLWhvcm5ldCI6MywibWFuZ3JvdmUtbW9uaXRvciI6MywicGlrYS1ob2FyZGVyIjozLCJjb3JhbC1wb2x5cC1jb2xvbnkiOjMsIm1hbmdyb3ZlLW1hbmF0ZWUiOjMsImdyb3R0by1sb2JzdGVyIjozLCJtYW5ncm92ZS1tdWRza2lwcGVyIjoyfX0=",
-   "listfix3": "2026-11-11 (LISTFIX3): lions-mane-jelly x2 out of play since SKIR1's lists; the copies to mangrove-mudskipper (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
+   "avgCost": 0.8,
+   "code": "BWD1:eyJuIjoiTWFuZ3JvdmUgTWlkcmFuZ2U6IENpbmRlciBIb3JuZXQiLCJjIjoiY2FzdGxlIiwibCI6IndvbGZzYmFuZS1hbHBoYSIsImQiOnsiY2luZGVyLWhvcm5ldCI6NCwibWFuZ3JvdmUtbW9uaXRvciI6MywicGlrYS1ob2FyZGVyIjozLCJjb3JhbC1wb2x5cC1jb2xvbnkiOjMsIm1hbmdyb3ZlLW1hbmF0ZWUiOjMsIm1hbmdyb3ZlLW11ZHNraXBwZXIiOjIsImliZXgtcm9ja2NhbGxlciI6Mn19",
+   "listfix3": "2026-11-11 (LISTFIX3): lions-mane-jelly x2 out of play since SKIR1's lists; the copies to mangrove-mudskipper (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's",
+   "skir3": "2026-11-12 (SKIR3): grotto-lobster x3 out of play on the owner's 11-12 lists; the copies to ibex-rockcaller (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-29",
-   "name": "Field Tempo: Hedge Weasel",
+   "name": "Rabbit Tempo: Burrow Rabbit",
    "leader": "fire-drake-hatchling",
    "cards": {
     "planarian-splitter": 4,
     "testudo-tortoise": 3,
-    "hedge-weasel": 4,
-    "trapdoor-spider": 2,
     "riverstone-slinger": 3,
-    "burrow-rabbit": 3,
-    "sunspire-sky-sovereign": 1
+    "burrow-rabbit": 5,
+    "sunspire-sky-sovereign": 1,
+    "tiny-cave-dweller": 4
    },
    "seed": "pvp1-29",
-   "gauntletWin": 58.7,
+   "gauntletWin": 70.2,
    "fieldWin": 46.4,
-   "tribe": "Field",
+   "tribe": "Rabbit",
    "shape": "Tempo",
    "anchor": "random",
    "avgCost": 0.55,
-   "code": "BWD1:eyJuIjoiRmllbGQgVGVtcG86IEhlZGdlIFdlYXNlbCIsImMiOiJjYXN0bGUiLCJsIjoiZmlyZS1kcmFrZS1oYXRjaGxpbmciLCJkIjp7InBsYW5hcmlhbi1zcGxpdHRlciI6NCwidGVzdHVkby10b3J0b2lzZSI6MywiaGVkZ2Utd2Vhc2VsIjo0LCJ0cmFwZG9vci1zcGlkZXIiOjIsInJpdmVyc3RvbmUtc2xpbmdlciI6MywiYnVycm93LXJhYmJpdCI6Mywic3Vuc3BpcmUtc2t5LXNvdmVyZWlnbiI6MX19",
-   "listfix3": "2026-11-11 (LISTFIX3): marsh-harrier x3 out of play since SKIR1's lists; the copies to sunspire-sky-sovereign (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
+   "code": "BWD1:eyJuIjoiUmFiYml0IFRlbXBvOiBCdXJyb3cgUmFiYml0IiwiYyI6ImNhc3RsZSIsImwiOiJmaXJlLWRyYWtlLWhhdGNobGluZyIsImQiOnsicGxhbmFyaWFuLXNwbGl0dGVyIjo0LCJ0ZXN0dWRvLXRvcnRvaXNlIjozLCJyaXZlcnN0b25lLXNsaW5nZXIiOjMsImJ1cnJvdy1yYWJiaXQiOjUsInN1bnNwaXJlLXNreS1zb3ZlcmVpZ24iOjEsInRpbnktY2F2ZS1kd2VsbGVyIjo0fX0=",
+   "listfix3": "2026-11-11 (LISTFIX3): marsh-harrier x3 out of play since SKIR1's lists; the copies to sunspire-sky-sovereign (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's",
+   "skir3": "2026-11-12 (SKIR3): hedge-weasel x4, trapdoor-spider x2 out of play on the owner's 11-12 lists; the copies to tiny-cave-dweller (PVP1's fill measure); gauntletWin re-measured, fieldWin is the 11-06 round robin's"
   },
   {
    "id": "pvp1-30",

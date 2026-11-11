@@ -102,12 +102,11 @@
    "todayRule": "Pack 1: basic-pack cards whose first map list opens on Maps 0-6 (PACK_MAPS_PER_TIER 7), plus canonical/pack-extras.json \"1\" (empty)",
    "zone": "A",
    "current": {
-    "count": 65,
+    "count": 51,
     "cards": [
      "alley-cat",
      "anhinga-spearbird",
      "beachcomber-sanderling",
-     "beaver-feller",
      "bog-leech",
      "box-turtle",
      "bramble-sprout",
@@ -117,44 +116,33 @@
      "conch-crawler",
      "constrictor-coil",
      "cormorant",
+     "crocodile-ambusher",
      "cypress-root-lurker",
-     "dam-keeper-beaver",
      "dolphin-knight",
      "dormouse",
      "eagle-sharpshooter",
      "farm-dog",
      "feral-tomcat",
-     "fiddler-crab-swarm",
      "fire-ant-raft",
      "gannet-nestweaver",
      "grass-snake",
-     "great-skua",
      "gull-thief",
      "hawk-arrowkeeper",
-     "hazel-coppice",
      "hedgerow-shrew",
      "house-cat",
      "kittiwake-flock",
-     "lamprey",
      "limpet-clinger",
      "lodge-engineer",
-     "lotus-frog",
      "marsh-mallow-hare",
-     "mayfly-dancer",
-     "monarch-wingblade",
      "moonlit-hare",
      "mosquito-cloud",
      "mudpuppy",
      "muskrat-reedgatherer",
-     "nightjar-drifter",
      "nutria-reedcutter",
      "old-sturgeon",
      "open-ocean-hermit-crab",
-     "owl-sentinel",
      "oystercatcher",
-     "pack-rat-looter",
      "peak-condor",
-     "peat-cutter-vole",
      "pincushion-urchin",
      "planarian-splitter",
      "pond-algae",
@@ -164,83 +152,63 @@
      "robin-redbreast",
      "shoal-shark",
      "slow-worm",
-     "sunbittern-strider",
      "swamp-alligator",
      "venomlord-serpent",
-     "victoria-regia",
      "water-shrew"
     ]
    },
    "inProposedZone": {
-    "count": 82,
+    "count": 61,
     "cards": [
      "alley-cat",
      "amber-cicada",
      "anhinga-spearbird",
      "beachcomber-sanderling",
-     "beaver-feller",
      "bog-leech",
      "box-turtle",
      "bramble-sprout",
      "camouflage-frog",
      "chipmunk-cavalry",
-     "coffer-mimic",
      "compost-grub",
      "conch-crawler",
      "constrictor-coil",
      "cormorant",
      "crocodile-ambusher",
      "cypress-root-lurker",
-     "dam-keeper-beaver",
      "dolphin-knight",
      "dormouse",
      "eagle-sharpshooter",
      "farm-dog",
      "feral-tomcat",
-     "fiddler-crab-swarm",
      "fire-ant-raft",
      "fungus-gnat-cloud",
      "gannet-nestweaver",
      "grass-snake",
-     "great-skua",
-     "grey-seal-bull",
      "gull-thief",
      "hawk-arrowkeeper",
      "hawthorn-shieldbug",
-     "hazel-coppice",
      "hedgerow-shrew",
      "house-cat",
      "kittiwake-flock",
      "lamprey",
-     "leafcutter-gardener",
      "leopard-slug",
      "limpet-clinger",
      "lodge-engineer",
-     "lotus-frog",
      "marsh-mallow-hare",
-     "mayfly-dancer",
-     "monarch-wingblade",
      "moonlit-hare",
-     "moray-ambusher",
      "mosquito-cloud",
      "mudpuppy",
      "muskrat-reedgatherer",
-     "nightjar-drifter",
-     "nightshade-moth",
      "nutria-reedcutter",
      "old-sturgeon",
      "open-ocean-hermit-crab",
-     "owl-sentinel",
      "oystercatcher",
-     "pack-rat-looter",
      "peak-condor",
-     "peat-cutter-vole",
      "pincushion-urchin",
      "planarian-splitter",
      "pond-algae",
      "puddle-skimmer",
      "puffball-bombardier",
-     "raccoon-nightcrew",
      "raft-spider",
      "river-mink",
      "robin-redbreast",
@@ -249,12 +217,9 @@
      "shoal-shark",
      "sleepless-shrew",
      "slow-worm",
-     "sunbittern-strider",
      "swamp-alligator",
-     "tide-pool-crab",
      "trash-panda-trickster",
      "venomlord-serpent",
-     "victoria-regia",
      "water-shrew"
     ]
    },
@@ -475,7 +440,7 @@
      }
     ]
    },
-   "proposedCount": 96
+   "proposedCount": 78
   },
   "silver": {
    "kind": "shop",
@@ -486,39 +451,28 @@
    "todayRule": "Pack 2: first map list on Maps 7-13, plus pack-extras \"2\" (empty)",
    "zone": "B",
    "current": {
-    "count": 96,
+    "count": 66,
     "cards": [
      "amber-cicada",
      "ant-hill",
-     "ant-warrior",
      "anvil-thrush",
+     "balloon-archer",
      "barkplate-beetle",
-     "barnacle-fortress",
      "barrow-leech-bat",
      "bear-cub",
-     "berserker-boar",
+     "beaver-feller",
+     "bison-bulldozer",
      "blind-cave-fish",
-     "bog-behemoth",
-     "bombardier-beetle",
-     "bramblewood-lynx",
      "briarback-hedgehog",
      "caiman-hatchling",
-     "carrion-crow",
      "cave-olm",
      "chipmunk-hoarder",
-     "clover-butterfly",
      "clownfish-scout",
-     "coffer-mimic",
      "coral-current-eel",
      "coral-polyp-colony",
-     "coral-reef-shark",
-     "cottonmouth-matriarch",
-     "crocodile-ambusher",
      "crown-of-thorns-star",
-     "dung-beetle",
      "eyrie-warden",
-     "field-mouse",
-     "field-vole",
+     "fiddler-crab-swarm",
      "fishing-cat",
      "fox-kit",
      "fungal-colossus",
@@ -526,97 +480,69 @@
      "gallery-orb-weaver",
      "gangrenous-leech",
      "giant-clam",
-     "grey-seal-bull",
      "grizzly-vanguard",
      "hawthorn-shieldbug",
-     "heartwood-treant",
-     "hedge-weasel",
      "horseshoe-crab",
      "humpback-elder",
      "ironclaw-fiddler",
      "jackrabbit-sprinter",
-     "kraken-spawnling",
      "krill-swarm",
-     "ladybird-guard",
-     "leafcutter-gardener",
+     "lamprey",
      "leopard-slug",
      "mangrove-monitor",
      "mangrove-mudskipper",
      "millipede-hauler",
+     "monarch-wingblade",
      "moon-jelly",
-     "moray-ambusher",
      "mountain-hare",
      "mouse-sapper",
      "mudflat-godwit",
-     "nautilus-drifter",
-     "nightshade-moth",
      "orca-vanguard",
      "owl-nightwatch",
-     "parrotfish",
+     "peat-cutter-vole",
      "pill-bug",
      "pine-marten",
      "proboscis-monkey",
      "puffball-bombardier",
      "quill-thorn-boar",
-     "raccoon-nightcrew",
      "redwood-woodpecker",
      "reef-shark",
      "riptide-eel",
      "rot-swollen-carcass",
      "salvager-hermit-crab",
-     "sea-bass",
      "sea-turtle-elder",
-     "seed-cache-squirrel",
-     "signal-crayfish",
      "sleepless-shrew",
      "snapper-hatchling",
-     "springtail-hopper",
      "stalactite-golem",
      "stonedrop-vulture",
      "sulfur-cinder-moth",
-     "swift-fox",
-     "tasmanian-devil",
      "the-gannet-queen",
-     "thorn-shrike",
-     "tide-pool-crab",
-     "tide-spirit",
      "trash-panda-trickster",
-     "tunnel-wyrm",
-     "voltaic-eel",
-     "whale-shark"
+     "voltaic-eel"
     ]
    },
    "inProposedZone": {
-    "count": 79,
+    "count": 56,
     "cards": [
      "ant-hill",
-     "ant-warrior",
      "anvil-thrush",
+     "balloon-archer",
      "barkplate-beetle",
-     "barnacle-fortress",
      "barrow-leech-bat",
      "bear-cub",
-     "berserker-boar",
+     "beaver-feller",
+     "bison-bulldozer",
      "blind-cave-fish",
-     "bog-behemoth",
-     "bombardier-beetle",
-     "bramblewood-lynx",
      "briarback-hedgehog",
      "caiman-hatchling",
-     "carrion-crow",
      "cave-olm",
      "chipmunk-hoarder",
-     "clover-butterfly",
      "clownfish-scout",
      "coral-current-eel",
      "coral-polyp-colony",
-     "coral-reef-shark",
-     "cottonmouth-matriarch",
      "crown-of-thorns-star",
-     "dung-beetle",
      "eyrie-warden",
-     "field-mouse",
-     "field-vole",
+     "fiddler-crab-swarm",
      "fishing-cat",
      "fox-kit",
      "fungal-colossus",
@@ -624,26 +550,22 @@
      "gangrenous-leech",
      "giant-clam",
      "grizzly-vanguard",
-     "heartwood-treant",
-     "hedge-weasel",
      "horseshoe-crab",
      "humpback-elder",
      "ironclaw-fiddler",
      "jackrabbit-sprinter",
-     "kraken-spawnling",
      "krill-swarm",
-     "ladybird-guard",
      "mangrove-monitor",
      "mangrove-mudskipper",
      "millipede-hauler",
+     "monarch-wingblade",
      "moon-jelly",
      "mountain-hare",
      "mouse-sapper",
      "mudflat-godwit",
-     "nautilus-drifter",
      "orca-vanguard",
      "owl-nightwatch",
-     "parrotfish",
+     "peat-cutter-vole",
      "pill-bug",
      "pine-marten",
      "proboscis-monkey",
@@ -651,23 +573,13 @@
      "redwood-woodpecker",
      "reef-shark",
      "riptide-eel",
-     "sea-bass",
      "sea-turtle-elder",
-     "seed-cache-squirrel",
-     "signal-crayfish",
      "snapper-hatchling",
-     "springtail-hopper",
      "stalactite-golem",
      "stonedrop-vulture",
      "sulfur-cinder-moth",
-     "swift-fox",
-     "tasmanian-devil",
      "the-gannet-queen",
-     "thorn-shrike",
-     "tide-spirit",
-     "tunnel-wyrm",
-     "voltaic-eel",
-     "whale-shark"
+     "voltaic-eel"
     ]
    },
    "proposal": {
@@ -887,7 +799,7 @@
      }
     ]
    },
-   "proposedCount": 94
+   "proposedCount": 72
   },
   "gold": {
    "kind": "shop",
@@ -898,189 +810,131 @@
    "todayRule": "Pack 3: first map list on Maps 14-20, plus pack-extras \"3\" (empty)",
    "zone": "C",
    "current": {
-    "count": 88,
+    "count": 59,
     "cards": [
-     "acacia-giraffe",
-     "alpine-salamander",
      "alpine-swift",
      "ancient-sloth-titan",
      "apollo-butterfly",
-     "arctic-fox-raider",
      "arctic-tern",
      "armadillo-guard",
      "ash-moth",
      "ashbone-ghoul",
-     "ashwing-ptarmigan",
      "basalt-boar",
-     "bison-bulldozer",
+     "berserker-boar",
      "boreal-elk",
+     "bramblewood-lynx",
+     "bramblewood-macaque",
      "cataphract-destrier",
-     "cave-swiftlet",
-     "cave-warlord",
-     "cinder-hornet",
      "cinder-skeleton",
      "cinder-stoker",
      "cone-cutter-squirrel",
      "deep-cave-troll",
      "dromedary",
      "dune-jackal",
-     "dune-jackal-scout",
-     "dune-packrat",
      "dust-hyena",
-     "ember-centipede",
+     "elderhorn-monarch",
      "ember-jackal",
-     "frostbitten-wolverine",
+     "frillneck-duelist",
      "fumarole-ibex",
-     "gale-swift",
      "glacier-yak",
-     "glasswing-moth",
-     "glimmer-spider",
-     "goose-sentry",
      "gorge-wyrm",
-     "granite-ox-golem",
      "great-horned-owl",
-     "grotto-lobster",
      "harbor-seal",
      "honey-badger-fury",
      "hoopoe-herald",
      "horned-lizard",
      "howler-monkey",
      "ice-crevasse-wolf",
-     "komodo-warlord",
-     "land-tiller",
-     "lemming-swarm",
-     "magma-titan",
      "magpie-collector",
-     "mallard-halberdier",
+     "mallard-marauder",
      "marula-elephant",
      "meerkat-sentry",
-     "moon-jerboa",
-     "musk-ox-calf",
-     "obsidian-lich",
+     "nightjar-drifter",
      "obsidian-scorpion",
-     "pale-oryx",
-     "pall-wraith",
-     "phoenix-fledgling",
-     "pronghorn-racer",
-     "pyroclast-wyrm",
+     "owl-sentinel",
+     "pinecone-sapper",
+     "plains-zebra",
      "quillback-elder",
-     "red-billed-chough",
      "ringed-seal",
      "roadrunner-courier",
      "sand-widow",
-     "sandfish",
      "sandstorm-roc",
-     "shepherds-bark",
-     "skull-vulture",
+     "siege-rhino",
      "smoke-raccoon",
-     "snow-bunting-archer",
      "snow-ermine",
      "snowshoe-hare",
      "sparrow-chick",
-     "springbok-pronker",
      "sulfur-vent-crab",
-     "talus-pika",
-     "termite-forager",
-     "timber-wolf-pack",
-     "trapdoor-spider",
-     "tundra-musk-ox",
-     "vampire-bat",
+     "sunbittern-strider",
+     "sworn-shieldbearer",
+     "tasmanian-devil",
      "vampire-roost",
-     "war-hound",
-     "whip-spider"
+     "village-miller",
+     "warhorse-charger"
     ]
    },
    "inProposedZone": {
-    "count": 88,
+    "count": 59,
     "cards": [
-     "acacia-giraffe",
-     "alpine-salamander",
      "alpine-swift",
      "ancient-sloth-titan",
      "apollo-butterfly",
-     "arctic-fox-raider",
      "arctic-tern",
      "armadillo-guard",
      "ash-moth",
      "ashbone-ghoul",
-     "ashwing-ptarmigan",
      "basalt-boar",
-     "bison-bulldozer",
+     "berserker-boar",
      "boreal-elk",
+     "bramblewood-lynx",
+     "bramblewood-macaque",
      "cataphract-destrier",
-     "cave-swiftlet",
-     "cave-warlord",
-     "cinder-hornet",
      "cinder-skeleton",
      "cinder-stoker",
      "cone-cutter-squirrel",
      "deep-cave-troll",
      "dromedary",
      "dune-jackal",
-     "dune-jackal-scout",
-     "dune-packrat",
      "dust-hyena",
-     "ember-centipede",
+     "elderhorn-monarch",
      "ember-jackal",
-     "frostbitten-wolverine",
+     "frillneck-duelist",
      "fumarole-ibex",
-     "gale-swift",
      "glacier-yak",
-     "glasswing-moth",
-     "glimmer-spider",
-     "goose-sentry",
      "gorge-wyrm",
-     "granite-ox-golem",
      "great-horned-owl",
-     "grotto-lobster",
      "harbor-seal",
      "honey-badger-fury",
      "hoopoe-herald",
      "horned-lizard",
      "howler-monkey",
      "ice-crevasse-wolf",
-     "komodo-warlord",
-     "land-tiller",
-     "lemming-swarm",
-     "magma-titan",
      "magpie-collector",
-     "mallard-halberdier",
+     "mallard-marauder",
      "marula-elephant",
      "meerkat-sentry",
-     "moon-jerboa",
-     "musk-ox-calf",
-     "obsidian-lich",
+     "nightjar-drifter",
      "obsidian-scorpion",
-     "pale-oryx",
-     "pall-wraith",
-     "phoenix-fledgling",
-     "pronghorn-racer",
-     "pyroclast-wyrm",
+     "owl-sentinel",
+     "pinecone-sapper",
+     "plains-zebra",
      "quillback-elder",
-     "red-billed-chough",
      "ringed-seal",
      "roadrunner-courier",
      "sand-widow",
-     "sandfish",
      "sandstorm-roc",
-     "shepherds-bark",
-     "skull-vulture",
+     "siege-rhino",
      "smoke-raccoon",
-     "snow-bunting-archer",
      "snow-ermine",
      "snowshoe-hare",
      "sparrow-chick",
-     "springbok-pronker",
      "sulfur-vent-crab",
-     "talus-pika",
-     "termite-forager",
-     "timber-wolf-pack",
-     "trapdoor-spider",
-     "tundra-musk-ox",
-     "vampire-bat",
+     "sunbittern-strider",
+     "sworn-shieldbearer",
+     "tasmanian-devil",
      "vampire-roost",
-     "war-hound",
-     "whip-spider"
+     "village-miller",
+     "warhorse-charger"
     ]
    },
    "proposal": {
@@ -1274,7 +1128,7 @@
      }
     ]
    },
-   "proposedCount": 97
+   "proposedCount": 73
   },
   "mystery": {
    "kind": "shop",
@@ -1312,81 +1166,85 @@
    "todayRule": "first map list on Maps 21-27; no shop pack sells pool 4, its cards come only from the card drop, the base reward track and raid claims (pool \"basic\"), from Map 21",
    "zone": "D",
    "current": {
-    "count": 34,
+    "count": 36,
     "cards": [
+     "acacia-giraffe",
+     "alpine-salamander",
      "badger-berserker",
      "badger-trench-digger",
-     "balloon-archer",
      "beetle-battering-ram",
-     "beluga",
      "cinder-gecko",
+     "cinder-hornet",
      "duckling-squadron",
      "echidna-quillshot",
      "elder-willow",
-     "elderhorn-monarch",
-     "ember-tetra",
-     "frost-thistle-lynx",
-     "gatling-hog",
+     "ember-centipede",
      "glacier-wolf-pack",
      "grindstone-boar",
      "harp-seal-pup",
      "howdah-archers",
      "ice-petrel",
+     "land-tiller",
+     "lemming-swarm",
+     "magma-titan",
      "magnate-duck",
-     "malachite-golem",
+     "mallard-halberdier",
      "meerkat-burrower",
      "mountain-goat-climber",
      "ore-smelter-mole",
      "pangolin-roller",
-     "permafrost-mammoth",
-     "porcupine-roller",
+     "phoenix-fledgling",
+     "pronghorn-racer",
      "pumice-beetle",
      "raccoon-bandit",
      "ravenous-wolverine",
-     "siege-rhino",
+     "red-billed-chough",
      "snow-leopard",
+     "talus-pika",
      "tax-collector-teal",
-     "thornwood-palisade",
-     "yeti-chieftain"
+     "thorn-shrike",
+     "tide-spirit"
     ]
    },
    "inProposedZone": {
-    "count": 34,
+    "count": 36,
     "cards": [
+     "acacia-giraffe",
+     "alpine-salamander",
      "badger-berserker",
      "badger-trench-digger",
-     "balloon-archer",
      "beetle-battering-ram",
-     "beluga",
      "cinder-gecko",
+     "cinder-hornet",
      "duckling-squadron",
      "echidna-quillshot",
      "elder-willow",
-     "elderhorn-monarch",
-     "ember-tetra",
-     "frost-thistle-lynx",
-     "gatling-hog",
+     "ember-centipede",
      "glacier-wolf-pack",
      "grindstone-boar",
      "harp-seal-pup",
      "howdah-archers",
      "ice-petrel",
+     "land-tiller",
+     "lemming-swarm",
+     "magma-titan",
      "magnate-duck",
-     "malachite-golem",
+     "mallard-halberdier",
      "meerkat-burrower",
      "mountain-goat-climber",
      "ore-smelter-mole",
      "pangolin-roller",
-     "permafrost-mammoth",
-     "porcupine-roller",
+     "phoenix-fledgling",
+     "pronghorn-racer",
      "pumice-beetle",
      "raccoon-bandit",
      "ravenous-wolverine",
-     "siege-rhino",
+     "red-billed-chough",
      "snow-leopard",
+     "talus-pika",
      "tax-collector-teal",
-     "thornwood-palisade",
-     "yeti-chieftain"
+     "thorn-shrike",
+     "tide-spirit"
     ]
    },
    "proposal": {
@@ -1394,7 +1252,7 @@
     "remove": [],
     "note": "Maps 21-27: not tuned now (owner 11-06, BAL17-2: Maps 0-20 only)."
    },
-   "proposedCount": 34
+   "proposedCount": 36
   },
   "otters": {
    "kind": "faction",
@@ -1893,54 +1751,54 @@
   }
  },
  "summary": {
-  "liveCards": 835,
+  "liveCards": 836,
   "sourcesToday": {
    "starter": 16,
    "skirmish-unique": 108,
-   "pack": 284,
+   "pack": 212,
    "base": 25,
-   "none": 304,
+   "none": 376,
    "faction": 57,
    "reward": 3,
    "special": 29,
-   "pack-unique": 9
+   "pack-unique": 10
   },
   "sourcesProposed": {
    "starter": 16,
    "skirmish-unique": 108,
-   "pack": 286,
+   "pack": 214,
    "base": 25,
-   "none": 261,
+   "none": 322,
    "faction": 59,
-   "achievement": 12,
-   "pack-unique": 36,
+   "achievement": 13,
+   "pack-unique": 47,
    "reward": 3,
    "special": 29
   },
   "packCounts": {
    "bronze": {
-    "now": 65,
-    "inProposedZone": 82,
+    "now": 51,
+    "inProposedZone": 61,
     "add": 20,
     "remove": 0,
     "movedIn": 3,
-    "proposed": 96
+    "proposed": 78
    },
    "silver": {
-    "now": 96,
-    "inProposedZone": 79,
+    "now": 66,
+    "inProposedZone": 56,
     "add": 20,
     "remove": 4,
     "movedIn": 1,
-    "proposed": 94
+    "proposed": 72
    },
    "gold": {
-    "now": 88,
-    "inProposedZone": 88,
+    "now": 59,
+    "inProposedZone": 59,
     "add": 20,
     "remove": 1,
     "movedIn": 0,
-    "proposed": 97
+    "proposed": 73
    },
    "mystery": {
     "now": 11,
@@ -1950,12 +1808,12 @@
     "proposed": 11
    },
    "pack4": {
-    "now": 34,
-    "inProposedZone": 34,
+    "now": 36,
+    "inProposedZone": 36,
     "add": 0,
     "remove": 0,
     "movedIn": 0,
-    "proposed": 34
+    "proposed": 36
    },
    "otters": {
     "now": 27,
@@ -1998,55 +1856,46 @@
   "orphans": {
    "note": "live cards nothing gives out today (source none)",
    "onAList": [
-    "ember-wisp",
+    "ant-warrior",
     "alpha-howler",
     "badger-sapper",
     "stable-colt",
-    "warhorse-charger",
     "puddle-hopper",
-    "hanging-loafer",
     "stone-turtle-warden",
     "hollow-oath-keeper",
-    "bone-diviner",
     "toucan-courier",
-    "poison-dart-frog",
     "rockslide-ram",
-    "war-drum-mandrill",
     "frost-hare-sprinter",
+    "porcupine-roller",
     "frostmoon-howler",
     "hedgehog-scout",
     "willow-o-wisp",
+    "thornwood-palisade",
+    "dung-beetle",
     "scree-goat",
     "dynamite-packrat",
+    "vampire-bat",
     "dhole-runner",
     "swordfish-spearman",
-    "hagfish-silencer",
+    "seed-cache-squirrel",
+    "swift-fox",
     "slow-loris",
     "hellbender",
     "archerfish",
-    "sperm-whale-elder",
-    "thunder-lizard",
     "corpse-flower-beetle",
-    "salamander-pyromancer",
     "weaver-bird",
-    "leaf-chameleon",
     "oilbird",
-    "chained-binturong",
     "rimeheart-colossus",
     "marshal-tuskwell",
     "fulmar-spitter",
-    "glintsnatch-magpie",
-    "conger-eel",
-    "bloodworm",
-    "matamata",
-    "mossmother-newt",
-    "smuggler-slingrat",
-    "pinecone-crossbill",
-    "sand-flinger-antlion",
-    "glow-worm"
+    "whip-spider",
+    "hedge-weasel",
+    "hollow-belly-rat",
+    "glow-worm",
+    "barrel-cactus"
    ],
-   "onNoList": "258 cards (ids under sources, flag \"unobtainable: on no map list\")",
-   "afterProposal": 261
+   "onNoList": "339 cards (ids under sources, flag \"unobtainable: on no map list\")",
+   "afterProposal": 322
   },
   "skirmishUniqueInPack": {
    "today": [],
@@ -2087,21 +1936,14 @@
   "zoneMoves": {
    "note": "cards that change pack only because of the new zone split",
    "toBronze": [
-    "crocodile-ambusher",
-    "moray-ambusher",
-    "tide-pool-crab",
     "trash-panda-trickster",
-    "raccoon-nightcrew",
-    "nightshade-moth",
     "rot-swollen-carcass",
     "puffball-bombardier",
-    "leafcutter-gardener",
+    "lamprey",
     "amber-cicada",
-    "grey-seal-bull",
     "leopard-slug",
     "fungus-gnat-cloud",
     "hawthorn-shieldbug",
-    "coffer-mimic",
     "salvager-hermit-crab",
     "sleepless-shrew"
    ],
@@ -2110,9 +1952,9 @@
   },
   "firstClearOutsideItsZone": [
    {
-    "fight": "mk:9-2",
-    "id": "sunbittern-strider",
-    "fightZone": "B",
+    "fight": "ml:15-1",
+    "id": "village-miller",
+    "fightZone": "C",
     "pack": "bronze"
    },
    {
@@ -2122,14 +1964,14 @@
     "pack": "gold"
    },
    {
-    "fight": "m22:22-3",
-    "id": "cinder-hornet",
+    "fight": "m23:23-4",
+    "id": "siege-rhino",
     "fightZone": "D",
     "pack": "gold"
    },
    {
-    "fight": "m24:24-4",
-    "id": "mallard-halberdier",
+    "fight": "m24:24-3",
+    "id": "elderhorn-monarch",
     "fightZone": "D",
     "pack": "gold"
    }
@@ -2139,7 +1981,7 @@
    "note": "starting-deck cards with no other source: the one starting copy is all a player can ever hold",
    "ids": []
   },
-  "unsoldPack4": 34,
+  "unsoldPack4": 36,
   "awaitingSourceInProposal": [
    "bog-shrew",
    "kelpborn-otter",
@@ -2152,15 +1994,11 @@
    "termite-forager (gold, Map 14, 100%)"
   ],
   "proposalNotOrphan": [
+   "village-miller (bronze: today pack)",
    "briarback-hedgehog (bronze: today pack)",
-   "hazel-coppice (bronze: today pack)",
-   "ladybird-guard (bronze: today pack)",
-   "clover-butterfly (bronze: today pack)",
    "leopard-slug (bronze: today pack)",
    "jackrabbit-sprinter (bronze: today pack)",
    "limpet-clinger (bronze: today pack)",
-   "signal-crayfish (bronze: today pack)",
-   "dam-keeper-beaver (bronze: today pack)",
    "raft-spider (bronze: today pack)",
    "peat-cutter-vole (bronze: today pack)",
    "marsh-mallow-hare (bronze: today pack)",
@@ -2170,23 +2008,17 @@
    "beaver-feller (silver: today pack)",
    "bear-cub (silver: today pack)",
    "meerkat-sentry (gold: today pack)",
-   "termite-forager (gold: today pack)",
-   "timber-wolf-pack (gold: today pack)",
+   "plains-zebra (gold: today pack)",
+   "pinecone-sapper (gold: today pack)",
    "harp-seal-pup (gold: today pack)",
    "ringed-seal (gold: today pack)",
-   "tundra-musk-ox (gold: today pack)",
-   "musk-ox-calf (gold: today pack)",
    "lemming-swarm (gold: today pack)",
-   "frost-thistle-lynx (gold: today pack)",
-   "pale-oryx (gold: today pack)",
    "sandstorm-roc (gold: today pack)",
-   "glasswing-moth (gold: today pack)",
    "basalt-boar (gold: today pack)",
+   "sworn-shieldbearer (achievement: today pack)",
    "magpie-collector (achievement: today pack)",
    "grindstone-boar (achievement: today pack)",
-   "arctic-tern (achievement: today pack)",
-   "heartwood-treant (achievement: today pack)",
-   "ashwing-ptarmigan (achievement: today pack)"
+   "arctic-tern (achievement: today pack)"
   ]
  },
  "sources": {
@@ -2228,8 +2060,7 @@
    "source": "base",
    "where": [
     "base",
-    "faction-pool:base (1 copy)",
-    "list:mq@12"
+    "faction-pool:base (1 copy)"
    ]
   },
   "caustic-scorpion": {
@@ -2237,8 +2068,8 @@
    "where": [
     "skirmish:md 18-2",
     "list:mtut@0",
-    "list:md@18",
-    "list:mpd@19"
+    "list:mpd@19",
+    "list:m3@19"
    ]
   },
   "yeti": {
@@ -2270,12 +2101,11 @@
    ]
   },
   "ant-warrior": {
-   "source": "pack",
+   "source": "none",
    "where": [
-    "pack:silver",
-    "list:mz@8",
     "list:muc@11"
-   ]
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)"
   },
   "ant-hill": {
    "source": "pack",
@@ -2310,8 +2140,8 @@
   "owl-sentinel": {
    "source": "pack",
    "where": [
-    "pack:bronze",
-    "list:m8@6"
+    "pack:gold",
+    "list:mt@16"
    ]
   },
   "great-horned-owl": {
@@ -2325,16 +2155,13 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:m1 0-4",
-    "list:mf@1",
-    "list:mh@12"
+    "list:mf@1"
    ]
   },
   "war-hound": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:ml@15"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "armored-mastiff": {
    "source": "none",
@@ -2354,11 +2181,9 @@
   "bramblewood-lynx": {
    "source": "pack",
    "where": [
-    "pack:silver",
-    "list:mo@21",
+    "pack:gold",
     "list:muc@11",
-    "list:mr@13",
-    "list:mt@16"
+    "list:ml@15"
    ]
   },
   "war-panther": {
@@ -2367,9 +2192,11 @@
    "flag": "unobtainable: on no map list"
   },
   "bramblewood-macaque": {
-   "source": "none",
-   "where": [],
-   "flag": "unobtainable: on no map list"
+   "source": "pack",
+   "where": [
+    "pack:gold",
+    "list:m5@14"
+   ]
   },
   "silverback-brawler": {
    "source": "none",
@@ -2377,11 +2204,9 @@
    "flag": "unobtainable: on no map list"
   },
   "trapdoor-spider": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mpd@19"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "webspire-sentinel": {
    "source": "none",
@@ -2399,11 +2224,9 @@
    ]
   },
   "tunnel-wyrm": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mz@8"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "gorge-wyrm": {
    "source": "pack",
@@ -2417,8 +2240,7 @@
    "where": [
     "skirmish:mf 1-1",
     "list:mf@1",
-    "list:mq@12",
-    "list:ml@15"
+    "list:mq@12"
    ]
   },
   "carrion-fly-swarm": {
@@ -2429,9 +2251,8 @@
   "monarch-wingblade": {
    "source": "pack",
    "where": [
-    "pack:bronze",
-    "list:mf@1",
-    "list:mq@12"
+    "pack:silver",
+    "list:mr@13"
    ]
   },
   "bramble-sprout": {
@@ -2439,8 +2260,8 @@
    "where": [
     "pack:bronze",
     "first-clear:mf:1-4",
-    "list:mo@21",
-    "list:mf@1"
+    "list:mf@1",
+    "list:m5@14"
    ]
   },
   "thornvine-lasher": {
@@ -2465,28 +2286,29 @@
   },
   "ember-wisp": {
    "source": "none",
-   "where": [
-    "list:m3@19",
-    "list:mx@20"
-   ],
+   "where": [],
    "proposed": {
     "source": "achievement",
     "where": [
-     "achievement:streak_5",
-     "list:m3@19",
-     "list:mx@20"
+     "achievement:streak_5"
     ]
    },
-   "flag": "unobtainable: on a map list (an enemy card only)"
+   "flag": "unobtainable: on no map list"
   },
   "tide-spirit": {
    "source": "pack",
    "where": [
-    "pack:silver",
-    "list:mk@9",
-    "list:m7@10",
+    "pack:pack4",
     "list:m22@22"
-   ]
+   ],
+   "proposed": {
+    "source": "pack",
+    "where": [
+     "pack:silver",
+     "pack:pack4",
+     "list:m22@22"
+    ]
+   }
   },
   "stoneheart-golem": {
    "source": "none",
@@ -2535,6 +2357,7 @@
    "source": "pack",
    "where": [
     "pack:silver",
+    "first-clear:m7:10-5",
     "list:m7@10",
     "list:muc@11"
    ]
@@ -2543,18 +2366,14 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:mh 12-7",
-    "list:mo@21",
     "list:muc@11",
-    "list:mh@12",
     "list:m3@19"
    ]
   },
   "komodo-warlord": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mpd@19"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "raccoon-bandit": {
    "source": "pack",
@@ -2591,20 +2410,11 @@
   "crocodile-ambusher": {
    "source": "pack",
    "where": [
-    "pack:silver",
+    "pack:bronze",
+    "list:m8@6",
     "list:mm@10",
-    "list:mu@7",
-    "list:m5@14"
-   ],
-   "proposed": {
-    "source": "pack",
-    "where": [
-     "pack:bronze",
-     "list:mm@10",
-     "list:mu@7",
-     "list:m5@14"
-    ]
-   }
+    "list:m11@20"
+   ]
   },
   "raven-scout": {
    "source": "none",
@@ -2636,8 +2446,7 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:m1 0-1",
-    "list:mf@1",
-    "list:mr@13"
+    "list:mf@1"
    ]
   },
   "eagle-diver": {
@@ -2654,17 +2463,13 @@
   "octopus-tactician": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:mg 2-B-4",
-    "list:mg@7"
+    "skirmish:mg 2-B-4"
    ]
   },
   "nautilus-drifter": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:m7@10",
-    "list:mj@11"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "alpha-howler": {
    "source": "none",
@@ -2713,6 +2518,7 @@
     "first-clear:m10:11-4",
     "list:m10@11",
     "list:mv@15",
+    "list:mh@12",
     "list:m21@21"
    ]
   },
@@ -2732,7 +2538,8 @@
    "source": "pack",
    "where": [
     "pack:silver",
-    "list:mr@13"
+    "list:mr@13",
+    "list:mt@16"
    ]
   },
   "woodland-brawler": {
@@ -2746,22 +2553,21 @@
     "pack:silver",
     "list:muc@11",
     "list:mr@13",
-    "list:mt@16"
+    "list:m5@14"
    ]
   },
   "cave-warlord": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:me@20"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "fawn-scout": {
    "source": "skirmish-unique",
    "where": [
     "skirmish:mr 13-1",
     "list:muc@11",
-    "list:mr@13"
+    "list:mh@12",
+    "list:ml@15"
    ]
   },
   "antler-skirmisher": {
@@ -2777,8 +2583,11 @@
   "elderhorn-monarch": {
    "source": "pack",
    "where": [
-    "pack:pack4",
+    "pack:gold",
     "first-clear:m24:24-3",
+    "list:ml@15",
+    "list:m6@17",
+    "list:m3@19",
     "list:m24@24"
    ]
   },
@@ -2838,8 +2647,7 @@
    "where": [
     "skirmish:m8 6-8",
     "list:m8@6",
-    "list:mu@7",
-    "list:m5@14"
+    "list:mu@7"
    ]
   },
   "constrictor-coil": {
@@ -2847,8 +2655,7 @@
    "where": [
     "pack:bronze",
     "list:mw@5",
-    "list:m8@6",
-    "list:m11@20"
+    "list:m8@6"
    ]
   },
   "venomlord-serpent": {
@@ -2869,22 +2676,22 @@
    "where": [
     "skirmish:m4 8-8",
     "list:m4@8",
-    "list:muc@11"
+    "list:muc@11",
+    "list:m11@20"
    ]
   },
   "vampire-roost": {
    "source": "pack",
    "where": [
     "pack:gold",
+    "first-clear:m11:20-4",
     "list:m11@20"
    ]
   },
   "field-mouse": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mq@12"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "mouse-sapper": {
    "source": "pack",
@@ -2892,7 +2699,7 @@
     "pack:silver",
     "first-clear:mh:12-3",
     "list:mh@12",
-    "list:ml@15",
+    "list:md@18",
     "list:m23@23"
    ]
   },
@@ -2914,18 +2721,22 @@
    "flag": "unobtainable: on no map list"
   },
   "warhorse-charger": {
-   "source": "none",
+   "source": "pack",
    "where": [
-    "list:muc@11"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)"
+    "pack:gold",
+    "list:muc@11",
+    "list:ml@15",
+    "list:m6@17"
+   ]
   },
   "cataphract-destrier": {
    "source": "pack",
    "where": [
     "pack:gold",
     "first-clear:ml:15-4",
-    "list:ml@15"
+    "list:ml@15",
+    "list:m6@17",
+    "list:m11@20"
    ]
   },
   "puddle-hopper": {
@@ -2938,16 +2749,13 @@
   "poison-dart-croaker": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:m8 6-1",
-    "list:my@18"
+    "skirmish:m8 6-1"
    ]
   },
   "bog-behemoth": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:ms@13"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "warren-scout": {
    "source": "none",
@@ -2963,8 +2771,7 @@
   "lucky-hopper": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:mq 1-A-5",
-    "list:mq@12"
+    "skirmish:mq 1-A-5"
    ]
   },
   "buck-brawler": {
@@ -2974,17 +2781,14 @@
   },
   "hanging-loafer": {
    "source": "none",
-   "where": [
-    "list:my@18"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "ancient-sloth-titan": {
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:my@18",
     "list:m11@20"
    ]
   },
@@ -2994,9 +2798,11 @@
    "flag": "unobtainable: on no map list"
   },
   "mallard-marauder": {
-   "source": "none",
-   "where": [],
-   "flag": "unobtainable: on no map list"
+   "source": "pack",
+   "where": [
+    "pack:gold",
+    "list:ml@15"
+   ]
   },
   "glacial-ape-king": {
    "source": "none",
@@ -3007,7 +2813,6 @@
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:md@18",
     "list:md@18",
     "list:mpd@19"
    ]
@@ -3023,7 +2828,6 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:m3 19-2",
-    "list:mo@21",
     "list:muc@11"
    ]
   },
@@ -3038,18 +2842,14 @@
    "source": "pack",
    "where": [
     "pack:silver",
-    "list:mo@21",
-    "list:mh@12",
-    "list:mr@13"
+    "list:mh@12"
    ]
   },
   "berserker-boar": {
    "source": "pack",
    "where": [
-    "pack:silver",
-    "first-clear:mr:13-4",
-    "list:mr@13",
-    "list:mt@16"
+    "pack:gold",
+    "list:m11@20"
    ]
   },
   "pack-wolf-reaver": {
@@ -3069,7 +2869,7 @@
     "list:mtut@0",
     "list:mc@3",
     "list:m10@11",
-    "list:m21@21"
+    "list:m11@20"
    ]
   },
   "hawk-arrowkeeper": {
@@ -3077,10 +2877,7 @@
    "where": [
     "pack:bronze",
     "first-clear:mc:3-1",
-    "list:mc@3",
-    "list:mc@3",
-    "list:m10@11",
-    "list:mv@15"
+    "list:mc@3"
    ]
   },
   "shrine-acolyte": {
@@ -3110,11 +2907,8 @@
   },
   "bone-diviner": {
    "source": "none",
-   "where": [
-    "list:m8@6",
-    "list:m4@8"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)"
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "colony": {
    "source": "none",
@@ -3136,8 +2930,7 @@
   "jaguar-stalker": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:my 14-A-5",
-    "list:my@18"
+    "skirmish:my 14-A-5"
    ]
   },
   "toucan-courier": {
@@ -3151,10 +2944,8 @@
   },
   "poison-dart-frog": {
    "source": "none",
-   "where": [
-    "list:my@18"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "strangler-vine": {
@@ -3166,8 +2957,7 @@
   "acacia-giraffe": {
    "source": "pack",
    "where": [
-    "pack:gold",
-    "list:m5@14",
+    "pack:pack4",
     "list:m23@23",
     "list:m24@24"
    ]
@@ -3178,7 +2968,7 @@
     "skirmish:m5 14-8",
     "list:muc@11",
     "list:m5@14",
-    "list:md@18"
+    "list:ml@15"
    ]
   },
   "dust-hyena": {
@@ -3187,7 +2977,7 @@
     "pack:gold",
     "list:muc@11",
     "list:m5@14",
-    "list:md@18",
+    "list:ml@15",
     "list:mpd@19"
    ]
   },
@@ -3203,6 +2993,22 @@
    "flag": "unobtainable: on no map list"
   },
   "plains-zebra": {
+   "source": "pack",
+   "where": [
+    "pack:gold",
+    "list:m5@14",
+    "list:ml@15"
+   ]
+  },
+  "snow-owl-sentinel": {
+   "source": "skirmish-unique",
+   "where": [
+    "skirmish:m21 21-6",
+    "list:mt@16",
+    "list:mi@21"
+   ]
+  },
+  "tundra-musk-ox": {
    "source": "none",
    "where": [],
    "proposed": {
@@ -3213,40 +3019,22 @@
    },
    "flag": "unobtainable: on no map list"
   },
-  "snow-owl-sentinel": {
-   "source": "skirmish-unique",
-   "where": [
-    "skirmish:m21 21-6",
-    "list:mi@21",
-    "list:m21@21"
-   ]
-  },
-  "tundra-musk-ox": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:m6@17"
-   ]
-  },
   "arctic-fox-raider": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:m6@17"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "permafrost-mammoth": {
-   "source": "pack",
-   "where": [
-    "pack:pack4",
-    "list:mi@21"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "ice-crevasse-wolf": {
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:m6@17"
+    "list:m6@17",
+    "list:md@18"
    ]
   },
   "clownfish-scout": {
@@ -3260,26 +3048,14 @@
    ]
   },
   "coral-reef-shark": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "first-clear:m7:10-4",
-    "list:m7@10"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "moray-ambusher": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mg@7"
-   ],
-   "proposed": {
-    "source": "pack",
-    "where": [
-     "pack:bronze",
-     "list:mg@7"
-    ]
-   }
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "sea-turtle-elder": {
    "source": "pack",
@@ -3309,8 +3085,7 @@
     "list:mtut@0",
     "list:m10@11",
     "list:muc@11",
-    "list:m5@14",
-    "list:m21@21"
+    "list:mt@16"
    ]
   },
   "alpine-avalanche": {
@@ -3385,7 +3160,6 @@
     "pack:silver",
     "first-clear:m4:8-4",
     "list:m4@8",
-    "list:m4@8",
     "list:mn@16"
    ]
   },
@@ -3397,6 +3171,7 @@
     "list:m4@8",
     "list:mn@16",
     "list:m3@19",
+    "list:m11@20",
     "list:m11@20"
    ]
   },
@@ -3410,7 +3185,6 @@
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:m11@20",
     "list:m11@20"
    ]
   },
@@ -3427,8 +3201,6 @@
    "where": [
     "skirmish:m11 20-2",
     "list:mtut@0",
-    "list:m11@20",
-    "list:mx@20",
     "list:m22@22"
    ]
   },
@@ -3447,8 +3219,8 @@
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:m3@19",
-    "list:m9@23"
+    "list:m9@23",
+    "list:m11@20"
    ]
   },
   "fire-drake-hatchling": {
@@ -3471,10 +3243,28 @@
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:mt@16"
+    "list:mt@16",
+    "list:m6@17"
    ]
   },
   "pinecone-sapper": {
+   "source": "pack",
+   "where": [
+    "pack:gold",
+    "list:m3@19"
+   ]
+  },
+  "snowshoe-hare": {
+   "source": "pack",
+   "where": [
+    "pack:gold",
+    "first-clear:mt:16-1",
+    "list:muc@11",
+    "list:mt@16",
+    "list:m6@17"
+   ]
+  },
+  "timber-wolf-pack": {
    "source": "none",
    "where": [],
    "proposed": {
@@ -3485,36 +3275,10 @@
    },
    "flag": "unobtainable: on no map list"
   },
-  "snowshoe-hare": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "first-clear:mt:16-1",
-    "list:muc@11",
-    "list:mt@16"
-   ]
-  },
-  "timber-wolf-pack": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mt@16",
-    "list:m6@17"
-   ]
-  },
   "tide-pool-crab": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mg@7"
-   ],
-   "proposed": {
-    "source": "pack",
-    "where": [
-     "pack:bronze",
-     "list:mg@7"
-    ]
-   }
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "gull-thief": {
    "source": "pack",
@@ -3530,16 +3294,15 @@
    "source": "pack",
    "where": [
     "pack:silver",
+    "first-clear:m7:10-4",
     "list:m7@10",
     "list:mj@11"
    ]
   },
   "barnacle-fortress": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mj@11"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "pelican-diver": {
    "source": "none",
@@ -3560,15 +3323,13 @@
     "pack:silver",
     "first-clear:mk:9-4",
     "list:mk@9",
-    "list:muc@11",
-    "list:m5@14"
+    "list:muc@11"
    ]
   },
   "fiddler-crab-swarm": {
    "source": "pack",
    "where": [
-    "pack:bronze",
-    "list:mc@3",
+    "pack:silver",
     "list:mk@9"
    ]
   },
@@ -3597,16 +3358,13 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:mv 11-A-4",
-    "list:m10@11",
-    "list:mv@15"
+    "list:m10@11"
    ]
   },
   "war-drum-mandrill": {
    "source": "none",
-   "where": [
-    "list:my@18"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "swarm-matriarch": {
@@ -3625,7 +3383,6 @@
    "where": [
     "pack:pack4",
     "list:muc@11",
-    "list:mi@21",
     "list:m22@22"
    ]
   },
@@ -3644,7 +3401,6 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:mr 13-8",
-    "list:mo@21",
     "list:muc@11"
    ]
   },
@@ -3677,7 +3433,8 @@
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:md@18"
+    "list:md@18",
+    "list:m3@19"
    ]
   },
   "sandstorm-roc": {
@@ -3703,18 +3460,18 @@
    ]
   },
   "porcupine-roller": {
-   "source": "pack",
+   "source": "none",
    "where": [
-    "pack:pack4",
-    "list:mo@21",
     "list:muc@11"
-   ]
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)"
   },
   "quillback-elder": {
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:m3@19"
+    "list:m3@19",
+    "list:m11@20"
    ]
   },
   "trash-panda-trickster": {
@@ -3734,24 +3491,18 @@
    }
   },
   "raccoon-nightcrew": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mg@7"
-   ],
-   "proposed": {
-    "source": "pack",
-    "where": [
-     "pack:bronze",
-     "list:mg@7"
-    ]
-   }
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "honey-badger-fury": {
    "source": "pack",
    "where": [
     "pack:gold",
+    "first-clear:m3:19-1",
     "list:m3@19",
+    "list:m11@20",
+    "list:m21@21",
     "list:mlb@22"
    ]
   },
@@ -3771,8 +3522,7 @@
     "first-clear:m10:11-3",
     "list:m10@11",
     "list:mv@15",
-    "list:m3@19",
-    "list:m11@20"
+    "list:mh@12"
    ]
   },
   "chipmunk-cavalry": {
@@ -3789,11 +3539,9 @@
    "flag": "unobtainable: on no map list"
   },
   "kraken-spawnling": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mj@11"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "slowpoke-sentinel": {
    "source": "none",
@@ -3831,40 +3579,32 @@
    "where": [
     "pack:silver",
     "list:muc@11",
-    "list:mr@13",
-    "list:mt@16"
+    "list:mr@13"
    ]
   },
   "shepherds-bark": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:ml@15",
-    "list:m6@17"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "feral-tomcat": {
    "source": "pack",
    "where": [
     "pack:bronze",
-    "list:mc@3"
+    "list:mc@3",
+    "list:mr@13"
    ]
   },
   "rootworm-colony": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:mz 7-A-5",
-    "list:mz@8"
+    "skirmish:mz 7-A-5"
    ]
   },
   "pack-rat-looter": {
-   "source": "pack",
-   "where": [
-    "pack:bronze",
-    "list:mf@1",
-    "list:m4@8",
-    "list:mh@12"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "camouflage-frog": {
    "source": "pack",
@@ -3907,9 +3647,8 @@
   "magma-titan": {
    "source": "pack",
    "where": [
-    "pack:gold",
+    "pack:pack4",
     "list:muc@11",
-    "list:mx@20",
     "list:m21@21",
     "list:mlb@22"
    ]
@@ -3917,8 +3656,7 @@
   "phoenix-fledgling": {
    "source": "pack",
    "where": [
-    "pack:gold",
-    "list:m11@20",
+    "pack:pack4",
     "list:m22@22"
    ]
   },
@@ -3926,22 +3664,21 @@
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:m3@19",
+    "list:m11@20",
     "list:mlb@22"
    ]
   },
   "pyroclast-wyrm": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mx@20"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "barrow-leech-bat": {
    "source": "pack",
    "where": [
     "pack:silver",
-    "list:m4@8"
+    "list:m4@8",
+    "list:mh@12"
    ]
   },
   "coral-current-eel": {
@@ -3952,26 +3689,20 @@
    ]
   },
   "frost-thistle-lynx": {
-   "source": "pack",
-   "where": [
-    "pack:pack4",
-    "list:mi@21"
-   ],
+   "source": "none",
+   "where": [],
    "proposed": {
-    "source": "pack",
+    "source": "pack-unique",
     "where": [
-     "pack:gold",
-     "pack:pack4",
-     "list:mi@21"
+     "pack:gold"
     ]
-   }
+   },
+   "flag": "unobtainable: on no map list"
   },
   "dune-jackal-scout": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:md@18"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "sulfur-cinder-moth": {
    "source": "pack",
@@ -3988,23 +3719,15 @@
     "pack:gold",
     "first-clear:m21:21-2",
     "list:m6@17",
+    "list:m3@19",
     "list:m21@21",
     "list:m22@22"
    ]
   },
   "nightshade-moth": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mu@7"
-   ],
-   "proposed": {
-    "source": "pack",
-    "where": [
-     "pack:bronze",
-     "list:mu@7"
-    ]
-   }
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "voltaic-eel": {
    "source": "pack",
@@ -4017,12 +3740,9 @@
   "cinder-hornet": {
    "source": "pack",
    "where": [
-    "pack:gold",
+    "pack:pack4",
     "first-clear:m22:22-3",
-    "list:m3@19",
     "list:m9@23",
-    "list:m11@20",
-    "list:mx@20",
     "list:m22@22"
    ]
   },
@@ -4057,8 +3777,7 @@
   "fen-mink": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:mw 5-6",
-    "list:ms@13"
+    "skirmish:mw 5-6"
    ]
   },
   "tidepool-trapper-crab": {
@@ -4070,8 +3789,7 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:m5 14-2",
-    "list:muc@11",
-    "list:m5@14"
+    "list:muc@11"
    ]
   },
   "bogfire-newt": {
@@ -4085,11 +3803,15 @@
    "flag": "unobtainable: on no map list"
   },
   "glasswing-moth": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:md@18"
-   ]
+   "source": "none",
+   "where": [],
+   "proposed": {
+    "source": "pack-unique",
+    "where": [
+     "pack:gold"
+    ]
+   },
+   "flag": "unobtainable: on no map list"
   },
   "rivergate-drummer": {
    "source": "faction",
@@ -4144,8 +3866,7 @@
     "starter:hummingbirds",
     "starter:both",
     "base",
-    "list:m1@0",
-    "list:mf@1"
+    "list:m1@0"
    ]
   },
   "bee-forager": {
@@ -4168,7 +3889,8 @@
    "where": [
     "base",
     "list:m1@0",
-    "list:mtut@0"
+    "list:mtut@0",
+    "list:md@18"
    ]
   },
   "tunnel-ant": {
@@ -4184,7 +3906,8 @@
     "base",
     "list:m1@0",
     "list:mf@1",
-    "list:mf@1"
+    "list:mf@1",
+    "list:md@18"
    ]
   },
   "silver-minnow": {
@@ -4205,6 +3928,7 @@
     "starter:hummingbirds",
     "starter:both",
     "base",
+    "list:m1@0",
     "list:mtut12@0",
     "list:mtut@0"
    ]
@@ -4215,15 +3939,13 @@
     "starter:otters",
     "starter:hummingbirds",
     "starter:both",
-    "base",
-    "list:mp@6"
+    "base"
    ]
   },
   "duckling": {
    "source": "base",
    "where": [
     "base",
-    "list:m1@0",
     "list:mtut12@0"
    ]
   },
@@ -4233,8 +3955,7 @@
     "starter:otters",
     "starter:hummingbirds",
     "starter:both",
-    "base",
-    "list:mp@6"
+    "base"
    ]
   },
   "duck-paddler": {
@@ -4254,7 +3975,6 @@
    "source": "base",
    "where": [
     "base",
-    "list:mf@1",
     "list:mf@1"
    ]
   },
@@ -4284,7 +4004,8 @@
     "starter:hummingbirds",
     "starter:both",
     "base",
-    "list:m1@0"
+    "list:m1@0",
+    "list:md@18"
    ]
   },
   "acorn-chipmunk": {
@@ -4375,7 +4096,8 @@
    "where": [
     "skirmish:m4 8-1",
     "list:m4@8",
-    "list:mn@16"
+    "list:mn@16",
+    "list:mh@12"
    ]
   },
   "bramblewood-bonebreaker": {
@@ -4430,8 +4152,7 @@
   "garden-snail": {
    "source": "base",
    "where": [
-    "base",
-    "list:mz@8"
+    "base"
    ]
   },
   "hedgehog-scout": {
@@ -4493,8 +4214,7 @@
    "where": [
     "pack:bronze",
     "first-clear:mf:1-2",
-    "list:mf@1",
-    "list:mh@12"
+    "list:mf@1"
    ]
   },
   "guppy": {
@@ -4702,21 +4422,26 @@
   "land-tiller": {
    "source": "pack",
    "where": [
-    "pack:gold",
-    "list:ml@15",
+    "pack:pack4",
     "list:m24@24"
    ]
   },
   "village-miller": {
-   "source": "none",
-   "where": [],
+   "source": "pack",
+   "where": [
+    "pack:gold",
+    "first-clear:ml:15-1",
+    "list:ml@15"
+   ],
    "proposed": {
-    "source": "pack-unique",
+    "source": "pack",
     "where": [
-     "pack:bronze"
+     "pack:bronze",
+     "pack:gold",
+     "first-clear:ml:15-1",
+     "list:ml@15"
     ]
-   },
-   "flag": "unobtainable: on no map list"
+   }
   },
   "night-watchman": {
    "source": "none",
@@ -4757,6 +4482,8 @@
    "where": [
     "skirmish:ml 15-3",
     "list:muc@11",
+    "list:m5@14",
+    "list:ml@15",
     "list:m23@23",
     "list:m24@24"
    ]
@@ -4771,8 +4498,8 @@
    "source": "pack",
    "where": [
     "pack:mystery",
-    "list:m4@8",
-    "list:mn@16"
+    "list:mn@16",
+    "list:mt@16"
    ]
   },
   "teatime-toad": {
@@ -4794,10 +4521,9 @@
    ]
   },
   "glass-golem": {
-   "source": "pack",
+   "source": "pack-unique",
    "where": [
-    "pack:mystery",
-    "list:mpd@19"
+    "pack:mystery"
    ]
   },
   "wrong-way-salmon": {
@@ -4823,7 +4549,8 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:mr 13-2",
-    "list:mr@13"
+    "list:mr@13",
+    "list:m5@14"
    ]
   },
   "thistle-baron": {
@@ -4847,11 +4574,9 @@
    ]
   },
   "yeti-chieftain": {
-   "source": "pack",
-   "where": [
-    "pack:pack4",
-    "list:mi@21"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "echo-matriarch": {
    "source": "skirmish-unique",
@@ -5066,10 +4791,7 @@
    "source": "pack",
    "where": [
     "pack:gold",
-    "first-clear:m3:19-1",
     "list:muc@11",
-    "list:m3@19",
-    "list:m11@20",
     "list:mx@20"
    ]
   },
@@ -5077,6 +4799,7 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:m11 20-1",
+    "list:m11@20",
     "list:m21@21",
     "list:m23@23"
    ]
@@ -5087,18 +4810,16 @@
    "flag": "unobtainable: on no map list"
   },
   "thornwood-palisade": {
-   "source": "pack",
+   "source": "none",
    "where": [
-    "pack:pack4",
-    "list:mtut@0",
-    "list:mo@21"
-   ]
+    "list:mtut@0"
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)"
   },
   "conch-crawler": {
    "source": "pack",
    "where": [
     "pack:bronze",
-    "list:mc@3",
     "list:m2@4",
     "list:m7@10"
    ]
@@ -5107,7 +4828,6 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:mb 2-4",
-    "list:mb@2",
     "list:mc@3"
    ]
   },
@@ -5120,11 +4840,9 @@
    ]
   },
   "malachite-golem": {
-   "source": "pack",
-   "where": [
-    "pack:pack4",
-    "list:m9@23"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "irradiated-axolotl": {
    "source": "pack-unique",
@@ -5144,19 +4862,15 @@
    "flag": "unobtainable: on no map list"
   },
   "heartwood-treant": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mr@13"
-   ],
+   "source": "none",
+   "where": [],
    "proposed": {
-    "source": "pack",
+    "source": "achievement",
     "where": [
-     "pack:silver",
-     "achievement:collector_200",
-     "list:mr@13"
+     "achievement:collector_200"
     ]
-   }
+   },
+   "flag": "unobtainable: on no map list"
   },
   "quarry-troll": {
    "source": "none",
@@ -5174,7 +4888,9 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:mf 1-5",
-    "list:mr@13"
+    "list:mr@13",
+    "list:m5@14",
+    "list:md@18"
    ]
   },
   "ore-smelter-mole": {
@@ -5187,15 +4903,21 @@
    ]
   },
   "sworn-shieldbearer": {
-   "source": "none",
-   "where": [],
+   "source": "pack",
+   "where": [
+    "pack:gold",
+    "list:ml@15",
+    "list:mt@16"
+   ],
    "proposed": {
-    "source": "achievement",
+    "source": "pack",
     "where": [
-     "achievement:wins_10"
+     "pack:gold",
+     "achievement:wins_10",
+     "list:ml@15",
+     "list:mt@16"
     ]
-   },
-   "flag": "unobtainable: on no map list"
+   }
   },
   "crown-pretender": {
    "source": "none",
@@ -5246,19 +4968,14 @@
    "flag": "unobtainable: on no map list"
   },
   "frostbitten-wolverine": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:m6@17",
-    "list:mi@21"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "skull-vulture": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mpd@19"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "caldera-wyrm": {
    "source": "skirmish-unique",
@@ -5269,18 +4986,14 @@
   "the-contradiction": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:me 20-A-4",
-    "list:me@20"
+    "skirmish:me 20-A-4"
    ]
   },
   "ashbone-ghoul": {
    "source": "pack",
    "where": [
     "pack:gold",
-    "first-clear:m11:20-3",
-    "list:m11@20",
     "list:me@20",
-    "list:m21@21",
     "list:m22@22"
    ]
   },
@@ -5288,8 +5001,6 @@
    "source": "pack",
    "where": [
     "pack:gold",
-    "first-clear:m11:20-4",
-    "list:m11@20",
     "list:me@20",
     "list:m22@22"
    ]
@@ -5297,30 +5008,23 @@
   "magma-wraith": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:m11 20-7",
-    "list:m11@20",
-    "list:me@20"
+    "skirmish:m11 20-7"
    ]
   },
   "pall-wraith": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:me@20"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "obsidian-lich": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:me@20"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "ember-revenant": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:m9 19-A-10",
-    "list:m9@23"
+    "skirmish:m9 19-A-10"
    ]
   },
   "meerkat-wayfarer": {
@@ -5348,8 +5052,10 @@
   "siege-rhino": {
    "source": "pack",
    "where": [
-    "pack:pack4",
+    "pack:gold",
     "first-clear:m23:23-4",
+    "list:ml@15",
+    "list:mt@16",
     "list:m23@23",
     "list:m24@24"
    ]
@@ -5358,9 +5064,7 @@
    "source": "pack",
    "where": [
     "pack:silver",
-    "list:m10@11",
-    "list:m5@14",
-    "list:md@18"
+    "list:m10@11"
    ]
   },
   "newt-doctor": {
@@ -5373,24 +5077,23 @@
    ]
   },
   "gatling-hog": {
-   "source": "pack",
-   "where": [
-    "pack:pack4",
-    "list:mo@21"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "dung-beetle": {
-   "source": "pack",
+   "source": "none",
    "where": [
-    "pack:silver",
-    "list:mz@8",
     "list:muc@11"
-   ]
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)"
   },
   "ur-elk": {
    "source": "skirmish-unique",
    "where": [
     "skirmish:m22 22-6",
+    "list:m11@20",
+    "list:m21@21",
     "list:m22@22"
    ]
   },
@@ -5406,7 +5109,8 @@
     "starter:hummingbirds",
     "starter:both",
     "pack:bronze",
-    "list:m1@0"
+    "list:m1@0",
+    "list:mt@16"
    ]
   },
   "house-cat": {
@@ -5532,17 +5236,15 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:md 18-5",
-    "list:muc@11",
-    "list:md@18",
-    "list:mpd@19"
+    "list:muc@11"
    ]
   },
   "meerkat-sentry": {
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:m5@14",
-    "list:md@18"
+    "first-clear:m5:14-1",
+    "list:m5@14"
    ]
   },
   "lone-grey-wolf": {
@@ -5586,11 +5288,9 @@
    ]
   },
   "bombardier-beetle": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mz@8"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "cunning-vixen": {
    "source": "skirmish-unique",
@@ -5598,7 +5298,7 @@
     "skirmish:mh 12-2",
     "list:muc@11",
     "list:mh@12",
-    "list:mr@13"
+    "list:m5@14"
    ]
   },
   "fox-sharpshot": {
@@ -5609,14 +5309,19 @@
   "balloon-archer": {
    "source": "pack",
    "where": [
-    "pack:pack4",
+    "pack:silver",
+    "list:mr@13",
+    "list:m5@14",
+    "list:md@18",
     "list:m24@24"
    ]
   },
   "frillneck-duelist": {
-   "source": "none",
-   "where": [],
-   "flag": "unobtainable: on no map list"
+   "source": "pack",
+   "where": [
+    "pack:gold",
+    "list:m11@20"
+   ]
   },
   "monitor-rambler": {
    "source": "none",
@@ -5645,25 +5350,19 @@
   "bramble-hoglet": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:mh 12-1",
-    "list:mh@12",
-    "list:mr@13"
+    "skirmish:mh 12-1"
    ]
   },
   "clover-butterfly": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mq@12"
-   ],
+   "source": "none",
+   "where": [],
    "proposed": {
-    "source": "pack",
+    "source": "pack-unique",
     "where": [
-     "pack:bronze",
-     "pack:silver",
-     "list:mq@12"
+     "pack:bronze"
     ]
-   }
+   },
+   "flag": "unobtainable: on no map list"
   },
   "the-gannet-queen": {
    "source": "pack",
@@ -5684,7 +5383,7 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:m10 11-1",
-    "list:m10@11",
+    "list:mh@12",
     "list:m21@21"
    ]
   },
@@ -5749,9 +5448,7 @@
   "ember-centipede": {
    "source": "pack",
    "where": [
-    "pack:gold",
-    "list:mx@20",
-    "list:m21@21",
+    "pack:pack4",
     "list:m22@22"
    ]
   },
@@ -5782,11 +5479,9 @@
    ]
   },
   "glimmer-spider": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mn@16"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "field-crow": {
    "source": "none",
@@ -5815,12 +5510,11 @@
    "flag": "unobtainable: on no map list"
   },
   "vampire-bat": {
-   "source": "pack",
+   "source": "none",
    "where": [
-    "pack:gold",
-    "list:mn@16",
     "list:muc@11"
-   ]
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)"
   },
   "wandering-mage": {
    "source": "none",
@@ -5938,7 +5632,8 @@
    "where": [
     "pack:gold",
     "list:m3@19",
-    "list:m9@23"
+    "list:m9@23",
+    "list:m21@21"
    ],
    "proposed": {
     "source": "pack",
@@ -5946,7 +5641,8 @@
      "pack:silver",
      "pack:gold",
      "list:m3@19",
-     "list:m9@23"
+     "list:m9@23",
+     "list:m21@21"
     ]
    }
   },
@@ -5959,15 +5655,13 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:m7 10-9",
-    "list:mj@11",
     "list:muc@11"
    ]
   },
   "lantern-spark-fly": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:mn 8-A-4",
-    "list:mn@16"
+    "skirmish:mn 8-A-4"
    ]
   },
   "baby-bat": {
@@ -6015,6 +5709,7 @@
     "skirmish:ml 15-2",
     "list:muc@11",
     "list:ml@15",
+    "list:m6@17",
     "list:m23@23",
     "list:m24@24"
    ]
@@ -6035,15 +5730,14 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:mt 16-7",
-    "list:muc@11",
-    "list:mt@16"
+    "list:muc@11"
    ]
   },
   "nightjar-drifter": {
    "source": "pack",
    "where": [
-    "pack:bronze",
-    "list:m1@0"
+    "pack:gold",
+    "list:md@18"
    ]
   },
   "aye-aye-prowler": {
@@ -6060,24 +5754,22 @@
     "list:muc@11",
     "list:m5@14",
     "list:m5@14",
+    "list:ml@15",
     "list:m23@23"
    ]
   },
   "sunbittern-strider": {
    "source": "pack",
    "where": [
-    "pack:bronze",
-    "first-clear:mk:9-2",
-    "list:m8@6",
-    "list:mk@9",
-    "list:muc@11"
+    "pack:gold",
+    "list:muc@11",
+    "list:md@18"
    ]
   },
   "kinkajou-lurker": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:my 14-A-3",
-    "list:my@18"
+    "skirmish:my 14-A-3"
    ]
   },
   "mudflat-godwit": {
@@ -6088,11 +5780,9 @@
    ]
   },
   "moon-jerboa": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mpd@19"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "werebadger": {
    "source": "none",
@@ -6109,8 +5799,7 @@
    "where": [
     "pack:gold",
     "first-clear:m5:14-3",
-    "list:m5@14",
-    "list:md@18"
+    "list:m5@14"
    ]
   },
   "star-nosed-mole": {
@@ -6128,6 +5817,7 @@
     "skirmish:m21 21-1",
     "list:mc@3",
     "list:m10@11",
+    "list:mr@13",
     "list:m21@21"
    ]
   },
@@ -6146,16 +5836,13 @@
   "blue-ringed-octopus": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:mj 10-A-5",
-    "list:mj@11"
+    "skirmish:mj 10-A-5"
    ]
   },
   "pronghorn-racer": {
    "source": "pack",
    "where": [
-    "pack:gold",
-    "first-clear:ml:15-1",
-    "list:ml@15",
+    "pack:pack4",
     "list:m23@23"
    ]
   },
@@ -6204,39 +5891,21 @@
    "flag": "unobtainable: on no map list"
   },
   "seed-cache-squirrel": {
-   "source": "pack",
+   "source": "none",
    "where": [
-    "pack:silver",
-    "list:mq@12",
     "list:muc@11"
-   ]
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)"
   },
   "leafcutter-gardener": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "first-clear:mu:7-3",
-    "list:mu@7",
-    "list:mz@8",
-    "list:my@18"
-   ],
-   "proposed": {
-    "source": "pack",
-    "where": [
-     "pack:bronze",
-     "first-clear:mu:7-3",
-     "list:mu@7",
-     "list:mz@8",
-     "list:my@18"
-    ]
-   }
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "lotus-frog": {
-   "source": "pack",
-   "where": [
-    "pack:bronze",
-    "list:mp@6"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "planarian-splitter": {
    "source": "pack",
@@ -6250,10 +5919,8 @@
   },
   "hagfish-silencer": {
    "source": "none",
-   "where": [
-    "list:mj@11"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)"
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "electric-ray": {
    "source": "skirmish-unique",
@@ -6272,12 +5939,11 @@
    "flag": "unobtainable: on no map list"
   },
   "swift-fox": {
-   "source": "pack",
+   "source": "none",
    "where": [
-    "pack:silver",
-    "list:muc@11",
-    "list:mr@13"
-   ]
+    "list:muc@11"
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)"
   },
   "slow-loris": {
    "source": "none",
@@ -6294,11 +5960,9 @@
    ]
   },
   "mayfly-dancer": {
-   "source": "pack",
-   "where": [
-    "pack:bronze",
-    "list:mp@6"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "pangolin-roller": {
    "source": "pack",
@@ -6316,15 +5980,10 @@
   "tasmanian-devil": {
    "source": "pack",
    "where": [
-    "pack:silver",
-    "list:mr@13"
-   ],
-   "proposed": {
-    "source": "none",
-    "where": [
-     "list:mr@13"
-    ]
-   }
+    "pack:gold",
+    "list:m5@14",
+    "list:ml@15"
+   ]
   },
   "mantis-shrimp": {
    "source": "none",
@@ -6357,12 +6016,9 @@
    "flag": "unobtainable: on no map list"
   },
   "snow-bunting-archer": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "first-clear:m6:17-4",
-    "list:m6@17"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "spitting-cobra": {
    "source": "skirmish-unique",
@@ -6375,7 +6031,6 @@
    "source": "pack",
    "where": [
     "pack:pack4",
-    "list:mo@21",
     "list:muc@11",
     "list:m22@22"
    ]
@@ -6427,53 +6082,43 @@
   "ibex-rockcaller": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:m10 11-10",
-    "list:mv@15"
+    "skirmish:m10 11-10"
    ]
   },
   "sperm-whale-elder": {
    "source": "none",
-   "where": [
-    "list:mj@11"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)"
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "thunder-lizard": {
    "source": "none",
-   "where": [
-    "list:mx@20"
-   ],
+   "where": [],
    "proposed": {
     "source": "achievement",
     "where": [
-     "achievement:world_boss",
-     "list:mx@20"
+     "achievement:world_boss"
     ]
    },
-   "flag": "unobtainable: on a map list (an enemy card only)"
+   "flag": "unobtainable: on no map list"
   },
   "corpse-flower-beetle": {
    "source": "none",
    "where": [
     "list:mu@7",
-    "list:m4@8",
-    "list:mr@13"
+    "list:m4@8"
    ],
    "flag": "unobtainable: on a map list (an enemy card only)"
   },
   "salamander-pyromancer": {
    "source": "none",
-   "where": [
-    "list:mx@20"
-   ],
+   "where": [],
    "proposed": {
     "source": "achievement",
     "where": [
-     "achievement:eye_volcano",
-     "list:mx@20"
+     "achievement:eye_volcano"
     ]
    },
-   "flag": "unobtainable: on a map list (an enemy card only)"
+   "flag": "unobtainable: on no map list"
   },
   "starfall-owl": {
    "source": "none",
@@ -6484,7 +6129,9 @@
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:md@18"
+    "first-clear:md:18-4",
+    "list:md@18",
+    "list:m3@19"
    ]
   },
   "elephant-nose-fish": {
@@ -6521,11 +6168,16 @@
   "lamprey": {
    "source": "pack",
    "where": [
-    "pack:bronze",
-    "first-clear:m8:6-4",
-    "list:m8@6",
+    "pack:silver",
     "list:mu@7"
-   ]
+   ],
+   "proposed": {
+    "source": "pack",
+    "where": [
+     "pack:bronze",
+     "list:mu@7"
+    ]
+   }
   },
   "paper-wasp": {
    "source": "none",
@@ -6535,9 +6187,11 @@
   "bison-bulldozer": {
    "source": "pack",
    "where": [
-    "pack:gold",
+    "pack:silver",
+    "first-clear:mh:12-4",
     "list:muc@11",
-    "list:ml@15",
+    "list:mh@12",
+    "list:md@18",
     "list:m23@23"
    ]
   },
@@ -6560,10 +6214,8 @@
   },
   "leaf-chameleon": {
    "source": "none",
-   "where": [
-    "list:my@18"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "oilbird": {
@@ -6590,7 +6242,8 @@
     "skirmish:m3 19-3",
     "list:muc@11",
     "list:m3@19",
-    "list:m9@23"
+    "list:m9@23",
+    "list:m11@20"
    ]
   },
   "fire-hawk": {
@@ -6625,12 +6278,9 @@
    "flag": "unobtainable: on no map list"
   },
   "springbok-pronker": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "first-clear:m5:14-1",
-    "list:m5@14"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "supernova-jelly": {
    "source": "none",
@@ -6676,7 +6326,8 @@
    "source": "pack",
    "where": [
     "pack:gold",
-    "list:md@18"
+    "list:md@18",
+    "list:m3@19"
    ]
   },
   "dromedary": {
@@ -6702,18 +6353,13 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:mh 12-5",
-    "list:muc@11",
-    "list:mh@12",
-    "list:mr@13",
-    "list:my@18"
+    "list:muc@11"
    ]
   },
   "chained-binturong": {
    "source": "none",
-   "where": [
-    "list:m9@23"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "rimefire-salamander": {
@@ -6727,37 +6373,33 @@
    "source": "pack",
    "where": [
     "pack:gold",
+    "first-clear:m11:20-3",
     "list:m11@20",
+    "list:m21@21",
     "list:m22@22"
    ]
   },
   "ashwing-ptarmigan": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:m3@19"
-   ],
+   "source": "none",
+   "where": [],
    "proposed": {
-    "source": "pack",
+    "source": "achievement",
     "where": [
-     "pack:gold",
-     "achievement:conquest_road",
-     "list:m3@19"
+     "achievement:conquest_road"
     ]
-   }
+   },
+   "flag": "unobtainable: on no map list"
   },
   "caldera-snow-leopard": {
    "source": "skirmish-unique",
    "where": [
     "skirmish:m22 22-8",
-    "list:m11@20",
     "list:m22@22"
    ]
   },
   "rimeheart-colossus": {
    "source": "none",
    "where": [
-    "list:me@20",
     "list:m22@22",
     "list:m22@22"
    ],
@@ -6811,18 +6453,15 @@
    "flag": "unobtainable: on no map list"
   },
   "goose-sentry": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:ml@15"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "mallard-halberdier": {
    "source": "pack",
    "where": [
-    "pack:gold",
+    "pack:pack4",
     "first-clear:m24:24-4",
-    "list:ml@15",
     "list:m24@24"
    ]
   },
@@ -6859,21 +6498,19 @@
    "source": "pack",
    "where": [
     "pack:silver",
-    "list:m4@8"
+    "list:m4@8",
+    "list:md@18"
    ]
   },
   "cottonmouth-matriarch": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:ms@13"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "hedgehog-herbalist": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:ms 5-A-4",
-    "list:mo@21"
+    "skirmish:ms 5-A-4"
    ]
   },
   "eagle-owl-quartermaster": {
@@ -6882,16 +6519,14 @@
     "skirmish:m10 11-2",
     "list:m10@11",
     "list:mv@15",
-    "list:m3@19",
+    "list:ml@15",
     "list:m23@23"
    ]
   },
   "ossuary-lammergeier": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:m11 20-10",
-    "list:m11@20",
-    "list:me@20"
+    "skirmish:m11 20-10"
    ]
   },
   "walrus-icebreaker": {
@@ -6900,7 +6535,8 @@
     "skirmish:m6 17-8",
     "list:muc@11",
     "list:m6@17",
-    "list:mi@21"
+    "list:mi@21",
+    "list:m3@19"
    ]
   },
   "sea-cucumber": {
@@ -6927,11 +6563,9 @@
    "awaitingSource": true
   },
   "grotto-lobster": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mn@16"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "amber-cicada": {
    "source": "pack",
@@ -6950,25 +6584,25 @@
    }
   },
   "sandfish": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "first-clear:md:18-4",
-    "list:md@18"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "pale-oryx": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mpd@19"
-   ]
+   "source": "none",
+   "where": [],
+   "proposed": {
+    "source": "pack-unique",
+    "where": [
+     "pack:gold"
+    ]
+   },
+   "flag": "unobtainable: on no map list"
   },
   "quicksand-queen": {
    "source": "skirmish-unique",
    "where": [
-    "skirmish:mpd 18-A-9",
-    "list:mpd@19"
+    "skirmish:mpd 18-A-9"
    ]
   },
   "water-vole": {
@@ -6980,28 +6614,26 @@
    "source": "pack",
    "where": [
     "pack:bronze",
-    "list:m2@4"
+    "list:m2@4",
+    "list:m5@14"
    ]
   },
   "signal-crayfish": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:ms@13"
-   ],
+   "source": "none",
+   "where": [],
    "proposed": {
-    "source": "pack",
+    "source": "pack-unique",
     "where": [
-     "pack:bronze",
-     "pack:silver",
-     "list:ms@13"
+     "pack:bronze"
     ]
-   }
+   },
+   "flag": "unobtainable: on no map list"
   },
   "pine-marten": {
    "source": "pack",
    "where": [
     "pack:silver",
+    "first-clear:mr:13-4",
     "list:mr@13"
    ]
   },
@@ -7014,31 +6646,27 @@
    "source": "pack",
    "where": [
     "pack:bronze",
-    "list:m2@4"
+    "list:m2@4",
+    "list:mr@13"
    ]
   },
   "ladybird-guard": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mq@12"
-   ],
+   "source": "none",
+   "where": [],
    "proposed": {
-    "source": "pack",
+    "source": "pack-unique",
     "where": [
-     "pack:bronze",
-     "pack:silver",
-     "list:mq@12"
+     "pack:bronze"
     ]
-   }
+   },
+   "flag": "unobtainable: on no map list"
   },
   "hedgerow-shrew": {
    "source": "pack",
    "where": [
     "pack:bronze",
     "list:mf@1",
-    "list:mb@2",
-    "list:mh@12"
+    "list:mb@2"
    ]
   },
   "stag-beetle": {
@@ -7057,7 +6685,8 @@
    "where": [
     "pack:bronze",
     "list:mq@12",
-    "list:m2@4"
+    "list:m2@4",
+    "list:mr@13"
    ]
   },
   "robin-redbreast": {
@@ -7070,11 +6699,9 @@
    ]
   },
   "field-vole": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mq@12"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "pincushion-urchin": {
    "source": "pack",
@@ -7102,20 +6729,9 @@
    ]
   },
   "grey-seal-bull": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mg@7",
-    "list:m7@10"
-   ],
-   "proposed": {
-    "source": "pack",
-    "where": [
-     "pack:bronze",
-     "list:mg@7",
-     "list:m7@10"
-    ]
-   }
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "limpet-clinger": {
    "source": "pack",
@@ -7131,14 +6747,14 @@
    "where": [
     "skirmish:mc 3-2",
     "list:mc@3",
-    "list:muc@11"
+    "list:muc@11",
+    "list:mt@16"
    ]
   },
   "razorbill": {
    "source": "skirmish-unique",
    "where": [
     "skirmish:mc 3-7",
-    "list:mc@3",
     "list:muc@11"
    ]
   },
@@ -7172,8 +6788,7 @@
   "red-billed-chough": {
    "source": "pack",
    "where": [
-    "pack:gold",
-    "list:mv@15",
+    "pack:pack4",
     "list:muc@11",
     "list:m21@21"
    ]
@@ -7202,7 +6817,6 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:m2 4-5",
-    "list:mp@6",
     "list:muc@11"
    ]
   },
@@ -7247,17 +6861,18 @@
    "source": "pack",
    "where": [
     "pack:bronze",
+    "first-clear:m8:6-4",
     "list:mw@5",
     "list:m8@6",
-    "list:my@18"
+    "list:my@18",
+    "list:ml@15"
    ]
   },
   "fire-ant-raft": {
    "source": "pack",
    "where": [
     "pack:bronze",
-    "list:mw@5",
-    "list:ml@15"
+    "list:mw@5"
    ]
   },
   "anhinga-spearbird": {
@@ -7265,7 +6880,8 @@
    "where": [
     "pack:bronze",
     "list:ms@13",
-    "list:m8@6"
+    "list:m8@6",
+    "list:mr@13"
    ]
   },
   "booming-bittern": {
@@ -7296,7 +6912,8 @@
    "where": [
     "pack:bronze",
     "first-clear:mw:5-2",
-    "list:mw@5"
+    "list:mw@5",
+    "list:mt@16"
    ]
   },
   "leopard-slug": {
@@ -7329,10 +6946,7 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:mu 7-1",
-    "list:mu@7",
-    "list:mz@8",
-    "list:muc@11",
-    "list:ml@15"
+    "list:muc@11"
    ]
   },
   "fungus-gnat-cloud": {
@@ -7354,11 +6968,9 @@
    }
   },
   "springtail-hopper": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mz@8"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "red-backed-salamander": {
    "source": "none",
@@ -7388,11 +7000,9 @@
    "flag": "unobtainable: on no map list"
   },
   "cave-swiftlet": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mn@16"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "cave-pseudoscorpion": {
    "source": "none",
@@ -7406,12 +7016,11 @@
    "flag": "unobtainable: on no map list"
   },
   "whip-spider": {
-   "source": "pack",
+   "source": "none",
    "where": [
-    "pack:gold",
-    "list:mn@16",
     "list:muc@11"
-   ]
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)"
   },
   "giant-cave-huntsman": {
    "source": "skirmish-unique",
@@ -7453,6 +7062,7 @@
    "source": "pack",
    "where": [
     "pack:silver",
+    "first-clear:mk:9-2",
     "list:mk@9"
    ]
   },
@@ -7494,12 +7104,9 @@
    ]
   },
   "parrotfish": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "first-clear:m7:10-3",
-    "list:m7@10"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "lionfish": {
    "source": "none",
@@ -7516,6 +7123,7 @@
    "source": "pack",
    "where": [
     "pack:silver",
+    "first-clear:m7:10-3",
     "list:m7@10",
     "list:mj@11"
    ]
@@ -7524,16 +7132,13 @@
    "source": "skirmish-unique",
    "where": [
     "skirmish:m7 10-6",
-    "list:mj@11",
     "list:muc@11"
    ]
   },
   "whale-shark": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mj@11"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "chamois-leaper": {
    "source": "skirmish-unique",
@@ -7541,7 +7146,7 @@
     "skirmish:m10 11-9",
     "list:m10@11",
     "list:mv@15",
-    "list:m11@20"
+    "list:mh@12"
    ]
   },
   "alpine-swift": {
@@ -7555,8 +7160,7 @@
   "alpine-salamander": {
    "source": "pack",
    "where": [
-    "pack:gold",
-    "list:mv@15",
+    "pack:pack4",
     "list:m21@21"
    ]
   },
@@ -7573,43 +7177,39 @@
    "where": [
     "pack:silver",
     "list:m10@11",
+    "list:mh@12",
     "list:mt@16"
    ]
   },
   "thorn-shrike": {
    "source": "pack",
    "where": [
-    "pack:silver",
-    "list:mo@21",
-    "list:mh@12",
-    "list:ml@15"
+    "pack:pack4",
+    "list:mo@21"
    ]
   },
   "hedge-weasel": {
-   "source": "pack",
+   "source": "none",
    "where": [
-    "pack:silver",
-    "first-clear:mh:12-4",
-    "list:muc@11",
-    "list:mh@12",
-    "list:ml@15"
-   ]
+    "list:muc@11"
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)"
   },
   "hawthorn-shieldbug": {
    "source": "pack",
    "where": [
     "pack:silver",
+    "first-clear:mu:7-3",
     "list:mu@7",
-    "list:m4@8",
-    "list:mh@12"
+    "list:m4@8"
    ],
    "proposed": {
     "source": "pack",
     "where": [
      "pack:bronze",
+     "first-clear:mu:7-3",
      "list:mu@7",
-     "list:m4@8",
-     "list:mh@12"
+     "list:m4@8"
     ]
    }
   },
@@ -7629,6 +7229,7 @@
    "where": [
     "pack:silver",
     "list:m10@11",
+    "list:mh@12",
     "list:m9@23"
    ]
   },
@@ -7643,7 +7244,8 @@
     "skirmish:m6 17-6",
     "list:muc@11",
     "list:m6@17",
-    "list:mi@21"
+    "list:mi@21",
+    "list:m3@19"
    ]
   },
   "harp-seal-pup": {
@@ -7662,16 +7264,15 @@
    }
   },
   "beluga": {
-   "source": "pack",
-   "where": [
-    "pack:pack4",
-    "list:mi@21"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "arctic-tern": {
    "source": "pack",
    "where": [
     "pack:gold",
+    "first-clear:m6:17-4",
     "list:m6@17",
     "list:mi@21"
    ],
@@ -7680,6 +7281,7 @@
     "where": [
      "pack:gold",
      "achievement:conquest_maps_5",
+     "first-clear:m6:17-4",
      "list:m6@17",
      "list:mi@21"
     ]
@@ -7688,17 +7290,23 @@
   "lemming-swarm": {
    "source": "pack",
    "where": [
-    "pack:gold",
-    "list:m6@17",
+    "pack:pack4",
     "list:mi@21"
-   ]
+   ],
+   "proposed": {
+    "source": "pack",
+    "where": [
+     "pack:gold",
+     "pack:pack4",
+     "list:mi@21"
+    ]
+   }
   },
   "krill-swarm": {
    "source": "pack",
    "where": [
     "pack:silver",
-    "list:m7@10",
-    "list:m6@17"
+    "list:m7@10"
    ]
   },
   "greenland-shark": {
@@ -7726,11 +7334,15 @@
    ]
   },
   "musk-ox-calf": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:m6@17"
-   ]
+   "source": "none",
+   "where": [],
+   "proposed": {
+    "source": "pack-unique",
+    "where": [
+     "pack:gold"
+    ]
+   },
+   "flag": "unobtainable: on no map list"
   },
   "petrified-tree": {
    "source": "none",
@@ -7757,10 +7369,8 @@
   },
   "glintsnatch-magpie": {
    "source": "none",
-   "where": [
-    "list:mn@16"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "greyplume-fledgling": {
@@ -7777,31 +7387,19 @@
    ]
   },
   "ember-tetra": {
-   "source": "pack",
-   "where": [
-    "pack:pack4",
-    "list:m9@23"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "coffer-mimic": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mg@7"
-   ],
-   "proposed": {
-    "source": "pack",
-    "where": [
-     "pack:bronze",
-     "list:mg@7"
-    ]
-   }
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "lava-waders": {
    "source": "special",
    "where": [
-    "smith",
-    "list:mx@20"
+    "smith"
    ]
   },
   "ironclaw-fiddler": {
@@ -7817,16 +7415,19 @@
    "where": [
     "pack:bronze",
     "list:mp@6",
-    "list:m2@4",
     "list:m8@6"
    ]
   },
   "dam-keeper-beaver": {
-   "source": "pack",
-   "where": [
-    "pack:bronze",
-    "list:mp@6"
-   ]
+   "source": "none",
+   "where": [],
+   "proposed": {
+    "source": "pack-unique",
+    "where": [
+     "pack:bronze"
+    ]
+   },
+   "flag": "unobtainable: on no map list"
   },
   "moat-snapper": {
    "source": "none",
@@ -7837,14 +7438,16 @@
    "source": "pack",
    "where": [
     "pack:silver",
-    "list:mh@12"
+    "list:mh@12",
+    "list:m6@17"
    ],
    "proposed": {
     "source": "pack",
     "where": [
      "pack:bronze",
      "pack:silver",
-     "list:mh@12"
+     "list:mh@12",
+     "list:m6@17"
     ]
    }
   },
@@ -7852,17 +7455,14 @@
    "source": "pack",
    "where": [
     "pack:silver",
-    "list:mo@21",
-    "list:mh@12"
+    "list:mh@12",
+    "list:md@18"
    ]
   },
   "great-skua": {
-   "source": "pack",
-   "where": [
-    "pack:bronze",
-    "list:mb@2",
-    "list:mc@3"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "bloodscent-shark": {
    "source": "none",
@@ -7937,17 +7537,19 @@
    "source": "pack",
    "where": [
     "pack:silver",
-    "list:mr@13",
-    "list:mt@16"
+    "list:mr@13"
    ]
   },
   "termite-forager": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:m5@14",
-    "list:md@18"
-   ]
+   "source": "none",
+   "where": [],
+   "proposed": {
+    "source": "pack-unique",
+    "where": [
+     "pack:gold"
+    ]
+   },
+   "flag": "unobtainable: on no map list"
   },
   "cone-cutter-squirrel": {
    "source": "pack",
@@ -7961,19 +7563,14 @@
   "talus-pika": {
    "source": "pack",
    "where": [
-    "pack:gold",
-    "list:mi@21",
-    "list:m3@19",
-    "list:m11@20",
-    "list:m21@21"
+    "pack:pack4",
+    "list:mi@21"
    ]
   },
   "dune-packrat": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mpd@19"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "gravel-mole": {
    "source": "none",
@@ -7996,7 +7593,6 @@
    "where": [
     "pack:pack4",
     "list:m9@23",
-    "list:m21@21",
     "list:m22@22"
    ]
   },
@@ -8020,8 +7616,11 @@
   },
   "hollow-belly-rat": {
    "source": "none",
-   "where": [],
-   "flag": "unobtainable: on no map list",
+   "where": [
+    "list:mh@12",
+    "list:m5@14"
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)",
    "awaitingSource": true
   },
   "gnawed-matriarch": {
@@ -8044,17 +7643,14 @@
   },
   "conger-eel": {
    "source": "none",
-   "where": [
-    "list:mj@11"
-   ],
+   "where": [],
    "proposed": {
-    "source": "pack",
+    "source": "pack-unique",
     "where": [
-     "pack:silver",
-     "list:mj@11"
+     "pack:silver"
     ]
    },
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "selkie-wavebinder": {
@@ -8082,49 +7678,39 @@
   "beaver-feller": {
    "source": "pack",
    "where": [
-    "pack:bronze",
-    "list:m2@4"
-   ],
-   "proposed": {
-    "source": "pack",
-    "where": [
-     "pack:bronze",
-     "pack:silver",
-     "list:m2@4"
-    ]
-   }
+    "pack:silver",
+    "list:mr@13"
+   ]
   },
   "salvager-hermit-crab": {
    "source": "pack",
    "where": [
     "pack:silver",
-    "list:mg@7",
-    "list:mk@9"
+    "list:mg@7"
    ],
    "proposed": {
     "source": "pack",
     "where": [
      "pack:bronze",
-     "list:mg@7",
-     "list:mk@9"
+     "list:mg@7"
     ]
    }
   },
   "carrion-crow": {
-   "source": "pack",
-   "where": [
-    "pack:silver",
-    "list:mh@12"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "hazel-coppice": {
-   "source": "pack",
-   "where": [
-    "pack:bronze",
-    "list:m1@0",
-    "list:mo@21",
-    "list:mf@1"
-   ]
+   "source": "none",
+   "where": [],
+   "proposed": {
+    "source": "pack-unique",
+    "where": [
+     "pack:bronze"
+    ]
+   },
+   "flag": "unobtainable: on no map list"
   },
   "beachcomber-sanderling": {
    "source": "pack",
@@ -8167,7 +7753,8 @@
    "where": [
     "pack:bronze",
     "first-clear:mw:5-1",
-    "list:mw@5"
+    "list:mw@5",
+    "list:mr@13"
    ]
   },
   "sphagnum-vole": {
@@ -8194,11 +7781,9 @@
    ]
   },
   "gale-swift": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mv@15"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "static-fennec": {
    "source": "none",
@@ -8216,10 +7801,17 @@
   "peat-cutter-vole": {
    "source": "pack",
    "where": [
-    "pack:bronze",
-    "list:mw@5",
+    "pack:silver",
     "list:ms@13"
-   ]
+   ],
+   "proposed": {
+    "source": "pack",
+    "where": [
+     "pack:bronze",
+     "pack:silver",
+     "list:ms@13"
+    ]
+   }
   },
   "magpie-collector": {
    "source": "pack",
@@ -8243,11 +7835,9 @@
    "awaitingSource": true
   },
   "granite-ox-golem": {
-   "source": "pack",
-   "where": [
-    "pack:gold",
-    "list:mx@20"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "bolas-spider": {
    "source": "none",
@@ -8263,11 +7853,8 @@
   },
   "bloodworm": {
    "source": "none",
-   "where": [
-    "list:mb@2",
-    "list:mg@7"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "night-algae": {
@@ -8324,11 +7911,9 @@
    "flag": "unobtainable: on no map list"
   },
   "victoria-regia": {
-   "source": "pack",
-   "where": [
-    "pack:bronze",
-    "list:mp@6"
-   ]
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
   },
   "crimson-wing-drumcaller": {
    "source": "none",
@@ -8380,10 +7965,8 @@
   },
   "matamata": {
    "source": "none",
-   "where": [
-    "list:ms@13"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "bog-lungfish": {
@@ -8394,10 +7977,8 @@
   },
   "mossmother-newt": {
    "source": "none",
-   "where": [
-    "list:ms@13"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "reed-dart-bittern": {
@@ -8426,10 +8007,8 @@
   },
   "smuggler-slingrat": {
    "source": "none",
-   "where": [
-    "list:mg@7"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "tidefolk-harpooner": {
@@ -8458,10 +8037,8 @@
   },
   "pinecone-crossbill": {
    "source": "none",
-   "where": [
-    "list:mt@16"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "yeti-tracker": {
@@ -8484,10 +8061,8 @@
   },
   "sand-flinger-antlion": {
    "source": "none",
-   "where": [
-    "list:mpd@19"
-   ],
-   "flag": "unobtainable: on a map list (an enemy card only)",
+   "where": [],
+   "flag": "unobtainable: on no map list",
    "awaitingSource": true
   },
   "stonecracker-vulture": {
@@ -8536,12 +8111,16 @@
    ]
   },
   "sea-bass": {
-   "source": "pack",
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list"
+  },
+  "barrel-cactus": {
+   "source": "none",
    "where": [
-    "pack:silver",
-    "first-clear:m7:10-5",
-    "list:m7@10"
-   ]
+    "list:md@18"
+   ],
+   "flag": "unobtainable: on a map list (an enemy card only)"
   }
  }
 }

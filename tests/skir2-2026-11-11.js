@@ -32,10 +32,14 @@ const PENDING = {}; J('docs/balance/skir1/pending-budget-2026-11-11.json').cards
 const obtainMap = J('canonical/card-obtain-maps.json').maps;
 const heldStill = id => !!PENDING[id] && (PENDING[id].obtainMap == null || obtainMap[id] === PENDING[id].obtainMap);
 
+// 2026-11-12 (SKIR3): the owner's 11-12 picks are the lists now, under the NEW! / Carried limits; Claude's adds went first (tools/skir3/lists_2026_11_12.js).
+// An add SKIR3 took off (its record names it, or the map's list no longer holds it) is checked as off; the rest as before.
+const S3 = J('docs/balance/skir3/lists-2026-11-12.json'), s3off = (mid, id) => !!(S3.main[mid] || S3.side[mid]) && !((S3.main[mid] || S3.side[mid]).list || []).includes(id);
 // ---- 1. the adds ----
 // 2026-11-11 (LISTFIX3): an add that is a cut card (canonical/map-review.json cutArchive) is off its list again (tools/listfix3/lists_2026_11_11.js REMOVE: Sphagnum Vole)
 const LF3 = require(path.join(ROOT, 'tools', 'listfix3', 'lists_2026_11_11.js')).REMOVE;
 for (const [mid, adds] of Object.entries(ADDS)) for (const [id, x] of Object.entries(adds)) {
+  if (s3off(mid, id)) { ok(!(pools[mid].cards || []).includes(id) && !(ADMIN[mid] || []).includes(id), `${mid}: ${id} is off its list (SKIR3: the owner's 11-12 picks under the limits)`); continue; }
   if ((LF3[mid] || {})[id]) { ok(!(pools[mid].cards || []).includes(id) && !(ADMIN[mid] || []).includes(id) && !(SUGGEST[mid] || []).includes(id), `${mid}: ${id} is off its list again (LISTFIX3: a cut card)`); continue; }
   ok(D[id], `${mid}: ${id} is a card`); if (!D[id]) continue;
   ok((pools[mid].cards || []).includes(id), `Map ${no(mid)} (${mid}): ${id} is on its MAP tier`);
@@ -46,8 +50,8 @@ for (const [mid, adds] of Object.entries(ADDS)) for (const [id, x] of Object.ent
   const b = SCN.budget(D[id], { level: 1 }); ok(b.ok || heldStill(id), `${id}: within its budget at its obtain map (${b.x1} <= ${b.N}), or held for the owner's re-fit by SKIR1 with its first map unchanged`);
   ok(x.why && x.why.length > 15, `${id}: the add says why`);
 }
-Object.entries(EXTRA.main || {}).forEach(([mid, o]) => Object.keys(o).forEach(id => { ok((ADMIN[mid] || []).includes(id), `SKIR1's admin add ${id} (${mid}) is in UI47_ADMIN_ADD`); ok(/^SKIR1: ./.test(((SUG.maps[mid] || {}).adminWhy || {})[id] || ''), `SKIR1's admin add ${id} has its reason`); }));
-ok(/^\/\/ 2026-11-11 \(SKIR2\): admin adds named by SKIR1 \/ SKIR2.*\nconst UI47_ADMIN_ADD = /m.test(src), 'a dated comment names the admin adds above UI47_ADMIN_ADD');
+Object.entries(EXTRA.main || {}).forEach(([mid, o]) => Object.keys(o).forEach(id => { if (s3off(mid, id)) return; ok((ADMIN[mid] || []).includes(id), `SKIR1's admin add ${id} (${mid}) is in UI47_ADMIN_ADD`); ok(/^SKIR1: ./.test(((SUG.maps[mid] || {}).adminWhy || {})[id] || ''), `SKIR1's admin add ${id} has its reason`); }));
+ok(/^\/\/ 2026-11-1[12] \(SKIR[23]\): admin adds.*\nconst UI47_ADMIN_ADD = /m.test(src), 'a dated comment names the admin adds above UI47_ADMIN_ADD'); // 2026-11-12: SKIR3's comment replaces SKIR2's
 // THEME8's suggest / carried split still holds: a "suggest" card is first listed on that map (no earlier main map gives it)
 const firstAt = {}; MAIN_ORDER.forEach((mid, i) => { const m = SUG.maps[mid]; if (!m) return; [].concat(m.ownerYes, m.adminAdd, m.suggest, m.carried, m.baby).forEach(id => { if (firstAt[id] == null) firstAt[id] = i; }); });
 MAIN_ORDER.forEach((mid, i) => (SUG.maps[mid] && i >= 12 ? SUG.maps[mid].suggest : []).forEach(id => ok(firstAt[id] === i, `Map ${i}: suggested ${id} is new to the road (first on Map ${firstAt[id]})`)));
@@ -57,6 +61,7 @@ ok(Object.entries(use).every(([id, k]) => SUG.usage[id] === k), 'the suggestion 
 // ---- 2. BAL9 JJ28 ----
 const L = require(path.join(ROOT, 'tools', 'skir1', 'lib_fight_2026_11_11.js'));
 for (const mid of ['m7', 'm6', 'md', 'm3']) {
+  if (['grey-seal-bull', 'shepherds-bark', 'marula-elephant', 'stalactite-golem'].some(id => s3off(mid, id) && (S3.main[mid].before || []).includes(id))) continue; // 2026-11-12 (SKIR3): no room for the Guardian add (draft SKIR3-1)
   const guards = (pools[mid].cards || []).filter(id => D[id] && (D[id].effects || {}).guardian);
   ok(guards.length >= 1, `Map ${no(mid)} (${mid}): its list holds a Guardian defender (${guards.join(', ')})`);
   const m = L.maps().find(x => x.id === mid); ok(L.fightsOf(m).some(n => guards.some(id => n.deck[id])), `Map ${no(mid)}: a road deck holds its Guardian`);
@@ -85,7 +90,7 @@ const n52 = G.CONQUEST_MAPS.find(m => m.id === 'mw').nodes.find(n => n.key === '
 ok(n52.firstCard === 'raft-spider' && !G.isUnattainable(defs['raft-spider']) && (pools.mw.cards || []).includes('raft-spider') && !(pools.mw.cards || []).includes('sphagnum-vole'), "5-2 pays Raft Spider, on Map 5's list and obtainable; the cut Sphagnum Vole is off it");
 
 // ---- 4. Map 13 ----
-['swift-fox', 'tasmanian-devil', 'bramblewood-lynx'].forEach(id => ok(pools.mr.cards.includes(id), `Map 13's list holds ${id} (SKIR1-7)`));
+['swift-fox', 'tasmanian-devil', 'bramblewood-lynx'].forEach(id => ok(pools.mr.cards.includes(id) || s3off('mr', id), `Map 13's list holds ${id} (SKIR1-7), unless SKIR3 took it off (the owner's 11-12 picks)`));
 const plan = J('docs/balance/skir2/build-plan-2026-11-11.json'), mr = plan.maps.find(p => p.id === 'mr');
 ok(mr && mr.fights.length === 8, 'Map 13 is in the SKIR2 build plan (8 fights)');
 (mr ? mr.fights : []).forEach(x => ok(/\(SKIR2( fit)?\): /.test(lineOf(x.code)), `${x.code}: rebuilt by SKIR2 (dated comment)`));
@@ -93,6 +98,7 @@ ok(mr && mr.fights.length === 8, 'Map 13 is in the SKIR2 build plan (8 fights)')
 // ---- 5. restored leaders, fits on record ----
 [['ml', '15-1', 'cataphract-destrier'], ['mj', '10-A-2', 'coral-reef-shark']].forEach(([mid, code, id]) => {
   const m = G.CONQUEST_MAPS.find(x => x.id === mid), n = m.nodes.find(x => x.key === code); G.NODE_MAP_HINT.set(n, mid);
+  if (G.isUnattainable(defs[id]) || !n.deck[id]) return; // 2026-11-12 (SKIR3): the card left play / the deck on the 11-12 lists
   ok(JSON.stringify(G.skirmishLeadersOf(n, mid)) === JSON.stringify([id]), `${code}: led by ${id} again`); });
 const fitDirs = fs.readdirSync(path.join(ROOT, 'docs', 'balance', 'skir2')).filter(d => /^(fit|search)/.test(d) && fs.statSync(path.join(ROOT, 'docs', 'balance', 'skir2', d)).isDirectory()).map(d => path.join(ROOT, 'docs', 'balance', 'skir2', d));
 const kept = {}; fitDirs.forEach(d => fs.readdirSync(d).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(d, f), 'utf8')); if (x.keep) (kept[x.code] = kept[x.code] || []).push(x); }));

@@ -1,0 +1,4710 @@
+{
+ "about": "SKIR3 lists (tools/skir3/lists_2026_11_12.js): the owner's 2026-11-12 picks under the default NEW! / Carried limits",
+ "built": "2026-11-12",
+ "adminBefore": {
+  "m1": [
+   "hazel-coppice",
+   "nightjar-drifter"
+  ],
+  "mf": [
+   "monarch-wingblade",
+   "pack-rat-looter",
+   "hazel-coppice"
+  ],
+  "mb": [
+   "great-skua",
+   "bloodworm"
+  ],
+  "mc": [
+   "razorbill",
+   "great-skua",
+   "hawk-arrowkeeper"
+  ],
+  "m2": [
+   "beaver-feller"
+  ],
+  "mw": [
+   "peat-cutter-vole"
+  ],
+  "m8": [
+   "sunbittern-strider",
+   "bone-diviner",
+   "owl-sentinel"
+  ],
+  "mu": [
+   "truffle-piglet",
+   "leafcutter-gardener",
+   "nightshade-moth",
+   "planarian-splitter"
+  ],
+  "m4": [
+   "upside-down-bat",
+   "blind-cave-fish",
+   "pack-rat-looter",
+   "bone-diviner"
+  ],
+  "mk": [
+   "nutria-reedcutter",
+   "sunbittern-strider",
+   "salvager-hermit-crab"
+  ],
+  "m7": [
+   "nautilus-drifter",
+   "grey-seal-bull",
+   "parrotfish",
+   "coral-reef-shark"
+  ],
+  "m10": [
+   "hawk-arrowkeeper",
+   "alpine-marmot"
+  ]
+ },
+ "sideBefore": {
+  "mo": [
+   "ent",
+   "elder-willow",
+   "echidna-quillshot",
+   "gatling-hog",
+   "hedgehog-herbalist",
+   "thornwood-palisade",
+   "quill-volley",
+   "porcupine-roller",
+   "shimmerwing-stag",
+   "bramblewood-lynx",
+   "quillguard",
+   "quill-thorn-boar",
+   "barkplate-beetle",
+   "thorn-shrike",
+   "hazel-coppice",
+   "bramble-sprout"
+  ],
+  "mq": [
+   "lucky-hopper",
+   "jackrabbit-sprinter",
+   "field-mouse",
+   "harvest-mouse",
+   "field-vole",
+   "clover-butterfly",
+   "ladybird-guard",
+   "ant-hill",
+   "bee-drone",
+   "seed-cache-squirrel",
+   "bee-sentry",
+   "cricket-drummer",
+   "robin-redbreast",
+   "slow-worm",
+   "earthworm",
+   "monarch-wingblade"
+  ],
+  "mp": [
+   "pond-duck",
+   "lotus-frog",
+   "victoria-regia",
+   "mayfly-dancer",
+   "dam-keeper-beaver",
+   "lodge-engineer",
+   "box-turtle",
+   "old-sturgeon",
+   "river-carp",
+   "pyrenean-desman",
+   "muskrat-lodgekeeper",
+   "snapstick-turtle",
+   "pond-algae",
+   "muskrat-reedgatherer",
+   "platypus-spur",
+   "water-shrew"
+  ],
+  "mg": [
+   "octopus-tactician",
+   "trash-panda-trickster",
+   "smuggler-slingrat",
+   "coffer-mimic",
+   "salvager-hermit-crab",
+   "glow-worm",
+   "moray-ambusher",
+   "raccoon-nightcrew",
+   "tide-pool-crab",
+   "grey-seal-bull",
+   "gull-thief",
+   "rock-pool-starfish",
+   "pincushion-urchin",
+   "limpet-clinger",
+   "bloodworm"
+  ],
+  "ms": [
+   "venomlord-serpent",
+   "bog-behemoth",
+   "cottonmouth-matriarch",
+   "fen-mink",
+   "mudflat-godwit",
+   "signal-crayfish",
+   "matamata",
+   "mossmother-newt",
+   "snapper-hatchling",
+   "cypress-root-lurker",
+   "swamp-alligator",
+   "anhinga-spearbird",
+   "nutria-reedcutter",
+   "newt-doctor",
+   "caiman-hatchling",
+   "peat-cutter-vole"
+  ],
+  "mz": [
+   "rootworm-colony",
+   "dung-beetle",
+   "fungal-colossus",
+   "ant-warrior",
+   "bombardier-beetle",
+   "garden-snail",
+   "springtail-hopper",
+   "millipede-hauler",
+   "pill-bug",
+   "tunnel-wyrm",
+   "wolf-spider-mother",
+   "fungus-gnat-cloud",
+   "leopard-slug",
+   "puffball-bombardier",
+   "rot-swollen-carcass",
+   "leafcutter-gardener",
+   "truffle-piglet"
+  ],
+  "mn": [
+   "lantern-spark-fly",
+   "vampire-bat",
+   "whip-spider",
+   "glimmer-spider",
+   "grotto-lobster",
+   "cave-swiftlet",
+   "oilbird",
+   "glintsnatch-magpie",
+   "magpie-collector",
+   "cave-olm",
+   "quarry-mole",
+   "star-nosed-mole",
+   "stalactite-golem",
+   "blind-cave-fish",
+   "upside-down-bat"
+  ],
+  "mj": [
+   "humpback-elder",
+   "sperm-whale-elder",
+   "whale-shark",
+   "kraken-spawnling",
+   "colossal-squid",
+   "blue-ringed-octopus",
+   "hagfish-silencer",
+   "conger-eel",
+   "abyss-lantern-squid",
+   "barnacle-fortress",
+   "great-barracuda",
+   "riptide-eel",
+   "giant-clam",
+   "moon-jelly",
+   "clownfish-scout",
+   "coral-polyp-colony",
+   "nautilus-drifter"
+  ],
+  "mv": [
+   "ibex-rockcaller",
+   "alpine-swift",
+   "gale-swift",
+   "apollo-butterfly",
+   "red-billed-chough",
+   "great-horned-owl",
+   "sparrow-chick",
+   "alpine-salamander",
+   "wound-reaver",
+   "eyrie-warden",
+   "eagle-owl-quartermaster",
+   "chamois-leaper",
+   "chipmunk-hoarder",
+   "the-gannet-queen",
+   "hawk-arrowkeeper"
+  ],
+  "my": [
+   "ancient-sloth-titan",
+   "hanging-loafer",
+   "jaguar-stalker",
+   "kinkajou-lurker",
+   "poison-dart-croaker",
+   "poison-dart-frog",
+   "slow-loris",
+   "howler-monkey",
+   "toucan-courier",
+   "war-drum-mandrill",
+   "leaf-chameleon",
+   "lyrebird-mimic",
+   "amber-cicada",
+   "mosquito-cloud",
+   "fishing-cat",
+   "leafcutter-gardener"
+  ],
+  "mi": [
+   "yeti-chieftain",
+   "permafrost-mammoth",
+   "beluga",
+   "greenland-shark",
+   "ravenous-wolverine",
+   "harp-seal-pup",
+   "frost-thistle-lynx",
+   "snow-owl-sentinel",
+   "polar-bear",
+   "walrus-icebreaker",
+   "frostbitten-wolverine",
+   "ringed-seal",
+   "lemming-swarm",
+   "talus-pika",
+   "arctic-tern"
+  ],
+  "mpd": [
+   "quicksand-queen",
+   "skull-vulture",
+   "dromedary",
+   "dune-packrat",
+   "trapdoor-spider",
+   "pale-oryx",
+   "moon-jerboa",
+   "sand-flinger-antlion",
+   "sandstorm-roc",
+   "glass-golem",
+   "komodo-warlord",
+   "antlion-pit",
+   "caustic-scorpion",
+   "sand-widow",
+   "roadrunner-courier",
+   "fennec-fox",
+   "dust-hyena"
+  ],
+  "m9": [
+   "malachite-golem",
+   "ember-revenant",
+   "ore-smelter-mole",
+   "cinder-gecko",
+   "grindstone-boar",
+   "pumice-beetle",
+   "ember-tetra",
+   "hellbender",
+   "chained-binturong",
+   "anvil-thrush",
+   "fire-salamander",
+   "sulfur-vent-crab",
+   "smoke-raccoon",
+   "cinder-hornet"
+  ],
+  "me": [
+   "the-contradiction",
+   "cave-warlord",
+   "rimeheart-colossus",
+   "ash-moth",
+   "obsidian-lich",
+   "pall-wraith",
+   "cinder-skeleton",
+   "ashbone-ghoul",
+   "ossuary-lammergeier",
+   "magma-wraith",
+   "obsidian-scorpion"
+  ],
+  "mx": [
+   "fire-drake-hatchling",
+   "salamander-pyromancer",
+   "pyroclast-wyrm",
+   "gorge-wyrm",
+   "granite-ox-golem",
+   "magma-titan",
+   "ember-jackal",
+   "ember-centipede",
+   "lava-waders",
+   "thunder-lizard",
+   "magma-salamander",
+   "ember-wisp",
+   "ash-cloud-condor",
+   "cinder-stoker",
+   "cinder-hornet"
+  ]
+ },
+ "cactus": {
+  "id": "barrel-cactus",
+  "map": "md"
+ },
+ "cost": 91.5,
+ "main": {
+  "m1": {
+   "mapNo": 0,
+   "limits": {
+    "own": 10,
+    "carried": 5
+   },
+   "picks": 17,
+   "claudeAdds": [
+    "hazel-coppice",
+    "nightjar-drifter"
+   ],
+   "neu": 10,
+   "car": 5,
+   "drops": [
+    {
+     "id": "hazel-coppice",
+     "name": "Hazel Coppice",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "nightjar-drifter",
+     "name": "Nightjar Drifter",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "md"
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "who": "owner",
+     "side": "Carried",
+     "fit": 0,
+     "why": "over Carried 5; UI38 fit 0; still on  then",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "ant-scout",
+    "duck-paddler",
+    "crossed-eyes",
+    "honey-bee",
+    "earthworm",
+    "house-cat",
+    "silver-minnow",
+    "cottontail",
+    "rabbit-kit",
+    "soldier-ant",
+    "bee-forager",
+    "bee-sentry",
+    "farm-dog",
+    "chipmunk-forager",
+    "worker-ant",
+    "pond-trout"
+   ],
+   "before": [
+    "ant-scout",
+    "duckling",
+    "duck-paddler",
+    "crossed-eyes",
+    "honey-bee",
+    "earthworm",
+    "house-cat",
+    "silver-minnow",
+    "cottontail",
+    "rabbit-kit",
+    "soldier-ant",
+    "bee-forager",
+    "bee-sentry",
+    "farm-dog",
+    "chipmunk-forager",
+    "worker-ant",
+    "hazel-coppice",
+    "nightjar-drifter"
+   ]
+  },
+  "mf": {
+   "mapNo": 1,
+   "limits": {
+    "own": 10,
+    "carried": 5
+   },
+   "picks": 17,
+   "claudeAdds": [
+    "monarch-wingblade",
+    "pack-rat-looter",
+    "hazel-coppice"
+   ],
+   "neu": 10,
+   "car": 5,
+   "drops": [
+    {
+     "id": "monarch-wingblade",
+     "name": "Monarch Wingblade",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "mr"
+    },
+    {
+     "id": "pack-rat-looter",
+     "name": "Pack Rat Looter",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "hazel-coppice",
+     "name": "Hazel Coppice",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 8,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "meadow-rabbit",
+     "name": "Meadow Rabbit",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 10; UI38 fit 0; still on mf SPECIAL then",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "honey-bee",
+     "name": "Honey Bee",
+     "who": "owner",
+     "side": "Carried",
+     "fit": 0,
+     "why": "over Carried 5; UI38 fit 0; still on m1 then",
+     "nowOn": "m1"
+    }
+   ],
+   "list": [
+    "bramble-sprout",
+    "terrier-pup",
+    "cricket-drummer",
+    "chipmunk-skirmisher",
+    "chipmunk-cavalry",
+    "hedgerow-shrew",
+    "moonlit-hare",
+    "dormouse",
+    "puddle-skimmer",
+    "soldier-ant",
+    "ant-scout",
+    "bee-knight",
+    "house-cat",
+    "duck-paddler",
+    "robin-redbreast"
+   ],
+   "before": [
+    "bramble-sprout",
+    "terrier-pup",
+    "cricket-drummer",
+    "chipmunk-skirmisher",
+    "chipmunk-cavalry",
+    "hedgerow-shrew",
+    "meadow-rabbit",
+    "moonlit-hare",
+    "dormouse",
+    "puddle-skimmer",
+    "soldier-ant",
+    "ant-scout",
+    "bee-knight",
+    "honey-bee",
+    "house-cat",
+    "duck-paddler",
+    "robin-redbreast",
+    "monarch-wingblade",
+    "pack-rat-looter",
+    "hazel-coppice"
+   ]
+  },
+  "mb": {
+   "mapNo": 2,
+   "limits": {
+    "own": 10,
+    "carried": 5
+   },
+   "picks": 16,
+   "claudeAdds": [
+    "great-skua",
+    "bloodworm"
+   ],
+   "neu": 10,
+   "car": 5,
+   "drops": [
+    {
+     "id": "bloodworm",
+     "name": "Bloodworm",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 8,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "great-skua",
+     "name": "Great Skua",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 8,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "over NEW! 10; UI38 fit 4; still on mc then",
+     "nowOn": "mc"
+    }
+   ],
+   "list": [
+    "beaver-lumberjack",
+    "driftwood-crab",
+    "gull-thief",
+    "open-ocean-hermit-crab",
+    "oystercatcher",
+    "pincushion-urchin",
+    "dolphin-knight",
+    "rock-pool-starfish",
+    "beachcomber-sanderling",
+    "limpet-clinger",
+    "puddle-skimmer",
+    "duck-paddler",
+    "hedgerow-shrew",
+    "moonlit-hare",
+    "robin-redbreast"
+   ],
+   "before": [
+    "beaver-lumberjack",
+    "driftwood-crab",
+    "gull-thief",
+    "open-ocean-hermit-crab",
+    "oystercatcher",
+    "pincushion-urchin",
+    "dolphin-knight",
+    "conch-herald",
+    "rock-pool-starfish",
+    "beachcomber-sanderling",
+    "limpet-clinger",
+    "puddle-skimmer",
+    "duck-paddler",
+    "hedgerow-shrew",
+    "moonlit-hare",
+    "robin-redbreast",
+    "great-skua",
+    "bloodworm"
+   ]
+  },
+  "mc": {
+   "mapNo": 3,
+   "limits": {
+    "own": 10,
+    "carried": 5
+   },
+   "picks": 16,
+   "claudeAdds": [
+    "razorbill",
+    "great-skua",
+    "hawk-arrowkeeper"
+   ],
+   "neu": 10,
+   "car": 4,
+   "drops": [
+    {
+     "id": "great-skua",
+     "name": "Great Skua",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "razorbill",
+     "name": "Razorbill",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "hawk-arrowkeeper",
+     "name": "Hawk Arrowkeeper",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 7,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 10; UI38 fit 0; still on m2, m7 then",
+     "nowOn": "m2,m7"
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 10; UI38 fit 0; still on mk then",
+     "nowOn": "mk"
+    }
+   ],
+   "list": [
+    "cormorant",
+    "kittiwake-flock",
+    "puffin-diver",
+    "peak-condor",
+    "gannet-nestweaver",
+    "feral-tomcat",
+    "peregrine-stooper",
+    "eagle-sharpshooter",
+    "chipmunk-cavalry",
+    "limpet-clinger",
+    "conch-herald",
+    "beaver-lumberjack",
+    "gull-thief",
+    "pika-hoarder"
+   ],
+   "before": [
+    "conch-crawler",
+    "cormorant",
+    "fiddler-crab-swarm",
+    "kittiwake-flock",
+    "puffin-diver",
+    "peak-condor",
+    "gannet-nestweaver",
+    "feral-tomcat",
+    "peregrine-stooper",
+    "eagle-sharpshooter",
+    "chipmunk-cavalry",
+    "limpet-clinger",
+    "conch-herald",
+    "beaver-lumberjack",
+    "gull-thief",
+    "pika-hoarder",
+    "razorbill",
+    "great-skua",
+    "hawk-arrowkeeper"
+   ]
+  },
+  "m2": {
+   "mapNo": 4,
+   "limits": {
+    "own": 10,
+    "carried": 5
+   },
+   "picks": 15,
+   "claudeAdds": [
+    "beaver-feller"
+   ],
+   "neu": 10,
+   "car": 4,
+   "drops": [
+    {
+     "id": "beaver-feller",
+     "name": "Beaver Feller",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "mr"
+    },
+    {
+     "id": "pond-algae",
+     "name": "Pond Algae",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "over NEW! 10; UI38 fit 4; still on m8 then",
+     "nowOn": "m8,mp"
+    }
+   ],
+   "list": [
+    "slow-worm",
+    "water-shrew",
+    "snapstick-turtle",
+    "shoal-shark",
+    "platypus-spur",
+    "muskrat-lodgekeeper",
+    "grass-snake",
+    "river-mink",
+    "planarian-splitter",
+    "dolphin-knight",
+    "beaver-lumberjack",
+    "kittiwake-flock",
+    "duck-paddler",
+    "conch-crawler"
+   ],
+   "before": [
+    "pond-algae",
+    "slow-worm",
+    "water-shrew",
+    "snapstick-turtle",
+    "shoal-shark",
+    "platypus-spur",
+    "muskrat-lodgekeeper",
+    "grass-snake",
+    "river-mink",
+    "planarian-splitter",
+    "dolphin-knight",
+    "beaver-lumberjack",
+    "kittiwake-flock",
+    "duck-paddler",
+    "conch-crawler",
+    "beaver-feller"
+   ]
+  },
+  "mw": {
+   "mapNo": 5,
+   "limits": {
+    "own": 10,
+    "carried": 5
+   },
+   "picks": 15,
+   "claudeAdds": [
+    "peat-cutter-vole"
+   ],
+   "neu": 10,
+   "car": 5,
+   "drops": [
+    {
+     "id": "peat-cutter-vole",
+     "name": "Peat-cutter Vole",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "ms"
+    }
+   ],
+   "list": [
+    "shoal-shark",
+    "newt-doctor",
+    "mosquito-cloud",
+    "platypus-spur",
+    "alley-cat",
+    "marsh-mallow-hare",
+    "mudpuppy",
+    "muskrat-reedgatherer",
+    "swamp-alligator",
+    "raft-spider",
+    "muskrat-lodgekeeper",
+    "snapstick-turtle",
+    "planarian-splitter",
+    "fire-ant-raft",
+    "constrictor-coil"
+   ],
+   "before": [
+    "shoal-shark",
+    "newt-doctor",
+    "mosquito-cloud",
+    "platypus-spur",
+    "alley-cat",
+    "marsh-mallow-hare",
+    "mudpuppy",
+    "muskrat-reedgatherer",
+    "swamp-alligator",
+    "raft-spider",
+    "muskrat-lodgekeeper",
+    "snapstick-turtle",
+    "planarian-splitter",
+    "fire-ant-raft",
+    "constrictor-coil",
+    "peat-cutter-vole"
+   ]
+  },
+  "m8": {
+   "mapNo": 6,
+   "limits": {
+    "own": 10,
+    "carried": 5
+   },
+   "picks": 15,
+   "claudeAdds": [
+    "sunbittern-strider",
+    "bone-diviner",
+    "owl-sentinel"
+   ],
+   "neu": 10,
+   "car": 4,
+   "drops": [
+    {
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "md"
+    },
+    {
+     "id": "owl-sentinel",
+     "name": "Owl Sentinel",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "mt"
+    },
+    {
+     "id": "bone-diviner",
+     "name": "Bone Diviner",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 10",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "lamprey",
+     "name": "Lamprey",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 10; UI38 fit 0; still on mu then",
+     "nowOn": "mu"
+    }
+   ],
+   "list": [
+    "cypress-root-lurker",
+    "alligator-gar",
+    "camouflage-frog",
+    "adder-ambusher",
+    "anhinga-spearbird",
+    "booming-bittern",
+    "nutria-reedcutter",
+    "newt-doctor",
+    "pond-algae",
+    "water-shrew",
+    "grass-viper",
+    "mosquito-cloud",
+    "constrictor-coil",
+    "crocodile-ambusher"
+   ],
+   "before": [
+    "cypress-root-lurker",
+    "lamprey",
+    "alligator-gar",
+    "camouflage-frog",
+    "adder-ambusher",
+    "anhinga-spearbird",
+    "booming-bittern",
+    "nutria-reedcutter",
+    "newt-doctor",
+    "pond-algae",
+    "water-shrew",
+    "grass-viper",
+    "mosquito-cloud",
+    "constrictor-coil",
+    "sunbittern-strider",
+    "bone-diviner",
+    "owl-sentinel"
+   ]
+  },
+  "mu": {
+   "mapNo": 7,
+   "limits": {
+    "own": 9,
+    "carried": 5
+   },
+   "picks": 14,
+   "claudeAdds": [
+    "truffle-piglet",
+    "leafcutter-gardener",
+    "nightshade-moth",
+    "planarian-splitter"
+   ],
+   "neu": 9,
+   "car": 5,
+   "drops": [
+    {
+     "id": "nightshade-moth",
+     "name": "Nightshade Moth",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 7,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "corpse-flower-beetle",
+    "wolf-spider-mother",
+    "fungus-gnat-cloud",
+    "rot-swollen-carcass",
+    "puffball-bombardier",
+    "cypress-root-lurker",
+    "earthworm",
+    "adder-ambusher",
+    "lamprey",
+    "camouflage-frog",
+    "compost-grub",
+    "leopard-slug",
+    "amber-cicada",
+    "hawthorn-shieldbug",
+    "planarian-splitter"
+   ],
+   "before": [
+    "hawthorn-shieldbug",
+    "corpse-flower-beetle",
+    "wolf-spider-mother",
+    "fungus-gnat-cloud",
+    "rot-swollen-carcass",
+    "puffball-bombardier",
+    "cypress-root-lurker",
+    "earthworm",
+    "crocodile-ambusher",
+    "adder-ambusher",
+    "lamprey",
+    "camouflage-frog",
+    "compost-grub",
+    "leopard-slug",
+    "amber-cicada",
+    "truffle-piglet",
+    "leafcutter-gardener",
+    "nightshade-moth",
+    "planarian-splitter"
+   ]
+  },
+  "m4": {
+   "mapNo": 8,
+   "limits": {
+    "own": 9,
+    "carried": 5
+   },
+   "picks": 14,
+   "claudeAdds": [
+    "upside-down-bat",
+    "blind-cave-fish",
+    "pack-rat-looter",
+    "bone-diviner"
+   ],
+   "neu": 9,
+   "car": 5,
+   "drops": [
+    {
+     "id": "pack-rat-looter",
+     "name": "Pack Rat Looter",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "bone-diviner",
+     "name": "Bone Diviner",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "mt,mn"
+    },
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "mn"
+    }
+   ],
+   "list": [
+    "quarry-mole",
+    "cave-olm",
+    "sulfur-cinder-moth",
+    "star-nosed-mole",
+    "stalactite-golem",
+    "echo-screecher",
+    "giant-cave-huntsman",
+    "gallery-orb-weaver",
+    "barrow-leech-bat",
+    "corpse-flower-beetle",
+    "rot-swollen-carcass",
+    "wolf-spider-mother",
+    "hawthorn-shieldbug",
+    "driftwood-crab"
+   ],
+   "before": [
+    "quarry-mole",
+    "cave-olm",
+    "sulfur-cinder-moth",
+    "star-nosed-mole",
+    "stalactite-golem",
+    "echo-screecher",
+    "giant-cave-huntsman",
+    "gallery-orb-weaver",
+    "barrow-leech-bat",
+    "corpse-flower-beetle",
+    "rot-swollen-carcass",
+    "wolf-spider-mother",
+    "hawthorn-shieldbug",
+    "driftwood-crab",
+    "upside-down-bat",
+    "blind-cave-fish",
+    "pack-rat-looter",
+    "bone-diviner"
+   ]
+  },
+  "mk": {
+   "mapNo": 9,
+   "limits": {
+    "own": 9,
+    "carried": 6
+   },
+   "picks": 15,
+   "claudeAdds": [
+    "nutria-reedcutter",
+    "sunbittern-strider",
+    "salvager-hermit-crab"
+   ],
+   "neu": 9,
+   "car": 6,
+   "drops": [
+    {
+     "id": "salvager-hermit-crab",
+     "name": "Salvager Hermit Crab",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "mg"
+    },
+    {
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "md"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "over NEW! 9; UI38 fit 4; still on m7, m22 then",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "banded-sea-krait",
+    "mangrove-mudskipper",
+    "mangrove-monitor",
+    "horseshoe-crab",
+    "proboscis-monkey",
+    "ironclaw-fiddler",
+    "fishing-cat",
+    "voltaic-eel",
+    "alligator-gar",
+    "booming-bittern",
+    "fiddler-crab-swarm",
+    "driftwood-crab",
+    "alley-cat",
+    "giant-cave-huntsman",
+    "nutria-reedcutter"
+   ],
+   "before": [
+    "banded-sea-krait",
+    "mangrove-mudskipper",
+    "mangrove-monitor",
+    "horseshoe-crab",
+    "proboscis-monkey",
+    "ironclaw-fiddler",
+    "fishing-cat",
+    "tide-spirit",
+    "voltaic-eel",
+    "alligator-gar",
+    "booming-bittern",
+    "fiddler-crab-swarm",
+    "driftwood-crab",
+    "alley-cat",
+    "giant-cave-huntsman",
+    "nutria-reedcutter",
+    "sunbittern-strider",
+    "salvager-hermit-crab"
+   ]
+  },
+  "m7": {
+   "mapNo": 10,
+   "limits": {
+    "own": 9,
+    "carried": 6
+   },
+   "picks": 15,
+   "claudeAdds": [
+    "nautilus-drifter",
+    "grey-seal-bull",
+    "parrotfish",
+    "coral-reef-shark",
+    "sea-bass"
+   ],
+   "neu": 9,
+   "car": 5,
+   "drops": [
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "sea-bass",
+     "name": "Sea Bass",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "parrotfish",
+     "name": "Parrotfish",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "coral-reef-shark",
+     "name": "Coral Reef Shark",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 7,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "Claude's add: no room under NEW! 9 (it was needed: the list's only Guardian)",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "over NEW! 9; UI38 fit 4; still on m22 then",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "coral-current-eel",
+    "riptide-eel",
+    "krill-swarm",
+    "voltaic-eel",
+    "dolphin-knight",
+    "ironclaw-fiddler",
+    "moon-jelly",
+    "sea-turtle-elder",
+    "reef-shark",
+    "clownfish-scout",
+    "crown-of-thorns-star",
+    "giant-clam",
+    "pincushion-urchin",
+    "conch-crawler"
+   ],
+   "before": [
+    "coral-current-eel",
+    "riptide-eel",
+    "krill-swarm",
+    "voltaic-eel",
+    "dolphin-knight",
+    "ironclaw-fiddler",
+    "moon-jelly",
+    "sea-turtle-elder",
+    "reef-shark",
+    "clownfish-scout",
+    "crown-of-thorns-star",
+    "giant-clam",
+    "pincushion-urchin",
+    "conch-crawler",
+    "tide-spirit",
+    "nautilus-drifter",
+    "sea-bass",
+    "grey-seal-bull",
+    "parrotfish",
+    "coral-reef-shark"
+   ]
+  },
+  "m10": {
+   "mapNo": 11,
+   "limits": {
+    "own": 9,
+    "carried": 7
+   },
+   "picks": 16,
+   "claudeAdds": [
+    "hawk-arrowkeeper",
+    "alpine-marmot"
+   ],
+   "neu": 9,
+   "car": 7,
+   "drops": [
+    {
+     "id": "hawk-arrowkeeper",
+     "name": "Hawk Arrowkeeper",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "Claude's add: no room under NEW! 9",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "who": "claude",
+     "side": "NEW!",
+     "fit": 7,
+     "why": "Claude's add: no room under NEW! 9 (it was needed: the list's only Guardian)",
+     "nowOn": "mh,m21"
+    }
+   ],
+   "list": [
+    "stonedrop-vulture",
+    "anvil-thrush",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "golden-eagle-diver",
+    "chamois-leaper",
+    "mountain-hare",
+    "chipmunk-hoarder",
+    "gannet-nestweaver",
+    "the-gannet-queen",
+    "peregrine-stooper",
+    "pika-hoarder",
+    "peak-condor",
+    "beaver-lumberjack",
+    "eagle-sharpshooter",
+    "kittiwake-flock"
+   ],
+   "before": [
+    "stonedrop-vulture",
+    "anvil-thrush",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "golden-eagle-diver",
+    "chamois-leaper",
+    "mountain-hare",
+    "chipmunk-hoarder",
+    "gannet-nestweaver",
+    "the-gannet-queen",
+    "peregrine-stooper",
+    "pika-hoarder",
+    "peak-condor",
+    "beaver-lumberjack",
+    "eagle-sharpshooter",
+    "kittiwake-flock",
+    "hawk-arrowkeeper",
+    "alpine-marmot"
+   ]
+  },
+  "mh": {
+   "mapNo": 12,
+   "limits": {
+    "own": 9,
+    "carried": 8
+   },
+   "picks": 17,
+   "claudeAdds": [],
+   "neu": 9,
+   "car": 7,
+   "drops": [
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 7,
+     "why": "over NEW! 9; UI38 fit 7; still on md, m3 then",
+     "nowOn": "m3,mo"
+    }
+   ],
+   "list": [
+    "barkplate-beetle",
+    "quill-thorn-boar",
+    "briarback-hedgehog",
+    "cunning-vixen",
+    "mouse-sapper",
+    "fawn-scout",
+    "hollow-belly-rat",
+    "bison-bulldozer",
+    "chipmunk-hoarder",
+    "chamois-leaper",
+    "mountain-hare",
+    "eyrie-warden",
+    "anvil-thrush",
+    "alpine-marmot",
+    "quarry-mole",
+    "barrow-leech-bat"
+   ],
+   "before": [
+    "quillguard",
+    "barkplate-beetle",
+    "quill-thorn-boar",
+    "briarback-hedgehog",
+    "bramble-hoglet",
+    "cunning-vixen",
+    "lyrebird-mimic",
+    "thorn-shrike",
+    "mouse-sapper",
+    "hedge-weasel",
+    "carrion-crow",
+    "hedgerow-shrew",
+    "dormouse",
+    "hawthorn-shieldbug",
+    "terrier-pup",
+    "pack-rat-looter"
+   ]
+  },
+  "mr": {
+   "mapNo": 13,
+   "limits": {
+    "own": 9,
+    "carried": 8
+   },
+   "picks": 18,
+   "claudeAdds": [],
+   "neu": 9,
+   "car": 6,
+   "drops": [
+    {
+     "id": "tasmanian-devil",
+     "name": "Tasmanian Devil",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 9; UI38 fit 0; still on m5, ml then",
+     "nowOn": "m5,ml"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 7,
+     "why": "over NEW! 9; UI38 fit 7; still on ml then",
+     "nowOn": "ml,mo"
+    }
+   ],
+   "list": [
+    "grizzly-vanguard",
+    "owl-nightwatch",
+    "badger-lumberjack",
+    "redwood-woodpecker",
+    "bear-cub",
+    "pine-marten",
+    "balloon-archer",
+    "sergeant-bramblefox",
+    "monarch-wingblade",
+    "feral-tomcat",
+    "pika-hoarder",
+    "beaver-feller",
+    "marsh-mallow-hare",
+    "grass-snake",
+    "slow-worm",
+    "anhinga-spearbird"
+   ],
+   "before": [
+    "grizzly-vanguard",
+    "fawn-scout",
+    "berserker-boar",
+    "badger-lumberjack",
+    "redwood-woodpecker",
+    "pine-marten",
+    "sergeant-bramblefox",
+    "owl-nightwatch",
+    "heartwood-treant",
+    "quill-thorn-boar",
+    "corpse-flower-beetle",
+    "cunning-vixen",
+    "bramble-hoglet",
+    "chipmunk-skirmisher",
+    "lyrebird-mimic",
+    "bear-cub",
+    "swift-fox",
+    "tasmanian-devil",
+    "bramblewood-lynx"
+   ]
+  },
+  "m5": {
+   "mapNo": 14,
+   "limits": {
+    "own": 9,
+    "carried": 9
+   },
+   "picks": 18,
+   "claudeAdds": [],
+   "neu": 9,
+   "car": 8,
+   "drops": [
+    {
+     "id": "acacia-giraffe",
+     "name": "Acacia Giraffe",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 7,
+     "why": "over NEW! 9; UI38 fit 7; still on m23, m24 then",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "meerkat-sentry",
+    "hoopoe-herald",
+    "dust-hyena",
+    "savanna-cheetah",
+    "marula-elephant",
+    "plains-zebra",
+    "bramblewood-macaque",
+    "stoat-cutthroat",
+    "grizzly-vanguard",
+    "tasmanian-devil",
+    "badger-lumberjack",
+    "balloon-archer",
+    "cunning-vixen",
+    "sergeant-bramblefox",
+    "hollow-belly-rat",
+    "river-mink",
+    "bramble-sprout"
+   ],
+   "before": [
+    "springbok-pronker",
+    "savanna-cheetah",
+    "grave-grin-hyena",
+    "dust-hyena",
+    "acacia-giraffe",
+    "marula-elephant",
+    "meerkat-sentry",
+    "termite-forager",
+    "hoopoe-herald",
+    "golden-eagle-diver",
+    "stonedrop-vulture",
+    "adder-ambusher",
+    "crocodile-ambusher",
+    "mangrove-monitor"
+   ]
+  },
+  "ml": {
+   "mapNo": 15,
+   "limits": {
+    "own": 9,
+    "carried": 10
+   },
+   "picks": 19,
+   "claudeAdds": [],
+   "neu": 9,
+   "car": 9,
+   "drops": [
+    {
+     "id": "pronghorn-racer",
+     "name": "Pronghorn Racer",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "over NEW! 9; UI38 fit 4; still on m23 then",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "warhorse-charger",
+    "border-collie",
+    "mallard-marauder",
+    "sworn-shieldbearer",
+    "elderhorn-monarch",
+    "siege-rhino",
+    "village-miller",
+    "cataphract-destrier",
+    "hoopoe-herald",
+    "dust-hyena",
+    "savanna-cheetah",
+    "stoat-cutthroat",
+    "plains-zebra",
+    "tasmanian-devil",
+    "bramblewood-lynx",
+    "fawn-scout",
+    "eagle-owl-quartermaster",
+    "mosquito-cloud"
+   ],
+   "before": [
+    "war-hound",
+    "border-collie",
+    "shepherds-bark",
+    "pronghorn-racer",
+    "bison-bulldozer",
+    "goose-sentry",
+    "land-tiller",
+    "mallard-halberdier",
+    "truffle-piglet",
+    "cricket-drummer",
+    "fire-ant-raft",
+    "hedge-weasel",
+    "mouse-sapper",
+    "thorn-shrike",
+    "cataphract-destrier"
+   ]
+  },
+  "mt": {
+   "mapNo": 16,
+   "limits": {
+    "own": 8,
+    "carried": 10
+   },
+   "picks": 18,
+   "claudeAdds": [],
+   "neu": 8,
+   "car": 8,
+   "drops": [
+    {
+     "id": "pinecone-sapper",
+     "name": "Pinecone Sapper",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 8,
+     "why": "over NEW! 8; UI38 fit 8; still on m3 then",
+     "nowOn": "m3"
+    },
+    {
+     "id": "berserker-boar",
+     "name": "Berserker Boar",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 2,
+     "why": "over NEW! 8; UI38 fit 2; still on m11 then",
+     "nowOn": "m11"
+    }
+   ],
+   "list": [
+    "boreal-elk",
+    "woodland-caribou",
+    "cone-cutter-squirrel",
+    "snowshoe-hare",
+    "taiga-lynx",
+    "snow-owl-sentinel",
+    "mountain-hare",
+    "bear-cub",
+    "sworn-shieldbearer",
+    "siege-rhino",
+    "upside-down-bat",
+    "owl-sentinel",
+    "raft-spider",
+    "puffin-diver",
+    "farm-dog",
+    "golden-eagle-diver"
+   ],
+   "before": [
+    "timber-wolf-pack",
+    "dhole-matriarch",
+    "taiga-lynx",
+    "snowshoe-hare",
+    "boreal-elk",
+    "woodland-caribou",
+    "cone-cutter-squirrel",
+    "pinecone-crossbill",
+    "bramblewood-lynx",
+    "grizzly-vanguard",
+    "redwood-woodpecker",
+    "owl-nightwatch",
+    "berserker-boar",
+    "mountain-hare"
+   ]
+  },
+  "m6": {
+   "mapNo": 17,
+   "limits": {
+    "own": 8,
+    "carried": 11
+   },
+   "picks": 19,
+   "claudeAdds": [],
+   "neu": 8,
+   "car": 10,
+   "drops": [
+    {
+     "id": "nightshade-moth",
+     "name": "Nightshade Moth",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 8; UI38 fit 0; on no other list",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "snow-ermine",
+    "ringed-seal",
+    "harbor-seal",
+    "glacier-yak",
+    "arctic-tern",
+    "walrus-icebreaker",
+    "ice-crevasse-wolf",
+    "polar-bear",
+    "woodland-caribou",
+    "taiga-lynx",
+    "cone-cutter-squirrel",
+    "boreal-elk",
+    "snowshoe-hare",
+    "border-collie",
+    "warhorse-charger",
+    "elderhorn-monarch",
+    "cataphract-destrier",
+    "briarback-hedgehog"
+   ],
+   "before": [
+    "polar-bear",
+    "walrus-icebreaker",
+    "arctic-fox-raider",
+    "tundra-musk-ox",
+    "glacier-yak",
+    "frostbitten-wolverine",
+    "ice-crevasse-wolf",
+    "ringed-seal",
+    "arctic-tern",
+    "lemming-swarm",
+    "timber-wolf-pack",
+    "taiga-lynx",
+    "woodland-caribou",
+    "krill-swarm",
+    "cone-cutter-squirrel",
+    "musk-ox-calf",
+    "shepherds-bark",
+    "snow-ermine",
+    "harbor-seal",
+    "snow-bunting-archer"
+   ]
+  },
+  "md": {
+   "mapNo": 18,
+   "limits": {
+    "own": 8,
+    "carried": 12
+   },
+   "picks": 22,
+   "claudeAdds": [],
+   "neu": 8,
+   "car": 10,
+   "drops": [
+    {
+     "id": "frillneck-duelist",
+     "name": "Frillneck Duelist",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 8; UI38 fit 0; still on m11 then",
+     "nowOn": "m11"
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 8; UI38 fit 0; still on m3 then",
+     "nowOn": "m3,mo"
+    },
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 8; UI38 fit 0; still on m11, md SPECIAL then",
+     "nowOn": "mpd"
+    },
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 7,
+     "why": "over NEW! 8; UI38 fit 7; still on m3 then",
+     "nowOn": "m3,mpd"
+    }
+   ],
+   "list": [
+    "horned-lizard",
+    "antlion-pit",
+    "roadrunner-courier",
+    "dune-jackal",
+    "armadillo-guard",
+    "ice-crevasse-wolf",
+    "mouse-sapper",
+    "bison-bulldozer",
+    "balloon-archer",
+    "barkplate-beetle",
+    "badger-lumberjack",
+    "gallery-orb-weaver",
+    "nightjar-drifter",
+    "chipmunk-forager",
+    "worker-ant",
+    "ant-scout",
+    "sunbittern-strider",
+    "barrel-cactus"
+   ],
+   "before": [
+    "antlion-pit",
+    "glasswing-moth",
+    "caustic-scorpion",
+    "dune-jackal",
+    "dune-jackal-scout",
+    "fennec-fox",
+    "sandfish",
+    "horned-lizard",
+    "roadrunner-courier",
+    "armadillo-guard",
+    "sand-widow",
+    "dust-hyena",
+    "termite-forager",
+    "savanna-cheetah",
+    "stonedrop-vulture",
+    "meerkat-sentry",
+    "marula-elephant"
+   ]
+  },
+  "m3": {
+   "mapNo": 19,
+   "limits": {
+    "own": 8,
+    "carried": 12
+   },
+   "picks": 20,
+   "claudeAdds": [],
+   "neu": 8,
+   "car": 9,
+   "drops": [
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 10,
+     "why": "over NEW! 8; UI38 fit 10; still on m21, m22 then",
+     "nowOn": "m9"
+    },
+    {
+     "id": "caldera-snow-leopard",
+     "name": "Caldera Snow Leopard",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "over NEW! 8; UI38 fit 4; still on m22 then",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 8; UI38 fit 0; still on m11 then",
+     "nowOn": "m11"
+    }
+   ],
+   "list": [
+    "honey-badger-fury",
+    "quillback-elder",
+    "smoke-raccoon",
+    "fire-salamander",
+    "obsidian-scorpion",
+    "sulfur-cinder-moth",
+    "stalactite-golem",
+    "glacier-yak",
+    "walrus-icebreaker",
+    "quillguard",
+    "caustic-scorpion",
+    "horned-lizard",
+    "armadillo-guard",
+    "polar-bear",
+    "dune-jackal",
+    "pinecone-sapper",
+    "elderhorn-monarch"
+   ],
+   "before": [
+    "fire-salamander",
+    "cinder-stoker",
+    "cinder-hornet",
+    "sulfur-vent-crab",
+    "ashwing-ptarmigan",
+    "ember-wisp",
+    "obsidian-scorpion",
+    "smoke-raccoon",
+    "honey-badger-fury",
+    "quillback-elder",
+    "basalt-boar",
+    "quillguard",
+    "eagle-owl-quartermaster",
+    "sulfur-cinder-moth",
+    "chipmunk-hoarder",
+    "talus-pika",
+    "stalactite-golem"
+   ]
+  },
+  "m11": {
+   "mapNo": 20,
+   "limits": {
+    "own": 8,
+    "carried": 13
+   },
+   "picks": 22,
+   "claudeAdds": [],
+   "neu": 8,
+   "car": 9,
+   "drops": [
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 8; UI38 fit 0; still on md SPECIAL then",
+     "nowOn": "mpd"
+    },
+    {
+     "id": "ash-cloud-condor",
+     "name": "Ash Cloud Condor",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 6,
+     "why": "over NEW! 8; UI38 fit 6; still on m22 then",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "over NEW! 8; UI38 fit 4; still on m21, m22 then",
+     "nowOn": "m9"
+    },
+    {
+     "id": "ossuary-lammergeier",
+     "name": "Ossuary Lammergeier",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "over NEW! 8; UI38 fit 4; still on m21 then",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 4,
+     "why": "over NEW! 8; UI38 fit 4; still on m21, m11 SPECIAL then",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "fumarole-ibex",
+    "magma-salamander",
+    "pack-mule",
+    "ur-elk",
+    "sulfur-vent-crab",
+    "obsidian-scorpion",
+    "basalt-boar",
+    "fire-salamander",
+    "honey-badger-fury",
+    "quillback-elder",
+    "stalactite-golem",
+    "cataphract-destrier",
+    "berserker-boar",
+    "eagle-sharpshooter",
+    "crocodile-ambusher",
+    "echo-screecher",
+    "frillneck-duelist"
+   ],
+   "before": [
+    "caldera-snow-leopard",
+    "ossuary-lammergeier",
+    "ash-cloud-condor",
+    "magma-wraith",
+    "cinder-skeleton",
+    "ashbone-ghoul",
+    "magma-salamander",
+    "fumarole-ibex",
+    "phoenix-fledgling",
+    "deep-cave-troll",
+    "chamois-leaper",
+    "constrictor-coil",
+    "cinder-stoker",
+    "talus-pika",
+    "chipmunk-hoarder",
+    "cinder-hornet",
+    "obsidian-scorpion"
+   ]
+  },
+  "m21": {
+   "mapNo": 21,
+   "limits": {
+    "own": 7,
+    "carried": 14
+   },
+   "picks": 21,
+   "claudeAdds": [],
+   "neu": 7,
+   "car": 10,
+   "drops": [
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 7; UI38 fit 0; still on m22 then",
+     "nowOn": "m9"
+    },
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 7; UI38 fit 0; still on m11 SPECIAL then",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 7; UI38 fit 0; still on m22 then",
+     "nowOn": "m9"
+    },
+    {
+     "id": "ossuary-lammergeier",
+     "name": "Ossuary Lammergeier",
+     "who": "owner",
+     "side": "NEW!",
+     "fit": 0,
+     "why": "over NEW! 7; UI38 fit 0; on no other list",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "snow-leopard",
+    "mountain-goat-climber",
+    "apollo-butterfly",
+    "red-billed-chough",
+    "alpine-swift",
+    "alpine-salamander",
+    "magma-titan",
+    "glacier-yak",
+    "pack-mule",
+    "peak-condor",
+    "pika-hoarder",
+    "eyrie-warden",
+    "alpine-marmot",
+    "fumarole-ibex",
+    "honey-badger-fury",
+    "ur-elk",
+    "smoke-raccoon"
+   ],
+   "before": [
+    "pika-hoarder",
+    "snow-owl-sentinel",
+    "snow-leopard",
+    "glacier-yak",
+    "eagle-sharpshooter",
+    "mountain-goat-climber",
+    "eyrie-warden",
+    "talus-pika",
+    "alpine-marmot",
+    "golden-eagle-diver",
+    "alpine-swift",
+    "peak-condor",
+    "apollo-butterfly",
+    "alpine-salamander",
+    "red-billed-chough",
+    "ember-centipede",
+    "pumice-beetle",
+    "pack-mule",
+    "ashbone-ghoul",
+    "magma-titan"
+   ]
+  }
+ },
+ "side": {
+  "mo": {
+   "claudeAdds": {
+    "bramble-sprout": "on its old list: The Old Bramble's 4 fights need 5+ different cards; his 3 kept picks alone cannot fill them",
+    "barkplate-beetle": "on its old list: The Old Bramble's 4 fights need 5+ different cards; his 3 kept picks alone cannot fill them",
+    "quill-thorn-boar": "on its old list: The Old Bramble's 4 fights need 5+ different cards; his 3 kept picks alone cannot fill them",
+    "bramblewood-lynx": "on its old list: The Old Bramble's 4 fights need 5+ different cards; his 3 kept picks alone cannot fill them",
+    "quillguard": "on its old list: The Old Bramble's 4 fights need 5+ different cards; his 3 kept picks alone cannot fill them",
+    "house-cat": "the parent map's own card: The Old Bramble's 4 fights need 5+ different cards; his 3 kept picks alone cannot fill them",
+    "earthworm": "the parent map's own card: The Old Bramble's 4 fights need 5+ different cards; his 3 kept picks alone cannot fill them",
+    "farm-dog": "the parent map's own card: The Old Bramble's 4 fights need 5+ different cards; his 3 kept picks alone cannot fill them"
+   },
+   "parent": "m1",
+   "unlockAfterNo": 21,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 8,
+   "drops": [
+    {
+     "id": "strangler-vine",
+     "name": "Strangler Vine",
+     "who": "owner",
+     "side": "NEW!",
+     "why": "over NEW! 3; 0 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "shimmerwing-stag",
+     "name": "Shimmerwing Stag",
+     "who": "owner",
+     "side": "NEW!",
+     "why": "over NEW! 3; 2 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "hedgehog-herbalist",
+     "name": "Hedgehog Herbalist",
+     "who": "owner",
+     "side": "NEW!",
+     "why": "over NEW! 3; 5 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "ent",
+    "elder-willow",
+    "thorn-shrike",
+    "bramble-sprout",
+    "barkplate-beetle",
+    "quill-thorn-boar",
+    "bramblewood-lynx",
+    "quillguard",
+    "house-cat",
+    "earthworm",
+    "farm-dog"
+   ],
+   "before": [
+    "ent",
+    "elder-willow",
+    "echidna-quillshot",
+    "gatling-hog",
+    "hedgehog-herbalist",
+    "thornwood-palisade",
+    "quill-volley",
+    "porcupine-roller",
+    "shimmerwing-stag",
+    "bramblewood-lynx",
+    "quillguard",
+    "quill-thorn-boar",
+    "barkplate-beetle",
+    "thorn-shrike",
+    "hazel-coppice",
+    "bramble-sprout"
+   ]
+  },
+  "mq": {
+   "claudeAdds": {},
+   "parent": "mf",
+   "unlockAfterNo": 12,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 5,
+   "drops": [
+    {
+     "id": "monarch-wingblade",
+     "name": "Monarch Wingblade",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 0 copies in its fights / reference decks; stays on mr",
+     "nowOn": "mr"
+    },
+    {
+     "id": "field-mouse",
+     "name": "Field Mouse",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 4 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "clover-butterfly",
+     "name": "Clover Butterfly",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 7 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "ladybird-guard",
+     "name": "Ladybird Guard",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "lucky-hopper",
+     "name": "Lucky Hopper",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "bee-drone",
+     "name": "Bee Drone",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "seed-cache-squirrel",
+     "name": "Seed-cache Squirrel",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "field-vole",
+     "name": "Field Vole",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 16 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "jackrabbit-sprinter",
+    "harvest-mouse",
+    "ant-hill",
+    "bee-sentry",
+    "cricket-drummer",
+    "robin-redbreast",
+    "slow-worm",
+    "earthworm"
+   ],
+   "before": [
+    "lucky-hopper",
+    "jackrabbit-sprinter",
+    "field-mouse",
+    "harvest-mouse",
+    "field-vole",
+    "clover-butterfly",
+    "ladybird-guard",
+    "ant-hill",
+    "bee-drone",
+    "seed-cache-squirrel",
+    "bee-sentry",
+    "cricket-drummer",
+    "robin-redbreast",
+    "slow-worm",
+    "earthworm",
+    "monarch-wingblade"
+   ]
+  },
+  "mp": {
+   "claudeAdds": {},
+   "parent": "mb",
+   "unlockAfterNo": 6,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 6,
+   "drops": [
+    {
+     "id": "mayfly-dancer",
+     "name": "Mayfly Dancer",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 5 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "victoria-regia",
+     "name": "Victoria Regia",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 7 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "pyrenean-desman",
+     "name": "Pyrenean Desman",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 8 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "dam-keeper-beaver",
+     "name": "Dam-Keeper Beaver",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 9 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "river-carp",
+     "name": "River Carp",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "pond-duck",
+     "name": "Pond Duck",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 15 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "lotus-frog",
+     "name": "Lotus Frog",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 17 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "lodge-engineer",
+    "box-turtle",
+    "old-sturgeon",
+    "muskrat-lodgekeeper",
+    "snapstick-turtle",
+    "pond-algae",
+    "muskrat-reedgatherer",
+    "platypus-spur",
+    "water-shrew"
+   ],
+   "before": [
+    "pond-duck",
+    "lotus-frog",
+    "victoria-regia",
+    "mayfly-dancer",
+    "dam-keeper-beaver",
+    "lodge-engineer",
+    "box-turtle",
+    "old-sturgeon",
+    "river-carp",
+    "pyrenean-desman",
+    "muskrat-lodgekeeper",
+    "snapstick-turtle",
+    "pond-algae",
+    "muskrat-reedgatherer",
+    "platypus-spur",
+    "water-shrew"
+   ]
+  },
+  "mg": {
+   "claudeAdds": {},
+   "parent": "mb",
+   "unlockAfterNo": 7,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 4,
+   "drops": [
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 7 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "bloodworm",
+     "name": "Bloodworm",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "moray-ambusher",
+     "name": "Moray Ambusher",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "raccoon-nightcrew",
+     "name": "Raccoon Nightcrew",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "tide-pool-crab",
+     "name": "Tide Pool Crab",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "octopus-tactician",
+     "name": "Octopus Tactician",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "smuggler-slingrat",
+     "name": "Smuggler Slingrat",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 16 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "coffer-mimic",
+     "name": "Coffer Mimic",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 19 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "trash-panda-trickster",
+    "salvager-hermit-crab",
+    "glow-worm",
+    "gull-thief",
+    "rock-pool-starfish",
+    "pincushion-urchin",
+    "limpet-clinger"
+   ],
+   "before": [
+    "octopus-tactician",
+    "trash-panda-trickster",
+    "smuggler-slingrat",
+    "coffer-mimic",
+    "salvager-hermit-crab",
+    "glow-worm",
+    "moray-ambusher",
+    "raccoon-nightcrew",
+    "tide-pool-crab",
+    "grey-seal-bull",
+    "gull-thief",
+    "rock-pool-starfish",
+    "pincushion-urchin",
+    "limpet-clinger",
+    "bloodworm"
+   ]
+  },
+  "ms": {
+   "claudeAdds": {},
+   "parent": "mw",
+   "unlockAfterNo": 13,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 5,
+   "drops": [
+    {
+     "id": "signal-crayfish",
+     "name": "Signal Crayfish",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 3 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "fen-mink",
+     "name": "Fen Mink",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 4 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "cottonmouth-matriarch",
+     "name": "Cottonmouth Matriarch",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 5 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "mossmother-newt",
+     "name": "Mossmother Newt",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 9 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "bog-behemoth",
+     "name": "Bog Behemoth",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "matamata",
+     "name": "Matamata",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "venomlord-serpent",
+    "mudflat-godwit",
+    "snapper-hatchling",
+    "cypress-root-lurker",
+    "swamp-alligator",
+    "anhinga-spearbird",
+    "nutria-reedcutter",
+    "newt-doctor",
+    "caiman-hatchling",
+    "peat-cutter-vole"
+   ],
+   "before": [
+    "venomlord-serpent",
+    "bog-behemoth",
+    "cottonmouth-matriarch",
+    "fen-mink",
+    "mudflat-godwit",
+    "signal-crayfish",
+    "matamata",
+    "mossmother-newt",
+    "snapper-hatchling",
+    "cypress-root-lurker",
+    "swamp-alligator",
+    "anhinga-spearbird",
+    "nutria-reedcutter",
+    "newt-doctor",
+    "caiman-hatchling",
+    "peat-cutter-vole"
+   ]
+  },
+  "mz": {
+   "claudeAdds": {},
+   "parent": "mu",
+   "unlockAfterNo": 8,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 5,
+   "drops": [
+    {
+     "id": "garden-snail",
+     "name": "Garden Snail",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 1 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 4 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "tunnel-wyrm",
+     "name": "Tunnel Wyrm",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "rootworm-colony",
+     "name": "Rootworm Colony",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 11 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "ant-warrior",
+     "name": "Ant Warrior",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "springtail-hopper",
+     "name": "Springtail Hopper",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 16 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "fungal-colossus",
+    "millipede-hauler",
+    "pill-bug",
+    "wolf-spider-mother",
+    "fungus-gnat-cloud",
+    "leopard-slug",
+    "puffball-bombardier",
+    "rot-swollen-carcass"
+   ],
+   "before": [
+    "rootworm-colony",
+    "dung-beetle",
+    "fungal-colossus",
+    "ant-warrior",
+    "bombardier-beetle",
+    "garden-snail",
+    "springtail-hopper",
+    "millipede-hauler",
+    "pill-bug",
+    "tunnel-wyrm",
+    "wolf-spider-mother",
+    "fungus-gnat-cloud",
+    "leopard-slug",
+    "puffball-bombardier",
+    "rot-swollen-carcass",
+    "leafcutter-gardener",
+    "truffle-piglet"
+   ]
+  },
+  "mn": {
+   "claudeAdds": {},
+   "parent": "m4",
+   "unlockAfterNo": 16,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 5,
+   "drops": [
+    {
+     "id": "glimmer-spider",
+     "name": "Glimmer Spider",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 5 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 5 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 6 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "whip-spider",
+     "name": "Whip Spider",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 8 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "cave-swiftlet",
+     "name": "Cave Swiftlet",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "glintsnatch-magpie",
+     "name": "Glintsnatch Magpie",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "lantern-spark-fly",
+     "name": "Lantern Spark Fly",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 16 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "oilbird",
+    "magpie-collector",
+    "cave-olm",
+    "quarry-mole",
+    "star-nosed-mole",
+    "stalactite-golem",
+    "blind-cave-fish",
+    "upside-down-bat"
+   ],
+   "before": [
+    "lantern-spark-fly",
+    "vampire-bat",
+    "whip-spider",
+    "glimmer-spider",
+    "grotto-lobster",
+    "cave-swiftlet",
+    "oilbird",
+    "glintsnatch-magpie",
+    "magpie-collector",
+    "cave-olm",
+    "quarry-mole",
+    "star-nosed-mole",
+    "stalactite-golem",
+    "blind-cave-fish",
+    "upside-down-bat"
+   ]
+  },
+  "mj": {
+   "claudeAdds": {},
+   "parent": "m7",
+   "unlockAfterNo": 11,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 4,
+   "drops": [
+    {
+     "id": "great-barracuda",
+     "name": "Great Barracuda",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 0 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "sperm-whale-elder",
+     "name": "Sperm Whale Elder",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 0 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "colossal-squid",
+     "name": "Colossal Squid",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 2 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "whale-shark",
+     "name": "Whale Shark",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 5 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 6 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "hagfish-silencer",
+     "name": "Hagfish Silencer",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 8 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "barnacle-fortress",
+     "name": "Barnacle Fortress",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "conger-eel",
+     "name": "Conger Eel",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "kraken-spawnling",
+     "name": "Kraken Spawnling",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 20 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "humpback-elder",
+    "abyss-lantern-squid",
+    "riptide-eel",
+    "giant-clam",
+    "moon-jelly",
+    "clownfish-scout",
+    "coral-polyp-colony"
+   ],
+   "before": [
+    "humpback-elder",
+    "sperm-whale-elder",
+    "whale-shark",
+    "kraken-spawnling",
+    "colossal-squid",
+    "blue-ringed-octopus",
+    "hagfish-silencer",
+    "conger-eel",
+    "abyss-lantern-squid",
+    "barnacle-fortress",
+    "great-barracuda",
+    "riptide-eel",
+    "giant-clam",
+    "moon-jelly",
+    "clownfish-scout",
+    "coral-polyp-colony",
+    "nautilus-drifter"
+   ]
+  },
+  "mv": {
+   "claudeAdds": {},
+   "parent": "m10",
+   "unlockAfterNo": 15,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 5,
+   "drops": [
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 5 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "red-billed-chough",
+     "name": "Red-billed Chough",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 7 copies in its fights / reference decks; stays on m21",
+     "nowOn": "m21"
+    },
+    {
+     "id": "gale-swift",
+     "name": "Gale Swift",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 8 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "hawk-arrowkeeper",
+     "name": "Hawk Arrowkeeper",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 8 copies in its fights / reference decks; stays on mc SPECIAL",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "wound-reaver",
+     "name": "Wound Reaver",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks; stays on m10 SPECIAL",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks; stays on m21",
+     "nowOn": "m21"
+    }
+   ],
+   "list": [
+    "alpine-swift",
+    "apollo-butterfly",
+    "great-horned-owl",
+    "sparrow-chick",
+    "eyrie-warden",
+    "eagle-owl-quartermaster",
+    "chamois-leaper",
+    "chipmunk-hoarder",
+    "the-gannet-queen"
+   ],
+   "before": [
+    "ibex-rockcaller",
+    "alpine-swift",
+    "gale-swift",
+    "apollo-butterfly",
+    "red-billed-chough",
+    "great-horned-owl",
+    "sparrow-chick",
+    "alpine-salamander",
+    "wound-reaver",
+    "eyrie-warden",
+    "eagle-owl-quartermaster",
+    "chamois-leaper",
+    "chipmunk-hoarder",
+    "the-gannet-queen",
+    "hawk-arrowkeeper"
+   ]
+  },
+  "my": {
+   "claudeAdds": {},
+   "parent": "m5",
+   "unlockAfterNo": 18,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 3,
+   "drops": [
+    {
+     "id": "lyrebird-mimic",
+     "name": "Lyrebird Mimic",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 4 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "poison-dart-croaker",
+     "name": "Poison Dart Croaker",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 8 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "poison-dart-frog",
+     "name": "Poison Dart Frog",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 8 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "jaguar-stalker",
+     "name": "Jaguar Stalker",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 9 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "war-drum-mandrill",
+     "name": "War-Drum Mandrill",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "ancient-sloth-titan",
+     "name": "Ancient Sloth Titan",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 11 copies in its fights / reference decks; stays on m11 SPECIAL",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "leaf-chameleon",
+     "name": "Leaf Chameleon",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 11 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "hanging-loafer",
+     "name": "Hanging Loafer",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "kinkajou-lurker",
+     "name": "Kinkajou Lurker",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "slow-loris",
+    "howler-monkey",
+    "toucan-courier",
+    "amber-cicada",
+    "mosquito-cloud",
+    "fishing-cat"
+   ],
+   "before": [
+    "ancient-sloth-titan",
+    "hanging-loafer",
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "poison-dart-croaker",
+    "poison-dart-frog",
+    "slow-loris",
+    "howler-monkey",
+    "toucan-courier",
+    "war-drum-mandrill",
+    "leaf-chameleon",
+    "lyrebird-mimic",
+    "amber-cicada",
+    "mosquito-cloud",
+    "fishing-cat",
+    "leafcutter-gardener"
+   ]
+  },
+  "mi": {
+   "claudeAdds": {
+    "snow-ermine": "the parent map's own card: The Ice Hollow's fights (17-A-2 / 17-A-3) cannot fill 20 cards from the cut list (K14: carried cards 1 copy each)",
+    "ice-crevasse-wolf": "the parent map's own card: The Ice Hollow's fights (17-A-2 / 17-A-3) cannot fill 20 cards from the cut list (K14: carried cards 1 copy each)",
+    "glacier-yak": "the parent map's own card: The Ice Hollow's fights (17-A-2 / 17-A-3) cannot fill 20 cards from the cut list (K14: carried cards 1 copy each)"
+   },
+   "parent": "m6",
+   "unlockAfterNo": 21,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 8,
+   "drops": [
+    {
+     "id": "yeti-chieftain",
+     "name": "Yeti Chieftain",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 2 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks; stays on m22",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "frost-thistle-lynx",
+     "name": "Frost Thistle Lynx",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 12 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "frostbitten-wolverine",
+     "name": "Frostbitten Wolverine",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 15 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "permafrost-mammoth",
+     "name": "Permafrost Mammoth",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 16 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 17 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "greenland-shark",
+    "harp-seal-pup",
+    "snow-owl-sentinel",
+    "polar-bear",
+    "walrus-icebreaker",
+    "ringed-seal",
+    "lemming-swarm",
+    "talus-pika",
+    "arctic-tern",
+    "snow-ermine",
+    "ice-crevasse-wolf",
+    "glacier-yak"
+   ],
+   "before": [
+    "yeti-chieftain",
+    "permafrost-mammoth",
+    "beluga",
+    "greenland-shark",
+    "ravenous-wolverine",
+    "harp-seal-pup",
+    "frost-thistle-lynx",
+    "snow-owl-sentinel",
+    "polar-bear",
+    "walrus-icebreaker",
+    "frostbitten-wolverine",
+    "ringed-seal",
+    "lemming-swarm",
+    "talus-pika",
+    "arctic-tern"
+   ]
+  },
+  "mpd": {
+   "claudeAdds": {
+    "armadillo-guard": "the parent map's own card: The Pale Desert's 18-A-9 cannot fill its 19 cards from the cut list (K14)",
+    "dune-jackal": "the parent map's own card: The Pale Desert's 18-A-9 cannot fill its 19 cards from the cut list (K14)",
+    "horned-lizard": "the parent map's own card: The Pale Desert's 18-A-9 cannot fill its 19 cards from the cut list (K14)",
+    "barrel-cactus": "the parent map's own card: The Pale Desert's 18-A-9 cannot fill its 19 cards from the cut list (K14)"
+   },
+   "parent": "md",
+   "unlockAfterNo": 19,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 8,
+   "drops": [
+    {
+     "id": "fennec-fox",
+     "name": "Fennec Fox",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 3 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "quicksand-queen",
+     "name": "Quicksand Queen",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 6 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "trapdoor-spider",
+     "name": "Trapdoor Spider",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 8 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "glass-golem",
+     "name": "Glass Golem",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 9 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "pale-oryx",
+     "name": "Pale Oryx",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 15 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 17 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "moon-jerboa",
+     "name": "Moon Jerboa",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 17 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "komodo-warlord",
+     "name": "Komodo Warlord",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 20 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "skull-vulture",
+     "name": "Skull Vulture",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 20 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "sand-flinger-antlion",
+     "name": "Sand-flinger Antlion",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 22 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "dromedary",
+    "sandstorm-roc",
+    "antlion-pit",
+    "caustic-scorpion",
+    "sand-widow",
+    "roadrunner-courier",
+    "dust-hyena",
+    "armadillo-guard",
+    "dune-jackal",
+    "horned-lizard",
+    "barrel-cactus"
+   ],
+   "before": [
+    "quicksand-queen",
+    "skull-vulture",
+    "dromedary",
+    "dune-packrat",
+    "trapdoor-spider",
+    "pale-oryx",
+    "moon-jerboa",
+    "sand-flinger-antlion",
+    "sandstorm-roc",
+    "glass-golem",
+    "komodo-warlord",
+    "antlion-pit",
+    "caustic-scorpion",
+    "sand-widow",
+    "roadrunner-courier",
+    "fennec-fox",
+    "dust-hyena"
+   ]
+  },
+  "m9": {
+   "claudeAdds": {
+    "obsidian-scorpion": "the parent map's own card, a emberBorn card: 19-A-3's challenge boon (Ember-born) needs half its deck to hold it"
+   },
+   "parent": "m3",
+   "unlockAfterNo": 23,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 8,
+   "drops": [
+    {
+     "id": "ember-revenant",
+     "name": "Ember Revenant",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 2 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "malachite-golem",
+     "name": "Malachite Golem",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 11 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "ember-tetra",
+     "name": "Ember Tetra",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 17 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "chained-binturong",
+     "name": "Chained Binturong",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 18 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "ore-smelter-mole",
+    "cinder-gecko",
+    "grindstone-boar",
+    "pumice-beetle",
+    "hellbender",
+    "anvil-thrush",
+    "fire-salamander",
+    "sulfur-vent-crab",
+    "smoke-raccoon",
+    "cinder-hornet",
+    "obsidian-scorpion"
+   ],
+   "before": [
+    "malachite-golem",
+    "ember-revenant",
+    "ore-smelter-mole",
+    "cinder-gecko",
+    "grindstone-boar",
+    "pumice-beetle",
+    "ember-tetra",
+    "hellbender",
+    "chained-binturong",
+    "anvil-thrush",
+    "fire-salamander",
+    "sulfur-vent-crab",
+    "smoke-raccoon",
+    "cinder-hornet"
+   ]
+  },
+  "me": {
+   "claudeAdds": {},
+   "parent": "m11",
+   "unlockAfterNo": 20,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 1,
+   "drops": [
+    {
+     "id": "ossuary-lammergeier",
+     "name": "Ossuary Lammergeier",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 1 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "rimeheart-colossus",
+     "name": "Rimeheart Mammoth",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 1 copies in its fights / reference decks; stays on m22, m22 SPECIAL",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "the-contradiction",
+     "name": "The Contradiction",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 2 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "cave-warlord",
+     "name": "Cave Warlord",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 6 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "magma-wraith",
+     "name": "Magma Wraith",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 10 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "pall-wraith",
+     "name": "Pall Wraith",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 11 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "obsidian-lich",
+     "name": "Obsidian Lich",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "ash-moth",
+    "cinder-skeleton",
+    "ashbone-ghoul",
+    "obsidian-scorpion"
+   ],
+   "before": [
+    "the-contradiction",
+    "cave-warlord",
+    "rimeheart-colossus",
+    "ash-moth",
+    "obsidian-lich",
+    "pall-wraith",
+    "cinder-skeleton",
+    "ashbone-ghoul",
+    "ossuary-lammergeier",
+    "magma-wraith",
+    "obsidian-scorpion"
+   ]
+  },
+  "mx": {
+   "claudeAdds": {},
+   "parent": "m11",
+   "unlockAfterNo": 20,
+   "limits": {
+    "own": 3,
+    "carried": 8
+   },
+   "neu": 3,
+   "car": 1,
+   "drops": [
+    {
+     "id": "salamander-pyromancer",
+     "name": "Salamander Pyromancer",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 1 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "thunder-lizard",
+     "name": "Thunder Lizard",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 1 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "lava-waders",
+     "name": "Lava Waders",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 4 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "ash-cloud-condor",
+     "name": "Ash Cloud Condor",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 6 copies in its fights / reference decks; stays on m22",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "granite-ox-golem",
+     "name": "Granite Ox Golem",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 6 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "pyroclast-wyrm",
+     "name": "Pyroclast Wyrm",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 7 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "ember-wisp",
+     "name": "Ember Firefly",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks",
+     "nowOn": "no main / side list"
+    },
+    {
+     "id": "magma-titan",
+     "name": "Magma Rhino",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 13 copies in its fights / reference decks; stays on m21",
+     "nowOn": "m21"
+    },
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks; stays on m22",
+     "nowOn": "m9"
+    },
+    {
+     "id": "ember-centipede",
+     "name": "Ember Centipede",
+     "who": "list",
+     "side": "NEW!",
+     "why": "over NEW! 3; 14 copies in its fights / reference decks; stays on m22",
+     "nowOn": "no main / side list"
+    }
+   ],
+   "list": [
+    "fire-drake-hatchling",
+    "gorge-wyrm",
+    "ember-jackal",
+    "magma-salamander",
+    "cinder-stoker"
+   ],
+   "before": [
+    "fire-drake-hatchling",
+    "salamander-pyromancer",
+    "pyroclast-wyrm",
+    "gorge-wyrm",
+    "granite-ox-golem",
+    "magma-titan",
+    "ember-jackal",
+    "ember-centipede",
+    "lava-waders",
+    "thunder-lizard",
+    "magma-salamander",
+    "ember-wisp",
+    "ash-cloud-condor",
+    "cinder-stoker",
+    "cinder-hornet"
+   ]
+  }
+ },
+ "adminAfter": {
+  "m1": [],
+  "mf": [],
+  "mb": [],
+  "mc": [],
+  "m2": [],
+  "mw": [],
+  "m8": [],
+  "mu": [
+   "planarian-splitter"
+  ],
+  "m4": [],
+  "mk": [
+   "nutria-reedcutter"
+  ],
+  "m7": [],
+  "m10": [],
+  "mh": [],
+  "mr": [],
+  "m5": [],
+  "ml": [],
+  "mt": [],
+  "m6": [],
+  "md": [],
+  "m3": [],
+  "m11": [],
+  "m21": []
+ },
+ "leftPlay": [
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior"
+  },
+  {
+   "id": "trapdoor-spider",
+   "name": "Trapdoor Spider"
+  },
+  {
+   "id": "tunnel-wyrm",
+   "name": "Tunnel Wyrm"
+  },
+  {
+   "id": "komodo-warlord",
+   "name": "Komodo Warlord"
+  },
+  {
+   "id": "nautilus-drifter",
+   "name": "Nautilus Drifter"
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord"
+  },
+  {
+   "id": "field-mouse",
+   "name": "Field Mouse"
+  },
+  {
+   "id": "bog-behemoth",
+   "name": "Bog Behemoth"
+  },
+  {
+   "id": "tundra-musk-ox",
+   "name": "Tundra Musk Ox"
+  },
+  {
+   "id": "arctic-fox-raider",
+   "name": "Arctic Fox Raider"
+  },
+  {
+   "id": "permafrost-mammoth",
+   "name": "Permafrost Mammoth"
+  },
+  {
+   "id": "coral-reef-shark",
+   "name": "Coral Reef Shark"
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab"
+  },
+  {
+   "id": "barnacle-fortress",
+   "name": "Barnacle Fortress"
+  },
+  {
+   "id": "porcupine-roller",
+   "name": "Porcupine Roller"
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "name": "Raccoon Nightcrew"
+  },
+  {
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling"
+  },
+  {
+   "id": "shepherds-bark",
+   "name": "Shepherd"
+  },
+  {
+   "id": "pack-rat-looter",
+   "name": "Pack Rat Looter"
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "name": "Pyroclast Wyrm"
+  },
+  {
+   "id": "frost-thistle-lynx",
+   "name": "Frost Thistle Lynx"
+  },
+  {
+   "id": "dune-jackal-scout",
+   "name": "Dune Jackal Scout"
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth"
+  },
+  {
+   "id": "glasswing-moth",
+   "name": "Glasswing Moth"
+  },
+  {
+   "id": "thornwood-palisade",
+   "name": "Thornwood Palisade"
+  },
+  {
+   "id": "malachite-golem",
+   "name": "Malachite Golem"
+  },
+  {
+   "id": "skull-vulture",
+   "name": "Skull Vulture"
+  },
+  {
+   "id": "pall-wraith",
+   "name": "Pall Wraith"
+  },
+  {
+   "id": "obsidian-lich",
+   "name": "Obsidian Lich"
+  },
+  {
+   "id": "gatling-hog",
+   "name": "Gatling Hog"
+  },
+  {
+   "id": "dung-beetle",
+   "name": "Dung Beetle"
+  },
+  {
+   "id": "bombardier-beetle",
+   "name": "Bombardier Beetle"
+  },
+  {
+   "id": "clover-butterfly",
+   "name": "Clover Butterfly"
+  },
+  {
+   "id": "glimmer-spider",
+   "name": "Glimmer Spider"
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat"
+  },
+  {
+   "id": "moon-jerboa",
+   "name": "Moon Jerboa"
+  },
+  {
+   "id": "seed-cache-squirrel",
+   "name": "Seed-cache Squirrel"
+  },
+  {
+   "id": "leafcutter-gardener",
+   "name": "Leafcutter Gardener"
+  },
+  {
+   "id": "lotus-frog",
+   "name": "Lotus Frog"
+  },
+  {
+   "id": "hagfish-silencer",
+   "name": "Hagfish Silencer"
+  },
+  {
+   "id": "swift-fox",
+   "name": "Swift Fox"
+  },
+  {
+   "id": "mayfly-dancer",
+   "name": "Mayfly Dancer"
+  },
+  {
+   "id": "snow-bunting-archer",
+   "name": "Snow Bunting Archer"
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer"
+  },
+  {
+   "id": "springbok-pronker",
+   "name": "Springbok Pronker"
+  },
+  {
+   "id": "ashwing-ptarmigan",
+   "name": "Ashwing Ptarmigan"
+  },
+  {
+   "id": "goose-sentry",
+   "name": "Goose Sentry"
+  },
+  {
+   "id": "cottonmouth-matriarch",
+   "name": "Cottonmouth Matriarch"
+  },
+  {
+   "id": "grotto-lobster",
+   "name": "Grotto Lobster"
+  },
+  {
+   "id": "sandfish",
+   "name": "Sandfish"
+  },
+  {
+   "id": "pale-oryx",
+   "name": "Pale Oryx"
+  },
+  {
+   "id": "signal-crayfish",
+   "name": "Signal Crayfish"
+  },
+  {
+   "id": "ladybird-guard",
+   "name": "Ladybird Guard"
+  },
+  {
+   "id": "field-vole",
+   "name": "Field Vole"
+  },
+  {
+   "id": "grey-seal-bull",
+   "name": "Grey Seal Bull"
+  },
+  {
+   "id": "springtail-hopper",
+   "name": "Springtail Hopper"
+  },
+  {
+   "id": "cave-swiftlet",
+   "name": "Cave Swiftlet"
+  },
+  {
+   "id": "whip-spider",
+   "name": "Whip Spider"
+  },
+  {
+   "id": "parrotfish",
+   "name": "Parrotfish"
+  },
+  {
+   "id": "whale-shark",
+   "name": "Whale Shark"
+  },
+  {
+   "id": "hedge-weasel",
+   "name": "Hedge Weasel"
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga"
+  },
+  {
+   "id": "musk-ox-calf",
+   "name": "Musk Ox Calf"
+  },
+  {
+   "id": "ember-tetra",
+   "name": "Ember Tetra"
+  },
+  {
+   "id": "coffer-mimic",
+   "name": "Coffer Mimic"
+  },
+  {
+   "id": "dam-keeper-beaver",
+   "name": "Dam-Keeper Beaver"
+  },
+  {
+   "id": "great-skua",
+   "name": "Great Skua"
+  },
+  {
+   "id": "termite-forager",
+   "name": "Termite Forager"
+  },
+  {
+   "id": "dune-packrat",
+   "name": "Dune Packrat"
+  },
+  {
+   "id": "carrion-crow",
+   "name": "Carrion Crow"
+  },
+  {
+   "id": "hazel-coppice",
+   "name": "Hazel Coppice"
+  },
+  {
+   "id": "gale-swift",
+   "name": "Gale Swift"
+  },
+  {
+   "id": "granite-ox-golem",
+   "name": "Granite Ox Golem"
+  },
+  {
+   "id": "victoria-regia",
+   "name": "Victoria Regia"
+  },
+  {
+   "id": "sea-bass",
+   "name": "Sea Bass"
+  }
+ ],
+ "leftLists": [
+  "arctic-fox-raider",
+  "ashwing-ptarmigan",
+  "barnacle-fortress",
+  "bee-drone",
+  "beluga",
+  "bloodworm",
+  "blue-ringed-octopus",
+  "bog-behemoth",
+  "bombardier-beetle",
+  "bone-diviner",
+  "bramble-hoglet",
+  "carrion-crow",
+  "cave-swiftlet",
+  "cave-warlord",
+  "chained-binturong",
+  "clover-butterfly",
+  "coffer-mimic",
+  "conger-eel",
+  "coral-reef-shark",
+  "cottonmouth-matriarch",
+  "dam-keeper-beaver",
+  "dune-jackal-scout",
+  "dune-packrat",
+  "ember-revenant",
+  "ember-tetra",
+  "ember-wisp",
+  "fen-mink",
+  "field-mouse",
+  "field-vole",
+  "frost-thistle-lynx",
+  "frostbitten-wolverine",
+  "gale-swift",
+  "garden-snail",
+  "gatling-hog",
+  "glass-golem",
+  "glasswing-moth",
+  "glimmer-spider",
+  "glintsnatch-magpie",
+  "goose-sentry",
+  "granite-ox-golem",
+  "great-skua",
+  "grey-seal-bull",
+  "grotto-lobster",
+  "hagfish-silencer",
+  "hanging-loafer",
+  "hazel-coppice",
+  "heartwood-treant",
+  "hedgehog-herbalist",
+  "ibex-rockcaller",
+  "jaguar-stalker",
+  "kinkajou-lurker",
+  "komodo-warlord",
+  "kraken-spawnling",
+  "ladybird-guard",
+  "lantern-spark-fly",
+  "lava-waders",
+  "leaf-chameleon",
+  "leafcutter-gardener",
+  "lotus-frog",
+  "lucky-hopper",
+  "magma-wraith",
+  "malachite-golem",
+  "matamata",
+  "mayfly-dancer",
+  "moon-jerboa",
+  "moray-ambusher",
+  "mossmother-newt",
+  "musk-ox-calf",
+  "nautilus-drifter",
+  "nightshade-moth",
+  "obsidian-lich",
+  "octopus-tactician",
+  "ossuary-lammergeier",
+  "pack-rat-looter",
+  "pale-oryx",
+  "pall-wraith",
+  "parrotfish",
+  "permafrost-mammoth",
+  "pinecone-crossbill",
+  "poison-dart-croaker",
+  "poison-dart-frog",
+  "pond-duck",
+  "pyroclast-wyrm",
+  "quicksand-queen",
+  "raccoon-nightcrew",
+  "river-carp",
+  "rootworm-colony",
+  "salamander-pyromancer",
+  "sand-flinger-antlion",
+  "sandfish",
+  "sea-bass",
+  "shepherds-bark",
+  "signal-crayfish",
+  "skull-vulture",
+  "smuggler-slingrat",
+  "snow-bunting-archer",
+  "sperm-whale-elder",
+  "springbok-pronker",
+  "springtail-hopper",
+  "termite-forager",
+  "the-contradiction",
+  "thunder-lizard",
+  "tide-pool-crab",
+  "timber-wolf-pack",
+  "trapdoor-spider",
+  "tundra-musk-ox",
+  "tunnel-wyrm",
+  "victoria-regia",
+  "war-drum-mandrill",
+  "war-hound",
+  "whale-shark",
+  "yeti-chieftain"
+ ],
+ "newOnLists": [
+  "barrel-cactus",
+  "bramblewood-macaque",
+  "frillneck-duelist",
+  "hollow-belly-rat",
+  "mallard-marauder",
+  "pinecone-sapper",
+  "plains-zebra",
+  "sworn-shieldbearer",
+  "village-miller"
+ ],
+ "flags": {
+  "cleared": [
+   "bramblewood-macaque",
+   "warhorse-charger",
+   "mallard-marauder",
+   "pinecone-sapper",
+   "village-miller",
+   "frillneck-duelist"
+  ],
+  "set": [
+   "ant-warrior",
+   "trapdoor-spider",
+   "tunnel-wyrm",
+   "komodo-warlord",
+   "nautilus-drifter",
+   "cave-warlord",
+   "field-mouse",
+   "bog-behemoth",
+   "tundra-musk-ox",
+   "arctic-fox-raider",
+   "permafrost-mammoth",
+   "coral-reef-shark",
+   "tide-pool-crab",
+   "barnacle-fortress",
+   "porcupine-roller",
+   "raccoon-nightcrew",
+   "kraken-spawnling",
+   "shepherds-bark",
+   "pack-rat-looter",
+   "pyroclast-wyrm",
+   "frost-thistle-lynx",
+   "dune-jackal-scout",
+   "nightshade-moth",
+   "glasswing-moth",
+   "thornwood-palisade",
+   "malachite-golem",
+   "skull-vulture",
+   "pall-wraith",
+   "obsidian-lich",
+   "gatling-hog",
+   "dung-beetle",
+   "bombardier-beetle",
+   "clover-butterfly",
+   "glimmer-spider",
+   "vampire-bat",
+   "moon-jerboa",
+   "seed-cache-squirrel",
+   "leafcutter-gardener",
+   "lotus-frog",
+   "hagfish-silencer",
+   "swift-fox",
+   "mayfly-dancer",
+   "snow-bunting-archer",
+   "salamander-pyromancer",
+   "springbok-pronker",
+   "ashwing-ptarmigan",
+   "goose-sentry",
+   "cottonmouth-matriarch",
+   "grotto-lobster",
+   "sandfish",
+   "pale-oryx",
+   "signal-crayfish",
+   "ladybird-guard",
+   "field-vole",
+   "grey-seal-bull",
+   "springtail-hopper",
+   "cave-swiftlet",
+   "whip-spider",
+   "parrotfish",
+   "whale-shark",
+   "hedge-weasel",
+   "beluga",
+   "musk-ox-calf",
+   "ember-tetra",
+   "coffer-mimic",
+   "dam-keeper-beaver",
+   "great-skua",
+   "termite-forager",
+   "dune-packrat",
+   "carrion-crow",
+   "hazel-coppice",
+   "gale-swift",
+   "granite-ox-golem",
+   "victoria-regia",
+   "sea-bass"
+  ]
+ },
+ "obtainMaps": [
+  {
+   "id": "ant-warrior",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "war-hound",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "bramblewood-lynx",
+   "before": 7,
+   "after": 14
+  },
+  {
+   "id": "trapdoor-spider",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "tunnel-wyrm",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "monarch-wingblade",
+   "before": 5,
+   "after": 7
+  },
+  {
+   "id": "tide-spirit",
+   "before": 10,
+   "after": 22
+  },
+  {
+   "id": "komodo-warlord",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "crocodile-ambusher",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "nautilus-drifter",
+   "before": 10,
+   "after": null
+  },
+  {
+   "id": "cave-warlord",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "elderhorn-monarch",
+   "before": 24,
+   "after": 14
+  },
+  {
+   "id": "field-mouse",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "bog-behemoth",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "berserker-boar",
+   "before": 7,
+   "after": 14
+  },
+  {
+   "id": "acacia-giraffe",
+   "before": 14,
+   "after": 23
+  },
+  {
+   "id": "tundra-musk-ox",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "arctic-fox-raider",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "permafrost-mammoth",
+   "before": 21,
+   "after": null
+  },
+  {
+   "id": "coral-reef-shark",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "moray-ambusher",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "timber-wolf-pack",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "tide-pool-crab",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "barnacle-fortress",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "ravenous-wolverine",
+   "before": 21,
+   "after": 22
+  },
+  {
+   "id": "porcupine-roller",
+   "before": 21,
+   "after": null
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "kraken-spawnling",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "shepherds-bark",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "magma-titan",
+   "before": 14,
+   "after": 21
+  },
+  {
+   "id": "phoenix-fledgling",
+   "before": 14,
+   "after": 22
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "frost-thistle-lynx",
+   "before": 21,
+   "after": null
+  },
+  {
+   "id": "dune-jackal-scout",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "nightshade-moth",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "cinder-hornet",
+   "before": 14,
+   "after": 22
+  },
+  {
+   "id": "glasswing-moth",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "land-tiller",
+   "before": 14,
+   "after": 24
+  },
+  {
+   "id": "yeti-chieftain",
+   "before": 21,
+   "after": null
+  },
+  {
+   "id": "thornwood-palisade",
+   "before": 21,
+   "after": null
+  },
+  {
+   "id": "malachite-golem",
+   "before": 23,
+   "after": null
+  },
+  {
+   "id": "heartwood-treant",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "frostbitten-wolverine",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "skull-vulture",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "pall-wraith",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "obsidian-lich",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "siege-rhino",
+   "before": 23,
+   "after": 14
+  },
+  {
+   "id": "gatling-hog",
+   "before": 21,
+   "after": null
+  },
+  {
+   "id": "dung-beetle",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "bombardier-beetle",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "balloon-archer",
+   "before": 24,
+   "after": 7
+  },
+  {
+   "id": "clover-butterfly",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "ember-centipede",
+   "before": 14,
+   "after": 22
+  },
+  {
+   "id": "glimmer-spider",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "vampire-bat",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "sunbittern-strider",
+   "before": 1,
+   "after": 14
+  },
+  {
+   "id": "moon-jerboa",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "pronghorn-racer",
+   "before": 14,
+   "after": 23
+  },
+  {
+   "id": "seed-cache-squirrel",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "leafcutter-gardener",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "lotus-frog",
+   "before": 1,
+   "after": null
+  },
+  {
+   "id": "swift-fox",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "tasmanian-devil",
+   "before": 7,
+   "after": 14
+  },
+  {
+   "id": "snow-bunting-archer",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "echidna-quillshot",
+   "before": 21,
+   "after": 22
+  },
+  {
+   "id": "bison-bulldozer",
+   "before": 14,
+   "after": 7
+  },
+  {
+   "id": "springbok-pronker",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "ashwing-ptarmigan",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "goose-sentry",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "mallard-halberdier",
+   "before": 14,
+   "after": 24
+  },
+  {
+   "id": "cottonmouth-matriarch",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "grotto-lobster",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "sandfish",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "pale-oryx",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "signal-crayfish",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "ladybird-guard",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "field-vole",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "grey-seal-bull",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "red-billed-chough",
+   "before": 14,
+   "after": 21
+  },
+  {
+   "id": "springtail-hopper",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "cave-swiftlet",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "whip-spider",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "parrotfish",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "whale-shark",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "alpine-salamander",
+   "before": 14,
+   "after": 21
+  },
+  {
+   "id": "thorn-shrike",
+   "before": 7,
+   "after": 21
+  },
+  {
+   "id": "hedge-weasel",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "beluga",
+   "before": 21,
+   "after": null
+  },
+  {
+   "id": "lemming-swarm",
+   "before": 14,
+   "after": 21
+  },
+  {
+   "id": "musk-ox-calf",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "ember-tetra",
+   "before": 23,
+   "after": null
+  },
+  {
+   "id": "coffer-mimic",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "termite-forager",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "talus-pika",
+   "before": 14,
+   "after": 21
+  },
+  {
+   "id": "dune-packrat",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "pumice-beetle",
+   "before": 21,
+   "after": 22
+  },
+  {
+   "id": "carrion-crow",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "gale-swift",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "granite-ox-golem",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "victoria-regia",
+   "before": 1,
+   "after": null
+  },
+  {
+   "id": "sea-bass",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "owl-sentinel",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "bramblewood-macaque",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "warhorse-charger",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "mallard-marauder",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "plains-zebra",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "pinecone-sapper",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "before": null,
+   "after": 7
+  },
+  {
+   "id": "village-miller",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "sworn-shieldbearer",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "frillneck-duelist",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "nightjar-drifter",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "lamprey",
+   "before": null,
+   "after": 7
+  },
+  {
+   "id": "beaver-feller",
+   "before": null,
+   "after": 7
+  },
+  {
+   "id": "peat-cutter-vole",
+   "before": null,
+   "after": 7
+  }
+ ]
+}

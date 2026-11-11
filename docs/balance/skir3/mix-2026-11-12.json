@@ -1,0 +1,76 @@
+{
+ "about": "SKIR3 mix repairs (tools/skir3/mix_2026_11_12.js)",
+ "rows": [
+  {
+   "map": "mu",
+   "kind": "wait0",
+   "fight": "7-4",
+   "in": "earthworm",
+   "out": "lamprey",
+   "before": {
+    "amber-cicada": 3,
+    "fungus-gnat-cloud": 4,
+    "lamprey": 1,
+    "puffball-bombardier": 4,
+    "sleepless-shrew": 4
+   },
+   "after": {
+    "amber-cicada": 3,
+    "earthworm": 1,
+    "fungus-gnat-cloud": 4,
+    "puffball-bombardier": 4,
+    "sleepless-shrew": 4
+   }
+  },
+  {
+   "map": "m6",
+   "kind": "wait0",
+   "fight": "17-5",
+   "in": "snowshoe-hare",
+   "out": "walrus-icebreaker",
+   "before": {
+    "arctic-tern": 4,
+    "cataphract-destrier": 1,
+    "cone-cutter-squirrel": 1,
+    "glacier-yak": 2,
+    "harbor-seal": 4,
+    "ice-crevasse-wolf": 2,
+    "walrus-icebreaker": 1
+   },
+   "after": {
+    "arctic-tern": 4,
+    "cataphract-destrier": 1,
+    "cone-cutter-squirrel": 1,
+    "glacier-yak": 2,
+    "harbor-seal": 4,
+    "ice-crevasse-wolf": 2,
+    "snowshoe-hare": 1
+   }
+  },
+  {
+   "map": "m3",
+   "kind": "wait0",
+   "fight": "19-3",
+   "in": "sulfur-cinder-moth",
+   "out": "horned-lizard",
+   "before": {
+    "elderhorn-monarch": 1,
+    "fire-salamander": 2,
+    "honey-badger-fury": 4,
+    "horned-lizard": 1,
+    "obsidian-scorpion": 1,
+    "quillback-elder": 4,
+    "stalactite-golem": 1
+   },
+   "after": {
+    "elderhorn-monarch": 1,
+    "fire-salamander": 2,
+    "honey-badger-fury": 4,
+    "obsidian-scorpion": 1,
+    "quillback-elder": 4,
+    "stalactite-golem": 1,
+    "sulfur-cinder-moth": 1
+   }
+  }
+ ]
+}
