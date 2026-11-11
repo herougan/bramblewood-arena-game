@@ -67,7 +67,7 @@ Object.keys(data.maps).forEach(mid=>{
       // 2026-11-02 (BAL9, JJ24): a deck whose cut cards BAL9 swapped out (e.bal9) is its run's deck but for those copies; it is held to the run's score and mode only
       ok((run.decks || []).some(x=> (e.bal9 || e.bal13 || e.bal13trim || e.bal13cap /* 2026-11-02 (BAL13): late-priced cards / RAR-1 copy caps swapped, not re-searched */ || e.bal21 /* 2026-11-07 (BAL21): retuned by tools/bal21/pro_fix_2026_11_07.js, not re-searched */ || O.deckKey(x.deck) === O.deckKey(e.deck)) && x.score === e.source.score) && (run.settings || {}).mode === 'map-true', `1. ${e.id}: the deck is a deck of its DECK1 run${e.bal9 ? ' (cut cards swapped by BAL9)' : ''}${e.bal13 || e.bal13trim || e.bal13cap ? ' (swapped by BAL13)' : ''}`);
       ok(e.focus && e.h2h == null, `1. ${e.id}: a focus (${e.focus}), no head-to-head`);
-      if(i > 0) ok(e.source.score <= L[i - 1].source.score, `1. ${e.id}: ordered by the gauntlet score`);
+      if(i > 0) ok(e.source.score <= L[i - 1].source.score || (i === 1 && L[0].kept1) /* 2026-11-11 (SKIR1): a PRO-1 kept by the replacement rule leads */, `1. ${e.id}: ordered by the gauntlet score`);
       return; }
     ok(e.source && e.source.mode === mode, `1. ${e.id}: from a ${mode} run (${e.source && e.source.mode})`);
     ok(e.source && fs.existsSync(path.join(ROOT, e.source.file)), `1. ${e.id}: its source run exists (${e.source && e.source.file})`);

@@ -1,0 +1,90 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:17:28.954Z",
+ "map": {
+  "id": "mc",
+  "num": 3,
+  "name": "Gannet Cliffs"
+ },
+ "pool": [
+  "beaver-lumberjack",
+  "chipmunk-cavalry",
+  "conch-crawler",
+  "conch-herald",
+  "cormorant",
+  "eagle-sharpshooter",
+  "feral-tomcat",
+  "fiddler-crab-swarm",
+  "gannet-nestweaver",
+  "great-skua",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "limpet-clinger",
+  "peak-condor",
+  "peregrine-stooper",
+  "pika-hoarder",
+  "puffin-diver",
+  "razorbill"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "chipmunk-cavalry": 4,
+    "eagle-sharpshooter": 4,
+    "great-skua": 4,
+    "peregrine-stooper": 4,
+    "razorbill": 4
+   },
+   "score": 0.2917,
+   "ci": [
+    0.2452,
+    0.3381
+   ],
+   "refWins": 0.5417,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "flying x16",
+    "strike-first x8"
+   ],
+   "apartFrom": [],
+   "steps": 2,
+   "games": 940,
+   "seconds": 172
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "beaver-lumberjack": 4,
+    "conch-crawler": 4,
+    "fiddler-crab-swarm": 4,
+    "great-skua": 4,
+    "pika-hoarder": 4
+   },
+   "score": 0.2208,
+   "ci": [
+    0.1763,
+    0.2653
+   ],
+   "refWins": 0.7083,
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "armor x8",
+    "guard x8"
+   ],
+   "apartFrom": [
+    16
+   ],
+   "steps": 2,
+   "games": 1060,
+   "seconds": 216
+  }
+ ]
+}

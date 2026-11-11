@@ -1,0 +1,756 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T20:19:08.255Z",
+ "fingerprint": "70bb0acabad2",
+ "map": {
+  "id": "mu",
+  "num": 7,
+  "name": "The Morel Hollow"
+ },
+ "level": 1,
+ "pool": [
+  "adder-ambusher",
+  "alley-cat",
+  "amber-cicada",
+  "bee-forager",
+  "box-turtle",
+  "caiman-hatchling",
+  "camouflage-frog",
+  "compost-grub",
+  "corpse-flower-beetle",
+  "cottonmouth-matriarch",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "earthworm",
+  "fire-ant-raft",
+  "fungus-gnat-cloud",
+  "hawthorn-shieldbug",
+  "lamprey",
+  "leafcutter-gardener",
+  "leopard-slug",
+  "mudpuppy",
+  "newt-doctor",
+  "nightshade-moth",
+  "nutria-reedcutter",
+  "otter-centurion",
+  "planarian-splitter",
+  "puffball-bombardier",
+  "raft-spider",
+  "rot-swollen-carcass",
+  "sleepless-shrew",
+  "truffle-piglet",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Adder Ambusher",
+  "Alley Cat",
+  "Amber Cicada",
+  "Bee Forager",
+  "Box Turtle",
+  "Caiman Hatchling",
+  "Camouflage Frog",
+  "Compost Grub",
+  "Corpse-flower Beetle",
+  "Cottonmouth Matriarch",
+  "Crocodile Ambusher",
+  "Cypress Root Lurker",
+  "Earthworm",
+  "Fire Ant Raft",
+  "Fungus Gnat Cloud",
+  "Hawthorn Shieldbug",
+  "Lamprey",
+  "Leafcutter Gardener",
+  "Leopard Slug",
+  "Mudpuppy",
+  "Newt Doctor",
+  "Nightshade Moth",
+  "Nutria Reedcutter",
+  "Otter Centurion",
+  "Planarian Splitter",
+  "Puffball Bombardier",
+  "Raft Spider",
+  "Rot-Swollen Carcass",
+  "Sleepless Shrew",
+  "Truffle Piglet",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "adder-ambusher",
+   "amber-cicada",
+   "camouflage-frog",
+   "compost-grub",
+   "corpse-flower-beetle",
+   "crocodile-ambusher",
+   "cypress-root-lurker",
+   "earthworm",
+   "fungus-gnat-cloud",
+   "hawthorn-shieldbug",
+   "lamprey",
+   "leafcutter-gardener",
+   "leopard-slug",
+   "nightshade-moth",
+   "puffball-bombardier",
+   "rot-swollen-carcass",
+   "sleepless-shrew",
+   "truffle-piglet",
+   "wolf-spider-mother"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 1200,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:7-1",
+   "label": "vs 7-1 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:7-2",
+   "label": "vs 7-2 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:7-3",
+   "label": "vs 7-3 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:7-4",
+   "label": "vs 7-4 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:7-5",
+   "label": "vs 7-5 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:7-6",
+   "label": "vs 7-6 miniboss's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 7-1's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:road7",
+   "label": "vs reference deck (Map 7) under 7-2's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+   "weight": 0.1111
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:poison",
+   "label": "poison (skill family)",
+   "cards": [
+    "adder-ambusher",
+    "cottonmouth-matriarch",
+    "fire-ant-raft",
+    "puffball-bombardier"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "bee-forager",
+    "fungus-gnat-cloud",
+    "nightshade-moth"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "crocodile-ambusher",
+    "nightshade-moth",
+    "rot-swollen-carcass"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:poison",
+   "steps": 1,
+   "moves": 1,
+   "games": 432,
+   "apartFromEarlier": 14
+  },
+  {
+   "focus": "family:flying",
+   "steps": 1,
+   "moves": 0,
+   "games": 486,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 1,
+   "moves": 0,
+   "games": 414,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 1,
+   "moves": 1,
+   "games": 486,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 496,
+ "games": 2394,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "flying x8"
+   ],
+   "deck": {
+    "bee-forager": 4,
+    "box-turtle": 4,
+    "fungus-gnat-cloud": 4,
+    "sleepless-shrew": 4,
+    "truffle-piglet": 4
+   },
+   "cards": [
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "sleepless-shrew",
+     "name": "Sleepless Shrew",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.6574,
+   "ci": [
+    0.6015,
+    0.7133
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-1",
+     "label": "vs 7-1 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-2",
+     "label": "vs 7-2 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-3",
+     "label": "vs 7-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-4",
+     "label": "vs 7-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-5",
+     "label": "vs 7-5 elite's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-6",
+     "label": "vs 7-6 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.4 Lumber)"
+   ],
+   "deck": {
+    "adder-ambusher": 3,
+    "bee-forager": 4,
+    "box-turtle": 4,
+    "camouflage-frog": 2,
+    "leafcutter-gardener": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "camouflage-frog",
+     "name": "Camouflage Frog",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6296,
+   "ci": [
+    0.5744,
+    0.6849
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-1",
+     "label": "vs 7-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-2",
+     "label": "vs 7-2 skirmish's deck",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-3",
+     "label": "vs 7-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-4",
+     "label": "vs 7-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-5",
+     "label": "vs 7-5 elite's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-6",
+     "label": "vs 7-6 miniboss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:poison",
+   "labels": [
+    "poison x9"
+   ],
+   "deck": {
+    "adder-ambusher": 3,
+    "alley-cat": 4,
+    "corpse-flower-beetle": 3,
+    "cottonmouth-matriarch": 3,
+    "earthworm": 4,
+    "fire-ant-raft": 3
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "corpse-flower-beetle",
+     "name": "Corpse-flower Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "cottonmouth-matriarch",
+     "name": "Cottonmouth Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.5093,
+   "ci": [
+    0.4515,
+    0.567
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "poison",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-1",
+     "label": "vs 7-1 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-2",
+     "label": "vs 7-2 skirmish's deck",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-3",
+     "label": "vs 7-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-4",
+     "label": "vs 7-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-5",
+     "label": "vs 7-5 elite's deck",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-6",
+     "label": "vs 7-6 miniboss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-1's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+     "p": 0.3333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.3)",
+    "poison x6"
+   ],
+   "deck": {
+    "adder-ambusher": 3,
+    "alley-cat": 4,
+    "cottonmouth-matriarch": 3,
+    "crocodile-ambusher": 4,
+    "mudpuppy": 2,
+    "rot-swollen-carcass": 4
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "crocodile-ambusher",
+     "name": "Crocodile Ambusher",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "rot-swollen-carcass",
+     "name": "Rot-Swollen Carcass",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "cottonmouth-matriarch",
+     "name": "Cottonmouth Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.3333,
+   "ci": [
+    0.2781,
+    0.3885
+   ],
+   "avgLumber": 1.3,
+   "avgWait": 1.55,
+   "curve": {
+    "0": 6,
+    "1": 6,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "poison",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-1",
+     "label": "vs 7-1 skirmish's deck",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-2",
+     "label": "vs 7-2 skirmish's deck",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-3",
+     "label": "vs 7-3 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-4",
+     "label": "vs 7-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-5",
+     "label": "vs 7-5 elite's deck",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-6",
+     "label": "vs 7-6 miniboss's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-1's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+     "p": 0.2917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,alley-cat,amber-cicada,bee-forager,box-turtle,caiman-hatchling,camouflage-frog,compost-grub,corpse-flower-beetle,cottonmouth-matriarch,crocodile-ambusher,cypress-root-lurker,earthworm,fire-ant-raft,fungus-gnat-cloud,hawthorn-shieldbug,lamprey,leafcutter-gardener,leopard-slug,mudpuppy,newt-doctor,nightshade-moth,nutria-reedcutter,otter-centurion,planarian-splitter,puffball-bombardier,raft-spider,rot-swollen-carcass,sleepless-shrew,truffle-piglet,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 1200 --final-games 24 --seed skir1-pro --focus family:poison,family:flying,big,open --anchor adder-ambusher,amber-cicada,camouflage-frog,compost-grub,corpse-flower-beetle,crocodile-ambusher,cypress-root-lurker,earthworm,fungus-gnat-cloud,hawthorn-shieldbug,lamprey,leafcutter-gardener,leopard-slug,nightshade-moth,puffball-bombardier,rot-swollen-carcass,sleepless-shrew,truffle-piglet,wolf-spider-mother --anchor-min 10 --level 1 --mode map-true"
+}

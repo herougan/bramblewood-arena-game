@@ -1,0 +1,88 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:39:46.698Z",
+ "map": {
+  "id": "mo",
+  "num": 0,
+  "name": "The Old Bramble"
+ },
+ "pool": [
+  "barkplate-beetle",
+  "bramble-sprout",
+  "bramblewood-lynx",
+  "echidna-quillshot",
+  "elder-willow",
+  "ent",
+  "gatling-hog",
+  "hazel-coppice",
+  "hedgehog-herbalist",
+  "porcupine-roller",
+  "quill-thorn-boar",
+  "quill-volley",
+  "quillguard",
+  "shimmerwing-stag",
+  "thorn-shrike",
+  "thornwood-palisade"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "bramble-sprout": 4,
+    "elder-willow": 4,
+    "gatling-hog": 3,
+    "hazel-coppice": 4,
+    "quillguard": 3,
+    "shimmerwing-stag": 2
+   },
+   "score": 0.2262,
+   "ci": [
+    0.1822,
+    0.2702
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (4 copies at 2+ Lumber, average 1.2)",
+    "economy (4 resource makers)"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 1092,
+   "seconds": 97
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "elder-willow": 4,
+    "hazel-coppice": 4,
+    "quill-thorn-boar": 3,
+    "quill-volley": 3,
+    "thorn-shrike": 3,
+    "thornwood-palisade": 3
+   },
+   "score": 0.1548,
+   "ci": [
+    0.1058,
+    0.2038
+   ],
+   "refWins": 0.9583,
+   "labels": [
+    "big (4 copies at 2+ Lumber, average 1.4)",
+    "economy (4 resource makers)",
+    "spite x6"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 5,
+   "games": 980,
+   "seconds": 80
+  }
+ ]
+}

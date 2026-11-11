@@ -1,0 +1,87 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:36:34.729Z",
+ "map": {
+  "id": "mk",
+  "num": 9,
+  "name": "The Kelp Mangroves"
+ },
+ "pool": [
+  "alley-cat",
+  "alligator-gar",
+  "banded-sea-krait",
+  "booming-bittern",
+  "driftwood-crab",
+  "fiddler-crab-swarm",
+  "fishing-cat",
+  "giant-cave-huntsman",
+  "horseshoe-crab",
+  "ironclaw-fiddler",
+  "mangrove-monitor",
+  "mangrove-mudskipper",
+  "nutria-reedcutter",
+  "proboscis-monkey",
+  "sunbittern-strider",
+  "voltaic-eel"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "banded-sea-krait": 2,
+    "booming-bittern": 4,
+    "fishing-cat": 3,
+    "mangrove-monitor": 4,
+    "nutria-reedcutter": 4,
+    "voltaic-eel": 3
+   },
+   "score": 0.4208,
+   "ci": [
+    0.367,
+    0.4747
+   ],
+   "refWins": 0.6389,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.9)"
+   ],
+   "apartFrom": [],
+   "steps": 1,
+   "games": 760,
+   "seconds": 86
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "alligator-gar": 3,
+    "banded-sea-krait": 4,
+    "booming-bittern": 4,
+    "fishing-cat": 3,
+    "giant-cave-huntsman": 3,
+    "ironclaw-fiddler": 3
+   },
+   "score": 0.5,
+   "ci": [
+    0.4454,
+    0.5546
+   ],
+   "refWins": 0.7361,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.1)",
+    "armor x6",
+    "tide x6"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 2,
+   "games": 800,
+   "seconds": 52
+  }
+ ]
+}

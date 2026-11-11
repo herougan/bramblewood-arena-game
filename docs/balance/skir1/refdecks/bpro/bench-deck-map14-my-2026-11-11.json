@@ -1,0 +1,675 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T20:03:34.470Z",
+ "fingerprint": "97bb9d28f904",
+ "map": {
+  "id": "my",
+  "num": 14,
+  "name": "The Canopy"
+ },
+ "level": 1,
+ "pool": [
+  "amber-cicada",
+  "ancient-sloth-titan",
+  "fishing-cat",
+  "hanging-loafer",
+  "hoopoe-herald",
+  "howler-monkey",
+  "jaguar-stalker",
+  "kinkajou-lurker",
+  "leaf-chameleon",
+  "leafcutter-gardener",
+  "lyrebird-mimic",
+  "mosquito-cloud",
+  "poison-dart-croaker",
+  "poison-dart-frog",
+  "pride-queen",
+  "slow-loris",
+  "toucan-courier",
+  "war-drum-mandrill"
+ ],
+ "poolNames": [
+  "Amber Cicada",
+  "Ancient Sloth Titan",
+  "Fishing Cat",
+  "Hanging Loafer",
+  "Hoopoe Herald",
+  "Howler Monkey",
+  "Jaguar Stalker",
+  "Kinkajou Lurker",
+  "Leaf Chameleon",
+  "Leafcutter Gardener",
+  "Lyrebird Mimic",
+  "Mosquito Cloud",
+  "Poison Dart Croaker",
+  "Poison Dart Frog",
+  "Pride Queen",
+  "Slow Loris",
+  "Toucan Courier",
+  "War-Drum Mandrill"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 1500,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:14-A-1",
+   "label": "vs 14-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-2",
+   "label": "vs 14-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-3",
+   "label": "vs 14-A-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-4",
+   "label": "vs 14-A-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-5",
+   "label": "vs 14-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 14-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road18",
+   "label": "vs reference deck (Map 18) under 14-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "fishing-cat",
+    "jaguar-stalker",
+    "pride-queen"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:night",
+   "label": "night (skill family)",
+   "cards": [
+    "howler-monkey",
+    "kinkajou-lurker"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "ancient-sloth-titan",
+    "war-drum-mandrill"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:strike-first",
+   "steps": 1,
+   "moves": 0,
+   "games": 448,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:night",
+   "steps": 1,
+   "moves": 1,
+   "games": 384,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 1,
+   "moves": 1,
+   "games": 432,
+   "apartFromEarlier": 14
+  },
+  {
+   "focus": "open",
+   "steps": 2,
+   "moves": 2,
+   "games": 576,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 549,
+ "games": 2352,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "night x7"
+   ],
+   "deck": {
+    "howler-monkey": 3,
+    "kinkajou-lurker": 4,
+    "leaf-chameleon": 2,
+    "leafcutter-gardener": 3,
+    "lyrebird-mimic": 4,
+    "slow-loris": 4
+   },
+   "cards": [
+    {
+     "id": "kinkajou-lurker",
+     "name": "Kinkajou Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lyrebird-mimic",
+     "name": "Lyrebird Mimic",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "slow-loris",
+     "name": "Slow Loris",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "howler-monkey",
+     "name": "Howler Monkey",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leaf-chameleon",
+     "name": "Leaf Chameleon",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8281,
+   "ci": [
+    0.7794,
+    0.8768
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "night",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "strike-first x8"
+   ],
+   "deck": {
+    "fishing-cat": 3,
+    "hoopoe-herald": 4,
+    "howler-monkey": 4,
+    "jaguar-stalker": 3,
+    "pride-queen": 2,
+    "slow-loris": 4
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "howler-monkey",
+     "name": "Howler Monkey",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "slow-loris",
+     "name": "Slow Loris",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fishing-cat",
+     "name": "Fishing Cat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "jaguar-stalker",
+     "name": "Jaguar Stalker",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "pride-queen",
+     "name": "Pride Queen",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7344,
+   "ci": [
+    0.6807,
+    0.7881
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.2083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "family:night",
+   "labels": [
+    "night x8"
+   ],
+   "deck": {
+    "howler-monkey": 4,
+    "kinkajou-lurker": 4,
+    "poison-dart-croaker": 4,
+    "pride-queen": 2,
+    "slow-loris": 2,
+    "toucan-courier": 4
+   },
+   "cards": [
+    {
+     "id": "howler-monkey",
+     "name": "Howler Monkey",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "kinkajou-lurker",
+     "name": "Kinkajou Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "poison-dart-croaker",
+     "name": "Poison Dart Croaker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "toucan-courier",
+     "name": "Toucan Courier",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pride-queen",
+     "name": "Pride Queen",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "slow-loris",
+     "name": "Slow Loris",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6979,
+   "ci": [
+    0.6382,
+    0.7576
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "night",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.0)"
+   ],
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "leafcutter-gardener": 4,
+    "slow-loris": 4,
+    "toucan-courier": 4,
+    "war-drum-mandrill": 4
+   },
+   "cards": [
+    {
+     "id": "ancient-sloth-titan",
+     "name": "Ancient Sloth Titan",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "slow-loris",
+     "name": "Slow Loris",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "toucan-courier",
+     "name": "Toucan Courier",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "war-drum-mandrill",
+     "name": "War-Drum Mandrill",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.4063,
+   "ci": [
+    0.3402,
+    0.4723
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.4,
+   "curve": {
+    "0": 12,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.0417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map my --pool amber-cicada,ancient-sloth-titan,fishing-cat,hanging-loafer,hoopoe-herald,howler-monkey,jaguar-stalker,kinkajou-lurker,leaf-chameleon,leafcutter-gardener,lyrebird-mimic,mosquito-cloud,poison-dart-croaker,poison-dart-frog,pride-queen,slow-loris,toucan-courier,war-drum-mandrill --max-unique 6 --max-copies 4 --budget 1500 --final-games 24 --seed skir1-bpro --focus family:strike-first,family:night,big,open --level 1 --mode map-true"
+}

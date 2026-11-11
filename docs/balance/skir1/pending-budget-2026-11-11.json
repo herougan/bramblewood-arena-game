@@ -1,0 +1,144 @@
+{
+ "_about": "SKIR1 (2026-11-11): cards on a SKIR1 list over their first map's budget; they wait for the owner's re-fit step (tools/lib_map_pools.js budgetHold \"pending\"). No stat was changed.",
+ "built": "2026-11-11",
+ "count": 6,
+ "cards": [
+  {
+   "id": "moray-ambusher",
+   "name": "Moray Ambusher",
+   "rarity": "common",
+   "stats": "4/5",
+   "cost": 1,
+   "wait": 2,
+   "obtainMap": 7,
+   "lists": [
+    "Smugglers' Grotto (mg)"
+   ],
+   "level1": {
+    "x1": 26.53,
+    "N": 25.88,
+    "x2": 42.71,
+    "N2": 116.84,
+    "ok": false
+   },
+   "ownLevel": {
+    "level": 1,
+    "x1": 26.53,
+    "N": 25.88,
+    "ok": false
+   }
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "name": "Raccoon Nightcrew",
+   "rarity": "common",
+   "stats": "3/6",
+   "cost": 1,
+   "wait": 1,
+   "obtainMap": 7,
+   "lists": [
+    "Smugglers' Grotto (mg)"
+   ],
+   "level1": {
+    "x1": 23.77,
+    "N": 21.5,
+    "x2": 37.23,
+    "N2": 80.64,
+    "ok": false
+   },
+   "ownLevel": {
+    "level": 1,
+    "x1": 23.77,
+    "N": 21.5,
+    "ok": false
+   }
+  },
+  {
+   "id": "mudpuppy",
+   "name": "Mudpuppy",
+   "rarity": "common",
+   "stats": "2/9",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 5 (mw)"
+   ],
+   "level1": {
+    "x1": 17.3,
+    "N": 16.72,
+    "x2": 19.32,
+    "N2": 48.77,
+    "ok": false
+   },
+   "ownLevel": {
+    "level": 1,
+    "x1": 17.3,
+    "N": 16.72,
+    "ok": false
+   }
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "stats": "3/8",
+   "cost": 1,
+   "wait": 1,
+   "obtainMap": 1,
+   "lists": [
+    "Map 4 (m2)",
+    "Map 5 (mw)"
+   ],
+   "level1": {
+    "x1": 21.55,
+    "N": 21.27,
+    "x2": 29.18,
+    "N2": 78.92,
+    "ok": false
+   },
+   "ownLevel": {
+    "level": 1,
+    "x1": 21.55,
+    "N": 21.27,
+    "ok": false
+   }
+  },
+  {
+   "id": "peat-cutter-vole",
+   "name": "Peat-cutter Vole",
+   "rarity": "common",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 5 (mw)",
+    "The Sunken Grove (ms)"
+   ],
+   "level1": {
+    "x1": 18.25,
+    "N": 16.72,
+    "x2": 20.89,
+    "N2": 48.77,
+    "ok": false
+   },
+   "ownLevel": {
+    "level": 1,
+    "x1": 18.25,
+    "N": 16.72,
+    "ok": false
+   }
+  },
+  {
+   "id": "termite-forager",
+   "name": "Termite Forager",
+   "rarity": "common",
+   "stats": "2/5",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Savanna Reaches (m5)"
+   ],
+   "note": "2026-11-11 (SKIR1): within budget by tools/skir1/pending_budget (skill_costs) but CONTENT2's own check (tools/content2_2026_10_24.js) reads it at 100% (borderline) on its new Map 14 list: held for the owner's re-fit with the five"
+  }
+ ]
+}

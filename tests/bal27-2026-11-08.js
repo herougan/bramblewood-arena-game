@@ -29,7 +29,7 @@ const tune = {}, first = {};
   fs.readdirSync(tdir).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(tdir, f), 'utf8')); if (x.keep) { tune[x.code] = x; if (!first[x.code]) first[x.code] = x; } }));
 const bal27Lines = [...lines.entries()].filter(([, l]) => /2026-11-08 \(BAL27\)/.test(l));
 ok(bal27Lines.length >= 1, 'BAL27 retuned some road fights: ' + bal27Lines.length);
-for (const [code, l] of bal27Lines) {
+for (const [code, l] of bal27Lines) { if (/\(SKIR1( fit)?\): /.test(l)) continue; /* 2026-11-11 (SKIR1): rebuilt from the new map lists; tests/skir1-2026-11-11.js checks it now */
   if (/2026-11-10 \(BAL45\): retuned/.test(l)) continue; // 2026-11-10 (BAL45): retuned again (5-2, 5-4, 5-5, 11-8); tests/bal45-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL42\): retuned/.test(l)) continue; // 2026-11-10 (BAL42): retuned again (7-6); tests/bal42-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL41\): retuned/.test(l)) continue; // 2026-11-10 (BAL41): retuned again (9-4); tests/bal41-2026-11-10.js checks and pins it now
@@ -72,7 +72,7 @@ const PINS = {
   "16-3": {"deck":{"woodland-caribou":4,"alpha-howler":4,"redwood-woodpecker":1,"boreal-elk":5,"snowshoe-hare":4,"cone-cutter-squirrel":2},"shield":16},
   "11-8": {"deck":{"chipmunk-hoarder":3,"eyrie-warden":4,"mountain-hare":3,"alpine-salamander":1,"alpine-swift":2,"peak-condor":1},"leaders":["gannet-nestweaver"],"shield":16}
 };
-for (const [code, p] of Object.entries(PINS)) {
+for (const [code, p] of Object.entries(PINS)) { if (/\(SKIR1( fit)?\): /.test(lines.get(code) || "")) continue; /* 2026-11-11 (SKIR1): rebuilt, checked by tests/skir1-2026-11-11.js */
   const l = lines.get(code); ok(!!l, code + ': pinned fight found'); if (!l) continue; const now = fields(l);
   if (/2026-11-10 \(BAL45\): retuned/.test(l)) continue; // 2026-11-10 (BAL45): 5-4, 11-8 retuned again, pinned in tests/bal45-pins-2026-11-10.json
   if (/2026-11-10 \(BAL42\): retuned/.test(l)) continue; // 2026-11-10 (BAL42): 7-6 retuned again, pinned in tests/bal42-pins-2026-11-10.json

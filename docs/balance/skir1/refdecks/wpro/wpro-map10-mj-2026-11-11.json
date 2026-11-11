@@ -1,0 +1,91 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:55:58.641Z",
+ "map": {
+  "id": "mj",
+  "num": 10,
+  "name": "The Sunken Depths"
+ },
+ "pool": [
+  "abyss-lantern-squid",
+  "barnacle-fortress",
+  "blue-ringed-octopus",
+  "clownfish-scout",
+  "colossal-squid",
+  "conger-eel",
+  "coral-polyp-colony",
+  "giant-clam",
+  "great-barracuda",
+  "hagfish-silencer",
+  "humpback-elder",
+  "kraken-spawnling",
+  "moon-jelly",
+  "nautilus-drifter",
+  "orca-vanguard",
+  "reef-admiral",
+  "riptide-eel",
+  "whale-shark"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "barnacle-fortress": 4,
+    "blue-ringed-octopus": 3,
+    "colossal-squid": 2,
+    "humpback-elder": 4,
+    "kraken-spawnling": 3,
+    "orca-vanguard": 4
+   },
+   "score": 0.263,
+   "ci": [
+    0.2152,
+    0.3108
+   ],
+   "refWins": 0.9444,
+   "labels": [
+    "big (13 copies at 3+ Lumber, average 2.4)",
+    "tide x10",
+    "cleave x9"
+   ],
+   "apartFrom": [],
+   "steps": 2,
+   "games": 816,
+   "seconds": 14
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "conger-eel": 1,
+    "giant-clam": 4,
+    "great-barracuda": 3,
+    "kraken-spawnling": 4,
+    "moon-jelly": 4,
+    "orca-vanguard": 4
+   },
+   "score": 0.3438,
+   "ci": [
+    0.2958,
+    0.3917
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.6)",
+    "tide x16",
+    "cleave x9"
+   ],
+   "apartFrom": [
+    13
+   ],
+   "steps": 2,
+   "games": 880,
+   "seconds": 12
+  }
+ ]
+}

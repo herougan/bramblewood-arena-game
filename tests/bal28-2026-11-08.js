@@ -28,7 +28,7 @@ const kept = {};
   fs.readdirSync(dir).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); if (x.keep) (kept[x.code] = kept[x.code] || []).push(x); }));
 const bal28 = [...lines.entries()].filter(([, l]) => /2026-11-08 \(BAL28\)/.test(l));
 ok(bal28.length === 5, 'BAL28 retuned the five Canopy fights: ' + bal28.length);
-for (const [code, l] of bal28) {
+for (const [code, l] of bal28) { if (/\(SKIR1( fit)?\): /.test(l)) continue; /* 2026-11-11 (SKIR1): rebuilt from the new map lists; tests/skir1-2026-11-11.js checks it now */
   if (/2026-11-10 \(BAL35\): retuned/.test(l)) continue; // 2026-11-10 (BAL35): retuned again (the worst road maps); tests/bal35-2026-11-10.js checks and pins it now
   if (/2026-11-09 \(BAL33\)/.test(l)) continue; // 2026-11-09 (BAL33): retuned again after BAL28-1 a / BAL28-2 b; tests/bal33-2026-11-09.js checks the deck now
   ok(/^14-A-[1-5]$/.test(code), code + ': a Canopy fight (Maps 0-20 only, no other map)');
@@ -57,7 +57,7 @@ const PINS = {
   '14-A-4': { deck: { 'apollo-butterfly': 1, 'camouflage-frog': 1, 'hercules-beetle': 3, 'jaguar-stalker': 3, 'leafcutter-gardener': 1, 'pangolin-roller': 2, 'proboscis-monkey': 1, 'redwood-woodpecker': 1, 'weaver-bird': 4 }, leaders: ['vampire-bat'], shield: '0' },
   '14-A-5': { deck: { 'apollo-butterfly': 1, 'camouflage-frog': 1, 'hoopoe-herald': 5, 'jaguar-stalker': 3, 'pangolin-roller': 3, 'weaver-bird': 5, 'proboscis-monkey': 1, 'leafcutter-gardener': 1 }, leaders: null, shield: '0' },
 };
-for (const [code, p] of Object.entries(PINS)) { const f = fields(lines.get(code) || ''); if (/2026-11-09 \(BAL33\)|2026-11-10 \(BAL35\): retuned/.test(lines.get(code) || '')) continue; // 2026-11-10 (BAL35): + a fight BAL35 retuned (pinned in tests/bal35-2026-11-10.js); // 2026-11-09 (BAL33): pinned in tests/bal33-2026-11-09.js now
+for (const [code, p] of Object.entries(PINS)) { if (/\(SKIR1( fit)?\): /.test(lines.get(code) || "")) continue; /* 2026-11-11 (SKIR1): rebuilt, checked by tests/skir1-2026-11-11.js */ const f = fields(lines.get(code) || ''); if (/2026-11-09 \(BAL33\)|2026-11-10 \(BAL35\): retuned/.test(lines.get(code) || '')) continue; // 2026-11-10 (BAL35): + a fight BAL35 retuned (pinned in tests/bal35-2026-11-10.js); // 2026-11-09 (BAL33): pinned in tests/bal33-2026-11-09.js now
   ok(keyOf(f.deck) === keyOf(p.deck) && JSON.stringify(f.leaders) === JSON.stringify(p.leaders) && f.shield === p.shield, code + ': pinned deck / leader / Shield'); }
 // ---- 3. untouched ----
 const CB = J('canonical/characters.json').find(c => c.id === 'canopy-bower');

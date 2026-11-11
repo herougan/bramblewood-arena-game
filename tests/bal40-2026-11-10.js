@@ -32,7 +32,7 @@ const files = {}; ['exhaust', 'exhaust-r2', 'tune', 'tune-r2', 'pick'].forEach(d
   fs.readdirSync(dir).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); (files[x.code] = files[x.code] || []).push(Object.assign({ dir: d }, x)); }); });
 const retuned = [...lines.entries()].filter(([, l]) => /2026-11-10 \(BAL40\): retuned/.test(l));
 ok(retuned.length >= 1, 'BAL40 retuned some road fights: ' + retuned.length);
-for (const [code, l] of retuned) {
+for (const [code, l] of retuned) { if (/\(SKIR1( fit)?\): /.test(l)) continue; /* 2026-11-11 (SKIR1): rebuilt from the new map lists; tests/skir1-2026-11-11.js checks it now */
   const f = find(code); ok(f, code + ': in CONQUEST_MAPS'); if (!f) continue;
   const MAP = f.m.id, mapNo = G.mapNumberOf(MAP), kind = f.n.kind || 'skirmish', now = fields(l);
   ok(['mh', 'm3', 'mn', 'mv'].includes(MAP), code + ': on The Briar Maze, Ashen Spurn, The Glimmer Depths or The Aerie Vault');
@@ -62,7 +62,7 @@ for (const [code, l] of retuned) {
 const PINS = J('tests/bal40-pins-2026-11-10.json');
 ok(Object.keys(PINS).length === retuned.length && retuned.every(([c]) => PINS[c]), 'the pins list exactly the retuned fights');
 // ---- 2. pins ----
-for (const [code, p] of Object.entries(PINS)) { const f = fields(lines.get(code) || '');
+for (const [code, p] of Object.entries(PINS)) { if (/\(SKIR1( fit)?\): /.test(lines.get(code) || "")) continue; /* 2026-11-11 (SKIR1): rebuilt, checked by tests/skir1-2026-11-11.js */ const f = fields(lines.get(code) || '');
   ok(keyOf(f.deck) === keyOf(p.deck) && JSON.stringify(f.leaders) === JSON.stringify(p.leaders) && f.shield === p.shield, code + ': pinned deck / leader / Shield');
   ok(f.hqHp === p.hqHp && f.characterId === p.characterId, code + ': bramble Health and bramble as before BAL40'); }
 // ---- 3. untouched, files, decisions ----

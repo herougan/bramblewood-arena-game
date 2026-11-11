@@ -1,0 +1,904 @@
+{
+ "about": "SKIR1 road totals (tools/skir1/totals_2026_11_11.js): bal46w400 -> skir1w400, the Map reference",
+ "before": "bal46w400",
+ "after": "skir1w400",
+ "main": {
+  "before": {
+   "fights": 149,
+   "inBand": 135,
+   "within10": 141,
+   "beyond20": 4,
+   "meanGap": 3.96,
+   "meanWin": 69.6
+  },
+  "after": {
+   "fights": 149,
+   "inBand": 126,
+   "within10": 130,
+   "beyond20": 10,
+   "meanGap": 5.99,
+   "meanWin": 69.5
+  }
+ },
+ "side": {
+  "before": {
+   "fights": 81,
+   "inBand": 56,
+   "within10": 63,
+   "beyond20": 6,
+   "meanGap": 8.3,
+   "meanWin": 61.3
+  },
+  "after": {
+   "fights": 81,
+   "inBand": 59,
+   "within10": 65,
+   "beyond20": 8,
+   "meanGap": 7.4,
+   "meanWin": 65.1
+  }
+ },
+ "maps": {
+  "m1": {
+   "mapNo": 0,
+   "name": "Bramblewood Outskirts",
+   "side": false,
+   "before": {
+    "fights": 4,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 2.13,
+    "meanWin": 68.8
+   },
+   "after": {
+    "fights": 4,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 2.88,
+    "meanWin": 69.8
+   },
+   "off": []
+  },
+  "mo": {
+   "mapNo": 0,
+   "name": "The Old Bramble",
+   "side": true,
+   "before": {
+    "fights": 4,
+    "inBand": 1,
+    "within10": 2,
+    "beyond20": 0,
+    "meanGap": 9.85,
+    "meanWin": 57.3
+   },
+   "after": {
+    "fights": 4,
+    "inBand": 0,
+    "within10": 1,
+    "beyond20": 1,
+    "meanGap": 16.68,
+    "meanWin": 72.8
+   },
+   "off": [
+    "0-B-2 90/75",
+    "0-B-1 80.8/90",
+    "0-B-4 29/40",
+    "0-B-3 91.5/60"
+   ]
+  },
+  "mf": {
+   "mapNo": 1,
+   "name": "Thistlewood",
+   "side": false,
+   "before": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 3,
+    "beyond20": 0,
+    "meanGap": 7.72,
+    "meanWin": 81.6
+   },
+   "after": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 4.72,
+    "meanWin": 78.9
+   },
+   "off": []
+  },
+  "mq": {
+   "mapNo": 1,
+   "name": "Clovermead",
+   "side": true,
+   "before": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 3,
+    "beyond20": 0,
+    "meanGap": 6.8,
+    "meanWin": 63.3
+   },
+   "after": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 1,
+    "meanGap": 8.02,
+    "meanWin": 60
+   },
+   "off": [
+    "1-A-2 52.3/80",
+    "1-A-4 51/60"
+   ]
+  },
+  "mb": {
+   "mapNo": 2,
+   "name": "Pebble Beach",
+   "side": false,
+   "before": {
+    "fights": 5,
+    "inBand": 1,
+    "within10": 3,
+    "beyond20": 1,
+    "meanGap": 13.28,
+    "meanWin": 54.7
+   },
+   "after": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 3,
+    "beyond20": 1,
+    "meanGap": 10.02,
+    "meanWin": 58.2
+   },
+   "off": [
+    "2-1 62.8/90",
+    "2-2 61.5/80"
+   ]
+  },
+  "mp": {
+   "mapNo": 2,
+   "name": "Lilypad Reach",
+   "side": true,
+   "before": {
+    "fights": 7,
+    "inBand": 5,
+    "within10": 6,
+    "beyond20": 0,
+    "meanGap": 6.41,
+    "meanWin": 66.6
+   },
+   "after": {
+    "fights": 7,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 2,
+    "meanGap": 12.73,
+    "meanWin": 73.2
+   },
+   "off": [
+    "2-A-2 73/84",
+    "2-A-4 50.5/72",
+    "2-A-7 87.5/40"
+   ]
+  },
+  "mg": {
+   "mapNo": 2,
+   "name": "Smugglers' Grotto",
+   "side": true,
+   "before": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 4.25,
+    "meanWin": 69.7
+   },
+   "after": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 4.07,
+    "meanWin": 69.8
+   },
+   "off": [
+    "2-B-2 83.3/75"
+   ]
+  },
+  "mc": {
+   "mapNo": 3,
+   "name": "Gannet Cliffs",
+   "side": false,
+   "before": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.5,
+    "meanWin": 68.7
+   },
+   "after": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.87,
+    "meanWin": 66.3
+   },
+   "off": []
+  },
+  "m2": {
+   "mapNo": 4,
+   "name": "Sunken Hollow",
+   "side": false,
+   "before": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 2.58,
+    "meanWin": 65.4
+   },
+   "after": {
+    "fights": 5,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 5,
+    "meanWin": 64.3
+   },
+   "off": [
+    "4-5 28.3/40"
+   ]
+  },
+  "mw": {
+   "mapNo": 5,
+   "name": "Gatorback Swamp",
+   "side": false,
+   "before": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 1.44,
+    "meanWin": 67.3
+   },
+   "after": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.13,
+    "meanWin": 66.2
+   },
+   "off": []
+  },
+  "ms": {
+   "mapNo": 5,
+   "name": "The Sunken Grove",
+   "side": true,
+   "before": {
+    "fights": 4,
+    "inBand": 2,
+    "within10": 3,
+    "beyond20": 0,
+    "meanGap": 6.88,
+    "meanWin": 62.3
+   },
+   "after": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 4.95,
+    "meanWin": 63
+   },
+   "off": [
+    "5-A-2 56/65"
+   ]
+  },
+  "m8": {
+   "mapNo": 6,
+   "name": "Sable Swampmire",
+   "side": false,
+   "before": {
+    "fights": 8,
+    "inBand": 8,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 1.94,
+    "meanWin": 69.6
+   },
+   "after": {
+    "fights": 8,
+    "inBand": 8,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 2.21,
+    "meanWin": 71.5
+   },
+   "off": []
+  },
+  "mu": {
+   "mapNo": 7,
+   "name": "The Morel Hollow",
+   "side": false,
+   "before": {
+    "fights": 6,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 0,
+    "meanGap": 5.12,
+    "meanWin": 74.3
+   },
+   "after": {
+    "fights": 6,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 1,
+    "meanGap": 10.25,
+    "meanWin": 77.2
+   },
+   "off": [
+    "7-6 79.5/40"
+   ]
+  },
+  "mz": {
+   "mapNo": 7,
+   "name": "The Mycelium Deep",
+   "side": true,
+   "before": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 2.2,
+    "meanWin": 68
+   },
+   "after": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 2.66,
+    "meanWin": 65.3
+   },
+   "off": []
+  },
+  "m4": {
+   "mapNo": 8,
+   "name": "Caves & Alcoves",
+   "side": false,
+   "before": {
+    "fights": 8,
+    "inBand": 8,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 3.17,
+    "meanWin": 70.7
+   },
+   "after": {
+    "fights": 8,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 1,
+    "meanGap": 9.54,
+    "meanWin": 60
+   },
+   "off": [
+    "8-7 29.8/60",
+    "8-2 66/85",
+    "8-5 46.5/60"
+   ]
+  },
+  "mn": {
+   "mapNo": 8,
+   "name": "The Glimmer Depths",
+   "side": true,
+   "before": {
+    "fights": 4,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 4.57,
+    "meanWin": 66.7
+   },
+   "after": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 6.48,
+    "meanWin": 57.3
+   },
+   "off": [
+    "8-A-3 41/50"
+   ]
+  },
+  "mk": {
+   "mapNo": 9,
+   "name": "The Kelp Mangroves",
+   "side": false,
+   "before": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.49,
+    "meanWin": 70.6
+   },
+   "after": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.7,
+    "meanWin": 67.8
+   },
+   "off": []
+  },
+  "m7": {
+   "mapNo": 10,
+   "name": "Coral Current",
+   "side": false,
+   "before": {
+    "fights": 9,
+    "inBand": 9,
+    "within10": 9,
+    "beyond20": 0,
+    "meanGap": 1.83,
+    "meanWin": 70.9
+   },
+   "after": {
+    "fights": 9,
+    "inBand": 8,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 2.76,
+    "meanWin": 69.3
+   },
+   "off": [
+    "10-9 29.8/40"
+   ]
+  },
+  "mj": {
+   "mapNo": 10,
+   "name": "The Sunken Depths",
+   "side": true,
+   "before": {
+    "fights": 5,
+    "inBand": 4,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 5.56,
+    "meanWin": 63
+   },
+   "after": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 3,
+    "beyond20": 2,
+    "meanGap": 18.8,
+    "meanWin": 48.8
+   },
+   "off": [
+    "10-A-5 17.8/40",
+    "10-A-4 0/60"
+   ]
+  },
+  "m10": {
+   "mapNo": 11,
+   "name": "Eyrie Heights",
+   "side": false,
+   "before": {
+    "fights": 10,
+    "inBand": 10,
+    "within10": 10,
+    "beyond20": 0,
+    "meanGap": 2.93,
+    "meanWin": 69.5
+   },
+   "after": {
+    "fights": 10,
+    "inBand": 9,
+    "within10": 9,
+    "beyond20": 0,
+    "meanGap": 4.6,
+    "meanWin": 69.1
+   },
+   "off": [
+    "11-7 53.5/67.5"
+   ]
+  },
+  "mv": {
+   "mapNo": 11,
+   "name": "The Aerie Vault",
+   "side": true,
+   "before": {
+    "fights": 4,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 2.18,
+    "meanWin": 62.8
+   },
+   "after": {
+    "fights": 4,
+    "inBand": 2,
+    "within10": 2,
+    "beyond20": 1,
+    "meanGap": 9.32,
+    "meanWin": 60.8
+   },
+   "off": [
+    "11-A-2 86.5/75",
+    "11-A-3 35.5/60"
+   ]
+  },
+  "mh": {
+   "mapNo": 12,
+   "name": "The Briar Maze",
+   "side": false,
+   "before": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.87,
+    "meanWin": 67.5
+   },
+   "after": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.57,
+    "meanWin": 67.6
+   },
+   "off": []
+  },
+  "mr": {
+   "mapNo": 13,
+   "name": "The Redwood Deep",
+   "side": false,
+   "before": {
+    "fights": 8,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 4,
+    "meanWin": 72
+   },
+   "after": {
+    "fights": 8,
+    "inBand": 1,
+    "within10": 2,
+    "beyond20": 5,
+    "meanGap": 24.75,
+    "meanWin": 94.1
+   },
+   "off": [
+    "13-2 94.8/85",
+    "13-6 95.8/65",
+    "13-7 92.3/60",
+    "13-8 87/40",
+    "13-3 92/80",
+    "13-4 97/65",
+    "13-5 96.3/70"
+   ]
+  },
+  "m5": {
+   "mapNo": 14,
+   "name": "Savanna Reaches",
+   "side": false,
+   "before": {
+    "fights": 8,
+    "inBand": 3,
+    "within10": 7,
+    "beyond20": 1,
+    "meanGap": 9.39,
+    "meanWin": 62.1
+   },
+   "after": {
+    "fights": 8,
+    "inBand": 8,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 4.95,
+    "meanWin": 67.8
+   },
+   "off": []
+  },
+  "my": {
+   "mapNo": 14,
+   "name": "The Canopy",
+   "side": true,
+   "before": {
+    "fights": 5,
+    "inBand": 2,
+    "within10": 2,
+    "beyond20": 1,
+    "meanGap": 12.62,
+    "meanWin": 55.4
+   },
+   "after": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 3.28,
+    "meanWin": 65.9
+   },
+   "off": []
+  },
+  "ml": {
+   "mapNo": 15,
+   "name": "The Long Grass",
+   "side": false,
+   "before": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.21,
+    "meanWin": 71.2
+   },
+   "after": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.33,
+    "meanWin": 70.6
+   },
+   "off": []
+  },
+  "mt": {
+   "mapNo": 16,
+   "name": "The Pinewood Taiga",
+   "side": false,
+   "before": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 1.74,
+    "meanWin": 68.9
+   },
+   "after": {
+    "fights": 7,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 0,
+    "meanGap": 4.71,
+    "meanWin": 65.5
+   },
+   "off": [
+    "16-4 61/72"
+   ]
+  },
+  "m6": {
+   "mapNo": 17,
+   "name": "Wolfsbane Tundra",
+   "side": false,
+   "before": {
+    "fights": 8,
+    "inBand": 8,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 3,
+    "meanWin": 69.9
+   },
+   "after": {
+    "fights": 8,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 4.56,
+    "meanWin": 67.2
+   },
+   "off": [
+    "17-8 20/40"
+   ]
+  },
+  "mi": {
+   "mapNo": 17,
+   "name": "The Ice Hollow",
+   "side": true,
+   "before": {
+    "fights": 4,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 2.93,
+    "meanWin": 66.3
+   },
+   "after": {
+    "fights": 4,
+    "inBand": 2,
+    "within10": 2,
+    "beyond20": 0,
+    "meanGap": 6.75,
+    "meanWin": 63.2
+   },
+   "off": [
+    "17-A-2 62.5/75",
+    "17-A-3 71.3/60"
+   ]
+  },
+  "md": {
+   "mapNo": 18,
+   "name": "The Glass Dunes",
+   "side": false,
+   "before": {
+    "fights": 7,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 1,
+    "meanGap": 6.09,
+    "meanWin": 73.6
+   },
+   "after": {
+    "fights": 7,
+    "inBand": 5,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 4.9,
+    "meanWin": 66
+   },
+   "off": [
+    "18-1 81/90",
+    "18-6 50.7/60"
+   ]
+  },
+  "mpd": {
+   "mapNo": 18,
+   "name": "The Pale Desert",
+   "side": true,
+   "before": {
+    "fights": 9,
+    "inBand": 6,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 6.64,
+    "meanWin": 65.1
+   },
+   "after": {
+    "fights": 9,
+    "inBand": 7,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 4.28,
+    "meanWin": 67.8
+   },
+   "off": [
+    "18-A-4 64.3/77.1",
+    "18-A-6 59/68.6"
+   ]
+  },
+  "m3": {
+   "mapNo": 19,
+   "name": "Ashen Spurn",
+   "side": false,
+   "before": {
+    "fights": 6,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 0,
+    "meanGap": 3.02,
+    "meanWin": 69.4
+   },
+   "after": {
+    "fights": 6,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 1,
+    "meanGap": 6.7,
+    "meanWin": 63.9
+   },
+   "off": [
+    "19-4 44.8/67.5"
+   ]
+  },
+  "m9": {
+   "mapNo": 19,
+   "name": "Basalt Foundry",
+   "side": true,
+   "before": {
+    "fights": 10,
+    "inBand": 5,
+    "within10": 6,
+    "beyond20": 3,
+    "meanGap": 14.56,
+    "meanWin": 56
+   },
+   "after": {
+    "fights": 10,
+    "inBand": 9,
+    "within10": 9,
+    "beyond20": 0,
+    "meanGap": 5.28,
+    "meanWin": 67.8
+   },
+   "off": [
+    "19-A-8 46.8/63.8"
+   ]
+  },
+  "m11": {
+   "mapNo": 20,
+   "name": "The Sundered Peak",
+   "side": false,
+   "before": {
+    "fights": 10,
+    "inBand": 9,
+    "within10": 9,
+    "beyond20": 1,
+    "meanGap": 5.43,
+    "meanWin": 72.8
+   },
+   "after": {
+    "fights": 10,
+    "inBand": 8,
+    "within10": 9,
+    "beyond20": 1,
+    "meanGap": 6.54,
+    "meanWin": 73.9
+   },
+   "off": [
+    "20-9 78/50",
+    "20-10 50/40"
+   ]
+  },
+  "me": {
+   "mapNo": 20,
+   "name": "Eye of the Volcano",
+   "side": true,
+   "before": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.43,
+    "meanWin": 65
+   },
+   "after": {
+    "fights": 7,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 1,
+    "meanGap": 7.46,
+    "meanWin": 70.6
+   },
+   "off": [
+    "20-A-4 74.8/35.5"
+   ]
+  },
+  "mx": {
+   "mapNo": 20,
+   "name": "Volcano Lair",
+   "side": true,
+   "before": {
+    "fights": 4,
+    "inBand": 1,
+    "within10": 1,
+    "beyond20": 2,
+    "meanGap": 36.6,
+    "meanWin": 26.8
+   },
+   "after": {
+    "fights": 4,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 2.6,
+    "meanWin": 58.5
+   },
+   "off": []
+  }
+ }
+}

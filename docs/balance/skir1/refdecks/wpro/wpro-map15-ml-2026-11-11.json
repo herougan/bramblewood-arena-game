@@ -1,0 +1,85 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:49:46.815Z",
+ "map": {
+  "id": "ml",
+  "num": 15,
+  "name": "The Long Grass"
+ },
+ "pool": [
+  "bison-bulldozer",
+  "border-collie",
+  "cricket-drummer",
+  "fire-ant-raft",
+  "goose-sentry",
+  "hedge-weasel",
+  "land-tiller",
+  "mallard-halberdier",
+  "mouse-sapper",
+  "pronghorn-racer",
+  "shepherds-bark",
+  "squires-mount",
+  "thorn-shrike",
+  "truffle-piglet",
+  "war-hound",
+  "warhorse-charger"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "fire-ant-raft": 4,
+    "pronghorn-racer": 4,
+    "shepherds-bark": 3,
+    "thorn-shrike": 1,
+    "truffle-piglet": 4,
+    "warhorse-charger": 4
+   },
+   "score": 0.2167,
+   "ci": [
+    0.1676,
+    0.2658
+   ],
+   "refWins": 0.8056,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)"
+   ],
+   "apartFrom": [],
+   "steps": 1,
+   "games": 780,
+   "seconds": 59
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "bison-bulldozer": 4,
+    "border-collie": 4,
+    "fire-ant-raft": 4,
+    "goose-sentry": 3,
+    "pronghorn-racer": 1,
+    "warhorse-charger": 4
+   },
+   "score": 0.35,
+   "ci": [
+    0.2961,
+    0.4039
+   ],
+   "refWins": 0.625,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 2,
+   "games": 1020,
+   "seconds": 73
+  }
+ ]
+}

@@ -1,0 +1,88 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:07:58.635Z",
+ "map": {
+  "id": "mf",
+  "num": 1,
+  "name": "Thistlewood"
+ },
+ "pool": [
+  "ant-scout",
+  "bee-knight",
+  "bramble-sprout",
+  "chipmunk-cavalry",
+  "chipmunk-skirmisher",
+  "cottontail",
+  "cricket-drummer",
+  "dormouse",
+  "duck-paddler",
+  "hedgerow-shrew",
+  "honey-bee",
+  "house-cat",
+  "meadow-rabbit",
+  "moonlit-hare",
+  "pack-rat-looter",
+  "puddle-skimmer",
+  "robin-redbreast",
+  "soldier-ant",
+  "terrier-pup"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ant-scout": 4,
+    "bee-knight": 4,
+    "chipmunk-cavalry": 4,
+    "cottontail": 4,
+    "pack-rat-looter": 4
+   },
+   "score": 0.349,
+   "ci": [
+    0.2884,
+    0.4095
+   ],
+   "refWins": 0.5556,
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "economy (4 resource makers)"
+   ],
+   "apartFrom": [],
+   "steps": 2,
+   "games": 768,
+   "seconds": 75
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "ant-scout": 4,
+    "cottontail": 1,
+    "duck-paddler": 4,
+    "hedgerow-shrew": 4,
+    "pack-rat-looter": 3,
+    "puddle-skimmer": 4
+   },
+   "score": 0.2969,
+   "ci": [
+    0.2511,
+    0.3426
+   ],
+   "refWins": 0.4028,
+   "labels": [
+    "swarm (17 copies at 0 Lumber)"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 2,
+   "games": 880,
+   "seconds": 73
+  }
+ ]
+}

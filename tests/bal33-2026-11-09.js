@@ -50,7 +50,7 @@ const files = {}; ['space', 'space-r2', 'tune'].forEach(d => { const dir = path.
   fs.readdirSync(dir).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); (files[x.code] = files[x.code] || []).push(Object.assign({ dir: d }, x)); }); });
 const retuned = [...lines.entries()].filter(([, l]) => /2026-11-09 \(BAL33\): retuned/.test(l));
 ok(retuned.length === 5, 'BAL33 retuned the five Canopy fights: ' + retuned.length);
-for (const [code, l] of retuned) {
+for (const [code, l] of retuned) { if (/\(SKIR1( fit)?\): /.test(l)) continue; /* 2026-11-11 (SKIR1): rebuilt from the new map lists; tests/skir1-2026-11-11.js checks it now */
   if (/2026-11-10 \(BAL35\): retuned/.test(l)) continue; // 2026-11-10 (BAL35): retuned again (the worst road maps); tests/bal35-2026-11-10.js checks and pins it now
   ok(/^14-A-[1-5]$/.test(code), code + ': a Canopy fight');
   const now = fields(l), n0 = node(code), x = (files[code] || []).find(y => y.keep && keyOf(y.pick.deck) === keyOf(now.deck)), orig = (files[code] || []).find(y => y.dir === 'space');
@@ -72,7 +72,7 @@ for (const [code, l] of retuned) {
 }
 // ---- 4. pins ----
 const PINS = require('./bal33-pins-2026-11-09.json');
-for (const [code, p] of Object.entries(PINS)) { const f = fields(lines.get(code) || ''); if (/2026-11-10 \(BAL35\): retuned/.test(lines.get(code) || '')) continue; // 2026-11-10 (BAL35): pinned in tests/bal35-2026-11-10.js if retuned again
+for (const [code, p] of Object.entries(PINS)) { if (/\(SKIR1( fit)?\): /.test(lines.get(code) || "")) continue; /* 2026-11-11 (SKIR1): rebuilt, checked by tests/skir1-2026-11-11.js */ const f = fields(lines.get(code) || ''); if (/2026-11-10 \(BAL35\): retuned/.test(lines.get(code) || '')) continue; // 2026-11-10 (BAL35): pinned in tests/bal35-2026-11-10.js if retuned again
  
   ok(keyOf(f.deck) === keyOf(p.deck) && JSON.stringify(f.leaders) === JSON.stringify(p.leaders) && f.shield === p.shield, code + ': pinned deck / leader / Shield'); }
 // ---- 5. untouched, files, decisions ----

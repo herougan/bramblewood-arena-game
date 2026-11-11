@@ -1,0 +1,87 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:58:35.499Z",
+ "map": {
+  "id": "my",
+  "num": 14,
+  "name": "The Canopy"
+ },
+ "pool": [
+  "amber-cicada",
+  "ancient-sloth-titan",
+  "fishing-cat",
+  "hanging-loafer",
+  "hoopoe-herald",
+  "howler-monkey",
+  "jaguar-stalker",
+  "kinkajou-lurker",
+  "leaf-chameleon",
+  "leafcutter-gardener",
+  "lyrebird-mimic",
+  "mosquito-cloud",
+  "poison-dart-croaker",
+  "poison-dart-frog",
+  "pride-queen",
+  "slow-loris",
+  "toucan-courier",
+  "war-drum-mandrill"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "fishing-cat": 3,
+    "hanging-loafer": 4,
+    "leaf-chameleon": 1,
+    "poison-dart-frog": 4,
+    "war-drum-mandrill": 4
+   },
+   "score": 0.0052,
+   "ci": [
+    -0.0069,
+    0.0173
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)"
+   ],
+   "apartFrom": [],
+   "steps": 2,
+   "games": 848,
+   "seconds": 38
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "ancient-sloth-titan": 3,
+    "fishing-cat": 2,
+    "hanging-loafer": 4,
+    "jaguar-stalker": 3,
+    "mosquito-cloud": 4,
+    "slow-loris": 4
+   },
+   "score": 0.0781,
+   "ci": [
+    0.0427,
+    0.1135
+   ],
+   "refWins": 0.9583,
+   "labels": [
+    "midrange (average 0.9 Lumber)"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 2,
+   "games": 880,
+   "seconds": 66
+  }
+ ]
+}

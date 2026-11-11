@@ -48,7 +48,9 @@ function loadPending(){
     // 2026-11-08 (package BAL30, owner BAL29-1: update the prices and N now, no card refit): the cards the BAL29 A+B / Reach / Bulwark prices put over (or well under) budget wait for the owner's re-fit step
     try{ JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'bal30', 'verdict-change-2026-11-08.json'), 'utf8')).flips.forEach(c=> PEND.add(c.id)); }catch(e){}
     // 2026-11-09 (package BAL32, owner BAL31-1/2/3: prices only, no card refit): the cards the on-hit rider / enabler prices flip (Maps 0-20 and beyond) wait for the re-fit step
-    try{ const v = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'bal32', 'verdict-change-2026-11-09.json'), 'utf8')); (v.flips || []).concat(v.beyond || []).concat(v.unplaced || []).forEach(c=> PEND.add(c.id)); }catch(e){} } // 2026-11-09 (FIX11): + unplaced (unlisted cards judged at their proposed home map)
+    try{ const v = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'bal32', 'verdict-change-2026-11-09.json'), 'utf8')); (v.flips || []).concat(v.beyond || []).concat(v.unplaced || []).forEach(c=> PEND.add(c.id)); }catch(e){} // 2026-11-09 (FIX11): + unplaced (unlisted cards judged at their proposed home map)
+    // 2026-11-11 (package SKIR1, phase A): the cards SKIR1's map lists put over their first map's budget (owner's re-fit step, no stat change)
+    try{ JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'skir1', 'pending-budget-2026-11-11.json'), 'utf8')).cards.forEach(c=> PEND.add(c.id)); }catch(e){} }
   return PEND;
 }
 function budgetHold(id){

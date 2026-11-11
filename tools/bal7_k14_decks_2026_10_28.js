@@ -60,6 +60,10 @@ function uniqueOf(mapId){
     if(s.kind === 'pack' && s.map === mapId) set.add(c.id);
     if(s.kind === 'map' && s.id === mapId) set.add(c.id); });
   (m.nodes || []).forEach(n=>{ if(n.showcase && D[n.showcase]) set.add(n.showcase); });
+  // 2026-11-11 (package SKIR1): since PACK1 (2026-10-28) a basic-pack card's map is its first map list (canonical/map-pools.json), not its old
+  // source.map: a card first listed on this map (cardFirstMapList) is the map's own too, so a map's new cards count as map-unique and the cards it
+  // carries from earlier maps do not (SKIR1's lists moved most cards off their source.map; read only that way, Ashen Spurn had 2 own cards)
+  Object.values(D).forEach(c=>{ if(!c || c.token || c.test) return; let f = null; try{ f = G.cardFirstMapList(c); }catch(e){} if(f && f.loc === mapId) set.add(c.id); });
   // an enemy-only card (no source: no player can own it) is unique to the map when only this map's fights play it
   const used = {}; MAPS.filter(x=> !x.reserved && !x.tower).forEach(x=> (x.nodes || []).forEach(n=> Object.keys(n.deck || {}).forEach(id=> (used[id] = used[id] || new Set()).add(x.id))));
   Object.entries(used).forEach(([id, ms])=>{ const c = D[id]; if(!c || c.token || c.test || (c.source && c.source.kind) || c.rarity === 'starter') return; if([...ms].every(x=> x === mapId || (m.sub && x === m.parent))) set.add(id); });

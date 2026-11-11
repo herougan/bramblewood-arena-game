@@ -59,8 +59,12 @@ ok(pools.maps.m7.cards.includes('sea-bass'), '3 on Map 10\'s MAP list (canonical
   ok(on.length === 1 && on[0] === 'm7', `3 on no other list, no SPECIAL, no submap (${on})`); }
 ok(!Object.values(extras).some(v=> Array.isArray(v) && v.includes('sea-bass')), '3 in no pack extras');
 { const e = J('canonical/map-review.json').maps.m7.chosen.find(x=> x.id === 'sea-bass'); ok(e && e.by === 'owner' && /CONTENT19/.test(e.why), '3 Map 10\'s review (canonical/map-review.json m7 chosen) has it as the owner\'s ask (content4 / content10 want a review row for every list card)'); }{ const f = G.cardFirstMapList(def); ok(f && f.n === 10 && f.loc === 'm7', `3 its first map list is Map 10 (${JSON.stringify(f)})`); ok(G.basicPackTierOf(def) === 2, `3 a Pack 2 card (${G.basicPackTierOf(def)})`); }
-ok(!rd('arena_app.js').includes('sea-bass'), '3 in no skirmish deck or map block of arena_app.js (a later package rebuilds the skirmishes)');
-ok(!rd('canonical/pro-skirmishes.json').includes('sea-bass'), '3 in no PRO skirmish');
+// 2026-11-11 (SKIR1): the later package came: SKIR1 rebuilt the skirmishes from the new lists, so the Sea Bass may sit in Map 10's (m7) decks
+// (lines SKIR1 rebuilt) and Map 10's PRO decks, nowhere else
+{ const lines = rd('arena_app.js').split('\n').filter(l=> l.includes('"sea-bass"'));
+  ok(lines.every(l=> /^\s*\{ ?key:\s*"10-\d+"/.test(l) && /\(SKIR1( fit)?\)/.test(l)), `3 in no skirmish deck or map block of arena_app.js but Map 10's, rebuilt by SKIR1 (${lines.length} lines)`); }
+{ const P = J('canonical/pro-skirmishes.json').maps, on = Object.keys(P).filter(k=> JSON.stringify([P[k].pro, P[k].bpro, P[k].wpro]).includes('sea-bass'));
+  ok(on.every(k=> k === 'm7'), `3 in no PRO skirmish but Map 10's (SKIR1 rebuilt them; ${on.join(', ') || 'none'})`); }
 { const m = /"m7": \{"cards": \[([^\]]*)\]/.exec(rd('index.html')); ok(m && /"sea-bass"/.test(m[1]), '3 the build carries it on Map 10\'s list (index.html)'); }
 
 // ---- 4. the skills in the engine --------------------------------------------------------------------------------------------------------

@@ -1,0 +1,84 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-10T22:53:18.390Z",
+ "map": {
+  "id": "md",
+  "num": 18,
+  "name": "The Glass Dunes"
+ },
+ "pool": [
+  "antlion-pit",
+  "armadillo-guard",
+  "caustic-scorpion",
+  "dune-jackal",
+  "dune-jackal-scout",
+  "dust-hyena",
+  "fennec-fox",
+  "glasswing-moth",
+  "horned-lizard",
+  "meerkat-sentry",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "savanna-cheetah",
+  "stonedrop-vulture",
+  "termite-forager"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "dune-jackal": 4,
+    "dune-jackal-scout": 4,
+    "meerkat-sentry": 4,
+    "sand-widow": 4,
+    "sandfish": 4
+   },
+   "score": 0.2917,
+   "ci": [
+    0.242,
+    0.3413
+   ],
+   "refWins": 0.5694,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)"
+   ],
+   "apartFrom": [],
+   "steps": 2,
+   "games": 900,
+   "seconds": 31
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "caustic-scorpion": 4,
+    "dune-jackal": 4,
+    "fennec-fox": 4,
+    "sand-widow": 4,
+    "termite-forager": 4
+   },
+   "score": 0.225,
+   "ci": [
+    0.1813,
+    0.2687
+   ],
+   "refWins": 0.6944,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.0)",
+    "poison x8"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 2,
+   "games": 920,
+   "seconds": 32
+  }
+ ]
+}

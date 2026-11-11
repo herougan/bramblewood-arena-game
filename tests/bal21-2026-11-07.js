@@ -30,7 +30,7 @@ const tdirs = ['tune', 'tune-r2'].map(d => path.join(ROOT, 'docs', 'balance', 'b
 const tune = {}; tdirs.forEach(d => fs.readdirSync(d).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(d, f), 'utf8')); if (x.keep) tune[x.code] = x; }));
 const bal21Lines = [...lines.entries()].filter(([, l]) => /2026-11-07 \(BAL21\)/.test(l));
 ok(bal21Lines.length >= 1, 'BAL21 retuned some road fights: ' + bal21Lines.length);
-for (const [code, l] of bal21Lines) {
+for (const [code, l] of bal21Lines) { if (/\(SKIR1( fit)?\): /.test(l)) continue; /* 2026-11-11 (SKIR1): rebuilt from the new map lists; tests/skir1-2026-11-11.js checks it now */
   if (/2026-11-10 \(BAL45\): retuned/.test(l)) continue; // 2026-11-10 (BAL45): retuned again (3-7, 8-4, 8-7, 11-9, 15-3); tests/bal45-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL44\): retuned/.test(l)) continue; // 2026-11-10 (BAL44): retuned again (6-1, 6-4, 6-8; Sable Swampmire); tests/bal44-2026-11-10.js checks and pins it now
   if (/2026-11-10 \(BAL42\): retuned/.test(l)) continue; // 2026-11-10 (BAL42): retuned again (7-1, 18-6); tests/bal42-2026-11-10.js checks and pins it now
@@ -70,6 +70,8 @@ const plan = J('docs/balance/bal16/refdecks-plan-2026-11-05.json');
 const fixes = fs.existsSync(proDir) ? fs.readdirSync(proDir).filter(f => f.endsWith('.json')).map(f => JSON.parse(fs.readFileSync(path.join(proDir, f), 'utf8'))) : [];
 ok(fixes.length >= 7, 'the seven flagged PRO decks were worked on: ' + fixes.map(x => x.id).join(', '));
 for (const x of fixes) {
+  // 2026-11-11 (SKIR1): a map whose PRO set SKIR1 searched again on its 2026-11-11 list (tests/deck1, pro, skill2 check it) drops BAL21's pins
+  if ((pro.maps[x.map].pro || []).some(y => ((y.source || {}).package === 'SKIR1') || y.kept1)) continue;
   const ent = pro.maps[x.map], e = (ent.pro || []).find(y => y.id === x.id); ok(e, x.id + ': still in the file'); if (!e) continue;
   if (!x.keep) { ok(!e.bal21, x.id + ': not kept, no bal21 note'); continue; }
   ok(/BAL21/.test(e.bal21 || '') && JSON.stringify(e.deck) === JSON.stringify(x.pick.deck), x.id + ': the kept deck with its dated bal21 note');
@@ -107,7 +109,7 @@ ok(fightsSeen > 200, 'reference decks checked on ' + fightsSeen + ' fights');
 // ---- 4. late-priced cards ----
 const DK = require(path.join(ROOT, 'tools', 'bal13', 'decks_2026_11_02.js')), pl4 = DK.plan();
 ok(pl4.rows.length === 0, 'no deck holds a late-priced card before its map: ' + pl4.rows.map(r => r.where).join(', '));
-['14-A-PRO-2'].forEach(id => { const e = pro.maps.my.pro.find(y => y.id === id); ok(e && !e.deck['hercules-beetle'] && /BAL21/.test(e.bal13 || ''), id + ': Hercules Beetle swapped out, dated note'); });
+['14-A-PRO-2'].filter(() => !(pro.maps.my.pro || []).some(y => (y.source || {}).package === 'SKIR1' || y.kept1) /* 2026-11-11 (SKIR1) */).forEach(id => { const e = pro.maps.my.pro.find(y => y.id === id); ok(e && !e.deck['hercules-beetle'] && /BAL21/.test(e.bal13 || ''), id + ': Hercules Beetle swapped out, dated note'); });
 { const e = (pro.maps.my.wpro || []).find(y => y.id === '14-A-WPRO-2'); ok(e && !e.deck['hercules-beetle'], '14-A-WPRO-2: Hercules Beetle swapped out'); }
 
 // ---- 5. skill costs ----

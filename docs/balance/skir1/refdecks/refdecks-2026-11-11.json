@@ -1,0 +1,4137 @@
+{
+ "about": "SKIR1 reference decks per map (apply report; tools/skir1/refdecks_2026_11_11.js)",
+ "maps": [
+  {
+   "map": "m1",
+   "num": 0,
+   "name": "Bramblewood Outskirts",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.6181,
+     "why": "under 76%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "economy",
+     "score": 0.5625,
+     "why": "under 73.2%"
+    },
+    {
+     "focus": "big",
+     "score": 0.4306,
+     "why": "under 73.2%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "0-BPRO-1",
+    "dropped": [
+     "chipmunk-skirmisher: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))",
+     "terrier-pup: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))"
+    ]
+   },
+   "proOld1": {
+    "id": "0-PRO-1",
+    "dropped": [
+     "chipmunk-skirmisher: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+     "terrier-pup: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+     "4 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "0-PRO-1",
+     "focus": "family:flying",
+     "score": 0.8819,
+     "labels": [
+      "swarm (20 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "0-PRO-2",
+     "focus": "open",
+     "score": 0.7708,
+     "labels": [
+      "swarm (20 copies at 0 Lumber)"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "0-BPRO-1",
+     "focus": "swarm",
+     "score": 0.9097,
+     "labels": [
+      "swarm (20 copies at 0 Lumber)",
+      "swarm x8"
+     ]
+    },
+    {
+     "id": "0-BPRO-2",
+     "focus": "open",
+     "score": 0.9028,
+     "labels": [
+      "swarm (20 copies at 0 Lumber)"
+     ]
+    },
+    {
+     "id": "0-BPRO-3",
+     "focus": "family:flying",
+     "score": 0.8264,
+     "labels": [
+      "swarm (20 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "0-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.0347,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "0-WPRO-2",
+     "plan": "low",
+     "score": 0.1597,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mo",
+   "num": 0,
+   "name": "The Old Bramble",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [],
+   "proOld1": {
+    "id": "0-B-PRO-1",
+    "dropped": [
+     "9 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "0-B-PRO-1",
+     "focus": "swarm",
+     "score": 0.8631,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "spite x7"
+     ]
+    },
+    {
+     "id": "0-B-PRO-2",
+     "focus": "family:spite",
+     "score": 0.8274,
+     "labels": [
+      "spite x10"
+     ]
+    },
+    {
+     "id": "0-B-PRO-3",
+     "focus": "open",
+     "score": 0.7321,
+     "labels": [
+      "midrange (average 1.0 Lumber)"
+     ]
+    },
+    {
+     "id": "0-B-PRO-4",
+     "focus": "big",
+     "score": 0.7262,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.1)",
+      "spite x6"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "0-B-BPRO-1",
+     "focus": "family:spite",
+     "score": 0.622,
+     "labels": [
+      "spite x11"
+     ]
+    },
+    {
+     "id": "0-B-BPRO-2",
+     "focus": "big",
+     "score": 0.5952,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.2)",
+      "spite x15"
+     ]
+    },
+    {
+     "id": "0-B-BPRO-3",
+     "focus": "open",
+     "score": 0.5119,
+     "labels": [
+      "economy (4 resource makers)",
+      "spite x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "0-B-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.1548,
+     "labels": [
+      "big (4 copies at 2+ Lumber, average 1.4)",
+      "economy (4 resource makers)",
+      "spite x6"
+     ]
+    },
+    {
+     "id": "0-B-WPRO-2",
+     "plan": "low",
+     "score": 0.2262,
+     "labels": [
+      "big (4 copies at 2+ Lumber, average 1.2)",
+      "economy (4 resource makers)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mf",
+   "num": 1,
+   "name": "Thistlewood",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "family:night",
+     "score": 0.5365,
+     "why": "under 67.8%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "1-BPRO-1",
+    "dropped": [
+     "field-mouse: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+     "slow-worm: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "1-PRO-1",
+    "vsNewBest": {
+     "p": 0.838,
+     "n": 400,
+     "ci": [
+      0.798,
+      0.87
+     ],
+     "elo": 285,
+     "eloCI": [
+      239,
+      331
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "1-PRO-1",
+     "focus": "open",
+     "score": 0.8281,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "1-PRO-2",
+     "focus": "economy",
+     "score": 0.8177,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "economy (6 resource makers)"
+     ]
+    },
+    {
+     "id": "1-PRO-3",
+     "focus": "family:flying",
+     "score": 0.8073,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "1-BPRO-1",
+     "focus": "family:night",
+     "score": 0.8802,
+     "labels": [
+      "swarm (20 copies at 0 Lumber)",
+      "night x8"
+     ]
+    },
+    {
+     "id": "1-BPRO-2",
+     "focus": "family:flying",
+     "score": 0.8281,
+     "labels": [
+      "swarm (17 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "1-BPRO-3",
+     "focus": "economy",
+     "score": 0.7917,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "economy (6 resource makers)",
+      "night x6"
+     ]
+    },
+    {
+     "id": "1-BPRO-4",
+     "focus": "open",
+     "score": 0.7552,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "1-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.2969,
+     "labels": [
+      "swarm (17 copies at 0 Lumber)"
+     ]
+    },
+    {
+     "id": "1-WPRO-2",
+     "plan": "low",
+     "score": 0.349,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "economy (4 resource makers)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mq",
+   "num": 1,
+   "name": "Clovermead",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "1-A-BPRO-1",
+    "dropped": [
+     "bramble-sprout: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "1-A-PRO-1",
+    "dropped": [
+     "7 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "1-A-PRO-1",
+     "focus": "open",
+     "score": 0.9219,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)"
+     ]
+    },
+    {
+     "id": "1-A-PRO-2",
+     "focus": "family:flying",
+     "score": 0.9167,
+     "labels": [
+      "swarm (20 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "1-A-PRO-3",
+     "focus": "family:guard",
+     "score": 0.9167,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "guard x8"
+     ]
+    },
+    {
+     "id": "1-A-PRO-4",
+     "focus": "big",
+     "score": 0.8698,
+     "labels": [
+      "big (11 copies at 1+ Lumber, average 0.6)",
+      "flying x6"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "1-A-BPRO-1",
+     "focus": "family:flying",
+     "score": 0.9219,
+     "labels": [
+      "swarm (15 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "1-A-BPRO-2",
+     "focus": "big",
+     "score": 0.8906,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)"
+     ]
+    },
+    {
+     "id": "1-A-BPRO-3",
+     "focus": "swarm",
+     "score": 0.8333,
+     "labels": [
+      "swarm (20 copies at 0 Lumber)"
+     ]
+    },
+    {
+     "id": "1-A-BPRO-4",
+     "focus": "open",
+     "score": 0.7969,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "1-A-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.2083,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.8)"
+     ]
+    },
+    {
+     "id": "1-A-WPRO-2",
+     "plan": "low",
+     "score": 0.2552,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mb",
+   "num": 2,
+   "name": "Pebble Beach",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "2-BPRO-1",
+    "dropped": [
+     "cricket-drummer: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "2-PRO-1",
+    "vsNewBest": {
+     "p": 0.34,
+     "n": 400,
+     "ci": [
+      0.295,
+      0.388
+     ],
+     "elo": -115,
+     "eloCI": [
+      -151,
+      -79
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "2-PRO-1",
+     "focus": "open",
+     "score": 0.8698,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "rally x8"
+     ]
+    },
+    {
+     "id": "2-PRO-2",
+     "focus": "family:tide",
+     "score": 0.7917,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "tide x8",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "2-PRO-3",
+     "focus": "family:flying",
+     "score": 0.7917,
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "flying x10"
+     ]
+    },
+    {
+     "id": "2-PRO-4",
+     "focus": "economy",
+     "score": 0.6719,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "economy (6 resource makers)"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "2-BPRO-1",
+     "focus": "economy",
+     "score": 0.7656,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "economy (11 resource makers)",
+      "tide x9",
+      "armor x8"
+     ]
+    },
+    {
+     "id": "2-BPRO-2",
+     "focus": "family:tide",
+     "score": 0.7656,
+     "labels": [
+      "swarm (15 copies at 0 Lumber)",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "2-BPRO-3",
+     "focus": "open",
+     "score": 0.7396,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "2-BPRO-4",
+     "focus": "family:armor",
+     "score": 0.7083,
+     "labels": [
+      "swarm (15 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "armor x9",
+      "tide x7"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "2-WPRO-1",
+     "plan": "low",
+     "score": 0.3646,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "economy (4 resource makers)",
+      "flying x12"
+     ]
+    },
+    {
+     "id": "2-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.4115,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "economy (4 resource makers)",
+      "flying x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mg",
+   "num": 2,
+   "name": "Smugglers' Grotto",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "family:armor",
+     "score": 0.4107,
+     "why": "under 55.8%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "2-B-BPRO-1",
+    "dropped": [
+     "conch-crawler: not on the map's list (held, not listed)",
+     "conch-herald: not on the map's list (held, not listed)",
+     "driftwood-crab: not on the map's list (held, not listed)",
+     "gallery-orb-weaver: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))"
+    ]
+   },
+   "proOld1": {
+    "id": "2-B-PRO-1",
+    "dropped": [
+     "pelican-diver: not obtainable (not in the progression plan or an earlier map's cards)",
+     "0 copies of the map's list (under 10)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): pelican-diver"
+    ]
+   },
+   "pro": [
+    {
+     "id": "2-B-PRO-1",
+     "focus": "family:tide",
+     "score": 0.7083,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "2-B-PRO-2",
+     "focus": "economy",
+     "score": 0.6964,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "economy (9 resource makers)",
+      "night x8"
+     ]
+    },
+    {
+     "id": "2-B-PRO-3",
+     "focus": "open",
+     "score": 0.6369,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "tide x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "2-B-BPRO-1",
+     "focus": "family:armor",
+     "score": 0.8185,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "armor x8",
+      "evasion x8"
+     ]
+    },
+    {
+     "id": "2-B-BPRO-2",
+     "focus": "economy",
+     "score": 0.7083,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "economy (12 resource makers)",
+      "evasion x6",
+      "night x6"
+     ]
+    },
+    {
+     "id": "2-B-BPRO-3",
+     "focus": "family:tide",
+     "score": 0.7083,
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "economy (8 resource makers)",
+      "armor x10",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "2-B-BPRO-4",
+     "focus": "open",
+     "score": 0.7024,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "economy (5 resource makers)",
+      "tide x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "2-B-WPRO-1",
+     "plan": "low",
+     "score": 0.131,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.8)",
+      "tide x12",
+      "spite x8"
+     ]
+    },
+    {
+     "id": "2-B-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2321,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.2)",
+      "tide x12",
+      "guard x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mp",
+   "num": 2,
+   "name": "Lilypad Reach",
+   "bproLeft": [
+    {
+     "focus": "family:guard",
+     "score": 0.65,
+     "why": "under 65.8%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.7125,
+     "why": "under 74.2%"
+    },
+    {
+     "focus": "open",
+     "score": 0.7125,
+     "why": "under 74.2%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "2-A-BPRO-1",
+    "dropped": [
+     "alley-cat: not on the map's list (held, not listed)",
+     "water-vole: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "2-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.57,
+     "n": 400,
+     "ci": [
+      0.521,
+      0.618
+     ],
+     "elo": 49,
+     "eloCI": [
+      15,
+      83
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "2-A-PRO-1",
+     "focus": "family:tide",
+     "score": 0.8917,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "tide x12",
+      "poison x8"
+     ]
+    },
+    {
+     "id": "2-A-PRO-2",
+     "focus": "family:guard",
+     "score": 0.7833,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "guard x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "2-A-BPRO-1",
+     "focus": "family:tide",
+     "score": 0.8083,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "2-A-BPRO-2",
+     "focus": "open",
+     "score": 0.7917,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)"
+     ]
+    },
+    {
+     "id": "2-A-BPRO-3",
+     "focus": "big",
+     "score": 0.7583,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "2-A-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.1333,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.2)",
+      "guard x10",
+      "armor x8"
+     ]
+    },
+    {
+     "id": "2-A-WPRO-2",
+     "plan": "low",
+     "score": 0.2375,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "tide x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mc",
+   "num": 3,
+   "name": "Gannet Cliffs",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "economy",
+     "score": 0.5583,
+     "why": "under 68.3%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "3-BPRO-1",
+    "vsNewBest": {
+     "p": 0.343,
+     "n": 400,
+     "ci": [
+      0.298,
+      0.39
+     ],
+     "elo": -113,
+     "eloCI": [
+      -149,
+      -77
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "3-PRO-1",
+    "vsNewBest": {
+     "p": 0.775,
+     "n": 400,
+     "ci": [
+      0.732,
+      0.813
+     ],
+     "elo": 215,
+     "eloCI": [
+      174,
+      256
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "3-PRO-1",
+     "focus": "family:tide",
+     "score": 0.8333,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "economy (4 resource makers)",
+      "armor x8",
+      "guard x8"
+     ]
+    },
+    {
+     "id": "3-PRO-2",
+     "focus": "open",
+     "score": 0.7875,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "3-PRO-3",
+     "focus": "family:flying",
+     "score": 0.7708,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.0)",
+      "economy (4 resource makers)",
+      "flying x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "3-BPRO-1",
+     "focus": "family:flying",
+     "score": 0.8708,
+     "labels": [
+      "big (12 copies at 1 Lumber, average 0.6)",
+      "flying x12",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "3-BPRO-2",
+     "focus": "open",
+     "score": 0.7875,
+     "labels": [
+      "big (15 copies at 1+ Lumber, average 0.8)",
+      "flying x9"
+     ]
+    },
+    {
+     "id": "3-BPRO-3",
+     "focus": "economy",
+     "score": 0.7667,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "economy (8 resource makers)",
+      "flying x16"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "3-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.2208,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "armor x8",
+      "guard x8"
+     ]
+    },
+    {
+     "id": "3-WPRO-2",
+     "plan": "low",
+     "score": 0.2917,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.2)",
+      "flying x16",
+      "strike-first x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m2",
+   "num": 4,
+   "name": "Sunken Hollow",
+   "bproLeft": [
+    {
+     "focus": "family:guard",
+     "score": 0.5885,
+     "why": "under 63.7%"
+    }
+   ],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "4-BPRO-1",
+    "dropped": [
+     "field-vole: not on the map's list (first obtainable on Map 7)",
+     "pyrenean-desman: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "4-PRO-1",
+    "dropped": [
+     "8 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "4-PRO-1",
+     "focus": "family:tide",
+     "score": 0.8229,
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "tide x13"
+     ]
+    },
+    {
+     "id": "4-PRO-2",
+     "focus": "economy",
+     "score": 0.7969,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "economy (6 resource makers)",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "4-PRO-3",
+     "focus": "family:flying",
+     "score": 0.7604,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "tide x8",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "4-PRO-4",
+     "focus": "open",
+     "score": 0.7083,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "flying x9",
+      "tide x6"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "4-BPRO-1",
+     "focus": "big",
+     "score": 0.7865,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "tide x10"
+     ]
+    },
+    {
+     "id": "4-BPRO-2",
+     "focus": "open",
+     "score": 0.7813,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "4-BPRO-3",
+     "focus": "family:tide",
+     "score": 0.7604,
+     "labels": [
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "economy (4 resource makers)",
+      "tide x12"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "4-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.276,
+     "labels": [
+      "big (10 copies at 1 Lumber, average 0.5)",
+      "guard x8",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "4-WPRO-2",
+     "plan": "low",
+     "score": 0.3229,
+     "labels": [
+      "big (16 copies at 1 Lumber, average 0.8)",
+      "tide x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mw",
+   "num": 5,
+   "name": "Gatorback Swamp",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "open",
+     "score": 0.6583,
+     "why": "under 68.3%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "5-BPRO-1",
+    "dropped": [
+     "box-turtle: not on the map's list (held, not listed)",
+     "crocodile-ambusher: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+     "grass-viper: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))"
+    ]
+   },
+   "proOld1": {
+    "id": "5-PRO-1",
+    "dropped": [
+     "4 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "5-PRO-1",
+     "focus": "big",
+     "score": 0.8333,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "5-PRO-2",
+     "focus": "family:tide",
+     "score": 0.7667,
+     "labels": [
+      "swarm (17 copies at 0 Lumber)",
+      "tide x8",
+      "bleed x7"
+     ]
+    },
+    {
+     "id": "5-PRO-3",
+     "focus": "family:armor",
+     "score": 0.7083,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "bleed x10",
+      "armor x10"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "5-BPRO-1",
+     "focus": "family:bleed",
+     "score": 0.9125,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "bleed x8"
+     ]
+    },
+    {
+     "id": "5-BPRO-2",
+     "focus": "open",
+     "score": 0.9,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "bleed x10"
+     ]
+    },
+    {
+     "id": "5-BPRO-3",
+     "focus": "family:tide",
+     "score": 0.875,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "5-BPRO-4",
+     "focus": "big",
+     "score": 0.8417,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "bleed x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "5-WPRO-1",
+     "plan": "low",
+     "score": 0.1083,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.4)",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "5-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2583,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.6)",
+      "armor x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "ms",
+   "num": 5,
+   "name": "The Sunken Grove",
+   "bproLeft": [
+    {
+     "focus": "family:armor",
+     "score": 0.5833,
+     "why": "under 73.7%"
+    },
+    {
+     "focus": "big",
+     "score": 0.1548,
+     "why": "under 73.7%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.2917,
+     "why": "under 54.1%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "5-A-BPRO-1",
+    "dropped": [
+     "alligator-gar: not on the map's list (held, not listed)",
+     "mangrove-mudskipper: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "5-A-PRO-1",
+    "dropped": [
+     "8 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "5-A-PRO-1",
+     "focus": "family:armor",
+     "score": 0.6905,
+     "labels": [
+      "bleed x10",
+      "armor x8"
+     ]
+    },
+    {
+     "id": "5-A-PRO-2",
+     "focus": "open",
+     "score": 0.6786,
+     "labels": [
+      "midrange (average 0.4 Lumber)"
+     ]
+    },
+    {
+     "id": "5-A-PRO-3",
+     "focus": "family:tide",
+     "score": 0.6667,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "tide x10"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "5-A-BPRO-1",
+     "focus": "open",
+     "score": 0.8869,
+     "labels": [
+      "midrange (average 0.6 Lumber)"
+     ]
+    },
+    {
+     "id": "5-A-BPRO-2",
+     "focus": "family:heal",
+     "score": 0.6607,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "heal x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "5-A-WPRO-1",
+     "plan": "low",
+     "score": 0.0119,
+     "labels": [
+      "big (12 copies at 2+ Lumber, average 1.8)"
+     ]
+    },
+    {
+     "id": "5-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.1548,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "guard x8",
+      "poison x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m8",
+   "num": 6,
+   "name": "Sable Swampmire",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.7083,
+     "why": "under 71.7%"
+    }
+   ],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "6-BPRO-1",
+    "dropped": [
+     "fire-ant-raft: not on the map's list (held, not listed)",
+     "raven-scout: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): raven-scout"
+    ]
+   },
+   "proOld1": {
+    "id": "6-PRO-1",
+    "dropped": [
+     "raven-scout: not obtainable (not in the progression plan or an earlier map's cards)",
+     "5 copies of the map's list (under 10)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): marsh-harrier, raven-scout"
+    ]
+   },
+   "pro": [
+    {
+     "id": "6-PRO-1",
+     "focus": "family:poison",
+     "score": 0.928,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "poison x10"
+     ]
+    },
+    {
+     "id": "6-PRO-2",
+     "focus": "open",
+     "score": 0.9205,
+     "labels": [
+      "economy (4 resource makers)",
+      "guard x7"
+     ]
+    },
+    {
+     "id": "6-PRO-3",
+     "focus": "economy",
+     "score": 0.8977,
+     "labels": [
+      "economy (6 resource makers)"
+     ]
+    },
+    {
+     "id": "6-PRO-4",
+     "focus": "family:flying",
+     "score": 0.8485,
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "flying x9",
+      "bleed x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "6-BPRO-1",
+     "focus": "family:poison",
+     "score": 0.8674,
+     "labels": [
+      "poison x11",
+      "flying x7"
+     ]
+    },
+    {
+     "id": "6-BPRO-2",
+     "focus": "family:flying",
+     "score": 0.8258,
+     "labels": [
+      "flying x11",
+      "poison x9"
+     ]
+    },
+    {
+     "id": "6-BPRO-3",
+     "focus": "open",
+     "score": 0.7538,
+     "labels": [
+      "midrange (average 0.8 Lumber)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "6-WPRO-1",
+     "plan": "low",
+     "score": 0.1288,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "6-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2689,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "poison x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mu",
+   "num": 7,
+   "name": "The Morel Hollow",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.2454,
+     "why": "under 55.8%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.3333,
+     "why": "under 50.7%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "7-BPRO-1",
+    "dropped": [
+     "dung-beetle: not on the map's list (held, not listed)",
+     "slow-worm: not on the map's list (held, not listed)",
+     "worker-ant: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "7-PRO-1",
+    "dropped": [
+     "owl-nightwatch: not obtainable (not in the progression plan or an earlier map's cards)",
+     "4 copies of the map's list (under 10)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): woodcock-lookout"
+    ]
+   },
+   "pro": [
+    {
+     "id": "7-PRO-1",
+     "focus": "family:flying",
+     "score": 0.6574,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "7-PRO-2",
+     "focus": "open",
+     "score": 0.6296,
+     "labels": [
+      "midrange (average 0.4 Lumber)"
+     ]
+    },
+    {
+     "id": "7-PRO-3",
+     "focus": "family:poison",
+     "score": 0.5093,
+     "labels": [
+      "poison x9"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "7-BPRO-1",
+     "focus": "family:guard",
+     "score": 0.7083,
+     "labels": [
+      "guard x8"
+     ]
+    },
+    {
+     "id": "7-BPRO-2",
+     "focus": "open",
+     "score": 0.6667,
+     "labels": [
+      "swarm x7"
+     ]
+    },
+    {
+     "id": "7-BPRO-3",
+     "focus": "family:flying",
+     "score": 0.5926,
+     "labels": [
+      "flying x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "7-WPRO-1",
+     "plan": "low",
+     "score": 0.0139,
+     "labels": [
+      "big (7 copies at 2+ Lumber, average 1.3)",
+      "swarm x6"
+     ]
+    },
+    {
+     "id": "7-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.0231,
+     "labels": [
+      "big (12 copies at 2+ Lumber, average 1.8)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mz",
+   "num": 7,
+   "name": "The Mycelium Deep",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.4948,
+     "why": "under 73%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.6771,
+     "why": "under 75.6%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "7-A-BPRO-1",
+    "dropped": [
+     "owl-nightwatch: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))"
+    ]
+   },
+   "proOld1": {
+    "id": "7-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.665,
+     "n": 400,
+     "ci": [
+      0.617,
+      0.709
+     ],
+     "elo": 119,
+     "eloCI": [
+      83,
+      155
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "7-A-PRO-1",
+     "focus": "family:heal",
+     "score": 0.9063,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "heal x8"
+     ]
+    },
+    {
+     "id": "7-A-PRO-2",
+     "focus": "family:armor",
+     "score": 0.8594,
+     "labels": [
+      "armor x8",
+      "swarm x8"
+     ]
+    },
+    {
+     "id": "7-A-PRO-3",
+     "focus": "open",
+     "score": 0.8438,
+     "labels": [
+      "swarm x7"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "7-A-BPRO-1",
+     "focus": "open",
+     "score": 0.8802,
+     "labels": [
+      "midrange (average 0.6 Lumber)"
+     ]
+    },
+    {
+     "id": "7-A-BPRO-2",
+     "focus": "family:armor",
+     "score": 0.875,
+     "labels": [
+      "armor x8",
+      "swarm x8"
+     ]
+    },
+    {
+     "id": "7-A-BPRO-3",
+     "focus": "swarm",
+     "score": 0.8646,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "7-A-WPRO-1",
+     "plan": "low",
+     "score": 0.0469,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "swarm x15"
+     ]
+    },
+    {
+     "id": "7-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2396,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.4)",
+      "swarm x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m4",
+   "num": 8,
+   "name": "Caves & Alcoves",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.6402,
+     "why": "under 82.4%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.7121,
+     "why": "under 71.4%"
+    }
+   ],
+   "wproLeft": [
+    {
+     "plan": "top-heavy",
+     "score": 0.5606,
+     "why": "not weak enough"
+    }
+   ],
+   "bproOld1": {
+    "id": "8-BPRO-1",
+    "vsNewBest": {
+     "p": 0.673,
+     "n": 400,
+     "ci": [
+      0.625,
+      0.717
+     ],
+     "elo": 125,
+     "eloCI": [
+      89,
+      161
+     ]
+    },
+    "replaced": true
+   },
+   "proOld1": {
+    "id": "8-PRO-1",
+    "dropped": [
+     "hollow-belly-rat: not obtainable (not in the progression plan or an earlier map's cards)",
+     "6 copies of the map's list (under 10)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): hollow-belly-rat"
+    ]
+   },
+   "pro": [
+    {
+     "id": "8-PRO-1",
+     "focus": "family:flying",
+     "score": 0.8636,
+     "labels": [
+      "swarm (17 copies at 0 Lumber)",
+      "flying x10"
+     ]
+    },
+    {
+     "id": "8-PRO-2",
+     "focus": "family:armor",
+     "score": 0.8182,
+     "labels": [
+      "economy (4 resource makers)",
+      "armor x8"
+     ]
+    },
+    {
+     "id": "8-PRO-3",
+     "focus": "open",
+     "score": 0.7955,
+     "labels": [
+      "economy (4 resource makers)",
+      "armor x6"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "8-BPRO-1",
+     "focus": "family:flying",
+     "score": 0.9735,
+     "labels": [
+      "economy (4 resource makers)",
+      "flying x11"
+     ]
+    },
+    {
+     "id": "8-BPRO-2",
+     "focus": "family:armor",
+     "score": 0.9432,
+     "labels": [
+      "economy (4 resource makers)",
+      "armor x8",
+      "guard x8"
+     ]
+    },
+    {
+     "id": "8-BPRO-3",
+     "focus": "open",
+     "score": 0.839,
+     "labels": [
+      "flying x10",
+      "night x6"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "8-WPRO-1",
+     "plan": "low",
+     "score": 0.3182,
+     "labels": [
+      "big (7 copies at 2+ Lumber, average 1.3)",
+      "armor x7",
+      "guard x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mn",
+   "num": 8,
+   "name": "The Glimmer Depths",
+   "bproLeft": [
+    {
+     "focus": "open",
+     "score": 0.5833,
+     "why": "under 64.2%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "family:armor",
+     "score": 0.6726,
+     "why": "under 67.7%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "8-A-BPRO-1",
+    "dropped": [
+     "badger-stonemason: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+     "prospector-mole: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): badger-stonemason, prospector-mole"
+    ]
+   },
+   "proOld1": {
+    "id": "8-A-PRO-1",
+    "dropped": [
+     "7 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "8-A-PRO-1",
+     "focus": "family:flying",
+     "score": 0.8274,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "flying x19"
+     ]
+    },
+    {
+     "id": "8-A-PRO-2",
+     "focus": "open",
+     "score": 0.8036,
+     "labels": [
+      "economy (4 resource makers)",
+      "flying x12"
+     ]
+    },
+    {
+     "id": "8-A-PRO-3",
+     "focus": "big",
+     "score": 0.744,
+     "labels": [
+      "big (13 copies at 1+ Lumber, average 0.7)",
+      "flying x6"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "8-A-BPRO-1",
+     "focus": "family:flying",
+     "score": 0.7917,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "flying x11"
+     ]
+    },
+    {
+     "id": "8-A-BPRO-2",
+     "focus": "swarm",
+     "score": 0.7083,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "flying x10"
+     ]
+    },
+    {
+     "id": "8-A-BPRO-3",
+     "focus": "big",
+     "score": 0.6607,
+     "labels": [
+      "big (9 copies at 1+ Lumber, average 0.5)",
+      "flying x10",
+      "night x6"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "8-A-WPRO-1",
+     "plan": "low",
+     "score": 0.0119,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.2)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "8-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.1845,
+     "labels": [
+      "big (13 copies at 1+ Lumber, average 0.8)",
+      "flying x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mk",
+   "num": 9,
+   "name": "The Kelp Mangroves",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.7292,
+     "why": "under 77.5%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "9-BPRO-1",
+    "dropped": [
+     "conch-crawler: not on the map's list (held, not listed)",
+     "mangrove-manatee: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "9-PRO-1",
+    "dropped": [
+     "9 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "9-PRO-1",
+     "focus": "open",
+     "score": 0.925,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)"
+     ]
+    },
+    {
+     "id": "9-PRO-2",
+     "focus": "family:tide",
+     "score": 0.8583,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.1)",
+      "economy (4 resource makers)",
+      "tide x10",
+      "guard x8"
+     ]
+    },
+    {
+     "id": "9-PRO-3",
+     "focus": "family:armor",
+     "score": 0.8208,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "economy (4 resource makers)",
+      "armor x11",
+      "guard x9"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "9-BPRO-1",
+     "focus": "family:tide",
+     "score": 0.8917,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "tide x11",
+      "armor x8"
+     ]
+    },
+    {
+     "id": "9-BPRO-2",
+     "focus": "big",
+     "score": 0.8792,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "9-BPRO-3",
+     "focus": "family:armor",
+     "score": 0.8167,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.8)",
+      "armor x10",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "9-BPRO-4",
+     "focus": "open",
+     "score": 0.7958,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "armor x9",
+      "tide x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "9-WPRO-1",
+     "plan": "low",
+     "score": 0.4208,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.9)"
+     ]
+    },
+    {
+     "id": "9-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.5,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.1)",
+      "armor x6",
+      "tide x6"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m7",
+   "num": 10,
+   "name": "Coral Current",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.7222,
+     "why": "under 74.9%"
+    },
+    {
+     "focus": "family:armor",
+     "score": 0.6146,
+     "why": "under 74.9%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "10-BPRO-1",
+    "dropped": [
+     "open-ocean-hermit-crab: not on the map's list (held, not listed)",
+     "parrotfish: not on the map's list (held, not listed)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): parrotfish"
+    ]
+   },
+   "proOld1": {
+    "id": "10-PRO-1",
+    "dropped": [
+     "0 copies of the map's list (under 10)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): lions-mane-jelly, parrotfish, supernova-jelly"
+    ]
+   },
+   "pro": [
+    {
+     "id": "10-PRO-1",
+     "focus": "family:tide",
+     "score": 0.8993,
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "tide x16",
+      "armor x7"
+     ]
+    },
+    {
+     "id": "10-PRO-2",
+     "focus": "open",
+     "score": 0.8785,
+     "labels": [
+      "tide x14",
+      "armor x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "10-BPRO-1",
+     "focus": "family:tide",
+     "score": 0.9306,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "tide x20"
+     ]
+    },
+    {
+     "id": "10-BPRO-2",
+     "focus": "open",
+     "score": 0.9306,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "tide x20",
+      "spite x8"
+     ]
+    },
+    {
+     "id": "10-BPRO-3",
+     "focus": "family:armor",
+     "score": 0.8299,
+     "labels": [
+      "tide x20",
+      "armor x11"
+     ]
+    },
+    {
+     "id": "10-BPRO-4",
+     "focus": "big",
+     "score": 0.8194,
+     "labels": [
+      "big (10 copies at 2+ Lumber, average 1.0)",
+      "tide x20"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "10-WPRO-1",
+     "plan": "low",
+     "score": 0.2986,
+     "labels": [
+      "big (15 copies at 2+ Lumber, average 1.9)",
+      "tide x20",
+      "armor x8"
+     ]
+    },
+    {
+     "id": "10-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.3038,
+     "labels": [
+      "big (13 copies at 2+ Lumber, average 1.9)",
+      "tide x20"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mj",
+   "num": 10,
+   "name": "The Sunken Depths",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "10-A-BPRO-1",
+    "dropped": [
+     "coral-reef-shark: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+     "mangrove-manatee: not on the map's list (held, not listed)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): coral-reef-shark"
+    ]
+   },
+   "proOld1": {
+    "id": "10-A-PRO-1",
+    "dropped": [
+     "4 copies of the map's list (under 10)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): lions-mane-jelly, parrotfish"
+    ]
+   },
+   "pro": [
+    {
+     "id": "10-A-PRO-1",
+     "focus": "big",
+     "score": 0.9323,
+     "labels": [
+      "big (8 copies at 3+ Lumber, average 1.7)",
+      "tide x18"
+     ]
+    },
+    {
+     "id": "10-A-PRO-2",
+     "focus": "open",
+     "score": 0.9323,
+     "labels": [
+      "midrange (average 0.7 Lumber)"
+     ]
+    },
+    {
+     "id": "10-A-PRO-3",
+     "focus": "family:tide",
+     "score": 0.9271,
+     "labels": [
+      "tide x12"
+     ]
+    },
+    {
+     "id": "10-A-PRO-4",
+     "focus": "family:cleave",
+     "score": 0.8646,
+     "labels": [
+      "tide x11",
+      "cleave x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "10-A-BPRO-1",
+     "focus": "family:tide",
+     "score": 0.9167,
+     "labels": [
+      "tide x17"
+     ]
+    },
+    {
+     "id": "10-A-BPRO-2",
+     "focus": "open",
+     "score": 0.9141,
+     "labels": [
+      "tide x14",
+      "armor x8"
+     ]
+    },
+    {
+     "id": "10-A-BPRO-3",
+     "focus": "family:cleave",
+     "score": 0.8698,
+     "labels": [
+      "big (8 copies at 3+ Lumber, average 1.6)",
+      "tide x11",
+      "cleave x8"
+     ]
+    },
+    {
+     "id": "10-A-BPRO-4",
+     "focus": "big",
+     "score": 0.8438,
+     "labels": [
+      "big (8 copies at 3+ Lumber, average 1.4)",
+      "tide x20"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "10-A-WPRO-1",
+     "plan": "low",
+     "score": 0.263,
+     "labels": [
+      "big (13 copies at 3+ Lumber, average 2.4)",
+      "tide x10",
+      "cleave x9"
+     ]
+    },
+    {
+     "id": "10-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.3438,
+     "labels": [
+      "big (8 copies at 3+ Lumber, average 1.6)",
+      "tide x16",
+      "cleave x9"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m10",
+   "num": 11,
+   "name": "Eyrie Heights",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [
+    {
+     "plan": "top-heavy",
+     "score": 0.3526,
+     "why": "not weak enough"
+    }
+   ],
+   "bproOld1": {
+    "id": "11-BPRO-1",
+    "dropped": [
+     "alpine-salamander: not on the map's list (first obtainable on Map 14)",
+     "ibex-rockcaller: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "11-PRO-1",
+    "vsNewBest": {
+     "p": 0.7,
+     "n": 400,
+     "ci": [
+      0.653,
+      0.743
+     ],
+     "elo": 147,
+     "eloCI": [
+      110,
+      184
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "11-PRO-1",
+     "focus": "family:flying",
+     "score": 0.9535,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "flying x14"
+     ]
+    },
+    {
+     "id": "11-PRO-2",
+     "focus": "family:ranged",
+     "score": 0.9199,
+     "labels": [
+      "ranged x8",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "11-PRO-3",
+     "focus": "open",
+     "score": 0.883,
+     "labels": [
+      "flying x10",
+      "strike-first x7"
+     ]
+    },
+    {
+     "id": "11-PRO-4",
+     "focus": "big",
+     "score": 0.8301,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.0)",
+      "flying x14",
+      "ranged x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "11-BPRO-1",
+     "focus": "family:flying",
+     "score": 0.9167,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "11-BPRO-2",
+     "focus": "open",
+     "score": 0.9006,
+     "labels": [
+      "flying x16",
+      "strike-first x8"
+     ]
+    },
+    {
+     "id": "11-BPRO-3",
+     "focus": "big",
+     "score": 0.8237,
+     "labels": [
+      "big (9 copies at 2+ Lumber, average 1.3)",
+      "flying x13",
+      "day x8"
+     ]
+    },
+    {
+     "id": "11-BPRO-4",
+     "focus": "family:ranged",
+     "score": 0.8077,
+     "labels": [
+      "ranged x11",
+      "flying x11"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "11-WPRO-1",
+     "plan": "low",
+     "score": 0.1955,
+     "labels": [
+      "big (16 copies at 2+ Lumber, average 2.0)",
+      "flying x12",
+      "strike-first x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mv",
+   "num": 11,
+   "name": "The Aerie Vault",
+   "bproLeft": [
+    {
+     "focus": "open",
+     "score": 0.6607,
+     "why": "under 68.9%"
+    },
+    {
+     "focus": "big",
+     "score": 0.5923,
+     "why": "under 68.9%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "family:flying",
+     "score": 0.6131,
+     "why": "under 63.3%"
+    }
+   ],
+   "wproLeft": [
+    {
+     "plan": "top-heavy",
+     "score": 0.3958,
+     "why": "not weak enough"
+    }
+   ],
+   "bproOld1": {
+    "id": "11-A-BPRO-1",
+    "dropped": [
+     "golden-eagle-diver: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "11-A-PRO-1",
+    "dropped": [
+     "9 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "11-A-PRO-1",
+     "focus": "big",
+     "score": 0.7827,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.1)",
+      "flying x14"
+     ]
+    },
+    {
+     "id": "11-A-PRO-2",
+     "focus": "family:strike-first",
+     "score": 0.7619,
+     "labels": [
+      "flying x12",
+      "strike-first x8"
+     ]
+    },
+    {
+     "id": "11-A-PRO-3",
+     "focus": "open",
+     "score": 0.6726,
+     "labels": [
+      "economy (4 resource makers)",
+      "flying x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "11-A-BPRO-1",
+     "focus": "family:flying",
+     "score": 0.8393,
+     "labels": [
+      "flying x8"
+     ]
+    },
+    {
+     "id": "11-A-BPRO-2",
+     "focus": "family:strike-first",
+     "score": 0.7024,
+     "labels": [
+      "strike-first x8",
+      "flying x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "11-A-WPRO-1",
+     "plan": "low",
+     "score": 0.1905,
+     "labels": [
+      "big (16 copies at 2+ Lumber, average 2.0)",
+      "flying x13",
+      "siege x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mh",
+   "num": 12,
+   "name": "The Briar Maze",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "12-BPRO-1",
+    "dropped": [
+     "field-mouse: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))"
+    ]
+   },
+   "proOld1": {
+    "id": "12-PRO-1",
+    "vsNewBest": {
+     "p": 0.455,
+     "n": 400,
+     "ci": [
+      0.407,
+      0.504
+     ],
+     "elo": -31,
+     "eloCI": [
+      -65,
+      3
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "12-PRO-1",
+     "focus": "family:flying",
+     "score": 0.8292,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "guard x8",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "12-PRO-2",
+     "focus": "economy",
+     "score": 0.8167,
+     "labels": [
+      "big (10 copies at 1+ Lumber, average 0.5)",
+      "economy (8 resource makers)"
+     ]
+    },
+    {
+     "id": "12-PRO-3",
+     "focus": "open",
+     "score": 0.7833,
+     "labels": [
+      "big (13 copies at 1+ Lumber, average 0.7)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "12-PRO-4",
+     "focus": "family:armor",
+     "score": 0.725,
+     "labels": [
+      "big (11 copies at 1+ Lumber, average 0.6)",
+      "armor x8",
+      "swarm x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "12-BPRO-1",
+     "focus": "family:armor",
+     "score": 0.7292,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "economy (4 resource makers)",
+      "armor x8"
+     ]
+    },
+    {
+     "id": "12-BPRO-2",
+     "focus": "big",
+     "score": 0.725,
+     "labels": [
+      "big (9 copies at 1+ Lumber, average 0.7)"
+     ]
+    },
+    {
+     "id": "12-BPRO-3",
+     "focus": "economy",
+     "score": 0.6958,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.6)",
+      "economy (8 resource makers)"
+     ]
+    },
+    {
+     "id": "12-BPRO-4",
+     "focus": "open",
+     "score": 0.6208,
+     "labels": [
+      "big (10 copies at 1+ Lumber, average 0.5)",
+      "economy (6 resource makers)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "12-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.1938,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.0)",
+      "armor x12",
+      "guard x8"
+     ]
+    },
+    {
+     "id": "12-WPRO-2",
+     "plan": "low",
+     "score": 0.2542,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.1)",
+      "economy (4 resource makers)",
+      "armor x6"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mr",
+   "num": 13,
+   "name": "The Redwood Deep",
+   "bproLeft": [
+    {
+     "focus": "family:guard",
+     "score": 0.4886,
+     "why": "under 50.1%"
+    }
+   ],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "13-BPRO-1",
+    "dropped": [
+     "bramblewood-lynx: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))",
+     "swift-fox: not on the map's list (held, not listed)",
+     "tasmanian-devil: not on the map's list (held, not listed)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): swift-fox, tasmanian-devil"
+    ]
+   },
+   "proOld1": {
+    "id": "13-PRO-1",
+    "vsNewBest": {
+     "p": 0.363,
+     "n": 400,
+     "ci": [
+      0.317,
+      0.411
+     ],
+     "elo": -98,
+     "eloCI": [
+      -133,
+      -63
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "13-PRO-1",
+     "focus": "family:guard",
+     "score": 0.8674,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "guard x8"
+     ]
+    },
+    {
+     "id": "13-PRO-2",
+     "focus": "family:flying",
+     "score": 0.9091,
+     "labels": [
+      "swarm (17 copies at 0 Lumber)",
+      "flying x8",
+      "day x8"
+     ]
+    },
+    {
+     "id": "13-PRO-3",
+     "focus": "big",
+     "score": 0.8864,
+     "labels": [
+      "big (11 copies at 1+ Lumber, average 0.6)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "13-PRO-4",
+     "focus": "economy",
+     "score": 0.8333,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 1.0)",
+      "economy (8 resource makers)"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "13-BPRO-1",
+     "focus": "economy",
+     "score": 0.6515,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.8)",
+      "economy (11 resource makers)",
+      "economy x7"
+     ]
+    },
+    {
+     "id": "13-BPRO-2",
+     "focus": "open",
+     "score": 0.5417,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.1)",
+      "economy (10 resource makers)",
+      "economy x6"
+     ]
+    },
+    {
+     "id": "13-BPRO-3",
+     "focus": "family:evasion",
+     "score": 0.5379,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)",
+      "economy (4 resource makers)",
+      "evasion x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "13-WPRO-1",
+     "plan": "low",
+     "score": 0.1136,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.8)"
+     ]
+    },
+    {
+     "id": "13-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2538,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.4)",
+      "strike-first x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m5",
+   "num": 14,
+   "name": "Savanna Reaches",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [
+    {
+     "plan": "top-heavy",
+     "score": 0.5265,
+     "why": "not weak enough"
+    }
+   ],
+   "bproOld1": {
+    "id": "14-BPRO-1",
+    "dropped": [
+     "mouse-sapper: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "14-PRO-1",
+    "vsNewBest": {
+     "p": 0.385,
+     "n": 400,
+     "ci": [
+      0.339,
+      0.434
+     ],
+     "elo": -81,
+     "eloCI": [
+      -116,
+      -46
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "14-PRO-1",
+     "focus": "family:strike-first",
+     "score": 0.8712,
+     "labels": [
+      "swarm (15 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "strike-first x9"
+     ]
+    },
+    {
+     "id": "14-PRO-2",
+     "focus": "open",
+     "score": 0.8258,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "strike-first x6"
+     ]
+    },
+    {
+     "id": "14-PRO-3",
+     "focus": "big",
+     "score": 0.7992,
+     "labels": [
+      "big (9 copies at 1+ Lumber, average 0.5)",
+      "evasion x7"
+     ]
+    },
+    {
+     "id": "14-PRO-4",
+     "focus": "family:flying",
+     "score": 0.7803,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)",
+      "flying x11",
+      "ranged x7"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "14-BPRO-1",
+     "focus": "family:strike-first",
+     "score": 0.9205,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "economy (4 resource makers)",
+      "strike-first x8"
+     ]
+    },
+    {
+     "id": "14-BPRO-2",
+     "focus": "big",
+     "score": 0.8977,
+     "labels": [
+      "big (10 copies at 1+ Lumber, average 0.5)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "14-BPRO-3",
+     "focus": "open",
+     "score": 0.8826,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "14-BPRO-4",
+     "focus": "family:evasion",
+     "score": 0.822,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.6)",
+      "evasion x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "14-WPRO-1",
+     "plan": "low",
+     "score": 0.2235,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.6)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "my",
+   "num": 14,
+   "name": "The Canopy",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.4063,
+     "why": "under 67.8%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "open",
+     "score": 0.5,
+     "why": "under 64.2%"
+    },
+    {
+     "focus": "family:strike-first",
+     "score": 0.4531,
+     "why": "under 64.2%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "14-A-BPRO-1",
+    "dropped": [
+     "pangolin-roller: not on the map's list (first obtainable on Map 23)",
+     "redwood-woodpecker: not on the map's list (held, not listed)",
+     "weaver-bird: not on the map's list (held, not listed)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): weaver-bird"
+    ]
+   },
+   "proOld1": {
+    "id": "14-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.38,
+     "n": 400,
+     "ci": [
+      0.334,
+      0.428
+     ],
+     "elo": -85,
+     "eloCI": [
+      -120,
+      -50
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "14-A-PRO-1",
+     "focus": "big",
+     "score": 0.7865,
+     "labels": [
+      "big (9 copies at 1 Lumber, average 0.5)"
+     ]
+    },
+    {
+     "id": "14-A-PRO-2",
+     "focus": "family:flying",
+     "score": 0.7604,
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "14-A-BPRO-1",
+     "focus": "open",
+     "score": 0.8281,
+     "labels": [
+      "night x7"
+     ]
+    },
+    {
+     "id": "14-A-BPRO-2",
+     "focus": "family:strike-first",
+     "score": 0.7344,
+     "labels": [
+      "strike-first x8"
+     ]
+    },
+    {
+     "id": "14-A-BPRO-3",
+     "focus": "family:night",
+     "score": 0.6979,
+     "labels": [
+      "night x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "14-A-WPRO-1",
+     "plan": "low",
+     "score": 0.0052,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)"
+     ]
+    },
+    {
+     "id": "14-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.0781,
+     "labels": [
+      "midrange (average 0.9 Lumber)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "ml",
+   "num": 15,
+   "name": "The Long Grass",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "family:flying",
+     "score": 0.7667,
+     "why": "under 77.9%"
+    }
+   ],
+   "wproLeft": [
+    {
+     "plan": "top-heavy",
+     "score": 0.35,
+     "why": "not weak enough"
+    }
+   ],
+   "bproOld1": {
+    "id": "15-BPRO-1",
+    "dropped": [
+     "carrion-crow: not on the map's list (held, not listed)",
+     "slow-worm: not on the map's list (held, not listed)",
+     "talon-archer: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))"
+    ]
+   },
+   "proOld1": {
+    "id": "15-PRO-1",
+    "dropped": [
+     "stoat-cutthroat: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+     "4 copies of the map's list (under 10)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): swift-fox"
+    ]
+   },
+   "pro": [
+    {
+     "id": "15-PRO-1",
+     "focus": "family:guard",
+     "score": 0.9292,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "guard x9"
+     ]
+    },
+    {
+     "id": "15-PRO-2",
+     "focus": "big",
+     "score": 0.9042,
+     "labels": [
+      "big (10 copies at 1+ Lumber, average 0.5)",
+      "flying x6",
+      "day x6"
+     ]
+    },
+    {
+     "id": "15-PRO-3",
+     "focus": "open",
+     "score": 0.7958,
+     "labels": [
+      "big (11 copies at 1+ Lumber, average 0.6)"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "15-BPRO-1",
+     "focus": "big",
+     "score": 0.9125,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)"
+     ]
+    },
+    {
+     "id": "15-BPRO-2",
+     "focus": "open",
+     "score": 0.8458,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "15-WPRO-1",
+     "plan": "low",
+     "score": 0.2167,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.2)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mt",
+   "num": 16,
+   "name": "The Pinewood Taiga",
+   "bproLeft": [
+    {
+     "focus": "open",
+     "score": 0.5708,
+     "why": "under 63.3%"
+    },
+    {
+     "focus": "family:cleave",
+     "score": 0.4,
+     "why": "under 63.3%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "family:cleave",
+     "score": 0.5667,
+     "why": "under 58.8%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "16-BPRO-1",
+    "dropped": [
+     "swift-fox: not on the map's list (held, not listed)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): swift-fox"
+    ]
+   },
+   "proOld1": {
+    "id": "16-PRO-1",
+    "vsNewBest": {
+     "p": 0.35,
+     "n": 400,
+     "ci": [
+      0.305,
+      0.398
+     ],
+     "elo": -108,
+     "eloCI": [
+      -143,
+      -72
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "16-PRO-1",
+     "focus": "open",
+     "score": 0.8542,
+     "labels": [
+      "big (10 copies at 1+ Lumber, average 0.5)",
+      "economy (4 resource makers)",
+      "evasion x8"
+     ]
+    },
+    {
+     "id": "16-PRO-2",
+     "focus": "family:evasion",
+     "score": 0.7042,
+     "labels": [
+      "big (10 copies at 1+ Lumber, average 0.5)",
+      "evasion x8"
+     ]
+    },
+    {
+     "id": "16-PRO-3",
+     "focus": "economy",
+     "score": 0.6792,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "economy (8 resource makers)"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "16-BPRO-1",
+     "focus": "family:evasion",
+     "score": 0.7833,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.6)",
+      "economy (4 resource makers)",
+      "evasion x10"
+     ]
+    },
+    {
+     "id": "16-BPRO-2",
+     "focus": "economy",
+     "score": 0.7458,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "economy (6 resource makers)",
+      "evasion x10"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "16-WPRO-1",
+     "plan": "low",
+     "score": 0.0625,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.4)",
+      "cleave x8",
+      "guard x6"
+     ]
+    },
+    {
+     "id": "16-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.0917,
+     "labels": [
+      "big (17 copies at 1+ Lumber, average 1.4)",
+      "economy (4 resource makers)",
+      "guard x6"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m6",
+   "num": 17,
+   "name": "Wolfsbane Tundra",
+   "bproLeft": [
+    {
+     "focus": "open",
+     "score": 0.8068,
+     "why": "under 82%"
+    },
+    {
+     "focus": "big",
+     "score": 0.7727,
+     "why": "under 82%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "family:evasion",
+     "score": 0.7727,
+     "why": "under 82.7%"
+    },
+    {
+     "focus": "big",
+     "score": 0.4924,
+     "why": "under 82.7%"
+    }
+   ],
+   "wproLeft": [
+    {
+     "plan": "top-heavy",
+     "score": 0.6629,
+     "why": "not weak enough"
+    }
+   ],
+   "bproOld1": {
+    "id": "17-BPRO-1",
+    "dropped": [
+     "beluga: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))",
+     "mountain-hare: not on the map's list (held, not listed)",
+     "snow-ermine: not on the map's list (held, not listed)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): snow-ermine"
+    ]
+   },
+   "proOld1": {
+    "id": "17-PRO-1",
+    "dropped": [
+     "9 copies of the map's list (under 10)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): snow-bunting-archer"
+    ]
+   },
+   "pro": [
+    {
+     "id": "17-PRO-1",
+     "focus": "family:cold",
+     "score": 0.9773,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "cold x10"
+     ]
+    },
+    {
+     "id": "17-PRO-2",
+     "focus": "open",
+     "score": 0.8864,
+     "labels": [
+      "evasion x12"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "17-BPRO-1",
+     "focus": "family:cold",
+     "score": 0.9697,
+     "labels": [
+      "cold x10",
+      "swarm x8"
+     ]
+    },
+    {
+     "id": "17-BPRO-2",
+     "focus": "family:evasion",
+     "score": 0.9432,
+     "labels": [
+      "evasion x9",
+      "swarm x7"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "17-WPRO-1",
+     "plan": "low",
+     "score": 0.2083,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "evasion x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mi",
+   "num": 17,
+   "name": "The Ice Hollow",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "family:cold",
+     "score": 0.6667,
+     "why": "under 71.3%"
+    },
+    {
+     "focus": "big",
+     "score": 0.1131,
+     "why": "under 71.3%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "17-A-BPRO-1",
+    "dropped": [
+     "frost-hare-sprinter: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+     "snow-bunting-archer: not on the map's list (held, not listed)",
+     "snow-ermine: not on the map's list (held, not listed)",
+     "spitting-spider: not on the map's list (held, not listed)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): frost-hare-sprinter, snow-bunting-archer, snow-ermine, spitting-spider"
+    ]
+   },
+   "proOld1": {
+    "id": "17-A-PRO-1",
+    "dropped": [
+     "frost-hare-sprinter: not obtainable (not in the progression plan or an earlier map's cards)",
+     "5 copies of the map's list (under 10)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): frost-hare-sprinter, snow-ermine"
+    ]
+   },
+   "pro": [
+    {
+     "id": "17-A-PRO-1",
+     "focus": "open",
+     "score": 0.8631,
+     "labels": [
+      "swarm x7"
+     ]
+    },
+    {
+     "id": "17-A-PRO-2",
+     "focus": "family:tide",
+     "score": 0.7202,
+     "labels": [
+      "tide x9",
+      "swarm x7"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "17-A-BPRO-1",
+     "focus": "family:cold",
+     "score": 0.6488,
+     "labels": [
+      "cold x10"
+     ]
+    },
+    {
+     "id": "17-A-BPRO-2",
+     "focus": "open",
+     "score": 0.6369,
+     "labels": [
+      "tide x7"
+     ]
+    },
+    {
+     "id": "17-A-BPRO-3",
+     "focus": "big",
+     "score": 0.619,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.2)",
+      "cold x6"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "17-A-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.0595,
+     "labels": [
+      "tide x7",
+      "cold x7"
+     ]
+    },
+    {
+     "id": "17-A-WPRO-2",
+     "plan": "low",
+     "score": 0.0774,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "cold x8",
+      "tide x6"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "md",
+   "num": 18,
+   "name": "The Glass Dunes",
+   "bproLeft": [
+    {
+     "focus": "family:strike-first",
+     "score": 0.6958,
+     "why": "under 72.5%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "family:flying",
+     "score": 0.675,
+     "why": "under 70.4%"
+    },
+    {
+     "focus": "family:strike-first",
+     "score": 0.6458,
+     "why": "under 70.4%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "18-BPRO-1",
+    "dropped": [
+     "meerkat-burrower: not on the map's list (first obtainable on Map 23)",
+     "thorny-devil: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "18-PRO-1",
+    "vsNewBest": {
+     "p": 0.575,
+     "n": 400,
+     "ci": [
+      0.526,
+      0.623
+     ],
+     "elo": 53,
+     "eloCI": [
+      18,
+      87
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "18-PRO-1",
+     "focus": "open",
+     "score": 0.8542,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.0)"
+     ]
+    },
+    {
+     "id": "18-PRO-2",
+     "focus": "big",
+     "score": 0.8417,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "18-BPRO-1",
+     "focus": "big",
+     "score": 0.875,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.0)"
+     ]
+    },
+    {
+     "id": "18-BPRO-2",
+     "focus": "family:poison",
+     "score": 0.75,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.0)",
+      "economy (4 resource makers)",
+      "poison x8"
+     ]
+    },
+    {
+     "id": "18-BPRO-3",
+     "focus": "open",
+     "score": 0.7333,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "18-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.225,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.0)",
+      "poison x8"
+     ]
+    },
+    {
+     "id": "18-WPRO-2",
+     "plan": "low",
+     "score": 0.2917,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.2)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mpd",
+   "num": 18,
+   "name": "The Pale Desert",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.5868,
+     "why": "under 73.9%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.6875,
+     "why": "under 77.4%"
+    },
+    {
+     "focus": "family:poison",
+     "score": 0.6354,
+     "why": "under 77.4%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "18-A-BPRO-1",
+    "dropped": [
+     "thorny-devil: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "18-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.34,
+     "n": 400,
+     "ci": [
+      0.295,
+      0.388
+     ],
+     "elo": -115,
+     "eloCI": [
+      -151,
+      -79
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "18-A-PRO-1",
+     "focus": "open",
+     "score": 0.9201,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "18-A-PRO-2",
+     "focus": "swarm",
+     "score": 0.9236,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "economy (4 resource makers)"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "18-A-BPRO-1",
+     "focus": "open",
+     "score": 0.8889,
+     "labels": [
+      "midrange (average 0.8 Lumber)"
+     ]
+    },
+    {
+     "id": "18-A-BPRO-2",
+     "focus": "family:poison",
+     "score": 0.7951,
+     "labels": [
+      "economy (4 resource makers)",
+      "poison x10"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "18-A-WPRO-1",
+     "plan": "low",
+     "score": 0.0868,
+     "labels": [
+      "big (12 copies at 2+ Lumber, average 1.8)",
+      "poison x8"
+     ]
+    },
+    {
+     "id": "18-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2639,
+     "labels": [
+      "big (4 copies at 2+ Lumber, average 1.3)",
+      "poison x6"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m3",
+   "num": 19,
+   "name": "Ashen Spurn",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [
+    {
+     "plan": "top-heavy",
+     "score": 0.6204,
+     "why": "not weak enough"
+    }
+   ],
+   "bproOld1": {
+    "id": "19-BPRO-1",
+    "dropped": [
+     "snow-bunting-archer: not on the map's list (held, not listed)",
+     "spitting-spider: not on the map's list (held, not listed)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): snow-bunting-archer, spitting-spider"
+    ]
+   },
+   "proOld1": {
+    "id": "19-PRO-1",
+    "dropped": [
+     "stoat-cutthroat: not obtainable (not in the progression plan or an earlier map's cards)",
+     "7 copies of the map's list (under 10)",
+     "on no 2026-11-11 list (out of play, BAL9 JJ24): snow-ermine"
+    ]
+   },
+   "pro": [
+    {
+     "id": "19-PRO-1",
+     "focus": "big",
+     "score": 0.8519,
+     "labels": [
+      "big (9 copies at 1+ Lumber, average 0.5)",
+      "flying x10"
+     ]
+    },
+    {
+     "id": "19-PRO-2",
+     "focus": "family:flying",
+     "score": 0.8472,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "19-PRO-3",
+     "focus": "open",
+     "score": 0.7593,
+     "labels": [
+      "big (11 copies at 1+ Lumber, average 0.8)"
+     ]
+    },
+    {
+     "id": "19-PRO-4",
+     "focus": "family:armor",
+     "score": 0.7083,
+     "labels": [
+      "big (13 copies at 1+ Lumber, average 0.8)",
+      "armor x10"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "19-BPRO-1",
+     "focus": "big",
+     "score": 0.8796,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)"
+     ]
+    },
+    {
+     "id": "19-BPRO-2",
+     "focus": "family:flying",
+     "score": 0.8287,
+     "labels": [
+      "big (11 copies at 1+ Lumber, average 0.8)",
+      "flying x11"
+     ]
+    },
+    {
+     "id": "19-BPRO-3",
+     "focus": "family:armor",
+     "score": 0.7685,
+     "labels": [
+      "big (10 copies at 1+ Lumber, average 0.7)",
+      "armor x11"
+     ]
+    },
+    {
+     "id": "19-BPRO-4",
+     "focus": "open",
+     "score": 0.7639,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)",
+      "flying x6"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "19-WPRO-1",
+     "plan": "low",
+     "score": 0.4213,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.4)",
+      "flying x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m9",
+   "num": 19,
+   "name": "Basalt Foundry",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.5313,
+     "why": "under 54.8%"
+    },
+    {
+     "focus": "swarm",
+     "score": 0.4201,
+     "why": "under 54.8%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "family:armor",
+     "score": 0.5972,
+     "why": "under 60.3%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "19-A-BPRO-1",
+    "dropped": [
+     "anvilwhisker-otter: not on the map's list (held, not listed)",
+     "cinder-stoker: not on the map's list (held, not listed)",
+     "ember-jackal: not on the map's list (held, not listed)",
+     "tide-spirit: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "19-A-PRO-1",
+    "dropped": [
+     "4 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "19-A-PRO-1",
+     "focus": "family:flying",
+     "score": 0.7535,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "19-A-PRO-2",
+     "focus": "open",
+     "score": 0.7014,
+     "labels": [
+      "evasion x8",
+      "tide x6"
+     ]
+    },
+    {
+     "id": "19-A-PRO-3",
+     "focus": "economy",
+     "score": 0.6042,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.0)",
+      "economy (8 resource makers)"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "19-A-BPRO-1",
+     "focus": "economy",
+     "score": 0.6979,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "economy (8 resource makers)"
+     ]
+    },
+    {
+     "id": "19-A-BPRO-2",
+     "focus": "open",
+     "score": 0.691,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.8)",
+      "evasion x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "19-A-WPRO-1",
+     "plan": "low",
+     "score": 0.1122,
+     "labels": [
+      "big (15 copies at 1+ Lumber, average 1.1)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "19-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.1891,
+     "labels": [
+      "big (17 copies at 1+ Lumber, average 1.1)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m11",
+   "num": 20,
+   "name": "The Sundered Peak",
+   "bproLeft": [
+    {
+     "focus": "family:flying",
+     "score": 0.484,
+     "why": "under 50%"
+    }
+   ],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "20-BPRO-1",
+    "dropped": [
+     "pack-mule: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))",
+     "pumice-beetle: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))"
+    ]
+   },
+   "proOld1": {
+    "id": "20-PRO-1",
+    "dropped": [
+     "pack-mule: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+     "pumice-beetle: not obtainable (not in the progression plan or an earlier map's cards)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "20-PRO-1",
+     "focus": "family:flying",
+     "score": 0.8301,
+     "labels": [
+      "flying x8"
+     ]
+    },
+    {
+     "id": "20-PRO-2",
+     "focus": "family:ranged",
+     "score": 0.7821,
+     "labels": [
+      "ranged x8",
+      "flying x6"
+     ]
+    },
+    {
+     "id": "20-PRO-3",
+     "focus": "big",
+     "score": 0.7212,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.0)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "20-PRO-4",
+     "focus": "open",
+     "score": 0.6827,
+     "labels": [
+      "swarm x7"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "20-BPRO-1",
+     "focus": "open",
+     "score": 0.6442,
+     "labels": [
+      "armor x7",
+      "ranged x6"
+     ]
+    },
+    {
+     "id": "20-BPRO-2",
+     "focus": "family:strike-first",
+     "score": 0.5801,
+     "labels": [
+      "strike-first x8",
+      "climb x7"
+     ]
+    },
+    {
+     "id": "20-BPRO-3",
+     "focus": "big",
+     "score": 0.5577,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 0.9)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "20-WPRO-1",
+     "plan": "low",
+     "score": 0.024,
+     "labels": [
+      "big (19 copies at 2+ Lumber, average 2.1)",
+      "flying x9"
+     ]
+    },
+    {
+     "id": "20-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.133,
+     "labels": [
+      "big (15 copies at 2+ Lumber, average 2.1)",
+      "guard x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "me",
+   "num": 20,
+   "name": "Eye of the Volcano",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.4438,
+     "why": "under 51.3%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.2208,
+     "why": "under 64.2%"
+    }
+   ],
+   "wproLeft": [
+    {
+     "plan": "top-heavy",
+     "score": 0.3792,
+     "why": "not weak enough"
+    }
+   ],
+   "bproOld1": {
+    "id": "20-A-BPRO-1",
+    "dropped": [
+     "ash-cloud-condor: not on the map's list (held, not listed)",
+     "cinder-stoker: not on the map's list (held, not listed)",
+     "pack-mule: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))"
+    ]
+   },
+   "proOld1": {
+    "id": "20-A-PRO-1",
+    "dropped": [
+     "3 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "20-A-PRO-1",
+     "focus": "family:armor",
+     "score": 0.7917,
+     "labels": [
+      "armor x10"
+     ]
+    },
+    {
+     "id": "20-A-PRO-2",
+     "focus": "open",
+     "score": 0.7792,
+     "labels": [
+      "midrange (average 0.8 Lumber)"
+     ]
+    },
+    {
+     "id": "20-A-PRO-3",
+     "focus": "family:flying",
+     "score": 0.7458,
+     "labels": [
+      "big (4 copies at 3+ Lumber, average 1.4)",
+      "flying x9"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "20-A-BPRO-1",
+     "focus": "family:armor",
+     "score": 0.6625,
+     "labels": [
+      "armor x9"
+     ]
+    },
+    {
+     "id": "20-A-BPRO-2",
+     "focus": "open",
+     "score": 0.4625,
+     "labels": [
+      "big (3 copies at 3+ Lumber, average 1.3)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "20-A-WPRO-1",
+     "plan": "low",
+     "score": 0.1292,
+     "labels": [
+      "big (12 copies at 3+ Lumber, average 2.6)",
+      "siege x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mx",
+   "num": 20,
+   "name": "Volcano Lair",
+   "bproLeft": [
+    {
+     "focus": "family:fire",
+     "score": 0.3333,
+     "why": "under 50%"
+    },
+    {
+     "focus": "open",
+     "score": 0.2024,
+     "why": "under 50%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.2917,
+     "why": "under 66.6%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "20-B-BPRO-1",
+    "dropped": [
+     "ashbone-ghoul: not on the map's list (held, not listed)",
+     "magma-wraith: not on the map's list (held, not listed)",
+     "obsidian-scorpion: not on the map's list (held, not listed)"
+    ]
+   },
+   "proOld1": {
+    "id": "20-B-PRO-1",
+    "dropped": [
+     "8 copies of the map's list (under 10)"
+    ]
+   },
+   "pro": [
+    {
+     "id": "20-B-PRO-1",
+     "focus": "open",
+     "score": 0.8155,
+     "labels": [
+      "midrange (average 0.5 Lumber)"
+     ]
+    },
+    {
+     "id": "20-B-PRO-2",
+     "focus": "family:ranged",
+     "score": 0.6905,
+     "labels": [
+      "flying x11",
+      "ranged x9"
+     ]
+    },
+    {
+     "id": "20-B-PRO-3",
+     "focus": "family:flying",
+     "score": 0.6845,
+     "labels": [
+      "flying x10",
+      "ranged x7"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "20-B-BPRO-1",
+     "focus": "family:flying",
+     "score": 0.6369,
+     "labels": [
+      "flying x10"
+     ]
+    },
+    {
+     "id": "20-B-BPRO-2",
+     "focus": "big",
+     "score": 0.3452,
+     "labels": [
+      "big (10 copies at 2+ Lumber, average 1.4)",
+      "guard x6"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "20-B-WPRO-1",
+     "plan": "low",
+     "score": 0.0476,
+     "labels": [
+      "big (16 copies at 2+ Lumber, average 2.4)"
+     ]
+    },
+    {
+     "id": "20-B-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.0536,
+     "labels": [
+      "big (20 copies at 2+ Lumber, average 2.6)",
+      "guard x8"
+     ]
+    }
+   ]
+  }
+ ]
+}

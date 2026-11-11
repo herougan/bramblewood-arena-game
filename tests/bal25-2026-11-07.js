@@ -30,7 +30,9 @@ ok(!/writeFileSync\([^)]*canonical/.test(tool) && !/appendFileSync\([^)]*canonic
 // ---- the report
 const rep = JSON.parse(read('docs/balance/bal25/card-power.json'));
 const cards = JSON.parse(read('canonical/cards.json')), RAW = {}; cards.forEach(c=> RAW[c.id] = c);
-const OBT = JSON.parse(read('canonical/card-obtain-maps.json')).maps;
+// 2026-11-11 (SKIR1): BAL25 measured the Maps 0-20 cards of the lists before SKIR1; SKIR1's new lists moved cards in and out of Maps 0-20, so the
+// scope is the obtain maps as BAL25 knew them (docs/balance/skir1/card-obtain-maps-before-2026-11-11.json, canonical/card-obtain-maps.json at 1137b281)
+const OBT = JSON.parse(read('docs/balance/skir1/card-obtain-maps-before-2026-11-11.json')).maps;
 const inScope = c=> OBT[c.id] != null ? OBT[c.id] <= 20 : !!(c.faction || c.rarity === 'starter' || (c.source && c.source.kind === 'base'));
 const fieldable = c=> !c.token && !c.test && !c.hallOfFame && !c.baseId && !c.field && !c.pool;
 ok(rep.v === 3 && rep.games === 400, 'v3 report at 400 games a card (' + rep.games + ')');

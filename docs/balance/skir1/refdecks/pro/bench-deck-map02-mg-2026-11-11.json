@@ -1,0 +1,702 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-10T21:11:13.075Z",
+ "fingerprint": "fa1691d39923",
+ "map": {
+  "id": "mg",
+  "num": 2,
+  "name": "Smugglers' Grotto"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "bee-forager",
+  "bloodworm",
+  "coffer-mimic",
+  "gannet-nestweaver",
+  "glow-worm",
+  "grey-seal-bull",
+  "gull-thief",
+  "kittiwake-flock",
+  "limpet-clinger",
+  "moray-ambusher",
+  "mudpuppy",
+  "muskrat-lodgekeeper",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "octopus-tactician",
+  "old-shell",
+  "old-sturgeon",
+  "pincushion-urchin",
+  "planarian-splitter",
+  "puffin-diver",
+  "raccoon-nightcrew",
+  "rock-pool-starfish",
+  "salvager-hermit-crab",
+  "signal-crayfish",
+  "smuggler-slingrat",
+  "tide-pool-crab",
+  "trash-panda-trickster"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Bee Forager",
+  "Bloodworm",
+  "Coffer Mimic",
+  "Gannet Nestweaver",
+  "Glow-worm",
+  "Grey Seal Bull",
+  "Gull Thief",
+  "Kittiwake Flock",
+  "Limpet Clinger",
+  "Moray Ambusher",
+  "Mudpuppy",
+  "Muskrat Lodgekeeper",
+  "Newt Doctor",
+  "Nutria Reedcutter",
+  "Octopus Tactician",
+  "The Old Shell",
+  "Old Sturgeon",
+  "Pincushion Urchin",
+  "Planarian Splitter",
+  "Puffin Diver",
+  "Raccoon Nightcrew",
+  "Rock Pool Starfish",
+  "Salvager Hermit Crab",
+  "Signal Crayfish",
+  "Smuggler Slingrat",
+  "Tide Pool Crab",
+  "Trash Panda Trickster"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "bloodworm",
+   "coffer-mimic",
+   "glow-worm",
+   "grey-seal-bull",
+   "gull-thief",
+   "limpet-clinger",
+   "moray-ambusher",
+   "octopus-tactician",
+   "old-shell",
+   "pincushion-urchin",
+   "raccoon-nightcrew",
+   "rock-pool-starfish",
+   "salvager-hermit-crab",
+   "smuggler-slingrat",
+   "tide-pool-crab",
+   "trash-panda-trickster"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 1200,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-B-1",
+   "label": "vs 2-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-2",
+   "label": "vs 2-B-2 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-3",
+   "label": "vs 2-B-3 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-4",
+   "label": "vs 2-B-4 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 2-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road7",
+   "label": "vs reference deck (Map 7) under 2-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "gannet-nestweaver",
+    "gull-thief",
+    "salvager-hermit-crab",
+    "trash-panda-trickster"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "grey-seal-bull",
+    "limpet-clinger",
+    "moray-ambusher",
+    "muskrat-lodgekeeper",
+    "octopus-tactician",
+    "old-sturgeon",
+    "pincushion-urchin",
+    "puffin-diver",
+    "rock-pool-starfish",
+    "tide-pool-crab"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "limpet-clinger",
+    "old-shell",
+    "old-sturgeon",
+    "signal-crayfish",
+    "tide-pool-crab"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 1,
+   "moves": 0,
+   "games": 322,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:tide",
+   "steps": 1,
+   "moves": 1,
+   "games": 322,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:armor",
+   "steps": 2,
+   "moves": 2,
+   "games": 518,
+   "apartFromEarlier": 15
+  },
+  {
+   "focus": "open",
+   "steps": 1,
+   "moves": 1,
+   "games": 336,
+   "apartFromEarlier": 16
+  }
+ ],
+ "apart": 10,
+ "seconds": 586,
+ "games": 1946,
+ "decks": [
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "tide x8"
+   ],
+   "deck": {
+    "glow-worm": 4,
+    "newt-doctor": 4,
+    "old-sturgeon": 4,
+    "pincushion-urchin": 4,
+    "trash-panda-trickster": 4
+   },
+   "cards": [
+    {
+     "id": "glow-worm",
+     "name": "Glow-worm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "old-sturgeon",
+     "name": "Old Sturgeon",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7083,
+   "ci": [
+    0.6507,
+    0.766
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "economy (9 resource makers)",
+    "night x8"
+   ],
+   "deck": {
+    "alley-cat": 3,
+    "gannet-nestweaver": 3,
+    "old-sturgeon": 4,
+    "raccoon-nightcrew": 4,
+    "salvager-hermit-crab": 2,
+    "trash-panda-trickster": 4
+   },
+   "cards": [
+    {
+     "id": "old-sturgeon",
+     "name": "Old Sturgeon",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "raccoon-nightcrew",
+     "name": "Raccoon Nightcrew",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "salvager-hermit-crab",
+     "name": "Salvager Hermit Crab",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6964,
+   "ci": [
+    0.6349,
+    0.7579
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 1.05,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 9,
+   "families": [
+    {
+     "f": "night",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "tide x8"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "coffer-mimic": 4,
+    "glow-worm": 4,
+    "moray-ambusher": 4,
+    "muskrat-lodgekeeper": 4
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "coffer-mimic",
+     "name": "Coffer Mimic",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "glow-worm",
+     "name": "Glow-worm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "moray-ambusher",
+     "name": "Moray Ambusher",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "muskrat-lodgekeeper",
+     "name": "Muskrat Lodgekeeper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.6369,
+   "ci": [
+    0.575,
+    0.6988
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "big (11 copies at 1+ Lumber, average 0.6)",
+    "tide x15",
+    "armor x8"
+   ],
+   "deck": {
+    "grey-seal-bull": 3,
+    "limpet-clinger": 4,
+    "moray-ambusher": 4,
+    "mudpuppy": 4,
+    "newt-doctor": 1,
+    "old-sturgeon": 4
+   },
+   "cards": [
+    {
+     "id": "limpet-clinger",
+     "name": "Limpet Clinger",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "moray-ambusher",
+     "name": "Moray Ambusher",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "old-sturgeon",
+     "name": "Old Sturgeon",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.4107,
+   "ci": [
+    0.3434,
+    0.478
+   ],
+   "avgLumber": 0.55,
+   "avgWait": 1.55,
+   "curve": {
+    "0": 9,
+    "1": 11
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 15
+    },
+    {
+     "f": "armor",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mg --pool alley-cat,bee-forager,bloodworm,coffer-mimic,gannet-nestweaver,glow-worm,grey-seal-bull,gull-thief,kittiwake-flock,limpet-clinger,moray-ambusher,mudpuppy,muskrat-lodgekeeper,newt-doctor,nutria-reedcutter,octopus-tactician,old-shell,old-sturgeon,pincushion-urchin,planarian-splitter,puffin-diver,raccoon-nightcrew,rock-pool-starfish,salvager-hermit-crab,signal-crayfish,smuggler-slingrat,tide-pool-crab,trash-panda-trickster --max-unique 6 --max-copies 4 --budget 1200 --final-games 24 --seed skir1-pro --focus economy,family:tide,family:armor,open --anchor bloodworm,coffer-mimic,glow-worm,grey-seal-bull,gull-thief,limpet-clinger,moray-ambusher,octopus-tactician,old-shell,pincushion-urchin,raccoon-nightcrew,rock-pool-starfish,salvager-hermit-crab,smuggler-slingrat,tide-pool-crab,trash-panda-trickster --anchor-min 10 --level 1 --mode map-true"
+}
