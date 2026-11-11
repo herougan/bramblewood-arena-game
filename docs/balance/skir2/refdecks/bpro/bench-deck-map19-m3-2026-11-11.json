@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-11T00:49:10.955Z",
- "fingerprint": "7c8335cf4b2b",
+ "generated": "2026-11-11T03:08:04.417Z",
+ "fingerprint": "bcdf2f81904a",
  "map": {
   "id": "m3",
   "num": 19,
@@ -161,50 +161,64 @@
    "focus": "family:armor",
    "steps": 5,
    "moves": 2,
-   "games": 1584,
+   "games": 1656,
    "apartFromEarlier": null
   },
   {
    "focus": "family:flying",
    "steps": 5,
-   "moves": 4,
-   "games": 1548,
-   "apartFromEarlier": 13
+   "moves": 2,
+   "games": 1584,
+   "apartFromEarlier": 17
   },
   {
    "focus": "big",
-   "steps": 6,
-   "moves": 3,
+   "steps": 5,
+   "moves": 4,
    "games": 1584,
-   "apartFromEarlier": 10
+   "apartFromEarlier": 13
   },
   {
    "focus": "open",
-   "steps": 6,
-   "moves": 3,
-   "games": 1602,
-   "apartFromEarlier": 14
+   "steps": 7,
+   "moves": 4,
+   "games": 1656,
+   "apartFromEarlier": 10
   }
  ],
  "apart": 10,
- "seconds": 64,
- "games": 6894,
+ "seconds": 77,
+ "games": 7056,
  "decks": [
   {
-   "focus": "family:flying",
+   "focus": "big",
    "labels": [
     "big (14 copies at 1+ Lumber, average 0.7)",
-    "flying x10"
+    "fire x6"
    ],
    "deck": {
     "ashwing-ptarmigan": 3,
-    "cinder-stoker": 3,
-    "eagle-owl-quartermaster": 3,
+    "basalt-boar": 4,
+    "cinder-stoker": 4,
+    "ember-wisp": 2,
     "fire-salamander": 4,
-    "sulfur-cinder-moth": 4,
-    "talus-pika": 3
+    "quillguard": 3
    },
    "cards": [
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "fire-salamander",
      "name": "Fire Salamander",
@@ -213,10 +227,137 @@
      "rarity": "uncommon"
     },
     {
-     "id": "sulfur-cinder-moth",
-     "name": "Sulfur Cinder Moth",
-     "copies": 4,
+     "id": "ashwing-ptarmigan",
+     "name": "Ashwing Ptarmigan",
+     "copies": 3,
      "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ember-wisp",
+     "name": "Ember Firefly",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.9051,
+   "ci": [
+    0.872,
+    0.9382
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 6,
+    "1": 14
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "fire",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.4792,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.7)",
+    "flying x10"
+   ],
+   "deck": {
+    "ashwing-ptarmigan": 3,
+    "chipmunk-hoarder": 2,
+    "cinder-hornet": 4,
+    "cinder-stoker": 4,
+    "eagle-owl-quartermaster": 3,
+    "talus-pika": 4
+   },
+   "cards": [
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
      "rarity": "common"
     },
     {
@@ -227,13 +368,6 @@
      "rarity": "rare"
     },
     {
-     "id": "cinder-stoker",
-     "name": "Cinder Stoker",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
      "id": "eagle-owl-quartermaster",
      "name": "Eagle-Owl Quartermaster",
      "copies": 3,
@@ -241,23 +375,24 @@
      "rarity": "rare"
     },
     {
-     "id": "talus-pika",
-     "name": "Talus Pika",
-     "copies": 3,
+     "id": "chipmunk-hoarder",
+     "name": "Chipmunk Hoarder",
+     "copies": 2,
      "cost": 0,
      "rarity": "common"
     }
    ],
-   "score": 0.8426,
+   "score": 0.8148,
    "ci": [
-    0.7959,
-    0.8893
+    0.7668,
+    0.8628
    ],
    "avgLumber": 0.7,
-   "avgWait": 0.35,
+   "avgWait": 0.25,
    "curve": {
-    "0": 6,
-    "1": 14
+    "0": 10,
+    "1": 6,
+    "2": 4
    },
    "resourceMakers": 0,
    "families": [
@@ -276,31 +411,31 @@
     {
      "entry": "mirror|fight:19-2",
      "label": "vs 19-2 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-3",
      "label": "vs 19-3 elite's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-4",
      "label": "vs 19-4 elite's deck",
-     "p": 0.8333,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-5",
      "label": "vs 19-5 elite's deck",
-     "p": 0.9167,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-6",
      "label": "vs 19-6 miniboss's deck",
-     "p": 0.7917,
+     "p": 0.7083,
      "n": 24
     },
     {
@@ -312,160 +447,30 @@
     {
      "entry": "mirror|ref:road19",
      "label": "vs reference deck (Map 19) under 19-2's field",
-     "p": 0.6667,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
-     "p": 0.7083,
+     "p": 0.875,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 17
+   "copiesApartFromOpen": 13
   },
   {
    "focus": "open",
    "labels": [
-    "big (10 copies at 1+ Lumber, average 0.7)"
+    "big (13 copies at 1+ Lumber, average 0.7)"
    ],
    "deck": {
-    "chipmunk-hoarder": 4,
-    "cinder-hornet": 4,
-    "cinder-stoker": 3,
-    "ember-wisp": 3,
-    "obsidian-scorpion": 3,
-    "quillguard": 3
-   },
-   "cards": [
-    {
-     "id": "chipmunk-hoarder",
-     "name": "Chipmunk Hoarder",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "cinder-hornet",
-     "name": "Cinder Hornet",
-     "copies": 4,
-     "cost": 2,
-     "rarity": "common"
-    },
-    {
-     "id": "cinder-stoker",
-     "name": "Cinder Stoker",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "ember-wisp",
-     "name": "Ember Firefly",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    },
-    {
-     "id": "obsidian-scorpion",
-     "name": "Obsidian Scorpion",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "quillguard",
-     "name": "Quillguard",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    }
-   ],
-   "score": 0.8194,
-   "ci": [
-    0.7725,
-    0.8663
-   ],
-   "avgLumber": 0.7,
-   "avgWait": 0.65,
-   "curve": {
-    "0": 10,
-    "1": 6,
-    "2": 4
-   },
-   "resourceMakers": 0,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:19-1",
-     "label": "vs 19-1 skirmish's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-2",
-     "label": "vs 19-2 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-3",
-     "label": "vs 19-3 elite's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-4",
-     "label": "vs 19-4 elite's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-5",
-     "label": "vs 19-5 elite's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-6",
-     "label": "vs 19-6 miniboss's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 19-1's field",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road19",
-     "label": "vs reference deck (Map 19) under 19-2's field",
-     "p": 0.4583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
-     "p": 0.7083,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "big",
-   "labels": [
-    "big (20 copies at 1+ Lumber, average 1.1)",
-    "flying x9"
-   ],
-   "deck": {
-    "ashwing-ptarmigan": 3,
     "basalt-boar": 4,
-    "cinder-hornet": 3,
-    "fire-salamander": 4,
-    "obsidian-scorpion": 3,
-    "sulfur-cinder-moth": 3
+    "cinder-stoker": 3,
+    "quillguard": 3,
+    "smoke-raccoon": 3,
+    "sulfur-cinder-moth": 3,
+    "talus-pika": 4
    },
    "cards": [
     {
@@ -476,32 +481,32 @@
      "rarity": "common"
     },
     {
-     "id": "fire-salamander",
-     "name": "Fire Salamander",
+     "id": "talus-pika",
+     "name": "Talus Pika",
      "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "ashwing-ptarmigan",
-     "name": "Ashwing Ptarmigan",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "cinder-hornet",
-     "name": "Cinder Hornet",
-     "copies": 3,
-     "cost": 2,
+     "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "obsidian-scorpion",
-     "name": "Obsidian Scorpion",
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
+    },
+    {
+     "id": "smoke-raccoon",
+     "name": "Smokescreen Raccoon",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
     },
     {
      "id": "sulfur-cinder-moth",
@@ -511,41 +516,36 @@
      "rarity": "common"
     }
    ],
-   "score": 0.8009,
+   "score": 0.7917,
    "ci": [
-    0.7551,
-    0.8467
+    0.7471,
+    0.8362
    ],
-   "avgLumber": 1.15,
-   "avgWait": 0.55,
+   "avgLumber": 0.65,
+   "avgWait": 0.65,
    "curve": {
-    "1": 17,
-    "2": 3
+    "0": 7,
+    "1": 13
    },
    "resourceMakers": 0,
-   "families": [
-    {
-     "f": "flying",
-     "n": 9
-    }
-   ],
+   "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:19-1",
      "label": "vs 19-1 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-2",
      "label": "vs 19-2 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-3",
      "label": "vs 19-3 elite's deck",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     },
     {
@@ -557,13 +557,13 @@
     {
      "entry": "mirror|fight:19-5",
      "label": "vs 19-5 elite's deck",
-     "p": 0.8333,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-6",
      "label": "vs 19-6 miniboss's deck",
-     "p": 0.7083,
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -575,7 +575,7 @@
     {
      "entry": "mirror|ref:road19",
      "label": "vs reference deck (Map 19) under 19-2's field",
-     "p": 0.3333,
+     "p": 0.2083,
      "n": 24
     },
     {
@@ -585,7 +585,7 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 14
+   "copiesApartFromOpen": 0
   },
   {
    "focus": "family:armor",
@@ -645,10 +645,10 @@
      "rarity": "uncommon"
     }
    ],
-   "score": 0.7824,
+   "score": 0.7778,
    "ci": [
-    0.7362,
-    0.8286
+    0.7309,
+    0.8246
    ],
    "avgLumber": 0.9,
    "avgWait": 0.85,
@@ -686,7 +686,7 @@
     {
      "entry": "mirror|fight:19-4",
      "label": "vs 19-4 elite's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
@@ -720,7 +720,7 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 14
+   "copiesApartFromOpen": 11
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map m3 --pool ashwing-ptarmigan,basalt-boar,chipmunk-hoarder,cinder-hornet,cinder-stoker,eagle-owl-quartermaster,ember-wisp,fire-salamander,honey-badger-fury,obsidian-scorpion,quillback-elder,quillguard,smoke-raccoon,stalactite-golem,sulfur-cinder-moth,sulfur-vent-crab,talus-pika --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:armor,family:flying,big,open --level 1 --mode map-true"

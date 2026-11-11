@@ -1,0 +1,1744 @@
+{
+ "about": "SKIR2 reference decks per map (apply report; tools/skir2/refdecks_2026_11_11.js running tools/skir1/refdecks_2026_11_11.js)",
+ "maps": [
+  {
+   "map": "mw",
+   "num": 5,
+   "name": "Gatorback Swamp",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "family:armor",
+     "score": 0.7833,
+     "why": "under 78.8%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "5-BPRO-1",
+    "vsNewBest": {
+     "p": 0.368,
+     "n": 400,
+     "ci": [
+      0.322,
+      0.416
+     ],
+     "elo": -94,
+     "eloCI": [
+      -130,
+      -59
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "5-PRO-1",
+    "vsNewBest": {
+     "p": 0.56,
+     "n": 400,
+     "ci": [
+      0.511,
+      0.608
+     ],
+     "elo": 42,
+     "eloCI": [
+      8,
+      76
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "5-PRO-1",
+     "focus": "open",
+     "score": 0.9375,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "bleed x8"
+     ]
+    },
+    {
+     "id": "5-PRO-2",
+     "focus": "big",
+     "score": 0.9125,
+     "labels": [
+      "big (14 copies at 1+ Lumber, average 0.7)",
+      "economy (4 resource makers)",
+      "swarm x7"
+     ]
+    },
+    {
+     "id": "5-PRO-3",
+     "focus": "family:tide",
+     "score": 0.8583,
+     "labels": [
+      "big (9 copies at 1+ Lumber, average 0.6)",
+      "armor x9",
+      "tide x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "5-BPRO-1",
+     "focus": "family:bleed",
+     "score": 0.9125,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "bleed x8"
+     ]
+    },
+    {
+     "id": "5-BPRO-2",
+     "focus": "big",
+     "score": 0.7917,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "tide x8",
+      "heal x6"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "5-WPRO-1",
+     "plan": "low",
+     "score": 0.1292,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.4)",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "5-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2375,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.6)",
+      "armor x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "ms",
+   "num": 5,
+   "name": "The Sunken Grove",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.4167,
+     "why": "under 67.1%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "family:armor",
+     "score": 0.6756,
+     "why": "under 76.1%"
+    },
+    {
+     "focus": "big",
+     "score": 0.4643,
+     "why": "under 76.1%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "5-A-BPRO-1",
+    "vsNewBest": {
+     "p": 0.4,
+     "n": 400,
+     "ci": [
+      0.353,
+      0.449
+     ],
+     "elo": -70,
+     "eloCI": [
+      -105,
+      -36
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "5-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.635,
+     "n": 400,
+     "ci": [
+      0.587,
+      0.681
+     ],
+     "elo": 96,
+     "eloCI": [
+      61,
+      131
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "5-A-PRO-1",
+     "focus": "open",
+     "score": 0.9107,
+     "labels": [
+      "heal x8"
+     ]
+    },
+    {
+     "id": "5-A-PRO-2",
+     "focus": "family:tide",
+     "score": 0.8512,
+     "labels": [
+      "tide x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "5-A-BPRO-1",
+     "focus": "open",
+     "score": 0.8869,
+     "labels": [
+      "midrange (average 0.6 Lumber)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "5-A-WPRO-1",
+     "plan": "low",
+     "score": 0.0119,
+     "labels": [
+      "big (12 copies at 2+ Lumber, average 1.8)"
+     ]
+    },
+    {
+     "id": "5-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.1548,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "guard x8",
+      "poison x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mu",
+   "num": 7,
+   "name": "The Morel Hollow",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.4167,
+     "why": "under 54.9%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.3889,
+     "why": "under 54%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "7-BPRO-1",
+    "vsNewBest": {
+     "p": 0.525,
+     "n": 400,
+     "ci": [
+      0.476,
+      0.573
+     ],
+     "elo": 17,
+     "eloCI": [
+      -17,
+      51
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "7-PRO-1",
+    "vsNewBest": {
+     "p": 0.46,
+     "n": 400,
+     "ci": [
+      0.412,
+      0.509
+     ],
+     "elo": -28,
+     "eloCI": [
+      -62,
+      6
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "7-PRO-1",
+     "focus": "family:flying",
+     "score": 0.6574,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "7-PRO-2",
+     "focus": "open",
+     "score": 0.6898,
+     "labels": [
+      "swarm (17 copies at 0 Lumber)"
+     ]
+    },
+    {
+     "id": "7-PRO-3",
+     "focus": "family:evasion",
+     "score": 0.6389,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "evasion x10",
+      "swarm x7"
+     ]
+    },
+    {
+     "id": "7-PRO-4",
+     "focus": "family:poison",
+     "score": 0.6019,
+     "labels": [
+      "poison x9",
+      "swarm x6"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "7-BPRO-1",
+     "focus": "family:guard",
+     "score": 0.7083,
+     "labels": [
+      "guard x8"
+     ]
+    },
+    {
+     "id": "7-BPRO-2",
+     "focus": "open",
+     "score": 0.6713,
+     "labels": [
+      "midrange (average 0.8 Lumber)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "7-WPRO-1",
+     "plan": "top-heavy",
+     "score": 0.0093,
+     "labels": [
+      "big (10 copies at 2+ Lumber, average 1.7)"
+     ]
+    },
+    {
+     "id": "7-WPRO-2",
+     "plan": "low",
+     "score": 0.0185,
+     "labels": [
+      "big (12 copies at 2+ Lumber, average 1.6)",
+      "swarm x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mz",
+   "num": 7,
+   "name": "The Mycelium Deep",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.4896,
+     "why": "under 81.4%"
+    }
+   ],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "7-A-BPRO-1",
+    "vsNewBest": {
+     "p": 0.528,
+     "n": 400,
+     "ci": [
+      0.479,
+      0.576
+     ],
+     "elo": 19,
+     "eloCI": [
+      -15,
+      53
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "7-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.588,
+     "n": 400,
+     "ci": [
+      0.539,
+      0.635
+     ],
+     "elo": 61,
+     "eloCI": [
+      27,
+      96
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "7-A-PRO-1",
+     "focus": "family:armor",
+     "score": 0.9167,
+     "labels": [
+      "armor x9",
+      "swarm x8"
+     ]
+    },
+    {
+     "id": "7-A-PRO-2",
+     "focus": "family:heal",
+     "score": 0.9063,
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "heal x8"
+     ]
+    },
+    {
+     "id": "7-A-PRO-3",
+     "focus": "open",
+     "score": 0.8542,
+     "labels": [
+      "midrange (average 0.4 Lumber)"
+     ]
+    },
+    {
+     "id": "7-A-PRO-4",
+     "focus": "big",
+     "score": 0.7917,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.0)",
+      "armor x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "7-A-BPRO-1",
+     "focus": "open",
+     "score": 0.8802,
+     "labels": [
+      "midrange (average 0.6 Lumber)"
+     ]
+    },
+    {
+     "id": "7-A-BPRO-2",
+     "focus": "swarm",
+     "score": 0.9635,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "swarm x7"
+     ]
+    },
+    {
+     "id": "7-A-BPRO-3",
+     "focus": "family:armor",
+     "score": 0.8698,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "armor x8",
+      "swarm x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "7-A-WPRO-1",
+     "plan": "low",
+     "score": 0.0625,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "swarm x15"
+     ]
+    },
+    {
+     "id": "7-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2396,
+     "labels": [
+      "midrange (average 0.8 Lumber)"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m7",
+   "num": 10,
+   "name": "Coral Current",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "10-BPRO-1",
+    "vsNewBest": {
+     "p": 0.78,
+     "n": 400,
+     "ci": [
+      0.737,
+      0.818
+     ],
+     "elo": 220,
+     "eloCI": [
+      179,
+      261
+     ]
+    },
+    "replaced": true
+   },
+   "proOld1": {
+    "id": "10-PRO-1",
+    "vsNewBest": {
+     "p": 0.665,
+     "n": 400,
+     "ci": [
+      0.617,
+      0.709
+     ],
+     "elo": 119,
+     "eloCI": [
+      83,
+      155
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "10-PRO-1",
+     "focus": "family:tide",
+     "score": 0.9444,
+     "labels": [
+      "swarm (15 copies at 0 Lumber)",
+      "tide x15"
+     ]
+    },
+    {
+     "id": "10-PRO-2",
+     "focus": "family:armor",
+     "score": 0.8819,
+     "labels": [
+      "swarm (17 copies at 0 Lumber)",
+      "tide x20",
+      "armor x8"
+     ]
+    },
+    {
+     "id": "10-PRO-3",
+     "focus": "open",
+     "score": 0.875,
+     "labels": [
+      "tide x15"
+     ]
+    },
+    {
+     "id": "10-PRO-4",
+     "focus": "big",
+     "score": 0.8021,
+     "labels": [
+      "big (9 copies at 2+ Lumber, average 0.9)",
+      "tide x20"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "10-BPRO-1",
+     "focus": "open",
+     "score": 0.9549,
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "tide x20",
+      "poison x6"
+     ]
+    },
+    {
+     "id": "10-BPRO-2",
+     "focus": "family:tide",
+     "score": 0.9167,
+     "labels": [
+      "tide x20"
+     ]
+    },
+    {
+     "id": "10-BPRO-3",
+     "focus": "big",
+     "score": 0.8854,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 0.9)",
+      "tide x20"
+     ]
+    },
+    {
+     "id": "10-BPRO-4",
+     "focus": "family:armor",
+     "score": 0.8611,
+     "labels": [
+      "tide x20",
+      "armor x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "10-WPRO-1",
+     "plan": "low",
+     "score": 0.184,
+     "labels": [
+      "big (18 copies at 2+ Lumber, average 2.1)",
+      "tide x20",
+      "armor x6"
+     ]
+    },
+    {
+     "id": "10-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2222,
+     "labels": [
+      "big (12 copies at 2+ Lumber, average 1.8)",
+      "tide x20",
+      "armor x9"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mj",
+   "num": 10,
+   "name": "The Sunken Depths",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [
+    {
+     "plan": "top-heavy",
+     "score": 0.3854,
+     "why": "not weak enough"
+    }
+   ],
+   "bproOld1": {
+    "id": "10-A-BPRO-1",
+    "vsNewBest": {
+     "p": 0.889,
+     "n": 400,
+     "ci": [
+      0.854,
+      0.916
+     ],
+     "elo": 361,
+     "eloCI": [
+      307,
+      415
+     ]
+    },
+    "replaced": true
+   },
+   "proOld1": {
+    "id": "10-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.639,
+     "n": 400,
+     "ci": [
+      0.591,
+      0.684
+     ],
+     "elo": 99,
+     "eloCI": [
+      64,
+      134
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "10-A-PRO-1",
+     "focus": "open",
+     "score": 0.9323,
+     "labels": [
+      "tide x18"
+     ]
+    },
+    {
+     "id": "10-A-PRO-2",
+     "focus": "family:cleave",
+     "score": 0.901,
+     "labels": [
+      "swarm (15 copies at 0 Lumber)",
+      "tide x14",
+      "cleave x8"
+     ]
+    },
+    {
+     "id": "10-A-PRO-3",
+     "focus": "family:tide",
+     "score": 0.8854,
+     "labels": [
+      "tide x20"
+     ]
+    },
+    {
+     "id": "10-A-PRO-4",
+     "focus": "big",
+     "score": 0.7917,
+     "labels": [
+      "big (8 copies at 3+ Lumber, average 1.4)",
+      "tide x18"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "10-A-BPRO-1",
+     "focus": "big",
+     "score": 0.9271,
+     "labels": [
+      "big (8 copies at 3+ Lumber, average 1.6)",
+      "tide x14"
+     ]
+    },
+    {
+     "id": "10-A-BPRO-2",
+     "focus": "family:cleave",
+     "score": 0.9089,
+     "labels": [
+      "tide x14",
+      "cleave x8"
+     ]
+    },
+    {
+     "id": "10-A-BPRO-3",
+     "focus": "family:tide",
+     "score": 0.8932,
+     "labels": [
+      "tide x17"
+     ]
+    },
+    {
+     "id": "10-A-BPRO-4",
+     "focus": "open",
+     "score": 0.8438,
+     "labels": [
+      "tide x15"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "10-A-WPRO-1",
+     "plan": "low",
+     "score": 0.25,
+     "labels": [
+      "big (14 copies at 3+ Lumber, average 2.3)",
+      "tide x14",
+      "cleave x10"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mr",
+   "num": 13,
+   "name": "The Redwood Deep",
+   "bproLeft": [
+    {
+     "focus": "family:guard",
+     "score": 0.625,
+     "why": "under 72.5%"
+    },
+    {
+     "focus": "family:evasion",
+     "score": 0.5568,
+     "why": "under 72.5%"
+    }
+   ],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "13-BPRO-1",
+    "vsNewBest": {
+     "p": 0.795,
+     "n": 400,
+     "ci": [
+      0.753,
+      0.832
+     ],
+     "elo": 235,
+     "eloCI": [
+      193,
+      278
+     ]
+    },
+    "replaced": true
+   },
+   "proOld1": {
+    "id": "13-PRO-1",
+    "vsNewBest": {
+     "p": 0.538,
+     "n": 400,
+     "ci": [
+      0.489,
+      0.586
+     ],
+     "elo": 26,
+     "eloCI": [
+      -8,
+      60
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "13-PRO-1",
+     "focus": "family:guard",
+     "score": 0.8674,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "guard x8"
+     ]
+    },
+    {
+     "id": "13-PRO-2",
+     "focus": "open",
+     "score": 0.8864,
+     "labels": [
+      "big (9 copies at 1+ Lumber, average 0.5)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "13-PRO-3",
+     "focus": "big",
+     "score": 0.8712,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "economy (7 resource makers)"
+     ]
+    },
+    {
+     "id": "13-PRO-4",
+     "focus": "family:flying",
+     "score": 0.803,
+     "labels": [
+      "swarm (15 copies at 0 Lumber)",
+      "flying x8",
+      "day x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "13-BPRO-1",
+     "focus": "economy",
+     "score": 0.875,
+     "labels": [
+      "big (13 copies at 1+ Lumber, average 0.7)",
+      "economy (7 resource makers)"
+     ]
+    },
+    {
+     "id": "13-BPRO-2",
+     "focus": "open",
+     "score": 0.7235,
+     "labels": [
+      "big (13 copies at 1+ Lumber, average 0.7)",
+      "economy (6 resource makers)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "13-WPRO-1",
+     "plan": "low",
+     "score": 0.0189,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.8)"
+     ]
+    },
+    {
+     "id": "13-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.0758,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.5)",
+      "strike-first x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "ml",
+   "num": 15,
+   "name": "The Long Grass",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "15-BPRO-1",
+    "vsNewBest": {
+     "p": 0.425,
+     "n": 400,
+     "ci": [
+      0.377,
+      0.474
+     ],
+     "elo": -53,
+     "eloCI": [
+      -87,
+      -18
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "15-PRO-1",
+    "vsNewBest": {
+     "p": 0.593,
+     "n": 400,
+     "ci": [
+      0.544,
+      0.64
+     ],
+     "elo": 65,
+     "eloCI": [
+      30,
+      100
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "15-PRO-1",
+     "focus": "family:flying",
+     "score": 0.9667,
+     "labels": [
+      "flying x8",
+      "day x8"
+     ]
+    },
+    {
+     "id": "15-PRO-2",
+     "focus": "swarm",
+     "score": 0.9625,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)"
+     ]
+    },
+    {
+     "id": "15-PRO-3",
+     "focus": "open",
+     "score": 0.8667,
+     "labels": [
+      "midrange (average 0.4 Lumber)"
+     ]
+    },
+    {
+     "id": "15-PRO-4",
+     "focus": "family:guard",
+     "score": 0.8458,
+     "labels": [
+      "guard x11"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "15-BPRO-1",
+     "focus": "big",
+     "score": 0.9125,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "15-WPRO-1",
+     "plan": "low",
+     "score": 0.0708,
+     "labels": [
+      "big (4 copies at 3+ Lumber, average 1.8)",
+      "strike-first x8",
+      "cleave x7"
+     ]
+    },
+    {
+     "id": "15-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.1667,
+     "labels": [
+      "big (4 copies at 3+ Lumber, average 1.8)",
+      "guard x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m6",
+   "num": 17,
+   "name": "Wolfsbane Tundra",
+   "bproLeft": [],
+   "proLeft": [],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "17-BPRO-1",
+    "vsNewBest": {
+     "p": 0.483,
+     "n": 400,
+     "ci": [
+      0.434,
+      0.531
+     ],
+     "elo": -12,
+     "eloCI": [
+      -46,
+      22
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "17-PRO-1",
+    "vsNewBest": {
+     "p": 0.41,
+     "n": 400,
+     "ci": [
+      0.363,
+      0.459
+     ],
+     "elo": -63,
+     "eloCI": [
+      -98,
+      -29
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "17-PRO-1",
+     "focus": "family:cold",
+     "score": 0.9773,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "cold x10"
+     ]
+    },
+    {
+     "id": "17-PRO-2",
+     "focus": "family:evasion",
+     "score": 0.8864,
+     "labels": [
+      "evasion x11"
+     ]
+    },
+    {
+     "id": "17-PRO-3",
+     "focus": "big",
+     "score": 0.8636,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.3)",
+      "cold x10"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "17-BPRO-1",
+     "focus": "family:cold",
+     "score": 0.9697,
+     "labels": [
+      "cold x10",
+      "swarm x8"
+     ]
+    },
+    {
+     "id": "17-BPRO-2",
+     "focus": "family:evasion",
+     "score": 0.9545,
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "evasion x8",
+      "swarm x7"
+     ]
+    },
+    {
+     "id": "17-BPRO-3",
+     "focus": "open",
+     "score": 0.8826,
+     "labels": [
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "17-BPRO-4",
+     "focus": "big",
+     "score": 0.8371,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.1)"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "17-WPRO-1",
+     "plan": "low",
+     "score": 0.197,
+     "labels": [
+      "big (5 copies at 2+ Lumber, average 1.4)",
+      "evasion x7"
+     ]
+    },
+    {
+     "id": "17-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2386,
+     "labels": [
+      "big (4 copies at 2+ Lumber, average 1.4)",
+      "cold x8",
+      "evasion x7"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mi",
+   "num": 17,
+   "name": "The Ice Hollow",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.5119,
+     "why": "under 63.6%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "big",
+     "score": 0.2143,
+     "why": "under 67.7%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "17-A-BPRO-1",
+    "vsNewBest": {
+     "p": 0.678,
+     "n": 400,
+     "ci": [
+      0.63,
+      0.721
+     ],
+     "elo": 129,
+     "eloCI": [
+      93,
+      165
+     ]
+    },
+    "replaced": true
+   },
+   "proOld1": {
+    "id": "17-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.513,
+     "n": 400,
+     "ci": [
+      0.464,
+      0.561
+     ],
+     "elo": 9,
+     "eloCI": [
+      -25,
+      43
+     ]
+    }
+   },
+   "pro": [
+    {
+     "id": "17-A-PRO-1",
+     "focus": "open",
+     "score": 0.8631,
+     "labels": [
+      "swarm x7"
+     ]
+    },
+    {
+     "id": "17-A-PRO-2",
+     "focus": "family:tide",
+     "score": 0.8214,
+     "labels": [
+      "swarm x8",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "17-A-PRO-3",
+     "focus": "family:cold",
+     "score": 0.8214,
+     "labels": [
+      "cold x8",
+      "evasion x7"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "17-A-BPRO-1",
+     "focus": "open",
+     "score": 0.7857,
+     "labels": [
+      "midrange (average 0.4 Lumber)"
+     ]
+    },
+    {
+     "id": "17-A-BPRO-2",
+     "focus": "family:cold",
+     "score": 0.5655,
+     "labels": [
+      "cold x10"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "17-A-WPRO-1",
+     "plan": "low",
+     "score": 0.0179,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "cold x8",
+      "tide x7"
+     ]
+    },
+    {
+     "id": "17-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.1429,
+     "labels": [
+      "tide x10"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "md",
+   "num": 18,
+   "name": "The Glass Dunes",
+   "bproLeft": [
+    {
+     "focus": "family:guard",
+     "score": 0.5958,
+     "why": "under 71%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "open",
+     "score": 0.7083,
+     "why": "under 73.3%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "18-BPRO-1",
+    "vsNewBest": {
+     "p": 0.428,
+     "n": 400,
+     "ci": [
+      0.38,
+      0.476
+     ],
+     "elo": -51,
+     "eloCI": [
+      -85,
+      -16
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "18-PRO-1",
+    "vsNewBest": {
+     "p": 0.68,
+     "n": 400,
+     "ci": [
+      0.633,
+      0.724
+     ],
+     "elo": 131,
+     "eloCI": [
+      95,
+      167
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "18-PRO-1",
+     "focus": "family:flying",
+     "score": 0.8833,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "18-PRO-2",
+     "focus": "big",
+     "score": 0.8771,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)"
+     ]
+    },
+    {
+     "id": "18-PRO-3",
+     "focus": "family:strike-first",
+     "score": 0.8292,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)",
+      "strike-first x8",
+      "flying x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "18-BPRO-1",
+     "focus": "big",
+     "score": 0.875,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.0)"
+     ]
+    },
+    {
+     "id": "18-BPRO-2",
+     "focus": "family:strike-first",
+     "score": 0.8604,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.0)",
+      "strike-first x8"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "18-WPRO-1",
+     "plan": "low",
+     "score": 0.1667,
+     "labels": [
+      "big (19 copies at 1+ Lumber, average 1.4)",
+      "strike-first x7"
+     ]
+    },
+    {
+     "id": "18-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2917,
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.4)",
+      "poison x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mpd",
+   "num": 18,
+   "name": "The Pale Desert",
+   "bproLeft": [
+    {
+     "focus": "big",
+     "score": 0.7292,
+     "why": "under 73.5%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "family:poison",
+     "score": 0.7917,
+     "why": "under 79.8%"
+    },
+    {
+     "focus": "big",
+     "score": 0.6181,
+     "why": "under 79.8%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "18-A-BPRO-1",
+    "vsNewBest": {
+     "p": 0.353,
+     "n": 400,
+     "ci": [
+      0.307,
+      0.401
+     ],
+     "elo": -106,
+     "eloCI": [
+      -141,
+      -70
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "18-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.648,
+     "n": 400,
+     "ci": [
+      0.599,
+      0.693
+     ],
+     "elo": 106,
+     "eloCI": [
+      70,
+      141
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "18-A-PRO-1",
+     "focus": "swarm",
+     "score": 0.9479,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)"
+     ]
+    },
+    {
+     "id": "18-A-PRO-2",
+     "focus": "open",
+     "score": 0.8403,
+     "labels": [
+      "ranged x7"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "18-A-BPRO-1",
+     "focus": "open",
+     "score": 0.8889,
+     "labels": [
+      "midrange (average 0.8 Lumber)"
+     ]
+    },
+    {
+     "id": "18-A-BPRO-2",
+     "focus": "family:poison",
+     "score": 0.8021,
+     "labels": [
+      "economy (4 resource makers)",
+      "poison x9"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "18-A-WPRO-1",
+     "plan": "low",
+     "score": 0.1146,
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)"
+     ]
+    },
+    {
+     "id": "18-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.1806,
+     "labels": [
+      "big (12 copies at 2+ Lumber, average 1.8)",
+      "poison x8"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m3",
+   "num": 19,
+   "name": "Ashen Spurn",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "family:armor",
+     "score": 0.7778,
+     "why": "under 79.4%"
+    }
+   ],
+   "wproLeft": [
+    {
+     "plan": "top-heavy",
+     "score": 0.3843,
+     "why": "not weak enough"
+    }
+   ],
+   "bproOld1": {
+    "id": "19-BPRO-1",
+    "vsNewBest": {
+     "p": 0.438,
+     "n": 400,
+     "ci": [
+      0.39,
+      0.486
+     ],
+     "elo": -44,
+     "eloCI": [
+      -78,
+      -9
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "19-PRO-1",
+    "vsNewBest": {
+     "p": 0.66,
+     "n": 400,
+     "ci": [
+      0.612,
+      0.705
+     ],
+     "elo": 115,
+     "eloCI": [
+      79,
+      151
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "19-PRO-1",
+     "focus": "family:flying",
+     "score": 0.9444,
+     "labels": [
+      "big (9 copies at 1+ Lumber, average 0.5)",
+      "flying x11"
+     ]
+    },
+    {
+     "id": "19-PRO-2",
+     "focus": "big",
+     "score": 0.9306,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)"
+     ]
+    },
+    {
+     "id": "19-PRO-3",
+     "focus": "open",
+     "score": 0.8565,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.0)"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "19-BPRO-1",
+     "focus": "big",
+     "score": 0.8796,
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 0.8)"
+     ]
+    },
+    {
+     "id": "19-BPRO-2",
+     "focus": "family:flying",
+     "score": 0.8148,
+     "labels": [
+      "big (10 copies at 1+ Lumber, average 0.7)",
+      "flying x10"
+     ]
+    },
+    {
+     "id": "19-BPRO-3",
+     "focus": "open",
+     "score": 0.7917,
+     "labels": [
+      "big (13 copies at 1+ Lumber, average 0.7)"
+     ]
+    },
+    {
+     "id": "19-BPRO-4",
+     "focus": "family:armor",
+     "score": 0.7778,
+     "labels": [
+      "big (14 copies at 1+ Lumber, average 0.9)",
+      "armor x10"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "19-WPRO-1",
+     "plan": "low",
+     "score": 0.1713,
+     "labels": [
+      "big (17 copies at 1+ Lumber, average 1.4)",
+      "armor x11"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m9",
+   "num": 19,
+   "name": "Basalt Foundry",
+   "bproLeft": [],
+   "proLeft": [
+    {
+     "focus": "family:armor",
+     "score": 0.6314,
+     "why": "under 69.9%"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "19-A-BPRO-1",
+    "vsNewBest": {
+     "p": 0.473,
+     "n": 400,
+     "ci": [
+      0.424,
+      0.521
+     ],
+     "elo": -19,
+     "eloCI": [
+      -53,
+      15
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "19-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.643,
+     "n": 400,
+     "ci": [
+      0.594,
+      0.688
+     ],
+     "elo": 102,
+     "eloCI": [
+      66,
+      137
+     ]
+    },
+    "replaced": true
+   },
+   "pro": [
+    {
+     "id": "19-A-PRO-1",
+     "focus": "economy",
+     "score": 0.8494,
+     "labels": [
+      "big (11 copies at 1+ Lumber, average 0.6)",
+      "economy (8 resource makers)"
+     ]
+    },
+    {
+     "id": "19-A-PRO-2",
+     "focus": "open",
+     "score": 0.8301,
+     "labels": [
+      "big (13 copies at 1+ Lumber, average 0.8)",
+      "economy (4 resource makers)"
+     ]
+    },
+    {
+     "id": "19-A-PRO-3",
+     "focus": "family:flying",
+     "score": 0.75,
+     "labels": [
+      "big (11 copies at 1+ Lumber, average 0.6)",
+      "economy (4 resource makers)",
+      "flying x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "19-A-BPRO-1",
+     "focus": "economy",
+     "score": 0.6979,
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "economy (8 resource makers)"
+     ]
+    },
+    {
+     "id": "19-A-BPRO-2",
+     "focus": "big",
+     "score": 0.7724,
+     "labels": [
+      "big (15 copies at 1+ Lumber, average 0.9)",
+      "economy (4 resource makers)",
+      "evasion x8"
+     ]
+    },
+    {
+     "id": "19-A-BPRO-3",
+     "focus": "swarm",
+     "score": 0.7212,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "tide x7"
+     ]
+    },
+    {
+     "id": "19-A-BPRO-4",
+     "focus": "open",
+     "score": 0.7147,
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.8)",
+      "economy (4 resource makers)",
+      "flying x6"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "19-A-WPRO-1",
+     "plan": "low",
+     "score": 0.109,
+     "labels": [
+      "big (15 copies at 1+ Lumber, average 1.1)",
+      "flying x8"
+     ]
+    },
+    {
+     "id": "19-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.2179,
+     "labels": [
+      "big (14 copies at 1+ Lumber, average 0.8)",
+      "evasion x6"
+     ]
+    }
+   ]
+  }
+ ]
+}

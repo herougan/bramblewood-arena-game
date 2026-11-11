@@ -1,0 +1,506 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-11T03:03:51.419Z",
+ "fingerprint": "bcdf2f81904a",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow"
+ },
+ "level": 1,
+ "pool": [
+  "arctic-tern",
+  "beluga",
+  "frost-thistle-lynx",
+  "frostbitten-wolverine",
+  "greenland-shark",
+  "lemming-swarm",
+  "permafrost-mammoth",
+  "polar-bear",
+  "ravenous-wolverine",
+  "ringed-seal",
+  "talus-pika",
+  "walrus-icebreaker",
+  "wolfsbane-alpha",
+  "yeti-chieftain"
+ ],
+ "poolNames": [
+  "Arctic Tern",
+  "Beluga",
+  "Frost Thistle Lynx",
+  "Frostbitten Wolverine",
+  "Greenland Shark",
+  "Lemming Swarm",
+  "Permafrost Mammoth",
+  "Polar Bear",
+  "Ravenous Wolverine",
+  "Ringed Seal",
+  "Talus Pika",
+  "Walrus Icebreaker",
+  "Wolfsbane Alpha",
+  "Yeti Chieftain"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:17-A-1",
+   "label": "vs 17-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-2",
+   "label": "vs 17-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-3",
+   "label": "vs 17-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-4",
+   "label": "vs 17-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 17-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road21",
+   "label": "vs reference deck (Map 21) under 17-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:cold",
+   "label": "cold (skill family)",
+   "cards": [
+    "frostbitten-wolverine",
+    "permafrost-mammoth",
+    "walrus-icebreaker"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "frost-thistle-lynx",
+    "permafrost-mammoth"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:cold",
+   "steps": 10,
+   "moves": 3,
+   "games": 2002,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 11,
+   "moves": 4,
+   "games": 2030,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "open",
+   "steps": 25,
+   "moves": 8,
+   "games": 2044,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 73,
+ "games": 6412,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.4 Lumber)"
+   ],
+   "deck": {
+    "arctic-tern": 4,
+    "beluga": 3,
+    "lemming-swarm": 4,
+    "ravenous-wolverine": 3,
+    "talus-pika": 4,
+    "yeti-chieftain": 2
+   },
+   "cards": [
+    {
+     "id": "arctic-tern",
+     "name": "Arctic Tern",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "yeti-chieftain",
+     "name": "Yeti Chieftain",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7857,
+   "ci": [
+    0.7255,
+    0.846
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:cold",
+   "labels": [
+    "cold x10"
+   ],
+   "deck": {
+    "arctic-tern": 3,
+    "beluga": 3,
+    "frostbitten-wolverine": 4,
+    "lemming-swarm": 4,
+    "permafrost-mammoth": 4,
+    "walrus-icebreaker": 2
+   },
+   "cards": [
+    {
+     "id": "frostbitten-wolverine",
+     "name": "Frostbitten Wolverine",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "permafrost-mammoth",
+     "name": "Permafrost Mammoth",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "arctic-tern",
+     "name": "Arctic Tern",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.5655,
+   "ci": [
+    0.4946,
+    0.6363
+   ],
+   "avgLumber": 1.05,
+   "avgWait": 1.45,
+   "curve": {
+    "0": 7,
+    "1": 9,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "cold",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.2)"
+   ],
+   "deck": {
+    "frost-thistle-lynx": 4,
+    "greenland-shark": 3,
+    "lemming-swarm": 4,
+    "permafrost-mammoth": 4,
+    "ravenous-wolverine": 1,
+    "talus-pika": 4
+   },
+   "cards": [
+    {
+     "id": "frost-thistle-lynx",
+     "name": "Frost Thistle Lynx",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "permafrost-mammoth",
+     "name": "Permafrost Mammoth",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "greenland-shark",
+     "name": "Greenland Shark",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.5119,
+   "ci": [
+    0.4394,
+    0.5844
+   ],
+   "avgLumber": 1.2,
+   "avgWait": 1.25,
+   "curve": {
+    "0": 8,
+    "1": 4,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.375,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mi --pool arctic-tern,beluga,frost-thistle-lynx,frostbitten-wolverine,greenland-shark,lemming-swarm,permafrost-mammoth,polar-bear,ravenous-wolverine,ringed-seal,talus-pika,walrus-icebreaker,wolfsbane-alpha,yeti-chieftain --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:cold,big,open --level 1 --mode map-true"
+}

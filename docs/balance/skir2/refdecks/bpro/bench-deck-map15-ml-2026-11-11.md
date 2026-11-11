@@ -1,6 +1,6 @@
 # Focused decks: Map 15 The Long Grass (2026-11-11)
 
-Package TOOLS1 (T3). `node tools/bench/bench.js deck --map ml --pool bison-bulldozer,border-collie,cataphract-destrier,cricket-drummer,fire-ant-raft,goose-sentry,hedge-weasel,land-tiller,mallard-halberdier,mouse-sapper,pronghorn-racer,shepherds-bark,squires-mount,thorn-shrike,truffle-piglet,war-hound,warhorse-charger --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus open --level 1 --mode map-true` (tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)), 6440 games in 66 s.
+Package TOOLS1 (T3). `node tools/bench/bench.js deck --map ml --pool bison-bulldozer,border-collie,cataphract-destrier,cricket-drummer,fire-ant-raft,goose-sentry,hedge-weasel,land-tiller,mallard-halberdier,mouse-sapper,pronghorn-racer,shepherds-bark,squires-mount,thorn-shrike,truffle-piglet,war-hound,warhorse-charger --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus open --level 1 --mode map-true` (tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)), 6160 games in 70 s.
 
 - The list (17): Bison Bulldozer, Border Collie, Gilded Roadwarden, Cricket Drummer, Fire Ant Raft, Goose Sentry, Hedge Weasel, Land Tiller, Mallard Halberdier, Mouse Sapper, Pronghorn Racer, Shepherd, Squire's Mount, Thorn Shrike, Truffle Piglet, War Hound, Warhorse Charger.
 - The rule: at most 6 different cards, at most 4 copies (never above a rarity's cap), 20 cards. Level 1.
@@ -9,10 +9,10 @@ Package TOOLS1 (T3). `node tools/bench/bench.js deck --map ml --pool bison-bulld
 
 | Deck | Focus | Labels | Win rate (95%) | Avg Lumber | Curve (Lumber: copies) | Cards | Apart from open |
 |---|---|---|---|---|---|---|---|
-| 1 | open | midrange (average 0.8 Lumber) | 89% (85%-93%) | 0.8 | 0: 4, 1: 16 | 4x Border Collie, 4x Cricket Drummer, 4x Truffle Piglet, 3x Squire's Mount, 3x Thorn Shrike, 2x Mouse Sapper | 0 |
+| 1 | open | midrange (average 0.8 Lumber) | 88% (84%-91%) | 0.8 | 0: 4, 1: 16 | 4x Border Collie, 4x Cricket Drummer, 4x Pronghorn Racer, 3x Squire's Mount, 3x Thorn Shrike, 2x Truffle Piglet | 0 |
 
 ## Per opponent
 
 | Deck | fight:15-1 | fight:15-2 | fight:15-3 | fight:15-4 | fight:15-5 | fight:15-6 | fight:15-7 | ref:starter | ref:road15 | ref:expected |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 open | 96% | 83% | 92% | 71% | 100% | 92% | 100% | 100% | 75% | 79% |
+| 1 open | 96% | 92% | 88% | 75% | 100% | 96% | 92% | 100% | 58% | 79% |

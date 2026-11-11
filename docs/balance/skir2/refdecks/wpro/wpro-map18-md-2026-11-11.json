@@ -1,6 +1,6 @@
 {
  "tool": "tools/skir1/refdecks_2026_11_11.js",
- "generated": "2026-11-11T01:05:49.402Z",
+ "generated": "2026-11-11T03:45:09.982Z",
  "map": {
   "id": "md",
   "num": 18,
@@ -35,52 +35,54 @@
   {
    "plan": "low",
    "deck": {
-    "dune-jackal": 4,
+    "dune-jackal": 3,
+    "dust-hyena": 1,
     "fennec-fox": 4,
     "marula-elephant": 4,
-    "sand-widow": 4,
-    "sandfish": 4
+    "roadrunner-courier": 4,
+    "sand-widow": 4
    },
-   "score": 0.1375,
+   "score": 0.1667,
    "ci": [
-    0.1048,
-    0.1702
+    0.1275,
+    0.2059
    ],
-   "refWins": 0.6944,
+   "refWins": 0.7083,
    "labels": [
-    "big (20 copies at 1+ Lumber, average 1.4)"
+    "big (19 copies at 1+ Lumber, average 1.4)",
+    "strike-first x7"
    ],
    "apartFrom": [],
    "steps": 5,
-   "games": 1940,
+   "games": 1900,
    "seconds": 29
   },
   {
    "plan": "top-heavy",
    "deck": {
-    "antlion-pit": 3,
-    "caustic-scorpion": 3,
+    "antlion-pit": 2,
+    "caustic-scorpion": 4,
     "dune-jackal-scout": 4,
     "marula-elephant": 4,
-    "meerkat-sentry": 2,
-    "sand-widow": 4
+    "sand-widow": 4,
+    "savanna-cheetah": 2
    },
-   "score": 0.3042,
+   "score": 0.2917,
    "ci": [
-    0.255,
-    0.3533
+    0.2414,
+    0.3419
    ],
-   "refWins": 0.5694,
+   "refWins": 0.5833,
    "labels": [
     "big (20 copies at 1+ Lumber, average 1.4)",
-    "poison x7"
+    "poison x8"
    ],
    "apartFrom": [
     12
    ],
    "steps": 5,
-   "games": 1840,
-   "seconds": 27
+   "games": 1800,
+   "seconds": 29
   }
  ]
 }

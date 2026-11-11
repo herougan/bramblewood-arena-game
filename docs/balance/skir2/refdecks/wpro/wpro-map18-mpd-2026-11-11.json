@@ -1,0 +1,87 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-11T03:46:01.000Z",
+ "map": {
+  "id": "mpd",
+  "num": 18,
+  "name": "The Pale Desert"
+ },
+ "pool": [
+  "antlion-pit",
+  "caustic-scorpion",
+  "dromedary",
+  "dune-packrat",
+  "dust-hyena",
+  "fennec-fox",
+  "glass-golem",
+  "komodo-warlord",
+  "moon-jerboa",
+  "pale-oryx",
+  "quicksand-queen",
+  "roadrunner-courier",
+  "sand-flinger-antlion",
+  "sand-widow",
+  "sandstorm-roc",
+  "skull-vulture",
+  "trapdoor-spider"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "dromedary": 1,
+    "fennec-fox": 3,
+    "komodo-warlord": 4,
+    "moon-jerboa": 4,
+    "pale-oryx": 4,
+    "sandstorm-roc": 4
+   },
+   "score": 0.1146,
+   "ci": [
+    0.081,
+    0.1482
+   ],
+   "refWins": 0.9167,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 2064,
+   "seconds": 27
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "antlion-pit": 2,
+    "dromedary": 2,
+    "komodo-warlord": 4,
+    "sand-widow": 4,
+    "sandstorm-roc": 4,
+    "skull-vulture": 4
+   },
+   "score": 0.1806,
+   "ci": [
+    0.1381,
+    0.223
+   ],
+   "refWins": 0.9167,
+   "labels": [
+    "big (12 copies at 2+ Lumber, average 1.8)",
+    "poison x8"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 4,
+   "games": 1824,
+   "seconds": 24
+  }
+ ]
+}

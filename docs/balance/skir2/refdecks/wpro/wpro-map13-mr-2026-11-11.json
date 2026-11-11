@@ -1,6 +1,6 @@
 {
  "tool": "tools/skir1/refdecks_2026_11_11.js",
- "generated": "2026-11-11T00:40:20.363Z",
+ "generated": "2026-11-11T03:41:38.443Z",
  "map": {
   "id": "mr",
   "num": 13,
@@ -41,48 +41,49 @@
     "grizzly-vanguard": 4,
     "heartwood-treant": 3,
     "owl-nightwatch": 4,
-    "stag-knight": 3,
-    "tasmanian-devil": 2
+    "stag-knight": 4,
+    "swift-fox": 1
    },
-   "score": 0.1098,
+   "score": 0.0189,
    "ci": [
-    0.0752,
-    0.1445
+    0.0021,
+    0.0358
    ],
    "refWins": 1,
    "labels": [
-    "big (20 copies at 1+ Lumber, average 1.7)"
+    "big (20 copies at 1+ Lumber, average 1.8)"
    ],
    "apartFrom": [],
-   "steps": 4,
-   "games": 1804,
-   "seconds": 23
+   "steps": 5,
+   "games": 1958,
+   "seconds": 17
   },
   {
    "plan": "top-heavy",
    "deck": {
     "berserker-boar": 4,
-    "bramblewood-lynx": 3,
     "corpse-flower-beetle": 3,
     "cunning-vixen": 4,
-    "grizzly-vanguard": 2,
-    "stag-knight": 4
+    "grizzly-vanguard": 3,
+    "pine-marten": 3,
+    "stag-knight": 3
    },
-   "score": 0.3561,
+   "score": 0.0758,
    "ci": [
-    0.3042,
-    0.4079
+    0.0445,
+    0.107
    ],
-   "refWins": 0.8889,
+   "refWins": 0.9167,
    "labels": [
-    "big (20 copies at 1+ Lumber, average 1.5)"
+    "big (20 copies at 1+ Lumber, average 1.5)",
+    "strike-first x7"
    ],
    "apartFrom": [
-    11
+    10
    ],
    "steps": 5,
-   "games": 2002,
-   "seconds": 26
+   "games": 1782,
+   "seconds": 19
   }
  ]
 }

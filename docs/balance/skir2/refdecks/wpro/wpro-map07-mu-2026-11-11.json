@@ -1,6 +1,6 @@
 {
  "tool": "tools/skir1/refdecks_2026_11_11.js",
- "generated": "2026-11-11T01:02:37.098Z",
+ "generated": "2026-11-11T03:38:27.545Z",
  "map": {
   "id": "mu",
   "num": 7,
@@ -13,7 +13,6 @@
   "corpse-flower-beetle",
   "crocodile-ambusher",
   "cypress-root-lurker",
-  "dung-beetle",
   "earthworm",
   "fungus-gnat-cloud",
   "hawthorn-shieldbug",
@@ -38,52 +37,53 @@
   {
    "plan": "low",
    "deck": {
-    "camouflage-frog": 1,
     "crocodile-ambusher": 4,
     "earthworm": 4,
+    "lamprey": 1,
     "nightshade-moth": 4,
     "rot-swollen-carcass": 4,
     "wolf-spider-mother": 3
    },
-   "score": 0.0139,
+   "score": 0.0185,
    "ci": [
-    -0.0025,
-    0.0302
+    0.0001,
+    0.0369
    ],
-   "refWins": 0.9861,
+   "refWins": 0.9722,
    "labels": [
     "big (12 copies at 2+ Lumber, average 1.6)",
     "swarm x7"
    ],
    "apartFrom": [],
    "steps": 5,
-   "games": 1800,
-   "seconds": 25
+   "games": 1854,
+   "seconds": 24
   },
   {
    "plan": "top-heavy",
    "deck": {
+    "adder-ambusher": 2,
     "amber-cicada": 4,
     "camouflage-frog": 4,
     "crocodile-ambusher": 4,
-    "lamprey": 4,
+    "nightshade-moth": 2,
     "rot-swollen-carcass": 4
    },
-   "score": 0,
+   "score": 0.0093,
    "ci": [
-    -0.0068,
-    0.0068
+    -0.0047,
+    0.0232
    ],
    "refWins": 1,
    "labels": [
-    "big (8 copies at 2+ Lumber, average 1.6)"
+    "big (10 copies at 2+ Lumber, average 1.7)"
    ],
    "apartFrom": [
-    11
+    10
    ],
-   "steps": 5,
-   "games": 1746,
-   "seconds": 22
+   "steps": 6,
+   "games": 1854,
+   "seconds": 24
   }
  ]
 }

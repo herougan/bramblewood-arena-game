@@ -1,6 +1,6 @@
 {
  "tool": "tools/skir1/refdecks_2026_11_11.js",
- "generated": "2026-11-11T01:04:53.485Z",
+ "generated": "2026-11-11T03:43:24.548Z",
  "map": {
   "id": "m6",
   "num": 17,
@@ -48,8 +48,8 @@
    },
    "score": 0.197,
    "ci": [
-    0.1524,
-    0.2415
+    0.1533,
+    0.2407
    ],
    "refWins": 0.9722,
    "labels": [
@@ -58,36 +58,36 @@
    ],
    "apartFrom": [],
    "steps": 4,
-   "games": 1870,
+   "games": 1782,
    "seconds": 29
   },
   {
    "plan": "top-heavy",
    "deck": {
     "arctic-fox-raider": 3,
-    "frostbitten-wolverine": 4,
     "glacier-yak": 4,
     "harbor-seal": 4,
-    "ringed-seal": 1,
-    "tundra-musk-ox": 4
+    "ice-crevasse-wolf": 1,
+    "shepherds-bark": 4,
+    "woodland-caribou": 4
    },
-   "score": 0.2273,
+   "score": 0.2386,
    "ci": [
-    0.1812,
-    0.2734
+    0.1935,
+    0.2838
    ],
    "refWins": 0.9444,
    "labels": [
-    "big (8 copies at 2+ Lumber, average 1.6)",
-    "evasion x8",
-    "cold x8"
+    "big (4 copies at 2+ Lumber, average 1.4)",
+    "cold x8",
+    "evasion x7"
    ],
    "apartFrom": [
-    11
+    13
    ],
    "steps": 5,
-   "games": 1892,
-   "seconds": 29
+   "games": 1980,
+   "seconds": 31
   }
  ]
 }

@@ -3,7 +3,19 @@
  "items": [
   {"id": "SKIR2-1", "status": "OPEN", "kind": "Decide", "area": "Balance", "asked": "2026-11-11", "group": "game", "source": "SKIR2", "default": "a",
    "title": "Keep SKIR2's list adds",
-   "body": "(filled at the end of the run)",
-   "options": ["a) Keep.", "b) Drop the ones you name."]}
+   "body": "No card stats changed. Rewards made obtainable: Sphagnum Vole (Map 5), Parrotfish, Coral Reef Shark (10), Gilded Roadwarden (15), Snow Ermine, Harbor Seal, Snow Bunting Archer (17). Guardians (JJ28): Grey Seal Bull (10), Shepherd (17), Marula Elephant (18), Stalactite Pill Bug (19). Fights: Planarian Splitter (7), Swift Fox, Tasmanian Devil, Bramblewood Lynx (13).",
+   "options": ["a) Keep.", "b) Drop the ones you name."]},
+  {"id": "SKIR2-2", "status": "OPEN", "kind": "Decide", "area": "Balance", "asked": "2026-11-11", "group": "game", "source": "SKIR2", "default": "a",
+   "title": "Caves & Alcoves needs a second weak card",
+   "body": "8-2 reads 66% (target 85) and 8-7 46% (target 60). Map 8's only weak card, Stalactite Pill Bug, is already in 5 of 8 fights, the most the rule allows. With it, 8-2 reads about 80%.",
+   "options": ["a) Allow the Pill Bug in 6 of Map 8's fights.", "b) You add a weak Map 8 card.", "c) Leave both."]},
+  {"id": "SKIR2-3", "status": "OPEN", "kind": "Decide", "area": "Balance", "asked": "2026-11-11", "group": "game", "source": "SKIR2", "default": "a",
+   "title": "Fights no legal deck can fix",
+   "body": "2-1 (63%, target 90) and 2-2 (62%, target 80): every legal Pebble Beach deck reads about 60%. 17-8 (23%, target 40): its Walrus Icebreaker leader and the frost decide it; every deck reads 0-23%. Side 10-A-4 reads 0%.",
+   "options": ["a) Allow a Health or Shield change on these.", "b) Leave them."]},
+  {"id": "SKIR2-4", "status": "OPEN", "kind": "Decide", "area": "Balance", "asked": "2026-11-11", "group": "game", "source": "SKIR2", "default": "a",
+   "title": "First-clear cards missing from their fight",
+   "body": "27 of 50 fights that pay a first-clear pack card no longer field that card (SKIR1's rebuild could not see the table). Players win a card they never met in that fight.",
+   "options": ["a) Put each back in its fight in the next road pass.", "b) Leave it."]}
  ]
 }

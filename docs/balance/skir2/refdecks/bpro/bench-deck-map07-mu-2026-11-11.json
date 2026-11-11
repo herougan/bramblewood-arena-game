@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-11T00:43:24.817Z",
- "fingerprint": "7c8335cf4b2b",
+ "generated": "2026-11-11T02:54:10.156Z",
+ "fingerprint": "bcdf2f81904a",
  "map": {
   "id": "mu",
   "num": 7,
@@ -15,7 +15,6 @@
   "corpse-flower-beetle",
   "crocodile-ambusher",
   "cypress-root-lurker",
-  "dung-beetle",
   "earthworm",
   "fungus-gnat-cloud",
   "hawthorn-shieldbug",
@@ -37,7 +36,6 @@
   "Corpse-flower Beetle",
   "Crocodile Ambusher",
   "Cypress Root Lurker",
-  "Dung Beetle",
   "Earthworm",
   "Fungus Gnat Cloud",
   "Hawthorn Shieldbug",
@@ -154,46 +152,48 @@
    "focus": "family:flying",
    "steps": 5,
    "moves": 4,
-   "games": 1620,
+   "games": 1638,
    "apartFromEarlier": null
   },
   {
    "focus": "family:guard",
-   "steps": 5,
-   "moves": 2,
-   "games": 1710,
-   "apartFromEarlier": 14
+   "steps": 6,
+   "moves": 4,
+   "games": 1584,
+   "apartFromEarlier": 10
   },
   {
    "focus": "big",
-   "steps": 6,
-   "moves": 1,
-   "games": 1782,
-   "apartFromEarlier": 11
+   "steps": 5,
+   "moves": 3,
+   "games": 1530,
+   "apartFromEarlier": 12
   },
   {
    "focus": "open",
-   "steps": 7,
-   "moves": 3,
-   "games": 1584,
-   "apartFromEarlier": 10
+   "steps": 5,
+   "moves": 4,
+   "games": 1548,
+   "apartFromEarlier": 12
   }
  ],
  "apart": 10,
- "seconds": 90,
- "games": 7272,
+ "seconds": 114,
+ "games": 6876,
  "decks": [
   {
-   "focus": "family:guard",
+   "focus": "family:flying",
    "labels": [
-    "guard x8"
+    "flying x8",
+    "guard x7"
    ],
    "deck": {
     "cypress-root-lurker": 4,
     "fungus-gnat-cloud": 4,
-    "hawthorn-shieldbug": 4,
-    "leafcutter-gardener": 4,
-    "sleepless-shrew": 4
+    "hawthorn-shieldbug": 3,
+    "leafcutter-gardener": 3,
+    "nightshade-moth": 4,
+    "wolf-spider-mother": 2
    },
    "cards": [
     {
@@ -211,126 +211,6 @@
      "rarity": "common"
     },
     {
-     "id": "hawthorn-shieldbug",
-     "name": "Hawthorn Shieldbug",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "leafcutter-gardener",
-     "name": "Leafcutter Gardener",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "sleepless-shrew",
-     "name": "Sleepless Shrew",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    }
-   ],
-   "score": 0.8241,
-   "ci": [
-    0.779,
-    0.8692
-   ],
-   "avgLumber": 0.4,
-   "avgWait": 0.8,
-   "curve": {
-    "0": 12,
-    "1": 8
-   },
-   "resourceMakers": 0,
-   "families": [
-    {
-     "f": "guard",
-     "n": 8
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:7-1",
-     "label": "vs 7-1 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:7-2",
-     "label": "vs 7-2 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:7-3",
-     "label": "vs 7-3 skirmish's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:7-4",
-     "label": "vs 7-4 skirmish's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:7-5",
-     "label": "vs 7-5 elite's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:7-6",
-     "label": "vs 7-6 miniboss's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 7-1's field",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road7",
-     "label": "vs reference deck (Map 7) under 7-2's field",
-     "p": 0.375,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
-     "p": 0.875,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 10
-  },
-  {
-   "focus": "family:flying",
-   "labels": [
-    "flying x8",
-    "swarm x7"
-   ],
-   "deck": {
-    "dung-beetle": 3,
-    "fungus-gnat-cloud": 4,
-    "leafcutter-gardener": 2,
-    "nightshade-moth": 4,
-    "truffle-piglet": 4,
-    "wolf-spider-mother": 3
-   },
-   "cards": [
-    {
-     "id": "fungus-gnat-cloud",
-     "name": "Fungus Gnat Cloud",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
      "id": "nightshade-moth",
      "name": "Nightshade Moth",
      "copies": 4,
@@ -338,44 +218,37 @@
      "rarity": "common"
     },
     {
-     "id": "truffle-piglet",
-     "name": "Truffle Piglet",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "dung-beetle",
-     "name": "Dung Beetle",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "wolf-spider-mother",
-     "name": "Wolf Spider Mother",
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
      "copies": 3,
      "cost": 1,
-     "rarity": "rare"
+     "rarity": "common"
     },
     {
      "id": "leafcutter-gardener",
      "name": "Leafcutter Gardener",
-     "copies": 2,
+     "copies": 3,
      "cost": 0,
      "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
     }
    ],
-   "score": 0.787,
+   "score": 0.6991,
    "ci": [
-    0.7357,
-    0.8384
+    0.6436,
+    0.7546
    ],
-   "avgLumber": 0.75,
-   "avgWait": 0.35,
+   "avgLumber": 0.85,
+   "avgWait": 0.65,
    "curve": {
-    "0": 9,
-    "1": 7,
+    "0": 7,
+    "1": 9,
     "2": 4
    },
    "resourceMakers": 0,
@@ -385,45 +258,49 @@
      "n": 8
     },
     {
-     "f": "swarm",
+     "f": "guard",
      "n": 7
+    },
+    {
+     "f": "swarm",
+     "n": 6
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:7-1",
      "label": "vs 7-1 skirmish's deck",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-2",
      "label": "vs 7-2 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-3",
      "label": "vs 7-3 skirmish's deck",
-     "p": 0.75,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-4",
      "label": "vs 7-4 skirmish's deck",
-     "p": 0.875,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-5",
      "label": "vs 7-5 elite's deck",
-     "p": 0.75,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-6",
      "label": "vs 7-6 miniboss's deck",
-     "p": 0.875,
+     "p": 0.5417,
      "n": 24
     },
     {
@@ -435,35 +312,35 @@
     {
      "entry": "mirror|ref:road7",
      "label": "vs reference deck (Map 7) under 7-2's field",
-     "p": 0.5417,
+     "p": 0.2917,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
-     "p": 0.5833,
+     "p": 0.75,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 11
+   "copiesApartFromOpen": 15
   },
   {
    "focus": "open",
    "labels": [
-    "flying x7"
+    "midrange (average 0.8 Lumber)"
    ],
    "deck": {
-    "corpse-flower-beetle": 3,
-    "fungus-gnat-cloud": 4,
-    "leafcutter-gardener": 3,
-    "nightshade-moth": 3,
+    "adder-ambusher": 3,
+    "lamprey": 2,
+    "leafcutter-gardener": 4,
     "planarian-splitter": 4,
-    "sleepless-shrew": 3
+    "truffle-piglet": 4,
+    "wolf-spider-mother": 3
    },
    "cards": [
     {
-     "id": "fungus-gnat-cloud",
-     "name": "Fungus Gnat Cloud",
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
@@ -476,70 +353,64 @@
      "rarity": "uncommon"
     },
     {
-     "id": "corpse-flower-beetle",
-     "name": "Corpse-flower Beetle",
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
     },
     {
-     "id": "leafcutter-gardener",
-     "name": "Leafcutter Gardener",
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
      "copies": 3,
-     "cost": 0,
-     "rarity": "common"
+     "cost": 1,
+     "rarity": "rare"
     },
     {
-     "id": "nightshade-moth",
-     "name": "Nightshade Moth",
-     "copies": 3,
-     "cost": 2,
-     "rarity": "common"
-    },
-    {
-     "id": "sleepless-shrew",
-     "name": "Sleepless Shrew",
-     "copies": 3,
-     "cost": 0,
+     "id": "lamprey",
+     "name": "Lamprey",
+     "copies": 2,
+     "cost": 1,
      "rarity": "common"
     }
    ],
-   "score": 0.7037,
+   "score": 0.6713,
    "ci": [
-    0.6477,
-    0.7597
+    0.6145,
+    0.7281
    ],
-   "avgLumber": 0.65,
-   "avgWait": 0.65,
+   "avgLumber": 0.8,
+   "avgWait": 0.7,
    "curve": {
-    "0": 10,
-    "1": 7,
-    "2": 3
+    "0": 4,
+    "1": 16
    },
    "resourceMakers": 0,
-   "families": [
-    {
-     "f": "flying",
-     "n": 7
-    }
-   ],
+   "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:7-1",
      "label": "vs 7-1 skirmish's deck",
-     "p": 0.7083,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-2",
      "label": "vs 7-2 skirmish's deck",
-     "p": 0.875,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-3",
      "label": "vs 7-3 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.625,
      "n": 24
     },
     {
@@ -557,7 +428,140 @@
     {
      "entry": "mirror|fight:7-6",
      "label": "vs 7-6 miniboss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:guard",
+   "labels": [
+    "guard x8"
+   ],
+   "deck": {
+    "cypress-root-lurker": 4,
+    "hawthorn-shieldbug": 4,
+    "lamprey": 1,
+    "leafcutter-gardener": 4,
+    "leopard-slug": 4,
+    "truffle-piglet": 3
+   },
+   "cards": [
+    {
+     "id": "cypress-root-lurker",
+     "name": "Cypress Root Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leopard-slug",
+     "name": "Leopard Slug",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lamprey",
+     "name": "Lamprey",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.5926,
+   "ci": [
+    0.5385,
+    0.6467
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-1",
+     "label": "vs 7-1 skirmish's deck",
      "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-2",
+     "label": "vs 7-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-3",
+     "label": "vs 7-3 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-4",
+     "label": "vs 7-4 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-5",
+     "label": "vs 7-5 elite's deck",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-6",
+     "label": "vs 7-6 miniboss's deck",
+     "p": 0.625,
      "n": 24
     },
     {
@@ -569,52 +573,39 @@
     {
      "entry": "mirror|ref:road7",
      "label": "vs reference deck (Map 7) under 7-2's field",
-     "p": 0.4167,
+     "p": 0.0833,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
-     "p": 0.4583,
+     "p": 0.7083,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 0
+   "copiesApartFromOpen": 12
   },
   {
    "focus": "big",
    "labels": [
-    "big (8 copies at 2+ Lumber, average 1.0)",
+    "big (8 copies at 2+ Lumber, average 1.3)",
+    "swarm x8",
     "flying x8"
    ],
    "deck": {
-    "crocodile-ambusher": 4,
+    "corpse-flower-beetle": 2,
     "fungus-gnat-cloud": 4,
-    "hawthorn-shieldbug": 4,
     "leopard-slug": 3,
     "nightshade-moth": 4,
-    "sleepless-shrew": 1
+    "rot-swollen-carcass": 4,
+    "truffle-piglet": 3
    },
    "cards": [
-    {
-     "id": "crocodile-ambusher",
-     "name": "Crocodile Ambusher",
-     "copies": 4,
-     "cost": 2,
-     "rarity": "common"
-    },
     {
      "id": "fungus-gnat-cloud",
      "name": "Fungus Gnat Cloud",
      "copies": 4,
      "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "hawthorn-shieldbug",
-     "name": "Hawthorn Shieldbug",
-     "copies": 4,
-     "cost": 1,
      "rarity": "common"
     },
     {
@@ -625,6 +616,13 @@
      "rarity": "common"
     },
     {
+     "id": "rot-swollen-carcass",
+     "name": "Rot-Swollen Carcass",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
      "id": "leopard-slug",
      "name": "Leopard Slug",
      "copies": 3,
@@ -632,27 +630,39 @@
      "rarity": "common"
     },
     {
-     "id": "sleepless-shrew",
-     "name": "Sleepless Shrew",
-     "copies": 1,
-     "cost": 0,
-     "rarity": "common"
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "corpse-flower-beetle",
+     "name": "Corpse-flower Beetle",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
     }
    ],
-   "score": 0.412,
+   "score": 0.4167,
    "ci": [
-    0.3507,
-    0.4734
+    0.3535,
+    0.4799
    ],
-   "avgLumber": 1,
-   "avgWait": 1,
+   "avgLumber": 1.25,
+   "avgWait": 0.9,
    "curve": {
-    "0": 8,
-    "1": 4,
-    "2": 8
+    "0": 7,
+    "1": 5,
+    "2": 4,
+    "3": 4
    },
    "resourceMakers": 0,
    "families": [
+    {
+     "f": "swarm",
+     "n": 8
+    },
     {
      "f": "flying",
      "n": 8
@@ -662,25 +672,25 @@
     {
      "entry": "mirror|fight:7-1",
      "label": "vs 7-1 skirmish's deck",
-     "p": 0.75,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-2",
      "label": "vs 7-2 skirmish's deck",
-     "p": 0.5417,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-3",
      "label": "vs 7-3 skirmish's deck",
-     "p": 0.4167,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-4",
      "label": "vs 7-4 skirmish's deck",
-     "p": 0.2917,
+     "p": 0.5,
      "n": 24
     },
     {
@@ -692,19 +702,19 @@
     {
      "entry": "mirror|fight:7-6",
      "label": "vs 7-6 miniboss's deck",
-     "p": 0.5,
+     "p": 0.4167,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 7-1's field",
-     "p": 0.4583,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|ref:road7",
      "label": "vs reference deck (Map 7) under 7-2's field",
-     "p": 0.0833,
+     "p": 0.125,
      "n": 24
     },
     {
@@ -714,8 +724,8 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 12
+   "copiesApartFromOpen": 17
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,amber-cicada,camouflage-frog,corpse-flower-beetle,crocodile-ambusher,cypress-root-lurker,dung-beetle,earthworm,fungus-gnat-cloud,hawthorn-shieldbug,lamprey,leafcutter-gardener,leopard-slug,nightshade-moth,planarian-splitter,puffball-bombardier,rot-swollen-carcass,sleepless-shrew,truffle-piglet,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:flying,family:guard,big,open --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,amber-cicada,camouflage-frog,corpse-flower-beetle,crocodile-ambusher,cypress-root-lurker,earthworm,fungus-gnat-cloud,hawthorn-shieldbug,lamprey,leafcutter-gardener,leopard-slug,nightshade-moth,planarian-splitter,puffball-bombardier,rot-swollen-carcass,sleepless-shrew,truffle-piglet,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:flying,family:guard,big,open --level 1 --mode map-true"
 }

@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-11T00:55:40.321Z",
- "fingerprint": "a2bd49aa35d1",
+ "generated": "2026-11-11T03:24:58.326Z",
+ "fingerprint": "bcdf2f81904a",
  "map": {
   "id": "ml",
   "num": 15,
@@ -228,13 +228,13 @@
    "focus": "open",
    "steps": 7,
    "moves": 4,
-   "games": 2160,
+   "games": 2220,
    "apartFromEarlier": 11
   }
  ],
  "apart": 10,
- "seconds": 95,
- "games": 9180,
+ "seconds": 99,
+ "games": 9240,
  "decks": [
   {
    "focus": "family:flying",

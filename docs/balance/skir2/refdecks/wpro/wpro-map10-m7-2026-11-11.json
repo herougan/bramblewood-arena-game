@@ -1,6 +1,6 @@
 {
  "tool": "tools/skir1/refdecks_2026_11_11.js",
- "generated": "2026-11-11T01:03:10.821Z",
+ "generated": "2026-11-11T03:40:18.010Z",
  "map": {
   "id": "m7",
   "num": 10,
@@ -41,26 +41,27 @@
   {
    "plan": "low",
    "deck": {
-    "coral-reef-shark": 4,
-    "grey-seal-bull": 1,
+    "coral-reef-shark": 3,
+    "giant-clam": 2,
     "orca-vanguard": 4,
     "reef-shark": 4,
     "sea-turtle-elder": 4,
     "voltaic-eel": 3
    },
-   "score": 0.1632,
+   "score": 0.184,
    "ci": [
-    0.1247,
-    0.2017
+    0.1436,
+    0.2245
    ],
    "refWins": 1,
    "labels": [
-    "big (19 copies at 2+ Lumber, average 2.1)",
-    "tide x20"
+    "big (18 copies at 2+ Lumber, average 2.1)",
+    "tide x20",
+    "armor x6"
    ],
    "apartFrom": [],
    "steps": 4,
-   "games": 2040,
+   "games": 2064,
    "seconds": 17
   },
   {
@@ -68,27 +69,27 @@
    "deck": {
     "coral-reef-shark": 4,
     "crown-of-thorns-star": 4,
-    "giant-clam": 3,
+    "giant-clam": 4,
     "ironclaw-fiddler": 3,
-    "orca-vanguard": 4,
+    "orca-vanguard": 3,
     "sea-turtle-elder": 2
    },
    "score": 0.2222,
    "ci": [
-    0.18,
-    0.2645
+    0.1787,
+    0.2657
    ],
    "refWins": 0.9583,
    "labels": [
-    "big (13 copies at 2+ Lumber, average 1.9)",
+    "big (12 copies at 2+ Lumber, average 1.8)",
     "tide x20",
-    "armor x8"
+    "armor x9"
    ],
    "apartFrom": [
     10
    ],
    "steps": 4,
-   "games": 1992,
+   "games": 1872,
    "seconds": 16
   }
  ]

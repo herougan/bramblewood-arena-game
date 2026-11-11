@@ -1,0 +1,635 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-11T03:06:46.923Z",
+ "fingerprint": "bcdf2f81904a",
+ "map": {
+  "id": "mpd",
+  "num": 18,
+  "name": "The Pale Desert"
+ },
+ "level": 1,
+ "pool": [
+  "antlion-pit",
+  "caustic-scorpion",
+  "dromedary",
+  "dune-packrat",
+  "dust-hyena",
+  "fennec-fox",
+  "glass-golem",
+  "komodo-warlord",
+  "moon-jerboa",
+  "pale-oryx",
+  "quicksand-queen",
+  "roadrunner-courier",
+  "sand-flinger-antlion",
+  "sand-widow",
+  "sandstorm-roc",
+  "skull-vulture",
+  "trapdoor-spider"
+ ],
+ "poolNames": [
+  "Antlion Pit",
+  "Caustic Scorpion",
+  "Dromedary",
+  "Dune Packrat",
+  "Dust Hyena",
+  "Fennec Fox",
+  "Glass Golem",
+  "Komodo Warlord",
+  "Moon Jerboa",
+  "Pale Oryx",
+  "Quicksand Queen",
+  "Roadrunner Courier",
+  "Sand-flinger Antlion",
+  "Sand Widow",
+  "Sandstorm Roc",
+  "Skull Vulture",
+  "Trapdoor Spider"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:18-A-1",
+   "label": "vs 18-A-1 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-2",
+   "label": "vs 18-A-2 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-3",
+   "label": "vs 18-A-3 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-4",
+   "label": "vs 18-A-4 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-5",
+   "label": "vs 18-A-5 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-6",
+   "label": "vs 18-A-6 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-7",
+   "label": "vs 18-A-7 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-8",
+   "label": "vs 18-A-8 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-9",
+   "label": "vs 18-A-9 boss's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 18-A-1's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:road19",
+   "label": "vs reference deck (Map 19) under 18-A-2's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+   "weight": 0.0833
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:poison",
+   "label": "poison (skill family)",
+   "cards": [
+    "caustic-scorpion",
+    "komodo-warlord",
+    "sand-widow",
+    "trapdoor-spider"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "komodo-warlord",
+    "sand-widow",
+    "sandstorm-roc"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:poison",
+   "steps": 5,
+   "moves": 2,
+   "games": 2064,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 6,
+   "moves": 3,
+   "games": 2328,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 1,
+   "games": 2136,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 87,
+ "games": 7104,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "antlion-pit": 4,
+    "dust-hyena": 4,
+    "pale-oryx": 4,
+    "quicksand-queen": 2,
+    "sand-flinger-antlion": 4,
+    "trapdoor-spider": 2
+   },
+   "cards": [
+    {
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pale-oryx",
+     "name": "Pale Oryx",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sand-flinger-antlion",
+     "name": "Sand-flinger Antlion",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "quicksand-queen",
+     "name": "Quicksand Queen",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "trapdoor-spider",
+     "name": "Trapdoor Spider",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8854,
+   "ci": [
+    0.8509,
+    0.9199
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:poison",
+   "labels": [
+    "economy (4 resource makers)",
+    "poison x9"
+   ],
+   "deck": {
+    "caustic-scorpion": 3,
+    "dromedary": 3,
+    "dust-hyena": 4,
+    "sand-flinger-antlion": 4,
+    "sand-widow": 4,
+    "trapdoor-spider": 2
+   },
+   "cards": [
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sand-flinger-antlion",
+     "name": "Sand-flinger Antlion",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dromedary",
+     "name": "Dromedary",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "trapdoor-spider",
+     "name": "Trapdoor Spider",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8021,
+   "ci": [
+    0.7623,
+    0.8419
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 1.3,
+   "curve": {
+    "0": 10,
+    "1": 6,
+    "2": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "poison",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.1)",
+    "poison x6"
+   ],
+   "deck": {
+    "antlion-pit": 4,
+    "dune-packrat": 3,
+    "dust-hyena": 3,
+    "sand-widow": 4,
+    "sandstorm-roc": 4,
+    "trapdoor-spider": 2
+   },
+   "cards": [
+    {
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "sandstorm-roc",
+     "name": "Sandstorm Roc",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "trapdoor-spider",
+     "name": "Trapdoor Spider",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7292,
+   "ci": [
+    0.6837,
+    0.7746
+   ],
+   "avgLumber": 1.15,
+   "avgWait": 1.25,
+   "curve": {
+    "0": 5,
+    "1": 7,
+    "2": 8
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "poison",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mpd --pool antlion-pit,caustic-scorpion,dromedary,dune-packrat,dust-hyena,fennec-fox,glass-golem,komodo-warlord,moon-jerboa,pale-oryx,quicksand-queen,roadrunner-courier,sand-flinger-antlion,sand-widow,sandstorm-roc,skull-vulture,trapdoor-spider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:poison,big,open --level 1 --mode map-true"
+}

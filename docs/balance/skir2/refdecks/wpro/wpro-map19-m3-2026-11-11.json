@@ -1,6 +1,6 @@
 {
  "tool": "tools/skir1/refdecks_2026_11_11.js",
- "generated": "2026-11-11T01:06:38.851Z",
+ "generated": "2026-11-11T03:46:52.969Z",
  "map": {
   "id": "m3",
   "num": 19,
@@ -42,10 +42,10 @@
     "sulfur-cinder-moth": 1,
     "sulfur-vent-crab": 3
    },
-   "score": 0.1991,
+   "score": 0.1713,
    "ci": [
-    0.1512,
-    0.2469
+    0.1268,
+    0.2157
    ],
    "refWins": 0.9028,
    "labels": [
@@ -54,8 +54,8 @@
    ],
    "apartFrom": [],
    "steps": 6,
-   "games": 1800,
-   "seconds": 22
+   "games": 1818,
+   "seconds": 23
   },
   {
    "plan": "top-heavy",
@@ -67,10 +67,10 @@
     "stalactite-golem": 4,
     "talus-pika": 4
    },
-   "score": 0.4259,
+   "score": 0.3843,
    "ci": [
-    0.3675,
-    0.4844
+    0.3255,
+    0.443
    ],
    "refWins": 0.7361,
    "labels": [
@@ -81,8 +81,8 @@
     10
    ],
    "steps": 6,
-   "games": 1926,
-   "seconds": 27
+   "games": 1998,
+   "seconds": 29
   }
  ]
 }

@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-11T00:48:06.821Z",
- "fingerprint": "7c8335cf4b2b",
+ "generated": "2026-11-11T03:05:19.712Z",
+ "fingerprint": "bcdf2f81904a",
  "map": {
   "id": "md",
   "num": 18,
@@ -171,28 +171,28 @@
   {
    "focus": "family:guard",
    "steps": 5,
-   "moves": 2,
-   "games": 1760,
-   "apartFromEarlier": 11
+   "moves": 1,
+   "games": 1780,
+   "apartFromEarlier": 12
   },
   {
    "focus": "big",
    "steps": 5,
-   "moves": 2,
-   "games": 1620,
-   "apartFromEarlier": 12
+   "moves": 3,
+   "games": 1500,
+   "apartFromEarlier": 10
   },
   {
    "focus": "open",
-   "steps": 6,
-   "moves": 4,
-   "games": 1640,
-   "apartFromEarlier": 10
+   "steps": 5,
+   "moves": 3,
+   "games": 1680,
+   "apartFromEarlier": 12
   }
  ],
  "apart": 10,
- "seconds": 93,
- "games": 7340,
+ "seconds": 88,
+ "games": 7280,
  "decks": [
   {
    "focus": "family:strike-first",
@@ -252,10 +252,10 @@
      "rarity": "veryrare"
     }
    ],
-   "score": 0.8688,
+   "score": 0.8604,
    "ci": [
-    0.8298,
-    0.9077
+    0.8199,
+    0.9009
    ],
    "avgLumber": 1,
    "avgWait": 0.4,
@@ -273,7 +273,7 @@
     {
      "entry": "mirror|fight:18-1",
      "label": "vs 18-1 skirmish's deck",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -285,7 +285,7 @@
     {
      "entry": "mirror|fight:18-3",
      "label": "vs 18-3 skirmish's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -303,7 +303,7 @@
     {
      "entry": "mirror|fight:18-6",
      "label": "vs 18-6 elite's deck",
-     "p": 0.875,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -331,7 +331,7 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 11
+   "copiesApartFromOpen": 14
   },
   {
    "focus": "open",
@@ -339,17 +339,24 @@
     "big (20 copies at 1+ Lumber, average 1.0)"
    ],
    "deck": {
-    "antlion-pit": 3,
-    "armadillo-guard": 3,
-    "caustic-scorpion": 4,
+    "antlion-pit": 4,
+    "fennec-fox": 4,
     "horned-lizard": 4,
-    "roadrunner-courier": 3,
-    "stonedrop-vulture": 3
+    "sandfish": 2,
+    "savanna-cheetah": 2,
+    "stonedrop-vulture": 4
    },
    "cards": [
     {
-     "id": "caustic-scorpion",
-     "name": "Caustic Scorpion",
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fennec-fox",
+     "name": "Fennec Fox",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
@@ -362,38 +369,31 @@
      "rarity": "uncommon"
     },
     {
-     "id": "antlion-pit",
-     "name": "Antlion Pit",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "armadillo-guard",
-     "name": "Armadillo Guard",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "roadrunner-courier",
-     "name": "Roadrunner Courier",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
      "id": "stonedrop-vulture",
      "name": "Stonedrop Vulture",
-     "copies": 3,
+     "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
+    },
+    {
+     "id": "sandfish",
+     "name": "Sandfish",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
     }
    ],
-   "score": 0.8667,
+   "score": 0.8542,
    "ci": [
-    0.826,
-    0.9073
+    0.8121,
+    0.8962
    ],
    "avgLumber": 1,
    "avgWait": 0.9,
@@ -412,139 +412,13 @@
     {
      "entry": "mirror|fight:18-2",
      "label": "vs 18-2 skirmish's deck",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:18-3",
-     "label": "vs 18-3 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:18-4",
-     "label": "vs 18-4 skirmish's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:18-5",
-     "label": "vs 18-5 elite's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:18-6",
-     "label": "vs 18-6 elite's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:18-7",
-     "label": "vs 18-7 miniboss's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 18-1's field",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road18",
-     "label": "vs reference deck (Map 18) under 18-2's field",
      "p": 0.7083,
      "n": 24
     },
     {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
-     "p": 0.9167,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "big",
-   "labels": [
-    "big (16 copies at 1+ Lumber, average 0.8)"
-   ],
-   "deck": {
-    "antlion-pit": 4,
-    "glasswing-moth": 4,
-    "roadrunner-courier": 4,
-    "sandfish": 4,
-    "stonedrop-vulture": 4
-   },
-   "cards": [
-    {
-     "id": "antlion-pit",
-     "name": "Antlion Pit",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "glasswing-moth",
-     "name": "Glasswing Moth",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "roadrunner-courier",
-     "name": "Roadrunner Courier",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "sandfish",
-     "name": "Sandfish",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "stonedrop-vulture",
-     "name": "Stonedrop Vulture",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    }
-   ],
-   "score": 0.8479,
-   "ci": [
-    0.807,
-    0.8888
-   ],
-   "avgLumber": 0.8,
-   "avgWait": 0.6,
-   "curve": {
-    "0": 4,
-    "1": 16
-   },
-   "resourceMakers": 0,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:18-1",
-     "label": "vs 18-1 skirmish's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:18-2",
-     "label": "vs 18-2 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
      "entry": "mirror|fight:18-3",
      "label": "vs 18-3 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
@@ -563,6 +437,140 @@
      "entry": "mirror|fight:18-6",
      "label": "vs 18-6 elite's deck",
      "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "label": "vs 18-7 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 18-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (14 copies at 1+ Lumber, average 0.7)"
+   ],
+   "deck": {
+    "armadillo-guard": 2,
+    "dust-hyena": 2,
+    "glasswing-moth": 4,
+    "horned-lizard": 4,
+    "roadrunner-courier": 4,
+    "stonedrop-vulture": 4
+   },
+   "cards": [
+    {
+     "id": "glasswing-moth",
+     "name": "Glasswing Moth",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "horned-lizard",
+     "name": "Horned Lizard",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "roadrunner-courier",
+     "name": "Roadrunner Courier",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "armadillo-guard",
+     "name": "Armadillo Guard",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7729,
+   "ci": [
+    0.7262,
+    0.8197
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 6,
+    "1": 14
+   },
+   "resourceMakers": 2,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "label": "vs 18-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "label": "vs 18-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "label": "vs 18-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "label": "vs 18-4 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "label": "vs 18-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "label": "vs 18-6 elite's deck",
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -580,7 +588,7 @@
     {
      "entry": "mirror|ref:road18",
      "label": "vs reference deck (Map 18) under 18-2's field",
-     "p": 0.6875,
+     "p": 0.5208,
      "n": 24
     },
     {
@@ -590,29 +598,42 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 11
+   "copiesApartFromOpen": 12
   },
   {
    "focus": "family:guard",
    "labels": [
-    "big (16 copies at 1+ Lumber, average 1.0)",
+    "big (20 copies at 1+ Lumber, average 1.2)",
     "guard x8"
    ],
    "deck": {
+    "antlion-pit": 4,
     "armadillo-guard": 4,
-    "horned-lizard": 3,
+    "horned-lizard": 4,
     "marula-elephant": 4,
-    "roadrunner-courier": 4,
-    "stonedrop-vulture": 1,
-    "termite-forager": 4
+    "roadrunner-courier": 4
    },
    "cards": [
+    {
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
     {
      "id": "armadillo-guard",
      "name": "Armadillo Guard",
      "copies": 4,
      "cost": 1,
      "rarity": "common"
+    },
+    {
+     "id": "horned-lizard",
+     "name": "Horned Lizard",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
     },
     {
      "id": "marula-elephant",
@@ -627,39 +648,17 @@
      "copies": 4,
      "cost": 1,
      "rarity": "common"
-    },
-    {
-     "id": "termite-forager",
-     "name": "Termite Forager",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "horned-lizard",
-     "name": "Horned Lizard",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "stonedrop-vulture",
-     "name": "Stonedrop Vulture",
-     "copies": 1,
-     "cost": 1,
-     "rarity": "uncommon"
     }
    ],
-   "score": 0.6375,
+   "score": 0.5958,
    "ci": [
-    0.5816,
-    0.6934
+    0.5404,
+    0.6513
    ],
-   "avgLumber": 1,
-   "avgWait": 0.6,
+   "avgLumber": 1.2,
+   "avgWait": 0.8,
    "curve": {
-    "0": 4,
-    "1": 12,
+    "1": 16,
     "2": 4
    },
    "resourceMakers": 0,
@@ -673,43 +672,43 @@
     {
      "entry": "mirror|fight:18-1",
      "label": "vs 18-1 skirmish's deck",
-     "p": 0.75,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-2",
      "label": "vs 18-2 skirmish's deck",
-     "p": 0.625,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-3",
      "label": "vs 18-3 skirmish's deck",
-     "p": 0.7917,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-4",
      "label": "vs 18-4 skirmish's deck",
-     "p": 0.4167,
+     "p": 0.2917,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-5",
      "label": "vs 18-5 elite's deck",
-     "p": 0.8333,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-6",
      "label": "vs 18-6 elite's deck",
-     "p": 0.5417,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-7",
      "label": "vs 18-7 miniboss's deck",
-     "p": 0.375,
+     "p": 0.4167,
      "n": 24
     },
     {
@@ -721,17 +720,17 @@
     {
      "entry": "mirror|ref:road18",
      "label": "vs reference deck (Map 18) under 18-2's field",
-     "p": 0.5,
+     "p": 0.3333,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
-     "p": 0.5417,
+     "p": 0.6667,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 10
+   "copiesApartFromOpen": 12
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map md --pool antlion-pit,armadillo-guard,caustic-scorpion,dune-jackal,dune-jackal-scout,dust-hyena,fennec-fox,glasswing-moth,horned-lizard,marula-elephant,meerkat-sentry,roadrunner-courier,sand-widow,sandfish,savanna-cheetah,stonedrop-vulture,termite-forager --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:strike-first,family:guard,big,open --level 1 --mode map-true"

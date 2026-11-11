@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-11T00:46:33.987Z",
- "fingerprint": "7c8335cf4b2b",
+ "generated": "2026-11-11T03:02:38.167Z",
+ "fingerprint": "bcdf2f81904a",
  "map": {
   "id": "m6",
   "num": 17,
@@ -177,28 +177,28 @@
   {
    "focus": "family:cold",
    "steps": 4,
-   "moves": 4,
-   "games": 1606,
-   "apartFromEarlier": 10
+   "moves": 2,
+   "games": 1694,
+   "apartFromEarlier": 13
   },
   {
    "focus": "big",
    "steps": 4,
    "moves": 2,
-   "games": 1562,
-   "apartFromEarlier": 13
+   "games": 1540,
+   "apartFromEarlier": 12
   },
   {
    "focus": "open",
    "steps": 4,
-   "moves": 1,
-   "games": 1562,
-   "apartFromEarlier": 11
+   "moves": 0,
+   "games": 1606,
+   "apartFromEarlier": 10
   }
  ],
  "apart": 10,
- "seconds": 72,
- "games": 7040,
+ "seconds": 78,
+ "games": 7150,
  "decks": [
   {
    "focus": "family:evasion",
@@ -259,10 +259,10 @@
      "rarity": "common"
     }
    ],
-   "score": 0.9508,
+   "score": 0.9545,
    "ci": [
-    0.9256,
-    0.9759
+    0.9304,
+    0.9787
    ],
    "avgLumber": 0.2,
    "avgWait": 0.35,
@@ -331,7 +331,7 @@
     {
      "entry": "mirror|fight:17-8",
      "label": "vs 17-8 miniboss's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
@@ -353,22 +353,31 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 11
+   "copiesApartFromOpen": 13
   },
   {
-   "focus": "open",
+   "focus": "family:cold",
    "labels": [
-    "swarm x8"
+    "economy (4 resource makers)",
+    "cold x10",
+    "evasion x6"
    ],
    "deck": {
-    "arctic-fox-raider": 3,
+    "arctic-fox-raider": 2,
+    "cone-cutter-squirrel": 4,
     "frostbitten-wolverine": 4,
-    "krill-swarm": 4,
-    "lemming-swarm": 4,
-    "snow-bunting-archer": 3,
-    "talus-pika": 2
+    "snow-ermine": 4,
+    "walrus-icebreaker": 2,
+    "woodland-caribou": 4
    },
    "cards": [
+    {
+     "id": "cone-cutter-squirrel",
+     "name": "Cone-cutter Squirrel",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "frostbitten-wolverine",
      "name": "Frostbitten Wolverine",
@@ -377,57 +386,54 @@
      "rarity": "uncommon"
     },
     {
-     "id": "krill-swarm",
-     "name": "Krill Swarm",
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "lemming-swarm",
-     "name": "Lemming Swarm",
+     "id": "woodland-caribou",
+     "name": "Woodland Caribou",
      "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "arctic-fox-raider",
-     "name": "Arctic Fox Raider",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "snow-bunting-archer",
-     "name": "Snow Bunting Archer",
-     "copies": 3,
      "cost": 1,
      "rarity": "uncommon"
     },
     {
-     "id": "talus-pika",
-     "name": "Talus Pika",
+     "id": "arctic-fox-raider",
+     "name": "Arctic Fox Raider",
      "copies": 2,
-     "cost": 0,
-     "rarity": "common"
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
     }
    ],
-   "score": 0.9394,
+   "score": 0.9129,
    "ci": [
-    0.9127,
-    0.9661
+    0.8807,
+    0.945
    ],
-   "avgLumber": 0.5,
-   "avgWait": 0.35,
+   "avgLumber": 0.6,
+   "avgWait": 0.8,
    "curve": {
-    "0": 10,
-    "1": 10
+    "0": 8,
+    "1": 12
    },
-   "resourceMakers": 0,
+   "resourceMakers": 4,
    "families": [
     {
-     "f": "swarm",
-     "n": 8
+     "f": "cold",
+     "n": 10
+    },
+    {
+     "f": "evasion",
+     "n": 6
     }
    ],
    "perOpponent": [
@@ -440,43 +446,43 @@
     {
      "entry": "mirror|fight:17-2",
      "label": "vs 17-2 skirmish's deck",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-3",
      "label": "vs 17-3 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-4",
      "label": "vs 17-4 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-5",
      "label": "vs 17-5 elite's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-6",
      "label": "vs 17-6 elite's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-7",
      "label": "vs 17-7 elite's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-8",
      "label": "vs 17-8 miniboss's deck",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -494,36 +500,36 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
-     "p": 0.875,
+     "p": 0.7917,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 0
+   "copiesApartFromOpen": 10
   },
   {
-   "focus": "family:cold",
+   "focus": "open",
    "labels": [
-    "cold x9"
+    "economy (4 resource makers)"
    ],
    "deck": {
-    "cone-cutter-squirrel": 3,
-    "frostbitten-wolverine": 3,
-    "krill-swarm": 4,
-    "snow-ermine": 4,
-    "walrus-icebreaker": 2,
+    "arctic-fox-raider": 3,
+    "cone-cutter-squirrel": 4,
+    "ice-crevasse-wolf": 3,
+    "lemming-swarm": 4,
+    "polar-bear": 2,
     "woodland-caribou": 4
    },
    "cards": [
     {
-     "id": "krill-swarm",
-     "name": "Krill Swarm",
+     "id": "cone-cutter-squirrel",
+     "name": "Cone-cutter Squirrel",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "snow-ermine",
-     "name": "Snow Ermine",
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
@@ -536,45 +542,40 @@
      "rarity": "uncommon"
     },
     {
-     "id": "cone-cutter-squirrel",
-     "name": "Cone-cutter Squirrel",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "frostbitten-wolverine",
-     "name": "Frostbitten Wolverine",
+     "id": "arctic-fox-raider",
+     "name": "Arctic Fox Raider",
      "copies": 3,
      "cost": 1,
-     "rarity": "uncommon"
+     "rarity": "rare"
     },
     {
-     "id": "walrus-icebreaker",
-     "name": "Walrus Icebreaker",
+     "id": "ice-crevasse-wolf",
+     "name": "Ice-Crevasse Wolf",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "polar-bear",
+     "name": "Polar Bear",
      "copies": 2,
      "cost": 1,
      "rarity": "veryrare"
     }
    ],
-   "score": 0.9167,
+   "score": 0.8826,
    "ci": [
-    0.8851,
-    0.9483
+    0.8498,
+    0.9154
    ],
-   "avgLumber": 0.45,
-   "avgWait": 0.7,
+   "avgLumber": 0.6,
+   "avgWait": 0.75,
    "curve": {
-    "0": 11,
-    "1": 9
+    "0": 8,
+    "1": 12
    },
-   "resourceMakers": 3,
-   "families": [
-    {
-     "f": "cold",
-     "n": 9
-    }
-   ],
+   "resourceMakers": 4,
+   "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:17-1",
@@ -585,7 +586,7 @@
     {
      "entry": "mirror|fight:17-2",
      "label": "vs 17-2 skirmish's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
@@ -603,19 +604,19 @@
     {
      "entry": "mirror|fight:17-5",
      "label": "vs 17-5 elite's deck",
-     "p": 0.7917,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-6",
      "label": "vs 17-6 elite's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-7",
      "label": "vs 17-7 elite's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
@@ -627,38 +628,36 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 17-1's field",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:road17",
      "label": "vs reference deck (Map 17) under 17-2's field",
-     "p": 0.7083,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
-     "p": 0.8333,
+     "p": 0.5,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 13
+   "copiesApartFromOpen": 0
   },
   {
    "focus": "big",
    "labels": [
-    "big (8 copies at 2+ Lumber, average 1.1)",
-    "swarm x8",
-    "cold x6"
+    "big (8 copies at 2+ Lumber, average 1.1)"
    ],
    "deck": {
     "arctic-tern": 2,
     "glacier-yak": 4,
-    "krill-swarm": 4,
     "lemming-swarm": 4,
+    "snow-ermine": 4,
     "tundra-musk-ox": 4,
-    "walrus-icebreaker": 2
+    "wolfsbane-alpha": 2
    },
    "cards": [
     {
@@ -669,15 +668,15 @@
      "rarity": "common"
     },
     {
-     "id": "krill-swarm",
-     "name": "Krill Swarm",
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "lemming-swarm",
-     "name": "Lemming Swarm",
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
@@ -697,17 +696,17 @@
      "rarity": "uncommon"
     },
     {
-     "id": "walrus-icebreaker",
-     "name": "Walrus Icebreaker",
+     "id": "wolfsbane-alpha",
+     "name": "Wolfsbane Alpha",
      "copies": 2,
      "cost": 1,
      "rarity": "veryrare"
     }
    ],
-   "score": 0.9091,
+   "score": 0.8371,
    "ci": [
-    0.8764,
-    0.9418
+    0.7981,
+    0.8761
    ],
    "avgLumber": 1.1,
    "avgWait": 0.9,
@@ -718,45 +717,36 @@
     "3": 4
    },
    "resourceMakers": 0,
-   "families": [
-    {
-     "f": "swarm",
-     "n": 8
-    },
-    {
-     "f": "cold",
-     "n": 6
-    }
-   ],
+   "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:17-1",
      "label": "vs 17-1 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-2",
      "label": "vs 17-2 skirmish's deck",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-3",
      "label": "vs 17-3 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-4",
      "label": "vs 17-4 skirmish's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-5",
      "label": "vs 17-5 elite's deck",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -768,7 +758,7 @@
     {
      "entry": "mirror|fight:17-7",
      "label": "vs 17-7 elite's deck",
-     "p": 0.9167,
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -780,23 +770,23 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 17-1's field",
-     "p": 0.9167,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|ref:road17",
      "label": "vs reference deck (Map 17) under 17-2's field",
-     "p": 0.875,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
-     "p": 0.625,
+     "p": 0.5,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 12
+   "copiesApartFromOpen": 16
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map m6 --pool arctic-fox-raider,arctic-tern,cone-cutter-squirrel,frostbitten-wolverine,glacier-yak,harbor-seal,ice-crevasse-wolf,krill-swarm,lemming-swarm,polar-bear,ringed-seal,shepherds-bark,snow-bunting-archer,snow-ermine,taiga-lynx,talus-pika,timber-wolf-pack,tundra-musk-ox,walrus-icebreaker,wolfsbane-alpha,woodland-caribou --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:evasion,family:cold,big,open --level 1 --mode map-true"

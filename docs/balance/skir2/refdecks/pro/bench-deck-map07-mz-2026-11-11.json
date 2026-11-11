@@ -1,0 +1,738 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-11T03:18:50.530Z",
+ "fingerprint": "bcdf2f81904a",
+ "map": {
+  "id": "mz",
+  "num": 7,
+  "name": "The Mycelium Deep"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "amber-cicada",
+  "ant-warrior",
+  "barkplate-beetle",
+  "bee-forager",
+  "bombardier-beetle",
+  "dung-beetle",
+  "fire-ant-raft",
+  "fungal-colossus",
+  "fungus-gnat-cloud",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "leopard-slug",
+  "millipede-hauler",
+  "mudpuppy",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "otter-centurion",
+  "pill-bug",
+  "planarian-splitter",
+  "puffball-bombardier",
+  "rootworm-colony",
+  "rot-swollen-carcass",
+  "sleepless-shrew",
+  "springtail-hopper",
+  "truffle-piglet",
+  "tunnel-ant",
+  "tunnel-wyrm",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Amber Cicada",
+  "Ant Warrior",
+  "Barkplate Beetle",
+  "Bee Forager",
+  "Bombardier Beetle",
+  "Dung Beetle",
+  "Fire Ant Raft",
+  "Fungal Colossus",
+  "Fungus Gnat Cloud",
+  "Garden Snail",
+  "Hawthorn Shieldbug",
+  "Leafcutter Gardener",
+  "Leopard Slug",
+  "Millipede Hauler",
+  "Mudpuppy",
+  "Newt Doctor",
+  "Nutria Reedcutter",
+  "Otter Centurion",
+  "Pill Bug",
+  "Planarian Splitter",
+  "Puffball Bombardier",
+  "Rootworm Colony",
+  "Rot-Swollen Carcass",
+  "Sleepless Shrew",
+  "Springtail Hopper",
+  "Truffle Piglet",
+  "Tunnel Ant",
+  "Tunnel Wyrm",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "ant-warrior",
+   "bombardier-beetle",
+   "dung-beetle",
+   "fungal-colossus",
+   "fungus-gnat-cloud",
+   "garden-snail",
+   "leafcutter-gardener",
+   "leopard-slug",
+   "millipede-hauler",
+   "pill-bug",
+   "puffball-bombardier",
+   "rootworm-colony",
+   "rot-swollen-carcass",
+   "sleepless-shrew",
+   "springtail-hopper",
+   "truffle-piglet",
+   "tunnel-wyrm",
+   "wolf-spider-mother"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:7-A-1",
+   "label": "vs 7-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:7-A-2",
+   "label": "vs 7-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:7-A-3",
+   "label": "vs 7-A-3 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:7-A-4",
+   "label": "vs 7-A-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:7-A-5",
+   "label": "vs 7-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 7-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road8",
+   "label": "vs reference deck (Map 8) under 7-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "barkplate-beetle",
+    "garden-snail",
+    "hawthorn-shieldbug",
+    "millipede-hauler",
+    "pill-bug"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:heal",
+   "label": "heal (skill family)",
+   "cards": [
+    "leopard-slug",
+    "mudpuppy",
+    "newt-doctor"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "barkplate-beetle",
+    "fungal-colossus",
+    "rot-swollen-carcass"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:armor",
+   "steps": 8,
+   "moves": 5,
+   "games": 2192,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "family:heal",
+   "steps": 8,
+   "moves": 4,
+   "games": 2128,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 9,
+   "moves": 3,
+   "games": 2112,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 8,
+   "moves": 4,
+   "games": 2224,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 188,
+ "games": 9168,
+ "decks": [
+  {
+   "focus": "family:armor",
+   "labels": [
+    "armor x9",
+    "swarm x8"
+   ],
+   "deck": {
+    "ant-warrior": 3,
+    "barkplate-beetle": 4,
+    "fungus-gnat-cloud": 4,
+    "millipede-hauler": 4,
+    "nutria-reedcutter": 4,
+    "pill-bug": 1
+   },
+   "cards": [
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "millipede-hauler",
+     "name": "Millipede Hauler",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ant-warrior",
+     "name": "Ant Warrior",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pill-bug",
+     "name": "Pill Bug",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.9167,
+   "ci": [
+    0.8819,
+    0.9514
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 12,
+    "1": 4,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 9
+    },
+    {
+     "f": "swarm",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-A-1",
+     "label": "vs 7-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-2",
+     "label": "vs 7-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-3",
+     "label": "vs 7-A-3 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-4",
+     "label": "vs 7-A-4 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-5",
+     "label": "vs 7-A-5 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 7-A-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "family:heal",
+   "labels": [
+    "swarm (18 copies at 0 Lumber)",
+    "heal x8"
+   ],
+   "deck": {
+    "amber-cicada": 2,
+    "dung-beetle": 4,
+    "fungus-gnat-cloud": 4,
+    "leopard-slug": 4,
+    "newt-doctor": 4,
+    "springtail-hopper": 2
+   },
+   "cards": [
+    {
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leopard-slug",
+     "name": "Leopard Slug",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "amber-cicada",
+     "name": "Amber Cicada",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "springtail-hopper",
+     "name": "Springtail Hopper",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9063,
+   "ci": [
+    0.8678,
+    0.9447
+   ],
+   "avgLumber": 0.1,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 18,
+    "1": 2
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "heal",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-A-1",
+     "label": "vs 7-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-2",
+     "label": "vs 7-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-3",
+     "label": "vs 7-A-3 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-4",
+     "label": "vs 7-A-4 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-5",
+     "label": "vs 7-A-5 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 7-A-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.4 Lumber)"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "leafcutter-gardener": 4,
+    "millipede-hauler": 2,
+    "nutria-reedcutter": 4,
+    "tunnel-wyrm": 3,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "tunnel-wyrm",
+     "name": "Tunnel Wyrm",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "millipede-hauler",
+     "name": "Millipede Hauler",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8542,
+   "ci": [
+    0.8083,
+    0.9001
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 1.05,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-A-1",
+     "label": "vs 7-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-2",
+     "label": "vs 7-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-3",
+     "label": "vs 7-A-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-4",
+     "label": "vs 7-A-4 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-5",
+     "label": "vs 7-A-5 boss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 7-A-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.0)",
+    "armor x8"
+   ],
+   "deck": {
+    "alley-cat": 2,
+    "barkplate-beetle": 4,
+    "leafcutter-gardener": 2,
+    "nutria-reedcutter": 4,
+    "pill-bug": 4,
+    "rot-swollen-carcass": 4
+   },
+   "cards": [
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pill-bug",
+     "name": "Pill Bug",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "rot-swollen-carcass",
+     "name": "Rot-Swollen Carcass",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7419,
+    0.8414
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 12,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-A-1",
+     "label": "vs 7-A-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-2",
+     "label": "vs 7-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-3",
+     "label": "vs 7-A-3 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-4",
+     "label": "vs 7-A-4 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-5",
+     "label": "vs 7-A-5 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 7-A-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mz --pool alley-cat,amber-cicada,ant-warrior,barkplate-beetle,bee-forager,bombardier-beetle,dung-beetle,fire-ant-raft,fungal-colossus,fungus-gnat-cloud,garden-snail,hawthorn-shieldbug,leafcutter-gardener,leopard-slug,millipede-hauler,mudpuppy,newt-doctor,nutria-reedcutter,otter-centurion,pill-bug,planarian-splitter,puffball-bombardier,rootworm-colony,rot-swollen-carcass,sleepless-shrew,springtail-hopper,truffle-piglet,tunnel-ant,tunnel-wyrm,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:armor,family:heal,big,open --anchor ant-warrior,bombardier-beetle,dung-beetle,fungal-colossus,fungus-gnat-cloud,garden-snail,leafcutter-gardener,leopard-slug,millipede-hauler,pill-bug,puffball-bombardier,rootworm-colony,rot-swollen-carcass,sleepless-shrew,springtail-hopper,truffle-piglet,tunnel-wyrm,wolf-spider-mother --anchor-min 10 --level 1 --mode map-true"
+}

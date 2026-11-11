@@ -1,0 +1,721 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-11T03:13:36.864Z",
+ "fingerprint": "bcdf2f81904a",
+ "map": {
+  "id": "ms",
+  "num": 5,
+  "name": "The Sunken Grove"
+ },
+ "level": 1,
+ "pool": [
+  "alligator-gar",
+  "alpine-marmot",
+  "anhinga-spearbird",
+  "banded-sea-krait",
+  "blue-ringed-octopus",
+  "bog-behemoth",
+  "bog-leech",
+  "booming-bittern",
+  "caiman-hatchling",
+  "cottonmouth-matriarch",
+  "cypress-root-lurker",
+  "eagle-owl-quartermaster",
+  "fen-mink",
+  "fire-ant-raft",
+  "matamata",
+  "mossmother-newt",
+  "mudflat-godwit",
+  "mudpuppy",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "old-snapjaw",
+  "otter-centurion",
+  "peat-cutter-vole",
+  "raft-spider",
+  "signal-crayfish",
+  "snapper-hatchling",
+  "swamp-alligator",
+  "upside-down-bat",
+  "venomlord-serpent",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alligator Gar",
+  "Alpine Marmot",
+  "Anhinga Spearbird",
+  "Banded Sea Krait",
+  "Blue-ringed Octopus",
+  "Bog Behemoth",
+  "Bog Leech",
+  "Booming Bittern",
+  "Caiman Hatchling",
+  "Cottonmouth Matriarch",
+  "Cypress Root Lurker",
+  "Eagle-Owl Quartermaster",
+  "Fen Mink",
+  "Fire Ant Raft",
+  "Matamata",
+  "Mossmother Newt",
+  "Mudflat Godwit",
+  "Mudpuppy",
+  "Newt Doctor",
+  "Nutria Reedcutter",
+  "Old Snapjaw",
+  "Otter Centurion",
+  "Peat-cutter Vole",
+  "Raft Spider",
+  "Signal Crayfish",
+  "Snapper Hatchling",
+  "Swamp Alligator",
+  "Upside-Down Bat",
+  "Venomlord Serpent",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "anhinga-spearbird",
+   "bog-behemoth",
+   "bog-leech",
+   "caiman-hatchling",
+   "cottonmouth-matriarch",
+   "cypress-root-lurker",
+   "fen-mink",
+   "matamata",
+   "mossmother-newt",
+   "mudflat-godwit",
+   "newt-doctor",
+   "nutria-reedcutter",
+   "old-snapjaw",
+   "peat-cutter-vole",
+   "signal-crayfish",
+   "snapper-hatchling",
+   "swamp-alligator",
+   "venomlord-serpent"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:5-A-1",
+   "label": "vs 5-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:5-A-2",
+   "label": "vs 5-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:5-A-3",
+   "label": "vs 5-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:5-A-4",
+   "label": "vs 5-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 5-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road13",
+   "label": "vs reference deck (Map 13) under 5-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "alligator-gar",
+    "matamata",
+    "old-snapjaw",
+    "signal-crayfish",
+    "swamp-alligator"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "alligator-gar",
+    "fire-ant-raft",
+    "mudflat-godwit",
+    "raft-spider",
+    "snapper-hatchling"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "bog-behemoth",
+    "old-snapjaw",
+    "swamp-alligator",
+    "venomlord-serpent"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:armor",
+   "steps": 11,
+   "moves": 6,
+   "games": 2128,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:tide",
+   "steps": 10,
+   "moves": 6,
+   "games": 2072,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "big",
+   "steps": 9,
+   "moves": 4,
+   "games": 2100,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 12,
+   "moves": 5,
+   "games": 2212,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 151,
+ "games": 8960,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "heal x8"
+   ],
+   "deck": {
+    "alpine-marmot": 2,
+    "bog-leech": 2,
+    "matamata": 4,
+    "mossmother-newt": 4,
+    "mudflat-godwit": 4,
+    "mudpuppy": 4
+   },
+   "cards": [
+    {
+     "id": "matamata",
+     "name": "Matamata",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mossmother-newt",
+     "name": "Mossmother Newt",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mudflat-godwit",
+     "name": "Mudflat Godwit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.9107,
+   "ci": [
+    0.8699,
+    0.9515
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 1.1,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "heal",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-A-1",
+     "label": "vs 5-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-2",
+     "label": "vs 5-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-3",
+     "label": "vs 5-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-4",
+     "label": "vs 5-A-4 boss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 5-A-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "tide x8"
+   ],
+   "deck": {
+    "blue-ringed-octopus": 3,
+    "mudflat-godwit": 4,
+    "newt-doctor": 1,
+    "nutria-reedcutter": 4,
+    "snapper-hatchling": 4,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "mudflat-godwit",
+     "name": "Mudflat Godwit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snapper-hatchling",
+     "name": "Snapper Hatchling",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8512,
+   "ci": [
+    0.8,
+    0.9024
+   ],
+   "avgLumber": 0.35,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 13,
+    "1": 7
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-A-1",
+     "label": "vs 5-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-2",
+     "label": "vs 5-A-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-3",
+     "label": "vs 5-A-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-4",
+     "label": "vs 5-A-4 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 5-A-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "armor x8",
+    "evasion x7"
+   ],
+   "deck": {
+    "bog-leech": 4,
+    "caiman-hatchling": 3,
+    "matamata": 4,
+    "mossmother-newt": 2,
+    "otter-centurion": 3,
+    "signal-crayfish": 4
+   },
+   "cards": [
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "matamata",
+     "name": "Matamata",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "signal-crayfish",
+     "name": "Signal Crayfish",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "caiman-hatchling",
+     "name": "Caiman Hatchling",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "mossmother-newt",
+     "name": "Mossmother Newt",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6756,
+   "ci": [
+    0.6135,
+    0.7377
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    },
+    {
+     "f": "evasion",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-A-1",
+     "label": "vs 5-A-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-2",
+     "label": "vs 5-A-2 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-3",
+     "label": "vs 5-A-3 skirmish's deck",
+     "p": 0.6875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-4",
+     "label": "vs 5-A-4 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 5-A-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (9 copies at 2+ Lumber, average 1.3)",
+    "heal x7",
+    "armor x6"
+   ],
+   "deck": {
+    "bog-behemoth": 3,
+    "bog-leech": 3,
+    "mudflat-godwit": 4,
+    "mudpuppy": 4,
+    "old-snapjaw": 2,
+    "swamp-alligator": 4
+   },
+   "cards": [
+    {
+     "id": "mudflat-godwit",
+     "name": "Mudflat Godwit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "swamp-alligator",
+     "name": "Swamp Alligator",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "bog-behemoth",
+     "name": "Bog Behemoth",
+     "copies": 3,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "old-snapjaw",
+     "name": "Old Snapjaw",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.4643,
+   "ci": [
+    0.3968,
+    0.5318
+   ],
+   "avgLumber": 1.25,
+   "avgWait": 1.7,
+   "curve": {
+    "0": 7,
+    "1": 4,
+    "2": 6,
+    "3": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "heal",
+     "n": 7
+    },
+    {
+     "f": "armor",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-A-1",
+     "label": "vs 5-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-2",
+     "label": "vs 5-A-2 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-3",
+     "label": "vs 5-A-3 skirmish's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-4",
+     "label": "vs 5-A-4 boss's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-A-1's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 5-A-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field",
+     "p": 0.2083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map ms --pool alligator-gar,alpine-marmot,anhinga-spearbird,banded-sea-krait,blue-ringed-octopus,bog-behemoth,bog-leech,booming-bittern,caiman-hatchling,cottonmouth-matriarch,cypress-root-lurker,eagle-owl-quartermaster,fen-mink,fire-ant-raft,matamata,mossmother-newt,mudflat-godwit,mudpuppy,newt-doctor,nutria-reedcutter,old-snapjaw,otter-centurion,peat-cutter-vole,raft-spider,signal-crayfish,snapper-hatchling,swamp-alligator,upside-down-bat,venomlord-serpent,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:armor,family:tide,big,open --anchor anhinga-spearbird,bog-behemoth,bog-leech,caiman-hatchling,cottonmouth-matriarch,cypress-root-lurker,fen-mink,matamata,mossmother-newt,mudflat-godwit,newt-doctor,nutria-reedcutter,old-snapjaw,peat-cutter-vole,signal-crayfish,snapper-hatchling,swamp-alligator,venomlord-serpent --anchor-min 10 --level 1 --mode map-true"
+}

@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-11T00:39:29.584Z",
- "fingerprint": "c3e9effa70eb",
+ "generated": "2026-11-11T03:23:19.399Z",
+ "fingerprint": "bcdf2f81904a",
  "map": {
   "id": "mr",
   "num": 13,
@@ -236,53 +236,58 @@
   {
    "focus": "economy",
    "steps": 6,
-   "moves": 6,
-   "games": 2288,
-   "apartFromEarlier": 14
+   "moves": 4,
+   "games": 2200,
+   "apartFromEarlier": 10
   },
   {
    "focus": "family:flying",
-   "steps": 7,
-   "moves": 2,
-   "games": 2310,
-   "apartFromEarlier": 12
+   "steps": 6,
+   "moves": 3,
+   "games": 2156,
+   "apartFromEarlier": 11
   },
   {
    "focus": "big",
    "steps": 6,
-   "moves": 3,
-   "games": 2024,
+   "moves": 2,
+   "games": 2310,
    "apartFromEarlier": 10
   },
   {
    "focus": "open",
    "steps": 6,
-   "moves": 3,
+   "moves": 2,
    "games": 2156,
-   "apartFromEarlier": 12
+   "apartFromEarlier": 10
   }
  ],
  "apart": 10,
- "seconds": 90,
- "games": 9482,
+ "seconds": 97,
+ "games": 9526,
  "decks": [
   {
-   "focus": "economy",
+   "focus": "open",
    "labels": [
-    "swarm (15 copies at 0 Lumber)",
-    "economy (6 resource makers)",
-    "flying x8",
-    "day x8"
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "economy (4 resource makers)"
    ],
    "deck": {
-    "badger-lumberjack": 3,
-    "chipmunk-skirmisher": 3,
+    "bear-cub": 3,
+    "chipmunk-skirmisher": 4,
     "fox-kit": 4,
-    "ibex-rockcaller": 2,
-    "robin-redbreast": 4,
-    "upside-down-bat": 4
+    "pine-marten": 3,
+    "seed-cache-squirrel": 3,
+    "sergeant-bramblefox": 3
    },
    "cards": [
+    {
+     "id": "chipmunk-skirmisher",
+     "name": "Chipmunk Skirmisher",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "fox-kit",
      "name": "Fox Kit",
@@ -291,198 +296,41 @@
      "rarity": "common"
     },
     {
-     "id": "robin-redbreast",
-     "name": "Robin Redbreast",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "upside-down-bat",
-     "name": "Upside-Down Bat",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "badger-lumberjack",
-     "name": "Badger Lumberjack",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "chipmunk-skirmisher",
-     "name": "Chipmunk Skirmisher",
+     "id": "bear-cub",
+     "name": "Bear Cub",
      "copies": 3,
      "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "ibex-rockcaller",
-     "name": "Ibex Rockcaller",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "veryrare"
-    }
-   ],
-   "score": 0.928,
-   "ci": [
-    0.8982,
-    0.9578
-   ],
-   "avgLumber": 0.25,
-   "avgWait": 0.35,
-   "curve": {
-    "0": 15,
-    "1": 5
-   },
-   "resourceMakers": 6,
-   "families": [
-    {
-     "f": "flying",
-     "n": 8
-    },
-    {
-     "f": "day",
-     "n": 8
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:13-1",
-     "label": "vs 13-1 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-2",
-     "label": "vs 13-2 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-3",
-     "label": "vs 13-3 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-4",
-     "label": "vs 13-4 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-5",
-     "label": "vs 13-5 elite's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-6",
-     "label": "vs 13-6 elite's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-7",
-     "label": "vs 13-7 elite's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-8",
-     "label": "vs 13-8 miniboss's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 13-1's field",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road13",
-     "label": "vs reference deck (Map 13) under 13-2's field",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
-     "p": 0.7917,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 13
-  },
-  {
-   "focus": "big",
-   "labels": [
-    "big (9 copies at 1+ Lumber, average 0.5)",
-    "economy (4 resource makers)"
-   ],
-   "deck": {
-    "badger-lumberjack": 4,
-    "bramble-hoglet": 4,
-    "bramblewood-lynx": 3,
-    "fawn-scout": 3,
-    "ibex-rockcaller": 2,
-    "robin-redbreast": 4
-   },
-   "cards": [
-    {
-     "id": "badger-lumberjack",
-     "name": "Badger Lumberjack",
-     "copies": 4,
-     "cost": 1,
      "rarity": "uncommon"
     },
     {
-     "id": "bramble-hoglet",
-     "name": "Bramble Hoglet",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "robin-redbreast",
-     "name": "Robin Redbreast",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "bramblewood-lynx",
-     "name": "Bramblewood Lynx",
+     "id": "pine-marten",
+     "name": "Pine Marten",
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
     },
     {
-     "id": "fawn-scout",
-     "name": "Fawn Scout",
+     "id": "seed-cache-squirrel",
+     "name": "Seed-cache Squirrel",
      "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
+     "cost": 1,
+     "rarity": "common"
     },
     {
-     "id": "ibex-rockcaller",
-     "name": "Ibex Rockcaller",
-     "copies": 2,
+     "id": "sergeant-bramblefox",
+     "name": "Sergeant Bramblefox",
+     "copies": 3,
      "cost": 1,
-     "rarity": "veryrare"
+     "rarity": "rare"
     }
    ],
-   "score": 0.9129,
+   "score": 0.8864,
    "ci": [
-    0.8817,
-    0.9441
+    0.8506,
+    0.9221
    ],
    "avgLumber": 0.45,
-   "avgWait": 0.55,
+   "avgWait": 0.15,
    "curve": {
     "0": 11,
     "1": 9
@@ -493,19 +341,19 @@
     {
      "entry": "mirror|fight:13-1",
      "label": "vs 13-1 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-2",
      "label": "vs 13-2 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-3",
      "label": "vs 13-3 skirmish's deck",
-     "p": 1,
+     "p": 0.75,
      "n": 24
     },
     {
@@ -517,13 +365,13 @@
     {
      "entry": "mirror|fight:13-5",
      "label": "vs 13-5 elite's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-6",
      "label": "vs 13-6 elite's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -535,7 +383,7 @@
     {
      "entry": "mirror|fight:13-8",
      "label": "vs 13-8 miniboss's deck",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -553,45 +401,37 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
-     "p": 0.75,
+     "p": 0.8333,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 20
+   "copiesApartFromOpen": 0
   },
   {
-   "focus": "family:flying",
+   "focus": "big",
    "labels": [
-    "swarm (14 copies at 0 Lumber)",
-    "flying x8",
-    "day x8"
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "economy (7 resource makers)"
    ],
    "deck": {
-    "bear-cub": 4,
-    "corpse-flower-beetle": 2,
-    "leopard-slug": 2,
-    "robin-redbreast": 4,
-    "swift-fox": 4,
+    "badger-lumberjack": 3,
+    "chipmunk-skirmisher": 4,
+    "ibex-rockcaller": 2,
+    "seed-cache-squirrel": 4,
+    "sergeant-bramblefox": 3,
     "upside-down-bat": 4
    },
    "cards": [
     {
-     "id": "bear-cub",
-     "name": "Bear Cub",
+     "id": "chipmunk-skirmisher",
+     "name": "Chipmunk Skirmisher",
      "copies": 4,
      "cost": 0,
-     "rarity": "uncommon"
+     "rarity": "common"
     },
     {
-     "id": "robin-redbreast",
-     "name": "Robin Redbreast",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "swift-fox",
-     "name": "Swift Fox",
+     "id": "seed-cache-squirrel",
+     "name": "Seed-cache Squirrel",
      "copies": 4,
      "cost": 1,
      "rarity": "common"
@@ -604,30 +444,179 @@
      "rarity": "uncommon"
     },
     {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sergeant-bramblefox",
+     "name": "Sergeant Bramblefox",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8712,
+   "ci": [
+    0.834,
+    0.9085
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 7,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "flying x8",
+    "day x8"
+   ],
+   "deck": {
+    "corpse-flower-beetle": 2,
+    "fawn-scout": 3,
+    "fox-kit": 4,
+    "robin-redbreast": 4,
+    "sergeant-bramblefox": 3,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "sergeant-bramblefox",
+     "name": "Sergeant Bramblefox",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
      "id": "corpse-flower-beetle",
      "name": "Corpse-flower Beetle",
      "copies": 2,
      "cost": 1,
      "rarity": "rare"
-    },
-    {
-     "id": "leopard-slug",
-     "name": "Leopard Slug",
-     "copies": 2,
-     "cost": 0,
-     "rarity": "common"
     }
    ],
-   "score": 0.8636,
+   "score": 0.803,
    "ci": [
-    0.8278,
-    0.8995
+    0.7581,
+    0.848
    ],
-   "avgLumber": 0.3,
-   "avgWait": 0.3,
+   "avgLumber": 0.25,
+   "avgWait": 0.2,
    "curve": {
-    "0": 14,
-    "1": 6
+    "0": 15,
+    "1": 5
    },
    "resourceMakers": 0,
    "families": [
@@ -644,49 +633,49 @@
     {
      "entry": "mirror|fight:13-1",
      "label": "vs 13-1 skirmish's deck",
-     "p": 0.7917,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-2",
      "label": "vs 13-2 skirmish's deck",
-     "p": 0.875,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-3",
      "label": "vs 13-3 skirmish's deck",
-     "p": 0.875,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-4",
      "label": "vs 13-4 skirmish's deck",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-5",
      "label": "vs 13-5 elite's deck",
-     "p": 1,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-6",
      "label": "vs 13-6 elite's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-7",
      "label": "vs 13-7 elite's deck",
-     "p": 1,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-8",
      "label": "vs 13-8 miniboss's deck",
-     "p": 1,
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -704,31 +693,32 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
-     "p": 0.5,
+     "p": 0.6667,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 18
+   "copiesApartFromOpen": 13
   },
   {
-   "focus": "open",
+   "focus": "economy",
    "labels": [
-    "big (9 copies at 1+ Lumber, average 0.7)"
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "economy (6 resource makers)"
    ],
    "deck": {
-    "berserker-boar": 4,
-    "chipmunk-skirmisher": 3,
+    "badger-lumberjack": 2,
+    "chipmunk-skirmisher": 4,
+    "corpse-flower-beetle": 3,
     "fox-kit": 4,
-    "leopard-slug": 4,
-    "river-mink": 4,
-    "sergeant-bramblefox": 1
+    "robin-redbreast": 3,
+    "swift-fox": 4
    },
    "cards": [
     {
-     "id": "berserker-boar",
-     "name": "Berserker Boar",
+     "id": "chipmunk-skirmisher",
+     "name": "Chipmunk Skirmisher",
      "copies": 4,
-     "cost": 2,
+     "cost": 0,
      "rarity": "common"
     },
     {
@@ -739,95 +729,94 @@
      "rarity": "common"
     },
     {
-     "id": "leopard-slug",
-     "name": "Leopard Slug",
+     "id": "swift-fox",
+     "name": "Swift Fox",
      "copies": 4,
-     "cost": 0,
+     "cost": 1,
      "rarity": "common"
     },
     {
-     "id": "river-mink",
-     "name": "River Mink",
-     "copies": 4,
+     "id": "corpse-flower-beetle",
+     "name": "Corpse-flower Beetle",
+     "copies": 3,
      "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 3,
+     "cost": 0,
      "rarity": "uncommon"
     },
     {
-     "id": "chipmunk-skirmisher",
-     "name": "Chipmunk Skirmisher",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "sergeant-bramblefox",
-     "name": "Sergeant Bramblefox",
-     "copies": 1,
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 2,
      "cost": 1,
-     "rarity": "rare"
+     "rarity": "uncommon"
     }
    ],
-   "score": 0.8182,
+   "score": 0.7992,
    "ci": [
-    0.7857,
-    0.8507
+    0.7563,
+    0.8422
    ],
-   "avgLumber": 0.65,
-   "avgWait": 0.6,
+   "avgLumber": 0.45,
+   "avgWait": 0.4,
    "curve": {
     "0": 11,
-    "1": 5,
-    "2": 4
+    "1": 9
    },
-   "resourceMakers": 3,
+   "resourceMakers": 6,
    "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:13-1",
      "label": "vs 13-1 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-2",
      "label": "vs 13-2 skirmish's deck",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-3",
      "label": "vs 13-3 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-4",
      "label": "vs 13-4 skirmish's deck",
-     "p": 1,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-5",
      "label": "vs 13-5 elite's deck",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-6",
      "label": "vs 13-6 elite's deck",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-7",
      "label": "vs 13-7 elite's deck",
-     "p": 0.9583,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-8",
      "label": "vs 13-8 miniboss's deck",
-     "p": 0.6667,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -839,17 +828,17 @@
     {
      "entry": "mirror|ref:road13",
      "label": "vs reference deck (Map 13) under 13-2's field",
-     "p": 0,
+     "p": 0.4167,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
-     "p": 0.75,
+     "p": 0.5,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 0
+   "copiesApartFromOpen": 12
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map mr --pool badger-lumberjack,barkplate-beetle,bear-cub,berserker-boar,blue-ringed-octopus,bramble-hoglet,bramblewood-lynx,chipmunk-skirmisher,corpse-flower-beetle,cunning-vixen,eagle-owl-quartermaster,fawn-scout,fox-kit,grizzly-vanguard,heartwood-treant,ibex-rockcaller,leopard-slug,lyrebird-mimic,owl-nightwatch,pine-marten,quill-thorn-boar,redwood-woodpecker,river-mink,robin-redbreast,seed-cache-squirrel,sergeant-bramblefox,stag-knight,swift-fox,tasmanian-devil,tide-spirit,truffle-piglet,upside-down-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus economy,family:flying,big,open --anchor badger-lumberjack,bear-cub,berserker-boar,bramble-hoglet,bramblewood-lynx,chipmunk-skirmisher,corpse-flower-beetle,cunning-vixen,fawn-scout,fox-kit,grizzly-vanguard,heartwood-treant,lyrebird-mimic,owl-nightwatch,pine-marten,quill-thorn-boar,redwood-woodpecker,sergeant-bramblefox,stag-knight,swift-fox,tasmanian-devil --anchor-min 10 --level 1 --mode map-true"

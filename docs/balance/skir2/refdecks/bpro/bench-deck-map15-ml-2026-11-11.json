@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-11T00:45:22.374Z",
- "fingerprint": "7c8335cf4b2b",
+ "generated": "2026-11-11T03:01:20.421Z",
+ "fingerprint": "bcdf2f81904a",
  "map": {
   "id": "ml",
   "num": 15,
@@ -124,14 +124,14 @@
   {
    "focus": "open",
    "steps": 20,
-   "moves": 10,
-   "games": 6280,
+   "moves": 8,
+   "games": 6000,
    "apartFromEarlier": null
   }
  ],
  "apart": 10,
- "seconds": 66,
- "games": 6440,
+ "seconds": 70,
+ "games": 6160,
  "decks": [
   {
    "focus": "open",
@@ -141,10 +141,10 @@
    "deck": {
     "border-collie": 4,
     "cricket-drummer": 4,
-    "mouse-sapper": 2,
+    "pronghorn-racer": 4,
     "squires-mount": 3,
     "thorn-shrike": 3,
-    "truffle-piglet": 4
+    "truffle-piglet": 2
    },
    "cards": [
     {
@@ -162,11 +162,11 @@
      "rarity": "common"
     },
     {
-     "id": "truffle-piglet",
-     "name": "Truffle Piglet",
+     "id": "pronghorn-racer",
+     "name": "Pronghorn Racer",
      "copies": 4,
      "cost": 1,
-     "rarity": "uncommon"
+     "rarity": "common"
     },
     {
      "id": "squires-mount",
@@ -183,20 +183,20 @@
      "rarity": "rare"
     },
     {
-     "id": "mouse-sapper",
-     "name": "Mouse Sapper",
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
      "copies": 2,
      "cost": 1,
-     "rarity": "common"
+     "rarity": "uncommon"
     }
    ],
-   "score": 0.8875,
+   "score": 0.875,
    "ci": [
-    0.8496,
-    0.9254
+    0.8362,
+    0.9138
    ],
    "avgLumber": 0.8,
-   "avgWait": 0.8,
+   "avgWait": 0.6,
    "curve": {
     "0": 4,
     "1": 16
@@ -213,19 +213,19 @@
     {
      "entry": "mirror|fight:15-2",
      "label": "vs 15-2 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-3",
      "label": "vs 15-3 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-4",
      "label": "vs 15-4 skirmish's deck",
-     "p": 0.7083,
+     "p": 0.75,
      "n": 24
     },
     {
@@ -237,13 +237,13 @@
     {
      "entry": "mirror|fight:15-6",
      "label": "vs 15-6 elite's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-7",
      "label": "vs 15-7 boss's deck",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -255,7 +255,7 @@
     {
      "entry": "mirror|ref:road15",
      "label": "vs reference deck (Map 15) under 15-2's field",
-     "p": 0.75,
+     "p": 0.5833,
      "n": 24
     },
     {

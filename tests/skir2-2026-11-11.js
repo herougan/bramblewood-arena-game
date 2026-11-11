@@ -8,7 +8,8 @@
 //      (node.firstCard, else SKIRMISH_FIRST_PACK_CARDS) and every skirmish-exclusive card (a card whose source is that fight); 5-2's Sphagnum Vole
 //      (CONTENT3) first among them
 //   4. Map 13: its list holds Swift Fox, Tasmanian Devil and Bramblewood Lynx; every fight rebuilt by SKIR2 (in its build plan, dated comment)
-//   5. the restored leaders (15-1 Cataphract Destrier, 10-A-2 Coral Reef Shark); every "(SKIR2 fit)" line is a kept fit or re-draw on record
+//   5. the restored leaders (15-1 Cataphract Destrier, 10-A-2 Coral Reef Shark); every "(SKIR2 fit)" line is a kept fit or re-draw on record;
+//      no road fight writes a field twice with two values (10-9 / 11-7's shieldOverride)
 //   6. the record files; draft decisions SKIR2-n under 100 words, one of them "Keep SKIR2's list adds" naming every add
 //   node tests/skir2-2026-11-11.js
 'use strict';
@@ -92,6 +93,13 @@ const fitDirs = fs.readdirSync(path.join(ROOT, 'docs', 'balance', 'skir2')).filt
 const kept = {}; fitDirs.forEach(d => fs.readdirSync(d).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(d, f), 'utf8')); if (x.keep) (kept[x.code] = kept[x.code] || []).push(x); }));
 src.split('\n').filter(l => /\(SKIR2 fit\): /.test(l)).forEach(l => { const code = (l.match(/key:\s*"([^"]+)"/) || [])[1];
   ok(code && kept[code], `${code}: its SKIR2 fit is a kept pick on record`); });
+// 2026-11-11 (SKIR2): no road fight writes a field twice with two values (the later key wins in JS: 10-9 and 11-7 kept their old
+// shieldOverride after the fit wrote 0 in front of it); comments are left out, a repeated identical value (SKIR1's pinned showcases) is harmless
+const twice = [];
+src.split('\n').forEach(l => { const m = l.match(/^\s*\{ ?key:\s*["']([^"']+)["']/); if (!m) return; const code = l.replace(/\/\*[\s\S]*?\*\//g, '');
+  ['shieldOverride', 'deck', 'showcase', 'leaders', 'leaderId', 'hqHp', 'firstCard'].forEach(k => { const v = (code.match(new RegExp('[,{]\\s*' + k + ':\\s*("[^"]*"|\'[^\']*\'|\\d+|\\{[^}]*\\}|\\[[^\\]]*\\])', 'g')) || []).map(h => h.replace(/^[,{]\s*/, ''));
+    if (new Set(v).size > 1) twice.push(`${m[1]} ${v.join(' / ')}`); }); });
+ok(!twice.length, `no road fight writes a field twice with two values (${twice.join('; ') || 'none'})`);
 
 // ---- 6. files and decisions ----
 ['docs/balance/skir2/lists-2026-11-11.json', 'docs/balance/skir2/build-plan-2026-11-11.json', 'docs/balance/skir2/seed-2026-11-11.json', 'docs/balance/skir2/cuts-2026-11-11.json', 'docs/balance/skir2/road-totals-skir2w400.json']

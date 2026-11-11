@@ -1,0 +1,85 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-11T03:47:36.368Z",
+ "map": {
+  "id": "m9",
+  "num": 19,
+  "name": "Basalt Foundry"
+ },
+ "pool": [
+  "anvil-thrush",
+  "chained-binturong",
+  "cinder-gecko",
+  "cinder-hornet",
+  "ember-revenant",
+  "ember-tetra",
+  "fire-salamander",
+  "grindstone-boar",
+  "hellbender",
+  "malachite-golem",
+  "ore-smelter-mole",
+  "pumice-beetle",
+  "smoke-raccoon",
+  "sulfur-vent-crab"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "anvil-thrush": 4,
+    "chained-binturong": 4,
+    "cinder-hornet": 4,
+    "ember-tetra": 1,
+    "grindstone-boar": 4,
+    "malachite-golem": 3
+   },
+   "score": 0.109,
+   "ci": [
+    0.0773,
+    0.1406
+   ],
+   "refWins": 0.9444,
+   "labels": [
+    "big (15 copies at 1+ Lumber, average 1.1)",
+    "flying x8"
+   ],
+   "apartFrom": [],
+   "steps": 3,
+   "games": 1846,
+   "seconds": 19
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "chained-binturong": 3,
+    "cinder-gecko": 2,
+    "grindstone-boar": 4,
+    "hellbender": 4,
+    "malachite-golem": 3,
+    "smoke-raccoon": 4
+   },
+   "score": 0.2179,
+   "ci": [
+    0.1773,
+    0.2586
+   ],
+   "refWins": 0.9444,
+   "labels": [
+    "big (14 copies at 1+ Lumber, average 0.8)",
+    "evasion x6"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 4,
+   "games": 1820,
+   "seconds": 25
+  }
+ ]
+}

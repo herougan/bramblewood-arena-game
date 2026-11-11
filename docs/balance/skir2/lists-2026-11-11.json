@@ -8,7 +8,8 @@
    "card": "swift-fox",
    "name": "Swift Fox",
    "kind": "own",
-   "why": "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card); the suggested list left every fight at 87-99%"
+   "why": "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card); the suggested list left every fight at 87-99%",
+   "need": "measured: Map 13 1/8 fights in band (skir1w400) -> 7/8 (skir2w400) on the rebuilt list; in 5 of 8 fights"
   },
   {
    "map": "mr",
@@ -16,7 +17,8 @@
    "card": "tasmanian-devil",
    "name": "Tasmanian Devil",
    "kind": "own",
-   "why": "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card)"
+   "why": "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card)",
+   "need": "measured: as Swift Fox (Map 13 1/8 -> 7/8); in 5 of 8 fights"
   },
   {
    "map": "mr",
@@ -24,7 +26,8 @@
    "card": "bramblewood-lynx",
    "name": "Bramblewood Lynx",
    "kind": "own",
-   "why": "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card, source.map mr); now first listed here, carried on Map 16"
+   "why": "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card, source.map mr); now first listed here, carried on Map 16",
+   "need": "measured: as Swift Fox (Map 13 1/8 -> 7/8); in 5 of 8 fights"
   },
   {
    "map": "mw",
@@ -32,7 +35,8 @@
    "card": "sphagnum-vole",
    "name": "Sphagnum Vole",
    "kind": "admin",
-   "why": "5-2's first-clear reward (CONTENT3)"
+   "why": "5-2's first-clear reward (CONTENT3)",
+   "need": "check: 5-2 pays it on first clear (node.firstCard); off every list it is unattainable and the fight pays nothing (tests/skir2 rewards)"
   },
   {
    "map": "mu",
@@ -40,7 +44,8 @@
    "card": "planarian-splitter",
    "name": "Planarian Splitter",
    "kind": "admin",
-   "why": "7-6's old boss card (Map 7's own pack card by source), carried from Map 4: the boss read 79.5% (target 40) without it"
+   "why": "7-6's old boss card (Map 7's own pack card by source), carried from Map 4: the boss read 79.5% (target 40) without it",
+   "need": "measured: 7-6 79.5% (skir1w400) -> 43% (skir2w400), target 40"
   },
   {
    "map": "m7",
@@ -48,7 +53,8 @@
    "card": "grey-seal-bull",
    "name": "Grey Seal Bull",
    "kind": "admin",
-   "why": "BAL9 JJ28: a Guardian defender for Coral Current (its list had none): an Ocean seal bull carried from Smugglers' Grotto (Map 2), on no other main list"
+   "why": "BAL9 JJ28: a Guardian defender for Coral Current (its list had none): an Ocean seal bull carried from Smugglers' Grotto (Map 2), on no other main list",
+   "need": "check: BAL9 JJ28 (Coral Current listed no defender); in 10-4"
   },
   {
    "map": "m7",
@@ -56,7 +62,8 @@
    "card": "parrotfish",
    "name": "Parrotfish",
    "kind": "admin",
-   "why": "10-3's first-clear reward (GD5 table): on no list since SKIR1, so the fight paid nothing"
+   "why": "10-3's first-clear reward (GD5 table): on no list since SKIR1, so the fight paid nothing",
+   "need": "check: 10-3 pays it on first clear (GD5 table); also 10-9 x4 (10-9 29.8% -> 42.5%, target 40)"
   },
   {
    "map": "m7",
@@ -64,7 +71,8 @@
    "card": "coral-reef-shark",
    "name": "Coral Reef Shark",
    "kind": "admin",
-   "why": "10-4's first-clear reward (GD5 table): on no list since SKIR1, so the fight paid nothing"
+   "why": "10-4's first-clear reward (GD5 table): on no list since SKIR1, so the fight paid nothing",
+   "need": "check: 10-4 pays it on first clear (GD5 table); also the leader of 10-A-2 (62.3% -> 69.5%, target 70) and 10-A-4"
   },
   {
    "map": "ml",
@@ -72,7 +80,8 @@
    "card": "cataphract-destrier",
    "name": "Gilded Roadwarden",
    "kind": "own",
-   "why": "15-4's first-clear reward (GD5 table; Map 15's own pack card): on no list since SKIR1, so the fight paid nothing"
+   "why": "15-4's first-clear reward (GD5 table; Map 15's own pack card): on no list since SKIR1, so the fight paid nothing",
+   "need": "check: 15-4 pays it on first clear (GD5 table); also 15-1 led by it again (in band)"
   },
   {
    "map": "m6",
@@ -80,7 +89,8 @@
    "card": "shepherds-bark",
    "name": "Shepherd",
    "kind": "carried",
-   "why": "BAL9 JJ28: a Guardian defender for Wolfsbane Tundra (its list had none): a herding dog against the wolves, carried from Map 15, on one list before"
+   "why": "BAL9 JJ28: a Guardian defender for Wolfsbane Tundra (its list had none): a herding dog against the wolves, carried from Map 15, on one list before",
+   "need": "check: BAL9 JJ28 (Wolfsbane Tundra listed no defender); in 17-8"
   },
   {
    "map": "m6",
@@ -88,7 +98,8 @@
    "card": "snow-ermine",
    "name": "Snow Ermine",
    "kind": "own",
-   "why": "17-1's first-clear reward (GD5 table; Map 17's own pack card): on no main list since SKIR1, so the fight paid nothing"
+   "why": "17-1's first-clear reward (GD5 table; Map 17's own pack card): on no main list since SKIR1, so the fight paid nothing",
+   "need": "check: 17-1 pays it on first clear (GD5 table); Map 17 own pack card"
   },
   {
    "map": "m6",
@@ -96,7 +107,8 @@
    "card": "harbor-seal",
    "name": "Harbor Seal",
    "kind": "own",
-   "why": "17-3's first-clear reward (GD5 table; Map 17's own pack card): on no list since SKIR1, so the fight paid nothing"
+   "why": "17-3's first-clear reward (GD5 table; Map 17's own pack card): on no list since SKIR1, so the fight paid nothing",
+   "need": "check: 17-3 pays it on first clear (GD5 table); also 17-8 x4"
   },
   {
    "map": "m6",
@@ -104,7 +116,8 @@
    "card": "snow-bunting-archer",
    "name": "Snow Bunting Archer",
    "kind": "own",
-   "why": "17-4's first-clear reward (GD5 table; Map 17's own pack card): on no list since SKIR1, so the fight paid nothing"
+   "why": "17-4's first-clear reward (GD5 table; Map 17's own pack card): on no list since SKIR1, so the fight paid nothing",
+   "need": "check: 17-4 pays it on first clear (GD5 table); also 17-4 x3, 17-8 x4"
   },
   {
    "map": "md",
@@ -112,7 +125,8 @@
    "card": "marula-elephant",
    "name": "Marula Elephant",
    "kind": "carried",
-   "why": "BAL9 JJ28: a Guardian defender for The Glass Dunes (its list had none): a desert-edge elephant carried from Map 14 like the list's other savanna cards, on one list before"
+   "why": "BAL9 JJ28: a Guardian defender for The Glass Dunes (its list had none): a desert-edge elephant carried from Map 14 like the list's other savanna cards, on one list before",
+   "need": "check: BAL9 JJ28 (The Glass Dunes listed no defender); in 18-1 and 18-3"
   },
   {
    "map": "m3",
@@ -120,7 +134,8 @@
    "card": "stalactite-golem",
    "name": "Stalactite Pill Bug",
    "kind": "carried",
-   "why": "BAL9 JJ28: a Guardian defender for Ashen Spurn (its list had none): a cave wall from the lava tubes, carried from Map 8 (on Map 20's SPECIAL list too)"
+   "why": "BAL9 JJ28: a Guardian defender for Ashen Spurn (its list had none): a cave wall from the lava tubes, carried from Map 8 (on Map 20's SPECIAL list too)",
+   "need": "check: BAL9 JJ28 (Ashen Spurn listed no defender); in 19-4"
   }
  ],
  "problems": [],
@@ -350,5 +365,6 @@
    "talus-pika",
    "stalactite-golem"
   ]
- }
+ },
+ "trimCheck": "2026-11-11 (SKIR2 second run, brief: Map 17 got four cards and Map 10 three; trim or give each a measured reason): kept all. Every add is needed by a check (BAL9 JJ28 Guardian, or a first-clear reward that is unattainable off every list) or by a measured fight result (need). Map 17: one JJ28 Guardian + three of its own pack cards that 17-1 / 17-3 / 17-4 pay; Map 10: one JJ28 Guardian + the two cards 10-3 / 10-4 pay. No add is a pure balance add on Map 10 or 17."
 }

@@ -1,0 +1,85 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-11T03:44:12.466Z",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow"
+ },
+ "pool": [
+  "arctic-tern",
+  "beluga",
+  "frost-thistle-lynx",
+  "frostbitten-wolverine",
+  "greenland-shark",
+  "lemming-swarm",
+  "permafrost-mammoth",
+  "polar-bear",
+  "ravenous-wolverine",
+  "ringed-seal",
+  "talus-pika",
+  "walrus-icebreaker",
+  "wolfsbane-alpha",
+  "yeti-chieftain"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "arctic-tern": 1,
+    "frost-thistle-lynx": 4,
+    "frostbitten-wolverine": 4,
+    "greenland-shark": 3,
+    "permafrost-mammoth": 4,
+    "ringed-seal": 4
+   },
+   "score": 0.0179,
+   "ci": [
+    -0.0027,
+    0.0384
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)",
+    "cold x8",
+    "tide x7"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1764,
+   "seconds": 23
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "beluga": 3,
+    "greenland-shark": 3,
+    "permafrost-mammoth": 3,
+    "ravenous-wolverine": 3,
+    "ringed-seal": 4,
+    "talus-pika": 4
+   },
+   "score": 0.1429,
+   "ci": [
+    0.0925,
+    0.1933
+   ],
+   "refWins": 0.8889,
+   "labels": [
+    "tide x10"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 14,
+   "games": 1722,
+   "seconds": 25
+  }
+ ]
+}
