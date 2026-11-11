@@ -6,7 +6,7 @@
    "submaps": {
     "mtut12": ["bee-knight", "earthworm", "pond-trout", "silver-minnow", "duckling", "cottontail", "crossed-eyes"],
     "mtut": ["ash-cloud-condor", "badger-berserker", "bee-knight", "burrow-rabbit", "caustic-scorpion", "dynamite-packrat", "eagle-sharpshooter", "earthworm", "golden-eagle-diver", "gull-thief", "otter-paddler", "pond-trout", "rockslide-ram", "scree-goat", "thornwood-palisade", "toucan-courier", "trash-panda-trickster", "worker-ant"],
-    "mo": ["ent", "elder-willow", "thorn-shrike"]
+    "mo": ["ent", "elder-willow", "thorn-shrike", "bramble-sprout", "barkplate-beetle", "quill-thorn-boar", "bramblewood-lynx", "quillguard", "house-cat", "earthworm", "farm-dog"]
    },
    "special": []
   },
@@ -18,7 +18,7 @@
    "special": ["meadow-rabbit", "cottontail", "ant-scout", "compost-grub"]
   },
   "mb": {
-   "cards": ["beaver-lumberjack", "driftwood-crab", "gull-thief", "open-ocean-hermit-crab", "oystercatcher", "pincushion-urchin", "dolphin-knight", "rock-pool-starfish", "beachcomber-sanderling", "limpet-clinger", "puddle-skimmer", "duck-paddler", "hedgerow-shrew", "moonlit-hare", "robin-redbreast"],
+   "cards": ["driftwood-crab", "gull-thief", "open-ocean-hermit-crab", "oystercatcher", "pincushion-urchin", "dolphin-knight", "conch-herald", "rock-pool-starfish", "beachcomber-sanderling", "limpet-clinger", "puddle-skimmer", "duck-paddler", "hedgerow-shrew", "moonlit-hare", "robin-redbreast"],
    "submaps": {
     "mp": ["lodge-engineer", "box-turtle", "old-sturgeon", "muskrat-lodgekeeper", "snapstick-turtle", "pond-algae", "muskrat-reedgatherer", "platypus-spur", "water-shrew"],
     "mg": ["trash-panda-trickster", "salvager-hermit-crab", "glow-worm", "gull-thief", "rock-pool-starfish", "pincushion-urchin", "limpet-clinger"]
@@ -26,7 +26,7 @@
    "special": ["old-shell"]
   },
   "mc": {
-   "cards": ["cormorant", "kittiwake-flock", "puffin-diver", "peak-condor", "gannet-nestweaver", "feral-tomcat", "peregrine-stooper", "eagle-sharpshooter", "chipmunk-cavalry", "limpet-clinger", "conch-herald", "beaver-lumberjack", "gull-thief", "pika-hoarder"],
+   "cards": ["conch-crawler", "cormorant", "kittiwake-flock", "puffin-diver", "peak-condor", "gannet-nestweaver", "feral-tomcat", "peregrine-stooper", "eagle-sharpshooter", "chipmunk-cavalry", "limpet-clinger", "conch-herald", "gull-thief", "pika-hoarder"],
    "submaps": {},
    "special": ["hawk-arrowkeeper"]
   },
@@ -113,21 +113,21 @@
   "m6": {
    "cards": ["snow-ermine", "ringed-seal", "harbor-seal", "glacier-yak", "arctic-tern", "walrus-icebreaker", "ice-crevasse-wolf", "polar-bear", "woodland-caribou", "taiga-lynx", "cone-cutter-squirrel", "boreal-elk", "snowshoe-hare", "border-collie", "warhorse-charger", "elderhorn-monarch", "cataphract-destrier", "briarback-hedgehog"],
    "submaps": {
-    "mi": ["greenland-shark", "harp-seal-pup", "snow-owl-sentinel", "polar-bear", "walrus-icebreaker", "ringed-seal", "lemming-swarm", "talus-pika", "arctic-tern"]
+    "mi": ["greenland-shark", "harp-seal-pup", "snow-owl-sentinel", "polar-bear", "walrus-icebreaker", "ringed-seal", "lemming-swarm", "talus-pika", "arctic-tern", "snow-ermine", "ice-crevasse-wolf", "glacier-yak"]
    },
    "special": ["wolfsbane-alpha"]
   },
   "md": {
    "cards": ["horned-lizard", "antlion-pit", "roadrunner-courier", "dune-jackal", "armadillo-guard", "ice-crevasse-wolf", "mouse-sapper", "bison-bulldozer", "balloon-archer", "barkplate-beetle", "badger-lumberjack", "gallery-orb-weaver", "nightjar-drifter", "chipmunk-forager", "worker-ant", "ant-scout", "sunbittern-strider", "barrel-cactus"],
    "submaps": {
-    "mpd": ["dromedary", "sandstorm-roc", "antlion-pit", "caustic-scorpion", "sand-widow", "roadrunner-courier", "dust-hyena"]
+    "mpd": ["dromedary", "sandstorm-roc", "antlion-pit", "caustic-scorpion", "sand-widow", "roadrunner-courier", "dust-hyena", "armadillo-guard", "dune-jackal", "horned-lizard", "barrel-cactus"]
    },
    "special": ["sand-widow"]
   },
   "m3": {
    "cards": ["honey-badger-fury", "quillback-elder", "smoke-raccoon", "fire-salamander", "obsidian-scorpion", "sulfur-cinder-moth", "stalactite-golem", "glacier-yak", "walrus-icebreaker", "quillguard", "caustic-scorpion", "horned-lizard", "armadillo-guard", "polar-bear", "dune-jackal", "pinecone-sapper", "elderhorn-monarch"],
    "submaps": {
-    "m9": ["ore-smelter-mole", "cinder-gecko", "grindstone-boar", "pumice-beetle", "hellbender", "anvil-thrush", "fire-salamander", "sulfur-vent-crab", "smoke-raccoon", "cinder-hornet"]
+    "m9": ["ore-smelter-mole", "cinder-gecko", "grindstone-boar", "pumice-beetle", "hellbender", "anvil-thrush", "fire-salamander", "sulfur-vent-crab", "smoke-raccoon", "cinder-hornet", "obsidian-scorpion"]
    },
    "special": []
   },

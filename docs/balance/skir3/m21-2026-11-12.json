@@ -1,0 +1,168 @@
+{
+ "about": "SKIR3 Map 21 swaps (tools/skir3/m21_2026_11_12.js)",
+ "rows": [
+  {
+   "code": "21-1",
+   "before": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "golden-eagle-diver": 1,
+    "mountain-goat-climber": 1,
+    "glacier-yak": 5,
+    "pika-hoarder": 3
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "fumarole-ibex": 1,
+    "glacier-yak": 5,
+    "honey-badger-fury": 5,
+    "mountain-goat-climber": 1,
+    "pika-hoarder": 3
+   },
+   "moves": [
+    "eagle-sharpshooter x5 -> honey-badger-fury x5",
+    "golden-eagle-diver x1 -> fumarole-ibex x1"
+   ],
+   "leaders": [
+    "mountain-goat-climber"
+   ]
+  },
+  {
+   "code": "21-2",
+   "before": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "glacier-yak": 5,
+    "pika-hoarder": 5,
+    "snow-leopard": 2,
+    "mountain-goat-climber": 1
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "glacier-yak": 5,
+    "honey-badger-fury": 5,
+    "mountain-goat-climber": 1,
+    "pika-hoarder": 5,
+    "snow-leopard": 2
+   },
+   "moves": [
+    "eagle-sharpshooter x5 -> honey-badger-fury x5"
+   ],
+   "leaders": [
+    "snow-leopard"
+   ]
+  },
+  {
+   "code": "21-3",
+   "before": {
+    "alpine-marmot": 1,
+    "glacier-yak": 5,
+    "golden-eagle-diver": 1,
+    "mountain-goat-climber": 1,
+    "snow-leopard": 2,
+    "snow-owl-sentinel": 1,
+    "eagle-sharpshooter": 5
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "alpine-swift": 1,
+    "fumarole-ibex": 1,
+    "glacier-yak": 5,
+    "honey-badger-fury": 5,
+    "mountain-goat-climber": 1,
+    "snow-leopard": 2
+   },
+   "moves": [
+    "golden-eagle-diver x1 -> fumarole-ibex x1",
+    "snow-owl-sentinel x1 -> alpine-swift x1",
+    "eagle-sharpshooter x5 -> honey-badger-fury x5"
+   ],
+   "leaders": [
+    "glacier-yak"
+   ]
+  },
+  {
+   "code": "21-4",
+   "before": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 1,
+    "snow-owl-sentinel": 1,
+    "glacier-yak": 5,
+    "snow-leopard": 2
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "alpine-swift": 1,
+    "glacier-yak": 5,
+    "honey-badger-fury": 5,
+    "mountain-goat-climber": 1,
+    "pika-hoarder": 5,
+    "snow-leopard": 2
+   },
+   "moves": [
+    "eagle-sharpshooter x5 -> honey-badger-fury x5",
+    "snow-owl-sentinel x1 -> alpine-swift x1"
+   ],
+   "leaders": [
+    "snow-owl-sentinel"
+   ]
+  },
+  {
+   "code": "21-5",
+   "before": {
+    "alpine-marmot": 1,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 1,
+    "snow-owl-sentinel": 1,
+    "snow-leopard": 2,
+    "glacier-yak": 3,
+    "eagle-sharpshooter": 2
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "alpine-swift": 1,
+    "glacier-yak": 3,
+    "honey-badger-fury": 2,
+    "mountain-goat-climber": 1,
+    "pika-hoarder": 5,
+    "snow-leopard": 2
+   },
+   "moves": [
+    "snow-owl-sentinel x1 -> alpine-swift x1",
+    "eagle-sharpshooter x2 -> honey-badger-fury x2"
+   ],
+   "leaders": [
+    "snow-owl-sentinel"
+   ]
+  },
+  {
+   "code": "21-6",
+   "before": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 1,
+    "snow-owl-sentinel": 1,
+    "snow-leopard": 2,
+    "glacier-yak": 4
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "glacier-yak": 4,
+    "honey-badger-fury": 5,
+    "mountain-goat-climber": 1,
+    "pika-hoarder": 5,
+    "snow-leopard": 2,
+    "snow-owl-sentinel": 1
+   },
+   "moves": [
+    "eagle-sharpshooter x5 -> honey-badger-fury x5"
+   ],
+   "leaders": [
+    "snow-owl-sentinel"
+   ]
+  }
+ ]
+}

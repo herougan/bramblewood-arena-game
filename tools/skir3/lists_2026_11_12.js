@@ -117,11 +117,23 @@ for (let d = 0; d < best.decisions.length; d++) {
 const final = best.final;
 const rec = { about: 'SKIR3 lists (tools/skir3/lists_2026_11_12.js): the owner\'s 2026-11-12 picks under the default NEW! / Carried limits', built: '2026-11-12',
   adminBefore: ADMIN0, sideBefore: SIDE0, cactus: CACTUS, cost: +best.cost.toFixed(2), main: best.recs, side: {}, adminAfter: {}, leftPlay: [] };
+// Claude's carried adds that a road fight needs (only a Carried card, only with room under the Carried limit; listed in UI47_ADMIN_ADD)
+const NEED_MAIN = {}; // 2026-11-12: Quill-thorn Boar for 13-4's Wild Rage tried and left out: carried, K14 holds it to 1 copy, so the boon still could not hold (13-4 plays with the boon off, draft SKIR3-3)
+Object.entries(NEED_MAIN).forEach(([k, o]) => Object.entries(o).forEach(([id, why]) => { const r = rec.main[k], car = r.car;
+  const carried = MAIN.slice(0, MAIN.indexOf(k)).some(j => final[j].includes(id)) || tut.includes(id);
+  if (!carried || car + 1 > r.limits.carried || final[k].includes(id)) { r.needAddRefused = (r.needAddRefused || []).concat(id); return; }
+  final[k].push(id); r.car++; r.claudeAdds.push(id); r.needAdds = Object.assign(r.needAdds || {}, { [id]: why }); }));
 MAIN.forEach(k => { rec.adminAfter[k] = rec.main[k].claudeAdds.filter(id => final[k].includes(id)); });
 const otherLists = (k, id) => { const out = []; MAIN.forEach(j => { if (j !== k && final[j].includes(id)) out.push(j); }); return out.concat(OFFROAD[id] || []); };
 // side maps
 const unlockOf = s => { const m = G.CONQUEST_MAPS.find(x => x.id === s), a = m && m.entry && m.entry.afterMapCleared; return a ? G.mapUnlockNumberOf(a) : G.mapNumberOf(s); };
 const mainUpTo = un => { const s = new Set(tut); MAIN.forEach((k, i) => { if (i <= un) final[k].forEach(id => s.add(id)); }); Object.entries(pools.maps).forEach(([t, e]) => { const no = G.mapNumberOf(t); if (!MAIN.includes(t) && !e.sub && no != null && no <= un) (e.cards || []).forEach(id => s.add(id)); }); return s; };
+const TOPUP = {
+  mo: { why: 'The Old Bramble\'s 4 fights need 5+ different cards; his 3 kept picks alone cannot fill them' },
+  mi: { why: 'The Ice Hollow\'s fights (17-A-2 / 17-A-3) cannot fill 20 cards from the cut list (K14: carried cards 1 copy each)' },
+  mpd: { why: 'The Pale Desert\'s 18-A-9 cannot fill its 19 cards from the cut list (K14)' },
+  m9: { boon: 'emberBorn', why: '19-A-3\'s challenge boon (Ember-born) needs half its deck to hold it' },
+};
 SIDES.forEach(s => {
   const un = unlockOf(s), idx = mainUpTo(un), base = s === 'mo' ? picksOf('mo') : SIDE0[s].filter(id => C[id]), list = base.slice(), drops = [];
   const isNew = id => !idx.has(id), use = id => useOf(s, id);
@@ -136,8 +148,17 @@ SIDES.forEach(s => {
       drops.push({ id, name: nm(id), who: s === 'mo' ? 'owner' : 'list', side: kind === 'neu' ? 'NEW!' : 'Carried', why: `over ${kind === 'neu' ? 'NEW!' : 'Carried'} ${lim}; ${use(id)} copies in its fights / reference decks` + (o.length ? `; stays on ${o.join(', ')}` : '') });
     }
   }
+  // a side map whose fights cannot be built from the cut list (fewer than 5 different cards, K14 holding the carried cards to 1 copy, a challenge
+  // boon with too few cards): Claude's carried top-up to the Carried limit, from its old list first, then the parent map's own cards (most used by
+  // its fights and reference decks, then the parent's UI38 fit); a boon fight's theme cards first
+  const adds = {};
+  if (TOPUP[s]) { const par = parentOf(s), boon = TOPUP[s].boon, ENG = require(path.join(ROOT, 'bramblewood-engine.js')), LF = require('../skir1/lib_fight_2026_11_11.js');
+    const th = id => boon ? ENG.selfishBoonCount(LF.DX, { [id]: 1 }, boon).have === 1 : false, parOwn = new Set(final[par].filter(id => !MAIN.slice(0, MAIN.indexOf(par)).some(j => final[j].includes(id))));
+    const cand = [...new Set(SIDE0[s].concat(final[par]))].filter(id => C[id] && idx.has(id) && !list.includes(id) && !baby(id) && (SIDE0[s].includes(id) || (!TOPUP[s].oldOnly && parOwn.has(id))) && !LF.M.stone(C[id]))
+      .sort((a, b) => (th(b) ? 1 : 0) - (th(a) ? 1 : 0) || (SIDE0[s].includes(b) ? 1 : 0) - (SIDE0[s].includes(a) ? 1 : 0) || use(b) - use(a) || fitOf(par, b) - fitOf(par, a) || (a < b ? -1 : 1));
+    for (const id of cand) { if (list.filter(x => !isNew(x)).length >= SIDE_LIMIT.carried) break; list.push(id); adds[id] = (SIDE0[s].includes(id) ? 'on its old list' : 'the parent map\'s own card') + (th(id) ? ', a ' + boon + ' card' : '') + ': ' + TOPUP[s].why; } }
   final[s] = list;
-  rec.side[s] = { parent: parentOf(s), unlockAfterNo: un, limits: SIDE_LIMIT, neu: list.filter(id => isNew(id) && !baby(id)).length, car: list.filter(id => !isNew(id)).length, drops, list, before: SIDE0[s] };
+  rec.side[s] = { claudeAdds: adds, parent: parentOf(s), unlockAfterNo: un, limits: SIDE_LIMIT, neu: list.filter(id => isNew(id) && !baby(id)).length, car: list.filter(id => !isNew(id)).length, drops, list, before: SIDE0[s] };
 });
 // write the lists
 MAIN.forEach(k => { pools.maps[k].cards = final[k]; });
