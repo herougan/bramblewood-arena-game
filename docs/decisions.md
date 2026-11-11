@@ -11,12 +11,24 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - c) Leave them.
 - **Default:** a
 
-**PICKS1-1. Maps 0-11 over your card limits because of Claude's adds** · Decide · Balance · asked 2026-11-11
-- Claude's admin adds (32 cards on Maps 0-11, put on lists to keep road fights in band: UI47, SKIR2, LISTFIX3) count as Yes, so all 12 maps are over their NEW! limit and 7 over Carried. Without them, only Maps 0-3 and 8 are over, by 1 each. Pressing No on an admin add now sticks (it did not before).
-  - a) Don't count Claude's adds in the limits; road unchanged.
-  - b) Claude removes its adds where a map is over and re-fits those fights with deck swaps.
-  - c) You press No on the adds you don't want; Claude re-fits after.
-- **Default:** c
+**NET1-1. Apply the database speed-ups** · Decide · Network · asked 2026-11-12
+- supabase/proposed/20261112_net1_scale.sql: 5 indexes, 19 security rules rewritten to check the player once per query (not once per row), 3 duplicate rules dropped, and card_overrides' updated_at set by the server clock (an admin with a slow clock is then never missed). No rows change. Say "apply it" to run it.
+  - a) Apply it.
+  - b) Not yet.
+- **Default:** a
+
+**NET1-2. When to upgrade hosting plans** · Decide · Network · asked 2026-11-12
+- After NET1 the first limits are Supabase Free's realtime (200 connections: about 200 players signed in at once) and Vercel Hobby's 100 GB a month (about 650 daily players at one release a day). Nothing is bought; this only sets the trigger. Limits quoted from memory; re-check before buying.
+  - a) Supabase Pro near 150 players online; Vercel Pro near 80 GB a month.
+  - b) Other thresholds.
+- **Default:** a
+
+**NET1-3. Next network steps** · Decide · Network · asked 2026-11-12
+- Three changes would cut load further: open realtime only on the Friends, Arena and co-op screens; split index.html into cached files so a release doesn't re-download all 5 MB; let the server pick ghost opponents (a sign-in reads up to 3,000 rows).
+  - a) Do all three next.
+  - b) Pick some.
+  - c) Later.
+- **Default:** a
 
 **LISTFIX3-1. New first-clear rewards for four fights** · Decide · Balance · asked 2026-11-11
 - 5-2 paid Sphagnum Vole, a card you cut; it now pays Raft Spider, your Map 5 Yes card nearest it (Common, 1 Lumber, Wait 1, 3/8), already in 5-2's deck. No other Cure card is on your Map 5 picks (CONTENT3 C1 wanted one). Three rewards were off their map's new list (a first-clear card must be on it, GD-5): 1-4 Field Mouse -> Bramble Sprout, 7-2 Dung Beetle -> Fungus Gnat Cloud, 10-5 Kraken Spawnling -> Sea Bass.
@@ -266,6 +278,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 ## Decided
+
+**PICKS1-1. Maps 0-11 over your card limits because of Claude's adds** · Decide · Balance · asked 2026-11-11 · decided 2026-11-12
+- Claude's admin adds (32 cards on Maps 0-11, put on lists to keep road fights in band: UI47, SKIR2, LISTFIX3) count as Yes, so all 12 maps are over their NEW! limit and 7 over Carried. Without them, only Maps 0-3 and 8 are over, by 1 each. Pressing No on an admin add now sticks (it did not before).
+  - a) Don't count Claude's adds in the limits; road unchanged.
+  - b) Claude removes its adds where a map is over and re-fits those fights with deck swaps.
+  - c) You press No on the adds you don't want; Claude re-fits after.
+- **Default:** c
 
 **BAL40-1. Glimmer Depths 8-A-3 stays too easy** · Decide · Road · asked 2026-11-10 · decided 2026-11-10
 - Shard Gallery 8-A-3 58% (target 50), 200 games. Its deck has its Sky Ambush boon off (7 of the 10 cards it needs), so no deck move is legal, and its Shield is at the rule.
