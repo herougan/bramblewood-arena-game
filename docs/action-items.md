@@ -8,6 +8,18 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-12 00:38-00:43: Owner notes (night batch: CACTI1, UI48, PERF3, PERF4, NET1, SKIR3; released 11-12 on the owner's "push")
+- Done: Barrel Cactus (Dry, Thorns 2; placeholder art; tl/ta/id texts need a native read). Tutorial cards Carried on Maps 0-1 only; skirmish rewards as a grid; 1-3 Suggested cards per side map; side-map ‹ › arrows; No works on side maps and beats an admin add.
+- Done: lists = the owner's picks under the limits (SKIR3; drop list `docs/balance/skir3/drop-list-2026-11-12.md`). Main road 140 -> 128 of 149 in band; side 60 -> 58 of 81.
+- Done: fight lag (PERF3 + PERF4: played turn 1x 1433 -> about 1100-1200 ms CPU; no task over 100 ms at 1x; 4x still 1.5x its window). Network (NET1: no presence channel, cached card data, idle traffic about halved).
+- Open: SKIR3-1..7, NET1-1..3 (NET1-1 needs "apply it").
+- Follow-ups:
+  - 225 reference decks were swapped to legal cards, not re-searched: re-run the ladder (BAL24) and ref5 on the 11-12 lists.
+  - Tests that encode the old lists or decks: content2/3/4/10/11/12/17/19, listfix2, deck1, bal7 (23-5 breaks the carried one-copy rule), bal9 JJ28 / JJ7.
+  - Barrel Cactus reads over budget at Map 14 (its pack): owner re-fit.
+  - The owner's stored picks still hold the dropped cards: the Map cards window shows them over the limit until set to No.
+  - PERF5: per-frame work (GSAP update, the snap guard, about 4 style passes a frame) is the next lag suspect; a real morph of the play view needs listener delegation first.
+
 ## 11-11: Package LISTFIX3 (merged on batch-1023e, not released)
 - Done: the 12 cut cards are off the lists Claude's adds and suggestions had put them back on. 4 were the owner's cuts (Sphagnum Vole, Caiman Hatchling, Duckling, Phoenix Fledgling); 8 were Claude's own CONTENT10 cuts (11-05). New first-clear cards 5-2, 1-4, 7-2, 10-5; 31 road fights, 30 PRO decks, 11 PvP presets re-fitted. Main road 142 -> 140 of 149 in band (Map 16: 16-5, 16-6).
 - Open: LISTFIX3-1..4 (rewards; cards that left play; Map 16's Dhole Runner; Caiman / Phoenix on lists the owner hasn't picked).
