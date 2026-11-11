@@ -84,7 +84,7 @@ async def main():
             ok(before == after, f'4. flagging a baby card Yes leaves the NEW! flagged count at {before} (is {after})')
             await pg.evaluate("ui37SetFlag('m2', '%s', '')" % r['shown'])
         # 2 skills: main = Yes cards
-        r = await pg.evaluate(E(OPEN % '"m2"' + "const defs = getCardDefs(), g = ui32McSkillIds('m2', 'm2', id=> !!defs[id]); return {main: g.main.slice().sort(), yes: ui37Ent('m2').yes.slice().sort(), sec: !!document.querySelector('#ui19McSkills')};"))
+        r = await pg.evaluate(E(OPEN % '"m2"' + "const defs = getCardDefs(), g = ui32McSkillIds('m2', 'm2', id=> !!defs[id]); return {main: g.main.slice().sort(), yes: ui47YesList('m2').slice().sort() /* 2026-11-11 (re-baseline): admin adds count as Yes, and the lists are filled now */, sec: !!document.querySelector('#ui19McSkills')};"))
         ok(r['main'] == r['yes'] and r['sec'], f"2. Skills on these cards counts the Yes cards only ({len(r['yes'])})")
         # 5 add card
         for top, q, cid in (('m2', 'moon jelly', None), ('mw', 'field vole', None), ('m8', 'crocodile ambusher', None)):
@@ -103,18 +103,23 @@ async def main():
         r = await pg.evaluate("""(()=>{ const s = document.getElementById('ui22McRewards'); if(!s) return {none: true}; const t = [...s.querySelectorAll('.rv1-tile.is-ui39')]; return {n: t.length, big: s.querySelectorAll('.vis4-mc-card.is-large').length, role: s.querySelectorAll('[data-ui22-role]').length, old: s.querySelectorAll('.ui22-rw').length}; })()""")
         ok(r.get('none') or (r['n'] > 0 and r['n'] == r['big'] and r['role'] == r['n'] and r['old'] == 0), f'6. Skirmish rewards are full card tiles with a role pill {r}')
         # 7 + admin add + usage chip
-        r = await pg.evaluate(E("""const defs = getCardDefs(); const a = ui37Ent('mf').yes.slice(); const pick = 'bee-knight';
-          UI47_SUGGEST.m2 = ['field-vole']; UI47_ADMIN_ADD.mf = ['hollow-belly-rat', 'beaver-lumberjack'];
+        # 2026-11-11 (re-baseline): the Suggested card is picked from the data (field-vole became a side-map-only card for m2 after SKIR1's lists)
+        r = await pg.evaluate(E("""const defs = getCardDefs(); const a = ui37Ent('mf').yes.slice(); const okA = id=> !!defs[id] && ui41Allowed(id, defs), side = ui38SideOnly('m2'), idx0 = ui37CarriedIndex(mapNumberOf('m2'), ui37MapsData());
+          const sug = Object.keys(defs).find(id=> okA(id) && !defs[id].token && !defs[id].test && !defs[id].hero && !side.has(id) && !mpEntry('m2').cards.includes(id) && !ui47YesList('m2').includes(id) && !idx0.has(id) && ui37FlagOf('m2', id) === '');
+          UI47_SUGGEST.m2 = [sug]; UI47_ADMIN_ADD.mf = ['hollow-belly-rat', 'beaver-lumberjack'];
           const ok2 = id=> !!defs[id] && ui41Allowed(id, defs), s2 = ui37Split('m2', defs, ok2), s3 = ui37Split('mb', defs, ok2);
-          const out = {sugFirst: s2.neu[0].id, rawYes: ui37Ent('mf').yes.includes('hollow-belly-rat'), flag: ui37FlagOf('mf', 'hollow-belly-rat'), carriedMb: s3.car.some(p=> p.id === 'beaver-lumberjack') && s3.idx.get('beaver-lumberjack') === 1,
-            flagM2: ui37FlagOf('m2', 'field-vole'), usage: (ui47Usage().get('beaver-lumberjack') || []).map(m=> m.n)};
+          ui47UsageCache = null; const out = {sug, sugUsed: (ui47Usage().get(sug) || []).length, sugFirst: s2.neu[0].id, rawYes: ui37Ent('mf').yes.includes('hollow-belly-rat'), flag: ui37FlagOf('mf', 'hollow-belly-rat'), carriedMb: s3.car.some(p=> p.id === 'beaver-lumberjack') && s3.idx.get('beaver-lumberjack') === 1,
+            flagM2: ui37FlagOf('m2', sug), usage: (ui47Usage().get('beaver-lumberjack') || []).map(m=> m.n)};
           await new Promise(r=> setTimeout(r, 50)); return out;"""))
-        ok(r['sugFirst'] == 'field-vole' and r['flagM2'] == '', f"7. Suggested card sorts first in NEW! and its flag is unchanged (first {r['sugFirst']}, flag {r['flagM2'] or 'none'})")
+        sug, sug_used = r['sug'], r['sugUsed']
+        ok(r['sugFirst'] == sug and r['flagM2'] == '', f"7. Suggested card sorts first in NEW! and its flag is unchanged (first {r['sugFirst']}, flag {r['flagM2'] or 'none'})")
         ok(r['rawYes'] is False and r['flag'] == 'yes' and r['carriedMb'], 'Admin add counts as Yes (Carried on Map 2, pill Map 1) and is not in the owner picks')
         ok(r['usage'] == [1, 2, 3, 4, 11], f"x N chip counts owner Yes + admin adds: Beaver Lumberjack on {r['usage']}")
         await pg.evaluate(E(OPEN % '"m2"'))
-        r = await pg.evaluate("""(()=>{ const t = document.querySelector('#ui37Pros .ui37-tile[data-ui37-id="field-vole"]'); return {sug: !!(t && t.querySelector('.ui47-sug')), used: t && t.querySelector('.ui47-used') ? t.querySelector('.ui47-used').textContent : null}; })()""")
-        ok(r['sug'] and r['used'] == '×2', f"Suggested badge and x2 chip on the tile {r}")
+        r = await pg.evaluate("""(()=>{ const t = document.querySelector('#ui37Pros .ui37-tile[data-ui37-id="%s"]'); return {sug: !!(t && t.querySelector('.ui47-sug')), used: t && t.querySelector('.ui47-used') ? t.querySelector('.ui47-used').textContent : null}; })()""" % sug)
+        ok(r['sug'] and r['used'] == '×%d' % sug_used, f"Suggested badge and x{sug_used} chip on the tile ({sug}) {r}")
+        ex = await pg.evaluate("ui37ExportRows().filter(x=> x.mapId === 'mf' && x.cardId === 'hollow-belly-rat').map(x=> [x.flag, x.adminAdd])")
+        ok(ex == [['yes', True]], f"Export picks: an admin add exports as yes, adminAdd true (was 'no'; 2026-11-11) {ex}")
         await pg.evaluate(E(OPEN % '"mf"'))
         ok(await pg.evaluate("!![...document.querySelectorAll('#ui37Pros .ui37-tile .ui47-adm')].length"), '"Added by Claude" badge on Map 1')
         await pg.evaluate("UI47_SUGGEST.m2 = []; delete UI47_ADMIN_ADD.mf;")

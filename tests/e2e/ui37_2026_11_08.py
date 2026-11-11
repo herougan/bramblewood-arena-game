@@ -50,7 +50,7 @@ async def main():
         r = await pg.evaluate(E("""const top = %s, defs = getCardDefs(), ok = id=> !!defs[id], pros = ui37Prospects(top, defs, ok), ent = mpEntry(top), subOnly = [];
           Object.values(ent.submaps).flat().forEach(id=>{ if(!pros.has(id) && !subOnly.includes(id)) subOnly.push(id); });
           const shown = [...document.querySelectorAll('#ui37Pros [data-ui37-grp=new] .ui37-tile, #ui37Pros [data-ui37-grp=carried] .ui37-tile')].map(t=> t.dataset.ui37Id);
-          const c = (CLAUDE_NEW.content17 || {})[top], side = ui38SideOnly(top), picks = ((c && c.groups) || []).flatMap(g=> (g.picks || []).map(p=> p.id)).filter(id=> defs[id] && !side.has(id)); /* 2026-11-09 (UI38): side-map cards are left out */
+          const c = (CLAUDE_NEW.content17 || {})[top], side = ui38SideOnly(top), picks = ((c && c.groups) || []).flatMap(g=> (g.picks || []).map(p=> p.id)).filter(id=> defs[id] && !side.has(id) && !isUnattainable(defs[id])); /* 2026-11-09 (UI38): side-map cards are left out; 2026-11-11 (re-baseline): so are out-of-play cards (on no list after SKIR1) */
           return {subShown: subOnly.filter(id=> shown.includes(id)), listMissing: ent.cards.filter(id=> defs[id] && !shown.includes(id)), picksMissing: picks.filter(id=> !shown.includes(id)), shown: shown.length,
             chip: !!document.querySelector('#ui37Pros .ui37-tile .vis4-mc-card.is-large[data-zoom]') && !document.querySelector('#ui37Pros .ui37-tile .vis4-mc-card.is-chip')};""" % json.dumps(L['id'])))
         print('   ', json.dumps({k: v for k, v in r.items()}))
@@ -71,20 +71,29 @@ async def main():
         await pg.click(f'#ui37Pros [data-ui37-grp=new] .ui37-tile:nth-child(3) [data-ui37-flag=no]')
         s = await pg.evaluate(E(STATE)); ok(s['ctN'] == '2' and s['ctC'] == '1', f"counters: NEW! flagged {s['ctN']}, Carried flagged {s['ctC']}")
         await pg.click(f'#ui37Pros .ui37-tile[data-ui37-id="{n1}"] [data-ui37-flag=yes]')
-        s = await pg.evaluate(E(STATE)); ok(s['ctN'] == '1', 'pressing the lit Yes again clears the flag')
+        s = await pg.evaluate(E(STATE)); ok(s['ctN'] == '2', 'pressing the lit Yes again keeps it (UI42)')
+        await pg.click(f'#ui37Pros .ui37-tile[data-ui37-id="{n1}"] [data-ui37-flag=no]')
+        s = await pg.evaluate(E(STATE)); ok(s['ctN'] == '1', 'No clears a Yes (UI42; was: pressing the lit Yes again)')
         await pg.click(f'#ui37Pros .ui37-tile[data-ui37-id="{n1}"] [data-ui37-flag=yes]')
         await pg.fill('[data-ui37-target=n]', '2'); await pg.dispatch_event('[data-ui37-target=n]', 'change'); await pg.wait_for_timeout(200)
         s = await pg.evaluate(E(STATE)); met = await pg.evaluate("document.querySelector('[data-ui37-ct=n]').classList.contains('is-met')")
         ok(s['tN'] == '2' and met, 'the NEW! target is editable and the counter turns green when met')
         await pg.screenshot(path=os.path.join(OUT, 'prospects-flagged-1366.png'))
-        # 4 an EARLIER map's flags move cards on the later map. Pick a Carried card given by exactly one earlier map's list (no flags), flag it No there.
-        r = await pg.evaluate(E("""const L = %s, maps = ui37MapsData(), me = maps.find(m=> m.id === L), car = [...document.querySelectorAll('#ui37Pros [data-ui37-grp=carried] .ui37-tile')].map(t=> t.dataset.ui37Id);
-          for(const id of car){ const g = maps.filter(m=> m.n < me.n && m.list.includes(id) && !m.yes.includes(id)); if(g.length === 1) return {id, giver: g[0].id, gn: g[0].n}; } return null;""" % json.dumps(L['id'])))
-        print('   carried card with one giver:', r)
-        ok(bool(r), 'a Carried card with a single earlier giver exists')
+        # 4 an EARLIER map's flags move cards on the later map. 2026-11-11 (re-baseline for UI45 / UI47): Carried now means flagged Yes on an earlier map (a list alone
+        # no longer carries a card), so flag an unflagged NEW! card of an earlier map Yes there, check it is Carried here, then flag it No and check it is not.
+        G = mains[2]
+        await pg.evaluate(E(OPEN % json.dumps(G['id']) + "return 1;"))
+        r = await pg.evaluate(E("""const G = %s, L = %s, maps = ui37MapsData(), me = maps.find(m=> m.id === L), idx = ui37CarriedIndex(me.n, maps);
+          const t = [...document.querySelectorAll('#ui37Pros [data-ui37-grp=new] .ui37-tile')].map(x=> x.dataset.ui37Id).find(id=> !ui47IsAdminAdded(G, id) && ui37FlagOf(G, id) === '' && !idx.has(id));
+          return t ? {id: t, giver: G, gn: %d} : null;""" % (json.dumps(G['id']), json.dumps(L['id']), G['n'])))
+        print('   card flagged Yes on the earlier map:', r)
+        ok(bool(r), 'an unflagged NEW! card on an earlier map exists')
         if r:
-            await pg.evaluate(E(OPEN % json.dumps(r['giver']) + "return 1;"))
             s2 = await pg.evaluate(E(STATE)); ok(s2['view'] == 'pros', 'the view is remembered when another map is loaded')
+            await pg.click(f'#ui37Pros .ui37-tile[data-ui37-id="{r["id"]}"] [data-ui37-flag=yes]')
+            await pg.evaluate(E(OPEN % json.dumps(L['id']) + "return 1;"))
+            s5 = await pg.evaluate(E(STATE)); ok(r['id'] in [x['id'] for x in s5['car']], f"{r['id']}: flagged Yes on Map {r['gn']} -> Carried on Map {L['n']}")
+            await pg.evaluate(E(OPEN % json.dumps(r['giver']) + "return 1;"))
             await pg.click(f'#ui37Pros .ui37-tile[data-ui37-id="{r["id"]}"] [data-ui37-flag=no]')
             # and a Claude pick of that earlier map that no earlier map gives: flag it Yes
             y = await pg.evaluate(E("""const top = %s, maps = ui37MapsData(), me = maps.find(m=> m.id === top), idx = ui37CarriedIndex(me.n, maps), defs = getCardDefs();
@@ -97,7 +106,7 @@ async def main():
             await pg.evaluate(E(OPEN % json.dumps(L['id']) + "return 1;"))
             s3 = await pg.evaluate(E(STATE)); ids = lambda k: [x['id'] for x in s3[k]]
             ok(s3['view'] == 'pros', 'after a reload the window opens on Prospects')
-            ok(r['id'] in ids('neu') and r['id'] not in ids('car'), f"{r['id']}: flagged No on Map {r['gn']} -> NEW! on Map {L['n']} (was Carried)")
+            ok(r['id'] not in ids('car'), f"{r['id']}: flagged No again on Map {r['gn']} -> not Carried on Map {L['n']} (after a reload)")
             if y: ok(y in ids('car') or y in ids('earlier'), f"{y}: flagged Yes on Map {r['gn']} -> Carried on Map {L['n']}")
             fl = {x['id']: x['f'] for x in s3['neu'] + s3['car'] + s3['earlier']}
             ok(fl.get(n0) == 'yes' and fl.get(n1) == 'yes' and fl.get(c0) == 'yes' and s3['tN'] == '2', 'the later map\'s own flags and its edited target survive the reload')
@@ -117,7 +126,7 @@ async def main():
         # 7 a submap's window has no Prospects
         sub = await pg.evaluate("(CONQUEST_MAPS.find(m=> m.sub && !m.reserved && m.parent === %s) || CONQUEST_MAPS.find(m=> m.sub && !m.reserved) || {}).id" % json.dumps(L['id']))
         await pg.evaluate(E(OPEN % json.dumps(sub) + "return 1;"))
-        ok(not await pg.evaluate("!!document.querySelector('.ui37-switch') || !!document.getElementById('ui37Pros')"), f'a submap window ({sub}) has no Prospects')
+        ok(await pg.evaluate("!document.querySelector('.ui37-switch') && document.querySelectorAll('#ui37Pros [data-ui37-grp=new] .ui37-tile').length > 0"), f'a submap window ({sub}) has no switch and shows its NEW! suggestions (UI47; was: no Prospects)')
         # 8 phone
         await pg.set_viewport_size({'width': 390, 'height': 844})
         await pg.evaluate(E(OPEN % json.dumps(L['id']) + "return 1;"))

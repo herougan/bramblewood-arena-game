@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-11 Coordinator fixes (Map cards export, stale browser checks)
+- Admin sees: Export picks writes Claude's admin adds (UI47_ADMIN_ADD) as `yes`, as the window shows them, with a new `adminAdd` field (they exported as `no`).
+- Tests: tests/e2e/ui37 follows UI42 (No clears a Yes), UI45 / UI47 (Carried = Yes on an earlier map; side maps show suggestions) and skips out-of-play picks; tests/e2e/ui47 picks its Suggested card from the data and checks the export fix.
+- Docs: translator and release-engineer agents, release.md and ui.md point at `tools/i18n_add.py` and merge_pkg's code-map regeneration.
+
 ## 2026-11-11 Package SKIR1 (every skirmish of Maps 0-20 rebuilt from the new map lists)
 - Players see: the road fights of Maps 0-20 field new enemy decks drawn from each map's new list (the owner's Yes picks + admin adds on Maps 0-11; his 3 + suggestions on Map 12; suggestions on Maps 13-20 and the side maps). No Stone card before Map 21. Each map's fights together show Lumber-cost and free cards, Wait and no-Wait cards, Lumber makers and plain animals; a card sits in at most half a map's fights (one more on 15 maps, each with its reason in docs/balance/skir1/slack-2026-11-11.json: a thin list, or a fight that reached its band only that way); two cards of a two-card family never share a fight. Leaders, boss identity, showcases, first-clear cards, brambles and deck sizes kept (an Auto showcase leader is now written as the fight's `showcase`; the Stone leaders of 8-7 / 8-A-4 left the deck).
 - Lists (phase A): canonical/map-pools.json from docs/design/map-picks-owner-2026-11-11.json + UI47_ADMIN_ADD / UI47_SUGGEST, plus SKIR1's Lumber adds (Map 1 Hazel Coppice, Map 8 Pack Rat Looter + Bone Diviner, Map 9 Salvager Hermit Crab) and CONTENT19's Sea Bass; suggestions that break a standing rule stay off (CUT3-1 Glacial Ape-King, LIST-1104 archetype cards on Map 20+, LISTFIX2 Weaver Bird, two pool cards). card-obtain-maps.json regenerated; five cards over budget on their new map wait for the owner's re-fit (docs/balance/skir1/pending-budget-2026-11-11.json); `unattainable` flags follow the lists. K14 counts a card first listed on a map as that map's own.

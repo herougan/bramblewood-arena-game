@@ -34165,11 +34165,11 @@ function ui37SetTarget(top, k, v){ const e = ui37Ent(top), t = Object.assign({},
 // every main map's flags, with the group each card is in on that map (as this view computes it now)
 function ui37ExportRows(){
   const defs = getCardDefs(), rows = [], maps = ui37MapsData();
-  maps.forEach(m=>{ const e = ui37Ent(m.id); if(!e.yes.length && !e.no.length) return; const idx = ui37CarriedIndex(m.n, maps), tg = ui37Targets(m.id);
+  maps.forEach(m=>{ const e = ui37Ent(m.id), yes = ui47YesList(m.id); if(!yes.length && !e.no.length) return; const idx = ui37CarriedIndex(m.n, maps), tg = ui37Targets(m.id);
     let shown = []; try{ const ok0 = id=> !!defs[id] && ui41Allowed(id, defs), sp = ui37Split(m.id, defs, ok0); shown = sp.neu.concat(sp.car).map(p=> p.id); }catch(x){} // 2026-11-09 (UI42): every card the map shows, unflagged ones as no
-    const have = new Set(e.yes);
-    e.yes.map(id=> [id, 'yes']).concat([...new Set(e.no.concat(shown))].filter(id=> !have.has(id)).map(id=> [id, 'no'])).forEach(([id, flag])=>{ const c = ui38Concept(id); /* 2026-11-09 (UI38): a concept row carries its fields */
-      rows.push(Object.assign({mapNo: m.n, mapId: m.id, map: m.name, cardId: id, card: c ? c.name : (defs[id] && defs[id].name) || id, flag, group: idx.has(id) ? 'carried' : 'new', carriedFrom: idx.has(id) ? (idx.get(id) === UI47_TUT ? 'tutorial' : idx.get(id)) : null, targetNew: tg.n, targetCarried: tg.c},
+    const have = new Set(yes); // 2026-11-11: admin adds (UI47_ADMIN_ADD) read Yes in the window, so they export as yes (were 'no')
+    yes.map(id=> [id, 'yes']).concat([...new Set(e.no.concat(shown))].filter(id=> !have.has(id)).map(id=> [id, 'no'])).forEach(([id, flag])=>{ const c = ui38Concept(id); /* 2026-11-09 (UI38): a concept row carries its fields */
+      rows.push(Object.assign({mapNo: m.n, mapId: m.id, map: m.name, cardId: id, card: c ? c.name : (defs[id] && defs[id].name) || id, flag, group: idx.has(id) ? 'carried' : 'new', carriedFrom: idx.has(id) ? (idx.get(id) === UI47_TUT ? 'tutorial' : idx.get(id)) : null, targetNew: tg.n, targetCarried: tg.c, adminAdd: ui47IsAdminAdded(m.id, id)},
         c ? {concept: true, animal: c.animal, family: c.family, element: c.element, rarity: c.rarity, role: c.role, conceptMap: c.mapNo} : {concept: false})); }); });
   try{ ui44ExportRows(rows, defs); }catch(x){} // 2026-11-10 (UI44): the submaps' picks and unlock choices
   return rows;
