@@ -1067,6 +1067,79 @@
     "ibex-rockcaller"
    ],
    "problems": []
+  },
+  {
+   "map": "mx",
+   "mapNo": 20,
+   "kind": "bpro",
+   "id": "20-B-BPRO-1",
+   "before": {
+    "ash-cloud-condor": 3,
+    "cinder-hornet": 3,
+    "cinder-stoker": 4,
+    "ember-jackal": 3,
+    "ember-wisp": 3,
+    "phoenix-fledgling": 4
+   },
+   "after": {
+    "ash-cloud-condor": 3,
+    "cinder-hornet": 4,
+    "cinder-stoker": 4,
+    "ember-jackal": 3,
+    "ember-wisp": 3,
+    "pyroclast-wyrm": 3
+   },
+   "moves": [
+    {
+     "cut": "phoenix-fledgling",
+     "copies": 4,
+     "to": {
+      "cinder-hornet": 1,
+      "pyroclast-wyrm": 3
+     },
+     "left": 0
+    }
+   ],
+   "leadersBefore": [
+    "ember-jackal"
+   ],
+   "leaders": [
+    "ember-jackal"
+   ],
+   "problems": []
+  },
+  {
+   "map": "mx",
+   "mapNo": 20,
+   "kind": "wpro",
+   "id": "20-B-WPRO-2",
+   "before": {
+    "ancient-sloth-titan": 4,
+    "gorge-wyrm": 4,
+    "magma-titan": 4,
+    "phoenix-fledgling": 4,
+    "stalactite-golem": 4
+   },
+   "after": {
+    "ancient-sloth-titan": 4,
+    "cinder-hornet": 4,
+    "gorge-wyrm": 4,
+    "magma-titan": 4,
+    "stalactite-golem": 4
+   },
+   "moves": [
+    {
+     "cut": "phoenix-fledgling",
+     "copies": 4,
+     "to": {
+      "cinder-hornet": 4
+     },
+     "left": 0
+    }
+   ],
+   "leadersBefore": [],
+   "leaders": [],
+   "problems": []
   }
  ]
 }

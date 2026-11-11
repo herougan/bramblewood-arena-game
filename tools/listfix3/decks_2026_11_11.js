@@ -78,6 +78,7 @@ if (CMD === 'pro') {
   const O = require('../opt/deckopt.js'), P = require('../opt/pro_skirmishes.js'), LP = require('../lib_map_pools.js'), L9 = require('../bal9/lib_bal9.js');
   const gm = O.loadGame(ROOT), GG = gm.G, DD = gm.D, FILE = path.join(ROOT, 'canonical', 'pro-skirmishes.json'), pro = JSON.parse(fs.readFileSync(FILE, 'utf8'));
   const POOLS = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8'));
+  const B2 = require('../opt/bpro2_2026_10_31.js'), CUT = new Set([].concat(...Object.values(require('./lists_2026_11_11.js').REMOVE).map(o => Object.keys(o))));
   const st = d => 2 * (+d.attack || 0) + (+d.health || 0);
   const dist = (x, y) => { const p = DD[x] || {}, q = DD[y] || {}; return 3 * Math.abs((+p.cost || 0) - (+q.cost || 0)) + Math.abs((+p.wait || 0) - (+q.wait || 0)) + Math.abs(st(p) - st(q)) / 3 + 4 * Math.abs(L9.step(p.rarity) - L9.step(q.rarity)) + (L9.step(q.rarity) > L9.step(p.rarity) ? 2 : 0); };
   const rows = [];
@@ -87,7 +88,9 @@ if (CMD === 'pro') {
     const own = new Set((pool.cards || []).concat(pool.special || [], Array.isArray(sub) ? sub : (sub.cards || []), ...O.fightsOf(map).map(n => Object.keys(n.deck))));
     const cand = [...(LP.fightPool(POOLS, mid, map.sub ? map.parent : null) || [])];
     for (const [kind, mode] of [['pro', 'map-true'], ['bpro', 'bpro'], ['wpro', 'bpro']]) for (const x of (ent[kind] || [])) {
-      const bad = id => (DD[id] && LP.isOutOfPlay(GG, DD[id])) || O.mapRuleProblems(gm, map, { [id]: 1 }, mode).some(p => p.startsWith(id + ':')) || (kind !== 'pro' && !own.has(id));
+      // + a cut card off this map's own list by SKILL2's BPRO rule (tools/opt/bpro2: a side map's list, not its parent's; Phoenix Fledgling on Volcano Lair)
+      const bad = id => (DD[id] && LP.isOutOfPlay(GG, DD[id])) || O.mapRuleProblems(gm, map, { [id]: 1 }, mode).some(p => p.startsWith(id + ':')) || (kind !== 'pro' && !own.has(id))
+        || (kind !== 'pro' && CUT.has(id) && B2.bproProblems(gm, map, { [id]: 1 }).length > 0);
       const cuts = Object.keys(x.deck).filter(bad); if (!cuts.length) continue;
       const out = Object.assign({}, x.deck), moves = [], capR = c => Math.min(GG.maxCopiesForRarity((DD[c] || {}).rarity), 4);
       for (const id of cuts) { let k = out[id]; delete out[id]; const got = {};
@@ -103,6 +106,8 @@ if (CMD === 'pro') {
         x.listfix3 = `2026-11-11 (LISTFIX3): ${moves.map(v => v.cut + ' x' + v.copies).join(', ')} not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched`; }
     }
   }
-  if (a.includes('--apply')) { fs.writeFileSync(FILE, JSON.stringify(pro, null, 1) + '\n'); fs.writeFileSync(path.join(OUT, 'pro-swaps-2026-11-11.json'), JSON.stringify({ about: 'LISTFIX3 PRO / BPRO / WPRO swaps (tools/listfix3/decks_2026_11_11.js pro)', rows }, null, 1) + '\n'); }
+  if (a.includes('--apply')) { fs.writeFileSync(FILE, JSON.stringify(pro, null, 1) + '\n'); const REC = path.join(OUT, 'pro-swaps-2026-11-11.json'); // a re-run adds its rows to the record
+    const old = fs.existsSync(REC) ? JSON.parse(fs.readFileSync(REC, 'utf8')).rows.filter(r => !rows.some(x => x.id === r.id)) : [];
+    fs.writeFileSync(REC, JSON.stringify({ about: 'LISTFIX3 PRO / BPRO / WPRO swaps (tools/listfix3/decks_2026_11_11.js pro)', rows: old.concat(rows) }, null, 1) + '\n'); }
   console.log(rows.length, 'decks', a.includes('--apply') ? 'written' : '(dry run)');
 }

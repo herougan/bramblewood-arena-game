@@ -54796,11 +54796,11 @@
      ],
      "deck": {
       "ash-cloud-condor": 3,
-      "cinder-hornet": 3,
+      "cinder-hornet": 4,
       "cinder-stoker": 4,
       "ember-jackal": 3,
       "ember-wisp": 3,
-      "phoenix-fledgling": 4
+      "pyroclast-wyrm": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map20-mx-2026-11-11.json",
@@ -54817,7 +54817,8 @@
       "generated": "2026-11-10T20:40:42.287Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): phoenix-fledgling x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "20-B-BPRO-2",
@@ -55916,9 +55917,9 @@
      "leaders": [],
      "deck": {
       "ancient-sloth-titan": 4,
+      "cinder-hornet": 4,
       "gorge-wyrm": 4,
       "magma-titan": 4,
-      "phoenix-fledgling": 4,
       "stalactite-golem": 4
      },
      "source": {
@@ -55936,7 +55937,8 @@
       "generated": "2026-11-10T23:02:52.658Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "listfix3": "2026-11-11 (LISTFIX3): phoenix-fledgling x4 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ]
   },

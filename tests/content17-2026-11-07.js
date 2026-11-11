@@ -31,8 +31,8 @@ const parent = {}; Object.entries(POOLS).forEach(([k, e])=> Object.keys(e.submap
 const ownLists = m=>{ const top = parent[m] || m, e = POOLS[top] || {}; return new Set([].concat(e.cards || [], e.special || [], ...Object.values(e.submaps || {}))); };
 // 2026-11-11 (LISTFIX3): the 11-11 lists (SKIR1, owner 00:16: his Yes picks, Claude's admin adds and THEME8 suggestions) took up some of these
 // picks; a pick on its map's list is fine when one of those three put it there (was: no pick on its own map's lists)
-const appSrc = R('arena_app.js'), grab = n=> JSON.parse((appSrc.match(new RegExp('const ' + n + ' = (\\{.*?\\});\\n')) || [0, '{}'])[1]);
-const PICKS = J('docs/design/map-picks-owner-2026-11-11.json').maps, ADMIN = grab('UI47_ADMIN_ADD'), SUGGEST = grab('UI47_SUGGEST');
+const appSrc = R('arena_app.js'), grabC = n=> JSON.parse((appSrc.match(new RegExp('const ' + n + ' = (\\{.*?\\});\\n')) || [0, '{}'])[1]);
+const PICKS = J('docs/design/map-picks-owner-2026-11-11.json').maps, ADMIN = grabC('UI47_ADMIN_ADD'), SUGGEST = grabC('UI47_SUGGEST');
 const tookUp = (m, id)=>{ const top = parent[m] || m; return [(PICKS[top] || {}).yes, ADMIN[top], SUGGEST[top], ...Object.keys((POOLS[top] || {}).submaps || {}).map(s=> SUGGEST[s])].some(l=> (l || []).includes(id)); };
 let total = 0, ranged = 0;
 MAPS.forEach(m=>{

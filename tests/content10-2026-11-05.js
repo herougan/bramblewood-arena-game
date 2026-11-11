@@ -62,7 +62,8 @@ G.CONQUEST_MAPS.filter(m=> !m.reserved && G.mapNumberOf(m.id) >= 20).forEach(m=>
 const REW = [['rock-pool-starfish', 'mb', '2-1'], ['driftwood-crab', 'mb', '2-5'], ['pyrenean-desman', 'm2', '4-5'], ['magma-salamander', 'm11', '20-9'], ['razorbill', 'mc', '3-7'], ['yeti', 'm3', '19-6']];
 REW.forEach(([id, mid, node])=>{ const s = cards[id].source || {}; ok(s.kind === 'map' && s.id === mid && s.node === node, `3. ${id} is ${node}'s reward`); });
 ok(cards.yeti.source.challenge === true && !(cards['yeti-chieftain'].source || {}).challenge, '3. 19-6\'s challenge card is the Yeti (LISTFIX2-2)');
-const FP = {'mb:2-3': 'open-ocean-hermit-crab', 'm2:4-2': 'water-shrew', 'mw:5-1': 'cypress-root-lurker', 'mw:5-3': 'swamp-alligator', 'm8:6-4': 'lamprey', 'm5:14-3': 'marula-elephant'};
+// 2026-11-11 (LISTFIX3): mw:5-1's row follows its node's firstCard (marsh-mallow-hare, which pays); cypress-root-lurker left Map 5's 11-11 list (GD-5)
+const FP = {'mb:2-3': 'open-ocean-hermit-crab', 'm2:4-2': 'water-shrew', 'mw:5-1': 'marsh-mallow-hare', 'mw:5-3': 'swamp-alligator', 'm8:6-4': 'lamprey', 'm5:14-3': 'marula-elephant'};
 Object.entries(FP).forEach(([k, id])=> ok(new RegExp(`'${k}': '${id}'`).test(src), `3. ${k}'s first-clear card is ${id}`));
 const LF2 = {mb: ['fiddler-crab-swarm', 'grey-seal-bull', 'tidepool-trapper-crab'], m2: ['old-sturgeon', 'stone-turtle-warden'], mw: ['venomlord-serpent', 'snapper-hatchling'], m8: ['marsh-wisp'], m5: ['weaver-bird'], m11: ['woodland-brawler'], mc: ['the-gannet-queen'], m3: ['yeti-chieftain']};
 Object.entries(LF2).forEach(([mid, ids])=>{ const m = G.CONQUEST_MAPS.find(x=> x.id === mid);

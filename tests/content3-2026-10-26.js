@@ -147,7 +147,8 @@ const movedBy1111 = id=> Object.values(SUGGEST).some(l=> l.includes(id)) && Obje
 ok(!pools.mu.cards.includes('hollow-oath-keeper') && pools.mr.cards.includes('hollow-oath-keeper') === t2Has('mr', 'hollow-oath-keeper') && by['hollow-oath-keeper'].source.map === 'mr', 'G3 the Hollow Oath-Keeper is a Redwood Deep card, not a Morel Hollow one (on the Redwood Deep\'s list where THEME2 puts it)');
 const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), line = k=>{ const i = app.indexOf('{ key:"' + k + '"'); return i < 0 ? '' : app.slice(i, app.indexOf('\n', i)); };
 ok(['7-2', '7-4', '7-5', '7-6'].every(k=> !/"hollow-oath-keeper"/.test(line(k).replace(/\/\*.*?\*\//g, ''))), 'G3 ... and in no Morel Hollow deck');
-ok(/firstCard:"marsh-mallow-hare"/.test(line('5-1')) && /firstCard:"sphagnum-vole"/.test(line('5-2')), 'C1 5-1 and 5-2 pay a Cure card on their first clear');
+// 2026-11-11 (LISTFIX3, draft LISTFIX3-1): the owner cut Sphagnum Vole from Map 5 (Q3, after C1) and his Map 5 picks hold no other Cure card but 5-1's, so 5-2 pays Raft Spider (was: Sphagnum Vole)
+ok(/firstCard:"marsh-mallow-hare"/.test(line('5-1')) && /firstCard:"raft-spider"/.test(line('5-2')), 'C1 5-1 pays a Cure card on its first clear; 5-2 the draft LISTFIX3-1 card');
 ok(by['marsh-mallow-hare'].effects.cure && by['sphagnum-vole'].effects.cure, 'C1 ... both Cure');
 ok(/firstCard:"sleepless-shrew"/.test(line('7-4')) && by['sleepless-shrew'].effects.wakeful, 'G5 7-4 (before 7-5) pays the Wakeful Sleepless Shrew');
 ok(/"tide":true/.test(line('5-A-2')) && /"tide":true/.test(line('10-A-2')), 'BAL3-1 5-A-2 and 10-A-2 have the Tide');
