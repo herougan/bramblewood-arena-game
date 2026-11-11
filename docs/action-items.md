@@ -8,6 +8,17 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-11: Package LISTFIX3 (merged on batch-1023e, not released)
+- Done: the 12 cut cards are off the lists Claude's adds and suggestions had put them back on. 4 were the owner's cuts (Sphagnum Vole, Caiman Hatchling, Duckling, Phoenix Fledgling); 8 were Claude's own CONTENT10 cuts (11-05). New first-clear cards 5-2, 1-4, 7-2, 10-5; 31 road fights, 30 PRO decks, 11 PvP presets re-fitted. Main road 142 -> 140 of 149 in band (Map 16: 16-5, 16-6).
+- Open: LISTFIX3-1..4 (rewards; cards that left play; Map 16's Dhole Runner; Caiman / Phoenix on lists the owner hasn't picked).
+- Follow-ups:
+  - CONTENT16's pack proposal predates the 11-11 lists: ui29 (4 proposal checks x 2 widths) and content16 (5 achievement cards now in packs, 3 over budget) fail.
+  - en2: Ironclaw Fiddler over budget at Map 7 (SKIR1-3).
+  - BAL24's reference ladder (`docs/balance/ref/ref-ladder.json`, Admin's "Reference ladder") still holds Water Vole in 37 places: rebuild it on the 11-11 lists.
+  - Re-search the 30 swapped PRO / BPRO / WPRO decks.
+  - Seven listed cards have no source (enemy-only): Bloodworm, Glow-worm, Matamata, Mossmother Newt, Smuggler Slingrat, Pinecone Crossbill, Sand-flinger Antlion.
+  - A PvP stranger deck in `bramblewood-ghosts.js` holds Stag Knight.
+
 ## 11-11 00:06-00:19: Owner notes (shipped in the 11-11 release, owner 11:38 "Release when ready")
 | # | Note | Package |
 |---|---|---|
