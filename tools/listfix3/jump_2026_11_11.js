@@ -5,7 +5,7 @@
 // reads it); deck moves only (no Shield). Each walk read at --g1 (48) games on the tune seeds (11300 + 37g), the --top (6) nearest at --g3 (200) on
 // the road seeds (9100 + 37g) against the deck as it stands; the nearest is kept when 2+ points nearer, written in SKIR1's fit format to
 // docs/balance/listfix3/<dir>/<code>.json for tools/listfix3/decks_2026_11_11.js fitapply.
-//   node tools/listfix3/jump_2026_11_11.js --codes 16-7,16-6 [--walks 120] [--dir fit3]
+//   node tools/listfix3/jump_2026_11_11.js --codes 16-7,16-6 [--walks 120] [--dir fit3] [--seed 7]
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..'), a = process.argv.slice(2), arg = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; };
@@ -16,7 +16,7 @@ const UT = {}; JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'unit-the
 const AT = {}; JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'animal-tags.json'), 'utf8')).cards.forEach(t => { AT[t.id] = t; });
 const family = id => (UT[id] || {}).animalGroup || (AT[id] || {}).group || (D[id] || {}).animal || id;
 const MIN = { cost1: 4, cost0: 3, wait1: 4, wait0: 3, lumber: 2, plain: 2, status: 2 };
-let seed = 7; const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }, pick = xs => xs[Math.floor(rnd() * xs.length)];
+let seed = +arg('--seed', 7); const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }, pick = xs => xs[Math.floor(rnd() * xs.length)];
 fs.mkdirSync(DIR, { recursive: true });
 for (const code of CODES) {
   const m = L.maps().find(x => L.fightsOf(x).some(n => n.key === code)), fl = L.fightsOf(m), n = fl.find(x => x.key === code), f = L.fight(m, n), band = F.bandOf(m, n), t0 = Date.now();

@@ -1,0 +1,1962 @@
+{
+ "about": "SKIR2 road totals (tools/skir2/totals_2026_11_11.js): skir2w400 -> listfix3w400, the Map reference at 400 games",
+ "tags": [
+  "skir2w400",
+  "listfix3w400"
+ ],
+ "main": {
+  "skir2w400": {
+   "fights": 149,
+   "inBand": 142,
+   "within10": 143,
+   "beyond20": 2,
+   "meanGap": 3.82
+  },
+  "listfix3w400": {
+   "fights": 149,
+   "inBand": 140,
+   "within10": 141,
+   "beyond20": 3,
+   "meanGap": 3.99
+  }
+ },
+ "side": {
+  "skir2w400": {
+   "fights": 81,
+   "inBand": 61,
+   "within10": 67,
+   "beyond20": 5,
+   "meanGap": 6.61
+  },
+  "listfix3w400": {
+   "fights": 81,
+   "inBand": 60,
+   "within10": 66,
+   "beyond20": 5,
+   "meanGap": 6.82
+  }
+ },
+ "maps": {
+  "m1": {
+   "mapNo": 0,
+   "name": "Bramblewood Outskirts",
+   "side": false,
+   "skir2w400": {
+    "fights": 4,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 2.88
+   },
+   "listfix3w400": {
+    "fights": 4,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 2.88
+   },
+   "off": []
+  },
+  "mo": {
+   "mapNo": 0,
+   "name": "The Old Bramble",
+   "side": true,
+   "skir2w400": {
+    "fights": 4,
+    "inBand": 1,
+    "within10": 2,
+    "beyond20": 0,
+    "meanGap": 10.43
+   },
+   "listfix3w400": {
+    "fights": 4,
+    "inBand": 1,
+    "within10": 2,
+    "beyond20": 0,
+    "meanGap": 10.43
+   },
+   "off": [
+    "0-B-1 80.8/90",
+    "0-B-2 90/75",
+    "0-B-4 29/40"
+   ]
+  },
+  "mf": {
+   "mapNo": 1,
+   "name": "Thistlewood",
+   "side": false,
+   "skir2w400": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 4.72
+   },
+   "listfix3w400": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 4.72
+   },
+   "off": []
+  },
+  "mq": {
+   "mapNo": 1,
+   "name": "Clovermead",
+   "side": true,
+   "skir2w400": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 5.58
+   },
+   "listfix3w400": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 5.58
+   },
+   "off": [
+    "1-A-4 51/60",
+    "1-A-2 64.5/80"
+   ]
+  },
+  "mb": {
+   "mapNo": 2,
+   "name": "Pebble Beach",
+   "side": false,
+   "skir2w400": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 3,
+    "beyond20": 1,
+    "meanGap": 10.02
+   },
+   "listfix3w400": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 3,
+    "beyond20": 1,
+    "meanGap": 10.02
+   },
+   "off": [
+    "2-1 62.8/90",
+    "2-2 61.5/80"
+   ]
+  },
+  "mp": {
+   "mapNo": 2,
+   "name": "Lilypad Reach",
+   "side": true,
+   "skir2w400": {
+    "fights": 7,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 1,
+    "meanGap": 9.87
+   },
+   "listfix3w400": {
+    "fights": 7,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 1,
+    "meanGap": 9.87
+   },
+   "off": [
+    "2-A-2 73/84",
+    "2-A-7 87.5/40"
+   ]
+  },
+  "mg": {
+   "mapNo": 2,
+   "name": "Smugglers' Grotto",
+   "side": true,
+   "skir2w400": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 4.07
+   },
+   "listfix3w400": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 4.07
+   },
+   "off": [
+    "2-B-2 83.3/75"
+   ]
+  },
+  "mc": {
+   "mapNo": 3,
+   "name": "Gannet Cliffs",
+   "side": false,
+   "skir2w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.87
+   },
+   "listfix3w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.87
+   },
+   "off": []
+  },
+  "m2": {
+   "mapNo": 4,
+   "name": "Sunken Hollow",
+   "side": false,
+   "skir2w400": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 3.4
+   },
+   "listfix3w400": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 2.42
+   },
+   "off": []
+  },
+  "mw": {
+   "mapNo": 5,
+   "name": "Gatorback Swamp",
+   "side": false,
+   "skir2w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.13
+   },
+   "listfix3w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.21
+   },
+   "off": []
+  },
+  "ms": {
+   "mapNo": 5,
+   "name": "The Sunken Grove",
+   "side": true,
+   "skir2w400": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 4.95
+   },
+   "listfix3w400": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 6.25
+   },
+   "off": [
+    "5-A-2 56/65"
+   ]
+  },
+  "m8": {
+   "mapNo": 6,
+   "name": "Sable Swampmire",
+   "side": false,
+   "skir2w400": {
+    "fights": 8,
+    "inBand": 8,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 2.21
+   },
+   "listfix3w400": {
+    "fights": 8,
+    "inBand": 8,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 2.21
+   },
+   "off": []
+  },
+  "mu": {
+   "mapNo": 7,
+   "name": "The Morel Hollow",
+   "side": false,
+   "skir2w400": {
+    "fights": 6,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 0,
+    "meanGap": 4.17
+   },
+   "listfix3w400": {
+    "fights": 6,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 0,
+    "meanGap": 4.17
+   },
+   "off": []
+  },
+  "mz": {
+   "mapNo": 7,
+   "name": "The Mycelium Deep",
+   "side": true,
+   "skir2w400": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 2.66
+   },
+   "listfix3w400": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 2.66
+   },
+   "off": []
+  },
+  "m4": {
+   "mapNo": 8,
+   "name": "Caves & Alcoves",
+   "side": false,
+   "skir2w400": {
+    "fights": 8,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 0,
+    "meanGap": 5.94
+   },
+   "listfix3w400": {
+    "fights": 8,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 0,
+    "meanGap": 5.94
+   },
+   "off": [
+    "8-2 66/85",
+    "8-7 45.8/60"
+   ]
+  },
+  "mn": {
+   "mapNo": 8,
+   "name": "The Glimmer Depths",
+   "side": true,
+   "skir2w400": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 6.48
+   },
+   "listfix3w400": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 6.48
+   },
+   "off": [
+    "8-A-3 41/50"
+   ]
+  },
+  "mk": {
+   "mapNo": 9,
+   "name": "The Kelp Mangroves",
+   "side": false,
+   "skir2w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.7
+   },
+   "listfix3w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.7
+   },
+   "off": []
+  },
+  "m7": {
+   "mapNo": 10,
+   "name": "Coral Current",
+   "side": false,
+   "skir2w400": {
+    "fights": 9,
+    "inBand": 9,
+    "within10": 9,
+    "beyond20": 0,
+    "meanGap": 1.78
+   },
+   "listfix3w400": {
+    "fights": 9,
+    "inBand": 9,
+    "within10": 9,
+    "beyond20": 0,
+    "meanGap": 1.81
+   },
+   "off": []
+  },
+  "mj": {
+   "mapNo": 10,
+   "name": "The Sunken Depths",
+   "side": true,
+   "skir2w400": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 3,
+    "beyond20": 2,
+    "meanGap": 17.36
+   },
+   "listfix3w400": {
+    "fights": 5,
+    "inBand": 3,
+    "within10": 3,
+    "beyond20": 2,
+    "meanGap": 17.36
+   },
+   "off": [
+    "10-A-5 17.8/40",
+    "10-A-4 0/60"
+   ]
+  },
+  "m10": {
+   "mapNo": 11,
+   "name": "Eyrie Heights",
+   "side": false,
+   "skir2w400": {
+    "fights": 10,
+    "inBand": 10,
+    "within10": 10,
+    "beyond20": 0,
+    "meanGap": 3.48
+   },
+   "listfix3w400": {
+    "fights": 10,
+    "inBand": 10,
+    "within10": 10,
+    "beyond20": 0,
+    "meanGap": 3.48
+   },
+   "off": []
+  },
+  "mv": {
+   "mapNo": 11,
+   "name": "The Aerie Vault",
+   "side": true,
+   "skir2w400": {
+    "fights": 4,
+    "inBand": 2,
+    "within10": 2,
+    "beyond20": 1,
+    "meanGap": 9.32
+   },
+   "listfix3w400": {
+    "fights": 4,
+    "inBand": 2,
+    "within10": 2,
+    "beyond20": 1,
+    "meanGap": 9.32
+   },
+   "off": [
+    "11-A-3 35.5/60",
+    "11-A-2 86.5/75"
+   ]
+  },
+  "mh": {
+   "mapNo": 12,
+   "name": "The Briar Maze",
+   "side": false,
+   "skir2w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.57
+   },
+   "listfix3w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.57
+   },
+   "off": []
+  },
+  "mr": {
+   "mapNo": 13,
+   "name": "The Redwood Deep",
+   "side": false,
+   "skir2w400": {
+    "fights": 8,
+    "inBand": 7,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 2.96
+   },
+   "listfix3w400": {
+    "fights": 8,
+    "inBand": 7,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 4.07
+   },
+   "off": [
+    "13-6 74.8/65"
+   ]
+  },
+  "m5": {
+   "mapNo": 14,
+   "name": "Savanna Reaches",
+   "side": false,
+   "skir2w400": {
+    "fights": 8,
+    "inBand": 8,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 4.95
+   },
+   "listfix3w400": {
+    "fights": 8,
+    "inBand": 8,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 4.13
+   },
+   "off": []
+  },
+  "my": {
+   "mapNo": 14,
+   "name": "The Canopy",
+   "side": true,
+   "skir2w400": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 3.28
+   },
+   "listfix3w400": {
+    "fights": 5,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 0,
+    "meanGap": 3.28
+   },
+   "off": []
+  },
+  "ml": {
+   "mapNo": 15,
+   "name": "The Long Grass",
+   "side": false,
+   "skir2w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 2.83
+   },
+   "listfix3w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 1.84
+   },
+   "off": []
+  },
+  "mt": {
+   "mapNo": 16,
+   "name": "The Pinewood Taiga",
+   "side": false,
+   "skir2w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.19
+   },
+   "listfix3w400": {
+    "fights": 7,
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 1,
+    "meanGap": 8.99
+   },
+   "off": [
+    "16-5 49.3/66",
+    "16-6 31.3/60"
+   ]
+  },
+  "m6": {
+   "mapNo": 17,
+   "name": "Wolfsbane Tundra",
+   "side": false,
+   "skir2w400": {
+    "fights": 8,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 4.34
+   },
+   "listfix3w400": {
+    "fights": 8,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.56
+   },
+   "off": [
+    "17-8 23.5/40"
+   ]
+  },
+  "mi": {
+   "mapNo": 17,
+   "name": "The Ice Hollow",
+   "side": true,
+   "skir2w400": {
+    "fights": 4,
+    "inBand": 2,
+    "within10": 2,
+    "beyond20": 0,
+    "meanGap": 6.75
+   },
+   "listfix3w400": {
+    "fights": 4,
+    "inBand": 2,
+    "within10": 2,
+    "beyond20": 0,
+    "meanGap": 6.75
+   },
+   "off": [
+    "17-A-3 71.3/60",
+    "17-A-2 62.5/75"
+   ]
+  },
+  "md": {
+   "mapNo": 18,
+   "name": "The Glass Dunes",
+   "side": false,
+   "skir2w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.84
+   },
+   "listfix3w400": {
+    "fights": 7,
+    "inBand": 7,
+    "within10": 7,
+    "beyond20": 0,
+    "meanGap": 3.84
+   },
+   "off": []
+  },
+  "mpd": {
+   "mapNo": 18,
+   "name": "The Pale Desert",
+   "side": true,
+   "skir2w400": {
+    "fights": 9,
+    "inBand": 7,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 4.28
+   },
+   "listfix3w400": {
+    "fights": 9,
+    "inBand": 7,
+    "within10": 8,
+    "beyond20": 0,
+    "meanGap": 4.28
+   },
+   "off": [
+    "18-A-4 64.3/77.1",
+    "18-A-6 59/68.6"
+   ]
+  },
+  "m3": {
+   "mapNo": 19,
+   "name": "Ashen Spurn",
+   "side": false,
+   "skir2w400": {
+    "fights": 6,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 0,
+    "meanGap": 2.87
+   },
+   "listfix3w400": {
+    "fights": 6,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 0,
+    "meanGap": 2.87
+   },
+   "off": []
+  },
+  "m9": {
+   "mapNo": 19,
+   "name": "Basalt Foundry",
+   "side": true,
+   "skir2w400": {
+    "fights": 10,
+    "inBand": 9,
+    "within10": 9,
+    "beyond20": 0,
+    "meanGap": 5.28
+   },
+   "listfix3w400": {
+    "fights": 10,
+    "inBand": 9,
+    "within10": 9,
+    "beyond20": 0,
+    "meanGap": 5.28
+   },
+   "off": [
+    "19-A-8 46.8/63.8"
+   ]
+  },
+  "m11": {
+   "mapNo": 20,
+   "name": "The Sundered Peak",
+   "side": false,
+   "skir2w400": {
+    "fights": 10,
+    "inBand": 9,
+    "within10": 9,
+    "beyond20": 1,
+    "meanGap": 5.59
+   },
+   "listfix3w400": {
+    "fights": 10,
+    "inBand": 9,
+    "within10": 9,
+    "beyond20": 1,
+    "meanGap": 5.59
+   },
+   "off": [
+    "20-9 78/50"
+   ]
+  },
+  "me": {
+   "mapNo": 20,
+   "name": "Eye of the Volcano",
+   "side": true,
+   "skir2w400": {
+    "fights": 7,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 1,
+    "meanGap": 7.46
+   },
+   "listfix3w400": {
+    "fights": 7,
+    "inBand": 6,
+    "within10": 6,
+    "beyond20": 1,
+    "meanGap": 7.46
+   },
+   "off": [
+    "20-A-4 74.8/35.5"
+   ]
+  },
+  "mx": {
+   "mapNo": 20,
+   "name": "Volcano Lair",
+   "side": true,
+   "skir2w400": {
+    "fights": 4,
+    "inBand": 4,
+    "within10": 4,
+    "beyond20": 0,
+    "meanGap": 2.6
+   },
+   "listfix3w400": {
+    "fights": 4,
+    "inBand": 3,
+    "within10": 3,
+    "beyond20": 0,
+    "meanGap": 5.5
+   },
+   "off": [
+    "20-B-3 73.8/60"
+   ]
+  }
+ },
+ "fights": {
+  "0-1": {
+   "target": 90,
+   "skir2w400": 88.8,
+   "listfix3w400": 88.8
+  },
+  "0-2": {
+   "target": 75,
+   "skir2w400": 78,
+   "listfix3w400": 78
+  },
+  "0-4": {
+   "target": 45,
+   "skir2w400": 48.5,
+   "listfix3w400": 48.5
+  },
+  "0-3": {
+   "target": 60,
+   "skir2w400": 63.8,
+   "listfix3w400": 63.8
+  },
+  "1-1": {
+   "target": 90,
+   "skir2w400": 90,
+   "listfix3w400": 90
+  },
+  "1-2": {
+   "target": 80,
+   "skir2w400": 87.8,
+   "listfix3w400": 87.8
+  },
+  "1-3": {
+   "target": 85,
+   "skir2w400": 92.3,
+   "listfix3w400": 92.3
+  },
+  "1-4": {
+   "target": 80,
+   "skir2w400": 86.5,
+   "listfix3w400": 86.5
+  },
+  "1-5": {
+   "target": 40,
+   "skir2w400": 38,
+   "listfix3w400": 38
+  },
+  "2-1": {
+   "target": 90,
+   "skir2w400": 62.8,
+   "listfix3w400": 62.8
+  },
+  "2-2": {
+   "target": 80,
+   "skir2w400": 61.5,
+   "listfix3w400": 61.5
+  },
+  "2-3": {
+   "target": 70,
+   "skir2w400": 70.5,
+   "listfix3w400": 70.5
+  },
+  "2-4": {
+   "target": 60,
+   "skir2w400": 57.3,
+   "listfix3w400": 57.3
+  },
+  "2-5": {
+   "target": 40,
+   "skir2w400": 38.8,
+   "listfix3w400": 38.8
+  },
+  "3-1": {
+   "target": 90,
+   "skir2w400": 85.3,
+   "listfix3w400": 85.3
+  },
+  "3-2": {
+   "target": 84,
+   "skir2w400": 83.3,
+   "listfix3w400": 83.3
+  },
+  "3-3": {
+   "target": 78,
+   "skir2w400": 72.8,
+   "listfix3w400": 72.8
+  },
+  "3-4": {
+   "target": 72,
+   "skir2w400": 65,
+   "listfix3w400": 65
+  },
+  "3-5": {
+   "target": 66,
+   "skir2w400": 62,
+   "listfix3w400": 62
+  },
+  "3-6": {
+   "target": 60,
+   "skir2w400": 60.5,
+   "listfix3w400": 60.5
+  },
+  "3-7": {
+   "target": 40,
+   "skir2w400": 35,
+   "listfix3w400": 35
+  },
+  "4-1": {
+   "target": 90,
+   "skir2w400": 86.5,
+   "listfix3w400": 86.5
+  },
+  "4-2": {
+   "target": 80,
+   "skir2w400": 81.8,
+   "listfix3w400": 79.8
+  },
+  "4-3": {
+   "target": 70,
+   "skir2w400": 63.5,
+   "listfix3w400": 66.8
+  },
+  "4-4": {
+   "target": 60,
+   "skir2w400": 61.5,
+   "listfix3w400": 61.5
+  },
+  "5-1": {
+   "target": 90,
+   "skir2w400": 90.3,
+   "listfix3w400": 90.3
+  },
+  "5-2": {
+   "target": 84,
+   "skir2w400": 79.3,
+   "listfix3w400": 79.3
+  },
+  "5-3": {
+   "target": 68,
+   "skir2w400": 70.5,
+   "listfix3w400": 63
+  },
+  "5-5": {
+   "target": 66,
+   "skir2w400": 63.5,
+   "listfix3w400": 63.5
+  },
+  "5-4": {
+   "target": 72,
+   "skir2w400": 65.8,
+   "listfix3w400": 65.8
+  },
+  "5-7": {
+   "target": 40,
+   "skir2w400": 36.3,
+   "listfix3w400": 41.8
+  },
+  "5-6": {
+   "target": 60,
+   "skir2w400": 58,
+   "listfix3w400": 58
+  },
+  "6-2": {
+   "target": 85,
+   "skir2w400": 84.5,
+   "listfix3w400": 84.5
+  },
+  "6-1": {
+   "target": 90,
+   "skir2w400": 91.8,
+   "listfix3w400": 91.8
+  },
+  "6-4": {
+   "target": 75,
+   "skir2w400": 76.5,
+   "listfix3w400": 76.5
+  },
+  "6-3": {
+   "target": 80,
+   "skir2w400": 80.3,
+   "listfix3w400": 80.3
+  },
+  "6-6": {
+   "target": 65,
+   "skir2w400": 72.8,
+   "listfix3w400": 72.8
+  },
+  "6-5": {
+   "target": 70,
+   "skir2w400": 69.5,
+   "listfix3w400": 69.5
+  },
+  "6-8": {
+   "target": 40,
+   "skir2w400": 35.5,
+   "listfix3w400": 35.5
+  },
+  "6-7": {
+   "target": 60,
+   "skir2w400": 60.8,
+   "listfix3w400": 60.8
+  },
+  "7-2": {
+   "target": 82.5,
+   "skir2w400": 83.8,
+   "listfix3w400": 83.8
+  },
+  "7-1": {
+   "target": 90,
+   "skir2w400": 88.8,
+   "listfix3w400": 88.8
+  },
+  "7-4": {
+   "target": 67.5,
+   "skir2w400": 62,
+   "listfix3w400": 62
+  },
+  "7-3": {
+   "target": 75,
+   "skir2w400": 82.5,
+   "listfix3w400": 82.5
+  },
+  "7-6": {
+   "target": 40,
+   "skir2w400": 43,
+   "listfix3w400": 43
+  },
+  "7-5": {
+   "target": 60,
+   "skir2w400": 66.5,
+   "listfix3w400": 66.5
+  },
+  "8-2": {
+   "target": 85,
+   "skir2w400": 66,
+   "listfix3w400": 66
+  },
+  "8-1": {
+   "target": 90,
+   "skir2w400": 90.5,
+   "listfix3w400": 90.5
+  },
+  "8-4": {
+   "target": 75,
+   "skir2w400": 72.5,
+   "listfix3w400": 72.5
+  },
+  "8-3": {
+   "target": 80,
+   "skir2w400": 73.8,
+   "listfix3w400": 73.8
+  },
+  "8-6": {
+   "target": 65,
+   "skir2w400": 62.3,
+   "listfix3w400": 62.3
+  },
+  "8-5": {
+   "target": 60,
+   "skir2w400": 59.3,
+   "listfix3w400": 59.3
+  },
+  "8-8": {
+   "target": 40,
+   "skir2w400": 38.3,
+   "listfix3w400": 38.3
+  },
+  "9-2": {
+   "target": 84,
+   "skir2w400": 82.8,
+   "listfix3w400": 82.8
+  },
+  "8-7": {
+   "target": 60,
+   "skir2w400": 45.8,
+   "listfix3w400": 45.8
+  },
+  "9-4": {
+   "target": 62,
+   "skir2w400": 63,
+   "listfix3w400": 63
+  },
+  "9-1": {
+   "target": 90,
+   "skir2w400": 82.8,
+   "listfix3w400": 82.8
+  },
+  "9-6": {
+   "target": 60,
+   "skir2w400": 59.5,
+   "listfix3w400": 59.5
+  },
+  "9-3": {
+   "target": 78,
+   "skir2w400": 74.8,
+   "listfix3w400": 74.8
+  },
+  "10-1": {
+   "target": 90,
+   "skir2w400": 86.3,
+   "listfix3w400": 86.3
+  },
+  "9-5": {
+   "target": 66,
+   "skir2w400": 68.8,
+   "listfix3w400": 68.8
+  },
+  "10-3": {
+   "target": 81.4,
+   "skir2w400": 79.8,
+   "listfix3w400": 79.8
+  },
+  "9-7": {
+   "target": 40,
+   "skir2w400": 43,
+   "listfix3w400": 43
+  },
+  "10-5": {
+   "target": 72.9,
+   "skir2w400": 74.8,
+   "listfix3w400": 74.8
+  },
+  "10-2": {
+   "target": 85.7,
+   "skir2w400": 85,
+   "listfix3w400": 85
+  },
+  "10-7": {
+   "target": 64.3,
+   "skir2w400": 63.8,
+   "listfix3w400": 63.8
+  },
+  "10-4": {
+   "target": 77.1,
+   "skir2w400": 75.8,
+   "listfix3w400": 75.8
+  },
+  "10-6": {
+   "target": 68.6,
+   "skir2w400": 65.5,
+   "listfix3w400": 65.5
+  },
+  "10-8": {
+   "target": 60,
+   "skir2w400": 59.3,
+   "listfix3w400": 59.3
+  },
+  "11-2": {
+   "target": 86.3,
+   "skir2w400": 84.5,
+   "listfix3w400": 84.5
+  },
+  "11-4": {
+   "target": 78.8,
+   "skir2w400": 82.5,
+   "listfix3w400": 82.5
+  },
+  "11-1": {
+   "target": 90,
+   "skir2w400": 90.3,
+   "listfix3w400": 90.3
+  },
+  "11-3": {
+   "target": 82.5,
+   "skir2w400": 81.8,
+   "listfix3w400": 81.8
+  },
+  "11-6": {
+   "target": 71.3,
+   "skir2w400": 68.5,
+   "listfix3w400": 68.5
+  },
+  "11-5": {
+   "target": 75,
+   "skir2w400": 71.8,
+   "listfix3w400": 71.8
+  },
+  "11-8": {
+   "target": 63.8,
+   "skir2w400": 58,
+   "listfix3w400": 58
+  },
+  "11-10": {
+   "target": 40,
+   "skir2w400": 33.3,
+   "listfix3w400": 33.3
+  },
+  "11-9": {
+   "target": 60,
+   "skir2w400": 67,
+   "listfix3w400": 67
+  },
+  "12-2": {
+   "target": 84,
+   "skir2w400": 83.8,
+   "listfix3w400": 83.8
+  },
+  "12-1": {
+   "target": 90,
+   "skir2w400": 82.8,
+   "listfix3w400": 82.8
+  },
+  "12-4": {
+   "target": 72,
+   "skir2w400": 73.3,
+   "listfix3w400": 73.3
+  },
+  "12-3": {
+   "target": 68,
+   "skir2w400": 68.5,
+   "listfix3w400": 68.5
+  },
+  "12-6": {
+   "target": 60,
+   "skir2w400": 55,
+   "listfix3w400": 55
+  },
+  "12-5": {
+   "target": 66,
+   "skir2w400": 68,
+   "listfix3w400": 68
+  },
+  "13-1": {
+   "target": 90,
+   "skir2w400": 91,
+   "listfix3w400": 91
+  },
+  "13-3": {
+   "target": 80,
+   "skir2w400": 83,
+   "listfix3w400": 83
+  },
+  "12-7": {
+   "target": 40,
+   "skir2w400": 41.8,
+   "listfix3w400": 41.8
+  },
+  "13-5": {
+   "target": 70,
+   "skir2w400": 68.3,
+   "listfix3w400": 69
+  },
+  "13-2": {
+   "target": 85,
+   "skir2w400": 86.5,
+   "listfix3w400": 86.5
+  },
+  "13-7": {
+   "target": 60,
+   "skir2w400": 61.5,
+   "listfix3w400": 62.8
+  },
+  "13-4": {
+   "target": 65,
+   "skir2w400": 63.8,
+   "listfix3w400": 60.3
+  },
+  "14-1": {
+   "target": 90,
+   "skir2w400": 82.3,
+   "listfix3w400": 82.3
+  },
+  "13-6": {
+   "target": 65,
+   "skir2w400": 74.8,
+   "listfix3w400": 74.8
+  },
+  "14-3": {
+   "target": 80,
+   "skir2w400": 75.8,
+   "listfix3w400": 79
+  },
+  "13-8": {
+   "target": 40,
+   "skir2w400": 44,
+   "listfix3w400": 48.8
+  },
+  "14-5": {
+   "target": 70,
+   "skir2w400": 62.3,
+   "listfix3w400": 62.3
+  },
+  "14-2": {
+   "target": 85,
+   "skir2w400": 87.3,
+   "listfix3w400": 85.8
+  },
+  "14-7": {
+   "target": 60,
+   "skir2w400": 66.3,
+   "listfix3w400": 66.3
+  },
+  "14-4": {
+   "target": 75,
+   "skir2w400": 72.3,
+   "listfix3w400": 76.3
+  },
+  "15-1": {
+   "target": 90,
+   "skir2w400": 91,
+   "listfix3w400": 91
+  },
+  "15-3": {
+   "target": 78,
+   "skir2w400": 84.8,
+   "listfix3w400": 76.8
+  },
+  "14-6": {
+   "target": 65,
+   "skir2w400": 61.5,
+   "listfix3w400": 61.5
+  },
+  "15-5": {
+   "target": 66,
+   "skir2w400": 68.3,
+   "listfix3w400": 64.5
+  },
+  "14-8": {
+   "target": 40,
+   "skir2w400": 34.8,
+   "listfix3w400": 35.3
+  },
+  "15-2": {
+   "target": 84,
+   "skir2w400": 82.3,
+   "listfix3w400": 82.3
+  },
+  "15-7": {
+   "target": 40,
+   "skir2w400": 38.5,
+   "listfix3w400": 40
+  },
+  "15-4": {
+   "target": 72,
+   "skir2w400": 76.8,
+   "listfix3w400": 76.8
+  },
+  "16-2": {
+   "target": 84,
+   "skir2w400": 79.3,
+   "listfix3w400": 83.3
+  },
+  "15-6": {
+   "target": 60,
+   "skir2w400": 58.3,
+   "listfix3w400": 57.3
+  },
+  "16-1": {
+   "target": 90,
+   "skir2w400": 91.8,
+   "listfix3w400": 91.3
+  },
+  "16-4": {
+   "target": 72,
+   "skir2w400": 72.3,
+   "listfix3w400": 67.8
+  },
+  "16-3": {
+   "target": 68,
+   "skir2w400": 63,
+   "listfix3w400": 63
+  },
+  "16-6": {
+   "target": 60,
+   "skir2w400": 59.5,
+   "listfix3w400": 31.3
+  },
+  "16-5": {
+   "target": 66,
+   "skir2w400": 59.8,
+   "listfix3w400": 49.3
+  },
+  "17-1": {
+   "target": 90,
+   "skir2w400": 89.8,
+   "listfix3w400": 89.8
+  },
+  "16-7": {
+   "target": 40,
+   "skir2w400": 43.8,
+   "listfix3w400": 46.3
+  },
+  "17-3": {
+   "target": 80,
+   "skir2w400": 80.8,
+   "listfix3w400": 80.8
+  },
+  "17-2": {
+   "target": 85,
+   "skir2w400": 78.3,
+   "listfix3w400": 85.3
+  },
+  "17-5": {
+   "target": 70,
+   "skir2w400": 67,
+   "listfix3w400": 68.5
+  },
+  "17-4": {
+   "target": 75,
+   "skir2w400": 70,
+   "listfix3w400": 70
+  },
+  "17-7": {
+   "target": 60,
+   "skir2w400": 58.5,
+   "listfix3w400": 59.3
+  },
+  "17-6": {
+   "target": 65,
+   "skir2w400": 64.5,
+   "listfix3w400": 61.5
+  },
+  "18-1": {
+   "target": 90,
+   "skir2w400": 83.8,
+   "listfix3w400": 83.8
+  },
+  "17-8": {
+   "target": 40,
+   "skir2w400": 23,
+   "listfix3w400": 23.5
+  },
+  "18-3": {
+   "target": 78,
+   "skir2w400": 74.3,
+   "listfix3w400": 74.3
+  },
+  "18-2": {
+   "target": 84,
+   "skir2w400": 79.3,
+   "listfix3w400": 79.3
+  },
+  "18-5": {
+   "target": 66,
+   "skir2w400": 66.8,
+   "listfix3w400": 66.8
+  },
+  "18-7": {
+   "target": 40,
+   "skir2w400": 44,
+   "listfix3w400": 44
+  },
+  "18-4": {
+   "target": 62,
+   "skir2w400": 59,
+   "listfix3w400": 59
+  },
+  "19-2": {
+   "target": 82.5,
+   "skir2w400": 75.8,
+   "listfix3w400": 75.8
+  },
+  "18-6": {
+   "target": 60,
+   "skir2w400": 55.5,
+   "listfix3w400": 55.5
+  },
+  "19-6": {
+   "target": 40,
+   "skir2w400": 36,
+   "listfix3w400": 36
+  },
+  "19-1": {
+   "target": 90,
+   "skir2w400": 89.3,
+   "listfix3w400": 89.3
+  },
+  "20-2": {
+   "target": 85.7,
+   "skir2w400": 88.8,
+   "listfix3w400": 88.8
+  },
+  "19-3": {
+   "target": 75,
+   "skir2w400": 72.5,
+   "listfix3w400": 72.5
+  },
+  "19-5": {
+   "target": 60,
+   "skir2w400": 61.5,
+   "listfix3w400": 61.5
+  },
+  "20-4": {
+   "target": 67.1,
+   "skir2w400": 71,
+   "listfix3w400": 71
+  },
+  "20-1": {
+   "target": 90,
+   "skir2w400": 93.5,
+   "listfix3w400": 93.5
+  },
+  "20-6": {
+   "target": 68.6,
+   "skir2w400": 73.5,
+   "listfix3w400": 73.5
+  },
+  "20-3": {
+   "target": 81.4,
+   "skir2w400": 86,
+   "listfix3w400": 86
+  },
+  "20-8": {
+   "target": 60,
+   "skir2w400": 58.5,
+   "listfix3w400": 58.5
+  },
+  "20-5": {
+   "target": 72.9,
+   "skir2w400": 71,
+   "listfix3w400": 71
+  },
+  "20-7": {
+   "target": 64.3,
+   "skir2w400": 68.3,
+   "listfix3w400": 68.3
+  },
+  "1-A-1": {
+   "target": 90,
+   "skir2w400": 89.3,
+   "listfix3w400": 89.3
+  },
+  "20-9": {
+   "target": 50,
+   "skir2w400": 78,
+   "listfix3w400": 78
+  },
+  "1-A-3": {
+   "target": 70,
+   "skir2w400": 69.3,
+   "listfix3w400": 69.3
+  },
+  "1-A-5": {
+   "target": 40,
+   "skir2w400": 38,
+   "listfix3w400": 38
+  },
+  "1-A-4": {
+   "target": 60,
+   "skir2w400": 51,
+   "listfix3w400": 51
+  },
+  "2-A-2": {
+   "target": 84,
+   "skir2w400": 73,
+   "listfix3w400": 73
+  },
+  "2-A-1": {
+   "target": 90,
+   "skir2w400": 94.3,
+   "listfix3w400": 94.3
+  },
+  "2-A-3": {
+   "target": 78,
+   "skir2w400": 80.8,
+   "listfix3w400": 80.8
+  },
+  "2-A-5": {
+   "target": 66,
+   "skir2w400": 67,
+   "listfix3w400": 67
+  },
+  "2-A-6": {
+   "target": 60,
+   "skir2w400": 59,
+   "listfix3w400": 59
+  },
+  "19-A-1": {
+   "target": 90,
+   "skir2w400": 86.8,
+   "listfix3w400": 86.8
+  },
+  "19-A-3": {
+   "target": 72.5,
+   "skir2w400": 68.3,
+   "listfix3w400": 68.3
+  },
+  "2-A-7": {
+   "target": 40,
+   "skir2w400": 87.5,
+   "listfix3w400": 87.5
+  },
+  "19-A-5": {
+   "target": 75,
+   "skir2w400": 70.5,
+   "listfix3w400": 70.5
+  },
+  "19-A-2": {
+   "target": 86.3,
+   "skir2w400": 93,
+   "listfix3w400": 93
+  },
+  "19-A-7": {
+   "target": 67.5,
+   "skir2w400": 59.8,
+   "listfix3w400": 59.8
+  },
+  "19-A-4": {
+   "target": 78.8,
+   "skir2w400": 80.3,
+   "listfix3w400": 80.3
+  },
+  "19-A-9": {
+   "target": 60,
+   "skir2w400": 56.5,
+   "listfix3w400": 56.5
+  },
+  "19-A-6": {
+   "target": 71.3,
+   "skir2w400": 74.5,
+   "listfix3w400": 74.5
+  },
+  "10-A-1": {
+   "target": 90,
+   "skir2w400": 90.8,
+   "listfix3w400": 90.8
+  },
+  "19-A-8": {
+   "target": 63.8,
+   "skir2w400": 46.8,
+   "listfix3w400": 46.8
+  },
+  "19-A-10": {
+   "target": 40,
+   "skir2w400": 41.3,
+   "listfix3w400": 41.3
+  },
+  "10-A-3": {
+   "target": 70,
+   "skir2w400": 73.3,
+   "listfix3w400": 73.3
+  },
+  "10-A-2": {
+   "target": 70,
+   "skir2w400": 69.5,
+   "listfix3w400": 69.5
+  },
+  "10-A-5": {
+   "target": 40,
+   "skir2w400": 17.8,
+   "listfix3w400": 17.8
+  },
+  "10-A-4": {
+   "target": 60,
+   "skir2w400": 0,
+   "listfix3w400": 0
+  },
+  "2-B-2": {
+   "target": 75,
+   "skir2w400": 83.3,
+   "listfix3w400": 83.3
+  },
+  "2-B-1": {
+   "target": 90,
+   "skir2w400": 89,
+   "listfix3w400": 89
+  },
+  "2-B-4": {
+   "target": 40,
+   "skir2w400": 46,
+   "listfix3w400": 46
+  },
+  "2-B-3": {
+   "target": 60,
+   "skir2w400": 61,
+   "listfix3w400": 61
+  },
+  "7-A-2": {
+   "target": 70,
+   "skir2w400": 69,
+   "listfix3w400": 69
+  },
+  "7-A-1": {
+   "target": 90,
+   "skir2w400": 83.5,
+   "listfix3w400": 83.5
+  },
+  "7-A-4": {
+   "target": 60,
+   "skir2w400": 60.5,
+   "listfix3w400": 60.5
+  },
+  "14-A-1": {
+   "target": 90,
+   "skir2w400": 93,
+   "listfix3w400": 93
+  },
+  "7-A-3": {
+   "target": 70,
+   "skir2w400": 69,
+   "listfix3w400": 69
+  },
+  "14-A-3": {
+   "target": 70,
+   "skir2w400": 66.8,
+   "listfix3w400": 66.8
+  },
+  "7-A-5": {
+   "target": 40,
+   "skir2w400": 44.3,
+   "listfix3w400": 44.3
+  },
+  "14-A-5": {
+   "target": 40,
+   "skir2w400": 34.5,
+   "listfix3w400": 34.5
+  },
+  "14-A-2": {
+   "target": 80,
+   "skir2w400": 76.3,
+   "listfix3w400": 76.3
+  },
+  "20-A-2": {
+   "target": 81.3,
+   "skir2w400": 78.8,
+   "listfix3w400": 78.8
+  },
+  "14-A-4": {
+   "target": 60,
+   "skir2w400": 59,
+   "listfix3w400": 59
+  },
+  "20-A-4": {
+   "target": 35.5,
+   "skir2w400": 74.8,
+   "listfix3w400": 74.8
+  },
+  "20-A-1": {
+   "target": 88.2,
+   "skir2w400": 89.5,
+   "listfix3w400": 89.5
+  },
+  "20-A-6": {
+   "target": 61.6,
+   "skir2w400": 61,
+   "listfix3w400": 61
+  },
+  "20-B-1": {
+   "target": 85,
+   "skir2w400": 82.5,
+   "listfix3w400": 82.5
+  },
+  "20-A-3": {
+   "target": 74.6,
+   "skir2w400": 72.8,
+   "listfix3w400": 72.8
+  },
+  "20-B-3": {
+   "target": 60,
+   "skir2w400": 63.5,
+   "listfix3w400": 73.8
+  },
+  "20-A-5": {
+   "target": 68,
+   "skir2w400": 68.3,
+   "listfix3w400": 68.3
+  },
+  "5-A-1": {
+   "target": 90,
+   "skir2w400": 87.5,
+   "listfix3w400": 87.5
+  },
+  "20-A-7": {
+   "target": 55.4,
+   "skir2w400": 49,
+   "listfix3w400": 49
+  },
+  "5-A-3": {
+   "target": 60,
+   "skir2w400": 66.5,
+   "listfix3w400": 66.5
+  },
+  "20-B-2": {
+   "target": 72.5,
+   "skir2w400": 70.8,
+   "listfix3w400": 75.5
+  },
+  "8-A-1": {
+   "target": 90,
+   "skir2w400": 87.8,
+   "listfix3w400": 87.8
+  },
+  "20-B-4": {
+   "target": 20,
+   "skir2w400": 17.3,
+   "listfix3w400": 17.3
+  },
+  "8-A-3": {
+   "target": 50,
+   "skir2w400": 41,
+   "listfix3w400": 41
+  },
+  "5-A-2": {
+   "target": 65,
+   "skir2w400": 56,
+   "listfix3w400": 56
+  },
+  "11-A-1": {
+   "target": 80,
+   "skir2w400": 81,
+   "listfix3w400": 81
+  },
+  "11-A-3": {
+   "target": 60,
+   "skir2w400": 35.5,
+   "listfix3w400": 35.5
+  },
+  "5-A-4": {
+   "target": 40,
+   "skir2w400": 41.8,
+   "listfix3w400": 47
+  },
+  "17-A-1": {
+   "target": 80,
+   "skir2w400": 77.8,
+   "listfix3w400": 77.8
+  },
+  "8-A-2": {
+   "target": 75,
+   "skir2w400": 68,
+   "listfix3w400": 68
+  },
+  "17-A-3": {
+   "target": 60,
+   "skir2w400": 71.3,
+   "listfix3w400": 71.3
+  },
+  "8-A-4": {
+   "target": 40,
+   "skir2w400": 32.3,
+   "listfix3w400": 32.3
+  },
+  "0-B-1": {
+   "target": 90,
+   "skir2w400": 80.8,
+   "listfix3w400": 80.8
+  },
+  "11-A-2": {
+   "target": 75,
+   "skir2w400": 86.5,
+   "listfix3w400": 86.5
+  },
+  "18-A-1": {
+   "target": 90,
+   "skir2w400": 91.3,
+   "listfix3w400": 91.3
+  },
+  "11-A-4": {
+   "target": 40,
+   "skir2w400": 40.3,
+   "listfix3w400": 40.3
+  },
+  "18-A-3": {
+   "target": 71.4,
+   "skir2w400": 73.5,
+   "listfix3w400": 73.5
+  },
+  "17-A-2": {
+   "target": 75,
+   "skir2w400": 62.5,
+   "listfix3w400": 62.5
+  },
+  "17-A-4": {
+   "target": 40,
+   "skir2w400": 41,
+   "listfix3w400": 41
+  },
+  "18-A-5": {
+   "target": 72.9,
+   "skir2w400": 71,
+   "listfix3w400": 71
+  },
+  "0-B-2": {
+   "target": 75,
+   "skir2w400": 90,
+   "listfix3w400": 90
+  },
+  "18-A-7": {
+   "target": 64.3,
+   "skir2w400": 65.5,
+   "listfix3w400": 65.5
+  },
+  "0-B-4": {
+   "target": 40,
+   "skir2w400": 29,
+   "listfix3w400": 29
+  },
+  "18-A-2": {
+   "target": 85.7,
+   "skir2w400": 89.8,
+   "listfix3w400": 89.8
+  },
+  "18-A-9": {
+   "target": 40,
+   "skir2w400": 35,
+   "listfix3w400": 35
+  },
+  "18-A-4": {
+   "target": 77.1,
+   "skir2w400": 64.3,
+   "listfix3w400": 64.3
+  },
+  "18-A-6": {
+   "target": 68.6,
+   "skir2w400": 59,
+   "listfix3w400": 59
+  },
+  "18-A-8": {
+   "target": 60,
+   "skir2w400": 60.5,
+   "listfix3w400": 60.5
+  },
+  "10-9": {
+   "target": 40,
+   "skir2w400": 42.5,
+   "listfix3w400": 42.8
+  },
+  "4-5": {
+   "target": 40,
+   "skir2w400": 36.3,
+   "listfix3w400": 36.3
+  },
+  "19-4": {
+   "target": 67.5,
+   "skir2w400": 69.3,
+   "listfix3w400": 69.3
+  },
+  "11-7": {
+   "target": 67.5,
+   "skir2w400": 70.3,
+   "listfix3w400": 70.3
+  },
+  "20-10": {
+   "target": 40,
+   "skir2w400": 39.5,
+   "listfix3w400": 39.5
+  },
+  "2-A-4": {
+   "target": 72,
+   "skir2w400": 70.5,
+   "listfix3w400": 70.5
+  },
+  "1-A-2": {
+   "target": 80,
+   "skir2w400": 64.5,
+   "listfix3w400": 64.5
+  },
+  "0-B-3": {
+   "target": 60,
+   "skir2w400": 66.5,
+   "listfix3w400": 66.5
+  }
+ }
+}
