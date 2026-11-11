@@ -1,0 +1,320 @@
+{
+ "about": "SKIR2 rebuild (tools/skir2/decks_2026_11_11.js rebuild: SKIR1's planMap on the amended list, SKIR2's BPRO decks as the peak strategies)",
+ "built": "2026-11-11",
+ "maps": [
+  {
+   "id": "mr",
+   "mapNo": 13,
+   "side": false,
+   "name": "The Redwood Deep",
+   "strategies": [
+    {
+     "id": "BPRO",
+     "focus": "open"
+    },
+    {
+     "id": "BPRO",
+     "focus": "economy"
+    },
+    {
+     "id": "BPRO",
+     "focus": "family:guard"
+    }
+   ],
+   "peaks": [
+    "13-2",
+    "13-4",
+    "13-7"
+   ],
+   "usageCap": 4,
+   "repairs": [],
+   "mix": {
+    "cost1": {
+     "shown": 14,
+     "list": 14
+    },
+    "cost0": {
+     "shown": 1,
+     "list": 1
+    },
+    "wait1": {
+     "shown": 12,
+     "list": 12
+    },
+    "wait0": {
+     "shown": 3,
+     "list": 3
+    },
+    "lumber": {
+     "shown": 1,
+     "list": 1
+    },
+    "plain": {
+     "shown": 3,
+     "list": 3
+    },
+    "status": {
+     "shown": 1,
+     "list": 1
+    },
+    "stone": {
+     "shown": 0,
+     "list": 0
+    }
+   },
+   "fights": [
+    {
+     "code": "13-1",
+     "kind": "skirmish",
+     "size": 19,
+     "old": {
+      "berserker-boar": 4,
+      "fawn-scout": 3,
+      "heartwood-treant": 3,
+      "owl-nightwatch": 4,
+      "pine-marten": 3,
+      "redwood-woodpecker": 2
+     },
+     "leaders0": [
+      "berserker-boar"
+     ],
+     "explicitLeaders": true,
+     "showcase": null,
+     "stoneLeader": false,
+     "role": "blend",
+     "deck": {
+      "fawn-scout": 3,
+      "berserker-boar": 4,
+      "heartwood-treant": 3,
+      "swift-fox": 4,
+      "bramblewood-lynx": 3,
+      "pine-marten": 2
+     },
+     "problems": []
+    },
+    {
+     "code": "13-2",
+     "kind": "skirmish",
+     "size": 16,
+     "old": {
+      "corpse-flower-beetle": 1,
+      "grizzly-vanguard": 4,
+      "owl-nightwatch": 4,
+      "quill-thorn-boar": 1,
+      "sergeant-bramblefox": 3,
+      "stag-knight": 3
+     },
+     "leaders0": [
+      "sergeant-bramblefox"
+     ],
+     "explicitLeaders": false,
+     "showcase": "sergeant-bramblefox",
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "family:guard",
+     "deck": {
+      "sergeant-bramblefox": 3,
+      "redwood-woodpecker": 4,
+      "grizzly-vanguard": 4,
+      "corpse-flower-beetle": 1,
+      "tasmanian-devil": 4
+     },
+     "problems": []
+    },
+    {
+     "code": "13-3",
+     "kind": "skirmish",
+     "size": 17,
+     "old": {
+      "berserker-boar": 4,
+      "bramblewood-lynx": 3,
+      "grizzly-vanguard": 3,
+      "pine-marten": 3,
+      "redwood-woodpecker": 4
+     },
+     "leaders0": [
+      "bramblewood-lynx"
+     ],
+     "explicitLeaders": false,
+     "showcase": "bramblewood-lynx",
+     "stoneLeader": false,
+     "role": "blend",
+     "deck": {
+      "bramblewood-lynx": 3,
+      "owl-nightwatch": 4,
+      "stag-knight": 4,
+      "swift-fox": 4,
+      "quill-thorn-boar": 1,
+      "heartwood-treant": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "13-4",
+     "kind": "skirmish",
+     "size": 14,
+     "old": {
+      "berserker-boar": 2,
+      "bramblewood-lynx": 2,
+      "grizzly-vanguard": 5,
+      "owl-nightwatch": 2,
+      "stag-knight": 3
+     },
+     "leaders0": [
+      "bramblewood-lynx"
+     ],
+     "explicitLeaders": false,
+     "showcase": "bramblewood-lynx",
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "economy",
+     "deck": {
+      "bramblewood-lynx": 1,
+      "tasmanian-devil": 4,
+      "fawn-scout": 2,
+      "redwood-woodpecker": 2,
+      "stag-knight": 2,
+      "berserker-boar": 3
+     },
+     "problems": []
+    },
+    {
+     "code": "13-5",
+     "kind": "elite",
+     "size": 17,
+     "old": {
+      "berserker-boar": 4,
+      "corpse-flower-beetle": 1,
+      "heartwood-treant": 3,
+      "pine-marten": 3,
+      "shimmerwing-stag": 2,
+      "stag-knight": 4
+     },
+     "leaders0": [
+      "shimmerwing-stag"
+     ],
+     "explicitLeaders": false,
+     "showcase": "shimmerwing-stag",
+     "stoneLeader": false,
+     "role": "blend",
+     "deck": {
+      "shimmerwing-stag": 2,
+      "fawn-scout": 3,
+      "pine-marten": 3,
+      "quill-thorn-boar": 1,
+      "tasmanian-devil": 4,
+      "bramblewood-lynx": 3,
+      "owl-nightwatch": 1
+     },
+     "problems": []
+    },
+    {
+     "code": "13-6",
+     "kind": "elite",
+     "size": 17,
+     "old": {
+      "corpse-flower-beetle": 1,
+      "grizzly-vanguard": 3,
+      "owl-nightwatch": 4,
+      "quill-thorn-boar": 1,
+      "redwood-woodpecker": 4,
+      "stag-knight": 4
+     },
+     "leaders0": [
+      "grizzly-vanguard"
+     ],
+     "explicitLeaders": false,
+     "showcase": "grizzly-vanguard",
+     "stoneLeader": false,
+     "role": "blend",
+     "deck": {
+      "grizzly-vanguard": 4,
+      "bramblewood-lynx": 3,
+      "corpse-flower-beetle": 1,
+      "quill-thorn-boar": 1,
+      "redwood-woodpecker": 4,
+      "tasmanian-devil": 4
+     },
+     "problems": []
+    },
+    {
+     "code": "13-7",
+     "kind": "elite",
+     "size": 16,
+     "old": {
+      "berserker-boar": 4,
+      "heartwood-treant": 3,
+      "pine-marten": 3,
+      "redwood-woodpecker": 4,
+      "shimmerwing-stag": 2
+     },
+     "leaders0": [
+      "shimmerwing-stag"
+     ],
+     "explicitLeaders": false,
+     "showcase": "shimmerwing-stag",
+     "stoneLeader": false,
+     "role": "peak",
+     "strategy": "BPRO",
+     "focus": "open",
+     "deck": {
+      "shimmerwing-stag": 2,
+      "berserker-boar": 4,
+      "bramblewood-lynx": 3,
+      "grizzly-vanguard": 4,
+      "pine-marten": 3
+     },
+     "problems": []
+    },
+    {
+     "code": "13-8",
+     "kind": "miniboss",
+     "size": 19,
+     "old": {
+      "berserker-boar": 4,
+      "corpse-flower-beetle": 1,
+      "heartwood-treant": 1,
+      "pine-marten": 3,
+      "redwood-woodpecker": 4,
+      "shimmerwing-stag": 2,
+      "stag-knight": 4
+     },
+     "leaders0": [
+      "shimmerwing-stag"
+     ],
+     "explicitLeaders": false,
+     "showcase": "shimmerwing-stag",
+     "stoneLeader": false,
+     "role": "boss",
+     "deck": {
+      "shimmerwing-stag": 2,
+      "fawn-scout": 3,
+      "corpse-flower-beetle": 1,
+      "swift-fox": 4,
+      "heartwood-treant": 3,
+      "stag-knight": 4,
+      "owl-nightwatch": 2
+     },
+     "problems": []
+    }
+   ],
+   "usage": {
+    "tasmanian-devil": 4,
+    "bramblewood-lynx": 4,
+    "redwood-woodpecker": 3,
+    "corpse-flower-beetle": 3,
+    "fawn-scout": 3,
+    "stag-knight": 3,
+    "pine-marten": 3,
+    "swift-fox": 3,
+    "heartwood-treant": 3,
+    "owl-nightwatch": 3,
+    "quill-thorn-boar": 3,
+    "grizzly-vanguard": 2,
+    "berserker-boar": 2
+   }
+  }
+ ]
+}

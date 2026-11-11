@@ -51420,7 +51420,7 @@
      ],
      "level": 1,
      "leaders": [
-      "stoat-cutthroat"
+      "pumice-beetle"
      ],
      "deck": {
       "ember-centipede": 3,
@@ -51428,7 +51428,7 @@
       "mountain-goat-climber": 4,
       "pack-mule": 4,
       "pika-hoarder": 2,
-      "stoat-cutthroat": 3
+      "pumice-beetle": 3
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map21-m21-2026-11-05.json",
@@ -51445,7 +51445,8 @@
       "generated": "2026-11-05T04:23:11.539Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir2": "2026-11-11 (SKIR2): stoat-cutthroat x3 not held by this map since SKIR1's lists (the map-true rule), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "21-PRO-4",
@@ -51456,13 +51457,13 @@
      ],
      "level": 1,
      "leaders": [
-      "stoat-cutthroat"
+      "blue-ringed-octopus"
      ],
      "deck": {
       "blue-ringed-octopus": 2,
       "pack-mule": 4,
+      "pumice-beetle": 3,
       "red-billed-chough": 4,
-      "stoat-cutthroat": 3,
       "talus-pika": 4,
       "wolf-spider-mother": 3
      },
@@ -51481,7 +51482,8 @@
       "generated": "2026-11-05T04:23:11.539Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir2": "2026-11-11 (SKIR2): stoat-cutthroat x3 not held by this map since SKIR1's lists (the map-true rule), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     }
    ],
    "bpro": [
@@ -51758,9 +51760,9 @@
       "badger-berserker": 3,
       "cinder-gecko": 4,
       "ember-centipede": 4,
+      "fumarole-ibex": 3,
       "grave-grin-hyena": 3,
-      "rimefire-salamander": 3,
-      "stoat-cutthroat": 3
+      "rimefire-salamander": 3
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map22-m22-2026-11-05.json",
@@ -51777,7 +51779,8 @@
       "generated": "2026-11-05T04:25:02.768Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir2": "2026-11-11 (SKIR2): stoat-cutthroat x3 not held by this map since SKIR1's lists (the map-true rule), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "22-PRO-2",
@@ -52012,9 +52015,9 @@
       "badger-berserker": 3,
       "border-collie": 4,
       "pack-mule": 4,
+      "pronghorn-racer": 4,
       "raccoon-bandit": 3,
-      "tide-spirit": 2,
-      "weaver-bird": 4
+      "tide-spirit": 2
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map23-m23-2026-11-05.json",
@@ -52031,7 +52034,8 @@
       "generated": "2026-11-05T04:26:19.324Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir2": "2026-11-11 (SKIR2): weaver-bird x4 on no list since SKIR1's lists (BAL9 JJ24), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "23-PRO-2",
@@ -52050,7 +52054,7 @@
       "house-cat": 4,
       "howdah-archers": 3,
       "pack-mule": 4,
-      "weaver-bird": 4
+      "pronghorn-racer": 4
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map23-m23-2026-11-05.json",
@@ -52067,7 +52071,8 @@
       "generated": "2026-11-05T04:26:19.324Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skir2": "2026-11-11 (SKIR2): weaver-bird x4 on no list since SKIR1's lists (BAL9 JJ24), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
     },
     {
      "id": "23-PRO-3",

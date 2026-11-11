@@ -1,0 +1,354 @@
+{
+ "about": "SKIR2 list adds (tools/skir2/lists_2026_11_11.js)",
+ "built": "2026-11-11",
+ "adds": [
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "card": "swift-fox",
+   "name": "Swift Fox",
+   "kind": "own",
+   "why": "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card); the suggested list left every fight at 87-99%"
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "card": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "kind": "own",
+   "why": "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card)"
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "card": "bramblewood-lynx",
+   "name": "Bramblewood Lynx",
+   "kind": "own",
+   "why": "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card, source.map mr); now first listed here, carried on Map 16"
+  },
+  {
+   "map": "mw",
+   "mapNo": 5,
+   "card": "sphagnum-vole",
+   "name": "Sphagnum Vole",
+   "kind": "admin",
+   "why": "5-2's first-clear reward (CONTENT3)"
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "card": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "kind": "admin",
+   "why": "7-6's old boss card (Map 7's own pack card by source), carried from Map 4: the boss read 79.5% (target 40) without it"
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "card": "grey-seal-bull",
+   "name": "Grey Seal Bull",
+   "kind": "admin",
+   "why": "BAL9 JJ28: a Guardian defender for Coral Current (its list had none): an Ocean seal bull carried from Smugglers' Grotto (Map 2), on no other main list"
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "card": "parrotfish",
+   "name": "Parrotfish",
+   "kind": "admin",
+   "why": "10-3's first-clear reward (GD5 table): on no list since SKIR1, so the fight paid nothing"
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "card": "coral-reef-shark",
+   "name": "Coral Reef Shark",
+   "kind": "admin",
+   "why": "10-4's first-clear reward (GD5 table): on no list since SKIR1, so the fight paid nothing"
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "card": "cataphract-destrier",
+   "name": "Gilded Roadwarden",
+   "kind": "own",
+   "why": "15-4's first-clear reward (GD5 table; Map 15's own pack card): on no list since SKIR1, so the fight paid nothing"
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "card": "shepherds-bark",
+   "name": "Shepherd",
+   "kind": "carried",
+   "why": "BAL9 JJ28: a Guardian defender for Wolfsbane Tundra (its list had none): a herding dog against the wolves, carried from Map 15, on one list before"
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "card": "snow-ermine",
+   "name": "Snow Ermine",
+   "kind": "own",
+   "why": "17-1's first-clear reward (GD5 table; Map 17's own pack card): on no main list since SKIR1, so the fight paid nothing"
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "card": "harbor-seal",
+   "name": "Harbor Seal",
+   "kind": "own",
+   "why": "17-3's first-clear reward (GD5 table; Map 17's own pack card): on no list since SKIR1, so the fight paid nothing"
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "card": "snow-bunting-archer",
+   "name": "Snow Bunting Archer",
+   "kind": "own",
+   "why": "17-4's first-clear reward (GD5 table; Map 17's own pack card): on no list since SKIR1, so the fight paid nothing"
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "card": "marula-elephant",
+   "name": "Marula Elephant",
+   "kind": "carried",
+   "why": "BAL9 JJ28: a Guardian defender for The Glass Dunes (its list had none): a desert-edge elephant carried from Map 14 like the list's other savanna cards, on one list before"
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "card": "stalactite-golem",
+   "name": "Stalactite Pill Bug",
+   "kind": "carried",
+   "why": "BAL9 JJ28: a Guardian defender for Ashen Spurn (its list had none): a cave wall from the lava tubes, carried from Map 8 (on Map 20's SPECIAL list too)"
+  }
+ ],
+ "problems": [],
+ "obtainMaps": [
+  {
+   "id": "bramblewood-lynx",
+   "before": 14,
+   "after": 7
+  },
+  {
+   "id": "cataphract-destrier",
+   "before": 0,
+   "after": 14
+  },
+  {
+   "id": "coral-reef-shark",
+   "before": 0,
+   "after": 7
+  },
+  {
+   "id": "harbor-seal",
+   "before": 0,
+   "after": 14
+  },
+  {
+   "id": "snow-ermine",
+   "before": 0,
+   "after": 14
+  },
+  {
+   "id": "swift-fox",
+   "before": 0,
+   "after": 7
+  },
+  {
+   "id": "tasmanian-devil",
+   "before": 0,
+   "after": 7
+  },
+  {
+   "id": "snow-bunting-archer",
+   "before": 0,
+   "after": 14
+  },
+  {
+   "id": "parrotfish",
+   "before": 0,
+   "after": 7
+  }
+ ],
+ "flags": {
+  "cleared": [
+   "cataphract-destrier",
+   "coral-reef-shark",
+   "harbor-seal",
+   "snow-ermine",
+   "swift-fox",
+   "tasmanian-devil",
+   "snow-bunting-archer",
+   "parrotfish",
+   "sphagnum-vole"
+  ],
+  "set": []
+ },
+ "uiAdminAdd": {
+  "m1": [
+   "hazel-coppice",
+   "nightjar-drifter"
+  ],
+  "mf": [
+   "monarch-wingblade",
+   "pack-rat-looter",
+   "hazel-coppice"
+  ],
+  "mb": [
+   "great-skua",
+   "bloodworm"
+  ],
+  "mc": [
+   "razorbill",
+   "great-skua",
+   "hawk-arrowkeeper"
+  ],
+  "m2": [
+   "beaver-feller",
+   "water-vole"
+  ],
+  "mw": [
+   "caiman-hatchling",
+   "peat-cutter-vole",
+   "sphagnum-vole"
+  ],
+  "m8": [
+   "sunbittern-strider",
+   "bone-diviner",
+   "owl-sentinel"
+  ],
+  "mu": [
+   "truffle-piglet",
+   "leafcutter-gardener",
+   "nightshade-moth",
+   "planarian-splitter"
+  ],
+  "m4": [
+   "upside-down-bat",
+   "blind-cave-fish",
+   "pack-rat-looter",
+   "bone-diviner"
+  ],
+  "mk": [
+   "nutria-reedcutter",
+   "sunbittern-strider",
+   "salvager-hermit-crab"
+  ],
+  "m7": [
+   "coral-polyp-colony",
+   "nautilus-drifter",
+   "grey-seal-bull",
+   "parrotfish",
+   "coral-reef-shark"
+  ],
+  "m10": [
+   "hawk-arrowkeeper",
+   "alpine-marmot"
+  ]
+ },
+ "uiSuggest": {
+  "mr": [
+   "grizzly-vanguard",
+   "stag-knight",
+   "fawn-scout",
+   "berserker-boar",
+   "badger-lumberjack",
+   "redwood-woodpecker",
+   "pine-marten",
+   "sergeant-bramblefox",
+   "owl-nightwatch",
+   "heartwood-treant",
+   "quill-thorn-boar",
+   "corpse-flower-beetle",
+   "cunning-vixen",
+   "bramble-hoglet",
+   "chipmunk-skirmisher",
+   "lyrebird-mimic",
+   "bear-cub",
+   "swift-fox",
+   "tasmanian-devil",
+   "bramblewood-lynx"
+  ],
+  "ml": [
+   "squires-mount",
+   "warhorse-charger",
+   "war-hound",
+   "border-collie",
+   "shepherds-bark",
+   "pronghorn-racer",
+   "bison-bulldozer",
+   "goose-sentry",
+   "land-tiller",
+   "mallard-halberdier",
+   "truffle-piglet",
+   "cricket-drummer",
+   "fire-ant-raft",
+   "hedge-weasel",
+   "mouse-sapper",
+   "thorn-shrike",
+   "cataphract-destrier"
+  ],
+  "m6": [
+   "polar-bear",
+   "walrus-icebreaker",
+   "arctic-fox-raider",
+   "tundra-musk-ox",
+   "glacier-yak",
+   "frostbitten-wolverine",
+   "ice-crevasse-wolf",
+   "ringed-seal",
+   "arctic-tern",
+   "lemming-swarm",
+   "talus-pika",
+   "timber-wolf-pack",
+   "taiga-lynx",
+   "woodland-caribou",
+   "krill-swarm",
+   "cone-cutter-squirrel",
+   "musk-ox-calf",
+   "shepherds-bark",
+   "snow-ermine",
+   "harbor-seal",
+   "snow-bunting-archer"
+  ],
+  "md": [
+   "antlion-pit",
+   "glasswing-moth",
+   "caustic-scorpion",
+   "dune-jackal",
+   "dune-jackal-scout",
+   "fennec-fox",
+   "sandfish",
+   "horned-lizard",
+   "roadrunner-courier",
+   "armadillo-guard",
+   "sand-widow",
+   "dust-hyena",
+   "termite-forager",
+   "savanna-cheetah",
+   "stonedrop-vulture",
+   "meerkat-sentry",
+   "marula-elephant"
+  ],
+  "m3": [
+   "fire-salamander",
+   "cinder-stoker",
+   "cinder-hornet",
+   "sulfur-vent-crab",
+   "ashwing-ptarmigan",
+   "ember-wisp",
+   "obsidian-scorpion",
+   "smoke-raccoon",
+   "honey-badger-fury",
+   "quillback-elder",
+   "basalt-boar",
+   "quillguard",
+   "eagle-owl-quartermaster",
+   "sulfur-cinder-moth",
+   "chipmunk-hoarder",
+   "talus-pika",
+   "stalactite-golem"
+  ]
+ }
+}
