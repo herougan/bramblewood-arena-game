@@ -6086,6 +6086,34 @@
     "gorge-wyrm": 4
    },
    "problems": []
+  },
+  {
+   "code": "20-B-1",
+   "map": "mx",
+   "mapNo": 20,
+   "side": true,
+   "cut": [
+    "magma-salamander x2"
+   ],
+   "to": {
+    "cinder-stoker": 2
+   },
+   "before": {
+    "cinder-stoker": 3,
+    "deep-cave-troll": 4,
+    "ember-jackal": 3,
+    "fire-drake-hatchling": 1,
+    "gorge-wyrm": 4,
+    "magma-salamander": 2
+   },
+   "after": {
+    "cinder-stoker": 5,
+    "deep-cave-troll": 4,
+    "ember-jackal": 3,
+    "fire-drake-hatchling": 1,
+    "gorge-wyrm": 4
+   },
+   "problems": []
   }
  ]
 }
