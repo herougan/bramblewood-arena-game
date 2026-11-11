@@ -11,6 +11,31 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - c) Leave them.
 - **Default:** a
 
+**LISTFIX3-1. New first-clear rewards for four fights** · Decide · Balance · asked 2026-11-11
+- 5-2 paid Sphagnum Vole, a card you cut; it now pays Raft Spider, your Map 5 Yes card nearest it (Common, 1 Lumber, Wait 1, 3/8), already in 5-2's deck. No other Cure card is on your Map 5 picks (CONTENT3 C1 wanted one). Three rewards were off their map's new list (a first-clear card must be on it, GD-5): 1-4 Field Mouse -> Bramble Sprout, 7-2 Dung Beetle -> Fungus Gnat Cloud, 10-5 Kraken Spawnling -> Sea Bass.
+  - a) Keep.
+  - b) Name other cards.
+- **Default:** a
+
+**LISTFIX3-2. Cards that left play with your Map cards picks** · Decide · Balance · asked 2026-11-11
+- These 17 were on a list before SKIR1 and are on none now, so no pack, fight or reward gives them: Raven Scout, Alpha Howler, Pelican Diver, Frost Hare Sprinter, Tidepool Trapper Crab, Lunar Howler, Lion's Mane Jelly, Supernova Jelly, Spitting Spider, Weaver Bird, Water Vole, Woodcock Lookout, Marsh Harrier, Cane Toad, Badger Stonemason, Prospector Mole, Nudibranch. The two jellyfish were your CONTENT7-1 wish.
+  - a) Fine, they stay out.
+  - b) Name the ones to place, and where.
+- **Default:** a
+
+**LISTFIX3-3. Map 16 lost its weak card** · Decide · Balance · asked 2026-11-11
+- 16-5 and 16-6 got much harder once Dhole Runner left Map 16 (49% vs target 66; 31% vs target 60). That cut was mine (11-05, a second dhole on the list), not yours, and Map 16's list is still my suggestion. Putting it back returns both fights to their earlier decks (about 60% each).
+  - a) Put Dhole Runner back on Map 16.
+  - b) Allow 16-6's Shield 47 -> 0 instead (reads 49%).
+  - c) Leave both fights hard.
+- **Default:** a
+
+**LISTFIX3-4. Two of your cuts still on lists you have not picked** · Decide · Balance · asked 2026-11-11
+- You cut Caiman Hatchling (Maps 5 and 9) and Phoenix Fledgling (Maps 19 and 20-B) on 11-01. My suggestions still list Caiman on side map 5-A and Phoenix on Map 20. Removing them means re-fitting the fights that use them.
+  - a) Take them off those lists too.
+  - b) Keep them there.
+- **Default:** a
+
 **SKIR2-1. Keep SKIR2's list adds** · Decide · Balance · asked 2026-11-11
 - No card stats changed. Rewards made obtainable: Sphagnum Vole (Map 5), Parrotfish, Coral Reef Shark (10), Gilded Roadwarden (15), Snow Ermine, Harbor Seal, Snow Bunting Archer (17). Guardians (JJ28): Grey Seal Bull (10), Shepherd (17), Marula Elephant (18), Stalactite Pill Bug (19). Fights: Planarian Splitter (7), Swift Fox, Tasmanian Devil, Bramblewood Lynx (13).
   - a) Keep.

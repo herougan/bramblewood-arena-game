@@ -22,7 +22,7 @@ const ADDS = {
     'swift-fox': { kind: 'own', why: "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card); the suggested list left every fight at 87-99%" },
     'tasmanian-devil': { kind: 'own', why: "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card)" },
     'bramblewood-lynx': { kind: 'own', why: "SKIR1-7: one of The Redwood Deep's old strongest fighters (its own pack card, source.map mr); now first listed here, carried on Map 16" } },
-  mw: { 'sphagnum-vole': { kind: 'admin', why: "5-2's first-clear reward (CONTENT3)" } },
+  // 2026-11-11 (LISTFIX3 follow-up): mw's 'sphagnum-vole' admin add removed: the owner cut that card (Q3); 5-2 now pays Raft Spider (draft LISTFIX3-1)
   mu: { // 7-6 read 79.5% (target 40) on the list; SKIR1's three fits stopped at 72-75%: one of its old boss cards back (BAL46's in-band deck held it and
     // the Dung Beetle, which stays off: with the boss's pinned showcase Corpse-flower Beetle it would be two cards of a two-card family in one fight)
     'planarian-splitter': { kind: 'admin', why: "7-6's old boss card (Map 7's own pack card by source), carried from Map 4: the boss read 79.5% (target 40) without it" } },
