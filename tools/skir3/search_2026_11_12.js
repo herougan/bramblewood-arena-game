@@ -36,7 +36,7 @@ for (const code of CODES) {
   const prev = (() => { let best = null; for (const dir of ['fit', 'fit3', 'jump', 'search']) { const p = path.join(ROOT, 'docs', 'balance', 'skir3', dir, code + '.json'); if (!fs.existsSync(p)) continue; const x = JSON.parse(fs.readFileSync(p, 'utf8'));
     [[x.before.deck, x.before.win], [x.pick.deck, x.pick.win]].forEach(([d, w]) => { if (w != null && key(d) === key(n.deck)) best = w; }); } return best; })();
   const w0 = prev != null ? prev : read(n.deck, G3, 9100), harder = w0 > band.t;
-  const R = rng('skir3s|' + code), weight = id => Math.pow(Math.max(0.5, score(id)), harder ? 1.5 : -1.5) * (0.6 + 0.8 * R());
+  const R = rng('skir3s|' + code + (arg('--seed', '') ? '|' + arg('--seed', '') : '')), weight = id => Math.pow(Math.max(0.5, score(id)), harder ? 1.5 : -1.5) * (0.6 + 0.8 * R());
   const cands = [], why = { fill: 0, mix: 0, same: 0 };
   for (let i = 0; i < N * 3 && cands.length < N; i++) {
     const k = f.dMin + Math.floor(R() * (f.dMax - f.dMin + 1)), chosen = [...f.keep.keys()], pool = f.pool.filter(id => !chosen.includes(id));
