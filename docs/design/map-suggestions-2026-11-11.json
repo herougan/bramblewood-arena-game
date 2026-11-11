@@ -515,12 +515,10 @@
    ],
    "baby": [],
    "adminAdd": [
-    "beaver-feller",
-    "water-vole"
+    "beaver-feller"
    ],
    "adminWhy": {
-    "beaver-feller": "a river Lumber maker (Felling): only the Beaver Lumberjack makes Lumber here",
-    "water-vole": "a no-wait, no-Lumber body: only 2 no-wait cards"
+    "beaver-feller": "a river Lumber maker (Felling): only the Beaver Lumberjack makes Lumber here"
    },
    "skills": [
     {
@@ -583,8 +581,7 @@
     "kittiwake-flock": 3,
     "duck-paddler": 4,
     "conch-crawler": 3,
-    "beaver-feller": 1,
-    "water-vole": 1
+    "beaver-feller": 1
    }
   },
   "mw": {
@@ -628,14 +625,10 @@
    ],
    "baby": [],
    "adminAdd": [
-    "caiman-hatchling",
-    "peat-cutter-vole",
-    "sphagnum-vole"
+    "peat-cutter-vole"
    ],
    "adminWhy": {
-    "caiman-hatchling": "a second gator for the Gatorback fights (only the Swamp Alligator), no-wait, and Ambush, the swamp's missing skill",
-    "peat-cutter-vole": "a swamp Lumber maker (Delivery): only one Lumber maker",
-    "sphagnum-vole": "SKIR2: 5-2's first-clear reward (CONTENT3)"
+    "peat-cutter-vole": "a swamp Lumber maker (Delivery): only one Lumber maker"
    },
    "skills": [
     {
@@ -659,17 +652,10 @@
      "carriers": [
       "marsh-mallow-hare"
      ]
-    },
-    {
-     "key": "ambush",
-     "name": "Ambush",
-     "carriers": [
-      "caiman-hatchling"
-     ]
     }
    ],
    "gaps": [
-    "Ambush (the gators, DES2) had no carrier: Caiman Hatchling (admin add) closes it."
+    "Ambush (the gators, DES2) has no carrier: Caiman Hatchling, the owner's 11-01 cut, is off the list again (LISTFIX3)."
    ],
    "mix": {
     "cost1": 9,
@@ -697,9 +683,7 @@
     "planarian-splitter": 3,
     "fire-ant-raft": 2,
     "constrictor-coil": 3,
-    "caiman-hatchling": 1,
-    "peat-cutter-vole": 1,
-    "sphagnum-vole": 1
+    "peat-cutter-vole": 1
    }
   },
   "m8": {
@@ -1205,14 +1189,12 @@
    ],
    "baby": [],
    "adminAdd": [
-    "coral-polyp-colony",
     "nautilus-drifter",
     "grey-seal-bull",
     "parrotfish",
     "coral-reef-shark"
    ],
    "adminWhy": {
-    "coral-polyp-colony": "a reef Lumber maker every round: the map has none",
     "nautilus-drifter": "a second reef Lumber maker, high-cost (Very Rare from Map 10)",
     "grey-seal-bull": "SKIR2: BAL9 JJ28: a Guardian defender for Coral Current (its list had none): an Ocean seal bull carried from Smugglers' Grotto (Map 2), on no other main list",
     "parrotfish": "SKIR2: 10-3's first-clear reward (GD5 table): on no list since SKIR1, so the fight paid nothing",
@@ -1278,7 +1260,6 @@
     "pincushion-urchin": 2,
     "conch-crawler": 3,
     "tide-spirit": 2,
-    "coral-polyp-colony": 1,
     "nautilus-drifter": 1,
     "grey-seal-bull": 1,
     "parrotfish": 1,
@@ -1505,7 +1486,6 @@
    "name": "The Redwood Deep",
    "suggest": [
     "grizzly-vanguard",
-    "stag-knight",
     "fawn-scout",
     "berserker-boar",
     "badger-lumberjack",
@@ -1577,7 +1557,6 @@
    },
    "usage": {
     "grizzly-vanguard": 2,
-    "stag-knight": 1,
     "fawn-scout": 1,
     "berserker-boar": 2,
     "badger-lumberjack": 1,
@@ -1607,7 +1586,6 @@
    "mapNo": 14,
    "name": "Savanna Reaches",
    "suggest": [
-    "plains-zebra",
     "springbok-pronker",
     "savanna-cheetah",
     "grave-grin-hyena",
@@ -1656,7 +1634,6 @@
      "key": "evasive",
      "name": "Evasive herd (review)",
      "carriers": [
-      "plains-zebra",
       "acacia-giraffe"
      ]
     }
@@ -1675,7 +1652,6 @@
     "stone": 0
    },
    "usage": {
-    "plains-zebra": 1,
     "springbok-pronker": 1,
     "savanna-cheetah": 2,
     "grave-grin-hyena": 1,
@@ -1697,8 +1673,6 @@
    "mapNo": 15,
    "name": "The Long Grass",
    "suggest": [
-    "squires-mount",
-    "warhorse-charger",
     "war-hound",
     "border-collie",
     "shepherds-bark",
@@ -1765,8 +1739,6 @@
     "stone": 0
    },
    "usage": {
-    "squires-mount": 1,
-    "warhorse-charger": 1,
     "war-hound": 1,
     "border-collie": 1,
     "shepherds-bark": 2,
@@ -1793,7 +1765,6 @@
    "suggest": [
     "timber-wolf-pack",
     "dhole-matriarch",
-    "dhole-runner",
     "taiga-lynx",
     "snowshoe-hare",
     "boreal-elk",
@@ -1814,13 +1785,6 @@
    "adminAdd": [],
    "adminWhy": {},
    "skills": [
-    {
-     "key": "pack",
-     "name": "Pack",
-     "carriers": [
-      "dhole-runner"
-     ]
-    },
     {
      "key": "packLeader",
      "name": "Pack Leader",
@@ -1845,7 +1809,7 @@
     }
    ],
    "gaps": [
-    "Pack + Pack Leader shown as a pair (Dhole Runner, Dhole Matriarch)."
+    "Pack + Pack Leader: only Dhole Matriarch (Dhole Runner, cut 11-05, is off the list again: LISTFIX3)."
    ],
    "mix": {
     "cost1": 11,
@@ -1860,7 +1824,6 @@
    "usage": {
     "timber-wolf-pack": 2,
     "dhole-matriarch": 1,
-    "dhole-runner": 1,
     "taiga-lynx": 2,
     "snowshoe-hare": 1,
     "boreal-elk": 1,
@@ -1889,7 +1852,6 @@
     "ringed-seal",
     "arctic-tern",
     "lemming-swarm",
-    "talus-pika",
     "snow-ermine",
     "harbor-seal",
     "snow-bunting-archer"
@@ -1964,7 +1926,6 @@
     "ringed-seal": 1,
     "arctic-tern": 1,
     "lemming-swarm": 1,
-    "talus-pika": 3,
     "timber-wolf-pack": 2,
     "taiga-lynx": 2,
     "woodland-caribou": 2,
@@ -2094,14 +2055,14 @@
     "smoke-raccoon",
     "honey-badger-fury",
     "quillback-elder",
-    "basalt-boar"
+    "basalt-boar",
+    "talus-pika"
    ],
    "carried": [
     "quillguard",
     "eagle-owl-quartermaster",
     "sulfur-cinder-moth",
     "chipmunk-hoarder",
-    "talus-pika",
     "stalactite-golem"
    ],
    "ownerYes": [],
@@ -2167,7 +2128,7 @@
     "eagle-owl-quartermaster": 2,
     "sulfur-cinder-moth": 2,
     "chipmunk-hoarder": 3,
-    "talus-pika": 3,
+    "talus-pika": 2,
     "stalactite-golem": 2
    },
    "addWhy": {
@@ -2259,7 +2220,7 @@
     "chamois-leaper": 2,
     "constrictor-coil": 3,
     "cinder-stoker": 2,
-    "talus-pika": 3,
+    "talus-pika": 2,
     "chipmunk-hoarder": 3,
     "cinder-hornet": 2,
     "obsidian-scorpion": 2
@@ -2688,7 +2649,6 @@
     "pyrenean-desman"
    ],
    "carried": [
-    "duckling",
     "muskrat-lodgekeeper",
     "snapstick-turtle",
     "pond-algae",
@@ -2708,7 +2668,8 @@
     "stone": 0
    },
    "gaps": [],
-   "note": null
+   "note": null,
+   "skills": []
   },
   "mg": {
    "name": "Smugglers' Grotto",
@@ -3196,7 +3157,6 @@
    ],
    "carried": [
     "magma-salamander",
-    "phoenix-fledgling",
     "ember-wisp",
     "ash-cloud-condor",
     "cinder-stoker",
@@ -3223,7 +3183,8 @@
    "gaps": [
     "deck mix short: lumber"
    ],
-   "note": "The Caldera Wyrm (the lair's boss) costs Stone and Metal: kept as the boss fight's SPECIAL leader only, or its Stone cost goes."
+   "note": "The Caldera Wyrm (the lair's boss) costs Stone and Metal: kept as the boss fight's SPECIAL leader only, or its Stone cost goes.",
+   "skills": []
   },
   "mi": {
    "name": "The Ice Hollow",
@@ -3389,7 +3350,6 @@
   "pack-rat-looter": 3,
   "planarian-splitter": 3,
   "stonedrop-vulture": 3,
-  "talus-pika": 3,
   "alley-cat": 2,
   "alligator-gar": 2,
   "ant-scout": 2,
@@ -3466,6 +3426,7 @@
   "sulfur-cinder-moth": 2,
   "sunbittern-strider": 2,
   "taiga-lynx": 2,
+  "talus-pika": 2,
   "termite-forager": 2,
   "terrier-pup": 2,
   "thorn-shrike": 2,
@@ -3506,7 +3467,6 @@
   "boreal-elk": 1,
   "bramble-sprout": 1,
   "briarback-hedgehog": 1,
-  "caiman-hatchling": 1,
   "caldera-snow-leopard": 1,
   "carrion-crow": 1,
   "cataphract-destrier": 1,
@@ -3517,7 +3477,6 @@
   "clownfish-scout": 1,
   "compost-grub": 1,
   "coral-current-eel": 1,
-  "coral-polyp-colony": 1,
   "coral-reef-shark": 1,
   "cormorant": 1,
   "cottontail": 1,
@@ -3525,7 +3484,6 @@
   "crown-of-thorns-star": 1,
   "deep-cave-troll": 1,
   "dhole-matriarch": 1,
-  "dhole-runner": 1,
   "duckling": 1,
   "dune-jackal": 1,
   "dune-jackal-scout": 1,
@@ -3584,7 +3542,6 @@
   "phoenix-fledgling": 1,
   "pine-marten": 1,
   "pinecone-crossbill": 1,
-  "plains-zebra": 1,
   "polar-bear": 1,
   "proboscis-monkey": 1,
   "pronghorn-racer": 1,
@@ -3612,10 +3569,7 @@
   "snow-bunting-archer": 1,
   "snow-ermine": 1,
   "snowshoe-hare": 1,
-  "sphagnum-vole": 1,
   "springbok-pronker": 1,
-  "squires-mount": 1,
-  "stag-knight": 1,
   "star-nosed-mole": 1,
   "sulfur-vent-crab": 1,
   "swamp-alligator": 1,
@@ -3626,8 +3580,6 @@
   "upside-down-bat": 1,
   "walrus-icebreaker": 1,
   "war-hound": 1,
-  "warhorse-charger": 1,
-  "water-vole": 1,
   "weaver-bird": 1,
   "worker-ant": 1
  },
@@ -3688,7 +3640,6 @@
   "cypress-root-lurker": 1,
   "dam-keeper-beaver": 1,
   "dromedary": 1,
-  "duckling": 1,
   "dune-packrat": 1,
   "dung-beetle": 1,
   "dust-hyena": 1,
@@ -3791,7 +3742,6 @@
   "pall-wraith": 1,
   "peat-cutter-vole": 1,
   "permafrost-mammoth": 1,
-  "phoenix-fledgling": 1,
   "pill-bug": 1,
   "pincushion-urchin": 1,
   "platypus-spur": 1,

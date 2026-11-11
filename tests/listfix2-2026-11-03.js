@@ -25,6 +25,8 @@ const specialOf = k=> (pools[topOf[k]] || {}).special || [];
 // 2026-11-05 (CONTENT10): LISTFIX2-1 b and LISTFIX2-2 b are applied: each fight got another card of its map's list and the cut card left that map's
 // MAP and SPECIAL lists (CARD5's two first-clear cards too); only Wolfsbane Alpha stays on SPECIAL as 17-8's boss (LISTFIX2-2 a). Was: CARD5's two back.
 const RESTORED = new Set([]);
+// 2026-11-11 (LISTFIX3): a cut the owner picked Yes again on that map's list in his 11-11 picks is listed by his newer choice (mk Fishing Cat, mw Alley Cat, mw Marsh-mallow Hare)
+const REPICKED = new Set(); Object.entries(J('docs/design/map-picks-owner-2026-11-11.json').maps).forEach(([k, p])=> (p.yes || []).forEach(id=> REPICKED.add(k + '|' + id)));
 const LF2 = {mb: ['fiddler-crab-swarm', 'grey-seal-bull', 'tidepool-trapper-crab'], m2: ['old-sturgeon', 'stone-turtle-warden'], mw: ['venomlord-serpent', 'snapper-hatchling'], m8: ['marsh-wisp'], m5: ['weaver-bird'], m11: ['woodland-brawler'], mc: ['the-gannet-queen'], m3: ['yeti-chieftain']};
 
 // ---------------------------------------------------------------- 1. the 11-01 export's cuts
@@ -32,6 +34,7 @@ const ex = J('docs/balance/owner-map-cards-export-2026-11-01.json');
 let nCut = 0;
 ex.lists.forEach(L=>{ const k = L.mapId && L.listKey === 'cards' ? L.mapId : L.listKey.slice(4);
   L.cutNow.forEach(id=>{ nCut++; const on = ownList(k).includes(id);
+    if(REPICKED.has(k + '|' + id) && on){ pass++; return; }
     ok(RESTORED.has(k + '|' + id) ? on : !on, `${k}: the owner's 11-01 cut of ${id} ${RESTORED.has(k + '|' + id) ? 'is back by CARD5 (LISTFIX2-1 open)' : 'is applied'}`); }); });
 ok(nCut === 37, `the 11-01 export holds 37 cuts (got ${nCut})`);
 
@@ -39,15 +42,17 @@ ok(nCut === 37, `the 11-01 export holds 37 cuts (got ${nCut})`);
 const first = {}; { const i = src.indexOf('const SKIRMISH_FIRST_PACK_CARDS = {'), j = src.indexOf('\n};', i);
   const re = /'([a-z0-9]+):([0-9A-Z-]+)'\s*:\s*'([a-z0-9-]+)'/g; let m; while((m = re.exec(src.slice(i, j)))) (first[m[1]] = first[m[1]] || new Set()).add(m[3]); }
 ok(Object.keys(first).length > 10, 'SKIRMISH_FIRST_PACK_CARDS parsed');
-let still = [], spec = [];
+let still = [], spec = []; const repicked = new Set();
 const cutArc = (J('canonical/map-review.json').cutArchive || {}).maps || {}; // 2026-11-05 22:49 (owner: reset the Map cards cut lists): the cut entries moved to map-review.json cutArchive
 Object.entries(review).forEach(([k, r])=>{ if(!topOf[k]) return; ((r.cut || []).concat(cutArc[k] || [])).forEach(e=>{
-  if(ownList(k).includes(e.id)){ still.push(k + '|' + e.id); ok(!!e.statusWhy, `${k}: cut ${e.id} is still listed and says why (statusWhy)`); }
+  if(ownList(k).includes(e.id) && REPICKED.has(k + '|' + e.id)) repicked.add(k + '|' + e.id);
+  else if(ownList(k).includes(e.id)){ still.push(k + '|' + e.id); ok(!!e.statusWhy, `${k}: cut ${e.id} is still listed and says why (statusWhy)`); }
   else if(k === topOf[k] && specialOf(k).includes(e.id)){ spec.push(k + '|' + e.id);
     const s = (cards[e.id] || {}).source || {}, why = (s.kind === 'map' && s.id === k) || (first[k] && first[k].has(e.id));
     ok(why, `${k}: cut ${e.id} on SPECIAL is a fight's card of that map (boss / reward / first clear)`);
     ok(!!e.statusWhy, `${k}: cut ${e.id} on SPECIAL says why (statusWhy)`); } }); });
 ok(still.sort().join() === [...RESTORED].sort().join(), `no cut card is still on its list (got ${still.join(', ')})`); // 2026-11-05 (CONTENT10): was the two CARD5 cards
+ok([...repicked].sort().join() === 'mk|fishing-cat,mw|alley-cat,mw|marsh-mallow-hare', `the cuts listed again are the owner's 11-11 Yes picks (got ${[...repicked].sort().join(', ')})`); // 2026-11-11 (LISTFIX3)
 ok(spec.join() === 'm6|wolfsbane-alpha', `only Wolfsbane Alpha is kept on SPECIAL for its fight (got ${spec.length}: ${spec.join(', ')})`); // 2026-11-05 (CONTENT10): was 11
 Object.entries(LF2).forEach(([k, ids])=> ids.forEach(id=> ok(!(pools[k].cards || []).includes(id) && !(pools[k].special || []).includes(id), `CONTENT10: ${id} is off ${k}'s MAP and SPECIAL lists (LISTFIX2)`)));
 
