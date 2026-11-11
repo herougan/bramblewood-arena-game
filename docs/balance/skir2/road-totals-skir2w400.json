@@ -22,10 +22,10 @@
   },
   "skir2w400": {
    "fights": 149,
-   "inBand": 137,
-   "within10": 139,
+   "inBand": 142,
+   "within10": 143,
    "beyond20": 2,
-   "meanGap": 4.22
+   "meanGap": 3.82
   }
  },
  "side": {
@@ -305,14 +305,12 @@
    },
    "skir2w400": {
     "fights": 5,
-    "inBand": 4,
-    "within10": 4,
+    "inBand": 5,
+    "within10": 5,
     "beyond20": 0,
-    "meanGap": 5
+    "meanGap": 3.4
    },
-   "off": [
-    "4-5 28.3/40"
-   ]
+   "off": []
   },
   "mw": {
    "mapNo": 5,
@@ -557,14 +555,12 @@
    },
    "skir2w400": {
     "fights": 9,
-    "inBand": 8,
-    "within10": 8,
+    "inBand": 9,
+    "within10": 9,
     "beyond20": 0,
-    "meanGap": 3.72
+    "meanGap": 1.78
    },
-   "off": [
-    "10-9 20/40"
-   ]
+   "off": []
   },
   "mj": {
    "mapNo": 10,
@@ -616,14 +612,12 @@
    },
    "skir2w400": {
     "fights": 10,
-    "inBand": 9,
-    "within10": 9,
+    "inBand": 10,
+    "within10": 10,
     "beyond20": 0,
-    "meanGap": 4.6
+    "meanGap": 3.48
    },
-   "off": [
-    "11-7 53.5/67.5"
-   ]
+   "off": []
   },
   "mv": {
    "mapNo": 11,
@@ -955,14 +949,12 @@
    },
    "skir2w400": {
     "fights": 6,
-    "inBand": 5,
-    "within10": 5,
+    "inBand": 6,
+    "within10": 6,
     "beyond20": 0,
-    "meanGap": 5.23
+    "meanGap": 2.87
    },
-   "off": [
-    "19-4 51.5/67.5"
-   ]
+   "off": []
   },
   "m9": {
    "mapNo": 19,
@@ -1013,13 +1005,12 @@
    },
    "skir2w400": {
     "fights": 10,
-    "inBand": 8,
+    "inBand": 9,
     "within10": 9,
     "beyond20": 1,
-    "meanGap": 6.52
+    "meanGap": 5.59
    },
    "off": [
-    "20-10 49.8/40",
     "20-9 78/50"
    ]
   },
@@ -1241,7 +1232,7 @@
    "target": 40,
    "bal46w400": 34,
    "skir1w400": 28.3,
-   "skir2w400": 28.3
+   "skir2w400": 36.3
   },
   "5-3": {
    "target": 68,
@@ -1505,7 +1496,7 @@
    "target": 40,
    "bal46w400": 38.5,
    "skir1w400": 29.8,
-   "skir2w400": 20
+   "skir2w400": 42.5
   },
   "11-1": {
    "target": 90,
@@ -1547,7 +1538,7 @@
    "target": 67.5,
    "bal46w400": 67.3,
    "skir1w400": 53.5,
-   "skir2w400": 53.5
+   "skir2w400": 70.3
   },
   "11-8": {
    "target": 63.8,
@@ -1895,7 +1886,7 @@
    "target": 67.5,
    "bal46w400": 68,
    "skir1w400": 44.8,
-   "skir2w400": 51.5
+   "skir2w400": 69.3
   },
   "19-3": {
    "target": 75,
@@ -1967,7 +1958,7 @@
    "target": 40,
    "bal46w400": 48,
    "skir1w400": 50,
-   "skir2w400": 49.8
+   "skir2w400": 39.5
   },
   "20-9": {
    "target": 50,
