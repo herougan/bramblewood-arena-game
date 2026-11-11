@@ -23,6 +23,10 @@
     "meadow-rabbit": 4
    },
    "slack": 1,
+   "score": {
+    "old": 103.9,
+    "now": 112.2
+   },
    "problems": []
   },
   {
@@ -47,6 +51,10 @@
     "hedgerow-shrew": 3
    },
    "slack": 1,
+   "score": {
+    "old": 126,
+    "now": 129.4
+   },
    "problems": []
   },
   {
@@ -63,14 +71,14 @@
     "rock-pool-starfish": 4
    },
    "after": {
-    "gull-thief": 3,
-    "limpet-clinger": 4,
+    "beaver-lumberjack": 4,
+    "limpet-clinger": 3,
     "open-ocean-hermit-crab": 4,
     "oystercatcher": 4,
     "puddle-skimmer": 1,
     "rock-pool-starfish": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -87,14 +95,14 @@
     "rock-pool-starfish": 3
    },
    "after": {
-    "beachcomber-sanderling": 4,
+    "beaver-lumberjack": 4,
     "limpet-clinger": 4,
     "open-ocean-hermit-crab": 4,
     "pincushion-urchin": 4,
     "puddle-skimmer": 1,
     "rock-pool-starfish": 3
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -111,14 +119,14 @@
     "pincushion-urchin": 4
    },
    "after": {
+    "beaver-lumberjack": 3,
     "duck-paddler": 1,
     "gull-thief": 4,
     "moonlit-hare": 1,
-    "open-ocean-hermit-crab": 3,
     "oystercatcher": 4,
     "pincushion-urchin": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -136,14 +144,15 @@
     "rock-pool-starfish": 2
    },
    "after": {
+    "beaver-lumberjack": 3,
     "driftwood-crab": 2,
-    "open-ocean-hermit-crab": 4,
+    "open-ocean-hermit-crab": 1,
     "oystercatcher": 4,
     "pincushion-urchin": 4,
     "puddle-skimmer": 1,
     "rock-pool-starfish": 2
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -160,13 +169,14 @@
     "razorbill": 4
    },
    "after": {
+    "beaver-lumberjack": 1,
     "eagle-sharpshooter": 4,
-    "kittiwake-flock": 2,
+    "kittiwake-flock": 1,
     "peak-condor": 1,
     "puffin-diver": 1,
     "razorbill": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -183,13 +193,14 @@
     "razorbill": 4
    },
    "after": {
+    "beaver-lumberjack": 1,
     "cormorant": 4,
-    "feral-tomcat": 2,
+    "feral-tomcat": 1,
     "gull-thief": 1,
     "peak-condor": 4,
     "razorbill": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -207,14 +218,15 @@
     "peregrine-stooper": 4
    },
    "after": {
+    "beaver-lumberjack": 1,
     "chipmunk-cavalry": 1,
     "cormorant": 4,
     "gannet-nestweaver": 4,
     "golden-eagle-diver": 4,
-    "hawk-arrowkeeper": 2,
+    "hawk-arrowkeeper": 1,
     "peregrine-stooper": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -231,13 +243,14 @@
     "peak-condor": 4
    },
    "after": {
+    "beaver-lumberjack": 1,
     "chipmunk-cavalry": 1,
-    "feral-tomcat": 3,
+    "feral-tomcat": 2,
     "gannet-nestweaver": 4,
     "hawk-arrowkeeper": 4,
     "peak-condor": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -255,13 +268,15 @@
     "razorbill": 4
    },
    "after": {
+    "chipmunk-cavalry": 1,
     "gannet-nestweaver": 4,
     "golden-eagle-diver": 3,
     "hawk-arrowkeeper": 4,
-    "peak-condor": 4,
+    "peak-condor": 2,
+    "puffin-diver": 1,
     "razorbill": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -277,13 +292,13 @@
     "water-shrew": 4
    },
    "after": {
-    "conch-crawler": 1,
+    "conch-crawler": 3,
     "grass-snake": 4,
     "platypus-spur": 3,
-    "river-mink": 3,
+    "river-mink": 1,
     "water-shrew": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -301,11 +316,11 @@
    "after": {
     "kittiwake-flock": 1,
     "muskrat-lodgekeeper": 2,
-    "river-mink": 4,
     "shoal-shark": 4,
+    "snapstick-turtle": 4,
     "water-shrew": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -323,15 +338,15 @@
     "slow-worm": 4
    },
    "after": {
-    "conch-crawler": 1,
+    "conch-crawler": 4,
     "drowned-matriarch": 4,
     "duck-paddler": 1,
-    "planarian-splitter": 4,
+    "muskrat-lodgekeeper": 4,
     "pyrenean-desman": 2,
-    "shoal-shark": 4,
+    "shoal-shark": 1,
     "slow-worm": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -348,13 +363,14 @@
     "water-shrew": 1
    },
    "after": {
-    "cypress-root-lurker": 4,
+    "booming-bittern": 2,
+    "cypress-root-lurker": 2,
     "mosquito-cloud": 1,
     "newt-doctor": 4,
     "venomlord-serpent": 4,
     "water-shrew": 1
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -374,12 +390,13 @@
    "after": {
     "chamois-leaper": 4,
     "chipmunk-hoarder": 4,
+    "eagle-owl-quartermaster": 1,
     "eyrie-warden": 4,
     "kittiwake-flock": 1,
-    "mountain-hare": 4,
+    "mountain-hare": 3,
     "stonedrop-vulture": 2
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -396,14 +413,18 @@
     "quillguard": 3
    },
    "after": {
+    "barkplate-beetle": 3,
     "barrow-leech-bat": 1,
     "hollow-belly-rat": 4,
     "mountain-hare": 1,
     "mouse-sapper": 4,
-    "quill-thorn-boar": 3,
     "quillguard": 3
    },
    "slack": 0,
+   "score": {
+    "old": 102.8,
+    "now": 88.8
+   },
    "problems": []
   },
   {
@@ -420,13 +441,12 @@
    },
    "after": {
     "anvil-thrush": 1,
-    "barrow-leech-bat": 1,
     "briarback-hedgehog": 4,
+    "cunning-vixen": 3,
     "hollow-belly-rat": 4,
-    "mouse-sapper": 4,
-    "quill-thorn-boar": 2
+    "mouse-sapper": 4
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -446,13 +466,17 @@
    "after": {
     "barkplate-beetle": 4,
     "briarback-hedgehog": 4,
-    "eyrie-warden": 1,
+    "chipmunk-hoarder": 1,
     "hollow-belly-rat": 4,
     "mountain-hare": 1,
     "quill-thorn-boar": 3,
     "quillguard": 3
    },
    "slack": 0,
+   "score": {
+    "old": 106.9,
+    "now": 105.2
+   },
    "problems": []
   },
   {
@@ -469,14 +493,18 @@
     "swift-fox": 4
    },
    "after": {
+    "anhinga-spearbird": 1,
     "beaver-feller": 4,
     "berserker-boar": 4,
     "fawn-scout": 3,
     "grizzly-vanguard": 4,
-    "marsh-mallow-hare": 1,
     "pine-marten": 3
    },
    "slack": 0,
+   "score": {
+    "old": 107.2,
+    "now": 116
+   },
    "problems": []
   },
   {
@@ -493,14 +521,18 @@
     "tasmanian-devil": 3
    },
    "after": {
-    "beaver-feller": 2,
+    "beaver-feller": 3,
     "bramblewood-lynx": 2,
     "grizzly-vanguard": 5,
-    "owl-nightwatch": 2,
+    "marsh-mallow-hare": 1,
     "pine-marten": 2,
     "slow-worm": 1
    },
    "slack": 0,
+   "score": {
+    "old": 84.3,
+    "now": 75.5
+   },
    "problems": []
   },
   {
@@ -516,15 +548,19 @@
     "tasmanian-devil": 4
    },
    "after": {
-    "beaver-feller": 3,
+    "beaver-feller": 4,
     "feral-tomcat": 1,
     "grizzly-vanguard": 4,
     "marsh-mallow-hare": 1,
     "monarch-wingblade": 3,
-    "owl-nightwatch": 4,
+    "owl-nightwatch": 3,
     "slow-worm": 1
    },
    "slack": 0,
+   "score": {
+    "old": 98.2,
+    "now": 94.1
+   },
    "problems": []
   },
   {
@@ -540,14 +576,18 @@
     "termite-forager": 1
    },
    "after": {
-    "bramble-sprout": 1,
-    "hollow-belly-rat": 1,
-    "hoopoe-herald": 4,
+    "balloon-archer": 1,
+    "grizzly-vanguard": 1,
+    "hoopoe-herald": 2,
     "marula-elephant": 4,
     "meerkat-sentry": 4,
-    "plains-zebra": 2
+    "plains-zebra": 4
    },
    "slack": 0,
+   "score": {
+    "old": 82.1,
+    "now": 103.3
+   },
    "problems": []
   },
   {
@@ -564,14 +604,18 @@
     "stonedrop-vulture": 1
    },
    "after": {
-    "dust-hyena": 4,
-    "grizzly-vanguard": 1,
+    "balloon-archer": 1,
+    "bramble-sprout": 1,
     "marula-elephant": 4,
     "meerkat-sentry": 4,
-    "river-mink": 1,
-    "tasmanian-devil": 1
+    "plains-zebra": 4,
+    "river-mink": 1
    },
    "slack": 0,
+   "score": {
+    "old": 86.3,
+    "now": 86.3
+   },
    "problems": []
   },
   {
@@ -587,14 +631,18 @@
     "termite-forager": 1
    },
    "after": {
-    "balloon-archer": 1,
-    "bramblewood-macaque": 3,
     "dust-hyena": 4,
     "grizzly-vanguard": 1,
+    "hollow-belly-rat": 1,
     "marula-elephant": 4,
-    "plains-zebra": 2
+    "river-mink": 1,
+    "tasmanian-devil": 4
    },
    "slack": 0,
+   "score": {
+    "old": 91.9,
+    "now": 98
+   },
    "problems": []
   },
   {
@@ -611,15 +659,19 @@
     "termite-forager": 3
    },
    "after": {
+    "balloon-archer": 1,
+    "bramble-sprout": 1,
     "bramblewood-macaque": 3,
-    "hollow-belly-rat": 1,
-    "hoopoe-herald": 4,
+    "hoopoe-herald": 1,
     "marula-elephant": 4,
-    "river-mink": 1,
     "spitting-cobra": 3,
-    "tasmanian-devil": 1
+    "tasmanian-devil": 4
    },
    "slack": 0,
+   "score": {
+    "old": 95.1,
+    "now": 98.4
+   },
    "problems": []
   },
   {
@@ -637,11 +689,16 @@
    "after": {
     "bramblewood-lynx": 3,
     "cataphract-destrier": 4,
-    "sworn-shieldbearer": 3,
-    "tasmanian-devil": 1,
-    "village-miller": 4
+    "dust-hyena": 1,
+    "plains-zebra": 1,
+    "siege-rhino": 2,
+    "sworn-shieldbearer": 4
    },
    "slack": 0,
+   "score": {
+    "old": 82.9,
+    "now": 82.6
+   },
    "problems": []
   },
   {
@@ -659,12 +716,17 @@
    },
    "after": {
     "border-collie": 4,
-    "bramblewood-lynx": 3,
+    "mosquito-cloud": 1,
     "stoat-cutthroat": 3,
-    "village-miller": 4,
-    "warhorse-charger": 2
+    "tasmanian-devil": 1,
+    "village-miller": 3,
+    "warhorse-charger": 4
    },
    "slack": 0,
+   "score": {
+    "old": 90.5,
+    "now": 97
+   },
    "problems": []
   },
   {
@@ -681,13 +743,17 @@
    },
    "after": {
     "cataphract-destrier": 4,
+    "dust-hyena": 1,
     "elderhorn-monarch": 4,
     "mallard-marauder": 3,
-    "siege-rhino": 2,
     "stoat-cutthroat": 3,
-    "warhorse-charger": 2
+    "village-miller": 3
    },
    "slack": 0,
+   "score": {
+    "old": 99.2,
+    "now": 99.4
+   },
    "problems": []
   },
   {
@@ -704,14 +770,18 @@
     "war-hound": 3
    },
    "after": {
-    "elderhorn-monarch": 4,
+    "bramblewood-lynx": 3,
     "mallard-marauder": 3,
     "siege-rhino": 2,
-    "sworn-shieldbearer": 4,
+    "stoat-cutthroat": 3,
     "talon-archer": 2,
-    "village-miller": 2
+    "village-miller": 4
    },
    "slack": 0,
+   "score": {
+    "old": 103.6,
+    "now": 102
+   },
    "problems": []
   },
   {
@@ -729,15 +799,19 @@
     "war-hound": 3
    },
    "after": {
-    "bramblewood-lynx": 3,
     "cataphract-destrier": 4,
-    "elderhorn-monarch": 4,
-    "mallard-marauder": 3,
+    "elderhorn-monarch": 3,
+    "hoopoe-herald": 1,
     "siege-rhino": 2,
+    "sworn-shieldbearer": 4,
     "talon-archer": 2,
-    "warhorse-charger": 2
+    "warhorse-charger": 4
    },
    "slack": 0,
+   "score": {
+    "old": 103.9,
+    "now": 102.7
+   },
    "problems": []
   },
   {
@@ -755,14 +829,18 @@
    },
    "after": {
     "cataphract-destrier": 4,
+    "dust-hyena": 1,
     "mallard-marauder": 3,
     "mosquito-cloud": 1,
     "sworn-shieldbearer": 4,
     "talon-archer": 2,
-    "tasmanian-devil": 1,
-    "warhorse-charger": 1
+    "tasmanian-devil": 1
    },
    "slack": 0,
+   "score": {
+    "old": 87.7,
+    "now": 86.7
+   },
    "problems": []
   },
   {
@@ -780,15 +858,18 @@
     "war-hound": 3
    },
    "after": {
+    "border-collie": 4,
     "bramblewood-lynx": 3,
-    "cataphract-destrier": 4,
-    "elderhorn-monarch": 2,
     "hoopoe-herald": 1,
-    "mosquito-cloud": 1,
+    "sworn-shieldbearer": 4,
     "talon-archer": 2,
-    "village-miller": 4
+    "warhorse-charger": 3
    },
    "slack": 0,
+   "score": {
+    "old": 99.4,
+    "now": 99
+   },
    "problems": []
   },
   {
@@ -811,7 +892,11 @@
     "siege-rhino": 2,
     "snowshoe-hare": 4
    },
-   "slack": 0,
+   "slack": 3,
+   "score": {
+    "old": 106,
+    "now": 110.1
+   },
    "problems": []
   },
   {
@@ -830,12 +915,16 @@
    "after": {
     "cone-cutter-squirrel": 5,
     "owl-sentinel": 4,
+    "raft-spider": 1,
+    "siege-rhino": 1,
     "snowshoe-hare": 5,
-    "sworn-shieldbearer": 1,
-    "upside-down-bat": 1,
     "woodland-caribou": 4
    },
-   "slack": 1,
+   "slack": 3,
+   "score": {
+    "old": 117.9,
+    "now": 128.8
+   },
    "problems": []
   },
   {
@@ -857,11 +946,15 @@
     "cone-cutter-squirrel": 4,
     "dhole-matriarch": 2,
     "farm-dog": 1,
-    "owl-sentinel": 3,
-    "snowshoe-hare": 4,
-    "sworn-shieldbearer": 1
+    "mountain-hare": 1,
+    "owl-sentinel": 4,
+    "taiga-lynx": 3
    },
-   "slack": 1,
+   "slack": 3,
+   "score": {
+    "old": 109,
+    "now": 111.3
+   },
    "problems": []
   },
   {
@@ -880,16 +973,20 @@
     "woodland-caribou": 4
    },
    "after": {
-    "boreal-elk": 4,
-    "cone-cutter-squirrel": 4,
+    "cone-cutter-squirrel": 1,
     "dhole-matriarch": 2,
-    "farm-dog": 1,
-    "owl-sentinel": 3,
-    "raft-spider": 1,
+    "owl-sentinel": 4,
+    "siege-rhino": 1,
     "snowshoe-hare": 4,
-    "sworn-shieldbearer": 1
+    "sworn-shieldbearer": 1,
+    "taiga-lynx": 3,
+    "woodland-caribou": 4
    },
    "slack": 3,
+   "score": {
+    "old": 122.1,
+    "now": 122.2
+   },
    "problems": []
   },
   {
@@ -909,11 +1006,15 @@
     "boreal-elk": 1,
     "cataphract-destrier": 1,
     "glacier-yak": 4,
-    "harbor-seal": 1,
+    "harbor-seal": 4,
     "ice-crevasse-wolf": 3,
-    "snow-ermine": 4
+    "snow-ermine": 1
    },
-   "slack": 0,
+   "slack": 1,
+   "score": {
+    "old": 72.6,
+    "now": 71.1
+   },
    "problems": []
   },
   {
@@ -932,12 +1033,16 @@
    "after": {
     "arctic-tern": 4,
     "elderhorn-monarch": 1,
-    "glacier-yak": 3,
+    "glacier-yak": 4,
     "ice-crevasse-wolf": 3,
     "ringed-seal": 4,
-    "snow-ermine": 4
+    "snow-ermine": 3
    },
    "slack": 1,
+   "score": {
+    "old": 94.2,
+    "now": 112.5
+   },
    "problems": []
   },
   {
@@ -955,15 +1060,19 @@
     "snow-bunting-archer": 3
    },
    "after": {
-    "arctic-tern": 2,
+    "arctic-tern": 4,
+    "boreal-elk": 1,
     "glacier-yak": 4,
     "ice-crevasse-wolf": 3,
     "polar-bear": 2,
     "ringed-seal": 4,
-    "snow-ermine": 4,
-    "snowshoe-hare": 1
+    "snow-ermine": 2
    },
    "slack": 1,
+   "score": {
+    "old": 96,
+    "now": 115.2
+   },
    "problems": []
   },
   {
@@ -990,6 +1099,10 @@
     "snow-ermine": 4
    },
    "slack": 1,
+   "score": {
+    "old": 91.3,
+    "now": 123.8
+   },
    "problems": []
   },
   {
@@ -1006,14 +1119,18 @@
     "sandfish": 2
    },
    "after": {
-    "barkplate-beetle": 1,
+    "antlion-pit": 4,
+    "barrel-cactus": 3,
+    "bison-bulldozer": 1,
     "caustic-scorpion": 4,
-    "gallery-orb-weaver": 1,
-    "nightjar-drifter": 4,
-    "roadrunner-courier": 4,
-    "sunbittern-strider": 3
+    "nightjar-drifter": 1,
+    "roadrunner-courier": 4
    },
    "slack": 0,
+   "score": {
+    "old": 103.2,
+    "now": 93.5
+   },
    "problems": []
   },
   {
@@ -1029,14 +1146,18 @@
     "sandfish": 5
    },
    "after": {
+    "ant-scout": 1,
     "armadillo-guard": 5,
-    "barrel-cactus": 3,
-    "dune-jackal": 5,
     "dust-devil-kestrel": 2,
-    "mouse-sapper": 1,
+    "horned-lizard": 4,
+    "nightjar-drifter": 4,
     "sunbittern-strider": 2
    },
    "slack": 0,
+   "score": {
+    "old": 106.9,
+    "now": 101.2
+   },
    "problems": []
   },
   {
@@ -1061,6 +1182,10 @@
     "sulfur-cinder-moth": 1
    },
    "slack": 0,
+   "score": {
+    "old": 85.5,
+    "now": 69.2
+   },
    "problems": []
   },
   {
@@ -1077,14 +1202,18 @@
     "sulfur-vent-crab": 1
    },
    "after": {
-    "dune-jackal": 1,
     "fire-salamander": 1,
-    "horned-lizard": 1,
+    "honey-badger-fury": 4,
     "obsidian-scorpion": 3,
     "quillback-elder": 4,
-    "smoke-raccoon": 4
+    "stalactite-golem": 1,
+    "sulfur-cinder-moth": 1
    },
-   "slack": 0,
+   "slack": 1,
+   "score": {
+    "old": 61.7,
+    "now": 60.1
+   },
    "problems": []
   },
   {
@@ -1102,14 +1231,18 @@
    },
    "after": {
     "dune-jackal": 1,
-    "glacier-yak": 1,
+    "horned-lizard": 1,
     "obsidian-scorpion": 3,
     "quillback-elder": 4,
     "smoke-raccoon": 4,
     "sulfur-cinder-moth": 1,
     "yeti": 4
    },
-   "slack": 1,
+   "slack": 0,
+   "score": {
+    "old": 135,
+    "now": 83.3
+   },
    "problems": []
   },
   {
@@ -1127,13 +1260,17 @@
    },
    "after": {
     "berserker-boar": 4,
-    "crocodile-ambusher": 1,
     "fumarole-ibex": 3,
-    "honey-badger-fury": 1,
+    "magma-salamander": 2,
     "pack-mule": 4,
-    "sulfur-vent-crab": 3
+    "quillback-elder": 1,
+    "sulfur-vent-crab": 2
    },
    "slack": 0,
+   "score": {
+    "old": 97.3,
+    "now": 105.1
+   },
    "problems": []
   },
   {
@@ -1151,13 +1288,17 @@
    },
    "after": {
     "ash-cloud-condor": 3,
-    "berserker-boar": 4,
     "deep-cave-troll": 4,
-    "honey-badger-fury": 1,
+    "fumarole-ibex": 3,
+    "pack-mule": 2,
     "stalactite-golem": 1,
     "vampire-roost": 4
    },
    "slack": 0,
+   "score": {
+    "old": 82,
+    "now": 87.5
+   },
    "problems": []
   },
   {
@@ -1175,13 +1316,17 @@
    },
    "after": {
     "ancient-sloth-titan": 4,
-    "basalt-boar": 4,
-    "eagle-sharpshooter": 1,
+    "berserker-boar": 4,
+    "magma-salamander": 2,
     "obsidian-scorpion": 3,
-    "sulfur-vent-crab": 4,
+    "sulfur-vent-crab": 3,
     "vampire-roost": 4
    },
    "slack": 0,
+   "score": {
+    "old": 99.1,
+    "now": 102.9
+   },
    "problems": []
   },
   {
@@ -1200,14 +1345,17 @@
    },
    "after": {
     "ancient-sloth-titan": 4,
-    "berserker-boar": 4,
-    "cataphract-destrier": 1,
     "eagle-sharpshooter": 1,
     "fumarole-ibex": 3,
     "obsidian-scorpion": 1,
-    "vampire-roost": 2
+    "pack-mule": 3,
+    "vampire-roost": 4
    },
    "slack": 0,
+   "score": {
+    "old": 87.7,
+    "now": 88.3
+   },
    "problems": []
   },
   {
@@ -1225,15 +1373,19 @@
     "talus-pika": 1
    },
    "after": {
-    "ancient-sloth-titan": 2,
+    "ancient-sloth-titan": 4,
     "basalt-boar": 4,
     "deep-cave-troll": 4,
     "frillneck-duelist": 3,
+    "magma-salamander": 2,
     "obsidian-scorpion": 1,
-    "ossuary-lammergeier": 1,
-    "sulfur-vent-crab": 4
+    "ossuary-lammergeier": 1
    },
    "slack": 0,
+   "score": {
+    "old": 89.5,
+    "now": 91.5
+   },
    "problems": []
   },
   {
@@ -1251,14 +1403,18 @@
     "phoenix-fledgling": 2
    },
    "after": {
-    "berserker-boar": 4,
+    "basalt-boar": 4,
+    "cataphract-destrier": 1,
     "crocodile-ambusher": 1,
-    "eagle-sharpshooter": 1,
-    "frillneck-duelist": 2,
+    "magma-salamander": 2,
     "magma-wraith": 4,
     "ossuary-lammergeier": 1
    },
    "slack": 0,
+   "score": {
+    "old": 68.9,
+    "now": 65.9
+   },
    "problems": []
   },
   {
@@ -1277,14 +1433,18 @@
    },
    "after": {
     "ancient-sloth-titan": 4,
-    "basalt-boar": 4,
-    "cataphract-destrier": 1,
+    "berserker-boar": 4,
+    "frillneck-duelist": 3,
     "obsidian-scorpion": 1,
     "ossuary-lammergeier": 1,
     "stalactite-golem": 1,
-    "vampire-roost": 4
+    "sulfur-vent-crab": 2
    },
    "slack": 0,
+   "score": {
+    "old": 78.7,
+    "now": 79.4
+   },
    "problems": []
   },
   {
@@ -1304,15 +1464,18 @@
    },
    "after": {
     "ancient-sloth-titan": 4,
-    "berserker-boar": 3,
-    "fumarole-ibex": 3,
+    "berserker-boar": 4,
     "honey-badger-fury": 1,
     "magma-salamander": 2,
     "obsidian-scorpion": 1,
-    "quillback-elder": 1,
-    "sulfur-vent-crab": 4
+    "sulfur-vent-crab": 3,
+    "vampire-roost": 4
    },
    "slack": 0,
+   "score": {
+    "old": 97.2,
+    "now": 96
+   },
    "problems": []
   },
   {
@@ -1331,13 +1494,14 @@
    },
    "after": {
     "basalt-boar": 4,
-    "deep-cave-troll": 3,
-    "frillneck-duelist": 2,
+    "deep-cave-troll": 2,
+    "frillneck-duelist": 1,
     "fumarole-ibex": 3,
+    "magma-salamander": 2,
     "obsidian-scorpion": 1,
     "ossuary-lammergeier": 1
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -1362,6 +1526,10 @@
     "slow-worm": 4
    },
    "slack": 1,
+   "score": {
+    "old": 105.4,
+    "now": 94.2
+   },
    "problems": []
   },
   {
@@ -1377,13 +1545,17 @@
     "victoria-regia": 4
    },
    "after": {
-    "box-turtle": 3,
+    "box-turtle": 4,
     "lodge-engineer": 4,
     "muskrat-reedgatherer": 1,
-    "old-sturgeon": 2,
-    "pond-algae": 3
+    "old-sturgeon": 3,
+    "pond-algae": 1
    },
-   "slack": 1,
+   "slack": 3,
+   "score": {
+    "old": 77.8,
+    "now": 77.9
+   },
    "problems": []
   },
   {
@@ -1400,13 +1572,17 @@
     "shoal-shark": 1
    },
    "after": {
-    "lodge-engineer": 4,
+    "lodge-engineer": 2,
     "muskrat-reedgatherer": 1,
-    "pond-algae": 2,
+    "pond-algae": 4,
     "shoal-shark": 4,
     "water-shrew": 1
    },
-   "slack": 1,
+   "slack": 3,
+   "score": {
+    "old": 62.6,
+    "now": 62.7
+   },
    "problems": []
   },
   {
@@ -1423,13 +1599,17 @@
     "victoria-regia": 1
    },
    "after": {
-    "box-turtle": 2,
     "lodge-engineer": 4,
     "muskrat-reedgatherer": 1,
     "old-sturgeon": 4,
-    "pond-algae": 2
+    "pond-algae": 3,
+    "water-shrew": 1
    },
    "slack": 3,
+   "score": {
+    "old": 63.2,
+    "now": 62.2
+   },
    "problems": []
   },
   {
@@ -1446,12 +1626,17 @@
    },
    "after": {
     "box-turtle": 4,
+    "muskrat-reedgatherer": 1,
     "old-sturgeon": 4,
-    "pond-algae": 4,
+    "pond-algae": 3,
     "riverworks-bastion": 1,
     "water-shrew": 1
    },
    "slack": 3,
+   "score": {
+    "old": 92.5,
+    "now": 87.3
+   },
    "problems": []
   },
   {
@@ -1468,12 +1653,17 @@
    },
    "after": {
     "anvilwhisker-otter": 4,
+    "cinder-gecko": 1,
     "cinder-hornet": 1,
-    "grindstone-boar": 3,
-    "obsidian-scorpion": 2,
-    "pumice-beetle": 4
+    "grindstone-boar": 4,
+    "obsidian-scorpion": 3,
+    "sulfur-vent-crab": 1
    },
    "slack": 0,
+   "score": {
+    "old": 66,
+    "now": 75.3
+   },
    "problems": []
   },
   {
@@ -1492,11 +1682,15 @@
     "anvilwhisker-otter": 4,
     "cinder-gecko": 1,
     "cinder-hornet": 1,
-    "hellbender": 1,
+    "grindstone-boar": 1,
     "obsidian-scorpion": 3,
     "pumice-beetle": 4
    },
    "slack": 1,
+   "score": {
+    "old": 67.3,
+    "now": 70.7
+   },
    "problems": []
   },
   {
@@ -1515,11 +1709,15 @@
     "cinder-hornet": 1,
     "grindstone-boar": 4,
     "obsidian-scorpion": 3,
+    "ore-smelter-mole": 2,
     "pumice-beetle": 4,
-    "smoke-raccoon": 2,
     "sulfur-vent-crab": 1
    },
    "slack": 1,
+   "score": {
+    "old": 89.1,
+    "now": 88.1
+   },
    "problems": []
   },
   {
@@ -1536,12 +1734,16 @@
    },
    "after": {
     "anvil-thrush": 1,
-    "ashbone-ghoul": 2,
+    "ashbone-ghoul": 3,
     "cinder-hornet": 1,
-    "hellbender": 4,
+    "hellbender": 3,
     "smoke-raccoon": 4
    },
    "slack": 1,
+   "score": {
+    "old": 65.1,
+    "now": 70.3
+   },
    "problems": []
   },
   {
@@ -1560,13 +1762,17 @@
    "after": {
     "cinder-hornet": 1,
     "grindstone-boar": 4,
+    "hellbender": 2,
     "obsidian-scorpion": 3,
     "ore-smelter-mole": 4,
-    "smoke-raccoon": 2,
     "sulfur-vent-crab": 1,
     "tide-spirit": 2
    },
-   "slack": 3,
+   "slack": 1,
+   "score": {
+    "old": 111.4,
+    "now": 111.5
+   },
    "problems": []
   },
   {
@@ -1592,7 +1798,11 @@
     "smoke-raccoon": 4,
     "sulfur-vent-crab": 1
    },
-   "slack": 3,
+   "slack": 1,
+   "score": {
+    "old": 134.2,
+    "now": 122.5
+   },
    "problems": []
   },
   {
@@ -1608,13 +1818,17 @@
     "kraken-spawnling": 3
    },
    "after": {
+    "abyss-lantern-squid": 1,
     "clownfish-scout": 1,
-    "coral-polyp-colony": 1,
-    "giant-clam": 4,
-    "humpback-elder": 3,
-    "moon-jelly": 1
+    "giant-clam": 3,
+    "humpback-elder": 4,
+    "riptide-eel": 1
    },
    "slack": 0,
+   "score": {
+    "old": 38.5,
+    "now": 53.6
+   },
    "problems": []
   },
   {
@@ -1630,13 +1844,17 @@
     "orca-vanguard": 3
    },
    "after": {
-    "abyss-lantern-squid": 3,
+    "abyss-lantern-squid": 2,
     "clownfish-scout": 1,
     "coral-polyp-colony": 1,
-    "giant-clam": 2,
+    "giant-clam": 3,
     "orca-vanguard": 5
    },
    "slack": 0,
+   "score": {
+    "old": 49.3,
+    "now": 64.9
+   },
    "problems": []
   },
   {
@@ -1652,13 +1870,17 @@
     "orca-vanguard": 4
    },
    "after": {
-    "coral-polyp-colony": 2,
+    "abyss-lantern-squid": 1,
     "humpback-elder": 4,
-    "moon-jelly": 1,
+    "moon-jelly": 2,
     "orca-vanguard": 4,
     "riptide-eel": 1
    },
-   "slack": 1,
+   "slack": 0,
+   "score": {
+    "old": 46.3,
+    "now": 52.4
+   },
    "problems": []
   },
   {
@@ -1675,13 +1897,17 @@
     "smuggler-slingrat": 4
    },
    "after": {
-    "glow-worm": 3,
-    "gull-thief": 4,
-    "limpet-clinger": 3,
+    "glow-worm": 4,
+    "gull-thief": 2,
+    "limpet-clinger": 4,
     "pincushion-urchin": 4,
     "salvager-hermit-crab": 4
    },
    "slack": 0,
+   "score": {
+    "old": 94.6,
+    "now": 140.1
+   },
    "problems": []
   },
   {
@@ -1699,12 +1925,16 @@
    },
    "after": {
     "fungal-colossus": 4,
+    "fungus-gnat-cloud": 3,
     "leopard-slug": 4,
-    "millipede-hauler": 2,
     "puffball-bombardier": 4,
-    "rot-swollen-carcass": 2
+    "rot-swollen-carcass": 1
    },
    "slack": 0,
+   "score": {
+    "old": 95.9,
+    "now": 95.7
+   },
    "problems": []
   },
   {
@@ -1721,13 +1951,17 @@
    },
    "after": {
     "amber-cicada": 1,
-    "fishing-cat": 1,
-    "hoopoe-herald": 3,
+    "fishing-cat": 3,
+    "hoopoe-herald": 1,
     "mosquito-cloud": 1,
     "slow-loris": 4,
     "toucan-courier": 4
    },
    "slack": 1,
+   "score": {
+    "old": 83.3,
+    "now": 120
+   },
    "problems": []
   },
   {
@@ -1755,6 +1989,10 @@
     "toucan-courier": 4
    },
    "slack": 1,
+   "score": {
+    "old": 159.8,
+    "now": 186.7
+   },
    "problems": []
   },
   {
@@ -1771,14 +2009,18 @@
     "salamander-pyromancer": 1
    },
    "after": {
-    "cinder-stoker": 5,
-    "deep-cave-troll": 2,
+    "cinder-stoker": 3,
+    "deep-cave-troll": 4,
     "ember-jackal": 3,
     "fire-drake-hatchling": 1,
-    "gorge-wyrm": 3,
-    "vampire-roost": 3
+    "gorge-wyrm": 4,
+    "magma-salamander": 2
    },
    "slack": 1,
+   "score": {
+    "old": 76.2,
+    "now": 99.2
+   },
    "problems": []
   },
   {
@@ -1794,13 +2036,18 @@
     "vampire-roost": 4
    },
    "after": {
-    "ancient-sloth-titan": 3,
+    "deep-cave-troll": 2,
     "ember-jackal": 3,
     "gorge-wyrm": 4,
     "magma-salamander": 2,
+    "stalactite-golem": 1,
     "vampire-roost": 4
    },
    "slack": 1,
+   "score": {
+    "old": 83.4,
+    "now": 77.7
+   },
    "problems": []
   },
   {
@@ -1817,12 +2064,16 @@
    },
    "after": {
     "cave-olm": 4,
-    "magpie-collector": 3,
+    "magpie-collector": 4,
     "oilbird": 4,
     "stalactite-golem": 1,
-    "upside-down-bat": 2
+    "upside-down-bat": 1
    },
-   "slack": 1,
+   "slack": 3,
+   "score": {
+    "old": 81,
+    "now": 79.6
+   },
    "problems": []
   },
   {
@@ -1846,7 +2097,11 @@
     "oilbird": 4,
     "stalactite-golem": 4
    },
-   "slack": 1,
+   "slack": 3,
+   "score": {
+    "old": 122.5,
+    "now": 118.1
+   },
    "problems": []
   },
   {
@@ -1869,7 +2124,11 @@
     "magpie-collector": 4,
     "oilbird": 4
    },
-   "slack": 1,
+   "slack": 3,
+   "score": {
+    "old": 118.9,
+    "now": 113.6
+   },
    "problems": []
   },
   {
@@ -1885,13 +2144,17 @@
     "stalactite-golem": 1
    },
    "after": {
-    "blind-cave-fish": 2,
-    "lantern-spark-fly": 1,
-    "magpie-collector": 1,
+    "blind-cave-fish": 1,
+    "lantern-spark-fly": 4,
+    "oilbird": 1,
     "stalactite-golem": 4,
-    "upside-down-bat": 3
+    "upside-down-bat": 1
    },
-   "slack": 3,
+   "slack": 1,
+   "score": {
+    "old": 65.3,
+    "now": 71.3
+   },
    "problems": []
   },
   {
@@ -1908,12 +2171,12 @@
    },
    "after": {
     "alpine-swift": 3,
-    "eyrie-warden": 2,
+    "eagle-owl-quartermaster": 3,
+    "eyrie-warden": 1,
     "gangrenous-leech": 4,
-    "great-horned-owl": 1,
-    "swamp-alligator": 4
+    "swamp-alligator": 3
    },
-   "slack": 0,
+   "restored": true,
    "problems": []
   },
   {
@@ -1931,12 +2194,16 @@
    },
    "after": {
     "alpine-swift": 4,
-    "gangrenous-leech": 4,
+    "apollo-butterfly": 4,
     "great-horned-owl": 4,
     "ibex-rockcaller": 2,
     "swamp-alligator": 4
    },
    "slack": 1,
+   "score": {
+    "old": 99.5,
+    "now": 92.7
+   },
    "problems": []
   },
   {
@@ -1953,12 +2220,16 @@
    },
    "after": {
     "arctic-tern": 4,
-    "glacier-yak": 4,
+    "glacier-yak": 3,
     "greenland-shark": 3,
-    "ice-crevasse-wolf": 2,
+    "ice-crevasse-wolf": 3,
     "lemming-swarm": 3
    },
    "slack": 0,
+   "score": {
+    "old": 88.1,
+    "now": 96.6
+   },
    "problems": []
   },
   {
@@ -1975,14 +2246,18 @@
     "talus-pika": 4
    },
    "after": {
-    "glacier-yak": 2,
+    "glacier-yak": 4,
     "lemming-swarm": 4,
     "lone-grey-wolf": 2,
     "ringed-seal": 4,
-    "snow-ermine": 4,
+    "snow-ermine": 2,
     "talus-pika": 4
    },
    "slack": 0,
+   "score": {
+    "old": 107.5,
+    "now": 117.9
+   },
    "problems": []
   },
   {
@@ -2000,13 +2275,17 @@
    },
    "after": {
     "arctic-tern": 4,
-    "glacier-yak": 1,
-    "ice-crevasse-wolf": 3,
+    "glacier-yak": 4,
+    "greenland-shark": 3,
     "ringed-seal": 4,
-    "snow-ermine": 4,
+    "snow-ermine": 1,
     "talus-pika": 4
    },
    "slack": 0,
+   "score": {
+    "old": 118,
+    "now": 118
+   },
    "problems": []
   },
   {
@@ -2025,12 +2304,16 @@
    "after": {
     "barkplate-beetle": 1,
     "bramble-sprout": 1,
-    "bramblewood-lynx": 1,
-    "earthworm": 4,
     "farm-dog": 4,
+    "house-cat": 4,
+    "quill-thorn-boar": 1,
     "thorn-shrike": 3
    },
    "slack": 0,
+   "score": {
+    "old": 83,
+    "now": 85.4
+   },
    "problems": []
   },
   {
@@ -2049,12 +2332,15 @@
    "after": {
     "barkplate-beetle": 1,
     "bramble-sprout": 1,
-    "bramblewood-lynx": 1,
-    "earthworm": 4,
     "elder-willow": 4,
-    "farm-dog": 3
+    "farm-dog": 4,
+    "house-cat": 4
    },
    "slack": 0,
+   "score": {
+    "old": 80.2,
+    "now": 82.6
+   },
    "problems": []
   },
   {
@@ -2071,13 +2357,18 @@
     "thornwood-palisade": 3
    },
    "after": {
+    "barkplate-beetle": 1,
     "earthworm": 4,
-    "elder-willow": 4,
-    "farm-dog": 3,
+    "farm-dog": 4,
     "house-cat": 4,
-    "quill-thorn-boar": 1
+    "quill-thorn-boar": 1,
+    "thorn-shrike": 2
    },
    "slack": 0,
+   "score": {
+    "old": 93.8,
+    "now": 88.8
+   },
    "problems": []
   },
   {
@@ -2095,14 +2386,19 @@
     "thornwood-palisade": 3
    },
    "after": {
+    "bramble-sprout": 1,
     "bramblewood-lynx": 1,
-    "earthworm": 3,
+    "earthworm": 2,
     "elder-willow": 4,
     "ent": 3,
     "quill-thorn-boar": 1,
     "thorn-shrike": 3
    },
-   "slack": 1,
+   "slack": 0,
+   "score": {
+    "old": 81.4,
+    "now": 74.2
+   },
    "problems": []
   },
   {
@@ -2119,13 +2415,17 @@
     "sand-widow": 4
    },
    "after": {
-    "armadillo-guard": 1,
-    "dust-hyena": 4,
-    "horned-lizard": 3,
+    "armadillo-guard": 2,
+    "dust-hyena": 2,
+    "horned-lizard": 4,
     "roadrunner-courier": 4,
     "sand-widow": 4
    },
    "slack": 0,
+   "score": {
+    "old": 91.5,
+    "now": 96.6
+   },
    "problems": []
   },
   {
@@ -2142,13 +2442,17 @@
     "pale-oryx": 3
    },
    "after": {
-    "armadillo-guard": 1,
+    "barrel-cactus": 3,
     "caustic-scorpion": 4,
     "dromedary": 4,
     "dune-jackal": 3,
-    "dust-hyena": 4
+    "dust-hyena": 2
    },
    "slack": 0,
+   "score": {
+    "old": 89.6,
+    "now": 90.6
+   },
    "problems": []
   },
   {
@@ -2165,13 +2469,17 @@
     "sand-widow": 4
    },
    "after": {
-    "barrel-cactus": 3,
+    "armadillo-guard": 3,
     "dromedary": 4,
     "dune-jackal": 4,
     "dust-hyena": 3,
     "sand-widow": 4
    },
    "slack": 0,
+   "score": {
+    "old": 89.9,
+    "now": 102.3
+   },
    "problems": []
   },
   {
@@ -2188,13 +2496,17 @@
     "trapdoor-spider": 2
    },
    "after": {
-    "armadillo-guard": 3,
-    "dune-jackal": 3,
-    "dust-hyena": 4,
-    "horned-lizard": 3,
+    "barrel-cactus": 2,
+    "dune-jackal": 4,
+    "dust-hyena": 3,
+    "horned-lizard": 4,
     "sandstorm-roc": 4
    },
    "slack": 0,
+   "score": {
+    "old": 96.8,
+    "now": 99.1
+   },
    "problems": []
   },
   {
@@ -2211,13 +2523,17 @@
     "trapdoor-spider": 2
    },
    "after": {
-    "barrel-cactus": 3,
-    "dune-jackal": 4,
-    "dust-hyena": 3,
+    "armadillo-guard": 3,
+    "dune-jackal": 3,
+    "horned-lizard": 4,
     "quicksand-queen": 2,
     "sandstorm-roc": 4
    },
    "slack": 0,
+   "score": {
+    "old": 83.6,
+    "now": 83.3
+   },
    "problems": []
   },
   {
@@ -2235,14 +2551,18 @@
     "skull-vulture": 2
    },
    "after": {
-    "armadillo-guard": 2,
     "barrel-cactus": 3,
     "dromedary": 4,
-    "horned-lizard": 4,
+    "dune-jackal": 4,
+    "horned-lizard": 2,
     "quicksand-queen": 2,
     "roadrunner-courier": 4
    },
    "slack": 0,
+   "score": {
+    "old": 98.7,
+    "now": 99.4
+   },
    "problems": []
   }
  ]

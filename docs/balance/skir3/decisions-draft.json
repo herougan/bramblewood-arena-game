@@ -1,0 +1,75 @@
+{
+ "about": "SKIR3 draft owner decisions (2026-11-12). Not in docs/decisions.json: the coordinator moves them there.",
+ "items": [
+  {
+   "id": "SKIR3-1",
+   "title": "Six main maps have no Guardian on their list",
+   "status": "YET",
+   "body": "With your 11-12 picks, Maps 3, 10, 11, 15, 16 and 17 list no defender (Guardian / Bulwark / Taunt), which BAL9's JJ28 asks of Maps 1-19. Claude's Guardian adds (Grey Seal Bull on Map 10, Alpine Marmot on Map 11) had no room under NEW!.",
+   "options": [
+    "a) You pick a Guardian on each (it may replace one of your picks)",
+    "b) Claude adds a carried Guardian where Carried has room",
+    "c) Drop JJ28"
+   ],
+   "default": "a"
+  },
+  {
+   "id": "SKIR3-2",
+   "title": "Side maps cut to 3 own cards: 75 cards left play",
+   "status": "YET",
+   "body": "Side maps now list 3 own cards (your 1-3). Their other own cards were on no other list, so 75 cards left play, among them side-map set pieces (Kraken Spawnling, Komodo Warlord, Permafrost Mammoth, Obsidian Lich). The full list is in docs/balance/skir3/drop-list-2026-11-12.md.",
+   "options": [
+    "a) Keep",
+    "b) Move some to a main map's list (under its limits)",
+    "c) Raise the side-map NEW! default to 5"
+   ],
+   "default": "a"
+  },
+  {
+   "id": "SKIR3-3",
+   "title": "Two challenge fights lost their boon's cards",
+   "status": "YET",
+   "body": "13-4 (Wild Rage) and 20-4 (Restless Dead) need half their deck to hold the boon's theme. Map 13's list has one Wild Rage card; no list up to Map 20 has an undead card. Both fights now play with the boon off; nothing else changed.",
+   "options": [
+    "a) Keep the boon off",
+    "b) Add a theme card to the map",
+    "c) Give the fight another boon"
+   ],
+   "default": "a"
+  },
+  {
+   "id": "SKIR3-4",
+   "title": "Over-limit picks pile up on Maps 18-21",
+   "status": "YET",
+   "body": "A pick cut where it is NEW! but listed again later becomes NEW! on that later map. Maps 12-18 pushed cards forward, so Maps 19-21 dropped 3-5 of your picks each. One pick left play: Nightshade Moth (Map 17).",
+   "options": [
+    "a) Keep",
+    "b) Raise NEW! on Maps 18-21 by 1-2",
+    "c) You choose the cuts on those maps"
+   ],
+   "default": "a"
+  },
+  {
+   "id": "SKIR3-5",
+   "title": "Carried top-ups on four side maps",
+   "status": "YET",
+   "body": "The Old Bramble, The Ice Hollow, The Pale Desert and Basalt Foundry could not build their fights from 3 own cards (K14 holds carried cards to 1 copy). Claude topped Carried up to 8; The Old Bramble got 5 of its old cards plus 3 Map 0 cards (House Cat, Earthworm, Farm Dog).",
+   "options": [
+    "a) Keep",
+    "b) You pick the carried cards"
+   ],
+   "default": "a"
+  },
+  {
+   "id": "SKIR3-6",
+   "title": "15 first-clear cards changed",
+   "status": "YET",
+   "body": "Fifteen fights paid a pack card that is no longer on its map's list. Each now pays the nearest card on that list (GD-5), as LISTFIX3 did. Examples: 10-3 Giant Clam (was Parrotfish), 13-4 Pine Marten (was Berserker Boar), 20-4 Vampire Roost (was Cinder Skeleton).",
+   "options": [
+    "a) Keep",
+    "b) You choose per fight"
+   ],
+   "default": "a"
+  }
+ ]
+}
