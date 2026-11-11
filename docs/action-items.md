@@ -8,7 +8,23 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
-## 11-11: Package CONTENT19 (on its branch, not released)
+## 11-11 00:06-00:19: Owner notes (shipped in the 11-11 release, owner 11:38 "Release when ready")
+| # | Note | Package |
+|---|---|---|
+| 1 | Pack-opening pencil covers the ×N badge; merchant menu after a sale; Codex Create card button | done UI46 |
+| 2 | Map 0 Carried = tutorial cards; skill count reads Yes only; Carried bugs; Add card button | done UI47 (+ Export picks writes admin adds as yes) |
+| 3 | Effects lag on the MacBook | done PERF2 (PERF2-1 open) |
+| 4 | Ponytail for code and game text | done: `docs/workflows/code-quality.md`, GUIDE1 |
+| 5 | Free hosting and tester sites, by type, with Discord | done: `docs/launch-sites-2026-11-11.md` |
+| 6 | Art follows the creature's true body plan | done: `docs/style-guideline.md` |
+| 7 | Moon Jelly Map 4, Field Vole Map 5, Crocodile Ambusher Map 6; new Sea Bass for Map 10 | done CONTENT19 (CONTENT19-1 open); Sea Bass art still needed |
+| 8 | Yes suggestions for Maps 11-20 and submaps | done THEME8 (THEME8-1/2 open) |
+| 9 | (00:09) Electron option (1); more VFX ideas; skills audit, under 80 by Map 20 | done DESK2 (DESK2-1..4), LAB3, SKILL9 (SKILL9-1..10) |
+| 10 | (00:16) Redo deck optimisations, update all skirmishes (no Stone before Map 21, lumber mix, admin adds on Maps 0-11) | done SKIR1 + SKIR2: main 142/149 in band (SKIR1-1..6, 8; SKIR2-1..4 open) |
+| 11 | (00:16) Reference win rates labelled for admins; 100 reference decks per map with variance | done REF6 (REF6-1..3 open); re-measure on the SKIR2 decks runs after the release |
+| 12 | (00:19) Specialist .md files and token savings | done GUIDE1, TOOLS1 (GUIDE1-1 open) |
+
+## 11-11: Package CONTENT19 (shipped in the 11-11 release)
 - Done (owner: "Add a new card, Sea Bass for Map 10"): the Sea Bass (Common 3/6, 1 Lumber, Wait 1; Tide, Wave 1, Swarm (Fish); types Coral Reef + Fish) is on Map 10's list (Coral Current, main map m7), a basic-pack card of Pack 2; name and flavour in the 12 packs. Skirmish decks untouched (a later package rebuilds them).
 - Art needed: **Sea Bass** card art (the game shows 🐟 until then). Prompt with the fish body plan in `docs/art-style-prompts.md` (CONTENT19); run on the owner's computer, then the pixel pass at 128 px.
 - Notes for the owner: THEME8's 3/7 is over the game's budget at the Map 7 term a Pack 2 card is priced at (21.78 > 21.5), so Health 7 -> 6 (3/6 reads 20.78 of 21.5). Swarm (Fish) counts Types, so the card lists Fish; on Map 10's list only Parrotfish, Great Barracuda, Electric Ray and Reef Shark are Fish-typed (Clownfish Scout, Riptide Eel and Coral Reef Shark are not).
