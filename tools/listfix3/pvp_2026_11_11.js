@@ -33,7 +33,7 @@ const deckCode = d => 'BWD1:' + Buffer.from(JSON.stringify({ n: d.name.slice(0, 
     for (const first of cands) { // the copies to one card first (up to its cap), the rest to the next best by this order: the deck's own cards
       const deck = Object.assign({}, base); let left = k;
       for (const id of [first].concat(Object.keys(base).filter(x => x !== first))) while (left && canAdd(deck, id, leader)) { deck[id] = (deck[id] || 0) + 1; left--; }
-      if (left || L.validate(deck, leader).length || Object.keys(deck).length > 8 || others.some(o => P.shared(o.cards, deck) > P.MAX_SHARED)) continue;
+      if (left || L.validate(deck, leader).length || others.some(o => P.shared(o.cards, deck) > P.MAX_SHARED)) continue;
       const s = (await score({ deck, leader }, key, SEARCH_G)).mean; if (!best || s > best.s) best = { deck, s, first };
     }
     if (!best) { rows.push({ id: d.id, out, problem: 'no legal fill' }); console.log(d.id, 'no legal fill for', out.join(', ')); continue; }

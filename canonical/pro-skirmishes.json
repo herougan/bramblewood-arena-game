@@ -14814,6 +14814,44 @@
      "h2h": null,
      "later": [],
      "renamedFrom": "5-A-PRO-2"
+    },
+    {
+     "id": "5-A-PRO-2",
+     "name": "5-A-PRO-2",
+     "focus": "big",
+     "labels": [
+      "big (9 copies at 2+ Lumber, average 1.3)",
+      "heal x7",
+      "armor x6"
+     ],
+     "level": 1,
+     "leaders": [
+      "old-snapjaw"
+     ],
+     "deck": {
+      "bog-behemoth": 3,
+      "bog-leech": 3,
+      "mudflat-godwit": 4,
+      "mudpuppy": 4,
+      "old-snapjaw": 2,
+      "swamp-alligator": 4
+     },
+     "source": {
+      "file": "docs/balance/skir2/refdecks/pro/bench-deck-map05-ms-2026-11-11.json",
+      "mode": "deck1",
+      "package": "SKIR1",
+      "run": "SKIR2",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map ms --pool alligator-gar,alpine-marmot,anhinga-spearbird,banded-sea-krait,blue-ringed-octopus,bog-behemoth,bog-leech,booming-bittern,caiman-hatchling,cottonmouth-matriarch,cypress-root-lurker,eagle-owl-quartermaster,fen-mink,fire-ant-raft,matamata,mossmother-newt,mudflat-godwit,mudpuppy,newt-doctor,nutria-reedcutter,old-snapjaw,otter-centurion,peat-cutter-vole,raft-spider,signal-crayfish,snapper-hatchling,swamp-alligator,upside-down-bat,venomlord-serpent,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:armor,family:tide,big,open --anchor anhinga-spearbird,bog-behemoth,bog-leech,caiman-hatchling,cottonmouth-matriarch,cypress-root-lurker,fen-mink,matamata,mossmother-newt,mudflat-godwit,newt-doctor,nutria-reedcutter,old-snapjaw,peat-cutter-vole,signal-crayfish,snapper-hatchling,swamp-alligator,venomlord-serpent --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.4643,
+      "ci": [
+       0.3968,
+       0.5318
+      ],
+      "avgLumber": 1.25,
+      "generated": "2026-11-11T03:13:36.864Z"
+     },
+     "listfix3": "2026-11-11 (LISTFIX3): DECK1 wants 2-4 PRO decks; SKIR2 dropped this map's PRO-1 (more than 10 copies shared with the kept BPRO-1), leaving one: the same SKIR2 search's next distinct deck (focus big; 4 copies shared with PRO-1 and with BPRO-1), not re-searched"
     }
    ],
    "bpro": [
@@ -15092,7 +15130,8 @@
     "SKILL2 BPRO: 3 focused decks from the map's list (5-A-BPRO-1 open, 5-A-BPRO-2 swarm, 5-A-BPRO-3 family:armor); the previous BPRO decks are under history",
     "BAL16: 2 PRO, 2 BPRO (distinct plans, at most 10 shared copies), 2 WPRO (weak plans low, top-heavy); the previous decks are under history",
     "SKIR1: (re-run by SKIR2 on the amended list) 2 PRO, 1 BPRO (distinct plans, at most 10 shared copies), 2 WPRO (weak plans low, top-heavy); the previous decks are under history",
-    "SKIR2: 5-A-PRO-1 dropped (shares more than 10 copies with the kept 5-A-BPRO-1); the PRO decks after it renumbered"
+    "SKIR2: 5-A-PRO-1 dropped (shares more than 10 copies with the kept 5-A-BPRO-1); the PRO decks after it renumbered",
+    "LISTFIX3: 5-A-PRO-2 added from the same SKIR2 search (focus big): DECK1 wants 2-4 PRO decks"
    ],
    "history": [
     {

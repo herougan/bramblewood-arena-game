@@ -47,7 +47,7 @@ if (CMD === 'swap') {
       rows.push(row); console.log(`${f.code.padEnd(8)} ${row.cut.join(', ')} -> ${JSON.stringify(adds)}${probs.length ? ' | PROBLEMS ' + probs.join('; ') : ''}`);
       if (probs.length) continue;
       if (a.includes('--apply')) { const mm = s.match(lineRe(f.code)); if (!mm) throw new Error('no line ' + f.code);
-        s = s.replace(mm[1], mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(row.after) + ` /* 2026-11-11 (LISTFIX3): ${bad.map(id => f.pool.includes(id) ? id + ' (now one of a two-card family)' : id + ' (cut, off the list again)').join(', ')} out, the copies to the pool's nearest by stat score ${JSON.stringify(adds)}; deck (was ${JSON.stringify(f.n.deck)}) */`)); }
+        s = s.replace(mm[1], mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(row.after) + ` /* 2026-11-11 (LISTFIX3): ${bad.map(id => f.pool.includes(id) ? id + ' (now one of a two-card family)' : id + (D[id] && D[id].kind === 'baby' ? ' (a Baby card, no longer an admin add)' : ' (cut, off the list again)')).join(', ')} out, the copies to the pool's nearest by stat score ${JSON.stringify(adds)}; deck (was ${JSON.stringify(f.n.deck)}) */`)); }
       f.n.deck = row.after; // the map's later fights read the usage this one leaves
     }
   }

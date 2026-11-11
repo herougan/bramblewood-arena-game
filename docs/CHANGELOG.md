@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-11 Package LISTFIX3 (cut cards off the lists again; no card stat changed)
+- Players see: 12 cards you cut are gone again from the lists Claude's admin adds / suggestions had put them back on (Water Vole Map 4, Coral Polyp Colony Map 10, Caiman Hatchling + Sphagnum Vole Map 5, Plains Zebra Map 14, Talus Pika Map 17, Squire's Mount + Warhorse Charger Map 15, Duckling Lilypad Reach, Stag Knight Map 13, Dhole Runner Map 16, Phoenix Fledgling Volcano Lair). Water Vole, Sphagnum Vole, Plains Zebra, Squire's Mount, Warhorse Charger, Stag Knight and Dhole Runner are out of play. First clears: 5-2 pays Raft Spider (was Sphagnum Vole), 1-4 Bramble Sprout, 7-2 Fungus Gnat Cloud, 10-5 Sea Bass (their old cards are off their map's list; draft LISTFIX3-1).
+- Lists: tools/listfix3/lists_2026_11_11.js (canonical/map-pools.json, UI47_ADMIN_ADD / UI47_SUGGEST, docs/design/map-suggestions-2026-11-11.json, `unattainable` flags, card-obtain-maps.json; record docs/balance/listfix3/lists-2026-11-11.json). The owner's own 11-11 Yes on three cut cards stands (Fishing Cat, Alley Cat, Marsh-mallow Hare).
+- Road: __ROAD__
+- Reference and PvP decks: __PRO__
+- Tests: __TESTS__
+
 ## 2026-11-11 Package SKIR2 (the road after SKIR1 recovered, mostly by list adds; no card stat changed)
 - Players see: Maps 0-20 road fights back near the road curve (main maps 142 of 149 in band, was 126 after SKIR1 and 135 before it). Fifteen cards are back on a map list: the first-clear cards of 5-2, 10-3, 10-4, 15-4, 17-1, 17-3 and 17-4 can be won again (they were on no list since SKIR1, so those fights paid nothing); Coral Current, Wolfsbane Tundra, The Glass Dunes and Ashen Spurn list a Guardian (BAL9 JJ28); Map 7 gets its old boss card back (Planarian Splitter) and Map 13 three of its own fighters (Swift Fox, Tasmanian Devil, Bramblewood Lynx). Map 13's fights rebuilt; 4-5, 7-6, 8-5, 10-9, 11-7, 13-x, 16-4, 17-4, 18-1, 18-3, 18-6, 19-1, 19-4, 20-10 and side 0-B-3, 1-A-2, 2-A-4 re-fitted (deck swaps; 10-9 and 11-7 also Shield 0, as their saved fits said).
 - Lists: tools/skir2/lists_2026_11_11.js (each add with its reason and what needs it, docs/balance/skir2/lists-2026-11-11.json): Maps 0-11 adds in UI47_ADMIN_ADD with SKIR1's Lumber adds (Map 1 Hazel Coppice, Map 8 Pack Rat Looter + Bone Diviner, Map 9 Salvager Hermit Crab), Maps 12-20 adds in UI47_SUGGEST and docs/design/map-suggestions-2026-11-11.json; `unattainable` flags and card-obtain-maps.json follow. Map 17's four and Map 10's three are each needed by a check (a Guardian, or a reward unattainable off every list); none is a pure balance add.
