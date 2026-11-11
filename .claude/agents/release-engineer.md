@@ -16,7 +16,7 @@ git worktree remove --force <path> && git branch -D <branch>
 ```
 - `merge_pkg.sh` takes ours for generated files (`index.html`, `version.json`, `assets/lang/*.js`, `docs/game-texts.xlsx`, `docs/dialogues-*.xlsx`), merges `lang/*.json` and `lang/ui/*.json` by key, `canonical/cards.json` per card and field, unions `docs/CHANGELOG.md`, `tests/run-all.sh` and new `TEXT` keys, prunes `lang/ui`, rebuilds, checks JSON and unique card ids / numericIds.
 - Exit 2 = a file needs a hand: resolve it, or `git merge --abort` and ask that package's agent to merge `main` itself. Never union `.js` files.
-- `docs/code-map.md` and `docs/guides/arena-app-index.md` conflicts: take either side, then `python3 tools/code_map.py`.
+- `docs/code-map.md` and `docs/guides/arena-app-index.md`: `merge_pkg.sh` regenerates both with `python3 tools/code_map.py` after the rest is merged (TOOLS1); exit 7 means that script failed.
 - No full suite between merges.
 
 ## Release (only on the owner's approval)

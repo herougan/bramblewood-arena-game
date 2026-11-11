@@ -3,7 +3,7 @@
 A release is one push to `main`, which deploys the live site, plus one hub republish. Release once per finished batch.
 
 ## Merge the batch (one branch at a time)
-1. For each finished package: `bash tools/merge/merge_pkg.sh <branch>`. If it stops on a `.js` conflict, resolve it by hand or `git merge --abort` and ask that package's agent to merge `main` itself.
+1. For each finished package: `bash tools/merge/merge_pkg.sh <branch>` (it also regenerates `docs/code-map.md` and `docs/guides/arena-app-index.md`). If it stops on a `.js` conflict, resolve it by hand or `git merge --abort` and ask that package's agent to merge `main` itself.
 2. After each merge: `node tests/run.js --smoke` and the package's own test (`--only`). Don't run the full suite between merges.
 3. Remove the merged worktree: `git worktree remove --force <path> && git branch -D <branch>`.
 
