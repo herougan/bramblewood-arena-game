@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-12 Package CACTI1 (the Barrel Cactus, owner 00:38 "There is no cacti card. There should be. Dry & Thorny")
+- New card, not placed yet (awaitingSource, on no map list): Barrel Cactus, Rare Plant, 1/18, Cost 1 / Wait 2, Dry + Thorns 2; budget 0.98 of N 30.79 at Map 18. Recommended home: The Glass Dunes (md, Map 18), for SKIR3 to place.
+- Name and flavour in the 12 packs (tools/i18n_2026_11_12_cacti1.py); art prompt in docs/art-style-prompts.md, the emoji shows until drawn.
+
 ## 2026-11-11 Map cards: your No beats Claude's admin add (owner 23:27 "i cant click no")
 - Admin sees: No on a card Claude added to a map (UI47_ADMIN_ADD) now sticks: it stores an explicit No, which wins over the add (ui37FlagOf, ui47YesList, the Prospects click). Before, the add kept the card Yes. Any other No still clears the flag.
 - Found with it: Claude's 32 admin adds on Maps 0-11 count as Yes, so those maps read over their NEW! / Carried limits (decision PICKS1-1).
