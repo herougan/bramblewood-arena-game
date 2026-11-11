@@ -3,7 +3,7 @@
  "items": [
   {"id": "SKIR2-1", "status": "OPEN", "kind": "Decide", "area": "Balance", "asked": "2026-11-11", "group": "game", "source": "SKIR2", "default": "a",
    "title": "Keep SKIR2's list adds",
-   "body": "Added (no card stats changed): Map 5 Sphagnum Vole; Map 7 Planarian Splitter; Map 10 Grey Seal Bull, Parrotfish, Coral Reef Shark; Map 13 Swift Fox, Tasmanian Devil, Bramblewood Lynx; Map 15 Cataphract Destrier; Map 17 Shepherd's Bark, Snow Ermine, Harbor Seal, Snow Bunting Archer; Map 18 Marula Elephant; Map 19 Stalactite Golem.",
+   "body": "(filled at the end of the run)",
    "options": ["a) Keep.", "b) Drop the ones you name."]}
  ]
 }

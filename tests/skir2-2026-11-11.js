@@ -25,6 +25,11 @@ const pools = J('canonical/map-pools.json').maps, SUG = J('docs/design/map-sugge
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), SCN = SC.make(J('canonical/skill-costs.json'));
 const lineOf = code => (src.match(new RegExp(`^\\s*\\{ ?key:\\s*"${code.replace(/-/g, '\\-')}",.*$`, 'm')) || [''])[0];
 const no = id => MAIN_ORDER.indexOf(id);
+// a card SKIR1 already held for the owner's re-fit (over budget at its first map, no stat change by Claude) may be carried to a later list: its
+// first map, so its budget, does not move (Planarian Splitter: Maps 4 / 5 list it, SKIR2 carries it to Map 7)
+const PENDING = {}; J('docs/balance/skir1/pending-budget-2026-11-11.json').cards.forEach(c => { PENDING[c.id] = c; });
+const obtainMap = J('canonical/card-obtain-maps.json').maps;
+const heldStill = id => !!PENDING[id] && (PENDING[id].obtainMap == null || obtainMap[id] === PENDING[id].obtainMap);
 
 // ---- 1. the adds ----
 for (const [mid, adds] of Object.entries(ADDS)) for (const [id, x] of Object.entries(adds)) {
@@ -34,7 +39,7 @@ for (const [mid, adds] of Object.entries(ADDS)) for (const [id, x] of Object.ent
   else { ok((SUGGEST[mid] || []).includes(id), `Map ${no(mid)}: ${id} in UI47_SUGGEST`); ok(/^SKIR2: ./.test(((SUG.maps[mid] || {}).addWhy || {})[id] || ''), `Map ${no(mid)}: ${id} has its reason (addWhy)`);
     ok([].concat(SUG.maps[mid].suggest, SUG.maps[mid].carried).includes(id), `Map ${no(mid)}: ${id} in the suggestion doc's suggest / carried`); }
   ok(!M.stone(D[id]), `${id}: no Stone card before Map 21`);
-  const b = SCN.budget(D[id], { level: 1 }); ok(b.ok, `${id}: within its budget at its obtain map (${b.x1} <= ${b.N})`);
+  const b = SCN.budget(D[id], { level: 1 }); ok(b.ok || heldStill(id), `${id}: within its budget at its obtain map (${b.x1} <= ${b.N}), or held for the owner's re-fit by SKIR1 with its first map unchanged`);
   ok(x.why && x.why.length > 15, `${id}: the add says why`);
 }
 Object.entries(EXTRA.main || {}).forEach(([mid, o]) => Object.keys(o).forEach(id => { ok((ADMIN[mid] || []).includes(id), `SKIR1's admin add ${id} (${mid}) is in UI47_ADMIN_ADD`); ok(/^SKIR1: ./.test(((SUG.maps[mid] || {}).adminWhy || {})[id] || ''), `SKIR1's admin add ${id} has its reason`); }));
@@ -56,17 +61,21 @@ for (const mid of ['m7', 'm6', 'md', 'm3']) {
 // ---- 3. every road fight's card reward is obtainable ----
 const tab = {}; ((src.match(/\/\* GD5-TABLE-START[\s\S]*?GD5-TABLE-END \*\//) || [''])[0]).replace(/'([a-z0-9]+):([^']+)':\s*'([^']+)'/g, (_, m, k, id) => { tab[m + ':' + k] = id; });
 ok(Object.keys(tab).length > 40, `the first-clear pack card table reads (${Object.keys(tab).length} rows)`);
-const defs = G.getCardDefs(); let nRewards = 0;
+// 2026-11-11 (SKIR2, brief item 3): Maps 0-20 and every side map that opens on them (the Old Bramble, the tutorial and the endless dungeons
+// included); a node pays its skirmish-exclusive cards (source = that node: nodeRewardCardIds) and its first-clear pack card (node.firstCard,
+// else SKIRMISH_FIRST_PACK_CARDS: nodeFirstPackCardIds); both drop a card that isUnattainable, so the fight would pay nothing for it
+const defs = G.getCardDefs(), seen = { pack: 0, firstCard: 0, exclusive: 0, maps: 0 }, bad = [];
 for (const m of G.CONQUEST_MAPS) {
-  const n0 = G.mapNumberOf(m.id); if (n0 == null || n0 > 20 || m.reserved || m.tower) continue;
+  const n0 = G.mapNumberOf(m.id); if (n0 == null || n0 > 20 || m.reserved || m.tower) continue; seen.maps++;
   for (const n of m.nodes || []) {
-    const packIds = [].concat(n.firstCard != null ? n.firstCard : (tab[m.id + ':' + n.key] || []));
-    const excl = Object.keys(defs).filter(id => { const s = G.cardSourceOf(defs[id]); return s.kind === 'map' && s.id === m.id && s.node === n.key && defs[id].cardType !== 'equipment'; });
-    packIds.forEach(id => { nRewards++; ok(defs[id] && !G.isUnattainable(defs[id]), `${n.key} (${m.id}): its first-clear pack card ${id} is obtainable`); });
-    excl.forEach(id => { nRewards++; ok(!G.isUnattainable(defs[id]), `${n.key} (${m.id}): its skirmish-exclusive card ${id} is obtainable`); });
+    const packIds = [].concat(n.firstCard != null ? n.firstCard : (tab[m.id + ':' + n.key] || [])), how = n.firstCard != null ? 'firstCard' : 'pack';
+    const excl = Object.keys(defs).filter(id => { const s = G.cardSourceOf(defs[id]); return s.kind === 'map' && s.id === m.id && s.node === n.key && defs[id].cardType !== 'equipment' && !(G.isEasterEgg ? G.isEasterEgg(defs[id]) : defs[id].easterEgg); });
+    packIds.forEach(id => { seen[how]++; const good = defs[id] && !G.isUnattainable(defs[id]); if (!good) bad.push(`${n.key} ${how} ${id}`); ok(good, `${n.key} (${m.id}): its first-clear pack card ${id} (${how === 'pack' ? 'SKIRMISH_FIRST_PACK_CARDS' : 'node.firstCard'}) is obtainable`); });
+    excl.forEach(id => { seen.exclusive++; const good = !G.isUnattainable(defs[id]); if (!good) bad.push(`${n.key} exclusive ${id}`); ok(good, `${n.key} (${m.id}): its skirmish-exclusive card ${id} is obtainable`); });
   }
 }
-ok(nRewards > 100, `rewards checked: ${nRewards}`);
+const nRewards = seen.pack + seen.firstCard + seen.exclusive;
+ok(nRewards > 100 && seen.maps >= 39, `rewards checked: ${nRewards} on ${seen.maps} maps (${seen.pack} first-clear pack cards from the table, ${seen.firstCard} node.firstCard, ${seen.exclusive} skirmish-exclusive)${bad.length ? '; not obtainable: ' + bad.join(', ') : ''}`);
 ok(defs['sphagnum-vole'] && !G.isUnattainable(defs['sphagnum-vole']) && (pools.mw.cards || []).includes('sphagnum-vole'), "5-2's Sphagnum Vole (CONTENT3) is on Map 5's list and obtainable");
 
 // ---- 4. Map 13 ----
