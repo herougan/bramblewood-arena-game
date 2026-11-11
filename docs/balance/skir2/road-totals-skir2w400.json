@@ -45,10 +45,10 @@
   },
   "skir2w400": {
    "fights": 81,
-   "inBand": 59,
-   "within10": 65,
-   "beyond20": 8,
-   "meanGap": 7.32
+   "inBand": 61,
+   "within10": 67,
+   "beyond20": 5,
+   "meanGap": 6.61
   }
  },
  "maps": {
@@ -99,14 +99,13 @@
    },
    "skir2w400": {
     "fights": 4,
-    "inBand": 0,
-    "within10": 1,
-    "beyond20": 1,
-    "meanGap": 16.68
+    "inBand": 1,
+    "within10": 2,
+    "beyond20": 0,
+    "meanGap": 10.43
    },
    "off": [
     "0-B-1 80.8/90",
-    "0-B-3 91.5/60",
     "0-B-2 90/75",
     "0-B-4 29/40"
    ]
@@ -160,12 +159,12 @@
     "fights": 5,
     "inBand": 3,
     "within10": 4,
-    "beyond20": 1,
-    "meanGap": 8.02
+    "beyond20": 0,
+    "meanGap": 5.58
    },
    "off": [
-    "1-A-2 52.3/80",
-    "1-A-4 51/60"
+    "1-A-4 51/60",
+    "1-A-2 64.5/80"
    ]
   },
   "mb": {
@@ -218,14 +217,13 @@
    },
    "skir2w400": {
     "fights": 7,
-    "inBand": 4,
-    "within10": 4,
-    "beyond20": 2,
-    "meanGap": 12.73
+    "inBand": 5,
+    "within10": 5,
+    "beyond20": 1,
+    "meanGap": 9.87
    },
    "off": [
     "2-A-2 73/84",
-    "2-A-4 50.5/72",
     "2-A-7 87.5/40"
    ]
   },
@@ -1982,7 +1980,7 @@
    "target": 80,
    "bal46w400": 82.3,
    "skir1w400": 52.3,
-   "skir2w400": 52.3
+   "skir2w400": 64.5
   },
   "1-A-5": {
    "target": 40,
@@ -2012,7 +2010,7 @@
    "target": 72,
    "bal46w400": 57.5,
    "skir1w400": 50.5,
-   "skir2w400": 50.5
+   "skir2w400": 70.5
   },
   "2-A-3": {
    "target": 78,
@@ -2384,7 +2382,7 @@
    "target": 60,
    "bal46w400": 51.8,
    "skir1w400": 91.5,
-   "skir2w400": 91.5
+   "skir2w400": 66.5
   },
   "0-B-2": {
    "target": 75,
