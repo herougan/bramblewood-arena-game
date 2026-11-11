@@ -38211,7 +38211,10 @@ const syncPageFlags = (()=>{
     b.classList.toggle('pg-has-overlay', vs || !!document.querySelector('.rr-stage'));
     b.classList.toggle('pg-has-spot', !!document.querySelector('.coach-spotlight'));
     b.classList.toggle('pg-shop-back', !!document.querySelector('#view-shop:not([hidden]) #shopBackBtn'));
-    b.classList.toggle('pg-in-match', !!(aw && aw.classList.contains('in-match'))); };
+    b.classList.toggle('pg-in-match', !!(aw && aw.classList.contains('in-match')));
+    b.classList.toggle('pg-has-ds2', !!document.querySelector('body > .ds2-overlay')); // 2026-11-12 (package PERF3): replace body:has(.ds2-overlay) / body:has(> #packOpenOverlay:not([hidden]))
+    const po = document.getElementById('packOpenOverlay'); if(po && !po._pgObs){ po._pgObs = 1; new MutationObserver(sync).observe(po, {attributes:true, attributeFilter:['hidden']}); }
+    b.classList.toggle('pg-pack-open', !!(po && po.parentNode === b && !po.hidden)); };
   const sync = ()=>{ if(queued) return; queued = true; (window.queueMicrotask || (f=> Promise.resolve().then(f)))(run); };
   const watch = ()=>{ try{
     const mo = new MutationObserver(sync), b = document.body; if(!b) return;
@@ -65661,7 +65664,7 @@ const HandDrag = (function(){
   }
   function beginDrag(touch){
     dragActive = true;
-    document.body.classList.add('bw-touch-dragging'); // 2026-10-29 (package UI1, owner O2): no page scroll or overscroll under a drag (CSS)
+    document.body.classList.add('bw-touch-dragging'); document.documentElement.classList.add('bw-touch-dragging'); // 2026-10-29 (package UI1, owner O2): no page scroll or overscroll under a drag (CSS)
     dragEl = candidate;
     dt = makeDataTransfer();
     lastTarget = null;
@@ -65690,7 +65693,7 @@ const HandDrag = (function(){
     if(ghost && !keepGhost){ removeDragGhost(ghost); }
     ghost = null;
     candidate = null; dragEl = null; dt = null; lastTarget = null; dragActive = false;
-    document.body.classList.remove('bw-touch-dragging'); detachTargetListeners();
+    document.body.classList.remove('bw-touch-dragging'); document.documentElement.classList.remove('bw-touch-dragging'); detachTargetListeners();
   }
   // 2026-10-12 (user: "On mobile, in the deck editor, I can't scroll the card selection very well... I mostly drag the
   // cards"): outside the battle hand, a card only starts dragging after you hold it still for a moment (HOLD_TO_DRAG_MS).
