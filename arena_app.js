@@ -4009,7 +4009,9 @@ function currentCardDataHash(){
   if(_cardHashMemo.key !== key){ _cardHashMemo = {key, hash: IntegrityM.cardDataHash(effectiveCardDefsForHash())}; }
   return _cardHashMemo.hash;
 }
-const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELINE) : '';
+// 2026-11-12 (package PERF3): worked out on first use (the version check, a minute after load), not at load: a JS sha256 of every card cost ~250 ms of startup.
+let _baselineHash = null;
+function baselineCardHash(){ if(_baselineHash === null) _baselineHash = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELINE) : ''; return _baselineHash; }
 // Version + card-data check (2026-10-11, user: "a per-session card_data hash plus version check: if the client is
 // outdated, ask to update; if the hash is wrong for that version, the data is corrupted"). The build stamps its id and
 // the hash its card data should have (assemble_arena.py, also written to version.json). Once per session, and again when
@@ -4028,7 +4030,7 @@ function versionBanner(kind, text, btnLabel, onBtn){
   document.body.appendChild(b);
   try{ fxHook('banner', b); }catch(e){} // 2026-10-15 batch F
 }
-function cardDataIntact(){ return !BUILD_CARD_HASH || BUILD_CARD_HASH.startsWith('__') || !BASELINE_CARD_HASH || BASELINE_CARD_HASH === BUILD_CARD_HASH; }
+function cardDataIntact(){ return !BUILD_CARD_HASH || BUILD_CARD_HASH.startsWith('__') || !baselineCardHash() || baselineCardHash() === BUILD_CARD_HASH; }
 async function checkGameVersion(force){
   if(typeof location === 'undefined' || !/^https?:/.test(location.protocol) || BUILD_ID.startsWith('__')) return null;
   if(!cardDataIntact()){
@@ -4055,7 +4057,7 @@ async function checkGameVersion(force){
     versionBanner('update', 'A new version of Bramblewood is out.', 'Update', ()=> ui27GoUpdate(v.build));
     return 'outdated';
   }
-  if(v.cardHash && v.cardHash !== BASELINE_CARD_HASH){
+  if(v.cardHash && v.cardHash !== baselineCardHash()){
     versionBanner('bad', 'The card data for this version doesn’t check out. Reload, and tell us if this keeps happening.', 'Reload', ()=> location.reload());
     return 'corrupt';
   }
@@ -4080,7 +4082,7 @@ function ui27GoUpdate(serverBuild){
 }
 try{ if(typeof location !== 'undefined' && /[?&]v=/.test(location.search) && typeof history !== 'undefined' && history.replaceState){ const u = new URL(location.href); u.searchParams.delete('v'); history.replaceState(history.state, '', u.pathname + (u.search || '') + u.hash); } }catch(e){}
 if(typeof window !== 'undefined'){
-  window.addEventListener('load', ()=> setTimeout(()=> checkGameVersion(false), 4000));
+  window.addEventListener('load', ()=> setTimeout(()=> (window.requestIdleCallback || setTimeout)(()=> checkGameVersion(false)), 4000)); // 2026-11-12 (package PERF3): idle, it hashes the card data on first run
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) checkGameVersion(false); });
 }
 // Perf (2026-10-08, user: "clicking ... should instantly transit you"): one Codex render called
@@ -37064,7 +37066,7 @@ function renderAdmin(){
     ${adminModeEnabled ? `<div class="panel admin-subpanel"><h3>🃏 ${escapeHtml(TX('ui.mp-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.mp-admin-sub'))}</p>
       <button type="button" class="btn small" id="adminMapCardsBtn">🃏 ${escapeHtml(TX('ui.mp-open'))}</button></div>` : '' /* 2026-10-22 (package MP) */}
     <div class="panel admin-subpanel"><h3>🔏 Card data fingerprint</h3><p class="panel-sub">SHA-256 of every card's gameplay fields (art and flavor excluded), including live overrides. The server will compute the same from its card table and reject transactions whose fingerprint differs (T3).</p>
-      <code class="admin-hash" id="adminCardHash" title="${escapeAttr(currentCardDataHash())}">${escapeHtml(currentCardDataHash().slice(0,16))}…</code> <span class="panel-sub">${Object.keys(effectiveCardDefsForHash()).length} cards · baseline build ${escapeHtml(BASELINE_CARD_HASH.slice(0,12))}</span></div>
+      <code class="admin-hash" id="adminCardHash" title="${escapeAttr(currentCardDataHash())}">${escapeHtml(currentCardDataHash().slice(0,16))}…</code> <span class="panel-sub">${Object.keys(effectiveCardDefsForHash()).length} cards · baseline build ${escapeHtml(baselineCardHash().slice(0,12))}</span></div>
     ${(RaidM && allRaidDefs().length) ? `<div class="panel admin-subpanel"><h3>🐙 Raids</h3><p class="panel-sub">Parts, HP bars, lock order, stages, scoring and rewards. Publishes live.</p>${allRaidDefs().map(d=> `<button type="button" class="btn small" data-admin-raid="${escapeAttr(d.id)}">✏️ ${escapeHtml(d.icon||'')} ${escapeHtml(d.name)}${d.live===false?' (off)':''}</button>`).join(' ')}</div>` : ''}
     <div class="panel admin-subpanel">
       <h3>🧪 Test Kit</h3>
@@ -38216,7 +38218,10 @@ const syncPageFlags = (()=>{
     b.classList.toggle('pg-has-overlay', vs || !!document.querySelector('.rr-stage'));
     b.classList.toggle('pg-has-spot', !!document.querySelector('.coach-spotlight'));
     b.classList.toggle('pg-shop-back', !!document.querySelector('#view-shop:not([hidden]) #shopBackBtn'));
-    b.classList.toggle('pg-in-match', !!(aw && aw.classList.contains('in-match'))); };
+    b.classList.toggle('pg-in-match', !!(aw && aw.classList.contains('in-match')));
+    b.classList.toggle('pg-has-ds2', !!document.querySelector('body > .ds2-overlay')); // 2026-11-12 (package PERF3): replace body:has(.ds2-overlay) / body:has(> #packOpenOverlay:not([hidden]))
+    const po = document.getElementById('packOpenOverlay'); if(po && !po._pgObs){ po._pgObs = 1; new MutationObserver(sync).observe(po, {attributes:true, attributeFilter:['hidden']}); }
+    b.classList.toggle('pg-pack-open', !!(po && po.parentNode === b && !po.hidden)); };
   const sync = ()=>{ if(queued) return; queued = true; (window.queueMicrotask || (f=> Promise.resolve().then(f)))(run); };
   const watch = ()=>{ try{
     const mo = new MutationObserver(sync), b = document.body; if(!b) return;
@@ -38916,6 +38921,11 @@ function fitTopRowControls(){
       const sw = row.querySelector('.settings-wrap'); if(sw && sw.nextSibling) row.insertBefore(more, sw.nextSibling); else row.appendChild(more); }
     row.classList.remove('is-compact', 'is-menu'); play.classList.remove('trc-wrap');
     const vw = document.documentElement.clientWidth || window.innerWidth;
+    // 2026-11-12 (package PERF3): the fit is three forced layouts with every child's flex rewritten, and every round redraws this row. The answer only changes with the
+    // viewport width, the row's text (castle health, deck count, button labels) and the font, so the last answer for the same three is re-applied without measuring.
+    const sig = vw + '|' + row.children.length + '|' + play.children.length + '|' + play.textContent + '|' + row.className + '|' + (document.fonts && document.fonts.status), memo = fitTopRowControls._memo;
+    if(memo && memo.sig === sig && document.fonts && document.fonts.status === 'loaded'){ memo.cls.forEach(c=> c[0] === 'r' ? row.classList.add(c[1]) : play.classList.add(c[1])); return; }
+    const done = ()=>{ fitTopRowControls._memo = {sig, cls: [...row.classList].filter(c=> c === 'is-compact' || c === 'is-menu').map(c=> ['r', c]).concat(play.classList.contains('trc-wrap') ? [['p', 'trc-wrap']] : [])}; };
     // does the stack, at its natural width, sit beside the cards and inside the row? (A stack that wraps onto its own line, as on a phone, only has to fit that line.)
     const fits = ()=>{
       const keep = stack.style.flex, kids = [...play.children]; kids.forEach(k=>{ k.dataset.trcFlex = k.style.flex; k.style.flex = 'none'; }); // everything at its natural width: a squeezed castle or deck must not make the row look as if it fits
@@ -38923,10 +38933,11 @@ function fitTopRowControls(){
       for(let el = stack.previousElementSibling; el; el = el.previousElementSibling){ const r = el.getBoundingClientRect(); if(!r.width) continue; if(r.top < sr.bottom - 2 && r.bottom > sr.top + 2) prevRight = Math.max(prevRight, r.right); break; }
       const ok = sr.right <= Math.min(vw, pr.right) + 1 && sr.left >= prevRight + 4 && row.scrollWidth <= row.clientWidth + 1;
       kids.forEach(k=>{ k.style.flex = k.dataset.trcFlex || ''; delete k.dataset.trcFlex; }); stack.style.flex = keep; return ok; };
-    if(fits()) return;
-    row.classList.add('is-compact'); if(fits()) return;
-    if(document.getElementById('appWrap') && document.getElementById('appWrap').classList.contains('mb2-raid')) return; // the raid keeps its own grid of icons
+    if(fits()) return done();
+    row.classList.add('is-compact'); if(fits()) return done();
+    if(document.getElementById('appWrap') && document.getElementById('appWrap').classList.contains('mb2-raid')) return done(); // the raid keeps its own grid of icons
     row.classList.add('is-menu'); if(!fits()) play.classList.add('trc-wrap'); // even four buttons do not fit beside the cards: they take their own line, as on a phone
+    done();
   }catch(e){}
 }
 window.addEventListener('resize', ()=>{ clearTimeout(fitTopRowControls._t); fitTopRowControls._t = setTimeout(fitTopRowControls, 80); });
@@ -52688,16 +52699,21 @@ function vis3PipSource(img){
   const cw = at.naturalWidth / sz[0], ch = at.naturalHeight / sz[1];
   return {key, im: at, sx: (ps[0] || 0) * (sz[0] - 1) * cw, sy: (ps[1] || 0) * (sz[1] - 1) * ch, sw: cw, sh: ch};
 }
+// 2026-11-12 (package PERF3): an atlas emoji's offset is known from its class (set + cell), so a redraw does not read getComputedStyle of every pip (each read
+// made the browser redo the page's styles right after the board was rebuilt).
+const VIS3_CLS_OFF = new Map();
 function vis3PipOffset(img){
+  const ck = img.classList.contains('emo') ? img.className : null;
+  if(ck !== null && VIS3_CLS_OFF.has(ck)) return VIS3_CLS_OFF.get(ck);
   const src = vis3PipSource(img); if(src === undefined) return undefined; if(!src) return null; if(src.wait) return src;
-  if(VIS3_PIP_OFF.has(src.key)) return VIS3_PIP_OFF.get(src.key);
+  if(VIS3_PIP_OFF.has(src.key)){ if(ck !== null) VIS3_CLS_OFF.set(ck, VIS3_PIP_OFF.get(src.key)); return VIS3_PIP_OFF.get(src.key); }
   let off = null;
   try{ const N = 48, cv = vis3PipOffset.cv || (vis3PipOffset.cv = document.createElement('canvas')); cv.width = N; cv.height = N;
     const g = cv.getContext('2d', {willReadFrequently: true}); g.clearRect(0, 0, N, N); g.drawImage(src.im, src.sx, src.sy, src.sw, src.sh, 0, 0, N, N);
     const d = g.getImageData(0, 0, N, N).data; let x0 = N, y0 = N, x1 = -1, y1 = -1;
     for(let y = 0; y < N; y++) for(let x = 0; x < N; x++) if(d[(y * N + x) * 4 + 3] > 60){ if(x < x0) x0 = x; if(x > x1) x1 = x; if(y < y0) y0 = y; if(y > y1) y1 = y; }
     if(x1 >= 0){ const fx = (x0 + x1 + 1) / 2 / N - .5, fy = (y0 + y1 + 1) / 2 / N - .5; off = (Math.abs(fx) >= .04 || Math.abs(fy) >= .04) ? [fx, fy] : null; } }catch(e){ off = null; } // (a picture from another site can't be read: left as it is)
-  VIS3_PIP_OFF.set(src.key, off); return off;
+  VIS3_PIP_OFF.set(src.key, off); if(ck !== null) VIS3_CLS_OFF.set(ck, off); return off;
 }
 // 2026-11-11 (package PERF2): every pip is measured first (vis3PipSource reads its computed background) and only then moved. Read, write,
 // read, write made the browser redo the page's styles once per pip on every board redraw.
@@ -65666,7 +65682,7 @@ const HandDrag = (function(){
   }
   function beginDrag(touch){
     dragActive = true;
-    document.body.classList.add('bw-touch-dragging'); // 2026-10-29 (package UI1, owner O2): no page scroll or overscroll under a drag (CSS)
+    document.body.classList.add('bw-touch-dragging'); document.documentElement.classList.add('bw-touch-dragging'); // 2026-10-29 (package UI1, owner O2): no page scroll or overscroll under a drag (CSS)
     dragEl = candidate;
     dt = makeDataTransfer();
     lastTarget = null;
@@ -65695,7 +65711,7 @@ const HandDrag = (function(){
     if(ghost && !keepGhost){ removeDragGhost(ghost); }
     ghost = null;
     candidate = null; dragEl = null; dt = null; lastTarget = null; dragActive = false;
-    document.body.classList.remove('bw-touch-dragging'); detachTargetListeners();
+    document.body.classList.remove('bw-touch-dragging'); document.documentElement.classList.remove('bw-touch-dragging'); detachTargetListeners();
   }
   // 2026-10-12 (user: "On mobile, in the deck editor, I can't scroll the card selection very well... I mostly drag the
   // cards"): outside the battle hand, a card only starts dragging after you hold it still for a moment (HOLD_TO_DRAG_MS).

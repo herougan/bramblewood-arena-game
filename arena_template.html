@@ -12201,7 +12201,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 /* 2026-10-12 (22:04, user: "in skirmish editor's deck editor, the card details pane is darkened and hidden below. Show it"): card
    details float above every modal, so the editor's deck popup and deck preview show them too. */
 #cardPop{z-index:2100 !important;}
-body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package RW4, owner #3): the card details show over the swap window */
+body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3): a body class (syncPageFlags), not body:has() */ /* 2026-10-23 (package RW4, owner #3): the card details show over the swap window */
 .deck-popup{width:min(1100px, 96vw); max-height:92vh; display:flex; flex-direction:column; gap:10px;}
 .dbp-deck{flex:0 0 auto; display:flex; flex-wrap:wrap; gap:14px 12px; padding:14px 12px 10px; border-radius:12px; background:rgba(125,82,42,.12); min-height:126px; max-height:34vh; overflow-y:auto;}
 .dbp-tools{flex:0 0 auto; display:flex; gap:8px;} .dbp-tools input{flex:1;}
@@ -14176,7 +14176,7 @@ body.ne-shift .ne-shift-hint kbd, .ne-shift-hint.is-on kbd{color:var(--ink);}
   font:800 13.5px/1.2 'Baloo 2',system-ui,sans-serif; box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 2px 4px rgba(60,35,10,.25);}
 .pl2-where-pill.is-text{font:700 12.5px/1.3 Nunito,system-ui,sans-serif;}
 .pl2-where-pill.c18-sp-pill{background:#f3e3a6; border-color:#b8902f;} /* CONTENT18 (2026-11-08): the Star path pill, a touch more golden than a pack's (both sit on the detail's fixed parchment) */
-body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
+body.pg-pack-open #cardPop{z-index:9600 !important;} /* 2026-11-12 (package PERF3): body class, not body:has() */
 @media (min-width:761px){
   .card-inspect.ci-split{display:grid; grid-template-columns:auto minmax(280px, 400px); grid-template-areas:"stage detail" "bar detail"; column-gap:40px; row-gap:14px; align-content:center; justify-content:center; align-items:center;}
   .card-inspect.ci-split .ci-stage{grid-area:stage;} .card-inspect.ci-split .ci-bar{grid-area:bar; justify-self:center;} .card-inspect.ci-split .ci-detail{grid-area:detail;}
@@ -14321,7 +14321,7 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 #handStrip [draggable="true"], #leaderWidget[draggable="true"], #view-play .battlefield [draggable="true"], .discardzone, .skipzone, .reserve-target{touch-action:none;}
 #handStrip.hs-scroll [draggable="true"]{touch-action:pan-x;}
 body.bw-touch-dragging, body.bw-touch-dragging *{touch-action:none !important;}
-html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:none;}
+html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 2026-11-12 (package PERF3): an html class, not html:has(body...) */
 /* 2026-10-29 (package UI1, owner O1: "The raids decks are extremely elongated."): the desktop window's copies of the formula set only --match-card-h and beat the
    raid's own pair, so its Deck and Environment cards got 64 x 142. 2026-10-30 (CS-D): that rule only sets --mc-fit now, so the raid's own pair
    (#appWrap.in-match.mb2-raid) wins without a repeat here, and a top-row card is height x .8 wide by construction (CS-D block). */
@@ -14883,7 +14883,7 @@ html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
 @media (prefers-reduced-motion: reduce){
   .map-node.is-lair-final:not(.done), .fl1-node-ring, .fl1-node-crown i, .fl1-entry-ring, .fl1-entry-ring::after, .fl1-vignette{animation:none !important;}
   .fl1-banner{animation:none; opacity:1;} .boss-title.is-lair{animation:none; opacity:1;} }
-:where(html[data-fx="none"], html[data-fx="low"]) :is(.map-node.is-lair-final:not(.done), .fl1-node-ring, .fl1-node-crown i, .fl1-entry-ring, .fl1-entry-ring::after, .fl1-vignette){animation:none;}
+html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .fl1-node-ring, html[data-fx="none"] .fl1-node-crown i, html[data-fx="none"] .fl1-entry-ring, html[data-fx="none"] .fl1-entry-ring::after, html[data-fx="none"] .fl1-vignette, html[data-fx="low"] .map-node.is-lair-final:not(.done), html[data-fx="low"] .fl1-node-ring, html[data-fx="low"] .fl1-node-crown i, html[data-fx="low"] .fl1-entry-ring, html[data-fx="low"] .fl1-entry-ring::after, html[data-fx="low"] .fl1-vignette{animation:none;} /* 2026-11-12 (package PERF3): plain class selectors (an :is() on the right was tried on every element at every restyle); specificity (0,2,0)+ as before */
 /* ===== 2026-11-04 (package UI19, owner 2026-11-03 23:01 + 23:12): the card-name scroll =====
    (a) a better look and (b) more texture: both ends are real rolls (spiral caps, light and shade down the cylinder), the paper has a vertical
    curve shade, tucked-in ends, fibres and flecks (a tiled pattern, no filter: cheap in a long Codex grid).

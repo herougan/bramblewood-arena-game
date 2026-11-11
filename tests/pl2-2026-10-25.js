@@ -68,7 +68,7 @@ ok(/pl2TakeMapMoments\(mapId\)/.test(fxe) && /if\(!prev\)\{ if\(pendQ\) playRetu
 ok(!/TX\('results\.rare-find'\)/.test(app) && !/TX\('results\.rare-find-2'\)/.test(app), 'B 00:02 #5: no "Rare find" pill anywhere');
 { const f = fnSrc('neInspectDetailHTML');
   ok(/pl2-where-pill/.test(f) && /TX\('ui\.pl2-pack-n', \{n: tier\}\)/.test(f) && !/cd-where-k/.test(f), 'B 22:28 #9: the pack card detail\'s "📦 Pack 1" pill (no "Where to get it" label)');
-  ok(/\.ci-detail \.cd-abilities h3\{color:var\(--ink\);\}/.test(tpl) && /body:has\(> #packOpenOverlay:not\(\[hidden\]\)\) #cardPop\{z-index:9600 !important;\}/.test(tpl), 'B 22:28 #9: the heading follows the theme; the card popover opens over the pack opener'); }
+  ok(/\.ci-detail \.cd-abilities h3\{color:var\(--ink\);\}/.test(tpl) && /body\.pg-pack-open #cardPop\{z-index:9600 !important;\}/.test(tpl), 'B 22:28 #9: the heading follows the theme; the card popover opens over the pack opener'); }
 { const L = app.match(/const TRIGGER_LESSON = \[[\s\S]*?\n\];/)[0];
   ok((L.match(/\{id:/g) || []).length === 1 && /coach\.pl2-trigger/.test(L) && T.TEXT['coach.pl2-trigger'] === '⚡ This chip is a trigger — read the card.', 'B 00:02 #6: one short trigger step: "This chip is a trigger — read the card."'); }
 { const f = fnSrc('openEnergyPanel');
