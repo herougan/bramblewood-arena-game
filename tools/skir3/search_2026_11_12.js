@@ -22,6 +22,8 @@ function fnv(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= 
 function rng(seed) { let t = fnv(seed); return () => { t += 0x6D2B79F5; let r = Math.imul(t ^ t >>> 15, 1 | t); r ^= r + Math.imul(r ^ r >>> 7, 61 | r); return ((r ^ r >>> 14) >>> 0) / 4294967296; }; }
 for (const code of CODES) {
   const m = L.maps().find(x => L.fightsOf(x).some(n => n.key === code)), fl = L.fightsOf(m), n = fl.find(x => x.key === code), f = L.fight(m, n), band = F.bandOf(m, n), t0 = Date.now();
+  // the two challenge fights whose boon theme no 11-12 card holds play with the boon off (tools/skir3/refill_2026_11_12.js BOON_OFF, draft SKIR3-3)
+  if (['13-4', '20-4'].includes(code)) { const p0 = f.problems; f.problems = d => p0(d).filter(x => !/challenge boon/.test(x)); f.legal = d => !f.problems(d).length; }
   const others = fl.filter(x => x !== n).map(x => L.fight(m, x)), ucap = L.ucapOf(m) + SLACK, use = {};
   others.forEach(o => Object.keys(o.n.deck).forEach(id => { if (!o.keep.has(id)) use[id] = (use[id] || 0) + 1; }));
   const listAll = [...new Set([].concat(f.pool, ...others.map(o => o.pool)))], fam = {}; listAll.forEach(id => { fam[B.family(id)] = (fam[B.family(id)] || 0) + 1; });

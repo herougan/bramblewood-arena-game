@@ -5,7 +5,7 @@
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..'), L = require('../skir1/lib_fight_2026_11_11.js');
-const picks = {}; ['jump', 'search'].forEach(dir => { const D = path.join(ROOT, 'docs', 'balance', 'skir3', dir); if (!fs.existsSync(D)) return;
+const picks = {}; fs.readdirSync(path.join(ROOT, 'docs', 'balance', 'skir3')).filter(d => /^(jump|search)/.test(d)).forEach(dir => { const D = path.join(ROOT, 'docs', 'balance', 'skir3', dir); if (!fs.existsSync(D)) return;
   fs.readdirSync(D).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(D, f), 'utf8')); if (x.keep && x.slack) picks[x.code] = x; }); });
 const out = { about: 'SKIR3: maps where a kept search / jump pick (run with --slack 1) puts a card in one more fight than the usage line (tools/skir3/slack_2026_11_12.js)', built: '2026-11-12', maps: {} }, problems = [];
 for (const m of L.maps()) {
