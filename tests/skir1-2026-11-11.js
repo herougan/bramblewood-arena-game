@@ -24,12 +24,17 @@ const EXTRA = require(path.join(ROOT, 'tools', 'skir1', 'extra_2026_11_11.js')),
 const same = (x, y) => JSON.stringify([...new Set(x)].sort()) === JSON.stringify([...new Set(y)].sort());
 
 // ---- 1. the lists ----
-for (const [id, m] of Object.entries(SUG.maps)) {
+// 2026-11-12 (SKIR3): the lists are now the owner's 11-12 picks under the NEW! / Carried limits (tools/skir3/lists_2026_11_12.js): each MAP tier and
+// side list is the SKIR3 record's; SKIR1's 11-11 fold below no longer applies
+const S3 = J('docs/balance/skir3/lists-2026-11-12.json');
+Object.entries(S3.main).forEach(([id, r]) => ok(same(pools[id].cards, r.list), `Map ${r.mapNo} (${id}): the MAP tier is SKIR3's (the owner's 11-12 picks under the limits)`));
+Object.entries(S3.side).forEach(([sid, r]) => ok(same(((pools[r.parent] || {}).submaps || {})[sid] || [], r.list), `${sid}: its list is SKIR3's`));
+if (!S3) for (const [id, m] of Object.entries(SUG.maps)) {
   const yes = (PICKS[id] || {}).yes || [], want = (m.mapNo <= 11 ? yes.concat(UI47_ADMIN_ADD[id] || []) : m.mapNo === 12 ? yes.concat(UI47_SUGGEST[id] || []) : UI47_SUGGEST[id] || [])
     .concat(Object.keys((EXTRA.main || {})[id] || {}), Object.keys((EXTRA.batch || {})[id] || {})).filter(x => D[x] && !((EXTRA.drop || {})[id] || {})[x]);
   ok(same(pools[id].cards, want), `Map ${m.mapNo} (${id}): the MAP tier is ${m.mapNo <= 11 ? 'the owner\'s Yes + admin adds' : m.mapNo === 12 ? 'his 3 + the suggestions' : 'the suggestions'}`);
 }
-for (const [sid, sm] of Object.entries(SUG.submaps)) ok(same(((pools[sm.parent] || {}).submaps || {})[sid] || [], (UI47_SUGGEST[sid] || []).concat(Object.keys((EXTRA.sub || {})[sid] || {})).filter(x => D[x] && !((EXTRA.drop || {})[sid] || {})[x])), `${sm.name} (${sid}): its list is its suggestions`);
+if (!S3) for (const [sid, sm] of Object.entries(SUG.submaps)) ok(same(((pools[sm.parent] || {}).submaps || {})[sid] || [], (UI47_SUGGEST[sid] || []).concat(Object.keys((EXTRA.sub || {})[sid] || {})).filter(x => D[x] && !((EXTRA.drop || {})[sid] || {})[x])), `${sm.name} (${sid}): its list is its suggestions`);
 const unlockAt = {}; L.maps().forEach(m => { unlockAt[m.id] = L.unlockOf(m); });
 Object.entries(pools).forEach(([id, e]) => { const no = G.mapNumberOf(id); if (no == null || no > 20) return;
   const stone = (e.cards || []).filter(x => M.stone(D[x])); ok(!stone.length, `Map ${no} (${id}): no Stone card on its list (${stone.join(', ')})`);
