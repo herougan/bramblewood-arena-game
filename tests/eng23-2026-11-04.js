@@ -106,7 +106,9 @@ ok(byId['beaver-lumberjack'].effects.delivery === 1 && /function eng23MigrateDel
   ok(m.effects.delivery === 1 && !('stockpile' in m.effects), '4: the live row {stockpile: 1} reads {delivery: 1}'); }
 { // which maps field an Invisible or a Changeling first
   const pools = J('canonical/map-pools.json').maps, hidden = new Set(cards.filter(c=> c.effects && (c.effects.invisible || c.effects.changeling)).map(c=> c.id));
-  const early = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7'].filter(k=> pools[k] && [].concat(pools[k].cards || [], pools[k].special || [], ...Object.values(pools[k].submaps || {})).some(id=> hidden.has(id)));
+  // 2026-11-11 (LISTFIX3): Maps 0-5 by map number (the ids m1-m7 no longer run in road order: m5 is Map 14, m6 Map 17)
+  const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G;
+  const early = Object.keys(pools).filter(k=> G.mapNumberOf(k) != null && G.mapNumberOf(k) <= 5).filter(k=> pools[k] && [].concat(pools[k].cards || [], pools[k].special || [], ...Object.values(pools[k].submaps || {})).some(id=> hidden.has(id)));
   ok(!early.length, `4: no Invisible / Changeling card on the lists of Maps 0-5 (${early})`); }
 
 // ---- 5. the Map cards stats ---------------------------------------------------------------------------------------------------

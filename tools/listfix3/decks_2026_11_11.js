@@ -4,7 +4,7 @@
 // families, the mix kinds):
 //   swap [--apply]        every road fight of Maps 0-20 and their side maps holding a card outside its pool (or a two-card family pair): those copies to the
 //                         deck cards and up to two new pool cards nearest their stat score (skirmishCardScore), the deck and the map kept legal
-//   fitapply [--dir fit]  the kept picks of tools/skir1/fit_2026_11_11.js run --dir ../listfix3/<dir>, written with a LISTFIX3 comment
+//   fitapply [--dir fit]  the kept deck-only picks of a fit run (tools/skir1/fit_2026_11_11.js or fit_decks_only_2026_11_11.js --dir ../listfix3/<dir>), with a LISTFIX3 comment
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..'), APP = path.join(ROOT, 'arena_app.js'), OUT = path.join(ROOT, 'docs', 'balance', 'listfix3');
@@ -61,12 +61,48 @@ if (CMD === 'fitapply') {
   for (const x of fs.readdirSync(dir).filter(f => f.endsWith('.json')).map(f => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))).filter(x => x.keep && (!only.length || only.includes(x.code)))) {
     const mm = s.match(lineRe(x.code)); if (!mm) throw new Error('no line ' + x.code); let line = mm[1];
     const cur = JSON.parse((line.match(/deck:(\{[^}]*\})/) || [0, '{}'])[1]); if (keyOf(cur) !== keyOf(x.before.deck)) { console.log('skip', x.code, '(the deck moved since the fit)'); continue; }
+    if (x.pick.shield != null) { console.log('skip', x.code, '(a Shield move: road retunes are deck swaps only; re-fit with tools/listfix3/fit_decks_only_2026_11_11.js)'); continue; }
     const deck = sorted(x.pick.deck), what = [];
     if (keyOf(deck) !== keyOf(x.before.deck)) { line = line.replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(deck)); what.push('deck (was ' + JSON.stringify(x.before.deck) + ')'); }
-    if (x.pick.shield != null) { what.push('Shield override ' + (x.shieldOverride == null ? 'rule ' + x.shieldRule : x.shieldOverride) + ' -> ' + x.pick.shield);
-      line = /shieldOverride:\d+/.test(line.split('deck:')[0]) ? line.replace(/shieldOverride:\d+/, 'shieldOverride:' + x.pick.shield) : line.replace(/deck:/, `shieldOverride:${x.pick.shield}, deck:`); }
     line = line.replace(/(deck:\{[^}]*\})/, `$1 /* 2026-11-11 (LISTFIX3 fit): toward the road curve (target ${Math.round(x.band.t * 10) / 10}), ${x.before.win}% -> ${x.pick.win}% at ${x.games} games on the road seeds; ${what.join('; ')} */`);
     s = s.replace(mm[1], line); k++; console.log('applied', x.code, x.before.win, '->', x.pick.win);
   }
   write(s); console.log('applied', k);
+}
+
+if (CMD === 'pro') {
+  // PRO / BPRO / WPRO decks of every map holding a card the lists no longer allow there: out of play (BAL9 JJ24), the map rule for its kind
+  // (PRO map-true; BPRO / WPRO the map's own pool, tests/pro): those copies to the nearest card of the map's fight pool by SKIR2's distance
+  // (tools/skir2/decks_2026_11_11.js cuts: Lumber x3, Wait, (2A+H)/3, rarity steps x4, +2 rarer; a card the deck holds first at equal distance),
+  // inside the rarity cap and 6 different / 4 copies; never another fight's skirmish-exclusive card; not re-searched
+  const O = require('../opt/deckopt.js'), P = require('../opt/pro_skirmishes.js'), LP = require('../lib_map_pools.js'), L9 = require('../bal9/lib_bal9.js');
+  const gm = O.loadGame(ROOT), GG = gm.G, DD = gm.D, FILE = path.join(ROOT, 'canonical', 'pro-skirmishes.json'), pro = JSON.parse(fs.readFileSync(FILE, 'utf8'));
+  const POOLS = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8'));
+  const st = d => 2 * (+d.attack || 0) + (+d.health || 0);
+  const dist = (x, y) => { const p = DD[x] || {}, q = DD[y] || {}; return 3 * Math.abs((+p.cost || 0) - (+q.cost || 0)) + Math.abs((+p.wait || 0) - (+q.wait || 0)) + Math.abs(st(p) - st(q)) / 3 + 4 * Math.abs(L9.step(p.rarity) - L9.step(q.rarity)) + (L9.step(q.rarity) > L9.step(p.rarity) ? 2 : 0); };
+  const rows = [];
+  for (const [mid, ent] of Object.entries(pro.maps)) {
+    const map = GG.CONQUEST_MAPS.find(m => m.id === mid); if (!map) continue;
+    const pk = map.sub ? map.parent : mid, sub = map.sub ? ((gm.pools[pk] || {}).submaps || {})[mid] || [] : [], pool = gm.pools[pk] || {}, cap = O.mapRarityCap(gm, map);
+    const own = new Set((pool.cards || []).concat(pool.special || [], Array.isArray(sub) ? sub : (sub.cards || []), ...O.fightsOf(map).map(n => Object.keys(n.deck))));
+    const cand = [...(LP.fightPool(POOLS, mid, map.sub ? map.parent : null) || [])];
+    for (const [kind, mode] of [['pro', 'map-true'], ['bpro', 'bpro'], ['wpro', 'bpro']]) for (const x of (ent[kind] || [])) {
+      const bad = id => (DD[id] && LP.isOutOfPlay(GG, DD[id])) || O.mapRuleProblems(gm, map, { [id]: 1 }, mode).some(p => p.startsWith(id + ':')) || (kind !== 'pro' && !own.has(id));
+      const cuts = Object.keys(x.deck).filter(bad); if (!cuts.length) continue;
+      const out = Object.assign({}, x.deck), moves = [], capR = c => Math.min(GG.maxCopiesForRarity((DD[c] || {}).rarity), 4);
+      for (const id of cuts) { let k = out[id]; delete out[id]; const got = {};
+        const opts = cand.filter(c => DD[c] && !bad(c) && !DD[c].token && GG.roadRarityStep(DD[c].rarity) <= GG.roadRarityStep(cap) && c !== id && !(DD[c].source && DD[c].source.kind === 'map'))
+          .sort((p, q) => dist(id, p) - dist(id, q) || ((out[q] ? 1 : 0) - (out[p] ? 1 : 0)) || (p < q ? -1 : 1));
+        for (const c of opts) { if (!k) break; while (k && (out[c] || 0) < capR(c) && (out[c] || Object.keys(out).length < 6)) { out[c] = (out[c] || 0) + 1; k--; got[c] = (got[c] || 0) + 1; } }
+        moves.push({ cut: id, copies: x.deck[id], to: got, left: k }); }
+      const leaders = kind === 'wpro' ? [] : P.leadersFor(gm, map, out);
+      const probs = (kind === 'wpro' ? [] : P.deckProblems(gm, out, leaders)).concat(O.mapRuleProblems(gm, map, out, mode), P.limitProblems(out, { maxUnique: 6, maxCopies: 4 }), moves.filter(v => v.left).map(v => v.cut + ': ' + v.left + ' copies left'));
+      rows.push({ map: mid, mapNo: GG.mapNumberOf(mid), kind, id: x.id, before: x.deck, after: sorted(out), moves, leadersBefore: x.leaders, leaders, problems: probs });
+      console.log(`${x.id.padEnd(16)} ${moves.map(v => `${v.cut} x${v.copies} -> ${Object.entries(v.to).map(([c, n]) => c + ' x' + n).join(' + ')}`).join('; ')} | leaders ${JSON.stringify(x.leaders)} -> ${JSON.stringify(leaders)}${probs.length ? ' | PROBLEMS ' + probs.join('; ') : ''}`);
+      if (a.includes('--apply') && !probs.length) { x.deck = sorted(out); x.leaders = leaders;
+        x.listfix3 = `2026-11-11 (LISTFIX3): ${moves.map(v => v.cut + ' x' + v.copies).join(', ')} not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched`; }
+    }
+  }
+  if (a.includes('--apply')) { fs.writeFileSync(FILE, JSON.stringify(pro, null, 1) + '\n'); fs.writeFileSync(path.join(OUT, 'pro-swaps-2026-11-11.json'), JSON.stringify({ about: 'LISTFIX3 PRO / BPRO / WPRO swaps (tools/listfix3/decks_2026_11_11.js pro)', rows }, null, 1) + '\n'); }
+  console.log(rows.length, 'decks', a.includes('--apply') ? 'written' : '(dry run)');
 }
