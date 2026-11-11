@@ -55429,7 +55429,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c715c920e2e4', BUILD_CARD_HASH = '44ee39bbf679148f3b1b7c5100a8fb1b7f59edc33a979d0037ddf0fe29165d83';
+const BUILD_ID = '340facdfedd0', BUILD_CARD_HASH = '44ee39bbf679148f3b1b7c5100a8fb1b7f59edc33a979d0037ddf0fe29165d83';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -55591,7 +55591,7 @@ function getCardDefs0(){
   _cardDefsCache = res; _cardDefsSig = sig;
   // 2026-10-17 (fight lag): while a round plays back, nothing edits the cards, but every replayed beat is its own task, so the defs
   // were rebuilt (~5-10 ms) on nearly every beat. During playback the copy now lives for a second.
-  if(!_cardDefsTick){ _cardDefsTick = true; let ms = 0; try{ if(matchState && matchState.resolving) ms = 1000; }catch(e){} /* matchState is declared further down */ setTimeout(()=>{ _cardDefsCache = null; _cardDefsTick = false; }, ms); }
+  if(!_cardDefsTick){ _cardDefsTick = true; let ms = 0; try{ if(matchState && (matchState.resolving || !matchState.over)) ms = 1000; }catch(e){} /* 2026-11-12 (package PERF4): a fight on screen keeps the copy 1 s too: the 0 ms expiry rebuilt the defs (5-10 ms) on every render call outside a replay; _cardDefsSignature still catches edits */ /* matchState is declared further down */ setTimeout(()=>{ _cardDefsCache = null; _cardDefsTick = false; }, ms); }
   return res;
 }
 function buildCardDefs(){
@@ -62080,6 +62080,7 @@ const entranceBorn = new Map();
 // only way to guarantee an unchanged side never visibly moves at all, rather than moving by a
 // coincidental zero pixels.
 let lastBoardSig = {1:null, 2:null};
+const PERF4_KEEP_DOM = true; // 2026-11-12 (package PERF4): switch for keeping a live fight's board rows and battle log across renderMatchUI (tests flip it to compare DOM)
 // Bugfix (2026-09-17, second and much broader root cause of "the placement of units is still
 // weird, they teleport everywhere" / "every turn all the cards phase out and phase back in" —
 // found after the flippingEls fix above still left real jumps and a live diagnostic traced one
@@ -72161,7 +72162,8 @@ const pointerLight = {x:null, y:null, sx:null, sy:null, type:'mouse', moved:0, t
     const dt = Math.min(100, Math.max(1, now - (P.last || now))); P.last = now;
     if(P.x != null){ const k = reducedMotion() ? 1 : 1 - Math.pow(1 - 0.22, dt / 16.7); // ease toward the pointer
       P.sx += (P.x - P.sx) * k; P.sy += (P.y - P.sy) * k; }
-    const r = bf.getBoundingClientRect(); if(!r.width || !r.height){ P.raf = requestAnimationFrame(frame); return; }
+    // 2026-11-12 (package PERF4): the board's box is re-read at most every 250 ms (or at once when the board element changes): a read each frame forced a style + layout pass after every GSAP write (371 passes in 3 rounds)
+    const r = (P.rBf === bf && now - P.rAt < 250 && P.rect) || (P.rect = bf.getBoundingClientRect(), P.rBf = bf, P.rAt = now, P.rect); if(!r.width || !r.height){ P.rect = null; P.raf = requestAnimationFrame(frame); return; }
     const px = P.sx == null ? null : (P.sx - r.left) / r.width * 100, py = P.sy == null ? null : (P.sy - r.top) / r.height * 100;
     if(night){ const l = lightOf(bf);
       const inside = P.x != null && P.x >= r.left && P.x <= r.right && P.y >= r.top && P.y <= r.bottom;
@@ -90613,7 +90615,9 @@ function renderMatchUI(){
   // under the results: art re-decoded, a token or a card still landing from the hand (its flight proxy, its entrance) started over.
   // Once the match is decided nothing on the board changes any more, so the board rows (with their cards) are kept as they are and
   // put back into the rebuilt screen; renderBoard then sees full rows with an unchanged signature and leaves them alone.
-  const keptRows = m.over ? BOARD_ROW_IDS.map(id=> document.getElementById(id)).filter(el=> el && el.__bwMatch === m && el.children.length) : [];
+  // 2026-11-12 (package PERF4): a live fight keeps its rows too (renderBoard's signature check skips an unchanged side) and its battle log (pushLog already draws each new line, so the 200-line replay is only for a fresh box): the round-end redraw was 54-220 ms at 1x
+  const keptRows = (m.over || PERF4_KEEP_DOM) ? BOARD_ROW_IDS.map(id=> document.getElementById(id)).filter(el=> el && el.__bwMatch === m && el.children.length) : [];
+  const keptLog = PERF4_KEEP_DOM && m.log.length < 200 ? document.getElementById('battleLog') : null; const keepLog = !!(keptLog && keptLog.__bwMatch === m && keptLog.dataset.pinWired);
   root.innerHTML = `
     <!-- 2026-09-29, per explicit request ("Put this top banner UI onto the top right corner of
          the same level as the Deck and enemy castle row."): the opponent tag + utility buttons
@@ -91018,6 +91022,7 @@ function renderMatchUI(){
       wireWinLossRewardAnim();
     }
   }
+  if(keepLog){ const fresh = document.getElementById('battleLog'); if(fresh && fresh !== keptLog){ try{ fresh.replaceWith(keptLog); }catch(e){} } }
   keptRows.forEach(old=>{ const fresh = document.getElementById(old.id); if(fresh && fresh !== old){ try{ fresh.replaceWith(old); }catch(e){} } }); // 2026-10-23 (package UI4)
   renderBoard();
   BOARD_ROW_IDS.forEach(id=>{ const el = document.getElementById(id); if(el) el.__bwMatch = m; }); // 2026-10-23 (package UI4): which match drew these rows
@@ -91028,7 +91033,7 @@ function renderMatchUI(){
   wireDropZones();
   if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox && !m.fxLib) wireSandboxPanel();
   updateControlsDisabled();
-  { const pin0 = battleLogPinned; ui32LastFieldKey = null; m.log.forEach(renderLogLine); battleLogPinned = pin0; } // replaying the lines into the fresh log never changes the pin (2026-10-18, BP)
+  if(!keepLog){ const pin0 = battleLogPinned; ui32LastFieldKey = null; m.log.forEach(renderLogLine); battleLogPinned = pin0; const lg0 = document.getElementById('battleLog'); if(lg0) lg0.__bwMatch = m; } // replaying the lines into the fresh log never changes the pin (2026-10-18, BP)
   try{ if(!m._logPinInit){ m._logPinInit = true; battleLogPinned = true; } wireBattleLogScroll(); const lg = document.getElementById('battleLog'); if(lg){ if(battleLogPinned) pinBattleLog(lg); else lg.scrollTop = battleLogScrollTop; } }catch(e){} // the rebuilt log keeps its place (2026-10-18, BP)
   // Sandbox has no hand/turn concept (see its own comment above) -- maybeAutoSkip exists to
   // auto-pass an empty-handed turn in a real match, which would otherwise fire every single

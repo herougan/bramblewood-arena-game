@@ -17,7 +17,7 @@ const EXE = process.env.BW_CHROMIUM || '/opt/pw-browsers/chromium_headless_shell
 const TYPES = {'.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.webp': 'image/webp', '.png': 'image/png', '.svg': 'image/svg+xml', '.css': 'text/css'};
 function serve(page){ const http = require('http'); return new Promise(res=>{ const s = http.createServer((q, r)=>{ let p = decodeURIComponent(q.url.split('?')[0]); if(p === '/') p = '/index.html';
   const f = p === '/index.html' ? page : path.join(ROOT, p); fs.readFile(f, (e, d)=>{ if(e){ r.writeHead(404); r.end(); return; } r.writeHead(200, {'content-type': TYPES[path.extname(f)] || 'application/octet-stream'}); r.end(d); }); }); s.listen(0, '127.0.0.1', ()=> res(s)); }); }
-const STK = {}; const GS = 51379 + 1;
+const EVT = []; const STK = {}; const GS = 51379 + 1;
 function stacks(ev){ // forced style / layout passes: who asked (top page frame of the JS stack on the trace event), by cost
   ev.filter(e=> e.ph === 'X' && (e.name === 'UpdateLayoutTree' || e.name === 'Layout') && e.args).forEach(e=>{ const st = (e.args.beginData && e.args.beginData.stackTrace) || (e.args.data && e.args.data.stackTrace) || []; const fr = st.filter(x=> x.url && (!args.includes('--nogsap') || !/index\.html$/.test(x.url) || x.lineNumber !== GS)).slice(0, +opt('--depth', 1)); const k = e.name[0] + ' ' + (fr.length ? fr.map(f=> (f.functionName || '(anon)') + ':' + f.lineNumber).join(' < ') : '(no JS: normal frame)'); const r = STK[k] || (STK[k] = {n: 0, ms: 0}); r.n++; r.ms += (e.tdur || 0) / 1000; }); }
 const SEL = {};
@@ -26,6 +26,7 @@ function work(ev){ if(args.includes('--selectors')) selstats(ev); if(args.includ
   const main = new Set(ev.filter(e=> e.name === 'thread_name' && e.args && e.args.name === 'CrRendererMain').map(e=> e.pid + ':' + e.tid));
   const M = ev.filter(e=> e.ph === 'X' && main.has(e.pid + ':' + e.tid)), cpu = nm=> Math.round(M.filter(e=> e.name === nm).reduce((s, e)=> s + (e.tdur || 0), 0) / 1000);
   const ult = M.filter(e=> e.name === 'UpdateLayoutTree'), tasks = M.filter(e=> e.name === 'RunTask').map(e=> (e.tdur || 0) / 1000);
+  if(args.includes('--events')){ const names = {}; M.forEach(e=>{ if(e.name !== 'RunTask') names[e.name] = (names[e.name] || 0) + (e.tdur || 0) / 1000; }); EVT.push(names); } // PERF4: inclusive ms by trace event name, summed over traces
   return {cpu: cpu('RunTask'), style: cpu('UpdateLayoutTree'), styleN: ult.length, els: ult.reduce((s, e)=> s + ((e.args && e.args.elementCount) || 0), 0), layout: cpu('Layout'), paint: cpu('Paint'), maxTask: Math.round(Math.max(0, ...tasks)), over50: tasks.filter(x=> x > 50).length};
 }
 const med = a=>{ const s = a.slice().sort((x, y)=> x - y); return s.length ? s[Math.floor(s.length / 2)] : 0; };
@@ -61,6 +62,11 @@ async function once(b, url, rate, rounds){
         if(!cur) cur = {ms: 0, by: {}}; cur.ms += d; let p = id, e = null; while(p){ const c = byId.get(p).callFrame; if(c.url && c.functionName !== '(root)' && !/^(Al|Qd)$/.test(c.functionName)) e = c; p = parent.get(p); }
         const k = e ? (e.functionName || '(anon)') + ':' + e.lineNumber : cf.functionName; cur.by[k] = (cur.by[k] || 0) + d; });
       const long = tasks.filter(t=> t.ms > 50000).sort((a, c)=> c.ms - a.ms); console.log('  long tasks (>50 ms, profiler on): ' + long.length + ' of ' + tasks.length + '; worst:'); long.slice(0, 10).forEach(t=> console.log('   ' + Math.round(t.ms / 1000) + ' ms: ' + Object.entries(t.by).sort((a, c)=> c[1] - a[1]).slice(0, 4).map(([k, v])=> k + ' ' + Math.round(v / 1000)).join(' | '))); }
+    { const incl = {}; profile.samples.forEach((id, i)=>{ const d = dt[i] || 0, seen = new Set(); let p = id; while(p){ const c = byId.get(p).callFrame; if(c.url && c.functionName){ const k = c.functionName + ':' + c.lineNumber; if(!seen.has(k)){ seen.add(k); incl[k] = (incl[k] || 0) + d; } } p = parent.get(p); } }); // PERF4: inclusive time by page function
+      if(args.includes('--incl')){ console.log('  inclusive time by function (ms):'); Object.entries(incl).sort((x, y)=> y[1] - x[1]).slice(0, +opt('--top', 22)).forEach(([k, v])=> console.log('   ' + String(Math.round(v / 1000)).padStart(6), k)); } }
+    if(opt('--under', null)){ const U = opt('--under'), kids = {}; profile.samples.forEach((id, i)=>{ const d = dt[i] || 0, chain = []; let p = id; while(p){ chain.push(byId.get(p).callFrame); p = parent.get(p); } chain.reverse(); const j = chain.findIndex(c=> c.functionName === U); if(j < 0) return;
+        const c = chain[j + 1]; const k = c ? (c.functionName || '(anon)') + ':' + c.lineNumber : '(self)'; kids[k] = (kids[k] || 0) + d; }); // PERF4: time directly under one function
+      console.log('  time directly under ' + U + ' (ms):'); Object.entries(kids).sort((x, y)=> y[1] - x[1]).slice(0, 25).forEach(([k, v])=> console.log('   ' + String(Math.round(v / 1000)).padStart(6), k)); }
     const pr = (o, n)=> Object.entries(o).sort((a, c)=> c[1] - a[1]).slice(0, n).forEach(([k, v])=> console.log('   ' + String(Math.round(v / 1000)).padStart(6), k));
     console.log('  busy self time by function (ms):'); pr(self, +opt('--top', 22)); console.log('  busy time by outermost page function:'); pr(entry, 16); }
   await ctx.close(); return {rate, idle, play, resolve, errs};
@@ -73,6 +79,7 @@ async function once(b, url, rate, rounds){
     for(const ph of ['play', 'resolve']){ const a = res[ph], m = f=> med(a.map(x=> x[f]));
       console.log(`  ${path.basename(page)} ${rate}x ${ph.padEnd(7)} n=${a.length} median/round: cpu ${m('cpu')} ms (style ${m('style')}/${m('styleN')} passes/${m('els')} els, layout ${m('layout')}, paint ${m('paint')})  longest task ${m('maxTask')}  tasks>50ms ${a.reduce((x, y)=> x + y.over50, 0)}  frames ${m('frames')} >33ms ${a.reduce((x, y)=> x + y.fOver33, 0)} worst ${Math.max(...a.map(x=> x.fMax))}${ph === 'resolve' ? '  wall ' + m('wall') : ''}`); }
     if(res.errs.length) console.log('  page errors', res.errs.slice(0, 2)); }
+  if(args.includes('--events')){ const t = {}; EVT.forEach(n=> Object.entries(n).forEach(([k, v])=> t[k] = (t[k] || 0) + v)); console.log('trace events on the main thread (inclusive ms, all phases):'); Object.entries(t).sort((x, y)=> y[1] - x[1]).slice(0, 25).forEach(([k, v])=> console.log('  ' + String(Math.round(v)).padStart(7), k)); }
   if(args.includes('--stacks')){ console.log('style (U) / layout (L) passes by the JS that caused them (ms, count):'); Object.entries(STK).sort((a, c)=> c[1].ms - a[1].ms).slice(0, 25).forEach(([k, v])=> console.log('  ' + String(Math.round(v.ms)).padStart(6), String(v.n).padStart(5), k)); }
   if(args.includes('--selectors')){ console.log('slowest selectors (us, attempts, matches):'); Object.entries(SEL).sort((a, c)=> c[1].ns - a[1].ns).slice(0, +opt('--top', 25)).forEach(([k, v])=> console.log('  ' + String(Math.round(v.ns / 1000)).padStart(7), String(v.n).padStart(7), String(v.match).padStart(6), k.slice(0, +opt('--w', 150)))); }
   if(opt('--json', null)) fs.writeFileSync(opt('--json'), JSON.stringify(all, null, 1));
