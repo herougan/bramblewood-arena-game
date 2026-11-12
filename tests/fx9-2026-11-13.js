@@ -52,7 +52,7 @@ ok(/yPercent:0, opacity:\.9, duration:\.7/.test(fxb) && /filter:'brightness\(1\.
 ok(/rgba\(255,150,170,\.6\)/.test(fxb), '#1 the wash keeps its rosy colours');
 
 // ---------------------------------------------------------------- #5 Guardian
-ok(/function blockerReady\(n\)\{ return !!n && !\(n\.wait > 0\) && !n\.stunned && !\(n\.frozen > 0\) && !dozing\(n\) && !n\.petrified && !\(n\.bound > 0\) && !n\.chained; \}/.test(eng), '#5 engine blockerReady unchanged (rules untouched)');
+ok(/function blockerReady\(n\)\{ return !!n && (!inRitual\(n\)[^&]*&& )?!\(n\.wait > 0\) && !n\.stunned && !\(n\.frozen > 0\) && !dozing\(n\) && !n\.petrified && !\(n\.bound > 0\) && !n\.chained; \}/.test(eng), '#5 engine blockerReady unchanged (rules untouched)'); // 2026-11-13: ENG-RC1's Ritual check may come first
 ok(/const guards = !!\(\(d\.effects\|\|\{\}\)\.guardian\) && !fog/.test(src), '#5 every Guardian still carries its plates element (shown or hidden by class)');
 ok(/\$\{guards\?'has-guard ' \+ fx9GuardCls\(c\)/.test(src), '#5 boardCardHTML adds the Ready state class');
 ok(/fx9GuardSync\(el, c\); \/\/ 2026-11-13 \(package FX9 #5\)/.test(fnSrc('updateCardStatusDisplay')) && /fx9GuardSync\(el, currentCardByUid\(uid\)\)/.test(fnSrc('updateCardWaitDisplay')), '#5 a live status or Wait change re-syncs the plates');
