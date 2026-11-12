@@ -8,6 +8,35 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-12 22:47-23:47: Owner notes (released the 1023e batch 22:47; NET1-1 applied 23:2x)
+| # | Note | Package |
+|---|---|---|
+| a | (23:22) Effects Lab entries built 10-21..23 throw errors; more skill effects to see | FX7 (running) |
+| b | (23:22) Meteor (portent, sky darkens, darkness creeps, bright ball, boom) + 10 more like it | FX8 (running) |
+| c | (23:22) Prompts go, + the art he rejected (Dormouse) | ART12 (running) |
+| d | (23:22) Owner fixes Barrel Cactus and tests Maps 13, 16, 19; NET1-1 apply it | owner / done |
+| 1 | Morning (pinkish) effect 10% less bright | FX9 |
+| 2 | Much less laggy now; look for other sources | PERF5 |
+| 3 | "Search for implicit state machines and fix potential bugs" | AUDIT1 |
+| 4 | Premium shop separate from the normal shop; the name-change ticket is premium | SHOP1 |
+| 5 | Guardian: guards only when Ready (answer to the FX6 question); its VFX only then too | FX9 |
+| 6 | Ambush: the animation on the card itself, so camera moves don't leave the VFX behind | FX9 |
+| 7 | Graveyard: cards travel to the new spot (pitched or played) instead of teleporting | FX9 |
+| 8 | Sleep not obvious: blue Zs drifting out of the card's top right | FX9 |
+| 9 | Board zoom-out when more cards: transition, not a jump; such transitions run nearer source speed (0.5/1/1.5/2/3/4/5 -> 0.75/1/1.2/1.4/1.6/2.0/2.5) | ANIM1 |
+| 10 | Bolt effects still laggy | PERF5 |
+| 11 | Card editor: mark a card as Baby; wherever it comes from, it starts at Level 0 | BABY1 |
+| 12 | Unit death, unit damage numbers and bramble damage numbers (on-hits) drop a frame | PERF5 |
+| 13 | A card's shape after playing is sometimes slightly off until it acts or is hit | ANIM1 |
+| 14 | Shell break: a tortoise shell breaking, not a stretched semicircle | FX9 |
+| 15 | Dragon spawn: improve; keep flying across the screen, vary the direction | FX9 |
+| 16 | Ritual: cannot be attacked (as if absent, but holds its slot). Chained takes Ritual's old role: can be attacked, needs its chains removed to act, each chain gives 1 Armor | ENG-RC1 |
+| 17 | Stampede runs straight ahead at the opposing bramble's health bar | FX9 |
+| 18 | Multiplayer dungeon waiting room: better UI; one per multiplayer dungeon on the map; jump between dungeons from the main UI | DUNGEON1 |
+| 19 | Card play (hand to field) at 1.5x+ (sometimes 1x): field card shows, vanishes, anim half plays, reappears. Wait for the play anim; at 4x/5x skip the anim (straight go-to) | ANIM1 |
+| 20 | Multiplayer multi-row beatdowns too fast: column attacks in a row 2x slower (relative to speed); column-by-column a bit slower unless already at single-player pace | DUNGEON1 |
+| 21 | Multiplayer dungeon: at most 5 skirmishes; full rewards only for all; partial = completed% x 0.5, only 1-3 parts done = x 0.25; after a part, stay on the board, a "Part N: ..." banner scrolls, enemies arrive as if they had 3-5 free turns (with Wait); counts as cleared only after all; enemy side usually 2+ rows | DUNGEON1 |
+
 ## 11-12 08:39: Owner notes
 - FX6 (done, merged, waiting for release): High Tide second wave; Bulwark walls rise from the slot with hammer knocks; Swarm / spawn-on-death crawlies; spore puff (Spore Cloud sleepers, Puffball Bombardier). Guardian: no change, asked the owner what he sees. PUFF1-1 filed.
 - Running: full suite again (runner now stops a test after 10 min; a hung test stalled the 09:22 run for 2 h); BAL24 ladder rebuild on the 11-12 lists (pools done, opt running); TESTFIX1 (tests that encode the old lists).
