@@ -1798,3 +1798,20 @@ All four are cheap by design: one element or a handful of spans (WAAPI, transfor
 | ✅ Spore puff | Spore Cloud's sleep tick (`statusFx` `field:'sporeCloud'`); a Puffball Bombardier's hit | five dark lime-green puffs billow up off the card and thin out in under 1 s; reduced motion: one soft fade | `sporePuffVfx(el)` (reusable) |
 
 Lab entries: `tools/effects-lab/manifest/fx6.js` (variant key `FX6`). Check: `tests/fx6-2026-11-12.js`.
+
+## 2026-11-12 (package FX7): seven skill proposals, and the Lab errors (Lab only, not wired into fights)
+Owner 23:22: "Build more effects for me to see related to the kind of effects we are doing!" Each skill below had no look of its own. All seven are built like FX6's: one host over the card (`fx7Run` on `fxHostAt`), a few spans, WAAPI on transform and opacity, gone by about 1 s, the host removes itself. Effects Medium and up: the full effect; Low and reduced motion: one still piece that only fades; None: nothing. Wiring a fight later is one call per effect (`xVfx(boardCardEl(uid))`). Sound: the Lab borrows existing cues (`buzz`, `reflectTone`, `momentumTone`); new cues are TBC if the owner picks these.
+
+| Skill | Call | Look | Spans |
+|---|---|---|---|
+| Rabid (hits add Poison) | `rabidFrothVfx(el)` | pale green froth bubbles pop off the card, a red rage glow pulses at the edge | 8 |
+| Spiteful (answers a hit) | `spiteBristleVfx(el)` | dark red thorns snap out of the card edge and straight back | 9 |
+| Rock-solid (+2/+2 per Stone) | `rockSolidVfx(el)` | stone-coloured rim, pebbles bounce down the card and settle, a dust ring at its foot | 7 |
+| Iron-will (+3/+3 per Metal) | `ironWillVfx(el)` | a steel sheen sweeps across, leaving a cold steel rim | 2 |
+| Haste / Speed | `hasteStreakVfx(el)` | six thin lines streak past, down on the enemy row, up on ours | 7 |
+| True Sight (Keen Eye) | `trueSightVfx(el)` | an eye opens over the card, looks left and right, closes; a gold ring marks the find | 3 |
+| Heavy Metal (+ore) | `oreClangVfx(el)` | three steel nuggets pop off the card with a metal-blue ring | 4 |
+
+Lab: `tools/effects-lab/manifest/fx7.js`, area "FX7 proposals" (ids `fx7-*`). Check: `tests/fx7-2026-11-12.js`.
+
+**Lab errors fixed (same package).** Entries built 10-21 to 10-23 threw because the functions they call were never copied into the Lab (`tools/effects-lab/fx-src-extra.txt`), or called helpers and tables that those functions need in turn (`escapeHtml`, `iconHTML`, `ICON_ART` after `SKILL_ICON_HTML`, `DEATH_TONES`, `BURN_MASKS`, `animMs`, `en2Layer`, `pl2BrambleTile` ...); `LEADER_THRONE_WAIT_MS` is shimmed in `manifest/_game.js`. The Lab also refused every variant keyed `FX6`, `I`, `J` or `LAB` (the key had to be one letter A-H), so FX6's own entries, VIS4 / VIS5 and wave 17 never registered; keys may now be a short tag. `tr-token`'s later registration moved the whole entry to the board stage (its A and B variants need the cards stage), and two `castle-hp-number` variants were both `G`. `tests/lab-errors-2026-11-12.py` now plays every variant and fails on any error.

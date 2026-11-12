@@ -27,6 +27,10 @@ const KINDS = ['unit', 'structure', 'castle', 'field'];
 def('cardBackClass', d=> 'bw-back bk-' + (KINDS.includes(d) ? d : (d && d.isCastle) ? 'castle' : (d && d.field) ? 'field' : 'unit'));
 def('bwCardBackClass', W.cardBackClass);
 if(typeof W.floatDetachDepth === 'undefined') W.floatDetachDepth = 0;
+// 2026-11-12 (FX7): arena_app.js declares this in a multi-const line (1700 ms x 0.75) that sync_fx_src.py cannot copy; leaderThroneVfx reads it
+if(typeof W.LEADER_THRONE_WAIT_MS === 'undefined') W.LEADER_THRONE_WAIT_MS = 1275;
+// 2026-11-12 (FX7): icoParts (iconHTML) reads ICO_SEG, a one-line const holding braces that sync_fx_src.py cuts short; same value as arena_app.js
+if(typeof W.ICO_SEG === 'undefined') W.ICO_SEG = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter(undefined, {granularity:'grapheme'}) : null;
 // the sky's ease state (arena_app.js keeps these as lets beside syncSkyFx)
 if(typeof W.skyStepEase === 'undefined') W.skyStepEase = null;
 if(typeof W.skyPhaseEase === 'undefined') W.skyPhaseEase = null;

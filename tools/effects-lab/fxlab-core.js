@@ -45,8 +45,8 @@ function register(spec){
   let e = BY_ID.get(spec.id);
   // 2026-10-16: three families may add entries that are not in the inventory (map titles, map grandeur, the fun set;
   // user: "I like having more map effects and title effects" / "Invent more for fun?"). They carry their own name/trigger.
-  if(!e && /^(map-title-|map-grand-|fun-)/.test(String(spec.id || ''))){
-    e = {id:spec.id, area:spec.area || (/^fun-/.test(spec.id) ? 'fun' : 'map-grandeur'), name:spec.name || spec.id, trigger:spec.trigger || '', current:spec.current || '',
+  if(!e && /^(map-title-|map-grand-|fun-|fx7-)/.test(String(spec.id || ''))){ // 2026-11-12 (FX7): + fx7- (area 'fx7', "FX7 proposals")
+    e = {id:spec.id, area:spec.area || (/^fx7-/.test(spec.id) ? 'fx7' : /^fun-/.test(spec.id) ? 'fun' : 'map-grandeur'), name:spec.name || spec.id, trigger:spec.trigger || '', current:spec.current || '',
       quality:spec.quality || 'good', priority:spec.priority || 2, themeNotes:spec.themeNotes || '', variantsSuggested:false, future:!!spec.future, batch:'G', isNew:true};
     INV.push(e); BY_ID.set(e.id, e);
   }
@@ -60,7 +60,7 @@ function register(spec){
   Object.assign(rec, {stage, note:spec.note || rec.note || '', inGameHook:spec.inGameHook || rec.inGameHook || '', duration:spec.duration || rec.duration});
   vs.forEach((v, i)=>{
     const key = String(v.key || 'ABCDEFGH'[i]).toUpperCase();
-    if(!/^[A-H]$/.test(key)){ problem(`register: "${spec.id}" variant key "${key}" must be one letter A–H`); return; }
+    if(!/^[A-Z][A-Z0-9]{0,3}$/.test(key)){ problem(`register: "${spec.id}" variant key "${key}" must be a letter A–H or a short tag such as FX6`); return; } // 2026-11-12 (FX7): FX6, I, J and LAB were rejected here, so those variants never registered
     if(typeof v.play !== 'function'){ problem(`register: "${spec.id}" variant ${key} has no play(ctx)`); return; }
     if(v.stage && !STAGES.includes(v.stage)){ problem(`register: "${spec.id}" variant ${key} stage "${v.stage}" is unknown`); return; }
     const at = rec.variants.findIndex(x=> x.key === key);

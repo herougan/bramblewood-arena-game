@@ -11077,6 +11077,19 @@
   background:radial-gradient(circle at 45% 42%, rgba(74,104,6,.92) 0, rgba(52,84,10,.8) 38%, rgba(38,66,12,.45) 62%, rgba(38,66,12,0) 74%);}
 .fx-float-host > .fx6-dust{position:absolute; bottom:2px; width:14px; height:10px; border-radius:50%; pointer-events:none; will-change:transform, opacity; opacity:0;
   background:radial-gradient(circle, rgba(196,172,128,.9) 0, rgba(168,142,100,.55) 55%, rgba(168,142,100,0) 75%);}
+/* 2026-11-12 (package FX7): seven skill proposals (Lab only), spans in a fxHostAt host animated by WAAPI (transform / opacity). Low effects and reduced motion
+   keep one still piece (JS), so no animation rule is needed here. */
+.fx-float-host > .fx7{position:absolute; pointer-events:none; will-change:transform, opacity; opacity:0;}
+.fx-float-host > .fx7-rim{inset:0; border-radius:10px; border:3px solid var(--c, #fff); box-shadow:0 0 10px 2px var(--c, #fff), inset 0 0 10px 1px var(--c, #fff);}
+.fx-float-host > .fx7-foam{border-radius:50%; background:radial-gradient(circle at 35% 30%, #fff 0, #eaf6d8 40%, rgba(190,226,160,.55) 75%); border:1px solid rgba(120,160,90,.7);}
+.fx-float-host > .fx7-thorn{width:8px; height:17px; transform-origin:50% 100%; background:linear-gradient(#e0583a, #8c1c1c 60%, #4a0d0d); clip-path:polygon(50% 0, 100% 100%, 0 100%);}
+.fx-float-host > .fx7-pebble{border-radius:42% 58% 50% 50%; background:radial-gradient(circle at 35% 30%, #cfc6b4 0, #8f8574 55%, #5c5446);}
+.fx-float-host > .fx7-ring{width:60px; height:60px; border-radius:50%; border:3px solid var(--c, #b8ad98); box-shadow:0 0 8px 1px var(--c, #b8ad98);}
+.fx-float-host > .fx7-sheen{top:-10%; height:120%; background:linear-gradient(90deg, rgba(220,232,250,0), rgba(235,242,255,.9) 50%, rgba(220,232,250,0));}
+.fx-float-host > .fx7-streak{width:3px; border-radius:2px; background:linear-gradient(rgba(255,240,170,0), #fff6c8 60%, #ffe27a);}
+.fx-float-host > .fx7-eye{width:44px; height:24px; border-radius:50%; background:#fbf3dc; border:2px solid #2a2118; box-shadow:0 0 10px 2px rgba(255,213,110,.8);}
+.fx-float-host > .fx7-pupil{width:10px; height:10px; border-radius:50%; background:#2a2118; box-shadow:inset 2px 2px 0 -1px #fff;}
+.fx-float-host > .fx7-ore{width:14px; height:14px; border-radius:3px; rotate:45deg; background:linear-gradient(135deg, #f1f6ff 0, #8fa6c6 45%, #55698a); border:1px solid #33425c;}
 .bleed-drop{will-change:transform, opacity; text-shadow:0 1px 1px rgba(0,0,0,.35);}
 /* EN3 (2026-10-23): Rampart's streak from the bramble to the unit taking its share, its flash on the unit, the guard's shield (no line)
    and Bramble Armor's shield ting on the bramble. */
@@ -55452,7 +55465,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'edee20d91558', BUILD_CARD_HASH = '19a64baf79f7dd4ff53e2e32f32929f7261e42d1c2c91d8a57fca469529ec883';
+const BUILD_ID = 'f025eaf8db70', BUILD_CARD_HASH = '19a64baf79f7dd4ff53e2e32f32929f7261e42d1c2c91d8a57fca469529ec883';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -102318,6 +102331,51 @@ function sporePuffVfx(el, o){
       : [{transform:'translate(-50%, -40%) scale(.35)', opacity:0}, {transform:'translate(-50%, -62%) scale(.9)', opacity:.9, offset:.3}, {transform:`translate(calc(-50% + ${(i - 2)*8}px), -105%) scale(1.35)`, opacity:0}],
       {duration:calm ? 900 : 820, delay:calm ? 0 : i*40, easing:'ease-out', fill:'forwards'}); }
 }
+// ==== Package FX7 (2026-11-12, owner 23:22: more skill effects in FX6's vein): seven proposals for skills with no look of their own, in the Lab only
+// (tools/effects-lab/manifest/fx7.js); none is wired into a fight, so wiring is one line each (in renderVfxForEvent, call the function with the unit's boardCardEl).
+// Same build as FX6: one host over the card (fxHostAt), a few spans, WAAPI on transform and opacity only, nothing per frame; the host removes itself.
+// Effects Medium and up: the full effect. Low and reduced motion: one still piece that only fades (opacity). Effects None: nothing.
+function fx7Run(el, ms, build){
+  if(!el || !el.isConnected || !fxAtLeast('low') || !el.animate) return;
+  const r = ui23Rect(el.getBoundingClientRect()); if(!r) return;
+  const calm = reducedMotion() || !fxAtLeast('med'), host = fxHostAt(el, ms, r), dir = host.dataset.row === 'enemy' ? 1 : -1;
+  // add(cls, css, frames, o): one span; o.still = the piece kept on Low / reduced motion (opacity only); the others are skipped there
+  const add = (cls, css, frames, o)=>{ o = o || {}; if(calm && !o.still) return;
+    const i = document.createElement('i'); i.className = 'fx7 fx7-' + cls; if(css) i.style.cssText = css; host.appendChild(i);
+    i.animate(calm ? [{opacity:0}, {opacity:o.peak || .85, offset:.3}, {opacity:0}] : frames, {duration:calm ? 800 : o.ms || 800, delay:calm ? 0 : o.delay || 0, easing:o.ease || 'ease-out', fill:'forwards'}); };
+  build(add, r, dir); }
+function FX7_C(x, y, sc, op){ return {transform:`translate(${x}px, ${y}px) scale(${sc})`, opacity:op}; }
+// Rabid: its bites add Poison. Pale green froth bubbles pop off the card and a red rage glow pulses at its edge.
+function rabidFrothVfx(el){ fx7Run(el, 1100, (add, r)=>{ add('rim', '--c:#d6402a;', [{opacity:0}, {opacity:.9, offset:.25}, {opacity:.35, offset:.5}, {opacity:.8, offset:.7}, {opacity:0}], {still:true, ms:850, peak:.7});
+  for(let i = 0; i < 7; i++){ const w = 8 + (i % 3)*4, x = r.width*(.2 + ((i*37) % 60)/100);
+    add('foam', `left:${x}px; top:${r.height*.55}px; width:${w}px; height:${w}px;`, [FX7_C(0, 0, .3, 0), Object.assign(FX7_C((i % 2 ? 6 : -6), -r.height*.12, 1, .95), {offset:.55}), FX7_C((i % 2 ? 10 : -10), -r.height*.24, 1.6, 0)], {ms:700, delay:i*60}); } }); }
+// Spiteful: a hit on it is answered. Dark red thorns snap out of the card's edge and straight back.
+function spiteBristleVfx(el){ fx7Run(el, 900, (add, r)=>{ add('rim', '--c:#8c1c1c;', [{opacity:0}, {opacity:.9, offset:.2}, {opacity:0}], {still:true, ms:600, peak:.8});
+  for(let i = 0; i < 8; i++){ const a = i*45 + 22, rad = a/57.3, R = Math.min(r.width, r.height)*.5, x = r.width/2 + Math.sin(rad)*R*.9 - 4, y = r.height/2 - Math.cos(rad)*R*.95 - 17;
+    const f = (d, sy, op)=> ({transform:`rotate(${a}deg) translateY(${-d}px) scaleY(${sy})`, opacity:op});
+    add('thorn', `left:${x}px; top:${y}px;`, [f(0, .2, 0), Object.assign(f(7, 1, 1), {offset:.25, easing:'ease-out'}), Object.assign(f(7, 1, 1), {offset:.6}), f(0, .2, 0)], {ms:680, delay:(i % 2)*40, ease:'linear'}); } }); }
+// Rock-solid (+2/+2 per Stone): the card shrugs it off. A stone-coloured rim, grey pebbles bounce down its face and settle, a dust ring at its foot.
+function rockSolidVfx(el){ fx7Run(el, 1100, (add, r)=>{ add('rim', '--c:#9a8e7a;', [{opacity:0, transform:'scale(1.06)'}, {opacity:.95, transform:'scale(1)', offset:.3}, {opacity:.4, offset:.7}, {opacity:0}], {still:true, ms:900, peak:.75});
+  for(let i = 0; i < 5; i++){ const x = r.width*(.14 + i*.17), fall = r.height*(.5 + (i % 3)*.12), b = 10 + (i % 2)*6;
+    add('pebble', `left:${x}px; top:${r.height*.06}px; width:${6 + (i % 3)*2}px; height:${5 + (i % 3)*2}px;`, [FX7_C(0, 0, 1, 0), Object.assign(FX7_C((i - 2)*3, fall, 1, 1), {offset:.45, easing:'cubic-bezier(.5,0,.9,.6)'}), Object.assign(FX7_C((i - 2)*5, fall - b, 1, 1), {offset:.62}), FX7_C((i - 2)*6, fall, 1, 0)], {ms:760, delay:i*50}); }
+  add('ring', `left:${r.width/2 - 30}px; top:${r.height - 14}px; --c:#b8ad98;`, [FX7_C(0, 0, .3, .8), FX7_C(0, 0, 1.9, 0)], {ms:600, delay:260}); }); }
+// Iron-will (+3/+3 per Metal): a steel sheen sweeps across the card, leaving a cold steel rim.
+function ironWillVfx(el){ fx7Run(el, 1100, (add, r)=>{ add('rim', '--c:#b4c2d8;', [{opacity:0, transform:'scale(1.06)'}, {opacity:1, transform:'scale(1)', offset:.35}, {opacity:.5, offset:.75}, {opacity:0}], {still:true, ms:950, peak:.85});
+  add('sheen', `left:${-r.width*.3}px; width:${r.width*.28}px;`, [{transform:'translateX(0) skewX(-18deg)', opacity:0}, {opacity:.9, offset:.25}, {transform:`translateX(${r.width*1.2}px) skewX(-18deg)`, opacity:0}], {ms:650, delay:80, ease:'ease-in-out'}); }); }
+// Haste / Speed: thin lines streak past the card, trailing the way it moves (down for the enemy row, up for ours).
+function hasteStreakVfx(el){ fx7Run(el, 900, (add, r, dir)=>{ add('rim', '--c:#ffe27a;', [{opacity:0}, {opacity:.8, offset:.2}, {opacity:0}], {still:true, ms:550, peak:.6});
+  for(let i = 0; i < 6; i++){ const h = r.height*(.3 + (i % 3)*.1), y0 = dir > 0 ? -h : r.height;
+    add('streak', `left:${r.width*(.1 + i*.15)}px; top:0; height:${h}px;`, [{transform:`translateY(${y0 + (dir > 0 ? -h*.2 : h*.2)}px)`, opacity:0}, {opacity:.9, offset:.3}, {transform:`translateY(${dir > 0 ? r.height : -h}px)`, opacity:0}], {ms:420, delay:(i*53) % 160, ease:'ease-in'}); } }); }
+// True Sight / Keen Eye: an eye opens over the card, looks left and right, and closes; a thin ring marks what it found.
+function trueSightVfx(el){ fx7Run(el, 1200, (add, r)=>{ const cx = r.width/2 - 22, cy = r.height*.4;
+  add('eye', `left:${cx}px; top:${cy}px;`, [{transform:'scaleY(.08)', opacity:0}, {transform:'scaleY(1)', opacity:1, offset:.2}, {transform:'scaleY(1)', opacity:1, offset:.78}, {transform:'scaleY(.08)', opacity:0}], {still:true, ms:1000, peak:.95});
+  add('pupil', `left:${r.width/2 - 5}px; top:${cy + 7}px;`, [{transform:'translateX(0)', opacity:0}, {transform:'translateX(-9px)', opacity:1, offset:.3}, {transform:'translateX(9px)', opacity:1, offset:.6}, {transform:'translateX(0)', opacity:0}], {ms:1000});
+  add('ring', `left:${r.width/2 - 30}px; top:${cy - 18}px; --c:#ffd56e;`, [FX7_C(0, 0, .4, 0), Object.assign(FX7_C(0, 0, 1, .8), {offset:.4}), FX7_C(0, 0, 1.6, 0)], {ms:900, delay:200}); }); }
+// Heavy Metal (+ore): three steel nuggets pop off the card with a ring of metal-blue light.
+function oreClangVfx(el){ fx7Run(el, 1000, (add, r)=>{ const cx = r.width/2, cy = r.height*.5;
+  add('ring', `left:${cx - 30}px; top:${cy - 30}px; --c:#8fb0d8;`, [FX7_C(0, 0, .3, .9), FX7_C(0, 0, 1.5, 0)], {still:true, ms:600, peak:.7});
+  for(let i = 0; i < 3; i++){ const dx = (i - 1)*r.width*.26;
+    add('ore', `left:${cx - 7}px; top:${cy - 7}px;`, [FX7_C(0, 0, .3, 0), Object.assign(FX7_C(dx*.6, -r.height*.22 - (i % 2)*8, 1.1, 1), {offset:.35, easing:'ease-in'}), Object.assign(FX7_C(dx, -r.height*.02, 1, 1), {offset:.7}), FX7_C(dx, 4, .8, 0)], {ms:760, delay:i*70}); } }); }
 function afterSettle(uid, fn){ const el0 = boardCardEl(uid), r0 = el0 ? ui23Rect(el0.getBoundingClientRect()) : null, row0 = el0;
   setTimeout(()=>{ const el = boardCardEl(uid), r = el && ui23Rect(el.getBoundingClientRect()); if(r) fn(el, r); else if(r0) fn(null, r0, row0); }, 60); } // UI23 (#25): a 0x0 box is no anchor
 // 2026-11-06 (package UI23 #25, owner: "context pips get thrown to the top-left of the screen"): a page-level effect placed from an element's box
