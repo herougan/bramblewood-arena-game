@@ -1,0 +1,1710 @@
+{
+ "about": "SIDE1 side lists (tools/side1/lists_2026_11_12.js): Claude's Yes / No picks, NEW! 3 / Carried 8, 1-3 skills a map",
+ "built": "2026-11-12",
+ "maps": {
+  "mo": {
+   "parent": "m1",
+   "unlockAfterNo": 21,
+   "neu": [
+    "ent",
+    "elder-willow",
+    "thorn-shrike"
+   ],
+   "car": [
+    "bramble-sprout",
+    "barkplate-beetle",
+    "quill-thorn-boar",
+    "quillguard",
+    "bramblewood-lynx",
+    "sergeant-bramblefox",
+    "farm-dog",
+    "earthworm"
+   ],
+   "nNew": 3,
+   "nCar": 8,
+   "skills": [
+    "Fog",
+    "Delivery, every turn",
+    "Bleed"
+   ],
+   "lightSkills": [
+    "Flying"
+   ],
+   "carriedOffSkills": [
+    {
+     "id": "bramble-sprout",
+     "off": [
+      "Thorns"
+     ]
+    },
+    {
+     "id": "barkplate-beetle",
+     "off": [
+      "Fortify (Armor 1), while it lives",
+      "Thorns"
+     ]
+    },
+    {
+     "id": "quill-thorn-boar",
+     "off": [
+      "Thorns"
+     ]
+    }
+   ],
+   "before": [
+    "ent",
+    "elder-willow",
+    "thorn-shrike",
+    "bramble-sprout",
+    "barkplate-beetle",
+    "quill-thorn-boar",
+    "bramblewood-lynx",
+    "quillguard",
+    "house-cat",
+    "earthworm",
+    "farm-dog"
+   ],
+   "after": [
+    "ent",
+    "elder-willow",
+    "thorn-shrike",
+    "bramble-sprout",
+    "barkplate-beetle",
+    "quill-thorn-boar",
+    "quillguard",
+    "bramblewood-lynx",
+    "sergeant-bramblefox",
+    "farm-dog",
+    "earthworm"
+   ],
+   "dropped": [
+    "house-cat"
+   ],
+   "added": [
+    "sergeant-bramblefox"
+   ]
+  },
+  "mq": {
+   "parent": "mf",
+   "unlockAfterNo": 12,
+   "neu": [
+    "lucky-hopper",
+    "jackrabbit-sprinter",
+    "clover-butterfly"
+   ],
+   "car": [
+    "chipmunk-cavalry",
+    "cottontail",
+    "robin-redbreast",
+    "dormouse",
+    "puddle-skimmer",
+    "honey-bee",
+    "bee-forager"
+   ],
+   "nNew": 3,
+   "nCar": 7,
+   "skills": [
+    "Quick"
+   ],
+   "lightSkills": [
+    "Flying"
+   ],
+   "carriedOffSkills": [
+    {
+     "id": "puddle-skimmer",
+     "off": [
+      "Rainrunner"
+     ]
+    },
+    {
+     "id": "bee-forager",
+     "off": [
+      "On Turn Start"
+     ]
+    }
+   ],
+   "before": [
+    "jackrabbit-sprinter",
+    "harvest-mouse",
+    "ant-hill",
+    "bee-sentry",
+    "cricket-drummer",
+    "robin-redbreast",
+    "slow-worm",
+    "earthworm"
+   ],
+   "after": [
+    "lucky-hopper",
+    "jackrabbit-sprinter",
+    "clover-butterfly",
+    "chipmunk-cavalry",
+    "cottontail",
+    "robin-redbreast",
+    "dormouse",
+    "puddle-skimmer",
+    "honey-bee",
+    "bee-forager"
+   ],
+   "dropped": [
+    "harvest-mouse",
+    "ant-hill",
+    "bee-sentry",
+    "cricket-drummer",
+    "slow-worm",
+    "earthworm"
+   ],
+   "added": [
+    "lucky-hopper",
+    "clover-butterfly",
+    "chipmunk-cavalry",
+    "cottontail",
+    "dormouse",
+    "puddle-skimmer",
+    "honey-bee",
+    "bee-forager"
+   ]
+  },
+  "mp": {
+   "parent": "mb",
+   "unlockAfterNo": 6,
+   "neu": [
+    "riverworks-bastion",
+    "lodge-engineer",
+    "dam-keeper-beaver"
+   ],
+   "car": [
+    "beaver-lumberjack",
+    "muskrat-reedgatherer",
+    "muskrat-lodgekeeper",
+    "duck-paddler",
+    "snapstick-turtle",
+    "pond-algae",
+    "raft-spider",
+    "water-shrew"
+   ],
+   "nNew": 3,
+   "nCar": 8,
+   "skills": [
+    "Rampart",
+    "Timbered",
+    "Delivery, every turn"
+   ],
+   "lightSkills": [],
+   "carriedOffSkills": [
+    {
+     "id": "beaver-lumberjack",
+     "off": [
+      "Delivery"
+     ]
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "off": [
+      "Delivery"
+     ]
+    },
+    {
+     "id": "muskrat-lodgekeeper",
+     "off": [
+      "Bulwark"
+     ]
+    },
+    {
+     "id": "pond-algae",
+     "off": [
+      "Bloom"
+     ]
+    },
+    {
+     "id": "water-shrew",
+     "off": [
+      "Venomous"
+     ]
+    }
+   ],
+   "before": [
+    "lodge-engineer",
+    "box-turtle",
+    "old-sturgeon",
+    "muskrat-lodgekeeper",
+    "snapstick-turtle",
+    "pond-algae",
+    "muskrat-reedgatherer",
+    "platypus-spur",
+    "water-shrew"
+   ],
+   "after": [
+    "riverworks-bastion",
+    "lodge-engineer",
+    "dam-keeper-beaver",
+    "beaver-lumberjack",
+    "muskrat-reedgatherer",
+    "muskrat-lodgekeeper",
+    "duck-paddler",
+    "snapstick-turtle",
+    "pond-algae",
+    "raft-spider",
+    "water-shrew"
+   ],
+   "dropped": [
+    "box-turtle",
+    "old-sturgeon",
+    "platypus-spur"
+   ],
+   "added": [
+    "riverworks-bastion",
+    "dam-keeper-beaver",
+    "beaver-lumberjack",
+    "duck-paddler",
+    "raft-spider"
+   ]
+  },
+  "mg": {
+   "parent": "mb",
+   "unlockAfterNo": 7,
+   "neu": [
+    "octopus-tactician",
+    "raccoon-nightcrew",
+    "salvager-hermit-crab"
+   ],
+   "car": [
+    "gull-thief",
+    "pincushion-urchin",
+    "limpet-clinger",
+    "open-ocean-hermit-crab",
+    "driftwood-crab",
+    "rock-pool-starfish"
+   ],
+   "nNew": 3,
+   "nCar": 6,
+   "skills": [
+    "Cleave",
+    "Stealth",
+    "Salvage"
+   ],
+   "lightSkills": [
+    "Tide",
+    "Nocturnal"
+   ],
+   "carriedOffSkills": [
+    {
+     "id": "gull-thief",
+     "off": [
+      "On Kill"
+     ]
+    },
+    {
+     "id": "pincushion-urchin",
+     "off": [
+      "Thorns"
+     ]
+    },
+    {
+     "id": "limpet-clinger",
+     "off": [
+      "Shell"
+     ]
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "off": [
+      "Armor",
+      "Crab Claws"
+     ]
+    },
+    {
+     "id": "driftwood-crab",
+     "off": [
+      "On Attacked",
+      "Guardian",
+      "Crab Claws"
+     ]
+    }
+   ],
+   "before": [
+    "trash-panda-trickster",
+    "salvager-hermit-crab",
+    "glow-worm",
+    "gull-thief",
+    "rock-pool-starfish",
+    "pincushion-urchin",
+    "limpet-clinger"
+   ],
+   "after": [
+    "octopus-tactician",
+    "raccoon-nightcrew",
+    "salvager-hermit-crab",
+    "gull-thief",
+    "pincushion-urchin",
+    "limpet-clinger",
+    "open-ocean-hermit-crab",
+    "driftwood-crab",
+    "rock-pool-starfish"
+   ],
+   "dropped": [
+    "trash-panda-trickster",
+    "glow-worm"
+   ],
+   "added": [
+    "octopus-tactician",
+    "raccoon-nightcrew",
+    "open-ocean-hermit-crab",
+    "driftwood-crab"
+   ]
+  },
+  "ms": {
+   "parent": "mw",
+   "unlockAfterNo": 13,
+   "neu": [
+    "hedgehog-herbalist",
+    "peat-cutter-vole",
+    "mudflat-godwit",
+    "snapper-hatchling"
+   ],
+   "car": [
+    "swamp-alligator",
+    "constrictor-coil",
+    "muskrat-reedgatherer",
+    "mudpuppy",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "cypress-root-lurker",
+    "crocodile-ambusher"
+   ],
+   "nNew": 3,
+   "nCar": 8,
+   "skills": [
+    "Herbalist",
+    "Immunity",
+    "Delivery"
+   ],
+   "lightSkills": [
+    "Tide"
+   ],
+   "carriedOffSkills": [
+    {
+     "id": "swamp-alligator",
+     "off": [
+      "Armor"
+     ]
+    },
+    {
+     "id": "mudpuppy",
+     "off": [
+      "Regenerate"
+     ]
+    },
+    {
+     "id": "newt-doctor",
+     "off": [
+      "Heal"
+     ]
+    },
+    {
+     "id": "cypress-root-lurker",
+     "off": [
+      "Repair",
+      "Guardian"
+     ]
+    }
+   ],
+   "before": [
+    "venomlord-serpent",
+    "mudflat-godwit",
+    "snapper-hatchling",
+    "cypress-root-lurker",
+    "swamp-alligator",
+    "anhinga-spearbird",
+    "nutria-reedcutter",
+    "newt-doctor",
+    "caiman-hatchling",
+    "peat-cutter-vole"
+   ],
+   "after": [
+    "hedgehog-herbalist",
+    "peat-cutter-vole",
+    "mudflat-godwit",
+    "snapper-hatchling",
+    "swamp-alligator",
+    "constrictor-coil",
+    "muskrat-reedgatherer",
+    "mudpuppy",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "cypress-root-lurker",
+    "crocodile-ambusher"
+   ],
+   "dropped": [
+    "venomlord-serpent",
+    "anhinga-spearbird",
+    "caiman-hatchling"
+   ],
+   "added": [
+    "hedgehog-herbalist",
+    "constrictor-coil",
+    "muskrat-reedgatherer",
+    "mudpuppy",
+    "crocodile-ambusher"
+   ]
+  },
+  "mz": {
+   "parent": "mu",
+   "unlockAfterNo": 8,
+   "neu": [
+    "rootworm-colony",
+    "fungal-colossus",
+    "tunnel-wyrm"
+   ],
+   "car": [
+    "rot-swollen-carcass",
+    "puffball-bombardier",
+    "fungus-gnat-cloud",
+    "leopard-slug",
+    "compost-grub",
+    "hawthorn-shieldbug",
+    "planarian-splitter",
+    "earthworm"
+   ],
+   "nNew": 3,
+   "nCar": 8,
+   "skills": [
+    "Poison Barbs",
+    "Progeny",
+    "Bloom"
+   ],
+   "lightSkills": [],
+   "carriedOffSkills": [
+    {
+     "id": "rot-swollen-carcass",
+     "off": [
+      "On Spawn"
+     ]
+    },
+    {
+     "id": "puffball-bombardier",
+     "off": [
+      "Arrow",
+      "Venomous"
+     ]
+    },
+    {
+     "id": "fungus-gnat-cloud",
+     "off": [
+      "Swarm"
+     ]
+    },
+    {
+     "id": "leopard-slug",
+     "off": [
+      "Regenerate"
+     ]
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "off": [
+      "Armor",
+      "Guardian"
+     ]
+    },
+    {
+     "id": "planarian-splitter",
+     "off": [
+      "Meiosis"
+     ]
+    }
+   ],
+   "before": [
+    "fungal-colossus",
+    "millipede-hauler",
+    "pill-bug",
+    "wolf-spider-mother",
+    "fungus-gnat-cloud",
+    "leopard-slug",
+    "puffball-bombardier",
+    "rot-swollen-carcass"
+   ],
+   "after": [
+    "rootworm-colony",
+    "fungal-colossus",
+    "tunnel-wyrm",
+    "rot-swollen-carcass",
+    "puffball-bombardier",
+    "fungus-gnat-cloud",
+    "leopard-slug",
+    "compost-grub",
+    "hawthorn-shieldbug",
+    "planarian-splitter",
+    "earthworm"
+   ],
+   "dropped": [
+    "millipede-hauler",
+    "pill-bug",
+    "wolf-spider-mother"
+   ],
+   "added": [
+    "rootworm-colony",
+    "tunnel-wyrm",
+    "compost-grub",
+    "hawthorn-shieldbug",
+    "planarian-splitter",
+    "earthworm"
+   ]
+  },
+  "mn": {
+   "parent": "m4",
+   "unlockAfterNo": 16,
+   "neu": [
+    "lantern-spark-fly",
+    "glimmer-spider",
+    "cave-swiftlet"
+   ],
+   "car": [
+    "sulfur-cinder-moth",
+    "gallery-orb-weaver",
+    "echo-screecher",
+    "stalactite-golem",
+    "cave-olm",
+    "quarry-mole",
+    "giant-cave-huntsman",
+    "barrow-leech-bat"
+   ],
+   "nNew": 3,
+   "nCar": 8,
+   "skills": [
+    "Illuminate",
+    "Venomous",
+    "Echolocation"
+   ],
+   "lightSkills": [
+    "Flying"
+   ],
+   "carriedOffSkills": [
+    {
+     "id": "sulfur-cinder-moth",
+     "off": [
+      "On Death"
+     ]
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "off": [
+      "Web"
+     ]
+    },
+    {
+     "id": "echo-screecher",
+     "off": [
+      "On Ready Damage"
+     ]
+    },
+    {
+     "id": "stalactite-golem",
+     "off": [
+      "Shell",
+      "Guardian"
+     ]
+    },
+    {
+     "id": "cave-olm",
+     "off": [
+      "Regenerate"
+     ]
+    },
+    {
+     "id": "quarry-mole",
+     "off": [
+      "Keen Sense",
+      "Bedrock"
+     ]
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "off": [
+      "Pounce"
+     ]
+    }
+   ],
+   "before": [
+    "oilbird",
+    "magpie-collector",
+    "cave-olm",
+    "quarry-mole",
+    "star-nosed-mole",
+    "stalactite-golem",
+    "blind-cave-fish",
+    "upside-down-bat"
+   ],
+   "after": [
+    "lantern-spark-fly",
+    "glimmer-spider",
+    "cave-swiftlet",
+    "sulfur-cinder-moth",
+    "gallery-orb-weaver",
+    "echo-screecher",
+    "stalactite-golem",
+    "cave-olm",
+    "quarry-mole",
+    "giant-cave-huntsman",
+    "barrow-leech-bat"
+   ],
+   "dropped": [
+    "oilbird",
+    "magpie-collector",
+    "star-nosed-mole",
+    "blind-cave-fish",
+    "upside-down-bat"
+   ],
+   "added": [
+    "lantern-spark-fly",
+    "glimmer-spider",
+    "cave-swiftlet",
+    "sulfur-cinder-moth",
+    "gallery-orb-weaver",
+    "echo-screecher",
+    "giant-cave-huntsman",
+    "barrow-leech-bat"
+   ]
+  },
+  "mj": {
+   "parent": "m7",
+   "unlockAfterNo": 11,
+   "neu": [
+    "blue-ringed-octopus",
+    "kraken-spawnling"
+   ],
+   "car": [
+    "riptide-eel",
+    "coral-current-eel",
+    "reef-shark",
+    "moon-jelly",
+    "sea-turtle-elder",
+    "krill-swarm",
+    "giant-clam"
+   ],
+   "nNew": 2,
+   "nCar": 7,
+   "skills": [
+    "Octolash",
+    "Fork",
+    "Gash"
+   ],
+   "lightSkills": [],
+   "carriedOffSkills": [
+    {
+     "id": "riptide-eel",
+     "off": [
+      "Reload"
+     ]
+    },
+    {
+     "id": "moon-jelly",
+     "off": [
+      "Venomous"
+     ]
+    },
+    {
+     "id": "sea-turtle-elder",
+     "off": [
+      "Armor"
+     ]
+    },
+    {
+     "id": "krill-swarm",
+     "off": [
+      "Swarm"
+     ]
+    },
+    {
+     "id": "giant-clam",
+     "off": [
+      "Shell",
+      "Delivery",
+      "Delivery resource"
+     ]
+    }
+   ],
+   "before": [
+    "humpback-elder",
+    "abyss-lantern-squid",
+    "riptide-eel",
+    "giant-clam",
+    "moon-jelly",
+    "clownfish-scout",
+    "coral-polyp-colony"
+   ],
+   "after": [
+    "blue-ringed-octopus",
+    "kraken-spawnling",
+    "riptide-eel",
+    "coral-current-eel",
+    "reef-shark",
+    "moon-jelly",
+    "sea-turtle-elder",
+    "krill-swarm",
+    "giant-clam"
+   ],
+   "dropped": [
+    "humpback-elder",
+    "abyss-lantern-squid",
+    "clownfish-scout",
+    "coral-polyp-colony"
+   ],
+   "added": [
+    "blue-ringed-octopus",
+    "kraken-spawnling",
+    "coral-current-eel",
+    "reef-shark",
+    "sea-turtle-elder",
+    "krill-swarm"
+   ]
+  },
+  "mv": {
+   "parent": "m10",
+   "unlockAfterNo": 15,
+   "neu": [
+    "wound-reaver",
+    "great-horned-owl",
+    "sparrow-chick"
+   ],
+   "car": [
+    "eyrie-warden",
+    "eagle-owl-quartermaster",
+    "golden-eagle-diver",
+    "the-gannet-queen",
+    "chamois-leaper",
+    "anvil-thrush",
+    "peak-condor",
+    "peregrine-stooper"
+   ],
+   "nNew": 2,
+   "nCar": 8,
+   "skills": [
+    "Bleed",
+    "Rupture",
+    "On Ready Damage"
+   ],
+   "lightSkills": [
+    "Flying",
+    "Nocturnal"
+   ],
+   "carriedOffSkills": [
+    {
+     "id": "eyrie-warden",
+     "off": [
+      "Daunt"
+     ]
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "off": [
+      "Arrow",
+      "Fletcher"
+     ]
+    },
+    {
+     "id": "golden-eagle-diver",
+     "off": [
+      "Pounce"
+     ]
+    },
+    {
+     "id": "the-gannet-queen",
+     "off": [
+      "Pounce",
+      "Natural Leader"
+     ]
+    },
+    {
+     "id": "chamois-leaper",
+     "off": [
+      "Mountain Climber",
+      "Pounce"
+     ]
+    },
+    {
+     "id": "anvil-thrush",
+     "off": [
+      "Pierce"
+     ]
+    },
+    {
+     "id": "peak-condor",
+     "off": [
+      "Reload"
+     ]
+    },
+    {
+     "id": "peregrine-stooper",
+     "off": [
+      "Pounce"
+     ]
+    }
+   ],
+   "before": [
+    "alpine-swift",
+    "apollo-butterfly",
+    "great-horned-owl",
+    "sparrow-chick",
+    "eyrie-warden",
+    "eagle-owl-quartermaster",
+    "chamois-leaper",
+    "chipmunk-hoarder",
+    "the-gannet-queen"
+   ],
+   "after": [
+    "wound-reaver",
+    "great-horned-owl",
+    "sparrow-chick",
+    "eyrie-warden",
+    "eagle-owl-quartermaster",
+    "golden-eagle-diver",
+    "the-gannet-queen",
+    "chamois-leaper",
+    "anvil-thrush",
+    "peak-condor",
+    "peregrine-stooper"
+   ],
+   "dropped": [
+    "alpine-swift",
+    "apollo-butterfly",
+    "chipmunk-hoarder"
+   ],
+   "added": [
+    "wound-reaver",
+    "golden-eagle-diver",
+    "anvil-thrush",
+    "peak-condor",
+    "peregrine-stooper"
+   ]
+  },
+  "my": {
+   "parent": "m5",
+   "unlockAfterNo": 18,
+   "neu": [
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "hercules-beetle"
+   ],
+   "car": [
+    "bramblewood-macaque",
+    "proboscis-monkey",
+    "camouflage-frog",
+    "fishing-cat",
+    "amber-cicada",
+    "mosquito-cloud"
+   ],
+   "nNew": 3,
+   "nCar": 6,
+   "skills": [
+    "Quick",
+    "Mighty"
+   ],
+   "lightSkills": [
+    "Nocturnal"
+   ],
+   "carriedOffSkills": [
+    {
+     "id": "bramblewood-macaque",
+     "off": [
+      "Banana"
+     ]
+    },
+    {
+     "id": "proboscis-monkey",
+     "off": [
+      "Taunt"
+     ]
+    },
+    {
+     "id": "camouflage-frog",
+     "off": [
+      "Evasive"
+     ]
+    },
+    {
+     "id": "fishing-cat",
+     "off": [
+      "Pounce"
+     ]
+    },
+    {
+     "id": "amber-cicada",
+     "off": [
+      "Scare",
+      "On Ready"
+     ]
+    },
+    {
+     "id": "mosquito-cloud",
+     "off": [
+      "Bleed"
+     ]
+    }
+   ],
+   "before": [
+    "slow-loris",
+    "howler-monkey",
+    "toucan-courier",
+    "amber-cicada",
+    "mosquito-cloud",
+    "fishing-cat"
+   ],
+   "after": [
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "hercules-beetle",
+    "bramblewood-macaque",
+    "proboscis-monkey",
+    "camouflage-frog",
+    "fishing-cat",
+    "amber-cicada",
+    "mosquito-cloud"
+   ],
+   "dropped": [
+    "slow-loris",
+    "howler-monkey",
+    "toucan-courier"
+   ],
+   "added": [
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "hercules-beetle",
+    "bramblewood-macaque",
+    "proboscis-monkey",
+    "camouflage-frog"
+   ]
+  },
+  "mi": {
+   "parent": "m6",
+   "unlockAfterNo": 21,
+   "neu": [
+    "greenland-shark",
+    "frostbitten-wolverine",
+    "harp-seal-pup"
+   ],
+   "car": [
+    "snow-ermine",
+    "ringed-seal",
+    "harbor-seal",
+    "glacier-yak",
+    "walrus-icebreaker",
+    "ice-crevasse-wolf",
+    "polar-bear"
+   ],
+   "nNew": 2,
+   "nCar": 7,
+   "skills": [
+    "Carrion",
+    "Armor",
+    "Frostbite"
+   ],
+   "lightSkills": [
+    "Tide"
+   ],
+   "carriedOffSkills": [
+    {
+     "id": "snow-ermine",
+     "off": [
+      "Evasive",
+      "Frost crystal"
+     ]
+    },
+    {
+     "id": "ringed-seal",
+     "off": [
+      "Invisible"
+     ]
+    },
+    {
+     "id": "harbor-seal",
+     "off": [
+      "Evasive",
+      "Dive"
+     ]
+    },
+    {
+     "id": "glacier-yak",
+     "off": [
+      "Freeze",
+      "On Spawn"
+     ]
+    },
+    {
+     "id": "walrus-icebreaker",
+     "off": [
+      "Freeze",
+      "Shatter"
+     ]
+    },
+    {
+     "id": "ice-crevasse-wolf",
+     "off": [
+      "Bleed"
+     ]
+    },
+    {
+     "id": "polar-bear",
+     "off": [
+      "Ambush",
+      "Hibernate"
+     ]
+    }
+   ],
+   "before": [
+    "greenland-shark",
+    "harp-seal-pup",
+    "snow-owl-sentinel",
+    "polar-bear",
+    "walrus-icebreaker",
+    "ringed-seal",
+    "lemming-swarm",
+    "talus-pika",
+    "arctic-tern",
+    "snow-ermine",
+    "ice-crevasse-wolf",
+    "glacier-yak"
+   ],
+   "after": [
+    "greenland-shark",
+    "frostbitten-wolverine",
+    "harp-seal-pup",
+    "snow-ermine",
+    "ringed-seal",
+    "harbor-seal",
+    "glacier-yak",
+    "walrus-icebreaker",
+    "ice-crevasse-wolf",
+    "polar-bear"
+   ],
+   "dropped": [
+    "snow-owl-sentinel",
+    "lemming-swarm",
+    "talus-pika",
+    "arctic-tern"
+   ],
+   "added": [
+    "frostbitten-wolverine",
+    "harbor-seal"
+   ]
+  },
+  "mpd": {
+   "parent": "md",
+   "unlockAfterNo": 19,
+   "neu": [
+    "quicksand-queen",
+    "sandstorm-roc"
+   ],
+   "car": [
+    "antlion-pit",
+    "dune-jackal",
+    "barrel-cactus",
+    "roadrunner-courier",
+    "horned-lizard",
+    "nightjar-drifter",
+    "sunbittern-strider",
+    "caustic-scorpion"
+   ],
+   "nNew": 2,
+   "nCar": 8,
+   "skills": [
+    "Trap",
+    "Tangleweed",
+    "Dry"
+   ],
+   "lightSkills": [],
+   "carriedOffSkills": [
+    {
+     "id": "dune-jackal",
+     "off": [
+      "Quick"
+     ]
+    },
+    {
+     "id": "barrel-cactus",
+     "off": [
+      "Thorns"
+     ]
+    },
+    {
+     "id": "roadrunner-courier",
+     "off": [
+      "Haste"
+     ]
+    },
+    {
+     "id": "horned-lizard",
+     "off": [
+      "Blinding"
+     ]
+    },
+    {
+     "id": "caustic-scorpion",
+     "off": [
+      "Venomous"
+     ]
+    }
+   ],
+   "before": [
+    "dromedary",
+    "sandstorm-roc",
+    "antlion-pit",
+    "caustic-scorpion",
+    "sand-widow",
+    "roadrunner-courier",
+    "dust-hyena",
+    "armadillo-guard",
+    "dune-jackal",
+    "horned-lizard",
+    "barrel-cactus"
+   ],
+   "after": [
+    "quicksand-queen",
+    "sandstorm-roc",
+    "antlion-pit",
+    "dune-jackal",
+    "barrel-cactus",
+    "roadrunner-courier",
+    "horned-lizard",
+    "nightjar-drifter",
+    "sunbittern-strider",
+    "caustic-scorpion"
+   ],
+   "dropped": [
+    "dromedary",
+    "sand-widow",
+    "dust-hyena",
+    "armadillo-guard"
+   ],
+   "added": [
+    "quicksand-queen",
+    "nightjar-drifter",
+    "sunbittern-strider"
+   ]
+  },
+  "m9": {
+   "parent": "m3",
+   "unlockAfterNo": 23,
+   "neu": [
+    "ember-revenant",
+    "grindstone-boar"
+   ],
+   "car": [
+    "fire-salamander",
+    "obsidian-scorpion",
+    "smoke-raccoon",
+    "pumice-beetle",
+    "cinder-hornet",
+    "cinder-gecko",
+    "basalt-boar",
+    "cinder-skeleton"
+   ],
+   "nNew": 2,
+   "nCar": 8,
+   "skills": [
+    "Undead",
+    "Pierce",
+    "Friction"
+   ],
+   "lightSkills": [],
+   "carriedOffSkills": [
+    {
+     "id": "fire-salamander",
+     "off": [
+      "Spitfire"
+     ]
+    },
+    {
+     "id": "obsidian-scorpion",
+     "off": [
+      "Armor",
+      "Venomous"
+     ]
+    },
+    {
+     "id": "smoke-raccoon",
+     "off": [
+      "Smoke Bomb"
+     ]
+    },
+    {
+     "id": "pumice-beetle",
+     "off": [
+      "On Spawn"
+     ]
+    },
+    {
+     "id": "cinder-hornet",
+     "off": [
+      "Stun"
+     ]
+    },
+    {
+     "id": "cinder-gecko",
+     "off": [
+      "Evasive"
+     ]
+    },
+    {
+     "id": "basalt-boar",
+     "off": [
+      "Grit"
+     ]
+    },
+    {
+     "id": "cinder-skeleton",
+     "off": [
+      "Requiem"
+     ]
+    }
+   ],
+   "before": [
+    "ore-smelter-mole",
+    "cinder-gecko",
+    "grindstone-boar",
+    "pumice-beetle",
+    "hellbender",
+    "anvil-thrush",
+    "fire-salamander",
+    "sulfur-vent-crab",
+    "smoke-raccoon",
+    "cinder-hornet",
+    "obsidian-scorpion"
+   ],
+   "after": [
+    "ember-revenant",
+    "grindstone-boar",
+    "fire-salamander",
+    "obsidian-scorpion",
+    "smoke-raccoon",
+    "pumice-beetle",
+    "cinder-hornet",
+    "cinder-gecko",
+    "basalt-boar",
+    "cinder-skeleton"
+   ],
+   "dropped": [
+    "ore-smelter-mole",
+    "hellbender",
+    "anvil-thrush",
+    "sulfur-vent-crab"
+   ],
+   "added": [
+    "ember-revenant",
+    "basalt-boar",
+    "cinder-skeleton"
+   ]
+  },
+  "me": {
+   "parent": "m11",
+   "unlockAfterNo": 20,
+   "neu": [
+    "the-contradiction",
+    "obsidian-lich",
+    "ash-moth"
+   ],
+   "car": [
+    "berserker-boar",
+    "basalt-boar",
+    "sulfur-vent-crab",
+    "ur-elk",
+    "magma-salamander",
+    "obsidian-scorpion",
+    "honey-badger-fury"
+   ],
+   "nNew": 3,
+   "nCar": 7,
+   "skills": [
+    "Rage",
+    "Regenerate",
+    "Armor"
+   ],
+   "lightSkills": [
+    "Flying",
+    "Nocturnal"
+   ],
+   "carriedOffSkills": [
+    {
+     "id": "basalt-boar",
+     "off": [
+      "Grit"
+     ]
+    },
+    {
+     "id": "sulfur-vent-crab",
+     "off": [
+      "Thorns",
+      "Crab Claws"
+     ]
+    },
+    {
+     "id": "ur-elk",
+     "off": [
+      "Stampede"
+     ]
+    },
+    {
+     "id": "magma-salamander",
+     "off": [
+      "Fire Arrow"
+     ]
+    },
+    {
+     "id": "obsidian-scorpion",
+     "off": [
+      "Venomous"
+     ]
+    }
+   ],
+   "before": [
+    "ash-moth",
+    "cinder-skeleton",
+    "ashbone-ghoul",
+    "obsidian-scorpion"
+   ],
+   "after": [
+    "the-contradiction",
+    "obsidian-lich",
+    "ash-moth",
+    "berserker-boar",
+    "basalt-boar",
+    "sulfur-vent-crab",
+    "ur-elk",
+    "magma-salamander",
+    "obsidian-scorpion",
+    "honey-badger-fury"
+   ],
+   "dropped": [
+    "cinder-skeleton",
+    "ashbone-ghoul"
+   ],
+   "added": [
+    "the-contradiction",
+    "obsidian-lich",
+    "berserker-boar",
+    "basalt-boar",
+    "sulfur-vent-crab",
+    "ur-elk",
+    "magma-salamander",
+    "honey-badger-fury"
+   ]
+  },
+  "mx": {
+   "parent": "m11",
+   "unlockAfterNo": 20,
+   "neu": [
+    "caldera-wyrm",
+    "fire-drake-hatchling"
+   ],
+   "car": [
+    "magma-salamander",
+    "fumarole-ibex",
+    "obsidian-scorpion",
+    "quillback-elder",
+    "fire-salamander",
+    "basalt-boar",
+    "ur-elk"
+   ],
+   "nNew": 1,
+   "nCar": 7,
+   "skills": [
+    "Armor",
+    "On Death",
+    "Pounce"
+   ],
+   "lightSkills": [],
+   "carriedOffSkills": [
+    {
+     "id": "magma-salamander",
+     "off": [
+      "Fire Arrow"
+     ]
+    },
+    {
+     "id": "fumarole-ibex",
+     "off": [
+      "Mountain Climber"
+     ]
+    },
+    {
+     "id": "obsidian-scorpion",
+     "off": [
+      "Venomous"
+     ]
+    },
+    {
+     "id": "fire-salamander",
+     "off": [
+      "Spitfire"
+     ]
+    },
+    {
+     "id": "basalt-boar",
+     "off": [
+      "Grit"
+     ]
+    },
+    {
+     "id": "ur-elk",
+     "off": [
+      "Stampede",
+      "Rage"
+     ]
+    }
+   ],
+   "before": [
+    "fire-drake-hatchling",
+    "gorge-wyrm",
+    "ember-jackal",
+    "magma-salamander",
+    "cinder-stoker"
+   ],
+   "after": [
+    "caldera-wyrm",
+    "fire-drake-hatchling",
+    "magma-salamander",
+    "fumarole-ibex",
+    "obsidian-scorpion",
+    "quillback-elder",
+    "fire-salamander",
+    "basalt-boar",
+    "ur-elk"
+   ],
+   "dropped": [
+    "gorge-wyrm",
+    "ember-jackal",
+    "cinder-stoker"
+   ],
+   "added": [
+    "caldera-wyrm",
+    "fumarole-ibex",
+    "obsidian-scorpion",
+    "quillback-elder",
+    "fire-salamander",
+    "basalt-boar",
+    "ur-elk"
+   ]
+  }
+ },
+ "leftLists": [
+  "abyss-lantern-squid",
+  "ant-hill",
+  "box-turtle",
+  "caiman-hatchling",
+  "coral-polyp-colony",
+  "glow-worm",
+  "gorge-wyrm",
+  "harvest-mouse",
+  "hellbender",
+  "howler-monkey",
+  "humpback-elder",
+  "lemming-swarm",
+  "magpie-collector",
+  "millipede-hauler",
+  "oilbird",
+  "pill-bug",
+  "slow-loris",
+  "talus-pika"
+ ],
+ "newOnLists": [
+  "blue-ringed-octopus",
+  "caldera-wyrm",
+  "cave-swiftlet",
+  "clover-butterfly",
+  "dam-keeper-beaver",
+  "ember-revenant",
+  "frostbitten-wolverine",
+  "glimmer-spider",
+  "hedgehog-herbalist",
+  "hercules-beetle",
+  "jaguar-stalker",
+  "kinkajou-lurker",
+  "kraken-spawnling",
+  "lantern-spark-fly",
+  "lucky-hopper",
+  "obsidian-lich",
+  "octopus-tactician",
+  "quicksand-queen",
+  "raccoon-nightcrew",
+  "riverworks-bastion",
+  "rootworm-colony",
+  "the-contradiction",
+  "tunnel-wyrm"
+ ],
+ "flags": {
+  "cleared": [
+   "tunnel-wyrm",
+   "raccoon-nightcrew",
+   "kraken-spawnling",
+   "obsidian-lich",
+   "clover-butterfly",
+   "glimmer-spider",
+   "cave-swiftlet",
+   "dam-keeper-beaver"
+  ],
+  "set": [
+   "ant-hill",
+   "gorge-wyrm",
+   "howler-monkey",
+   "coral-polyp-colony",
+   "humpback-elder",
+   "trash-panda-trickster",
+   "pill-bug",
+   "cinder-stoker",
+   "millipede-hauler",
+   "caiman-hatchling",
+   "box-turtle",
+   "dromedary",
+   "old-sturgeon",
+   "lemming-swarm",
+   "talus-pika",
+   "magpie-collector"
+  ]
+ },
+ "obtainMaps": [
+  {
+   "id": "ant-hill",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "gorge-wyrm",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "howler-monkey",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "coral-polyp-colony",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "humpback-elder",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "trash-panda-trickster",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "ember-jackal",
+   "before": 14,
+   "after": 22
+  },
+  {
+   "id": "pill-bug",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "cinder-stoker",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "ore-smelter-mole",
+   "before": 23,
+   "after": 24
+  },
+  {
+   "id": "ashbone-ghoul",
+   "before": 14,
+   "after": 22
+  },
+  {
+   "id": "cinder-skeleton",
+   "before": 14,
+   "after": 22
+  },
+  {
+   "id": "millipede-hauler",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "caiman-hatchling",
+   "before": 7,
+   "after": null
+  },
+  {
+   "id": "dromedary",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "old-sturgeon",
+   "before": 1,
+   "after": null
+  },
+  {
+   "id": "alpine-swift",
+   "before": 14,
+   "after": 21
+  },
+  {
+   "id": "apollo-butterfly",
+   "before": 14,
+   "after": 21
+  },
+  {
+   "id": "lemming-swarm",
+   "before": 21,
+   "after": null
+  },
+  {
+   "id": "talus-pika",
+   "before": 21,
+   "after": null
+  },
+  {
+   "id": "magpie-collector",
+   "before": 14,
+   "after": null
+  },
+  {
+   "id": "tunnel-wyrm",
+   "before": null,
+   "after": 7
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "before": null,
+   "after": 7
+  },
+  {
+   "id": "kraken-spawnling",
+   "before": null,
+   "after": 7
+  },
+  {
+   "id": "frostbitten-wolverine",
+   "before": null,
+   "after": 21
+  },
+  {
+   "id": "obsidian-lich",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "clover-butterfly",
+   "before": null,
+   "after": 7
+  },
+  {
+   "id": "glimmer-spider",
+   "before": null,
+   "after": 14
+  },
+  {
+   "id": "cave-swiftlet",
+   "before": null,
+   "after": 14
+  }
+ ]
+}

@@ -86,6 +86,17 @@ def card_table(root, canon, tix):
         mapname = {m['id']: m['name'] for m in hc.get('maps', [])}
     except Exception:
         mapname = {}
+    # 2026-11-12 (package SIDE1, owner 23:50 "re-assess card power for my assessment when editting cards"): the newest card power reading
+    # (docs/balance/card-power-<date>.json, tools/side1/power_2026_11_12.js: B / N at the card's first map, as the card editor reads it), as
+    # 'bu' and after the Source text, so the table shows it with no change to the tab
+    bu = {}
+    try:
+        cps = sorted(f for f in os.listdir(os.path.join(root, 'docs', 'balance')) if re.match(r'card-power-\d{4}-\d\d-\d\d\.json$', f))
+        if cps:
+            for x in _load(root, 'docs', 'balance', cps[-1]).get('cards', []):
+                bu[x['id']] = 'B/N %s%% at Map %s (%s)' % (x['use'], x['firstMap'], x['verdict'])
+    except Exception:
+        bu = {}
     rows = []
     skill_count = {}
     for c in canon:
@@ -128,12 +139,14 @@ def card_table(root, canon, tix):
         # 2026-10-25: exileCost can be {zone, count} (e.g. tithe-collector): show the count and the zone.
         costs = ' '.join('%s%s' % (ic, ('%g %s' % (c[f].get('count', 1), c[f].get('zone', ''))).strip() if isinstance(c[f], dict) else '%g' % c[f]) for f, ic in COST_FIELDS if c.get(f))
         r = c.get('rarity') or ''
+        if c['id'] in bu:
+            sdet = '%s · %s' % (sdet, bu[c['id']])
         rows.append({
             'id': c['id'], 'n': c.get('name', c['id']), 'ic': c.get('icon', ''), 'r': r,
             'a': c.get('attack'), 'h': c.get('health'), 'w': c.get('wait', 0), 'c': c.get('cost', 0), 'cs': costs,
             'sk': sks, 'ty': typ, 'sp': ', '.join(c.get('species') or []) if isinstance(c.get('species'), list) else (c.get('species') or ''),
             'an': c.get('animal') or '', 'f': fac, 'mp': om.get(c['id']), 'src': kind, 'sd': sdet, 'pt': tier, 'pk': pk,
-            't': tix.get(c['id'], -1), 'x': 1 if (c.get('test') or c.get('token') or c.get('hidden')) else 0,
+            'bu': bu.get(c['id'], ''), 't': tix.get(c['id'], -1), 'x': 1 if (c.get('test') or c.get('token') or c.get('hidden')) else 0,
         })
     skills = sorted(skill_count.items(), key=lambda kv: kv[0].lower())
     return {'cards': rows, 'rarities': [{'k': k, 'l': RARITY_LABEL[k]} for k in RARITY_ORDER], 'skills': [{'l': k, 'n': n} for k, n in skills],
