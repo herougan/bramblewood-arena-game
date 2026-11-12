@@ -29210,6 +29210,7 @@ function renderConquestSubTab(body){
   // slime-and-stone 'dungeon' variant), and a daily dungeon's subtitle says so.
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak), map.id); }catch(e){}
   fxHook('mapShown', conquestShaderHost(), map, document.getElementById('conquestCanvas'), progress); // map ambience, day/night, node states, coming-back moments (FX.E, 2026-10-15)
+  try{ if(window.BramblewoodWorld) BramblewoodWorld.arrive(map, conquestShaderHost(), document.getElementById('conquestCanvas')); }catch(e){} // 2026-11-13 (package UIFX2): the place's season, the travel beat from the last map, its ambient (bramblewood-ui-world.js)
   pl2MapViewed(); // PL2 (2026-10-25): XP won elsewhere fills here
   try{ jumperArrivals(map, document.getElementById('conquestCanvas')); }catch(e){} // a jumper landing on the trail (2026-10-16)
   if(adminModeEnabled) wireMapLayoutEditor(map, body);

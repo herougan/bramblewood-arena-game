@@ -60,6 +60,8 @@ fxbatches += '\n' + open(f'{ROOT}/bramblewood-ui-places.js', encoding='utf-8').r
 # manifest/story.js plays its scenes ("Story (UIFX3)").
 fxbatches += '\n' + open(f'{ROOT}/bramblewood-ui-story.js', encoding='utf-8').read()
 fxideas2 = open(f'{LAB}/fxlab-ideas2.js', encoding='utf-8').read()
+# 2026-11-13 (package UIFX2): + bramblewood-ui-world.js (BramblewoodWorld: map seasons, the travel beat), as the game bundles it; manifest/world.js plays it.
+fxbatches += '\n' + open(f'{ROOT}/bramblewood-ui-world.js', encoding='utf-8').read()
 _inv = json.load(open(f'{ROOT}/docs/effects-inventory-2026-10-15.json', encoding='utf-8'))
 _INV_KEYS = ['id', 'area', 'name', 'trigger', 'current', 'quality', 'priority', 'themeNotes', 'variantsSuggested', 'future', 'batch', 'status', 'retired', 'added', 'updated', 'inGameHook']  # + status / retired / added / updated (2026-10-17); + inGameHook (2026-10-21: the catalogue's "In game: <where>" badge)
 inventory_js = json.dumps([{k: e.get(k) for k in _INV_KEYS} for e in _inv], ensure_ascii=False, separators=(',', ':'))
