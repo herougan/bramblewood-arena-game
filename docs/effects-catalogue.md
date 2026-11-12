@@ -1798,3 +1798,22 @@ All four are cheap by design: one element or a handful of spans (WAAPI, transfor
 | ✅ Spore puff | Spore Cloud's sleep tick (`statusFx` `field:'sporeCloud'`); a Puffball Bombardier's hit | five dark lime-green puffs billow up off the card and thin out in under 1 s; reduced motion: one soft fade | `sporePuffVfx(el)` (reusable) |
 
 Lab entries: `tools/effects-lab/manifest/fx6.js` (variant key `FX6`). Check: `tests/fx6-2026-11-12.js`.
+
+## 2026-11-13 (package UIFX3 "Story"): dialogue as a scene, not a text box
+Owner 2026-11-13 00:03: "immersion with dialogue". All in `bramblewood-ui-story.js` (`window.StoryUI`); `playDialogue`, `dialogueDock` and
+`showSpeechBubble` call it. The dock stays out of the way: nothing takes a tap, a tap on a typing line completes it and the next tap moves on,
+the hide button takes the scene layer away with the conversation. Effects None and reduced motion: the whole line at once, no motion, no
+scene layer (sides and nameplates stay); Low: typing, entrance, vignette and letterbox; Medium: + reactions and ambience; High: + the edge
+blur behind a story scene. Ambience and blur never run in a live fight; there a boss intro is only two glowing edge lines and the vignette, gone after the first line (nothing covers the hand or the controls).
+
+| Effect | Where | Look | Code |
+|---|---|---|---|
+| ✅ Speakers arrive | a line whose speaker changed | the portrait rises from below and settles with a small squash; the line slides in from its speaker's side; the first speaker stands left (portrait poking up at the top left), the next one right (portrait poking down at the bottom right, clear of the hide button); the talking line is lit (a ring in the people's colour), the others dim; a nameplate plate in the people's colour (Legion oxblood, river blue, Sunthroat amber, Crimson Wing, Voidfeather violet, road-folk indigo, ember, folk brown, moss, stone); on a phone the other party waits, dimmed, at its corner; cue `storyArrive` (41) | `StoryUI.line` |
+| ✅ Typing with a voice | every NPC line | each letter a span with its own `animation-delay` (the box has its final size from the first frame; no per-letter layout or script); 27 ms a letter at Medium, x1.5 Slow, x0.6 Fast (the NPC dialogue setting), a beat after , ; : and a longer one after . ! ? …, squeezed under 4.2 s; `*marked*` words pop, capitalised words inside a sentence are stressed in the speaker's colour (English only); one `babble` syllable a word in the speaker's people's voice (43); a small arrow bobs once the line is written | `StoryUI.line`, `StoryUI.complete` |
+| ✅ Reactions | `line.mood`, or read from the line (!, ?, …, HA, CAPITALS) | shout: the portrait jolts and shakes with three surprise lines as the ! is typed; laugh: bobs; whisper: italic, softer ink, the portrait dims and shrinks, slower typing, half the voice; question: a head tilt at the end; trailing off: a droop. Replaces `FX.F.portraitMood` on the dock (retired row `tut-dialogue-portrait`); the faction warning keeps `FX.F.factionWarning` | `REACT` |
+| ✅ Letterbox and vignette | `STORY_SCENES`: `scene:'boss'` (boss_banter), `scene:'story'` (outskirts_reveal, scale_trail_finale) | bars close in with a thin edge line (crimson for a boss, gold for a story); a vignette (red for a boss, pulsing once); a story scene also blurs the screen's edges at High; cue `storyLetterbox` (42) | `startLayer` |
+| ✅ Ambience | `STORY_SCENES`: `ambient:'fireflies'` (well_m1, cur_m4_glowpool, cur_m8_wisp), `'rain'` (cur_m3_ashcairn), `'embers'` (scale_trail_finale) | 11 fireflies drifting and blinking; two layers of slanted rain under a cool vignette; 12 embers rising. CSS transform and opacity only | `ambientHTML` |
+| ✅ Battlefield bubbles | `showSpeechBubble` (barks, chatter, emotes) | a squash-pop pivoting on the tail tip (so it never dips over the card's numbers), the tail wiggles once, a clean lift and fade | `StoryUI.bubble` |
+
+Lab: the group "Story (UIFX3)" (`tools/effects-lab/manifest/story.js`, rows `story-*`); `story-scene` is the demo (a boss intro with
+letterbox, two speakers, a shout, a whisper; A a computer's dock, B a phone's). Check: `tests/uifx3-2026-11-13.js`. Frames: `docs/screens/uifx3/`.

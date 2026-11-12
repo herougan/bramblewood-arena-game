@@ -5605,6 +5605,11 @@ const SoundKit = (()=>{
         t += V.gap * 0.6;
       }
     },
+    // 2026-11-13 (package UIFX3, bramblewood-ui-story.js): a new speaker steps into a conversation (a soft cloth swish and a wooden tock),
+    // and a story or boss scene frames the screen with its letterbox (a low drum swell under a muffled gong; the boss's is deeper).
+    storyArrive(){ fnoise(0.16, 0.03, {type:'bandpass', freq:1800, freqEnd:4200, q:1.6, attack:0.05}); tone(523, 0.06, 'triangle', 0.022, 0.07); },
+    storyLetterbox(boss){ sweep(boss ? 96 : 130, boss ? 44 : 70, 0.55, 'sine', boss ? 0.16 : 0.1); fnoise(0.7, boss ? 0.05 : 0.03, {type:'lowpass', freq:300, freqEnd:120, attack:0.2});
+      tone(boss ? 98 : 196, 0.9, 'triangle', 0.04, 0.12); if(boss) tone(147, 0.7, 'sine', 0.025, 0.3); },
     // Reward unlock (2026-10-08): a bright rising chime, then the padlock snapping open.
     unlockChime(){ [659, 880, 1319].forEach((f, i)=> tone(f, 0.22, 'triangle', 0.05, i*0.07)); tone(1760, 0.4, 'sine', 0.03, 0.22); },
     lockBreak(){ tone(320, 0.06, 'square', 0.05); tone(1900, 0.08, 'triangle', 0.04, 0.02); tone(2600, 0.12, 'sine', 0.03, 0.05); },
@@ -18836,6 +18841,7 @@ const DIALOGUE_SPEAKERS = {
   golem:      {name:'Cobble, the Forge golem', icon:'🗿', art:'art/npc/golem.png'},
 };
 // Script format: {lines:[{who, text, options?:[{label, goto?}], silent?:goto, goto?}], ...}. `goto` jumps to a label.
+// 2026-11-13 (package UIFX3): a line may carry a staging mark, never text: mood 'shout' | 'laugh' | 'whisper' | 'ask' | 'sad' (a script's scene and ambient: STORY_SCENES in bramblewood-ui-story.js)
 const DIALOGUES = {
   // Cobble at the Forge (2026-10-14): the one-time hello, and the lines it says instead of a plain "can't afford" toast.
   forge_cobble_intro: {lines:[
@@ -18856,7 +18862,7 @@ const DIALOGUES = {
     {who:'shieldback', text:'Mostly. Which means not entirely. We go carefully.'},
     {who:'swiftpaw', text:'You heard the Marshal. You\'re with us, aren\'t you?', options:[{label:'Of course.', goto:'yes'}, {label:'What\'s in it for me?', goto:'pay'}], silent:'quiet'},
     {label:'yes', who:'shieldback', text:'Good. Then the first patrol is yours.', goto:'end'},
-    {label:'pay', who:'swiftpaw', text:'Leaves, glory, and the Marshal\'s eternal respect. Two of those are real.', goto:'end'},
+    {label:'pay', who:'swiftpaw', text:'Leaves, glory, and the Marshal\'s eternal respect. Two of those are real.', goto:'end', mood:'laugh'},
     {label:'quiet', who:'shieldback', text:'…Quiet type. I can work with quiet.', goto:'end'},
     {label:'end', who:'swiftpaw', text:'Watch the map. Things turn up when you push further in.'},
   ]},
@@ -18868,7 +18874,7 @@ const DIALOGUES = {
   unlock_shop: {lines:[
     {who:'traveller', text:'Ah! A customer. Or a soldier. In this war they\'re the same thing.'},
     {who:'traveller', text:'Packs, trinkets, the odd rumour. Interested?', options:[{label:'Let\'s trade.', goto:'go'}, {label:'Rumours?', goto:'rumour'}], silent:'go'},
-    {label:'rumour', who:'traveller', text:'Only that the Crown didn\'t fly away on its own. But you didn\'t hear it from me.', goto:'go'},
+    {label:'rumour', who:'traveller', text:'Only that the Crown didn\'t fly away on its own. But you didn\'t hear it from me.', goto:'go', mood:'whisper'},
     {label:'go', who:'traveller', text:'Leaves on the counter, please.'},
   ]},
   // The Scale Trail's finale (2026-10-18, audit R1): plays once all eight Dragon Scales are found (scaleTrailFinaleSoon), then the
@@ -18884,7 +18890,7 @@ const DIALOGUES = {
     {who:'peddler', text:'Mind the cinders. The Foundry\'s fire is right behind me, and it\'s still warm. So are the prices.'},
     {who:'peddler', text:'Tidemire Chests. Five cards, one you\'ve never held. The Cart can\'t carry them this far up.', options:[{label:'Show me.', goto:'go'}, {label:'Who are you?', goto:'who'}], silent:'go'},
     {label:'who', who:'peddler', text:'A mole who walked the wrong way out of a mine and kept going. You\'ll find my stall with the Cart\'s.', goto:'go'},
-    {label:'go', who:'traveller', text:'Competition! Wonderful. We\'ll share a counter. Shops, plural, now.'},
+    {label:'go', who:'traveller', text:'Competition! Wonderful. We\'ll share a counter. Shops, plural, now.', mood:'laugh'},
   ]},
   unlock_market: {lines:[
     {who:'traveller', text:'Every trader who ever crossed these maps ends up here sooner or later. So do their cards.'},
@@ -18906,7 +18912,7 @@ const DIALOGUES = {
   unlock_autobattler: {lines:[
     {who:'whisper', text:'You like games? Here\'s one. Build an army from nothing. Watch it fight without you.'},
     {who:'whisper', text:'Ten wins and you\'re a legend. Five losses and you\'re a story.', options:[{label:'Deal.', goto:'go'}], silent:'go'},
-    {label:'go', who:'whisper', text:'…Don\'t tell the Marshal you saw me.'},
+    {label:'go', who:'whisper', text:'…Don\'t tell the Marshal you saw me.', mood:'whisper'},
   ]},
   well_m1: {lines:[
     {who:'swiftpaw', text:'Huh. The old well. Otters drew water here long before the border war.'},
@@ -19066,7 +19072,7 @@ const DIALOGUES = {
   ]},
   cur_m4_echo: {lines:[
     {who:'swiftpaw', text:'HELLO!'},
-    {who:'whisper', text:'…hello… hello… hello…'},
+    {who:'whisper', text:'…hello… hello… hello…', mood:'whisper'},
     {who:'swiftpaw', text:'That last one wasn\'t the echo.'},
   ]},
   cur_m4_glowpool: {lines:[
@@ -19241,7 +19247,8 @@ function dialogueDock(){
     dock.addEventListener('pointerdown', wake, true);
     // 2026-10-14: a tap or click on a line moves the conversation on. The dock stays click-through (it never blocks the map), so
     // this listens on the page and checks whether the press landed on a line.
-    document.addEventListener('click', e=>{ if(!dialogueAdvance || !lines.children.length || dock.classList.contains('is-collapsed')) return; const t = e.target; if(t && t.closest && t.closest('.dlg-reply, .dlg-hide, .dlg-chip')) return; if(overLine(e.clientX, e.clientY)) dialogueAdvance(true); }, true);
+    // 2026-11-13 (package UIFX3): a tap on a line still typing completes it (StoryUI); the next tap moves on
+    document.addEventListener('click', e=>{ if(!lines.children.length || dock.classList.contains('is-collapsed')) return; const t = e.target; if(t && t.closest && t.closest('.dlg-reply, .dlg-hide, .dlg-chip')) return; if(!overLine(e.clientX, e.clientY)) return; if(window.StoryUI && StoryUI.complete()) return; if(dialogueAdvance) dialogueAdvance(true); }, true);
   }
   return dock.querySelector('.dlg-lines');
 }
@@ -19422,8 +19429,10 @@ function playDialogue(id, opts){
       b.innerHTML = `${speakerPortraitHTML(sp)}<div class="dlg-body"><div class="dlg-name">${escapeHtml(sp.name)}</div><div class="dlg-text">${escapeHtml(line.text)}</div></div>`;
       dock.appendChild(b);
       while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
-      if(hasGsap()) gsap.from(b, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
-      try{ fxHook('dialogueLine', b, line, id); }catch(e){} // 2026-10-15 batch F: portrait mood, speaker change, faction warning
+      // 2026-11-13 (package UIFX3): the story staging (bramblewood-ui-story.js) owns the entrance, the typing, the mood and the scene
+      const st = window.StoryUI ? StoryUI.line(b, line, {id, sp, script}) : null;
+      if(!st && hasGsap()) gsap.from(b, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
+      if(!st) try{ fxHook('dialogueLine', b, line, id); }catch(e){} // 2026-10-15 batch F: portrait mood, speaker change, faction warning
       let next = i+1;
       if(line.options){
         const choice = await new Promise(resolve=>{
@@ -19446,7 +19455,7 @@ function playDialogue(id, opts){
           b.querySelector('.dlg-replies') && b.querySelector('.dlg-replies').remove(); b.classList.remove('dlg-to-you');
           const bye = document.createElement('div'); bye.className = 'dlg-line';
           bye.innerHTML = `${speakerPortraitHTML(sp)}<div class="dlg-body"><div class="dlg-name">${escapeHtml(sp.name)}</div><div class="dlg-text">${escapeHtml(afkLineFor(line.who))}</div></div>`;
-          dock.appendChild(bye); if(hasGsap()) gsap.from(bye, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
+          dock.appendChild(bye); if(!(window.StoryUI && StoryUI.line(bye, {who: line.who, text: afkLineFor(line.who)}, {id, sp, script})) && hasGsap()) gsap.from(bye, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'}); // 2026-11-13 (UIFX3)
           try{ fxHook('dialogueAfk', bye); }catch(e){} // 2026-10-15 batch F
           while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
           if(opts.once) setDialogueFlag('seen:'+id, false);
@@ -19462,6 +19471,7 @@ function playDialogue(id, opts){
         b.querySelector('.dlg-replies').remove();
         b.classList.remove('dlg-to-you'); // 2026-10-08 (user: "the conversation is a little broken"): answered lines stop glowing
         dock.appendChild(reply);
+        if(window.StoryUI) StoryUI.mine(reply); // 2026-11-13 (UIFX3): your reply is lit, the others dim
         if(hasGsap()) gsap.from(reply, {x: 40, opacity: 0, duration: .3, ease: 'power3.out'});
         while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
         replies.push(choice ? choice.label : '…');
@@ -19470,8 +19480,8 @@ function playDialogue(id, opts){
         await dialogueWait(DIALOGUE_GAP_MS * dialogueSpeedMul()); // 2026-10-14: the next line 1 s later (2026-10-17: × the dialogue speed)
       } else {
         if(line.act) setTimeout(()=> performDialogueAct(line.act), 600);
-        // 2026-10-14: its reading time (≤ 8 s), then 1 s before the next line; a tap skips both
-        if(!(await dialogueWait(dialogueReadMs(line.text))) && i + 1 < script.lines.length) await dialogueWait(DIALOGUE_GAP_MS * dialogueSpeedMul());
+        // 2026-10-14: its reading time (≤ 8 s), then 1 s before the next line; a tap skips both (2026-11-13 UIFX3: never less than its typing + 1.2 s)
+        if(!(await dialogueWait(Math.max(dialogueReadMs(line.text), st ? st.ms + 1200 * dialogueSpeedMul() : 0))) && i + 1 < script.lines.length) await dialogueWait(DIALOGUE_GAP_MS * dialogueSpeedMul());
         if(line.goto && byLabel[line.goto]!=null) next = byLabel[line.goto];
         if(line.goto === '__end') next = script.lines.length;
       }
@@ -19482,7 +19492,7 @@ function playDialogue(id, opts){
     if(opts.onDone) try{ opts.onDone(replies); }catch(e){}
     return {replies};
   };
-  const run = async ()=>{ try{ return await run0(); } finally { dialoguesPending.delete(id); } };
+  const run = async ()=>{ try{ return await run0(); } finally { dialoguesPending.delete(id); try{ if(window.StoryUI) StoryUI.end(id); }catch(e){} } }; // 2026-11-13 (UIFX3): the scene ends with its conversation
   const p = dialogueQueue.then(run, run);
   dialogueQueue = p.catch(()=>{});
   return p;
@@ -65445,7 +65455,8 @@ function showSpeechBubble(el, text, extraClass, opts){
   const f = {b, anchor: el, uid, lkey, bw: bubbleRect.width, bh: bubbleRect.height, l: null, t: null};
   bubbleFollowRead(f); bubbleFollowWrite(f);
   bubbleFollowers.add(f); bubbleFollowStart();
-  if(hasGsap()){
+  if(window.StoryUI && StoryUI.bubble(b, holdS)){ /* 2026-11-13 (package UIFX3): a squash-pop from the tail, the tail wiggles, a clean lift and fade */ }
+  else if(hasGsap()){
     gsap.timeline({onComplete:()=> b.remove()})
       .to(b, {opacity:1, scale:1, y:0, duration:.22, ease:'back.out(2.2)'})
       .to(b, {opacity:1, duration:holdS}) // hold, readable
