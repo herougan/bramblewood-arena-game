@@ -45,6 +45,9 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 | 37 | Crystal ting | Tap a crystal on a conquest map | Three bright sine/triangle partials (pitch varies 0.9-1.12 per tap) | Single bell blip | 550 ms |
 | 38 | Water plop | Tap water on a conquest map | A falling sine plop, a splash of band noise, a smaller drip after it | Down-blip | 200 ms |
 | 39 | Bush rustle | Tap a bush on a conquest map | Two short bursts of high filtered noise with crackle | Noise blip | 300 ms |
+| 40 | Construction | Bulwark raises its Log Walls (2026-11-12, FX6) | Three hammer knocks on wood (a low square thud with a band of noise on each, the pitch sagging a little) over a short rising saw-scrape | Three square blips | 400 ms |
+
+**Status (2026-11-12, package FX6):** cue 40 is live as a Web Audio synth (`SoundKit.constructTone`, built from `tone`, `fnoise`, `sweep`); it replaces the spawn buzz for Bulwark's walls.
 
 **Status (2026-10-05):** cues 28–33 are live as Web Audio synths (`SoundKit.arrowLoose/arrowThunk/bleedOut/burnAway/castleCollapse/pitchChime`), built on two new primitives: filtered noise with a sweeping filter (`fnoise`) and a pitch-swept tone (`sweep`). They follow the "mixed" default for D17: an organic body with a little chip on top.
 

@@ -163,3 +163,7 @@ vis5HazardMap
 vis5HzArm
 vis5HzDisarm
 vis5HzSprung
+# FX6 (2026-11-12): Bulwark rise dust, bug crawl (Swarm, Spawn on death), the spore puff
+riseUpFx
+bugCrawlVfx
+sporePuffVfx

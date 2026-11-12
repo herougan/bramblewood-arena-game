@@ -7165,6 +7165,21 @@
   .tide-scene .tw-edge.tw-edge-b{top:-33px; width:calc(100% + 208px); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 28' width='160' height='28' preserveAspectRatio='none'%3E%3Cpath d='M0 9.4 L4 10.0 L8 10.7 L12 11.3 L16 11.9 L20 12.4 L24 12.9 L28 13.2 L32 13.4 L36 13.5 L40 13.6 L44 13.6 L48 13.6 L52 13.6 L56 13.6 L60 13.7 L64 13.8 L68 14.0 L72 14.2 L76 14.4 L80 14.5 L84 14.6 L88 14.7 L92 14.6 L96 14.3 L100 14.0 L104 13.5 L108 12.8 L112 12.1 L116 11.3 L120 10.5 L124 9.8 L128 9.1 L132 8.5 L136 8.1 L140 7.9 L144 7.9 L148 8.0 L152 8.3 L156 8.8 L160 9.4' fill='none' stroke='white' stroke-opacity='.55' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E"); opacity:.6; animation:twEdgeB 13s linear infinite;}
   @keyframes twEdge{from{transform:translateX(0);} to{transform:translateX(-160px);}}
   @keyframes twEdgeB{from{transform:translateX(-160px);} to{transform:translateX(0);}}
+  /* 2026-11-12 (package FX6, owner: "One more tide over the current tide. And it looks more like a wave. I want it in the same art style as tide"): High Tide
+     lays a second layer over the settled water: one element (.tw-wave) with the tide's own look (the same blue wash, a soft white crest line) whose top
+     is a breaking crest, a long back rising to a curled lip, drifting slowly the way the front edge does. Transforms and opacity only; Low effects and
+     reduced motion hold it still, Effects None leaves it out. */
+  .tide-scene .tw-wave{display:none; position:absolute; left:-24px; right:-24px; top:20%; bottom:-14px; pointer-events:none;
+    background:linear-gradient(180deg, rgba(64,146,218,.3) 0, rgba(26,92,172,.36) 100%);}
+  .tide-scene[data-k="high"] .tw-wave{display:block; animation:twWaveIn 1.6s ease-out .2s both;}
+  .tide-scene.is-moving[data-k="high"] .tw-wave{animation-delay:1.4s;}
+  .tide-scene .tw-wave::before{content:''; position:absolute; left:0; top:-47px; width:calc(100% + 240px); height:48px; animation:twWaveDrift 9s linear infinite;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 48' width='240' height='48' preserveAspectRatio='none'%3E%3Cpath d='M0 42 C50 42 90 36 128 24 C148 18 160 8 180 6 C198 4 210 10 206 18 C202 14 194 13 188 18 C186 24 192 32 202 38 C214 44 230 44 240 42 L240 48 L0 48 Z' fill='rgb(64,146,218)' fill-opacity='.3'/%3E%3Cpath d='M0 42 C50 42 90 36 128 24 C148 18 160 8 180 6 C198 4 210 10 206 18 C202 14 194 13 188 18' fill='none' stroke='white' stroke-opacity='.5' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 0/240px 48px;}
+  @keyframes twWaveIn{from{opacity:0; translate:0 46px;} to{opacity:1; translate:0 0;}}
+  @keyframes twWaveDrift{from{transform:translateX(0);} to{transform:translateX(-240px);}}
+  html[data-fx="low"] .tide-scene .tw-wave, html[data-fx="low"] .tide-scene .tw-wave::before{animation:none !important;}
+  html[data-fx="none"] .tide-scene .tw-wave{display:none;}
+  @media (prefers-reduced-motion: reduce){ .tide-scene .tw-wave, .tide-scene .tw-wave::before{animation:none !important;} }
   /* the crest surges while the water moves (the independent scale property, so it adds to the drift) */
   .tide-scene.is-moving .tw-edge{animation:twEdge 8s linear infinite, twSurgeA 1.8s ease-out var(--tw-delay, 0ms) both;}
   .tide-scene.is-moving.mv-b .tw-edge{animation-name:twEdge, twSurgeB;}
@@ -11006,6 +11021,14 @@
   background:radial-gradient(circle, rgba(255,240,250,.85) 0%, rgba(255,170,220,.55) 38%, rgba(150,230,140,.25) 62%, rgba(255,255,255,0) 72%);}
 .bloom-petal{position:absolute; left:0; top:0; font-size:15px; line-height:1; pointer-events:none; will-change:transform, opacity; text-shadow:0 0 6px rgba(255,200,235,.9);}
 .board-card.is-blooming{box-shadow:0 0 18px 4px rgba(255,170,220,.75), 0 0 34px 10px rgba(160,235,150,.35);}
+/* 2026-11-12 (package FX6): the bug silhouettes (Swarm, Spawn on death), the dark lime puff (Spore Cloud, Puffball) and Bulwark's dust. Each is one
+   span in a host div over the card, animated by WAAPI (transform / opacity), removed with the host. */
+.fx-float-host > .fx6-bug{position:absolute; left:-8px; top:-8px; width:17px; height:17px; pointer-events:none; will-change:transform, opacity; opacity:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg stroke='%232a2118' stroke-width='1.1' stroke-linecap='round' fill='none'%3E%3Cpath d='M6 8 L2 6 M6 11 L1.5 11 M6 14 L2 17 M14 8 L18 6 M14 11 L18.5 11 M14 14 L18 17 M8.5 3 L6.5 .8 M11.5 3 L13.5 .8'/%3E%3C/g%3E%3Cellipse cx='10' cy='12' rx='4' ry='5.6' fill='%232a2118' stroke='%23f3e9d2' stroke-opacity='.9' stroke-width='.8'/%3E%3Ccircle cx='10' cy='5' r='2.4' fill='%232a2118' stroke='%23f3e9d2' stroke-opacity='.9' stroke-width='.8'/%3E%3C/svg%3E") center/contain no-repeat;}
+.fx-float-host > .fx6-puff{position:absolute; border-radius:50%; pointer-events:none; will-change:transform, opacity; opacity:0;
+  background:radial-gradient(circle at 45% 42%, rgba(74,104,6,.92) 0, rgba(52,84,10,.8) 38%, rgba(38,66,12,.45) 62%, rgba(38,66,12,0) 74%);}
+.fx-float-host > .fx6-dust{position:absolute; bottom:2px; width:14px; height:10px; border-radius:50%; pointer-events:none; will-change:transform, opacity; opacity:0;
+  background:radial-gradient(circle, rgba(196,172,128,.9) 0, rgba(168,142,100,.55) 55%, rgba(168,142,100,0) 75%);}
 .bleed-drop{will-change:transform, opacity; text-shadow:0 1px 1px rgba(0,0,0,.35);}
 /* EN3 (2026-10-23): Rampart's streak from the bramble to the unit taking its share, its flash on the unit, the guard's shield (no line)
    and Bramble Armor's shield ting on the bramble. */
