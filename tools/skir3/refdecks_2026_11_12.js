@@ -16,6 +16,12 @@ const swaps = [
   [/kept1: 'SKIR1 \(PRO-1 replacement rule\)/, "kept1: 'SKIR3 (PRO-1 replacement rule)"],
   [/\.concat\(\[`SKIR1: \$\{pro\.length\} PRO/, ".concat([`SKIR1: (re-run on the owner's 11-12 lists, SKIR3) ${pro.length} PRO"],
   [/about: 'SKIR1 reference decks per map \(apply report; tools\/skir1\/refdecks_2026_11_11\.js\)'/, "about: 'SKIR3 reference decks per map (apply report; tools/skir3/refdecks_2026_11_12.js running tools/skir1/refdecks_2026_11_11.js)'"],
+  // 2026-11-12 23:40 (check found 7 problems on the first apply): a kept PRO-1 / BPRO-1 (replacement rule) must also hold only cards of its
+  // pool on the 11-12 lists (19-PRO-1 kept stonedrop-vulture, 20-B-PRO-1 ashbone-ghoul), and a kept PRO-1 may not share more than 10 copies
+  // with the map's BPRO decks; then any PRO deck that does is dropped (BPRO goes first, as in the search: PRO avoids BPRO).
+  [/const keep1 = \(kind, list\) => \{/, 'const keep1 = (kind, list, avoid = []) => {'],
+  [/if \(cut\.length\) probs\.push\('on no 2026-11-11 list \(out of play, BAL9 JJ24\): ' \+ cut\.join\(', '\)\);/, "$&\n      const offPool = Object.keys(o1.deck).filter(id => x[kind].pool && !x[kind].pool.includes(id)); if (offPool.length) probs.push('not in its pool on the 11-12 lists (SKIR3): ' + offPool.join(', '));\n      avoid.forEach(b => { if (ovl(b.deck, o1.deck) > MAX_OVERLAP) probs.push('shares ' + ovl(b.deck, o1.deck) + ' copies with ' + b.id + ' (SKIR3: BPRO goes first)'); });"],
+  [/bpro = keep1\('bpro', bpro\); pro = keep1\('pro', pro\);/, "bpro = keep1('bpro', bpro); pro = keep1('pro', pro, bpro);\n    row.proVsBpro = pro.filter(d => bpro.some(b => ovl(b.deck, d.deck) > MAX_OVERLAP)).map(d => ({ focus: d.focus, why: 'shares more than ' + MAX_OVERLAP + ' copies with a BPRO deck (SKIR3)' }));\n    pro = pro.filter(d => !bpro.some(b => ovl(b.deck, d.deck) > MAX_OVERLAP)).map((d, i) => Object.assign(d, { id: `${prefix}-PRO-${i + 1}`, name: `${prefix}-PRO-${i + 1}` }));"],
 ];
 for (const [re, to] of swaps) { if (!re.test(src)) throw new Error('SKIR1 refdecks tool changed: ' + re); src = src.replace(re, to); }
 const m = new Module(FILE, module); m.filename = FILE; m.paths = Module._nodeModulePaths(path.dirname(FILE));
