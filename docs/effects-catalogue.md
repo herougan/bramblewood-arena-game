@@ -1788,6 +1788,28 @@ Checks: `tests/lab3-2026-11-11.js` (every look in a fake DOM: resolves, callback
 motion one still node) and `tests/e2e/lab3_2026_11_11.py` (every look played in the built Lab at 1366, the first of each at 390, and under
 reduced motion: no page error, fewer than 40 overlays on any frame, none left).
 
+## 2026-11-13 (package UIFX1): places you walk into
+Owner 00:03: "tent opening for shop ... immersion". Each place screen has one entrance, `BramblewoodPlaces.enter(tab, el, opts)` → Promise
+(`bramblewood-ui-places.js`), called by one line in `switchTab` on a real arrival (not a redraw, not a page load): the full take the first time a session, then the short take. It replaces the page turn on
+that screen. A tap, a key or the wheel skips it; one layer at z-index 590 (under dialogs and toasts), Web Animations on transform and opacity
+only, every node, timer and listener removed at the end. Effects Low: the short take (one or two moving parts, about 0.4 s, no light, no
+particles, no ambience). Effects None: nothing. Reduced motion: a 180 ms fade of the screen.
+
+| Lab id | Place | Entrance (Medium and High) | While open (Medium and High) | Sound (existing cues) |
+|---|---|---|---|---|
+| ✅ `place-shop` | Shop | 0.82 s: indigo-and-canvas tent flaps (the cart awning's stripes, a stitched hem, wooden toggles) part from a seam of light and tie back; lantern light and 12 dust motes spill out; the scalloped valance lifts | the cart's lantern light flickers, 5 dust specks rise in it, the awning stirs | `bushRustle`, then `pitchChime` (the bell) |
+| ✅ `place-premium` | Premium shop (SHOP1's switch, `.is-premium-shop`) | 0.88 s: a gilded pavilion: plum velvet drapes with gold braid and fringe sweep up and aside, the Gold Leaf crest glints and unclasps, gold rays turn behind, 14 gold leaves fall | a warm gold light, a gold leaf drifting down now and then | `rareRise`, `crystalTing` ×2 (a fourth apart) |
+| ✅ `place-nest` | Nest | 0.86 s: you look out through the nest's hollow, a tangle of about 520 twigs (one seeded SVG, drawn once); the rim opens around you and flies past, warm light in the hollow, 12 tufts of down drift out | down drifts past the edges now and then | `featherFlutter` ×2 |
+| ✅ `place-codex` | Codex (not the Forge) | 0.88 s: a tooled leather cover (spine ribs, double gold rule, brass corners, a lozenge medallion with a glint) swings open away from you on its spine, the marbled flyleaf follows, dust off the spine | a slanting shaft of library light with 6 dust specks (one fixed layer) | `pageTurn` ×2 |
+| ✅ `place-deck` | Camp | 0.86 s: the red tent door rolls up on its roll, its two ties shorten as it climbs, the campfire glows and 10 embers rise | the campfire glow breathes along the floor, embers rise | `mapUnroll`, `woodKnock` |
+| ✅ `place-stomp` | Stomping Grounds | 0.90 s: the arena's banded timber gates jolt, then swing in; a blade of sunlight through the gap, 10 puffs of sand dust roll out | (the page's own dust) | `woodKnock`, `leaderSlam` |
+| ✅ `place-inventory` | Inventory | 0.76 s: the brass buckle drops, the stitched leather satchel flap lifts toward you and over, the bag's inside lightens | — | `shelfPick`, `pickup` |
+
+The ambience is a few nodes kept as the screen's first child (put back by a MutationObserver when the screen redraws) or, for the Codex, one
+fixed layer; CSS keyframes on transform and opacity; gone on any other tab or a fight, hidden by `html[data-fx=low|none]` and reduced motion.
+The Forge keeps its own flare (`dressForgePlace`). Lab: group "Places (UIFX1)" (`tools/effects-lab/manifest/places.js`: A the entrance,
+B Effects Low, C the ambience). Contact sheets: `docs/screens/uifx1/`. Check: `tests/uifx1-2026-11-13.js`.
+
 ## 2026-11-12 (package FX6): High Tide's wave, Bulwark's rise, bugs, the spore puff
 All four are cheap by design: one element or a handful of spans (WAAPI, transform and opacity, no per-frame reads), removed when done, nothing running after, no motion under reduced motion.
 
@@ -1816,3 +1838,68 @@ Owner 23:22: "Build more effects for me to see related to the kind of effects we
 Lab: `tools/effects-lab/manifest/fx7.js`, area "FX7 proposals" (ids `fx7-*`). Check: `tests/fx7-2026-11-12.js`.
 
 **Lab errors fixed (same package).** Entries built 10-21 to 10-23 threw because the functions they call were never copied into the Lab (`tools/effects-lab/fx-src-extra.txt`), or called helpers and tables that those functions need in turn (`escapeHtml`, `iconHTML`, `ICON_ART` after `SKILL_ICON_HTML`, `DEATH_TONES`, `BURN_MASKS`, `animMs`, `en2Layer`, `pl2BrambleTile` ...); `LEADER_THRONE_WAIT_MS` is shimmed in `manifest/_game.js`. The Lab also refused every variant keyed `FX6`, `I`, `J` or `LAB` (the key had to be one letter A-H), so FX6's own entries, VIS4 / VIS5 and wave 17 never registered; keys may now be a short tag. `tr-token`'s later registration moved the whole entry to the board stage (its A and B variants need the cards stage), and two `castle-hp-number` variants were both `G`. `tests/lab-errors-2026-11-12.py` now plays every variant and fails on any error.
+## 2026-11-13 (package UIFX3 "Story"): dialogue as a scene, not a text box
+Owner 2026-11-13 00:03: "immersion with dialogue". All in `bramblewood-ui-story.js` (`window.StoryUI`); `playDialogue`, `dialogueDock` and
+`showSpeechBubble` call it. The dock stays out of the way: nothing takes a tap, a tap on a typing line completes it and the next tap moves on,
+the hide button takes the scene layer away with the conversation. Effects None and reduced motion: the whole line at once, no motion, no
+scene layer (sides and nameplates stay); Low: typing, entrance, vignette and letterbox; Medium: + reactions and ambience; High: + the edge
+blur behind a story scene. Ambience and blur never run in a live fight; there a boss intro is only two glowing edge lines and the vignette, gone after the first line (nothing covers the hand or the controls).
+
+| Effect | Where | Look | Code |
+|---|---|---|---|
+| ✅ Speakers arrive | a line whose speaker changed | the portrait rises from below and settles with a small squash; the line slides in from its speaker's side; the first speaker stands left (portrait poking up at the top left), the next one right (portrait poking down at the bottom right, clear of the hide button); the talking line is lit (a ring in the people's colour), the others dim; a nameplate plate in the people's colour (Legion oxblood, river blue, Sunthroat amber, Crimson Wing, Voidfeather violet, road-folk indigo, ember, folk brown, moss, stone); on a phone the other party waits, dimmed, at its corner; cue `storyArrive` (41) | `StoryUI.line` |
+| ✅ Typing with a voice | every NPC line | each letter a span with its own `animation-delay` (the box has its final size from the first frame; no per-letter layout or script); 27 ms a letter at Medium, x1.5 Slow, x0.6 Fast (the NPC dialogue setting), a beat after , ; : and a longer one after . ! ? …, squeezed under 4.2 s; `*marked*` words pop, capitalised words inside a sentence are stressed in the speaker's colour (English only); one `babble` syllable a word in the speaker's people's voice (43); a small arrow bobs once the line is written | `StoryUI.line`, `StoryUI.complete` |
+| ✅ Reactions | `line.mood`, or read from the line (!, ?, …, HA, CAPITALS) | shout: the portrait jolts and shakes with three surprise lines as the ! is typed; laugh: bobs; whisper: italic, softer ink, the portrait dims and shrinks, slower typing, half the voice; question: a head tilt at the end; trailing off: a droop. Replaces `FX.F.portraitMood` on the dock (retired row `tut-dialogue-portrait`); the faction warning keeps `FX.F.factionWarning` | `REACT` |
+| ✅ Letterbox and vignette | `STORY_SCENES`: `scene:'boss'` (boss_banter), `scene:'story'` (outskirts_reveal, scale_trail_finale) | bars close in with a thin edge line (crimson for a boss, gold for a story); a vignette (red for a boss, pulsing once); a story scene also blurs the screen's edges at High; cue `storyLetterbox` (42) | `startLayer` |
+| ✅ Ambience | `STORY_SCENES`: `ambient:'fireflies'` (well_m1, cur_m4_glowpool, cur_m8_wisp), `'rain'` (cur_m3_ashcairn), `'embers'` (scale_trail_finale) | 11 fireflies drifting and blinking; two layers of slanted rain under a cool vignette; 12 embers rising. CSS transform and opacity only | `ambientHTML` |
+| ✅ Battlefield bubbles | `showSpeechBubble` (barks, chatter, emotes) | a squash-pop pivoting on the tail tip (so it never dips over the card's numbers), the tail wiggles once, a clean lift and fade | `StoryUI.bubble` |
+
+Lab: the group "Story (UIFX3)" (`tools/effects-lab/manifest/story.js`, rows `story-*`); `story-scene` is the demo (a boss intro with
+letterbox, two speakers, a shout, a whisper; A a computer's dock, B a phone's). Check: `tests/uifx3-2026-11-13.js`. Frames: `docs/screens/uifx3/`.
+## 2026-11-13 (package UIFX2): the world as a journey (map seasons, travel, ambient weather)
+Owner 00:03: "season changes when moving from certain maps etc." Every map has a season or biome (`MAP_SEASON` in `bramblewood-ui-world.js`; Maps 0-21 meet all eight). One hook line in `renderConquestSubTab` calls `BramblewoodWorld.arrive(map)` on every map render: a new map travels from the last one, the same map keeps its season in the new frame. Effects None: nothing; Low or reduced motion: the vignette only, at once; Medium: + ambient (8 spans), the change and the travel beat; High: 14 spans.
+
+| Effect | Where | Look | Code |
+|---|---|---|---|
+| ✅ Season vignette by place | every map render | the game's `.season-veil` now follows the place, not the calendar month: the four season looks plus desert (warm ochre rim), ash (ember-red floor glow, dark rim), coast (aqua rim); none in the dark | `setSeason`, `veilSet` |
+| ✅ Season change | moving to a map of another season | ~0.95 s: the vignette crossfades, a wash of the season's colour crosses from the side you came from, and its flourish: petals on a gust over a greening floor (spring), a sun flare and rising heat bands (summer), leaves tumbling as the light turns amber (autumn), the first snow and a frost rim closing in (winter), a sand gust (desert), embers off a glowing floor (ash), a tide line: a foam crest washing up the pane and back with glints (coast), darkness closing in (deep) | `change`, `flourish` |
+| ✅ Travel beat | moving between maps (list, edge arrows, swipe) | ≤ 1.15 s: the pane's edges dim, a soft lit route draws in from the side you travel from to where your pawn lands, seven paw prints walk along it (three quiet `pawnStep`s), then it fades as the new season arrives. A side map and its parent zoom (no route). No route while the map's title card is due (the title is the arrival). Any tap, key or wheel finishes it at once and still goes through | `travel`, `road`, `route` |
+| ✅ Season ambient | while the map is open | 8-14 small spans on CSS keyframes (transform and opacity only, no canvas, no timers): petals, haze bands and pollen, leaves, snow, sand streaks and a drifting sand haze, embers and ash, sea spray and glints at the coast (the tide itself washes in with the change: the coast art puts the sea on different sides). Placed under the time-of-day tint, so dawn, dusk and night grade it; half the spans where the map's shader or FX.E ambience already shows that weather; gone in a fight | `mountAmb`, `lanes` |
+
+Lab entries: `tools/effects-lab/manifest/world.js`, the group "World (UIFX2)" (ids `map-grand-uifx2-*`: A the change, B the ambient; travel A / B / C). Frames: `docs/screens/uifx2/`, `python3 tools/uifx2_frames.py`. Check: `tests/uifx2-2026-11-13.js` (`--browser` for the real map).
+## 2026-11-12 additions: Cinematic (FX8), eleven staged board-wide sequences (Lab only, not wired into fights)
+
+Each is omen, build-up, climax, aftermath in 3-6 s over the fight board: `BramblewoodCinematic.<name>(boardEl, opts)` in `bramblewood-cinematic.js` returns a Promise (with `.skip()` / `.stop()`). A few full-board layers (transform / opacity), at most one particle canvas (freed at the end), the shake on the CSS `translate` property. Low: about 1.6x faster, no canvas, no shake. Reduced motion / Effects None: one still frame, then a fade. A tap skips to the aftermath. Contact sheets: `docs/screens/fx8/<name>-stages.png`. Lab: group "Cinematic (FX8)", variants A full, B Low, C reduced (`tools/effects-lab/manifest/cine.js`). Sound: cues 44-56 in `docs/sfx-cue-sheet.md`. Check: `tests/fx8-2026-11-12.js`.
+
+| Effect | Staging |
+|---|---|
+| 📝 Meteor | a faint ember high in the sky; the sky darkens; darkness creeps in from the edges; a sudden warm brightness as the burning ball falls; white flash, two shockwave rings, shake, debris, a crater that cools and fades |
+| 📝 Eclipse | the sun sharpens; the moon slides across; blue-black dusk; totality with corona, rays and stars; the diamond ring and gold light return |
+| 📝 Lightning storm | slate clouds and rain; three flickers, each closer; a held breath; one forked bolt, white-blue flash, scorch and smoke |
+| 📝 Tidal wave | the sea draws back, sickly light; a foam-crested wall stands up; it breaks over the board; it drains, leaving a wet sheen |
+| 📝 Earthquake fissure | tremor and falling dust; amber-lit cracks run; the ground splits open with a big shake; the chasm closes slowly |
+| 📝 Volcanic eruption | smoke and a ground glow; ash and sparks; the blast, a lava fountain and light column; lava rains, the ash cloud thins |
+| 📝 Blizzard whiteout | the air chills; wind-blown flakes, fog bands sweep in; whiteout and a gust; hush, frost vignette, ice glints |
+| 📝 Aurora blessing | a calm night with stars; curtains of green, teal and violet unfurl and sway; the light pours down as drifting motes; the night lifts |
+| 📝 Wildfire sweep | smoke haze, embers blown ahead; a flame front sweeps left to right scorching behind it; a final flare; smoke, embers winking out |
+| 📝 Swarm blots out the sun | specks gather into a cloud (one canvas, ~120 flickering wings) over the sun; near-dark sweep across the board; it flies off, sun returns |
+| 📝 Stampede | dust trembles on the horizon; nine silhouettes (deer, bison, ram, goat) thunder across right to left with dust and hoofbeats; the dust settles |
+
+## 2026-11-13 (package FX9): the owner's 23:47 notes (dawn, Guardian, Ambush, Graveyard, Sleep, Shell, Dragon, Stampede)
+In fights these replace FX.A `ambushStrike` / `shellCrack` / `stampede` and FX.C `dragonArrive` (`fx9PatchFx`, bound once like VIS4's); the Lab keeps the old looks beside them. WAAPI on transform and opacity (the dragon's sway and drop use the CSS `rotate` / `translate` / `scale` properties, so GSAP keeps `transform`); every piece is removed; Effects None: nothing; reduced motion: no travel.
+
+| Note | Where | Look | Code |
+|---|---|---|---|
+| ✅ #1 Morning (dawn draw) | `dawn` event | the rosy wash peaks at 0.9 (was 1), the decks' flash at brightness 1.4 (was 1.45): 10% less bright | `FX.B.dawnDraw` (bramblewood-fx-b.js) |
+| ✅ #5 Guardian only when Ready | a Guardian's state (ENG9 `blockerReady` + not Hibernating / aloft) | the plates show only while it can step in: Waiting, Stunned, Frozen, Asleep, playing dead, Petrified, Bound or Chained fold them in behind the card (`gp-fall`, 0.42 s, opacity + `scale`), Ready swings them back out (`gp-rise`, 0.5 s with a small overshoot); hidden plates are not painted and their sheen loop stops; a rebuilt card still animates the change (state kept per match); None: no animation; reduced motion: a fade | `fx9GuardUp`, `fx9GuardCls` (boardCardHTML), `fx9GuardSync` (updateCardStatusDisplay, updateCardWaitDisplay, the ready event); `.guard-down`, `.gp-rise`, `.gp-fall` |
+| ✅ #6 Ambush on the card | hit with `ambush:true` | the same look (shadow, two blinking yellow eyes, dark smoke, a dark slash at the struck unit) drawn inside the ambusher's card, and its pip's echo rings too, so a camera pan or zoom carries every piece | `fx9AmbushVfx`, `ambushEcho`, `fx9CardHost` |
+| ✅ #6 The same flaw, fixed | any effect on `fxHostAt` | its host sits in the camera layer (`#battlefieldInner`, counter-scaled so its px stay screen px) when its card is on the board, and moves to the new layer at the round-end redraw: FX6 (Bulwark dust, bugs, spore puff), FX7 proposals, Bloom's copy, Wash's push-back, the comet strike, Scorch's sweep, the ground boil, a raid smack, an item landing, the upkeep numbers that wait for the board to settle (`floatText` → `afterSettle`) and a Bloom copy's number | `fxHostAt` → `fx9CamHost`; renderMatchUI `keptFx` |
+| ✅ #7 Graveyard | your pitch (tap or drop) | the card flies from where you let it go (a drop: a short hop) or from its place in the hand (a tap) in an arc, shrinking into the pile and sinking in; the pile bumps and the gain and callout come as it lands (UI16's Auto flight, now for every pitch of yours); reduced motion / None: the gain only | `discardCardByUid(uid, at)` → `ui16PitchToGrave` |
+| ✅ #8 Sleep | while Asleep | three light-blue Zs (dark edge, a soft glow, 15-23 px) drift out of the card's top-right corner, growing and turning, on a 3.6 s loop; waking fades them; Low and reduced motion: two still Zs; None: one. Replaces the 💤 bobbing in the middle under a drop-shadow filter | `FX9_ZZZ_HTML`, `fx9ZzzSync`; `.fx9-zzz` |
+| ✅ #14 Shell breaks | `statusFx shellDown` | a tortoise carapace (three vertebral and six costal scutes with growth rings, a ring of marginal scutes) settles over the card, cracks along its seams, and its nine plates fall away turning; a crack-and-clatter cue (`shellCrackTone`, cue 57); Low / reduced motion: the whole shell fades in and out | `FX9_SHELL`, `fx9ShellBreakVfx` |
+| ✅ #15 Dragon arrives | play of a Dragon | each spawn takes the next of four flights (left to right, right to left, a diagonal dive that ends on its slot, a sweep from the far side toward you, growing): the board dims a little, a top-down wing shadow (soft edge drawn into the image, wings beating) passes over it, the cards near its path sway in its wind, a low gust (`dragonGust`, cue 58), then the dragon drops into its slot from the way it came, squashes, dust at its feet, a quake at High. Was a blurred 🐉 emoji over a multiply layer, always left to right | `FX9_DRAGON_SVG`, `fx9DragonArrive` |
+| ✅ #17 Stampede | `overwhelmHQ` | the dust cloud and cloven hoof prints run straight ahead from the killer's column to the opposing bramble's Health bar (not its centre) and burst against it; the bar jolts | `fx9StampedeVfx` |
+
+**Still fixed on the page (the same flaw, not moved in FX9):** the FX.A-F module overlays (`layer()` on `<body>`: hit sparks, skill marks, deaths...), SkillFX projectiles and arcs, `en2Layer` effects (boomerang, dust rings), `devilPulse` (Penance, Blood Tithe), `UnitFX.guardBreak`. Most are beats under 0.8 s that start after the follow pan has moved; a real fix is to give each module's `layer()` the camera layer as its host, one module at a time.
+
+Cost (`tests/fx9-perf-2026-11-13.js`, six units, 2.5 s window, medians of 3, box loaded by other runs): see the CHANGELOG entry. Lab: `tools/effects-lab/manifest/fx9.js` (variant keys `FX9`, `FX9A`-`FX9D`, `FX9P`, `FX9S` on the inventory ids: `wt-dawn-draw`, `atk-guardian-redirect`, `atk-ambush`, `atk-swarm` (the camera pan), `ui-pitch`, `st-sleep-active`, `sk-shell-down`, `sum-dragon`, `atk-overwhelm-hq`). Frames in a real fight: `docs/screens/fx9/` (`tests/e2e/fx9_2026_11_13.py`). Check: `tests/fx9-2026-11-13.js`.

@@ -26,7 +26,7 @@ ok(/prefers-reduced-motion: reduce\)\{ \.tide-scene \.tw-wave[^}]*animation:none
   ok(/@keyframes twWaveDrift\{from\{transform:translateX\(0\);\} to\{transform:translateX\(-240px\);\}\}/.test(tpl), 'the crest drifts by transform only, one tile (240 px) so it loops'); }
 
 // 2. Guardian: the rule and the picture agree on what exists
-ok(/function blockerReady\(n\)\{ return !!n && !\(n\.wait > 0\)/.test(eng) && /isLiveGuardian[^\n]*blockerReady\(n\)/.test(eng), 'engine: a Guardian steps in only while Ready (ENG9), unchanged');
+ok(/function blockerReady\(n\)\{ return !!n && (!inRitual\(n\)[^&]*&& )?!\(n\.wait > 0\)/.test(eng) /* 2026-11-13: ENG-RC1 adds the Ritual check first */ && /isLiveGuardian[^\n]*blockerReady\(n\)/.test(eng), 'engine: a Guardian steps in only while Ready (ENG9), unchanged');
 ok(/const guards = !!\(\(d\.effects\|\|\{\}\)\.guardian\) && !fog/.test(src), 'the plates are drawn for every Guardian from the moment it is placed (no wait gate)');
 
 // 3. Bulwark
@@ -75,5 +75,5 @@ ok(!/setInterval|requestAnimationFrame|onUpdate/.test([fnSrc('riseUpFx'), fnSrc(
 // 5. docs and the Lab
 ok(/id:'wt-tide-high'/.test(rd('tools/effects-lab/manifest/fx6.js')) && /riseUpFx\nbugCrawlVfx\nsporePuffVfx/.test(rd('tools/effects-lab/fx-src-extra.txt')), 'Lab entries and function sources');
 ok(/package FX6/.test(rd('docs/effects-catalogue.md')), 'effects catalogue entry');
-ok(/Package FX6/.test(rd('docs/CHANGELOG.md').slice(0, 20000)), 'CHANGELOG entry');
+ok(/Package FX6/.test(rd('docs/CHANGELOG.md').slice(0, 60000)), 'CHANGELOG entry'); // 2026-11-13: the night's packages sit above it
 console.log(fail ? `fx6: ${fail} of ${n} checks FAILED` : `fx6: all ${n} checks passed`); process.exit(fail ? 1 : 0);

@@ -217,7 +217,7 @@ function fakeDb(tables, opts){
   ok(doc && words < 600, `6. the plan doc is under 600 words (${words})`);
   ok(/10,000/.test(doc) && /first limit/i.test(doc) && /apply it/.test(doc), '6. the plan names the 10,000 model, the first limit and the owner\'s calls');
   // 2026-11-12: later packages of the batch push the entry down, so the check reads the newest 20k characters
-  ok(/NET1/.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 20000)), '6. a CHANGELOG entry near the top');
+  ok(/NET1/.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 60000)), '6. a CHANGELOG entry near the top'); // 2026-11-13 (PERF5): the night's entries sit above it (it was at 33 kB)
 }
 
 setTimeout(()=>{ console.log(`net1-2026-11-12: ${n - fail}/${n} passed`); process.exit(fail ? 1 : 0); }, 1500);

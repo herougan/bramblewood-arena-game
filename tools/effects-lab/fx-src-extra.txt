@@ -207,3 +207,25 @@ BURN_MASKS
 sharpBoard
 SKILL_ICON_HTML
 ICON_ART
+# FX9 (2026-11-13): effects riding their card / the camera, the Guardian's plates, Sleep's Zs, Ambush, the tortoise shell, the dragon's flights, Stampede, the pitch flight
+fx9CardHost
+fx9Piece
+fx9CamHost
+fx9GuardUp
+fx9GuardMem
+fx9GuardCls
+fx9GuardSync
+FX9_ZZZ_HTML
+fx9ZzzSync
+fx9AmbushVfx
+ambushEcho
+FX9_SHELL
+fx9ShellBreakVfx
+FX9_DRAGON_DIRS
+FX9_DRAGON_SVG
+fx9DragonArrive
+fx9StampedeVfx
+ui16PitchToGrave
+UI16_PITCH_MS
+PITCH_RESOURCE_META
+noteMatchFx

@@ -4181,8 +4181,16 @@ function getCardDefs0(){
   _cardDefsCache = res; _cardDefsSig = sig;
   // 2026-10-17 (fight lag): while a round plays back, nothing edits the cards, but every replayed beat is its own task, so the defs
   // were rebuilt (~5-10 ms) on nearly every beat. During playback the copy now lives for a second.
-  if(!_cardDefsTick){ _cardDefsTick = true; let ms = 0; try{ if(matchState && (matchState.resolving || !matchState.over)) ms = 1000; }catch(e){} /* 2026-11-12 (package PERF4): a fight on screen keeps the copy 1 s too: the 0 ms expiry rebuilt the defs (5-10 ms) on every render call outside a replay; _cardDefsSignature still catches edits */ /* matchState is declared further down */ setTimeout(()=>{ _cardDefsCache = null; _cardDefsTick = false; }, ms); }
+  if(!_cardDefsTick){ _cardDefsTick = true; let ms = 0; try{ if(matchState && (matchState.resolving || !matchState.over)) ms = 1000; }catch(e){} /* 2026-11-12 (package PERF4): a fight on screen keeps the copy 1 s too: the 0 ms expiry rebuilt the defs (5-10 ms) on every render call outside a replay; _cardDefsSignature still catches edits */ /* matchState is declared further down */ setTimeout(_cardDefsExpire, ms); }
   return res;
+}
+// 2026-11-13 (package PERF5, owner 23:47 #12 "unit death and damage numbers have a small frame drop"): the 1 s expiry rebuilt the defs (5-8 ms on
+// the 2-core box) about once a second in a fight, inside whichever hit, number or death came next. While the fight is live the copy now stays
+// (checked again each second); _cardDefsSignature, invalidateCardDefs and onCardsChanged (cloud edits) still drop it on a change.
+function _cardDefsExpire(){
+  let live = false; try{ live = !!(matchState && !matchState.over); }catch(e){}
+  if(live && _cardDefsCache){ setTimeout(_cardDefsExpire, 1000); return; }
+  _cardDefsCache = null; _cardDefsTick = false;
 }
 function buildCardDefs(){
   // An edit saved without art keeps the shipped art (2026-10-13, user: "Some cards don't have art yet": cloud edits of Shepherd,
@@ -4968,6 +4976,7 @@ function setDbPill(live, text){
   document.getElementById('dbPillText').textContent = text;
 }
 function onCardsChanged(){
+  invalidateCardDefs(); // 2026-11-13 (package PERF5): a fight keeps its card defs while live; an edit from the cloud drops them
   if(currentTab==='codex') renderCodex();
   // 2026-09-20: the Simulator moved from its own top-level tab into the Deck menu (deckSubTab
   // 'sim'), so the live-card-sync refresh has to check that instead of a 'sim' currentTab that
@@ -5387,13 +5396,22 @@ const SoundKit = (()=>{
     if(type === 'triangle') return ph < 0.5 ? 4 * ph - 1 : 3 - 4 * ph;
     return Math.sin(2 * Math.PI * ph);
   }
-  // one cue rendered to a buffer, played through a static gain (fire and forget)
-  function playBaked(c, data, len, gain, delay){
-    const buf = c.createBuffer(1, len, c.sampleRate); buf.getChannelData(0).set(data);
+  // 2026-11-13 (package PERF5, owner 23:47 #12 "unit death ... damage number ... have a small frame drop"): a baked cue is kept as its AudioBuffer
+  // (the last 200 kinds), so a hit, a mark or a death no longer computes its waveform sample by sample on the main thread (0.4-4 ms a cue on the
+  // 2-core box) and allocates two fresh buffers every time. Same sound: tone and sweep are exact repeats; fnoise keeps two noise takes per kind.
+  const BAKED = new Map(), BAKED_MAX = 200;
+  function bakedBuf(c, key, make){
+    let b = BAKED.get(key);
+    if(b && b.sampleRate === c.sampleRate){ BAKED.delete(key); BAKED.set(key, b); return b; }
+    const r = make(); b = c.createBuffer(1, r.len, c.sampleRate); b.getChannelData(0).set(r.d);
+    BAKED.set(key, b); if(BAKED.size > BAKED_MAX) BAKED.delete(BAKED.keys().next().value);
+    return b;
+  }
+  function playBuf(c, buf, gain, delay){ // one cue's buffer, played through a static gain (fire and forget)
     const src = c.createBufferSource(); src.buffer = buf;
     const g = c.createGain(); g.gain.value = gain;
     src.connect(g); g.connect(outNode(c));
-    const t0 = c.currentTime + (delay || 0); src.start(t0); track(src, t0 + len / c.sampleRate);
+    const t0 = c.currentTime + (delay || 0); src.start(t0); track(src, t0 + buf.length / c.sampleRate);
   }
   function osc2buf(c, f0, f1, dur, type, att){
     const sr = c.sampleRate, len = Math.max(1, Math.floor(sr * (dur + 0.02))), d = new Float32Array(len);
@@ -5409,8 +5427,7 @@ const SoundKit = (()=>{
     const vol = volOverride!=null ? volOverride : sfxVolume;
     if(vol<=0) return;
     const c = ac(); if(!c) return;
-    const b = osc2buf(c, freq, freq, dur, type || 'sine', 0.01);
-    playBaked(c, b.d, b.len, (gainPeak||0.15)*vol, delay||0);
+    playBuf(c, bakedBuf(c, 't' + freq + '|' + dur + '|' + (type || 'sine'), ()=> osc2buf(c, freq, freq, dur, type || 'sine', 0.01)), (gainPeak||0.15)*vol, delay||0);
   }
   function noise(dur, gainPeak){
     if(sfxVolume<=0) return;
@@ -5427,10 +5444,15 @@ const SoundKit = (()=>{
   // Richer primitives (2026-10-05 SFX pass): band-limited noise with its own envelope and a
   // sweeping filter (whooshes, crackles, rumbles, squelches), and a pitch-swept tone (twangs, drips).
   // 2026-10-17: the filter runs here (the Web Audio BiquadFilter's own formulas, its cutoff swept every 32 samples), baked with the envelope.
+  let fnoiseTake = 0;
   function fnoise(dur, gainPeak, o){
     o = o || {};
     if(sfxVolume<=0) return;
     const c = ac(); if(!c) return;
+    const key = 'n' + dur + '|' + (o.type || 'bandpass') + '|' + (o.q || 1) + '|' + (o.freq || 1200) + '|' + (o.freqEnd || '') + '|' + o.attack + '|' + (o.crackle || 0) + '|' + (fnoiseTake = (fnoiseTake + 1) % 2);
+    playBuf(c, bakedBuf(c, key, ()=> fnoiseBuf(c, dur, o)), Math.max(0.0002, gainPeak*sfxVolume), o.delay || 0);
+  }
+  function fnoiseBuf(c, dur, o){
     const sr = c.sampleRate, len = Math.max(1, Math.floor(sr*(dur + 0.02))), d = new Float32Array(len);
     const crackle = o.crackle || 0, type = o.type || 'bandpass', Q = o.q || 1, fA = o.freq || 1200, fB = o.freqEnd || fA;
     const att = o.attack != null ? Math.max(0.0005, o.attack) : 0.01;
@@ -5445,13 +5467,12 @@ const SoundKit = (()=>{
       const y = b0*v + b1*x1 + b2*x2 - a1*y1 - a2*y2; x2 = x1; x1 = v; y2 = y1; y1 = y;
       d[i] = y * envAt(i / sr, att, dur, 1);
     }
-    playBaked(c, d, len, Math.max(0.0002, gainPeak*sfxVolume), o.delay || 0);
+    return {d, len};
   }
   function sweep(f0, f1, dur, type, gainPeak, delay){
     if(sfxVolume<=0) return;
     const c = ac(); if(!c) return;
-    const b = osc2buf(c, f0, Math.max(20, f1), dur, type || 'sine', 0.008);
-    playBaked(c, b.d, b.len, (gainPeak||0.12)*sfxVolume, delay||0);
+    playBuf(c, bakedBuf(c, 's' + f0 + '|' + f1 + '|' + dur + '|' + (type || 'sine'), ()=> osc2buf(c, f0, Math.max(20, f1), dur, type || 'sine', 0.008)), (gainPeak||0.12)*sfxVolume, delay||0);
   }
   // Task list item 8's "voice from a set list" — a short, distinct blip standing in for a
   // character's spoken line (real voice recording is out of scope for a single-file artifact).
@@ -5556,7 +5577,7 @@ const SoundKit = (()=>{
     // ≥4-damage layer had anything up high (its 2.6 kHz crackle), so only big hits were heard. Every hit now also gets a short
     // mid-range "thwack" (a 1.1-2.4 kHz band-passed snap and a quick 620→300 Hz knock), a little louder on bigger hits.
     hitAt(dmg, heavy){
-      const j = 0.92 + Math.random()*0.16;
+      const j = 0.92 + Math.floor(Math.random()*9)*0.02; // 2026-11-13 (package PERF5): the ±8% pitch jitter in 2% steps, so its baked buffers are reused (BAKED)
       fnoise(0.09, 0.14, {type:'lowpass', freq:1400*j, freqEnd:260, q:1.2, attack:0.002});
       sweep(210*j, 120*j, 0.08, 'triangle', 0.09);
       fnoise(0.055, Math.min(0.2, 0.13 + Math.max(0, dmg||0)*0.006), {type:'bandpass', freq:2400*j, freqEnd:1100*j, q:1.4, attack:0.001});
@@ -5605,6 +5626,11 @@ const SoundKit = (()=>{
         t += V.gap * 0.6;
       }
     },
+    // 2026-11-13 (package UIFX3, bramblewood-ui-story.js): a new speaker steps into a conversation (a soft cloth swish and a wooden tock),
+    // and a story or boss scene frames the screen with its letterbox (a low drum swell under a muffled gong; the boss's is deeper).
+    storyArrive(){ fnoise(0.16, 0.03, {type:'bandpass', freq:1800, freqEnd:4200, q:1.6, attack:0.05}); tone(523, 0.06, 'triangle', 0.022, 0.07); },
+    storyLetterbox(boss){ sweep(boss ? 96 : 130, boss ? 44 : 70, 0.55, 'sine', boss ? 0.16 : 0.1); fnoise(0.7, boss ? 0.05 : 0.03, {type:'lowpass', freq:300, freqEnd:120, attack:0.2});
+      tone(boss ? 98 : 196, 0.9, 'triangle', 0.04, 0.12); if(boss) tone(147, 0.7, 'sine', 0.025, 0.3); },
     // Reward unlock (2026-10-08): a bright rising chime, then the padlock snapping open.
     unlockChime(){ [659, 880, 1319].forEach((f, i)=> tone(f, 0.22, 'triangle', 0.05, i*0.07)); tone(1760, 0.4, 'sine', 0.03, 0.22); },
     lockBreak(){ tone(320, 0.06, 'square', 0.05); tone(1900, 0.08, 'triangle', 0.04, 0.02); tone(2600, 0.12, 'sine', 0.03, 0.05); },
@@ -5976,6 +6002,10 @@ const SoundKit = (()=>{
     // 2026-11-12 (FX6, owner: "Construction sounds"): Bulwark's Log Walls going up: three hammer knocks on wood (a low square thud with a band of
     // noise on each, the pitch dropping a little as the wall takes weight) over a short rising saw-scrape of the planks sliding up.
     constructTone(){ sweep(240,420,0.32,'sawtooth',0.03); [0,0.12,0.25].forEach((d,i)=>{ tone(150-i*10,0.07,'square',0.09,d); fnoise(0.05,0.06,{type:'bandpass',freq:900,delay:d}); }); },
+    // 2026-11-13 (package FX9 #14 / #15): a tortoise shell cracking (a dry crack, then its plates clattering down) and a dragon's wings passing over
+    // the board (a low rush of air that swells and fades, three deep wing beats in it).
+    shellCrackTone(){ fnoise(0.07,0.09,{type:'highpass',freq:1600,crackle:0.4,attack:0.002}); [0.3,0.38,0.47,0.55].forEach((d,i)=>{ tone(520-i*55,0.05,'square',0.045,d); fnoise(0.04,0.04,{type:'bandpass',freq:1400-i*150,delay:d}); }); },
+    dragonGust(){ fnoise(1.0,0.07,{type:'lowpass',freq:320,freqEnd:900,q:0.8,attack:0.35}); [0.05,0.43,0.81].forEach(d=> fnoise(0.18,0.06,{type:'lowpass',freq:260,freqEnd:110,attack:0.03,delay:d})); },
     reflectTone(){ tone(600,0.05,'triangle',0.07); tone(900,0.05,'triangle',0.06,0.04); tone(600,0.05,'triangle',0.05,0.08); }, // bounces up then back down, mirroring the hit
     momentumTone(){ tone(400,0.06,'square',0.07); tone(560,0.06,'square',0.07,0.05); tone(760,0.08,'square',0.08,0.1); }, // three escalating notes, each louder
     // Esprit (2026-09-21, Skills/VFX/SFX audit): the engine has pushed a statusFx{kind:'esprit'}
@@ -18836,6 +18866,7 @@ const DIALOGUE_SPEAKERS = {
   golem:      {name:'Cobble, the Forge golem', icon:'🗿', art:'art/npc/golem.png'},
 };
 // Script format: {lines:[{who, text, options?:[{label, goto?}], silent?:goto, goto?}], ...}. `goto` jumps to a label.
+// 2026-11-13 (package UIFX3): a line may carry a staging mark, never text: mood 'shout' | 'laugh' | 'whisper' | 'ask' | 'sad' (a script's scene and ambient: STORY_SCENES in bramblewood-ui-story.js)
 const DIALOGUES = {
   // Cobble at the Forge (2026-10-14): the one-time hello, and the lines it says instead of a plain "can't afford" toast.
   forge_cobble_intro: {lines:[
@@ -18856,7 +18887,7 @@ const DIALOGUES = {
     {who:'shieldback', text:'Mostly. Which means not entirely. We go carefully.'},
     {who:'swiftpaw', text:'You heard the Marshal. You\'re with us, aren\'t you?', options:[{label:'Of course.', goto:'yes'}, {label:'What\'s in it for me?', goto:'pay'}], silent:'quiet'},
     {label:'yes', who:'shieldback', text:'Good. Then the first patrol is yours.', goto:'end'},
-    {label:'pay', who:'swiftpaw', text:'Leaves, glory, and the Marshal\'s eternal respect. Two of those are real.', goto:'end'},
+    {label:'pay', who:'swiftpaw', text:'Leaves, glory, and the Marshal\'s eternal respect. Two of those are real.', goto:'end', mood:'laugh'},
     {label:'quiet', who:'shieldback', text:'…Quiet type. I can work with quiet.', goto:'end'},
     {label:'end', who:'swiftpaw', text:'Watch the map. Things turn up when you push further in.'},
   ]},
@@ -18868,7 +18899,7 @@ const DIALOGUES = {
   unlock_shop: {lines:[
     {who:'traveller', text:'Ah! A customer. Or a soldier. In this war they\'re the same thing.'},
     {who:'traveller', text:'Packs, trinkets, the odd rumour. Interested?', options:[{label:'Let\'s trade.', goto:'go'}, {label:'Rumours?', goto:'rumour'}], silent:'go'},
-    {label:'rumour', who:'traveller', text:'Only that the Crown didn\'t fly away on its own. But you didn\'t hear it from me.', goto:'go'},
+    {label:'rumour', who:'traveller', text:'Only that the Crown didn\'t fly away on its own. But you didn\'t hear it from me.', goto:'go', mood:'whisper'},
     {label:'go', who:'traveller', text:'Leaves on the counter, please.'},
   ]},
   // The Scale Trail's finale (2026-10-18, audit R1): plays once all eight Dragon Scales are found (scaleTrailFinaleSoon), then the
@@ -18884,7 +18915,7 @@ const DIALOGUES = {
     {who:'peddler', text:'Mind the cinders. The Foundry\'s fire is right behind me, and it\'s still warm. So are the prices.'},
     {who:'peddler', text:'Tidemire Chests. Five cards, one you\'ve never held. The Cart can\'t carry them this far up.', options:[{label:'Show me.', goto:'go'}, {label:'Who are you?', goto:'who'}], silent:'go'},
     {label:'who', who:'peddler', text:'A mole who walked the wrong way out of a mine and kept going. You\'ll find my stall with the Cart\'s.', goto:'go'},
-    {label:'go', who:'traveller', text:'Competition! Wonderful. We\'ll share a counter. Shops, plural, now.'},
+    {label:'go', who:'traveller', text:'Competition! Wonderful. We\'ll share a counter. Shops, plural, now.', mood:'laugh'},
   ]},
   unlock_market: {lines:[
     {who:'traveller', text:'Every trader who ever crossed these maps ends up here sooner or later. So do their cards.'},
@@ -18906,7 +18937,7 @@ const DIALOGUES = {
   unlock_autobattler: {lines:[
     {who:'whisper', text:'You like games? Here\'s one. Build an army from nothing. Watch it fight without you.'},
     {who:'whisper', text:'Ten wins and you\'re a legend. Five losses and you\'re a story.', options:[{label:'Deal.', goto:'go'}], silent:'go'},
-    {label:'go', who:'whisper', text:'…Don\'t tell the Marshal you saw me.'},
+    {label:'go', who:'whisper', text:'…Don\'t tell the Marshal you saw me.', mood:'whisper'},
   ]},
   well_m1: {lines:[
     {who:'swiftpaw', text:'Huh. The old well. Otters drew water here long before the border war.'},
@@ -19066,7 +19097,7 @@ const DIALOGUES = {
   ]},
   cur_m4_echo: {lines:[
     {who:'swiftpaw', text:'HELLO!'},
-    {who:'whisper', text:'…hello… hello… hello…'},
+    {who:'whisper', text:'…hello… hello… hello…', mood:'whisper'},
     {who:'swiftpaw', text:'That last one wasn\'t the echo.'},
   ]},
   cur_m4_glowpool: {lines:[
@@ -19241,7 +19272,8 @@ function dialogueDock(){
     dock.addEventListener('pointerdown', wake, true);
     // 2026-10-14: a tap or click on a line moves the conversation on. The dock stays click-through (it never blocks the map), so
     // this listens on the page and checks whether the press landed on a line.
-    document.addEventListener('click', e=>{ if(!dialogueAdvance || !lines.children.length || dock.classList.contains('is-collapsed')) return; const t = e.target; if(t && t.closest && t.closest('.dlg-reply, .dlg-hide, .dlg-chip')) return; if(overLine(e.clientX, e.clientY)) dialogueAdvance(true); }, true);
+    // 2026-11-13 (package UIFX3): a tap on a line still typing completes it (StoryUI); the next tap moves on
+    document.addEventListener('click', e=>{ if(!lines.children.length || dock.classList.contains('is-collapsed')) return; const t = e.target; if(t && t.closest && t.closest('.dlg-reply, .dlg-hide, .dlg-chip')) return; if(!overLine(e.clientX, e.clientY)) return; if(window.StoryUI && StoryUI.complete()) return; if(dialogueAdvance) dialogueAdvance(true); }, true);
   }
   return dock.querySelector('.dlg-lines');
 }
@@ -19422,8 +19454,10 @@ function playDialogue(id, opts){
       b.innerHTML = `${speakerPortraitHTML(sp)}<div class="dlg-body"><div class="dlg-name">${escapeHtml(sp.name)}</div><div class="dlg-text">${escapeHtml(line.text)}</div></div>`;
       dock.appendChild(b);
       while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
-      if(hasGsap()) gsap.from(b, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
-      try{ fxHook('dialogueLine', b, line, id); }catch(e){} // 2026-10-15 batch F: portrait mood, speaker change, faction warning
+      // 2026-11-13 (package UIFX3): the story staging (bramblewood-ui-story.js) owns the entrance, the typing, the mood and the scene
+      const st = window.StoryUI ? StoryUI.line(b, line, {id, sp, script}) : null;
+      if(!st && hasGsap()) gsap.from(b, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
+      if(!st) try{ fxHook('dialogueLine', b, line, id); }catch(e){} // 2026-10-15 batch F: portrait mood, speaker change, faction warning
       let next = i+1;
       if(line.options){
         const choice = await new Promise(resolve=>{
@@ -19446,7 +19480,7 @@ function playDialogue(id, opts){
           b.querySelector('.dlg-replies') && b.querySelector('.dlg-replies').remove(); b.classList.remove('dlg-to-you');
           const bye = document.createElement('div'); bye.className = 'dlg-line';
           bye.innerHTML = `${speakerPortraitHTML(sp)}<div class="dlg-body"><div class="dlg-name">${escapeHtml(sp.name)}</div><div class="dlg-text">${escapeHtml(afkLineFor(line.who))}</div></div>`;
-          dock.appendChild(bye); if(hasGsap()) gsap.from(bye, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
+          dock.appendChild(bye); if(!(window.StoryUI && StoryUI.line(bye, {who: line.who, text: afkLineFor(line.who)}, {id, sp, script})) && hasGsap()) gsap.from(bye, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'}); // 2026-11-13 (UIFX3)
           try{ fxHook('dialogueAfk', bye); }catch(e){} // 2026-10-15 batch F
           while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
           if(opts.once) setDialogueFlag('seen:'+id, false);
@@ -19462,6 +19496,7 @@ function playDialogue(id, opts){
         b.querySelector('.dlg-replies').remove();
         b.classList.remove('dlg-to-you'); // 2026-10-08 (user: "the conversation is a little broken"): answered lines stop glowing
         dock.appendChild(reply);
+        if(window.StoryUI) StoryUI.mine(reply); // 2026-11-13 (UIFX3): your reply is lit, the others dim
         if(hasGsap()) gsap.from(reply, {x: 40, opacity: 0, duration: .3, ease: 'power3.out'});
         while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
         replies.push(choice ? choice.label : '…');
@@ -19470,8 +19505,8 @@ function playDialogue(id, opts){
         await dialogueWait(DIALOGUE_GAP_MS * dialogueSpeedMul()); // 2026-10-14: the next line 1 s later (2026-10-17: × the dialogue speed)
       } else {
         if(line.act) setTimeout(()=> performDialogueAct(line.act), 600);
-        // 2026-10-14: its reading time (≤ 8 s), then 1 s before the next line; a tap skips both
-        if(!(await dialogueWait(dialogueReadMs(line.text))) && i + 1 < script.lines.length) await dialogueWait(DIALOGUE_GAP_MS * dialogueSpeedMul());
+        // 2026-10-14: its reading time (≤ 8 s), then 1 s before the next line; a tap skips both (2026-11-13 UIFX3: never less than its typing + 1.2 s)
+        if(!(await dialogueWait(Math.max(dialogueReadMs(line.text), st ? st.ms + 1200 * dialogueSpeedMul() : 0))) && i + 1 < script.lines.length) await dialogueWait(DIALOGUE_GAP_MS * dialogueSpeedMul());
         if(line.goto && byLabel[line.goto]!=null) next = byLabel[line.goto];
         if(line.goto === '__end') next = script.lines.length;
       }
@@ -19482,7 +19517,7 @@ function playDialogue(id, opts){
     if(opts.onDone) try{ opts.onDone(replies); }catch(e){}
     return {replies};
   };
-  const run = async ()=>{ try{ return await run0(); } finally { dialoguesPending.delete(id); } };
+  const run = async ()=>{ try{ return await run0(); } finally { dialoguesPending.delete(id); try{ if(window.StoryUI) StoryUI.end(id); }catch(e){} } }; // 2026-11-13 (UIFX3): the scene ends with its conversation
   const p = dialogueQueue.then(run, run);
   dialogueQueue = p.catch(()=>{});
   return p;
@@ -29200,6 +29235,7 @@ function renderConquestSubTab(body){
   // slime-and-stone 'dungeon' variant), and a daily dungeon's subtitle says so.
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak), map.id); }catch(e){}
   fxHook('mapShown', conquestShaderHost(), map, document.getElementById('conquestCanvas'), progress); // map ambience, day/night, node states, coming-back moments (FX.E, 2026-10-15)
+  try{ if(window.BramblewoodWorld) BramblewoodWorld.arrive(map, conquestShaderHost(), document.getElementById('conquestCanvas')); }catch(e){} // 2026-11-13 (package UIFX2): the place's season, the travel beat from the last map, its ambient (bramblewood-ui-world.js)
   pl2MapViewed(); // PL2 (2026-10-25): XP won elsewhere fills here
   try{ jumperArrivals(map, document.getElementById('conquestCanvas')); }catch(e){} // a jumper landing on the trail (2026-10-16)
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
@@ -39316,6 +39352,7 @@ function renderMatchUI(){
   // 2026-11-12 (package PERF4): a live fight keeps its rows too (renderBoard's signature check skips an unchanged side) and its battle log (pushLog already draws each new line, so the 200-line replay is only for a fresh box): the round-end redraw was 54-220 ms at 1x
   const keptRows = (m.over || PERF4_KEEP_DOM) ? BOARD_ROW_IDS.map(id=> document.getElementById(id)).filter(el=> el && el.__bwMatch === m && el.children.length) : [];
   const keptLog = PERF4_KEEP_DOM && m.log.length < 200 ? document.getElementById('battleLog') : null; const keepLog = !!(keptLog && keptLog.__bwMatch === m && keptLog.dataset.pinWired);
+  const keptFx = [...document.querySelectorAll('#battlefieldInner > .fx9-cam')]; // 2026-11-13 (package FX9 #6): effects riding the camera layer (fxHostAt) move to the new one
   root.innerHTML = `
     <!-- 2026-09-29, per explicit request ("Put this top banner UI onto the top right corner of
          the same level as the Deck and enemy castle row."): the opponent tag + utility buttons
@@ -39722,6 +39759,7 @@ function renderMatchUI(){
   }
   if(keepLog){ const fresh = document.getElementById('battleLog'); if(fresh && fresh !== keptLog){ try{ fresh.replaceWith(keptLog); }catch(e){} } }
   keptRows.forEach(old=>{ const fresh = document.getElementById(old.id); if(fresh && fresh !== old){ try{ fresh.replaceWith(old); }catch(e){} } }); // 2026-10-23 (package UI4)
+  { const inn = keptFx.length && document.getElementById('battlefieldInner'); if(inn) keptFx.forEach(h=> inn.appendChild(h)); } // FX9 #6
   renderBoard();
   BOARD_ROW_IDS.forEach(id=>{ const el = document.getElementById(id); if(el) el.__bwMatch = m; }); // 2026-10-23 (package UI4): which match drew these rows
   syncWindField(m); // 2026-10-15: the wind layer survives the repaint
@@ -39958,7 +39996,7 @@ function wireDropZones(){
       discardDragActive = false;
       hideResourceTip(); hidePitchBadge();
       const uid = Number(e.dataTransfer.getData('text/plain'));
-      if(uid) discardCardByUid(uid);
+      if(uid) discardCardByUid(uid, e.clientX || e.clientY ? {x: e.clientX, y: e.clientY} : null); // FX9 #7: the flight starts where it was let go
     });
     discardZone.addEventListener('click', ()=>{ const m=matchState; if(m && m.selectedUid!=null) discardCardByUid(m.selectedUid); else if(m) toggleGravePeek(viewerHandPid(m), discardZone); }); // 2026-10-15: a tap with no card held peeks at the Graveyard
     // 2026-09-26: covers the tap-arm-then-just-point-at-it case (no native drag at all) with the
@@ -40721,9 +40759,9 @@ function renderBoard(opts){
     flipSlotFast = true;
     const cells = new Map();
     [[p1Rows, 1], [p2Rows, 2]].forEach(([rows, pid])=> [...rows.left, ...rows.center, ...rows.right].forEach(c=> cells.set(String(c.uid), pid + ':' + c.slot)));
-    const prevCells = m._flipCells;
-    if(prevCells && m._flipRange === slotRange){ flipNoMove = true; for(const [u, cell] of cells){ if(prevCells.has(u) && prevCells.get(u) !== cell){ flipNoMove = false; break; } } }
-    m._flipCells = cells; m._flipRange = slotRange;
+    const prevCells = m._flipCells, span = ui2UnitSpan([p1Rows, p2Rows]); // ANIM1 (note 9): the units' span sizes the cards (--row-n), so a new span re-lays them out too
+    if(prevCells && m._flipRange === slotRange && m._flipSpan === span){ flipNoMove = true; for(const [u, cell] of cells){ if(prevCells.has(u) && prevCells.get(u) !== cell){ flipNoMove = false; break; } } }
+    m._flipCells = cells; m._flipRange = slotRange; m._flipSpan = span;
   } else { m._flipCells = null; m._flipRange = null; }
   // Bugfix (2026-09-17, found while wiring up tasks #125/#126): GSAP's Flip.from()/onEnter
   // never actually distinguishes "a brand new uid with no prior recorded state" from an
@@ -40824,7 +40862,7 @@ function renderBoard(opts){
           tl.kill();
           enteringTimelines.delete(uid);
           const isSpawn = spawnUidsForKilledEntrants.includes(String(uid));
-          if(!handFlightsLive.has(String(uid))) setTimeout(()=>{ if(isSpawn) playBeeSpawnLanding(uid); else playLandingImpact(uid); }, 0); // a hand flight lands its own (2026-10-17)
+          if(!handFlightsLive.has(String(uid)) && !tl._byFlight) setTimeout(()=>{ if(isSpawn) playBeeSpawnLanding(uid); else playLandingImpact(uid); }, 0); // a hand flight lands its own (2026-10-17); + one already down (ANIM1: no second thud)
         }
       });
       gsap.killTweensOf(enteringEls);
@@ -40948,6 +40986,10 @@ function renderBoard(opts){
     if(m.coop && slotView){ try{ const resRows = (m.players[1].reserve || []).map(rw=> ({left: [], center: Object.keys(rw).map(k=> rw[k]).filter(Boolean), right: []}));
       ui2SetRowSpan(m, [p1Rows, p2Rows, ...resRows], [rowEnemy, rowMine, ...document.querySelectorAll('#battlefieldInner .reserve-row.coop-rows')]); }catch(e){} }
   }
+  // 2026-11-13 (package ANIM1, owner 23:47 note 19): a row redrawn while a played card is still flying in from the hand (the turn's own
+  // render, Auto's, a second play) drew that card at its slot, shown, until the flight's next frame hid it again: the card flashed on the
+  // field, vanished, and came back on landing. The flight keeps its card hidden until it lands, so a redrawn copy starts hidden too.
+  handFlightsLive.forEach(u=>{ const c = boardCardEl(u); if(c) c.style.visibility = 'hidden'; });
   // 2026-10-18 (owner 15:56, row and column smacks): the next smack's column glows red down all your rows, or its row glows red across
   if(m.coop) try{ gdDecorateBoard(m); }catch(e){} // 2026-10-28 (package COOP2): my claims waiting in their slots, whose row is whose
   if(m.raidFull){ const tg = raidTelegraph(m), resRows = [...document.querySelectorAll('#battlefieldInner .reserve-row.mine')];
@@ -41377,7 +41419,8 @@ function renderBoard(opts){
         const sharp = sharpBoard();
         // 2026-10-17: your own play never waits on the stagger (the enemy's card rendered first in this pass pushed yours 0.05 s
         // back, sat still at the hand: the "0.1 s lag").
-        const flightOk = !!(handFlight && handFlightProxy(el, uid, handFlight));
+        const goTo = isHandPlay && playGoTo(); // 2026-11-13 (ANIM1, note 19): 4x / 5x: no travel, the card is simply in its slot
+        const flightOk = !goTo && !!(handFlight && handFlightProxy(el, uid, handFlight));
         const entranceTl = gsap.timeline({
           delay: (isHandPlay && !(origin && origin.enemyHand)) ? 0 : i*(sharp ? 0.03 : 0.05),
           onComplete: ()=>{
@@ -41396,9 +41439,11 @@ function renderBoard(opts){
             // is done — would let it compute a static flow position as if Flip's still-absolute
             // targets don't exist yet, which is exactly the desync this whole scheme prevents.
             if(spawnUids.includes(String(uid))) playBeeSpawnLanding(uid);
-            else if(!flightOk){ playLandingImpact(uid); if(isHandPlay) playHandSummonGlow(uid); } // a flight lands its own thud (handFlightProxy)
+            else if(!flightOk && !goTo){ playLandingImpact(uid); if(isHandPlay) playHandSummonGlow(uid); } // a flight lands its own thud (handFlightProxy)
+            if(!flightOk) settleRestPose(el); // ANIM1 (note 13): the entrance's last pose off the card once it is down
           },
         });
+        entranceTl._byFlight = flightOk; // ANIM1 (note 19): a redraw that cuts this short doesn't land it a second time
         if(riseUp){
           const calm = reducedMotion() || !fxAtLeast('low');
           if(calm) entranceTl.fromTo(el, {opacity:0, x:0, y:0, rotate:0, scale:1}, {opacity:1, duration:.2, ease:'none'});
@@ -41414,6 +41459,8 @@ function renderBoard(opts){
           // Flip leaves alone) at its slot and takes over the moment the copy arrives, its face squashing into place (the leader
           // harder, a stomp). This timeline only holds the card's "entering" state for that long.
           entranceTl.set(el, {opacity:1, x:0, y:0, rotate:0, scale:1}, 0).to({}, {duration: handFlightSec(!!handFlight.leader) + .25});
+        } else if(goTo){
+          entranceTl.to({}, {duration: .05}); // ANIM1 (note 19): drawn at rest in its slot; the timeline only closes its "entering" state
         } else if(broodHop){
           // UI14 (JJ13): the 🐣 hops from the parent onto this slot (the second egg a beat later), and the token pops out of it as it lands
           const calm = reducedMotion() || !fxAtLeast('low'); // reduced motion / Effects None: no hop, the token fades in where it lands
@@ -41630,9 +41677,9 @@ function recenterBattlefieldPan(delayMs){
     const inner = document.getElementById('battlefieldInner');
     if(!inner || battlefieldPanX===0) { battlefieldPanX = 0; return; }
     battlefieldPanX = 0;
-    inner.style.transition = 'transform .6s cubic-bezier(.22,.85,.34,1)';
+    inner.style.transition = `transform ${layoutSec(.6).toFixed(3)}s cubic-bezier(.22,.85,.34,1)`; // ANIM1 (note 9): at the layout speed
     applyBattlefieldTransform();
-    setTimeout(()=>{ if(inner) inner.style.transition = ''; }, 650);
+    setTimeout(()=>{ if(inner) inner.style.transition = ''; }, Math.round(layoutSec(.6) * 1000) + 50);
   }, delayMs==null ? 550 : delayMs);
 }
 // Item 3, second half ("the camera moves such that we can see the action happen if it's outside
@@ -41684,7 +41731,7 @@ function panCameraToShowUid(uid){
     inner.style.transition = 'none';
     inner.style.transform = trueBeforeTransform;
     void inner.offsetWidth; // force-commit the "before" frame before enabling the transition
-    inner.style.transition = 'transform .35s ease-out';
+    inner.style.transition = `transform ${layoutSec(.35).toFixed(3)}s ease-out`; // ANIM1 (note 9): at the layout speed
     inner.style.transform = afterTransform;
   }
   panCameraToShowUid._transitionActive = true;
@@ -41694,7 +41741,7 @@ function panCameraToShowUid(uid){
     if(inner) inner.style.transition = '';
     panCameraToShowUid._transitionActive = false;
     fitBattlefieldZoom._transitionActive = false;
-  }, 380);
+  }, Math.round(layoutSec(.35) * 1000) + 30);
 }
 // Elastic camera pan (2026-09-22, item 4 — "If the field is bigger than the camera, scrolling
 // lets you go left/right"): wired ONCE, delegated on `document` rather than bound to a specific
@@ -41953,11 +42000,11 @@ function mb2FlipReframe(inner, before, after){
   inner.style.transition = 'none';
   inner.style.transform = `translateX(${before.x.toFixed(1)}px) translateY(${dy.toFixed(1)}px) scale(${s.toFixed(4)})`;
   void inner.offsetWidth;
-  inner.style.transition = 'transform .3s cubic-bezier(.3,.1,.2,1)';
+  inner.style.transition = `transform ${layoutSec(.3).toFixed(3)}s cubic-bezier(.3,.1,.2,1)`; // ANIM1 (note 9): at the layout speed
   inner.style.transform = target;
   fitBattlefieldZoom._transitionActive = true; panCameraToShowUid._transitionActive = true;
   clearTimeout(mb2FlipReframe._t);
-  mb2FlipReframe._t = setTimeout(()=>{ inner.style.transition = ''; fitBattlefieldZoom._transitionActive = false; panCameraToShowUid._transitionActive = false; }, 340);
+  mb2FlipReframe._t = setTimeout(()=>{ inner.style.transition = ''; fitBattlefieldZoom._transitionActive = false; panCameraToShowUid._transitionActive = false; }, Math.round(layoutSec(.3) * 1000) + 40);
 }
 // Fill mode: the frame's size changes without a board render (a hand drawn or played, the window, the browser bar), so it is
 // watched and the board framed again (a raid only when its frame key changed, see raidFrameKey).
@@ -42055,6 +42102,7 @@ function rzWrite(m){
 function rzTo(m, target, ms){
   cancelAnimationFrame(rzTween); const s = m._rz; if(!s) return;
   if(!ms || reducedMotion()){ Object.assign(s, target); rzWrite(m); return; }
+  ms = layoutSec(ms / 1000) * 1000; // ANIM1 (note 9): the raid zoom at the layout speed
   const from = {z: s.z, tx: s.tx, ty: s.ty}, t0 = performance.now(), ease = t=> t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   const step = now=>{ if(matchState !== m || s.gesture) return; const k = Math.min(1, (now - t0) / ms), e = ease(k);
     s.z = from.z + (target.z - from.z) * e; s.tx = from.tx + (target.tx - from.tx) * e; s.ty = from.ty + (target.ty - from.ty) * e; rzWrite(m);
@@ -42231,7 +42279,7 @@ function fitBattlefieldZoomNowCore(instant){
       inner.style.transition = 'none';
       inner.style.transform = trueBeforeTransform;
       void inner.offsetWidth; // force-commit the "before" frame before changing anything else
-      inner.style.transition = 'transform .75s cubic-bezier(.3,.1,.2,1)'; // a slow drift: the camera follows the board, it doesn't react to each card
+      inner.style.transition = `transform ${layoutSec(.75).toFixed(3)}s cubic-bezier(.3,.1,.2,1)`; // a slow drift: the camera follows the board, it doesn't react to each card (ANIM1: at the layout speed)
       inner.style.transform = afterTransform;
     }
     fitBattlefieldZoom._transitionActive = true;
@@ -42241,7 +42289,7 @@ function fitBattlefieldZoomNowCore(instant){
       if(inner) inner.style.transition = '';
       fitBattlefieldZoom._transitionActive = false;
       panCameraToShowUid._transitionActive = false;
-    }, 780);
+    }, Math.round(layoutSec(.75) * 1000) + 30);
   }
   // Bugfix (2026-09-17, root-caused via a live playtest that tracked every board card's
   // getBoundingClientRect() every animation frame through real games: cards were visibly
@@ -42930,7 +42978,7 @@ function boardCardHTML(c, defs, opts){
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${'' /* ENG9 (2026-10-26, owner G19: "no lock icon needed"): no chain glyph over a Chained unit; its tint (is-chained) says it */}${rc1ChainPipsHTML(c)}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
-      ${c.asleep>0?`<div class="status-overlay sleep-overlay">💤</div>`:''}
+      ${c.asleep>0?FX9_ZZZ_HTML /* 2026-11-13 (package FX9 #8): blue Zs out of the top-right corner (was a 💤 bobbing in the middle) */:''}
       ${c.paralyzed>0?`<div class="status-overlay paralyze-overlay">⚡</div>`:''}
       ${c.blind>0?`<div class="status-overlay blind-overlay">👁</div>`:''}
       ${c.smoke>0?`<div class="status-overlay smoke-overlay" aria-hidden="true">${SMOKE_BILLOWS_HTML}</div>`:''}
@@ -42960,7 +43008,7 @@ function boardCardHTML(c, defs, opts){
   const statusClassesShown = fog ? statusClasses.split(' ').filter(k=> /^(is-dancing|is-scattering|is-leader)$/.test(k)).join(' ') : statusClasses; // a fogged unit shows none of its statuses (FOG)
   // 2026-10-26 (package VIS3, V2; owner #15: "The copy created by fungal colossus should have a token background."): a Bloom copy and an
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
-  return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+  return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard ' + fx9GuardCls(c) /* FX9 #5: plates only while it can guard */:''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, size:'compact' /* 2026-10-30 (CS-D): only the inner tile; the .board-card wrapper (Flip, uids) is unchanged */, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, cowering: !!c.cowering /* ENG15 (FF6) */, en5On: c.en5On != null ? c.en5On : (c._en5On || ''), ctxOn: c.ctxOn != null ? c.ctxOn : (c._ctxOn || '') /* ENG25 (2026-11-05, #7): the lit state chips */, atkLabel, atkLow, atkZero, hp: ui23HeartOf(c) /* UI23 (2026-11-06, #1/#18) */, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
@@ -44110,7 +44158,7 @@ function refreshDiscardZone(){
   hideResourceTip();
   if(hc) showPitchBadge(hc.defId); else hidePitchBadge();
 }
-async function discardCardByUid(uid){
+async function discardCardByUid(uid, at){ // at: where the card was let go ({x, y}), FX9 #7
   const m = matchState; if(!m||m.resolving) return;
   // 2026-10-12 (user: "you asked me to play a card. I pitched it instead. Don't allow me to do that").
   if(!pitchAllowedIn(m)) return; // 2026-10-12: before pitching opens, dropping on the Graveyard does nothing
@@ -44150,6 +44198,7 @@ async function discardCardByUid(uid){
   // (2026-09-26 / 2026-10-17); Wildpath "Second Pitch"; then On Pitch (2026-10-16). Only the sound, chips and log stay here.
   const dc = me.hand[idx];
   const dcDef = getCardDefs()[dc.defId];
+  const pitchTile = document.querySelector(`#handStrip .card-tile[data-handuid="${CSS.escape(String(uid))}"]`); // FX9 #7: the card leaves from here
   const pitchEv = [];
   let pr = null; try{ if(m.engine && m.engine.pitchCard) pr = m.engine.pitchCard(m.players, m.sideOf, activePid, dc, m.stats, pitchEv); }catch(e){ console.warn('pitchCard', e); }
   if(!pr){ // no engine (shouldn't happen in a fight): the bare pitch, so the card still goes and pays
@@ -44180,8 +44229,11 @@ async function discardCardByUid(uid){
   if(yieldInfo.amount>0) gainChips.push({amount:yieldInfo.amount, glyph:meta.glyph, pillId:meta.pillId});
   if(darkPointBonus>0) gainChips.push({amount:darkPointBonus, glyph:PITCH_RESOURCE_META.devilry.glyph, pillId:PITCH_RESOURCE_META.devilry.pillId});
   if(onDiscardGains.length) gainChips.push(...onDiscardGains);
-  if(gainChips.length) resourceGainVfx(discardZoneEl ? discardZoneEl.getBoundingClientRect() : null, gainChips);
-  if(gainChips.length) pitchCallout(gainChips, dcDef);
+  // 2026-11-13 (package FX9 #7, owner: "Graveyard - transitions into new spot instead of teleporting (when card is pitched or played)"): your pitched card
+  // flies from where you let it go (a drop) or from its place in your hand (a tap) into the pile and sinks in; the gain and the callout come as it lands (UI16's flight, which Auto already used)
+  if(activePid === viewerHandPid(m) && pitchTile) ui16PitchToGrave(m, pitchTile, {defId: dc.defId, gains: gainChips, at});
+  else { if(gainChips.length) resourceGainVfx(discardZoneEl ? discardZoneEl.getBoundingClientRect() : null, gainChips);
+  if(gainChips.length) pitchCallout(gainChips, dcDef); }
   pushLog({type:'discard', side:m.sideOf(activePid), defId:dc.defId, resource:yieldInfo.resource, amount:yieldInfo.amount});
   if(darkPointBonus>0) pushLog({type:'devilry', side:m.sideOf(activePid), defId:dc.defId, amount:darkPointBonus});
   pitchEv.forEach(ev=>{ try{ pushLog(ev); renderVfxForEvent(ev); }catch(e){} }); // On Pitch (2026-10-16)
@@ -44416,14 +44468,16 @@ const UI16_PITCH_MS = 620;
 function ui16PitchToGrave(m, tile, ev){
   const grave = document.getElementById('dropDiscard');
   const meta = PITCH_RESOURCE_META[ev.resource] || PITCH_RESOURCE_META.lumber, amt = Math.max(0, Number(ev.amount) || 0);
-  const gains = amt > 0 ? [{amount: amt, glyph: meta.glyph, pillId: meta.pillId}] : [];
-  const land = ()=>{ if(matchState !== m) return;
-    try{ if(grave){ grave.classList.remove('ui16-grave-bump'); void grave.offsetWidth; grave.classList.add('ui16-grave-bump'); setTimeout(()=> grave.classList.remove('ui16-grave-bump'), 520); } }catch(e){}
-    try{ if(gains.length){ resourceGainVfx(grave ? grave.getBoundingClientRect() : null, gains); pitchCallout(gains, getCardDefs()[ev.defId]); } else SoundKit.gold(); }catch(e){} };
+  const gains = ev.gains || (amt > 0 ? [{amount: amt, glyph: meta.glyph, pillId: meta.pillId}] : []); // ev.gains: your own pitch's chips (FX9 #7)
+  const pile = ()=>{ const z = document.getElementById('dropDiscard'); return z && z.isConnected ? z : grave; }; // FX9 #7: the pile as it is now (the hand's redraw can move it)
+  const land = ()=>{ if(matchState !== m) return; const gz = pile();
+    try{ if(gz){ gz.classList.remove('ui16-grave-bump'); void gz.offsetWidth; gz.classList.add('ui16-grave-bump'); setTimeout(()=> gz.classList.remove('ui16-grave-bump'), 520); } }catch(e){}
+    try{ if(gains.length){ resourceGainVfx(gz ? gz.getBoundingClientRect() : null, gains); pitchCallout(gains, getCardDefs()[ev.defId]); } else if(!ev.gains) SoundKit.gold(); }catch(e){} };
   const lvl = (typeof fxLevel === 'function') ? fxLevel() : 'high';
   if(!grave || !document.body.animate || reducedMotion() || lvl === 'none'){ land(); return; }
-  const g = grave.getBoundingClientRect(); if(!(g.width > 0)){ land(); return; }
-  let r = tile ? tile.getBoundingClientRect() : null; if(!r || !(r.width > 0)) r = {left: g.left, top: g.bottom + 10, width: g.width * .8, height: g.width};
+  const g0 = grave.getBoundingClientRect(); if(!(g0.width > 0)){ land(); return; }
+  let r = tile ? tile.getBoundingClientRect() : null; if(!r || !(r.width > 0)) r = {left: g0.left, top: g0.bottom + 10, width: g0.width * .8, height: g0.width};
+  if(ev.at && ev.at.x > 0 && ev.at.y > 0) r = {left: ev.at.x - r.width/2, top: ev.at.y - r.height/2, width: r.width, height: r.height}; // FX9 #7: from where the card was dropped
   const p = tile ? tile.cloneNode(true) : document.createElement('div');
   if(!tile) p.innerHTML = cardTileHTML(getCardDefs()[ev.defId] || {name: ev.defId}, {inPlay: true});
   p.removeAttribute && p.removeAttribute('id'); p.querySelectorAll('[id]').forEach(n=> n.removeAttribute('id'));
@@ -44433,6 +44487,10 @@ function ui16PitchToGrave(m, tile, ev){
   document.body.appendChild(p);
   if(tile) tile.style.visibility = 'hidden'; // the hand's own tile is redrawn away a moment later
   const k = 1 / Math.max(.25, Number(m.speedMult) || 1), T = Math.round(UI16_PITCH_MS * k * (lvl === 'low' ? .7 : 1));
+  try{ noteMatchFx(T + 50); }catch(e){} // the round waits for the card to land
+  // 2026-11-13 (package FX9 #7): the flight is aimed in the next frame, after the hand's redraw: on a wide screen the pile sits after the hand and moves
+  // left when the card leaves it (the card used to land where the pile had been). Until then the copy stands where the card was.
+  const fly = ()=>{ const gz = pile(), gr = gz && gz.getBoundingClientRect(), g = gr && gr.width > 0 ? gr : g0;
   const dx = (g.left + g.width/2) - (r.left + r.width/2), dy = (g.top + g.height/2) - (r.top + r.height/2), s1 = Math.max(.25, Math.min(1, (g.width * .78) / r.width));
   const lift = Math.min(90, Math.abs(dx) * .18 + 30);
   const a = p.animate([
@@ -44441,13 +44499,13 @@ function ui16PitchToGrave(m, tile, ev){
     {transform: `translate(${dx}px, ${dy}px) rotate(${dx > 0 ? 4 : -4}deg) scale(${s1})`, opacity: 1, filter: 'brightness(1.25)', offset: .78},
     {transform: `translate(${dx}px, ${dy + g.height*.18}px) rotate(0deg) scale(${s1*.82})`, opacity: 0, filter: 'brightness(.7)'},
   ], {duration: T, easing: 'cubic-bezier(.35,.0,.25,1)', fill: 'both'});
-  try{ noteMatchFx(T); }catch(e){} // the round waits for the card to land
   // the flight's clock starts at the first frame drawn after it (a.ready), which can be 100-500 ms after the CPU's turn (the hand and board
   // redraw in between: see UI8's note on handFlightProxy), so the landing is timed from there; a tab that never draws still lands on the wall clock
   let done = false, landed = false; const fin = ()=>{ if(done) return; done = true; p.remove(); }, landOnce = ()=>{ if(landed) return; landed = true; land(); };
   try{ a.ready.then(()=> setTimeout(landOnce, Math.round(T * .78)), landOnce); }catch(e){ setTimeout(landOnce, Math.round(T * .78)); }
   setTimeout(landOnce, T + 1500);
-  a.onfinish = ()=>{ landOnce(); fin(); }; setTimeout(fin, T + 2000);
+  a.onfinish = ()=>{ landOnce(); fin(); }; setTimeout(fin, T + 2000); };
+  if(typeof requestAnimationFrame === 'function') requestAnimationFrame(fly); else setTimeout(fly, 0);
 }
 async function autoplayStep(){
   const m = matchState; if(!m || !m.autoplay || m.over || m.resolving || m._autoBusy || m.awaitingPass) return;
@@ -44961,7 +45019,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-stunned', !!c.stunned);
   el.classList.toggle('is-chained', !!c.chained); el.classList.toggle('is-ritual', rc1InRitual(c)); rc1SyncChainPips(el, c); // ENG-RC1 (2026-11-12)
   ui31FrostSync(el, c.frozen > 0); // UI31 (2026-11-07): the ice plays once going in, in reverse going out (was: a plain toggle, and a rebuilt card replayed it)
-  el.classList.toggle('is-asleep', c.asleep>0);
+  el.classList.toggle('is-asleep', c.asleep>0); fx9ZzzSync(tile, c.asleep>0); // FX9 #8 (2026-11-13): the Zs come and go with the status (were drawn only by a rebuild)
   el.classList.toggle('is-paralyzed', c.paralyzed>0);
   el.classList.toggle('is-blind', c.blind>0); el.classList.toggle('is-tipsy', c.tipsy>0); el.classList.toggle('is-confused', c.confused>0);
   el.classList.toggle('is-shocked', c.shocked>0);
@@ -45050,6 +45108,7 @@ function updateCardStatusDisplay(uid){
   } else if(staggerEl){
     staggerEl.remove();
   }
+  fx9GuardSync(el, c); // 2026-11-13 (package FX9 #5): the Guardian's plates fold away while it can't guard
   fxHook('cardStatusShown', el, c); // batch D (2026-10-15, docs/effects-lab-contract.md): persistent status looks on the tile
 }
 // Chained break flourish (2026-09-17): the chain-link overlay snaps and falls away instead of
@@ -45286,6 +45345,7 @@ function updateCardHpDisplay(uid){
 // little "clunk" of the mechanism, not just a number silently changing underneath it.
 function updateCardWaitDisplay(uid, waitRemaining){
   const el = boardCardEl(uid); if(!el) return;
+  fx9GuardSync(el, currentCardByUid(uid)); // 2026-11-13 (package FX9 #5): a Guardian's plates swing out as its Wait runs out (and fold in when it gains Wait)
   if(waitRemaining<=0) el.querySelectorAll('.ab-trig.is-off').forEach(b=>{ b.classList.remove('is-off'); b.classList.add('is-waking'); b.title = String(b.title||'').replace(' (off for now: it is Waiting, Stunned, Frozen or Asleep)', ''); }); // its triggers switch on as it becomes Ready
   const badge = el.querySelector('.waitbadge'); if(!badge) return;
   const total = Math.max(1, Number(badge.getAttribute('data-wait-total'))||waitRemaining||1);
@@ -45379,6 +45439,10 @@ function fallDeathVfx(el, ms){
   if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
   const t = el.querySelector('.card-tile') || el;
   if(el.classList.contains('is-flying')) return flyerFallVfx(el, t, ms);
+  // 2026-11-13 (package PERF5, owner 23:47 #12): the reads first (the owner edge's box, GSAP's start values: one style pass), then the writes; the
+  // filter and opacity the tweens start from go inline, so GSAP takes them from there instead of a computed-style read after the class change
+  const oe0 = el.querySelector(':scope > .owner-edge'), oe = oe0 && oe0.getClientRects().length ? oe0 : null, parts = [t, oe].filter(Boolean);
+  if(hasGsap()) fix3GsapPrime(parts);
   el.classList.add('falling'); el.style.setProperty('--fall-ms', ms + 'ms');
   // 2026-10-08 (user: "start slow, then speed up until it hits the floor — it looks like 3
   // animations stitched together"): one continuous topple under gravity (a slow lean that keeps
@@ -45404,8 +45468,9 @@ function fallDeathVfx(el, ms){
   // landing; now it is a plain power2-in (a steady, gravity-like speed-up from a slow start) that lands faded out, with the leaves
   // and the thump on that landing frame.
   if(hasGsap()){
-    const fall = ms*1.25/1000, oe0 = el.querySelector(':scope > .owner-edge'), oe = oe0 && oe0.getClientRects().length ? oe0 : null; // (the owner edge
+    const fall = ms*1.25/1000; // (the owner edge (oe)
     // normally lives inside the tile and tips with it; a stray one directly on the board card is only moved when it is shown)
+    parts.forEach(x=>{ x.style.filter = 'grayscale(0) brightness(1)'; x.style.opacity = '1'; });
     // each target hinges on the tile's bottom edge: the tile at 50% 100%; the owner edge at the same line in its own coordinates
     const hinge = (i, target)=>{ if(target === t) return '50% 100%'; const tr = t.getBoundingClientRect(), r = target.getBoundingClientRect(), k = (target.offsetHeight && r.height) ? r.height / target.offsetHeight : 1;
       return `50% ${Math.round((tr.bottom - r.top) / (k || 1))}px`; };
@@ -45444,9 +45509,13 @@ function impactDust(el){
   const r = el.getBoundingClientRect();
   const d = document.createElement('span'); d.className = 'impact-dust'; d.setAttribute('aria-hidden','true');
   d.style.cssText = `left:${r.left + r.width/2}px; top:${r.bottom - 6}px; width:${r.width*1.1}px;`;
-  document.body.appendChild(d);
+  document.body.appendChild(fxShown(d));
   gsap.fromTo(d, {scaleX:.4, opacity:.75}, {scaleX:1.5, opacity:0, duration:.55, ease:'power2.out', onComplete:()=> d.remove()});
 }
+// 2026-11-13 (package PERF5, owner 23:47 #12 "Unit death ... small frame drop"): a position:fixed piece has no offsetParent, so GSAP's first read
+// took it for display:none, set display:block, measured and put it back: two style passes and a layout per piece (a death's twelve leaves: 36
+// passes). It is always shown; skillfx's shown() and en2Layer do the same (PERF2).
+function fxShown(e){ try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} return e; }
 // What the ground kicks up, by the map's biome (shader map kinds): forest leaves, water spray, ash, cave grit, grass, snow,
 // reef bubbles, swamp mud, embers, feathers, rock, beach sand.
 const BIOME_PUFF = {0:['🍂','🍃','🍂','·','·','🍁'], 1:['💧','🍃','💧','·','·','💧'], 2:['·','•','·','🌫️','·','•'], 3:['•','·','🪨','·','•','·'], 4:['🌾','·','🌾','·','🍂','·'],
@@ -45463,7 +45532,7 @@ function leafPuff(el, glyphsIn){
   const glyphs = glyphsIn || ['🍂','🍃','🍂','·','·','🍁'];
   // 2026-10-25 (package FIX3, F3): the twelve leaves go in first and are read once together (fix3GsapPrime), then moved; each used to
   // force its own style pass between the last one's write and its own read
-  const ps = []; for(let i = 0; i < 12; i++){ const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true'); document.body.appendChild(p); ps.push(p); }
+  const ps = []; for(let i = 0; i < 12; i++){ const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true'); p.style.opacity = '1'; document.body.appendChild(p); ps.push(fxShown(p)); } // PERF5: opacity inline, so GSAP's set reads it there
   fix3GsapPrime(ps);
   for(let i = 0; i < 12; i++){
     const p = ps[i];
@@ -45704,9 +45773,12 @@ function featherBurst(el){
   if(!fxAtLeast('med')) return;
   if(!el || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
+  // 2026-11-13 (package PERF5, owner 23:47 #12): the five feathers go in first, marked shown, and GSAP reads them together (as leafPuff): each one's
+  // set used to force its own style pass (plus GSAP's display probe on a fixed piece) after the last one's write, at every hit on a flier
+  const ps = []; for(let i = 0; i < 5; i++){ const p = document.createElement('span'); p.className = 'feather-puff'; p.textContent = '🪶'; p.setAttribute('aria-hidden','true'); p.style.opacity = '1'; document.body.appendChild(p); ps.push(fxShown(p)); }
+  fix3GsapPrime(ps);
   for(let i = 0; i < 5; i++){
-    const p = document.createElement('span'); p.className = 'feather-puff'; p.textContent = '🪶'; p.setAttribute('aria-hidden','true');
-    document.body.appendChild(p);
+    const p = ps[i];
     const x = r.left + r.width*(0.25 + Math.random()*0.5), y = r.top + r.height*(0.3 + Math.random()*0.3), dir = Math.random() < .5 ? -1 : 1;
     gsap.set(p, {x, y, opacity:1, rotation:Math.random()*360, scale:.7 + Math.random()*.4});
     gsap.to(p, {x:`+=${dir*(30 + Math.random()*40)}`, y:`-=${15 + Math.random()*25}`, rotation:`+=${dir*90}`, duration:.35, ease:'power2.out'});
@@ -45751,7 +45823,7 @@ function deathVfx(uid){
   // 2026-10-15 (user: "Guardian: ... should break on death"): a Guardian's steel plates shatter and fall away as it dies, whatever
   // death look plays (UnitFX.guardBreak; at Effects "none" or reduced motion the plates just vanish). The engine already stops
   // redirecting to a Guardian at 0 Health (redirectToGuardian checks hp > 0), so only the look outlived it.
-  try{ if(el.querySelector('.guard-plates')){ if(window.UnitFX && UnitFX.guardBreak && fxAtLeast('low')){ UnitFX.guardBreak(el, {speed:(matchState && matchState.speedMult) || 1}); SoundKit.clang(); } else el.querySelector('.guard-plates').classList.add('is-broken'); } }catch(e){}
+  try{ if(el.querySelector('.guard-plates')){ if(window.UnitFX && UnitFX.guardBreak && fxAtLeast('low') && !el.classList.contains('guard-down') /* FX9 #5: no plates shown, none to break */){ UnitFX.guardBreak(el, {speed:(matchState && matchState.speedMult) || 1}); SoundKit.clang(); } else el.querySelector('.guard-plates').classList.add('is-broken'); } }catch(e){}
   { const fxd = {uid, style:deathStyleFor(uid), handled:false}; fxHook('deathLook', el, fxd); if(fxd.handled) return; } // 2026-10-15: a death per cause (FX.C.hooks.deathLook)
   const skull = document.createElement('div');
   skull.className = 'death-skull';
@@ -45788,13 +45860,12 @@ function deathVfx(uid){
     else if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
     else if(burnt) gsap.to(el, {opacity:0, scale:.92, y:12, duration:death*0.55/1000, delay:death*0.85/1000, ease:'power1.in'});
     else gsap.to(el, {opacity:0, scale:.8, y:10, duration:death/1000, ease:'power1.in'});
-    gsap.timeline({onComplete:()=> skull.remove()})
-      .fromTo(skull, {y:0, opacity:0, scale:.6}, {y:-26, opacity:1, scale:1, duration:(death*0.5)/1000, ease:'back.out(2)'})
-      .to(skull, {y:-40, opacity:0, duration:(death*0.5)/1000, ease:'power1.in'});
+    gsap.delayedCall(death/1000, ()=> skull.remove()); // 2026-11-13 (package PERF5): see below
   } else if(hasGsap() && isFlipping){
-    gsap.timeline({onComplete:()=> skull.remove()})
-      .fromTo(skull, {y:0, opacity:0, scale:.6}, {y:-26, opacity:1, scale:1, duration:(death*0.5)/1000, ease:'back.out(2)'})
-      .to(skull, {y:-40, opacity:0, duration:(death*0.5)/1000, ease:'power1.in'});
+    // 2026-11-13 (package PERF5, owner 23:47 #12 "Unit death ... small frame drop"): the skull's float is its CSS animation (deathSkullFloat), which
+    // outranks inline styles, so the GSAP tween that was here never showed; on a fall, pixel or ice death the skull is display:none and GSAP's first
+    // read of it un-hid and measured it (three forced style / layout passes a death). It still leaves when that tween ended.
+    gsap.delayedCall(death/1000, ()=> skull.remove());
   } else {
     el.classList.add('dying');
     setTimeout(()=> skull.remove(), 650);
@@ -45841,7 +45912,7 @@ function glideBoardCardFrom(el, from, toRect){
   const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? bfEffScale() : 1;
   dx /= sc; dy /= sc;
   const d = Math.min(.34, .16 + Math.hypot(dx, dy)/2000 + Math.abs(s - 1)*.4);
-  gsap.fromTo(el, {x:dx, y:dy, scale:Math.max(.6, Math.min(1.6, s))}, {x:0, y:0, scale:1, duration:sharpBoard() ? Math.min(.22, d) : d, ease:'power2.out', clearProps:'x,y,scale'});
+  gsap.fromTo(el, {x:dx, y:dy, scale:Math.max(.6, Math.min(1.6, s))}, {x:0, y:0, scale:1, duration:layoutSec(sharpBoard() ? Math.min(.22, d) : d) /* ANIM1 (note 9) */, ease:'power2.out', clearProps:'transform,translate,rotate,scale'});
 }
 function glideFromRect(el, from){
   if(!el || !from || !el.isConnected || !hasGsap()) return;
@@ -45850,7 +45921,7 @@ function glideFromRect(el, from){
   if(Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
   const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? bfEffScale() : 1;
   dx /= sc; dy /= sc;
-  gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration: sharpBoard() ? Math.min(.2, .08 + Math.hypot(dx, dy)/3200) : Math.min(.32, .12 + Math.hypot(dx, dy)/2200), ease: sharpBoard() ? 'power3.out' : 'power2.out', clearProps:'x,y'});
+  gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration: layoutSec(sharpBoard() ? Math.min(.2, .08 + Math.hypot(dx, dy)/3200) : Math.min(.32, .12 + Math.hypot(dx, dy)/2200)) /* ANIM1 (note 9) */, ease: sharpBoard() ? 'power3.out' : 'power2.out', clearProps:'x,y'});
 }
 // Layout-snap guard (2026-10-04, "cards sometimes teleport to the right"). Several things can
 // reflow a row outside a Flip animation: a pinned entrant released, a dying card removed, the
@@ -50468,6 +50539,28 @@ function animMs(){
   const sd = (ms, floor)=> Math.max(floor||40, Math.round(ms/mult));
   return { windup: sd(390,50), strike: sd(570,70), projectile: sd(690,70), impactPad: sd(180,30), death: sd(Math.round((sharpBoard() ? 320 : 480) * (typeof fxStyle === 'function' && fxStyle() === 'minimal' ? 0.6 : 1)),120) }; // Minimal style: shorter deaths (2026-10-17)
 }
+// 2026-11-13 (package ANIM1, owner 2026-11-12 23:47 note 9): camera and layout moves (zoom, pan, cards gliding to a new layout) follow the
+// game speed only part of the way: game 0.5 / 1 / 1.5 / 2 / 3 / 4 / 5 -> 0.75 / 1 / 1.2 / 1.4 / 1.6 / 2.0 / 2.5, straight lines between.
+const LAYOUT_SPEEDS = [[0.5, 0.75], [1, 1], [1.5, 1.2], [2, 1.4], [3, 1.6], [4, 2], [5, 2.5]];
+function layoutSpeedFor(mult){
+  const T = LAYOUT_SPEEDS, g = Math.max(T[0][0], Math.min(T[T.length - 1][0], Number(mult) || 1)), i = T.findIndex(([s])=> s >= g);
+  const [s1, k1] = T[i], [s0, k0] = T[Math.max(0, i - 1)];
+  return s1 === s0 ? k1 : k0 + (k1 - k0) * (g - s0) / (s1 - s0);
+}
+function layoutSec(sec){ return sec / layoutSpeedFor(matchState && matchState.speedMult); }
+// 2026-11-13 (ANIM1, note 19): at 4x and 5x a played card goes straight into its slot (no flight from the hand)
+const PLAY_GOTO_SPEED = 4;
+function playGoTo(){ return ((matchState && matchState.speedMult) || 1) >= PLAY_GOTO_SPEED; }
+// 2026-11-13 (ANIM1, note 13): GSAP (3.12+) reads a CSS `scale` / `translate` keyframe running on an element (the landing thud on the face,
+// the ready pulse on the card) into its own transform when a tween starts there mid-way, so the card kept that squash after the flourish
+// ended, until its next attack or hit redrew it. When a flourish ends, what GSAP left on the card and its face goes back to rest.
+function settleRestPose(el, n){
+  if(!el || !el.isConnected || !hasGsap()) return;
+  const parts = [el, el.querySelector('.card-tile')].filter(Boolean);
+  if(el.matches('.falling, .burning, .bleeding, .dying, .is-scattering')) return;
+  if(parts.some(x=> gsap.isTweening(x)) || el.style.position || el.matches('.is-entering, .is-attacking, .landing-impact, .ready-pulse')){ if((n || 0) < 15) setTimeout(()=> settleRestPose(el, (n || 0) + 1), 120); return; }
+  parts.forEach(x=>{ if(x.style.transform || x.style.scale || x.style.translate || x.style.rotate) gsap.set(x, {clearProps:'transform,translate,rotate,scale'}); });
+}
 function boardCardEl(uid){ return document.querySelector(`.board-card[data-uid="${uid}"]`); }
 // Task #125 (2026-09-17, "it should land there with some measurable impact! Then push the
 // cards off"): a shared little "shove" tween for whichever board-cards sit immediately to the
@@ -50496,7 +50589,7 @@ function pushNeighborCards(el, opts){
     gsap.killTweensOf(target, 'x');
     if(shoveUid) shovedUids.add(shoveUid);
     gsap.timeline({
-      onComplete: ()=>{ if(shoveUid) shovedUids.delete(shoveUid); },
+      onComplete: ()=>{ if(shoveUid) shovedUids.delete(shoveUid); settleRestPose(target); /* ANIM1 (note 13): a neighbour shoved mid ready-pulse */ },
     })
       .to(target, {x: dir*dist, duration:dur*0.42, ease:'power2.out'})
       .to(target, {x:0, duration:dur*0.7, ease:'back.out(2.4)', clearProps:'x'});
@@ -50518,7 +50611,7 @@ function playLandingImpact(uid){
   // that used to fire here on every single card landing (see hitExplosionVfx below for its new
   // home) is gone; the squash-thud + neighbor shove — the actual "landed with impact" feel —
   // stay exactly as they were.
-  setTimeout(()=>{ el.classList.remove('landing-impact'); }, 300);
+  setTimeout(()=>{ el.classList.remove('landing-impact'); settleRestPose(el); /* ANIM1 (note 13) */ }, 300);
   pushNeighborCards(el, {distance:8, durationMs:220});
   waterRippleAt(el);
 }
@@ -50545,7 +50638,7 @@ function handFlightSec(leader){
 // timer behind them.
 function armOnFrames(fn){ try{ requestAnimationFrame(()=> requestAnimationFrame(()=>{ try{ fn(); }catch(e){} })); }catch(e){ try{ fn(); }catch(_){} } }
 function handFlightProxy(el, uid, origin){
-  if(!el || !origin || !hasGsap() || reducedMotion()) return false;
+  if(!el || !origin || !hasGsap() || reducedMotion() || playGoTo()) return false; // + ANIM1 (note 19): 4x / 5x go straight in (an ally's, a boss's row play too)
   const tile = el.querySelector('.card-tile'); if(!tile) return false;
   // 2026-10-17: skins reach board tiles from applySkinClasses on the next frame, after this copy is taken; dress the tile first so the
   // flying card wears the copy's skin too (its Shiny comes in boardCardHTML's markup).
@@ -50556,7 +50649,7 @@ function handFlightProxy(el, uid, origin){
   p.classList.remove('holo-active', 'holo-tilt'); p.classList.add('hand-flight-proxy'); p.setAttribute('aria-hidden', 'true');
   [['position','fixed'], ['left','0'], ['top','0'], ['margin','0'], ['width', w0 + 'px'], ['height', h0 + 'px'], ['box-sizing','border-box'], ['pointer-events','none'], ['z-index','1300'], ['transition','none'], ['animation','none']]
     .forEach(([k, v])=> p.style.setProperty(k, v, 'important'));
-  document.body.appendChild(p);
+  document.body.appendChild(fxShown(p)); // PERF5 (2026-11-13): fixed and always shown (fxShown: no GSAP display probe on its first move)
   // 2026-10-19 (package RV2, an ally's play): origin.flip starts the copy face down (a card back over it) and turns it face up midway
   // along the path; origin.trail leaves a short sparkle trail; origin.dust kicks up dust where it lands.
   let back = null; if(origin.flip){ back = document.createElement('div'); back.className = 'ally-card-back'; back.setAttribute('aria-hidden', 'true'); p.appendChild(back); }
@@ -50633,8 +50726,9 @@ function allyPlayFx(uid, opts){
       from = {x: (lab ? rr.left + rr.width / 2 : rr.left) - er.width * 0.25, y: (row ? row.getBoundingClientRect().bottom : er.bottom) + er.height * 0.55}; }
     const tile = el.querySelector('.card-tile'), w = tile ? tile.getBoundingClientRect().width * 0.6 : 0;
     el.style.visibility = 'hidden'; // until the flight takes over (it keeps the card hidden until it lands)
+    handFlightsLive.add(String(uid)); // 2026-11-13 (package PERF5, ANIM1's leftover): counted as in the air during the rise too, so the 200 ms watchdog (playAnimWatchdog) and a redrawn row keep it hidden (it flashed at 1x)
     try{ allyHandFan(from, w || 40); }catch(e){}
-    setTimeout(()=>{ const c = boardCardEl(uid) || el;
+    setTimeout(()=>{ handFlightsLive.delete(String(uid)); const c = boardCardEl(uid) || el;
       if(!handFlightProxy(c, uid, {x: from.x, y: from.y - 18, kind:'hand', w: w || null, rotate: -8, fadeIn: 0.45, ally: true, flip: true, trail: true, dust: true})) c.style.visibility = ''; }, ALLY_PLAY_RISE_MS);
   };
   requestAnimationFrame(go);
@@ -50930,7 +51024,9 @@ function fxHostAt(el, ms, at){
   if(!r) return h; // UI23 (#25): no box to stand on (a pip on a hidden cycle page, a card mid re-render): the float is dropped, not thrown to the top-left
   h.dataset.row = el && el.closest && el.closest('#rowEnemy, [data-row="enemy"]') ? 'enemy' : 'mine';
   h.style.cssText = `position:fixed; left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px; pointer-events:none; z-index:70;`;
-  document.body.appendChild(h); setTimeout(()=> h.remove(), ms || 1900);
+  // 2026-11-13 (package FX9 #6, owner: "camera movements don't displace the leftover vfx"): over a card on the board the host sits in the camera layer (fx9CamHost), so a pan, the phone's re-frame or a raid zoom carries it with the cards; elsewhere it stays fixed on the page
+  const cam = el && el.closest && el.isConnected ? el.closest('#battlefieldInner') : null;
+  if(!(cam && fx9CamHost(cam, h, r))) document.body.appendChild(h); setTimeout(()=> h.remove(), ms || 1900);
   return h;
 }
 // The push-back, made plain (2026-10-14, user: "The pushback effect of wash needs to be clearer."): a Tide-spout or a Tsunami
@@ -51059,6 +51155,179 @@ function oreClangVfx(el){ fx7Run(el, 1000, (add, r)=>{ const cx = r.width/2, cy 
   add('ring', `left:${cx - 30}px; top:${cy - 30}px; --c:#8fb0d8;`, [FX7_C(0, 0, .3, .9), FX7_C(0, 0, 1.5, 0)], {still:true, ms:600, peak:.7});
   for(let i = 0; i < 3; i++){ const dx = (i - 1)*r.width*.26;
     add('ore', `left:${cx - 7}px; top:${cy - 7}px;`, [FX7_C(0, 0, .3, 0), Object.assign(FX7_C(dx*.6, -r.height*.22 - (i % 2)*8, 1.1, 1), {offset:.35, easing:'ease-in'}), Object.assign(FX7_C(dx, -r.height*.02, 1, 1), {offset:.7}), FX7_C(dx, 4, .8, 0)], {ms:760, delay:i*70}); } }); }
+// ==== Package FX9 (2026-11-13, owner notes 23:47): effects that ride on what they belong to, so a camera pan or a board zoom (the phone's re-frame
+// after a play, a raid's zoom, the follow pan) never leaves a piece floating where the card was (#6): a card's effect is a child of its card
+// (fx9CardHost), a board effect a child of the board frame, and fxHostAt's hosts sit in the camera layer (fx9CamHost). WAAPI on transform and
+// opacity only, nothing read per frame, every piece removed. Effects None: nothing; reduced motion and Effects Low: a still piece that only fades.
+function fx9CardHost(el, ms, cls){
+  const card = el && el.closest ? (el.closest('.board-card') || el) : null; if(!card || !card.isConnected) return null;
+  const h = document.createElement('div'); h.className = 'fx9-host' + (cls ? ' ' + cls : ''); h.setAttribute('aria-hidden', 'true');
+  card.appendChild(h); setTimeout(()=> h.remove(), ms || 1200); return h;
+}
+function fx9Piece(host, cls, css){ const i = document.createElement('i'); i.className = 'fx9 fx9-' + cls; if(css) i.style.cssText = css; host.appendChild(i); return i; }
+// fxHostAt's host over a card on the board goes into the camera layer: absolute at the card's place and counter-scaled, so its own px are still
+// screen px (the effects inside were written for a fixed host) while a pan or zoom carries it with the cards. False when the layer can't take it.
+function fx9CamHost(cam, h, r){
+  try{ Object.assign(h.style, {position:'absolute', left:'0px', top:'0px', transformOrigin:'0 0'}); cam.appendChild(h);
+    const o = h.getBoundingClientRect(), e = o.width / r.width; if(!(e > .05 && e < 20)){ h.remove(); return false; }
+    Object.assign(h.style, {left:((r.left - o.left) / e).toFixed(1) + 'px', top:((r.top - o.top) / e).toFixed(1) + 'px', scale:(1 / e).toFixed(4)}); h.classList.add('fx9-cam'); return true;
+  }catch(e){ try{ h.remove(); }catch(_){} return false; }
+}
+// #5 Guardian (owner: "Guardian - only when ready. vfx too."): the engine lets a Guardian step in only while Ready (ENG9 blockerReady: no Wait, not
+// Stunned, Frozen, Asleep, playing dead, Petrified, Bound or Chained; isLiveGuardian: not Hibernating or aloft). Its plates show only then: .guard-down
+// hides them and stops their sheen; a change folds them in behind the card (gp-fall) or swings them back out (gp-rise). A rebuilt card animates the
+// change too: the state each Guardian was last drawn with is kept per match (m._fx9Guard).
+function fx9GuardUp(c){ return !!c && !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !(c.asleep > 0) && !(c.playingDead != null && c.playingDead !== false) && !c.petrified && !(c.bound > 0) && !c.chained && !c.hibernating && c.diveAloft == null; }
+function fx9GuardMem(c, up){ const m = typeof matchState !== 'undefined' ? matchState : null; if(!m || !c || c.uid == null) return up;
+  const mem = m._fx9Guard || (m._fx9Guard = new Map()), k = String(c.uid), was = mem.has(k) ? mem.get(k) : up; mem.set(k, up); return was; }
+function fx9GuardCls(c){ const up = fx9GuardUp(c), was = fx9GuardMem(c, up), anim = was !== up && fxLevel() !== 'none';
+  return (up ? '' : 'guard-down') + (anim ? (up ? ' gp-rise' : ' gp-fall') : ''); }
+function fx9GuardSync(el, c){
+  if(!el || !c || !el.classList.contains('has-guard')) return; const up = fx9GuardUp(c); fx9GuardMem(c, up);
+  if(up === !el.classList.contains('guard-down')) return;
+  clearTimeout(el._fx9GpT); el.classList.remove('gp-rise', 'gp-fall'); el.classList.toggle('guard-down', !up);
+  if(fxLevel() === 'none') return; void el.offsetWidth; el.classList.add(up ? 'gp-rise' : 'gp-fall'); el._fx9GpT = setTimeout(()=> el.classList.remove('gp-rise', 'gp-fall'), 650);
+}
+if(typeof document !== 'undefined') document.addEventListener('animationend', e=>{ const n = e.animationName || ''; if(n.startsWith('fx9Guard')){ const b = e.target.closest && e.target.closest('.board-card'); if(b) b.classList.remove('gp-rise', 'gp-fall'); } });
+// #8 Sleep (owner: "Sleep is not so obvious. Maybe blue Zs dropping out from the card, from the top right?"): three blue Zs drift out of the card's
+// top-right corner on a slow loop (3.6 s, CSS transform / opacity, .fx9-zzz in arena_template.html); was a 💤 bobbing in the middle under a drop-shadow
+// filter. Low and reduced motion: two still Zs; Effects None: one. Waking fades them out.
+const FX9_ZZZ_HTML = '<div class="fx9-zzz" aria-hidden="true"><i>Z</i><i>Z</i><i>Z</i></div>';
+function fx9ZzzSync(tile, on){
+  if(!tile) return; const z = tile.querySelector(':scope > .fx9-zzz:not(.is-waking)');
+  if(on){ if(!z) tile.insertAdjacentHTML('beforeend', FX9_ZZZ_HTML); return; }
+  if(z){ z.classList.add('is-waking'); setTimeout(()=> z.remove(), 500); }
+}
+// #6 Ambush (owner: "put the animation on the card itself. So camera movements don't displace the leftover vfx."): replaces FX.A.ambushStrike in the
+// game (its shade, eyes, smoke and slash were fixed overlays on the page). The same look inside the ambusher's card: it goes to shadow, two yellow eyes
+// open and blink, it springs out of dark smoke with a dark slash toward the unit it strikes.
+function fx9AmbushVfx(att, tgt){
+  const card = att && att.closest ? (att.closest('.board-card') || att) : null; if(!card || !card.isConnected || !card.animate || !fxAtLeast('low')) return Promise.resolve();
+  const calm = reducedMotion() || !fxAtLeast('med'), W = card.offsetWidth || 80, H = card.offsetHeight || 100, h = fx9CardHost(card, 950); if(!h) return Promise.resolve();
+  fx9Piece(h, 'shade').animate([{opacity:0}, {opacity:1, offset:.12}, {opacity:1, offset:.6}, {opacity:0}], {duration:800, fill:'forwards'});
+  const ey = fx9Piece(h, 'eyes'), T = s=> `translate(-50%, -50%) scaleY(${s})`; ey.textContent = '● ●';
+  ey.animate(calm ? [{opacity:0}, {opacity:1, offset:.2}, {opacity:1, offset:.6}, {opacity:0}]
+    : [{opacity:0, transform:T(.2)}, {opacity:1, transform:T(1), offset:.12}, {transform:T(1), offset:.3}, {transform:T(.1), offset:.36}, {transform:T(1), offset:.42}, {opacity:1, offset:.62}, {opacity:0, transform:T(1)}], {duration:800, fill:'forwards'});
+  if(!calm){
+    for(let i = 0; i < 7; i++){ const a = (195 + i*25)*Math.PI/180, d = W*(.28 + (i % 3)*.12), p = fx9Piece(h, 'smoke', `left:${(W/2).toFixed(0)}px; top:${(H*.86).toFixed(0)}px;`), P = (k, s)=> `translate(calc(-50% + ${(Math.cos(a)*d*k).toFixed(1)}px), calc(-50% + ${(Math.sin(a)*d*k*.7 - (k > .5 ? 6 : 0)).toFixed(1)}px)) scale(${s})`;
+      p.animate([{opacity:0, transform:P(0, .4)}, {opacity:.9, transform:P(.4, 1), offset:.25}, {opacity:0, transform:P(1, 2)}], {duration:600, delay:320 + i*10, easing:'ease-out', fill:'forwards'}); }
+    const tc = tgt && tgt.isConnected && tgt.closest ? (tgt.closest('.board-card') || tgt) : null;
+    if(tc){ const a = card.getBoundingClientRect(), b = tc.getBoundingClientRect(), s = a.width / W || 1, dx = (b.left + b.width/2 - a.left - a.width/2) / s, dy = (b.top + b.height/2 - a.top - a.height/2) / s, L = Math.hypot(dx, dy)*.8, R = `rotate(${(Math.atan2(dy, dx)*57.3).toFixed(1)}deg)`;
+      if(L > 4) fx9Piece(h, 'slash', `left:${(W/2).toFixed(0)}px; top:${(H/2).toFixed(0)}px; width:${L.toFixed(0)}px;`).animate([{opacity:0, transform:R + ' scaleX(0)'}, {opacity:1, transform:R + ' scaleX(1)', offset:.35}, {opacity:0, transform:R + ' scaleX(1)'}], {duration:320, delay:380, easing:'ease-out', fill:'forwards'}); }
+  }
+  return new Promise(res=> setTimeout(res, 800));
+}
+// #14 Shell breaks (owner: "instead of a longified semicircle, can we have a tortoise shell breaking effect?"): replaces FX.A.shellCrack in the game.
+// A tortoise carapace (three vertebral scutes down the middle, three costal scutes each side, a ring of marginal scutes, growth rings in each scute)
+// settles over the card, cracks along its seams, and its nine plates fall away turning. Nine clipped copies of one SVG (decoded once) inside the card.
+const FX9_SHELL = (()=>{
+  const E = (t, rx, ry)=> [50 + rx*Math.cos(t*Math.PI/180), 50 + ry*Math.sin(t*Math.PI/180)], arc = (t0, t1)=>{ const o = [], n = Math.ceil(Math.abs(t1 - t0)/12); for(let i = 0; i <= n; i++) o.push(E(t0 + (t1 - t0)*i/n, 50, 49)); return o; };
+  const V = [[[40,0],[60,0],[65,20],[60,34],[40,34],[35,20]], [[40,34],[60,34],[66,50],[60,66],[40,66],[34,50]], [[40,66],[60,66],[65,80],[60,100],[40,100],[35,80]]];
+  const L = [[[40,0],[35,20],[40,34], ...arc(200.35, 257.7)], [[40,34],[34,50],[40,66], ...arc(159.65, 200.35)], [[40,66],[35,80],[40,100], ...arc(102.3, 159.65)]];
+  const polys = V.concat(L, L.map(p=> p.map(([x, y])=> [100 - x, y]))), f = v=> v.toFixed(1), pts = p=> p.map(([x, y])=> f(x) + ',' + f(y)).join(' ');
+  const cen = p=> [p.reduce((s, q)=> s + q[0], 0)/p.length, p.reduce((s, q)=> s + q[1], 0)/p.length], ring = (p, k)=>{ const [cx, cy] = cen(p); return pts(p.map(([x, y])=> [cx + (x - cx)*k, cy + (y - cy)*k])); };
+  let ticks = ''; for(let t = 12; t < 360; t += 24){ const [x0, y0] = E(t, 39, 38), [x1, y1] = E(t, 47, 46); ticks += `M${f(x0)} ${f(y0)}L${f(x1)} ${f(y1)}`; }
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><defs><radialGradient id='s' cx='.5' cy='.45' r='.65'><stop offset='0' stop-color='#e2ad58'/><stop offset='.55' stop-color='#a86a2a'/><stop offset='1' stop-color='#5c3412'/></radialGradient>`
+    + `<radialGradient id='m' cx='.5' cy='.5' r='.5'><stop offset='.8' stop-color='#7a4a1c'/><stop offset='1' stop-color='#4a2a0e'/></radialGradient><clipPath id='i'><ellipse cx='50' cy='50' rx='39' ry='38'/></clipPath><clipPath id='o'><ellipse cx='50' cy='50' rx='47' ry='46'/></clipPath></defs>`
+    + `<ellipse cx='50' cy='50' rx='47' ry='46' fill='url(#m)' stroke='#2a1606' stroke-width='1.6'/><g clip-path='url(#i)'>${polys.map(p=> `<polygon points='${pts(p)}' fill='url(#s)'/><polygon points='${ring(p, .62)}' fill='none' stroke='#4a2608' stroke-opacity='.6' stroke-width='1'/><polygon points='${ring(p, .3)}' fill='#f0c47a' fill-opacity='.35'/>`).join('')}</g>`
+    + `<ellipse cx='50' cy='50' rx='39' ry='38' fill='none' stroke='#2a1606' stroke-width='1.3'/><path d='${ticks}' stroke='#2a1606' stroke-width='1.1'/><g clip-path='url(#o)' fill='none' stroke='#2a1606' stroke-width='1.7' stroke-linejoin='round'>${polys.map(p=> `<polygon points='${pts(p)}'/>`).join('')}</g>`
+    + `<ellipse cx='36' cy='26' rx='20' ry='9' fill='#fff' fill-opacity='.14' transform='rotate(-20 36 26)'/></svg>`;
+  let cr = ''; polys.forEach(p=> p.forEach(([x, y], i)=>{ const [x2, y2] = p[(i + 1) % p.length]; if(Math.hypot(x2 - x, y2 - y) > 9 && Math.hypot((x + x2)/2 - 50, ((y + y2)/2 - 50)*1.02) < 42) cr += `M${f(x)} ${f(y)}L${f((x + x2)/2 + (i % 2 ? 1.6 : -1.6))} ${f((y + y2)/2)}L${f(x2)} ${f(y2)}`; }));
+  const crack = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><path d='${cr}' fill='none' stroke='#fff3cf' stroke-width='1.3' stroke-linejoin='bevel'/></svg>`;
+  const url = s=> `url("data:image/svg+xml,${encodeURIComponent(s)}")`;
+  return {art:url(svg), crack:url(crack), pieces:polys.map(p=>{ const [cx, cy] = cen(p); return {cx, cy, clip:'polygon(' + p.map(([x, y])=> f(Math.max(0, Math.min(100, x))) + '% ' + f(Math.max(0, Math.min(100, y))) + '%').join(', ') + ')'}; })};
+})();
+function fx9ShellBreakVfx(el){
+  const card = el && el.closest ? (el.closest('.board-card') || el) : null; if(!card || !card.isConnected || !card.animate || !fxAtLeast('low')) return Promise.resolve();
+  const calm = reducedMotion() || !fxAtLeast('med'), W = card.offsetWidth || 80, H = card.offsetHeight || 100, h = fx9CardHost(card, 1150, 'fx9-shellbox'); if(!h) return Promise.resolve();
+  try{ SoundKit.shellCrackTone(); }catch(e){}
+  if(calm){ fx9Piece(h, 'plate', `background-image:${FX9_SHELL.art};`).animate([{opacity:0}, {opacity:.95, offset:.25}, {opacity:.95, offset:.5}, {opacity:0}], {duration:900, fill:'forwards'}); return new Promise(res=> setTimeout(res, 900)); }
+  FX9_SHELL.pieces.forEach((p, i)=>{ const q = fx9Piece(h, 'plate', `background-image:${FX9_SHELL.art}; clip-path:${p.clip}; transform-origin:${p.cx.toFixed(1)}% ${p.cy.toFixed(1)}%;`);
+    const ux = (p.cx - 50)/50, uy = (p.cy - 50)/50, dx = ux*W*.45 + (i % 2 ? 4 : -4), dy = uy*H*.2 + H*(.5 + (i % 3)*.12), rot = (ux >= 0 ? 1 : -1)*(25 + (i*17) % 45), j = i % 2 ? 1.5 : -1.5;
+    q.animate([{opacity:0, transform:'translate(0,0) scale(1.1)'}, {opacity:1, transform:'translate(0,0) scale(1)', offset:.14, easing:'ease-in'}, {transform:'translate(0,0)', offset:.3}, {transform:`translate(${j}px,0)`, offset:.34}, {transform:`translate(${-j}px,0)`, offset:.38}, {opacity:1, transform:'translate(0,0) rotate(0deg)', offset:.44, easing:'cubic-bezier(.5,0,.9,.6)'}, {opacity:0, transform:`translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) rotate(${rot}deg)`}],
+      {duration:1000 + (i % 3)*50, fill:'forwards'}); });
+  fx9Piece(h, 'plate', `background-image:${FX9_SHELL.crack};`).animate([{opacity:0}, {opacity:0, offset:.28}, {opacity:1, offset:.32}, {opacity:1, offset:.42}, {opacity:0, offset:.5}, {opacity:0}], {duration:1000, fill:'forwards'});
+  return new Promise(res=> setTimeout(res, 1100));
+}
+// #15 A Dragon arrives (owner: "Improve the dragon spawn animations. I like the flying across the screen concept. (maybe vary the direction)"): replaces
+// FX.C.dragonArrive in the game. Each spawn takes the next of four flights: left to right, right to left, a diagonal dive onto its slot, a sweep from
+// the far side toward you. The board dims a little, the dragon's shadow (a top-down silhouette, wings beating) passes over it, each card it passes
+// sways in the wind of its wings, then the dragon drops into its slot with a thud, dust and (High) a quake. One shadow and one dim layer in the board
+// frame, a short sway per card (the CSS rotate / translate properties: GSAP keeps transform), WAAPI only. Was a dark emoji under a blur filter over a
+// multiply layer, always left to right. Effects Low: the drop only; reduced motion: it fades in.
+const FX9_DRAGON_DIRS = ['ltr', 'rtl', 'dive', 'back'];
+const FX9_DRAGON_SVG = (()=>{ const wing = 'M118 94C116 70 104 34 82 5C78 22 70 30 57 34C62 44 56 52 43 56C50 66 46 74 33 78C52 84 72 90 86 96Z', flip = d=> d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (s, x, y)=> x + ' ' + (200 - y));
+  const s = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='-6 -6 212 212'><defs><filter id='b' x='-10%' y='-10%' width='120%' height='120%'><feGaussianBlur stdDeviation='1.5'/></filter></defs><g filter='url(#b)' fill='#000'>`
+    + `<path d='${wing}'/><path d='${flip(wing)}'/><path d='M26 100C60 91 110 88 150 92C166 93 178 95 190 100C178 105 166 107 150 108C110 112 60 109 26 100Z'/><path d='M40 98Q20 97 8 100Q20 103 40 102Z'/><path d='M10 100L0 93L3 100L0 107Z'/>`
+    + `<ellipse cx='170' cy='100' rx='15' ry='8'/><path d='M160 94L150 84L164 92Z'/><path d='M160 106L150 116L164 108Z'/></g></svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(s)}")`; })();
+function fx9DragonArrive(el, opts){
+  opts = opts || {}; const card = el && el.closest ? (el.closest('.board-card') || el) : null, t = card && (card.querySelector('.card-tile') || card);
+  if(!t || !t.isConnected || !t.animate || !fxAtLeast('low')) return Promise.resolve();
+  const bf = (opts.host && opts.host.nodeType ? opts.host : null) || card.closest('.battlefield') || document.getElementById('battlefieldEl');
+  const n = fx9DragonArrive.n = (fx9DragonArrive.n == null ? Math.floor(Math.random()*4) : fx9DragonArrive.n + 1), dir = FX9_DRAGON_DIRS.includes(opts.dir) ? opts.dir : FX9_DRAGON_DIRS[n % 4];
+  try{ SoundKit.roar(); }catch(e){}
+  if(reducedMotion()){ t.animate([{opacity:0}, {opacity:1}], {duration:450, easing:'ease-out'}); return new Promise(res=> setTimeout(res, 450)); }
+  const full = fxAtLeast('med') && bf && bf.offsetWidth > 0, W = full ? bf.offsetWidth : 0, H = full ? bf.offsetHeight : 0, B = full ? bf.getBoundingClientRect() : null, e = full ? (B.width / W || 1) : 1;
+  const cr = card.getBoundingClientRect(), sx = full ? (cr.left + cr.width/2 - B.left)/e : 0, sy = full ? (cr.top + cr.height/2 - B.top)/e : 0, S = Math.max(260, Math.min(600, W*.8));
+  const F = {ltr:{a:[-.6*S, H*.44], b:[W + .6*S, H*.3], s0:.9, s1:1.15, ms:1250, land:1000}, rtl:{a:[W + .6*S, H*.3], b:[-.6*S, H*.46], s0:.9, s1:1.15, ms:1250, land:1000},
+    dive:{a:[sx - Math.max(W*.45, S*.8), sy - Math.max(H*.6, S*.8)], b:[sx, sy], s0:1.3, s1:.45, ms:900, land:700}, back:{a:[W*.5 + (sx - W*.5)*.3, -.7*S], b:[W*.15 + sx*.7, H + .7*S], s0:.6, s1:1.5, ms:1300, land:1050}}[dir];
+  const land = full ? F.land : 120, vx = full ? F.b[0] - F.a[0] : 0, vy = full ? F.b[1] - F.a[1] : -1, len = Math.hypot(vx, vy) || 1, ux = vx/len, uy = vy/len;
+  if(full){
+    const sky = document.createElement('div'); sky.className = 'fx9-sky'; sky.setAttribute('aria-hidden', 'true'); bf.appendChild(sky); setTimeout(()=> sky.remove(), Math.max(F.ms, land) + 900);
+    fx9Piece(sky, 'dim').animate([{opacity:0}, {opacity:1, offset:.2}, {opacity:1, offset:.7}, {opacity:0}], {duration:land + 700, fill:'forwards'});
+    const sh = fx9Piece(sky, 'dshadow', `width:${(S*.9).toFixed(0)}px; height:${S.toFixed(0)}px; margin:${(-S/2).toFixed(0)}px 0 0 ${(-S*.45).toFixed(0)}px;`), fl = fx9Piece(sh, 'dwings', `background-image:${FX9_DRAGON_SVG};`);
+    const ang = (Math.atan2(vy, vx)*57.3).toFixed(1), P = (x, y, k)=> `translate(${x.toFixed(0)}px, ${y.toFixed(0)}px) rotate(${ang}deg) scale(${k})`;
+    sh.animate([{opacity:0, transform:P(F.a[0], F.a[1], F.s0)}, {opacity:1, offset:.12}, {opacity:1, offset:.85}, {opacity:dir === 'dive' ? 0 : 1, transform:P(F.b[0], F.b[1], F.s1)}], {duration:F.ms, delay:80, easing:dir === 'dive' ? 'cubic-bezier(.35,0,.75,1)' : 'linear', fill:'forwards'});
+    fl.animate([{transform:'scaleY(1)'}, {transform:'scaleY(.55)', offset:.5}, {transform:'scaleY(1)'}], {duration:380, iterations:Math.ceil(F.ms/380), easing:'ease-in-out'});
+    // the wind: each card sways as the shadow passes nearest to it, pushed along the flight and away from its line
+    const cards = [...bf.querySelectorAll('.board-row > .board-card:not(.empty-slot) .card-tile')].filter(x=> x !== t && x.animate).slice(0, 16);
+    cards.forEach(c=>{ const r = c.getBoundingClientRect(); if(!(r.width > 0)) return; const cx = (r.left + r.width/2 - B.left)/e - F.a[0], cy = (r.top + r.height/2 - B.top)/e - F.a[1];
+      const u = Math.max(0, Math.min(1, (cx*ux + cy*uy)/len)), side = cx*uy - cy*ux, d = Math.abs(side), k = Math.max(0, 1 - d/(S*.75)); if(k <= .05) return;
+      const at = 80 + u*F.ms - 120, sg = side > 0 ? -1 : 1, px = (ux*5 - uy*sg*4)*k, py = (uy*5 + ux*sg*4)*k;
+      c.animate([{rotate:'0deg', translate:'0px 0px'}, {rotate:`${(sg*5*k).toFixed(1)}deg`, translate:`${px.toFixed(1)}px ${py.toFixed(1)}px`, offset:.3}, {rotate:`${(-sg*2*k).toFixed(1)}deg`, translate:'0px 0px', offset:.65}, {rotate:'0deg', translate:'0px 0px'}], {duration:700, delay:Math.max(0, at), easing:'ease-out'}); });
+    setTimeout(()=>{ try{ SoundKit.dragonGust(); }catch(e){} }, 150);
+  }
+  // the drop: hidden until it lands, then down out of the way it came, a squash, dust at its feet
+  const ox = full ? -ux*90 : 0, oy = -(110 + (full ? Math.max(0, uy)*90 : 0));
+  t.animate([{opacity:0, translate:`${ox.toFixed(0)}px ${oy.toFixed(0)}px`, scale:'1.35'}, {opacity:0, translate:`${ox.toFixed(0)}px ${oy.toFixed(0)}px`, scale:'1.35', offset:land/(land + 300)}, {opacity:1, translate:'0px 0px', scale:'1'}], {duration:land + 300, easing:'cubic-bezier(.55,0,.9,.55)'});
+  setTimeout(()=>{ if(!t.isConnected) return; try{ SoundKit.boom(); }catch(e){}
+    t.animate([{scale:'1.08 .9'}, {scale:'.97 1.04', offset:.45}, {scale:'1'}], {duration:260, easing:'ease-out'});
+    const W2 = card.offsetWidth || 80, H2 = card.offsetHeight || 100, h = fx9CardHost(card, 900); if(!h) return;
+    for(let i = 0; i < 6; i++){ const sd = i % 2 ? 1 : -1, d = W2*(.35 + (i >> 1)*.18), p = fx9Piece(h, 'dust', `left:${(W2/2).toFixed(0)}px; top:${(H2 - 6).toFixed(0)}px;`);
+      p.animate([{opacity:0, transform:'translate(-50%, -50%) scale(.5)'}, {opacity:.85, transform:`translate(calc(-50% + ${(sd*d*.5).toFixed(0)}px), -60%) scale(1.1)`, offset:.25}, {opacity:0, transform:`translate(calc(-50% + ${(sd*d).toFixed(0)}px), -110%) scale(1.9)`}], {duration:700, delay:i*15, easing:'ease-out', fill:'forwards'}); }
+    if(full && opts.shake !== false && fxAtLeast('high')) bf.animate([{translate:'0 0'}, {translate:'0 7px'}, {translate:'0 -5px'}, {translate:'0 2px'}, {translate:'0 0'}], {duration:380, easing:'linear'});
+  }, land + 300);
+  try{ if(typeof noteMatchFx === 'function') noteMatchFx(land + 900); }catch(e){}
+  return new Promise(res=> setTimeout(res, land + 900));
+}
+// #17 Stampede (owner: "can run towards the opposing bramble health bar instead (straight ahead, no need hit the centre)"): replaces FX.A.stampede in
+// the game. A rolling dust cloud with hoof prints runs straight ahead from the killer's column to the opposing bramble's Health bar and bursts against
+// it; the bar jolts. Drawn in the board frame. Low and reduced motion: one puff on the bar.
+function fx9StampedeVfx(from, castle){
+  if(!fxAtLeast('low')) return Promise.resolve();
+  const side = castle && castle.getAttribute ? castle.getAttribute('data-hq') : null, bf = (from && from.closest && from.closest('.battlefield')) || document.getElementById('battlefieldEl');
+  const bar = bf && side ? bf.querySelector(`.bf-hp[data-hpribbon="${side}"]`) : null; if(!bar || !(bf.offsetWidth > 0)) return Promise.resolve();
+  const B = bf.getBoundingClientRect(), e = B.width / bf.offsetWidth || 1, R = (bar.querySelector('.bf-hp-track') || bar).getBoundingClientRect(); if(!(R.width > 0)) return Promise.resolve();
+  const fc = from && from.isConnected ? (from.closest('.board-card') || from).getBoundingClientRect() : null, up = R.top + R.height/2 < B.top + B.height/2;
+  const x = (Math.max(R.left + 8, Math.min(R.right - 8, fc && fc.width > 0 ? fc.left + fc.width/2 : R.left + R.width/2)) - B.left)/e, y1 = (R.top + R.height/2 - B.top)/e;
+  const y0 = fc && fc.width > 0 ? (fc.top + fc.height/2 - B.top)/e : y1 + (up ? 1 : -1)*B.height*.45/e, h = document.createElement('div'); h.className = 'fx9-run'; h.setAttribute('aria-hidden', 'true'); bf.appendChild(h); setTimeout(()=> h.remove(), 1300);
+  const puff = (dx, dy, delay, s0, s1, ms)=> fx9Piece(h, 'dust', `left:${x.toFixed(0)}px; top:${y1.toFixed(0)}px;`).animate([{opacity:0, transform:`translate(-50%, -50%) scale(${s0})`}, {opacity:.85, transform:`translate(calc(-50% + ${(dx*.5).toFixed(0)}px), calc(-50% + ${(dy*.5).toFixed(0)}px)) scale(${(s0 + s1)/2})`, offset:.3}, {opacity:0, transform:`translate(calc(-50% + ${dx.toFixed(0)}px), calc(-50% + ${dy.toFixed(0)}px)) scale(${s1})`}], {duration:ms || 650, delay, easing:'ease-out', fill:'forwards'});
+  if(reducedMotion() || !fxAtLeast('med')){ fx9Piece(h, 'dust', `left:${x.toFixed(0)}px; top:${y1.toFixed(0)}px; transform:translate(-50%, -50%) scale(1.6);`).animate([{opacity:0}, {opacity:.8, offset:.3}, {opacity:0}], {duration:700, fill:'forwards'}); return new Promise(res=> setTimeout(res, 700)); }
+  const dy = y1 - y0, sg = up ? -1 : 1, rot = up ? 0 : 180;
+  for(let i = 0; i < 8; i++){ const k = (i + .5)/8, hy = y0 + dy*k;
+    fx9Piece(h, 'hoof', `left:${(x + (i % 2 ? 7 : -7)).toFixed(0)}px; top:${hy.toFixed(0)}px; transform:translate(-50%, -50%) rotate(${rot}deg);`).animate([{opacity:0}, {opacity:.8, offset:.1}, {opacity:.8, offset:.55}, {opacity:0}], {duration:650, delay:i*45, fill:'forwards'}); }
+  for(let i = 0; i < 4; i++) fx9Piece(h, 'dust', `left:${(x + (i - 1.5)*9).toFixed(0)}px; top:${y0.toFixed(0)}px;`).animate([{opacity:0, transform:'translate(-50%, -50%) scale(.6)'}, {opacity:.85, offset:.15}, {opacity:.75, transform:`translate(-50%, calc(-50% + ${(dy*.92).toFixed(0)}px)) scale(1.5)`, offset:.85}, {opacity:0, transform:`translate(-50%, calc(-50% + ${dy.toFixed(0)}px)) scale(1.8)`}], {duration:460, delay:i*35, easing:'ease-in', fill:'forwards'});
+  for(let i = 0; i < 7; i++){ const sd = i % 2 ? 1 : -1; puff(sd*(14 + (i >> 1)*16), sg*-(4 + (i % 3)*5), 420 + i*12, .5, 1.9, 700); }
+  fx9Piece(h, 'ring', `left:${x.toFixed(0)}px; top:${y1.toFixed(0)}px;`).animate([{opacity:.9, transform:'translate(-50%, -50%) scale(.3, .12)'}, {opacity:0, transform:'translate(-50%, -50%) scale(1.6, .55)'}], {duration:480, delay:420, easing:'ease-out', fill:'forwards'});
+  setTimeout(()=>{ if(bar.isConnected) bar.animate([{translate:'0 0'}, {translate:`0 ${-sg*5}px`}, {translate:`0 ${sg*3}px`}, {translate:'0 0'}], {duration:360, easing:'ease-out'}); }, 430);
+  return new Promise(res=> setTimeout(res, 1100));
+}
+// The game's FX modules keep their look in the Lab; in a fight these four play FX9's versions (bound once, as vis4PatchShieldFx does for FX.A).
+function fx9PatchFx(){ try{ const A = window.FX && FX.A, C = window.FX && FX.C;
+  if(A && !A.__fx9){ A.__fx9 = true; A.ambushStrike = (att, tgt)=> fx9AmbushVfx(att, tgt); A.shellCrack = el=> fx9ShellBreakVfx(el); A.stampede = (from, castle)=> fx9StampedeVfx(from, castle); }
+  if(C && !C.__fx9){ C.__fx9 = true; C.dragonArrive = (el, o)=> fx9DragonArrive(el, o); } }catch(e){} }
+setTimeout(fx9PatchFx, 0); setTimeout(fx9PatchFx, 1500);
 function afterSettle(uid, fn){ const el0 = boardCardEl(uid), r0 = el0 ? ui23Rect(el0.getBoundingClientRect()) : null, row0 = el0;
   setTimeout(()=>{ const el = boardCardEl(uid), r = el && ui23Rect(el.getBoundingClientRect()); if(r) fn(el, r); else if(r0) fn(null, r0, row0); }, 60); } // UI23 (#25): a 0x0 box is no anchor
 // 2026-11-06 (package UI23 #25, owner: "context pips get thrown to the top-left of the screen"): a page-level effect placed from an element's box
@@ -51176,9 +51445,14 @@ function floatText(el, text, cls, opts){
   const travel = 0.9 + Math.random()*0.2;
   let big = calm ? 1.1 : classes.includes('crit') ? 1.75 : heavyHit ? 1.6 : 1.45;
   el.appendChild(f);
+  // 2026-11-13 (package PERF5, owner 23:47 #12 "damage number ... small frame drop"): a fitted number is measured together with the other numbers
+  // of the same task, at its end (dnFitBatch: every read, one layout, then every start; still before the frame is drawn). Read right after its own
+  // append, each number forced its own style and layout pass (a splash's five numbers, five passes).
+  if(o.fit) dnFitBatch(el, f, place); else place();
+  function place(cw, fw){
   // 2026-10-22 (package DN, "the glyphs must not make the floater wider than the unit card"): a hit number with its type and mark
   // glyphs settles at no wider than the card (fit < 1 shrinks it), and its burst-out peak is held to the card's width too.
-  if(o.fit){ try{ const cw = el.offsetWidth || el.getBoundingClientRect().width; let fw = f.offsetWidth; // both in layout px (the board is zoomed by a transform)
+  if(o.fit){ try{ if(cw == null){ cw = el.offsetWidth || el.getBoundingClientRect().width; fw = f.offsetWidth; } // both in layout px (the board is zoomed by a transform)
     if(cw > 0 && fw > 0){ let fit = (cw * 0.96) / fw;
       if(fit < 1 && f.querySelector('.df-ico')){ f.classList.add('df-tight'); fw = f.offsetWidth || fw; fit = (cw * 0.96) / fw; } // the glyphs give way first, then the number
       if(fit < 1){ const fs = parseFloat(getComputedStyle(f).fontSize) || 24; f.style.setProperty('font-size', (fs * fit).toFixed(1) + 'px', 'important'); f.classList.add('df-shrunk'); fw = f.offsetWidth || fw * fit; } // df-shrunk: its edge thins with it (DN2)
@@ -51218,6 +51492,14 @@ function floatText(el, text, cls, opts){
     f.style.setProperty('--dx', dx.toFixed(1)+'px');
     setTimeout(()=> f.remove(), 1150);
   }
+  }
+}
+const dnFitQueue = []; // PERF5: the fitted numbers of one task, measured together (floatText)
+function dnFitBatch(el, f, place){
+  dnFitQueue.push([el, f, place]); if(dnFitQueue.length > 1) return;
+  const flush = ()=>{ const q = dnFitQueue.splice(0), m = q.map(([e, n])=>{ try{ return n.isConnected ? [e.offsetWidth || e.getBoundingClientRect().width, n.offsetWidth] : null; }catch(err){ return null; } });
+    q.forEach(([e, n, go], i)=>{ try{ if(m[i]) go(m[i][0], m[i][1]); }catch(err){} }); };
+  if(typeof queueMicrotask === 'function') queueMicrotask(flush); else Promise.resolve().then(flush);
 }
 // Item drop (item #3, 2026-09-16): when a kill pays out a resource (currently bounty gold),
 // show something visibly falling out of the kill — heavier and more "gravitas" than the
@@ -51695,9 +51977,10 @@ function spawnProjectile(fromEl, toEl, glyph){
   const p = document.createElement('div');
   p.className = 'projectile';
   p.textContent = glyph || '➶';
-  document.body.appendChild(p);
+  document.body.appendChild(fxShown(p)); // PERF5 (2026-11-13): fixed, always shown
   const {projectile} = animMs();
   if(hasGsap()){
+    p.style.transition = 'none'; // 2026-11-13 (package PERF5): the CSS transition re-aimed itself at every GSAP frame: the glyph trailed 460 ms behind and vanished mid-air
     gsap.set(p, {x:startX-9, y:startY-9, opacity:1, scale:1, rotate:0});
     gsap.timeline({onComplete:()=> p.remove()})
       .to(p, {x:endX-9, y:endY-9, scale:1.15, rotate:Math.random()*40-20, opacity:.15, duration:projectile/1000, ease:'power1.in'});
@@ -54080,13 +54363,16 @@ function devilPulse(el){
 // ~0.6 s; 2 over ~0.4 s on Effects Low; none on Effects None or with reduced motion. Rings are fixed-position, pointer-less, removed when done.
 function ambushEcho(cardEl){
   if(!cardEl || reducedMotion()) return 0; const lv = fxLevel(); if(lv === 'none') return 0;
-  const pip = cardEl.querySelector('.ab-sk[data-sk="ambush"]'), r = (pip && pip.getBoundingClientRect().width > 0 ? pip : cardEl).getBoundingClientRect(); if(!(r.width > 0)) return 0;
-  const n = lv === 'low' ? 2 : 3, ms = lv === 'low' ? 400 : 600, x = r.left + r.width / 2, y = r.top + r.height / 2, size = Math.max(14, Math.min(26, r.width)); let made = 0;
+  // 2026-11-13 (package FX9 #6): the rings are children of the card (fx9CardHost), so a camera pan or zoom carries them with it (they were fixed on the page)
+  const card = cardEl.closest ? (cardEl.closest('.board-card') || cardEl) : cardEl, cr = card.getBoundingClientRect(); if(!(cr.width > 0)) return 0;
+  const pip = card.querySelector('.ab-sk[data-sk="ambush"]'), r = (pip && pip.getBoundingClientRect().width > 0 ? pip : card).getBoundingClientRect(), k = cr.width / (card.offsetWidth || cr.width);
+  const n = lv === 'low' ? 2 : 3, ms = lv === 'low' ? 400 : 600, x = (r.left + r.width / 2 - cr.left) / k, y = (r.top + r.height / 2 - cr.top) / k, size = Math.max(14, Math.min(26, r.width)) / k;
+  const host = fx9CardHost(card, ms * 2 + 400); if(!host) return 0; let made = 0;
   for(let i = 0; i < n; i++){
     const d = document.createElement('div'); d.className = 'ambush-echo-ring'; d.setAttribute('aria-hidden', 'true');
-    Object.assign(d.style, {position:'fixed', left:x + 'px', top:y + 'px', width:size + 'px', height:size + 'px', marginLeft:(-size / 2) + 'px', marginTop:(-size / 2) + 'px', borderRadius:'50%', border:'2px solid #ffe14a', boxShadow:'0 0 6px #ffcf2a', zIndex:9990, pointerEvents:'none', opacity:0});
-    document.body.appendChild(d); made++;
-    try{ const an = d.animate([{opacity:.9, transform:'scale(.6)'}, {opacity:0, transform:'scale(3)'}], {duration:ms, delay:i * Math.round(ms / 5), easing:'ease-out', fill:'both'}); an.onfinish = ()=> d.remove(); setTimeout(()=> d.remove(), ms * 2 + 400); }catch(e){ d.remove(); }
+    Object.assign(d.style, {position:'absolute', left:x + 'px', top:y + 'px', width:size + 'px', height:size + 'px', marginLeft:(-size / 2) + 'px', marginTop:(-size / 2) + 'px', borderRadius:'50%', border:'2px solid #ffe14a', boxShadow:'0 0 6px #ffcf2a', pointerEvents:'none', opacity:0});
+    host.appendChild(d); made++;
+    try{ const an = d.animate([{opacity:.9, transform:'scale(.6)'}, {opacity:0, transform:'scale(3)'}], {duration:ms, delay:i * Math.round(ms / 5), easing:'ease-out', fill:'both'}); an.onfinish = ()=> d.remove(); }catch(e){ d.remove(); }
   }
   return made;
 }
@@ -55613,6 +55899,7 @@ function renderVfxForEvent(ev){
     if(rc) rc.wait = 0;
     SoundKit.readyChime();
     playReadyFlourish(ev.uid);
+    try{ fx9GuardSync(boardCardEl(ev.uid), currentCardByUid(ev.uid)); }catch(e){} // FX9 #5 (2026-11-13): Ready, so a Guardian's plates swing out
     // Card-level ready shake (2026-09-21, "when the unit is ready... it should shake or animate
     // like it's now ready"): every card gets this golden perk-up pulse now, not just the wait
     // badge's own flourish (which disappears along with the badge) — see .board-card.ready-pulse
@@ -55621,7 +55908,7 @@ function renderVfxForEvent(ev){
     if(readyEl){
       readyEl.classList.remove('ready-pulse'); void readyEl.offsetWidth; // restart if already mid-pulse
       readyEl.classList.add('ready-pulse');
-      setTimeout(()=> readyEl.classList.remove('ready-pulse'), 460);
+      setTimeout(()=>{ readyEl.classList.remove('ready-pulse'); settleRestPose(readyEl); /* ANIM1 (note 13) */ }, 460);
     }
     // Earthquake-on-Ready (2026-09-18, per explicit request — see the matching "don't shake on
     // played" comment in renderBoard's entrance block): a big creature (health>20 or attack>10)
@@ -64016,6 +64303,7 @@ function switchTab(tab){
   if(tab==='friends') safeRender('Friends', renderFriends);
   if(tab==='admin') safeRender('Admin', renderAdmin);
   safeRender('CommunityTabs', ()=> syncCommunityTabs(tab));
+  try{ window.BramblewoodPlaces && BramblewoodPlaces.enter(tab, document.getElementById('view-' + tab), {from: currentTabBeforeSwitch}); }catch(e){} // 2026-11-13 (package UIFX1): the place's entrance and ambience
   // Task #94 (2026-09-16, "make the battleground significantly bigger, full on full
   // screen"): the wider layout only makes sense while an actual match is on screen, so it's
   // gated on being both on the Play tab AND mid-match, not just the tab alone.
@@ -65635,7 +65923,8 @@ function showSpeechBubble(el, text, extraClass, opts){
   const f = {b, anchor: el, uid, lkey, bw: bubbleRect.width, bh: bubbleRect.height, l: null, t: null};
   bubbleFollowRead(f); bubbleFollowWrite(f);
   bubbleFollowers.add(f); bubbleFollowStart();
-  if(hasGsap()){
+  if(window.StoryUI && StoryUI.bubble(b, holdS)){ /* 2026-11-13 (package UIFX3): a squash-pop from the tail, the tail wiggles, a clean lift and fade */ }
+  else if(hasGsap()){
     gsap.timeline({onComplete:()=> b.remove()})
       .to(b, {opacity:1, scale:1, y:0, duration:.22, ease:'back.out(2.2)'})
       .to(b, {opacity:1, duration:holdS}) // hold, readable

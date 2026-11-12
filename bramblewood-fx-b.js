@@ -889,11 +889,12 @@ M.dawnDraw = function(host, opts){
   const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'inset:0; background:linear-gradient(0deg, rgba(255,150,170,.6), rgba(255,190,150,.35) 35%, rgba(255,220,200,0) 70%);'}))[0];
   const birds = bits(box, 5, i=> ({cls:'fxb-bird', style:`left:${10 + i*18}%; top:80%;`})); birds.forEach(b=> b.innerHTML = '<svg viewBox="0 0 16 8"><path d="M0 2 Q4 -1 8 5 Q12 -1 16 2" fill="none" stroke="#3a2a3a" stroke-width="1.6"/></svg>');
   const decks = [...document.querySelectorAll('.deck-widget')].filter(d=> d.getBoundingClientRect().width).slice(0, 2);
+  // 2026-11-13 (package FX9 #1, owner 23:47: "Morning comes (pinkish) effect: Make it 10% less bright."): the rosy wash peaks at .9 (was 1), the decks' flash at 1.4 (was 1.45)
   return run([box], opts, (t, g)=>{
-    t.fromTo(w, {yPercent:60, opacity:0}, {yPercent:0, opacity:1, duration:.7, ease:'power2.out'}).to(w, {opacity:0, duration:.6}, 1.1);
+    t.fromTo(w, {yPercent:60, opacity:0}, {yPercent:0, opacity:.9, duration:.7, ease:'power2.out'}).to(w, {opacity:0, duration:.6}, 1.1);
     birds.forEach((b, i)=> t.fromTo(b, {opacity:0, x:0, y:0}, {opacity:.85, x:rnd(30, 80), y:-r.height*rnd(.55, .8), duration:1.1, ease:'power1.out'}, .2 + i*.08)
       .to(b.firstChild, {scaleY:.3, duration:.12, yoyo:true, repeat:7, transformOrigin:'50% 50%'}, .2 + i*.08).to(b, {opacity:0, duration:.25}, '>-.3'));
-    decks.forEach(d=> t.fromTo(d, {filter:'brightness(1)'}, {filter:'brightness(1.45) drop-shadow(0 0 8px #ffd0e0)', duration:.2, yoyo:true, repeat:1, clearProps:'filter'}, .7));
+    decks.forEach(d=> t.fromTo(d, {filter:'brightness(1)'}, {filter:'brightness(1.4) drop-shadow(0 0 8px #ffd0e0)', duration:.2, yoyo:true, repeat:1, clearProps:'filter'}, .7));
   });
 };
 // Dusk (wt-dusk, the tone only): the sun sinks in the west, long shadows stretch across the felt, warm turns violet.
