@@ -30,6 +30,9 @@ ghosts_src += "\n" + open(SCRATCH + "bramblewood-a11y.js", encoding="utf-8").rea
 # 2026-10-19 (package G, guild skills): the skill list, costs and the Rooted Walls bramble Health math (BramblewoodGuild), DOM-free.
 ghosts_src += "\n" + open(SCRATCH + "bramblewood-guild.js", encoding="utf-8").read()
 ghosts_src += "\n" + open(SCRATCH + "bramblewood-ui-places.js", encoding="utf-8").read()  # 2026-11-13 (package UIFX1): BramblewoodPlaces, the places' entrances (switchTab's hook)
+# 2026-11-13 (package UIFX3): the story staging (window.StoryUI): dialogue as a scene (sides, nameplates, typing with a voice, moods,
+# vignette / letterbox / ambience) and the battlefield bubbles' pop. Defines functions only; arena_app.js's dialogue code calls it.
+ghosts_src += "\n" + open(SCRATCH + "bramblewood-ui-story.js", encoding="utf-8").read()
 # 2026-10-19 (package BF): the stat budget N(L) = (Base - 1 + L) x (1 + L/20) and the Forge level curve (BramblewoodBudget), DOM-free;
 # the same file tools/skill_costs.js and the master hub use.
 # 2026-11-08 (package ENG36): bramblewood-budget.js now rides at the head of engine_src (above), which the page loads in the same block

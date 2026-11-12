@@ -17681,9 +17681,11 @@
    "arena_app.js:11772"
   ],
   "batch": "F",
-  "status": "live",
+  "status": "retired",
   "lab": "f.js",
-  "inGameHook": "playDialogue line → fxHook(dialogueLine) (variant A)"
+  "inGameHook": "playDialogue line → fxHook(dialogueLine) (variant A)",
+  "retired": "2026-11-13 (package UIFX3): the dock's lines are staged by StoryUI (story-react: shout, laugh, whisper, question, trailing off); FX.F.portraitMood no longer runs in the game (fxHook('dialogueLine') only fires without StoryUI)",
+  "updated": "2026-11-13"
  },
  {
   "id": "tut-dialogue-act",
@@ -20473,5 +20475,148 @@
   "added": "2026-10-18",
   "lab": "nf.js",
   "inGameHook": "Forge → ⬆️ Upgrades → ⚡ Max Energy → Raise to N: wireStamina → energyForgeCelebrate (arena_app.js) → FX.D.energyForge (calm under reduced motion, Effects Off / Low, no GSAP)"
+ },
+ {
+  "id": "story-scene",
+  "area": "Story (UIFX3)",
+  "name": "A story scene: two speakers, a shout, a whisper, a boss intro",
+  "trigger": "playDialogue on a script marked scene:'boss' / 'story'",
+  "current": "StoryUI.line: sides, nameplates, typing with a voice, moods; the scene layer (vignette, letterbox, ambience)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Owner 2026-11-13 00:03: \"immersion with dialogue\". The dock stays out of the way: every layer is pointer-events:none, the hide button takes the scene away.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-ui-story.js",
+   "arena_app.js: playDialogue, dialogueDock"
+  ],
+  "batch": "UIFX3",
+  "status": "live",
+  "added": "2026-11-13",
+  "lab": "story.js",
+  "inGameHook": "playDialogue → StoryUI.line(b, line, {id, sp, script}) and StoryUI.end(id) (arena_app.js)"
+ },
+ {
+  "id": "story-arrive",
+  "area": "Story (UIFX3)",
+  "name": "Speakers arrive and take sides",
+  "trigger": "a line whose speaker changed",
+  "current": "the portrait rises and settles; the line slides in from its speaker's side; the nameplate in the speaker's people's colour; the talking line is lit, the others dim; on a phone the other party's portrait stays at the far corner",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Peoples from docs/lore-bible.md: Legion oxblood, river blue, Sunthroat amber, Crimson Wing, Voidfeather violet, road-folk indigo, ember, folk brown, moss, stone.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-ui-story.js"
+  ],
+  "batch": "UIFX3",
+  "status": "live",
+  "added": "2026-11-13",
+  "lab": "story.js",
+  "inGameHook": "playDialogue → StoryUI.line (speaker change) + SoundKit.storyArrive"
+ },
+ {
+  "id": "story-typewriter",
+  "area": "Story (UIFX3)",
+  "name": "Typewriter with a voice, pauses and emphasis",
+  "trigger": "every NPC line (Effects Low and up)",
+  "current": "each letter a span with its own animation-delay (the box has its final size from the first frame); pauses after punctuation; *marked* words pop, capitalised words mid-sentence are stressed; one SoundKit.babble syllable a word in the speaker's people's voice; a tap completes the line, the next tap moves on; the NPC dialogue speed setting scales it",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-ui-story.js"
+  ],
+  "batch": "UIFX3",
+  "status": "live",
+  "added": "2026-11-13",
+  "lab": "story.js",
+  "inGameHook": "playDialogue → StoryUI.line; dialogueDock's tap → StoryUI.complete()"
+ },
+ {
+  "id": "story-react",
+  "area": "Story (UIFX3)",
+  "name": "Reactions: shout, laugh, whisper, question, trailing off",
+  "trigger": "a line's mood (line.mood, or read from !, ?, …, HA, CAPITALS)",
+  "current": "shout: the portrait jolts and shakes with surprise lines as the ! is typed; laugh: it bobs; whisper: italic, softer ink, the portrait dims and shrinks, slower typing, half the voice; question: a head tilt; trailing off: a droop",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Replaces FX.F.portraitMood on the dock in the game (a line no longer gets both); the faction warning keeps FX.F.factionWarning.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-ui-story.js"
+  ],
+  "batch": "UIFX3",
+  "status": "live",
+  "added": "2026-11-13",
+  "lab": "story.js",
+  "inGameHook": "playDialogue → StoryUI.line (Effects Medium and up)"
+ },
+ {
+  "id": "story-letterbox",
+  "area": "Story (UIFX3)",
+  "name": "Boss and story intro: letterbox and vignette",
+  "trigger": "a script marked scene:'boss' (boss_banter) or 'story' (outskirts_reveal, scale_trail_finale)",
+  "current": "letterbox bars close in with a thin edge line (crimson for a boss, gold for a story) and a vignette (red for a boss, pulsing once); a soft edge blur behind a story scene at High outside fights; SoundKit.storyLetterbox; in a fight only two glowing edge lines and the vignette, gone after the first line",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-ui-story.js",
+   "arena_app.js: SoundKit.storyLetterbox"
+  ],
+  "batch": "UIFX3",
+  "status": "live",
+  "added": "2026-11-13",
+  "lab": "story.js",
+  "inGameHook": "playDialogue → StoryUI.line (first line of the scene) → the .sty-scene layer; StoryUI.end removes it"
+ },
+ {
+  "id": "story-ambient",
+  "area": "Story (UIFX3)",
+  "name": "Ambience by mood: fireflies, rain, embers",
+  "trigger": "a script marked ambient:'fireflies' (well_m1, cur_m4_glowpool, cur_m8_wisp), 'rain' (cur_m3_ashcairn) or 'embers' (scale_trail_finale)",
+  "current": "11 fireflies drifting and blinking / two layers of slanted rain under a cool vignette / 12 embers rising; CSS transform and opacity only; Effects Medium and up, never during a live fight",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-ui-story.js"
+  ],
+  "batch": "UIFX3",
+  "status": "live",
+  "added": "2026-11-13",
+  "lab": "story.js",
+  "inGameHook": "playDialogue → StoryUI.line (first line of the scene)"
+ },
+ {
+  "id": "story-bark",
+  "area": "Story (UIFX3)",
+  "name": "Battlefield bubble pops",
+  "trigger": "showSpeechBubble (barks, chatter, emotes)",
+  "current": "a squash-pop from the tail (scaleX / scaleY overshoot), the tail wiggles once, then a clean lift and fade; above the card, never over its numbers",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-ui-story.js",
+   "arena_app.js: showSpeechBubble"
+  ],
+  "batch": "UIFX3",
+  "status": "live",
+  "added": "2026-11-13",
+  "lab": "story.js",
+  "inGameHook": "showSpeechBubble → StoryUI.bubble(b, holdS) (arena_app.js)"
  }
 ]

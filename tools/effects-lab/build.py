@@ -56,6 +56,9 @@ fxideas = open(f'{LAB}/fxlab-ideas.js', encoding='utf-8').read()
 # bundle) and its tab (fxlab-ideas2.js, on LAB2's tab engine).
 fxbatches += '\n' + open(f'{ROOT}/bramblewood-fx-ideas2.js', encoding='utf-8').read()
 fxbatches += '\n' + open(f'{ROOT}/bramblewood-ui-places.js', encoding='utf-8').read()  # 2026-11-13 (package UIFX1): BramblewoodPlaces, as in the game bundle
+# 2026-11-13 (package UIFX3): + bramblewood-ui-story.js (window.StoryUI, the dialogue scene staging and the bubble pop), as the game bundles it;
+# manifest/story.js plays its scenes ("Story (UIFX3)").
+fxbatches += '\n' + open(f'{ROOT}/bramblewood-ui-story.js', encoding='utf-8').read()
 fxideas2 = open(f'{LAB}/fxlab-ideas2.js', encoding='utf-8').read()
 _inv = json.load(open(f'{ROOT}/docs/effects-inventory-2026-10-15.json', encoding='utf-8'))
 _INV_KEYS = ['id', 'area', 'name', 'trigger', 'current', 'quality', 'priority', 'themeNotes', 'variantsSuggested', 'future', 'batch', 'status', 'retired', 'added', 'updated', 'inGameHook']  # + status / retired / added / updated (2026-10-17); + inGameHook (2026-10-21: the catalogue's "In game: <where>" badge)

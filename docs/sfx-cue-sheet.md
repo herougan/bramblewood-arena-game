@@ -46,6 +46,11 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 | 38 | Water plop | Tap water on a conquest map | A falling sine plop, a splash of band noise, a smaller drip after it | Down-blip | 200 ms |
 | 39 | Bush rustle | Tap a bush on a conquest map | Two short bursts of high filtered noise with crackle | Noise blip | 300 ms |
 | 40 | Construction | Bulwark raises its Log Walls (2026-11-12, FX6) | Three hammer knocks on wood (a low square thud with a band of noise on each, the pitch sagging a little) over a short rising saw-scrape | Three square blips | 400 ms |
+| 41 | Speaker steps in | A new speaker's line in a conversation (2026-11-13, UIFX3) | A soft cloth swish (band noise sweeping up) and one small wooden tock | Tiny up-blip | 200 ms |
+| 42 | Letterbox | A story or boss conversation frames the screen (2026-11-13, UIFX3) | A low drum swell under a muffled gong; the boss's is deeper, with a second low note | Low sweep and a held note | 900 ms |
+| 43 | Typing voice | Each word of an NPC line as it is typed (2026-11-13, UIFX3) | One babble syllable a word in the speaker's people's voice (the rivals' `babble`: Legion low square, Tribes high sine, road-folk saw, golem deep); a whisper speaks every other word | One blip a word | 50-140 ms each |
+
+**Status (2026-11-13, package UIFX3):** cues 41 and 42 are live as Web Audio synths (`SoundKit.storyArrive`, `SoundKit.storyLetterbox(boss)`, built from `tone`, `fnoise`, `sweep`), played by `bramblewood-ui-story.js`; cue 43 reuses `SoundKit.babble(people, text)` (Voice slider), one call a typed word.
 
 **Status (2026-11-12, package FX6):** cue 40 is live as a Web Audio synth (`SoundKit.constructTone`, built from `tone`, `fnoise`, `sweep`); it replaces the spawn buzz for Bulwark's walls.
 
