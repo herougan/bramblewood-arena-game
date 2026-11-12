@@ -269,3 +269,10 @@ Card art for the Barrel Cactus (Rare, 1/18, Dry + Thorns 2; CACTI1, owner 2026-1
 
 ### Barrel Cactus
 > Full-body character in a small scene, centred, slight low angle: a cute round green barrel cactus with big bright eyes, a squat ribbed body with neat rows of pale sharp spines along each rib, a ring of small yellow flowers on top, standing on cracked sandy ground between pale dunes under a clear pale sky, hot pale-gold desert background with long soft shadows, one bright yellow flower accent. Natural plant anatomy, not anthropomorphic, no hands, anatomically correct barrel cactus: one short round ribbed body, no arms, no branches, no legs, spines in rows on the ribs, flowers in a crown on top.
+
+## Re-art prompt (2026-11-12, package ART12)
+
+Dormouse (`dormouse`, Common 2/5, Nocturnal) was rejected in the card editor on 2026-11-06 ("Generally not good."): the old picture reads as a hamster holding a bubble. Paste the base prompt first, then the line below. Run the pixel pass at 128 px. Genre Cute. Body plan (owner 2026-11-11): a dormouse is a small four-legged rodent with a golden-brown coat, a cream belly, big black eyes, small round ears and a thick bushy squirrel-like tail as long as the body; four short legs, no hands. Reject variations with a hamster face, a thin bare tail, upright posture or hands holding things.
+
+### Dormouse (re-art)
+> Full-body character in a small scene, centred, slight low angle: a cute golden-brown hazel dormouse with a cream belly, big shiny black eyes and a thick bushy tail curled around its body, curled up asleep on a mossy branch in a hazel tree with a hazelnut beside it, four small paws tucked under its chin, moonlit hazel-wood background with soft blue dusk light and drifting fireflies, one bright warm gold accent. Natural animal anatomy, not anthropomorphic, no hands, never standing upright like a human, anatomically correct dormouse: one small rodent body with four short legs, round ears and a long thick bushy tail.
