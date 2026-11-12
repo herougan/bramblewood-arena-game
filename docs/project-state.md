@@ -180,6 +180,7 @@ Each keyword's price lives in `canonical/skill-costs.json`; its behaviour in the
 Canonical text: `docs/progression-plan.md`.
 - **No Forge before Map 11:** Maps 0-10 are won by deck building. Levels gate by map, not by resources; Base cards stop at Level 4 and pay the full Forge cost; a fight's first-clear card drops 10% a repeat. Source: `ROAD_LEVEL_CURVE`, `BASE_CARD_LEVEL_CAP`, `UPGRADE_COSTS` in `arena_app.js`. [B7, DF-2]
 - **Base cards are Level 1; Level 0 is for tutorial base and baby cards trained in the Nest;** faction cards come at Level 0. The Nest lists only baby / egg cards and Level-0 base cards, in two tabs. [PP-3, TU2-2, N1]
+- **A card marked Baby (field `kind: "baby"`, set with the card editor's Kind select) enters the collection at Level 0 from every source** (pack, reward, first clear, Nest, shop, starter deck, a faction reward too); copies already owned stay as they are. [owner 2026-11-12 23:47 note 11, BABY1]
 - **The stat budget grows with level** (the formula N(L) is in `bramblewood-budget.js`); limit break comes in waves, older cards get a bigger step, and opens at Map 50. [B8, B9; budget]
 - **Printed card = obtained card.** Enemy strength comes from levels, decks / synergy and fields, never from altered stats. [B10]
 - **Skirmish rewards are never pack cards.** Every card is exactly one of: a skirmish reward, a pack card, a faction reward, or a raid / smith / nest / base / quest / secret / Easter egg / materia card. [rules 10-21 RP; `canonical/cards.json` `source`]

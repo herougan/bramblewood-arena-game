@@ -55452,7 +55452,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'edee20d91558', BUILD_CARD_HASH = '19a64baf79f7dd4ff53e2e32f32929f7261e42d1c2c91d8a57fca469529ec883';
+const BUILD_ID = 'a143b80ce566', BUILD_CARD_HASH = '19a64baf79f7dd4ff53e2e32f32929f7261e42d1c2c91d8a57fca469529ec883';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -83946,7 +83946,7 @@ function tutorialStarterCopiesLevel0(deck){
 // copy comes at the card's own level again (Level 1). The tutorial's faction rewards (TUTORIAL_FACTION_REWARDS) keep it too.
 const FACTION_COPY_LEVEL0 = false;
 function isFactionPoolDef(d){ const s = d && cardSourceOf(d); return !!(s && s.kind === 'pack' && (parseInt(s.tier, 10) || 1) === 11); }
-function tutorialCopyKeepsLevel(id){ try{ return !FACTION_COPY_LEVEL0 && isFactionPoolDef(copyBaseDef(id)); }catch(e){ return false; } }
+function tutorialCopyKeepsLevel(id){ try{ const bd = copyBaseDef(id); if(isBabyLevelDef(bd)) return false; /* BABY1 (2026-11-12, owner note 11): a Baby card starts at Level 0 from every source, a faction reward too */ return !FACTION_COPY_LEVEL0 && isFactionPoolDef(bd); }catch(e){ return false; } }
 function isFactionLevel0Def(d){ return !!(d && d.faction && d.id !== 'wandering-traveller' && !d.token && d.cardType !== 'materia' && d.cardType !== 'equipment'); }
 function factionCopyLevel0(id){
   try{ if(!FACTION_COPY_LEVEL0 || !copyModelOn()) return; const d = copyBaseDef(id); if(!isFactionLevel0Def(d)) return;
