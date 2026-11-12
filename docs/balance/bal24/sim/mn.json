@@ -20,48 +20,24 @@
    "player": 1,
    "seed": "bal24-1",
    "counts": {
-    "alpine-marmot": 1,
-    "bramble-sprout": 1,
-    "electric-ray": 1,
+    "dust-hyena": 2,
     "fawn-scout": 1,
-    "feral-tomcat": 1,
     "fiddler-crab-swarm": 1,
-    "golden-eagle-diver": 1,
-    "grass-snake": 1,
-    "ibex-rockcaller": 1,
-    "moonlit-hare": 1,
-    "otter-centurion": 3,
-    "peregrine-stooper": 1,
-    "planarian-splitter": 1,
-    "soldier-ant": 1,
-    "spitting-cobra": 1,
-    "termite-forager": 1,
-    "water-shrew": 1,
-    "wolf-spider-mother": 1
+    "hedgerow-shrew": 5,
+    "hoopoe-herald": 1,
+    "open-ocean-hermit-crab": 5,
+    "robin-redbreast": 3,
+    "star-nosed-mole": 1,
+    "stonedrop-vulture": 1
    },
    "parts": [
     [
-     "alpine-marmot",
-     1,
-     3
-    ],
-    [
-     "bramble-sprout",
-     1,
-     3
-    ],
-    [
-     "electric-ray",
-     1,
+     "dust-hyena",
+     2,
      3
     ],
     [
      "fawn-scout",
-     1,
-     3
-    ],
-    [
-     "feral-tomcat",
      1,
      3
     ],
@@ -71,57 +47,209 @@
      3
     ],
     [
-     "golden-eagle-diver",
+     "hedgerow-shrew",
+     5,
+     3
+    ],
+    [
+     "hoopoe-herald",
      1,
      3
     ],
     [
-     "grass-snake",
-     1,
+     "open-ocean-hermit-crab",
+     5,
      3
     ],
     [
-     "ibex-rockcaller",
-     1,
-     3
-    ],
-    [
-     "moonlit-hare",
-     1,
-     3
-    ],
-    [
-     "otter-centurion",
+     "robin-redbreast",
      3,
      3
     ],
     [
-     "peregrine-stooper",
+     "star-nosed-mole",
      1,
      3
     ],
     [
-     "planarian-splitter",
+     "stonedrop-vulture",
+     1,
+     3
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 289,
+   "factionCards": 42,
+   "optScore": 0.724,
+   "optBudget": 900,
+   "optFile": "deckopt-map08-mn-bal24-p1.json",
+   "games": 8,
+   "perFight": {
+    "8-A-1": 87.5,
+    "8-A-2": 62.5,
+    "8-A-3": 50,
+    "8-A-4": 50
+   },
+   "win": 62.5
+  },
+  {
+   "player": 2,
+   "seed": "bal24-2",
+   "counts": {
+    "dust-hyena": 1,
+    "hedgerow-shrew": 5,
+    "open-ocean-hermit-crab": 5,
+    "otter-angler": 1,
+    "proboscis-monkey": 1,
+    "robin-redbreast": 2,
+    "star-nosed-mole": 1,
+    "stonedrop-vulture": 1,
+    "trash-panda-trickster": 1,
+    "wrong-way-salmon": 2
+   },
+   "parts": [
+    [
+     "dust-hyena",
      1,
      3
     ],
     [
-     "soldier-ant",
+     "hedgerow-shrew",
+     5,
+     3
+    ],
+    [
+     "open-ocean-hermit-crab",
+     5,
+     3
+    ],
+    [
+     "otter-angler",
      1,
      3
     ],
     [
-     "spitting-cobra",
+     "proboscis-monkey",
      1,
      3
     ],
     [
-     "termite-forager",
+     "robin-redbreast",
+     2,
+     3
+    ],
+    [
+     "star-nosed-mole",
      1,
      3
     ],
     [
-     "water-shrew",
+     "stonedrop-vulture",
+     1,
+     3
+    ],
+    [
+     "trash-panda-trickster",
+     1,
+     3
+    ],
+    [
+     "wrong-way-salmon",
+     2,
+     3
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 287,
+   "factionCards": 42,
+   "optScore": 0.741,
+   "optBudget": 900,
+   "optFile": "deckopt-map08-mn-bal24-p2.json",
+   "games": 8,
+   "perFight": {
+    "8-A-1": 62.5,
+    "8-A-2": 75,
+    "8-A-3": 0,
+    "8-A-4": 25
+   },
+   "win": 40.6
+  },
+  {
+   "player": 3,
+   "seed": "bal24-3",
+   "counts": {
+    "alley-cat": 1,
+    "bee-drone": 4,
+    "cricket-drummer": 1,
+    "dolphin-knight": 1,
+    "earthworm": 1,
+    "fleetfootd": 4,
+    "grass-viper": 1,
+    "meerkat-wayfarer": 1,
+    "otter-flag-bearer": 2,
+    "otter-paddler": 1,
+    "star-nosed-mole": 1,
+    "swamp-alligator": 1,
+    "wolf-spider-mother": 1
+   },
+   "parts": [
+    [
+     "alley-cat",
+     1,
+     3
+    ],
+    [
+     "bee-drone",
+     4,
+     3
+    ],
+    [
+     "cricket-drummer",
+     1,
+     3
+    ],
+    [
+     "dolphin-knight",
+     1,
+     3
+    ],
+    [
+     "earthworm",
+     1,
+     3
+    ],
+    [
+     "fleetfootd",
+     4,
+     3
+    ],
+    [
+     "grass-viper",
+     1,
+     3
+    ],
+    [
+     "meerkat-wayfarer",
+     1,
+     3
+    ],
+    [
+     "otter-flag-bearer",
+     2,
+     3
+    ],
+    [
+     "otter-paddler",
+     1,
+     3
+    ],
+    [
+     "star-nosed-mole",
+     1,
+     3
+    ],
+    [
+     "swamp-alligator",
      1,
      3
     ],
@@ -132,291 +260,19 @@
     ]
    ],
    "leader": "pride-queen",
-   "collection": 322,
-   "factionCards": 42,
-   "optScore": 0.703,
-   "optBudget": 900,
-   "optFile": "deckopt-map08-mn-bal24-p1.json",
-   "games": 8,
-   "perFight": {
-    "8-A-1": 75,
-    "8-A-2": 75,
-    "8-A-3": 25,
-    "8-A-4": 37.5
-   },
-   "win": 53.1
-  },
-  {
-   "player": 2,
-   "seed": "bal24-2",
-   "counts": {
-    "alpine-marmot": 1,
-    "ant-scout": 1,
-    "beaver-lumberjack": 1,
-    "bee-sentry": 1,
-    "fawn-scout": 1,
-    "feral-tomcat": 1,
-    "ferry-toll-frog": 1,
-    "garden-snail": 1,
-    "horseshoe-crab": 1,
-    "hummingbird-needler": 1,
-    "leafcutter-gardener": 1,
-    "lyrebird-mimic": 1,
-    "mangrove-mudskipper": 1,
-    "moonlit-hare": 1,
-    "old-shell": 1,
-    "pond-trout": 1,
-    "river-warden": 1,
-    "rivergate-drummer": 1,
-    "star-nosed-mole": 1,
-    "worker-ant": 1
-   },
-   "parts": [
-    [
-     "alpine-marmot",
-     1,
-     3
-    ],
-    [
-     "ant-scout",
-     1,
-     3
-    ],
-    [
-     "beaver-lumberjack",
-     1,
-     3
-    ],
-    [
-     "bee-sentry",
-     1,
-     3
-    ],
-    [
-     "fawn-scout",
-     1,
-     3
-    ],
-    [
-     "feral-tomcat",
-     1,
-     3
-    ],
-    [
-     "ferry-toll-frog",
-     1,
-     3
-    ],
-    [
-     "garden-snail",
-     1,
-     3
-    ],
-    [
-     "horseshoe-crab",
-     1,
-     3
-    ],
-    [
-     "hummingbird-needler",
-     1,
-     3
-    ],
-    [
-     "leafcutter-gardener",
-     1,
-     3
-    ],
-    [
-     "lyrebird-mimic",
-     1,
-     3
-    ],
-    [
-     "mangrove-mudskipper",
-     1,
-     3
-    ],
-    [
-     "moonlit-hare",
-     1,
-     3
-    ],
-    [
-     "old-shell",
-     1,
-     3
-    ],
-    [
-     "pond-trout",
-     1,
-     3
-    ],
-    [
-     "river-warden",
-     1,
-     3
-    ],
-    [
-     "rivergate-drummer",
-     1,
-     3
-    ],
-    [
-     "star-nosed-mole",
-     1,
-     3
-    ],
-    [
-     "worker-ant",
-     1,
-     3
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 321,
-   "factionCards": 42,
-   "optScore": 0.626,
-   "optBudget": 900,
-   "optFile": "deckopt-map08-mn-bal24-p2.json",
-   "games": 8,
-   "perFight": {
-    "8-A-1": 50,
-    "8-A-2": 37.5,
-    "8-A-3": 37.5,
-    "8-A-4": 0
-   },
-   "win": 31.3
-  },
-  {
-   "player": 3,
-   "seed": "bal24-3",
-   "counts": {
-    "alpine-marmot": 1,
-    "ant-warrior": 1,
-    "berserker-boar": 1,
-    "chipmunk-skirmisher": 1,
-    "clap-net-trapper": 1,
-    "cobalt-talon-honour-guard": 1,
-    "drowned-matriarch": 1,
-    "electric-ray": 1,
-    "fawn-scout": 1,
-    "ibex-rockcaller": 1,
-    "muskrat-reedgatherer": 1,
-    "otter-centurion": 3,
-    "otter-kit": 1,
-    "otter-netmender": 1,
-    "owl-sentinel": 1,
-    "soldier-ant": 1,
-    "tasmanian-devil": 1,
-    "tide-spirit": 1
-   },
-   "parts": [
-    [
-     "alpine-marmot",
-     1,
-     3
-    ],
-    [
-     "ant-warrior",
-     1,
-     3
-    ],
-    [
-     "berserker-boar",
-     1,
-     3
-    ],
-    [
-     "chipmunk-skirmisher",
-     1,
-     3
-    ],
-    [
-     "clap-net-trapper",
-     1,
-     3
-    ],
-    [
-     "cobalt-talon-honour-guard",
-     1,
-     3
-    ],
-    [
-     "drowned-matriarch",
-     1,
-     3
-    ],
-    [
-     "electric-ray",
-     1,
-     3
-    ],
-    [
-     "fawn-scout",
-     1,
-     3
-    ],
-    [
-     "ibex-rockcaller",
-     1,
-     3
-    ],
-    [
-     "muskrat-reedgatherer",
-     1,
-     3
-    ],
-    [
-     "otter-centurion",
-     3,
-     3
-    ],
-    [
-     "otter-kit",
-     1,
-     3
-    ],
-    [
-     "otter-netmender",
-     1,
-     3
-    ],
-    [
-     "owl-sentinel",
-     1,
-     3
-    ],
-    [
-     "soldier-ant",
-     1,
-     3
-    ],
-    [
-     "tasmanian-devil",
-     1,
-     3
-    ],
-    [
-     "tide-spirit",
-     1,
-     3
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 323,
+   "collection": 291,
    "factionCards": 44,
-   "optScore": 0.775,
+   "optScore": 0.724,
    "optBudget": 900,
    "optFile": "deckopt-map08-mn-bal24-p3.json",
    "games": 8,
    "perFight": {
-    "8-A-1": 87.5,
-    "8-A-2": 50,
-    "8-A-3": 25,
-    "8-A-4": 37.5
+    "8-A-1": 75,
+    "8-A-2": 100,
+    "8-A-3": 37.5,
+    "8-A-4": 50
    },
-   "win": 50
+   "win": 65.6
   },
   {
    "player": 4,
@@ -424,16 +280,12 @@
    "counts": {
     "dust-hyena": 2,
     "fawn-scout": 1,
-    "golden-eagle-diver": 1,
+    "fiddler-crab-swarm": 1,
     "hedgerow-shrew": 5,
-    "ibex-rockcaller": 1,
-    "mirror-moth": 1,
-    "nightshade-moth": 1,
-    "open-ocean-hermit-crab": 1,
-    "otter-centurion": 2,
-    "otter-kit": 1,
-    "rootworm-colony": 1,
-    "shell-cracker": 1,
+    "hoopoe-herald": 1,
+    "open-ocean-hermit-crab": 5,
+    "robin-redbreast": 2,
+    "star-nosed-mole": 1,
     "stonedrop-vulture": 1,
     "wrong-way-salmon": 1
    },
@@ -449,7 +301,7 @@
      3
     ],
     [
-     "golden-eagle-diver",
+     "fiddler-crab-swarm",
      1,
      3
     ],
@@ -459,42 +311,22 @@
      3
     ],
     [
-     "ibex-rockcaller",
-     1,
-     3
-    ],
-    [
-     "mirror-moth",
-     1,
-     3
-    ],
-    [
-     "nightshade-moth",
+     "hoopoe-herald",
      1,
      3
     ],
     [
      "open-ocean-hermit-crab",
-     1,
+     5,
      3
     ],
     [
-     "otter-centurion",
+     "robin-redbreast",
      2,
      3
     ],
     [
-     "otter-kit",
-     1,
-     3
-    ],
-    [
-     "rootworm-colony",
-     1,
-     3
-    ],
-    [
-     "shell-cracker",
+     "star-nosed-mole",
      1,
      3
     ],
@@ -510,17 +342,17 @@
     ]
    ],
    "leader": "pride-queen",
-   "collection": 325,
+   "collection": 292,
    "factionCards": 43,
-   "optScore": 0.713,
+   "optScore": 0.703,
    "optBudget": 900,
    "optFile": "deckopt-map08-mn-bal24-p4.json",
    "games": 8,
    "perFight": {
-    "8-A-1": 87.5,
+    "8-A-1": 75,
     "8-A-2": 87.5,
     "8-A-3": 37.5,
-    "8-A-4": 25
+    "8-A-4": 37.5
    },
    "win": 59.4
   },
@@ -528,26 +360,52 @@
    "player": 5,
    "seed": "bal24-5",
    "counts": {
+    "adder-ambusher": 1,
     "alpine-marmot": 1,
-    "cottontail": 1,
+    "caiman-hatchling": 1,
+    "cricket-drummer": 1,
+    "crown-of-thorns-star": 1,
+    "farm-dog": 1,
     "fawn-scout": 1,
-    "fiddler-crab-swarm": 5,
+    "feral-tomcat": 1,
+    "gannet-nestweaver": 2,
     "golden-eagle-diver": 1,
-    "hoopoe-herald": 2,
-    "mayfly-dancer": 5,
-    "pond-algae": 1,
-    "sparrow-chick": 1,
-    "stonedrop-vulture": 1,
+    "ibex-rockcaller": 1,
+    "muskrat-lodgekeeper": 1,
+    "otter-centurion": 3,
+    "sworn-shieldbearer": 1,
+    "two-headed-calf": 1,
+    "upside-down-bat": 1,
     "wolf-spider-mother": 1
    },
    "parts": [
+    [
+     "adder-ambusher",
+     1,
+     3
+    ],
     [
      "alpine-marmot",
      1,
      3
     ],
     [
-     "cottontail",
+     "caiman-hatchling",
+     1,
+     3
+    ],
+    [
+     "cricket-drummer",
+     1,
+     3
+    ],
+    [
+     "crown-of-thorns-star",
+     1,
+     3
+    ],
+    [
+     "farm-dog",
      1,
      3
     ],
@@ -557,214 +415,17 @@
      3
     ],
     [
-     "fiddler-crab-swarm",
-     5,
-     3
-    ],
-    [
-     "golden-eagle-diver",
+     "feral-tomcat",
      1,
      3
     ],
     [
-     "hoopoe-herald",
+     "gannet-nestweaver",
      2,
      3
     ],
     [
-     "mayfly-dancer",
-     5,
-     3
-    ],
-    [
-     "pond-algae",
-     1,
-     3
-    ],
-    [
-     "sparrow-chick",
-     1,
-     3
-    ],
-    [
-     "stonedrop-vulture",
-     1,
-     3
-    ],
-    [
-     "wolf-spider-mother",
-     1,
-     3
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 322,
-   "factionCards": 43,
-   "optScore": 0.674,
-   "optBudget": 900,
-   "optFile": "deckopt-map08-mn-bal24-p5.json",
-   "games": 8,
-   "perFight": {
-    "8-A-1": 62.5,
-    "8-A-2": 62.5,
-    "8-A-3": 37.5,
-    "8-A-4": 0
-   },
-   "win": 40.6
-  },
-  {
-   "player": 6,
-   "seed": "bal24-6",
-   "counts": {
-    "alley-cat": 1,
-    "bee-drone": 4,
-    "blue-ringed-octopus": 1,
-    "dam-keeper-beaver": 1,
-    "fawn-scout": 1,
-    "fleetfootd": 4,
-    "grass-viper": 1,
-    "hoopoe-herald": 1,
-    "mayfly-dancer": 4,
-    "nectar-vintner": 1,
-    "swift-fox": 1
-   },
-   "parts": [
-    [
-     "alley-cat",
-     1,
-     3
-    ],
-    [
-     "bee-drone",
-     4,
-     3
-    ],
-    [
-     "blue-ringed-octopus",
-     1,
-     3
-    ],
-    [
-     "dam-keeper-beaver",
-     1,
-     3
-    ],
-    [
-     "fawn-scout",
-     1,
-     3
-    ],
-    [
-     "fleetfootd",
-     4,
-     3
-    ],
-    [
-     "grass-viper",
-     1,
-     3
-    ],
-    [
-     "hoopoe-herald",
-     1,
-     3
-    ],
-    [
-     "mayfly-dancer",
-     4,
-     3
-    ],
-    [
-     "nectar-vintner",
-     1,
-     3
-    ],
-    [
-     "swift-fox",
-     1,
-     3
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 324,
-   "factionCards": 43,
-   "optScore": 0.711,
-   "optBudget": 900,
-   "optFile": "deckopt-map08-mn-bal24-p6.json",
-   "games": 8,
-   "perFight": {
-    "8-A-1": 62.5,
-    "8-A-2": 37.5,
-    "8-A-3": 25,
-    "8-A-4": 25
-   },
-   "win": 37.5
-  },
-  {
-   "player": 7,
-   "seed": "bal24-7",
-   "counts": {
-    "bee-drone": 4,
-    "bombardier-beetle": 1,
-    "briarback-hedgehog": 1,
-    "chipmunk-skirmisher": 1,
-    "clover-butterfly": 1,
-    "echo-screecher": 1,
-    "grass-snake": 1,
-    "grass-viper": 1,
-    "greyplume-fledgling": 1,
-    "ibex-rockcaller": 1,
-    "mudpuppy": 1,
-    "peat-cutter-vole": 1,
-    "pond-duck": 1,
-    "swamp-alligator": 1,
-    "the-gannet-queen": 1,
-    "trapdoor-spider": 1,
-    "wolf-spider-mother": 1
-   },
-   "parts": [
-    [
-     "bee-drone",
-     4,
-     3
-    ],
-    [
-     "bombardier-beetle",
-     1,
-     3
-    ],
-    [
-     "briarback-hedgehog",
-     1,
-     3
-    ],
-    [
-     "chipmunk-skirmisher",
-     1,
-     3
-    ],
-    [
-     "clover-butterfly",
-     1,
-     3
-    ],
-    [
-     "echo-screecher",
-     1,
-     3
-    ],
-    [
-     "grass-snake",
-     1,
-     3
-    ],
-    [
-     "grass-viper",
-     1,
-     3
-    ],
-    [
-     "greyplume-fledgling",
+     "golden-eagle-diver",
      1,
      3
     ],
@@ -774,32 +435,27 @@
      3
     ],
     [
-     "mudpuppy",
+     "muskrat-lodgekeeper",
      1,
      3
     ],
     [
-     "peat-cutter-vole",
+     "otter-centurion",
+     3,
+     3
+    ],
+    [
+     "sworn-shieldbearer",
      1,
      3
     ],
     [
-     "pond-duck",
+     "two-headed-calf",
      1,
      3
     ],
     [
-     "swamp-alligator",
-     1,
-     3
-    ],
-    [
-     "the-gannet-queen",
-     1,
-     3
-    ],
-    [
-     "trapdoor-spider",
+     "upside-down-bat",
      1,
      3
     ],
@@ -810,41 +466,417 @@
     ]
    ],
    "leader": "pride-queen",
-   "collection": 325,
+   "collection": 291,
    "factionCards": 43,
-   "optScore": 0.738,
+   "optScore": 0.767,
+   "optBudget": 900,
+   "optFile": "deckopt-map08-mn-bal24-p5.json",
+   "games": 8,
+   "perFight": {
+    "8-A-1": 75,
+    "8-A-2": 100,
+    "8-A-3": 62.5,
+    "8-A-4": 37.5
+   },
+   "win": 68.8
+  },
+  {
+   "player": 6,
+   "seed": "bal24-6",
+   "counts": {
+    "fawn-scout": 1,
+    "fiddler-crab-swarm": 1,
+    "greyplume-fledgling": 1,
+    "hedgerow-shrew": 5,
+    "hoopoe-herald": 1,
+    "open-ocean-hermit-crab": 5,
+    "robin-redbreast": 4,
+    "star-nosed-mole": 1,
+    "swamp-alligator": 1
+   },
+   "parts": [
+    [
+     "fawn-scout",
+     1,
+     3
+    ],
+    [
+     "fiddler-crab-swarm",
+     1,
+     3
+    ],
+    [
+     "greyplume-fledgling",
+     1,
+     3
+    ],
+    [
+     "hedgerow-shrew",
+     5,
+     3
+    ],
+    [
+     "hoopoe-herald",
+     1,
+     3
+    ],
+    [
+     "open-ocean-hermit-crab",
+     5,
+     3
+    ],
+    [
+     "robin-redbreast",
+     4,
+     3
+    ],
+    [
+     "star-nosed-mole",
+     1,
+     3
+    ],
+    [
+     "swamp-alligator",
+     1,
+     3
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 291,
+   "factionCards": 43,
+   "optScore": 0.677,
+   "optBudget": 900,
+   "optFile": "deckopt-map08-mn-bal24-p6.json",
+   "games": 8,
+   "perFight": {
+    "8-A-1": 50,
+    "8-A-2": 50,
+    "8-A-3": 25,
+    "8-A-4": 62.5
+   },
+   "win": 46.9
+  },
+  {
+   "player": 7,
+   "seed": "bal24-7",
+   "counts": {
+    "acorn-chipmunk": 1,
+    "anvil-thrush": 1,
+    "crown-of-thorns-star": 1,
+    "farm-dog": 1,
+    "fiddler-crab-swarm": 1,
+    "fleetfootd": 1,
+    "ford-kingfisher": 1,
+    "grass-viper": 1,
+    "hedgerow-shrew": 1,
+    "honey-bee": 1,
+    "meerkat-sentry": 1,
+    "otter-angler": 1,
+    "otter-ferryman": 1,
+    "otter-shieldback": 2,
+    "robin-redbreast": 4,
+    "star-nosed-mole": 1
+   },
+   "parts": [
+    [
+     "acorn-chipmunk",
+     1,
+     3
+    ],
+    [
+     "anvil-thrush",
+     1,
+     3
+    ],
+    [
+     "crown-of-thorns-star",
+     1,
+     3
+    ],
+    [
+     "farm-dog",
+     1,
+     3
+    ],
+    [
+     "fiddler-crab-swarm",
+     1,
+     3
+    ],
+    [
+     "fleetfootd",
+     1,
+     3
+    ],
+    [
+     "ford-kingfisher",
+     1,
+     3
+    ],
+    [
+     "grass-viper",
+     1,
+     3
+    ],
+    [
+     "hedgerow-shrew",
+     1,
+     3
+    ],
+    [
+     "honey-bee",
+     1,
+     3
+    ],
+    [
+     "meerkat-sentry",
+     1,
+     3
+    ],
+    [
+     "otter-angler",
+     1,
+     3
+    ],
+    [
+     "otter-ferryman",
+     1,
+     3
+    ],
+    [
+     "otter-shieldback",
+     2,
+     3
+    ],
+    [
+     "robin-redbreast",
+     4,
+     3
+    ],
+    [
+     "star-nosed-mole",
+     1,
+     3
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 292,
+   "factionCards": 43,
+   "optScore": 0.732,
    "optBudget": 900,
    "optFile": "deckopt-map08-mn-bal24-p7.json",
    "games": 8,
    "perFight": {
-    "8-A-1": 75,
-    "8-A-2": 75,
+    "8-A-1": 62.5,
+    "8-A-2": 87.5,
     "8-A-3": 37.5,
-    "8-A-4": 12.5
+    "8-A-4": 25
    },
-   "win": 50
+   "win": 53.1
   },
   {
    "player": 8,
    "seed": "bal24-8",
    "counts": {
+    "dust-hyena": 2,
+    "fawn-scout": 1,
+    "fiddler-crab-swarm": 2,
+    "hedgerow-shrew": 5,
+    "hoopoe-herald": 1,
+    "open-ocean-hermit-crab": 5,
+    "otter-angler": 1,
+    "stonedrop-vulture": 1,
+    "wrong-way-salmon": 2
+   },
+   "parts": [
+    [
+     "dust-hyena",
+     2,
+     3
+    ],
+    [
+     "fawn-scout",
+     1,
+     3
+    ],
+    [
+     "fiddler-crab-swarm",
+     2,
+     3
+    ],
+    [
+     "hedgerow-shrew",
+     5,
+     3
+    ],
+    [
+     "hoopoe-herald",
+     1,
+     3
+    ],
+    [
+     "open-ocean-hermit-crab",
+     5,
+     3
+    ],
+    [
+     "otter-angler",
+     1,
+     3
+    ],
+    [
+     "stonedrop-vulture",
+     1,
+     3
+    ],
+    [
+     "wrong-way-salmon",
+     2,
+     3
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 287,
+   "factionCards": 42,
+   "optScore": 0.732,
+   "optBudget": 900,
+   "optFile": "deckopt-map08-mn-bal24-p8.json",
+   "games": 8,
+   "perFight": {
+    "8-A-1": 50,
+    "8-A-2": 50,
+    "8-A-3": 25,
+    "8-A-4": 12.5
+   },
+   "win": 34.4
+  },
+  {
+   "player": 9,
+   "seed": "bal24-9",
+   "counts": {
+    "acorn-chipmunk": 1,
     "alpine-marmot": 1,
-    "dominion-nestguard": 1,
-    "earthworm": 1,
+    "bee-drone": 4,
+    "cricket-drummer": 1,
+    "crown-of-thorns-star": 1,
+    "daily-post": 1,
+    "dormouse": 1,
+    "fen-mink": 1,
+    "fleetfootd": 4,
+    "fungus-gnat-cloud": 1,
+    "grass-viper": 1,
+    "pine-marten": 1,
+    "river-mink": 1,
+    "star-nosed-mole": 1
+   },
+   "parts": [
+    [
+     "acorn-chipmunk",
+     1,
+     3
+    ],
+    [
+     "alpine-marmot",
+     1,
+     3
+    ],
+    [
+     "bee-drone",
+     4,
+     3
+    ],
+    [
+     "cricket-drummer",
+     1,
+     3
+    ],
+    [
+     "crown-of-thorns-star",
+     1,
+     3
+    ],
+    [
+     "daily-post",
+     1,
+     3
+    ],
+    [
+     "dormouse",
+     1,
+     3
+    ],
+    [
+     "fen-mink",
+     1,
+     3
+    ],
+    [
+     "fleetfootd",
+     4,
+     3
+    ],
+    [
+     "fungus-gnat-cloud",
+     1,
+     3
+    ],
+    [
+     "grass-viper",
+     1,
+     3
+    ],
+    [
+     "pine-marten",
+     1,
+     3
+    ],
+    [
+     "river-mink",
+     1,
+     3
+    ],
+    [
+     "star-nosed-mole",
+     1,
+     3
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 290,
+   "factionCards": 42,
+   "optScore": 0.742,
+   "optBudget": 900,
+   "optFile": "deckopt-map08-mn-bal24-p9.json",
+   "games": 8,
+   "perFight": {
+    "8-A-1": 75,
+    "8-A-2": 100,
+    "8-A-3": 25,
+    "8-A-4": 37.5
+   },
+   "win": 59.4
+  },
+  {
+   "player": 10,
+   "seed": "bal24-10",
+   "counts": {
+    "alpine-marmot": 1,
+    "beaver-feller": 1,
+    "bee-knight": 1,
+    "blue-ringed-octopus": 1,
+    "cricket-drummer": 1,
     "electric-ray": 1,
     "fawn-scout": 1,
     "golden-eagle-diver": 1,
-    "grass-viper": 1,
-    "gull-thief": 1,
+    "hedgerow-shrew": 1,
+    "heron-hag": 1,
     "ibex-rockcaller": 1,
-    "meerkat-wayfarer": 1,
-    "newt-doctor": 1,
+    "meerkat-sentry": 1,
+    "otter-angler": 1,
     "otter-centurion": 3,
-    "quill-thorn-boar": 1,
-    "raccoon-nightcrew": 1,
-    "river-carp": 1,
-    "springbok-pronker": 1,
-    "star-nosed-mole": 1,
+    "rock-pool-starfish": 1,
+    "rootworm-colony": 1,
+    "violet-vane-fletcher": 1,
     "wolf-spider-mother": 1
    },
    "parts": [
@@ -854,12 +886,22 @@
      3
     ],
     [
-     "dominion-nestguard",
+     "beaver-feller",
      1,
      3
     ],
     [
-     "earthworm",
+     "bee-knight",
+     1,
+     3
+    ],
+    [
+     "blue-ringed-octopus",
+     1,
+     3
+    ],
+    [
+     "cricket-drummer",
      1,
      3
     ],
@@ -879,12 +921,12 @@
      3
     ],
     [
-     "grass-viper",
+     "hedgerow-shrew",
      1,
      3
     ],
     [
-     "gull-thief",
+     "heron-hag",
      1,
      3
     ],
@@ -894,12 +936,12 @@
      3
     ],
     [
-     "meerkat-wayfarer",
+     "meerkat-sentry",
      1,
      3
     ],
     [
-     "newt-doctor",
+     "otter-angler",
      1,
      3
     ],
@@ -909,27 +951,17 @@
      3
     ],
     [
-     "quill-thorn-boar",
+     "rock-pool-starfish",
      1,
      3
     ],
     [
-     "raccoon-nightcrew",
+     "rootworm-colony",
      1,
      3
     ],
     [
-     "river-carp",
-     1,
-     3
-    ],
-    [
-     "springbok-pronker",
-     1,
-     3
-    ],
-    [
-     "star-nosed-mole",
+     "violet-vane-fletcher",
      1,
      3
     ],
@@ -940,263 +972,21 @@
     ]
    ],
    "leader": "pride-queen",
-   "collection": 321,
+   "collection": 289,
    "factionCards": 42,
-   "optScore": 0.722,
-   "optBudget": 900,
-   "optFile": "deckopt-map08-mn-bal24-p8.json",
-   "games": 8,
-   "perFight": {
-    "8-A-1": 87.5,
-    "8-A-2": 50,
-    "8-A-3": 25,
-    "8-A-4": 12.5
-   },
-   "win": 43.8
-  },
-  {
-   "player": 9,
-   "seed": "bal24-9",
-   "counts": {
-    "barkplate-beetle": 1,
-    "bee-drone": 1,
-    "blind-cave-fish": 1,
-    "briarback-hedgehog": 1,
-    "chipmunk-skirmisher": 1,
-    "dust-hyena": 1,
-    "echo-screecher": 1,
-    "farm-dog": 1,
-    "fiddler-crab-swarm": 1,
-    "lodge-engineer": 1,
-    "muskrat-reedgatherer": 1,
-    "otter-centurion": 1,
-    "otter-netmender": 1,
-    "sheep": 1,
-    "sparrow-chick": 2,
-    "swift-fox": 1,
-    "termite-forager": 1,
-    "truffle-piglet": 1,
-    "wolf-spider-mother": 1
-   },
-   "parts": [
-    [
-     "barkplate-beetle",
-     1,
-     3
-    ],
-    [
-     "bee-drone",
-     1,
-     3
-    ],
-    [
-     "blind-cave-fish",
-     1,
-     3
-    ],
-    [
-     "briarback-hedgehog",
-     1,
-     3
-    ],
-    [
-     "chipmunk-skirmisher",
-     1,
-     3
-    ],
-    [
-     "dust-hyena",
-     1,
-     3
-    ],
-    [
-     "echo-screecher",
-     1,
-     3
-    ],
-    [
-     "farm-dog",
-     1,
-     3
-    ],
-    [
-     "fiddler-crab-swarm",
-     1,
-     3
-    ],
-    [
-     "lodge-engineer",
-     1,
-     3
-    ],
-    [
-     "muskrat-reedgatherer",
-     1,
-     3
-    ],
-    [
-     "otter-centurion",
-     1,
-     3
-    ],
-    [
-     "otter-netmender",
-     1,
-     3
-    ],
-    [
-     "sheep",
-     1,
-     3
-    ],
-    [
-     "sparrow-chick",
-     2,
-     3
-    ],
-    [
-     "swift-fox",
-     1,
-     3
-    ],
-    [
-     "termite-forager",
-     1,
-     3
-    ],
-    [
-     "truffle-piglet",
-     1,
-     3
-    ],
-    [
-     "wolf-spider-mother",
-     1,
-     3
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 321,
-   "factionCards": 42,
-   "optScore": 0.706,
-   "optBudget": 900,
-   "optFile": "deckopt-map08-mn-bal24-p9.json",
-   "games": 8,
-   "perFight": {
-    "8-A-1": 87.5,
-    "8-A-2": 75,
-    "8-A-3": 25,
-    "8-A-4": 25
-   },
-   "win": 53.1
-  },
-  {
-   "player": 10,
-   "seed": "bal24-10",
-   "counts": {
-    "alpine-swift": 1,
-    "anhinga-spearbird": 1,
-    "bee-drone": 4,
-    "crimson-wing-duelist-cadet": 1,
-    "dust-hyena": 1,
-    "ferry-toll-frog": 1,
-    "field-vole": 1,
-    "fleetfootd": 4,
-    "kittiwake-flock": 1,
-    "marsh-mallow-hare": 1,
-    "newt-doctor": 1,
-    "sergeant-bramblefox": 1,
-    "silver-minnow": 1,
-    "stoat-cutthroat": 1
-   },
-   "parts": [
-    [
-     "alpine-swift",
-     1,
-     3
-    ],
-    [
-     "anhinga-spearbird",
-     1,
-     3
-    ],
-    [
-     "bee-drone",
-     4,
-     3
-    ],
-    [
-     "crimson-wing-duelist-cadet",
-     1,
-     3
-    ],
-    [
-     "dust-hyena",
-     1,
-     3
-    ],
-    [
-     "ferry-toll-frog",
-     1,
-     3
-    ],
-    [
-     "field-vole",
-     1,
-     3
-    ],
-    [
-     "fleetfootd",
-     4,
-     3
-    ],
-    [
-     "kittiwake-flock",
-     1,
-     3
-    ],
-    [
-     "marsh-mallow-hare",
-     1,
-     3
-    ],
-    [
-     "newt-doctor",
-     1,
-     3
-    ],
-    [
-     "sergeant-bramblefox",
-     1,
-     3
-    ],
-    [
-     "silver-minnow",
-     1,
-     3
-    ],
-    [
-     "stoat-cutthroat",
-     1,
-     3
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 322,
-   "factionCards": 42,
-   "optScore": 0.693,
+   "optScore": 0.767,
    "optBudget": 900,
    "optFile": "deckopt-map08-mn-bal24-p10.json",
    "games": 8,
    "perFight": {
-    "8-A-1": 100,
-    "8-A-2": 62.5,
-    "8-A-3": 12.5,
+    "8-A-1": 87.5,
+    "8-A-2": 50,
+    "8-A-3": 37.5,
     "8-A-4": 37.5
    },
    "win": 53.1
   }
  ],
  "missing": 0,
- "measured": "2026-11-11T10:59:17.759Z"
+ "measured": "2026-11-12T07:51:06.478Z"
 }

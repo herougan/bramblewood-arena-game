@@ -26,561 +26,21 @@
    "seed": "bal24-1",
    "counts": {
     "adder-ambusher": 1,
-    "boreal-elk": 1,
-    "bramble-sprout": 1,
-    "crown-of-thorns-star": 1,
-    "echo-screecher": 1,
-    "greyplume-fledgling": 1,
-    "ibex-rockcaller": 1,
-    "lone-grey-wolf": 1,
-    "otter-centurion": 3,
-    "shell-cracker": 1,
-    "shepherds-bark": 1,
-    "snowshoe-hare": 1,
-    "stoat-cutthroat": 1,
-    "talon-archer": 1,
-    "tunnel-ant": 1,
-    "upside-down-bat": 1,
-    "voltaic-eel": 1,
-    "walrus-icebreaker": 1
-   },
-   "parts": [
-    [
-     "adder-ambusher",
-     1,
-     4
-    ],
-    [
-     "boreal-elk",
-     1,
-     4
-    ],
-    [
-     "bramble-sprout",
-     1,
-     4
-    ],
-    [
-     "crown-of-thorns-star",
-     1,
-     4
-    ],
-    [
-     "echo-screecher",
-     1,
-     4
-    ],
-    [
-     "greyplume-fledgling",
-     1,
-     4
-    ],
-    [
-     "ibex-rockcaller",
-     1,
-     4
-    ],
-    [
-     "lone-grey-wolf",
-     1,
-     4
-    ],
-    [
-     "otter-centurion",
-     3,
-     4
-    ],
-    [
-     "shell-cracker",
-     1,
-     4
-    ],
-    [
-     "shepherds-bark",
-     1,
-     4
-    ],
-    [
-     "snowshoe-hare",
-     1,
-     4
-    ],
-    [
-     "stoat-cutthroat",
-     1,
-     4
-    ],
-    [
-     "talon-archer",
-     1,
-     4
-    ],
-    [
-     "tunnel-ant",
-     1,
-     4
-    ],
-    [
-     "upside-down-bat",
-     1,
-     4
-    ],
-    [
-     "voltaic-eel",
-     1,
-     4
-    ],
-    [
-     "walrus-icebreaker",
-     1,
-     4
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 373,
-   "factionCards": 46,
-   "optScore": 0.786,
-   "optBudget": 900,
-   "optFile": "deckopt-map18-mpd-bal24-p1.json",
-   "games": 8,
-   "perFight": {
-    "18-A-1": 100,
-    "18-A-2": 87.5,
-    "18-A-3": 75,
-    "18-A-4": 87.5,
-    "18-A-5": 87.5,
-    "18-A-6": 62.5,
-    "18-A-7": 75,
-    "18-A-8": 75,
-    "18-A-9": 25
-   },
-   "win": 75
-  },
-  {
-   "player": 2,
-   "seed": "bal24-2",
-   "counts": {
-    "adder-ambusher": 1,
-    "burrow-rabbit": 1,
-    "echo-screecher": 1,
-    "fungus-gnat-cloud": 1,
-    "glimmer-spider": 1,
-    "hedge-changeling": 1,
-    "ibex-rockcaller": 1,
-    "mouse-sapper": 1,
-    "muskrat-reedgatherer": 1,
-    "otter-centurion": 3,
-    "parrotfish": 1,
-    "peregrine-stooper": 1,
-    "salvager-hermit-crab": 1,
-    "swordbill-challenger": 1,
-    "talon-archer": 1,
-    "tunnel-ant": 1,
-    "walrus-icebreaker": 1,
-    "whale-shark": 1
-   },
-   "parts": [
-    [
-     "adder-ambusher",
-     1,
-     4
-    ],
-    [
-     "burrow-rabbit",
-     1,
-     4
-    ],
-    [
-     "echo-screecher",
-     1,
-     4
-    ],
-    [
-     "fungus-gnat-cloud",
-     1,
-     4
-    ],
-    [
-     "glimmer-spider",
-     1,
-     4
-    ],
-    [
-     "hedge-changeling",
-     1,
-     4
-    ],
-    [
-     "ibex-rockcaller",
-     1,
-     4
-    ],
-    [
-     "mouse-sapper",
-     1,
-     4
-    ],
-    [
-     "muskrat-reedgatherer",
-     1,
-     4
-    ],
-    [
-     "otter-centurion",
-     3,
-     4
-    ],
-    [
-     "parrotfish",
-     1,
-     4
-    ],
-    [
-     "peregrine-stooper",
-     1,
-     4
-    ],
-    [
-     "salvager-hermit-crab",
-     1,
-     4
-    ],
-    [
-     "swordbill-challenger",
-     1,
-     4
-    ],
-    [
-     "talon-archer",
-     1,
-     4
-    ],
-    [
-     "tunnel-ant",
-     1,
-     4
-    ],
-    [
-     "walrus-icebreaker",
-     1,
-     4
-    ],
-    [
-     "whale-shark",
-     1,
-     4
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 376,
-   "factionCards": 46,
-   "optScore": 0.865,
-   "optBudget": 900,
-   "optFile": "deckopt-map18-mpd-bal24-p2.json",
-   "games": 8,
-   "perFight": {
-    "18-A-1": 100,
-    "18-A-2": 87.5,
-    "18-A-3": 87.5,
-    "18-A-4": 62.5,
-    "18-A-5": 75,
-    "18-A-6": 75,
-    "18-A-7": 62.5,
-    "18-A-8": 62.5,
-    "18-A-9": 37.5
-   },
-   "win": 72.2
-  },
-  {
-   "player": 3,
-   "seed": "bal24-3",
-   "counts": {
-    "adder-ambusher": 1,
-    "alpine-swift": 1,
-    "anhinga-spearbird": 1,
-    "ant-warrior": 1,
-    "barnacle-fortress": 1,
-    "clownfish-scout": 1,
-    "cricket-drummer": 1,
-    "echo-screecher": 1,
-    "house-cat": 1,
-    "ibex-rockcaller": 1,
-    "mangrove-monitor": 1,
-    "otter-centurion": 3,
-    "puddle-skimmer": 1,
-    "springtail-hopper": 1,
-    "swordbill-challenger": 1,
-    "talon-archer": 1,
-    "tunnel-ant": 1,
-    "walrus-icebreaker": 1
-   },
-   "parts": [
-    [
-     "adder-ambusher",
-     1,
-     4
-    ],
-    [
-     "alpine-swift",
-     1,
-     4
-    ],
-    [
-     "anhinga-spearbird",
-     1,
-     4
-    ],
-    [
-     "ant-warrior",
-     1,
-     4
-    ],
-    [
-     "barnacle-fortress",
-     1,
-     4
-    ],
-    [
-     "clownfish-scout",
-     1,
-     4
-    ],
-    [
-     "cricket-drummer",
-     1,
-     4
-    ],
-    [
-     "echo-screecher",
-     1,
-     4
-    ],
-    [
-     "house-cat",
-     1,
-     4
-    ],
-    [
-     "ibex-rockcaller",
-     1,
-     4
-    ],
-    [
-     "mangrove-monitor",
-     1,
-     4
-    ],
-    [
-     "otter-centurion",
-     3,
-     4
-    ],
-    [
-     "puddle-skimmer",
-     1,
-     4
-    ],
-    [
-     "springtail-hopper",
-     1,
-     4
-    ],
-    [
-     "swordbill-challenger",
-     1,
-     4
-    ],
-    [
-     "talon-archer",
-     1,
-     4
-    ],
-    [
-     "tunnel-ant",
-     1,
-     4
-    ],
-    [
-     "walrus-icebreaker",
-     1,
-     4
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 371,
-   "factionCards": 46,
-   "optScore": 0.855,
-   "optBudget": 900,
-   "optFile": "deckopt-map18-mpd-bal24-p3.json",
-   "games": 8,
-   "perFight": {
-    "18-A-1": 100,
-    "18-A-2": 87.5,
-    "18-A-3": 100,
-    "18-A-4": 87.5,
-    "18-A-5": 87.5,
-    "18-A-6": 62.5,
-    "18-A-7": 62.5,
-    "18-A-8": 62.5,
-    "18-A-9": 25
-   },
-   "win": 75
-  },
-  {
-   "player": 4,
-   "seed": "bal24-4",
-   "counts": {
-    "acacia-giraffe": 1,
-    "acorn-chipmunk": 1,
-    "adder-ambusher": 1,
-    "box-turtle": 1,
-    "caiman-hatchling": 1,
-    "dolphin-knight": 1,
-    "driftwood-crab": 1,
-    "dust-devil-kestrel": 1,
-    "echo-screecher": 1,
-    "field-mouse": 1,
-    "ibex-rockcaller": 1,
-    "mangrove-mudskipper": 1,
-    "nectar-sipper": 1,
-    "otter-centurion": 3,
-    "rock-pool-starfish": 1,
-    "talon-archer": 1,
-    "tunnel-ant": 1,
-    "walrus-icebreaker": 1
-   },
-   "parts": [
-    [
-     "acacia-giraffe",
-     1,
-     4
-    ],
-    [
-     "acorn-chipmunk",
-     1,
-     4
-    ],
-    [
-     "adder-ambusher",
-     1,
-     4
-    ],
-    [
-     "box-turtle",
-     1,
-     4
-    ],
-    [
-     "caiman-hatchling",
-     1,
-     4
-    ],
-    [
-     "dolphin-knight",
-     1,
-     4
-    ],
-    [
-     "driftwood-crab",
-     1,
-     4
-    ],
-    [
-     "dust-devil-kestrel",
-     1,
-     4
-    ],
-    [
-     "echo-screecher",
-     1,
-     4
-    ],
-    [
-     "field-mouse",
-     1,
-     4
-    ],
-    [
-     "ibex-rockcaller",
-     1,
-     4
-    ],
-    [
-     "mangrove-mudskipper",
-     1,
-     4
-    ],
-    [
-     "nectar-sipper",
-     1,
-     4
-    ],
-    [
-     "otter-centurion",
-     3,
-     4
-    ],
-    [
-     "rock-pool-starfish",
-     1,
-     4
-    ],
-    [
-     "talon-archer",
-     1,
-     4
-    ],
-    [
-     "tunnel-ant",
-     1,
-     4
-    ],
-    [
-     "walrus-icebreaker",
-     1,
-     4
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 373,
-   "factionCards": 45,
-   "optScore": 0.899,
-   "optBudget": 900,
-   "optFile": "deckopt-map18-mpd-bal24-p4.json",
-   "games": 8,
-   "perFight": {
-    "18-A-1": 100,
-    "18-A-2": 87.5,
-    "18-A-3": 100,
-    "18-A-4": 75,
-    "18-A-5": 75,
-    "18-A-6": 100,
-    "18-A-7": 75,
-    "18-A-8": 62.5,
-    "18-A-9": 62.5
-   },
-   "win": 81.9
-  },
-  {
-   "player": 5,
-   "seed": "bal24-5",
-   "counts": {
-    "adder-ambusher": 1,
-    "beaver-feller": 1,
-    "bee-forager": 1,
-    "cottontail": 1,
+    "apollo-butterfly": 1,
+    "banded-sea-krait": 1,
+    "cataphract-destrier": 1,
     "echo-screecher": 1,
     "fox-kit": 1,
-    "grey-seal-bull": 1,
+    "great-barracuda": 1,
+    "gull-thief": 1,
+    "helmeted-otter": 1,
     "ibex-rockcaller": 1,
-    "lantern-bearer": 1,
-    "mangrove-mudskipper": 1,
-    "muskrat-reedgatherer": 1,
+    "lamprey": 1,
     "otter-centurion": 3,
-    "peregrine-stooper": 1,
-    "phoenix-mushrooms": 1,
-    "sergeant-bramblefox": 1,
-    "snail-mail": 1,
+    "otter-kit": 1,
+    "platypus-spur": 1,
+    "slow-worm": 1,
+    "talon-archer": 1,
     "tunnel-ant": 1,
     "walrus-icebreaker": 1
    },
@@ -591,17 +51,17 @@
      4
     ],
     [
-     "beaver-feller",
+     "apollo-butterfly",
      1,
      4
     ],
     [
-     "bee-forager",
+     "banded-sea-krait",
      1,
      4
     ],
     [
-     "cottontail",
+     "cataphract-destrier",
      1,
      4
     ],
@@ -616,7 +76,17 @@
      4
     ],
     [
-     "grey-seal-bull",
+     "great-barracuda",
+     1,
+     4
+    ],
+    [
+     "gull-thief",
+     1,
+     4
+    ],
+    [
+     "helmeted-otter",
      1,
      4
     ],
@@ -626,17 +96,7 @@
      4
     ],
     [
-     "lantern-bearer",
-     1,
-     4
-    ],
-    [
-     "mangrove-mudskipper",
-     1,
-     4
-    ],
-    [
-     "muskrat-reedgatherer",
+     "lamprey",
      1,
      4
     ],
@@ -646,12 +106,710 @@
      4
     ],
     [
-     "peregrine-stooper",
+     "otter-kit",
      1,
      4
     ],
     [
-     "phoenix-mushrooms",
+     "platypus-spur",
+     1,
+     4
+    ],
+    [
+     "slow-worm",
+     1,
+     4
+    ],
+    [
+     "talon-archer",
+     1,
+     4
+    ],
+    [
+     "tunnel-ant",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 332,
+   "factionCards": 46,
+   "optScore": 0.823,
+   "optBudget": 900,
+   "optFile": "deckopt-map18-mpd-bal24-p1.json",
+   "games": 8,
+   "perFight": {
+    "18-A-1": 87.5,
+    "18-A-2": 100,
+    "18-A-3": 100,
+    "18-A-4": 100,
+    "18-A-5": 62.5,
+    "18-A-6": 75,
+    "18-A-7": 75,
+    "18-A-8": 62.5,
+    "18-A-9": 50
+   },
+   "win": 79.2
+  },
+  {
+   "player": 2,
+   "seed": "bal24-2",
+   "counts": {
+    "adder-ambusher": 1,
+    "ant-hill": 1,
+    "apollo-butterfly": 1,
+    "beachcomber-sanderling": 1,
+    "bramblewood-macaque": 1,
+    "chipmunk-hoarder": 1,
+    "dominion-nestguard": 1,
+    "echo-screecher": 1,
+    "gold-throated-acolyte": 1,
+    "great-barracuda": 1,
+    "hummingbird-needler": 1,
+    "ibex-rockcaller": 1,
+    "mudflat-godwit": 1,
+    "otter-centurion": 3,
+    "owl-sentinel": 1,
+    "talon-archer": 1,
+    "truce-heron": 1,
+    "walrus-icebreaker": 1
+   },
+   "parts": [
+    [
+     "adder-ambusher",
+     1,
+     4
+    ],
+    [
+     "ant-hill",
+     1,
+     4
+    ],
+    [
+     "apollo-butterfly",
+     1,
+     4
+    ],
+    [
+     "beachcomber-sanderling",
+     1,
+     4
+    ],
+    [
+     "bramblewood-macaque",
+     1,
+     4
+    ],
+    [
+     "chipmunk-hoarder",
+     1,
+     4
+    ],
+    [
+     "dominion-nestguard",
+     1,
+     4
+    ],
+    [
+     "echo-screecher",
+     1,
+     4
+    ],
+    [
+     "gold-throated-acolyte",
+     1,
+     4
+    ],
+    [
+     "great-barracuda",
+     1,
+     4
+    ],
+    [
+     "hummingbird-needler",
+     1,
+     4
+    ],
+    [
+     "ibex-rockcaller",
+     1,
+     4
+    ],
+    [
+     "mudflat-godwit",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "owl-sentinel",
+     1,
+     4
+    ],
+    [
+     "talon-archer",
+     1,
+     4
+    ],
+    [
+     "truce-heron",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 329,
+   "factionCards": 46,
+   "optScore": 0.868,
+   "optBudget": 900,
+   "optFile": "deckopt-map18-mpd-bal24-p2.json",
+   "games": 8,
+   "perFight": {
+    "18-A-1": 87.5,
+    "18-A-2": 87.5,
+    "18-A-3": 87.5,
+    "18-A-4": 100,
+    "18-A-5": 100,
+    "18-A-6": 75,
+    "18-A-7": 87.5,
+    "18-A-8": 50,
+    "18-A-9": 37.5
+   },
+   "win": 79.2
+  },
+  {
+   "player": 3,
+   "seed": "bal24-3",
+   "counts": {
+    "adder-ambusher": 1,
+    "bee-forager": 1,
+    "birdlime-dauber": 1,
+    "border-collie": 1,
+    "chipmunk-hoarder": 1,
+    "conch-crawler": 1,
+    "dolphin-knight": 1,
+    "echo-screecher": 1,
+    "fishing-cat": 1,
+    "ibex-rockcaller": 1,
+    "krill-swarm": 1,
+    "otter-centurion": 3,
+    "otter-netmender": 1,
+    "salvager-hermit-crab": 1,
+    "talon-archer": 1,
+    "truce-heron": 1,
+    "tunnel-ant": 1,
+    "walrus-icebreaker": 1
+   },
+   "parts": [
+    [
+     "adder-ambusher",
+     1,
+     4
+    ],
+    [
+     "bee-forager",
+     1,
+     4
+    ],
+    [
+     "birdlime-dauber",
+     1,
+     4
+    ],
+    [
+     "border-collie",
+     1,
+     4
+    ],
+    [
+     "chipmunk-hoarder",
+     1,
+     4
+    ],
+    [
+     "conch-crawler",
+     1,
+     4
+    ],
+    [
+     "dolphin-knight",
+     1,
+     4
+    ],
+    [
+     "echo-screecher",
+     1,
+     4
+    ],
+    [
+     "fishing-cat",
+     1,
+     4
+    ],
+    [
+     "ibex-rockcaller",
+     1,
+     4
+    ],
+    [
+     "krill-swarm",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "otter-netmender",
+     1,
+     4
+    ],
+    [
+     "salvager-hermit-crab",
+     1,
+     4
+    ],
+    [
+     "talon-archer",
+     1,
+     4
+    ],
+    [
+     "truce-heron",
+     1,
+     4
+    ],
+    [
+     "tunnel-ant",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 334,
+   "factionCards": 46,
+   "optScore": 0.813,
+   "optBudget": 900,
+   "optFile": "deckopt-map18-mpd-bal24-p3.json",
+   "games": 8,
+   "perFight": {
+    "18-A-1": 100,
+    "18-A-2": 100,
+    "18-A-3": 100,
+    "18-A-4": 100,
+    "18-A-5": 87.5,
+    "18-A-6": 75,
+    "18-A-7": 100,
+    "18-A-8": 50,
+    "18-A-9": 50
+   },
+   "win": 84.7
+  },
+  {
+   "player": 4,
+   "seed": "bal24-4",
+   "counts": {
+    "acorn-chipmunk": 1,
+    "armadillo-guard": 1,
+    "barkplate-beetle": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "dune-jackal": 1,
+    "dust-hyena": 2,
+    "fawn-scout": 1,
+    "grave-grin-hyena": 1,
+    "hawk-arrowkeeper": 1,
+    "honeyjoe-brewer": 1,
+    "lyrebird-mimic": 1,
+    "riptide-eel": 1,
+    "roadrunner-courier": 1,
+    "sergeant-bramblefox": 1,
+    "shoal-shark": 1,
+    "snapper-hatchling": 1,
+    "truffle-piglet": 1,
+    "woodland-caribou": 1
+   },
+   "parts": [
+    [
+     "acorn-chipmunk",
+     1,
+     4
+    ],
+    [
+     "armadillo-guard",
+     1,
+     4
+    ],
+    [
+     "barkplate-beetle",
+     1,
+     4
+    ],
+    [
+     "box-turtle",
+     1,
+     4
+    ],
+    [
+     "duckling",
+     1,
+     4
+    ],
+    [
+     "dune-jackal",
+     1,
+     4
+    ],
+    [
+     "dust-hyena",
+     2,
+     4
+    ],
+    [
+     "fawn-scout",
+     1,
+     4
+    ],
+    [
+     "grave-grin-hyena",
+     1,
+     4
+    ],
+    [
+     "hawk-arrowkeeper",
+     1,
+     4
+    ],
+    [
+     "honeyjoe-brewer",
+     1,
+     4
+    ],
+    [
+     "lyrebird-mimic",
+     1,
+     4
+    ],
+    [
+     "riptide-eel",
+     1,
+     4
+    ],
+    [
+     "roadrunner-courier",
+     1,
+     4
+    ],
+    [
+     "sergeant-bramblefox",
+     1,
+     4
+    ],
+    [
+     "shoal-shark",
+     1,
+     4
+    ],
+    [
+     "snapper-hatchling",
+     1,
+     4
+    ],
+    [
+     "truffle-piglet",
+     1,
+     4
+    ],
+    [
+     "woodland-caribou",
+     1,
+     4
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 330,
+   "factionCards": 45,
+   "optScore": 0.762,
+   "optBudget": 900,
+   "optFile": "deckopt-map18-mpd-bal24-p4.json",
+   "games": 8,
+   "perFight": {
+    "18-A-1": 87.5,
+    "18-A-2": 87.5,
+    "18-A-3": 50,
+    "18-A-4": 87.5,
+    "18-A-5": 50,
+    "18-A-6": 62.5,
+    "18-A-7": 50,
+    "18-A-8": 50,
+    "18-A-9": 25
+   },
+   "win": 61.1
+  },
+  {
+   "player": 5,
+   "seed": "bal24-5",
+   "counts": {
+    "adder-ambusher": 1,
+    "alpine-marmot": 1,
+    "bison-bulldozer": 1,
+    "caustic-scorpion": 1,
+    "echo-screecher": 1,
+    "ford-kingfisher": 1,
+    "gull-thief": 1,
+    "ibex-rockcaller": 1,
+    "lamprey": 1,
+    "net-thrower": 1,
+    "otter-centurion": 3,
+    "peak-condor": 1,
+    "pike-lancer": 1,
+    "sergeant-bramblefox": 1,
+    "talon-archer": 1,
+    "tunnel-ant": 1,
+    "walrus-icebreaker": 1,
+    "worker-ant": 1
+   },
+   "parts": [
+    [
+     "adder-ambusher",
+     1,
+     4
+    ],
+    [
+     "alpine-marmot",
+     1,
+     4
+    ],
+    [
+     "bison-bulldozer",
+     1,
+     4
+    ],
+    [
+     "caustic-scorpion",
+     1,
+     4
+    ],
+    [
+     "echo-screecher",
+     1,
+     4
+    ],
+    [
+     "ford-kingfisher",
+     1,
+     4
+    ],
+    [
+     "gull-thief",
+     1,
+     4
+    ],
+    [
+     "ibex-rockcaller",
+     1,
+     4
+    ],
+    [
+     "lamprey",
+     1,
+     4
+    ],
+    [
+     "net-thrower",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "peak-condor",
+     1,
+     4
+    ],
+    [
+     "pike-lancer",
+     1,
+     4
+    ],
+    [
+     "sergeant-bramblefox",
+     1,
+     4
+    ],
+    [
+     "talon-archer",
+     1,
+     4
+    ],
+    [
+     "tunnel-ant",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ],
+    [
+     "worker-ant",
+     1,
+     4
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 332,
+   "factionCards": 46,
+   "optScore": 0.784,
+   "optBudget": 900,
+   "optFile": "deckopt-map18-mpd-bal24-p5.json",
+   "games": 8,
+   "perFight": {
+    "18-A-1": 100,
+    "18-A-2": 100,
+    "18-A-3": 100,
+    "18-A-4": 75,
+    "18-A-5": 100,
+    "18-A-6": 100,
+    "18-A-7": 100,
+    "18-A-8": 50,
+    "18-A-9": 37.5
+   },
+   "win": 84.7
+  },
+  {
+   "player": 6,
+   "seed": "bal24-6",
+   "counts": {
+    "barrel-cactus": 1,
+    "bog-leech": 1,
+    "cataphract-destrier": 1,
+    "chipmunk-cavalry": 1,
+    "chipmunk-hoarder": 1,
+    "dormouse": 1,
+    "dust-hyena": 1,
+    "eagle-owl-quartermaster": 1,
+    "horned-lizard": 1,
+    "lucky-hopper": 1,
+    "meerkat-sentry": 1,
+    "millipede-hauler": 1,
+    "mirror-moth": 1,
+    "old-shell": 1,
+    "old-sturgeon": 1,
+    "sand-widow": 1,
+    "savanna-cheetah": 1,
+    "sergeant-bramblefox": 1,
+    "snail-mail": 1,
+    "wolfsbane-alpha": 1
+   },
+   "parts": [
+    [
+     "barrel-cactus",
+     1,
+     4
+    ],
+    [
+     "bog-leech",
+     1,
+     4
+    ],
+    [
+     "cataphract-destrier",
+     1,
+     4
+    ],
+    [
+     "chipmunk-cavalry",
+     1,
+     4
+    ],
+    [
+     "chipmunk-hoarder",
+     1,
+     4
+    ],
+    [
+     "dormouse",
+     1,
+     4
+    ],
+    [
+     "dust-hyena",
+     1,
+     4
+    ],
+    [
+     "eagle-owl-quartermaster",
+     1,
+     4
+    ],
+    [
+     "horned-lizard",
+     1,
+     4
+    ],
+    [
+     "lucky-hopper",
+     1,
+     4
+    ],
+    [
+     "meerkat-sentry",
+     1,
+     4
+    ],
+    [
+     "millipede-hauler",
+     1,
+     4
+    ],
+    [
+     "mirror-moth",
+     1,
+     4
+    ],
+    [
+     "old-shell",
+     1,
+     4
+    ],
+    [
+     "old-sturgeon",
+     1,
+     4
+    ],
+    [
+     "sand-widow",
+     1,
+     4
+    ],
+    [
+     "savanna-cheetah",
      1,
      4
     ],
@@ -666,55 +824,50 @@
      4
     ],
     [
-     "tunnel-ant",
-     1,
-     4
-    ],
-    [
-     "walrus-icebreaker",
+     "wolfsbane-alpha",
      1,
      4
     ]
    ],
    "leader": "pride-queen",
-   "collection": 373,
-   "factionCards": 46,
-   "optScore": 0.839,
+   "collection": 332,
+   "factionCards": 48,
+   "optScore": 0.763,
    "optBudget": 900,
-   "optFile": "deckopt-map18-mpd-bal24-p5.json",
+   "optFile": "deckopt-map18-mpd-bal24-p6.json",
    "games": 8,
    "perFight": {
     "18-A-1": 100,
-    "18-A-2": 100,
-    "18-A-3": 100,
-    "18-A-4": 87.5,
-    "18-A-5": 87.5,
-    "18-A-6": 62.5,
-    "18-A-7": 75,
+    "18-A-2": 75,
+    "18-A-3": 87.5,
+    "18-A-4": 100,
+    "18-A-5": 75,
+    "18-A-6": 50,
+    "18-A-7": 87.5,
     "18-A-8": 62.5,
-    "18-A-9": 12.5
+    "18-A-9": 75
    },
-   "win": 76.4
+   "win": 79.2
   },
   {
-   "player": 6,
-   "seed": "bal24-6",
+   "player": 7,
+   "seed": "bal24-7",
    "counts": {
     "adder-ambusher": 1,
-    "bison-bulldozer": 1,
-    "bog-behemoth": 1,
-    "cone-cutter-squirrel": 1,
+    "beaver-lumberjack": 1,
+    "dhole-matriarch": 1,
+    "dolphin-knight": 1,
     "echo-screecher": 1,
-    "glasswing-moth": 1,
-    "glimmer-spider": 1,
-    "grass-snake": 1,
-    "house-cat": 1,
     "ibex-rockcaller": 1,
-    "moon-jelly": 1,
+    "lantern-bearer": 1,
+    "moonlit-hare": 1,
+    "mosquito-cloud": 1,
+    "open-ocean-hermit-crab": 1,
     "otter-centurion": 3,
-    "petal-fletcher": 1,
-    "pond-algae": 1,
-    "shoal-shark": 1,
+    "proboscis-monkey": 1,
+    "puddle-skimmer": 1,
+    "sunbittern-strider": 1,
+    "sunfeather-scout": 1,
     "talon-archer": 1,
     "tunnel-ant": 1,
     "walrus-icebreaker": 1
@@ -726,17 +879,17 @@
      4
     ],
     [
-     "bison-bulldozer",
+     "beaver-lumberjack",
      1,
      4
     ],
     [
-     "bog-behemoth",
+     "dhole-matriarch",
      1,
      4
     ],
     [
-     "cone-cutter-squirrel",
+     "dolphin-knight",
      1,
      4
     ],
@@ -746,32 +899,151 @@
      4
     ],
     [
-     "glasswing-moth",
-     1,
-     4
-    ],
-    [
-     "glimmer-spider",
-     1,
-     4
-    ],
-    [
-     "grass-snake",
-     1,
-     4
-    ],
-    [
-     "house-cat",
-     1,
-     4
-    ],
-    [
      "ibex-rockcaller",
      1,
      4
     ],
     [
-     "moon-jelly",
+     "lantern-bearer",
+     1,
+     4
+    ],
+    [
+     "moonlit-hare",
+     1,
+     4
+    ],
+    [
+     "mosquito-cloud",
+     1,
+     4
+    ],
+    [
+     "open-ocean-hermit-crab",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "proboscis-monkey",
+     1,
+     4
+    ],
+    [
+     "puddle-skimmer",
+     1,
+     4
+    ],
+    [
+     "sunbittern-strider",
+     1,
+     4
+    ],
+    [
+     "sunfeather-scout",
+     1,
+     4
+    ],
+    [
+     "talon-archer",
+     1,
+     4
+    ],
+    [
+     "tunnel-ant",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 334,
+   "factionCards": 48,
+   "optScore": 0.868,
+   "optBudget": 900,
+   "optFile": "deckopt-map18-mpd-bal24-p7.json",
+   "games": 8,
+   "perFight": {
+    "18-A-1": 87.5,
+    "18-A-2": 75,
+    "18-A-3": 75,
+    "18-A-4": 100,
+    "18-A-5": 75,
+    "18-A-6": 75,
+    "18-A-7": 100,
+    "18-A-8": 50,
+    "18-A-9": 50
+   },
+   "win": 76.4
+  },
+  {
+   "player": 8,
+   "seed": "bal24-8",
+   "counts": {
+    "adder-ambusher": 1,
+    "balloon-archer": 1,
+    "bison-bulldozer": 1,
+    "bog-leech": 1,
+    "briarback-hedgehog": 1,
+    "echo-screecher": 1,
+    "fen-mink": 1,
+    "ibex-rockcaller": 1,
+    "otter-centurion": 3,
+    "petal-fletcher": 1,
+    "quarry-mole": 1,
+    "robin-redbreast": 1,
+    "soldier-ant": 2,
+    "sunspire-envoy": 1,
+    "talon-archer": 1,
+    "tunnel-ant": 1,
+    "walrus-icebreaker": 1
+   },
+   "parts": [
+    [
+     "adder-ambusher",
+     1,
+     4
+    ],
+    [
+     "balloon-archer",
+     1,
+     4
+    ],
+    [
+     "bison-bulldozer",
+     1,
+     4
+    ],
+    [
+     "bog-leech",
+     1,
+     4
+    ],
+    [
+     "briarback-hedgehog",
+     1,
+     4
+    ],
+    [
+     "echo-screecher",
+     1,
+     4
+    ],
+    [
+     "fen-mink",
+     1,
+     4
+    ],
+    [
+     "ibex-rockcaller",
      1,
      4
     ],
@@ -786,12 +1058,22 @@
      4
     ],
     [
-     "pond-algae",
+     "quarry-mole",
      1,
      4
     ],
     [
-     "shoal-shark",
+     "robin-redbreast",
+     1,
+     4
+    ],
+    [
+     "soldier-ant",
+     2,
+     4
+    ],
+    [
+     "sunspire-envoy",
      1,
      4
     ],
@@ -812,187 +1094,46 @@
     ]
    ],
    "leader": "pride-queen",
-   "collection": 378,
-   "factionCards": 48,
-   "optScore": 0.793,
+   "collection": 330,
+   "factionCards": 45,
+   "optScore": 0.819,
    "optBudget": 900,
-   "optFile": "deckopt-map18-mpd-bal24-p6.json",
-   "games": 8,
-   "perFight": {
-    "18-A-1": 75,
-    "18-A-2": 87.5,
-    "18-A-3": 50,
-    "18-A-4": 62.5,
-    "18-A-5": 37.5,
-    "18-A-6": 62.5,
-    "18-A-7": 50,
-    "18-A-8": 62.5,
-    "18-A-9": 12.5
-   },
-   "win": 55.6
-  },
-  {
-   "player": 7,
-   "seed": "bal24-7",
-   "counts": {
-    "amber-cicada": 1,
-    "anhinga-spearbird": 1,
-    "cave-swiftlet": 1,
-    "chipmunk-skirmisher": 1,
-    "clap-net-trapper": 1,
-    "cormorant": 1,
-    "crimson-wing-recruit": 1,
-    "crown-of-thorns-star": 1,
-    "echo-matriarch": 1,
-    "hush-wing-spy": 1,
-    "leafcutter-gardener": 1,
-    "marsh-mallow-hare": 1,
-    "meerkat-wayfarer": 1,
-    "nectar-sipper": 1,
-    "oystercatcher": 1,
-    "reef-shark": 1,
-    "stoat-cutthroat": 1,
-    "sunthroat-courier": 1,
-    "trapdoor-spider": 2
-   },
-   "parts": [
-    [
-     "amber-cicada",
-     1,
-     4
-    ],
-    [
-     "anhinga-spearbird",
-     1,
-     4
-    ],
-    [
-     "cave-swiftlet",
-     1,
-     4
-    ],
-    [
-     "chipmunk-skirmisher",
-     1,
-     4
-    ],
-    [
-     "clap-net-trapper",
-     1,
-     4
-    ],
-    [
-     "cormorant",
-     1,
-     4
-    ],
-    [
-     "crimson-wing-recruit",
-     1,
-     4
-    ],
-    [
-     "crown-of-thorns-star",
-     1,
-     4
-    ],
-    [
-     "echo-matriarch",
-     1,
-     4
-    ],
-    [
-     "hush-wing-spy",
-     1,
-     4
-    ],
-    [
-     "leafcutter-gardener",
-     1,
-     4
-    ],
-    [
-     "marsh-mallow-hare",
-     1,
-     4
-    ],
-    [
-     "meerkat-wayfarer",
-     1,
-     4
-    ],
-    [
-     "nectar-sipper",
-     1,
-     4
-    ],
-    [
-     "oystercatcher",
-     1,
-     4
-    ],
-    [
-     "reef-shark",
-     1,
-     4
-    ],
-    [
-     "stoat-cutthroat",
-     1,
-     4
-    ],
-    [
-     "sunthroat-courier",
-     1,
-     4
-    ],
-    [
-     "trapdoor-spider",
-     2,
-     4
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 377,
-   "factionCards": 48,
-   "optScore": 0.777,
-   "optBudget": 900,
-   "optFile": "deckopt-map18-mpd-bal24-p7.json",
+   "optFile": "deckopt-map18-mpd-bal24-p8.json",
    "games": 8,
    "perFight": {
     "18-A-1": 87.5,
-    "18-A-2": 87.5,
-    "18-A-3": 50,
-    "18-A-4": 50,
-    "18-A-5": 75,
-    "18-A-6": 62.5,
-    "18-A-7": 75,
-    "18-A-8": 50,
-    "18-A-9": 37.5
+    "18-A-2": 100,
+    "18-A-3": 87.5,
+    "18-A-4": 62.5,
+    "18-A-5": 62.5,
+    "18-A-6": 75,
+    "18-A-7": 62.5,
+    "18-A-8": 62.5,
+    "18-A-9": 50
    },
-   "win": 63.9
+   "win": 72.2
   },
   {
-   "player": 8,
-   "seed": "bal24-8",
+   "player": 9,
+   "seed": "bal24-9",
    "counts": {
     "adder-ambusher": 1,
-    "bee-sentry": 1,
-    "cataphract-destrier": 1,
-    "cobalt-talon-honour-guard": 1,
-    "dust-devil-kestrel": 1,
+    "arctic-tern": 1,
+    "banded-sea-krait": 1,
+    "conch-crawler": 1,
+    "crimson-wing-recruit": 1,
     "echo-screecher": 1,
+    "feral-tomcat": 1,
+    "grave-grin-hyena": 1,
+    "gull-thief": 1,
+    "house-cat": 1,
     "ibex-rockcaller": 1,
-    "limpet-clinger": 1,
-    "mist-net-otter": 1,
+    "jaguar-stalker": 1,
+    "meerkat-sentry": 1,
     "otter-centurion": 3,
-    "pack-rat-looter": 1,
-    "roadrunner-courier": 1,
-    "robin-redbreast": 1,
-    "savanna-cheetah": 1,
     "talon-archer": 1,
-    "terrier-pup": 1,
     "tunnel-ant": 1,
+    "voidfeather-scout": 1,
     "walrus-icebreaker": 1
    },
    "parts": [
@@ -1002,22 +1143,22 @@
      4
     ],
     [
-     "bee-sentry",
+     "arctic-tern",
      1,
      4
     ],
     [
-     "cataphract-destrier",
+     "banded-sea-krait",
      1,
      4
     ],
     [
-     "cobalt-talon-honour-guard",
+     "conch-crawler",
      1,
      4
     ],
     [
-     "dust-devil-kestrel",
+     "crimson-wing-recruit",
      1,
      4
     ],
@@ -1027,12 +1168,151 @@
      4
     ],
     [
+     "feral-tomcat",
+     1,
+     4
+    ],
+    [
+     "grave-grin-hyena",
+     1,
+     4
+    ],
+    [
+     "gull-thief",
+     1,
+     4
+    ],
+    [
+     "house-cat",
+     1,
+     4
+    ],
+    [
      "ibex-rockcaller",
      1,
      4
     ],
     [
-     "limpet-clinger",
+     "jaguar-stalker",
+     1,
+     4
+    ],
+    [
+     "meerkat-sentry",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "talon-archer",
+     1,
+     4
+    ],
+    [
+     "tunnel-ant",
+     1,
+     4
+    ],
+    [
+     "voidfeather-scout",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ]
+   ],
+   "leader": "pride-queen",
+   "collection": 337,
+   "factionCards": 49,
+   "optScore": 0.878,
+   "optBudget": 900,
+   "optFile": "deckopt-map18-mpd-bal24-p9.json",
+   "games": 8,
+   "perFight": {
+    "18-A-1": 87.5,
+    "18-A-2": 87.5,
+    "18-A-3": 87.5,
+    "18-A-4": 87.5,
+    "18-A-5": 75,
+    "18-A-6": 75,
+    "18-A-7": 75,
+    "18-A-8": 25,
+    "18-A-9": 62.5
+   },
+   "win": 73.6
+  },
+  {
+   "player": 10,
+   "seed": "bal24-10",
+   "counts": {
+    "ant-hill": 1,
+    "bramble-sprout": 1,
+    "chipmunk-cavalry": 1,
+    "cricket-drummer": 1,
+    "crossed-eyes": 1,
+    "echo-screecher": 1,
+    "hedge-changeling": 1,
+    "ibex-rockcaller": 1,
+    "mangrove-kingfisher": 1,
+    "mist-net-otter": 1,
+    "otter-centurion": 3,
+    "raft-spider": 2,
+    "sunbittern-strider": 1,
+    "sworn-shieldbearer": 1,
+    "talon-archer": 1,
+    "tunnel-ant": 1,
+    "walrus-icebreaker": 1
+   },
+   "parts": [
+    [
+     "ant-hill",
+     1,
+     4
+    ],
+    [
+     "bramble-sprout",
+     1,
+     4
+    ],
+    [
+     "chipmunk-cavalry",
+     1,
+     4
+    ],
+    [
+     "cricket-drummer",
+     1,
+     4
+    ],
+    [
+     "crossed-eyes",
+     1,
+     4
+    ],
+    [
+     "echo-screecher",
+     1,
+     4
+    ],
+    [
+     "hedge-changeling",
+     1,
+     4
+    ],
+    [
+     "ibex-rockcaller",
+     1,
+     4
+    ],
+    [
+     "mangrove-kingfisher",
      1,
      4
     ],
@@ -1047,343 +1327,57 @@
      4
     ],
     [
-     "pack-rat-looter",
-     1,
-     4
-    ],
-    [
-     "roadrunner-courier",
-     1,
-     4
-    ],
-    [
-     "robin-redbreast",
-     1,
-     4
-    ],
-    [
-     "savanna-cheetah",
-     1,
-     4
-    ],
-    [
-     "talon-archer",
-     1,
-     4
-    ],
-    [
-     "terrier-pup",
-     1,
-     4
-    ],
-    [
-     "tunnel-ant",
-     1,
-     4
-    ],
-    [
-     "walrus-icebreaker",
-     1,
-     4
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 372,
-   "factionCards": 45,
-   "optScore": 0.844,
-   "optBudget": 900,
-   "optFile": "deckopt-map18-mpd-bal24-p8.json",
-   "games": 8,
-   "perFight": {
-    "18-A-1": 100,
-    "18-A-2": 87.5,
-    "18-A-3": 100,
-    "18-A-4": 87.5,
-    "18-A-5": 100,
-    "18-A-6": 87.5,
-    "18-A-7": 87.5,
-    "18-A-8": 75,
-    "18-A-9": 75
-   },
-   "win": 88.9
-  },
-  {
-   "player": 9,
-   "seed": "bal24-9",
-   "counts": {
-    "adder-ambusher": 1,
-    "alpine-salamander": 1,
-    "cone-cutter-squirrel": 1,
-    "crossed-eyes": 1,
-    "dormouse": 1,
-    "echo-screecher": 1,
-    "farm-dog": 1,
-    "fire-ant-raft": 1,
-    "gallery-orb-weaver": 1,
-    "hoopoe-herald": 1,
-    "ibex-rockcaller": 1,
-    "otter-centurion": 3,
-    "quarry-mole": 1,
-    "roadrunner-courier": 1,
-    "star-nosed-mole": 1,
-    "talon-archer": 1,
-    "tunnel-ant": 1,
-    "walrus-icebreaker": 1
-   },
-   "parts": [
-    [
-     "adder-ambusher",
-     1,
-     4
-    ],
-    [
-     "alpine-salamander",
-     1,
-     4
-    ],
-    [
-     "cone-cutter-squirrel",
-     1,
-     4
-    ],
-    [
-     "crossed-eyes",
-     1,
-     4
-    ],
-    [
-     "dormouse",
-     1,
-     4
-    ],
-    [
-     "echo-screecher",
-     1,
-     4
-    ],
-    [
-     "farm-dog",
-     1,
-     4
-    ],
-    [
-     "fire-ant-raft",
-     1,
-     4
-    ],
-    [
-     "gallery-orb-weaver",
-     1,
-     4
-    ],
-    [
-     "hoopoe-herald",
-     1,
-     4
-    ],
-    [
-     "ibex-rockcaller",
-     1,
-     4
-    ],
-    [
-     "otter-centurion",
-     3,
-     4
-    ],
-    [
-     "quarry-mole",
-     1,
-     4
-    ],
-    [
-     "roadrunner-courier",
-     1,
-     4
-    ],
-    [
-     "star-nosed-mole",
-     1,
-     4
-    ],
-    [
-     "talon-archer",
-     1,
-     4
-    ],
-    [
-     "tunnel-ant",
-     1,
-     4
-    ],
-    [
-     "walrus-icebreaker",
-     1,
-     4
-    ]
-   ],
-   "leader": "pride-queen",
-   "collection": 376,
-   "factionCards": 49,
-   "optScore": 0.81,
-   "optBudget": 900,
-   "optFile": "deckopt-map18-mpd-bal24-p9.json",
-   "games": 8,
-   "perFight": {
-    "18-A-1": 100,
-    "18-A-2": 100,
-    "18-A-3": 100,
-    "18-A-4": 75,
-    "18-A-5": 75,
-    "18-A-6": 75,
-    "18-A-7": 75,
-    "18-A-8": 75,
-    "18-A-9": 0
-   },
-   "win": 75
-  },
-  {
-   "player": 10,
-   "seed": "bal24-10",
-   "counts": {
-    "barkplate-beetle": 1,
-    "bear-cub": 1,
-    "beaver-feller": 1,
-    "duck-paddler": 1,
-    "dust-hyena": 2,
-    "gangrenous-leech": 1,
-    "ibex-rockcaller": 1,
-    "irradiated-axolotl": 1,
-    "meerkat-wayfarer": 1,
-    "oathsworn-legionary": 1,
-    "octopus-tactician": 1,
-    "oystercatcher": 1,
-    "pike-lancer": 1,
-    "pill-bug": 1,
-    "rot-swollen-carcass": 1,
-    "sand-widow": 1,
-    "upside-down-bat": 1,
-    "venomlord-serpent": 1,
-    "water-shrew": 1
-   },
-   "parts": [
-    [
-     "barkplate-beetle",
-     1,
-     4
-    ],
-    [
-     "bear-cub",
-     1,
-     4
-    ],
-    [
-     "beaver-feller",
-     1,
-     4
-    ],
-    [
-     "duck-paddler",
-     1,
-     4
-    ],
-    [
-     "dust-hyena",
+     "raft-spider",
      2,
      4
     ],
     [
-     "gangrenous-leech",
+     "sunbittern-strider",
      1,
      4
     ],
     [
-     "ibex-rockcaller",
+     "sworn-shieldbearer",
      1,
      4
     ],
     [
-     "irradiated-axolotl",
+     "talon-archer",
      1,
      4
     ],
     [
-     "meerkat-wayfarer",
+     "tunnel-ant",
      1,
      4
     ],
     [
-     "oathsworn-legionary",
-     1,
-     4
-    ],
-    [
-     "octopus-tactician",
-     1,
-     4
-    ],
-    [
-     "oystercatcher",
-     1,
-     4
-    ],
-    [
-     "pike-lancer",
-     1,
-     4
-    ],
-    [
-     "pill-bug",
-     1,
-     4
-    ],
-    [
-     "rot-swollen-carcass",
-     1,
-     4
-    ],
-    [
-     "sand-widow",
-     1,
-     4
-    ],
-    [
-     "upside-down-bat",
-     1,
-     4
-    ],
-    [
-     "venomlord-serpent",
-     1,
-     4
-    ],
-    [
-     "water-shrew",
+     "walrus-icebreaker",
      1,
      4
     ]
    ],
    "leader": "pride-queen",
-   "collection": 372,
+   "collection": 330,
    "factionCards": 45,
-   "optScore": 0.694,
+   "optScore": 0.838,
    "optBudget": 900,
    "optFile": "deckopt-map18-mpd-bal24-p10.json",
    "games": 8,
    "perFight": {
     "18-A-1": 100,
-    "18-A-2": 100,
-    "18-A-3": 87.5,
+    "18-A-2": 75,
+    "18-A-3": 100,
     "18-A-4": 87.5,
-    "18-A-5": 62.5,
-    "18-A-6": 87.5,
-    "18-A-7": 37.5,
-    "18-A-8": 75,
-    "18-A-9": 12.5
+    "18-A-5": 100,
+    "18-A-6": 75,
+    "18-A-7": 100,
+    "18-A-8": 50,
+    "18-A-9": 62.5
    },
-   "win": 72.2
+   "win": 83.3
   }
  ],
  "missing": 0,
- "measured": "2026-11-11T11:01:50.102Z"
+ "measured": "2026-11-12T07:55:07.969Z"
 }
