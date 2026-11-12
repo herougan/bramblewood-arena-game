@@ -5973,6 +5973,9 @@ const SoundKit = (()=>{
     overwhelmTone(){ tone(200,0.1,'sawtooth',0.08); tone(340,0.12,'sawtooth',0.09,0.05); tone(500,0.16,'sawtooth',0.1,0.1); }, // a rising crash, biggest note last
     berserkTone(){ tone(140,0.14,'sawtooth',0.11); tone(180,0.1,'sawtooth',0.09,0.06); }, // a low, aggressive double-growl
     bulwarkTone(){ tone(220,0.1,'square',0.09); tone(160,0.14,'square',0.08,0.05); noise(0.05,0.04); }, // a solid, muffled clunk (distinct from shield()'s brighter parry ring)
+    // 2026-11-12 (FX6, owner: "Construction sounds"): Bulwark's Log Walls going up: three hammer knocks on wood (a low square thud with a band of
+    // noise on each, the pitch dropping a little as the wall takes weight) over a short rising saw-scrape of the planks sliding up.
+    constructTone(){ sweep(240,420,0.32,'sawtooth',0.03); [0,0.12,0.25].forEach((d,i)=>{ tone(150-i*10,0.07,'square',0.09,d); fnoise(0.05,0.06,{type:'bandpass',freq:900,delay:d}); }); },
     reflectTone(){ tone(600,0.05,'triangle',0.07); tone(900,0.05,'triangle',0.06,0.04); tone(600,0.05,'triangle',0.05,0.08); }, // bounces up then back down, mirroring the hit
     momentumTone(){ tone(400,0.06,'square',0.07); tone(560,0.06,'square',0.07,0.05); tone(760,0.08,'square',0.08,0.1); }, // three escalating notes, each louder
     // Esprit (2026-09-21, Skills/VFX/SFX audit): the engine has pushed a statusFx{kind:'esprit'}
@@ -10523,7 +10526,7 @@ function spawnerOrigin(ev){
     if(!el && ev.fromUid != null) el = boardCardEl(ev.fromUid);
     if(!el && ev.side) el = hqTileEl(ev.side);
     const r = el && el.getBoundingClientRect(); if(!r || !r.width) return null;
-    return {x: r.left + r.width/2, y: r.top + r.height/2, rotate: Math.random()*16 - 8, kind: 'spawn'};
+    return {x: r.left + r.width/2, y: r.top + r.height/2, rotate: Math.random()*16 - 8, kind: ev.kind === 'bulwark' ? 'rise' : 'spawn' /* 2026-11-12 (FX6): Log Walls rise from the floor */};
   }catch(e){ return null; }
 }
 // Record that origin for every card an events list puts on the board without a hand: round-start 'play' events (a castle's spawn) and the
@@ -10549,7 +10552,7 @@ function ui14NoteArrivalSpawns(events){
     if(!ev || ev.type !== 'spawn' || ev.cause !== 'triggerSpawn' || ev.nearUid == null) return;
     (ev.uids || []).forEach(u=>{ if(u == null) return; const key = String(u), cur = pendingEntranceOrigins.get(key);
       if(ev.kind === 'brood'){ const k = per[ev.nearUid] = (per[ev.nearUid] == null ? 0 : per[ev.nearUid] + 1); pendingEntranceOrigins.set(key, {kind: 'brood', lazyFrom: ev.nearUid, rotate: 0, n: k}); }
-      else if(!cur) pendingEntranceOrigins.set(key, {kind: 'spawn', lazyFrom: ev.nearUid, rotate: Math.random()*16 - 8}); });
+      else if(!cur || (ev.kind === 'bulwark' && cur.kind !== 'rise')) pendingEntranceOrigins.set(key, {kind: ev.kind === 'bulwark' ? 'rise' : 'spawn' /* 2026-11-12 (FX6) */, lazyFrom: ev.nearUid, rotate: Math.random()*16 - 8}); });
   });
 }
 function resolveLazyOrigin(o){
@@ -41199,6 +41202,11 @@ function renderBoard(opts){
         if(origin && origin.lazyFrom != null){ const o2 = resolveLazyOrigin(origin); if(!o2) pendingEntranceOrigins.delete(String(uid)); origin = o2; } // UI14 (JJ13): the parent's final slot
         if(origin && origin.kind === 'brood'){ const fr = el.getBoundingClientRect(); broodHop = {a: {x: origin.x, y: origin.y}, b: {x: fr.left + fr.width/2, y: fr.top + fr.height/2}, n: origin.n || 0};
           fromVars = {opacity:0, scale:.3, x:0, y:0, rotate:0}; pendingEntranceOrigins.delete(String(uid)); origin = null; }
+        // 2026-11-12 (FX6, owner: "the wall cards are erected from the floor up, not spawned from the card"): a Bulwark Log Wall rises out of its
+        // own slot, revealed bottom-up behind a clip that opens upward, dust at its foot (riseUpFx); no flight from the card. Calm (reduced
+        // motion, Effects Low): it fades in where it stands.
+        let riseUp = false;
+        if(origin && origin.kind === 'rise'){ riseUp = true; pendingEntranceOrigins.delete(String(uid)); origin = null; }
         if(origin){
           const fr = el.getBoundingClientRect();
           // 2026-10-17 (user: "When playing a card, make it look like it came from my hand ... (When playing the 3rd card from the centre,
@@ -41286,7 +41294,14 @@ function renderBoard(opts){
             else if(!flightOk){ playLandingImpact(uid); if(isHandPlay) playHandSummonGlow(uid); } // a flight lands its own thud (handFlightProxy)
           },
         });
-        if(flightOk){
+        if(riseUp){
+          const calm = reducedMotion() || !fxAtLeast('low');
+          if(calm) entranceTl.fromTo(el, {opacity:0, x:0, y:0, rotate:0, scale:1}, {opacity:1, duration:.2, ease:'none'});
+          else{ const D = Math.max(.3, dur*0.8);
+            entranceTl.set(el, {opacity:1, scale:1, rotate:0, x:0}, 0).call(()=> riseUpFx(el), null, 0)
+              .fromTo(el, {y:34, clipPath:'inset(100% -45% -12% -45%)'}, {y:0, clipPath:'inset(-14% -45% -12% -45%)', duration:D, ease:'power2.out', clearProps:'clipPath'}, 0)
+              .to(el, {scale:1.04, duration:.07, ease:'power1.out'}).to(el, {scale:1, duration:.16, ease:'back.out(3)'}); }
+        } else if(flightOk){
           // 2026-10-17 (user: "Placing a card: It looks like it moves from your hand into play." / "When playing a card, make it look
           // like it came from my hand. Leader as well ... launch it from my hand, then using reverse ease to seem like it made more of
           // an impact"): a page-level copy of the card flies from the hand (or the dragged card, or the leader slot) to this slot
@@ -46294,7 +46309,7 @@ async function resolveRoundCore(opts){
           if(originEl){
             const r = originEl.getBoundingClientRect();
             const cx = r.left + r.width/2, cy = r.top + r.height/2;
-            placements.map(p=>p.uid).forEach(u=> pendingEntranceOrigins.set(String(u), {x:cx, y:cy, rotate: Math.random()*16-8, kind:'spawn'}));
+            placements.map(p=>p.uid).forEach(u=> pendingEntranceOrigins.set(String(u), {x:cx, y:cy, rotate: Math.random()*16-8, kind: ev.kind === 'bulwark' ? 'rise' : 'spawn' /* 2026-11-12 (FX6) */}));
           }
         } else if(ev.cause==='onDeathSpawn' && lastDeathOrigin){
           // Task list item 2 — the dying card's last known position, recorded in the 'death'
@@ -47629,7 +47644,7 @@ function syncTideScene(m){
   let w = bf.querySelector(':scope > .tide-scene');
   if(st.k === 'none' && !moving){ if(w) w.remove(); delete bf.dataset.tide; return; }
   if(!w){ w = document.createElement('div'); w.className = 'tide-scene'; w.setAttribute('aria-hidden', 'true');
-    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><div class="tw-surf"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div></div><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
+    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><div class="tw-surf"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div></div><i class="tw-wave"></i><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
     bf.insertBefore(w, bf.firstChild); }
   const key = st.k + '|' + st.at;
   if(w.dataset.key !== key){
@@ -50832,6 +50847,44 @@ function bloomCopyVfx(srcUid, copyUid){
       p.animate([{transform: `translate(${sx}px, ${sy}px) scale(.5) rotate(0deg)`, opacity: 0}, {transform: `translate(${(sx + ex) / 2}px, ${(sy + ey) / 2 - lift}px) scale(1) rotate(${i % 2 ? 90 : -90}deg)`, opacity: 1, offset: .45},
         {transform: `translate(${ex}px, ${ey}px) scale(.6) rotate(${i % 2 ? 160 : -160}deg)`, opacity: 0}], {duration: 850 + (i % 3) * 120, delay: i * 25, easing: 'cubic-bezier(.3,.6,.4,1)', fill: 'forwards'}); }
   }, 70); }
+// ==== Package FX6 (2026-11-12, owner notes 08:39): three cheap effects. One host div over the card (fxHostAt) with a handful of spans animated by the
+// Web Animations API (transform and opacity only, nothing read per frame); the host removes itself, and nothing runs after it. Effects
+// Medium and up for the bugs, Low and up for the puff and dust; reduced motion: no bugs, an opacity-only puff, no dust.
+// Bulwark's dust: a few specks kicked up at the foot of a Log Wall as it rises (riseUpFx; the rise itself is in renderBoard).
+function riseUpFx(el){
+  if(!el || !el.isConnected || reducedMotion() || !fxAtLeast('low') || !el.animate) return;
+  const r = ui23Rect(el.getBoundingClientRect()); if(!r) return;
+  const host = fxHostAt(el, 950, r);
+  for(let i = 0; i < 6; i++){ const d = document.createElement('i'); d.className = 'fx6-dust'; d.style.left = (10 + i*16) + '%'; host.appendChild(d);
+    const dx = (i - 2.5)*9 + (i % 2 ? 4 : -4);
+    d.animate([{transform:'translate(-50%, 0) scale(.4)', opacity:0}, {transform:`translate(calc(-50% + ${dx*.4}px), -8px) scale(1)`, opacity:.75, offset:.25}, {transform:`translate(calc(-50% + ${dx}px), -26px) scale(1.7)`, opacity:0}], {duration:700 + (i % 3)*60, delay:i*35, easing:'ease-out', fill:'forwards'}); }
+}
+// Swarm and Spawn-on-death: small bug silhouettes scatter out from the unit, crawl a little (two turns), and are gone by 1 s.
+function bugCrawlVfx(el, o){
+  o = o || {}; if(!el || !el.isConnected || reducedMotion() || !fxAtLeast('med') || !el.animate) return;
+  const r = ui23Rect(el.getBoundingClientRect()); if(!r) return;
+  const host = fxHostAt(el, 1100, r), n = Math.min(10, o.n || 9), cx = r.width/2, cy = r.height*.55;
+  for(let i = 0; i < n; i++){ const b = document.createElement('i'); b.className = 'fx6-bug'; host.appendChild(b);
+    const a = i/n*6.283 + Math.random()*.7, R = r.width*(.38 + Math.random()*.32), x1 = cx + Math.cos(a)*R, y1 = cy + Math.sin(a)*R*.8;
+    const a2 = a + (Math.random() - .5)*2.2, L = r.width*(.12 + Math.random()*.16), x2 = x1 + Math.cos(a2)*L, y2 = y1 + Math.sin(a2)*L;
+    const a3 = a2 + (Math.random() - .5)*2.2, x3 = x2 + Math.cos(a3)*L*.8, y3 = y2 + Math.sin(a3)*L*.8, deg = v=> Math.round(v*57.3 + 90);
+    const f = (x, y, h, op, sc)=> ({transform:`translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${deg(h)}deg) scale(${sc})`, opacity:op});
+    b.animate([Object.assign(f(cx, cy, a, 0, .5), {easing:'ease-out'}), Object.assign(f(x1, y1, a, 1, 1), {offset:.28, easing:'linear'}), Object.assign(f(x2, y2, a2, 1, 1), {offset:.58}), Object.assign(f(x3, y3, a3, 0, .9), {offset:1})],
+      {duration:900, delay:i*10, fill:'forwards'}); }
+}
+// Spore puff: a dark lime-green puff billows off the card and thins out within 1 s. Reusable: sporePuffVfx(cardEl). Used by Spore Cloud's
+// sleep tick and the Puffball Bombardier's shot.
+function sporePuffVfx(el, o){
+  o = o || {}; if(!el || !el.isConnected || !fxAtLeast('low') || !el.animate) return;
+  const r = ui23Rect(el.getBoundingClientRect()); if(!r) return;
+  const calm = reducedMotion(), host = fxHostAt(el, 1050, r), n = calm ? 1 : (o.n || 5);
+  for(let i = 0; i < n; i++){ const p = document.createElement('i'); p.className = 'fx6-puff'; host.appendChild(p);
+    const w = Math.round(r.width*(calm ? .9 : .5 + (i % 3)*.12));
+    p.style.cssText = `width:${w}px; height:${w}px; left:${calm ? 50 : 22 + (i*19) % 58}%; top:${calm ? 55 : 50 + (i % 2 ? 12 : -8)}%;`;
+    p.animate(calm ? [{opacity:0}, {opacity:.7, offset:.3}, {opacity:0}]
+      : [{transform:'translate(-50%, -40%) scale(.35)', opacity:0}, {transform:'translate(-50%, -62%) scale(.9)', opacity:.9, offset:.3}, {transform:`translate(calc(-50% + ${(i - 2)*8}px), -105%) scale(1.35)`, opacity:0}],
+      {duration:calm ? 900 : 820, delay:calm ? 0 : i*40, easing:'ease-out', fill:'forwards'}); }
+}
 function afterSettle(uid, fn){ const el0 = boardCardEl(uid), r0 = el0 ? ui23Rect(el0.getBoundingClientRect()) : null, row0 = el0;
   setTimeout(()=>{ const el = boardCardEl(uid), r = el && ui23Rect(el.getBoundingClientRect()); if(r) fn(el, r); else if(r0) fn(null, r0, row0); }, 60); } // UI23 (#25): a 0x0 box is no anchor
 // 2026-11-06 (package UI23 #25, owner: "context pips get thrown to the top-left of the screen"): a page-level effect placed from an element's box
@@ -52349,9 +52402,10 @@ function labSkillFx(ev){
       if(F.evasiveDodgeHit && !ev.sweep && !ev.swipe && !ev.fork && !ev.quake && !ev.ambush && !ev.boomerang){ const tf = fxOf(ev.targetDefId);
         if(tf.evasive && !fx.fencing){ const fromLeft = a.getBoundingClientRect().left < t.getBoundingClientRect().left;
           setTimeout(()=>{ const t2 = el(ev.targetUid); if(t2) F.evasiveDodgeHit(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 100)); } }
-      if(fx.swarm && F.swarm && liveSwarmBonus({uid: ev.attUid}) > 0 && skillFxOnce('swarm' + ev.attUid)) F.swarm(a, t);
+      if(fx.swarm && F.swarm && liveSwarmBonus({uid: ev.attUid}) > 0 && skillFxOnce('swarm' + ev.attUid)) bugCrawlVfx(a, {n:10}); /* 2026-11-12 (FX6): small bugs crawl out and fade (was SkillFX.swarm: 26 bugs steered every frame) */
       else if(ev.sweep && !ev._cleave && F.cleave && skillFxOnce('cleave' + ev.attUid)) F.cleave(a, [t]); // (a grouped Cleave has its own swing, 2026-10-15)
       else if(fx.quick && F.quickStrike && quickImpactMs(ev) != null) F.quickStrike(a, t); // every Quick hit dashes (2026-10-16: the lunge is skipped for it)
+      if(ev.attDefId === 'puffball-bombardier' && skillFxOnce('puff' + ev.attUid + ':' + ev.targetUid)) setTimeout(()=> sporePuffVfx(el(ev.targetUid)), 120); // 2026-11-12 (FX6): its spores puff over what it hits
       break; }
     case 'hitHQ': { const fx = fxOf(ev.attDefId); if(fx.quick && F.quickStrike && quickImpactMs(ev) != null) quickStrikeCastle(el(ev.attUid), ev.targetSide); break; } // 2026-10-16
   }
@@ -52710,7 +52764,7 @@ function eighthPassVfx(ev){
   if(ev.type === 'frenzy' && skillFxOnce('frenzy' + ev.attUid)){ const t = el(ev.attUid); if(t) F.rageFlare(t); }
   if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
   if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
-  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
+  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && ev.kind !== 'bulwark' /* FX6: it rises, no portal */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
     // 2026-10-25 (package FIX3, F5, owner #17: "cards played disappear then appear again at the end of the round - no it's just tokens"): the
     // portal pops the new token's tile from 30% opacity, 140 ms (+60 per token) after the spawn, when the token has already landed at full
     // opacity: it showed, dropped to 30% and faded back in (seen headless: a 145-170 ms dip on a Brood token). The portal now plays over the
@@ -53529,6 +53583,7 @@ function giVfx(ev){
   if(ev.type === 'statusEnd' && ev.status === 'brittle'){ const rc = rcOf(ev.uid); if(rc) rc.brittle = 0; refresh(ev.uid); return; }
   if(ev.type === 'fieldBreak'){ fl(boardCardEl(ev.uid), TX('ui.float-field-break'), 'quick'); snd('swipeTone'); return; }
   if(ev.type === 'fieldTick' && ev.field === 'sporeCloud'){ snd('sleepTone'); return; }
+  if(ev.type === 'statusFx' && ev.field === 'sporeCloud' && ev.kind === 'sleep'){ try{ sporePuffVfx(boardCardEl(ev.targetUid)); }catch(e){} } // 2026-11-12 (FX6): the dark lime puff on each sleeper
   if(ev.type === 'fieldTick' && ev.field === 'thunderstorm'){ snd('boom'); const bf = document.getElementById('battlefieldEl'); if(bf && !reducedMotion() && fxAtLeast('low')){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } return; }
   if(ev.type === 'fieldTick' && ev.field === 'tangledRoots'){ snd('curse'); return; }
   if(ev.type === 'fieldTick' && ev.field === 'graspingBriars'){ snd('curse'); return; } // ENG10 (2026-10-26)
@@ -55224,7 +55279,8 @@ function renderVfxForEvent(ev){
   // that changed slot, including this one — so this just needs its own light cue.
   if(ev.type==='collapseIn'){ SoundKit.shift(); }
   if(ev.type==='spawn' && ev.kind==='bloom'){ try{ bloomCopyVfx(ev.nearUid, ev.uids && ev.uids[0]); }catch(e){} } // BL (2026-10-23): the copy blooms in (no summon portal)
-  if(ev.type==='spawn'){ if(ev.cause==='shieldCall'){ try{ SoundKit.shieldDrop(); }catch(e){} setTimeout(()=>{ const el = boardCardEl(ev.uids && ev.uids[0]); if(el){ try{ if(window.SkillFX && SkillFX.shieldDrop) SkillFX.shieldDrop(el); }catch(e){} try{ floatText(el, '🛡️ Shield Call', 'buff'); }catch(e){} } }, 60); } else SoundKit.buzz(); }
+  if(ev.type==='spawn'){ if(ev.cause==='shieldCall'){ try{ SoundKit.shieldDrop(); }catch(e){} setTimeout(()=>{ const el = boardCardEl(ev.uids && ev.uids[0]); if(el){ try{ if(window.SkillFX && SkillFX.shieldDrop) SkillFX.shieldDrop(el); }catch(e){} try{ floatText(el, '🛡️ Shield Call', 'buff'); }catch(e){} } }, 60); } else if(ev.kind === 'bulwark') SoundKit.constructTone(); /* 2026-11-12 (FX6) */ else SoundKit.buzz();
+    if(ev.cause === 'onDeathSpawn' && ev.kind !== 'crystal' && ev.kind !== 'relic'){ const u0 = (ev.placements && ev.placements[0] && ev.placements[0].uid) != null ? ev.placements[0].uid : (ev.uids || [])[0]; /* FX6: Spawn on death: bugs crawl out of the first token */ if(u0 != null) setTimeout(()=>{ try{ bugCrawlVfx(boardCardEl(u0)); }catch(e){} }, 200); } }
   // Floating-number coverage audit (2026-09-18, "every action that changes a number... should
   // get a floating number"): Gold/Grace generation from a card's passive effect (onSpawnGold,
   // onReadyGold, a custom 'gainGold' trigger, etc.) used to be COMPLETELY SILENT beyond a chime

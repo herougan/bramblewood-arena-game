@@ -1786,3 +1786,15 @@ numbers only (`bossIntro` shows a name the caller passes, translated).
 Checks: `tests/lab3-2026-11-11.js` (every look in a fake DOM: resolves, callbacks once, nodes gone, 38 at most, the card put back, reduced
 motion one still node) and `tests/e2e/lab3_2026_11_11.py` (every look played in the built Lab at 1366, the first of each at 390, and under
 reduced motion: no page error, fewer than 40 overlays on any frame, none left).
+
+## 2026-11-12 (package FX6): High Tide's wave, Bulwark's rise, bugs, the spore puff
+All four are cheap by design: one element or a handful of spans (WAAPI, transform and opacity, no per-frame reads), removed when done, nothing running after, no motion under reduced motion.
+
+| Effect | Where | Look | Code |
+|---|---|---|---|
+| ✅ High Tide's second layer | the standing tide scene while the tide is High | one `.tw-wave` over the settled water: the tide's blue wash, a breaking crest (long back, curled lip) with the same soft white crest line, drifting 9 s a tile; fades and rises in after the tide arrives; still on Low effects / reduced motion, gone on None | `.tw-wave` in `arena_template.html`, `syncTideScene` |
+| ✅ Bulwark: walls rise | spawn `kind:'bulwark'` | the Log Wall is revealed bottom-up behind a clip while it lifts 34 px into its slot, dust at its foot, a hammer-knock cue (`constructTone`, cue 40); no flight from the card, no summon portal; reduced motion / Low: a fade | `riseUpFx`, renderBoard `riseUp` branch, origin kind `rise` |
+| ✅ Swarm, Spawn on death: bugs | Swarm hit; spawn `cause:'onDeathSpawn'` | 9-10 small bug silhouettes scatter from the unit, crawl through two turns, fade by 0.9 s; the game's Swarm now uses this instead of the 26-bug steered cloud (`SkillFX.swarm` stays in the Lab) | `bugCrawlVfx` |
+| ✅ Spore puff | Spore Cloud's sleep tick (`statusFx` `field:'sporeCloud'`); a Puffball Bombardier's hit | five dark lime-green puffs billow up off the card and thin out in under 1 s; reduced motion: one soft fade | `sporePuffVfx(el)` (reusable) |
+
+Lab entries: `tools/effects-lab/manifest/fx6.js` (variant key `FX6`). Check: `tests/fx6-2026-11-12.js`.
