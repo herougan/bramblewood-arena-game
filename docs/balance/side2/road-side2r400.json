@@ -1,0 +1,231 @@
+{
+ "about": "Road totals (tools/side2/road_compare_2026_11_13.js)",
+ "after": "side2r400",
+ "before": "skir3w400",
+ "totals": {
+  "fights": 149,
+  "inBand": 128,
+  "within10": 130,
+  "beyond20": 9,
+  "meanGap": 5.95
+ },
+ "totalsBefore": {
+  "fights": 149,
+  "inBand": 128,
+  "within10": 130,
+  "beyond20": 9,
+  "meanGap": 5.95
+ },
+ "worstMaps": [
+  {
+   "map": "16",
+   "fights": 7,
+   "out": 4,
+   "meanGap": 15.4,
+   "worst": [
+    "16-3 30.8/68",
+    "16-4 45.3/72"
+   ]
+  },
+  {
+   "map": "13",
+   "fights": 8,
+   "out": 6,
+   "meanGap": 14,
+   "worst": [
+    "13-6 90.8/65",
+    "13-8 64/40"
+   ]
+  },
+  {
+   "map": "2",
+   "fights": 5,
+   "out": 2,
+   "meanGap": 11.9,
+   "worst": [
+    "2-1 62/90",
+    "2-2 61.5/80"
+   ]
+  },
+  {
+   "map": "19",
+   "fights": 6,
+   "out": 3,
+   "meanGap": 10.3,
+   "worst": [
+    "19-5 29/60",
+    "19-1 77.8/90"
+   ]
+  },
+  {
+   "map": "20",
+   "fights": 10,
+   "out": 1,
+   "meanGap": 7.6,
+   "worst": [
+    "20-9 98.8/50",
+    "20-3 87.3/81.4"
+   ]
+  },
+  {
+   "map": "6",
+   "fights": 8,
+   "out": 1,
+   "meanGap": 7,
+   "worst": [
+    "6-2 64/85",
+    "6-8 30/40"
+   ]
+  },
+  {
+   "map": "17",
+   "fights": 8,
+   "out": 2,
+   "meanGap": 6.5,
+   "worst": [
+    "17-8 9.8/40",
+    "17-4 62.3/75"
+   ]
+  },
+  {
+   "map": "4",
+   "fights": 5,
+   "out": 1,
+   "meanGap": 5.3,
+   "worst": [
+    "4-5 21/40",
+    "4-4 64.5/60"
+   ]
+  }
+ ],
+ "pushedOut": [],
+ "bigMoves": [],
+ "outOfBand": [
+  {
+   "code": "20-9",
+   "win": 98.8,
+   "target": 50,
+   "gap": 48.8
+  },
+  {
+   "code": "16-3",
+   "win": 30.8,
+   "target": 68,
+   "gap": -37.2
+  },
+  {
+   "code": "19-5",
+   "win": 29,
+   "target": 60,
+   "gap": -31
+  },
+  {
+   "code": "17-8",
+   "win": 9.8,
+   "target": 40,
+   "gap": -30.2
+  },
+  {
+   "code": "2-1",
+   "win": 62,
+   "target": 90,
+   "gap": -28
+  },
+  {
+   "code": "16-4",
+   "win": 45.3,
+   "target": 72,
+   "gap": -26.7
+  },
+  {
+   "code": "13-6",
+   "win": 90.8,
+   "target": 65,
+   "gap": 25.8
+  },
+  {
+   "code": "13-8",
+   "win": 64,
+   "target": 40,
+   "gap": 24
+  },
+  {
+   "code": "6-2",
+   "win": 64,
+   "target": 85,
+   "gap": -21
+  },
+  {
+   "code": "4-5",
+   "win": 21,
+   "target": 40,
+   "gap": -19
+  },
+  {
+   "code": "2-2",
+   "win": 61.5,
+   "target": 80,
+   "gap": -18.5
+  },
+  {
+   "code": "8-7",
+   "win": 41.5,
+   "target": 60,
+   "gap": -18.5
+  },
+  {
+   "code": "13-4",
+   "win": 82,
+   "target": 65,
+   "gap": 17
+  },
+  {
+   "code": "16-6",
+   "win": 45.8,
+   "target": 60,
+   "gap": -14.2
+  },
+  {
+   "code": "13-5",
+   "win": 83.8,
+   "target": 70,
+   "gap": 13.8
+  },
+  {
+   "code": "16-2",
+   "win": 71,
+   "target": 84,
+   "gap": -13
+  },
+  {
+   "code": "17-4",
+   "win": 62.3,
+   "target": 75,
+   "gap": -12.7
+  },
+  {
+   "code": "19-1",
+   "win": 77.8,
+   "target": 90,
+   "gap": -12.2
+  },
+  {
+   "code": "13-3",
+   "win": 91.3,
+   "target": 80,
+   "gap": 11.3
+  },
+  {
+   "code": "19-3",
+   "win": 65,
+   "target": 75,
+   "gap": -10
+  },
+  {
+   "code": "13-7",
+   "win": 68.5,
+   "target": 60,
+   "gap": 8.5
+  }
+ ]
+}
