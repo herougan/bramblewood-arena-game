@@ -47,5 +47,24 @@ ok(fs.existsSync(path.join(ROOT, 'docs/balance/side1/phase-b-plan.md')) && /refd
 ok(/SIDE1/.test(read('docs/project-state.md')) && /side maps are tuned now/i.test(read('docs/project-state.md')) && /SK anchor/i.test(read('docs/project-state.md')), '6. project-state: side maps tuned now, the SK anchor');
 ok(read('docs/CHANGELOG.md').slice(0, 20000).includes('SIDE1'), '6. a CHANGELOG entry near the top');
 ok(read('tests/run-all.sh').includes('tests/side1-2026-11-12.js'), '6. listed in run-all.sh');
+// 7. (2026-11-13, package SIDE2) the card editor's budget readout reads every card as tools/skill_costs.js does: the Attack that counts (an
+//    Archer's, or arrow {swings: 'never'}, is 0; Hibernate's is its awake share). SIDE1 found Stonedrop Vulture at 247% in the editor, 74% in the tools.
+{
+  const LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), BB = require(path.join(ROOT, 'bramblewood-budget.js'));
+  const fnA = new Function('BramblewoodBudget', LB.grab('sbAttackMult') + '\n' + LB.grab('sbAttackOf') + '\nreturn sbAttackOf;')(BB);
+  const app = read('arena_app.js'), ce = app.slice(app.indexOf('function ceBudgetHTML('), app.indexOf('function ceBudgetHTML(') + 400);
+  ok(/A = sbAttackOf\(d\)/.test(ce), '7. the card editor\'s budget box (ceBudgetHTML) counts sbAttackOf, not the printed Attack');
+  const v = LB.CARD_DEFS_BASELINE['stonedrop-vulture'];
+  ok(v && fnA(v) === 0, '7. Stonedrop Vulture (arrow, swings never): the editor counts 0 Attack');
+  const bad = [];
+  Object.values(LB.CARD_DEFS_BASELINE).forEach(d => { if (!d || !d.id || d.attack == null) return;
+    const e = BB.SPL ? BB.SPL.expandDef(d).effects || {} : d.effects || {};
+    const toolsA = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0) * (e.hibernate ? 1 - BB.EN6_HIBERNATE_UPTIME : 1);
+    if (Math.abs(fnA(d) - toolsA) > 1e-9) bad.push(d.id); });
+  const cpr = J('docs/balance/card-power-2026-11-12.json').cards, apart = cpr.filter(r => Math.abs(r.use - r.toolsUse) >= 2);
+  ok(cpr.length > 100 && !apart.length, '7. card power report: the editor box and tools/skill_costs.js read every card in play within 2 points (' + apart.slice(0, 5).map(r => r.name + ' ' + r.use + '/' + r.toolsUse).join(', ') + ')');
+  ok(/sbCheck\(A, D, S, N, M, F, SH, sbEffectsOf\(d\)\)/.test(ce), '7. the editor box passes the effects (Bloom\'s body copy) to the shared capScores');
+  ok(!bad.length, '7. the editor\'s Attack that counts equals the tools\' for every card (' + bad.slice(0, 6).join(', ') + ')');
+}
 console.log(fail ? `side1-2026-11-12: ${fail} of ${pass + fail} failed` : `side1-2026-11-12: all ${pass} passed`);
 process.exit(fail ? 1 : 0);

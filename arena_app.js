@@ -35182,12 +35182,19 @@ function sbBudget(d, cfg){ return sbBudgetAt(d, cfg, cardBaseLevel(d)); }
 const SB_WELL_UNDER = 0.6;
 // 2026-10-22 (package BF7, owner pass III): the left sides come from BramblewoodBudget.capScores: M (the half-miss ×1.5s) on the stat terms only,
 // F (Fragile's fragileUse 0.7, sbFragileUse) on the whole left side: F × ((2A + H) × M + S) ≤ N, F × (A×H × M + S×|S|) ≤ (N/3)².
-function sbCheck(A, D, S, N, M, F, SH){ M = M || 1; F = F || 1; const r2d = v=> Math.round(v * 100) / 100, sc = BramblewoodBudget.capScores(A, D, S, null, null, {m: M, f: F, sh: SH || 0 /* FIN2-c (2026-10-26): the card's Shield as 0.8 Health (sbShieldH) */}), x1 = sc.x1, x2 = sc.x2, N2 = r2d(BramblewoodBudget.cap2Limit(N, SB_V3_DEFAULTS)) /* BF11 (2026-10-23): 2×(N/3)² */; // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): A×H + S×|S| (a negative skill still frees room)
+function sbCheck(A, D, S, N, M, F, SH, E){ M = M || 1; F = F || 1; const r2d = v=> Math.round(v * 100) / 100, sc = BramblewoodBudget.capScores(A, D, S, E || null /* SIDE2 (11-13): the card's effects, for Bloom's body copy (bloomBodyMult), as the tools pass them */, null, {m: M, f: F, sh: SH || 0 /* FIN2-c (2026-10-26): the card's Shield as 0.8 Health (sbShieldH) */}), x1 = sc.x1, x2 = sc.x2, N2 = r2d(BramblewoodBudget.cap2Limit(N, SB_V3_DEFAULTS)) /* BF11 (2026-10-23): 2×(N/3)² */; // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): A×H + S×|S| (a negative skill still frees room)
   const r1 = x1 <= N, r2 = x2 <= N2, ok = r1 && r2; return {r1, r2, x1, x2, N2, ok, wellUnder: ok && x1 <= N * SB_WELL_UNDER}; } // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): inclusive
 // "Fit" lowers Attack, then Health, until both rules pass.
 // FIN2-c (2026-10-26): a card's own Shield N counts as shieldPerHealth (0.8) x N Health in both caps (BramblewoodBudget.shieldHealthOf)
 function sbShieldH(d){ return BramblewoodBudget.shieldHealthOf ? BramblewoodBudget.shieldHealthOf((d && d.effects) || {}, SB_V3_DEFAULTS) : 0; }
-function sbFit(d, S, N, M, F){ let A = d.attack||0, D = d.health||1; const SH = sbShieldH(d); let guard = 200; while(!sbCheck(A, D, S, N, M, F, SH).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
+// 2026-11-13 (package SIDE2, SIDE1's finding): the Attack that counts, as tools/skill_costs.js budget reads it: an Archer never swings (also the
+// newer arrow {swings: 'never'}, which BramblewoodBudget.SPL.expandDef turns into archer), so its Attack is 0; a Hibernate unit's counts for its
+// awake rounds (EN6_HIBERNATE_UPTIME). The editor counted the printed Attack (Stonedrop Vulture read 247% here, 74% in the tools).
+function sbAttackMult(d){ const BB = BramblewoodBudget; let e = (d && d.effects) || {}; try{ if(BB.SPL && BB.SPL.expandDef) e = (BB.SPL.expandDef(d) || {}).effects || e; }catch(err){}
+  if(e.archer && !(Number(e.archer) < 0)) return 0; return e.hibernate && BB.EN6_HIBERNATE_UPTIME ? 1 - BB.EN6_HIBERNATE_UPTIME : 1; }
+function sbAttackOf(d){ return (Number(d && d.attack) || 0) * sbAttackMult(d); }
+function sbEffectsOf(d){ try{ const BB = BramblewoodBudget; if(BB.SPL && BB.SPL.expandDef) return (BB.SPL.expandDef(d) || {}).effects || {}; }catch(err){} return (d && d.effects) || {}; } // SIDE2 (11-13): the effects the budget reads
+function sbFit(d, S, N, M, F){ let A = d.attack||0, D = d.health||1; const SH = sbShieldH(d), k = sbAttackMult(d), E = sbEffectsOf(d); let guard = 200; while(!sbCheck(A * k, D, S, N, M, F, SH, E).ok && guard-- > 0){ if(!k){ if(D > 1){ D--; continue; } break; } if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
 function sbColour(c){ return !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '#d0569a' : '#2e8b57'); }
 function sbVerdict(c){ return !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'within'); }
 // 2026-10-19 (BF2): the formula line, from the numbers in use (the helper's v5 unless the Test Lab changed them), in words through TX
@@ -35220,7 +35227,7 @@ function sbContextLine(d, cfg){ const B = BramblewoodBudget, e = (d && d.effects
 // the rule (Base, the old heading's second number, is in the heading's hover with N's formula). The skill points row (ceSkillPtsHTML) sits under
 // the Custom Triggers. The Power line (cePowerHTML) is appended after this, unchanged.
 function ceBudgetHTML(d){
-  const cfg = sbLoad(), A = Number(d.attack)||0, D = Number(d.health)||0, price = sbPriceS(d, cfg), S = price.S, N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg), SH = sbShieldH(d), c = sbCheck(A, D, S, N, M, F, SH); // CX5 (10-21): S from canonical/skill-costs.json; BF7 (10-22): F
+  const cfg = sbLoad(), A = sbAttackOf(d) /* SIDE2 (11-13): the Attack that counts */, D = Number(d.health)||0, price = sbPriceS(d, cfg), S = price.S, N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg), SH = sbShieldH(d), c = sbCheck(A, D, S, N, M, F, SH, sbEffectsOf(d)); // CX5 (10-21): S from canonical/skill-costs.json; BF7 (10-22): F
   const BB = BramblewoodBudget, BD = BB.DEFAULTS || {}, f1 = v=> Math.round(v * 10) / 10, r2 = v=> Math.round(v * 100) / 100, mark = ok=> ok ? '✓' : '✗';
   const aw = BD.attackWeight || 3, sc = BB.CAP2_S_SCALE != null ? BB.CAP2_S_SCALE : 1, k2 = BD.cap2Mult || 2;
   const hs = SH ? `(${D} + ${r2(SH)})` : String(D); // FIN2-c (2026-10-26): the Shield's Health share
@@ -35316,7 +35323,7 @@ function ceBudgetRefresh(d){
 let sbState = {upTo:5, onlyFail:true};
 function renderStatBudget(host){
   const cfg = sbLoad(), defs = getCardDefs(), ids = cardCheckPool(sbState.upTo);
-  const rows = ids.map(id=>{ const d = defs[id], pr = sbPriceS(d, cfg) /* CX5 (10-21): canonical/skill-costs.json */, S = pr.S, lv = cardBaseLevel(d), N = sbBudgetAt(d, cfg, lv), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg) /* BF7 (10-22) */, c = sbCheck(A, D, S, N, M, F, sbShieldH(d)) /* FIN2-c */; return {id, d, S, miss: pr.missing, lv, N, A, D, M, F, c, fit: c.ok ? null : sbFit(d, S, N, M, F)}; });
+  const rows = ids.map(id=>{ const d = defs[id], pr = sbPriceS(d, cfg) /* CX5 (10-21): canonical/skill-costs.json */, S = pr.S, lv = cardBaseLevel(d), N = sbBudgetAt(d, cfg, lv), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg) /* BF7 (10-22) */, c = sbCheck(sbAttackOf(d) /* SIDE2 (11-13): the Attack that counts */, D, S, N, M, F, sbShieldH(d), sbEffectsOf(d)) /* FIN2-c */; return {id, d, S, miss: pr.missing, lv, N, A, D, M, F, c, fit: c.ok ? null : sbFit(d, S, N, M, F)}; });
   const fails = rows.filter(r=> !r.c.ok), pinks = rows.filter(r=> r.c.wellUnder), shown = sbState.onlyFail ? fails : rows;
   const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], inp = (id, k, step)=> `<input type="number" ${step ? `step="${step}"` : ''} id="${id}" value="${g(k)}" class="w-60">`;
   host.innerHTML = `<h2>⚖️ Stat budget</h2>

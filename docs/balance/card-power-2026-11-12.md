@@ -8,7 +8,6 @@ Every card in play on the 11-12 lists (main Maps 0-21 and their side maps), read
 
 | Card | Lists | B / N | Use | Margin | Cap 2 | Owner-set |
 |---|---|---|---|---|---|---|
-| Stonedrop Vulture (uncommon, 11/11, Map 7) | Map 11 | 55.96 / 22.67 | 247% | -33.29 | 147.23 > 89.65 |  |
 | Cricket Drummer (common, 2/7, Map 1) | Map 1 | 16.96 / 13.16 | 129% | -3.8 | ok |  |
 | Worker Ant (starter, 1/6, Map 0) | Map 0, Map 18 | 14.54 / 11.75 | 124% | -2.79 | ok | yes |
 | Alley Cat (uncommon, 1/4, Map 1) | Map 5, Map 9 | 17.64 / 14.32 | 123% | -3.32 | ok | yes |
@@ -27,6 +26,7 @@ Every card in play on the 11-12 lists (main Maps 0-21 and their side maps), read
 | Mudpuppy (common, 2/9, Map 0) | Map 5, The Sunken Grove | 17.3 / 16.72 | 103% | -0.58 | ok |  |
 | Bee Sentry (starter, 2/5, Map 0) | Map 0 | 15.81 / 15.55 | 102% | -0.26 | ok | yes |
 | Cormorant (common, 3/7, Map 0) | Map 3 | 17 / 16.72 | 102% | -0.28 | ok |  |
+| Pond Algae (common, 1/7, Map 0) | Map 6, Lilypad Reach | 17.04 / 16.72 | 102% | -0.32 | ok |  |
 | Soldier Ant (common, 2/8, Map 0) | Map 0, Map 1 | 17.13 / 16.72 | 102% | -0.41 | ok | yes |
 | Barrel Cactus (rare, 1/18, Map 14) | Map 18, The Pale Desert | 30.08 / 29.85 | 101% | -0.23 | ok |  |
 | Bramble Sprout (common, 1/5, Map 0) | Map 1, Map 14, The Old Bramble | 13.08 / 12.92 | 101% | -0.16 | ok | yes |
@@ -34,18 +34,6 @@ Every card in play on the 11-12 lists (main Maps 0-21 and their side maps), read
 | Planarian Splitter (uncommon, 3/8, Map 1) | Map 4, Map 5, Map 7, The Mycelium Deep | 21.55 / 21.27 | 101% | -0.28 | ok |  |
 | Walrus Icebreaker (veryrare, 4/17, Map 17) | Map 17, Map 19, The Ice Hollow | 31.92 / 31.72 | 101% | -0.2 | ok |  |
 | Gallery Orb-Weaver (uncommon, 4/7, Map 7) | Map 8, Map 18, The Glimmer Depths | 22.69 / 22.67 | 100% | -0.02 | ok |  |
-
-## Editor and tools read differently
-
-The editor's box (this table) and tools/skill_costs.js (the re-fits, the hub) at the same map and Level 1; 5+ points apart:
-
-| Card | Editor | Tools | Why |
-|---|---|---|---|
-| Fungal Colossus (2/14) | 75% | 95% | see the two readings |
-| Polar Bear (2/17) | 89% | 80% | see the two readings |
-| Pond Algae (1/7) | 76% | 102% | see the two readings |
-| Puffball Bombardier (1/5) | 85% | 96% | see the two readings |
-| Stonedrop Vulture (11/11) | 247% | 74% | it never swings: the tools leave its Attack out, the editor counts it |
 
 ## Well under (60% of N or less)
 
@@ -232,7 +220,7 @@ Before = the batch before SKIR3 (git b6162b29).
 | Frillneck Duelist | rare | 2/15 | 14 | 23.23 / 29.09 | 80% | in | Map 20 |
 | Frostbitten Wolverine | uncommon | 3/10 | 21 | 19.19 / 25.94 | 74% | in | The Ice Hollow |
 | Fumarole Ibex | rare | 1/12 | 14 | 21.96 / 25.47 | 86% | in | Map 20, Map 21, Volcano Lair |
-| Fungal Colossus | uncommon | 2/14 | 7 | 26.57 / 35.63 | 75% | in | The Mycelium Deep |
+| Fungal Colossus | uncommon | 2/14 | 7 | 33.97 / 35.63 | 95% | in | The Mycelium Deep |
 | Fungus Gnat Cloud | common | 1/4 | 7 | 11.46 / 14.56 | 79% | in | Map 7, The Mycelium Deep |
 | Gallery Orb-Weaver | uncommon | 4/7 | 7 | 22.69 / 22.67 | 100% | over | Map 8, Map 18, The Glimmer Depths |
 | Gannet Nestweaver | common | 1/7 | 0 | 14.49 / 16.72 | 87% | in | Map 3, Map 11 |
@@ -315,12 +303,12 @@ Before = the batch before SKIR3 (git b6162b29).
 | Plains Zebra | uncommon | 1/7 | 14 | 11.8 / 17.36 | 68% | in | Map 14, Map 15 |
 | Planarian Splitter | uncommon | 3/8 | 1 | 21.55 / 21.27 | 101% | over | Map 4, Map 5, Map 7, The Mycelium Deep |
 | Platypus Spur | uncommon | 4/4 | 4 | 20.75 / 21.97 | 94% | in | Map 4, Map 5 |
-| Polar Bear | veryrare | 2/17 | 17 | 28.32 / 31.72 | 89% | in | Map 17, Map 19, The Ice Hollow |
-| Pond Algae | common | 1/7 | 0 | 12.64 / 16.72 | 76% | in | Map 6, Lilypad Reach |
+| Polar Bear | veryrare | 2/17 | 17 | 25.5 / 31.72 | 80% | in | Map 17, Map 19, The Ice Hollow |
+| Pond Algae | common | 1/7 | 0 | 17.04 / 16.72 | 102% | over | Map 6, Lilypad Reach |
 | Pond Trout | starter | 2/4 | 0 | 10 / 12.34 | 81% | in | Map 0 |
 | Proboscis Monkey | uncommon | 2/11 | 7 | 17.9 / 22.67 | 79% | in | Map 9, The Canopy |
 | Puddle Skimmer | uncommon | 2/6 | 1 | 16 / 18.12 | 88% | in | Map 1, Map 2, Clovermead |
-| Puffball Bombardier | uncommon | 1/5 | 7 | 16.6 / 19.52 | 85% | in | Map 7, The Mycelium Deep |
+| Puffball Bombardier | uncommon | 1/5 | 7 | 18.76 / 19.52 | 96% | in | Map 7, The Mycelium Deep |
 | Puffin Diver | common | 2/5 | 3 | 11.89 / 20.57 | 58% | under | Map 3, Map 16 |
 | Pumice Beetle | uncommon | 3/11 | 22 | 22.35 / 26.18 | 85% | in | Basalt Foundry |
 | Quarry Mole | common | 2/12 | 8 | 18.96 / 21.74 | 87% | in | Map 8, Map 12, The Glimmer Depths |
@@ -364,7 +352,7 @@ Before = the batch before SKIR3 (git b6162b29).
 | Stalactite Pill Bug | common | 1/23 | 7 | 26.87 / 34.47 | 78% | in | Map 8, Map 19, Map 20, The Glimmer Depths |
 | Star-nosed Mole | common | 5/5 | 8 | 14 / 14.79 | 95% | in | Map 8 |
 | Stoat Cutthroat | rare | 3/10 | 15 | 23.78 / 25.71 | 92% | in | Map 14, Map 15 |
-| Stonedrop Vulture | uncommon | 11/11 | 7 | 55.96 / 22.67 | 247% | over | Map 11 |
+| Stonedrop Vulture | uncommon | 11/11 | 7 | 16.69 / 22.67 | 74% | in | Map 11 |
 | Sulfur Cinder Moth | common | 1/7 | 7 | 13.6 / 17.71 | 77% | in | Map 8, Map 19, The Glimmer Depths |
 | Sulfur Vent Crab | uncommon | 4/3 | 14 | 18.82 / 21.15 | 89% | in | Map 20, Eye of the Volcano |
 | Sunbittern Strider | uncommon | 3/10 | 14 | 20.38 / 24.8 | 82% | in | Map 18, The Pale Desert |

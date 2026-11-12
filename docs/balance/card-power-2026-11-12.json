@@ -3142,10 +3142,10 @@
    ],
    "firstMap": 7,
    "N": 35.63,
-   "B": 26.57,
+   "B": 33.97,
    "S": 6.57,
-   "use": 75,
-   "margin": 9.06,
+   "use": 95,
+   "margin": 1.66,
    "cap2": {
     "P": 38.79,
     "N2": 221.46,
@@ -3156,8 +3156,8 @@
    "before": {
     "firstMap": 7,
     "N": 35.63,
-    "B": 26.57,
-    "use": 75,
+    "B": 33.97,
+    "use": 95,
     "verdict": "in"
    },
    "owner": false
@@ -5819,12 +5819,12 @@
    ],
    "firstMap": 17,
    "N": 31.72,
-   "B": 28.32,
+   "B": 25.5,
    "S": 5.32,
-   "use": 89,
-   "margin": 3.4,
+   "use": 80,
+   "margin": 6.22,
    "cap2": {
-    "P": 41.08,
+    "P": 25.1,
     "N2": 175.52,
     "ok": true
    },
@@ -5833,8 +5833,8 @@
    "before": {
     "firstMap": 17,
     "N": 31.72,
-    "B": 28.32,
-    "use": 89,
+    "B": 25.5,
+    "use": 80,
     "verdict": "in"
    },
    "owner": false
@@ -5853,16 +5853,16 @@
    ],
    "firstMap": 0,
    "N": 16.72,
-   "B": 12.64,
+   "B": 17.04,
    "S": 2.64,
-   "use": 76,
-   "margin": 4.08,
+   "use": 102,
+   "margin": -0.32,
    "cap2": {
     "P": 8.74,
     "N2": 48.77,
     "ok": true
    },
-   "verdict": "in",
+   "verdict": "over",
    "toolsMap": null,
    "before": null,
    "owner": false
@@ -5977,10 +5977,10 @@
    ],
    "firstMap": 7,
    "N": 19.52,
-   "B": 16.6,
+   "B": 18.76,
    "S": 8.6,
-   "use": 85,
-   "margin": 2.92,
+   "use": 96,
+   "margin": 0.76,
    "cap2": {
     "P": 23.49,
     "N2": 66.47,
@@ -5991,8 +5991,8 @@
    "before": {
     "firstMap": 7,
     "N": 19.52,
-    "B": 16.6,
-    "use": 85,
+    "B": 18.76,
+    "use": 96,
     "verdict": "in"
    },
    "owner": false
@@ -7436,23 +7436,23 @@
    ],
    "firstMap": 7,
    "N": 22.67,
-   "B": 55.96,
+   "B": 16.69,
    "S": 3.6,
-   "use": 247,
-   "margin": -33.29,
+   "use": 74,
+   "margin": 5.98,
    "cap2": {
-    "P": 147.23,
+    "P": 3.24,
     "N2": 89.65,
-    "ok": false
+    "ok": true
    },
-   "verdict": "over",
+   "verdict": "in",
    "toolsMap": 7,
    "before": {
     "firstMap": 7,
     "N": 22.67,
-    "B": 55.96,
-    "use": 247,
-    "verdict": "over"
+    "B": 16.69,
+    "use": 74,
+    "verdict": "in"
    },
    "owner": false
   },

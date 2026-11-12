@@ -1,0 +1,1469 @@
+{
+ "maps": {
+  "mo": {
+   "id": "mo",
+   "num": 0,
+   "side": "m1",
+   "name": "The Old Bramble",
+   "cap": "superrare",
+   "bpro": {
+    "pool": [
+     "barkplate-beetle",
+     "bramble-sprout",
+     "bramblewood-lynx",
+     "earthworm",
+     "elder-willow",
+     "ent",
+     "farm-dog",
+     "quill-thorn-boar",
+     "quillguard",
+     "sergeant-bramblefox",
+     "thorn-shrike"
+    ],
+    "focuses": [
+     "family:spite",
+     "big",
+     "swarm",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "amber-cicada",
+     "barkplate-beetle",
+     "bramble-sprout",
+     "bramblewood-lynx",
+     "dhole-matriarch",
+     "eagle-owl-quartermaster",
+     "earthworm",
+     "elder-willow",
+     "ent",
+     "farm-dog",
+     "grave-grin-hyena",
+     "hedgehog-herbalist",
+     "ibex-rockcaller",
+     "lyrebird-mimic",
+     "pond-algae",
+     "quill-thorn-boar",
+     "quillguard",
+     "sergeant-bramblefox",
+     "stoat-cutthroat",
+     "thorn-shrike",
+     "truffle-piglet",
+     "upside-down-bat",
+     "wolf-spider-mother"
+    ],
+    "anchor": [
+     "barkplate-beetle",
+     "bramble-sprout",
+     "bramblewood-lynx",
+     "earthworm",
+     "elder-willow",
+     "ent",
+     "farm-dog",
+     "quill-thorn-boar",
+     "quillguard",
+     "sergeant-bramblefox",
+     "thorn-shrike"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:flying",
+     "family:spite",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "barkplate-beetle",
+     "bramble-sprout",
+     "bramblewood-lynx",
+     "earthworm",
+     "elder-willow",
+     "ent",
+     "farm-dog",
+     "quill-thorn-boar",
+     "quillguard",
+     "sergeant-bramblefox",
+     "thorn-shrike"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "mq": {
+   "id": "mq",
+   "num": 1,
+   "side": "mf",
+   "name": "Clovermead",
+   "cap": "uncommon",
+   "bpro": {
+    "pool": [
+     "ant-scout",
+     "bee-forager",
+     "chipmunk-cavalry",
+     "clover-butterfly",
+     "cottontail",
+     "dormouse",
+     "honey-bee",
+     "jackrabbit-sprinter",
+     "lucky-hopper",
+     "meadow-rabbit",
+     "puddle-skimmer",
+     "robin-redbreast"
+    ],
+    "focuses": [
+     "family:flying",
+     "family:strike-first",
+     "big",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "alley-cat",
+     "alpine-marmot",
+     "ant-scout",
+     "balloon-archer",
+     "barkplate-beetle",
+     "bee-forager",
+     "bee-knight",
+     "bee-sentry",
+     "burrow-rabbit",
+     "chipmunk-cavalry",
+     "clover-butterfly",
+     "compost-grub",
+     "cottontail",
+     "dormouse",
+     "honey-bee",
+     "jackrabbit-sprinter",
+     "lucky-hopper",
+     "meadow-rabbit",
+     "mountain-hare",
+     "mudpuppy",
+     "newt-doctor",
+     "nutria-reedcutter",
+     "planarian-splitter",
+     "puddle-skimmer",
+     "robin-redbreast"
+    ],
+    "anchor": [
+     "ant-scout",
+     "bee-forager",
+     "chipmunk-cavalry",
+     "clover-butterfly",
+     "compost-grub",
+     "cottontail",
+     "dormouse",
+     "honey-bee",
+     "jackrabbit-sprinter",
+     "lucky-hopper",
+     "meadow-rabbit",
+     "puddle-skimmer",
+     "robin-redbreast"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:flying",
+     "big",
+     "swarm",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "ant-scout",
+     "bee-forager",
+     "chipmunk-cavalry",
+     "clover-butterfly",
+     "cottontail",
+     "dormouse",
+     "honey-bee",
+     "jackrabbit-sprinter",
+     "lucky-hopper",
+     "meadow-rabbit",
+     "puddle-skimmer",
+     "robin-redbreast"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "mg": {
+   "id": "mg",
+   "num": 2,
+   "side": "mb",
+   "name": "Smugglers' Grotto",
+   "cap": "uncommon",
+   "bpro": {
+    "pool": [
+     "driftwood-crab",
+     "gull-thief",
+     "limpet-clinger",
+     "octopus-tactician",
+     "old-shell",
+     "open-ocean-hermit-crab",
+     "pincushion-urchin",
+     "raccoon-nightcrew",
+     "rock-pool-starfish",
+     "salvager-hermit-crab"
+    ],
+    "focuses": [
+     "economy",
+     "family:tide",
+     "family:armor",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "alley-cat",
+     "bee-forager",
+     "driftwood-crab",
+     "gull-thief",
+     "kittiwake-flock",
+     "limpet-clinger",
+     "mudpuppy",
+     "muskrat-lodgekeeper",
+     "newt-doctor",
+     "nutria-reedcutter",
+     "octopus-tactician",
+     "old-shell",
+     "open-ocean-hermit-crab",
+     "oystercatcher",
+     "pincushion-urchin",
+     "planarian-splitter",
+     "puffin-diver",
+     "raccoon-nightcrew",
+     "razorbill",
+     "rock-pool-starfish",
+     "salvager-hermit-crab",
+     "the-gannet-queen"
+    ],
+    "anchor": [
+     "driftwood-crab",
+     "gull-thief",
+     "limpet-clinger",
+     "octopus-tactician",
+     "old-shell",
+     "open-ocean-hermit-crab",
+     "pincushion-urchin",
+     "raccoon-nightcrew",
+     "rock-pool-starfish",
+     "salvager-hermit-crab"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "economy",
+     "family:flying",
+     "family:tide",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "driftwood-crab",
+     "gull-thief",
+     "limpet-clinger",
+     "octopus-tactician",
+     "old-shell",
+     "open-ocean-hermit-crab",
+     "pincushion-urchin",
+     "raccoon-nightcrew",
+     "rock-pool-starfish",
+     "salvager-hermit-crab"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "mp": {
+   "id": "mp",
+   "num": 2,
+   "side": "mb",
+   "name": "Lilypad Reach",
+   "cap": "uncommon",
+   "bpro": {
+    "pool": [
+     "beaver-lumberjack",
+     "dam-keeper-beaver",
+     "duck-paddler",
+     "lodge-engineer",
+     "muskrat-lodgekeeper",
+     "muskrat-reedgatherer",
+     "old-shell",
+     "pond-algae",
+     "raft-spider",
+     "riverworks-bastion",
+     "snapstick-turtle",
+     "water-shrew"
+    ],
+    "focuses": [
+     "family:guard",
+     "family:tide",
+     "big",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "alley-cat",
+     "beaver-lumberjack",
+     "bee-forager",
+     "conch-crawler",
+     "dam-keeper-beaver",
+     "driftwood-crab",
+     "duck-paddler",
+     "fleetfootd",
+     "gannet-nestweaver",
+     "grass-snake",
+     "lodge-engineer",
+     "mudpuppy",
+     "muskrat-lodgekeeper",
+     "muskrat-reedgatherer",
+     "newt-doctor",
+     "old-shell",
+     "platypus-spur",
+     "pond-algae",
+     "pyrenean-desman",
+     "raft-spider",
+     "river-mink",
+     "riverworks-bastion",
+     "snapstick-turtle",
+     "water-shrew"
+    ],
+    "anchor": [
+     "beaver-lumberjack",
+     "dam-keeper-beaver",
+     "duck-paddler",
+     "lodge-engineer",
+     "muskrat-lodgekeeper",
+     "muskrat-reedgatherer",
+     "old-shell",
+     "pond-algae",
+     "raft-spider",
+     "riverworks-bastion",
+     "snapstick-turtle",
+     "water-shrew"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:tide",
+     "family:guard",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "beaver-lumberjack",
+     "dam-keeper-beaver",
+     "duck-paddler",
+     "lodge-engineer",
+     "muskrat-lodgekeeper",
+     "muskrat-reedgatherer",
+     "old-shell",
+     "pond-algae",
+     "raft-spider",
+     "riverworks-bastion",
+     "snapstick-turtle",
+     "water-shrew"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "ms": {
+   "id": "ms",
+   "num": 5,
+   "side": "mw",
+   "name": "The Sunken Grove",
+   "cap": "rare",
+   "bpro": {
+    "pool": [
+     "bog-leech",
+     "constrictor-coil",
+     "crocodile-ambusher",
+     "cypress-root-lurker",
+     "hedgehog-herbalist",
+     "mudflat-godwit",
+     "mudpuppy",
+     "muskrat-reedgatherer",
+     "newt-doctor",
+     "nutria-reedcutter",
+     "old-snapjaw",
+     "peat-cutter-vole",
+     "swamp-alligator"
+    ],
+    "focuses": [
+     "big",
+     "swarm",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "alley-cat",
+     "alligator-gar",
+     "alpine-marmot",
+     "banded-sea-krait",
+     "blue-ringed-octopus",
+     "bog-leech",
+     "constrictor-coil",
+     "crocodile-ambusher",
+     "cypress-root-lurker",
+     "eagle-owl-quartermaster",
+     "fire-ant-raft",
+     "hedgehog-herbalist",
+     "ironclaw-fiddler",
+     "mosquito-cloud",
+     "mudflat-godwit",
+     "mudpuppy",
+     "muskrat-reedgatherer",
+     "newt-doctor",
+     "nutria-reedcutter",
+     "old-snapjaw",
+     "otter-centurion",
+     "peat-cutter-vole",
+     "raft-spider",
+     "snapper-hatchling",
+     "swamp-alligator",
+     "wolf-spider-mother"
+    ],
+    "anchor": [
+     "bog-leech",
+     "constrictor-coil",
+     "crocodile-ambusher",
+     "cypress-root-lurker",
+     "hedgehog-herbalist",
+     "mudflat-godwit",
+     "mudpuppy",
+     "muskrat-reedgatherer",
+     "newt-doctor",
+     "nutria-reedcutter",
+     "old-snapjaw",
+     "peat-cutter-vole",
+     "snapper-hatchling",
+     "swamp-alligator"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:tide",
+     "family:bleed",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "bog-leech",
+     "constrictor-coil",
+     "crocodile-ambusher",
+     "cypress-root-lurker",
+     "hedgehog-herbalist",
+     "mudflat-godwit",
+     "mudpuppy",
+     "muskrat-reedgatherer",
+     "newt-doctor",
+     "nutria-reedcutter",
+     "old-snapjaw",
+     "peat-cutter-vole",
+     "swamp-alligator"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "mz": {
+   "id": "mz",
+   "num": 7,
+   "side": "mu",
+   "name": "The Mycelium Deep",
+   "cap": "rare",
+   "bpro": {
+    "pool": [
+     "earthworm",
+     "fungal-colossus",
+     "fungus-gnat-cloud",
+     "hawthorn-shieldbug",
+     "leopard-slug",
+     "planarian-splitter",
+     "puffball-bombardier",
+     "rootworm-colony",
+     "rot-swollen-carcass",
+     "sleepless-shrew",
+     "tunnel-wyrm"
+    ],
+    "focuses": [
+     "big",
+     "swarm",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "alley-cat",
+     "amber-cicada",
+     "barkplate-beetle",
+     "bee-forager",
+     "compost-grub",
+     "earthworm",
+     "fire-ant-raft",
+     "fungal-colossus",
+     "fungus-gnat-cloud",
+     "hawthorn-shieldbug",
+     "leopard-slug",
+     "mudpuppy",
+     "newt-doctor",
+     "otter-centurion",
+     "pine-marten",
+     "planarian-splitter",
+     "puffball-bombardier",
+     "river-mink",
+     "rootworm-colony",
+     "rot-swollen-carcass",
+     "sleepless-shrew",
+     "truffle-piglet",
+     "tunnel-wyrm",
+     "wolf-spider-mother"
+    ],
+    "anchor": [
+     "compost-grub",
+     "earthworm",
+     "fungal-colossus",
+     "fungus-gnat-cloud",
+     "hawthorn-shieldbug",
+     "leopard-slug",
+     "planarian-splitter",
+     "puffball-bombardier",
+     "rootworm-colony",
+     "rot-swollen-carcass",
+     "sleepless-shrew",
+     "tunnel-wyrm"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:heal",
+     "family:armor",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "earthworm",
+     "fungal-colossus",
+     "fungus-gnat-cloud",
+     "hawthorn-shieldbug",
+     "leopard-slug",
+     "planarian-splitter",
+     "puffball-bombardier",
+     "rootworm-colony",
+     "rot-swollen-carcass",
+     "sleepless-shrew",
+     "tunnel-wyrm"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "mn": {
+   "id": "mn",
+   "num": 8,
+   "side": "m4",
+   "name": "The Glimmer Depths",
+   "cap": "rare",
+   "bpro": {
+    "pool": [
+     "barrow-leech-bat",
+     "blind-cave-fish",
+     "cave-olm",
+     "cave-swiftlet",
+     "echo-matriarch",
+     "echo-screecher",
+     "gallery-orb-weaver",
+     "giant-cave-huntsman",
+     "glimmer-spider",
+     "lantern-spark-fly",
+     "quarry-mole",
+     "stalactite-golem",
+     "sulfur-cinder-moth"
+    ],
+    "focuses": [
+     "family:flying",
+     "family:night",
+     "big",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "alpine-marmot",
+     "barrow-leech-bat",
+     "bee-sentry",
+     "blind-cave-fish",
+     "blue-ringed-octopus",
+     "cave-olm",
+     "cave-swiftlet",
+     "dust-hyena",
+     "eagle-owl-quartermaster",
+     "echo-matriarch",
+     "echo-screecher",
+     "fire-ant-raft",
+     "gallery-orb-weaver",
+     "giant-cave-huntsman",
+     "glimmer-spider",
+     "grave-grin-hyena",
+     "hawthorn-shieldbug",
+     "lantern-spark-fly",
+     "quarry-mole",
+     "raft-spider",
+     "stalactite-golem",
+     "star-nosed-mole",
+     "stoat-cutthroat",
+     "sulfur-cinder-moth",
+     "wolf-spider-mother"
+    ],
+    "anchor": [
+     "barrow-leech-bat",
+     "blind-cave-fish",
+     "cave-olm",
+     "cave-swiftlet",
+     "echo-matriarch",
+     "echo-screecher",
+     "gallery-orb-weaver",
+     "giant-cave-huntsman",
+     "glimmer-spider",
+     "lantern-spark-fly",
+     "quarry-mole",
+     "stalactite-golem",
+     "sulfur-cinder-moth"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:flying",
+     "family:poison",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "barrow-leech-bat",
+     "blind-cave-fish",
+     "cave-olm",
+     "cave-swiftlet",
+     "echo-matriarch",
+     "echo-screecher",
+     "gallery-orb-weaver",
+     "giant-cave-huntsman",
+     "glimmer-spider",
+     "lantern-spark-fly",
+     "quarry-mole",
+     "stalactite-golem",
+     "sulfur-cinder-moth"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "mj": {
+   "id": "mj",
+   "num": 10,
+   "side": "m7",
+   "name": "The Sunken Depths",
+   "cap": "veryrare",
+   "bpro": {
+    "pool": [
+     "blue-ringed-octopus",
+     "coral-current-eel",
+     "giant-clam",
+     "kraken-spawnling",
+     "krill-swarm",
+     "moon-jelly",
+     "orca-vanguard",
+     "reef-admiral",
+     "reef-shark",
+     "riptide-eel",
+     "sea-turtle-elder"
+    ],
+    "focuses": [
+     "family:tide",
+     "family:armor",
+     "big",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "alley-cat",
+     "blue-ringed-octopus",
+     "colossal-squid",
+     "coral-current-eel",
+     "crown-of-thorns-star",
+     "electric-ray",
+     "giant-cave-huntsman",
+     "giant-clam",
+     "great-barracuda",
+     "kraken-spawnling",
+     "krill-swarm",
+     "mangrove-manatee",
+     "moon-jelly",
+     "mudpuppy",
+     "newt-doctor",
+     "orca-vanguard",
+     "otter-centurion",
+     "pincushion-urchin",
+     "reef-admiral",
+     "reef-shark",
+     "riptide-eel",
+     "sea-turtle-elder",
+     "wolf-spider-mother"
+    ],
+    "anchor": [
+     "blue-ringed-octopus",
+     "coral-current-eel",
+     "giant-clam",
+     "kraken-spawnling",
+     "krill-swarm",
+     "moon-jelly",
+     "orca-vanguard",
+     "reef-admiral",
+     "reef-shark",
+     "riptide-eel",
+     "sea-turtle-elder"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:tide",
+     "family:cleave",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "blue-ringed-octopus",
+     "coral-current-eel",
+     "giant-clam",
+     "kraken-spawnling",
+     "krill-swarm",
+     "moon-jelly",
+     "orca-vanguard",
+     "reef-admiral",
+     "reef-shark",
+     "riptide-eel",
+     "sea-turtle-elder"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "mv": {
+   "id": "mv",
+   "num": 11,
+   "side": "m10",
+   "name": "The Aerie Vault",
+   "cap": "veryrare",
+   "bpro": {
+    "pool": [
+     "anvil-thrush",
+     "chamois-leaper",
+     "eagle-owl-quartermaster",
+     "eyrie-warden",
+     "gangrenous-leech",
+     "golden-eagle-diver",
+     "great-horned-owl",
+     "peak-condor",
+     "peregrine-stooper",
+     "swamp-alligator",
+     "the-gannet-queen",
+     "wound-reaver"
+    ],
+    "focuses": [
+     "family:flying",
+     "family:strike-first",
+     "big",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "alpine-marmot",
+     "anvil-thrush",
+     "blue-ringed-octopus",
+     "chamois-leaper",
+     "dust-hyena",
+     "eagle-owl-quartermaster",
+     "eyrie-warden",
+     "gangrenous-leech",
+     "golden-eagle-diver",
+     "grave-grin-hyena",
+     "great-horned-owl",
+     "hoopoe-herald",
+     "ibex-rockcaller",
+     "mountain-hare",
+     "peak-condor",
+     "peregrine-stooper",
+     "pika-hoarder",
+     "puffin-diver",
+     "sparrow-chick",
+     "stoat-cutthroat",
+     "stonedrop-vulture",
+     "swamp-alligator",
+     "the-gannet-queen",
+     "wolf-spider-mother",
+     "wound-reaver"
+    ],
+    "anchor": [
+     "anvil-thrush",
+     "chamois-leaper",
+     "eagle-owl-quartermaster",
+     "eyrie-warden",
+     "gangrenous-leech",
+     "golden-eagle-diver",
+     "great-horned-owl",
+     "peak-condor",
+     "peregrine-stooper",
+     "sparrow-chick",
+     "swamp-alligator",
+     "the-gannet-queen",
+     "wound-reaver"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:flying",
+     "family:strike-first",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "anvil-thrush",
+     "chamois-leaper",
+     "eagle-owl-quartermaster",
+     "eyrie-warden",
+     "gangrenous-leech",
+     "golden-eagle-diver",
+     "great-horned-owl",
+     "peak-condor",
+     "peregrine-stooper",
+     "swamp-alligator",
+     "the-gannet-queen",
+     "wound-reaver"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "my": {
+   "id": "my",
+   "num": 14,
+   "side": "m5",
+   "name": "The Canopy",
+   "cap": "veryrare",
+   "bpro": {
+    "pool": [
+     "amber-cicada",
+     "bramblewood-macaque",
+     "camouflage-frog",
+     "fishing-cat",
+     "hercules-beetle",
+     "hoopoe-herald",
+     "jaguar-stalker",
+     "kinkajou-lurker",
+     "mosquito-cloud",
+     "pride-queen",
+     "proboscis-monkey"
+    ],
+    "focuses": [
+     "family:strike-first",
+     "family:tide",
+     "big",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "amber-cicada",
+     "banded-sea-krait",
+     "barkplate-beetle",
+     "bramblewood-macaque",
+     "camouflage-frog",
+     "eagle-owl-quartermaster",
+     "fishing-cat",
+     "fungus-gnat-cloud",
+     "grave-grin-hyena",
+     "great-barracuda",
+     "hercules-beetle",
+     "hoopoe-herald",
+     "ibex-rockcaller",
+     "ironclaw-fiddler",
+     "jaguar-stalker",
+     "kinkajou-lurker",
+     "mangrove-manatee",
+     "mosquito-cloud",
+     "pride-queen",
+     "proboscis-monkey",
+     "stoat-cutthroat",
+     "upside-down-bat",
+     "wolf-spider-mother"
+    ],
+    "anchor": [
+     "amber-cicada",
+     "bramblewood-macaque",
+     "camouflage-frog",
+     "fishing-cat",
+     "hercules-beetle",
+     "hoopoe-herald",
+     "jaguar-stalker",
+     "kinkajou-lurker",
+     "mosquito-cloud",
+     "pride-queen",
+     "proboscis-monkey"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:strike-first",
+     "family:tide",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "amber-cicada",
+     "bramblewood-macaque",
+     "camouflage-frog",
+     "fishing-cat",
+     "hercules-beetle",
+     "hoopoe-herald",
+     "jaguar-stalker",
+     "kinkajou-lurker",
+     "mosquito-cloud",
+     "pride-queen",
+     "proboscis-monkey"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "mi": {
+   "id": "mi",
+   "num": 17,
+   "side": "m6",
+   "name": "The Ice Hollow",
+   "cap": "veryrare",
+   "bpro": {
+    "pool": [
+     "frostbitten-wolverine",
+     "glacier-yak",
+     "greenland-shark",
+     "harbor-seal",
+     "ice-crevasse-wolf",
+     "polar-bear",
+     "ringed-seal",
+     "snow-ermine",
+     "walrus-icebreaker",
+     "wolfsbane-alpha"
+    ],
+    "focuses": [
+     "family:evasion",
+     "family:cold",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "arctic-tern",
+     "dhole-matriarch",
+     "eagle-owl-quartermaster",
+     "frostbitten-wolverine",
+     "glacier-yak",
+     "grave-grin-hyena",
+     "greenland-shark",
+     "harbor-seal",
+     "harp-seal-pup",
+     "ibex-rockcaller",
+     "ice-crevasse-wolf",
+     "krill-swarm",
+     "lone-grey-wolf",
+     "magma-wraith",
+     "mountain-hare",
+     "polar-bear",
+     "ringed-seal",
+     "snow-ermine",
+     "stoat-cutthroat",
+     "upside-down-bat",
+     "walrus-icebreaker",
+     "wolf-spider-mother",
+     "wolfsbane-alpha"
+    ],
+    "anchor": [
+     "frostbitten-wolverine",
+     "glacier-yak",
+     "greenland-shark",
+     "harbor-seal",
+     "harp-seal-pup",
+     "ice-crevasse-wolf",
+     "polar-bear",
+     "ringed-seal",
+     "snow-ermine",
+     "walrus-icebreaker",
+     "wolfsbane-alpha"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:evasion",
+     "family:cold",
+     "swarm",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "frostbitten-wolverine",
+     "glacier-yak",
+     "greenland-shark",
+     "harbor-seal",
+     "ice-crevasse-wolf",
+     "polar-bear",
+     "ringed-seal",
+     "snow-ermine",
+     "walrus-icebreaker",
+     "wolfsbane-alpha"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "mpd": {
+   "id": "mpd",
+   "num": 18,
+   "side": "md",
+   "name": "The Pale Desert",
+   "cap": "veryrare",
+   "bpro": {
+    "pool": [
+     "antlion-pit",
+     "barrel-cactus",
+     "caustic-scorpion",
+     "dune-jackal",
+     "horned-lizard",
+     "nightjar-drifter",
+     "quicksand-queen",
+     "roadrunner-courier",
+     "sand-widow",
+     "sandstorm-roc",
+     "sunbittern-strider"
+    ],
+    "focuses": [
+     "family:poison",
+     "family:strike-first",
+     "swarm",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "antlion-pit",
+     "barrel-cactus",
+     "caustic-scorpion",
+     "dune-jackal",
+     "dust-devil-kestrel",
+     "eagle-owl-quartermaster",
+     "frillneck-duelist",
+     "gallery-orb-weaver",
+     "giant-cave-huntsman",
+     "glimmer-spider",
+     "grave-grin-hyena",
+     "horned-lizard",
+     "ibex-rockcaller",
+     "nightjar-drifter",
+     "quicksand-queen",
+     "roadrunner-courier",
+     "sand-widow",
+     "sandstorm-roc",
+     "stoat-cutthroat",
+     "sunbittern-strider",
+     "thorny-devil",
+     "upside-down-bat",
+     "wolf-spider-mother"
+    ],
+    "anchor": [
+     "antlion-pit",
+     "barrel-cactus",
+     "caustic-scorpion",
+     "dune-jackal",
+     "horned-lizard",
+     "nightjar-drifter",
+     "quicksand-queen",
+     "roadrunner-courier",
+     "sand-widow",
+     "sandstorm-roc",
+     "sunbittern-strider"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:strike-first",
+     "family:poison",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "antlion-pit",
+     "barrel-cactus",
+     "caustic-scorpion",
+     "dune-jackal",
+     "horned-lizard",
+     "nightjar-drifter",
+     "quicksand-queen",
+     "roadrunner-courier",
+     "sand-widow",
+     "sandstorm-roc",
+     "sunbittern-strider"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "m9": {
+   "id": "m9",
+   "num": 19,
+   "side": "m3",
+   "name": "Basalt Foundry",
+   "cap": "veryrare",
+   "bpro": {
+    "pool": [
+     "basalt-boar",
+     "cinder-gecko",
+     "cinder-hornet",
+     "cinder-skeleton",
+     "ember-revenant",
+     "fire-salamander",
+     "grindstone-boar",
+     "obsidian-scorpion",
+     "pumice-beetle",
+     "smoke-raccoon"
+    ],
+    "focuses": [
+     "family:evasion",
+     "big",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "ash-moth",
+     "ashbone-ghoul",
+     "badger-berserker",
+     "basalt-boar",
+     "cinder-gecko",
+     "cinder-hornet",
+     "cinder-skeleton",
+     "eagle-owl-quartermaster",
+     "ember-centipede",
+     "ember-revenant",
+     "fire-salamander",
+     "grave-grin-hyena",
+     "grindstone-boar",
+     "magma-wraith",
+     "obsidian-lich",
+     "obsidian-scorpion",
+     "pumice-beetle",
+     "rimefire-salamander",
+     "smoke-raccoon",
+     "stoat-cutthroat",
+     "tide-spirit",
+     "wolf-spider-mother"
+    ],
+    "anchor": [
+     "basalt-boar",
+     "cinder-gecko",
+     "cinder-hornet",
+     "cinder-skeleton",
+     "ember-revenant",
+     "fire-salamander",
+     "grindstone-boar",
+     "obsidian-scorpion",
+     "pumice-beetle",
+     "smoke-raccoon"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:evasion",
+     "family:flying",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "basalt-boar",
+     "cinder-gecko",
+     "cinder-hornet",
+     "cinder-skeleton",
+     "ember-revenant",
+     "fire-salamander",
+     "grindstone-boar",
+     "obsidian-scorpion",
+     "pumice-beetle",
+     "smoke-raccoon"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "me": {
+   "id": "me",
+   "num": 20,
+   "side": "m11",
+   "name": "Eye of the Volcano",
+   "cap": "epic",
+   "bpro": {
+    "pool": [
+     "ancient-sloth-titan",
+     "ash-moth",
+     "basalt-boar",
+     "berserker-boar",
+     "deep-cave-troll",
+     "honey-badger-fury",
+     "magma-salamander",
+     "obsidian-lich",
+     "obsidian-scorpion",
+     "stalactite-golem",
+     "sulfur-vent-crab",
+     "the-contradiction",
+     "ur-elk",
+     "vampire-roost"
+    ],
+    "focuses": [
+     "family:rally",
+     "family:armor",
+     "big",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "ancient-sloth-titan",
+     "ash-moth",
+     "basalt-boar",
+     "berserker-boar",
+     "cave-olm",
+     "deep-cave-troll",
+     "eagle-owl-quartermaster",
+     "fire-salamander",
+     "fumarole-ibex",
+     "grave-grin-hyena",
+     "honey-badger-fury",
+     "ibex-rockcaller",
+     "lantern-spark-fly",
+     "magma-salamander",
+     "obsidian-lich",
+     "obsidian-scorpion",
+     "polar-bear",
+     "stalactite-golem",
+     "stoat-cutthroat",
+     "sulfur-vent-crab",
+     "the-contradiction",
+     "truffle-piglet",
+     "upside-down-bat",
+     "ur-elk",
+     "vampire-roost",
+     "wolf-spider-mother"
+    ],
+    "anchor": [
+     "ancient-sloth-titan",
+     "ash-moth",
+     "basalt-boar",
+     "berserker-boar",
+     "deep-cave-troll",
+     "honey-badger-fury",
+     "magma-salamander",
+     "obsidian-lich",
+     "obsidian-scorpion",
+     "stalactite-golem",
+     "sulfur-vent-crab",
+     "the-contradiction",
+     "ur-elk",
+     "vampire-roost"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:rally",
+     "family:armor",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "ancient-sloth-titan",
+     "ash-moth",
+     "basalt-boar",
+     "berserker-boar",
+     "deep-cave-troll",
+     "honey-badger-fury",
+     "magma-salamander",
+     "obsidian-lich",
+     "obsidian-scorpion",
+     "stalactite-golem",
+     "sulfur-vent-crab",
+     "the-contradiction",
+     "ur-elk",
+     "vampire-roost"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  },
+  "mx": {
+   "id": "mx",
+   "num": 20,
+   "side": "m11",
+   "name": "Volcano Lair",
+   "cap": "heroic",
+   "bpro": {
+    "pool": [
+     "ancient-sloth-titan",
+     "basalt-boar",
+     "caldera-wyrm",
+     "deep-cave-troll",
+     "fire-salamander",
+     "fumarole-ibex",
+     "magma-salamander",
+     "obsidian-scorpion",
+     "quillback-elder",
+     "stalactite-golem",
+     "ur-elk",
+     "vampire-roost"
+    ],
+    "focuses": [
+     "family:armor",
+     "family:guard",
+     "big",
+     "open"
+    ]
+   },
+   "pro": {
+    "pool": [
+     "ancient-sloth-titan",
+     "basalt-boar",
+     "caldera-wyrm",
+     "cave-olm",
+     "cave-swiftlet",
+     "chamois-leaper",
+     "deep-cave-troll",
+     "eagle-owl-quartermaster",
+     "fire-drake-hatchling",
+     "fire-salamander",
+     "fumarole-ibex",
+     "giant-cave-huntsman",
+     "grave-grin-hyena",
+     "ibex-rockcaller",
+     "magma-salamander",
+     "obsidian-scorpion",
+     "polar-bear",
+     "quillback-elder",
+     "stalactite-golem",
+     "stoat-cutthroat",
+     "stonedrop-vulture",
+     "upside-down-bat",
+     "ur-elk",
+     "vampire-roost",
+     "wolf-spider-mother"
+    ],
+    "anchor": [
+     "ancient-sloth-titan",
+     "basalt-boar",
+     "caldera-wyrm",
+     "deep-cave-troll",
+     "fire-drake-hatchling",
+     "fire-salamander",
+     "fumarole-ibex",
+     "magma-salamander",
+     "obsidian-scorpion",
+     "quillback-elder",
+     "stalactite-golem",
+     "ur-elk",
+     "vampire-roost"
+    ],
+    "anchorMin": 10,
+    "focuses": [
+     "family:strike-first",
+     "family:armor",
+     "big",
+     "open"
+    ]
+   },
+   "wpro": {
+    "pool": [
+     "ancient-sloth-titan",
+     "basalt-boar",
+     "caldera-wyrm",
+     "deep-cave-troll",
+     "fire-salamander",
+     "fumarole-ibex",
+     "magma-salamander",
+     "obsidian-scorpion",
+     "quillback-elder",
+     "stalactite-golem",
+     "ur-elk",
+     "vampire-roost"
+    ],
+    "plans": [
+     "low",
+     "top-heavy"
+    ]
+   }
+  }
+ },
+ "about": "BAL16 (2026-11-05, REFDECK-1): per map the BPRO pool (the list), the PRO pool (list + held), the focuses (EFFECTS-1 order) and the weak plans; tools/bal16/refdecks_2026_11_05.js",
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "apart": 10,
+  "maxOverlap": 10,
+  "level": 1,
+  "budget": {
+   "bpro": 6000,
+   "pro": 8000,
+   "wpro": 1600
+  },
+  "finalGames": 24
+ }
+}
