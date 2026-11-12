@@ -53,6 +53,7 @@ const NO_CACHE = flag('--full') || flag('--no-cache');
 const ONLY = opt('--only', null);
 const JOBS = Math.max(1, parseInt(opt('-j', '2'), 10) || 2);
 const LIST = flag('--list');
+const TEST_TIMEOUT = +process.env.BW_TEST_TIMEOUT || 600;
 
 // ---- the list, read from run-all.sh ----
 const runAll = fs.readFileSync(path.join(ROOT, 'tests', 'run-all.sh'), 'utf8');
@@ -200,9 +201,12 @@ function runOne(t) {
     const argv = [t.file, ...(t.extra ? t.extra.split(/\s+/) : [])];
     const p = spawn(t.cmd, argv, { cwd: ROOT, env: process.env });
     let out = '';
+    // 2026-11-12: a hung test stalled the 11-12 suite for its whole 2-hour limit; one test may take 10 min (BW_TEST_TIMEOUT seconds), then it fails
+    const kill = setTimeout(() => { out += `\n(killed after ${TEST_TIMEOUT}s)`; p.kill('SIGKILL'); }, TEST_TIMEOUT * 1000);
     p.stdout.on('data', d => { out += d; if (out.length > 400000) out = out.slice(-200000); });
     p.stderr.on('data', d => { out += d; if (out.length > 400000) out = out.slice(-200000); });
     p.on('close', code => {
+      clearTimeout(kill);
       const secs = (Date.now() - t0) / 1000;
       timings[t.name] = secs;
       results.push({ t, code, secs, out });
