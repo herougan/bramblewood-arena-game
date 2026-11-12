@@ -26,7 +26,7 @@ ok(/prefers-reduced-motion: reduce\)\{ \.tide-scene \.tw-wave[^}]*animation:none
   ok(/@keyframes twWaveDrift\{from\{transform:translateX\(0\);\} to\{transform:translateX\(-240px\);\}\}/.test(tpl), 'the crest drifts by transform only, one tile (240 px) so it loops'); }
 
 // 2. Guardian: the rule and the picture agree on what exists
-ok(/function blockerReady\(n\)\{ return !!n && !\(n\.wait > 0\)/.test(eng) && /isLiveGuardian[^\n]*blockerReady\(n\)/.test(eng), 'engine: a Guardian steps in only while Ready (ENG9), unchanged');
+ok(/function blockerReady\(n\)\{ return !!n && (!inRitual\(n\)[^&]*&& )?!\(n\.wait > 0\)/.test(eng) /* 2026-11-13: ENG-RC1 adds the Ritual check first */ && /isLiveGuardian[^\n]*blockerReady\(n\)/.test(eng), 'engine: a Guardian steps in only while Ready (ENG9), unchanged');
 ok(/const guards = !!\(\(d\.effects\|\|\{\}\)\.guardian\) && !fog/.test(src), 'the plates are drawn for every Guardian from the moment it is placed (no wait gate)');
 
 // 3. Bulwark
