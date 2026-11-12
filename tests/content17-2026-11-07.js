@@ -33,7 +33,12 @@ const ownLists = m=>{ const top = parent[m] || m, e = POOLS[top] || {}; return n
 // picks; a pick on its map's list is fine when one of those three put it there (was: no pick on its own map's lists)
 const appSrc = R('arena_app.js'), grabC = n=> JSON.parse((appSrc.match(new RegExp('const ' + n + ' = (\\{.*?\\});\\n')) || [0, '{}'])[1]);
 const PICKS = J('docs/design/map-picks-owner-2026-11-11.json').maps, ADMIN = grabC('UI47_ADMIN_ADD'), SUGGEST = grabC('UI47_SUGGEST');
-const tookUp = (m, id)=>{ const top = parent[m] || m; return [(PICKS[top] || {}).yes, ADMIN[top], SUGGEST[top], ...Object.keys((POOLS[top] || {}).submaps || {}).map(s=> SUGGEST[s])].some(l=> (l || []).includes(id)); };
+// 2026-11-12 (TESTFIX1): SKIR3's lists are the owner's 11-12 picks (+ its own adds / top-ups, docs/balance/skir3/lists-2026-11-12.json): they took up more of these picks, so they count as a source too
+const PICKS12 = J('docs/design/map-picks-owner-2026-11-12.json').maps, S3 = J('docs/balance/skir3/lists-2026-11-12.json'), s3adds = x=> Array.isArray(x) ? x : Object.keys(x || {});
+// a side list also Carries cards of earlier maps (SKIR3 top-ups), so a card any map's 11-12 Yes picks hold counts as taken up
+const SG11 = J('docs/design/map-suggestions-2026-11-11.json').submaps; // THEME8's side-map suggestions (the side lists' NEW! cards come from them)
+const anyYes12 = id=> Object.values(PICKS12).some(e=> (e.yes || []).includes(id));
+const tookUp = (m, id)=>{ const top = parent[m] || m, subs = Object.keys((POOLS[top] || {}).submaps || {}); return anyYes12(id) || subs.concat(m).some(x=> ((SG11[x] || {}).suggest || []).concat((SG11[x] || {}).carried || []).includes(id)) || [(PICKS[top] || {}).yes, (PICKS12[top] || {}).yes, ...subs.map(s=> (PICKS12[s] || {}).yes), s3adds((S3.main[top] || {}).claudeAdds), ...subs.map(s=> s3adds((S3.side[s] || {}).claudeAdds)), ADMIN[top], SUGGEST[top], ...subs.map(s=> SUGGEST[s])].some(l=> (l || []).includes(id)); };
 let total = 0, ranged = 0;
 MAPS.forEach(m=>{
   const e = c17[m]; ok(!!(e && Array.isArray(e.groups)), `${m}: has content17 groups`); if(!e || !e.groups) return;

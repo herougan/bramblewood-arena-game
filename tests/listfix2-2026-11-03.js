@@ -27,6 +27,8 @@ const specialOf = k=> (pools[topOf[k]] || {}).special || [];
 const RESTORED = new Set([]);
 // 2026-11-11 (LISTFIX3): a cut the owner picked Yes again on that map's list in his 11-11 picks is listed by his newer choice (mk Fishing Cat, mw Alley Cat, mw Marsh-mallow Hare)
 const REPICKED = new Set(); Object.entries(J('docs/design/map-picks-owner-2026-11-11.json').maps).forEach(([k, p])=> (p.yes || []).forEach(id=> REPICKED.add(k + '|' + id)));
+// 2026-11-12 (TESTFIX1): the owner's 11-12 Yes picks (the lists SKIR3 built) re-pick a cut card as the 11-11 ones did; SKIR3's own top-ups of cut cards (mo house-cat, mpd armadillo-guard) are NOT re-picks and stay flagged by the last check
+Object.entries(J('docs/design/map-picks-owner-2026-11-12.json').maps).forEach(([k, p])=> (p.yes || []).forEach(id=> REPICKED.add(k + '|' + id)));
 const LF2 = {mb: ['fiddler-crab-swarm', 'grey-seal-bull', 'tidepool-trapper-crab'], m2: ['old-sturgeon', 'stone-turtle-warden'], mw: ['venomlord-serpent', 'snapper-hatchling'], m8: ['marsh-wisp'], m5: ['weaver-bird'], m11: ['woodland-brawler'], mc: ['the-gannet-queen'], m3: ['yeti-chieftain']};
 
 // ---------------------------------------------------------------- 1. the 11-01 export's cuts
@@ -52,7 +54,8 @@ Object.entries(review).forEach(([k, r])=>{ if(!topOf[k]) return; ((r.cut || []).
     ok(why, `${k}: cut ${e.id} on SPECIAL is a fight's card of that map (boss / reward / first clear)`);
     ok(!!e.statusWhy, `${k}: cut ${e.id} on SPECIAL says why (statusWhy)`); } }); });
 ok(still.sort().join() === [...RESTORED].sort().join(), `no cut card is still on its list (got ${still.join(', ')})`); // 2026-11-05 (CONTENT10): was the two CARD5 cards
-ok([...repicked].sort().join() === 'mk|fishing-cat,mw|alley-cat,mw|marsh-mallow-hare', `the cuts listed again are the owner's 11-11 Yes picks (got ${[...repicked].sort().join(', ')})`); // 2026-11-11 (LISTFIX3)
+// 2026-11-12 (TESTFIX1): was the three 11-11 picks by name; SKIR3's lists re-list more cuts (his 11-12 picks), so the rule is read generically: every cut listed again is one of his Yes picks (11-11 or 11-12)
+ok([...repicked].length > 0 && [...repicked].every(x=> REPICKED.has(x)), `the cuts listed again are the owner's Yes picks (got ${[...repicked].sort().join(', ')})`); // 2026-11-11 (LISTFIX3)
 ok(spec.join() === 'm6|wolfsbane-alpha', `only Wolfsbane Alpha is kept on SPECIAL for its fight (got ${spec.length}: ${spec.join(', ')})`); // 2026-11-05 (CONTENT10): was 11
 Object.entries(LF2).forEach(([k, ids])=> ids.forEach(id=> ok(!(pools[k].cards || []).includes(id) && !(pools[k].special || []).includes(id), `CONTENT10: ${id} is off ${k}'s MAP and SPECIAL lists (LISTFIX2)`)));
 

@@ -41,7 +41,8 @@ for(const m of mains){ const n = G.mapNumberOf(m.id), t = th6(n), r = review[m.i
   const listed = new Set(pools[m.id].cards), sp = new Set(pools[m.id].special || []);
   // 2026-11-11 (SKIR1): Maps 0-20's MAP lists are the owner's 2026-11-11 picks + admin adds / THEME8's suggestions now (tests/skir1-2026-11-11.js
   // checks them); this review's chosen lists still bind Maps 21-24
-  if(n <= 20) continue;
+  // 2026-11-12 (TESTFIX1): SKIR3 rebuilt Map 21's list from the owner's picks too, so the review's chosen lists bind Maps 22-24 only
+  if(n <= 21) continue;
   ok(r.chosen.every(e=> listed.has(e.id) || sp.has(e.id)), `2. Map ${n}: every chosen card is on the MAP list or SPECIAL`);
   ok(pools[m.id].cards.every(id=> r.chosen.some(e=> e.id === id)), `2. Map ${n}: every MAP card has a review entry`); }
 
@@ -53,7 +54,8 @@ ok(['2-2', '2-4', '2-5'].every(k=> !deckOf('mb', k)['sea-turtle-elder']) && ['2-
 // 2026-11-11 (SKIR1): the owner's 2026-11-11 Yes picks for Sunken Hollow keep the Shoal Shark and leave out both the Muskrat and the Alley Cat
 ok(pools.m2.cards.includes('shoal-shark') && !pools.m2.cards.includes('muskrat-reedgatherer'), '3. Sunken Hollow: Shoal Shark back, Muskrat Reedgatherer out');
 ok(!cards['shoal-shark'].unattainable && cards['shoal-shark'].source.map === 'm2', '3. Shoal Shark is a Sunken Hollow pack card again');
-ok(!pools.m11.cards.includes('glacier-wolf-pack') && pools.m11.cards.includes('chamois-leaper'), '3. The Sundered Peak: Glacier Wolf Pack replaced by Chamois Leaper');
+// 2026-11-12 (TESTFIX1): the owner's 11-12 picks for The Sundered Peak leave out the Chamois Leaper; the rule that stays is that the Glacier Wolf Pack is off the list
+ok(!pools.m11.cards.includes('glacier-wolf-pack'), '3. The Sundered Peak: Glacier Wolf Pack stays off the list');
 const arch = c=>{ if(!c) return false; const ml = c.mechanicLine; const e = c.effects || {}; return (ml && ml !== 'none' && ml !== 'None') || c.graceCost || c.prayerReq || c.exileCost || c.devilryCost || (c.archetypes || []).includes('Ecclesia') || e.evolute || e.evoluteAlpha || e.evoluteOmega; };
 G.CONQUEST_MAPS.filter(m=> !m.reserved && G.mapNumberOf(m.id) >= 20).forEach(m=>{ const top = m.sub ? m.parent : m.id, e = pools[top]; if(!e) return;
   const ids = m.sub ? ((e.submaps || {})[m.id] || []) : e.cards.concat(e.special || []);
@@ -63,7 +65,7 @@ const REW = [['rock-pool-starfish', 'mb', '2-1'], ['driftwood-crab', 'mb', '2-5'
 REW.forEach(([id, mid, node])=>{ const s = cards[id].source || {}; ok(s.kind === 'map' && s.id === mid && s.node === node, `3. ${id} is ${node}'s reward`); });
 ok(cards.yeti.source.challenge === true && !(cards['yeti-chieftain'].source || {}).challenge, '3. 19-6\'s challenge card is the Yeti (LISTFIX2-2)');
 // 2026-11-11 (LISTFIX3): mw:5-1's row follows its node's firstCard (marsh-mallow-hare, which pays); cypress-root-lurker left Map 5's 11-11 list (GD-5)
-const FP = {'mb:2-3': 'open-ocean-hermit-crab', 'm2:4-2': 'water-shrew', 'mw:5-1': 'marsh-mallow-hare', 'mw:5-3': 'swamp-alligator', 'm8:6-4': 'lamprey', 'm5:14-3': 'marula-elephant'};
+const FP = {'mb:2-3': 'open-ocean-hermit-crab', 'm2:4-2': 'water-shrew', 'mw:5-1': 'marsh-mallow-hare', 'mw:5-3': 'swamp-alligator', 'm8:6-4': 'mosquito-cloud' /* 2026-11-12 (TESTFIX1): SKIR3 (GD-5) swapped lamprey for the nearest card of the 11-12 list */, 'm5:14-3': 'marula-elephant'};
 Object.entries(FP).forEach(([k, id])=> ok(new RegExp(`'${k}': '${id}'`).test(src), `3. ${k}'s first-clear card is ${id}`));
 const LF2 = {mb: ['fiddler-crab-swarm', 'grey-seal-bull', 'tidepool-trapper-crab'], m2: ['old-sturgeon', 'stone-turtle-warden'], mw: ['venomlord-serpent', 'snapper-hatchling'], m8: ['marsh-wisp'], m5: ['weaver-bird'], m11: ['woodland-brawler'], mc: ['the-gannet-queen'], m3: ['yeti-chieftain']};
 Object.entries(LF2).forEach(([mid, ids])=>{ const m = G.CONQUEST_MAPS.find(x=> x.id === mid);

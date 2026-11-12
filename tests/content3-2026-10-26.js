@@ -137,7 +137,9 @@ const SUGGEST = JSON.parse((fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'ut
 const movedBy1111 = id=> Object.values(SUGGEST).some(l=> l.includes(id)) && Object.values(pools).some(e=> (e.cards || []).includes(id) || Object.values(e.submaps || {}).some(l=> (Array.isArray(l) ? l : l.cards || []).includes(id)));
 { const r = require('child_process').spawnSync(process.execPath, [path.join(ROOT, 'tools', 'content3_2026_10_26.js'), 'check'], {encoding: 'utf8'});
   const probs = (r.stdout || '').trim().split('\n').filter(l=> l && !/^(ok:|\d+ problem)/.test(l)).filter(l=>{
-    let m = /^not in pool (\S+)$/.exec(l); if(m && placeOf[m[1]] && (!t2Has(placeOf[m[1]], m[1]) || movedBy1111(m[1]))) return false;
+    // 2026-11-12 (TESTFIX1): SKIR3 cut 75 cards from every list (the Granite Ox Golem among them): a card out of play ('unplaced', LMP.budgetHold) is not "missing" from its pool
+    const outNow = id=> require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(id) === 'unplaced';
+    let m = /^not in pool (\S+)$/.exec(l); if(m && placeOf[m[1]] && (!t2Has(placeOf[m[1]], m[1]) || movedBy1111(m[1]) || outNow(m[1]))) return false;
     m = /^not moved (\S+)$/.exec(l); const mv = m && C3.MOVE[m[1]]; if(mv && !pools[mv.from].cards.includes(m[1]) && (by[m[1]].source || {}).map === mv.to && !t2Has(mv.to, m[1])) return false;
     // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): "over budget <id>" is reported, not failed, for an unplaced card
     // (on no list) or one pending the owner's re-fit (step 3) (tools/lib_map_pools.js budgetHold)

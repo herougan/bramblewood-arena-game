@@ -19,6 +19,9 @@ let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  âœ
 
 const cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, c])), c = by['sea-bass'];
 const design = J('docs/design/map-suggestions-2026-11-11.json').seaBass;
+// 2026-11-12 (TESTFIX1): the owner's 11-12 picks for Map 10 left the Sea Bass out and SKIR3 took it off every list: it is out of play now ('unplaced'), flagged unattainable,
+// in no deck and exempt from the budget hold. OUT switches each placement check to that rule; the card's own data, skills and texts are checked as before
+const OUT = L.budgetHold('sea-bass') === 'unplaced';
 
 // ---- 1. the card -----------------------------------------------------------------------------------------------------------------------
 ok(!!c, '1 sea-bass is in canonical/cards.json'); if(!c){ console.log(`content19: ${n - fail}/${n} ok`); process.exit(1); }
@@ -33,39 +36,43 @@ ok(c.archetypes.includes('Fish') && c.archetypes.includes('Coral Reef'), `1 Type
 ok(c.flavor === design.flavor, '1 THEME8\'s flavour line');
 ok(/\p{Extended_Pictographic}/u.test(c.icon) && !c.art, `1 the emoji fallback (${c.icon}) and no art yet`);
 ok(JSON.stringify(c.source) === '{"kind":"pack","tier":2,"map":"m7"}', '1 a basic-pack card of Pack 2, map m7 (as Parrotfish and the other Map 10 pack cards)');
-ok(!c.awaitingSource && !c.unattainable && !c.pool && c.locked === true && c.test === false, '1 placed, not awaiting a source');
+ok(!c.awaitingSource && (OUT ? c.unattainable === true : !c.unattainable) && !c.pool && c.locked === true && c.test === false, `1 ${OUT ? 'out of play and flagged unattainable (SKIR3), not awaiting a source' : 'placed, not awaiting a source'}`);
 { const ids = cards.map(x=> x.numericId).filter(x=> x != null), uu = cards.map(x=> x.uuid).filter(Boolean);
-  ok(new Set(ids).size === ids.length && new Set(uu).size === uu.length, '1 numericIds and uuids are unique'); ok(c.numericId === Math.max(...ids) && cards[cards.length - 1].id === 'sea-bass', `1 appended at the end with the next numericId (${c.numericId})`); }
+  ok(new Set(ids).size === ids.length && new Set(uu).size === uu.length, '1 numericIds and uuids are unique'); ok(cards.slice(cards.indexOf(c) + 1).every(x=> x.numericId > c.numericId) /* 2026-11-12 (TESTFIX1): later cards (Barrel Cactus) were appended after it */, `1 appended at the end with the next numericId (${c.numericId})`); }
 ok(/CONTENT19/.test(c.creatorNote || ''), '1 a CONTENT19 creatorNote');
 
 // ---- 2. the budget at the game's own term ----------------------------------------------------------------------------------------------
 const def = LB.CARD_DEFS_BASELINE['sea-bass'];
 ok(!!def, '2 the game reads the card (tools/lib_bramble CARD_DEFS_BASELINE)');
 const om = G.cardObtainMap(def);
-ok(om === 7 && J('canonical/card-obtain-maps.json').maps['sea-bass'] === 7, `2 the game prices it at Map 7 (Pack 2's first map), and canonical/card-obtain-maps.json says so (${om})`);
-{ const b = TB.budget(Object.assign({}, c, {obtainMap: om}), {level: 1});
+if(OUT) ok(!om && J('canonical/card-obtain-maps.json').maps['sea-bass'] == null, `2 out of play: the game gives it no obtain map (${om}), and canonical/card-obtain-maps.json lists none`);
+else ok(om === 7 && J('canonical/card-obtain-maps.json').maps['sea-bass'] === 7, `2 the game prices it at Map 7 (Pack 2's first map), and canonical/card-obtain-maps.json says so (${om})`);
+const omB = om ? om : 7; // Pack 2's first map: the term its budget is judged at
+{ const b = TB.budget(Object.assign({}, c, {obtainMap: omB}), {level: 1});
   ok(b.ok, `2 passes at the game's term (3A + H + S ${b.x1} / N ${b.N}; cap 2 ${b.x2} / ${b.N2})`);
   ok(Math.abs(b.S - 5.78) < 0.01 && b.parts.length === 3 && !(b.missing || []).length, `2 S 5.78 = Tide 0.5 + Wave 2.15 + Swarm 3.13 (${b.S}), every skill priced`);
-  const old = TB.budget(Object.assign({}, c, {attack: 3, health: 7, obtainMap: om}), {level: 1}), at10 = TB.budget(Object.assign({}, c, {attack: 3, health: 7, obtainMap: 10}), {level: 1});
+  const old = TB.budget(Object.assign({}, c, {attack: 3, health: 7, obtainMap: omB}), {level: 1}), at10 = TB.budget(Object.assign({}, c, {attack: 3, health: 7, obtainMap: 10}), {level: 1});
   ok(!old.ok && at10.ok, `2 THEME8's 3/7 is over at Map 7 (${old.x1} > ${old.N}) and passes only at the Map 10 term (${at10.x1} <= ${at10.N}): why Health is 6`);
   ok(TB.budget(Object.assign({}, c, {obtainMap: 10}), {level: 1}).ok, '2 and 3/6 passes at Map 10 as well'); }
-ok(L.budgetHold('sea-bass') === '', `2 the card-pass budget check looks at it (not unplaced or pending): "${L.budgetHold('sea-bass')}"`);
+ok(OUT ? L.budgetHold('sea-bass') === 'unplaced' : L.budgetHold('sea-bass') === '', `2 the card-pass budget check ${OUT ? 'skips it (unplaced)' : 'looks at it (not unplaced or pending)'}: "${L.budgetHold('sea-bass')}"`);
 
 // ---- 3. Map 10's list ------------------------------------------------------------------------------------------------------------------
 const pools = J('canonical/map-pools.json'), extras = J('canonical/pack-extras.json');
 ok(G.mapNumberOf('m7') === 10, '3 main map m7 is Map 10 (mapNumberOf)');
-ok(pools.maps.m7.cards.includes('sea-bass'), '3 on Map 10\'s MAP list (canonical/map-pools.json m7 cards)');
+ok(OUT ? !pools.maps.m7.cards.includes('sea-bass') : pools.maps.m7.cards.includes('sea-bass'), OUT ? '3 off Map 10\'s MAP list (SKIR3: not one of the owner\'s picks)' : '3 on Map 10\'s MAP list (canonical/map-pools.json m7 cards)');
 { const on = []; Object.entries(pools.maps).forEach(([k, e])=>{ if((e.cards || []).includes('sea-bass')) on.push(k); if((e.special || []).includes('sea-bass')) on.push(k + ' special'); Object.entries(e.submaps || {}).forEach(([s, l])=>{ if(l.includes('sea-bass')) on.push(s); }); });
-  ok(on.length === 1 && on[0] === 'm7', `3 on no other list, no SPECIAL, no submap (${on})`); }
+  ok(OUT ? on.length === 0 : (on.length === 1 && on[0] === 'm7'), `3 ${OUT ? 'on no list at all' : 'on no other list, no SPECIAL, no submap'} (${on})`); }
 ok(!Object.values(extras).some(v=> Array.isArray(v) && v.includes('sea-bass')), '3 in no pack extras');
-{ const e = J('canonical/map-review.json').maps.m7.chosen.find(x=> x.id === 'sea-bass'); ok(e && e.by === 'owner' && /CONTENT19/.test(e.why), '3 Map 10\'s review (canonical/map-review.json m7 chosen) has it as the owner\'s ask (content4 / content10 want a review row for every list card)'); }{ const f = G.cardFirstMapList(def); ok(f && f.n === 10 && f.loc === 'm7', `3 its first map list is Map 10 (${JSON.stringify(f)})`); ok(G.basicPackTierOf(def) === 2, `3 a Pack 2 card (${G.basicPackTierOf(def)})`); }
+{ const e = J('canonical/map-review.json').maps.m7.chosen.find(x=> x.id === 'sea-bass'); ok(OUT || (e && e.by === 'owner' && /CONTENT19/.test(e.why)), '3 Map 10\'s review (canonical/map-review.json m7 chosen) has it as the owner\'s ask (content4 / content10 want a review row for every list card)'); }{ const f = G.cardFirstMapList(def); ok(OUT ? !f : (f && f.n === 10 && f.loc === 'm7'), `3 its first map list is ${OUT ? 'none (out of play)' : 'Map 10'} (${JSON.stringify(f)})`); ok(OUT || G.basicPackTierOf(def) === 2, `3 a Pack 2 card (${G.basicPackTierOf(def)})`); }
 // 2026-11-11 (SKIR1): the later package came: SKIR1 rebuilt the skirmishes from the new lists, so the Sea Bass may sit in Map 10's (m7) decks
 // (lines SKIR1 rebuilt) and Map 10's PRO decks, nowhere else
 { const lines = rd('arena_app.js').split('\n').filter(l=> l.includes('"sea-bass"'));
-  ok(lines.every(l=> /^\s*\{ ?key:\s*"10-\d+"/.test(l) && /\(SKIR1( fit)?\)/.test(l)), `3 in no skirmish deck or map block of arena_app.js but Map 10's, rebuilt by SKIR1 (${lines.length} lines)`); }
+  // out of play: no fight deck literal and no baked reference deck (REF_DECK_SETS) may hold it (the 'was {...}' comments SKIR1 / SKIR3 left do not count)
+  const live = lines.filter(l=> /deck:\{[^}]*"sea-bass"/.test(l) || (/REF_DECK_SETS =/.test(l) && /"sea-bass":\d/.test(l)));
+  ok(OUT ? live.length === 0 : lines.every(l=> /^\s*\{ ?key:\s*"10-\d+"/.test(l) && /\(SKIR1( fit)?\)/.test(l)), `3 in no skirmish deck or map block of arena_app.js but Map 10's, rebuilt by SKIR1 (${OUT ? live.length + ' live lines: ' + live.map(l=> (/key:"([^"]+)"/.exec(l) || [0, l.slice(0, 24)])[1]).join(', ') : lines.length + ' lines'})`); }
 { const P = J('canonical/pro-skirmishes.json').maps, on = Object.keys(P).filter(k=> JSON.stringify([P[k].pro, P[k].bpro, P[k].wpro]).includes('sea-bass'));
   ok(on.every(k=> k === 'm7'), `3 in no PRO skirmish but Map 10's (SKIR1 rebuilt them; ${on.join(', ') || 'none'})`); }
-{ const m = /"m7": \{"cards": \[([^\]]*)\]/.exec(rd('index.html')); ok(m && /"sea-bass"/.test(m[1]), '3 the build carries it on Map 10\'s list (index.html)'); }
+{ const m = /"m7": \{"cards": \[([^\]]*)\]/.exec(rd('index.html')); ok(m && (OUT ? !/"sea-bass"/.test(m[1]) : /"sea-bass"/.test(m[1])), OUT ? '3 the build does not carry it on Map 10\'s list (index.html)' : '3 the build carries it on Map 10\'s list (index.html)'); }
 
 // ---- 4. the skills in the engine --------------------------------------------------------------------------------------------------------
 { const so = id=> id === 1 ? 'A' : 'B', all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];

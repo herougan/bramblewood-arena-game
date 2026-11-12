@@ -60,7 +60,11 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
     // 2026-10-29 THEME3: lists follow the owner's 23:35/00:10 notes: the expected list is THEME3's (canonical/map-review.json `chosen`, written by tools/theme3_2026_10_29.py with the file), THEME2's where THEME3 has none
     // 2026-10-29 RELFIX3: each map's boss card (Heroic / Unique, over the rarest its fights may hold) moved from MAP to SPECIAL (tools/opt/relfix3_boss_special_2026_10_29.py)
     const RELFIX3_BOSS = {mb:'old-shell', mc:'the-gannet-queen', m2:'drowned-matriarch', mw:'old-snapjaw', m8:'heron-hag', m4:'echo-matriarch', m7:'reef-admiral', m5:'pride-queen', m6:'wolfsbane-alpha', m3:'yeti-chieftain', m23:'triumvirate'};
-    if(t2){ const want = ((T3[L.sub || L.map]) || t2.proposed).filter(id=> L.sub || RELFIX3_BOSS[L.map] !== id || !(pools[L.map].special || []).includes(id));
+    // 2026-11-12 (TESTFIX1): SKIR3 rebuilt Maps 0-21 and the side lists from the owner's 11-12 picks under the unique-card limits (docs/balance/skir3/lists-2026-11-12.json, `main` / `side` `list`);
+    // that record is the expectation where it has the list (THEME3's / THEME2's stays for the rest), and a main map's list is also checked against the owner's Yes picks (+ SKIR3's three adds)
+    const S3 = J('docs/balance/skir3/lists-2026-11-12.json'), s3r = L.sub ? S3.side[L.sub] : S3.main[L.map], PK = J('docs/design/map-picks-owner-2026-11-12.json').maps;
+    if(!L.sub && PK[L.map]) ok(live && live.every(id=> PK[L.map].yes.includes(id) || ['barrel-cactus', 'planarian-splitter', 'nutria-reedcutter'].includes(id)), `4. ${L.map}: every listed card is one of the owner's 11-12 Yes picks (or a SKIR3 add)`);
+    if(t2){ const want = ((s3r && s3r.list) || (T3[L.sub || L.map]) || t2.proposed).filter(id=> L.sub || RELFIX3_BOSS[L.map] !== id || !(pools[L.map].special || []).includes(id));
       // 2026-11-04 (TESTFIX1): CONTENT8 (2026-11-02, owner 21:12, CONTENT7-1 / KK17) placed new sea cards on four lists after THEME3; they are not THEME3's to list
       const c8 = id=> /package CONTENT8, owner 21:12, CONTENT7-1 \/ KK17\): placed on the /.test((by[id] || {}).creatorNote || ''), liveT = live && live.filter(id=> !c8(id));
       // 2026-11-05 (CONTENT10): map-review.json now lists CONTENT8's placements too (so the Map cards window counts them); they stay aside here

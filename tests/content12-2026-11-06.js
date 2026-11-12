@@ -11,7 +11,8 @@ const cards = J('canonical/cards.json').map(c=> c && require('../bramblewood-ski
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(J('canonical/skill-costs.json'));
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 let fail = 0, pass = 0; const ok = (c, m)=>{ if(c) pass++; else { fail++; console.log('  ✗ ' + m); } };
-const inBand = id=>{ const b = T.budget(by[id], {}); return b && b.ok && !b.wellUnder; };
+// 2026-11-12 (TESTFIX1): a card SKIR3 took off every list ('unplaced') or that waits for the owner's re-fit ('pending') is exempt from the band, as in every other budget check (LMP.budgetHold)
+const inBand = id=>{ if(['unplaced', 'pending'].includes(require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(id))) return true; const b = T.budget(by[id], {}); return b && b.ok && !b.wellUnder; };
 
 // 1. the fold: every plan row's result is in the file (stats and skills), the clear is only proposed
 const plan = J('docs/balance/server-overrides/fold-plan-2026-11-06.json');
@@ -25,8 +26,10 @@ ok(by['terrier-pup'].effects.guardian === true && by['terrier-pup'].health === 5
 ok(by['field-mouse'].effects.pickpocket === 1, 'Field Mouse Pickpocket 1 (owner 11-05)');
 ok(!by['driftwood-crab'].effects.delivery && by['driftwood-crab'].effects.crabClaws, 'Driftwood Crab: his On Attacked Lumber, no renamed Delivery');
 ok(by['bee-knight'].name === 'Bee Warden', 'Bee Warden keeps its TEXT1-1 name');
-const sql = fs.readFileSync(path.join(ROOT, 'supabase', 'proposed', '20261106_clear_folded_overrides_4.sql'), 'utf8');
-ok(/PROPOSED, NOT APPLIED/.test(sql) && /o\.updated_at = f\.at/.test(sql), 'clearing SQL is proposed and matches on updated_at');
+// 2026-11-12 (TESTFIX1): the clearing SQL was applied (CONTENT12-4) and moved from supabase/proposed/ to supabase/oneoff/; read it from either place. Not a SKIR3 break.
+const sqlP = ['proposed', 'oneoff'].map(d=> path.join(ROOT, 'supabase', d, '20261106_clear_folded_overrides_4.sql')).find(f=> fs.existsSync(f));
+const sql = fs.readFileSync(sqlP, 'utf8');
+ok(/(PROPOSED, NOT APPLIED|APPLIED 2026-11-06)/.test(sql) && /o\.updated_at = f\.at/.test(sql), 'clearing SQL is proposed / applied and matches on updated_at' /* 2026-11-12 (TESTFIX1): the header now says APPLIED (CONTENT12-4) */);
 const cfg = J('tools/pipeline/config.json');
 ok(['moon-jelly', 'old-sturgeon', 'fire-ant-raft', 'terrier-pup'].every(id=> cfg.refit.ownerCards.includes(id)), 'the folded cards are owner cards for the pipeline refit');
 
@@ -64,7 +67,8 @@ ok(/key:"17-8", kind:"boss", name:"The Walrus Icebreaker"/.test(src) && !/name:"
 
 // 7. Lilypad Reach's attackers
 const mp = J('canonical/map-pools.json').maps.mb.submaps.mp;
-ok(['shoal-shark', 'beaver-lumberjack', 'marsh-harrier'].every(id=> mp.includes(id)), 'Lilypad Reach lists Shoal Shark, Beaver Lumberjack, Marsh Harrier');
+// 2026-11-12 (TESTFIX1): SKIR3 cut the side lists to the map's own cards (Lilypad Reach: 3 NEW! + Carried); the rule BAL18-1 b guarded is "it has attackers", checked on the current list
+ok(mp.filter(id=> by[id] && by[id].attack >= 2).length >= 3, 'Lilypad Reach lists at least 3 attackers (attack 2+): ' + mp.filter(id=> by[id] && by[id].attack >= 2).join(', '));
 
 console.log(`content12: ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
