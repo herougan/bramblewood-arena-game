@@ -1,0 +1,90 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T14:10:42.056Z",
+ "map": {
+  "id": "m11",
+  "num": 20,
+  "name": "The Sundered Peak"
+ },
+ "pool": [
+  "ancient-sloth-titan",
+  "basalt-boar",
+  "berserker-boar",
+  "cataphract-destrier",
+  "crocodile-ambusher",
+  "deep-cave-troll",
+  "eagle-sharpshooter",
+  "echo-screecher",
+  "fire-salamander",
+  "frillneck-duelist",
+  "fumarole-ibex",
+  "honey-badger-fury",
+  "magma-salamander",
+  "obsidian-scorpion",
+  "pack-mule",
+  "quillback-elder",
+  "stalactite-golem",
+  "sulfur-vent-crab",
+  "ur-elk",
+  "vampire-roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "berserker-boar": 2,
+    "cataphract-destrier": 4,
+    "eagle-sharpshooter": 4,
+    "honey-badger-fury": 3,
+    "quillback-elder": 4,
+    "vampire-roost": 3
+   },
+   "score": 0.0288,
+   "ci": [
+    0.0108,
+    0.0469
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (4 copies at 3+ Lumber, average 2.3)"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 2054,
+   "seconds": 70
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "berserker-boar": 4,
+    "cataphract-destrier": 4,
+    "deep-cave-troll": 1,
+    "eagle-sharpshooter": 4,
+    "frillneck-duelist": 3
+   },
+   "score": 0.0288,
+   "ci": [
+    0.0111,
+    0.0465
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (9 copies at 3+ Lumber, average 2.6)",
+    "strike-first x7"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 4,
+   "games": 2132,
+   "seconds": 64
+  }
+ ]
+}

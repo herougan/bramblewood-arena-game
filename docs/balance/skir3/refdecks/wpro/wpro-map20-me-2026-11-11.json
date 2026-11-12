@@ -1,0 +1,78 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T14:12:57.531Z",
+ "map": {
+  "id": "me",
+  "num": 20,
+  "name": "Eye of the Volcano"
+ },
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-moth",
+  "ashbone-ghoul",
+  "cinder-skeleton",
+  "deep-cave-troll",
+  "obsidian-scorpion",
+  "stalactite-golem",
+  "vampire-roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "cinder-skeleton": 4,
+    "deep-cave-troll": 4,
+    "stalactite-golem": 4,
+    "vampire-roost": 4
+   },
+   "score": 0.1938,
+   "ci": [
+    0.1515,
+    0.236
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (16 copies at 2+ Lumber, average 2.2)",
+    "guard x8"
+   ],
+   "apartFrom": [],
+   "steps": 6,
+   "games": 1820,
+   "seconds": 69
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "ash-moth": 4,
+    "ashbone-ghoul": 3,
+    "deep-cave-troll": 3,
+    "obsidian-scorpion": 3,
+    "vampire-roost": 3
+   },
+   "score": 0.3042,
+   "ci": [
+    0.2538,
+    0.3546
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (10 copies at 2+ Lumber, average 1.7)",
+    "night x7"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 7,
+   "games": 1760,
+   "seconds": 66
+  }
+ ]
+}
