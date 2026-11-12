@@ -35,6 +35,8 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 18 | Multiplayer dungeon waiting room: better UI; one per multiplayer dungeon on the map; jump between dungeons from the main UI | DUNGEON1 |
 | 19 | Card play (hand to field) at 1.5x+ (sometimes 1x): field card shows, vanishes, anim half plays, reappears. Wait for the play anim; at 4x/5x skip the anim (straight go-to) | ANIM1 |
 | 20 | Multiplayer multi-row beatdowns too fast: column attacks in a row 2x slower (relative to speed); column-by-column a bit slower unless already at single-player pace | DUNGEON1 |
+| 22 | (23:50) Do Yes / No for the side maps like the main maps; then return N-SK / N-WK and re-card the side-map fights. SK anchor: if the strong list-only deck beats the hardest fight's target, that fight = SK eased into band; if SK is too weak, the cards need a rebalance or redesign. Strict: 1-3 skills a map | SIDE1 (phase A running; phase B after ENG-RC1 merges) |
+| 23 | (23:50) Re-assess card power for his card-editor assessment | SIDE1 phase A |
 | 21 | Multiplayer dungeon: at most 5 skirmishes; full rewards only for all; partial = completed% x 0.5, only 1-3 parts done = x 0.25; after a part, stay on the board, a "Part N: ..." banner scrolls, enemies arrive as if they had 3-5 free turns (with Wait); counts as cleared only after all; enemy side usually 2+ rows | DUNGEON1 |
 
 ## 11-12 08:39: Owner notes
