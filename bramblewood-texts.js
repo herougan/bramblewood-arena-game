@@ -854,7 +854,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.skill-revive": "The first time it dies, it dies in full, then comes back with 1 Health and no statuses.",
   "coach.blind-this-card-s-swings-miss": "👁 Blind: this card's swings miss half the time.",
   "coach.smoke-attacks-at-this-card-miss": "🌫️ Smoke: attacks at this card miss half the time until the end of next round.",
-  "coach.chained-can-t-attack-until-its": "⛓️ Chained: can’t attack until its chain breaks.",
+  "coach.chained-can-t-attack-until-its": "⛓️ Chained: can’t act until its chains break. Each chain is 1 Armor.",
   "coach.daunted-this-card-has-less-attack": "😨 Daunted: this card has less Attack until the end of next round. More hits, more Attack lost.",
   "coach.wait-rounds-until-this-card-can": "⏳ Wait: rounds until this card can attack.",
   "coach.their-castle-has-a-passive-of": "Their bramble has a passive of its own.",
@@ -1292,7 +1292,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.de-egg-note": "Only a hatch on the battlefield: your egg card stays in your collection.",
   "ui.de-devour": "Once, using your play: drag a hand card onto it to eat it for +{a}/+{h}.",
   "ui.de-devour-grant": "Once, using your play: drag a hand card onto it to eat it for +{a}/+{h} and {grant}.",
-  "ui.de-ritual": "No Wait, but it can't act until {p} units perish, you draw {d} cards and deal {c} bramble damage.",
+  "ui.de-ritual": "Can't act or be attacked until {p} units perish, you draw {d} cards and deal {c} bramble damage.",
   "ui.ui7-poison-tip": "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.",
   "ui.ui7-poison-skill-tip": "Venomous {n}: its hits give the target Venom.",
   "ui.ui7-regen-tip": "Regenerate {n}: heals {n} Health at the start of every round.",
@@ -2161,7 +2161,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.cx-under": "under",
   "ui.cx-gain": "→ gain",
   "ui.cx-condition": "Condition",
-  "ui.cx-ritual-short": "It can't act until every corner is met.",
+  "ui.cx-ritual-short": "Until every corner is met, it can't act or be attacked.",
   "ui.cx-ritual-perished": "Units perished (either side)",
   "ui.cx-ritual-drawn": "Cards you draw",
   "ui.cx-ritual-bramble": "Bramble damage you deal",
@@ -2905,7 +2905,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng9-fork-codex": "Two side-by-side lines among left, centre and right: the centre and one side, never left and right together. Only when none of the three holds an enemy does it hit the bramble. Full Attack on each line.",
   "ui.eng9-trident": "One swing with three prongs, aimed straight ahead: the unit in front takes its full Attack, the units to its left and right half. It hits the bramble only when none of the three holds an enemy.",
   "ui.eng9-pitchfork": "One swing with four prongs, aimed left or right at random; every prong deals half its Attack. It hits the bramble only when none of its lines holds an enemy.",
-  "ui.eng9-chained": "Can't attack until its chain breaks: once the damage it has taken adds up to {n}.",
+  "ui.eng9-chained": "{n} chains, 1 Armor each. It can't act until all break; each point of a hit breaks one.",
   "ui.eng9-armor": "Takes {n} less damage from every hit but magic (never below 0). Magic goes past it.",
   "ui.eng9-magic-armor": "Each magic hit on it deals {n} less. Other hits ignore it.",
   "ui.eng9-magic-armor-codex": "Magic: magic swings, shots and skills (dark and holy count as magic). Physical and elemental hits (fire, frost, shock, venom, acid, water and the rest) are plain Armor's. Status ticks go past both.",
@@ -3752,7 +3752,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.dungeon1-switch": "Dungeons",
   "ui.dungeon1-preview": "Admin preview",
   "ui.dungeon1-run-pay": "{won} of {n} parts: {pct}% of the full rewards",
-  "ui.dungeon1-run-cleared": "{name} is cleared!"
+  "ui.dungeon1-run-cleared": "{name} is cleared!",
+  "ui.rc1-chained-spawn": "1 chain (1 Armor). It can't act until the opponent plays a card.",
+  "ui.rc1-chain-tip": "Chained: {n} Armor, 1 a chain.",
+  "ui.rc1-log-ritual": "{att} can't reach {unit}: it is in its Ritual."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

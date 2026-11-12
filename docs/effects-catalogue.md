@@ -506,7 +506,7 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Berserk (`berserk`) | 1 | `SkillFX.rageFlare` | statusFx berserk | 🆕 |
 | Blind (`blind`) | 1 | `SkillFX.blindInk` | statusFx blind | 🆕 |
 | Bludgeon (`bludgeon`) | 1 | floating text / sound only |  | — |
-| Chained (`chained`) | 1 | floating text / sound only |  | — |
+| Chained (`chained`) | 1 | floating text / sound; grey Armor pips, one a chain (ENG-RC1) |  | — |
 | Core Evil (`coreEvil`) | 1 | none (a rule or stat with no moment of its own) |  |  |
 | Counterattack (`counterattack`) | 1 | `SkillFX.parry` | statusFx counter | 🆕 |
 | Decay (`decay`) | 1 | floating text / sound only |  | — |
@@ -1277,7 +1277,8 @@ The rules as built (engine: `isMagicDmg` in `computeHitDamage` / `damageCardFlat
 - **Tangled** (Tangleweed N, `c.tangled` rounds): the Confused coin for every swing, shot, action and trigger (`confusedFumbles`; event `confusedWhiff {tangled}`); event `statusFx tangled`.
 - **Fork:** two adjacent lines of L / C / R (C + a side; never L + R; interlocked ranks: the two it stands between); the bramble only when L, C and R are empty. **Trident / Pitchfork:** the bramble only when none of their lines holds a unit; with the middle empty a side line is the swing proper.
 - **Sleep and the swing order:** a unit found Ready earlier in the round that is asleep, stunned, frozen, chained or petrified when its turn comes loses the swing (`pickNextAttacker`).
-- **Chained:** the damage it takes adds up (`card.chainDmg`); the chain breaks at N. Priced as N x (1 + 0.25 a held round), skill price 0. No ⛓ glyph on the board.
+- **Chained** (ENG-RC1, 2026-11-12): Chained N is N chains, 1 Armor each (`chainArmorOf`); each point of a blow, counted before Armor, breaks one (`card.chains`, `card.chainDmg`); free at N. Priced as N x (1 + 0.25 a held round), skill price 0. No ⛓ glyph; one small grey Armor pip a chain (`.shell-up.chain-pips`, `rc1ChainPipsHTML`), removed on `chainBreak`.
+- **Ritual** (ENG-RC1, 2026-11-12): a unit in its Ritual (`inRitual`) is never hit or aimed at; its slot reads as empty to the enemy. Board: the tile fades (`.is-ritual`); no hit, miss or reticle shows on it; the Aimed Bolt picker leaves it out.
 - **One-shot On Ready:** a front-row unit Ready at an upkeep without its Wait running out there (Wait 0, Hasten) gets its On Ready then, once (`c.readyDone`). Rocket, Fireball, Meteor, Chilli, Converge, Stockpile, On Ready damage / Missile / Render, an On Ready Pearl Bed and On Ready triggers leave the unit's card once fired (`spendOnReady`, event `skillSpent {keys}`). **Charge** goes off once and leaves the card.
 - **Stockpile N** (`effects.stockpile`): On Ready, +N Lumber, once. **Seasons:** 6 rounds each, from round 1.
 
