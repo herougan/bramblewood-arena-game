@@ -1,0 +1,11454 @@
+{
+ "about": "Card power against N at the first map (the card editor's reading: Level 1, cardObtainMap, canonical skill prices), cards in play on the 11-12 lists, Maps 0-21 and their side maps (tools/side1/power_2026_11_12.js)",
+ "built": "2026-11-12",
+ "budget": "bramblewood-budget.js (DEFAULTS, BUDGET2 3A + H)",
+ "base": "b6162b29",
+ "counts": {
+  "cards": 253,
+  "over": 26,
+  "in": 217,
+  "under": 10,
+  "firstMapMoved": 20,
+  "toolsMapStale": 0
+ },
+ "cards": [
+  {
+   "toolsUse": 92,
+   "id": "adder-ambusher",
+   "name": "Adder Ambusher",
+   "rarity": "rare",
+   "stats": "2/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 6",
+    "Map 7"
+   ],
+   "firstMap": 6,
+   "N": 23.61,
+   "B": 21.75,
+   "S": 4.75,
+   "use": 92,
+   "margin": 1.86,
+   "cap2": {
+    "P": 27.64,
+    "N2": 97.24,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 6,
+   "before": {
+    "firstMap": 6,
+    "N": 23.61,
+    "B": 21.75,
+    "use": 92,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 123,
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": "uncommon",
+   "stats": "1/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 5",
+    "Map 9"
+   ],
+   "firstMap": 1,
+   "N": 14.32,
+   "B": 17.64,
+   "S": 10.64,
+   "use": 123,
+   "margin": -3.32,
+   "cap2": {
+    "P": 32.3,
+    "N2": 35.77,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 14.32,
+    "B": 17.64,
+    "use": 123,
+    "verdict": "over"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 93,
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "rarity": "rare",
+   "stats": "5/5",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 6",
+    "Map 9"
+   ],
+   "firstMap": 5,
+   "N": 27.75,
+   "B": 25.72,
+   "S": 5.72,
+   "use": 93,
+   "margin": 2.03,
+   "cap2": {
+    "P": 33.18,
+    "N2": 134.33,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 5,
+   "before": {
+    "firstMap": 5,
+    "N": 27.75,
+    "B": 25.72,
+    "use": 93,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 93,
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "rarity": "common",
+   "stats": "3/9",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 12",
+    "Map 21"
+   ],
+   "firstMap": 11,
+   "N": 19.29,
+   "B": 18,
+   "S": 0,
+   "use": 93,
+   "margin": 1.29,
+   "cap2": {
+    "P": 27,
+    "N2": 64.91,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 11,
+   "before": {
+    "firstMap": 11,
+    "N": 19.29,
+    "B": 18,
+    "use": 93,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 74,
+   "id": "alpine-salamander",
+   "name": "Alpine Salamander",
+   "rarity": "common",
+   "stats": "2/10",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 21"
+   ],
+   "firstMap": 21,
+   "N": 24.77,
+   "B": 18.3,
+   "S": 2.3,
+   "use": 74,
+   "margin": 6.47,
+   "cap2": {
+    "P": 21.32,
+    "N2": 107.03,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 14,
+    "N": 23.14,
+    "B": 18.3,
+    "use": 79,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 60,
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "rarity": "common",
+   "stats": "2/3",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 21"
+   ],
+   "firstMap": 21,
+   "N": 21.62,
+   "B": 12.94,
+   "S": 2.23,
+   "use": 60,
+   "margin": 8.68,
+   "cap2": {
+    "P": 8.38,
+    "N2": 81.54,
+    "ok": true
+   },
+   "verdict": "under",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 14,
+    "N": 19.99,
+    "B": 12.94,
+    "use": 65,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 87,
+   "id": "amber-cicada",
+   "name": "Amber Cicada",
+   "rarity": "uncommon",
+   "stats": "1/21",
+   "cost": 1,
+   "wait": 3,
+   "lists": [
+    "Map 7",
+    "The Canopy"
+   ],
+   "firstMap": 7,
+   "N": 32.01,
+   "B": 27.96,
+   "S": 3.96,
+   "use": 87,
+   "margin": 4.05,
+   "cap2": {
+    "P": 24.92,
+    "N2": 178.74,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 32.01,
+    "B": 27.96,
+    "use": 87,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 84,
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "rarity": "uncommon",
+   "stats": "1/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 6",
+    "Map 13"
+   ],
+   "firstMap": 1,
+   "N": 21.27,
+   "B": 17.96,
+   "S": 2.96,
+   "use": 84,
+   "margin": 3.31,
+   "cap2": {
+    "P": 14.19,
+    "N2": 78.92,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 21.27,
+    "B": 17.96,
+    "use": 84,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "rarity": "starter",
+   "stats": "1/5",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0",
+    "Map 1",
+    "Map 18"
+   ],
+   "firstMap": 0,
+   "N": 11.75,
+   "B": 11.13,
+   "S": 3.13,
+   "use": 95,
+   "margin": 0.62,
+   "cap2": {
+    "P": 7.45,
+    "N2": 24.08,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 99,
+   "id": "antlion-pit",
+   "name": "Antlion Pit",
+   "rarity": "uncommon",
+   "stats": "3/13",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 18",
+    "The Pale Desert"
+   ],
+   "firstMap": 18,
+   "N": 25.24,
+   "B": 24.98,
+   "S": 2.98,
+   "use": 99,
+   "margin": 0.26,
+   "cap2": {
+    "P": 41.22,
+    "N2": 111.13,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 18,
+   "before": {
+    "firstMap": 18,
+    "N": 25.24,
+    "B": 24.98,
+    "use": 99,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 60,
+   "id": "anvil-thrush",
+   "name": "Anvil Thrush",
+   "rarity": "common",
+   "stats": "1/6",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 11",
+    "Map 12",
+    "The Aerie Vault"
+   ],
+   "firstMap": 7,
+   "N": 18.35,
+   "B": 11.01,
+   "S": 0.3,
+   "use": 60,
+   "margin": 7.34,
+   "cap2": {
+    "P": 7.16,
+    "N2": 58.74,
+    "ok": true
+   },
+   "verdict": "under",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 18.35,
+    "B": 11.01,
+    "use": 60,
+    "verdict": "under"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 72,
+   "id": "apollo-butterfly",
+   "name": "Apollo Butterfly",
+   "rarity": "uncommon",
+   "stats": "1/8",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 21"
+   ],
+   "firstMap": 21,
+   "N": 22.79,
+   "B": 16.31,
+   "S": 3.22,
+   "use": 72,
+   "margin": 6.48,
+   "cap2": {
+    "P": 12.11,
+    "N2": 90.6,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 14,
+    "N": 21.15,
+    "B": 16.31,
+    "use": 77,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 66,
+   "id": "arctic-tern",
+   "name": "Arctic Tern",
+   "rarity": "uncommon",
+   "stats": "1/8",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 17"
+   ],
+   "firstMap": 14,
+   "N": 21.57,
+   "B": 14.23,
+   "S": 1.14,
+   "use": 66,
+   "margin": 7.34,
+   "cap2": {
+    "P": 9.84,
+    "N2": 81.16,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 21.57,
+    "B": 14.23,
+    "use": 66,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 113,
+   "id": "armadillo-guard",
+   "name": "Armadillo Guard",
+   "rarity": "common",
+   "stats": "3/8",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 18",
+    "Map 19"
+   ],
+   "firstMap": 14,
+   "N": 19.34,
+   "B": 21.93,
+   "S": 2.53,
+   "use": 113,
+   "margin": -2.59,
+   "cap2": {
+    "P": 32.8,
+    "N2": 65.25,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 19.34,
+    "B": 21.93,
+    "use": 113,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 74,
+   "id": "ash-moth",
+   "name": "Ash Moth",
+   "rarity": "common",
+   "stats": "1/8",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Eye of the Volcano"
+   ],
+   "firstMap": 14,
+   "N": 19.73,
+   "B": 14.68,
+   "S": 1.59,
+   "use": 74,
+   "margin": 5.05,
+   "cap2": {
+    "P": 10.15,
+    "N2": 67.91,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 19.73,
+    "B": 14.68,
+    "use": 74,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 103,
+   "id": "badger-lumberjack",
+   "name": "Badger Lumberjack",
+   "rarity": "uncommon",
+   "stats": "2/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 13",
+    "Map 14",
+    "Map 18"
+   ],
+   "firstMap": 1,
+   "N": 21.27,
+   "B": 21.85,
+   "S": 4.85,
+   "use": 103,
+   "margin": -0.58,
+   "cap2": {
+    "P": 27.88,
+    "N2": 78.92,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 21.27,
+    "B": 21.85,
+    "use": 103,
+    "verdict": "over"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 85,
+   "id": "balloon-archer",
+   "name": "Balloon Archer",
+   "rarity": "uncommon",
+   "stats": "2/8",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 13",
+    "Map 14",
+    "Map 18"
+   ],
+   "firstMap": 7,
+   "N": 27.05,
+   "B": 22.97,
+   "S": 6.31,
+   "use": 85,
+   "margin": 4.08,
+   "cap2": {
+    "P": 28.99,
+    "N2": 127.64,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 24,
+    "N": 31.02,
+    "B": 22.97,
+    "use": 74,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 93,
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "rarity": "uncommon",
+   "stats": "4/3",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 9"
+   ],
+   "firstMap": 9,
+   "N": 23.14,
+   "B": 21.61,
+   "S": 6.61,
+   "use": 93,
+   "margin": 1.53,
+   "cap2": {
+    "P": 22.92,
+    "N2": 93.41,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 9,
+   "before": {
+    "firstMap": 9,
+    "N": 23.14,
+    "B": 21.61,
+    "use": 93,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "barkplate-beetle",
+   "name": "Barkplate Beetle",
+   "rarity": "uncommon",
+   "stats": "4/13",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "Map 12",
+    "Map 18",
+    "The Old Bramble"
+   ],
+   "firstMap": 7,
+   "N": 30.67,
+   "B": 29.32,
+   "S": 4.32,
+   "use": 96,
+   "margin": 1.35,
+   "cap2": {
+    "P": 56.67,
+    "N2": 164.09,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 30.67,
+    "B": 29.32,
+    "use": 96,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 101,
+   "id": "barrel-cactus",
+   "name": "Barrel Cactus",
+   "rarity": "rare",
+   "stats": "1/18",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 18",
+    "The Pale Desert"
+   ],
+   "firstMap": 14,
+   "N": 29.85,
+   "B": 30.08,
+   "S": 9.08,
+   "use": 101,
+   "margin": -0.23,
+   "cap2": {
+    "P": 38.61,
+    "N2": 155.43,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 14,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 73,
+   "id": "barrow-leech-bat",
+   "name": "Barrow Leech",
+   "rarity": "rare",
+   "stats": "1/8",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 8",
+    "Map 12",
+    "The Glimmer Depths"
+   ],
+   "firstMap": 7,
+   "N": 20.44,
+   "B": 14.98,
+   "S": 1.89,
+   "use": 73,
+   "margin": 5.46,
+   "cap2": {
+    "P": 10.41,
+    "N2": 72.88,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 20.44,
+    "B": 14.98,
+    "use": 73,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 91,
+   "id": "basalt-boar",
+   "name": "Basalt Boar",
+   "rarity": "common",
+   "stats": "2/15",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 20",
+    "Basalt Foundry",
+    "Eye of the Volcano",
+    "Volcano Lair"
+   ],
+   "firstMap": 14,
+   "N": 23.14,
+   "B": 21.05,
+   "S": 0.05,
+   "use": 91,
+   "margin": 2.09,
+   "cap2": {
+    "P": 30,
+    "N2": 93.41,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 23.14,
+    "B": 21.05,
+    "use": 91,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 106,
+   "id": "beachcomber-sanderling",
+   "name": "Beachcomber Sanderling",
+   "rarity": "common",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 2"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 13.75,
+   "S": 0.75,
+   "use": 106,
+   "margin": -0.83,
+   "cap2": {
+    "P": 14.14,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 85,
+   "id": "bear-cub",
+   "name": "Bear Cub",
+   "rarity": "uncommon",
+   "stats": "2/8",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 13",
+    "Map 16"
+   ],
+   "firstMap": 7,
+   "N": 16.51,
+   "B": 14,
+   "S": 0,
+   "use": 85,
+   "margin": 2.51,
+   "cap2": {
+    "P": 16,
+    "N2": 47.55,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 16.51,
+    "B": 14,
+    "use": 85,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 91,
+   "id": "beaver-feller",
+   "name": "Beaver Feller",
+   "rarity": "common",
+   "stats": "2/10",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 13"
+   ],
+   "firstMap": 7,
+   "N": 18.35,
+   "B": 16.73,
+   "S": 0.73,
+   "use": 91,
+   "margin": 1.62,
+   "cap2": {
+    "P": 20.13,
+    "N2": 58.74,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 111,
+   "id": "beaver-lumberjack",
+   "name": "Beaver Lumberjack",
+   "rarity": "common",
+   "stats": "3/5",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 2",
+    "Map 3",
+    "Map 4",
+    "Map 11",
+    "Lilypad Reach"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 18.62,
+   "S": 4.62,
+   "use": 111,
+   "margin": -1.9,
+   "cap2": {
+    "P": 20.34,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 43,
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "rarity": "starter",
+   "stats": "0/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0",
+    "Clovermead"
+   ],
+   "firstMap": 0,
+   "N": 11.75,
+   "B": 5.06,
+   "S": 0.3,
+   "use": 43,
+   "margin": 6.69,
+   "cap2": {
+    "P": 0.02,
+    "N2": 24.08,
+    "ok": true
+   },
+   "verdict": "under",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 37,
+   "id": "bee-knight",
+   "name": "Bee Warden",
+   "rarity": "common",
+   "stats": "1/2",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 1"
+   ],
+   "firstMap": 0,
+   "N": 13.57,
+   "B": 5,
+   "S": 0,
+   "use": 37,
+   "margin": 8.57,
+   "cap2": {
+    "P": 2,
+    "N2": 32.12,
+    "ok": true
+   },
+   "verdict": "under",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 102,
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "rarity": "starter",
+   "stats": "2/5",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 0"
+   ],
+   "firstMap": 0,
+   "N": 15.55,
+   "B": 15.81,
+   "S": 2.72,
+   "use": 102,
+   "margin": -0.26,
+   "cap2": {
+    "P": 13.75,
+    "N2": 42.18,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 79,
+   "id": "berserker-boar",
+   "name": "Berserker Boar",
+   "rarity": "common",
+   "stats": "3/9",
+   "cost": 2,
+   "wait": 1,
+   "lists": [
+    "Map 20",
+    "Eye of the Volcano"
+   ],
+   "firstMap": 14,
+   "N": 26.76,
+   "B": 21.01,
+   "S": 3.01,
+   "use": 79,
+   "margin": 5.75,
+   "cap2": {
+    "P": 29.27,
+    "N2": 124.92,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 7,
+    "N": 25.12,
+    "B": 21.01,
+    "use": 84,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "bison-bulldozer",
+   "name": "Bison Bulldozer",
+   "rarity": "uncommon",
+   "stats": "2/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 12",
+    "Map 18"
+   ],
+   "firstMap": 7,
+   "N": 22.67,
+   "B": 21.62,
+   "S": 3.62,
+   "use": 95,
+   "margin": 1.05,
+   "cap2": {
+    "P": 27.28,
+    "N2": 89.65,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 14,
+    "N": 24.31,
+    "B": 21.62,
+    "use": 89,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 83,
+   "id": "blue-ringed-octopus",
+   "name": "Blue-ringed Octopus",
+   "rarity": "rare",
+   "stats": "2/11",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "The Sunken Depths"
+   ],
+   "firstMap": 11,
+   "N": 29.15,
+   "B": 24.14,
+   "S": 7.14,
+   "use": 83,
+   "margin": 5.01,
+   "cap2": {
+    "P": 34.74,
+    "N2": 148.23,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 11,
+   "before": {
+    "firstMap": 11,
+    "N": 29.15,
+    "B": 24.14,
+    "use": 83,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 82,
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "rarity": "uncommon",
+   "stats": "1/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 6",
+    "Map 9"
+   ],
+   "firstMap": 6,
+   "N": 22.44,
+   "B": 18.36,
+   "S": 3.36,
+   "use": 82,
+   "margin": 4.08,
+   "cap2": {
+    "P": 14.82,
+    "N2": 87.84,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 6,
+   "before": {
+    "firstMap": 6,
+    "N": 22.44,
+    "B": 18.36,
+    "use": 82,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 94,
+   "id": "border-collie",
+   "name": "Border Collie",
+   "rarity": "uncommon",
+   "stats": "3/14",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 15",
+    "Map 17"
+   ],
+   "firstMap": 15,
+   "N": 24.54,
+   "B": 23,
+   "S": 0,
+   "use": 94,
+   "margin": 1.54,
+   "cap2": {
+    "P": 42,
+    "N2": 105.05,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 15,
+   "before": {
+    "firstMap": 15,
+    "N": 24.54,
+    "B": 23,
+    "use": 94,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 98,
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "rarity": "common",
+   "stats": "5/4",
+   "cost": 2,
+   "wait": 1,
+   "lists": [
+    "Map 16",
+    "Map 17"
+   ],
+   "firstMap": 14,
+   "N": 26.76,
+   "B": 26.16,
+   "S": 7.16,
+   "use": 98,
+   "margin": 0.6,
+   "cap2": {
+    "P": 32.82,
+    "N2": 124.92,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 26.76,
+    "B": 26.16,
+    "use": 98,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 101,
+   "id": "bramble-sprout",
+   "name": "Bramble Sprout",
+   "rarity": "common",
+   "stats": "1/5",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 1",
+    "Map 14",
+    "The Old Bramble"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 13.08,
+   "S": 5.08,
+   "use": 101,
+   "margin": -0.16,
+   "cap2": {
+    "P": 11.45,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 82,
+   "id": "bramblewood-lynx",
+   "name": "Bramblewood Lynx",
+   "rarity": "rare",
+   "stats": "5/7",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 15",
+    "The Old Bramble"
+   ],
+   "firstMap": 14,
+   "N": 26.74,
+   "B": 22,
+   "S": 0,
+   "use": 82,
+   "margin": 4.74,
+   "cap2": {
+    "P": 35,
+    "N2": 124.73,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 7,
+    "N": 25.03,
+    "B": 22,
+    "use": 88,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 94,
+   "id": "bramblewood-macaque",
+   "name": "Bramblewood Macaque",
+   "rarity": "rare",
+   "stats": "4/4",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 14",
+    "The Canopy"
+   ],
+   "firstMap": 14,
+   "N": 22.32,
+   "B": 21,
+   "S": 5,
+   "use": 94,
+   "margin": 1.32,
+   "cap2": {
+    "P": 22.25,
+    "N2": 86.91,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 84,
+   "id": "briarback-hedgehog",
+   "name": "Briarback Hedgehog",
+   "rarity": "common",
+   "stats": "2/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 12",
+    "Map 17"
+   ],
+   "firstMap": 7,
+   "N": 21.5,
+   "B": 18.1,
+   "S": 1.1,
+   "use": 84,
+   "margin": 3.4,
+   "cap2": {
+    "P": 22.3,
+    "N2": 80.64,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 21.5,
+    "B": 18.1,
+    "use": 84,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 108,
+   "id": "caldera-wyrm",
+   "name": "The Caldera Wyrm",
+   "rarity": "heroic",
+   "stats": "4/7",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Volcano Lair"
+   ],
+   "firstMap": 20,
+   "N": 28.39,
+   "B": 30.65,
+   "S": 11.65,
+   "use": 108,
+   "margin": -2.26,
+   "cap2": {
+    "P": 61.93,
+    "N2": 140.6,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 20,
+   "before": {
+    "firstMap": 20,
+    "N": 28.39,
+    "B": 30.65,
+    "use": 108,
+    "verdict": "over"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 68,
+   "id": "camouflage-frog",
+   "name": "Camouflage Frog",
+   "rarity": "common",
+   "stats": "2/5",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 6",
+    "Map 7",
+    "The Canopy"
+   ],
+   "firstMap": 0,
+   "N": 19.87,
+   "B": 13.48,
+   "S": 0.5,
+   "use": 68,
+   "margin": 6.39,
+   "cap2": {
+    "P": 11.86,
+    "N2": 68.87,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 90,
+   "id": "cataphract-destrier",
+   "name": "Gilded Roadwarden",
+   "rarity": "common",
+   "stats": "3/28",
+   "cost": 4,
+   "wait": 4,
+   "lists": [
+    "Map 15",
+    "Map 17",
+    "Map 20"
+   ],
+   "firstMap": 14,
+   "N": 50.29,
+   "B": 45.43,
+   "S": 8.43,
+   "use": 90,
+   "margin": 4.86,
+   "cap2": {
+    "P": 101.77,
+    "N2": 441.18,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 50.29,
+    "B": 45.43,
+    "use": 90,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 87,
+   "id": "caustic-scorpion",
+   "name": "Caustic Scorpion",
+   "rarity": "uncommon",
+   "stats": "1/18",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 19",
+    "The Pale Desert"
+   ],
+   "firstMap": 18,
+   "N": 29.62,
+   "B": 25.75,
+   "S": 4.75,
+   "use": 87,
+   "margin": 3.87,
+   "cap2": {
+    "P": 23.64,
+    "N2": 153.05,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 18,
+   "before": {
+    "firstMap": 18,
+    "N": 29.62,
+    "B": 25.75,
+    "use": 87,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 89,
+   "id": "cave-olm",
+   "name": "Cave Olm",
+   "rarity": "common",
+   "stats": "1/11",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 8",
+    "The Glimmer Depths"
+   ],
+   "firstMap": 7,
+   "N": 18.35,
+   "B": 16.3,
+   "S": 2.3,
+   "use": 89,
+   "margin": 2.05,
+   "cap2": {
+    "P": 12.32,
+    "N2": 58.74,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 18.35,
+    "B": 16.3,
+    "use": 89,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 57,
+   "id": "cave-swiftlet",
+   "name": "Cave Swiftlet",
+   "rarity": "common",
+   "stats": "1/6",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "The Glimmer Depths"
+   ],
+   "firstMap": 14,
+   "N": 19.99,
+   "B": 11.37,
+   "S": 0.66,
+   "use": 57,
+   "margin": 8.62,
+   "cap2": {
+    "P": 7.25,
+    "N2": 69.71,
+    "ok": true
+   },
+   "verdict": "under",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 19.99,
+    "B": 11.37,
+    "use": 57,
+    "verdict": "under"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 85,
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "rarity": "uncommon",
+   "stats": "1/10",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 11",
+    "Map 12",
+    "The Aerie Vault"
+   ],
+   "firstMap": 11,
+   "N": 23.61,
+   "B": 19.96,
+   "S": 6.96,
+   "use": 85,
+   "margin": 3.65,
+   "cap2": {
+    "P": 22.11,
+    "N2": 97.24,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 11,
+   "before": {
+    "firstMap": 11,
+    "N": 23.61,
+    "B": 19.96,
+    "use": 85,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "chipmunk-cavalry",
+   "name": "Chipmunk Cavalry",
+   "rarity": "common",
+   "stats": "3/4",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 1",
+    "Map 3",
+    "Clovermead"
+   ],
+   "firstMap": 0,
+   "N": 16.07,
+   "B": 15.23,
+   "S": 2.23,
+   "use": 95,
+   "margin": 0.84,
+   "cap2": {
+    "P": 13.24,
+    "N2": 45.05,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 89,
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "rarity": "starter",
+   "stats": "1/8",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0",
+    "Map 18"
+   ],
+   "firstMap": 0,
+   "N": 12.34,
+   "B": 11,
+   "S": 0,
+   "use": 89,
+   "margin": 1.34,
+   "cap2": {
+    "P": 8,
+    "N2": 26.56,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "rarity": "common",
+   "stats": "2/5",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 11",
+    "Map 12"
+   ],
+   "firstMap": 7,
+   "N": 18.35,
+   "B": 17.65,
+   "S": 6.65,
+   "use": 96,
+   "margin": 0.7,
+   "cap2": {
+    "P": 21.06,
+    "N2": 58.74,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 18.35,
+    "B": 17.65,
+    "use": 96,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 89,
+   "id": "chipmunk-skirmisher",
+   "name": "Chipmunk Skirmisher",
+   "rarity": "common",
+   "stats": "2/5",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 1"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 11.53,
+   "S": 0.53,
+   "use": 89,
+   "margin": 1.39,
+   "cap2": {
+    "P": 10.07,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 72,
+   "id": "cinder-gecko",
+   "name": "Cinder Gecko",
+   "rarity": "common",
+   "stats": "2/5",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Basalt Foundry"
+   ],
+   "firstMap": 22,
+   "N": 18.06,
+   "B": 12.98,
+   "S": 0,
+   "use": 72,
+   "margin": 5.08,
+   "cap2": {
+    "P": 11.8,
+    "N2": 56.9,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 22,
+   "before": {
+    "firstMap": 22,
+    "N": 18.06,
+    "B": 12.98,
+    "use": 72,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 66,
+   "id": "cinder-hornet",
+   "name": "Cinder Hornet",
+   "rarity": "common",
+   "stats": "3/3",
+   "cost": 2,
+   "wait": 0,
+   "lists": [
+    "Basalt Foundry"
+   ],
+   "firstMap": 22,
+   "N": 24.83,
+   "B": 16.5,
+   "S": 2.22,
+   "use": 66,
+   "margin": 8.33,
+   "cap2": {
+    "P": 11.94,
+    "N2": 107.55,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 22,
+   "before": {
+    "firstMap": 14,
+    "N": 22.96,
+    "B": 16.5,
+    "use": 72,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 78,
+   "id": "cinder-skeleton",
+   "name": "Cinder Skeleton",
+   "rarity": "common",
+   "stats": "1/7",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Basalt Foundry"
+   ],
+   "firstMap": 22,
+   "N": 21.21,
+   "B": 16.51,
+   "S": 6.51,
+   "use": 78,
+   "margin": 4.7,
+   "cap2": {
+    "P": 17.6,
+    "N2": 78.48,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 22,
+   "before": {
+    "firstMap": 14,
+    "N": 19.34,
+    "B": 16.51,
+    "use": 85,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "clover-butterfly",
+   "name": "Clover Butterfly",
+   "rarity": "common",
+   "stats": "2/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Clovermead"
+   ],
+   "firstMap": 7,
+   "N": 14.85,
+   "B": 11.9,
+   "S": 0,
+   "use": 80,
+   "margin": 2.95,
+   "cap2": {
+    "P": 9.52,
+    "N2": 38.47,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 14.85,
+    "B": 11.9,
+    "use": 80,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 86,
+   "id": "clownfish-scout",
+   "name": "Clownfish Scout",
+   "rarity": "common",
+   "stats": "1/9",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 10"
+   ],
+   "firstMap": 7,
+   "N": 14.56,
+   "B": 12.5,
+   "S": 0.5,
+   "use": 86,
+   "margin": 2.06,
+   "cap2": {
+    "P": 9.06,
+    "N2": 36.98,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 14.56,
+    "B": 12.5,
+    "use": 86,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "compost-grub",
+   "name": "Compost Grub",
+   "rarity": "common",
+   "stats": "1/10",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 7",
+    "The Mycelium Deep"
+   ],
+   "firstMap": 0,
+   "N": 13.57,
+   "B": 13,
+   "S": 0,
+   "use": 96,
+   "margin": 0.57,
+   "cap2": {
+    "P": 10,
+    "N2": 32.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 89,
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "rarity": "common",
+   "stats": "1/5",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 4",
+    "Map 10"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 14.8,
+   "S": 3.6,
+   "use": 89,
+   "margin": 1.92,
+   "cap2": {
+    "P": 11.44,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "conch-herald",
+   "name": "Conch Herald",
+   "rarity": "uncommon",
+   "stats": "1/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 3"
+   ],
+   "firstMap": 2,
+   "N": 21.5,
+   "B": 20.4,
+   "S": 6.4,
+   "use": 95,
+   "margin": 1.1,
+   "cap2": {
+    "P": 21.24,
+    "N2": 80.64,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 2,
+   "before": {
+    "firstMap": 2,
+    "N": 21.5,
+    "B": 20.4,
+    "use": 95,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 106,
+   "id": "cone-cutter-squirrel",
+   "name": "Cone-cutter Squirrel",
+   "rarity": "common",
+   "stats": "2/5",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 16",
+    "Map 17"
+   ],
+   "firstMap": 14,
+   "N": 19.99,
+   "B": 21.28,
+   "S": 10.28,
+   "use": 106,
+   "margin": -1.29,
+   "cap2": {
+    "P": 36.42,
+    "N2": 69.71,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 19.99,
+    "B": 21.28,
+    "use": 106,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "constrictor-coil",
+   "name": "Constrictor Coil",
+   "rarity": "common",
+   "stats": "4/16",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "Map 5",
+    "Map 6",
+    "The Sunken Grove"
+   ],
+   "firstMap": 0,
+   "N": 29.26,
+   "B": 28,
+   "S": 0,
+   "use": 96,
+   "margin": 1.26,
+   "cap2": {
+    "P": 64,
+    "N2": 149.35,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 92,
+   "id": "coral-current-eel",
+   "name": "Coral Current Eel",
+   "rarity": "rare",
+   "stats": "3/9",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 10",
+    "The Sunken Depths"
+   ],
+   "firstMap": 7,
+   "N": 20.04,
+   "B": 18.5,
+   "S": 0.5,
+   "use": 92,
+   "margin": 1.54,
+   "cap2": {
+    "P": 27.06,
+    "N2": 70.06,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 20.04,
+    "B": 18.5,
+    "use": 92,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 102,
+   "id": "cormorant",
+   "name": "Cormorant",
+   "rarity": "common",
+   "stats": "3/7",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 3"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 17,
+   "S": 1,
+   "use": 102,
+   "margin": -0.28,
+   "cap2": {
+    "P": 21.25,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "corpse-flower-beetle",
+   "name": "Corpse-flower Beetle",
+   "rarity": "rare",
+   "stats": "4/10",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 7",
+    "Map 8"
+   ],
+   "firstMap": 0,
+   "N": 26.58,
+   "B": 25.57,
+   "S": 3.57,
+   "use": 96,
+   "margin": 1.01,
+   "cap2": {
+    "P": 43.19,
+    "N2": 123.24,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 81,
+   "id": "cottontail",
+   "name": "Cottontail",
+   "rarity": "starter",
+   "stats": "3/1",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0",
+    "Clovermead"
+   ],
+   "firstMap": 0,
+   "N": 12.34,
+   "B": 10,
+   "S": 0,
+   "use": 81,
+   "margin": 2.34,
+   "cap2": {
+    "P": 3,
+    "N2": 26.56,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 129,
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "rarity": "common",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 1"
+   ],
+   "firstMap": 1,
+   "N": 13.16,
+   "B": 16.96,
+   "S": 3.96,
+   "use": 129,
+   "margin": -3.8,
+   "cap2": {
+    "P": 17.92,
+    "N2": 30.21,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 13.16,
+    "B": 16.96,
+    "use": 129,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 93,
+   "id": "crocodile-ambusher",
+   "name": "Crocodile Ambusher",
+   "rarity": "common",
+   "stats": "5/17",
+   "cost": 2,
+   "wait": 3,
+   "lists": [
+    "Map 6",
+    "Map 20",
+    "The Sunken Grove"
+   ],
+   "firstMap": 0,
+   "N": 34.47,
+   "B": 32,
+   "S": 0,
+   "use": 93,
+   "margin": 2.47,
+   "cap2": {
+    "P": 85,
+    "N2": 207.27,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": {
+    "firstMap": 7,
+    "N": 36.19,
+    "B": 32,
+    "use": 88,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 65,
+   "id": "crossed-eyes",
+   "name": "Crossed-Eyes",
+   "rarity": "starter",
+   "stats": "2/2",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0"
+   ],
+   "firstMap": 0,
+   "N": 12.34,
+   "B": 8,
+   "S": 0,
+   "use": 65,
+   "margin": 4.34,
+   "cap2": {
+    "P": 4,
+    "N2": 26.56,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 107,
+   "id": "crown-of-thorns-star",
+   "name": "Crown-of-thorns Star",
+   "rarity": "uncommon",
+   "stats": "4/4",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 10"
+   ],
+   "firstMap": 7,
+   "N": 22.67,
+   "B": 24.3,
+   "S": 8.3,
+   "use": 107,
+   "margin": -1.63,
+   "cap2": {
+    "P": 33.22,
+    "N2": 89.65,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 22.67,
+    "B": 24.3,
+    "use": 107,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 66,
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "rarity": "uncommon",
+   "stats": "1/10",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 12",
+    "Map 14"
+   ],
+   "firstMap": 12,
+   "N": 23.84,
+   "B": 15.67,
+   "S": 0.33,
+   "use": 66,
+   "margin": 8.17,
+   "cap2": {
+    "P": 11.83,
+    "N2": 99.14,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 12,
+   "before": {
+    "firstMap": 12,
+    "N": 23.84,
+    "B": 15.67,
+    "use": 66,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 111,
+   "id": "cypress-root-lurker",
+   "name": "Cypress Root Lurker",
+   "rarity": "common",
+   "stats": "4/12",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 6",
+    "Map 7",
+    "The Sunken Grove"
+   ],
+   "firstMap": 0,
+   "N": 24.25,
+   "B": 26.93,
+   "S": 2.93,
+   "use": 111,
+   "margin": -2.68,
+   "cap2": {
+    "P": 50.15,
+    "N2": 102.58,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 88,
+   "id": "dam-keeper-beaver",
+   "name": "Dam-Keeper Beaver",
+   "rarity": "common",
+   "stats": "2/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Lilypad Reach"
+   ],
+   "firstMap": 0,
+   "N": 19.87,
+   "B": 17.49,
+   "S": 0.49,
+   "use": 88,
+   "margin": 2.38,
+   "cap2": {
+    "P": 22.06,
+    "N2": 68.87,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "dolphin-knight",
+   "name": "Dolphin Outrider",
+   "rarity": "rare",
+   "stats": "3/9",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 2",
+    "Map 4",
+    "Map 10"
+   ],
+   "firstMap": 5,
+   "N": 20.22,
+   "B": 19.16,
+   "S": 1.16,
+   "use": 95,
+   "margin": 1.06,
+   "cap2": {
+    "P": 27.34,
+    "N2": 71.32,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 5,
+   "before": {
+    "firstMap": 5,
+    "N": 20.22,
+    "B": 19.16,
+    "use": 95,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 98,
+   "id": "dormouse",
+   "name": "Dormouse",
+   "rarity": "common",
+   "stats": "2/5",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 1",
+    "Clovermead"
+   ],
+   "firstMap": 0,
+   "N": 13.18,
+   "B": 12.89,
+   "S": 1.89,
+   "use": 98,
+   "margin": 0.29,
+   "cap2": {
+    "P": 10.89,
+    "N2": 30.3,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 94,
+   "id": "driftwood-crab",
+   "name": "Driftwood Crab",
+   "rarity": "common",
+   "stats": "2/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 2",
+    "Map 8",
+    "Map 9",
+    "Smugglers' Grotto"
+   ],
+   "firstMap": 2,
+   "N": 20.34,
+   "B": 19.15,
+   "S": 1.15,
+   "use": 94,
+   "margin": 1.19,
+   "cap2": {
+    "P": 24.33,
+    "N2": 72.17,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 2,
+   "before": {
+    "firstMap": 2,
+    "N": 20.34,
+    "B": 19.15,
+    "use": 94,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 98,
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "rarity": "starter",
+   "stats": "2/10",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 0",
+    "Map 1",
+    "Map 2",
+    "Map 4",
+    "Lilypad Reach"
+   ],
+   "firstMap": 0,
+   "N": 16.33,
+   "B": 16,
+   "S": 0,
+   "use": 98,
+   "margin": 0.33,
+   "cap2": {
+    "P": 20,
+    "N2": 46.52,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 53,
+   "id": "dune-jackal",
+   "name": "Dune Jackal",
+   "rarity": "common",
+   "stats": "1/1",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 18",
+    "Map 19",
+    "The Pale Desert"
+   ],
+   "firstMap": 14,
+   "N": 19.34,
+   "B": 10.23,
+   "S": 6.23,
+   "use": 53,
+   "margin": 9.11,
+   "cap2": {
+    "P": 10.7,
+    "N2": 65.25,
+    "ok": true
+   },
+   "verdict": "under",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 19.34,
+    "B": 10.23,
+    "use": 53,
+    "verdict": "under"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 86,
+   "id": "dust-hyena",
+   "name": "Dust Hyena",
+   "rarity": "uncommon",
+   "stats": "2/6",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 14",
+    "Map 15"
+   ],
+   "firstMap": 14,
+   "N": 17.36,
+   "B": 14.89,
+   "S": 2.89,
+   "use": 86,
+   "margin": 2.47,
+   "cap2": {
+    "P": 14.09,
+    "N2": 52.57,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 17.36,
+    "B": 14.89,
+    "use": 86,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 73,
+   "id": "eagle-owl-quartermaster",
+   "name": "Eagle-Owl Quartermaster",
+   "rarity": "rare",
+   "stats": "1/6",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 11",
+    "Map 15",
+    "The Aerie Vault"
+   ],
+   "firstMap": 11,
+   "N": 24.77,
+   "B": 18.16,
+   "S": 7.45,
+   "use": 73,
+   "margin": 6.61,
+   "cap2": {
+    "P": 21.02,
+    "N2": 107.03,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 11,
+   "before": {
+    "firstMap": 11,
+    "N": 24.77,
+    "B": 18.16,
+    "use": 73,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 95,
+   "id": "eagle-sharpshooter",
+   "name": "Eagle Sharpshooter",
+   "rarity": "common",
+   "stats": "2/6",
+   "cost": 2,
+   "wait": 1,
+   "lists": [
+    "Map 3",
+    "Map 11",
+    "Map 20"
+   ],
+   "firstMap": 0,
+   "N": 23.49,
+   "B": 22.22,
+   "S": 7.94,
+   "use": 95,
+   "margin": 1.27,
+   "cap2": {
+    "P": 30.04,
+    "N2": 96.25,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 49,
+   "id": "earthworm",
+   "name": "Earthworm",
+   "rarity": "starter",
+   "stats": "0/6",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0",
+    "Map 7",
+    "The Old Bramble",
+    "The Mycelium Deep"
+   ],
+   "firstMap": 0,
+   "N": 12.34,
+   "B": 6,
+   "S": 0,
+   "use": 49,
+   "margin": 6.34,
+   "cap2": {
+    "P": 0,
+    "N2": 26.56,
+    "ok": true
+   },
+   "verdict": "under",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 85,
+   "id": "echo-screecher",
+   "name": "Echo Screecher",
+   "rarity": "rare",
+   "stats": "2/5",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 8",
+    "Map 20",
+    "The Glimmer Depths"
+   ],
+   "firstMap": 8,
+   "N": 24.07,
+   "B": 20.51,
+   "S": 7.42,
+   "use": 85,
+   "margin": 3.56,
+   "cap2": {
+    "P": 25.66,
+    "N2": 101.07,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 8,
+   "before": {
+    "firstMap": 8,
+    "N": 24.07,
+    "B": 20.51,
+    "use": 85,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "rarity": "common",
+   "stats": "0/36",
+   "cost": 3,
+   "wait": 5,
+   "lists": [
+    "The Old Bramble"
+   ],
+   "firstMap": 21,
+   "N": 53.5,
+   "B": 42.65,
+   "S": 6.65,
+   "use": 80,
+   "margin": 10.85,
+   "cap2": {
+    "P": 11.06,
+    "N2": 499.3,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 21,
+    "N": 53.5,
+    "B": 42.65,
+    "use": 80,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 94,
+   "id": "elderhorn-monarch",
+   "name": "Elderhorn Monarch",
+   "rarity": "common",
+   "stats": "2/30",
+   "cost": 3,
+   "wait": 4,
+   "lists": [
+    "Map 15",
+    "Map 17",
+    "Map 19"
+   ],
+   "firstMap": 14,
+   "N": 45.73,
+   "B": 42.78,
+   "S": 6.78,
+   "use": 94,
+   "margin": 2.95,
+   "cap2": {
+    "P": 71.49,
+    "N2": 364.8,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 24,
+    "N": 48.07,
+    "B": 42.78,
+    "use": 89,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 91,
+   "id": "ember-revenant",
+   "name": "Ember Revenant",
+   "rarity": "veryrare",
+   "stats": "4/15",
+   "cost": 2,
+   "wait": 1,
+   "lists": [
+    "Basalt Foundry"
+   ],
+   "firstMap": 23,
+   "N": 32.36,
+   "B": 29.5,
+   "S": 2.5,
+   "use": 91,
+   "margin": 2.86,
+   "cap2": {
+    "P": 61.56,
+    "N2": 182.67,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 23,
+   "before": {
+    "firstMap": 23,
+    "N": 32.36,
+    "B": 29.5,
+    "use": 91,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 92,
+   "id": "ent",
+   "name": "Ent",
+   "rarity": "rare",
+   "stats": "2/22",
+   "cost": 0,
+   "wait": 3,
+   "lists": [
+    "The Old Bramble"
+   ],
+   "firstMap": 21,
+   "N": 33.3,
+   "B": 30.7,
+   "S": 2.7,
+   "use": 92,
+   "margin": 2.6,
+   "cap2": {
+    "P": 45.82,
+    "N2": 193.44,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 21,
+    "N": 33.3,
+    "B": 30.7,
+    "use": 92,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 81,
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "rarity": "common",
+   "stats": "3/11",
+   "cost": 3,
+   "wait": 3,
+   "lists": [
+    "Map 11",
+    "Map 12",
+    "Map 21",
+    "The Aerie Vault"
+   ],
+   "firstMap": 7,
+   "N": 38.55,
+   "B": 31.08,
+   "S": 7.28,
+   "use": 81,
+   "margin": 7.47,
+   "cap2": {
+    "P": 52.52,
+    "N2": 259.24,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 38.55,
+    "B": 31.08,
+    "use": 81,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "farm-dog",
+   "name": "Farm Dog",
+   "rarity": "common",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0",
+    "Map 16",
+    "The Old Bramble"
+   ],
+   "firstMap": 0,
+   "N": 13.57,
+   "B": 13,
+   "S": 0,
+   "use": 96,
+   "margin": 0.57,
+   "cap2": {
+    "P": 14,
+    "N2": 32.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "fawn-scout",
+   "name": "Fawn Scout",
+   "rarity": "rare",
+   "stats": "2/8",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 12",
+    "Map 15"
+   ],
+   "firstMap": 13,
+   "N": 18.29,
+   "B": 14.41,
+   "S": 0.41,
+   "use": 79,
+   "margin": 3.88,
+   "cap2": {
+    "P": 16.04,
+    "N2": 58.36,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 13,
+   "before": {
+    "firstMap": 13,
+    "N": 18.29,
+    "B": 14.41,
+    "use": 79,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 99,
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "rarity": "common",
+   "stats": "1/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 3",
+    "Map 13"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 12.82,
+   "S": 5.82,
+   "use": 99,
+   "margin": 0.1,
+   "cap2": {
+    "P": 12.47,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 80,
+   "id": "fiddler-crab-swarm",
+   "name": "Fiddler Crab Swarm",
+   "rarity": "common",
+   "stats": "1/8",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 9"
+   ],
+   "firstMap": 7,
+   "N": 14.56,
+   "B": 11.6,
+   "S": 0.6,
+   "use": 80,
+   "margin": 2.96,
+   "cap2": {
+    "P": 8.09,
+    "N2": 36.98,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 91,
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "rarity": "uncommon",
+   "stats": "2/7",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 5"
+   ],
+   "firstMap": 1,
+   "N": 21.27,
+   "B": 19.35,
+   "S": 6.35,
+   "use": 91,
+   "margin": 1.92,
+   "cap2": {
+    "P": 24.08,
+    "N2": 78.92,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 21.27,
+    "B": 19.35,
+    "use": 91,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 94,
+   "id": "fire-drake-hatchling",
+   "name": "Fire Drake Hatchling",
+   "rarity": "heroic",
+   "stats": "6/11",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "Volcano Lair"
+   ],
+   "firstMap": 20,
+   "N": 39.54,
+   "B": 37.04,
+   "S": 8.04,
+   "use": 94,
+   "margin": 2.5,
+   "cap2": {
+    "P": 82.16,
+    "N2": 272.73,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 20,
+   "before": {
+    "firstMap": 20,
+    "N": 39.54,
+    "B": 37.04,
+    "use": 94,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 93,
+   "id": "fire-salamander",
+   "name": "Fire Salamander",
+   "rarity": "uncommon",
+   "stats": "3/7",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 19",
+    "Map 20",
+    "Basalt Foundry",
+    "Volcano Lair"
+   ],
+   "firstMap": 19,
+   "N": 25.47,
+   "B": 23.72,
+   "S": 7.72,
+   "use": 93,
+   "margin": 1.75,
+   "cap2": {
+    "P": 35.9,
+    "N2": 113.17,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 19,
+   "before": {
+    "firstMap": 19,
+    "N": 25.47,
+    "B": 23.72,
+    "use": 93,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 84,
+   "id": "fishing-cat",
+   "name": "Fishing Cat",
+   "rarity": "rare",
+   "stats": "1/14",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 9",
+    "The Canopy"
+   ],
+   "firstMap": 7,
+   "N": 23.84,
+   "B": 19.96,
+   "S": 2.96,
+   "use": 84,
+   "margin": 3.88,
+   "cap2": {
+    "P": 16.19,
+    "N2": 99.14,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 23.84,
+    "B": 19.96,
+    "use": 84,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "frillneck-duelist",
+   "name": "Frillneck Duelist",
+   "rarity": "rare",
+   "stats": "2/15",
+   "cost": 2,
+   "wait": 1,
+   "lists": [
+    "Map 20"
+   ],
+   "firstMap": 14,
+   "N": 29.09,
+   "B": 23.23,
+   "S": 2.23,
+   "use": 80,
+   "margin": 5.86,
+   "cap2": {
+    "P": 31.24,
+    "N2": 147.62,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 74,
+   "id": "frostbitten-wolverine",
+   "name": "Frostbitten Wolverine",
+   "rarity": "uncommon",
+   "stats": "3/10",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "The Ice Hollow"
+   ],
+   "firstMap": 21,
+   "N": 25.94,
+   "B": 19.19,
+   "S": 0.19,
+   "use": 74,
+   "margin": 6.75,
+   "cap2": {
+    "P": 30.01,
+    "N2": 117.38,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 14,
+    "N": 24.31,
+    "B": 19.19,
+    "use": 79,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 86,
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "rarity": "rare",
+   "stats": "1/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 20",
+    "Map 21",
+    "Volcano Lair"
+   ],
+   "firstMap": 14,
+   "N": 25.47,
+   "B": 21.96,
+   "S": 6.96,
+   "use": 86,
+   "margin": 3.51,
+   "cap2": {
+    "P": 24.11,
+    "N2": 113.17,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 25.47,
+    "B": 21.96,
+    "use": 86,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "fungal-colossus",
+   "name": "Fungal Colossus",
+   "rarity": "uncommon",
+   "stats": "2/14",
+   "cost": 2,
+   "wait": 3,
+   "lists": [
+    "The Mycelium Deep"
+   ],
+   "firstMap": 7,
+   "N": 35.63,
+   "B": 26.57,
+   "S": 6.57,
+   "use": 75,
+   "margin": 9.06,
+   "cap2": {
+    "P": 38.79,
+    "N2": 221.46,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 35.63,
+    "B": 26.57,
+    "use": 75,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 79,
+   "id": "fungus-gnat-cloud",
+   "name": "Fungus Gnat Cloud",
+   "rarity": "common",
+   "stats": "1/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 7",
+    "The Mycelium Deep"
+   ],
+   "firstMap": 7,
+   "N": 14.56,
+   "B": 11.46,
+   "S": 3.13,
+   "use": 79,
+   "margin": 3.1,
+   "cap2": {
+    "P": 7.21,
+    "N2": 36.98,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 14.56,
+    "B": 11.46,
+    "use": 79,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 100,
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "rarity": "uncommon",
+   "stats": "4/7",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 8",
+    "Map 18",
+    "The Glimmer Depths"
+   ],
+   "firstMap": 7,
+   "N": 22.67,
+   "B": 22.69,
+   "S": 3.69,
+   "use": 100,
+   "margin": -0.02,
+   "cap2": {
+    "P": 31.4,
+    "N2": 89.65,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 22.67,
+    "B": 22.69,
+    "use": 100,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 87,
+   "id": "gannet-nestweaver",
+   "name": "Gannet Nestweaver",
+   "rarity": "common",
+   "stats": "1/7",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 3",
+    "Map 11"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 14.49,
+   "S": 2.59,
+   "use": 87,
+   "margin": 2.23,
+   "cap2": {
+    "P": 10.01,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 99,
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "rarity": "rare",
+   "stats": "3/15",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 8",
+    "Map 9",
+    "The Glimmer Depths"
+   ],
+   "firstMap": 8,
+   "N": 28.45,
+   "B": 28.15,
+   "S": 4.15,
+   "use": 99,
+   "margin": 0.3,
+   "cap2": {
+    "P": 49.31,
+    "N2": 141.2,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 8,
+   "before": {
+    "firstMap": 8,
+    "N": 28.45,
+    "B": 28.15,
+    "use": 99,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 92,
+   "id": "giant-clam",
+   "name": "Giant Clam",
+   "rarity": "common",
+   "stats": "5/4",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 10",
+    "The Sunken Depths"
+   ],
+   "firstMap": 7,
+   "N": 25.88,
+   "B": 23.76,
+   "S": 4.76,
+   "use": 92,
+   "margin": 2.12,
+   "cap2": {
+    "P": 25.66,
+    "N2": 116.84,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 25.88,
+    "B": 23.76,
+    "use": 92,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 79,
+   "id": "glacier-yak",
+   "name": "Glacier Yak",
+   "rarity": "common",
+   "stats": "1/17",
+   "cost": 3,
+   "wait": 1,
+   "lists": [
+    "Map 17",
+    "Map 19",
+    "Map 21",
+    "The Ice Hollow"
+   ],
+   "firstMap": 14,
+   "N": 30.85,
+   "B": 24.41,
+   "S": 4.41,
+   "use": 79,
+   "margin": 6.44,
+   "cap2": {
+    "P": 21.86,
+    "N2": 166.02,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 30.85,
+    "B": 24.41,
+    "use": 79,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 93,
+   "id": "glimmer-spider",
+   "name": "Glimmer Spider",
+   "rarity": "uncommon",
+   "stats": "3/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "The Glimmer Depths"
+   ],
+   "firstMap": 14,
+   "N": 24.31,
+   "B": 22.72,
+   "S": 2.72,
+   "use": 93,
+   "margin": 1.59,
+   "cap2": {
+    "P": 34.85,
+    "N2": 103.09,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 24.31,
+    "B": 22.72,
+    "use": 93,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 83,
+   "id": "golden-eagle-diver",
+   "name": "Golden Eagle Diver",
+   "rarity": "uncommon",
+   "stats": "2/2",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 11",
+    "Map 16",
+    "The Aerie Vault"
+   ],
+   "firstMap": 3,
+   "N": 17.94,
+   "B": 14.84,
+   "S": 5.32,
+   "use": 83,
+   "margin": 3.1,
+   "cap2": {
+    "P": 11.84,
+    "N2": 56.14,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 3,
+   "before": {
+    "firstMap": 3,
+    "N": 17.94,
+    "B": 14.84,
+    "use": 83,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 85,
+   "id": "grass-snake",
+   "name": "Grass Snake",
+   "rarity": "uncommon",
+   "stats": "2/10",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 4",
+    "Map 13"
+   ],
+   "firstMap": 1,
+   "N": 21.27,
+   "B": 18,
+   "S": 2,
+   "use": 85,
+   "margin": 3.27,
+   "cap2": {
+    "P": 21,
+    "N2": 78.92,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 21.27,
+    "B": 18,
+    "use": 85,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 90,
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "rarity": "uncommon",
+   "stats": "1/8",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 6"
+   ],
+   "firstMap": 5,
+   "N": 15.26,
+   "B": 13.72,
+   "S": 2.72,
+   "use": 90,
+   "margin": 1.54,
+   "cap2": {
+    "P": 9.85,
+    "N2": 40.62,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 5,
+   "before": {
+    "firstMap": 5,
+    "N": 15.26,
+    "B": 13.72,
+    "use": 90,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 87,
+   "id": "great-horned-owl",
+   "name": "Great Horned Owl",
+   "rarity": "common",
+   "stats": "2/14",
+   "cost": 2,
+   "wait": 3,
+   "lists": [
+    "The Aerie Vault"
+   ],
+   "firstMap": 14,
+   "N": 36.1,
+   "B": 31.25,
+   "S": 7.45,
+   "use": 87,
+   "margin": 4.85,
+   "cap2": {
+    "P": 47.2,
+    "N2": 227.34,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 36.1,
+    "B": 31.25,
+    "use": 87,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 86,
+   "id": "greenland-shark",
+   "name": "Greenland Shark",
+   "rarity": "rare",
+   "stats": "1/23",
+   "cost": 1,
+   "wait": 3,
+   "lists": [
+    "The Ice Hollow"
+   ],
+   "firstMap": 21,
+   "N": 36.45,
+   "B": 31.51,
+   "S": 5.51,
+   "use": 86,
+   "margin": 4.94,
+   "cap2": {
+    "P": 30.59,
+    "N2": 231.77,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 21,
+    "N": 36.45,
+    "B": 31.51,
+    "use": 86,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 75,
+   "id": "grindstone-boar",
+   "name": "Grindstone Boar",
+   "rarity": "common",
+   "stats": "3/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Basalt Foundry"
+   ],
+   "firstMap": 23,
+   "N": 25.24,
+   "B": 19,
+   "S": -2,
+   "use": 75,
+   "margin": 6.24,
+   "cap2": {
+    "P": 35,
+    "N2": 111.13,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 23,
+   "before": {
+    "firstMap": 23,
+    "N": 25.24,
+    "B": 19,
+    "use": 75,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 79,
+   "id": "grizzly-vanguard",
+   "name": "Grizzly Vanguard",
+   "rarity": "common",
+   "stats": "1/19",
+   "cost": 2,
+   "wait": 3,
+   "lists": [
+    "Map 13",
+    "Map 14"
+   ],
+   "firstMap": 7,
+   "N": 34.47,
+   "B": 27.08,
+   "S": 5.08,
+   "use": 79,
+   "margin": 7.39,
+   "cap2": {
+    "P": 25.45,
+    "N2": 207.27,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 34.47,
+    "B": 27.08,
+    "use": 79,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 98,
+   "id": "gull-thief",
+   "name": "Gull Thief",
+   "rarity": "common",
+   "stats": "1/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 2",
+    "Map 3",
+    "Smugglers' Grotto"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 12.69,
+   "S": 0.79,
+   "use": 98,
+   "margin": 0.23,
+   "cap2": {
+    "P": 8.49,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 56,
+   "id": "harbor-seal",
+   "name": "Harbor Seal",
+   "rarity": "common",
+   "stats": "1/9",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 17",
+    "The Ice Hollow"
+   ],
+   "firstMap": 14,
+   "N": 23.14,
+   "B": 12.96,
+   "S": -1.2,
+   "use": 56,
+   "margin": 10.18,
+   "cap2": {
+    "P": 10.26,
+    "N2": 93.41,
+    "ok": true
+   },
+   "verdict": "under",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 23.14,
+    "B": 12.96,
+    "use": 56,
+    "verdict": "under"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 67,
+   "id": "harp-seal-pup",
+   "name": "Harp Seal Pup",
+   "rarity": "common",
+   "stats": "1/6",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "The Ice Hollow"
+   ],
+   "firstMap": 21,
+   "N": 17.83,
+   "B": 12,
+   "S": 3,
+   "use": 67,
+   "margin": 5.83,
+   "cap2": {
+    "P": 8.25,
+    "N2": 55.46,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 21,
+    "N": 17.83,
+    "B": 12,
+    "use": 67,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "hawthorn-shieldbug",
+   "name": "Hawthorn Shieldbug",
+   "rarity": "common",
+   "stats": "2/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 7",
+    "Map 8",
+    "The Mycelium Deep"
+   ],
+   "firstMap": 7,
+   "N": 21.5,
+   "B": 20.33,
+   "S": 2.33,
+   "use": 95,
+   "margin": 1.17,
+   "cap2": {
+    "P": 25.36,
+    "N2": 80.64,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 21.5,
+    "B": 20.33,
+    "use": 95,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 97,
+   "id": "hedgehog-herbalist",
+   "name": "Hedgehog Herbalist",
+   "rarity": "rare",
+   "stats": "3/15",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "The Sunken Grove"
+   ],
+   "firstMap": 13,
+   "N": 25.24,
+   "B": 24.53,
+   "S": 0.53,
+   "use": 97,
+   "margin": 0.71,
+   "cap2": {
+    "P": 45.07,
+    "N2": 111.13,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 13,
+   "before": {
+    "firstMap": 13,
+    "N": 25.24,
+    "B": 24.53,
+    "use": 97,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 98,
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "rarity": "common",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 1",
+    "Map 2"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 12.68,
+   "S": -0.32,
+   "use": 98,
+   "margin": 0.24,
+   "cap2": {
+    "P": 13.97,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 90,
+   "id": "hercules-beetle",
+   "name": "Hercules Beetle",
+   "rarity": "rare",
+   "stats": "2/17",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "The Canopy"
+   ],
+   "firstMap": 18,
+   "N": 30.79,
+   "B": 27.79,
+   "S": 4.79,
+   "use": 90,
+   "margin": 3,
+   "cap2": {
+    "P": 39.74,
+    "N2": 165.38,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 18,
+   "before": {
+    "firstMap": 18,
+    "N": 30.79,
+    "B": 27.79,
+    "use": 90,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "hollow-belly-rat",
+   "name": "Hollow-belly Rat",
+   "rarity": "uncommon",
+   "stats": "2/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 12",
+    "Map 14"
+   ],
+   "firstMap": 0,
+   "N": 21.04,
+   "B": 20,
+   "S": 2,
+   "use": 95,
+   "margin": 1.04,
+   "cap2": {
+    "P": 25,
+    "N2": 77.22,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 62,
+   "id": "honey-badger-fury",
+   "name": "Honey Badger Fury",
+   "rarity": "common",
+   "stats": "1/6",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 19",
+    "Map 20",
+    "Map 21",
+    "Eye of the Volcano"
+   ],
+   "firstMap": 14,
+   "N": 19.34,
+   "B": 12.01,
+   "S": 3.01,
+   "use": 62,
+   "margin": 7.33,
+   "cap2": {
+    "P": 8.27,
+    "N2": 65.25,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 19.34,
+    "B": 12.01,
+    "use": 62,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 69,
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "rarity": "starter",
+   "stats": "1/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0",
+    "Clovermead"
+   ],
+   "firstMap": 0,
+   "N": 11.99,
+   "B": 8.33,
+   "S": 0,
+   "use": 69,
+   "margin": 3.66,
+   "cap2": {
+    "P": 4.76,
+    "N2": 25.08,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 97,
+   "id": "hoopoe-herald",
+   "name": "Hoopoe Herald",
+   "rarity": "common",
+   "stats": "2/12",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 14",
+    "Map 15"
+   ],
+   "firstMap": 14,
+   "N": 16.51,
+   "B": 15.96,
+   "S": -2.04,
+   "use": 97,
+   "margin": 0.55,
+   "cap2": {
+    "P": 22.96,
+    "N2": 47.55,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 16.51,
+    "B": 15.96,
+    "use": 97,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 101,
+   "id": "horned-lizard",
+   "name": "Horned Lizard",
+   "rarity": "uncommon",
+   "stats": "5/8",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 18",
+    "Map 19",
+    "The Pale Desert"
+   ],
+   "firstMap": 14,
+   "N": 24.31,
+   "B": 24.49,
+   "S": 1.49,
+   "use": 101,
+   "margin": -0.18,
+   "cap2": {
+    "P": 40.56,
+    "N2": 103.09,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 24.31,
+    "B": 24.49,
+    "use": 101,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "horseshoe-crab",
+   "name": "Horseshoe Crab",
+   "rarity": "common",
+   "stats": "2/9",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 9"
+   ],
+   "firstMap": 7,
+   "N": 21.5,
+   "B": 20.32,
+   "S": 5.32,
+   "use": 95,
+   "margin": 1.18,
+   "cap2": {
+    "P": 25.08,
+    "N2": 80.64,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 21.5,
+    "B": 20.32,
+    "use": 95,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 88,
+   "id": "house-cat",
+   "name": "House Cat",
+   "rarity": "common",
+   "stats": "3/3",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0",
+    "Map 1"
+   ],
+   "firstMap": 0,
+   "N": 13.57,
+   "B": 12,
+   "S": 0,
+   "use": 88,
+   "margin": 1.57,
+   "cap2": {
+    "P": 9,
+    "N2": 32.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 94,
+   "id": "ice-crevasse-wolf",
+   "name": "Ice-Crevasse Wolf",
+   "rarity": "rare",
+   "stats": "1/16",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 17",
+    "Map 18",
+    "The Ice Hollow"
+   ],
+   "firstMap": 14,
+   "N": 25.47,
+   "B": 23.87,
+   "S": 4.87,
+   "use": 94,
+   "margin": 1.6,
+   "cap2": {
+    "P": 21.93,
+    "N2": 113.17,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 25.47,
+    "B": 23.87,
+    "use": 94,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 108,
+   "id": "ironclaw-fiddler",
+   "name": "Ironclaw Fiddler",
+   "rarity": "rare",
+   "stats": "7/12",
+   "cost": 2,
+   "wait": 3,
+   "lists": [
+    "Map 9",
+    "Map 10"
+   ],
+   "firstMap": 7,
+   "N": 36.8,
+   "B": 39.78,
+   "S": 6.78,
+   "use": 108,
+   "margin": -2.98,
+   "cap2": {
+    "P": 95.49,
+    "N2": 236.24,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 36.8,
+    "B": 39.78,
+    "use": 108,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "jackrabbit-sprinter",
+   "name": "Jackrabbit Sprinter",
+   "rarity": "common",
+   "stats": "3/3",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Clovermead"
+   ],
+   "firstMap": 7,
+   "N": 17.71,
+   "B": 14.23,
+   "S": 2.23,
+   "use": 80,
+   "margin": 3.48,
+   "cap2": {
+    "P": 10.24,
+    "N2": 54.71,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 17.71,
+    "B": 14.23,
+    "use": 80,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 77,
+   "id": "jaguar-stalker",
+   "name": "Jaguar Stalker",
+   "rarity": "rare",
+   "stats": "1/15",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "The Canopy"
+   ],
+   "firstMap": 18,
+   "N": 26.41,
+   "B": 20.23,
+   "S": 2.23,
+   "use": 77,
+   "margin": 6.18,
+   "cap2": {
+    "P": 16.24,
+    "N2": 121.67,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 18,
+   "before": {
+    "firstMap": 18,
+    "N": 26.41,
+    "B": 20.23,
+    "use": 77,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 77,
+   "id": "kinkajou-lurker",
+   "name": "Kinkajou Lurker",
+   "rarity": "uncommon",
+   "stats": "4/6",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "The Canopy"
+   ],
+   "firstMap": 18,
+   "N": 25.74,
+   "B": 19.75,
+   "S": 1.75,
+   "use": 77,
+   "margin": 5.99,
+   "cap2": {
+    "P": 24.77,
+    "N2": 115.58,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 18,
+   "before": {
+    "firstMap": 18,
+    "N": 25.74,
+    "B": 19.75,
+    "use": 77,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 98,
+   "id": "kittiwake-flock",
+   "name": "Kittiwake Flock",
+   "rarity": "common",
+   "stats": "1/5",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 3",
+    "Map 4",
+    "Map 11"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 12.65,
+   "S": 3.13,
+   "use": 98,
+   "margin": 0.27,
+   "cap2": {
+    "P": 8.4,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 88,
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling",
+   "rarity": "common",
+   "stats": "2/16",
+   "cost": 3,
+   "wait": 2,
+   "lists": [
+    "The Sunken Depths"
+   ],
+   "firstMap": 7,
+   "N": 33.59,
+   "B": 29.68,
+   "S": 7.68,
+   "use": 88,
+   "margin": 3.91,
+   "cap2": {
+    "P": 46.75,
+    "N2": 196.82,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 33.59,
+    "B": 29.68,
+    "use": 88,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 73,
+   "id": "krill-swarm",
+   "name": "Krill Swarm",
+   "rarity": "common",
+   "stats": "0/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 10",
+    "The Sunken Depths"
+   ],
+   "firstMap": 7,
+   "N": 14.56,
+   "B": 10.63,
+   "S": 3.63,
+   "use": 73,
+   "margin": 3.93,
+   "cap2": {
+    "P": 3.29,
+    "N2": 36.98,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 14.56,
+    "B": 10.63,
+    "use": 73,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 77,
+   "id": "lamprey",
+   "name": "Lamprey",
+   "rarity": "common",
+   "stats": "2/5",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 7"
+   ],
+   "firstMap": 7,
+   "N": 17.71,
+   "B": 13.64,
+   "S": 2.64,
+   "use": 77,
+   "margin": 4.07,
+   "cap2": {
+    "P": 11.74,
+    "N2": 54.71,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 74,
+   "id": "lantern-spark-fly",
+   "name": "Lantern Spark Fly",
+   "rarity": "uncommon",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "The Glimmer Depths"
+   ],
+   "firstMap": 16,
+   "N": 21.62,
+   "B": 15.98,
+   "S": 0.51,
+   "use": 74,
+   "margin": 5.64,
+   "cap2": {
+    "P": 16.73,
+    "N2": 81.54,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 16,
+   "before": {
+    "firstMap": 16,
+    "N": 21.62,
+    "B": 15.98,
+    "use": 74,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 83,
+   "id": "leopard-slug",
+   "name": "Leopard Slug",
+   "rarity": "common",
+   "stats": "1/10",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 7",
+    "The Mycelium Deep"
+   ],
+   "firstMap": 7,
+   "N": 18.35,
+   "B": 15.3,
+   "S": 2.3,
+   "use": 83,
+   "margin": 3.05,
+   "cap2": {
+    "P": 11.32,
+    "N2": 58.74,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 18.35,
+    "B": 15.3,
+    "use": 83,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 86,
+   "id": "limpet-clinger",
+   "name": "Limpet Clinger",
+   "rarity": "common",
+   "stats": "2/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 2",
+    "Map 3",
+    "Smugglers' Grotto"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 11.07,
+   "S": 1.07,
+   "use": 86,
+   "margin": 1.85,
+   "cap2": {
+    "P": 8.29,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "lodge-engineer",
+   "name": "Lodge Engineer",
+   "rarity": "uncommon",
+   "stats": "3/12",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "Lilypad Reach"
+   ],
+   "firstMap": 1,
+   "N": 29.27,
+   "B": 28.22,
+   "S": 7.22,
+   "use": 96,
+   "margin": 1.05,
+   "cap2": {
+    "P": 49.03,
+    "N2": 149.45,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 29.27,
+    "B": 28.22,
+    "use": 96,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "lucky-hopper",
+   "name": "Lucky Hopper",
+   "rarity": "uncommon",
+   "stats": "1/17",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Clovermead"
+   ],
+   "firstMap": 12,
+   "N": 21.04,
+   "B": 20,
+   "S": 0,
+   "use": 95,
+   "margin": 1.04,
+   "cap2": {
+    "P": 17,
+    "N2": 77.22,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 12,
+   "before": {
+    "firstMap": 12,
+    "N": 21.04,
+    "B": 20,
+    "use": 95,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "rarity": "veryrare",
+   "stats": "3/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 20",
+    "Eye of the Volcano",
+    "Volcano Lair"
+   ],
+   "firstMap": 20,
+   "N": 28.04,
+   "B": 26.56,
+   "S": 6.56,
+   "use": 95,
+   "margin": 1.48,
+   "cap2": {
+    "P": 43.76,
+    "N2": 137.16,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 20,
+   "before": {
+    "firstMap": 20,
+    "N": 28.04,
+    "B": 26.56,
+    "use": 95,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 72,
+   "id": "magma-titan",
+   "name": "Magma Rhino",
+   "rarity": "common",
+   "stats": "2/17",
+   "cost": 3,
+   "wait": 2,
+   "lists": [
+    "Map 21"
+   ],
+   "firstMap": 21,
+   "N": 36.86,
+   "B": 26.41,
+   "S": 3.41,
+   "use": 72,
+   "margin": 10.45,
+   "cap2": {
+    "P": 36.91,
+    "N2": 237.01,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 14,
+    "N": 35.22,
+    "B": 26.41,
+    "use": 75,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 68,
+   "id": "mallard-marauder",
+   "name": "Mallard Marauder",
+   "rarity": "rare",
+   "stats": "2/5",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 15"
+   ],
+   "firstMap": 14,
+   "N": 21.68,
+   "B": 14.75,
+   "S": 1.66,
+   "use": 68,
+   "margin": 6.93,
+   "cap2": {
+    "P": 12.59,
+    "N2": 81.99,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 93,
+   "id": "mangrove-monitor",
+   "name": "Mangrove Monitor",
+   "rarity": "common",
+   "stats": "3/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 9"
+   ],
+   "firstMap": 7,
+   "N": 22.58,
+   "B": 21,
+   "S": 0,
+   "use": 93,
+   "margin": 1.58,
+   "cap2": {
+    "P": 36,
+    "N2": 88.94,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 22.58,
+    "B": 21,
+    "use": 93,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "mangrove-mudskipper",
+   "name": "Mangrove Mudskipper",
+   "rarity": "common",
+   "stats": "1/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 9"
+   ],
+   "firstMap": 7,
+   "N": 14.56,
+   "B": 14,
+   "S": 4,
+   "use": 96,
+   "margin": 0.56,
+   "cap2": {
+    "P": 11,
+    "N2": 36.98,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 14.56,
+    "B": 14,
+    "use": 96,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 99,
+   "id": "marsh-mallow-hare",
+   "name": "Marsh-mallow Hare",
+   "rarity": "common",
+   "stats": "4/4",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 5",
+    "Map 13"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 16.5,
+   "S": 0.5,
+   "use": 99,
+   "margin": 0.22,
+   "cap2": {
+    "P": 16.06,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 88,
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "rarity": "uncommon",
+   "stats": "4/20",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "Map 14"
+   ],
+   "firstMap": 14,
+   "N": 32.31,
+   "B": 28.3,
+   "S": -3.7,
+   "use": 88,
+   "margin": 4.01,
+   "cap2": {
+    "P": 76.58,
+    "N2": 182.11,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 32.31,
+    "B": 28.3,
+    "use": 88,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 82,
+   "id": "meerkat-sentry",
+   "name": "Meerkat Sentry",
+   "rarity": "common",
+   "stats": "2/7",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 14"
+   ],
+   "firstMap": 14,
+   "N": 23.14,
+   "B": 19,
+   "S": 6,
+   "use": 82,
+   "margin": 4.14,
+   "cap2": {
+    "P": 23,
+    "N2": 93.41,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 23.14,
+    "B": 19,
+    "use": 82,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 86,
+   "id": "monarch-wingblade",
+   "name": "Monarch Wingblade",
+   "rarity": "rare",
+   "stats": "3/6",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 13"
+   ],
+   "firstMap": 7,
+   "N": 23.84,
+   "B": 20.57,
+   "S": 2.72,
+   "use": 86,
+   "margin": 3.27,
+   "cap2": {
+    "P": 23.27,
+    "N2": 99.14,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 5,
+    "N": 23.37,
+    "B": 20.57,
+    "use": 88,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 81,
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "rarity": "common",
+   "stats": "1/3",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 10",
+    "The Sunken Depths"
+   ],
+   "firstMap": 7,
+   "N": 18.35,
+   "B": 14.8,
+   "S": 8.8,
+   "use": 81,
+   "margin": 3.55,
+   "cap2": {
+    "P": 22.36,
+    "N2": 58.74,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 18.35,
+    "B": 14.8,
+    "use": 81,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 85,
+   "id": "moonlit-hare",
+   "name": "Moonlit Hare",
+   "rarity": "uncommon",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 1",
+    "Map 2"
+   ],
+   "firstMap": 1,
+   "N": 18.12,
+   "B": 15.46,
+   "S": 2.46,
+   "use": 85,
+   "margin": 2.66,
+   "cap2": {
+    "P": 15.51,
+    "N2": 57.28,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 18.12,
+    "B": 15.46,
+    "use": 85,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 87,
+   "id": "mosquito-cloud",
+   "name": "Mosquito Cloud",
+   "rarity": "common",
+   "stats": "1/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 5",
+    "Map 6",
+    "Map 15",
+    "The Canopy"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 11.22,
+   "S": 2.89,
+   "use": 87,
+   "margin": 1.7,
+   "cap2": {
+    "P": 6.85,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 68,
+   "id": "mountain-goat-climber",
+   "name": "Mountain Goat Climber",
+   "rarity": "uncommon",
+   "stats": "1/8",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 21"
+   ],
+   "firstMap": 21,
+   "N": 18.99,
+   "B": 12.98,
+   "S": 0,
+   "use": 68,
+   "margin": 6.01,
+   "cap2": {
+    "P": 9.44,
+    "N2": 62.91,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 21,
+    "N": 18.99,
+    "B": 12.98,
+    "use": 68,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 74,
+   "id": "mountain-hare",
+   "name": "Mountain Hare",
+   "rarity": "common",
+   "stats": "2/3",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 11",
+    "Map 12",
+    "Map 16"
+   ],
+   "firstMap": 7,
+   "N": 14.56,
+   "B": 10.81,
+   "S": 0.19,
+   "use": 74,
+   "margin": 3.75,
+   "cap2": {
+    "P": 7.09,
+    "N2": 36.98,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 14.56,
+    "B": 10.81,
+    "use": 74,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 98,
+   "id": "mouse-sapper",
+   "name": "Mouse Sapper",
+   "rarity": "common",
+   "stats": "3/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 12",
+    "Map 18"
+   ],
+   "firstMap": 7,
+   "N": 21.5,
+   "B": 21.07,
+   "S": 1.07,
+   "use": 98,
+   "margin": 0.43,
+   "cap2": {
+    "P": 33.29,
+    "N2": 80.64,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 21.5,
+    "B": 21.07,
+    "use": 98,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "mudflat-godwit",
+   "name": "Mudflat Godwit",
+   "rarity": "uncommon",
+   "stats": "2/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "The Sunken Grove"
+   ],
+   "firstMap": 7,
+   "N": 22.67,
+   "B": 21.68,
+   "S": 4.68,
+   "use": 96,
+   "margin": 0.99,
+   "cap2": {
+    "P": 27.48,
+    "N2": 89.65,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 22.67,
+    "B": 21.68,
+    "use": 96,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 103,
+   "id": "mudpuppy",
+   "name": "Mudpuppy",
+   "rarity": "common",
+   "stats": "2/9",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 5",
+    "The Sunken Grove"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 17.3,
+   "S": 2.3,
+   "use": 103,
+   "margin": -0.58,
+   "cap2": {
+    "P": 19.32,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 73,
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "rarity": "uncommon",
+   "stats": "1/7",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 4",
+    "Map 5",
+    "Lilypad Reach"
+   ],
+   "firstMap": 4,
+   "N": 26.35,
+   "B": 19.23,
+   "S": 9.23,
+   "use": 73,
+   "margin": 7.12,
+   "cap2": {
+    "P": 28.3,
+    "N2": 121.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 4,
+   "before": {
+    "firstMap": 4,
+    "N": 26.35,
+    "B": 19.23,
+    "use": 73,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 108,
+   "id": "muskrat-reedgatherer",
+   "name": "Muskrat Reedgatherer",
+   "rarity": "common",
+   "stats": "1/8",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 5",
+    "Lilypad Reach",
+    "The Sunken Grove"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 18.06,
+   "S": 7.06,
+   "use": 108,
+   "margin": -1.34,
+   "cap2": {
+    "P": 20.46,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "rarity": "uncommon",
+   "stats": "4/3",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 5",
+    "Map 6",
+    "The Sunken Grove"
+   ],
+   "firstMap": 6,
+   "N": 19.29,
+   "B": 18.48,
+   "S": 3.48,
+   "use": 96,
+   "margin": 0.81,
+   "cap2": {
+    "P": 15.03,
+    "N2": 64.91,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 6,
+   "before": {
+    "firstMap": 6,
+    "N": 19.29,
+    "B": 18.48,
+    "use": 96,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 76,
+   "id": "nightjar-drifter",
+   "name": "Nightjar Drifter",
+   "rarity": "common",
+   "stats": "1/8",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 18",
+    "The Pale Desert"
+   ],
+   "firstMap": 14,
+   "N": 19.73,
+   "B": 14.96,
+   "S": 3.96,
+   "use": 76,
+   "margin": 4.77,
+   "cap2": {
+    "P": 11.92,
+    "N2": 67.91,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "nutria-reedcutter",
+   "name": "Nutria Reedcutter",
+   "rarity": "common",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 2,
+   "lists": [
+    "Map 6",
+    "Map 9",
+    "The Sunken Grove"
+   ],
+   "firstMap": 0,
+   "N": 21.1,
+   "B": 20.2,
+   "S": 7.2,
+   "use": 96,
+   "margin": 0.9,
+   "cap2": {
+    "P": 26.96,
+    "N2": 77.66,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 76,
+   "id": "obsidian-lich",
+   "name": "Obsidian Lich",
+   "rarity": "rare",
+   "stats": "4/4",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Eye of the Volcano"
+   ],
+   "firstMap": 14,
+   "N": 29.85,
+   "B": 22.6,
+   "S": 6.6,
+   "use": 76,
+   "margin": 7.25,
+   "cap2": {
+    "P": 26.89,
+    "N2": 155.43,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 29.85,
+    "B": 22.6,
+    "use": 76,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "obsidian-scorpion",
+   "name": "Obsidian Scorpion",
+   "rarity": "rare",
+   "stats": "4/4",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 19",
+    "Map 20",
+    "Basalt Foundry",
+    "Eye of the Volcano",
+    "Volcano Lair"
+   ],
+   "firstMap": 14,
+   "N": 25.47,
+   "B": 24.45,
+   "S": 8.45,
+   "use": 96,
+   "margin": 1.02,
+   "cap2": {
+    "P": 33.85,
+    "N2": 113.17,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 25.47,
+    "B": 24.45,
+    "use": 96,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 94,
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "rarity": "uncommon",
+   "stats": "5/7",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "Smugglers' Grotto"
+   ],
+   "firstMap": 7,
+   "N": 30.67,
+   "B": 28.72,
+   "S": 6.72,
+   "use": 94,
+   "margin": 1.95,
+   "cap2": {
+    "P": 46.29,
+    "N2": 164.09,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 30.67,
+    "B": 28.72,
+    "use": 94,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 85,
+   "id": "open-ocean-hermit-crab",
+   "name": "Open-Ocean Hermit Crab",
+   "rarity": "common",
+   "stats": "2/2",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 2",
+    "Smugglers' Grotto"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 10.93,
+   "S": 2.93,
+   "use": 85,
+   "margin": 1.99,
+   "cap2": {
+    "P": 6.15,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 92,
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "rarity": "common",
+   "stats": "1/3",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 13"
+   ],
+   "firstMap": 7,
+   "N": 21.5,
+   "B": 19.72,
+   "S": 12.58,
+   "use": 92,
+   "margin": 1.78,
+   "cap2": {
+    "P": 43.13,
+    "N2": 80.64,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 21.5,
+    "B": 19.72,
+    "use": 92,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 86,
+   "id": "owl-sentinel",
+   "name": "Owl Sentinel",
+   "rarity": "common",
+   "stats": "3/9",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 16"
+   ],
+   "firstMap": 14,
+   "N": 27.52,
+   "B": 23.62,
+   "S": 2.2,
+   "use": 86,
+   "margin": 3.9,
+   "cap2": {
+    "P": 33.34,
+    "N2": 132.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 73,
+   "id": "oystercatcher",
+   "name": "Oystercatcher",
+   "rarity": "common",
+   "stats": "2/6",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 2"
+   ],
+   "firstMap": 0,
+   "N": 19.87,
+   "B": 14.58,
+   "S": 0.3,
+   "use": 73,
+   "margin": 5.29,
+   "cap2": {
+    "P": 14.3,
+    "N2": 68.87,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 90,
+   "id": "pack-mule",
+   "name": "Pack Mule",
+   "rarity": "common",
+   "stats": "1/11",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 20",
+    "Map 21"
+   ],
+   "firstMap": 20,
+   "N": 17.59,
+   "B": 15.8,
+   "S": 1.8,
+   "use": 90,
+   "margin": 1.79,
+   "cap2": {
+    "P": 11.81,
+    "N2": 53.97,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 20,
+   "before": {
+    "firstMap": 20,
+    "N": 17.59,
+    "B": 15.8,
+    "use": 90,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 111,
+   "id": "peak-condor",
+   "name": "Peak Condor",
+   "rarity": "common",
+   "stats": "4/10",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 3",
+    "Map 11",
+    "Map 21",
+    "The Aerie Vault"
+   ],
+   "firstMap": 0,
+   "N": 19.87,
+   "B": 21.98,
+   "S": -4.2,
+   "use": 111,
+   "margin": -2.11,
+   "cap2": {
+    "P": 43.19,
+    "N2": 68.87,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 99,
+   "id": "peat-cutter-vole",
+   "name": "Peat-cutter Vole",
+   "rarity": "common",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "The Sunken Grove"
+   ],
+   "firstMap": 7,
+   "N": 18.35,
+   "B": 18.25,
+   "S": 5.25,
+   "use": 99,
+   "margin": 0.1,
+   "cap2": {
+    "P": 20.89,
+    "N2": 58.74,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 90,
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "rarity": "uncommon",
+   "stats": "2/8",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 3",
+    "Map 11",
+    "The Aerie Vault"
+   ],
+   "firstMap": 3,
+   "N": 21.74,
+   "B": 19.62,
+   "S": 2.96,
+   "use": 90,
+   "margin": 2.12,
+   "cap2": {
+    "P": 21.23,
+    "N2": 82.45,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 3,
+   "before": {
+    "firstMap": 3,
+    "N": 21.74,
+    "B": 19.62,
+    "use": 90,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 96,
+   "id": "pika-hoarder",
+   "name": "Pika Hoarder",
+   "rarity": "common",
+   "stats": "3/13",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 3",
+    "Map 11",
+    "Map 13",
+    "Map 21"
+   ],
+   "firstMap": 21,
+   "N": 17.83,
+   "B": 17.18,
+   "S": -4.82,
+   "use": 96,
+   "margin": 0.65,
+   "cap2": {
+    "P": 33.19,
+    "N2": 55.46,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 21,
+    "N": 17.83,
+    "B": 17.18,
+    "use": 96,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 79,
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "rarity": "common",
+   "stats": "0/6",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 2",
+    "Map 10",
+    "Smugglers' Grotto"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 13.13,
+   "S": 7.13,
+   "use": 79,
+   "margin": 3.59,
+   "cap2": {
+    "P": 12.71,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 84,
+   "id": "pine-marten",
+   "name": "Pine Marten",
+   "rarity": "rare",
+   "stats": "1/14",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 13"
+   ],
+   "firstMap": 7,
+   "N": 23.84,
+   "B": 19.96,
+   "S": 2.96,
+   "use": 84,
+   "margin": 3.88,
+   "cap2": {
+    "P": 16.19,
+    "N2": 99.14,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 23.84,
+    "B": 19.96,
+    "use": 84,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 94,
+   "id": "pinecone-sapper",
+   "name": "Pinecone Sapper",
+   "rarity": "common",
+   "stats": "0/13",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 19"
+   ],
+   "firstMap": 14,
+   "N": 19.99,
+   "B": 18.75,
+   "S": 5.75,
+   "use": 94,
+   "margin": 1.24,
+   "cap2": {
+    "P": 8.27,
+    "N2": 69.71,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 68,
+   "id": "plains-zebra",
+   "name": "Plains Zebra",
+   "rarity": "uncommon",
+   "stats": "1/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 14",
+    "Map 15"
+   ],
+   "firstMap": 14,
+   "N": 17.36,
+   "B": 11.8,
+   "S": 0,
+   "use": 68,
+   "margin": 5.56,
+   "cap2": {
+    "P": 8.26,
+    "N2": 52.57,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 101,
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "stats": "3/8",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 4",
+    "Map 5",
+    "Map 7",
+    "The Mycelium Deep"
+   ],
+   "firstMap": 1,
+   "N": 21.27,
+   "B": 21.55,
+   "S": 4.55,
+   "use": 101,
+   "margin": -0.28,
+   "cap2": {
+    "P": 29.18,
+    "N2": 78.92,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 21.27,
+    "B": 21.55,
+    "use": 101,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 94,
+   "id": "platypus-spur",
+   "name": "Platypus Spur",
+   "rarity": "uncommon",
+   "stats": "4/4",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 4",
+    "Map 5"
+   ],
+   "firstMap": 4,
+   "N": 21.97,
+   "B": 20.75,
+   "S": 4.75,
+   "use": 94,
+   "margin": 1.22,
+   "cap2": {
+    "P": 21.64,
+    "N2": 84.2,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 4,
+   "before": {
+    "firstMap": 4,
+    "N": 21.97,
+    "B": 20.75,
+    "use": 94,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "rarity": "veryrare",
+   "stats": "2/17",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 17",
+    "Map 19",
+    "The Ice Hollow"
+   ],
+   "firstMap": 17,
+   "N": 31.72,
+   "B": 28.32,
+   "S": 5.32,
+   "use": 89,
+   "margin": 3.4,
+   "cap2": {
+    "P": 41.08,
+    "N2": 175.52,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 17,
+   "before": {
+    "firstMap": 17,
+    "N": 31.72,
+    "B": 28.32,
+    "use": 89,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 102,
+   "id": "pond-algae",
+   "name": "Pond Algae",
+   "rarity": "common",
+   "stats": "1/7",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 6",
+    "Lilypad Reach"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 12.64,
+   "S": 2.64,
+   "use": 76,
+   "margin": 4.08,
+   "cap2": {
+    "P": 8.74,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 81,
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "rarity": "starter",
+   "stats": "2/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0"
+   ],
+   "firstMap": 0,
+   "N": 12.34,
+   "B": 10,
+   "S": 0,
+   "use": 81,
+   "margin": 2.34,
+   "cap2": {
+    "P": 8,
+    "N2": 26.56,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 79,
+   "id": "proboscis-monkey",
+   "name": "Proboscis Monkey",
+   "rarity": "uncommon",
+   "stats": "2/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 9",
+    "The Canopy"
+   ],
+   "firstMap": 7,
+   "N": 22.67,
+   "B": 17.9,
+   "S": 0.9,
+   "use": 79,
+   "margin": 4.77,
+   "cap2": {
+    "P": 22.2,
+    "N2": 89.65,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 22.67,
+    "B": 17.9,
+    "use": 79,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 88,
+   "id": "puddle-skimmer",
+   "name": "Puddle Skimmer",
+   "rarity": "uncommon",
+   "stats": "2/6",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 1",
+    "Map 2",
+    "Clovermead"
+   ],
+   "firstMap": 1,
+   "N": 18.12,
+   "B": 16,
+   "S": 4,
+   "use": 88,
+   "margin": 2.12,
+   "cap2": {
+    "P": 16,
+    "N2": 57.28,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 18.12,
+    "B": 16,
+    "use": 88,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 96,
+   "id": "puffball-bombardier",
+   "name": "Puffball Bombardier",
+   "rarity": "uncommon",
+   "stats": "1/5",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 7",
+    "The Mycelium Deep"
+   ],
+   "firstMap": 7,
+   "N": 19.52,
+   "B": 16.6,
+   "S": 8.6,
+   "use": 85,
+   "margin": 2.92,
+   "cap2": {
+    "P": 23.49,
+    "N2": 66.47,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 19.52,
+    "B": 16.6,
+    "use": 85,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 58,
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "rarity": "common",
+   "stats": "2/5",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 3",
+    "Map 16"
+   ],
+   "firstMap": 3,
+   "N": 20.57,
+   "B": 11.89,
+   "S": -1.2,
+   "use": 58,
+   "margin": 8.68,
+   "cap2": {
+    "P": 11.54,
+    "N2": 73.81,
+    "ok": true
+   },
+   "verdict": "under",
+   "toolsMap": 3,
+   "before": {
+    "firstMap": 3,
+    "N": 20.57,
+    "B": 11.89,
+    "use": 58,
+    "verdict": "under"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 85,
+   "id": "pumice-beetle",
+   "name": "Pumice Beetle",
+   "rarity": "uncommon",
+   "stats": "3/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Basalt Foundry"
+   ],
+   "firstMap": 22,
+   "N": 26.18,
+   "B": 22.35,
+   "S": 2.35,
+   "use": 85,
+   "margin": 3.83,
+   "cap2": {
+    "P": 34.38,
+    "N2": 119.56,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 22,
+   "before": {
+    "firstMap": 21,
+    "N": 25.94,
+    "B": 22.35,
+    "use": 86,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 87,
+   "id": "quarry-mole",
+   "name": "Quarry Mole",
+   "rarity": "common",
+   "stats": "2/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 8",
+    "Map 12",
+    "The Glimmer Depths"
+   ],
+   "firstMap": 8,
+   "N": 21.74,
+   "B": 18.96,
+   "S": 0.96,
+   "use": 87,
+   "margin": 2.78,
+   "cap2": {
+    "P": 24.23,
+    "N2": 82.45,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 8,
+   "before": {
+    "firstMap": 8,
+    "N": 21.74,
+    "B": 18.96,
+    "use": 87,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 97,
+   "id": "quicksand-queen",
+   "name": "Quicksand Queen",
+   "rarity": "veryrare",
+   "stats": "2/19",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "The Pale Desert"
+   ],
+   "firstMap": 19,
+   "N": 32.19,
+   "B": 31.22,
+   "S": 6.22,
+   "use": 97,
+   "margin": 0.97,
+   "cap2": {
+    "P": 47.67,
+    "N2": 180.76,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 19,
+   "before": {
+    "firstMap": 19,
+    "N": 32.19,
+    "B": 31.22,
+    "use": 97,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 99,
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "rarity": "rare",
+   "stats": "4/5",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 12",
+    "The Old Bramble"
+   ],
+   "firstMap": 7,
+   "N": 23.84,
+   "B": 23.63,
+   "S": 6.63,
+   "use": 99,
+   "margin": 0.21,
+   "cap2": {
+    "P": 30.99,
+    "N2": 99.14,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 23.84,
+    "B": 23.63,
+    "use": 99,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "quillback-elder",
+   "name": "Quillback Elder",
+   "rarity": "common",
+   "stats": "5/5",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "Map 19",
+    "Map 20",
+    "Volcano Lair"
+   ],
+   "firstMap": 14,
+   "N": 31.14,
+   "B": 24.85,
+   "S": 4.85,
+   "use": 80,
+   "margin": 6.29,
+   "cap2": {
+    "P": 30.88,
+    "N2": 169.16,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 31.14,
+    "B": 24.85,
+    "use": 80,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 91,
+   "id": "quillguard",
+   "name": "Quillguard",
+   "rarity": "rare",
+   "stats": "2/22",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 19",
+    "The Old Bramble"
+   ],
+   "firstMap": 12,
+   "N": 30.86,
+   "B": 28,
+   "S": 0,
+   "use": 91,
+   "margin": 2.86,
+   "cap2": {
+    "P": 44,
+    "N2": 166.13,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 12,
+   "before": {
+    "firstMap": 12,
+    "N": 30.86,
+    "B": 28,
+    "use": 91,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 73,
+   "id": "rabbit-kit",
+   "name": "Rabbit Kit",
+   "rarity": "common",
+   "stats": "2/2",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 9.44,
+   "S": 0,
+   "use": 73,
+   "margin": 3.48,
+   "cap2": {
+    "P": 4.72,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 111,
+   "id": "raccoon-nightcrew",
+   "name": "Raccoon Nightcrew",
+   "rarity": "common",
+   "stats": "3/6",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Smugglers' Grotto"
+   ],
+   "firstMap": 7,
+   "N": 21.5,
+   "B": 23.77,
+   "S": 8.77,
+   "use": 111,
+   "margin": -2.27,
+   "cap2": {
+    "P": 37.23,
+    "N2": 80.64,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 21.5,
+    "B": 23.77,
+    "use": 111,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 88,
+   "id": "raft-spider",
+   "name": "Raft Spider",
+   "rarity": "common",
+   "stats": "3/8",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 5",
+    "Map 16",
+    "Lilypad Reach"
+   ],
+   "firstMap": 0,
+   "N": 19.87,
+   "B": 17.5,
+   "S": 0.5,
+   "use": 88,
+   "margin": 2.37,
+   "cap2": {
+    "P": 24.06,
+    "N2": 68.87,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 79,
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "rarity": "common",
+   "stats": "3/2",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 21"
+   ],
+   "firstMap": 21,
+   "N": 21.62,
+   "B": 17.09,
+   "S": 4,
+   "use": 79,
+   "margin": 4.53,
+   "cap2": {
+    "P": 11.14,
+    "N2": 81.54,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 14,
+    "N": 19.99,
+    "B": 17.09,
+    "use": 85,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 86,
+   "id": "redwood-woodpecker",
+   "name": "Redwood Woodpecker",
+   "rarity": "uncommon",
+   "stats": "2/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 13"
+   ],
+   "firstMap": 7,
+   "N": 22.67,
+   "B": 19.46,
+   "S": 2.46,
+   "use": 86,
+   "margin": 3.21,
+   "cap2": {
+    "P": 23.51,
+    "N2": 89.65,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 22.67,
+    "B": 19.46,
+    "use": 86,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 91,
+   "id": "reef-shark",
+   "name": "Reef Shark",
+   "rarity": "common",
+   "stats": "6/13",
+   "cost": 2,
+   "wait": 3,
+   "lists": [
+    "Map 10",
+    "The Sunken Depths"
+   ],
+   "firstMap": 7,
+   "N": 34.47,
+   "B": 31.5,
+   "S": 0.5,
+   "use": 91,
+   "margin": 2.97,
+   "cap2": {
+    "P": 78.06,
+    "N2": 207.27,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 34.47,
+    "B": 31.5,
+    "use": 91,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 70,
+   "id": "ringed-seal",
+   "name": "Ringed Seal",
+   "rarity": "common",
+   "stats": "1/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 17",
+    "The Ice Hollow"
+   ],
+   "firstMap": 14,
+   "N": 23.14,
+   "B": 16.14,
+   "S": 2.14,
+   "use": 70,
+   "margin": 7,
+   "cap2": {
+    "P": 12.14,
+    "N2": 93.41,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 23.14,
+    "B": 16.14,
+    "use": 70,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 94,
+   "id": "riptide-eel",
+   "name": "Riptide Eel",
+   "rarity": "uncommon",
+   "stats": "6/7",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 10",
+    "The Sunken Depths"
+   ],
+   "firstMap": 7,
+   "N": 22.67,
+   "B": 21.3,
+   "S": -3.7,
+   "use": 94,
+   "margin": 1.37,
+   "cap2": {
+    "P": 38.58,
+    "N2": 89.65,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 22.67,
+    "B": 21.3,
+    "use": 94,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 87,
+   "id": "river-mink",
+   "name": "River Mink",
+   "rarity": "uncommon",
+   "stats": "3/9",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 4",
+    "Map 14"
+   ],
+   "firstMap": 1,
+   "N": 21.27,
+   "B": 18.5,
+   "S": 0.5,
+   "use": 87,
+   "margin": 2.77,
+   "cap2": {
+    "P": 27.06,
+    "N2": 78.92,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 21.27,
+    "B": 18.5,
+    "use": 87,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 77,
+   "id": "riverworks-bastion",
+   "name": "Riverworks Bastion",
+   "rarity": "common",
+   "stats": "0/35",
+   "cost": 2,
+   "wait": 5,
+   "lists": [
+    "Lilypad Reach"
+   ],
+   "firstMap": 6,
+   "N": 45.91,
+   "B": 35.49,
+   "S": 0.49,
+   "use": 77,
+   "margin": 10.42,
+   "cap2": {
+    "P": 0.06,
+    "N2": 367.68,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 6,
+   "before": {
+    "firstMap": 6,
+    "N": 45.91,
+    "B": 35.49,
+    "use": 77,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 91,
+   "id": "roadrunner-courier",
+   "name": "Roadrunner Courier",
+   "rarity": "common",
+   "stats": "3/6",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 18",
+    "The Pale Desert"
+   ],
+   "firstMap": 14,
+   "N": 19.34,
+   "B": 17.57,
+   "S": 2.57,
+   "use": 91,
+   "margin": 1.77,
+   "cap2": {
+    "P": 19.65,
+    "N2": 65.25,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 19.34,
+    "B": 17.57,
+    "use": 91,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 98,
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "rarity": "uncommon",
+   "stats": "2/5",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 1",
+    "Map 2",
+    "Clovermead"
+   ],
+   "firstMap": 1,
+   "N": 14.61,
+   "B": 14.38,
+   "S": 1.29,
+   "use": 98,
+   "margin": 0.23,
+   "cap2": {
+    "P": 12.32,
+    "N2": 37.24,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 14.61,
+    "B": 14.38,
+    "use": 98,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 92,
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "rarity": "common",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 2",
+    "Smugglers' Grotto"
+   ],
+   "firstMap": 2,
+   "N": 17.18,
+   "B": 15.78,
+   "S": 2.78,
+   "use": 92,
+   "margin": 1.4,
+   "cap2": {
+    "P": 15.93,
+    "N2": 51.49,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 2,
+   "before": {
+    "firstMap": 2,
+    "N": 17.18,
+    "B": 15.78,
+    "use": 92,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 81,
+   "id": "rootworm-colony",
+   "name": "Rootworm Colony",
+   "rarity": "common",
+   "stats": "4/4",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "The Mycelium Deep"
+   ],
+   "firstMap": 8,
+   "N": 21.74,
+   "B": 17.6,
+   "S": 1.6,
+   "use": 81,
+   "margin": 4.14,
+   "cap2": {
+    "P": 16.64,
+    "N2": 82.45,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 8,
+   "before": {
+    "firstMap": 8,
+    "N": 21.74,
+    "B": 17.6,
+    "use": 81,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 77,
+   "id": "rot-swollen-carcass",
+   "name": "Rot-Swollen Carcass",
+   "rarity": "common",
+   "stats": "3/11",
+   "cost": 3,
+   "wait": 2,
+   "lists": [
+    "Map 7",
+    "Map 8",
+    "The Mycelium Deep"
+   ],
+   "firstMap": 7,
+   "N": 33.59,
+   "B": 25.88,
+   "S": 5.88,
+   "use": 77,
+   "margin": 7.71,
+   "cap2": {
+    "P": 41.64,
+    "N2": 196.82,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 33.59,
+    "B": 25.88,
+    "use": 77,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 91,
+   "id": "salvager-hermit-crab",
+   "name": "Salvager Hermit Crab",
+   "rarity": "common",
+   "stats": "1/13",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Smugglers' Grotto"
+   ],
+   "firstMap": 7,
+   "N": 18.35,
+   "B": 16.75,
+   "S": 0.75,
+   "use": 91,
+   "margin": 1.6,
+   "cap2": {
+    "P": 13.14,
+    "N2": 58.74,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 18.35,
+    "B": 16.75,
+    "use": 91,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 96,
+   "id": "sandstorm-roc",
+   "name": "Sandstorm Roc",
+   "rarity": "common",
+   "stats": "4/14",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "The Pale Desert"
+   ],
+   "firstMap": 14,
+   "N": 31.14,
+   "B": 30,
+   "S": 4,
+   "use": 96,
+   "margin": 1.14,
+   "cap2": {
+    "P": 60,
+    "N2": 169.16,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 31.14,
+    "B": 30,
+    "use": 96,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "savanna-cheetah",
+   "name": "Savanna Cheetah",
+   "rarity": "veryrare",
+   "stats": "4/4",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 14",
+    "Map 15"
+   ],
+   "firstMap": 14,
+   "N": 22.85,
+   "B": 18.23,
+   "S": 2.23,
+   "use": 80,
+   "margin": 4.62,
+   "cap2": {
+    "P": 17.24,
+    "N2": 91.08,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 22.85,
+    "B": 18.23,
+    "use": 80,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 76,
+   "id": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "rarity": "common",
+   "stats": "4/9",
+   "cost": 2,
+   "wait": 3,
+   "lists": [
+    "Map 10",
+    "The Sunken Depths"
+   ],
+   "firstMap": 7,
+   "N": 34.47,
+   "B": 26.35,
+   "S": 5.35,
+   "use": 76,
+   "margin": 8.12,
+   "cap2": {
+    "P": 43.16,
+    "N2": 207.27,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 34.47,
+    "B": 26.35,
+    "use": 76,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 93,
+   "id": "sergeant-bramblefox",
+   "name": "Sergeant Bramblefox",
+   "rarity": "rare",
+   "stats": "3/12",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 13",
+    "Map 14",
+    "The Old Bramble"
+   ],
+   "firstMap": 13,
+   "N": 22.52,
+   "B": 21,
+   "S": 0,
+   "use": 93,
+   "margin": 1.52,
+   "cap2": {
+    "P": 36,
+    "N2": 88.47,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 13,
+   "before": {
+    "firstMap": 13,
+    "N": 22.52,
+    "B": 21,
+    "use": 93,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 92,
+   "id": "shoal-shark",
+   "name": "Shoal Shark",
+   "rarity": "uncommon",
+   "stats": "4/11",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 4",
+    "Map 5"
+   ],
+   "firstMap": 1,
+   "N": 25.65,
+   "B": 23.5,
+   "S": 0.5,
+   "use": 92,
+   "margin": 2.15,
+   "cap2": {
+    "P": 44.06,
+    "N2": 114.77,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 1,
+   "before": {
+    "firstMap": 1,
+    "N": 25.65,
+    "B": 23.5,
+    "use": 92,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 98,
+   "id": "siege-rhino",
+   "name": "Siege Rhino",
+   "rarity": "veryrare",
+   "stats": "5/17",
+   "cost": 1,
+   "wait": 3,
+   "lists": [
+    "Map 15",
+    "Map 16"
+   ],
+   "firstMap": 14,
+   "N": 35.98,
+   "B": 35.21,
+   "S": 3.21,
+   "use": 98,
+   "margin": 0.77,
+   "cap2": {
+    "P": 87.58,
+    "N2": 225.83,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 23,
+    "N": 38.09,
+    "B": 35.21,
+    "use": 92,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 73,
+   "id": "silver-minnow",
+   "name": "Silver Minnow",
+   "rarity": "starter",
+   "stats": "2/3",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0"
+   ],
+   "firstMap": 0,
+   "N": 12.34,
+   "B": 9,
+   "S": 0,
+   "use": 73,
+   "margin": 3.34,
+   "cap2": {
+    "P": 6,
+    "N2": 26.56,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 84,
+   "id": "slow-worm",
+   "name": "Slow-worm",
+   "rarity": "common",
+   "stats": "1/9",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 4",
+    "Map 13"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 14,
+   "S": 2,
+   "use": 84,
+   "margin": 2.72,
+   "cap2": {
+    "P": 10,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 82,
+   "id": "smoke-raccoon",
+   "name": "Smokescreen Raccoon",
+   "rarity": "uncommon",
+   "stats": "3/9",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 19",
+    "Map 21",
+    "Basalt Foundry"
+   ],
+   "firstMap": 14,
+   "N": 24.31,
+   "B": 20,
+   "S": 2,
+   "use": 82,
+   "margin": 4.31,
+   "cap2": {
+    "P": 28,
+    "N2": 103.09,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 24.31,
+    "B": 20,
+    "use": 82,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 72,
+   "id": "snapper-hatchling",
+   "name": "Snapper Hatchling",
+   "rarity": "common",
+   "stats": "1/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "The Sunken Grove"
+   ],
+   "firstMap": 7,
+   "N": 14.56,
+   "B": 10.5,
+   "S": 0.5,
+   "use": 72,
+   "margin": 4.06,
+   "cap2": {
+    "P": 7.06,
+    "N2": 36.98,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 14.56,
+    "B": 10.5,
+    "use": 72,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 89,
+   "id": "snapstick-turtle",
+   "name": "Snapstick Turtle",
+   "rarity": "common",
+   "stats": "2/12",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 4",
+    "Map 5",
+    "Lilypad Reach"
+   ],
+   "firstMap": 4,
+   "N": 20.8,
+   "B": 18.5,
+   "S": 0.5,
+   "use": 89,
+   "margin": 2.3,
+   "cap2": {
+    "P": 24.06,
+    "N2": 75.47,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 4,
+   "before": {
+    "firstMap": 4,
+    "N": 20.8,
+    "B": 18.5,
+    "use": 89,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "snow-ermine",
+   "name": "Snow Ermine",
+   "rarity": "common",
+   "stats": "2/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 17",
+    "The Ice Hollow"
+   ],
+   "firstMap": 14,
+   "N": 16.19,
+   "B": 12.92,
+   "S": 1.12,
+   "use": 80,
+   "margin": 3.27,
+   "cap2": {
+    "P": 9.75,
+    "N2": 45.72,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 16.19,
+    "B": 12.92,
+    "use": 80,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 92,
+   "id": "snow-leopard",
+   "name": "Snow Leopard",
+   "rarity": "veryrare",
+   "stats": "2/16",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 21"
+   ],
+   "firstMap": 21,
+   "N": 28.28,
+   "B": 26,
+   "S": 4,
+   "use": 92,
+   "margin": 2.28,
+   "cap2": {
+    "P": 36,
+    "N2": 139.51,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 21,
+    "N": 28.28,
+    "B": 26,
+    "use": 92,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 72,
+   "id": "snow-owl-sentinel",
+   "name": "Snow Owl Sentinel",
+   "rarity": "superrare",
+   "stats": "4/4",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 16"
+   ],
+   "firstMap": 21,
+   "N": 29.44,
+   "B": 21.05,
+   "S": 2.01,
+   "use": 72,
+   "margin": 8.39,
+   "cap2": {
+    "P": 20.05,
+    "N2": 151.19,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 21,
+    "N": 29.44,
+    "B": 21.05,
+    "use": 72,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 73,
+   "id": "snowshoe-hare",
+   "name": "Snowshoe Hare",
+   "rarity": "common",
+   "stats": "1/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 16",
+    "Map 17"
+   ],
+   "firstMap": 14,
+   "N": 16.19,
+   "B": 11.8,
+   "S": 0,
+   "use": 73,
+   "margin": 4.39,
+   "cap2": {
+    "P": 8.26,
+    "N2": 45.72,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 16.19,
+    "B": 11.8,
+    "use": 73,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 102,
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "rarity": "common",
+   "stats": "2/8",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 0",
+    "Map 1"
+   ],
+   "firstMap": 0,
+   "N": 16.72,
+   "B": 17.13,
+   "S": 3.13,
+   "use": 102,
+   "margin": -0.41,
+   "cap2": {
+    "P": 18.45,
+    "N2": 48.77,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 47,
+   "id": "sparrow-chick",
+   "name": "Sparrow Chick",
+   "rarity": "starter",
+   "stats": "1/3",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "The Aerie Vault"
+   ],
+   "firstMap": 14,
+   "N": 15.32,
+   "B": 7.14,
+   "S": 0,
+   "use": 47,
+   "margin": 8.18,
+   "cap2": {
+    "P": 3.57,
+    "N2": 40.94,
+    "ok": true
+   },
+   "verdict": "under",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 15.32,
+    "B": 7.14,
+    "use": 47,
+    "verdict": "under"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 78,
+   "id": "stalactite-golem",
+   "name": "Stalactite Pill Bug",
+   "rarity": "common",
+   "stats": "1/23",
+   "cost": 2,
+   "wait": 3,
+   "lists": [
+    "Map 8",
+    "Map 19",
+    "Map 20",
+    "The Glimmer Depths"
+   ],
+   "firstMap": 7,
+   "N": 34.47,
+   "B": 26.87,
+   "S": 0.87,
+   "use": 78,
+   "margin": 7.6,
+   "cap2": {
+    "P": 23.19,
+    "N2": 207.27,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 34.47,
+    "B": 26.87,
+    "use": 78,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "rarity": "common",
+   "stats": "5/5",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 8"
+   ],
+   "firstMap": 8,
+   "N": 14.79,
+   "B": 14,
+   "S": 0,
+   "use": 95,
+   "margin": 0.79,
+   "cap2": {
+    "P": 17.5,
+    "N2": 38.16,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 8,
+   "before": {
+    "firstMap": 8,
+    "N": 14.79,
+    "B": 14,
+    "use": 95,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 92,
+   "id": "stoat-cutthroat",
+   "name": "Stoat Cutthroat",
+   "rarity": "rare",
+   "stats": "3/10",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 14",
+    "Map 15"
+   ],
+   "firstMap": 15,
+   "N": 25.71,
+   "B": 23.78,
+   "S": 4.78,
+   "use": 92,
+   "margin": 1.93,
+   "cap2": {
+    "P": 35.71,
+    "N2": 115.31,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 15,
+   "before": {
+    "firstMap": 15,
+    "N": 25.71,
+    "B": 23.78,
+    "use": 92,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 74,
+   "id": "stonedrop-vulture",
+   "name": "Stonedrop Vulture",
+   "rarity": "uncommon",
+   "stats": "11/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 11"
+   ],
+   "firstMap": 7,
+   "N": 22.67,
+   "B": 55.96,
+   "S": 3.6,
+   "use": 247,
+   "margin": -33.29,
+   "cap2": {
+    "P": 147.23,
+    "N2": 89.65,
+    "ok": false
+   },
+   "verdict": "over",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 22.67,
+    "B": 55.96,
+    "use": 247,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 77,
+   "id": "sulfur-cinder-moth",
+   "name": "Sulfur Cinder Moth",
+   "rarity": "common",
+   "stats": "1/7",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 8",
+    "Map 19",
+    "The Glimmer Depths"
+   ],
+   "firstMap": 7,
+   "N": 17.71,
+   "B": 13.6,
+   "S": 1.7,
+   "use": 77,
+   "margin": 4.11,
+   "cap2": {
+    "P": 9.05,
+    "N2": 54.71,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 17.71,
+    "B": 13.6,
+    "use": 77,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 89,
+   "id": "sulfur-vent-crab",
+   "name": "Sulfur Vent Crab",
+   "rarity": "uncommon",
+   "stats": "4/3",
+   "cost": 0,
+   "wait": 1,
+   "lists": [
+    "Map 20",
+    "Eye of the Volcano"
+   ],
+   "firstMap": 14,
+   "N": 21.15,
+   "B": 18.82,
+   "S": 3.82,
+   "use": 89,
+   "margin": 2.33,
+   "cap2": {
+    "P": 15.65,
+    "N2": 78.03,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 14,
+    "N": 21.15,
+    "B": 18.82,
+    "use": 89,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 82,
+   "id": "sunbittern-strider",
+   "name": "Sunbittern Strider",
+   "rarity": "uncommon",
+   "stats": "3/10",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 18",
+    "The Pale Desert"
+   ],
+   "firstMap": 14,
+   "N": 24.8,
+   "B": 20.38,
+   "S": 1.38,
+   "use": 82,
+   "margin": 4.42,
+   "cap2": {
+    "P": 30.48,
+    "N2": 107.29,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 1,
+    "N": 21.7,
+    "B": 20.38,
+    "use": 94,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 89,
+   "id": "swamp-alligator",
+   "name": "Swamp Alligator",
+   "rarity": "common",
+   "stats": "2/15",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "Map 5",
+    "The Sunken Grove"
+   ],
+   "firstMap": 0,
+   "N": 27.87,
+   "B": 24.7,
+   "S": 3.7,
+   "use": 89,
+   "margin": 3.17,
+   "cap2": {
+    "P": 33.42,
+    "N2": 135.5,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 82,
+   "id": "sworn-shieldbearer",
+   "name": "Sworn Shieldbearer",
+   "rarity": "uncommon",
+   "stats": "3/10",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 15",
+    "Map 16"
+   ],
+   "firstMap": 14,
+   "N": 24.31,
+   "B": 19.93,
+   "S": 0.93,
+   "use": 82,
+   "margin": 4.38,
+   "cap2": {
+    "P": 30.22,
+    "N2": 103.09,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 75,
+   "id": "taiga-lynx",
+   "name": "Taiga Lynx",
+   "rarity": "rare",
+   "stats": "2/8",
+   "cost": 1,
+   "wait": 0,
+   "lists": [
+    "Map 16",
+    "Map 17"
+   ],
+   "firstMap": 16,
+   "N": 22.15,
+   "B": 16.52,
+   "S": 0,
+   "use": 75,
+   "margin": 5.63,
+   "cap2": {
+    "P": 18.88,
+    "N2": 85.59,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 16,
+   "before": {
+    "firstMap": 16,
+    "N": 22.15,
+    "B": 16.52,
+    "use": 75,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 73,
+   "id": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "rarity": "uncommon",
+   "stats": "1/11",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 14",
+    "Map 15"
+   ],
+   "firstMap": 14,
+   "N": 24.31,
+   "B": 17.68,
+   "S": 3.68,
+   "use": 73,
+   "margin": 6.63,
+   "cap2": {
+    "P": 14.39,
+    "N2": 103.09,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": {
+    "firstMap": 7,
+    "N": 22.67,
+    "B": 17.68,
+    "use": 78,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 85,
+   "id": "terrier-pup",
+   "name": "Terrier Pup",
+   "rarity": "common",
+   "stats": "2/5",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 1"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 11,
+   "S": 0,
+   "use": 85,
+   "margin": 1.92,
+   "cap2": {
+    "P": 10,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 80,
+   "id": "the-contradiction",
+   "name": "The Contradiction",
+   "rarity": "epic",
+   "stats": "2/16",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Eye of the Volcano"
+   ],
+   "firstMap": 20,
+   "N": 34.76,
+   "B": 27.91,
+   "S": 5.91,
+   "use": 80,
+   "margin": 6.85,
+   "cap2": {
+    "P": 40.73,
+    "N2": 210.77,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 20,
+   "before": {
+    "firstMap": 20,
+    "N": 34.76,
+    "B": 27.91,
+    "use": 80,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "the-gannet-queen",
+   "name": "The Gannet Queen",
+   "rarity": "uncommon",
+   "stats": "1/15",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "Map 11",
+    "The Aerie Vault"
+   ],
+   "firstMap": 7,
+   "N": 30.67,
+   "B": 24.48,
+   "S": 3.06,
+   "use": 80,
+   "margin": 6.19,
+   "cap2": {
+    "P": 20.19,
+    "N2": 164.09,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 30.67,
+    "B": 24.48,
+    "use": 80,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 71,
+   "id": "thorn-shrike",
+   "name": "Thorn Shrike",
+   "rarity": "rare",
+   "stats": "3/3",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "The Old Bramble"
+   ],
+   "firstMap": 21,
+   "N": 27.11,
+   "B": 19.15,
+   "S": 4.87,
+   "use": 71,
+   "margin": 7.96,
+   "cap2": {
+    "P": 16.64,
+    "N2": 128.21,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 21,
+   "before": {
+    "firstMap": 7,
+    "N": 23.84,
+    "B": 19.15,
+    "use": 80,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 99,
+   "id": "tunnel-wyrm",
+   "name": "Tunnel Wyrm",
+   "rarity": "uncommon",
+   "stats": "4/16",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "The Mycelium Deep"
+   ],
+   "firstMap": 7,
+   "N": 28.4,
+   "B": 28,
+   "S": 0,
+   "use": 99,
+   "margin": 0.4,
+   "cap2": {
+    "P": 64,
+    "N2": 140.7,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 28.4,
+    "B": 28,
+    "use": 99,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 75,
+   "id": "upside-down-bat",
+   "name": "Upside-Down Bat",
+   "rarity": "uncommon",
+   "stats": "2/4",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 16"
+   ],
+   "firstMap": 13,
+   "N": 17.47,
+   "B": 13.04,
+   "S": 1.14,
+   "use": 75,
+   "margin": 4.43,
+   "cap2": {
+    "P": 9.84,
+    "N2": 53.24,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 13,
+   "before": {
+    "firstMap": 13,
+    "N": 17.47,
+    "B": 13.04,
+    "use": 75,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 71,
+   "id": "ur-elk",
+   "name": "Ür-Elk",
+   "rarity": "veryrare",
+   "stats": "4/11",
+   "cost": 1,
+   "wait": 3,
+   "lists": [
+    "Map 20",
+    "Map 21",
+    "Eye of the Volcano",
+    "Volcano Lair"
+   ],
+   "firstMap": 22,
+   "N": 37.85,
+   "B": 27.06,
+   "S": 4.06,
+   "use": 71,
+   "margin": 10.79,
+   "cap2": {
+    "P": 48.12,
+    "N2": 249.91,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 22,
+   "before": {
+    "firstMap": 22,
+    "N": 37.85,
+    "B": 27.06,
+    "use": 71,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 76,
+   "id": "village-miller",
+   "name": "Village Miller",
+   "rarity": "common",
+   "stats": "2/7",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 15"
+   ],
+   "firstMap": 14,
+   "N": 17,
+   "B": 13,
+   "S": 0,
+   "use": 76,
+   "margin": 4,
+   "cap2": {
+    "P": 14,
+    "N2": 50.41,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 82,
+   "id": "voltaic-eel",
+   "name": "Voltaic Eel",
+   "rarity": "rare",
+   "stats": "1/7",
+   "cost": 2,
+   "wait": 0,
+   "lists": [
+    "Map 9",
+    "Map 10"
+   ],
+   "firstMap": 7,
+   "N": 23.66,
+   "B": 19.33,
+   "S": 9.33,
+   "use": 82,
+   "margin": 4.33,
+   "cap2": {
+    "P": 28.76,
+    "N2": 97.65,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 23.66,
+    "B": 19.33,
+    "use": 82,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 101,
+   "id": "walrus-icebreaker",
+   "name": "Walrus Icebreaker",
+   "rarity": "veryrare",
+   "stats": "4/17",
+   "cost": 1,
+   "wait": 2,
+   "lists": [
+    "Map 17",
+    "Map 19",
+    "The Ice Hollow"
+   ],
+   "firstMap": 17,
+   "N": 31.72,
+   "B": 31.92,
+   "S": 2.92,
+   "use": 101,
+   "margin": -0.2,
+   "cap2": {
+    "P": 70.13,
+    "N2": 175.52,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": 17,
+   "before": {
+    "firstMap": 17,
+    "N": 31.72,
+    "B": 31.92,
+    "use": 101,
+    "verdict": "over"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 95,
+   "id": "warhorse-charger",
+   "name": "Warhorse Charger",
+   "rarity": "common",
+   "stats": "4/19",
+   "cost": 2,
+   "wait": 2,
+   "lists": [
+    "Map 15",
+    "Map 17"
+   ],
+   "firstMap": 14,
+   "N": 32.7,
+   "B": 31,
+   "S": 0,
+   "use": 95,
+   "margin": 1.7,
+   "cap2": {
+    "P": 76,
+    "N2": 186.53,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 14,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 91,
+   "id": "water-shrew",
+   "name": "Water Shrew",
+   "rarity": "common",
+   "stats": "1/6",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 4",
+    "Map 6",
+    "Lilypad Reach"
+   ],
+   "firstMap": 0,
+   "N": 12.92,
+   "B": 11.72,
+   "S": 2.72,
+   "use": 91,
+   "margin": 1.2,
+   "cap2": {
+    "P": 7.85,
+    "N2": 29.12,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": null,
+   "before": null,
+   "owner": false
+  },
+  {
+   "toolsUse": 80,
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "rarity": "rare",
+   "stats": "2/7",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 7",
+    "Map 8"
+   ],
+   "firstMap": 7,
+   "N": 23.84,
+   "B": 19.18,
+   "S": 6.18,
+   "use": 80,
+   "margin": 4.66,
+   "cap2": {
+    "P": 23.55,
+    "N2": 99.14,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 7,
+   "before": {
+    "firstMap": 7,
+    "N": 23.84,
+    "B": 19.18,
+    "use": 80,
+    "verdict": "in"
+   },
+   "owner": true
+  },
+  {
+   "toolsUse": 86,
+   "id": "woodland-caribou",
+   "name": "Woodland Caribou",
+   "rarity": "uncommon",
+   "stats": "3/8",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "Map 16",
+    "Map 17"
+   ],
+   "firstMap": 16,
+   "N": 24.77,
+   "B": 21.19,
+   "S": 4.19,
+   "use": 86,
+   "margin": 3.58,
+   "cap2": {
+    "P": 28.39,
+    "N2": 107.03,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 16,
+   "before": {
+    "firstMap": 16,
+    "N": 24.77,
+    "B": 21.19,
+    "use": 86,
+    "verdict": "in"
+   },
+   "owner": false
+  },
+  {
+   "toolsUse": 124,
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "rarity": "starter",
+   "stats": "1/6",
+   "cost": 0,
+   "wait": 0,
+   "lists": [
+    "Map 0",
+    "Map 18"
+   ],
+   "firstMap": 0,
+   "N": 11.75,
+   "B": 14.54,
+   "S": 5.54,
+   "use": 124,
+   "margin": -2.79,
+   "cap2": {
+    "P": 13.67,
+    "N2": 24.08,
+    "ok": true
+   },
+   "verdict": "over",
+   "toolsMap": null,
+   "before": null,
+   "owner": true
+  },
+  {
+   "toolsUse": 88,
+   "id": "wound-reaver",
+   "name": "Wound Reaver",
+   "rarity": "rare",
+   "stats": "1/14",
+   "cost": 1,
+   "wait": 1,
+   "lists": [
+    "The Aerie Vault"
+   ],
+   "firstMap": 15,
+   "N": 25.71,
+   "B": 22.53,
+   "S": 5.53,
+   "use": 88,
+   "margin": 3.18,
+   "cap2": {
+    "P": 21.65,
+    "N2": 115.31,
+    "ok": true
+   },
+   "verdict": "in",
+   "toolsMap": 15,
+   "before": {
+    "firstMap": 15,
+    "N": 25.71,
+    "B": 22.53,
+    "use": 88,
+    "verdict": "in"
+   },
+   "owner": false
+  }
+ ],
+ "skillsAMap": [
+  {
+   "map": "m1",
+   "name": "Bramblewood Outskirts",
+   "no": 0,
+   "side": false,
+   "neu": [
+    "Ant Scout",
+    "Duck Paddler",
+    "Honey Bee",
+    "House Cat",
+    "Rabbit Kit",
+    "Soldier Ant",
+    "Bee Forager",
+    "Bee Sentry",
+    "Farm Dog",
+    "Chipmunk Forager",
+    "Worker Ant"
+   ],
+   "skills": [
+    {
+     "skill": "Swarm",
+     "cards": [
+      "Ant Scout",
+      "Soldier Ant"
+     ]
+    },
+    {
+     "skill": "On Turn Start",
+     "cards": [
+      "Bee Forager"
+     ]
+    },
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Bee Sentry"
+     ]
+    },
+    {
+     "skill": "On Attack",
+     "cards": [
+      "Worker Ant"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying"
+   ],
+   "count": 4,
+   "oddOut": [
+    {
+     "card": "Bee Forager",
+     "solo": [
+      "On Turn Start"
+     ]
+    },
+    {
+     "card": "Bee Sentry",
+     "solo": [
+      "Venomous"
+     ]
+    },
+    {
+     "card": "Worker Ant",
+     "solo": [
+      "On Attack"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mf",
+   "name": "Thistlewood",
+   "no": 1,
+   "side": false,
+   "neu": [
+    "Bramble Sprout",
+    "Terrier Pup",
+    "Cricket Drummer",
+    "Chipmunk Skirmisher",
+    "Chipmunk Cavalry",
+    "Hedgerow Shrew",
+    "Moonlit Hare",
+    "Dormouse",
+    "Puddle Skimmer",
+    "Robin Redbreast"
+   ],
+   "skills": [
+    {
+     "skill": "Thorns",
+     "cards": [
+      "Bramble Sprout"
+     ]
+    },
+    {
+     "skill": "Guardian",
+     "cards": [
+      "Terrier Pup"
+     ]
+    },
+    {
+     "skill": "Inspiring",
+     "cards": [
+      "Cricket Drummer"
+     ]
+    },
+    {
+     "skill": "On Attack",
+     "cards": [
+      "Chipmunk Skirmisher"
+     ]
+    },
+    {
+     "skill": "Quick",
+     "cards": [
+      "Chipmunk Cavalry"
+     ]
+    },
+    {
+     "skill": "Injured",
+     "cards": [
+      "Hedgerow Shrew"
+     ]
+    },
+    {
+     "skill": "Foraging",
+     "cards": [
+      "Hedgerow Shrew"
+     ]
+    },
+    {
+     "skill": "Moonborn",
+     "cards": [
+      "Moonlit Hare"
+     ]
+    },
+    {
+     "skill": "Rainrunner",
+     "cards": [
+      "Puddle Skimmer"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Nocturnal",
+    "Flying",
+    "Diurnal"
+   ],
+   "count": 9,
+   "oddOut": [
+    {
+     "card": "Bramble Sprout",
+     "solo": [
+      "Thorns"
+     ]
+    },
+    {
+     "card": "Terrier Pup",
+     "solo": [
+      "Guardian"
+     ]
+    },
+    {
+     "card": "Cricket Drummer",
+     "solo": [
+      "Inspiring"
+     ]
+    },
+    {
+     "card": "Chipmunk Skirmisher",
+     "solo": [
+      "On Attack"
+     ]
+    },
+    {
+     "card": "Chipmunk Cavalry",
+     "solo": [
+      "Quick"
+     ]
+    },
+    {
+     "card": "Hedgerow Shrew",
+     "solo": [
+      "Injured",
+      "Foraging"
+     ]
+    },
+    {
+     "card": "Moonlit Hare",
+     "solo": [
+      "Moonborn"
+     ]
+    },
+    {
+     "card": "Puddle Skimmer",
+     "solo": [
+      "Rainrunner"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mb",
+   "name": "Pebble Beach",
+   "no": 2,
+   "side": false,
+   "neu": [
+    "Beaver Lumberjack",
+    "Driftwood Crab",
+    "Gull Thief",
+    "Open-Ocean Hermit Crab",
+    "Oystercatcher",
+    "Pincushion Urchin",
+    "Dolphin Outrider",
+    "Rock Pool Starfish",
+    "Beachcomber Sanderling",
+    "Limpet Clinger"
+   ],
+   "skills": [
+    {
+     "skill": "Delivery",
+     "cards": [
+      "Beaver Lumberjack"
+     ]
+    },
+    {
+     "skill": "On Attacked",
+     "cards": [
+      "Driftwood Crab"
+     ]
+    },
+    {
+     "skill": "Guardian",
+     "cards": [
+      "Driftwood Crab"
+     ]
+    },
+    {
+     "skill": "Crab Claws",
+     "cards": [
+      "Driftwood Crab",
+      "Open-Ocean Hermit Crab"
+     ]
+    },
+    {
+     "skill": "On Kill",
+     "cards": [
+      "Gull Thief"
+     ]
+    },
+    {
+     "skill": "Armor",
+     "cards": [
+      "Open-Ocean Hermit Crab"
+     ]
+    },
+    {
+     "skill": "Pierce",
+     "cards": [
+      "Oystercatcher"
+     ]
+    },
+    {
+     "skill": "Thorns",
+     "cards": [
+      "Pincushion Urchin"
+     ]
+    },
+    {
+     "skill": "Echolocation",
+     "cards": [
+      "Dolphin Outrider"
+     ]
+    },
+    {
+     "skill": "Driftwood",
+     "cards": [
+      "Beachcomber Sanderling"
+     ]
+    },
+    {
+     "skill": "Shell",
+     "cards": [
+      "Limpet Clinger"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying",
+    "Tide",
+    "Diurnal"
+   ],
+   "count": 11,
+   "oddOut": [
+    {
+     "card": "Beaver Lumberjack",
+     "solo": [
+      "Delivery"
+     ]
+    },
+    {
+     "card": "Gull Thief",
+     "solo": [
+      "On Kill"
+     ]
+    },
+    {
+     "card": "Oystercatcher",
+     "solo": [
+      "Pierce"
+     ]
+    },
+    {
+     "card": "Pincushion Urchin",
+     "solo": [
+      "Thorns"
+     ]
+    },
+    {
+     "card": "Dolphin Outrider",
+     "solo": [
+      "Echolocation"
+     ]
+    },
+    {
+     "card": "Beachcomber Sanderling",
+     "solo": [
+      "Driftwood"
+     ]
+    },
+    {
+     "card": "Limpet Clinger",
+     "solo": [
+      "Shell"
+     ]
+    },
+    {
+     "card": "Driftwood Crab",
+     "solo": [
+      "On Attacked",
+      "Guardian"
+     ]
+    },
+    {
+     "card": "Open-Ocean Hermit Crab",
+     "solo": [
+      "Armor"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mc",
+   "name": "Gannet Cliffs",
+   "no": 3,
+   "side": false,
+   "neu": [
+    "Cormorant",
+    "Kittiwake Flock",
+    "Puffin Diver",
+    "Peak Condor",
+    "Gannet Nestweaver",
+    "Tomcat",
+    "Peregrine Stooper",
+    "Eagle Sharpshooter",
+    "Conch Herald",
+    "Pika Hoarder"
+   ],
+   "skills": [
+    {
+     "skill": "Reach",
+     "cards": [
+      "Cormorant"
+     ]
+    },
+    {
+     "skill": "Swarm",
+     "cards": [
+      "Kittiwake Flock"
+     ]
+    },
+    {
+     "skill": "Dive",
+     "cards": [
+      "Puffin Diver"
+     ]
+    },
+    {
+     "skill": "Reload",
+     "cards": [
+      "Peak Condor"
+     ]
+    },
+    {
+     "skill": "On Spawn",
+     "cards": [
+      "Gannet Nestweaver"
+     ]
+    },
+    {
+     "skill": "Quick",
+     "cards": [
+      "Tomcat"
+     ]
+    },
+    {
+     "skill": "Cleave",
+     "cards": [
+      "Tomcat"
+     ]
+    },
+    {
+     "skill": "Pounce",
+     "cards": [
+      "Peregrine Stooper"
+     ]
+    },
+    {
+     "skill": "Arrow",
+     "cards": [
+      "Eagle Sharpshooter"
+     ]
+    },
+    {
+     "skill": "Inspiring",
+     "cards": [
+      "Conch Herald"
+     ]
+    },
+    {
+     "skill": "Scatterbrained",
+     "cards": [
+      "Pika Hoarder"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying",
+    "Tide",
+    "Diurnal"
+   ],
+   "count": 11,
+   "oddOut": [
+    {
+     "card": "Cormorant",
+     "solo": [
+      "Reach"
+     ]
+    },
+    {
+     "card": "Kittiwake Flock",
+     "solo": [
+      "Swarm"
+     ]
+    },
+    {
+     "card": "Puffin Diver",
+     "solo": [
+      "Dive"
+     ]
+    },
+    {
+     "card": "Peak Condor",
+     "solo": [
+      "Reload"
+     ]
+    },
+    {
+     "card": "Gannet Nestweaver",
+     "solo": [
+      "On Spawn"
+     ]
+    },
+    {
+     "card": "Tomcat",
+     "solo": [
+      "Quick",
+      "Cleave"
+     ]
+    },
+    {
+     "card": "Peregrine Stooper",
+     "solo": [
+      "Pounce"
+     ]
+    },
+    {
+     "card": "Eagle Sharpshooter",
+     "solo": [
+      "Arrow"
+     ]
+    },
+    {
+     "card": "Conch Herald",
+     "solo": [
+      "Inspiring"
+     ]
+    },
+    {
+     "card": "Pika Hoarder",
+     "solo": [
+      "Scatterbrained"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m2",
+   "name": "Sunken Hollow",
+   "no": 4,
+   "side": false,
+   "neu": [
+    "Slow-worm",
+    "Water Shrew",
+    "Snapstick Turtle",
+    "Shoal Shark",
+    "Platypus Spur",
+    "Muskrat Lodgekeeper",
+    "Grass Snake",
+    "River Mink",
+    "Planarian Splitter",
+    "Conch Crawler"
+   ],
+   "skills": [
+    {
+     "skill": "Thanatosis",
+     "cards": [
+      "Slow-worm",
+      "Grass Snake"
+     ]
+    },
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Water Shrew",
+      "Platypus Spur"
+     ]
+    },
+    {
+     "skill": "Bulwark",
+     "cards": [
+      "Muskrat Lodgekeeper"
+     ]
+    },
+    {
+     "skill": "Meiosis",
+     "cards": [
+      "Planarian Splitter"
+     ]
+    },
+    {
+     "skill": "Shell",
+     "cards": [
+      "Conch Crawler"
+     ]
+    },
+    {
+     "skill": "Shield",
+     "cards": [
+      "Conch Crawler"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Tide"
+   ],
+   "count": 6,
+   "oddOut": [
+    {
+     "card": "Muskrat Lodgekeeper",
+     "solo": [
+      "Bulwark"
+     ]
+    },
+    {
+     "card": "Planarian Splitter",
+     "solo": [
+      "Meiosis"
+     ]
+    },
+    {
+     "card": "Conch Crawler",
+     "solo": [
+      "Shell",
+      "Shield"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mw",
+   "name": "Gatorback Swamp",
+   "no": 5,
+   "side": false,
+   "neu": [
+    "Newt Doctor",
+    "Mosquito Cloud",
+    "Alley Cat",
+    "Marsh-mallow Hare",
+    "Mudpuppy",
+    "Muskrat Reedgatherer",
+    "Swamp Alligator",
+    "Raft Spider",
+    "Fire Ant Raft",
+    "Constrictor Coil"
+   ],
+   "skills": [
+    {
+     "skill": "Heal",
+     "cards": [
+      "Newt Doctor"
+     ]
+    },
+    {
+     "skill": "Bleed",
+     "cards": [
+      "Mosquito Cloud",
+      "Alley Cat"
+     ]
+    },
+    {
+     "skill": "Twin Strike",
+     "cards": [
+      "Alley Cat"
+     ]
+    },
+    {
+     "skill": "Cure",
+     "cards": [
+      "Marsh-mallow Hare"
+     ]
+    },
+    {
+     "skill": "Regenerate",
+     "cards": [
+      "Mudpuppy"
+     ]
+    },
+    {
+     "skill": "Delivery",
+     "cards": [
+      "Muskrat Reedgatherer"
+     ]
+    },
+    {
+     "skill": "Armor",
+     "cards": [
+      "Swamp Alligator"
+     ]
+    },
+    {
+     "skill": "Swarm",
+     "cards": [
+      "Fire Ant Raft"
+     ]
+    },
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Fire Ant Raft"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying",
+    "Tide"
+   ],
+   "count": 9,
+   "oddOut": [
+    {
+     "card": "Newt Doctor",
+     "solo": [
+      "Heal"
+     ]
+    },
+    {
+     "card": "Marsh-mallow Hare",
+     "solo": [
+      "Cure"
+     ]
+    },
+    {
+     "card": "Mudpuppy",
+     "solo": [
+      "Regenerate"
+     ]
+    },
+    {
+     "card": "Muskrat Reedgatherer",
+     "solo": [
+      "Delivery"
+     ]
+    },
+    {
+     "card": "Swamp Alligator",
+     "solo": [
+      "Armor"
+     ]
+    },
+    {
+     "card": "Fire Ant Raft",
+     "solo": [
+      "Swarm",
+      "Venomous"
+     ]
+    },
+    {
+     "card": "Alley Cat",
+     "solo": [
+      "Twin Strike"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m8",
+   "name": "Sable Swampmire",
+   "no": 6,
+   "side": false,
+   "neu": [
+    "Cypress Root Lurker",
+    "Alligator Gar",
+    "Camouflage Frog",
+    "Adder Ambusher",
+    "Anhinga Spearbird",
+    "Booming Bittern",
+    "Nutria Reedcutter",
+    "Pond Algae",
+    "Grass Viper",
+    "Crocodile Ambusher"
+   ],
+   "skills": [
+    {
+     "skill": "Repair",
+     "cards": [
+      "Cypress Root Lurker"
+     ]
+    },
+    {
+     "skill": "Guardian",
+     "cards": [
+      "Cypress Root Lurker"
+     ]
+    },
+    {
+     "skill": "Armor",
+     "cards": [
+      "Alligator Gar"
+     ]
+    },
+    {
+     "skill": "Bleed",
+     "cards": [
+      "Alligator Gar"
+     ]
+    },
+    {
+     "skill": "Evasive",
+     "cards": [
+      "Camouflage Frog"
+     ]
+    },
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Adder Ambusher",
+      "Grass Viper"
+     ]
+    },
+    {
+     "skill": "Pounce",
+     "cards": [
+      "Anhinga Spearbird"
+     ]
+    },
+    {
+     "skill": "Invisible",
+     "cards": [
+      "Booming Bittern"
+     ]
+    },
+    {
+     "skill": "Daunt",
+     "cards": [
+      "Booming Bittern"
+     ]
+    },
+    {
+     "skill": "Delivery",
+     "cards": [
+      "Nutria Reedcutter"
+     ]
+    },
+    {
+     "skill": "Bloom",
+     "cards": [
+      "Pond Algae"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Tide"
+   ],
+   "count": 11,
+   "oddOut": [
+    {
+     "card": "Cypress Root Lurker",
+     "solo": [
+      "Repair",
+      "Guardian"
+     ]
+    },
+    {
+     "card": "Alligator Gar",
+     "solo": [
+      "Armor",
+      "Bleed"
+     ]
+    },
+    {
+     "card": "Camouflage Frog",
+     "solo": [
+      "Evasive"
+     ]
+    },
+    {
+     "card": "Anhinga Spearbird",
+     "solo": [
+      "Pounce"
+     ]
+    },
+    {
+     "card": "Booming Bittern",
+     "solo": [
+      "Invisible",
+      "Daunt"
+     ]
+    },
+    {
+     "card": "Nutria Reedcutter",
+     "solo": [
+      "Delivery"
+     ]
+    },
+    {
+     "card": "Pond Algae",
+     "solo": [
+      "Bloom"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mu",
+   "name": "The Morel Hollow",
+   "no": 7,
+   "side": false,
+   "neu": [
+    "Corpse-flower Beetle",
+    "Wolf Spider Mother",
+    "Fungus Gnat Cloud",
+    "Rot-Swollen Carcass",
+    "Puffball Bombardier",
+    "Lamprey",
+    "Compost Grub",
+    "Leopard Slug",
+    "Amber Cicada",
+    "Hawthorn Shieldbug"
+   ],
+   "skills": [
+    {
+     "skill": "Wither",
+     "cards": [
+      "Corpse-flower Beetle"
+     ]
+    },
+    {
+     "skill": "Brood",
+     "cards": [
+      "Wolf Spider Mother"
+     ]
+    },
+    {
+     "skill": "Swarm",
+     "cards": [
+      "Fungus Gnat Cloud"
+     ]
+    },
+    {
+     "skill": "Progeny",
+     "cards": [
+      "Rot-Swollen Carcass"
+     ]
+    },
+    {
+     "skill": "On Spawn",
+     "cards": [
+      "Rot-Swollen Carcass"
+     ]
+    },
+    {
+     "skill": "Arrow",
+     "cards": [
+      "Puffball Bombardier"
+     ]
+    },
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Puffball Bombardier"
+     ]
+    },
+    {
+     "skill": "Bloom",
+     "cards": [
+      "Puffball Bombardier"
+     ]
+    },
+    {
+     "skill": "Weaken",
+     "cards": [
+      "Lamprey"
+     ]
+    },
+    {
+     "skill": "Regenerate",
+     "cards": [
+      "Leopard Slug"
+     ]
+    },
+    {
+     "skill": "Scare",
+     "cards": [
+      "Amber Cicada"
+     ]
+    },
+    {
+     "skill": "On Ready",
+     "cards": [
+      "Amber Cicada"
+     ]
+    },
+    {
+     "skill": "Armor",
+     "cards": [
+      "Hawthorn Shieldbug"
+     ]
+    },
+    {
+     "skill": "Guardian",
+     "cards": [
+      "Hawthorn Shieldbug"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying"
+   ],
+   "count": 14,
+   "oddOut": [
+    {
+     "card": "Corpse-flower Beetle",
+     "solo": [
+      "Wither"
+     ]
+    },
+    {
+     "card": "Wolf Spider Mother",
+     "solo": [
+      "Brood"
+     ]
+    },
+    {
+     "card": "Fungus Gnat Cloud",
+     "solo": [
+      "Swarm"
+     ]
+    },
+    {
+     "card": "Rot-Swollen Carcass",
+     "solo": [
+      "Progeny",
+      "On Spawn"
+     ]
+    },
+    {
+     "card": "Puffball Bombardier",
+     "solo": [
+      "Arrow",
+      "Venomous",
+      "Bloom"
+     ]
+    },
+    {
+     "card": "Lamprey",
+     "solo": [
+      "Weaken"
+     ]
+    },
+    {
+     "card": "Leopard Slug",
+     "solo": [
+      "Regenerate"
+     ]
+    },
+    {
+     "card": "Amber Cicada",
+     "solo": [
+      "Scare",
+      "On Ready"
+     ]
+    },
+    {
+     "card": "Hawthorn Shieldbug",
+     "solo": [
+      "Armor",
+      "Guardian"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m4",
+   "name": "Caves & Alcoves",
+   "no": 8,
+   "side": false,
+   "neu": [
+    "Quarry Mole",
+    "Cave Olm",
+    "Sulfur Cinder Moth",
+    "Star-nosed Mole",
+    "Stalactite Pill Bug",
+    "Echo Screecher",
+    "Giant Cave Huntsman",
+    "Gallery Orb-Weaver",
+    "Barrow Leech"
+   ],
+   "skills": [
+    {
+     "skill": "Keen Sense",
+     "cards": [
+      "Quarry Mole"
+     ]
+    },
+    {
+     "skill": "Bedrock",
+     "cards": [
+      "Quarry Mole"
+     ]
+    },
+    {
+     "skill": "Regenerate",
+     "cards": [
+      "Cave Olm"
+     ]
+    },
+    {
+     "skill": "Illuminate",
+     "cards": [
+      "Sulfur Cinder Moth"
+     ]
+    },
+    {
+     "skill": "On Death",
+     "cards": [
+      "Sulfur Cinder Moth"
+     ]
+    },
+    {
+     "skill": "Shell",
+     "cards": [
+      "Stalactite Pill Bug"
+     ]
+    },
+    {
+     "skill": "Guardian",
+     "cards": [
+      "Stalactite Pill Bug"
+     ]
+    },
+    {
+     "skill": "On Ready Damage",
+     "cards": [
+      "Echo Screecher"
+     ]
+    },
+    {
+     "skill": "Pounce",
+     "cards": [
+      "Giant Cave Huntsman"
+     ]
+    },
+    {
+     "skill": "Web",
+     "cards": [
+      "Gallery Orb-Weaver"
+     ]
+    },
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Gallery Orb-Weaver"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying",
+    "Purblind",
+    "Nocturnal"
+   ],
+   "count": 11,
+   "oddOut": [
+    {
+     "card": "Quarry Mole",
+     "solo": [
+      "Keen Sense",
+      "Bedrock"
+     ]
+    },
+    {
+     "card": "Cave Olm",
+     "solo": [
+      "Regenerate"
+     ]
+    },
+    {
+     "card": "Sulfur Cinder Moth",
+     "solo": [
+      "Illuminate",
+      "On Death"
+     ]
+    },
+    {
+     "card": "Stalactite Pill Bug",
+     "solo": [
+      "Shell",
+      "Guardian"
+     ]
+    },
+    {
+     "card": "Echo Screecher",
+     "solo": [
+      "On Ready Damage"
+     ]
+    },
+    {
+     "card": "Giant Cave Huntsman",
+     "solo": [
+      "Pounce"
+     ]
+    },
+    {
+     "card": "Gallery Orb-Weaver",
+     "solo": [
+      "Web",
+      "Venomous"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mk",
+   "name": "The Kelp Mangroves",
+   "no": 9,
+   "side": false,
+   "neu": [
+    "Banded Sea Krait",
+    "Mangrove Mudskipper",
+    "Mangrove Monitor",
+    "Horseshoe Crab",
+    "Proboscis Monkey",
+    "Ironclaw Fiddler",
+    "Fishing Cat",
+    "Voltaic Eel",
+    "Fiddler Crab Swarm"
+   ],
+   "skills": [
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Banded Sea Krait"
+     ]
+    },
+    {
+     "skill": "Skitter",
+     "cards": [
+      "Mangrove Mudskipper"
+     ]
+    },
+    {
+     "skill": "Armor",
+     "cards": [
+      "Horseshoe Crab",
+      "Ironclaw Fiddler"
+     ]
+    },
+    {
+     "skill": "Salt",
+     "cards": [
+      "Horseshoe Crab"
+     ]
+    },
+    {
+     "skill": "Relict",
+     "cards": [
+      "Horseshoe Crab"
+     ]
+    },
+    {
+     "skill": "Taunt",
+     "cards": [
+      "Proboscis Monkey"
+     ]
+    },
+    {
+     "skill": "Bludgeon",
+     "cards": [
+      "Ironclaw Fiddler"
+     ]
+    },
+    {
+     "skill": "Pounce",
+     "cards": [
+      "Fishing Cat"
+     ]
+    },
+    {
+     "skill": "Shock",
+     "cards": [
+      "Voltaic Eel"
+     ]
+    },
+    {
+     "skill": "Chain Lightning",
+     "cards": [
+      "Voltaic Eel"
+     ]
+    },
+    {
+     "skill": "Crab Claws",
+     "cards": [
+      "Fiddler Crab Swarm"
+     ]
+    },
+    {
+     "skill": "Guardian",
+     "cards": [
+      "Fiddler Crab Swarm"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Nocturnal",
+    "Tide"
+   ],
+   "count": 12,
+   "oddOut": [
+    {
+     "card": "Banded Sea Krait",
+     "solo": [
+      "Venomous"
+     ]
+    },
+    {
+     "card": "Mangrove Mudskipper",
+     "solo": [
+      "Skitter"
+     ]
+    },
+    {
+     "card": "Proboscis Monkey",
+     "solo": [
+      "Taunt"
+     ]
+    },
+    {
+     "card": "Fishing Cat",
+     "solo": [
+      "Pounce"
+     ]
+    },
+    {
+     "card": "Voltaic Eel",
+     "solo": [
+      "Shock",
+      "Chain Lightning"
+     ]
+    },
+    {
+     "card": "Fiddler Crab Swarm",
+     "solo": [
+      "Crab Claws",
+      "Guardian"
+     ]
+    },
+    {
+     "card": "Horseshoe Crab",
+     "solo": [
+      "Salt",
+      "Relict"
+     ]
+    },
+    {
+     "card": "Ironclaw Fiddler",
+     "solo": [
+      "Bludgeon"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m7",
+   "name": "Coral Current",
+   "no": 10,
+   "side": false,
+   "neu": [
+    "Coral Current Eel",
+    "Riptide Eel",
+    "Krill Swarm",
+    "Moon Jelly",
+    "Sea Turtle Elder",
+    "Reef Shark",
+    "Clownfish Scout",
+    "Crown-of-thorns Star",
+    "Giant Clam"
+   ],
+   "skills": [
+    {
+     "skill": "Reload",
+     "cards": [
+      "Riptide Eel"
+     ]
+    },
+    {
+     "skill": "Swarm",
+     "cards": [
+      "Krill Swarm"
+     ]
+    },
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Moon Jelly",
+      "Crown-of-thorns Star"
+     ]
+    },
+    {
+     "skill": "Armor",
+     "cards": [
+      "Sea Turtle Elder"
+     ]
+    },
+    {
+     "skill": "Thorns",
+     "cards": [
+      "Crown-of-thorns Star"
+     ]
+    },
+    {
+     "skill": "Shell",
+     "cards": [
+      "Giant Clam"
+     ]
+    },
+    {
+     "skill": "Delivery",
+     "cards": [
+      "Giant Clam"
+     ]
+    },
+    {
+     "skill": "Delivery resource",
+     "cards": [
+      "Giant Clam"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Tide"
+   ],
+   "count": 8,
+   "oddOut": [
+    {
+     "card": "Riptide Eel",
+     "solo": [
+      "Reload"
+     ]
+    },
+    {
+     "card": "Krill Swarm",
+     "solo": [
+      "Swarm"
+     ]
+    },
+    {
+     "card": "Sea Turtle Elder",
+     "solo": [
+      "Armor"
+     ]
+    },
+    {
+     "card": "Giant Clam",
+     "solo": [
+      "Shell",
+      "Delivery",
+      "Delivery resource"
+     ]
+    },
+    {
+     "card": "Crown-of-thorns Star",
+     "solo": [
+      "Thorns"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m10",
+   "name": "Eyrie Heights",
+   "no": 11,
+   "side": false,
+   "neu": [
+    "Stonedrop Vulture",
+    "Anvil Thrush",
+    "Eagle-Owl Quartermaster",
+    "Eyrie Warden",
+    "Golden Eagle Diver",
+    "Chamois Leaper",
+    "Mountain Hare",
+    "Chipmunk Hoarder",
+    "The Gannet Queen"
+   ],
+   "skills": [
+    {
+     "skill": "Archer",
+     "cards": [
+      "Stonedrop Vulture"
+     ]
+    },
+    {
+     "skill": "Pierce",
+     "cards": [
+      "Anvil Thrush"
+     ]
+    },
+    {
+     "skill": "Arrow",
+     "cards": [
+      "Eagle-Owl Quartermaster"
+     ]
+    },
+    {
+     "skill": "Fletcher",
+     "cards": [
+      "Eagle-Owl Quartermaster"
+     ]
+    },
+    {
+     "skill": "On Ready Damage",
+     "cards": [
+      "Eyrie Warden"
+     ]
+    },
+    {
+     "skill": "Daunt",
+     "cards": [
+      "Eyrie Warden"
+     ]
+    },
+    {
+     "skill": "Pounce",
+     "cards": [
+      "Golden Eagle Diver",
+      "Chamois Leaper",
+      "The Gannet Queen"
+     ]
+    },
+    {
+     "skill": "Mountain Climber",
+     "cards": [
+      "Chamois Leaper"
+     ]
+    },
+    {
+     "skill": "Evasive",
+     "cards": [
+      "Mountain Hare"
+     ]
+    },
+    {
+     "skill": "Frostbite",
+     "cards": [
+      "Mountain Hare"
+     ]
+    },
+    {
+     "skill": "Delivery, every turn",
+     "cards": [
+      "Chipmunk Hoarder"
+     ]
+    },
+    {
+     "skill": "Natural Leader",
+     "cards": [
+      "The Gannet Queen"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying",
+    "Diurnal"
+   ],
+   "count": 12,
+   "oddOut": [
+    {
+     "card": "Stonedrop Vulture",
+     "solo": [
+      "Archer"
+     ]
+    },
+    {
+     "card": "Anvil Thrush",
+     "solo": [
+      "Pierce"
+     ]
+    },
+    {
+     "card": "Eagle-Owl Quartermaster",
+     "solo": [
+      "Arrow",
+      "Fletcher"
+     ]
+    },
+    {
+     "card": "Eyrie Warden",
+     "solo": [
+      "On Ready Damage",
+      "Daunt"
+     ]
+    },
+    {
+     "card": "Mountain Hare",
+     "solo": [
+      "Evasive",
+      "Frostbite"
+     ]
+    },
+    {
+     "card": "Chipmunk Hoarder",
+     "solo": [
+      "Delivery, every turn"
+     ]
+    },
+    {
+     "card": "Chamois Leaper",
+     "solo": [
+      "Mountain Climber"
+     ]
+    },
+    {
+     "card": "The Gannet Queen",
+     "solo": [
+      "Natural Leader"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mh",
+   "name": "The Briar Maze",
+   "no": 12,
+   "side": false,
+   "neu": [
+    "Barkplate Beetle",
+    "Quill-Thorn Boar",
+    "Briarback Hedgehog",
+    "Cunning Vixen",
+    "Mouse Sapper",
+    "Fawn Scout",
+    "Hollow-belly Rat",
+    "Bison Bulldozer",
+    "Alpine Marmot"
+   ],
+   "skills": [
+    {
+     "skill": "Fortify (Armor 1), while it lives",
+     "cards": [
+      "Barkplate Beetle",
+      "Briarback Hedgehog"
+     ]
+    },
+    {
+     "skill": "Thorns",
+     "cards": [
+      "Barkplate Beetle",
+      "Quill-Thorn Boar"
+     ]
+    },
+    {
+     "skill": "Evasive",
+     "cards": [
+      "Cunning Vixen"
+     ]
+    },
+    {
+     "skill": "Backstab",
+     "cards": [
+      "Cunning Vixen"
+     ]
+    },
+    {
+     "skill": "Siege",
+     "cards": [
+      "Mouse Sapper"
+     ]
+    },
+    {
+     "skill": "True Sight",
+     "cards": [
+      "Fawn Scout"
+     ]
+    },
+    {
+     "skill": "Canopy Cover",
+     "cards": [
+      "Fawn Scout"
+     ]
+    },
+    {
+     "skill": "Devour",
+     "cards": [
+      "Hollow-belly Rat"
+     ]
+    },
+    {
+     "skill": "Bulldoze",
+     "cards": [
+      "Bison Bulldozer"
+     ]
+    },
+    {
+     "skill": "Onslaught",
+     "cards": [
+      "Bison Bulldozer"
+     ]
+    },
+    {
+     "skill": "Guardian",
+     "cards": [
+      "Alpine Marmot"
+     ]
+    }
+   ],
+   "lightSkills": [],
+   "count": 11,
+   "oddOut": [
+    {
+     "card": "Cunning Vixen",
+     "solo": [
+      "Evasive",
+      "Backstab"
+     ]
+    },
+    {
+     "card": "Mouse Sapper",
+     "solo": [
+      "Siege"
+     ]
+    },
+    {
+     "card": "Fawn Scout",
+     "solo": [
+      "True Sight",
+      "Canopy Cover"
+     ]
+    },
+    {
+     "card": "Hollow-belly Rat",
+     "solo": [
+      "Devour"
+     ]
+    },
+    {
+     "card": "Bison Bulldozer",
+     "solo": [
+      "Bulldoze",
+      "Onslaught"
+     ]
+    },
+    {
+     "card": "Alpine Marmot",
+     "solo": [
+      "Guardian"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mr",
+   "name": "The Redwood Deep",
+   "no": 13,
+   "side": false,
+   "neu": [
+    "Grizzly Vanguard",
+    "Owl Nightwatch",
+    "Badger Lumberjack",
+    "Redwood Woodpecker",
+    "Bear Cub",
+    "Pine Marten",
+    "Balloon Archer",
+    "Sergeant Bramblefox",
+    "Monarch Wingblade",
+    "Beaver Feller"
+   ],
+   "skills": [
+    {
+     "skill": "Cleave",
+     "cards": [
+      "Grizzly Vanguard"
+     ]
+    },
+    {
+     "skill": "Guardian",
+     "cards": [
+      "Grizzly Vanguard",
+      "Badger Lumberjack"
+     ]
+    },
+    {
+     "skill": "Stealth",
+     "cards": [
+      "Owl Nightwatch"
+     ]
+    },
+    {
+     "skill": "Lumberjack",
+     "cards": [
+      "Badger Lumberjack"
+     ]
+    },
+    {
+     "skill": "Milling",
+     "cards": [
+      "Redwood Woodpecker"
+     ]
+    },
+    {
+     "skill": "Pounce",
+     "cards": [
+      "Pine Marten"
+     ]
+    },
+    {
+     "skill": "Arrow",
+     "cards": [
+      "Balloon Archer"
+     ]
+    },
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Monarch Wingblade"
+     ]
+    },
+    {
+     "skill": "Felling",
+     "cards": [
+      "Beaver Feller"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying",
+    "Nocturnal"
+   ],
+   "count": 9,
+   "oddOut": [
+    {
+     "card": "Owl Nightwatch",
+     "solo": [
+      "Stealth"
+     ]
+    },
+    {
+     "card": "Redwood Woodpecker",
+     "solo": [
+      "Milling"
+     ]
+    },
+    {
+     "card": "Pine Marten",
+     "solo": [
+      "Pounce"
+     ]
+    },
+    {
+     "card": "Balloon Archer",
+     "solo": [
+      "Arrow"
+     ]
+    },
+    {
+     "card": "Monarch Wingblade",
+     "solo": [
+      "Venomous"
+     ]
+    },
+    {
+     "card": "Beaver Feller",
+     "solo": [
+      "Felling"
+     ]
+    },
+    {
+     "card": "Grizzly Vanguard",
+     "solo": [
+      "Cleave"
+     ]
+    },
+    {
+     "card": "Badger Lumberjack",
+     "solo": [
+      "Lumberjack"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m5",
+   "name": "Savanna Reaches",
+   "no": 14,
+   "side": false,
+   "neu": [
+    "Meerkat Sentry",
+    "Hoopoe Herald",
+    "Dust Hyena",
+    "Savanna Cheetah",
+    "Marula Elephant",
+    "Plains Zebra",
+    "Bramblewood Macaque",
+    "Stoat Cutthroat",
+    "Tasmanian Devil"
+   ],
+   "skills": [
+    {
+     "skill": "Sociable",
+     "cards": [
+      "Meerkat Sentry"
+     ]
+    },
+    {
+     "skill": "On Kill",
+     "cards": [
+      "Dust Hyena"
+     ]
+    },
+    {
+     "skill": "Carnage",
+     "cards": [
+      "Dust Hyena"
+     ]
+    },
+    {
+     "skill": "Quick",
+     "cards": [
+      "Savanna Cheetah"
+     ]
+    },
+    {
+     "skill": "Drunk",
+     "cards": [
+      "Marula Elephant"
+     ]
+    },
+    {
+     "skill": "Guardian",
+     "cards": [
+      "Marula Elephant"
+     ]
+    },
+    {
+     "skill": "Evasive",
+     "cards": [
+      "Plains Zebra"
+     ]
+    },
+    {
+     "skill": "Banana",
+     "cards": [
+      "Bramblewood Macaque"
+     ]
+    },
+    {
+     "skill": "Backstab",
+     "cards": [
+      "Stoat Cutthroat"
+     ]
+    },
+    {
+     "skill": "Foe Scarcity",
+     "cards": [
+      "Stoat Cutthroat"
+     ]
+    },
+    {
+     "skill": "Berserk",
+     "cards": [
+      "Tasmanian Devil"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Night-blind"
+   ],
+   "count": 11,
+   "oddOut": [
+    {
+     "card": "Meerkat Sentry",
+     "solo": [
+      "Sociable"
+     ]
+    },
+    {
+     "card": "Dust Hyena",
+     "solo": [
+      "On Kill",
+      "Carnage"
+     ]
+    },
+    {
+     "card": "Savanna Cheetah",
+     "solo": [
+      "Quick"
+     ]
+    },
+    {
+     "card": "Marula Elephant",
+     "solo": [
+      "Drunk",
+      "Guardian"
+     ]
+    },
+    {
+     "card": "Plains Zebra",
+     "solo": [
+      "Evasive"
+     ]
+    },
+    {
+     "card": "Bramblewood Macaque",
+     "solo": [
+      "Banana"
+     ]
+    },
+    {
+     "card": "Stoat Cutthroat",
+     "solo": [
+      "Backstab",
+      "Foe Scarcity"
+     ]
+    },
+    {
+     "card": "Tasmanian Devil",
+     "solo": [
+      "Berserk"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "ml",
+   "name": "The Long Grass",
+   "no": 15,
+   "side": false,
+   "neu": [
+    "Warhorse Charger",
+    "Border Collie",
+    "Mallard Marauder",
+    "Sworn Shieldbearer",
+    "Elderhorn Monarch",
+    "Siege Rhino",
+    "Village Miller",
+    "Gilded Roadwarden",
+    "Bramblewood Lynx"
+   ],
+   "skills": [
+    {
+     "skill": "Converge",
+     "cards": [
+      "Border Collie"
+     ]
+    },
+    {
+     "skill": "Pounce",
+     "cards": [
+      "Mallard Marauder",
+      "Gilded Roadwarden"
+     ]
+    },
+    {
+     "skill": "Loyal",
+     "cards": [
+      "Sworn Shieldbearer"
+     ]
+    },
+    {
+     "skill": "Delivery, every turn",
+     "cards": [
+      "Elderhorn Monarch"
+     ]
+    },
+    {
+     "skill": "Siege",
+     "cards": [
+      "Siege Rhino"
+     ]
+    },
+    {
+     "skill": "Stampede",
+     "cards": [
+      "Gilded Roadwarden"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying"
+   ],
+   "count": 6,
+   "oddOut": [
+    {
+     "card": "Border Collie",
+     "solo": [
+      "Converge"
+     ]
+    },
+    {
+     "card": "Sworn Shieldbearer",
+     "solo": [
+      "Loyal"
+     ]
+    },
+    {
+     "card": "Elderhorn Monarch",
+     "solo": [
+      "Delivery, every turn"
+     ]
+    },
+    {
+     "card": "Siege Rhino",
+     "solo": [
+      "Siege"
+     ]
+    },
+    {
+     "card": "Gilded Roadwarden",
+     "solo": [
+      "Stampede"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mt",
+   "name": "The Pinewood Taiga",
+   "no": 16,
+   "side": false,
+   "neu": [
+    "Boreal Elk",
+    "Woodland Caribou",
+    "Cone-cutter Squirrel",
+    "Snowshoe Hare",
+    "Taiga Lynx",
+    "Snow Owl Sentinel",
+    "Upside-Down Bat",
+    "Owl Sentinel"
+   ],
+   "skills": [
+    {
+     "skill": "Cleave",
+     "cards": [
+      "Boreal Elk"
+     ]
+    },
+    {
+     "skill": "Riled",
+     "cards": [
+      "Boreal Elk"
+     ]
+    },
+    {
+     "skill": "Mountain Climber",
+     "cards": [
+      "Woodland Caribou"
+     ]
+    },
+    {
+     "skill": "Frostbite",
+     "cards": [
+      "Woodland Caribou"
+     ]
+    },
+    {
+     "skill": "On Spawn",
+     "cards": [
+      "Cone-cutter Squirrel"
+     ]
+    },
+    {
+     "skill": "Almanac",
+     "cards": [
+      "Cone-cutter Squirrel"
+     ]
+    },
+    {
+     "skill": "Evasive",
+     "cards": [
+      "Snowshoe Hare",
+      "Taiga Lynx"
+     ]
+    },
+    {
+     "skill": "Expose",
+     "cards": [
+      "Snow Owl Sentinel"
+     ]
+    },
+    {
+     "skill": "True Sight",
+     "cards": [
+      "Owl Sentinel"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying",
+    "Nocturnal",
+    "Diurnal"
+   ],
+   "count": 9,
+   "oddOut": [
+    {
+     "card": "Boreal Elk",
+     "solo": [
+      "Cleave",
+      "Riled"
+     ]
+    },
+    {
+     "card": "Woodland Caribou",
+     "solo": [
+      "Mountain Climber",
+      "Frostbite"
+     ]
+    },
+    {
+     "card": "Cone-cutter Squirrel",
+     "solo": [
+      "On Spawn",
+      "Almanac"
+     ]
+    },
+    {
+     "card": "Snow Owl Sentinel",
+     "solo": [
+      "Expose"
+     ]
+    },
+    {
+     "card": "Owl Sentinel",
+     "solo": [
+      "True Sight"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m6",
+   "name": "Wolfsbane Tundra",
+   "no": 17,
+   "side": false,
+   "neu": [
+    "Snow Ermine",
+    "Ringed Seal",
+    "Harbor Seal",
+    "Glacier Yak",
+    "Arctic Tern",
+    "Walrus Icebreaker",
+    "Ice-Crevasse Wolf",
+    "Polar Bear"
+   ],
+   "skills": [
+    {
+     "skill": "Evasive",
+     "cards": [
+      "Snow Ermine",
+      "Harbor Seal"
+     ]
+    },
+    {
+     "skill": "Frost crystal",
+     "cards": [
+      "Snow Ermine"
+     ]
+    },
+    {
+     "skill": "Invisible",
+     "cards": [
+      "Ringed Seal"
+     ]
+    },
+    {
+     "skill": "Dive",
+     "cards": [
+      "Harbor Seal"
+     ]
+    },
+    {
+     "skill": "Freeze",
+     "cards": [
+      "Glacier Yak",
+      "Walrus Icebreaker"
+     ]
+    },
+    {
+     "skill": "On Spawn",
+     "cards": [
+      "Glacier Yak"
+     ]
+    },
+    {
+     "skill": "Shatter",
+     "cards": [
+      "Walrus Icebreaker"
+     ]
+    },
+    {
+     "skill": "Bleed",
+     "cards": [
+      "Ice-Crevasse Wolf"
+     ]
+    },
+    {
+     "skill": "Ambush",
+     "cards": [
+      "Polar Bear"
+     ]
+    },
+    {
+     "skill": "Hibernate",
+     "cards": [
+      "Polar Bear"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Tide",
+    "Flying",
+    "Diurnal"
+   ],
+   "count": 10,
+   "oddOut": [
+    {
+     "card": "Ringed Seal",
+     "solo": [
+      "Invisible"
+     ]
+    },
+    {
+     "card": "Ice-Crevasse Wolf",
+     "solo": [
+      "Bleed"
+     ]
+    },
+    {
+     "card": "Polar Bear",
+     "solo": [
+      "Ambush",
+      "Hibernate"
+     ]
+    },
+    {
+     "card": "Snow Ermine",
+     "solo": [
+      "Frost crystal"
+     ]
+    },
+    {
+     "card": "Harbor Seal",
+     "solo": [
+      "Dive"
+     ]
+    },
+    {
+     "card": "Glacier Yak",
+     "solo": [
+      "On Spawn"
+     ]
+    },
+    {
+     "card": "Walrus Icebreaker",
+     "solo": [
+      "Shatter"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "md",
+   "name": "The Glass Dunes",
+   "no": 18,
+   "side": false,
+   "neu": [
+    "Horned Lizard",
+    "Antlion Pit",
+    "Roadrunner Courier",
+    "Dune Jackal",
+    "Armadillo Guard",
+    "Nightjar Drifter",
+    "Sunbittern Strider",
+    "Barrel Cactus"
+   ],
+   "skills": [
+    {
+     "skill": "Blinding",
+     "cards": [
+      "Horned Lizard"
+     ]
+    },
+    {
+     "skill": "Trap",
+     "cards": [
+      "Antlion Pit"
+     ]
+    },
+    {
+     "skill": "Haste",
+     "cards": [
+      "Roadrunner Courier"
+     ]
+    },
+    {
+     "skill": "Quick",
+     "cards": [
+      "Dune Jackal"
+     ]
+    },
+    {
+     "skill": "Dry",
+     "cards": [
+      "Dune Jackal",
+      "Barrel Cactus"
+     ]
+    },
+    {
+     "skill": "Shield",
+     "cards": [
+      "Armadillo Guard"
+     ]
+    },
+    {
+     "skill": "Thorns",
+     "cards": [
+      "Barrel Cactus"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Crepuscular",
+    "Diurnal"
+   ],
+   "count": 7,
+   "oddOut": [
+    {
+     "card": "Horned Lizard",
+     "solo": [
+      "Blinding"
+     ]
+    },
+    {
+     "card": "Antlion Pit",
+     "solo": [
+      "Trap"
+     ]
+    },
+    {
+     "card": "Roadrunner Courier",
+     "solo": [
+      "Haste"
+     ]
+    },
+    {
+     "card": "Armadillo Guard",
+     "solo": [
+      "Shield"
+     ]
+    },
+    {
+     "card": "Dune Jackal",
+     "solo": [
+      "Quick"
+     ]
+    },
+    {
+     "card": "Barrel Cactus",
+     "solo": [
+      "Thorns"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m3",
+   "name": "Ashen Spurn",
+   "no": 19,
+   "side": false,
+   "neu": [
+    "Honey Badger Fury",
+    "Quillback Elder",
+    "Smokescreen Raccoon",
+    "Fire Salamander",
+    "Obsidian Scorpion",
+    "Quillguard",
+    "Caustic Scorpion",
+    "Pinecone Sapper"
+   ],
+   "skills": [
+    {
+     "skill": "Rage",
+     "cards": [
+      "Honey Badger Fury"
+     ]
+    },
+    {
+     "skill": "Armor",
+     "cards": [
+      "Quillback Elder",
+      "Obsidian Scorpion"
+     ]
+    },
+    {
+     "skill": "Smoke Bomb",
+     "cards": [
+      "Smokescreen Raccoon"
+     ]
+    },
+    {
+     "skill": "Spitfire",
+     "cards": [
+      "Fire Salamander"
+     ]
+    },
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Obsidian Scorpion",
+      "Caustic Scorpion"
+     ]
+    },
+    {
+     "skill": "Explode",
+     "cards": [
+      "Pinecone Sapper"
+     ]
+    }
+   ],
+   "lightSkills": [],
+   "count": 6,
+   "oddOut": [
+    {
+     "card": "Honey Badger Fury",
+     "solo": [
+      "Rage"
+     ]
+    },
+    {
+     "card": "Smokescreen Raccoon",
+     "solo": [
+      "Smoke Bomb"
+     ]
+    },
+    {
+     "card": "Fire Salamander",
+     "solo": [
+      "Spitfire"
+     ]
+    },
+    {
+     "card": "Pinecone Sapper",
+     "solo": [
+      "Explode"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m11",
+   "name": "The Sundered Peak",
+   "no": 20,
+   "side": false,
+   "neu": [
+    "Fumarole Ibex",
+    "Magma Salamander",
+    "Pack Mule",
+    "Ür-Elk",
+    "Sulfur Vent Crab",
+    "Basalt Boar",
+    "Berserker Boar",
+    "Frillneck Duelist"
+   ],
+   "skills": [
+    {
+     "skill": "Mountain Climber",
+     "cards": [
+      "Fumarole Ibex"
+     ]
+    },
+    {
+     "skill": "Pounce",
+     "cards": [
+      "Fumarole Ibex"
+     ]
+    },
+    {
+     "skill": "Fire Arrow",
+     "cards": [
+      "Magma Salamander"
+     ]
+    },
+    {
+     "skill": "Bounty",
+     "cards": [
+      "Pack Mule"
+     ]
+    },
+    {
+     "skill": "Stampede",
+     "cards": [
+      "Ür-Elk"
+     ]
+    },
+    {
+     "skill": "Rage",
+     "cards": [
+      "Ür-Elk",
+      "Berserker Boar"
+     ]
+    },
+    {
+     "skill": "Thorns",
+     "cards": [
+      "Sulfur Vent Crab"
+     ]
+    },
+    {
+     "skill": "Crab Claws",
+     "cards": [
+      "Sulfur Vent Crab"
+     ]
+    },
+    {
+     "skill": "Grit",
+     "cards": [
+      "Basalt Boar"
+     ]
+    },
+    {
+     "skill": "Quick",
+     "cards": [
+      "Frillneck Duelist"
+     ]
+    },
+    {
+     "skill": "Fencing",
+     "cards": [
+      "Frillneck Duelist"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Tide"
+   ],
+   "count": 11,
+   "oddOut": [
+    {
+     "card": "Fumarole Ibex",
+     "solo": [
+      "Mountain Climber",
+      "Pounce"
+     ]
+    },
+    {
+     "card": "Magma Salamander",
+     "solo": [
+      "Fire Arrow"
+     ]
+    },
+    {
+     "card": "Pack Mule",
+     "solo": [
+      "Bounty"
+     ]
+    },
+    {
+     "card": "Sulfur Vent Crab",
+     "solo": [
+      "Thorns",
+      "Crab Claws"
+     ]
+    },
+    {
+     "card": "Basalt Boar",
+     "solo": [
+      "Grit"
+     ]
+    },
+    {
+     "card": "Frillneck Duelist",
+     "solo": [
+      "Quick",
+      "Fencing"
+     ]
+    },
+    {
+     "card": "Ür-Elk",
+     "solo": [
+      "Stampede"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "m21",
+   "name": "The Quiet Summit",
+   "no": 21,
+   "side": false,
+   "neu": [
+    "Snow Leopard",
+    "Mountain Goat Climber",
+    "Apollo Butterfly",
+    "Red-billed Chough",
+    "Alpine Swift",
+    "Alpine Salamander",
+    "Magma Rhino"
+   ],
+   "skills": [
+    {
+     "skill": "Mountain Climber",
+     "cards": [
+      "Snow Leopard",
+      "Red-billed Chough"
+     ]
+    },
+    {
+     "skill": "Evasive",
+     "cards": [
+      "Mountain Goat Climber"
+     ]
+    },
+    {
+     "skill": "Thorns",
+     "cards": [
+      "Apollo Butterfly"
+     ]
+    },
+    {
+     "skill": "Quick",
+     "cards": [
+      "Alpine Swift"
+     ]
+    },
+    {
+     "skill": "Regenerate",
+     "cards": [
+      "Alpine Salamander"
+     ]
+    },
+    {
+     "skill": "Scar",
+     "cards": [
+      "Magma Rhino"
+     ]
+    },
+    {
+     "skill": "Immolation",
+     "cards": [
+      "Magma Rhino"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying"
+   ],
+   "count": 7,
+   "oddOut": [
+    {
+     "card": "Mountain Goat Climber",
+     "solo": [
+      "Evasive"
+     ]
+    },
+    {
+     "card": "Apollo Butterfly",
+     "solo": [
+      "Thorns"
+     ]
+    },
+    {
+     "card": "Alpine Swift",
+     "solo": [
+      "Quick"
+     ]
+    },
+    {
+     "card": "Alpine Salamander",
+     "solo": [
+      "Regenerate"
+     ]
+    },
+    {
+     "card": "Magma Rhino",
+     "solo": [
+      "Scar",
+      "Immolation"
+     ]
+    }
+   ]
+  },
+  {
+   "map": "mo",
+   "name": "The Old Bramble",
+   "no": 0,
+   "opensAfter": 21,
+   "side": true,
+   "neu": [
+    "Ent",
+    "Elder Willow",
+    "Thorn Shrike"
+   ],
+   "skills": [
+    {
+     "skill": "Fog",
+     "cards": [
+      "Ent"
+     ]
+    },
+    {
+     "skill": "Delivery, every turn",
+     "cards": [
+      "Elder Willow"
+     ]
+    },
+    {
+     "skill": "Bleed",
+     "cards": [
+      "Thorn Shrike"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying"
+   ],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "mq",
+   "name": "Clovermead",
+   "no": 1,
+   "opensAfter": 12,
+   "side": true,
+   "neu": [
+    "Lucky Hopper",
+    "Jackrabbit Sprinter",
+    "Clover Butterfly"
+   ],
+   "skills": [
+    {
+     "skill": "Quick",
+     "cards": [
+      "Jackrabbit Sprinter"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying"
+   ],
+   "count": 1,
+   "oddOut": []
+  },
+  {
+   "map": "mp",
+   "name": "Lilypad Reach",
+   "no": 2,
+   "opensAfter": 6,
+   "side": true,
+   "neu": [
+    "Riverworks Bastion",
+    "Lodge Engineer",
+    "Dam-Keeper Beaver"
+   ],
+   "skills": [
+    {
+     "skill": "Rampart",
+     "cards": [
+      "Riverworks Bastion",
+      "Dam-Keeper Beaver"
+     ]
+    },
+    {
+     "skill": "Timbered",
+     "cards": [
+      "Lodge Engineer"
+     ]
+    },
+    {
+     "skill": "Delivery, every turn",
+     "cards": [
+      "Lodge Engineer"
+     ]
+    }
+   ],
+   "lightSkills": [],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "mg",
+   "name": "Smugglers' Grotto",
+   "no": 2,
+   "opensAfter": 7,
+   "side": true,
+   "neu": [
+    "Octopus Tactician",
+    "Raccoon Nightcrew",
+    "Salvager Hermit Crab"
+   ],
+   "skills": [
+    {
+     "skill": "Cleave",
+     "cards": [
+      "Octopus Tactician"
+     ]
+    },
+    {
+     "skill": "Stealth",
+     "cards": [
+      "Raccoon Nightcrew"
+     ]
+    },
+    {
+     "skill": "Salvage",
+     "cards": [
+      "Salvager Hermit Crab"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Tide",
+    "Nocturnal"
+   ],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "ms",
+   "name": "The Sunken Grove",
+   "no": 5,
+   "opensAfter": 13,
+   "side": true,
+   "neu": [
+    "Hedgehog Herbalist",
+    "Peat-cutter Vole",
+    "Mudflat Godwit",
+    "Snapper Hatchling"
+   ],
+   "skills": [
+    {
+     "skill": "Herbalist",
+     "cards": [
+      "Hedgehog Herbalist"
+     ]
+    },
+    {
+     "skill": "Immunity",
+     "cards": [
+      "Hedgehog Herbalist"
+     ]
+    },
+    {
+     "skill": "Delivery",
+     "cards": [
+      "Peat-cutter Vole"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Tide"
+   ],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "mz",
+   "name": "The Mycelium Deep",
+   "no": 7,
+   "opensAfter": 8,
+   "side": true,
+   "neu": [
+    "Rootworm Colony",
+    "Fungal Colossus",
+    "Tunnel Wyrm"
+   ],
+   "skills": [
+    {
+     "skill": "Poison Barbs",
+     "cards": [
+      "Rootworm Colony"
+     ]
+    },
+    {
+     "skill": "Progeny",
+     "cards": [
+      "Fungal Colossus"
+     ]
+    },
+    {
+     "skill": "Bloom",
+     "cards": [
+      "Fungal Colossus"
+     ]
+    }
+   ],
+   "lightSkills": [],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "mn",
+   "name": "The Glimmer Depths",
+   "no": 8,
+   "opensAfter": 16,
+   "side": true,
+   "neu": [
+    "Lantern Spark Fly",
+    "Glimmer Spider",
+    "Cave Swiftlet"
+   ],
+   "skills": [
+    {
+     "skill": "Illuminate",
+     "cards": [
+      "Lantern Spark Fly"
+     ]
+    },
+    {
+     "skill": "Venomous",
+     "cards": [
+      "Glimmer Spider"
+     ]
+    },
+    {
+     "skill": "Echolocation",
+     "cards": [
+      "Cave Swiftlet"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying"
+   ],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "mj",
+   "name": "The Sunken Depths",
+   "no": 10,
+   "opensAfter": 11,
+   "side": true,
+   "neu": [
+    "Blue-ringed Octopus",
+    "Kraken Spawnling"
+   ],
+   "skills": [
+    {
+     "skill": "Octolash",
+     "cards": [
+      "Blue-ringed Octopus"
+     ]
+    },
+    {
+     "skill": "Fork",
+     "cards": [
+      "Kraken Spawnling"
+     ]
+    },
+    {
+     "skill": "Gash",
+     "cards": [
+      "Kraken Spawnling"
+     ]
+    }
+   ],
+   "lightSkills": [],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "mv",
+   "name": "The Aerie Vault",
+   "no": 11,
+   "opensAfter": 15,
+   "side": true,
+   "neu": [
+    "Wound Reaver",
+    "Great Horned Owl",
+    "Sparrow Chick"
+   ],
+   "skills": [
+    {
+     "skill": "Bleed",
+     "cards": [
+      "Wound Reaver"
+     ]
+    },
+    {
+     "skill": "Rupture",
+     "cards": [
+      "Wound Reaver"
+     ]
+    },
+    {
+     "skill": "On Ready Damage",
+     "cards": [
+      "Great Horned Owl"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying",
+    "Nocturnal"
+   ],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "my",
+   "name": "The Canopy",
+   "no": 14,
+   "opensAfter": 18,
+   "side": true,
+   "neu": [
+    "Jaguar Stalker",
+    "Kinkajou Lurker",
+    "Hercules Beetle"
+   ],
+   "skills": [
+    {
+     "skill": "Quick",
+     "cards": [
+      "Jaguar Stalker"
+     ]
+    },
+    {
+     "skill": "Mighty",
+     "cards": [
+      "Hercules Beetle"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Nocturnal"
+   ],
+   "count": 2,
+   "oddOut": []
+  },
+  {
+   "map": "mi",
+   "name": "The Ice Hollow",
+   "no": 17,
+   "opensAfter": 21,
+   "side": true,
+   "neu": [
+    "Greenland Shark",
+    "Frostbitten Wolverine",
+    "Harp Seal Pup"
+   ],
+   "skills": [
+    {
+     "skill": "Carrion",
+     "cards": [
+      "Greenland Shark"
+     ]
+    },
+    {
+     "skill": "Armor",
+     "cards": [
+      "Greenland Shark"
+     ]
+    },
+    {
+     "skill": "Frostbite",
+     "cards": [
+      "Frostbitten Wolverine"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Tide"
+   ],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "mpd",
+   "name": "The Pale Desert",
+   "no": 18,
+   "opensAfter": 19,
+   "side": true,
+   "neu": [
+    "Quicksand Queen",
+    "Sandstorm Roc"
+   ],
+   "skills": [
+    {
+     "skill": "Trap",
+     "cards": [
+      "Quicksand Queen"
+     ]
+    },
+    {
+     "skill": "Tangleweed",
+     "cards": [
+      "Quicksand Queen"
+     ]
+    },
+    {
+     "skill": "Dry",
+     "cards": [
+      "Sandstorm Roc"
+     ]
+    }
+   ],
+   "lightSkills": [],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "m9",
+   "name": "Basalt Foundry",
+   "no": 19,
+   "opensAfter": 23,
+   "side": true,
+   "neu": [
+    "Ember Revenant",
+    "Grindstone Boar"
+   ],
+   "skills": [
+    {
+     "skill": "Undead",
+     "cards": [
+      "Ember Revenant"
+     ]
+    },
+    {
+     "skill": "Pierce",
+     "cards": [
+      "Ember Revenant"
+     ]
+    },
+    {
+     "skill": "Friction",
+     "cards": [
+      "Grindstone Boar"
+     ]
+    }
+   ],
+   "lightSkills": [],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "me",
+   "name": "Eye of the Volcano",
+   "no": 20,
+   "opensAfter": 20,
+   "side": true,
+   "neu": [
+    "The Contradiction",
+    "Obsidian Lich",
+    "Ash Moth"
+   ],
+   "skills": [
+    {
+     "skill": "Rage",
+     "cards": [
+      "The Contradiction"
+     ]
+    },
+    {
+     "skill": "Regenerate",
+     "cards": [
+      "The Contradiction",
+      "Obsidian Lich"
+     ]
+    },
+    {
+     "skill": "Armor",
+     "cards": [
+      "Obsidian Lich"
+     ]
+    }
+   ],
+   "lightSkills": [
+    "Flying",
+    "Nocturnal"
+   ],
+   "count": 3,
+   "oddOut": []
+  },
+  {
+   "map": "mx",
+   "name": "Volcano Lair",
+   "no": 20,
+   "opensAfter": 20,
+   "side": true,
+   "neu": [
+    "The Caldera Wyrm",
+    "Fire Drake Hatchling"
+   ],
+   "skills": [
+    {
+     "skill": "Armor",
+     "cards": [
+      "The Caldera Wyrm"
+     ]
+    },
+    {
+     "skill": "On Death",
+     "cards": [
+      "The Caldera Wyrm"
+     ]
+    },
+    {
+     "skill": "Pounce",
+     "cards": [
+      "The Caldera Wyrm"
+     ]
+    }
+   ],
+   "lightSkills": [],
+   "count": 3,
+   "oddOut": []
+  }
+ ]
+}
