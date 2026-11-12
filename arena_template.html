@@ -11103,6 +11103,64 @@
 .coop-chip i{font-style:normal; font-size:10px; font-weight:800; padding:1px 5px; border-radius:999px; background:rgba(0,0,0,.35);}
 .coop-chip.is-me{box-shadow:0 0 0 1.5px #e8a948 inset;} .coop-chip.is-done{color:#b7eaa0;} .coop-chip.is-away{opacity:.6;}
 .coop-bar .coop-line{font-size:11.5px; opacity:.9; text-align:right;}
+/* 2026-11-12 (package DUNGEON1, owner 23:47 notes 18 and 21): the waiting room (a banner from the dungeon's data, the switcher, the parts as a
+   track, seats as slots, the rules in one line with details on tap) and the "Part N: name" ribbon between parts. The room sits on the
+   overlay's own dark background in either colour scheme. */
+.coop-chip.dg1-part-chip{padding-left:8px; background:rgba(92,198,216,.18); color:#bfeef6;}
+.dg1-room{gap:12px;}
+.dg1-banner{position:relative; display:flex; align-items:center; gap:14px; min-height:118px; padding:16px 18px; border-radius:18px; overflow:hidden; isolation:isolate;
+  background:linear-gradient(120deg, var(--dg1-a) 0%, var(--dg1-b) 70%); border:1px solid rgba(255,232,190,.22); box-shadow:0 10px 28px rgba(0,0,0,.35);}
+.dg1-banner-art{position:absolute; right:0; top:0; height:100%; width:62%; object-fit:cover; z-index:-1; opacity:.55; image-rendering:pixelated;
+  -webkit-mask-image:linear-gradient(90deg, transparent, #000 55%); mask-image:linear-gradient(90deg, transparent, #000 55%);}
+.dg1-banner-ico{flex:0 0 auto; display:grid; place-items:center; width:64px; height:64px; border-radius:50%; font-size:34px; background:rgba(0,0,0,.32); box-shadow:0 0 0 2px rgba(255,231,168,.35) inset;}
+.dg1-banner-text{min-width:0; display:flex; flex-direction:column; gap:4px; text-shadow:0 1px 3px rgba(0,0,0,.6);}
+.dg1-banner-text h2{margin:0; font:800 clamp(21px, 5.4vw, 30px)/1.1 'Baloo 2',system-ui,sans-serif; color:#fff3d6; overflow-wrap:anywhere;}
+.dg1-banner-text p{margin:0; font-size:13.5px; color:rgba(243,234,216,.88); max-width:52ch;}
+.dg1-facts{display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; font-size:12.5px !important; font-weight:700;}
+.dg1-switch{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:12px; color:rgba(243,234,216,.7);}
+.dg1-switch-btn{font-family:inherit; font-weight:700; font-size:13px; line-height:1.2; padding:6px 12px; border-radius:999px; border:1px solid rgba(255,232,190,.22); background:rgba(255,255,255,.06); color:inherit; cursor:pointer;}
+.dg1-switch-btn.is-on{background:rgba(241,207,90,.18); border-color:rgba(241,207,90,.7); color:#ffe7a8; cursor:default;}
+.dg1-switch-btn[aria-disabled="true"]{opacity:.5; cursor:not-allowed;}
+.dg1-track{--dg1-line:rgba(255,231,168,.3); list-style:none; margin:0; padding:10px 6px 6px; display:grid; grid-template-columns:repeat(var(--dg1-n, 4), minmax(0, 1fr)); gap:4px; border-radius:16px; background:rgba(0,0,0,.22); border:1px solid var(--gd-line);}
+.dg1-part{position:relative; display:flex; flex-direction:column; align-items:center; text-align:center; gap:2px; min-width:0; padding:0 2px;}
+.dg1-part::before{content:''; position:absolute; top:15px; left:-50%; width:100%; height:3px; border-radius:3px; background:var(--dg1-line); z-index:0;}
+.dg1-part:first-child::before{display:none;}
+.dg1-stop{position:relative; z-index:1; display:grid; place-items:center; width:32px; height:32px; border-radius:50%; background:#2b2119; box-shadow:0 0 0 2px rgba(255,231,168,.55) inset;}
+.dg1-stop i{font:800 14px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; color:#ffe7a8;}
+.dg1-part.is-boss .dg1-stop{background:#4a2140; box-shadow:0 0 0 2px #f1cf5a inset, 0 0 12px rgba(241,207,90,.45);}
+.dg1-part-ico{font-size:20px; line-height:1.2;}
+.dg1-part b{font-size:12.5px; line-height:1.2; overflow-wrap:anywhere;} .dg1-part small{font-size:11px; color:rgba(243,234,216,.62);}
+@media (max-width:560px){
+  .dg1-track{grid-template-columns:1fr; gap:0; padding:8px 10px;}
+  .dg1-part{flex-direction:row; text-align:left; gap:8px; padding:3px 0; align-items:center;}
+  .dg1-part::before{top:-50%; left:15px; width:3px; height:100%;}
+  .dg1-part b{flex:1;} .dg1-part small{white-space:nowrap;}
+  .dg1-banner{min-height:104px; padding:14px;} .dg1-banner-ico{width:52px; height:52px; font-size:28px;} .dg1-banner-art{width:80%; opacity:.4;}
+}
+.dg1-seats{grid-template-columns:repeat(var(--dg1-seats, 2), minmax(0, 1fr));}
+.dg1-seats .gd-seat{min-height:96px; padding:12px 12px 12px 16px;}
+.dg1-seats .gd-seat.is-empty{background:transparent; border:2px dashed rgba(255,232,190,.28); opacity:.85;}
+.dg1-seat-plus{font-size:22px; line-height:1; color:rgba(255,231,168,.7);}
+.dg1-rules{margin:0; font-size:14px; font-weight:700; color:#ffe7a8;}
+.dg1-more{border-radius:12px; background:rgba(0,0,0,.2); border:1px solid var(--gd-line); padding:6px 12px; font-size:13px;}
+.dg1-more summary{cursor:pointer; font-weight:800; padding:4px 0; color:rgba(243,234,216,.9);}
+.dg1-more ul{margin:4px 0 8px; padding-left:18px; display:grid; gap:4px; color:rgba(243,234,216,.82);}
+.dg1-pay{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 6px; font-size:12px;}
+.dg1-pay > span:first-child{font-weight:800; margin-right:4px;}
+.dg1-pay-cell{padding:2px 8px; border-radius:999px; background:rgba(241,207,90,.12);} .dg1-pay-cell b{color:#ffe7a8;}
+.dg1-pay-line{font-weight:700; color:#ffe7a8 !important;}
+.dg1-part-banner{position:fixed; left:0; right:0; top:30%; z-index:9050; display:flex; justify-content:center; pointer-events:none;}
+.dg1-pb-ribbon{display:flex; align-items:center; gap:14px; width:min(780px, 94vw); padding:14px 22px; border-radius:14px; color:#fff3d6;
+  background:linear-gradient(100deg, var(--dg1-a), var(--dg1-b)); border:2px solid rgba(241,207,90,.75); box-shadow:0 14px 40px rgba(0,0,0,.55), 0 0 0 6px rgba(0,0,0,.18);
+  animation:dg1Scroll 2.6s cubic-bezier(.25,.8,.35,1) both;}
+.dg1-part-banner.is-boss .dg1-pb-ribbon{border-color:#f1cf5a; box-shadow:0 14px 40px rgba(0,0,0,.55), 0 0 26px rgba(241,207,90,.45);}
+.dg1-part-banner.is-still .dg1-pb-ribbon{animation:dg1Fade 2.6s ease both;}
+.dg1-pb-ico{font-size:clamp(30px, 7vw, 46px);}
+.dg1-pb-text{display:flex; flex-direction:column; min-width:0; text-shadow:0 2px 4px rgba(0,0,0,.6);}
+.dg1-pb-text b{font:800 clamp(22px, 5.6vw, 40px)/1.08 'Baloo 2',system-ui,sans-serif; overflow-wrap:anywhere;}
+.dg1-pb-text small{font-size:13px; opacity:.85;}
+@keyframes dg1Scroll{0%{transform:translateX(110vw) skewX(-10deg);} 20%{transform:translateX(0) skewX(0);} 80%{transform:translateX(0) skewX(0);} 100%{transform:translateX(-110vw) skewX(10deg);}}
+@keyframes dg1Fade{0%{opacity:0;} 15%{opacity:1;} 85%{opacity:1;} 100%{opacity:0;}}
 .board-card.coop-pending{position:relative; display:grid; place-items:center; border-radius:12px; border:2px dashed rgba(232,169,72,.8); background:rgba(232,169,72,.12);}
 .board-card.coop-pending .coop-ghost{opacity:.55; filter:saturate(.6); font-size:28px; line-height:1;}
 .board-card.coop-pending .coop-ghost img{max-width:70%; max-height:70%;}

@@ -148,7 +148,7 @@ async def run(b, url, w):
     r = await pg.evaluate("""()=>{ const T = GD.s.T, mine = Object.keys(T.seats[0].deck).sort().join(), cpu = Object.keys(T.seats[1].deck).sort().join(); return {cpu: T.seats[1].cpu, same: mine === cpu, n: Object.values(T.seats[1].deck).reduce((a, c)=> a + c, 0), distinct: Object.keys(T.seats[1].deck).length, filler: !!GD.s.startMsg.seats[1].filler}; }""")
     ok(r['cpu'] and not r['same'] and r['n'] == 20 and r['filler'], f'S9 the CPU ally plays its own random 20-card deck (not a copy of yours) {r}')
     seen = {'wl': False, 'both': False}
-    for floor in range(4):
+    for floor in range(5): # 2026-11-12 (DUNGEON1): the vault has 5 parts, a part won goes on on the same board (no panel until the run's end)
         await pg.evaluate("()=>{ const T = matchState.coop.T; T.players[2].hq.hp = 0; T.players[2].hq.shield = 0; T.players[2].hq.shieldLayers = []; renderHUD(); }")
         await pg.evaluate("async()=>{ try{ await skipTurn(); }catch(e){} }")
         for i in range(40):
@@ -156,6 +156,7 @@ async def run(b, url, w):
             s = await pg.evaluate("()=>({phase: GD.phase, gd: !!document.querySelector('#gdOverlay:not([hidden]) .gd-panel'), wl: !!document.querySelector('.winloss-overlay')})")
             if s['wl']: seen['wl'] = True
             if s['phase'] in ('floorEnd', 'end') and s['gd']: break
+            if await pg.evaluate(f"()=> !!(matchState && matchState.coop && matchState.coop.T.floorIdx > {floor})"): break
         if floor == 0: await shot(pg, 'coop-floor-cleared', w)
         if await pg.evaluate("()=> GD.phase") == 'end': break
         nxt = await pg.query_selector('#gdOverlay [data-gd-act="next"]')

@@ -41,7 +41,7 @@ async function elapse(hub, clock, ms){ for(let x = 0; x < ms; x += 50){ clock.ad
 (async ()=>{
   // ---- 1. the type
   ok(C.playersOf('hollow') === 2 && C.DUNGEONS.hollow.players === 2, 'type: the Tidelock Vault is a 2-player group dungeon (its definition, not the lobby)');
-  ok(C.DUNGEONS.hollow.floors.length === 4 && C.DUNGEONS.hollow.floors[3].boss && C.DUNGEONS.hollow.floors[3].boss.nameKey === 'ui.ar3-boss-name', 'type: four floors, the Tidewarden on the last');
+  ok(C.DUNGEONS.hollow.floors.length === 5 && C.DUNGEONS.hollow.floors[4].boss && C.DUNGEONS.hollow.floors[4].boss.nameKey === 'ui.ar3-boss-name', 'type: five parts (DUNGEON1, 2026-11-12; was four), the Tidewarden on the last');
   ok(C.DUNGEONS.hollow.roundCap === 20, 'type: the raid\'s 20-turn clock');
 
   // ---- 2. the table
