@@ -1,0 +1,583 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T11:51:02.965Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "me",
+  "num": 20,
+  "name": "Eye of the Volcano"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-moth",
+  "ashbone-ghoul",
+  "cinder-skeleton",
+  "deep-cave-troll",
+  "obsidian-scorpion",
+  "stalactite-golem",
+  "vampire-roost"
+ ],
+ "poolNames": [
+  "Ancient Sloth Titan",
+  "Ash Moth",
+  "Ashbone Ghoul",
+  "Cinder Skeleton",
+  "Cave Bear",
+  "Obsidian Scorpion",
+  "Stalactite Pill Bug",
+  "Vampire Roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-A-1",
+   "label": "vs 20-A-1 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-2",
+   "label": "vs 20-A-2 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-3",
+   "label": "vs 20-A-3 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-4",
+   "label": "vs 20-A-4 dungeon's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-5",
+   "label": "vs 20-A-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-6",
+   "label": "vs 20-A-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-7",
+   "label": "vs 20-A-7 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-A-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-A-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:guard",
+   "label": "guard (skill family)",
+   "cards": [
+    "ancient-sloth-titan",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "ancient-sloth-titan",
+    "deep-cave-troll",
+    "stalactite-golem",
+    "vampire-roost"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:guard",
+   "steps": 8,
+   "moves": 3,
+   "games": 2120,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 13,
+   "moves": 7,
+   "games": 2040,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 4,
+   "moves": 1,
+   "games": 2180,
+   "apartFromEarlier": 4
+  }
+ ],
+ "apart": 10,
+ "seconds": 131,
+ "games": 6820,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "armor x7"
+   ],
+   "deck": {
+    "ash-moth": 4,
+    "ashbone-ghoul": 4,
+    "cinder-skeleton": 4,
+    "obsidian-scorpion": 3,
+    "stalactite-golem": 4,
+    "vampire-roost": 1
+   },
+   "cards": [
+    {
+     "id": "ash-moth",
+     "name": "Ash Moth",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-skeleton",
+     "name": "Cinder Skeleton",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "vampire-roost",
+     "name": "Vampire Roost",
+     "copies": 1,
+     "cost": 2,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.5875,
+   "ci": [
+    0.538,
+    0.637
+   ],
+   "avgLumber": 1.05,
+   "avgWait": 1.1,
+   "curve": {
+    "0": 4,
+    "1": 11,
+    "2": 5
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-A-1",
+     "label": "vs 20-A-1 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-2",
+     "label": "vs 20-A-2 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-3",
+     "label": "vs 20-A-3 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-4",
+     "label": "vs 20-A-4 dungeon's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-5",
+     "label": "vs 20-A-5 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-6",
+     "label": "vs 20-A-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-7",
+     "label": "vs 20-A-7 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-A-1's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-A-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
+     "p": 0,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:guard",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "guard x8",
+    "armor x7"
+   ],
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "ash-moth": 1,
+    "ashbone-ghoul": 4,
+    "cinder-skeleton": 4,
+    "obsidian-scorpion": 3,
+    "stalactite-golem": 4
+   },
+   "cards": [
+    {
+     "id": "ancient-sloth-titan",
+     "name": "Ancient Sloth Titan",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-skeleton",
+     "name": "Cinder Skeleton",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ash-moth",
+     "name": "Ash Moth",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.5167,
+   "ci": [
+    0.4645,
+    0.5689
+   ],
+   "avgLumber": 1.4,
+   "avgWait": 2.15,
+   "curve": {
+    "0": 4,
+    "1": 8,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    },
+    {
+     "f": "armor",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-A-1",
+     "label": "vs 20-A-1 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-2",
+     "label": "vs 20-A-2 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-3",
+     "label": "vs 20-A-3 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-4",
+     "label": "vs 20-A-4 dungeon's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-5",
+     "label": "vs 20-A-5 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-6",
+     "label": "vs 20-A-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-7",
+     "label": "vs 20-A-7 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-A-1's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-A-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
+     "p": 0.0417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 4
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.5)",
+    "night x7"
+   ],
+   "deck": {
+    "ash-moth": 3,
+    "ashbone-ghoul": 2,
+    "cinder-skeleton": 4,
+    "deep-cave-troll": 4,
+    "obsidian-scorpion": 3,
+    "vampire-roost": 4
+   },
+   "cards": [
+    {
+     "id": "cinder-skeleton",
+     "name": "Cinder Skeleton",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "vampire-roost",
+     "name": "Vampire Roost",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "ash-moth",
+     "name": "Ash Moth",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.4083,
+   "ci": [
+    0.3544,
+    0.4622
+   ],
+   "avgLumber": 1.5,
+   "avgWait": 1.25,
+   "curve": {
+    "0": 2,
+    "1": 10,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "night",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-A-1",
+     "label": "vs 20-A-1 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-2",
+     "label": "vs 20-A-2 elite's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-3",
+     "label": "vs 20-A-3 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-4",
+     "label": "vs 20-A-4 dungeon's deck",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-5",
+     "label": "vs 20-A-5 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-6",
+     "label": "vs 20-A-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-7",
+     "label": "vs 20-A-7 elite's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-A-1's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-A-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
+     "p": 0.0833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 7
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map me --pool ancient-sloth-titan,ash-moth,ashbone-ghoul,cinder-skeleton,deep-cave-troll,obsidian-scorpion,stalactite-golem,vampire-roost --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:guard,big,open --level 1 --mode map-true"
+}

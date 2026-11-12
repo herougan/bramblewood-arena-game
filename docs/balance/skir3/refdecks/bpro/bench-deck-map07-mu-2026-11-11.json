@@ -1,0 +1,559 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T11:06:54.206Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "mu",
+  "num": 7,
+  "name": "The Morel Hollow"
+ },
+ "level": 1,
+ "pool": [
+  "adder-ambusher",
+  "amber-cicada",
+  "camouflage-frog",
+  "corpse-flower-beetle",
+  "cypress-root-lurker",
+  "earthworm",
+  "fungus-gnat-cloud",
+  "hawthorn-shieldbug",
+  "lamprey",
+  "leopard-slug",
+  "planarian-splitter",
+  "puffball-bombardier",
+  "rot-swollen-carcass",
+  "sleepless-shrew",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Adder Ambusher",
+  "Amber Cicada",
+  "Camouflage Frog",
+  "Corpse-flower Beetle",
+  "Cypress Root Lurker",
+  "Earthworm",
+  "Fungus Gnat Cloud",
+  "Hawthorn Shieldbug",
+  "Lamprey",
+  "Leopard Slug",
+  "Planarian Splitter",
+  "Puffball Bombardier",
+  "Rot-Swollen Carcass",
+  "Sleepless Shrew",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:7-1",
+   "label": "vs 7-1 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:7-2",
+   "label": "vs 7-2 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:7-3",
+   "label": "vs 7-3 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:7-4",
+   "label": "vs 7-4 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:7-5",
+   "label": "vs 7-5 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:7-6",
+   "label": "vs 7-6 miniboss's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 7-1's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:road7",
+   "label": "vs reference deck (Map 7) under 7-2's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+   "weight": 0.1111
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:guard",
+   "label": "guard (skill family)",
+   "cards": [
+    "cypress-root-lurker",
+    "hawthorn-shieldbug"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "earthworm",
+    "fungus-gnat-cloud",
+    "leopard-slug",
+    "puffball-bombardier",
+    "sleepless-shrew"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:guard",
+   "steps": 7,
+   "moves": 3,
+   "games": 2052,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "swarm",
+   "steps": 9,
+   "moves": 4,
+   "games": 2070,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 10,
+   "moves": 6,
+   "games": 2106,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 129,
+ "games": 6660,
+ "decks": [
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "swarm x7"
+   ],
+   "deck": {
+    "earthworm": 4,
+    "fungus-gnat-cloud": 4,
+    "lamprey": 3,
+    "leopard-slug": 2,
+    "sleepless-shrew": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "sleepless-shrew",
+     "name": "Sleepless Shrew",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lamprey",
+     "name": "Lamprey",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "leopard-slug",
+     "name": "Leopard Slug",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7778,
+   "ci": [
+    0.7279,
+    0.8277
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "swarm",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-1",
+     "label": "vs 7-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-2",
+     "label": "vs 7-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-3",
+     "label": "vs 7-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-4",
+     "label": "vs 7-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-5",
+     "label": "vs 7-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-6",
+     "label": "vs 7-6 miniboss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "family:guard",
+   "labels": [
+    "guard x8"
+   ],
+   "deck": {
+    "adder-ambusher": 1,
+    "cypress-root-lurker": 4,
+    "fungus-gnat-cloud": 4,
+    "hawthorn-shieldbug": 4,
+    "leopard-slug": 3,
+    "sleepless-shrew": 4
+   },
+   "cards": [
+    {
+     "id": "cypress-root-lurker",
+     "name": "Cypress Root Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "sleepless-shrew",
+     "name": "Sleepless Shrew",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leopard-slug",
+     "name": "Leopard Slug",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6898,
+   "ci": [
+    0.6362,
+    0.7435
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 1,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-1",
+     "label": "vs 7-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-2",
+     "label": "vs 7-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-3",
+     "label": "vs 7-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-4",
+     "label": "vs 7-4 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-5",
+     "label": "vs 7-5 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-6",
+     "label": "vs 7-6 miniboss's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.6 Lumber)"
+   ],
+   "deck": {
+    "amber-cicada": 4,
+    "fungus-gnat-cloud": 4,
+    "hawthorn-shieldbug": 3,
+    "lamprey": 4,
+    "leopard-slug": 4,
+    "wolf-spider-mother": 1
+   },
+   "cards": [
+    {
+     "id": "amber-cicada",
+     "name": "Amber Cicada",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lamprey",
+     "name": "Lamprey",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "leopard-slug",
+     "name": "Leopard Slug",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6435,
+   "ci": [
+    0.5875,
+    0.6995
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-1",
+     "label": "vs 7-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-2",
+     "label": "vs 7-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-3",
+     "label": "vs 7-3 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-4",
+     "label": "vs 7-4 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-5",
+     "label": "vs 7-5 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-6",
+     "label": "vs 7-6 miniboss's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-1's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,amber-cicada,camouflage-frog,corpse-flower-beetle,cypress-root-lurker,earthworm,fungus-gnat-cloud,hawthorn-shieldbug,lamprey,leopard-slug,planarian-splitter,puffball-bombardier,rot-swollen-carcass,sleepless-shrew,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:guard,swarm,open --level 1 --mode map-true"
+}

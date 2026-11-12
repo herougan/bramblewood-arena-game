@@ -1,0 +1,675 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T11:57:03.677Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "mo",
+  "num": 0,
+  "name": "The Old Bramble"
+ },
+ "level": 1,
+ "pool": [
+  "amber-cicada",
+  "ashbone-ghoul",
+  "barkplate-beetle",
+  "bramble-sprout",
+  "bramblewood-lynx",
+  "dhole-matriarch",
+  "eagle-owl-quartermaster",
+  "earthworm",
+  "elder-willow",
+  "ent",
+  "farm-dog",
+  "grave-grin-hyena",
+  "hedgehog-herbalist",
+  "house-cat",
+  "ibex-rockcaller",
+  "lyrebird-mimic",
+  "pond-algae",
+  "quill-thorn-boar",
+  "quillguard",
+  "stoat-cutthroat",
+  "thorn-shrike",
+  "truffle-piglet",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Amber Cicada",
+  "Ashbone Ghoul",
+  "Barkplate Beetle",
+  "Bramble Sprout",
+  "Bramblewood Lynx",
+  "Dhole Matriarch",
+  "Eagle-Owl Quartermaster",
+  "Earthworm",
+  "Elder Willow",
+  "Ent",
+  "Farm Dog",
+  "Grave-Grin Hyena",
+  "Hedgehog Herbalist",
+  "House Cat",
+  "Ibex Rockcaller",
+  "Lyrebird Mimic",
+  "Pond Algae",
+  "Quill-Thorn Boar",
+  "Quillguard",
+  "Stoat Cutthroat",
+  "Thorn Shrike",
+  "Truffle Piglet",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "barkplate-beetle",
+   "bramble-sprout",
+   "bramblewood-lynx",
+   "earthworm",
+   "elder-willow",
+   "ent",
+   "farm-dog",
+   "house-cat",
+   "quill-thorn-boar",
+   "quillguard",
+   "thorn-shrike"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:0-B-1",
+   "label": "vs 0-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:0-B-2",
+   "label": "vs 0-B-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:0-B-3",
+   "label": "vs 0-B-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:0-B-4",
+   "label": "vs 0-B-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 0-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road17",
+   "label": "vs reference deck (Map 17) under 0-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:spite",
+   "label": "spite (skill family)",
+   "cards": [
+    "barkplate-beetle",
+    "bramble-sprout",
+    "quill-thorn-boar"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "barkplate-beetle",
+    "dhole-matriarch",
+    "elder-willow"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "ashbone-ghoul",
+    "bramble-sprout",
+    "earthworm",
+    "ent",
+    "farm-dog",
+    "grave-grin-hyena",
+    "house-cat",
+    "pond-algae"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:spite",
+   "steps": 12,
+   "moves": 4,
+   "games": 2044,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 10,
+   "moves": 5,
+   "games": 2058,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "swarm",
+   "steps": 12,
+   "moves": 5,
+   "games": 2114,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 13,
+   "moves": 7,
+   "games": 2030,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 136,
+ "games": 8694,
+ "decks": [
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "bramble-sprout": 3,
+    "earthworm": 2,
+    "ent": 3,
+    "farm-dog": 4,
+    "grave-grin-hyena": 4,
+    "lyrebird-mimic": 4
+   },
+   "cards": [
+    {
+     "id": "farm-dog",
+     "name": "Farm Dog",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lyrebird-mimic",
+     "name": "Lyrebird Mimic",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.8869,
+   "ci": [
+    0.845,
+    0.9288
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:spite",
+   "labels": [
+    "spite x10"
+   ],
+   "deck": {
+    "barkplate-beetle": 3,
+    "bramble-sprout": 4,
+    "quill-thorn-boar": 3,
+    "stoat-cutthroat": 3,
+    "truffle-piglet": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "quill-thorn-boar",
+     "name": "Quill-Thorn Boar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8512,
+   "ci": [
+    0.8049,
+    0.8975
+   ],
+   "avgLumber": 0.95,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 4,
+    "1": 13,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "spite",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "ashbone-ghoul": 4,
+    "eagle-owl-quartermaster": 2,
+    "farm-dog": 4,
+    "grave-grin-hyena": 4,
+    "house-cat": 3,
+    "quill-thorn-boar": 3
+   },
+   "cards": [
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "farm-dog",
+     "name": "Farm Dog",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "quill-thorn-boar",
+     "name": "Quill-Thorn Boar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8036,
+   "ci": [
+    0.7544,
+    0.8528
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.65,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.1)"
+   ],
+   "deck": {
+    "barkplate-beetle": 4,
+    "bramblewood-lynx": 2,
+    "elder-willow": 4,
+    "ent": 3,
+    "grave-grin-hyena": 3,
+    "house-cat": 4
+   },
+   "cards": [
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "elder-willow",
+     "name": "Elder Willow",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7738,
+   "ci": [
+    0.7197,
+    0.8279
+   ],
+   "avgLumber": 1.1,
+   "avgWait": 2.1,
+   "curve": {
+    "0": 10,
+    "1": 2,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mo --pool amber-cicada,ashbone-ghoul,barkplate-beetle,bramble-sprout,bramblewood-lynx,dhole-matriarch,eagle-owl-quartermaster,earthworm,elder-willow,ent,farm-dog,grave-grin-hyena,hedgehog-herbalist,house-cat,ibex-rockcaller,lyrebird-mimic,pond-algae,quill-thorn-boar,quillguard,stoat-cutthroat,thorn-shrike,truffle-piglet,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:spite,big,swarm,open --anchor barkplate-beetle,bramble-sprout,bramblewood-lynx,earthworm,elder-willow,ent,farm-dog,house-cat,quill-thorn-boar,quillguard,thorn-shrike --anchor-min 10 --level 1 --mode map-true"
+}

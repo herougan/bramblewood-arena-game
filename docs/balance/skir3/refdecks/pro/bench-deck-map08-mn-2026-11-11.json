@@ -1,0 +1,688 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T12:35:25.546Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "mn",
+  "num": 8,
+  "name": "The Glimmer Depths"
+ },
+ "level": 1,
+ "pool": [
+  "blind-cave-fish",
+  "blue-ringed-octopus",
+  "cave-olm",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "echo-matriarch",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "grave-grin-hyena",
+  "kittiwake-flock",
+  "magpie-collector",
+  "millipede-hauler",
+  "mudflat-godwit",
+  "nightjar-drifter",
+  "oilbird",
+  "quarry-mole",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "stoat-cutthroat",
+  "upside-down-bat",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Blind Cave Fish",
+  "Blue-ringed Octopus",
+  "Cave Olm",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Echo Matriarch",
+  "Gallery Orb-Weaver",
+  "Giant Cave Huntsman",
+  "Grave-Grin Hyena",
+  "Kittiwake Flock",
+  "Magpie Collector",
+  "Millipede Hauler",
+  "Mudflat Godwit",
+  "Nightjar Drifter",
+  "Oilbird",
+  "Quarry Mole",
+  "Stalactite Pill Bug",
+  "Star-nosed Mole",
+  "Stoat Cutthroat",
+  "Upside-Down Bat",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "blind-cave-fish",
+   "cave-olm",
+   "echo-matriarch",
+   "magpie-collector",
+   "oilbird",
+   "quarry-mole",
+   "stalactite-golem",
+   "star-nosed-mole",
+   "upside-down-bat"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:8-A-1",
+   "label": "vs 8-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:8-A-2",
+   "label": "vs 8-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:8-A-3",
+   "label": "vs 8-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:8-A-4",
+   "label": "vs 8-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 8-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road16",
+   "label": "vs reference deck (Map 16) under 8-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "eagle-owl-quartermaster",
+    "echo-matriarch",
+    "kittiwake-flock",
+    "magpie-collector",
+    "upside-down-bat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "millipede-hauler",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "blue-ringed-octopus",
+    "eagle-owl-quartermaster",
+    "echo-matriarch",
+    "gallery-orb-weaver",
+    "giant-cave-huntsman",
+    "magpie-collector",
+    "millipede-hauler",
+    "mudflat-godwit",
+    "nightjar-drifter",
+    "oilbird",
+    "quarry-mole",
+    "stalactite-golem",
+    "stoat-cutthroat",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 14,
+   "moves": 8,
+   "games": 2226,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "family:armor",
+   "steps": 11,
+   "moves": 5,
+   "games": 2184,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 10,
+   "moves": 5,
+   "games": 2072,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 12,
+   "moves": 8,
+   "games": 2128,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 197,
+ "games": 9058,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "flying x11",
+    "tide x7"
+   ],
+   "deck": {
+    "blind-cave-fish": 3,
+    "echo-matriarch": 3,
+    "kittiwake-flock": 4,
+    "mudflat-godwit": 4,
+    "upside-down-bat": 4,
+    "wolf-spider-mother": 2
+   },
+   "cards": [
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mudflat-godwit",
+     "name": "Mudflat Godwit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7857,
+   "ci": [
+    0.7338,
+    0.8376
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    },
+    {
+     "f": "tide",
+     "n": 7
+    },
+    {
+     "f": "swarm",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "flying x11"
+   ],
+   "deck": {
+    "blind-cave-fish": 2,
+    "eagle-owl-quartermaster": 3,
+    "grave-grin-hyena": 3,
+    "kittiwake-flock": 4,
+    "magpie-collector": 4,
+    "star-nosed-mole": 4
+   },
+   "cards": [
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "magpie-collector",
+     "name": "Magpie Collector",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7738,
+   "ci": [
+    0.7189,
+    0.8287
+   ],
+   "avgLumber": 0.35,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 13,
+    "1": 7
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (11 copies at 1+ Lumber, average 0.6)"
+   ],
+   "deck": {
+    "cave-olm": 2,
+    "dust-hyena": 3,
+    "gallery-orb-weaver": 4,
+    "giant-cave-huntsman": 3,
+    "oilbird": 4,
+    "star-nosed-mole": 4
+   },
+   "cards": [
+    {
+     "id": "gallery-orb-weaver",
+     "name": "Gallery Orb-Weaver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "oilbird",
+     "name": "Oilbird",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "cave-olm",
+     "name": "Cave Olm",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7381,
+   "ci": [
+    0.6851,
+    0.7911
+   ],
+   "avgLumber": 0.55,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 9,
+    "1": 11
+   },
+   "resourceMakers": 3,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)",
+    "economy (4 resource makers)",
+    "armor x8"
+   ],
+   "deck": {
+    "dust-hyena": 4,
+    "millipede-hauler": 4,
+    "stalactite-golem": 4,
+    "star-nosed-mole": 4,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "millipede-hauler",
+     "name": "Millipede Hauler",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.5774,
+   "ci": [
+    0.5124,
+    0.6424
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1,
+   "curve": {
+    "0": 12,
+    "1": 4,
+    "2": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.25,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mn --pool blind-cave-fish,blue-ringed-octopus,cave-olm,dust-hyena,eagle-owl-quartermaster,echo-matriarch,gallery-orb-weaver,giant-cave-huntsman,grave-grin-hyena,kittiwake-flock,magpie-collector,millipede-hauler,mudflat-godwit,nightjar-drifter,oilbird,quarry-mole,stalactite-golem,star-nosed-mole,stoat-cutthroat,upside-down-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,family:armor,big,open --anchor blind-cave-fish,cave-olm,echo-matriarch,magpie-collector,oilbird,quarry-mole,stalactite-golem,star-nosed-mole,upside-down-bat --anchor-min 10 --level 1 --mode map-true"
+}
