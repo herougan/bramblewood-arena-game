@@ -11,6 +11,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - c) Leave them.
 - **Default:** a
 
+**PUFF1-1. A spore-puff card skill?** · Decide · Cards · asked 2026-11-12
+- You asked for "maybe a puff cloud skill for cards". The dark lime puff now plays on Spore Cloud sleepers and Puffball Bombardier hits. A new skill would need pricing in the budget before any card gets it.
+  - a) No: keep the puff a visual only.
+  - b) Spore puff (attack): 50% to put the target to sleep for a round.
+  - c) Spore puff (defence): when hit, the attacker gets Poison 1.
+- **Default:** a
+
 **SKIR3-1. Six main maps have no Guardian on their list** · Decide · Balance · asked 2026-11-12
 - With your 11-12 picks, Maps 3, 10, 11, 15, 16 and 17 list no defender (Guardian / Bulwark / Taunt), which BAL9's JJ28 asks of Maps 1-19. Claude's Guardian adds (Grey Seal Bull on Map 10, Alpine Marmot on Map 11) had no room under NEW!.
   - a) You pick a Guardian on each (it may replace one of your picks)
