@@ -23,6 +23,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
   - Tests that encode the old lists or decks: content2/3/4/10/11/12/17/19, listfix2, deck1, bal7 (23-5 breaks the carried one-copy rule), bal9 JJ28 / JJ7.
   - Barrel Cactus reads over budget at Map 14 (its pack): owner re-fit.
   - The owner's stored picks still hold the dropped cards: the Map cards window shows them over the limit until set to No.
+  - Suite 11-12 (2144 s; 254 passed, 74 failed, 67 cached; 55 of the 74 already failed on 11-10). Fixed since: card-matrix (golden accepted, Barrel Cactus re-sampling, 0 failures), eng37, flair1, bp, en8, ui27. Still new: the PRO / BPRO / WPRO reference decks hold cards that left the lists (skill2, bal11-wk, bal21: re-search them), the ladder (bal24: rebuild running), gd2 GD-5, ui29 (the 11-07 pack plan; Gold now 60 with Barrel Cactus), reward-screens B4-B5 (passes on a quiet machine, fails under load since FIX11). fin2 hangs (killed at 10 min; also on 11-10).
   - PERF5: per-frame work (GSAP update, the snap guard, about 4 style passes a frame) is the next lag suspect; a real morph of the play view needs listener delegation first.
 
 ## 11-11: Package LISTFIX3 (merged on batch-1023e, not released)
