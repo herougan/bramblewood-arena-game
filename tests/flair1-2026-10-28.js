@@ -30,7 +30,7 @@ ok(/kind === 'victory' && flairLairMatch\(m\)/.test(app) && /m\.fightFirstClear 
 // 3. CSS
 ok(/\.fl1-vignette\{[^}]*z-index:-1[^}]*pointer-events:none/.test(tpl), 'vignette under the board and click-through');
 ok(/prefers-reduced-motion: reduce\)\{\s*\.map-node\.is-lair-final:not\(\.done\)[^}]*\.fl1-vignette\{animation:none !important;\}/.test(tpl), 'reduced motion stops the lair animations');
-ok(/html\[data-fx="none"\][^{]*\{animation:none;\}/.test(tpl) && /fl1-vignette\)\{animation:none;\}/.test(tpl), 'low / no effects stop them');
+ok(/html\[data-fx="none"\][^{]*\{animation:none;\}/.test(tpl) && /fl1-vignette\)?\{animation:none;\}/.test(tpl), 'low / no effects stop them'); // 2026-11-12 (PERF3): plain selectors, no :is() group
 ok(/\.fl1-banner\{[^}]*pointer-events:none/.test(tpl), 'the banner never blocks the skip tap');
 ok(/@media \(max-width:560px\)\{ \.map-node\.is-lair-final/.test(tpl) && /@media \(max-width:600px\)\{ \.fight-sign\.end-sign\.end-lair/.test(tpl), 'phone-width rules');
 // 4. texts

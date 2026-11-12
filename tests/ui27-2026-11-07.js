@@ -82,7 +82,8 @@ async function browser(){
       // ---- 11 (before admin mode, which shows every skill)
       const g = await pg.evaluate("(()=>{ const s = [...ui27UngatedSkills()].sort(), h = [...hiddenSkillSet()]; return {s, h, tide: skillHiddenNow('tide'), sonar: skillHiddenNow('sonar'), far: furthestMapReached()}; })()");
       // UI25 counted 17 with the unobtainable cards (cardObtainMap 0); Frostbite, Fire Arrow, Molting and Stem sit early only on cards no one can own
-      ok(['nocturnal', 'tide', 'evasive', 'delivery', 'diurnal', 'taunt', 'inspiring', 'esprit', 'crepuscular', 'keenEye', 'reach', 'chrysalis'].every(k=> g.s.includes(k)), `@${w} #11 the skills on cards owned before their map are un-gated (${g.s.join(', ')})`);
+      // 2026-11-12 (SKIR3): Crepuscular and Keen Eye left the list; their early carriers are off the 11-12 map lists, so their maps gate them again
+      ok(['nocturnal', 'tide', 'evasive', 'delivery', 'diurnal', 'taunt', 'inspiring', 'esprit', 'reach', 'chrysalis'].every(k=> g.s.includes(k)), `@${w} #11 the skills on cards owned before their map are un-gated (${g.s.join(', ')})`);
       ok(['frostbite', 'fireArrow', 'molting', 'stem'].every(k=> !g.s.includes(k)), `@${w} #11 skills whose early cards can't be owned keep their gate`);
       ok(!g.s.includes('sonar') && !g.s.includes('keenSense'), `@${w} #11 Sonar / Keen Sense keep ENG28's gate`);
       ok(g.far < 1 && !g.tide && g.sonar, `@${w} #11 on a fresh save Tide reads as itself, Sonar is still "?" (hidden: ${g.h.join(', ')})`);

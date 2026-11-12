@@ -172,7 +172,9 @@ for(const lv of [0, 1, 2]){
   const app11 = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), grab11 = n=> JSON.parse((app11.match(new RegExp('const ' + n + ' = (\\{.*?\\});\\n')) || [0, '{}'])[1]);
   const PICKS11 = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/design/map-picks-owner-2026-11-11.json'), 'utf8')).maps, ADM11 = grab11('UI47_ADMIN_ADD'), SUG11 = grab11('UI47_SUGGEST');
   const picked11 = (m, id)=> [(PICKS11[m] || {}).yes, ADM11[m], SUG11[m]].some(l=> (l || []).includes(id));
-  C.NEW.forEach(s=>{ const c = by[s.id], m = s.place[0], on = (pools[m].cards || []).includes(s.id); ok(c && !c.faction && (on === (T2[m] || []).includes(s.id) || on === picked11(m, s.id)) && c.source && c.source.map === m, `${s.id}: its source is ${m}, its place on ${m}'s list follows THEME2, no faction`); });
+  // 2026-11-12 (SKIR3): the lists are now the owner's 11-12 picks under the limits; a card he left out is off its list
+  const PICKS12 = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/design/map-picks-owner-2026-11-12.json'), 'utf8')).maps, picked12 = (m, id)=> [(PICKS12[m] || {}).yes, ADM11[m]].some(l=> (l || []).includes(id));
+  C.NEW.forEach(s=>{ const c = by[s.id], m = s.place[0], on = (pools[m].cards || []).includes(s.id); ok(c && !c.faction && (on === (T2[m] || []).includes(s.id) || on === picked11(m, s.id) || on === picked12(m, s.id)) && c.source && c.source.map === m, `${s.id}: its source is ${m}, its place on ${m}'s list follows THEME2, no faction`); });
   const skills = ['stonecutter', 'prospector', 'felling', 'pearlBed', 'coppice', 'driftwood', 'scavenge', 'salvage', 'magicArmor'];
   skills.forEach(k=> ok(cards.some(c=> c.effects && (c.effects[k] || (k === 'pearlBed' && (c.effects.pearl || c.effects.deliveryRes === 'pearl')) /* 2026-11-06 (ENG27, ENG25-6): Delivery {Pearl} */) && !c.pool && !c.awaitingSource), `a placed card carries ${k}`)); // 2026-11-03 (DEC1, ENG19-3): the Shellfish carry Pearl (Pearl Bed's old once rule) now
   const pearls = c=> c.effects.pearl || (c.effects.delivery && c.effects.deliveryRes === 'pearl'); // 2026-11-06 (ENG27, owner ENG25-6): Delivery {Pearl x1}
