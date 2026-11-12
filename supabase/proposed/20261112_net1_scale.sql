@@ -1,5 +1,5 @@
 -- PROPOSED 2026-11-12 (package NET1, owner 00:43: "network optimisation ... support infra that supports 10,000 concurrent players").
--- NOT APPLIED. Apply only on the owner's "apply it". Idempotent: safe to run twice. README: 20261112_net1_README.md.
+-- APPLIED 2026-11-12 23:2x SGT on the owner's "NET1-1: Apply it" (migration net1_scale_20261112; read back: 5 indexes, 0 per-row auth.uid() policies, advisor auth_rls_initplan / multiple_permissive_policies gone). Idempotent: safe to run twice. README: 20261112_net1_README.md.
 --
 -- Touches no rows (indexes, policies, one trigger for future writes, function settings), so there is nothing to back up.
 -- The client (arena_app.js, NET1) works the same before and after: every query it sends is valid on both.
