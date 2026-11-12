@@ -20,115 +20,26 @@
    "player": 1,
    "seed": "bal24-1",
    "counts": {
-    "beaver-lumberjack": 1,
-    "bee-drone": 3,
-    "burrow-rabbit": 2,
-    "crossed-eyes": 2,
-    "duck-paddler": 2,
-    "greyplume-fledgling": 1,
-    "meadow-rabbit": 1,
-    "meerkat-wayfarer": 1,
-    "otter-kit": 1,
-    "river-carp": 2,
-    "silver-minnow": 1,
-    "soldier-ant": 3
-   },
-   "parts": [
-    [
-     "beaver-lumberjack",
-     1,
-     1
-    ],
-    [
-     "bee-drone",
-     3,
-     1
-    ],
-    [
-     "burrow-rabbit",
-     2,
-     1
-    ],
-    [
-     "crossed-eyes",
-     2,
-     0
-    ],
-    [
-     "duck-paddler",
-     2,
-     1
-    ],
-    [
-     "greyplume-fledgling",
-     1,
-     1
-    ],
-    [
-     "meadow-rabbit",
-     1,
-     1
-    ],
-    [
-     "meerkat-wayfarer",
-     1,
-     0
-    ],
-    [
-     "otter-kit",
-     1,
-     0
-    ],
-    [
-     "river-carp",
-     2,
-     1
-    ],
-    [
-     "silver-minnow",
-     1,
-     1
-    ],
-    [
-     "soldier-ant",
-     3,
-     1
-    ]
-   ],
-   "leader": "wandering-traveller",
-   "collection": 43,
-   "factionCards": 0,
-   "optScore": 0.852,
-   "optBudget": 900,
-   "optFile": "deckopt-map00-m1-bal24-p1.json",
-   "games": 8,
-   "perFight": {
-    "0-1": 100,
-    "0-2": 100,
-    "0-3": 100,
-    "0-4": 62.5
-   },
-   "win": 90.6
-  },
-  {
-   "player": 2,
-   "seed": "bal24-2",
-   "counts": {
-    "ant-scout": 5,
+    "ant-scout": 3,
+    "bee-forager": 1,
     "bee-sentry": 4,
+    "cobalt-talon-fledgling": 1,
     "crimson-wing-recruit": 1,
-    "crossed-eyes": 1,
-    "meadow-frog": 1,
-    "otter-guard": 1,
+    "duck-paddler": 2,
     "otter-paddler": 1,
-    "silver-minnow": 1,
-    "soldier-ant": 1,
-    "worker-ant": 4
+    "river-carp": 1,
+    "sparrow-chick": 1,
+    "worker-ant": 5
    },
    "parts": [
     [
      "ant-scout",
-     5,
+     3,
+     1
+    ],
+    [
+     "bee-forager",
+     1,
      1
     ],
     [
@@ -137,27 +48,92 @@
      1
     ],
     [
+     "cobalt-talon-fledgling",
+     1,
+     1
+    ],
+    [
      "crimson-wing-recruit",
      1,
      1
     ],
     [
-     "crossed-eyes",
-     1,
-     0
-    ],
-    [
-     "meadow-frog",
-     1,
-     0
-    ],
-    [
-     "otter-guard",
-     1,
+     "duck-paddler",
+     2,
      1
     ],
     [
      "otter-paddler",
+     1,
+     1
+    ],
+    [
+     "river-carp",
+     1,
+     1
+    ],
+    [
+     "sparrow-chick",
+     1,
+     0
+    ],
+    [
+     "worker-ant",
+     5,
+     1
+    ]
+   ],
+   "leader": "wandering-traveller",
+   "collection": 43,
+   "factionCards": 0,
+   "optScore": 0.789,
+   "optBudget": 900,
+   "optFile": "deckopt-map00-m1-bal24-p1.json",
+   "games": 8,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 87.5,
+    "0-3": 100,
+    "0-4": 62.5
+   },
+   "win": 87.5
+  },
+  {
+   "player": 2,
+   "seed": "bal24-2",
+   "counts": {
+    "ant-scout": 4,
+    "bee-knight": 1,
+    "bee-sentry": 4,
+    "cottontail": 4,
+    "otter-guard": 1,
+    "silver-minnow": 1,
+    "soldier-ant": 1,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "ant-scout",
+     4,
+     1
+    ],
+    [
+     "bee-knight",
+     1,
+     1
+    ],
+    [
+     "bee-sentry",
+     4,
+     1
+    ],
+    [
+     "cottontail",
+     4,
+     1
+    ],
+    [
+     "otter-guard",
      1,
      1
     ],
@@ -180,7 +156,7 @@
    "leader": "wandering-traveller",
    "collection": 43,
    "factionCards": 0,
-   "optScore": 0.883,
+   "optScore": 0.828,
    "optBudget": 900,
    "optFile": "deckopt-map00-m1-bal24-p2.json",
    "games": 8,
@@ -188,9 +164,9 @@
     "0-1": 100,
     "0-2": 100,
     "0-3": 100,
-    "0-4": 75
+    "0-4": 62.5
    },
-   "win": 93.8
+   "win": 90.6
   },
   {
    "player": 3,
@@ -200,10 +176,7 @@
     "beaver-lumberjack": 1,
     "bee-sentry": 4,
     "burrow-rabbit": 1,
-    "honey-bee": 1,
-    "meadow-frog": 1,
-    "otter-centurion": 1,
-    "river-carp": 1,
+    "cottontail": 4,
     "soldier-ant": 1,
     "worker-ant": 5
    },
@@ -229,23 +202,8 @@
      1
     ],
     [
-     "honey-bee",
-     1,
-     1
-    ],
-    [
-     "meadow-frog",
-     1,
-     0
-    ],
-    [
-     "otter-centurion",
-     1,
-     0
-    ],
-    [
-     "river-carp",
-     1,
+     "cottontail",
+     4,
      1
     ],
     [
@@ -262,7 +220,7 @@
    "leader": "wandering-traveller",
    "collection": 43,
    "factionCards": 0,
-   "optScore": 0.844,
+   "optScore": 0.867,
    "optBudget": 900,
    "optFile": "deckopt-map00-m1-bal24-p3.json",
    "games": 8,
@@ -270,29 +228,26 @@
     "0-1": 100,
     "0-2": 100,
     "0-3": 100,
-    "0-4": 50
+    "0-4": 62.5
    },
-   "win": 87.5
+   "win": 90.6
   },
   {
    "player": 4,
    "seed": "bal24-4",
    "counts": {
-    "ant-scout": 1,
+    "ant-scout": 4,
     "bee-sentry": 4,
-    "cobalt-talon-fledgling": 1,
-    "duck-paddler": 1,
-    "honey-bee": 2,
-    "otter-guard": 1,
-    "rabbit-kit": 3,
-    "river-carp": 1,
-    "soldier-ant": 4,
-    "worker-ant": 2
+    "cottontail": 4,
+    "honey-bee": 1,
+    "rabbit-kit": 1,
+    "soldier-ant": 1,
+    "worker-ant": 5
    },
    "parts": [
     [
      "ant-scout",
-     1,
+     4,
      1
     ],
     [
@@ -301,50 +256,35 @@
      1
     ],
     [
-     "cobalt-talon-fledgling",
-     1,
-     1
-    ],
-    [
-     "duck-paddler",
-     1,
+     "cottontail",
+     4,
      1
     ],
     [
      "honey-bee",
-     2,
-     1
-    ],
-    [
-     "otter-guard",
      1,
      1
     ],
     [
      "rabbit-kit",
-     3,
+     1,
      0
     ],
     [
-     "river-carp",
+     "soldier-ant",
      1,
      1
     ],
     [
-     "soldier-ant",
-     4,
-     1
-    ],
-    [
      "worker-ant",
-     2,
+     5,
      1
     ]
    ],
    "leader": "wandering-traveller",
    "collection": 43,
    "factionCards": 0,
-   "optScore": 0.906,
+   "optScore": 0.797,
    "optBudget": 900,
    "optFile": "deckopt-map00-m1-bal24-p4.json",
    "games": 8,
@@ -361,332 +301,16 @@
    "seed": "bal24-5",
    "counts": {
     "ant-scout": 5,
-    "bee-sentry": 4,
-    "earthworm": 2,
-    "forager-ant": 1,
-    "harvest-mouse": 1,
-    "otter-guard": 1,
-    "river-carp": 1,
-    "tunnel-ant": 1,
-    "worker-ant": 4
-   },
-   "parts": [
-    [
-     "ant-scout",
-     5,
-     1
-    ],
-    [
-     "bee-sentry",
-     4,
-     1
-    ],
-    [
-     "earthworm",
-     2,
-     0
-    ],
-    [
-     "forager-ant",
-     1,
-     1
-    ],
-    [
-     "harvest-mouse",
-     1,
-     0
-    ],
-    [
-     "otter-guard",
-     1,
-     1
-    ],
-    [
-     "river-carp",
-     1,
-     1
-    ],
-    [
-     "tunnel-ant",
-     1,
-     1
-    ],
-    [
-     "worker-ant",
-     4,
-     1
-    ]
-   ],
-   "leader": "wandering-traveller",
-   "collection": 43,
-   "factionCards": 0,
-   "optScore": 0.914,
-   "optBudget": 900,
-   "optFile": "deckopt-map00-m1-bal24-p5.json",
-   "games": 8,
-   "perFight": {
-    "0-1": 100,
-    "0-2": 100,
-    "0-3": 100,
-    "0-4": 50
-   },
-   "win": 87.5
-  },
-  {
-   "player": 6,
-   "seed": "bal24-6",
-   "counts": {
-    "ant-scout": 4,
-    "bee-sentry": 4,
-    "duckling": 1,
-    "guppy": 1,
-    "otter-guard": 1,
-    "otter-kit": 1,
-    "pond-duck": 1,
-    "silver-minnow": 2,
-    "sparrow-chick": 1,
-    "worker-ant": 4
-   },
-   "parts": [
-    [
-     "ant-scout",
-     4,
-     1
-    ],
-    [
-     "bee-sentry",
-     4,
-     1
-    ],
-    [
-     "duckling",
-     1,
-     0
-    ],
-    [
-     "guppy",
-     1,
-     0
-    ],
-    [
-     "otter-guard",
-     1,
-     1
-    ],
-    [
-     "otter-kit",
-     1,
-     0
-    ],
-    [
-     "pond-duck",
-     1,
-     1
-    ],
-    [
-     "silver-minnow",
-     2,
-     1
-    ],
-    [
-     "sparrow-chick",
-     1,
-     0
-    ],
-    [
-     "worker-ant",
-     4,
-     1
-    ]
-   ],
-   "leader": "wandering-traveller",
-   "collection": 43,
-   "factionCards": 0,
-   "optScore": 0.781,
-   "optBudget": 900,
-   "optFile": "deckopt-map00-m1-bal24-p6.json",
-   "games": 8,
-   "perFight": {
-    "0-1": 100,
-    "0-2": 100,
-    "0-3": 87.5,
-    "0-4": 62.5
-   },
-   "win": 87.5
-  },
-  {
-   "player": 7,
-   "seed": "bal24-7",
-   "counts": {
-    "ant-scout": 5,
-    "bee-knight": 1,
-    "bee-sentry": 5,
-    "burrow-rabbit": 1,
-    "duck-paddler": 2,
-    "duckling": 1,
-    "otter-guard": 1,
-    "worker-ant": 4
-   },
-   "parts": [
-    [
-     "ant-scout",
-     5,
-     1
-    ],
-    [
-     "bee-knight",
-     1,
-     1
-    ],
-    [
-     "bee-sentry",
-     5,
-     1
-    ],
-    [
-     "burrow-rabbit",
-     1,
-     1
-    ],
-    [
-     "duck-paddler",
-     2,
-     1
-    ],
-    [
-     "duckling",
-     1,
-     0
-    ],
-    [
-     "otter-guard",
-     1,
-     1
-    ],
-    [
-     "worker-ant",
-     4,
-     1
-    ]
-   ],
-   "leader": "wandering-traveller",
-   "collection": 43,
-   "factionCards": 0,
-   "optScore": 0.867,
-   "optBudget": 900,
-   "optFile": "deckopt-map00-m1-bal24-p7.json",
-   "games": 8,
-   "perFight": {
-    "0-1": 100,
-    "0-2": 100,
-    "0-3": 87.5,
-    "0-4": 50
-   },
-   "win": 84.4
-  },
-  {
-   "player": 8,
-   "seed": "bal24-8",
-   "counts": {
-    "ant-scout": 1,
-    "bee-knight": 1,
-    "burrow-rabbit": 1,
-    "crossed-eyes": 3,
-    "duck-paddler": 1,
-    "earthworm": 3,
-    "meadow-rabbit": 1,
-    "otter-guard": 1,
-    "pond-duck": 1,
-    "soldier-ant": 5,
-    "worker-ant": 2
-   },
-   "parts": [
-    [
-     "ant-scout",
-     1,
-     1
-    ],
-    [
-     "bee-knight",
-     1,
-     1
-    ],
-    [
-     "burrow-rabbit",
-     1,
-     1
-    ],
-    [
-     "crossed-eyes",
-     3,
-     0
-    ],
-    [
-     "duck-paddler",
-     1,
-     1
-    ],
-    [
-     "earthworm",
-     3,
-     0
-    ],
-    [
-     "meadow-rabbit",
-     1,
-     1
-    ],
-    [
-     "otter-guard",
-     1,
-     1
-    ],
-    [
-     "pond-duck",
-     1,
-     1
-    ],
-    [
-     "soldier-ant",
-     5,
-     1
-    ],
-    [
-     "worker-ant",
-     2,
-     1
-    ]
-   ],
-   "leader": "wandering-traveller",
-   "collection": 43,
-   "factionCards": 0,
-   "optScore": 0.898,
-   "optBudget": 900,
-   "optFile": "deckopt-map00-m1-bal24-p8.json",
-   "games": 8,
-   "perFight": {
-    "0-1": 100,
-    "0-2": 100,
-    "0-3": 100,
-    "0-4": 87.5
-   },
-   "win": 96.9
-  },
-  {
-   "player": 9,
-   "seed": "bal24-9",
-   "counts": {
-    "ant-scout": 2,
     "bee-sentry": 2,
     "chipmunk-forager": 4,
-    "crossed-eyes": 4,
     "duck-paddler": 4,
-    "river-carp": 4
+    "silver-minnow": 3,
+    "tunnel-ant": 2
    },
    "parts": [
     [
      "ant-scout",
-     2,
+     5,
      1
     ],
     [
@@ -700,27 +324,139 @@
      1
     ],
     [
-     "crossed-eyes",
-     4,
-     0
-    ],
-    [
      "duck-paddler",
      4,
      1
     ],
     [
-     "river-carp",
-     4,
+     "silver-minnow",
+     3,
+     1
+    ],
+    [
+     "tunnel-ant",
+     2,
      1
     ]
    ],
    "leader": "wandering-traveller",
    "collection": 43,
    "factionCards": 0,
-   "optScore": 0.789,
+   "optScore": 0.906,
    "optBudget": 900,
-   "optFile": "deckopt-map00-m1-bal24-p9.json",
+   "optFile": "deckopt-map00-m1-bal24-p5.json",
+   "games": 8,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 87.5,
+    "0-3": 100,
+    "0-4": 75
+   },
+   "win": 90.6
+  },
+  {
+   "player": 6,
+   "seed": "bal24-6",
+   "counts": {
+    "beaver-lumberjack": 2,
+    "bee-sentry": 1,
+    "chipmunk-forager": 1,
+    "crossed-eyes": 1,
+    "duckling": 1,
+    "guppy": 1,
+    "harvest-mouse": 1,
+    "meerkat-wayfarer": 2,
+    "otter-centurion": 2,
+    "otter-guard": 2,
+    "pond-duck": 1,
+    "rabbit-kit": 1,
+    "soldier-ant": 2,
+    "sparrow-chick": 1,
+    "tunnel-ant": 1
+   },
+   "parts": [
+    [
+     "beaver-lumberjack",
+     2,
+     1
+    ],
+    [
+     "bee-sentry",
+     1,
+     1
+    ],
+    [
+     "chipmunk-forager",
+     1,
+     1
+    ],
+    [
+     "crossed-eyes",
+     1,
+     0
+    ],
+    [
+     "duckling",
+     1,
+     0
+    ],
+    [
+     "guppy",
+     1,
+     0
+    ],
+    [
+     "harvest-mouse",
+     1,
+     0
+    ],
+    [
+     "meerkat-wayfarer",
+     2,
+     0
+    ],
+    [
+     "otter-centurion",
+     2,
+     0
+    ],
+    [
+     "otter-guard",
+     2,
+     1
+    ],
+    [
+     "pond-duck",
+     1,
+     1
+    ],
+    [
+     "rabbit-kit",
+     1,
+     0
+    ],
+    [
+     "soldier-ant",
+     2,
+     1
+    ],
+    [
+     "sparrow-chick",
+     1,
+     0
+    ],
+    [
+     "tunnel-ant",
+     1,
+     1
+    ]
+   ],
+   "leader": "wandering-traveller",
+   "collection": 43,
+   "factionCards": 0,
+   "optScore": 0.867,
+   "optBudget": 900,
+   "optFile": "deckopt-map00-m1-bal24-p6.json",
    "games": 8,
    "perFight": {
     "0-1": 100,
@@ -731,19 +467,17 @@
    "win": 90.6
   },
   {
-   "player": 10,
-   "seed": "bal24-10",
+   "player": 7,
+   "seed": "bal24-7",
    "counts": {
     "ant-scout": 4,
     "bee-sentry": 4,
     "cobalt-talon-fledgling": 1,
-    "duckling": 1,
-    "earthworm": 1,
-    "greyplume-fledgling": 1,
-    "otter-centurion": 1,
-    "otter-kit": 1,
-    "tunnel-ant": 1,
-    "worker-ant": 5
+    "cottontail": 1,
+    "crossed-eyes": 1,
+    "pond-trout": 2,
+    "soldier-ant": 4,
+    "worker-ant": 3
    },
    "parts": [
     [
@@ -762,17 +496,191 @@
      1
     ],
     [
+     "cottontail",
+     1,
+     1
+    ],
+    [
+     "crossed-eyes",
+     1,
+     0
+    ],
+    [
+     "pond-trout",
+     2,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "worker-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "wandering-traveller",
+   "collection": 43,
+   "factionCards": 0,
+   "optScore": 0.93,
+   "optBudget": 900,
+   "optFile": "deckopt-map00-m1-bal24-p7.json",
+   "games": 8,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 100,
+    "0-3": 100,
+    "0-4": 62.5
+   },
+   "win": 90.6
+  },
+  {
+   "player": 8,
+   "seed": "bal24-8",
+   "counts": {
+    "ant-scout": 4,
+    "bee-sentry": 4,
+    "cottontail": 4,
+    "duck-paddler": 1,
+    "meadow-frog": 1,
+    "meerkat-wayfarer": 1,
+    "tunnel-ant": 1,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "ant-scout",
+     4,
+     1
+    ],
+    [
+     "bee-sentry",
+     4,
+     1
+    ],
+    [
+     "cottontail",
+     4,
+     1
+    ],
+    [
+     "duck-paddler",
+     1,
+     1
+    ],
+    [
+     "meadow-frog",
+     1,
+     0
+    ],
+    [
+     "meerkat-wayfarer",
+     1,
+     0
+    ],
+    [
+     "tunnel-ant",
+     1,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "wandering-traveller",
+   "collection": 43,
+   "factionCards": 0,
+   "optScore": 0.875,
+   "optBudget": 900,
+   "optFile": "deckopt-map00-m1-bal24-p8.json",
+   "games": 8,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 100,
+    "0-3": 100,
+    "0-4": 62.5
+   },
+   "win": 90.6
+  },
+  {
+   "player": 9,
+   "seed": "bal24-9",
+   "counts": {
+    "ant-scout": 1,
+    "beaver-lumberjack": 1,
+    "bee-drone": 2,
+    "bee-sentry": 1,
+    "burrow-rabbit": 2,
+    "crimson-wing-recruit": 1,
+    "duckling": 1,
+    "forager-ant": 1,
+    "greyplume-fledgling": 1,
+    "guppy": 1,
+    "meadow-rabbit": 1,
+    "otter-centurion": 1,
+    "otter-kit": 1,
+    "pond-duck": 1,
+    "rabbit-kit": 1,
+    "soldier-ant": 1,
+    "tunnel-ant": 2
+   },
+   "parts": [
+    [
+     "ant-scout",
+     1,
+     1
+    ],
+    [
+     "beaver-lumberjack",
+     1,
+     1
+    ],
+    [
+     "bee-drone",
+     2,
+     1
+    ],
+    [
+     "bee-sentry",
+     1,
+     1
+    ],
+    [
+     "burrow-rabbit",
+     2,
+     1
+    ],
+    [
+     "crimson-wing-recruit",
+     1,
+     1
+    ],
+    [
      "duckling",
      1,
      0
     ],
     [
-     "earthworm",
+     "forager-ant",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     1,
+     1
+    ],
+    [
+     "guppy",
      1,
      0
     ],
     [
-     "greyplume-fledgling",
+     "meadow-rabbit",
      1,
      1
     ],
@@ -787,22 +695,32 @@
      0
     ],
     [
-     "tunnel-ant",
+     "pond-duck",
      1,
      1
     ],
     [
-     "worker-ant",
-     5,
+     "rabbit-kit",
+     1,
+     0
+    ],
+    [
+     "soldier-ant",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     2,
      1
     ]
    ],
    "leader": "wandering-traveller",
    "collection": 43,
    "factionCards": 0,
-   "optScore": 0.859,
+   "optScore": 0.922,
    "optBudget": 900,
-   "optFile": "deckopt-map00-m1-bal24-p10.json",
+   "optFile": "deckopt-map00-m1-bal24-p9.json",
    "games": 8,
    "perFight": {
     "0-1": 100,
@@ -811,8 +729,78 @@
     "0-4": 62.5
    },
    "win": 90.6
+  },
+  {
+   "player": 10,
+   "seed": "bal24-10",
+   "counts": {
+    "ant-scout": 3,
+    "bee-sentry": 5,
+    "cottontail": 4,
+    "duckling": 1,
+    "greyplume-fledgling": 1,
+    "meadow-frog": 1,
+    "tunnel-ant": 1,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "ant-scout",
+     3,
+     1
+    ],
+    [
+     "bee-sentry",
+     5,
+     1
+    ],
+    [
+     "cottontail",
+     4,
+     1
+    ],
+    [
+     "duckling",
+     1,
+     0
+    ],
+    [
+     "greyplume-fledgling",
+     1,
+     1
+    ],
+    [
+     "meadow-frog",
+     1,
+     0
+    ],
+    [
+     "tunnel-ant",
+     1,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "wandering-traveller",
+   "collection": 43,
+   "factionCards": 0,
+   "optScore": 0.828,
+   "optBudget": 900,
+   "optFile": "deckopt-map00-m1-bal24-p10.json",
+   "games": 8,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 100,
+    "0-3": 100,
+    "0-4": 50
+   },
+   "win": 87.5
   }
  ],
  "missing": 0,
- "measured": "2026-11-11T10:57:04.573Z"
+ "measured": "2026-11-12T07:48:25.649Z"
 }

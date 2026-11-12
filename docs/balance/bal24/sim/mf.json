@@ -21,30 +21,146 @@
    "player": 1,
    "seed": "bal24-1",
    "counts": {
-    "bee-sentry": 2,
-    "chipmunk-forager": 1,
+    "bee-forager": 4,
     "crimson-wing-recruit": 4,
-    "crossed-eyes": 1,
-    "duck-paddler": 5,
-    "forager-ant": 1,
-    "otter-shieldback": 1,
-    "soldier-ant": 4,
-    "tunnel-ant": 1
+    "duck-paddler": 4,
+    "soldier-ant": 5,
+    "tunnel-ant": 3
    },
    "parts": [
     [
-     "bee-sentry",
-     2,
-     1
-    ],
-    [
-     "chipmunk-forager",
-     1,
+     "bee-forager",
+     4,
      1
     ],
     [
      "crimson-wing-recruit",
      4,
+     1
+    ],
+    [
+     "duck-paddler",
+     4,
+     1
+    ],
+    [
+     "soldier-ant",
+     5,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "wandering-traveller",
+   "collection": 54,
+   "factionCards": 7,
+   "optScore": 0.739,
+   "optBudget": 900,
+   "optFile": "deckopt-map01-mf-bal24-p1.json",
+   "games": 8,
+   "perFight": {
+    "1-1": 100,
+    "1-2": 87.5,
+    "1-3": 87.5,
+    "1-4": 87.5,
+    "1-5": 75
+   },
+   "win": 87.5
+  },
+  {
+   "player": 2,
+   "seed": "bal24-2",
+   "counts": {
+    "bee-knight": 2,
+    "crimson-wing-recruit": 4,
+    "duck-paddler": 4,
+    "farm-dog": 1,
+    "rivergate-recruit": 1,
+    "riverwing-envoy": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "bee-knight",
+     2,
+     1
+    ],
+    [
+     "crimson-wing-recruit",
+     4,
+     1
+    ],
+    [
+     "duck-paddler",
+     4,
+     1
+    ],
+    [
+     "farm-dog",
+     1,
+     1
+    ],
+    [
+     "rivergate-recruit",
+     1,
+     1
+    ],
+    [
+     "riverwing-envoy",
+     1,
+     0
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "wandering-traveller",
+   "collection": 55,
+   "factionCards": 8,
+   "optScore": 0.727,
+   "optBudget": 900,
+   "optFile": "deckopt-map01-mf-bal24-p2.json",
+   "games": 8,
+   "perFight": {
+    "1-1": 100,
+    "1-2": 100,
+    "1-3": 75,
+    "1-4": 87.5,
+    "1-5": 62.5
+   },
+   "win": 85
+  },
+  {
+   "player": 3,
+   "seed": "bal24-3",
+   "counts": {
+    "crimson-wing-recruit": 1,
+    "crossed-eyes": 1,
+    "duck-paddler": 4,
+    "farm-dog": 1,
+    "greyplume-fledgling": 1,
+    "guppy": 1,
+    "mist-net-otter": 1,
+    "sheep": 1,
+    "soldier-ant": 5,
+    "tunnel-ant": 3,
+    "worker-ant": 1
+   },
+   "parts": [
+    [
+     "crimson-wing-recruit",
+     1,
      1
     ],
     [
@@ -54,80 +170,18 @@
     ],
     [
      "duck-paddler",
-     5,
-     1
-    ],
-    [
-     "forager-ant",
-     1,
-     1
-    ],
-    [
-     "otter-shieldback",
-     1,
-     1
-    ],
-    [
-     "soldier-ant",
      4,
      1
     ],
     [
-     "tunnel-ant",
-     1,
-     1
-    ]
-   ],
-   "leader": "wandering-traveller",
-   "collection": 56,
-   "factionCards": 7,
-   "optScore": 0.658,
-   "optBudget": 900,
-   "optFile": "deckopt-map01-mf-bal24-p1.json",
-   "games": 8,
-   "perFight": {
-    "1-1": 87.5,
-    "1-2": 87.5,
-    "1-3": 100,
-    "1-4": 87.5,
-    "1-5": 37.5
-   },
-   "win": 80
-  },
-  {
-   "player": 2,
-   "seed": "bal24-2",
-   "counts": {
-    "bee-forager": 1,
-    "duck-paddler": 4,
-    "fleetfootd": 4,
-    "garden-snail": 1,
-    "guppy": 1,
-    "otter-centurion": 1,
-    "pond-duck": 1,
-    "soldier-ant": 4,
-    "tunnel-ant": 3
-   },
-   "parts": [
-    [
-     "bee-forager",
+     "farm-dog",
      1,
      1
     ],
     [
-     "duck-paddler",
-     4,
-     1
-    ],
-    [
-     "fleetfootd",
-     4,
-     1
-    ],
-    [
-     "garden-snail",
+     "greyplume-fledgling",
      1,
-     0
+     1
     ],
     [
      "guppy",
@@ -135,133 +189,14 @@
      0
     ],
     [
-     "otter-centurion",
+     "mist-net-otter",
+     1,
+     1
+    ],
+    [
+     "sheep",
      1,
      0
-    ],
-    [
-     "pond-duck",
-     1,
-     1
-    ],
-    [
-     "soldier-ant",
-     4,
-     1
-    ],
-    [
-     "tunnel-ant",
-     3,
-     1
-    ]
-   ],
-   "leader": "wandering-traveller",
-   "collection": 57,
-   "factionCards": 8,
-   "optScore": 0.714,
-   "optBudget": 900,
-   "optFile": "deckopt-map01-mf-bal24-p2.json",
-   "games": 8,
-   "perFight": {
-    "1-1": 100,
-    "1-2": 87.5,
-    "1-3": 75,
-    "1-4": 87.5,
-    "1-5": 75
-   },
-   "win": 85
-  },
-  {
-   "player": 3,
-   "seed": "bal24-3",
-   "counts": {
-    "bee-forager": 4,
-    "crimson-wing-recruit": 3,
-    "duck-paddler": 4,
-    "hedge-changeling": 1,
-    "soldier-ant": 5,
-    "tunnel-ant": 3
-   },
-   "parts": [
-    [
-     "bee-forager",
-     4,
-     1
-    ],
-    [
-     "crimson-wing-recruit",
-     3,
-     1
-    ],
-    [
-     "duck-paddler",
-     4,
-     1
-    ],
-    [
-     "hedge-changeling",
-     1,
-     1
-    ],
-    [
-     "soldier-ant",
-     5,
-     1
-    ],
-    [
-     "tunnel-ant",
-     3,
-     1
-    ]
-   ],
-   "leader": "wandering-traveller",
-   "collection": 57,
-   "factionCards": 8,
-   "optScore": 0.775,
-   "optBudget": 900,
-   "optFile": "deckopt-map01-mf-bal24-p3.json",
-   "games": 8,
-   "perFight": {
-    "1-1": 100,
-    "1-2": 87.5,
-    "1-3": 100,
-    "1-4": 87.5,
-    "1-5": 62.5
-   },
-   "win": 87.5
-  },
-  {
-   "player": 4,
-   "seed": "bal24-4",
-   "counts": {
-    "bee-forager": 3,
-    "bee-sentry": 1,
-    "crimson-wing-recruit": 3,
-    "duck-paddler": 4,
-    "soldier-ant": 5,
-    "tunnel-ant": 3,
-    "worker-ant": 1
-   },
-   "parts": [
-    [
-     "bee-forager",
-     3,
-     1
-    ],
-    [
-     "bee-sentry",
-     1,
-     1
-    ],
-    [
-     "crimson-wing-recruit",
-     3,
-     1
-    ],
-    [
-     "duck-paddler",
-     4,
-     1
     ],
     [
      "soldier-ant",
@@ -280,59 +215,52 @@
     ]
    ],
    "leader": "wandering-traveller",
-   "collection": 56,
-   "factionCards": 7,
-   "optScore": 0.732,
+   "collection": 55,
+   "factionCards": 8,
+   "optScore": 0.828,
    "optBudget": 900,
-   "optFile": "deckopt-map01-mf-bal24-p4.json",
+   "optFile": "deckopt-map01-mf-bal24-p3.json",
    "games": 8,
    "perFight": {
-    "1-1": 87.5,
-    "1-2": 100,
+    "1-1": 100,
+    "1-2": 87.5,
     "1-3": 87.5,
-    "1-4": 100,
+    "1-4": 75,
     "1-5": 62.5
    },
-   "win": 87.5
+   "win": 82.5
   },
   {
-   "player": 5,
-   "seed": "bal24-5",
+   "player": 4,
+   "seed": "bal24-4",
    "counts": {
-    "ant-scout": 1,
-    "bee-forager": 5,
-    "bee-sentry": 1,
-    "crimson-wing-recruit": 1,
-    "duck-paddler": 3,
+    "bee-forager": 1,
+    "clap-net-trapper": 1,
+    "crimson-wing-recruit": 5,
+    "duck-paddler": 4,
     "greyplume-fledgling": 1,
-    "otter-flag-bearer": 1,
-    "soldier-ant": 4,
+    "soldier-ant": 5,
     "tunnel-ant": 3
    },
    "parts": [
     [
-     "ant-scout",
+     "bee-forager",
      1,
      1
     ],
     [
-     "bee-forager",
-     5,
-     1
-    ],
-    [
-     "bee-sentry",
+     "clap-net-trapper",
      1,
      1
     ],
     [
      "crimson-wing-recruit",
-     1,
+     5,
      1
     ],
     [
      "duck-paddler",
-     3,
+     4,
      1
     ],
     [
@@ -341,13 +269,8 @@
      1
     ],
     [
-     "otter-flag-bearer",
-     1,
-     1
-    ],
-    [
      "soldier-ant",
-     4,
+     5,
      1
     ],
     [
@@ -357,29 +280,28 @@
     ]
    ],
    "leader": "wandering-traveller",
-   "collection": 57,
-   "factionCards": 8,
-   "optScore": 0.716,
+   "collection": 54,
+   "factionCards": 7,
+   "optScore": 0.675,
    "optBudget": 900,
-   "optFile": "deckopt-map01-mf-bal24-p5.json",
+   "optFile": "deckopt-map01-mf-bal24-p4.json",
    "games": 8,
    "perFight": {
     "1-1": 100,
-    "1-2": 100,
-    "1-3": 87.5,
-    "1-4": 87.5,
-    "1-5": 50
+    "1-2": 87.5,
+    "1-3": 75,
+    "1-4": 75,
+    "1-5": 62.5
    },
-   "win": 85
+   "win": 80
   },
   {
-   "player": 6,
-   "seed": "bal24-6",
+   "player": 5,
+   "seed": "bal24-5",
    "counts": {
     "bee-forager": 4,
-    "crimson-wing-recruit": 3,
+    "crimson-wing-recruit": 4,
     "duck-paddler": 4,
-    "otter-centurion": 1,
     "soldier-ant": 5,
     "tunnel-ant": 3
    },
@@ -391,18 +313,13 @@
     ],
     [
      "crimson-wing-recruit",
-     3,
+     4,
      1
     ],
     [
      "duck-paddler",
      4,
      1
-    ],
-    [
-     "otter-centurion",
-     1,
-     0
     ],
     [
      "soldier-ant",
@@ -416,35 +333,35 @@
     ]
    ],
    "leader": "wandering-traveller",
-   "collection": 56,
-   "factionCards": 7,
-   "optScore": 0.763,
+   "collection": 55,
+   "factionCards": 8,
+   "optScore": 0.673,
    "optBudget": 900,
-   "optFile": "deckopt-map01-mf-bal24-p6.json",
+   "optFile": "deckopt-map01-mf-bal24-p5.json",
    "games": 8,
    "perFight": {
     "1-1": 100,
     "1-2": 87.5,
-    "1-3": 100,
+    "1-3": 87.5,
     "1-4": 87.5,
     "1-5": 75
    },
-   "win": 90
+   "win": 87.5
   },
   {
-   "player": 7,
-   "seed": "bal24-7",
+   "player": 6,
+   "seed": "bal24-6",
    "counts": {
-    "bee-forager": 5,
+    "bee-forager": 4,
     "crimson-wing-recruit": 4,
     "duck-paddler": 4,
-    "soldier-ant": 4,
+    "soldier-ant": 5,
     "tunnel-ant": 3
    },
    "parts": [
     [
      "bee-forager",
-     5,
+     4,
      1
     ],
     [
@@ -459,7 +376,7 @@
     ],
     [
      "soldier-ant",
-     4,
+     5,
      1
     ],
     [
@@ -469,73 +386,123 @@
     ]
    ],
    "leader": "wandering-traveller",
-   "collection": 57,
+   "collection": 54,
+   "factionCards": 7,
+   "optScore": 0.721,
+   "optBudget": 900,
+   "optFile": "deckopt-map01-mf-bal24-p6.json",
+   "games": 8,
+   "perFight": {
+    "1-1": 100,
+    "1-2": 87.5,
+    "1-3": 87.5,
+    "1-4": 87.5,
+    "1-5": 75
+   },
+   "win": 87.5
+  },
+  {
+   "player": 7,
+   "seed": "bal24-7",
+   "counts": {
+    "bee-forager": 5,
+    "crimson-wing-recruit": 3,
+    "duck-paddler": 3,
+    "otter-angler": 1,
+    "soldier-ant": 5,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "bee-forager",
+     5,
+     1
+    ],
+    [
+     "crimson-wing-recruit",
+     3,
+     1
+    ],
+    [
+     "duck-paddler",
+     3,
+     1
+    ],
+    [
+     "otter-angler",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     5,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ]
+   ],
+   "leader": "wandering-traveller",
+   "collection": 55,
    "factionCards": 8,
-   "optScore": 0.622,
+   "optScore": 0.662,
    "optBudget": 900,
    "optFile": "deckopt-map01-mf-bal24-p7.json",
    "games": 8,
    "perFight": {
     "1-1": 100,
-    "1-2": 75,
-    "1-3": 100,
-    "1-4": 87.5,
+    "1-2": 87.5,
+    "1-3": 62.5,
+    "1-4": 75,
     "1-5": 62.5
    },
-   "win": 85
+   "win": 77.5
   },
   {
    "player": 8,
    "seed": "bal24-8",
    "counts": {
-    "beaver-lumberjack": 1,
-    "bee-drone": 3,
-    "bee-sentry": 1,
-    "cobalt-talon-fledgling": 1,
-    "fleetfootd": 4,
-    "harvest-mouse": 1,
-    "mosswing-laborer": 1,
+    "bee-forager": 1,
+    "chipmunk-skirmisher": 1,
+    "crossed-eyes": 1,
+    "forager-ant": 1,
+    "guppy": 1,
     "net-thrower": 1,
-    "pond-duck": 1,
-    "rabbit-kit": 2,
-    "shell-cracker": 3,
-    "soldier-ant": 1
+    "otter-guard": 1,
+    "otter-kit": 1,
+    "river-carp": 1,
+    "sheep": 1,
+    "silver-minnow": 2,
+    "soldier-ant": 5,
+    "tunnel-ant": 3
    },
    "parts": [
     [
-     "beaver-lumberjack",
+     "bee-forager",
      1,
      1
     ],
     [
-     "bee-drone",
-     3,
-     1
-    ],
-    [
-     "bee-sentry",
+     "chipmunk-skirmisher",
      1,
      1
     ],
     [
-     "cobalt-talon-fledgling",
-     1,
-     1
-    ],
-    [
-     "fleetfootd",
-     4,
-     1
-    ],
-    [
-     "harvest-mouse",
+     "crossed-eyes",
      1,
      0
     ],
     [
-     "mosswing-laborer",
+     "forager-ant",
      1,
      1
+    ],
+    [
+     "guppy",
+     1,
+     0
     ],
     [
      "net-thrower",
@@ -543,47 +510,63 @@
      1
     ],
     [
-     "pond-duck",
+     "otter-guard",
      1,
      1
     ],
     [
-     "rabbit-kit",
-     2,
+     "otter-kit",
+     1,
      0
     ],
     [
-     "shell-cracker",
-     3,
+     "river-carp",
+     1,
+     1
+    ],
+    [
+     "sheep",
+     1,
+     0
+    ],
+    [
+     "silver-minnow",
+     2,
      1
     ],
     [
      "soldier-ant",
-     1,
+     5,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
      1
     ]
    ],
    "leader": "wandering-traveller",
-   "collection": 56,
+   "collection": 54,
    "factionCards": 7,
-   "optScore": 0.576,
+   "optScore": 0.696,
    "optBudget": 900,
    "optFile": "deckopt-map01-mf-bal24-p8.json",
    "games": 8,
    "perFight": {
     "1-1": 100,
     "1-2": 100,
-    "1-3": 87.5,
+    "1-3": 75,
     "1-4": 87.5,
     "1-5": 75
    },
-   "win": 90
+   "win": 87.5
   },
   {
    "player": 9,
    "seed": "bal24-9",
    "counts": {
-    "bee-forager": 4,
+    "bee-forager": 3,
+    "burrow-rabbit": 1,
     "crimson-wing-recruit": 4,
     "duck-paddler": 4,
     "soldier-ant": 5,
@@ -592,7 +575,12 @@
    "parts": [
     [
      "bee-forager",
-     4,
+     3,
+     1
+    ],
+    [
+     "burrow-rabbit",
+     1,
      1
     ],
     [
@@ -617,30 +605,30 @@
     ]
    ],
    "leader": "wandering-traveller",
-   "collection": 56,
+   "collection": 54,
    "factionCards": 7,
-   "optScore": 0.65,
+   "optScore": 0.691,
    "optBudget": 900,
    "optFile": "deckopt-map01-mf-bal24-p9.json",
    "games": 8,
    "perFight": {
     "1-1": 100,
     "1-2": 87.5,
-    "1-3": 100,
+    "1-3": 75,
     "1-4": 87.5,
     "1-5": 75
    },
-   "win": 90
+   "win": 85
   },
   {
    "player": 10,
    "seed": "bal24-10",
    "counts": {
     "bee-forager": 4,
-    "crimson-wing-recruit": 4,
+    "crimson-wing-recruit": 3,
     "duck-paddler": 4,
-    "rivergate-recruit": 1,
-    "soldier-ant": 4,
+    "farm-dog": 1,
+    "soldier-ant": 5,
     "tunnel-ant": 3
    },
    "parts": [
@@ -651,7 +639,7 @@
     ],
     [
      "crimson-wing-recruit",
-     4,
+     3,
      1
     ],
     [
@@ -660,13 +648,13 @@
      1
     ],
     [
-     "rivergate-recruit",
+     "farm-dog",
      1,
      1
     ],
     [
      "soldier-ant",
-     4,
+     5,
      1
     ],
     [
@@ -676,16 +664,16 @@
     ]
    ],
    "leader": "wandering-traveller",
-   "collection": 57,
+   "collection": 55,
    "factionCards": 8,
-   "optScore": 0.757,
+   "optScore": 0.737,
    "optBudget": 900,
    "optFile": "deckopt-map01-mf-bal24-p10.json",
    "games": 8,
    "perFight": {
     "1-1": 100,
-    "1-2": 87.5,
-    "1-3": 100,
+    "1-2": 100,
+    "1-3": 87.5,
     "1-4": 87.5,
     "1-5": 75
    },
@@ -693,5 +681,5 @@
   }
  ],
  "missing": 0,
- "measured": "2026-11-11T10:57:14.811Z"
+ "measured": "2026-11-12T07:48:38.264Z"
 }
