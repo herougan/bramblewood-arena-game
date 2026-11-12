@@ -29,8 +29,15 @@
 // join_coop_room already seat, with no new SQL, and a 2-player floor is the easiest to tune first. A 3-player type is one more row
 // (layout 'rows'); 4 players needs split rows (two seats a row), not built yet.
 // `id` stays 'hollow' (the text keys ui.ar3-* and the save keys use it); the floors' names and the boss are FIN1's aqua names.
+// 2026-11-12 (package DUNGEON1, owner 23:47 note 21: "It should have 5 skirmishes in total (max)"): a dungeon has PARTS_MIN-PARTS_MAX parts
+// (`floors`, the code's old name; players read "Part N"). The vault gained a fifth, the Drowned Stair, before the Tidewarden's Hall.
+// Each type also carries what its waiting room draws (note 18: one room per dungeon, built from its data): `blurbKey`, `art` (a field
+// art key, the room's banner), `tint` (the banner's colours), and `mapNumber` (the map whose spot opens it; null = no spot). `preview`:
+// shown in Admin / Dev Mode only, until the owner places it (decision DUNGEON1-2).
+const PARTS_MIN = 3, PARTS_MAX = 5;
 const DUNGEONS = {
   hollow: {id: 'hollow', nameKey: 'ui.ar3-dungeon-name', icon: '🌊', players: 2, layout: 'rows', roundCap: 20, poolFloor: 3,
+    blurbKey: 'ui.dungeon1-blurb-hollow', art: 'crushingdepths', tint: ['#123a52', '#0b1f2e'], mapNumber: 16,
     // the party's bramble: every player's bramble Health added up (the raid's merged bramble); the vault's scaled by the party (D49 steps)
     healthScale: [1, 1.7, 2.3, 2.8],
     floors: [
@@ -40,14 +47,41 @@ const DUNGEONS = {
         deck: {'quarry-mole': 4, 'star-nosed-mole': 3, 'ore-smelter-mole': 3, 'cave-cricket': 3, 'cave-centipede': 3, 'tiny-cave-dweller': 2, 'deep-cave-troll': 2}},
       {key: 'pools', nameKey: 'ui.ar3-floor-pools', icon: '🦎', castle: 21,
         deck: {'cave-olm': 3, 'alpine-salamander': 3, 'fire-salamander': 3, 'glimmer-spider': 3, 'glowworm-cluster': 2, 'whip-spider': 2, 'velvet-worm': 2, 'magma-salamander': 2}},
+      {key: 'stair', nameKey: 'ui.dungeon1-part-stair', icon: '🐟', castle: 25, // DUNGEON1: the fifth part (eels and lungfish on the way down)
+        deck: {'conger-eel': 3, 'riptide-eel': 3, 'bog-lungfish': 3, 'cave-olm': 3, 'glimmer-spider': 2, 'whip-spider': 2, 'coral-current-eel': 2, 'voltaic-eel': 2}},
       {key: 'matriarch', nameKey: 'ui.ar3-floor-matriarch', icon: '👑', castle: 28, boss: {base: 'cave-warlord', nameKey: 'ui.ar3-boss-name', hpMult: 1.25, atkAdd: 0},
         deck: {'giant-cave-huntsman': 2, 'wolf-spider-mother': 2, 'trapdoor-spider': 2, 'deep-cave-troll': 2, 'glowing-gecko': 3, 'hollow-oath-keeper': 3, 'cave-bat-swarm': 2, 'arc-bat': 2, 'irradiated-glow-wyrm': 2}},
     ],
     // the raid's scoring (RaidM.contributionFor): bramble damage x perInFightHp, capped; a fallen bramble scores overwhelmCap; the rank
-    // multiplies it. One entry a floor (deeper floors pay more), paid by each player's own game as a raid fight is (RAID_ATTEMPT_PAY).
+    // multiplies it. One entry a part (deeper parts pay more); the run's total is paid at its end (runPay, DUNGEON1).
     scoring: [{perInFightHp: 50, cap: 2000, overwhelmCap: 2500}, {perInFightHp: 50, cap: 2200, overwhelmCap: 3000},
-      {perInFightHp: 50, cap: 2400, overwhelmCap: 3500}, {perInFightHp: 50, cap: 3000, overwhelmCap: 5000}]},
+      {perInFightHp: 50, cap: 2400, overwhelmCap: 3500}, {perInFightHp: 50, cap: 2600, overwhelmCap: 4000}, {perInFightHp: 50, cap: 3000, overwhelmCap: 5000}]},
+  // DUNGEON1 (note 18: "this has to exist for multiple different multiplayer dungeons"): a second type, three parts, Admin preview only
+  // (decision DUNGEON1-2: its name, its map and its tuning are the owner's). The Gnawed's swamp tunnels (lore-bible: the Sable Swampmire).
+  mire: {id: 'mire', nameKey: 'ui.dungeon1-mire', icon: '🐀', players: 2, layout: 'rows', roundCap: 20, poolFloor: 2, preview: true,
+    blurbKey: 'ui.dungeon1-blurb-mire', art: 'swampfever', tint: ['#2f3a1a', '#161c0c'], mapNumber: null,
+    healthScale: [1, 1.7, 2.3, 2.8],
+    floors: [
+      {key: 'reeds', nameKey: 'ui.dungeon1-mire-p1', icon: '🐸', castle: 22,
+        deck: {'meadow-frog': 4, 'marsh-gas-toad': 4, 'bog-shrew': 4, 'water-shrew': 4, 'camouflage-frog': 2, 'poison-dart-frog': 2}},
+      {key: 'tunnels', nameKey: 'ui.dungeon1-mire-p2', icon: '🕳️', castle: 25,
+        deck: {'mire-rat': 4, 'bog-leech': 4, 'pack-rat-looter': 3, 'clinging-leech': 3, 'hollow-belly-rat': 3, 'gangrenous-leech': 3}},
+      {key: 'nest', nameKey: 'ui.dungeon1-mire-p3', icon: '👑', castle: 27, boss: {base: 'gnawed-matriarch', nameKey: 'ui.dungeon1-mire-boss', hpMult: 1.25, atkAdd: 0},
+        deck: {'mire-rat': 4, 'hollow-belly-rat': 3, 'bog-revenant': 2, 'swamp-alligator': 3, 'cane-toad': 3, 'mire-witch-heron': 3, 'bog-behemoth': 2}},
+    ],
+    scoring: [{perInFightHp: 50, cap: 2000, overwhelmCap: 2500}, {perInFightHp: 50, cap: 2400, overwhelmCap: 3200}, {perInFightHp: 50, cap: 3000, overwhelmCap: 5000}]},
 };
+// The next part's enemy comes in as if it had FREE_TURNS free turns (note 21: "as if the enemy player had free 3-5 turns (they come in
+// with wait)"): a seeded 3-5 units from its fresh deck, each still waiting (at least ARRIVAL_WAIT_MIN), every second one in its middle row.
+const FREE_TURNS = [3, 5], ARRIVAL_WAIT_MIN = 1;
+// The run's pay (note 21), one table so it is easy to change. f = parts won / parts. The first band whose test passes:
+//   every part: full rewards; at most `maxWon` parts won: f x mult. Reading (decision DUNGEON1-1): "1-3 parts done" = 1 to 3 parts won;
+//   4 of 5 pays f x 0.5. 0 parts pays nothing (the Energy comes back, as before).
+const RUN_PAY_BANDS = [
+  {all: true, mult: 1},     // all parts: the full rewards
+  {maxWon: 3, mult: 0.25},  // 1-3 parts: f x 0.25
+  {mult: 0.5},              // more, short of all (4 of 5): f x 0.5
+];
 const ENERGY_COST = 5; // ⚡ per player per run (paid as the run starts; given back if no floor was cleared)
 const COLS = [-3, -2, -1, 0, 1, 2, 3]; // the raid board's seven columns
 // What each seat owns of the party player (swapped in while it acts). The board, bramble, Graveyard and Removal Zone are shared.
@@ -83,6 +117,84 @@ function floorOverlay(typeId, idx, defs){
   return out;
 }
 function bossIdOf(typeId, idx){ const f = floorDef(typeId, idx); return f && f.boss ? f.boss.base + '~gdboss' : null; }
+// DUNGEON1: every part's fight-only cards at once (the table keeps one engine for the whole run, so the boss must be known from the start)
+function allOverlays(typeId, defs){ const out = {}; typeOf(typeId).floors.forEach((f, i)=> Object.assign(out, floorOverlay(typeId, i, defs))); return out; }
+function partsOf(typeId){ return typeOf(typeId).floors.length; }
+
+// ---- DUNGEON1 (2026-11-12, owner 23:47 note 21): the parts of one run on one board.
+// "After completing a map, instead of going out - it stays in the map, then a big title w/ banner scrolls by, Part N: ... Then enemies spawn
+// out as if the enemy player had free 3-5 turns (they come in with wait). Only after completing all, does it count."
+// The party (its board, hands, decks, bramble Health) carries over; so do the enemy's survivors. The enemy gets the next part's bramble
+// (its Health at the party's scale), deck (shuffled by the run's seed) and a fresh hand of 3; then FREE_TURNS units arrive from that deck
+// (a boss part's boss first), each with at least ARRIVAL_WAIT_MIN Wait; even arrivals go to the front row, odd ones to the middle row
+// (the other row when one is full), nearest the centre. They arrived during the free turns, so no On Spawn fires for them (as a daily
+// dungeon's next bramble, advanceDungeonWave). The part's clock restarts: roundCap more rounds. Deterministic: its own seeded draw.
+function hasNextPart(T){ return !!(T && T.floorIdx < partsOf(T.typeId) - 1); }
+function partyLost(T){ let n = 0; Object.keys(T.stats || {}).sort().forEach(k=>{ const st = T.stats[k]; if(st && st.side === 'A') n += (st.deaths || 0); }); return n; }
+// One part's record (for its rank and the run's pay): won or not, the party's bramble, units lost in it, damage dealt to its bramble.
+function partRecord(T, won){
+  const P = T.players, hq = P[1].hq, lost = partyLost(T) - (T.lostAt || 0), dealt = Math.max(0, (T.partHp || P[2].hq.maxHp) - Math.max(0, P[2].hq.hp));
+  const rec = {idx: T.floorIdx, won: !!won, hp: Math.max(0, hq.hp), maxHp: hq.maxHp, lost, dealt, round: T.round, rank: won ? rankFor(Math.max(0, hq.hp), hq.maxHp, lost > 0) : null};
+  T.partLog = (T.partLog || []).filter(r=> r.idx !== rec.idx).concat([rec]); return rec;
+}
+function shuffledDeck(counts, rnd){ const ids = []; Object.keys(counts || {}).sort().forEach(id=>{ for(let i = 0; i < (counts[id] | 0); i++) ids.push(id); });
+  for(let i = ids.length - 1; i > 0; i--){ const j = Math.floor(rnd() * (i + 1)); const x = ids[i]; ids[i] = ids[j]; ids[j] = x; } return ids; }
+function freeCellsOf(T, row){
+  const E = T.E, P2 = T.players[2];
+  const taken = row ? new Set(Object.keys((P2.reserve || [])[row - 1] || {}).filter(k=> P2.reserve[row - 1][k]).map(Number)) : new Set(E.allBoardCards(P2).filter(c=> c && !c.gap && c.hp > 0).map(c=> c.slot));
+  return COLS.filter(sl=> !taken.has(sl)).sort(byCentre);
+}
+// Advance the table to the next part (call it after a round in which the enemy's bramble fell and the party's stood). Returns
+// {idx, freeTurns, arrivals: [{uid, defId, row, slot, wait}], prev (the record of the part just won)} or null.
+function advancePart(T){
+  if(!hasNextPart(T)) return null;
+  const P = T.players, E = T.E, P2 = P[2]; if(!(P[1].hq.hp > 0) || P2.hq.hp > 0) return null;
+  const prev = partRecord(T, true), t = typeOf(T.typeId), idx = T.floorIdx + 1, f = t.floors[idx];
+  const rnd = mulberry32(mixSeed(T.seed, idx + 1, 0xD1A9));
+  T.floorIdx = idx; T.floorKey = f.key; T.over = null; T.reason = null;
+  // the next part's bramble, deck and hand (the old hand goes to the Graveyard, as a daily dungeon's new bramble does)
+  const hp = Math.max(10, Math.round(T.bh(f.castle) * T.scale));
+  P2.hq.hp = P2.hq.maxHp = hp; P2.hq.shield = 0; if(P2.hq.maxShield != null) P2.hq.maxShield = 0;
+  P2.character = Object.assign({}, P2.character || {}, {id: 'gd-' + f.key, name: f.key, health: hp});
+  P2.graveyard = (P2.graveyard || []).concat(P2.hand.map(h=> ({defId: h.defId}))); P2.hand = [];
+  P2.deck = shuffledDeck(f.deck, rnd); P2.deckCounts = Object.assign({}, f.deck);
+  // its free turns: units from the top of that deck (the boss first on a boss part), each still waiting
+  const freeTurns = FREE_TURNS[0] + Math.floor(rnd() * (FREE_TURNS[1] - FREE_TURNS[0] + 1)), ids = [];
+  const boss = bossIdOf(t.id, idx); if(boss && T.defs[boss]) ids.push(boss);
+  for(let i = P2.deck.length - 1; i >= 0 && ids.length < freeTurns + (boss ? 1 : 0); i--){ const d = T.defs[P2.deck[i]];
+    if(d && !noSlotCard(d) && !unsupportedCard(d) && d.attack != null){ ids.push(P2.deck[i]); P2.deck.splice(i, 1); } }
+  const arrivals = [];
+  ids.forEach((id, i)=>{
+    const want = boss && i === 0 ? 0 : (i - (boss ? 1 : 0)) % 2 === 0 ? 0 : 1, rows = P2.reserve && P2.reserve.length ? (want ? [1, 0] : [0, 1]) : [0];
+    let c = null, row = 0, slot = null;
+    for(const r of rows){ const cells = freeCellsOf(T, r); if(!cells.length) continue; row = r; slot = cells[0]; break; }
+    if(slot == null) return;
+    if(row){ c = E.fillReserve(P2, row, slot, id); if(c) c._rowArrived = true; }
+    else { c = E.makeBoardCard(id); c.slot = slot; P2.row[slot === 0 ? 'center' : slot < 0 ? 'left' : 'right'].push(c); E.syncSlots(P2); }
+    if(!c) return;
+    c.wait = Math.max(ARRIVAL_WAIT_MIN, c.wait || 0);
+    arrivals.push({uid: c.uid, defId: id, row, slot: c.slot, wait: c.wait});
+  });
+  E.draw(P2, 3, 'B', T.stats, []);
+  // the part's own clock and its bookkeeping
+  T.cap = T.round + t.roundCap; T.partStart = T.round + 1; T.partHp = hp; T.lostAt = partyLost(T);
+  T.lastAdvance = {idx, freeTurns, arrivals, prev};
+  return T.lastAdvance;
+}
+// The run's pay (note 21): f = parts won / parts; RUN_PAY_BANDS gives the multiplier. The full rewards are every part's pay as a won
+// part (its overwhelm figure x the rank it was won with; a part not won counts at x1), so a cleared run pays what its parts paid before.
+function runFactor(won, total){
+  total = Math.max(1, total | 0); won = Math.max(0, Math.min(total, won | 0)); if(!won) return 0;
+  const f = won / total, b = RUN_PAY_BANDS.find(x=> x.all ? won === total : x.maxWon == null || won <= x.maxWon) || {mult: 0};
+  return b.all ? b.mult : f * b.mult;
+}
+function runPay(typeId, partLog){
+  const t = typeOf(typeId), total = t.floors.length, log = partLog || [], won = log.filter(r=> r && r.won).length, factor = runFactor(won, total);
+  const rankAt = i=>{ const r = log.find(x=> x && x.idx === i && x.won); return r ? r.rank : null; };
+  let full = 0; for(let i = 0; i < total; i++) full += floorPay(typeId, i, {won: true, rank: rankAt(i)}).contribution;
+  const contribution = Math.round(full * factor);
+  return {won, total, factor, full, contribution, gold: Math.round(contribution / PAY.goldPer), dust: 3 * Math.round(contribution / PAY.dustPer), cleared: won === total};
+}
 
 // Seat swapping. T.loaded is the seat whose keys are in players[1] right now (the page keeps its own seat loaded at rest).
 function saveSeat(T){ const s = T.loaded; if(s == null) return; const pl = T.players[1], ctx = T.ctx[s]; SEAT_KEYS.forEach(k=>{ ctx[k] = pl[k]; }); T.loaded = null; }
@@ -126,16 +238,17 @@ function createTable(opts){
   const seats = []; for(let i = 0; i < n; i++){ const s = given[i] || {cpu: true}, own = Object.keys(s.deck || {}).length > 0;
     seats.push({seat: i, name: s.name || '', cpu: !!s.cpu, deck: Object.assign({}, own ? s.deck : firstDeck), leader: s.leader || (s.cpu && !own ? firstSeat.leader || null : null), castleHp: Math.max(1, Number(s.castleHp) || 20)}); }
   const seed = (Number(opts.seed) >>> 0) || 1, bh = opts.brambleHp || (x=> x);
-  const defs = Object.assign({}, opts.defs, floorOverlay(opts.typeId, idx, opts.defs));
+  const defs = Object.assign({}, opts.defs, allOverlays(opts.typeId, opts.defs)); // DUNGEON1: every part's boss (one engine a run)
   const rnd = mulberry32(mixSeed(seed, idx + 1, 0xF100));
   const E = opts.makeSimEngine(defs, rnd, {recordEvents: opts.recordEvents !== false, aiAim: true, aiLevel: opts.aiLevel != null ? opts.aiLevel : 1, battleMode: 'open',
-    reserveRows: n - 1, reserveActs: true, suddenDeathCastles: false, slotCols: COLS, rules: f.rules || {}});
+    reserveRows: Math.max(1, n - 1) /* DUNGEON1 (note 21): the enemy side has at least 2 rows */, reserveActs: true, suddenDeathCastles: false, slotCols: COLS, rules: f.rules || {}});
   const scale = t.healthScale[Math.max(0, Math.min(3, n - 1))];
   const pc = opts.partyCastle || {}, partyHp = Math.max(10, Number(pc.health) || seats.reduce((a, s)=> a + s.castleHp, 0));
   const players = {1: E.newPlayer(1, {}, Object.assign({}, pc, {id: pc.id || 'gd-party', name: pc.name || 'Party', health: partyHp, effects: pc.effects || {}})),
     2: E.newPlayer(2, f.deck, {id: 'gd-' + f.key, name: f.key, health: Math.max(10, Math.round(bh(f.castle) * scale)), effects: {}})};
   const T = {v: 2, typeId: t.id, seed, floorIdx: idx, floorKey: f.key, n, seats, E, defs, players, stats: {}, ctx: {}, loaded: null, round: 1, passed: {},
-    over: null, reason: null, cap: t.roundCap, aiLevel: opts.aiLevel != null ? opts.aiLevel : 1};
+    over: null, reason: null, cap: t.roundCap, aiLevel: opts.aiLevel != null ? opts.aiLevel : 1,
+    bh, scale, partStart: 1, partHp: 0, lostAt: 0, partLog: [], lastAdvance: null}; // DUNGEON1: what advancePart needs
   // each seat's deck (shuffled by the floor's engine, in seat order), then its opening hand of 3
   seats.forEach(s=>{ const tmp = E.newPlayer(1, s.deck), ctx = {}; SEAT_KEYS.forEach(k=>{ ctx[k] = tmp[k]; }); ctx.hand = []; T.ctx[s.seat] = ctx; });
   seats.forEach(s=> withSeat(T, s.seat, pl=> E.draw(pl, 3, 'A', T.stats, [])));
@@ -147,7 +260,7 @@ function createTable(opts){
     if(s.seat === 0){ E.debugSpawnCard(players, sideOf, 1, id, 0, T.stats, []); c = E.allBoardCards(players[1]).find(x=> x.defId === id && x.slot === 0) || null; }
     else c = E.fillReserve(players[1], rowOfSeat(t.id, s.seat), 0, id);
     if(c){ c.isLeader = true; c.coopSeat = s.seat; if(s.seat > 0) c.holdRow = true; T.leaderUids[s.seat] = c.uid; } });
-  T.W = coopEngine(T);
+  T.W = coopEngine(T); T.partHp = players[2].hq.maxHp;
   loadSeat(T, opts.rest != null ? opts.rest : 0);
   return T;
 }
@@ -241,6 +354,7 @@ function headlessRound(T, events){
   W.aiTakeTurn(P, sideOf, 2, T.stats, events);
   if(W.setSuddenDeath) W.setSuddenDeath(false, T.round >= 25 ? 2 : 1); // the page's rule with a 20-turn cap: never sudden death
   let over = W.resolveCombat(P, sideOf, T.stats, events, T.round % 2 === 0 ? 1 : 2), forced = null;
+  if(over && P[1].hq.hp > 0 && P[2].hq.hp <= 0 && advancePart(T)) over = false; // DUNGEON1: a part won, the next comes in on the same board (the page: resolveRoundCore)
   if(!over && T.round >= T.cap){ over = true; forced = 0; }
   return finishRound(T, over, forced, events);
 }
@@ -248,14 +362,14 @@ function headlessRound(T, events){
 function finishRound(T, over, forced, events){
   const P = T.players;
   if(over){ const d1 = P[1].hq.hp <= 0, d2 = P[2].hq.hp <= 0; const winner = forced != null ? forced : (d1 && d2) ? 0 : d1 ? 2 : 1;
-    T.over = winner === 1 ? 'won' : 'lost'; T.reason = forced === 0 ? 'time' : winner === 1 ? 'castle' : 'party'; return {over: T.over, winner, reason: T.reason}; }
+    T.over = winner === 1 ? 'won' : 'lost'; T.reason = forced === 0 ? 'time' : winner === 1 ? 'castle' : 'party'; partRecord(T, winner === 1); return {over: T.over, winner, reason: T.reason}; } // + DUNGEON1: the last part's record
   [1, 2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
   T.W.roundStart(P, T.round + 1, sideOf, T.stats, events);
   T.W.draw(P[1], 1, 'A', T.stats, events); T.W.draw(P[2], 1, 'B', T.stats, events);
   return {over: null};
 }
 // The page tells the table how its round ended (it ran the same engine calls itself): {over: bool, winner, reason}
-function noteRoundEnd(T, m){ if(!m || !m.over) return; T.over = m.winner === 1 ? 'won' : 'lost'; T.reason = m.reason || (m.winner === 1 ? 'castle' : m.winner === 2 ? 'party' : 'time'); }
+function noteRoundEnd(T, m){ if(!m || !m.over) return; T.over = m.winner === 1 ? 'won' : 'lost'; T.reason = m.reason || (m.winner === 1 ? 'castle' : m.winner === 2 ? 'party' : 'time'); partRecord(T, m.winner === 1); }
 
 // The state's fingerprint: equal on every machine in step (the seats read from wherever each one is, nothing moved).
 const UNIT_KEYS = ['uid', 'defId', 'hp', 'atk', 'slot', 'wait', 'shield'];
@@ -287,7 +401,8 @@ function cardPool(dungeonId, defs){
   return [...ids].filter(id=> defs[id] && !defs[id].token && !defs[id].test).sort();
 }
 // The texts the page asks for, by key (so a test can check every key exists)
-const TEXT_KEYS = ['ui.ar3-dungeon-name', 'ui.ar3-floor-roost', 'ui.ar3-floor-galleries', 'ui.ar3-floor-pools', 'ui.ar3-floor-matriarch', 'ui.ar3-boss-name'];
+// DUNGEON1: read off every type (its name, blurb, parts and boss), so a new dungeon's keys are checked too
+const TEXT_KEYS = [].concat(...Object.keys(DUNGEONS).map(k=>{ const d = DUNGEONS[k]; return [d.nameKey, d.blurbKey].concat(...d.floors.map(f=> [f.nameKey].concat(f.boss ? [f.boss.nameKey] : []))); })).filter(Boolean);
 
 // ============================================================================
 // 3. THE ROOM: transports and the session
@@ -341,7 +456,7 @@ function applyHeadless(T, act){
 //        plays my seat), maxHumans (the live room's cap while the 4p SQL is missing)}
 function createSession(opts){
   const clock = opts.clock || {now: ()=> Date.now(), setTimeout: (f, ms)=> setTimeout(f, ms), clearTimeout: id=> clearTimeout(id), setInterval: (f, ms)=> setInterval(f, ms), clearInterval: id=> clearInterval(id)};
-  const T0 = opts.transport, me = Object.assign({}, opts.me), typeId = (DUNGEONS[opts.typeId] ? opts.typeId : 'hollow'), N = playersOf(typeId);
+  const T0 = opts.transport, me = Object.assign({}, opts.me); let typeId = (DUNGEONS[opts.typeId] ? opts.typeId : 'hollow'), N = playersOf(typeId); // DUNGEON1: a joiner takes the room's type from its roster
   const emit = (k, d)=>{ try{ opts.onEvent && opts.onEvent(k, d); }catch(e){ console.error('coop event', e); } };
   const batchMs = opts.batchMs != null ? opts.batchMs : BATCH_MS;
   const S = {me, code: opts.code, typeId, players: N, isHost: !!opts.host, room: null, T: null, startMsg: null, closed: false, epoch: 0,
@@ -403,8 +518,9 @@ function createSession(opts){
     if(act.kind === 'round'){
       // out of step with the host (it should never be): stop, ask for the host's log and rebuild the floor from it (catchUp)
       if(act.hash && act.hash !== tableHash(T) && !S.isHost){ S.desyncs++; emit('desync', {mine: tableHash(T), host: act.hash}); S.syncing = true; S.syncAsked = 0; requestSync('hash'); return 'stop'; }
-      const res = await (opts.apply ? opts.apply(act, T, S) : applyHeadless(T, act));
+      const was = T.floorIdx, res = await (opts.apply ? opts.apply(act, T, S) : applyHeadless(T, act));
       if(res && res.over && !T.over) noteRoundEnd(T, res);
+      if(T.floorIdx !== was){ for(let i = was; i < T.floorIdx; i++) S.results[i] = 'won'; S.floorIdx = T.floorIdx; emit('part', {idx: T.floorIdx, from: was, T, advance: T.lastAdvance}); } // DUNGEON1: a part won, the next on the same board
       emit('round', {act, res, T});
       if(T.over){ S.results[T.floorIdx] = T.over; emit('floorEnd', {idx: T.floorIdx, result: T.over, reason: T.reason, T, last: T.floorIdx >= typeOf(typeId).floors.length - 1}); hostAfterFloor(); }
       else { maybeAutoPlay(); scheduleCpu(); } // + COOP3
@@ -505,7 +621,7 @@ function createSession(opts){
     S.startMsg = start; S.queue = []; S.log = []; S.T = null;
     log = log || []; let T = null; const floorAt = [...log].reverse().find(a=> a.kind === 'floor') || {seq: Infinity};
     log.forEach(a=>{ if(a.kind === 'floor' && a === floorAt){ S.floorIdx = a.idx; T = tableFor(start, a.idx, opts.deps, mySeat() != null ? mySeat() : 0); S.T = T; }
-      else if(T && a.seq > floorAt.seq && a.kind !== 'end') { const r = applyHeadless(T, a); if(a.kind === 'round' && T.over) S.results[T.floorIdx] = T.over; void r; }
+      else if(T && a.seq > floorAt.seq && a.kind !== 'end') { const was = T.floorIdx, r = applyHeadless(T, a); for(let i = was; i < T.floorIdx; i++) S.results[i] = 'won'; S.floorIdx = T.floorIdx; if(a.kind === 'round' && T.over) S.results[T.floorIdx] = T.over; void r; } // + DUNGEON1: parts won on the way
       if(a.kind === 'end'){ S.ended = a.how; }
       S.log.push(a); });
     S.seq = S.log.length ? S.log[S.log.length - 1].seq : 0; S.pending = {}; S.syncing = false;
@@ -519,7 +635,9 @@ function createSession(opts){
     switch(msg.t){
       case 'hello': if(S.isHost) onHello(msg); break;
       case 'roster': // the newest host term wins (host migration raises it)
-        if(msg.room && (msg.epoch || 0) >= S.epoch && !(S.isHost && (msg.epoch || 0) === S.epoch)){ const wasHost = S.isHost; S.epoch = msg.epoch || 0; S.room = msg.room; S.isHost = msg.room.hostId === me.peerId; emit('roster', S.room);
+        if(msg.room && (msg.epoch || 0) >= S.epoch && !(S.isHost && (msg.epoch || 0) === S.epoch)){ const wasHost = S.isHost; S.epoch = msg.epoch || 0; S.room = msg.room; S.isHost = msg.room.hostId === me.peerId;
+          if(DUNGEONS[msg.room.typeId] && msg.room.typeId !== typeId){ typeId = S.typeId = msg.room.typeId; N = S.players = playersOf(typeId); S.maxHumans = Math.min(N, opts.maxHumans || N); } // + DUNGEON1
+          emit('roster', S.room);
           if(wasHost && !S.isHost) clearBatch();
           if(S.pendingReady && mySeat() != null){ const p = S.pendingReady; S.pendingReady = null; setReady(p.on, p.deck); }
           resendPending(); } break;
@@ -594,10 +712,21 @@ function createSession(opts){
   else { send('hello', {peer: {name: me.name, deck: me.deck, leader: me.leader, castle: me.castle, castleHp: me.castleHp, avatar: me.avatar || null}}); }
   function setReady(on, deck, leader){ const seat = mySeat(); if(seat == null){ S.pendingReady = {on: !!on, deck: deck || null}; return; } if(deck) me.deck = deck;
     if(S.isHost){ S.room.seats[seat].ready = !!on; if(deck) S.room.seats[seat].deck = deck; if(leader !== undefined) S.room.seats[seat].leader = leader; broadcastRoster(); } else send('ready', {ready: !!on, deck: deck || null, leader}); }
+  // DUNGEON1 (2026-11-12, owner note 18: "I should be able to jump to different multiplayer dungeons"): the host moves the lobby to another
+  // dungeon; the guests follow by the roster and confirm again (their Ready is cleared). Refused once playing, or when a seated player
+  // would not fit the other type's seats.
+  function setType(id){
+    if(!S.isHost || !S.room || S.room.status !== 'lobby' || !DUNGEONS[id]) return false;
+    const n = playersOf(id); if(S.room.seats.some((x, i)=> x && !x.cpu && i >= n)) return false;
+    typeId = S.typeId = id; N = S.players = n; S.maxHumans = Math.min(N, opts.maxHumans || N);
+    S.room.seats = Array.from({length: N}, (_, i)=> S.room.seats[i] || null); S.room.typeId = id; S.room.players = N;
+    S.room.seats.forEach(x=>{ if(x && x.peerId !== me.peerId) x.ready = false; });
+    broadcastRoster(); return true;
+  }
   function leave(){ if(S.closed) return; send('leave', {host: S.isHost}); close(); }
   function close(){ S.closed = true; clearBatch(); clearCpu(); if(S.timers.ping) clock.clearInterval(S.timers.ping); try{ T0.close(); }catch(e){} }
   function rejoinHello(){ S.lastSeen = {}; send('hello', {peer: {name: me.name, deck: me.deck, leader: me.leader, castle: me.castle, castleHp: me.castleHp, avatar: me.avatar || null}}); }
-  Object.assign(S, {mySeat, setReady, canStart, start, claim, nextFloor, leave, close, rejoinHello, tick, flush, _onMsg: onMsg, humansIn: ()=> S.room ? humans() : [],
+  Object.assign(S, {mySeat, setReady, canStart, start, claim, nextFloor, setType /* DUNGEON1 */, leave, close, rejoinHello, tick, flush, _onMsg: onMsg, humansIn: ()=> S.room ? humans() : [],
     myAutoPlay: maybeAutoPlay, seatDone: i=> S.T ? seatDone(S.T, i) : false});
   return S;
 }
@@ -609,6 +738,7 @@ function defsHash(defs, ids){ const list = [...new Set(ids)].sort().map(id=>{ co
 function roomCardIds(decks){ const ids = new Set(); Object.values(DUNGEONS).forEach(dg=> dg.floors.forEach(f=>{ Object.keys(f.deck).forEach(id=> ids.add(id)); if(f.boss) ids.add(f.boss.base); })); (decks || []).forEach(d=> Object.keys(d || {}).forEach(id=> ids.add(id))); return [...ids]; }
 
 const api = {DUNGEONS, ENERGY_COST, COLS, SEAT_KEYS, TEXT_KEYS, PING_MS, DROP_MS, BATCH_MS, RANK_MULT, PAY,
+  PARTS_MIN, PARTS_MAX, FREE_TURNS, ARRIVAL_WAIT_MIN, RUN_PAY_BANDS, partsOf, allOverlays, hasNextPart, advancePart, partRecord, partyLost, runFactor, runPay, /* DUNGEON1 */
   typeOf, playersOf, rowOfSeat, seatOfRow, floorDef, floorOverlay, bossIdOf, createTable, coopEngine, withSeat, seatData, leadSeat, unitAt, ownerOf, rowLegalSlots, allCells,
   seatDone, checkAct, applyAct, cpuChoice, cpuActs, headlessRound, finishRound, noteRoundEnd, tableHash, applyHeadless, tableFor, unsupportedCard, noSlotCard,
   rankFor, floorPay, cardPool, createHub, broadcastChannelTransport, supabaseTransport, createSession, newRoomCode, defsHash, roomCardIds, mulberry32, mixSeed};

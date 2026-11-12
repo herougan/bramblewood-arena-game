@@ -40,10 +40,11 @@ function ok(cond, msg){ if(cond) pass++; else { fails.push(msg); console.log('  
 const dg = C.DUNGEONS.hollow;
 dg.floors.forEach(f=> ok(Object.keys(f.deck).every(id=> defs[id]), `floor ${f.key}: every card is a live card`));
 {
-  const ov = C.floorOverlay('hollow', 3, defs), id = C.bossIdOf('hollow', 3), b = ov[id], src = defs['cave-warlord'];
+  const LAST = dg.floors.length - 1; // 2026-11-12 (DUNGEON1): the vault has 5 parts now (the boss's is the last, was index 3)
+  const ov = C.floorOverlay('hollow', LAST, defs), id = C.bossIdOf('hollow', LAST), b = ov[id], src = defs['cave-warlord'];
   ok(b && b.gdBoss && b.nameKey === 'ui.ar3-boss-name' && b.health === Math.round(src.health * 1.25 * dg.healthScale[1]), 'boss: the Tidewarden, a copy of her base card, her Health x1.25 x the 2-player scale');
   ok(!Object.keys(C.floorOverlay('hollow', 0, defs)).length && C.bossIdOf('hollow', 0) === null, 'boss: only on the last floor');
-  const T = C.createTable({makeSimEngine: H.Engine.makeSimEngine, defs, seed: 3, typeId: 'hollow', floorIdx: 3, seats: [{deck: {'cave-cricket': 20}}, {cpu: true}]});
+  const T = C.createTable({makeSimEngine: H.Engine.makeSimEngine, defs, seed: 3, typeId: 'hollow', floorIdx: LAST, seats: [{deck: {'cave-cricket': 20}}, {cpu: true}]});
   const on = T.E.allBoardCards(T.players[2]).find(c=> String(c.defId).startsWith(id)); // (a derived copy id, e.g. ~dv1, when a skill made one)
   ok(on && on.slot === 0, 'boss: she stands in the centre of the vault\'s front row from the start');
   ok(T.seats[1].cpu && Object.keys(T.seats[1].deck).length, 'CPU seat: plays a copy of the first player\'s deck');
@@ -63,11 +64,11 @@ dg.floors.forEach(f=> ok(Object.keys(f.deck).every(id=> defs[id]), `floor ${f.ke
 // ---- 4. a whole floor, headless
 {
   const res = {};
-  for(let k = 0; k < 4; k++){
+  for(let k = 0; k < dg.floors.length; k++){ // + DUNGEON1: five parts; a won part goes on to the next on the same table, so a floor's fight ends at that
     const T = C.createTable({makeSimEngine: H.Engine.makeSimEngine, defs, seed: 50 + k, typeId: 'hollow', floorIdx: k, seats: [{deck: {'cave-cricket': 8, 'quarry-mole': 6, 'baby-bat': 6}, castleHp: 15}, {cpu: true}], recordEvents: false});
-    let r = {}; for(let i = 0; i < 30 && !r.over; i++){ C.cpuActs(T, 0); C.cpuActs(T, 1); r = C.headlessRound(T); }
-    res[k] = T.over + ':' + T.reason + '@' + T.round;
-    ok(!!T.over && T.round <= 20, `floor ${k + 1}: the fight ends within the 20-turn clock (${res[k]})`);
+    let r = {}; for(let i = 0; i < 30 && !r.over && T.floorIdx === k; i++){ C.cpuActs(T, 0); C.cpuActs(T, 1); r = C.headlessRound(T); }
+    res[k] = (T.floorIdx > k ? 'won' : T.over) + ':' + (T.floorIdx > k ? 'castle' : T.reason) + '@' + T.round;
+    ok((!!T.over || T.floorIdx > k) && T.round <= 20, `floor ${k + 1}: the fight ends within the 20-turn clock (${res[k]})`);
   }
   console.log('  floors headless:', JSON.stringify(res));
 }

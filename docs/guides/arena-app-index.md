@@ -24,15 +24,17 @@
 
 ## Most-called helpers in arena_app.js (reuse before writing a new one)
 
-`escapeHtml` 1725, `escapeAttr` 1207, `getCardDefs` 610, `numOr` 374, `boardCardEl` 341, `showToast` 323, `reducedMotion` 239, `floatText` 207, `hasGsap` 160, `iconHTML` 152, `fxAtLeast` 141, `cardTileHTML` 136, `switchTab` 118, `fightSafe` 88, `sk1Patch` 87, `mapNumberOf` 87, `denyShake` 87, `fnoise` 81, `loadConquestProgress` 80, `isSignedIn` 76, `conquestNodeId` 74, `renderBoard` 71, `sleep` 70, `fxHook` 70, `hqTileEl` 68, `grantText` 61, `cardBaseLevel` 61, `viewerHandPid` 60, `grantCurrency` 59, `findConquestNode` 58, `baseKind` 57, `renderPlay` 51, `parseGrantText` 50, `mainConquestMaps` 49, `saveCurrencies` 48, `updateCardHpDisplay` 47, `unlockCardForPlayer` 47, `tabOpen` 47, `updateCardStatusDisplay` 46, `deckTotal` 46, `loadTutorialDone` 44, `isMapUnlocked` 44, `dnFloat` 41, `renderForge` 40, `loadDialogueFlags` 40, `animMs` 40, `maxCopiesForRarity` 38, `loadFactionChoice` 36, `fxLevel` 36, `cardSourceOf` 36, `mapIdAt` 35, `resolveRound` 33, `pushLog` 33, `puff` 33, `loadTutorial2Done` 33, `featureUnlocked` 33, `dnLogNum` 33, `blip` 32, `copyModelOn` 31, `getCardLevel` 30
+`escapeHtml` 1754, `escapeAttr` 1233, `getCardDefs` 615, `numOr` 374, `boardCardEl` 343, `showToast` 323, `reducedMotion` 244, `floatText` 207, `hasGsap` 160, `iconHTML` 152, `fxAtLeast` 145, `cardTileHTML` 136, `switchTab` 118, `fightSafe` 90, `mapNumberOf` 88, `sk1Patch` 87, `denyShake` 87, `fnoise` 82, `loadConquestProgress` 80, `isSignedIn` 76, `conquestNodeId` 74, `sleep` 71, `renderBoard` 71, `fxHook` 70, `hqTileEl` 69, `grantText` 61, `cardBaseLevel` 61, `viewerHandPid` 60, `grantCurrency` 59, `findConquestNode` 58, `baseKind` 57, `renderPlay` 51, `parseGrantText` 50, `mainConquestMaps` 49, `saveCurrencies` 48, `updateCardHpDisplay` 47, `unlockCardForPlayer` 47, `tabOpen` 47, `updateCardStatusDisplay` 46, `deckTotal` 46, `loadTutorialDone` 44, `isMapUnlocked` 44, `dnFloat` 41, `renderForge` 40, `loadDialogueFlags` 40, `animMs` 40, `maxCopiesForRarity` 38, `mapIdAt` 37, `loadFactionChoice` 36, `fxLevel` 36, `cardSourceOf` 36, `resolveRound` 33, `pushLog` 33, `puff` 33, `loadTutorial2Done` 33, `featureUnlocked` 33, `dnLogNum` 33, `blip` 32, `copyModelOn` 31, `getCardLevel` 30
 
 ## Blocks that tests cut out and evaluate (keep the `NAME:BEGIN` / `NAME:END` lines; edit inside them with care)
 
 - `ROAD_RARITY`: card-pool-2026-10-19.js, content14-2026-11-07.js, decisions-2026-10-18.js, pale-desert-2026-10-19.js
+- `NET1_OVR`: net1-2026-11-12.js
 - `CODEX_ANIMAL_UT`: animal-tags-2026-10-19.js
 - `CODEX_UX`: ux-2026-10-19.js
 - `UI18_CODEX_SKILLS`: ui18-2026-11-03.js
 - `UI36_ACHVCARDS`: no test names it
+- `NET1_CARDS`: net1-2026-11-12.js
 - `DECK_SYNC_SY`: deck-sync-2026-10-19.js
 - `ECON1_INCOME`: econ1-2026-10-30.js, econ3-2026-11-03.js
 - `ECON1_BLOSSOMS`: econ1-2026-10-30.js
@@ -44,6 +46,7 @@
 - `SAVE_GUARD_UI12`: ui12-save-guard-2026-10-31.js
 - `PALE_DESERT`: no test names it
 - `C13_ADMIN_SUBMAPS`: content13-2026-11-07.js
+- `NET1_RAID`: net1-2026-11-12.js
 - `TUTORIAL_LEVEL0_UT`: animal-tags-2026-10-19.js
 - `UI19_MC_SKILLS`: no test names it
 - `UI17_OVERVIEW`: ui17-2026-11-03.js
@@ -65,5 +68,5 @@
 
 ## Saved state
 
-165 localStorage key constants: `grep -n "_KEY = '" arena_app.js`. The cloud save is the `PROGRESS_KEYS` blob
+166 localStorage key constants: `grep -n "_KEY = '" arena_app.js`. The cloud save is the `PROGRESS_KEYS` blob
 (docs/guides/networking-api.md).

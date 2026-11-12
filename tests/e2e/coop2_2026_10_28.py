@@ -141,21 +141,15 @@ async def main():
         # 5. the floor won: both tables' vault bramble emptied (the same change on both), then a round
         await page.evaluate("()=>{ [matchState.coop.T, window.__bot.T].forEach(T=>{ T.players[2].hq.hp = 0; T.players[2].hq.shield = 0; T.players[2].hq.shieldLayers = []; }); renderHUD(); }")
         await page.evaluate(TURN)
+        # 2026-11-12 (package DUNGEON1, note 21): a part won no longer opens a floor panel with Continue: the run goes on to part 2 on the same
+        # board on both clients (CoopM.advancePart at the same point of the round), the "Part 2" ribbon scrolls by.
         for _ in range(40):
-            ph = await page.evaluate("()=> ({phase: GD.phase, panel: !!document.querySelector('#gdOverlay .gd-panel.is-won'), rank: !!document.querySelector('#gdOverlay .gd-panel .rank-hex'), chest: (document.querySelector('#gdOverlay .gd-chest')||{}).textContent || '', next: !!document.querySelector('#gdOverlay [data-gd-act=\"next\"]')})")
-            if ph['panel']: break
+            st = await page.evaluate(STATE)
+            if st['floor'] == 1: break
             await page.wait_for_timeout(300)
-        check(ph['panel'] and ph['rank'] and ph['next'], f'floor won: the floor panel with the rank emblem and Continue for the host ({ph})')
-        check(any(ch.isdigit() for ch in ph['chest']), f"floor won: the raid's pay (Maple Leaves, Magic Dust) ({ph['chest'].strip()})")
         await shot(page, 'floor-won')
-        # 2026-10-30 (package COOP3, owner W6): the floor's rewards window opens over this panel; Collect closes it (the panel stays the hub)
-        for _ in range(20):
-            if await page.evaluate("()=> !!document.querySelector('.gd-rw-overlay [data-gd-rw]')"): break
-            await page.wait_for_timeout(200)
-        await page.evaluate("()=>{ const b = document.querySelector('.gd-rw-overlay [data-gd-rw=\"collect\"]'); if(b) b.click(); }"); await page.wait_for_timeout(300)
-        if ph['next']: await page.click('#gdOverlay [data-gd-act="next"]'); await page.wait_for_timeout(1500)
         st = await page.evaluate(STATE)
-        check(st['floor'] == 1 and st['mode'] == 'coop' and st['page'] == st['bot'], f'continue: floor 2 on both clients, in step ({st})')
+        check(st['floor'] == 1 and st['mode'] == 'coop' and st['page'] == st['bot'], f'part won: part 2 on the same board on both clients, in step ({st})')
         await page.evaluate("()=>{ try{ window.__bot.close(); }catch(e){} gdClose(true); }"); await page.wait_for_timeout(300)
         check(not await page.evaluate("()=> !!matchState"), 'leave: closing the room ends the fight')
         # 6. solo
