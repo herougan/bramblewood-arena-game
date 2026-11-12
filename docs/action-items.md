@@ -8,6 +8,10 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-12 08:39: Owner notes
+- FX6 (running): High Tide as a second wave over the tide; Guardian wings at placement (if the engine guards then); Bulwark walls rise from the slot with a construction sound; Swarm / spawn-on-death crawlies (1 s); Spore Cloud dark lime puff (1 s). A puff-cloud card skill goes to a decision.
+- Answered in chat: the lag summary, images and caching, Barrel Cactus is on The Pale Desert's list (and its fights 18-A-1, 18-A-6), balance status.
+
 ## 11-12 00:38-00:43: Owner notes (night batch: CACTI1, UI48, PERF3, PERF4, NET1, SKIR3; released 11-12 on the owner's "push")
 - Done: Barrel Cactus (Dry, Thorns 2; placeholder art; tl/ta/id texts need a native read). Tutorial cards Carried on Maps 0-1 only; skirmish rewards as a grid; 1-3 Suggested cards per side map; side-map ‹ › arrows; No works on side maps and beats an admin add.
 - Done: lists = the owner's picks under the limits (SKIR3; drop list `docs/balance/skir3/drop-list-2026-11-12.md`). Main road 140 -> 128 of 149 in band; side 60 -> 58 of 81.
