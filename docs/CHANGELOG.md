@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-13 Package UIFX1 (owner 00:03: "tent opening for shop, and immersion"; the places you walk into)
+- Players see: walking into a place plays its own entrance instead of the page turn: 0.76-0.9 s the first time a session, then a 0.4 s short take; a tap (or a key) skips it. Shop: canvas tent flaps part, lantern light and dust spill out. Premium shop (SHOP1's switch): plum velvet pavilion drapes sweep up, the Gold Leaf crest unclasps, gold leaves fall. Nest: the woven rim opens around you, down drifts out. Codex: the tooled leather cover swings open, the marbled flyleaf follows. Camp: the tent door rolls up, the campfire sparks. Stomping Grounds: the arena gates jolt and swing in, sand dust. Inventory: the satchel flap lifts off its buckle. The Forge keeps its flare.
+- While open (Medium and High): lantern flicker and dust in the Shop, a gold leaf now and then in Premium, drifting down in the Nest, a shaft of library light in the Codex, the Camp's campfire glow and embers. Effects Low: a 0.4 s plain take, no ambience. Effects None: nothing. Reduced motion: a 180 ms fade.
+- Code: `bramblewood-ui-places.js` (`BramblewoodPlaces.enter(tab, el, {from})`), one hook line in `switchTab`; bundled by `assemble_arena.py` and the Effects Lab (`build.py`); Lab group "Places (UIFX1)" (`tools/effects-lab/manifest/places.js`); `docs/effects-catalogue.md`, `docs/sfx-cue-sheet.md` (existing cues only); contact sheets `docs/screens/uifx1/`; `tests/uifx1-2026-11-13.js`.
+- Cost (this 2-core box, Effects Medium by default, load average about 40 from other agents; minimum of 20 samples): `enter()` 0.9-2.5 ms of script plus 0.8-1.3 ms of style and layout; 4-23 nodes; the parts paint 1-3 screens' worth (soft glows are drawn small and scaled). Ambience over 3 s: no layout, 0-2 style recalcs, no main-thread time above the noise (4-7 nodes, compositor-only). Frame times could not be measured: the renderer gave 0-1 frames a second on every screen, with or without the effects.
+
 ## 2026-11-12 Package BABY1 (owner note 11: mark cards as babies in the editor; they start at Level 0 from every source)
 - Baby stays the card field `kind: "baby"` (the editor's Kind select, saved through card_overrides). A Baby card starts at Level 0 from every grant path; the one gap closed: a faction-pool Baby reward in the tutorial kept Level 1. The 11-06 fold tool also folds an unticked Baby. Copies already owned are unchanged. Test: `tests/baby1-2026-11-12.js`.
 

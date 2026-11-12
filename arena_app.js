@@ -63826,6 +63826,7 @@ function switchTab(tab){
   if(tab==='friends') safeRender('Friends', renderFriends);
   if(tab==='admin') safeRender('Admin', renderAdmin);
   safeRender('CommunityTabs', ()=> syncCommunityTabs(tab));
+  try{ window.BramblewoodPlaces && BramblewoodPlaces.enter(tab, document.getElementById('view-' + tab), {from: currentTabBeforeSwitch}); }catch(e){} // 2026-11-13 (package UIFX1): the place's entrance and ambience
   // Task #94 (2026-09-16, "make the battleground significantly bigger, full on full
   // screen"): the wider layout only makes sense while an actual match is on screen, so it's
   // gated on being both on the Play tab AND mid-match, not just the tab alone.

@@ -1787,6 +1787,28 @@ Checks: `tests/lab3-2026-11-11.js` (every look in a fake DOM: resolves, callback
 motion one still node) and `tests/e2e/lab3_2026_11_11.py` (every look played in the built Lab at 1366, the first of each at 390, and under
 reduced motion: no page error, fewer than 40 overlays on any frame, none left).
 
+## 2026-11-13 (package UIFX1): places you walk into
+Owner 00:03: "tent opening for shop ... immersion". Each place screen has one entrance, `BramblewoodPlaces.enter(tab, el, opts)` → Promise
+(`bramblewood-ui-places.js`), called by one line in `switchTab` on a real arrival (not a redraw, not a page load): the full take the first time a session, then the short take. It replaces the page turn on
+that screen. A tap, a key or the wheel skips it; one layer at z-index 590 (under dialogs and toasts), Web Animations on transform and opacity
+only, every node, timer and listener removed at the end. Effects Low: the short take (one or two moving parts, about 0.4 s, no light, no
+particles, no ambience). Effects None: nothing. Reduced motion: a 180 ms fade of the screen.
+
+| Lab id | Place | Entrance (Medium and High) | While open (Medium and High) | Sound (existing cues) |
+|---|---|---|---|---|
+| ✅ `place-shop` | Shop | 0.82 s: indigo-and-canvas tent flaps (the cart awning's stripes, a stitched hem, wooden toggles) part from a seam of light and tie back; lantern light and 12 dust motes spill out; the scalloped valance lifts | the cart's lantern light flickers, 5 dust specks rise in it, the awning stirs | `bushRustle`, then `pitchChime` (the bell) |
+| ✅ `place-premium` | Premium shop (SHOP1's switch, `.is-premium-shop`) | 0.88 s: a gilded pavilion: plum velvet drapes with gold braid and fringe sweep up and aside, the Gold Leaf crest glints and unclasps, gold rays turn behind, 14 gold leaves fall | a warm gold light, a gold leaf drifting down now and then | `rareRise`, `crystalTing` ×2 (a fourth apart) |
+| ✅ `place-nest` | Nest | 0.86 s: you look out through the nest's hollow, a tangle of about 520 twigs (one seeded SVG, drawn once); the rim opens around you and flies past, warm light in the hollow, 12 tufts of down drift out | down drifts past the edges now and then | `featherFlutter` ×2 |
+| ✅ `place-codex` | Codex (not the Forge) | 0.88 s: a tooled leather cover (spine ribs, double gold rule, brass corners, a lozenge medallion with a glint) swings open away from you on its spine, the marbled flyleaf follows, dust off the spine | a slanting shaft of library light with 6 dust specks (one fixed layer) | `pageTurn` ×2 |
+| ✅ `place-deck` | Camp | 0.86 s: the red tent door rolls up on its roll, its two ties shorten as it climbs, the campfire glows and 10 embers rise | the campfire glow breathes along the floor, embers rise | `mapUnroll`, `woodKnock` |
+| ✅ `place-stomp` | Stomping Grounds | 0.90 s: the arena's banded timber gates jolt, then swing in; a blade of sunlight through the gap, 10 puffs of sand dust roll out | (the page's own dust) | `woodKnock`, `leaderSlam` |
+| ✅ `place-inventory` | Inventory | 0.76 s: the brass buckle drops, the stitched leather satchel flap lifts toward you and over, the bag's inside lightens | — | `shelfPick`, `pickup` |
+
+The ambience is a few nodes kept as the screen's first child (put back by a MutationObserver when the screen redraws) or, for the Codex, one
+fixed layer; CSS keyframes on transform and opacity; gone on any other tab or a fight, hidden by `html[data-fx=low|none]` and reduced motion.
+The Forge keeps its own flare (`dressForgePlace`). Lab: group "Places (UIFX1)" (`tools/effects-lab/manifest/places.js`: A the entrance,
+B Effects Low, C the ambience). Contact sheets: `docs/screens/uifx1/`. Check: `tests/uifx1-2026-11-13.js`.
+
 ## 2026-11-12 (package FX6): High Tide's wave, Bulwark's rise, bugs, the spore puff
 All four are cheap by design: one element or a handful of spans (WAAPI, transform and opacity, no per-frame reads), removed when done, nothing running after, no motion under reduced motion.
 
