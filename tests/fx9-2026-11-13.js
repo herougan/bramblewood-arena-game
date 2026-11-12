@@ -183,6 +183,6 @@ function stampede(level, reduced){
   ok(!/^fx9PatchFx$/m.test(extra), 'the Lab keeps the old looks next to FX9\'s (no fx9PatchFx there)'); }
 ok(/package FX9/.test(rd('docs/effects-catalogue.md')), 'effects catalogue entry');
 ok(/shellCrackTone/.test(rd('docs/sfx-cue-sheet.md')) && /dragonGust/.test(rd('docs/sfx-cue-sheet.md')), 'cue sheet lists the two new cues');
-ok(/^## 2026-11-13 Package FX9/m.test(rd('docs/CHANGELOG.md').slice(0, 6000)), 'CHANGELOG entry at the top');
+ok(/^## 2026-11-13 Package FX9/m.test(rd('docs/CHANGELOG.md').slice(0, 40000)), 'CHANGELOG entry near the top'); // 2026-11-13 (PERF5): below the night's later entries
 ok(/tests\/fx9-2026-11-13\.js/.test(rd('tests/run-all.sh')), 'listed in run-all.sh');
 console.log(fail ? `fx9: ${fail} of ${n} checks FAILED` : `fx9: all ${n} checks passed`); process.exit(fail ? 1 : 0);

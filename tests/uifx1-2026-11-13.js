@@ -171,7 +171,7 @@ const propsOf = list=>{ const s = new Set(); list.forEach(a=> a.frames.forEach(k
   { const cat = rd('docs/effects-catalogue.md'), cue = rd('docs/sfx-cue-sheet.md'), log = rd('docs/CHANGELOG.md');
     ok(/UIFX1/.test(cat) && /place-shop/.test(cat), 'docs/effects-catalogue.md has the places');
     ok(/UIFX1/.test(cue), 'docs/sfx-cue-sheet.md lists the entrance cues');
-    ok(/UIFX1/.test(log.slice(0, 4000)), 'a CHANGELOG entry at the top'); }
+    ok(/^## 2026-11-13 Package UIFX1/m.test(log.slice(0, 40000)), 'a CHANGELOG entry near the top'); } // 2026-11-13 (PERF5): its own heading, below the night's later entries
 
   ended = true; console.log(`uifx1: ${n - fail}/${n} checks passed`);
   process.exit(fail ? 1 : 0);
