@@ -1,0 +1,798 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T12:51:23.752Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "mh",
+  "num": 12,
+  "name": "The Briar Maze"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "alpine-marmot",
+  "anvil-thrush",
+  "balloon-archer",
+  "barkplate-beetle",
+  "barrow-leech-bat",
+  "bison-bulldozer",
+  "blue-ringed-octopus",
+  "briarback-hedgehog",
+  "chamois-leaper",
+  "chipmunk-hoarder",
+  "cunning-vixen",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "fawn-scout",
+  "harvest-mouse",
+  "hawthorn-shieldbug",
+  "hollow-belly-rat",
+  "ibex-rockcaller",
+  "millipede-hauler",
+  "mountain-hare",
+  "mouse-sapper",
+  "mudpuppy",
+  "otter-centurion",
+  "quarry-mole",
+  "quill-thorn-boar",
+  "robin-redbreast",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Alpine Marmot",
+  "Anvil Thrush",
+  "Balloon Archer",
+  "Barkplate Beetle",
+  "Barrow Leech",
+  "Bison Bulldozer",
+  "Blue-ringed Octopus",
+  "Briarback Hedgehog",
+  "Chamois Leaper",
+  "Chipmunk Hoarder",
+  "Cunning Vixen",
+  "Eagle-Owl Quartermaster",
+  "Eyrie Warden",
+  "Fawn Scout",
+  "Harvest Mouse",
+  "Hawthorn Shieldbug",
+  "Hollow-belly Rat",
+  "Ibex Rockcaller",
+  "Millipede Hauler",
+  "Mountain Hare",
+  "Mouse Sapper",
+  "Mudpuppy",
+  "Otter Centurion",
+  "Quarry Mole",
+  "Quill-Thorn Boar",
+  "Robin Redbreast",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "alpine-marmot",
+   "anvil-thrush",
+   "barkplate-beetle",
+   "barrow-leech-bat",
+   "bison-bulldozer",
+   "briarback-hedgehog",
+   "chamois-leaper",
+   "chipmunk-hoarder",
+   "cunning-vixen",
+   "eyrie-warden",
+   "fawn-scout",
+   "hollow-belly-rat",
+   "mountain-hare",
+   "mouse-sapper",
+   "quarry-mole",
+   "quill-thorn-boar"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:12-1",
+   "label": "vs 12-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-2",
+   "label": "vs 12-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-3",
+   "label": "vs 12-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-4",
+   "label": "vs 12-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-5",
+   "label": "vs 12-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-6",
+   "label": "vs 12-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-7",
+   "label": "vs 12-7 miniboss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 12-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road12",
+   "label": "vs reference deck (Map 12) under 12-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "anvil-thrush",
+    "balloon-archer",
+    "barrow-leech-bat",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "robin-redbreast"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "barkplate-beetle",
+    "briarback-hedgehog",
+    "hawthorn-shieldbug",
+    "millipede-hauler"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "barkplate-beetle",
+    "eyrie-warden"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 7,
+   "moves": 2,
+   "games": 2040,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:armor",
+   "steps": 7,
+   "moves": 6,
+   "games": 2200,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 8,
+   "moves": 6,
+   "games": 2020,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 7,
+   "moves": 6,
+   "games": 2260,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 178,
+ "games": 9160,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "flying x10",
+    "cleave x8"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "anvil-thrush": 4,
+    "balloon-archer": 2,
+    "barkplate-beetle": 3,
+    "fawn-scout": 3,
+    "robin-redbreast": 4
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "anvil-thrush",
+     "name": "Anvil Thrush",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.9042,
+   "ci": [
+    0.8683,
+    0.9401
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 15,
+    "1": 2,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    },
+    {
+     "f": "cleave",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "armor x9"
+   ],
+   "deck": {
+    "alley-cat": 3,
+    "barkplate-beetle": 4,
+    "briarback-hedgehog": 4,
+    "chipmunk-hoarder": 4,
+    "millipede-hauler": 1,
+    "robin-redbreast": 4
+   },
+   "cards": [
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "briarback-hedgehog",
+     "name": "Briarback Hedgehog",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "chipmunk-hoarder",
+     "name": "Chipmunk Hoarder",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "millipede-hauler",
+     "name": "Millipede Hauler",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8875,
+   "ci": [
+    0.8503,
+    0.9247
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 11,
+    "1": 5,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "evasion x7",
+    "ranged x6"
+   ],
+   "deck": {
+    "blue-ringed-octopus": 3,
+    "cunning-vixen": 3,
+    "fawn-scout": 3,
+    "mountain-hare": 4,
+    "mudpuppy": 4,
+    "otter-centurion": 3
+   },
+   "cards": [
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "cunning-vixen",
+     "name": "Cunning Vixen",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7792,
+   "ci": [
+    0.7306,
+    0.8278
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 7
+    },
+    {
+     "f": "ranged",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.2)"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "barkplate-beetle": 4,
+    "bison-bulldozer": 2,
+    "eyrie-warden": 4,
+    "ibex-rockcaller": 2,
+    "mudpuppy": 4
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "eyrie-warden",
+     "name": "Eyrie Warden",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "bison-bulldozer",
+     "name": "Bison Bulldozer",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7667,
+   "ci": [
+    0.7192,
+    0.8141
+   ],
+   "avgLumber": 1.2,
+   "avgWait": 1.5,
+   "curve": {
+    "0": 8,
+    "1": 4,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mh --pool alley-cat,alpine-marmot,anvil-thrush,balloon-archer,barkplate-beetle,barrow-leech-bat,bison-bulldozer,blue-ringed-octopus,briarback-hedgehog,chamois-leaper,chipmunk-hoarder,cunning-vixen,eagle-owl-quartermaster,eyrie-warden,fawn-scout,harvest-mouse,hawthorn-shieldbug,hollow-belly-rat,ibex-rockcaller,millipede-hauler,mountain-hare,mouse-sapper,mudpuppy,otter-centurion,quarry-mole,quill-thorn-boar,robin-redbreast,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,family:armor,big,open --anchor alpine-marmot,anvil-thrush,barkplate-beetle,barrow-leech-bat,bison-bulldozer,briarback-hedgehog,chamois-leaper,chipmunk-hoarder,cunning-vixen,eyrie-warden,fawn-scout,hollow-belly-rat,mountain-hare,mouse-sapper,quarry-mole,quill-thorn-boar --anchor-min 10 --level 1 --mode map-true"
+}

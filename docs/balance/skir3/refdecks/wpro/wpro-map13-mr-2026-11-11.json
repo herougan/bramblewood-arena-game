@@ -1,0 +1,88 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:53:52.765Z",
+ "map": {
+  "id": "mr",
+  "num": 13,
+  "name": "The Redwood Deep"
+ },
+ "pool": [
+  "anhinga-spearbird",
+  "badger-lumberjack",
+  "balloon-archer",
+  "beaver-feller",
+  "feral-tomcat",
+  "grass-snake",
+  "grizzly-vanguard",
+  "marsh-mallow-hare",
+  "monarch-wingblade",
+  "owl-nightwatch",
+  "pika-hoarder",
+  "pine-marten",
+  "redwood-woodpecker",
+  "sergeant-bramblefox",
+  "slow-worm"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "anhinga-spearbird": 4,
+    "balloon-archer": 4,
+    "grass-snake": 1,
+    "grizzly-vanguard": 4,
+    "owl-nightwatch": 4,
+    "pine-marten": 3
+   },
+   "score": 0.1705,
+   "ci": [
+    0.1283,
+    0.2126
+   ],
+   "refWins": 0.8472,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "flying x8",
+    "strike-first x7"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 1848,
+   "seconds": 30
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "anhinga-spearbird": 4,
+    "grizzly-vanguard": 4,
+    "pika-hoarder": 2,
+    "pine-marten": 2,
+    "redwood-woodpecker": 4,
+    "slow-worm": 4
+   },
+   "score": 0.3182,
+   "ci": [
+    0.2675,
+    0.3689
+   ],
+   "refWins": 0.8056,
+   "labels": [
+    "big (14 copies at 1+ Lumber, average 0.9)",
+    "economy (4 resource makers)",
+    "strike-first x6"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 1870,
+   "seconds": 45
+  }
+ ]
+}

@@ -1,0 +1,85 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:40:53.168Z",
+ "map": {
+  "id": "mu",
+  "num": 7,
+  "name": "The Morel Hollow"
+ },
+ "pool": [
+  "adder-ambusher",
+  "amber-cicada",
+  "camouflage-frog",
+  "corpse-flower-beetle",
+  "cypress-root-lurker",
+  "earthworm",
+  "fungus-gnat-cloud",
+  "hawthorn-shieldbug",
+  "lamprey",
+  "leopard-slug",
+  "planarian-splitter",
+  "puffball-bombardier",
+  "rot-swollen-carcass",
+  "sleepless-shrew",
+  "wolf-spider-mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "adder-ambusher": 1,
+    "amber-cicada": 4,
+    "camouflage-frog": 4,
+    "earthworm": 4,
+    "rot-swollen-carcass": 4,
+    "wolf-spider-mother": 3
+   },
+   "score": 0.0556,
+   "ci": [
+    0.0324,
+    0.0787
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (4 copies at 2+ Lumber, average 1.2)",
+    "swarm x7"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1926,
+   "seconds": 38
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "adder-ambusher": 3,
+    "amber-cicada": 3,
+    "cypress-root-lurker": 4,
+    "lamprey": 3,
+    "planarian-splitter": 3,
+    "rot-swollen-carcass": 4
+   },
+   "score": 0.1065,
+   "ci": [
+    0.0752,
+    0.1378
+   ],
+   "refWins": 0.8889,
+   "labels": [
+    "big (4 copies at 2+ Lumber, average 1.4)"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 7,
+   "games": 2070,
+   "seconds": 38
+  }
+ ]
+}

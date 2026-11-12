@@ -1,0 +1,81 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:33:49.185Z",
+ "map": {
+  "id": "mp",
+  "num": 2,
+  "name": "Lilypad Reach"
+ },
+ "pool": [
+  "box-turtle",
+  "lodge-engineer",
+  "muskrat-lodgekeeper",
+  "muskrat-reedgatherer",
+  "old-shell",
+  "old-sturgeon",
+  "platypus-spur",
+  "pond-algae",
+  "snapstick-turtle",
+  "water-shrew"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "lodge-engineer": 1,
+    "muskrat-lodgekeeper": 3,
+    "old-sturgeon": 4,
+    "platypus-spur": 4,
+    "pond-algae": 4,
+    "snapstick-turtle": 4
+   },
+   "score": 0.3208,
+   "ci": [
+    0.266,
+    0.3756
+   ],
+   "refWins": 0.8056,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.8)",
+    "tide x11"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1860,
+   "seconds": 43
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "box-turtle": 4,
+    "lodge-engineer": 4,
+    "old-shell": 4,
+    "old-sturgeon": 3,
+    "pond-algae": 4,
+    "snapstick-turtle": 1
+   },
+   "score": 0.3083,
+   "ci": [
+    0.2569,
+    0.3597
+   ],
+   "refWins": 0.9583,
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.8)",
+    "armor x7"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 6,
+   "games": 1820,
+   "seconds": 48
+  }
+ ]
+}

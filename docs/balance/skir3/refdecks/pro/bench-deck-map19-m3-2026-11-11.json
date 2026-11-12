@@ -1,0 +1,772 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T13:16:33.389Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "m3",
+  "num": 19,
+  "name": "Ashen Spurn"
+ },
+ "level": 1,
+ "pool": [
+  "armadillo-guard",
+  "caustic-scorpion",
+  "dune-jackal",
+  "eagle-owl-quartermaster",
+  "elderhorn-monarch",
+  "fire-salamander",
+  "gallery-orb-weaver",
+  "glacier-yak",
+  "grave-grin-hyena",
+  "honey-badger-fury",
+  "horned-lizard",
+  "ibex-rockcaller",
+  "kinkajou-lurker",
+  "lantern-spark-fly",
+  "mountain-hare",
+  "obsidian-scorpion",
+  "pinecone-sapper",
+  "polar-bear",
+  "quillback-elder",
+  "quillguard",
+  "smoke-raccoon",
+  "snow-ermine",
+  "stalactite-golem",
+  "stoat-cutthroat",
+  "sulfur-cinder-moth",
+  "thorny-devil",
+  "upside-down-bat",
+  "walrus-icebreaker",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Armadillo Guard",
+  "Caustic Scorpion",
+  "Dune Jackal",
+  "Eagle-Owl Quartermaster",
+  "Elderhorn Monarch",
+  "Fire Salamander",
+  "Gallery Orb-Weaver",
+  "Glacier Yak",
+  "Grave-Grin Hyena",
+  "Honey Badger Fury",
+  "Horned Lizard",
+  "Ibex Rockcaller",
+  "Kinkajou Lurker",
+  "Lantern Spark Fly",
+  "Mountain Hare",
+  "Obsidian Scorpion",
+  "Pinecone Sapper",
+  "Polar Bear",
+  "Quillback Elder",
+  "Quillguard",
+  "Smokescreen Raccoon",
+  "Snow Ermine",
+  "Stalactite Pill Bug",
+  "Stoat Cutthroat",
+  "Sulfur Cinder Moth",
+  "Thorny Devil",
+  "Upside-Down Bat",
+  "Walrus Icebreaker",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "armadillo-guard",
+   "caustic-scorpion",
+   "dune-jackal",
+   "elderhorn-monarch",
+   "fire-salamander",
+   "glacier-yak",
+   "honey-badger-fury",
+   "horned-lizard",
+   "obsidian-scorpion",
+   "pinecone-sapper",
+   "polar-bear",
+   "quillback-elder",
+   "quillguard",
+   "smoke-raccoon",
+   "stalactite-golem",
+   "sulfur-cinder-moth",
+   "walrus-icebreaker"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:19-1",
+   "label": "vs 19-1 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-2",
+   "label": "vs 19-2 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-3",
+   "label": "vs 19-3 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-4",
+   "label": "vs 19-4 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-5",
+   "label": "vs 19-5 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-6",
+   "label": "vs 19-6 miniboss's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 19-1's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:road19",
+   "label": "vs reference deck (Map 19) under 19-2's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+   "weight": 0.1111
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:evasion",
+   "label": "evasion (skill family)",
+   "cards": [
+    "mountain-hare",
+    "polar-bear",
+    "smoke-raccoon",
+    "snow-ermine"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "eagle-owl-quartermaster",
+    "lantern-spark-fly",
+    "sulfur-cinder-moth",
+    "upside-down-bat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "elderhorn-monarch",
+    "glacier-yak",
+    "quillback-elder",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:evasion",
+   "steps": 8,
+   "moves": 3,
+   "games": 2178,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:flying",
+   "steps": 7,
+   "moves": 5,
+   "games": 2088,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "big",
+   "steps": 7,
+   "moves": 3,
+   "games": 2142,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 8,
+   "moves": 5,
+   "games": 2268,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 128,
+ "games": 9252,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "guard x8",
+    "flying x8"
+   ],
+   "deck": {
+    "armadillo-guard": 4,
+    "ibex-rockcaller": 2,
+    "lantern-spark-fly": 4,
+    "sulfur-cinder-moth": 4,
+    "thorny-devil": 4,
+    "walrus-icebreaker": 2
+   },
+   "cards": [
+    {
+     "id": "armadillo-guard",
+     "name": "Armadillo Guard",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "lantern-spark-fly",
+     "name": "Lantern Spark Fly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "thorny-devil",
+     "name": "Thorny Devil",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9398,
+   "ci": [
+    0.9093,
+    0.9703
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 1,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "family:evasion",
+   "labels": [
+    "evasion x9",
+    "guard x7"
+   ],
+   "deck": {
+    "armadillo-guard": 4,
+    "horned-lizard": 4,
+    "mountain-hare": 3,
+    "polar-bear": 2,
+    "snow-ermine": 4,
+    "thorny-devil": 3
+   },
+   "cards": [
+    {
+     "id": "armadillo-guard",
+     "name": "Armadillo Guard",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "horned-lizard",
+     "name": "Horned Lizard",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "thorny-devil",
+     "name": "Thorny Devil",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "polar-bear",
+     "name": "Polar Bear",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9167,
+   "ci": [
+    0.8849,
+    0.9485
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 9
+    },
+    {
+     "f": "guard",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 1.0 Lumber)"
+   ],
+   "deck": {
+    "armadillo-guard": 4,
+    "caustic-scorpion": 4,
+    "horned-lizard": 4,
+    "stoat-cutthroat": 3,
+    "walrus-icebreaker": 2,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "armadillo-guard",
+     "name": "Armadillo Guard",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "horned-lizard",
+     "name": "Horned Lizard",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9028,
+   "ci": [
+    0.8663,
+    0.9392
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.1,
+   "curve": {
+    "1": 20
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.1)",
+    "armor x8",
+    "guard x8"
+   ],
+   "deck": {
+    "dune-jackal": 1,
+    "pinecone-sapper": 4,
+    "quillback-elder": 4,
+    "stalactite-golem": 4,
+    "thorny-devil": 4,
+    "upside-down-bat": 3
+   },
+   "cards": [
+    {
+     "id": "pinecone-sapper",
+     "name": "Pinecone Sapper",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "quillback-elder",
+     "name": "Quillback Elder",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "thorny-devil",
+     "name": "Thorny Devil",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dune-jackal",
+     "name": "Dune Jackal",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8056,
+   "ci": [
+    0.7596,
+    0.8515
+   ],
+   "avgLumber": 1.05,
+   "avgWait": 1.6,
+   "curve": {
+    "0": 7,
+    "1": 5,
+    "2": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    },
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 0.8125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.5208,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m3 --pool armadillo-guard,caustic-scorpion,dune-jackal,eagle-owl-quartermaster,elderhorn-monarch,fire-salamander,gallery-orb-weaver,glacier-yak,grave-grin-hyena,honey-badger-fury,horned-lizard,ibex-rockcaller,kinkajou-lurker,lantern-spark-fly,mountain-hare,obsidian-scorpion,pinecone-sapper,polar-bear,quillback-elder,quillguard,smoke-raccoon,snow-ermine,stalactite-golem,stoat-cutthroat,sulfur-cinder-moth,thorny-devil,upside-down-bat,walrus-icebreaker,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:evasion,family:flying,big,open --anchor armadillo-guard,caustic-scorpion,dune-jackal,elderhorn-monarch,fire-salamander,glacier-yak,honey-badger-fury,horned-lizard,obsidian-scorpion,pinecone-sapper,polar-bear,quillback-elder,quillguard,smoke-raccoon,stalactite-golem,sulfur-cinder-moth,walrus-icebreaker --anchor-min 10 --level 1 --mode map-true"
+}

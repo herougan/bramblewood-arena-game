@@ -1,0 +1,89 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:54:49.533Z",
+ "map": {
+  "id": "m5",
+  "num": 14,
+  "name": "Savanna Reaches"
+ },
+ "pool": [
+  "badger-lumberjack",
+  "balloon-archer",
+  "bramble-sprout",
+  "bramblewood-macaque",
+  "cunning-vixen",
+  "dust-hyena",
+  "grizzly-vanguard",
+  "hollow-belly-rat",
+  "hoopoe-herald",
+  "marula-elephant",
+  "meerkat-sentry",
+  "plains-zebra",
+  "pride-queen",
+  "river-mink",
+  "savanna-cheetah",
+  "sergeant-bramblefox",
+  "stoat-cutthroat",
+  "tasmanian-devil"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "badger-lumberjack": 2,
+    "balloon-archer": 2,
+    "cunning-vixen": 4,
+    "grizzly-vanguard": 4,
+    "marula-elephant": 4,
+    "tasmanian-devil": 4
+   },
+   "score": 0.2273,
+   "ci": [
+    0.1809,
+    0.2737
+   ],
+   "refWins": 0.9167,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)",
+    "guard x10"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 1848,
+   "seconds": 28
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "balloon-archer": 4,
+    "grizzly-vanguard": 4,
+    "hollow-belly-rat": 4,
+    "marula-elephant": 4,
+    "meerkat-sentry": 2,
+    "river-mink": 2
+   },
+   "score": 0.3068,
+   "ci": [
+    0.2587,
+    0.3549
+   ],
+   "refWins": 0.9583,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)",
+    "guard x8"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 4,
+   "games": 1826,
+   "seconds": 28
+  }
+ ]
+}

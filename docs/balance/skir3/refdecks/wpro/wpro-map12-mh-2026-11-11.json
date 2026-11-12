@@ -1,0 +1,87 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:52:37.438Z",
+ "map": {
+  "id": "mh",
+  "num": 12,
+  "name": "The Briar Maze"
+ },
+ "pool": [
+  "alpine-marmot",
+  "anvil-thrush",
+  "barkplate-beetle",
+  "barrow-leech-bat",
+  "bison-bulldozer",
+  "briarback-hedgehog",
+  "chamois-leaper",
+  "chipmunk-hoarder",
+  "cunning-vixen",
+  "eyrie-warden",
+  "fawn-scout",
+  "hollow-belly-rat",
+  "mountain-hare",
+  "mouse-sapper",
+  "quarry-mole",
+  "quill-thorn-boar"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "briarback-hedgehog": 3,
+    "chamois-leaper": 4,
+    "cunning-vixen": 4,
+    "eyrie-warden": 4,
+    "quarry-mole": 2,
+    "quill-thorn-boar": 3
+   },
+   "score": 0.0625,
+   "ci": [
+    0.0344,
+    0.0906
+   ],
+   "refWins": 0.875,
+   "labels": [
+    "big (4 copies at 2+ Lumber, average 1.4)",
+    "strike-first x8"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1940,
+   "seconds": 35
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "anvil-thrush": 4,
+    "barrow-leech-bat": 3,
+    "bison-bulldozer": 4,
+    "briarback-hedgehog": 2,
+    "eyrie-warden": 4,
+    "quarry-mole": 3
+   },
+   "score": 0.1875,
+   "ci": [
+    0.1427,
+    0.2323
+   ],
+   "refWins": 0.7778,
+   "labels": [
+    "big (4 copies at 2+ Lumber, average 1.2)",
+    "flying x11"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 5,
+   "games": 1820,
+   "seconds": 34
+  }
+ ]
+}

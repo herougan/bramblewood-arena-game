@@ -1,0 +1,85 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:30:32.078Z",
+ "map": {
+  "id": "mb",
+  "num": 2,
+  "name": "Pebble Beach"
+ },
+ "pool": [
+  "beachcomber-sanderling",
+  "beaver-lumberjack",
+  "driftwood-crab",
+  "duck-paddler",
+  "gull-thief",
+  "hedgerow-shrew",
+  "limpet-clinger",
+  "moonlit-hare",
+  "old-shell",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin",
+  "puddle-skimmer",
+  "robin-redbreast",
+  "rock-pool-starfish"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "beaver-lumberjack": 4,
+    "duck-paddler": 4,
+    "gull-thief": 2,
+    "hedgerow-shrew": 2,
+    "pincushion-urchin": 4,
+    "puddle-skimmer": 4
+   },
+   "score": 0.2656,
+   "ci": [
+    0.2098,
+    0.3215
+   ],
+   "refWins": 0.75,
+   "labels": [
+    "swarm (20 copies at 0 Lumber)"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1808,
+   "seconds": 41
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "driftwood-crab": 4,
+    "hedgerow-shrew": 4,
+    "moonlit-hare": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4
+   },
+   "score": 0.4635,
+   "ci": [
+    0.4033,
+    0.5238
+   ],
+   "refWins": 0.4583,
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "economy (4 resource makers)",
+    "armor x8"
+   ],
+   "apartFrom": [
+    18
+   ],
+   "steps": 7,
+   "games": 1904,
+   "seconds": 40
+  }
+ ]
+}

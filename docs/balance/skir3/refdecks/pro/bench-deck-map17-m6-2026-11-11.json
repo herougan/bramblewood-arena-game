@@ -1,0 +1,840 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T13:07:04.238Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "m6",
+  "num": 17,
+  "name": "Wolfsbane Tundra"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "arctic-tern",
+  "border-collie",
+  "boreal-elk",
+  "briarback-hedgehog",
+  "cataphract-destrier",
+  "colossal-squid",
+  "cone-cutter-squirrel",
+  "cunning-vixen",
+  "dhole-matriarch",
+  "eagle-owl-quartermaster",
+  "elderhorn-monarch",
+  "glacier-yak",
+  "grave-grin-hyena",
+  "harbor-seal",
+  "ibex-rockcaller",
+  "ice-crevasse-wolf",
+  "mountain-hare",
+  "polar-bear",
+  "ringed-seal",
+  "rock-pool-starfish",
+  "snow-ermine",
+  "snowshoe-hare",
+  "stoat-cutthroat",
+  "taiga-lynx",
+  "upside-down-bat",
+  "walrus-icebreaker",
+  "warhorse-charger",
+  "wolf-spider-mother",
+  "wolfsbane-alpha",
+  "woodland-caribou"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Arctic Tern",
+  "Border Collie",
+  "Boreal Elk",
+  "Briarback Hedgehog",
+  "Gilded Roadwarden",
+  "Colossal Squid",
+  "Cone-cutter Squirrel",
+  "Cunning Vixen",
+  "Dhole Matriarch",
+  "Eagle-Owl Quartermaster",
+  "Elderhorn Monarch",
+  "Glacier Yak",
+  "Grave-Grin Hyena",
+  "Harbor Seal",
+  "Ibex Rockcaller",
+  "Ice-Crevasse Wolf",
+  "Mountain Hare",
+  "Polar Bear",
+  "Ringed Seal",
+  "Rock Pool Starfish",
+  "Snow Ermine",
+  "Snowshoe Hare",
+  "Stoat Cutthroat",
+  "Taiga Lynx",
+  "Upside-Down Bat",
+  "Walrus Icebreaker",
+  "Warhorse Charger",
+  "Wolf Spider Mother",
+  "Wolfsbane Alpha",
+  "Woodland Caribou"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "arctic-tern",
+   "border-collie",
+   "boreal-elk",
+   "briarback-hedgehog",
+   "cataphract-destrier",
+   "cone-cutter-squirrel",
+   "elderhorn-monarch",
+   "glacier-yak",
+   "harbor-seal",
+   "ice-crevasse-wolf",
+   "polar-bear",
+   "ringed-seal",
+   "snow-ermine",
+   "snowshoe-hare",
+   "taiga-lynx",
+   "walrus-icebreaker",
+   "warhorse-charger",
+   "wolfsbane-alpha",
+   "woodland-caribou"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:17-1",
+   "label": "vs 17-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:17-2",
+   "label": "vs 17-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:17-3",
+   "label": "vs 17-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:17-4",
+   "label": "vs 17-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:17-5",
+   "label": "vs 17-5 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:17-6",
+   "label": "vs 17-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:17-7",
+   "label": "vs 17-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:17-8",
+   "label": "vs 17-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 17-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road17",
+   "label": "vs reference deck (Map 17) under 17-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:evasion",
+   "label": "evasion (skill family)",
+   "cards": [
+    "cunning-vixen",
+    "harbor-seal",
+    "mountain-hare",
+    "polar-bear",
+    "ringed-seal",
+    "snow-ermine",
+    "snowshoe-hare",
+    "taiga-lynx"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:bleed",
+   "label": "bleed (skill family)",
+   "cards": [
+    "alley-cat",
+    "colossal-squid",
+    "ice-crevasse-wolf",
+    "wolfsbane-alpha"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (3+ Lumber cards)",
+   "cards": [
+    "cataphract-destrier",
+    "colossal-squid",
+    "elderhorn-monarch",
+    "glacier-yak"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:evasion",
+   "steps": 5,
+   "moves": 2,
+   "games": 2002,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:bleed",
+   "steps": 9,
+   "moves": 3,
+   "games": 2332,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 6,
+   "moves": 4,
+   "games": 2134,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 2,
+   "games": 2046,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 182,
+ "games": 9218,
+ "decks": [
+  {
+   "focus": "family:evasion",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "evasion x12"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "briarback-hedgehog": 4,
+    "mountain-hare": 4,
+    "snow-ermine": 4,
+    "snowshoe-hare": 4
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "briarback-hedgehog",
+     "name": "Briarback Hedgehog",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snowshoe-hare",
+     "name": "Snowshoe Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9261,
+   "ci": [
+    0.9005,
+    0.9518
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.2,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 12
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-1",
+     "label": "vs 17-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-2",
+     "label": "vs 17-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-3",
+     "label": "vs 17-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-4",
+     "label": "vs 17-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-5",
+     "label": "vs 17-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-6",
+     "label": "vs 17-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-7",
+     "label": "vs 17-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-8",
+     "label": "vs 17-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 17-2's field",
+     "p": 0.4792,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "flying x10",
+    "day x7"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "arctic-tern": 4,
+    "border-collie": 2,
+    "eagle-owl-quartermaster": 3,
+    "snow-ermine": 4,
+    "upside-down-bat": 3
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "arctic-tern",
+     "name": "Arctic Tern",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8977,
+   "ci": [
+    0.8648,
+    0.9307
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    },
+    {
+     "f": "day",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-1",
+     "label": "vs 17-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-2",
+     "label": "vs 17-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-3",
+     "label": "vs 17-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-4",
+     "label": "vs 17-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-5",
+     "label": "vs 17-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-6",
+     "label": "vs 17-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-7",
+     "label": "vs 17-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-8",
+     "label": "vs 17-8 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 17-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:bleed",
+   "labels": [
+    "bleed x9",
+    "cold x8"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "colossal-squid": 2,
+    "cone-cutter-squirrel": 3,
+    "ice-crevasse-wolf": 3,
+    "mountain-hare": 4,
+    "woodland-caribou": 4
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "woodland-caribou",
+     "name": "Woodland Caribou",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cone-cutter-squirrel",
+     "name": "Cone-cutter Squirrel",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ice-crevasse-wolf",
+     "name": "Ice-Crevasse Wolf",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "colossal-squid",
+     "name": "Colossal Squid",
+     "copies": 2,
+     "cost": 4,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8674,
+   "ci": [
+    0.8302,
+    0.9046
+   ],
+   "avgLumber": 0.75,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 11,
+    "1": 7,
+    "4": 2
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "bleed",
+     "n": 9
+    },
+    {
+     "f": "cold",
+     "n": 8
+    },
+    {
+     "f": "cleave",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-1",
+     "label": "vs 17-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-2",
+     "label": "vs 17-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-3",
+     "label": "vs 17-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-4",
+     "label": "vs 17-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-5",
+     "label": "vs 17-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-6",
+     "label": "vs 17-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-7",
+     "label": "vs 17-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-8",
+     "label": "vs 17-8 miniboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 17-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.4)",
+    "evasion x10"
+   ],
+   "deck": {
+    "arctic-tern": 2,
+    "cataphract-destrier": 4,
+    "elderhorn-monarch": 4,
+    "mountain-hare": 4,
+    "snow-ermine": 4,
+    "snowshoe-hare": 2
+   },
+   "cards": [
+    {
+     "id": "cataphract-destrier",
+     "name": "Gilded Roadwarden",
+     "copies": 4,
+     "cost": 4,
+     "rarity": "common"
+    },
+    {
+     "id": "elderhorn-monarch",
+     "name": "Elderhorn Monarch",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "arctic-tern",
+     "name": "Arctic Tern",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "snowshoe-hare",
+     "name": "Snowshoe Hare",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6402,
+   "ci": [
+    0.5884,
+    0.6919
+   ],
+   "avgLumber": 1.4,
+   "avgWait": 1.7,
+   "curve": {
+    "0": 12,
+    "3": 4,
+    "4": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-1",
+     "label": "vs 17-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-2",
+     "label": "vs 17-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-3",
+     "label": "vs 17-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-4",
+     "label": "vs 17-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-5",
+     "label": "vs 17-5 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-6",
+     "label": "vs 17-6 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-7",
+     "label": "vs 17-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-8",
+     "label": "vs 17-8 miniboss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-1's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 17-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
+     "p": 0.25,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m6 --pool alley-cat,arctic-tern,border-collie,boreal-elk,briarback-hedgehog,cataphract-destrier,colossal-squid,cone-cutter-squirrel,cunning-vixen,dhole-matriarch,eagle-owl-quartermaster,elderhorn-monarch,glacier-yak,grave-grin-hyena,harbor-seal,ibex-rockcaller,ice-crevasse-wolf,mountain-hare,polar-bear,ringed-seal,rock-pool-starfish,snow-ermine,snowshoe-hare,stoat-cutthroat,taiga-lynx,upside-down-bat,walrus-icebreaker,warhorse-charger,wolf-spider-mother,wolfsbane-alpha,woodland-caribou --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:evasion,family:bleed,big,open --anchor arctic-tern,border-collie,boreal-elk,briarback-hedgehog,cataphract-destrier,cone-cutter-squirrel,elderhorn-monarch,glacier-yak,harbor-seal,ice-crevasse-wolf,polar-bear,ringed-seal,snow-ermine,snowshoe-hare,taiga-lynx,walrus-icebreaker,warhorse-charger,wolfsbane-alpha,woodland-caribou --anchor-min 10 --level 1 --mode map-true"
+}

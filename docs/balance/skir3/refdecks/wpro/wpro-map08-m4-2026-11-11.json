@@ -1,0 +1,87 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:43:50.618Z",
+ "map": {
+  "id": "m4",
+  "num": 8,
+  "name": "Caves & Alcoves"
+ },
+ "pool": [
+  "barrow-leech-bat",
+  "blind-cave-fish",
+  "cave-olm",
+  "corpse-flower-beetle",
+  "driftwood-crab",
+  "echo-matriarch",
+  "echo-screecher",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "hawthorn-shieldbug",
+  "quarry-mole",
+  "rot-swollen-carcass",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "sulfur-cinder-moth",
+  "wolf-spider-mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "blind-cave-fish": 3,
+    "hawthorn-shieldbug": 3,
+    "rot-swollen-carcass": 4,
+    "stalactite-golem": 4,
+    "sulfur-cinder-moth": 3,
+    "wolf-spider-mother": 3
+   },
+   "score": 0.2386,
+   "ci": [
+    0.1936,
+    0.2837
+   ],
+   "refWins": 0.9583,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "armor x7",
+    "guard x7"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 2090,
+   "seconds": 34
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "barrow-leech-bat": 3,
+    "corpse-flower-beetle": 3,
+    "gallery-orb-weaver": 3,
+    "quarry-mole": 3,
+    "rot-swollen-carcass": 4,
+    "stalactite-golem": 4
+   },
+   "score": 0.3295,
+   "ci": [
+    0.2817,
+    0.3774
+   ],
+   "refWins": 0.9167,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 6,
+   "games": 2068,
+   "seconds": 34
+  }
+ ]
+}

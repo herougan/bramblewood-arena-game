@@ -1,0 +1,79 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:29:10.381Z",
+ "map": {
+  "id": "mq",
+  "num": 1,
+  "name": "Clovermead"
+ },
+ "pool": [
+  "ant-hill",
+  "ant-scout",
+  "bee-sentry",
+  "cottontail",
+  "cricket-drummer",
+  "earthworm",
+  "harvest-mouse",
+  "jackrabbit-sprinter",
+  "meadow-rabbit",
+  "robin-redbreast",
+  "slow-worm"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ant-hill": 4,
+    "cottontail": 4,
+    "earthworm": 4,
+    "jackrabbit-sprinter": 4,
+    "meadow-rabbit": 4
+   },
+   "score": 0.1875,
+   "ci": [
+    0.1341,
+    0.2409
+   ],
+   "refWins": 0.9167,
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1840,
+   "seconds": 24
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "ant-hill": 4,
+    "ant-scout": 2,
+    "bee-sentry": 4,
+    "cottontail": 2,
+    "harvest-mouse": 4,
+    "jackrabbit-sprinter": 4
+   },
+   "score": 0.5052,
+   "ci": [
+    0.4394,
+    0.571
+   ],
+   "refWins": 0.5139,
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 8,
+   "games": 1792,
+   "seconds": 25
+  }
+ ]
+}

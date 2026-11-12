@@ -1,0 +1,79 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:48:36.284Z",
+ "map": {
+  "id": "mj",
+  "num": 10,
+  "name": "The Sunken Depths"
+ },
+ "pool": [
+  "abyss-lantern-squid",
+  "clownfish-scout",
+  "coral-polyp-colony",
+  "giant-clam",
+  "humpback-elder",
+  "moon-jelly",
+  "orca-vanguard",
+  "reef-admiral",
+  "riptide-eel"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "clownfish-scout": 1,
+    "giant-clam": 4,
+    "humpback-elder": 4,
+    "moon-jelly": 4,
+    "orca-vanguard": 4,
+    "riptide-eel": 3
+   },
+   "score": 0.4115,
+   "ci": [
+    0.3589,
+    0.464
+   ],
+   "refWins": 0.9167,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)",
+    "tide x20"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1872,
+   "seconds": 31
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "abyss-lantern-squid": 4,
+    "clownfish-scout": 4,
+    "moon-jelly": 4,
+    "orca-vanguard": 2,
+    "reef-admiral": 2,
+    "riptide-eel": 4
+   },
+   "score": 0.776,
+   "ci": [
+    0.7298,
+    0.8223
+   ],
+   "refWins": 0.4514,
+   "labels": [
+    "tide x20"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 19,
+   "games": 1808,
+   "seconds": 40
+  }
+ ]
+}

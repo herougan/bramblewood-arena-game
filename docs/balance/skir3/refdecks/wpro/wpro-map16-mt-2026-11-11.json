@@ -1,0 +1,85 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:57:39.168Z",
+ "map": {
+  "id": "mt",
+  "num": 16,
+  "name": "The Pinewood Taiga"
+ },
+ "pool": [
+  "boreal-elk",
+  "cone-cutter-squirrel",
+  "farm-dog",
+  "golden-eagle-diver",
+  "mountain-hare",
+  "owl-sentinel",
+  "puffin-diver",
+  "raft-spider",
+  "siege-rhino",
+  "snowshoe-hare",
+  "sworn-shieldbearer",
+  "taiga-lynx",
+  "upside-down-bat",
+  "woodland-caribou"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "boreal-elk": 4,
+    "owl-sentinel": 1,
+    "puffin-diver": 4,
+    "raft-spider": 4,
+    "sworn-shieldbearer": 4,
+    "taiga-lynx": 3
+   },
+   "score": 0.0208,
+   "ci": [
+    0.0024,
+    0.0393
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "tide x8"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1920,
+   "seconds": 28
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "boreal-elk": 2,
+    "golden-eagle-diver": 3,
+    "puffin-diver": 4,
+    "snowshoe-hare": 4,
+    "sworn-shieldbearer": 4,
+    "woodland-caribou": 3
+   },
+   "score": 0.1208,
+   "ci": [
+    0.0812,
+    0.1604
+   ],
+   "refWins": 0.8889,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.9)",
+    "flying x7"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 1780,
+   "seconds": 29
+  }
+ ]
+}

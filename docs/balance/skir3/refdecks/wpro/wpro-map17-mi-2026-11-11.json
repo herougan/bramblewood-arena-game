@@ -1,0 +1,80 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T14:00:23.505Z",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow"
+ },
+ "pool": [
+  "arctic-tern",
+  "glacier-yak",
+  "greenland-shark",
+  "ice-crevasse-wolf",
+  "lemming-swarm",
+  "polar-bear",
+  "ringed-seal",
+  "snow-ermine",
+  "talus-pika",
+  "walrus-icebreaker",
+  "wolfsbane-alpha"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "arctic-tern": 3,
+    "glacier-yak": 4,
+    "greenland-shark": 3,
+    "ringed-seal": 4,
+    "talus-pika": 4,
+    "wolfsbane-alpha": 2
+   },
+   "score": 0.0298,
+   "ci": [
+    0.0043,
+    0.0552
+   ],
+   "refWins": 1,
+   "labels": [
+    "tide x7"
+   ],
+   "apartFrom": [],
+   "steps": 9,
+   "games": 1792,
+   "seconds": 47
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "arctic-tern": 4,
+    "glacier-yak": 4,
+    "greenland-shark": 3,
+    "ice-crevasse-wolf": 3,
+    "polar-bear": 2,
+    "snow-ermine": 4
+   },
+   "score": 0.1667,
+   "ci": [
+    0.113,
+    0.2203
+   ],
+   "refWins": 0.8611,
+   "labels": [
+    "evasion x6"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 25,
+   "games": 1736,
+   "seconds": 57
+  }
+ ]
+}

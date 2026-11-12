@@ -1,0 +1,80 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:42:42.061Z",
+ "map": {
+  "id": "mz",
+  "num": 7,
+  "name": "The Mycelium Deep"
+ },
+ "pool": [
+  "fungal-colossus",
+  "fungus-gnat-cloud",
+  "leopard-slug",
+  "millipede-hauler",
+  "pill-bug",
+  "puffball-bombardier",
+  "rot-swollen-carcass",
+  "sleepless-shrew",
+  "wolf-spider-mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "fungal-colossus": 4,
+    "leopard-slug": 4,
+    "millipede-hauler": 4,
+    "puffball-bombardier": 1,
+    "rot-swollen-carcass": 4,
+    "wolf-spider-mother": 3
+   },
+   "score": 0.0729,
+   "ci": [
+    0.0395,
+    0.1064
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "swarm x15"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1760,
+   "seconds": 46
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "fungal-colossus": 2,
+    "millipede-hauler": 3,
+    "pill-bug": 3,
+    "puffball-bombardier": 4,
+    "rot-swollen-carcass": 4,
+    "sleepless-shrew": 4
+   },
+   "score": 0.1458,
+   "ci": [
+    0.0982,
+    0.1934
+   ],
+   "refWins": 0.8889,
+   "labels": [
+    "swarm x9",
+    "armor x6"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 10,
+   "games": 1744,
+   "seconds": 63
+  }
+ ]
+}

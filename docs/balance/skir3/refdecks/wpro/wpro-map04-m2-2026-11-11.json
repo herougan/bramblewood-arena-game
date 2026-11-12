@@ -1,0 +1,85 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:36:18.693Z",
+ "map": {
+  "id": "m2",
+  "num": 4,
+  "name": "Sunken Hollow"
+ },
+ "pool": [
+  "beaver-lumberjack",
+  "conch-crawler",
+  "drowned-matriarch",
+  "duck-paddler",
+  "grass-snake",
+  "kittiwake-flock",
+  "muskrat-lodgekeeper",
+  "planarian-splitter",
+  "platypus-spur",
+  "river-mink",
+  "shoal-shark",
+  "slow-worm",
+  "snapstick-turtle",
+  "water-shrew"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "grass-snake": 4,
+    "muskrat-lodgekeeper": 4,
+    "platypus-spur": 4,
+    "river-mink": 4,
+    "water-shrew": 4
+   },
+   "score": 0.3542,
+   "ci": [
+    0.2928,
+    0.4155
+   ],
+   "refWins": 0.6389,
+   "labels": [
+    "big (16 copies at 1 Lumber, average 0.8)",
+    "poison x8",
+    "tide x8"
+   ],
+   "apartFrom": [],
+   "steps": 6,
+   "games": 1728,
+   "seconds": 34
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "beaver-lumberjack": 4,
+    "kittiwake-flock": 3,
+    "platypus-spur": 4,
+    "slow-worm": 4,
+    "snapstick-turtle": 1,
+    "water-shrew": 4
+   },
+   "score": 0.2969,
+   "ci": [
+    0.2419,
+    0.3519
+   ],
+   "refWins": 0.6667,
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "poison x8"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 6,
+   "games": 1824,
+   "seconds": 37
+  }
+ ]
+}

@@ -1,0 +1,90 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T14:02:35.115Z",
+ "map": {
+  "id": "md",
+  "num": 18,
+  "name": "The Glass Dunes"
+ },
+ "pool": [
+  "ant-scout",
+  "antlion-pit",
+  "armadillo-guard",
+  "badger-lumberjack",
+  "balloon-archer",
+  "barkplate-beetle",
+  "barrel-cactus",
+  "bison-bulldozer",
+  "chipmunk-forager",
+  "dune-jackal",
+  "gallery-orb-weaver",
+  "horned-lizard",
+  "ice-crevasse-wolf",
+  "mouse-sapper",
+  "nightjar-drifter",
+  "roadrunner-courier",
+  "sand-widow",
+  "sunbittern-strider",
+  "worker-ant"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "chipmunk-forager": 2,
+    "dune-jackal": 4,
+    "gallery-orb-weaver": 2,
+    "nightjar-drifter": 4,
+    "roadrunner-courier": 4,
+    "sand-widow": 4
+   },
+   "score": 0.1667,
+   "ci": [
+    0.1291,
+    0.2043
+   ],
+   "refWins": 0.6528,
+   "labels": [
+    "big (18 copies at 1+ Lumber, average 1.1)",
+    "strike-first x8",
+    "poison x6"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1820,
+   "seconds": 57
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "armadillo-guard": 3,
+    "balloon-archer": 1,
+    "barkplate-beetle": 4,
+    "chipmunk-forager": 4,
+    "dune-jackal": 4,
+    "sand-widow": 4
+   },
+   "score": 0.3417,
+   "ci": [
+    0.2956,
+    0.3877
+   ],
+   "refWins": 0.5139,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.2)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 1800,
+   "seconds": 75
+  }
+ ]
+}

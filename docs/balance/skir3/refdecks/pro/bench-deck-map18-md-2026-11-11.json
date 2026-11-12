@@ -1,0 +1,831 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T13:12:24.255Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "md",
+  "num": 18,
+  "name": "The Glass Dunes"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "alpine-swift",
+  "ant-scout",
+  "antlion-pit",
+  "anvil-thrush",
+  "apollo-butterfly",
+  "armadillo-guard",
+  "badger-lumberjack",
+  "balloon-archer",
+  "barkplate-beetle",
+  "barrel-cactus",
+  "bison-bulldozer",
+  "chipmunk-forager",
+  "dhole-matriarch",
+  "dune-jackal",
+  "eagle-owl-quartermaster",
+  "fire-ant-raft",
+  "gallery-orb-weaver",
+  "grave-grin-hyena",
+  "horned-lizard",
+  "ibex-rockcaller",
+  "ice-crevasse-wolf",
+  "mouse-sapper",
+  "nightjar-drifter",
+  "roadrunner-courier",
+  "sand-widow",
+  "stoat-cutthroat",
+  "sunbittern-strider",
+  "upside-down-bat",
+  "wolf-spider-mother",
+  "worker-ant"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Alpine Swift",
+  "Ant Scout",
+  "Antlion Pit",
+  "Anvil Thrush",
+  "Apollo Butterfly",
+  "Armadillo Guard",
+  "Badger Lumberjack",
+  "Balloon Archer",
+  "Barkplate Beetle",
+  "Barrel Cactus",
+  "Bison Bulldozer",
+  "Chipmunk Forager",
+  "Dhole Matriarch",
+  "Dune Jackal",
+  "Eagle-Owl Quartermaster",
+  "Fire Ant Raft",
+  "Gallery Orb-Weaver",
+  "Grave-Grin Hyena",
+  "Horned Lizard",
+  "Ibex Rockcaller",
+  "Ice-Crevasse Wolf",
+  "Mouse Sapper",
+  "Nightjar Drifter",
+  "Roadrunner Courier",
+  "Sand Widow",
+  "Stoat Cutthroat",
+  "Sunbittern Strider",
+  "Upside-Down Bat",
+  "Wolf Spider Mother",
+  "Worker Ant"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "ant-scout",
+   "antlion-pit",
+   "armadillo-guard",
+   "badger-lumberjack",
+   "balloon-archer",
+   "barkplate-beetle",
+   "barrel-cactus",
+   "bison-bulldozer",
+   "chipmunk-forager",
+   "dune-jackal",
+   "gallery-orb-weaver",
+   "horned-lizard",
+   "ice-crevasse-wolf",
+   "mouse-sapper",
+   "nightjar-drifter",
+   "roadrunner-courier",
+   "sand-widow",
+   "sunbittern-strider",
+   "worker-ant"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:18-1",
+   "label": "vs 18-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-2",
+   "label": "vs 18-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-3",
+   "label": "vs 18-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-4",
+   "label": "vs 18-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-5",
+   "label": "vs 18-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-6",
+   "label": "vs 18-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-7",
+   "label": "vs 18-7 miniboss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 18-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road18",
+   "label": "vs reference deck (Map 18) under 18-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "alpine-swift",
+    "anvil-thrush",
+    "apollo-butterfly",
+    "balloon-archer",
+    "eagle-owl-quartermaster",
+    "upside-down-bat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:guard",
+   "label": "guard (skill family)",
+   "cards": [
+    "alpine-marmot",
+    "armadillo-guard",
+    "badger-lumberjack",
+    "dhole-matriarch"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "antlion-pit",
+    "armadillo-guard",
+    "badger-lumberjack",
+    "balloon-archer",
+    "barkplate-beetle",
+    "barrel-cactus",
+    "bison-bulldozer",
+    "dhole-matriarch",
+    "dune-jackal",
+    "eagle-owl-quartermaster",
+    "fire-ant-raft",
+    "gallery-orb-weaver",
+    "horned-lizard",
+    "ibex-rockcaller",
+    "ice-crevasse-wolf",
+    "mouse-sapper",
+    "nightjar-drifter",
+    "roadrunner-courier",
+    "sand-widow",
+    "stoat-cutthroat",
+    "sunbittern-strider",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 6,
+   "moves": 4,
+   "games": 2120,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:guard",
+   "steps": 7,
+   "moves": 4,
+   "games": 2200,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 7,
+   "moves": 4,
+   "games": 2280,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 6,
+   "games": 2000,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 174,
+ "games": 9240,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "big (13 copies at 1+ Lumber, average 0.8)",
+    "flying x7"
+   ],
+   "deck": {
+    "anvil-thrush": 3,
+    "armadillo-guard": 3,
+    "balloon-archer": 4,
+    "barkplate-beetle": 4,
+    "ibex-rockcaller": 2,
+    "worker-ant": 4
+   },
+   "cards": [
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "worker-ant",
+     "name": "Worker Ant",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "anvil-thrush",
+     "name": "Anvil Thrush",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "armadillo-guard",
+     "name": "Armadillo Guard",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.925,
+   "ci": [
+    0.8924,
+    0.9576
+   ],
+   "avgLumber": 0.85,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 7,
+    "1": 9,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "label": "vs 18-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "label": "vs 18-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "label": "vs 18-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "label": "vs 18-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "label": "vs 18-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "label": "vs 18-6 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "label": "vs 18-7 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 18-2's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.9)",
+    "flying x11",
+    "ranged x7"
+   ],
+   "deck": {
+    "apollo-butterfly": 4,
+    "balloon-archer": 4,
+    "barkplate-beetle": 3,
+    "bison-bulldozer": 4,
+    "eagle-owl-quartermaster": 3,
+    "ibex-rockcaller": 2
+   },
+   "cards": [
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bison-bulldozer",
+     "name": "Bison Bulldozer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8917,
+   "ci": [
+    0.8535,
+    0.9298
+   ],
+   "avgLumber": 0.95,
+   "avgWait": 1.45,
+   "curve": {
+    "0": 4,
+    "1": 13,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    },
+    {
+     "f": "ranged",
+     "n": 7
+    },
+    {
+     "f": "spite",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "label": "vs 18-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "label": "vs 18-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "label": "vs 18-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "label": "vs 18-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "label": "vs 18-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "label": "vs 18-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "label": "vs 18-7 miniboss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 18-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "family:guard",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.0)",
+    "guard x8",
+    "spite x7"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "armadillo-guard": 4,
+    "barkplate-beetle": 4,
+    "barrel-cactus": 3,
+    "ibex-rockcaller": 2,
+    "ice-crevasse-wolf": 3
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "armadillo-guard",
+     "name": "Armadillo Guard",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "barrel-cactus",
+     "name": "Barrel Cactus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ice-crevasse-wolf",
+     "name": "Ice-Crevasse Wolf",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8625,
+   "ci": [
+    0.8219,
+    0.9031
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.25,
+   "curve": {
+    "0": 4,
+    "1": 12,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    },
+    {
+     "f": "spite",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "label": "vs 18-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "label": "vs 18-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "label": "vs 18-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "label": "vs 18-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "label": "vs 18-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "label": "vs 18-6 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "label": "vs 18-7 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 18-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.0)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "antlion-pit": 4,
+    "badger-lumberjack": 4,
+    "balloon-archer": 3,
+    "bison-bulldozer": 4,
+    "ibex-rockcaller": 2,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bison-bulldozer",
+     "name": "Bison Bulldozer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8583,
+   "ci": [
+    0.8191,
+    0.8975
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.25,
+   "curve": {
+    "1": 20
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "label": "vs 18-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "label": "vs 18-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "label": "vs 18-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "label": "vs 18-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "label": "vs 18-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "label": "vs 18-6 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "label": "vs 18-7 miniboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 18-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 15
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map md --pool alpine-marmot,alpine-swift,ant-scout,antlion-pit,anvil-thrush,apollo-butterfly,armadillo-guard,badger-lumberjack,balloon-archer,barkplate-beetle,barrel-cactus,bison-bulldozer,chipmunk-forager,dhole-matriarch,dune-jackal,eagle-owl-quartermaster,fire-ant-raft,gallery-orb-weaver,grave-grin-hyena,horned-lizard,ibex-rockcaller,ice-crevasse-wolf,mouse-sapper,nightjar-drifter,roadrunner-courier,sand-widow,stoat-cutthroat,sunbittern-strider,upside-down-bat,wolf-spider-mother,worker-ant --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,family:guard,big,open --anchor ant-scout,antlion-pit,armadillo-guard,badger-lumberjack,balloon-archer,barkplate-beetle,barrel-cactus,bison-bulldozer,chipmunk-forager,dune-jackal,gallery-orb-weaver,horned-lizard,ice-crevasse-wolf,mouse-sapper,nightjar-drifter,roadrunner-courier,sand-widow,sunbittern-strider,worker-ant --anchor-min 10 --level 1 --mode map-true"
+}

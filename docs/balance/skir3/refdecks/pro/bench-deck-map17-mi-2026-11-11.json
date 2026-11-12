@@ -1,0 +1,713 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T13:09:30.037Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow"
+ },
+ "level": 1,
+ "pool": [
+  "arctic-tern",
+  "ashbone-ghoul",
+  "dhole-matriarch",
+  "eagle-owl-quartermaster",
+  "glacier-yak",
+  "grave-grin-hyena",
+  "greenland-shark",
+  "harbor-seal",
+  "harp-seal-pup",
+  "ibex-rockcaller",
+  "ice-crevasse-wolf",
+  "krill-swarm",
+  "lemming-swarm",
+  "lone-grey-wolf",
+  "magma-wraith",
+  "mountain-hare",
+  "polar-bear",
+  "ringed-seal",
+  "snow-ermine",
+  "stoat-cutthroat",
+  "talus-pika",
+  "walrus-icebreaker",
+  "wolf-spider-mother",
+  "wolfsbane-alpha"
+ ],
+ "poolNames": [
+  "Arctic Tern",
+  "Ashbone Ghoul",
+  "Dhole Matriarch",
+  "Eagle-Owl Quartermaster",
+  "Glacier Yak",
+  "Grave-Grin Hyena",
+  "Greenland Shark",
+  "Harbor Seal",
+  "Harp Seal Pup",
+  "Ibex Rockcaller",
+  "Ice-Crevasse Wolf",
+  "Krill Swarm",
+  "Lemming Swarm",
+  "Lone Grey Wolf",
+  "Magma Wraith",
+  "Mountain Hare",
+  "Polar Bear",
+  "Ringed Seal",
+  "Snow Ermine",
+  "Stoat Cutthroat",
+  "Talus Pika",
+  "Walrus Icebreaker",
+  "Wolf Spider Mother",
+  "Wolfsbane Alpha"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "arctic-tern",
+   "glacier-yak",
+   "greenland-shark",
+   "harp-seal-pup",
+   "ice-crevasse-wolf",
+   "lemming-swarm",
+   "polar-bear",
+   "ringed-seal",
+   "snow-ermine",
+   "talus-pika",
+   "walrus-icebreaker",
+   "wolfsbane-alpha"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:17-A-1",
+   "label": "vs 17-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-2",
+   "label": "vs 17-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-3",
+   "label": "vs 17-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-4",
+   "label": "vs 17-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 17-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road21",
+   "label": "vs reference deck (Map 21) under 17-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:evasion",
+   "label": "evasion (skill family)",
+   "cards": [
+    "harbor-seal",
+    "magma-wraith",
+    "mountain-hare",
+    "polar-bear",
+    "ringed-seal",
+    "snow-ermine"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "greenland-shark",
+    "harbor-seal",
+    "krill-swarm",
+    "ringed-seal"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "arctic-tern",
+    "ashbone-ghoul",
+    "grave-grin-hyena",
+    "harp-seal-pup",
+    "krill-swarm",
+    "lemming-swarm",
+    "mountain-hare",
+    "snow-ermine",
+    "talus-pika"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:evasion",
+   "steps": 12,
+   "moves": 4,
+   "games": 2170,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:tide",
+   "steps": 12,
+   "moves": 5,
+   "games": 2170,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "swarm",
+   "steps": 12,
+   "moves": 5,
+   "games": 2142,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 15,
+   "moves": 8,
+   "games": 2030,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 146,
+ "games": 8960,
+ "decks": [
+  {
+   "focus": "family:evasion",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "evasion x8",
+    "swarm x7"
+   ],
+   "deck": {
+    "greenland-shark": 3,
+    "ice-crevasse-wolf": 2,
+    "krill-swarm": 3,
+    "lemming-swarm": 4,
+    "mountain-hare": 4,
+    "snow-ermine": 4
+   },
+   "cards": [
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "greenland-shark",
+     "name": "Greenland Shark",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "krill-swarm",
+     "name": "Krill Swarm",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ice-crevasse-wolf",
+     "name": "Ice-Crevasse Wolf",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8274,
+   "ci": [
+    0.7753,
+    0.8795
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.55,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 8
+    },
+    {
+     "f": "swarm",
+     "n": 7
+    },
+    {
+     "f": "tide",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "swarm x8"
+   ],
+   "deck": {
+    "ashbone-ghoul": 4,
+    "harp-seal-pup": 4,
+    "ice-crevasse-wolf": 2,
+    "krill-swarm": 4,
+    "lemming-swarm": 4,
+    "walrus-icebreaker": 2
+   },
+   "cards": [
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "harp-seal-pup",
+     "name": "Harp Seal Pup",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "krill-swarm",
+     "name": "Krill Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ice-crevasse-wolf",
+     "name": "Ice-Crevasse Wolf",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8274,
+   "ci": [
+    0.7737,
+    0.8811
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "swarm",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "tide x8",
+    "evasion x7"
+   ],
+   "deck": {
+    "arctic-tern": 4,
+    "grave-grin-hyena": 3,
+    "ibex-rockcaller": 2,
+    "krill-swarm": 4,
+    "ringed-seal": 4,
+    "snow-ermine": 3
+   },
+   "cards": [
+    {
+     "id": "arctic-tern",
+     "name": "Arctic Tern",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "krill-swarm",
+     "name": "Krill Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ringed-seal",
+     "name": "Ringed Seal",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7619,
+   "ci": [
+    0.7038,
+    0.82
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.75,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    },
+    {
+     "f": "evasion",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "evasion x8"
+   ],
+   "deck": {
+    "arctic-tern": 4,
+    "ashbone-ghoul": 4,
+    "lemming-swarm": 2,
+    "lone-grey-wolf": 2,
+    "magma-wraith": 4,
+    "snow-ermine": 4
+   },
+   "cards": [
+    {
+     "id": "arctic-tern",
+     "name": "Arctic Tern",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "magma-wraith",
+     "name": "Magma Wraith",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7381,
+   "ci": [
+    0.6758,
+    0.8004
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mi --pool arctic-tern,ashbone-ghoul,dhole-matriarch,eagle-owl-quartermaster,glacier-yak,grave-grin-hyena,greenland-shark,harbor-seal,harp-seal-pup,ibex-rockcaller,ice-crevasse-wolf,krill-swarm,lemming-swarm,lone-grey-wolf,magma-wraith,mountain-hare,polar-bear,ringed-seal,snow-ermine,stoat-cutthroat,talus-pika,walrus-icebreaker,wolf-spider-mother,wolfsbane-alpha --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:evasion,family:tide,swarm,open --anchor arctic-tern,glacier-yak,greenland-shark,harp-seal-pup,ice-crevasse-wolf,lemming-swarm,polar-bear,ringed-seal,snow-ermine,talus-pika,walrus-icebreaker,wolfsbane-alpha --anchor-min 10 --level 1 --mode map-true"
+}

@@ -1,0 +1,87 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:56:41.952Z",
+ "map": {
+  "id": "ml",
+  "num": 15,
+  "name": "The Long Grass"
+ },
+ "pool": [
+  "border-collie",
+  "bramblewood-lynx",
+  "cataphract-destrier",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "elderhorn-monarch",
+  "fawn-scout",
+  "hoopoe-herald",
+  "mallard-marauder",
+  "mosquito-cloud",
+  "plains-zebra",
+  "savanna-cheetah",
+  "siege-rhino",
+  "stoat-cutthroat",
+  "sworn-shieldbearer",
+  "tasmanian-devil",
+  "village-miller",
+  "warhorse-charger"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "bramblewood-lynx": 3,
+    "cataphract-destrier": 4,
+    "elderhorn-monarch": 4,
+    "mallard-marauder": 1,
+    "tasmanian-devil": 4,
+    "warhorse-charger": 4
+   },
+   "score": 0.15,
+   "ci": [
+    0.1075,
+    0.1925
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 2.2)"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 2020,
+   "seconds": 25
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "cataphract-destrier": 4,
+    "dust-hyena": 3,
+    "elderhorn-monarch": 4,
+    "fawn-scout": 3,
+    "sworn-shieldbearer": 4,
+    "tasmanian-devil": 2
+   },
+   "score": 0.1958,
+   "ci": [
+    0.148,
+    0.2437
+   ],
+   "refWins": 0.875,
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.7)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 1940,
+   "seconds": 28
+  }
+ ]
+}

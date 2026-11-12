@@ -1,0 +1,81 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:32:18.573Z",
+ "map": {
+  "id": "mg",
+  "num": 2,
+  "name": "Smugglers' Grotto"
+ },
+ "pool": [
+  "glow-worm",
+  "gull-thief",
+  "limpet-clinger",
+  "old-shell",
+  "pincushion-urchin",
+  "rock-pool-starfish",
+  "salvager-hermit-crab",
+  "trash-panda-trickster"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "gull-thief": 3,
+    "limpet-clinger": 4,
+    "old-shell": 1,
+    "pincushion-urchin": 4,
+    "rock-pool-starfish": 4,
+    "salvager-hermit-crab": 4
+   },
+   "score": 0.3036,
+   "ci": [
+    0.2469,
+    0.3603
+   ],
+   "refWins": 0.7083,
+   "labels": [
+    "swarm (19 copies at 0 Lumber)",
+    "economy (7 resource makers)",
+    "tide x12"
+   ],
+   "apartFrom": [],
+   "steps": 11,
+   "games": 1834,
+   "seconds": 57
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "glow-worm": 4,
+    "gull-thief": 4,
+    "limpet-clinger": 2,
+    "old-shell": 2,
+    "rock-pool-starfish": 4,
+    "trash-panda-trickster": 4
+   },
+   "score": 0.6369,
+   "ci": [
+    0.5729,
+    0.7009
+   ],
+   "refWins": 0.4167,
+   "labels": [
+    "swarm (18 copies at 0 Lumber)",
+    "economy (8 resource makers)",
+    "tide x6"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 18,
+   "games": 1778,
+   "seconds": 49
+  }
+ ]
+}

@@ -1,0 +1,883 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T12:41:01.815Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "m7",
+  "num": 10,
+  "name": "Coral Current"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "alligator-gar",
+  "banded-sea-krait",
+  "clownfish-scout",
+  "conch-crawler",
+  "coral-current-eel",
+  "crown-of-thorns-star",
+  "dolphin-knight",
+  "giant-cave-huntsman",
+  "giant-clam",
+  "horseshoe-crab",
+  "ironclaw-fiddler",
+  "krill-swarm",
+  "limpet-clinger",
+  "mangrove-manatee",
+  "moon-jelly",
+  "mudpuppy",
+  "newt-doctor",
+  "orca-vanguard",
+  "otter-centurion",
+  "pincushion-urchin",
+  "reef-admiral",
+  "reef-shark",
+  "riptide-eel",
+  "rock-pool-starfish",
+  "sea-turtle-elder",
+  "voltaic-eel",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Alligator Gar",
+  "Banded Sea Krait",
+  "Clownfish Scout",
+  "Conch Crawler",
+  "Coral Current Eel",
+  "Crown-of-thorns Star",
+  "Dolphin Outrider",
+  "Giant Cave Huntsman",
+  "Giant Clam",
+  "Horseshoe Crab",
+  "Ironclaw Fiddler",
+  "Krill Swarm",
+  "Limpet Clinger",
+  "Mangrove Manatee",
+  "Moon Jelly",
+  "Mudpuppy",
+  "Newt Doctor",
+  "Orca Vanguard",
+  "Otter Centurion",
+  "Pincushion Urchin",
+  "Reef Admiral",
+  "Reef Shark",
+  "Riptide Eel",
+  "Rock Pool Starfish",
+  "Sea Turtle Elder",
+  "Voltaic Eel",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "clownfish-scout",
+   "conch-crawler",
+   "coral-current-eel",
+   "crown-of-thorns-star",
+   "dolphin-knight",
+   "giant-clam",
+   "ironclaw-fiddler",
+   "krill-swarm",
+   "moon-jelly",
+   "orca-vanguard",
+   "pincushion-urchin",
+   "reef-admiral",
+   "reef-shark",
+   "riptide-eel",
+   "sea-turtle-elder",
+   "voltaic-eel"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:10-1",
+   "label": "vs 10-1 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-2",
+   "label": "vs 10-2 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-3",
+   "label": "vs 10-3 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-4",
+   "label": "vs 10-4 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-5",
+   "label": "vs 10-5 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-6",
+   "label": "vs 10-6 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-7",
+   "label": "vs 10-7 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-8",
+   "label": "vs 10-8 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-9",
+   "label": "vs 10-9 boss's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 10-1's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:road10",
+   "label": "vs reference deck (Map 10) under 10-2's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
+   "weight": 0.0833
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "alligator-gar",
+    "clownfish-scout",
+    "conch-crawler",
+    "coral-current-eel",
+    "crown-of-thorns-star",
+    "dolphin-knight",
+    "giant-clam",
+    "ironclaw-fiddler",
+    "krill-swarm",
+    "limpet-clinger",
+    "mangrove-manatee",
+    "moon-jelly",
+    "orca-vanguard",
+    "pincushion-urchin",
+    "reef-admiral",
+    "reef-shark",
+    "riptide-eel",
+    "rock-pool-starfish",
+    "sea-turtle-elder",
+    "voltaic-eel"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "alligator-gar",
+    "conch-crawler",
+    "giant-clam",
+    "horseshoe-crab",
+    "ironclaw-fiddler",
+    "limpet-clinger",
+    "sea-turtle-elder"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "ironclaw-fiddler",
+    "orca-vanguard",
+    "reef-shark",
+    "sea-turtle-elder",
+    "voltaic-eel"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:tide",
+   "steps": 6,
+   "moves": 1,
+   "games": 2280,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:armor",
+   "steps": 6,
+   "moves": 3,
+   "games": 2208,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "big",
+   "steps": 6,
+   "moves": 3,
+   "games": 2352,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 2,
+   "games": 2088,
+   "apartFromEarlier": 14
+  }
+ ],
+ "apart": 10,
+ "seconds": 77,
+ "games": 9696,
+ "decks": [
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "tide x15"
+   ],
+   "deck": {
+    "alley-cat": 1,
+    "clownfish-scout": 4,
+    "dolphin-knight": 3,
+    "krill-swarm": 4,
+    "mudpuppy": 4,
+    "riptide-eel": 4
+   },
+   "cards": [
+    {
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "krill-swarm",
+     "name": "Krill Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "riptide-eel",
+     "name": "Riptide Eel",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dolphin-knight",
+     "name": "Dolphin Outrider",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.9618,
+   "ci": [
+    0.9409,
+    0.9827
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.55,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 15
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-1",
+     "label": "vs 10-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-2",
+     "label": "vs 10-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-3",
+     "label": "vs 10-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-4",
+     "label": "vs 10-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-5",
+     "label": "vs 10-5 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-6",
+     "label": "vs 10-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-7",
+     "label": "vs 10-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-8",
+     "label": "vs 10-8 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-9",
+     "label": "vs 10-9 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road10",
+     "label": "vs reference deck (Map 10) under 10-2's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "tide x14",
+    "armor x7"
+   ],
+   "deck": {
+    "conch-crawler": 4,
+    "coral-current-eel": 3,
+    "giant-cave-huntsman": 3,
+    "limpet-clinger": 3,
+    "pincushion-urchin": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "coral-current-eel",
+     "name": "Coral Current Eel",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "limpet-clinger",
+     "name": "Limpet Clinger",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.9201,
+   "ci": [
+    0.8945,
+    0.9458
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 14
+    },
+    {
+     "f": "armor",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-1",
+     "label": "vs 10-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-2",
+     "label": "vs 10-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-3",
+     "label": "vs 10-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-4",
+     "label": "vs 10-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-5",
+     "label": "vs 10-5 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-6",
+     "label": "vs 10-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-7",
+     "label": "vs 10-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-8",
+     "label": "vs 10-8 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-9",
+     "label": "vs 10-9 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road10",
+     "label": "vs reference deck (Map 10) under 10-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "tide x14",
+    "armor x10"
+   ],
+   "deck": {
+    "dolphin-knight": 3,
+    "horseshoe-crab": 3,
+    "ironclaw-fiddler": 3,
+    "limpet-clinger": 4,
+    "newt-doctor": 3,
+    "riptide-eel": 4
+   },
+   "cards": [
+    {
+     "id": "limpet-clinger",
+     "name": "Limpet Clinger",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "riptide-eel",
+     "name": "Riptide Eel",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dolphin-knight",
+     "name": "Dolphin Outrider",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "horseshoe-crab",
+     "name": "Horseshoe Crab",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "ironclaw-fiddler",
+     "name": "Ironclaw Fiddler",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "rare"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8785,
+   "ci": [
+    0.8456,
+    0.9114
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 1.1,
+   "curve": {
+    "0": 10,
+    "1": 7,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 14
+    },
+    {
+     "f": "armor",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-1",
+     "label": "vs 10-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-2",
+     "label": "vs 10-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-3",
+     "label": "vs 10-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-4",
+     "label": "vs 10-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-5",
+     "label": "vs 10-5 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-6",
+     "label": "vs 10-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-7",
+     "label": "vs 10-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-8",
+     "label": "vs 10-8 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-9",
+     "label": "vs 10-9 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road10",
+     "label": "vs reference deck (Map 10) under 10-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (9 copies at 2+ Lumber, average 0.9)",
+    "tide x16",
+    "armor x6"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "dolphin-knight": 3,
+    "ironclaw-fiddler": 3,
+    "pincushion-urchin": 4,
+    "sea-turtle-elder": 3,
+    "voltaic-eel": 3
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dolphin-knight",
+     "name": "Dolphin Outrider",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "ironclaw-fiddler",
+     "name": "Ironclaw Fiddler",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "rare"
+    },
+    {
+     "id": "sea-turtle-elder",
+     "name": "Sea Turtle Elder",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "voltaic-eel",
+     "name": "Voltaic Eel",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8576,
+   "ci": [
+    0.8234,
+    0.8919
+   ],
+   "avgLumber": 0.9,
+   "avgWait": 1.25,
+   "curve": {
+    "0": 11,
+    "2": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 16
+    },
+    {
+     "f": "armor",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-1",
+     "label": "vs 10-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-2",
+     "label": "vs 10-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-3",
+     "label": "vs 10-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-4",
+     "label": "vs 10-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-5",
+     "label": "vs 10-5 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-6",
+     "label": "vs 10-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-7",
+     "label": "vs 10-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-8",
+     "label": "vs 10-8 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-9",
+     "label": "vs 10-9 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road10",
+     "label": "vs reference deck (Map 10) under 10-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m7 --pool alley-cat,alligator-gar,banded-sea-krait,clownfish-scout,conch-crawler,coral-current-eel,crown-of-thorns-star,dolphin-knight,giant-cave-huntsman,giant-clam,horseshoe-crab,ironclaw-fiddler,krill-swarm,limpet-clinger,mangrove-manatee,moon-jelly,mudpuppy,newt-doctor,orca-vanguard,otter-centurion,pincushion-urchin,reef-admiral,reef-shark,riptide-eel,rock-pool-starfish,sea-turtle-elder,voltaic-eel,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:tide,family:armor,big,open --anchor clownfish-scout,conch-crawler,coral-current-eel,crown-of-thorns-star,dolphin-knight,giant-clam,ironclaw-fiddler,krill-swarm,moon-jelly,orca-vanguard,pincushion-urchin,reef-admiral,reef-shark,riptide-eel,sea-turtle-elder,voltaic-eel --anchor-min 10 --level 1 --mode map-true"
+}

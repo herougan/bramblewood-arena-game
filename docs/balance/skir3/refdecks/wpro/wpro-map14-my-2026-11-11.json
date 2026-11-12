@@ -1,0 +1,77 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:55:48.473Z",
+ "map": {
+  "id": "my",
+  "num": 14,
+  "name": "The Canopy"
+ },
+ "pool": [
+  "amber-cicada",
+  "fishing-cat",
+  "hoopoe-herald",
+  "howler-monkey",
+  "mosquito-cloud",
+  "pride-queen",
+  "slow-loris",
+  "toucan-courier"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "amber-cicada": 4,
+    "fishing-cat": 3,
+    "howler-monkey": 3,
+    "mosquito-cloud": 4,
+    "pride-queen": 2,
+    "toucan-courier": 4
+   },
+   "score": 0.2422,
+   "ci": [
+    0.1863,
+    0.2981
+   ],
+   "refWins": 0.7083,
+   "labels": [
+    "big (9 copies at 1 Lumber, average 0.5)"
+   ],
+   "apartFrom": [],
+   "steps": 9,
+   "games": 1744,
+   "seconds": 49
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "amber-cicada": 4,
+    "fishing-cat": 3,
+    "hoopoe-herald": 4,
+    "howler-monkey": 4,
+    "pride-queen": 2,
+    "slow-loris": 3
+   },
+   "score": 0.3542,
+   "ci": [
+    0.2994,
+    0.4089
+   ],
+   "refWins": 0.5972,
+   "labels": [
+    "big (9 copies at 1 Lumber, average 0.5)"
+   ],
+   "apartFrom": [
+    8
+   ],
+   "steps": 0,
+   "games": 192,
+   "seconds": 10
+  }
+ ]
+}

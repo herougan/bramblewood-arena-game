@@ -1,0 +1,85 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T14:06:37.173Z",
+ "map": {
+  "id": "m3",
+  "num": 19,
+  "name": "Ashen Spurn"
+ },
+ "pool": [
+  "armadillo-guard",
+  "caustic-scorpion",
+  "dune-jackal",
+  "elderhorn-monarch",
+  "fire-salamander",
+  "glacier-yak",
+  "honey-badger-fury",
+  "horned-lizard",
+  "obsidian-scorpion",
+  "pinecone-sapper",
+  "polar-bear",
+  "quillback-elder",
+  "quillguard",
+  "smoke-raccoon",
+  "stalactite-golem",
+  "sulfur-cinder-moth",
+  "walrus-icebreaker"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "dune-jackal": 4,
+    "glacier-yak": 4,
+    "honey-badger-fury": 4,
+    "smoke-raccoon": 4,
+    "stalactite-golem": 4
+   },
+   "score": 0.0833,
+   "ci": [
+    0.048,
+    0.1187
+   ],
+   "refWins": 0.9306,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1800,
+   "seconds": 57
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "caustic-scorpion": 4,
+    "elderhorn-monarch": 4,
+    "glacier-yak": 4,
+    "quillback-elder": 4,
+    "stalactite-golem": 4
+   },
+   "score": 0.1435,
+   "ci": [
+    0.1036,
+    0.1834
+   ],
+   "refWins": 0.9444,
+   "labels": [
+    "big (16 copies at 2+ Lumber, average 2.2)",
+    "armor x8"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 6,
+   "games": 1818,
+   "seconds": 71
+  }
+ ]
+}

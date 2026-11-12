@@ -1,0 +1,706 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T12:59:15.895Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "my",
+  "num": 14,
+  "name": "The Canopy"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-swift",
+  "amber-cicada",
+  "barkplate-beetle",
+  "eagle-owl-quartermaster",
+  "fishing-cat",
+  "fungus-gnat-cloud",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "howler-monkey",
+  "ibex-rockcaller",
+  "lyrebird-mimic",
+  "mosquito-cloud",
+  "pride-queen",
+  "proboscis-monkey",
+  "slow-loris",
+  "stoat-cutthroat",
+  "sunbittern-strider",
+  "toucan-courier",
+  "upside-down-bat",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alpine Swift",
+  "Amber Cicada",
+  "Barkplate Beetle",
+  "Eagle-Owl Quartermaster",
+  "Fishing Cat",
+  "Fungus Gnat Cloud",
+  "Grave-Grin Hyena",
+  "Hoopoe Herald",
+  "Howler Monkey",
+  "Ibex Rockcaller",
+  "Lyrebird Mimic",
+  "Mosquito Cloud",
+  "Pride Queen",
+  "Proboscis Monkey",
+  "Slow Loris",
+  "Stoat Cutthroat",
+  "Sunbittern Strider",
+  "Toucan Courier",
+  "Upside-Down Bat",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "amber-cicada",
+   "fishing-cat",
+   "hoopoe-herald",
+   "howler-monkey",
+   "mosquito-cloud",
+   "pride-queen",
+   "slow-loris",
+   "toucan-courier"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:14-A-1",
+   "label": "vs 14-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-2",
+   "label": "vs 14-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-3",
+   "label": "vs 14-A-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-4",
+   "label": "vs 14-A-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-5",
+   "label": "vs 14-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 14-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road18",
+   "label": "vs reference deck (Map 18) under 14-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "alpine-swift",
+    "eagle-owl-quartermaster",
+    "fungus-gnat-cloud",
+    "mosquito-cloud",
+    "upside-down-bat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "alpine-swift",
+    "fishing-cat",
+    "pride-queen",
+    "stoat-cutthroat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "amber-cicada",
+    "barkplate-beetle",
+    "eagle-owl-quartermaster",
+    "fishing-cat",
+    "ibex-rockcaller",
+    "lyrebird-mimic",
+    "pride-queen",
+    "proboscis-monkey",
+    "stoat-cutthroat",
+    "sunbittern-strider",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 9,
+   "moves": 6,
+   "games": 2160,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 17,
+   "moves": 7,
+   "games": 2112,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 10,
+   "moves": 5,
+   "games": 2192,
+   "apartFromEarlier": 9
+  },
+  {
+   "focus": "open",
+   "steps": 14,
+   "moves": 6,
+   "games": 2096,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 221,
+ "games": 9072,
+ "decks": [
+  {
+   "focus": "big",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)"
+   ],
+   "deck": {
+    "hoopoe-herald": 4,
+    "howler-monkey": 4,
+    "lyrebird-mimic": 4,
+    "slow-loris": 3,
+    "stoat-cutthroat": 3,
+    "wolf-spider-mother": 2
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "howler-monkey",
+     "name": "Howler Monkey",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lyrebird-mimic",
+     "name": "Lyrebird Mimic",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "slow-loris",
+     "name": "Slow Loris",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8281,
+   "ci": [
+    0.7787,
+    0.8776
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "barkplate-beetle": 4,
+    "grave-grin-hyena": 4,
+    "hoopoe-herald": 4,
+    "howler-monkey": 3,
+    "ibex-rockcaller": 2,
+    "slow-loris": 3
+   },
+   "cards": [
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "howler-monkey",
+     "name": "Howler Monkey",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "slow-loris",
+     "name": "Slow Loris",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7708,
+   "ci": [
+    0.7171,
+    0.8246
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 14,
+    "1": 2,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "strike-first x8"
+   ],
+   "deck": {
+    "alpine-swift": 3,
+    "fishing-cat": 2,
+    "grave-grin-hyena": 4,
+    "hoopoe-herald": 4,
+    "stoat-cutthroat": 3,
+    "toucan-courier": 4
+   },
+   "cards": [
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "toucan-courier",
+     "name": "Toucan Courier",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "fishing-cat",
+     "name": "Fishing Cat",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7682,
+   "ci": [
+    0.7219,
+    0.8146
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.7708,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.125,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "flying x8"
+   ],
+   "deck": {
+    "howler-monkey": 2,
+    "ibex-rockcaller": 2,
+    "lyrebird-mimic": 4,
+    "mosquito-cloud": 4,
+    "slow-loris": 4,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "lyrebird-mimic",
+     "name": "Lyrebird Mimic",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mosquito-cloud",
+     "name": "Mosquito Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "slow-loris",
+     "name": "Slow Loris",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "howler-monkey",
+     "name": "Howler Monkey",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7109,
+   "ci": [
+    0.6493,
+    0.7726
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.7292,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map my --pool alpine-swift,amber-cicada,barkplate-beetle,eagle-owl-quartermaster,fishing-cat,fungus-gnat-cloud,grave-grin-hyena,hoopoe-herald,howler-monkey,ibex-rockcaller,lyrebird-mimic,mosquito-cloud,pride-queen,proboscis-monkey,slow-loris,stoat-cutthroat,sunbittern-strider,toucan-courier,upside-down-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,family:strike-first,big,open --anchor amber-cicada,fishing-cat,hoopoe-herald,howler-monkey,mosquito-cloud,pride-queen,slow-loris,toucan-courier --anchor-min 10 --level 1 --mode map-true"
+}

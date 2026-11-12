@@ -1,0 +1,81 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:38:27.889Z",
+ "map": {
+  "id": "ms",
+  "num": 5,
+  "name": "The Sunken Grove"
+ },
+ "pool": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "cypress-root-lurker",
+  "mudflat-godwit",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "old-snapjaw",
+  "peat-cutter-vole",
+  "swamp-alligator",
+  "venomlord-serpent"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "anhinga-spearbird": 4,
+    "bog-leech": 1,
+    "cypress-root-lurker": 4,
+    "old-snapjaw": 3,
+    "swamp-alligator": 4,
+    "venomlord-serpent": 4
+   },
+   "score": 0.0952,
+   "ci": [
+    0.0604,
+    0.13
+   ],
+   "refWins": 0.9583,
+   "labels": [
+    "big (11 copies at 2+ Lumber, average 1.7)",
+    "guard x8",
+    "armor x7"
+   ],
+   "apartFrom": [],
+   "steps": 8,
+   "games": 1834,
+   "seconds": 30
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "anhinga-spearbird": 2,
+    "bog-leech": 4,
+    "newt-doctor": 4,
+    "nutria-reedcutter": 3,
+    "swamp-alligator": 3,
+    "venomlord-serpent": 4
+   },
+   "score": 0.2381,
+   "ci": [
+    0.1912,
+    0.2849
+   ],
+   "refWins": 0.8472,
+   "labels": [
+    "midrange (average 1.0 Lumber)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 9,
+   "games": 1820,
+   "seconds": 37
+  }
+ ]
+}

@@ -1,0 +1,90 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-12T13:58:40.035Z",
+ "map": {
+  "id": "m6",
+  "num": 17,
+  "name": "Wolfsbane Tundra"
+ },
+ "pool": [
+  "arctic-tern",
+  "border-collie",
+  "boreal-elk",
+  "briarback-hedgehog",
+  "cataphract-destrier",
+  "cone-cutter-squirrel",
+  "elderhorn-monarch",
+  "glacier-yak",
+  "harbor-seal",
+  "ice-crevasse-wolf",
+  "polar-bear",
+  "ringed-seal",
+  "snow-ermine",
+  "snowshoe-hare",
+  "taiga-lynx",
+  "walrus-icebreaker",
+  "warhorse-charger",
+  "wolfsbane-alpha",
+  "woodland-caribou"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "boreal-elk": 4,
+    "cataphract-destrier": 4,
+    "elderhorn-monarch": 4,
+    "glacier-yak": 4,
+    "warhorse-charger": 4
+   },
+   "score": 0.0189,
+   "ci": [
+    0.0021,
+    0.0358
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (12 copies at 3+ Lumber, average 2.8)",
+    "cleave x8"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 1826,
+   "seconds": 25
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "elderhorn-monarch": 3,
+    "glacier-yak": 2,
+    "ringed-seal": 4,
+    "taiga-lynx": 3,
+    "warhorse-charger": 4,
+    "woodland-caribou": 4
+   },
+   "score": 0.1117,
+   "ci": [
+    0.076,
+    0.1475
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (5 copies at 3+ Lumber, average 1.7)",
+    "evasion x7",
+    "cold x6"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 4,
+   "games": 1782,
+   "seconds": 35
+  }
+ ]
+}

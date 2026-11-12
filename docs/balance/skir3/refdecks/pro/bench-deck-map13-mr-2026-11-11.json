@@ -1,0 +1,811 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T12:53:41.568Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "mr",
+  "num": 13,
+  "name": "The Redwood Deep"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "anhinga-spearbird",
+  "badger-lumberjack",
+  "balloon-archer",
+  "bear-cub",
+  "beaver-feller",
+  "blue-ringed-octopus",
+  "box-turtle",
+  "burrow-rabbit",
+  "cunning-vixen",
+  "eagle-owl-quartermaster",
+  "feral-tomcat",
+  "fox-kit",
+  "grass-snake",
+  "grizzly-vanguard",
+  "ibex-rockcaller",
+  "lyrebird-mimic",
+  "marsh-mallow-hare",
+  "monarch-wingblade",
+  "mountain-hare",
+  "otter-centurion",
+  "owl-nightwatch",
+  "pika-hoarder",
+  "pine-marten",
+  "redwood-woodpecker",
+  "river-mink",
+  "sergeant-bramblefox",
+  "slow-worm",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Anhinga Spearbird",
+  "Badger Lumberjack",
+  "Balloon Archer",
+  "Bear Cub",
+  "Beaver Feller",
+  "Blue-ringed Octopus",
+  "Box Turtle",
+  "Burrow Rabbit",
+  "Cunning Vixen",
+  "Eagle-Owl Quartermaster",
+  "Tomcat",
+  "Fox Kit",
+  "Grass Snake",
+  "Grizzly Vanguard",
+  "Ibex Rockcaller",
+  "Lyrebird Mimic",
+  "Marsh-mallow Hare",
+  "Monarch Wingblade",
+  "Mountain Hare",
+  "Otter Centurion",
+  "Owl Nightwatch",
+  "Pika Hoarder",
+  "Pine Marten",
+  "Redwood Woodpecker",
+  "River Mink",
+  "Sergeant Bramblefox",
+  "Slow-worm",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "anhinga-spearbird",
+   "badger-lumberjack",
+   "balloon-archer",
+   "bear-cub",
+   "beaver-feller",
+   "feral-tomcat",
+   "fox-kit",
+   "grass-snake",
+   "grizzly-vanguard",
+   "marsh-mallow-hare",
+   "monarch-wingblade",
+   "owl-nightwatch",
+   "pika-hoarder",
+   "pine-marten",
+   "redwood-woodpecker",
+   "sergeant-bramblefox",
+   "slow-worm"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:13-1",
+   "label": "vs 13-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-2",
+   "label": "vs 13-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-3",
+   "label": "vs 13-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-4",
+   "label": "vs 13-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-5",
+   "label": "vs 13-5 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-6",
+   "label": "vs 13-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-7",
+   "label": "vs 13-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-8",
+   "label": "vs 13-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 13-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road13",
+   "label": "vs reference deck (Map 13) under 13-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "badger-lumberjack",
+    "beaver-feller",
+    "redwood-woodpecker"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "balloon-archer",
+    "eagle-owl-quartermaster",
+    "monarch-wingblade",
+    "owl-nightwatch"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "anhinga-spearbird",
+    "cunning-vixen",
+    "feral-tomcat",
+    "pine-marten"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 6,
+   "moves": 2,
+   "games": 2178,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "family:flying",
+   "steps": 8,
+   "moves": 4,
+   "games": 2046,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 7,
+   "moves": 2,
+   "games": 2222,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 1,
+   "games": 2024,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 138,
+ "games": 9174,
+ "decks": [
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "strike-first x8"
+   ],
+   "deck": {
+    "anhinga-spearbird": 4,
+    "bear-cub": 4,
+    "box-turtle": 4,
+    "feral-tomcat": 4,
+    "lyrebird-mimic": 3,
+    "pika-hoarder": 1
+   },
+   "cards": [
+    {
+     "id": "anhinga-spearbird",
+     "name": "Anhinga Spearbird",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bear-cub",
+     "name": "Bear Cub",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "feral-tomcat",
+     "name": "Tomcat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lyrebird-mimic",
+     "name": "Lyrebird Mimic",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.875,
+   "ci": [
+    0.8421,
+    0.9079
+   ],
+   "avgLumber": 0.35,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 13,
+    "1": 7
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "economy (12 resource makers)"
+   ],
+   "deck": {
+    "badger-lumberjack": 4,
+    "beaver-feller": 4,
+    "burrow-rabbit": 4,
+    "ibex-rockcaller": 2,
+    "monarch-wingblade": 2,
+    "redwood-woodpecker": 4
+   },
+   "cards": [
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "beaver-feller",
+     "name": "Beaver Feller",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "redwood-woodpecker",
+     "name": "Redwood Woodpecker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "monarch-wingblade",
+     "name": "Monarch Wingblade",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.875,
+   "ci": [
+    0.8409,
+    0.9091
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.1,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 12,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (7 resource makers)"
+   ],
+   "deck": {
+    "badger-lumberjack": 3,
+    "bear-cub": 4,
+    "beaver-feller": 4,
+    "fox-kit": 4,
+    "monarch-wingblade": 1,
+    "pika-hoarder": 4
+   },
+   "cards": [
+    {
+     "id": "bear-cub",
+     "name": "Bear Cub",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "beaver-feller",
+     "name": "Beaver Feller",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "monarch-wingblade",
+     "name": "Monarch Wingblade",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8371,
+   "ci": [
+    0.8033,
+    0.8709
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 7,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "flying x8"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "balloon-archer": 3,
+    "box-turtle": 4,
+    "monarch-wingblade": 2,
+    "owl-nightwatch": 3,
+    "pika-hoarder": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "owl-nightwatch",
+     "name": "Owl Nightwatch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "monarch-wingblade",
+     "name": "Monarch Wingblade",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7727,
+   "ci": [
+    0.727,
+    0.8184
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.75,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 18
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mr --pool alpine-marmot,anhinga-spearbird,badger-lumberjack,balloon-archer,bear-cub,beaver-feller,blue-ringed-octopus,box-turtle,burrow-rabbit,cunning-vixen,eagle-owl-quartermaster,feral-tomcat,fox-kit,grass-snake,grizzly-vanguard,ibex-rockcaller,lyrebird-mimic,marsh-mallow-hare,monarch-wingblade,mountain-hare,otter-centurion,owl-nightwatch,pika-hoarder,pine-marten,redwood-woodpecker,river-mink,sergeant-bramblefox,slow-worm,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus economy,family:flying,family:strike-first,open --anchor anhinga-spearbird,badger-lumberjack,balloon-archer,bear-cub,beaver-feller,feral-tomcat,fox-kit,grass-snake,grizzly-vanguard,marsh-mallow-hare,monarch-wingblade,owl-nightwatch,pika-hoarder,pine-marten,redwood-woodpecker,sergeant-bramblefox,slow-worm --anchor-min 10 --level 1 --mode map-true"
+}

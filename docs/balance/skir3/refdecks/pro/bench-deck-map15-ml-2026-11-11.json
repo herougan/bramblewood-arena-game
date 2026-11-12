@@ -1,0 +1,801 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T13:01:17.601Z",
+ "fingerprint": "53fe30eb0e61",
+ "map": {
+  "id": "ml",
+  "num": 15,
+  "name": "The Long Grass"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "anvil-thrush",
+  "balloon-archer",
+  "blue-ringed-octopus",
+  "border-collie",
+  "bramblewood-lynx",
+  "cataphract-destrier",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "elderhorn-monarch",
+  "farm-dog",
+  "fawn-scout",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "house-cat",
+  "ibex-rockcaller",
+  "mallard-marauder",
+  "mosquito-cloud",
+  "nightjar-drifter",
+  "otter-centurion",
+  "plains-zebra",
+  "robin-redbreast",
+  "savanna-cheetah",
+  "siege-rhino",
+  "stoat-cutthroat",
+  "sworn-shieldbearer",
+  "tasmanian-devil",
+  "village-miller",
+  "warhorse-charger",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Anvil Thrush",
+  "Balloon Archer",
+  "Blue-ringed Octopus",
+  "Border Collie",
+  "Bramblewood Lynx",
+  "Gilded Roadwarden",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Elderhorn Monarch",
+  "Farm Dog",
+  "Fawn Scout",
+  "Grave-Grin Hyena",
+  "Hoopoe Herald",
+  "House Cat",
+  "Ibex Rockcaller",
+  "Mallard Marauder",
+  "Mosquito Cloud",
+  "Nightjar Drifter",
+  "Otter Centurion",
+  "Plains Zebra",
+  "Robin Redbreast",
+  "Savanna Cheetah",
+  "Siege Rhino",
+  "Stoat Cutthroat",
+  "Sworn Shieldbearer",
+  "Tasmanian Devil",
+  "Village Miller",
+  "Warhorse Charger",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "border-collie",
+   "bramblewood-lynx",
+   "cataphract-destrier",
+   "dust-hyena",
+   "eagle-owl-quartermaster",
+   "elderhorn-monarch",
+   "fawn-scout",
+   "hoopoe-herald",
+   "mallard-marauder",
+   "mosquito-cloud",
+   "plains-zebra",
+   "savanna-cheetah",
+   "siege-rhino",
+   "stoat-cutthroat",
+   "sworn-shieldbearer",
+   "tasmanian-devil",
+   "village-miller",
+   "warhorse-charger"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:15-1",
+   "label": "vs 15-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-2",
+   "label": "vs 15-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-3",
+   "label": "vs 15-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-4",
+   "label": "vs 15-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-5",
+   "label": "vs 15-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-6",
+   "label": "vs 15-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-7",
+   "label": "vs 15-7 boss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 15-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road15",
+   "label": "vs reference deck (Map 15) under 15-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "anvil-thrush",
+    "balloon-archer",
+    "eagle-owl-quartermaster",
+    "mallard-marauder",
+    "mosquito-cloud",
+    "robin-redbreast"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:ranged",
+   "label": "ranged (skill family)",
+   "cards": [
+    "balloon-archer",
+    "eagle-owl-quartermaster",
+    "fawn-scout",
+    "otter-centurion"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (3+ Lumber cards)",
+   "cards": [
+    "cataphract-destrier",
+    "elderhorn-monarch"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 7,
+   "moves": 4,
+   "games": 2220,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "family:ranged",
+   "steps": 8,
+   "moves": 5,
+   "games": 2200,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "big",
+   "steps": 7,
+   "moves": 4,
+   "games": 2160,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 2,
+   "games": 2100,
+   "apartFromEarlier": 13
+  }
+ ],
+ "apart": 10,
+ "seconds": 122,
+ "games": 9320,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "flying x11",
+    "ranged x7"
+   ],
+   "deck": {
+    "balloon-archer": 4,
+    "fawn-scout": 3,
+    "mallard-marauder": 3,
+    "mosquito-cloud": 4,
+    "plains-zebra": 4,
+    "savanna-cheetah": 2
+   },
+   "cards": [
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mosquito-cloud",
+     "name": "Mosquito Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "plains-zebra",
+     "name": "Plains Zebra",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "mallard-marauder",
+     "name": "Mallard Marauder",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8875,
+   "ci": [
+    0.8522,
+    0.9228
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    },
+    {
+     "f": "ranged",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "family:ranged",
+   "labels": [
+    "flying x13",
+    "ranged x9"
+   ],
+   "deck": {
+    "balloon-archer": 3,
+    "eagle-owl-quartermaster": 3,
+    "fawn-scout": 3,
+    "mallard-marauder": 3,
+    "robin-redbreast": 4,
+    "village-miller": 4
+   },
+   "cards": [
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "village-miller",
+     "name": "Village Miller",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "mallard-marauder",
+     "name": "Mallard Marauder",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.875,
+   "ci": [
+    0.8399,
+    0.9101
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 13
+    },
+    {
+     "f": "ranged",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "border-collie": 4,
+    "bramblewood-lynx": 3,
+    "dust-hyena": 4,
+    "ibex-rockcaller": 2,
+    "otter-centurion": 3
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.85,
+   "ci": [
+    0.8078,
+    0.8922
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.8)",
+    "strike-first x7"
+   ],
+   "deck": {
+    "cataphract-destrier": 4,
+    "elderhorn-monarch": 4,
+    "robin-redbreast": 4,
+    "siege-rhino": 2,
+    "stoat-cutthroat": 3,
+    "tasmanian-devil": 3
+   },
+   "cards": [
+    {
+     "id": "cataphract-destrier",
+     "name": "Gilded Roadwarden",
+     "copies": 4,
+     "cost": 4,
+     "rarity": "common"
+    },
+    {
+     "id": "elderhorn-monarch",
+     "name": "Elderhorn Monarch",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "tasmanian-devil",
+     "name": "Tasmanian Devil",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "siege-rhino",
+     "name": "Siege Rhino",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.5333,
+   "ci": [
+    0.4762,
+    0.5905
+   ],
+   "avgLumber": 1.8,
+   "avgWait": 2.2,
+   "curve": {
+    "0": 4,
+    "1": 8,
+    "3": 4,
+    "4": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.2083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map ml --pool alpine-marmot,anvil-thrush,balloon-archer,blue-ringed-octopus,border-collie,bramblewood-lynx,cataphract-destrier,dust-hyena,eagle-owl-quartermaster,elderhorn-monarch,farm-dog,fawn-scout,grave-grin-hyena,hoopoe-herald,house-cat,ibex-rockcaller,mallard-marauder,mosquito-cloud,nightjar-drifter,otter-centurion,plains-zebra,robin-redbreast,savanna-cheetah,siege-rhino,stoat-cutthroat,sworn-shieldbearer,tasmanian-devil,village-miller,warhorse-charger,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,family:ranged,big,open --anchor border-collie,bramblewood-lynx,cataphract-destrier,dust-hyena,eagle-owl-quartermaster,elderhorn-monarch,fawn-scout,hoopoe-herald,mallard-marauder,mosquito-cloud,plains-zebra,savanna-cheetah,siege-rhino,stoat-cutthroat,sworn-shieldbearer,tasmanian-devil,village-miller,warhorse-charger --anchor-min 10 --level 1 --mode map-true"
+}
