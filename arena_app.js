@@ -10918,6 +10918,7 @@ function cardSocketDetailHTML(defId, d){
   return `<div class="cd-where cd-socket"><span class="cd-where-k">💎 ${escapeHtml(TX('ui.h1-detail-socket'))}</span> ${parts.join(' ')}<small class="h1-cd-how">${escapeHtml(TX('ui.h1-detail-how'))}</small></div>`;
 }
 let cardDetailCtl = null; // 2026-10-30 (package CS-C): the open Card Detail overlay's Detail card
+let cardDetailUnbind = null; // 2026-11-13 (package AUDIT1): removes the open Card Detail's Escape and outside-click listeners
 function openCardDetail(defId, opts){
   // 2026-10-19 (package UX): opened from the Codex, the card shows at the Codex's level (codexShownDef: its base level unless "My best")
   const d0 = getCardDefs()[defId], fromCodex = !!(opts && opts.codex), shownLv = opts && opts.shownLevel != null && isFinite(opts.shownLevel) ? opts.shownLevel : null;
@@ -10990,13 +10991,16 @@ function openCardDetail(defId, opts){
       </div>
     </div>`;
   overlay.hidden = false;
-  const onKey = e=>{ if(e.key==='Escape') close(); };
-  const close = ()=>{ overlay.hidden = true; overlay.innerHTML=''; cardDetailOpenId = null; document.removeEventListener('keydown', onKey); if(cardDetailCtl){ cardDetailCtl.destroy(); cardDetailCtl = null; }
+  const onKey = e=>{ if(e.key==='Escape') close(); }, outsideClick = e=>{ if(e.target===overlay) close(); };
+  // 2026-11-13 (package AUDIT1): one Escape and one outside-click listener at a time; a reopen (or a close by the X) left the old ones, and their closes moved focus to cards opened before
+  if(cardDetailUnbind) cardDetailUnbind();
+  cardDetailUnbind = ()=>{ document.removeEventListener('keydown', onKey); overlay.removeEventListener('click', outsideClick); cardDetailUnbind = null; };
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML=''; cardDetailOpenId = null; if(cardDetailUnbind) cardDetailUnbind(); if(cardDetailCtl){ cardDetailCtl.destroy(); cardDetailCtl = null; }
     if(opts && opts.returnFocus && opts.returnFocus.isConnected && opts.returnFocus.focus) try{ opts.returnFocus.focus(); }catch(e){} };
   document.addEventListener('keydown', onKey);
   document.getElementById('cdCloseXBtn').addEventListener('click', close);
   document.getElementById('cdCloseBtn').addEventListener('click', close);
-  overlay.addEventListener('click', function outsideClick(e){ if(e.target===overlay){ close(); overlay.removeEventListener('click', outsideClick); } });
+  overlay.addEventListener('click', outsideClick);
   const editBtn = document.getElementById('cdEditBtn');
   if(editBtn) editBtn.addEventListener('click', ()=>{ close(); if(opts && opts.codex && codexNavIds.includes(defId)) ceNavSet(codexNavIds, 'codex'); /* UI27 #17: Previous / Next in the Codex's order */ openCardEditor(defId); });
   // Admin (2026-10-12, user: "a 'get this card' button in the Codex card detail view").
@@ -21748,7 +21752,7 @@ function matchAlreadyResolved(uid){ return !!uid && resolvedMatchIds().includes(
 function noteMatchResultDecided(m){
   if(!m) return true; if(m.resultDecided) return !m.rewardDuplicate;
   const uid = matchUidOf(m), was = matchAlreadyResolved(uid);
-  m.resultDecided = true; m.rewardDuplicate = was;
+  m.resultDecided = true; m.resultDecidedAt = Date.now(); m.rewardDuplicate = was;
   if(!was){ try{ const a = resolvedMatchIds().filter(x=> x !== uid); a.push(uid); localStorage.setItem(RESOLVED_MATCH_KEY, JSON.stringify(a.slice(-60))); }catch(e){} }
   // its resume save (the one from before this round) goes: Continue can't bring the decided match back. Another match's save stays.
   try{ const snap = JSON.parse(localStorage.getItem(RESUME_KEY) || 'null'); if(snap && (!snap.matchUid || snap.matchUid === uid)) clearResumeSnapshot(); }catch(e){}
@@ -21772,7 +21776,8 @@ function lockResultButtonsUntilRecorded(m){
   setTimeout(tick, 150);
 }
 // Quit / Forfeit / Auto-win while a decided result is still being recorded: wait, say so.
-function matchResultPending(m){ return !!(m && m.resultDecided && !matchRewardSettled(m)); }
+// 2026-11-13 (package AUDIT1): at most 15 s, as the results' buttons: a reward step that threw never set rewardRecorded, and Quit refused for good
+function matchResultPending(m){ return !!(m && m.resultDecided && !matchRewardSettled(m) && !(m.resultDecidedAt && Date.now() - m.resultDecidedAt > 15000)); }
 // -- Tutorial II's showcase (#5: "Showcase card for T2 should be a different card"): Tutorial II deals the same rival deck as part 1
 // unless the tutorial editor gives part 2 its own, so its panel showed part 1's card. Part 2's lesson is your leader joining the fight
 // (its flavour: "Your leader joins you"; tutorialHighlightId(2): the Wandering Traveller, the card the lesson lights up and has you
@@ -57286,11 +57291,13 @@ function wireBlacksmith(root){
     Object.entries(r.needs).forEach(([id, n])=> spendCopies(id, n));
     myCurrencies.dust -= r.cost.dust||0; myCurrencies.gold -= r.cost.gold||0; myCurrencies.gems -= r.cost.gems||0; saveCurrencies();
     try{ SoundKit.anvil ? SoundKit.anvil() : (SoundKit.gold && SoundKit.gold()); }catch(e){}
-    const card = document.getElementById('smithCard'); if(card && card.animate && !reducedMotion()){ for(let k = 0; k < 3; k++){ await new Promise(res=> setTimeout(res, 230)); try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} card.animate([{transform:'translateY(0) scale(1)'}, {transform:'translateY(6px) scale(.97)', filter:'brightness(1.6)'}, {transform:'none'}], {duration:200}); smithBurst(); } }
-    unlockCardForPlayer(r.out, 'smith');
+    const card = document.getElementById('smithCard');
+    try{ if(card && card.animate && !reducedMotion()){ for(let k = 0; k < 3; k++){ await new Promise(res=> setTimeout(res, 230)); try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} card.animate([{transform:'translateY(0) scale(1)'}, {transform:'translateY(6px) scale(.97)', filter:'brightness(1.6)'}, {transform:'none'}], {duration:200}); smithBurst(); } } }catch(e){}
+    try{ unlockCardForPlayer(r.out, 'smith'); } // paid above: the card is given even if the look broke
+    finally{ forgeBusy = false; } // 2026-11-13 (package AUDIT1): a throw here left every Forge button dead until a reload
     try{ if(window.starFallVfx) starFallVfx.celebrate(card, 4); }catch(e){}
     showToast(TX('toast.crafted', {v1: getCardDefs()[r.out].name, v2: getCardDefs()[r.out].cardType==='materia' ? "It's in your Inventory." : "It's in your collection."}), 'ok');
-    forgeBusy = false; renderForge();
+    renderForge();
   };
   root.querySelectorAll('[data-fuse]').forEach(b=> b.onclick = async ()=>{
     const id = b.dataset.fuse, defs = getCardDefs(), to = fuseTargetRarity(defs[id] && defs[id].rarity);
@@ -58121,6 +58128,7 @@ function forgeSmithAnimation(beforeHTML, afterHTML, heavy){
     if(!stage || !mountEl || reduce || !hasGsap()){ resolve(); return; }
     const card = mountEl.querySelector('.card-tile'), hammer = stage.querySelector('.forge-hammer');
     stage.classList.add('is-hot');
+    setTimeout(()=>{ stage.classList.remove('is-hot', 'is-quench'); resolve(); }, 5000); // 2026-11-13 (package AUDIT1): GSAP's clock crawls on a slow device and a callback that throws never resolves; the Forge (forgeBusy) waits at most 5 s, as forgeTemperAnimation
     const sparks = ()=>{
       for(let k=0;k<10;k++){
         const sp = document.createElement('span'); sp.className = 'forge-spark'; stage.appendChild(sp);
@@ -64134,56 +64142,17 @@ async function setGameLanguage(code){
   if(got !== code) showToast(TX('toast.that-language-isn-t-available-yet'));
 }
 try{ if(I18nM) I18nM._boot(); }catch(e){}
-// Leaf sweep (2026-10-07, second rework — user: "the leaves rush (smooth) to the middle of the
-// screen then to the right... space the leaves out randomly, or in a wave like pattern... smoothly
-// interpolate from edge -20% to the other edge +10%"). Each leaf now travels at an even pace from
-// 20% past the left edge to 10% past the right edge — no mid-screen waypoint everyone converges on.
-// Its height rides a gentle sine wave (its own amplitude, wavelength and phase), the leaves start at
-// random moments over ~0.7 s and at random heights, and each tumbles at its own rate. Keyframes are
-// computed here and played with the Web Animations API on transform/opacity only (compositor).
-function leafSweep(){
-  if(!fxAtLeast('low')) return;
-  if(document.querySelector('#editorOverlay:not([hidden]) .modal, #skirmishEditorOverlay:not([hidden]) .modal')) return; // never over an open editor
-  const glyphs = ['🍂','🍁','🍃','🍂','🍁','🌿','🍃','🍂','🍁'];
-  const n = fxLevel() === 'low' ? 5 : glyphs.length;
-  const f = document.createElement('div'); f.className = 'leaf-sweep'; f.setAttribute('aria-hidden', 'true');
-  f.innerHTML = '<span class="ls-veil"></span>';
-  document.body.appendChild(f);
-  const W = innerWidth, H = innerHeight, STEPS = 10;
-  let longest = 0;
-  for(let i = 0; i < n; i++){
-    const leaf = document.createElement('i'); leaf.textContent = glyphs[i % glyphs.length];
-    leaf.style.fontSize = (22 + Math.random()*20).toFixed(0) + 'px';
-    f.appendChild(leaf);
-    const y0 = H * (0.08 + 0.84 * ((i + Math.random()*0.8) / n));   // spread down the screen, jittered
-    const amp = H * (0.03 + Math.random()*0.05), waves = 0.8 + Math.random()*1.0, phase = Math.random()*Math.PI*2;
-    const drift = H * (Math.random()*0.10 - 0.03);                     // a slight overall sink or rise
-    const r0 = Math.random()*360, spin = (Math.random() < .5 ? -1 : 1) * (200 + Math.random()*260);
-    const x0 = -0.20*W, x1 = 1.10*W;
-    const frames = [];
-    for(let k = 0; k <= STEPS; k++){
-      const t = k / STEPS;
-      const x = x0 + (x1 - x0) * t;
-      const y = y0 + drift * t + amp * Math.sin(phase + t * waves * Math.PI * 2);
-      const op = t < 0.08 ? t / 0.08 : t > 0.9 ? (1 - t) / 0.1 : 1;
-      frames.push({transform:`translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${(r0 + spin*t).toFixed(1)}deg)`, opacity: op.toFixed(2)});
-    }
-    const dur = 1500 + Math.random()*700, delay = Math.random()*700;
-    longest = Math.max(longest, dur + delay);
-    try{ leaf.animate(frames, {duration: dur, delay, easing: 'linear', fill: 'both'}); }catch(e){ leaf.remove(); }
-  }
-  setTimeout(()=> f.remove(), longest + 120);
-}
 function placeOverlay(cls, html, ms){
   const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';
   document.body.appendChild(f); setTimeout(()=> f.remove(), ms || 900);
 }
+// 2026-11-13 (package AUDIT1): each place's scene class, sign and ambience; bramblewood-ui-places.js (UIFX1) plays the entrances.
 const PLACES = {
-  deck: {cls:'tent-scene', icon:'⛺', sign:'Camp', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
-  shop: {cls:'cart-scene', icon:'🧳', get sign(){ return shopsTitle(); }, ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
-  market: {cls:'flea-scene', icon:'🧺', sign:'Flea Market', ambience:'cart', enter: ()=>{}},
-  inventory: {cls:'satchel-scene', icon:'🎒', sign:'Inventory', ambience:'tent', enter: ()=>{}}, // the traveller's camp shelf (2026-10-17)
-  nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
+  deck: {cls:'tent-scene', icon:'⛺', sign:'Camp', ambience:'tent'},
+  shop: {cls:'cart-scene', icon:'🧳', get sign(){ return shopsTitle(); }, ambience:'cart'},
+  market: {cls:'flea-scene', icon:'🧺', sign:'Flea Market', ambience:'cart'},
+  inventory: {cls:'satchel-scene', icon:'🎒', sign:'Inventory', ambience:'tent'}, // the traveller's camp shelf (2026-10-17)
+  nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest'},
 };
 var tabSwitchSeq = 0; // counts screen changes (renderPlay tells a fresh arrival from a redraw)
 function switchTab(tab){
@@ -64218,19 +64187,13 @@ function switchTab(tab){
   syncTextFilterPage(); // 2026-10-18 (owner: text filters reset when you move between pages), before the page draws
   // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
   // menu-like tabs (Deck, Shop, Codex...) are indoors, so the outdoor sound fades away.
-  // Places (immersion #4): some screens are places you walk into, each with its own look, sound
-  // and entrance — the Armoury Tent (Deck), the Traveller's Cart (Shop), the Old Nest (Nest).
+  // Places: some screens are places with their own look and sound (PLACES); bramblewood-ui-places.js plays their entrances (the hook below).
   try{
     const place = PLACES[tab];
     if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
     Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v){ v.classList.add(pl.cls); v.dataset.sign = pl.icon + ' ' + (window.i18 ? i18(pl.sign) : pl.sign); } });
     const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // 2026-10-08 (user: "Clicking play or any other button should instantly transit you"): no entrance
-    // that covers the new screen (the tent flaps and cart awning hid it for ~0.8 s). Only the Nest's
-    // drifting down remains, and it never covers anything.
-    // 2026-10-08 (user: "I like how the Hall of Fame and Deleted sections transition in/out ... make the rest like
-    // that. Forge's transition is too exaggerated"): every screen change is now the Codex's quick page turn (forward
-    // when moving right along the menu, back when moving left). The leaf gust and the Nest's falling down are retired.
+    // 2026-10-08: a screen change is the Codex's quick page turn (forward moving right along the menu, back moving left); a place's own entrance replaces it.
     if(currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState && tab!=='play'){
       const ORDER = ['home','play','deck','nest','shop','market','codex','profile','achievements','ranking','admin'];
       // 2026-10-10 (user: "When I click Home from Conquest, the Home background loads up, but at the wrong size, and it has to
@@ -64290,7 +64253,7 @@ function switchTab(tab){
   if(tab==='trail') safeRender('Trail', renderTrailPage); // 2026-10-26 (package RES4)
   // 2026-10-17 (user: "Stomping Grounds default: On load, load the main screen, not the last seen card."): coming in from another page
   // always opens the Stomping Grounds at its front (the top of the page, the Hero Hall), with no card close-up left open over it.
-  if(tab==='stomp'){ if(currentTabBeforeSwitch !== 'stomp'){ try{ const cd = document.getElementById('cardDetailOverlay'); if(cd && !cd.hidden){ cd.hidden = true; cd.innerHTML = ''; cardDetailOpenId = null; } window.hideCardPop && window.hideCardPop(); }catch(e){} try{ window.scrollTo(0, 0); }catch(e){} } safeRender('Stomp', renderStomp); }
+  if(tab==='stomp'){ if(currentTabBeforeSwitch !== 'stomp'){ try{ const cd = document.getElementById('cardDetailOverlay'); if(cd && !cd.hidden){ cd.hidden = true; cd.innerHTML = ''; cardDetailOpenId = null; if(cardDetailUnbind) cardDetailUnbind(); /* AUDIT1 */ } window.hideCardPop && window.hideCardPop(); }catch(e){} try{ window.scrollTo(0, 0); }catch(e){} } safeRender('Stomp', renderStomp); }
   if(tab==='paths') safeRender('Wildpaths', ()=>{ renderWildpaths.drawn = false; renderWildpaths(); });
   if(tab==='guild') safeRender('Guild', renderGuild);
   if(tab==='friends') safeRender('Friends', renderFriends);

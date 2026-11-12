@@ -612,7 +612,8 @@ function createSession(opts){
     maybeRound();
   }
   function onReject(m){
-    if(m.seat !== mySeat()) return; const p = S.pending[m.cid]; delete S.pending[m.cid];
+    // 2026-11-13 (package AUDIT1): a refusal of a claim no longer open (a resent copy, refused again) says nothing a second time
+    if(m.seat !== mySeat() || !S.pending[m.cid]) return; const p = S.pending[m.cid]; delete S.pending[m.cid];
     S.rejected.push({cid: m.cid, why: m.why, by: m.by}); emit('reject', {cid: m.cid, why: m.why, by: m.by, act: p || null}); maybeAutoPlay(); // + COOP3 (2026-10-30): auto-play tries again after a refused claim
   }
   function requestSync(why){ if(S.syncAsked && clock.now() - S.syncAsked < 1500) return; S.syncAsked = clock.now(); send('sync', {why, have: S.log.length ? S.log[S.log.length - 1].seq : 0}); }
@@ -646,7 +647,8 @@ function createSession(opts){
       case 'leave': onLeave(msg.from, !!msg.host); break;
       case 'start': if(!S.isHost){ S.startMsg = msg.start; S.defsOk = !(opts.deps && opts.deps.defsHash && msg.start.defsHash && opts.deps.defsHash !== msg.start.defsHash); emit('start', msg.start); } break;
       case 'act': if(!S.isHost || msg.epoch > S.epoch){ enqueue(msg.act); } break;
-      case 'claim': if(S.isHost && msg.floor === S.floorIdx){ const i = S.room.seats.findIndex(x=> x && x.peerId === msg.from); if(i >= 0 && i === msg.seat) hostInbox({seat: i, c: msg.c, cid: msg.cid}); } break;
+      // 2026-11-13 (package AUDIT1): a claim resent (heartbeat, roster) that already landed or waits in the batch is the same claim, not a second one
+      case 'claim': if(S.isHost && msg.floor === S.floorIdx && !S.inbox.some(it=> it.cid === msg.cid) && !S.log.some(a=> a.cid === msg.cid)){ const i = S.room.seats.findIndex(x=> x && x.peerId === msg.from); if(i >= 0 && i === msg.seat) hostInbox({seat: i, c: msg.c, cid: msg.cid}); } break;
       case 'reject': if(msg.to === mySeat()) onReject({cid: msg.cid, why: msg.why, by: msg.by, seat: msg.to}); break;
       case 'sync': if(S.isHost && S.startMsg) send('state', {to: msg.from, start: S.startMsg, room: S.room, log: S.log}); break;
       case 'state': if(!S.isHost && msg.to === me.peerId){ if(msg.room) S.room = msg.room; catchUp(msg.start, msg.log || []); } break;
@@ -694,6 +696,7 @@ function createSession(opts){
   function tick(){
     if(S.closed) return; send('ping', {host: S.isHost, seq: S.seq}); const now = clock.now();
     if(!S.room) return;
+    resendPending(); // 2026-11-13 (package AUDIT1): a claim lost on the way left this seat "waiting" and the host waiting for it, for good
     if(S.isHost){ let changed = false;
       S.room.seats.forEach((x, k)=>{ if(!x || x.cpu || x.peerId === me.peerId) return; const gone = now - (S.lastSeen[x.peerId] || 0) > DROP_MS;
         if(gone && x.connected){ if(S.room.status === 'lobby') S.room.seats[k] = null; else x.connected = false; changed = true; } });
