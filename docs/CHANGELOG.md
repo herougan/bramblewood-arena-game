@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-12 Package SHOP1 (owner note 4: separate the Premium shop from the normal shop)
+- The Shop has a Shop | Premium switch. Premium (accent frame, tinted counter) holds the Rename Ticket and the Gold Leaf Raid Ticket; packs, the field kit and the bread stay in the normal shop. No price or purchase flow changed; no server check names a shop, so no SQL. 4 texts in 12 packs; test `shop1-2026-11-12`.
+
 ## 2026-11-12 Package TESTFIX1 (tests only: the SKIR3 lists and decks; no data, game code or canonical file touched)
 - content2 / 3 / 4 / 10 / 11 / 12 / 17 / 19, listfix2, bal7 (CONTENT4-1) and bal9 (JJ7) now read the 11-12 lists: cards SKIR3 took off every list are exempt as "unplaced" (the budget / placement rules still bind the rest), list expectations come from the owner's 11-12 picks and `docs/balance/skir3/lists-2026-11-12.json`, road-deck rules read the map's whole road. Still failing on purpose (data): deck1 (5 PRO decks hold a road-deck-only card; 13 PRO decks under 10 copies from the map's list), bal9 JJ28 (no defender on 6 maps), content12 (identical lines: Plains Zebra / Snowshoe Hare, Village Miller / Farm Dog, Pine Marten / Fishing Cat), content19 (reference ladder decks hold the out-of-play Sea Bass), listfix2 (SKIR3 top-ups of the cut House Cat and Armadillo Guard), bal7 K14 (23-5).
 

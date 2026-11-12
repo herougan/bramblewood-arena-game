@@ -4415,5 +4415,7 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "참고 {k}: {pct}% (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "지도 기준 {pct}%",
  "Ref-2 {pct}%": "참고-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "측정 {tag}, {date}: 참고 플레이어 {k}명의 덱으로 이 전투를 총 {g}판 (덱마다 최소 {n}판). p10 / p90은 대전 잡음을 뺀 값. 지도 기준 덱과 참고-2: 각 {m}판."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "측정 {tag}, {date}: 참고 플레이어 {k}명의 덱으로 이 전투를 총 {g}판 (덱마다 최소 {n}판). p10 / p90은 대전 잡음을 뺀 값. 지도 기준 덱과 참고-2: 각 {m}판.",
+ "Shops": "상점",
+ "Nothing in the Premium shop for you yet.": "프리미엄 상점에 아직 물건이 없어요."
 }

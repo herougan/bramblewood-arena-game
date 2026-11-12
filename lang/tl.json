@@ -4413,5 +4413,7 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "Map ref {pct}%",
  "Ref-2 {pct}%": "Ref-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Sukat {tag}, {date}: ang mga deck ng {k} reference player laban sa labang ito, {g} laro lahat (hindi bababa sa {n} bawat deck); p10 / p90 nang walang ingay ng laro. Map reference at Reference-2: {m} laro bawat isa."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Sukat {tag}, {date}: ang mga deck ng {k} reference player laban sa labang ito, {g} laro lahat (hindi bababa sa {n} bawat deck); p10 / p90 nang walang ingay ng laro. Map reference at Reference-2: {m} laro bawat isa.",
+ "Shops": "Mga tindahan",
+ "Nothing in the Premium shop for you yet.": "Wala pang para sa iyo sa Premium."
 }
