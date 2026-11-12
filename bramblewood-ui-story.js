@@ -98,9 +98,11 @@ const CSS = () => `
 .sty-l .sty-listen{right:14px; bottom:-11px;} .sty-r .sty-listen{left:14px; top:-11px;}
 .sty-listen .dlg-portrait{width:100% !important; height:100% !important; margin:0 !important; box-shadow:none !important; font-size:14px; transition:none;}
 /* typing: every letter is there from the start (the box never grows), each fades in at its own delay */
-.sty-tw i{font-style:inherit; animation:styCh .13s linear var(--d, 0ms) backwards;}
+/* 2026-11-13 (package PERF5): a letter holds at .999 until the line is done (is-done: 1): a letter's opacity reaching 1 dropped its paint layer, a layout pass
+   each frame while a line typed (28 layouts in 1.5 s vs 8-10 for the old dock); now one at the end */
+.sty-tw i{font-style:inherit; animation:styCh .13s linear var(--d, 0ms) both;}
 .sty-tw.is-done i, .sty-tw.is-done .sty-em{animation:none;}
-@keyframes styCh{from{opacity:0;}}
+@keyframes styCh{from{opacity:0;} to{opacity:.999;}}
 .sty-em{font-style:inherit; font-weight:800; color:var(--sty-c);}
 .sty-em.is-pop{display:inline-block; animation:styEmPop .42s cubic-bezier(.3,1.7,.5,1) var(--d, 0ms) backwards;}
 @keyframes styEmPop{from{transform:scale(1.4) translateY(-2px);}}
@@ -408,6 +410,7 @@ S.bubble = function(b, holdS){
   const g = G(); if(!b || !g || S.off || !at('low')) return false;
   ensureCss(); b.classList.add('sty-bub');
   const emote = b.classList.contains('is-emote');
+  try{ Object.defineProperty(b, 'offsetParent', {value: document.body, configurable: true}); }catch(e){} // 2026-11-13 (package PERF5): a fixed bubble is always shown; without this GSAP's first read un-hid and measured it (two style passes and a layout, 4-8 ms on the 2-core box, at every bark)
   g.set(b, {transformOrigin:'50% 100%'});
   g.timeline({onComplete:()=> b.remove()})
     .fromTo(b, {opacity:0, y:8, scaleX:.35, scaleY:.25}, {opacity:1, y:-2, scaleX:emote ? 1.2 : 1.1, scaleY:emote ? .86 : .92, duration:.15, ease:'power2.out'})

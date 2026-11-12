@@ -3041,7 +3041,9 @@
   .shield-flash{position:absolute; inset:-8px; pointer-events:none; display:flex; align-items:center; justify-content:center; font-size:22px; animation:shieldpop 650ms ease-out forwards; z-index:5;}
   @keyframes shieldpop{0%{opacity:0; transform:scale(.5) rotate(-8deg);}22%{opacity:1; transform:scale(1.3) rotate(5deg);}100%{opacity:0; transform:scale(1.55) rotate(0deg);}}
   /* Missile/ranged: a small glyph travels from attacker to target */
-  .projectile{position:fixed; z-index:550; font-size:19px; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 2px 3px var(--shadow)); transition:transform 460ms cubic-bezier(.3,.55,.2,1), opacity 460ms ease;}
+  .projectile{position:fixed; left:0; top:0; z-index:550; font-size:19px; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 2px 3px var(--shadow)); transition:transform 460ms cubic-bezier(.3,.55,.2,1), opacity 460ms ease;}
+  /* 2026-11-13 (package PERF5, owner 23:47 #10 "Bolt effects are still laggy"): left / top 0, as every other flier here: without them the glyph sat at its
+     place in the page's flow (786 px down at 1366 x 768, off the bottom) and GSAP's screen x / y moved it from there; the transition is for the no-GSAP path only (spawnProjectile). */
   /* Deck builder (2026-09-14): adding/removing a copy flies a little glyph between the pool
      tile and the deck's mini chip list, in whichever direction the change actually went. */
   .deck-fly-chip{position:fixed; z-index:550; font-size:20px; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 2px 3px var(--shadow)); transition:transform 360ms cubic-bezier(.3,.65,.25,1), opacity 360ms ease;}
@@ -31878,7 +31880,11 @@ const centre = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.
 // them all at once (prime: reads only, so one style pass for the lot) before anything moves. Nothing looks different.
 const shown = e=>{ try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} return e; };
 const layer = (cls, html)=>{ const e = document.createElement('div'); e.className = 'sfx ' + cls; e.setAttribute('aria-hidden', 'true'); if(html) e.innerHTML = html; document.body.appendChild(e); return shown(e); };
-const prime = els=>{ const g = G(); if(g) els.forEach(e=>{ try{ g.getProperty(e, 'x'); }catch(err){} }); return els; };
+// 2026-11-13 (package PERF5, owner 23:47 #10 / #12): prime also copies each piece's opacity inline (all the reads, then all the writes), so the
+// batch's gsap.set(p, {opacity}) calls read it there: GSAP reads an un-set opacity from the computed style, after the last piece's write, one forced
+// style pass per piece (a poison cloud's 17, a burst's 8-12). The value is the computed one, so nothing looks different.
+const prime = els=>{ const g = G(); if(g){ els.forEach(e=>{ try{ g.getProperty(e, 'x'); }catch(err){} });
+  const op = els.map(e=>{ try{ return e.style.opacity ? null : getComputedStyle(e).opacity; }catch(err){ return null; } }); els.forEach((e, i)=>{ if(op[i] != null) e.style.opacity = op[i]; }); } return els; };
 const layers = (n, cls, html)=>{ const out = []; for(let i = 0; i < n; i++) out.push(layer(typeof cls === 'function' ? cls(i) : cls, html)); return prime(out); };
 const IMG = {arrow:'', fire:''};
 // The heal's plus, drawn (2026-10-16, user: "Heal's plusses look greyed out in the Effect lab - they should be green."): the ➕ emoji
@@ -33576,13 +33582,18 @@ function boltGlob(shooter, target, o){
   const L = BOLT_LOOK[o.element] || BOLT_LOOK.fire, g = G(), a = centre(shooter), b = centre(target);
   const m = {x:(a.x + b.x)/2, y:Math.min(a.y, b.y) - Math.max(50, Math.abs(b.x - a.x)*.25)}, st = {t:0};
   const glob = layer('sfx-glob'); glob.style.background = `radial-gradient(circle at 38% 36%, ${L.core} 0, ${L.mid} 45%, ${L.edge} 100%)`; glob.style.boxShadow = `0 0 12px 4px rgba(${L.glow},.75)`;
+  // 2026-11-13 (package PERF5, owner 23:47 #10 "Bolt effects are still laggy"): a droplet every 50 ms of flight (was every 3rd frame, the same at
+  // 60 fps), made four at a time and read together (prime): each drip read the glob's box after the frame's writes and GSAP read each new drop's
+  // styles, two to three forced style passes every third frame. The glob's centre is the point the tween just set.
+  const drops = [], more = ()=>{ const add = Array.from({length: 4}, ()=>{ const d = layer('sfx-glob-drop'); d.style.background = L.mid; d.style.opacity = '0'; return d; }); drops.push(...add); return add; };
+  prime([glob].concat(more()));
   g.set(glob, {x:a.x - 11, y:a.y - a.h*.15 - 11, scale:.4});
   g.fromTo(tileOf(shooter), {scaleY:1}, {scaleY:.93, duration:.08, yoyo:true, repeat:1, transformOrigin:'50% 100%', clearProps:'transform'}); // the spit
   let k = 0;
-  const drip = ()=>{ if(k++ % 3) return; const r = glob.getBoundingClientRect(), d = layer('sfx-glob-drop'); d.style.background = L.mid; g.set(d, {x:r.left + r.width/2 - 3, y:r.top + r.height/2 - 3, opacity:.9});
+  const drip = (q, t)=>{ if(t * fly < k * 50) return; if(k >= drops.length) prime(more()); const d = drops[k++]; g.set(d, {x:q.x - 3, y:q.y - 3, opacity:.9});
     g.to(d, {y:'+=14', opacity:0, scale:.3, duration:.35, ease:'power1.in', onComplete:()=> d.remove()}); };
-  g.timeline({onComplete:()=> glob.remove()})
-    .to(st, {t:1, duration:fly/1000, ease:'power1.in', onUpdate:()=>{ const q = qpt({x:a.x, y:a.y - a.h*.15}, m, b, st.t); g.set(glob, {x:q.x - 11, y:q.y - 11, scale:.6 + .5*st.t, scaleX:1 + .25*Math.sin(st.t*18), rotation:st.t*240}); drip(); }})
+  g.timeline({onComplete:()=>{ glob.remove(); drops.slice(k).forEach(d=> d.remove()); }})
+    .to(st, {t:1, duration:fly/1000, ease:'power1.in', onUpdate:()=>{ const q = qpt({x:a.x, y:a.y - a.h*.15}, m, b, st.t); g.set(glob, {x:q.x - 11, y:q.y - 11, scale:.6 + .5*st.t, scaleX:1 + .25*Math.sin(st.t*18), rotation:st.t*240}); drip(q, Math.sqrt(st.t) /* power1.in: t = p² */); }})
     .add(()=>{
       glob.style.opacity = 0;
       const sp = layer('sfx-glob-splat'); sp.style.background = `radial-gradient(circle, ${L.core} 0, rgba(${L.glow},.85) 35%, rgba(${L.glow},0) 72%)`;
@@ -52506,9 +52517,11 @@ const CSS = () => `
 .sty-l .sty-listen{right:14px; bottom:-11px;} .sty-r .sty-listen{left:14px; top:-11px;}
 .sty-listen .dlg-portrait{width:100% !important; height:100% !important; margin:0 !important; box-shadow:none !important; font-size:14px; transition:none;}
 /* typing: every letter is there from the start (the box never grows), each fades in at its own delay */
-.sty-tw i{font-style:inherit; animation:styCh .13s linear var(--d, 0ms) backwards;}
+/* 2026-11-13 (package PERF5): a letter holds at .999 until the line is done (is-done: 1): a letter's opacity reaching 1 dropped its paint layer, a layout pass
+   each frame while a line typed (28 layouts in 1.5 s vs 8-10 for the old dock); now one at the end */
+.sty-tw i{font-style:inherit; animation:styCh .13s linear var(--d, 0ms) both;}
 .sty-tw.is-done i, .sty-tw.is-done .sty-em{animation:none;}
-@keyframes styCh{from{opacity:0;}}
+@keyframes styCh{from{opacity:0;} to{opacity:.999;}}
 .sty-em{font-style:inherit; font-weight:800; color:var(--sty-c);}
 .sty-em.is-pop{display:inline-block; animation:styEmPop .42s cubic-bezier(.3,1.7,.5,1) var(--d, 0ms) backwards;}
 @keyframes styEmPop{from{transform:scale(1.4) translateY(-2px);}}
@@ -52816,6 +52829,7 @@ S.bubble = function(b, holdS){
   const g = G(); if(!b || !g || S.off || !at('low')) return false;
   ensureCss(); b.classList.add('sty-bub');
   const emote = b.classList.contains('is-emote');
+  try{ Object.defineProperty(b, 'offsetParent', {value: document.body, configurable: true}); }catch(e){} // 2026-11-13 (package PERF5): a fixed bubble is always shown; without this GSAP's first read un-hid and measured it (two style passes and a layout, 4-8 ms on the 2-core box, at every bark)
   g.set(b, {transformOrigin:'50% 100%'});
   g.timeline({onComplete:()=> b.remove()})
     .fromTo(b, {opacity:0, y:8, scaleX:.35, scaleY:.25}, {opacity:1, y:-2, scaleX:emote ? 1.2 : 1.1, scaleY:emote ? .86 : .92, duration:.15, ease:'power2.out'})
@@ -53077,6 +53091,11 @@ function runBeat(tl){
   S.beat = b;
 }
 const mk = (L, css2)=>{ const e = doc.createElement('i'); e.style.cssText = css2; L.appendChild(e); return e; };
+// PERF5 (2026-11-13): GSAP reads a batch of new pieces in one pass: every transform first, then each opacity is copied inline (all reads, then all
+// writes) and offsetParent is answered (they are always shown), so the tweens that follow read nothing from the page
+function primeAll(els){ const g = G(); if(!g || !els.length) return;
+  els.forEach(e=>{ try{ Object.defineProperty(e, 'offsetParent', {value: e.parentNode, configurable: true}); }catch(err){} try{ g.getProperty(e, 'x'); }catch(err){} });
+  const op = els.map(e=>{ try{ return e.style.opacity ? null : getComputedStyle(e).opacity; }catch(err){ return null; } }); els.forEach((e, i)=>{ if(op[i] != null) e.style.opacity = op[i]; }); }
 const rnd = (a, b)=> a + Math.random() * (b - a);
 let uid = 0;
 const from = dir=> dir === 'left' ? 1 : -1; // the side the season blows in from: travelling right, it comes in from the left edge
@@ -53127,7 +53146,11 @@ function change(tl, host, was, k, dir, at, T){
   const box = paneBox(host), L = doc.createElement('div');
   L.className = 'bww-fx bww-fx-' + k; L.setAttribute('aria-hidden', 'true'); L.style.cssText = `left:${box.left}px; top:${box.top}px; width:${box.width}px; height:${box.height}px; opacity:${todDim(host)};`;
   host.appendChild(L);
-  flourish(tl, L, k, box.width, box.height, dir, at, T, mode(true) !== 'high');
+  // 2026-11-13 (package PERF5, tonight's UIFX2 re-measured): the flourish's tweens are noted first and added once every piece is in and read (primeAll):
+  // each piece's fromTo read its styles and offsetParent right after the last piece's write, a forced style and layout pass a piece (5-26 a change)
+  const q = [], rec = {fromTo: (...a)=>{ q.push(['fromTo', a]); return rec; }, to: (...a)=>{ q.push(['to', a]); return rec; }};
+  flourish(rec, L, k, box.width, box.height, dir, at, T, mode(true) !== 'high');
+  primeAll([...L.children]); q.forEach(([m, a])=> tl[m](...a));
   const old = [...host.querySelectorAll(':scope > .season-veil')], nv = doc.createElement('div');
   old.forEach(v=>{ v.className = 'season-veil season-' + was; });
   nv.className = 'season-veil season-' + k; nv.setAttribute('aria-hidden', 'true'); nv.style.opacity = '0'; host.appendChild(nv);
@@ -53177,6 +53200,7 @@ function road(tl, host, canvas, dir){
   const step = ()=>{ try{ if(typeof SoundKit !== 'undefined' && SoundKit.pawnStep) SoundKit.pawnStep(); }catch(e){} };
   tl.fromTo(vig, {opacity: 0}, {opacity: 1, duration: .15}, 0)
     .to(reveal, {strokeDashoffset: 0, duration: .65, ease: 'power1.inOut'}, 0);
+  primeAll(prints); // PERF5: the seven prints read together
   prints.forEach((pp, i)=>{ tl.fromTo(pp, {scale: .3, opacity: 0, transformOrigin: '50% 50%'}, {scale: 1, opacity: 1, duration: .16, ease: 'back.out(2.5)'}, .08 + i * .085); if(i % 2) tl.call(step, null, .08 + i * .085); });
   tl.to(prints, {opacity: 0, duration: .25, stagger: .03}, .72).to([lit, vig], {opacity: 0, duration: .3}, .85).call(()=> R.remove(), null, BEAT_MS / 1000);
   return true;
@@ -57545,7 +57569,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '8fbffe2f5731', BUILD_CARD_HASH = '1490916b14c7c8ed94be1210cad1e9cf543fbf9d82b1b2f07c4210d08af4da65';
+const BUILD_ID = '945c357cf948', BUILD_CARD_HASH = '1490916b14c7c8ed94be1210cad1e9cf543fbf9d82b1b2f07c4210d08af4da65';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -57707,8 +57731,16 @@ function getCardDefs0(){
   _cardDefsCache = res; _cardDefsSig = sig;
   // 2026-10-17 (fight lag): while a round plays back, nothing edits the cards, but every replayed beat is its own task, so the defs
   // were rebuilt (~5-10 ms) on nearly every beat. During playback the copy now lives for a second.
-  if(!_cardDefsTick){ _cardDefsTick = true; let ms = 0; try{ if(matchState && (matchState.resolving || !matchState.over)) ms = 1000; }catch(e){} /* 2026-11-12 (package PERF4): a fight on screen keeps the copy 1 s too: the 0 ms expiry rebuilt the defs (5-10 ms) on every render call outside a replay; _cardDefsSignature still catches edits */ /* matchState is declared further down */ setTimeout(()=>{ _cardDefsCache = null; _cardDefsTick = false; }, ms); }
+  if(!_cardDefsTick){ _cardDefsTick = true; let ms = 0; try{ if(matchState && (matchState.resolving || !matchState.over)) ms = 1000; }catch(e){} /* 2026-11-12 (package PERF4): a fight on screen keeps the copy 1 s too: the 0 ms expiry rebuilt the defs (5-10 ms) on every render call outside a replay; _cardDefsSignature still catches edits */ /* matchState is declared further down */ setTimeout(_cardDefsExpire, ms); }
   return res;
+}
+// 2026-11-13 (package PERF5, owner 23:47 #12 "unit death and damage numbers have a small frame drop"): the 1 s expiry rebuilt the defs (5-8 ms on
+// the 2-core box) about once a second in a fight, inside whichever hit, number or death came next. While the fight is live the copy now stays
+// (checked again each second); _cardDefsSignature, invalidateCardDefs and onCardsChanged (cloud edits) still drop it on a change.
+function _cardDefsExpire(){
+  let live = false; try{ live = !!(matchState && !matchState.over); }catch(e){}
+  if(live && _cardDefsCache){ setTimeout(_cardDefsExpire, 1000); return; }
+  _cardDefsCache = null; _cardDefsTick = false;
 }
 function buildCardDefs(){
   // An edit saved without art keeps the shipped art (2026-10-13, user: "Some cards don't have art yet": cloud edits of Shepherd,
@@ -58494,6 +58526,7 @@ function setDbPill(live, text){
   document.getElementById('dbPillText').textContent = text;
 }
 function onCardsChanged(){
+  invalidateCardDefs(); // 2026-11-13 (package PERF5): a fight keeps its card defs while live; an edit from the cloud drops them
   if(currentTab==='codex') renderCodex();
   // 2026-09-20: the Simulator moved from its own top-level tab into the Deck menu (deckSubTab
   // 'sim'), so the live-card-sync refresh has to check that instead of a 'sim' currentTab that
@@ -58913,13 +58946,22 @@ const SoundKit = (()=>{
     if(type === 'triangle') return ph < 0.5 ? 4 * ph - 1 : 3 - 4 * ph;
     return Math.sin(2 * Math.PI * ph);
   }
-  // one cue rendered to a buffer, played through a static gain (fire and forget)
-  function playBaked(c, data, len, gain, delay){
-    const buf = c.createBuffer(1, len, c.sampleRate); buf.getChannelData(0).set(data);
+  // 2026-11-13 (package PERF5, owner 23:47 #12 "unit death ... damage number ... have a small frame drop"): a baked cue is kept as its AudioBuffer
+  // (the last 200 kinds), so a hit, a mark or a death no longer computes its waveform sample by sample on the main thread (0.4-4 ms a cue on the
+  // 2-core box) and allocates two fresh buffers every time. Same sound: tone and sweep are exact repeats; fnoise keeps two noise takes per kind.
+  const BAKED = new Map(), BAKED_MAX = 200;
+  function bakedBuf(c, key, make){
+    let b = BAKED.get(key);
+    if(b && b.sampleRate === c.sampleRate){ BAKED.delete(key); BAKED.set(key, b); return b; }
+    const r = make(); b = c.createBuffer(1, r.len, c.sampleRate); b.getChannelData(0).set(r.d);
+    BAKED.set(key, b); if(BAKED.size > BAKED_MAX) BAKED.delete(BAKED.keys().next().value);
+    return b;
+  }
+  function playBuf(c, buf, gain, delay){ // one cue's buffer, played through a static gain (fire and forget)
     const src = c.createBufferSource(); src.buffer = buf;
     const g = c.createGain(); g.gain.value = gain;
     src.connect(g); g.connect(outNode(c));
-    const t0 = c.currentTime + (delay || 0); src.start(t0); track(src, t0 + len / c.sampleRate);
+    const t0 = c.currentTime + (delay || 0); src.start(t0); track(src, t0 + buf.length / c.sampleRate);
   }
   function osc2buf(c, f0, f1, dur, type, att){
     const sr = c.sampleRate, len = Math.max(1, Math.floor(sr * (dur + 0.02))), d = new Float32Array(len);
@@ -58935,8 +58977,7 @@ const SoundKit = (()=>{
     const vol = volOverride!=null ? volOverride : sfxVolume;
     if(vol<=0) return;
     const c = ac(); if(!c) return;
-    const b = osc2buf(c, freq, freq, dur, type || 'sine', 0.01);
-    playBaked(c, b.d, b.len, (gainPeak||0.15)*vol, delay||0);
+    playBuf(c, bakedBuf(c, 't' + freq + '|' + dur + '|' + (type || 'sine'), ()=> osc2buf(c, freq, freq, dur, type || 'sine', 0.01)), (gainPeak||0.15)*vol, delay||0);
   }
   function noise(dur, gainPeak){
     if(sfxVolume<=0) return;
@@ -58953,10 +58994,15 @@ const SoundKit = (()=>{
   // Richer primitives (2026-10-05 SFX pass): band-limited noise with its own envelope and a
   // sweeping filter (whooshes, crackles, rumbles, squelches), and a pitch-swept tone (twangs, drips).
   // 2026-10-17: the filter runs here (the Web Audio BiquadFilter's own formulas, its cutoff swept every 32 samples), baked with the envelope.
+  let fnoiseTake = 0;
   function fnoise(dur, gainPeak, o){
     o = o || {};
     if(sfxVolume<=0) return;
     const c = ac(); if(!c) return;
+    const key = 'n' + dur + '|' + (o.type || 'bandpass') + '|' + (o.q || 1) + '|' + (o.freq || 1200) + '|' + (o.freqEnd || '') + '|' + o.attack + '|' + (o.crackle || 0) + '|' + (fnoiseTake = (fnoiseTake + 1) % 2);
+    playBuf(c, bakedBuf(c, key, ()=> fnoiseBuf(c, dur, o)), Math.max(0.0002, gainPeak*sfxVolume), o.delay || 0);
+  }
+  function fnoiseBuf(c, dur, o){
     const sr = c.sampleRate, len = Math.max(1, Math.floor(sr*(dur + 0.02))), d = new Float32Array(len);
     const crackle = o.crackle || 0, type = o.type || 'bandpass', Q = o.q || 1, fA = o.freq || 1200, fB = o.freqEnd || fA;
     const att = o.attack != null ? Math.max(0.0005, o.attack) : 0.01;
@@ -58971,13 +59017,12 @@ const SoundKit = (()=>{
       const y = b0*v + b1*x1 + b2*x2 - a1*y1 - a2*y2; x2 = x1; x1 = v; y2 = y1; y1 = y;
       d[i] = y * envAt(i / sr, att, dur, 1);
     }
-    playBaked(c, d, len, Math.max(0.0002, gainPeak*sfxVolume), o.delay || 0);
+    return {d, len};
   }
   function sweep(f0, f1, dur, type, gainPeak, delay){
     if(sfxVolume<=0) return;
     const c = ac(); if(!c) return;
-    const b = osc2buf(c, f0, Math.max(20, f1), dur, type || 'sine', 0.008);
-    playBaked(c, b.d, b.len, (gainPeak||0.12)*sfxVolume, delay||0);
+    playBuf(c, bakedBuf(c, 's' + f0 + '|' + f1 + '|' + dur + '|' + (type || 'sine'), ()=> osc2buf(c, f0, Math.max(20, f1), dur, type || 'sine', 0.008)), (gainPeak||0.12)*sfxVolume, delay||0);
   }
   // Task list item 8's "voice from a set list" — a short, distinct blip standing in for a
   // character's spoken line (real voice recording is out of scope for a single-file artifact).
@@ -59082,7 +59127,7 @@ const SoundKit = (()=>{
     // ≥4-damage layer had anything up high (its 2.6 kHz crackle), so only big hits were heard. Every hit now also gets a short
     // mid-range "thwack" (a 1.1-2.4 kHz band-passed snap and a quick 620→300 Hz knock), a little louder on bigger hits.
     hitAt(dmg, heavy){
-      const j = 0.92 + Math.random()*0.16;
+      const j = 0.92 + Math.floor(Math.random()*9)*0.02; // 2026-11-13 (package PERF5): the ±8% pitch jitter in 2% steps, so its baked buffers are reused (BAKED)
       fnoise(0.09, 0.14, {type:'lowpass', freq:1400*j, freqEnd:260, q:1.2, attack:0.002});
       sweep(210*j, 120*j, 0.08, 'triangle', 0.09);
       fnoise(0.055, Math.min(0.2, 0.13 + Math.max(0, dmg||0)*0.006), {type:'bandpass', freq:2400*j, freqEnd:1100*j, q:1.4, attack:0.001});
@@ -98937,6 +98982,10 @@ function fallDeathVfx(el, ms){
   if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
   const t = el.querySelector('.card-tile') || el;
   if(el.classList.contains('is-flying')) return flyerFallVfx(el, t, ms);
+  // 2026-11-13 (package PERF5, owner 23:47 #12): the reads first (the owner edge's box, GSAP's start values: one style pass), then the writes; the
+  // filter and opacity the tweens start from go inline, so GSAP takes them from there instead of a computed-style read after the class change
+  const oe0 = el.querySelector(':scope > .owner-edge'), oe = oe0 && oe0.getClientRects().length ? oe0 : null, parts = [t, oe].filter(Boolean);
+  if(hasGsap()) fix3GsapPrime(parts);
   el.classList.add('falling'); el.style.setProperty('--fall-ms', ms + 'ms');
   // 2026-10-08 (user: "start slow, then speed up until it hits the floor — it looks like 3
   // animations stitched together"): one continuous topple under gravity (a slow lean that keeps
@@ -98962,8 +99011,9 @@ function fallDeathVfx(el, ms){
   // landing; now it is a plain power2-in (a steady, gravity-like speed-up from a slow start) that lands faded out, with the leaves
   // and the thump on that landing frame.
   if(hasGsap()){
-    const fall = ms*1.25/1000, oe0 = el.querySelector(':scope > .owner-edge'), oe = oe0 && oe0.getClientRects().length ? oe0 : null; // (the owner edge
+    const fall = ms*1.25/1000; // (the owner edge (oe)
     // normally lives inside the tile and tips with it; a stray one directly on the board card is only moved when it is shown)
+    parts.forEach(x=>{ x.style.filter = 'grayscale(0) brightness(1)'; x.style.opacity = '1'; });
     // each target hinges on the tile's bottom edge: the tile at 50% 100%; the owner edge at the same line in its own coordinates
     const hinge = (i, target)=>{ if(target === t) return '50% 100%'; const tr = t.getBoundingClientRect(), r = target.getBoundingClientRect(), k = (target.offsetHeight && r.height) ? r.height / target.offsetHeight : 1;
       return `50% ${Math.round((tr.bottom - r.top) / (k || 1))}px`; };
@@ -99002,9 +99052,13 @@ function impactDust(el){
   const r = el.getBoundingClientRect();
   const d = document.createElement('span'); d.className = 'impact-dust'; d.setAttribute('aria-hidden','true');
   d.style.cssText = `left:${r.left + r.width/2}px; top:${r.bottom - 6}px; width:${r.width*1.1}px;`;
-  document.body.appendChild(d);
+  document.body.appendChild(fxShown(d));
   gsap.fromTo(d, {scaleX:.4, opacity:.75}, {scaleX:1.5, opacity:0, duration:.55, ease:'power2.out', onComplete:()=> d.remove()});
 }
+// 2026-11-13 (package PERF5, owner 23:47 #12 "Unit death ... small frame drop"): a position:fixed piece has no offsetParent, so GSAP's first read
+// took it for display:none, set display:block, measured and put it back: two style passes and a layout per piece (a death's twelve leaves: 36
+// passes). It is always shown; skillfx's shown() and en2Layer do the same (PERF2).
+function fxShown(e){ try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} return e; }
 // What the ground kicks up, by the map's biome (shader map kinds): forest leaves, water spray, ash, cave grit, grass, snow,
 // reef bubbles, swamp mud, embers, feathers, rock, beach sand.
 const BIOME_PUFF = {0:['🍂','🍃','🍂','·','·','🍁'], 1:['💧','🍃','💧','·','·','💧'], 2:['·','•','·','🌫️','·','•'], 3:['•','·','🪨','·','•','·'], 4:['🌾','·','🌾','·','🍂','·'],
@@ -99021,7 +99075,7 @@ function leafPuff(el, glyphsIn){
   const glyphs = glyphsIn || ['🍂','🍃','🍂','·','·','🍁'];
   // 2026-10-25 (package FIX3, F3): the twelve leaves go in first and are read once together (fix3GsapPrime), then moved; each used to
   // force its own style pass between the last one's write and its own read
-  const ps = []; for(let i = 0; i < 12; i++){ const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true'); document.body.appendChild(p); ps.push(p); }
+  const ps = []; for(let i = 0; i < 12; i++){ const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true'); p.style.opacity = '1'; document.body.appendChild(p); ps.push(fxShown(p)); } // PERF5: opacity inline, so GSAP's set reads it there
   fix3GsapPrime(ps);
   for(let i = 0; i < 12; i++){
     const p = ps[i];
@@ -99262,9 +99316,12 @@ function featherBurst(el){
   if(!fxAtLeast('med')) return;
   if(!el || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
+  // 2026-11-13 (package PERF5, owner 23:47 #12): the five feathers go in first, marked shown, and GSAP reads them together (as leafPuff): each one's
+  // set used to force its own style pass (plus GSAP's display probe on a fixed piece) after the last one's write, at every hit on a flier
+  const ps = []; for(let i = 0; i < 5; i++){ const p = document.createElement('span'); p.className = 'feather-puff'; p.textContent = '🪶'; p.setAttribute('aria-hidden','true'); p.style.opacity = '1'; document.body.appendChild(p); ps.push(fxShown(p)); }
+  fix3GsapPrime(ps);
   for(let i = 0; i < 5; i++){
-    const p = document.createElement('span'); p.className = 'feather-puff'; p.textContent = '🪶'; p.setAttribute('aria-hidden','true');
-    document.body.appendChild(p);
+    const p = ps[i];
     const x = r.left + r.width*(0.25 + Math.random()*0.5), y = r.top + r.height*(0.3 + Math.random()*0.3), dir = Math.random() < .5 ? -1 : 1;
     gsap.set(p, {x, y, opacity:1, rotation:Math.random()*360, scale:.7 + Math.random()*.4});
     gsap.to(p, {x:`+=${dir*(30 + Math.random()*40)}`, y:`-=${15 + Math.random()*25}`, rotation:`+=${dir*90}`, duration:.35, ease:'power2.out'});
@@ -99346,13 +99403,12 @@ function deathVfx(uid){
     else if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
     else if(burnt) gsap.to(el, {opacity:0, scale:.92, y:12, duration:death*0.55/1000, delay:death*0.85/1000, ease:'power1.in'});
     else gsap.to(el, {opacity:0, scale:.8, y:10, duration:death/1000, ease:'power1.in'});
-    gsap.timeline({onComplete:()=> skull.remove()})
-      .fromTo(skull, {y:0, opacity:0, scale:.6}, {y:-26, opacity:1, scale:1, duration:(death*0.5)/1000, ease:'back.out(2)'})
-      .to(skull, {y:-40, opacity:0, duration:(death*0.5)/1000, ease:'power1.in'});
+    gsap.delayedCall(death/1000, ()=> skull.remove()); // 2026-11-13 (package PERF5): see below
   } else if(hasGsap() && isFlipping){
-    gsap.timeline({onComplete:()=> skull.remove()})
-      .fromTo(skull, {y:0, opacity:0, scale:.6}, {y:-26, opacity:1, scale:1, duration:(death*0.5)/1000, ease:'back.out(2)'})
-      .to(skull, {y:-40, opacity:0, duration:(death*0.5)/1000, ease:'power1.in'});
+    // 2026-11-13 (package PERF5, owner 23:47 #12 "Unit death ... small frame drop"): the skull's float is its CSS animation (deathSkullFloat), which
+    // outranks inline styles, so the GSAP tween that was here never showed; on a fall, pixel or ice death the skull is display:none and GSAP's first
+    // read of it un-hid and measured it (three forced style / layout passes a death). It still leaves when that tween ended.
+    gsap.delayedCall(death/1000, ()=> skull.remove());
   } else {
     el.classList.add('dying');
     setTimeout(()=> skull.remove(), 650);
@@ -104136,7 +104192,7 @@ function handFlightProxy(el, uid, origin){
   p.classList.remove('holo-active', 'holo-tilt'); p.classList.add('hand-flight-proxy'); p.setAttribute('aria-hidden', 'true');
   [['position','fixed'], ['left','0'], ['top','0'], ['margin','0'], ['width', w0 + 'px'], ['height', h0 + 'px'], ['box-sizing','border-box'], ['pointer-events','none'], ['z-index','1300'], ['transition','none'], ['animation','none']]
     .forEach(([k, v])=> p.style.setProperty(k, v, 'important'));
-  document.body.appendChild(p);
+  document.body.appendChild(fxShown(p)); // PERF5 (2026-11-13): fixed and always shown (fxShown: no GSAP display probe on its first move)
   // 2026-10-19 (package RV2, an ally's play): origin.flip starts the copy face down (a card back over it) and turns it face up midway
   // along the path; origin.trail leaves a short sparkle trail; origin.dust kicks up dust where it lands.
   let back = null; if(origin.flip){ back = document.createElement('div'); back.className = 'ally-card-back'; back.setAttribute('aria-hidden', 'true'); p.appendChild(back); }
@@ -104213,8 +104269,9 @@ function allyPlayFx(uid, opts){
       from = {x: (lab ? rr.left + rr.width / 2 : rr.left) - er.width * 0.25, y: (row ? row.getBoundingClientRect().bottom : er.bottom) + er.height * 0.55}; }
     const tile = el.querySelector('.card-tile'), w = tile ? tile.getBoundingClientRect().width * 0.6 : 0;
     el.style.visibility = 'hidden'; // until the flight takes over (it keeps the card hidden until it lands)
+    handFlightsLive.add(String(uid)); // 2026-11-13 (package PERF5, ANIM1's leftover): counted as in the air during the rise too, so the 200 ms watchdog (playAnimWatchdog) and a redrawn row keep it hidden (it flashed at 1x)
     try{ allyHandFan(from, w || 40); }catch(e){}
-    setTimeout(()=>{ const c = boardCardEl(uid) || el;
+    setTimeout(()=>{ handFlightsLive.delete(String(uid)); const c = boardCardEl(uid) || el;
       if(!handFlightProxy(c, uid, {x: from.x, y: from.y - 18, kind:'hand', w: w || null, rotate: -8, fadeIn: 0.45, ally: true, flip: true, trail: true, dust: true})) c.style.visibility = ''; }, ALLY_PLAY_RISE_MS);
   };
   requestAnimationFrame(go);
@@ -104931,9 +104988,14 @@ function floatText(el, text, cls, opts){
   const travel = 0.9 + Math.random()*0.2;
   let big = calm ? 1.1 : classes.includes('crit') ? 1.75 : heavyHit ? 1.6 : 1.45;
   el.appendChild(f);
+  // 2026-11-13 (package PERF5, owner 23:47 #12 "damage number ... small frame drop"): a fitted number is measured together with the other numbers
+  // of the same task, at its end (dnFitBatch: every read, one layout, then every start; still before the frame is drawn). Read right after its own
+  // append, each number forced its own style and layout pass (a splash's five numbers, five passes).
+  if(o.fit) dnFitBatch(el, f, place); else place();
+  function place(cw, fw){
   // 2026-10-22 (package DN, "the glyphs must not make the floater wider than the unit card"): a hit number with its type and mark
   // glyphs settles at no wider than the card (fit < 1 shrinks it), and its burst-out peak is held to the card's width too.
-  if(o.fit){ try{ const cw = el.offsetWidth || el.getBoundingClientRect().width; let fw = f.offsetWidth; // both in layout px (the board is zoomed by a transform)
+  if(o.fit){ try{ if(cw == null){ cw = el.offsetWidth || el.getBoundingClientRect().width; fw = f.offsetWidth; } // both in layout px (the board is zoomed by a transform)
     if(cw > 0 && fw > 0){ let fit = (cw * 0.96) / fw;
       if(fit < 1 && f.querySelector('.df-ico')){ f.classList.add('df-tight'); fw = f.offsetWidth || fw; fit = (cw * 0.96) / fw; } // the glyphs give way first, then the number
       if(fit < 1){ const fs = parseFloat(getComputedStyle(f).fontSize) || 24; f.style.setProperty('font-size', (fs * fit).toFixed(1) + 'px', 'important'); f.classList.add('df-shrunk'); fw = f.offsetWidth || fw * fit; } // df-shrunk: its edge thins with it (DN2)
@@ -104973,6 +105035,14 @@ function floatText(el, text, cls, opts){
     f.style.setProperty('--dx', dx.toFixed(1)+'px');
     setTimeout(()=> f.remove(), 1150);
   }
+  }
+}
+const dnFitQueue = []; // PERF5: the fitted numbers of one task, measured together (floatText)
+function dnFitBatch(el, f, place){
+  dnFitQueue.push([el, f, place]); if(dnFitQueue.length > 1) return;
+  const flush = ()=>{ const q = dnFitQueue.splice(0), m = q.map(([e, n])=>{ try{ return n.isConnected ? [e.offsetWidth || e.getBoundingClientRect().width, n.offsetWidth] : null; }catch(err){ return null; } });
+    q.forEach(([e, n, go], i)=>{ try{ if(m[i]) go(m[i][0], m[i][1]); }catch(err){} }); };
+  if(typeof queueMicrotask === 'function') queueMicrotask(flush); else Promise.resolve().then(flush);
 }
 // Item drop (item #3, 2026-09-16): when a kill pays out a resource (currently bounty gold),
 // show something visibly falling out of the kill — heavier and more "gravitas" than the
@@ -105450,9 +105520,10 @@ function spawnProjectile(fromEl, toEl, glyph){
   const p = document.createElement('div');
   p.className = 'projectile';
   p.textContent = glyph || '➶';
-  document.body.appendChild(p);
+  document.body.appendChild(fxShown(p)); // PERF5 (2026-11-13): fixed, always shown
   const {projectile} = animMs();
   if(hasGsap()){
+    p.style.transition = 'none'; // 2026-11-13 (package PERF5): the CSS transition re-aimed itself at every GSAP frame: the glyph trailed 460 ms behind and vanished mid-air
     gsap.set(p, {x:startX-9, y:startY-9, opacity:1, scale:1, rotate:0});
     gsap.timeline({onComplete:()=> p.remove()})
       .to(p, {x:endX-9, y:endY-9, scale:1.15, rotate:Math.random()*40-20, opacity:.15, duration:projectile/1000, ease:'power1.in'});

@@ -25,7 +25,11 @@ const centre = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.
 // them all at once (prime: reads only, so one style pass for the lot) before anything moves. Nothing looks different.
 const shown = e=>{ try{ Object.defineProperty(e, 'offsetParent', {value: document.body, configurable: true}); }catch(err){} return e; };
 const layer = (cls, html)=>{ const e = document.createElement('div'); e.className = 'sfx ' + cls; e.setAttribute('aria-hidden', 'true'); if(html) e.innerHTML = html; document.body.appendChild(e); return shown(e); };
-const prime = els=>{ const g = G(); if(g) els.forEach(e=>{ try{ g.getProperty(e, 'x'); }catch(err){} }); return els; };
+// 2026-11-13 (package PERF5, owner 23:47 #10 / #12): prime also copies each piece's opacity inline (all the reads, then all the writes), so the
+// batch's gsap.set(p, {opacity}) calls read it there: GSAP reads an un-set opacity from the computed style, after the last piece's write, one forced
+// style pass per piece (a poison cloud's 17, a burst's 8-12). The value is the computed one, so nothing looks different.
+const prime = els=>{ const g = G(); if(g){ els.forEach(e=>{ try{ g.getProperty(e, 'x'); }catch(err){} });
+  const op = els.map(e=>{ try{ return e.style.opacity ? null : getComputedStyle(e).opacity; }catch(err){ return null; } }); els.forEach((e, i)=>{ if(op[i] != null) e.style.opacity = op[i]; }); } return els; };
 const layers = (n, cls, html)=>{ const out = []; for(let i = 0; i < n; i++) out.push(layer(typeof cls === 'function' ? cls(i) : cls, html)); return prime(out); };
 const IMG = {arrow:'', fire:''};
 // The heal's plus, drawn (2026-10-16, user: "Heal's plusses look greyed out in the Effect lab - they should be green."): the ➕ emoji
@@ -1723,13 +1727,18 @@ function boltGlob(shooter, target, o){
   const L = BOLT_LOOK[o.element] || BOLT_LOOK.fire, g = G(), a = centre(shooter), b = centre(target);
   const m = {x:(a.x + b.x)/2, y:Math.min(a.y, b.y) - Math.max(50, Math.abs(b.x - a.x)*.25)}, st = {t:0};
   const glob = layer('sfx-glob'); glob.style.background = `radial-gradient(circle at 38% 36%, ${L.core} 0, ${L.mid} 45%, ${L.edge} 100%)`; glob.style.boxShadow = `0 0 12px 4px rgba(${L.glow},.75)`;
+  // 2026-11-13 (package PERF5, owner 23:47 #10 "Bolt effects are still laggy"): a droplet every 50 ms of flight (was every 3rd frame, the same at
+  // 60 fps), made four at a time and read together (prime): each drip read the glob's box after the frame's writes and GSAP read each new drop's
+  // styles, two to three forced style passes every third frame. The glob's centre is the point the tween just set.
+  const drops = [], more = ()=>{ const add = Array.from({length: 4}, ()=>{ const d = layer('sfx-glob-drop'); d.style.background = L.mid; d.style.opacity = '0'; return d; }); drops.push(...add); return add; };
+  prime([glob].concat(more()));
   g.set(glob, {x:a.x - 11, y:a.y - a.h*.15 - 11, scale:.4});
   g.fromTo(tileOf(shooter), {scaleY:1}, {scaleY:.93, duration:.08, yoyo:true, repeat:1, transformOrigin:'50% 100%', clearProps:'transform'}); // the spit
   let k = 0;
-  const drip = ()=>{ if(k++ % 3) return; const r = glob.getBoundingClientRect(), d = layer('sfx-glob-drop'); d.style.background = L.mid; g.set(d, {x:r.left + r.width/2 - 3, y:r.top + r.height/2 - 3, opacity:.9});
+  const drip = (q, t)=>{ if(t * fly < k * 50) return; if(k >= drops.length) prime(more()); const d = drops[k++]; g.set(d, {x:q.x - 3, y:q.y - 3, opacity:.9});
     g.to(d, {y:'+=14', opacity:0, scale:.3, duration:.35, ease:'power1.in', onComplete:()=> d.remove()}); };
-  g.timeline({onComplete:()=> glob.remove()})
-    .to(st, {t:1, duration:fly/1000, ease:'power1.in', onUpdate:()=>{ const q = qpt({x:a.x, y:a.y - a.h*.15}, m, b, st.t); g.set(glob, {x:q.x - 11, y:q.y - 11, scale:.6 + .5*st.t, scaleX:1 + .25*Math.sin(st.t*18), rotation:st.t*240}); drip(); }})
+  g.timeline({onComplete:()=>{ glob.remove(); drops.slice(k).forEach(d=> d.remove()); }})
+    .to(st, {t:1, duration:fly/1000, ease:'power1.in', onUpdate:()=>{ const q = qpt({x:a.x, y:a.y - a.h*.15}, m, b, st.t); g.set(glob, {x:q.x - 11, y:q.y - 11, scale:.6 + .5*st.t, scaleX:1 + .25*Math.sin(st.t*18), rotation:st.t*240}); drip(q, Math.sqrt(st.t) /* power1.in: t = p² */); }})
     .add(()=>{
       glob.style.opacity = 0;
       const sp = layer('sfx-glob-splat'); sp.style.background = `radial-gradient(circle, ${L.core} 0, rgba(${L.glow},.85) 35%, rgba(${L.glow},0) 72%)`;

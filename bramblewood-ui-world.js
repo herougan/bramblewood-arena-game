@@ -226,6 +226,11 @@ function runBeat(tl){
   S.beat = b;
 }
 const mk = (L, css2)=>{ const e = doc.createElement('i'); e.style.cssText = css2; L.appendChild(e); return e; };
+// PERF5 (2026-11-13): GSAP reads a batch of new pieces in one pass: every transform first, then each opacity is copied inline (all reads, then all
+// writes) and offsetParent is answered (they are always shown), so the tweens that follow read nothing from the page
+function primeAll(els){ const g = G(); if(!g || !els.length) return;
+  els.forEach(e=>{ try{ Object.defineProperty(e, 'offsetParent', {value: e.parentNode, configurable: true}); }catch(err){} try{ g.getProperty(e, 'x'); }catch(err){} });
+  const op = els.map(e=>{ try{ return e.style.opacity ? null : getComputedStyle(e).opacity; }catch(err){ return null; } }); els.forEach((e, i)=>{ if(op[i] != null) e.style.opacity = op[i]; }); }
 const rnd = (a, b)=> a + Math.random() * (b - a);
 let uid = 0;
 const from = dir=> dir === 'left' ? 1 : -1; // the side the season blows in from: travelling right, it comes in from the left edge
@@ -276,7 +281,11 @@ function change(tl, host, was, k, dir, at, T){
   const box = paneBox(host), L = doc.createElement('div');
   L.className = 'bww-fx bww-fx-' + k; L.setAttribute('aria-hidden', 'true'); L.style.cssText = `left:${box.left}px; top:${box.top}px; width:${box.width}px; height:${box.height}px; opacity:${todDim(host)};`;
   host.appendChild(L);
-  flourish(tl, L, k, box.width, box.height, dir, at, T, mode(true) !== 'high');
+  // 2026-11-13 (package PERF5, tonight's UIFX2 re-measured): the flourish's tweens are noted first and added once every piece is in and read (primeAll):
+  // each piece's fromTo read its styles and offsetParent right after the last piece's write, a forced style and layout pass a piece (5-26 a change)
+  const q = [], rec = {fromTo: (...a)=>{ q.push(['fromTo', a]); return rec; }, to: (...a)=>{ q.push(['to', a]); return rec; }};
+  flourish(rec, L, k, box.width, box.height, dir, at, T, mode(true) !== 'high');
+  primeAll([...L.children]); q.forEach(([m, a])=> tl[m](...a));
   const old = [...host.querySelectorAll(':scope > .season-veil')], nv = doc.createElement('div');
   old.forEach(v=>{ v.className = 'season-veil season-' + was; });
   nv.className = 'season-veil season-' + k; nv.setAttribute('aria-hidden', 'true'); nv.style.opacity = '0'; host.appendChild(nv);
@@ -326,6 +335,7 @@ function road(tl, host, canvas, dir){
   const step = ()=>{ try{ if(typeof SoundKit !== 'undefined' && SoundKit.pawnStep) SoundKit.pawnStep(); }catch(e){} };
   tl.fromTo(vig, {opacity: 0}, {opacity: 1, duration: .15}, 0)
     .to(reveal, {strokeDashoffset: 0, duration: .65, ease: 'power1.inOut'}, 0);
+  primeAll(prints); // PERF5: the seven prints read together
   prints.forEach((pp, i)=>{ tl.fromTo(pp, {scale: .3, opacity: 0, transformOrigin: '50% 50%'}, {scale: 1, opacity: 1, duration: .16, ease: 'back.out(2.5)'}, .08 + i * .085); if(i % 2) tl.call(step, null, .08 + i * .085); });
   tl.to(prints, {opacity: 0, duration: .25, stagger: .03}, .72).to([lit, vig], {opacity: 0, duration: .3}, .85).call(()=> R.remove(), null, BEAT_MS / 1000);
   return true;

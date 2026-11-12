@@ -3041,7 +3041,9 @@
   .shield-flash{position:absolute; inset:-8px; pointer-events:none; display:flex; align-items:center; justify-content:center; font-size:22px; animation:shieldpop 650ms ease-out forwards; z-index:5;}
   @keyframes shieldpop{0%{opacity:0; transform:scale(.5) rotate(-8deg);}22%{opacity:1; transform:scale(1.3) rotate(5deg);}100%{opacity:0; transform:scale(1.55) rotate(0deg);}}
   /* Missile/ranged: a small glyph travels from attacker to target */
-  .projectile{position:fixed; z-index:550; font-size:19px; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 2px 3px var(--shadow)); transition:transform 460ms cubic-bezier(.3,.55,.2,1), opacity 460ms ease;}
+  .projectile{position:fixed; left:0; top:0; z-index:550; font-size:19px; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 2px 3px var(--shadow)); transition:transform 460ms cubic-bezier(.3,.55,.2,1), opacity 460ms ease;}
+  /* 2026-11-13 (package PERF5, owner 23:47 #10 "Bolt effects are still laggy"): left / top 0, as every other flier here: without them the glyph sat at its
+     place in the page's flow (786 px down at 1366 x 768, off the bottom) and GSAP's screen x / y moved it from there; the transition is for the no-GSAP path only (spawnProjectile). */
   /* Deck builder (2026-09-14): adding/removing a copy flies a little glyph between the pool
      tile and the deck's mini chip list, in whichever direction the change actually went. */
   .deck-fly-chip{position:fixed; z-index:550; font-size:20px; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 2px 3px var(--shadow)); transition:transform 360ms cubic-bezier(.3,.65,.25,1), opacity 360ms ease;}

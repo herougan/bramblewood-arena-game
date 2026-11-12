@@ -17,9 +17,9 @@ const EXE = process.env.BW_CHROMIUM || '/opt/pw-browsers/chromium_headless_shell
 const TYPES = {'.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.webp': 'image/webp', '.png': 'image/png', '.svg': 'image/svg+xml', '.css': 'text/css'};
 function serve(page){ const http = require('http'); return new Promise(res=>{ const s = http.createServer((q, r)=>{ let p = decodeURIComponent(q.url.split('?')[0]); if(p === '/') p = '/index.html';
   const f = p === '/index.html' ? page : path.join(ROOT, p); fs.readFile(f, (e, d)=>{ if(e){ r.writeHead(404); r.end(); return; } r.writeHead(200, {'content-type': TYPES[path.extname(f)] || 'application/octet-stream'}); r.end(d); }); }); s.listen(0, '127.0.0.1', ()=> res(s)); }); }
-const EVT = []; const STK = {}; const GS = 51379 + 1;
+const EVT = []; const STK = {}; let GS = 51379 + 1; // GSAP's (minified) line in the page; PERF5 (2026-11-13): found in the page at start (it moves with every build)
 function stacks(ev){ // forced style / layout passes: who asked (top page frame of the JS stack on the trace event), by cost
-  ev.filter(e=> e.ph === 'X' && (e.name === 'UpdateLayoutTree' || e.name === 'Layout') && e.args).forEach(e=>{ const st = (e.args.beginData && e.args.beginData.stackTrace) || (e.args.data && e.args.data.stackTrace) || []; const fr = st.filter(x=> x.url && (!args.includes('--nogsap') || !/index\.html$/.test(x.url) || x.lineNumber !== GS)).slice(0, +opt('--depth', 1)); const k = e.name[0] + ' ' + (fr.length ? fr.map(f=> (f.functionName || '(anon)') + ':' + f.lineNumber).join(' < ') : '(no JS: normal frame)'); const r = STK[k] || (STK[k] = {n: 0, ms: 0}); r.n++; r.ms += (e.tdur || 0) / 1000; }); }
+  ev.filter(e=> e.ph === 'X' && (e.name === 'UpdateLayoutTree' || e.name === 'Layout') && e.args).forEach(e=>{ const st = (e.args.beginData && e.args.beginData.stackTrace) || (e.args.data && e.args.data.stackTrace) || []; const fr = st.filter(x=> x.url && (!args.includes('--nogsap') || !/index\.html$/.test(x.url) || Math.abs(x.lineNumber - GS) > 1)).slice(0, +opt('--depth', 1)); const k = e.name[0] + ' ' + (fr.length ? fr.map(f=> (f.functionName || '(anon)') + ':' + f.lineNumber).join(' < ') : '(no JS: normal frame)'); const r = STK[k] || (STK[k] = {n: 0, ms: 0}); r.n++; r.ms += (e.tdur || 0) / 1000; }); }
 const SEL = {};
 function selstats(ev){ ev.filter(e=> e.name === 'SelectorStats').forEach(e=>{ ((e.args && e.args.selector_stats && e.args.selector_stats.selector_timings) || []).forEach(t=>{ const r = SEL[t['selector']] || (SEL[t['selector']] = {ns: 0, match: 0, fast: 0, n: 0}); r.ns += t['elapsed (us)'] * 1000 || 0; r.match += t['match_count'] || 0; r.fast += t['fast_reject_count'] || 0; r.n += t['match_attempts'] || 0; }); }); }
 function work(ev){ if(args.includes('--selectors')) selstats(ev); if(args.includes('--stacks')) stacks(ev);
@@ -72,6 +72,7 @@ async function once(b, url, rate, rounds){
   await ctx.close(); return {rate, idle, play, resolve, errs};
 }
 (async()=>{
+  { const L = fs.readFileSync(path.resolve(opt('--page', path.join(ROOT, 'index.html'))), 'utf8').split('\n'), i = L.findIndex(l=> l.startsWith('!function(t,e){') && l.includes('gsap')); if(i >= 0) GS = i + 1; }
   const page = path.resolve(opt('--page', path.join(ROOT, 'index.html'))), rounds = +opt('--rounds', 6), rates = opt('--rates', '1,4').split(',').map(Number), runs = +opt('--runs', 1);
   const s = await serve(page), url = `http://127.0.0.1:${s.address().port}/index.html`, b = await pw().chromium.launch({executablePath: fs.existsSync(EXE) ? EXE : undefined}), all = [];
   for(let k = 0; k < runs; k++) for(const rate of rates){ const res = await once(b, url, rate, rounds); all.push(res);
