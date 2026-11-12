@@ -46,6 +46,21 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 | 38 | Water plop | Tap water on a conquest map | A falling sine plop, a splash of band noise, a smaller drip after it | Down-blip | 200 ms |
 | 39 | Bush rustle | Tap a bush on a conquest map | Two short bursts of high filtered noise with crackle | Noise blip | 300 ms |
 | 40 | Construction | Bulwark raises its Log Walls (2026-11-12, FX6) | Three hammer knocks on wood (a low square thud with a band of noise on each, the pitch sagging a little) over a short rising saw-scrape | Three square blips | 400 ms |
+| 41 | Cinematic rumble | Meteor, Lightning, Earthquake, Eruption, Tidal wave, Stampede (omen and build) (2026-11-12, FX8) | `cineRumble`: filtered noise sweeping 140 to 70 Hz under a sine sliding 46 to 34 Hz, slow swell | (same, one palette) | 2-3 s |
+| 42 | Cinematic boom | Meteor impact, Earthquake split, Eruption blast, Wildfire end flare (2026-11-12, FX8) | `cineBoom`: a sine dropping 130 to 26 Hz, a lowpassed noise burst and a triangle tail | (same, one palette) | 1.3 s |
+| 43 | Cinematic thunder | Lightning storm (distant and after the strike) (2026-11-12, FX8) | `cineThunder`: slow-attack lowpassed noise falling 700 to 60 Hz over a 58 Hz sine | (same, one palette) | 1.7 s |
+| 44 | Cinematic whoosh | Meteor falls; the tide drains (2026-11-12, FX8) | `cineWhoosh`: bandpass noise swept 300 to 2400 Hz, rising | (same, one palette) | 0.6-1.4 s |
+| 45 | Cinematic crack | Lightning strike, Earthquake cracks (2026-11-12, FX8) | `cineCrack`: a very short highpass noise click and a falling square | (same, one palette) | 0.2 s |
+| 46 | Cinematic chime | Eclipse (totality, diamond ring), Blizzard glints, Aurora blessing (2026-11-12, FX8) | `cineChime`: stacked sines on a chosen chord, each with a quiet octave, long decay | (same, one palette) | 1.5 s |
+| 47 | Cinematic drone | Meteor and Eclipse (omen), Aurora (night) (2026-11-12, FX8) | `cineDrone`: two detuned triangles and a fifth, slow attack | (same, one palette) | 2-3 s |
+| 48 | Cinematic buzz | Swarm (2026-11-12, FX8) | `cineBuzz`: a sawtooth with a 27 Hz vibrato over a narrow noise band | (same, one palette) | 2-4 s |
+| 49 | Cinematic wind | Lightning, Tidal wave, Blizzard, Wildfire (2026-11-12, FX8) | `cineWind`: bandpass noise swept 380 to 950 Hz, slow swell | (same, one palette) | 1.6-3.4 s |
+| 50 | Cinematic rain | Lightning storm (2026-11-12, FX8) | `cineRain`: quiet highpass noise, 0.7 s fade-in | (same, one palette) | 3 s |
+| 51 | Cinematic slam | Tidal wave breaks (2026-11-12, FX8) | `cineSlam`: lowpass noise falling 2600 to 200 Hz and a 95 to 30 Hz sine | (same, one palette) | 0.95 s |
+| 52 | Cinematic roar | Eruption, Wildfire, Stampede (2026-11-12, FX8) | `cineRoar`: slow lowpass noise (800 to 280 Hz) over a faint saw | (same, one palette) | 2-2.4 s |
+| 53 | Cinematic hooves | Stampede (2026-11-12, FX8) | `cineHooves`: 13 short low thumps, 88 to 40 Hz, speeding up | (same, one palette) | 2.4 s |
+
+**Status (2026-11-12, package FX8):** cues 41-53 are the sound of the eleven cinematic board effects (`bramblewood-cinematic.js`, Effects Lab group "Cinematic (FX8)", not wired into fights). SoundKit's `tone()` / `noise()` are private to `arena_app.js`, so the file builds the same kind of synth (oscillators, filtered noise, sweeps) on `SoundKit.audioContext()`, gated by the SFX volume; nothing plays under Effects None / reduced motion.
 
 **Status (2026-11-12, package FX6):** cue 40 is live as a Web Audio synth (`SoundKit.constructTone`, built from `tone`, `fnoise`, `sweep`); it replaces the spawn buzz for Bulwark's walls.
 

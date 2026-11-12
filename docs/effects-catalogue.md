@@ -1798,3 +1798,21 @@ All four are cheap by design: one element or a handful of spans (WAAPI, transfor
 | ✅ Spore puff | Spore Cloud's sleep tick (`statusFx` `field:'sporeCloud'`); a Puffball Bombardier's hit | five dark lime-green puffs billow up off the card and thin out in under 1 s; reduced motion: one soft fade | `sporePuffVfx(el)` (reusable) |
 
 Lab entries: `tools/effects-lab/manifest/fx6.js` (variant key `FX6`). Check: `tests/fx6-2026-11-12.js`.
+
+## 2026-11-12 additions: Cinematic (FX8), eleven staged board-wide sequences (Lab only, not wired into fights)
+
+Each is omen, build-up, climax, aftermath in 3-6 s over the fight board: `BramblewoodCinematic.<name>(boardEl, opts)` in `bramblewood-cinematic.js` returns a Promise (with `.skip()` / `.stop()`). A few full-board layers (transform / opacity), at most one particle canvas (freed at the end), the shake on the CSS `translate` property. Low: about 1.6x faster, no canvas, no shake. Reduced motion / Effects None: one still frame, then a fade. A tap skips to the aftermath. Contact sheets: `docs/screens/fx8/<name>-stages.png`. Lab: group "Cinematic (FX8)", variants A full, B Low, C reduced (`tools/effects-lab/manifest/cine.js`). Sound: cues 41-53 in `docs/sfx-cue-sheet.md`. Check: `tests/fx8-2026-11-12.js`.
+
+| Effect | Staging |
+|---|---|
+| 📝 Meteor | a faint ember high in the sky; the sky darkens; darkness creeps in from the edges; a sudden warm brightness as the burning ball falls; white flash, two shockwave rings, shake, debris, a crater that cools and fades |
+| 📝 Eclipse | the sun sharpens; the moon slides across; blue-black dusk; totality with corona, rays and stars; the diamond ring and gold light return |
+| 📝 Lightning storm | slate clouds and rain; three flickers, each closer; a held breath; one forked bolt, white-blue flash, scorch and smoke |
+| 📝 Tidal wave | the sea draws back, sickly light; a foam-crested wall stands up; it breaks over the board; it drains, leaving a wet sheen |
+| 📝 Earthquake fissure | tremor and falling dust; amber-lit cracks run; the ground splits open with a big shake; the chasm closes slowly |
+| 📝 Volcanic eruption | smoke and a ground glow; ash and sparks; the blast, a lava fountain and light column; lava rains, the ash cloud thins |
+| 📝 Blizzard whiteout | the air chills; wind-blown flakes, fog bands sweep in; whiteout and a gust; hush, frost vignette, ice glints |
+| 📝 Aurora blessing | a calm night with stars; curtains of green, teal and violet unfurl and sway; the light pours down as drifting motes; the night lifts |
+| 📝 Wildfire sweep | smoke haze, embers blown ahead; a flame front sweeps left to right scorching behind it; a final flare; smoke, embers winking out |
+| 📝 Swarm blots out the sun | specks gather into a cloud (one canvas, ~120 flickering wings) over the sun; near-dark sweep across the board; it flies off, sun returns |
+| 📝 Stampede | dust trembles on the horizon; nine silhouettes (deer, bison, ram, goat) thunder across right to left with dust and hoofbeats; the dust settles |

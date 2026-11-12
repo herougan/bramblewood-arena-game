@@ -55,6 +55,8 @@ fxideas = open(f'{LAB}/fxlab-ideas.js', encoding='utf-8').read()
 # 2026-11-11 (package LAB3): + bramblewood-fx-ideas2.js (window.IdeasFX2, the candidates of the "Ideas 11-11" tab: Lab only, not in the game
 # bundle) and its tab (fxlab-ideas2.js, on LAB2's tab engine).
 fxbatches += '\n' + open(f'{ROOT}/bramblewood-fx-ideas2.js', encoding='utf-8').read()
+# 2026-11-12 (package FX8): + bramblewood-cinematic.js (window.BramblewoodCinematic), the "Cinematic (FX8)" group (manifest/cine.js).
+fxbatches += '\n' + open(f'{ROOT}/bramblewood-cinematic.js', encoding='utf-8').read()
 fxideas2 = open(f'{LAB}/fxlab-ideas2.js', encoding='utf-8').read()
 _inv = json.load(open(f'{ROOT}/docs/effects-inventory-2026-10-15.json', encoding='utf-8'))
 _INV_KEYS = ['id', 'area', 'name', 'trigger', 'current', 'quality', 'priority', 'themeNotes', 'variantsSuggested', 'future', 'batch', 'status', 'retired', 'added', 'updated', 'inGameHook']  # + status / retired / added / updated (2026-10-17); + inGameHook (2026-10-21: the catalogue's "In game: <where>" badge)
