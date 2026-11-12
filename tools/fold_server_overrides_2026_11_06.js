@@ -45,6 +45,8 @@ function foldCard(row, f, id){
     if(fileNewer(id, k, upd)){ const h = HIST[id + '|' + k]; conflicts.push({field: k, server: sv, file: fv, kept: 'file (changed after the server save)', fileAt: h.at, fileCommit: h.commit}); return; }
     if(isDefault(k, sv) && k !== 'effects'){ delete out[k]; changes.push({field: k, from: fv, to: null}); return; }
     out[k] = sv; changes.push({field: k, from: fv === undefined ? null : fv, to: sv}); });
+  // BABY1 (2026-11-12): the editor stores only Baby (kind 'baby'); a row without it is Baby unticked, so the file's kind goes (unless the file changed it later)
+  if(f.kind === 'baby' && !('kind' in s) && !fileNewer(id, 'kind', upd)){ delete out.kind; changes.push({field: 'kind', from: 'baby', to: null}); }
   return {out, changes, conflicts, kept, merged, upd};
 }
 // two hand calls on the merge (2026-11-06):

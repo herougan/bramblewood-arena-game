@@ -32513,7 +32513,7 @@ function tutorialStarterCopiesLevel0(deck){
 // copy comes at the card's own level again (Level 1). The tutorial's faction rewards (TUTORIAL_FACTION_REWARDS) keep it too.
 const FACTION_COPY_LEVEL0 = false;
 function isFactionPoolDef(d){ const s = d && cardSourceOf(d); return !!(s && s.kind === 'pack' && (parseInt(s.tier, 10) || 1) === 11); }
-function tutorialCopyKeepsLevel(id){ try{ return !FACTION_COPY_LEVEL0 && isFactionPoolDef(copyBaseDef(id)); }catch(e){ return false; } }
+function tutorialCopyKeepsLevel(id){ try{ const bd = copyBaseDef(id); if(isBabyLevelDef(bd)) return false; /* BABY1 (2026-11-12, owner note 11): a Baby card starts at Level 0 from every source, a faction reward too */ return !FACTION_COPY_LEVEL0 && isFactionPoolDef(bd); }catch(e){ return false; } }
 function isFactionLevel0Def(d){ return !!(d && d.faction && d.id !== 'wandering-traveller' && !d.token && d.cardType !== 'materia' && d.cardType !== 'equipment'); }
 function factionCopyLevel0(id){
   try{ if(!FACTION_COPY_LEVEL0 || !copyModelOn()) return; const d = copyBaseDef(id); if(!isFactionLevel0Def(d)) return;
