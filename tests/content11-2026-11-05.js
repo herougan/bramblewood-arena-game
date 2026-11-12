@@ -38,12 +38,18 @@ const prompts = R('docs/art-style-prompts.md'), BANNED = ['no clothes', 'spiked'
 NEW.forEach(s=>{ const c = byId[s.id]; ok(!!c, `${s.id}: in cards.json`); if(!c) return;
   ok(s.fx.every(k=> c.effects && c.effects[k]) && Object.keys(c.effects).length === 2, `${s.id}: carries ${s.fx.join(' + ')} (two skills)`);
   ok(/^data:image\/png;base64,/.test(c.art || "") && !!c.icon, `${s.id}: has its ART9 card art and keeps its icon`); // 2026-11-05 (ART9): the art came in; was "the emoji placeholder"
-  ok(c.source && c.source.kind === 'pack' && c.source.map === s.sub && !c.unattainable && !c.awaitingSource, `${s.id}: a pack card of its list, in play`);
-  ok(cards.indexOf(c) >= cards.length - 3, `${s.id}: appended at the end`); // 2026-11-06 (ENG27): the Crimson Wing Drumcaller came after it
+  // 2026-11-12 (TESTFIX1): SKIR3 cut the side lists to the owner's picks (3 own cards each) and both cards left play. An out-of-play card ('unplaced') carries
+  // the unattainable flag, sits on no list and is exempt from the budget (LMP.budgetHold); a card still on a list keeps every original check
+  const outOfPlay = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(s.id) === 'unplaced';
+  ok(c.source && c.source.kind === 'pack' && c.source.map === s.sub && (outOfPlay ? c.unattainable === true : !c.unattainable) && !c.awaitingSource, `${s.id}: a pack card of its list${outOfPlay ? ', out of play and flagged unattainable (SKIR3)' : ', in play'}`);
+  // 2026-11-12 (TESTFIX1): "appended at the end" = no card was inserted before it (every later card has a higher numericId); later packages add cards after it (Barrel Cactus, Sea Bass ...)
+  ok(cards.slice(cards.indexOf(c) + 1).every(x=> x.numericId > c.numericId), `${s.id}: appended at the end`); // 2026-11-06 (ENG27): the Crimson Wing Drumcaller came after it
+  if(outOfPlay){ ok(!Object.keys(POOLS).some(k=> JSON.stringify(POOLS[k]).includes('"' + s.id + '"')), `${s.id}: on no list while out of play`); }
+  else {
   const m = OBT[s.id]; ok(m > 0, `${s.id}: obtainable from Map ${m} (card-obtain-maps)`);
   const b = T.budget(Object.assign({}, c, {obtainMap: m}), {level:1}); ok(b.ok && b.x1 <= b.N, `${s.id}: inside the budget at Level 1, Map ${m} (${b.x1} / ${b.N})`);
   ok(POOLS[s.parent].submaps[s.sub].includes(s.id) && !POOLS[s.parent].cards.includes(s.id), `${s.id}: on the ${s.sub} list only`);
-  ok(Object.keys(POOLS).filter(k=> JSON.stringify(POOLS[k]).includes('"' + s.id + '"')).length === 1, `${s.id}: on one map's lists`);
+  ok(Object.keys(POOLS).filter(k=> JSON.stringify(POOLS[k]).includes('"' + s.id + '"')).length === 1, `${s.id}: on one map's lists`); }
   ok((REV[s.sub].chosen || []).some(x=> x.id === s.id && x.by === 'claude' && /CONTENT11/.test(x.why)), `${s.id}: the Map cards window says why (CONTENT11)`);
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{
     ok(!!J(`lang/cards/${code}.json`)[c.name], `${s.id}: name in lang/cards/${code}`); ok(!!J(`lang/ui/${code}.json`)[c.flavor], `${s.id}: flavour in lang/ui/${code}`); });

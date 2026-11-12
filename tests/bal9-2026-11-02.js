@@ -72,8 +72,9 @@ ok(fs.existsSync(path.join(ROOT, 'docs/balance/bench-contrib-map02-mb-bpro-2026-
     if (tot !== 20) bad.push(`${m}/${e.seed}: ${tot} cards`); if (!e.leader || !e.bramble) bad.push(`${m}/${e.seed}: no leader or bramble`);
     Object.keys(e.counts).filter(DK.isCut).forEach(id => bad.push(`${m}/${e.seed}: cut ${id}`));
     (e.parts || []).forEach(p => { if (p[2] !== R5.mapLevelOf(gm, p[0], m)) bad.push(`${m}/${e.seed}: ${p[0]} Lv ${p[2]} (map level ${R5.mapLevelOf(gm, p[0], m)})`); }); }));
+  // 2026-11-12 (TESTFIX1): the set was rebuilt again on the SKIR3 lists (tag skir3); the content checks below are unchanged and pass
   // 2026-11-11 (coordinator): the set was rebuilt on the LISTFIX3 lists (tag 2026-11-11-lf3); the content checks are unchanged
-  ok(maps.length === 21 && set.runs[20] && /bal9|lf3/.test(set.runs[20].tag) && !bad.length, `JJ7 21 maps x 5 decks rebuilt (tag ${set.runs[20] && set.runs[20].tag}): 20 cards, a leader and a bramble, no cut card, the map's level (${bad.slice(0, 6).join('; ') || 'all'})`);
+  ok(maps.length === 21 && set.runs[20] && /bal9|lf3|skir3/.test(set.runs[20].tag) && !bad.length, `JJ7 21 maps x 5 decks rebuilt (tag ${set.runs[20] && set.runs[20].tag}): 20 cards, a leader and a bramble, no cut card, the map's level (${bad.slice(0, 6).join('; ') || 'all'})`);
   const chk = run(['tools/opt/ref_decks.js', '--check']); ok(/up to date/.test(chk), 'JJ7 the decks are baked into arena_app.js (ref_decks --check)');
   const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'); ok(/leader: e\.leader \|\| null, bramble: e\.bramble \|\| null/.test(src), 'JJ7 refSetFor deals the deck\'s leader and bramble');
   const econ = J('docs/balance/bal9/econ-2026-11-02.json'); ok(econ.rows.length === 21 && econ.rows.every((r, i) => !i || r.packsOpened >= econ.rows[i - 1].packsOpened) && econ.rows[11].deckLevel === 3, 'JJ7 the packs / levels table covers Maps 0-20 (Lv 3 at Map 11)'); }

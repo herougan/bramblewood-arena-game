@@ -38,7 +38,8 @@ ok(new Set(nids).size === nids.length, 'numericIds are unique');
 const skillCount = e=> Object.keys(e || {}).filter(k=> k !== 'triggers' && k !== 'packLeaderOf').length + ((e && e.triggers) || []).length;
 for(const s of C2.NEW){ const c = by[s.id];
   ok(c, `${s.id} is in cards.json`); if(!c) continue;
-  ok(skillCount(c.effects) <= 2, `${s.id}: two skills at most (${JSON.stringify(c.effects)})`);
+  // 2026-11-12 (TESTFIX1): the Driftwood Crab is an owner card now (his live edit folded by CONTENT12: Guardian + Crab Claws + On Attacked Lumber); the two-skill rule binds the cards CONTENT2 made
+  ok(skillCount(c.effects) <= 2 || require(path.join(ROOT, 'tools', 'pipeline', 'config.json')).refit.ownerCards.includes(s.id), `${s.id}: two skills at most (${JSON.stringify(c.effects)})`);
   ok(c.attack >= 1 && c.health >= 1 && /Fit: the formula line/.test(c.creatorNote || ''), `${s.id}: fitted by the formula (${c.attack}/${c.health})`);
   ok(!c.art || /^data:image\/png;base64,/.test(c.art), `${s.id}: placeholder art (its emoji ${c.icon}), or its painted art since (2026-11-04 TESTFIX1: ART2 painted them on 10-29)`);
   if(s.place){ const [map, tier] = s.place;
@@ -50,12 +51,16 @@ for(const s of C2.NEW){ const c = by[s.id];
 const gnawed = ['bog-shrew', 'mire-rat', 'hollow-belly-rat', 'gnawed-matriarch'], tide = ['kelpborn-otter', 'conger-eel', 'selkie-wavebinder'];
 gnawed.forEach(id=> ok(utBy[id] && utBy[id].faction === 'gnawed', `${id} is one of the Gnawed (unit themes: ${utBy[id] && utBy[id].faction})`));
 tide.forEach(id=> ok(utBy[id] && utBy[id].faction === 'tidefolk', `${id} is one of the Tidefolk (unit themes: ${utBy[id] && utBy[id].faction})`));
-ok(ut.counts.faction.gnawed >= 4 && ut.counts.faction.tidefolk >= 5, `the thin factions grew (Gnawed ${ut.counts.faction.gnawed}, Tidefolk ${ut.counts.faction.tidefolk})`);
+// 2026-11-12 (TESTFIX1): counts.faction leaves out the evolved variants (4 / 4); the units list holds 5 / 5, the size the rule meant
+const nFac = f=> ut.units.filter(u=> u.faction === f).length;
+ok(nFac('gnawed') >= 4 && nFac('tidefolk') >= 5, `the thin factions grew (Gnawed ${nFac('gnawed')}, Tidefolk ${nFac('tidefolk')}; counts.faction ${ut.counts.faction.gnawed} / ${ut.counts.faction.tidefolk})`);
 ok(utBy['gannet-nestweaver'].biomes[0] === 'cliffs' && utBy['redwood-woodpecker'].biomes[0] === 'redwood' && utBy['driftwood-crab'].biomes[0] === 'coast', 'the gatherers carry their biome');
 
 // ---- 2. Lumber and Stone
 // 2026-11-04 (TESTFIX1): ENG22 (2026-11-03, owner 21:10, DESIGN1-6) folds "a resource when Ready" into Delivery {X} (Lumber by default; deliveryEvery each round)
-const pays = (c, res)=>{ const e = c.effects || {}; return (res === 'lumber' && (e.milling || e.onReadyGold || ((e.delivery || e.deliveryEvery) && (!e.deliveryRes || e.deliveryRes === 'lumber')))) || (res !== 'lumber' && (e.delivery || e.deliveryEvery) && e.deliveryRes === res) || (e.triggers || []).some(t=> t.do === 'gain' && t.resource === res && (t.on === 'onReady' || t.on === 'onSpawn')); };
+const SP = require(path.join(ROOT, 'bramblewood-skillparams.js')); // 2026-11-12 (TESTFIX1): ENG35 fused skills (delivery {v, res}) read as their flat keys, as content12 does
+// 2026-11-12 (TESTFIX1): + the owner's On Attacked (Driftwood Crab) and On Kill (Gull Thief) gathers
+const pays = (c, res)=>{ c = SP.expandDef(c); const e = c.effects || {}; return (res === 'lumber' && (e.milling || e.onReadyGold || ((e.delivery || e.deliveryEvery) && (!e.deliveryRes || e.deliveryRes === 'lumber')))) || (res !== 'lumber' && (e.delivery || e.deliveryEvery) && e.deliveryRes === res) || (e.triggers || []).some(t=> t.do === 'gain' && t.resource === res && ['onReady', 'onSpawn', 'onAttacked', 'onKill'].includes(t.on)); };
 ['driftwood-crab', 'gannet-nestweaver', 'nutria-reedcutter', 'redwood-woodpecker', 'termite-forager', 'cone-cutter-squirrel', 'talus-pika', 'dune-packrat', 'land-tiller', 'coral-polyp-colony', 'rodent-king']
   .forEach(id=> ok(pays(by[id], 'lumber'), `${id} gathers Lumber`));
 const gainOf = c=> c.effects.delivery || (c.effects.triggers || [])[0] && c.effects.triggers[0].amount; // TESTFIX1: Delivery N since ENG22
@@ -64,7 +69,9 @@ ok(new Set(['driftwood-crab', 'nutria-reedcutter', 'cone-cutter-squirrel', 'dune
 Object.entries(C2.EXISTING).forEach(([id, [map, tier]])=> ok(pools[map].cards.includes(id) === (T2[map] || []).includes(id) && by[id].source.map === map && by[id].source.tier === tier, `${id}: its source is ${map}, its place on ${map}'s list follows THEME2`));
 ok(pays(by['gravel-mole'], 'stone') && pays(by['pumice-beetle'], 'stone'), 'two Stone gatherers');
 // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the Gravel Mole is off the caves' list; the Stone gatherer there is THEME2's mix pick
-ok(by['badger-stonemason'].effects.quarry === 1 && pools.m4.cards.includes('badger-stonemason') && pools.m4.cards.includes('gravel-mole') === T2.m4.includes('gravel-mole'), 'the converter (Quarry 1) on the Stone map (Caves & Alcoves), the Gravel Mole where THEME2 puts it');
+// 2026-11-12 (TESTFIX1): SKIR1's rule (owner 11-11 "No stone until Map 21+") took every Stone card off the lists of Maps 0-20, so the converter and the Gravel Mole sit on no list there; the rule that stays: Quarry 1, and no list of Maps 0-20 holds either
+{ const GN = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, early = id=> Object.entries(pools).filter(([k, e])=> { const no = GN.mapNumberOf(k); return no != null && no <= 20 && [].concat(e.cards, e.special || [], ...Object.values(e.submaps || {}).map(l=> Array.isArray(l) ? l : l.cards || [])).includes(id); }).map(([k])=> k);
+  ok(by['badger-stonemason'].effects.quarry === 1 && !early('badger-stonemason').length && !early('gravel-mole').length, `the converter (Quarry 1) and the Gravel Mole are on no list before Map 21 (${early('badger-stonemason').concat(early('gravel-mole')).join(', ') || 'none'})`); }
 { const H = require('./lib/harness.js'), E = H.Engine, defs = H.loadCardDefs();
   const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
   const mk = ()=>{ const e = E.makeSimEngine(defs, E.mulberry32(7), {recordEvents: true, battleMode: 'open'}); return {e, P: {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}}; };
@@ -81,10 +88,12 @@ const deckOf = key=>{ const m = src.match(new RegExp(`key:"${key}"[^\\n]*?deck:(
 const d21 = deckOf('2-1'), d22 = deckOf('2-2'), d23 = deckOf('2-3'), d31 = deckOf('3-1'), d33 = deckOf('3-3'), d51 = deckOf('5-1');
 // 2026-10-28 APPLY1: lists follow THEME2 (the Starfish is on no list now); the deck-vs-pool check below still flags 2-1 until the decks are rebuilt.
 ok(d21 && d21['rock-pool-starfish'] >= 1, 'N21-1: the Rock Pool Starfish fights in Rock Pool Raiders (2-1)');
-ok(d22 && d22.oystercatcher >= 1 && d22['gull-thief'] >= 1, 'Gull Gang (2-2) has its two shore birds');
-ok(d23 && d23['driftwood-crab'] >= 1, 'Hermit Row (2-3) fields the Driftwood Crab');
-ok(d31 && d31['gannet-nestweaver'] && !d31['hawk-arrowkeeper'] && d33 && d33['gannet-nestweaver'] && !d33['hawk-arrowkeeper'], 'N21-2: Gannet Nestweavers for the Hawk Arrowkeepers in 3-1 and 3-3');
-ok(d51 && d51['bog-leech'] >= 1 && !d51['venomlord-serpent'] && pools.mw.special.includes('bog-leech'), 'the Leech Pools (5-1) have leeches; Bog Leech is on Map 5\'s Special list');
+// 2026-11-12 (TESTFIX1): SKIR1 / SKIR3 rebuilt every road deck from the new lists, so these four rules read the whole road of the map: each CONTENT2 card still fights in some fight of its map
+const LBX = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, roadHas = (mid, id)=> (LBX.CONQUEST_MAPS.find(m=> m.id === mid).nodes || []).some(nd=> (nd.deck || {})[id] > 0);
+ok(roadHas('mb', 'oystercatcher') && roadHas('mb', 'gull-thief'), 'Pebble Beach (Gull Gang\'s map) still fights its two shore birds');
+ok(roadHas('mb', 'driftwood-crab'), 'Pebble Beach still fields the Driftwood Crab (Hermit Row\'s map)');
+ok(d31 && d33 && !d31['hawk-arrowkeeper'] && !d33['hawk-arrowkeeper'] && roadHas('mc', 'gannet-nestweaver'), 'N21-2: Gannet Nestweavers fight on Gannet Cliffs, the Hawk Arrowkeepers are out of 3-1 and 3-3');
+ok(d51 && !d51['venomlord-serpent'] && roadHas('mw', 'bog-leech') && pools.mw.special.includes('bog-leech'), 'the Leech Pools\' map (Map 5) fights Bog Leeches (5-1 no longer, SKIR rebuilt it); Bog Leech is on Map 5\'s Special list');
 const LF1D = J('docs/balance/listfix1-decks-2026-10-29.json').list; // 2026-10-29 LISTFIX1
 const MAXC = {common: 5, uncommon: 4, rare: 3, veryrare: 2};
 for(const [k, d] of Object.entries({'2-1': d21, '2-2': d22, '2-3': d23, '3-1': d31, '3-3': d33, '5-1': d51})){ if(!d) continue;
@@ -94,7 +103,9 @@ for(const [k, d] of Object.entries({'2-1': d21, '2-2': d22, '2-3': d23, '3-1': d
   ok(ids.every(id=> ['common', 'uncommon', 'starter'].includes(by[id].rarity)), `${k}: Common / Uncommon only (Maps 2-5 skirmishes)`);
   // 2026-10-29 LISTFIX1: decks are not rebuilt yet (the owner's step 4): a card off the pool is reported, and it must be on the LISTFIX1 list
   // 2026-10-29 THEME3: lists follow the owner's 23:35/00:10 notes; a card THEME3 cut from the map's list (canonical/map-review.json `cut`) counts as recorded too
-  const offp = ids.filter(id=> !pool.has(id)), rec = (LF1D.find(f=> f.map === mapId && f.key === k) || {off: []}).off.map(o=> o.id).concat(((J('canonical/map-review.json').maps[mapId] || {}).cut || []).map(c=> c.id));
+  // 2026-11-12 (TESTFIX1): the fight's legal pool is SKIR1's (its map's list + SPECIAL, its own first-clear cards, leaders; tools/skir1/lib_fight): a card of it is not "off the pool" (Razorbill, kept for 3-1 / 3-3)
+  const SKL = require(path.join(ROOT, 'tools', 'skir1', 'lib_fight_2026_11_11.js')), skm = SKL.maps().find(m=> m.id === mapId), skn = SKL.fightsOf(skm).find(x=> x.key === k), legal = skn ? SKL.fight(skm, skn).pool : [];
+  const offp = ids.filter(id=> !pool.has(id) && !legal.includes(id)), rec = (LF1D.find(f=> f.map === mapId && f.key === k) || {off: []}).off.map(o=> o.id).concat(((J('canonical/map-review.json').maps[mapId] || {}).cut || []).map(c=> c.id));
   if(offp.length) console.log(`  · ${k}: off its map's pool, not rebuilt yet (step 4): ${offp.join(', ')}`);
   ok(offp.every(id=> rec.includes(id)), `${k}: every card from its map's pool, or listed in docs/balance/listfix1-decks-2026-10-29.json (${offp.filter(id=> !rec.includes(id)).join(', ')})`); }
 const after = R('docs/balance/skirmish-pass-content2-after.jsonl').trim().split('\n').map(l=> JSON.parse(l));
@@ -115,7 +126,8 @@ for(const code of CODES){
 // ---- 5. the owner calls, the uncharted unlocks
 const dec = J('docs/decisions.json').items;
 ['CONTENT2-1', 'CONTENT2-2', 'CONTENT2-3', 'CONTENT2-4', 'CONTENT2-5', 'CONTENT2-6'].forEach(id=> ok(dec.some(x=> x.id === id && (x.status === 'YET' || x.status === 'DONE')), `owner call ${id}`)); // 2026-10-26 (release): the owner answered them 10-25 17:53
-ok(/^const STRANGE_MATERIA_DROPS = \{12:1, 15:1, 25:2, 30:3\};$/m.test(src) && /\{map:25, cost:\{gold:2800, dust:600\}\},\n\s*\{map:30, cost:\{gold:4000, dust:900\}\},/.test(src), 'the uncharted unlocks stay where they are (CONTENT2-4 default)');
+// 2026-11-12 (TESTFIX1): UI21 (11-05) moved the nest unlocks to Maps 4 / 8 / 12 / 16 / 20 / 24; the last two prices are the old 25 / 30 ones, unchanged
+ok(/^const STRANGE_MATERIA_DROPS = \{12:1, 15:1, 25:2, 30:3\};$/m.test(src) && /\{map:20, cost:\{gold:2800, dust:600\}\},\n\s*\{map:24, cost:\{gold:4000, dust:900\}\},/.test(src), 'the uncharted unlocks stay where they are (CONTENT2-4 default)');
 ok(R('docs/art/content2-2026-10-24-briefs.md').split('full background').length - 1 >= 18 && !/\b(no clothes|spiked|studded|monitor|sperm|corpse|sword|spear|blade|dagger|axe)\b/i.test(R('docs/art/content2-2026-10-24-briefs.md')), 'art prompts: one per card, a background each, no banned words');
 
 console.log(fail ? `content2-2026-10-24: ${fail} of ${n} checks FAILED` : `content2-2026-10-24: all ${n} checks passed`); process.exit(fail ? 1 : 0);
