@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-12 "Reference (Random)" rebuilt on the SKIR3 lists (coordinator; no card or fight changed)
+- `tools/opt/ref5_prog.js run --maps 0-20 --tag skir3`: 5 decks per map from the 11-12 lists (the 225 decks SKIR3 had only swapped to legal cards), baked with `tools/opt/ref_decks.js --apply`; ref5 passes.
+
 ## 2026-11-12 Package FX6 (the owner's 08:39 effect notes: High Tide's wave, Bulwark's rise, bugs, the spore puff)
 - Players see: High Tide lays a second water layer over the tide, shaped as a breaking wave in the tide's own blue and white crest line. Bulwark's Log Walls now rise out of their slots from the floor up with a little dust and three hammer knocks (no flight from the card, no summon portal). Swarm and Spawn on death send out small bug silhouettes that scatter, crawl and fade by 1 s. Spore Cloud's sleepers (and the Puffball Bombardier's hit target) get a dark lime-green puff for 1 s.
 - Guardian: unchanged. The engine lets a Guardian step in only while Ready (ENG9, blockerReady); the plates were already drawn from the moment it is placed, so the picture is not behind the rule. Rules and card data untouched.
