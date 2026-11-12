@@ -9,7 +9,8 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 ## 11-12 08:39: Owner notes
-- FX6 (running): High Tide as a second wave over the tide; Guardian wings at placement (if the engine guards then); Bulwark walls rise from the slot with a construction sound; Swarm / spawn-on-death crawlies (1 s); Spore Cloud dark lime puff (1 s). A puff-cloud card skill goes to a decision.
+- FX6 (done, merged, waiting for release): High Tide second wave; Bulwark walls rise from the slot with hammer knocks; Swarm / spawn-on-death crawlies; spore puff (Spore Cloud sleepers, Puffball Bombardier). Guardian: no change, asked the owner what he sees. PUFF1-1 filed.
+- Running: full suite again (runner now stops a test after 10 min; a hung test stalled the 09:22 run for 2 h); BAL24 ladder rebuild on the 11-12 lists (pools done, opt running); TESTFIX1 (tests that encode the old lists).
 - Answered in chat: the lag summary, images and caching, Barrel Cactus is on The Pale Desert's list (and its fights 18-A-1, 18-A-6), balance status.
 
 ## 11-12 00:38-00:43: Owner notes (night batch: CACTI1, UI48, PERF3, PERF4, NET1, SKIR3; released 11-12 on the owner's "push")
