@@ -55476,7 +55476,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '6697c5eca8d5', BUILD_CARD_HASH = '19a64baf79f7dd4ff53e2e32f32929f7261e42d1c2c91d8a57fca469529ec883';
+const BUILD_ID = '9c8e82d5bd49', BUILD_CARD_HASH = '19a64baf79f7dd4ff53e2e32f32929f7261e42d1c2c91d8a57fca469529ec883';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -92073,9 +92073,9 @@ function renderBoard(opts){
     flipSlotFast = true;
     const cells = new Map();
     [[p1Rows, 1], [p2Rows, 2]].forEach(([rows, pid])=> [...rows.left, ...rows.center, ...rows.right].forEach(c=> cells.set(String(c.uid), pid + ':' + c.slot)));
-    const prevCells = m._flipCells;
-    if(prevCells && m._flipRange === slotRange){ flipNoMove = true; for(const [u, cell] of cells){ if(prevCells.has(u) && prevCells.get(u) !== cell){ flipNoMove = false; break; } } }
-    m._flipCells = cells; m._flipRange = slotRange;
+    const prevCells = m._flipCells, span = ui2UnitSpan([p1Rows, p2Rows]); // ANIM1 (note 9): the units' span sizes the cards (--row-n), so a new span re-lays them out too
+    if(prevCells && m._flipRange === slotRange && m._flipSpan === span){ flipNoMove = true; for(const [u, cell] of cells){ if(prevCells.has(u) && prevCells.get(u) !== cell){ flipNoMove = false; break; } } }
+    m._flipCells = cells; m._flipRange = slotRange; m._flipSpan = span;
   } else { m._flipCells = null; m._flipRange = null; }
   // Bugfix (2026-09-17, found while wiring up tasks #125/#126): GSAP's Flip.from()/onEnter
   // never actually distinguishes "a brand new uid with no prior recorded state" from an
@@ -92176,7 +92176,7 @@ function renderBoard(opts){
           tl.kill();
           enteringTimelines.delete(uid);
           const isSpawn = spawnUidsForKilledEntrants.includes(String(uid));
-          if(!handFlightsLive.has(String(uid))) setTimeout(()=>{ if(isSpawn) playBeeSpawnLanding(uid); else playLandingImpact(uid); }, 0); // a hand flight lands its own (2026-10-17)
+          if(!handFlightsLive.has(String(uid)) && !tl._byFlight) setTimeout(()=>{ if(isSpawn) playBeeSpawnLanding(uid); else playLandingImpact(uid); }, 0); // a hand flight lands its own (2026-10-17); + one already down (ANIM1: no second thud)
         }
       });
       gsap.killTweensOf(enteringEls);
@@ -92300,6 +92300,10 @@ function renderBoard(opts){
     if(m.coop && slotView){ try{ const resRows = (m.players[1].reserve || []).map(rw=> ({left: [], center: Object.keys(rw).map(k=> rw[k]).filter(Boolean), right: []}));
       ui2SetRowSpan(m, [p1Rows, p2Rows, ...resRows], [rowEnemy, rowMine, ...document.querySelectorAll('#battlefieldInner .reserve-row.coop-rows')]); }catch(e){} }
   }
+  // 2026-11-13 (package ANIM1, owner 23:47 note 19): a row redrawn while a played card is still flying in from the hand (the turn's own
+  // render, Auto's, a second play) drew that card at its slot, shown, until the flight's next frame hid it again: the card flashed on the
+  // field, vanished, and came back on landing. The flight keeps its card hidden until it lands, so a redrawn copy starts hidden too.
+  handFlightsLive.forEach(u=>{ const c = boardCardEl(u); if(c) c.style.visibility = 'hidden'; });
   // 2026-10-18 (owner 15:56, row and column smacks): the next smack's column glows red down all your rows, or its row glows red across
   if(m.coop) try{ gdDecorateBoard(m); }catch(e){} // 2026-10-28 (package COOP2): my claims waiting in their slots, whose row is whose
   if(m.raidFull){ const tg = raidTelegraph(m), resRows = [...document.querySelectorAll('#battlefieldInner .reserve-row.mine')];
@@ -92729,7 +92733,8 @@ function renderBoard(opts){
         const sharp = sharpBoard();
         // 2026-10-17: your own play never waits on the stagger (the enemy's card rendered first in this pass pushed yours 0.05 s
         // back, sat still at the hand: the "0.1 s lag").
-        const flightOk = !!(handFlight && handFlightProxy(el, uid, handFlight));
+        const goTo = isHandPlay && playGoTo(); // 2026-11-13 (ANIM1, note 19): 4x / 5x: no travel, the card is simply in its slot
+        const flightOk = !goTo && !!(handFlight && handFlightProxy(el, uid, handFlight));
         const entranceTl = gsap.timeline({
           delay: (isHandPlay && !(origin && origin.enemyHand)) ? 0 : i*(sharp ? 0.03 : 0.05),
           onComplete: ()=>{
@@ -92748,9 +92753,11 @@ function renderBoard(opts){
             // is done — would let it compute a static flow position as if Flip's still-absolute
             // targets don't exist yet, which is exactly the desync this whole scheme prevents.
             if(spawnUids.includes(String(uid))) playBeeSpawnLanding(uid);
-            else if(!flightOk){ playLandingImpact(uid); if(isHandPlay) playHandSummonGlow(uid); } // a flight lands its own thud (handFlightProxy)
+            else if(!flightOk && !goTo){ playLandingImpact(uid); if(isHandPlay) playHandSummonGlow(uid); } // a flight lands its own thud (handFlightProxy)
+            if(!flightOk) settleRestPose(el); // ANIM1 (note 13): the entrance's last pose off the card once it is down
           },
         });
+        entranceTl._byFlight = flightOk; // ANIM1 (note 19): a redraw that cuts this short doesn't land it a second time
         if(riseUp){
           const calm = reducedMotion() || !fxAtLeast('low');
           if(calm) entranceTl.fromTo(el, {opacity:0, x:0, y:0, rotate:0, scale:1}, {opacity:1, duration:.2, ease:'none'});
@@ -92766,6 +92773,8 @@ function renderBoard(opts){
           // Flip leaves alone) at its slot and takes over the moment the copy arrives, its face squashing into place (the leader
           // harder, a stomp). This timeline only holds the card's "entering" state for that long.
           entranceTl.set(el, {opacity:1, x:0, y:0, rotate:0, scale:1}, 0).to({}, {duration: handFlightSec(!!handFlight.leader) + .25});
+        } else if(goTo){
+          entranceTl.to({}, {duration: .05}); // ANIM1 (note 19): drawn at rest in its slot; the timeline only closes its "entering" state
         } else if(broodHop){
           // UI14 (JJ13): the 🐣 hops from the parent onto this slot (the second egg a beat later), and the token pops out of it as it lands
           const calm = reducedMotion() || !fxAtLeast('low'); // reduced motion / Effects None: no hop, the token fades in where it lands
@@ -92982,9 +92991,9 @@ function recenterBattlefieldPan(delayMs){
     const inner = document.getElementById('battlefieldInner');
     if(!inner || battlefieldPanX===0) { battlefieldPanX = 0; return; }
     battlefieldPanX = 0;
-    inner.style.transition = 'transform .6s cubic-bezier(.22,.85,.34,1)';
+    inner.style.transition = `transform ${layoutSec(.6).toFixed(3)}s cubic-bezier(.22,.85,.34,1)`; // ANIM1 (note 9): at the layout speed
     applyBattlefieldTransform();
-    setTimeout(()=>{ if(inner) inner.style.transition = ''; }, 650);
+    setTimeout(()=>{ if(inner) inner.style.transition = ''; }, Math.round(layoutSec(.6) * 1000) + 50);
   }, delayMs==null ? 550 : delayMs);
 }
 // Item 3, second half ("the camera moves such that we can see the action happen if it's outside
@@ -93036,7 +93045,7 @@ function panCameraToShowUid(uid){
     inner.style.transition = 'none';
     inner.style.transform = trueBeforeTransform;
     void inner.offsetWidth; // force-commit the "before" frame before enabling the transition
-    inner.style.transition = 'transform .35s ease-out';
+    inner.style.transition = `transform ${layoutSec(.35).toFixed(3)}s ease-out`; // ANIM1 (note 9): at the layout speed
     inner.style.transform = afterTransform;
   }
   panCameraToShowUid._transitionActive = true;
@@ -93046,7 +93055,7 @@ function panCameraToShowUid(uid){
     if(inner) inner.style.transition = '';
     panCameraToShowUid._transitionActive = false;
     fitBattlefieldZoom._transitionActive = false;
-  }, 380);
+  }, Math.round(layoutSec(.35) * 1000) + 30);
 }
 // Elastic camera pan (2026-09-22, item 4 — "If the field is bigger than the camera, scrolling
 // lets you go left/right"): wired ONCE, delegated on `document` rather than bound to a specific
@@ -93305,11 +93314,11 @@ function mb2FlipReframe(inner, before, after){
   inner.style.transition = 'none';
   inner.style.transform = `translateX(${before.x.toFixed(1)}px) translateY(${dy.toFixed(1)}px) scale(${s.toFixed(4)})`;
   void inner.offsetWidth;
-  inner.style.transition = 'transform .3s cubic-bezier(.3,.1,.2,1)';
+  inner.style.transition = `transform ${layoutSec(.3).toFixed(3)}s cubic-bezier(.3,.1,.2,1)`; // ANIM1 (note 9): at the layout speed
   inner.style.transform = target;
   fitBattlefieldZoom._transitionActive = true; panCameraToShowUid._transitionActive = true;
   clearTimeout(mb2FlipReframe._t);
-  mb2FlipReframe._t = setTimeout(()=>{ inner.style.transition = ''; fitBattlefieldZoom._transitionActive = false; panCameraToShowUid._transitionActive = false; }, 340);
+  mb2FlipReframe._t = setTimeout(()=>{ inner.style.transition = ''; fitBattlefieldZoom._transitionActive = false; panCameraToShowUid._transitionActive = false; }, Math.round(layoutSec(.3) * 1000) + 40);
 }
 // Fill mode: the frame's size changes without a board render (a hand drawn or played, the window, the browser bar), so it is
 // watched and the board framed again (a raid only when its frame key changed, see raidFrameKey).
@@ -93407,6 +93416,7 @@ function rzWrite(m){
 function rzTo(m, target, ms){
   cancelAnimationFrame(rzTween); const s = m._rz; if(!s) return;
   if(!ms || reducedMotion()){ Object.assign(s, target); rzWrite(m); return; }
+  ms = layoutSec(ms / 1000) * 1000; // ANIM1 (note 9): the raid zoom at the layout speed
   const from = {z: s.z, tx: s.tx, ty: s.ty}, t0 = performance.now(), ease = t=> t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   const step = now=>{ if(matchState !== m || s.gesture) return; const k = Math.min(1, (now - t0) / ms), e = ease(k);
     s.z = from.z + (target.z - from.z) * e; s.tx = from.tx + (target.tx - from.tx) * e; s.ty = from.ty + (target.ty - from.ty) * e; rzWrite(m);
@@ -93583,7 +93593,7 @@ function fitBattlefieldZoomNowCore(instant){
       inner.style.transition = 'none';
       inner.style.transform = trueBeforeTransform;
       void inner.offsetWidth; // force-commit the "before" frame before changing anything else
-      inner.style.transition = 'transform .75s cubic-bezier(.3,.1,.2,1)'; // a slow drift: the camera follows the board, it doesn't react to each card
+      inner.style.transition = `transform ${layoutSec(.75).toFixed(3)}s cubic-bezier(.3,.1,.2,1)`; // a slow drift: the camera follows the board, it doesn't react to each card (ANIM1: at the layout speed)
       inner.style.transform = afterTransform;
     }
     fitBattlefieldZoom._transitionActive = true;
@@ -93593,7 +93603,7 @@ function fitBattlefieldZoomNowCore(instant){
       if(inner) inner.style.transition = '';
       fitBattlefieldZoom._transitionActive = false;
       panCameraToShowUid._transitionActive = false;
-    }, 780);
+    }, Math.round(layoutSec(.75) * 1000) + 30);
   }
   // Bugfix (2026-09-17, root-caused via a live playtest that tracked every board card's
   // getBoundingClientRect() every animation frame through real games: cards were visibly
@@ -97178,7 +97188,7 @@ function glideBoardCardFrom(el, from, toRect){
   const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? bfEffScale() : 1;
   dx /= sc; dy /= sc;
   const d = Math.min(.34, .16 + Math.hypot(dx, dy)/2000 + Math.abs(s - 1)*.4);
-  gsap.fromTo(el, {x:dx, y:dy, scale:Math.max(.6, Math.min(1.6, s))}, {x:0, y:0, scale:1, duration:sharpBoard() ? Math.min(.22, d) : d, ease:'power2.out', clearProps:'x,y,scale'});
+  gsap.fromTo(el, {x:dx, y:dy, scale:Math.max(.6, Math.min(1.6, s))}, {x:0, y:0, scale:1, duration:layoutSec(sharpBoard() ? Math.min(.22, d) : d) /* ANIM1 (note 9) */, ease:'power2.out', clearProps:'transform,translate,rotate,scale'});
 }
 function glideFromRect(el, from){
   if(!el || !from || !el.isConnected || !hasGsap()) return;
@@ -97187,7 +97197,7 @@ function glideFromRect(el, from){
   if(Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
   const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? bfEffScale() : 1;
   dx /= sc; dy /= sc;
-  gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration: sharpBoard() ? Math.min(.2, .08 + Math.hypot(dx, dy)/3200) : Math.min(.32, .12 + Math.hypot(dx, dy)/2200), ease: sharpBoard() ? 'power3.out' : 'power2.out', clearProps:'x,y'});
+  gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration: layoutSec(sharpBoard() ? Math.min(.2, .08 + Math.hypot(dx, dy)/3200) : Math.min(.32, .12 + Math.hypot(dx, dy)/2200)) /* ANIM1 (note 9) */, ease: sharpBoard() ? 'power3.out' : 'power2.out', clearProps:'x,y'});
 }
 // Layout-snap guard (2026-10-04, "cards sometimes teleport to the right"). Several things can
 // reflow a row outside a Flip animation: a pinned entrant released, a dying card removed, the
@@ -101796,6 +101806,28 @@ function animMs(){
   const sd = (ms, floor)=> Math.max(floor||40, Math.round(ms/mult));
   return { windup: sd(390,50), strike: sd(570,70), projectile: sd(690,70), impactPad: sd(180,30), death: sd(Math.round((sharpBoard() ? 320 : 480) * (typeof fxStyle === 'function' && fxStyle() === 'minimal' ? 0.6 : 1)),120) }; // Minimal style: shorter deaths (2026-10-17)
 }
+// 2026-11-13 (package ANIM1, owner 2026-11-12 23:47 note 9): camera and layout moves (zoom, pan, cards gliding to a new layout) follow the
+// game speed only part of the way: game 0.5 / 1 / 1.5 / 2 / 3 / 4 / 5 -> 0.75 / 1 / 1.2 / 1.4 / 1.6 / 2.0 / 2.5, straight lines between.
+const LAYOUT_SPEEDS = [[0.5, 0.75], [1, 1], [1.5, 1.2], [2, 1.4], [3, 1.6], [4, 2], [5, 2.5]];
+function layoutSpeedFor(mult){
+  const T = LAYOUT_SPEEDS, g = Math.max(T[0][0], Math.min(T[T.length - 1][0], Number(mult) || 1)), i = T.findIndex(([s])=> s >= g);
+  const [s1, k1] = T[i], [s0, k0] = T[Math.max(0, i - 1)];
+  return s1 === s0 ? k1 : k0 + (k1 - k0) * (g - s0) / (s1 - s0);
+}
+function layoutSec(sec){ return sec / layoutSpeedFor(matchState && matchState.speedMult); }
+// 2026-11-13 (ANIM1, note 19): at 4x and 5x a played card goes straight into its slot (no flight from the hand)
+const PLAY_GOTO_SPEED = 4;
+function playGoTo(){ return ((matchState && matchState.speedMult) || 1) >= PLAY_GOTO_SPEED; }
+// 2026-11-13 (ANIM1, note 13): GSAP (3.12+) reads a CSS `scale` / `translate` keyframe running on an element (the landing thud on the face,
+// the ready pulse on the card) into its own transform when a tween starts there mid-way, so the card kept that squash after the flourish
+// ended, until its next attack or hit redrew it. When a flourish ends, what GSAP left on the card and its face goes back to rest.
+function settleRestPose(el, n){
+  if(!el || !el.isConnected || !hasGsap()) return;
+  const parts = [el, el.querySelector('.card-tile')].filter(Boolean);
+  if(el.matches('.falling, .burning, .bleeding, .dying, .is-scattering')) return;
+  if(parts.some(x=> gsap.isTweening(x)) || el.style.position || el.matches('.is-entering, .is-attacking, .landing-impact, .ready-pulse')){ if((n || 0) < 15) setTimeout(()=> settleRestPose(el, (n || 0) + 1), 120); return; }
+  parts.forEach(x=>{ if(x.style.transform || x.style.scale || x.style.translate || x.style.rotate) gsap.set(x, {clearProps:'transform,translate,rotate,scale'}); });
+}
 function boardCardEl(uid){ return document.querySelector(`.board-card[data-uid="${uid}"]`); }
 // Task #125 (2026-09-17, "it should land there with some measurable impact! Then push the
 // cards off"): a shared little "shove" tween for whichever board-cards sit immediately to the
@@ -101824,7 +101856,7 @@ function pushNeighborCards(el, opts){
     gsap.killTweensOf(target, 'x');
     if(shoveUid) shovedUids.add(shoveUid);
     gsap.timeline({
-      onComplete: ()=>{ if(shoveUid) shovedUids.delete(shoveUid); },
+      onComplete: ()=>{ if(shoveUid) shovedUids.delete(shoveUid); settleRestPose(target); /* ANIM1 (note 13): a neighbour shoved mid ready-pulse */ },
     })
       .to(target, {x: dir*dist, duration:dur*0.42, ease:'power2.out'})
       .to(target, {x:0, duration:dur*0.7, ease:'back.out(2.4)', clearProps:'x'});
@@ -101846,7 +101878,7 @@ function playLandingImpact(uid){
   // that used to fire here on every single card landing (see hitExplosionVfx below for its new
   // home) is gone; the squash-thud + neighbor shove — the actual "landed with impact" feel —
   // stay exactly as they were.
-  setTimeout(()=>{ el.classList.remove('landing-impact'); }, 300);
+  setTimeout(()=>{ el.classList.remove('landing-impact'); settleRestPose(el); /* ANIM1 (note 13) */ }, 300);
   pushNeighborCards(el, {distance:8, durationMs:220});
   waterRippleAt(el);
 }
@@ -101873,7 +101905,7 @@ function handFlightSec(leader){
 // timer behind them.
 function armOnFrames(fn){ try{ requestAnimationFrame(()=> requestAnimationFrame(()=>{ try{ fn(); }catch(e){} })); }catch(e){ try{ fn(); }catch(_){} } }
 function handFlightProxy(el, uid, origin){
-  if(!el || !origin || !hasGsap() || reducedMotion()) return false;
+  if(!el || !origin || !hasGsap() || reducedMotion() || playGoTo()) return false; // + ANIM1 (note 19): 4x / 5x go straight in (an ally's, a boss's row play too)
   const tile = el.querySelector('.card-tile'); if(!tile) return false;
   // 2026-10-17: skins reach board tiles from applySkinClasses on the next frame, after this copy is taken; dress the tile first so the
   // flying card wears the copy's skin too (its Shiny comes in boardCardHTML's markup).
@@ -106947,7 +106979,7 @@ function renderVfxForEvent(ev){
     if(readyEl){
       readyEl.classList.remove('ready-pulse'); void readyEl.offsetWidth; // restart if already mid-pulse
       readyEl.classList.add('ready-pulse');
-      setTimeout(()=> readyEl.classList.remove('ready-pulse'), 460);
+      setTimeout(()=>{ readyEl.classList.remove('ready-pulse'); settleRestPose(readyEl); /* ANIM1 (note 13) */ }, 460);
     }
     // Earthquake-on-Ready (2026-09-18, per explicit request — see the matching "don't shake on
     // played" comment in renderBoard's entrance block): a big creature (health>20 or attack>10)

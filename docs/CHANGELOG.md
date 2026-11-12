@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-13 Package ANIM1 (owner 2026-11-12 23:47 notes 9, 13, 19: board transitions, a played card's shape, the play flicker)
+- Note 19: a played card no longer flashes on the field, vanishes and reappears. Cause: a board redraw while the card was still flying from the hand (the turn's own render, Auto's, a second play) drew the field card shown at its slot until the flight's next frame hid it again. A redrawn row now keeps a flying card hidden until it lands, and a cut-short flight doesn't thud twice. At 4x and 5x a play has no flight: the card is simply in its slot (yours, the CPU's, an ally's, a raid boss's).
+- Note 9: one table maps the game speed to camera and layout moves (0.5 / 1 / 1.5 / 2 / 3 / 4 / 5 -> 0.75 / 1 / 1.2 / 1.4 / 1.6 / 2.0 / 2.5x, `layoutSpeedFor`), used by the zoom, camera pans, the recentre, the phone's re-frame, the raid zoom and the re-layout glides. The cards now glide and scale when the units' span changes their size even though the column range stayed the same (they jumped before).
+- Note 13: GSAP 3.12+ reads a CSS `scale` / `translate` keyframe (the landing thud on the face, the ready pulse) into its own transform when a tween starts mid-way, leaving the card slightly squashed until its next attack or hit. The landing thud, the ready pulse, a neighbour's shove and an entrance now put the card and its face back at rest when they end (`settleRestPose`).
+- Tests: `tests/anim1-2026-11-13.js` (in run-all.sh); browser `tests/e2e/anim1_2026_11_13.py` (the race at 1x / 1.5x / 2x, 4x / 5x straight in, the resting shape, the span glide; in `--e2e`). `docs/project-state.md` section 8 holds the table.
+
 ## 2026-11-12 Package BABY1 (owner note 11: mark cards as babies in the editor; they start at Level 0 from every source)
 - Baby stays the card field `kind: "baby"` (the editor's Kind select, saved through card_overrides). A Baby card starts at Level 0 from every grant path; the one gap closed: a faction-pool Baby reward in the tutorial kept Level 1. The 11-06 fold tool also folds an unticked Baby. Copies already owned are unchanged. Test: `tests/baby1-2026-11-12.js`.
 ## 2026-11-12 Package SHOP1 (owner note 4: separate the Premium shop from the normal shop)
