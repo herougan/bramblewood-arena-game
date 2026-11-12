@@ -66,3 +66,17 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 - **jsfxr** for direction B and the UI blips.
 
 Each file gets a line in `CREDITS.md`, even for CC0.
+
+## Place entrances (2026-11-13, package UIFX1)
+
+Each place's entrance (`bramblewood-ui-places.js`) plays existing cues, so no new sound was made; skipping an entrance cancels its later cue.
+
+| Place | Cues (time from the start) | Mood |
+|---|---|---|
+| Shop (canvas tent) | `bushRustle` 0 ms, `pitchChime` 260 ms | canvas rustle, then the shop bell as the light spills out |
+| Premium shop (gilded pavilion) | `rareRise` 0 ms, `crystalTing(1)` 300 ms, `crystalTing(1.335)` 400 ms | a rising shimmer, then two bright gold tings a fourth apart |
+| Nest | `featherFlutter` 0 and 300 ms | soft wing air |
+| Codex | `pageTurn` 0 and 260 ms | the cover, then the flyleaf |
+| Camp | `mapUnroll` 0 ms, `woodKnock` 600 ms | canvas rolling up, the roll knocks the frame |
+| Stomping Grounds | `woodKnock` 0 ms, `leaderSlam` 160 ms | the bar lifts, the gates boom open on a chord |
+| Inventory | `shelfPick` 0 ms, `pickup` 200 ms | the buckle clinks, the flap lifts |
