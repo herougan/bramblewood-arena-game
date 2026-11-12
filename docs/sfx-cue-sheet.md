@@ -46,6 +46,8 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 | 38 | Water plop | Tap water on a conquest map | A falling sine plop, a splash of band noise, a smaller drip after it | Down-blip | 200 ms |
 | 39 | Bush rustle | Tap a bush on a conquest map | Two short bursts of high filtered noise with crackle | Noise blip | 300 ms |
 | 40 | Construction | Bulwark raises its Log Walls (2026-11-12, FX6) | Three hammer knocks on wood (a low square thud with a band of noise on each, the pitch sagging a little) over a short rising saw-scrape | Three square blips | 400 ms |
+| 41 | Shell crack | A Shell ends: the tortoise carapace cracks and falls away (2026-11-13, FX9, `shellCrackTone`) | A dry crack of crackly high noise, then four small clatters of its plates (square blips with a band of noise, each a little lower) | Noise crack + four blips | 600 ms |
+| 42 | Dragon gust | A Dragon's shadow passes over the board (2026-11-13, FX9, `dragonGust`) | A low rush of air that swells and opens up over 1 s, three deep wing beats inside it | Low noise swell | 1 s |
 
 **Status (2026-11-12, package FX6):** cue 40 is live as a Web Audio synth (`SoundKit.constructTone`, built from `tone`, `fnoise`, `sweep`); it replaces the spawn buzz for Bulwark's walls.
 
