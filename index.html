@@ -5970,6 +5970,18 @@
   @media (prefers-reduced-motion: reduce){ .frost-flakes i, .stun-halo i, .sac-teeth .st-top, .sac-teeth .st-bot{animation:none !important;} }
   .sleep-overlay{font-size:22px; animation:sleepBob 2.6s ease-in-out infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   @keyframes sleepBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+  /* 2026-11-13 (package FX9 #8, owner: "Sleep is not so obvious. Maybe blue Zs dropping out from the card, from the top right?"): three blue Zs drift out of
+     the card's top-right corner on a slow loop (transform / opacity, no filter); Low and reduced motion: two still Zs; Effects None: one; waking fades them. */
+  .card-tile > .fx9-zzz{position:absolute; right:24%; top:14%; width:0; height:0; z-index:7; pointer-events:none; transition:opacity .45s ease;}
+  .fx9-zzz > i{position:absolute; left:0; bottom:0; font:800 clamp(15px, 30cqw, 23px)/1 'Baloo 2', system-ui, sans-serif; font-style:normal; color:#b4e6ff;
+    -webkit-text-stroke:1px #0b3566; text-shadow:0 1px 0 #0b3566, 0 0 6px rgba(150,215,255,.95); opacity:0; animation:fx9Zzz 3.6s linear infinite; will-change:transform, opacity;}
+  .fx9-zzz > i:nth-child(2){animation-delay:-1.2s;} .fx9-zzz > i:nth-child(3){animation-delay:-2.4s;}
+  @keyframes fx9Zzz{0%{opacity:0; transform:translate(0, 0) rotate(-14deg) scale(.45);} 12%{opacity:1;} 50%{transform:translate(.5em, -1.1em) rotate(-2deg) scale(.85);} 78%{opacity:.95;} 100%{opacity:0; transform:translate(1.1em, -2.2em) rotate(10deg) scale(1.2);}}
+  .card-tile > .fx9-zzz.is-waking{opacity:0;}
+  html[data-fx="low"] .fx9-zzz > i, html[data-fx="none"] .fx9-zzz > i{animation:none;}
+  html[data-fx="low"] .fx9-zzz > i:nth-child(1), html[data-fx="none"] .fx9-zzz > i:nth-child(1){opacity:1; transform:translate(.1em, -.1em) rotate(-10deg) scale(.65);}
+  html[data-fx="low"] .fx9-zzz > i:nth-child(2){opacity:1; transform:translate(.7em, -1.2em) rotate(4deg) scale(.95);}
+  @media (prefers-reduced-motion: reduce){ .fx9-zzz > i{animation:none;} .fx9-zzz > i:nth-child(1){opacity:1; transform:translate(.1em, -.1em) rotate(-10deg) scale(.65);} .fx9-zzz > i:nth-child(2){opacity:1; transform:translate(.7em, -1.2em) rotate(4deg) scale(.95);} }
   .paralyze-overlay{font-size:24px; animation:paralyzeJitter .35s steps(2) infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   @keyframes paralyzeJitter{0%{transform:translate(0,0);}50%{transform:translate(1px,-1px);}100%{transform:translate(-1px,1px);}}
   .abadge.freeze{background:color-mix(in srgb, var(--status-freeze-tint) 30%, var(--surface-2)); color:var(--status-freeze-ink);}
@@ -9781,6 +9793,22 @@
   .board-row > .board-card:not(.is-attacking):not(.is-entering){z-index:1;}
   .board-row > .board-card.has-guard:not(.is-attacking):not(.is-entering){z-index:0;}
   .board-card .guard-plates.is-broken{visibility:hidden;}
+  /* 2026-11-13 (package FX9 #5, owner: "Guardian - only when ready. vfx too."): the plates show only while the Guardian can step in (Ready, not Bound);
+     they fold in behind the card when it can't (gp-fall) and swing back out when it can (gp-rise); hidden, their sheen stops. */
+  .board-card.has-guard .guard-plates i{overflow:hidden;} /* the sheen sweeps by transform on its own layer (was background-position: a repaint of both plates every frame) */
+  .board-card.has-guard .guard-plates i::after{inset:0 auto 0 0; width:100%; background-size:100% 100%; animation:fx9GuardSheen 4.5s ease-in-out infinite; will-change:transform;}
+  @keyframes fx9GuardSheen{0%,60%{transform:translateX(-110%);} 100%{transform:translateX(110%);}}
+  .board-card.guard-down .guard-plates{opacity:0; scale:.45 1;}
+  .board-card.guard-down:not(.gp-fall) .guard-plates{visibility:hidden;}
+  .board-card.guard-down .guard-plates i::after{animation:none; transform:translateX(-110%);}
+  .board-card.gp-rise .guard-plates{animation:fx9GuardRise .5s cubic-bezier(.3,1.4,.5,1) both;}
+  .board-card.gp-fall .guard-plates{animation:fx9GuardFall .42s ease-in both;}
+  @keyframes fx9GuardRise{from{opacity:0; scale:.45 1;} to{opacity:1; scale:1 1;}}
+  @keyframes fx9GuardFall{from{opacity:1; scale:1 1;} to{opacity:0; scale:.45 1;}}
+  @keyframes fx9GuardIn0{from{opacity:0;} to{opacity:1;}}
+  @keyframes fx9GuardOut0{from{opacity:1;} to{opacity:0;}}
+  html[data-fx="none"] .board-card:is(.gp-rise, .gp-fall) .guard-plates{animation:none;}
+  @media (prefers-reduced-motion: reduce){ .board-card.has-guard .guard-plates i::after{animation:none; transform:translateX(-110%);} .board-card.guard-down .guard-plates{scale:none;} .board-card.gp-rise .guard-plates{animation-name:fx9GuardIn0;} .board-card.gp-fall .guard-plates{animation-name:fx9GuardOut0;} }
   /* Initiative coin on top (user: "The initiative coin should be placed at the highest layer, appearing above the darkness and battle
      boundary. Though, the map status could affect a small shading of the coin, looking like it's reflecting the battle status - lava,
      night, day, flood, ebb. etc."): above the dark veil, the lantern and the HP ribbons; data-mood (initCoinMood) lays a small
@@ -11097,6 +11125,26 @@
 .fx-float-host > .fx7-eye{width:44px; height:24px; border-radius:50%; background:#fbf3dc; border:2px solid #2a2118; box-shadow:0 0 10px 2px rgba(255,213,110,.8);}
 .fx-float-host > .fx7-pupil{width:10px; height:10px; border-radius:50%; background:#2a2118; box-shadow:inset 2px 2px 0 -1px #fff;}
 .fx-float-host > .fx7-ore{width:14px; height:14px; border-radius:3px; rotate:45deg; background:linear-gradient(135deg, #f1f6ff 0, #8fa6c6 45%, #55698a); border:1px solid #33425c;}
+/* 2026-11-13 (package FX9, owner 23:47 #6): effects drawn inside their card (fx9CardHost) or the board frame (.fx9-sky, .fx9-run), so a camera pan or a
+   board zoom carries them; spans animated by WAAPI (transform / opacity), removed with their host. */
+.board-card > .fx9-host{position:absolute; inset:0; pointer-events:none; z-index:30;}
+.fx9-host > .fx9, .fx9-sky > .fx9, .fx9-run > .fx9{position:absolute; pointer-events:none; will-change:transform, opacity; opacity:0;}
+.fx9-host > .fx9-shade{inset:-3px; border-radius:12px; background:rgba(10,8,16,.82);}
+.fx9-host > .fx9-eyes{left:50%; top:36%; font:900 12px/1 system-ui, sans-serif; color:#ffe14a; letter-spacing:6px; text-shadow:0 0 6px #ffcf2a; white-space:nowrap;}
+.fx9-host > .fx9-smoke{width:26px; height:26px; border-radius:50%; background:radial-gradient(circle, rgba(40,32,48,.9) 0, rgba(40,32,48,0) 70%);}
+.fx9-host > .fx9-slash{height:4px; margin-top:-2px; transform-origin:0 50%; border-radius:2px; background:linear-gradient(90deg, rgba(20,16,28,0), #1a1424 40%, #fff);}
+/* #14 the tortoise shell: nine clipped copies of one carapace drawing and its crack lines, laid over the card */
+.fx9-shellbox > .fx9-plate{inset:4% 3% 7%; background:no-repeat 0 0 / 100% 100%;}
+/* #15 the dragon's flight: a dim layer and the wing shadow in the board frame, dust at its feet as it lands */
+.battlefield > .fx9-sky{position:absolute; inset:0; pointer-events:none; z-index:40; overflow:hidden; border-radius:inherit;}
+.fx9-sky > .fx9-dim{inset:0; background:rgba(14,8,26,.3);}
+.fx9-sky > .fx9-dshadow{left:0; top:0;}
+.fx9-dshadow > .fx9-dwings{position:absolute; inset:0; background:no-repeat center / 100% 100%; opacity:.72; will-change:transform;}
+.fx9-host > .fx9-dust, .fx9-run > .fx9-dust{width:30px; height:30px; border-radius:50%; background:radial-gradient(circle, rgba(205,190,160,.85) 0, rgba(205,190,160,0) 70%);}
+/* #17 the stampede: cloven hoof prints and a dust cloud running straight at the opposing Health bar */
+.battlefield > .fx9-run{position:absolute; inset:0; pointer-events:none; z-index:40;}
+.fx9-run > .fx9-hoof{width:12px; height:14px; background:radial-gradient(ellipse 44% 50% at 26% 60%, #f0dcb4 70%, #5a3d1c 74%, transparent 80%), radial-gradient(ellipse 44% 50% at 74% 60%, #f0dcb4 70%, #5a3d1c 74%, transparent 80%);} /* pale dust prints with a dark rim: they read on the dark boards too */
+.fx9-run > .fx9-ring{width:80px; height:80px; border-radius:50%; border:4px solid rgba(210,195,165,.9);}
 .bleed-drop{will-change:transform, opacity; text-shadow:0 1px 1px rgba(0,0,0,.35);}
 /* EN3 (2026-10-23): Rampart's streak from the bramble to the unit taking its share, its flash on the unit, the guard's shield (no line)
    and Bramble Armor's shield ting on the bramble. */
@@ -37332,11 +37380,12 @@ M.dawnDraw = function(host, opts){
   const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'inset:0; background:linear-gradient(0deg, rgba(255,150,170,.6), rgba(255,190,150,.35) 35%, rgba(255,220,200,0) 70%);'}))[0];
   const birds = bits(box, 5, i=> ({cls:'fxb-bird', style:`left:${10 + i*18}%; top:80%;`})); birds.forEach(b=> b.innerHTML = '<svg viewBox="0 0 16 8"><path d="M0 2 Q4 -1 8 5 Q12 -1 16 2" fill="none" stroke="#3a2a3a" stroke-width="1.6"/></svg>');
   const decks = [...document.querySelectorAll('.deck-widget')].filter(d=> d.getBoundingClientRect().width).slice(0, 2);
+  // 2026-11-13 (package FX9 #1, owner 23:47: "Morning comes (pinkish) effect: Make it 10% less bright."): the rosy wash peaks at .9 (was 1), the decks' flash at 1.4 (was 1.45)
   return run([box], opts, (t, g)=>{
-    t.fromTo(w, {yPercent:60, opacity:0}, {yPercent:0, opacity:1, duration:.7, ease:'power2.out'}).to(w, {opacity:0, duration:.6}, 1.1);
+    t.fromTo(w, {yPercent:60, opacity:0}, {yPercent:0, opacity:.9, duration:.7, ease:'power2.out'}).to(w, {opacity:0, duration:.6}, 1.1);
     birds.forEach((b, i)=> t.fromTo(b, {opacity:0, x:0, y:0}, {opacity:.85, x:rnd(30, 80), y:-r.height*rnd(.55, .8), duration:1.1, ease:'power1.out'}, .2 + i*.08)
       .to(b.firstChild, {scaleY:.3, duration:.12, yoyo:true, repeat:7, transformOrigin:'50% 50%'}, .2 + i*.08).to(b, {opacity:0, duration:.25}, '>-.3'));
-    decks.forEach(d=> t.fromTo(d, {filter:'brightness(1)'}, {filter:'brightness(1.45) drop-shadow(0 0 8px #ffd0e0)', duration:.2, yoyo:true, repeat:1, clearProps:'filter'}, .7));
+    decks.forEach(d=> t.fromTo(d, {filter:'brightness(1)'}, {filter:'brightness(1.4) drop-shadow(0 0 8px #ffd0e0)', duration:.2, yoyo:true, repeat:1, clearProps:'filter'}, .7));
   });
 };
 // Dusk (wt-dusk, the tone only): the sun sinks in the west, long shadows stretch across the felt, warm turns violet.
@@ -57496,7 +57545,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'dbad5f06ed79', BUILD_CARD_HASH = '1490916b14c7c8ed94be1210cad1e9cf543fbf9d82b1b2f07c4210d08af4da65';
+const BUILD_ID = '8fbffe2f5731', BUILD_CARD_HASH = '1490916b14c7c8ed94be1210cad1e9cf543fbf9d82b1b2f07c4210d08af4da65';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -59458,6 +59507,10 @@ const SoundKit = (()=>{
     // 2026-11-12 (FX6, owner: "Construction sounds"): Bulwark's Log Walls going up: three hammer knocks on wood (a low square thud with a band of
     // noise on each, the pitch dropping a little as the wall takes weight) over a short rising saw-scrape of the planks sliding up.
     constructTone(){ sweep(240,420,0.32,'sawtooth',0.03); [0,0.12,0.25].forEach((d,i)=>{ tone(150-i*10,0.07,'square',0.09,d); fnoise(0.05,0.06,{type:'bandpass',freq:900,delay:d}); }); },
+    // 2026-11-13 (package FX9 #14 / #15): a tortoise shell cracking (a dry crack, then its plates clattering down) and a dragon's wings passing over
+    // the board (a low rush of air that swells and fades, three deep wing beats in it).
+    shellCrackTone(){ fnoise(0.07,0.09,{type:'highpass',freq:1600,crackle:0.4,attack:0.002}); [0.3,0.38,0.47,0.55].forEach((d,i)=>{ tone(520-i*55,0.05,'square',0.045,d); fnoise(0.04,0.04,{type:'bandpass',freq:1400-i*150,delay:d}); }); },
+    dragonGust(){ fnoise(1.0,0.07,{type:'lowpass',freq:320,freqEnd:900,q:0.8,attack:0.35}); [0.05,0.43,0.81].forEach(d=> fnoise(0.18,0.06,{type:'lowpass',freq:260,freqEnd:110,attack:0.03,delay:d})); },
     reflectTone(){ tone(600,0.05,'triangle',0.07); tone(900,0.05,'triangle',0.06,0.04); tone(600,0.05,'triangle',0.05,0.08); }, // bounces up then back down, mirroring the hit
     momentumTone(){ tone(400,0.06,'square',0.07); tone(560,0.06,'square',0.07,0.05); tone(760,0.08,'square',0.08,0.1); }, // three escalating notes, each louder
     // Esprit (2026-09-21, Skills/VFX/SFX audit): the engine has pushed a statusFx{kind:'esprit'}
@@ -92797,6 +92850,7 @@ function renderMatchUI(){
   // 2026-11-12 (package PERF4): a live fight keeps its rows too (renderBoard's signature check skips an unchanged side) and its battle log (pushLog already draws each new line, so the 200-line replay is only for a fresh box): the round-end redraw was 54-220 ms at 1x
   const keptRows = (m.over || PERF4_KEEP_DOM) ? BOARD_ROW_IDS.map(id=> document.getElementById(id)).filter(el=> el && el.__bwMatch === m && el.children.length) : [];
   const keptLog = PERF4_KEEP_DOM && m.log.length < 200 ? document.getElementById('battleLog') : null; const keepLog = !!(keptLog && keptLog.__bwMatch === m && keptLog.dataset.pinWired);
+  const keptFx = [...document.querySelectorAll('#battlefieldInner > .fx9-cam')]; // 2026-11-13 (package FX9 #6): effects riding the camera layer (fxHostAt) move to the new one
   root.innerHTML = `
     <!-- 2026-09-29, per explicit request ("Put this top banner UI onto the top right corner of
          the same level as the Deck and enemy castle row."): the opponent tag + utility buttons
@@ -93203,6 +93257,7 @@ function renderMatchUI(){
   }
   if(keepLog){ const fresh = document.getElementById('battleLog'); if(fresh && fresh !== keptLog){ try{ fresh.replaceWith(keptLog); }catch(e){} } }
   keptRows.forEach(old=>{ const fresh = document.getElementById(old.id); if(fresh && fresh !== old){ try{ fresh.replaceWith(old); }catch(e){} } }); // 2026-10-23 (package UI4)
+  { const inn = keptFx.length && document.getElementById('battlefieldInner'); if(inn) keptFx.forEach(h=> inn.appendChild(h)); } // FX9 #6
   renderBoard();
   BOARD_ROW_IDS.forEach(id=>{ const el = document.getElementById(id); if(el) el.__bwMatch = m; }); // 2026-10-23 (package UI4): which match drew these rows
   syncWindField(m); // 2026-10-15: the wind layer survives the repaint
@@ -93439,7 +93494,7 @@ function wireDropZones(){
       discardDragActive = false;
       hideResourceTip(); hidePitchBadge();
       const uid = Number(e.dataTransfer.getData('text/plain'));
-      if(uid) discardCardByUid(uid);
+      if(uid) discardCardByUid(uid, e.clientX || e.clientY ? {x: e.clientX, y: e.clientY} : null); // FX9 #7: the flight starts where it was let go
     });
     discardZone.addEventListener('click', ()=>{ const m=matchState; if(m && m.selectedUid!=null) discardCardByUid(m.selectedUid); else if(m) toggleGravePeek(viewerHandPid(m), discardZone); }); // 2026-10-15: a tap with no card held peeks at the Graveyard
     // 2026-09-26: covers the tap-arm-then-just-point-at-it case (no native drag at all) with the
@@ -96421,7 +96476,7 @@ function boardCardHTML(c, defs, opts){
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${'' /* ENG9 (2026-10-26, owner G19: "no lock icon needed"): no chain glyph over a Chained unit; its tint (is-chained) says it */}${rc1ChainPipsHTML(c)}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
-      ${c.asleep>0?`<div class="status-overlay sleep-overlay">💤</div>`:''}
+      ${c.asleep>0?FX9_ZZZ_HTML /* 2026-11-13 (package FX9 #8): blue Zs out of the top-right corner (was a 💤 bobbing in the middle) */:''}
       ${c.paralyzed>0?`<div class="status-overlay paralyze-overlay">⚡</div>`:''}
       ${c.blind>0?`<div class="status-overlay blind-overlay">👁</div>`:''}
       ${c.smoke>0?`<div class="status-overlay smoke-overlay" aria-hidden="true">${SMOKE_BILLOWS_HTML}</div>`:''}
@@ -96451,7 +96506,7 @@ function boardCardHTML(c, defs, opts){
   const statusClassesShown = fog ? statusClasses.split(' ').filter(k=> /^(is-dancing|is-scattering|is-leader)$/.test(k)).join(' ') : statusClasses; // a fogged unit shows none of its statuses (FOG)
   // 2026-10-26 (package VIS3, V2; owner #15: "The copy created by fungal colossus should have a token background."): a Bloom copy and an
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
-  return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+  return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard ' + fx9GuardCls(c) /* FX9 #5: plates only while it can guard */:''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, size:'compact' /* 2026-10-30 (CS-D): only the inner tile; the .board-card wrapper (Flip, uids) is unchanged */, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, cowering: !!c.cowering /* ENG15 (FF6) */, en5On: c.en5On != null ? c.en5On : (c._en5On || ''), ctxOn: c.ctxOn != null ? c.ctxOn : (c._ctxOn || '') /* ENG25 (2026-11-05, #7): the lit state chips */, atkLabel, atkLow, atkZero, hp: ui23HeartOf(c) /* UI23 (2026-11-06, #1/#18) */, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
@@ -97601,7 +97656,7 @@ function refreshDiscardZone(){
   hideResourceTip();
   if(hc) showPitchBadge(hc.defId); else hidePitchBadge();
 }
-async function discardCardByUid(uid){
+async function discardCardByUid(uid, at){ // at: where the card was let go ({x, y}), FX9 #7
   const m = matchState; if(!m||m.resolving) return;
   // 2026-10-12 (user: "you asked me to play a card. I pitched it instead. Don't allow me to do that").
   if(!pitchAllowedIn(m)) return; // 2026-10-12: before pitching opens, dropping on the Graveyard does nothing
@@ -97641,6 +97696,7 @@ async function discardCardByUid(uid){
   // (2026-09-26 / 2026-10-17); Wildpath "Second Pitch"; then On Pitch (2026-10-16). Only the sound, chips and log stay here.
   const dc = me.hand[idx];
   const dcDef = getCardDefs()[dc.defId];
+  const pitchTile = document.querySelector(`#handStrip .card-tile[data-handuid="${CSS.escape(String(uid))}"]`); // FX9 #7: the card leaves from here
   const pitchEv = [];
   let pr = null; try{ if(m.engine && m.engine.pitchCard) pr = m.engine.pitchCard(m.players, m.sideOf, activePid, dc, m.stats, pitchEv); }catch(e){ console.warn('pitchCard', e); }
   if(!pr){ // no engine (shouldn't happen in a fight): the bare pitch, so the card still goes and pays
@@ -97671,8 +97727,11 @@ async function discardCardByUid(uid){
   if(yieldInfo.amount>0) gainChips.push({amount:yieldInfo.amount, glyph:meta.glyph, pillId:meta.pillId});
   if(darkPointBonus>0) gainChips.push({amount:darkPointBonus, glyph:PITCH_RESOURCE_META.devilry.glyph, pillId:PITCH_RESOURCE_META.devilry.pillId});
   if(onDiscardGains.length) gainChips.push(...onDiscardGains);
-  if(gainChips.length) resourceGainVfx(discardZoneEl ? discardZoneEl.getBoundingClientRect() : null, gainChips);
-  if(gainChips.length) pitchCallout(gainChips, dcDef);
+  // 2026-11-13 (package FX9 #7, owner: "Graveyard - transitions into new spot instead of teleporting (when card is pitched or played)"): your pitched card
+  // flies from where you let it go (a drop) or from its place in your hand (a tap) into the pile and sinks in; the gain and the callout come as it lands (UI16's flight, which Auto already used)
+  if(activePid === viewerHandPid(m) && pitchTile) ui16PitchToGrave(m, pitchTile, {defId: dc.defId, gains: gainChips, at});
+  else { if(gainChips.length) resourceGainVfx(discardZoneEl ? discardZoneEl.getBoundingClientRect() : null, gainChips);
+  if(gainChips.length) pitchCallout(gainChips, dcDef); }
   pushLog({type:'discard', side:m.sideOf(activePid), defId:dc.defId, resource:yieldInfo.resource, amount:yieldInfo.amount});
   if(darkPointBonus>0) pushLog({type:'devilry', side:m.sideOf(activePid), defId:dc.defId, amount:darkPointBonus});
   pitchEv.forEach(ev=>{ try{ pushLog(ev); renderVfxForEvent(ev); }catch(e){} }); // On Pitch (2026-10-16)
@@ -97907,14 +97966,16 @@ const UI16_PITCH_MS = 620;
 function ui16PitchToGrave(m, tile, ev){
   const grave = document.getElementById('dropDiscard');
   const meta = PITCH_RESOURCE_META[ev.resource] || PITCH_RESOURCE_META.lumber, amt = Math.max(0, Number(ev.amount) || 0);
-  const gains = amt > 0 ? [{amount: amt, glyph: meta.glyph, pillId: meta.pillId}] : [];
-  const land = ()=>{ if(matchState !== m) return;
-    try{ if(grave){ grave.classList.remove('ui16-grave-bump'); void grave.offsetWidth; grave.classList.add('ui16-grave-bump'); setTimeout(()=> grave.classList.remove('ui16-grave-bump'), 520); } }catch(e){}
-    try{ if(gains.length){ resourceGainVfx(grave ? grave.getBoundingClientRect() : null, gains); pitchCallout(gains, getCardDefs()[ev.defId]); } else SoundKit.gold(); }catch(e){} };
+  const gains = ev.gains || (amt > 0 ? [{amount: amt, glyph: meta.glyph, pillId: meta.pillId}] : []); // ev.gains: your own pitch's chips (FX9 #7)
+  const pile = ()=>{ const z = document.getElementById('dropDiscard'); return z && z.isConnected ? z : grave; }; // FX9 #7: the pile as it is now (the hand's redraw can move it)
+  const land = ()=>{ if(matchState !== m) return; const gz = pile();
+    try{ if(gz){ gz.classList.remove('ui16-grave-bump'); void gz.offsetWidth; gz.classList.add('ui16-grave-bump'); setTimeout(()=> gz.classList.remove('ui16-grave-bump'), 520); } }catch(e){}
+    try{ if(gains.length){ resourceGainVfx(gz ? gz.getBoundingClientRect() : null, gains); pitchCallout(gains, getCardDefs()[ev.defId]); } else if(!ev.gains) SoundKit.gold(); }catch(e){} };
   const lvl = (typeof fxLevel === 'function') ? fxLevel() : 'high';
   if(!grave || !document.body.animate || reducedMotion() || lvl === 'none'){ land(); return; }
-  const g = grave.getBoundingClientRect(); if(!(g.width > 0)){ land(); return; }
-  let r = tile ? tile.getBoundingClientRect() : null; if(!r || !(r.width > 0)) r = {left: g.left, top: g.bottom + 10, width: g.width * .8, height: g.width};
+  const g0 = grave.getBoundingClientRect(); if(!(g0.width > 0)){ land(); return; }
+  let r = tile ? tile.getBoundingClientRect() : null; if(!r || !(r.width > 0)) r = {left: g0.left, top: g0.bottom + 10, width: g0.width * .8, height: g0.width};
+  if(ev.at && ev.at.x > 0 && ev.at.y > 0) r = {left: ev.at.x - r.width/2, top: ev.at.y - r.height/2, width: r.width, height: r.height}; // FX9 #7: from where the card was dropped
   const p = tile ? tile.cloneNode(true) : document.createElement('div');
   if(!tile) p.innerHTML = cardTileHTML(getCardDefs()[ev.defId] || {name: ev.defId}, {inPlay: true});
   p.removeAttribute && p.removeAttribute('id'); p.querySelectorAll('[id]').forEach(n=> n.removeAttribute('id'));
@@ -97924,6 +97985,10 @@ function ui16PitchToGrave(m, tile, ev){
   document.body.appendChild(p);
   if(tile) tile.style.visibility = 'hidden'; // the hand's own tile is redrawn away a moment later
   const k = 1 / Math.max(.25, Number(m.speedMult) || 1), T = Math.round(UI16_PITCH_MS * k * (lvl === 'low' ? .7 : 1));
+  try{ noteMatchFx(T + 50); }catch(e){} // the round waits for the card to land
+  // 2026-11-13 (package FX9 #7): the flight is aimed in the next frame, after the hand's redraw: on a wide screen the pile sits after the hand and moves
+  // left when the card leaves it (the card used to land where the pile had been). Until then the copy stands where the card was.
+  const fly = ()=>{ const gz = pile(), gr = gz && gz.getBoundingClientRect(), g = gr && gr.width > 0 ? gr : g0;
   const dx = (g.left + g.width/2) - (r.left + r.width/2), dy = (g.top + g.height/2) - (r.top + r.height/2), s1 = Math.max(.25, Math.min(1, (g.width * .78) / r.width));
   const lift = Math.min(90, Math.abs(dx) * .18 + 30);
   const a = p.animate([
@@ -97932,13 +97997,13 @@ function ui16PitchToGrave(m, tile, ev){
     {transform: `translate(${dx}px, ${dy}px) rotate(${dx > 0 ? 4 : -4}deg) scale(${s1})`, opacity: 1, filter: 'brightness(1.25)', offset: .78},
     {transform: `translate(${dx}px, ${dy + g.height*.18}px) rotate(0deg) scale(${s1*.82})`, opacity: 0, filter: 'brightness(.7)'},
   ], {duration: T, easing: 'cubic-bezier(.35,.0,.25,1)', fill: 'both'});
-  try{ noteMatchFx(T); }catch(e){} // the round waits for the card to land
   // the flight's clock starts at the first frame drawn after it (a.ready), which can be 100-500 ms after the CPU's turn (the hand and board
   // redraw in between: see UI8's note on handFlightProxy), so the landing is timed from there; a tab that never draws still lands on the wall clock
   let done = false, landed = false; const fin = ()=>{ if(done) return; done = true; p.remove(); }, landOnce = ()=>{ if(landed) return; landed = true; land(); };
   try{ a.ready.then(()=> setTimeout(landOnce, Math.round(T * .78)), landOnce); }catch(e){ setTimeout(landOnce, Math.round(T * .78)); }
   setTimeout(landOnce, T + 1500);
-  a.onfinish = ()=>{ landOnce(); fin(); }; setTimeout(fin, T + 2000);
+  a.onfinish = ()=>{ landOnce(); fin(); }; setTimeout(fin, T + 2000); };
+  if(typeof requestAnimationFrame === 'function') requestAnimationFrame(fly); else setTimeout(fly, 0);
 }
 async function autoplayStep(){
   const m = matchState; if(!m || !m.autoplay || m.over || m.resolving || m._autoBusy || m.awaitingPass) return;
@@ -98452,7 +98517,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-stunned', !!c.stunned);
   el.classList.toggle('is-chained', !!c.chained); el.classList.toggle('is-ritual', rc1InRitual(c)); rc1SyncChainPips(el, c); // ENG-RC1 (2026-11-12)
   ui31FrostSync(el, c.frozen > 0); // UI31 (2026-11-07): the ice plays once going in, in reverse going out (was: a plain toggle, and a rebuilt card replayed it)
-  el.classList.toggle('is-asleep', c.asleep>0);
+  el.classList.toggle('is-asleep', c.asleep>0); fx9ZzzSync(tile, c.asleep>0); // FX9 #8 (2026-11-13): the Zs come and go with the status (were drawn only by a rebuild)
   el.classList.toggle('is-paralyzed', c.paralyzed>0);
   el.classList.toggle('is-blind', c.blind>0); el.classList.toggle('is-tipsy', c.tipsy>0); el.classList.toggle('is-confused', c.confused>0);
   el.classList.toggle('is-shocked', c.shocked>0);
@@ -98541,6 +98606,7 @@ function updateCardStatusDisplay(uid){
   } else if(staggerEl){
     staggerEl.remove();
   }
+  fx9GuardSync(el, c); // 2026-11-13 (package FX9 #5): the Guardian's plates fold away while it can't guard
   fxHook('cardStatusShown', el, c); // batch D (2026-10-15, docs/effects-lab-contract.md): persistent status looks on the tile
 }
 // Chained break flourish (2026-09-17): the chain-link overlay snaps and falls away instead of
@@ -98777,6 +98843,7 @@ function updateCardHpDisplay(uid){
 // little "clunk" of the mechanism, not just a number silently changing underneath it.
 function updateCardWaitDisplay(uid, waitRemaining){
   const el = boardCardEl(uid); if(!el) return;
+  fx9GuardSync(el, currentCardByUid(uid)); // 2026-11-13 (package FX9 #5): a Guardian's plates swing out as its Wait runs out (and fold in when it gains Wait)
   if(waitRemaining<=0) el.querySelectorAll('.ab-trig.is-off').forEach(b=>{ b.classList.remove('is-off'); b.classList.add('is-waking'); b.title = String(b.title||'').replace(' (off for now: it is Waiting, Stunned, Frozen or Asleep)', ''); }); // its triggers switch on as it becomes Ready
   const badge = el.querySelector('.waitbadge'); if(!badge) return;
   const total = Math.max(1, Number(badge.getAttribute('data-wait-total'))||waitRemaining||1);
@@ -99242,7 +99309,7 @@ function deathVfx(uid){
   // 2026-10-15 (user: "Guardian: ... should break on death"): a Guardian's steel plates shatter and fall away as it dies, whatever
   // death look plays (UnitFX.guardBreak; at Effects "none" or reduced motion the plates just vanish). The engine already stops
   // redirecting to a Guardian at 0 Health (redirectToGuardian checks hp > 0), so only the look outlived it.
-  try{ if(el.querySelector('.guard-plates')){ if(window.UnitFX && UnitFX.guardBreak && fxAtLeast('low')){ UnitFX.guardBreak(el, {speed:(matchState && matchState.speedMult) || 1}); SoundKit.clang(); } else el.querySelector('.guard-plates').classList.add('is-broken'); } }catch(e){}
+  try{ if(el.querySelector('.guard-plates')){ if(window.UnitFX && UnitFX.guardBreak && fxAtLeast('low') && !el.classList.contains('guard-down') /* FX9 #5: no plates shown, none to break */){ UnitFX.guardBreak(el, {speed:(matchState && matchState.speedMult) || 1}); SoundKit.clang(); } else el.querySelector('.guard-plates').classList.add('is-broken'); } }catch(e){}
   { const fxd = {uid, style:deathStyleFor(uid), handled:false}; fxHook('deathLook', el, fxd); if(fxd.handled) return; } // 2026-10-15: a death per cause (FX.C.hooks.deathLook)
   const skull = document.createElement('div');
   skull.className = 'death-skull';
@@ -104443,7 +104510,9 @@ function fxHostAt(el, ms, at){
   if(!r) return h; // UI23 (#25): no box to stand on (a pip on a hidden cycle page, a card mid re-render): the float is dropped, not thrown to the top-left
   h.dataset.row = el && el.closest && el.closest('#rowEnemy, [data-row="enemy"]') ? 'enemy' : 'mine';
   h.style.cssText = `position:fixed; left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px; pointer-events:none; z-index:70;`;
-  document.body.appendChild(h); setTimeout(()=> h.remove(), ms || 1900);
+  // 2026-11-13 (package FX9 #6, owner: "camera movements don't displace the leftover vfx"): over a card on the board the host sits in the camera layer (fx9CamHost), so a pan, the phone's re-frame or a raid zoom carries it with the cards; elsewhere it stays fixed on the page
+  const cam = el && el.closest && el.isConnected ? el.closest('#battlefieldInner') : null;
+  if(!(cam && fx9CamHost(cam, h, r))) document.body.appendChild(h); setTimeout(()=> h.remove(), ms || 1900);
   return h;
 }
 // The push-back, made plain (2026-10-14, user: "The pushback effect of wash needs to be clearer."): a Tide-spout or a Tsunami
@@ -104572,6 +104641,179 @@ function oreClangVfx(el){ fx7Run(el, 1000, (add, r)=>{ const cx = r.width/2, cy 
   add('ring', `left:${cx - 30}px; top:${cy - 30}px; --c:#8fb0d8;`, [FX7_C(0, 0, .3, .9), FX7_C(0, 0, 1.5, 0)], {still:true, ms:600, peak:.7});
   for(let i = 0; i < 3; i++){ const dx = (i - 1)*r.width*.26;
     add('ore', `left:${cx - 7}px; top:${cy - 7}px;`, [FX7_C(0, 0, .3, 0), Object.assign(FX7_C(dx*.6, -r.height*.22 - (i % 2)*8, 1.1, 1), {offset:.35, easing:'ease-in'}), Object.assign(FX7_C(dx, -r.height*.02, 1, 1), {offset:.7}), FX7_C(dx, 4, .8, 0)], {ms:760, delay:i*70}); } }); }
+// ==== Package FX9 (2026-11-13, owner notes 23:47): effects that ride on what they belong to, so a camera pan or a board zoom (the phone's re-frame
+// after a play, a raid's zoom, the follow pan) never leaves a piece floating where the card was (#6): a card's effect is a child of its card
+// (fx9CardHost), a board effect a child of the board frame, and fxHostAt's hosts sit in the camera layer (fx9CamHost). WAAPI on transform and
+// opacity only, nothing read per frame, every piece removed. Effects None: nothing; reduced motion and Effects Low: a still piece that only fades.
+function fx9CardHost(el, ms, cls){
+  const card = el && el.closest ? (el.closest('.board-card') || el) : null; if(!card || !card.isConnected) return null;
+  const h = document.createElement('div'); h.className = 'fx9-host' + (cls ? ' ' + cls : ''); h.setAttribute('aria-hidden', 'true');
+  card.appendChild(h); setTimeout(()=> h.remove(), ms || 1200); return h;
+}
+function fx9Piece(host, cls, css){ const i = document.createElement('i'); i.className = 'fx9 fx9-' + cls; if(css) i.style.cssText = css; host.appendChild(i); return i; }
+// fxHostAt's host over a card on the board goes into the camera layer: absolute at the card's place and counter-scaled, so its own px are still
+// screen px (the effects inside were written for a fixed host) while a pan or zoom carries it with the cards. False when the layer can't take it.
+function fx9CamHost(cam, h, r){
+  try{ Object.assign(h.style, {position:'absolute', left:'0px', top:'0px', transformOrigin:'0 0'}); cam.appendChild(h);
+    const o = h.getBoundingClientRect(), e = o.width / r.width; if(!(e > .05 && e < 20)){ h.remove(); return false; }
+    Object.assign(h.style, {left:((r.left - o.left) / e).toFixed(1) + 'px', top:((r.top - o.top) / e).toFixed(1) + 'px', scale:(1 / e).toFixed(4)}); h.classList.add('fx9-cam'); return true;
+  }catch(e){ try{ h.remove(); }catch(_){} return false; }
+}
+// #5 Guardian (owner: "Guardian - only when ready. vfx too."): the engine lets a Guardian step in only while Ready (ENG9 blockerReady: no Wait, not
+// Stunned, Frozen, Asleep, playing dead, Petrified, Bound or Chained; isLiveGuardian: not Hibernating or aloft). Its plates show only then: .guard-down
+// hides them and stops their sheen; a change folds them in behind the card (gp-fall) or swings them back out (gp-rise). A rebuilt card animates the
+// change too: the state each Guardian was last drawn with is kept per match (m._fx9Guard).
+function fx9GuardUp(c){ return !!c && !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !(c.asleep > 0) && !(c.playingDead != null && c.playingDead !== false) && !c.petrified && !(c.bound > 0) && !c.chained && !c.hibernating && c.diveAloft == null; }
+function fx9GuardMem(c, up){ const m = typeof matchState !== 'undefined' ? matchState : null; if(!m || !c || c.uid == null) return up;
+  const mem = m._fx9Guard || (m._fx9Guard = new Map()), k = String(c.uid), was = mem.has(k) ? mem.get(k) : up; mem.set(k, up); return was; }
+function fx9GuardCls(c){ const up = fx9GuardUp(c), was = fx9GuardMem(c, up), anim = was !== up && fxLevel() !== 'none';
+  return (up ? '' : 'guard-down') + (anim ? (up ? ' gp-rise' : ' gp-fall') : ''); }
+function fx9GuardSync(el, c){
+  if(!el || !c || !el.classList.contains('has-guard')) return; const up = fx9GuardUp(c); fx9GuardMem(c, up);
+  if(up === !el.classList.contains('guard-down')) return;
+  clearTimeout(el._fx9GpT); el.classList.remove('gp-rise', 'gp-fall'); el.classList.toggle('guard-down', !up);
+  if(fxLevel() === 'none') return; void el.offsetWidth; el.classList.add(up ? 'gp-rise' : 'gp-fall'); el._fx9GpT = setTimeout(()=> el.classList.remove('gp-rise', 'gp-fall'), 650);
+}
+if(typeof document !== 'undefined') document.addEventListener('animationend', e=>{ const n = e.animationName || ''; if(n.startsWith('fx9Guard')){ const b = e.target.closest && e.target.closest('.board-card'); if(b) b.classList.remove('gp-rise', 'gp-fall'); } });
+// #8 Sleep (owner: "Sleep is not so obvious. Maybe blue Zs dropping out from the card, from the top right?"): three blue Zs drift out of the card's
+// top-right corner on a slow loop (3.6 s, CSS transform / opacity, .fx9-zzz in arena_template.html); was a 💤 bobbing in the middle under a drop-shadow
+// filter. Low and reduced motion: two still Zs; Effects None: one. Waking fades them out.
+const FX9_ZZZ_HTML = '<div class="fx9-zzz" aria-hidden="true"><i>Z</i><i>Z</i><i>Z</i></div>';
+function fx9ZzzSync(tile, on){
+  if(!tile) return; const z = tile.querySelector(':scope > .fx9-zzz:not(.is-waking)');
+  if(on){ if(!z) tile.insertAdjacentHTML('beforeend', FX9_ZZZ_HTML); return; }
+  if(z){ z.classList.add('is-waking'); setTimeout(()=> z.remove(), 500); }
+}
+// #6 Ambush (owner: "put the animation on the card itself. So camera movements don't displace the leftover vfx."): replaces FX.A.ambushStrike in the
+// game (its shade, eyes, smoke and slash were fixed overlays on the page). The same look inside the ambusher's card: it goes to shadow, two yellow eyes
+// open and blink, it springs out of dark smoke with a dark slash toward the unit it strikes.
+function fx9AmbushVfx(att, tgt){
+  const card = att && att.closest ? (att.closest('.board-card') || att) : null; if(!card || !card.isConnected || !card.animate || !fxAtLeast('low')) return Promise.resolve();
+  const calm = reducedMotion() || !fxAtLeast('med'), W = card.offsetWidth || 80, H = card.offsetHeight || 100, h = fx9CardHost(card, 950); if(!h) return Promise.resolve();
+  fx9Piece(h, 'shade').animate([{opacity:0}, {opacity:1, offset:.12}, {opacity:1, offset:.6}, {opacity:0}], {duration:800, fill:'forwards'});
+  const ey = fx9Piece(h, 'eyes'), T = s=> `translate(-50%, -50%) scaleY(${s})`; ey.textContent = '● ●';
+  ey.animate(calm ? [{opacity:0}, {opacity:1, offset:.2}, {opacity:1, offset:.6}, {opacity:0}]
+    : [{opacity:0, transform:T(.2)}, {opacity:1, transform:T(1), offset:.12}, {transform:T(1), offset:.3}, {transform:T(.1), offset:.36}, {transform:T(1), offset:.42}, {opacity:1, offset:.62}, {opacity:0, transform:T(1)}], {duration:800, fill:'forwards'});
+  if(!calm){
+    for(let i = 0; i < 7; i++){ const a = (195 + i*25)*Math.PI/180, d = W*(.28 + (i % 3)*.12), p = fx9Piece(h, 'smoke', `left:${(W/2).toFixed(0)}px; top:${(H*.86).toFixed(0)}px;`), P = (k, s)=> `translate(calc(-50% + ${(Math.cos(a)*d*k).toFixed(1)}px), calc(-50% + ${(Math.sin(a)*d*k*.7 - (k > .5 ? 6 : 0)).toFixed(1)}px)) scale(${s})`;
+      p.animate([{opacity:0, transform:P(0, .4)}, {opacity:.9, transform:P(.4, 1), offset:.25}, {opacity:0, transform:P(1, 2)}], {duration:600, delay:320 + i*10, easing:'ease-out', fill:'forwards'}); }
+    const tc = tgt && tgt.isConnected && tgt.closest ? (tgt.closest('.board-card') || tgt) : null;
+    if(tc){ const a = card.getBoundingClientRect(), b = tc.getBoundingClientRect(), s = a.width / W || 1, dx = (b.left + b.width/2 - a.left - a.width/2) / s, dy = (b.top + b.height/2 - a.top - a.height/2) / s, L = Math.hypot(dx, dy)*.8, R = `rotate(${(Math.atan2(dy, dx)*57.3).toFixed(1)}deg)`;
+      if(L > 4) fx9Piece(h, 'slash', `left:${(W/2).toFixed(0)}px; top:${(H/2).toFixed(0)}px; width:${L.toFixed(0)}px;`).animate([{opacity:0, transform:R + ' scaleX(0)'}, {opacity:1, transform:R + ' scaleX(1)', offset:.35}, {opacity:0, transform:R + ' scaleX(1)'}], {duration:320, delay:380, easing:'ease-out', fill:'forwards'}); }
+  }
+  return new Promise(res=> setTimeout(res, 800));
+}
+// #14 Shell breaks (owner: "instead of a longified semicircle, can we have a tortoise shell breaking effect?"): replaces FX.A.shellCrack in the game.
+// A tortoise carapace (three vertebral scutes down the middle, three costal scutes each side, a ring of marginal scutes, growth rings in each scute)
+// settles over the card, cracks along its seams, and its nine plates fall away turning. Nine clipped copies of one SVG (decoded once) inside the card.
+const FX9_SHELL = (()=>{
+  const E = (t, rx, ry)=> [50 + rx*Math.cos(t*Math.PI/180), 50 + ry*Math.sin(t*Math.PI/180)], arc = (t0, t1)=>{ const o = [], n = Math.ceil(Math.abs(t1 - t0)/12); for(let i = 0; i <= n; i++) o.push(E(t0 + (t1 - t0)*i/n, 50, 49)); return o; };
+  const V = [[[40,0],[60,0],[65,20],[60,34],[40,34],[35,20]], [[40,34],[60,34],[66,50],[60,66],[40,66],[34,50]], [[40,66],[60,66],[65,80],[60,100],[40,100],[35,80]]];
+  const L = [[[40,0],[35,20],[40,34], ...arc(200.35, 257.7)], [[40,34],[34,50],[40,66], ...arc(159.65, 200.35)], [[40,66],[35,80],[40,100], ...arc(102.3, 159.65)]];
+  const polys = V.concat(L, L.map(p=> p.map(([x, y])=> [100 - x, y]))), f = v=> v.toFixed(1), pts = p=> p.map(([x, y])=> f(x) + ',' + f(y)).join(' ');
+  const cen = p=> [p.reduce((s, q)=> s + q[0], 0)/p.length, p.reduce((s, q)=> s + q[1], 0)/p.length], ring = (p, k)=>{ const [cx, cy] = cen(p); return pts(p.map(([x, y])=> [cx + (x - cx)*k, cy + (y - cy)*k])); };
+  let ticks = ''; for(let t = 12; t < 360; t += 24){ const [x0, y0] = E(t, 39, 38), [x1, y1] = E(t, 47, 46); ticks += `M${f(x0)} ${f(y0)}L${f(x1)} ${f(y1)}`; }
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><defs><radialGradient id='s' cx='.5' cy='.45' r='.65'><stop offset='0' stop-color='#e2ad58'/><stop offset='.55' stop-color='#a86a2a'/><stop offset='1' stop-color='#5c3412'/></radialGradient>`
+    + `<radialGradient id='m' cx='.5' cy='.5' r='.5'><stop offset='.8' stop-color='#7a4a1c'/><stop offset='1' stop-color='#4a2a0e'/></radialGradient><clipPath id='i'><ellipse cx='50' cy='50' rx='39' ry='38'/></clipPath><clipPath id='o'><ellipse cx='50' cy='50' rx='47' ry='46'/></clipPath></defs>`
+    + `<ellipse cx='50' cy='50' rx='47' ry='46' fill='url(#m)' stroke='#2a1606' stroke-width='1.6'/><g clip-path='url(#i)'>${polys.map(p=> `<polygon points='${pts(p)}' fill='url(#s)'/><polygon points='${ring(p, .62)}' fill='none' stroke='#4a2608' stroke-opacity='.6' stroke-width='1'/><polygon points='${ring(p, .3)}' fill='#f0c47a' fill-opacity='.35'/>`).join('')}</g>`
+    + `<ellipse cx='50' cy='50' rx='39' ry='38' fill='none' stroke='#2a1606' stroke-width='1.3'/><path d='${ticks}' stroke='#2a1606' stroke-width='1.1'/><g clip-path='url(#o)' fill='none' stroke='#2a1606' stroke-width='1.7' stroke-linejoin='round'>${polys.map(p=> `<polygon points='${pts(p)}'/>`).join('')}</g>`
+    + `<ellipse cx='36' cy='26' rx='20' ry='9' fill='#fff' fill-opacity='.14' transform='rotate(-20 36 26)'/></svg>`;
+  let cr = ''; polys.forEach(p=> p.forEach(([x, y], i)=>{ const [x2, y2] = p[(i + 1) % p.length]; if(Math.hypot(x2 - x, y2 - y) > 9 && Math.hypot((x + x2)/2 - 50, ((y + y2)/2 - 50)*1.02) < 42) cr += `M${f(x)} ${f(y)}L${f((x + x2)/2 + (i % 2 ? 1.6 : -1.6))} ${f((y + y2)/2)}L${f(x2)} ${f(y2)}`; }));
+  const crack = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><path d='${cr}' fill='none' stroke='#fff3cf' stroke-width='1.3' stroke-linejoin='bevel'/></svg>`;
+  const url = s=> `url("data:image/svg+xml,${encodeURIComponent(s)}")`;
+  return {art:url(svg), crack:url(crack), pieces:polys.map(p=>{ const [cx, cy] = cen(p); return {cx, cy, clip:'polygon(' + p.map(([x, y])=> f(Math.max(0, Math.min(100, x))) + '% ' + f(Math.max(0, Math.min(100, y))) + '%').join(', ') + ')'}; })};
+})();
+function fx9ShellBreakVfx(el){
+  const card = el && el.closest ? (el.closest('.board-card') || el) : null; if(!card || !card.isConnected || !card.animate || !fxAtLeast('low')) return Promise.resolve();
+  const calm = reducedMotion() || !fxAtLeast('med'), W = card.offsetWidth || 80, H = card.offsetHeight || 100, h = fx9CardHost(card, 1150, 'fx9-shellbox'); if(!h) return Promise.resolve();
+  try{ SoundKit.shellCrackTone(); }catch(e){}
+  if(calm){ fx9Piece(h, 'plate', `background-image:${FX9_SHELL.art};`).animate([{opacity:0}, {opacity:.95, offset:.25}, {opacity:.95, offset:.5}, {opacity:0}], {duration:900, fill:'forwards'}); return new Promise(res=> setTimeout(res, 900)); }
+  FX9_SHELL.pieces.forEach((p, i)=>{ const q = fx9Piece(h, 'plate', `background-image:${FX9_SHELL.art}; clip-path:${p.clip}; transform-origin:${p.cx.toFixed(1)}% ${p.cy.toFixed(1)}%;`);
+    const ux = (p.cx - 50)/50, uy = (p.cy - 50)/50, dx = ux*W*.45 + (i % 2 ? 4 : -4), dy = uy*H*.2 + H*(.5 + (i % 3)*.12), rot = (ux >= 0 ? 1 : -1)*(25 + (i*17) % 45), j = i % 2 ? 1.5 : -1.5;
+    q.animate([{opacity:0, transform:'translate(0,0) scale(1.1)'}, {opacity:1, transform:'translate(0,0) scale(1)', offset:.14, easing:'ease-in'}, {transform:'translate(0,0)', offset:.3}, {transform:`translate(${j}px,0)`, offset:.34}, {transform:`translate(${-j}px,0)`, offset:.38}, {opacity:1, transform:'translate(0,0) rotate(0deg)', offset:.44, easing:'cubic-bezier(.5,0,.9,.6)'}, {opacity:0, transform:`translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) rotate(${rot}deg)`}],
+      {duration:1000 + (i % 3)*50, fill:'forwards'}); });
+  fx9Piece(h, 'plate', `background-image:${FX9_SHELL.crack};`).animate([{opacity:0}, {opacity:0, offset:.28}, {opacity:1, offset:.32}, {opacity:1, offset:.42}, {opacity:0, offset:.5}, {opacity:0}], {duration:1000, fill:'forwards'});
+  return new Promise(res=> setTimeout(res, 1100));
+}
+// #15 A Dragon arrives (owner: "Improve the dragon spawn animations. I like the flying across the screen concept. (maybe vary the direction)"): replaces
+// FX.C.dragonArrive in the game. Each spawn takes the next of four flights: left to right, right to left, a diagonal dive onto its slot, a sweep from
+// the far side toward you. The board dims a little, the dragon's shadow (a top-down silhouette, wings beating) passes over it, each card it passes
+// sways in the wind of its wings, then the dragon drops into its slot with a thud, dust and (High) a quake. One shadow and one dim layer in the board
+// frame, a short sway per card (the CSS rotate / translate properties: GSAP keeps transform), WAAPI only. Was a dark emoji under a blur filter over a
+// multiply layer, always left to right. Effects Low: the drop only; reduced motion: it fades in.
+const FX9_DRAGON_DIRS = ['ltr', 'rtl', 'dive', 'back'];
+const FX9_DRAGON_SVG = (()=>{ const wing = 'M118 94C116 70 104 34 82 5C78 22 70 30 57 34C62 44 56 52 43 56C50 66 46 74 33 78C52 84 72 90 86 96Z', flip = d=> d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (s, x, y)=> x + ' ' + (200 - y));
+  const s = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='-6 -6 212 212'><defs><filter id='b' x='-10%' y='-10%' width='120%' height='120%'><feGaussianBlur stdDeviation='1.5'/></filter></defs><g filter='url(#b)' fill='#000'>`
+    + `<path d='${wing}'/><path d='${flip(wing)}'/><path d='M26 100C60 91 110 88 150 92C166 93 178 95 190 100C178 105 166 107 150 108C110 112 60 109 26 100Z'/><path d='M40 98Q20 97 8 100Q20 103 40 102Z'/><path d='M10 100L0 93L3 100L0 107Z'/>`
+    + `<ellipse cx='170' cy='100' rx='15' ry='8'/><path d='M160 94L150 84L164 92Z'/><path d='M160 106L150 116L164 108Z'/></g></svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(s)}")`; })();
+function fx9DragonArrive(el, opts){
+  opts = opts || {}; const card = el && el.closest ? (el.closest('.board-card') || el) : null, t = card && (card.querySelector('.card-tile') || card);
+  if(!t || !t.isConnected || !t.animate || !fxAtLeast('low')) return Promise.resolve();
+  const bf = (opts.host && opts.host.nodeType ? opts.host : null) || card.closest('.battlefield') || document.getElementById('battlefieldEl');
+  const n = fx9DragonArrive.n = (fx9DragonArrive.n == null ? Math.floor(Math.random()*4) : fx9DragonArrive.n + 1), dir = FX9_DRAGON_DIRS.includes(opts.dir) ? opts.dir : FX9_DRAGON_DIRS[n % 4];
+  try{ SoundKit.roar(); }catch(e){}
+  if(reducedMotion()){ t.animate([{opacity:0}, {opacity:1}], {duration:450, easing:'ease-out'}); return new Promise(res=> setTimeout(res, 450)); }
+  const full = fxAtLeast('med') && bf && bf.offsetWidth > 0, W = full ? bf.offsetWidth : 0, H = full ? bf.offsetHeight : 0, B = full ? bf.getBoundingClientRect() : null, e = full ? (B.width / W || 1) : 1;
+  const cr = card.getBoundingClientRect(), sx = full ? (cr.left + cr.width/2 - B.left)/e : 0, sy = full ? (cr.top + cr.height/2 - B.top)/e : 0, S = Math.max(260, Math.min(600, W*.8));
+  const F = {ltr:{a:[-.6*S, H*.44], b:[W + .6*S, H*.3], s0:.9, s1:1.15, ms:1250, land:1000}, rtl:{a:[W + .6*S, H*.3], b:[-.6*S, H*.46], s0:.9, s1:1.15, ms:1250, land:1000},
+    dive:{a:[sx - Math.max(W*.45, S*.8), sy - Math.max(H*.6, S*.8)], b:[sx, sy], s0:1.3, s1:.45, ms:900, land:700}, back:{a:[W*.5 + (sx - W*.5)*.3, -.7*S], b:[W*.15 + sx*.7, H + .7*S], s0:.6, s1:1.5, ms:1300, land:1050}}[dir];
+  const land = full ? F.land : 120, vx = full ? F.b[0] - F.a[0] : 0, vy = full ? F.b[1] - F.a[1] : -1, len = Math.hypot(vx, vy) || 1, ux = vx/len, uy = vy/len;
+  if(full){
+    const sky = document.createElement('div'); sky.className = 'fx9-sky'; sky.setAttribute('aria-hidden', 'true'); bf.appendChild(sky); setTimeout(()=> sky.remove(), Math.max(F.ms, land) + 900);
+    fx9Piece(sky, 'dim').animate([{opacity:0}, {opacity:1, offset:.2}, {opacity:1, offset:.7}, {opacity:0}], {duration:land + 700, fill:'forwards'});
+    const sh = fx9Piece(sky, 'dshadow', `width:${(S*.9).toFixed(0)}px; height:${S.toFixed(0)}px; margin:${(-S/2).toFixed(0)}px 0 0 ${(-S*.45).toFixed(0)}px;`), fl = fx9Piece(sh, 'dwings', `background-image:${FX9_DRAGON_SVG};`);
+    const ang = (Math.atan2(vy, vx)*57.3).toFixed(1), P = (x, y, k)=> `translate(${x.toFixed(0)}px, ${y.toFixed(0)}px) rotate(${ang}deg) scale(${k})`;
+    sh.animate([{opacity:0, transform:P(F.a[0], F.a[1], F.s0)}, {opacity:1, offset:.12}, {opacity:1, offset:.85}, {opacity:dir === 'dive' ? 0 : 1, transform:P(F.b[0], F.b[1], F.s1)}], {duration:F.ms, delay:80, easing:dir === 'dive' ? 'cubic-bezier(.35,0,.75,1)' : 'linear', fill:'forwards'});
+    fl.animate([{transform:'scaleY(1)'}, {transform:'scaleY(.55)', offset:.5}, {transform:'scaleY(1)'}], {duration:380, iterations:Math.ceil(F.ms/380), easing:'ease-in-out'});
+    // the wind: each card sways as the shadow passes nearest to it, pushed along the flight and away from its line
+    const cards = [...bf.querySelectorAll('.board-row > .board-card:not(.empty-slot) .card-tile')].filter(x=> x !== t && x.animate).slice(0, 16);
+    cards.forEach(c=>{ const r = c.getBoundingClientRect(); if(!(r.width > 0)) return; const cx = (r.left + r.width/2 - B.left)/e - F.a[0], cy = (r.top + r.height/2 - B.top)/e - F.a[1];
+      const u = Math.max(0, Math.min(1, (cx*ux + cy*uy)/len)), side = cx*uy - cy*ux, d = Math.abs(side), k = Math.max(0, 1 - d/(S*.75)); if(k <= .05) return;
+      const at = 80 + u*F.ms - 120, sg = side > 0 ? -1 : 1, px = (ux*5 - uy*sg*4)*k, py = (uy*5 + ux*sg*4)*k;
+      c.animate([{rotate:'0deg', translate:'0px 0px'}, {rotate:`${(sg*5*k).toFixed(1)}deg`, translate:`${px.toFixed(1)}px ${py.toFixed(1)}px`, offset:.3}, {rotate:`${(-sg*2*k).toFixed(1)}deg`, translate:'0px 0px', offset:.65}, {rotate:'0deg', translate:'0px 0px'}], {duration:700, delay:Math.max(0, at), easing:'ease-out'}); });
+    setTimeout(()=>{ try{ SoundKit.dragonGust(); }catch(e){} }, 150);
+  }
+  // the drop: hidden until it lands, then down out of the way it came, a squash, dust at its feet
+  const ox = full ? -ux*90 : 0, oy = -(110 + (full ? Math.max(0, uy)*90 : 0));
+  t.animate([{opacity:0, translate:`${ox.toFixed(0)}px ${oy.toFixed(0)}px`, scale:'1.35'}, {opacity:0, translate:`${ox.toFixed(0)}px ${oy.toFixed(0)}px`, scale:'1.35', offset:land/(land + 300)}, {opacity:1, translate:'0px 0px', scale:'1'}], {duration:land + 300, easing:'cubic-bezier(.55,0,.9,.55)'});
+  setTimeout(()=>{ if(!t.isConnected) return; try{ SoundKit.boom(); }catch(e){}
+    t.animate([{scale:'1.08 .9'}, {scale:'.97 1.04', offset:.45}, {scale:'1'}], {duration:260, easing:'ease-out'});
+    const W2 = card.offsetWidth || 80, H2 = card.offsetHeight || 100, h = fx9CardHost(card, 900); if(!h) return;
+    for(let i = 0; i < 6; i++){ const sd = i % 2 ? 1 : -1, d = W2*(.35 + (i >> 1)*.18), p = fx9Piece(h, 'dust', `left:${(W2/2).toFixed(0)}px; top:${(H2 - 6).toFixed(0)}px;`);
+      p.animate([{opacity:0, transform:'translate(-50%, -50%) scale(.5)'}, {opacity:.85, transform:`translate(calc(-50% + ${(sd*d*.5).toFixed(0)}px), -60%) scale(1.1)`, offset:.25}, {opacity:0, transform:`translate(calc(-50% + ${(sd*d).toFixed(0)}px), -110%) scale(1.9)`}], {duration:700, delay:i*15, easing:'ease-out', fill:'forwards'}); }
+    if(full && opts.shake !== false && fxAtLeast('high')) bf.animate([{translate:'0 0'}, {translate:'0 7px'}, {translate:'0 -5px'}, {translate:'0 2px'}, {translate:'0 0'}], {duration:380, easing:'linear'});
+  }, land + 300);
+  try{ if(typeof noteMatchFx === 'function') noteMatchFx(land + 900); }catch(e){}
+  return new Promise(res=> setTimeout(res, land + 900));
+}
+// #17 Stampede (owner: "can run towards the opposing bramble health bar instead (straight ahead, no need hit the centre)"): replaces FX.A.stampede in
+// the game. A rolling dust cloud with hoof prints runs straight ahead from the killer's column to the opposing bramble's Health bar and bursts against
+// it; the bar jolts. Drawn in the board frame. Low and reduced motion: one puff on the bar.
+function fx9StampedeVfx(from, castle){
+  if(!fxAtLeast('low')) return Promise.resolve();
+  const side = castle && castle.getAttribute ? castle.getAttribute('data-hq') : null, bf = (from && from.closest && from.closest('.battlefield')) || document.getElementById('battlefieldEl');
+  const bar = bf && side ? bf.querySelector(`.bf-hp[data-hpribbon="${side}"]`) : null; if(!bar || !(bf.offsetWidth > 0)) return Promise.resolve();
+  const B = bf.getBoundingClientRect(), e = B.width / bf.offsetWidth || 1, R = (bar.querySelector('.bf-hp-track') || bar).getBoundingClientRect(); if(!(R.width > 0)) return Promise.resolve();
+  const fc = from && from.isConnected ? (from.closest('.board-card') || from).getBoundingClientRect() : null, up = R.top + R.height/2 < B.top + B.height/2;
+  const x = (Math.max(R.left + 8, Math.min(R.right - 8, fc && fc.width > 0 ? fc.left + fc.width/2 : R.left + R.width/2)) - B.left)/e, y1 = (R.top + R.height/2 - B.top)/e;
+  const y0 = fc && fc.width > 0 ? (fc.top + fc.height/2 - B.top)/e : y1 + (up ? 1 : -1)*B.height*.45/e, h = document.createElement('div'); h.className = 'fx9-run'; h.setAttribute('aria-hidden', 'true'); bf.appendChild(h); setTimeout(()=> h.remove(), 1300);
+  const puff = (dx, dy, delay, s0, s1, ms)=> fx9Piece(h, 'dust', `left:${x.toFixed(0)}px; top:${y1.toFixed(0)}px;`).animate([{opacity:0, transform:`translate(-50%, -50%) scale(${s0})`}, {opacity:.85, transform:`translate(calc(-50% + ${(dx*.5).toFixed(0)}px), calc(-50% + ${(dy*.5).toFixed(0)}px)) scale(${(s0 + s1)/2})`, offset:.3}, {opacity:0, transform:`translate(calc(-50% + ${dx.toFixed(0)}px), calc(-50% + ${dy.toFixed(0)}px)) scale(${s1})`}], {duration:ms || 650, delay, easing:'ease-out', fill:'forwards'});
+  if(reducedMotion() || !fxAtLeast('med')){ fx9Piece(h, 'dust', `left:${x.toFixed(0)}px; top:${y1.toFixed(0)}px; transform:translate(-50%, -50%) scale(1.6);`).animate([{opacity:0}, {opacity:.8, offset:.3}, {opacity:0}], {duration:700, fill:'forwards'}); return new Promise(res=> setTimeout(res, 700)); }
+  const dy = y1 - y0, sg = up ? -1 : 1, rot = up ? 0 : 180;
+  for(let i = 0; i < 8; i++){ const k = (i + .5)/8, hy = y0 + dy*k;
+    fx9Piece(h, 'hoof', `left:${(x + (i % 2 ? 7 : -7)).toFixed(0)}px; top:${hy.toFixed(0)}px; transform:translate(-50%, -50%) rotate(${rot}deg);`).animate([{opacity:0}, {opacity:.8, offset:.1}, {opacity:.8, offset:.55}, {opacity:0}], {duration:650, delay:i*45, fill:'forwards'}); }
+  for(let i = 0; i < 4; i++) fx9Piece(h, 'dust', `left:${(x + (i - 1.5)*9).toFixed(0)}px; top:${y0.toFixed(0)}px;`).animate([{opacity:0, transform:'translate(-50%, -50%) scale(.6)'}, {opacity:.85, offset:.15}, {opacity:.75, transform:`translate(-50%, calc(-50% + ${(dy*.92).toFixed(0)}px)) scale(1.5)`, offset:.85}, {opacity:0, transform:`translate(-50%, calc(-50% + ${dy.toFixed(0)}px)) scale(1.8)`}], {duration:460, delay:i*35, easing:'ease-in', fill:'forwards'});
+  for(let i = 0; i < 7; i++){ const sd = i % 2 ? 1 : -1; puff(sd*(14 + (i >> 1)*16), sg*-(4 + (i % 3)*5), 420 + i*12, .5, 1.9, 700); }
+  fx9Piece(h, 'ring', `left:${x.toFixed(0)}px; top:${y1.toFixed(0)}px;`).animate([{opacity:.9, transform:'translate(-50%, -50%) scale(.3, .12)'}, {opacity:0, transform:'translate(-50%, -50%) scale(1.6, .55)'}], {duration:480, delay:420, easing:'ease-out', fill:'forwards'});
+  setTimeout(()=>{ if(bar.isConnected) bar.animate([{translate:'0 0'}, {translate:`0 ${-sg*5}px`}, {translate:`0 ${sg*3}px`}, {translate:'0 0'}], {duration:360, easing:'ease-out'}); }, 430);
+  return new Promise(res=> setTimeout(res, 1100));
+}
+// The game's FX modules keep their look in the Lab; in a fight these four play FX9's versions (bound once, as vis4PatchShieldFx does for FX.A).
+function fx9PatchFx(){ try{ const A = window.FX && FX.A, C = window.FX && FX.C;
+  if(A && !A.__fx9){ A.__fx9 = true; A.ambushStrike = (att, tgt)=> fx9AmbushVfx(att, tgt); A.shellCrack = el=> fx9ShellBreakVfx(el); A.stampede = (from, castle)=> fx9StampedeVfx(from, castle); }
+  if(C && !C.__fx9){ C.__fx9 = true; C.dragonArrive = (el, o)=> fx9DragonArrive(el, o); } }catch(e){} }
+setTimeout(fx9PatchFx, 0); setTimeout(fx9PatchFx, 1500);
 function afterSettle(uid, fn){ const el0 = boardCardEl(uid), r0 = el0 ? ui23Rect(el0.getBoundingClientRect()) : null, row0 = el0;
   setTimeout(()=>{ const el = boardCardEl(uid), r = el && ui23Rect(el.getBoundingClientRect()); if(r) fn(el, r); else if(r0) fn(null, r0, row0); }, 60); } // UI23 (#25): a 0x0 box is no anchor
 // 2026-11-06 (package UI23 #25, owner: "context pips get thrown to the top-left of the screen"): a page-level effect placed from an element's box
@@ -107593,13 +107835,16 @@ function devilPulse(el){
 // ~0.6 s; 2 over ~0.4 s on Effects Low; none on Effects None or with reduced motion. Rings are fixed-position, pointer-less, removed when done.
 function ambushEcho(cardEl){
   if(!cardEl || reducedMotion()) return 0; const lv = fxLevel(); if(lv === 'none') return 0;
-  const pip = cardEl.querySelector('.ab-sk[data-sk="ambush"]'), r = (pip && pip.getBoundingClientRect().width > 0 ? pip : cardEl).getBoundingClientRect(); if(!(r.width > 0)) return 0;
-  const n = lv === 'low' ? 2 : 3, ms = lv === 'low' ? 400 : 600, x = r.left + r.width / 2, y = r.top + r.height / 2, size = Math.max(14, Math.min(26, r.width)); let made = 0;
+  // 2026-11-13 (package FX9 #6): the rings are children of the card (fx9CardHost), so a camera pan or zoom carries them with it (they were fixed on the page)
+  const card = cardEl.closest ? (cardEl.closest('.board-card') || cardEl) : cardEl, cr = card.getBoundingClientRect(); if(!(cr.width > 0)) return 0;
+  const pip = card.querySelector('.ab-sk[data-sk="ambush"]'), r = (pip && pip.getBoundingClientRect().width > 0 ? pip : card).getBoundingClientRect(), k = cr.width / (card.offsetWidth || cr.width);
+  const n = lv === 'low' ? 2 : 3, ms = lv === 'low' ? 400 : 600, x = (r.left + r.width / 2 - cr.left) / k, y = (r.top + r.height / 2 - cr.top) / k, size = Math.max(14, Math.min(26, r.width)) / k;
+  const host = fx9CardHost(card, ms * 2 + 400); if(!host) return 0; let made = 0;
   for(let i = 0; i < n; i++){
     const d = document.createElement('div'); d.className = 'ambush-echo-ring'; d.setAttribute('aria-hidden', 'true');
-    Object.assign(d.style, {position:'fixed', left:x + 'px', top:y + 'px', width:size + 'px', height:size + 'px', marginLeft:(-size / 2) + 'px', marginTop:(-size / 2) + 'px', borderRadius:'50%', border:'2px solid #ffe14a', boxShadow:'0 0 6px #ffcf2a', zIndex:9990, pointerEvents:'none', opacity:0});
-    document.body.appendChild(d); made++;
-    try{ const an = d.animate([{opacity:.9, transform:'scale(.6)'}, {opacity:0, transform:'scale(3)'}], {duration:ms, delay:i * Math.round(ms / 5), easing:'ease-out', fill:'both'}); an.onfinish = ()=> d.remove(); setTimeout(()=> d.remove(), ms * 2 + 400); }catch(e){ d.remove(); }
+    Object.assign(d.style, {position:'absolute', left:x + 'px', top:y + 'px', width:size + 'px', height:size + 'px', marginLeft:(-size / 2) + 'px', marginTop:(-size / 2) + 'px', borderRadius:'50%', border:'2px solid #ffe14a', boxShadow:'0 0 6px #ffcf2a', pointerEvents:'none', opacity:0});
+    host.appendChild(d); made++;
+    try{ const an = d.animate([{opacity:.9, transform:'scale(.6)'}, {opacity:0, transform:'scale(3)'}], {duration:ms, delay:i * Math.round(ms / 5), easing:'ease-out', fill:'both'}); an.onfinish = ()=> d.remove(); }catch(e){ d.remove(); }
   }
   return made;
 }
@@ -109126,6 +109371,7 @@ function renderVfxForEvent(ev){
     if(rc) rc.wait = 0;
     SoundKit.readyChime();
     playReadyFlourish(ev.uid);
+    try{ fx9GuardSync(boardCardEl(ev.uid), currentCardByUid(ev.uid)); }catch(e){} // FX9 #5 (2026-11-13): Ready, so a Guardian's plates swing out
     // Card-level ready shake (2026-09-21, "when the unit is ready... it should shake or animate
     // like it's now ready"): every card gets this golden perk-up pulse now, not just the wait
     // badge's own flourish (which disappears along with the badge) — see .board-card.ready-pulse
