@@ -66,6 +66,8 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 | 56 | Cinematic hooves | Stampede (2026-11-12, FX8) | `cineHooves`: 13 short low thumps, 88 to 40 Hz, speeding up | (same, one palette) | 2.4 s |
 
 **Status (2026-11-12, package FX8):** cues 44-56 (renumbered at the merge: UIFX3 took 41-43) are the sound of the eleven cinematic board effects (`bramblewood-cinematic.js`, Effects Lab group "Cinematic (FX8)", not wired into fights). SoundKit's `tone()` / `noise()` are private to `arena_app.js`, so the file builds the same kind of synth (oscillators, filtered noise, sweeps) on `SoundKit.audioContext()`, gated by the SFX volume; nothing plays under Effects None / reduced motion.
+| 57 | Shell crack | A Shell ends: the tortoise carapace cracks and falls away (2026-11-13, FX9, `shellCrackTone`) | A dry crack of crackly high noise, then four small clatters of its plates (square blips with a band of noise, each a little lower) | Noise crack + four blips | 600 ms |
+| 58 | Dragon gust | A Dragon's shadow passes over the board (2026-11-13, FX9, `dragonGust`) | A low rush of air that swells and opens up over 1 s, three deep wing beats inside it | Low noise swell | 1 s |
 
 **Status (2026-11-12, package FX6):** cue 40 is live as a Web Audio synth (`SoundKit.constructTone`, built from `tone`, `fnoise`, `sweep`); it replaces the spawn buzz for Bulwark's walls.
 
