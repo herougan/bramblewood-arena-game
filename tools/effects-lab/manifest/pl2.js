@@ -28,7 +28,7 @@ R({id:'st-stat-change', stage:'board', inGameHook:'updateCardAtkDisplay / update
 R({id:'castle-hp-number', stage:'board', inGameHook:'updateHpRibbon → pl2RibbonFill (the fill eases, a chip of lost Health drains after it) and pl2RibbonNum (the number counts)',
   note:'2026-10-25 (PL2, owner 22:28 #7: "As the battleground\'s bramble HP/LP bars change, they ease towards the new value (quickly)").',
   variants:[
-    {key:'G', label:'PL2 · Their bramble takes 6, then 3; then a repair of 5', play:ctx=>{ const rib = document.querySelector('[data-hpribbon="B"]'), f = rib && rib.querySelector('.bf-hp-fill'), n = rib && rib.querySelector('.bf-hp-num');
+    {key:'J', label:'PL2 · Their bramble takes 6, then 3; then a repair of 5', play:ctx=>{ const rib = document.querySelector('[data-hpribbon="B"]'), f = rib && rib.querySelector('.bf-hp-fill'), n = rib && rib.querySelector('.bf-hp-num');
       if(!f || !has('pl2RibbonFill')) return ctx.wait(400);
       const max = 20, at = v=>{ const pct = v / max * 100; pl2RibbonFill(rib, f, 'B', pct, null); if(n) pl2RibbonNum(n, 'B', null, v, max); };
       at(20); return ctx.wait(300).then(()=>{ at(14); return ctx.wait(700); }).then(()=>{ at(11); return ctx.wait(900); }).then(()=>{ at(16); return ctx.wait(900); }).then(()=> at(20)); }}]});

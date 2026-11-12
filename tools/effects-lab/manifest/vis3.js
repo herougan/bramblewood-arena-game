@@ -24,9 +24,9 @@ R({id:'sk-trap-set', stage:'board', inGameHook:'w2HazardMark (arena_app.js): a t
     return ctx.wait(4200).then(()=>{ el.querySelectorAll('.vis3-trap-ring, .w2-hazard-mark').forEach(x=> x.remove()); el.classList.remove('empty-slot', 'w2-hazard'); if(t) t.style.visibility = ''; }); }}]});
 
 // V2: the token look on a board card (a Bloom copy wears it now)
-R({id:'tr-token', stage:'board', inGameHook:'boardCardHTML: is-token when the def is a token or the unit is a Bloom copy / an Undead token (c.bloomCopy, c.undeadToken)',
+R({id:'tr-token', inGameHook:'boardCardHTML: is-token when the def is a token or the unit is a Bloom copy / an Undead token (c.bloomCopy, c.undeadToken)',
   note:'2026-10-26 (VIS3, owner #15: "The copy created by fungal colossus should have a token background").',
-  variants:[{key:'G', label:'VIS3 · A Bloom copy splits off beside its unit, in the token look', play:ctx=>{ const src = bc(mine(ctx)[1]), cp = bc(mine(ctx)[2]); cp.classList.add('is-token');
+  variants:[{key:'G', stage:'board', label:'VIS3 · A Bloom copy splits off beside its unit, in the token look', play:ctx=>{ const src = bc(mine(ctx)[1]), cp = bc(mine(ctx)[2]); cp.classList.add('is-token');
     if(ctx.gsap) ctx.gsap.fromTo(tileOf(cp), {x:-40, scale:.6, opacity:0}, {x:0, scale:1, opacity:1, duration:.45, ease:'back.out(1.7)'}); ctx.float(cp, '+1/+1', 'heal');
     return ctx.wait(2400).then(()=> cp.classList.remove('is-token')); }}]});
 

@@ -11036,6 +11036,19 @@
   background:radial-gradient(circle at 45% 42%, rgba(74,104,6,.92) 0, rgba(52,84,10,.8) 38%, rgba(38,66,12,.45) 62%, rgba(38,66,12,0) 74%);}
 .fx-float-host > .fx6-dust{position:absolute; bottom:2px; width:14px; height:10px; border-radius:50%; pointer-events:none; will-change:transform, opacity; opacity:0;
   background:radial-gradient(circle, rgba(196,172,128,.9) 0, rgba(168,142,100,.55) 55%, rgba(168,142,100,0) 75%);}
+/* 2026-11-12 (package FX7): seven skill proposals (Lab only), spans in a fxHostAt host animated by WAAPI (transform / opacity). Low effects and reduced motion
+   keep one still piece (JS), so no animation rule is needed here. */
+.fx-float-host > .fx7{position:absolute; pointer-events:none; will-change:transform, opacity; opacity:0;}
+.fx-float-host > .fx7-rim{inset:0; border-radius:10px; border:3px solid var(--c, #fff); box-shadow:0 0 10px 2px var(--c, #fff), inset 0 0 10px 1px var(--c, #fff);}
+.fx-float-host > .fx7-foam{border-radius:50%; background:radial-gradient(circle at 35% 30%, #fff 0, #eaf6d8 40%, rgba(190,226,160,.55) 75%); border:1px solid rgba(120,160,90,.7);}
+.fx-float-host > .fx7-thorn{width:8px; height:17px; transform-origin:50% 100%; background:linear-gradient(#e0583a, #8c1c1c 60%, #4a0d0d); clip-path:polygon(50% 0, 100% 100%, 0 100%);}
+.fx-float-host > .fx7-pebble{border-radius:42% 58% 50% 50%; background:radial-gradient(circle at 35% 30%, #cfc6b4 0, #8f8574 55%, #5c5446);}
+.fx-float-host > .fx7-ring{width:60px; height:60px; border-radius:50%; border:3px solid var(--c, #b8ad98); box-shadow:0 0 8px 1px var(--c, #b8ad98);}
+.fx-float-host > .fx7-sheen{top:-10%; height:120%; background:linear-gradient(90deg, rgba(220,232,250,0), rgba(235,242,255,.9) 50%, rgba(220,232,250,0));}
+.fx-float-host > .fx7-streak{width:3px; border-radius:2px; background:linear-gradient(rgba(255,240,170,0), #fff6c8 60%, #ffe27a);}
+.fx-float-host > .fx7-eye{width:44px; height:24px; border-radius:50%; background:#fbf3dc; border:2px solid #2a2118; box-shadow:0 0 10px 2px rgba(255,213,110,.8);}
+.fx-float-host > .fx7-pupil{width:10px; height:10px; border-radius:50%; background:#2a2118; box-shadow:inset 2px 2px 0 -1px #fff;}
+.fx-float-host > .fx7-ore{width:14px; height:14px; border-radius:3px; rotate:45deg; background:linear-gradient(135deg, #f1f6ff 0, #8fa6c6 45%, #55698a); border:1px solid #33425c;}
 .bleed-drop{will-change:transform, opacity; text-shadow:0 1px 1px rgba(0,0,0,.35);}
 /* EN3 (2026-10-23): Rampart's streak from the bramble to the unit taking its share, its flash on the unit, the guard's shield (no line)
    and Bramble Armor's shield ting on the bramble. */
