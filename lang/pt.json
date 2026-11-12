@@ -4414,5 +4414,12 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "Ref. mapa {pct}%",
  "Ref-2 {pct}%": "Ref-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Medição {tag}, {date}: os baralhos dos {k} jogadores de referência contra esta luta, {g} partidas no total (pelo menos {n} por baralho); p10 / p90 sem o ruído das partidas. Referência do mapa e Referência-2: {m} partidas cada."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Medição {tag}, {date}: os baralhos dos {k} jogadores de referência contra esta luta, {g} partidas no total (pelo menos {n} por baralho); p10 / p90 sem o ruído das partidas. Referência do mapa e Referência-2: {m} partidas cada.",
+ "{n} chains, 1 Armor each. It can't act until all break; each point of a hit breaks one.": "{n} correntes, 1 Armadura cada. Não pode agir até todas partirem; cada ponto de um golpe parte uma.",
+ "1 chain (1 Armor). It can't act until the opponent plays a card.": "1 corrente (1 Armadura). Não pode agir até o rival jogar uma carta.",
+ "Chained: can’t act until its chains break. Each chain is 1 Armor.": "Acorrentado: não pode agir até as correntes partirem. Cada corrente dá 1 Armadura.",
+ "Until every corner is met, it can't act or be attacked.": "Até cada canto estar cumprido, não pode agir nem ser atacado.",
+ "Chained: {n} Armor, 1 a chain.": "Acorrentado: {n} Armadura, 1 por corrente.",
+ "{att} can't reach {unit}: it is in its Ritual.": "{att} não alcança {unit}: está no seu Ritual.",
+ "Can't act or be attacked until {p} units perish, you draw {d} cards and deal {c} bramble damage.": "Não pode agir nem ser atacada até morrerem {p} unidades, comprares {d} cartas e causares {c} de dano ao silvado."
 }

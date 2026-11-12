@@ -4413,5 +4413,12 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "Map ref {pct}%",
  "Ref-2 {pct}%": "Ref-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Sukat {tag}, {date}: ang mga deck ng {k} reference player laban sa labang ito, {g} laro lahat (hindi bababa sa {n} bawat deck); p10 / p90 nang walang ingay ng laro. Map reference at Reference-2: {m} laro bawat isa."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Sukat {tag}, {date}: ang mga deck ng {k} reference player laban sa labang ito, {g} laro lahat (hindi bababa sa {n} bawat deck); p10 / p90 nang walang ingay ng laro. Map reference at Reference-2: {m} laro bawat isa.",
+ "{n} chains, 1 Armor each. It can't act until all break; each point of a hit breaks one.": "{n} kadena, tig-1 Baluti. Hindi makakakilos hanggang maputol lahat; bawat puntos ng tama ay pumuputol ng isa.",
+ "1 chain (1 Armor). It can't act until the opponent plays a card.": "1 kadena (1 Baluti). Hindi makakakilos hanggang maglaro ng card ang kalaban.",
+ "Chained: can’t act until its chains break. Each chain is 1 Armor.": "Nakakadena: hindi makakakilos hanggang maputol ang mga kadena. Bawat kadena ay 1 Baluti.",
+ "Until every corner is met, it can't act or be attacked.": "Hangga't hindi natutupad ang bawat sulok, hindi ito makakakilos o maaatake.",
+ "Chained: {n} Armor, 1 a chain.": "Nakakadena: {n} Baluti, 1 bawat kadena.",
+ "{att} can't reach {unit}: it is in its Ritual.": "Hindi maabot ng {att} ang {unit}: nasa Ritwal pa ito.",
+ "Can't act or be attacked until {p} units perish, you draw {d} cards and deal {c} bramble damage.": "Hindi makakakilos o maaatake hanggang mamatay ang {p} unit, makabunot ka ng {d} card at makagawa ng {c} pinsala sa dawag."
 }

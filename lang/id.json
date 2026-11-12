@@ -4414,5 +4414,12 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "Ref. peta {pct}%",
  "Ref-2 {pct}%": "Ref-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Pengukuran {tag}, {date}: deck {k} pemain referensi melawan pertarungan ini, total {g} permainan (minimal {n} per deck); p10 / p90 tanpa derau permainan. Referensi peta dan Referensi-2: masing-masing {m} permainan."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Pengukuran {tag}, {date}: deck {k} pemain referensi melawan pertarungan ini, total {g} permainan (minimal {n} per deck); p10 / p90 tanpa derau permainan. Referensi peta dan Referensi-2: masing-masing {m} permainan.",
+ "{n} chains, 1 Armor each. It can't act until all break; each point of a hit breaks one.": "{n} rantai, masing-masing 1 Zirah. Tak bisa bertindak sampai semua putus; tiap poin serangan memutus satu.",
+ "1 chain (1 Armor). It can't act until the opponent plays a card.": "1 rantai (1 Zirah). Tak bisa bertindak sampai lawan memainkan kartu.",
+ "Chained: can’t act until its chains break. Each chain is 1 Armor.": "Terantai: tak bisa bertindak sampai rantainya putus. Tiap rantai memberi 1 Zirah.",
+ "Until every corner is met, it can't act or be attacked.": "Sampai setiap sudut terpenuhi, ia tak bisa bertindak atau diserang.",
+ "Chained: {n} Armor, 1 a chain.": "Terantai: {n} Zirah, 1 per rantai.",
+ "{att} can't reach {unit}: it is in its Ritual.": "{att} tak bisa menjangkau {unit}: ia sedang dalam Ritual.",
+ "Can't act or be attacked until {p} units perish, you draw {d} cards and deal {c} bramble damage.": "Tak bisa bertindak atau diserang sampai {p} unit gugur, kamu menarik {d} kartu dan memberi {c} kerusakan semak."
 }

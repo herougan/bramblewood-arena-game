@@ -4413,5 +4413,12 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "参考{k}：{pct}%（p10 {lo} – p90 {hi}）",
  "Map ref {pct}%": "マップ基準 {pct}%",
  "Ref-2 {pct}%": "参考2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "測定 {tag}、{date}：参考プレイヤー{k}人のデッキでこの戦闘を計{g}戦（各デッキ最低{n}戦）。p10 / p90 は対戦のばらつきを除いた値。マップ基準デッキと参考2：各{m}戦。"
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "測定 {tag}、{date}：参考プレイヤー{k}人のデッキでこの戦闘を計{g}戦（各デッキ最低{n}戦）。p10 / p90 は対戦のばらつきを除いた値。マップ基準デッキと参考2：各{m}戦。",
+ "{n} chains, 1 Armor each. It can't act until all break; each point of a hit breaks one.": "鎖{n}本、各アーマー1。すべて切れるまで行動できない。攻撃のダメージ1ごとに1本切れる。",
+ "1 chain (1 Armor). It can't act until the opponent plays a card.": "鎖1本（アーマー1）。相手がカードを出すまで行動できない。",
+ "Chained: can’t act until its chains break. Each chain is 1 Armor.": "鎖縛：鎖が切れるまで行動できません。鎖1本ごとにアーマー1。",
+ "Until every corner is met, it can't act or be attacked.": "すべての角を満たすまで、行動も攻撃を受けることもない。",
+ "Chained: {n} Armor, 1 a chain.": "鎖縛：アーマー{n}（鎖1本につき1）。",
+ "{att} can't reach {unit}: it is in its Ritual.": "{att}は{unit}に届かない：儀式の最中だ。",
+ "Can't act or be attacked until {p} units perish, you draw {d} cards and deal {c} bramble damage.": "{p} 体が倒れ、{d} 枚引き、いばらに {c} ダメージを与えるまで、行動も攻撃を受けることもない。"
 }

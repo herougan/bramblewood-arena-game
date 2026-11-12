@@ -4415,5 +4415,12 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "வரைபட மேற். {pct}%",
  "Ref-2 {pct}%": "Ref-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "அளவீடு {tag}, {date}: இந்தச் சண்டைக்கு எதிராக {k} மேற்கோள் வீரர்களின் டெக்குகள், மொத்தம் {g} ஆட்டங்கள் (ஒவ்வொரு டெக்கிற்கும் குறைந்தது {n}); p10 / p90 ஆட்ட இரைச்சல் இல்லாமல். வரைபட மேற்கோள் மற்றும் Reference-2: தலா {m} ஆட்டங்கள்."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "அளவீடு {tag}, {date}: இந்தச் சண்டைக்கு எதிராக {k} மேற்கோள் வீரர்களின் டெக்குகள், மொத்தம் {g} ஆட்டங்கள் (ஒவ்வொரு டெக்கிற்கும் குறைந்தது {n}); p10 / p90 ஆட்ட இரைச்சல் இல்லாமல். வரைபட மேற்கோள் மற்றும் Reference-2: தலா {m} ஆட்டங்கள்.",
+ "{n} chains, 1 Armor each. It can't act until all break; each point of a hit breaks one.": "{n} சங்கிலிகள், ஒவ்வொன்றும் 1 கவசம். அனைத்தும் உடையும் வரை செயல்பட முடியாது; தாக்குதலின் ஒவ்வொரு புள்ளியும் ஒன்றை உடைக்கும்.",
+ "1 chain (1 Armor). It can't act until the opponent plays a card.": "1 சங்கிலி (1 கவசம்). எதிரி ஒரு அட்டை ஆடும் வரை செயல்பட முடியாது.",
+ "Chained: can’t act until its chains break. Each chain is 1 Armor.": "சங்கிலி: சங்கிலிகள் உடையும் வரை செயல்பட முடியாது. ஒவ்வொரு சங்கிலியும் 1 கவசம்.",
+ "Until every corner is met, it can't act or be attacked.": "ஒவ்வொரு மூலையும் நிறைவேறும்வரை இது செயல்படவோ தாக்கப்படவோ முடியாது.",
+ "Chained: {n} Armor, 1 a chain.": "சங்கிலி: {n} கவசம், சங்கிலிக்கு 1.",
+ "{att} can't reach {unit}: it is in its Ritual.": "{att} {unit}-ஐ அடைய முடியாது: அது தன் சடங்கில் உள்ளது.",
+ "Can't act or be attacked until {p} units perish, you draw {d} cards and deal {c} bramble damage.": "{p} அலகுகள் இறந்து, நீ {d} அட்டைகள் எடுத்து, {c} முட்புதர்ச் சேதம் செய்யும் வரை செயல்படவோ தாக்கப்படவோ முடியாது."
 }

@@ -4412,5 +4412,12 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct} % (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "Ref. mapa {pct} %",
  "Ref-2 {pct}%": "Ref-2 {pct} %",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Medición {tag}, {date}: los mazos de los {k} jugadores de referencia contra este combate, {g} partidas en total (al menos {n} por mazo); p10 / p90 sin el ruido de las partidas. Referencia del mapa y Referencia-2: {m} partidas cada una."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Medición {tag}, {date}: los mazos de los {k} jugadores de referencia contra este combate, {g} partidas en total (al menos {n} por mazo); p10 / p90 sin el ruido de las partidas. Referencia del mapa y Referencia-2: {m} partidas cada una.",
+ "{n} chains, 1 Armor each. It can't act until all break; each point of a hit breaks one.": "{n} cadenas, 1 Armadura cada una. No puede actuar hasta que se rompan todas; cada punto de un golpe rompe una.",
+ "1 chain (1 Armor). It can't act until the opponent plays a card.": "1 cadena (1 Armadura). No puede actuar hasta que el rival juegue una carta.",
+ "Chained: can’t act until its chains break. Each chain is 1 Armor.": "Encadenado: no puede actuar hasta romper sus cadenas. Cada cadena da 1 Armadura.",
+ "Until every corner is met, it can't act or be attacked.": "Hasta cumplir cada esquina, no puede actuar ni ser atacado.",
+ "Chained: {n} Armor, 1 a chain.": "Encadenado: {n} Armadura, 1 por cadena.",
+ "{att} can't reach {unit}: it is in its Ritual.": "{att} no alcanza a {unit}: está en su Ritual.",
+ "Can't act or be attacked until {p} units perish, you draw {d} cards and deal {c} bramble damage.": "No puede actuar ni ser atacada hasta que mueran {p} unidades, robes {d} cartas y hagas {c} de daño al zarzal."
 }

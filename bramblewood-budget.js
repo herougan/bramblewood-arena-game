@@ -260,6 +260,9 @@ function skillCountOf(effects, params){ return skillCountParts(effects, params).
 // and no say in where it fights (it is the enemy's free target); the old flat credit (S -3) was about +20% of N on a typical card and the owner
 // wants more than that: x(1 + 0.25 per held round): Chained 1 1.08, 4 1.33, 9 1.75, 12+ 2. 'enemySpawn' (the opponent plays a card) breaks
 // within about half a round: 1.1. Its skill price is 0 (canonical/skill-costs.json).
+// ENG-RC1 (2026-11-12, owner 23:47 note 16): each chain is now 1 Armor, and the blows the chains stop still break them, so Chained N also
+// soaks up to N damage (about a Shield N) before it frees. That is worth something the x(1 + 0.25 a round) credit above does not count, so
+// Chained cards now sit above their measured worth; not retuned here (balance-analyst re-measures: chained-binturong).
 const CHAINED_PER_ROUND = 0.25, CHAINED_DMG_A_ROUND = 3, CHAINED_MAX_ROUNDS = 4, CHAINED_SPAWN_MULT = 1.1;
 function chainedMult(effects){ effects = XP(effects); const c = effects && effects.chained; if(!c) return 1; if(typeof c === 'object' && c.breakOn === 'enemySpawn') return CHAINED_SPAWN_MULT;
   const n = Math.max(1, Number(c && c.amount) || 1); return r2(1 + CHAINED_PER_ROUND * Math.min(CHAINED_MAX_ROUNDS, n / CHAINED_DMG_A_ROUND)); }

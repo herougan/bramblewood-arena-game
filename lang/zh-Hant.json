@@ -4413,5 +4413,12 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "參考{k}：{pct}%（p10 {lo} – p90 {hi}）",
  "Map ref {pct}%": "地圖參考 {pct}%",
  "Ref-2 {pct}%": "參考-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "測量 {tag}，{date}：{k} 名參考玩家的牌組對此戰鬥，共 {g} 局（每副至少 {n} 局）；p10 / p90 已去除對局雜訊。地圖參考與參考-2：各 {m} 局。"
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "測量 {tag}，{date}：{k} 名參考玩家的牌組對此戰鬥，共 {g} 局（每副至少 {n} 局）；p10 / p90 已去除對局雜訊。地圖參考與參考-2：各 {m} 局。",
+ "{n} chains, 1 Armor each. It can't act until all break; each point of a hit breaks one.": "{n} 條鎖鏈，每條 1 點護甲。鎖鏈全斷前無法行動；每點攻擊傷害斷開一條。",
+ "1 chain (1 Armor). It can't act until the opponent plays a card.": "1 條鎖鏈（1 點護甲）。對手打出一張牌前無法行動。",
+ "Chained: can’t act until its chains break. Each chain is 1 Armor.": "鎖鏈：鎖鏈斷開前無法行動。每條鎖鏈提供 1 點護甲。",
+ "Until every corner is met, it can't act or be attacked.": "每個角都達成前，它無法行動也無法被攻擊。",
+ "Chained: {n} Armor, 1 a chain.": "鎖鏈：{n} 點護甲，每條鎖鏈 1 點。",
+ "{att} can't reach {unit}: it is in its Ritual.": "{att} 無法觸及 {unit}：它正在儀式中。",
+ "Can't act or be attacked until {p} units perish, you draw {d} cards and deal {c} bramble damage.": "在 {p} 個單位陣亡、你抽 {d} 張牌並對荊棘叢造成 {c} 點傷害之前，無法行動也無法被攻擊。"
 }

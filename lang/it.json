@@ -4414,5 +4414,12 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Rif {k}: {pct}% (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "Rif. mappa {pct}%",
  "Ref-2 {pct}%": "Rif-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Misura {tag}, {date}: i mazzi dei {k} giocatori di riferimento contro questo scontro, {g} partite in tutto (almeno {n} per mazzo); p10 / p90 senza il rumore delle partite. Riferimento della mappa e Riferimento-2: {m} partite ciascuno."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Misura {tag}, {date}: i mazzi dei {k} giocatori di riferimento contro questo scontro, {g} partite in tutto (almeno {n} per mazzo); p10 / p90 senza il rumore delle partite. Riferimento della mappa e Riferimento-2: {m} partite ciascuno.",
+ "{n} chains, 1 Armor each. It can't act until all break; each point of a hit breaks one.": "{n} catene, 1 Armatura ciascuna. Non può agire finché non si spezzano tutte; ogni punto di un colpo ne spezza una.",
+ "1 chain (1 Armor). It can't act until the opponent plays a card.": "1 catena (1 Armatura). Non può agire finché l'avversario non gioca una carta.",
+ "Chained: can’t act until its chains break. Each chain is 1 Armor.": "Incatenato: non può agire finché le catene non si spezzano. Ogni catena dà 1 Armatura.",
+ "Until every corner is met, it can't act or be attacked.": "Finché ogni angolo non è soddisfatto, non può agire né essere attaccato.",
+ "Chained: {n} Armor, 1 a chain.": "Incatenato: {n} Armatura, 1 per catena.",
+ "{att} can't reach {unit}: it is in its Ritual.": "{att} non raggiunge {unit}: è nel suo Rituale.",
+ "Can't act or be attacked until {p} units perish, you draw {d} cards and deal {c} bramble damage.": "Non può agire né essere attaccata finché non muoiono {p} unità, peschi {d} carte e infliggi {c} danni al rovo."
 }
