@@ -1,0 +1,1448 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+ "generated": "2026-11-12T00:19:12.869Z",
+ "map": {
+  "id": "mk",
+  "num": 9,
+  "name": "The Kelp Mangroves"
+ },
+ "level": 0,
+ "settings": {
+  "mode": "prog",
+  "seedRef": true,
+  "faction": false,
+  "rarityCap": "map",
+  "cap": null,
+  "seed": "ref5-s2",
+  "budget": 3000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 1,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 8,
+  "children": 16,
+  "g0": 2,
+  "gmax": 8,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mk --seed ref5-s2 --budget 3000 --final-games 4 --method ga --level ref --cross-share 0 --road-weight 0.25 --restarts 1 --ladder none --mode prog --seed-ref --prog-seed 2 --pool-file docs/balance/ref/ref5-prog-pools.json",
+ "pools": {
+  "mode": "prog",
+  "cap": null,
+  "subsOpen": [],
+  "phase1": 184,
+  "mapCards": [],
+  "owned": [
+   "acorn-chipmunk",
+   "adder-ambusher",
+   "alley-cat",
+   "alligator-gar",
+   "amber-cicada",
+   "anhinga-spearbird",
+   "ant-scout",
+   "badger-lumberjack",
+   "barrow-leech-bat",
+   "beachcomber-sanderling",
+   "beaver-lumberjack",
+   "bee-drone",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "birdlime-dauber",
+   "blind-cave-fish",
+   "bog-leech",
+   "booming-bittern",
+   "box-turtle",
+   "bramble-sprout",
+   "burrow-rabbit",
+   "camouflage-frog",
+   "cave-olm",
+   "chipmunk-cavalry",
+   "chipmunk-forager",
+   "chipmunk-skirmisher",
+   "clap-net-trapper",
+   "cobalt-talon-fledgling",
+   "cobalt-talon-honour-guard",
+   "cobalt-talon-skirmisher",
+   "compost-grub",
+   "conch-crawler",
+   "conch-herald",
+   "constrictor-coil",
+   "cormorant",
+   "cottontail",
+   "cricket-drummer",
+   "crimson-wing-duelist-cadet",
+   "crimson-wing-recruit",
+   "crocodile-ambusher",
+   "crossed-eyes",
+   "cypress-root-lurker",
+   "daily-post",
+   "dolphin-knight",
+   "dominion-nestguard",
+   "dormouse",
+   "driftwood-crab",
+   "drowned-matriarch",
+   "duck-paddler",
+   "duckling",
+   "eagle-sharpshooter",
+   "earthworm",
+   "echo-matriarch",
+   "echo-screecher",
+   "eyrie-warden",
+   "farm-dog",
+   "fen-mink",
+   "feral-tomcat",
+   "ferry-toll-frog",
+   "fire-ant-raft",
+   "fleetfootd",
+   "forager-ant",
+   "ford-kingfisher",
+   "fungal-colossus",
+   "fungus-gnat-cloud",
+   "gallery-orb-weaver",
+   "gannet-nestweaver",
+   "garden-snail",
+   "giant-cave-huntsman",
+   "golden-eagle-diver",
+   "grass-snake",
+   "grass-viper",
+   "greyplume-fledgling",
+   "gull-thief",
+   "guppy",
+   "harvest-mouse",
+   "hawk-arrowkeeper",
+   "hawthorn-shieldbug",
+   "hedge-changeling",
+   "hedgerow-shrew",
+   "helmeted-otter",
+   "heron-hag",
+   "honey-bee",
+   "house-cat",
+   "hush-wing-spy",
+   "kittiwake-flock",
+   "krill-swarm",
+   "lamprey",
+   "leopard-slug",
+   "limpet-clinger",
+   "lodge-engineer",
+   "marsh-mallow-hare",
+   "meadow-frog",
+   "meadow-rabbit",
+   "meerkat-wayfarer",
+   "millipede-hauler",
+   "mist-net-otter",
+   "moonlit-hare",
+   "mosquito-cloud",
+   "mosswing-laborer",
+   "mudpuppy",
+   "muskrat-lodgekeeper",
+   "muskrat-reedgatherer",
+   "nectar-sipper",
+   "nectar-vintner",
+   "net-thrower",
+   "newt-doctor",
+   "nutria-reedcutter",
+   "oathsworn-legionary",
+   "octopus-tactician",
+   "old-shell",
+   "old-snapjaw",
+   "old-sturgeon",
+   "open-ocean-hermit-crab",
+   "otter-angler",
+   "otter-centurion",
+   "otter-ferryman",
+   "otter-flag-bearer",
+   "otter-guard",
+   "otter-kit",
+   "otter-netmender",
+   "otter-paddler",
+   "otter-riverguard",
+   "otter-shieldback",
+   "oystercatcher",
+   "peak-condor",
+   "peregrine-stooper",
+   "phoenix-mushrooms",
+   "pill-bug",
+   "pincushion-urchin",
+   "planarian-splitter",
+   "platypus-spur",
+   "poison-dart-croaker",
+   "pond-algae",
+   "pond-duck",
+   "pond-trout",
+   "puddle-skimmer",
+   "puffball-bombardier",
+   "puffin-diver",
+   "pyrenean-desman",
+   "quarry-mole",
+   "rabbit-kit",
+   "raft-spider",
+   "razorbill",
+   "river-carp",
+   "river-mink",
+   "riverbed-diver",
+   "rivergate-drummer",
+   "rivergate-recruit",
+   "riverside-peddler",
+   "riverwing-envoy",
+   "riverworks-bastion",
+   "robin-redbreast",
+   "rock-pool-starfish",
+   "rootworm-colony",
+   "rot-swollen-carcass",
+   "salvager-hermit-crab",
+   "sheep",
+   "shell-cracker",
+   "shellwright-apprentice",
+   "shoal-shark",
+   "silver-minnow",
+   "sleepless-shrew",
+   "slow-worm",
+   "snapstick-turtle",
+   "soldier-ant",
+   "sparrow-chick",
+   "stalactite-golem",
+   "star-nosed-mole",
+   "sulfur-cinder-moth",
+   "sunfeather-scout",
+   "sunthroat-courier",
+   "swamp-alligator",
+   "terrier-pup",
+   "trash-panda-trickster",
+   "truffle-piglet",
+   "tunnel-ant",
+   "venomlord-serpent",
+   "violet-vane-fletcher",
+   "voidfeather-scout",
+   "water-shrew",
+   "wolf-spider-mother",
+   "worker-ant"
+  ],
+  "phase2": 184,
+  "wholeSpectrum": 184,
+  "excluded": []
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "mangrove",
+   "kinBiomes": [
+    "coast",
+    "reef-ocean",
+    "river",
+    "swamp"
+   ],
+   "terrainTypes": [
+    "Coral Reef",
+    "Ocean"
+   ],
+   "mapTypes": [
+    "Arachnid 2",
+    "Bird 3",
+    "Cat 2",
+    "Crustacean 3",
+    "Felid 2",
+    "Fish 4",
+    "Mangrove 10",
+    "Ocean 4",
+    "Reptile 3",
+    "River 2",
+    "Swamp 3"
+   ],
+   "mapMechanics": [
+    "armor 5",
+    "bleed 2",
+    "evasion 2",
+    "guard 4",
+    "strike-first 2",
+    "tide 8"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "boon",
+    "highTide",
+    "phase:cycle",
+    "saltMap",
+    "tangledRoots",
+    "tide",
+    "wet"
+   ],
+   "coreCards": 20
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: not in player 2's collection",
+    "n": 680,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "acacia-giraffe",
+     "acorn-pelter-squirrel",
+     "adder"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:9-1",
+   "kind": "mirror",
+   "node": "9-1",
+   "label": "vs 9-1 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, tide, wet"
+  },
+  {
+   "key": "mirror|fight:9-2",
+   "kind": "mirror",
+   "node": "9-2",
+   "label": "vs 9-2 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "mirror|fight:9-3",
+   "kind": "mirror",
+   "node": "9-3",
+   "label": "vs 9-3 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "mirror|fight:9-4",
+   "kind": "mirror",
+   "node": "9-4",
+   "label": "vs 9-4 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon risingTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "mirror|fight:9-5",
+   "kind": "mirror",
+   "node": "9-5",
+   "label": "vs 9-5 elite's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "mirror|fight:9-6",
+   "kind": "mirror",
+   "node": "9-6",
+   "label": "vs 9-6 elite's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "mirror|fight:9-7",
+   "kind": "mirror",
+   "node": "9-7",
+   "label": "vs 9-7 miniboss's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "9-1",
+   "label": "vs reference starter deck under 9-1's field",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, tide, wet"
+  },
+  {
+   "key": "mirror|ref:road9",
+   "kind": "mirror",
+   "node": "9-2",
+   "label": "vs reference deck (Map 9) under 9-2's field",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "9-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "road|9-1",
+   "kind": "road",
+   "node": "9-1",
+   "label": "9-1 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, tide, wet"
+  },
+  {
+   "key": "road|9-2",
+   "kind": "road",
+   "node": "9-2",
+   "label": "9-2 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "road|9-3",
+   "kind": "road",
+   "node": "9-3",
+   "label": "9-3 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "road|9-4",
+   "kind": "road",
+   "node": "9-4",
+   "label": "9-4 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon risingTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "road|9-5",
+   "kind": "road",
+   "node": "9-5",
+   "label": "9-5 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "road|9-6",
+   "kind": "road",
+   "node": "9-6",
+   "label": "9-6 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "road|9-7",
+   "kind": "road",
+   "node": "9-7",
+   "label": "9-7 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "neutral|fight:9-1",
+   "kind": "mirror",
+   "node": "9-1",
+   "label": "vs 9-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-2",
+   "kind": "mirror",
+   "node": "9-2",
+   "label": "vs 9-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-3",
+   "kind": "mirror",
+   "node": "9-3",
+   "label": "vs 9-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-4",
+   "kind": "mirror",
+   "node": "9-4",
+   "label": "vs 9-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-5",
+   "kind": "mirror",
+   "node": "9-5",
+   "label": "vs 9-5 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-6",
+   "kind": "mirror",
+   "node": "9-6",
+   "label": "vs 9-6 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-7",
+   "kind": "mirror",
+   "node": "9-7",
+   "label": "vs 9-7 miniboss's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "9-1",
+   "label": "vs reference starter deck under 9-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road9",
+   "kind": "mirror",
+   "node": "9-2",
+   "label": "vs reference deck (Map 9) under 9-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "9-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 3882,
+  "seconds": 38.6,
+  "gamesPerSecond": 100.7,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 3502,
+   "gens": 2,
+   "restarts": 1,
+   "runs": [
+    {
+     "best": "greyplume-fledgling:4,meadow-rabbit:2,peregrine-stooper:1,soldier-ant:5,tunnel-ant:3,worker-ant:5",
+     "f": 0.898,
+     "gens": 2,
+     "games": 3502,
+     "top": [
+      "greyplume-fledgling:4,meadow-rabbit:2,peregrine-stooper:1,soldier-ant:5,tunnel-ant:3,worker-ant:5",
+      "badger-lumberjack:1,crossed-eyes:1,driftwood-crab:1,greyplume-fledgling:1,otter-centurion:3,otter-paddler:1,otter-riverguard:1,soldier-ant:4,tunnel-ant:3,worker-ant:4",
+      "greyplume-fledgling:4,otter-centurion:3,peregrine-stooper:1,soldier-ant:5,tunnel-ant:3,worker-ant:4",
+      "badger-lumberjack:1,driftwood-crab:1,greyplume-fledgling:1,otter-centurion:3,otter-paddler:1,otter-riverguard:1,poison-dart-croaker:1,soldier-ant:4,tunnel-ant:3,worker-ant:4"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "greyplume-fledgling": 4,
+    "meadow-rabbit": 2,
+    "peregrine-stooper": 1,
+    "soldier-ant": 5,
+    "tunnel-ant": 3,
+    "worker-ant": 5
+   },
+   "cards": [
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "worker-ant",
+     "name": "Worker Ant",
+     "copies": 5,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "greyplume-fledgling",
+     "name": "Greyplume Fledgling",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "meadow-rabbit",
+     "name": "Meadow Rabbit",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "peregrine-stooper",
+     "name": "Peregrine Stooper",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.898,
+   "ci": [
+    0.851,
+    0.945
+   ],
+   "mirror": 0.9,
+   "road": 0.893,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:9-1",
+     "label": "vs 9-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:9-2",
+     "label": "vs 9-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:9-3",
+     "label": "vs 9-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:9-4",
+     "label": "vs 9-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:9-5",
+     "label": "vs 9-5 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:9-6",
+     "label": "vs 9-6 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:9-7",
+     "label": "vs 9-7 miniboss's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 9-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:road9",
+     "label": "vs reference deck (Map 9) under 9-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.5,
+     "lo": 0.215,
+     "hi": 0.785,
+     "n": 8
+    },
+    {
+     "entry": "road|9-1",
+     "label": "9-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "road|9-2",
+     "label": "9-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "road|9-3",
+     "label": "9-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "road|9-4",
+     "label": "9-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "road|9-5",
+     "label": "9-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "road|9-6",
+     "label": "9-6 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.625,
+     "lo": 0.306,
+     "hi": 0.863,
+     "n": 8
+    },
+    {
+     "entry": "road|9-7",
+     "label": "9-7 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.625,
+     "lo": 0.306,
+     "hi": 0.863,
+     "n": 8
+    },
+    {
+     "entry": "neutral|fight:9-1",
+     "label": "vs 9-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:9-2",
+     "label": "vs 9-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:9-3",
+     "label": "vs 9-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:9-4",
+     "label": "vs 9-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:9-5",
+     "label": "vs 9-5 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:9-6",
+     "label": "vs 9-6 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:9-7",
+     "label": "vs 9-7 miniboss's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 9-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:road9",
+     "label": "vs reference deck (Map 9) under 9-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.898,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "greyplume-fledgling": 4,
+    "meadow-rabbit": 2,
+    "peregrine-stooper": 1,
+    "soldier-ant": 5,
+    "tunnel-ant": 3,
+    "worker-ant": 5
+   },
+   "cards": [
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "worker-ant",
+     "name": "Worker Ant",
+     "copies": 5,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "greyplume-fledgling",
+     "name": "Greyplume Fledgling",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "meadow-rabbit",
+     "name": "Meadow Rabbit",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "peregrine-stooper",
+     "name": "Peregrine Stooper",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.898,
+   "ci": [
+    0.851,
+    0.945
+   ],
+   "copiesApartFromOptimum": 0
+  }
+ ],
+ "optimaH2H": [
+  [
+   null
+  ]
+ ],
+ "optimaConsidered": 4,
+ "ladder": null,
+ "road": [
+  {
+   "node": "9-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 1,
+   "ci": [
+    0.676,
+    1
+   ],
+   "n": 8
+  },
+  {
+   "node": "9-2",
+   "kind": "skirmish",
+   "target": 0.84,
+   "optimum": 1,
+   "ci": [
+    0.676,
+    1
+   ],
+   "n": 8
+  },
+  {
+   "node": "9-3",
+   "kind": "skirmish",
+   "target": 0.78,
+   "optimum": 1,
+   "ci": [
+    0.676,
+    1
+   ],
+   "n": 8
+  },
+  {
+   "node": "9-4",
+   "kind": "skirmish",
+   "target": 0.72,
+   "optimum": 1,
+   "ci": [
+    0.676,
+    1
+   ],
+   "n": 8
+  },
+  {
+   "node": "9-5",
+   "kind": "elite",
+   "target": 0.66,
+   "optimum": 1,
+   "ci": [
+    0.676,
+    1
+   ],
+   "n": 8
+  },
+  {
+   "node": "9-6",
+   "kind": "elite",
+   "target": 0.6,
+   "optimum": 0.625,
+   "ci": [
+    0.306,
+    0.863
+   ],
+   "n": 8
+  },
+  {
+   "node": "9-7",
+   "kind": "miniboss",
+   "target": 0.4,
+   "optimum": 0.625,
+   "ci": [
+    0.306,
+    0.863
+   ],
+   "n": 8
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:9-1",
+   "node": "9-1",
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, tide, wet",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "fight:9-2",
+   "node": "9-2",
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "fight:9-3",
+   "node": "9-3",
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "fight:9-4",
+   "node": "9-4",
+   "rules": "aiGuardLethal, boon risingTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "fight:9-5",
+   "node": "9-5",
+   "rules": "aiGuardLethal, highTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "fight:9-6",
+   "node": "9-6",
+   "rules": "aiGuardLethal, highTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "fight:9-7",
+   "node": "9-7",
+   "rules": "aiGuardLethal, highTide, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet",
+   "withField": 0.875,
+   "noField": 0.75,
+   "delta": 0.125,
+   "ci": [
+    -0.357,
+    0.607
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "9-1",
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, tide, wet",
+   "withField": 0.875,
+   "noField": 1,
+   "delta": -0.125,
+   "ci": [
+    -0.354,
+    0.104
+   ]
+  },
+  {
+   "opponent": "ref:road9",
+   "node": "9-2",
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet",
+   "withField": 0.75,
+   "noField": 0.75,
+   "delta": 0,
+   "ci": [
+    -0.52,
+    0.52
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "9-3",
+   "rules": "aiGuardLethal, phase cycle, saltMap, tangledRoots, terrain Coral Shelf T1, tide, wet",
+   "withField": 0.5,
+   "noField": 0.75,
+   "delta": -0.25,
+   "ci": [
+    -0.798,
+    0.298
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:9-1",
+   "label": "9-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "9-1",
+   "target": 0.9,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.181,
+   "optimumSame": 0.89,
+   "pointsBelow": 70.8,
+   "pointsCI": 13.6
+  },
+  {
+   "opponent": "fight:9-2",
+   "label": "9-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "9-2",
+   "target": 0.84,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.402,
+   "optimumSame": 0.89,
+   "pointsBelow": 48.8,
+   "pointsCI": 11.6
+  },
+  {
+   "opponent": "fight:9-3",
+   "label": "9-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "9-3",
+   "target": 0.78,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.423,
+   "optimumSame": 0.89,
+   "pointsBelow": 46.7,
+   "pointsCI": 13
+  },
+  {
+   "opponent": "fight:9-4",
+   "label": "9-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "9-4",
+   "target": 0.72,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.539,
+   "optimumSame": 0.89,
+   "pointsBelow": 35.1,
+   "pointsCI": 13
+  },
+  {
+   "opponent": "fight:9-5",
+   "label": "9-5 elite's deck",
+   "kind": "elite",
+   "node": "9-5",
+   "target": 0.66,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.541,
+   "optimumSame": 0.89,
+   "pointsBelow": 34.9,
+   "pointsCI": 11.9
+  },
+  {
+   "opponent": "fight:9-6",
+   "label": "9-6 elite's deck",
+   "kind": "elite",
+   "node": "9-6",
+   "target": 0.6,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.658,
+   "optimumSame": 0.89,
+   "pointsBelow": 23.2,
+   "pointsCI": 13
+  },
+  {
+   "opponent": "fight:9-7",
+   "label": "9-7 miniboss's deck",
+   "kind": "miniboss",
+   "node": "9-7",
+   "target": 0.4,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.529,
+    0.978
+   ],
+   "elo": 338,
+   "eloCI": [
+    20,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.562,
+   "optimumSame": 0.9,
+   "pointsBelow": 33.8,
+   "pointsCI": 12.6
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 9-1's field",
+   "kind": "reference",
+   "node": "9-1",
+   "target": null,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.529,
+    0.978
+   ],
+   "elo": 338,
+   "eloCI": [
+    20,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.319,
+   "optimumSame": 0.9,
+   "pointsBelow": 58.2,
+   "pointsCI": 12.6
+  },
+  {
+   "opponent": "ref:road9",
+   "label": "reference deck (Map 9) under 9-2's field",
+   "kind": "reference",
+   "node": "9-2",
+   "target": null,
+   "h2h": 0.75,
+   "h2hCI": [
+    0.409,
+    0.929
+   ],
+   "elo": 191,
+   "eloCI": [
+    -64,
+    445
+   ],
+   "n": 8,
+   "asPlayer": 0.722,
+   "optimumSame": 0.91,
+   "pointsBelow": 18.8,
+   "pointsCI": 11.9
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 9-3's field",
+   "kind": "reference",
+   "node": "9-3",
+   "target": null,
+   "h2h": 0.5,
+   "h2hCI": [
+    0.215,
+    0.785
+   ],
+   "elo": 0,
+   "eloCI": [
+    -225,
+    225
+   ],
+   "n": 8,
+   "asPlayer": 0.84,
+   "optimumSame": 0.931,
+   "pointsBelow": 9.1,
+   "pointsCI": 10
+  }
+ ]
+}
