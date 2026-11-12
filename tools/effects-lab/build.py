@@ -59,6 +59,8 @@ fxbatches += '\n' + open(f'{ROOT}/bramblewood-ui-places.js', encoding='utf-8').r
 # 2026-11-13 (package UIFX3): + bramblewood-ui-story.js (window.StoryUI, the dialogue scene staging and the bubble pop), as the game bundles it;
 # manifest/story.js plays its scenes ("Story (UIFX3)").
 fxbatches += '\n' + open(f'{ROOT}/bramblewood-ui-story.js', encoding='utf-8').read()
+# 2026-11-12 (package FX8): + bramblewood-cinematic.js (window.BramblewoodCinematic), the "Cinematic (FX8)" group (manifest/cine.js).
+fxbatches += '\n' + open(f'{ROOT}/bramblewood-cinematic.js', encoding='utf-8').read()
 fxideas2 = open(f'{LAB}/fxlab-ideas2.js', encoding='utf-8').read()
 # 2026-11-13 (package UIFX2): + bramblewood-ui-world.js (BramblewoodWorld: map seasons, the travel beat), as the game bundles it; manifest/world.js plays it.
 fxbatches += '\n' + open(f'{ROOT}/bramblewood-ui-world.js', encoding='utf-8').read()
