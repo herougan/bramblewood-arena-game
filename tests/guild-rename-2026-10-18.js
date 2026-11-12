@@ -32,7 +32,7 @@ ok(/const RENAME_TICKET = \{icon:'🎫', name:'Rename Ticket'/.test(src), 'RENAM
 const itemDefs = (src.match(/const ITEM_DEFS = \{([\s\S]*?)\n\};/) || [])[1] || '';
 ok(itemDefs && !/rename|ticket/i.test(itemDefs), 'the ticket is not a field-kit item (ITEM_DEFS)');
 ok(/PROGRESS_KEYS\.push\(RENAME_TICKET_KEY, RENAME_TICKET_GIFT_KEY\)/.test(src), 'the ticket count and gift flag travel in the progress blob');
-ok(/\.\.\.\(shopTicketOnShelf\(\) \? \[\{ticket:true, qty:1\}\] : \[\]\)/.test(src), 'the Shop shelf stocks the ticket');
+ok(/\.\.\.\(prem && shopTicketOnShelf\(\) \? \[\{ticket:true, qty:1\}\] : \[\]\)/.test(src), 'the Shop shelf stocks the ticket');
 ok(/it\.ticket \? 'ticket:1'/.test(src) && /if\(it\.ticket\) return shopTicketShelfHTML\(/.test(src) && /it\.ticket \? shopTicketDetailHTML\(\)/.test(src) && /if\(it\.ticket\)\{ shopTicketCounter\(el\); return; \}/.test(src), 'the shelf item, its hover and its counter are wired');
 ok(/myCurrencies\.gold -= RENAME_TICKET_PRICE; saveCurrencies\(\); addRenameTickets\(1\)/.test(fnSrc('shopTicketCounter')), 'buying takes the Maple Leaves and adds one ticket');
 const inv = fnSrc('renderInventory');

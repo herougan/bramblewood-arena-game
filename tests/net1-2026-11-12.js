@@ -206,7 +206,8 @@ function fakeDb(tables, opts){
   ok(imm && /max-age=31536000, immutable/.test(imm.headers[0].value) && week && /max-age=604800/.test(week.headers[0].value) && a.length === 2, '6. vercel.json: hashed assets (?v=) a year immutable; the rest 7 days');
   ok(/connect-src 'self' https:\/\/xjctfwobcsyiztecutrb\.supabase\.co wss:\/\/xjctfwobcsyiztecutrb\.supabase\.co/.test(JSON.stringify(v)), '6. the CSP is unchanged (no new origin)');
   const sqlP = path.join(ROOT, 'supabase', 'proposed', '20261112_net1_scale.sql'), sql = fs.existsSync(sqlP) ? fs.readFileSync(sqlP, 'utf8') : '';
-  ok(/NOT APPLIED/.test(sql) && /"apply it"/.test(sql), '6. the SQL is proposed, not applied');
+  // 2026-11-13: the owner said "NET1-1: Apply it" (11-12 23:22) and it was applied; the file records that and stays idempotent
+  ok(/APPLIED 2026-11-12 .*"NET1-1: Apply it"/.test(sql) && /Idempotent/.test(sql), '6. the SQL was applied on the owner\'s "apply it" (recorded in the file)');
   ['card_overrides_updated_at_idx', 'raid_week_attempts_cycle_time', 'friendships_requester_idx', 'card_overrides_touch', 'set search_path = \'\''].forEach(k=> ok(sql.includes(k), '6. the SQL has ' + k));
   const alters = (sql.match(/^alter policy/gm) || []).length; ok(alters >= 19 && !/^alter policy[^\n]*[^(]auth\.uid\(\)/m.test(sql.replace(/\(select auth\.uid\(\)\)/g, '')), `6. ${alters} policies call auth.uid() once per query`);
   ok(!/^\s*(delete|update|insert|truncate)\b/im.test(sql), '6. the SQL changes no rows');

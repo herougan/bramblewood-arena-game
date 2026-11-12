@@ -4414,5 +4414,7 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "Ref. peta {pct}%",
  "Ref-2 {pct}%": "Ref-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Pengukuran {tag}, {date}: deck {k} pemain referensi melawan pertarungan ini, total {g} permainan (minimal {n} per deck); p10 / p90 tanpa derau permainan. Referensi peta dan Referensi-2: masing-masing {m} permainan."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "Pengukuran {tag}, {date}: deck {k} pemain referensi melawan pertarungan ini, total {g} permainan (minimal {n} per deck); p10 / p90 tanpa derau permainan. Referensi peta dan Referensi-2: masing-masing {m} permainan.",
+ "Shops": "Toko",
+ "Nothing in the Premium shop for you yet.": "Belum ada apa pun untukmu di toko Premium."
 }

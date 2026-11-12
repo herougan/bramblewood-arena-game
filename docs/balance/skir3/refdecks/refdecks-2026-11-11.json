@@ -41,6 +41,7 @@
     },
     "replaced": true
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "0-PRO-1",
@@ -159,6 +160,7 @@
      ]
     }
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "0-B-PRO-1",
@@ -260,6 +262,7 @@
      ]
     }
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "1-PRO-1",
@@ -364,7 +367,8 @@
    "bproOld1": {
     "id": "1-A-BPRO-1",
     "dropped": [
-     "compost-grub: a Baby card (BAL11)"
+     "compost-grub: a Baby card (BAL11)",
+     "not in its pool on the 11-12 lists (SKIR3): compost-grub"
     ]
    },
    "proOld1": {
@@ -384,6 +388,7 @@
     },
     "replaced": true
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "1-A-PRO-1",
@@ -465,16 +470,19 @@
    "bproOld1": {
     "id": "2-BPRO-1",
     "dropped": [
-     "conch-herald: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))"
+     "conch-herald: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))",
+     "not in its pool on the 11-12 lists (SKIR3): conch-herald"
     ]
    },
    "proOld1": {
     "id": "2-PRO-1",
     "dropped": [
      "conch-herald: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
-     "6 copies of the map's list (under 10)"
+     "6 copies of the map's list (under 10)",
+     "not in its pool on the 11-12 lists (SKIR3): conch-herald"
     ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "2-PRO-1",
@@ -627,6 +635,7 @@
     },
     "replaced": true
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "2-B-PRO-1",
@@ -739,6 +748,7 @@
      "8 copies of the map's list (under 10)"
     ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "2-A-PRO-1",
@@ -839,26 +849,17 @@
    "bproOld1": {
     "id": "3-BPRO-1",
     "dropped": [
-     "razorbill: not on the map's list (held, not listed)"
+     "razorbill: not on the map's list (held, not listed)",
+     "not in its pool on the 11-12 lists (SKIR3): razorbill"
     ]
    },
    "proOld1": {
     "id": "3-PRO-1",
-    "vsNewBest": {
-     "p": 0.778,
-     "n": 400,
-     "ci": [
-      0.734,
-      0.816
-     ],
-     "elo": 217,
-     "eloCI": [
-      177,
-      258
-     ]
-    },
-    "replaced": true
+    "dropped": [
+     "shares 12 copies with 3-BPRO-2 (SKIR3: BPRO goes first)"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "3-PRO-1",
@@ -987,6 +988,12 @@
      ]
     }
    },
+   "proVsBpro": [
+    {
+     "focus": "family:flying",
+     "why": "shares more than 10 copies with a BPRO deck (SKIR3)"
+    }
+   ],
    "pro": [
     {
      "id": "4-PRO-1",
@@ -1011,17 +1018,6 @@
     },
     {
      "id": "4-PRO-3",
-     "focus": "family:flying",
-     "score": 0.8698,
-     "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "economy (8 resource makers)",
-      "flying x8",
-      "armor x7"
-     ]
-    },
-    {
-     "id": "4-PRO-4",
      "focus": "big",
      "score": 0.8385,
      "labels": [
@@ -1094,32 +1090,19 @@
    },
    "proOld1": {
     "id": "5-PRO-1",
-    "vsNewBest": {
-     "p": 0.495,
-     "n": 400,
-     "ci": [
-      0.446,
-      0.544
-     ],
-     "elo": -3,
-     "eloCI": [
-      -37,
-      31
-     ]
-    }
+    "dropped": [
+     "shares 14 copies with 5-BPRO-2 (SKIR3: BPRO goes first)"
+    ]
    },
+   "proVsBpro": [
+    {
+     "focus": "open",
+     "why": "shares more than 10 copies with a BPRO deck (SKIR3)"
+    }
+   ],
    "pro": [
     {
      "id": "5-PRO-1",
-     "focus": "open",
-     "score": 0.9375,
-     "labels": [
-      "swarm (16 copies at 0 Lumber)",
-      "bleed x8"
-     ]
-    },
-    {
-     "id": "5-PRO-2",
      "focus": "big",
      "score": 0.95,
      "labels": [
@@ -1129,7 +1112,7 @@
      ]
     },
     {
-     "id": "5-PRO-3",
+     "id": "5-PRO-2",
      "focus": "family:armor",
      "score": 0.9083,
      "labels": [
@@ -1140,7 +1123,7 @@
      ]
     },
     {
-     "id": "5-PRO-4",
+     "id": "5-PRO-3",
      "focus": "family:tide",
      "score": 0.8292,
      "labels": [
@@ -1228,21 +1211,11 @@
    },
    "proOld1": {
     "id": "5-A-PRO-1",
-    "vsNewBest": {
-     "p": 0.57,
-     "n": 400,
-     "ci": [
-      0.521,
-      0.618
-     ],
-     "elo": 49,
-     "eloCI": [
-      15,
-      83
-     ]
-    },
-    "replaced": true
+    "dropped": [
+     "shares 12 copies with 5-A-BPRO-1 (SKIR3: BPRO goes first)"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "5-A-PRO-1",
@@ -1363,6 +1336,7 @@
      ]
     }
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "6-PRO-1",
@@ -1460,15 +1434,18 @@
    "bproOld1": {
     "id": "7-BPRO-1",
     "dropped": [
-     "truffle-piglet: not on the map's list (held, not listed)"
+     "truffle-piglet: not on the map's list (held, not listed)",
+     "not in its pool on the 11-12 lists (SKIR3): truffle-piglet"
     ]
    },
    "proOld1": {
     "id": "7-PRO-1",
     "dropped": [
-     "8 copies of the map's list (under 10)"
+     "8 copies of the map's list (under 10)",
+     "not in its pool on the 11-12 lists (SKIR3): box-turtle, truffle-piglet"
     ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "7-PRO-1",
@@ -1574,21 +1551,12 @@
    },
    "proOld1": {
     "id": "7-A-PRO-1",
-    "vsNewBest": {
-     "p": 0.603,
-     "n": 400,
-     "ci": [
-      0.554,
-      0.649
-     ],
-     "elo": 72,
-     "eloCI": [
-      38,
-      107
-     ]
-    },
-    "replaced": true
+    "dropped": [
+     "not in its pool on the 11-12 lists (SKIR3): nutria-reedcutter",
+     "shares 12 copies with 7-A-BPRO-1 (SKIR3: BPRO goes first)"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "7-A-PRO-1",
@@ -1712,6 +1680,7 @@
     },
     "replaced": true
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "8-PRO-1",
@@ -1869,21 +1838,11 @@
    },
    "proOld1": {
     "id": "8-A-PRO-1",
-    "vsNewBest": {
-     "p": 0.558,
-     "n": 400,
-     "ci": [
-      0.509,
-      0.605
-     ],
-     "elo": 40,
-     "eloCI": [
-      6,
-      74
-     ]
-    },
-    "replaced": true
+    "dropped": [
+     "not in its pool on the 11-12 lists (SKIR3): lantern-spark-fly"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "8-A-PRO-1",
@@ -1966,9 +1925,11 @@
    "proOld1": {
     "id": "9-PRO-1",
     "dropped": [
-     "sunbittern-strider: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+     "sunbittern-strider: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+     "not in its pool on the 11-12 lists (SKIR3): sunbittern-strider"
     ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "9-PRO-1",
@@ -2092,6 +2053,7 @@
     },
     "replaced": true
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "10-PRO-1",
@@ -2202,21 +2164,11 @@
    },
    "proOld1": {
     "id": "10-A-PRO-1",
-    "vsNewBest": {
-     "p": 0.593,
-     "n": 400,
-     "ci": [
-      0.544,
-      0.64
-     ],
-     "elo": 65,
-     "eloCI": [
-      30,
-      100
-     ]
-    },
-    "replaced": true
+    "dropped": [
+     "shares 11 copies with 10-A-BPRO-2 (SKIR3: BPRO goes first)"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "10-A-PRO-1",
@@ -2288,7 +2240,8 @@
    "bproOld1": {
     "id": "11-BPRO-1",
     "dropped": [
-     "alpine-marmot: not on the map's list (held, not listed)"
+     "alpine-marmot: not on the map's list (held, not listed)",
+     "not in its pool on the 11-12 lists (SKIR3): alpine-marmot"
     ]
    },
    "proOld1": {
@@ -2308,6 +2261,7 @@
     },
     "replaced": true
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "11-PRO-1",
@@ -2426,7 +2380,8 @@
    "bproOld1": {
     "id": "11-A-BPRO-1",
     "dropped": [
-     "sparrow-chick: a Baby card (BAL11)"
+     "sparrow-chick: a Baby card (BAL11)",
+     "not in its pool on the 11-12 lists (SKIR3): sparrow-chick"
     ]
    },
    "proOld1": {
@@ -2446,6 +2401,7 @@
     },
     "replaced": true
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "11-A-PRO-1",
@@ -2569,9 +2525,11 @@
    "proOld1": {
     "id": "12-PRO-1",
     "dropped": [
-     "8 copies of the map's list (under 10)"
+     "8 copies of the map's list (under 10)",
+     "not in its pool on the 11-12 lists (SKIR3): bramble-hoglet"
     ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "12-PRO-1",
@@ -2675,15 +2633,18 @@
     "id": "13-BPRO-1",
     "dropped": [
      "bramblewood-lynx: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))",
-     "fawn-scout: not on the map's list (held, not listed)"
+     "fawn-scout: not on the map's list (held, not listed)",
+     "not in its pool on the 11-12 lists (SKIR3): bramblewood-lynx, fawn-scout"
     ]
    },
    "proOld1": {
     "id": "13-PRO-1",
     "dropped": [
-     "4 copies of the map's list (under 10)"
+     "4 copies of the map's list (under 10)",
+     "not in its pool on the 11-12 lists (SKIR3): bramble-hoglet, fawn-scout, hawthorn-shieldbug"
     ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "13-PRO-1",
@@ -2806,21 +2767,11 @@
    },
    "proOld1": {
     "id": "14-PRO-1",
-    "vsNewBest": {
-     "p": 0.933,
-     "n": 400,
-     "ci": [
-      0.904,
-      0.953
-     ],
-     "elo": 456,
-     "eloCI": [
-      389,
-      524
-     ]
-    },
-    "replaced": true
+    "dropped": [
+     "not in its pool on the 11-12 lists (SKIR3): grave-grin-hyena"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "14-PRO-1",
@@ -2959,21 +2910,11 @@
    },
    "proOld1": {
     "id": "14-A-PRO-1",
-    "vsNewBest": {
-     "p": 0.653,
-     "n": 400,
-     "ci": [
-      0.605,
-      0.698
-     ],
-     "elo": 109,
-     "eloCI": [
-      74,
-      145
-     ]
-    },
-    "replaced": true
+    "dropped": [
+     "not in its pool on the 11-12 lists (SKIR3): walrus-icebreaker"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "14-A-PRO-1",
@@ -3061,21 +3002,11 @@
    },
    "proOld1": {
     "id": "15-PRO-1",
-    "vsNewBest": {
-     "p": 0.563,
-     "n": 400,
-     "ci": [
-      0.514,
-      0.61
-     ],
-     "elo": 44,
-     "eloCI": [
-      9,
-      78
-     ]
-    },
-    "replaced": true
+    "dropped": [
+     "not in its pool on the 11-12 lists (SKIR3): bison-bulldozer"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "15-PRO-1",
@@ -3168,15 +3099,18 @@
    "bproOld1": {
     "id": "16-BPRO-1",
     "dropped": [
-     "bramblewood-lynx: not on the map's list (held, not listed)"
+     "bramblewood-lynx: not on the map's list (held, not listed)",
+     "not in its pool on the 11-12 lists (SKIR3): bramblewood-lynx"
     ]
    },
    "proOld1": {
     "id": "16-PRO-1",
     "dropped": [
-     "8 copies of the map's list (under 10)"
+     "8 copies of the map's list (under 10)",
+     "not in its pool on the 11-12 lists (SKIR3): bramblewood-lynx, owl-nightwatch"
     ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "16-PRO-1",
@@ -3307,33 +3241,14 @@
    },
    "proOld1": {
     "id": "17-PRO-1",
-    "vsNewBest": {
-     "p": 0.205,
-     "n": 400,
-     "ci": [
-      0.168,
-      0.247
-     ],
-     "elo": -235,
-     "eloCI": [
-      -278,
-      -193
-     ]
-    }
+    "dropped": [
+     "shares 14 copies with 17-BPRO-1 (SKIR3: BPRO goes first)"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "17-PRO-1",
-     "focus": "family:cold",
-     "score": 0.9773,
-     "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "economy (4 resource makers)",
-      "cold x10"
-     ]
-    },
-    {
-     "id": "17-PRO-2",
      "focus": "family:evasion",
      "score": 0.9261,
      "labels": [
@@ -3342,7 +3257,7 @@
      ]
     },
     {
-     "id": "17-PRO-3",
+     "id": "17-PRO-2",
      "focus": "open",
      "score": 0.8977,
      "labels": [
@@ -3352,7 +3267,7 @@
      ]
     },
     {
-     "id": "17-PRO-4",
+     "id": "17-PRO-3",
      "focus": "family:bleed",
      "score": 0.8674,
      "labels": [
@@ -3463,6 +3378,7 @@
      ]
     }
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "17-A-PRO-1",
@@ -3535,26 +3451,17 @@
    "bproOld1": {
     "id": "18-BPRO-1",
     "dropped": [
-     "caustic-scorpion: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))"
+     "caustic-scorpion: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))",
+     "not in its pool on the 11-12 lists (SKIR3): caustic-scorpion"
     ]
    },
    "proOld1": {
     "id": "18-PRO-1",
-    "vsNewBest": {
-     "p": 0.643,
-     "n": 400,
-     "ci": [
-      0.594,
-      0.688
-     ],
-     "elo": 102,
-     "eloCI": [
-      66,
-      137
-     ]
-    },
-    "replaced": true
+    "dropped": [
+     "not in its pool on the 11-12 lists (SKIR3): savanna-cheetah"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "18-PRO-1",
@@ -3678,37 +3585,28 @@
    },
    "proOld1": {
     "id": "18-A-PRO-1",
-    "vsNewBest": {
-     "p": 0.348,
-     "n": 400,
-     "ci": [
-      0.302,
-      0.395
-     ],
-     "elo": -109,
-     "eloCI": [
-      -145,
-      -74
-     ]
-    }
+    "dropped": [
+     "shares 14 copies with 18-A-BPRO-1 (SKIR3: BPRO goes first)"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "18-A-PRO-1",
-     "focus": "swarm",
-     "score": 0.9479,
-     "labels": [
-      "swarm (14 copies at 0 Lumber)"
-     ]
-    },
-    {
-     "id": "18-A-PRO-2",
      "focus": "family:strike-first",
      "score": 0.8507,
      "labels": [
       "big (16 copies at 1+ Lumber, average 0.8)",
       "economy (4 resource makers)",
       "strike-first x10"
+     ]
+    },
+    {
+     "id": "18-A-PRO-2",
+     "focus": "open",
+     "score": 0.816,
+     "labels": [
+      "big (14 copies at 1+ Lumber, average 0.9)"
      ]
     }
    ],
@@ -3780,28 +3678,19 @@
    },
    "proOld1": {
     "id": "19-PRO-1",
-    "vsNewBest": {
-     "p": 0.494,
-     "n": 400,
-     "ci": [
-      0.445,
-      0.543
-     ],
-     "elo": -4,
-     "eloCI": [
-      -38,
-      30
-     ]
-    }
+    "dropped": [
+     "not in its pool on the 11-12 lists (SKIR3): stonedrop-vulture"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "19-PRO-1",
      "focus": "family:flying",
-     "score": 0.9444,
+     "score": 0.9398,
      "labels": [
-      "big (9 copies at 1+ Lumber, average 0.5)",
-      "flying x11"
+      "guard x8",
+      "flying x8"
      ]
     },
     {
@@ -3924,6 +3813,7 @@
      ]
     }
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "19-A-PRO-1",
@@ -4044,9 +3934,11 @@
     "id": "20-PRO-1",
     "dropped": [
      "ash-cloud-condor: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
-     "3 copies of the map's list (under 10)"
+     "3 copies of the map's list (under 10)",
+     "not in its pool on the 11-12 lists (SKIR3): ash-cloud-condor, chamois-leaper"
     ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "20-PRO-1",
@@ -4166,36 +4058,28 @@
    },
    "proOld1": {
     "id": "20-A-PRO-1",
-    "vsNewBest": {
-     "p": 0.29,
-     "n": 400,
-     "ci": [
-      0.248,
-      0.336
-     ],
-     "elo": -156,
-     "eloCI": [
-      -193,
-      -118
-     ]
-    }
+    "dropped": [
+     "shares 12 copies with 20-A-BPRO-1 (SKIR3: BPRO goes first)"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "20-A-PRO-1",
-     "focus": "family:flying",
-     "score": 0.9083,
-     "labels": [
-      "flying x12"
-     ]
-    },
-    {
-     "id": "20-A-PRO-2",
      "focus": "family:armor",
      "score": 0.7917,
      "labels": [
       "armor x10",
       "flying x8"
+     ]
+    },
+    {
+     "id": "20-A-PRO-2",
+     "focus": "family:flying",
+     "score": 0.7792,
+     "labels": [
+      "flying x8",
+      "armor x7"
      ]
     },
     {
@@ -4275,31 +4159,14 @@
    },
    "proOld1": {
     "id": "20-B-PRO-1",
-    "vsNewBest": {
-     "p": 0.528,
-     "n": 400,
-     "ci": [
-      0.479,
-      0.576
-     ],
-     "elo": 19,
-     "eloCI": [
-      -15,
-      53
-     ]
-    }
+    "dropped": [
+     "not in its pool on the 11-12 lists (SKIR3): ashbone-ghoul"
+    ]
    },
+   "proVsBpro": [],
    "pro": [
     {
      "id": "20-B-PRO-1",
-     "focus": "open",
-     "score": 0.8155,
-     "labels": [
-      "midrange (average 0.5 Lumber)"
-     ]
-    },
-    {
-     "id": "20-B-PRO-2",
      "focus": "family:ranged",
      "score": 0.8095,
      "labels": [
@@ -4308,12 +4175,20 @@
      ]
     },
     {
-     "id": "20-B-PRO-3",
+     "id": "20-B-PRO-2",
      "focus": "swarm",
      "score": 0.8095,
      "labels": [
       "swarm (14 copies at 0 Lumber)",
       "rally x6"
+     ]
+    },
+    {
+     "id": "20-B-PRO-3",
+     "focus": "open",
+     "score": 0.6667,
+     "labels": [
+      "midrange (average 0.8 Lumber)"
      ]
     }
    ],

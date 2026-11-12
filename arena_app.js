@@ -59283,6 +59283,7 @@ function refreshShopAfford(){
 const PACK_TINT = {bronze:'#5f8f3e', silver:'#8a4b25', gold:'#b8862b', mystery:'#6b3fa0'};
 const SHELF_PROPS = ['🫙','🍯','🕯️','🥐','🧴','🍞','🧪','🪴','🥖','🫖','🧺','🍪'];
 let shopSelected = null; // 'packId:qty'
+let shopMode = 'normal'; // 2026-11-12 (package SHOP1, owner note 4): 'normal' | 'premium'; the tickets (Gold Leaf goods) sit in the Premium shop
 // 2026-10-12 (user: "Don't show me the items I haven't unlocked yet. At the start, only a simple 1x acorn pack and a bread on
 // the side"): the shelves hold only what you can buy now. Bundles of 10+ come once you reach Map 10. The loaf costs 1 Maple
 // Leaf, does nothing, and is sold out after one.
@@ -59319,13 +59320,14 @@ function packQtyOptions(p){
 }
 let shopQty = {};
 function shelfRows(){
+  const prem = shopMode === 'premium'; // 2026-11-12 (package SHOP1): the two tickets are Premium goods; all else is the normal shop
   const packs = shopPacksAll().filter(p=> adminModeEnabled || (packOnSale(p) && packPoolReady(p))), onSale = packs.filter(p=> packOnSale(p) && shopBundlesOpen());
   // one shelf never holds more than fits on it; extra goods go onto the next shelf down, alternating its lean
   const chunk = (items, n, kinds)=>{ const out = []; for(let i = 0; i < items.length; i += n) out.push({kind:kinds[(i/n) % kinds.length], items:items.slice(i, i + n)}); return out; };
   const narrow = window.matchMedia && matchMedia('(max-width:620px)').matches;
   return [
-    ...chunk([...packs.map(p=> ({pack:p, qty:1})), ...(shopKitToday() ? [{kit:shopKitToday(), qty:1}] : []), ...(shopTicketOnShelf() ? [{ticket:true, qty:1}] : []) /* 2026-10-18: 🎫 Rename Ticket */, ...(shopRaidTicketOnShelf() ? [{raidTicket:true, qty:1}] : []) /* 2026-10-21 (package RK): 🎫 Raid Ticket */, {bread:true, qty:1}], narrow ? 2 : 5, ['straight', 'crooked-r']),
-    ...(onSale.length === 1 ? [
+    ...chunk([...(prem ? [] : packs.map(p=> ({pack:p, qty:1}))), ...(!prem && shopKitToday() ? [{kit:shopKitToday(), qty:1}] : []), ...(prem && shopTicketOnShelf() ? [{ticket:true, qty:1}] : []) /* 2026-10-18: 🎫 Rename Ticket */, ...(prem && shopRaidTicketOnShelf() ? [{raidTicket:true, qty:1}] : []) /* 2026-10-21 (package RK): 🎫 Raid Ticket */, ...(prem ? [] : [{bread:true, qty:1}])], narrow ? 2 : 5, ['straight', 'crooked-r']),
+    ...(!prem && onSale.length === 1 ? [
       ...chunk(onSale.flatMap(p=> [10, 25].filter(q=> packQtyOptions(p).includes(q) || adminModeEnabled).map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, ['crooked', 'straight']),
       ...chunk(onSale.flatMap(p=> [50, 100].filter(q=> packQtyOptions(p).includes(q) || adminModeEnabled).map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, narrow ? ['straight', 'crooked-r'] : ['stepped'])] : []),
   ].filter(r=> r.items.length);
@@ -59577,14 +59579,16 @@ function renderShop(){
   const tabsHTML = '';
   shopTab = 'packs';
   const signedInShop = isSignedIn();
+  const prem = shopMode === 'premium'; // 2026-11-12 (package SHOP1): Shop | Premium switch
   const merchants = merchantsUnlocked();
   root.innerHTML = `${cartDoodadsHTML()}<div class="panel">${shopBackHTML()}<h2 class="sr-only">${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
       <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}${escapeHtml(TX('ui.rw5-shop-sub'))}</p> <!-- 2026-10-23 (package RW5): each pack its own pool; was "Packs of cards from Pack 1 (N cards)" -->
-      ${wanderingMerchantShopHTML()}
+      <div class="shop-modes" role="group" aria-label="${escapeAttr(TX('ui.shop1-modes'))}">${[['normal', '🛒', TX('ui.shop1-normal')], ['premium', '🍂', TX('ui.shop1-premium')]].map(([m, ic, lb])=> `<button type="button" class="btn small shop-mode is-${m} ${shopMode === m ? 'is-on' : ''}" data-shopmode="${m}" aria-pressed="${shopMode === m}">${ic} ${escapeHtml(lb)}</button>`).join('')}</div>
+      ${prem ? '' : wanderingMerchantShopHTML()}
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
       <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}${typeof ui29ShopBarHTML === 'function' ? ui29ShopBarHTML() : '' /* 2026-11-07 (package UI29) */}
     </div>
-    ${factionPackShelfHTML()}
+    ${prem ? '' : factionPackShelfHTML()}
     <div class="shop-pack-grid" id="shopPackGrid"></div>
     <div class="panel shop-reveal-panel" id="shopRevealPanel" hidden>
       <div class="forge-preview-wrap" id="shopRevealMount"></div>
@@ -59597,6 +59601,15 @@ function renderShop(){
          rather than shown as a greyed-out promise. See receiveLockedCard()'s own comment for the
          "arrives locked" data model this would eventually feed into. -->
     `;
+  root.classList.toggle('is-premium-shop', prem);
+  root.querySelectorAll('[data-shopmode]').forEach(b=> b.onclick = ()=>{ if(shopMode === b.dataset.shopmode) return; shopMode = b.dataset.shopmode; shopSelected = null; renderShop(); });
+  if(prem){ // 2026-11-12 (package SHOP1): the Premium shop is its own shelf; no pack shelf, no merchant
+    const g = document.getElementById('shopPackGrid'), has = shelfRows().length > 0;
+    if(!has) g.innerHTML = `<div class="panel"><p class="panel-sub">${escapeHtml(TX('ui.shop1-premium-empty'))}</p></div>`; else renderShopShelves(g, isSignedIn());
+    const sib2 = document.getElementById('shopSignInBtn'); if(sib2) sib2.onclick = ()=> requireSignIn('to open packs', ()=> renderShop());
+    { const bb = document.getElementById('shopBackBtn'); if(bb) bb.onclick = ()=>{ const c = shopCameFrom; shopCameFrom = null; switchTab(c ? c.tab : 'home'); }; }
+    return;
+  }
   wireFactionPackShelf();
   root.querySelectorAll('[data-shoptab]').forEach(b=> b.onclick = ()=>{ shopTab = b.dataset.shoptab; renderShop(); });
   const grid = document.getElementById('shopPackGrid');
@@ -61992,7 +62005,7 @@ function openGuildRenameDialog(){
   inp.addEventListener('input', ()=> say(''));
   ov.querySelector('#grCancel').addEventListener('click', close);
   ov.addEventListener('pointerdown', e=>{ if(e.target === ov) close(); });
-  const shopBtn = ov.querySelector('#grShop'); if(shopBtn) shopBtn.addEventListener('click', ()=>{ close(); shopSelected = 'ticket:1'; switchTab('shop'); });
+  const shopBtn = ov.querySelector('#grShop'); if(shopBtn) shopBtn.addEventListener('click', ()=>{ close(); shopMode = 'premium'; shopSelected = 'ticket:1'; switchTab('shop'); });
   ov.querySelector('form').addEventListener('submit', async e=>{
     e.preventDefault(); if(okBtn.disabled) return;
     if(renameTickets() < 1){ say(TX('ui.guild-rename-no-ticket', {price: RENAME_TICKET_PRICE})); denyShake(okBtn); return; }

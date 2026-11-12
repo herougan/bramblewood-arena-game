@@ -4415,5 +4415,7 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
  "Map ref {pct}%": "வரைபட மேற். {pct}%",
  "Ref-2 {pct}%": "Ref-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "அளவீடு {tag}, {date}: இந்தச் சண்டைக்கு எதிராக {k} மேற்கோள் வீரர்களின் டெக்குகள், மொத்தம் {g} ஆட்டங்கள் (ஒவ்வொரு டெக்கிற்கும் குறைந்தது {n}); p10 / p90 ஆட்ட இரைச்சல் இல்லாமல். வரைபட மேற்கோள் மற்றும் Reference-2: தலா {m} ஆட்டங்கள்."
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "அளவீடு {tag}, {date}: இந்தச் சண்டைக்கு எதிராக {k} மேற்கோள் வீரர்களின் டெக்குகள், மொத்தம் {g} ஆட்டங்கள் (ஒவ்வொரு டெக்கிற்கும் குறைந்தது {n}); p10 / p90 ஆட்ட இரைச்சல் இல்லாமல். வரைபட மேற்கோள் மற்றும் Reference-2: தலா {m} ஆட்டங்கள்.",
+ "Shops": "கடைகள்",
+ "Nothing in the Premium shop for you yet.": "பிரீமியம் கடையில் இன்னும் எதுவும் இல்லை."
 }

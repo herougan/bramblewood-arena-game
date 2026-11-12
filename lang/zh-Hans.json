@@ -4413,5 +4413,7 @@
  "Ref {k}: {pct}% (p10 {lo} – p90 {hi})": "参考{k}：{pct}%（p10 {lo} – p90 {hi}）",
  "Map ref {pct}%": "地图参考 {pct}%",
  "Ref-2 {pct}%": "参考-2 {pct}%",
- "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "测量 {tag}，{date}：{k} 名参考玩家的卡组对此战斗，共 {g} 局（每副至少 {n} 局）；p10 / p90 已去除对局噪声。地图参考与参考-2：各 {m} 局。"
+ "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.": "测量 {tag}，{date}：{k} 名参考玩家的卡组对此战斗，共 {g} 局（每副至少 {n} 局）；p10 / p90 已去除对局噪声。地图参考与参考-2：各 {m} 局。",
+ "Shops": "商店",
+ "Nothing in the Premium shop for you yet.": "高级商店暂时没有适合你的商品。"
 }

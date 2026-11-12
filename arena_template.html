@@ -3999,6 +3999,13 @@
      it goes once the page is complete */
   #codexGrid > .cx-more{grid-column:1/-1; height:0; pointer-events:none;}
   .shop-back{float:left; margin:0 12px 8px 0;}
+  /* 2026-11-12 (package SHOP1): Shop | Premium switch; the Premium shelf gets an accent frame and a tinted counter (tokens only) */
+  .shop-modes{display:flex; gap:6px; margin:8px 0 0; flex-wrap:wrap;}
+  .shop-mode{flex:1 1 0; min-width:110px; justify-content:center; font-weight:700;}
+  .shop-mode.is-on{background:var(--accent); color:var(--accent-ink); border-color:var(--accent-strong);}
+  .shop-mode.is-premium:not(.is-on){border-color:var(--accent); color:var(--accent-strong);}
+  #view-shop.is-premium-shop .shelf-wall{box-shadow:inset 0 0 0 3px var(--accent), 0 0 18px color-mix(in srgb, var(--accent) 35%, transparent);}
+  #view-shop.is-premium-shop .shop-counter{border-color:var(--accent); background:color-mix(in srgb, var(--accent) 12%, var(--surface));}
   /* Reserve rows (2026-10-12, raids as a full game): smaller, dimmer rows behind each front row */
   /* 2026-10-18 (user: "the backrow cards are to be made 20% larger"): the middle and back rows' cards at .84 of a front card (were .7), the
      rows as tall as the cards in them (were a fixed 112 px). */

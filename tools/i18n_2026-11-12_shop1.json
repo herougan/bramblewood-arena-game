@@ -1,0 +1,6 @@
+{"tx":{
+"ui.shop1-modes":{"en":"Shops","fr":"Boutiques","de":"Läden","es":"Tiendas","it":"Negozi","pt":"Lojas","tl":"Mga tindahan","ta":"கடைகள்","id":"Toko","zh-Hans":"商店","zh-Hant":"商店","ja":"ショップ","ko":"상점"},
+"ui.shop1-normal":{"en":"Shop","fr":"Boutique","de":"Laden","es":"Tienda","it":"Negozio","pt":"Loja","tl":"Tindahan","ta":"கடை","id":"Toko","zh-Hans":"商店","zh-Hant":"商店","ja":"ショップ","ko":"상점"},
+"ui.shop1-premium":{"en":"Premium","fr":"Premium","de":"Premium","es":"Premium","it":"Premium","pt":"Premium","tl":"Premium","ta":"பிரீமியம்","id":"Premium","zh-Hans":"高级","zh-Hant":"高級","ja":"プレミアム","ko":"프리미엄"},
+"ui.shop1-premium-empty":{"en":"Nothing in the Premium shop for you yet.","fr":"Rien en Premium pour vous pour l'instant.","de":"Im Premium-Laden gibt es noch nichts für dich.","es":"Aún no hay nada para ti en Premium.","it":"Ancora niente per te nel negozio Premium.","pt":"Ainda nada para ti na loja Premium.","tl":"Wala pang para sa iyo sa Premium.","ta":"பிரீமியம் கடையில் இன்னும் எதுவும் இல்லை.","id":"Belum ada apa pun untukmu di toko Premium.","zh-Hans":"高级商店暂时没有适合你的商品。","zh-Hant":"高級商店暫時沒有適合你的商品。","ja":"プレミアムショップにはまだ何もありません。","ko":"프리미엄 상점에 아직 물건이 없어요."}
+}}
