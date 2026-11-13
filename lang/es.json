@@ -731,7 +731,6 @@
  "Defense": "Defensa",
  "Delete": "Eliminar",
  "Delete the added skirmish {label}?": "¿Borrar la escaramuza añadida {label}?",
- "Delete this deck? This cannot be undone.": "¿Borrar este mazo? No se puede deshacer.",
  "Demolisher (Structures) and the old Siege (the bramble) are one skill now. An old Demolisher card reads as Siege.": "Demoledora (Estructuras) y el antiguo Asedio (la zarza) son ahora una sola habilidad. Una carta antigua con Demoledora se lee como Asedio.",
  "Desert": "Desierto",
  "Details": "Detalles",
@@ -4443,5 +4442,10 @@
  "No part won: your ⚡{n} came back.": "Ninguna parte ganada: recuperas tus ⚡{n}.",
  "{floors} parts and a boss · {n} players · ⚡{energy} each": "{floors} partes y un jefe · {n} jugadores · ⚡{energy} cada uno",
  "Shops": "Tiendas",
- "Nothing in the Premium shop for you yet.": "Aún no hay nada para ti en Premium."
+ "Nothing in the Premium shop for you yet.": "Aún no hay nada para ti en Premium.",
+ "Delete this deck": "Eliminar este mazo",
+ "Tap again to delete": "Toca otra vez para eliminar",
+ "{name} deleted": "{name} eliminado",
+ "Side maps": "Mapas secundarios",
+ "Main map": "Mapa principal"
 }

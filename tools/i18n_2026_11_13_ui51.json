@@ -1,0 +1,11 @@
+{
+ "tx": {
+  "ui.ui51-deck-delete": ["Delete", "Supprimer", "Löschen", "Eliminar", "Elimina", "Excluir", "Burahin", "நீக்கு", "Hapus", "删除", "刪除", "削除", "삭제"],
+  "ui.ui51-deck-delete-tip": ["Delete this deck", "Supprimer ce deck", "Dieses Deck löschen", "Eliminar este mazo", "Elimina questo mazzo", "Excluir este baralho", "Burahin ang deck na ito", "இந்த அடுக்கை நீக்கு", "Hapus dek ini", "删除这套卡组", "刪除這副牌組", "このデッキを削除", "이 덱 삭제"],
+  "ui.ui51-deck-delete-only": ["You need at least one deck", "Il te faut au moins un deck", "Du brauchst mindestens ein Deck", "Necesitas al menos un mazo", "Ti serve almeno un mazzo", "Você precisa de pelo menos um deck", "Kailangan mo ng kahit isang deck", "குறைந்தது ஒரு டெக் தேவை", "Kamu butuh minimal satu dek", "你至少需要一套卡组", "你至少需要一副牌組", "デッキが最低1つ必要です", "덱이 최소 하나 필요합니다"],
+  "ui.ui51-deck-delete-again": ["Tap again to delete", "Touche encore pour supprimer", "Nochmal tippen zum Löschen", "Toca otra vez para eliminar", "Tocca di nuovo per eliminare", "Toque de novo para excluir", "I-tap ulit para burahin", "நீக்க மீண்டும் தட்டு", "Ketuk lagi untuk menghapus", "再点一次删除", "再點一次刪除", "もう一度タップで削除", "다시 탭하면 삭제"],
+  "ui.ui51-deck-deleted": ["🗑 {name} deleted", "🗑 {name} supprimé", "🗑 {name} gelöscht", "🗑 {name} eliminado", "🗑 {name} eliminato", "🗑 {name} excluído", "🗑 Nabura ang {name}", "🗑 {name} நீக்கப்பட்டது", "🗑 {name} dihapus", "🗑 已删除 {name}", "🗑 已刪除 {name}", "🗑 {name} を削除しました", "🗑 {name} 삭제됨"],
+  "ui.ui51-side-maps": ["Side maps", "Cartes annexes", "Nebenkarten", "Mapas secundarios", "Mappe secondarie", "Mapas secundários", "Mga side map", "பக்க வரைபடங்கள்", "Peta samping", "支线地图", "支線地圖", "サイドマップ", "보조 맵"],
+  "ui.ui51-main-map": ["Main map", "Carte principale", "Hauptkarte", "Mapa principal", "Mappa principale", "Mapa principal", "Pangunahing map", "முதன்மை வரைபடம்", "Peta utama", "主线地图", "主線地圖", "メインマップ", "메인 맵"]
+ }
+}

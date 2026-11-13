@@ -1112,7 +1112,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.learned": "🦸 Learned {v1}.",
   "toast.your-hero-takes-a-deck-slot": "🦸 Your Hero takes a deck slot — take one card out to get back to {DECK_SIZE}.",
   "toast.deck-saved": "💾 Deck saved.",
-  "dialog.delete-this-deck-this-cannot-be": "Delete this deck? This cannot be undone.",
   "toast.you-bought-the-bread-it-smells": "🍞 You bought the bread. It smells wonderful. It does nothing.",
   "toast.you-found-a-set-it-in": "{v1} You found a {v2} ({v3})! Set it in a nest in the Nest to warm it.",
   "toast.hidden-skirmish-found": "{v1} A hidden skirmish: {v2} ({v3}).",
@@ -3755,7 +3754,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.dungeon1-run-cleared": "{name} is cleared!",
   "ui.rc1-chained-spawn": "1 chain (1 Armor). It can't act until the opponent plays a card.",
   "ui.rc1-chain-tip": "Chained: {n} Armor, 1 a chain.",
-  "ui.rc1-log-ritual": "{att} can't reach {unit}: it is in its Ritual."
+  "ui.rc1-log-ritual": "{att} can't reach {unit}: it is in its Ritual.",
+  "ui.ui51-deck-delete": "Delete",
+  "ui.ui51-deck-delete-tip": "Delete this deck",
+  "ui.ui51-deck-delete-only": "You need at least one deck",
+  "ui.ui51-deck-delete-again": "Tap again to delete",
+  "ui.ui51-deck-deleted": "🗑 {name} deleted",
+  "ui.ui51-side-maps": "Side maps",
+  "ui.ui51-main-map": "Main map"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

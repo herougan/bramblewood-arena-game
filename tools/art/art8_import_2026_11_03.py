@@ -43,6 +43,7 @@ def main():
     ap.add_argument('--src', default='/mnt/user-data/uploads/Downloads/art8')
     ap.add_argument('--variants'); ap.add_argument('--contact'); ap.add_argument('--only', nargs='*')
     ap.add_argument('ids', nargs='*')
+    ap.add_argument('--force', action='store_true', help='replace art that is not rejected with a reason')
     a = ap.parse_args()
     picks = json.load(open(PICKS)) if os.path.exists(PICKS) else {}
     if a.variants: return variants(a.src, a.ids, a.variants, picks)
@@ -50,6 +51,7 @@ def main():
     ids = a.only if a.only else a.ids
     text = open(CARDS, encoding='utf-8').read()
     for cid in ids:
+        if not a2.may_replace(text, cid, a.force): continue
         v = picks[cid]['pick']
         panels = a7.split(Image.open(os.path.join(a.src, cid + '.png')))
         img = a7.finish(panels['ABCD'.index(v)])
@@ -58,7 +60,6 @@ def main():
             '# ART8 2026-11-03, PixelLab Create image (Pro, 128x128, 2x2), variant %s picked; description sent:\n%s\n' % (v, picks[cid]['prompt']))
         uri = 'data:image/png;base64,' + base64.b64encode(open(path, 'rb').read()).decode('ascii')
         text = a2.set_art(text, cid, uri)
-        text = a7.drop_review(text, cid)
         print(cid, 'variant', v, 'panel', panels['ABCD'.index(v)].size)
     open(CARDS, 'w', encoding='utf-8').write(text)
     json.loads(text)

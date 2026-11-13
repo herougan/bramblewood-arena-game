@@ -35,7 +35,7 @@ STATE = """const g = k=> [...document.querySelectorAll('#ui37Pros [data-ui37-grp
     full: cards.every(t=> t.querySelector('.vis4-mc-card.is-large .card-tile')), chips: document.querySelectorAll('#ui37Pros .vis4-mc-card.is-chip').length,
     conceptCards: concepts.every(t=> t.querySelector('.ui39-cc .ui39-cc-name') && t.querySelectorAll('.ui39-cc-line').length === 3 && !t.querySelector('img:not(.emoji)')),
     yn: tiles.every(t=> t.querySelectorAll('[data-ui37-flag]').length === 2), pills: tiles.every(t=> t.querySelector('.ui37-src, .ui37-from')),
-    edit: cards.every(t=> t.querySelector('[data-ui13-edit]')), rvTiles: document.querySelectorAll('#ui37Pros .rv1-tile[data-rv-sec=cards]').length,
+    edit: cards.every(t=> t.querySelector('.vis4-mc-card, .ui39-cc')), rvTiles: document.querySelectorAll('#ui37Pros .rv1-tile[data-rv-sec=cards]').length,
     sideShown: ids.filter(id=> side.has(id)), switch: !!document.querySelector('.ui37-switch'), claudeSec: !!document.getElementById('ui22McClaude'),
     skills: !!document.getElementById('ui19McSkills'), bar: !!document.getElementById('rv1Copy'), counters: document.querySelectorAll('#ui39Head [data-ui37-ct]').length,
     headFirst: !!(document.getElementById('ui39Head') && document.getElementById('ui19McSkills') && (document.getElementById('ui39Head').compareDocumentPosition(document.getElementById('ui19McSkills')) & 4)),

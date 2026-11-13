@@ -28,7 +28,7 @@ def E(body): return "(async()=>{ " + body + " })()"
 OPEN = "adminModeEnabled = true; pk1OpenMapCards(%s); await new Promise(r=> setTimeout(r, 500));"
 STATE = """const sec = id=>{ const s = document.getElementById(id); if(!s) return null; const t = [...s.querySelectorAll('.rv1-tile')];
     return {tiles: t.length, chips: s.querySelectorAll('.vis4-mc-card.is-chip').length, full: t.every(x=> x.querySelector('.vis4-mc-card.is-large .card-tile')),
-      power: t.filter(x=> x.querySelector('.ui28-pow, [class*=pow]')).length, edit: t.every(x=> x.querySelector('[data-ui13-edit]')),
+      power: t.filter(x=> x.querySelector('.ui28-pow, [class*=pow]')).length, edit: t.every(x=> x.querySelector('.vis4-mc-card')),
       pills: s.querySelectorAll('.rv1-tile .rv2-pills .ui22-pill').length, rng: s.querySelectorAll('.rv1-tile > .c17-rng').length, rngWant: s.querySelectorAll('.rv1-tile.is-c17-ranged').length,
       heads: s.querySelectorAll('h4.c17-theme').length, headSum: [...s.querySelectorAll('h4.c17-theme small, h4.ui21-kw-cards small')].reduce((a, x)=> a + Number(x.textContent), 0),
       n: Number((s.querySelector('h3 small') || {}).textContent || -1), grid: [...s.querySelectorAll('.ui40-row')].every(r=> getComputedStyle(r).flexWrap === 'wrap')}; };

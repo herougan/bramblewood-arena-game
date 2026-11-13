@@ -731,7 +731,6 @@
  "Defense": "防御",
  "Delete": "删除",
  "Delete the added skirmish {label}?": "删除新增的遭遇战 {label}？",
- "Delete this deck? This cannot be undone.": "删除这个卡组吗？此操作无法撤销。",
  "Demolisher (Structures) and the old Siege (the bramble) are one skill now. An old Demolisher card reads as Siege.": "拆迁者（建筑）和旧的攻城（荆棘）现已合为一项技能。旧的拆迁者卡牌按攻城计算。",
  "Desert": "沙漠",
  "Details": "详情",
@@ -4444,5 +4443,10 @@
  "No part won: your ⚡{n} came back.": "未赢下任何部分：你的 ⚡{n} 已退还。",
  "{floors} parts and a boss · {n} players · ⚡{energy} each": "{floors} 个部分和一个首领 · {n} 名玩家 · 每人 ⚡{energy}",
  "Shops": "商店",
- "Nothing in the Premium shop for you yet.": "高级商店暂时没有适合你的商品。"
+ "Nothing in the Premium shop for you yet.": "高级商店暂时没有适合你的商品。",
+ "Delete this deck": "删除这套卡组",
+ "Tap again to delete": "再点一次删除",
+ "{name} deleted": "已删除 {name}",
+ "Side maps": "支线地图",
+ "Main map": "主线地图"
 }

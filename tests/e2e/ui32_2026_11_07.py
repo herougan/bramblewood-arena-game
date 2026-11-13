@@ -111,7 +111,7 @@ async def main():
         ok(r['mark'] == '', f'{cid}: no edited marker before the edit')
         ok(all(h != 'Main skills' for h in r['heads']), f'UI35: no Main heading any more, one list with pills ({r["heads"]})')
         await pg.screenshot(path=os.path.join(OUT, 'mapcards-before-1366.png'))
-        await pg.evaluate(f"document.querySelector('#pk1MapCardsOverlay [data-ui13-edit=\"{cid}\"]').click()")
+        await pg.evaluate(f"document.querySelector('#pk1MapCardsOverlay .rv1-tile[data-rv-id=\"{cid}\"] .vis4-mc-card').click()")
         await pg.wait_for_timeout(900)
         await pg.evaluate("(()=>{ const a = document.getElementById('fAtk'); a.value = String((+a.value || 0) + 3); a.dispatchEvent(new Event('input', {bubbles:true})); a.dispatchEvent(new Event('change', {bubbles:true})); })()")
         await pg.screenshot(path=os.path.join(OUT, 'editor-edited-1366.png'))

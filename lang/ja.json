@@ -731,7 +731,6 @@
  "Defense": "防御",
  "Delete": "削除",
  "Delete the added skirmish {label}?": "追加した小競り合い {label} を削除しますか？",
- "Delete this deck? This cannot be undone.": "このデッキを削除しますか？元に戻せません。",
  "Demolisher (Structures) and the old Siege (the bramble) are one skill now. An old Demolisher card reads as Siege.": "解体屋（建造物）と旧・攻城（イバラ）は一つのスキルになった。旧解体屋カードは攻城として読む。",
  "Desert": "砂漠",
  "Details": "詳細",
@@ -4444,5 +4443,10 @@
  "No part won: your ⚡{n} came back.": "勝ったパートなし：⚡{n}は返却。",
  "{floors} parts and a boss · {n} players · ⚡{energy} each": "{floors}パートとボス · {n}人 · 各⚡{energy}",
  "Shops": "ショップ",
- "Nothing in the Premium shop for you yet.": "プレミアムショップにはまだ何もありません。"
+ "Nothing in the Premium shop for you yet.": "プレミアムショップにはまだ何もありません。",
+ "Delete this deck": "このデッキを削除",
+ "Tap again to delete": "もう一度タップで削除",
+ "{name} deleted": "{name} を削除しました",
+ "Side maps": "サイドマップ",
+ "Main map": "メインマップ"
 }

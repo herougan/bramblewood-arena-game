@@ -99,11 +99,28 @@ def pixel_pass(panel, colours, size=128):
     return big.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
 
 
-def set_art(text, cid, uri):
-    """Targeted edit of one card's "art" line in cards.json text (file format: 2-space list, 4-space keys)."""
+def _block(text, cid):
+    """(start, end) of one card's block in cards.json text (file format: 2-space list, 4-space keys)."""
     m = re.search(r'\n    "id": "%s",?\n' % re.escape(cid), text)
     if not m: raise SystemExit('card not found: ' + cid)
-    start = text.rfind('\n  {\n', 0, m.start() + 1); end = text.find('\n  }', m.end() - 1)
+    return text.rfind('\n  {\n', 0, m.start() + 1), text.find('\n  }', m.end() - 1)
+
+
+def may_replace(text, cid, force=False):
+    """Owner 2026-11-13 11:22 (docs/workflows/art.md): a card's art is replaced only when it is rejected with a reason, or with --force."""
+    if force: return True
+    start, end = _block(text, cid)
+    rv = re.search(r'\n    "artReview": (\{[^\n]*\}|\{.*?\n    \})', text[start:end], re.S)
+    try: r = json.loads(rv.group(1)) if rv else {}
+    except ValueError: r = {}
+    if r.get('status') == 'rejected' and str(r.get('reason') or '').strip(): return True
+    print('skip (art not rejected with a reason; --force replaces it):', cid)
+    return False
+
+
+def set_art(text, cid, uri):
+    """Targeted edit of one card's "art" line in cards.json text; drops its "artReview" (status and reason)."""
+    start, end = _block(text, cid)
     block = text[start:end]
     line = '    "art": "%s"' % uri
     am = re.search(r'\n    "art": "[^"]*"', block)
@@ -115,6 +132,7 @@ def set_art(text, cid, uri):
             block = block[:sm.start()] + '\n' + line + ',' + block[sm.start():]
         else:
             block = block + ',\n' + line
+    block = re.sub(r',\n    "artReview": \{(?:[^\n]*\}|.*?\n    \})', '', block, count=1, flags=re.S)  # 2026-11-13 (UI51): new art drops the old rejection
     return text[:start] + block + text[end:]
 
 
@@ -133,6 +151,7 @@ def main():
     ap.add_argument('--src', default='/mnt/user-data/uploads/Downloads')
     ap.add_argument('--only', nargs='*')
     ap.add_argument('--contact', nargs='*', help='out.png then ids (or none = all imported)')
+    ap.add_argument('--force', action='store_true', help='replace art that is not rejected with a reason')
     a = ap.parse_args()
     if a.contact:
         out, *ids = a.contact
@@ -153,7 +172,7 @@ def main():
         if not os.path.exists(src): print('missing', src); continue
         panels = split_sheet(Image.open(src), inset=0.045 if 'nightcafe' in fn else 0.0)
         for cid, pos, p in zip(ids, POS, panels):
-            if cid is None: continue
+            if cid is None or not may_replace(text, cid, a.force): continue
             img = pixel_pass(p, colours)
             path = os.path.join(OUT, cid + '.png'); img.save(path, optimize=True)
             prompt = sent.get(cid) or (base_of.get(cid, plan['base']) + ' ' + pos + ': ' + subj.get(cid, cid) + '.')

@@ -731,7 +731,6 @@
  "Defense": "Défense",
  "Delete": "Supprimer",
  "Delete the added skirmish {label}?": "Supprimer l’escarmouche ajoutée {label} ?",
- "Delete this deck? This cannot be undone.": "Supprimer ce deck ? C’est irréversible.",
  "Demolisher (Structures) and the old Siege (the bramble) are one skill now. An old Demolisher card reads as Siege.": "Démolisseur (Structures) et l’ancien Siège (la ronce) ne font plus qu’un. Une ancienne carte Démolisseur se lit comme Siège.",
  "Desert": "Désert",
  "Details": "Détails",
@@ -4444,5 +4443,10 @@
  "No part won: your ⚡{n} came back.": "Aucune partie gagnée : vos ⚡{n} sont rendus.",
  "{floors} parts and a boss · {n} players · ⚡{energy} each": "{floors} parties et un boss · {n} joueurs · ⚡{energy} chacun",
  "Shops": "Boutiques",
- "Nothing in the Premium shop for you yet.": "Rien en Premium pour vous pour l'instant."
+ "Nothing in the Premium shop for you yet.": "Rien en Premium pour vous pour l'instant.",
+ "Delete this deck": "Supprimer ce deck",
+ "Tap again to delete": "Touche encore pour supprimer",
+ "{name} deleted": "{name} supprimé",
+ "Side maps": "Cartes annexes",
+ "Main map": "Carte principale"
 }

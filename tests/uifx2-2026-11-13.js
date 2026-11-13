@@ -109,7 +109,7 @@ async function browser(){
     await pg.evaluate(clean);
     const st = await pg.evaluate("({k: BramblewoodWorld._state.kind, spans: document.querySelectorAll('#conquestLayout > .bww-amb > i').length, veil: (document.querySelector('#conquestLayout > .season-veil') || {}).className})");
     ok(st.k === 'coast' && st.spans >= 4 && /season-coast/.test(st.veil), '@390 Map 10: coast, ambient spans, the coast vignette ' + JSON.stringify(st));
-    await pg.evaluate("conquestPanTo('m10', document.getElementById('playSubBody'), loadConquestProgress())");
+    await pg.evaluate("BramblewoodWorld.travelBeat = true; conquestPanTo('m10', document.getElementById('playSubBody'), loadConquestProgress())"); // 2026-11-13 (UI51): the beat is off in the game; the test turns it on
     await pg.waitForFunction('!!BramblewoodWorld._state.beat', null, {timeout: 20000}).catch(()=>{});
     const mid = await pg.evaluate(`(()=>{ const b = BramblewoodWorld._state.beat; if(!b) return null; clearTimeout(b.timer); b.tl.pause(); b.tl.seek(.6);
       const lay = document.getElementById('conquestLayout'), amb = lay.querySelector(':scope > .bww-amb'), kids = [...lay.children];

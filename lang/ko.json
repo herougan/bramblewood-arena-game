@@ -731,7 +731,6 @@
  "Defense": "방어",
  "Delete": "삭제",
  "Delete the added skirmish {label}?": "추가한 소규모 전투 {label}을(를) 삭제할까요?",
- "Delete this deck? This cannot be undone.": "이 덱을 삭제할까요? 되돌릴 수 없어요.",
  "Demolisher (Structures) and the old Siege (the bramble) are one skill now. An old Demolisher card reads as Siege.": "철거꾼(구조물)과 예전 공성(가시덤불)은 이제 한 스킬이에요. 예전 철거꾼 카드는 공성으로 읽어요.",
  "Desert": "사막",
  "Details": "상세",
@@ -4446,5 +4445,10 @@
  "No part won: your ⚡{n} came back.": "이긴 부 없음: ⚡{n}이 돌아왔습니다.",
  "{floors} parts and a boss · {n} players · ⚡{energy} each": "{floors}부와 보스 · {n}명 · 각 ⚡{energy}",
  "Shops": "상점",
- "Nothing in the Premium shop for you yet.": "프리미엄 상점에 아직 물건이 없어요."
+ "Nothing in the Premium shop for you yet.": "프리미엄 상점에 아직 물건이 없어요.",
+ "Delete this deck": "이 덱 삭제",
+ "Tap again to delete": "다시 탭하면 삭제",
+ "{name} deleted": "{name} 삭제됨",
+ "Side maps": "보조 맵",
+ "Main map": "메인 맵"
 }
