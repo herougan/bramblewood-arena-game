@@ -116,7 +116,7 @@ function missRate(att, def, seeds){ let miss = 0, tot = 0; for(let s = 1; s <= s
   const h = ev.find(x=> x.type === 'statusFx' && x.kind === 'eng27Hype'); ok(h && defs[h.targetDefId] && h.targetDefId === 'x-hitter', '#22 Hype 1 picks the ally with the most Attack');
   ok(ev.some(x=> x.type === 'hit' && x.attDefId === 'x-hitter'), '#22 ... and it acts at once'); }
 { const cards = JSON.parse(rd('canonical/cards.json')).map(c=> require('../bramblewood-skillparams.js').expandDef(c)) /* ENG35 (2026-11-07): fused skills read as their flat keys */, hc = cards.filter(c=> c.effects && c.effects.hype);
-  ok(hc.length === 1 && hc[0].id === 'crimson-wing-drumcaller' && hc[0].art === '' && hc[0].awaitingSource, '#22 one new card carries Hype, no art yet, in no pack');
+  ok(hc.length === 1 && hc[0].id === 'crimson-wing-drumcaller' && hc[0].awaitingSource, '#22 one new card carries Hype, in no pack'); // 2026-11-13 TESTFIX3: the Drumcaller has art now (was: no art yet)
   const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), Tb = SC.make(JSON.parse(rd('canonical/skill-costs.json'))), b = Tb.budget(hc[0], {});
   ok(b && b.x1 / b.N > 0.9 && b.x1 / b.N <= 1.0 && b.ok !== false, `#22 the Drumcaller is in band (${b && Math.round(100 * b.x1 / b.N)}% of N)`);
   ok(/Crimson Wing Drumcaller/.test(rd('docs/art-style-prompts.md')), '#22 its art prompt is written'); }

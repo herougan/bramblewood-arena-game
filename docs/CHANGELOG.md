@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-13 Package TESTFIX3 (stale test pins after LIST1 / SIDE2 / UI51 / UI52; e2e timing)
+- Tests only, except two small fixes. Unit suites 77 failing -> 57 (20 fixed): fx7, eng28 (CHANGELOG window), hubdec1, ui41, ui45, skir2, content10, content17, content18, pl1, econ1, pack1, eng27, content19, ui6, review1, z, pref, coop-lobby, filters.
+- Real bugs fixed: `docs/decisions.json` SIDE2-1..4 had `id` after `status` (the hub's one-item-per-line check); three search boxes (`ff9-pk-q` x2, `ui47AddIn`, `adminu1-search`) lacked `data-text-filter` so they did not reset on a page change (owner 10-18 rule).
+- e2e: anim1 #13 was test timing (the sample fell inside the card's own attack lunge at 1.5x; the test now waits for the round to finish); ui_smoke: forge castle price 2760 -> 690 (Briar Blossoms), and the card inspector needs Effects Medium+ in front (the page is forced there). The ui_smoke goto timeout did not recur when it ran alone (load only).
+
 ## 2026-11-13 Package UI52 (owner notes 11-13 11:50 #1-4, 11:55 #5-9)
 - Card editor: a "🗺️ Map N · <map>" button beside the id (cardObtainMap, the source of `canonical/card-obtain-maps.json`); it opens that map's Map cards window.
 - Skills Codex, admin: a 🗺️ toggle overlaid at the right of the filter row shows each skill's first map (earliest obtainable card that carries it).

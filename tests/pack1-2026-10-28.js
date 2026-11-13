@@ -80,7 +80,7 @@ ok(/\{id:'bronze', packNo:1, name:'Hedgerow Pouch', icon:'🌿', cost:\{gold:50,
   && /const PACK_RARITY_WEIGHT = \{special:0, devlegendary:0, devancient:0, eventlegendary:0, eventrare:0, starter:6, common:6, uncommon:3, quest:0, rare:1\.5,/.test(app), '4. pack sizes, pools 1 / 2 / 3, rarity weights and foil chances unchanged');
 
 // ---- 5. the Map cards button and overlay; texts
-ok(/id="cnpAdminClear"[^\n]*✅ Mark cleared<\/button><button type="button" class="btn small ghost" id="cnpMapCards" aria-haspopup="dialog">\$\{escapeHtml\(TX\('ui\.pk1-map-cards-btn'\)\)/.test(app), '5. 🃏 Map cards sits with Edit skirmish / Edit rewards / Mark cleared (admins only)');
+ok(/id="cnpAdminClear"[^\n]*✅ Mark cleared<\/button>(?:`\})?<button type="button" class="btn small ghost" id="cnpMapCards" aria-haspopup="dialog">\$\{escapeHtml\(TX\('ui\.pk1-map-cards-btn'\)\)/.test(app), '5. 🃏 Map cards sits with Edit skirmish / Edit rewards / Mark cleared (admins only)'); // 2026-11-13 TESTFIX3: CONTENT13 wraps Edit rewards / Mark cleared in a template, so the button follows a backtick-brace
 ok(/getElementById\('cnpMapCards'\); if\(mc\) mc\.addEventListener\('click', \(\)=> pk1OpenMapCards\(map\.id\)\)/.test(app), '5. it opens the overlay');
 { const i = app.indexOf('function pk1OpenMapCards('), body = app.slice(i, app.indexOf('\nfunction ', i + 10));
   ok(/mapPoolSections\(top\)/.test(body) && /vis4MapCardTilesHTML\(ids, defs, \{packs: true(, power: true)?\}\)/.test(body) /* 2026-11-07 (UI28): the power badge option */ && /wireRewardZoom\(ov\)/.test(body) && /Escape/.test(body), '5. the overlay: every list of the map (MAP, side maps, SPECIAL), VIS4\'s tiles with zoom tooltips, Escape closes'); }

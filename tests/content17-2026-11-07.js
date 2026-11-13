@@ -32,6 +32,7 @@ const ownLists = m=>{ const top = parent[m] || m, e = POOLS[top] || {}; return n
 // 2026-11-11 (LISTFIX3): the 11-11 lists (SKIR1, owner 00:16: his Yes picks, Claude's admin adds and THEME8 suggestions) took up some of these
 // picks; a pick on its map's list is fine when one of those three put it there (was: no pick on its own map's lists)
 const appSrc = R('arena_app.js'), grabC = n=> JSON.parse((appSrc.match(new RegExp('const ' + n + ' = (\\{.*?\\});\\n')) || [0, '{}'])[1]);
+const OWN1113 = new Set(Object.values(Object.assign({}, require('../docs/balance/list1/fold-2026-11-13.json').main, require('../docs/balance/list1/fold-2026-11-13.json').side)).flatMap(r=> r.ownerYes || [])); // 2026-11-13 TESTFIX3: LIST1's owner Yes picks; a card he picked that is still awaiting its source (placement) may be on a list
 const PICKS = J('docs/design/map-picks-owner-2026-11-11.json').maps, ADMIN = grabC('UI47_ADMIN_ADD'), SUGGEST = grabC('UI47_SUGGEST');
 // 2026-11-12 (TESTFIX1): SKIR3's lists are the owner's 11-12 picks (+ its own adds / top-ups, docs/balance/skir3/lists-2026-11-12.json): they took up more of these picks, so they count as a source too
 const PICKS12 = J('docs/design/map-picks-owner-2026-11-12.json').maps, S3 = J('docs/balance/skir3/lists-2026-11-12.json'), s3adds = x=> Array.isArray(x) ? x : Object.keys(x || {});
@@ -75,7 +76,7 @@ const firstNew = cards.findIndex(c=> newIds.has(c.id));
 ok(firstNew >= cards.length - C17.NEW.length - 12 /* 2026-11-08: room for later packages' appends (ENG37 1, CONTENT18 5) */ && cards.slice(firstNew).every(c=> newIds.has(c.id) || cards.indexOf(c) > firstNew), '2: the new cards are appended at the end');
 C17.NEW.forEach(s=>{ const c = by[s.id]; ok(!!c, `${s.id}: in cards.json`); if(!c) return;
   ok(c.awaitingSource === true && c.unattainable === true && !c.source, `${s.id}: awaitingSource + unattainable, no source`);
-  ok((!listed.has(s.id) || Object.values(SUGGEST).some(l=> l.includes(s.id))) && !JSON.stringify(extras).includes('"' + s.id + '"'), `${s.id}: on no list (or a THEME8 suggestion SKIR1 listed, still awaiting the owner's placement) and in no pack's extras`); // 2026-11-11 (LISTFIX3)
+  ok((!listed.has(s.id) || Object.values(SUGGEST).some(l=> l.includes(s.id)) || OWN1113.has(s.id)) && !JSON.stringify(extras).includes('"' + s.id + '"'), `${s.id}: on no list (or a THEME8 suggestion SKIR1 listed, still awaiting the owner's placement) and in no pack's extras`); // 2026-11-11 (LISTFIX3)
   ok(Object.keys(c.effects || {}).length <= 2, `${s.id}: two skills at most`);
   const b = T.budget(Object.assign({}, c, {obtainMap: mapN[s.map]}), {level: 1});
   ok(b.ok && b.x1 <= b.N && !(b.missing && b.missing.length), `${s.id}: inside the budget at Level 1, Map ${mapN[s.map]} (${(+b.x1).toFixed(2)} / ${(+b.N).toFixed(2)})`);

@@ -33744,7 +33744,7 @@ function ff9OpenPicker(ov, top, ok){
   const defs = getCardDefs(), inSpecial = new Set((mpEntry(top).special || []).concat(rvAddedOf(top)));
   const all = Object.keys(defs).filter(ok).sort((a, b)=> String(defs[a].name).localeCompare(String(defs[b].name)));
   const box = document.createElement('div'); box.className = 'ff9-picker'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', TX('ui.ff9-picker-title'));
-  box.innerHTML = `<div class="ff9-pk-head"><b>${escapeHtml(TX('ui.ff9-picker-title'))}</b><button type="button" class="modal-close-btn ff9-pk-x" aria-label="Close">✕</button></div><input type="search" class="ff9-pk-q" autocomplete="off" placeholder="${escapeAttr(TX('ui.ff9-search'))}" aria-label="${escapeAttr(TX('ui.ff9-search'))}"><div class="ff9-pk-list" role="listbox"></div>`;
+  box.innerHTML = `<div class="ff9-pk-head"><b>${escapeHtml(TX('ui.ff9-picker-title'))}</b><button type="button" class="modal-close-btn ff9-pk-x" aria-label="Close">✕</button></div><input data-text-filter type="search" class="ff9-pk-q" autocomplete="off" placeholder="${escapeAttr(TX('ui.ff9-search'))}" aria-label="${escapeAttr(TX('ui.ff9-search'))}"><div class="ff9-pk-list" role="listbox"></div>`;
   ov.querySelector('.pk1-mc-modal').appendChild(box);
   const q = box.querySelector('.ff9-pk-q'), list = box.querySelector('.ff9-pk-list');
   const draw = ()=>{
@@ -34618,7 +34618,7 @@ function ui37Mount(ov, top, mapId, ok){
   // (Carried if an earlier main map has it Yes, else NEW!). Lives outside the redrawn head so typing survives a draw.
   const addBox = document.createElement('div'); addBox.id = 'ui47Add'; addBox.className = 'ui47-add';
   addBox.innerHTML = `<button type="button" class="btn small" id="ui47AddBtn" aria-expanded="false" aria-controls="ui47AddPanel">➕ ${escapeHtml(TX('ui.ui47-add'))}</button><span class="panel-sub ui47-msg" id="ui47Msg" role="status"></span>`
-    + `<div class="ui47-panel" id="ui47AddPanel" hidden><input type="search" id="ui47AddIn" class="ui47-in" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="ui47AddList" aria-autocomplete="list" placeholder="${escapeAttr(TX('ui.ui47-add-ph'))}" aria-label="${escapeAttr(TX('ui.ui47-add-ph'))}"><ul class="ui47-list" id="ui47AddList" role="listbox"></ul></div>`;
+    + `<div class="ui47-panel" id="ui47AddPanel" hidden><input data-text-filter type="search" id="ui47AddIn" class="ui47-in" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="ui47AddList" aria-autocomplete="list" placeholder="${escapeAttr(TX('ui.ui47-add-ph'))}" aria-label="${escapeAttr(TX('ui.ui47-add-ph'))}"><ul class="ui47-list" id="ui47AddList" role="listbox"></ul></div>`;
   head.insertAdjacentElement('afterend', addBox);
   const aBtn = addBox.querySelector('#ui47AddBtn'), aPanel = addBox.querySelector('#ui47AddPanel'), aIn = addBox.querySelector('#ui47AddIn'), aList = addBox.querySelector('#ui47AddList'), aMsg = addBox.querySelector('#ui47Msg');
   let aAct = 0, aRes = [];
@@ -34958,7 +34958,7 @@ function ui29OpenPicker(ov, l){
   const defs = getCardDefs(), ok = ui29Ok(defs), has = new Set(ui29ListCards(l, defs).concat(ui29AddedOf(l.plan)));
   const all = Object.keys(defs).filter(ok).sort((a, b)=> String(defs[a].name).localeCompare(String(defs[b].name)));
   const box = document.createElement('div'); box.className = 'ff9-picker'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', TX('ui.ff9-picker-title'));
-  box.innerHTML = `<div class="ff9-pk-head"><b>${escapeHtml(TX('ui.ff9-picker-title'))}</b><button type="button" class="modal-close-btn ff9-pk-x" aria-label="Close">✕</button></div><input type="search" class="ff9-pk-q" autocomplete="off" placeholder="${escapeAttr(TX('ui.ff9-search'))}" aria-label="${escapeAttr(TX('ui.ff9-search'))}"><div class="ff9-pk-list" role="listbox"></div>`;
+  box.innerHTML = `<div class="ff9-pk-head"><b>${escapeHtml(TX('ui.ff9-picker-title'))}</b><button type="button" class="modal-close-btn ff9-pk-x" aria-label="Close">✕</button></div><input data-text-filter type="search" class="ff9-pk-q" autocomplete="off" placeholder="${escapeAttr(TX('ui.ff9-search'))}" aria-label="${escapeAttr(TX('ui.ff9-search'))}"><div class="ff9-pk-list" role="listbox"></div>`;
   ov.querySelector('.pk1-mc-modal').appendChild(box);
   const q = box.querySelector('.ff9-pk-q'), list = box.querySelector('.ff9-pk-list');
   const draw = ()=>{ const t = q.value.trim().toLowerCase(), hit = all.filter(id=> !t || String(defs[id].name).toLowerCase().includes(t)).slice(0, 60);
@@ -37326,7 +37326,7 @@ async function openAdminUserList(){
     <div class="modal-head-row"><h2>👥 ${escapeHtml(TX('ui.adminu1-title'))}</h2><button type="button" class="modal-close-btn" data-x aria-label="${escapeAttr(TX('ui.adminu1-close'))}">✕</button></div>
     <section class="ui17-ov" aria-label="${escapeAttr(TX('ui.ui17-ov-title'))}"></section>
     <p class="panel-sub">${escapeHtml(TX('ui.adminu1-sub'))}</p>
-    <div class="adminu1-bar"><input type="search" class="adminu1-search" placeholder="${escapeAttr(TX('ui.adminu1-search'))}" aria-label="${escapeAttr(TX('ui.adminu1-search'))}" autocomplete="off"><span class="adminu1-count" aria-live="polite"></span><button type="button" class="btn small ghost" data-refresh>↻ ${escapeHtml(TX('ui.adminu1-refresh'))}</button></div>
+    <div class="adminu1-bar"><input data-text-filter autocomplete="off" type="search" class="adminu1-search" placeholder="${escapeAttr(TX('ui.adminu1-search'))}" aria-label="${escapeAttr(TX('ui.adminu1-search'))}" autocomplete="off"><span class="adminu1-count" aria-live="polite"></span><button type="button" class="btn small ghost" data-refresh>↻ ${escapeHtml(TX('ui.adminu1-refresh'))}</button></div>
     <div class="adminu1-body"></div></div>`;
   document.body.appendChild(ov);
   const body = ov.querySelector('.adminu1-body'), search = ov.querySelector('.adminu1-search'), count = ov.querySelector('.adminu1-count');

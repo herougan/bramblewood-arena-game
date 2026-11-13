@@ -143,7 +143,7 @@ function tableAfter(def, scaleLine, name){ const ctx = {Math, Number, Object, Ar
 const uses = {
   quickMatch: /grantCurrency\('gold', econPay\('quickMatch'/, ghostRun: /econPay\('ghostRun', 'gold', 12 \+ stage\*6\)/, gauntlet: /econPay\('gauntlet', 'gold', 15 \+ streak\*5\)/,
   onlineRaid: /econPay\('onlineRaid', 'gold', 30 \+ strength\*13\)/, 'raids (offline)': /econPay\('raids', 'gold', Math\.round\(dealt\/4\)/, 'raids (parts)': /econPay\('raids', 'gold', below \? 8/,
-  'raids (claims)': /const all = econPayAll\('raids', all0\)/, coopDungeon: /econPayAll\('coopDungeon', CoopM\.floorPay/, autobattle: /econPayAll\('autobattle', AutoB\.runRewards/,
+  'raids (claims)': /const all = econPayAll\('raids', all0\)/, coopDungeon: /econPayAll\('coopDungeon'/ /* 2026-11-13 TESTFIX3: DUNGEON1 pays the run's gold / dust, no CoopM.floorPay */, autobattle: /econPayAll\('autobattle', AutoB\.runRewards/,
   arena: /econPay\('arena', 'gold'/, packDust: /econPay\('packDust', 'dust', MU\(pct \/ 100\)\)/, arenaDungeon: /econPayAll\('arenaDungeon'/, errands: /econScale\('errands', 'dust'/,
   'boss Metal on a repeat': /metalAmt = m\.conquestFirstClearNow \? metalFull : econPay\('conquestRepeat', 'metal'/, 'Long Burrow every clear': /econScale\('dungeonEvery', 'gems', 20 \+ floor\)/,
 };

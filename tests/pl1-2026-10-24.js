@@ -50,7 +50,7 @@ ok(/function pl1AuraAtk\(/.test(app) && (app.match(/pl1AuraAtk\(/g) || []).lengt
 { const f = new Function(fnSrc('pl1AuraAtk') + '; return pl1AuraAtk;')(); ok(f({kinBonus:1}) === 1 && f({kinBonus:1, natureBonus:2, packBonus:1}) === 4 && f(null) === 0, 'P24-12 pl1AuraAtk adds the three'); }
 // P24-13
 // 2026-10-26 (package RES3, B3): the Group Dungeon moved to Map 16 (was 3)
-ok(/const GD_OPEN_AFTER_MAP = 16;/.test(app) && /tutorialFullyDone\(\) && mapsPassed\(\) >= GD_OPEN_AFTER_MAP/.test(app), 'P24-13 the Group Dungeon opens after Map 16 (RES3 B3; was Map 3)');
+ok(/const GD_OPEN_AFTER_MAP = 16;/.test(app) && /tutorialFullyDone\(\)\) return false; return mapsPassed\(\) >= \(id === 'hollow' \? GD_OPEN_AFTER_MAP/.test(app), 'P24-13 the Group Dungeon opens after Map 16 (RES3 B3; was Map 3)'); // 2026-11-13 TESTFIX3: DUNGEON1 made the check per dungeon (gdPlayerOpen(id)); the vault still opens after GD_OPEN_AFTER_MAP
 // P24-18
 ok(/if\(!tabOpen\('deck'\)\)\{ pl1LeaderLessonWaitSave/.test(fnSrc('maybeLeaderLesson')), 'P24-18 the leader lesson waits for the Camp');
 // P24-19

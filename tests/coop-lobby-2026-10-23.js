@@ -65,7 +65,7 @@ function session(id, host, code, extra){ const sb = newPlayer(id); const events 
   // a fresh room of two: the race over the relay, rounds in step, a drop
   // 2026-10-30 (package COOP3, owner W10: a slot in an ally's row needs a card of your own beside it): ana brings a leader, so the middle
   // row's centre (behind it) is a cell player 1 may claim in the race. Was: no leader (any unit opened an ally's slots then).
-  const a = session('ana', true, 'RELAY2', {me: {peerId: 'ana', name: 'ana', deck: {'cave-cricket': 20} /* 2026-11-02 (ENG17): free units, so player 1 can play in rounds 1 and 2 (was deckFrom('ana'...)) */, leader: 'quarry-mole', castleHp: 15}}), b = session('ben', false, 'RELAY2'); await settle();
+  const a = session('ana', true, 'RELAY2', {me: {peerId: 'ana', name: 'ana', deck: {'cave-cricket': 20} /* 2026-11-02 (ENG17): free units, so player 1 can play in rounds 1 and 2 (was deckFrom('ana'...)) */, leader: 'quarry-mole', castleHp: 15}}), b = session('ben', false, 'RELAY2', {me: {peerId: 'ben', name: 'ben', deck: {'cave-cricket': 20}, castleHp: 15}} /* 2026-11-13 TESTFIX3: free units for ben too, the default deck's hand costs too much by round 2 (the race needs both to play at 1:1) */); await settle();
   b.setReady(true); await settle(); a.start(); await settle(); await elapse(100);
   ok(a.T && b.T && C.tableHash(a.T) === C.tableHash(b.T), 'start: both built the same table');
   // 2026-11-02 (package ENG17, owner COOP3-3): the middle row's centre is player 2's alone, so the race is on a cell both may use: round 1

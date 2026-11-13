@@ -57,7 +57,7 @@ const lab = rd('tools/effects-lab/manifest/fx7.js'), extra = rd('tools/effects-l
 ok(NAMES.every(nm=> lab.includes("'" + nm + "'") && new RegExp('^' + nm + '$', 'm').test(extra)), 'every function is in a Lab entry and in fx-src-extra.txt');
 ok((lab.match(/\bE\('/g) || []).length === 7 && /FX7 proposals/.test(rd('tools/effects-lab/fxlab-catalogue.js')), 'seven entries in the "FX7 proposals" area');
 ok(/package FX7/.test(rd('docs/effects-catalogue.md')), 'effects catalogue entry');
-ok(/Package FX7/.test(rd('docs/CHANGELOG.md').slice(0, 20000)), 'CHANGELOG entry');
+ok(/Package FX7/.test(rd('docs/CHANGELOG.md').slice(0, 150000)), 'CHANGELOG entry'); // 2026-11-13 TESTFIX3: window widened, newer entries sit above FX7's
 // 4. the Lab-error test
 ok(fs.existsSync(path.join(ROOT, 'tests/lab-errors-2026-11-12.py')) && /lab-errors-2026-11-12\.py/.test(rd('tests/run-all.sh')), 'the Lab-error test is in run-all.sh');
 console.log(fail ? `fx7: ${fail} of ${n} checks FAILED` : `fx7: all ${n} checks passed`); process.exit(fail ? 1 : 0);
