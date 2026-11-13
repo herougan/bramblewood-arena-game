@@ -6,7 +6,7 @@
 //      2. a high-value card within reach: it pitches for it and plays it this turn;
 //      3. the reserve: a deck averaging 1.75 Lumber pitches to keep 0.75 when its play would leave less;
 //      4. nothing to play and nothing the Lumber is for: it holds its cards (no pitch);
-//      5. a cheap deck over eight turns pitches seldom; a costly deck still pitches (it needs the Lumber).
+//      5. a cheap deck over eight turns pitches seldom (at most 2); a costly deck still pitches (it needs the Lumber).
 //   A1 (owner #26: "Play card A, B, C or just pitch and then for each decision - where. Then which is the best decision"; "Does the AI
 //      consider triggering bloom?"):
 //      6. Bloom: a Bloom card whose conditions hold goes to the slot with a free neighbour (the smart and smartest CPUs, every seed);
@@ -60,8 +60,10 @@ for(const lv of [0, 1, 2]){
     e.draw(P[2], 3, 'B', {}, null);
     for(let r = 1; r <= 8; r++){ fresh(P); if(r > 1) e.roundStart(P, r, so, {}, null); const ev = []; e.aiTakeTurn(P, so, 2, {}, ev); k += ev.filter(x=> x.type === 'discard').length; plays += ev.filter(x=> x.type === 'play').length; e.draw(P[2], 1, 'B', {}, null); } }
     return {k: k / 20, plays: plays / 20}; };
+  // 2026-11-13 (package FIX11): at most 2 (was 1.5): ENG14's save plan (owner X24, 10-30) pitches its best free play (x-free 1/3) to put down a
+  // card worth 1.5x it (x-one 2/3) this turn, 1.15 -> 1.75 pitches here with the same cards played (8.0 -> 7.85)
   for(const lv of [0, 1]){ const c = pitches(CHEAP, lv), x = pitches(COSTLY, lv);
-    ok(c.k <= 1.5 && c.plays >= 6, `level ${lv}: a cheap deck pitches ${c.k.toFixed(2)} times in 8 turns (at most 1.5) and plays ${c.plays.toFixed(1)} cards`);
+    ok(c.k <= 2 && c.plays >= 6, `level ${lv}: a cheap deck pitches ${c.k.toFixed(2)} times in 8 turns (at most 2) and plays ${c.plays.toFixed(1)} cards`);
     ok(x.k >= 2 && x.k > c.k, `level ${lv}: a costly deck still pitches for its Lumber (${x.k.toFixed(2)} times in 8 turns)`); }
 }
 

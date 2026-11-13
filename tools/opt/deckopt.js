@@ -891,7 +891,8 @@ async function compareMap(gm, ev, map, o, log) {
   const t0 = Date.now(), pools = poolsFor(gm, map, o), fights = fightsOf(map), G = gm.G;
   const level = o.level != null ? o.level : G.referenceFightSetup(map.id, fights[0], { deck: {} }).ref.level;
   const entries = buildEntries(gm, map, o), main = entries.map((e, i) => i).filter(i => !entries[i].neutral), B = o.budget || 12000, res = {};
-  const spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank, leader: o.leader || null, levels: (typeof pools !== 'undefined' && pools && pools.levels) || null }; // REF5: prog's own card levels await ev.setup(spec);
+  const spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank, leader: o.leader || null, levels: (typeof pools !== 'undefined' && pools && pools.levels) || null }; // REF5: prog's own card levels
+  await ev.setup(spec); // 2026-11-13 (package FIX11): was swallowed by the comment above since REF5 (10-30); --compare exited 0 with no output
   for (const m of ['ga', 'descent']) {
     const rng = mulberry(fnv(o.seed + '|' + map.id)), X = { gm, ev, stats: new Stats(entries.length), entries, main, o, log, t0: Date.now() }, credit = {};
     const seeds = seedDecks(gm, entries, pools.p1, rng, credit, o.pop * 2), t = Date.now();

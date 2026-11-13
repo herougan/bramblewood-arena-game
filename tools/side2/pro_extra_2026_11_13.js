@@ -8,10 +8,7 @@
 const fs = require('fs'), path = require('path'), Module = require('module');
 const ROOT = path.resolve(__dirname, '..', '..'), DIR = path.join(ROOT, 'docs', 'balance', 'side2', 'refdecks');
 const mid = process.argv[2], budget = +process.argv[3] || 6000;
-// the search with SIDE2's stall guard (as tools/side2/refdecks_2026_11_13.js loads it)
-const DECK = path.join(ROOT, 'tools', 'bench', 'deck.js'); let ds = fs.readFileSync(DECK, 'utf8');
-ds = ds.replace('while (used() < share) {\n', "let stall = 0, lastG = -1; while (used() < share) { if (ev.games === lastG) { if (++stall > 40) break; } else { stall = 0; lastG = ev.games; }\n");
-const dm = new Module(DECK, module); dm.filename = DECK; dm.paths = Module._nodeModulePaths(path.dirname(DECK)); dm._compile(ds, DECK); dm.loaded = true; require.cache[DECK] = dm;
+const DECK = path.join(ROOT, 'tools', 'bench', 'deck.js');
 const T3 = require(DECK), O = require('../opt/deckopt.js');
 (async () => {
   const gm = O.loadGame(ROOT), m = gm.G.CONQUEST_MAPS.find(x => x.id === mid), no2 = String(gm.G.mapNumberOf(mid)).padStart(2, '0');

@@ -155,8 +155,11 @@ async function main(o) {
     let ok = O.uniqDecks(seeds.filter(d => R.legal(d, pool) && (!f.cards || R.focusCopies(d, f) >= f.need)));
     const okFar = ok.filter(far); let nearOk = false; if (okFar.length) ok = okFar; else if (prev.length) nearOk = true;
     if (!ok.length) { log(`  ${f.id}: no legal deck holds the focus (${f.need} copies of ${f.cards.length} cards); skipped`); continue; }
-    let ranked = await O.halving(ev, stats, entries, main, ok, sh), best = ranked[0].k, cur = best, fail = 0, steps = 0, moves = 0;
+    let ranked = await O.halving(ev, stats, entries, main, ok, sh), best = ranked[0].k, cur = best, fail = 0, steps = 0, moves = 0, idle = 0, lastG = -1;
     while (used() < share) {
+      // 2026-11-13 (package FIX11): once every neighbour is already read no game is played and `fail` keeps resetting, so a small list never
+      // reached `share` (The Canopy's 11 cards ran 3.5 h); a focus stops after 40 passes in a row with no new game
+      if (ev.games === lastG) { if (++idle > 40) { log(`  ${f.id}: stalled (every neighbour already read), stopping at ${used()} games`); break; } } else { idle = 0; lastG = ev.games; }
       const nb = neighbours(gm, R, O.deckFromKey(cur), pool, rng, f, 8).filter(d => nearOk || far(d)); if (!nb.length) { if (++fail > 6) break; continue; }
       const r = await O.halving(ev, stats, entries, main, nb, sh); steps++;
       if (r[0].g >= sh.gmax && r[0].f > fit(cur).f) { cur = r[0].k; fail = 0; moves++; } else fail++;
