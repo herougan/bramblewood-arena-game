@@ -2150,4 +2150,119 @@ function bloomFail(el, o){
   later(o.onDone, 960/spd);
 }
 Object.assign(root.SkillFX, {bloomFail});
+// ==== Package FX10 (2026-11-13, owner 00:03: "interesting vfx to improve our general UI experience and also skills"): ten skills that fire on Maps 0-20
+// with only a floating word or a shared look. One host over the card (o.host: the game passes fxHostAt's, which rides the camera layer; else a fixed one
+// here), at most 8 spans a card, WAAPI on transform and opacity only, nothing read per frame, the host removes itself. o.rect: the card's box, read
+// before the host was added. o.speed (the fight's speed) shortens a look up to 3x; at 4x and 5x, with o.calm (Effects Low) and under reduced motion one
+// still piece only fades. Returns the look's length in ms (0: nothing drawn).
+const F10_KF = (x, y, s, op, more)=> Object.assign({transform:`translate(${x}px, ${y}px) scale(${s})`, opacity:op}, more || {});
+function f10Run(el, o, ms, build){
+  o = o || {}; if(!el || el.isConnected === false || !el.getBoundingClientRect) return 0;
+  const r = o.rect || el.getBoundingClientRect(); if(!(r.width > 0 && r.height > 0)) return 0;
+  const sp = Number(o.speed) || 1, calm = !!o.calm || sp >= 4 || reduce(), spd = Math.max(.6, Math.min(3, sp)), T = calm ? (sp >= 4 ? 380 : 700) : Math.round(ms / spd);
+  let host = o.host;
+  if(!host){ host = document.createElement('div'); host.className = 'fx-float-host'; host.setAttribute('aria-hidden', 'true');
+    host.style.cssText = `position:fixed; left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px; pointer-events:none; z-index:70;`;
+    document.body.appendChild(host); setTimeout(()=> host.remove(), T + 150); }
+  const add = (cls, css, frames, a)=>{ a = a || {}; if(calm && !a.still) return null;
+    const i = document.createElement('i'); i.className = 'fx10 fx10-' + cls; if(css) i.style.cssText = css; if(a.text) i.textContent = a.text; host.appendChild(i);
+    if(i.animate) i.animate(calm ? [{opacity:0}, {opacity:a.peak || .85, offset:.3}, {opacity:0}] : frames,
+      {duration: calm ? T : Math.round((a.ms || ms) / spd), delay: calm ? 0 : Math.round((a.delay || 0) / spd), easing: a.ease || 'ease-out', fill:'forwards'});
+    return i; };
+  build(add, r.width, r.height, r);
+  if(o.onDone) later(o.onDone, T);
+  return T;
+}
+// Avalanche (statusFx avalancheWait, +1 Wait): a heap of snow lands on the card's top edge with a squash, powder puffs off both sides, three clumps
+// slide down its face and drop off, and the heap settles and melts away.
+function snowBury(el, o){ return f10Run(el, o, 1050, (add, W, H)=>{
+  const mw = W*.96, mh = H*.34;
+  add('snowcap', `left:${(W - mw)/2}px; top:${-mh*.3}px; width:${mw}px; height:${mh}px;`, [{transform:`translateY(${-H*.55}px) scale(1, .8)`, opacity:0},
+    {transform:'translateY(0) scale(1.06, .78)', opacity:1, offset:.2}, {transform:'translateY(0) scale(.97, 1.06)', opacity:1, offset:.3}, {transform:'translateY(0) scale(1, 1)', opacity:1, offset:.4},
+    {transform:`translateY(${mh*.12}px) scale(1, .9)`, opacity:.9, offset:.78}, {transform:`translateY(${mh*.25}px) scale(1, .7)`, opacity:0}], {still:true, peak:.9});
+  [-1, 1].forEach(s=> [0, 1].forEach(k=> add('powder', `left:${W/2 + s*mw*(.3 + k*.12) - 9}px; top:${mh*.2 - 9 + k*6}px;`,
+    [F10_KF(0, 0, .4, 0), F10_KF(s*(14 + k*10), -6 - k*8, 1.2, .9, {offset:.3}), F10_KF(s*(26 + k*16), -2 - k*10, 1.9, 0)], {ms:620, delay:200 + k*40})));
+  for(let i = 0; i < 3; i++) add('clump', `left:${W*(.22 + i*.28) - 6}px; top:${mh*.45}px;`, [F10_KF(0, 0, .8, 0), F10_KF(0, 0, 1, 1, {offset:.15}),
+    F10_KF((i - 1)*3, H*.45, 1, 1, {offset:.7}), F10_KF((i - 1)*5, H*.78, .7, 0)], {ms:720, delay:300 + i*90, ease:'ease-in'});
+}); }
+// Ignite (statusFx en20Ignite: Burn takes hold): a spark lands at the card's foot and a line of flame runs out from it both ways along the bottom edge,
+// licking up, while a warm rim lights the card.
+function igniteFlare(el, o){ return f10Run(el, o, 950, (add, W, H)=>{
+  add('heatrim', '', [{opacity:0}, {opacity:.95, offset:.3}, {opacity:.55, offset:.6}, {opacity:0}], {still:true, ms:900, peak:.75});
+  add('spark', `left:${W/2 - 7}px; top:${H - 12}px;`, [F10_KF(0, -H*.25, .4, 0), F10_KF(0, 0, 1.3, 1, {offset:.25, easing:'ease-in'}), F10_KF(0, 0, .2, 0)], {ms:380});
+  for(let i = 0; i < 5; i++){ const k = i - 2, h = 1 - Math.abs(k)*.18;
+    add('flame', `left:${W/2 + k*W*.18 - 9}px; top:${H - 30}px;`, [{transform:'translateY(6px) scale(.5, .1)', opacity:0}, {transform:`translateY(0) scale(${h}, ${h*1.25})`, opacity:1, offset:.35},
+      {transform:`translateY(-4px) scale(${h*.9}, ${h*1.05})`, opacity:.95, offset:.6}, {transform:'translateY(-10px) scale(.4, .5)', opacity:0}], {ms:620, delay:140 + Math.abs(k)*70}); }
+}); }
+// Burn's tick (burnTick): soot climbs the card's lower half, three tongues of flame flick up from its bottom edge and embers drift off.
+function burnLick(el, o){ return f10Run(el, o, 850, (add, W, H)=>{
+  add('soot', '', [{opacity:0}, {opacity:.85, offset:.25}, {opacity:.5, offset:.6}, {opacity:0}], {still:true, ms:820, peak:.6});
+  [.22, .5, .78].forEach((f, i)=> add('flame', `left:${W*f - 7}px; top:${H - 24}px; width:14px; height:24px;`, [{transform:'scale(.4, .2)', opacity:0}, {transform:'scale(1, 1.15)', opacity:1, offset:.3},
+    {transform:'scale(.8, .7)', opacity:.9, offset:.5}, {transform:'scale(1, 1.2)', opacity:.9, offset:.7}, {transform:'translateY(-6px) scale(.3, .4)', opacity:0}], {ms:560, delay:i*80}));
+  for(let i = 0; i < 4; i++) add('ember', `left:${W*(.2 + i*.2)}px; top:${H - 14}px;`, [F10_KF(0, 0, 1, 0), F10_KF(i % 2 ? 5 : -5, -H*.25, 1, 1, {offset:.35}), F10_KF(i % 2 ? -4 : 8, -H*.6, .5, 0)], {ms:700, delay:120 + i*60});
+}); }
+// A once-only skill is used up (skillSpent): its chip (o.chipRect: its box, read before the host went in; else o.chip or the card's skill strip) gives a last
+// gold flash and goes out in a puff of grey smoke.
+function spentPuff(el, o){ o = o || {}; const chip = o.chipRect ? null : o.chip || (el && el.querySelector ? el.querySelector('.badges') : null), cr = o.chipRect || (chip && chip.getBoundingClientRect ? chip.getBoundingClientRect() : null);
+  return f10Run(el, o, 800, (add, W, H, r)=>{ let cx = W/2, cy = H - 8; if(cr && cr.width > 0){ cx = cr.left + cr.width/2 - r.left; cy = cr.top + cr.height/2 - r.top; }
+    add('spentring', `left:${cx - 18}px; top:${cy - 18}px;`, [F10_KF(0, 0, .4, 1), F10_KF(0, 0, 1, 1, {offset:.3}), F10_KF(0, 0, 1.7, 0)], {still:true, ms:520, peak:.9});
+    for(let i = 0; i < 4; i++){ const d = i - 1.5; add('smoke', `left:${cx - 12 + d*8}px; top:${cy - 12}px;`, [F10_KF(0, 0, .4, 0), F10_KF(d*5, -14, 1, .9, {offset:.35}), F10_KF(d*10, -36 - (i % 2)*8, 1.9, 0)], {ms:700, delay:140 + i*50}); }
+  }); }
+// Brood (spawn kind brood; replaces the shared summon ring): the mother (o.from, or her box o.fromRect) lets a spiderling down on silk. A thread runs out from her to the new
+// token, an egg sac slides down it, lands, wobbles and splits; its halves drop away, two spiderlings scurry off and the thread fades.
+function broodDrop(token, o){ o = o || {}; const m = o.fromRect || (o.from && o.from.getBoundingClientRect ? o.from.getBoundingClientRect() : null);
+  return f10Run(token, o, 1000, (add, W, H, r)=>{
+    const cx = W/2, cy = H*.42; let dx = 0, dy = -H*.9; if(m && m.width > 0){ dx = m.left + m.width/2 - (r.left + cx); dy = m.top + m.height*.35 - (r.top + cy); }
+    const L = Math.max(20, Math.hypot(dx, dy)), ang = (Math.atan2(-dy, -dx)*57.2958).toFixed(1), land = .42;
+    add('silk', `left:${cx + dx}px; top:${cy + dy}px; width:${L}px; rotate:${ang}deg;`, [{transform:'scaleX(0)', opacity:.9}, {transform:'scaleX(1)', opacity:.9, offset:.25}, {transform:'scaleX(1)', opacity:.8, offset:.7}, {transform:'scaleX(1)', opacity:0}], {ms:1000, ease:'linear'});
+    add('sac', `left:${cx - 9}px; top:${cy - 11}px;`, [F10_KF(dx, dy, .6, 0), F10_KF(dx*.85, dy*.85, .8, 1, {offset:.1}), F10_KF(0, 0, 1, 1, {offset:land, easing:'ease-in'}), {transform:'translate(-2px, 0) rotate(-12deg)', opacity:1, offset:land + .08},
+      {transform:'translate(2px, 0) rotate(12deg)', opacity:1, offset:land + .16}, {transform:'translate(0, 0) scale(1.15, .9)', opacity:1, offset:land + .22}, {transform:'translate(0, 0) scale(1.2)', opacity:0, offset:land + .24}, {transform:'translate(0, 0) scale(1.2)', opacity:0}], {still:true, ms:1000, peak:.9});
+    [-1, 1].forEach(s=> add('half' + (s > 0 ? ' r' : ''), `left:${cx - 9 + (s > 0 ? 9 : 0)}px; top:${cy - 11}px;`, [{transform:'translate(0, 0) rotate(0deg)', opacity:0}, {transform:'translate(0, 0) rotate(0deg)', opacity:0, offset:.64},
+      {transform:'translate(0, 0) rotate(0deg)', opacity:1, offset:.66}, {transform:`translate(${s*16}px, ${H*.3}px) rotate(${s*80}deg)`, opacity:0}], {ms:1000, ease:'ease-in'}));
+    [-1, 1].forEach(s=> add('babe', `left:${cx - 3}px; top:${cy - 2}px;`, [F10_KF(0, 0, .5, 0), F10_KF(0, 0, .5, 0, {offset:.66}), F10_KF(s*W*.18, H*.12, 1, 1, {offset:.84}), F10_KF(s*W*.32, H*.2, 1, 0)], {ms:1000}));
+  }); }
+// Confuse (statusFx confuse; was the Stun orbit with a ❓): a jumble of question marks and notes, the lyrebird's mimicked calls, loops around the card's
+// head on a lopsided ring, every other one going the other way round.
+function confuseSpin(el, o){ return f10Run(el, o, 1100, (add, W, H)=>{
+  const rx = W*.48, ry = H*.09, cy = H*.04, G = ['?', '♪', '?', '♫', '?'];
+  add('mixring', `left:${W/2 - rx}px; top:${cy - ry}px; width:${rx*2}px; height:${ry*2}px;`, [{transform:'rotate(0deg) scale(.6)', opacity:0}, {transform:'rotate(-120deg) scale(1)', opacity:.8, offset:.3}, {transform:'rotate(-300deg) scale(1.1)', opacity:0}], {still:true, ms:1000, peak:.7});
+  G.forEach((g, i)=>{ const kf = [], way = i % 2 ? -1 : 1;
+    for(let s = 0; s <= 6; s++){ const a = (i/G.length + way*s/6*.85)*Math.PI*2; kf.push({transform:`translate(${(W/2 - 8 + Math.cos(a)*rx).toFixed(1)}px, ${(cy - 11 + Math.sin(a)*ry).toFixed(1)}px) rotate(${way*s*30}deg) scale(${(.85 + .25*Math.sin(a)).toFixed(2)})`, opacity: s === 0 || s === 6 ? 0 : 1}); }
+    add('glyph', '', kf, {text:g, ms:1000, delay:i*25, ease:'linear'}); });
+}); }
+// Carrion (statusFx carrion: it heals when another unit dies): pale wisps rise from where the fallen unit was (o.from, else below the card), curl in and
+// sink into the feeder; a dark red rim pulses as they arrive. o.fromRect: that box, read before the host went in.
+function carrionFeed(el, o){ o = o || {}; const fr = o.fromRect || (o.from && o.from.getBoundingClientRect ? o.from.getBoundingClientRect() : null);
+  return f10Run(el, o, 1000, (add, W, H, r)=>{ let sx = W/2, sy = H + 30; if(fr && fr.width > 0){ sx = fr.left + fr.width/2 - r.left; sy = fr.top + fr.height/2 - r.top; }
+    for(let i = 0; i < 4; i++){ const ox = (i - 1.5)*10, mx = (sx + W/2)/2 + (i % 2 ? 24 : -24), my = Math.min(sy, H/2) - 30 - i*6;
+      add('wisp', '', [{transform:`translate(${sx + ox - 11}px, ${sy - 11}px) scale(.5)`, opacity:0}, {transform:`translate(${mx - 11}px, ${my - 11}px) scale(1)`, opacity:.9, offset:.45},
+        {transform:`translate(${W/2 + ox*.3 - 11}px, ${H*.45 - 11}px) scale(.4)`, opacity:0}], {ms:800, delay:i*60, ease:'ease-in-out'}); }
+    add('feedrim', '', [{opacity:0}, {opacity:0, offset:.5}, {opacity:.9, offset:.7}, {opacity:0}], {still:true, peak:.8});
+  }); }
+// Delivery (a resource gain with cause delivery): a small crate drops onto the card, bounces, and its lid pops off with a few wisps of straw (the game then
+// flies the resource to its pill, as before).
+function deliveryCrate(el, o){ return f10Run(el, o, 760, (add, W, H)=>{
+  const s = Math.min(W, H)*.34, x = W/2 - s/2, y = H*.3, drop = {offset:.3, easing:'cubic-bezier(.5,0,.9,.6)'};
+  add('crate', `left:${x}px; top:${y}px; width:${s}px; height:${s*.8}px;`, [F10_KF(0, -H*.6, 1, 0), F10_KF(0, 0, 1, 1, drop), {transform:`translate(0, ${s*.06}px) scale(1.08, .88)`, opacity:1, offset:.38},
+    F10_KF(0, -s*.12, 1, 1, {offset:.5}), F10_KF(0, 0, 1, 1, {offset:.6}), F10_KF(0, 0, 1, 1, {offset:.82}), F10_KF(0, s*.1, .9, 0)], {still:true, peak:.9});
+  add('lid', `left:${x - s*.06}px; top:${y - s*.14}px; width:${s*1.12}px; height:${s*.2}px;`, [F10_KF(0, -H*.6, 1, 0), F10_KF(0, 0, 1, 1, drop), F10_KF(0, 0, 1, 1, {offset:.6}),
+    {transform:`translate(${s*.5}px, ${-s*.9}px) rotate(70deg)`, opacity:1, offset:.78}, {transform:`translate(${s*.8}px, ${-s*.4}px) rotate(140deg)`, opacity:0}], {ease:'linear'});
+  for(let i = 0; i < 3; i++) add('straw', `left:${W/2 - 5 + (i - 1)*s*.25}px; top:${y}px;`, [F10_KF(0, 0, .6, 0), F10_KF(0, 0, .6, 0, {offset:.58}), F10_KF((i - 1)*14, -s*.6, 1, 1, {offset:.78}), F10_KF((i - 1)*20, -s*.3, .8, 0)]);
+}); }
+// Skitter (statusFx skitter: after its hit it is Quick and Evasive for its next round): a trail of tiny footprints scurries in a zig-zag along the card's
+// foot while two dashes streak past.
+function skitterDash(el, o){ return f10Run(el, o, 800, (add, W, H)=>{
+  [0, 1, 2].forEach(k=> add('dash', `left:${-W*.1}px; top:${H*(.42 + k*.15)}px; width:${W*.55}px;`, [{transform:'translateX(0) scaleX(.3)', opacity:0}, {transform:`translateX(${W*.4}px) scaleX(1)`, opacity:.95, offset:.4},
+    {transform:`translateX(${W*.9}px) scaleX(.4)`, opacity:0}], {ms:460, delay:60 + k*80, ease:'ease-in', still:!k, peak:.8}));
+  for(let i = 0; i < 5; i++) add('print', `left:${W*(.06 + i*.19)}px; top:${H*.78 + (i % 2 ? -8 : 4)}px; rotate:${i % 2 ? 70 : 110}deg;`,
+    [F10_KF(0, 0, .3, 0), F10_KF(0, 0, 1.1, 1, {offset:.2}), F10_KF(0, 0, 1, .85, {offset:.6}), F10_KF(0, 0, .9, 0)], {ms:540, delay:i*60});
+}); }
+// Thanatosis (statusFx thanatosis: it plays dead at 1 Health): a grey hush falls over the card, two crossed-out eyes pop up, and a little ghost floats out,
+// looks both ways and slips back in (it is only pretending).
+function playDead(el, o){ return f10Run(el, o, 1150, (add, W, H)=>{
+  add('hush', '', [{opacity:0}, {opacity:.75, offset:.2}, {opacity:.6, offset:.75}, {opacity:0}], {still:true, ms:1100, peak:.55});
+  [-1, 1].forEach(s=> add('xeye', `left:${W/2 + s*W*.17 - 10}px; top:${H*.3}px;`, [F10_KF(0, 0, .2, 0), F10_KF(0, 0, 1.25, 1, {offset:.2}), F10_KF(0, 0, 1, 1, {offset:.3}), F10_KF(0, 0, 1, 1, {offset:.8}), F10_KF(0, 0, .6, 0)], {text:'✕', ms:1050, delay:80}));
+  add('ghost', `left:${W/2 - 14}px; top:${H*.32}px;`, [F10_KF(0, 10, .5, 0), F10_KF(0, -H*.32, 1, .9, {offset:.35}), F10_KF(-6, -H*.36, 1, .9, {offset:.5}), F10_KF(6, -H*.36, 1, .9, {offset:.62}), F10_KF(0, 4, .6, 0)], {delay:60, ease:'ease-in-out'});
+}); }
+Object.assign(root.SkillFX, {snowBury, igniteFlare, burnLick, spentPuff, broodDrop, confuseSpin, carrionFeed, deliveryCrate, skitterDash, playDead});
 })(typeof window !== 'undefined' ? window : globalThis);

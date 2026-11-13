@@ -6006,6 +6006,17 @@ const SoundKit = (()=>{
     // the board (a low rush of air that swells and fades, three deep wing beats in it).
     shellCrackTone(){ fnoise(0.07,0.09,{type:'highpass',freq:1600,crackle:0.4,attack:0.002}); [0.3,0.38,0.47,0.55].forEach((d,i)=>{ tone(520-i*55,0.05,'square',0.045,d); fnoise(0.04,0.04,{type:'bandpass',freq:1400-i*150,delay:d}); }); },
     dragonGust(){ fnoise(1.0,0.07,{type:'lowpass',freq:320,freqEnd:900,q:0.8,attack:0.35}); [0.05,0.43,0.81].forEach(d=> fnoise(0.18,0.06,{type:'lowpass',freq:260,freqEnd:110,attack:0.03,delay:d})); },
+    // 2026-11-13 (package FX10): one cue for each of the ten skill looks (docs/sfx-cue-sheet.md 59-68)
+    snowThump(){ fnoise(0.22,0.12,{type:'lowpass',freq:500,freqEnd:180,attack:0.004}); tone(90,0.12,'sine',0.08); fnoise(0.3,0.04,{type:'highpass',freq:3000,delay:0.05}); },
+    igniteWhoosh(){ fnoise(0.4,0.08,{type:'bandpass',freq:500,freqEnd:2400,q:1.2,attack:0.12}); fnoise(0.3,0.04,{type:'highpass',freq:2500,crackle:0.35,delay:0.15}); },
+    burnCrackle(){ fnoise(0.25,0.06,{type:'highpass',freq:2200,crackle:0.5}); fnoise(0.3,0.03,{type:'lowpass',freq:600,delay:0.02}); },
+    spentPuff(){ fnoise(0.12,0.05,{type:'bandpass',freq:1400,freqEnd:600}); tone(660,0.05,'triangle',0.05,0.02); tone(440,0.07,'triangle',0.045,0.08); },
+    silkDrop(){ sweep(900,1700,0.3,'sine',0.04); tone(520,0.04,'square',0.04,0.5); fnoise(0.06,0.05,{type:'bandpass',freq:1800,delay:0.5}); },
+    confuseWarble(){ [880,620,990,560].forEach((f,i)=> tone(f,0.07,'sine',0.06,i*0.09)); sweep(700,420,0.25,'triangle',0.03,0.34); },
+    carrionCaw(){ tone(310,0.12,'sawtooth',0.05); fnoise(0.12,0.04,{type:'bandpass',freq:900,delay:0.01}); tone(260,0.16,'sawtooth',0.05,0.16); fnoise(0.14,0.04,{type:'bandpass',freq:760,delay:0.17}); },
+    crateThunk(){ tone(140,0.08,'square',0.08); fnoise(0.07,0.07,{type:'bandpass',freq:700}); tone(980,0.04,'triangle',0.05,0.42); },
+    skitterPatter(){ [0,0.05,0.1,0.15,0.2,0.25].forEach((d,i)=> tone(1800 + (i%2)*300,0.02,'square',0.03,d)); },
+    playDeadFlop(){ sweep(520,180,0.45,'sine',0.06); fnoise(0.1,0.06,{type:'lowpass',freq:300,delay:0.42}); },
     reflectTone(){ tone(600,0.05,'triangle',0.07); tone(900,0.05,'triangle',0.06,0.04); tone(600,0.05,'triangle',0.05,0.08); }, // bounces up then back down, mirroring the hit
     momentumTone(){ tone(400,0.06,'square',0.07); tone(560,0.06,'square',0.07,0.05); tone(760,0.08,'square',0.08,0.1); }, // three escalating notes, each louder
     // Esprit (2026-09-21, Skills/VFX/SFX audit): the engine has pushed a statusFx{kind:'esprit'}
@@ -53171,7 +53182,7 @@ function positionBeamVfx(ev){
 // own short SkillFX look in real fights (the Effects library plays them too, since it runs the same replay). Each layers over
 // the existing number, sound and tint; Medium effects and up, never with reduced motion, and the ones that can repeat play at
 // most once per unit per round (skillFxOnce). Fire-and-forget: nothing here holds up the replay.
-const STATUS_ORBIT = {stun:'★', stunOnHit:'★', stagger:'✦', confuse:'❓', tipsy:'🫧'};
+const STATUS_ORBIT = {stun:'★', stunOnHit:'★', stagger:'✦', tipsy:'🫧'}; // 2026-11-13 (package FX10): Confuse has its own look (SkillFX.confuseSpin)
 // 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): an Electricity hit is drawn as its own bolt: the arc runs attacker -> struck unit -> this unit, the wet zap attacker -> this
 // unit. SkillFX.lightning lands jump i at i*152 + 60 ms, so the number pops as the last jump lands.
 function electricChain(ev){
@@ -53219,7 +53230,7 @@ function eighthPassVfx(ev){
   if(ev.type === 'frenzy' && skillFxOnce('frenzy' + ev.attUid)){ const t = el(ev.attUid); if(t) F.rageFlare(t); }
   if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
   if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
-  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && ev.kind !== 'bulwark' /* FX6: it rises, no portal */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
+  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && ev.kind !== 'bulwark' /* FX6: it rises, no portal */ && ev.kind !== 'brood' /* FX10: silk (SkillFX.broodDrop) */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
     // 2026-10-25 (package FIX3, F5, owner #17: "cards played disappear then appear again at the end of the round - no it's just tokens"): the
     // portal pops the new token's tile from 30% opacity, 140 ms (+60 per token) after the spawn, when the token has already landed at full
     // opacity: it showed, dropped to 30% and faded back in (seen headless: a 145-170 ms dip on a Brood token). The portal now plays over the
@@ -53229,7 +53240,7 @@ function eighthPassVfx(ev){
     at(140, ()=> fresh.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) fix3PortalOver(F, t); }))); }
   if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
     const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
-    if(src && dest) F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); }
+    const arc = ()=> F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); if(src && dest){ if(ev.cause === 'delivery') at(Math.round(380 / Math.min(3, matchState.speedMult || 1)), arc); else arc(); } } // 2026-11-13 (FX10): a Delivery's logs leave its crate
   if(ev.type === 'play' && !ev.reserve && (Number(fxOf(ev.defId).prayer) > 0)) at(500, ()=>{ const t = el(ev.uid); if(t) F.prayerLight(t); }); // a Prayer card arrives
   if(ev.type === 'tide' && ev.tide !== 'ebb' && !ev.moonpull && skillFxOnce('swimTide')){ // the Tide comes in: every Swimmer on the board splashes up
     const sw = Object.keys(matchState.replayCards || {}).filter(u=>{ const rc = matchState.replayCards[u]; return rc && rc.hp > 0 && fxOf(rc.defId).swimmer; }).slice(0, 6);
@@ -54877,6 +54888,30 @@ function en6Vfx(ev){
     const a = en2Ctr(src), b = en2Ctr(hq), ar = en2Layer('🏹', 'en6-bramble-arrow'); gsap.set(ar, {x:a.x, y:a.y, xPercent:-50, yPercent:-50, scale:.7, opacity:0, rotation:Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI + 45});
     gsap.timeline({onComplete:()=>{ ar.remove(); try{ en2Ring(b.x, b.y, 60); }catch(e){} }}).to(ar, {opacity:1, duration:.06}).to(ar, {x:b.x, y:b.y, duration:.3, ease:'power1.in'}).to(ar, {opacity:0, scale:1.2, duration:.1}); }, 60); }
 }
+// 2026-11-13 (package FX10): the ten FX10 skill looks (bramblewood-skillfx.js), each where its event already fires; cosmetic only, nothing waits for them.
+// Effects Low: one still piece (calm); None: no look (the cue still plays). Each starts on the next frame, so its host and spans go in after the event's
+// own reads (the floats); there the card's box (and any other box it needs, pre) is read once, before the host (fxHostAt, the camera layer) goes in.
+function fx10Vfx(ev){
+  const F = window.SkillFX, m = matchState; if(!ev || !m || document.hidden) return; // nothing starts in a hidden tab (its frames would all run on return)
+  const el = uid=> uid == null ? null : boardCardEl(uid);
+  const go = (fn, uid, cue, pre)=>{ const t0 = performance.now(); requestAnimationFrame(()=>{ if(performance.now() - t0 > 400) return; const e = el(uid), r = e && e.isConnected ? e.getBoundingClientRect() : null;
+    if(cue) try{ SoundKit.at(r ? ((r.left + r.width/2)/Math.max(1, innerWidth))*2 - 1 : 0, ()=> SoundKit[cue]()); }catch(err){}
+    if(!r || !(r.width > 0) || !F || !F[fn] || !fxAtLeast('low') || matchState !== m) return;
+    try{ const x = pre ? pre(e) : null; F[fn](e, Object.assign({host: fxHostAt(e, 1500, r), rect: r, speed: m.speedMult || 1, calm: !fxAtLeast('med') || reducedMotion()}, x)); }catch(err){} }); };
+  const box = uid=>{ const e = el(uid), r = e && e.isConnected ? e.getBoundingClientRect() : null; return r && r.width > 0 ? r : null; };
+  const t = ev.type, k = ev.kind;
+  if(t === 'statusFx' && k === 'avalancheWait') go('snowBury', ev.targetUid, skillFxOnce('fx10snow' + ev.attUid) ? 'snowThump' : null); // one thump an avalanche
+  else if(t === 'statusFx' && k === 'en20Ignite') go('igniteFlare', ev.targetUid, 'igniteWhoosh');
+  else if(t === 'burnTick') setTimeout(()=> go('burnLick', ev.uid, 'burnCrackle'), 60); // an upkeep tick: the board redraws first (as afterSettle)
+  else if(t === 'skillSpent'){ const sel = (ev.keys || []).map(s=> /^triggers/.test(s) ? '.ab-trig' : /^\w+$/.test(s) ? `[data-sk="${s}"], .ab-${s}` : '').filter(Boolean).join(', ');
+    go('spentPuff', ev.uid, 'spentPuff', e=>{ let c = null; try{ c = (sel && e.querySelector(sel)) || e.querySelector('.badges'); }catch(err){} return {chipRect: c ? c.getBoundingClientRect() : null}; }); }
+  else if(t === 'spawn' && k === 'brood') (ev.uids || []).slice(0, 3).forEach((u, i)=>{ if(skillFxOnce('fx10brood' + u)) setTimeout(()=> go('broodDrop', u, null, ()=> ({fromRect: box(ev.nearUid)})), 140 + i*60); }); // the token has landed
+  else if(t === 'statusFx' && k === 'confuse') go('confuseSpin', ev.targetUid);
+  else if(t === 'statusFx' && k === 'carrion') go('carrionFeed', ev.targetUid, 'carrionCaw', ()=> ({fromRect: box(ev.fromUid)}));
+  else if(ev.cause === 'delivery' && ev.uid != null && /^(lumber|stone|metal|uranium|pearl|grace)$/.test(t)) go('deliveryCrate', ev.uid, 'crateThunk');
+  else if(t === 'statusFx' && k === 'skitter') go('skitterDash', ev.attUid, 'skitterPatter');
+  else if(t === 'statusFx' && k === 'thanatosis') go('playDead', ev.targetUid, 'playDeadFlop');
+}
 function renderVfxForEvent(ev){
   if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
@@ -54912,6 +54947,7 @@ function renderVfxForEvent(ev){
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
+  try{ fx10Vfx(ev); }catch(e){} // 2026-11-13 (package FX10): ten skill looks
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
   if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum','chilli','bloodlust'].includes(ev.kind)){ // + Chilli, Bloodlust (2026-10-15)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
@@ -55397,7 +55433,7 @@ function renderVfxForEvent(ev){
     // so they float on the attacker's own tile, same convention as Grit above.
     else if(ev.kind==='blind'){ SoundKit.blindTone(); if(el) floatText(el, '👁 Blinded', 'debuff'); if(rc) rc.blind = (rc.blind||0) + 1; }
     else if(ev.kind==='tipsy'){ SoundKit.blindTone(); if(el) floatText(el, '🍺 Tipsy', 'debuff'); if(rc) rc.tipsy = (rc.tipsy||0) + 1; }
-    else if(ev.kind==='confuse'){ SoundKit.blindTone(); if(el) floatText(el, '❓ Confused', 'debuff'); if(rc) rc.confused = (rc.confused||0) + 1; }
+    else if(ev.kind==='confuse'){ SoundKit.confuseWarble(); /* 2026-11-13 (FX10): was Blind's tone */ if(el) floatText(el, '❓ Confused', 'debuff'); if(rc) rc.confused = (rc.confused||0) + 1; }
     else if(ev.kind==='shock'){ SoundKit.shockTone(); if(el){ shakeEl(el); glitchVfx(el); floatText(el, '🌩 Shocked', 'debuff'); } if(rc) rc.shocked = (rc.shocked||0) + 1; }
     else if(ev.kind==='corrode'){ SoundKit.corrodeTone(); if(el) floatText(el, '-'+ev.amount+'⚔ 🧪', 'debuff'); if(rc) rc.corrode = (rc.corrode||0) + ev.amount; }
     // Stagger (2026-09-24, task #109): physical's elemental status, completing the cold/heat/
@@ -55739,7 +55775,7 @@ function renderVfxForEvent(ev){
   // that changed slot, including this one — so this just needs its own light cue.
   if(ev.type==='collapseIn'){ SoundKit.shift(); }
   if(ev.type==='spawn' && ev.kind==='bloom'){ try{ bloomCopyVfx(ev.nearUid, ev.uids && ev.uids[0]); }catch(e){} } // BL (2026-10-23): the copy blooms in (no summon portal)
-  if(ev.type==='spawn'){ if(ev.cause==='shieldCall'){ try{ SoundKit.shieldDrop(); }catch(e){} setTimeout(()=>{ const el = boardCardEl(ev.uids && ev.uids[0]); if(el){ try{ if(window.SkillFX && SkillFX.shieldDrop) SkillFX.shieldDrop(el); }catch(e){} try{ floatText(el, '🛡️ Shield Call', 'buff'); }catch(e){} } }, 60); } else if(ev.kind === 'bulwark') SoundKit.constructTone(); /* 2026-11-12 (FX6) */ else SoundKit.buzz();
+  if(ev.type==='spawn'){ if(ev.cause==='shieldCall'){ try{ SoundKit.shieldDrop(); }catch(e){} setTimeout(()=>{ const el = boardCardEl(ev.uids && ev.uids[0]); if(el){ try{ if(window.SkillFX && SkillFX.shieldDrop) SkillFX.shieldDrop(el); }catch(e){} try{ floatText(el, '🛡️ Shield Call', 'buff'); }catch(e){} } }, 60); } else if(ev.kind === 'bulwark') SoundKit.constructTone(); /* 2026-11-12 (FX6) */ else if(ev.kind === 'brood') SoundKit.silkDrop(); /* 2026-11-13 (FX10) */ else SoundKit.buzz();
     if(ev.cause === 'onDeathSpawn' && ev.kind !== 'crystal' && ev.kind !== 'relic'){ const u0 = (ev.placements && ev.placements[0] && ev.placements[0].uid) != null ? ev.placements[0].uid : (ev.uids || [])[0]; /* FX6: Spawn on death: bugs crawl out of the first token */ if(u0 != null) setTimeout(()=>{ try{ bugCrawlVfx(boardCardEl(u0)); }catch(e){} }, 200); } }
   // Floating-number coverage audit (2026-09-18, "every action that changes a number... should
   // get a floating number"): Gold/Grace generation from a card's passive effect (onSpawnGold,
