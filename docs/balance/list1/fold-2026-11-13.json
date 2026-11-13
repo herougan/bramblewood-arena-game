@@ -1,0 +1,902 @@
+{
+ "about": "LIST1 fold (tools/list1/fold_picks_2026_11_13.js): the owner's 11-13 Map cards picks as the lists, no cut (#10)",
+ "built": "2026-11-13",
+ "main": {
+  "m1": {
+   "mapNo": 0,
+   "added": [
+    "duckling"
+   ],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "mf": {
+   "mapNo": 1,
+   "added": [
+    "meadow-rabbit",
+    "honey-bee"
+   ],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "mb": {
+   "mapNo": 2,
+   "added": [
+    "conch-herald"
+   ],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "mc": {
+   "mapNo": 3,
+   "added": [
+    "conch-crawler",
+    "fiddler-crab-swarm"
+   ],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "m2": {
+   "mapNo": 4,
+   "added": [
+    "pond-algae"
+   ],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "mw": {
+   "mapNo": 5,
+   "added": [],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "m8": {
+   "mapNo": 6,
+   "added": [
+    "lamprey"
+   ],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "mu": {
+   "mapNo": 7,
+   "added": [
+    "phoenix-mushrooms"
+   ],
+   "dropped": [],
+   "adminAdds": [
+    "planarian-splitter"
+   ],
+   "kept": []
+  },
+  "m4": {
+   "mapNo": 8,
+   "added": [],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "mk": {
+   "mapNo": 9,
+   "added": [
+    "tide-spirit"
+   ],
+   "dropped": [],
+   "adminAdds": [
+    "nutria-reedcutter"
+   ],
+   "kept": []
+  },
+  "m7": {
+   "mapNo": 10,
+   "added": [
+    "tide-spirit"
+   ],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "m10": {
+   "mapNo": 11,
+   "added": [],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "mh": {
+   "mapNo": 12,
+   "added": [
+    "quillguard",
+    "hedgerow-shrew"
+   ],
+   "dropped": [
+    "bison-bulldozer"
+   ],
+   "adminAdds": [],
+   "kept": []
+  },
+  "mr": {
+   "mapNo": 13,
+   "added": [
+    "tasmanian-devil",
+    "bramblewood-lynx",
+    "amber-cicada",
+    "the-gannet-queen"
+   ],
+   "dropped": [
+    "owl-nightwatch",
+    "sergeant-bramblefox"
+   ],
+   "adminAdds": [],
+   "kept": []
+  },
+  "m5": {
+   "mapNo": 14,
+   "added": [
+    "acacia-giraffe",
+    "crocodile-ambusher"
+   ],
+   "dropped": [
+    "sergeant-bramblefox"
+   ],
+   "adminAdds": [],
+   "kept": []
+  },
+  "ml": {
+   "mapNo": 15,
+   "added": [
+    "pronghorn-racer"
+   ],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "mt": {
+   "mapNo": 16,
+   "added": [
+    "pinecone-sapper",
+    "grizzly-vanguard",
+    "mallard-marauder"
+   ],
+   "dropped": [
+    "snow-owl-sentinel"
+   ],
+   "adminAdds": [],
+   "kept": []
+  },
+  "m6": {
+   "mapNo": 17,
+   "added": [
+    "nightshade-moth",
+    "pinecone-sapper"
+   ],
+   "dropped": [
+    "harbor-seal"
+   ],
+   "adminAdds": [],
+   "kept": []
+  },
+  "md": {
+   "mapNo": 18,
+   "added": [
+    "frillneck-duelist",
+    "caustic-scorpion",
+    "sand-widow",
+    "quillguard",
+    "savanna-cheetah",
+    "meerkat-sentry"
+   ],
+   "dropped": [
+    "bison-bulldozer",
+    "nightjar-drifter",
+    "sunbittern-strider"
+   ],
+   "adminAdds": [],
+   "kept": [
+    "barrel-cactus"
+   ]
+  },
+  "m3": {
+   "mapNo": 19,
+   "added": [
+    "cinder-hornet",
+    "basalt-boar",
+    "caldera-snow-leopard"
+   ],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  },
+  "m11": {
+   "mapNo": 20,
+   "added": [
+    "deep-cave-troll",
+    "ash-cloud-condor",
+    "pumice-beetle",
+    "sand-widow",
+    "barrow-leech-bat",
+    "nightshade-moth"
+   ],
+   "dropped": [
+    "sulfur-vent-crab",
+    "frillneck-duelist"
+   ],
+   "adminAdds": [],
+   "kept": []
+  },
+  "m21": {
+   "mapNo": 21,
+   "added": [
+    "pumice-beetle",
+    "deep-cave-troll",
+    "ossuary-lammergeier",
+    "cinder-hornet"
+   ],
+   "dropped": [],
+   "adminAdds": [],
+   "kept": []
+  }
+ },
+ "side": {
+  "mo": {
+   "parent": "m1",
+   "unlockAfterNo": 21,
+   "ownerYes": [
+    "ent",
+    "strangler-vine",
+    "hedgehog-herbalist",
+    "earthworm",
+    "bramble-sprout",
+    "cricket-drummer",
+    "grass-snake",
+    "platypus-spur",
+    "proboscis-monkey",
+    "phoenix-mushrooms",
+    "wolf-spider-mother"
+   ],
+   "keptCarried": [
+    "bramble-sprout",
+    "barkplate-beetle",
+    "quill-thorn-boar",
+    "bramblewood-lynx",
+    "farm-dog",
+    "earthworm"
+   ],
+   "dropped": [
+    "elder-willow",
+    "thorn-shrike",
+    "quillguard",
+    "sergeant-bramblefox"
+   ],
+   "added": [
+    "strangler-vine",
+    "hedgehog-herbalist",
+    "cricket-drummer",
+    "grass-snake",
+    "platypus-spur",
+    "proboscis-monkey",
+    "phoenix-mushrooms",
+    "wolf-spider-mother"
+   ]
+  },
+  "mq": {
+   "parent": "mf",
+   "unlockAfterNo": 12,
+   "ownerYes": [
+    "clover-butterfly",
+    "ladybird-guard",
+    "lucky-hopper"
+   ],
+   "keptCarried": [
+    "chipmunk-cavalry",
+    "cottontail",
+    "robin-redbreast",
+    "dormouse",
+    "puddle-skimmer",
+    "honey-bee",
+    "bee-forager"
+   ],
+   "dropped": [
+    "jackrabbit-sprinter"
+   ],
+   "added": [
+    "ladybird-guard"
+   ]
+  },
+  "mp": {
+   "parent": "mb",
+   "unlockAfterNo": 6,
+   "ownerYes": [
+    "old-sturgeon",
+    "lodge-engineer",
+    "riverworks-bastion"
+   ],
+   "keptCarried": [
+    "beaver-lumberjack",
+    "muskrat-reedgatherer",
+    "muskrat-lodgekeeper",
+    "duck-paddler",
+    "snapstick-turtle",
+    "pond-algae",
+    "raft-spider",
+    "water-shrew"
+   ],
+   "dropped": [
+    "dam-keeper-beaver"
+   ],
+   "added": [
+    "old-sturgeon"
+   ]
+  },
+  "mg": {
+   "parent": "mb",
+   "unlockAfterNo": 7,
+   "ownerYes": [
+    "trash-panda-trickster",
+    "octopus-tactician",
+    "raccoon-nightcrew"
+   ],
+   "keptCarried": [
+    "gull-thief",
+    "pincushion-urchin",
+    "limpet-clinger",
+    "open-ocean-hermit-crab",
+    "driftwood-crab",
+    "rock-pool-starfish"
+   ],
+   "dropped": [
+    "salvager-hermit-crab"
+   ],
+   "added": [
+    "trash-panda-trickster"
+   ]
+  },
+  "ms": {
+   "parent": "mw",
+   "unlockAfterNo": 13,
+   "ownerYes": [
+    "peat-cutter-vole",
+    "river-carp",
+    "matamata"
+   ],
+   "keptCarried": [
+    "swamp-alligator",
+    "constrictor-coil",
+    "muskrat-reedgatherer",
+    "mudpuppy",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "cypress-root-lurker",
+    "crocodile-ambusher"
+   ],
+   "dropped": [
+    "hedgehog-herbalist",
+    "mudflat-godwit",
+    "snapper-hatchling"
+   ],
+   "added": [
+    "river-carp",
+    "matamata"
+   ]
+  },
+  "mz": {
+   "parent": "mu",
+   "unlockAfterNo": 8,
+   "ownerYes": [
+    "fungal-colossus",
+    "rootworm-colony",
+    "bombardier-beetle",
+    "millipede-hauler"
+   ],
+   "keptCarried": [
+    "rot-swollen-carcass",
+    "puffball-bombardier",
+    "fungus-gnat-cloud",
+    "leopard-slug",
+    "compost-grub",
+    "hawthorn-shieldbug",
+    "planarian-splitter",
+    "earthworm"
+   ],
+   "dropped": [
+    "tunnel-wyrm"
+   ],
+   "added": [
+    "bombardier-beetle",
+    "millipede-hauler"
+   ]
+  },
+  "mn": {
+   "parent": "m4",
+   "unlockAfterNo": 16,
+   "ownerYes": [
+    "whip-spider",
+    "glow-worm",
+    "fruit-bat"
+   ],
+   "keptCarried": [
+    "sulfur-cinder-moth",
+    "gallery-orb-weaver",
+    "echo-screecher",
+    "stalactite-golem",
+    "cave-olm",
+    "quarry-mole",
+    "giant-cave-huntsman",
+    "barrow-leech-bat"
+   ],
+   "dropped": [
+    "lantern-spark-fly",
+    "glimmer-spider",
+    "cave-swiftlet"
+   ],
+   "added": [
+    "whip-spider",
+    "glow-worm",
+    "fruit-bat"
+   ]
+  },
+  "mj": {
+   "parent": "m7",
+   "unlockAfterNo": 11,
+   "ownerYes": [
+    "blue-ringed-octopus",
+    "mantis-shrimp",
+    "coral-polyp-colony"
+   ],
+   "keptCarried": [
+    "riptide-eel",
+    "coral-current-eel",
+    "reef-shark",
+    "moon-jelly",
+    "sea-turtle-elder",
+    "krill-swarm",
+    "giant-clam"
+   ],
+   "dropped": [
+    "kraken-spawnling"
+   ],
+   "added": [
+    "mantis-shrimp",
+    "coral-polyp-colony"
+   ]
+  },
+  "mv": {
+   "parent": "m10",
+   "unlockAfterNo": 15,
+   "ownerYes": [
+    "sparrow-chick",
+    "apollo-butterfly",
+    "gale-swift"
+   ],
+   "keptCarried": [
+    "eyrie-warden",
+    "eagle-owl-quartermaster",
+    "golden-eagle-diver",
+    "the-gannet-queen",
+    "chamois-leaper",
+    "anvil-thrush",
+    "peak-condor",
+    "peregrine-stooper"
+   ],
+   "dropped": [
+    "wound-reaver",
+    "great-horned-owl"
+   ],
+   "added": [
+    "apollo-butterfly",
+    "gale-swift"
+   ]
+  },
+  "my": {
+   "parent": "m5",
+   "unlockAfterNo": 18,
+   "ownerYes": [
+    "kinkajou-lurker",
+    "jaguar-stalker",
+    "canopy-sloth-guardian"
+   ],
+   "keptCarried": [
+    "bramblewood-macaque",
+    "proboscis-monkey",
+    "camouflage-frog",
+    "fishing-cat",
+    "amber-cicada",
+    "mosquito-cloud"
+   ],
+   "dropped": [
+    "hercules-beetle"
+   ],
+   "added": [
+    "canopy-sloth-guardian"
+   ]
+  },
+  "mi": {
+   "parent": "m6",
+   "unlockAfterNo": 21,
+   "ownerYes": [
+    "greenland-shark",
+    "beluga",
+    "lemming-swarm",
+    "limpet-clinger",
+    "dormouse",
+    "cormorant",
+    "pincushion-urchin",
+    "rock-pool-starfish",
+    "shoal-shark",
+    "giant-clam",
+    "moon-jelly",
+    "riptide-eel"
+   ],
+   "keptCarried": [
+    "snow-ermine",
+    "ringed-seal",
+    "glacier-yak",
+    "ice-crevasse-wolf"
+   ],
+   "dropped": [
+    "frostbitten-wolverine",
+    "harp-seal-pup",
+    "harbor-seal",
+    "walrus-icebreaker",
+    "polar-bear"
+   ],
+   "added": [
+    "beluga",
+    "lemming-swarm",
+    "limpet-clinger",
+    "dormouse",
+    "cormorant",
+    "pincushion-urchin",
+    "rock-pool-starfish",
+    "shoal-shark",
+    "giant-clam",
+    "moon-jelly",
+    "riptide-eel"
+   ]
+  },
+  "mpd": {
+   "parent": "md",
+   "unlockAfterNo": 19,
+   "ownerYes": [
+    "pale-oryx",
+    "dromedary",
+    "dust-devil-kestrel"
+   ],
+   "keptCarried": [
+    "antlion-pit",
+    "dune-jackal",
+    "barrel-cactus",
+    "roadrunner-courier",
+    "horned-lizard",
+    "caustic-scorpion"
+   ],
+   "dropped": [
+    "quicksand-queen",
+    "sandstorm-roc",
+    "nightjar-drifter",
+    "sunbittern-strider"
+   ],
+   "added": [
+    "pale-oryx",
+    "dromedary",
+    "dust-devil-kestrel"
+   ]
+  },
+  "m9": {
+   "parent": "m3",
+   "unlockAfterNo": 23,
+   "ownerYes": [
+    "ember-revenant",
+    "granite-ox-golem",
+    "grindstone-boar",
+    "peak-condor",
+    "booming-bittern",
+    "stalactite-golem",
+    "star-nosed-mole",
+    "stoat-cutthroat",
+    "obsidian-scorpion",
+    "magma-titan",
+    "smoke-raccoon"
+   ],
+   "keptCarried": [
+    "obsidian-scorpion",
+    "smoke-raccoon",
+    "pumice-beetle",
+    "cinder-hornet",
+    "cinder-gecko"
+   ],
+   "dropped": [
+    "fire-salamander",
+    "basalt-boar",
+    "cinder-skeleton"
+   ],
+   "added": [
+    "granite-ox-golem",
+    "peak-condor",
+    "booming-bittern",
+    "stalactite-golem",
+    "star-nosed-mole",
+    "stoat-cutthroat",
+    "magma-titan"
+   ]
+  },
+  "me": {
+   "parent": "m11",
+   "unlockAfterNo": 20,
+   "ownerYes": [
+    "carrion-beetle",
+    "ossuary-lammergeier",
+    "brimstone-hound"
+   ],
+   "keptCarried": [
+    "berserker-boar",
+    "basalt-boar",
+    "ur-elk",
+    "magma-salamander",
+    "obsidian-scorpion",
+    "honey-badger-fury"
+   ],
+   "dropped": [
+    "the-contradiction",
+    "obsidian-lich",
+    "ash-moth",
+    "sulfur-vent-crab"
+   ],
+   "added": [
+    "carrion-beetle",
+    "ossuary-lammergeier",
+    "brimstone-hound"
+   ]
+  },
+  "mx": {
+   "parent": "m11",
+   "unlockAfterNo": 20,
+   "ownerYes": [
+    "caldera-wyrm",
+    "granite-ox-golem",
+    "magma-titan",
+    "eagle-sharpshooter",
+    "quarry-mole",
+    "cataphract-destrier",
+    "basalt-boar",
+    "cinder-hornet",
+    "obsidian-scorpion",
+    "fire-salamander",
+    "ur-elk",
+    "barrow-leech-bat"
+   ],
+   "keptCarried": [
+    "magma-salamander"
+   ],
+   "dropped": [
+    "fire-drake-hatchling",
+    "fumarole-ibex",
+    "quillback-elder"
+   ],
+   "added": [
+    "granite-ox-golem",
+    "magma-titan",
+    "eagle-sharpshooter",
+    "quarry-mole",
+    "cataphract-destrier",
+    "cinder-hornet",
+    "barrow-leech-bat"
+   ]
+  }
+ },
+ "special": {
+  "mh": [
+   {
+    "id": "bison-bulldozer",
+    "name": "Bison Bulldozer",
+    "from": "mh",
+    "why": "dropped from the MAP list; fielded by 12-1, 12-2, 12-5, 12-7"
+   }
+  ],
+  "mr": [
+   {
+    "id": "owl-nightwatch",
+    "name": "Owl Nightwatch",
+    "from": "mr",
+    "why": "dropped from the MAP list; fielded by 13-3, 13-5, 13-6, 13-7, 13-8"
+   },
+   {
+    "id": "sergeant-bramblefox",
+    "name": "Sergeant Bramblefox",
+    "from": "mr",
+    "why": "dropped from the MAP list; fielded by 13-2"
+   }
+  ],
+  "m6": [
+   {
+    "id": "harbor-seal",
+    "name": "Harbor Seal",
+    "from": "m6",
+    "why": "dropped from the MAP list; fielded by 17-1, 17-5, 17-8"
+   }
+  ],
+  "md": [
+   {
+    "id": "bison-bulldozer",
+    "name": "Bison Bulldozer",
+    "from": "md",
+    "why": "dropped from the MAP list; fielded by 18-2"
+   },
+   {
+    "id": "nightjar-drifter",
+    "name": "Nightjar Drifter",
+    "from": "md",
+    "why": "dropped from the MAP list; fielded by 18-1, 18-2, 18-4, 18-5"
+   },
+   {
+    "id": "sunbittern-strider",
+    "name": "Sunbittern Strider",
+    "from": "md",
+    "why": "dropped from the MAP list; fielded by 18-5"
+   },
+   {
+    "id": "quicksand-queen",
+    "name": "Quicksand Queen",
+    "from": "mpd",
+    "why": "dropped from mpd; fielded by 18-A-7, 18-A-9"
+   },
+   {
+    "id": "sandstorm-roc",
+    "name": "Sandstorm Roc",
+    "from": "mpd",
+    "why": "dropped from mpd; fielded by 18-A-1, 18-A-2, 18-A-3, 18-A-6, 18-A-8, 18-A-9"
+   }
+  ],
+  "m11": [
+   {
+    "id": "sulfur-vent-crab",
+    "name": "Sulfur Vent Crab",
+    "from": "m11",
+    "why": "dropped from the MAP list; fielded by 20-1, 20-4, 20-5, 20-6, 20-8, 20-9"
+   },
+   {
+    "id": "frillneck-duelist",
+    "name": "Frillneck Duelist",
+    "from": "m11",
+    "why": "dropped from the MAP list; fielded by 20-2, 20-3, 20-8, 20-10"
+   },
+   {
+    "id": "the-contradiction",
+    "name": "The Contradiction",
+    "from": "me",
+    "why": "dropped from me; fielded by 20-A-4"
+   },
+   {
+    "id": "ash-moth",
+    "name": "Ash Moth",
+    "from": "me",
+    "why": "dropped from me; fielded by 20-A-1, 20-A-4, 20-A-6, 20-A-7"
+   },
+   {
+    "id": "fire-drake-hatchling",
+    "name": "Fire Drake Hatchling",
+    "from": "mx",
+    "why": "dropped from mx; fielded by 20-B-1, 20-B-4"
+   }
+  ],
+  "m1": [
+   {
+    "id": "elder-willow",
+    "name": "Elder Willow",
+    "from": "mo",
+    "why": "dropped from mo; fielded by 0-B-1, 0-B-2, 0-B-3, 0-B-4"
+   },
+   {
+    "id": "thorn-shrike",
+    "name": "Thorn Shrike",
+    "from": "mo",
+    "why": "dropped from mo; fielded by 0-B-1, 0-B-4"
+   }
+  ],
+  "mf": [
+   {
+    "id": "jackrabbit-sprinter",
+    "name": "Jackrabbit Sprinter",
+    "from": "mq",
+    "why": "dropped from mq; fielded by 1-A-2, 1-A-3, 1-A-4"
+   }
+  ],
+  "mb": [
+   {
+    "id": "salvager-hermit-crab",
+    "name": "Salvager Hermit Crab",
+    "from": "mg",
+    "why": "dropped from mg; fielded by 2-B-1, 2-B-2, 2-B-3"
+   }
+  ],
+  "mw": [
+   {
+    "id": "hedgehog-herbalist",
+    "name": "Hedgehog Herbalist",
+    "from": "ms",
+    "why": "dropped from ms; fielded by 5-A-4"
+   },
+   {
+    "id": "mudflat-godwit",
+    "name": "Mudflat Godwit",
+    "from": "ms",
+    "why": "dropped from ms; fielded by 5-A-1, 5-A-2"
+   }
+  ],
+  "m4": [
+   {
+    "id": "lantern-spark-fly",
+    "name": "Lantern Spark Fly",
+    "from": "mn",
+    "why": "dropped from mn; fielded by 8-A-4"
+   }
+  ],
+  "m7": [
+   {
+    "id": "kraken-spawnling",
+    "name": "Kraken Spawnling",
+    "from": "mj",
+    "why": "dropped from mj; fielded by 10-A-1"
+   }
+  ],
+  "m10": [
+   {
+    "id": "wound-reaver",
+    "name": "Wound Reaver",
+    "from": "mv",
+    "why": "dropped from mv; fielded by 11-A-1, 11-A-4"
+   },
+   {
+    "id": "great-horned-owl",
+    "name": "Great Horned Owl",
+    "from": "mv",
+    "why": "dropped from mv; fielded by 11-A-2, 11-A-3"
+   }
+  ],
+  "m5": [
+   {
+    "id": "hercules-beetle",
+    "name": "Hercules Beetle",
+    "from": "my",
+    "why": "dropped from my; fielded by 14-A-4"
+   }
+  ]
+ },
+ "unknownIds": {},
+ "flags": {
+  "cleared": [
+   "coral-polyp-colony",
+   "trash-panda-trickster",
+   "nightshade-moth",
+   "millipede-hauler",
+   "bombardier-beetle",
+   "carrion-beetle",
+   "mantis-shrimp",
+   "dromedary",
+   "pale-oryx",
+   "ladybird-guard",
+   "old-sturgeon",
+   "whip-spider",
+   "beluga",
+   "lemming-swarm",
+   "gale-swift",
+   "granite-ox-golem"
+  ],
+  "set": [
+   "tunnel-wyrm",
+   "snapper-hatchling",
+   "obsidian-lich",
+   "glimmer-spider",
+   "cave-swiftlet",
+   "harp-seal-pup",
+   "dam-keeper-beaver"
+  ]
+ }
+}
