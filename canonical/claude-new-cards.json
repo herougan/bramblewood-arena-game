@@ -3876,5 +3876,65 @@
     }
    ]
   }
+ },
+ "list1": {
+  "_about": "LIST1 (2026-11-13, owner 11:08 #14): Claude's picks for each map's NEW! gap after his side-map picks (target: the default, or the count where it was over, #10). Shown as \"Claude's pick\" in the admin Map cards window, never as his Yes. picks: existing cards (on no list); concepts: no stats, existing skills only (he designs them). Built by tools/list1/list1_2026_11_13.js; doc docs/balance/list1-2026-11-13.md.",
+  "m21": {
+   "name": "The Quiet Summit",
+   "gap": 2,
+   "target": 7,
+   "picks": [
+    {
+     "id": "talus-pika",
+     "role": "lumber",
+     "why": "Lumber gatherer (Delivery 1): the summit has no Lumber maker of its own; a pika haying on the talus. On no list today."
+    }
+   ],
+   "concepts": [
+    {
+     "id": "concept-summit-tahr",
+     "name": "Summit Tahr",
+     "animal": "tahr",
+     "family": "goat",
+     "element": "physical",
+     "rarity": "uncommon",
+     "role": "Lumber payoff: costs 2 Lumber, a big plain body, Mountain Climber (the map's own skill; no new skill)",
+     "skill": "mountainClimber",
+     "why": "payoff for the Lumber gatherers; a rested mountain grazer above the clouds"
+    }
+   ]
+  },
+  "mv": {
+   "name": "The Aerie Vault",
+   "gap": 1,
+   "target": 3,
+   "picks": [],
+   "concepts": [
+    {
+     "id": "concept-old-aerie-nest",
+     "name": "Old Aerie Nest",
+     "animal": "swift",
+     "family": "bird",
+     "element": "physical",
+     "rarity": "rare",
+     "role": "Lumber gatherer and wall: no attack, a tall nest of a thousand springs' twigs, Delivery (twigs into Lumber)",
+     "skill": "delivery",
+     "why": "the oldest nests themselves; the side map has no Lumber maker; could be 11-A-4's themed reward (decision SIDE1-2)"
+    }
+   ]
+  },
+  "m9": {
+   "name": "Basalt Foundry",
+   "gap": 0,
+   "target": 3,
+   "picks": [
+    {
+     "id": "malachite-golem",
+     "role": "basic",
+     "why": "only if Granite Ox Golem stays Volcano Lair's own (decision LIST1-1): a foundry golem, Shell (Stalactite Golem's skill, already Carried here). On no list today."
+    }
+   ],
+   "concepts": []
+  }
  }
 }

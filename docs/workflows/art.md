@@ -10,6 +10,7 @@ For card art, map and raid backgrounds, frames, briefs and art review.
   - built copies in `assets/cards/*.webp`.
 - Reuse map: `tools/art_reuse_map.py`, `docs/art/art-reuse-map.md`.
 - Rejected art: a card's `artReview {status:'rejected', reason}` (set in the in-game card editor) is the review queue.
+- Owner 2026-11-13 11:22: never replace a card's art unless it is rejected with a reason. After the new art is in, clear the rejection and its reason (the editor does this on any art change from UI51; a live `card_overrides` row needs the owner's "apply it").
 
 ## Rules
 - NightCafe: generate with the owner's credits. Never buy plans, PRO models or LoRAs. Never vote, claim streaks or act for the owner; just close popups.

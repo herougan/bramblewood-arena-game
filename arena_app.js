@@ -6006,6 +6006,17 @@ const SoundKit = (()=>{
     // the board (a low rush of air that swells and fades, three deep wing beats in it).
     shellCrackTone(){ fnoise(0.07,0.09,{type:'highpass',freq:1600,crackle:0.4,attack:0.002}); [0.3,0.38,0.47,0.55].forEach((d,i)=>{ tone(520-i*55,0.05,'square',0.045,d); fnoise(0.04,0.04,{type:'bandpass',freq:1400-i*150,delay:d}); }); },
     dragonGust(){ fnoise(1.0,0.07,{type:'lowpass',freq:320,freqEnd:900,q:0.8,attack:0.35}); [0.05,0.43,0.81].forEach(d=> fnoise(0.18,0.06,{type:'lowpass',freq:260,freqEnd:110,attack:0.03,delay:d})); },
+    // 2026-11-13 (package FX10): one cue for each of the ten skill looks (docs/sfx-cue-sheet.md 59-68)
+    snowThump(){ fnoise(0.22,0.12,{type:'lowpass',freq:500,freqEnd:180,attack:0.004}); tone(90,0.12,'sine',0.08); fnoise(0.3,0.04,{type:'highpass',freq:3000,delay:0.05}); },
+    igniteWhoosh(){ fnoise(0.4,0.08,{type:'bandpass',freq:500,freqEnd:2400,q:1.2,attack:0.12}); fnoise(0.3,0.04,{type:'highpass',freq:2500,crackle:0.35,delay:0.15}); },
+    burnCrackle(){ fnoise(0.25,0.06,{type:'highpass',freq:2200,crackle:0.5}); fnoise(0.3,0.03,{type:'lowpass',freq:600,delay:0.02}); },
+    spentPuff(){ fnoise(0.12,0.05,{type:'bandpass',freq:1400,freqEnd:600}); tone(660,0.05,'triangle',0.05,0.02); tone(440,0.07,'triangle',0.045,0.08); },
+    silkDrop(){ sweep(900,1700,0.3,'sine',0.04); tone(520,0.04,'square',0.04,0.5); fnoise(0.06,0.05,{type:'bandpass',freq:1800,delay:0.5}); },
+    confuseWarble(){ [880,620,990,560].forEach((f,i)=> tone(f,0.07,'sine',0.06,i*0.09)); sweep(700,420,0.25,'triangle',0.03,0.34); },
+    carrionCaw(){ tone(310,0.12,'sawtooth',0.05); fnoise(0.12,0.04,{type:'bandpass',freq:900,delay:0.01}); tone(260,0.16,'sawtooth',0.05,0.16); fnoise(0.14,0.04,{type:'bandpass',freq:760,delay:0.17}); },
+    crateThunk(){ tone(140,0.08,'square',0.08); fnoise(0.07,0.07,{type:'bandpass',freq:700}); tone(980,0.04,'triangle',0.05,0.42); },
+    skitterPatter(){ [0,0.05,0.1,0.15,0.2,0.25].forEach((d,i)=> tone(1800 + (i%2)*300,0.02,'square',0.03,d)); },
+    playDeadFlop(){ sweep(520,180,0.45,'sine',0.06); fnoise(0.1,0.06,{type:'lowpass',freq:300,delay:0.42}); },
     reflectTone(){ tone(600,0.05,'triangle',0.07); tone(900,0.05,'triangle',0.06,0.04); tone(600,0.05,'triangle',0.05,0.08); }, // bounces up then back down, mirroring the hit
     momentumTone(){ tone(400,0.06,'square',0.07); tone(560,0.06,'square',0.07,0.05); tone(760,0.08,'square',0.08,0.1); }, // three escalating notes, each louder
     // Esprit (2026-09-21, Skills/VFX/SFX audit): the engine has pushed a statusFx{kind:'esprit'}
@@ -10918,6 +10929,7 @@ function cardSocketDetailHTML(defId, d){
   return `<div class="cd-where cd-socket"><span class="cd-where-k">💎 ${escapeHtml(TX('ui.h1-detail-socket'))}</span> ${parts.join(' ')}<small class="h1-cd-how">${escapeHtml(TX('ui.h1-detail-how'))}</small></div>`;
 }
 let cardDetailCtl = null; // 2026-10-30 (package CS-C): the open Card Detail overlay's Detail card
+let cardDetailUnbind = null; // 2026-11-13 (package AUDIT1): removes the open Card Detail's Escape and outside-click listeners
 function openCardDetail(defId, opts){
   // 2026-10-19 (package UX): opened from the Codex, the card shows at the Codex's level (codexShownDef: its base level unless "My best")
   const d0 = getCardDefs()[defId], fromCodex = !!(opts && opts.codex), shownLv = opts && opts.shownLevel != null && isFinite(opts.shownLevel) ? opts.shownLevel : null;
@@ -10990,13 +11002,16 @@ function openCardDetail(defId, opts){
       </div>
     </div>`;
   overlay.hidden = false;
-  const onKey = e=>{ if(e.key==='Escape') close(); };
-  const close = ()=>{ overlay.hidden = true; overlay.innerHTML=''; cardDetailOpenId = null; document.removeEventListener('keydown', onKey); if(cardDetailCtl){ cardDetailCtl.destroy(); cardDetailCtl = null; }
+  const onKey = e=>{ if(e.key==='Escape') close(); }, outsideClick = e=>{ if(e.target===overlay) close(); };
+  // 2026-11-13 (package AUDIT1): one Escape and one outside-click listener at a time; a reopen (or a close by the X) left the old ones, and their closes moved focus to cards opened before
+  if(cardDetailUnbind) cardDetailUnbind();
+  cardDetailUnbind = ()=>{ document.removeEventListener('keydown', onKey); overlay.removeEventListener('click', outsideClick); cardDetailUnbind = null; };
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML=''; cardDetailOpenId = null; if(cardDetailUnbind) cardDetailUnbind(); if(cardDetailCtl){ cardDetailCtl.destroy(); cardDetailCtl = null; }
     if(opts && opts.returnFocus && opts.returnFocus.isConnected && opts.returnFocus.focus) try{ opts.returnFocus.focus(); }catch(e){} };
   document.addEventListener('keydown', onKey);
   document.getElementById('cdCloseXBtn').addEventListener('click', close);
   document.getElementById('cdCloseBtn').addEventListener('click', close);
-  overlay.addEventListener('click', function outsideClick(e){ if(e.target===overlay){ close(); overlay.removeEventListener('click', outsideClick); } });
+  overlay.addEventListener('click', outsideClick);
   const editBtn = document.getElementById('cdEditBtn');
   if(editBtn) editBtn.addEventListener('click', ()=>{ close(); if(opts && opts.codex && codexNavIds.includes(defId)) ceNavSet(codexNavIds, 'codex'); /* UI27 #17: Previous / Next in the Codex's order */ openCardEditor(defId); });
   // Admin (2026-10-12, user: "a 'get this card' button in the Codex card detail view").
@@ -21748,7 +21763,7 @@ function matchAlreadyResolved(uid){ return !!uid && resolvedMatchIds().includes(
 function noteMatchResultDecided(m){
   if(!m) return true; if(m.resultDecided) return !m.rewardDuplicate;
   const uid = matchUidOf(m), was = matchAlreadyResolved(uid);
-  m.resultDecided = true; m.rewardDuplicate = was;
+  m.resultDecided = true; m.resultDecidedAt = Date.now(); m.rewardDuplicate = was;
   if(!was){ try{ const a = resolvedMatchIds().filter(x=> x !== uid); a.push(uid); localStorage.setItem(RESOLVED_MATCH_KEY, JSON.stringify(a.slice(-60))); }catch(e){} }
   // its resume save (the one from before this round) goes: Continue can't bring the decided match back. Another match's save stays.
   try{ const snap = JSON.parse(localStorage.getItem(RESUME_KEY) || 'null'); if(snap && (!snap.matchUid || snap.matchUid === uid)) clearResumeSnapshot(); }catch(e){}
@@ -21772,7 +21787,8 @@ function lockResultButtonsUntilRecorded(m){
   setTimeout(tick, 150);
 }
 // Quit / Forfeit / Auto-win while a decided result is still being recorded: wait, say so.
-function matchResultPending(m){ return !!(m && m.resultDecided && !matchRewardSettled(m)); }
+// 2026-11-13 (package AUDIT1): at most 15 s, as the results' buttons: a reward step that threw never set rewardRecorded, and Quit refused for good
+function matchResultPending(m){ return !!(m && m.resultDecided && !matchRewardSettled(m) && !(m.resultDecidedAt && Date.now() - m.resultDecidedAt > 15000)); }
 // -- Tutorial II's showcase (#5: "Showcase card for T2 should be a different card"): Tutorial II deals the same rival deck as part 1
 // unless the tutorial editor gives part 2 its own, so its panel showed part 1's card. Part 2's lesson is your leader joining the fight
 // (its flavour: "Your leader joins you"; tutorialHighlightId(2): the Wandering Traveller, the card the lesson lights up and has you
@@ -34358,7 +34374,22 @@ function ui37CarriedIndex(n, maps){
 function ui37MapsData(){
   return mainConquestMaps().filter(m=> !m.reserved).map(m=>{ const e = ui37Ent(m.id); let list = []; try{ list = mpEntry(m.id).cards; }catch(x){} return {id: m.id, n: mapNumberOf(m.id), name: m.name, icon: m.icon || '', list, yes: ui47YesList(m.id) /* 2026-11-11 (UI47): + UI47_ADMIN_ADD */, no: e.no}; }).filter(x=> x.n != null);
 }
-function ui37Targets(top){ const n = mapNumberOf(top), sub = typeof ui44IsSub === 'function' && ui44IsSub(top), d = sub ? {own: 3, carried: 8} /* 2026-11-12 (UI48 #4): a side map's own target is 3 (was 12); 2026-11-10 (UI44): a side map; th6Targets is the main-map curve and has no side-map value, so 12 / 8 as the owner asked */ : (th6Targets(n == null ? 2 : n) || {own: 0, carried: 0}), t = ui37Ent(top).t, num = v=> (v === '' || v == null || !(Number(v) >= 0)) ? null : Math.round(Number(v));
+// 2026-11-13 (package LIST1, owner 11:08 #10: "The current 'New!' cards amount in the early maps - turn them canonical - as in, not 11/10 but 11/11"): a map whose
+// folded NEW! count (docs/design/map-picks-owner-2026-11-13.json) is over its default target takes that count as its default (tools/list1/list1_2026_11_13.js writes it)
+const LIST1_NEW_TARGETS = {"mf":11, "mb":11, "mc":11, "mz":4};
+// #12: the cards that fit each side map as Carried (its biome in canonical/unit-themes.json, Claude's side-map fits / adds, the animals of its own cards in
+// canonical/animal-tags.json, its keyword in canonical/map-keywords.json; Claude's "off" cards out), live cards only; written by the same tool
+const LIST1_SIDE_FIT = {"mo": ["acacia-giraffe", "acorn-chipmunk", "amber-cicada", "ant-hill", "ant-scout", "ant-warrior", "anvil-thrush", "arctic-fox-raider", "badger-lumberjack", "badger-sapper", "balloon-archer", "barkplate-beetle", "beaver-feller", "bee-drone", "bee-forager", "bee-knight", "bee-sentry", "beetle-grunt", "bison-bulldozer", "blind-cave-fish", "blister-beetle", "bog-shrew", "box-turtle", "bramble-hoglet", "bramble-sprout", "bramblewood-lynx", "briarback-hedgehog", "buck-brawler", "burrow-rabbit", "camouflage-frog", "candle-moth", "carrion-fly-swarm", "cave-cricket", "chapel-sparrow", "chapel-tortoise", "chipmunk-cavalry", "chipmunk-forager", "chipmunk-skirmisher", "chipmunk-stockpiler", "cinder-gecko", "clover-butterfly", "compost-grub", "cottontail", "courier-pigeon", "cricket-drummer", "crossed-eyes", "cunning-vixen", "cuttlefish-illusionist", "dhole-runner", "dormouse", "duck-paddler", "duckling", "dune-packrat", "dynamite-packrat", "earthworm", "echidna-quillshot", "ent", "farm-dog", "field-crow", "field-mouse", "field-vole", "fire-ant-raft", "firetail-trickster", "forager-ant", "fox-sharpshot", "fox-warchief", "friar-badger", "frost-hare-sprinter", "fungus-gnat-cloud", "garden-snail", "garden-tiger-moth", "gatling-hog", "glintsnatch-magpie", "gnawed-matriarch", "golden-magpie", "gorge-wyrm", "great-crested-grebe", "great-horned-owl", "grovebearer-dragon-turtle", "harbor-seal", "harvest-mouse", "hawthorn-shieldbug", "hazel-coppice", "hedge-weasel", "hedgehog-herbalist", "hedgehog-scout", "hedgerow-shrew", "hollow-belly-rat", "hollow-oath-keeper", "honey-badger-fury", "honey-bee", "house-cat", "inkcloud-squid", "inside-out-hedgehog", "irradiated-couatl", "jackrabbit-sprinter", "jay-pilferer", "king-maker", "ladybird-guard", "land-tiller", "leafcutter-gardener", "lemming-swarm", "leopard-slug", "lichen-tortoise", "lyrebird-mimic", "magma-wraith", "magpie-collector", "mangrove-kingfisher", "marsh-mallow-hare", "meadow-frog", "meadow-rabbit", "millipede-hauler", "mire-rat", "mirror-moth", "missingno", "moat-snapper", "monarch-wingblade", "moon-jerboa", "moonlit-hare", "moonshell-snail", "mountain-goat-climber", "mountain-hare", "mouse-sapper", "muntjac-barker", "night-algae", "night-watchman", "nightjar-drifter", "old-willow-of-the-ford", "otter-kit", "otter-paddler", "owl-fletcher", "owl-nightwatch", "owl-sentinel", "pack-rat-looter", "peat-cutter-vole", "petrified-tree", "pika-hoarder", "pill-bug", "pine-marten", "pinecone-sapper", "plains-zebra", "pond-algae", "pond-duck", "pond-trout", "pronghorn-racer", "puddle-skimmer", "quillguard", "rabbit-kit", "raccoon-nightcrew", "raccoon-warlord", "red-backed-salamander", "reef-admiral", "reef-manta-glider", "river-mink", "riverbed-diver", "riverside-peddler", "robin-redbreast", "rockslide-ram", "rodent-king", "scraper-of-skies", "scree-goat", "seed-cache-squirrel", "sergeant-bramblefox", "sheep", "silver-minnow", "skunk-gasser", "sleepless-shrew", "slow-worm", "smoke-raccoon", "snail-mail", "snow-ermine", "snowshoe-hare", "soldier-ant", "sparrow-chick", "sphagnum-vole", "springtail-hopper", "stag-beetle", "starfall-owl", "stone-turtle-warden", "stormcaller", "strangler-vine", "swamp-rabbit", "swift-fox", "tarantula-hawk", "tasmanian-devil", "terrier-pup", "testudo-tortoise", "thistle-baron", "thorn-shrike", "thornwood-palisade", "toucan-courier", "truffle-piglet", "tunnel-ant", "tunnel-wyrm", "turtle-bastion", "two-headed-calf", "unicorn", "victoria-regia", "vigil-owl", "village-miller", "warren-scout", "water-vole", "weathervane-swift", "werebadger", "willow-o-wisp", "wolf-spider-mother", "woodcock-lookout", "woodpecker-sapper", "worker-ant"], "mq": ["acorn-chipmunk", "amber-cicada", "ant-hill", "ant-scout", "ant-warrior", "anvil-thrush", "apollo-butterfly", "badger-sapper", "balloon-archer", "barkplate-beetle", "beaver-feller", "bee-drone", "bee-forager", "bee-knight", "bee-sentry", "beetle-grunt", "bison-bulldozer", "blister-beetle", "bog-shrew", "box-turtle", "buck-brawler", "burrow-rabbit", "candle-moth", "carrion-fly-swarm", "chapel-sparrow", "chapel-tortoise", "chipmunk-cavalry", "chipmunk-forager", "chipmunk-skirmisher", "chipmunk-stockpiler", "clover-butterfly", "compost-grub", "cottontail", "courier-pigeon", "cricket-drummer", "crossed-eyes", "dhole-matriarch", "dhole-runner", "dormouse", "duck-paddler", "duckling", "dune-packrat", "dynamite-packrat", "earthworm", "echidna-quillshot", "ent", "fawn-scout", "field-crow", "field-mouse", "field-vole", "fire-ant-raft", "firetail-trickster", "forager-ant", "fox-sharpshot", "fox-warchief", "friar-badger", "fungus-gnat-cloud", "garden-snail", "garden-tiger-moth", "gatling-hog", "glasswing-butterfly", "glintsnatch-magpie", "gnawed-matriarch", "golden-magpie", "gorge-wyrm", "great-horned-owl", "grovebearer-dragon-turtle", "harvest-mouse", "hawthorn-shieldbug", "hazel-coppice", "hedge-weasel", "hedgehog-herbalist", "hedgerow-shrew", "hollow-belly-rat", "hollow-oath-keeper", "honey-badger-fury", "honey-bee", "house-cat", "jackrabbit-sprinter", "jay-pilferer", "king-maker", "ladybird-guard", "land-tiller", "leafcutter-gardener", "lemming-swarm", "leopard-slug", "lichen-tortoise", "lucky-hopper", "lyrebird-mimic", "magpie-collector", "marsh-mallow-hare", "meadow-frog", "meadow-rabbit", "millipede-hauler", "mire-rat", "mirror-moth", "moat-snapper", "monarch-wingblade", "moon-jerboa", "moonlit-hare", "moonshell-snail", "mountain-hare", "mouse-sapper", "muntjac-barker", "night-algae", "nightjar-drifter", "old-willow-of-the-ford", "otter-kit", "otter-paddler", "owl-fletcher", "owl-sentinel", "pack-rat-looter", "peat-cutter-vole", "pika-hoarder", "pill-bug", "pine-marten", "pinecone-sapper", "pond-algae", "pond-duck", "pond-trout", "pronghorn-racer", "puddle-skimmer", "rabbit-kit", "raccoon-nightcrew", "raccoon-warlord", "red-backed-salamander", "river-mink", "riverside-peddler", "robin-redbreast", "rockslide-ram", "rodent-king", "scraper-of-skies", "scree-goat", "seed-cache-squirrel", "sheep", "silver-minnow", "skunk-gasser", "sleepless-shrew", "slow-worm", "smoke-raccoon", "snail-mail", "soldier-ant", "sparrow-chick", "sphagnum-vole", "springtail-hopper", "stag-beetle", "stone-turtle-warden", "swamp-rabbit", "swift-fox", "tarantula-hawk", "tasmanian-devil", "terrier-pup", "testudo-tortoise", "thistle-baron", "thorn-shrike", "thornwood-palisade", "toucan-courier", "truffle-piglet", "tunnel-ant", "tunnel-wyrm", "turtle-bastion", "two-headed-calf", "unicorn", "victoria-regia", "village-miller", "warren-scout", "water-vole", "weathervane-swift", "werebadger", "willow-o-wisp", "wolf-spider-mother", "woodpecker-sapper", "worker-ant"], "mp": ["anvilwhisker-otter", "armory", "battlement-heron", "beachcomber-sanderling", "beaver-builder", "beaver-feller", "beaver-lumberjack", "birdlime-dauber", "box-turtle", "clap-net-trapper", "conch-herald", "dam-keeper-beaver", "dam-wall", "diving-bell-spider", "dolphin-knight", "driftwood-crab", "drowned-matriarch", "duck-paddler", "duckling", "elder-tortoise", "electric-catfish", "elephant-nose-fish", "ferry-toll-frog", "fleetfootd", "ford-kingfisher", "grass-snake", "great-crested-grebe", "gull-thief", "guppy", "helmeted-otter", "irradiated-axolotl", "lamprey", "limpet-clinger", "lions-mane-jelly", "lodge-engineer", "lotus-frog", "magnate-duck", "mallard-marauder", "marshal-of-rivergate", "mayfly-dancer", "migration-leader", "minnow-skitter", "mist-net-otter", "muskrat-lodgekeeper", "muskrat-reedgatherer", "net-thrower", "newt-doctor", "nutria-reedcutter", "old-sturgeon", "old-willow-of-the-ford", "open-ocean-hermit-crab", "optio-of-the-ford", "otter-angler", "otter-centurion", "otter-ferryman", "otter-flag-bearer", "otter-guard", "otter-kit", "otter-lantern-bearer", "otter-netmender", "otter-paddler", "otter-riverguard", "otter-royal-guard", "otter-scout", "otter-shieldback", "oystercatcher", "pike-lancer", "pincushion-urchin", "piranha-shoal", "planarian-splitter", "platypus-spur", "pond-algae", "pond-duck", "pond-paddler", "pond-trout", "puddle-skimmer", "pufferfish-bulwark", "pyrenean-desman", "river-carp", "river-mink", "river-warden", "riverbed-diver", "rivergate-drummer", "rivergate-recruit", "rivergate-tribune", "riverstone-slinger", "riverwing-envoy", "riverworks-bastion", "rock-pool-starfish", "shallows-fry", "shell-cracker", "shellwright-apprentice", "signal-crayfish", "snapstick-turtle", "star-nosed-mole", "sunbittern-strider", "tardigrade", "tiny-cave-dweller", "trebuchet-crew", "truce-heron", "victoria-regia", "voltaic-eel", "water-shrew", "water-vole", "wrong-way-salmon"], "mg": ["alligator-gar", "arc-bat", "baby-bat", "badger-berserker", "badger-stonemason", "barnacle-bulwark", "barnacle-fortress", "barrow-leech-bat", "beachcomber-sanderling", "beaver-lumberjack", "beetle-grunt", "black-dragon", "blind-cave-fish", "bolas-spider", "caldera-wyrm", "cave-bat-swarm", "cave-centipede", "cave-cricket", "cave-flitter", "cave-olm", "cave-pseudoscorpion", "cave-swiftlet", "cave-warlord", "cinder-gecko", "coffer-mimic", "conch-crawler", "conch-herald", "deep-cave-troll", "dolphin-knight", "driftwood-crab", "drowned-matriarch", "dune-jackal-scout", "dynamite-packrat", "echo-matriarch", "echo-screecher", "ember-centipede", "fiddler-crab-swarm", "fruit-bat-familiar", "gallery-orb-weaver", "garden-snail", "geode-scorpion", "ghost-crayfish", "giant-cave-huntsman", "gilded-swan-knight", "glacier-wolf-pack", "glass-octopus", "glimmer-spider", "glowworm-cluster", "goliath-broodmother", "goliath-tentacle", "gravel-mole", "greenland-shark", "grey-seal-bull", "grotto-lobster", "guano-beetle", "gull-thief", "hawthorn-shieldbug", "hollow-belly-rat", "horseshoe-crab", "ironclaw-fiddler", "ironmaw-warwolf", "irradiated-glow-wyrm", "kraken-spawnling", "lantern-spark-fly", "limpet-clinger", "magma-titan", "magnate-duck", "malachite-golem", "marching-elephant", "marshal-of-rivergate", "marshal-tuskwell", "millipede-hauler", "moat-snapper", "monitor-rambler", "moray-ambusher", "musk-ox-calf", "musk-ox-matriarch", "nautiloid", "obsidian-lich", "obsidian-scorpion", "octopus-tactician", "oilbird", "old-shell", "old-snapjaw", "old-sturgeon", "open-ocean-hermit-crab", "ore-smelter-mole", "otter-netmender", "otter-riverguard", "oystercatcher", "pill-bug", "pincushion-urchin", "prospector-mole", "puffball-bombardier", "quarry-mole", "quarry-troll", "quillback-elder", "raccoon-bandit", "raccoon-nightcrew", "raccoon-warlord", "rimeheart-colossus", "rivergate-tribune", "rock-pool-starfish", "salvager-hermit-crab", "shieldbearer-hound", "signal-crayfish", "slowpoke-sentinel", "smoke-raccoon", "snail-mail", "spitting-spider", "stag-beetle", "stalactite-golem", "star-nosed-mole", "static-bat", "stone-turtle-warden", "subterraneaner", "sulfur-cinder-moth", "swamp-alligator", "termite-mound", "testudo-tortoise", "tide-pool-crab", "tidepool-trapper-crab", "tiny-cave-dweller", "trash-panda-trickster", "upside-down-bat", "ur-elk", "vampire-bat", "vampire-bat-nurse", "vampire-roost", "voltwing-bat", "war-elephant", "whale-shark", "whip-spider"], "ms": ["adder-ambusher", "alley-cat", "alligator-gar", "anaconda-coil", "anhinga-spearbird", "baby-horned-capybara", "bloodworm", "bog-behemoth", "bog-leech", "bog-revenant", "bog-shrew", "bogfire-newt", "bone-diviner", "booming-bittern", "caiman-hatchling", "camouflage-frog", "carrion-beetle", "clinging-leech", "constrictor-coil", "cottonmouth-matriarch", "crocodile-ambusher", "cypress-root-lurker", "echo-keeper", "fen-mink", "fiddler-crab-swarm", "field-vole", "fire-ant-raft", "frost-thistle-lynx", "gangrenous-leech", "giant-water-bug", "glacier-wolf-pack", "grass-viper", "greater-siren", "green-dragon", "heron-hag", "horseshoe-crab", "ice-crevasse-wolf", "ironmaw-warwolf", "lamprey", "mangrove-monitor", "mangrove-mudskipper", "marsh-gas-toad", "marsh-harrier", "marsh-mallow-hare", "marsh-wisp", "meadow-frog", "mire-rat", "mire-witch-heron", "mosquito-cloud", "mudflat-godwit", "mudpuppy", "muskrat-reedgatherer", "newt-doctor", "nightshade-moth", "nutria-reedcutter", "old-snapjaw", "peat-cutter-vole", "plague-gnat-cloud", "poison-dart-croaker", "puddle-hopper", "raft-spider", "rainmaker-frog", "raven-harbinger", "raven-hexcaller", "raven-scout", "razorbill", "river-carp", "rot-swollen-carcass", "signal-crayfish", "skull-vulture", "snapper-hatchling", "sphagnum-vole", "swamp-alligator", "swamp-rabbit", "teatime-toad", "the-unremembered", "thorn-shrike", "vampire-bat", "vampire-squid", "venomlord-serpent", "water-vole", "whip-spider", "wolfsbane-alpha", "wound-reaver"], "mz": ["amber-cicada", "ant-warrior", "bear-cub", "bloodworm", "bobbit-worm", "bombardier-beetle", "bramblewood-bonebreaker", "cane-toad", "cave-warlord", "compost-grub", "corpse-flower-beetle", "deep-cave-troll", "dung-beetle", "earthworm", "fungal-colossus", "fungus-gnat-cloud", "garden-snail", "gorge-wyrm", "grizzly-vanguard", "heartwood-treant", "irradiated-glow-wyrm", "leafcutter-gardener", "leopard-slug", "millipede-hauler", "phoenix-mushrooms", "pill-bug", "planarian-splitter", "puffball-bombardier", "rootworm-colony", "rot-swollen-carcass", "sleepless-shrew", "springtail-hopper", "swarm-matriarch", "termite-mound", "truffle-piglet", "tunnel-wyrm", "velvet-worm", "woodland-brawler"], "mn": ["arc-bat", "baby-bat", "badger-berserker", "barrow-leech-bat", "black-dragon", "blind-cave-fish", "bolas-spider", "cave-bat-swarm", "cave-centipede", "cave-cricket", "cave-flitter", "cave-olm", "cave-pseudoscorpion", "cave-swiftlet", "cave-warlord", "cinder-gecko", "coffer-mimic", "conch-crawler", "deep-cave-troll", "driftwood-crab", "dynamite-packrat", "echo-matriarch", "echo-screecher", "ember-centipede", "fruit-bat-familiar", "gallery-orb-weaver", "geode-scorpion", "ghost-crayfish", "giant-cave-huntsman", "glacier-wolf-pack", "glasswing-moth", "glimmer-spider", "glintsnatch-magpie", "glowworm-cluster", "gravel-mole", "grey-seal-bull", "guano-beetle", "hollow-belly-rat", "irradiated-glow-wyrm", "lantern-spark-fly", "magma-titan", "magpie-collector", "malachite-golem", "millipede-hauler", "nightshade-moth", "octopus-tactician", "oilbird", "ore-smelter-mole", "pelican-diver", "prospector-mole", "puffball-bombardier", "quarry-mole", "quarry-troll", "spitting-spider", "stalactite-golem", "static-bat", "subterraneaner", "sulfur-cinder-moth", "tide-pool-crab", "tidepool-trapper-crab", "tiny-cave-dweller", "trash-panda-trickster", "upside-down-bat", "ur-elk", "vampire-bat", "vampire-bat-nurse", "vampire-roost", "voltwing-bat", "whip-spider"], "mj": ["abyss-lantern-squid", "banded-sea-krait", "barnacle-bulwark", "barnacle-fortress", "beluga", "bloodscent-shark", "blue-ringed-octopus", "bobbit-worm", "cleaner-wrasse", "colossal-squid", "cone-snail", "conger-eel", "coral-current-eel", "coral-polyp-colony", "coral-reef-shark", "crown-of-thorns-star", "cuttlefish-illusionist", "dolphin-knight", "drowned-matriarch", "electric-ray", "fathom-leviathan", "giant-clam", "glass-octopus", "goliath-broodmother", "goliath-tentacle", "great-barracuda", "greenland-shark", "grey-seal-bull", "hagfish-silencer", "hammerhead-shark", "horseshoe-crab", "humpback-elder", "inkcloud-squid", "kelpborn-otter", "kraken-spawnling", "krill-swarm", "leopard-seal", "lionfish", "lions-mane-jelly", "man-o-war", "mantis-shrimp", "moon-jelly", "moray-ambusher", "narwhal-lancer", "nautiloid", "nautilus-drifter", "night-algae", "nudibranch", "octopus-tactician", "open-ocean-hermit-crab", "orca-vanguard", "otter-ferryman", "pincushion-urchin", "pistol-shrimp", "reef-admiral", "reef-manta-glider", "reef-shark", "reefback-turtle", "riptide-eel", "sawfish", "sea-cucumber", "sea-hare", "sea-turtle-elder", "selkie-wavebinder", "sperm-whale-elder", "supernova-jelly", "swordfish-spearman", "vampire-squid", "voltaic-eel", "whale-shark", "yellow-bellied-sea-snake"], "mv": ["abbey-goose", "alpine-avalanche", "alpine-swift", "anvil-thrush", "apollo-butterfly", "blue-dragon", "bramblewood-bonebreaker", "caldera-snow-leopard", "cathedral-eagle", "chamois-leaper", "chapel-sparrow", "clover-butterfly", "eagle-diver", "eagle-owl-quartermaster", "eagle-sharpshooter", "eyrie-warden", "fumarole-ibex", "gale-sprite", "gale-swift", "gangrenous-leech", "gannet-nestweaver", "glacier-yak", "glasswing-butterfly", "golden-eagle-diver", "great-horned-owl", "griffin", "hawk-arrowkeeper", "hymn-wren", "ibex-rockcaller", "marmot-stonecutter", "mirrorhide-mutant", "mountain-goat-climber", "mountain-hare", "peak-condor", "peregrine-stooper", "pika-hoarder", "red-billed-chough", "rockslide-ram", "scree-goat", "shrine-bell-ringer", "shrine-high-priest", "snow-leopard", "snow-owl-sentinel", "sparrow-chick", "starfall-owl", "stonedrop-vulture", "storm-heron", "stormcaller", "talus-pika", "the-gannet-queen", "vigil-owl", "weathervane-swift"], "my": ["acacia-giraffe", "ancient-sloth-titan", "aye-aye-prowler", "bramblewood-macaque", "camouflage-frog", "canopy-sloth-guardian", "chilli-parrot", "dust-hyena", "glasswing-butterfly", "gloom-gibbon", "hanging-loafer", "hercules-beetle", "hoopoe-herald", "howler-monkey", "ironback-gorilla", "irradiated-couatl", "jaguar-stalker", "kinkajou-lurker", "leaf-chameleon", "leafcutter-gardener", "lotus-frog", "lyrebird-mimic", "marula-elephant", "meerkat-sentry", "old-growth-tortoise", "plains-zebra", "poison-dart-croaker", "poison-dart-frog", "proboscis-monkey", "rafflesia", "savanna-cheetah", "silverback-brawler", "slow-loris", "slowpoke-sentinel", "stoat-cutthroat", "strangler-vine", "toucan-courier", "vampire-bat", "velvet-worm", "war-drum-mandrill", "weaver-bird", "yeti-chieftain"], "mi": ["arctic-fox-raider", "arctic-tern", "ashwing-ptarmigan", "beluga", "caldera-snow-leopard", "frost-hare-sprinter", "frost-thistle-lynx", "frostbitten-wolverine", "frostmoon-howler", "glacial-ape-king", "glacier-wolf-pack", "glacier-yak", "harbor-seal", "harp-seal-pup", "ice-crevasse-wolf", "ice-fish", "ice-petrel", "krill-swarm", "lemming-swarm", "lone-grey-wolf", "mountain-hare", "musk-ox-calf", "musk-ox-matriarch", "nightshade-moth", "permafrost-mammoth", "polar-bear", "ravenous-wolverine", "rimefire-salamander", "rimeheart-colossus", "ringed-seal", "snow-bunting-archer", "snow-ermine", "snow-owl-sentinel", "talus-pika", "the-contradiction", "tundra-musk-ox", "ur-elk", "walrus-icebreaker", "white-dragon", "wolfsbane-alpha", "yeti"], "mpd": ["antlion-pit", "armadillo-guard", "caustic-scorpion", "dromedary", "dune-jackal", "dune-packrat", "dust-devil-kestrel", "dust-hyena", "fennec-fox", "frillneck-duelist", "horned-lizard", "meerkat-burrower", "meerkat-sentry", "moon-jerboa", "pale-oryx", "quicksand-queen", "roadrunner-courier", "sand-widow", "sandfish", "sandstorm-roc", "skull-vulture", "thorny-devil", "trapdoor-spider"], "m9": ["ancient-sloth-titan", "anvil-thrush", "anvilwhisker-otter", "ash-cloud-condor", "ash-imp", "ash-moth", "ashbone-ghoul", "ashmantle-fiend", "ashwing-ptarmigan", "basalt-boar", "beaver-lumberjack", "berserker-boar", "black-dragon", "blackmass-acolyte", "blessed-avatar", "blue-dragon", "boar-rampager", "brimstone-hound", "caldera-snow-leopard", "caldera-wyrm", "cave-warlord", "chained-binturong", "cinder-gecko", "cinder-hornet", "cinder-imp", "cinder-skeleton", "cinder-stoker", "deep-cave-troll", "dread-bell", "ember-centipede", "ember-jackal", "ember-revenant", "ember-tetra", "ember-wisp", "feral-tuskboar", "fire-drake-hatchling", "fire-salamander", "firefly-swarm", "flagellant-vulture", "fruit-bat-familiar", "fumarole-ibex", "glowing-gecko", "granite-ox-golem", "green-dragon", "grindstone-boar", "hellbender", "honey-badger-fury", "ice-petrel", "lurking-dread", "magma-salamander", "magma-titan", "magma-wraith", "obsidian-lich", "obsidian-scorpion", "ore-smelter-mole", "ossuary-lammergeier", "pack-mule", "pall-wraith", "phoenix-fledgling", "pit-glutton", "pumice-beetle", "puppeteer-imp", "pyroclast-wyrm", "quill-thorn-boar", "quillback-elder", "red-dragon", "rimefire-salamander", "rimeheart-colossus", "salamander-pyromancer", "shrine-acolyte", "shrine-bell-ringer", "smoke-raccoon", "sulfur-vent-crab", "the-contradiction", "the-sixfold", "thunder-lizard", "tithe-collector", "tusked-vanguard", "vampire-finch", "vampire-roost", "white-dragon", "wound-reaver", "yeti"], "me": ["ancient-sloth-titan", "anvilwhisker-otter", "armored-mastiff", "ash-cloud-condor", "ash-imp", "ash-moth", "ashbone-ghoul", "ashmantle-fiend", "ashwing-ptarmigan", "basalt-boar", "beaver-lumberjack", "berserker-boar", "black-dragon", "blackmass-acolyte", "blessed-avatar", "blue-dragon", "bone-diviner", "border-collie", "brimstone-hound", "caldera-snow-leopard", "caldera-wyrm", "carrion-beetle", "chained-binturong", "cinder-gecko", "cinder-hornet", "cinder-imp", "cinder-skeleton", "cinder-stoker", "deep-cave-troll", "dread-bell", "ember-centipede", "ember-jackal", "ember-revenant", "ember-tetra", "ember-wisp", "farm-dog", "fire-drake-hatchling", "fire-salamander", "firefly-swarm", "flagellant-vulture", "fruit-bat-familiar", "fumarole-ibex", "granite-ox-golem", "green-dragon", "hellbender", "ice-petrel", "lurking-dread", "magma-salamander", "magma-titan", "magma-wraith", "obsidian-lich", "obsidian-scorpion", "ossuary-lammergeier", "pall-wraith", "phoenix-fledgling", "pit-glutton", "pumice-beetle", "puppeteer-imp", "pyroclast-wyrm", "quill-volley", "red-dragon", "rimefire-salamander", "rimeheart-colossus", "salamander-pyromancer", "shepherds-bark", "shieldbearer-hound", "shrine-acolyte", "shrine-bell-ringer", "sulfur-vent-crab", "terrier-pup", "the-contradiction", "the-sixfold", "thunder-lizard", "tide-spirit", "tithe-collector", "ur-elk", "vampire-finch", "vampire-roost", "war-hound", "weredog", "white-dragon", "wound-reaver", "yeti"], "mx": ["ancient-sloth-titan", "anvilwhisker-otter", "ash-cloud-condor", "ash-imp", "ash-moth", "ashbone-ghoul", "ashmantle-fiend", "ashwing-ptarmigan", "basalt-boar", "beaver-lumberjack", "berserker-boar", "black-dragon", "blackmass-acolyte", "blessed-avatar", "blue-dragon", "brimstone-hound", "caldera-snow-leopard", "caldera-wyrm", "cave-warlord", "chained-binturong", "cinder-gecko", "cinder-hornet", "cinder-imp", "cinder-skeleton", "cinder-stoker", "deep-cave-troll", "dread-bell", "ember-centipede", "ember-jackal", "ember-revenant", "ember-tetra", "ember-wisp", "fire-drake-hatchling", "fire-salamander", "firefly-swarm", "flagellant-vulture", "fruit-bat-familiar", "fumarole-ibex", "granite-ox-golem", "green-dragon", "hellbender", "ice-petrel", "lurking-dread", "magma-salamander", "magma-titan", "magma-wraith", "obsidian-lich", "obsidian-scorpion", "ossuary-lammergeier", "pall-wraith", "phoenix-fledgling", "pit-glutton", "pumice-beetle", "puppeteer-imp", "pyroclast-wyrm", "quill-volley", "red-dragon", "rimefire-salamander", "rimeheart-colossus", "salamander-pyromancer", "shrine-acolyte", "shrine-bell-ringer", "siege-rhino", "sulfur-vent-crab", "the-contradiction", "the-sixfold", "thunder-lizard", "tithe-collector", "ur-elk", "vampire-finch", "vampire-roost", "white-dragon", "wound-reaver", "yeti"]};
+// #14: Claude's picks for a map's NEW! gap (canonical/claude-new-cards.json `list1`, baked in with CLAUDE_NEW): [{id, why}], cards and concepts (concept-<name>)
+function list1PicksOf(id){ const m = ((typeof CLAUDE_NEW !== 'undefined' && CLAUDE_NEW && CLAUDE_NEW.list1) || {})[id] || {}; return (m.picks || []).concat(m.concepts || []).filter(e=> e && typeof e.id === 'string').map(e=> ({id: e.id, why: e.why || e.role || ''})); }
+// #12: each side map's own cards (its list and its Yes flags, minus what it carries) whose side map opens before main map n: card id -> that unlock map's number
+function list1SideOwnIndex(n, maps){
+  const out = new Map(); if(n == null) return out;
+  try{ ui44ProsSubs().forEach(sm=>{ const u = mapNumberOf(ui44After(sm.id)); if(u == null || u >= n) return; const own = ui37CarriedIndex(u + 1, maps); let l = []; try{ l = mpEntry(mpTopOf(sm.id)).submaps[sm.id] || []; }catch(e){}
+    l.concat(ui37Ent(sm.id).yes).forEach(id=>{ if(!own.has(id) && (!out.has(id) || out.get(id) > u)) out.set(id, u); }); }); }catch(e){}
+  return out;
+}
+function ui37Targets(top){ const n = mapNumberOf(top), sub = typeof ui44IsSub === 'function' && ui44IsSub(top), d0 = sub ? {own: 3, carried: 8} /* 2026-11-12 (UI48 #4): a side map's own target is 3 (was 12); 2026-11-10 (UI44): a side map; th6Targets is the main-map curve and has no side-map value, so 12 / 8 as the owner asked */ : (th6Targets(n == null ? 2 : n) || {own: 0, carried: 0}), d = {own: Math.max(d0.own, LIST1_NEW_TARGETS[top] || 0), carried: d0.carried}, t = ui37Ent(top).t, num = v=> (v === '' || v == null || !(Number(v) >= 0)) ? null : Math.round(Number(v));
   return {n: num(t.n) != null ? num(t.n) : d.own, c: num(t.c) != null ? num(t.c) : d.carried, dn: d.own, dc: d.carried}; }
 // every prospective card of a main map: id -> {id, src: Set('list' | 'maybe' | 'claude' | 'newcard' | 'flag'), why}
 function ui37Prospects(top, defs, ok){
@@ -34369,6 +34400,7 @@ function ui37Prospects(top, defs, ok){
   const cn = (typeof CLAUDE_NEW !== 'undefined' && CLAUDE_NEW) || {}, n = mapNumberOf(top);
   ((cn.theme5 || {})[top] || []).forEach(e=> e && add(e.id, 'claude', e.why));
   if(n != null) ((cn.skillrec || {})[String(n)] || []).forEach(e=> e && add(e.id, 'claude', e.why));
+  list1PicksOf(top).forEach(e=> add(e.id, 'list1', e.why)); // 2026-11-13 (LIST1 #14): Claude's picks for the map's NEW! gap (cards, and concepts by their concept id)
   const c = (cn.content17 || {})[top]; ((c && c.groups) || []).slice().sort((a, b)=> (b.current ? 1 : 0) - (a.current ? 1 : 0)).forEach(g=> (g.picks || []).forEach(p=> p && add(p.id, p.source === 'new' ? 'newcard' : 'claude', (g.theme ? g.theme + ': ' : '') + (p.why || ''))));
   const e = ui37Ent(top); e.yes.concat(e.no).forEach(id=> add(id, 'flag'));
   ui47AdminOf(top).forEach(id=> add(id, 'flag'));
@@ -34384,7 +34416,7 @@ function ui41Allowed(id, defs){ const d = defs[id]; return !d || !d.faction || d
 // owner flagged Yes always stay (they count first); the cap is not applied to list cards, so nothing on today's list is dropped.
 function ui41Cap(top, list, defs){
   const cap = ((UI38_PROS && UI38_PROS.rules) || {}).familyCap || 2, cnt = {}, keep = new Set(), yes = new Set(ui47YesList(top));
-  const fixed = p=> p.src.has('list') || p.src.has('tut') || p.src.has('suggest') /* 2026-11-11 (UI47): a Suggested card is always shown */ || yes.has(p.id); // + the tutorial's cards on Thistlewood (2026-11-10, owner 09:52)
+  const fixed = p=> p.src.has('list') || p.src.has('tut') || p.src.has('suggest') /* 2026-11-11 (UI47): a Suggested card is always shown */ || p.src.has('list1') /* 2026-11-13 (LIST1): a gap pick too */ || yes.has(p.id); // + the tutorial's cards on Thistlewood (2026-11-10, owner 09:52)
   list.forEach(p=>{ if(fixed(p)){ keep.add(p.id); const f = ui38Family(p.id, defs); if(f) cnt[f] = (cnt[f] || 0) + 1; } });
   list.forEach(p=>{ if(keep.has(p.id)) return; const f = ui38Family(p.id, defs); if(f && (cnt[f] || 0) >= cap) return; if(f) cnt[f] = (cnt[f] || 0) + 1; keep.add(p.id); });
   return list.filter(p=> keep.has(p.id));
@@ -34394,15 +34426,19 @@ function ui41Cap(top, list, defs){
 // proposed concepts) and Carried up to 20+ (earlier main maps' cards, best fit first). extra stays an empty list for callers.
 function ui37Split(top, defs, ok){
   const n = mapNumberOf(top), maps = ui37MapsData(), idx = ui37CarriedIndex(n, maps), pros = ui37Prospects(top, defs, ok), neu = [], car = [];
-  const SRC = {list: 0, maybe: 1, claude: 2, newcard: 3, flag: 4, suggest: 5}, rank = p=> Math.min(...[...p.src].map(s=> SRC[s] == null ? 9 : SRC[s]));
+  const SRC = {list: 0, list1: 1, maybe: 1, claude: 2, newcard: 3, flag: 4, suggest: 5}, rank = p=> Math.min(...[...p.src].map(s=> SRC[s] == null ? 9 : SRC[s]));
   const nm = id=> String(ui38Concept(id) ? ui38Concept(id).name : defs[id].name), rs = id=> ui38Concept(id) ? roadRarityStep(ui38Concept(id).rarity) : roadRarityStep(defs[id].rarity);
   const by = (a, b)=> rank(a) - rank(b) || rs(a.id) - rs(b.id) || nm(a.id).localeCompare(nm(b.id));
   pros.forEach(p=> (idx.has(p.id) ? car : neu).push(p));
   neu.sort(by); car.sort(by);
   const neu2 = ui41Cap(top, neu, defs), car2 = ui41Cap(top, car, defs); neu.length = 0; car.length = 0; neu.push(...neu2); car.push(...car2); // 2026-11-09 (UI41)
   ui38Fill(top, defs, ok, idx, neu, car); // 2026-11-10 (UI45): Yes-only index; every other fitting card is NEW!, Carried is never topped up
+  // 2026-11-13 (LIST1, owner 11:08 #12: "those cards could be used in the far future in a mainline map as 'Carried'"): a side map's own card on a main map past the one
+  // that opens it is Carried (pill: that map's number), not NEW!; Carried is still not topped up with side cards
+  const sx = list1SideOwnIndex(n, maps), idx2 = new Map(idx);
+  for(let i = neu.length - 1; i >= 0; i--){ const p = neu[i]; if(sx.has(p.id)){ idx2.set(p.id, sx.get(p.id)); neu.splice(i, 1); car.push(p); } }
   ui47SuggestFirst(top, neu); // 2026-11-11 (UI47 #7): a Suggested card sorts first within NEW! (it never changes a flag)
-  return {n, neu, car, extra: [], idx}; // idx: the "Map N" pill of every Carried card (Yes on an earlier map, or a tutorial card)
+  return {n, neu, car, extra: [], idx: idx2}; // idx: the "Map N" pill of every Carried card (Yes on an earlier map, a tutorial card, or a side map's own card)
 }
 let ui37Status = null, ui37Live = null; const ui37Timers = {};
 function ui37StatusText(){ return !ui37Status ? '' : ui37Status.ok ? '☁️ ' + TX('ui.ui37-saved-cloud') : '💾 ' + TX('ui.ui37-saved-local'); }
@@ -34432,8 +34468,8 @@ function ui37SetTarget(top, k, v){ const e = ui37Ent(top), t = Object.assign({},
 // every main map's flags, with the group each card is in on that map (as this view computes it now)
 function ui37ExportRows(){
   const defs = getCardDefs(), rows = [], maps = ui37MapsData();
-  maps.forEach(m=>{ const e = ui37Ent(m.id), yes = ui47YesList(m.id); if(!yes.length && !e.no.length) return; const idx = ui37CarriedIndex(m.n, maps), tg = ui37Targets(m.id);
-    let shown = []; try{ const ok0 = id=> !!defs[id] && ui41Allowed(id, defs), sp = ui37Split(m.id, defs, ok0); shown = sp.neu.concat(sp.car).map(p=> p.id); }catch(x){} // 2026-11-09 (UI42): every card the map shows, unflagged ones as no
+  maps.forEach(m=>{ const e = ui37Ent(m.id), yes = ui47YesList(m.id); if(!yes.length && !e.no.length) return; let idx = ui37CarriedIndex(m.n, maps); const tg = ui37Targets(m.id);
+    let shown = []; try{ const ok0 = id=> !!defs[id] && ui41Allowed(id, defs), sp = ui37Split(m.id, defs, ok0); shown = sp.neu.concat(sp.car).map(p=> p.id); idx = sp.idx; /* 2026-11-13 (LIST1): the split's groups */ }catch(x){} // 2026-11-09 (UI42): every card the map shows, unflagged ones as no
     const have = new Set(yes); // 2026-11-11: admin adds (UI47_ADMIN_ADD) read Yes in the window, so they export as yes (were 'no')
     yes.map(id=> [id, 'yes']).concat([...new Set(e.no.concat(shown))].filter(id=> !have.has(id)).map(id=> [id, 'no'])).forEach(([id, flag])=>{ const c = ui38Concept(id); /* 2026-11-09 (UI38): a concept row carries its fields */
       rows.push(Object.assign({mapNo: m.n, mapId: m.id, map: m.name, cardId: id, card: c ? c.name : (defs[id] && defs[id].name) || id, flag, group: idx.has(id) ? 'carried' : 'new', carriedFrom: idx.has(id) ? (idx.get(id) === UI47_TUT ? 'tutorial' : idx.get(id)) : null, targetNew: tg.n, targetCarried: tg.c, adminAdd: ui47IsAdminAdded(m.id, id)},
@@ -34449,7 +34485,7 @@ function ui37ExportFile(kind){
   try{ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], {type: kind === 'csv' ? 'text/csv' : 'application/json'})); a.download = 'bramblewood-map-picks.' + (kind === 'csv' ? 'csv' : 'json'); document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
   return body;
 }
-const UI37_SRC_TX = {tut: ()=> TX('tutorial.tutorial'), list: ()=> TX('ui.ui37-src-list'), maybe: ()=> TX('ui.ui37-src-maybe'), claude: ()=> TX('ui.ui37-src-claude'), newcard: ()=> TX('ui.ui37-src-newcard'), flag: ()=> TX('ui.ui37-src-flag'), earlier: ()=> TX('ui.ui37-src-earlier'), fit: ()=> TX('ui.ui38-src-fit'), concept: ()=> TX('ui.ui38-src-concept')}; // UI38: + fit, concept // literal keys (keyify drops keys built from names)
+const UI37_SRC_TX = {tut: ()=> TX('tutorial.tutorial'), list: ()=> TX('ui.ui37-src-list'), maybe: ()=> TX('ui.ui37-src-maybe'), claude: ()=> TX('ui.ui37-src-claude'), newcard: ()=> TX('ui.ui37-src-newcard'), flag: ()=> TX('ui.ui37-src-flag'), earlier: ()=> TX('ui.ui37-src-earlier'), fit: ()=> TX('ui.ui38-src-fit'), concept: ()=> TX('ui.ui38-src-concept'), list1: ()=> TX('ui.ui37-src-claude')}; // UI38: + fit, concept; LIST1: a gap pick reads "Claude's pick" // literal keys (keyify drops keys built from names)
 // 2026-11-09 (package UI39, owner 10:17: "combine the prospects UI and the Lists UI. So I pick from there, full view. Not pill view. Combine them."): one view, no
 // Lists / Prospects switch. A prospect is the Lists view's full card: a card on the map's reviewed MAP list is its own review tile (rv1TileHTML: art, stats,
 // skills, the review pills, ✂ Cut / Keep, ✏️ edit), any other card the same full card with ✏️ (data-rv-kind "ui39"), a proposed concept a card-shaped placeholder
@@ -34596,13 +34632,20 @@ function ui44UnlockPicks(){ return ui44ProsSubs().filter(m=> ui37Ent(m.id).after
 function ui44Split(subId, defs, ok){
   const top = mpTopOf(subId), afterId = ui44After(subId), un = mapNumberOf(afterId), maps = ui37MapsData(), idx = ui37CarriedIndex((un == null ? 0 : un) + 1, maps), all = new Map();
   const add = (id, src, why)=>{ if(!id || !(ui38Concept(id) || (defs[id] && ok(id)))) return; let e = all.get(id); if(!e){ e = {id, src: new Set(), why: ''}; all.set(id, e); } e.src.add(src); if(why && !e.why) e.why = String(why); };
+  // 2026-11-13 (package LIST1, owner 11:08 #12: "remove card recommendations for 'Carried' here if they don't fit ... don't show cards in future maps after the
+  // progression of this map"): a proposal (Claude's fits / adds, Maybe, Suggested, a gap pick) that is a later main map's Yes card is not shown (its own main map
+  // introduces it; it is never NEW! here); a Yes from a main map up to the pick shows as Carried only if it fits this side map (LIST1_SIDE_FIT: its biome, Claude's
+  // side-map fits, its own cards' animals, its keyword skill), or if the list, a flag or a proposal already brings it. The list and the owner's flags always show.
+  const full = ui37CarriedIndex(Infinity, maps), later = id=> full.has(id) && !idx.has(id), fitL = LIST1_SIDE_FIT[subId], fit = id=> !fitL || fitL.includes(id);
+  const prop = (id, src, why)=>{ if(!later(id)) add(id, src, why); };
   try{ (mpEntry(top).submaps[subId] || []).forEach(id=> add(id, 'list')); }catch(e){}
-  try{ const rv = rv1ReviewOf({key: 'sub:' + subId, sub: subId}, top); if(rv) (rv.maybe || []).forEach(e=> e && add(e.id, 'maybe', e.why)); }catch(e){}
-  const P = UI44_SIDE[subId] || {}; (P.fits || []).forEach(id=> add(id, 'claude')); (P.add || []).forEach(e=> e && add(e.id, 'claude', e.why));
+  try{ const rv = rv1ReviewOf({key: 'sub:' + subId, sub: subId}, top); if(rv) (rv.maybe || []).forEach(e=> e && prop(e.id, 'maybe', e.why)); }catch(e){}
+  const P = UI44_SIDE[subId] || {}; (P.fits || []).forEach(id=> prop(id, 'claude')); (P.add || []).forEach(e=> e && prop(e.id, 'claude', e.why));
+  list1PicksOf(subId).forEach(e=> prop(e.id, 'list1', e.why)); // LIST1 #14: Claude's picks for the side map's NEW! gap
   const f = ui37Ent(subId); f.yes.concat(f.no).forEach(id=> add(id, 'flag'));
-  ui47SuggestedOf(subId).forEach(id=> add(id, 'suggest')); // 2026-11-12 (UI48 #4): 1-3 Suggested cards per side map (UI47_SUGGEST keyed by the submap id)
-  idx.forEach((n, id)=> add(id, n === UI47_TUT ? 'tut' : 'earlier')); // Carried: a Yes on a main map up to the pick, and the tutorial's T-1 / T-2 cards
-  const SRC = {list: 0, maybe: 1, claude: 2, newcard: 3, flag: 4}, rank = p=> Math.min(...[...p.src].map(s=> SRC[s] == null ? 9 : SRC[s]));
+  ui47SuggestedOf(subId).forEach(id=> prop(id, 'suggest')); // 2026-11-12 (UI48 #4): 1-3 Suggested cards per side map (UI47_SUGGEST keyed by the submap id)
+  idx.forEach((n, id)=>{ if(all.has(id) || fit(id)) add(id, n === UI47_TUT ? 'tut' : 'earlier'); }); // Carried: a Yes on a main map up to the pick (and the tutorial's T-1 / T-2 cards) that fits
+  const SRC = {list: 0, list1: 1, maybe: 1, claude: 2, newcard: 3, flag: 4}, rank = p=> Math.min(...[...p.src].map(s=> SRC[s] == null ? 9 : SRC[s]));
   const nm = id=> String(ui38Concept(id) ? ui38Concept(id).name : defs[id].name), rs = id=> ui38Concept(id) ? roadRarityStep(ui38Concept(id).rarity) : roadRarityStep(defs[id].rarity);
   const neu = [], car = []; all.forEach(p=> (idx.has(p.id) ? car : neu).push(p));
   neu.sort((a, b)=> rank(a) - rank(b) || rs(a.id) - rs(b.id) || nm(a.id).localeCompare(nm(b.id)));
@@ -34644,7 +34687,9 @@ function ui44ExportRows(rows, defs){
 // recent map first) A proposed card is not added once its animal family is in its group rules.familyCap times. The split follows the
 // flags as UI37 does (ui37CarriedIndex); a concept is flagged by its stable id (concept-<name>) in the same `__cfg:map-picks:<map>` row. No side-map cards.
 const UI38_PROS = __MAP_PROSPECTS__;
-const UI38_CONCEPTS = (()=>{ const o = {}; try{ Object.keys(UI38_PROS.maps || {}).forEach(mid=> (UI38_PROS.maps[mid].concepts || []).forEach(c=>{ if(c && c.id) o[c.id] = Object.assign({mapId: mid, mapNo: mapNumberOf(mid)}, c); })); }catch(e){} return o; })();
+const UI38_CONCEPTS = (()=>{ const o = {}; try{ Object.keys(UI38_PROS.maps || {}).forEach(mid=> (UI38_PROS.maps[mid].concepts || []).forEach(c=>{ if(c && c.id) o[c.id] = Object.assign({mapId: mid, mapNo: mapNumberOf(mid)}, c); })); }catch(e){}
+  try{ const l1 = (typeof CLAUDE_NEW !== 'undefined' && CLAUDE_NEW && CLAUDE_NEW.list1) || {}; Object.keys(l1).forEach(mid=> ((l1[mid] || {}).concepts || []).forEach(c=>{ if(c && c.id && !o[c.id]) o[c.id] = Object.assign({mapId: mid, mapNo: mapNumberOf(mid)}, c); })); }catch(e){} // 2026-11-13 (LIST1 #14): the gap concepts
+  return o; })();
 function ui38Concept(id){ return (typeof id === 'string' && UI38_CONCEPTS[id]) || null; }
 function ui38Family(id, defs){ const c = ui38Concept(id); return c ? c.family : ((UI38_PROS.family || {})[id] || (defs[id] && defs[id].animal) || ''); }
 // side-map cards, as the lists are now: a card only on side maps' lists (on no main map's MAP list), and, for a map `top`, a card on its own side maps' lists
@@ -53173,7 +53218,7 @@ function positionBeamVfx(ev){
 // own short SkillFX look in real fights (the Effects library plays them too, since it runs the same replay). Each layers over
 // the existing number, sound and tint; Medium effects and up, never with reduced motion, and the ones that can repeat play at
 // most once per unit per round (skillFxOnce). Fire-and-forget: nothing here holds up the replay.
-const STATUS_ORBIT = {stun:'★', stunOnHit:'★', stagger:'✦', confuse:'❓', tipsy:'🫧'};
+const STATUS_ORBIT = {stun:'★', stunOnHit:'★', stagger:'✦', tipsy:'🫧'}; // 2026-11-13 (package FX10): Confuse has its own look (SkillFX.confuseSpin)
 // 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): an Electricity hit is drawn as its own bolt: the arc runs attacker -> struck unit -> this unit, the wet zap attacker -> this
 // unit. SkillFX.lightning lands jump i at i*152 + 60 ms, so the number pops as the last jump lands.
 function electricChain(ev){
@@ -53221,7 +53266,7 @@ function eighthPassVfx(ev){
   if(ev.type === 'frenzy' && skillFxOnce('frenzy' + ev.attUid)){ const t = el(ev.attUid); if(t) F.rageFlare(t); }
   if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
   if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
-  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && ev.kind !== 'bulwark' /* FX6: it rises, no portal */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
+  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && ev.kind !== 'bulwark' /* FX6: it rises, no portal */ && ev.kind !== 'brood' /* FX10: silk (SkillFX.broodDrop) */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
     // 2026-10-25 (package FIX3, F5, owner #17: "cards played disappear then appear again at the end of the round - no it's just tokens"): the
     // portal pops the new token's tile from 30% opacity, 140 ms (+60 per token) after the spawn, when the token has already landed at full
     // opacity: it showed, dropped to 30% and faded back in (seen headless: a 145-170 ms dip on a Brood token). The portal now plays over the
@@ -53231,7 +53276,7 @@ function eighthPassVfx(ev){
     at(140, ()=> fresh.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) fix3PortalOver(F, t); }))); }
   if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
     const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
-    if(src && dest) F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); }
+    const arc = ()=> F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); if(src && dest){ if(ev.cause === 'delivery') at(Math.round(380 / Math.min(3, matchState.speedMult || 1)), arc); else arc(); } } // 2026-11-13 (FX10): a Delivery's logs leave its crate
   if(ev.type === 'play' && !ev.reserve && (Number(fxOf(ev.defId).prayer) > 0)) at(500, ()=>{ const t = el(ev.uid); if(t) F.prayerLight(t); }); // a Prayer card arrives
   if(ev.type === 'tide' && ev.tide !== 'ebb' && !ev.moonpull && skillFxOnce('swimTide')){ // the Tide comes in: every Swimmer on the board splashes up
     const sw = Object.keys(matchState.replayCards || {}).filter(u=>{ const rc = matchState.replayCards[u]; return rc && rc.hp > 0 && fxOf(rc.defId).swimmer; }).slice(0, 6);
@@ -54879,6 +54924,30 @@ function en6Vfx(ev){
     const a = en2Ctr(src), b = en2Ctr(hq), ar = en2Layer('🏹', 'en6-bramble-arrow'); gsap.set(ar, {x:a.x, y:a.y, xPercent:-50, yPercent:-50, scale:.7, opacity:0, rotation:Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI + 45});
     gsap.timeline({onComplete:()=>{ ar.remove(); try{ en2Ring(b.x, b.y, 60); }catch(e){} }}).to(ar, {opacity:1, duration:.06}).to(ar, {x:b.x, y:b.y, duration:.3, ease:'power1.in'}).to(ar, {opacity:0, scale:1.2, duration:.1}); }, 60); }
 }
+// 2026-11-13 (package FX10): the ten FX10 skill looks (bramblewood-skillfx.js), each where its event already fires; cosmetic only, nothing waits for them.
+// Effects Low: one still piece (calm); None: no look (the cue still plays). Each starts on the next frame, so its host and spans go in after the event's
+// own reads (the floats); there the card's box (and any other box it needs, pre) is read once, before the host (fxHostAt, the camera layer) goes in.
+function fx10Vfx(ev){
+  const F = window.SkillFX, m = matchState; if(!ev || !m || document.hidden) return; // nothing starts in a hidden tab (its frames would all run on return)
+  const el = uid=> uid == null ? null : boardCardEl(uid);
+  const go = (fn, uid, cue, pre)=>{ const t0 = performance.now(); requestAnimationFrame(()=>{ if(performance.now() - t0 > 600) return; const e = el(uid), r = e && e.isConnected ? e.getBoundingClientRect() : null;
+    if(cue) try{ SoundKit.at(r ? ((r.left + r.width/2)/Math.max(1, innerWidth))*2 - 1 : 0, ()=> SoundKit[cue]()); }catch(err){}
+    if(!r || !(r.width > 0) || !F || !F[fn] || !fxAtLeast('low') || matchState !== m) return;
+    try{ const x = pre ? pre(e) : null; F[fn](e, Object.assign({host: fxHostAt(e, 1500, r), rect: r, speed: m.speedMult || 1, calm: !fxAtLeast('med') || reducedMotion()}, x)); }catch(err){} }); };
+  const box = uid=>{ const e = el(uid), r = e && e.isConnected ? e.getBoundingClientRect() : null; return r && r.width > 0 ? r : null; };
+  const t = ev.type, k = ev.kind;
+  if(t === 'statusFx' && k === 'avalancheWait') go('snowBury', ev.targetUid, skillFxOnce('fx10snow' + ev.attUid) ? 'snowThump' : null); // one thump an avalanche
+  else if(t === 'statusFx' && k === 'en20Ignite') go('igniteFlare', ev.targetUid, 'igniteWhoosh');
+  else if(t === 'burnTick') setTimeout(()=> go('burnLick', ev.uid, 'burnCrackle'), 60); // an upkeep tick: the board redraws first (as afterSettle)
+  else if(t === 'skillSpent'){ const sel = (ev.keys || []).map(s=> /^triggers/.test(s) ? '.ab-trig' : /^\w+$/.test(s) ? `[data-sk="${s}"], .ab-${s}` : '').filter(Boolean).join(', ');
+    go('spentPuff', ev.uid, 'spentPuff', e=>{ let c = null; try{ c = (sel && e.querySelector(sel)) || e.querySelector('.badges'); }catch(err){} return {chipRect: c ? c.getBoundingClientRect() : null}; }); }
+  else if(t === 'spawn' && k === 'brood') (ev.uids || []).slice(0, 3).forEach((u, i)=>{ if(skillFxOnce('fx10brood' + u)) setTimeout(()=> go('broodDrop', u, null, ()=> ({fromRect: box(ev.nearUid)})), 140 + i*60); }); // the token has landed
+  else if(t === 'statusFx' && k === 'confuse') go('confuseSpin', ev.targetUid);
+  else if(t === 'statusFx' && k === 'carrion') go('carrionFeed', ev.targetUid, 'carrionCaw', ()=> ({fromRect: box(ev.fromUid)}));
+  else if(ev.cause === 'delivery' && ev.uid != null && /^(lumber|stone|metal|uranium|pearl|grace)$/.test(t)) go('deliveryCrate', ev.uid, 'crateThunk');
+  else if(t === 'statusFx' && k === 'skitter') go('skitterDash', ev.attUid, 'skitterPatter');
+  else if(t === 'statusFx' && k === 'thanatosis') go('playDead', ev.targetUid, 'playDeadFlop');
+}
 function renderVfxForEvent(ev){
   if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
@@ -54914,6 +54983,7 @@ function renderVfxForEvent(ev){
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
+  try{ fx10Vfx(ev); }catch(e){} // 2026-11-13 (package FX10): ten skill looks
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
   if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum','chilli','bloodlust'].includes(ev.kind)){ // + Chilli, Bloodlust (2026-10-15)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
@@ -55399,7 +55469,7 @@ function renderVfxForEvent(ev){
     // so they float on the attacker's own tile, same convention as Grit above.
     else if(ev.kind==='blind'){ SoundKit.blindTone(); if(el) floatText(el, '👁 Blinded', 'debuff'); if(rc) rc.blind = (rc.blind||0) + 1; }
     else if(ev.kind==='tipsy'){ SoundKit.blindTone(); if(el) floatText(el, '🍺 Tipsy', 'debuff'); if(rc) rc.tipsy = (rc.tipsy||0) + 1; }
-    else if(ev.kind==='confuse'){ SoundKit.blindTone(); if(el) floatText(el, '❓ Confused', 'debuff'); if(rc) rc.confused = (rc.confused||0) + 1; }
+    else if(ev.kind==='confuse'){ SoundKit.confuseWarble(); /* 2026-11-13 (FX10): was Blind's tone */ if(el) floatText(el, '❓ Confused', 'debuff'); if(rc) rc.confused = (rc.confused||0) + 1; }
     else if(ev.kind==='shock'){ SoundKit.shockTone(); if(el){ shakeEl(el); glitchVfx(el); floatText(el, '🌩 Shocked', 'debuff'); } if(rc) rc.shocked = (rc.shocked||0) + 1; }
     else if(ev.kind==='corrode'){ SoundKit.corrodeTone(); if(el) floatText(el, '-'+ev.amount+'⚔ 🧪', 'debuff'); if(rc) rc.corrode = (rc.corrode||0) + ev.amount; }
     // Stagger (2026-09-24, task #109): physical's elemental status, completing the cold/heat/
@@ -55741,7 +55811,7 @@ function renderVfxForEvent(ev){
   // that changed slot, including this one — so this just needs its own light cue.
   if(ev.type==='collapseIn'){ SoundKit.shift(); }
   if(ev.type==='spawn' && ev.kind==='bloom'){ try{ bloomCopyVfx(ev.nearUid, ev.uids && ev.uids[0]); }catch(e){} } // BL (2026-10-23): the copy blooms in (no summon portal)
-  if(ev.type==='spawn'){ if(ev.cause==='shieldCall'){ try{ SoundKit.shieldDrop(); }catch(e){} setTimeout(()=>{ const el = boardCardEl(ev.uids && ev.uids[0]); if(el){ try{ if(window.SkillFX && SkillFX.shieldDrop) SkillFX.shieldDrop(el); }catch(e){} try{ floatText(el, '🛡️ Shield Call', 'buff'); }catch(e){} } }, 60); } else if(ev.kind === 'bulwark') SoundKit.constructTone(); /* 2026-11-12 (FX6) */ else SoundKit.buzz();
+  if(ev.type==='spawn'){ if(ev.cause==='shieldCall'){ try{ SoundKit.shieldDrop(); }catch(e){} setTimeout(()=>{ const el = boardCardEl(ev.uids && ev.uids[0]); if(el){ try{ if(window.SkillFX && SkillFX.shieldDrop) SkillFX.shieldDrop(el); }catch(e){} try{ floatText(el, '🛡️ Shield Call', 'buff'); }catch(e){} } }, 60); } else if(ev.kind === 'bulwark') SoundKit.constructTone(); /* 2026-11-12 (FX6) */ else if(ev.kind === 'brood') SoundKit.silkDrop(); /* 2026-11-13 (FX10) */ else SoundKit.buzz();
     if(ev.cause === 'onDeathSpawn' && ev.kind !== 'crystal' && ev.kind !== 'relic'){ const u0 = (ev.placements && ev.placements[0] && ev.placements[0].uid) != null ? ev.placements[0].uid : (ev.uids || [])[0]; /* FX6: Spawn on death: bugs crawl out of the first token */ if(u0 != null) setTimeout(()=>{ try{ bugCrawlVfx(boardCardEl(u0)); }catch(e){} }, 200); } }
   // Floating-number coverage audit (2026-09-18, "every action that changes a number... should
   // get a floating number"): Gold/Grace generation from a card's passive effect (onSpawnGold,
@@ -57293,11 +57363,13 @@ function wireBlacksmith(root){
     Object.entries(r.needs).forEach(([id, n])=> spendCopies(id, n));
     myCurrencies.dust -= r.cost.dust||0; myCurrencies.gold -= r.cost.gold||0; myCurrencies.gems -= r.cost.gems||0; saveCurrencies();
     try{ SoundKit.anvil ? SoundKit.anvil() : (SoundKit.gold && SoundKit.gold()); }catch(e){}
-    const card = document.getElementById('smithCard'); if(card && card.animate && !reducedMotion()){ for(let k = 0; k < 3; k++){ await new Promise(res=> setTimeout(res, 230)); try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} card.animate([{transform:'translateY(0) scale(1)'}, {transform:'translateY(6px) scale(.97)', filter:'brightness(1.6)'}, {transform:'none'}], {duration:200}); smithBurst(); } }
-    unlockCardForPlayer(r.out, 'smith');
+    const card = document.getElementById('smithCard');
+    try{ if(card && card.animate && !reducedMotion()){ for(let k = 0; k < 3; k++){ await new Promise(res=> setTimeout(res, 230)); try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} card.animate([{transform:'translateY(0) scale(1)'}, {transform:'translateY(6px) scale(.97)', filter:'brightness(1.6)'}, {transform:'none'}], {duration:200}); smithBurst(); } } }catch(e){}
+    try{ unlockCardForPlayer(r.out, 'smith'); } // paid above: the card is given even if the look broke
+    finally{ forgeBusy = false; } // 2026-11-13 (package AUDIT1): a throw here left every Forge button dead until a reload
     try{ if(window.starFallVfx) starFallVfx.celebrate(card, 4); }catch(e){}
     showToast(TX('toast.crafted', {v1: getCardDefs()[r.out].name, v2: getCardDefs()[r.out].cardType==='materia' ? "It's in your Inventory." : "It's in your collection."}), 'ok');
-    forgeBusy = false; renderForge();
+    renderForge();
   };
   root.querySelectorAll('[data-fuse]').forEach(b=> b.onclick = async ()=>{
     const id = b.dataset.fuse, defs = getCardDefs(), to = fuseTargetRarity(defs[id] && defs[id].rarity);
@@ -58128,6 +58200,7 @@ function forgeSmithAnimation(beforeHTML, afterHTML, heavy){
     if(!stage || !mountEl || reduce || !hasGsap()){ resolve(); return; }
     const card = mountEl.querySelector('.card-tile'), hammer = stage.querySelector('.forge-hammer');
     stage.classList.add('is-hot');
+    setTimeout(()=>{ stage.classList.remove('is-hot', 'is-quench'); resolve(); }, 5000); // 2026-11-13 (package AUDIT1): GSAP's clock crawls on a slow device and a callback that throws never resolves; the Forge (forgeBusy) waits at most 5 s, as forgeTemperAnimation
     const sparks = ()=>{
       for(let k=0;k<10;k++){
         const sp = document.createElement('span'); sp.className = 'forge-spark'; stage.appendChild(sp);
@@ -64141,56 +64214,17 @@ async function setGameLanguage(code){
   if(got !== code) showToast(TX('toast.that-language-isn-t-available-yet'));
 }
 try{ if(I18nM) I18nM._boot(); }catch(e){}
-// Leaf sweep (2026-10-07, second rework — user: "the leaves rush (smooth) to the middle of the
-// screen then to the right... space the leaves out randomly, or in a wave like pattern... smoothly
-// interpolate from edge -20% to the other edge +10%"). Each leaf now travels at an even pace from
-// 20% past the left edge to 10% past the right edge — no mid-screen waypoint everyone converges on.
-// Its height rides a gentle sine wave (its own amplitude, wavelength and phase), the leaves start at
-// random moments over ~0.7 s and at random heights, and each tumbles at its own rate. Keyframes are
-// computed here and played with the Web Animations API on transform/opacity only (compositor).
-function leafSweep(){
-  if(!fxAtLeast('low')) return;
-  if(document.querySelector('#editorOverlay:not([hidden]) .modal, #skirmishEditorOverlay:not([hidden]) .modal')) return; // never over an open editor
-  const glyphs = ['🍂','🍁','🍃','🍂','🍁','🌿','🍃','🍂','🍁'];
-  const n = fxLevel() === 'low' ? 5 : glyphs.length;
-  const f = document.createElement('div'); f.className = 'leaf-sweep'; f.setAttribute('aria-hidden', 'true');
-  f.innerHTML = '<span class="ls-veil"></span>';
-  document.body.appendChild(f);
-  const W = innerWidth, H = innerHeight, STEPS = 10;
-  let longest = 0;
-  for(let i = 0; i < n; i++){
-    const leaf = document.createElement('i'); leaf.textContent = glyphs[i % glyphs.length];
-    leaf.style.fontSize = (22 + Math.random()*20).toFixed(0) + 'px';
-    f.appendChild(leaf);
-    const y0 = H * (0.08 + 0.84 * ((i + Math.random()*0.8) / n));   // spread down the screen, jittered
-    const amp = H * (0.03 + Math.random()*0.05), waves = 0.8 + Math.random()*1.0, phase = Math.random()*Math.PI*2;
-    const drift = H * (Math.random()*0.10 - 0.03);                     // a slight overall sink or rise
-    const r0 = Math.random()*360, spin = (Math.random() < .5 ? -1 : 1) * (200 + Math.random()*260);
-    const x0 = -0.20*W, x1 = 1.10*W;
-    const frames = [];
-    for(let k = 0; k <= STEPS; k++){
-      const t = k / STEPS;
-      const x = x0 + (x1 - x0) * t;
-      const y = y0 + drift * t + amp * Math.sin(phase + t * waves * Math.PI * 2);
-      const op = t < 0.08 ? t / 0.08 : t > 0.9 ? (1 - t) / 0.1 : 1;
-      frames.push({transform:`translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${(r0 + spin*t).toFixed(1)}deg)`, opacity: op.toFixed(2)});
-    }
-    const dur = 1500 + Math.random()*700, delay = Math.random()*700;
-    longest = Math.max(longest, dur + delay);
-    try{ leaf.animate(frames, {duration: dur, delay, easing: 'linear', fill: 'both'}); }catch(e){ leaf.remove(); }
-  }
-  setTimeout(()=> f.remove(), longest + 120);
-}
 function placeOverlay(cls, html, ms){
   const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';
   document.body.appendChild(f); setTimeout(()=> f.remove(), ms || 900);
 }
+// 2026-11-13 (package AUDIT1): each place's scene class, sign and ambience; bramblewood-ui-places.js (UIFX1) plays the entrances.
 const PLACES = {
-  deck: {cls:'tent-scene', icon:'⛺', sign:'Camp', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
-  shop: {cls:'cart-scene', icon:'🧳', get sign(){ return shopsTitle(); }, ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
-  market: {cls:'flea-scene', icon:'🧺', sign:'Flea Market', ambience:'cart', enter: ()=>{}},
-  inventory: {cls:'satchel-scene', icon:'🎒', sign:'Inventory', ambience:'tent', enter: ()=>{}}, // the traveller's camp shelf (2026-10-17)
-  nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
+  deck: {cls:'tent-scene', icon:'⛺', sign:'Camp', ambience:'tent'},
+  shop: {cls:'cart-scene', icon:'🧳', get sign(){ return shopsTitle(); }, ambience:'cart'},
+  market: {cls:'flea-scene', icon:'🧺', sign:'Flea Market', ambience:'cart'},
+  inventory: {cls:'satchel-scene', icon:'🎒', sign:'Inventory', ambience:'tent'}, // the traveller's camp shelf (2026-10-17)
+  nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest'},
 };
 var tabSwitchSeq = 0; // counts screen changes (renderPlay tells a fresh arrival from a redraw)
 function switchTab(tab){
@@ -64225,19 +64259,13 @@ function switchTab(tab){
   syncTextFilterPage(); // 2026-10-18 (owner: text filters reset when you move between pages), before the page draws
   // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
   // menu-like tabs (Deck, Shop, Codex...) are indoors, so the outdoor sound fades away.
-  // Places (immersion #4): some screens are places you walk into, each with its own look, sound
-  // and entrance — the Armoury Tent (Deck), the Traveller's Cart (Shop), the Old Nest (Nest).
+  // Places: some screens are places with their own look and sound (PLACES); bramblewood-ui-places.js plays their entrances (the hook below).
   try{
     const place = PLACES[tab];
     if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
     Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v){ v.classList.add(pl.cls); v.dataset.sign = pl.icon + ' ' + (window.i18 ? i18(pl.sign) : pl.sign); } });
     const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // 2026-10-08 (user: "Clicking play or any other button should instantly transit you"): no entrance
-    // that covers the new screen (the tent flaps and cart awning hid it for ~0.8 s). Only the Nest's
-    // drifting down remains, and it never covers anything.
-    // 2026-10-08 (user: "I like how the Hall of Fame and Deleted sections transition in/out ... make the rest like
-    // that. Forge's transition is too exaggerated"): every screen change is now the Codex's quick page turn (forward
-    // when moving right along the menu, back when moving left). The leaf gust and the Nest's falling down are retired.
+    // 2026-10-08: a screen change is the Codex's quick page turn (forward moving right along the menu, back moving left); a place's own entrance replaces it.
     if(currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState && tab!=='play'){
       const ORDER = ['home','play','deck','nest','shop','market','codex','profile','achievements','ranking','admin'];
       // 2026-10-10 (user: "When I click Home from Conquest, the Home background loads up, but at the wrong size, and it has to
@@ -64297,7 +64325,7 @@ function switchTab(tab){
   if(tab==='trail') safeRender('Trail', renderTrailPage); // 2026-10-26 (package RES4)
   // 2026-10-17 (user: "Stomping Grounds default: On load, load the main screen, not the last seen card."): coming in from another page
   // always opens the Stomping Grounds at its front (the top of the page, the Hero Hall), with no card close-up left open over it.
-  if(tab==='stomp'){ if(currentTabBeforeSwitch !== 'stomp'){ try{ const cd = document.getElementById('cardDetailOverlay'); if(cd && !cd.hidden){ cd.hidden = true; cd.innerHTML = ''; cardDetailOpenId = null; } window.hideCardPop && window.hideCardPop(); }catch(e){} try{ window.scrollTo(0, 0); }catch(e){} } safeRender('Stomp', renderStomp); }
+  if(tab==='stomp'){ if(currentTabBeforeSwitch !== 'stomp'){ try{ const cd = document.getElementById('cardDetailOverlay'); if(cd && !cd.hidden){ cd.hidden = true; cd.innerHTML = ''; cardDetailOpenId = null; if(cardDetailUnbind) cardDetailUnbind(); /* AUDIT1 */ } window.hideCardPop && window.hideCardPop(); }catch(e){} try{ window.scrollTo(0, 0); }catch(e){} } safeRender('Stomp', renderStomp); }
   if(tab==='paths') safeRender('Wildpaths', ()=>{ renderWildpaths.drawn = false; renderWildpaths(); });
   if(tab==='guild') safeRender('Guild', renderGuild);
   if(tab==='friends') safeRender('Friends', renderFriends);

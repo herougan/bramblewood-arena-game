@@ -8,12 +8,50 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
-## 11-12 22:47-23:47: Owner notes (released the 1023e batch 22:47; NET1-1 applied 23:2x)
+## 11-13 11:55: Owner notes -> also UI52 (after UI51)
+5. Going to the Forge always lags (measure, fix).
+6. Codex entrance: no full-screen page flip; the closed book opens and its page turns on the book.
+7. Stomping Grounds gates: open like doors (not sliding from the middle), no shake at the start, nothing left visible after; whole sequence at most 1 s.
+8. Nest and Inventory entrances don't look good: redo them.
+9. Shop: Shop and Premium on one strip like Forge / Nest / Codex (now a switch inside the shop). A Trail battle pass doesn't exist yet: it goes into rewards / pack planning, and onto that strip once designed.
+
+## 11-13 11:50: Owner notes -> UI52 (starts after UI51 merges; same files)
+1. Card editor: show where the card first appears on the maps.
+2. Skill codex, admin only: a toggle button on the right (overlaid, doesn't push the layout down) shows where each skill is first seen on the maps.
+3. Codex page turn: the page turns slowly and also slides left/right, pivoting from the book's centre (now it pivots on the page edge, then jumps).
+4. Remove the "Triggers lesson" button. Profile/account page: reset basic tutorials (Map T to Map 3, triggers included) or all tutorials. The page number and its buttons move up into the filter row, and the row between the filter and the book goes (saves height).
+
+## 11-13 11:25: Owner notes
+- Deck deletion (not when it is the only deck): UI51 item 15.
+- Order after SIDE2's reference decks: the machine never idles. Owner redesigns cards -> balance again (road Maps 0-20 + side maps) -> assign the skirmish maps -> skirmish rewards planning -> pack planning.
+- TESTFIX2 (queued after SIDE2, on a quieter machine): 71 unit failures (mostly old lists) and 32 of 51 e2e failures from the 11-13 release run (load timeouts in part; anim1 #13 at 1.5x and ui_smoke worth a real look). Logs: the 11-13 full and e2e runs.
+
+## 11-13 11:08: Owner notes (after the 09:56 release)
 | # | Note | Package |
 |---|---|---|
-| a | (23:22) Effects Lab entries built 10-21..23 throw errors; more skill effects to see | FX7 (running) |
-| b | (23:22) Meteor (portent, sky darkens, darkness creeps, bright ball, boom) + 10 more like it | FX8 (running) |
-| c | (23:22) Prompts go, + the art he rejected (Dormouse) | ART12 (running) |
+| 1 | Replacing a card's art should clear its "art rejected" flag | UI51 (auto-clear on art change); dormouse live row needs "apply it" |
+| 2 | Mobile: accidental refresh (pull-down) or back; only when intended | UI51 |
+| 3 | Owner is making card designs different (identical stat pairs) | owner |
+| 4 | Conquest map-change paw VFX: turn off for now | UI51 |
+| 5 | Mobile: leaving Chrome mid-load leaves art as "?" for good; retry without a refresh, keep lazy loading | UI51 |
+| 6 | Blind: remove the blindfold effect | UI51 |
+| 7 | Map cards view lags when switching maps (render in steps?); check Codex on phone / PC | UI51 |
+| 8 | Map cards view: shortcut main map <-> its side maps | UI51 |
+| 9 | Map cards view: clicking the card opens the editor; drop the pencil | UI51 |
+| 10 | Early maps' New! counts become canonical (11/11, not 11/10) | LIST1 |
+| 11 | What "Yes earlier" means | answered |
+| 12 | Carried suggestions on side maps: only cards that fit; none from main maps past the one that unlocks it; main-map uniques never shown as New! there | LIST1 |
+| 13 | Whip Spider etc. show a dashed token-like border | UI51 |
+| 14 | Side-map picks done: refill each map's New! count (theme, animal mix, lumber + payoffs + simple monsters + theme intro, few unique skills); owner designs the cards after | LIST1 |
+
+## 11-12 22:47-23:47: Owner notes (released the 1023e batch 22:47; NET1-1 applied 23:2x)
+- Status 11-13 09:30: every package below is merged into batch-1023e and waits for release (also FX10: ten skill looks; UIFX1-3 places, seasons, story). Still running: SIDE2 (note 22). Open owner calls: AUDIT1-1, FX9-1, ENG-RC1-1/2, UIFX1-1, UIFX2-1, SIDE1-1..4, DUNGEON1-1..3; "apply it" for the dormouse artReview row.
+
+| # | Note | Package |
+|---|---|---|
+| a | (23:22) Effects Lab entries built 10-21..23 throw errors; more skill effects to see | FX7 (merged) |
+| b | (23:22) Meteor (portent, sky darkens, darkness creeps, bright ball, boom) + 10 more like it | FX8 (merged) |
+| c | (23:22) Prompts go, + the art he rejected (Dormouse) | ART12 (merged) |
 | d | (23:22) Owner fixes Barrel Cactus and tests Maps 13, 16, 19; NET1-1 apply it | owner / done |
 | 1 | Morning (pinkish) effect 10% less bright | FX9 |
 | 2 | Much less laggy now; look for other sources | PERF5 |
