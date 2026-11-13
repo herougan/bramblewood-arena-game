@@ -4,6 +4,25 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**FIX11-1. Cards above their map's rarity cap** · Decide · Balance · asked 2026-11-13
+- These listed cards are rarer than their map's fights may hold: Dolphin Knight (Rare) on Maps 2 and 4 (cap Uncommon, from before your 11-13 picks); from your 11-13 picks Phoenix Mushrooms (Epic) on Map 7 (cap Rare), Tide Spirit (Very Rare) on Map 9 (cap Rare), Caldera Snow Leopard (Super Rare) on Map 19 (cap Very Rare).
+  - a) Allow them as exceptions
+  - b) Move each to a map whose cap fits
+  - c) Lower their rarity
+- **Default:** a
+
+**FIX11-2. Three card pairs with identical stats** · Decide · Balance · asked 2026-11-13
+- Same cost, wait, Attack/Health and skills, both cards now on the lists: Plains Zebra / Snowshoe Hare (0-cost 1/7 Evasive), Village Miller / Farm Dog (0-cost 2/7, no skills), Pine Marten / Fishing Cat (1-cost wait 1, 1/14 Pounce 2).
+  - a) You retune one of each pair in your redesign
+  - b) Leave them identical
+- **Default:** a
+
+**FIX11-3. Fight 8-A-3 holds both bats** · Decide · Balance · asked 2026-11-13
+- Echo Screecher and Fruit Bat are the two-card bat family; the family rule says one per fight. 8-A-3 holds both.
+  - a) Swap one out in the LIST1-2 re-card
+  - b) Allow it
+- **Default:** a
+
 **UI52-1. Should a tutorial reset replay the Map T fights?** · Decide · UI · asked 2026-11-13
 - Profile → Tutorials resets the coach tips and lessons. It leaves the tutorial-fight done flags alone, because clearing them locks tabs again until the fights are replayed.
   - a) Tips and lessons only (as built).
@@ -46,6 +65,34 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - Signed in, the front screen's Start waits until your cloud save has loaded, so fresh play can't be overwritten by it. On a stalled connection that wait has no end until the browser gives up (minutes). Unlock Start after 30 s and load the save later?
   - a) Keep waiting (as built).
   - b) Unlock after 30 s; a save that arrives later asks before replacing.
+- **Default:** a
+
+**SIDE2-1. Side bosses the list can't make hard enough** · Decide · Balance · asked 2026-11-13
+- The strongest list-only deck (BPRO-1) in the hardest fight, Map reference win rate at 400 games: Eye of the Volcano 69% (target 36, +33), Basalt Foundry 51% (target 40, +11). In road fights K14 holds Carried cards to 1 copy, so the boss is weaker than BPRO-1 itself. Both keep that strongest deck; no Shield or Health change.
+  - a) Add one stronger NEW! card each (theme pick)
+  - b) Let a side boss hold Carried cards at 2 copies
+  - c) Leave them easy for now
+- **Default:** a
+
+**SIDE2-2. Thin side lists lock many side decks** · Decide · Balance · asked 2026-11-13
+- With few own cards and K14 (Carried 1 copy each, 6 in all), many side decks have no room to move. 0-B-3, 2-A-6 and 14-A-5 can't be built at all and keep their old decks. Others can't be fitted: Clovermead 1-A-1 / 1-A-2 at 42% / 24% (targets 90 / 80), Lilypad Reach 2-A-4 23% (72), The Canopy 14-A-3 24% (70), all at Shield 0. Side maps: 39 of 77 fights in band.
+  - a) Carried cards up to 2 copies on side maps
+  - b) More own cards on the thinnest lists
+  - c) Smaller side-map decks
+  - d) Keep the rules
+- **Default:** a
+
+**SIDE2-3. Re-price Chained now that chains soak damage?** · Decide · Balance · asked 2026-11-13
+- ENG-RC1 made each chain 1 Armor that breaks as it soaks, worth about a Shield N that chainedMult doesn't count. Chained Binturong, the only Chained card, has been on no list since 11-02, so no road fight holds it: the 400-game road read of Basalt Foundry and Maps 0-20 is unchanged.
+  - a) Re-price when a Chained card is back on a list
+  - b) Re-price now (the chains as Shield N)
+- **Default:** a
+
+**SIDE2-4. Three side bosses stay too hard** · Decide · Balance · asked 2026-11-13
+- Still too hard after the fit's easing, or with the builder's blend: The Old Bramble 0-B-4 22% (target 40, Shield 0), The Sunken Depths 10-A-5 17% (40, Shield 0), The Pale Desert 18-A-9 26% (40; Shield 41 by the desert's rule, which the fit never moves). Only you can change Health, level or that Shield.
+  - a) Lower their bramble Health (the Pale Desert: its Shield)
+  - b) A lower enemy level for these three
+  - c) Leave them hard
 - **Default:** a
 
 **FX9-1. More cards fly to the Graveyard?** · Decide · UI · asked 2026-11-13
