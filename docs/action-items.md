@@ -8,6 +8,10 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-13 11:25: Owner notes
+- Deck deletion (not when it is the only deck): UI51 item 15.
+- Order after SIDE2's reference decks: the machine never idles. Owner redesigns cards -> balance again (road Maps 0-20 + side maps) -> assign the skirmish maps -> skirmish rewards planning -> pack planning.
+
 ## 11-13 11:08: Owner notes (after the 09:56 release)
 | # | Note | Package |
 |---|---|---|
