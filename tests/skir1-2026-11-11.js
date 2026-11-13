@@ -16,6 +16,9 @@
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
+// 2026-11-13 (SIDE2): LIST1 holds 24 dropped cards on SPECIAL only until their fights are re-carded (decision LIST1-2); a side fight's pool leaves
+// them out (a kept card aside), as SIDE2's re-card did (tools/side2/holds_2026_11_13.js): the pool and mix lines read the lists the owner picked
+require(path.join(ROOT, 'tools', 'side2', 'holds_2026_11_13.js')).patch();
 const L = require(path.join(ROOT, 'tools', 'skir1', 'lib_fight_2026_11_11.js')), G = L.G, D = L.D, M = L.M;
 let fail = 0, pass = 0; const ok = (c, m) => { if (c) pass++; else { fail++; console.log('  ✗ ' + m); } };
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), grab = n => JSON.parse((src.match(new RegExp('const ' + n + ' = (\\{.*?\\});\\n')) || [0, '{}'])[1]);
@@ -69,7 +72,9 @@ for (const m of L.maps()) for (const n of L.fightsOf(m)) {
   G.NODE_MAP_HINT.set(n, m.id); const now = G.skirmishLeadersOf(n, m.id) || [];
   ok(p.stoneLeader || p.leaders0.some(f.cutOut) || p.leaders0.some(id => !f.pool.includes(id)) /* 2026-11-12 (SKIR3): a SKIR1 leader off the fight's 11-12 pool (back in play elsewhere) cannot lead here */ || JSON.stringify(now) === JSON.stringify(p.leaders0), `${code}: its leaders are kept (${p.leaders0} -> ${now})`);
   if (/boss/.test(n.kind || '')) ok(p.stoneLeader || p.leaders0.some(f.cutOut) || JSON.stringify(now) === JSON.stringify(p.leaders0), `${code}: a boss keeps its leader (a Stone leader left before Map 21)`);
-  ok((n.showcase || null) === p.showcase || (!p.showcase && !p.explicitLeaders && p.leaders0.length === 1 && n.showcase === p.leaders0[0] && /Auto showcase leader, pinned/.test(lineOf(code))), `${code}: its showcase is kept (${p.showcase}), or its Auto showcase leader pinned (${n.showcase})`);
+  // 2026-11-13 (SIDE2): as for the leaders above, a SKIR1 Auto leader that is off the fight's pool now (the owner's 11-13 lists) cannot be pinned; the re-card
+  // pins the deck's own Auto leader instead (a SIDE2 'Auto showcase leader, pinned' comment)
+  ok((n.showcase || null) === p.showcase || (!p.showcase && !p.explicitLeaders && p.leaders0.length === 1 && (n.showcase === p.leaders0[0] || (!f.pool.includes(p.leaders0[0]) && /\(SIDE2\): its Auto showcase leader, pinned/.test(lineOf(code)))) && /Auto showcase leader, pinned/.test(lineOf(code))), `${code}: its showcase is kept (${p.showcase}), or its Auto showcase leader pinned (${n.showcase})`);
   ((G.nodeFirstClearCardIds || G.nodeRewardCardIds)(m.id, code) || []).filter(id => p.old[id] && !(f.unlock < 21 && M.stone(D[id])) && !f.cutOut(id) /* 2026-11-11: a card on no list leaves (BAL9 JJ24) */).forEach(id => ok(d[id] > 0, `${code}: first-clear card ${id} kept in the deck`));
 }
 // ---- 3. every map ----

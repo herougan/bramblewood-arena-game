@@ -57043,15 +57043,15 @@
      ],
      "level": 1,
      "leaders": [
-      "siege-rhino"
+      "ibex-rockcaller"
      ],
      "deck": {
       "alpine-marmot": 4,
       "bear-cub": 4,
       "cone-cutter-squirrel": 4,
       "ibex-rockcaller": 2,
-      "raft-spider": 4,
-      "siege-rhino": 2
+      "mallard-marauder": 2,
+      "raft-spider": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map16-mt-2026-11-11.json",
@@ -57070,7 +57070,8 @@
      },
      "h2h": null,
      "later": [],
-     "side2": "2026-11-13 (SIDE2): nightjar-drifter x4 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched"
+     "side2": "2026-11-13 (SIDE2): nightjar-drifter x4 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
+     "bal13": "2026-11-13 (SIDE2, BAL13 rule, owner BAL11-3 b): siege-rhino x2 priced for a later map, swapped by tools/bal13/decks_2026_11_02.js plan for the list's nearest; not re-searched"
     },
     {
      "id": "16-PRO-3",
@@ -57163,13 +57164,13 @@
      ],
      "level": 1,
      "leaders": [
-      "siege-rhino"
+      "mallard-marauder"
      ],
      "deck": {
       "cone-cutter-squirrel": 2,
       "golden-eagle-diver": 4,
+      "mallard-marauder": 2,
       "mountain-hare": 4,
-      "siege-rhino": 2,
       "snowshoe-hare": 4,
       "upside-down-bat": 4
      },
@@ -57189,7 +57190,8 @@
       "generated": "2026-11-12T11:35:10.186Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13": "2026-11-13 (SIDE2, BAL13 rule, owner BAL11-3 b): siege-rhino x2 priced for a later map, swapped by tools/bal13/decks_2026_11_02.js plan for the list's nearest; not re-searched"
     },
     {
      "id": "16-BPRO-2",

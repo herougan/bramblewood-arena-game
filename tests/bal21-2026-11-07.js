@@ -103,7 +103,10 @@ for (const m of G.CONQUEST_MAPS) {
 ok(fightsSeen > 200, 'reference decks checked on ' + fightsSeen + ' fights');
 // the 7-A-SK case (brief item 3): Garden Snail is on the Mycelium Deep's own list, Silver Minnow a Base card a player holds from the start
 { const mz = G.CONQUEST_MAPS.find(m => m.id === 'mz'), p = new Set(LD.poolOf(gm, mz));
-  ok(p.has('garden-snail') && ((pools.maps || pools).mu.submaps.mz || []).includes('garden-snail'), "Garden Snail is in 7-A's ladder pool through the Mycelium Deep's own list");
+  // 2026-11-13 (SIDE2, TESTFIX1's way): SIDE1 and then LIST1 (the owner's 11-13 picks) took Garden Snail off the Mycelium Deep's list; the case is now
+  // the list's own card (Fungal Colossus, his Yes there): still in 7-A's ladder pool through that list
+  const mzList = (pools.maps || pools).mu.submaps.mz || [], own = mzList.includes('garden-snail') ? 'garden-snail' : 'fungal-colossus';
+  ok(p.has(own) && mzList.includes(own), own + " is in 7-A's ladder pool through the Mycelium Deep's own list");
   ok(p.has('silver-minnow') && G.cardSourceOf(D['silver-minnow']).kind === 'base', "Silver Minnow is in 7-A's ladder pool as a Base card"); }
 
 // ---- 4. late-priced cards ----

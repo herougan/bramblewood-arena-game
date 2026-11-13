@@ -18,7 +18,15 @@ let fail = 0, pass = 0; const ok = (c, m) => { if (c) pass++; else { fail++; con
 const L = require(path.join(ROOT, 'tools', 'side1', 'lib_side1_2026_11_12.js')), C = L.C;
 const P = L.pools(), PR = J('docs/design/side-picks-proposal-2026-11-12.json').maps, OWNER = J('docs/design/map-picks-owner-2026-11-12.json').maps;
 ok(L.SIDES.length === 15 && L.SIDES.every(s => PR[s]), '0. a proposal for each of the 15 side maps of Maps 0-21');
-L.SIDES.forEach(s => {
+// 2026-11-13 (SIDE2, TESTFIX1's way): LIST1 (2026-11-13) folded the owner's own 11-13 picks into the side lists (docs/balance/list1/fold-2026-11-13.json;
+// his picks win over Claude's SIDE1 proposal, and tests/list1-2026-11-13.js holds them). Where LIST1's record has a side map, its live list is checked
+// against that record (his Yes + the kept Carried cards, every Yes listed) and SIDE1's own rules (NEW! 1-3, Carried 8, 1-3 skills, the proposal
+// as the list) are not asked of it; the proposal file and the record checks below stay
+const L1 = J('docs/balance/list1/fold-2026-11-13.json').side, sameSet = (a, b) => JSON.stringify([...new Set(a)].sort()) === JSON.stringify([...new Set(b)].sort());
+L.SIDES.filter(s => L1[s]).forEach(s => { const live = (P[L.parentOf(s, P)].submaps || {})[s] || [], r = L1[s];
+  ok(sameSet(live, r.ownerYes.concat(r.keptCarried)), `1. ${s}: the list is LIST1's (the owner's 11-13 Yes + kept Carried)`);
+  ok(r.ownerYes.every(id => live.includes(id)), `1. ${s}: every one of the owner's 11-13 Yes picks is listed`); });
+L.SIDES.filter(s => !L1[s]).forEach(s => {
   const par = L.parentOf(s, P), list = (P[par].submaps || {})[s] || [], pr = PR[s] || { yes: [] }, idx = L.carriedIndex(L.unlockOf(s), P);
   ok(list.length === pr.yes.length && list.every(id => pr.yes.includes(id)), `1. ${s}: the list is its Yes picks`);
   const neu = list.filter(id => !idx.has(id)), car = list.filter(id => idx.has(id)), nNew = neu.filter(id => !L.baby(id)).length;
@@ -31,7 +39,8 @@ L.SIDES.forEach(s => {
   neu.forEach(id => ok(!!(C[id].source && C[id].source.kind), `4. ${s}: NEW! ${id} has a source`));
   ok(pr.no.every(id => !list.includes(id)), `1. ${s}: no No card on the list`);
 });
-ok(!P.m1.submaps.mo.includes('house-cat') && !P.md.submaps.mpd.includes('armadillo-guard'), '3. House Cat and Armadillo Guard (cut 11-01) are off The Old Bramble and The Pale Desert');
+{ const Y13 = J('docs/design/map-picks-owner-2026-11-13.json').maps, yes13 = (m, id) => ((Y13[m] || {}).yes || []).includes(id); /* SIDE2: unless the owner picked them again on 11-13 */
+ok((!P.m1.submaps.mo.includes('house-cat') || yes13('mo', 'house-cat')) && (!P.md.submaps.mpd.includes('armadillo-guard') || yes13('mpd', 'armadillo-guard')), '3. House Cat and Armadillo Guard (cut 11-01) are off The Old Bramble and The Pale Desert'); }
 ok(PR.mo.ownerFlags && JSON.stringify(PR.mo.ownerFlags.yes) === JSON.stringify(OWNER.mo.yes) && PR.mo.yes.filter(id => OWNER.mo.yes.includes(id)).length === 3, '5. The Old Bramble keeps his 6 flags; its list takes 3 of them');
 // 6. the record
 const sql = read('supabase/proposed/20261112_side1_map_picks.sql');
