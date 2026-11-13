@@ -4,6 +4,44 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**UI52-1. Should a tutorial reset replay the Map T fights?** · Decide · UI · asked 2026-11-13
+- Profile → Tutorials resets the coach tips and lessons. It leaves the tutorial-fight done flags alone, because clearing them locks tabs again until the fights are replayed.
+  - a) Tips and lessons only (as built).
+  - b) Also replay the T fights (tabs lock until done).
+- **Default:** a
+
+**UI52-2. Shop and Premium on the places strip: always or only in the shop?** · Decide · UI · asked 2026-11-13
+- Shop and Premium are now places on the shared strip (like Forge, Nest, Codex), shown on every page.
+  - a) Always on the strip (as built).
+  - b) Only while you're in the shop.
+- **Default:** a
+
+**UI51-1. Season crossfade on the map: keep it?** · Decide · UI · asked 2026-11-13
+- The conquest paw prints are off. Moving between seasons on the map still crossfades the colours.
+  - a) Keep the crossfade.
+  - b) Turn it off too.
+- **Default:** a
+
+**LIST1-1. Granite Ox Golem is NEW! on two side maps** · Decide · Balance · asked 2026-11-13
+- You picked Granite Ox Golem as an own card for both Volcano Lair (opens after Map 20) and Basalt Foundry (opens after Map 23 today). A card belongs to one map only. Volcano Lair opens first, so it would own the Golem. Basalt Foundry then has 2 own cards, and Claude's pick for its third is Malachite Golem (Shell, a skill its Carried cards already have).
+  - a) Volcano Lair keeps it; Basalt Foundry takes Malachite Golem
+  - b) Basalt Foundry keeps it; Volcano Lair needs a third card
+  - c) Keep it on both
+- **Default:** a
+
+**LIST1-2. Fights to re-card after your 11-13 picks** · Decide · Balance · asked 2026-11-13
+- Your 11-13 picks are now the lists. Some fights no longer match them: 24 dropped cards are still in fights (they sit on SPECIAL so the fights stay legal), 26 road fights field more than one copy of a card that is now Carried (K14), a few PRO decks use dropped cards, and 2 bosses' auto leaders changed.
+  - a) Re-card those fights next (SIDE2 for the side maps, a SKIR pass for the main maps)
+  - b) Leave them as they are
+- **Default:** a
+
+**LIST1-3. Stone cards before Map 21** · Decide · Balance · asked 2026-11-13
+- Two of your picks break the rule of no Stone before Map 21: Phoenix Mushrooms on Map 7 (an Epic that costs Stone; the road ladder has Epics from Map 22) and Pumice Beetle on Map 20 (it makes Stone). The lists keep them for now.
+  - a) Keep them (an exception)
+  - b) Move them to Map 21+ lists
+  - c) Change the cards (you design)
+- **Default:** b
+
 **AUDIT1-1. Start locked while a cloud save loads** · Decide · Cloud · asked 2026-11-13
 - Signed in, the front screen's Start waits until your cloud save has loaded, so fresh play can't be overwritten by it. On a stalled connection that wait has no end until the browser gives up (minutes). Unlock Start after 30 s and load the save later?
   - a) Keep waiting (as built).
