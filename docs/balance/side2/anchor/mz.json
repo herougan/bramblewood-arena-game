@@ -1,0 +1,51 @@
+{
+ "map": "mz",
+ "name": "The Mycelium Deep",
+ "code": "7-A-5",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 15,
+ "current": {
+  "deck": {
+   "fungal-colossus": 1,
+   "fungus-gnat-cloud": 3,
+   "leopard-slug": 3,
+   "millipede-hauler": 4,
+   "puffball-bombardier": 3,
+   "rootworm-colony": 1
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "7-A-BPRO-1",
+  "focus": "swarm",
+  "deck": {
+   "fungus-gnat-cloud": 3,
+   "hawthorn-shieldbug": 1,
+   "leopard-slug": 4,
+   "planarian-splitter": 4,
+   "puffball-bombardier": 4,
+   "sleepless-shrew": 4
+  }
+ },
+ "offPool": [],
+ "deck": {
+  "rootworm-colony": 1,
+  "fungal-colossus": 1,
+  "leopard-slug": 3,
+  "planarian-splitter": 3,
+  "puffball-bombardier": 3,
+  "sleepless-shrew": 3,
+  "fungus-gnat-cloud": 1
+ },
+ "problems": [],
+ "skWin": 62.5,
+ "verdict": "too-weak",
+ "gap": 22.5,
+ "sec": 9
+}

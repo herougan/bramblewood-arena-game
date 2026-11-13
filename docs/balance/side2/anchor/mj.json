@@ -1,0 +1,52 @@
+{
+ "map": "mj",
+ "name": "The Sunken Depths",
+ "code": "10-A-5",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 20,
+ "current": {
+  "deck": {
+   "abyss-lantern-squid": 2,
+   "blue-ringed-octopus": 3,
+   "humpback-elder": 4,
+   "moon-jelly": 4,
+   "orca-vanguard": 4,
+   "riptide-eel": 3
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "10-A-BPRO-1",
+  "focus": "family:tide",
+  "deck": {
+   "blue-ringed-octopus": 3,
+   "coral-current-eel": 3,
+   "krill-swarm": 4,
+   "orca-vanguard": 4,
+   "reef-admiral": 2,
+   "sea-turtle-elder": 4
+  }
+ },
+ "offPool": [
+  "reef-admiral"
+ ],
+ "deck": {
+  "blue-ringed-octopus": 3,
+  "krill-swarm": 4,
+  "orca-vanguard": 4,
+  "sea-turtle-elder": 4,
+  "coral-current-eel": 3,
+  "giant-clam": 2
+ },
+ "problems": [],
+ "skWin": 2,
+ "verdict": "too-hard",
+ "gap": -38,
+ "sec": 5
+}

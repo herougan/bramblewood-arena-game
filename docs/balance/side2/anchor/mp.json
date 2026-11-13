@@ -1,0 +1,51 @@
+{
+ "map": "mp",
+ "name": "Lilypad Reach",
+ "code": "2-A-7",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 14,
+ "current": {
+  "deck": {
+   "box-turtle": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 4,
+   "pond-algae": 3,
+   "riverworks-bastion": 1,
+   "water-shrew": 1
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "2-A-BPRO-1",
+  "focus": "family:guard",
+  "deck": {
+   "beaver-lumberjack": 4,
+   "dam-keeper-beaver": 4,
+   "muskrat-lodgekeeper": 4,
+   "muskrat-reedgatherer": 4,
+   "raft-spider": 4
+  }
+ },
+ "offPool": [
+  "muskrat-lodgekeeper"
+ ],
+ "deck": {
+  "riverworks-bastion": 1,
+  "beaver-lumberjack": 4,
+  "dam-keeper-beaver": 4,
+  "muskrat-reedgatherer": 1,
+  "raft-spider": 1,
+  "lodge-engineer": 3
+ },
+ "problems": [],
+ "skWin": 54.5,
+ "verdict": "too-weak",
+ "gap": 14.5,
+ "sec": 15
+}

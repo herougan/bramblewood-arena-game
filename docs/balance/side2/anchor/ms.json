@@ -1,0 +1,50 @@
+{
+ "map": "ms",
+ "name": "The Sunken Grove",
+ "code": "5-A-4",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 18,
+ "current": {
+  "deck": {
+   "bog-leech": 4,
+   "cypress-root-lurker": 3,
+   "hedgehog-herbalist": 3,
+   "nutria-reedcutter": 4,
+   "peat-cutter-vole": 4
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "5-A-BPRO-1",
+  "focus": "swarm",
+  "deck": {
+   "bog-leech": 4,
+   "hedgehog-herbalist": 3,
+   "mudflat-godwit": 3,
+   "mudpuppy": 4,
+   "newt-doctor": 2,
+   "peat-cutter-vole": 4
+  }
+ },
+ "offPool": [
+  "newt-doctor"
+ ],
+ "deck": {
+  "hedgehog-herbalist": 3,
+  "bog-leech": 4,
+  "mudpuppy": 4,
+  "peat-cutter-vole": 4,
+  "mudflat-godwit": 3
+ },
+ "problems": [],
+ "skWin": 4.5,
+ "verdict": "too-hard",
+ "gap": -35.5,
+ "sec": 7
+}

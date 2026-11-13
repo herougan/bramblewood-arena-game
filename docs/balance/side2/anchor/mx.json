@@ -1,0 +1,53 @@
+{
+ "map": "mx",
+ "name": "Volcano Lair",
+ "code": "20-B-4",
+ "kind": "worldboss",
+ "band": {
+  "t": 20,
+  "lo": 12,
+  "hi": 28,
+  "curve": false
+ },
+ "size": 14,
+ "current": {
+  "deck": {
+   "ancient-sloth-titan": 4,
+   "deep-cave-troll": 4,
+   "fire-drake-hatchling": 1,
+   "stalactite-golem": 1,
+   "vampire-roost": 4
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "20-B-BPRO-1",
+  "focus": "family:armor",
+  "deck": {
+   "basalt-boar": 3,
+   "fire-salamander": 4,
+   "obsidian-scorpion": 3,
+   "quillback-elder": 4,
+   "stalactite-golem": 4,
+   "ur-elk": 2
+  }
+ },
+ "offPool": [
+  "fire-salamander",
+  "ur-elk"
+ ],
+ "deck": {
+  "fire-drake-hatchling": 1,
+  "quillback-elder": 1,
+  "stalactite-golem": 1,
+  "basalt-boar": 4,
+  "obsidian-scorpion": 1,
+  "ancient-sloth-titan": 4,
+  "deep-cave-troll": 2
+ },
+ "problems": [],
+ "skWin": 3,
+ "verdict": "too-hard",
+ "gap": -17,
+ "sec": 4
+}

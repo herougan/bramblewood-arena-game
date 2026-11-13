@@ -1,0 +1,52 @@
+{
+ "map": "m9",
+ "name": "Basalt Foundry",
+ "code": "19-A-10",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 19,
+ "current": {
+  "deck": {
+   "cinder-gecko": 1,
+   "ember-revenant": 2,
+   "hellbender": 4,
+   "obsidian-scorpion": 3,
+   "ore-smelter-mole": 4,
+   "smoke-raccoon": 4,
+   "sulfur-vent-crab": 1
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "19-A-BPRO-1",
+  "focus": "family:evasion",
+  "deck": {
+   "basalt-boar": 4,
+   "cinder-gecko": 4,
+   "ember-revenant": 1,
+   "fire-salamander": 4,
+   "obsidian-scorpion": 3,
+   "smoke-raccoon": 4
+  }
+ },
+ "offPool": [],
+ "deck": {
+  "ember-revenant": 2,
+  "basalt-boar": 1,
+  "cinder-gecko": 1,
+  "fire-salamander": 4,
+  "smoke-raccoon": 4,
+  "obsidian-scorpion": 3,
+  "grindstone-boar": 4
+ },
+ "problems": [],
+ "skWin": 58,
+ "verdict": "too-weak",
+ "gap": 18,
+ "sec": 4
+}

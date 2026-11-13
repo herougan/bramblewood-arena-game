@@ -1,0 +1,51 @@
+{
+ "map": "me",
+ "name": "Eye of the Volcano",
+ "code": "20-A-4",
+ "kind": "dungeon",
+ "band": {
+  "t": 35.5,
+  "lo": 27.5,
+  "hi": 43.5,
+  "curve": true
+ },
+ "size": 10,
+ "current": {
+  "deck": {
+   "ash-moth": 2,
+   "ashbone-ghoul": 3,
+   "cinder-skeleton": 1,
+   "obsidian-scorpion": 3,
+   "the-contradiction": 1
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "20-A-BPRO-1",
+  "focus": "family:armor",
+  "deck": {
+   "ash-moth": 4,
+   "basalt-boar": 4,
+   "magma-salamander": 2,
+   "obsidian-lich": 3,
+   "obsidian-scorpion": 3,
+   "sulfur-vent-crab": 4
+  }
+ },
+ "offPool": [
+  "magma-salamander"
+ ],
+ "deck": {
+  "the-contradiction": 1,
+  "obsidian-scorpion": 2,
+  "ash-moth": 2,
+  "basalt-boar": 2,
+  "sulfur-vent-crab": 2,
+  "obsidian-lich": 1
+ },
+ "problems": [],
+ "skWin": 63.5,
+ "verdict": "too-weak",
+ "gap": 28,
+ "sec": 6
+}
