@@ -8,6 +8,13 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-13 11:55: Owner notes -> also UI52 (after UI51)
+5. Going to the Forge always lags (measure, fix).
+6. Codex entrance: no full-screen page flip; the closed book opens and its page turns on the book.
+7. Stomping Grounds gates: open like doors (not sliding from the middle), no shake at the start, nothing left visible after; whole sequence at most 1 s.
+8. Nest and Inventory entrances don't look good: redo them.
+9. Shop: Shop and Premium on one strip like Forge / Nest / Codex (now a switch inside the shop). A Trail battle pass doesn't exist yet: it goes into rewards / pack planning, and onto that strip once designed.
+
 ## 11-13 11:50: Owner notes -> UI52 (starts after UI51 merges; same files)
 1. Card editor: show where the card first appears on the maps.
 2. Skill codex, admin only: a toggle button on the right (overlaid, doesn't push the layout down) shows where each skill is first seen on the maps.
