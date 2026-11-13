@@ -24,7 +24,8 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 ## 11-13 11:25: Owner notes
 - Deck deletion (not when it is the only deck): UI51 item 15.
 - Order after SIDE2's reference decks: the machine never idles. Owner redesigns cards -> balance again (road Maps 0-20 + side maps) -> assign the skirmish maps -> skirmish rewards planning -> pack planning.
-- TESTFIX2 (queued after SIDE2, on a quieter machine): 71 unit failures (mostly old lists) and 32 of 51 e2e failures from the 11-13 release run (load timeouts in part; anim1 #13 at 1.5x and ui_smoke worth a real look). Logs: the 11-13 full and e2e runs.
+- Status 11-13 14:58: UI51, UI52 and SIDE2 merged (unreleased). SIDE2: main road unchanged (128/149 in band); side maps 39/77 in band on legal decks; waits on SIDE2-2 (Carried at 2 copies on side maps) and SIDE2-4, then a side re-fit. Main-map re-cards (LIST1-2) after that.
+- TESTFIX3 (started 11-13 14:58, after SIDE2 merged; was queued as TESTFIX2): 71 unit failures (mostly old lists) and 32 of 51 e2e failures from the 11-13 release run (load timeouts in part; anim1 #13 at 1.5x and ui_smoke worth a real look). Logs: the 11-13 full and e2e runs.
 
 ## 11-13 11:08: Owner notes (after the 09:56 release)
 | # | Note | Package |
