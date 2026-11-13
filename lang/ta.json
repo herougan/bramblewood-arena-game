@@ -731,7 +731,6 @@
  "Defense": "பாதுகாப்பு",
  "Delete": "நீக்கு",
  "Delete the added skirmish {label}?": "சேர்த்த சிறு மோதல் {label}ஐ நீக்கவா?",
- "Delete this deck? This cannot be undone.": "இந்த அடுக்கை நீக்கவா? இதைத் திரும்பப் பெற முடியாது.",
  "Demolisher (Structures) and the old Siege (the bramble) are one skill now. An old Demolisher card reads as Siege.": "இடிப்பான் (கட்டமைப்புகள்) மற்றும் பழைய முற்றுகை (முட்புதர்) இப்போது ஒரே திறன். பழைய இடிப்பான் அட்டை முற்றுகையாகப் படிக்கப்படும்.",
  "Desert": "பாலைவனம்",
  "Details": "விவரங்கள்",
@@ -4446,5 +4445,10 @@
  "No part won: your ⚡{n} came back.": "எந்தப் பகுதியும் வெல்லவில்லை: உங்கள் ⚡{n} திரும்பியது.",
  "{floors} parts and a boss · {n} players · ⚡{energy} each": "{floors} பகுதிகள், ஒரு தலைவன் · {n} வீரர்கள் · தலா ⚡{energy}",
  "Shops": "கடைகள்",
- "Nothing in the Premium shop for you yet.": "பிரீமியம் கடையில் இன்னும் எதுவும் இல்லை."
+ "Nothing in the Premium shop for you yet.": "பிரீமியம் கடையில் இன்னும் எதுவும் இல்லை.",
+ "Delete this deck": "இந்த அடுக்கை நீக்கு",
+ "Tap again to delete": "நீக்க மீண்டும் தட்டு",
+ "{name} deleted": "{name} நீக்கப்பட்டது",
+ "Side maps": "பக்க வரைபடங்கள்",
+ "Main map": "முதன்மை வரைபடம்"
 }

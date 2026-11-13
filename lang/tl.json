@@ -731,7 +731,6 @@
  "Defense": "Depensa",
  "Delete": "Burahin",
  "Delete the added skirmish {label}?": "Burahin ang idinagdag na sagupaang {label}?",
- "Delete this deck? This cannot be undone.": "Burahin ang deck na ito? Hindi na ito maibabalik.",
  "Demolisher (Structures) and the old Siege (the bramble) are one skill now. An old Demolisher card reads as Siege.": "Isang kasanayan na ngayon ang Demolisher (Istruktura) at ang lumang Pagkubkob (tinikan). Ang lumang kard na Demolisher ay binabasa bilang Pagkubkob.",
  "Desert": "Disyerto",
  "Details": "Detalye",
@@ -4444,5 +4443,10 @@
  "No part won: your ⚡{n} came back.": "Walang naipanalong bahagi: bumalik ang ⚡{n} mo.",
  "{floors} parts and a boss · {n} players · ⚡{energy} each": "{floors} bahagi at isang boss · {n} manlalaro · ⚡{energy} bawat isa",
  "Shops": "Mga tindahan",
- "Nothing in the Premium shop for you yet.": "Wala pang para sa iyo sa Premium."
+ "Nothing in the Premium shop for you yet.": "Wala pang para sa iyo sa Premium.",
+ "Delete this deck": "Burahin ang deck na ito",
+ "Tap again to delete": "I-tap ulit para burahin",
+ "{name} deleted": "Nabura ang {name}",
+ "Side maps": "Mga side map",
+ "Main map": "Pangunahing map"
 }

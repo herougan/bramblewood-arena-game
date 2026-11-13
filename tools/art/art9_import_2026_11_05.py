@@ -23,9 +23,11 @@ SUFFIX = ', a full scenic background filling the whole frame, no text'
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--src', required=True); ap.add_argument('ids', nargs='+')
+    ap.add_argument('--force', action='store_true', help='replace art that is not rejected with a reason')
     a = ap.parse_args()
     cards = os.path.join(ROOT, 'canonical', 'cards.json'); text = open(cards, encoding='utf-8').read()
     for cid in a.ids:
+        if not a2.may_replace(text, cid, a.force): continue
         v, p = PROMPTS[cid]
         img = a7.finish(Image.open(os.path.join(a.src, cid + '.png')).convert('RGB'))  # the browser crop is RGBA
         path = os.path.join(ROOT, 'art', 'cards', cid + '.png'); img.save(path, optimize=True)

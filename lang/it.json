@@ -731,7 +731,6 @@
  "Defense": "Difesa",
  "Delete": "Elimina",
  "Delete the added skirmish {label}?": "Eliminare la schermaglia aggiunta {label}?",
- "Delete this deck? This cannot be undone.": "Eliminare questo mazzo? Non si può annullare.",
  "Demolisher (Structures) and the old Siege (the bramble) are one skill now. An old Demolisher card reads as Siege.": "Demolitore (Strutture) e il vecchio Assedio (il rovo) ora sono un’unica abilità. Una vecchia carta Demolitore vale come Assedio.",
  "Desert": "Deserto",
  "Details": "Dettagli",
@@ -4445,5 +4444,10 @@
  "No part won: your ⚡{n} came back.": "Nessuna parte vinta: i tuoi ⚡{n} tornano.",
  "{floors} parts and a boss · {n} players · ⚡{energy} each": "{floors} parti e un boss · {n} giocatori · ⚡{energy} a testa",
  "Shops": "Negozi",
- "Nothing in the Premium shop for you yet.": "Ancora niente per te nel negozio Premium."
+ "Nothing in the Premium shop for you yet.": "Ancora niente per te nel negozio Premium.",
+ "Delete this deck": "Elimina questo mazzo",
+ "Tap again to delete": "Tocca di nuovo per eliminare",
+ "{name} deleted": "{name} eliminato",
+ "Side maps": "Mappe secondarie",
+ "Main map": "Mappa principale"
 }

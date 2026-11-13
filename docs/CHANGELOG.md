@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-13 Package UI51 (owner notes 11-13 11:08, 11:22, 11:25)
+- Art review: new art clears the rejection and its reason (card editor URL / upload; `set_art` in `tools/art`). Art importers (art2, 7, 8, 9, 12) only replace art that is rejected with a reason; others are skipped and listed unless `--force`.
+- Phones: no pull-to-refresh (`overscroll-behavior-y` on html / body). Back closes the top panel (its own Escape path); in a fight it opens the forfeit question; in the deck editor it acts as ‹ Back (asks about unsaved edits); on a plain screen it leaves the page. No new `beforeunload`.
+- Card art that fails to load (left Chrome mid-load) loads again on return to the page, when back online, and after 2 / 6 / 18 s (`bwArtFail`); lazy loading kept.
+- Off: the conquest travel beat (paw prints), `BramblewoodWorld.travelBeat = false`; season crossfade stays; the Lab still plays it. Blind's swing has no blindfold band.
+- Map cards window: map switch 1439 -> 662 ms to paint at 390 px / 4x CPU, 626 -> 563 ms at 1366 (interleaved medians of 15). The Prospects list was drawn twice; name widths re-checked the font each card; off-screen tiles now skip layout (`content-visibility`). Side-map shortcut (and ↩ to the main map). Clicking a card opens the editor; the ✏️ is gone. Maybe / Unlikely review marks are thin solid rings, not dashed.
+- Decks: 🗑 Delete in the deck editor (tap twice; off for your only deck; cloud copy goes through the sync tombstone). The old Large view (never shown, its Delete used a browser confirm) is removed.
+- Test: `tests/ui51-2026-11-13.js` (static + browser at 1366 and 390).
+
 ## 2026-11-13 Package FX10 (owner 00:03: "generate interesting vfx to improve our general UI experience and also skills")
 - Players see, in fights (all ten wired where the skill already fires; cosmetic only, no rule or timing touched): Avalanche heaps snow on each unit it buries; Ignite runs a line of flame along the card's foot; Burn's tick licks flames and soot up the card; a once-only skill's chip puffs out in smoke when spent; Brood lets its spiderling down on a silk thread (no more summon ring); Confuse loops question marks and notes round the card's head (no more Stun orbit); Carrion draws pale wisps from the fallen into the feeder; Delivery drops a crate that pops open before the logs fly; Skitter scurries footprints past the card; Thanatosis greys the card, crosses its eyes and lets a ghost peek out. Each has its own cue (59-68; Confuse had Blind's tone, Brood the spawn buzz).
 - Picked by measurement: the reference fights of every road fight on Maps 0-20 (298 fights) with events recorded, each event fired in a real fight to see what it drew; these ten drew only a word, nothing or a shared look, ranked by events a fight (Avalanche 2.3, Ignite 1.1, Burn 0.75, spent skills 0.6 on 13 maps ... Thanatosis 0.04). Table and next candidates: `docs/effects-catalogue.md`.

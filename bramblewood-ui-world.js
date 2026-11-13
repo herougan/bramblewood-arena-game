@@ -6,7 +6,7 @@
 // time-of-day tint so dawn, dusk and night grade it like the art. The season's vignette is the game's own .season-veil, re-classed
 // from the calendar month to the place.
 // Entry points (one hook line in arena_app.js, renderConquestSubTab, calls arrive() on every map render):
-//   BramblewoodWorld.arrive(map, host, canvas)      the travel beat when the map changed, else keep (or re-attach) the season
+//   BramblewoodWorld.arrive(map, host, canvas)      the travel beat when the map changed (only while .travelBeat is on), else keep (or re-attach) the season
 //   BramblewoodWorld.travel(fromMap, toMap, opts)   the beat, ending in toMap's season
 //   BramblewoodWorld.setSeason(mapIdOrKind, opts)   vignette + ambient, and the transition when it differs from the one on show
 //   BramblewoodWorld.seasonOf(mapId), .stop()
@@ -387,12 +387,14 @@ function travel(a, b, o){
 function arrive(map, host, canvas){
   const id = map && typeof map === 'object' ? map.id : map; host = host || layoutEl(); if(!id || !host || !doc) return null;
   const prev = S.map; S.map = id;
-  if(prev && prev !== id && !host.querySelector(':scope > .map-veil') && !doc.body.classList.contains('cq-opening')) return travel(prev, id, {host, canvas});
-  return setSeason(id, {host, canvas, instant: true});
+  const moved = prev && prev !== id && !host.querySelector(':scope > .map-veil') && !doc.body.classList.contains('cq-opening');
+  if(moved && root.BramblewoodWorld.travelBeat) return travel(prev, id, {host, canvas});
+  return setSeason(id, {host, canvas, instant: !moved});
 }
 function stop(){ finishBeat(); dropAmb(false); S.kind = null; S.map = null; }
 
-root.BramblewoodWorld = {arrive, travel, setSeason, seasonOf, stop, KINDS, MAP_SEASON, BIOME_SEASON, BEAT_MS, FADE_MS,
+// 2026-11-13 (package UI51, owner 11:08): travelBeat off for now: a map change only crossfades the season; the Effects Lab still calls travel().
+root.BramblewoodWorld = {arrive, travel, setSeason, seasonOf, stop, travelBeat: false, KINDS, MAP_SEASON, BIOME_SEASON, BEAT_MS, FADE_MS,
   _lanes: lanes, _kf: kfText, _css: ()=> CSS, _count: count, _route: route, _mode: mode, _state: S};
 if(typeof module !== 'undefined' && module.exports) module.exports = root.BramblewoodWorld;
 })(typeof window !== 'undefined' ? window : globalThis);

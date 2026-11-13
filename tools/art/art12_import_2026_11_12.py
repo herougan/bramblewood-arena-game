@@ -117,11 +117,13 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--src', required=True)
     ap.add_argument('--sheets', help='directory for the contact sheets art12-variants-<n>.png')
     ap.add_argument('--per-sheet', type=int, default=8); ap.add_argument('--no-import', action='store_true')
+    ap.add_argument('--force', action='store_true', help='replace art that is not rejected with a reason')
     ap.add_argument('ids', nargs='*', help='card ids (default: all in PICKS)')
     a = ap.parse_args(); ids = a.ids or list(PICKS)
     if not a.no_import:
         cards = os.path.join(ROOT, 'canonical', 'cards.json'); text = open(cards, encoding='utf-8').read()
         for cid in ids:
+            if not a2.may_replace(text, cid, a.force): continue
             v, body = PICKS[cid]
             img = a7.finish(Image.open(os.path.join(a.src, cid + '.png')).convert('RGB'))
             path = os.path.join(ROOT, 'art', 'cards', cid + '.png'); img.save(path, optimize=True)

@@ -666,12 +666,9 @@ M.smokeSwallow = function(el){
   g.set(t, {filter:'blur(0px) grayscale(0)'}); g.timeline().to(t, {filter:'blur(3px) grayscale(.6)', opacity:.55, duration:.15}).to(t, {filter:'blur(0px) grayscale(0)', opacity:1, duration:.45, delay:.35, clearProps:'filter,opacity'});
   return done(1100);
 };
-// Blind: a dark blindfold slides over the attacker's eyes and it swings at empty air, "?" marks swirling (night: a moon instead).
-css('blind', `.fxa-band{height:16%; border-radius:4px; background:linear-gradient(#2b2230, #120d16); box-shadow:0 2px 4px rgba(0,0,0,.5);}`);
+// Blind: the attacker swings at empty air, "?" marks swirling (night: a moon instead). 2026-11-13 (package UI51, owner 11:08): no blindfold band.
 M.blindSwing = function(el, o){
   o = o || {}; const g = G(); if(!g || !el) return done(0); const c = centre(tileOf(el)), side = Math.random() < .5 ? -1 : 1;
-  const b = P('fxa-band', '', c.x, c.r.top + c.h*.32, {width:c.w*1.05, height:c.h*.16, scaleX:0}); if(o.night) b.style.background = 'linear-gradient(#1b2340, #0b1024)';
-  g.timeline({onComplete:()=> kill(b)}).to(b, {scaleX:1, duration:.14, ease:'power2.out'}).to(b, {opacity:0, duration:.25, delay:.7});
   nudge(el, [{x:0}, {x:side*12, r:side*8, o:.35}, {x:side*16, r:side*10, o:.5}, {x:0}], 620);
   spray(c.x + side*c.w*.5, c.r.top + c.h*.2, {n:4, html:i=> o.night && !i ? '🌙' : '?', size:()=> rnd(13, 18), color:'#fff4d0', style:{textShadow:'0 1px 2px #000'}, a0:220, a1:320, d0:16, d1:34, dur:.8, stagger:.08, spin:60});
   return done(1000);

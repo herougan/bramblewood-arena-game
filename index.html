@@ -195,6 +195,7 @@
      specific embed's own wrapper does something unusual with a page that never explicitly opts
      into scrolling its own overflow. Costs nothing in a normal browser tab. */
   html{height:100%; background-color:var(--bg-2); /* 2026-10-08: never let the desktop or browser backdrop show through */}
+  html, body{overscroll-behavior-y:contain;} /* 2026-11-13 (package UI51): no pull-to-refresh on phones */
   body{margin:0; min-height:100%; min-height:100dvh; overflow-y:auto; background:
       radial-gradient(ellipse at top, color-mix(in srgb, var(--page-mint) 30%, transparent), transparent 60%),
       radial-gradient(ellipse at top, var(--page-wood-2), var(--page-wood) 68%);
@@ -14752,7 +14753,7 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 .rv1-tile{position:relative; display:flex; flex-direction:column; align-items:center; gap:3px;}
 .rv1-tile .vis4-mc-card{margin-bottom:30px;}
 .rv1-tile.is-cut .vis4-mc-card{opacity:.5; filter:grayscale(.6);}
-.rv1-tile.is-maybe .vis4-mc-card{outline:2px dashed rgba(255,215,0,.55); outline-offset:2px;}
+.rv1-tile.is-maybe .vis4-mc-card{outline:1px solid rgba(255,215,0,.5); outline-offset:3px;} /* 2026-11-13 (package UI51): review marks are thin solid rings, not a token's dashed edge */
 .rv1-tile.is-flipped.is-chosen .vis4-mc-card{opacity:.55; filter:grayscale(.8);}
 .rv1-tile.is-flipped.is-cut .vis4-mc-card, .rv1-tile.is-flipped.is-maybe .vis4-mc-card{opacity:1; filter:none; outline:2px solid #6fd16f; outline-offset:2px;}
 .rv1-mark{position:absolute; top:-6px; left:6px; z-index:2; font:800 11px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; padding:2px 4px; border-radius:999px; background:#222; color:#ffd24a; border:1px solid rgba(255,255,255,.3);}
@@ -14793,15 +14794,13 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 .rv2-pill.is-unique{background:#7da35b; color:#14210a; border-color:transparent;}
 .rv2-pill.is-owner{background:#e0b030; color:#222; border-color:transparent; cursor:help;}
 .rv2-pill.is-claude{background:#8a6fc4; color:#fff; border-color:transparent; cursor:help;}
-/* UI13 (2026-11-01): the Unlikely pill (HH7, its flagWhy as the tooltip), the Baby and Egg pills and the Baby cards panel (HH1), the ✏️ on a tile (HH3), the kind chip */
+/* UI13 (2026-11-01): the Unlikely pill (HH7, its flagWhy as the tooltip), the Baby and Egg pills and the Baby cards panel (HH1), the kind chip */
 .rv2-pill.is-unlikely{background:#b8463a; color:#fff; border-color:transparent; cursor:help;}
 .rv2-pill.is-baby{background:#f3c6d4; color:#4a1f2c; border-color:transparent; cursor:help;}
 .rv2-pill.is-egg{background:#efe2c0; color:#3b2c10; border-color:transparent; cursor:help;}
-.rv1-tile.is-unlikely.is-chosen:not(.is-flipped) .vis4-mc-card.is-large{outline:2px dashed rgba(184,70,58,.85); outline-offset:2px;}
+.rv1-tile.is-unlikely.is-chosen:not(.is-flipped) .vis4-mc-card.is-large{outline:1px solid rgba(184,70,58,.55); outline-offset:3px;}
 .ui13-acts{display:flex; justify-content:center; align-items:center; gap:5px;}
 .ui13-acts .rv1-act{white-space:nowrap; padding:4px 10px;}
-.rv1-tile .ui13-edit{width:30px; height:30px; flex:0 0 30px; padding:0; border-radius:50%; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font-size:13px; line-height:1; cursor:pointer;}
-.rv1-tile .ui13-edit:hover, .rv1-tile .ui13-edit:focus-visible{background:var(--surface-3);}
 .ui13-baby-sec .panel-sub{margin:2px 0 8px;}
 .cd-chip.cd-kind.kind-baby{background:#f3c6d4; color:#4a1f2c;}
 .cd-chip.cd-kind.kind-faction{background:#d7c48a; color:#2e2410;}
@@ -14985,6 +14984,10 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
 @media (prefers-reduced-motion: reduce){ .abadge.ui30-tick{animation:none !important;} }
 /* 2026-11-07 (package UI30 #16): the admin Map cards window's "Sugg. Intro" pill (amber, beside UI28's blue "Suggested"); a suggested skill no card here has yet is a dashed intro tile */
+/* 2026-11-13 (package UI51): Map cards window: the card opens the editor (admins); off-screen tiles skip layout and paint */
+.pk1-mc-overlay .rv1-tile .vis4-mc-card{cursor:pointer;}
+.ui51-maps{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:4px 0 6px;} .rv1-bar > .ui51-maps{flex-basis:100%; margin:0;}
+.pk1-mc-body .ui37-tile, .pk1-mc-body .rv1-part .rv1-tile{content-visibility:auto; contain-intrinsic-size:auto 132px auto 280px;}
 .ui30-sugg{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; letter-spacing:.03em; padding:1px 5px; border-radius:999px; background:#c27f0e; color:#fff; cursor:help; vertical-align:1px; white-space:nowrap;}
 .ui19-sk.ui30-sugg-tile{border-style:dashed;}
 /* JJ14: your turn's glow on the battlefield frame (full width, your row down), not on the camera-moved row */
@@ -15342,8 +15345,8 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .rv2-pill.ui29-sug-pill{background:#4f8ee8; color:#fff; border-color:transparent; cursor:help;}
 .rv2-pill.ui29-sug-pill.is-zone{background:#5b86b8;}
 .rv2-pill.ui29-picks{letter-spacing:1px; cursor:help;}
-.ui29-tile.is-chosen:has(.ui29-out):not(.is-flipped) .vis4-mc-card.is-large{outline:2px dashed rgba(184,70,58,.85); outline-offset:2px;}
-.ui29-tile.is-maybe .vis4-mc-card.is-large{outline:2px dashed #4f8ee8; outline-offset:2px;}
+.ui29-tile.is-chosen:has(.ui29-out):not(.is-flipped) .vis4-mc-card.is-large{outline:1px solid rgba(184,70,58,.55); outline-offset:3px;}
+.ui29-tile.is-maybe .vis4-mc-card.is-large{outline:1px solid rgba(79,142,232,.6); outline-offset:3px;}
 .ui29-tile.is-maybe.is-flipped .vis4-mc-card.is-large{outline:2px solid #6fd16f;}
 .ui29-tile.ui29-rejected .vis4-mc-card.is-large{opacity:.45; filter:grayscale(.85); outline-color:rgba(184,70,58,.6);}
 .ui29-tile .rv1-act[aria-pressed="true"]{background:#6fd16f; color:#112;}
@@ -35795,12 +35798,9 @@ M.smokeSwallow = function(el){
   g.set(t, {filter:'blur(0px) grayscale(0)'}); g.timeline().to(t, {filter:'blur(3px) grayscale(.6)', opacity:.55, duration:.15}).to(t, {filter:'blur(0px) grayscale(0)', opacity:1, duration:.45, delay:.35, clearProps:'filter,opacity'});
   return done(1100);
 };
-// Blind: a dark blindfold slides over the attacker's eyes and it swings at empty air, "?" marks swirling (night: a moon instead).
-css('blind', `.fxa-band{height:16%; border-radius:4px; background:linear-gradient(#2b2230, #120d16); box-shadow:0 2px 4px rgba(0,0,0,.5);}`);
+// Blind: the attacker swings at empty air, "?" marks swirling (night: a moon instead). 2026-11-13 (package UI51, owner 11:08): no blindfold band.
 M.blindSwing = function(el, o){
   o = o || {}; const g = G(); if(!g || !el) return done(0); const c = centre(tileOf(el)), side = Math.random() < .5 ? -1 : 1;
-  const b = P('fxa-band', '', c.x, c.r.top + c.h*.32, {width:c.w*1.05, height:c.h*.16, scaleX:0}); if(o.night) b.style.background = 'linear-gradient(#1b2340, #0b1024)';
-  g.timeline({onComplete:()=> kill(b)}).to(b, {scaleX:1, duration:.14, ease:'power2.out'}).to(b, {opacity:0, duration:.25, delay:.7});
   nudge(el, [{x:0}, {x:side*12, r:side*8, o:.35}, {x:side*16, r:side*10, o:.5}, {x:0}], 620);
   spray(c.x + side*c.w*.5, c.r.top + c.h*.2, {n:4, html:i=> o.night && !i ? '🌙' : '?', size:()=> rnd(13, 18), color:'#fff4d0', style:{textShadow:'0 1px 2px #000'}, a0:220, a1:320, d0:16, d1:34, dur:.8, stagger:.08, spin:60});
   return done(1000);
@@ -47938,7 +47938,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=3d85b1264e", "es": "assets/lang/es.js?v=1d8d77f995", "fr": "assets/lang/fr.js?v=9f15e6452b", "id": "assets/lang/id.js?v=4e11b25ba9", "it": "assets/lang/it.js?v=5f106f9e60", "ja": "assets/lang/ja.js?v=41f51f362e", "ko": "assets/lang/ko.js?v=26e49e0639", "pt": "assets/lang/pt.js?v=db8e8f283d", "ta": "assets/lang/ta.js?v=fffb82e011", "tl": "assets/lang/tl.js?v=a81d94ed08", "zh-Hans": "assets/lang/zh-Hans.js?v=1fd3ba488d", "zh-Hant": "assets/lang/zh-Hant.js?v=b343071a09"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=65bd68a70a", "es": "assets/lang/es.js?v=804963c827", "fr": "assets/lang/fr.js?v=80e1cf3c36", "id": "assets/lang/id.js?v=983fb081a2", "it": "assets/lang/it.js?v=aa9031a6c7", "ja": "assets/lang/ja.js?v=11442de7eb", "ko": "assets/lang/ko.js?v=9a3ddb335c", "pt": "assets/lang/pt.js?v=d92c93517c", "ta": "assets/lang/ta.js?v=a55697af48", "tl": "assets/lang/tl.js?v=31a4a770d7", "zh-Hans": "assets/lang/zh-Hans.js?v=024abf11c9", "zh-Hant": "assets/lang/zh-Hant.js?v=e4c1aa1a95"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -49176,7 +49176,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.learned": "🦸 Learned {v1}.",
   "toast.your-hero-takes-a-deck-slot": "🦸 Your Hero takes a deck slot — take one card out to get back to {DECK_SIZE}.",
   "toast.deck-saved": "💾 Deck saved.",
-  "dialog.delete-this-deck-this-cannot-be": "Delete this deck? This cannot be undone.",
   "toast.you-bought-the-bread-it-smells": "🍞 You bought the bread. It smells wonderful. It does nothing.",
   "toast.you-found-a-set-it-in": "{v1} You found a {v2} ({v3})! Set it in a nest in the Nest to warm it.",
   "toast.hidden-skirmish-found": "{v1} A hidden skirmish: {v2} ({v3}).",
@@ -51819,7 +51818,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.dungeon1-run-cleared": "{name} is cleared!",
   "ui.rc1-chained-spawn": "1 chain (1 Armor). It can't act until the opponent plays a card.",
   "ui.rc1-chain-tip": "Chained: {n} Armor, 1 a chain.",
-  "ui.rc1-log-ritual": "{att} can't reach {unit}: it is in its Ritual."
+  "ui.rc1-log-ritual": "{att} can't reach {unit}: it is in its Ritual.",
+  "ui.ui51-deck-delete": "Delete",
+  "ui.ui51-deck-delete-tip": "Delete this deck",
+  "ui.ui51-deck-delete-only": "You need at least one deck",
+  "ui.ui51-deck-delete-again": "Tap again to delete",
+  "ui.ui51-deck-deleted": "🗑 {name} deleted",
+  "ui.ui51-side-maps": "Side maps",
+  "ui.ui51-main-map": "Main map"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -53023,7 +53029,7 @@ S.demo = function(host, script, opts){
 // time-of-day tint so dawn, dusk and night grade it like the art. The season's vignette is the game's own .season-veil, re-classed
 // from the calendar month to the place.
 // Entry points (one hook line in arena_app.js, renderConquestSubTab, calls arrive() on every map render):
-//   BramblewoodWorld.arrive(map, host, canvas)      the travel beat when the map changed, else keep (or re-attach) the season
+//   BramblewoodWorld.arrive(map, host, canvas)      the travel beat when the map changed (only while .travelBeat is on), else keep (or re-attach) the season
 //   BramblewoodWorld.travel(fromMap, toMap, opts)   the beat, ending in toMap's season
 //   BramblewoodWorld.setSeason(mapIdOrKind, opts)   vignette + ambient, and the transition when it differs from the one on show
 //   BramblewoodWorld.seasonOf(mapId), .stop()
@@ -53404,12 +53410,14 @@ function travel(a, b, o){
 function arrive(map, host, canvas){
   const id = map && typeof map === 'object' ? map.id : map; host = host || layoutEl(); if(!id || !host || !doc) return null;
   const prev = S.map; S.map = id;
-  if(prev && prev !== id && !host.querySelector(':scope > .map-veil') && !doc.body.classList.contains('cq-opening')) return travel(prev, id, {host, canvas});
-  return setSeason(id, {host, canvas, instant: true});
+  const moved = prev && prev !== id && !host.querySelector(':scope > .map-veil') && !doc.body.classList.contains('cq-opening');
+  if(moved && root.BramblewoodWorld.travelBeat) return travel(prev, id, {host, canvas});
+  return setSeason(id, {host, canvas, instant: !moved});
 }
 function stop(){ finishBeat(); dropAmb(false); S.kind = null; S.map = null; }
 
-root.BramblewoodWorld = {arrive, travel, setSeason, seasonOf, stop, KINDS, MAP_SEASON, BIOME_SEASON, BEAT_MS, FADE_MS,
+// 2026-11-13 (package UI51, owner 11:08): travelBeat off for now: a map change only crossfades the season; the Effects Lab still calls travel().
+root.BramblewoodWorld = {arrive, travel, setSeason, seasonOf, stop, travelBeat: false, KINDS, MAP_SEASON, BIOME_SEASON, BEAT_MS, FADE_MS,
   _lanes: lanes, _kf: kfText, _css: ()=> CSS, _count: count, _route: route, _mode: mode, _state: S};
 if(typeof module !== 'undefined' && module.exports) module.exports = root.BramblewoodWorld;
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -57721,7 +57729,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '91bc5f59b943', BUILD_CARD_HASH = '1490916b14c7c8ed94be1210cad1e9cf543fbf9d82b1b2f07c4210d08af4da65';
+const BUILD_ID = 'cfee6b3f6eaf', BUILD_CARD_HASH = '1490916b14c7c8ed94be1210cad1e9cf543fbf9d82b1b2f07c4210d08af4da65';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -62876,11 +62884,26 @@ function preloadFightAssets(m){
 // unset or 50 = centred); set in the Card editor (Art height), stored on the card (canonical/cards.json). Framed art uses object-position, extended art moves down by --apy.
 function artPosOf(d){ const v = d && d.artPosY; if(v === undefined || v === null || v === '') return null; const n = Math.round(Number(v)); return Number.isFinite(n) && n !== 50 ? Math.max(0, Math.min(100, n)) : null; }
 function artPosStyle(d){ const n = artPosOf(d); return n === null ? '' : ` style="--apy:${n}; object-position:50% ${n}%"`; }
+// 2026-11-13 (package UI51, owner 11:08 #5): a card picture that fails (the phone left the browser mid-load and the request was cut) shows the card's
+// icon and loads again: when the page is shown again, back online, and after 2, 6 and 18 s; a lazy picture still waits until it is near the screen.
+const bwArtRetry = new Set();
+function bwArtFail(img){
+  const f = img.nextElementSibling; img.style.display = 'none'; img.style.visibility = ''; if(f) f.style.display = 'flex';
+  if(!img.isConnected) return; const n = +img.dataset.artTry || 0; img.dataset.artTry = n + 1; bwArtRetry.add(img);
+  if(n < 3) setTimeout(bwArtRetryAll, 2000 * Math.pow(3, n));
+}
+function bwArtRetryAll(){
+  if(document.hidden || navigator.onLine === false) return;
+  bwArtRetry.forEach(img=>{ bwArtRetry.delete(img); const u = img.getAttribute('src'); if(!img.isConnected || !u) return;
+    img.onload = ()=>{ img.onload = null; img.style.visibility = ''; const f = img.nextElementSibling; if(f) f.style.display = 'none'; };
+    img.style.display = ''; img.style.visibility = 'hidden'; img.src = u; }); // hidden, not display:none, so a lazy picture still counts as near the screen
+}
+try{ addEventListener('visibilitychange', ()=>{ if(!document.hidden) bwArtRetryAll(); }); addEventListener('online', bwArtRetryAll); addEventListener('pageshow', bwArtRetryAll); }catch(e){}
 function cardIcoHTML(d, lazy){
   if(d && d.art){
     // 2026-10-17 (Codex / Nest lag): a long grid (the Codex, the Nest) asks for lazy, async art, so a page of cards doesn't fetch and
     // decode every painting on the main thread before it can show; the board and hand keep the synchronous decode below.
-    if(lazy) return `<img class="card-art-img" src="${d.art}"${artPosStyle(d)} alt="${escapeAttr(d.name||'')}" draggable="false" decoding="async" loading="lazy" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';"><span class="ico-emoji-fallback" style="display:none">${escapeAttr((d && d.icon) || '❔')}</span>`;
+    if(lazy) return `<img class="card-art-img" src="${d.art}"${artPosStyle(d)} alt="${escapeAttr(d.name||'')}" draggable="false" decoding="async" loading="lazy" onerror="bwArtFail(this)"><span class="ico-emoji-fallback" style="display:none">${escapeAttr((d && d.icon) || '❔')}</span>`;
     const icon = escapeAttr((d && d.icon) || '❔');
     // 2026-09-26 (bug report: "backgrounds sometimes randomly disappear" — a card briefly showing
     // just its plain rarity-color background, no art). Root cause: every board/hand re-render
@@ -62896,7 +62919,7 @@ function cardIcoHTML(d, lazy){
     // layout instead of deferring it, closing that gap; loading="eager" additionally rules out any
     // browser heuristic treating an off-screen-at-mount tile (e.g. one that scrolls into view) as
     // lazy-loadable, which the same deferred-paint symptom could also come from.
-    return `<img class="card-art-img" src="${d.art}"${artPosStyle(d)} alt="${escapeAttr(d.name||'')}" draggable="false" decoding="sync" loading="eager" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';"><span class="ico-emoji-fallback" style="display:none">${icon}</span>`;
+    return `<img class="card-art-img" src="${d.art}"${artPosStyle(d)} alt="${escapeAttr(d.name||'')}" draggable="false" decoding="sync" loading="eager" onerror="bwArtFail(this)"><span class="ico-emoji-fallback" style="display:none">${icon}</span>`;
   }
   // Shadow cards (2026-10-11, Willow-o'-Wisp) without art: the emoji becomes a dark silhouette with a cold glow.
   if(d && Array.isArray(d.archetypes) && d.archetypes.includes('Shadow')) return `<span class="ico-shadow">${d.icon || '❔'}</span>`;
@@ -63231,9 +63254,10 @@ function cardSizeAttr(opts){ const s = opts && opts.size; return CARD_SIZES.incl
 // (NM_ROOM_EM = 6.7 em of the card’s name size; measured on a built tile: 6.9 em of room) and shrinks the text (--nm-s) down to NM_MIN_SCALE; a longer name then wraps
 // to two lines. The text never goes under 6.2px (CSS). The rolled ends do not follow (--nm-cap is the card's).
 const NM_ROOM_EM = 6.7, NM_MIN_SCALE = 0.7, NM_W_CACHE = new Map(); let nmCtx = null;
+let nmFontOk = false; // 2026-11-13 (package UI51): document.fonts.check costs ~3 ms a call; once the font is in, it stays
 function nmWidthEm(name){ name = String(name || '');
   try{ if(NM_W_CACHE.has(name)) return NM_W_CACHE.get(name);
-    if(typeof document !== 'undefined' && document.fonts && document.fonts.check('700 20px "Baloo 2"')){ nmCtx = nmCtx || document.createElement('canvas').getContext('2d'); nmCtx.font = '700 100px "Baloo 2"'; const w = nmCtx.measureText(name).width / 100; NM_W_CACHE.set(name, w); return w; } }catch(e){}
+    if(typeof document !== 'undefined' && document.fonts && (nmFontOk || (nmFontOk = document.fonts.check('700 20px "Baloo 2"')))){ nmCtx = nmCtx || document.createElement('canvas').getContext('2d'); nmCtx.font = '700 100px "Baloo 2"'; const w = nmCtx.measureText(name).width / 100; NM_W_CACHE.set(name, w); return w; } }catch(e){}
   let w = 0; for(const ch of name){ w += /[iIl1j.,'’:;!|]/.test(ch) ? .3 : /[ftr\- ]/.test(ch) ? .36 : /[mwMW@]/.test(ch) ? .75 : /[A-Z]/.test(ch) ? .63 : .52; } return w; } // the fallback before the font is ready
 function nmFitScale(name){ const w = nmWidthEm(name); return w <= NM_ROOM_EM ? 1 : Math.max(NM_MIN_SCALE, Math.round(NM_ROOM_EM / w * 100) / 100); }
 // 2026-11-04 (package UI20, owner 11-04: the Lumber cost badge hid the start of "Glacial Ape-King" in the large view): the cost badge (top left) and the wait badge (top right)
@@ -65510,11 +65534,13 @@ function mountEditorSide(modal){
   let t = null; const soon = ()=>{ clearTimeout(t); t = setTimeout(refresh, 120); };
   modal.addEventListener('input', soon); modal.addEventListener('change', soon);
   const url = document.getElementById('ceArtUrl');
-  url.addEventListener('change', ()=>{ const v = url.value.trim(); if(v) editingCard.art = v; refresh(); });
+  // 2026-11-13 (package UI51): a new picture drops the old art rejection
+  const newArt = v=>{ if(v === editingCard.art) return; editingCard.art = v; applyArtReview(editingCard, false); const chk = document.getElementById('edArtRejectedChk'), rs = document.getElementById('edArtReason'), at = document.querySelector('.ce-art-review-at'); if(chk) chk.checked = false; if(rs){ rs.value = ''; rs.hidden = true; } if(at) at.remove(); };
+  url.addEventListener('change', ()=>{ const v = url.value.trim(); if(v) newArt(v); refresh(); });
   document.getElementById('ceArtFile').addEventListener('change', ev=>{
     const f = ev.target.files && ev.target.files[0]; if(!f) return;
     if(f.size > 300*1024){ showToast('That image is over 300 KB. Use a smaller one (cards are drawn at about 160 px).', 'warn'); return; }
-    const r = new FileReader(); r.onload = ()=>{ editingCard.art = r.result; url.value = ''; refresh(); }; r.readAsDataURL(f);
+    const r = new FileReader(); r.onload = ()=>{ newArt(r.result); url.value = ''; refresh(); }; r.readAsDataURL(f);
   });
   document.getElementById('ceArtRemove').addEventListener('click', ()=>{ delete editingCard.art; url.value = ''; refresh(); });
   wireArtReviewEditor(); // 2026-10-21 (package ED)
@@ -87278,7 +87304,6 @@ function rv1TilesHTML(list, kind, defs, secKey){
 // tile's review entry ("<list key>|<card id>|<part>") for that redraw. data-rv-baby (HH1) and data-rv-unlikely (HH7) feed rv2Update's counts.
 const rvTileEntries = new Map();
 function ui13IsBaby(id, defs){ const d = (defs || getCardDefs())[id]; return cardKindOf(d) === 'baby'; }
-function ui13EditBtnHTML(id){ return `<button type="button" class="ui13-edit" data-ui13-edit="${escapeAttr(id)}" title="${escapeAttr(TX('ui.ed-edit-card-tip'))}" aria-label="${escapeAttr(TX('ui.ed-edit-card'))}">✏️</button>`; }
 function rv1TileHTML(e, kind, defs, secKey){
   rvTileEntries.set(secKey + '|' + e.id + '|' + kind, e);
   const mark = kind === 'cut' ? '✂' : ''; // 2026-10-29 (UI3, S6): no "?" on a maybe (its section says it)
@@ -87290,7 +87315,7 @@ function rv1TileHTML(e, kind, defs, secKey){
   return `<span class="rv1-tile is-${kind}${fl ? ' is-flipped' : ''}${baby ? ' is-baby' : ''}${unlikely ? ' is-unlikely' : ''}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}" data-rv-baby="${baby ? 1 : 0}" data-rv-unlikely="${unlikely ? 1 : 0}">`
     + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, power: true, why: e.why || ''})
     + `<span class="rv2-pills">${pills}</span>`
-    + `<span class="ui13-acts"><button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="${fl ? 'true' : 'false'}" title="${escapeAttr(TX('ui.lf2-picks-note'))}" aria-label="${escapeAttr(TX('ui.lf2-picks-note'))}">${escapeHtml(fl ? TX('ui.rv1-undo') : btn[0])}</button>${adminModeEnabled ? ui13EditBtnHTML(e.id) : ''}</span></span>`;
+    + `<span class="ui13-acts"><button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="${fl ? 'true' : 'false'}" title="${escapeAttr(TX('ui.lf2-picks-note'))}" aria-label="${escapeAttr(TX('ui.lf2-picks-note'))}">${escapeHtml(fl ? TX('ui.rv1-undo') : btn[0])}</button></span></span>`;
 }
 // 2026-11-01 (package UI13, HH1; owner: "the Map cards view shows them (today eggs and hatchlings are missing there)"). Why they were missing:
 // the gallery draws the map's lists (canonical/map-pools.json, read through map-review.json), and no egg card is on any list: an egg is a Nest
@@ -87311,7 +87336,7 @@ function ui13BabyPanelHTML(mapId, defs){
   const eggs = ui13MapEggs(mapId).filter(x=> defs[x.id]);
   const pct = p=> (Math.round(p * 1000) / 10) + '%';
   const tiles = eggs.map(x=>{ const why = TX('ui.ui13-egg-why', {fights: x.nodes.join(', '), p: pct(x.best)}) + (x.sure ? ' ' + TX('ui.ui13-egg-sure', {node: EGG_MAP1_NODE}) : '');
-    return `<span class="rv1-tile is-egg is-baby" data-rv-id="${escapeAttr(x.id)}" data-rv-sec="baby" data-rv-kind="egg" data-rv-baby="1">${vis4MapCardTilesHTML([x.id], defs, {large: true, power: true, why})}<span class="rv2-pills"><b class="rv2-pill is-baby" title="${escapeAttr(TX('ui.ui13-tip-baby'))}">${escapeHtml(TX('ui.ui13-tag-baby'))}</b><b class="rv2-pill is-egg" title="${escapeAttr(why)}">🥚 ${escapeHtml(TX('ui.ui13-tag-egg'))}</b></span>${adminModeEnabled ? `<span class="ui13-acts">${ui13EditBtnHTML(x.id)}</span>` : ''}</span>`; }).join('');
+    return `<span class="rv1-tile is-egg is-baby" data-rv-id="${escapeAttr(x.id)}" data-rv-sec="baby" data-rv-kind="egg" data-rv-baby="1">${vis4MapCardTilesHTML([x.id], defs, {large: true, power: true, why})}<span class="rv2-pills"><b class="rv2-pill is-baby" title="${escapeAttr(TX('ui.ui13-tip-baby'))}">${escapeHtml(TX('ui.ui13-tag-baby'))}</b><b class="rv2-pill is-egg" title="${escapeAttr(why)}">🥚 ${escapeHtml(TX('ui.ui13-tag-egg'))}</b></span></span>`; }).join('');
   return `<section class="pk1-mc-sec rv2-panel ui13-baby-sec" data-ui13-baby="1"><h3>🍼 ${escapeHtml(TX('ui.ui13-baby-title'))} <small>${eggs.length}</small></h3><p class="panel-sub">${escapeHtml(TX('ui.ui13-baby-sub'))}</p><div class="vis4-mc-row rv1-row">${tiles || '<span class="panel-sub">–</span>'}</div></section>`;
 }
 // N / M per list (owner 10-29 19:14; main maps replaced by THEME6-1 below): the map's own cards 8-11 (N = the list's current unique count when it is in range, else the cap 11) and carried 4-5
@@ -87368,7 +87393,7 @@ function rvSpecialAddSave(){ try{ localStorage.setItem(RV_SPECIAL_ADD_KEY, JSON.
 function rvAddedOf(top){ const a = rvSpecialAdd[top]; return Array.isArray(a) ? a.filter(x=> typeof x === 'string') : []; }
 function rvAddedPartHTML(top, defs){
   const ids = rvAddedOf(top).filter(id=> defs[id]);
-  const tiles = ids.map(id=> `<span class="rv1-tile is-added" data-rv-id="${escapeAttr(id)}" data-rv-sec="special" data-rv-kind="added">${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true})}<span class="rv2-pills"><b class="rv2-pill is-owner">${escapeHtml(TX('ui.ff9-added-pill'))}</b></span><span class="ui13-acts"><button type="button" class="rv1-act" data-rv-act="remove-added">${escapeHtml(TX('ui.ff9-remove'))}</button>${adminModeEnabled ? ui13EditBtnHTML(id) /* 2026-11-01 (UI13, HH3) */ : ''}</span></span>`).join('');
+  const tiles = ids.map(id=> `<span class="rv1-tile is-added" data-rv-id="${escapeAttr(id)}" data-rv-sec="special" data-rv-kind="added">${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true})}<span class="rv2-pills"><b class="rv2-pill is-owner">${escapeHtml(TX('ui.ff9-added-pill'))}</b></span><span class="ui13-acts"><button type="button" class="rv1-act" data-rv-act="remove-added">${escapeHtml(TX('ui.ff9-remove'))}</button></span></span>`).join('');
   return `<div class="rv1-part is-added" data-rv-added-part${ids.length ? '' : ' hidden'}><h4>${escapeHtml(TX('ui.ff9-added-title'))} <small>${ids.length}</small></h4><div class="vis4-mc-row rv1-row">${tiles}</div></div>`;
 }
 function rv3ExportAll(){
@@ -87915,6 +87940,13 @@ function ui40Css(){
   document.head.appendChild(st);
 }
 // UI21_KW:END
+// 2026-11-13 (package UI51, owner 11:08 #8): the Map cards window's shortcut from a main map to its side maps, and from a side map back to its main map
+function ui51MapLinksHTML(mapId, top){
+  const btn = (m, pre)=> `<button type="button" class="btn small ghost" data-ui51-go="${escapeAttr(m.id)}">${escapeHtml(pre + (m.icon ? m.icon + ' ' : '') + m.name)}</button>`;
+  if(mapId !== top){ const t = mpMapById(top); return t ? `<div class="ui51-maps" role="group" aria-label="${escapeAttr(TX('ui.ui51-main-map'))}">${btn(t, '↩ ')}</div>` : ''; }
+  const subs = mpSubsOf(top);
+  return subs.length ? `<div class="ui51-maps" role="group" aria-label="${escapeAttr(TX('ui.ui51-side-maps'))}"><span class="panel-sub">${escapeHtml(TX('ui.ui51-side-maps'))}</span>${subs.map(m=> btn(m, '')).join('')}</div>` : '';
+}
 function pk1OpenMapCards(mapId){
   const top = mpTopOf(mapId), m = mpMapById(mapId) || mpMapById(top); if(!m) return; // 2026-10-29 (package UI3, S4): a submap's fight is labelled by the submap itself
   let ov = document.getElementById('pk1MapCardsOverlay');
@@ -87926,16 +87958,18 @@ function pk1OpenMapCards(mapId){
   // 2026-10-29 (package UI3, S4; owner 23:01: "dont need to show cards from its submaps - those submaps will show their own submaps cards only"): a main map's fight
   // shows its MAP list + SPECIAL; a submap's fight shows only that submap's lists (its Tutorial-style extra lists too) + SPECIAL. Was: every list of the main map.
   const inScope = s=> s.key === 'cards' ? !mpIsSub(mapId) : s.key === 'special' ? true : !!(mpIsSub(mapId) && (s.sub === mapId || (MP_EXTRA_LISTS[s.sub] && MP_EXTRA_LISTS[s.sub].map === mapId)));
+  // 2026-11-13 (package UI51): the list the Prospects view replaces (ui37Mount) is drawn without tiles; they were built, then thrown away
+  const prosKey = !adminModeEnabled ? '' : ui44IsSub(mapId) ? 'sub:' + mapId : !mpIsSub(mapId) && mainConquestMaps().some(x=> x.id === top && !x.reserved) ? 'cards' : '';
   const secs = mapPoolSections(top).filter(inScope).map((s, si)=>{
-    const rv = rv1ReviewOf(s, top), ids = s.ids.filter(ok);
-    if(!rv) return `<section class="pk1-mc-sec rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''}><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3>${s.key === 'special' ? ui28AddSpecialHTML() : ''}<div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true, power: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
+    const rv = rv1ReviewOf(s, top), ids = s.ids.filter(ok), pros = s.key === prosKey;
+    if(!rv) return `<section class="pk1-mc-sec rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''}>${pros ? '' : `<h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3>${s.key === 'special' ? ui28AddSpecialHTML() : ''}<div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true, power: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}`}</section>`;
     // 2026-10-29 (package REVIEW2): each list is a panel of its own; Chosen, Maybe, Cut cards in that order, each a boxed part
     const part = (kind, label, list)=>{ const l = (list || []).filter(e=> e && ok(e.id)); if(kind === 'cut' && !l.length) return ''; /* 2026-11-05 22:49 (owner: "reset the 'undo' or 'cut' pills ... Just show the updated map card list"): the cut cards went to canonical/map-review.json cutArchive, and an empty Cut part is not drawn */ return `<div class="rv1-part is-${kind}"><h4>${escapeHtml(label)} <small>${l.length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(l, kind, defs, s.key)}</div></div>`; };
     const chosen = (rv.chosen || []).filter(e=> e && ok(e.id)), all = chosen.concat((rv.cut || []).filter(e=> e && ok(e.id)), (rv.maybe || []).filter(e=> e && ok(e.id)));
     const nb = e=> !ui13IsBaby(e.id, defs); // 2026-11-01 (package UI13, HH1): Baby cards are left out of the N / M targets too
     const tg = rv2TargetsOf(s, top, chosen.filter(nb), all.filter(nb));
     bars.push(`<span class="rv2-cl" data-rv2-count="${si}"><b>${escapeHtml(s.label)}</b> <span class="rv2-ct"></span></span>`);
-    return `<section class="pk1-mc-sec has-rv1 rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''} data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${s.key === 'special' ? ui28AddSpecialHTML() : ''}${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
+    return `<section class="pk1-mc-sec has-rv1 rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''} data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}">${pros ? '' : `<h3>${escapeHtml(s.label)}</h3>${s.key === 'special' ? ui28AddSpecialHTML() : ''}${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}`}</section>`;
   }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
   // 2026-11-04 (package UI22): the fights' rewards, then Claude's recommended cards (shown, on no list)
   const ui22Lists = new Set(mapPoolSections(top).flatMap(s=> s.ids || []));
@@ -87945,14 +87979,16 @@ function pk1OpenMapCards(mapId){
     + (()=>{ try{ return ui21McKeywordHTML(mapId, defs, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok)); }catch(e){ return ''; } })(); // 2026-11-05 (UI21, IDEA-EARLY-3): the keyword of the map
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}${(()=>{ try{ const g = ui32McSkillIds(top, mapId, ok); return ui19McSkillsHTML(top, g.main, defs, ok, mapId, g.other); }catch(e){ return ''; } })() /* 2026-11-04 (UI19); UI32 #7: main / other groups */}<div class="vis4-map-cards pk1-mc-body">${secs}${ui22Secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? '' : ui51MapLinksHTML(mapId, top)}${anyRv ? `<div class="rv1-bar">${ui51MapLinksHTML(mapId, top)}<span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}${(()=>{ try{ const g = ui32McSkillIds(top, mapId, ok); return ui19McSkillsHTML(top, g.main, defs, ok, mapId, g.other); }catch(e){ return ''; } })() /* 2026-11-04 (UI19); UI32 #7: main / other groups */}<div class="vis4-map-cards pk1-mc-body">${secs}${ui22Secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); }; // 2026-11-01 (UI13, HH3): not while the card editor has it hidden
+  ov.onkeydown = e=>{ if((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.rv1-tile .vis4-mc-card')){ e.preventDefault(); e.target.click(); } }; // 2026-11-13 (UI51)
   document.addEventListener('keydown', onKey);
   ov.onclick = e=>{
     if(e.target === ov) return close();
-    const ed = e.target.closest && e.target.closest('[data-ui13-edit]'); if(ed){ e.stopPropagation(); ui13EditFromGallery(ov, ed.closest('.rv1-tile')); return; } // 2026-11-01 (UI13, HH3)
+    const go = e.target.closest && e.target.closest('[data-ui51-go]'); if(go){ pk1OpenMapCards(go.dataset.ui51Go); return; } // 2026-11-13 (UI51)
+    const ed = adminModeEnabled && e.target.closest && e.target.closest('.rv1-tile .vis4-mc-card'); if(ed){ e.stopPropagation(); ui13EditFromGallery(ov, ed.closest('.rv1-tile')); return; } // 2026-11-13 (package UI51): the card opens the editor (no ✏️)
     const b = e.target.closest && e.target.closest('.rv1-act'); if(!b) return;
     if(b.dataset.rvAct === 'remove-added'){ ff9RemoveAdded(ov, top, b.closest('.rv1-tile').dataset.rvId); return; } // 2026-10-31 (UI11, FF9)
     const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); { const k = top + '|' + t.dataset.rvSec + '|' + t.dataset.rvId; if(on) rvFlips[k] = true; else delete rvFlips[k]; rvFlipsSave(); } b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -88190,7 +88226,7 @@ function ui37TileHTML(top, p, kind, defs, idx, rvMap){
 function ui39PlainTileHTML(id, defs, why, x){
   const dd = defs[id], pt = dd ? basicPackTierOf(dd) : 0; x = x || {};
   const pack = pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '';
-  return `<span class="rv1-tile is-ui39${x.cls ? ' ' + x.cls : ''}" data-rv-id="${escapeAttr(id)}" data-rv-sec="ui39" data-rv-kind="ui39"${x.attrs || ''}${x.title ? ` title="${escapeAttr(x.title)}"` : ''}>${x.mark || ''}${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true, why})}<span class="rv2-pills">${pack}${x.pills || ''}</span>${adminModeEnabled ? `<span class="ui13-acts">${ui13EditBtnHTML(id)}</span>` : ''}</span>`;
+  return `<span class="rv1-tile is-ui39${x.cls ? ' ' + x.cls : ''}" data-rv-id="${escapeAttr(id)}" data-rv-sec="ui39" data-rv-kind="ui39"${x.attrs || ''}${x.title ? ` title="${escapeAttr(x.title)}"` : ''}>${x.mark || ''}${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true, why})}<span class="rv2-pills">${pack}${x.pills || ''}</span></span>`;
 }
 // a proposed concept (no art, no stats): a full-size card-shaped placeholder with its name, animal, element, suggested rarity and role; the hover shows it all
 function ui39ConceptCardHTML(c){
@@ -112917,6 +112953,19 @@ function deckLeaveGuard(then){
   return false;
 }
 try{ window.addEventListener('beforeunload', e=>{ if(deckDirty){ e.preventDefault(); e.returnValue = ''; } }); }catch(e){}
+// 2026-11-13 (package UI51, owner 11:08 #2): the phone's back gesture / button. One history entry of our own (pushed on a tap: Chrome skips entries
+// pushed without one); a back closes the top panel (its own Escape path), asks in a fight (forfeitMatch) or in the deck editor (its Back, deckLeaveGuard),
+// and from a plain screen goes on back, out of the page.
+const ui51Back = {armed: false,
+  push(){ if(ui51Back.armed) return; try{ history.pushState({bwBack: 1}, ''); ui51Back.armed = true; }catch(e){} },
+  topPanel(){ return [...document.querySelectorAll('.modal-overlay')].filter(o=> !o.hidden && o.getClientRects().length).pop() || null; },
+  onPop(){ ui51Back.armed = false;
+    const ov = ui51Back.topPanel(), ae = document.activeElement;
+    if(ov){ ui51Back.push(); (ae && ov.contains(ae) ? ae : ov).dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true, cancelable: true})); return; }
+    if(typeof matchState !== 'undefined' && matchState && !matchState.over && document.querySelector('#appWrap.in-match')){ ui51Back.push(); forfeitMatch(); return; }
+    const bb = document.getElementById('deckBackBtn'); if(bb && bb.getClientRects().length){ ui51Back.push(); bb.click(); return; }
+    try{ history.back(); }catch(e){} } };
+try{ addEventListener('pointerdown', ui51Back.push, true); addEventListener('popstate', ui51Back.onPop); }catch(e){}
 let deckHeroView = false; // Deck → 🦸 Hero: the Hero Hall instead of the deck builder
 var deckOpenBuilderOnce = false; // set by buttons that should land in the builder, not the list (2026-10-08)
 let deckShowList = true; // D16 (2026-10-03): Deck opens straight into the active deck's builder; "Manage decks" shows the list
@@ -113084,6 +113133,7 @@ function renderDeckSectionInner(){
         <div class="play-subtabs-actions">
           ${deckEditingId===mainDeckId ? `<span class="deck-main-tag ne-main-tag" title="${escapeAttr(TX('ui.ui4-main-deck-sub'))}"><b>★ ${escapeHtml(TX('ui.ui4-main-deck'))}</b><small>${escapeHtml(TX('ui.ui4-main-deck-sub'))}</small></span>` /* 2026-10-24 (package NE, owner 17:34 #19: the subtitle "you play with this one") */ : '<button type="button" class="btn small" id="deckMakeMainBtn" title="Play with this deck">★ Make main deck</button>'}
           <button type="button" class="btn small ghost" id="deckManageBtn" title="Rename, copy codes, import or delete decks">🗂 Manage decks</button>
+          ${(()=>{ const only = myDecks.length <= 1, tip = TX(only ? 'ui.ui51-deck-delete-only' : 'ui.ui51-deck-delete-tip'); return `<button type="button" class="btn small ghost dm-delete" id="deckDeleteBtn" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"${only ? ' aria-disabled="true"' : ''}>🗑 ${escapeHtml(TX('ui.ui51-deck-delete'))}</button>`; })() /* 2026-11-13 (package UI51, owner 11:25) */}
         </div>
       </div>
       <div id="deckBuilderBody"></div>`;
@@ -113093,6 +113143,11 @@ function renderDeckSectionInner(){
     const mm = document.getElementById('deckMakeMainBtn');
     if(mm) mm.addEventListener('click', ()=>{ if(deckDirty) commitDeckDraft(); setMainDeck(deckEditingId); SoundKit.codeImport && SoundKit.codeImport(); renderDeckSection(); });
     document.getElementById('deckManageBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; renderDeckSection(); }));
+    { const del = document.getElementById('deckDeleteBtn'); // 2026-11-13 (package UI51): tap twice to delete; the only deck stays (deleteDeck picks the next main / active deck, the sync tomb deletes it in the cloud)
+      del.addEventListener('click', ()=>{ if(myDecks.length <= 1){ showToast(TX('ui.ui51-deck-delete-only'), 'warn'); return; }
+        if(!del.dataset.armed){ del.dataset.armed = '1'; del.textContent = TX('ui.ui51-deck-delete-again'); setTimeout(()=>{ if(del.isConnected){ delete del.dataset.armed; del.textContent = '🗑 ' + TX('ui.ui51-deck-delete'); } }, 4000); return; }
+        const d = myDecks.find(x=> x.id === deckEditingId), name = d ? d.name : ''; discardDeckDraft(); endDeckDraft();
+        if(deleteDeck(deckEditingId)){ showToast(TX('ui.ui51-deck-deleted', {name}), 'ok'); deckEditingId = null; deckShowList = true; renderDeckSection(); } }); }
     document.getElementById('deckBackBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; deckHeroView = false; renderDeckSection(); }));
 
     renderPlayerSubTab(document.getElementById('deckBuilderBody'));
@@ -113153,37 +113208,6 @@ function renderDeckListTab(body){
     document.getElementById('importDeckCodeBtn').addEventListener('click', ()=> importDeckCodeFlow(document.getElementById('importDeckCodeBtn')));
     return;
   }
-  grid.innerHTML = myDecks.map(d=> `
-    <div class="deck-menu-card deck-large-preview ${d.id===mainDeckId?'active':''} ${deckIsLegal(d)?'':'is-illegal'}" data-deckid="${d.id}">
-      <div class="deck-menu-card-head">
-        <input class="deck-menu-name-input" aria-label="Deck name" data-deckid="${d.id}" value="${escapeAttr(d.name)}" maxlength="40">
-        ${d.id===mainDeckId?'<span class="deck-active-badge">★ MAIN</span>':''}
-        ${deckIsLegal(d)?'':`<span class="deck-illegal-badge" title="Needs exactly ${DECK_SIZE} cards to play">${deckTotal(d.counts||{})}/${DECK_SIZE}</span>`}
-      </div>
-      ${deckShowcaseHTML(d)}
-      ${deckCardsStripHTML(d)}
-      <div class="deck-menu-card-actions">
-        <button class="btn small primary" data-editdeck="${d.id}">✏️ Edit</button>
-        ${d.id!==mainDeckId?`<button class="btn small" data-selectdeck="${d.id}" title="Play with this deck">★ Make main</button>`:''}
-        <button class="btn small" data-exportdeck="${d.id}" title="Copy a shareable code for this deck">📋 Code</button>
-        <button class="btn small ghost dm-delete" data-deletedeck="${d.id}" ${myDecks.length>1 ? '' : 'disabled aria-disabled="true"'} title="${myDecks.length>1 ? 'Delete this deck' : 'You need at least one deck'}">🗑 Delete</button>
-      </div>
-    </div>`).join('');
-  grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckHeroView = false; deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));
-  grid.querySelectorAll('[data-selectdeck]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.getAttribute('data-selectdeck'); setMainDeck(id); switchActiveDeck(id); renderDeckSection(); }));
-  grid.querySelectorAll('[data-deletedeck]').forEach(b=> b.addEventListener('click', ()=>{
-    if(confirm(TX('dialog.delete-this-deck-this-cannot-be'))){ deleteDeck(b.getAttribute('data-deletedeck')); renderDeckSection(); }
-  }));
-  grid.querySelectorAll('[data-exportdeck]').forEach(b=> b.addEventListener('click', ()=>{
-    const d = myDecks.find(x=>x.id===b.getAttribute('data-exportdeck'));
-    if(d) exportDeckCode(d, b);
-  }));
-  grid.querySelectorAll('.deck-menu-name-input').forEach(inp=>{
-    inp.addEventListener('click', e=> e.stopPropagation());
-    inp.addEventListener('change', ()=>{ renameDeck(inp.getAttribute('data-deckid'), inp.value); renderDeckSection(); });
-  });
-  document.getElementById('newDeckBtn').addEventListener('click', e=>{ if(deckSlotDenied(e.currentTarget)) return; /* 2026-10-23 (package UI4) */ deckHeroView = false; const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); });
-  document.getElementById('importDeckCodeBtn').addEventListener('click', ()=> importDeckCodeFlow(document.getElementById('importDeckCodeBtn')));
 }
 // Copies `d`'s code to the clipboard (async Clipboard API, needs a real user gesture — this is
 // always called from one, a button click). Falls back to a pre-filled prompt() (select-all +

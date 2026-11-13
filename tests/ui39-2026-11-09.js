@@ -28,7 +28,7 @@ ok(/c \? ui39ConceptCardHTML\(c\) : rv \? rv1TileHTML\(rv\.e, rv\.kind, defs, 'c
 ok(/data-ui37-flag="\$\{k\}"/.test(tile) && /ui37-src is-\$\{s\}/.test(tile) && /ui37-from/.test(tile), "UI38's source pills, the Map N pill and Yes / No on every card");
 ok(!/vis4MapCardTilesHTML\(\[p\.id\], defs, \{power: true/.test(b37) && !/ui38ConceptChipHTML\(c\)/.test(b37), 'no chips in the view');
 const plain = fn('ui39PlainTileHTML');
-ok(/large: true, power: true/.test(plain) && /ui13EditBtnHTML\(id\)/.test(plain) && /data-rv-kind="ui39"/.test(plain), 'the plain card is full size, with its power badge and edit');
+ok(/large: true, power: true/.test(plain) && /data-rv-kind="ui39"/.test(plain), 'the plain card is full size, with its power badge (UI51: the card opens the editor)');
 ok(/kind === 'egg' \|\| kind === 'added' \|\| kind === 'ui39'/.test(app) && /kind === 'ui39' \? \{packs: true, large: true, power: true, why\}/.test(app), 'ui13RefreshTile redraws a plain card after an edit');
 const cc = fn('ui39ConceptCardHTML');
 ok(/c\.name/.test(cc) && /c\.animal/.test(cc) && /DMG_TYPE_LABEL\[c\.element\]/.test(cc) && /ui39-c-rarity/.test(cc) && /c\.role/.test(cc) && /vis4-mc-card is-large/.test(cc) && /data-zoom-tip=/.test(cc), 'the concept card: name, animal, element, suggested rarity, role, full size, hover text');

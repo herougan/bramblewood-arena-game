@@ -8,7 +8,7 @@ For every card in PICKS ({id: variant letter}):
   2. crop the chosen one to a centred square, resize nearest to 128 px (already pixel art: no palette snap,
      unlike art2_import which snapped painterly output), then x2 nearest to 256 px, palette PNG in art/cards/<id>.png;
   3. write art/cards/<id>.prompt.txt (the PixelLab job description and the pick);
-  4. set the card's "art" field (targeted text edit, same as art2) and delete its "artReview" block.
+  4. set the card's "art" field (art2's targeted text edit, which also deletes its "artReview" block).
 
     python3 tools/art/art7_import_2026_11_03.py --src /mnt/user-data/uploads/Downloads/art7 [--contact out.png] [--variants out.png]
 """
@@ -93,18 +93,11 @@ def finish(p):
     return big.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
 
 
-def drop_review(text, cid):
-    m = re.search(r'\n    "id": "%s",?\n' % re.escape(cid), text)
-    start = text.rfind('\n  {\n', 0, m.start() + 1); end = text.find('\n  }', m.end() - 1)
-    block = text[start:end]
-    block2 = re.sub(r'\n    "artReview": \{.*?\n    \},?(?=\n)', '', block, count=1, flags=re.S)
-    return text[:start] + block2 + text[end:]
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--src', default='/mnt/user-data/uploads/Downloads/art7')
     ap.add_argument('--contact'); ap.add_argument('--variants')
+    ap.add_argument('--force', action='store_true', help='replace art that is not rejected with a reason')
     a = ap.parse_args()
     ids = list(PICKS)
     if a.variants:  # check sheet: every card's four variants, the pick outlined
@@ -118,6 +111,7 @@ def main():
     if a.contact: return a2.contact(ids, a.contact, cols=7)
     text = open(CARDS, encoding='utf-8').read()
     for cid, v in PICKS.items():
+        if not a2.may_replace(text, cid, a.force): continue
         src = os.path.join(a.src, cid + '.png')
         panels = split(Image.open(src))
         img = finish(panels['ABCD'.index(v)])
@@ -126,7 +120,6 @@ def main():
             '# ART7 2026-11-03, PixelLab Create image (Pro, 128x128, 2x2), variant %s picked; job description = prefix + brief (docs/art/art6-pixellab-gallery-2026-11-02.md)\n%s\n' % (v, PREFIX + 'brief for card id "' + cid + '" in docs/art/content6-2026-11-02-briefs.md or content7 briefs' + ', full background, no text'))
         uri = 'data:image/png;base64,' + base64.b64encode(open(path, 'rb').read()).decode('ascii')
         text = a2.set_art(text, cid, uri)
-        text = drop_review(text, cid)
         print(cid, 'variant', v, 'panel', panels['ABCD'.index(v)].size)
     open(CARDS, 'w', encoding='utf-8').write(text)
     json.loads(text)

@@ -195,6 +195,7 @@
      specific embed's own wrapper does something unusual with a page that never explicitly opts
      into scrolling its own overflow. Costs nothing in a normal browser tab. */
   html{height:100%; background-color:var(--bg-2); /* 2026-10-08: never let the desktop or browser backdrop show through */}
+  html, body{overscroll-behavior-y:contain;} /* 2026-11-13 (package UI51): no pull-to-refresh on phones */
   body{margin:0; min-height:100%; min-height:100dvh; overflow-y:auto; background:
       radial-gradient(ellipse at top, color-mix(in srgb, var(--page-mint) 30%, transparent), transparent 60%),
       radial-gradient(ellipse at top, var(--page-wood-2), var(--page-wood) 68%);
@@ -14704,7 +14705,7 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 .rv1-tile{position:relative; display:flex; flex-direction:column; align-items:center; gap:3px;}
 .rv1-tile .vis4-mc-card{margin-bottom:30px;}
 .rv1-tile.is-cut .vis4-mc-card{opacity:.5; filter:grayscale(.6);}
-.rv1-tile.is-maybe .vis4-mc-card{outline:2px dashed rgba(255,215,0,.55); outline-offset:2px;}
+.rv1-tile.is-maybe .vis4-mc-card{outline:1px solid rgba(255,215,0,.5); outline-offset:3px;} /* 2026-11-13 (package UI51): review marks are thin solid rings, not a token's dashed edge */
 .rv1-tile.is-flipped.is-chosen .vis4-mc-card{opacity:.55; filter:grayscale(.8);}
 .rv1-tile.is-flipped.is-cut .vis4-mc-card, .rv1-tile.is-flipped.is-maybe .vis4-mc-card{opacity:1; filter:none; outline:2px solid #6fd16f; outline-offset:2px;}
 .rv1-mark{position:absolute; top:-6px; left:6px; z-index:2; font:800 11px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; padding:2px 4px; border-radius:999px; background:#222; color:#ffd24a; border:1px solid rgba(255,255,255,.3);}
@@ -14745,15 +14746,13 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 .rv2-pill.is-unique{background:#7da35b; color:#14210a; border-color:transparent;}
 .rv2-pill.is-owner{background:#e0b030; color:#222; border-color:transparent; cursor:help;}
 .rv2-pill.is-claude{background:#8a6fc4; color:#fff; border-color:transparent; cursor:help;}
-/* UI13 (2026-11-01): the Unlikely pill (HH7, its flagWhy as the tooltip), the Baby and Egg pills and the Baby cards panel (HH1), the ✏️ on a tile (HH3), the kind chip */
+/* UI13 (2026-11-01): the Unlikely pill (HH7, its flagWhy as the tooltip), the Baby and Egg pills and the Baby cards panel (HH1), the kind chip */
 .rv2-pill.is-unlikely{background:#b8463a; color:#fff; border-color:transparent; cursor:help;}
 .rv2-pill.is-baby{background:#f3c6d4; color:#4a1f2c; border-color:transparent; cursor:help;}
 .rv2-pill.is-egg{background:#efe2c0; color:#3b2c10; border-color:transparent; cursor:help;}
-.rv1-tile.is-unlikely.is-chosen:not(.is-flipped) .vis4-mc-card.is-large{outline:2px dashed rgba(184,70,58,.85); outline-offset:2px;}
+.rv1-tile.is-unlikely.is-chosen:not(.is-flipped) .vis4-mc-card.is-large{outline:1px solid rgba(184,70,58,.55); outline-offset:3px;}
 .ui13-acts{display:flex; justify-content:center; align-items:center; gap:5px;}
 .ui13-acts .rv1-act{white-space:nowrap; padding:4px 10px;}
-.rv1-tile .ui13-edit{width:30px; height:30px; flex:0 0 30px; padding:0; border-radius:50%; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font-size:13px; line-height:1; cursor:pointer;}
-.rv1-tile .ui13-edit:hover, .rv1-tile .ui13-edit:focus-visible{background:var(--surface-3);}
 .ui13-baby-sec .panel-sub{margin:2px 0 8px;}
 .cd-chip.cd-kind.kind-baby{background:#f3c6d4; color:#4a1f2c;}
 .cd-chip.cd-kind.kind-faction{background:#d7c48a; color:#2e2410;}
@@ -14937,6 +14936,10 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
 @media (prefers-reduced-motion: reduce){ .abadge.ui30-tick{animation:none !important;} }
 /* 2026-11-07 (package UI30 #16): the admin Map cards window's "Sugg. Intro" pill (amber, beside UI28's blue "Suggested"); a suggested skill no card here has yet is a dashed intro tile */
+/* 2026-11-13 (package UI51): Map cards window: the card opens the editor (admins); off-screen tiles skip layout and paint */
+.pk1-mc-overlay .rv1-tile .vis4-mc-card{cursor:pointer;}
+.ui51-maps{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:4px 0 6px;} .rv1-bar > .ui51-maps{flex-basis:100%; margin:0;}
+.pk1-mc-body .ui37-tile, .pk1-mc-body .rv1-part .rv1-tile{content-visibility:auto; contain-intrinsic-size:auto 132px auto 280px;}
 .ui30-sugg{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; letter-spacing:.03em; padding:1px 5px; border-radius:999px; background:#c27f0e; color:#fff; cursor:help; vertical-align:1px; white-space:nowrap;}
 .ui19-sk.ui30-sugg-tile{border-style:dashed;}
 /* JJ14: your turn's glow on the battlefield frame (full width, your row down), not on the camera-moved row */
@@ -15294,8 +15297,8 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .rv2-pill.ui29-sug-pill{background:#4f8ee8; color:#fff; border-color:transparent; cursor:help;}
 .rv2-pill.ui29-sug-pill.is-zone{background:#5b86b8;}
 .rv2-pill.ui29-picks{letter-spacing:1px; cursor:help;}
-.ui29-tile.is-chosen:has(.ui29-out):not(.is-flipped) .vis4-mc-card.is-large{outline:2px dashed rgba(184,70,58,.85); outline-offset:2px;}
-.ui29-tile.is-maybe .vis4-mc-card.is-large{outline:2px dashed #4f8ee8; outline-offset:2px;}
+.ui29-tile.is-chosen:has(.ui29-out):not(.is-flipped) .vis4-mc-card.is-large{outline:1px solid rgba(184,70,58,.55); outline-offset:3px;}
+.ui29-tile.is-maybe .vis4-mc-card.is-large{outline:1px solid rgba(79,142,232,.6); outline-offset:3px;}
 .ui29-tile.is-maybe.is-flipped .vis4-mc-card.is-large{outline:2px solid #6fd16f;}
 .ui29-tile.ui29-rejected .vis4-mc-card.is-large{opacity:.45; filter:grayscale(.85); outline-color:rgba(184,70,58,.6);}
 .ui29-tile .rv1-act[aria-pressed="true"]{background:#6fd16f; color:#112;}

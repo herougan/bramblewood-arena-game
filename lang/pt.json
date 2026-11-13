@@ -731,7 +731,6 @@
  "Defense": "Defesa",
  "Delete": "Excluir",
  "Delete the added skirmish {label}?": "Apagar a escaramuça adicionada {label}?",
- "Delete this deck? This cannot be undone.": "Apagar este baralho? Não é possível anular.",
  "Demolisher (Structures) and the old Siege (the bramble) are one skill now. An old Demolisher card reads as Siege.": "Demolidor (Estruturas) e o antigo Cerco (a silva) são agora uma só habilidade. Uma carta antiga com Demolidor conta como Cerco.",
  "Desert": "Deserto",
  "Details": "Detalhes",
@@ -4445,5 +4444,10 @@
  "No part won: your ⚡{n} came back.": "Nenhuma parte vencida: os teus ⚡{n} voltaram.",
  "{floors} parts and a boss · {n} players · ⚡{energy} each": "{floors} partes e um chefe · {n} jogadores · ⚡{energy} cada",
  "Shops": "Lojas",
- "Nothing in the Premium shop for you yet.": "Ainda nada para ti na loja Premium."
+ "Nothing in the Premium shop for you yet.": "Ainda nada para ti na loja Premium.",
+ "Delete this deck": "Excluir este baralho",
+ "Tap again to delete": "Toque de novo para excluir",
+ "{name} deleted": "{name} excluído",
+ "Side maps": "Mapas secundários",
+ "Main map": "Mapa principal"
 }

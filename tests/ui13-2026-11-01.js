@@ -90,8 +90,7 @@ const A = new Function('TX', ['rv2IsCarried', 'rv2TagsOf'].map(fnSrc).join('\n')
 { const f = fnSrc('ui13EditFromGallery'), r = fnSrc('ui13RefreshTile'), op = fnSrc('pk1OpenMapCards');
   ok(/edOpenCardEditor\(id, ov,/.test(f), 'HH3 the ✏️ opens the existing card editor (edOpenCardEditor), the gallery hidden meanwhile');
   ok(/rv1TileHTML\(e, kind, defs, sec\)/.test(r) && /rv2Update\(ov\)/.test(r), 'HH3 on close the tile is drawn again and the counts follow');
-  ok(/\[data-ui13-edit\]/.test(op) && /e\.key === 'Escape' && !ov\.hidden/.test(op), 'HH3 wired in the gallery; Escape in the editor does not close the hidden gallery');
-  ok(/adminModeEnabled \? ui13EditBtnHTML\(e\.id\)/.test(fnSrc('rv1TileHTML')), 'HH3 admins only'); }
+  ok(/adminModeEnabled && e\.target\.closest && e\.target\.closest\('\.rv1-tile \.vis4-mc-card'\)/.test(op) && /e\.key === 'Escape' && !ov\.hidden/.test(op), 'HH3 (UI51: the card itself, admins only) wired in the gallery; Escape in the editor does not close the hidden gallery'); }
 
 // ---- 5. texts ------------------------------------------------------------------------------------------------------------------
 { const keys = [...new Set([...app.matchAll(/TX\('((?:ui|map|toast)\.ui13-[a-z0-9-]+)'/g)].map(x=> x[1]))];

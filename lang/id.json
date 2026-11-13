@@ -731,7 +731,6 @@
  "Defense": "Pertahanan",
  "Delete": "Hapus",
  "Delete the added skirmish {label}?": "Hapus pertempuran kecil tambahan {label}?",
- "Delete this deck? This cannot be undone.": "Hapus dek ini? Tidak bisa dibatalkan.",
  "Demolisher (Structures) and the old Siege (the bramble) are one skill now. An old Demolisher card reads as Siege.": "Penghancur (Bangunan) dan Pengepungan lama (semak duri) kini satu skill. Kartu Penghancur lama dibaca sebagai Pengepungan.",
  "Desert": "Gurun",
  "Details": "Detail",
@@ -4445,5 +4444,10 @@
  "No part won: your ⚡{n} came back.": "Tak ada bagian dimenangkan: ⚡{n} kembali.",
  "{floors} parts and a boss · {n} players · ⚡{energy} each": "{floors} bagian dan satu bos · {n} pemain · ⚡{energy} per orang",
  "Shops": "Toko",
- "Nothing in the Premium shop for you yet.": "Belum ada apa pun untukmu di toko Premium."
+ "Nothing in the Premium shop for you yet.": "Belum ada apa pun untukmu di toko Premium.",
+ "Delete this deck": "Hapus dek ini",
+ "Tap again to delete": "Ketuk lagi untuk menghapus",
+ "{name} deleted": "{name} dihapus",
+ "Side maps": "Peta samping",
+ "Main map": "Peta utama"
 }
