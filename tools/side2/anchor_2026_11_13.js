@@ -16,6 +16,7 @@
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
+require('./holds_2026_11_13.js').patch(); // round 2: LIST1's held cards stay out of side fights' pools
 const L = require('../skir1/lib_fight_2026_11_11.js'), G = L.G;
 const BLD = require('../skir1/build_2026_11_11.js'); // fill() only (its own commands are plan / apply / purge / pin, never ours)
 const a = process.argv.slice(2), CMD = a[0] || 'report', arg = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; };
@@ -63,7 +64,7 @@ if (CMD === 'measure') {
     const cur = JSON.parse((mm[1].match(/deck:(\{[^}]*\})/) || [0, '{}'])[1]), deck = Object.fromEntries(Object.keys(r.deck).sort().map(id => [id, r.deck[id]]));
     if (L.keyOf(cur) === L.keyOf(deck)) { if (r.verdict === 'too-hard') ease.push(r.code); return; }
     const why = r.verdict === 'too-hard' ? 'too hard, eased next by the fit' : r.verdict === 'in-band' ? 'in band as it stands' : 'still too easy: cards too weak (flagged), the hardest deck the list makes';
-    s = s.replace(mm[1], mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(deck) + ` /* 2026-11-13 (SIDE2 SK anchor, owner 11-12 23:50): the map's hardest fight takes its BPRO-1 (${r.bpro1.id}, ${r.bpro1.focus}) scaled to the fight; Map reference ${r.skWin}% at ${r.games} games (target ${r.band.t}): ${why}; deck (was ${JSON.stringify(cur)}) */`));
+    s = s.replace(mm[1], mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(deck) + ` /* 2026-11-13 (SIDE2 r2 SK anchor, owner 11-12 23:50; LIST1 lists): the map's hardest fight takes its BPRO-1 (${r.bpro1.id}, ${r.bpro1.focus}) scaled to the fight; Map reference ${r.skWin}% at ${r.games} games (target ${r.band.t}): ${why}; deck (was ${JSON.stringify(cur)}) */`));
     k++; if (r.verdict === 'too-hard') ease.push(r.code);
   });
   fs.writeFileSync(APP + '.side2tmp', s); fs.renameSync(APP + '.side2tmp', APP);

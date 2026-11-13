@@ -6,7 +6,8 @@
 const fs = require('fs'), path = require('path'), Module = require('module');
 const FILE = path.join(__dirname, '..', 'skir1', 'fit_2026_11_11.js');
 let src = fs.readFileSync(FILE, 'utf8');
-const a = '/* 2026-11-11 (SKIR1 fit): toward the road curve', b = '/* 2026-11-13 (SIDE2 fit, SKIR1\'s fit on the SIDE1 lists): toward the road curve';
+const a = '/* 2026-11-11 (SKIR1 fit): toward the road curve', b = '/* 2026-11-13 (SIDE2 r2 fit, SKIR1\'s fit on the LIST1 lists): toward the road curve';
 if (!src.includes(a)) throw new Error('SKIR1 fit changed: ' + a); src = src.split(a).join(b);
 const m = new Module(FILE, module); m.filename = FILE; m.paths = Module._nodeModulePaths(path.dirname(FILE));
+require('./holds_2026_11_13.js').patch(); // round 2: LIST1's held cards stay out of side fights' pools
 process.mainModule = m; require.main = m; m._compile(src, FILE);

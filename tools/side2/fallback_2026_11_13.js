@@ -9,6 +9,7 @@
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..'), PLAN = path.join(ROOT, 'docs', 'balance', 'side2', 'build-plan-2026-11-13.json');
 process.argv[2] = 'fallback'; // the builder runs its own command line on load (default 'plan'): give it none of its commands
+require('./holds_2026_11_13.js').patch(); // round 2: LIST1's held cards stay out of side fights' pools
 const L = require('../skir1/lib_fight_2026_11_11.js'), G = L.G, BLD = require('../skir1/build_2026_11_11.js');
 const plan = JSON.parse(fs.readFileSync(PLAN, 'utf8')); const out = [];
 for (const p of plan.maps) for (const x of p.fights) {
