@@ -8,6 +8,12 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-13 11:50: Owner notes -> UI52 (starts after UI51 merges; same files)
+1. Card editor: show where the card first appears on the maps.
+2. Skill codex, admin only: a toggle button on the right (overlaid, doesn't push the layout down) shows where each skill is first seen on the maps.
+3. Codex page turn: the page turns slowly and also slides left/right, pivoting from the book's centre (now it pivots on the page edge, then jumps).
+4. Remove the "Triggers lesson" button. Profile/account page: reset basic tutorials (Map T to Map 3, triggers included) or all tutorials. The page number and its buttons move up into the filter row, and the row between the filter and the book goes (saves height).
+
 ## 11-13 11:25: Owner notes
 - Deck deletion (not when it is the only deck): UI51 item 15.
 - Order after SIDE2's reference decks: the machine never idles. Owner redesigns cards -> balance again (road Maps 0-20 + side maps) -> assign the skirmish maps -> skirmish rewards planning -> pack planning.
