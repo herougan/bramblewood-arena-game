@@ -1,0 +1,674 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T04:34:33.569Z",
+ "fingerprint": "53a2adc56d03",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow"
+ },
+ "level": 1,
+ "pool": [
+  "beluga",
+  "cormorant",
+  "dormouse",
+  "giant-clam",
+  "glacier-yak",
+  "greenland-shark",
+  "ice-crevasse-wolf",
+  "lemming-swarm",
+  "limpet-clinger",
+  "moon-jelly",
+  "pincushion-urchin",
+  "ringed-seal",
+  "riptide-eel",
+  "rock-pool-starfish",
+  "shoal-shark",
+  "snow-ermine",
+  "wolfsbane-alpha"
+ ],
+ "poolNames": [
+  "Beluga",
+  "Cormorant",
+  "Dormouse",
+  "Giant Clam",
+  "Glacier Yak",
+  "Greenland Shark",
+  "Ice-Crevasse Wolf",
+  "Lemming Swarm",
+  "Limpet Clinger",
+  "Moon Jelly",
+  "Pincushion Urchin",
+  "Ringed Seal",
+  "Riptide Eel",
+  "Rock Pool Starfish",
+  "Shoal Shark",
+  "Snow Ermine",
+  "Wolfsbane Alpha"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:17-A-1",
+   "label": "vs 17-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-2",
+   "label": "vs 17-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-3",
+   "label": "vs 17-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-4",
+   "label": "vs 17-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 17-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road21",
+   "label": "vs reference deck (Map 21) under 17-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "beluga",
+    "giant-clam",
+    "greenland-shark",
+    "limpet-clinger",
+    "moon-jelly",
+    "pincushion-urchin",
+    "ringed-seal",
+    "riptide-eel",
+    "rock-pool-starfish",
+    "shoal-shark"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "giant-clam",
+    "greenland-shark",
+    "limpet-clinger"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "cormorant",
+    "dormouse",
+    "lemming-swarm",
+    "limpet-clinger",
+    "moon-jelly",
+    "pincushion-urchin",
+    "rock-pool-starfish",
+    "snow-ermine"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:tide",
+   "steps": 7,
+   "moves": 3,
+   "games": 1708,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:armor",
+   "steps": 6,
+   "moves": 3,
+   "games": 1554,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "swarm",
+   "steps": 7,
+   "moves": 3,
+   "games": 1526,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "open",
+   "steps": 8,
+   "moves": 2,
+   "games": 1652,
+   "apartFromEarlier": 13
+  }
+ ],
+ "apart": 10,
+ "seconds": 74,
+ "games": 6888,
+ "decks": [
+  {
+   "focus": "family:tide",
+   "labels": [
+    "tide x8"
+   ],
+   "deck": {
+    "cormorant": 4,
+    "lemming-swarm": 4,
+    "pincushion-urchin": 1,
+    "riptide-eel": 3,
+    "shoal-shark": 4,
+    "snow-ermine": 4
+   },
+   "cards": [
+    {
+     "id": "cormorant",
+     "name": "Cormorant",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "shoal-shark",
+     "name": "Shoal Shark",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "riptide-eel",
+     "name": "Riptide Eel",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.881,
+   "ci": [
+    0.8385,
+    0.9234
+   ],
+   "avgLumber": 0.35,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 13,
+    "1": 7
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (18 copies at 0 Lumber)",
+    "tide x7",
+    "night x6"
+   ],
+   "deck": {
+    "cormorant": 3,
+    "dormouse": 4,
+    "lemming-swarm": 4,
+    "moon-jelly": 3,
+    "pincushion-urchin": 4,
+    "wolfsbane-alpha": 2
+   },
+   "cards": [
+    {
+     "id": "dormouse",
+     "name": "Dormouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cormorant",
+     "name": "Cormorant",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "moon-jelly",
+     "name": "Moon Jelly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "wolfsbane-alpha",
+     "name": "Wolfsbane Alpha",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8512,
+   "ci": [
+    0.8054,
+    0.8969
+   ],
+   "avgLumber": 0.1,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 18,
+    "1": 2
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 7
+    },
+    {
+     "f": "night",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "tide x12"
+   ],
+   "deck": {
+    "dormouse": 4,
+    "limpet-clinger": 4,
+    "riptide-eel": 4,
+    "rock-pool-starfish": 4,
+    "snow-ermine": 4
+   },
+   "cards": [
+    {
+     "id": "dormouse",
+     "name": "Dormouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "limpet-clinger",
+     "name": "Limpet Clinger",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "riptide-eel",
+     "name": "Riptide Eel",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "rock-pool-starfish",
+     "name": "Rock Pool Starfish",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7491,
+    0.8342
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 12
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "tide x14",
+    "armor x8"
+   ],
+   "deck": {
+    "beluga": 3,
+    "cormorant": 2,
+    "giant-clam": 4,
+    "lemming-swarm": 4,
+    "limpet-clinger": 4,
+    "shoal-shark": 3
+   },
+   "cards": [
+    {
+     "id": "giant-clam",
+     "name": "Giant Clam",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "limpet-clinger",
+     "name": "Limpet Clinger",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "shoal-shark",
+     "name": "Shoal Shark",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cormorant",
+     "name": "Cormorant",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7679,
+   "ci": [
+    0.7156,
+    0.8201
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 1.1,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 14
+    },
+    {
+     "f": "armor",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mi --pool beluga,cormorant,dormouse,giant-clam,glacier-yak,greenland-shark,ice-crevasse-wolf,lemming-swarm,limpet-clinger,moon-jelly,pincushion-urchin,ringed-seal,riptide-eel,rock-pool-starfish,shoal-shark,snow-ermine,wolfsbane-alpha --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:tide,family:armor,swarm,open --level 1 --mode map-true"
+}

@@ -1,0 +1,790 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T04:50:20.181Z",
+ "fingerprint": "53a2adc56d03",
+ "map": {
+  "id": "mp",
+  "num": 2,
+  "name": "Lilypad Reach"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "beaver-lumberjack",
+  "bee-forager",
+  "conch-crawler",
+  "driftwood-crab",
+  "duck-paddler",
+  "fleetfootd",
+  "gannet-nestweaver",
+  "grass-snake",
+  "lodge-engineer",
+  "mudpuppy",
+  "muskrat-lodgekeeper",
+  "muskrat-reedgatherer",
+  "newt-doctor",
+  "old-shell",
+  "old-sturgeon",
+  "platypus-spur",
+  "pond-algae",
+  "pyrenean-desman",
+  "raft-spider",
+  "river-mink",
+  "riverworks-bastion",
+  "snapstick-turtle",
+  "water-shrew"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Beaver Lumberjack",
+  "Bee Forager",
+  "Conch Crawler",
+  "Driftwood Crab",
+  "Duck Paddler",
+  "Fleetfoot'd",
+  "Gannet Nestweaver",
+  "Grass Snake",
+  "Lodge Engineer",
+  "Mudpuppy",
+  "Muskrat Lodgekeeper",
+  "Muskrat Reedgatherer",
+  "Newt Doctor",
+  "The Old Shell",
+  "Old Sturgeon",
+  "Platypus Spur",
+  "Pond Algae",
+  "Pyrenean Desman",
+  "Raft Spider",
+  "River Mink",
+  "Riverworks Bastion",
+  "Snapstick Turtle",
+  "Water Shrew"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "beaver-lumberjack",
+   "duck-paddler",
+   "lodge-engineer",
+   "muskrat-lodgekeeper",
+   "muskrat-reedgatherer",
+   "old-shell",
+   "old-sturgeon",
+   "pond-algae",
+   "raft-spider",
+   "riverworks-bastion",
+   "snapstick-turtle",
+   "water-shrew"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-A-1",
+   "label": "vs 2-A-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-2",
+   "label": "vs 2-A-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-3",
+   "label": "vs 2-A-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-4",
+   "label": "vs 2-A-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-5",
+   "label": "vs 2-A-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-6",
+   "label": "vs 2-A-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-7",
+   "label": "vs 2-A-7 boss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 2-A-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road6",
+   "label": "vs reference deck (Map 6) under 2-A-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "driftwood-crab",
+    "gannet-nestweaver"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "conch-crawler",
+    "fleetfootd",
+    "muskrat-lodgekeeper",
+    "old-sturgeon",
+    "pyrenean-desman",
+    "raft-spider",
+    "river-mink",
+    "snapstick-turtle"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:guard",
+   "label": "guard (skill family)",
+   "cards": [
+    "conch-crawler",
+    "driftwood-crab",
+    "muskrat-lodgekeeper",
+    "old-shell",
+    "riverworks-bastion"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 7,
+   "moves": 3,
+   "games": 2000,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:tide",
+   "steps": 7,
+   "moves": 3,
+   "games": 2240,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "family:guard",
+   "steps": 7,
+   "moves": 4,
+   "games": 2040,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 7,
+   "moves": 4,
+   "games": 2000,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 269,
+ "games": 8920,
+ "decks": [
+  {
+   "focus": "economy",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.7)",
+    "economy (6 resource makers)",
+    "tide x6"
+   ],
+   "deck": {
+    "driftwood-crab": 4,
+    "duck-paddler": 4,
+    "gannet-nestweaver": 2,
+    "lodge-engineer": 4,
+    "pyrenean-desman": 4,
+    "snapstick-turtle": 2
+   },
+   "cards": [
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "lodge-engineer",
+     "name": "Lodge Engineer",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pyrenean-desman",
+     "name": "Pyrenean Desman",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snapstick-turtle",
+     "name": "Snapstick Turtle",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8625,
+   "ci": [
+    0.8316,
+    0.8934
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 10,
+    "1": 6,
+    "2": 4
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "tide",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.3333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "tide x11"
+   ],
+   "deck": {
+    "beaver-lumberjack": 3,
+    "bee-forager": 2,
+    "fleetfootd": 3,
+    "mudpuppy": 4,
+    "muskrat-lodgekeeper": 4,
+    "raft-spider": 4
+   },
+   "cards": [
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "muskrat-lodgekeeper",
+     "name": "Muskrat Lodgekeeper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "raft-spider",
+     "name": "Raft Spider",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fleetfootd",
+     "name": "Fleetfoot'd",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.8583,
+   "ci": [
+    0.8264,
+    0.8902
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 11
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "tide x8"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "conch-crawler": 3,
+    "lodge-engineer": 4,
+    "pyrenean-desman": 3,
+    "raft-spider": 2,
+    "water-shrew": 4
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lodge-engineer",
+     "name": "Lodge Engineer",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "water-shrew",
+     "name": "Water Shrew",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pyrenean-desman",
+     "name": "Pyrenean Desman",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "raft-spider",
+     "name": "Raft Spider",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.85,
+   "ci": [
+    0.811,
+    0.889
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 14,
+    "1": 2,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 18
+  },
+  {
+   "focus": "family:guard",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "armor x8",
+    "guard x8"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "beaver-lumberjack": 4,
+    "conch-crawler": 4,
+    "muskrat-reedgatherer": 2,
+    "old-shell": 4,
+    "platypus-spur": 2
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "old-shell",
+     "name": "The Old Shell",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "name": "Muskrat Reedgatherer",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "platypus-spur",
+     "name": "Platypus Spur",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8375,
+   "ci": [
+    0.7997,
+    0.8753
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    },
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.375,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mp --pool alley-cat,beaver-lumberjack,bee-forager,conch-crawler,driftwood-crab,duck-paddler,fleetfootd,gannet-nestweaver,grass-snake,lodge-engineer,mudpuppy,muskrat-lodgekeeper,muskrat-reedgatherer,newt-doctor,old-shell,old-sturgeon,platypus-spur,pond-algae,pyrenean-desman,raft-spider,river-mink,riverworks-bastion,snapstick-turtle,water-shrew --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus economy,family:tide,family:guard,open --anchor beaver-lumberjack,duck-paddler,lodge-engineer,muskrat-lodgekeeper,muskrat-reedgatherer,old-shell,old-sturgeon,pond-algae,raft-spider,riverworks-bastion,snapstick-turtle,water-shrew --anchor-min 10 --level 1 --mode map-true"
+}

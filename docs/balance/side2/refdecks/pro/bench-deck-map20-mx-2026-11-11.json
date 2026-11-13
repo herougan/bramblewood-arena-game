@@ -1,0 +1,714 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T05:33:21.764Z",
+ "fingerprint": "53a2adc56d03",
+ "map": {
+  "id": "mx",
+  "num": 20,
+  "name": "Volcano Lair"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "barrow-leech-bat",
+  "basalt-boar",
+  "caldera-wyrm",
+  "cataphract-destrier",
+  "cave-olm",
+  "cinder-hornet",
+  "deep-cave-troll",
+  "eagle-owl-quartermaster",
+  "eagle-sharpshooter",
+  "fire-salamander",
+  "fumarole-ibex",
+  "giant-cave-huntsman",
+  "granite-ox-golem",
+  "grave-grin-hyena",
+  "hawthorn-shieldbug",
+  "ibex-rockcaller",
+  "magma-salamander",
+  "magma-titan",
+  "millipede-hauler",
+  "obsidian-scorpion",
+  "polar-bear",
+  "quarry-mole",
+  "stalactite-golem",
+  "stoat-cutthroat",
+  "tide-spirit",
+  "ur-elk",
+  "vampire-roost",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Ancient Sloth Titan",
+  "Barrow Leech",
+  "Basalt Boar",
+  "The Caldera Wyrm",
+  "Gilded Roadwarden",
+  "Cave Olm",
+  "Cinder Hornet",
+  "Cave Bear",
+  "Eagle-Owl Quartermaster",
+  "Eagle Sharpshooter",
+  "Fire Salamander",
+  "Fumarole Ibex",
+  "Giant Cave Huntsman",
+  "Granite Ox Golem",
+  "Grave-Grin Hyena",
+  "Hawthorn Shieldbug",
+  "Ibex Rockcaller",
+  "Magma Salamander",
+  "Magma Rhino",
+  "Millipede Hauler",
+  "Obsidian Scorpion",
+  "Polar Bear",
+  "Quarry Mole",
+  "Stalactite Pill Bug",
+  "Stoat Cutthroat",
+  "Tide Seahorse",
+  "Ür-Elk",
+  "Vampire Roost",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "ancient-sloth-titan",
+   "barrow-leech-bat",
+   "basalt-boar",
+   "caldera-wyrm",
+   "cataphract-destrier",
+   "cinder-hornet",
+   "deep-cave-troll",
+   "eagle-sharpshooter",
+   "fire-salamander",
+   "granite-ox-golem",
+   "magma-salamander",
+   "magma-titan",
+   "obsidian-scorpion",
+   "quarry-mole",
+   "stalactite-golem",
+   "ur-elk",
+   "vampire-roost"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-B-1",
+   "label": "vs 20-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-2",
+   "label": "vs 20-B-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-3",
+   "label": "vs 20-B-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-4",
+   "label": "vs 20-B-4 worldboss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "caldera-wyrm",
+    "hawthorn-shieldbug",
+    "millipede-hauler",
+    "obsidian-scorpion",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "caldera-wyrm",
+    "cataphract-destrier",
+    "fumarole-ibex",
+    "giant-cave-huntsman",
+    "stoat-cutthroat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (3+ Lumber cards)",
+   "cards": [
+    "ancient-sloth-titan",
+    "cataphract-destrier",
+    "deep-cave-troll",
+    "magma-titan"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:armor",
+   "steps": 14,
+   "moves": 6,
+   "games": 2100,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 11,
+   "moves": 6,
+   "games": 2072,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 10,
+   "moves": 4,
+   "games": 2086,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 10,
+   "moves": 7,
+   "games": 2184,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 266,
+ "games": 8890,
+ "decks": [
+  {
+   "focus": "family:armor",
+   "labels": [
+    "armor x10"
+   ],
+   "deck": {
+    "cinder-hornet": 4,
+    "fire-salamander": 4,
+    "hawthorn-shieldbug": 4,
+    "millipede-hauler": 3,
+    "obsidian-scorpion": 3,
+    "tide-spirit": 2
+   },
+   "cards": [
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "millipede-hauler",
+     "name": "Millipede Hauler",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7385,
+    0.8448
+   ],
+   "avgLumber": 1.1,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 2,
+    "1": 14,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.7)"
+   ],
+   "deck": {
+    "basalt-boar": 4,
+    "cataphract-destrier": 4,
+    "deep-cave-troll": 4,
+    "grave-grin-hyena": 4,
+    "magma-salamander": 2,
+    "tide-spirit": 2
+   },
+   "cards": [
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "cataphract-destrier",
+     "name": "Gilded Roadwarden",
+     "copies": 4,
+     "cost": 4,
+     "rarity": "common"
+    },
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7083,
+   "ci": [
+    0.6532,
+    0.7635
+   ],
+   "avgLumber": 1.7,
+   "avgWait": 1.8,
+   "curve": {
+    "0": 6,
+    "1": 6,
+    "3": 4,
+    "4": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "big (4 copies at 3+ Lumber, average 1.7)",
+    "strike-first x10"
+   ],
+   "deck": {
+    "cataphract-destrier": 4,
+    "eagle-sharpshooter": 4,
+    "fire-salamander": 4,
+    "giant-cave-huntsman": 3,
+    "stoat-cutthroat": 3,
+    "tide-spirit": 2
+   },
+   "cards": [
+    {
+     "id": "cataphract-destrier",
+     "name": "Gilded Roadwarden",
+     "copies": 4,
+     "cost": 4,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-sharpshooter",
+     "name": "Eagle Sharpshooter",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7024,
+   "ci": [
+    0.6396,
+    0.7652
+   ],
+   "avgLumber": 1.7,
+   "avgWait": 1.75,
+   "curve": {
+    "0": 2,
+    "1": 10,
+    "2": 4,
+    "4": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (4 copies at 3+ Lumber, average 1.4)",
+    "flying x7",
+    "ranged x6"
+   ],
+   "deck": {
+    "barrow-leech-bat": 3,
+    "deep-cave-troll": 4,
+    "eagle-sharpshooter": 4,
+    "giant-cave-huntsman": 3,
+    "grave-grin-hyena": 4,
+    "magma-salamander": 2
+   },
+   "cards": [
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-sharpshooter",
+     "name": "Eagle Sharpshooter",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "barrow-leech-bat",
+     "name": "Barrow Leech",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.5476,
+   "ci": [
+    0.487,
+    0.6082
+   ],
+   "avgLumber": 1.4,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 4,
+    "1": 8,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 7
+    },
+    {
+     "f": "ranged",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.2083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mx --pool ancient-sloth-titan,barrow-leech-bat,basalt-boar,caldera-wyrm,cataphract-destrier,cave-olm,cinder-hornet,deep-cave-troll,eagle-owl-quartermaster,eagle-sharpshooter,fire-salamander,fumarole-ibex,giant-cave-huntsman,granite-ox-golem,grave-grin-hyena,hawthorn-shieldbug,ibex-rockcaller,magma-salamander,magma-titan,millipede-hauler,obsidian-scorpion,polar-bear,quarry-mole,stalactite-golem,stoat-cutthroat,tide-spirit,ur-elk,vampire-roost,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:armor,family:strike-first,big,open --anchor ancient-sloth-titan,barrow-leech-bat,basalt-boar,caldera-wyrm,cataphract-destrier,cinder-hornet,deep-cave-troll,eagle-sharpshooter,fire-salamander,granite-ox-golem,magma-salamander,magma-titan,obsidian-scorpion,quarry-mole,stalactite-golem,ur-elk,vampire-roost --anchor-min 10 --level 1 --mode map-true"
+}

@@ -1,0 +1,88 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T05:47:20.654Z",
+ "map": {
+  "id": "mx",
+  "num": 20,
+  "name": "Volcano Lair"
+ },
+ "pool": [
+  "ancient-sloth-titan",
+  "barrow-leech-bat",
+  "basalt-boar",
+  "caldera-wyrm",
+  "cataphract-destrier",
+  "cinder-hornet",
+  "deep-cave-troll",
+  "eagle-sharpshooter",
+  "fire-salamander",
+  "granite-ox-golem",
+  "magma-salamander",
+  "magma-titan",
+  "obsidian-scorpion",
+  "quarry-mole",
+  "stalactite-golem",
+  "ur-elk",
+  "vampire-roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "deep-cave-troll": 4,
+    "eagle-sharpshooter": 2,
+    "granite-ox-golem": 3,
+    "magma-titan": 3,
+    "stalactite-golem": 4
+   },
+   "score": 0.0357,
+   "ci": [
+    0.0077,
+    0.0637
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (11 copies at 3+ Lumber, average 2.5)",
+    "guard x8"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1806,
+   "seconds": 22
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "barrow-leech-bat": 2,
+    "cataphract-destrier": 4,
+    "cinder-hornet": 4,
+    "deep-cave-troll": 4,
+    "granite-ox-golem": 3,
+    "quarry-mole": 3
+   },
+   "score": 0.122,
+   "ci": [
+    0.0771,
+    0.1669
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 2.4)",
+    "flying x6"
+   ],
+   "apartFrom": [
+    13
+   ],
+   "steps": 8,
+   "games": 1876,
+   "seconds": 25
+  }
+ ]
+}

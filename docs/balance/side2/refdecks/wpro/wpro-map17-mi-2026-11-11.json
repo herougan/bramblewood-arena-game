@@ -1,0 +1,88 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T05:44:16.460Z",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow"
+ },
+ "pool": [
+  "beluga",
+  "cormorant",
+  "dormouse",
+  "giant-clam",
+  "glacier-yak",
+  "greenland-shark",
+  "ice-crevasse-wolf",
+  "lemming-swarm",
+  "limpet-clinger",
+  "moon-jelly",
+  "pincushion-urchin",
+  "ringed-seal",
+  "riptide-eel",
+  "rock-pool-starfish",
+  "shoal-shark",
+  "snow-ermine",
+  "wolfsbane-alpha"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "glacier-yak": 4,
+    "ice-crevasse-wolf": 3,
+    "moon-jelly": 4,
+    "pincushion-urchin": 4,
+    "ringed-seal": 4,
+    "shoal-shark": 1
+   },
+   "score": 0.3512,
+   "ci": [
+    0.3043,
+    0.3981
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "tide x13"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1764,
+   "seconds": 28
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "beluga": 3,
+    "giant-clam": 4,
+    "glacier-yak": 4,
+    "greenland-shark": 3,
+    "ice-crevasse-wolf": 2,
+    "ringed-seal": 4
+   },
+   "score": 0.3095,
+   "ci": [
+    0.2579,
+    0.3611
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (4 copies at 2+ Lumber, average 1.4)",
+    "tide x14",
+    "armor x7"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 7,
+   "games": 1792,
+   "seconds": 28
+  }
+ ]
+}

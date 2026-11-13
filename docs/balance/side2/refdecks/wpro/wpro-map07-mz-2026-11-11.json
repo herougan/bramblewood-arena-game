@@ -1,0 +1,83 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T05:39:42.871Z",
+ "map": {
+  "id": "mz",
+  "num": 7,
+  "name": "The Mycelium Deep"
+ },
+ "pool": [
+  "bombardier-beetle",
+  "earthworm",
+  "fungal-colossus",
+  "fungus-gnat-cloud",
+  "hawthorn-shieldbug",
+  "leopard-slug",
+  "millipede-hauler",
+  "planarian-splitter",
+  "puffball-bombardier",
+  "rootworm-colony",
+  "rot-swollen-carcass",
+  "sleepless-shrew"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "earthworm": 4,
+    "fungal-colossus": 4,
+    "planarian-splitter": 4,
+    "rootworm-colony": 4,
+    "rot-swollen-carcass": 4
+   },
+   "score": 0.0052,
+   "ci": [
+    -0.0069,
+    0.0173
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "swarm x8"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1920,
+   "seconds": 28
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "fungal-colossus": 4,
+    "hawthorn-shieldbug": 4,
+    "millipede-hauler": 4,
+    "rootworm-colony": 3,
+    "rot-swollen-carcass": 3,
+    "sleepless-shrew": 2
+   },
+   "score": 0.0313,
+   "ci": [
+    0.0086,
+    0.0539
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (7 copies at 2+ Lumber, average 1.4)",
+    "swarm x11",
+    "armor x8"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 7,
+   "games": 1776,
+   "seconds": 32
+  }
+ ]
+}

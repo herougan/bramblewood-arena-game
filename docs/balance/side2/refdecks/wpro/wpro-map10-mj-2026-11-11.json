@@ -1,0 +1,84 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T05:41:23.109Z",
+ "map": {
+  "id": "mj",
+  "num": 10,
+  "name": "The Sunken Depths"
+ },
+ "pool": [
+  "blue-ringed-octopus",
+  "coral-current-eel",
+  "coral-polyp-colony",
+  "giant-clam",
+  "krill-swarm",
+  "mantis-shrimp",
+  "moon-jelly",
+  "orca-vanguard",
+  "reef-admiral",
+  "reef-shark",
+  "riptide-eel",
+  "sea-turtle-elder"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "blue-ringed-octopus": 3,
+    "mantis-shrimp": 3,
+    "moon-jelly": 4,
+    "orca-vanguard": 3,
+    "reef-shark": 4,
+    "sea-turtle-elder": 3
+   },
+   "score": 0.3906,
+   "ci": [
+    0.3326,
+    0.4487
+   ],
+   "refWins": 0.8889,
+   "labels": [
+    "big (13 copies at 2+ Lumber, average 1.6)",
+    "tide x14"
+   ],
+   "apartFrom": [],
+   "steps": 6,
+   "games": 1760,
+   "seconds": 23
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "giant-clam": 4,
+    "krill-swarm": 3,
+    "mantis-shrimp": 3,
+    "orca-vanguard": 4,
+    "riptide-eel": 4,
+    "sea-turtle-elder": 2
+   },
+   "score": 0.4479,
+   "ci": [
+    0.3914,
+    0.5044
+   ],
+   "refWins": 0.8958,
+   "labels": [
+    "big (9 copies at 2+ Lumber, average 1.5)",
+    "tide x17",
+    "armor x6"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 6,
+   "games": 1728,
+   "seconds": 21
+  }
+ ]
+}

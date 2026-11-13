@@ -1,0 +1,83 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T05:45:05.258Z",
+ "map": {
+  "id": "mpd",
+  "num": 18,
+  "name": "The Pale Desert"
+ },
+ "pool": [
+  "antlion-pit",
+  "barrel-cactus",
+  "caustic-scorpion",
+  "dromedary",
+  "dune-jackal",
+  "dust-devil-kestrel",
+  "horned-lizard",
+  "pale-oryx",
+  "roadrunner-courier",
+  "sand-widow"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "caustic-scorpion": 4,
+    "dromedary": 2,
+    "dune-jackal": 4,
+    "dust-devil-kestrel": 2,
+    "roadrunner-courier": 4,
+    "sand-widow": 4
+   },
+   "score": 0.3958,
+   "ci": [
+    0.3446,
+    0.447
+   ],
+   "refWins": 0.7778,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "swarm (16 copies at 1 Lumber)",
+    "poison x8",
+    "strike-first x8"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 1800,
+   "seconds": 22
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "barrel-cactus": 2,
+    "dromedary": 3,
+    "dune-jackal": 4,
+    "horned-lizard": 3,
+    "pale-oryx": 4,
+    "sand-widow": 4
+   },
+   "score": 0.3958,
+   "ci": [
+    0.3464,
+    0.4453
+   ],
+   "refWins": 0.6528,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "swarm (16 copies at 1 Lumber)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 1968,
+   "seconds": 26
+  }
+ ]
+}
