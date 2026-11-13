@@ -56,7 +56,9 @@ ok(pools.m2.cards.includes('shoal-shark') && !pools.m2.cards.includes('muskrat-r
 ok(!cards['shoal-shark'].unattainable && cards['shoal-shark'].source.map === 'm2', '3. Shoal Shark is a Sunken Hollow pack card again');
 // 2026-11-12 (TESTFIX1): the owner's 11-12 picks for The Sundered Peak leave out the Chamois Leaper; the rule that stays is that the Glacier Wolf Pack is off the list
 ok(!pools.m11.cards.includes('glacier-wolf-pack'), '3. The Sundered Peak: Glacier Wolf Pack stays off the list');
-const arch = c=>{ if(!c) return false; const ml = c.mechanicLine; const e = c.effects || {}; return (ml && ml !== 'none' && ml !== 'None') || c.graceCost || c.prayerReq || c.exileCost || c.devilryCost || (c.archetypes || []).includes('Ecclesia') || e.evolute || e.evoluteAlpha || e.evoluteOmega; };
+// 2026-11-13 TESTFIX3: LIST1 made the owner's 11-13 Yes picks the lists; an archetype card he picked himself (Brimstone Hound on Map 20-A) is his call and is exempt, with the decks SIDE2 built from those lists
+const OWN1113 = new Set(Object.values(Object.assign({}, require('../docs/balance/list1/fold-2026-11-13.json').main, require('../docs/balance/list1/fold-2026-11-13.json').side)).flatMap(r=> r.ownerYes || []));
+const arch = c=>{ if(!c) return false; if(OWN1113.has(c.id)) return false; const ml = c.mechanicLine; const e = c.effects || {}; return (ml && ml !== 'none' && ml !== 'None') || c.graceCost || c.prayerReq || c.exileCost || c.devilryCost || (c.archetypes || []).includes('Ecclesia') || e.evolute || e.evoluteAlpha || e.evoluteOmega; };
 G.CONQUEST_MAPS.filter(m=> !m.reserved && G.mapNumberOf(m.id) >= 20).forEach(m=>{ const top = m.sub ? m.parent : m.id, e = pools[top]; if(!e) return;
   const ids = m.sub ? ((e.submaps || {})[m.id] || []) : e.cards.concat(e.special || []);
   ok(!ids.some(id=> arch(cards[id])), `3. ${m.id} (Map ${G.mapNumberOf(m.id)}): no archetype card on its list (${ids.filter(id=> arch(cards[id])).join(', ')})`);

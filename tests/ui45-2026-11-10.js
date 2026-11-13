@@ -14,7 +14,7 @@ ok(/NEW_TARGET, CAR_TARGET, FAMILY_CAP, NEW_MIN_SCORE, CAR_MIN_SCORE = 45, 0, 2,
 ok(!app.includes('ui37CarriedPool') || /is gone/.test(app), 'the wide Carried pool function is gone');
 ok(!/function ui37CarriedPool/.test(app) && !/function ui37CarriedPool/.test(html), 'no ui37CarriedPool in source or build');
 const sp = fn('ui37Split'), fill = fn('ui38Fill');
-ok(/ui38Fill\(top, defs, ok, idx, neu, car\)/.test(sp) && /return \{n, neu, car, extra: \[\], idx\}/.test(sp), 'ui37Split passes the Yes-only index and returns it for the Map N pills');
+ok(/ui38Fill\(top, defs, ok, idx, neu, car\)/.test(sp) && /return \{n, neu, car, extra: \[\], idx: idx2\}/.test(sp), 'ui37Split passes the Yes-only index and returns it for the Map N pills'); // 2026-11-13 TESTFIX3: LIST1 returns idx: idx2 (the Yes index plus a side map's own cards)
 ok(!/carFill|carriedFill/.test(fill), 'ui38Fill has no Carried fill');
 ok(/newMax = R\.newMax \|\| 60/.test(fill), 'JS fallback 60 (UI48: no newTarget top-up)');
 ok(/\.sort\(\(a, b\)=> idx\.get\(b\) - idx\.get\(a\)\)/.test(fill), "Carried: previous map's Yes cards first");

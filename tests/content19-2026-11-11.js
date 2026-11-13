@@ -34,7 +34,7 @@ ok(c.archetypes.includes('Fish') && c.archetypes.includes('Coral Reef'), `1 Type
   ok(fx.tide === true && fx.wave === true && JSON.stringify(fx.swarm) === '["Fish"]', '1 the engine ids: tide, wave (true = Wave 1, as the editor writes it), swarm ["Fish"]');
   ok(!('waveN' in fx) && !('swarmN' in fx) && !('swarmSpecies' in fx) && !('tideGrant' in fx), '1 no twin keys (ENG35: one key per skill)'); }
 ok(c.flavor === design.flavor, '1 THEME8\'s flavour line');
-ok(/\p{Extended_Pictographic}/u.test(c.icon) && !c.art, `1 the emoji fallback (${c.icon}) and no art yet`);
+ok(/\p{Extended_Pictographic}/u.test(c.icon), `1 the emoji fallback is kept (${c.icon})`); // 2026-11-13 TESTFIX3: the card has art now (was: no art yet); the icon stays as the fallback
 ok(JSON.stringify(c.source) === '{"kind":"pack","tier":2,"map":"m7"}', '1 a basic-pack card of Pack 2, map m7 (as Parrotfish and the other Map 10 pack cards)');
 ok(!c.awaitingSource && (OUT ? c.unattainable === true : !c.unattainable) && !c.pool && c.locked === true && c.test === false, `1 ${OUT ? 'out of play and flagged unattainable (SKIR3), not awaiting a source' : 'placed, not awaiting a source'}`);
 { const ids = cards.map(x=> x.numericId).filter(x=> x != null), uu = cards.map(x=> x.uuid).filter(Boolean);

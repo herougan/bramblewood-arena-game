@@ -27,6 +27,7 @@ const pools = JSON.parse(rd('canonical/map-pools.json')), listed = L.listedIds(p
 const extras = JSON.parse(rd('canonical/pack-extras.json'));
 const roadListed = (()=>{ const p2 = JSON.parse(JSON.stringify(pools)); Object.values(p2.maps).forEach(e=> ['mm', 'muc', 'mlb'].forEach(k=> { if(e.submaps) delete e.submaps[k]; })); return L.listedIds(p2); })(); // lib_map_pools PARENT_POOL_SUBS: they draw from many maps, and name no card's map
 const inExtras = id=> Object.values(extras).some(v=> Array.isArray(v) && v.includes(id));
+const OWN1113 = new Set(Object.values(Object.assign({}, require('../docs/balance/list1/fold-2026-11-13.json').main, require('../docs/balance/list1/fold-2026-11-13.json').side)).flatMap(r=> r.ownerYes || [])); // 2026-11-13 TESTFIX3: LIST1's owner Yes picks, a card he picked that is still awaiting its source (placement)
 const SUGGEST = JSON.parse((fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8').match(/const UI47_SUGGEST = (\{.*?\});\n/) || [0, '{}'])[1]);
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 const ranged = fx=> Object.keys(fx || {}).some(k=> DELIV.delivery[k] === 'ranged') || ((fx || {}).triggers || []).some(t=> DELIV.delivery['action:' + (t.do || t.action)] === 'ranged');
@@ -46,7 +47,7 @@ C.SHOOTERS.forEach(s=>{
   ok(el === s.element, `1 ${s.id} shoots ${s.element} (${el})`);
   // 2026-11-11 (LISTFIX3): or a THEME8 suggestion the 11-11 lists took up (SKIR1, owner 00:16: Glow-worm on The Glimmer Depths), still awaiting the
   // owner's placement (awaitingSource, no source: enemy-only, not in a pack)
-  const sug = Object.values(SUGGEST).some(l=> l.includes(s.id));
+  const sug = Object.values(SUGGEST).some(l=> l.includes(s.id)) || OWN1113.has(s.id); // 2026-11-13 TESTFIX3: or an owner Yes pick of LIST1 awaiting placement
   ok((!roadListed.has(s.id) || sug) && !inExtras(s.id), `1 ${s.id} is on no map list (the endless dungeons' / tower's mixed lists aside, or an 11-11 suggestion) and in no pack's extras`);
   ok(sug ? c.awaitingSource && !c.source : L.budgetHold(s.id) === 'unplaced', `1 ${s.id} is out of play (unplaced), or a suggestion awaiting its source`);
   const b = TB.budget(Object.assign({}, c, {obtainMap: s.map[2]}), {level: 1});

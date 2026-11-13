@@ -212,6 +212,7 @@ async def main():
         # 7d: Codex card inspector — opens large, turns about a tilted axis, Esc closes only the inspector (2026-10-08)
         # 2026-10-30 CS-C: the Card Detail overlay's card is the inspector now (the Detail card: drag to spin, a back face); no 🔍 Inspect button and
         # no second overlay over it, so Esc closes the details themselves
+        await pg.bring_to_front(); await pg.evaluate("try{ setFxLevel('high'); }catch(e){} 1"); await pg.wait_for_timeout(1500)  # 2026-11-13 TESTFIX3: the 3D turn needs Effects Medium+ and a visible, not just-returned tab (UI27 #15: away = none); the page must be in front
         await pg.evaluate("(()=>{ openCardDetail(Object.keys(getCardDefs()).find(k=> !getCardDefs()[k].token)); return 1; })()"); await pg.wait_for_timeout(700)
         ci = await pg.evaluate("(()=>{ const s = document.querySelector('#cardDetailOverlay .dc-spin'); const r = s && s.getBoundingClientRect(); return s ? {tf: s.style.transform, w: r.width, back: !!document.querySelector('#cardDetailOverlay .dc-back')} : null; })()")
         check(ci and 'rotateY' in ci['tf'] and ci['w'] >= 280 and ci['back'], f'card inspector should show the card large with a back face and a 3D turn: {ci}')
@@ -269,7 +270,7 @@ async def main():
             map20:enemyDeckLevel(mains[20].nodes.find(n=>n.kind==='skirmish')), map1:enemyDeckLevel(mains[0].nodes.find(n=>n.kind==='skirmish')), max: Math.round(22*30*ratingLevelFactor(10))}; })()""")
         # 2026-10-21 (package TT2): package FG's cost curve (+10%): a Common's levels 1-10 cost 744 Dust (was 675), so a fed duplicate is
         # 744 / 18.75 = 40 Dust of credit (was 36). The Epic multiplier and the brambles are unchanged.
-        check(ec['common'] == 744 and ec['epicMult'] == 11 and ec['castle'] == 2760, f'forge prices: {ec}')
+        check(ec['common'] == 744 and ec['epicMult'] == 11 and ec['castle'] == 690, f'forge prices: {ec}')  # 2026-11-13 TESTFIX3: Briar Blossoms: a bramble level costs a quarter of the old Dust (2760 -> 690), the rest as ever
         check(ec['fed'] == 40 and ec['credit'] == 40 and ec['copies'] == 2, f'feeding a duplicate: {ec}')
         check(40 <= ec['map20'] <= 600 and ec['map1'] < 40 and 2400 <= ec['max'] <= 2600, f'battle rating scale: {ec}')
         await b.close()

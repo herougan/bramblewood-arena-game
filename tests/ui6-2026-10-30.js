@@ -32,7 +32,7 @@ ok(/if\(!\(how && how\.quiet\)\) try\{ fxHook\('cardPop', pop, el\);/.test(pop),
 ok(/if\(rec\.steady\)\{ tip\.style\.opacity = ''; return; \}/.test(app) && /steady: !!\(opts && opts\.steady\)/.test(app), 'X2: TipWatch.track takes {steady}');
 
 // ---- X4: printed card
-ok(/fullCardHTML\(el\.getAttribute\('data-defid'\), null, \{logUid: liveForLog \? liveForLog\.uid : null/.test(pop), 'X4: the popover asks for the printed card (no live instance)');
+ok(/fullCardHTML\(el\.getAttribute\('data-defid'\), null, \{(?:draftDef:.{0,200}?)?logUid: liveForLog \? liveForLog\.uid : null/.test(pop), 'X4: the popover asks for the printed card (no live instance)'); // 2026-11-13 TESTFIX3: UI24 added draftDef before logUid
 ok(/opts\.logUid != null \? cardActionLogHTML\(opts\.logUid\)/.test(fnSrc('fullCardHTML')), 'X4: the unit\'s own hit log is still added');
 
 // ---- X11: the ending render

@@ -59,7 +59,9 @@ PLAY19 = """(async(speed)=>{ const A = window.__a1, m = matchState; m.speedMult 
   await A.frame(); look('frame 1');
   lastBoardSig[1] = null; renderBoard(); look('a redraw on frame 1');
   for(let i = 2; i < 120 && uid && handFlightsLive.has(uid); i++){ await A.frame(); look('frame ' + i); }
-  await A.sleep(1500); look('settled');
+  await A.sleep(1500); // 2026-11-13 TESTFIX3: then until the round has played out (an attack lunge of the card is not a resting pose; at 1.5x the sample fell inside it: scale 1.08, 20 px up), and a beat for the settle
+  for(let i = 0; i < 80 && (m.resolving || m._committing || m._upkeep); i++) await A.sleep(150);
+  await A.sleep(700); look('settled');
   const pe = uid && boardCardEl(uid), fly = !!(pe && pe.querySelector('.float-body')); // a Flyer's face sits in its lifted body: compare like with like
   const sib = [...document.querySelectorAll('#rowMine .board-card[data-uid]')].find(e=> before.has(e.dataset.uid) && !e.matches('.falling, .dying, .burning') && !!e.querySelector('.float-body') === fly);
   return {uid, S, played: A.pose(uid && boardCardEl(uid)), resting: A.pose(sib)}; })"""

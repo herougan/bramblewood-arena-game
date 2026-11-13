@@ -113,7 +113,7 @@ ok(/\.premium-badge\{/.test(tpl) && /\.dg-sweep\.is-locked/.test(tpl), '2. the b
   const r = T.nodeRewardTier(Object.assign({rewards:{first:{gold:66, dust:17}}}, f3));
   ok(r.first.gold === 66 && r.repeat.gold === 0 && r.repeat.dust === 0, '3. a Spire floor pays its first clear, and 0 again');
   ok(T.nodeRewardTier(plain).repeat.gold === 30, '3. other fights keep their clear-again reward'); }
-{ const s = src.slice(src.indexOf('\nfunction startConquestMatch('), src.indexOf('\nfunction startConquestMatch(') + 9000);
+{ const s = src.slice(src.indexOf('\nfunction startConquestMatch('), src.indexOf('\nfunction startConquestMatch(') + 40000); // 2026-11-13 TESTFIX3: window 40000 (was 9000), the function grew
   ok(/const towerReplay = !!node\.tower && towerFloorCleared\(node\); let towerEnergyPaid = 0(, energyPaid = 0)?;/.test(s) /* 2026-10-23 (EB): + energyPaid */ && /if\(!\(opts && opts\.skipEnergyCost\) && !towerReplay\)\{/.test(s), '3. a cleared floor starts without spending Energy');
   ok(/if\(node\.tower\) towerEnergyPaid = cost; else bumpQuestCounter\('energyConquest', cost\);/.test(s) && /towerReplay, towerEnergyPaid,/.test(s), '3. a new floor\'s Energy is held for a refund'); }
 // 2026-10-21 (package TT): package ED's one result per match adds !m.rewardDuplicate to the refund and the rewards (below)
@@ -124,7 +124,7 @@ ok(/if\(m\.towerEnergyPaid > 0\) bumpQuestCounter\('energyConquest', m\.towerEne
 ok(/TX\('results\.tower-refunded', \{n: m\.towerRefunded\}\)/.test(src) && /TX\('results\.tower-replay'\)/.test(src), '3. the results say "refunded" / "no reward"');
 ok(/\$\{done && node\.tower \? ' is-free-replay' : ''/.test(src) && /<span class="map-node-free">\$\{escapeHtml\(TX\('ui\.tower-free-tag'\)\)\}<\/span>/.test(src), '3. cleared floors on the map: blue-grey with "0 reward · free"');
 ok(/\.map-node\.done\.is-free-replay\{background-color:#8fa3b8;/.test(tpl) && /\.map-node \.map-node-free\{/.test(tpl), '3. the blue-grey CSS');
-ok(/const energyCost = (?:selectedNode\.virtual|\(selectedNode\.virtual \|\| selectedNode\.pro\)) \? 0 : fightEnergyCost\(map, selectedNode\)/.test(src) && /const c = fightEnergyCost\(f\.map, f\.node\), short/.test(src), '3. the panel and Play again use the free cost'); // 2026-10-25 (release): PL2's PRO preview is free too
+ok(/const energyCost = (?:selectedNode\.virtual|\(selectedNode\.virtual \|\| selectedNode\.pro(?: \|\| c13NodeIsAdminTest\(map\.id\)[^)]*)?\)) \? 0 : fightEnergyCost\(map, selectedNode\)/.test(src) && /const c = fightEnergyCost\(f\.map, f\.node\), short/.test(src), '3. the panel and Play again use the free cost'); // 2026-10-25 (release): PL2's PRO preview is free too
 { // the Spire card: rule line, the next floor's refundable cost, and at the summit the free replay line
   const towerSrc = fnSrc('towerCardHTML'); const nodes = Array.from({length:50}, (_, i)=> ({key:'20-TW-' + (i + 1), kind:(i + 1) % 10 ? 'elite' : 'boss'}));
   const card = done=> new Function('CONQUEST_MAPS', 'isMapUnlocked', 'dungeonFloorProgress', 'enemyDeckLevel', 'compassDiamondSVG', 'escapeHtml', 'escapeAttr',

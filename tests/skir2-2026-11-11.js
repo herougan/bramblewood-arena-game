@@ -38,7 +38,11 @@ const S3 = J('docs/balance/skir3/lists-2026-11-12.json'), s3off = (mid, id) => !
 // ---- 1. the adds ----
 // 2026-11-11 (LISTFIX3): an add that is a cut card (canonical/map-review.json cutArchive) is off its list again (tools/listfix3/lists_2026_11_11.js REMOVE: Sphagnum Vole)
 const LF3 = require(path.join(ROOT, 'tools', 'listfix3', 'lists_2026_11_11.js')).REMOVE;
+// 2026-11-13 TESTFIX3: LIST1 (the owner's 11-13 picks) re-wrote the lists after SKIR3: an add LIST1 dropped is off; an add it added back is on (its record: docs/balance/list1/fold-2026-11-13.json)
+const L1 = J('docs/balance/list1/fold-2026-11-13.json'), l1 = mid => L1.main[mid] || L1.side[mid] || null;
 for (const [mid, adds] of Object.entries(ADDS)) for (const [id, x] of Object.entries(adds)) {
+  if (l1(mid) && (l1(mid).dropped || []).includes(id)) { ok(!(pools[mid].cards || []).includes(id), `${mid}: ${id} is off its list (LIST1 dropped it)`); continue; }
+  if (l1(mid) && ((l1(mid).added || []).includes(id) || (l1(mid).kept || []).includes(id))) { ok((pools[mid].cards || []).includes(id), `${mid}: ${id} is on its list (LIST1 picks)`); continue; }
   if (s3off(mid, id)) { ok(!(pools[mid].cards || []).includes(id) && !(ADMIN[mid] || []).includes(id), `${mid}: ${id} is off its list (SKIR3: the owner's 11-12 picks under the limits)`); continue; }
   if ((LF3[mid] || {})[id]) { ok(!(pools[mid].cards || []).includes(id) && !(ADMIN[mid] || []).includes(id) && !(SUGGEST[mid] || []).includes(id), `${mid}: ${id} is off its list again (LISTFIX3: a cut card)`); continue; }
   ok(D[id], `${mid}: ${id} is a card`); if (!D[id]) continue;
