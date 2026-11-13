@@ -11,6 +11,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 ## 11-13 11:25: Owner notes
 - Deck deletion (not when it is the only deck): UI51 item 15.
 - Order after SIDE2's reference decks: the machine never idles. Owner redesigns cards -> balance again (road Maps 0-20 + side maps) -> assign the skirmish maps -> skirmish rewards planning -> pack planning.
+- TESTFIX2 (queued after SIDE2, on a quieter machine): 71 unit failures (mostly old lists) and 32 of 51 e2e failures from the 11-13 release run (load timeouts in part; anim1 #13 at 1.5x and ui_smoke worth a real look). Logs: the 11-13 full and e2e runs.
 
 ## 11-13 11:08: Owner notes (after the 09:56 release)
 | # | Note | Package |
