@@ -1,0 +1,90 @@
+{
+ "about": "SIDE2: eased SK deck vs the builder blend for enders the fit could not ease (tools/side2/ender_alt_2026_11_13.js)",
+ "rows": [
+  {
+   "code": "10-A-5",
+   "target": 40,
+   "skEased": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "giant-clam": 2,
+     "krill-swarm": 2,
+     "moon-jelly": 2,
+     "orca-vanguard": 4,
+     "sea-turtle-elder": 4
+    },
+    "win": 3
+   },
+   "blend": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "giant-clam": 4,
+     "moon-jelly": 3,
+     "reef-shark": 3,
+     "orca-vanguard": 2,
+     "sea-turtle-elder": 2
+    },
+    "win": 5.5
+   },
+   "pick": "blend"
+  },
+  {
+   "code": "18-A-9",
+   "target": 40,
+   "skEased": {
+    "deck": {
+     "barrel-cactus": 1,
+     "dune-jackal": 4,
+     "horned-lizard": 4,
+     "quicksand-queen": 2,
+     "roadrunner-courier": 4,
+     "sunbittern-strider": 4
+    },
+    "win": 14.5
+   },
+   "blend": {
+    "deck": {
+     "quicksand-queen": 2,
+     "horned-lizard": 3,
+     "roadrunner-courier": 4,
+     "sunbittern-strider": 4,
+     "sandstorm-roc": 2,
+     "sand-widow": 2,
+     "dune-jackal": 2
+    },
+    "win": 16
+   },
+   "pick": "sk"
+  },
+  {
+   "code": "20-B-4",
+   "target": 20,
+   "skEased": {
+    "deck": {
+     "ancient-sloth-titan": 2,
+     "basalt-boar": 4,
+     "deep-cave-troll": 4,
+     "fire-drake-hatchling": 1,
+     "obsidian-scorpion": 1,
+     "quillback-elder": 1,
+     "stalactite-golem": 1
+    },
+    "win": 8.5
+   },
+   "blend": {
+    "deck": {
+     "fire-drake-hatchling": 1,
+     "magma-salamander": 2,
+     "fumarole-ibex": 3,
+     "stalactite-golem": 1,
+     "vampire-roost": 4,
+     "ancient-sloth-titan": 3
+    },
+    "win": 6
+   },
+   "pick": "sk"
+  }
+ ]
+}

@@ -1,0 +1,666 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T04:39:50.465Z",
+ "fingerprint": "53a2adc56d03",
+ "map": {
+  "id": "mx",
+  "num": 20,
+  "name": "Volcano Lair"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "barrow-leech-bat",
+  "basalt-boar",
+  "caldera-wyrm",
+  "cataphract-destrier",
+  "cinder-hornet",
+  "deep-cave-troll",
+  "eagle-sharpshooter",
+  "fire-salamander",
+  "granite-ox-golem",
+  "magma-salamander",
+  "magma-titan",
+  "obsidian-scorpion",
+  "quarry-mole",
+  "stalactite-golem",
+  "ur-elk",
+  "vampire-roost"
+ ],
+ "poolNames": [
+  "Ancient Sloth Titan",
+  "Barrow Leech",
+  "Basalt Boar",
+  "The Caldera Wyrm",
+  "Gilded Roadwarden",
+  "Cinder Hornet",
+  "Cave Bear",
+  "Eagle Sharpshooter",
+  "Fire Salamander",
+  "Granite Ox Golem",
+  "Magma Salamander",
+  "Magma Rhino",
+  "Obsidian Scorpion",
+  "Quarry Mole",
+  "Stalactite Pill Bug",
+  "Ür-Elk",
+  "Vampire Roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-B-1",
+   "label": "vs 20-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-2",
+   "label": "vs 20-B-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-3",
+   "label": "vs 20-B-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-4",
+   "label": "vs 20-B-4 worldboss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "caldera-wyrm",
+    "obsidian-scorpion",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "barrow-leech-bat",
+    "cinder-hornet",
+    "eagle-sharpshooter"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (3+ Lumber cards)",
+   "cards": [
+    "ancient-sloth-titan",
+    "cataphract-destrier",
+    "deep-cave-troll",
+    "magma-titan"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:armor",
+   "steps": 14,
+   "moves": 5,
+   "games": 1554,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:flying",
+   "steps": 9,
+   "moves": 3,
+   "games": 1680,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "big",
+   "steps": 7,
+   "moves": 4,
+   "games": 1624,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 9,
+   "moves": 4,
+   "games": 1554,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 107,
+ "games": 6860,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (4 copies at 3+ Lumber, average 2.0)",
+    "flying x11",
+    "ranged x6"
+   ],
+   "deck": {
+    "barrow-leech-bat": 3,
+    "cataphract-destrier": 4,
+    "cinder-hornet": 4,
+    "eagle-sharpshooter": 4,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 3
+   },
+   "cards": [
+    {
+     "id": "cataphract-destrier",
+     "name": "Gilded Roadwarden",
+     "copies": 4,
+     "cost": 4,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-sharpshooter",
+     "name": "Eagle Sharpshooter",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "barrow-leech-bat",
+     "name": "Barrow Leech",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.619,
+   "ci": [
+    0.5551,
+    0.683
+   ],
+   "avgLumber": 2,
+   "avgWait": 1.25,
+   "curve": {
+    "1": 8,
+    "2": 8,
+    "4": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    },
+    {
+     "f": "ranged",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.2917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (4 copies at 3+ Lumber, average 1.6)"
+   ],
+   "deck": {
+    "basalt-boar": 4,
+    "cinder-hornet": 4,
+    "deep-cave-troll": 4,
+    "fire-salamander": 3,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 3
+   },
+   "cards": [
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.5536,
+   "ci": [
+    0.4877,
+    0.6194
+   ],
+   "avgLumber": 1.6,
+   "avgWait": 1,
+   "curve": {
+    "1": 12,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.1667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "big (0 copies at 3+ Lumber, average 1.4)",
+    "armor x8"
+   ],
+   "deck": {
+    "basalt-boar": 4,
+    "caldera-wyrm": 1,
+    "eagle-sharpshooter": 4,
+    "fire-salamander": 4,
+    "obsidian-scorpion": 3,
+    "stalactite-golem": 4
+   },
+   "cards": [
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-sharpshooter",
+     "name": "Eagle Sharpshooter",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "caldera-wyrm",
+     "name": "The Caldera Wyrm",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "heroic"
+    }
+   ],
+   "score": 0.5476,
+   "ci": [
+    0.4851,
+    0.6102
+   ],
+   "avgLumber": 1.35,
+   "avgWait": 1.4,
+   "curve": {
+    "0": 1,
+    "1": 11,
+    "2": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.1667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (11 copies at 3+ Lumber, average 2.3)",
+    "fire x8"
+   ],
+   "deck": {
+    "ancient-sloth-titan": 3,
+    "cataphract-destrier": 4,
+    "fire-salamander": 4,
+    "magma-salamander": 2,
+    "magma-titan": 4,
+    "obsidian-scorpion": 3
+   },
+   "cards": [
+    {
+     "id": "cataphract-destrier",
+     "name": "Gilded Roadwarden",
+     "copies": 4,
+     "cost": 4,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "magma-titan",
+     "name": "Magma Rhino",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "ancient-sloth-titan",
+     "name": "Ancient Sloth Titan",
+     "copies": 3,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.4405,
+   "ci": [
+    0.3752,
+    0.5058
+   ],
+   "avgLumber": 2.3,
+   "avgWait": 2.55,
+   "curve": {
+    "1": 9,
+    "3": 7,
+    "4": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "fire",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.1667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mx --pool ancient-sloth-titan,barrow-leech-bat,basalt-boar,caldera-wyrm,cataphract-destrier,cinder-hornet,deep-cave-troll,eagle-sharpshooter,fire-salamander,granite-ox-golem,magma-salamander,magma-titan,obsidian-scorpion,quarry-mole,stalactite-golem,ur-elk,vampire-roost --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:armor,family:flying,big,open --level 1 --mode map-true"
+}

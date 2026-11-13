@@ -1,0 +1,51 @@
+{
+ "map": "mn",
+ "name": "The Glimmer Depths",
+ "code": "8-A-4",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 11,
+ "current": {
+  "deck": {
+   "blind-cave-fish": 2,
+   "lantern-spark-fly": 2,
+   "oilbird": 1,
+   "stalactite-golem": 4,
+   "upside-down-bat": 2
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "8-A-BPRO-1",
+  "focus": "family:flying",
+  "deck": {
+   "blind-cave-fish": 3,
+   "cave-swiftlet": 4,
+   "echo-matriarch": 3,
+   "echo-screecher": 3,
+   "gallery-orb-weaver": 3,
+   "lantern-spark-fly": 4
+  }
+ },
+ "offPool": [
+  "echo-matriarch",
+  "echo-screecher"
+ ],
+ "deck": {
+  "lantern-spark-fly": 2,
+  "cave-swiftlet": 2,
+  "blind-cave-fish": 4,
+  "gallery-orb-weaver": 2,
+  "cave-olm": 1
+ },
+ "problems": [],
+ "skWin": 36.5,
+ "verdict": "in-band",
+ "gap": -3.5,
+ "sec": 6
+}

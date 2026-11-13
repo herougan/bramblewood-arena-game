@@ -1,0 +1,707 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T01:10:06.917Z",
+ "fingerprint": "cd1103b85b23",
+ "map": {
+  "id": "mz",
+  "num": 7,
+  "name": "The Mycelium Deep"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "amber-cicada",
+  "barkplate-beetle",
+  "bee-forager",
+  "compost-grub",
+  "earthworm",
+  "fire-ant-raft",
+  "fungal-colossus",
+  "fungus-gnat-cloud",
+  "hawthorn-shieldbug",
+  "leopard-slug",
+  "mudpuppy",
+  "newt-doctor",
+  "otter-centurion",
+  "pine-marten",
+  "planarian-splitter",
+  "puffball-bombardier",
+  "river-mink",
+  "rootworm-colony",
+  "rot-swollen-carcass",
+  "sleepless-shrew",
+  "truffle-piglet",
+  "tunnel-wyrm",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Amber Cicada",
+  "Barkplate Beetle",
+  "Bee Forager",
+  "Compost Grub",
+  "Earthworm",
+  "Fire Ant Raft",
+  "Fungal Colossus",
+  "Fungus Gnat Cloud",
+  "Hawthorn Shieldbug",
+  "Leopard Slug",
+  "Mudpuppy",
+  "Newt Doctor",
+  "Otter Centurion",
+  "Pine Marten",
+  "Planarian Splitter",
+  "Puffball Bombardier",
+  "River Mink",
+  "Rootworm Colony",
+  "Rot-Swollen Carcass",
+  "Sleepless Shrew",
+  "Truffle Piglet",
+  "Tunnel Wyrm",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "compost-grub",
+   "earthworm",
+   "fungal-colossus",
+   "fungus-gnat-cloud",
+   "hawthorn-shieldbug",
+   "leopard-slug",
+   "planarian-splitter",
+   "puffball-bombardier",
+   "rootworm-colony",
+   "rot-swollen-carcass",
+   "sleepless-shrew",
+   "tunnel-wyrm"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:7-A-1",
+   "label": "vs 7-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:7-A-2",
+   "label": "vs 7-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:7-A-3",
+   "label": "vs 7-A-3 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:7-A-4",
+   "label": "vs 7-A-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:7-A-5",
+   "label": "vs 7-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 7-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road8",
+   "label": "vs reference deck (Map 8) under 7-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:heal",
+   "label": "heal (skill family)",
+   "cards": [
+    "leopard-slug",
+    "mudpuppy",
+    "newt-doctor"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "barkplate-beetle",
+    "hawthorn-shieldbug"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "barkplate-beetle",
+    "fungal-colossus",
+    "rot-swollen-carcass"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:heal",
+   "steps": 10,
+   "moves": 4,
+   "games": 2016,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:armor",
+   "steps": 9,
+   "moves": 3,
+   "games": 2208,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 8,
+   "moves": 2,
+   "games": 2096,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 9,
+   "moves": 5,
+   "games": 2016,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 197,
+ "games": 8848,
+ "decks": [
+  {
+   "focus": "family:heal",
+   "labels": [
+    "swarm (17 copies at 0 Lumber)",
+    "heal x8"
+   ],
+   "deck": {
+    "alley-cat": 3,
+    "fungus-gnat-cloud": 4,
+    "hawthorn-shieldbug": 3,
+    "leopard-slug": 4,
+    "newt-doctor": 4,
+    "otter-centurion": 2
+   },
+   "cards": [
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leopard-slug",
+     "name": "Leopard Slug",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8073,
+   "ci": [
+    0.7603,
+    0.8543
+   ],
+   "avgLumber": 0.15,
+   "avgWait": 0.65,
+   "curve": {
+    "0": 17,
+    "1": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "heal",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-A-1",
+     "label": "vs 7-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-2",
+     "label": "vs 7-A-2 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-3",
+     "label": "vs 7-A-3 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-4",
+     "label": "vs 7-A-4 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-5",
+     "label": "vs 7-A-5 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 7-A-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "armor x8"
+   ],
+   "deck": {
+    "alley-cat": 3,
+    "barkplate-beetle": 4,
+    "compost-grub": 3,
+    "fungus-gnat-cloud": 4,
+    "hawthorn-shieldbug": 4,
+    "sleepless-shrew": 2
+   },
+   "cards": [
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "compost-grub",
+     "name": "Compost Grub",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "sleepless-shrew",
+     "name": "Sleepless Shrew",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7552,
+   "ci": [
+    0.6997,
+    0.8108
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 12,
+    "1": 4,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-A-1",
+     "label": "vs 7-A-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-2",
+     "label": "vs 7-A-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-3",
+     "label": "vs 7-A-3 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-4",
+     "label": "vs 7-A-4 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-5",
+     "label": "vs 7-A-5 boss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 7-A-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 15
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.4 Lumber)"
+   ],
+   "deck": {
+    "alley-cat": 3,
+    "compost-grub": 2,
+    "fire-ant-raft": 4,
+    "leopard-slug": 4,
+    "otter-centurion": 3,
+    "tunnel-wyrm": 4
+   },
+   "cards": [
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "leopard-slug",
+     "name": "Leopard Slug",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "tunnel-wyrm",
+     "name": "Tunnel Wyrm",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "compost-grub",
+     "name": "Compost Grub",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.625,
+   "ci": [
+    0.564,
+    0.686
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-A-1",
+     "label": "vs 7-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-2",
+     "label": "vs 7-A-2 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-3",
+     "label": "vs 7-A-3 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-4",
+     "label": "vs 7-A-4 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-5",
+     "label": "vs 7-A-5 boss's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 7-A-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.2)"
+   ],
+   "deck": {
+    "alley-cat": 2,
+    "barkplate-beetle": 4,
+    "compost-grub": 4,
+    "mudpuppy": 2,
+    "rot-swollen-carcass": 4,
+    "tunnel-wyrm": 4
+   },
+   "cards": [
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "compost-grub",
+     "name": "Compost Grub",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "rot-swollen-carcass",
+     "name": "Rot-Swollen Carcass",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "tunnel-wyrm",
+     "name": "Tunnel Wyrm",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.5313,
+   "ci": [
+    0.4709,
+    0.5916
+   ],
+   "avgLumber": 1.2,
+   "avgWait": 1.3,
+   "curve": {
+    "0": 8,
+    "1": 4,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-A-1",
+     "label": "vs 7-A-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-2",
+     "label": "vs 7-A-2 skirmish's deck",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-3",
+     "label": "vs 7-A-3 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-4",
+     "label": "vs 7-A-4 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-5",
+     "label": "vs 7-A-5 boss's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 7-A-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field",
+     "p": 0.375,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mz --pool alley-cat,amber-cicada,barkplate-beetle,bee-forager,compost-grub,earthworm,fire-ant-raft,fungal-colossus,fungus-gnat-cloud,hawthorn-shieldbug,leopard-slug,mudpuppy,newt-doctor,otter-centurion,pine-marten,planarian-splitter,puffball-bombardier,river-mink,rootworm-colony,rot-swollen-carcass,sleepless-shrew,truffle-piglet,tunnel-wyrm,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:heal,family:armor,big,open --anchor compost-grub,earthworm,fungal-colossus,fungus-gnat-cloud,hawthorn-shieldbug,leopard-slug,planarian-splitter,puffball-bombardier,rootworm-colony,rot-swollen-carcass,sleepless-shrew,tunnel-wyrm --anchor-min 10 --level 1 --mode map-true"
+}

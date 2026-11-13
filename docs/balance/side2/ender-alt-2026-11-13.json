@@ -1,0 +1,146 @@
+{
+ "about": "SIDE2: eased SK deck vs the builder blend for enders the fit could not ease (tools/side2/ender_alt_2026_11_13.js)",
+ "rows": [
+  {
+   "code": "10-A-5",
+   "target": 40,
+   "skEased": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "coral-polyp-colony": 4,
+     "giant-clam": 2,
+     "krill-swarm": 4,
+     "sea-turtle-elder": 4
+    },
+    "win": 1
+   },
+   "blend": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "moon-jelly": 4,
+     "mantis-shrimp": 3,
+     "reef-shark": 4,
+     "sea-turtle-elder": 3
+    },
+    "win": 16.5
+   },
+   "pick": "blend"
+  },
+  {
+   "code": "17-A-4",
+   "target": 40,
+   "skEased": {
+    "deck": {
+     "cormorant": 1,
+     "greenland-shark": 3,
+     "lemming-swarm": 4,
+     "lone-grey-wolf": 2,
+     "riptide-eel": 1,
+     "shoal-shark": 1,
+     "snow-ermine": 4
+    },
+    "win": 19
+   },
+   "blend": {
+    "deck": {
+     "greenland-shark": 3,
+     "lone-grey-wolf": 2,
+     "limpet-clinger": 1,
+     "riptide-eel": 1,
+     "beluga": 3,
+     "lemming-swarm": 4,
+     "ringed-seal": 2
+    },
+    "win": 45.5
+   },
+   "pick": "blend"
+  },
+  {
+   "code": "0-B-4",
+   "target": 40,
+   "skEased": {
+    "deck": {
+     "barkplate-beetle": 1,
+     "earthworm": 4,
+     "ent": 3,
+     "farm-dog": 4,
+     "grass-snake": 1,
+     "proboscis-monkey": 1,
+     "quill-thorn-boar": 1
+    },
+    "win": 19
+   },
+   "blend": {
+    "deck": {
+     "ent": 3,
+     "bramble-sprout": 1,
+     "proboscis-monkey": 1,
+     "bramblewood-lynx": 1,
+     "earthworm": 4,
+     "strangler-vine": 3,
+     "farm-dog": 2
+    },
+    "win": 17.5
+   },
+   "pick": "sk"
+  },
+  {
+   "code": "20-B-4",
+   "target": 20,
+   "skEased": {
+    "deck": {
+     "ancient-sloth-titan": 3,
+     "basalt-boar": 3,
+     "cinder-hornet": 1,
+     "fire-drake-hatchling": 1,
+     "granite-ox-golem": 2,
+     "magma-titan": 4
+    },
+    "win": 9.5
+   },
+   "blend": {
+    "deck": {
+     "fire-drake-hatchling": 1,
+     "magma-salamander": 2,
+     "barrow-leech-bat": 1,
+     "obsidian-scorpion": 1,
+     "granite-ox-golem": 3,
+     "deep-cave-troll": 4,
+     "magma-titan": 2
+    },
+    "win": 28
+   },
+   "pick": "blend"
+  },
+  {
+   "code": "18-A-9",
+   "target": 40,
+   "skEased": {
+    "deck": {
+     "barrel-cactus": 1,
+     "dromedary": 4,
+     "dune-jackal": 4,
+     "horned-lizard": 4,
+     "quicksand-queen": 2,
+     "sand-widow": 4
+    },
+    "win": 29
+   },
+   "blend": {
+    "deck": {
+     "quicksand-queen": 2,
+     "horned-lizard": 3,
+     "pale-oryx": 4,
+     "barrel-cactus": 3,
+     "dromedary": 3,
+     "roadrunner-courier": 2,
+     "sand-widow": 2
+    },
+    "win": 15.5
+   },
+   "pick": "sk"
+  }
+ ]
+}

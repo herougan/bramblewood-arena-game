@@ -1,0 +1,82 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:36:36.167Z",
+ "map": {
+  "id": "mn",
+  "num": 8,
+  "name": "The Glimmer Depths"
+ },
+ "pool": [
+  "barrow-leech-bat",
+  "blind-cave-fish",
+  "cave-olm",
+  "cave-swiftlet",
+  "echo-matriarch",
+  "echo-screecher",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "glimmer-spider",
+  "lantern-spark-fly",
+  "quarry-mole",
+  "stalactite-golem",
+  "sulfur-cinder-moth"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "barrow-leech-bat": 3,
+    "blind-cave-fish": 3,
+    "giant-cave-huntsman": 2,
+    "glimmer-spider": 4,
+    "quarry-mole": 4,
+    "stalactite-golem": 4
+   },
+   "score": 0.1369,
+   "ci": [
+    0.0884,
+    0.1854
+   ],
+   "refWins": 0.9306,
+   "labels": [
+    "big (17 copies at 1+ Lumber, average 1.1)"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1764,
+   "seconds": 30
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "barrow-leech-bat": 2,
+    "cave-olm": 4,
+    "echo-screecher": 3,
+    "gallery-orb-weaver": 3,
+    "quarry-mole": 4,
+    "stalactite-golem": 4
+   },
+   "score": 0.0952,
+   "ci": [
+    0.0515,
+    0.139
+   ],
+   "refWins": 0.9444,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.0)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 8,
+   "games": 1736,
+   "seconds": 31
+  }
+ ]
+}

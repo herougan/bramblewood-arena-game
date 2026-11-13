@@ -1,0 +1,639 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T20:00:26.053Z",
+ "fingerprint": "9ee4b33dbf8e",
+ "map": {
+  "id": "mo",
+  "num": 0,
+  "name": "The Old Bramble"
+ },
+ "level": 1,
+ "pool": [
+  "barkplate-beetle",
+  "bramble-sprout",
+  "bramblewood-lynx",
+  "earthworm",
+  "elder-willow",
+  "ent",
+  "farm-dog",
+  "quill-thorn-boar",
+  "quillguard",
+  "sergeant-bramblefox",
+  "thorn-shrike"
+ ],
+ "poolNames": [
+  "Barkplate Beetle",
+  "Bramble Sprout",
+  "Bramblewood Lynx",
+  "Earthworm",
+  "Elder Willow",
+  "Ent",
+  "Farm Dog",
+  "Quill-Thorn Boar",
+  "Quillguard",
+  "Sergeant Bramblefox",
+  "Thorn Shrike"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:0-B-1",
+   "label": "vs 0-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:0-B-2",
+   "label": "vs 0-B-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:0-B-3",
+   "label": "vs 0-B-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:0-B-4",
+   "label": "vs 0-B-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 0-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road17",
+   "label": "vs reference deck (Map 17) under 0-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:spite",
+   "label": "spite (skill family)",
+   "cards": [
+    "barkplate-beetle",
+    "bramble-sprout",
+    "quill-thorn-boar"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "barkplate-beetle",
+    "elder-willow"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "bramble-sprout",
+    "earthworm",
+    "ent",
+    "farm-dog"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:spite",
+   "steps": 10,
+   "moves": 3,
+   "games": 1596,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 14,
+   "moves": 4,
+   "games": 1554,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "swarm",
+   "steps": 34328,
+   "moves": 6089,
+   "games": 168,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 16,
+   "moves": 5,
+   "games": 1596,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 170,
+ "games": 5362,
+ "decks": [
+  {
+   "focus": "family:spite",
+   "labels": [
+    "spite x10"
+   ],
+   "deck": {
+    "barkplate-beetle": 3,
+    "bramble-sprout": 4,
+    "ent": 3,
+    "farm-dog": 4,
+    "quill-thorn-boar": 3,
+    "sergeant-bramblefox": 3
+   },
+   "cards": [
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "farm-dog",
+     "name": "Farm Dog",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "quill-thorn-boar",
+     "name": "Quill-Thorn Boar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "sergeant-bramblefox",
+     "name": "Sergeant Bramblefox",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8452,
+   "ci": [
+    0.8022,
+    0.8883
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 11,
+    "1": 6,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "spite",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "spite x7"
+   ],
+   "deck": {
+    "bramble-sprout": 4,
+    "bramblewood-lynx": 3,
+    "earthworm": 4,
+    "quill-thorn-boar": 3,
+    "sergeant-bramblefox": 3,
+    "thorn-shrike": 3
+   },
+   "cards": [
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "quill-thorn-boar",
+     "name": "Quill-Thorn Boar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "sergeant-bramblefox",
+     "name": "Sergeant Bramblefox",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "thorn-shrike",
+     "name": "Thorn Shrike",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6905,
+   "ci": [
+    0.631,
+    0.75
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "spite",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "bramble-sprout": 3,
+    "earthworm": 4,
+    "ent": 3,
+    "farm-dog": 4,
+    "quillguard": 3,
+    "thorn-shrike": 3
+   },
+   "cards": [
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "farm-dog",
+     "name": "Farm Dog",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "thorn-shrike",
+     "name": "Thorn Shrike",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6548,
+   "ci": [
+    0.5958,
+    0.7138
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.1)"
+   ],
+   "deck": {
+    "barkplate-beetle": 4,
+    "bramblewood-lynx": 3,
+    "earthworm": 3,
+    "elder-willow": 4,
+    "ent": 3,
+    "farm-dog": 3
+   },
+   "cards": [
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "elder-willow",
+     "name": "Elder Willow",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "farm-dog",
+     "name": "Farm Dog",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6369,
+   "ci": [
+    0.5805,
+    0.6933
+   ],
+   "avgLumber": 1.15,
+   "avgWait": 2,
+   "curve": {
+    "0": 9,
+    "1": 3,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mo --pool barkplate-beetle,bramble-sprout,bramblewood-lynx,earthworm,elder-willow,ent,farm-dog,quill-thorn-boar,quillguard,sergeant-bramblefox,thorn-shrike --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:spite,big,swarm,open --level 1 --mode map-true"
+}

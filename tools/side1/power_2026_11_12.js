@@ -14,13 +14,13 @@ const BASE = 'b6162b29';
 // the editor's budget box in a sandbox: read(d, om) -> its numbers; om (a map number), when given, stands in for cardObtainMap
 function editor() {
   const LB = require('../lib_bramble.js'), grab = LB.grab, G = LB.G;
-  const names = ['SB_DEFAULT_SKILLS', 'SB_HALF_MISS', 'SB_PAY_DEF', 'SB_V3_DEFAULTS', 'sbRitualPts', 'sbSkillCost', 'sbMissMult', 'sbFragileUse', 'sbBudgetAt', 'SB_WELL_UNDER', 'sbCheck', 'sbShieldH', 'sbCanon', 'sbPriceS'];
+  const names = ['SB_DEFAULT_SKILLS', 'SB_HALF_MISS', 'SB_PAY_DEF', 'SB_V3_DEFAULTS', 'sbRitualPts', 'sbSkillCost', 'sbMissMult', 'sbFragileUse', 'sbBudgetAt', 'SB_WELL_UNDER', 'sbCheck', 'sbShieldH', 'sbCanon', 'sbPriceS', 'sbAttackMult', 'sbAttackOf', 'sbEffectsOf' /* SIDE2 (11-13): the Attack that counts */];
   const BB = require(path.join(ROOT, 'bramblewood-budget.js')), SC = require(path.join(ROOT, 'tools', 'skill_costs.js'));
   const body = ['let SB_SC = null, sbFbSkills = null, OM = null; const SKILL_COSTS_TABLE = TABLE; const cardObtainMap = d=> OM != null ? OM : OBTAIN(d);',
     'function sbLoad(){ return Object.assign({}, SB_V3_DEFAULTS, {skills: SB_DEFAULT_SKILLS, halfMiss: SKILL_COSTS_TABLE.halfMiss || SB_HALF_MISS}); }',
     ...names.map(n => grab(n)),
     // ceBudgetHTML's numbers (A, H as printed; N at Level 1; S from the canonical table)
-    'return function read(d, om){ OM = om == null ? null : om; try{ const cfg = sbLoad(), A = Number(d.attack)||0, D = Number(d.health)||0, S = sbPriceS(d, cfg).S, N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg), SH = sbShieldH(d), c = sbCheck(A, D, S, N, M, F, SH); return {om: cardObtainMap(d), N, S, B: c.x1, P: c.x2, N2: c.N2, ok: c.ok, r1: c.r1, r2: c.r2, wellUnder: c.wellUnder}; }finally{ OM = null; } };'].join('\n');
+    'return function read(d, om){ OM = om == null ? null : om; try{ const cfg = sbLoad(), A = sbAttackOf(d), D = Number(d.health)||0, S = sbPriceS(d, cfg).S, N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg), SH = sbShieldH(d), c = sbCheck(A, D, S, N, M, F, SH, sbEffectsOf(d)); return {om: cardObtainMap(d), N, S, B: c.x1, P: c.x2, N2: c.N2, ok: c.ok, r1: c.r1, r2: c.r2, wellUnder: c.wellUnder}; }finally{ OM = null; } };'].join('\n');
   const read = new Function('BramblewoodBudget', 'SkillCosts', 'TABLE', 'OBTAIN', 'RARITY_DEFS', 'localStorage', body)(BB, SC, J('canonical/skill-costs.json'), d => G.cardObtainMap(d), G.RARITY_DEFS || [], { getItem: () => null });
   return { read, G, defs: LB.CARD_DEFS_BASELINE };
 }

@@ -1,0 +1,52 @@
+{
+ "map": "mpd",
+ "name": "The Pale Desert",
+ "code": "18-A-9",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 19,
+ "current": {
+  "deck": {
+   "dromedary": 3,
+   "dune-jackal": 4,
+   "horned-lizard": 3,
+   "quicksand-queen": 2,
+   "roadrunner-courier": 3,
+   "sandstorm-roc": 4
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "18-A-BPRO-1",
+  "focus": "family:strike-first",
+  "deck": {
+   "antlion-pit": 4,
+   "dune-jackal": 4,
+   "horned-lizard": 4,
+   "quicksand-queen": 2,
+   "roadrunner-courier": 4,
+   "sunbittern-strider": 2
+  }
+ },
+ "offPool": [
+  "antlion-pit"
+ ],
+ "deck": {
+  "quicksand-queen": 2,
+  "dune-jackal": 4,
+  "horned-lizard": 4,
+  "roadrunner-courier": 4,
+  "sunbittern-strider": 4,
+  "barrel-cactus": 1
+ },
+ "problems": [],
+ "skWin": 14,
+ "verdict": "too-hard",
+ "gap": -26,
+ "sec": 8
+}

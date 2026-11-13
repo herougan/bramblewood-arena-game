@@ -62,8 +62,14 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
     const RELFIX3_BOSS = {mb:'old-shell', mc:'the-gannet-queen', m2:'drowned-matriarch', mw:'old-snapjaw', m8:'heron-hag', m4:'echo-matriarch', m7:'reef-admiral', m5:'pride-queen', m6:'wolfsbane-alpha', m3:'yeti-chieftain', m23:'triumvirate'};
     // 2026-11-12 (TESTFIX1): SKIR3 rebuilt Maps 0-21 and the side lists from the owner's 11-12 picks under the unique-card limits (docs/balance/skir3/lists-2026-11-12.json, `main` / `side` `list`);
     // that record is the expectation where it has the list (THEME3's / THEME2's stays for the rest), and a main map's list is also checked against the owner's Yes picks (+ SKIR3's three adds)
-    const S3 = J('docs/balance/skir3/lists-2026-11-12.json'), s3r = L.sub ? S3.side[L.sub] : S3.main[L.map], PK = J('docs/design/map-picks-owner-2026-11-12.json').maps;
-    if(!L.sub && PK[L.map]) ok(live && live.every(id=> PK[L.map].yes.includes(id) || ['barrel-cactus', 'planarian-splitter', 'nutria-reedcutter'].includes(id)), `4. ${L.map}: every listed card is one of the owner's 11-12 Yes picks (or a SKIR3 add)`);
+    const S3 = J('docs/balance/skir3/lists-2026-11-12.json'), s3r = L.sub ? S3.side[L.sub] : S3.main[L.map], PK = J('docs/design/map-picks-owner-2026-11-13.json').maps;
+    // 2026-11-13 (SIDE2, TESTFIX1's way): LIST1 folded the owner's 11-13 picks into the lists (docs/balance/list1/fold-2026-11-13.json, no cuts): where its
+    // record has the map, the expectation is LIST1's (a side map: his Yes + the kept Carried cards; a main map: SKIR3's list less LIST1's drops plus its
+    // adds), compared as a set; the Yes check reads his 11-13 picks (docs/design/map-picks-owner-2026-11-13.json, LIST1's file of them)
+    const L1 = J('docs/balance/list1/fold-2026-11-13.json'), l1 = L.sub ? L1.side[L.sub] : L1.main[L.map], sameSet = (a, b)=> JSON.stringify([...new Set(a)].sort()) === JSON.stringify([...new Set(b)].sort());
+    if(!L.sub && PK[L.map]) ok(live && live.every(id=> PK[L.map].yes.includes(id) || ['barrel-cactus', 'planarian-splitter', 'nutria-reedcutter'].includes(id)), `4. ${L.map}: every listed card is one of the owner's 11-13 Yes picks (or a SKIR3 add)`);
+    if(t2 && l1){ const want1 = L.sub ? l1.ownerYes.concat(l1.keptCarried) : ((s3r && s3r.list) || []).filter(id=> !(l1.dropped || []).includes(id)).concat(l1.added || []);
+      ok(live && sameSet(live, want1), `4. ${k}: the live list is LIST1's (the owner's 11-13 picks; ${live && live.length} vs ${new Set(want1).size})`); return; }
     if(t2){ const want = ((s3r && s3r.list) || (T3[L.sub || L.map]) || t2.proposed).filter(id=> L.sub || RELFIX3_BOSS[L.map] !== id || !(pools[L.map].special || []).includes(id));
       // 2026-11-04 (TESTFIX1): CONTENT8 (2026-11-02, owner 21:12, CONTENT7-1 / KK17) placed new sea cards on four lists after THEME3; they are not THEME3's to list
       const c8 = id=> /package CONTENT8, owner 21:12, CONTENT7-1 \/ KK17\): placed on the /.test((by[id] || {}).creatorNote || ''), liveT = live && live.filter(id=> !c8(id));

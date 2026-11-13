@@ -1,0 +1,81 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:43:30.889Z",
+ "map": {
+  "id": "mx",
+  "num": 20,
+  "name": "Volcano Lair"
+ },
+ "pool": [
+  "ancient-sloth-titan",
+  "basalt-boar",
+  "caldera-wyrm",
+  "deep-cave-troll",
+  "fire-salamander",
+  "fumarole-ibex",
+  "magma-salamander",
+  "obsidian-scorpion",
+  "quillback-elder",
+  "stalactite-golem",
+  "ur-elk",
+  "vampire-roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "basalt-boar": 1,
+    "deep-cave-troll": 4,
+    "fumarole-ibex": 3,
+    "stalactite-golem": 4,
+    "vampire-roost": 4
+   },
+   "score": 0.0595,
+   "ci": [
+    0.0252,
+    0.0939
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (16 copies at 2+ Lumber, average 2.2)",
+    "guard x8"
+   ],
+   "apartFrom": [],
+   "steps": 8,
+   "games": 1792,
+   "seconds": 28
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "basalt-boar": 4,
+    "fire-salamander": 4,
+    "quillback-elder": 4,
+    "vampire-roost": 4
+   },
+   "score": 0.2262,
+   "ci": [
+    0.1756,
+    0.2768
+   ],
+   "refWins": 0.9583,
+   "labels": [
+    "big (12 copies at 2+ Lumber, average 1.8)"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 10,
+   "games": 1890,
+   "seconds": 25
+  }
+ ]
+}

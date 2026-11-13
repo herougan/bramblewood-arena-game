@@ -1,0 +1,715 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T05:05:40.694Z",
+ "fingerprint": "53a2adc56d03",
+ "map": {
+  "id": "mn",
+  "num": 8,
+  "name": "The Glimmer Depths"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "barrow-leech-bat",
+  "blind-cave-fish",
+  "blue-ringed-octopus",
+  "bombardier-beetle",
+  "cave-olm",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "echo-matriarch",
+  "echo-screecher",
+  "fruit-bat",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "glow-worm",
+  "grave-grin-hyena",
+  "hawthorn-shieldbug",
+  "millipede-hauler",
+  "quarry-mole",
+  "raft-spider",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "stoat-cutthroat",
+  "sulfur-cinder-moth",
+  "whip-spider",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Barrow Leech",
+  "Blind Cave Fish",
+  "Blue-ringed Octopus",
+  "Bombardier Beetle",
+  "Cave Olm",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Echo Matriarch",
+  "Echo Screecher",
+  "Fruit Bat",
+  "Gallery Orb-Weaver",
+  "Giant Cave Huntsman",
+  "Glow-worm",
+  "Grave-Grin Hyena",
+  "Hawthorn Shieldbug",
+  "Millipede Hauler",
+  "Quarry Mole",
+  "Raft Spider",
+  "Stalactite Pill Bug",
+  "Star-nosed Mole",
+  "Stoat Cutthroat",
+  "Sulfur Cinder Moth",
+  "Whip Spider",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "barrow-leech-bat",
+   "blind-cave-fish",
+   "cave-olm",
+   "echo-matriarch",
+   "echo-screecher",
+   "fruit-bat",
+   "gallery-orb-weaver",
+   "giant-cave-huntsman",
+   "glow-worm",
+   "quarry-mole",
+   "stalactite-golem",
+   "sulfur-cinder-moth",
+   "whip-spider"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:8-A-1",
+   "label": "vs 8-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:8-A-2",
+   "label": "vs 8-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:8-A-3",
+   "label": "vs 8-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:8-A-4",
+   "label": "vs 8-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 8-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road16",
+   "label": "vs reference deck (Map 16) under 8-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "barrow-leech-bat",
+    "eagle-owl-quartermaster",
+    "echo-matriarch",
+    "echo-screecher",
+    "sulfur-cinder-moth"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "hawthorn-shieldbug",
+    "millipede-hauler",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "barrow-leech-bat",
+    "blue-ringed-octopus",
+    "bombardier-beetle",
+    "eagle-owl-quartermaster",
+    "echo-matriarch",
+    "echo-screecher",
+    "gallery-orb-weaver",
+    "giant-cave-huntsman",
+    "hawthorn-shieldbug",
+    "millipede-hauler",
+    "quarry-mole",
+    "raft-spider",
+    "stalactite-golem",
+    "stoat-cutthroat",
+    "sulfur-cinder-moth",
+    "whip-spider",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 11,
+   "moves": 5,
+   "games": 2128,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:armor",
+   "steps": 9,
+   "moves": 5,
+   "games": 2058,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "big",
+   "steps": 10,
+   "moves": 5,
+   "games": 2086,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "open",
+   "steps": 12,
+   "moves": 7,
+   "games": 2114,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 383,
+ "games": 8834,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "economy (4 resource makers)",
+    "flying x8"
+   ],
+   "deck": {
+    "dust-hyena": 4,
+    "eagle-owl-quartermaster": 1,
+    "echo-screecher": 3,
+    "fruit-bat": 4,
+    "hawthorn-shieldbug": 4,
+    "sulfur-cinder-moth": 4
+   },
+   "cards": [
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fruit-bat",
+     "name": "Fruit Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8631,
+   "ci": [
+    0.818,
+    0.9082
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "flying x9",
+    "night x6"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "cave-olm": 3,
+    "eagle-owl-quartermaster": 3,
+    "echo-matriarch": 3,
+    "echo-screecher": 3,
+    "fruit-bat": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fruit-bat",
+     "name": "Fruit Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cave-olm",
+     "name": "Cave Olm",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8571,
+   "ci": [
+    0.8138,
+    0.9004
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 9
+    },
+    {
+     "f": "night",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "big (11 copies at 1+ Lumber, average 0.8)",
+    "armor x8",
+    "guard x8"
+   ],
+   "deck": {
+    "cave-olm": 4,
+    "dust-hyena": 3,
+    "echo-matriarch": 3,
+    "glow-worm": 2,
+    "hawthorn-shieldbug": 4,
+    "stalactite-golem": 4
+   },
+   "cards": [
+    {
+     "id": "cave-olm",
+     "name": "Cave Olm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "glow-worm",
+     "name": "Glow-worm",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7381,
+   "ci": [
+    0.679,
+    0.7972
+   ],
+   "avgLumber": 0.75,
+   "avgWait": 1.4,
+   "curve": {
+    "0": 9,
+    "1": 7,
+    "2": 4
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    },
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "blind-cave-fish": 4,
+    "blue-ringed-octopus": 3,
+    "dust-hyena": 4,
+    "giant-cave-huntsman": 2,
+    "star-nosed-mole": 3,
+    "sulfur-cinder-moth": 4
+   },
+   "cards": [
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6786,
+   "ci": [
+    0.6159,
+    0.7412
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mn --pool alpine-marmot,barrow-leech-bat,blind-cave-fish,blue-ringed-octopus,bombardier-beetle,cave-olm,dust-hyena,eagle-owl-quartermaster,echo-matriarch,echo-screecher,fruit-bat,gallery-orb-weaver,giant-cave-huntsman,glow-worm,grave-grin-hyena,hawthorn-shieldbug,millipede-hauler,quarry-mole,raft-spider,stalactite-golem,star-nosed-mole,stoat-cutthroat,sulfur-cinder-moth,whip-spider,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,family:armor,big,open --anchor barrow-leech-bat,blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,fruit-bat,gallery-orb-weaver,giant-cave-huntsman,glow-worm,quarry-mole,stalactite-golem,sulfur-cinder-moth,whip-spider --anchor-min 10 --level 1 --mode map-true"
+}

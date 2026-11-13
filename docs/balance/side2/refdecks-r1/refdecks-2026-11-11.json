@@ -1,0 +1,146 @@
+{
+ "about": "SKIR3 reference decks per map (apply report; tools/skir3/refdecks_2026_11_12.js running tools/skir1/refdecks_2026_11_11.js)",
+ "maps": [
+  {
+   "map": "mi",
+   "num": 17,
+   "name": "The Ice Hollow",
+   "bproLeft": [
+    {
+     "focus": "family:evasion",
+     "score": 0.1726,
+     "why": "shares more than 10 copies with a stronger deck"
+    },
+    {
+     "focus": "family:cold",
+     "score": 0.0298,
+     "why": "under 50%"
+    }
+   ],
+   "proLeft": [
+    {
+     "focus": "open",
+     "score": 0.6786,
+     "why": "shares more than 10 copies with a stronger deck"
+    },
+    {
+     "focus": "family:cold",
+     "score": 0.6726,
+     "why": "shares more than 10 copies with a stronger deck"
+    },
+    {
+     "focus": "family:evasion",
+     "score": 0.631,
+     "why": "a stronger deck of its kind has its focus (tests/deck1: one focus a deck)"
+    }
+   ],
+   "wproLeft": [],
+   "bproOld1": {
+    "id": "17-A-BPRO-1",
+    "vsNewBest": {
+     "p": 0.468,
+     "n": 400,
+     "ci": [
+      0.419,
+      0.516
+     ],
+     "elo": -23,
+     "eloCI": [
+      -57,
+      11
+     ]
+    }
+   },
+   "proOld1": {
+    "id": "17-A-PRO-1",
+    "vsNewBest": {
+     "p": 0.478,
+     "n": 400,
+     "ci": [
+      0.429,
+      0.526
+     ],
+     "elo": -16,
+     "eloCI": [
+      -50,
+      18
+     ]
+    }
+   },
+   "proVsBpro": [],
+   "pro": [
+    {
+     "id": "17-A-PRO-1",
+     "focus": "swarm",
+     "score": 0.7024,
+     "labels": [
+      "swarm (17 copies at 0 Lumber)"
+     ]
+    },
+    {
+     "id": "17-A-PRO-2",
+     "focus": "family:evasion",
+     "score": 0.7024,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "evasion x13",
+      "tide x8"
+     ]
+    },
+    {
+     "id": "17-A-PRO-3",
+     "focus": "open",
+     "score": 0.6607,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "cold x10",
+      "evasion x6"
+     ]
+    },
+    {
+     "id": "17-A-PRO-4",
+     "focus": "family:cold",
+     "score": 0.625,
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "evasion x10",
+      "cold x8"
+     ]
+    }
+   ],
+   "bpro": [
+    {
+     "id": "17-A-BPRO-1",
+     "focus": "open",
+     "score": 0.2679,
+     "labels": [
+      "evasion x8",
+      "tide x7"
+     ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "17-A-WPRO-1",
+     "plan": "low",
+     "score": 0,
+     "labels": [
+      "big (4 copies at 2+ Lumber, average 1.4)",
+      "tide x11",
+      "evasion x8"
+     ]
+    },
+    {
+     "id": "17-A-WPRO-2",
+     "plan": "top-heavy",
+     "score": 0.0357,
+     "labels": [
+      "big (4 copies at 2+ Lumber, average 1.4)",
+      "cold x8",
+      "tide x7"
+     ]
+    }
+   ]
+  }
+ ]
+}

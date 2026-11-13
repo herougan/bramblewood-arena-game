@@ -1,0 +1,52 @@
+{
+ "map": "mpd",
+ "name": "The Pale Desert",
+ "code": "18-A-9",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 19,
+ "current": {
+  "deck": {
+   "barrel-cactus": 1,
+   "dune-jackal": 4,
+   "horned-lizard": 4,
+   "quicksand-queen": 2,
+   "roadrunner-courier": 4,
+   "sunbittern-strider": 4
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "18-A-BPRO-1",
+  "focus": "family:poison",
+  "deck": {
+   "antlion-pit": 4,
+   "caustic-scorpion": 4,
+   "dromedary": 4,
+   "horned-lizard": 4,
+   "sand-widow": 4
+  }
+ },
+ "offPool": [
+  "antlion-pit",
+  "caustic-scorpion"
+ ],
+ "deck": {
+  "quicksand-queen": 2,
+  "dromedary": 4,
+  "horned-lizard": 4,
+  "sand-widow": 4,
+  "barrel-cactus": 3,
+  "dune-jackal": 2
+ },
+ "problems": [],
+ "skWin": 13,
+ "verdict": "too-hard",
+ "gap": -27,
+ "sec": 8
+}

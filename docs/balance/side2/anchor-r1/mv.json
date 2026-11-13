@@ -1,0 +1,53 @@
+{
+ "map": "mv",
+ "name": "The Aerie Vault",
+ "code": "11-A-4",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 16,
+ "current": {
+  "deck": {
+   "alpine-swift": 4,
+   "apollo-butterfly": 4,
+   "chipmunk-hoarder": 3,
+   "swamp-alligator": 2,
+   "wound-reaver": 3
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "11-A-BPRO-1",
+  "focus": "family:flying",
+  "deck": {
+   "chamois-leaper": 4,
+   "eagle-owl-quartermaster": 3,
+   "golden-eagle-diver": 2,
+   "peak-condor": 4,
+   "peregrine-stooper": 4,
+   "wound-reaver": 3
+  }
+ },
+ "offPool": [
+  "chamois-leaper",
+  "eagle-owl-quartermaster",
+  "golden-eagle-diver",
+  "peregrine-stooper"
+ ],
+ "deck": {
+  "wound-reaver": 3,
+  "peak-condor": 1,
+  "eyrie-warden": 4,
+  "great-horned-owl": 4,
+  "gangrenous-leech": 4
+ },
+ "problems": [],
+ "skWin": 35.5,
+ "verdict": "in-band",
+ "gap": -4.5,
+ "sec": 6
+}

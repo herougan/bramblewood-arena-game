@@ -1,0 +1,644 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T00:37:10.620Z",
+ "fingerprint": "cd1103b85b23",
+ "map": {
+  "id": "m9",
+  "num": 19,
+  "name": "Basalt Foundry"
+ },
+ "level": 1,
+ "pool": [
+  "basalt-boar",
+  "cinder-gecko",
+  "cinder-hornet",
+  "cinder-skeleton",
+  "ember-revenant",
+  "fire-salamander",
+  "grindstone-boar",
+  "obsidian-scorpion",
+  "pumice-beetle",
+  "smoke-raccoon"
+ ],
+ "poolNames": [
+  "Basalt Boar",
+  "Cinder Gecko",
+  "Cinder Hornet",
+  "Cinder Skeleton",
+  "Ember Revenant",
+  "Fire Salamander",
+  "Grindstone Boar",
+  "Obsidian Scorpion",
+  "Pumice Beetle",
+  "Smokescreen Raccoon"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:19-A-1",
+   "label": "vs 19-A-1 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:19-A-2",
+   "label": "vs 19-A-2 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:19-A-3",
+   "label": "vs 19-A-3 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:19-A-4",
+   "label": "vs 19-A-4 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:19-A-5",
+   "label": "vs 19-A-5 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:19-A-6",
+   "label": "vs 19-A-6 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:19-A-7",
+   "label": "vs 19-A-7 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:19-A-8",
+   "label": "vs 19-A-8 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:19-A-9",
+   "label": "vs 19-A-9 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:19-A-10",
+   "label": "vs 19-A-10 boss's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 19-A-1's field",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|ref:road23",
+   "label": "vs reference deck (Map 23) under 19-A-2's field",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 19-A-3's field",
+   "weight": 0.0769
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:evasion",
+   "label": "evasion (skill family)",
+   "cards": [
+    "cinder-gecko",
+    "smoke-raccoon"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "basalt-boar",
+    "cinder-hornet",
+    "cinder-skeleton",
+    "ember-revenant",
+    "fire-salamander",
+    "grindstone-boar",
+    "obsidian-scorpion",
+    "pumice-beetle",
+    "smoke-raccoon"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:evasion",
+   "steps": 5,
+   "moves": 3,
+   "games": 2210,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 7,
+   "moves": 3,
+   "games": 2080,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 13,
+   "moves": 7,
+   "games": 2080,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 153,
+ "games": 6994,
+ "decks": [
+  {
+   "focus": "family:evasion",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.8)",
+    "evasion x8"
+   ],
+   "deck": {
+    "basalt-boar": 4,
+    "cinder-gecko": 4,
+    "ember-revenant": 1,
+    "fire-salamander": 4,
+    "obsidian-scorpion": 3,
+    "smoke-raccoon": 4
+   },
+   "cards": [
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-gecko",
+     "name": "Cinder Gecko",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "smoke-raccoon",
+     "name": "Smokescreen Raccoon",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ember-revenant",
+     "name": "Ember Revenant",
+     "copies": 1,
+     "cost": 2,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8141,
+   "ci": [
+    0.7774,
+    0.8508
+   ],
+   "avgLumber": 0.85,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 4,
+    "1": 15,
+    "2": 1
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-A-1",
+     "label": "vs 19-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-2",
+     "label": "vs 19-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-3",
+     "label": "vs 19-A-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-4",
+     "label": "vs 19-A-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-5",
+     "label": "vs 19-A-5 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-6",
+     "label": "vs 19-A-6 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-7",
+     "label": "vs 19-A-7 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-8",
+     "label": "vs 19-A-8 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-9",
+     "label": "vs 19-A-9 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-10",
+     "label": "vs 19-A-10 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "label": "vs reference deck (Map 23) under 19-A-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-A-3's field",
+     "p": 0.2917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.9)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "basalt-boar": 4,
+    "cinder-gecko": 4,
+    "cinder-hornet": 2,
+    "cinder-skeleton": 4,
+    "obsidian-scorpion": 2,
+    "pumice-beetle": 4
+   },
+   "cards": [
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-gecko",
+     "name": "Cinder Gecko",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-skeleton",
+     "name": "Cinder Skeleton",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7788,
+   "ci": [
+    0.74,
+    0.8176
+   ],
+   "avgLumber": 0.9,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 4,
+    "1": 14,
+    "2": 2
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-A-1",
+     "label": "vs 19-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-2",
+     "label": "vs 19-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-3",
+     "label": "vs 19-A-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-4",
+     "label": "vs 19-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-5",
+     "label": "vs 19-A-5 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-6",
+     "label": "vs 19-A-6 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-7",
+     "label": "vs 19-A-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-8",
+     "label": "vs 19-A-8 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-9",
+     "label": "vs 19-A-9 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-10",
+     "label": "vs 19-A-10 boss's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "label": "vs reference deck (Map 23) under 19-A-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-A-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "basalt-boar": 4,
+    "cinder-hornet": 2,
+    "ember-revenant": 2,
+    "fire-salamander": 4,
+    "grindstone-boar": 4,
+    "pumice-beetle": 4
+   },
+   "cards": [
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grindstone-boar",
+     "name": "Grindstone Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cinder-hornet",
+     "name": "Cinder Hornet",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "ember-revenant",
+     "name": "Ember Revenant",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.5417,
+   "ci": [
+    0.4942,
+    0.5891
+   ],
+   "avgLumber": 1.2,
+   "avgWait": 0.9,
+   "curve": {
+    "1": 16,
+    "2": 4
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-A-1",
+     "label": "vs 19-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-2",
+     "label": "vs 19-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-3",
+     "label": "vs 19-A-3 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-4",
+     "label": "vs 19-A-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-5",
+     "label": "vs 19-A-5 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-6",
+     "label": "vs 19-A-6 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-7",
+     "label": "vs 19-A-7 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-8",
+     "label": "vs 19-A-8 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-9",
+     "label": "vs 19-A-9 elite's deck",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-10",
+     "label": "vs 19-A-10 boss's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-A-1's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "label": "vs reference deck (Map 23) under 19-A-2's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-A-3's field",
+     "p": 0.125,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m9 --pool basalt-boar,cinder-gecko,cinder-hornet,cinder-skeleton,ember-revenant,fire-salamander,grindstone-boar,obsidian-scorpion,pumice-beetle,smoke-raccoon --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:evasion,big,open --level 1 --mode map-true"
+}

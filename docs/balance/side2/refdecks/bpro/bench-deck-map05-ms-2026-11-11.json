@@ -1,0 +1,650 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T04:23:59.087Z",
+ "fingerprint": "53a2adc56d03",
+ "map": {
+  "id": "ms",
+  "num": 5,
+  "name": "The Sunken Grove"
+ },
+ "level": 1,
+ "pool": [
+  "bog-leech",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "matamata",
+  "mudpuppy",
+  "muskrat-reedgatherer",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "old-snapjaw",
+  "peat-cutter-vole",
+  "river-carp",
+  "swamp-alligator"
+ ],
+ "poolNames": [
+  "Bog Leech",
+  "Constrictor Coil",
+  "Crocodile Ambusher",
+  "Cypress Root Lurker",
+  "Matamata",
+  "Mudpuppy",
+  "Muskrat Reedgatherer",
+  "Newt Doctor",
+  "Nutria Reedcutter",
+  "Old Snapjaw",
+  "Peat-cutter Vole",
+  "River Carp",
+  "Swamp Alligator"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:5-A-1",
+   "label": "vs 5-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:5-A-2",
+   "label": "vs 5-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:5-A-3",
+   "label": "vs 5-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:5-A-4",
+   "label": "vs 5-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 5-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road13",
+   "label": "vs reference deck (Map 13) under 5-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "matamata",
+    "old-snapjaw",
+    "swamp-alligator"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "constrictor-coil",
+    "crocodile-ambusher",
+    "cypress-root-lurker",
+    "matamata",
+    "old-snapjaw",
+    "swamp-alligator"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "bog-leech",
+    "mudpuppy",
+    "muskrat-reedgatherer",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "peat-cutter-vole",
+    "river-carp"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:armor",
+   "steps": 7,
+   "moves": 5,
+   "games": 1610,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 7,
+   "moves": 2,
+   "games": 1610,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "swarm",
+   "steps": 8,
+   "moves": 4,
+   "games": 1554,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 10,
+   "moves": 2,
+   "games": 1526,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 128,
+ "games": 6748,
+ "decks": [
+  {
+   "focus": "family:armor",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)",
+    "armor x8"
+   ],
+   "deck": {
+    "matamata": 4,
+    "mudpuppy": 3,
+    "muskrat-reedgatherer": 4,
+    "nutria-reedcutter": 1,
+    "peat-cutter-vole": 4,
+    "swamp-alligator": 4
+   },
+   "cards": [
+    {
+     "id": "matamata",
+     "name": "Matamata",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "name": "Muskrat Reedgatherer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "peat-cutter-vole",
+     "name": "Peat-cutter Vole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "swamp-alligator",
+     "name": "Swamp Alligator",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6905,
+   "ci": [
+    0.6274,
+    0.7536
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.45,
+   "curve": {
+    "0": 12,
+    "1": 4,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-A-1",
+     "label": "vs 5-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-2",
+     "label": "vs 5-A-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-3",
+     "label": "vs 5-A-3 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-4",
+     "label": "vs 5-A-4 boss's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 5-A-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "heal x8"
+   ],
+   "deck": {
+    "bog-leech": 4,
+    "cypress-root-lurker": 4,
+    "matamata": 4,
+    "mudpuppy": 4,
+    "newt-doctor": 4
+   },
+   "cards": [
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "name": "Cypress Root Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "matamata",
+     "name": "Matamata",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.6726,
+   "ci": [
+    0.6131,
+    0.7322
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "heal",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-A-1",
+     "label": "vs 5-A-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-2",
+     "label": "vs 5-A-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-3",
+     "label": "vs 5-A-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-4",
+     "label": "vs 5-A-4 boss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 5-A-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "heal x6"
+   ],
+   "deck": {
+    "crocodile-ambusher": 3,
+    "matamata": 3,
+    "mudpuppy": 2,
+    "newt-doctor": 4,
+    "nutria-reedcutter": 4,
+    "peat-cutter-vole": 4
+   },
+   "cards": [
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "peat-cutter-vole",
+     "name": "Peat-cutter Vole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "crocodile-ambusher",
+     "name": "Crocodile Ambusher",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "matamata",
+     "name": "Matamata",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6071,
+   "ci": [
+    0.542,
+    0.6723
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 1.65,
+   "curve": {
+    "0": 14,
+    "1": 3,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "heal",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-A-1",
+     "label": "vs 5-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-2",
+     "label": "vs 5-A-2 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-3",
+     "label": "vs 5-A-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-4",
+     "label": "vs 5-A-4 boss's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-A-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 5-A-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.5 Lumber)"
+   ],
+   "deck": {
+    "cypress-root-lurker": 4,
+    "mudpuppy": 1,
+    "muskrat-reedgatherer": 4,
+    "newt-doctor": 4,
+    "old-snapjaw": 3,
+    "peat-cutter-vole": 4
+   },
+   "cards": [
+    {
+     "id": "cypress-root-lurker",
+     "name": "Cypress Root Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "name": "Muskrat Reedgatherer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "peat-cutter-vole",
+     "name": "Peat-cutter Vole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "old-snapjaw",
+     "name": "Old Snapjaw",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "rare"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.5952,
+   "ci": [
+    0.5348,
+    0.6557
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 1.5,
+   "curve": {
+    "0": 13,
+    "1": 4,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-A-1",
+     "label": "vs 5-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-2",
+     "label": "vs 5-A-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-3",
+     "label": "vs 5-A-3 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-4",
+     "label": "vs 5-A-4 boss's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 5-A-2's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map ms --pool bog-leech,constrictor-coil,crocodile-ambusher,cypress-root-lurker,matamata,mudpuppy,muskrat-reedgatherer,newt-doctor,nutria-reedcutter,old-snapjaw,peat-cutter-vole,river-carp,swamp-alligator --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:armor,big,swarm,open --level 1 --mode map-true"
+}

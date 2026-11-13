@@ -1,0 +1,52 @@
+{
+ "map": "mq",
+ "name": "Clovermead",
+ "code": "1-A-5",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 17,
+ "current": {
+  "deck": {
+   "chipmunk-cavalry": 3,
+   "clover-butterfly": 3,
+   "honey-bee": 1,
+   "jackrabbit-sprinter": 3,
+   "lucky-hopper": 1,
+   "puddle-skimmer": 3,
+   "robin-redbreast": 3
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "1-A-BPRO-1",
+  "focus": "open",
+  "deck": {
+   "chipmunk-cavalry": 4,
+   "clover-butterfly": 4,
+   "honey-bee": 2,
+   "ladybird-guard": 2,
+   "meadow-rabbit": 4,
+   "robin-redbreast": 4
+  }
+ },
+ "offPool": [],
+ "deck": {
+  "lucky-hopper": 1,
+  "chipmunk-cavalry": 4,
+  "clover-butterfly": 3,
+  "meadow-rabbit": 3,
+  "robin-redbreast": 3,
+  "honey-bee": 1,
+  "ladybird-guard": 2
+ },
+ "problems": [],
+ "skWin": 21.5,
+ "verdict": "too-hard",
+ "gap": -18.5,
+ "sec": 5
+}

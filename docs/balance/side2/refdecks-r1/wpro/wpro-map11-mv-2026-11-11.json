@@ -1,0 +1,85 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:38:28.068Z",
+ "map": {
+  "id": "mv",
+  "num": 11,
+  "name": "The Aerie Vault"
+ },
+ "pool": [
+  "anvil-thrush",
+  "chamois-leaper",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gangrenous-leech",
+  "golden-eagle-diver",
+  "great-horned-owl",
+  "peak-condor",
+  "peregrine-stooper",
+  "swamp-alligator",
+  "the-gannet-queen",
+  "wound-reaver"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "anvil-thrush": 3,
+    "eagle-owl-quartermaster": 3,
+    "eyrie-warden": 2,
+    "great-horned-owl": 4,
+    "swamp-alligator": 4,
+    "the-gannet-queen": 4
+   },
+   "score": 0.3393,
+   "ci": [
+    0.277,
+    0.4016
+   ],
+   "refWins": 0.6944,
+   "labels": [
+    "big (14 copies at 2+ Lumber, average 1.6)",
+    "flying x16",
+    "siege x6"
+   ],
+   "apartFrom": [],
+   "steps": 8,
+   "games": 1820,
+   "seconds": 40
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "anvil-thrush": 3,
+    "chamois-leaper": 4,
+    "eyrie-warden": 4,
+    "gangrenous-leech": 4,
+    "golden-eagle-diver": 1,
+    "the-gannet-queen": 4
+   },
+   "score": 0.2738,
+   "ci": [
+    0.2134,
+    0.3342
+   ],
+   "refWins": 0.75,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "flying x12",
+    "strike-first x9"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 9,
+   "games": 1778,
+   "seconds": 30
+  }
+ ]
+}

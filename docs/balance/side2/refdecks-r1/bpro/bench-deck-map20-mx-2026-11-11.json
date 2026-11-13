@@ -1,0 +1,667 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T00:43:24.819Z",
+ "fingerprint": "cd1103b85b23",
+ "map": {
+  "id": "mx",
+  "num": 20,
+  "name": "Volcano Lair"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "basalt-boar",
+  "caldera-wyrm",
+  "deep-cave-troll",
+  "fire-salamander",
+  "fumarole-ibex",
+  "magma-salamander",
+  "obsidian-scorpion",
+  "quillback-elder",
+  "stalactite-golem",
+  "ur-elk",
+  "vampire-roost"
+ ],
+ "poolNames": [
+  "Ancient Sloth Titan",
+  "Basalt Boar",
+  "The Caldera Wyrm",
+  "Cave Bear",
+  "Fire Salamander",
+  "Fumarole Ibex",
+  "Magma Salamander",
+  "Obsidian Scorpion",
+  "Quillback Elder",
+  "Stalactite Pill Bug",
+  "Ür-Elk",
+  "Vampire Roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-B-1",
+   "label": "vs 20-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-2",
+   "label": "vs 20-B-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-3",
+   "label": "vs 20-B-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-4",
+   "label": "vs 20-B-4 worldboss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "caldera-wyrm",
+    "obsidian-scorpion",
+    "quillback-elder",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:guard",
+   "label": "guard (skill family)",
+   "cards": [
+    "ancient-sloth-titan",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "ancient-sloth-titan",
+    "deep-cave-troll",
+    "quillback-elder",
+    "stalactite-golem",
+    "vampire-roost"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:armor",
+   "steps": 7,
+   "moves": 3,
+   "games": 1568,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:guard",
+   "steps": 14,
+   "moves": 4,
+   "games": 1512,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 15,
+   "moves": 3,
+   "games": 1540,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 28,
+   "moves": 7,
+   "games": 1554,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 178,
+ "games": 6622,
+ "decks": [
+  {
+   "focus": "family:armor",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "armor x11"
+   ],
+   "deck": {
+    "basalt-boar": 3,
+    "fire-salamander": 4,
+    "obsidian-scorpion": 3,
+    "quillback-elder": 4,
+    "stalactite-golem": 4,
+    "ur-elk": 2
+   },
+   "cards": [
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "quillback-elder",
+     "name": "Quillback Elder",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ur-elk",
+     "name": "Ür-Elk",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.5179,
+   "ci": [
+    0.4508,
+    0.5849
+   ],
+   "avgLumber": 1.4,
+   "avgWait": 1.8,
+   "curve": {
+    "1": 12,
+    "2": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 11
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.3333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "family:guard",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)",
+    "guard x8",
+    "armor x7"
+   ],
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "basalt-boar": 4,
+    "fumarole-ibex": 3,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 3,
+    "stalactite-golem": 4
+   },
+   "cards": [
+    {
+     "id": "ancient-sloth-titan",
+     "name": "Ancient Sloth Titan",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "fumarole-ibex",
+     "name": "Fumarole Ibex",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.3661,
+   "ci": [
+    0.3011,
+    0.431
+   ],
+   "avgLumber": 1.6,
+   "avgWait": 2.4,
+   "curve": {
+    "1": 12,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    },
+    {
+     "f": "armor",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.7292,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.1667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (12 copies at 2+ Lumber, average 2.0)",
+    "armor x6"
+   ],
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "deep-cave-troll": 4,
+    "fire-salamander": 4,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 2,
+    "quillback-elder": 4
+   },
+   "cards": [
+    {
+     "id": "ancient-sloth-titan",
+     "name": "Ancient Sloth Titan",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "quillback-elder",
+     "name": "Quillback Elder",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.3333,
+   "ci": [
+    0.2726,
+    0.394
+   ],
+   "avgLumber": 2,
+   "avgWait": 2.4,
+   "curve": {
+    "1": 8,
+    "2": 4,
+    "3": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.0417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (12 copies at 2+ Lumber, average 1.8)",
+    "armor x7",
+    "rally x6"
+   ],
+   "deck": {
+    "deep-cave-troll": 4,
+    "fumarole-ibex": 3,
+    "obsidian-scorpion": 3,
+    "stalactite-golem": 4,
+    "ur-elk": 2,
+    "vampire-roost": 4
+   },
+   "cards": [
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "vampire-roost",
+     "name": "Vampire Roost",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "fumarole-ibex",
+     "name": "Fumarole Ibex",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ur-elk",
+     "name": "Ür-Elk",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.2679,
+   "ci": [
+    0.2117,
+    0.324
+   ],
+   "avgLumber": 1.8,
+   "avgWait": 2.2,
+   "curve": {
+    "1": 8,
+    "2": 8,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 7
+    },
+    {
+     "f": "rally",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.0417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mx --pool ancient-sloth-titan,basalt-boar,caldera-wyrm,deep-cave-troll,fire-salamander,fumarole-ibex,magma-salamander,obsidian-scorpion,quillback-elder,stalactite-golem,ur-elk,vampire-roost --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:armor,family:guard,big,open --level 1 --mode map-true"
+}

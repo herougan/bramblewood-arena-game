@@ -1,0 +1,1287 @@
+{
+ "about": "Road totals (tools/side2/road_compare_2026_11_13.js)",
+ "after": "side2r2s400",
+ "before": "skir3w400",
+ "totals": {
+  "fights": 77,
+  "inBand": 39,
+  "within10": 41,
+  "beyond20": 13,
+  "meanGap": 11.84
+ },
+ "totalsBefore": {
+  "fights": 77,
+  "inBand": 57,
+  "within10": 58,
+  "beyond20": 10,
+  "meanGap": 9.49
+ },
+ "worstMaps": [
+  {
+   "map": "1 Clovermead",
+   "fights": 5,
+   "out": 3,
+   "meanGap": 24.8,
+   "worst": [
+    "1-A-2 23.5/80",
+    "1-A-1 42.3/90"
+   ]
+  },
+  {
+   "map": "2 Lilypad Reach",
+   "fights": 7,
+   "out": 5,
+   "meanGap": 18.9,
+   "worst": [
+    "2-A-4 23.3/72",
+    "2-A-2 53.3/84"
+   ]
+  },
+  {
+   "map": "14 The Canopy",
+   "fights": 5,
+   "out": 4,
+   "meanGap": 16.7,
+   "worst": [
+    "14-A-3 24.3/70",
+    "14-A-2 94.8/80"
+   ]
+  },
+  {
+   "map": "20 Eye of the Volcano",
+   "fights": 7,
+   "out": 4,
+   "meanGap": 14.1,
+   "worst": [
+    "20-A-4 69/35.5",
+    "20-A-6 84.5/61.6"
+   ]
+  },
+  {
+   "map": "18 The Pale Desert",
+   "fights": 9,
+   "out": 6,
+   "meanGap": 13.1,
+   "worst": [
+    "18-A-1 59.3/90",
+    "18-A-7 84.8/64.3"
+   ]
+  },
+  {
+   "map": "10 The Sunken Depths",
+   "fights": 5,
+   "out": 2,
+   "meanGap": 13,
+   "worst": [
+    "10-A-4 33/60",
+    "10-A-5 17.3/40"
+   ]
+  },
+  {
+   "map": "0 The Old Bramble",
+   "fights": 4,
+   "out": 2,
+   "meanGap": 11.2,
+   "worst": [
+    "0-B-4 21.8/40",
+    "0-B-1 77/90"
+   ]
+  },
+  {
+   "map": "17 The Ice Hollow",
+   "fights": 4,
+   "out": 3,
+   "meanGap": 11.1,
+   "worst": [
+    "17-A-1 63.8/80",
+    "17-A-2 61/75"
+   ]
+  }
+ ],
+ "pushedOut": [
+  {
+   "code": "1-A-1",
+   "before": 91.8,
+   "after": 42.3,
+   "target": 90,
+   "d": -49.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "1-A-4",
+   "before": 56.3,
+   "after": 49.3,
+   "target": 60,
+   "d": -7,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "2-A-1",
+   "before": 88.5,
+   "after": 73.5,
+   "target": 90,
+   "d": -15,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "2-A-2",
+   "before": 76,
+   "after": 53.3,
+   "target": 84,
+   "d": -22.7,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "2-A-3",
+   "before": 72.8,
+   "after": 65.3,
+   "target": 78,
+   "d": -7.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-1",
+   "before": 84.5,
+   "after": 99.8,
+   "target": 90,
+   "d": 15.3,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-4",
+   "before": 82.5,
+   "after": 95,
+   "target": 78.8,
+   "d": 12.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-7",
+   "before": 64,
+   "after": 79,
+   "target": 67.5,
+   "d": 15,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-6",
+   "before": 68.8,
+   "after": 91,
+   "target": 71.3,
+   "d": 22.2,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-8",
+   "before": 60.3,
+   "after": 75.5,
+   "target": 63.8,
+   "d": 15.2,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "2-B-1",
+   "before": 87.5,
+   "after": 79.3,
+   "target": 90,
+   "d": -8.2,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "7-A-2",
+   "before": 64.3,
+   "after": 83.5,
+   "target": 70,
+   "d": 19.2,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "20-A-2",
+   "before": 80.3,
+   "after": 94.8,
+   "target": 81.3,
+   "d": 14.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "8-A-3",
+   "before": 47,
+   "after": 74,
+   "target": 50,
+   "d": 27,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "17-A-2",
+   "before": 72,
+   "after": 61,
+   "target": 75,
+   "d": -11,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "0-B-1",
+   "before": 88,
+   "after": 77,
+   "target": 90,
+   "d": -11,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "17-A-4",
+   "before": 39.8,
+   "after": 50.7,
+   "target": 40,
+   "d": 10.9,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "0-B-4",
+   "before": 41.8,
+   "after": 21.8,
+   "target": 40,
+   "d": -20,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-3",
+   "before": 71.8,
+   "after": 59.8,
+   "target": 71.4,
+   "d": -12,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-2",
+   "before": 86.5,
+   "after": 73,
+   "target": 85.7,
+   "d": -13.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-7",
+   "before": 60.5,
+   "after": 84.8,
+   "target": 64.3,
+   "d": 24.3,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-9",
+   "before": 30.3,
+   "after": 25.5,
+   "target": 40,
+   "d": -4.8,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-8",
+   "before": 53.8,
+   "after": 40.5,
+   "target": 60,
+   "d": -13.3,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "17-A-1",
+   "before": 74.8,
+   "after": 63.8,
+   "target": 80,
+   "d": -11,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-1",
+   "before": 87.8,
+   "after": 59.3,
+   "target": 90,
+   "d": -28.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  }
+ ],
+ "bigMoves": [
+  {
+   "code": "10-A-2",
+   "before": 14.8,
+   "after": 76.8,
+   "target": 70,
+   "d": 62,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "14-A-1",
+   "before": 45.5,
+   "after": 98.5,
+   "target": 90,
+   "d": 53,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "2-A-7",
+   "before": 87,
+   "after": 35,
+   "target": 40,
+   "d": -52,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "1-A-1",
+   "before": 91.8,
+   "after": 42.3,
+   "target": 90,
+   "d": -49.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "1-A-2",
+   "before": 67.5,
+   "after": 23.5,
+   "target": 80,
+   "d": -44,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "10-A-4",
+   "before": 0,
+   "after": 33,
+   "target": 60,
+   "d": 33,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "14-A-4",
+   "before": 27.3,
+   "after": 59.3,
+   "target": 60,
+   "d": 32,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-1",
+   "before": 87.8,
+   "after": 59.3,
+   "target": 90,
+   "d": -28.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "14-A-2",
+   "before": 66.5,
+   "after": 94.8,
+   "target": 80,
+   "d": 28.3,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "8-A-3",
+   "before": 47,
+   "after": 74,
+   "target": 50,
+   "d": 27,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-7",
+   "before": 60.5,
+   "after": 84.8,
+   "target": 64.3,
+   "d": 24.3,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "14-A-3",
+   "before": 48.5,
+   "after": 24.3,
+   "target": 70,
+   "d": -24.2,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "2-A-2",
+   "before": 76,
+   "after": 53.3,
+   "target": 84,
+   "d": -22.7,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-9",
+   "before": 38.3,
+   "after": 60.8,
+   "target": 60,
+   "d": 22.5,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-10",
+   "before": 29,
+   "after": 51.3,
+   "target": 40,
+   "d": 22.3,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-6",
+   "before": 68.8,
+   "after": 91,
+   "target": 71.3,
+   "d": 22.2,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "7-A-3",
+   "before": 89.5,
+   "after": 69.3,
+   "target": 70,
+   "d": -20.2,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "0-B-4",
+   "before": 41.8,
+   "after": 21.8,
+   "target": 40,
+   "d": -20,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "7-A-2",
+   "before": 64.3,
+   "after": 83.5,
+   "target": 70,
+   "d": 19.2,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-5",
+   "before": 57.3,
+   "after": 76,
+   "target": 75,
+   "d": 18.7,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "20-A-4",
+   "before": 53,
+   "after": 69,
+   "target": 35.5,
+   "d": 16,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-1",
+   "before": 84.5,
+   "after": 99.8,
+   "target": 90,
+   "d": 15.3,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-8",
+   "before": 60.3,
+   "after": 75.5,
+   "target": 63.8,
+   "d": 15.2,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "2-A-1",
+   "before": 88.5,
+   "after": 73.5,
+   "target": 90,
+   "d": -15,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-7",
+   "before": 64,
+   "after": 79,
+   "target": 67.5,
+   "d": 15,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "20-A-6",
+   "before": 69.8,
+   "after": 84.5,
+   "target": 61.6,
+   "d": 14.7,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "20-A-2",
+   "before": 80.3,
+   "after": 94.8,
+   "target": 81.3,
+   "d": 14.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-2",
+   "before": 86.5,
+   "after": 73,
+   "target": 85.7,
+   "d": -13.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-8",
+   "before": 53.8,
+   "after": 40.5,
+   "target": 60,
+   "d": -13.3,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-3",
+   "before": 62,
+   "after": 74.5,
+   "target": 72.5,
+   "d": 12.5,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-4",
+   "before": 82.5,
+   "after": 95,
+   "target": 78.8,
+   "d": 12.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "11-A-4",
+   "before": 30.8,
+   "after": 42.8,
+   "target": 40,
+   "d": 12,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "18-A-3",
+   "before": 71.8,
+   "after": 59.8,
+   "target": 71.4,
+   "d": -12,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "5-A-2",
+   "before": 69,
+   "after": 57.3,
+   "target": 65,
+   "d": -11.7,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "17-A-2",
+   "before": 72,
+   "after": 61,
+   "target": 75,
+   "d": -11,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "0-B-1",
+   "before": 88,
+   "after": 77,
+   "target": 90,
+   "d": -11,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "17-A-1",
+   "before": 74.8,
+   "after": 63.8,
+   "target": 80,
+   "d": -11,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "17-A-4",
+   "before": 39.8,
+   "after": 50.7,
+   "target": 40,
+   "d": 10.9,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "0-B-3",
+   "before": 58.3,
+   "after": 68,
+   "target": 60,
+   "d": 9.7,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "14-A-5",
+   "before": 17,
+   "after": 26,
+   "target": 40,
+   "d": 9,
+   "sameFight": false,
+   "wasGreen": false,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "19-A-2",
+   "before": 78.5,
+   "after": 87,
+   "target": 86.3,
+   "d": 8.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "2-B-2",
+   "before": 72.8,
+   "after": 81.3,
+   "target": 75,
+   "d": 8.5,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": true,
+   "games": [
+    400,
+    400
+   ]
+  },
+  {
+   "code": "2-B-1",
+   "before": 87.5,
+   "after": 79.3,
+   "target": 90,
+   "d": -8.2,
+   "sameFight": false,
+   "wasGreen": true,
+   "nowGreen": false,
+   "games": [
+    400,
+    400
+   ]
+  }
+ ],
+ "outOfBand": [
+  {
+   "code": "1-A-2",
+   "win": 23.5,
+   "target": 80,
+   "gap": -56.5
+  },
+  {
+   "code": "2-A-4",
+   "win": 23.3,
+   "target": 72,
+   "gap": -48.7
+  },
+  {
+   "code": "1-A-1",
+   "win": 42.3,
+   "target": 90,
+   "gap": -47.7
+  },
+  {
+   "code": "14-A-3",
+   "win": 24.3,
+   "target": 70,
+   "gap": -45.7
+  },
+  {
+   "code": "20-A-4",
+   "win": 69,
+   "target": 35.5,
+   "gap": 33.5
+  },
+  {
+   "code": "2-A-2",
+   "win": 53.3,
+   "target": 84,
+   "gap": -30.7
+  },
+  {
+   "code": "18-A-1",
+   "win": 59.3,
+   "target": 90,
+   "gap": -30.7
+  },
+  {
+   "code": "10-A-4",
+   "win": 33,
+   "target": 60,
+   "gap": -27
+  },
+  {
+   "code": "8-A-3",
+   "win": 74,
+   "target": 50,
+   "gap": 24
+  },
+  {
+   "code": "20-A-6",
+   "win": 84.5,
+   "target": 61.6,
+   "gap": 22.9
+  },
+  {
+   "code": "10-A-5",
+   "win": 17.3,
+   "target": 40,
+   "gap": -22.7
+  },
+  {
+   "code": "18-A-7",
+   "win": 84.8,
+   "target": 64.3,
+   "gap": 20.5
+  },
+  {
+   "code": "20-A-7",
+   "win": 75.5,
+   "target": 55.4,
+   "gap": 20.1
+  },
+  {
+   "code": "19-A-6",
+   "win": 91,
+   "target": 71.3,
+   "gap": 19.7
+  },
+  {
+   "code": "18-A-8",
+   "win": 40.5,
+   "target": 60,
+   "gap": -19.5
+  },
+  {
+   "code": "0-B-4",
+   "win": 21.8,
+   "target": 40,
+   "gap": -18.2
+  },
+  {
+   "code": "2-A-6",
+   "win": 43.3,
+   "target": 60,
+   "gap": -16.7
+  },
+  {
+   "code": "2-A-1",
+   "win": 73.5,
+   "target": 90,
+   "gap": -16.5
+  },
+  {
+   "code": "19-A-4",
+   "win": 95,
+   "target": 78.8,
+   "gap": 16.2
+  },
+  {
+   "code": "17-A-1",
+   "win": 63.8,
+   "target": 80,
+   "gap": -16.2
+  },
+  {
+   "code": "14-A-2",
+   "win": 94.8,
+   "target": 80,
+   "gap": 14.8
+  },
+  {
+   "code": "18-A-9",
+   "win": 25.5,
+   "target": 40,
+   "gap": -14.5
+  },
+  {
+   "code": "17-A-2",
+   "win": 61,
+   "target": 75,
+   "gap": -14
+  },
+  {
+   "code": "14-A-5",
+   "win": 26,
+   "target": 40,
+   "gap": -14
+  },
+  {
+   "code": "7-A-2",
+   "win": 83.5,
+   "target": 70,
+   "gap": 13.5
+  },
+  {
+   "code": "20-A-2",
+   "win": 94.8,
+   "target": 81.3,
+   "gap": 13.5
+  },
+  {
+   "code": "0-B-1",
+   "win": 77,
+   "target": 90,
+   "gap": -13
+  },
+  {
+   "code": "2-A-3",
+   "win": 65.3,
+   "target": 78,
+   "gap": -12.7
+  },
+  {
+   "code": "18-A-2",
+   "win": 73,
+   "target": 85.7,
+   "gap": -12.7
+  },
+  {
+   "code": "19-A-8",
+   "win": 75.5,
+   "target": 63.8,
+   "gap": 11.7
+  },
+  {
+   "code": "18-A-3",
+   "win": 59.8,
+   "target": 71.4,
+   "gap": -11.6
+  },
+  {
+   "code": "19-A-7",
+   "win": 79,
+   "target": 67.5,
+   "gap": 11.5
+  },
+  {
+   "code": "19-A-10",
+   "win": 51.3,
+   "target": 40,
+   "gap": 11.3
+  },
+  {
+   "code": "1-A-4",
+   "win": 49.3,
+   "target": 60,
+   "gap": -10.7
+  },
+  {
+   "code": "2-B-1",
+   "win": 79.3,
+   "target": 90,
+   "gap": -10.7
+  },
+  {
+   "code": "17-A-4",
+   "win": 50.7,
+   "target": 40,
+   "gap": 10.7
+  },
+  {
+   "code": "19-A-1",
+   "win": 99.8,
+   "target": 90,
+   "gap": 9.8
+  },
+  {
+   "code": "14-A-1",
+   "win": 98.5,
+   "target": 90,
+   "gap": 8.5
+  }
+ ]
+}

@@ -1,0 +1,81 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T05:43:20.760Z",
+ "map": {
+  "id": "my",
+  "num": 14,
+  "name": "The Canopy"
+ },
+ "pool": [
+  "amber-cicada",
+  "bramblewood-macaque",
+  "camouflage-frog",
+  "canopy-sloth-guardian",
+  "fishing-cat",
+  "hoopoe-herald",
+  "jaguar-stalker",
+  "kinkajou-lurker",
+  "mosquito-cloud",
+  "pride-queen",
+  "proboscis-monkey"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "amber-cicada": 4,
+    "camouflage-frog": 4,
+    "canopy-sloth-guardian": 4,
+    "fishing-cat": 3,
+    "jaguar-stalker": 3,
+    "pride-queen": 2
+   },
+   "score": 0,
+   "ci": [
+    -0.0072,
+    0.0072
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "strike-first x8"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1792,
+   "seconds": 23
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "amber-cicada": 4,
+    "camouflage-frog": 4,
+    "hoopoe-herald": 4,
+    "mosquito-cloud": 4,
+    "proboscis-monkey": 4
+   },
+   "score": 0.026,
+   "ci": [
+    0.0034,
+    0.0487
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "tide x8"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 7,
+   "games": 1872,
+   "seconds": 31
+  }
+ ]
+}

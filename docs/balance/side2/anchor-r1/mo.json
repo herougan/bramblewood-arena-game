@@ -1,0 +1,54 @@
+{
+ "map": "mo",
+ "name": "The Old Bramble",
+ "code": "0-B-4",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 15,
+ "current": {
+  "deck": {
+   "bramble-sprout": 1,
+   "bramblewood-lynx": 1,
+   "earthworm": 2,
+   "elder-willow": 4,
+   "ent": 3,
+   "quill-thorn-boar": 1,
+   "thorn-shrike": 3
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "0-B-BPRO-1",
+  "focus": "family:spite",
+  "deck": {
+   "barkplate-beetle": 3,
+   "bramble-sprout": 4,
+   "ent": 3,
+   "farm-dog": 4,
+   "quill-thorn-boar": 3,
+   "sergeant-bramblefox": 3
+  }
+ },
+ "offPool": [
+  "sergeant-bramblefox"
+ ],
+ "deck": {
+  "ent": 3,
+  "bramble-sprout": 1,
+  "farm-dog": 4,
+  "barkplate-beetle": 1,
+  "quill-thorn-boar": 1,
+  "earthworm": 4,
+  "elder-willow": 1
+ },
+ "problems": [],
+ "skWin": 20.5,
+ "verdict": "too-hard",
+ "gap": -19.5,
+ "sec": 6
+}

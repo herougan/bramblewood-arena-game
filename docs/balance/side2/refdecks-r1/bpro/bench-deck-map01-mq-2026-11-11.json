@@ -1,0 +1,682 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-12T20:02:31.627Z",
+ "fingerprint": "9ee4b33dbf8e",
+ "map": {
+  "id": "mq",
+  "num": 1,
+  "name": "Clovermead"
+ },
+ "level": 1,
+ "pool": [
+  "ant-scout",
+  "bee-forager",
+  "chipmunk-cavalry",
+  "clover-butterfly",
+  "cottontail",
+  "dormouse",
+  "honey-bee",
+  "jackrabbit-sprinter",
+  "lucky-hopper",
+  "meadow-rabbit",
+  "puddle-skimmer",
+  "robin-redbreast"
+ ],
+ "poolNames": [
+  "Ant Scout",
+  "Bee Forager",
+  "Chipmunk Cavalry",
+  "Clover Butterfly",
+  "Cottontail",
+  "Dormouse",
+  "Honey Bee",
+  "Jackrabbit Sprinter",
+  "Lucky Hopper",
+  "Meadow Rabbit",
+  "Puddle Skimmer",
+  "Robin Redbreast"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:1-A-1",
+   "label": "vs 1-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-2",
+   "label": "vs 1-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-3",
+   "label": "vs 1-A-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-4",
+   "label": "vs 1-A-4 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-5",
+   "label": "vs 1-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 1-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road12",
+   "label": "vs reference deck (Map 12) under 1-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "bee-forager",
+    "clover-butterfly",
+    "honey-bee",
+    "robin-redbreast"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "chipmunk-cavalry",
+    "jackrabbit-sprinter"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "chipmunk-cavalry",
+    "jackrabbit-sprinter",
+    "lucky-hopper"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 7,
+   "moves": 2,
+   "games": 1648,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 8,
+   "moves": 3,
+   "games": 1504,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 14,
+   "moves": 5,
+   "games": 1632,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 8,
+   "moves": 4,
+   "games": 1552,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 125,
+ "games": 6848,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "strike-first x8",
+    "flying x8"
+   ],
+   "deck": {
+    "chipmunk-cavalry": 4,
+    "clover-butterfly": 4,
+    "dormouse": 4,
+    "jackrabbit-sprinter": 4,
+    "robin-redbreast": 4
+   },
+   "cards": [
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "clover-butterfly",
+     "name": "Clover Butterfly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dormouse",
+     "name": "Dormouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "jackrabbit-sprinter",
+     "name": "Jackrabbit Sprinter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.9323,
+   "ci": [
+    0.9006,
+    0.964
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "strike-first x8",
+    "flying x6"
+   ],
+   "deck": {
+    "chipmunk-cavalry": 4,
+    "honey-bee": 4,
+    "jackrabbit-sprinter": 4,
+    "meadow-rabbit": 3,
+    "puddle-skimmer": 3,
+    "robin-redbreast": 2
+   },
+   "cards": [
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "honey-bee",
+     "name": "Honey Bee",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "jackrabbit-sprinter",
+     "name": "Jackrabbit Sprinter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "meadow-rabbit",
+     "name": "Meadow Rabbit",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "puddle-skimmer",
+     "name": "Puddle Skimmer",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.6979,
+   "ci": [
+    0.6374,
+    0.7585
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.15,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "ant-scout": 3,
+    "chipmunk-cavalry": 4,
+    "clover-butterfly": 4,
+    "dormouse": 1,
+    "meadow-rabbit": 4,
+    "puddle-skimmer": 4
+   },
+   "cards": [
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "clover-butterfly",
+     "name": "Clover Butterfly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "meadow-rabbit",
+     "name": "Meadow Rabbit",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "puddle-skimmer",
+     "name": "Puddle Skimmer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ant-scout",
+     "name": "Ant Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "dormouse",
+     "name": "Dormouse",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6979,
+   "ci": [
+    0.6418,
+    0.7541
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.2,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "strike-first x8",
+    "flying x6"
+   ],
+   "deck": {
+    "ant-scout": 3,
+    "bee-forager": 4,
+    "chipmunk-cavalry": 4,
+    "cottontail": 3,
+    "jackrabbit-sprinter": 4,
+    "robin-redbreast": 2
+   },
+   "cards": [
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "jackrabbit-sprinter",
+     "name": "Jackrabbit Sprinter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "ant-scout",
+     "name": "Ant Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "cottontail",
+     "name": "Cottontail",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.6719,
+   "ci": [
+    0.6139,
+    0.7299
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mq --pool ant-scout,bee-forager,chipmunk-cavalry,clover-butterfly,cottontail,dormouse,honey-bee,jackrabbit-sprinter,lucky-hopper,meadow-rabbit,puddle-skimmer,robin-redbreast --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:flying,family:strike-first,big,open --level 1 --mode map-true"
+}

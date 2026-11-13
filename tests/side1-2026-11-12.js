@@ -18,7 +18,15 @@ let fail = 0, pass = 0; const ok = (c, m) => { if (c) pass++; else { fail++; con
 const L = require(path.join(ROOT, 'tools', 'side1', 'lib_side1_2026_11_12.js')), C = L.C;
 const P = L.pools(), PR = J('docs/design/side-picks-proposal-2026-11-12.json').maps, OWNER = J('docs/design/map-picks-owner-2026-11-12.json').maps;
 ok(L.SIDES.length === 15 && L.SIDES.every(s => PR[s]), '0. a proposal for each of the 15 side maps of Maps 0-21');
-L.SIDES.forEach(s => {
+// 2026-11-13 (SIDE2, TESTFIX1's way): LIST1 (2026-11-13) folded the owner's own 11-13 picks into the side lists (docs/balance/list1/fold-2026-11-13.json;
+// his picks win over Claude's SIDE1 proposal, and tests/list1-2026-11-13.js holds them). Where LIST1's record has a side map, its live list is checked
+// against that record (his Yes + the kept Carried cards, every Yes listed) and SIDE1's own rules (NEW! 1-3, Carried 8, 1-3 skills, the proposal
+// as the list) are not asked of it; the proposal file and the record checks below stay
+const L1 = J('docs/balance/list1/fold-2026-11-13.json').side, sameSet = (a, b) => JSON.stringify([...new Set(a)].sort()) === JSON.stringify([...new Set(b)].sort());
+L.SIDES.filter(s => L1[s]).forEach(s => { const live = (P[L.parentOf(s, P)].submaps || {})[s] || [], r = L1[s];
+  ok(sameSet(live, r.ownerYes.concat(r.keptCarried)), `1. ${s}: the list is LIST1's (the owner's 11-13 Yes + kept Carried)`);
+  ok(r.ownerYes.every(id => live.includes(id)), `1. ${s}: every one of the owner's 11-13 Yes picks is listed`); });
+L.SIDES.filter(s => !L1[s]).forEach(s => {
   const par = L.parentOf(s, P), list = (P[par].submaps || {})[s] || [], pr = PR[s] || { yes: [] }, idx = L.carriedIndex(L.unlockOf(s), P);
   ok(list.length === pr.yes.length && list.every(id => pr.yes.includes(id)), `1. ${s}: the list is its Yes picks`);
   const neu = list.filter(id => !idx.has(id)), car = list.filter(id => idx.has(id)), nNew = neu.filter(id => !L.baby(id)).length;
@@ -31,7 +39,8 @@ L.SIDES.forEach(s => {
   neu.forEach(id => ok(!!(C[id].source && C[id].source.kind), `4. ${s}: NEW! ${id} has a source`));
   ok(pr.no.every(id => !list.includes(id)), `1. ${s}: no No card on the list`);
 });
-ok(!P.m1.submaps.mo.includes('house-cat') && !P.md.submaps.mpd.includes('armadillo-guard'), '3. House Cat and Armadillo Guard (cut 11-01) are off The Old Bramble and The Pale Desert');
+{ const Y13 = J('docs/design/map-picks-owner-2026-11-13.json').maps, yes13 = (m, id) => ((Y13[m] || {}).yes || []).includes(id); /* SIDE2: unless the owner picked them again on 11-13 */
+ok((!P.m1.submaps.mo.includes('house-cat') || yes13('mo', 'house-cat')) && (!P.md.submaps.mpd.includes('armadillo-guard') || yes13('mpd', 'armadillo-guard')), '3. House Cat and Armadillo Guard (cut 11-01) are off The Old Bramble and The Pale Desert'); }
 ok(PR.mo.ownerFlags && JSON.stringify(PR.mo.ownerFlags.yes) === JSON.stringify(OWNER.mo.yes) && PR.mo.yes.filter(id => OWNER.mo.yes.includes(id)).length === 3, '5. The Old Bramble keeps his 6 flags; its list takes 3 of them');
 // 6. the record
 const sql = read('supabase/proposed/20261112_side1_map_picks.sql');
@@ -47,5 +56,24 @@ ok(fs.existsSync(path.join(ROOT, 'docs/balance/side1/phase-b-plan.md')) && /refd
 ok(/SIDE1/.test(read('docs/project-state.md')) && /side maps are tuned now/i.test(read('docs/project-state.md')) && /SK anchor/i.test(read('docs/project-state.md')), '6. project-state: side maps tuned now, the SK anchor');
 ok(read('docs/CHANGELOG.md').slice(0, 20000).includes('SIDE1'), '6. a CHANGELOG entry near the top');
 ok(read('tests/run-all.sh').includes('tests/side1-2026-11-12.js'), '6. listed in run-all.sh');
+// 7. (2026-11-13, package SIDE2) the card editor's budget readout reads every card as tools/skill_costs.js does: the Attack that counts (an
+//    Archer's, or arrow {swings: 'never'}, is 0; Hibernate's is its awake share). SIDE1 found Stonedrop Vulture at 247% in the editor, 74% in the tools.
+{
+  const LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), BB = require(path.join(ROOT, 'bramblewood-budget.js'));
+  const fnA = new Function('BramblewoodBudget', LB.grab('sbAttackMult') + '\n' + LB.grab('sbAttackOf') + '\nreturn sbAttackOf;')(BB);
+  const app = read('arena_app.js'), ce = app.slice(app.indexOf('function ceBudgetHTML('), app.indexOf('function ceBudgetHTML(') + 400);
+  ok(/A = sbAttackOf\(d\)/.test(ce), '7. the card editor\'s budget box (ceBudgetHTML) counts sbAttackOf, not the printed Attack');
+  const v = LB.CARD_DEFS_BASELINE['stonedrop-vulture'];
+  ok(v && fnA(v) === 0, '7. Stonedrop Vulture (arrow, swings never): the editor counts 0 Attack');
+  const bad = [];
+  Object.values(LB.CARD_DEFS_BASELINE).forEach(d => { if (!d || !d.id || d.attack == null) return;
+    const e = BB.SPL ? BB.SPL.expandDef(d).effects || {} : d.effects || {};
+    const toolsA = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0) * (e.hibernate ? 1 - BB.EN6_HIBERNATE_UPTIME : 1);
+    if (Math.abs(fnA(d) - toolsA) > 1e-9) bad.push(d.id); });
+  const cpr = J('docs/balance/card-power-2026-11-12.json').cards, apart = cpr.filter(r => Math.abs(r.use - r.toolsUse) >= 2);
+  ok(cpr.length > 100 && !apart.length, '7. card power report: the editor box and tools/skill_costs.js read every card in play within 2 points (' + apart.slice(0, 5).map(r => r.name + ' ' + r.use + '/' + r.toolsUse).join(', ') + ')');
+  ok(/sbCheck\(A, D, S, N, M, F, SH, sbEffectsOf\(d\)\)/.test(ce), '7. the editor box passes the effects (Bloom\'s body copy) to the shared capScores');
+  ok(!bad.length, '7. the editor\'s Attack that counts equals the tools\' for every card (' + bad.slice(0, 6).join(', ') + ')');
+}
 console.log(fail ? `side1-2026-11-12: ${fail} of ${pass + fail} failed` : `side1-2026-11-12: all ${pass} passed`);
 process.exit(fail ? 1 : 0);

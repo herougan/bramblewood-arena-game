@@ -1,0 +1,81 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:29:56.274Z",
+ "map": {
+  "id": "mo",
+  "num": 0,
+  "name": "The Old Bramble"
+ },
+ "pool": [
+  "barkplate-beetle",
+  "bramble-sprout",
+  "bramblewood-lynx",
+  "earthworm",
+  "elder-willow",
+  "ent",
+  "farm-dog",
+  "quill-thorn-boar",
+  "quillguard",
+  "sergeant-bramblefox",
+  "thorn-shrike"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "barkplate-beetle": 4,
+    "earthworm": 3,
+    "elder-willow": 4,
+    "quill-thorn-boar": 3,
+    "quillguard": 3,
+    "thorn-shrike": 3
+   },
+   "score": 0.2857,
+   "ci": [
+    0.227,
+    0.3444
+   ],
+   "refWins": 0.7083,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "spite x7"
+   ],
+   "apartFrom": [],
+   "steps": 9,
+   "games": 1750,
+   "seconds": 23
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "bramble-sprout": 3,
+    "elder-willow": 4,
+    "farm-dog": 4,
+    "quillguard": 3,
+    "sergeant-bramblefox": 3,
+    "thorn-shrike": 3
+   },
+   "score": 0.3571,
+   "ci": [
+    0.2914,
+    0.4229
+   ],
+   "refWins": 0.7778,
+   "labels": [
+    "midrange (average 1.1 Lumber)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 14,
+   "games": 1736,
+   "seconds": 22
+  }
+ ]
+}

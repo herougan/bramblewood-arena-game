@@ -1,0 +1,844 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T05:24:37.013Z",
+ "fingerprint": "53a2adc56d03",
+ "map": {
+  "id": "mpd",
+  "num": 18,
+  "name": "The Pale Desert"
+ },
+ "level": 1,
+ "pool": [
+  "anhinga-spearbird",
+  "antlion-pit",
+  "barrel-cactus",
+  "caustic-scorpion",
+  "dromedary",
+  "dune-jackal",
+  "dust-devil-kestrel",
+  "eagle-owl-quartermaster",
+  "fire-ant-raft",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "grave-grin-hyena",
+  "horned-lizard",
+  "ibex-rockcaller",
+  "pale-oryx",
+  "pronghorn-racer",
+  "roadrunner-courier",
+  "sand-widow",
+  "stoat-cutthroat",
+  "thorny-devil",
+  "tide-spirit",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Anhinga Spearbird",
+  "Antlion Pit",
+  "Barrel Cactus",
+  "Caustic Scorpion",
+  "Dromedary",
+  "Dune Jackal",
+  "Dust-devil Kestrel",
+  "Eagle-Owl Quartermaster",
+  "Fire Ant Raft",
+  "Gallery Orb-Weaver",
+  "Giant Cave Huntsman",
+  "Grave-Grin Hyena",
+  "Horned Lizard",
+  "Ibex Rockcaller",
+  "Pale Oryx",
+  "Pronghorn Racer",
+  "Roadrunner Courier",
+  "Sand Widow",
+  "Stoat Cutthroat",
+  "Thorny Devil",
+  "Tide Seahorse",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "antlion-pit",
+   "barrel-cactus",
+   "caustic-scorpion",
+   "dromedary",
+   "dune-jackal",
+   "dust-devil-kestrel",
+   "horned-lizard",
+   "pale-oryx",
+   "roadrunner-courier",
+   "sand-widow"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:18-A-1",
+   "label": "vs 18-A-1 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-2",
+   "label": "vs 18-A-2 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-3",
+   "label": "vs 18-A-3 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-4",
+   "label": "vs 18-A-4 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-5",
+   "label": "vs 18-A-5 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-6",
+   "label": "vs 18-A-6 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-7",
+   "label": "vs 18-A-7 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-8",
+   "label": "vs 18-A-8 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-9",
+   "label": "vs 18-A-9 boss's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 18-A-1's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:road19",
+   "label": "vs reference deck (Map 19) under 18-A-2's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+   "weight": 0.0833
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "anhinga-spearbird",
+    "dune-jackal",
+    "giant-cave-huntsman",
+    "pronghorn-racer",
+    "roadrunner-courier",
+    "stoat-cutthroat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:poison",
+   "label": "poison (skill family)",
+   "cards": [
+    "caustic-scorpion",
+    "fire-ant-raft",
+    "gallery-orb-weaver",
+    "sand-widow"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "anhinga-spearbird",
+    "antlion-pit",
+    "barrel-cactus",
+    "caustic-scorpion",
+    "dromedary",
+    "dune-jackal",
+    "dust-devil-kestrel",
+    "eagle-owl-quartermaster",
+    "fire-ant-raft",
+    "gallery-orb-weaver",
+    "giant-cave-huntsman",
+    "horned-lizard",
+    "ibex-rockcaller",
+    "pale-oryx",
+    "pronghorn-racer",
+    "roadrunner-courier",
+    "sand-widow",
+    "stoat-cutthroat",
+    "thorny-devil",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:strike-first",
+   "steps": 6,
+   "moves": 3,
+   "games": 2088,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:poison",
+   "steps": 6,
+   "moves": 6,
+   "games": 2088,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 7,
+   "moves": 3,
+   "games": 2016,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 7,
+   "moves": 4,
+   "games": 2208,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 173,
+ "games": 9168,
+ "decks": [
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "big (18 copies at 1+ Lumber, average 0.9)",
+    "strike-first x8"
+   ],
+   "deck": {
+    "antlion-pit": 4,
+    "dromedary": 4,
+    "ibex-rockcaller": 2,
+    "pronghorn-racer": 4,
+    "roadrunner-courier": 4,
+    "tide-spirit": 2
+   },
+   "cards": [
+    {
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dromedary",
+     "name": "Dromedary",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pronghorn-racer",
+     "name": "Pronghorn Racer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "roadrunner-courier",
+     "name": "Roadrunner Courier",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8108,
+   "ci": [
+    0.77,
+    0.8515
+   ],
+   "avgLumber": 0.9,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 2,
+    "1": 18
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.5208,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (18 copies at 1+ Lumber, average 0.9)",
+    "spite x7"
+   ],
+   "deck": {
+    "barrel-cactus": 3,
+    "caustic-scorpion": 4,
+    "dromedary": 4,
+    "giant-cave-huntsman": 3,
+    "thorny-devil": 4,
+    "tide-spirit": 2
+   },
+   "cards": [
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dromedary",
+     "name": "Dromedary",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "thorny-devil",
+     "name": "Thorny Devil",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "barrel-cactus",
+     "name": "Barrel Cactus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.809,
+   "ci": [
+    0.775,
+    0.843
+   ],
+   "avgLumber": 0.9,
+   "avgWait": 1.9,
+   "curve": {
+    "0": 2,
+    "1": 18
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "spite",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.0417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (14 copies at 1+ Lumber, average 0.7)"
+   ],
+   "deck": {
+    "barrel-cactus": 3,
+    "caustic-scorpion": 4,
+    "eagle-owl-quartermaster": 3,
+    "grave-grin-hyena": 4,
+    "roadrunner-courier": 4,
+    "tide-spirit": 2
+   },
+   "cards": [
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "roadrunner-courier",
+     "name": "Roadrunner Courier",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "barrel-cactus",
+     "name": "Barrel Cactus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8021,
+   "ci": [
+    0.7602,
+    0.844
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 6,
+    "1": 14
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:poison",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.9)",
+    "poison x8"
+   ],
+   "deck": {
+    "caustic-scorpion": 3,
+    "gallery-orb-weaver": 2,
+    "grave-grin-hyena": 4,
+    "horned-lizard": 4,
+    "sand-widow": 3,
+    "thorny-devil": 4
+   },
+   "cards": [
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "horned-lizard",
+     "name": "Horned Lizard",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "thorny-devil",
+     "name": "Thorny Devil",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "name": "Gallery Orb-Weaver",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7847,
+   "ci": [
+    0.7442,
+    0.8253
+   ],
+   "avgLumber": 0.95,
+   "avgWait": 1.5,
+   "curve": {
+    "0": 4,
+    "1": 13,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "poison",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.2083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mpd --pool anhinga-spearbird,antlion-pit,barrel-cactus,caustic-scorpion,dromedary,dune-jackal,dust-devil-kestrel,eagle-owl-quartermaster,fire-ant-raft,gallery-orb-weaver,giant-cave-huntsman,grave-grin-hyena,horned-lizard,ibex-rockcaller,pale-oryx,pronghorn-racer,roadrunner-courier,sand-widow,stoat-cutthroat,thorny-devil,tide-spirit,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:strike-first,family:poison,big,open --anchor antlion-pit,barrel-cactus,caustic-scorpion,dromedary,dune-jackal,dust-devil-kestrel,horned-lizard,pale-oryx,roadrunner-courier,sand-widow --anchor-min 10 --level 1 --mode map-true"
+}

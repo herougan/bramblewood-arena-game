@@ -1,0 +1,732 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T00:48:52.464Z",
+ "fingerprint": "cd1103b85b23",
+ "map": {
+  "id": "mq",
+  "num": 1,
+  "name": "Clovermead"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "alpine-marmot",
+  "ant-scout",
+  "balloon-archer",
+  "barkplate-beetle",
+  "bee-forager",
+  "bee-knight",
+  "bee-sentry",
+  "burrow-rabbit",
+  "chipmunk-cavalry",
+  "clover-butterfly",
+  "compost-grub",
+  "cottontail",
+  "dormouse",
+  "honey-bee",
+  "jackrabbit-sprinter",
+  "lucky-hopper",
+  "meadow-rabbit",
+  "mountain-hare",
+  "mudpuppy",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "planarian-splitter",
+  "puddle-skimmer",
+  "robin-redbreast"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Alpine Marmot",
+  "Ant Scout",
+  "Balloon Archer",
+  "Barkplate Beetle",
+  "Bee Forager",
+  "Bee Warden",
+  "Bee Sentry",
+  "Burrow Rabbit",
+  "Chipmunk Cavalry",
+  "Clover Butterfly",
+  "Compost Grub",
+  "Cottontail",
+  "Dormouse",
+  "Honey Bee",
+  "Jackrabbit Sprinter",
+  "Lucky Hopper",
+  "Meadow Rabbit",
+  "Mountain Hare",
+  "Mudpuppy",
+  "Newt Doctor",
+  "Nutria Reedcutter",
+  "Planarian Splitter",
+  "Puddle Skimmer",
+  "Robin Redbreast"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "ant-scout",
+   "bee-forager",
+   "chipmunk-cavalry",
+   "clover-butterfly",
+   "compost-grub",
+   "cottontail",
+   "dormouse",
+   "honey-bee",
+   "jackrabbit-sprinter",
+   "lucky-hopper",
+   "meadow-rabbit",
+   "puddle-skimmer",
+   "robin-redbreast"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:1-A-1",
+   "label": "vs 1-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-2",
+   "label": "vs 1-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-3",
+   "label": "vs 1-A-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-4",
+   "label": "vs 1-A-4 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-5",
+   "label": "vs 1-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 1-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road12",
+   "label": "vs reference deck (Map 12) under 1-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "balloon-archer",
+    "bee-forager",
+    "bee-sentry",
+    "clover-butterfly",
+    "honey-bee",
+    "robin-redbreast"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "balloon-archer",
+    "barkplate-beetle",
+    "chipmunk-cavalry",
+    "jackrabbit-sprinter",
+    "lucky-hopper",
+    "planarian-splitter"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "alley-cat",
+    "alpine-marmot",
+    "ant-scout",
+    "bee-forager",
+    "bee-knight",
+    "bee-sentry",
+    "burrow-rabbit",
+    "clover-butterfly",
+    "compost-grub",
+    "cottontail",
+    "dormouse",
+    "honey-bee",
+    "meadow-rabbit",
+    "mountain-hare",
+    "mudpuppy",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "puddle-skimmer",
+    "robin-redbreast"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 9,
+   "moves": 4,
+   "games": 2128,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "big",
+   "steps": 8,
+   "moves": 3,
+   "games": 2112,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "swarm",
+   "steps": 10,
+   "moves": 1,
+   "games": 2048,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 10,
+   "moves": 5,
+   "games": 2112,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 178,
+ "games": 8912,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (17 copies at 0 Lumber)",
+    "flying x7"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "burrow-rabbit": 2,
+    "chipmunk-cavalry": 3,
+    "clover-butterfly": 3,
+    "mountain-hare": 4,
+    "robin-redbreast": 4
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "clover-butterfly",
+     "name": "Clover Butterfly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.9219,
+   "ci": [
+    0.8889,
+    0.9549
+   ],
+   "avgLumber": 0.15,
+   "avgWait": 0.1,
+   "curve": {
+    "0": 17,
+    "1": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "alpine-marmot": 3,
+    "ant-scout": 2,
+    "bee-sentry": 3,
+    "chipmunk-cavalry": 4,
+    "meadow-rabbit": 4
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "meadow-rabbit",
+     "name": "Meadow Rabbit",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "ant-scout",
+     "name": "Ant Scout",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.9063,
+   "ci": [
+    0.8672,
+    0.9453
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.3,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (18 copies at 0 Lumber)",
+    "flying x16"
+   ],
+   "deck": {
+    "balloon-archer": 2,
+    "bee-forager": 3,
+    "bee-sentry": 4,
+    "burrow-rabbit": 4,
+    "clover-butterfly": 3,
+    "robin-redbreast": 4
+   },
+   "cards": [
+    {
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "clover-butterfly",
+     "name": "Clover Butterfly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8906,
+   "ci": [
+    0.8519,
+    0.9293
+   ],
+   "avgLumber": 0.1,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 18,
+    "1": 2
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 16
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.7)"
+   ],
+   "deck": {
+    "alpine-marmot": 2,
+    "barkplate-beetle": 3,
+    "chipmunk-cavalry": 4,
+    "dormouse": 4,
+    "lucky-hopper": 3,
+    "mountain-hare": 4
+   },
+   "cards": [
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "dormouse",
+     "name": "Dormouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lucky-hopper",
+     "name": "Lucky Hopper",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8385,
+   "ci": [
+    0.7959,
+    0.8812
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 10,
+    "1": 7,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mq --pool alley-cat,alpine-marmot,ant-scout,balloon-archer,barkplate-beetle,bee-forager,bee-knight,bee-sentry,burrow-rabbit,chipmunk-cavalry,clover-butterfly,compost-grub,cottontail,dormouse,honey-bee,jackrabbit-sprinter,lucky-hopper,meadow-rabbit,mountain-hare,mudpuppy,newt-doctor,nutria-reedcutter,planarian-splitter,puddle-skimmer,robin-redbreast --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,big,swarm,open --anchor ant-scout,bee-forager,chipmunk-cavalry,clover-butterfly,compost-grub,cottontail,dormouse,honey-bee,jackrabbit-sprinter,lucky-hopper,meadow-rabbit,puddle-skimmer,robin-redbreast --anchor-min 10 --level 1 --mode map-true"
+}
