@@ -12,13 +12,14 @@ const fn = (src, name)=>{ const i = src.indexOf('function ' + name + '('); if(i 
 
 const lt = fn(app, 'codexLeafTurn');
 ok(lt.length > 800, 'codexLeafTurn exists');
-ok(/const CODEX_TURN_MS = 440/.test(app), 'the whole turn is 440 ms');
+const TURN = +((/const CODEX_TURN_MS = (\d+)/.exec(app) || [])[1] || 0); // UI52 (2026-11-13): 760 ms, slower
+ok(TURN === 760, 'the whole turn is 760 ms (UI52; UI33 had 440)');
 ok(/document\.hidden/.test(lt) && /reducedMotion\(\)/.test(lt) && /pg-xfade/.test(lt), 'hidden tab: no animation; reduced motion: cross-fade');
 ok(/host\._cxTurnEnd/.test(lt) && /pg-face-back/.test(lt) && /pg-face-front/.test(lt) && /pg-cast/.test(lt) && /pg-hold/.test(lt), 'a running turn is finished first; two faces, a fold shadow, a held page');
 ok(/\.pg-leaf-two\{[^}]*preserve-3d[^}]*animation:pgTurnFwd var\(--pg-turn-ms\)/.test(tpl), 'CSS: the two-face leaf turns in 3D');
 ok(/\.pg-leaf-two \.pg-face\{backface-visibility:hidden/.test(tpl) && /\.pg-face-back\{transform:rotateY\(180deg\);?\}/.test(tpl), 'CSS: both faces hide their backs; the back is turned round');
 ok(/@keyframes pgTurnFwd\{[^\n]*rotateY\(-180deg\)/.test(tpl) && /@keyframes pgTurnBack\{[^\n]*rotateY\(180deg\)/.test(tpl), 'CSS: a full 180 degrees both ways');
-ok(/@keyframes pgOpenFwd\{from\{transform:perspective\(1800px\) rotateY\(-90deg\)/.test(tpl), 'CSS: one page: the new page opens out from the slice');
+ok(/\.pg-leaf-two\.pg-leaf-mid\{transform-origin:50% 50%/.test(tpl) && /@keyframes pgMidFwd\{[^\n]*translateX\(-26%\) rotateY\(-90deg\)[^\n]*rotateY\(-180deg\)/.test(tpl), 'CSS: one page (UI52): the two-face leaf turns about the page middle and slides aside');
 ok(/prefers-reduced-motion: reduce\)\{[^\n]*\.pg-leaf, \.pg-cast, \.pg-hold\{display:none/.test(tpl), 'CSS: reduced motion hides the leaf');
 ok(/pg-leaf-two/.test(read('tests/run-all.sh')) === false && /ui33-2026-11-07/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
 
@@ -73,18 +74,17 @@ async function browser(){
         } else {
           for(const dir of [1, -1]){
             const tag = `@${w} ${dir > 0 ? 'next' : 'previous'}`;
-            const s = await pg.evaluate(`(async()=>{ const anims = ()=> document.getAnimations().filter(a=>{ try{ return isFinite(a.effect.getComputedTiming().endTime) && /pg|Pg/.test((a.animationName||'')); }catch(e){ return false; } }), fin = ()=> anims().forEach(a=>{ try{ a.finish(); }catch(e){} }); const st = window.setTimeout; window.setTimeout = (f, ms, ...a)=> (ms >= 480 && ms <= 560) ? 0 : st(f, ms, ...a); const head = ${HEAD}; const g = codexAlbumState.gridEl; const two = !!g.querySelector('.pg-right');
+            const s = await pg.evaluate(`(async()=>{ const anims = ()=> document.getAnimations().filter(a=>{ try{ return isFinite(a.effect.getComputedTiming().endTime) && /pg|Pg/.test((a.animationName||'')); }catch(e){ return false; } }), fin = ()=> anims().forEach(a=>{ try{ a.finish(); }catch(e){} }); const st = window.setTimeout; window.setTimeout = (f, ms, ...a)=> (ms >= ${TURN} && ms <= ${TURN + 120}) ? 0 : st(f, ms, ...a); const head = ${HEAD}; const g = codexAlbumState.gridEl; const two = !!g.querySelector('.pg-right');
               const oldFrom = head(g.querySelector(${dir > 0 ? "'.pg-right, .pg-single'" : "'.pg-left, .pg-single'"})), oldOther = two ? head(g.querySelector(${dir > 0 ? "'.pg-left'" : "'.pg-right'"})) : '';
               albumTurn(${dir}); const leaf = g.querySelector('.pg-leaf'); if(!leaf) return {err: 'noleaf'};
               const newDest = head(g.querySelector(${dir > 0 ? "'.pg-left, .pg-single'" : "'.pg-right, .pg-single'"})), newReveal = two ? head(g.querySelector(${dir > 0 ? "'.pg-right'" : "'.pg-left'"})) : '';
               const out = {two, oldFrom, newDest, newReveal, frames: {}};
               const leaves = ()=> [...g.querySelectorAll('.pg-leaf')];
               for(const pct of [25, 50, 75]){
-                anims().forEach(a=>{ a.pause(); a.currentTime = ${440} * pct / 100; });
+                anims().forEach(a=>{ a.pause(); a.currentTime = ${TURN} * pct / 100; });
                 await new Promise(r=> requestAnimationFrame(()=> requestAnimationFrame(r)));
                 const L = leaves(); const f = {n: L.length};
-                if(two){ const m = new DOMMatrix(getComputedStyle(L[0]).transform); f.angle = Math.round(Math.atan2(m.m13, m.m11) * 180 / Math.PI); f.front = head(L[0].querySelector('.pg-face-front')); f.back = head(L[0].querySelector('.pg-face-back')); }
-                else { f.ops = L.map(x=> +getComputedStyle(x).opacity); f.heads = L.map(x=> head(x)); }
+                { const m = new DOMMatrix(getComputedStyle(L[0]).transform); f.angle = Math.round(Math.atan2(m.m13, m.m11) * 180 / Math.PI); f.dx = Math.round(m.m41); f.front = head(L[0].querySelector('.pg-face-front')); f.back = head(L[0].querySelector('.pg-face-back')); }
                 out.frames[pct] = f;
                 ${'SHOT'}
               }
@@ -93,22 +93,18 @@ async function browser(){
               out.left = g.querySelectorAll('.pg-leaf, .pg-cast, .pg-hold').length; out.hidden = [...g.querySelectorAll('.al-page')].filter(p=> p.style.visibility === 'hidden').length; return out; })()`.replace('SHOT', ''));
             ok(!s.err, `${tag}: a leaf appears`);
             if(s.err) continue;
-            if(s.two){
+            { // two pages turn about the spine; one page (UI52) about its middle, sliding aside
               const f = s.frames;
               ok(Math.abs(f[25].angle) > 20 && Math.abs(f[25].angle) < 90 && f[25].front === s.oldFrom, `${tag} 25%: the leaf shows the old page, turning toward the slice (${f[25].angle} deg)`);
               ok(Math.abs(Math.abs(f[50].angle) - 90) <= 30, `${tag} 50%: near edge-on (${f[50].angle} deg)`);
               ok(Math.abs(f[75].angle) > 100 && Math.abs(f[75].angle) < 180 && f[75].back === s.newDest && f[75].back !== s.oldFrom, `${tag} 75%: past edge-on, the back face is the new page (${f[75].angle} deg, ${f[75].back})`);
-              ok(s.newReveal !== '' && s.cast === 1, `${tag}: the revealed page holds new content and gets the fold shadow`);
-            } else {
-              const f = s.frames;
-              ok(f[25].n === 2 && f[25].ops[0] === 1 && f[25].ops[1] === 0, `${tag} 25%: the old page folds, the new one waits`);
-              ok(f[75].ops[1] === 1 && f[75].heads[1] === s.newDest, `${tag} 75%: the new page is opening out with its content`);
-              ok(s.hidden === 0, `${tag}: the real new page is shown again after the turn`);
+              if(s.two) ok(s.newReveal !== '' && s.cast === 1, `${tag}: the revealed page holds new content and gets the fold shadow`);
+              else ok(Math.abs(f[50].dx) > 20 && Math.sign(f[50].dx) === -dir && f[25].n === 1 && s.hidden === 0, `${tag}: one leaf slides aside as it turns (${f[50].dx} px at 50%), the real new page is shown again after`);
             }
             ok(s.left === 0, `${tag}: after the turn no copies are left (${s.left})`);
             if(SHOTS){ // frames for the owner (re-run the turn, pause at each point)
               for(const pct of [25, 50, 75]){
-                await pg.evaluate(`(async()=>{ const anims = ()=> document.getAnimations().filter(a=>{ try{ return isFinite(a.effect.getComputedTiming().endTime) && /pg|Pg/.test((a.animationName||'')); }catch(e){ return false; } }), fin = ()=> anims().forEach(a=>{ try{ a.finish(); }catch(e){} }); const g = codexAlbumState.gridEl; const st = window.__st || window.setTimeout; window.__st = st; window.setTimeout = (f, ms, ...a)=> (ms >= 480 && ms <= 560) ? 0 : st(f, ms, ...a); fin(); await new Promise(r=> setTimeout(r, 120)); albumTurn(${-dir}); fin(); if(g._cxTurnEnd) g._cxTurnEnd(); await new Promise(r=> setTimeout(r, 60)); albumTurn(${dir}); anims().forEach(a=>{ a.pause(); a.currentTime = 440 * ${pct} / 100; }); await new Promise(r=> requestAnimationFrame(()=> requestAnimationFrame(r))); })()`);
+                await pg.evaluate(`(async()=>{ const anims = ()=> document.getAnimations().filter(a=>{ try{ return isFinite(a.effect.getComputedTiming().endTime) && /pg|Pg/.test((a.animationName||'')); }catch(e){ return false; } }), fin = ()=> anims().forEach(a=>{ try{ a.finish(); }catch(e){} }); const g = codexAlbumState.gridEl; const st = window.__st || window.setTimeout; window.__st = st; window.setTimeout = (f, ms, ...a)=> (ms >= ${TURN} && ms <= ${TURN + 120}) ? 0 : st(f, ms, ...a); fin(); await new Promise(r=> setTimeout(r, 120)); albumTurn(${-dir}); fin(); if(g._cxTurnEnd) g._cxTurnEnd(); await new Promise(r=> setTimeout(r, 60)); albumTurn(${dir}); anims().forEach(a=>{ a.pause(); a.currentTime = ${TURN} * ${pct} / 100; }); await new Promise(r=> requestAnimationFrame(()=> requestAnimationFrame(r))); })()`);
                 const el = await pg.$('#codexBody .al-album, #codexBody .pg-book'); if(el) await el.screenshot({path: path.join(SHOTS, `${w}-${dir > 0 ? 'next' : 'prev'}-${pct}.png`)}); // (the book is put back first, then turned this way)
                 await pg.evaluate(`(async()=>{ const anims = ()=> document.getAnimations().filter(a=>{ try{ return isFinite(a.effect.getComputedTiming().endTime) && /pg|Pg/.test((a.animationName||'')); }catch(e){ return false; } }), fin = ()=> anims().forEach(a=>{ try{ a.finish(); }catch(e){} }); fin(); await new Promise(r=> setTimeout(r, 150)); if(codexAlbumState.gridEl._cxTurnEnd) codexAlbumState.gridEl._cxTurnEnd(); if(window.__st) window.setTimeout = window.__st; })()`);
               }
@@ -117,8 +113,8 @@ async function browser(){
             await pg.evaluate(`(async()=>{ const anims = ()=> document.getAnimations().filter(a=>{ try{ return isFinite(a.effect.getComputedTiming().endTime) && /pg|Pg/.test((a.animationName||'')); }catch(e){ return false; } }), fin = ()=> anims().forEach(a=>{ try{ a.finish(); }catch(e){} }); fin(); await new Promise(r=> setTimeout(r, 150)); })()`);
           }
           // fast clicks: two turns 40 ms apart: one leaf at a time, both pages counted, nothing left
-          const fc = await pg.evaluate(`(async()=>{ const g = codexAlbumState.gridEl, per = codexAlbumState.L.pages; const p0 = codexPage; albumTurn(-1); await new Promise(r=> setTimeout(r, 40)); const a = g.querySelectorAll('.pg-leaf-two, .pg-leaf-one:not(.pg-leaf-open)').length; albumTurn(-1); await new Promise(r=> setTimeout(r, 40)); const b = g.querySelectorAll('.pg-leaf-two, .pg-leaf-one:not(.pg-leaf-open)').length;
-            await new Promise(r=> setTimeout(r, 700)); return {a, b, moved: (p0 - codexPage) / per, left: g.querySelectorAll('.pg-leaf, .pg-cast, .pg-hold').length, hidden: [...g.querySelectorAll('.al-page')].filter(p=> p.style.visibility === 'hidden').length}; })()`);
+          const fc = await pg.evaluate(`(async()=>{ const g = codexAlbumState.gridEl, per = codexAlbumState.L.pages; const p0 = codexPage; albumTurn(-1); await new Promise(r=> setTimeout(r, 40)); const a = g.querySelectorAll('.pg-leaf-two').length; albumTurn(-1); await new Promise(r=> setTimeout(r, 40)); const b = g.querySelectorAll('.pg-leaf-two').length;
+            await new Promise(r=> setTimeout(r, ${TURN + 300})); return {a, b, moved: (p0 - codexPage) / per, left: g.querySelectorAll('.pg-leaf, .pg-cast, .pg-hold').length, hidden: [...g.querySelectorAll('.al-page')].filter(p=> p.style.visibility === 'hidden').length}; })()`);
           ok(fc.a === 1 && fc.b === 1 && fc.moved === 2 && fc.left === 0 && fc.hidden === 0, `@${w} fast clicks: one leaf at a time, two pages turned, nothing left over (${JSON.stringify(fc)})`);
         }
         await ctx.close();

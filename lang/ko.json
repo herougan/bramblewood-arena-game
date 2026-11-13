@@ -2254,7 +2254,6 @@
  "Repeat-clear payout": "반복 클리어 보상",
  "Replaces any field in play; the map's own field returns when it ends.": "현재 필드 효과를 대체한다. 끝나면 맵 고유의 필드가 돌아온다.",
  "Replay onboarding": "온보딩 다시 하기",
- "Replay the triggers lesson in your next fight.": "다음 전투에서 트리거 강의를 다시 합니다.",
  "Reptile": "파충류",
  "Requiem": "진혼곡",
  "Rescued a baby": "아기를 구했어요",
@@ -3643,8 +3642,6 @@
  "🌹 The briars grasp at the field.": "🌹 가시덤불이 전장을 움켜쥡니다.",
  "🌿 {a} tangles {t} (Tangled {n}).": "🌿 {a}이(가) {t}을(를) 휘감습니다 (휘감김 {n}).",
  "🎆 {att} detonates the Venom on {name}: {n} damage.": "🎆 {att}이(가) {name}의 독을 폭발시킵니다: 피해 {n}.",
- "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 다음 전투에서 트리거 카드가 나오면 트리거 수업이 다시 나와요.",
- "🎓 Triggers lesson": "🎓 트리거 수업",
  "🐞 Bug Hunters": "🐞 버그 헌터",
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name}은(는) 불면: 깨어 있습니다.",
  "💎 Two gems fused into {gem}.": "💎 보석 두 개가 {gem}(으)로 융합되었습니다.",
@@ -4450,5 +4447,14 @@
  "Tap again to delete": "다시 탭하면 삭제",
  "{name} deleted": "{name} 삭제됨",
  "Side maps": "보조 맵",
- "Main map": "메인 맵"
+ "Main map": "메인 맵",
+ "Where this card first appears on the maps. Opens that map's cards.": "이 카드가 지도에 처음 나오는 곳. 그 지도의 카드를 엽니다.",
+ "On no map yet": "아직 지도에 없음",
+ "Admin: show the map where each skill is first seen": "관리자: 각 스킬이 처음 나오는 지도 보기",
+ "Tutorials": "튜토리얼",
+ "Reset basic tutorials": "기본 튜토리얼 초기화",
+ "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "지도 T부터 지도 3까지의 수업을 다시. 트리거 수업도.",
+ "Reset all tutorials": "모든 튜토리얼 초기화",
+ "Replay every lesson and tip.": "모든 수업과 팁을 다시.",
+ "Tutorials reset: they play again in your next fights.": "튜토리얼 초기화: 다음 전투에서 다시 나옵니다."
 }

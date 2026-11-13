@@ -61,8 +61,13 @@ ok(/#handStrip \[data-handuid\] \.ab-trig/.test(chipSrc) && /for\(const p of \[2
   const skip = new Function('TRIGGER_LESSON', 'markCoachSeen', fnSrc('skipTriggerLesson') + '\nreturn skipTriggerLesson;')([{id:'tl-what'}], id=> { marked.push(id); seen.add(id); });
   skip(); ok(['tl-what', 'tl-when', 'trig-off', 'trig-on'].every(i=> seen.has(i)), '3. Skip ends the lesson and the two passive trigger tips');
   const cs = new Set(['tl-what', 'tl-when', 'trig-off', 'trig-on', 'wait']); const store = {};
-  const rep = new Function('TRIGGER_LESSON', 'coachSeen', 'COACH_SEEN_KEY', 'localStorage', fnSrc('replayTriggerLesson') + '\nreturn replayTriggerLesson;')([{id:'tl-what'}], cs, 'k', {setItem: (k, v)=> { store[k] = v; }});
-  rep(); ok(!cs.has('tl-what') && !cs.has('tl-when') && !cs.has('trig-off') && !cs.has('trig-on') && cs.has('wait') && JSON.parse(store.k).includes('wait'), '3. replay clears only the trigger tips and saves');
+  // 2026-11-13 (package UI52): the replay is the Profile's Reset basic tutorials (resetTutorials(false)); 'skill-flying' is not a basic tip, so it stays seen
+  cs.add('skill-flying'); const flags = {'lesson:lumber': true, 'lesson:rarity': true};
+  const rep = new Function('TRIGGER_LESSON', 'GUIDED_STEPS', 'PITCH_LESSON', 'PITCH_WAIT_TIP', 'PEEK_GATE', 'coachSeen', 'COACH_SEEN_KEY', 'localStorage', 'loadDialogueFlags', 'LUMBER_LESSON_FLAG', 'DIALOGUE_FLAGS_KEY', 'LUMBER_NUDGE_KEY',
+    fnSrc('basicTutorialTipIds') + '\n' + fnSrc('resetTutorials') + '\nreturn resetTutorials;')([{id:'tl-what'}], [{id:'g-hand'}], [{id:'pl-need'}], {id:'pl-wait'}, {id:'g-peek'}, cs, 'k', {setItem: (k, v)=> { store[k] = v; }, removeItem: ()=>{}}, ()=> Object.assign({}, flags), 'lesson:lumber', 'f', 'n');
+  rep(false); ok(!cs.has('tl-what') && !cs.has('tl-when') && !cs.has('trig-off') && !cs.has('trig-on') && !cs.has('wait') && cs.has('skill-flying') && JSON.parse(store.k).includes('skill-flying'), '3. Reset basic tutorials clears the trigger tips and the early ones, and saves');
+  ok(!('lesson:lumber' in JSON.parse(store.f)) && JSON.parse(store.f)['lesson:rarity'], '3. ...and the Lumber lesson flag only');
+  rep(true); ok(cs.size === 0 && !('lesson:rarity' in JSON.parse(store.f)), '3. Reset all tutorials clears every tip and lesson flag');
 }
 
 // --- 4. MAP-3
@@ -75,7 +80,7 @@ const labels = new Set([...src.matchAll(/\{key:'\w+', label:'(On [^']+)'/g)].map
 const when = TEXT['coach.tl-when'] || '', what = TEXT['coach.tl-what'] || '';
 ok(Object.keys(TERMS).every(t=> labels.has(t) && when.includes(t)), '5. step 2 names real trigger moments: ' + Object.keys(TERMS).join(', '));
 ok(/trigger/i.test(what) && what.includes('⚡'), '5. step 1 says what a trigger is and shows the chip\'s bolt');
-for(const k of ['coach.tl-what', 'coach.tl-when', 'ui.tl-replay', 'ui.tl-replay-title', 'ui.tl-replay-toast']){
+for(const k of ['coach.tl-what', 'coach.tl-when', 'ui.ui52-reset-basic', 'ui.ui52-reset-basic-tip', 'ui.ui52-reset-all']){ // UI52: the replay moved to the Profile
   const en = TEXT[k]; ok(!!en, '5. TX key ' + k);
   if(!en) continue;
   ok(CODES.every(c=> packs[c][en] && packs[c][en] !== en), '5. ' + k + ' is translated in all 12 packs');
@@ -84,7 +89,7 @@ ok(CODES.every(c=> packs[c]['Next ▶'] && packs[c]['Next ▶'] !== 'Next ▶' &
 ok(CODES.every(c=> !/<\w+>/.test(packs[c][when] || '')), '5. no placeholder left in step 2');
 
 // --- 6. replay place
-ok(/id="tlReplayBtn"/.test(fnSrc('renderSkillBook')) && /replayTriggerLesson\(\)/.test(fnSrc('renderSkillBook')), '6. the Skill Codex has the Triggers lesson button');
+ok(!/tlReplayBtn/.test(fnSrc('renderSkillBook')) && /data-tutreset/.test(fnSrc('tutorialResetHTML')) && /resetTutorials\(/.test(fnSrc('wireTutorialReset')) && /tutorialResetHTML\(\)/.test(fnSrc('renderProfile')), '6. UI52: the Profile resets the tutorials (the Skill Codex button is gone)');
 
 console.log(fail ? `tt-2026-10-24: ${fail} of ${checks} checks FAILED` : `tt-2026-10-24: ${checks} checks passed`);
 process.exit(fail ? 1 : 0);

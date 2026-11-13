@@ -1788,6 +1788,11 @@ Checks: `tests/lab3-2026-11-11.js` (every look in a fake DOM: resolves, callback
 motion one still node) and `tests/e2e/lab3_2026_11_11.py` (every look played in the built Lab at 1366, the first of each at 390, and under
 reduced motion: no page error, fewer than 40 overlays on any frame, none left).
 
+## 2026-11-13 (package UI52): four entrances redone, the Codex page turn
+- Nest, Codex, Stomping Grounds and Inventory entrances redone (rows below, marked UI52): objects in the middle of a dim instead of full-screen flaps; each at most 0.9 s; Effects Low keeps a 0.4 s take of one or two moving parts; reduced motion, Effects None and the first-visit rule unchanged.
+- Codex page turn (`codexLeafTurn`): 760 ms (was 440). Two pages turn about the spine; one page (phone) turns the same two-face leaf about its middle while sliding aside (`.pg-leaf-mid`, `pgMidFwd` / `pgMidBack`), so the new page comes round with the old one (was a fold to edge-on, then the new page).
+- Check: `tests/ui52-2026-11-13.js`; contact sheets `docs/screens/ui52/`.
+
 ## 2026-11-13 (package UIFX1): places you walk into
 Owner 00:03: "tent opening for shop ... immersion". Each place screen has one entrance, `BramblewoodPlaces.enter(tab, el, opts)` → Promise
 (`bramblewood-ui-places.js`), called by one line in `switchTab` on a real arrival (not a redraw, not a page load): the full take the first time a session, then the short take. It replaces the page turn on
@@ -1798,12 +1803,12 @@ particles, no ambience). Effects None: nothing. Reduced motion: a 180 ms fade of
 | Lab id | Place | Entrance (Medium and High) | While open (Medium and High) | Sound (existing cues) |
 |---|---|---|---|---|
 | ✅ `place-shop` | Shop | 0.82 s: indigo-and-canvas tent flaps (the cart awning's stripes, a stitched hem, wooden toggles) part from a seam of light and tie back; lantern light and 12 dust motes spill out; the scalloped valance lifts | the cart's lantern light flickers, 5 dust specks rise in it, the awning stirs | `bushRustle`, then `pitchChime` (the bell) |
-| ✅ `place-premium` | Premium shop (SHOP1's switch, `.is-premium-shop`) | 0.88 s: a gilded pavilion: plum velvet drapes with gold braid and fringe sweep up and aside, the Gold Leaf crest glints and unclasps, gold rays turn behind, 14 gold leaves fall | a warm gold light, a gold leaf drifting down now and then | `rareRise`, `crystalTing` ×2 (a fourth apart) |
-| ✅ `place-nest` | Nest | 0.86 s: you look out through the nest's hollow, a tangle of about 520 twigs (one seeded SVG, drawn once); the rim opens around you and flies past, warm light in the hollow, 12 tufts of down drift out | down drifts past the edges now and then | `featherFlutter` ×2 |
-| ✅ `place-codex` | Codex (not the Forge) | 0.88 s: a tooled leather cover (spine ribs, double gold rule, brass corners, a lozenge medallion with a glint) swings open away from you on its spine, the marbled flyleaf follows, dust off the spine | a slanting shaft of library light with 6 dust specks (one fixed layer) | `pageTurn` ×2 |
+| ✅ `place-premium` | Premium shop (its place on the strip since UI52, `.is-premium-shop`) | 0.88 s: a gilded pavilion: plum velvet drapes with gold braid and fringe sweep up and aside, the Gold Leaf crest glints and unclasps, gold rays turn behind, 14 gold leaves fall | a warm gold light, a gold leaf drifting down now and then | `rareRise`, `crystalTing` ×2 (a fourth apart) |
+| ✅ `place-nest` | Nest | 0.82 s (UI52): an egg sits in the nest's hollow (the seeded twig SVG, cut round, on a warm dim); it wobbles, cracks, its top flies off in a burst of warm light, 10 tufts of down puff out | down drifts past the edges now and then | `featherFlutter`, `shellCrackTone` |
+| ✅ `place-codex` | Codex (not the Forge) | 0.90 s (UI52, no full-screen flip): the closed book in the middle of a dim (leather, gold rule, medallion) opens on its spine and slides so the spine ends in the middle; the marbled flyleaf shows, then one page turns on the book; dust off the spine | a slanting shaft of library light with 6 dust specks (one fixed layer) | `pageTurn` ×2 |
 | ✅ `place-deck` | Camp | 0.86 s: the red tent door rolls up on its roll, its two ties shorten as it climbs, the campfire glows and 10 embers rise | the campfire glow breathes along the floor, embers rise | `mapUnroll`, `woodKnock` |
-| ✅ `place-stomp` | Stomping Grounds | 0.90 s: the arena's banded timber gates jolt, then swing in; a blade of sunlight through the gap, 10 puffs of sand dust roll out | (the page's own dust) | `woodKnock`, `leaderSlam` |
-| ✅ `place-inventory` | Inventory | 0.76 s: the brass buckle drops, the stitched leather satchel flap lifts toward you and over, the bag's inside lightens | — | `shelfPick`, `pickup` |
+| ✅ `place-stomp` | Stomping Grounds | 0.82 s (UI52): the arena's banded timber gates, hinged at the screen's sides, swing open toward you and out of sight (no shake, nothing left over); a blade of sunlight, 10 puffs of sand dust | (the page's own dust) | `woodKnock`, `bowCreak`, `leaderSlam` |
+| ✅ `place-inventory` | Inventory | 0.76 s (UI52): a stitched satchel pops up in the middle of a dim, its buckled flap flips open over the top and six of your things (🧪 🍞 🗝️ 🪵 💎 🃏) hop out | — | `shelfPick`, `pickup` |
 
 The ambience is a few nodes kept as the screen's first child (put back by a MutationObserver when the screen redraws) or, for the Codex, one
 fixed layer; CSS keyframes on transform and opacity; gone on any other tab or a fight, hidden by `html[data-fx=low|none]` and reduced motion.

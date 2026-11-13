@@ -192,7 +192,7 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(/data-cxskillclear/.test(fnSrc('codexSkillPanelHTML')) && /data-cxskillclear/.test(fnSrc('codexSkillUI')) && /data-cxskilloff/.test(fnSrc('codexSkillUI')), '9. Clear in the picker and under the toolbar; each pick can be removed');
   ok(/id="cxSkillBtn"/.test(src) && /id="cxSkillActive"/.test(src) && /wireCodexSkillFilter\(\);/.test(fnSrc('renderCodex')), '9. the Skills button sits with the other filters');
   // the book's jump
-  const B = run(['bookEntryHTML'], {TX, escapeHtml: esc, escapeAttr: s=> String(s).replace(/"/g, '&quot;'), _t: s=> s, legendaryTagHTML: ()=> '', PASSIVE_BY_KEY: {}});
+  const B = run(['bookEntryHTML'], {TX, escapeHtml: esc, escapeAttr: s=> String(s).replace(/"/g, '&quot;'), _t: s=> s, legendaryTagHTML: ()=> '', bookFirstMapHTML: ()=> '' /* UI52: the admin first-map chip */, PASSIVE_BY_KEY: {}});
   ok(/data-bkskill="armor"/.test(B.bookEntryHTML({ch:'sk', key:'armor', name:'Armor', html:'x', icon:'🛡'})) && !/data-bkskill/.test(B.bookEntryHTML({ch:'sk', key:'flying', hint:true, name:'?', html:'x'})) && !/data-bkskill/.test(B.bookEntryHTML({ch:'fx', key:'tide', name:'Tide', html:'x'})), '9. each seen skill in the book offers "Show cards with this skill" (not the ? hints, statuses or field effects)');
   const ctx = {codexFilter:{skills:['x'], q:'otter', rarity:'rare'}, codexPage:4, codexSubTab:'skills', saved:0, rendered:0, saveCodexFilters(){ ctx.saved++; }, renderCodex(){ ctx.rendered++; }, codexPageTurn(){}};
   const J = run(['codexShowCardsWithSkill'], ctx); J.codexShowCardsWithSkill('armor');
@@ -229,7 +229,7 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(/aria-label="First page"/.test(mid) && /aria-label="Last page"/.test(mid) && /role="group"/.test(mid), '10. labelled for screen readers');
   const ad = fnSrc('albumDraw'), bd = fnSrc('bookDraw');
   ok(/codexPagerNavHTML\('album'[^;]*\+ `<div class="al-album pg-book[^`]*\$\{codexEdgeTabsHTML\(codexPage, L\.pages, pages\.length\)\}<\/div>`/.test(ad), '10. the album: the page count above, the tabs on the album, no bar below');
-  ok(/book\.innerHTML = codexPagerNavHTML\('book'[^;]*\+ bookSpreadHTML\(S\.pages, skillBookPage, per, true\)/.test(bd) && /codexEdgeTabsHTML\(first, per, S\.pages\.length\)/.test(fnSrc('bookSpreadHTML')), '10. the book: the same, its tabs on the spread');
+  ok(/book\.innerHTML = bookSpreadHTML\(S\.pages, skillBookPage, per, per === 2\)/.test(bd) && /bar\.innerHTML = codexPagerNavHTML\('book'/.test(bd) && /codexEdgeTabsHTML\(first, per, S\.pages\.length\)/.test(fnSrc('bookSpreadHTML')), '10. the book: its tabs on the spread (two pages); UI52: the page count, and on a phone the tabs, in the filter row');
   ok(!/pg-btn|<nav/.test(fnSrc('codexPagerNavHTML')), '10. the old bar\'s buttons are gone');
   // first / last
   const at = {codexPage:6, codexAlbumState:{gridEl:{isConnected:true}, L:{pages:2}, pages:new Array(13)}, went:[], albumGo(p){ at.went.push(p); }, codexLeafTurn(){}, albumDraw(){}, codexKeepInView(){}};

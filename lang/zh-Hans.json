@@ -2252,7 +2252,6 @@
  "Repeat-clear payout": "重复通关收益",
  "Replaces any field in play; the map's own field returns when it ends.": "替换场上的任何场地效果；结束后地图自身的场地效果恢复。",
  "Replay onboarding": "重玩新手引导",
- "Replay the triggers lesson in your next fight.": "在下一场战斗中重玩触发器课程。",
  "Reptile": "爬行动物",
  "Requiem": "安魂曲",
  "Rescued a baby": "救下了一只幼崽",
@@ -3640,8 +3639,6 @@
  "🌹 The briars grasp at the field.": "🌹 荆棘缠向战场。",
  "🌿 {a} tangles {t} (Tangled {n}).": "🌿 {a} 缠住了 {t}（缠绕 {n}）。",
  "🎆 {att} detonates the Venom on {name}: {n} damage.": "🎆 {att} 引爆了 {name} 身上的中毒：{n} 点伤害。",
- "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 下次战斗中出现带触发效果的卡牌时，会再次播放触发效果教程。",
- "🎓 Triggers lesson": "🎓 触发效果教程",
  "🐞 Bug Hunters": "🐞 漏洞猎人",
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name} 警醒：保持清醒。",
  "💎 Two gems fused into {gem}.": "💎 两颗宝石融合成了{gem}。",
@@ -4448,5 +4445,14 @@
  "Tap again to delete": "再点一次删除",
  "{name} deleted": "已删除 {name}",
  "Side maps": "支线地图",
- "Main map": "主线地图"
+ "Main map": "主线地图",
+ "Where this card first appears on the maps. Opens that map's cards.": "这张卡牌首次出现在哪张地图。打开该地图的卡牌。",
+ "On no map yet": "尚未出现在地图上",
+ "Admin: show the map where each skill is first seen": "管理员：显示每个技能首次出现的地图",
+ "Tutorials": "教程",
+ "Reset basic tutorials": "重置基础教程",
+ "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "重玩地图 T 到地图 3 的课程，包括触发课程。",
+ "Reset all tutorials": "重置全部教程",
+ "Replay every lesson and tip.": "重玩每一课和每条提示。",
+ "Tutorials reset: they play again in your next fights.": "教程已重置：下次战斗会再次出现。"
 }

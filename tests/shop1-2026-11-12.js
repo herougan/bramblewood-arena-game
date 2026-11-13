@@ -22,14 +22,14 @@ ok(/prem && shopRaidTicketOnShelf\(\)/.test(rows), 'Raid Ticket (Gold Leaves) on
 ok(/prem \? \[\] : packs\.map/.test(rows) && /!prem && shopKitToday\(\)/.test(rows) && /prem \? \[\] : \[\{bread:true/.test(rows), 'packs, kit and bread only in the normal shop');
 ok(/!prem && onSale\.length === 1/.test(rows), 'pack bundles only in the normal shop');
 const rs = fnSrc('renderShop');
-ok(/data-shopmode/.test(rs) && /ui\.shop1-normal/.test(rs) && /ui\.shop1-premium/.test(rs), 'entry: Shop | Premium switch');
+ok(!/data-shopmode/.test(rs) && /key:'shop', icon:'🛒', get name\(\)\{ return TX\('ui\.shop1-normal'\)/.test(src) && /key:'premium', icon:'🍂', get name\(\)\{ return TX\('ui\.shop1-premium'\)/.test(src), 'entry: Shop and Premium on the places strip (UI52; was a switch in the shop)');
 ok(/is-premium-shop/.test(rs) && /is-premium-shop/.test(tpl), 'Premium look class in JS and CSS');
 ok(/shopMode = 'premium'; shopSelected = 'ticket:1'/.test(src), 'the guild "Shop" link opens Premium on the ticket');
 ok(/RENAME_TICKET_PRICE/.test(fnSrc('shopTicketCounter')) && /RAID_TICKET_ITEM_COST = \{gold:400, gems:5\}/.test(src), 'prices and purchase code unchanged');
-const css = (tpl.match(/\.shop-mode[^\n]*|#view-shop\.is-premium-shop[^\n]*/g) || []).join('\n');
+const css = (tpl.match(/#view-shop\.is-premium-shop[^\n]*/g) || []).join('\n');
 ok(css && !/#[0-9a-fA-F]{3,6}\b/.test(css) && !/rgb\(/.test(css), 'new CSS uses tokens only');
 ok(!fs.existsSync(path.join(ROOT, 'supabase/migrations/20261112_shop1.sql')), 'no server check ties an item to a shop id: nothing applied');
-for(const k of ['modes', 'normal', 'premium', 'premium-empty']){
+for(const k of ['normal', 'premium', 'premium-empty']){ // UI52 (2026-11-13): 'modes' (the switch's label) is gone
   ok(typeof TX === 'function' && TX('ui.shop1-' + k) && TX('ui.shop1-' + k) !== 'ui.shop1-' + k, 'text ui.shop1-' + k);
   for(const l of ['fr','de','es','it','pt','tl','ta','id','zh-Hans','zh-Hant','ja','ko']) ok(fs.existsSync(path.join(ROOT, 'lang', l + '.json')), 'pack ' + l);
 }

@@ -71,33 +71,34 @@ const CSS = `
 .bwp-gleaf{left:50%; top:60px; width:19px; height:19px; margin:-9.5px; border-radius:0 100% 0 100%; opacity:0;
   background:linear-gradient(135deg, transparent 46%, rgba(140,90,20,.75) 46% 54%, transparent 54%), linear-gradient(135deg, #fff6c0, #f5c842 40%, #d99a1e 70%, #9a6412);
   box-shadow:inset 0 0 0 1px rgba(122,84,24,.6), 0 0 6px rgba(255,214,110,.55);}
-/* the Nest: the twig rim opens around you, down drifts out (the twigs are one seeded SVG, nestTwigs(), drawn once and scaled) */
-.bwp-rim{left:50%; top:50%; width:120vmax; height:120vmax; margin:-60vmax 0 0 -60vmax; border-radius:50%;}
+/* the Nest (UI52): an egg in the nest's hollow (the seeded twig SVG, nestTwigs(), cut round) wobbles, cracks and its top flies off in a burst of warm light and down */
+.bwp-dim{inset:0; opacity:0; background:radial-gradient(ellipse 70% 60% at 50% 48%, rgba(46,28,12,.72), rgba(16,9,4,.9));}
+.bwp-nestring{border-radius:50%; -webkit-mask:radial-gradient(circle closest-side, #000 80%, transparent 100%); mask:radial-gradient(circle closest-side, #000 80%, transparent 100%);}
+.bwp-egg{transform-origin:50% 92%; border-radius:50% 50% 46% 46% / 60% 60% 40% 40%; box-shadow:inset -6px -8px 12px rgba(120,90,50,.35);
+  background:radial-gradient(circle at 30% 34%, rgba(150,110,60,.5) 0 2px, transparent 2.5px) 0 0 / 13px 15px, radial-gradient(ellipse at 36% 28%, #fffdf4, #f2e6c8 55%, #d8c49a);}
+.bwp-egg.is-top{clip-path:polygon(0 0, 100% 0, 100% 50%, 86% 58%, 72% 47%, 57% 58%, 43% 47%, 28% 58%, 14% 48%, 0 56%);}
+.bwp-egg.is-bot{clip-path:polygon(0 56%, 14% 48%, 28% 58%, 43% 47%, 57% 58%, 72% 47%, 86% 58%, 100% 50%, 100% 100%, 0 100%);}
 .bwp-down{left:50%; top:50%; width:16px; height:24px; margin:-12px 0 0 -8px; opacity:0; border-radius:50% 50% 45% 45%;
   background:linear-gradient(90deg, transparent 47%, rgba(190,170,140,.8) 47% 53%, transparent 53%) 0 40% / 100% 60% no-repeat, radial-gradient(ellipse at 40% 30%, #fffaf0, #eadfc8 58%, rgba(234,223,200,0) 72%);}
-/* the Codex: the great book's tooled leather cover swings open on its spine, the marbled flyleaf follows */
-.bwp-codex{perspective:1400px;}
-.bwp-codex .bwp-page{inset:0; transform-origin:0 50%; backface-visibility:hidden;
-  background:linear-gradient(90deg, rgba(70,44,20,.45), rgba(70,44,20,0) 7%), radial-gradient(ellipse 18% 9% at 22% 30%, rgba(60,110,120,.32), transparent 70%), radial-gradient(ellipse 14% 22% at 64% 62%, rgba(176,96,40,.28), transparent 70%),
-    radial-gradient(ellipse 26% 12% at 78% 22%, rgba(60,110,120,.26), transparent 70%), radial-gradient(ellipse 22% 14% at 36% 78%, rgba(150,120,50,.3), transparent 70%),
-    repeating-radial-gradient(ellipse 60% 40% at 40% 50%, rgba(90,120,120,.08) 0 6px, transparent 6px 15px), #ede0c0;}
-.bwp-shade{inset:0; opacity:0; background:linear-gradient(90deg, rgba(40,20,8,.75), rgba(40,20,8,.25) 40%, rgba(40,20,8,0) 80%);}
-.bwp-cover{inset:0; transform-origin:0 50%; backface-visibility:hidden;
-  background:linear-gradient(180deg, transparent 17%, rgba(0,0,0,.45) 17% 18%, rgba(255,214,160,.16) 18% 20.5%, transparent 20.5% 39%, rgba(0,0,0,.45) 39% 40%, rgba(255,214,160,.16) 40% 42.5%, transparent 42.5% 57.5%,
-      rgba(0,0,0,.45) 57.5% 58.5%, rgba(255,214,160,.16) 58.5% 61%, transparent 61% 79.5%, rgba(0,0,0,.45) 79.5% 80.5%, rgba(255,214,160,.16) 80.5% 83%, transparent 83%) 0 0 / 40px 100% no-repeat,
-    radial-gradient(ellipse 70% 55% at 52% 45%, rgba(255,220,170,.12), transparent 70%), radial-gradient(circle at 30% 20%, rgba(0,0,0,.09) 0 1px, transparent 1px) 0 0 / 5px 5px,
-    linear-gradient(90deg, rgba(0,0,0,.6), rgba(0,0,0,.2) 40px, rgba(255,210,150,.1) 44px, rgba(0,0,0,0) 52px), linear-gradient(160deg, #6e3a20, #4a2412 58%, #331607);}
-.bwp-cover::before{content:''; position:absolute; inset:22px 22px 22px 58px; border:2px solid #c9a24a; border-radius:6px; box-shadow:inset 0 0 0 5px rgba(0,0,0,0), inset 0 0 0 6px rgba(201,162,74,.8);}
-.bwp-cover::after{content:''; position:absolute; inset:70px 70px 70px 106px; border:1px solid rgba(201,162,74,.6); border-radius:4px; background:rgba(40,16,6,.22);}
-.bwp-cover > b{width:46px; height:46px; z-index:1; background:radial-gradient(circle at 30% 30%, #f6dc8c, #c9a24a 55%, #7a5a20); box-shadow:0 2px 4px rgba(0,0,0,.5);}
-.bwp-cover > b.c1{left:46px; top:10px; border-radius:0 0 100% 0;} .bwp-cover > b.c2{right:10px; top:10px; border-radius:0 0 0 100%;}
-.bwp-cover > b.c3{left:46px; bottom:10px; border-radius:0 100% 0 0;} .bwp-cover > b.c4{right:10px; bottom:10px; border-radius:100% 0 0 0;}
-.bwp-cover > i{left:calc(50% + 18px); top:50%; width:150px; height:150px; margin:-75px 0 0 -75px; border-radius:50%; overflow:hidden; z-index:1;
-  background:radial-gradient(circle, #2e6a5c 0 7%, #f3d684 7.5% 10%, transparent 10.5% 56%, #c9a24a 57% 60%, transparent 61% 66%, #e6c272 67% 71%, #8a6a2a 72% 73%, transparent 74%);}
-.bwp-cover > i::before{content:''; position:absolute; left:50%; top:50%; width:66px; height:66px; margin:-33px 0 0 -33px; transform:rotate(45deg); border:3px solid #d9b45a; box-shadow:inset 0 0 0 5px rgba(0,0,0,0), inset 0 0 0 6px rgba(217,180,90,.6);}
-.bwp-cover > i::after{content:''; position:absolute; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg, rgba(232,196,110,.9) 0 2deg, transparent 2deg 15deg);
-  -webkit-mask:radial-gradient(circle, transparent 0 46%, #000 47% 53%, transparent 54%); mask:radial-gradient(circle, transparent 0 46%, #000 47% 53%, transparent 54%);}
-.bwp-cover > i b{top:-10%; bottom:-10%; left:0; width:34%; z-index:1; background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,250,230,.75), rgba(255,255,255,0)); transform:translateX(-160%) skewX(-16deg);}
+/* the Codex (UI52): the closed book in the middle of the screen opens on its spine, sliding so the spine ends in the middle, then one page turns on it */
+.bwp-codex{perspective:1600px;}
+.bwp-bk, .bwp-leaf{transform-style:preserve-3d;}
+.bwp-bk-r{inset:3px 0; border-radius:2px 8px 8px 2px; box-shadow:inset -3px 0 0 #d9c9a2, inset -5px 0 0 #c4b28a, 0 18px 38px rgba(0,0,0,.5);
+  background:linear-gradient(90deg, rgba(90,60,30,.32), rgba(90,60,30,0) 9%), repeating-linear-gradient(180deg, transparent 0 13px, rgba(90,70,40,.2) 13px 14px) 16% 14% / 68% 64% no-repeat, #efe3c4;}
+.bwp-leaf{inset:0; transform-origin:0 50%;}
+.bwp-face{inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;}
+.bwp-face.is-back{transform:rotateY(180deg);}
+.bwp-pg{inset:3px 0; border-radius:2px 8px 8px 2px; background:linear-gradient(90deg, rgba(90,60,30,.3), rgba(90,60,30,0) 10%), repeating-linear-gradient(180deg, transparent 0 13px, rgba(90,70,40,.2) 13px 14px) 16% 14% / 68% 64% no-repeat, #f3e8cc;}
+.bwp-pg::before{content:''; position:absolute; left:20%; right:20%; top:6%; height:5%; border-radius:3px; background:rgba(120,80,40,.4);} /* the turning page has a heading, so it reads against the page under it */
+.bwp-pg::after{content:''; position:absolute; left:16%; top:16%; width:14%; aspect-ratio:1; border-radius:3px; background:#a8452a; box-shadow:inset 0 0 0 2px #e2b65a;}
+.bwp-pg.is-back{border-radius:8px 2px 2px 8px; background:linear-gradient(270deg, rgba(90,60,30,.3), rgba(90,60,30,0) 10%), repeating-linear-gradient(180deg, transparent 0 13px, rgba(90,70,40,.2) 13px 14px) 16% 14% / 68% 64% no-repeat, #f3e8cc;}
+.bwp-cv{border-radius:3px 10px 10px 3px; box-shadow:inset 0 0 0 2px rgba(30,12,4,.6), 0 18px 38px rgba(0,0,0,.45);
+  background:linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.15) 9%, rgba(255,210,150,.12) 10%, rgba(0,0,0,0) 13%), radial-gradient(ellipse 70% 55% at 55% 45%, rgba(255,220,170,.14), transparent 70%), linear-gradient(160deg, #6e3a20, #4a2412 58%, #331607);}
+.bwp-cv::before{content:''; position:absolute; inset:8% 8% 8% 15%; border:2px solid #c9a24a; border-radius:5px; box-shadow:inset 0 0 0 4px rgba(0,0,0,0), inset 0 0 0 5px rgba(201,162,74,.7);}
+.bwp-cv::after{content:''; position:absolute; left:37%; top:50%; width:34%; aspect-ratio:1; margin-top:-17%; border-radius:50%;
+  background:radial-gradient(circle, #2e6a5c 0 9%, #f3d684 9.5% 13%, transparent 13.5% 54%, #c9a24a 55% 60%, transparent 61% 67%, #e6c272 68% 73%, #8a6a2a 74% 76%, transparent 77%);}
+.bwp-cv-in{border-radius:10px 3px 3px 10px; background:linear-gradient(270deg, rgba(70,44,20,.45), rgba(70,44,20,0) 9%), radial-gradient(ellipse 30% 14% at 30% 30%, rgba(60,110,120,.32), transparent 70%),
+  radial-gradient(ellipse 26% 20% at 66% 64%, rgba(176,96,40,.28), transparent 70%), repeating-radial-gradient(ellipse 60% 40% at 40% 50%, rgba(90,120,120,.08) 0 5px, transparent 5px 12px), #ede0c0;}
 /* the Camp: the tent's door is rolled up, the campfire glows behind it */
 .bwp-door{inset:0; transform-origin:50% 0;
   background:radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, rgba(30,10,6,.55) 100%), repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px),
@@ -109,9 +110,9 @@ const CSS = `
 .bwp-fire{left:50%; bottom:-12.5vh; width:60vmax; height:35vh; margin-left:-30vmax; border-radius:50%; opacity:0;
   background:radial-gradient(ellipse at 50% 70%, rgba(255,190,90,.85), rgba(255,120,40,.4) 30%, rgba(255,110,30,0) 62%);}
 .bwp-ember{left:50%; bottom:6vh; width:5px; height:5px; margin-left:-2.5px; border-radius:50%; opacity:0; background:#ffd27a; box-shadow:0 0 8px 2px rgba(255,130,40,.8);}
-/* the Stomping Grounds: the arena's timber gates swing in, sand dust rolls out */
+/* the Stomping Grounds (UI52): the arena's timber gates, hinged at the screen's sides, swing open toward you and out of sight; sun and sand dust come through */
 .bwp-stomp{perspective:1300px;}
-.bwp-gate{top:0; bottom:0; width:50%; box-shadow:inset 0 0 70px rgba(0,0,0,.55);
+.bwp-gate{top:0; bottom:0; width:50%; box-shadow:inset 0 0 70px rgba(0,0,0,.55); backface-visibility:hidden; -webkit-backface-visibility:hidden;
   background:radial-gradient(circle, #9a9088 0 3px, #3a332e 3px 4px, transparent 4.5px) 23px 15% / 46px 24px repeat-x, radial-gradient(circle, #9a9088 0 3px, #3a332e 3px 4px, transparent 4.5px) 23px 82% / 46px 24px repeat-x,
     linear-gradient(180deg, transparent 12%, #2e2824 12% 18%, transparent 18% 79%, #2e2824 79% 85%, transparent 85%),
     repeating-linear-gradient(90deg, rgba(0,0,0,.45) 0 3px, rgba(255,220,170,.06) 3px 6px, transparent 6px 46px), linear-gradient(180deg, #84593a, #6a4628 50%, #553620);}
@@ -121,18 +122,18 @@ const CSS = `
 .bwp-sun{left:50%; top:0; bottom:0; width:60px; margin-left:-30px; opacity:0; background:linear-gradient(90deg, rgba(255,226,160,0), rgba(255,236,190,.9), rgba(255,226,160,0));}
 .bwp-dust{left:50%; bottom:2vh; width:120px; height:80px; margin-left:-60px; border-radius:50%; opacity:0;
   background:radial-gradient(ellipse, rgba(214,182,128,.85), rgba(190,156,104,.4) 50%, rgba(190,156,104,0) 70%);}
-/* the Inventory: the satchel's flap lifts off its buckle */
-.bwp-inventory{perspective:1200px;}
-.bwp-inside{inset:0; background:radial-gradient(ellipse 80% 70% at 50% 45%, rgba(30,16,6,.35), rgba(30,16,6,.85));}
-.bwp-sflap{left:0; right:0; top:0; height:86%; transform-origin:50% 0; border-radius:0 0 50% 50% / 0 0 22% 22%; box-shadow:0 18px 34px rgba(0,0,0,.55);
-  background:radial-gradient(ellipse 70% 50% at 50% 26%, rgba(255,220,170,.14), transparent 70%), radial-gradient(circle at 30% 30%, rgba(0,0,0,.07) 0 1px, transparent 1.5px) 0 0 / 6px 6px,
-    linear-gradient(180deg, #8a5630, #6a3e1e 64%, #52300f);}
-.bwp-sflap::before{content:''; position:absolute; inset:16px; border:2px dashed rgba(240,210,160,.7); border-radius:0 0 50% 50% / 0 0 22% 22%;}
-.bwp-strap{left:50%; top:calc(86% - 46px); width:44px; height:calc(14% + 46px); margin-left:-22px; background:linear-gradient(90deg, #4a2a10, #6a3e1e 30%, #6a3e1e 70%, #4a2a10);}
-.bwp-strap::before{content:''; position:absolute; left:6px; right:6px; top:6px; bottom:0; border:2px dashed rgba(240,210,160,.55); border-bottom:0;}
-.bwp-buckle{left:50%; top:calc(86% - 34px); width:60px; height:44px; margin-left:-30px; border-radius:8px; border:7px solid #d9ae4e;
-  box-shadow:inset 0 0 0 2px #8a6420, 0 3px 6px rgba(0,0,0,.45); background:transparent;}
-.bwp-buckle::after{content:''; position:absolute; left:50%; top:-4px; bottom:-4px; width:6px; margin-left:-3px; border-radius:3px; background:#b8862b;}
+/* the Inventory (UI52): the satchel in the middle pops up, its flap flips open over the top and a few of your things hop out */
+.bwp-inventory{perspective:900px;}
+.bwp-bagw{transform-style:preserve-3d;}
+.bwp-bag{left:0; right:0; bottom:0; height:78%; border-radius:16px 16px 24px 24px; box-shadow:0 16px 30px rgba(0,0,0,.5), inset 0 -7px 0 rgba(0,0,0,.2);
+  background:radial-gradient(ellipse 70% 50% at 50% 30%, rgba(255,220,170,.14), transparent 70%), linear-gradient(180deg, #8a5630, #6a3e1e 64%, #52300f);}
+.bwp-bag::before{content:''; position:absolute; inset:10px; border:2px dashed rgba(240,210,160,.6); border-radius:10px 10px 18px 18px;}
+.bwp-bagin{left:9%; right:9%; top:16%; height:16%; border-radius:50%; background:radial-gradient(ellipse at 50% 70%, #1a0d04, #2e1a0a 70%, #4a2a12);}
+.bwp-bflap{left:-2%; right:-2%; top:18%; height:52%; transform-origin:50% 0; border-radius:12px 12px 50% 50% / 12px 12px 34% 34%; box-shadow:0 8px 12px rgba(0,0,0,.4);
+  background:radial-gradient(ellipse 60% 40% at 50% 20%, rgba(255,220,170,.16), transparent 70%), linear-gradient(180deg, #9a6238, #7a4a24);}
+.bwp-bflap::before{content:''; position:absolute; inset:8px; border:2px dashed rgba(240,210,160,.6); border-radius:8px 8px 50% 50% / 8px 8px 34% 34%;}
+.bwp-bflap::after{content:''; position:absolute; left:50%; bottom:8%; width:26%; height:22%; margin-left:-13%; border-radius:6px; border:5px solid #d9ae4e; box-shadow:inset 0 0 0 2px #8a6420;}
+.bwp-item{left:50%; top:50%; width:48px; height:48px; margin:-24px; font-size:38px; line-height:48px; text-align:center; opacity:0;}
 /* ambient life while a place is open: transform and opacity only, behind the panels */
 .bwp-host{position:relative;}
 .bwp-host > .bwp-amb{position:absolute !important; inset:0; z-index:0 !important; pointer-events:none; overflow:hidden; border-radius:inherit;}
@@ -159,7 +160,7 @@ body.bwp-on-shop #view-shop.cart-scene::before, body.bwp-on-premium #view-shop.c
 html[data-fx="low"] .bwp-amb, html[data-fx="none"] .bwp-amb{display:none;}
 html[data-fx="low"] body.bwp-on-shop #view-shop.cart-scene::before, html[data-fx="none"] body.bwp-on-shop #view-shop.cart-scene::before{animation:none;}
 @media (prefers-reduced-motion: reduce){ .bwp-amb{display:none;} body.bwp-on-shop #view-shop.cart-scene::before, body.bwp-on-premium #view-shop.cart-scene::before{animation:none;} }
-@media (max-width:560px){ .bwp-cover::before{inset:14px 14px 14px 48px;} .bwp-cover > b{width:32px; height:32px;} .bwp-cover > b.c1, .bwp-cover > b.c3{left:34px;} .bwp-cover::after{inset:44px 40px 44px 66px;} .bwp-cover > i{width:112px; height:112px; margin:-56px 0 0 -56px;} .bwp-cover > i::before{width:48px; height:48px; margin:-24px 0 0 -24px;} .bwp-gate b{width:34px; height:34px; margin-top:-17px; border-width:5px;} }
+@media (max-width:560px){ .bwp-gate b{width:34px; height:34px; margin-top:-17px; border-width:5px;} .bwp-item{font-size:30px;} }
 `;
 // The Nest's rim: about 520 short bent twigs laid mostly round the hole (seeded, so every visit is the same nest), a hole cut by an
 // even-odd clip, a dark lip and the warm light inside as CSS layers on top. Built once per page.
@@ -219,6 +220,7 @@ function finish(run, eat){
   run.resolve(true);
 }
 function bit(run, cls, style, html){ const i = D.createElement('i'); i.className = cls; if(style) i.style.cssText = style; if(html) i.innerHTML = html; run.lay.appendChild(i); return i; }
+function kid(parent, cls, style, html){ const i = D.createElement('i'); i.className = cls; if(style) i.style.cssText = style; if(html) i.innerHTML = html; parent.appendChild(i); return i; }
 function an(run, node, frames, ms, delay, ease){
   const a = node.animate(frames, {duration: ms, delay: delay || 0, easing: ease || OUT, fill: 'both'});
   if(run.rate !== 1) a.playbackRate = run.rate;
@@ -226,10 +228,10 @@ function an(run, node, frames, ms, delay, ease){
 }
 function later(run, ms, fn){ run.timers.push(setTimeout(fn, ms / run.rate)); }
 function size(run){ const h = run.lay.parentNode; if(h && h !== D.body && h.getBoundingClientRect){ const r = h.getBoundingClientRect(); if(r.width) return {w: r.width, h: r.height}; } return {w: W.innerWidth || 1024, h: W.innerHeight || 768}; }
-// motes thrown out from a point: n of them, each `make(R, k)` → {from, to, ms, delay} in px (fill-forward keyframes, opacity in and out)
+// motes thrown out from a point: n of them, each `make(R, k)` → {from, to, ms, delay, style, html} in px (fill-forward keyframes, opacity in and out)
 function motes(run, cls, n, seed, make){
   const R = rng(seed);
-  for(let k = 0; k < n; k++){ const m = make(R, k), i = bit(run, cls, m.style), delay = Math.round(m.delay);
+  for(let k = 0; k < n; k++){ const m = make(R, k), i = bit(run, cls, m.style, m.html), delay = Math.round(m.delay);
     an(run, i, [{transform: m.from, opacity: 0}, {transform: m.mid || m.from, opacity: m.peak || 1, offset: m.at || .3}, {transform: m.to, opacity: 0}], Math.min(Math.round(m.ms), run.ms - delay), delay, m.ease || OUT); }
 }
 const fadeOut = (run, at)=> an(run, run.lay, [{opacity: 1}, {opacity: 0}], run.ms - at, at, 'ease-in');
@@ -278,33 +280,48 @@ const PLACES = {
     fadeOut(run, 740);
     later(run, 300, ()=> sound('crystalTing', 1)); later(run, 400, ()=> sound('crystalTing', 1.335));
   }},
-  nest: {ms: 860, low: 420, play(run, low){ // the Old Nest: you look out through its hollow, the twig rim opens around you and the down drifts out
+  nest: {ms: 820, low: 420, play(run, low){ // the Old Nest (UI52): an egg in the hollow wobbles, cracks, and its top flies off in warm light and down
     sound('featherFlutter');
-    if(low){ an(run, bit(run, 'bwp-rim', 'background:' + nestTwigs()), [{transform: 'scale(1)', opacity: 1}, {transform: 'scale(3.2)', opacity: 0}], 400, 0, 'cubic-bezier(.45,0,.7,.6)'); return; }
-    an(run, bit(run, 'bwp-glow'), [{transform: 'scale(.42)', opacity: 0}, {transform: 'scale(1.68)', opacity: .7, offset: .4}, {transform: 'scale(3.08)', opacity: 0}], 680, 40);
-    const rim = bit(run, 'bwp-rim', 'background:' + nestTwigs());
-    an(run, rim, [{transform: 'scale(1)', opacity: 1}, {transform: 'scale(1.35)', opacity: 1, offset: .3}, {transform: 'scale(4.4)', opacity: 0}], 760, 60, 'cubic-bezier(.45,0,.7,.6)');
-    const {w, h} = size(run), r0 = .08 * 1.2 * Math.max(w, h);
-    motes(run, 'bwp-down', 12, 5, (R, k)=>{ const a = (k / 12) * Math.PI * 2 + R() * .4, x0 = Math.cos(a) * r0, y0 = Math.sin(a) * r0, out = 1.5 + R() * .9, rot = (R() - .5) * 200;
-      return {from: `translate(${x0.toFixed(0)}px, ${y0.toFixed(0)}px) rotate(0deg) scale(.6)`, mid: `translate(${(x0 * out).toFixed(0)}px, ${(y0 * out - 10).toFixed(0)}px) rotate(${(rot * .4).toFixed(0)}deg) scale(1)`, at: .35, peak: .95,
-        to: `translate(${(x0 * out * 1.15 + (R() - .5) * 60).toFixed(0)}px, ${(y0 * out + 60 + R() * 80).toFixed(0)}px) rotate(${rot.toFixed(0)}deg) scale(.85)`, ms: 600 + R() * 120, delay: 110 + R() * 70}; });
-    later(run, 300, ()=> sound('featherFlutter'));
+    const {w, h} = size(run), nw = Math.round(Math.min(300, w * .64, h * .5)), ew = Math.round(nw * .22), eh = Math.round(ew * 1.32), cx = w / 2, cy = h / 2;
+    bit(run, 'bwp-dim', low ? 'opacity:1' : '');
+    const ring = bit(run, 'bwp-nestring', `left:${cx - nw / 2}px; top:${cy - nw / 2}px; width:${nw}px; height:${nw}px; background:${nestTwigs()}`);
+    const egg = `left:${(cx - ew / 2).toFixed(0)}px; top:${(cy - eh * .66).toFixed(0)}px; width:${ew}px; height:${eh}px`, bot = bit(run, 'bwp-egg is-bot', egg), top = bit(run, 'bwp-egg is-top', egg);
+    if(low){ an(run, top, [{transform: 'translate(0px, 0px) rotate(0deg)', opacity: 1}, {transform: 'translate(-10px, -70px) rotate(-40deg)', opacity: 0}], 280, 0, 'cubic-bezier(.3,.6,.4,1)'); fadeOut(run, 200); return; }
+    an(run, run.lay.firstChild, [{opacity: 0}, {opacity: 1}], 140, 0, 'ease-out');
+    an(run, ring, [{transform: 'scale(.72)', opacity: 0}, {transform: 'scale(1)', opacity: 1, offset: .2}, {transform: 'scale(1)', opacity: 1, offset: .7}, {transform: 'scale(1.2)', opacity: 0}], 820, 0);
+    const wob = [{transform: 'translate(0px, 0px) rotate(0deg) scale(.6)', opacity: 0}, {transform: 'translate(0px, 0px) rotate(0deg) scale(1)', opacity: 1, offset: .1}, {transform: 'translate(0px, 0px) rotate(-10deg) scale(1)', opacity: 1, offset: .19},
+      {transform: 'translate(0px, 0px) rotate(9deg) scale(1)', opacity: 1, offset: .28}, {transform: 'translate(0px, 0px) rotate(-4deg) scale(1)', opacity: 1, offset: .35}, {transform: 'translate(0px, 0px) rotate(0deg) scale(1)', opacity: 1, offset: .41}];
+    an(run, bot, wob.concat([{transform: 'translate(0px, 0px) rotate(0deg) scale(1)', opacity: 1, offset: .72}, {transform: 'translate(0px, 6px) rotate(0deg) scale(.9)', opacity: 0}]), 820, 0, 'ease-in-out');
+    an(run, top, wob.concat([{transform: `translate(${(-ew * .3).toFixed(0)}px, ${(-eh * 1.5).toFixed(0)}px) rotate(-38deg) scale(1)`, opacity: 1, offset: .78}, {transform: `translate(${(-ew * .4).toFixed(0)}px, ${(-eh * 1.9).toFixed(0)}px) rotate(-52deg) scale(1)`, opacity: 0}]), 820, 0, 'ease-in-out');
+    an(run, bit(run, 'bwp-glow', `left:${cx}px; top:${(cy - eh * .1).toFixed(0)}px; width:${nw}px; height:${nw}px; margin:${-nw / 2}px 0 0 ${-nw / 2}px`),
+      [{transform: 'scale(.15)', opacity: 0}, {transform: 'scale(1.3)', opacity: .95, offset: .4}, {transform: 'scale(2.4)', opacity: 0}], 480, 330);
+    motes(run, 'bwp-down', 10, 5, (R, k)=>{ const a = -Math.PI / 2 + (k / 9 - .5) * 2.6 + (R() - .5) * .3, d = nw * (.35 + R() * .3), x = Math.cos(a) * d, y = Math.sin(a) * d, rot = (R() - .5) * 220;
+      return {style: `left:${cx}px; top:${(cy - eh * .1).toFixed(0)}px`, from: 'translate(0px, 0px) rotate(0deg) scale(.5)', mid: `translate(${(x * .7).toFixed(0)}px, ${(y * .7).toFixed(0)}px) rotate(${(rot * .4).toFixed(0)}deg) scale(1)`, at: .35, peak: .95,
+        to: `translate(${(x + (R() - .5) * 40).toFixed(0)}px, ${(y + 50 + R() * 50).toFixed(0)}px) rotate(${rot.toFixed(0)}deg) scale(.8)`, ms: 440 + R() * 80, delay: 340 + R() * 50}; });
+    fadeOut(run, 660);
+    later(run, 330, ()=> sound('shellCrackTone'));
   }},
-  codex: {ms: 880, low: 420, play(run, low){ // the Codex: the great book's tooled cover swings open on its spine (away, so it stays in view), the flyleaf follows
-    const coverHTML = '<b class="c1"></b><b class="c2"></b><b class="c3"></b><b class="c4"></b><i><b></b></i>';
+  codex: {ms: 900, low: 420, play(run, low){ // the Codex (UI52): the closed book opens on its spine and slides so the spine sits in the middle; one page turns on it
     sound('pageTurn');
-    if(low){ an(run, bit(run, 'bwp-cover', '', coverHTML), [{transform: 'rotateY(0deg)'}, {transform: 'rotateY(92deg)'}], 400, 0, SWING); return; }
-    const sh = bit(run, 'bwp-shade'), p1 = bit(run, 'bwp-page'), cv = bit(run, 'bwp-cover', '', coverHTML);
-    an(run, cv.querySelector('i b'), [{transform: 'translateX(-160%) skewX(-16deg)'}, {transform: 'translateX(420%) skewX(-16deg)'}], 300, 0, 'ease-in-out');
-    an(run, cv, [{transform: 'rotateY(0deg)'}, {transform: 'rotateY(7deg)', offset: .18}, {transform: 'rotateY(92deg)'}], 500, 80, 'cubic-bezier(.55,.05,.3,1)');
-    an(run, sh, [{opacity: 0}, {opacity: .7, offset: .35}, {opacity: 0}], 560, 140);
-    an(run, p1, [{transform: 'rotateY(0deg)'}, {transform: 'rotateY(92deg)'}], 400, 230, 'cubic-bezier(.5,0,.3,1)');
-    const {h} = size(run);
-    motes(run, 'bwp-mote', 9, 3, R=>{ const y = (R() - .5) * h * .8, x = 40 + R() * 160; // dust puffed off the spine
-      return {style: 'left:14px', from: `translate(0px, ${y.toFixed(0)}px) scale(.6)`, mid: `translate(${(x * .5).toFixed(0)}px, ${(y - 10).toFixed(0)}px) scale(1)`, peak: .8,
-        to: `translate(${x.toFixed(0)}px, ${(y - 40 - R() * 40).toFixed(0)}px) scale(.5)`, ms: 440 + R() * 120, delay: 230 + R() * 80}; });
-    fadeOut(run, 740);
-    later(run, 260, ()=> sound('pageTurn'));
+    const {w, h} = size(run), bw = Math.round(Math.min(w < 560 ? w * .42 : 300, h * .52 / 1.36)), bh = Math.round(bw * 1.36);
+    bit(run, 'bwp-dim', low ? 'opacity:1' : '');
+    const bk = bit(run, 'bwp-bk', `left:${Math.round((w - bw) / 2)}px; top:${Math.round((h - bh) / 2)}px; width:${bw}px; height:${bh}px`);
+    kid(bk, 'bwp-bk-r');
+    // the page leaf comes after the cover, so it paints over the open cover however the browser sorts the two; its faces show once the cover is past edge-on
+    const cv = kid(bk, 'bwp-leaf', '', '<i class="bwp-face bwp-cv"></i><i class="bwp-face bwp-cv-in is-back"></i>');
+    const pg = low ? null : kid(bk, 'bwp-leaf', '', '<i class="bwp-face bwp-pg" style="opacity:0"></i><i class="bwp-face bwp-pg is-back" style="opacity:0"></i>');
+    const half = Math.round(bw / 2);
+    if(low){ an(run, cv, [{transform: 'rotateY(0deg)'}, {transform: 'rotateY(-180deg)'}], 300, 0, SWING); an(run, bk, [{transform: 'translateX(0px)'}, {transform: `translateX(${half}px)`}], 300, 0, SWING); fadeOut(run, 260); return; }
+    an(run, run.lay.firstChild, [{opacity: 0}, {opacity: 1}], 140, 0, 'ease-out');
+    an(run, bk, [{transform: 'translateX(0px) scale(.6)'}, {transform: 'translateX(0px) scale(1)', offset: .2}, {transform: `translateX(${half}px) scale(1)`}], 540, 0, 'cubic-bezier(.45,.05,.3,1)'); // no opacity here: it would flatten the book's 3D
+    an(run, cv, [{transform: 'rotateY(0deg)'}, {transform: 'rotateY(-180deg)'}], 430, 110, 'cubic-bezier(.55,.05,.3,1)');
+    [pg.firstChild, pg.lastChild].forEach(f=> an(run, f, [{opacity: 0}, {opacity: 1}], 1, 360));
+    an(run, pg, [{transform: 'rotateY(0deg)'}, {transform: 'rotateY(-180deg)'}], 330, 450, 'cubic-bezier(.45,0,.35,1)');
+    motes(run, 'bwp-mote', 7, 3, R=>{ const y = (R() - .5) * bh * .8, x = (R() - .3) * 90; // dust puffed off the spine
+      return {style: `left:${Math.round(w / 2)}px`, from: `translate(0px, ${y.toFixed(0)}px) scale(.6)`, mid: `translate(${(x * .5).toFixed(0)}px, ${(y - 10).toFixed(0)}px) scale(1)`, peak: .8,
+        to: `translate(${x.toFixed(0)}px, ${(y - 40 - R() * 40).toFixed(0)}px) scale(.5)`, ms: 380 + R() * 100, delay: 300 + R() * 80}; });
+    fadeOut(run, 760);
+    later(run, 450, ()=> sound('pageTurn'));
   }},
   deck: {ms: 860, low: 420, play(run, low){ // the Camp: the tent door is rolled up on its roll; the campfire glows behind it
     sound('mapUnroll');
@@ -323,32 +340,36 @@ const PLACES = {
     fadeOut(run, 720);
     later(run, 600, ()=> sound('woodKnock'));
   }},
-  stomp: {ms: 900, low: 440, play(run, low){ // the Stomping Grounds: the arena's timber gates swing in, sand dust rolls out
+  stomp: {ms: 820, low: 420, play(run, low){ // the Stomping Grounds (UI52): the timber gates, hinged at the screen's sides, swing open toward you and out of sight
     sound('woodKnock');
     const sun = low ? null : bit(run, 'bwp-sun'), [l, r] = pair(run, 'bwp-gate', '<b></b>');
-    if(low){ an(run, l, [{transform: 'rotateY(0deg)'}, {transform: 'rotateY(95deg)'}], 420, 0, SWING); an(run, r, [{transform: 'rotateY(0deg)'}, {transform: 'rotateY(-95deg)'}], 420, 0, SWING); return; }
-    an(run, sun, [{transform: 'scaleX(.3)', opacity: 0}, {transform: 'scaleX(3)', opacity: .9, offset: .35}, {transform: 'scaleX(14)', opacity: 0}], 640, 200);
-    const shake = s=> [{transform: 'translate(0px, 0px) rotateY(0deg)', easing: 'linear'}, {transform: `translate(${-3 * s}px, 3px) rotateY(0deg)`, offset: .07, easing: 'linear'},
-      {transform: `translate(${2 * s}px, -1px) rotateY(0deg)`, offset: .13, easing: 'linear'}, {transform: 'translate(0px, 0px) rotateY(0deg)', offset: .19, easing: 'cubic-bezier(.55,.05,.3,1)'},
-      {transform: `translate(0px, 0px) rotateY(${s * 104}deg)`}];
-    an(run, l, shake(1), 780, 40, 'linear'); an(run, r, shake(-1), 780, 40, 'linear');
+    const swing = (g, s, ms, delay)=> an(run, g, [{transform: 'rotateY(0deg)'}, {transform: `rotateY(${s * 100}deg)`}], ms, delay, 'cubic-bezier(.5,0,.25,1)');
+    if(low){ swing(l, -1, 400, 0); swing(r, 1, 400, 0); return; }
+    an(run, sun, [{transform: 'scaleX(.3)', opacity: 0}, {transform: 'scaleX(3)', opacity: .9, offset: .35}, {transform: 'scaleX(14)', opacity: 0}], 560, 120);
+    swing(l, -1, 600, 40); swing(r, 1, 600, 40);
     const {w} = size(run);
     motes(run, 'bwp-dust', 10, 13, R=>{ const x = (R() - .5) * w * .7;
       return {from: `translate(${(x * .3).toFixed(0)}px, 20px) scale(.35)`, mid: `translate(${(x * .7).toFixed(0)}px, -10px) scale(1.2)`, at: .3, peak: .85,
-        to: `translate(${x.toFixed(0)}px, ${(-30 - R() * 60).toFixed(0)}px) scale(2.3)`, ms: 520 + R() * 160, delay: 230 + R() * 90}; });
-    fadeOut(run, 760);
-    later(run, 160, ()=> sound('leaderSlam'));
+        to: `translate(${x.toFixed(0)}px, ${(-30 - R() * 60).toFixed(0)}px) scale(2.3)`, ms: 480 + R() * 120, delay: 200 + R() * 80}; });
+    fadeOut(run, 660);
+    later(run, 120, ()=> sound('bowCreak')); later(run, 300, ()=> sound('leaderSlam'));
   }},
-  inventory: {ms: 760, low: 380, play(run, low){ // the Inventory: the satchel's flap lifts off its buckle
+  inventory: {ms: 760, low: 380, play(run, low){ // the Inventory (UI52): the satchel pops up, its flap flips open over the top and a few of your things hop out
     sound('shelfPick');
-    if(low){ an(run, bit(run, 'bwp-sflap'), [{transform: 'rotateX(0deg)'}, {transform: 'rotateX(-95deg)'}], 360, 0, SWING); return; }
-    const ins = bit(run, 'bwp-inside'), fl = bit(run, 'bwp-sflap'), st = bit(run, 'bwp-strap'), bk = bit(run, 'bwp-buckle');
-    an(run, bk, [{transform: 'translateY(0px) rotate(0deg)', opacity: 1}, {transform: 'translateY(-6px) rotate(-8deg)', opacity: 1, offset: .35}, {transform: 'translateY(46px) rotate(-28deg)', opacity: 0}], 240, 0, 'ease-in');
-    an(run, st, [{transform: 'translateY(0px)', opacity: 1}, {transform: 'translateY(60px)', opacity: 0}], 220, 60, 'ease-in');
-    an(run, fl, [{transform: 'rotateX(0deg)'}, {transform: 'rotateX(5deg)', offset: .14}, {transform: 'rotateX(-96deg)'}], 520, 120, 'cubic-bezier(.5,.05,.3,1)'); // folds up and back, away from you
-    an(run, ins, [{opacity: 1}, {opacity: 0}], 420, 260, 'ease-out');
-    fadeOut(run, 640);
-    later(run, 200, ()=> sound('pickup'));
+    const {w, h} = size(run), bw = Math.round(Math.min(200, w * .46)), bh = Math.round(bw * .9), cx = w / 2, cy = h / 2 + bh * .1;
+    bit(run, 'bwp-dim', low ? 'opacity:1' : '');
+    const wrap = bit(run, 'bwp-bagw', `left:${Math.round(cx - bw / 2)}px; top:${Math.round(cy - bh / 2)}px; width:${bw}px; height:${bh}px`);
+    kid(wrap, 'bwp-bag'); kid(wrap, 'bwp-bagin'); const fl = kid(wrap, 'bwp-bflap');
+    if(low){ an(run, fl, [{transform: 'rotateX(0deg)'}, {transform: 'rotateX(-165deg)'}], 280, 0, SWING); fadeOut(run, 240); return; }
+    an(run, run.lay.firstChild, [{opacity: 0}, {opacity: 1}], 120, 0, 'ease-out');
+    an(run, wrap, [{transform: 'translateY(30px) scale(.5)'}, {transform: 'translateY(-6px) scale(1.04)', offset: .55}, {transform: 'translateY(0px) scale(1)'}], 220, 0, OUT); // no opacity: it would flatten the flap's 3D
+    an(run, fl, [{transform: 'rotateX(0deg)'}, {transform: 'rotateX(10deg)', offset: .2}, {transform: 'rotateX(-165deg)'}], 380, 180, 'cubic-bezier(.5,.05,.3,1)');
+    const items = ['🧪', '🍞', '🗝️', '🪵', '💎', '🃏'];
+    motes(run, 'bwp-item', items.length, 21, (R, k)=>{ const x = (k - (items.length - 1) / 2) * Math.min(w / 7, bw * .4) + (R() - .5) * 16, y = -(bh * .75 + R() * bh * .35), rot = (R() - .5) * 50;
+      return {style: `left:${cx}px; top:${Math.round(cy - bh * .2)}px`, from: 'translate(0px, 10px) rotate(0deg) scale(.4)', mid: `translate(${(x * .8).toFixed(0)}px, ${y.toFixed(0)}px) rotate(${(rot * .6).toFixed(0)}deg) scale(1.1)`, at: .4, peak: 1,
+        to: `translate(${x.toFixed(0)}px, ${(y * .7).toFixed(0)}px) rotate(${rot.toFixed(0)}deg) scale(1)`, ms: 440, delay: 260 + k * 25, html: items[k]}; });
+    fadeOut(run, 600);
+    later(run, 300, ()=> sound('pickup'));
   }},
 };
 // The Forge keeps its own flare (dressForgePlace); a Codex view showing the Forge is not the library.

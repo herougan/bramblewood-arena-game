@@ -1408,6 +1408,7 @@
   .modal h2{font-size:19px; margin-bottom:0;}
   .modal-head-row{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:14px;}
   .modal-meta{font-family:'Nunito'; font-weight:400; font-size:11px; color:var(--ink-muted); margin-left:9px; letter-spacing:normal;}
+  .ui52-first-map{margin-left:9px; font-family:'Nunito'; font-weight:700; font-size:12px; letter-spacing:normal; vertical-align:middle;} span.ui52-first-map{color:var(--ink-muted);} /* 2026-11-13 (package UI52): the card editor's first map */
   .modal-close-btn{flex-shrink:0; width:30px; height:30px; border-radius:50%; border:1px solid var(--surface-border); background:var(--bg); color:var(--ink-muted); font-size:15px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .15s,color .15s,border-color .15s;}
   .modal-close-btn:hover{background:var(--danger); color:var(--badge-ink); border-color:var(--danger);}
   /* 2026-09-26 (#364) — Codex "Learn more" card-detail view. Reuses .modal/.modal-overlay/
@@ -4002,11 +4003,7 @@
      it goes once the page is complete */
   #codexGrid > .cx-more{grid-column:1/-1; height:0; pointer-events:none;}
   .shop-back{float:left; margin:0 12px 8px 0;}
-  /* 2026-11-12 (package SHOP1): Shop | Premium switch; the Premium shelf gets an accent frame and a tinted counter (tokens only) */
-  .shop-modes{display:flex; gap:6px; margin:8px 0 0; flex-wrap:wrap;}
-  .shop-mode{flex:1 1 0; min-width:110px; justify-content:center; font-weight:700;}
-  .shop-mode.is-on{background:var(--accent); color:var(--accent-ink); border-color:var(--accent-strong);}
-  .shop-mode.is-premium:not(.is-on){border-color:var(--accent); color:var(--accent-strong);}
+  /* 2026-11-12 (package SHOP1): the Premium shelf gets an accent frame and a tinted counter (tokens only) */
   #view-shop.is-premium-shop .shelf-wall{box-shadow:inset 0 0 0 3px var(--accent), 0 0 18px color-mix(in srgb, var(--accent) 35%, transparent);}
   #view-shop.is-premium-shop .shop-counter{border-color:var(--accent); background:color-mix(in srgb, var(--accent) 12%, var(--surface));}
   /* Reserve rows (2026-10-12, raids as a full game): smaller, dimmer rows behind each front row */
@@ -6987,6 +6984,7 @@
   .pf-facts{display:grid; grid-template-columns:auto 1fr; gap:6px 14px; margin:0 0 12px; font-size:14px;}
   .pf-facts dt{color:var(--ink-muted); font-weight:700;} .pf-facts dd{margin:0; display:flex; flex-direction:column;} .pf-facts dd small{color:var(--ink-muted);}
   .pf-logout{align-self:flex-start;}
+  .pf-tut-row{display:flex; flex-wrap:wrap; gap:8px;} .pf-tutorials h3{margin:0 0 8px;} /* 2026-11-13 (package UI52): the tutorial resets */
   .pf .about-you{text-align:left;}
   .pf-char-modal{position:relative; max-width:560px; width:min(560px, 94vw); padding:0 !important; overflow:hidden;}
   .pf-char-modal .avatar-panel{margin:0 !important; border:0 !important; box-shadow:none !important;}
@@ -11989,9 +11987,8 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 /* 2026-11-07 (package UI33, owner 23:05: the turn stopped at the vertical slice): a full turn. Two pages: .pg-leaf-two turns 0 -> 180 deg about the spine; its front face
    is the old page, its back face (turned round, backface-visibility hidden on both) is the NEW page, so the slice opens out into it. A shade crosses the
    front, then lifts off the back; .pg-cast is the fold's soft shadow on the page being revealed; .pg-hold keeps the old page the leaf lands on.
-   One page (phone): .pg-leaf-one folds old to edge-on at the spine, then the new page (pg-leaf-open) opens out from it. The whole turn is 440 ms
-   (UI30's was 390 for the half turn): each half 220. */
-.pg-book{--pg-turn-ms:440ms;}
+   One page (phone): the same leaf turns about the page's middle and slides aside (.pg-leaf-mid, UI52). The whole turn is 760 ms (UI52, "slowly"; was 440). */
+.pg-book{--pg-turn-ms:760ms;}
 .pg-leaf{position:absolute !important; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; will-change:transform;}
 .pg-leaf-two{transform-style:preserve-3d; animation:pgTurnFwd var(--pg-turn-ms) cubic-bezier(.42,0,.58,1) forwards;}
 .pg-leaf-two.pg-leaf-back{transform-origin:100% 50%; animation-name:pgTurnBack;}
@@ -12006,16 +12003,11 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .pg-cast{z-index:7; pointer-events:none; opacity:0; border-radius:inherit; animation:pgCast var(--pg-turn-ms) ease-in-out forwards;}
 .pg-cast-fwd{background:linear-gradient(90deg, rgba(0,0,0,.38), rgba(0,0,0,.12) 38%, rgba(0,0,0,0) 70%);}
 .pg-cast-back{background:linear-gradient(270deg, rgba(0,0,0,.38), rgba(0,0,0,.12) 38%, rgba(0,0,0,0) 70%);}
-.pg-leaf-one{animation:pgOneFwd calc(var(--pg-turn-ms) / 2) cubic-bezier(.5,0,.9,.6) forwards; backface-visibility:hidden;}
-.pg-leaf-one.pg-leaf-back{animation-name:pgOneBack;}
-.pg-leaf-one.pg-leaf-open{opacity:0; animation:pgOpenFwd calc(var(--pg-turn-ms) / 2) cubic-bezier(.1,.4,.5,1) calc(var(--pg-turn-ms) / 2) forwards;}
-.pg-leaf-one.pg-leaf-open.pg-leaf-back{animation-name:pgOpenBack;}
+.pg-leaf-two.pg-leaf-mid{transform-origin:50% 50%; animation-name:pgMidFwd;} .pg-leaf-two.pg-leaf-mid.pg-leaf-back{animation-name:pgMidBack;} /* 2026-11-13 (package UI52): one page turns about its middle and slides aside */
 @keyframes pgTurnFwd{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(-180deg);}}
 @keyframes pgTurnBack{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(180deg);}}
-@keyframes pgOneFwd{from{transform:perspective(1800px) rotateY(0deg); opacity:1;} 99%{opacity:1;} to{transform:perspective(1800px) rotateY(-90deg); opacity:0;}}
-@keyframes pgOneBack{from{transform:perspective(1800px) rotateY(0deg); opacity:1;} 99%{opacity:1;} to{transform:perspective(1800px) rotateY(90deg); opacity:0;}}
-@keyframes pgOpenFwd{from{transform:perspective(1800px) rotateY(-90deg); opacity:1;} to{transform:perspective(1800px) rotateY(0deg); opacity:1;}}
-@keyframes pgOpenBack{from{transform:perspective(1800px) rotateY(90deg); opacity:1;} to{transform:perspective(1800px) rotateY(0deg); opacity:1;}}
+@keyframes pgMidFwd{from{transform:perspective(1800px) translateX(0) rotateY(0deg);} 50%{transform:perspective(1800px) translateX(-26%) rotateY(-90deg);} to{transform:perspective(1800px) translateX(0) rotateY(-180deg);}}
+@keyframes pgMidBack{from{transform:perspective(1800px) translateX(0) rotateY(0deg);} 50%{transform:perspective(1800px) translateX(26%) rotateY(90deg);} to{transform:perspective(1800px) translateX(0) rotateY(180deg);}}
 @keyframes pgShadeIn{to{opacity:1;}}
 @keyframes pgShadeOut{from{opacity:1;} to{opacity:0;}}
 @keyframes pgCast{0%{opacity:0;} 45%{opacity:1;} 100%{opacity:0;}}
@@ -12026,9 +12018,13 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 @media (prefers-reduced-motion: reduce){ .pg-leaf, .pg-leaf-two, .pg-face::after, .pg-cast, .pg-in-back{animation:none !important;} .pg-leaf, .pg-cast, .pg-hold{display:none;} .pg-xfade{animation:pgXfade 220ms ease-out both !important;} }
 
 /* the skills book */
-.bk-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:0 0 10px;}
-.bk-bar .bk-filter{flex:none; display:flex; align-items:center; gap:10px; width:min(560px, 100%); margin:0 auto;}
-.bk-bar #tlReplayBtn{margin:0 auto;} /* 2026-10-24 (package TT): the Triggers lesson replay button */
+.bk-bar{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px 12px; margin:0 0 10px;}
+.bk-bar .bk-filter{flex:0 1 560px; min-width:200px; display:flex; align-items:center; gap:10px;}
+/* 2026-11-13 (package UI52): the page count, and on a phone the turn buttons around it, in the filter row (no row of their own) */
+#bkWrap{position:relative;} .bk-maps-toggle{position:absolute; top:2px; right:0; z-index:10; min-width:40px; height:36px;} .bk-maps-toggle.is-on{background:var(--accent); color:var(--accent-ink); border-color:var(--accent-strong);} /* UI52: admin, overlaid */
+.bk-firstmap{display:inline-block; margin-left:8px; font:700 11px/1.4 'Nunito',system-ui,sans-serif; color:var(--accent-strong); padding:1px 7px; border-radius:999px; background:color-mix(in srgb, var(--accent) 14%, transparent); vertical-align:middle;}
+.bk-pager{display:flex; align-items:center; gap:4px;} .bk-pager .pg-info{margin:0;} .bk-pager .pg-edge{position:static; width:auto; flex-direction:row;} .bk-pager .pg-edge-l{order:-1;} .bk-pager .pg-edge-in{position:static; flex-direction:row; gap:4px;} .bk-pager .pg-edge-l .pg-edge-in{flex-direction:row-reverse;}
+@media (max-width:559px){ .bk-bar .bk-filter{flex-basis:100%;} #bkWrap.is-admin .bk-filter{padding-right:46px;} .bk-pager .pg-info .pg-of{min-width:7.5em; padding:6px 10px;} }
 .bk-bar .bk-filter small{color:var(--page-ink, #f5ecd2);}
 .bk-filter input{flex:1 1 auto; min-width:0; height:40px; padding:0 12px; border-radius:10px; border:1px solid var(--surface-border); font:inherit; background:var(--surface); color:var(--ink);}
 .bk-book{position:relative; touch-action:pan-y;}
@@ -14375,7 +14371,7 @@ body.pg-pack-open #cardPop{z-index:9600 !important;} /* 2026-11-12 (package PERF
 /* #21: Home is an icon; the Conquest map leads the places bar */
 .topbar .home-nav-btn.ne-home-icon{width:38px; height:38px; padding:0 !important; justify-content:center; gap:0; border-radius:50%;} .home-nav-btn.ne-home-icon .tab-emoji{font-size:18px; margin:0; line-height:1;}
 .page-back-bar .pb-sc[data-pbsc="map"]{margin-right:4px; box-shadow:4px 0 0 -2px rgba(255,236,190,.25);}
-@media (max-width:480px){ .page-back-bar .pb-shortcuts{gap:1px;} .page-back-bar .pb-sc{padding:6px 6px;} .page-back-bar .pb-sc span{font-size:15px;} }
+@media (max-width:480px){ .page-back-bar .pb-shortcuts{gap:0; min-width:0; overflow-x:auto; scrollbar-width:none;} .page-back-bar .pb-sc{padding:6px 3px;} .page-back-bar .pb-sc span{font-size:15px;} } /* 2026-11-13 (package UI52): room for Shop, Premium and one more place on a phone; never wider than the bar */
 /* #12: the Codex card detail's copies, one small card each, grouped by treatment; a tapped copy shows its level */
 .ne-cx-copies{margin:10px 0 4px;} .ne-cx-copies h3 small{font-weight:600; font-size:11.5px; opacity:.7; margin-left:6px;}
 .ne-cx-group{margin:4px 0 8px;} .ne-cx-g{display:block; font-weight:800; font-size:12px; opacity:.8; margin:0 0 4px;}

@@ -2254,7 +2254,6 @@
  "Repeat-clear payout": "Premio per ripetizione",
  "Replaces any field in play; the map's own field returns when it ends.": "Sostituisce qualsiasi campo in gioco; il campo proprio della mappa torna quando finisce.",
  "Replay onboarding": "Rigioca l'introduzione",
- "Replay the triggers lesson in your next fight.": "Rigioca la lezione sui trigger nel prossimo scontro.",
  "Reptile": "Rettile",
  "Requiem": "Requiem",
  "Rescued a baby": "Hai salvato un cucciolo",
@@ -3642,8 +3641,6 @@
  "🌹 The briars grasp at the field.": "🌹 I rovi afferrano il campo.",
  "🌿 {a} tangles {t} (Tangled {n}).": "🌿 {a} intralcia {t} (Intralciato {n}).",
  "🎆 {att} detonates the Venom on {name}: {n} damage.": "🎆 {att} fa detonare il Veleno su {name}: {n} danni.",
- "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 La lezione sugli inneschi tornerà la prossima volta che in uno scontro comparirà una carta con innesco.",
- "🎓 Triggers lesson": "🎓 Lezione sugli inneschi",
  "🐞 Bug Hunters": "🐞 Cacciatori di bug",
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name} è Insonne: resta sveglio.",
  "💎 Two gems fused into {gem}.": "💎 Due gemme fuse in {gem}.",
@@ -4449,5 +4446,14 @@
  "Tap again to delete": "Tocca di nuovo per eliminare",
  "{name} deleted": "{name} eliminato",
  "Side maps": "Mappe secondarie",
- "Main map": "Mappa principale"
+ "Main map": "Mappa principale",
+ "Where this card first appears on the maps. Opens that map's cards.": "Dove questa carta compare per la prima volta sulle mappe. Apre le carte di quella mappa.",
+ "On no map yet": "Ancora su nessuna mappa",
+ "Admin: show the map where each skill is first seen": "Admin: mostra la mappa dove ogni abilità compare per prima",
+ "Tutorials": "Tutorial",
+ "Reset basic tutorials": "Ripristina i tutorial base",
+ "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "Rigioca le lezioni dalla mappa T alla mappa 3, anche quella sugli inneschi.",
+ "Reset all tutorials": "Ripristina tutti i tutorial",
+ "Replay every lesson and tip.": "Rigioca ogni lezione e suggerimento.",
+ "Tutorials reset: they play again in your next fights.": "Tutorial ripristinati: tornano nei prossimi scontri."
 }

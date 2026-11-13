@@ -59,7 +59,7 @@ ok(!/CHIP_FALLBACK_SKILLS\.push\('immortal', 'hydra', 'tribeDelivery'\)/.test(ap
 ok(/poisonBarbs:'🌵☠️'/.test(app), '#14 Poison Barbs 🌵☠️');
 
 // ---- #10 codex leaf
-ok(/\.pg-leaf\{position:absolute !important;/.test(tpl) && /--pg-turn-ms:440ms/.test(tpl) && /position: 'absolute', left: g\.x/.test(fn(app, 'codexLeafTurn')), '#10 the leaf is absolute (inline and !important); UI33 (2026-11-07) made it a full turn of 440 ms (was 390 for the half turn)');
+ok(/\.pg-leaf\{position:absolute !important;/.test(tpl) && /--pg-turn-ms:760ms/.test(tpl) && /position: 'absolute', left: g\.x/.test(fn(app, 'codexLeafTurn')), '#10 the leaf is absolute (inline and !important); UI33 made it a full turn; UI52 (2026-11-13) slowed it to 760 ms');
 
 // ---- #16 suggestions data + placeholder
 const SUG = JSON.parse(read('canonical/map-intro-suggestions.json')).suggestions;
@@ -146,7 +146,7 @@ async function browser(){
         albumTurn(1); const l = S.gridEl.querySelector('.pg-leaf'); if(!l) return 'noleaf'; const dur = getComputedStyle(l).animationDuration; l.style.animation = 'none'; const lr = l.getBoundingClientRect();
         return {dx: Math.round(lr.left - fr.left), dy: Math.round(lr.top - fr.top), pos: getComputedStyle(l).position, dur, grew: S.gridEl.offsetHeight - h0}; })()`);
       ok(L && L !== 'noleaf' && Math.abs(L.dx) <= 3 && Math.abs(L.dy) <= 3 && L.pos === 'absolute' && L.grew <= 2, `@${w} #10 the turning leaf sits on its page, the book doesn't grow (${JSON.stringify(L)})`);
-      ok(L && (L.dur === '0.44s' || L.dur === '0.22s'), `@${w} #10 the leaf turns in 440 ms (one page: two 220 ms halves; UI33; ${L && L.dur})`);
+      ok(L && L.dur === '0.76s', `@${w} #10 the leaf turns in 760 ms (UI52; ${L && L.dur})`);
       await ctx2.close();
     }
   } finally { await b.close(); }

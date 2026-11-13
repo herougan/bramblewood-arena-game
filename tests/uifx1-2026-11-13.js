@@ -76,7 +76,7 @@ function world(o){
   const layers = ()=> doc.body.children.filter(c=> /bwp-layer/.test(c.className));
   return {win, doc, P: win.BramblewoodPlaces, timers, listeners, observers, anims, sounds, view, settle, layers, El};
 }
-const MS = {shop: 820, premium: 880, nest: 860, codex: 880, deck: 860, stomp: 900, inventory: 760};
+const MS = {shop: 820, premium: 880, nest: 820, codex: 900, deck: 860, stomp: 820, inventory: 760}; // UI52 (2026-11-13): new Nest, Codex, Stomping Grounds and Inventory entrances
 const TAB = {shop: 'shop', premium: 'shop', nest: 'nest', codex: 'codex', deck: 'deck', stomp: 'stomp', inventory: 'inventory'};
 const AMBI = {shop: 1, premium: 1, nest: 1, codex: 1, deck: 1};
 const propsOf = list=>{ const s = new Set(); list.forEach(a=> a.frames.forEach(k=> Object.keys(k).forEach(p=> s.add(p)))); return [...s]; };

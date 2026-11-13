@@ -83,13 +83,13 @@ async def run(b, url, w):
       const chip = triggerLessonChip(m); return {hand: !!chip && !!chip.closest('#handStrip'), n: me.hand.length};"""))
     ok(r['hand'], f'a trigger card in the hand is found first ({r})')
     await pg.close()
-    # the Skill Codex button plays it again
+    # 2026-11-13 (package UI52): the Profile's Reset basic tutorials plays it again (tap twice)
     pg = await page(b, url, w)
-    r = await pg.evaluate(E("""markCoachSeen('tl-what'); markCoachSeen('tl-when'); markCoachSeen('trig-off'); codexSubTab = 'skills'; switchTab('codex'); await new Promise(r=> setTimeout(r, 800));
-      const btn = document.getElementById('tlReplayBtn'); if(!btn) return {btn: false}; btn.click(); await new Promise(r=> setTimeout(r, 200));
-      return {btn: true, cleared: !coachSeen.has('tl-what') && !coachSeen.has('tl-when') && !coachSeen.has('trig-off')};"""))
-    ok(r.get('btn') and r.get('cleared'), f'the Skill Codex button clears the lesson to play again ({r})')
-    await shot(pg, 'codex-replay', w)
+    r = await pg.evaluate(E("""markCoachSeen('tl-what'); markCoachSeen('tl-when'); markCoachSeen('trig-off'); switchTab('profile'); await new Promise(r=> setTimeout(r, 800));
+      const btn = document.querySelector('[data-tutreset="basic"]'); if(!btn) return {btn: false}; btn.click(); const once = coachSeen.has('tl-what'); btn.click(); await new Promise(r=> setTimeout(r, 200));
+      return {btn: true, once, cleared: !coachSeen.has('tl-what') && !coachSeen.has('tl-when') && !coachSeen.has('trig-off')};"""))
+    ok(r.get('btn') and r.get('once') and r.get('cleared'), f'the Profile reset (tap twice) clears the lesson to play again ({r})')
+    await shot(pg, 'profile-reset', w)
     ok(not pg._errs, f'no page errors ({pg._errs[:2]})')
     await pg.close()
 async def main():

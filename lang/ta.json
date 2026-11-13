@@ -2254,7 +2254,6 @@
  "Repeat-clear payout": "மீண்டும் வெல்லும் வெகுமதி",
  "Replaces any field in play; the map's own field returns when it ends.": "நடப்பிலுள்ள எந்தக் களத்தையும் மாற்றும்; இது முடிந்ததும் வரைபடத்தின் சொந்தக் களம் திரும்பும்.",
  "Replay onboarding": "அறிமுகத்தை மீண்டும் இயக்கு",
- "Replay the triggers lesson in your next fight.": "அடுத்த சண்டையில் தூண்டுதல் பாடத்தை மீண்டும் இயக்கவும்.",
  "Reptile": "ஊர்வன",
  "Requiem": "இரங்கற்பா",
  "Rescued a baby": "ஒரு குட்டி மீட்கப்பட்டது",
@@ -3643,8 +3642,6 @@
  "🌹 The briars grasp at the field.": "🌹 முட்புதர்கள் களத்தைப் பற்றுகின்றன.",
  "🌿 {a} tangles {t} (Tangled {n}).": "🌿 {a} {t}-ஐச் சிக்க வைக்கிறது (சிக்கியது {n}).",
  "🎆 {att} detonates the Venom on {name}: {n} damage.": "🎆 {att} {name} மீதுள்ள விஷத்தை வெடிக்கச் செய்கிறது: {n} சேதம்.",
- "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 சண்டையில் அடுத்த முறை தூண்டி அட்டை வரும்போது தூண்டி பாடம் மீண்டும் வரும்.",
- "🎓 Triggers lesson": "🎓 தூண்டி பாடம்",
  "🐞 Bug Hunters": "🐞 பிழை வேட்டையர்",
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name} விழிப்புள்ளது: அது விழித்தே இருக்கிறது.",
  "💎 Two gems fused into {gem}.": "💎 இரண்டு மணிகள் {gem} ஆக இணைந்தன.",
@@ -4450,5 +4447,14 @@
  "Tap again to delete": "நீக்க மீண்டும் தட்டு",
  "{name} deleted": "{name} நீக்கப்பட்டது",
  "Side maps": "பக்க வரைபடங்கள்",
- "Main map": "முதன்மை வரைபடம்"
+ "Main map": "முதன்மை வரைபடம்",
+ "Where this card first appears on the maps. Opens that map's cards.": "இந்த அட்டை வரைபடங்களில் முதலில் தோன்றும் இடம். அந்த வரைபடத்தின் அட்டைகளைத் திறக்கும்.",
+ "On no map yet": "இன்னும் எந்த வரைபடத்திலும் இல்லை",
+ "Admin: show the map where each skill is first seen": "நிர்வாகி: ஒவ்வொரு திறனும் முதலில் தோன்றும் வரைபடம்",
+ "Tutorials": "பயிற்சிகள்",
+ "Reset basic tutorials": "அடிப்படைப் பயிற்சிகளை மீட்டமை",
+ "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "வரைபடம் T முதல் வரைபடம் 3 வரையிலான பாடங்கள், தூண்டல் பாடமும்.",
+ "Reset all tutorials": "எல்லாப் பயிற்சிகளையும் மீட்டமை",
+ "Replay every lesson and tip.": "ஒவ்வொரு பாடமும் குறிப்பும் மீண்டும்.",
+ "Tutorials reset: they play again in your next fights.": "பயிற்சிகள் மீட்டமைக்கப்பட்டன: அடுத்த சண்டைகளில் மீண்டும் வரும்."
 }

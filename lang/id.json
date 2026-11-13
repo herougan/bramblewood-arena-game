@@ -2254,7 +2254,6 @@
  "Repeat-clear payout": "Bayaran tuntas ulang",
  "Replaces any field in play; the map's own field returns when it ends.": "Menggantikan medan yang sedang berlaku; medan bawaan peta kembali saat ini berakhir.",
  "Replay onboarding": "Ulangi pengenalan",
- "Replay the triggers lesson in your next fight.": "Mainkan lagi pelajaran pemicu di pertarungan berikutnya.",
  "Reptile": "Reptil",
  "Requiem": "Rekuiem",
  "Rescued a baby": "Menyelamatkan seekor bayi",
@@ -3642,8 +3641,6 @@
  "🌹 The briars grasp at the field.": "🌹 Semak berduri mencengkeram arena.",
  "🌿 {a} tangles {t} (Tangled {n}).": "🌿 {a} menjerat {t} (Terjerat {n}).",
  "🎆 {att} detonates the Venom on {name}: {n} damage.": "🎆 {att} meledakkan Racun pada {name}: {n} kerusakan.",
- "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 Pelajaran pemicu akan muncul lagi saat kartu pemicu berikutnya muncul di pertarungan.",
- "🎓 Triggers lesson": "🎓 Pelajaran pemicu",
  "🐞 Bug Hunters": "🐞 Pemburu Bug",
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name} Terjaga: ia tetap bangun.",
  "💎 Two gems fused into {gem}.": "💎 Dua permata menyatu menjadi {gem}.",
@@ -4449,5 +4446,14 @@
  "Tap again to delete": "Ketuk lagi untuk menghapus",
  "{name} deleted": "{name} dihapus",
  "Side maps": "Peta samping",
- "Main map": "Peta utama"
+ "Main map": "Peta utama",
+ "Where this card first appears on the maps. Opens that map's cards.": "Tempat kartu ini pertama muncul di peta. Membuka kartu peta itu.",
+ "On no map yet": "Belum di peta mana pun",
+ "Admin: show the map where each skill is first seen": "Admin: tampilkan peta tempat tiap skill pertama terlihat",
+ "Tutorials": "Tutorial",
+ "Reset basic tutorials": "Atur ulang tutorial dasar",
+ "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "Ulangi pelajaran dari Peta T sampai Peta 3, termasuk pelajaran pemicu.",
+ "Reset all tutorials": "Atur ulang semua tutorial",
+ "Replay every lesson and tip.": "Ulangi setiap pelajaran dan tip.",
+ "Tutorials reset: they play again in your next fights.": "Tutorial diatur ulang: muncul lagi di pertarunganmu berikutnya."
 }

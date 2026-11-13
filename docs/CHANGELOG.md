@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-13 Package UI52 (owner notes 11-13 11:50 #1-4, 11:55 #5-9)
+- Card editor: a "🗺️ Map N · <map>" button beside the id (cardObtainMap, the source of `canonical/card-obtain-maps.json`); it opens that map's Map cards window.
+- Skills Codex, admin: a 🗺️ toggle overlaid at the right of the filter row shows each skill's first map (earliest obtainable card that carries it).
+- Codex page turn: 760 ms (was 440). One page (phone) turns a two-face leaf about its middle while sliding aside; two pages turn about the spine.
+- Skills Codex: no Triggers lesson button; the page count sits in the filter row (on a phone with « ‹ › »), the row above the book is gone. Profile: 🎓 Tutorials, Reset basic tutorials (Map T to Map 3, Triggers lesson included) and Reset all tutorials, tap twice. Story scenes and the tutorial fights' done flags are untouched.
+- Forge entry: `forgeBaseDef` copied every card definition on each call (`Object.assign({}, CARD_DEFS_BASELINE, liveCards)`), about 5 calls a card for the Ready count. Now a lookup. switchTab into the Forge at 4x CPU, interleaved medians of 7: 359 -> 145 ms at 1366, 161 -> 70 ms at 390; longest task 431 -> 219 ms at 1366; click to paint 1061 -> 963 and 603 -> 540 ms (noisy, a balance sim was running; the rest is the page change's style and layout pass, ~270 ms at 4x, shared by every screen). The Cobble intro check no longer forces a layout once seen; the rarity lesson skips the Forge.
+- Entrances (`bramblewood-ui-places.js`): Codex, a closed book in the middle opens on its spine and a page turns on it (no full-screen flip); Stomping Grounds, the gates swing open toward you and out of sight (no shake, nothing left, 0.82 s); Nest, an egg in the nest's hollow cracks open; Inventory, the satchel's flap flips open and six items hop out. Each at most 0.9 s; Low, reduced motion, None and the first-visit rule unchanged. Contact sheet `docs/screens/ui52/`.
+- Shop and Premium are places on the strip with Camp, Codex, Forge, Nest (the switch inside the shop is gone); the phone strip fits one more (a Trail pass, once designed).
+- Test: `tests/ui52-2026-11-13.js` (static + browser at 1366 and 390). Perf A/B: `tools/perf/ui52_forge.js`. Updated: tt, ui30, ui33, shop1, uifx1 tests.
+
 ## 2026-11-13 Package LIST1 (owner 11:08 #10, #12, #14: canonical NEW! counts, side-map Carried that fits, refill the NEW! gaps)
 - Lists: the owner's live Map cards picks (`__cfg:map-picks:*`, read-only into `docs/balance/server-overrides/map-picks-dump-2026-11-13.json`) are the map lists, with no cuts (`tools/list1/fold_picks_2026_11_13.js`, picks file `docs/design/map-picks-owner-2026-11-13.json`). A dropped card a fight still uses sits on its map's SPECIAL list (24 cards; LIST1-2). Unattainable flags and obtain maps follow the lists (16 back in play, 7 out). No card stats changed.
 - Map cards window (admin), #10: a map over its NEW! target keeps that count as its target (`LIST1_NEW_TARGETS`: Maps 1-3 11/11, The Mycelium Deep 4/4).

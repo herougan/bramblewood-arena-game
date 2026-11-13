@@ -8986,10 +8986,10 @@ function codexEdgeTabsHTML(first, per, total){
 // the contents of the new page"): a full turn on a cloned leaf with two faces. The front is the page you leave and swings to edge-on (the slice); the back
 // is the NEW page and opens out flat on the other side (0 -> 180 deg, backface-visibility). The new pages are drawn first, so the page being revealed
 // under the leaf already holds its new content; the page the leaf lands on is held as a still copy of the old one (pg-hold) until it is covered.
-// A single page (phone): the old page folds to the slice at the spine and the new page opens out from it (two clones, one after the other).
+// A single page (phone): the same leaf, turning about the page's middle as it slides aside (UI52).
 // Reduced motion: a plain cross-fade. Tab hidden, or Low / None effects: no animation. A click mid-turn finishes the running turn (its copies go,
 // the pages are already the new ones) and starts the next. Transform and opacity only.
-const CODEX_TURN_MS = 440; // UI30 had 390 ms for half a turn; the whole turn is 440 (each half 220), a little over the old length
+const CODEX_TURN_MS = 760; // 2026-11-13 (package UI52, owner 11:50 #3: "the page turns slowly"): was 440
 function codexLeafTurn(host, dir, draw){
   if(host && host._cxTurnEnd){ try{ host._cxTurnEnd(); }catch(e){} } // finish the running turn
   const live = !!host && host.isConnected && !document.hidden && fxAtLeast('med');
@@ -9020,21 +9020,16 @@ function codexLeafTurn(host, dir, draw){
   if(reveal && !reveal.classList.contains('is-blank')){ const cast = document.createElement('div'); cast.className = 'pg-cast pg-cast-' + (dir > 0 ? 'fwd' : 'back'); cast.setAttribute('aria-hidden', 'true'); place(cast, reveal); host.appendChild(cast); bits.push(cast); }
   host.style.setProperty('--pg-turn-ms', CODEX_TURN_MS + 'ms');
   const dirCls = dir > 0 ? 'pg-leaf-fwd' : 'pg-leaf-back';
-  if(old.single){
-    // the slice: the old page folds to edge-on at the spine (first half), the new page opens out from it (second half)
-    old.front.classList.add('pg-leaf', 'pg-leaf-one', dirCls); host.appendChild(old.front); bits.push(old.front);
-    if(dest){ const nw = clone(dest); place(nw, dest); nw.classList.add('pg-leaf', 'pg-leaf-one', 'pg-leaf-open', dirCls); host.appendChild(nw); bits.push(nw);
-      dest.style.visibility = 'hidden'; bits.push({remove: ()=>{ dest.style.visibility = ''; }}); }
-    setTimeout(end, CODEX_TURN_MS + 60);
-    return;
-  }
   // two pages: one leaf, two faces. The wrapper turns about the spine; the back face is the new page, already turned round
-  const leaf = document.createElement('div'); leaf.className = 'pg-leaf pg-leaf-two ' + dirCls; leaf.setAttribute('aria-hidden', 'true');
+  // 2026-11-13 (package UI52, owner 11:50 #3): one page (phone) turns the same two-face leaf about the page's middle (the book's centre) and slides aside as it
+  // turns (pg-leaf-mid), so the new page's face comes round with the old one; the real new page waits under it, hidden. Two pages turn about the spine.
+  const leaf = document.createElement('div'); leaf.className = 'pg-leaf pg-leaf-two ' + (old.single ? 'pg-leaf-mid ' : '') + dirCls; leaf.setAttribute('aria-hidden', 'true');
   put(leaf, old.geo);
   old.front.classList.add('pg-face', 'pg-face-front'); Object.assign(old.front.style, {left: '0px', top: '0px', width: '100%', height: '100%'});
   leaf.appendChild(old.front);
   if(dest && !dest.classList.contains('is-blank')){ const back = clone(dest); back.classList.add('pg-face', 'pg-face-back'); Object.assign(back.style, {position: 'absolute', left: '0px', top: '0px', width: '100%', height: '100%', margin: '0'}); leaf.appendChild(back); }
   host.appendChild(leaf); bits.push(leaf);
+  if(old.single && dest){ dest.style.visibility = 'hidden'; bits.push({remove: ()=>{ dest.style.visibility = ''; }}); } // (after the back face is cloned from it)
   leaf.addEventListener('animationend', e=>{ if(e.target === leaf) end(); }); setTimeout(end, CODEX_TURN_MS + 80);
 }
 // A sideways swipe (touch, pen or a mouse drag) turns the page; up and down still scroll.
@@ -10294,20 +10289,37 @@ function bookPaginate(heights, cap, gap, brk){
   return pages;
 }
 function bookLayout(){ const host = document.getElementById('codexBody'), w = (host && host.clientWidth) || window.innerWidth || 1200; return w >= 900 ? {pages:2, key:'2'} : {pages:1, key:'1'}; }
+// 2026-11-13 (package UI52, owner 11:50 #2): admin only, the Skills book's 🗺️ toggle shows the map where each skill is first seen: the earliest
+// cardObtainMap of an obtainable card that carries it (the same data as canonical/card-obtain-maps.json), memoised until the live cards change
+let skillMapsShown = false, skillFirstMapMemo = null;
+function skillFirstMaps(){
+  let sig = ''; try{ sig = Object.keys(liveCards).length + ':' + Object.keys(liveDeletes).length; }catch(e){}
+  if(skillFirstMapMemo && skillFirstMapMemo.sig === sig) return skillFirstMapMemo.map;
+  const out = {};
+  try{ const src = Object.assign({}, CARD_DEFS_BASELINE, liveCards); Object.keys(liveDeletes || {}).forEach(id=>{ delete src[id]; });
+    Object.values(src).forEach(d=>{ if(!d || d.token || d.test || d.hero || d.hallOfFame || isUnattainable(d)) return; const e = d.effects || {}; let om = null;
+      Object.keys(e).forEach(k=>{ if(k === 'triggers' || !skillValOn(e[k])) return; if(om == null) om = cardObtainMap(d); if(out[k] == null || om < out[k]) out[k] = om; }); }); }catch(e){}
+  skillFirstMapMemo = {sig, map: out}; return out;
+}
+function bookFirstMapHTML(e){
+  if(!skillMapsShown || !adminModeEnabled || e.ch !== 'sk' || e.hint) return '';
+  const n = skillFirstMaps()[e.key];
+  return `<small class="bk-firstmap">🗺️ ${escapeHtml(n == null ? TX('ui.ui52-first-map-none') : TX('ui.pg-map-n', {n}))}</small>`;
+}
 function bookEntryHTML(e){
   const show = e.ch === 'sk' && !e.hint ? `<button type="button" class="bk-show" data-bkskill="${escapeAttr(e.key)}">🔎 ${escapeHtml(TX('ui.book-show-cards'))}</button>` : ''; // 2026-10-18 (package C, owner 23:21)
-  return `<article class="bk-entry${e.hint ? ' is-hint' : ''}"><div class="bk-ico" aria-hidden="true">${e.icon || '?'}</div><div class="bk-txt"><h4>${escapeHtml(e.name)}${legendaryTagHTML(e) /* 2026-10-18 (owner 23:05) */}</h4><p>${e.html}</p>${e.ans ? `<p class="bk-ans">${_t('Answered by')}: ${e.ans}</p>` : ''}${show}</div></article>`;
+  return `<article class="bk-entry${e.hint ? ' is-hint' : ''}"><div class="bk-ico" aria-hidden="true">${e.icon || '?'}</div><div class="bk-txt"><h4>${escapeHtml(e.name)}${legendaryTagHTML(e) /* 2026-10-18 (owner 23:05) */}${bookFirstMapHTML(e)}</h4><p>${e.html}</p>${e.ans ? `<p class="bk-ans">${_t('Answered by')}: ${e.ans}</p>` : ''}${show}</div></article>`;
 }
 const BOOK_CHAPTERS = [{ch:'sk', icon:'📘', title:()=> TX('ui.book-skills')}, {ch:'st', icon:'🌀', title:()=> TX('ui.codex-statuses'), sub:()=> TX('ui.codex-statuses-sub')}, {ch:'fx', icon:'🗺️', title:()=> TX('ui.book-field-effects')}];
 function renderSkillBook(body){
-  body.innerHTML = `<div class="bk" id="bkWrap">
+  body.innerHTML = `<div class="bk${adminModeEnabled ? ' is-admin' : ''}" id="bkWrap">
     <div class="bk-bar">
       <div class="sk-filter bk-filter"><input data-text-filter type="search" id="skFilterInput" placeholder="${escapeAttr(TX('ui.book-filter'))}" aria-label="${escapeAttr(TX('ui.book-filter'))}" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>
-      <button type="button" class="btn small" id="tlReplayBtn" title="${escapeAttr(TX('ui.tl-replay-title'))}">${escapeHtml(TX('ui.tl-replay'))}</button></div>
-    <div class="bk-book" id="bkBook"></div></div>`;
-  { const rb = body.querySelector('#tlReplayBtn'); if(rb) rb.addEventListener('click', ()=>{ replayTriggerLesson(); showToast(TX('ui.tl-replay-toast'), 'ok'); }); } // 2026-10-24 (package TT)
+      <div class="bk-pager" id="bkPager"></div></div>${adminModeEnabled ? `<button type="button" class="btn small bk-maps-toggle${skillMapsShown ? ' is-on' : ''}" id="bkMapsBtn" aria-pressed="${skillMapsShown}" title="${escapeAttr(TX('ui.ui52-skill-maps-tip'))}" aria-label="${escapeAttr(TX('ui.ui52-skill-maps-tip'))}">🗺️</button>` : ''}
+    <div class="bk-book" id="bkBook"></div></div>`; // 2026-11-13 (package UI52, owner 11:50 #4): the page count (on a phone with its turn buttons) sits in the filter row; the Triggers lesson resets from the Profile
   const all = skillBookEntries();
   codexBookState = {all, entries:null, pages:null, items:null, L:null};
+  { const mb = body.querySelector('#bkMapsBtn'); if(mb) mb.addEventListener('click', ()=>{ skillMapsShown = !skillMapsShown; mb.classList.toggle('is-on', skillMapsShown); mb.setAttribute('aria-pressed', skillMapsShown); bookBuild(true); }); } // 2026-11-13 (package UI52)
   const inp = body.querySelector('#skFilterInput'); let t = null;
   inp.addEventListener('input', ()=>{ clearTimeout(t); t = setTimeout(()=>{ skillCodexQuery = inp.value; uiStickySave('skills', {q: inp.value}); skillBookPage = 0; bookBuild(); }, 120); });
   codexWireSwipe(document.getElementById('bkBook'));
@@ -10380,7 +10392,8 @@ function bookDraw(){
   skillBookPage = Math.max(0, Math.min(skillBookPage, total - 1)); skillBookPage -= skillBookPage % per;
   try{ uiStickySave('skills', {page: skillBookPage}); }catch(e){}
   // 2026-10-19 (package CX, owner 14:07): the page count above, the turn tabs (‹ « › ») on the book's edges (bookSpreadHTML)
-  book.innerHTML = codexPagerNavHTML('book', skillBookPage, per, total, null) + bookSpreadHTML(S.pages, skillBookPage, per, true);
+  book.innerHTML = bookSpreadHTML(S.pages, skillBookPage, per, per === 2);
+  const bar = document.getElementById('bkPager'); if(bar){ bar.innerHTML = codexPagerNavHTML('book', skillBookPage, per, total, null) + (per === 2 ? '' : codexEdgeTabsHTML(skillBookPage, per, total)); bar.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> bookTurn(b.dataset.turn))); }
   book.querySelectorAll('[data-bkgo]').forEach(b=> b.addEventListener('click', ()=> bookGo(+b.dataset.bkgo)));
   book.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> bookTurn(b.dataset.turn)));
   book.querySelectorAll('[data-bkskill]').forEach(b=> b.addEventListener('click', ()=> codexShowCardsWithSkill(b.dataset.bkskill)));
@@ -11847,6 +11860,15 @@ function mountEditorSide(modal){
   });
   refresh();
 }
+// 2026-11-13 (package UI52, owner 11:50 #1): where the card first appears on the maps: cardObtainMap (the source of canonical/card-obtain-maps.json, DF-1);
+// the button opens the Map cards view of the map whose list names it (cardFirstMapList), else of that main map
+function cardFirstMapHTML(c){
+  if(!c || !c.id) return '';
+  let n = 0, f = null; try{ n = cardObtainMap(c); f = cardFirstMapList(c); }catch(e){}
+  const m = mpMapById(f ? f.loc : mapIdAt(n));
+  if(!f && !(n > 0) || !m) return `<span class="ui52-first-map is-none">🗺️ ${escapeHtml(TX('ui.ui52-first-map-none'))}</span>`;
+  return `<button type="button" class="btn small ghost ui52-first-map" data-ui52-map="${escapeAttr(m.id)}" title="${escapeAttr(TX('ui.ui52-first-map-tip'))}">🗺️ ${escapeHtml(TX('ui.pg-map-n', {n}))} · ${escapeHtml((m.icon ? m.icon + ' ' : '') + m.name)}</button>`;
+}
 function renderEditorInner(){
   const c = editingCard;
   const overlay = document.getElementById('editorOverlay');
@@ -11854,7 +11876,7 @@ function renderEditorInner(){
   const isNew = !CARD_DEFS_BASELINE[c.id] && !liveCards[c.id];
   overlay.innerHTML = `<div class="modal">
     <div class="modal-head-row">
-      <h2>${c.id? '✏️ Edit '+(c.name||'Card') : '🆕 Create a Card'}<span class="modal-meta">#${c.numericId!=null ? c.numericId : '—'} · ${escapeAttr(c.uuid||'')}</span></h2>
+      <h2>${c.id? '✏️ Edit '+(c.name||'Card') : '🆕 Create a Card'}<span class="modal-meta">#${c.numericId!=null ? c.numericId : '—'} · ${escapeAttr(c.uuid||'')}</span>${cardFirstMapHTML(c) /* 2026-11-13 (package UI52) */}</h2>
       ${ceNavHTML() /* 2026-11-07 (package UI27 #17) */}<button type="button" class="modal-close-btn" id="editorXBtn" title="Cancel" aria-label="Cancel">✕</button>
     </div>
     <div class="field-row">
@@ -12145,7 +12167,7 @@ function renderEditorInner(){
     </div>
   </div>`;
   document.getElementById('btnCancel').addEventListener('click', closeCardEditor);
-  document.getElementById('editorXBtn').addEventListener('click', closeCardEditor);
+  document.getElementById('editorXBtn').addEventListener('click', closeCardEditor); { const fm = overlay.querySelector('[data-ui52-map]'); if(fm) fm.addEventListener('click', ()=> pk1OpenMapCards(fm.dataset.ui52Map)); } // 2026-11-13 (package UI52)
   overlay.querySelectorAll('[data-ce-nav]').forEach(b=> b.addEventListener('click', ()=> ceNavGo(Number(b.getAttribute('data-ce-nav'))))); // 2026-11-07 (package UI27 #17)
   { const fk = document.getElementById('fCardKind'); if(fk) fk.addEventListener('change', ()=>{ document.getElementById('fSpellRow').hidden = fk.value !== 'spell'; document.getElementById('fEquipRow').hidden = fk.value !== 'equipment'; { const r = document.getElementById('fEquipTimeRow'); if(r) r.hidden = fk.value !== 'equipment'; } /* CONTENT3 */ }); }
   const rarityNow = ()=>{ const f = document.querySelector('#editorOverlay [data-rflag]:checked'); return rarityComposeOf(document.getElementById('fRarity').value, f ? f.getAttribute('data-rflag') : null); }; // CX2
@@ -15604,7 +15626,7 @@ function rarityLessonScript(d){
 function maybeRarityLesson(){
   if(loadDialogueFlags()[RARITY_LESSON_FLAG]) return;
   if(typeof matchState !== 'undefined' && matchState && !matchState.over) return;
-  if(typeof currentTab !== 'undefined' && currentTab !== 'codex') return;
+  if(typeof currentTab !== 'undefined' && currentTab !== 'codex') return; if(typeof codexSubTab !== 'undefined' && codexSubTab === 'forge') return; // 2026-11-13 (package UI52): the Forge is not the Codex
   const d = rarityLessonPick(); if(!d) return;
   setDialogueFlag(RARITY_LESSON_FLAG, true);
   DIALOGUES.lesson_rarity = rarityLessonScript(d);
@@ -16184,7 +16206,6 @@ syncTestRules();
 //   card of their rarity costs, 10-20 three times that (4× in all).
 const LEVEL_COST_MULT = Object.assign({}, UPGRADE_COSTS.levelCostMult); // 2026-10-23 (HUB2): canonical/upgrade-costs.json
 function cardRarityTier(d){ if(!d) return 'common'; const r = d.rarity || 'common'; if(LEVEL_COST_MULT[r] != null && r !== 'starter') return r; const as = (RARITY_DEFS.find(x=> x.key===r) || {}).as; return as || (r === 'starter' ? 'common' : 'common'); }
-function forgeBaseDef(defId){ return defId && ((typeof CARD_DEFS_BASELINE!=='undefined' && CARD_DEFS_BASELINE[defId]) || getCardDefs()[defId]); }
 function isEventCard(d){ return !!(d && (/^event/.test(d.rarity||'') || (d.source && d.source.kind==='event'))); }
 function isQuestOrBaseCard(d){ if(!d) return false; const r = d.rarity || ''; return r === 'starter' || r === 'quest' || r === 'questunique' || d.basic || cardSourceOf(d).kind === 'base' || (d.source && (d.source.kind==='quest' || d.source.kind==='map')); }
 // Base cards (2026-10-24, package BAL2, DF-2, owner 10-23 17:34 "DF-2 OKAY. But of course, don't look down on the grind they have to do to level up
@@ -48384,7 +48405,7 @@ function pitchLessonTip(m){
 // first time a card with a trigger shows up in your hand or on the board (the enemy's included). Step 1 says what a trigger is, step 2 names the moments
 // (On Spawn, On Attack, On Hit, On Attacked, On Kill, On Death, On Turn Start). Each step has Next and Skip; Skip ends the lesson and the two passive
 // trigger tips that follow it (trig-off, trig-on). It is a coach tip, so a map tile is never held back by it (EN5's MAP-3: tutorialLessonOn). Seen ids
-// live in coachSeen, so it never repeats; the Skill Codex's "Triggers lesson" button clears them to play it again (replayTriggerLesson).
+// live in coachSeen, so it never repeats; the Profile's Reset basic tutorials clears them to play it again (resetTutorials).
 function triggerLessonChip(m){
   if(m._tlChip && m._tlChip.isConnected && !m._tlChip.classList.contains('is-spent')) return m._tlChip; // step 2 points at the chip step 1 did
   const hand = document.querySelector('#handStrip [data-handuid] .ab-trig:not(.is-spent)'); if(hand) return (m._tlChip = hand);
@@ -48404,9 +48425,14 @@ function triggerLessonTip(m){
   return triggerLessonChip(m) ? next : null;
 }
 function skipTriggerLesson(){ TRIGGER_LESSON.forEach(t=> markCoachSeen(t.id)); markCoachSeen('tl-when'); markCoachSeen('trig-off'); markCoachSeen('trig-on'); } // (tl-when: PL2's retired step)
-function replayTriggerLesson(){
-  TRIGGER_LESSON.forEach(t=> coachSeen.delete(t.id)); coachSeen.delete('tl-when'); coachSeen.delete('trig-off'); coachSeen.delete('trig-on');
+// 2026-11-13 (package UI52, owner 11:50 #4): the Profile's Tutorials reset. Basic: the lessons met from Map T to Map 3 (the guided fight steps, Lumber and
+// pitching, Wait, the leader, the hand limit, the castle, the peek, the Triggers lesson); all: every coach tip and lesson flag. Story scenes stay seen.
+function basicTutorialTipIds(){ return GUIDED_STEPS.concat(PITCH_LESSON, TRIGGER_LESSON, [PITCH_WAIT_TIP, PEEK_GATE]).map(t=> t.id).concat(['wait', 'leader', 'handLimit', 'castle-passive', 'tl-when', 'trig-off', 'trig-on']); }
+function resetTutorials(all){
+  if(all) coachSeen.clear(); else basicTutorialTipIds().forEach(id=> coachSeen.delete(id));
   try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){}
+  try{ const f = loadDialogueFlags(); Object.keys(f).forEach(k=>{ if(all ? /^lesson:/.test(k) : k === LUMBER_LESSON_FLAG) delete f[k]; }); localStorage.setItem(DIALOGUE_FLAGS_KEY, JSON.stringify(f)); }catch(e){}
+  if(all) try{ localStorage.removeItem(LUMBER_NUDGE_KEY); }catch(e){}
 }
 function peekGateTip(m){
   if(coachSeen.has(PEEK_GATE.id) || m.mode==='tutorial' || m.adminTest) return null;
@@ -56924,7 +56950,8 @@ function forgeSortCmp(defs, rIdx){ const nm = (a, b)=> defs[a].name.localeCompar
       default: return nm(a, b);
     } }; }
 let forgeMode = 'upgrade'; // 'upgrade' (level + prestige) | 'refine' (foil finish) | 'enchant' (Materia socket)
-function forgeBaseDef(id){ return Object.assign({}, CARD_DEFS_BASELINE, liveCards)[id] || getCardDefs()[id]; }
+// 2026-11-13 (package UI52): a lookup, not a copy of every card per call (the Forge's Ready count called it ~5 times a card: 300+ ms at 4x CPU).
+function forgeBaseDef(id){ return (id in liveCards ? liveCards[id] : CARD_DEFS_BASELINE[id]) || getCardDefs()[id]; }
 function forgeStatsAt(id, level){
   // 2026-10-12: the same per-level stats a match uses (statsAtLevel), so the Forge preview never disagrees with the card.
   const b = forgeBaseDef(id) || {}; const st = statsAtLevel(b, level);
@@ -56996,7 +57023,7 @@ function renderForge(){
   const root = document.getElementById('view-forge'); if(!root) return;
   setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r){ dressForgePlace(r); wireForgeMateriaBench(r); wireStamina(r, renderForge); } }, 0);
   // Cobble's hello, the first time the Forge is actually on screen (2026-10-14).
-  setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r && r.offsetParent !== null && !loadDialogueFlags()['seen:forge_cobble_intro']) playDialogue('forge_cobble_intro', {once:true}); }, 700);
+  setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r && !loadDialogueFlags()['seen:forge_cobble_intro'] && r.offsetParent !== null) playDialogue('forge_cobble_intro', {once:true}); }, 700); // 2026-11-13 (package UI52): the flag first, so a seen intro forces no layout
   const defs = getCardDefs();
   if(!res3ForgeTabOpen(forgeMode)) forgeMode = 'upgrade'; // RES3 (2026-10-26, G18): a tab not earned yet opens the Upgrade tab instead
   let ids = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token && id!==HERO_ID);
@@ -60016,6 +60043,9 @@ const PAGE_SHORTCUTS = [
   {key:'forge', icon:'🔨', name:'Forge', open:()=> tabOpen('forge'), go:()=>{ codexSubTab = 'forge'; switchTab('codex'); }, here:t=> t==='codex' && codexSubTab === 'forge'},
   {key:'nest', icon:'🪺', name:'Nest', open:()=> tabOpen('nest'), go:()=> switchTab('nest'), here:t=> t==='nest'},
   {key:'inventory', icon:'🎒', name:'Inventory', open:()=> tabOpen('inventory'), go:()=> switchTab('inventory'), here:t=> t==='inventory'},
+  // 2026-11-13 (package UI52, owner 11:55 #9): the Shop and the Premium shop are places on this strip (were a switch inside the shop); a Trail pass joins once designed
+  {key:'shop', icon:'🛒', get name(){ return TX('ui.shop1-normal'); }, open:()=> tabOpen('shop'), go:()=>{ shopMode = 'normal'; shopSelected = null; switchTab('shop'); }, here:t=> t==='shop' && shopMode !== 'premium'},
+  {key:'premium', icon:'🍂', get name(){ return TX('ui.shop1-premium'); }, open:()=> tabOpen('shop'), go:()=>{ shopMode = 'premium'; shopSelected = null; switchTab('shop'); }, here:t=> t==='shop' && shopMode === 'premium'},
 ];
 // 2026-10-15 (user: "the back button is not centered (in Nest etc.)"): a drawn return arrow, centred on its own 24×24 box.
 const PB_BACK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 4.5 5 9l4.5 4.5"/><path d="M5 9h9.5a4.75 4.75 0 0 1 0 9.5H11"/></svg>';
@@ -60125,11 +60155,10 @@ function renderShop(){
   const tabsHTML = '';
   shopTab = 'packs';
   const signedInShop = isSignedIn();
-  const prem = shopMode === 'premium'; // 2026-11-12 (package SHOP1): Shop | Premium switch
+  const prem = shopMode === 'premium'; // 2026-11-12 (package SHOP1): the Premium shop (picked on the places strip, UI52)
   const merchants = merchantsUnlocked();
   root.innerHTML = `${cartDoodadsHTML()}<div class="panel">${shopBackHTML()}<h2 class="sr-only">${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
       <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}${escapeHtml(TX('ui.rw5-shop-sub'))}</p> <!-- 2026-10-23 (package RW5): each pack its own pool; was "Packs of cards from Pack 1 (N cards)" -->
-      <div class="shop-modes" role="group" aria-label="${escapeAttr(TX('ui.shop1-modes'))}">${[['normal', '🛒', TX('ui.shop1-normal')], ['premium', '🍂', TX('ui.shop1-premium')]].map(([m, ic, lb])=> `<button type="button" class="btn small shop-mode is-${m} ${shopMode === m ? 'is-on' : ''}" data-shopmode="${m}" aria-pressed="${shopMode === m}">${ic} ${escapeHtml(lb)}</button>`).join('')}</div>
       ${prem ? '' : wanderingMerchantShopHTML()}
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
       <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}${typeof ui29ShopBarHTML === 'function' ? ui29ShopBarHTML() : '' /* 2026-11-07 (package UI29) */}
@@ -60148,7 +60177,6 @@ function renderShop(){
          "arrives locked" data model this would eventually feed into. -->
     `;
   root.classList.toggle('is-premium-shop', prem);
-  root.querySelectorAll('[data-shopmode]').forEach(b=> b.onclick = ()=>{ if(shopMode === b.dataset.shopmode) return; shopMode = b.dataset.shopmode; shopSelected = null; renderShop(); });
   if(prem){ // 2026-11-12 (package SHOP1): the Premium shop is its own shelf; no pack shelf, no merchant
     const g = document.getElementById('shopPackGrid'), has = shelfRows().length > 0;
     if(!has) g.innerHTML = `<div class="panel"><p class="panel-sub">${escapeHtml(TX('ui.shop1-premium-empty'))}</p></div>`; else renderShopShelves(g, isSignedIn());
@@ -63521,6 +63549,16 @@ function ui17OpenFullReset(){
 // After the reload: one line saying it worked (or which cloud rows refused), then the note is gone.
 setTimeout(()=>{ let n = null; try{ n = localStorage.getItem(UI17_RESET_NOTE_KEY); if(n) localStorage.removeItem(UI17_RESET_NOTE_KEY); }catch(e){}
   if(!n) return; try{ showToast(n === 'ok' ? TX('ui.ui17-fr-done') : TX('ui.ui17-fr-partial', {list: n.slice(5)}), n === 'ok' ? 'ok' : 'warn'); }catch(e){} }, 2500);
+// 2026-11-13 (package UI52, owner 11:50 #4): Reset basic tutorials (Map T to Map 3) / all tutorials; tap twice (resetTutorials)
+function tutorialResetHTML(){
+  const b = (k, label, tip)=> `<button type="button" class="btn small" data-tutreset="${k}" title="${escapeAttr(TX(tip))}">${escapeHtml(TX(label))}</button>`;
+  return `<div class="panel pf-tutorials"><h3>🎓 ${escapeHtml(TX('ui.ui52-tutorials'))}</h3><div class="pf-tut-row">${b('basic', 'ui.ui52-reset-basic', 'ui.ui52-reset-basic-tip')}${b('all', 'ui.ui52-reset-all', 'ui.ui52-reset-all-tip')}</div></div>`;
+}
+function wireTutorialReset(root){
+  root.querySelectorAll('[data-tutreset]').forEach(btn=>{ const label = btn.textContent; btn.addEventListener('click', ()=>{
+    if(!btn.dataset.armed){ btn.dataset.armed = '1'; btn.textContent = TX('ui.mp-reset-confirm'); setTimeout(()=>{ if(btn.isConnected){ delete btn.dataset.armed; btn.textContent = label; } }, 4000); return; }
+    delete btn.dataset.armed; btn.textContent = label; resetTutorials(btn.dataset.tutreset === 'all'); showToast(TX('ui.ui52-reset-done'), 'ok'); }); });
+}
 function renderProfile(){
   const root = document.getElementById('view-profile');
   root.innerHTML = `<div class="pf">
@@ -63539,6 +63577,7 @@ function renderProfile(){
       <div class="pf-col">
         ${profileAccountHTML()}
         ${aboutYouHTML()}
+        ${tutorialResetHTML() /* 2026-11-13 (package UI52) */}
         <button class="btn danger pf-logout" id="logoutBtn">🚪 Log out of this device</button>
         ${adminProfileToolsHTML()}
       </div>
@@ -63549,7 +63588,7 @@ function renderProfile(){
   document.getElementById('pfAvatarBtn').onclick = openCharacterEditor;
   document.getElementById('pfAchvBtn').onclick = ()=> switchTab('achievements');
   { const sb = document.getElementById('pfScoreBtn'); if(sb) sb.onclick = ()=>{ let open = true; try{ open = tabOpen('codex'); }catch(e){} if(!open) return; codexSubTab = 'browse'; switchTab('codex'); }; } // 2026-10-18 (package C)
-  wireAboutYou(); wireAdminProfileTools();
+  wireAboutYou(); wireAdminProfileTools(); wireTutorialReset(root);
   const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); });
   document.getElementById('logoutBtn').addEventListener('click', ()=>{
     if(isSignedIn()){ if(!confirm(TX('dialog.log-out-your-progress-is-saved'))) return; signOutAndSwitch(); return; }

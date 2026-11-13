@@ -2254,7 +2254,6 @@
  "Repeat-clear payout": "Pagamento por repetir",
  "Replaces any field in play; the map's own field returns when it ends.": "Substitui qualquer campo em jogo; o campo próprio do mapa volta quando termina.",
  "Replay onboarding": "Repetir a introdução",
- "Replay the triggers lesson in your next fight.": "Repete a lição dos gatilhos no teu próximo combate.",
  "Reptile": "Réptil",
  "Requiem": "Réquiem",
  "Rescued a baby": "Salvaste uma cria",
@@ -3642,8 +3641,6 @@
  "🌹 The briars grasp at the field.": "🌹 As sarças agarram o campo.",
  "🌿 {a} tangles {t} (Tangled {n}).": "🌿 {a} enreda {t} (Enredado {n}).",
  "🎆 {att} detonates the Venom on {name}: {n} damage.": "🎆 {att} detona o Veneno de {name}: {n} de dano.",
- "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 A lição dos gatilhos volta a aparecer na próxima vez que uma carta com gatilho surgir num combate.",
- "🎓 Triggers lesson": "🎓 Lição dos gatilhos",
  "🐞 Bug Hunters": "🐞 Caçadores de bugs",
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name} é Desperto: continua acordado.",
  "💎 Two gems fused into {gem}.": "💎 Duas gemas fundidas em {gem}.",
@@ -4449,5 +4446,14 @@
  "Tap again to delete": "Toque de novo para excluir",
  "{name} deleted": "{name} excluído",
  "Side maps": "Mapas secundários",
- "Main map": "Mapa principal"
+ "Main map": "Mapa principal",
+ "Where this card first appears on the maps. Opens that map's cards.": "Onde esta carta aparece primeiro nos mapas. Abre as cartas desse mapa.",
+ "On no map yet": "Em nenhum mapa ainda",
+ "Admin: show the map where each skill is first seen": "Admin: mostrar o mapa onde cada habilidade aparece primeiro",
+ "Tutorials": "Tutoriais",
+ "Reset basic tutorials": "Repor tutoriais básicos",
+ "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "Repete as lições do Mapa T ao Mapa 3, incluindo a de gatilhos.",
+ "Reset all tutorials": "Repor todos os tutoriais",
+ "Replay every lesson and tip.": "Repete cada lição e dica.",
+ "Tutorials reset: they play again in your next fights.": "Tutoriais repostos: voltam nas próximas lutas."
 }

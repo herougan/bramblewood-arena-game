@@ -1,0 +1,31 @@
+{
+ "tx": {
+  "ui.ui52-first-map-tip": {"en": "Where this card first appears on the maps. Opens that map's cards.",
+   "fr": "Où cette carte apparaît d'abord sur les cartes. Ouvre les cartes de cette carte.", "de": "Wo diese Karte zuerst auf den Landkarten erscheint. Öffnet deren Karten.", "es": "Dónde aparece esta carta por primera vez en los mapas. Abre las cartas de ese mapa.", "it": "Dove questa carta compare per la prima volta sulle mappe. Apre le carte di quella mappa.", "pt": "Onde esta carta aparece primeiro nos mapas. Abre as cartas desse mapa.",
+   "tl": "Kung saan unang lumalabas ang card na ito sa mga mapa. Binubuksan ang mga card ng mapang iyon.", "ta": "இந்த அட்டை வரைபடங்களில் முதலில் தோன்றும் இடம். அந்த வரைபடத்தின் அட்டைகளைத் திறக்கும்.", "id": "Tempat kartu ini pertama muncul di peta. Membuka kartu peta itu.", "zh-Hans": "这张卡牌首次出现在哪张地图。打开该地图的卡牌。", "zh-Hant": "這張卡牌首次出現在哪張地圖。打開該地圖的卡牌。", "ja": "このカードが最初に登場するマップ。そのマップのカードを開きます。", "ko": "이 카드가 지도에 처음 나오는 곳. 그 지도의 카드를 엽니다."},
+  "ui.ui52-first-map-none": {"en": "On no map yet",
+   "fr": "Sur aucune carte", "de": "Noch auf keiner Karte", "es": "En ningún mapa aún", "it": "Ancora su nessuna mappa", "pt": "Em nenhum mapa ainda",
+   "tl": "Wala pa sa mapa", "ta": "இன்னும் எந்த வரைபடத்திலும் இல்லை", "id": "Belum di peta mana pun", "zh-Hans": "尚未出现在地图上", "zh-Hant": "尚未出現在地圖上", "ja": "まだどのマップにもない", "ko": "아직 지도에 없음"},
+  "ui.ui52-skill-maps-tip": {"en": "Admin: show the map where each skill is first seen",
+   "fr": "Admin : afficher la carte où chaque compétence apparaît d'abord", "de": "Admin: die Karte zeigen, auf der jede Fähigkeit zuerst vorkommt", "es": "Admin: mostrar el mapa donde se ve cada habilidad por primera vez", "it": "Admin: mostra la mappa dove ogni abilità compare per prima", "pt": "Admin: mostrar o mapa onde cada habilidade aparece primeiro",
+   "tl": "Admin: ipakita ang mapa kung saan unang makikita ang bawat skill", "ta": "நிர்வாகி: ஒவ்வொரு திறனும் முதலில் தோன்றும் வரைபடம்", "id": "Admin: tampilkan peta tempat tiap skill pertama terlihat", "zh-Hans": "管理员：显示每个技能首次出现的地图", "zh-Hant": "管理員：顯示每個技能首次出現的地圖", "ja": "管理者：各スキルが最初に登場するマップを表示", "ko": "관리자: 각 스킬이 처음 나오는 지도 보기"},
+  "ui.ui52-tutorials": {"en": "Tutorials",
+   "fr": "Tutoriels", "de": "Tutorials", "es": "Tutoriales", "it": "Tutorial", "pt": "Tutoriais",
+   "tl": "Mga tutorial", "ta": "பயிற்சிகள்", "id": "Tutorial", "zh-Hans": "教程", "zh-Hant": "教學", "ja": "チュートリアル", "ko": "튜토리얼"},
+  "ui.ui52-reset-basic": {"en": "Reset basic tutorials",
+   "fr": "Revoir les tutoriels de base", "de": "Grund-Tutorials zurücksetzen", "es": "Reiniciar tutoriales básicos", "it": "Ripristina i tutorial base", "pt": "Repor tutoriais básicos",
+   "tl": "I-reset ang mga basic tutorial", "ta": "அடிப்படைப் பயிற்சிகளை மீட்டமை", "id": "Atur ulang tutorial dasar", "zh-Hans": "重置基础教程", "zh-Hant": "重置基礎教學", "ja": "基本チュートリアルをリセット", "ko": "기본 튜토리얼 초기화"},
+  "ui.ui52-reset-basic-tip": {"en": "Replay the lessons from Map T to Map 3, the Triggers lesson too.",
+   "fr": "Rejoue les leçons de la carte T à la carte 3, déclencheurs compris.", "de": "Spielt die Lektionen von Karte T bis Karte 3 erneut, auch die zu Auslösern.", "es": "Repite las lecciones del mapa T al mapa 3, también la de activadores.", "it": "Rigioca le lezioni dalla mappa T alla mappa 3, anche quella sugli inneschi.", "pt": "Repete as lições do Mapa T ao Mapa 3, incluindo a de gatilhos.",
+   "tl": "Ulitin ang mga aralin mula Map T hanggang Map 3, pati ang aralin sa trigger.", "ta": "வரைபடம் T முதல் வரைபடம் 3 வரையிலான பாடங்கள், தூண்டல் பாடமும்.", "id": "Ulangi pelajaran dari Peta T sampai Peta 3, termasuk pelajaran pemicu.", "zh-Hans": "重玩地图 T 到地图 3 的课程，包括触发课程。", "zh-Hant": "重玩地圖 T 到地圖 3 的課程，包括觸發課程。", "ja": "マップTからマップ3までのレッスンをもう一度。トリガーのレッスンも。", "ko": "지도 T부터 지도 3까지의 수업을 다시. 트리거 수업도."},
+  "ui.ui52-reset-all": {"en": "Reset all tutorials",
+   "fr": "Revoir tous les tutoriels", "de": "Alle Tutorials zurücksetzen", "es": "Reiniciar todos los tutoriales", "it": "Ripristina tutti i tutorial", "pt": "Repor todos os tutoriais",
+   "tl": "I-reset lahat ng tutorial", "ta": "எல்லாப் பயிற்சிகளையும் மீட்டமை", "id": "Atur ulang semua tutorial", "zh-Hans": "重置全部教程", "zh-Hant": "重置全部教學", "ja": "すべてのチュートリアルをリセット", "ko": "모든 튜토리얼 초기화"},
+  "ui.ui52-reset-all-tip": {"en": "Replay every lesson and tip.",
+   "fr": "Rejoue chaque leçon et astuce.", "de": "Spielt jede Lektion und jeden Tipp erneut.", "es": "Repite cada lección y consejo.", "it": "Rigioca ogni lezione e suggerimento.", "pt": "Repete cada lição e dica.",
+   "tl": "Ulitin ang bawat aralin at tip.", "ta": "ஒவ்வொரு பாடமும் குறிப்பும் மீண்டும்.", "id": "Ulangi setiap pelajaran dan tip.", "zh-Hans": "重玩每一课和每条提示。", "zh-Hant": "重玩每一課和每條提示。", "ja": "すべてのレッスンとヒントをもう一度。", "ko": "모든 수업과 팁을 다시."},
+  "ui.ui52-reset-done": {"en": "🎓 Tutorials reset: they play again in your next fights.",
+   "fr": "🎓 Tutoriels réinitialisés : ils reviennent dans tes prochains combats.", "de": "🎓 Tutorials zurückgesetzt: Sie kommen in deinen nächsten Kämpfen wieder.", "es": "🎓 Tutoriales reiniciados: vuelven en tus próximos combates.", "it": "🎓 Tutorial ripristinati: tornano nei prossimi scontri.", "pt": "🎓 Tutoriais repostos: voltam nas próximas lutas.",
+   "tl": "🎓 Na-reset ang mga tutorial: babalik sila sa susunod mong laban.", "ta": "🎓 பயிற்சிகள் மீட்டமைக்கப்பட்டன: அடுத்த சண்டைகளில் மீண்டும் வரும்.", "id": "🎓 Tutorial diatur ulang: muncul lagi di pertarunganmu berikutnya.", "zh-Hans": "🎓 教程已重置：下次战斗会再次出现。", "zh-Hant": "🎓 教學已重置：下次戰鬥會再次出現。", "ja": "🎓 チュートリアルをリセット：次のバトルでまた表示されます。", "ko": "🎓 튜토리얼 초기화: 다음 전투에서 다시 나옵니다."}
+ }
+}

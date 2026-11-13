@@ -2253,7 +2253,6 @@
  "Repeat-clear payout": "Bayad sa paulit-ulit na clear",
  "Replaces any field in play; the map's own field returns when it ends.": "Pinapalitan ang anumang larangan na nasa laro; bumabalik ang sariling larangan ng mapa kapag natapos ito.",
  "Replay onboarding": "Ulitin ang onboarding",
- "Replay the triggers lesson in your next fight.": "Ulitin ang aralin sa mga trigger sa susunod mong laban.",
  "Reptile": "Reptilya",
  "Requiem": "Requiem",
  "Rescued a baby": "Nakasagip ng sanggol",
@@ -3641,8 +3640,6 @@
  "🌹 The briars grasp at the field.": "🌹 Kumakapit ang mga tinikan sa larangan.",
  "🌿 {a} tangles {t} (Tangled {n}).": "🌿 Pinulupot ni {a} si {t} (Nakapulupot {n}).",
  "🎆 {att} detonates the Venom on {name}: {n} damage.": "🎆 Pinasabog ni {att} ang Lason kay {name}: {n} pinsala.",
- "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 Muling lalabas ang aralin sa mga trigger sa susunod na may trigger card na lumabas sa laban.",
- "🎓 Triggers lesson": "🎓 Aralin sa mga trigger",
  "🐞 Bug Hunters": "🐞 Mga Bug Hunter",
  "👁️ {name} is Wakeful: it stays awake.": "👁️ Gising si {name}: nananatili itong gising.",
  "💎 Two gems fused into {gem}.": "💎 Nagsanib ang dalawang gem bilang {gem}.",
@@ -4448,5 +4445,14 @@
  "Tap again to delete": "I-tap ulit para burahin",
  "{name} deleted": "Nabura ang {name}",
  "Side maps": "Mga side map",
- "Main map": "Pangunahing map"
+ "Main map": "Pangunahing map",
+ "Where this card first appears on the maps. Opens that map's cards.": "Kung saan unang lumalabas ang card na ito sa mga mapa. Binubuksan ang mga card ng mapang iyon.",
+ "On no map yet": "Wala pa sa mapa",
+ "Admin: show the map where each skill is first seen": "Admin: ipakita ang mapa kung saan unang makikita ang bawat skill",
+ "Tutorials": "Mga tutorial",
+ "Reset basic tutorials": "I-reset ang mga basic tutorial",
+ "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "Ulitin ang mga aralin mula Map T hanggang Map 3, pati ang aralin sa trigger.",
+ "Reset all tutorials": "I-reset lahat ng tutorial",
+ "Replay every lesson and tip.": "Ulitin ang bawat aralin at tip.",
+ "Tutorials reset: they play again in your next fights.": "Na-reset ang mga tutorial: babalik sila sa susunod mong laban."
 }

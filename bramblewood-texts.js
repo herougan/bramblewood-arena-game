@@ -877,9 +877,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "coach.pl2-trigger": "⚡ This chip is a trigger — read the card.",
   "coach.tl-what": "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.",
   "coach.tl-when": "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.",
-  "ui.tl-replay": "🎓 Triggers lesson",
-  "ui.tl-replay-title": "Replay the triggers lesson in your next fight.",
-  "ui.tl-replay-toast": "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.",
   "coach.okay-next-turn-you-ll-draw": "Okay — next turn you’ll draw 1 more card.",
   "coach.this-card-needs-lumber-get-lumber": "🪵 This card needs Lumber. Get Lumber by giving up a card.",
   "coach.drag-a-card-you-don-t": "👉 Drag a card you don’t need onto the Graveyard.",
@@ -3728,7 +3725,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ref6-mapref": "Map ref {pct}%",
   "ui.ref6-ref2": "Ref-2 {pct}%",
   "ui.ref6-tip": "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.",
-  "ui.shop1-modes": "Shops",
   "ui.shop1-normal": "Shop",
   "ui.shop1-premium": "Premium",
   "ui.shop1-premium-empty": "Nothing in the Premium shop for you yet.",
@@ -3761,7 +3757,16 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui51-deck-delete-again": "Tap again to delete",
   "ui.ui51-deck-deleted": "🗑 {name} deleted",
   "ui.ui51-side-maps": "Side maps",
-  "ui.ui51-main-map": "Main map"
+  "ui.ui51-main-map": "Main map",
+  "ui.ui52-first-map-tip": "Where this card first appears on the maps. Opens that map's cards.",
+  "ui.ui52-first-map-none": "On no map yet",
+  "ui.ui52-skill-maps-tip": "Admin: show the map where each skill is first seen",
+  "ui.ui52-tutorials": "Tutorials",
+  "ui.ui52-reset-basic": "Reset basic tutorials",
+  "ui.ui52-reset-basic-tip": "Replay the lessons from Map T to Map 3, the Triggers lesson too.",
+  "ui.ui52-reset-all": "Reset all tutorials",
+  "ui.ui52-reset-all-tip": "Replay every lesson and tip.",
+  "ui.ui52-reset-done": "🎓 Tutorials reset: they play again in your next fights."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
