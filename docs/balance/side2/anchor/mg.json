@@ -1,0 +1,53 @@
+{
+ "map": "mg",
+ "name": "Smugglers' Grotto",
+ "code": "2-B-4",
+ "kind": "elite",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 17,
+ "current": {
+  "deck": {
+   "gallery-orb-weaver": 1,
+   "gull-thief": 2,
+   "limpet-clinger": 3,
+   "octopus-tactician": 4,
+   "pincushion-urchin": 3,
+   "raccoon-nightcrew": 3,
+   "salvager-hermit-crab": 1
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "2-B-BPRO-1",
+  "focus": "economy",
+  "deck": {
+   "driftwood-crab": 4,
+   "octopus-tactician": 3,
+   "pincushion-urchin": 4,
+   "raccoon-nightcrew": 4,
+   "rock-pool-starfish": 1,
+   "trash-panda-trickster": 4
+  }
+ },
+ "offPool": [
+  "driftwood-crab",
+  "rock-pool-starfish"
+ ],
+ "deck": {
+  "octopus-tactician": 4,
+  "gallery-orb-weaver": 2,
+  "pincushion-urchin": 4,
+  "raccoon-nightcrew": 3,
+  "trash-panda-trickster": 4
+ },
+ "problems": [],
+ "skWin": 34,
+ "verdict": "in-band",
+ "gap": -6,
+ "sec": 3
+}

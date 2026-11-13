@@ -1,0 +1,46 @@
+{
+ "map": "my",
+ "name": "The Canopy",
+ "code": "14-A-5",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 20,
+ "current": {
+  "deck": {
+   "fishing-cat": 1,
+   "hoopoe-herald": 3,
+   "howler-monkey": 4,
+   "jaguar-stalker": 3,
+   "mosquito-cloud": 1,
+   "slow-loris": 4,
+   "toucan-courier": 4
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "14-A-BPRO-1",
+  "focus": "big",
+  "deck": {
+   "amber-cicada": 4,
+   "bramblewood-macaque": 3,
+   "camouflage-frog": 4,
+   "hoopoe-herald": 3,
+   "jaguar-stalker": 2,
+   "kinkajou-lurker": 4
+  }
+ },
+ "offPool": [
+  "kinkajou-lurker"
+ ],
+ "deck": null,
+ "problems": [
+  "17 cards, not 20"
+ ],
+ "verdict": "no-deck",
+ "sec": 0
+}

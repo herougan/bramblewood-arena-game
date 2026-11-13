@@ -1,0 +1,51 @@
+{
+ "map": "mi",
+ "name": "The Ice Hollow",
+ "code": "17-A-4",
+ "kind": "boss",
+ "band": {
+  "t": 40,
+  "lo": 32,
+  "hi": 48,
+  "curve": true
+ },
+ "size": 16,
+ "current": {
+  "deck": {
+   "frostbitten-wolverine": 3,
+   "greenland-shark": 3,
+   "ice-crevasse-wolf": 2,
+   "lone-grey-wolf": 2,
+   "ringed-seal": 3,
+   "snow-ermine": 3
+  }
+ },
+ "games": 200,
+ "bpro1": {
+  "id": "17-A-BPRO-1",
+  "focus": "family:tide",
+  "deck": {
+   "cormorant": 4,
+   "lemming-swarm": 4,
+   "pincushion-urchin": 1,
+   "riptide-eel": 3,
+   "shoal-shark": 4,
+   "snow-ermine": 4
+  }
+ },
+ "offPool": [],
+ "deck": {
+  "greenland-shark": 3,
+  "lone-grey-wolf": 2,
+  "cormorant": 1,
+  "lemming-swarm": 4,
+  "shoal-shark": 1,
+  "snow-ermine": 4,
+  "riptide-eel": 1
+ },
+ "problems": [],
+ "skWin": 25,
+ "verdict": "too-hard",
+ "gap": -15,
+ "sec": 5
+}

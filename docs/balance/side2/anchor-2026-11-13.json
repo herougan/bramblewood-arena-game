@@ -1,0 +1,332 @@
+{
+ "about": "SIDE2 SK anchor per side map (tools/side2/anchor_2026_11_13.js): BPRO-1 in the hardest fight, Map reference win rate",
+ "built": "2026-11-13",
+ "maps": [
+  {
+   "map": "m9",
+   "name": "Basalt Foundry",
+   "code": "19-A-10",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "19-A-BPRO-1",
+   "skWin": 43,
+   "gap": 3,
+   "verdict": "in-band",
+   "deck": {
+    "ember-revenant": 2,
+    "cinder-gecko": 1,
+    "smoke-raccoon": 4,
+    "obsidian-scorpion": 3,
+    "pumice-beetle": 4,
+    "cinder-hornet": 4,
+    "granite-ox-golem": 1
+   }
+  },
+  {
+   "map": "me",
+   "name": "Eye of the Volcano",
+   "code": "20-A-4",
+   "target": 35.5,
+   "band": [
+    27.5,
+    43.5
+   ],
+   "bpro1": "20-A-BPRO-1",
+   "skWin": 64,
+   "gap": 28.5,
+   "verdict": "too-weak",
+   "deck": {
+    "the-contradiction": 1,
+    "obsidian-scorpion": 2,
+    "basalt-boar": 2,
+    "berserker-boar": 2,
+    "brimstone-hound": 2,
+    "stalactite-golem": 1
+   }
+  },
+  {
+   "map": "mg",
+   "name": "Smugglers' Grotto",
+   "code": "2-B-4",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "2-B-BPRO-1",
+   "skWin": 34,
+   "gap": -6,
+   "verdict": "in-band",
+   "deck": {
+    "octopus-tactician": 4,
+    "gallery-orb-weaver": 2,
+    "pincushion-urchin": 4,
+    "raccoon-nightcrew": 3,
+    "trash-panda-trickster": 4
+   }
+  },
+  {
+   "map": "mi",
+   "name": "The Ice Hollow",
+   "code": "17-A-4",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "17-A-BPRO-1",
+   "skWin": 25,
+   "gap": -15,
+   "verdict": "too-hard",
+   "deck": {
+    "greenland-shark": 3,
+    "lone-grey-wolf": 2,
+    "cormorant": 1,
+    "lemming-swarm": 4,
+    "shoal-shark": 1,
+    "snow-ermine": 4,
+    "riptide-eel": 1
+   }
+  },
+  {
+   "map": "mj",
+   "name": "The Sunken Depths",
+   "code": "10-A-5",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "10-A-BPRO-1",
+   "skWin": 0.5,
+   "gap": -39.5,
+   "verdict": "too-hard",
+   "deck": {
+    "blue-ringed-octopus": 3,
+    "coral-polyp-colony": 4,
+    "krill-swarm": 4,
+    "sea-turtle-elder": 4,
+    "coral-current-eel": 3,
+    "giant-clam": 2
+   }
+  },
+  {
+   "map": "mn",
+   "name": "The Glimmer Depths",
+   "code": "8-A-4",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "8-A-BPRO-1",
+   "skWin": 31,
+   "gap": -9,
+   "verdict": "too-hard",
+   "deck": {
+    "lantern-spark-fly": 2,
+    "gallery-orb-weaver": 2,
+    "blind-cave-fish": 2,
+    "fruit-bat": 2,
+    "glow-worm": 2,
+    "barrow-leech-bat": 1
+   }
+  },
+  {
+   "map": "mo",
+   "name": "The Old Bramble",
+   "code": "0-B-4",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "0-B-BPRO-1",
+   "skWin": 11,
+   "gap": -29,
+   "verdict": "too-hard",
+   "deck": {
+    "ent": 3,
+    "barkplate-beetle": 1,
+    "bramble-sprout": 1,
+    "farm-dog": 4,
+    "quill-thorn-boar": 1,
+    "earthworm": 4,
+    "strangler-vine": 1
+   }
+  },
+  {
+   "map": "mp",
+   "name": "Lilypad Reach",
+   "code": "2-A-7",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "2-A-BPRO-1",
+   "skWin": 27.5,
+   "gap": -12.5,
+   "verdict": "too-hard",
+   "deck": {
+    "riverworks-bastion": 1,
+    "muskrat-reedgatherer": 1,
+    "raft-spider": 1,
+    "water-shrew": 1,
+    "beaver-lumberjack": 4,
+    "lodge-engineer": 4,
+    "old-sturgeon": 2
+   }
+  },
+  {
+   "map": "mpd",
+   "name": "The Pale Desert",
+   "code": "18-A-9",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "18-A-BPRO-1",
+   "skWin": 13,
+   "gap": -27,
+   "verdict": "too-hard",
+   "deck": {
+    "quicksand-queen": 2,
+    "dromedary": 4,
+    "horned-lizard": 4,
+    "sand-widow": 4,
+    "barrel-cactus": 3,
+    "dune-jackal": 2
+   }
+  },
+  {
+   "map": "mq",
+   "name": "Clovermead",
+   "code": "1-A-5",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "1-A-BPRO-1",
+   "skWin": 21.5,
+   "gap": -18.5,
+   "verdict": "too-hard",
+   "deck": {
+    "lucky-hopper": 1,
+    "chipmunk-cavalry": 4,
+    "clover-butterfly": 3,
+    "meadow-rabbit": 3,
+    "robin-redbreast": 3,
+    "honey-bee": 1,
+    "ladybird-guard": 2
+   }
+  },
+  {
+   "map": "ms",
+   "name": "The Sunken Grove",
+   "code": "5-A-4",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "5-A-BPRO-1",
+   "skWin": 44.5,
+   "gap": 4.5,
+   "verdict": "in-band",
+   "deck": {
+    "hedgehog-herbalist": 1,
+    "matamata": 4,
+    "muskrat-reedgatherer": 4,
+    "peat-cutter-vole": 4,
+    "swamp-alligator": 4,
+    "mudpuppy": 1
+   }
+  },
+  {
+   "map": "mv",
+   "name": "The Aerie Vault",
+   "code": "11-A-4",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "11-A-BPRO-1",
+   "skWin": 25,
+   "gap": -15,
+   "verdict": "too-hard",
+   "deck": {
+    "wound-reaver": 3,
+    "gale-swift": 4,
+    "peak-condor": 1,
+    "apollo-butterfly": 4,
+    "gangrenous-leech": 4
+   }
+  },
+  {
+   "map": "mx",
+   "name": "Volcano Lair",
+   "code": "20-B-4",
+   "target": 20,
+   "band": [
+    12,
+    28
+   ],
+   "bpro1": "20-B-BPRO-1",
+   "skWin": 5,
+   "gap": -15,
+   "verdict": "too-hard",
+   "deck": {
+    "fire-drake-hatchling": 1,
+    "cataphract-destrier": 1,
+    "cinder-hornet": 1,
+    "eagle-sharpshooter": 1,
+    "magma-salamander": 2,
+    "ancient-sloth-titan": 4,
+    "basalt-boar": 4
+   }
+  },
+  {
+   "map": "my",
+   "name": "The Canopy",
+   "code": "14-A-5",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "14-A-BPRO-1",
+   "verdict": "no-deck",
+   "deck": null
+  },
+  {
+   "map": "mz",
+   "name": "The Mycelium Deep",
+   "code": "7-A-5",
+   "target": 40,
+   "band": [
+    32,
+    48
+   ],
+   "bpro1": "7-A-BPRO-1",
+   "skWin": 30,
+   "gap": -10,
+   "verdict": "too-hard",
+   "deck": {
+    "rootworm-colony": 1,
+    "fungal-colossus": 1,
+    "fungus-gnat-cloud": 4,
+    "puffball-bombardier": 3,
+    "sleepless-shrew": 3,
+    "bombardier-beetle": 2,
+    "earthworm": 1
+   }
+  }
+ ]
+}
