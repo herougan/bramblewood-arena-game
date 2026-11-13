@@ -114,7 +114,7 @@ async def calm_checks(b, url):
     for level, speed, want, label in (('low', 1, 1, 'Effects Low'), ('high', 4, 1, '4x speed'), ('none', 1, 0, 'Effects None')):
         pg = await fresh(b, url, 1366, level)
         res = await pg.evaluate(f"""(async()=>{{ matchState.speedMult = {speed}; const cues = []; ['snowThump', 'igniteWhoosh', 'playDeadFlop'].forEach(k=>{{ const o = SoundKit[k]; SoundKit[k] = function(){{ cues.push(k); return o.apply(this, arguments); }}; }});
-          const out = []; for(const ev of [{FX[0][2]}, {FX[1][2]}, {FX[9][2]}]){{ renderVfxForEvent(ev); await new Promise(r=> setTimeout(r, 150)); const hs = [...document.querySelectorAll('.fx-float-host')].filter(h=> h.querySelector(':scope > .fx10'));
+          const out = []; for(const ev of [{FX[0][2]}, {FX[1][2]}, {FX[9][2]}]){{ renderVfxForEvent(ev); const has = ()=> document.querySelector('.fx-float-host > .fx10'); for(let w = 0; w < 20 && !has(); w++) await new Promise(r=> setTimeout(r, 50)); await new Promise(r=> setTimeout(r, 60)); const hs = [...document.querySelectorAll('.fx-float-host')].filter(h=> h.querySelector(':scope > .fx10'));
             out.push(hs.length ? Math.max(...hs.map(h=> h.querySelectorAll(':scope > .fx10').length)) : 0); hs.forEach(h=> h.remove()); await new Promise(r=> setTimeout(r, 60)); }} return {{out, cues}}; }})()""")
         ok(all(n == want for n in res['out']), f'{label}: {want} piece(s) a look ({res["out"]})')
         ok(len(res['cues']) == 3, f'{label}: the cues play ({res["cues"]})')

@@ -6,6 +6,7 @@
 // 16.7 ms (a dropped 60 fps frame) and 50 ms, and the synchronous fire. Medians over --runs.
 //   git show <commit before FX10>:index.html > .fx10-before.html   # (not committed)
 //   node tests/fx10-perf-2026-11-13.js --ab .fx10-before.html [--runs 3] [--rate 4] [--win 1500] [--modes snow,burn] [--cold]
+//   node tests/fx10-perf-2026-11-13.js --micro [--rate 4] [--reps 7]
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -62,8 +63,33 @@ async function run(b, url, rate, order, win){
   }
   await ctx.close(); return {out, errs};
 }
+// --micro: each look's own start in the same fight, as the game starts it (the card's box, fxHostAt, the SkillFX call), then the style and layout its pieces
+// add (forced right after, the pass the next frame would run), --reps times each at --rate; medians in ms. No A/B: the build before FX10 has no look to time.
+async function micro(b, url, rate, reps){
+  const ctx = await b.newContext({viewport: {width: 1366, height: 768}}), pg = await ctx.newPage(), errs = []; pg.on('pageerror', e=> errs.push(String(e)));
+  await pg.addInitScript(SKIP); await pg.goto(url); await pg.waitForFunction("typeof startConquestMatch === 'function'", null, {timeout: 180000}); await pg.waitForTimeout(1500); await pg.evaluate(OWN);
+  await pg.evaluate(`(async()=>{ adminModeEnabled = true; forcedNextSeed = 777; switchTab('play'); startConquestMatch('mw', '5-3', {skipEnergyCost:true, noOpener:true}); await new Promise(r=> setTimeout(r, 2600)); try{ skipTriggerLesson(); }catch(e){} const h = document.getElementById('toastHost'); if(h) h.remove(); window.showToast = ()=>{};
+    const m = matchState, pl = m.players[1], c = pl.hand.find(h=> m.engine.canPlay(pl, h.defId, h.uid)); if(c) await playCardByUid(c.uid, 'left'); await new Promise(r=> setTimeout(r, 2500)); })()`);
+  const cdp = await ctx.newCDPSession(pg); await cdp.send('Emulation.setCPUThrottlingRate', {rate});
+  const res = await pg.evaluate(`(async()=>{ const W = ms=> new Promise(r=> setTimeout(r, ms)), out = {}, med = a=> a.slice().sort((x, y)=> x - y)[Math.floor(a.length/2)];
+    const M = document.querySelector('#rowMine .board-card[data-uid]'), E = document.querySelectorAll('#rowEnemy .board-card[data-uid]');
+    for(const fn of ['snowBury', 'igniteFlare', 'burnLick', 'spentPuff', 'broodDrop', 'confuseSpin', 'carrionFeed', 'deliveryCrate', 'skitterDash', 'playDead']){ const rd = [], st = [], sl = [], n = [];
+      for(let i = 0; i < ${reps}; i++){ await new Promise(r=> requestAnimationFrame(()=> r())); const t0 = performance.now(), r = M.getBoundingClientRect(), c = M.querySelector('.badges');
+        const x = fn === 'broodDrop' || fn === 'carrionFeed' ? {fromRect: (E[0] || M).getBoundingClientRect()} : fn === 'spentPuff' ? {chipRect: c ? c.getBoundingClientRect() : null} : {};
+        const t1 = performance.now(), h = fxHostAt(M, 1500, r); SkillFX[fn](M, Object.assign({host: h, rect: r, speed: 1}, x)); const t2 = performance.now(); void document.body.offsetHeight; const t3 = performance.now();
+        rd.push(t1 - t0); st.push(t2 - t1); sl.push(t3 - t2); n.push(h.childElementCount); await W(1300); }
+      out[fn] = {read: med(rd), start: med(st), styleLayout: med(sl), pieces: med(n)}; }
+    return out; })()`);
+  await ctx.close(); return {res, errs};
+}
 (async()=>{
   const page = path.resolve(opt('--page', path.join(ROOT, 'index.html'))), runs = +opt('--runs', 3), rate = +opt('--rate', 1), win = +opt('--win', 1500);
+  if(args.includes('--micro')){ const srv = await serve(page), b = await pw().chromium.launch({executablePath: fs.existsSync(EXE) ? EXE : undefined, args: ['--enable-unsafe-swiftshader', '--use-angle=swiftshader', '--ignore-gpu-blocklist']});
+    const {res, errs} = await micro(b, `http://127.0.0.1:${srv.address().port}/index.html`, rate, +opt('--reps', 7)); await b.close(); srv.close();
+    console.log(`${path.basename(page)} ${rate}x, medians of ${opt('--reps', 7)} (ms): read = the boxes at the frame's start (the frame's own style / layout, pulled forward); build = fxHostAt + the look; then the style / layout its pieces add`);
+    console.log('look             read   build  style+layout  pieces');
+    Object.entries(res).forEach(([k, v])=> console.log(k.padEnd(14), v.read.toFixed(2).padStart(6), v.start.toFixed(2).padStart(7), v.styleLayout.toFixed(2).padStart(13), String(v.pieces).padStart(7)));
+    if(errs.length) console.log('errors:', errs.slice(0, 4)); return; }
   const modes = opt('--modes', Object.keys(MODES).filter(m=> m !== 'none').join(',')).split(',').filter(m=> MODES[m]);
   const pages = [page].concat(opt('--ab', null) ? [path.resolve(opt('--ab'))] : []), srv = await Promise.all(pages.map(serve)), urls = srv.map(x=> `http://127.0.0.1:${x.address().port}/index.html`);
   const b = await pw().chromium.launch({executablePath: fs.existsSync(EXE) ? EXE : undefined, args: ['--enable-unsafe-swiftshader', '--use-angle=swiftshader', '--ignore-gpu-blocklist']});

@@ -68,6 +68,16 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 **Status (2026-11-12, package FX8):** cues 44-56 (renumbered at the merge: UIFX3 took 41-43) are the sound of the eleven cinematic board effects (`bramblewood-cinematic.js`, Effects Lab group "Cinematic (FX8)", not wired into fights). SoundKit's `tone()` / `noise()` are private to `arena_app.js`, so the file builds the same kind of synth (oscillators, filtered noise, sweeps) on `SoundKit.audioContext()`, gated by the SFX volume; nothing plays under Effects None / reduced motion.
 | 57 | Shell crack | A Shell ends: the tortoise carapace cracks and falls away (2026-11-13, FX9, `shellCrackTone`) | A dry crack of crackly high noise, then four small clatters of its plates (square blips with a band of noise, each a little lower) | Noise crack + four blips | 600 ms |
 | 58 | Dragon gust | A Dragon's shadow passes over the board (2026-11-13, FX9, `dragonGust`) | A low rush of air that swells and opens up over 1 s, three deep wing beats inside it | Low noise swell | 1 s |
+| 59 | Snow thump | Avalanche buries a unit (2026-11-13, FX10, `snowThump`; once an avalanche) | A soft lowpass thud falling 500 to 180 Hz, a 90 Hz sine under it, a quiet high powder hiss | Noise thud + hiss | 300 ms |
+| 60 | Ignite | Burn takes hold of a unit (2026-11-13, FX10, `igniteWhoosh`) | A rising bandpass "fwump" (500 to 2400 Hz), then a crackle | Noise sweep + crackle | 450 ms |
+| 61 | Burn crackle | Burn's tick (2026-11-13, FX10, `burnCrackle`) | Crackly high noise over a low hiss | Noise | 300 ms |
+| 62 | Spent puff | A once-only skill is used up (2026-11-13, FX10, `spentPuff`) | A short falling "pff" of noise, then two soft falling triangle notes (660, 440 Hz) | Noise + two blips | 150 ms |
+| 63 | Silk drop | Brood lets a spiderling down (2026-11-13, FX10, `silkDrop`; replaces the spawn buzz for Brood) | A thin sine whistle rising 900 to 1700 Hz, then a small pop as the sac splits | Sweep + pop | 560 ms |
+| 64 | Confuse warble | Confuse lands (2026-11-13, FX10, `confuseWarble`; was Blind's tone) | Four mismatched sine notes (880, 620, 990, 560 Hz), then a sagging triangle slide | Four blips + slide | 600 ms |
+| 65 | Carrion caw | Carrion feeds on a death (2026-11-13, FX10, `carrionCaw`) | Two raspy low sawtooth calls (310 then 260 Hz), each with a band of noise | Two rasps | 330 ms |
+| 66 | Crate thunk | A Delivery's crate lands (2026-11-13, FX10, `crateThunk`) | A low square thud with a band of noise, then a high triangle tick as the lid pops | Thud + tick | 460 ms |
+| 67 | Skitter patter | Skitter readies (2026-11-13, FX10, `skitterPatter`) | Six tiny square ticks, alternating 1800 / 2100 Hz, 50 ms apart | Six ticks | 270 ms |
+| 68 | Play dead | Thanatosis (2026-11-13, FX10, `playDeadFlop`) | A sine sliding down 520 to 180 Hz ("wah"), a soft low thud as it lands | Slide + thud | 520 ms |
 
 **Status (2026-11-12, package FX6):** cue 40 is live as a Web Audio synth (`SoundKit.constructTone`, built from `tone`, `fnoise`, `sweep`); it replaces the spawn buzz for Bulwark's walls.
 

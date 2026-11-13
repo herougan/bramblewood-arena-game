@@ -54894,7 +54894,7 @@ function en6Vfx(ev){
 function fx10Vfx(ev){
   const F = window.SkillFX, m = matchState; if(!ev || !m || document.hidden) return; // nothing starts in a hidden tab (its frames would all run on return)
   const el = uid=> uid == null ? null : boardCardEl(uid);
-  const go = (fn, uid, cue, pre)=>{ const t0 = performance.now(); requestAnimationFrame(()=>{ if(performance.now() - t0 > 400) return; const e = el(uid), r = e && e.isConnected ? e.getBoundingClientRect() : null;
+  const go = (fn, uid, cue, pre)=>{ const t0 = performance.now(); requestAnimationFrame(()=>{ if(performance.now() - t0 > 600) return; const e = el(uid), r = e && e.isConnected ? e.getBoundingClientRect() : null;
     if(cue) try{ SoundKit.at(r ? ((r.left + r.width/2)/Math.max(1, innerWidth))*2 - 1 : 0, ()=> SoundKit[cue]()); }catch(err){}
     if(!r || !(r.width > 0) || !F || !F[fn] || !fxAtLeast('low') || matchState !== m) return;
     try{ const x = pre ? pre(e) : null; F[fn](e, Object.assign({host: fxHostAt(e, 1500, r), rect: r, speed: m.speedMult || 1, calm: !fxAtLeast('med') || reducedMotion()}, x)); }catch(err){} }); };

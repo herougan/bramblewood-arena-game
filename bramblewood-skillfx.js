@@ -2183,7 +2183,7 @@ function snowBury(el, o){ return f10Run(el, o, 1050, (add, W, H)=>{
   [-1, 1].forEach(s=> [0, 1].forEach(k=> add('powder', `left:${W/2 + s*mw*(.3 + k*.12) - 9}px; top:${mh*.2 - 9 + k*6}px;`,
     [F10_KF(0, 0, .4, 0), F10_KF(s*(14 + k*10), -6 - k*8, 1.2, .9, {offset:.3}), F10_KF(s*(26 + k*16), -2 - k*10, 1.9, 0)], {ms:620, delay:200 + k*40})));
   for(let i = 0; i < 3; i++) add('clump', `left:${W*(.22 + i*.28) - 6}px; top:${mh*.45}px;`, [F10_KF(0, 0, .8, 0), F10_KF(0, 0, 1, 1, {offset:.15}),
-    F10_KF((i - 1)*3, H*.45, 1, 1, {offset:.7}), F10_KF((i - 1)*5, H*.78, .7, 0)], {ms:720, delay:300 + i*90, ease:'ease-in'});
+    F10_KF((i - 1)*3, H*.45, 1, 1, {offset:.7}), F10_KF((i - 1)*5, H*.78, .7, 0)], {ms:620, delay:280 + i*70, ease:'ease-in'});
 }); }
 // Ignite (statusFx en20Ignite: Burn takes hold): a spark lands at the card's foot and a line of flame runs out from it both ways along the bottom edge,
 // licking up, while a warm rim lights the card.
@@ -2262,7 +2262,7 @@ function skitterDash(el, o){ return f10Run(el, o, 800, (add, W, H)=>{
 function playDead(el, o){ return f10Run(el, o, 1150, (add, W, H)=>{
   add('hush', '', [{opacity:0}, {opacity:.75, offset:.2}, {opacity:.6, offset:.75}, {opacity:0}], {still:true, ms:1100, peak:.55});
   [-1, 1].forEach(s=> add('xeye', `left:${W/2 + s*W*.17 - 10}px; top:${H*.3}px;`, [F10_KF(0, 0, .2, 0), F10_KF(0, 0, 1.25, 1, {offset:.2}), F10_KF(0, 0, 1, 1, {offset:.3}), F10_KF(0, 0, 1, 1, {offset:.8}), F10_KF(0, 0, .6, 0)], {text:'✕', ms:1050, delay:80}));
-  add('ghost', `left:${W/2 - 14}px; top:${H*.32}px;`, [F10_KF(0, 10, .5, 0), F10_KF(0, -H*.32, 1, .9, {offset:.35}), F10_KF(-6, -H*.36, 1, .9, {offset:.5}), F10_KF(6, -H*.36, 1, .9, {offset:.62}), F10_KF(0, 4, .6, 0)], {delay:60, ease:'ease-in-out'});
+  add('ghost', `left:${W/2 - 14}px; top:${H*.32}px;`, [F10_KF(0, 10, .5, 0), F10_KF(0, -H*.32, 1, .9, {offset:.35}), F10_KF(-6, -H*.36, 1, .9, {offset:.5}), F10_KF(6, -H*.36, 1, .9, {offset:.62}), F10_KF(0, 4, .6, 0)], {ms:1080, delay:60, ease:'ease-in-out'});
 }); }
 Object.assign(root.SkillFX, {snowBury, igniteFlare, burnLick, spentPuff, broodDrop, confuseSpin, carrionFeed, deliveryCrate, skitterDash, playDead});
 })(typeof window !== 'undefined' ? window : globalThis);
