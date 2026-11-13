@@ -8,6 +8,24 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-13 11:08: Owner notes (after the 09:56 release)
+| # | Note | Package |
+|---|---|---|
+| 1 | Replacing a card's art should clear its "art rejected" flag | UI51 (auto-clear on art change); dormouse live row needs "apply it" |
+| 2 | Mobile: accidental refresh (pull-down) or back; only when intended | UI51 |
+| 3 | Owner is making card designs different (identical stat pairs) | owner |
+| 4 | Conquest map-change paw VFX: turn off for now | UI51 |
+| 5 | Mobile: leaving Chrome mid-load leaves art as "?" for good; retry without a refresh, keep lazy loading | UI51 |
+| 6 | Blind: remove the blindfold effect | UI51 |
+| 7 | Map cards view lags when switching maps (render in steps?); check Codex on phone / PC | UI51 |
+| 8 | Map cards view: shortcut main map <-> its side maps | UI51 |
+| 9 | Map cards view: clicking the card opens the editor; drop the pencil | UI51 |
+| 10 | Early maps' New! counts become canonical (11/11, not 11/10) | LIST1 |
+| 11 | What "Yes earlier" means | answered |
+| 12 | Carried suggestions on side maps: only cards that fit; none from main maps past the one that unlocks it; main-map uniques never shown as New! there | LIST1 |
+| 13 | Whip Spider etc. show a dashed token-like border | UI51 |
+| 14 | Side-map picks done: refill each map's New! count (theme, animal mix, lumber + payoffs + simple monsters + theme intro, few unique skills); owner designs the cards after | LIST1 |
+
 ## 11-12 22:47-23:47: Owner notes (released the 1023e batch 22:47; NET1-1 applied 23:2x)
 - Status 11-13 09:30: every package below is merged into batch-1023e and waits for release (also FX10: ten skill looks; UIFX1-3 places, seasons, story). Still running: SIDE2 (note 22). Open owner calls: AUDIT1-1, FX9-1, ENG-RC1-1/2, UIFX1-1, UIFX2-1, SIDE1-1..4, DUNGEON1-1..3; "apply it" for the dormouse artReview row.
 
