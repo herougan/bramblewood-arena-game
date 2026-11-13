@@ -203,6 +203,7 @@ MANUAL = {
   'unicorn': ('horse', 'mythic', 'name', '2026-11-02 CONTENT7: a horse with one horn (Mythic, Map 56+)'),
   'hazel-coppice': ('dormouse', 'plant', 'proposed', 'a coppiced hazel; proposed: the hazel dormouse that lives in it, like the Ent\'s owl (was subtype structure: a tree, as the Elder Willow)'),
   'phoenix-mushrooms': ('mushroom', 'fungus', 'name', ''),
+  'barrel-cactus': ('cactus', 'plant', 'name', '2026-11-13 FIX11: a plant card (CACTI1), as Pond Algae; kept as set in cards.json'),
   # 2026-11-02 (CARD5): tags later packages set in cards.json by hand; without these rows the tool's name / type / icon fallback rewrote them
   # (talus-pika a hamster, inland-taipan a plain snake, two subtypes dropped)
   'ironclaw-fiddler': ('fiddler crab', None, 'name', 'kept as set in cards.json'),
@@ -213,6 +214,28 @@ MANUAL = {
   'reefback-turtle': ('sea turtle', None, 'name', 'kept as set in cards.json'),
   'nutria-reedcutter': ('nutria', None, 'name', 'kept as set in cards.json'),
   'cone-cutter-squirrel': ('red squirrel', None, 'name', 'kept as set in cards.json'),
+  # 2026-11-13 (package FIX11): later cards' hand tags (CONTENT14-19, CACTI1), kept; without these rows the fallback rewrote them (cormorant a raven)
+  'peat-smoke-shaman': ('toad', None, 'name', 'kept as set in cards.json'),
+  'matamata': ('matamata turtle', None, 'name', 'kept as set in cards.json'),
+  'bog-lungfish': ('lungfish', None, 'name', 'kept as set in cards.json'),
+  'reed-dart-bittern': ('bittern', None, 'name', 'kept as set in cards.json'),
+  'shoebill': ('shoebill', None, 'name', 'kept as set in cards.json'),
+  'hoatzin': ('hoatzin', None, 'name', 'kept as set in cards.json'),
+  'shell-drop-gull': ('gull', None, 'name', 'kept as set in cards.json'),
+  'smuggler-slingrat': ('rat', None, 'name', 'kept as set in cards.json'),
+  'tidefolk-harpooner': ('grey seal', None, 'name', 'kept as set in cards.json'),
+  'snapgun-shrimp': ('pistol shrimp', None, 'name', 'kept as set in cards.json'),
+  'acorn-pelter-squirrel': ('red squirrel', None, 'name', 'kept as set in cards.json'),
+  'pinecone-crossbill': ('crossbill', None, 'name', 'kept as set in cards.json'),
+  'yeti-tracker': ('wolverine', None, 'name', 'kept as set in cards.json'),
+  'icefletch-fox': ('arctic fox', None, 'name', 'kept as set in cards.json'),
+  'yeti-snarer': ('snow leopard', None, 'name', 'kept as set in cards.json'),
+  'sand-flinger-antlion': ('antlion', None, 'name', 'kept as set in cards.json'),
+  'cormorant': ('cormorant', None, 'name', 'kept as set in cards.json'),
+  'fruit-bat': ('fruit bat', None, 'name', 'kept as set in cards.json'),
+  'glow-worm': ('glow-worm', None, 'name', 'kept as set in cards.json'),
+  'bumblebee-queen': ('bumblebee', None, 'name', 'kept as set in cards.json'),
+  'sea-bass': ('sea bass', None, 'name', 'kept as set in cards.json'),
   'talus-pika': ('pika', None, 'name', 'kept as set in cards.json'),
   'dune-packrat': ('pack rat', None, 'name', 'kept as set in cards.json'),
   'pumice-beetle': ('dung beetle', None, 'name', 'kept as set in cards.json'),
@@ -310,7 +333,8 @@ TYPE_ANIMAL = {'Otter': 'otter', 'Hummingbird': 'hummingbird', 'Bee': 'bee', 'An
   'Worm': 'worm', 'Fish': 'fish', 'Sheep': 'sheep', 'Vulture': 'vulture', 'Ape': 'ape', 'Cephalopod': 'octopus', 'Cetacean': 'whale'}
 
 # the head word for grouping (most groups are the last word; these are not)
-GROUP = {'polar bear': 'bear', 'honey badger': 'badger', 'snow leopard': 'leopard', 'leopard seal': 'seal', 'leopard slug': 'slug', 'sea turtle': 'turtle',
+GROUP = {'sea bass': 'fish', 'lungfish': 'fish', 'bumblebee': 'bee', 'cormorant': 'seabird', 'crossbill': 'songbird', 'glow-worm': 'beetle', 'hoatzin': 'bird', 'shoebill': 'heron', # 2026-11-13 (package FIX11): the kept hand tags
+  'polar bear': 'bear', 'honey badger': 'badger', 'snow leopard': 'leopard', 'leopard seal': 'seal', 'leopard slug': 'slug', 'sea turtle': 'turtle',
   'box turtle': 'turtle', 'snapping turtle': 'turtle', 'bog turtle': 'turtle', 'tortoise': 'turtle', 'sea krait': 'snake', 'sea snake': 'snake', 'whale shark': 'shark',
   'sperm whale': 'whale', 'humpback whale': 'whale', 'hammerhead shark': 'shark', 'greenland shark': 'shark', 'electric catfish': 'catfish', 'horseshoe crab': 'horseshoe crab',
   'hermit crab': 'crab', 'fiddler crab': 'crab', 'blue-ringed octopus': 'octopus', 'vampire squid': 'squid', 'giant clam': 'clam', 'pine marten': 'marten',

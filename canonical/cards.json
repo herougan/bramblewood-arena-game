@@ -36969,8 +36969,8 @@
     "species": [
       "Plant"
     ],
-    "subtype": "plant",
     "animal": "cactus",
+    "subtype": "plant",
     "archetypes": [
       "Desert",
       "Flora"

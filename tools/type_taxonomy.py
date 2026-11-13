@@ -65,6 +65,7 @@ GROUP_PARENT = {
   # 2026-11-02 (package CARD5): groups new since the last run (animal_tags.py now runs through): Pond Algae, Phoenix Mushrooms (no animal
   # class: top-level, like the tardigrade), a hamster, the Oyster Bank
   'algae': None, 'mushroom': None, 'hamster': 'Rodent', 'oyster': 'Mollusc',
+  'cactus': None, # 2026-11-13 (package FIX11): the Barrel Cactus (a plant, top-level like the algae)
 }
 # The classes above the groups (and the game species, which are nodes too).
 CLASS_PARENT = {

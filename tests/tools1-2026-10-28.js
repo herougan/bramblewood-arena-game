@@ -9,6 +9,9 @@ let fail = 0, n = 0; const ok = (c, m) => { n++; if (!c) { fail++; console.log('
 (async () => {
   const problems = await require(path.join(ROOT, 'tools', 'bench', 'check.js')).run({});
   problems.forEach(p => ok(false, p)); ok(problems.length === 0, 'bench self-checks');
+  // 2026-11-13 (package FIX11): a list too small to fill the budget (3 cards, 10-card decks: 6 legal decks) ends once every neighbour is read
+  { const D = require(path.join(ROOT, 'tools', 'bench', 'deck.js')), r = await D.main({ map: '1', pool: ['ant-scout', 'badger-lumberjack', 'bee-knight'], maxUnique: 3, maxCopies: 4, size: 10, budget: 1e6, finalGames: 2, workers: 0, quiet: true, seed: 'stall', noSave: true, focus: ['open'] });
+    ok(r.games < 5000 && r.decks.length === 1, 'deck: a search with every neighbour read stops (' + r.games + ' games)'); }
   const help = cp.execFileSync('node', [path.join(ROOT, 'tools', 'bench', 'bench.js'), 'help'], { encoding: 'utf8' });
   ['contrib', 'skill', 'deck', 'check'].forEach(c => ok(help.includes('bench.js ' + c), 'help names ' + c));
   // nothing the workbench does may write the price table or the cards: the modules hold no write to canonical/

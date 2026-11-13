@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-13 Package FIX11 (TESTFIX3's open items)
+- Tools: `tools/bench/deck.js` stops a focus after 40 passes with no new game (a small list whose neighbours are all read looped forever; The Canopy's 11 cards ran 3.5 h); SIDE2's copies of the guard dropped. `tools/opt/deckopt.js --compare`: `await ev.setup(spec)` sat inside a comment since REF5 (10-30), so the run exited 0 with no output (opt2's missing file).
+- Animal tags: Barrel Cactus (cactus, plant) and 21 later hand tags kept in `tools/animal_tags.py` (the fallback had turned a Cormorant into a raven); `canonical/animal-tags.json` and `bramblewood-taxonomy.js` regenerated.
+- Tests: ai3's cheap-deck pitch limit 1.5 -> 2 (ENG14's save plan, owner X24, pitches a 0-cost card to play a better 1-cost one); opt2 reads its outside card from the pools; tools1 checks the stall guard.
+
 ## 2026-11-13 Package TESTFIX3 (stale test pins after LIST1 / SIDE2 / UI51 / UI52; e2e timing)
 - Tests only, except two small fixes. Unit suites 77 failing -> 57 (20 fixed): fx7, eng28 (CHANGELOG window), hubdec1, ui41, ui45, skir2, content10, content17, content18, pl1, econ1, pack1, eng27, content19, ui6, review1, z, pref, coop-lobby, filters.
 - Real bugs fixed: `docs/decisions.json` SIDE2-1..4 had `id` after `status` (the hub's one-item-per-line check); three search boxes (`ff9-pk-q` x2, `ui47AddIn`, `adminu1-search`) lacked `data-text-filter` so they did not reset on a page change (owner 10-18 rule).
