@@ -4,6 +4,93 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**AUDIT1-1. Start locked while a cloud save loads** · Decide · Cloud · asked 2026-11-13
+- Signed in, the front screen's Start waits until your cloud save has loaded, so fresh play can't be overwritten by it. On a stalled connection that wait has no end until the browser gives up (minutes). Unlock Start after 30 s and load the save later?
+  - a) Keep waiting (as built).
+  - b) Unlock after 30 s; a save that arrives later asks before replacing.
+- **Default:** a
+
+**FX9-1. More cards fly to the Graveyard?** · Decide · UI · asked 2026-11-13
+- A card you pitch now arcs into the Graveyard (note 7). Cards that get there another way (a field card used up, Feed, overdraw) still jump straight to the pile. Make those fly too?
+  - a) Yes, every card flies there.
+  - b) Pitches only (as built).
+- **Default:** a
+
+**UIFX1-1. Place entrances: full once a session** · Decide · UI · asked 2026-11-13
+- The shop tent, Premium pavilion, Nest, Codex, Camp, Stomping Grounds and Inventory entrances play in full (0.8-0.9 s) on the first visit each session, then a 0.4 s short take (your 10-08 note: "instantly transit you"). A tap skips. Or play the full take every visit?
+  - a) Full once a session (as built).
+  - b) Full every visit.
+- **Default:** a
+
+**ENG-RC1-1. Ritual hides from the enemy only** · Confirm · Rules · asked 2026-11-13
+- A Ritual unit (The Sixfold) can't be attacked or targeted by the enemy; swings into its slot go on to the bramble. Your own buffs and heals can still reach it. Confirm, or should it be out of reach for both sides?
+  - a) Enemy only (as built).
+  - b) Both sides.
+- **Default:** a
+
+**ENG-RC1-2. Chained N = N chains** · Confirm · Rules · asked 2026-11-13
+- Chained Binturong (Chained 4) starts with 4 chains = 4 Armor; each point of a blow breaks one chain before Armor counts, so small hits still free it. The other reading: 1 chain = 1 Armor that breaks at N damage. Its budget (chainedMult) doesn't yet count the soak.
+  - a) N chains (as built).
+  - b) One chain, breaks at N.
+- **Default:** a
+
+**SIDE1-1. The Old Bramble: your 6 own cards, the limit is 3** · Decide · Balance · asked 2026-11-12
+- You picked 6 own cards there (Ent, Elder Willow, Shimmerwing Stag, Strangler Vine, Thorn Shrike, Hedgehog Herbalist); a side map takes 3 and 1-3 skills. The list takes Ent (its reward), Elder Willow and Thorn Shrike: Fog, Delivery, Bleed. Strangler Vine has no source, so no player can own it; Hedgehog Herbalist is The Sunken Grove's reward; Shimmerwing Stag adds a 4th skill. Your flags are unchanged.
+  - a) Keep Claude's three
+  - b) You pick three in Map cards
+  - c) Raise The Old Bramble's limit
+- **Default:** a
+
+**SIDE1-2. Three side-map rewards miss their map's theme** · Decide · Balance · asked 2026-11-12
+- A fight's reward must stay on its list, so each takes an own-card slot and brings its skills: Hedgehog Herbalist (The Sunken Grove 5-A-4; a forest hedgehog you picked for The Old Bramble), Wound Reaver (The Aerie Vault 11-A-4; a volcanic lizard in the nests), Greenland Shark (The Ice Hollow 17-A-4; a deep-sea shark).
+  - a) Phase B gives each fight a reward of its theme (Herbalist moves to The Old Bramble)
+  - b) Keep them
+- **Default:** a
+
+**SIDE1-3. Do Flying, Tide and Nocturnal count toward 1-3 skills?** · Decide · Balance · asked 2026-11-12
+- Phase A counts a side map's skills on its own cards, but not plain Flying, Tide, Diurnal, Nocturnal (the two-skill rule counts them half) or Baby cards. Counting them puts 7 side maps at 4-5 skills (The Old Bramble, Smugglers' Grotto, The Sunken Grove, The Glimmer Depths, The Aerie Vault, The Ice Hollow, Eye of the Volcano).
+  - a) As built: not counted
+  - b) Count them
+  - c) Count them half
+- **Default:** a
+
+**SIDE1-4. Main maps: 1-3 skills too?** · Decide · Balance · asked 2026-11-12
+- Every main map of 0-21 shows 4-14 skills on its own cards (8-10 cards each; Map 7 the most). docs/balance/card-power-2026-11-12.md names the odd card out on each. Strict 1-3 there means a card pass or new cards.
+  - a) Side maps only for now
+  - b) Main maps at most 5, Claude proposes swaps
+  - c) Main maps 1-3 too
+- **Default:** a
+
+**DUNGEON1-1. Partial dungeon rewards: my reading of note 21** · Confirm · Group dungeon · asked 2026-11-12
+- Your note: "%completed * 0.5 ... If only 1-3rd map completed, 0.25". Built: f = parts won / parts. All parts: full rewards. 1-3 parts won: f x 0.25. More, short of all (4 of 5): f x 0.5. So 4/5 pays 40%, 3/5 15%, 2/5 10%, 1/5 5%. The other reading of "1-3rd" is "a third or less" (f <= 1/3: x 0.25, else x 0.5: 3/5 would pay 30%). One table in bramblewood-coop.js (RUN_PAY_BANDS).
+  - As built (1-3 parts: x 0.25)
+  - A third or less: x 0.25, otherwise x 0.5
+  - Other figures (say which)
+- **Default:** As built (1-3 parts: x 0.25)
+
+**DUNGEON1-2. A second multiplayer dungeon: the Mire Warren (Admin preview)** · Decide · Group dungeon · asked 2026-11-12
+- To show the switcher and a room built from data, I added the Mire Warren: 3 parts in the Gnawed's swamp tunnels (frogs and shrews, rats and leeches, then the Mire Matriarch, a Gnawed Matriarch scaled as the Tidewarden is). Admin Mode only, no map spot, not tuned. Giving it a map number (data: mapNumber) adds its spot and opens it to players.
+  - Keep as a preview
+  - Place it on a map (say which)
+  - Rename or retheme it
+  - Remove it
+- **Default:** Keep as a preview
+
+**DUNGEON1-3. How the next part's enemies arrive** · Confirm · Group dungeon · asked 2026-11-12
+- Built: 3-5 units (seeded) from the next part's deck, each with at least Wait 1 (a Wait-0 card too), every second one in the enemy's middle row, the boss first on the boss part; no On Spawn for them (they came during the free turns, as a daily dungeon's next bramble). The enemy's survivors stay. The CPU still plays only into its front row; its middle row fills from these arrivals.
+  - As built
+  - Wait-0 cards arrive ready
+  - The CPU also plays into its middle row each turn
+  - Clear the enemy's survivors between parts
+- **Default:** As built
+
+**UIFX2-1. Map vignette: the place's season or the calendar month** · Decide · Map · asked 2026-11-13
+- Built (UIFX2, your 00:03 note): every map has a season or biome (Maps 0-1 spring, 2-3 coast, 4-5 summer, 6-7 autumn, 11 winter, 18 desert, 19-20 ash ...), with a change when you move between seasons, a travel beat and a light ambient. The map's edge tint used to follow the real calendar month (2026-10-07); it now follows the place, so a desert never wears November's autumn rim.
+  - a) As built: the place's season.
+  - b) The calendar month on spring / summer / autumn / winter maps, the place elsewhere.
+  - c) The calendar month everywhere (the ambient stays by place).
+- **Default:** a
+
 **BAL43-1. Thistlewood 1-3 / 1-4 still too easy at 85 / 80** · Decide · Road · asked 2026-11-10
 - Burrow Line 96% (target 85) and Sapper Hedge 94% (80), 200 games. Every legal deck from their lists reads 87-100%; the Shield is at the rule and their leader is hidden.
   - a) You add one slightly stronger Thistlewood common to 1-3 / 1-4; Claude retunes.
@@ -63,12 +150,6 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - a) Claude adds 1-2 carried cards there (admin adds, within Carried) and re-tunes
   - b) You re-pick those maps
   - c) Accept for now
-- **Default:** a
-
-**NET1-1. Apply the database speed-ups** · Decide · Network · asked 2026-11-12
-- supabase/proposed/20261112_net1_scale.sql: 5 indexes, 19 security rules rewritten to check the player once per query (not once per row), 3 duplicate rules dropped, and card_overrides' updated_at set by the server clock (an admin with a slow clock is then never missed). No rows change. Say "apply it" to run it.
-  - a) Apply it.
-  - b) Not yet.
 - **Default:** a
 
 **NET1-2. When to upgrade hosting plans** · Decide · Network · asked 2026-11-12
@@ -332,6 +413,12 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 ## Decided
+
+**NET1-1. Apply the database speed-ups** · Decide · Network · asked 2026-11-12
+- supabase/proposed/20261112_net1_scale.sql: 5 indexes, 19 security rules rewritten to check the player once per query (not once per row), 3 duplicate rules dropped, and card_overrides' updated_at set by the server clock (an admin with a slow clock is then never missed). No rows change. Say "apply it" to run it.
+  - a) Apply it.
+  - b) Not yet.
+- **Default:** a
 
 **PICKS1-1. Maps 0-11 over your card limits because of Claude's adds** · Decide · Balance · asked 2026-11-11 · decided 2026-11-12
 - Claude's admin adds (32 cards on Maps 0-11, put on lists to keep road fights in band: UI47, SKIR2, LISTFIX3) count as Yes, so all 12 maps are over their NEW! limit and 7 over Carried. Without them, only Maps 0-3 and 8 are over, by 1 each. Pressing No on an admin add now sticks (it did not before).
