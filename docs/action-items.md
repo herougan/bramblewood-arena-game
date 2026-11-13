@@ -9,11 +9,13 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 ## 11-12 22:47-23:47: Owner notes (released the 1023e batch 22:47; NET1-1 applied 23:2x)
+- Status 11-13 09:30: every package below is merged into batch-1023e and waits for release (also FX10: ten skill looks; UIFX1-3 places, seasons, story). Still running: SIDE2 (note 22). Open owner calls: AUDIT1-1, FX9-1, ENG-RC1-1/2, UIFX1-1, UIFX2-1, SIDE1-1..4, DUNGEON1-1..3; "apply it" for the dormouse artReview row.
+
 | # | Note | Package |
 |---|---|---|
-| a | (23:22) Effects Lab entries built 10-21..23 throw errors; more skill effects to see | FX7 (running) |
-| b | (23:22) Meteor (portent, sky darkens, darkness creeps, bright ball, boom) + 10 more like it | FX8 (running) |
-| c | (23:22) Prompts go, + the art he rejected (Dormouse) | ART12 (running) |
+| a | (23:22) Effects Lab entries built 10-21..23 throw errors; more skill effects to see | FX7 (merged) |
+| b | (23:22) Meteor (portent, sky darkens, darkness creeps, bright ball, boom) + 10 more like it | FX8 (merged) |
+| c | (23:22) Prompts go, + the art he rejected (Dormouse) | ART12 (merged) |
 | d | (23:22) Owner fixes Barrel Cactus and tests Maps 13, 16, 19; NET1-1 apply it | owner / done |
 | 1 | Morning (pinkish) effect 10% less bright | FX9 |
 | 2 | Much less laggy now; look for other sources | PERF5 |
