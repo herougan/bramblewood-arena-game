@@ -15,6 +15,7 @@ Shots: `docs/screens/owner-2026-11-13/` (1729-*.png).
 | 1 | Poison pip should show how much (e.g. Venom 4 on the card chip). The card hover popup should also list the tokens / statuses on the card; today it shows only the battle log ("Venom ☠ → 4"). | UI53 |
 | 2 | The small light gradient overlay on each battle card doesn't follow the card: when the card animates, it stays behind and leaves a "slot" (Kittiwake Flock, The Old Shell). Sometimes it disappears (Tunnel Ant). | UI53 |
 | 3 | Message cut off at "3. I"; waiting for the rest. | ? |
+| 4 | (17:50) "New!" skills in the Map cards window: red background instead (the NEW! marker on skill rows, `ui19McSkillRows` / UI32 skill tiles, today gold). | UI53 |
 
 ## 11-13 11:55: Owner notes -> also UI52 (after UI51)
 5. Going to the Forge always lags (measure, fix).
