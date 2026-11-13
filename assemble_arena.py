@@ -497,7 +497,7 @@ def _pack_plan_for_game(path):
     zones = [{k: z.get(k) for k in ("id", "maps", "pack", "name", "mapNames", "submaps")} for z in d.get("zones", [])]
     return {"built": d.get("built", ""), "zones": zones, "packs": packs, "sources": src}
 app_src = sub_once(app_src, "__PACK_PLAN__", json.dumps(_pack_plan_for_game(SCRATCH + "canonical/pack-plan.json"), ensure_ascii=False))
-app_src = sub_once(app_src, "__CLAUDE_NEW__",json.dumps({k: v for k, v in json.load(open(SCRATCH + "canonical/claude-new-cards.json", encoding="utf-8")).items() if k in ("theme5", "skillrec", "content17")}, ensure_ascii=False))  # 2026-11-07 (CONTENT17): + the per-map theme groups
+app_src = sub_once(app_src, "__CLAUDE_NEW__",json.dumps({k: v for k, v in json.load(open(SCRATCH + "canonical/claude-new-cards.json", encoding="utf-8")).items() if k in ("theme5", "skillrec", "content17", "list1")}, ensure_ascii=False))  # 2026-11-07 (CONTENT17): + the per-map theme groups; 2026-11-13 (LIST1): + the NEW! gap picks
 # 2026-11-09 (package UI38): the admin Map cards window's bigger Prospects pool (fit ranking, concepts, families), docs/design/map-prospects-2026-11-09.json
 def _map_prospects_for_game(p):
     d = json.load(open(p, encoding="utf-8"))

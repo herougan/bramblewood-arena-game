@@ -60,7 +60,7 @@ MAIN.forEach(k=>{ const m = D.maps[k], st = m.static;
   ok(f.ui38Concept('concept-x').mapId === 'mx' && f.ui38Concept('a1') === null, 'concept lookup by id'); }
 
 // 3. wiring
-ok(/ui38Fill\(top, defs, ok, idx, neu, car\);[^\n]*\n(  ui47SuggestFirst\(top, neu\);[^\n]*\n)?  return \{n, neu, car, extra: \[\], idx\}/.test(b37), 'ui37Split fills both groups with ui38Fill; no fold list');
+ok(/ui38Fill\(top, defs, ok, idx, neu, car\);[^\n]*\n([^\n]*\n)*?  return \{n, neu, car, extra: \[\], idx(: idx2)?\}/.test(b37), 'ui37Split fills both groups with ui38Fill; no fold list'); // 2026-11-13 (LIST1): side cards then move to Carried (idx2)
 ok(!/details class="pk1-mc-sec rv2-panel ui37-grp ui37-extra"/.test(b37) && !/ui37-earlier/.test(b37), 'the closed "More cards from earlier maps" fold is gone');
 ok(/src !== 'flag' && (src !== 'tut' && )?side\.has\(id\)/.test(b37) /* 2026-11-10 (UI43): the tutorial's cards pass */, 'prospects leave out side-map-only cards (unless already flagged)');
 ok(/ui38Concept\(id\) \|\| \(defs\[id\] && ok\(id\)\)/.test(b37), 'a flagged concept id is a prospect');

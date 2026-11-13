@@ -1,0 +1,885 @@
+{
+ "about": "LIST1 gaps, targets (#10), side-map Carried fit (#12), picks (#14); tools/list1/list1_2026_11_13.js",
+ "built": "2026-11-13",
+ "targets": {
+  "mf": 11,
+  "mb": 11,
+  "mc": 11,
+  "mz": 4
+ },
+ "maps": [
+  {
+   "id": "m1",
+   "name": "Bramblewood Outskirts",
+   "mapNo": 0,
+   "sub": false,
+   "newNow": 10,
+   "dflt": 10,
+   "target": 10,
+   "gap": 0,
+   "newAfterPicks": 10,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mf",
+   "name": "Thistlewood",
+   "mapNo": 1,
+   "sub": false,
+   "newNow": 11,
+   "dflt": 10,
+   "target": 11,
+   "gap": 0,
+   "newAfterPicks": 11,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mb",
+   "name": "Pebble Beach",
+   "mapNo": 2,
+   "sub": false,
+   "newNow": 11,
+   "dflt": 10,
+   "target": 11,
+   "gap": 0,
+   "newAfterPicks": 11,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mc",
+   "name": "Gannet Cliffs",
+   "mapNo": 3,
+   "sub": false,
+   "newNow": 11,
+   "dflt": 10,
+   "target": 11,
+   "gap": 0,
+   "newAfterPicks": 11,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m2",
+   "name": "Sunken Hollow",
+   "mapNo": 4,
+   "sub": false,
+   "newNow": 10,
+   "dflt": 10,
+   "target": 10,
+   "gap": 0,
+   "newAfterPicks": 10,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mw",
+   "name": "Gatorback Swamp",
+   "mapNo": 5,
+   "sub": false,
+   "newNow": 10,
+   "dflt": 10,
+   "target": 10,
+   "gap": 0,
+   "newAfterPicks": 10,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m8",
+   "name": "Sable Swampmire",
+   "mapNo": 6,
+   "sub": false,
+   "newNow": 10,
+   "dflt": 10,
+   "target": 10,
+   "gap": 0,
+   "newAfterPicks": 10,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mu",
+   "name": "The Morel Hollow",
+   "mapNo": 7,
+   "sub": false,
+   "newNow": 9,
+   "dflt": 9,
+   "target": 9,
+   "gap": 0,
+   "newAfterPicks": 9,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m4",
+   "name": "Caves & Alcoves",
+   "mapNo": 8,
+   "sub": false,
+   "newNow": 9,
+   "dflt": 9,
+   "target": 9,
+   "gap": 0,
+   "newAfterPicks": 9,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mk",
+   "name": "The Kelp Mangroves",
+   "mapNo": 9,
+   "sub": false,
+   "newNow": 9,
+   "dflt": 9,
+   "target": 9,
+   "gap": 0,
+   "newAfterPicks": 9,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m7",
+   "name": "Coral Current",
+   "mapNo": 10,
+   "sub": false,
+   "newNow": 9,
+   "dflt": 9,
+   "target": 9,
+   "gap": 0,
+   "newAfterPicks": 9,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m10",
+   "name": "Eyrie Heights",
+   "mapNo": 11,
+   "sub": false,
+   "newNow": 9,
+   "dflt": 9,
+   "target": 9,
+   "gap": 0,
+   "newAfterPicks": 9,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mh",
+   "name": "The Briar Maze",
+   "mapNo": 12,
+   "sub": false,
+   "newNow": 9,
+   "dflt": 9,
+   "target": 9,
+   "gap": 0,
+   "newAfterPicks": 9,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mr",
+   "name": "The Redwood Deep",
+   "mapNo": 13,
+   "sub": false,
+   "newNow": 9,
+   "dflt": 9,
+   "target": 9,
+   "gap": 0,
+   "newAfterPicks": 9,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m5",
+   "name": "Savanna Reaches",
+   "mapNo": 14,
+   "sub": false,
+   "newNow": 9,
+   "dflt": 9,
+   "target": 9,
+   "gap": 0,
+   "newAfterPicks": 9,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "ml",
+   "name": "The Long Grass",
+   "mapNo": 15,
+   "sub": false,
+   "newNow": 9,
+   "dflt": 9,
+   "target": 9,
+   "gap": 0,
+   "newAfterPicks": 9,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mt",
+   "name": "The Pinewood Taiga",
+   "mapNo": 16,
+   "sub": false,
+   "newNow": 8,
+   "dflt": 8,
+   "target": 8,
+   "gap": 0,
+   "newAfterPicks": 8,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m6",
+   "name": "Wolfsbane Tundra",
+   "mapNo": 17,
+   "sub": false,
+   "newNow": 8,
+   "dflt": 8,
+   "target": 8,
+   "gap": 0,
+   "newAfterPicks": 8,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "md",
+   "name": "The Glass Dunes",
+   "mapNo": 18,
+   "sub": false,
+   "newNow": 8,
+   "dflt": 8,
+   "target": 8,
+   "gap": 0,
+   "newAfterPicks": 8,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m3",
+   "name": "Ashen Spurn",
+   "mapNo": 19,
+   "sub": false,
+   "newNow": 8,
+   "dflt": 8,
+   "target": 8,
+   "gap": 0,
+   "newAfterPicks": 8,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m11",
+   "name": "The Sundered Peak",
+   "mapNo": 20,
+   "sub": false,
+   "newNow": 8,
+   "dflt": 8,
+   "target": 8,
+   "gap": 0,
+   "newAfterPicks": 8,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m21",
+   "name": "The Quiet Summit",
+   "mapNo": 21,
+   "sub": false,
+   "newNow": 5,
+   "dflt": 7,
+   "target": 7,
+   "gap": 2,
+   "newAfterPicks": 7,
+   "sideCarried": [
+    {
+     "id": "apollo-butterfly",
+     "from": "mv"
+    },
+    {
+     "id": "magma-titan",
+     "from": "mx"
+    },
+    {
+     "id": "ossuary-lammergeier",
+     "from": "me"
+    }
+   ],
+   "sharedWith": [],
+   "picks": [
+    "talus-pika"
+   ],
+   "concepts": [
+    "Summit Tahr"
+   ]
+  },
+  {
+   "id": "mo",
+   "name": "The Old Bramble",
+   "sub": true,
+   "unlockAfterNo": 21,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mq",
+   "name": "Clovermead",
+   "sub": true,
+   "unlockAfterNo": 12,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mp",
+   "name": "Lilypad Reach",
+   "sub": true,
+   "unlockAfterNo": 6,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mg",
+   "name": "Smugglers' Grotto",
+   "sub": true,
+   "unlockAfterNo": 7,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "ms",
+   "name": "The Sunken Grove",
+   "sub": true,
+   "unlockAfterNo": 13,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mz",
+   "name": "The Mycelium Deep",
+   "sub": true,
+   "unlockAfterNo": 8,
+   "newNow": 4,
+   "dflt": 3,
+   "target": 4,
+   "gap": 0,
+   "newAfterPicks": 4,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mn",
+   "name": "The Glimmer Depths",
+   "sub": true,
+   "unlockAfterNo": 16,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mj",
+   "name": "The Sunken Depths",
+   "sub": true,
+   "unlockAfterNo": 11,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mv",
+   "name": "The Aerie Vault",
+   "sub": true,
+   "unlockAfterNo": 15,
+   "newNow": 2,
+   "dflt": 3,
+   "target": 3,
+   "gap": 1,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": [
+    "Old Aerie Nest"
+   ]
+  },
+  {
+   "id": "my",
+   "name": "The Canopy",
+   "sub": true,
+   "unlockAfterNo": 18,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mi",
+   "name": "The Ice Hollow",
+   "sub": true,
+   "unlockAfterNo": 21,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mpd",
+   "name": "The Pale Desert",
+   "sub": true,
+   "unlockAfterNo": 19,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "m9",
+   "name": "Basalt Foundry",
+   "sub": true,
+   "unlockAfterNo": 23,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 4,
+   "sideCarried": [],
+   "sharedWith": [
+    "mx"
+   ],
+   "picks": [
+    "malachite-golem"
+   ],
+   "concepts": []
+  },
+  {
+   "id": "me",
+   "name": "Eye of the Volcano",
+   "sub": true,
+   "unlockAfterNo": 20,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [],
+   "picks": [],
+   "concepts": []
+  },
+  {
+   "id": "mx",
+   "name": "Volcano Lair",
+   "sub": true,
+   "unlockAfterNo": 20,
+   "newNow": 3,
+   "dflt": 3,
+   "target": 3,
+   "gap": 0,
+   "newAfterPicks": 3,
+   "sideCarried": [],
+   "sharedWith": [
+    "m9"
+   ],
+   "picks": [],
+   "concepts": []
+  }
+ ],
+ "sideFit": {
+  "mo": {
+   "biome": "meadow-forest",
+   "home": "m1",
+   "animals": [
+    "hedgehog",
+    "owl",
+    "snake"
+   ],
+   "keyword": "evasive",
+   "off": [
+    "taiga-lynx",
+    "dhole-matriarch",
+    "shimmerwing-stag",
+    "lucky-hopper"
+   ]
+  },
+  "mq": {
+   "biome": "meadow-forest",
+   "home": "mf",
+   "animals": [
+    "butterfly",
+    "ladybird",
+    "rabbit"
+   ],
+   "keyword": "keenEye",
+   "off": [
+    "woodcock-lookout",
+    "bramble-sprout",
+    "badger-lumberjack"
+   ]
+  },
+  "mp": {
+   "biome": "river",
+   "home": "mb",
+   "animals": [
+    "beaver",
+    "sturgeon"
+   ],
+   "keyword": "venomous",
+   "off": [
+    "alley-cat",
+    "shoal-shark",
+    "marsh-harrier"
+   ]
+  },
+  "mg": {
+   "biome": "caves",
+   "home": "mb",
+   "animals": [
+    "octopus",
+    "raccoon"
+   ],
+   "keyword": "armor",
+   "off": [
+    "sea-turtle-elder",
+    "pelican-diver"
+   ]
+  },
+  "ms": {
+   "biome": "swamp",
+   "home": "mw",
+   "animals": [
+    "carp",
+    "vole"
+   ],
+   "keyword": "bleed",
+   "off": [
+    "hedgehog-herbalist"
+   ]
+  },
+  "mz": {
+   "biome": "fungal",
+   "home": "mu",
+   "animals": [
+    "bear",
+    "bombardier beetle",
+    "millipede",
+    "worm"
+   ],
+   "keyword": null,
+   "off": [
+    "owl-nightwatch",
+    "wolf-spider-mother",
+    "hawthorn-shieldbug"
+   ]
+  },
+  "mn": {
+   "biome": "caves",
+   "home": "m4",
+   "animals": [
+    "whip spider"
+   ],
+   "keyword": null,
+   "off": [
+    "grotto-lobster",
+    "star-nosed-mole",
+    "badger-stonemason"
+   ]
+  },
+  "mj": {
+   "biome": "reef-ocean",
+   "home": "m7",
+   "animals": [
+    "blue-ringed octopus",
+    "coral",
+    "mantis shrimp"
+   ],
+   "keyword": null,
+   "off": [
+    "mangrove-manatee",
+    "clownfish-scout",
+    "parrotfish"
+   ]
+  },
+  "mv": {
+   "biome": "mountain-sky",
+   "home": "m10",
+   "animals": [
+    "butterfly",
+    "sparrow",
+    "swift"
+   ],
+   "keyword": null,
+   "off": [
+    "wound-reaver",
+    "alpine-salamander",
+    "chipmunk-hoarder",
+    "alpine-marmot"
+   ]
+  },
+  "my": {
+   "biome": "jungle",
+   "home": "m5",
+   "animals": [
+    "jaguar",
+    "kinkajou",
+    "sloth"
+   ],
+   "keyword": null,
+   "off": [
+    "pangolin-roller",
+    "spitting-cobra",
+    "redwood-woodpecker",
+    "apollo-butterfly"
+   ]
+  },
+  "mi": {
+   "biome": "tundra-ice",
+   "home": "m6",
+   "animals": [
+    "beluga",
+    "greenland shark",
+    "lemming"
+   ],
+   "keyword": null,
+   "off": [
+    "spitting-spider",
+    "greenland-shark"
+   ]
+  },
+  "mpd": {
+   "biome": "pale-desert",
+   "home": "md",
+   "animals": [
+    "camel",
+    "kestrel",
+    "oryx"
+   ],
+   "keyword": null,
+   "off": []
+  },
+  "m9": {
+   "biome": "volcanic-ash",
+   "home": "m3",
+   "animals": [
+    "boar",
+    "gecko",
+    "ox"
+   ],
+   "keyword": null,
+   "off": [
+    "tide-spirit",
+    "quill-volley",
+    "hercules-beetle"
+   ]
+  },
+  "me": {
+   "biome": "volcanic-ash",
+   "home": "m11",
+   "animals": [
+    "carrion beetle",
+    "dog",
+    "lammergeier"
+   ],
+   "keyword": null,
+   "off": [
+    "pack-mule",
+    "cave-warlord"
+   ]
+  },
+  "mx": {
+   "biome": "volcanic-ash",
+   "home": "m11",
+   "animals": [
+    "dragon",
+    "ox",
+    "rhino"
+   ],
+   "keyword": null,
+   "off": [
+    "tide-spirit",
+    "pack-mule"
+   ]
+  }
+ },
+ "carriedShrink": {
+  "mo": {
+   "before": 200,
+   "after": 61,
+   "dropped": 139
+  },
+  "mq": {
+   "before": 129,
+   "after": 38,
+   "dropped": 91
+  },
+  "mp": {
+   "before": 73,
+   "after": 20,
+   "dropped": 53
+  },
+  "mg": {
+   "before": 85,
+   "after": 11,
+   "dropped": 74
+  },
+  "ms": {
+   "before": 138,
+   "after": 17,
+   "dropped": 121
+  },
+  "mz": {
+   "before": 92,
+   "after": 3,
+   "dropped": 89
+  },
+  "mn": {
+   "before": 164,
+   "after": 5,
+   "dropped": 159
+  },
+  "mj": {
+   "before": 120,
+   "after": 7,
+   "dropped": 113
+  },
+  "mv": {
+   "before": 156,
+   "after": 5,
+   "dropped": 151
+  },
+  "my": {
+   "before": 182,
+   "after": 8,
+   "dropped": 174
+  },
+  "mi": {
+   "before": 199,
+   "after": 8,
+   "dropped": 191
+  },
+  "mpd": {
+   "before": 191,
+   "after": 5,
+   "dropped": 186
+  },
+  "m9": {
+   "before": 202,
+   "after": 15,
+   "dropped": 187
+  },
+  "me": {
+   "before": 198,
+   "after": 12,
+   "dropped": 186
+  },
+  "mx": {
+   "before": 194,
+   "after": 8,
+   "dropped": 186
+  }
+ }
+}
