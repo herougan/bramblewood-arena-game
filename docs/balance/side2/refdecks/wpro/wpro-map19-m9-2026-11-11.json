@@ -1,0 +1,79 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:41:43.783Z",
+ "map": {
+  "id": "m9",
+  "num": 19,
+  "name": "Basalt Foundry"
+ },
+ "pool": [
+  "basalt-boar",
+  "cinder-gecko",
+  "cinder-hornet",
+  "cinder-skeleton",
+  "ember-revenant",
+  "fire-salamander",
+  "grindstone-boar",
+  "obsidian-scorpion",
+  "pumice-beetle",
+  "smoke-raccoon"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "cinder-hornet": 4,
+    "cinder-skeleton": 4,
+    "fire-salamander": 4,
+    "grindstone-boar": 4,
+    "smoke-raccoon": 4
+   },
+   "score": 0.3173,
+   "ci": [
+    0.2716,
+    0.363
+   ],
+   "refWins": 0.7917,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 2184,
+   "seconds": 23
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "cinder-gecko": 4,
+    "cinder-hornet": 4,
+    "cinder-skeleton": 2,
+    "ember-revenant": 2,
+    "grindstone-boar": 4,
+    "pumice-beetle": 4
+   },
+   "score": 0.3654,
+   "ci": [
+    0.3185,
+    0.4122
+   ],
+   "refWins": 0.8056,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.1)",
+    "economy (4 resource makers)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 2028,
+   "seconds": 24
+  }
+ ]
+}

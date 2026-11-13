@@ -1,0 +1,721 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T01:17:04.475Z",
+ "fingerprint": "cd1103b85b23",
+ "map": {
+  "id": "mv",
+  "num": 11,
+  "name": "The Aerie Vault"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "anvil-thrush",
+  "blue-ringed-octopus",
+  "chamois-leaper",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gangrenous-leech",
+  "golden-eagle-diver",
+  "grave-grin-hyena",
+  "great-horned-owl",
+  "hoopoe-herald",
+  "ibex-rockcaller",
+  "mountain-hare",
+  "peak-condor",
+  "peregrine-stooper",
+  "pika-hoarder",
+  "puffin-diver",
+  "sparrow-chick",
+  "stoat-cutthroat",
+  "stonedrop-vulture",
+  "swamp-alligator",
+  "the-gannet-queen",
+  "wolf-spider-mother",
+  "wound-reaver"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Anvil Thrush",
+  "Blue-ringed Octopus",
+  "Chamois Leaper",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Eyrie Warden",
+  "Gangrenous Leech",
+  "Golden Eagle Diver",
+  "Grave-Grin Hyena",
+  "Great Horned Owl",
+  "Hoopoe Herald",
+  "Ibex Rockcaller",
+  "Mountain Hare",
+  "Peak Condor",
+  "Peregrine Stooper",
+  "Pika Hoarder",
+  "Puffin Diver",
+  "Sparrow Chick",
+  "Stoat Cutthroat",
+  "Stonedrop Vulture",
+  "Swamp Alligator",
+  "The Gannet Queen",
+  "Wolf Spider Mother",
+  "Wound Reaver"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "anvil-thrush",
+   "chamois-leaper",
+   "eagle-owl-quartermaster",
+   "eyrie-warden",
+   "gangrenous-leech",
+   "golden-eagle-diver",
+   "great-horned-owl",
+   "peak-condor",
+   "peregrine-stooper",
+   "sparrow-chick",
+   "swamp-alligator",
+   "the-gannet-queen",
+   "wound-reaver"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:11-A-1",
+   "label": "vs 11-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:11-A-2",
+   "label": "vs 11-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:11-A-3",
+   "label": "vs 11-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:11-A-4",
+   "label": "vs 11-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 11-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road15",
+   "label": "vs reference deck (Map 15) under 11-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 11-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "anvil-thrush",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "golden-eagle-diver",
+    "great-horned-owl",
+    "peak-condor",
+    "peregrine-stooper",
+    "puffin-diver",
+    "sparrow-chick",
+    "stonedrop-vulture",
+    "the-gannet-queen"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "chamois-leaper",
+    "golden-eagle-diver",
+    "peregrine-stooper",
+    "stoat-cutthroat",
+    "the-gannet-queen"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "eyrie-warden",
+    "great-horned-owl",
+    "swamp-alligator",
+    "the-gannet-queen"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 9,
+   "moves": 4,
+   "games": 2002,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 10,
+   "moves": 4,
+   "games": 2030,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 10,
+   "moves": 3,
+   "games": 2002,
+   "apartFromEarlier": 15
+  },
+  {
+   "focus": "open",
+   "steps": 10,
+   "moves": 6,
+   "games": 2086,
+   "apartFromEarlier": 13
+  }
+ ],
+ "apart": 10,
+ "seconds": 129,
+ "games": 8568,
+ "decks": [
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "flying x13",
+    "strike-first x9"
+   ],
+   "deck": {
+    "golden-eagle-diver": 2,
+    "grave-grin-hyena": 4,
+    "peak-condor": 4,
+    "peregrine-stooper": 4,
+    "stoat-cutthroat": 3,
+    "stonedrop-vulture": 3
+   },
+   "cards": [
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "peak-condor",
+     "name": "Peak Condor",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "peregrine-stooper",
+     "name": "Peregrine Stooper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.9643,
+   "ci": [
+    0.9363,
+    0.9923
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 13
+    },
+    {
+     "f": "strike-first",
+     "n": 9
+    },
+    {
+     "f": "ranged",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-A-1",
+     "label": "vs 11-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-2",
+     "label": "vs 11-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-3",
+     "label": "vs 11-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-4",
+     "label": "vs 11-A-4 boss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 11-A-2's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-A-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "economy (4 resource makers)",
+    "flying x13",
+    "ranged x9"
+   ],
+   "deck": {
+    "alpine-marmot": 3,
+    "dust-hyena": 4,
+    "eagle-owl-quartermaster": 3,
+    "golden-eagle-diver": 4,
+    "peak-condor": 4,
+    "stonedrop-vulture": 2
+   },
+   "cards": [
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "peak-condor",
+     "name": "Peak Condor",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.9167,
+   "ci": [
+    0.8755,
+    0.9579
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 13
+    },
+    {
+     "f": "ranged",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-A-1",
+     "label": "vs 11-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-2",
+     "label": "vs 11-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-3",
+     "label": "vs 11-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-4",
+     "label": "vs 11-A-4 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 11-A-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-A-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "flying x12",
+    "ranged x8"
+   ],
+   "deck": {
+    "chamois-leaper": 3,
+    "hoopoe-herald": 2,
+    "peak-condor": 4,
+    "pika-hoarder": 3,
+    "sparrow-chick": 4,
+    "stonedrop-vulture": 4
+   },
+   "cards": [
+    {
+     "id": "peak-condor",
+     "name": "Peak Condor",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "sparrow-chick",
+     "name": "Sparrow Chick",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "chamois-leaper",
+     "name": "Chamois Leaper",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8661,
+   "ci": [
+    0.8158,
+    0.9163
+   ],
+   "avgLumber": 0.55,
+   "avgWait": 0.55,
+   "curve": {
+    "0": 9,
+    "1": 11
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 12
+    },
+    {
+     "f": "ranged",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-A-1",
+     "label": "vs 11-A-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-2",
+     "label": "vs 11-A-2 skirmish's deck",
+     "p": 0.7708,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-3",
+     "label": "vs 11-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-4",
+     "label": "vs 11-A-4 boss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 11-A-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-A-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 0.9)",
+    "flying x6"
+   ],
+   "deck": {
+    "alpine-marmot": 2,
+    "great-horned-owl": 4,
+    "hoopoe-herald": 4,
+    "peregrine-stooper": 2,
+    "pika-hoarder": 4,
+    "swamp-alligator": 4
+   },
+   "cards": [
+    {
+     "id": "great-horned-owl",
+     "name": "Great Horned Owl",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "swamp-alligator",
+     "name": "Swamp Alligator",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "peregrine-stooper",
+     "name": "Peregrine Stooper",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8274,
+   "ci": [
+    0.7751,
+    0.8797
+   ],
+   "avgLumber": 0.9,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 10,
+    "1": 2,
+    "2": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-A-1",
+     "label": "vs 11-A-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-2",
+     "label": "vs 11-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-3",
+     "label": "vs 11-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-4",
+     "label": "vs 11-A-4 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 11-A-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-A-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 15
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mv --pool alpine-marmot,anvil-thrush,blue-ringed-octopus,chamois-leaper,dust-hyena,eagle-owl-quartermaster,eyrie-warden,gangrenous-leech,golden-eagle-diver,grave-grin-hyena,great-horned-owl,hoopoe-herald,ibex-rockcaller,mountain-hare,peak-condor,peregrine-stooper,pika-hoarder,puffin-diver,sparrow-chick,stoat-cutthroat,stonedrop-vulture,swamp-alligator,the-gannet-queen,wolf-spider-mother,wound-reaver --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,family:strike-first,big,open --anchor anvil-thrush,chamois-leaper,eagle-owl-quartermaster,eyrie-warden,gangrenous-leech,golden-eagle-diver,great-horned-owl,peak-condor,peregrine-stooper,sparrow-chick,swamp-alligator,the-gannet-queen,wound-reaver --anchor-min 10 --level 1 --mode map-true"
+}

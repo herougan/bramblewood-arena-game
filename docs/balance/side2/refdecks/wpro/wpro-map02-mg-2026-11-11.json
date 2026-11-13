@@ -1,0 +1,84 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:31:59.178Z",
+ "map": {
+  "id": "mg",
+  "num": 2,
+  "name": "Smugglers' Grotto"
+ },
+ "pool": [
+  "driftwood-crab",
+  "gull-thief",
+  "limpet-clinger",
+  "octopus-tactician",
+  "old-shell",
+  "open-ocean-hermit-crab",
+  "pincushion-urchin",
+  "raccoon-nightcrew",
+  "rock-pool-starfish",
+  "salvager-hermit-crab"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "limpet-clinger": 3,
+    "octopus-tactician": 4,
+    "old-shell": 4,
+    "open-ocean-hermit-crab": 2,
+    "pincushion-urchin": 4,
+    "salvager-hermit-crab": 3
+   },
+   "score": 0.244,
+   "ci": [
+    0.1873,
+    0.3008
+   ],
+   "refWins": 0.7222,
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)",
+    "tide x13",
+    "armor x9"
+   ],
+   "apartFrom": [],
+   "steps": 8,
+   "games": 1778,
+   "seconds": 34
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "driftwood-crab": 2,
+    "gull-thief": 4,
+    "limpet-clinger": 3,
+    "open-ocean-hermit-crab": 4,
+    "pincushion-urchin": 4,
+    "rock-pool-starfish": 3
+   },
+   "score": 0.2679,
+   "ci": [
+    0.2145,
+    0.3212
+   ],
+   "refWins": 0.6667,
+   "labels": [
+    "swarm (18 copies at 0 Lumber)",
+    "economy (6 resource makers)",
+    "tide x14",
+    "armor x9"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 9,
+   "games": 1778,
+   "seconds": 37
+  }
+ ]
+}

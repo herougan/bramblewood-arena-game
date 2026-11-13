@@ -1,0 +1,733 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T01:19:24.265Z",
+ "fingerprint": "cd1103b85b23",
+ "map": {
+  "id": "my",
+  "num": 14,
+  "name": "The Canopy"
+ },
+ "level": 1,
+ "pool": [
+  "amber-cicada",
+  "banded-sea-krait",
+  "barkplate-beetle",
+  "bramblewood-macaque",
+  "camouflage-frog",
+  "eagle-owl-quartermaster",
+  "fishing-cat",
+  "fungus-gnat-cloud",
+  "grave-grin-hyena",
+  "great-barracuda",
+  "hercules-beetle",
+  "hoopoe-herald",
+  "ibex-rockcaller",
+  "ironclaw-fiddler",
+  "jaguar-stalker",
+  "kinkajou-lurker",
+  "mangrove-manatee",
+  "mosquito-cloud",
+  "pride-queen",
+  "proboscis-monkey",
+  "stoat-cutthroat",
+  "upside-down-bat",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Amber Cicada",
+  "Banded Sea Krait",
+  "Barkplate Beetle",
+  "Bramblewood Macaque",
+  "Camouflage Frog",
+  "Eagle-Owl Quartermaster",
+  "Fishing Cat",
+  "Fungus Gnat Cloud",
+  "Grave-Grin Hyena",
+  "Great Barracuda",
+  "Hercules Beetle",
+  "Hoopoe Herald",
+  "Ibex Rockcaller",
+  "Ironclaw Fiddler",
+  "Jaguar Stalker",
+  "Kinkajou Lurker",
+  "Mangrove Manatee",
+  "Mosquito Cloud",
+  "Pride Queen",
+  "Proboscis Monkey",
+  "Stoat Cutthroat",
+  "Upside-Down Bat",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "amber-cicada",
+   "bramblewood-macaque",
+   "camouflage-frog",
+   "fishing-cat",
+   "hercules-beetle",
+   "hoopoe-herald",
+   "jaguar-stalker",
+   "kinkajou-lurker",
+   "mosquito-cloud",
+   "pride-queen",
+   "proboscis-monkey"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:14-A-1",
+   "label": "vs 14-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-2",
+   "label": "vs 14-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-3",
+   "label": "vs 14-A-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-4",
+   "label": "vs 14-A-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-5",
+   "label": "vs 14-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 14-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road18",
+   "label": "vs reference deck (Map 18) under 14-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "fishing-cat",
+    "great-barracuda",
+    "jaguar-stalker",
+    "pride-queen",
+    "stoat-cutthroat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "camouflage-frog",
+    "great-barracuda",
+    "ironclaw-fiddler",
+    "mangrove-manatee",
+    "proboscis-monkey"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "amber-cicada",
+    "banded-sea-krait",
+    "barkplate-beetle",
+    "camouflage-frog",
+    "eagle-owl-quartermaster",
+    "fishing-cat",
+    "great-barracuda",
+    "hercules-beetle",
+    "ibex-rockcaller",
+    "ironclaw-fiddler",
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "mangrove-manatee",
+    "pride-queen",
+    "proboscis-monkey",
+    "stoat-cutthroat",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:strike-first",
+   "steps": 11,
+   "moves": 5,
+   "games": 2000,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:tide",
+   "steps": 11,
+   "moves": 4,
+   "games": 2096,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 10,
+   "moves": 3,
+   "games": 2016,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 9,
+   "moves": 5,
+   "games": 2064,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 140,
+ "games": 8688,
+ "decks": [
+  {
+   "focus": "big",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)"
+   ],
+   "deck": {
+    "bramblewood-macaque": 3,
+    "fungus-gnat-cloud": 4,
+    "grave-grin-hyena": 4,
+    "hercules-beetle": 3,
+    "kinkajou-lurker": 4,
+    "mangrove-manatee": 2
+   },
+   "cards": [
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "kinkajou-lurker",
+     "name": "Kinkajou Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bramblewood-macaque",
+     "name": "Bramblewood Macaque",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "hercules-beetle",
+     "name": "Hercules Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7366,
+    0.8468
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "strike-first x9"
+   ],
+   "deck": {
+    "fishing-cat": 3,
+    "grave-grin-hyena": 4,
+    "great-barracuda": 3,
+    "hoopoe-herald": 4,
+    "kinkajou-lurker": 3,
+    "stoat-cutthroat": 3
+   },
+   "cards": [
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fishing-cat",
+     "name": "Fishing Cat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "great-barracuda",
+     "name": "Great Barracuda",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "kinkajou-lurker",
+     "name": "Kinkajou Lurker",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7708,
+   "ci": [
+    0.72,
+    0.8217
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.2083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.6)",
+    "swarm x7"
+   ],
+   "deck": {
+    "amber-cicada": 3,
+    "barkplate-beetle": 3,
+    "bramblewood-macaque": 3,
+    "fungus-gnat-cloud": 4,
+    "hoopoe-herald": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "amber-cicada",
+     "name": "Amber Cicada",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "barkplate-beetle",
+     "name": "Barkplate Beetle",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bramblewood-macaque",
+     "name": "Bramblewood Macaque",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7552,
+   "ci": [
+    0.6973,
+    0.8131
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.05,
+   "curve": {
+    "0": 11,
+    "1": 6,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "swarm",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "tide x8",
+    "flying x8"
+   ],
+   "deck": {
+    "great-barracuda": 3,
+    "hoopoe-herald": 4,
+    "mangrove-manatee": 2,
+    "mosquito-cloud": 4,
+    "proboscis-monkey": 3,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mosquito-cloud",
+     "name": "Mosquito Cloud",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "great-barracuda",
+     "name": "Great Barracuda",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "proboscis-monkey",
+     "name": "Proboscis Monkey",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.4948,
+   "ci": [
+    0.4288,
+    0.5608
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.2917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map my --pool amber-cicada,banded-sea-krait,barkplate-beetle,bramblewood-macaque,camouflage-frog,eagle-owl-quartermaster,fishing-cat,fungus-gnat-cloud,grave-grin-hyena,great-barracuda,hercules-beetle,hoopoe-herald,ibex-rockcaller,ironclaw-fiddler,jaguar-stalker,kinkajou-lurker,mangrove-manatee,mosquito-cloud,pride-queen,proboscis-monkey,stoat-cutthroat,upside-down-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:strike-first,family:tide,big,open --anchor amber-cicada,bramblewood-macaque,camouflage-frog,fishing-cat,hercules-beetle,hoopoe-herald,jaguar-stalker,kinkajou-lurker,mosquito-cloud,pride-queen,proboscis-monkey --anchor-min 10 --level 1 --mode map-true"
+}

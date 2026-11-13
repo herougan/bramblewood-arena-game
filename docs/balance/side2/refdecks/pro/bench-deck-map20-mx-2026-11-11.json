@@ -1,0 +1,709 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T01:29:09.517Z",
+ "fingerprint": "cd1103b85b23",
+ "map": {
+  "id": "mx",
+  "num": 20,
+  "name": "Volcano Lair"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "basalt-boar",
+  "caldera-wyrm",
+  "cave-olm",
+  "cave-swiftlet",
+  "chamois-leaper",
+  "deep-cave-troll",
+  "eagle-owl-quartermaster",
+  "fire-drake-hatchling",
+  "fire-salamander",
+  "fumarole-ibex",
+  "giant-cave-huntsman",
+  "grave-grin-hyena",
+  "ibex-rockcaller",
+  "magma-salamander",
+  "obsidian-scorpion",
+  "polar-bear",
+  "quillback-elder",
+  "stalactite-golem",
+  "stoat-cutthroat",
+  "stonedrop-vulture",
+  "upside-down-bat",
+  "ur-elk",
+  "vampire-roost",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Ancient Sloth Titan",
+  "Basalt Boar",
+  "The Caldera Wyrm",
+  "Cave Olm",
+  "Cave Swiftlet",
+  "Chamois Leaper",
+  "Cave Bear",
+  "Eagle-Owl Quartermaster",
+  "Fire Drake Hatchling",
+  "Fire Salamander",
+  "Fumarole Ibex",
+  "Giant Cave Huntsman",
+  "Grave-Grin Hyena",
+  "Ibex Rockcaller",
+  "Magma Salamander",
+  "Obsidian Scorpion",
+  "Polar Bear",
+  "Quillback Elder",
+  "Stalactite Pill Bug",
+  "Stoat Cutthroat",
+  "Stonedrop Vulture",
+  "Upside-Down Bat",
+  "Ür-Elk",
+  "Vampire Roost",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "ancient-sloth-titan",
+   "basalt-boar",
+   "caldera-wyrm",
+   "deep-cave-troll",
+   "fire-drake-hatchling",
+   "fire-salamander",
+   "fumarole-ibex",
+   "magma-salamander",
+   "obsidian-scorpion",
+   "quillback-elder",
+   "stalactite-golem",
+   "ur-elk",
+   "vampire-roost"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "skir1-pro",
+  "budget": 8000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-B-1",
+   "label": "vs 20-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-2",
+   "label": "vs 20-B-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-3",
+   "label": "vs 20-B-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:20-B-4",
+   "label": "vs 20-B-4 worldboss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "caldera-wyrm",
+    "chamois-leaper",
+    "fumarole-ibex",
+    "giant-cave-huntsman",
+    "stoat-cutthroat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "caldera-wyrm",
+    "obsidian-scorpion",
+    "quillback-elder",
+    "stalactite-golem"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "ancient-sloth-titan",
+    "deep-cave-troll",
+    "fire-drake-hatchling",
+    "quillback-elder",
+    "stalactite-golem",
+    "vampire-roost"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:strike-first",
+   "steps": 11,
+   "moves": 5,
+   "games": 2058,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "family:armor",
+   "steps": 10,
+   "moves": 3,
+   "games": 2044,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 11,
+   "moves": 7,
+   "games": 2170,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 14,
+   "moves": 4,
+   "games": 2114,
+   "apartFromEarlier": 13
+  }
+ ],
+ "apart": 10,
+ "seconds": 132,
+ "games": 8834,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "flying x7"
+   ],
+   "deck": {
+    "basalt-boar": 4,
+    "cave-swiftlet": 4,
+    "eagle-owl-quartermaster": 3,
+    "fire-salamander": 4,
+    "grave-grin-hyena": 3,
+    "magma-salamander": 2
+   },
+   "cards": [
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "cave-swiftlet",
+     "name": "Cave Swiftlet",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7321,
+   "ci": [
+    0.6743,
+    0.79
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 1,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "strike-first x9",
+    "climb x6"
+   ],
+   "deck": {
+    "chamois-leaper": 3,
+    "fire-salamander": 4,
+    "fumarole-ibex": 3,
+    "giant-cave-huntsman": 3,
+    "obsidian-scorpion": 3,
+    "upside-down-bat": 4
+   },
+   "cards": [
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "chamois-leaper",
+     "name": "Chamois Leaper",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fumarole-ibex",
+     "name": "Fumarole Ibex",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7202,
+   "ci": [
+    0.6628,
+    0.7776
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 9
+    },
+    {
+     "f": "climb",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.0)",
+    "armor x8"
+   ],
+   "deck": {
+    "grave-grin-hyena": 4,
+    "ibex-rockcaller": 2,
+    "quillback-elder": 4,
+    "stalactite-golem": 4,
+    "upside-down-bat": 4,
+    "ur-elk": 2
+   },
+   "cards": [
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "quillback-elder",
+     "name": "Quillback Elder",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "ur-elk",
+     "name": "Ür-Elk",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.6845,
+   "ci": [
+    0.627,
+    0.7421
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.7,
+   "curve": {
+    "0": 8,
+    "1": 4,
+    "2": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "flying x7",
+    "rally x6"
+   ],
+   "deck": {
+    "deep-cave-troll": 4,
+    "giant-cave-huntsman": 3,
+    "stonedrop-vulture": 3,
+    "upside-down-bat": 4,
+    "ur-elk": 2,
+    "vampire-roost": 4
+   },
+   "cards": [
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "upside-down-bat",
+     "name": "Upside-Down Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "vampire-roost",
+     "name": "Vampire Roost",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ur-elk",
+     "name": "Ür-Elk",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.6488,
+   "ci": [
+    0.5887,
+    0.7089
+   ],
+   "avgLumber": 1.4,
+   "avgWait": 1.75,
+   "curve": {
+    "0": 4,
+    "1": 8,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 7
+    },
+    {
+     "f": "rally",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mx --pool ancient-sloth-titan,basalt-boar,caldera-wyrm,cave-olm,cave-swiftlet,chamois-leaper,deep-cave-troll,eagle-owl-quartermaster,fire-drake-hatchling,fire-salamander,fumarole-ibex,giant-cave-huntsman,grave-grin-hyena,ibex-rockcaller,magma-salamander,obsidian-scorpion,polar-bear,quillback-elder,stalactite-golem,stoat-cutthroat,stonedrop-vulture,upside-down-bat,ur-elk,vampire-roost,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:strike-first,family:armor,big,open --anchor ancient-sloth-titan,basalt-boar,caldera-wyrm,deep-cave-troll,fire-drake-hatchling,fire-salamander,fumarole-ibex,magma-salamander,obsidian-scorpion,quillback-elder,stalactite-golem,ur-elk,vampire-roost --anchor-min 10 --level 1 --mode map-true"
+}

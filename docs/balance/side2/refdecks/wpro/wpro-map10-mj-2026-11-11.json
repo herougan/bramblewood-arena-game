@@ -1,0 +1,84 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:37:18.343Z",
+ "map": {
+  "id": "mj",
+  "num": 10,
+  "name": "The Sunken Depths"
+ },
+ "pool": [
+  "blue-ringed-octopus",
+  "coral-current-eel",
+  "giant-clam",
+  "kraken-spawnling",
+  "krill-swarm",
+  "moon-jelly",
+  "orca-vanguard",
+  "reef-admiral",
+  "reef-shark",
+  "riptide-eel",
+  "sea-turtle-elder"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "giant-clam": 4,
+    "kraken-spawnling": 2,
+    "moon-jelly": 4,
+    "orca-vanguard": 4,
+    "riptide-eel": 2,
+    "sea-turtle-elder": 4
+   },
+   "score": 0.3672,
+   "ci": [
+    0.3119,
+    0.4224
+   ],
+   "refWins": 0.9028,
+   "labels": [
+    "big (10 copies at 2+ Lumber, average 1.6)",
+    "tide x18",
+    "armor x8"
+   ],
+   "apartFrom": [],
+   "steps": 6,
+   "games": 1888,
+   "seconds": 21
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "blue-ringed-octopus": 3,
+    "giant-clam": 2,
+    "kraken-spawnling": 4,
+    "orca-vanguard": 4,
+    "reef-shark": 4,
+    "riptide-eel": 3
+   },
+   "score": 0.3984,
+   "ci": [
+    0.3428,
+    0.4541
+   ],
+   "refWins": 0.875,
+   "labels": [
+    "big (12 copies at 2+ Lumber, average 2.0)",
+    "tide x13",
+    "cleave x8"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 9,
+   "games": 1808,
+   "seconds": 21
+  }
+ ]
+}

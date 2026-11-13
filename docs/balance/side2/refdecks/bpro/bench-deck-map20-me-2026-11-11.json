@@ -1,0 +1,757 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-13T00:40:27.186Z",
+ "fingerprint": "cd1103b85b23",
+ "map": {
+  "id": "me",
+  "num": 20,
+  "name": "Eye of the Volcano"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-moth",
+  "basalt-boar",
+  "berserker-boar",
+  "deep-cave-troll",
+  "honey-badger-fury",
+  "magma-salamander",
+  "obsidian-lich",
+  "obsidian-scorpion",
+  "stalactite-golem",
+  "sulfur-vent-crab",
+  "the-contradiction",
+  "ur-elk",
+  "vampire-roost"
+ ],
+ "poolNames": [
+  "Ancient Sloth Titan",
+  "Ash Moth",
+  "Basalt Boar",
+  "Berserker Boar",
+  "Cave Bear",
+  "Honey Badger Fury",
+  "Magma Salamander",
+  "Obsidian Lich",
+  "Obsidian Scorpion",
+  "Stalactite Pill Bug",
+  "Sulfur Vent Crab",
+  "The Contradiction",
+  "Ür-Elk",
+  "Vampire Roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "skir1-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-A-1",
+   "label": "vs 20-A-1 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-2",
+   "label": "vs 20-A-2 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-3",
+   "label": "vs 20-A-3 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-4",
+   "label": "vs 20-A-4 dungeon's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-5",
+   "label": "vs 20-A-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-6",
+   "label": "vs 20-A-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:20-A-7",
+   "label": "vs 20-A-7 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-A-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-A-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:rally",
+   "label": "rally (skill family)",
+   "cards": [
+    "berserker-boar",
+    "deep-cave-troll",
+    "honey-badger-fury",
+    "the-contradiction",
+    "ur-elk"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "obsidian-lich",
+    "obsidian-scorpion",
+    "stalactite-golem",
+    "sulfur-vent-crab"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "ancient-sloth-titan",
+    "berserker-boar",
+    "deep-cave-troll",
+    "stalactite-golem",
+    "vampire-roost"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:rally",
+   "steps": 5,
+   "moves": 2,
+   "games": 1760,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:armor",
+   "steps": 6,
+   "moves": 0,
+   "games": 1520,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 7,
+   "moves": 4,
+   "games": 1520,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 3,
+   "games": 1500,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 196,
+ "games": 6940,
+ "decks": [
+  {
+   "focus": "family:armor",
+   "labels": [
+    "armor x10"
+   ],
+   "deck": {
+    "ash-moth": 4,
+    "basalt-boar": 4,
+    "magma-salamander": 2,
+    "obsidian-lich": 3,
+    "obsidian-scorpion": 3,
+    "sulfur-vent-crab": 4
+   },
+   "cards": [
+    {
+     "id": "ash-moth",
+     "name": "Ash Moth",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "sulfur-vent-crab",
+     "name": "Sulfur Vent Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "obsidian-lich",
+     "name": "Obsidian Lich",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.775,
+   "ci": [
+    0.7265,
+    0.8235
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-A-1",
+     "label": "vs 20-A-1 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-2",
+     "label": "vs 20-A-2 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-3",
+     "label": "vs 20-A-3 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-4",
+     "label": "vs 20-A-4 dungeon's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-5",
+     "label": "vs 20-A-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-6",
+     "label": "vs 20-A-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-7",
+     "label": "vs 20-A-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-A-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-A-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:rally",
+   "labels": [
+    "rally x10",
+    "armor x6"
+   ],
+   "deck": {
+    "basalt-boar": 4,
+    "berserker-boar": 4,
+    "honey-badger-fury": 4,
+    "obsidian-scorpion": 3,
+    "sulfur-vent-crab": 3,
+    "ur-elk": 2
+   },
+   "cards": [
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "berserker-boar",
+     "name": "Berserker Boar",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "honey-badger-fury",
+     "name": "Honey Badger Fury",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "sulfur-vent-crab",
+     "name": "Sulfur Vent Crab",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ur-elk",
+     "name": "Ür-Elk",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.6458,
+   "ci": [
+    0.592,
+    0.6997
+   ],
+   "avgLumber": 1.05,
+   "avgWait": 1,
+   "curve": {
+    "0": 3,
+    "1": 13,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "rally",
+     "n": 10
+    },
+    {
+     "f": "armor",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-A-1",
+     "label": "vs 20-A-1 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-2",
+     "label": "vs 20-A-2 elite's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-3",
+     "label": "vs 20-A-3 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-4",
+     "label": "vs 20-A-4 dungeon's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-5",
+     "label": "vs 20-A-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-6",
+     "label": "vs 20-A-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-7",
+     "label": "vs 20-A-7 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-A-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-A-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "armor x7",
+    "rally x6"
+   ],
+   "deck": {
+    "ash-moth": 3,
+    "basalt-boar": 4,
+    "berserker-boar": 4,
+    "obsidian-lich": 3,
+    "stalactite-golem": 4,
+    "ur-elk": 2
+   },
+   "cards": [
+    {
+     "id": "basalt-boar",
+     "name": "Basalt Boar",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "berserker-boar",
+     "name": "Berserker Boar",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "ash-moth",
+     "name": "Ash Moth",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-lich",
+     "name": "Obsidian Lich",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ur-elk",
+     "name": "Ür-Elk",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.6167,
+   "ci": [
+    0.5623,
+    0.671
+   ],
+   "avgLumber": 1.4,
+   "avgWait": 1.6,
+   "curve": {
+    "1": 12,
+    "2": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 7
+    },
+    {
+     "f": "rally",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-A-1",
+     "label": "vs 20-A-1 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-2",
+     "label": "vs 20-A-2 elite's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-3",
+     "label": "vs 20-A-3 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-4",
+     "label": "vs 20-A-4 dungeon's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-5",
+     "label": "vs 20-A-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-6",
+     "label": "vs 20-A-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-7",
+     "label": "vs 20-A-7 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-A-1's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-A-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "armor x10"
+   ],
+   "deck": {
+    "honey-badger-fury": 4,
+    "magma-salamander": 2,
+    "obsidian-lich": 3,
+    "obsidian-scorpion": 3,
+    "stalactite-golem": 4,
+    "vampire-roost": 4
+   },
+   "cards": [
+    {
+     "id": "honey-badger-fury",
+     "name": "Honey Badger Fury",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "vampire-roost",
+     "name": "Vampire Roost",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-lich",
+     "name": "Obsidian Lich",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.5125,
+   "ci": [
+    0.4591,
+    0.5659
+   ],
+   "avgLumber": 1.4,
+   "avgWait": 1.75,
+   "curve": {
+    "1": 12,
+    "2": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-A-1",
+     "label": "vs 20-A-1 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-2",
+     "label": "vs 20-A-2 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-3",
+     "label": "vs 20-A-3 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-4",
+     "label": "vs 20-A-4 dungeon's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-5",
+     "label": "vs 20-A-5 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-6",
+     "label": "vs 20-A-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-7",
+     "label": "vs 20-A-7 elite's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-A-1's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-A-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
+     "p": 0.1667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map me --pool ancient-sloth-titan,ash-moth,basalt-boar,berserker-boar,deep-cave-troll,honey-badger-fury,magma-salamander,obsidian-lich,obsidian-scorpion,stalactite-golem,sulfur-vent-crab,the-contradiction,ur-elk,vampire-roost --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:rally,family:armor,big,open --level 1 --mode map-true"
+}

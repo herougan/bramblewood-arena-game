@@ -1,0 +1,80 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:30:48.585Z",
+ "map": {
+  "id": "mq",
+  "num": 1,
+  "name": "Clovermead"
+ },
+ "pool": [
+  "ant-scout",
+  "bee-forager",
+  "chipmunk-cavalry",
+  "clover-butterfly",
+  "cottontail",
+  "dormouse",
+  "honey-bee",
+  "jackrabbit-sprinter",
+  "lucky-hopper",
+  "meadow-rabbit",
+  "puddle-skimmer",
+  "robin-redbreast"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "bee-forager": 4,
+    "chipmunk-cavalry": 4,
+    "cottontail": 4,
+    "lucky-hopper": 4,
+    "puddle-skimmer": 4
+   },
+   "score": 0.349,
+   "ci": [
+    0.2881,
+    0.4098
+   ],
+   "refWins": 0.8056,
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)"
+   ],
+   "apartFrom": [],
+   "steps": 6,
+   "games": 1776,
+   "seconds": 30
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "bee-forager": 4,
+    "clover-butterfly": 4,
+    "honey-bee": 4,
+    "lucky-hopper": 4,
+    "meadow-rabbit": 4
+   },
+   "score": 0.4479,
+   "ci": [
+    0.3812,
+    0.5146
+   ],
+   "refWins": 0.6806,
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "flying x12"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 7,
+   "games": 1808,
+   "seconds": 22
+  }
+ ]
+}

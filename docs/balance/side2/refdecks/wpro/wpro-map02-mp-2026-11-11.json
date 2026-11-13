@@ -1,0 +1,82 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:33:19.782Z",
+ "map": {
+  "id": "mp",
+  "num": 2,
+  "name": "Lilypad Reach"
+ },
+ "pool": [
+  "beaver-lumberjack",
+  "dam-keeper-beaver",
+  "duck-paddler",
+  "lodge-engineer",
+  "muskrat-lodgekeeper",
+  "muskrat-reedgatherer",
+  "old-shell",
+  "pond-algae",
+  "raft-spider",
+  "riverworks-bastion",
+  "snapstick-turtle",
+  "water-shrew"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "dam-keeper-beaver": 4,
+    "lodge-engineer": 2,
+    "muskrat-lodgekeeper": 4,
+    "old-shell": 2,
+    "pond-algae": 4,
+    "riverworks-bastion": 4
+   },
+   "score": 0.0375,
+   "ci": [
+    0.0139,
+    0.0611
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.1)",
+    "guard x14"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1840,
+   "seconds": 38
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "lodge-engineer": 4,
+    "pond-algae": 4,
+    "raft-spider": 4,
+    "riverworks-bastion": 4,
+    "snapstick-turtle": 4
+   },
+   "score": 0.1,
+   "ci": [
+    0.0643,
+    0.1357
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.2)",
+    "tide x8"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 7,
+   "games": 2020,
+   "seconds": 43
+  }
+ ]
+}

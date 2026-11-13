@@ -1,0 +1,83 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:40:01.241Z",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow"
+ },
+ "pool": [
+  "frostbitten-wolverine",
+  "glacier-yak",
+  "greenland-shark",
+  "harbor-seal",
+  "ice-crevasse-wolf",
+  "polar-bear",
+  "ringed-seal",
+  "snow-ermine",
+  "walrus-icebreaker",
+  "wolfsbane-alpha"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "frostbitten-wolverine": 4,
+    "glacier-yak": 4,
+    "greenland-shark": 3,
+    "harbor-seal": 4,
+    "ice-crevasse-wolf": 1,
+    "ringed-seal": 4
+   },
+   "score": 0,
+   "ci": [
+    -0.0077,
+    0.0077
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (4 copies at 2+ Lumber, average 1.4)",
+    "tide x11",
+    "evasion x8"
+   ],
+   "apartFrom": [],
+   "steps": 8,
+   "games": 1792,
+   "seconds": 25
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "frostbitten-wolverine": 4,
+    "glacier-yak": 4,
+    "greenland-shark": 3,
+    "harbor-seal": 4,
+    "ice-crevasse-wolf": 3,
+    "polar-bear": 2
+   },
+   "score": 0.0357,
+   "ci": [
+    0.0079,
+    0.0635
+   ],
+   "refWins": 0.9583,
+   "labels": [
+    "big (4 copies at 2+ Lumber, average 1.4)",
+    "cold x8",
+    "tide x7"
+   ],
+   "apartFrom": [
+    4
+   ],
+   "steps": 0,
+   "games": 168,
+   "seconds": 4
+  }
+ ]
+}

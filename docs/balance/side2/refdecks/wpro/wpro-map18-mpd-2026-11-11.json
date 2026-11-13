@@ -1,0 +1,80 @@
+{
+ "tool": "tools/skir1/refdecks_2026_11_11.js",
+ "generated": "2026-11-13T01:40:56.895Z",
+ "map": {
+  "id": "mpd",
+  "num": 18,
+  "name": "The Pale Desert"
+ },
+ "pool": [
+  "antlion-pit",
+  "barrel-cactus",
+  "caustic-scorpion",
+  "dune-jackal",
+  "horned-lizard",
+  "nightjar-drifter",
+  "quicksand-queen",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandstorm-roc",
+  "sunbittern-strider"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "dune-jackal": 4,
+    "nightjar-drifter": 4,
+    "sand-widow": 4,
+    "sandstorm-roc": 4,
+    "sunbittern-strider": 4
+   },
+   "score": 0.1493,
+   "ci": [
+    0.1097,
+    0.1889
+   ],
+   "refWins": 0.9028,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1968,
+   "seconds": 27
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "antlion-pit": 4,
+    "barrel-cactus": 3,
+    "caustic-scorpion": 4,
+    "nightjar-drifter": 1,
+    "sand-widow": 4,
+    "sandstorm-roc": 4
+   },
+   "score": 0.4514,
+   "ci": [
+    0.4015,
+    0.5013
+   ],
+   "refWins": 0.8056,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)",
+    "poison x8"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 6,
+   "games": 1800,
+   "seconds": 29
+  }
+ ]
+}
