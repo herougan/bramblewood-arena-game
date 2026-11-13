@@ -28,7 +28,10 @@ const same = (x, y) => JSON.stringify([...new Set(x)].sort()) === JSON.stringify
 // side list is the SKIR3 record's; SKIR1's 11-11 fold below no longer applies
 const S3 = J('docs/balance/skir3/lists-2026-11-12.json');
 Object.entries(S3.main).forEach(([id, r]) => ok(same(pools[id].cards, r.list), `Map ${r.mapNo} (${id}): the MAP tier is SKIR3's (the owner's 11-12 picks under the limits)`));
-Object.entries(S3.side).forEach(([sid, r]) => ok(same(((pools[r.parent] || {}).submaps || {})[sid] || [], r.list), `${sid}: its list is SKIR3's`));
+// 2026-11-13 (SIDE2): SIDE1 (2026-11-12) re-picked the 15 side lists of Maps 0-21 (NEW! 1-3, Carried 8, 1-3 skills): a side map it covers is
+// checked against SIDE1's record (docs/balance/side1/lists-2026-11-12.json `after`), the rest against SKIR3's
+const S1 = J('docs/balance/side1/lists-2026-11-12.json').maps;
+Object.entries(S3.side).forEach(([sid, r]) => ok(same(((pools[r.parent] || {}).submaps || {})[sid] || [], S1[sid] ? S1[sid].after : r.list), `${sid}: its list is ${S1[sid] ? 'SIDE1' : 'SKIR3'}'s`));
 if (!S3) for (const [id, m] of Object.entries(SUG.maps)) {
   const yes = (PICKS[id] || {}).yes || [], want = (m.mapNo <= 11 ? yes.concat(UI47_ADMIN_ADD[id] || []) : m.mapNo === 12 ? yes.concat(UI47_SUGGEST[id] || []) : UI47_SUGGEST[id] || [])
     .concat(Object.keys((EXTRA.main || {})[id] || {}), Object.keys((EXTRA.batch || {})[id] || {})).filter(x => D[x] && !((EXTRA.drop || {})[id] || {})[x]);
@@ -41,18 +44,25 @@ Object.entries(pools).forEach(([id, e]) => { const no = G.mapNumberOf(id); if (n
   Object.entries(e.submaps || {}).forEach(([sid, l]) => { if (unlockAt[sid] == null || unlockAt[sid] >= 21) return; const st = (Array.isArray(l) ? l : l.cards || []).filter(x => M.stone(D[x])); ok(!st.length, `${sid} (opens on Map ${unlockAt[sid]}): no Stone card on its list (${st.join(', ')})`); }); });
 
 // ---- 2. every fight ----
+// 2026-11-13 (SIDE2): fights SIDE1's thin side lists cannot fill by the deck rules, held for the owner's call (docs/decisions.json): The Canopy's
+// 14-A-1 / 14-A-4 / 14-A-5 (K14 leaves 10 own copies plus 1 copy each of up to 4 carried cards for decks of 14-20: decision SIDE2-2) keep their
+// pre-SIDE1 decks; nothing else is excused
+const SIDE2_OPEN = { '14-A-1': 'SIDE2-2', '14-A-4': 'SIDE2-2', '14-A-5': 'SIDE2-2' };
+const SIDE2_DEC = new Set((J('docs/decisions.json').items || []).filter(x => x.status === 'YET').map(x => x.id));
+Object.entries(SIDE2_OPEN).forEach(([code, id]) => ok(SIDE2_DEC.has(id), `${code}: held for open decision ${id}`));
 const PLAN = J('docs/balance/skir1/build-plan-2026-11-11.json'), planBy = {}; PLAN.maps.forEach(p => p.fights.forEach(x => { planBy[x.code] = x; }));
 const lineOf = code => (src.match(new RegExp(`^\\s*\\{ ?key:\\s*"${code.replace(/-/g, '\\-')}",.*$`, 'm')) || [''])[0];
 const byMap = {};
 for (const m of L.maps()) for (const n of L.fightsOf(m)) {
   const code = n.key, p = planBy[code], f = L.fight(m, n), d = n.deck, ids = Object.keys(d); (byMap[m.id] = byMap[m.id] || []).push({ f, n });
   ok(p, code + ': in the SKIR1 build plan'); if (!p) continue;
-  ok(/\(SKIR1( fit)?\)/.test(lineOf(code)) || L.keyOf(p.old) === L.keyOf(d), code + ': rebuilt by SKIR1 (dated comment)');
+  // 2026-11-13 (SIDE2): a side-map fight re-carded on SIDE1's lists carries a SIDE2 comment (re-card, SK anchor or SIDE2 fit) instead
+  ok(/\((SKIR1( fit)?\)|SIDE2[ )])/.test(lineOf(code)) || L.keyOf(p.old) === L.keyOf(d) || SIDE2_OPEN[code], code + ': rebuilt by SKIR1 or re-carded by SIDE2 (dated comment)');
   ok(L.size(d) === p.size, `${code}: deck size kept (${p.size})`);
-  ids.forEach(id => ok(f.pool.includes(id), `${code}: ${id} is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)`));
+  ids.forEach(id => ok(f.pool.includes(id) || SIDE2_OPEN[code], `${code}: ${id} is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)`));
   ok(ids.length >= f.dMin && ids.length <= f.dMax, `${code}: ${ids.length} different cards (${f.dMin}-${f.dMax})`);
   ids.forEach(id => ok(d[id] <= f.cap(id), `${code}: ${id} x${d[id]} within its cap ${f.cap(id)}`));
-  ok(!f.k14(d).length, `${code}: K14 (${f.k14(d).join('; ')})`);
+  ok(!f.k14(d).length || SIDE2_OPEN[code], `${code}: K14 (${f.k14(d).join('; ')})`);
   if (f.unlock < 21) ids.forEach(id => ok(!M.stone(D[id]), `${code}: no Stone card before Map 21 (${id})`));
   G.NODE_MAP_HINT.set(n, m.id); const now = G.skirmishLeadersOf(n, m.id) || [];
   ok(p.stoneLeader || p.leaders0.some(f.cutOut) || p.leaders0.some(id => !f.pool.includes(id)) /* 2026-11-12 (SKIR3): a SKIR1 leader off the fight's 11-12 pool (back in play elsewhere) cannot lead here */ || JSON.stringify(now) === JSON.stringify(p.leaders0), `${code}: its leaders are kept (${p.leaders0} -> ${now})`);
