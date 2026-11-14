@@ -34,7 +34,7 @@ const texts54 = ['intro', 'world', 'range', 'range-open', 'reached', 'cleared', 
 texts54.forEach(k=>{ const m = new RegExp('"ui\\.ui54-' + k + '": "((?:[^"\\\\]|\\\\.)*)"').exec(texts); ok(!!m, 'text ui54-' + k);
   if(m){ const en = JSON.parse('"' + m[1] + '"').replace(/^[^A-Za-z{+]+/, ''); ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(c=>{ const p = JSON.parse(read('lang/' + c + '.json')); ok(!!p[en], `lang/${c}.json has "${en}"`); }); } });
 ok(/ui54-2026-11-14/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
-ok(/Package UI54/.test(read('docs/CHANGELOG.md').slice(0, 600)), 'CHANGELOG has the entry at the top');
+ok(/Package UI54/.test(read('docs/CHANGELOG.md').slice(0, 20000)), 'CHANGELOG has the entry near the top'); // 2026-11-14: later packages' entries go above it
 
 async function browser(){
   let pw; try{ pw = require('playwright'); }catch(e){ try{ pw = require(path.join(require('child_process').execSync('npm root -g').toString().trim(), 'playwright')); }catch(_){ console.log('  (browser part skipped: no playwright)'); return; } }
