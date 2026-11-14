@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**EDGE3-1. Two main fights sitting at 20 off** · Decide · Balance · asked 2026-11-15
+- 2-2 (61% vs 80) and 8-7 (40% vs 60) are both too hard by 19-20 points on every seed set. Enemy deck changes: 2-2 swaps its Rock Pool Starfish and Pincushion Urchins for 3 Riverworks Bastion, giving 74-78% on three fresh seed sets (in band); 8-7 swaps 1 Giant Cave Huntsman for a Rot-Swollen Carcass, giving 51-56% (in band on two, within 10 on all). Fixes: docs/balance/allfix/edge3-fixes.jsonl.
+  - a) Apply both
+  - b) Apply 2-2 only
+  - c) Leave them
+- **Default:** a
+
 **SIDE3-1. Last six side fights far off target** · Decide · Balance · asked 2026-11-15
 - With SIDE2-2 e and SIDE2-4 e, six side fights still miss by over 20. Enemy deck changes, no Shield or stat edits, checked on fresh seed sets: 1-A-2 80% (target 80), 2-A-2 83% (84), 2-A-4 71% (72), 20-A-4 43% (36) in band; 18-A-1 80% (90) and 10-A-4 51% (60) within 10. 1-A-2 and 2-A-2 need SIDE2-2's Carried x2. All together: side fights 58/77 in band, 66 within 10, 0 beyond 20 (now 38/42/13). Files: docs/balance/side3p/, side2p/side2p-refit-fixes.jsonl.
   - a) Apply all six with SIDE2-2 e and SIDE2-4 e
