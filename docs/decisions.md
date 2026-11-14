@@ -5,11 +5,11 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 ## Waiting on you
 
 **SKW2-1. Attack's worth depends on Health** · Decide · Budget · asked 2026-11-14
-- SKW2: what +1 Attack is worth in Health is about the unit's Health ÷ Attack (fit 0.82 × (H/A)^1.01). Fragile units (Health ≤5): 0.8, so Health is worth more to them. Sturdy units (Health ≥13): 20+, so extra Health is worth little. Cap 1 prices a flat 3A + H; cap 2 (A·H) already has this shape. Changing it would re-price every card.
-  - a) Lean on cap 2 more (cap 1 a looser guard)
-  - b) Measure a re-fit of cap 1 first
+- SKW2: +1 Attack is worth about Health ÷ Attack (fragile units 0.8, sturdy 20+), not cap 1's flat 3. Cap 1 binds on all 472 cards; cap 2 (A·H) on none. SKW3 (no games): cap 2 alone ranks cards closer to their measured worth (0.32 vs 0.14; 0.37 vs 0.27), but puts 43 Maps 0-20 cards over budget. A softer cap 1 (square root of A·H) puts 22 over (mostly small Commons on Maps 0-5). Either needs a road check first.
+  - a) Cap 2 alone (cap 1 dropped), after a road check
+  - b) Square-root cap 1, after a road check
   - c) Keep both caps as they are
-- **Default:** b
+- **Default:** a
 
 **EDGE1-1. Five main fights just outside band** · Decide · Balance · asked 2026-11-14
 - At 1,000 games 2-4 (51%), 14-5 (60%) and 14-8 (28%) are too hard; 11-9 (71%) and 16-5 (75%) too easy, each 1-3 points out. The road tuner found one enemy deck change each (400 games, tune seeds): 2-4 2 Beaver Lumberjack to Riverworks Bastion, 58%; 14-5 2 Bramblewood Macaque to Jaguar Stalker, 67%; 14-8 1 Bramble Sprout to Jaguar Stalker, Shield 0, 39%; 11-9 2 Chipmunk Hoarder to Stonedrop Vulture, 59%; 16-5 +1 Mountain Hare, 69%. Fresh seeds, 1,000 games: 2-4 60.5, 11-9 57.4, 14-8 38.1, 16-5 70.8 in band; 14-5 61.2, still 1 under. Fixes in docs/balance/b1114-edge-fixes.jsonl.
