@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package WHATIF3 (smallest lever for the fights still out under SIDE2-2 e; nothing applied)
+- The fights were measured on WHATIF2's a+c scratch copy, 400 games, on road and fresh seeds (`docs/balance/whatif3/whatif3-2026-11-14.md`).
+- Smallest levers in band on both seed sets:
+  - 10-A-5: Health 16 -> 15 (31.3 / 30.5).
+  - 18-A-9: Enemy level 4 -> 3 (37.8 / 37.3).
+  - 2-A-6: Health 17 -> 9 (56.3 / 53.5).
+- No CPU deck move of up to 2 copies brings 2-A-6 into band (best 41.3 / 36.8).
+- 0-B-4 stays in band under Health -1 to -3, but Enemy level 4 -> 3 makes it too easy (54.3).
+
 ## 2026-11-14 Package WHATIF2 (SIDE2-2 options a + c together; nothing applied)
 - WHATIF1's tools, rules and method in a scratch copy, Map reference win rate at 400 games a fight (`docs/balance/whatif2/whatif2-2026-11-14.md`).
 - Side maps in band, of 77: today 39, (a) Carried x2 48, (c) smaller decks 47, (a + c) 53. Within 10: 58. Beyond 20: 8. Mean gap: 7.9.

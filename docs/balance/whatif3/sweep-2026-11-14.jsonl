@@ -1,0 +1,68 @@
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"level","value":3,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":27.5,"hp":16,"shield":0,"level":3,"sec":11}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"level","value":2,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":27.5,"hp":16,"shield":0,"level":2,"sec":7}
+{"code":"2-A-6","name":"The Lodge","param":"level","value":2,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":34.8,"hp":17,"shield":0,"level":2,"sec":18}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":15,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":31.3,"hp":15,"shield":0,"level":3,"sec":8}
+{"code":"2-A-6","name":"The Lodge","param":"level","value":1,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":36.3,"hp":17,"shield":0,"level":1,"sec":14}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":14,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":34.5,"hp":14,"shield":0,"level":3,"sec":6}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":13,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":37.8,"hp":13,"shield":0,"level":3,"sec":6}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":12,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":44,"hp":12,"shield":0,"level":3,"sec":6}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":16,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":36.3,"hp":16,"shield":0,"level":2,"sec":15}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":11,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":48.5,"hp":11,"shield":0,"level":3,"sec":6}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":10,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":54.3,"hp":10,"shield":0,"level":3,"sec":6}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":15,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":39,"hp":15,"shield":0,"level":2,"sec":13}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":9,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":61.8,"hp":9,"shield":0,"level":3,"sec":6}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":14,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":42.3,"hp":14,"shield":0,"level":2,"sec":14}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"level","value":4,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":29.3,"hp":15,"shield":41,"level":4,"sec":15}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":13,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":43,"hp":13,"shield":0,"level":2,"sec":13}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"level","value":3,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":37.8,"hp":15,"shield":41,"level":3,"sec":14}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":12,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":46.3,"hp":12,"shield":0,"level":2,"sec":14}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":38,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":29.3,"hp":15,"shield":38,"level":4,"sec":17}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":11,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":48.8,"hp":11,"shield":0,"level":2,"sec":13}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":35,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":31.3,"hp":15,"shield":35,"level":4,"sec":13}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":10,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":true,"tag":"whatif3","win":53,"hp":10,"shield":0,"level":2,"sec":11}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":9,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":true,"tag":"whatif3","win":56.3,"hp":9,"shield":0,"level":2,"sec":11}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":32,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":32.3,"hp":15,"shield":32,"level":4,"sec":14}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":8,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":true,"tag":"whatif3","win":61.8,"hp":8,"shield":0,"level":2,"sec":11}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":29,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":33.5,"hp":15,"shield":29,"level":4,"sec":13}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":7,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":true,"tag":"whatif3","win":65,"hp":7,"shield":0,"level":2,"sec":11}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":26,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":35.3,"hp":15,"shield":26,"level":4,"sec":12}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":6,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":70.3,"hp":6,"shield":0,"level":2,"sec":8}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":5,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":74.3,"hp":5,"shield":0,"level":2,"sec":8}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":23,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":37.5,"hp":15,"shield":23,"level":4,"sec":12}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":4,"games":400,"seed0":9100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":80.5,"hp":4,"shield":0,"level":2,"sec":8}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":20,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":39,"hp":15,"shield":20,"level":4,"sec":13}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":17,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":41,"hp":15,"shield":17,"level":4,"sec":13}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"hp","value":13,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":29.5,"hp":13,"shield":41,"level":4,"sec":15}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"hp","value":11,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":30,"hp":11,"shield":41,"level":4,"sec":12}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"hp","value":9,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":31.3,"hp":9,"shield":41,"level":4,"sec":13}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"hp","value":7,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":31.5,"hp":7,"shield":41,"level":4,"sec":14}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"hp","value":5,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":33,"hp":5,"shield":41,"level":4,"sec":14}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"hp","value":3,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":33.5,"hp":3,"shield":41,"level":4,"sec":13}
+{"code":"0-B-4","name":"The Old Bramble","param":"level","value":4,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":41.3,"hp":18,"shield":0,"level":4,"sec":9}
+{"code":"0-B-4","name":"The Old Bramble","param":"level","value":3,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":54.3,"hp":18,"shield":0,"level":3,"sec":8}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":16,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":25,"hp":16,"shield":0,"level":3,"sec":9}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":15,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":30.5,"hp":15,"shield":0,"level":3,"sec":7}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":14,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":35.8,"hp":14,"shield":0,"level":3,"sec":7}
+{"code":"10-A-5","name":"The Ferry's Last Passenger","param":"hp","value":13,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":38.5,"hp":13,"shield":0,"level":3,"sec":7}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"level","value":4,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":27.3,"hp":15,"shield":41,"level":4,"sec":16}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"level","value":3,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":37.3,"hp":15,"shield":41,"level":3,"sec":13}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":35,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":28.8,"hp":15,"shield":35,"level":4,"sec":15}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":32,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":29.8,"hp":15,"shield":32,"level":4,"sec":12}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":29,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":30.3,"hp":15,"shield":29,"level":4,"sec":12}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"shield","value":26,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":32,"hp":15,"shield":26,"level":4,"sec":12}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"hp","value":11,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":27.8,"hp":11,"shield":41,"level":4,"sec":17}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"hp","value":9,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":28.8,"hp":9,"shield":41,"level":4,"sec":12}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"hp","value":7,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":29,"hp":7,"shield":41,"level":4,"sec":12}
+{"code":"18-A-9","name":"The Quicksand Queen","param":"hp","value":5,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":30,"hp":5,"shield":41,"level":4,"sec":12}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":17,"games":400,"seed0":5100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":28,"hp":17,"shield":0,"level":2,"sec":16}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":10,"games":400,"seed0":5100,"target":60,"lo":52,"hi":68,"inBand":false,"tag":"whatif3","win":48.8,"hp":10,"shield":0,"level":2,"sec":12}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":9,"games":400,"seed0":5100,"target":60,"lo":52,"hi":68,"inBand":true,"tag":"whatif3","win":53.5,"hp":9,"shield":0,"level":2,"sec":11}
+{"code":"2-A-6","name":"The Lodge","param":"hp","value":8,"games":400,"seed0":5100,"target":60,"lo":52,"hi":68,"inBand":true,"tag":"whatif3","win":58.8,"hp":8,"shield":0,"level":2,"sec":10}
+{"code":"0-B-4","name":"The Old Bramble","param":"hp","value":17,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":42.8,"hp":17,"shield":0,"level":4,"sec":11}
+{"code":"0-B-4","name":"The Old Bramble","param":"hp","value":16,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":44.5,"hp":16,"shield":0,"level":4,"sec":10}
+{"code":"0-B-4","name":"The Old Bramble","param":"hp","value":15,"games":400,"seed0":9100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":46,"hp":15,"shield":0,"level":4,"sec":8}
+{"code":"0-B-4","name":"The Old Bramble","param":"level","value":4,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":40.3,"hp":18,"shield":0,"level":4,"sec":11}
+{"code":"0-B-4","name":"The Old Bramble","param":"level","value":3,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":false,"tag":"whatif3","win":54.3,"hp":18,"shield":0,"level":3,"sec":10}
+{"code":"0-B-4","name":"The Old Bramble","param":"hp","value":17,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":40.5,"hp":17,"shield":0,"level":4,"sec":11}
+{"code":"0-B-4","name":"The Old Bramble","param":"hp","value":16,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":42,"hp":16,"shield":0,"level":4,"sec":9}
+{"code":"0-B-4","name":"The Old Bramble","param":"hp","value":15,"games":400,"seed0":5100,"target":40,"lo":30,"hi":49,"inBand":true,"tag":"whatif3","win":42.5,"hp":15,"shield":0,"level":4,"sec":10}
