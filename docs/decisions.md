@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**EDGE2-1. Nine main fights far off target** · Decide · Balance · asked 2026-11-15
+- On four seed sets these miss by over 20 every time: 2-1, 6-2, 16-3, 16-4, 17-8, 19-5 too hard; 13-6, 13-8, 20-9 too easy. The road tuner found enemy deck changes (Shield for 13-6, 13-8; base Health for 2-1). On two fresh seed sets 2-1, 6-2, 13-6, 13-8, 16-3, 16-4 land in band on both; 17-8 (30, 40) and 19-5 (49, 55) on one; 20-9 stays too easy (76-78 vs 50) and needs a card change. Fixes: docs/balance/b1115-edge2-fixes.jsonl.
+  - a) Apply the eight, leave 20-9 for the redesign
+  - b) Apply only the six that held on both
+  - c) Wait for the card redesign
+- **Default:** a
+
 **SKR1-1. Which named skills each map introduces** · Decide · Skills · asked 2026-11-14
 - From your second pass (column J): all 43 rank 1s and 11 of the 13 rank 2s on Maps 0-20; 3-4 new skills on Maps 0-10, 1-2 on Maps 11-20; 54 in all. Helmet, Pitchfork and the rank 3s wait for later maps or one-offs. Cure, Nursing, Delivery, Electricity and Illuminate are treated as actions or damage types, not named skills. Table: docs/skill-intro-proposal-2026-11-14.md.
   - a) This split (54 skills)
