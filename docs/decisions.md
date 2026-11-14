@@ -165,12 +165,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 **SIDE2-4. Three side bosses stay too hard** · Decide · Balance · asked 2026-11-13
-- Still too hard (boss band 30-49): The Old Bramble 0-B-4 22%, The Sunken Depths 10-A-5 17%, The Pale Desert 18-A-9 26% (Shield 41). WHATIF1's smallest fixes, in band on two seed sets: Old Bramble level 4 to 3 or Health 18 to 11 (or nothing, if SIDE2-2 a); Sunken Depths Health 16 to 11 (no level works); Pale Desert level 4 to 3 or Shield 41 to 23 (no Health works).
+- Too hard today (boss band 30-49): The Old Bramble 0-B-4 22%, The Sunken Depths 10-A-5 17%, The Pale Desert 18-A-9 26%. With SIDE2-2 e (WHATIF3, two seed sets): Old Bramble in band as is (41%); Sunken Depths Health 16 to 13 gives 38% (no level works); Pale Desert level 4 to 3 gives 37% (or Shield 41 to 29). Level 3 makes the Old Bramble too easy, so no single rule fits all three. Also 2-A-6 (band 52-68): Health 17 to 8 gives 59-62%; no deck move works.
   - a) Lower their bramble Health (the Pale Desert: its Shield)
   - b) A lower enemy level for these three
   - c) Leave them hard
   - d) Mix: Old Bramble by SIDE2-2 a, Sunken Depths Health 11, Pale Desert level 3
-- **Default:** d
+  - e) With SIDE2-2 e: Old Bramble as is, Sunken Depths Health 13, Pale Desert level 3, 2-A-6 Health 8
+- **Default:** e
 
 **FX9-1. More cards fly to the Graveyard?** · Decide · UI · asked 2026-11-13
 - A card you pitch now arcs into the Graveyard (note 7). Cards that get there another way (a field card used up, Feed, overdraw) still jump straight to the pile. Make those fly too?
