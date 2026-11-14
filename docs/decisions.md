@@ -4,6 +4,24 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**UI54-1. Codex World 1 roll: show the map total?** · Decide · UI · asked 2026-11-14
+- World 1 is Maps 0-40, but only Maps 0-24 exist yet, so its roll reads "x of 25 reached".
+  - a) Keep "x of 25" (grows as maps are added)
+  - b) Show only maps reached
+- **Default:** a
+
+**UI54-2. Names for the worlds in the Codex?** · Decide · UI · asked 2026-11-14
+- The world rolls say only "World 1 · Maps 0-40", maps reached and fights cleared. No lore was invented.
+  - a) You name World 1 and World 2 (lore bible)
+  - b) Keep "World 1", "World 2"
+- **Default:** b
+
+**UI54-3. Codex map scrolls: what New! means** · Decide · UI · asked 2026-11-14
+- In a map's scroll, New! marks cards whose first map list is this map; the rest show as "+N from earlier maps". (The admin Map cards window uses your review's New!/Carried flags instead.)
+  - a) First map list that holds the card (as built)
+  - b) Use your review's New! flags
+- **Default:** a
+
 **FIX11-1. Cards above their map's rarity cap** · Decide · Balance · asked 2026-11-13
 - These listed cards are rarer than their map's fights may hold: Dolphin Knight (Rare) on Maps 2 and 4 (cap Uncommon, from before your 11-13 picks); from your 11-13 picks Phoenix Mushrooms (Epic) on Map 7 (cap Rare), Tide Spirit (Very Rare) on Map 9 (cap Rare), Caldera Snow Leopard (Super Rare) on Map 19 (cap Very Rare).
   - a) Allow them as exceptions
