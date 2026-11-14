@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKW2-1. Attack's worth depends on Health** · Decide · Budget · asked 2026-11-14
+- SKW2: what +1 Attack is worth in Health is about the unit's Health ÷ Attack (fit 0.82 × (H/A)^1.01). Fragile units (Health ≤5): 0.8, so Health is worth more to them. Sturdy units (Health ≥13): 20+, so extra Health is worth little. Cap 1 prices a flat 3A + H; cap 2 (A·H) already has this shape. Changing it would re-price every card.
+  - a) Lean on cap 2 more (cap 1 a looser guard)
+  - b) Measure a re-fit of cap 1 first
+  - c) Keep both caps as they are
+- **Default:** b
+
 **EDGE1-1. Five main fights just outside band** · Decide · Balance · asked 2026-11-14
 - At 1,000 games 2-4 (51%), 14-5 (60%) and 14-8 (28%) are too hard; 11-9 (71%) and 16-5 (75%) too easy, each 1-3 points out. The road tuner found one enemy deck change each (400 games, tune seeds): 2-4 2 Beaver Lumberjack to Riverworks Bastion, 58%; 14-5 2 Bramblewood Macaque to Jaguar Stalker, 67%; 14-8 1 Bramble Sprout to Jaguar Stalker, Shield 0, 39%; 11-9 2 Chipmunk Hoarder to Stonedrop Vulture, 59%; 16-5 +1 Mountain Hare, 69%. Fresh seeds, 1,000 games: 2-4 60.5, 11-9 57.4, 14-8 38.1, 16-5 70.8 in band; 14-5 61.2, still 1 under. Fixes in docs/balance/b1114-edge-fixes.jsonl.
   - a) Apply all five (14-5 may need one more step)
@@ -57,10 +64,10 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 **SKW1-5. Attack weight** · Decide · Budget · asked 2026-11-14
-- +1 Attack measured worth 4.3-9.9 Health points in all seven contexts, against the budget's 3. That would change every card's price, so measure it properly first (at bramble 15) before any re-fit.
-  - a) Measure it properly first
+- SKW2 measured it properly (bramble 15, Maps 3/8/13/18, 17 commons, 400k games): +1 Attack = 2.91 Health [2.74-3.09], so the budget's 3 holds. SKW1's 4.3-9.9 came from sturdy carriers. Cost doesn't change it. +1 Shield = about 1.0 Health (budget 0.8). The real miss is the shape: see SKW2-1.
+  - a) Measure it properly first (done: SKW2)
   - b) Keep 3
-- **Default:** a
+- **Default:** b
 
 **SKW1-6. Named-skill cap** · Decide · Budget · asked 2026-11-14
 - A player meets 151 named skills by Map 20; your 25-30 is passed at Map 1. 101 of them sit on a single card, and Map 11 alone adds 49. The SKW1 doc lists near-duplicate groups (e.g. Poison 2 / Bleed 2 measured 5.3 / 5.6; Flying / Evasive 3.45 / 3.34) and marks the skills that carry theme. No cuts are proposed.
