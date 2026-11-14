@@ -47994,7 +47994,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=ef906d2786", "es": "assets/lang/es.js?v=4914a1bb59", "fr": "assets/lang/fr.js?v=f64eec2495", "id": "assets/lang/id.js?v=60b693c00d", "it": "assets/lang/it.js?v=214b594e49", "ja": "assets/lang/ja.js?v=0caee83f26", "ko": "assets/lang/ko.js?v=69e36a709f", "pt": "assets/lang/pt.js?v=be81c0263f", "ta": "assets/lang/ta.js?v=35385eff3f", "tl": "assets/lang/tl.js?v=b3ba94dd57", "zh-Hans": "assets/lang/zh-Hans.js?v=77c33e7736", "zh-Hant": "assets/lang/zh-Hant.js?v=619f28b526"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=3ec0fec4c1", "es": "assets/lang/es.js?v=e7f545ddbf", "fr": "assets/lang/fr.js?v=928381ce97", "id": "assets/lang/id.js?v=a48ea36284", "it": "assets/lang/it.js?v=f02192b37c", "ja": "assets/lang/ja.js?v=100d9a7638", "ko": "assets/lang/ko.js?v=84c0a8b99a", "pt": "assets/lang/pt.js?v=9b98ad37eb", "ta": "assets/lang/ta.js?v=a6ff491581", "tl": "assets/lang/tl.js?v=69d6ebc188", "zh-Hans": "assets/lang/zh-Hans.js?v=00b4ab6577", "zh-Hant": "assets/lang/zh-Hant.js?v=214e8c071c"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -48205,13 +48205,13 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui27-budget-ok": "⚖️ Within budget, B = {b} {op} {n} = N",
   "ui.ui27-budget-over": "⚖️ Over budget, B = {b} {op} {n} = N",
   "ui.ui27-budget-under": "⚖️ Well under budget, B = {b} {op} {n} = N",
-  "ui.ui27-budget-b-tip": "B = f × (({aw}A + H) × m + S). A: Attack, H: Health (a Shield point counts {sh}), m: the miss multiplier, f: Fragile, S: the skill value",
+  "ui.ui27-budget-b-tip": "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.",
   "ui.ui27-budget-product": "Product: {expr} = {x} {op} {n2} {mark}",
-  "ui.ui27-budget-product-tip": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², with s = {sc} × S",
+  "ui.ui27-budget-product-tip": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
   "ui.ui27-budget-n-tip": "{formula}. Base = {base} (from rank, Wait, Lumber and map)",
-  "ui.ui27-s-tip": "S, the skill value: each skill at its own price (a fixed value, value × N, value × N^p, the half rule value × (1 + N/2 rounded down), a trigger's weight × value)",
+  "ui.ui27-s-tip": "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value",
   "ui.ui27-base-level": "Base level",
-  "ui.ui27-base-level-tip": "The level the card starts at: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited here.",
+  "ui.ui27-base-level-tip": "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.",
   "ui.ui27-lvl": "Lvl {n}",
   "ui.ui27-new-card": "New card!",
   "ui.ui27-new-cards": "New cards!",
@@ -51342,7 +51342,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui32-edited": "Edited since rated: was {was}, now {now}.",
   "ui.ui32-no-skills": "no skills",
   "ui.ui32-triggers": "triggers",
-  "ui.eng20-burn-tip": "Burning {n}: 1 fire damage at the start of each round, one Burn off each time. Each fire hit adds 1. Water puts it out.",
+  "ui.eng20-burn-tip": "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.",
   "ui.eng20-wind-calm": "Calm",
   "ui.eng20-wind-calm-tip": "Calm: no wind",
   "ui.eng20-wind-heavy-back": "Heavy wind at your back",
@@ -51608,7 +51608,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng30-cancel-mark": "Consecration and Desecration cancel out: no Exalted or Cursed ground",
   "ui.bal22-adv": "Advanced {m}",
   "ui.bal22-adv-none": "Advanced not measured",
-  "ui.bal22-power-tip": "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.",
+  "ui.bal22-power-tip": "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.",
   "ui.bal22-power-share": "Played in {share}% of the test games.",
   "ui.eng33-venomous-name": "Venomous",
   "ui.eng33-venomous": "Every melee hit it lands adds {n} Venom.",
@@ -51647,7 +51647,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng35-leech-blank": "Blank = heals the damage dealt",
   "ui.eng36-statuses": "+ Statuses",
   "ui.eng36-status-of": "{name} (status)",
-  "ui.eng36-status-sel-title": "Add a status. Resistance: half its damage ticks, or 50 points off its chance to land. Weakness: double ticks, or +50 points. Immune: it never lands.",
+  "ui.eng36-status-sel-title": "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.",
   "ui.eng36-st-venom": "Venom",
   "ui.eng36-st-toxin": "Toxin",
   "ui.eng36-st-bleed": "Bleed",
@@ -51708,15 +51708,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui35-pill-counter": "Counter",
   "ui.ui35-pill-counter-tip": "Answers some of this map's cards (the number says how many)",
   "ui.ui35-new-count": "{n} new",
-  "ui.ui35-new-count-tip": "Skills this map introduces: no earlier main map has them on its own main cards. Side maps and Other skills never count.",
+  "ui.ui35-new-count-tip": "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.",
   "ui.ui35-ref-sk": "Map reference wins {pct}% vs these decks",
   "ui.ui35-ref-wk": "Map reference wins {pct}% vs these weak decks",
   "ui.ui35-ref-cut-sk": "too weak above {cut}%",
   "ui.ui35-ref-cut-wk": "too strong below {cut}%",
   "ui.ui35-ref-worst": "worst deck {pct}%",
-  "ui.ui35-ref-tip": "Measured {date} by the latest pro-ease run that plays the ladder: the number the TOO WEAK / TOO STRONG pill is judged on.",
+  "ui.ui35-ref-tip": "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.",
   "ui.ui35-pill-newuse": "New use",
-  "ui.ui35-pill-newuse-tip": "A skill an earlier main map already has, used here with a parameter no earlier map used (a skill family is one skill)",
+  "ui.ui35-pill-newuse-tip": "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).",
   "ui.ui35-pill-cxsig": "Codex sig.",
   "ui.ui35-pill-cxsig-tip": "A signature skill in the Codex draft's skill distribution for this map",
   "ui.ui35-pill-cxside": "Codex side",
@@ -51797,7 +51797,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ref6-label": "Ref {k}: {pct}% (p10 {lo} – p90 {hi})",
   "ui.ref6-mapref": "Map ref {pct}%",
   "ui.ref6-ref2": "Ref-2 {pct}%",
-  "ui.ref6-tip": "Measure {tag}, {date}: the {k} reference players' decks against this fight, {g} games in all (at least {n} a deck); p10 / p90 without the game noise. Map reference and Reference-2: {m} games each.",
+  "ui.ref6-tip": "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.",
   "ui.shop1-normal": "Shop",
   "ui.shop1-premium": "Premium",
   "ui.shop1-premium-empty": "Nothing in the Premium shop for you yet.",
@@ -57779,7 +57779,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '520025d062d0', BUILD_CARD_HASH = '51cc9f277a8b761681f0efc25adfcd298cf9c130ed3943694e8fdd0492d28135';
+const BUILD_ID = '2e715e51340f', BUILD_CARD_HASH = '51cc9f277a8b761681f0efc25adfcd298cf9c130ed3943694e8fdd0492d28135';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
