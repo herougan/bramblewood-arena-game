@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package WHATIF1 (numbers for the open side-map decisions SIDE2-1, SIDE2-2 and SIDE2-4; nothing applied)
+- Simulated in scratch copies, Map reference at 400 games a fight, with fresh-seed checks (`docs/balance/whatif1/whatif1-2026-11-14.md`). Side maps today: 39 / 77 in band.
+- SIDE2-2: (a) Carried x2 gives 48 / 77 in band (beyond 20: 11) and builds 0-B-3, 2-A-6 and 14-A-5. (c) Smaller decks (15 cards for a skirmish, 16 for an elite or boss) give 47 / 77; two of their gains fail on fresh seeds.
+- SIDE2-4: the smallest change that reaches the band. The Old Bramble: level 4 -> 3, or Health 18 -> 11. The Sunken Depths: Health 16 -> 12 (level never reaches the band). The Pale Desert: level 4 -> 3.5, or Shield 41 -> 23.
+- SIDE2-1 (b): Basalt Foundry's boss drops 51 -> 33, the low edge of the band. Eye of the Volcano's deck does not change: its 10-card size binds, not K14.
+- Tools: `tools/whatif1/` (an in-memory Carried x2 patch of SKIR1's rules, rebuild, lever sweep, report, run queue).
+
 ## 2026-11-13 Package FIX11 (TESTFIX3's open items)
 - Tools: `tools/bench/deck.js` stops a focus after 40 passes with no new game (a small list whose neighbours are all read looped forever; The Canopy's 11 cards ran 3.5 h); SIDE2's copies of the guard dropped. `tools/opt/deckopt.js --compare`: `await ev.setup(spec)` sat inside a comment since REF5 (10-30), so the run exited 0 with no output (opt2's missing file).
 - Animal tags: Barrel Cactus (cactus, plant) and 21 later hand tags kept in `tools/animal_tags.py` (the fallback had turned a Cormorant into a raven); `canonical/animal-tags.json` and `bramblewood-taxonomy.js` regenerated.
