@@ -1,0 +1,5 @@
+10-A-4 target 60 start {"coral-current-eel":1,"mantis-shrimp":2,"reef-shark":4,"sea-turtle-elder":4,"orca-vanguard":1} 47.7 (seed0 11300)
+round 1: 305 legal moves; top: -1 mantis-shrimp +1 orca-vanguard 60/54.3 | -1 mantis-shrimp -1 sea-turtle-elder +1 orca-vanguard +1 orca-vanguard 60/54 | -1 sea-turtle-elder +1 orca-vanguard 60/51 | -1 mantis-shrimp -1 reef-shark +1 coral-current-eel +1 orca-vanguard 60/48.7
+round 2: 306 legal moves; top: -1 sea-turtle-elder +1 orca-vanguard 60/54 | -2 reef-shark +2 mantis-shrimp 60/52.3 | -1 sea-turtle-elder +1 mantis-shrimp 60/51 | -1 reef-shark +1 coral-current-eel 60/48.7
+no nearer move
+RESULT 10-A-4 {"coral-current-eel":1,"mantis-shrimp":1,"reef-shark":4,"sea-turtle-elder":4,"orca-vanguard":2} 54.3 moves: -1 mantis-shrimp +1 orca-vanguard problems: []
