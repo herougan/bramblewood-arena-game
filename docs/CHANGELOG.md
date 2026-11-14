@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-15 Package SIDE4P (fits for the ten side fights still out of band after SIDE3-1)
+- Proposals only, nothing applied: deck fits for 19-A-4, 19-A-6, 19-A-8, 7-A-2, 14-A-2, 20-A-2, 20-A-6, 20-A-7 and 18-A-8, and a deck move with a Health and Shield cut for 2-B-1. All ten are in band on three fresh seed sets at 400 games. Side fights project to 69 in band / 77 within 10 / 0 beyond 20 (of 77) with SIDE3-1. `docs/balance/side4p/`.
+
 ## 2026-11-15 Package SIDE3P (legal fits for four side fights under SIDE2-2 e)
 - Proposals only, nothing applied: deck-only fits for 1-A-2, 2-A-2, 2-A-4 and 20-A-4 that pass the side deck rules (Carried x2). All four are within 10 of target on three seed sets, 400 games each. `docs/balance/side3p/`.
 
