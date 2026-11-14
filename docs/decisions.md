@@ -5,8 +5,8 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 ## Waiting on you
 
 **EDGE1-1. Five main fights just outside band** · Decide · Balance · asked 2026-11-14
-- At 1,000 games 2-4 (51%), 14-5 (60%) and 14-8 (28%) are too hard; 11-9 (71%) and 16-5 (75%) too easy, each 1-3 points out. The road tuner found one enemy deck change each (400 games, tune seeds): 2-4 2 Beaver Lumberjack to Riverworks Bastion, 58%; 14-5 2 Bramblewood Macaque to Jaguar Stalker, 67%; 14-8 1 Bramble Sprout to Jaguar Stalker, Shield 0, 39%; 11-9 2 Chipmunk Hoarder to Stonedrop Vulture, 59%; 16-5 +1 Mountain Hare, 69%. Fixes in docs/balance/b1114-edge-fixes.jsonl.
-  - a) Apply all five, then confirm on fresh seeds
+- At 1,000 games 2-4 (51%), 14-5 (60%) and 14-8 (28%) are too hard; 11-9 (71%) and 16-5 (75%) too easy, each 1-3 points out. The road tuner found one enemy deck change each (400 games, tune seeds): 2-4 2 Beaver Lumberjack to Riverworks Bastion, 58%; 14-5 2 Bramblewood Macaque to Jaguar Stalker, 67%; 14-8 1 Bramble Sprout to Jaguar Stalker, Shield 0, 39%; 11-9 2 Chipmunk Hoarder to Stonedrop Vulture, 59%; 16-5 +1 Mountain Hare, 69%. Fresh seeds, 1,000 games: 2-4 60.5, 11-9 57.4, 14-8 38.1, 16-5 70.8 in band; 14-5 61.2, still 1 under. Fixes in docs/balance/b1114-edge-fixes.jsonl.
+  - a) Apply all five (14-5 may need one more step)
   - b) Apply some (say which)
   - c) Leave them; they are close
 - **Default:** a
