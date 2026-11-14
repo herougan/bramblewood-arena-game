@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-15 Package SIDE3P (legal fits for four side fights under SIDE2-2 e)
+- Proposals only, nothing applied: deck-only fits for 1-A-2, 2-A-2, 2-A-4 and 20-A-4 that pass the side deck rules (Carried x2). All four are within 10 of target on three seed sets, 400 games each. `docs/balance/side3p/`.
+
 ## 2026-11-15 Package SIDE2P (side maps if SIDE2-2 e and SIDE2-4 e are picked)
 - Measure only, nothing applied: the 77 side fights of Maps 0-20 at 400 games on four seed sets read 54 in band / 60 within 10 / 6 beyond 20 on the mean (today 38 / 42 / 13). `docs/balance/side2p/`.
 
