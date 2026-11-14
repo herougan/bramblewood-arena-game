@@ -19,7 +19,7 @@ ok((src.replace(/\/\*[\s\S]*?\*\//g, '').match(/[^-]filter\s*:/g) || []).length 
 ok((src.match(/createElement\('canvas'\)/g) || []).length === 1, 'one canvas, made once');
 ok(NAMES.every(k=> man.includes("E('" + k + "'")) && /area:'cine'/.test(man), 'the Lab manifest lists all 11 in the area "cine"');
 ok(/\['cine', 'Cinematic \(FX8\)'/.test(rd('tools/effects-lab/fxlab-catalogue.js')), 'the Lab group is titled "Cinematic (FX8)"');
-ok(/Cinematic \(FX8\)/.test(rd('docs/effects-catalogue.md')) && /package FX8/.test(rd('docs/sfx-cue-sheet.md')) && /Package FX8/.test(rd('docs/CHANGELOG.md').slice(0, 40000)) /* 2026-11-13: other packages' entries now sit above it */, 'catalogue, cue sheet and CHANGELOG entries');
+ok(/Cinematic \(FX8\)/.test(rd('docs/effects-catalogue.md')) && /package FX8/.test(rd('docs/sfx-cue-sheet.md')) && /Package FX8/.test(rd('docs/CHANGELOG.md')) /* 2026-11-14 (TESTFIX1): entries move down as later packages add theirs, so the whole file is searched */, 'catalogue, cue sheet and CHANGELOG entries');
 ok(!/BramblewoodCinematic/.test(rd('arena_app.js')), 'not wired into fights (arena_app.js untouched)');
 ok(NAMES.every(k=> fs.existsSync(path.join(ROOT, 'docs/screens/fx8/' + k + '-stages.png'))), 'a contact sheet per effect');
 ok(/tests\/fx8-2026-11-12\.js/.test(rd('tests/run-all.sh')), 'listed in tests/run-all.sh');
