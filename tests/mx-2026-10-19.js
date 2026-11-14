@@ -58,7 +58,7 @@ ok(/value="\$\{\(P\.cost\|\|\{\}\)\.energy\|\|''\}"><\/label>\n\s*<label title="
 ok(/draft\.shield = Math\.max\(0, Math\.min\(999, Math\.round\(num\(v\('reShield'\), 50\)\)\)\)/.test(src) && /k==='shield'\)\{ if\(el\.value===''\) delete P\.shield; else P\.shield = /.test(src), 'both are saved (blank part = the raid\'s)');
 // the player's line
 ok(TX('ui.mx-raid-shield', {n: 50}) === 'Shield 50 (falls as the raid weakens)', 'the line reads "Shield 50 (falls as the raid weakens)"');
-ok(/\$\{raidShieldLineHTML\(def, st\)/.test(src) && /shield: b\.raidShield && b\.raidShield\.shield > 0 \? TX\('ui\.mx-raid-shield'/.test(src) && /p\.bramble\.shield \? `<div class="u3-bramble-line mx-raid-shield"/.test(src), 'on the raid screen and the VS boss card');
+ok(/shield: b\.raidShield && b\.raidShield\.shield > 0 \? TX\('ui\.mx-raid-shield'/.test(src) && /p\.bramble\.shield \? `<div class="u3-bramble-line mx-raid-shield"/.test(src), 'on the VS boss card (2026-11-14 TESTFIX2: RAID2 took the rules section, and its Shield line, off the raid screen)');
 { const CODES = ['de', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt', 'ta', 'tl', 'zh-Hans', 'zh-Hant'], keys = ['ui.mx-raid-shield', 'ui.mx-raid-shield-tip'];
   CODES.forEach(c=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8')); const miss = keys.filter(k=> !pack[TEXT[k]] || !/\{n\}/.test(pack[TEXT['ui.mx-raid-shield']] || '')); ok(!miss.length, `pack ${c} has the Shield texts (${miss.join(', ')})`); }); }
 
@@ -73,8 +73,8 @@ ok(/\$\{raidShieldLineHTML\(def, st\)/.test(src) && /shield: b\.raidShield && b\
   ok(K.dungeonKeyBadge(-2).text === '0' && K.dungeonKeyBadge(undefined).text === '0', 'never blank or negative'); }
 ok(/\$\{k\.empty \? ' is-empty' : ''\}/.test(src) && /b\.classList\.toggle\('is-empty', k\.empty\)/.test(src), 'both 🗝️ buttons (the Play cluster and the topbar) take .is-empty');
 ok(/\.dungeon-key-btn\.is-empty \.dk-n\{/.test(tpl) && /\.dungeon-key-btn\.is-empty \.tab-emoji\{filter:grayscale/.test(tpl), 'the greyed key and the empty badge (CSS)');
-ok(/<span class="r3-chip r3-tickets\$\{tickets <= 0 \? ' is-empty' : ''\}"[^]*?<b>\$\{tickets\}\/\$\{RAID_POINTS_MAX\}/.test(src), 'the raid tickets chip says 0/10 at 0 (checked; no change needed)');
-ok(/const html = `\$\{s\.current\}\/\$\{energyMax\(\)\}/.test(src), 'the Energy pill says 0/N at 0 (checked; no change needed)');
+ok(/<span class="r3-chip r3-tickets\$\{tickets <= 0 \? ' is-empty' : ''\}[^]*?<b>\$\{tickets\}\/\$\{RAID_POINTS_MAX\}/.test(src), 'the raid tickets chip says 0/10 at 0 (checked; no change needed)');
+ok(/const html = [^]*?`\$\{s\.current\}\/\$\{energyMax\(\)\}/.test(src), 'the Energy pill says 0/N at 0 (checked; no change needed)');
 
 // ---- 3. swaps: only a clearly better card
 const SWAP_NAMES = ['SB_DEFAULT_SKILLS', 'SB_HALF_MISS', 'SB_PAY_DEF', 'sbSkillCost', 'sbMissMult', 'cardSkillCount', 'strictlyDominates', 'SWAP_CLEAR_MARGIN', 'swapMuchBetterOn' /* 2026-11-04 (TESTFIX1): RW4's "much better" rule from 2-1 (off here: no map reached) */, 'swapStrength', 'swapCostBracket', 'swapClearlyBetter', 'swapOptsFor', 'weakestDeckCard', 'dominatedDeckCard'];
@@ -182,9 +182,6 @@ async function browser(){ if(process.env.MX_NO_BROWSER) return;
       ok(live && live.want === live.left && live.want === Math.round(25 * live.share), `${tag} 1. the page's raid as it stands: Shield ${live && live.want} = 25 (BF5: 50 halved) x ${live && live.share.toFixed(2)}`);
       await pg.evaluate("(()=>{ const orig = currentRaidStateFor; currentRaidStateFor = (def, now, opts)=> orig(Object.assign({}, def, {standIns: {perDayPct: 0}}), now, opts); return 1; })()");
       await pg.evaluate("(()=>{ playSubTab = 'raid'; raidView = 'raid'; switchTab('play'); try{ renderPlay(); }catch(e){} return 1; })()"); await pg.waitForTimeout(1500);
-      const line = await pg.evaluate("(()=>{ const p = document.querySelector('.mx-raid-shield'); if(!p) return null; const d = p.closest('details'); if(d) d.open = true; p.scrollIntoView({block: 'center'}); return p.textContent.trim(); })()");
-      ok(line && /Shield 25 \(falls as the raid weakens\)/.test(line) /* BF5: halved */, `${tag} 1. the raid screen: "${line}"`);
-      await pg.waitForTimeout(300); await shot('raid-shield-line');
       // 1. a raid fight: the VS card's line, then the boss bramble's 🔷 50 on the board
       await pg.evaluate("(()=>{ const def = liveRaidDefs().find(d=> d.id === 'goliath') || allRaidDefs()[0]; window.__mxDef = def; startRaidPartMatch(def, 'left'); return 1; })()");
       await pg.waitForTimeout(1800);

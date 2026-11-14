@@ -109,7 +109,7 @@ ok(!/Its first attack always crits/.test(src), 'the old Ambush text is gone');
 ok(/expose: v=> `Its hits put \$\{numOr\(v, 1\)\} Expose counter/.test(src) && /name:'Exposed', c:'#e07b39', text:TX\('ui\.st-exposed'\)/.test(src) && /hiding is stripped/.test(TEXT_D['ui.st-exposed']), 'Expose card text and the Exposed gloss (2026-10-18, package D: terse; 2026-10-19, SK1: hiding)');
 ok(/opts\.crit \? '🎯 Crit!'/.test(fxb) && /M\.exposeCash\(t, \{crit:true\}\)/.test(fxb), 'the Exposed hit chip says Crit!');
 ok(/"Always Flooded\. Tide effects can't change it\."/.test(src) && /r\.rapids \? 'Always Flood' : 'Always Flooded'/.test(src), 'Perma-tide says "Always Flooded"');
-ok(/function liveStatusGlossHTML\(c\)/.test(src) && /\$\{abilityHTML\}\$\{liveStatusGlossHTML\(liveC\)\}/.test(src), 'a unit in play lists its statuses under its skills');
+ok(/function liveStatusGlossHTML\(c\)/.test(src) && /\$\{abilityHTML\}\$\{eng28LaterSkillsHTML\(d\)\}\$\{liveStatusGlossHTML\(liveC\)\}/.test(src), 'a unit in play lists its statuses under its skills');
 // the live status list itself, run on its own
 { const vm = require('vm'); const grab = (re)=>{ const m = src.match(re); if(!m) throw new Error('not found: ' + re); return m[0]; };
   const code = grab(/const STATUS_KEYWORDS = \[[\s\S]*?\n\];/) + '\n' + grab(/const LIVE_STATUS_ROWS = \[[\s\S]*?\n\];/) + '\n' + grab(/const LIVE_STATUS_ROUNDS = [^\n]*/) + '\n' + grab(/function liveStatusGlossHTML\(c\)\{[\s\S]*?\n\}/);

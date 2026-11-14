@@ -101,7 +101,7 @@ async function browser(){
     await ctx.route('**/*', r=> r.request().url().startsWith('file:') ? r.continue() : r.abort()); // nothing leaves the page
     const pg = await ctx.newPage(); pg.on('pageerror', e=> errs.push(`@${w}: ` + String(e)));
     await pg.addInitScript(INIT); await pg.goto(URL, {waitUntil:'domcontentloaded', timeout:90000}); await pg.waitForTimeout(2500);
-    await pg.evaluate(`FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); adminModeEnabled = ${admin ? 'true' : 'false'}; document.body.classList.toggle('is-admin', adminModeEnabled); 1`); return [ctx, pg]; };
+    await pg.evaluate(`FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); adminModeEnabled = ${admin ? 'true' : 'false'}; document.body.classList.toggle('is-admin', adminModeEnabled); Object.keys(myDeckCounts).forEach(id=>{ myCardCopies[id] = []; for(let i = 0; i < myDeckCounts[id]; i++) myCardCopies[id].push({uid:'ed' + id + i, level:1}); }); 1`); /* 2026-11-14 (TESTFIX2): PG's copy limits (10-23) refuse a deck you do not own; a fresh profile owns the starter deck through the tutorial */ return [ctx, pg]; };
   const startFight = async pg=>{ // Map 0's first plain skirmish, no Energy
     const ok1 = await pg.evaluate(`(()=>{ const m1 = CONQUEST_MAPS.find(m=> m.id === 'm1'); const nd = m1.nodes.find(n=> n.kind === 'skirmish' && !n.dialogue); window.__edNode = nd.key;
       playSubTab = 'conquest'; switchTab('play'); return startConquestMatch('m1', nd.key, {skipEnergyCost:true, noAmbush:true}); })()`);

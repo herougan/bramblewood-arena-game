@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package TESTFIX2 (four stale tests, no game change)
+- game-texts reads a values variable as filled; devilry and mx look for the code as it is now (the raid screen's rules section, and its Shield line, went in RAID2; the VS card keeps it); ed gives its fresh profile the starter deck's copies (PG's copy limits).
+
 ## 2026-11-14 Package TESTFIX1 (six tests that failed on the batch only; tests only, no game change)
 - fx8 and net1 look for their CHANGELOG entry anywhere in the file; ui30 measures the page-turn growth from the leaf alone (the new page's own height differs by 17 px at 390 px).
 - listfix2 allows LIST1-2's SPECIAL holds (Ash Moth); bal20 skips 14-3's K14 check (Tasmanian Devil is Carried now, LIST1-2). list1 (2-A-6 deck vs the dropped Dam Keeper Beaver) needs a deck change, left open.

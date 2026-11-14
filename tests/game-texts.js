@@ -36,6 +36,7 @@ function varsAt(i){ // the top-level names of the {…} object that starts at sr
 let bad = [];
 for(const m of uses){
   const text = TEXT[m[1]]; if(text == null) continue;
+  if(!m[2] && /^,\s*[A-Za-z_]\w*\s*\)/.test(src.slice(m.index + m[0].length))) continue; // 2026-11-14 (TESTFIX2): values passed in a variable (ceBudgetHTML's vals) can't be read statically
   const need = [...new Set([...text.matchAll(/\{(\w+)\}/g)].map(x=> x[1]))];
   const have = m[2] ? varsAt(m.index + m[0].length - 1) : [];
   const lack = need.filter(n=> !have.includes(n));
