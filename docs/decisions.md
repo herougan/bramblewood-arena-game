@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SIDE4-1. Ten side fights just outside band** · Decide · Balance · asked 2026-11-15
+- Ten side fights still sit 3-18 points outside band after SIDE3-1 (Maps 2, 7, 14, 18, 19, 20). Enemy deck changes put all ten in band on three fresh seed sets. 2-B-1 also needs Health 15 to 7 and Shield 0. 19-A-8 and 20-A-7 need Carried x2. With SIDE3-1 a: side 69/77 in band, 77 within 10, 0 beyond 20 (now 38/42/13). Files: docs/balance/side4p/.
+  - a) All ten, with SIDE3-1 a
+  - b) Skip 2-B-1's Health cut
+  - c) Wait for the card redesign
+- **Default:** a
+
 **EDGE4-1. Seven main fights just outside band** · Decide · Balance · asked 2026-11-15
 - These sit 2-9 points outside their band on all four seed sets: 4-5, 16-6, 17-4, 19-1, 19-3 too hard; 13-4, 13-5 too easy. Fixes are enemy deck changes, except 13-4 (Shield 64 only) and 13-5 (one swap plus Shield 37). All seven land in band on three fresh seed sets. With EDGE1-1, EDGE2-1 and EDGE3-1 too: main road 141/149 in band, 148 within 10, 1 beyond 20 (20-9; now 120/130/9). Fixes: docs/balance/allfix/edge4-fixes.jsonl.
   - a) Apply all seven
