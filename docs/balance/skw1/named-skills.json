@@ -1,0 +1,1295 @@
+{
+ "tool": "tools/skw1/named_skills.js 1.0.0 (2026-11-14, SKW1)",
+ "generated": "2026-11-14T03:37:49.105Z",
+ "byMap": [
+  {
+   "map": 0,
+   "lists": [
+    "m1"
+   ],
+   "onMap": 20,
+   "newHere": [
+    "bloomCopy",
+    "brambleArmor",
+    "brood",
+    "diurnal",
+    "evasive",
+    "flying",
+    "fog",
+    "hatchling",
+    "herbalist",
+    "immunity",
+    "inspiring",
+    "meiosis",
+    "poison",
+    "quick",
+    "regen",
+    "swarm",
+    "taunt",
+    "thanatosis",
+    "thorns",
+    "tide"
+   ],
+   "cumulative": 20,
+   "customTriggerCards": 2
+  },
+  {
+   "map": 1,
+   "lists": [
+    "mf"
+   ],
+   "onMap": 12,
+   "newHere": [
+    "foraging",
+    "guardian",
+    "injured",
+    "moonborn",
+    "nocturnal",
+    "rainrunner"
+   ],
+   "cumulative": 26,
+   "customTriggerCards": 2
+  },
+  {
+   "map": 2,
+   "lists": [
+    "mb"
+   ],
+   "onMap": 26,
+   "newHere": [
+    "armor",
+    "bounty",
+    "bulwark",
+    "crabClaws",
+    "delivery",
+    "driftwood",
+    "pierce",
+    "rampart",
+    "shell",
+    "sonar",
+    "stealth",
+    "sweep",
+    "timbered"
+   ],
+   "cumulative": 39,
+   "customTriggerCards": 2
+  },
+  {
+   "map": 3,
+   "lists": [
+    "mc"
+   ],
+   "onMap": 18,
+   "newHere": [
+    "arrow",
+    "dive",
+    "pounce",
+    "reach",
+    "reload",
+    "scatterbrained",
+    "shield"
+   ],
+   "cumulative": 46,
+   "customTriggerCards": 2
+  },
+  {
+   "map": 4,
+   "lists": [
+    "m2"
+   ],
+   "onMap": 12,
+   "newHere": [],
+   "cumulative": 46,
+   "customTriggerCards": 0
+  },
+  {
+   "map": 5,
+   "lists": [
+    "mw"
+   ],
+   "onMap": 16,
+   "newHere": [
+    "ambush",
+    "bleed",
+    "cure",
+    "healing",
+    "repair",
+    "twinStrike"
+   ],
+   "cumulative": 52,
+   "customTriggerCards": 0
+  },
+  {
+   "map": 6,
+   "lists": [
+    "m8"
+   ],
+   "onMap": 16,
+   "newHere": [
+    "daunt",
+    "invisible",
+    "rain"
+   ],
+   "cumulative": 55,
+   "customTriggerCards": 1
+  },
+  {
+   "map": 7,
+   "lists": [
+    "mu"
+   ],
+   "onMap": 21,
+   "newHere": [
+    "onDeathSpawn",
+    "poisonBarbs",
+    "rocket",
+    "scare",
+    "wither"
+   ],
+   "cumulative": 60,
+   "customTriggerCards": 2
+  },
+  {
+   "map": 8,
+   "lists": [
+    "m4"
+   ],
+   "onMap": 20,
+   "newHere": [
+    "bedrock",
+    "illuminate",
+    "keenSense",
+    "onReadyDamage",
+    "purblind",
+    "web"
+   ],
+   "cumulative": 66,
+   "customTriggerCards": 5
+  },
+  {
+   "map": 9,
+   "lists": [
+    "mk"
+   ],
+   "onMap": 19,
+   "newHere": [
+    "bludgeon",
+    "chainLightning",
+    "relict",
+    "salt",
+    "shock",
+    "skitter"
+   ],
+   "cumulative": 72,
+   "customTriggerCards": 1
+  },
+  {
+   "map": 10,
+   "lists": [
+    "m7"
+   ],
+   "onMap": 16,
+   "newHere": [
+    "meld",
+    "octolash",
+    "recoil"
+   ],
+   "cumulative": 75,
+   "customTriggerCards": 0
+  },
+  {
+   "map": 11,
+   "lists": [
+    "m10"
+   ],
+   "onMap": 84,
+   "newHere": [
+    "backstab",
+    "bulldoze",
+    "canopyCover",
+    "carnage",
+    "confuse",
+    "converge",
+    "decay",
+    "drought",
+    "dry",
+    "executioner",
+    "exploit",
+    "fastForward",
+    "fletcher",
+    "foeScarcity",
+    "fork",
+    "freeze",
+    "frost",
+    "frostbite",
+    "gash",
+    "haste",
+    "heat",
+    "hibernate",
+    "immolation",
+    "keenEye",
+    "landslide",
+    "leader",
+    "loneWolf",
+    "mountainClimber",
+    "nightblind",
+    "onslaught",
+    "pack",
+    "packHowl",
+    "packLeader",
+    "plenty",
+    "predator",
+    "rage",
+    "sap",
+    "shatter",
+    "spitfire",
+    "sprout",
+    "storm",
+    "strangle",
+    "sturdy",
+    "throng",
+    "tornado",
+    "trap",
+    "trident",
+    "twinShot",
+    "volley"
+   ],
+   "cumulative": 124,
+   "customTriggerCards": 3
+  },
+  {
+   "map": 12,
+   "lists": [
+    "mh"
+   ],
+   "onMap": 22,
+   "newHere": [
+    "devour",
+    "siege"
+   ],
+   "cumulative": 126,
+   "customTriggerCards": 0
+  },
+  {
+   "map": 13,
+   "lists": [
+    "mr"
+   ],
+   "onMap": 17,
+   "newHere": [
+    "felling",
+    "harbinger",
+    "lumberjack",
+    "milling"
+   ],
+   "cumulative": 130,
+   "customTriggerCards": 1
+  },
+  {
+   "map": 14,
+   "lists": [
+    "m5"
+   ],
+   "onMap": 24,
+   "newHere": [
+    "banana",
+    "drunk",
+    "evolute",
+    "formation"
+   ],
+   "cumulative": 134,
+   "customTriggerCards": 2
+  },
+  {
+   "map": 15,
+   "lists": [
+    "ml"
+   ],
+   "onMap": 20,
+   "newHere": [
+    "loyal",
+    "overwhelm",
+    "speed"
+   ],
+   "cumulative": 137,
+   "customTriggerCards": 1
+  },
+  {
+   "map": 16,
+   "lists": [
+    "mt"
+   ],
+   "onMap": 18,
+   "newHere": [
+    "almanac",
+    "explode",
+    "riled"
+   ],
+   "cumulative": 140,
+   "customTriggerCards": 1
+  },
+  {
+   "map": 17,
+   "lists": [
+    "m6"
+   ],
+   "onMap": 35,
+   "newHere": [
+    "carrion",
+    "sleep"
+   ],
+   "cumulative": 142,
+   "customTriggerCards": 2
+  },
+  {
+   "map": 18,
+   "lists": [
+    "md"
+   ],
+   "onMap": 22,
+   "newHere": [
+    "blind",
+    "fencing"
+   ],
+   "cumulative": 144,
+   "customTriggerCards": 1
+  },
+  {
+   "map": 19,
+   "lists": [
+    "m3"
+   ],
+   "onMap": 35,
+   "newHere": [
+    "friction",
+    "grit",
+    "smokeBomb",
+    "stunOnHit",
+    "undead"
+   ],
+   "cumulative": 149,
+   "customTriggerCards": 4
+  },
+  {
+   "map": 20,
+   "lists": [
+    "m11"
+   ],
+   "onMap": 27,
+   "newHere": [
+    "festering",
+    "pitchfork"
+   ],
+   "cumulative": 151,
+   "customTriggerCards": 4
+  }
+ ],
+ "skills": [
+  {
+   "key": "flying",
+   "firstMap": 0,
+   "cards": 46,
+   "price": 0
+  },
+  {
+   "key": "tide",
+   "firstMap": 0,
+   "cards": 45,
+   "price": 0.5
+  },
+  {
+   "key": "poison",
+   "firstMap": 0,
+   "cards": 15,
+   "price": 2.72
+  },
+  {
+   "key": "evasive",
+   "firstMap": 0,
+   "cards": 14,
+   "price": 0
+  },
+  {
+   "key": "thorns",
+   "firstMap": 0,
+   "cards": 10,
+   "price": 3.22
+  },
+  {
+   "key": "diurnal",
+   "firstMap": 0,
+   "cards": 9,
+   "price": 0.38
+  },
+  {
+   "key": "swarm",
+   "firstMap": 0,
+   "cards": 8,
+   "price": 3.13
+  },
+  {
+   "key": "quick",
+   "firstMap": 0,
+   "cards": 8,
+   "price": 2.23
+  },
+  {
+   "key": "bloomCopy",
+   "firstMap": 0,
+   "cards": 5,
+   "price": 0
+  },
+  {
+   "key": "regen",
+   "firstMap": 0,
+   "cards": 5,
+   "price": 2.3
+  },
+  {
+   "key": "hatchling",
+   "firstMap": 0,
+   "cards": 5,
+   "price": 2
+  },
+  {
+   "key": "inspiring",
+   "firstMap": 0,
+   "cards": 3,
+   "price": 3.96
+  },
+  {
+   "key": "thanatosis",
+   "firstMap": 0,
+   "cards": 3,
+   "price": 2
+  },
+  {
+   "key": "meiosis",
+   "firstMap": 0,
+   "cards": 2,
+   "price": 4.55
+  },
+  {
+   "key": "brood",
+   "firstMap": 0,
+   "cards": 2,
+   "price": 3.2
+  },
+  {
+   "key": "brambleArmor",
+   "firstMap": 0,
+   "cards": 2,
+   "price": 1.1
+  },
+  {
+   "key": "fog",
+   "firstMap": 0,
+   "cards": 1,
+   "price": 2.7
+  },
+  {
+   "key": "herbalist",
+   "firstMap": 0,
+   "cards": 1,
+   "price": 0.23
+  },
+  {
+   "key": "immunity",
+   "firstMap": 0,
+   "cards": 1,
+   "price": 0.3
+  },
+  {
+   "key": "taunt",
+   "firstMap": 0,
+   "cards": 1,
+   "price": 0.4
+  },
+  {
+   "key": "guardian",
+   "firstMap": 1,
+   "cards": 14,
+   "price": 0
+  },
+  {
+   "key": "nocturnal",
+   "firstMap": 1,
+   "cards": 13,
+   "price": 0.53
+  },
+  {
+   "key": "injured",
+   "firstMap": 1,
+   "cards": 1,
+   "price": -1
+  },
+  {
+   "key": "foraging",
+   "firstMap": 1,
+   "cards": 1,
+   "price": 1.68
+  },
+  {
+   "key": "moonborn",
+   "firstMap": 1,
+   "cards": 1,
+   "price": 1.23
+  },
+  {
+   "key": "rainrunner",
+   "firstMap": 1,
+   "cards": 1,
+   "price": 2
+  },
+  {
+   "key": "armor",
+   "firstMap": 2,
+   "cards": 15,
+   "price": 2.33
+  },
+  {
+   "key": "delivery",
+   "firstMap": 2,
+   "cards": 10,
+   "price": 5.25
+  },
+  {
+   "key": "sweep",
+   "firstMap": 2,
+   "cards": 5,
+   "price": 3.59
+  },
+  {
+   "key": "pierce",
+   "firstMap": 2,
+   "cards": 4,
+   "price": 0.23
+  },
+  {
+   "key": "shell",
+   "firstMap": 2,
+   "cards": 4,
+   "price": 0.37
+  },
+  {
+   "key": "crabClaws",
+   "firstMap": 2,
+   "cards": 3,
+   "price": 0.1
+  },
+  {
+   "key": "sonar",
+   "firstMap": 2,
+   "cards": 3,
+   "price": 0.66
+  },
+  {
+   "key": "bounty",
+   "firstMap": 2,
+   "cards": 3,
+   "price": null
+  },
+  {
+   "key": "stealth",
+   "firstMap": 2,
+   "cards": 2,
+   "price": 6.88
+  },
+  {
+   "key": "driftwood",
+   "firstMap": 2,
+   "cards": 1,
+   "price": 0.75
+  },
+  {
+   "key": "timbered",
+   "firstMap": 2,
+   "cards": 1,
+   "price": 0.5
+  },
+  {
+   "key": "rampart",
+   "firstMap": 2,
+   "cards": 1,
+   "price": 0.49
+  },
+  {
+   "key": "bulwark",
+   "firstMap": 2,
+   "cards": 1,
+   "price": 6.3
+  },
+  {
+   "key": "pounce",
+   "firstMap": 3,
+   "cards": 14,
+   "price": 1.66
+  },
+  {
+   "key": "arrow",
+   "firstMap": 3,
+   "cards": 8,
+   "price": 4.26
+  },
+  {
+   "key": "shield",
+   "firstMap": 3,
+   "cards": 2,
+   "price": 2.53
+  },
+  {
+   "key": "reload",
+   "firstMap": 3,
+   "cards": 2,
+   "price": -4.2
+  },
+  {
+   "key": "reach",
+   "firstMap": 3,
+   "cards": 1,
+   "price": 1
+  },
+  {
+   "key": "dive",
+   "firstMap": 3,
+   "cards": 1,
+   "price": -3.3
+  },
+  {
+   "key": "scatterbrained",
+   "firstMap": 3,
+   "cards": 1,
+   "price": -4.82
+  },
+  {
+   "key": "bleed",
+   "firstMap": 5,
+   "cards": 8,
+   "price": 2.89
+  },
+  {
+   "key": "ambush",
+   "firstMap": 5,
+   "cards": 2,
+   "price": 0.59
+  },
+  {
+   "key": "healing",
+   "firstMap": 5,
+   "cards": 1,
+   "price": 3.48
+  },
+  {
+   "key": "twinStrike",
+   "firstMap": 5,
+   "cards": 1,
+   "price": 7.75
+  },
+  {
+   "key": "cure",
+   "firstMap": 5,
+   "cards": 1,
+   "price": 0.5
+  },
+  {
+   "key": "repair",
+   "firstMap": 5,
+   "cards": 1,
+   "price": 2.93
+  },
+  {
+   "key": "daunt",
+   "firstMap": 6,
+   "cards": 3,
+   "price": 1.72
+  },
+  {
+   "key": "invisible",
+   "firstMap": 6,
+   "cards": 2,
+   "price": 1.05
+  },
+  {
+   "key": "rain",
+   "firstMap": 6,
+   "cards": 1,
+   "price": 0.15
+  },
+  {
+   "key": "onDeathSpawn",
+   "firstMap": 7,
+   "cards": 3,
+   "price": 4.35
+  },
+  {
+   "key": "scare",
+   "firstMap": 7,
+   "cards": 2,
+   "price": 2.52
+  },
+  {
+   "key": "wither",
+   "firstMap": 7,
+   "cards": 1,
+   "price": 3.57
+  },
+  {
+   "key": "poisonBarbs",
+   "firstMap": 7,
+   "cards": 1,
+   "price": 1.6
+  },
+  {
+   "key": "rocket",
+   "firstMap": 7,
+   "cards": 1,
+   "price": 2.56
+  },
+  {
+   "key": "onReadyDamage",
+   "firstMap": 8,
+   "cards": 2,
+   "price": 5.56
+  },
+  {
+   "key": "keenSense",
+   "firstMap": 8,
+   "cards": 1,
+   "price": 0.66
+  },
+  {
+   "key": "bedrock",
+   "firstMap": 8,
+   "cards": 1,
+   "price": 0.3
+  },
+  {
+   "key": "illuminate",
+   "firstMap": 8,
+   "cards": 1,
+   "price": 0.51
+  },
+  {
+   "key": "purblind",
+   "firstMap": 8,
+   "cards": 1,
+   "price": 0
+  },
+  {
+   "key": "web",
+   "firstMap": 8,
+   "cards": 1,
+   "price": 0.97
+  },
+  {
+   "key": "skitter",
+   "firstMap": 9,
+   "cards": 1,
+   "price": 3.5
+  },
+  {
+   "key": "salt",
+   "firstMap": 9,
+   "cards": 1,
+   "price": 0.38
+  },
+  {
+   "key": "relict",
+   "firstMap": 9,
+   "cards": 1,
+   "price": 1.24
+  },
+  {
+   "key": "bludgeon",
+   "firstMap": 9,
+   "cards": 1,
+   "price": 3.95
+  },
+  {
+   "key": "shock",
+   "firstMap": 9,
+   "cards": 1,
+   "price": 0.93
+  },
+  {
+   "key": "chainLightning",
+   "firstMap": 9,
+   "cards": 1,
+   "price": 4
+  },
+  {
+   "key": "recoil",
+   "firstMap": 10,
+   "cards": 2,
+   "price": -3.46
+  },
+  {
+   "key": "octolash",
+   "firstMap": 10,
+   "cards": 1,
+   "price": 7.14
+  },
+  {
+   "key": "meld",
+   "firstMap": 10,
+   "cards": 1,
+   "price": 1.64
+  },
+  {
+   "key": "rage",
+   "firstMap": 11,
+   "cards": 5,
+   "price": 3.01
+  },
+  {
+   "key": "dry",
+   "firstMap": 11,
+   "cards": 5,
+   "price": 4
+  },
+  {
+   "key": "mountainClimber",
+   "firstMap": 11,
+   "cards": 4,
+   "price": 4
+  },
+  {
+   "key": "frostbite",
+   "firstMap": 11,
+   "cards": 2,
+   "price": 0.19
+  },
+  {
+   "key": "storm",
+   "firstMap": 11,
+   "cards": 2,
+   "price": 1.8
+  },
+  {
+   "key": "backstab",
+   "firstMap": 11,
+   "cards": 2,
+   "price": 0.0273
+  },
+  {
+   "key": "keenEye",
+   "firstMap": 11,
+   "cards": 2,
+   "price": 0.34
+  },
+  {
+   "key": "freeze",
+   "firstMap": 11,
+   "cards": 2,
+   "price": 2.88
+  },
+  {
+   "key": "fletcher",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 3.19
+  },
+  {
+   "key": "leader",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0.1
+  },
+  {
+   "key": "trap",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0.4
+  },
+  {
+   "key": "bulldoze",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 2.23
+  },
+  {
+   "key": "onslaught",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 2.98
+  },
+  {
+   "key": "converge",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0
+  },
+  {
+   "key": "heat",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 1.2
+  },
+  {
+   "key": "fork",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 4.95
+  },
+  {
+   "key": "gash",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0.46
+  },
+  {
+   "key": "packLeader",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0
+  },
+  {
+   "key": "pack",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 3.25
+  },
+  {
+   "key": "drought",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 1
+  },
+  {
+   "key": "decay",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 5.77
+  },
+  {
+   "key": "tornado",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 1.17
+  },
+  {
+   "key": "carnage",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 1.68
+  },
+  {
+   "key": "volley",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 6.79
+  },
+  {
+   "key": "canopyCover",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0.07
+  },
+  {
+   "key": "spitfire",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 7.72
+  },
+  {
+   "key": "packHowl",
+   "firstMap": 11,
+   "cards": 1,
+   "price": null
+  },
+  {
+   "key": "executioner",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0.1
+  },
+  {
+   "key": "predator",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 1.12
+  },
+  {
+   "key": "nightblind",
+   "firstMap": 11,
+   "cards": 1,
+   "price": -2.12
+  },
+  {
+   "key": "loneWolf",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 3.68
+  },
+  {
+   "key": "confuse",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 1.69
+  },
+  {
+   "key": "exploit",
+   "firstMap": 11,
+   "cards": 1,
+   "price": null
+  },
+  {
+   "key": "immolation",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0
+  },
+  {
+   "key": "sturdy",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 2.81
+  },
+  {
+   "key": "hibernate",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0.95
+  },
+  {
+   "key": "throng",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 5.12
+  },
+  {
+   "key": "haste",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 2.57
+  },
+  {
+   "key": "landslide",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 2
+  },
+  {
+   "key": "sprout",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 3
+  },
+  {
+   "key": "plenty",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0.45
+  },
+  {
+   "key": "frost",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 1.12
+  },
+  {
+   "key": "twinShot",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 6.63
+  },
+  {
+   "key": "foeScarcity",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 3.39
+  },
+  {
+   "key": "fastForward",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 4.24
+  },
+  {
+   "key": "trident",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 2.28
+  },
+  {
+   "key": "sap",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 2.3
+  },
+  {
+   "key": "shatter",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 0.02
+  },
+  {
+   "key": "strangle",
+   "firstMap": 11,
+   "cards": 1,
+   "price": 4.21
+  },
+  {
+   "key": "siege",
+   "firstMap": 12,
+   "cards": 3,
+   "price": 1.07
+  },
+  {
+   "key": "devour",
+   "firstMap": 12,
+   "cards": 1,
+   "price": 2
+  },
+  {
+   "key": "lumberjack",
+   "firstMap": 13,
+   "cards": 1,
+   "price": 4.85
+  },
+  {
+   "key": "harbinger",
+   "firstMap": 13,
+   "cards": 1,
+   "price": null
+  },
+  {
+   "key": "milling",
+   "firstMap": 13,
+   "cards": 1,
+   "price": null
+  },
+  {
+   "key": "felling",
+   "firstMap": 13,
+   "cards": 1,
+   "price": 0.73
+  },
+  {
+   "key": "formation",
+   "firstMap": 14,
+   "cards": 1,
+   "price": 2.5
+  },
+  {
+   "key": "drunk",
+   "firstMap": 14,
+   "cards": 1,
+   "price": -3.7
+  },
+  {
+   "key": "banana",
+   "firstMap": 14,
+   "cards": 1,
+   "price": 5
+  },
+  {
+   "key": "evolute",
+   "firstMap": 14,
+   "cards": 1,
+   "price": 3
+  },
+  {
+   "key": "overwhelm",
+   "firstMap": 15,
+   "cards": 2,
+   "price": 1.05
+  },
+  {
+   "key": "speed",
+   "firstMap": 15,
+   "cards": 1,
+   "price": 2.33
+  },
+  {
+   "key": "loyal",
+   "firstMap": 15,
+   "cards": 1,
+   "price": 0
+  },
+  {
+   "key": "riled",
+   "firstMap": 16,
+   "cards": 1,
+   "price": 5.87
+  },
+  {
+   "key": "almanac",
+   "firstMap": 16,
+   "cards": 1,
+   "price": 7.95
+  },
+  {
+   "key": "explode",
+   "firstMap": 16,
+   "cards": 1,
+   "price": 5.75
+  },
+  {
+   "key": "carrion",
+   "firstMap": 17,
+   "cards": 2,
+   "price": 1.34
+  },
+  {
+   "key": "sleep",
+   "firstMap": 17,
+   "cards": 1,
+   "price": 2.77
+  },
+  {
+   "key": "fencing",
+   "firstMap": 18,
+   "cards": 1,
+   "price": 0
+  },
+  {
+   "key": "blind",
+   "firstMap": 18,
+   "cards": 1,
+   "price": 1.49
+  },
+  {
+   "key": "stunOnHit",
+   "firstMap": 19,
+   "cards": 1,
+   "price": 2.22
+  },
+  {
+   "key": "grit",
+   "firstMap": 19,
+   "cards": 1,
+   "price": 0.05
+  },
+  {
+   "key": "smokeBomb",
+   "firstMap": 19,
+   "cards": 1,
+   "price": 2
+  },
+  {
+   "key": "undead",
+   "firstMap": 19,
+   "cards": 1,
+   "price": 2.27
+  },
+  {
+   "key": "friction",
+   "firstMap": 19,
+   "cards": 1,
+   "price": -1
+  },
+  {
+   "key": "festering",
+   "firstMap": 20,
+   "cards": 1,
+   "price": 0
+  },
+  {
+   "key": "pitchfork",
+   "firstMap": 20,
+   "cards": 1,
+   "price": 4
+  }
+ ]
+}

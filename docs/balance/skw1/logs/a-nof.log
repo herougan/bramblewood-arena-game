@@ -1,0 +1,47 @@
+skw1-nof: global pool, no field, Level 1; 1 fields, pool 810, Level 1; 228 variants x 100 fights
+  2100/22800 games, 34.8/s, about 10 min left
+  4350/22800 games, 36.0/s, about 9 min left
+  7025/22800 games, 38.8/s, about 7 min left
+  9300/22800 games, 38.5/s, about 6 min left
+  11800/22800 games, 39.1/s, about 5 min left
+  13850/22800 games, 38.2/s, about 4 min left
+  16050/22800 games, 38.0/s, about 3 min left
+  17950/22800 games, 37.1/s, about 2 min left
+  19950/22800 games, 36.7/s, about 1 min left
+  22075/22800 games, 36.5/s, about 0 min left
+  played 22800 games in 625 s
+ruler: 2.60 win pts a budget point; Attack weight 7.962 [4.959, 19.364]; placebo -0.189; base win 0.53; 22800 games in 625 s -> docs/balance/skw1/a-nof.json
+  diurnal=1                worth   4.421 [3.164, 6.158]  price 1.14
+  bleed=2                  worth   6.821 [4.914, 9.6]  price 4.87
+  poison=2                 worth   5.937 [4.229, 8.348]  price 4.75
+  sweep=2                  worth   5.937 [4.528, 8.388]  price 5.08
+  esprit=2                 worth   4.168 [2.887, 6]  price 3.37
+  bleed=1                  worth   3.663 [2.5, 5.178]  price 2.89
+  stealth                  worth   7.642 [5.654, 10.667]  price 6.88
+  thorns=1                 worth   3.947 [2.746, 5.746]  price 3.22
+  flying                   worth   4.137 [2.578, 6.083]  price 3.452
+  regen=2                  worth   3.537 [2.235, 5.083]  price 2.9
+  thorns=2                 worth   5.653 [4.065, 7.957]  price 5.08
+  siege=4                  worth   3.663 [2.455, 5.4]  price 3.21
+  arrow=1                  worth   4.674 [3.273, 6.711]  price 4.26
+  evasive                  worth   3.632 [2.48, 5.345]  price 3.27
+  armor=2                  worth   3.979 [2.673, 5.908]  price 3.7
+  armor=1                  worth   2.589 [1.636, 4]  price 2.33
+  poison=1                 worth   2.968 [1.952, 4.431]  price 2.72
+  inspiring=1              worth   4.168 [2.95, 5.908]  price 3.96
+  pounce=2                 worth   3.158 [2.018, 4.552]  price 2.96
+  delivery                 worth   6.758 [4.846, 9.649]  price 6.65
+  rage                     worth   3.032 [2.073, 4.258]  price 3.01
+  pierce=1                 worth   0.189 [0, 0.45]  price 0.23
+  keenEye                  worth       0 [0, 0]  price 0.34
+  shell=2                  worth   0.189 [-0.07, 0.488]  price 0.57
+  backstab=2               worth  -0.063 [-1.129, 1.096]  price 0.33
+  tide                     worth       0 [-0.17, 0.191]  price 0.5
+  illuminate               worth       0 [0, 0]  price 0.51
+  reach                    worth   0.379 [-0.581, 1.379]  price 1
+  quick                    worth   1.516 [0.808, 2.492]  price 2.23
+  regen=1                  worth   1.516 [0.762, 2.486]  price 2.3
+  fork                     worth   3.979 [2.667, 5.727]  price 4.95
+  guardian                 worth  -1.011 [-2.519, -0.064]  price 0
+  nocturnal=1              worth       0 [0, 0]  price 1.89
+  dry                      worth   0.063 [0, 0.214]  price 4

@@ -1,0 +1,1261 @@
+{
+ "tool": "tools/skw1/skw1.js 1.0.0 (2026-11-14, SKW1)",
+ "generated": "2026-11-14T05:30:10.591Z",
+ "fingerprint": "07fb06988482",
+ "context": {
+  "name": "skw1-ref",
+  "about": "opponent = a PRO / BPRO deck of Maps 0-20 on its field, rest from that map pool, Level 1",
+  "level": 1,
+  "fights": 100,
+  "copies": 6,
+  "bramble": 15,
+  "pool": 810,
+  "fields": 36,
+  "seed": "skw1",
+  "refDecks": 230
+ },
+ "carriers": [
+  "house-cat",
+  "bramblewood-lynx",
+  "blessed-avatar",
+  "stable-colt",
+  "rivergate-recruit",
+  "lucky-hopper"
+ ],
+ "baseWin": 0.238,
+ "ruler": {
+  "rate": {
+   "m": 0.035,
+   "lo": 0.026,
+   "hi": 0.044,
+   "se": 0.005
+  },
+  "aw": {
+   "m": 4.776,
+   "lo": 3.577,
+   "hi": 6.804,
+   "se": 0.865
+  },
+  "gA": {
+   "m": 0.13,
+   "lo": 0.097,
+   "hi": 0.16,
+   "se": 0.016
+  },
+  "gH3": {
+   "m": 0.082,
+   "lo": 0.05,
+   "hi": 0.113,
+   "se": 0.016
+  },
+  "placebo": {
+   "m": 0.033,
+   "lo": 0.015,
+   "hi": 0.055,
+   "se": 0.011
+  },
+  "placeboWorth": {
+   "m": 0.945,
+   "lo": 0.472,
+   "hi": 1.386,
+   "se": 0.229
+  }
+ },
+ "tests": [
+  {
+   "key": "flying",
+   "eff": {
+    "flying": true
+   },
+   "gain": {
+    "m": 0.078,
+    "lo": 0.047,
+    "hi": 0.115,
+    "se": 0.017
+   },
+   "worth": {
+    "m": 2.197,
+    "lo": 1.331,
+    "hi": 3.403,
+    "se": 0.552
+   },
+   "price": 3.452,
+   "priceBy": [
+    2.28,
+    4.18,
+    4.18,
+    2.85,
+    3.42,
+    3.8
+   ],
+   "rawGainBy": {
+    "house-cat": 0.07,
+    "bramblewood-lynx": 0.26,
+    "blessed-avatar": 0,
+    "stable-colt": 0.13,
+    "rivergate-recruit": 0.175,
+    "lucky-hopper": 0.03
+   }
+  },
+  {
+   "key": "evasive",
+   "eff": {
+    "evasive": true
+   },
+   "gain": {
+    "m": 0.087,
+    "lo": 0.053,
+    "hi": 0.124,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 2.48,
+    "lo": 1.552,
+    "hi": 3.788,
+    "se": 0.606
+   },
+   "price": 3.27,
+   "priceBy": [
+    2.16,
+    3.96,
+    3.96,
+    2.7,
+    3.24,
+    3.6
+   ],
+   "rawGainBy": {
+    "house-cat": 0.13,
+    "bramblewood-lynx": 0.22,
+    "blessed-avatar": 0,
+    "stable-colt": 0.16,
+    "rivergate-recruit": 0.175,
+    "lucky-hopper": 0.04
+   }
+  },
+  {
+   "key": "tide",
+   "eff": {
+    "tide": true
+   },
+   "gain": {
+    "m": 0.025,
+    "lo": 0.01,
+    "hi": 0.043,
+    "se": 0.008
+   },
+   "worth": {
+    "m": 0.709,
+    "lo": 0.277,
+    "hi": 1.223,
+    "se": 0.249
+   },
+   "price": 0.5,
+   "priceBy": [
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    0.5
+   ],
+   "rawGainBy": {
+    "house-cat": 0.05,
+    "bramblewood-lynx": 0.12,
+    "blessed-avatar": 0,
+    "stable-colt": 0.07,
+    "rivergate-recruit": 0.1,
+    "lucky-hopper": 0.01
+   }
+  },
+  {
+   "key": "armor=1",
+   "eff": {
+    "armor": 1
+   },
+   "gain": {
+    "m": 0.063,
+    "lo": 0.04,
+    "hi": 0.088,
+    "se": 0.012
+   },
+   "worth": {
+    "m": 1.795,
+    "lo": 1.261,
+    "hi": 2.374,
+    "se": 0.291
+   },
+   "price": 2.33,
+   "priceBy": [
+    2.33,
+    2.33,
+    2.33,
+    2.33,
+    2.33,
+    2.33
+   ],
+   "rawGainBy": {
+    "house-cat": 0.11,
+    "bramblewood-lynx": 0.15,
+    "blessed-avatar": 0,
+    "stable-colt": 0.13,
+    "rivergate-recruit": 0.15,
+    "lucky-hopper": 0.04
+   }
+  },
+  {
+   "key": "armor=2",
+   "eff": {
+    "armor": 2
+   },
+   "gain": {
+    "m": 0.134,
+    "lo": 0.103,
+    "hi": 0.168,
+    "se": 0.017
+   },
+   "worth": {
+    "m": 3.803,
+    "lo": 2.937,
+    "hi": 5.053,
+    "se": 0.546
+   },
+   "price": 3.7,
+   "priceBy": [
+    3.7,
+    3.7,
+    3.7,
+    3.7,
+    3.7,
+    3.7
+   ],
+   "rawGainBy": {
+    "house-cat": 0.2,
+    "bramblewood-lynx": 0.27,
+    "blessed-avatar": 0,
+    "stable-colt": 0.22,
+    "rivergate-recruit": 0.265,
+    "lucky-hopper": 0.05
+   }
+  },
+  {
+   "key": "poison=1",
+   "eff": {
+    "poison": 1
+   },
+   "gain": {
+    "m": 0.068,
+    "lo": 0.045,
+    "hi": 0.093,
+    "se": 0.013
+   },
+   "worth": {
+    "m": 1.937,
+    "lo": 1.333,
+    "hi": 2.623,
+    "se": 0.343
+   },
+   "price": 2.72,
+   "priceBy": [
+    2.72,
+    2.72,
+    2.72,
+    2.72,
+    2.72,
+    2.72
+   ],
+   "rawGainBy": {
+    "house-cat": 0.07,
+    "bramblewood-lynx": 0.12,
+    "blessed-avatar": 0,
+    "stable-colt": 0.19,
+    "rivergate-recruit": 0.16,
+    "lucky-hopper": 0.07
+   }
+  },
+  {
+   "key": "poison=2",
+   "eff": {
+    "poison": 2
+   },
+   "gain": {
+    "m": 0.167,
+    "lo": 0.128,
+    "hi": 0.202,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 4.724,
+    "lo": 3.678,
+    "hi": 6.307,
+    "se": 0.662
+   },
+   "price": 4.75,
+   "priceBy": [
+    4.75,
+    4.75,
+    4.75,
+    4.75,
+    4.75,
+    4.75
+   ],
+   "rawGainBy": {
+    "house-cat": 0.17,
+    "bramblewood-lynx": 0.17,
+    "blessed-avatar": 0,
+    "stable-colt": 0.34,
+    "rivergate-recruit": 0.35,
+    "lucky-hopper": 0.17
+   }
+  },
+  {
+   "key": "guardian",
+   "eff": {
+    "guardian": true
+   },
+   "gain": {
+    "m": -0.031,
+    "lo": -0.06,
+    "hi": -0.005,
+    "se": 0.014
+   },
+   "worth": {
+    "m": -0.874,
+    "lo": -1.663,
+    "hi": -0.137,
+    "se": 0.399
+   },
+   "price": 0,
+   "priceBy": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "rawGainBy": {
+    "house-cat": -0.01,
+    "bramblewood-lynx": -0.08,
+    "blessed-avatar": 0,
+    "stable-colt": 0.03,
+    "rivergate-recruit": 0.045,
+    "lucky-hopper": 0.03
+   }
+  },
+  {
+   "key": "nocturnal=1",
+   "eff": {
+    "nocturnal": 1
+   },
+   "gain": {
+    "m": 0.06,
+    "lo": 0.037,
+    "hi": 0.083,
+    "se": 0.012
+   },
+   "worth": {
+    "m": 1.701,
+    "lo": 1.017,
+    "hi": 2.746,
+    "se": 0.425
+   },
+   "price": 1.89,
+   "priceBy": [
+    1.89,
+    1.89,
+    1.89,
+    1.89,
+    1.89,
+    1.89
+   ],
+   "rawGainBy": {
+    "house-cat": 0.04,
+    "bramblewood-lynx": 0.12,
+    "blessed-avatar": 0,
+    "stable-colt": 0.15,
+    "rivergate-recruit": 0.19,
+    "lucky-hopper": 0.06
+   }
+  },
+  {
+   "key": "diurnal=1",
+   "eff": {
+    "diurnal": 1
+   },
+   "gain": {
+    "m": 0.052,
+    "lo": 0.032,
+    "hi": 0.075,
+    "se": 0.011
+   },
+   "worth": {
+    "m": 1.465,
+    "lo": 0.943,
+    "hi": 2.173,
+    "se": 0.312
+   },
+   "price": 1.14,
+   "priceBy": [
+    1.14,
+    1.14,
+    1.14,
+    1.14,
+    1.14,
+    1.14
+   ],
+   "rawGainBy": {
+    "house-cat": 0.05,
+    "bramblewood-lynx": 0.09,
+    "blessed-avatar": 0,
+    "stable-colt": 0.15,
+    "rivergate-recruit": 0.13,
+    "lucky-hopper": 0.09
+   }
+  },
+  {
+   "key": "pounce=2",
+   "eff": {
+    "pounce": 2
+   },
+   "gain": {
+    "m": 0.105,
+    "lo": 0.068,
+    "hi": 0.139,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 2.976,
+    "lo": 1.886,
+    "hi": 4.267,
+    "se": 0.605
+   },
+   "price": 2.96,
+   "priceBy": [
+    2.96,
+    2.96,
+    2.96,
+    2.96,
+    2.96,
+    2.96
+   ],
+   "rawGainBy": {
+    "house-cat": 0.165,
+    "bramblewood-lynx": 0.165,
+    "blessed-avatar": 0,
+    "stable-colt": 0.24,
+    "rivergate-recruit": 0.18,
+    "lucky-hopper": 0.08
+   }
+  },
+  {
+   "key": "bleed=1",
+   "eff": {
+    "bleed": 1
+   },
+   "gain": {
+    "m": 0.098,
+    "lo": 0.073,
+    "hi": 0.127,
+    "se": 0.014
+   },
+   "worth": {
+    "m": 2.787,
+    "lo": 2.059,
+    "hi": 3.728,
+    "se": 0.404
+   },
+   "price": 2.89,
+   "priceBy": [
+    2.89,
+    2.89,
+    2.89,
+    2.89,
+    2.89,
+    2.89
+   ],
+   "rawGainBy": {
+    "house-cat": 0.1,
+    "bramblewood-lynx": 0.16,
+    "blessed-avatar": 0,
+    "stable-colt": 0.25,
+    "rivergate-recruit": 0.21,
+    "lucky-hopper": 0.07
+   }
+  },
+  {
+   "key": "bleed=2",
+   "eff": {
+    "bleed": 2
+   },
+   "gain": {
+    "m": 0.197,
+    "lo": 0.153,
+    "hi": 0.238,
+    "se": 0.021
+   },
+   "worth": {
+    "m": 5.575,
+    "lo": 4.367,
+    "hi": 7.213,
+    "se": 0.753
+   },
+   "price": 4.87,
+   "priceBy": [
+    4.87,
+    4.87,
+    4.87,
+    4.87,
+    4.87,
+    4.87
+   ],
+   "rawGainBy": {
+    "house-cat": 0.18,
+    "bramblewood-lynx": 0.19,
+    "blessed-avatar": 0,
+    "stable-colt": 0.39,
+    "rivergate-recruit": 0.38,
+    "lucky-hopper": 0.24
+   }
+  },
+  {
+   "key": "delivery",
+   "eff": {
+    "delivery": {
+     "v": 1,
+     "every": "round"
+    }
+   },
+   "gain": {
+    "m": 0.145,
+    "lo": 0.102,
+    "hi": 0.185,
+    "se": 0.021
+   },
+   "worth": {
+    "m": 4.11,
+    "lo": 2.862,
+    "hi": 5.701,
+    "se": 0.743
+   },
+   "price": 6.65,
+   "priceBy": [
+    6.65,
+    6.65,
+    6.65,
+    6.65,
+    6.65,
+    6.65
+   ],
+   "rawGainBy": {
+    "house-cat": 0.13,
+    "bramblewood-lynx": 0.31,
+    "blessed-avatar": 0,
+    "stable-colt": 0.17,
+    "rivergate-recruit": 0.22,
+    "lucky-hopper": 0.24
+   }
+  },
+  {
+   "key": "arrow=1",
+   "eff": {
+    "arrow": 1
+   },
+   "gain": {
+    "m": 0.092,
+    "lo": 0.065,
+    "hi": 0.117,
+    "se": 0.013
+   },
+   "worth": {
+    "m": 2.598,
+    "lo": 1.906,
+    "hi": 3.706,
+    "se": 0.465
+   },
+   "price": 4.26,
+   "priceBy": [
+    4.26,
+    4.26,
+    4.26,
+    4.26,
+    4.26,
+    4.26
+   ],
+   "rawGainBy": {
+    "house-cat": 0.11,
+    "bramblewood-lynx": 0.12,
+    "blessed-avatar": 0,
+    "stable-colt": 0.24,
+    "rivergate-recruit": 0.21,
+    "lucky-hopper": 0.07
+   }
+  },
+  {
+   "key": "thorns=1",
+   "eff": {
+    "thorns": 1
+   },
+   "gain": {
+    "m": 0.092,
+    "lo": 0.067,
+    "hi": 0.122,
+    "se": 0.015
+   },
+   "worth": {
+    "m": 2.598,
+    "lo": 1.917,
+    "hi": 3.523,
+    "se": 0.404
+   },
+   "price": 3.22,
+   "priceBy": [
+    3.22,
+    3.22,
+    3.22,
+    3.22,
+    3.22,
+    3.22
+   ],
+   "rawGainBy": {
+    "house-cat": 0.07,
+    "bramblewood-lynx": 0.12,
+    "blessed-avatar": 0,
+    "stable-colt": 0.22,
+    "rivergate-recruit": 0.26,
+    "lucky-hopper": 0.08
+   }
+  },
+  {
+   "key": "thorns=2",
+   "eff": {
+    "thorns": 2
+   },
+   "gain": {
+    "m": 0.173,
+    "lo": 0.137,
+    "hi": 0.209,
+    "se": 0.018
+   },
+   "worth": {
+    "m": 4.89,
+    "lo": 3.729,
+    "hi": 6.603,
+    "se": 0.74
+   },
+   "price": 5.08,
+   "priceBy": [
+    5.08,
+    5.08,
+    5.08,
+    5.08,
+    5.08,
+    5.08
+   ],
+   "rawGainBy": {
+    "house-cat": 0.13,
+    "bramblewood-lynx": 0.21,
+    "blessed-avatar": 0,
+    "stable-colt": 0.33,
+    "rivergate-recruit": 0.425,
+    "lucky-hopper": 0.14
+   }
+  },
+  {
+   "key": "quick",
+   "eff": {
+    "quick": true
+   },
+   "gain": {
+    "m": 0.055,
+    "lo": 0.035,
+    "hi": 0.08,
+    "se": 0.012
+   },
+   "worth": {
+    "m": 1.559,
+    "lo": 0.92,
+    "hi": 2.355,
+    "se": 0.359
+   },
+   "price": 2.23,
+   "priceBy": [
+    2.23,
+    2.23,
+    2.23,
+    2.23,
+    2.23,
+    2.23
+   ],
+   "rawGainBy": {
+    "house-cat": 0.12,
+    "bramblewood-lynx": 0.15,
+    "blessed-avatar": 0,
+    "stable-colt": 0.12,
+    "rivergate-recruit": 0.1,
+    "lucky-hopper": 0.04
+   }
+  },
+  {
+   "key": "regen=1",
+   "eff": {
+    "regen": 1
+   },
+   "gain": {
+    "m": 0.058,
+    "lo": 0.037,
+    "hi": 0.082,
+    "se": 0.011
+   },
+   "worth": {
+    "m": 1.63,
+    "lo": 1.118,
+    "hi": 2.279,
+    "se": 0.295
+   },
+   "price": 2.3,
+   "priceBy": [
+    2.3,
+    2.3,
+    2.3,
+    2.3,
+    2.3,
+    2.3
+   ],
+   "rawGainBy": {
+    "house-cat": 0.06,
+    "bramblewood-lynx": 0.13,
+    "blessed-avatar": 0,
+    "stable-colt": 0.15,
+    "rivergate-recruit": 0.165,
+    "lucky-hopper": 0.04
+   }
+  },
+  {
+   "key": "regen=2",
+   "eff": {
+    "regen": 2
+   },
+   "gain": {
+    "m": 0.107,
+    "lo": 0.08,
+    "hi": 0.137,
+    "se": 0.015
+   },
+   "worth": {
+    "m": 3.024,
+    "lo": 2.313,
+    "hi": 4.127,
+    "se": 0.453
+   },
+   "price": 2.9,
+   "priceBy": [
+    2.9,
+    2.9,
+    2.9,
+    2.9,
+    2.9,
+    2.9
+   ],
+   "rawGainBy": {
+    "house-cat": 0.11,
+    "bramblewood-lynx": 0.22,
+    "blessed-avatar": 0,
+    "stable-colt": 0.22,
+    "rivergate-recruit": 0.24,
+    "lucky-hopper": 0.05
+   }
+  },
+  {
+   "key": "sweep=2",
+   "eff": {
+    "sweep": 2
+   },
+   "gain": {
+    "m": 0.158,
+    "lo": 0.125,
+    "hi": 0.195,
+    "se": 0.018
+   },
+   "worth": {
+    "m": 4.488,
+    "lo": 3.289,
+    "hi": 6.447,
+    "se": 0.789
+   },
+   "price": 5.08,
+   "priceBy": [
+    5.08,
+    5.08,
+    5.08,
+    5.08,
+    5.08,
+    5.08
+   ],
+   "rawGainBy": {
+    "house-cat": 0.1,
+    "bramblewood-lynx": 0.21,
+    "blessed-avatar": 0,
+    "stable-colt": 0.32,
+    "rivergate-recruit": 0.35,
+    "lucky-hopper": 0.17
+   }
+  },
+  {
+   "key": "dry",
+   "eff": {
+    "dry": true
+   },
+   "gain": {
+    "m": 0.007,
+    "lo": -0.01,
+    "hi": 0.025,
+    "se": 0.009
+   },
+   "worth": {
+    "m": 0.189,
+    "lo": -0.294,
+    "hi": 0.695,
+    "se": 0.26
+   },
+   "price": 4,
+   "priceBy": [
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+   ],
+   "rawGainBy": {
+    "house-cat": 0.04,
+    "bramblewood-lynx": 0.08,
+    "blessed-avatar": 0,
+    "stable-colt": 0.04,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.02
+   }
+  },
+  {
+   "key": "inspiring=1",
+   "eff": {
+    "inspiring": 1
+   },
+   "gain": {
+    "m": 0.097,
+    "lo": 0.067,
+    "hi": 0.123,
+    "se": 0.015
+   },
+   "worth": {
+    "m": 2.74,
+    "lo": 1.984,
+    "hi": 3.842,
+    "se": 0.489
+   },
+   "price": 3.96,
+   "priceBy": [
+    3.96,
+    3.96,
+    3.96,
+    3.96,
+    3.96,
+    3.96
+   ],
+   "rawGainBy": {
+    "house-cat": 0.07,
+    "bramblewood-lynx": 0.09,
+    "blessed-avatar": 0,
+    "stable-colt": 0.26,
+    "rivergate-recruit": 0.23,
+    "lucky-hopper": 0.13
+   }
+  },
+  {
+   "key": "pierce=1",
+   "eff": {
+    "pierce": 1
+   },
+   "gain": {
+    "m": 0.01,
+    "lo": 0.003,
+    "hi": 0.018,
+    "se": 0.004
+   },
+   "worth": {
+    "m": 0.283,
+    "lo": 0.081,
+    "hi": 0.517,
+    "se": 0.116
+   },
+   "price": 0.23,
+   "priceBy": [
+    0.23,
+    0.23,
+    0.23,
+    0.23,
+    0.23,
+    0.23
+   ],
+   "rawGainBy": {
+    "house-cat": 0.04,
+    "bramblewood-lynx": 0.09,
+    "blessed-avatar": 0,
+    "stable-colt": 0.04,
+    "rivergate-recruit": 0.08,
+    "lucky-hopper": 0.01
+   }
+  },
+  {
+   "key": "illuminate",
+   "eff": {
+    "illuminate": true
+   },
+   "gain": {
+    "m": 0.02,
+    "lo": 0.002,
+    "hi": 0.04,
+    "se": 0.01
+   },
+   "worth": {
+    "m": 0.567,
+    "lo": 0.048,
+    "hi": 1.284,
+    "se": 0.323
+   },
+   "price": 0.51,
+   "priceBy": [
+    0.51,
+    0.51,
+    0.51,
+    0.51,
+    0.51,
+    0.51
+   ],
+   "rawGainBy": {
+    "house-cat": 0.05,
+    "bramblewood-lynx": 0.07,
+    "blessed-avatar": 0,
+    "stable-colt": 0.04,
+    "rivergate-recruit": 0.11,
+    "lucky-hopper": 0.05
+   }
+  },
+  {
+   "key": "esprit=2",
+   "eff": {
+    "esprit": 2
+   },
+   "gain": {
+    "m": 0.134,
+    "lo": 0.1,
+    "hi": 0.167,
+    "se": 0.017
+   },
+   "worth": {
+    "m": 3.803,
+    "lo": 2.856,
+    "hi": 5.219,
+    "se": 0.608
+   },
+   "price": 3.37,
+   "priceBy": [
+    3.37,
+    3.37,
+    3.37,
+    3.37,
+    3.37,
+    3.37
+   ],
+   "rawGainBy": {
+    "house-cat": 0.09,
+    "bramblewood-lynx": 0.13,
+    "blessed-avatar": 0,
+    "stable-colt": 0.27,
+    "rivergate-recruit": 0.345,
+    "lucky-hopper": 0.17
+   }
+  },
+  {
+   "key": "rage",
+   "eff": {
+    "rage": true
+   },
+   "gain": {
+    "m": 0.107,
+    "lo": 0.078,
+    "hi": 0.137,
+    "se": 0.015
+   },
+   "worth": {
+    "m": 3.024,
+    "lo": 2.266,
+    "hi": 4,
+    "se": 0.465
+   },
+   "price": 3.01,
+   "priceBy": [
+    3.01,
+    3.01,
+    3.01,
+    3.01,
+    3.01,
+    3.01
+   ],
+   "rawGainBy": {
+    "house-cat": 0.09,
+    "bramblewood-lynx": 0.21,
+    "blessed-avatar": 0,
+    "stable-colt": 0.22,
+    "rivergate-recruit": 0.25,
+    "lucky-hopper": 0.07
+   }
+  },
+  {
+   "key": "shell=2",
+   "eff": {
+    "shell": 2
+   },
+   "gain": {
+    "m": 0.02,
+    "lo": 0.003,
+    "hi": 0.035,
+    "se": 0.008
+   },
+   "worth": {
+    "m": 0.567,
+    "lo": 0.126,
+    "hi": 0.99,
+    "se": 0.221
+   },
+   "price": 0.57,
+   "priceBy": [
+    0.57,
+    0.57,
+    0.57,
+    0.57,
+    0.57,
+    0.57
+   ],
+   "rawGainBy": {
+    "house-cat": 0.04,
+    "bramblewood-lynx": 0.1,
+    "blessed-avatar": 0,
+    "stable-colt": 0.09,
+    "rivergate-recruit": 0.08,
+    "lucky-hopper": 0.01
+   }
+  },
+  {
+   "key": "stealth",
+   "eff": {
+    "stealth": true
+   },
+   "gain": {
+    "m": 0.287,
+    "lo": 0.238,
+    "hi": 0.333,
+    "se": 0.024
+   },
+   "worth": {
+    "m": 8.126,
+    "lo": 6.221,
+    "hi": 10.782,
+    "se": 1.186
+   },
+   "price": 6.88,
+   "priceBy": [
+    6.88,
+    6.88,
+    6.88,
+    6.88,
+    6.88,
+    6.88
+   ],
+   "rawGainBy": {
+    "house-cat": 0.3,
+    "bramblewood-lynx": 0.44,
+    "blessed-avatar": 0,
+    "stable-colt": 0.45,
+    "rivergate-recruit": 0.465,
+    "lucky-hopper": 0.265
+   }
+  },
+  {
+   "key": "fork",
+   "eff": {
+    "fork": true
+   },
+   "gain": {
+    "m": 0.118,
+    "lo": 0.085,
+    "hi": 0.155,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 3.354,
+    "lo": 2.281,
+    "hi": 4.866,
+    "se": 0.68
+   },
+   "price": 4.95,
+   "priceBy": [
+    4.95,
+    4.95,
+    4.95,
+    4.95,
+    4.95,
+    4.95
+   ],
+   "rawGainBy": {
+    "house-cat": 0.065,
+    "bramblewood-lynx": 0.29,
+    "blessed-avatar": 0,
+    "stable-colt": 0.24,
+    "rivergate-recruit": 0.245,
+    "lucky-hopper": 0.07
+   }
+  },
+  {
+   "key": "siege=4",
+   "eff": {
+    "siege": 4
+   },
+   "gain": {
+    "m": 0.106,
+    "lo": 0.078,
+    "hi": 0.13,
+    "se": 0.013
+   },
+   "worth": {
+    "m": 3,
+    "lo": 2.161,
+    "hi": 4.118,
+    "se": 0.489
+   },
+   "price": 3.21,
+   "priceBy": [
+    3.21,
+    3.21,
+    3.21,
+    3.21,
+    3.21,
+    3.21
+   ],
+   "rawGainBy": {
+    "house-cat": 0.235,
+    "bramblewood-lynx": 0.09,
+    "blessed-avatar": 0,
+    "stable-colt": 0.21,
+    "rivergate-recruit": 0.15,
+    "lucky-hopper": 0.15
+   }
+  },
+  {
+   "key": "backstab=2",
+   "eff": {
+    "backstab": 2
+   },
+   "gain": {
+    "m": -0.001,
+    "lo": -0.029,
+    "hi": 0.023,
+    "se": 0.014
+   },
+   "worth": {
+    "m": -0.024,
+    "lo": -0.841,
+    "hi": 0.716,
+    "se": 0.407
+   },
+   "price": 0.33,
+   "priceBy": [
+    0.33,
+    0.33,
+    0.33,
+    0.33,
+    0.33,
+    0.33
+   ],
+   "rawGainBy": {
+    "house-cat": 0.01,
+    "bramblewood-lynx": -0.01,
+    "blessed-avatar": 0,
+    "stable-colt": 0.1,
+    "rivergate-recruit": 0.085,
+    "lucky-hopper": 0.01
+   }
+  },
+  {
+   "key": "reach",
+   "eff": {
+    "reach": true
+   },
+   "gain": {
+    "m": 0.01,
+    "lo": -0.013,
+    "hi": 0.033,
+    "se": 0.012
+   },
+   "worth": {
+    "m": 0.283,
+    "lo": -0.367,
+    "hi": 1.068,
+    "se": 0.346
+   },
+   "price": 1,
+   "priceBy": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "rawGainBy": {
+    "house-cat": 0.02,
+    "bramblewood-lynx": 0.09,
+    "blessed-avatar": 0,
+    "stable-colt": 0.06,
+    "rivergate-recruit": 0.09,
+    "lucky-hopper": 0
+   }
+  },
+  {
+   "key": "keenEye",
+   "eff": {
+    "keenEye": true
+   },
+   "gain": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0,
+    "se": 0
+   },
+   "worth": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0,
+    "se": 0
+   },
+   "price": 0.34,
+   "priceBy": [
+    0.34,
+    0.34,
+    0.34,
+    0.34,
+    0.34,
+    0.34
+   ],
+   "rawGainBy": {
+    "house-cat": 0.04,
+    "bramblewood-lynx": 0.05,
+    "blessed-avatar": 0,
+    "stable-colt": 0.04,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.01
+   }
+  }
+ ],
+ "seconds": 808,
+ "played": 22548
+}
