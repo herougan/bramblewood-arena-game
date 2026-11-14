@@ -8,6 +8,14 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-14 11:11: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | Cards like Windfall have no art yet (field cards without a scene: windfall, seasons; creatures sanderling, roseate-spoonbill, water-scorpion, wallcreeper; full sweep in ART13). Missing art only, nothing replaced. | ART13 |
+| 2 | Measure skill weights more, across different ways of building the field; measure Trigger -> Action costs with trigger and action decoupled. | SKW1 |
+| 3 | Codex its own mega-page (places strip); its maps section as rolls of maps per map and per world (World 1 = Maps 0-40). | UI54 |
+- 11-14 11:15: UI53 merged (Venom/Bleed pip counts, live statuses in the battle hover, Guardian plates follow the card, red NEW! skills in Map cards). Running: REF6, WHATIF1 (side-map decision sims), ART13, SKW1, UI54.
+
 ## 11-13 17:29: Owner notes -> UI53 (starts after FIX11 merges; same files)
 Shots: `docs/screens/owner-2026-11-13/` (1729-*.png).
 | # | Note | Package |
