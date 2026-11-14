@@ -1,0 +1,3 @@
+19-A-1 target 90 start {"anvilwhisker-otter":4,"granite-ox-golem":2,"magma-titan":4,"peak-condor":1,"pumice-beetle":2,"stalactite-golem":1} 98.7 (seed0 11300)
+round 1: 252 legal moves; top: -2 granite-ox-golem +2 obsidian-scorpion 91.7/88.3 | -1 granite-ox-golem +1 peak-condor 93.3/98.3 | -1 magma-titan +1 granite-ox-golem 93.3/98.7 | -1 magma-titan +1 peak-condor 93.3/98.7
+RESULT 19-A-1 {"anvilwhisker-otter":4,"magma-titan":4,"peak-condor":1,"pumice-beetle":2,"stalactite-golem":1,"obsidian-scorpion":2} 88.3 moves: -2 granite-ox-golem +2 obsidian-scorpion problems: []

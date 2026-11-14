@@ -4,6 +4,12 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SIDE5-1. 19-A-1 almost always won** · Decide · Balance · asked 2026-11-15
+- With every other proposed fix in, side fight 19-A-1 reads 99% against a target of 90 (band 82-98). The only legal deck move that reaches the band swaps 2 Granite Ox Golem for 2 Obsidian Scorpion: 88 / 88 / 89 on three seed sets. Cost: with SIDE4-1, Obsidian Scorpion would be in 9 of Map 19's 10 fights. File: docs/balance/allfix/side19a1-fixes.jsonl.
+  - a) Leave it for the card redesign, 1 point over band
+  - b) Apply the swap
+- **Default:** a
+
 **EDGE5-1. 13-7 a little too easy** · Decide · Balance · asked 2026-11-15
 - With every other proposed fix in, 13-7 still reads 70% against a target of 60 (band 52-68) on three seed sets. Swapping 2 Owl Nightwatch for 2 Fungus Gnat Cloud in the enemy deck gives 59 / 64 / 59, in band on all three. With EDGE1-4 too: main road 142/149 in band, 147 within 10, 1 beyond 20 (20-9). File: docs/balance/allfix/edge5-fixes.jsonl.
   - a) Apply it with EDGE1-4
