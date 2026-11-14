@@ -1,0 +1,691 @@
+{
+ "about": "REF7: BAL13 ladder build before (git HEAD) vs after the rebuild on the REF6 prog decks (tools/ref7/bal13_diff_2026_11_14.js); wins in % on the ladder seeds, 6 games a fight",
+ "maps": {
+  "m1": {
+   "map": 0,
+   "side": false,
+   "before": {
+    "lo": 29.2,
+    "hi": 100,
+    "chosenMean": 66.3,
+    "prog": 0
+   },
+   "after": {
+    "lo": 54.2,
+    "hi": 95.8,
+    "chosenMean": 78.8,
+    "prog": 2,
+    "progWin": [
+     "prog-1 95.8",
+     "prog-2 91.7"
+    ],
+    "progChosen": [
+     "prog-1 rank 10"
+    ]
+   }
+  },
+  "mo": {
+   "map": 0,
+   "side": true,
+   "before": {
+    "lo": 0,
+    "hi": 62.5,
+    "chosenMean": 28.3,
+    "prog": 0
+   },
+   "after": {
+    "lo": 4.2,
+    "hi": 79.2,
+    "chosenMean": 41.7,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mf": {
+   "map": 1,
+   "side": false,
+   "before": {
+    "lo": 53.3,
+    "hi": 100,
+    "chosenMean": 77,
+    "prog": 0
+   },
+   "after": {
+    "lo": 43.3,
+    "hi": 96.7,
+    "chosenMean": 70,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mq": {
+   "map": 1,
+   "side": true,
+   "before": {
+    "lo": 0,
+    "hi": 66.7,
+    "chosenMean": 32.7,
+    "prog": 0
+   },
+   "after": {
+    "lo": 0,
+    "hi": 70,
+    "chosenMean": 34,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mb": {
+   "map": 2,
+   "side": false,
+   "before": {
+    "lo": 0,
+    "hi": 83.3,
+    "chosenMean": 41.3,
+    "prog": 0
+   },
+   "after": {
+    "lo": 6.7,
+    "hi": 83.3,
+    "chosenMean": 45,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mg": {
+   "map": 2,
+   "side": true,
+   "before": {
+    "lo": 4.2,
+    "hi": 91.7,
+    "chosenMean": 47.1,
+    "prog": 0
+   },
+   "after": {
+    "lo": 4.2,
+    "hi": 66.7,
+    "chosenMean": 35,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mp": {
+   "map": 2,
+   "side": true,
+   "before": {
+    "lo": 4.8,
+    "hi": 88.1,
+    "chosenMean": 46.9,
+    "prog": 0
+   },
+   "after": {
+    "lo": 4.8,
+    "hi": 95.2,
+    "chosenMean": 49.5,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mc": {
+   "map": 3,
+   "side": false,
+   "before": {
+    "lo": 9.5,
+    "hi": 76.2,
+    "chosenMean": 43.1,
+    "prog": 0
+   },
+   "after": {
+    "lo": 2.4,
+    "hi": 83.3,
+    "chosenMean": 42.4,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "m2": {
+   "map": 4,
+   "side": false,
+   "before": {
+    "lo": 16.7,
+    "hi": 93.3,
+    "chosenMean": 54.7,
+    "prog": 0
+   },
+   "after": {
+    "lo": 36.7,
+    "hi": 80,
+    "chosenMean": 58,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mw": {
+   "map": 5,
+   "side": false,
+   "before": {
+    "lo": 9.5,
+    "hi": 90.5,
+    "chosenMean": 53.3,
+    "prog": 0
+   },
+   "after": {
+    "lo": 16.7,
+    "hi": 97.6,
+    "chosenMean": 56.9,
+    "prog": 2,
+    "progWin": [
+     "prog-3 88.1",
+     "prog-4 78.6"
+    ],
+    "progChosen": []
+   }
+  },
+  "ms": {
+   "map": 5,
+   "side": true,
+   "before": {
+    "lo": 0,
+    "hi": 83.3,
+    "chosenMean": 42.5,
+    "prog": 0
+   },
+   "after": {
+    "lo": 0,
+    "hi": 79.2,
+    "chosenMean": 40,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "m8": {
+   "map": 6,
+   "side": false,
+   "before": {
+    "lo": 35.4,
+    "hi": 97.9,
+    "chosenMean": 66.9,
+    "prog": 0
+   },
+   "after": {
+    "lo": 31.3,
+    "hi": 95.8,
+    "chosenMean": 65.6,
+    "prog": 1,
+    "progWin": [
+     "prog-4 87.5"
+    ],
+    "progChosen": [
+     "prog-4 rank 9"
+    ]
+   }
+  },
+  "mu": {
+   "map": 7,
+   "side": false,
+   "before": {
+    "lo": 8.3,
+    "hi": 94.4,
+    "chosenMean": 51.9,
+    "prog": 3
+   },
+   "after": {
+    "lo": 5.6,
+    "hi": 75,
+    "chosenMean": 34.5,
+    "prog": 4,
+    "progWin": [
+     "prog-1 75",
+     "prog-3 44.4",
+     "prog-4 72.2",
+     "prog-5 66.7"
+    ],
+    "progChosen": [
+     "prog-3 rank 8",
+     "prog-5 rank 9",
+     "prog-4 rank 10"
+    ]
+   }
+  },
+  "mz": {
+   "map": 7,
+   "side": true,
+   "before": {
+    "lo": 13.3,
+    "hi": 100,
+    "chosenMean": 56.7,
+    "prog": 1
+   },
+   "after": {
+    "lo": 10,
+    "hi": 93.3,
+    "chosenMean": 51.4,
+    "prog": 2,
+    "progWin": [
+     "prog-1 76.7",
+     "prog-4 93.3"
+    ],
+    "progChosen": [
+     "prog-1 rank 9",
+     "prog-4 rank 10"
+    ]
+   }
+  },
+  "m4": {
+   "map": 8,
+   "side": false,
+   "before": {
+    "lo": 56.3,
+    "hi": 100,
+    "chosenMean": 78.6,
+    "prog": 1
+   },
+   "after": {
+    "lo": 43.8,
+    "hi": 93.8,
+    "chosenMean": 69,
+    "prog": 2,
+    "progWin": [
+     "prog-1 79.2",
+     "prog-4 89.6"
+    ],
+    "progChosen": []
+   }
+  },
+  "mn": {
+   "map": 8,
+   "side": true,
+   "before": {
+    "lo": 37.5,
+    "hi": 87.5,
+    "chosenMean": 62.5,
+    "prog": 0
+   },
+   "after": {
+    "lo": 8.3,
+    "hi": 66.7,
+    "chosenMean": 37.9,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mk": {
+   "map": 9,
+   "side": false,
+   "before": {
+    "lo": 21.4,
+    "hi": 90.5,
+    "chosenMean": 56.9,
+    "prog": 2
+   },
+   "after": {
+    "lo": 26.2,
+    "hi": 92.9,
+    "chosenMean": 59.3,
+    "prog": 1,
+    "progWin": [
+     "prog-4 92.9"
+    ],
+    "progChosen": [
+     "prog-4 rank 10"
+    ]
+   }
+  },
+  "m7": {
+   "map": 10,
+   "side": false,
+   "before": {
+    "lo": 33.3,
+    "hi": 96.3,
+    "chosenMean": 68.3,
+    "prog": 1
+   },
+   "after": {
+    "lo": 13,
+    "hi": 98.1,
+    "chosenMean": 59.1,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mj": {
+   "map": 10,
+   "side": true,
+   "before": {
+    "lo": 43.3,
+    "hi": 100,
+    "chosenMean": 70.7,
+    "prog": 1
+   },
+   "after": {
+    "lo": 36.7,
+    "hi": 100,
+    "chosenMean": 68.7,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "m10": {
+   "map": 11,
+   "side": false,
+   "before": {
+    "lo": 16.7,
+    "hi": 93.3,
+    "chosenMean": 55.2,
+    "prog": 1
+   },
+   "after": {
+    "lo": 16.7,
+    "hi": 91.7,
+    "chosenMean": 55,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mv": {
+   "map": 11,
+   "side": true,
+   "before": {
+    "lo": 4.2,
+    "hi": 70.8,
+    "chosenMean": 37.5,
+    "prog": 0
+   },
+   "after": {
+    "lo": 8.3,
+    "hi": 75,
+    "chosenMean": 40.8,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mh": {
+   "map": 12,
+   "side": false,
+   "before": {
+    "lo": 0,
+    "hi": 97.6,
+    "chosenMean": 48.1,
+    "prog": 1
+   },
+   "after": {
+    "lo": 2.4,
+    "hi": 85.7,
+    "chosenMean": 45.7,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mr": {
+   "map": 13,
+   "side": false,
+   "before": {
+    "lo": 8.3,
+    "hi": 70.8,
+    "chosenMean": 39.2,
+    "prog": 0
+   },
+   "after": {
+    "lo": 6.3,
+    "hi": 95.8,
+    "chosenMean": 50.2,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "m5": {
+   "map": 14,
+   "side": false,
+   "before": {
+    "lo": 8.3,
+    "hi": 93.8,
+    "chosenMean": 50.8,
+    "prog": 0
+   },
+   "after": {
+    "lo": 20.8,
+    "hi": 87.5,
+    "chosenMean": 55.4,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "my": {
+   "map": 14,
+   "side": true,
+   "before": {
+    "lo": 10,
+    "hi": 86.7,
+    "chosenMean": 47,
+    "prog": 0
+   },
+   "after": {
+    "lo": 36.7,
+    "hi": 93.3,
+    "chosenMean": 65,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "ml": {
+   "map": 15,
+   "side": false,
+   "before": {
+    "lo": 9.5,
+    "hi": 69,
+    "chosenMean": 39.8,
+    "prog": 0
+   },
+   "after": {
+    "lo": 11.9,
+    "hi": 81,
+    "chosenMean": 46.4,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mt": {
+   "map": 16,
+   "side": false,
+   "before": {
+    "lo": 2.4,
+    "hi": 64.3,
+    "chosenMean": 32.9,
+    "prog": 0
+   },
+   "after": {
+    "lo": 0,
+    "hi": 57.1,
+    "chosenMean": 28.1,
+    "prog": 1,
+    "progWin": [
+     "prog-2 57.1"
+    ],
+    "progChosen": [
+     "prog-2 rank 10"
+    ]
+   }
+  },
+  "m6": {
+   "map": 17,
+   "side": false,
+   "before": {
+    "lo": 6.3,
+    "hi": 70.8,
+    "chosenMean": 38.3,
+    "prog": 0
+   },
+   "after": {
+    "lo": 10.4,
+    "hi": 87.5,
+    "chosenMean": 48.6,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mi": {
+   "map": 17,
+   "side": true,
+   "before": {
+    "lo": 0,
+    "hi": 75,
+    "chosenMean": 37.9,
+    "prog": 0
+   },
+   "after": {
+    "lo": 0,
+    "hi": 79.2,
+    "chosenMean": 39.6,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "md": {
+   "map": 18,
+   "side": false,
+   "before": {
+    "lo": 2.4,
+    "hi": 97.6,
+    "chosenMean": 49.8,
+    "prog": 0
+   },
+   "after": {
+    "lo": 2.4,
+    "hi": 92.9,
+    "chosenMean": 44.5,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mpd": {
+   "map": 18,
+   "side": true,
+   "before": {
+    "lo": 1.9,
+    "hi": 66.7,
+    "chosenMean": 33.9,
+    "prog": 0
+   },
+   "after": {
+    "lo": 18.5,
+    "hi": 72.2,
+    "chosenMean": 45,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "m3": {
+   "map": 19,
+   "side": false,
+   "before": {
+    "lo": 11.1,
+    "hi": 80.6,
+    "chosenMean": 45.6,
+    "prog": 0
+   },
+   "after": {
+    "lo": 0,
+    "hi": 72.2,
+    "chosenMean": 36.1,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "m9": {
+   "map": 19,
+   "side": true,
+   "before": {
+    "lo": 5,
+    "hi": 81.7,
+    "chosenMean": 43.2,
+    "prog": 0
+   },
+   "after": {
+    "lo": 33.3,
+    "hi": 88.3,
+    "chosenMean": 61,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "m11": {
+   "map": 20,
+   "side": false,
+   "before": {
+    "lo": 1.7,
+    "hi": 60,
+    "chosenMean": 30.8,
+    "prog": 0
+   },
+   "after": {
+    "lo": 8.3,
+    "hi": 85,
+    "chosenMean": 46.2,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "me": {
+   "map": 20,
+   "side": true,
+   "before": {
+    "lo": 7.1,
+    "hi": 69,
+    "chosenMean": 36.4,
+    "prog": 0
+   },
+   "after": {
+    "lo": 33.3,
+    "hi": 90.5,
+    "chosenMean": 62.6,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  },
+  "mx": {
+   "map": 20,
+   "side": true,
+   "before": {
+    "lo": 0,
+    "hi": 25,
+    "chosenMean": 12.5,
+    "prog": 0
+   },
+   "after": {
+    "lo": 20.8,
+    "hi": 95.8,
+    "chosenMean": 57.9,
+    "prog": 0,
+    "progWin": [],
+    "progChosen": []
+   }
+  }
+ }
+}
