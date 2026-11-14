@@ -4,6 +4,12 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**EDGE5-1. 13-7 a little too easy** · Decide · Balance · asked 2026-11-15
+- With every other proposed fix in, 13-7 still reads 70% against a target of 60 (band 52-68) on three seed sets. Swapping 2 Owl Nightwatch for 2 Fungus Gnat Cloud in the enemy deck gives 59 / 64 / 59, in band on all three. With EDGE1-4 too: main road 142/149 in band, 147 within 10, 1 beyond 20 (20-9). File: docs/balance/allfix/edge5-fixes.jsonl.
+  - a) Apply it with EDGE1-4
+  - b) Leave 13-7 as it is
+- **Default:** a
+
 **SIDE4-1. Ten side fights just outside band** · Decide · Balance · asked 2026-11-15
 - Ten side fights still sit 3-18 points outside band after SIDE3-1 (Maps 2, 7, 14, 18, 19, 20). Enemy deck changes put all ten in band on three fresh seed sets. 2-B-1 also needs Health 15 to 7 and Shield 0. 19-A-8 and 20-A-7 need Carried x2. With SIDE3-1 a: side 69/77 in band, 77 within 10, 0 beyond 20 (now 38/42/13). Files: docs/balance/side4p/.
   - a) All ten, with SIDE3-1 a
