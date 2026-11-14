@@ -178,7 +178,7 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 **SIDE2-2. Thin side lists lock many side decks** · Decide · Balance · asked 2026-11-13
-- With few own cards and K14 (Carried 1 copy each), many side decks have no room: 0-B-3, 2-A-6 and 14-A-5 can't be built; Clovermead, Lilypad Reach and The Canopy are stuck. Of 77 side fights in band: today 39 (mean gap 11.8); (a) 48 (9.4); (c) 47 (10.3); (a)+(c) 53 (7.9), 8 beyond 20, about 51 on fresh seeds. (a)+(c) builds 0-B-3 and 14-A-5 in band; 2-A-6 stays too hard. Bosses 10-A-5 and 18-A-9 still need SIDE2-4.
+- With few own cards and K14 (Carried 1 copy each), many side decks have no room: 0-B-3, 2-A-6 and 14-A-5 can't be built; Clovermead, Lilypad Reach and The Canopy are stuck. Of 77 side fights in band: today 39 (mean gap 11.8); (a) 48 (9.4); (c) 47 (10.3); (a)+(c) 53 (7.9), 8 beyond 20, about 51 on fresh seeds. (a)+(c) builds 0-B-3 and 14-A-5 in band; 2-A-6 stays too hard. Bosses 10-A-5 and 18-A-9 still need SIDE2-4. Four seed sets, SIDE2-2 e with SIDE2-4 e: side fights 54/77 in band, 60 within 10, 6 beyond 20 (now 38/42/13); docs/balance/side2p/.
   - a) Carried cards up to 2 copies on side maps
   - b) More own cards on the thinnest lists
   - c) Smaller side-map decks
@@ -193,7 +193,7 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 **SIDE2-4. Three side bosses stay too hard** · Decide · Balance · asked 2026-11-13
-- Too hard today (boss band 30-49): The Old Bramble 0-B-4 22%, The Sunken Depths 10-A-5 17%, The Pale Desert 18-A-9 26%. With SIDE2-2 e (WHATIF3, two seed sets): Old Bramble in band as is (41%); Sunken Depths Health 16 to 13 gives 38% (no level works); Pale Desert level 4 to 3 gives 37% (or Shield 41 to 29). Level 3 makes the Old Bramble too easy, so no single rule fits all three. Also 2-A-6 (band 52-68): Health 17 to 8 gives 59-62%; no deck move works.
+- Too hard today (boss band 30-49): The Old Bramble 0-B-4 22%, The Sunken Depths 10-A-5 17%, The Pale Desert 18-A-9 26%. With SIDE2-2 e: Old Bramble in band as is (41%); Sunken Depths Health 16 to 13 gives 38%; Pale Desert level 4 to 3 gives 37% (or Shield 41 to 29). No single rule fits all three. 2-A-6 (band 52-68): Health 17 to 8 gives 59-62%; no deck move works. Four seed sets, SIDE2-2 e with SIDE2-4 e: side fights 54/77 in band, 60 within 10, 6 beyond 20 (now 38/42/13).
   - a) Lower their bramble Health (the Pale Desert: its Shield)
   - b) A lower enemy level for these three
   - c) Leave them hard
