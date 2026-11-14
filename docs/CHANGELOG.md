@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package ENG-OD1 (SKW1's flag: On Death + Health buff on itself)
+- Rule fix: a unit at 0 Health is dead, so Buff and Buff Health skip it, as Heal and Shield already did. An On Death "+N Health on itself" no longer keeps the dying unit on the board (it used to stay at N Health while its card also went to the graveyard, a free Revive that died again every round), and such a unit no longer counts as alive for the next death in the same pass (no On Ally Die from it). On Death actions on other units still resolve; an Undead unit comes back at 1 Health with its printed Attack.
+- No live card carries an On Death self Buff, Heal or Shield, so no card plays differently (card matrix: 0 golden diffs). Test `tests/eng-od1-2026-11-14.js`.
+
 ## 2026-11-14 Package ART13 (owner 11-14 11:11: "cards like windfall do not have art yet")
 - Fifteen Environment cards that showed their emoji now have scenes: Windfall, Seasons, Quiet Contemplation and the twelve selfish boons (Blind Fury, Hive Chorus, Rising Tide, Second Burrow, Wild Rage, Snow Veil, Sand Veil, Restless Dead, Ember-born, Siege Train, Venom Glands, Sky Ambush). Painted in code like the other field scenes (`tools/make_field_art_2026_11_14.py`, `art/fields/*.png`); nothing replaced. A boon's tile finds its scene by the boon id.
 - Creature and spell cards: none missing (Sanderling, Roseate Spoonbill, Water Scorpion and Wallcreeper have had PixelLab art since ART5; only the test-* cards have none). Contact sheet: `docs/art/art13-fields-contact.png`.
