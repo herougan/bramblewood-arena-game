@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**EDGE4-1. Seven main fights just outside band** · Decide · Balance · asked 2026-11-15
+- These sit 2-9 points outside their band on all four seed sets: 4-5, 16-6, 17-4, 19-1, 19-3 too hard; 13-4, 13-5 too easy. Fixes are enemy deck changes, except 13-4 (Shield 64 only) and 13-5 (one swap plus Shield 37). All seven land in band on three fresh seed sets. With EDGE1-1, EDGE2-1 and EDGE3-1 too: main road 141/149 in band, 148 within 10, 1 beyond 20 (20-9; now 120/130/9). Fixes: docs/balance/allfix/edge4-fixes.jsonl.
+  - a) Apply all seven
+  - b) Deck changes only (skip the Shield ones, 13-4 and 13-5)
+  - c) Leave them
+- **Default:** a
+
 **EDGE3-1. Two main fights sitting at 20 off** · Decide · Balance · asked 2026-11-15
 - 2-2 (61% vs 80) and 8-7 (40% vs 60) are both too hard by 19-20 points on every seed set. Enemy deck changes: 2-2 swaps its Rock Pool Starfish and Pincushion Urchins for 3 Riverworks Bastion, giving 74-78% on three fresh seed sets (in band); 8-7 swaps 1 Giant Cave Huntsman for a Rot-Swollen Carcass, giving 51-56% (in band on two, within 10 on all). Fixes: docs/balance/allfix/edge3-fixes.jsonl.
   - a) Apply both
