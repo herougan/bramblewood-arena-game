@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package SKW2 (what +1 Attack is worth in Health at bramble 15; measurement only, nothing changed)
+- 17 commons in the Map reference decks against every road fight of Maps 3, 8, 13 and 18, bramble 15, about 405,000 paired games (`docs/balance/skw2/skw2-2026-11-14.md`, tool `tools/skw2/skw2.js`).
+- On average, +1 Attack = 2.9 Health (pooled, 95% 2.7-3.1; median 3.2), which is the budget's 3.
+- The rate follows the unit's Health / Attack (w ≈ 0.8 x H/A), not its cost: fragile hitters 0.8, walls above 10.
+- +1 Shield = 1.0 Health (the budget says 0.8).
+
 ## 2026-11-14 Package WHATIF3 (smallest lever for the fights still out under SIDE2-2 e; nothing applied)
 - The fights were measured on WHATIF2's a+c scratch copy, 400 games, on road and fresh seeds (`docs/balance/whatif3/whatif3-2026-11-14.md`).
 - Smallest levers in band on both seed sets:

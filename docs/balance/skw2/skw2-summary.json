@@ -1,0 +1,2845 @@
+{
+ "tool": "tools/skw2/skw2.js 1.0.0 (2026-11-14, SKW2)",
+ "generated": "2026-11-14T12:05:50.848Z",
+ "fingerprint": "919420caf9d7",
+ "budgetAttackWeight": 3,
+ "budgetShieldPerHealth": 0.8,
+ "design": {
+  "maps": [
+   3,
+   8,
+   13,
+   18
+  ],
+  "copies": 5,
+  "bramble": 15,
+  "h0": 6,
+  "hPoints": 4,
+  "shield": 3,
+  "boot": 1000
+ },
+ "groups": {
+  "all": {
+   "n": 68,
+   "pooled": 2.91,
+   "pooledLo": 2.74,
+   "pooledHi": 3.09,
+   "median": 3.15,
+   "medLo": 1.78,
+   "medHi": 5.48,
+   "q1": 0.82,
+   "q3": 26.26,
+   "shieldMedian": 1,
+   "gainA": 3.82
+  },
+  "cost 1-2": {
+   "n": 24,
+   "pooled": 3.06,
+   "pooledLo": 2.84,
+   "pooledHi": 3.3,
+   "median": 2.83,
+   "medLo": 1.96,
+   "medHi": 5.46,
+   "q1": 1.97,
+   "q3": 5.3,
+   "shieldMedian": 1,
+   "gainA": 6.41
+  },
+  "cost 3-4": {
+   "n": 24,
+   "pooled": 3.34,
+   "pooledLo": 3.05,
+   "pooledHi": 3.71,
+   "median": 5.83,
+   "medLo": 0.36,
+   "medHi": 52.76,
+   "q1": 0.26,
+   "q3": 58.35,
+   "shieldMedian": 0.99,
+   "gainA": 3.57
+  },
+  "cost 5-6": {
+   "n": 20,
+   "pooled": 1.5,
+   "pooledLo": 1.04,
+   "pooledHi": 2.05,
+   "median": 1.67,
+   "medLo": 0.29,
+   "medHi": 16.7,
+   "q1": 0.41,
+   "q3": 28.36,
+   "shieldMedian": 1,
+   "gainA": 1.02
+  },
+  "map 3": {
+   "n": 17,
+   "pooled": 2.67,
+   "pooledLo": 2.43,
+   "pooledHi": 2.94,
+   "median": 4,
+   "medLo": 1.3,
+   "medHi": 60,
+   "q1": 1.38,
+   "q3": 60,
+   "shieldMedian": 1,
+   "gainA": 5.21
+  },
+  "map 8": {
+   "n": 17,
+   "pooled": 3.22,
+   "pooledLo": 2.84,
+   "pooledHi": 3.7,
+   "median": 3.61,
+   "medLo": 1.56,
+   "medHi": 8.54,
+   "q1": 1.67,
+   "q3": 10.75,
+   "shieldMedian": 1,
+   "gainA": 3.17
+  },
+  "map 13": {
+   "n": 17,
+   "pooled": 4.45,
+   "pooledLo": 3.78,
+   "pooledHi": 5.31,
+   "median": 1.59,
+   "medLo": 0.02,
+   "medHi": 29.85,
+   "q1": 0.1,
+   "q3": 29.54,
+   "shieldMedian": 0.98,
+   "gainA": 2.78
+  },
+  "map 18": {
+   "n": 17,
+   "pooled": 2.43,
+   "pooledLo": 2.13,
+   "pooledHi": 2.72,
+   "median": 3.15,
+   "medLo": 0.61,
+   "medHi": 6.46,
+   "q1": 0.92,
+   "q3": 6.22,
+   "shieldMedian": 1.14,
+   "gainA": 4.12
+  },
+  "fragile (H<=5)": {
+   "n": 16,
+   "pooled": 0.82,
+   "pooledLo": 0.61,
+   "pooledHi": 1.01,
+   "median": 0.82,
+   "medLo": 0.17,
+   "medHi": 1.88,
+   "q1": 0.1,
+   "q3": 1.59,
+   "shieldMedian": 0.83,
+   "gainA": 2.21
+  },
+  "mid (H 6-12)": {
+   "n": 24,
+   "pooled": 2.71,
+   "pooledLo": 2.48,
+   "pooledHi": 2.97,
+   "median": 2.46,
+   "medLo": 1.5,
+   "medHi": 5.02,
+   "q1": 0.85,
+   "q3": 5.3,
+   "shieldMedian": 1.01,
+   "gainA": 4.82
+  },
+  "sturdy (H>=13)": {
+   "n": 28,
+   "pooled": 28.88,
+   "pooledLo": 20.83,
+   "pooledHi": 44.52,
+   "median": 28.36,
+   "medLo": 4.57,
+   "medHi": 60,
+   "q1": 4,
+   "q3": 60,
+   "shieldMedian": 1.25,
+   "gainA": 3.88
+  }
+ },
+ "dependence": {
+  "cost": {
+   "rho": 0,
+   "p": 0.99
+  },
+  "health": {
+   "rho": 0.78,
+   "p": 0
+  },
+  "attack": {
+   "rho": -0.54,
+   "p": 0.03
+  },
+  "healthAll": {
+   "rho": 0.62,
+   "p": 0
+  },
+  "costAll": {
+   "rho": -0.1,
+   "p": 0.44
+  },
+  "shape": {
+   "rhoHA": {
+    "rho": 0.72,
+    "p": 0
+   },
+   "fit": "w = 0.82 x (H/A)^1.01",
+   "n": 41,
+   "medianAllNoRage": 2.67,
+   "bands": [
+    {
+     "ha": "0-1.2",
+     "n": 20,
+     "median": 0.41
+    },
+    {
+     "ha": "1.2-3",
+     "n": 16,
+     "median": 2.46
+    },
+    {
+     "ha": "3-99",
+     "n": 28,
+     "median": 28.36
+    }
+   ]
+  }
+ },
+ "perUnit": [
+  {
+   "unit": "rivergate-recruit",
+   "cost": 1,
+   "health": 12,
+   "attack": 2,
+   "w": 5.3
+  },
+  {
+   "unit": "otter-ferryman",
+   "cost": 1,
+   "health": 7,
+   "attack": 3,
+   "w": 2.51
+  },
+  {
+   "unit": "jackrabbit-sprinter",
+   "cost": 1,
+   "health": 3,
+   "attack": 3,
+   "w": 2.6
+  },
+  {
+   "unit": "hollow-oath-keeper",
+   "cost": 2,
+   "health": 13,
+   "attack": 3,
+   "w": 60
+  },
+  {
+   "unit": "raft-spider",
+   "cost": 2,
+   "health": 8,
+   "attack": 3,
+   "w": 2.46
+  },
+  {
+   "unit": "dominion-nestguard",
+   "cost": 2,
+   "health": 4,
+   "attack": 3,
+   "w": 1.38
+  },
+  {
+   "unit": "pufferfish-bulwark",
+   "cost": 3,
+   "health": 18,
+   "attack": 1,
+   "w": 55.06
+  },
+  {
+   "unit": "berserker-boar",
+   "cost": 3,
+   "health": 9,
+   "attack": 3,
+   "w": 60
+  },
+  {
+   "unit": "boreal-elk",
+   "cost": 3,
+   "health": 4,
+   "attack": 5,
+   "w": 0.26
+  },
+  {
+   "unit": "warhorse-charger",
+   "cost": 4,
+   "health": 19,
+   "attack": 4,
+   "w": 60
+  },
+  {
+   "unit": "stag-knight",
+   "cost": 4,
+   "health": 14,
+   "attack": 5,
+   "w": 4
+  },
+  {
+   "unit": "fox-warchief",
+   "cost": 4,
+   "health": 5,
+   "attack": 5,
+   "w": 0
+  },
+  {
+   "unit": "stoneheart-golem",
+   "cost": 5,
+   "health": 23,
+   "attack": 3,
+   "w": 60
+  },
+  {
+   "unit": "war-panther",
+   "cost": 5,
+   "health": 18,
+   "attack": 5,
+   "w": 14
+  },
+  {
+   "unit": "alpha-howler",
+   "cost": 5,
+   "health": 7,
+   "attack": 7,
+   "w": 0.17
+  },
+  {
+   "unit": "humpback-elder",
+   "cost": 6,
+   "health": 18,
+   "attack": 2,
+   "w": 28.36
+  },
+  {
+   "unit": "orca-vanguard",
+   "cost": 6,
+   "health": 7,
+   "attack": 7,
+   "w": 0.64
+  }
+ ],
+ "rows": [
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "rivergate-recruit",
+   "cost": 1,
+   "lumber": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 12,
+   "effects": [],
+   "games": 896,
+   "base": 59.26,
+   "gainA": 13.06,
+   "gainALo": 10.04,
+   "gainAHi": 16.29,
+   "hs": [
+    3,
+    5,
+    6
+   ],
+   "gainsH": [
+    9.71,
+    12.72,
+    13.84
+   ],
+   "w": 5.3,
+   "cens": "",
+   "wLo": 3.68,
+   "wHi": 6.92,
+   "wLin": 5.2,
+   "gainS": 10.16,
+   "shieldH": 1.1,
+   "shieldLo": 0.96,
+   "shieldHi": 1.36
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "otter-ferryman",
+   "cost": 1,
+   "lumber": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "effects": [
+    "tide"
+   ],
+   "games": 896,
+   "base": 65.85,
+   "gainA": 6.92,
+   "gainALo": 3.79,
+   "gainAHi": 9.82,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    3.46,
+    8.04,
+    11.72,
+    19.75
+   ],
+   "w": 1.76,
+   "cens": "",
+   "wLo": 1.21,
+   "wHi": 2.36,
+   "wLin": 2,
+   "gainS": 11.94,
+   "shieldH": 1.03,
+   "shieldLo": 0.95,
+   "shieldHi": 1.13
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "jackrabbit-sprinter",
+   "cost": 1,
+   "lumber": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 3,
+   "effects": [
+    "quick"
+   ],
+   "games": 896,
+   "base": 55.92,
+   "gainA": 9.49,
+   "gainALo": 6.7,
+   "gainAHi": 12.39,
+   "hs": [
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    7.14,
+    11.05,
+    19.53
+   ],
+   "w": 2.6,
+   "cens": "",
+   "wLo": 1.85,
+   "wHi": 3.35,
+   "wLin": 2.82,
+   "gainS": 12.5,
+   "shieldH": 1.17,
+   "shieldLo": 0.98,
+   "shieldHi": 1.37
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "hollow-oath-keeper",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 13,
+   "effects": [],
+   "games": 896,
+   "base": 36.72,
+   "gainA": 5.92,
+   "gainALo": 3.68,
+   "gainAHi": 8.04,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    1,
+    1.67,
+    1.9
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 31.64,
+   "wHi": 60,
+   "wLin": 62.41,
+   "gainS": 0.78,
+   "shieldH": 1.56,
+   "shieldLo": 0,
+   "shieldHi": 20
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "raft-spider",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "effects": [
+    "tide"
+   ],
+   "games": 896,
+   "base": 60.71,
+   "gainA": 8.93,
+   "gainALo": 6.14,
+   "gainAHi": 11.61,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    4.58,
+    9.04,
+    11.83,
+    18.08
+   ],
+   "w": 1.97,
+   "cens": "",
+   "wLo": 1.47,
+   "wHi": 2.8,
+   "wLin": 2.68,
+   "gainS": 11.83,
+   "shieldH": 1,
+   "shieldLo": 0.95,
+   "shieldHi": 1.05
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "dominion-nestguard",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 4,
+   "effects": [
+    "flying"
+   ],
+   "games": 896,
+   "base": 49.67,
+   "gainA": 5.02,
+   "gainALo": 2.23,
+   "gainAHi": 7.92,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    4.13,
+    6.47,
+    15.4,
+    29.91
+   ],
+   "w": 1.38,
+   "cens": "",
+   "wLo": 0.62,
+   "wHi": 2.13,
+   "wLin": 1.03,
+   "gainS": 15.4,
+   "shieldH": 1,
+   "shieldLo": 0.94,
+   "shieldHi": 1.11
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "pufferfish-bulwark",
+   "cost": 3,
+   "lumber": 1,
+   "wait": 2,
+   "attack": 1,
+   "health": 18,
+   "effects": [
+    "tide"
+   ],
+   "games": 896,
+   "base": 52.46,
+   "gainA": 13.06,
+   "gainALo": 10.6,
+   "gainAHi": 15.51,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    3.35,
+    5.02,
+    5.69
+   ],
+   "w": 55.06,
+   "cens": ">",
+   "wLo": 40.9,
+   "wHi": 60,
+   "wLin": 45.5,
+   "gainS": 1,
+   "shieldH": 0.6,
+   "shieldLo": 0,
+   "shieldHi": 1.28
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "berserker-boar",
+   "cost": 3,
+   "lumber": 2,
+   "wait": 1,
+   "attack": 3,
+   "health": 9,
+   "effects": [
+    "rage"
+   ],
+   "games": 896,
+   "base": 59.38,
+   "gainA": 4.69,
+   "gainALo": 2.01,
+   "gainAHi": 7.48,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    1.67,
+    0.33,
+    -8.26
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 60,
+   "wHi": 60,
+   "wLin": null,
+   "gainS": -3.24,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 0
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "boreal-elk",
+   "cost": 3,
+   "lumber": 2,
+   "wait": 1,
+   "attack": 5,
+   "health": 4,
+   "effects": [
+    "sweep",
+    "riled"
+   ],
+   "games": 896,
+   "base": 48.44,
+   "gainA": 2.9,
+   "gainALo": 1.34,
+   "gainAHi": 4.46,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    9.49,
+    17.19,
+    22.54,
+    30.58
+   ],
+   "w": 0.31,
+   "cens": "",
+   "wLo": 0.15,
+   "wHi": 0.49,
+   "wLin": 0.49,
+   "gainS": 14.73,
+   "shieldH": 0.56,
+   "shieldLo": 0.47,
+   "shieldHi": 0.65
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "warhorse-charger",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 19,
+   "effects": [],
+   "games": 896,
+   "base": 54.24,
+   "gainA": 3.79,
+   "gainALo": 2.01,
+   "gainAHi": 5.69,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    -3.91,
+    -3.46,
+    -3.46
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 60,
+   "wHi": 60,
+   "wLin": null,
+   "gainS": 1,
+   "shieldH": 20,
+   "shieldLo": 20,
+   "shieldHi": 20
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "stag-knight",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 14,
+   "effects": [],
+   "games": 896,
+   "base": 55.36,
+   "gainA": 2.34,
+   "gainALo": 0.45,
+   "gainAHi": 4.02,
+   "hs": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "gainsH": [
+    1.79,
+    2.34,
+    2.68,
+    3.01
+   ],
+   "w": 4,
+   "cens": "",
+   "wLo": 0.83,
+   "wHi": 9,
+   "wLin": 4.36,
+   "gainS": 1.79,
+   "shieldH": 1,
+   "shieldLo": 1,
+   "shieldHi": 1
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "fox-warchief",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 5,
+   "effects": [
+    "sweep"
+   ],
+   "games": 896,
+   "base": 44.31,
+   "gainA": -0.67,
+   "gainALo": -2.68,
+   "gainAHi": 1.56,
+   "hs": [
+    6
+   ],
+   "gainsH": [
+    23.33
+   ],
+   "w": 0,
+   "cens": "<",
+   "wLo": 0,
+   "wHi": 0.39,
+   "wLin": -0.17,
+   "gainS": 11.5,
+   "shieldH": 0.99,
+   "shieldLo": 0.81,
+   "shieldHi": 1.13
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "stoneheart-golem",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 3,
+   "health": 23,
+   "effects": [],
+   "games": 896,
+   "base": 45.76,
+   "gainA": 5.02,
+   "gainALo": 3.24,
+   "gainAHi": 6.92,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    -6.03,
+    -5.92,
+    -5.92
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 60,
+   "wHi": 60,
+   "wLin": null,
+   "gainS": -6.36,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 0
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "war-panther",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 5,
+   "health": 18,
+   "effects": [],
+   "games": 896,
+   "base": 52.23,
+   "gainA": 1.45,
+   "gainALo": -0.33,
+   "gainAHi": 3.35,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    -3.91,
+    -3.68,
+    -3.68
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 0,
+   "wHi": 60,
+   "wLin": null,
+   "gainS": 0.67,
+   "shieldH": 20,
+   "shieldLo": 0,
+   "shieldHi": 20
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "alpha-howler",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 7,
+   "health": 7,
+   "effects": [
+    "sweep"
+   ],
+   "games": 896,
+   "base": 38.62,
+   "gainA": 3.68,
+   "gainALo": 2.34,
+   "gainAHi": 5.25,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    4.35,
+    8.37,
+    13.73,
+    21.54
+   ],
+   "w": 0.85,
+   "cens": "",
+   "wLo": 0.5,
+   "wHi": 1.3,
+   "wLin": 0.96,
+   "gainS": 13.84,
+   "shieldH": 1.01,
+   "shieldLo": 1,
+   "shieldHi": 1.05
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "humpback-elder",
+   "cost": 6,
+   "lumber": 3,
+   "wait": 3,
+   "attack": 2,
+   "health": 18,
+   "effects": [
+    "inspiring",
+    "tide"
+   ],
+   "games": 896,
+   "base": 29.13,
+   "gainA": 1.45,
+   "gainALo": 0.33,
+   "gainAHi": 2.68,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    0.78,
+    1,
+    1.23
+   ],
+   "w": 28.36,
+   "cens": ">",
+   "wLo": 2.4,
+   "wHi": 60,
+   "wLin": 23.74,
+   "gainS": 0.11,
+   "shieldH": 0.29,
+   "shieldLo": 0,
+   "shieldHi": 1.4
+  },
+  {
+   "map": 3,
+   "level": 0,
+   "unit": "orca-vanguard",
+   "cost": 6,
+   "lumber": 3,
+   "wait": 3,
+   "attack": 7,
+   "health": 7,
+   "effects": [
+    "sweep",
+    "tide"
+   ],
+   "games": 896,
+   "base": 26.67,
+   "gainA": 1.56,
+   "gainALo": 0.45,
+   "gainAHi": 2.57,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    2.46,
+    4.69,
+    6.58,
+    11.94
+   ],
+   "w": 0.64,
+   "cens": "",
+   "wLo": 0.18,
+   "wHi": 1.27,
+   "wLin": 0.76,
+   "gainS": 6.7,
+   "shieldH": 1.02,
+   "shieldLo": 1,
+   "shieldHi": 1.07
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "rivergate-recruit",
+   "cost": 1,
+   "lumber": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 12,
+   "effects": [],
+   "games": 1024,
+   "base": 62.4,
+   "gainA": 8.69,
+   "gainALo": 6.54,
+   "gainAHi": 11.04,
+   "hs": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "gainsH": [
+    6.84,
+    9.86,
+    10.35,
+    10.64
+   ],
+   "w": 3.61,
+   "cens": "",
+   "wLo": 2.85,
+   "wHi": 6.2,
+   "wLin": 4.26,
+   "gainS": 6.84,
+   "shieldH": 1,
+   "shieldLo": 1,
+   "shieldHi": 1
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "otter-ferryman",
+   "cost": 1,
+   "lumber": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "effects": [
+    "tide"
+   ],
+   "games": 1024,
+   "base": 56.05,
+   "gainA": 8.79,
+   "gainALo": 6.35,
+   "gainAHi": 11.43,
+   "hs": [
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    6.64,
+    10.84,
+    16.21
+   ],
+   "w": 2.51,
+   "cens": "",
+   "wLo": 1.95,
+   "wHi": 3.16,
+   "wLin": 3.01,
+   "gainS": 10.84,
+   "shieldH": 1,
+   "shieldLo": 1,
+   "shieldHi": 1
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "jackrabbit-sprinter",
+   "cost": 1,
+   "lumber": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 3,
+   "effects": [
+    "quick"
+   ],
+   "games": 1024,
+   "base": 44.24,
+   "gainA": 4.79,
+   "gainALo": 2.44,
+   "gainAHi": 7.23,
+   "hs": [
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    3.32,
+    5.08,
+    8.5
+   ],
+   "w": 2.83,
+   "cens": "",
+   "wLo": 1.57,
+   "wHi": 5.06,
+   "wLin": 3.22,
+   "gainS": 4.69,
+   "shieldH": 0.93,
+   "shieldLo": 0.46,
+   "shieldHi": 1.16
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "hollow-oath-keeper",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 13,
+   "effects": [],
+   "games": 1024,
+   "base": 30.08,
+   "gainA": 7.13,
+   "gainALo": 5.27,
+   "gainAHi": 9.18,
+   "hs": [
+    6,
+    9,
+    11,
+    12
+   ],
+   "gainsH": [
+    4,
+    6.45,
+    7.23,
+    7.91
+   ],
+   "w": 10.75,
+   "cens": "",
+   "wLo": 6.94,
+   "wHi": 15.04,
+   "wLin": 10.62,
+   "gainS": 3.22,
+   "shieldH": 1.61,
+   "shieldLo": 1,
+   "shieldHi": 2.4
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "raft-spider",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "effects": [
+    "tide"
+   ],
+   "games": 1024,
+   "base": 40.82,
+   "gainA": 6.64,
+   "gainALo": 4.2,
+   "gainAHi": 9.28,
+   "hs": [
+    3,
+    5,
+    6
+   ],
+   "gainsH": [
+    4.1,
+    6.05,
+    6.64
+   ],
+   "w": 6,
+   "cens": "",
+   "wLo": 3.42,
+   "wHi": 8.93,
+   "wLin": 5.64,
+   "gainS": 4.2,
+   "shieldH": 1.03,
+   "shieldLo": 0.94,
+   "shieldHi": 1.27
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "dominion-nestguard",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 4,
+   "effects": [
+    "flying"
+   ],
+   "games": 1024,
+   "base": 43.16,
+   "gainA": 6.84,
+   "gainALo": 4.2,
+   "gainAHi": 9.28,
+   "hs": [
+    3,
+    5,
+    6
+   ],
+   "gainsH": [
+    6.64,
+    6.74,
+    7.23
+   ],
+   "w": 5.2,
+   "cens": "",
+   "wLo": 2.17,
+   "wHi": 7.75,
+   "wLin": 4.93,
+   "gainS": 5.57,
+   "shieldH": 0.84,
+   "shieldLo": 0.64,
+   "shieldHi": 2.03
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "pufferfish-bulwark",
+   "cost": 3,
+   "lumber": 1,
+   "wait": 2,
+   "attack": 1,
+   "health": 18,
+   "effects": [
+    "tide"
+   ],
+   "games": 1024,
+   "base": 41.7,
+   "gainA": 3.52,
+   "gainALo": 1.56,
+   "gainAHi": 5.76,
+   "hs": [
+    3,
+    5,
+    6
+   ],
+   "gainsH": [
+    2.15,
+    3.03,
+    3.61
+   ],
+   "w": 5.83,
+   "cens": "",
+   "wLo": 2.36,
+   "wHi": 10.5,
+   "wLin": 5.69,
+   "gainS": 2.54,
+   "shieldH": 1.3,
+   "shieldLo": 0.92,
+   "shieldHi": 2
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "berserker-boar",
+   "cost": 3,
+   "lumber": 2,
+   "wait": 1,
+   "attack": 3,
+   "health": 9,
+   "effects": [
+    "rage"
+   ],
+   "games": 1024,
+   "base": 41.99,
+   "gainA": 1.66,
+   "gainALo": -0.1,
+   "gainAHi": 3.71,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    -1.17,
+    0.39,
+    -1.07
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 0,
+   "wHi": 60,
+   "wLin": null,
+   "gainS": -5.86,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 0
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "boreal-elk",
+   "cost": 3,
+   "lumber": 2,
+   "wait": 1,
+   "attack": 5,
+   "health": 4,
+   "effects": [
+    "sweep",
+    "riled"
+   ],
+   "games": 1024,
+   "base": 35.94,
+   "gainA": 1.17,
+   "gainALo": 0,
+   "gainAHi": 2.34,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    4.49,
+    6.05,
+    8.59,
+    15.33
+   ],
+   "w": 0.26,
+   "cens": "",
+   "wLo": 0,
+   "wHi": 0.56,
+   "wLin": 0.44,
+   "gainS": 5.66,
+   "shieldH": 0.58,
+   "shieldLo": 0.31,
+   "shieldHi": 0.78
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "warhorse-charger",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 19,
+   "effects": [],
+   "games": 1024,
+   "base": 35.74,
+   "gainA": 5.08,
+   "gainALo": 3.32,
+   "gainAHi": 6.84,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    -1.07,
+    1.27,
+    2.05
+   ],
+   "w": 59.43,
+   "cens": ">",
+   "wLo": 26.5,
+   "wHi": 60,
+   "wLin": 66.18,
+   "gainS": 1.17,
+   "shieldH": 3.89,
+   "shieldLo": 2.11,
+   "shieldHi": 20
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "stag-knight",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 14,
+   "effects": [],
+   "games": 1024,
+   "base": 37.3,
+   "gainA": 2.83,
+   "gainALo": 1.46,
+   "gainAHi": 4.3,
+   "hs": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "gainsH": [
+    2.73,
+    3.03,
+    3.52,
+    3.71
+   ],
+   "w": 3.33,
+   "cens": "",
+   "wLo": 1.5,
+   "wHi": 7.8,
+   "wLin": 4.05,
+   "gainS": 2.73,
+   "shieldH": 1,
+   "shieldLo": 1,
+   "shieldHi": 1.42
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "fox-warchief",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 5,
+   "effects": [
+    "sweep"
+   ],
+   "games": 1024,
+   "base": 40.14,
+   "gainA": -7.62,
+   "gainALo": -10.35,
+   "gainAHi": -4.98,
+   "hs": [
+    6
+   ],
+   "gainsH": [
+    2.83
+   ],
+   "w": 0,
+   "cens": "<",
+   "wLo": 0,
+   "wHi": 0,
+   "wLin": -16.14,
+   "gainS": -3.42,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 0
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "stoneheart-golem",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 3,
+   "health": 23,
+   "effects": [],
+   "games": 1024,
+   "base": 37.11,
+   "gainA": 0.29,
+   "gainALo": -0.78,
+   "gainAHi": 1.46,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    -4.39,
+    -4.2,
+    -3.12
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 0,
+   "wHi": 60,
+   "wLin": null,
+   "gainS": -4.59,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 0
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "war-panther",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 5,
+   "health": 18,
+   "effects": [],
+   "games": 1024,
+   "base": 35.84,
+   "gainA": 2.15,
+   "gainALo": 0.98,
+   "gainAHi": 3.42,
+   "hs": [
+    6,
+    12,
+    18,
+    24
+   ],
+   "gainsH": [
+    -0.68,
+    1.56,
+    3.32,
+    4.2
+   ],
+   "w": 14,
+   "cens": "",
+   "wLo": 6.72,
+   "wHi": 30,
+   "wLin": 13.24,
+   "gainS": 1.46,
+   "shieldH": 3.9,
+   "shieldLo": 1.9,
+   "shieldHi": 6.6
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "alpha-howler",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 7,
+   "health": 7,
+   "effects": [
+    "sweep"
+   ],
+   "games": 1024,
+   "base": 31.84,
+   "gainA": 0.29,
+   "gainALo": -0.78,
+   "gainAHi": 1.37,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    1.76,
+    3.71,
+    5.47,
+    8.98
+   ],
+   "w": 0.17,
+   "cens": "",
+   "wLo": 0,
+   "wHi": 0.85,
+   "wLin": 0.18,
+   "gainS": 5.47,
+   "shieldH": 1,
+   "shieldLo": 1,
+   "shieldHi": 1
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "humpback-elder",
+   "cost": 6,
+   "lumber": 3,
+   "wait": 3,
+   "attack": 2,
+   "health": 18,
+   "effects": [
+    "inspiring",
+    "tide"
+   ],
+   "games": 1024,
+   "base": 25.88,
+   "gainA": 0.78,
+   "gainALo": 0,
+   "gainAHi": 1.66,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    0.59,
+    0.88,
+    1.17,
+    2.15
+   ],
+   "w": 1.67,
+   "cens": "",
+   "wLo": 0,
+   "wHi": 5,
+   "wLin": 2.08,
+   "gainS": 1.17,
+   "shieldH": 1,
+   "shieldLo": 0.58,
+   "shieldHi": 1
+  },
+  {
+   "map": 8,
+   "level": 0,
+   "unit": "orca-vanguard",
+   "cost": 6,
+   "lumber": 3,
+   "wait": 3,
+   "attack": 7,
+   "health": 7,
+   "effects": [
+    "sweep",
+    "tide"
+   ],
+   "games": 1024,
+   "base": 25.68,
+   "gainA": 0.88,
+   "gainALo": 0.29,
+   "gainAHi": 1.56,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    0.59,
+    1.07,
+    2.64,
+    3.52
+   ],
+   "w": 1.6,
+   "cens": "",
+   "wLo": 0.31,
+   "wHi": 2.69,
+   "wLin": 1.38,
+   "gainS": 2.64,
+   "shieldH": 1,
+   "shieldLo": 1,
+   "shieldHi": 2.06
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "rivergate-recruit",
+   "cost": 1,
+   "lumber": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 12,
+   "effects": [],
+   "games": 1024,
+   "base": 90.92,
+   "gainA": 5.66,
+   "gainALo": 4,
+   "gainAHi": 7.32,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    4.59,
+    4.98,
+    5.18
+   ],
+   "w": 26.26,
+   "cens": ">",
+   "wLo": 5.88,
+   "wHi": 32.78,
+   "wLin": 20.24,
+   "gainS": 4.2,
+   "shieldH": 1.83,
+   "shieldLo": 1.54,
+   "shieldHi": 3.5
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "otter-ferryman",
+   "cost": 1,
+   "lumber": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "effects": [
+    "tide"
+   ],
+   "games": 1024,
+   "base": 86.91,
+   "gainA": 6.54,
+   "gainALo": 4.79,
+   "gainAHi": 8.3,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    2.15,
+    8.3,
+    8.69,
+    10.45
+   ],
+   "w": 1.71,
+   "cens": "",
+   "wLo": 1.47,
+   "wHi": 1.94,
+   "wLin": 3.04,
+   "gainS": 8.98,
+   "shieldH": 1.17,
+   "shieldLo": 1,
+   "shieldHi": 1.38
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "jackrabbit-sprinter",
+   "cost": 1,
+   "lumber": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 3,
+   "effects": [
+    "quick"
+   ],
+   "games": 1024,
+   "base": 72.27,
+   "gainA": 3.52,
+   "gainALo": 1.76,
+   "gainAHi": 5.18,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    0.59,
+    5.57,
+    7.42,
+    10.16
+   ],
+   "w": 1.59,
+   "cens": "",
+   "wLo": 1.24,
+   "wHi": 1.95,
+   "wLin": 1.85,
+   "gainS": 4.79,
+   "shieldH": 0.61,
+   "shieldLo": 0.51,
+   "shieldHi": 0.8
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "hollow-oath-keeper",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 13,
+   "effects": [],
+   "games": 1024,
+   "base": 49.12,
+   "gainA": 5.96,
+   "gainALo": 3.42,
+   "gainAHi": 8.98,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    -2.25,
+    -0.2,
+    0.29
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 49.07,
+   "wHi": 60,
+   "wLin": null,
+   "gainS": -4.49,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 0
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "raft-spider",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "effects": [
+    "tide"
+   ],
+   "games": 1024,
+   "base": 70.02,
+   "gainA": 1.86,
+   "gainALo": -0.39,
+   "gainAHi": 4.1,
+   "hs": [
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    0.59,
+    5.27,
+    9.18
+   ],
+   "w": 2.27,
+   "cens": "",
+   "wLo": 0,
+   "wHi": 2.66,
+   "wLin": 1.26,
+   "gainS": 5.08,
+   "shieldH": 0.99,
+   "shieldLo": 0.88,
+   "shieldHi": 1.23
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "dominion-nestguard",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 4,
+   "effects": [
+    "flying"
+   ],
+   "games": 1024,
+   "base": 63.96,
+   "gainA": 1.37,
+   "gainALo": 0.29,
+   "gainAHi": 2.54,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    4.2,
+    5.37,
+    7.71,
+    9.08
+   ],
+   "w": 0.33,
+   "cens": "",
+   "wLo": 0.06,
+   "wHi": 0.64,
+   "wLin": 0.74,
+   "gainS": 5.96,
+   "shieldH": 0.75,
+   "shieldLo": 0.33,
+   "shieldHi": 0.94
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "pufferfish-bulwark",
+   "cost": 3,
+   "lumber": 1,
+   "wait": 2,
+   "attack": 1,
+   "health": 18,
+   "effects": [
+    "tide"
+   ],
+   "games": 1024,
+   "base": 37.7,
+   "gainA": 24.22,
+   "gainALo": 21.58,
+   "gainAHi": 27.25,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    6.54,
+    8.3,
+    9.96
+   ],
+   "w": 58.35,
+   "cens": ">",
+   "wLo": 48.63,
+   "wHi": 60,
+   "wLin": 48.45,
+   "gainS": 5.57,
+   "shieldH": 1.7,
+   "shieldLo": 1.4,
+   "shieldHi": 1.97
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "berserker-boar",
+   "cost": 3,
+   "lumber": 2,
+   "wait": 1,
+   "attack": 3,
+   "health": 9,
+   "effects": [
+    "rage"
+   ],
+   "games": 1024,
+   "base": 68.07,
+   "gainA": 1.46,
+   "gainALo": 0.39,
+   "gainAHi": 2.54,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    -0.1,
+    -11.13,
+    -18.75
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 60,
+   "wHi": 60,
+   "wLin": null,
+   "gainS": -0.78,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 20
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "boreal-elk",
+   "cost": 3,
+   "lumber": 2,
+   "wait": 1,
+   "attack": 5,
+   "health": 4,
+   "effects": [
+    "sweep",
+    "riled"
+   ],
+   "games": 1024,
+   "base": 65.04,
+   "gainA": 0.39,
+   "gainALo": -0.39,
+   "gainAHi": 1.27,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    3.81,
+    4.59,
+    6.84,
+    12.5
+   ],
+   "w": 0.1,
+   "cens": "",
+   "wLo": 0,
+   "wHi": 0.35,
+   "wLin": 0.18,
+   "gainS": 5.47,
+   "shieldH": 0.8,
+   "shieldLo": 0.59,
+   "shieldHi": 0.91
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "warhorse-charger",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 19,
+   "effects": [],
+   "games": 1024,
+   "base": 52.34,
+   "gainA": 4.88,
+   "gainALo": 3.32,
+   "gainAHi": 6.35,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    -4.3,
+    -3.71,
+    -3.71
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 60,
+   "wHi": 60,
+   "wLin": null,
+   "gainS": 1.66,
+   "shieldH": 20,
+   "shieldLo": 20,
+   "shieldHi": 20
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "stag-knight",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 14,
+   "effects": [],
+   "games": 1024,
+   "base": 60.84,
+   "gainA": -2.93,
+   "gainALo": -5.47,
+   "gainAHi": -0.2,
+   "hs": [
+    6
+   ],
+   "gainsH": [
+    -2.64
+   ],
+   "w": 0,
+   "cens": "<",
+   "wLo": 0,
+   "wHi": 0,
+   "wLin": null,
+   "gainS": -4.3,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 0
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "fox-warchief",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 5,
+   "effects": [
+    "sweep"
+   ],
+   "games": 1024,
+   "base": 66.31,
+   "gainA": -1.07,
+   "gainALo": -1.95,
+   "gainAHi": -0.2,
+   "hs": [
+    6
+   ],
+   "gainsH": [
+    4.49
+   ],
+   "w": 0,
+   "cens": "<",
+   "wLo": 0,
+   "wHi": 0,
+   "wLin": -1.43,
+   "gainS": 3.03,
+   "shieldH": 1.35,
+   "shieldLo": 1,
+   "shieldHi": 1.69
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "stoneheart-golem",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 3,
+   "health": 23,
+   "effects": [],
+   "games": 1024,
+   "base": 45.61,
+   "gainA": -3.81,
+   "gainALo": -6.15,
+   "gainAHi": -1.56,
+   "hs": [
+    6
+   ],
+   "gainsH": [
+    -7.81
+   ],
+   "w": 0,
+   "cens": "<",
+   "wLo": 0,
+   "wHi": 0,
+   "wLin": null,
+   "gainS": -7.81,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 0
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "war-panther",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 5,
+   "health": 18,
+   "effects": [],
+   "games": 1024,
+   "base": 49.9,
+   "gainA": -4.2,
+   "gainALo": -6.45,
+   "gainAHi": -1.95,
+   "hs": [
+    6
+   ],
+   "gainsH": [
+    -3.52
+   ],
+   "w": 0,
+   "cens": "<",
+   "wLo": 0,
+   "wHi": 0,
+   "wLin": null,
+   "gainS": -4.39,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 0
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "alpha-howler",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 7,
+   "health": 7,
+   "effects": [
+    "sweep"
+   ],
+   "games": 1024,
+   "base": 49.8,
+   "gainA": 0.59,
+   "gainALo": -1.17,
+   "gainAHi": 2.34,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    3.81,
+    4.3,
+    7.32,
+    7.13
+   ],
+   "w": 0.15,
+   "cens": "",
+   "wLo": 0,
+   "wHi": 0.55,
+   "wLin": 0.38,
+   "gainS": 7.03,
+   "shieldH": 0.98,
+   "shieldLo": 0.92,
+   "shieldHi": 2.3
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "humpback-elder",
+   "cost": 6,
+   "lumber": 3,
+   "wait": 3,
+   "attack": 2,
+   "health": 18,
+   "effects": [
+    "inspiring",
+    "tide"
+   ],
+   "games": 1024,
+   "base": 26.17,
+   "gainA": 1.56,
+   "gainALo": 0.59,
+   "gainAHi": 2.64,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    0.78,
+    1.07,
+    1.27
+   ],
+   "w": 29.54,
+   "cens": ">",
+   "wLo": 3.75,
+   "wHi": 60,
+   "wLin": 24.59,
+   "gainS": 0.49,
+   "shieldH": 1.25,
+   "shieldLo": 0,
+   "shieldHi": 2
+  },
+  {
+   "map": 13,
+   "level": 3,
+   "unit": "orca-vanguard",
+   "cost": 6,
+   "lumber": 3,
+   "wait": 3,
+   "attack": 7,
+   "health": 7,
+   "effects": [
+    "sweep",
+    "tide"
+   ],
+   "games": 1024,
+   "base": 26.86,
+   "gainA": 1.27,
+   "gainALo": 0.29,
+   "gainAHi": 2.25,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    3.13,
+    3.13,
+    4.49,
+    6.84
+   ],
+   "w": 0.41,
+   "cens": "",
+   "wLo": 0.11,
+   "wHi": 0.75,
+   "wLin": 0.99,
+   "gainS": 4.49,
+   "shieldH": 1,
+   "shieldLo": 0.91,
+   "shieldHi": 1.11
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "rivergate-recruit",
+   "cost": 1,
+   "lumber": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 12,
+   "effects": [],
+   "games": 896,
+   "base": 46.88,
+   "gainA": 11.94,
+   "gainALo": 9.15,
+   "gainAHi": 14.73,
+   "hs": [
+    3,
+    5,
+    6
+   ],
+   "gainsH": [
+    7.25,
+    11.16,
+    15.85
+   ],
+   "w": 5.17,
+   "cens": "",
+   "wLo": 4.03,
+   "wHi": 5.8,
+   "wLin": 4.84,
+   "gainS": 9.38,
+   "shieldH": 1.36,
+   "shieldLo": 1.12,
+   "shieldHi": 1.68
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "otter-ferryman",
+   "cost": 1,
+   "lumber": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "effects": [
+    "tide"
+   ],
+   "games": 896,
+   "base": 37.95,
+   "gainA": 10.71,
+   "gainALo": 7.81,
+   "gainAHi": 13.39,
+   "hs": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "gainsH": [
+    10.04,
+    14.4,
+    19.2,
+    23.66
+   ],
+   "w": 3.15,
+   "cens": "",
+   "wLo": 2.44,
+   "wHi": 3.85,
+   "wLin": 2.83,
+   "gainS": 11.83,
+   "shieldH": 1.14,
+   "shieldLo": 1.01,
+   "shieldHi": 1.3
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "jackrabbit-sprinter",
+   "cost": 1,
+   "lumber": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 3,
+   "effects": [
+    "quick"
+   ],
+   "games": 896,
+   "base": 41.85,
+   "gainA": 5.02,
+   "gainALo": 2.68,
+   "gainAHi": 7.59,
+   "hs": [
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    4.46,
+    8.48,
+    17.41
+   ],
+   "w": 2.14,
+   "cens": "",
+   "wLo": 1.21,
+   "wHi": 2.82,
+   "wLin": 1.77,
+   "gainS": 6.47,
+   "shieldH": 0.83,
+   "shieldLo": 0.57,
+   "shieldHi": 1.03
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "hollow-oath-keeper",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 13,
+   "effects": [],
+   "games": 896,
+   "base": 20.98,
+   "gainA": 0.78,
+   "gainALo": -1.9,
+   "gainAHi": 3.24,
+   "hs": [
+    6,
+    12,
+    18,
+    24
+   ],
+   "gainsH": [
+    -3.12,
+    0.45,
+    1.34,
+    2.23
+   ],
+   "w": 14.25,
+   "cens": "",
+   "wLo": 0,
+   "wHi": 60,
+   "wLin": 13.12,
+   "gainS": -3.57,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 0
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "raft-spider",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "effects": [
+    "tide"
+   ],
+   "games": 896,
+   "base": 44.08,
+   "gainA": 5.13,
+   "gainALo": 2.57,
+   "gainAHi": 7.59,
+   "hs": [
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    3.91,
+    6.58,
+    17.63
+   ],
+   "w": 2.46,
+   "cens": "",
+   "wLo": 1.52,
+   "wHi": 3.33,
+   "wLin": 1.89,
+   "gainS": 9.38,
+   "shieldH": 1.25,
+   "shieldLo": 1.12,
+   "shieldHi": 1.4
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "dominion-nestguard",
+   "cost": 2,
+   "lumber": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 4,
+   "effects": [
+    "flying"
+   ],
+   "games": 896,
+   "base": 39.51,
+   "gainA": 3.01,
+   "gainALo": 0.78,
+   "gainAHi": 5.36,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    3.68,
+    7.48,
+    10.94,
+    19.53
+   ],
+   "w": 0.82,
+   "cens": "",
+   "wLo": 0.26,
+   "wHi": 1.43,
+   "wLin": 0.89,
+   "gainS": 7.48,
+   "shieldH": 0.67,
+   "shieldLo": 0.44,
+   "shieldHi": 0.9
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "pufferfish-bulwark",
+   "cost": 3,
+   "lumber": 1,
+   "wait": 2,
+   "attack": 1,
+   "health": 18,
+   "effects": [
+    "tide"
+   ],
+   "games": 896,
+   "base": 42.19,
+   "gainA": 9.04,
+   "gainALo": 6.36,
+   "gainAHi": 11.83,
+   "hs": [
+    6,
+    9,
+    11,
+    12
+   ],
+   "gainsH": [
+    5.92,
+    8.04,
+    10.04,
+    9.49
+   ],
+   "w": 10.16,
+   "cens": "",
+   "wLo": 6.57,
+   "wHi": 14.61,
+   "wLin": 10.4,
+   "gainS": 3.13,
+   "shieldH": 1.06,
+   "shieldLo": 0.27,
+   "shieldHi": 1.67
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "berserker-boar",
+   "cost": 3,
+   "lumber": 2,
+   "wait": 1,
+   "attack": 3,
+   "health": 9,
+   "effects": [
+    "rage"
+   ],
+   "games": 896,
+   "base": 37.61,
+   "gainA": 4.91,
+   "gainALo": 2.9,
+   "gainAHi": 6.92,
+   "hs": [
+    6,
+    8,
+    9,
+    12
+   ],
+   "gainsH": [
+    4.8,
+    6.47,
+    5.13,
+    6.58
+   ],
+   "w": 6.22,
+   "cens": "",
+   "wLo": 3.41,
+   "wHi": 17.82,
+   "wLin": 7.75,
+   "gainS": 2.23,
+   "shieldH": 0.93,
+   "shieldLo": 0,
+   "shieldHi": 2.05
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "boreal-elk",
+   "cost": 3,
+   "lumber": 2,
+   "wait": 1,
+   "attack": 5,
+   "health": 4,
+   "effects": [
+    "sweep",
+    "riled"
+   ],
+   "games": 896,
+   "base": 33.04,
+   "gainA": 0,
+   "gainALo": -2.46,
+   "gainAHi": 2.34,
+   "hs": [
+    6
+   ],
+   "gainsH": [
+    23.1
+   ],
+   "w": 0,
+   "cens": "<",
+   "wLo": 0,
+   "wHi": 0.58,
+   "wLin": 0,
+   "gainS": 9.04,
+   "shieldH": 0.78,
+   "shieldLo": 0.57,
+   "shieldHi": 0.99
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "warhorse-charger",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 19,
+   "effects": [],
+   "games": 896,
+   "base": 37.05,
+   "gainA": 6.03,
+   "gainALo": 3.57,
+   "gainAHi": 8.71,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    2.46,
+    3.57,
+    4.13
+   ],
+   "w": 35.03,
+   "cens": ">",
+   "wLo": 11.6,
+   "wHi": 60,
+   "wLin": 29.08,
+   "gainS": 1.56,
+   "shieldH": 1.27,
+   "shieldLo": 0,
+   "shieldHi": 3.6
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "stag-knight",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 14,
+   "effects": [],
+   "games": 896,
+   "base": 36.94,
+   "gainA": 4.8,
+   "gainALo": 2.01,
+   "gainAHi": 7.7,
+   "hs": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "gainsH": [
+    3.46,
+    4.8,
+    6.14,
+    6.92
+   ],
+   "w": 4,
+   "cens": "",
+   "wLo": 2.08,
+   "wHi": 6.75,
+   "wLin": 4.05,
+   "gainS": 5.47,
+   "shieldH": 1.5,
+   "shieldLo": 1.22,
+   "shieldHi": 2.06
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "fox-warchief",
+   "cost": 4,
+   "lumber": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 5,
+   "effects": [
+    "sweep"
+   ],
+   "games": 896,
+   "base": 32.7,
+   "gainA": 1.23,
+   "gainALo": -0.33,
+   "gainAHi": 2.68,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    1.34,
+    4.8,
+    7.37,
+    12.95
+   ],
+   "w": 0.92,
+   "cens": "",
+   "wLo": 0,
+   "wHi": 1.49,
+   "wLin": 0.55,
+   "gainS": 6.7,
+   "shieldH": 0.91,
+   "shieldLo": 0.66,
+   "shieldHi": 1.2
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "stoneheart-golem",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 3,
+   "health": 23,
+   "effects": [],
+   "games": 896,
+   "base": 29.02,
+   "gainA": 4.24,
+   "gainALo": 2.12,
+   "gainAHi": 6.25,
+   "hs": [
+    6,
+    12,
+    24
+   ],
+   "gainsH": [
+    0.11,
+    0.89,
+    1
+   ],
+   "w": 60,
+   "cens": ">",
+   "wLo": 36,
+   "wHi": 60,
+   "wLin": 90.34,
+   "gainS": -0.33,
+   "shieldH": 0,
+   "shieldLo": 0,
+   "shieldHi": 2.67
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "war-panther",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 5,
+   "health": 18,
+   "effects": [],
+   "games": 896,
+   "base": 35.27,
+   "gainA": 2.79,
+   "gainALo": 0.67,
+   "gainAHi": 4.8,
+   "hs": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "gainsH": [
+    0.89,
+    2.68,
+    2.9,
+    3.13
+   ],
+   "w": 4.5,
+   "cens": "",
+   "wLo": 2.57,
+   "wHi": 15.69,
+   "wLin": 5.14,
+   "gainS": 2.34,
+   "shieldH": 1.27,
+   "shieldLo": 0.96,
+   "shieldHi": 2.78
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "alpha-howler",
+   "cost": 5,
+   "lumber": 2,
+   "wait": 3,
+   "attack": 7,
+   "health": 7,
+   "effects": [
+    "sweep"
+   ],
+   "games": 896,
+   "base": 30.25,
+   "gainA": -1,
+   "gainALo": -3.35,
+   "gainAHi": 1.34,
+   "hs": [
+    6
+   ],
+   "gainsH": [
+    11.5
+   ],
+   "w": 0,
+   "cens": "<",
+   "wLo": 0,
+   "wHi": 0.64,
+   "wLin": -0.52,
+   "gainS": 8.59,
+   "shieldH": 1.5,
+   "shieldLo": 1.13,
+   "shieldHi": 1.94
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "humpback-elder",
+   "cost": 6,
+   "lumber": 3,
+   "wait": 3,
+   "attack": 2,
+   "health": 18,
+   "effects": [
+    "inspiring",
+    "tide"
+   ],
+   "games": 896,
+   "base": 12.17,
+   "gainA": 0.56,
+   "gainALo": -0.67,
+   "gainAHi": 1.79,
+   "hs": [
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    0.33,
+    0.67,
+    1.12
+   ],
+   "w": 2.67,
+   "cens": "",
+   "wLo": 0,
+   "wHi": 21,
+   "wLin": 2.92,
+   "gainS": 1.34,
+   "shieldH": 2.4,
+   "shieldLo": 1.29,
+   "shieldHi": 14
+  },
+  {
+   "map": 18,
+   "level": 3.54,
+   "unit": "orca-vanguard",
+   "cost": 6,
+   "lumber": 3,
+   "wait": 3,
+   "attack": 7,
+   "health": 7,
+   "effects": [
+    "sweep",
+    "tide"
+   ],
+   "games": 896,
+   "base": 8.37,
+   "gainA": 0.78,
+   "gainALo": -0.22,
+   "gainAHi": 1.9,
+   "hs": [
+    1,
+    2,
+    3,
+    6
+   ],
+   "gainsH": [
+    1.9,
+    4.91,
+    6.14,
+    10.49
+   ],
+   "w": 0.41,
+   "cens": "",
+   "wLo": 0,
+   "wHi": 1.09,
+   "wLin": 0.42,
+   "gainS": 8.48,
+   "shieldH": 1.54,
+   "shieldLo": 1.35,
+   "shieldHi": 1.86
+  }
+ ]
+}
