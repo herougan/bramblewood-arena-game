@@ -4430,5 +4430,17 @@
  "No field effects.": "Nessun effetto del campo.",
  "New!": "Nuovo!",
  "+{n} from earlier maps": "+{n} da mappe precedenti",
- "Opens after {name}": "Si apre dopo {name}"
+ "Opens after {name}": "Si apre dopo {name}",
+ "B = f × (({aw}A + H) × m + S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f × (({aw}A + H) × m + S). A: Attacco, H: Salute ({sh} per punto Scudo), m: moltiplicatore di mancato, f: Fragile, S: valore abilità.",
+ "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
+ "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value": "S: valore abilità, con prezzo per abilità: fisso, valore × N, valore × N^p, regola della metà, o peso dell'innesco × valore",
+ "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.": "Livello iniziale: carte Base, Starter, Baby e missione 0, ricompense 1. Calcolato dalla carta, non modificabile.",
+ "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.": "Bruciatura {n}: 1 danno da fuoco a inizio round, Bruciatura cala di 1. I colpi di fuoco aggiungono 1. L'acqua la spegne.",
+ "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.": "Potenza: % di vittorie contro mazzi neutri, relativo alla mediana. Avanzato: % contro mazzi di carte top, meno 50. Solo partite giocate.",
+ "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.": "Aggiungi uno stato. Resistenza: metà danno per tick, o -50 di probabilità. Debolezza: doppio, o +50. Immune: non si applica mai.",
+ "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.": "Abilità che questa mappa introduce: nessuna mappa principale precedente le ha sulle sue carte principali. Mappe secondarie e Altre abilità non contano mai.",
+ "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Misurato il {date} nell'ultima esecuzione pro-ease della scala. Il badge TROPPO DEBOLE / TROPPO FORTE si basa su questo.",
+ "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Un'abilità che ha già una mappa principale precedente, usata qui con un nuovo parametro (una famiglia di abilità conta come una).",
+ "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: {k} mazzi di riferimento contro questo scontro, {g} partite ({n}+ ciascuno); p10/p90 senza rumore. Rif. mappa, Riferimento-2: {m} ciascuno.",
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Attacco, H: Salute ({sh} per punto Scudo), m: moltiplicatore di mancato, f: Fragile, S: valore abilità."
 }

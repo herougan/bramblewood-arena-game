@@ -4429,5 +4429,17 @@
  "No field effects.": "Walang epekto ng larangan.",
  "New!": "Bago!",
  "+{n} from earlier maps": "+{n} mula sa naunang mapa",
- "Opens after {name}": "Bubukas pagkatapos ng {name}"
+ "Opens after {name}": "Bubukas pagkatapos ng {name}",
+ "B = f × (({aw}A + H) × m + S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f × (({aw}A + H) × m + S). A: Atake, H: Buhay ({sh} bawat puntos ng Kalasag), m: multiplier ng sablay, f: Marupok, S: halaga ng kakayahan.",
+ "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
+ "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value": "S: halaga ng kakayahan, may presyo bawat kakayahan: nakapirmi, halaga × N, halaga × N^p, tuntuning kalahati, o bigat ng trigger × halaga",
+ "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.": "Panimulang antas: Base, Starter, Baby at quest na card 0, gantimpala 1. Kinukuwenta mula sa card, hindi ine-edit.",
+ "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.": "Pagkasunog {n}: 1 pinsala ng apoy sa simula ng round, bumababa ng 1 ang Pagkasunog. Dagdag 1 ang tama ng apoy. Pinapatay ito ng tubig.",
+ "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.": "Lakas: % ng panalo vs filler na deck, kaugnay ng median. Advanced: % vs deck ng top card, bawas 50. Mga nilaro lang.",
+ "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.": "Magdagdag ng status. Resistensya: kalahating pinsala bawat tick, o -50 tsansa. Kahinaan: doble, o +50. Immune: hindi tatama.",
+ "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.": "Mga kakayahang inilalabas ng mapang ito: wala nito sa mga pangunahing card ng naunang pangunahing mapa. Hindi binibilang ang side map at Iba pang kakayahan.",
+ "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Sinukat noong {date} sa pinakabagong pro-ease na takbo ng hagdan. Dito hinuhusgahan ang pill na MASYADONG MAHINA / MASYADONG MALAKAS.",
+ "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Kakayahang mayroon na ang naunang pangunahing mapa, ginamit dito na may bagong parameter (ang pamilya ng kakayahan ay isa).",
+ "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: {k} reference deck laban sa laban na ito, {g} laro ({n}+ bawat isa); p10/p90 walang ingay. Reference ng mapa, Reference-2: {m} bawat isa.",
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Atake, H: Buhay ({sh} bawat puntos ng Kalasag), m: multiplier ng sablay, f: Marupok, S: halaga ng kakayahan."
 }

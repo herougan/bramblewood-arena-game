@@ -4430,5 +4430,17 @@
  "No field effects.": "Tidak ada efek medan.",
  "New!": "Baru!",
  "+{n} from earlier maps": "+{n} dari peta sebelumnya",
- "Opens after {name}": "Terbuka setelah {name}"
+ "Opens after {name}": "Terbuka setelah {name}",
+ "B = f × (({aw}A + H) × m + S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f × (({aw}A + H) × m + S). A: Serangan, H: Nyawa ({sh} per poin Perisai), m: pengali meleset, f: Rapuh, S: nilai skill.",
+ "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
+ "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value": "S: nilai skill, harga per skill: tetap, nilai × N, nilai × N^p, aturan setengah, atau bobot pemicu × nilai",
+ "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.": "Level awal: kartu Base, Starter, Baby, dan misi 0, hadiah 1. Dihitung dari kartu, tidak diedit.",
+ "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.": "Terbakar {n}: 1 damage api di awal ronde, Terbakar turun 1. Serangan api menambah 1. Air memadamkannya.",
+ "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.": "Kekuatan: % menang vs dek pengisi, relatif terhadap median. Lanjutan: % vs dek kartu terbaik, dikurangi 50. Hanya game yang dimainkan.",
+ "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.": "Tambah status. Resistensi: setengah damage per tick, atau -50 peluang. Kelemahan: dua kali lipat, atau +50. Kebal: tidak pernah kena.",
+ "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.": "Skill yang diperkenalkan peta ini: kartu utama peta utama sebelumnya tidak punya. Peta sampingan dan Skill lain tidak dihitung.",
+ "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Diukur {date} pada putaran tangga pro-ease terbaru. Lencana TERLALU LEMAH / TERLALU KUAT dinilai dari ini.",
+ "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Skill yang sudah dimiliki peta utama sebelumnya, dipakai di sini dengan parameter baru (satu keluarga skill dihitung satu).",
+ "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: {k} dek referensi melawan pertarungan ini, {g} game ({n}+ per dek); p10/p90 bebas noise. Referensi peta, Referensi-2: masing-masing {m}.",
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Serangan, H: Nyawa ({sh} per poin Perisai), m: pengali meleset, f: Rapuh, S: nilai skill."
 }

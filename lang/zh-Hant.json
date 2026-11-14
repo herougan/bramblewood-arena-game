@@ -4429,5 +4429,17 @@
  "No field effects.": "沒有場地效果。",
  "New!": "新！",
  "+{n} from earlier maps": "另有 {n} 張來自之前的地圖",
- "Opens after {name}": "通關 {name} 後開啟"
+ "Opens after {name}": "通關 {name} 後開啟",
+ "B = f × (({aw}A + H) × m + S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f × (({aw}A + H) × m + S)。A：攻擊，H：生命（每點護盾算 {sh}），m：未命中係數，f：脆弱，S：技能值。",
+ "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
+ "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value": "S：技能值，按技能定價：固定值、值 × N、值 × N^p、減半規則，或觸發權重 × 值",
+ "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.": "初始等級：Base、Starter、Baby 和任務卡為 0，獎勵卡為 1。由卡牌推算，不可編輯。",
+ "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.": "燃燒 {n}：每回合開始受 1 點火焰傷害，燃燒減 1。火焰攻擊加 1。水可撲滅。",
+ "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.": "強度：對陣普通填充牌組的勝率 %，相對於中位數。進階：對陣頂級卡牌組的勝率 % 減 50。僅計已出牌的對局。",
+ "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.": "新增狀態。抗性：每跳傷害減半，或機率 -50。弱點：加倍，或 +50。免疫：永不生效。",
+ "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.": "本地圖引入的技能：之前主地圖的主卡都沒有。支線地圖和其他技能不計入。",
+ "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "{date} 在最新一次 pro-ease 天梯執行中測得。「太弱 / 太強」標籤以此判定。",
+ "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "之前主地圖已有的技能，在此以新參數使用（一個技能族算一個技能）。",
+ "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}，{date}：{k} 個參考牌組對陣本戰，共 {g} 局（每組至少 {n}）；p10/p90 已去噪。地圖參考、參考-2：各 {m} 局。",
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S)。A：攻擊，H：生命（每點護盾算 {sh}），m：未命中係數，f：脆弱，S：技能值。"
 }

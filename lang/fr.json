@@ -4429,5 +4429,17 @@
  "No field effects.": "Aucun effet de terrain.",
  "New!": "Nouveau !",
  "+{n} from earlier maps": "+{n} de cartes précédentes",
- "Opens after {name}": "S'ouvre après {name}"
+ "Opens after {name}": "S'ouvre après {name}",
+ "B = f × (({aw}A + H) × m + S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f × (({aw}A + H) × m + S). A : Attaque, H : Santé ({sh} par point de Bouclier), m : multiplicateur de ratés, f : Fragile, S : valeur de compétence.",
+ "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
+ "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value": "S : valeur de compétence, au prix de chaque compétence : fixe, valeur × N, valeur × N^p, règle de moitié, ou poids du déclencheur × valeur",
+ "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.": "Niveau de départ : cartes Base, Starter, Baby et de quête 0, récompenses 1. Calculé depuis la carte, non modifiable.",
+ "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.": "Brûlure {n} : 1 dégât de feu au début du round, Brûlure baisse de 1. Les coups de feu en ajoutent 1. L'eau l'éteint.",
+ "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.": "Puissance : % de victoires contre des decks neutres, relatif à la médiane. Avancé : % contre des decks de top cartes, moins 50. Parties jouées seulement.",
+ "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.": "Ajouter un statut. Résistance : moitié de dégâts par tic, ou -50 de chance. Faiblesse : double, ou +50. Immunité : ne touche jamais.",
+ "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.": "Compétences que cette carte introduit : aucune carte principale précédente ne les a sur ses cartes principales. Les cartes annexes et Autres compétences ne comptent jamais.",
+ "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Mesuré le {date} lors de la dernière exécution pro-ease du palier. Le badge TROP FAIBLE / TROP FORT s'y réfère.",
+ "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Une compétence qu'une carte principale précédente a, utilisée ici avec un nouveau paramètre (une famille de compétences compte pour une).",
+ "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date} : {k} decks de référence contre ce combat, {g} parties ({n}+ chacun) ; p10/p90 sans bruit. Réf. de carte, Référence-2 : {m} chacun.",
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A : Attaque, H : Santé ({sh} par point de Bouclier), m : multiplicateur de ratés, f : Fragile, S : valeur de compétence."
 }

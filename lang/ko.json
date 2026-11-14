@@ -4431,5 +4431,17 @@
  "No field effects.": "필드 효과 없음.",
  "New!": "신규!",
  "+{n} from earlier maps": "이전 지도에서 +{n}",
- "Opens after {name}": "{name} 이후에 열림"
+ "Opens after {name}": "{name} 이후에 열림",
+ "B = f × (({aw}A + H) × m + S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f × (({aw}A + H) × m + S). A: 공격, H: 체력(방패 1점은 {sh}), m: 빗나감 배수, f: 취약, S: 스킬 값.",
+ "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
+ "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value": "S: 스킬 값, 스킬별 가격: 고정, 값 × N, 값 × N^p, 절반 규칙, 또는 발동 가중치 × 값",
+ "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.": "시작 레벨: Base, Starter, Baby, 퀘스트 카드는 0, 보상은 1. 카드에서 계산되며 편집할 수 없음.",
+ "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.": "화상 {n}: 라운드 시작 시 화염 피해 1, 화상 1 감소. 화염 공격은 1 추가. 물로 꺼짐.",
+ "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.": "위력: 평범한 필러 덱 상대 승률 %, 중앙값 기준. 고급: 상위 카드 덱 상대 승률 % 에서 50을 뺌. 플레이한 게임만.",
+ "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.": "상태 추가. 저항: 틱당 피해 절반, 또는 확률 -50. 약점: 2배, 또는 +50. 면역: 절대 걸리지 않음.",
+ "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.": "이 맵이 도입하는 스킬: 이전 메인 맵의 메인 카드에 없는 것. 사이드 맵과 기타 스킬은 세지 않음.",
+ "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "{date}, 최신 pro-ease 사다리 실행에서 측정. '너무 약함 / 너무 강함' 표시는 이 값으로 판정.",
+ "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "이전 메인 맵에 있는 스킬을 여기서 새 매개변수로 사용(스킬 계열은 하나로 셈).",
+ "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: 참조 덱 {k}개로 이 전투 {g}판(덱당 {n}+); p10/p90 노이즈 제외. 맵 참조, 참조-2: 각 {m}판.",
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: 공격, H: 체력(방패 1점은 {sh}), m: 빗나감 배수, f: 취약, S: 스킬 값."
 }

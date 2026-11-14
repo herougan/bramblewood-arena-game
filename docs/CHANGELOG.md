@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package TIP2 (tooltips of 20 words or fewer)
+- 11 long tooltip texts shortened to 20 words or fewer (budget formula, S, base level, burn, power, status, new skills, reference); the 12 language packs follow.
+
 ## 2026-11-14 Package TESTFIX3 (the last three test failures)
 - ed B#28: the emoji style draws the chip's star as a picture, so the test reads it with EmojiStyle.textOf (stale test; B#9a passes now, fixed by TESTFIX2's B#9). game-texts: 47 unused text keys and their pack rows removed; the Codex pills' keys stay (built as 'ui.ui35-pill-cx' + n) and the test counts that shape as a use. The energy refresh no longer re-enables a results button held for its rewards (it flashed enabled for up to 150 ms; clicks were already blocked).
 

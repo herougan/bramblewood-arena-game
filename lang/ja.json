@@ -4429,5 +4429,17 @@
  "No field effects.": "フィールド効果なし。",
  "New!": "新着！",
  "+{n} from earlier maps": "+{n} 前のマップから",
- "Opens after {name}": "{name} の後に解放"
+ "Opens after {name}": "{name} の後に解放",
+ "B = f × (({aw}A + H) × m + S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f × (({aw}A + H) × m + S)。A：攻撃、H：体力（シールド1点は {sh}）、m：ミス係数、f：脆弱、S：スキル値。",
+ "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
+ "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value": "S：スキル値。スキルごとの価格：固定、値 × N、値 × N^p、半分ルール、またはトリガー重み × 値",
+ "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.": "初期レベル：Base・Starter・Baby・クエストのカードは0、報酬は1。カードから算出され、編集不可。",
+ "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.": "燃焼 {n}：ラウンド開始時に炎ダメージ1、燃焼は1減る。炎の攻撃で1増える。水で消える。",
+ "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.": "強さ：フィラーデッキ相手の勝率 %、中央値との差。上級：上位カードのデッキ相手の勝率 % から50を引く。プレイした試合のみ。",
+ "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.": "状態を追加。耐性：1ティックのダメージ半減、または確率 -50。弱点：2倍、または +50。無効：決まらない。",
+ "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.": "このマップが導入するスキル：以前のメインマップのメインカードにないもの。サイドマップとその他のスキルは数えない。",
+ "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "{date} に最新の pro-ease ラダー実行で計測。「弱すぎ / 強すぎ」の判定はこの値を使う。",
+ "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "以前のメインマップが持つスキルを、ここで新しいパラメータで使用（スキル系統は1つと数える）。",
+ "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}、{date}：参照デッキ {k} 個がこの戦いに挑戦、計 {g} 戦（各 {n} 以上）；p10/p90 はノイズ除去済み。マップ参照・参照2：各 {m} 戦。",
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S)。A：攻撃、H：体力（シールド1点は {sh}）、m：ミス係数、f：脆弱、S：スキル値。"
 }

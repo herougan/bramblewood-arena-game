@@ -4428,5 +4428,17 @@
  "No field effects.": "Sin efectos de campo.",
  "New!": "¡Nuevo!",
  "+{n} from earlier maps": "+{n} de mapas anteriores",
- "Opens after {name}": "Se abre tras {name}"
+ "Opens after {name}": "Se abre tras {name}",
+ "B = f × (({aw}A + H) × m + S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f × (({aw}A + H) × m + S). A: Ataque, H: Salud ({sh} por punto de Escudo), m: multiplicador de fallo, f: Frágil, S: valor de habilidad.",
+ "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
+ "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value": "S: valor de habilidad, con precio por habilidad: fijo, valor × N, valor × N^p, regla de mitad, o peso del disparador × valor",
+ "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.": "Nivel inicial: cartas Base, Starter, Baby y de misión 0, recompensas 1. Se calcula de la carta, no se edita.",
+ "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.": "Quemadura {n}: 1 daño de fuego al inicio de la ronda, Quemadura baja 1. Los golpes de fuego suman 1. El agua la apaga.",
+ "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.": "Poder: % de victorias contra mazos de relleno, relativo a la mediana. Avanzado: % contra mazos de cartas top, menos 50. Solo partidas jugadas.",
+ "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.": "Añadir un estado. Resistencia: mitad de daño por tic, o -50 de probabilidad. Debilidad: doble, o +50. Inmune: nunca se aplica.",
+ "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.": "Habilidades que introduce este mapa: ningún mapa principal anterior las tiene en sus cartas principales. Los mapas secundarios y Otras habilidades nunca cuentan.",
+ "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Medido el {date} en la última ejecución pro-ease de la escalera. La etiqueta DEMASIADO DÉBIL / DEMASIADO FUERTE se juzga con ello.",
+ "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Una habilidad que ya tiene un mapa principal anterior, usada aquí con un parámetro nuevo (una familia de habilidades cuenta como una).",
+ "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: {k} mazos de referencia contra este combate, {g} partidas ({n}+ cada uno); p10/p90 sin ruido. Ref. de mapa, Referencia-2: {m} cada una.",
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Ataque, H: Salud ({sh} por punto de Escudo), m: multiplicador de fallo, f: Frágil, S: valor de habilidad."
 }

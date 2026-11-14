@@ -4428,5 +4428,17 @@
  "No field effects.": "Keine Feldeffekte.",
  "New!": "Neu!",
  "+{n} from earlier maps": "+{n} von früheren Karten",
- "Opens after {name}": "Öffnet nach {name}"
+ "Opens after {name}": "Öffnet nach {name}",
+ "B = f × (({aw}A + H) × m + S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f × (({aw}A + H) × m + S). A: Angriff, H: Gesundheit ({sh} je Schildpunkt), m: Fehlschlag-Faktor, f: Fragil, S: Fertigkeitswert.",
+ "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
+ "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value": "S: Fertigkeitswert, je Fertigkeit bepreist: fest, Wert × N, Wert × N^p, Halbregel oder Auslösergewicht × Wert",
+ "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.": "Startstufe: Basis-, Starter-, Baby- und Questkarten 0, Belohnungen 1. Aus der Karte berechnet, nicht bearbeitbar.",
+ "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.": "Brennen {n}: 1 Feuerschaden zu Rundenbeginn, Brennen sinkt um 1. Feuertreffer erhöhen um 1. Wasser löscht es.",
+ "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.": "Stärke: Siegquote % gegen Füllerdecks, relativ zum Median. Fortgeschritten: % gegen Top-Kartendecks, minus 50. Nur gespielte Partien.",
+ "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.": "Status hinzufügen. Resistenz: halber Schaden pro Tick oder -50 Chance. Schwäche: doppelt oder +50. Immun: wirkt nie.",
+ "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.": "Fertigkeiten, die diese Karte einführt: keine frühere Hauptkarte hat sie auf ihren Hauptkarten. Nebenkarten und Andere Fertigkeiten zählen nie.",
+ "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Gemessen am {date} im letzten Pro-Ease-Leiterlauf. Danach wird die Plakette ZU SCHWACH / ZU STARK beurteilt.",
+ "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Eine Fertigkeit, die eine frühere Hauptkarte hat, hier mit neuem Parameter (eine Fertigkeitsfamilie zählt als eine).",
+ "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: {k} Referenzdecks gegen diesen Kampf, {g} Spiele ({n}+ je Deck); p10/p90 rauschfrei. Kartenreferenz, Referenz-2: je {m}.",
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Angriff, H: Gesundheit ({sh} je Schildpunkt), m: Fehlschlag-Faktor, f: Fragil, S: Fertigkeitswert."
 }

@@ -4431,5 +4431,17 @@
  "No field effects.": "களத் தாக்கங்கள் இல்லை.",
  "New!": "புதிது!",
  "+{n} from earlier maps": "+{n} முந்தைய வரைபடங்களிலிருந்து",
- "Opens after {name}": "{name}-க்குப் பிறகு திறக்கும்"
+ "Opens after {name}": "{name}-க்குப் பிறகு திறக்கும்",
+ "B = f × (({aw}A + H) × m + S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f × (({aw}A + H) × m + S). A: தாக்குதல், H: உயிர் (கேடய புள்ளிக்கு {sh}), m: தவறல் பெருக்கி, f: உடையும், S: திறன் மதிப்பு.",
+ "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S": "f × (A × H × m + s × |s|) ≤ {k} × (N/3)², s = {sc} × S",
+ "S: skill value, priced per skill: fixed, value × N, value × N^p, half rule, or trigger weight × value": "S: திறன் மதிப்பு, ஒவ்வொரு திறனுக்கும் விலை: நிலையானது, மதிப்பு × N, மதிப்பு × N^p, பாதி விதி, அல்லது தூண்டி எடை × மதிப்பு",
+ "Starting level: Base, Starter, Baby and quest cards 0, rewards 1. Worked out from the card, not edited.": "தொடக்க நிலை: Base, Starter, Baby, தேடல் அட்டைகள் 0, பரிசுகள் 1. அட்டையிலிருந்து கணக்கிடப்படுகிறது, திருத்த முடியாது.",
+ "Burning {n}: 1 fire damage at round start, Burn drops by 1. Fire hits add 1. Water puts it out.": "எரிதல் {n}: சுற்று தொடக்கத்தில் 1 தீ சேதம், எரிதல் 1 குறையும். தீ தாக்குதல் 1 கூட்டும். நீர் அணைக்கும்.",
+ "Power: win % vs filler decks, relative to median. Advanced: win % vs top-card decks, minus 50. Played games only.": "வலிமை: நிரப்பு அடுக்குகளுக்கு எதிரான வெற்றி %, இடைநிலை அட்டையுடன் ஒப்பிட்டு. மேம்பட்டது: சிறந்த அட்டை அடுக்குகளுக்கு எதிரான %, மைனஸ் 50. விளையாடிய ஆட்டங்கள் மட்டும்.",
+ "Add a status. Resistance: half damage per tick, or -50 chance. Weakness: double, or +50. Immune: never lands.": "நிலை சேர். எதிர்ப்பு: ஒவ்வொரு டிக்கிலும் பாதி சேதம், அல்லது -50 வாய்ப்பு. பலவீனம்: இரட்டிப்பு, அல்லது +50. தடுப்பு: ஒருபோதும் பாதிக்காது.",
+ "Skills this map introduces: no earlier main map's main cards have them. Side maps and Other skills never count.": "இந்த வரைபடம் அறிமுகப்படுத்தும் திறன்கள்: முந்தைய முதன்மை வரைபடங்களின் முதன்மை அட்டைகளில் இல்லாதவை. பக்க வரைபடங்களும் பிற திறன்களும் கணக்கில் வராது.",
+ "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "{date} அன்று சமீபத்திய pro-ease ஏணி ஓட்டத்தில் அளவிடப்பட்டது. மிகவும் பலவீனம் / மிகவும் வலிமை குறிச்சொல் இதை வைத்தே தீர்மானிக்கப்படும்.",
+ "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "முந்தைய முதன்மை வரைபடத்தில் உள்ள திறன், இங்கே புதிய அளவுருவுடன் பயன்படுகிறது (திறன் குடும்பம் ஒரு திறனாகக் கணக்கு).",
+ "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: இந்தச் சண்டைக்கு எதிராக {k} குறிப்பு அடுக்குகள், {g} ஆட்டங்கள் (ஒவ்வொன்றும் {n}+); p10/p90 இரைச்சல் இல்லாமல். வரைபட குறிப்பு, Reference-2: ஒவ்வொன்றும் {m}.",
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: தாக்குதல், H: உயிர் (கேடய புள்ளிக்கு {sh}), m: தவறல் பெருக்கி, f: உடையும், S: திறன் மதிப்பு."
 }
