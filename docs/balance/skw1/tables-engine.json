@@ -1,0 +1,2399 @@
+{
+ "tool": "tools/skw1/tables.js 1.0.0 (2026-11-14, SKW1)",
+ "generated": "2026-11-14T03:27:18.889Z",
+ "inPlayCards": 764,
+ "triggers": [
+  {
+   "id": "onAction",
+   "cards": 4,
+   "priced": true,
+   "weight": 3
+  },
+  {
+   "id": "onAllyDie",
+   "cards": 1,
+   "priced": true,
+   "weight": 1.2
+  },
+  {
+   "id": "onAllyHealed",
+   "cards": 0,
+   "priced": true,
+   "weight": 2
+  },
+  {
+   "id": "onAllyPlayed",
+   "cards": 4,
+   "priced": true,
+   "weight": 2.5
+  },
+  {
+   "id": "onAllyReady",
+   "cards": 0,
+   "priced": true,
+   "weight": 1.5
+  },
+  {
+   "id": "onAllySpawn",
+   "cards": 0,
+   "priced": true,
+   "weight": 1.38
+  },
+  {
+   "id": "onAnyDeath",
+   "cards": 0,
+   "priced": true,
+   "weight": 2.5
+  },
+  {
+   "id": "onAttack",
+   "cards": 4,
+   "priced": true,
+   "weight": 1.35
+  },
+  {
+   "id": "onAttacked",
+   "cards": 6,
+   "priced": true,
+   "weight": 1.9
+  },
+  {
+   "id": "onChainBreak",
+   "cards": 0,
+   "priced": true,
+   "weight": 0.5
+  },
+  {
+   "id": "onCharge",
+   "cards": 0,
+   "priced": true,
+   "weight": 0.7
+  },
+  {
+   "id": "onColumnSpawn",
+   "cards": 0,
+   "priced": true,
+   "weight": 1
+  },
+  {
+   "id": "onDeath",
+   "cards": 7,
+   "priced": true,
+   "weight": 0.8
+  },
+  {
+   "id": "onDiscard",
+   "cards": 0,
+   "priced": true,
+   "weight": 0.96
+  },
+  {
+   "id": "onEnemyEnter",
+   "cards": 2,
+   "priced": true,
+   "weight": 1.9
+  },
+  {
+   "id": "onEnemyPlayed",
+   "cards": 0,
+   "priced": true,
+   "weight": 2.5
+  },
+  {
+   "id": "onEnemyReady",
+   "cards": 0,
+   "priced": true,
+   "weight": 1.5
+  },
+  {
+   "id": "onEnemySpawn",
+   "cards": 0,
+   "priced": true,
+   "weight": 3
+  },
+  {
+   "id": "onEnterSlot",
+   "cards": 0,
+   "priced": true,
+   "weight": 1.5
+  },
+  {
+   "id": "onExile",
+   "cards": 0,
+   "priced": true,
+   "weight": 0.25
+  },
+  {
+   "id": "onHeal",
+   "cards": 0,
+   "priced": true,
+   "weight": 1.5
+  },
+  {
+   "id": "onHealed",
+   "cards": 0,
+   "priced": true,
+   "weight": 1
+  },
+  {
+   "id": "onHit",
+   "cards": 2,
+   "priced": true,
+   "weight": 2.1
+  },
+  {
+   "id": "onKill",
+   "cards": 8,
+   "priced": true,
+   "weight": 1.4
+  },
+  {
+   "id": "onKillCreature",
+   "cards": 0,
+   "priced": true,
+   "weight": 1.3
+  },
+  {
+   "id": "onMove",
+   "cards": 0,
+   "priced": true,
+   "weight": 1
+  },
+  {
+   "id": "onPitch",
+   "cards": 0,
+   "priced": true,
+   "weight": 3
+  },
+  {
+   "id": "onReady",
+   "cards": 17,
+   "priced": true,
+   "weight": 0.9
+  },
+  {
+   "id": "onRoundStart",
+   "cards": 1,
+   "priced": true,
+   "weight": 3.5
+  },
+  {
+   "id": "onSacrifice",
+   "cards": 0,
+   "priced": true,
+   "weight": 0.29
+  },
+  {
+   "id": "onSpawn",
+   "cards": 18,
+   "priced": true,
+   "weight": 1.05
+  },
+  {
+   "id": "perTurn",
+   "cards": 8,
+   "priced": true,
+   "weight": 3
+  }
+ ],
+ "actions": [
+  {
+   "id": "addWait",
+   "cards": 3,
+   "priced": true,
+   "value": 2.8
+  },
+  {
+   "id": "arrow",
+   "cards": 1,
+   "priced": true,
+   "value": 0.4
+  },
+  {
+   "id": "bleed",
+   "cards": 1,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "buff",
+   "cards": 5,
+   "priced": true,
+   "value": 2.1
+  },
+  {
+   "id": "buffAlly",
+   "cards": 0,
+   "priced": true,
+   "value": 2.1
+  },
+  {
+   "id": "buffAttack",
+   "cards": 0,
+   "priced": true,
+   "value": 2.1
+  },
+  {
+   "id": "buffHealth",
+   "cards": 0,
+   "priced": true,
+   "value": 2.1
+  },
+  {
+   "id": "cleanse",
+   "cards": 0,
+   "priced": true,
+   "value": 0.1
+  },
+  {
+   "id": "constrict",
+   "cards": 0,
+   "priced": true,
+   "value": 7
+  },
+  {
+   "id": "damage",
+   "cards": 8,
+   "priced": true,
+   "value": 0.4
+  },
+  {
+   "id": "debuff",
+   "cards": 1,
+   "priced": true,
+   "value": 2.1
+  },
+  {
+   "id": "debuffAttack",
+   "cards": 0,
+   "priced": true,
+   "value": 2.1
+  },
+  {
+   "id": "drawCard",
+   "cards": 5,
+   "priced": true,
+   "value": 4.1
+  },
+  {
+   "id": "exile",
+   "cards": 0,
+   "priced": true,
+   "value": 0.1
+  },
+  {
+   "id": "exileGrave",
+   "cards": 2,
+   "priced": true,
+   "value": 0
+  },
+  {
+   "id": "exileSelf",
+   "cards": 3,
+   "priced": true,
+   "value": -0.1
+  },
+  {
+   "id": "exploit",
+   "cards": 0,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "expose",
+   "cards": 1,
+   "priced": true,
+   "value": 2
+  },
+  {
+   "id": "fireHit",
+   "cards": 0,
+   "priced": true,
+   "value": 0.7
+  },
+  {
+   "id": "forage",
+   "cards": 0,
+   "priced": true,
+   "value": 0.56
+  },
+  {
+   "id": "gain",
+   "cards": 32,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "gainDevilry",
+   "cards": 0,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "gainGold",
+   "cards": 0,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "gainGrace",
+   "cards": 0,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "gainLumber",
+   "cards": 0,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "gainStone",
+   "cards": 0,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "grantFastForward",
+   "cards": 0,
+   "priced": true,
+   "value": 3.02
+  },
+  {
+   "id": "grantShield",
+   "cards": 1,
+   "priced": true,
+   "value": 0.4
+  },
+  {
+   "id": "heal",
+   "cards": 1,
+   "priced": true,
+   "value": 0.2
+  },
+  {
+   "id": "mindControl",
+   "cards": 1,
+   "priced": true,
+   "value": 7
+  },
+  {
+   "id": "missile",
+   "cards": 0,
+   "priced": true,
+   "value": 0.4
+  },
+  {
+   "id": "poison",
+   "cards": 1,
+   "priced": true,
+   "value": 1.4
+  },
+  {
+   "id": "poisonTick",
+   "cards": 0,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "positionBeam",
+   "cards": 0,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "pulse",
+   "cards": 0,
+   "priced": true,
+   "value": 1.3
+  },
+  {
+   "id": "rebuild",
+   "cards": 0,
+   "priced": true,
+   "value": 0.2
+  },
+  {
+   "id": "reduceWaitOfSpawned",
+   "cards": 1,
+   "priced": true,
+   "value": 4
+  },
+  {
+   "id": "refine",
+   "cards": 0,
+   "priced": true,
+   "value": 1
+  },
+  {
+   "id": "revive",
+   "cards": 0,
+   "priced": true,
+   "value": 6
+  },
+  {
+   "id": "shield",
+   "cards": 1,
+   "priced": true,
+   "value": 0.4
+  },
+  {
+   "id": "spawnCard",
+   "cards": 5,
+   "priced": true,
+   "value": 4
+  },
+  {
+   "id": "strangle",
+   "cards": 0,
+   "priced": true,
+   "value": 3
+  },
+  {
+   "id": "stun",
+   "cards": 3,
+   "priced": true,
+   "value": 6
+  },
+  {
+   "id": "stunPlayer",
+   "cards": 1,
+   "priced": true,
+   "value": 1.89
+  },
+  {
+   "id": "swapPositions",
+   "cards": 1,
+   "priced": true,
+   "value": 0.2
+  }
+ ],
+ "pairs": [
+  {
+   "pair": "onReady>gain",
+   "cards": 13
+  },
+  {
+   "pair": "onKill>gain",
+   "cards": 8
+  },
+  {
+   "pair": "perTurn>gain",
+   "cards": 4
+  },
+  {
+   "pair": "onAttacked>spawnCard",
+   "cards": 3
+  },
+  {
+   "pair": "onSpawn>addWait",
+   "cards": 3
+  },
+  {
+   "pair": "onSpawn>drawCard",
+   "cards": 3
+  },
+  {
+   "pair": "onDeath>exileSelf",
+   "cards": 3
+  },
+  {
+   "pair": "onSpawn>gain",
+   "cards": 3
+  },
+  {
+   "pair": "onAction>damage",
+   "cards": 3
+  },
+  {
+   "pair": "onAttack>gain",
+   "cards": 2
+  },
+  {
+   "pair": "perTurn>spawnCard",
+   "cards": 2
+  },
+  {
+   "pair": "onReady>damage",
+   "cards": 2
+  },
+  {
+   "pair": "onSpawn>stun",
+   "cards": 2
+  },
+  {
+   "pair": "onEnemyEnter>damage",
+   "cards": 2
+  },
+  {
+   "pair": "onAllyPlayed>gain",
+   "cards": 1
+  },
+  {
+   "pair": "onAllyPlayed>reduceWaitOfSpawned",
+   "cards": 1
+  },
+  {
+   "pair": "onAttack>buff",
+   "cards": 1
+  },
+  {
+   "pair": "onAttacked>buff",
+   "cards": 1
+  },
+  {
+   "pair": "onSpawn>swapPositions",
+   "cards": 1
+  },
+  {
+   "pair": "onReady>buff",
+   "cards": 1
+  },
+  {
+   "pair": "onHit>expose",
+   "cards": 1
+  },
+  {
+   "pair": "onDeath>damage",
+   "cards": 1
+  },
+  {
+   "pair": "onAllyPlayed>buff",
+   "cards": 1
+  },
+  {
+   "pair": "onAllyPlayed>bleed",
+   "cards": 1
+  },
+  {
+   "pair": "perTurn>heal",
+   "cards": 1
+  },
+  {
+   "pair": "onAttack>drawCard",
+   "cards": 1
+  },
+  {
+   "pair": "onSpawn>exileGrave",
+   "cards": 1
+  },
+  {
+   "pair": "onSpawn>stunPlayer",
+   "cards": 1
+  },
+  {
+   "pair": "onSpawn>mindControl",
+   "cards": 1
+  },
+  {
+   "pair": "onAllyDie>buff",
+   "cards": 1
+  },
+  {
+   "pair": "onDeath>exileGrave",
+   "cards": 1
+  },
+  {
+   "pair": "onAction>arrow",
+   "cards": 1
+  },
+  {
+   "pair": "onSpawn>grantShield",
+   "cards": 1
+  },
+  {
+   "pair": "onRoundStart>debuff",
+   "cards": 1
+  },
+  {
+   "pair": "onDeath>poison",
+   "cards": 1
+  },
+  {
+   "pair": "onAttacked>stun",
+   "cards": 1
+  },
+  {
+   "pair": "onReady>shield",
+   "cards": 1
+  },
+  {
+   "pair": "perTurn>forgeWeapon",
+   "cards": 1
+  },
+  {
+   "pair": "onSpawn>disarm",
+   "cards": 1
+  },
+  {
+   "pair": "onHit>disarm",
+   "cards": 1
+  },
+  {
+   "pair": "onAttacked>gain",
+   "cards": 1
+  },
+  {
+   "pair": "onSpawn>magnet",
+   "cards": 1
+  },
+  {
+   "pair": "onDeath>drawCard",
+   "cards": 1
+  }
+ ],
+ "skills": [
+  {
+   "key": "flying",
+   "cards": 127,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "tide",
+   "cards": 94,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "triggers",
+   "cards": 53,
+   "kind": "pair",
+   "how": "explicit trigger entries (each one trigger x one action)"
+  },
+  {
+   "key": "armor",
+   "cards": 42,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "poison",
+   "cards": 34,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "nocturnal",
+   "cards": 31,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "evasive",
+   "cards": 28,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "guardian",
+   "cards": 25,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "thorns",
+   "cards": 19,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "arrow",
+   "cards": 17,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "pounce",
+   "cards": 16,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "diurnal",
+   "cards": 15,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "regen",
+   "cards": 15,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sweep",
+   "cards": 14,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bleed",
+   "cards": 13,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "delivery",
+   "cards": 13,
+   "kind": "pair",
+   "how": "onReady x gain"
+  },
+  {
+   "key": "deliveryEvery",
+   "cards": 10,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "pierce",
+   "cards": 10,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "quick",
+   "cards": 10,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "swarm",
+   "cards": 9,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "prayer",
+   "cards": 8,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "stealth",
+   "cards": 8,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "dry",
+   "cards": 8,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "inspiring",
+   "cards": 7,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "shell",
+   "cards": 7,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "crabClaws",
+   "cards": 7,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "ambush",
+   "cards": 7,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "reach",
+   "cards": 7,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "scare",
+   "cards": 6,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bloomCopy",
+   "cards": 6,
+   "kind": "context",
+   "how": "braces switched on by a condition"
+  },
+  {
+   "key": "fork",
+   "cards": 6,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "frostbite",
+   "cards": 6,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "esprit",
+   "cards": 6,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "supreme",
+   "cards": 6,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "healing",
+   "cards": 6,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "rage",
+   "cards": 5,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "onDeathSpawn",
+   "cards": 5,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bounty",
+   "cards": 5,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "daunt",
+   "cards": 5,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "siege",
+   "cards": 5,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "relic",
+   "cards": 5,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "wave",
+   "cards": 5,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "darksight",
+   "cards": 5,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "fireArrow",
+   "cards": 5,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "cure",
+   "cards": 5,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sonar",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "keenEye",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "onReadyDamage",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "brood",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "immolation",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "gash",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "illuminate",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "freeze",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "deliveryRes",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "taunt",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "invisible",
+   "cards": 4,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "evolute",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "evoluteAlpha",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "rampart",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "immunity",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "overwhelm",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "slow",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "shield",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "stunOnHit",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "remember",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "backstab",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bola",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "changeling",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "loyal",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "electricity",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "predator",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "mountainClimber",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "thanatosis",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "storm",
+   "cards": 3,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "twinStrike",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "earthquake",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "relict",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "breach",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "timbered",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sequestration",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bulwark",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "render",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "meld",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "reload",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "explode",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "parasite",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "shock",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "hunter",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "lightning",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "corrode",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sacrifice",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "devour",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "worship",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "felling",
+   "cards": 2,
+   "kind": "pair",
+   "how": "onKill x gain"
+  },
+  {
+   "key": "counterattack",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "irradiated",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "moonborn",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "coffee",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "kinship",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "dive",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sap",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bludgeon",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "smokeBomb",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "pack",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "crepuscular",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "shade",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sprout",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "meiosis",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "recoil",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "iceArrow",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "poisonBolt",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "shockBolt",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "tsunami",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bulldoze",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "tangle",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "strangle",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "poisonGas",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "trap",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "confuse",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sentry",
+   "cards": 2,
+   "kind": "pair",
+   "how": "onEnemyEnter x damage"
+  },
+  {
+   "key": "web",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "fletcher",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "carrion",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "foraging",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "brambleArmor",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "hemorrhage",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "greaterPoison",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "shoreUp",
+   "cards": 2,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "boomerang",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "tribeDelivery",
+   "cards": 1,
+   "kind": "pair",
+   "how": "onAllyPlayed x gain"
+  },
+  {
+   "key": "banana",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "throng",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "tally",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "muster",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "canopyCover",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "pickpocket",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "rain",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "evoluteOmega",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bananarang",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "carnage",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "repair",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "riled",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "skitter",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "fester",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "rupture",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "durian",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "expose",
+   "cards": 1,
+   "kind": "pair",
+   "how": "onHit x expose"
+  },
+  {
+   "key": "stem",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "poisonBarbs",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "scar",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "grit",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sleep",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "chainLightning",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "kingSlayer",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "executioner",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "detonate",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "proliferate",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "brittle",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "kinRally",
+   "cards": 1,
+   "kind": "pair",
+   "how": "onAllyPlayed x buff"
+  },
+  {
+   "key": "packHowl",
+   "cards": 1,
+   "kind": "pair",
+   "how": "onAllyPlayed x bleed"
+  },
+  {
+   "key": "prayerWard",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "fieldBreaker",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "keenSense",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bedrock",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "stagger",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "trueStrike",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "supremeTide",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "onSpawnDevilry",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "pitchfork",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "desecrate",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "beware",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "ritual",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "banner",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "foeScarcity",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "reflect",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "anadromous",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "twin",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "heat",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "spiteful",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "timber",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "rockSolid",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "lumberjack",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "usurper",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "rainmaker",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "rainrunner",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "castDarkness",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "archer",
+   "cards": 1,
+   "kind": "pair",
+   "how": "onAction x arrow"
+  },
+  {
+   "key": "decay",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sociable",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "loneWolf",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "landslide",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "rocket",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "snipe",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "fencing",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "dynamite",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "helmet",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "frost",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "rabid",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "mimic",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "chrysalis",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "swipe",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "converge",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "defiance",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "packLeader",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sunshy",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "nightblind",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "fullMoon",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "transform",
+   "cards": 1,
+   "kind": "context",
+   "how": "braces switched on by a condition"
+  },
+  {
+   "key": "festering",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "drunk",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "purblind",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "primed",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "trident",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "octolash",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "speed",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "haste",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "cower",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "ghost",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "ichor",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "shadow",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "plenty",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "nullify",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "charge",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "nursing",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "natureForce",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "fastForward",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "feeble",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "mighty",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "fragile",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "berserk",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "inherentDarkness",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "coreEvil",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "perforate",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "twinShot",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "fireBolt",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "acidBolt",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "tornado",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "avalanche",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "dragonLightning",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "wither",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "fireball",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "meteor",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "psychic",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bloodlust",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "chilli",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "toxin",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "weaken",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "wilting",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "onslaught",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "invincible",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "absoluteZero",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "spitfire",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "slashBurn",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "penance",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "bloodTithe",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "prey",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "nova",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "crystallise",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "amore",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "blind",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "drought",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "tipsy",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "chained",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "volley",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "vanguard",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "venomMaster",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "herbalist",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "shatter",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "sturdy",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "injured",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "salt",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "hibernate",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "molting",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "weaponMaster",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "disarm",
+   "cards": 1,
+   "kind": "multi-pair",
+   "how": "onSpawn x disarm + onHit x disarm"
+  },
+  {
+   "key": "shapeshifter",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "milling",
+   "cards": 1,
+   "kind": "pair",
+   "how": "perTurn x gain"
+  },
+  {
+   "key": "almanac",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "quarry",
+   "cards": 1,
+   "kind": "pair",
+   "how": "perTurn x gain"
+  },
+  {
+   "key": "stonecutter",
+   "cards": 1,
+   "kind": "pair",
+   "how": "perTurn x gain"
+  },
+  {
+   "key": "prospector",
+   "cards": 1,
+   "kind": "pair",
+   "how": "onKill x gain"
+  },
+  {
+   "key": "salvage",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "scavenge",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "coppice",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "driftwood",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "magicArmor",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "wakeful",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "hype",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  },
+  {
+   "key": "lasso",
+   "cards": 1,
+   "kind": "passive",
+   "how": ""
+  }
+ ],
+ "kinds": {
+  "passive": {
+   "keys": 273,
+   "cardUses": 1026
+  },
+  "pair": {
+   "keys": 13,
+   "cardUses": 79
+  },
+  "context": {
+   "keys": 2,
+   "cardUses": 7
+  },
+  "multi-pair": {
+   "keys": 1,
+   "cardUses": 1
+  }
+ }
+}
