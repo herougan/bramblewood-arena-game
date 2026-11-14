@@ -67,6 +67,12 @@ Concepts for Maps 21+ (package CONTENT17). The direction, the maps each one suit
 | Storm-callers | ranged for the storm map | Storm-chant Heron (Lightning), Kite-rider Swift (Flying + Arrow); Thunderhead Expanse |
 | Others | | Lantern Angler Spearfish (Snipe + Darksight, Abyssal Shelf), Ironbark Shield Tortoise (Guardian + Armor, Ironroot Wilds), Flint-knapper Badger and Flint-throw Baboon Troop (First Hearth / Flintbound Wilds), Siege Pelican Catapult (Volley + Siege, Goldfeather Siege) |
 
+## 2026-11-14 21:41 (owner)
+
+| Idea | Owner's note | Notes for the build |
+|---|---|---|
+| Porcelain Crab | "can swim with its bottom shell thingy! pleon?" | Yes, the pleon (the tucked-under abdomen): porcelain crabs flick it to dart backwards, like a squat lobster's tail-flip. Small, flat, a tide-pool filter feeder with fan-like mouthparts, and it drops a claw to escape. Pick its skill after the skill winnowing (an existing escape / reposition skill, not a new name). Distinct from the eight crabs already in cards.json. |
+
 ## Built
 - 2026-11-07 (CONTENT17, on no list until placed; Claude picks in the Map cards window):
   - the first yeti hunters: `yeti-tracker`, `icefletch-fox`, `yeti-snarer`;
