@@ -5,7 +5,7 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 ## Waiting on you
 
 **EDGE2-1. Nine main fights far off target** · Decide · Balance · asked 2026-11-15
-- On four seed sets these miss by over 20 every time: 2-1, 6-2, 16-3, 16-4, 17-8, 19-5 too hard; 13-6, 13-8, 20-9 too easy. The road tuner found enemy deck changes (Shield for 13-6, 13-8; base Health for 2-1). On two fresh seed sets 2-1, 6-2, 13-6, 13-8, 16-3, 16-4 land in band on both; 17-8 (30, 40) and 19-5 (49, 55) on one; 20-9 stays too easy (76-78 vs 50) and needs a card change. Fixes: docs/balance/b1115-edge2-fixes.jsonl.
+- These miss by over 20 on all four seed sets: 2-1, 6-2, 16-3, 16-4, 17-8, 19-5 too hard; 13-6, 13-8, 20-9 too easy. The tuner found enemy deck changes (plus Shield for 13-6, 13-8; base Health for 2-1). Mean of four seed sets after: all but 20-9 within 10; 19-5 (51) and 17-8 (36) closest to the edge. 20-9 stays too easy (77 vs 50); it needs a card change. With EDGE1-1 a as well: main road 132/149 in band, 139 within 10, 1 beyond 20 (now 120/130/9). Fixes: docs/balance/b1115-edge2-fixes.jsonl.
   - a) Apply the eight, leave 20-9 for the redesign
   - b) Apply only the six that held on both
   - c) Wait for the card redesign
