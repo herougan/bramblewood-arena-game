@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package REF7 (ladders on the REF6 prog decks; Maps 16-20 walls; measurement only)
+- BAL13 ladder rebuilt for Maps 0-20: its pool rule admits 15 of 180 prog decks (none on Maps 10-15, 17-20); 9 chosen, all at ranks 8-10. Saved as `docs/balance/ref7/ref-ladder-bal13-2026-11-14.json`; the game's ladder set stays BAL24's. REF6 ladder-100 rebuilt with the prog decks in each map's library (3,353 of 3,600 decks changed; strengths need a re-measure).
+- Walls, 200 games on fresh seeds: Map 16 Cone-cutter Squirrel and enemy Lv 4, Map 18 the Windfall field and Horned Lizard, Map 19 Obsidian Scorpion, Map 20 the bramble Shield. One lever brings 19 of 21 wall fights within 10; 18-4 and 19-5 need more. Report `docs/balance/ref7/ref7-2026-11-14.md`, tools `tools/ref7/`. No card, fight, budget or decision changed.
+
 ## 2026-11-14 Package ENG-OD1 (SKW1's flag: On Death + Health buff on itself)
 - Rule fix: a unit at 0 Health is dead, so Buff and Buff Health skip it, as Heal and Shield already did. An On Death "+N Health on itself" no longer keeps the dying unit on the board (it used to stay at N Health while its card also went to the graveyard, a free Revive that died again every round), and such a unit no longer counts as alive for the next death in the same pass (no On Ally Die from it). On Death actions on other units still resolve; an Undead unit comes back at 1 Health with its printed Attack.
 - No live card carries an On Death self Buff, Heal or Shield, so no card plays differently (card matrix: 0 golden diffs). Test `tests/eng-od1-2026-11-14.js`.

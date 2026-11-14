@@ -1,0 +1,36 @@
+19-5 base: 18.5% (gap -41.5) [27.5 15 7.5 22.5 20] Lv 4 hp 18 sh 0 6s
+19-1 base: 68% (gap -22) [67.5 67.5 67.5 62.5 75] Lv 4 hp 16 sh 0 6s
+19-3 base: 61% (gap -14) [55 50 75 70 55] Lv 4 hp 12 sh 0 4s
+19-4 base: 52% (gap -15.5) [47.5 42.5 50 57.5 62.5] Lv 4 hp 18 sh 0 7s
+20-4 base: 47% (gap -30.1) [40 65 32.5 45 52.5] Lv 4 hp 15 sh 10 8s
+20-6 base: 44% (gap -24.6) [47.5 57.5 27.5 45 42.5] Lv 5 hp 15 sh 27 10s
+20-1 base: 69.5% (gap -20.5) [70 82.5 62.5 62.5 70] Lv 4 hp 15 sh 10 10s
+20-7 base: 49% (gap -15.3) [37.5 82.5 30 32.5 62.5] Lv 5 hp 15 sh 13 11s
+20-5 base: 51.5% (gap -21.4) [40 72.5 45 42.5 57.5] Lv 5 hp 12 sh 15 13s
+20-8 base: 54.5% (gap -5.5) [50 75 47.5 42.5 57.5] Lv 5 hp 15 sh 15 9s
+19-5 card-out=obsidian-scorpion x1/3>quillback-elder: 21% (gap -39) [25 25 10 22.5 22.5] Lv 4 hp 18 sh 0 6s
+19-5 card-out=obsidian-scorpion x2/3>quillback-elder: 28% (gap -32) [30 22.5 22.5 30 35] Lv 4 hp 18 sh 0 6s
+19-5 card-out=obsidian-scorpion x3/3>quillback-elder: 44.5% (gap -15.5) [45 45 42.5 47.5 42.5] Lv 4 hp 18 sh 0 7s
+19-5 level=3: 33% (gap -27) [32.5 30 37.5 35 30] Lv 3 hp 18 sh 0 6s
+19-1 card-out=obsidian-scorpion x1/1>quillback-elder: 92.5% (gap 2.5) [90 90 92.5 95 95] Lv 4 hp 16 sh 0 6s
+19-1 level=3.5: 70% (gap -20) [70 67.5 72.5 62.5 77.5] Lv 3.5 hp 16 sh 0 6s
+19-1 level=3: 78.5% (gap -11.5) [82.5 70 80 75 85] Lv 3 hp 16 sh 0 5s
+19-3 hp=10: 66.5% (gap -8.5) [62.5 60 70 80 60] Lv 4 hp 10 sh 0 4s
+19-3 hp=9: 71% (gap -4) [65 65 80 80 65] Lv 4 hp 9 sh 0 3s
+19-3 level=3: 73% (gap -2) [67.5 67.5 77.5 85 67.5] Lv 3 hp 12 sh 0 5s
+19-3 card-out=obsidian-scorpion x1/2>dune-jackal: 68% (gap -7) [67.5 67.5 62.5 67.5 75] Lv 4 hp 12 sh 0 5s
+20-4 shield=5: 59.5% (gap -17.6) [60 72.5 52.5 55 57.5] Lv 4 hp 15 sh 5 9s
+20-4 shield=0: 69.5% (gap -7.6) [75 72.5 62.5 75 62.5] Lv 4 hp 15 sh 0 6s
+20-4 card-out=sulfur-vent-crab x2/4>deep-cave-troll: 63% (gap -14.1) [62.5 80 52.5 62.5 57.5] Lv 4 hp 15 sh 10 7s
+20-4 card-out=obsidian-scorpion x1/3>deep-cave-troll: 51.5% (gap -25.6) [47.5 65 50 42.5 52.5] Lv 4 hp 15 sh 10 8s
+20-6 shield=15: 52.5% (gap -16.1) [50 75 42.5 55 40] Lv 5 hp 15 sh 15 10s
+20-6 shield=10: 57.5% (gap -11.1) [62.5 75 47.5 57.5 45] Lv 5 hp 15 sh 10 7s
+20-6 level=3: 63% (gap -5.6) [62.5 77.5 57.5 60 57.5] Lv 3 hp 15 sh 27 11s
+20-6 card-out=sulfur-vent-crab x2/4>deep-cave-troll: 52% (gap -16.6) [55 67.5 37.5 52.5 47.5] Lv 5 hp 15 sh 27 11s
+20-1 shield=5: 77% (gap -13) [77.5 92.5 70 70 75] Lv 4 hp 15 sh 5 11s
+20-1 shield=0: 77% (gap -13) [70 87.5 72.5 80 75] Lv 4 hp 15 sh 0 7s
+20-7 shield=7: 51% (gap -13.3) [37.5 82.5 32.5 37.5 65] Lv 5 hp 15 sh 7 10s
+20-7 shield=0: 55.5% (gap -8.8) [50 82.5 37.5 47.5 60] Lv 5 hp 15 sh 0 8s
+20-5 shield=8: 59% (gap -13.9) [50 77.5 50 55 62.5] Lv 5 hp 12 sh 8 11s
+20-5 shield=0: 70.5% (gap -2.4) [60 80 75 72.5 65] Lv 5 hp 12 sh 0 8s
+levers-b done

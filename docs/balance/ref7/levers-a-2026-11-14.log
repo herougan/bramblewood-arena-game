@@ -1,0 +1,48 @@
+16-3 base: 45.5% (gap -32.5) [40 47.5 37.5 62.5 40] Lv 4 hp 15 sh 0 10s
+16-4 base: 42.5% (gap -29.5) [35 32.5 47.5 60 37.5] Lv 4 hp 15 sh 0 7s
+16-6 base: 34.5% (gap -25.5) [30 35 22.5 55 30] Lv 4 hp 15 sh 0 8s
+16-2 base: 66% (gap -18) [65 70 55 85 55] Lv 3 hp 15 sh 0 6s
+18-4 base: 32.5% (gap -39.5) [12.5 35 32.5 30 52.5] Lv 4 hp 15 sh 9 15s
+18-3 base: 46% (gap -32) [42.5 55 42.5 35 55] Lv 4 hp 15 sh 9 11s
+18-2 base: 61.5% (gap -22.5) [55 67.5 67.5 40 77.5] Lv 4 hp 15 sh 9 11s
+18-6 base: 37% (gap -23) [22.5 47.5 50 15 50] Lv 4 hp 15 sh 0 10s
+18-5 base: 46.5% (gap -19.5) [27.5 57.5 55 40 52.5] Lv 4 hp 15 sh 0 8s
+18-1 base: 79% (gap -11) [67.5 87.5 85 70 85] Lv 4 hp 15 sh 0 9s
+18-7 base: 23% (gap -17) [12.5 25 30 15 32.5] Lv 4 hp 15 sh 18 9s
+16-3 card-out=cone-cutter-squirrel x2/5>raft-spider: 51% (gap -27) [50 50 50 65 40] Lv 4 hp 15 sh 0 8s
+16-3 card-out=cone-cutter-squirrel x3/5>raft-spider: 60.5% (gap -17.5) [55 55 55 82.5 55] Lv 4 hp 15 sh 0 9s
+16-3 card-out=cone-cutter-squirrel x5/5>raft-spider: 95.5% (gap 17.5) [97.5 92.5 95 100 92.5] Lv 4 hp 15 sh 0 6s
+16-4 card-out=cone-cutter-squirrel x1/3>boreal-elk: 59.5% (gap -12.5) [52.5 57.5 65 57.5 65] Lv 4 hp 15 sh 0 7s
+16-4 card-out=cone-cutter-squirrel x2/3>boreal-elk: 80.5% (gap 8.5) [85 82.5 72.5 82.5 80] Lv 4 hp 15 sh 0 7s
+16-4 level=3.5: 59.5% (gap -12.5) [50 50 70 72.5 55] Lv 3.5 hp 15 sh 0 8s
+16-4 level=3: 77% (gap 5) [75 70 80 80 80] Lv 3 hp 15 sh 0 6s
+16-6 hp=13: 38.5% (gap -21.5) [32.5 40 30 57.5 32.5] Lv 4 hp 13 sh 0 9s
+16-6 hp=12: 43% (gap -17) [42.5 42.5 40 57.5 32.5] Lv 4 hp 12 sh 0 7s
+16-6 card-out=cone-cutter-squirrel x1/2>boreal-elk: 52% (gap -8) [47.5 47.5 45 75 45] Lv 4 hp 15 sh 0 10s
+16-2 hp=13: 70% (gap -14) [67.5 75 57.5 82.5 67.5] Lv 3 hp 13 sh 0 6s
+16-2 hp=12: 73% (gap -11) [70 80 62.5 85 67.5] Lv 3 hp 12 sh 0 5s
+16-2 card-out=cone-cutter-squirrel x1/4>boreal-elk: 85% (gap 1) [90 80 75 100 80] Lv 3 hp 15 sh 0 6s
+18-4 level=3: 53.5% (gap -18.5) [30 50 65 52.5 70] Lv 3 hp 15 sh 9 14s
+18-4 level=1: 51% (gap -21) [25 47.5 67.5 42.5 72.5] Lv 1 hp 15 sh 9 11s
+18-4 level=0: 51% (gap -21) [25 47.5 67.5 42.5 72.5] Lv 0 hp 15 sh 9 11s
+18-4 shield=0: 44.5% (gap -27.5) [30 50 42.5 35 65] Lv 4 hp 15 sh 0 12s
+18-4 card-out=armadillo-guard x5/5>nightjar-drifter: 49% (gap -23) [25 45 52.5 50 72.5] Lv 4 hp 15 sh 9 15s
+18-3 level=3.5: 52% (gap -26) [42.5 52.5 52.5 37.5 75] Lv 3.5 hp 15 sh 9 9s
+18-3 level=3: 66.5% (gap -11.5) [55 70 72.5 52.5 82.5] Lv 3 hp 15 sh 9 7s
+18-3 card-out=horned-lizard x2/4>sand-widow: 67.5% (gap -10.5) [55 72.5 80 42.5 87.5] Lv 4 hp 15 sh 9 8s
+18-3 card-out=horned-lizard x4/4>sand-widow: 72% (gap -6) [70 67.5 77.5 57.5 87.5] Lv 4 hp 15 sh 9 10s
+18-2 level=3.5: 70% (gap -14) [62.5 77.5 80 47.5 82.5] Lv 3.5 hp 15 sh 9 11s
+18-2 level=3: 81% (gap -3) [80 77.5 85 72.5 90] Lv 3 hp 15 sh 9 8s
+18-2 card-out=antlion-pit x2/4>dune-jackal: 75.5% (gap -8.5) [70 80 80 65 82.5] Lv 4 hp 15 sh 9 11s
+18-6 level=3.5: 40% (gap -20) [27.5 40 55 17.5 60] Lv 3.5 hp 15 sh 0 9s
+18-6 level=3: 56% (gap -4) [45 62.5 65 27.5 80] Lv 3 hp 15 sh 0 8s
+18-6 card-out=horned-lizard x2/4>sand-widow: 56% (gap -4) [37.5 60 65 32.5 85] Lv 4 hp 15 sh 0 10s
+18-5 hp=13: 53% (gap -13) [40 60 65 45 55] Lv 4 hp 13 sh 0 9s
+18-5 hp=12: 55.5% (gap -10.5) [40 60 62.5 52.5 62.5] Lv 4 hp 12 sh 0 6s
+18-5 level=3.5: 57% (gap -9) [35 67.5 55 52.5 75] Lv 3.5 hp 15 sh 0 7s
+18-1 hp=13: 84.5% (gap -5.5) [75 90 90 80 87.5] Lv 4 hp 13 sh 0 7s
+18-1 hp=12: 85% (gap -5) [77.5 92.5 90 77.5 87.5] Lv 4 hp 12 sh 0 6s
+18-7 shield=12: 23% (gap -17) [12.5 20 32.5 15 35] Lv 4 hp 15 sh 12 8s
+18-7 shield=9: 24% (gap -16) [12.5 22.5 32.5 10 42.5] Lv 4 hp 15 sh 9 6s
+18-7 level=3.5: 33.5% (gap -6.5) [17.5 35 40 22.5 52.5] Lv 3.5 hp 15 sh 18 6s
+levers-a done

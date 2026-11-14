@@ -6,7 +6,8 @@
 //        per fight: the 5 prog decks pooled (games a deck x 5) for the fight as built, enemy Lv -1 / -2, bramble Health x0.75, no Shield,
 //        each field rule off, and each enemy card swapped out (its copies -> the deck's lowest-score other card, skirmishCardScore)
 //   node tools/ref7/walls_2026_11_14.js lever --code X --param level|hp|shield|card --values v1,v2 [--card id] [--games 40] [--seed0 9100]
-//        one lever stepped; card: --values unused, --card the card swapped out (to the deck's lowest-score other card)
+//        one lever stepped; shield: the Shield as played; card: --card the card swapped out, --copies k of its copies (default all), to the
+//        deck's lowest-score other card; --param base: the fight as built (for a fresh-seed base)
 // Rows -> docs/balance/ref7/walls-2026-11-14.jsonl (one a variant). Seeds: the road measure's (9100 + 37g); --seed0 5100 for a fresh check.
 'use strict';
 const fs = require('fs'), path = require('path');
@@ -23,8 +24,10 @@ function play(m, nn) {
   return { win: Math.round(w / N * 1000) / 10, n: N, per };
 }
 const score = id => G.skirmishCardScore(B.CARD_DEFS_BASELINE[id] || {}) || 0;
-function swapOut(deck, id) { const ids = Object.keys(deck).filter(x => x !== id); if (!ids.length) return null; const to = ids.sort((p, q) => score(p) - score(q))[0];
-  const d = Object.assign({}, deck); d[to] += d[id]; delete d[id]; return { deck: d, to }; }
+function swapOut(deck, id, k) { const ids = Object.keys(deck).filter(x => x !== id); if (!ids.length) return null; const to = ids.sort((p, q) => score(p) - score(q))[0];
+  const d = Object.assign({}, deck), mv = Math.min(d[id], k || d[id]); d[to] += mv; d[id] -= mv; if (!d[id]) delete d[id]; return { deck: d, to, mv }; }
+// the Shield as the fight plays it (as tools/whatif1): the smallest shieldOverride whose played Shield reaches v; 0 = an explicit no Shield
+function shieldOv(m, n, v) { if (!(v > 0)) return 0; for (let o = 1; o < 1000; o++) { if (G.skirmishCastle(trial(m, n, { shieldOverride: o })).shield >= v) return o; } throw new Error('no override for Shield ' + v); }
 function row(code, m, n, lever, value, over, base) {
   const t0 = Date.now(), nn = trial(m, n, over), r = play(m, nn), sc = G.skirmishCastle(nn), t = G.roadCurveTarget(m.id, n), tgt = t ? Math.round(t.t * 1000) / 10 : null;
   const o = { code, map: G.mapNumberOf(m.id), kind: n.kind || 'skirmish', lever, value, games: r.n, seed0: SEED0, win: r.win, per: r.per, target: tgt, gap: tgt == null ? null : Math.round((r.win - tgt) * 10) / 10,
@@ -45,8 +48,10 @@ function screen(code) {
 }
 function lever(code) {
   const { m, n } = find(code), P = arg('--param'), base = +arg('--base', NaN);
-  if (P === 'card') { const id = arg('--card'), s = swapOut(n.deck, id); return row(code, m, n, 'card-out', id + ' x' + n.deck[id] + '>' + s.to, { deck: s.deck }, isNaN(base) ? null : base); }
-  arg('--values').split(',').map(Number).forEach(v => row(code, m, n, P, v, P === 'level' ? { enemyLevel: v } : P === 'hp' ? { brambleHealth: v } : P === 'shield' ? { shieldOverride: v > 0 ? v : 0 } : (() => { throw new Error('--param level|hp|shield|card'); })(), isNaN(base) ? null : base));
+  if (P === 'base') return row(code, m, n, 'base', null, {}, null);
+  if (P === 'rule') { const k = arg('--rule'); return row(code, m, n, 'rule-off', k, { rules: Object.assign({}, n.rules || {}, { [k]: false }) }, isNaN(base) ? null : base); } // a field rule switched off (diagnostic)
+  if (P === 'card') { const id = arg('--card'), s = swapOut(n.deck, id, +arg('--copies', 0)); return row(code, m, n, 'card-out', id + ' x' + s.mv + '/' + n.deck[id] + '>' + s.to, { deck: s.deck }, isNaN(base) ? null : base); }
+  arg('--values').split(',').map(Number).forEach(v => row(code, m, n, P, v, P === 'level' ? { enemyLevel: v } : P === 'hp' ? { brambleHealth: v } : P === 'shield' ? { shieldOverride: shieldOv(m, n, v) } : (() => { throw new Error('--param level|hp|shield|card'); })(), isNaN(base) ? null : base));
 }
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 if (CMD === 'screen') arg('--codes').split(',').forEach(screen);

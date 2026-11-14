@@ -1,0 +1,9 @@
+16-3 card-out=cone-cutter-squirrel x4/5>raft-spider: 84% (gap 6) [85 87.5 80 92.5 75] Lv 4 hp 15 sh 0 6s
+16-3 level=3: 68% (gap -10) [62.5 67.5 70 77.5 62.5] Lv 3 hp 15 sh 0 6s
+18-4 rule-off=windfall: 79% (gap 7) [77.5 77.5 67.5 87.5 85] Lv 4 hp 15 sh 9 7s
+18-4 card-out=horned-lizard x4/4>nightjar-drifter: 52.5% (gap -19.5) [30 47.5 65 42.5 77.5] Lv 4 hp 15 sh 9 12s
+18-7 card-out=horned-lizard x1/3>sand-widow: 33% (gap -7) [25 25 40 27.5 47.5] Lv 4 hp 15 sh 18 5s
+18-7 card-out=horned-lizard x2/3>sand-widow: 56% (gap 16) [52.5 55 60 37.5 75] Lv 4 hp 15 sh 18 7s
+19-5 card-out=pinecone-sapper x4/4>quillback-elder: 34% (gap -26) [27.5 30 32.5 42.5 37.5] Lv 4 hp 18 sh 0 4s
+19-5 rule-off=windfall: 20% (gap -40) [27.5 15 5 25 27.5] Lv 4 hp 18 sh 0 3s
+levers-c done
