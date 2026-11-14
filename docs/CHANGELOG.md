@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package TESTFIX3 (the last three test failures)
+- ed B#28: the emoji style draws the chip's star as a picture, so the test reads it with EmojiStyle.textOf (stale test; B#9a passes now, fixed by TESTFIX2's B#9). game-texts: 47 unused text keys and their pack rows removed; the Codex pills' keys stay (built as 'ui.ui35-pill-cx' + n) and the test counts that shape as a use. The energy refresh no longer re-enables a results button held for its rewards (it flashed enabled for up to 150 ms; clicks were already blocked).
+
 ## 2026-11-14 Package TESTFIX2 (four stale tests, no game change)
 - game-texts reads a values variable as filled; devilry and mx look for the code as it is now (the raid screen's rules section, and its Shield line, went in RAID2; the VS card keeps it); ed gives its fresh profile the starter deck's copies (PG's copy limits).
 

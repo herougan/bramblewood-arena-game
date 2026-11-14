@@ -15224,7 +15224,7 @@ function energyShortToast(cost){
   document.body.appendChild(t);
   setTimeout(()=>{ t.classList.add('is-out'); setTimeout(()=> t.remove(), 450); }, 2000);
 }
-function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ const short = e < (+b.dataset.energyCost||0); b.disabled = false; b.classList.toggle('is-energy-short', short); if(short || b.dataset.noKeys) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled'); }); } // + a daily dungeon fight with no key stays disabled (2026-10-18, package DK)
+function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ const short = e < (+b.dataset.energyCost||0); b.disabled = !!b.dataset.edLocked; /* 2026-11-14 (TESTFIX3): a results button held for its rewards stays disabled */ b.classList.toggle('is-energy-short', short); if(short || b.dataset.noKeys) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled'); }); } // + a daily dungeon fight with no key stays disabled (2026-10-18, package DK)
 document.addEventListener('click', e=>{ // 2026-10-18 (package DK): a daily dungeon fight with no key in hand says why instead of starting
   const b = e.target && e.target.closest ? e.target.closest('button[data-no-keys]') : null; if(!b || dungeonTicketsLeft() > 0) return;
   e.preventDefault(); e.stopImmediatePropagation(); dungeonNoKeys(b);

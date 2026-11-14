@@ -46,7 +46,8 @@ ok(!bad.length, `every {placeholder} is filled at every call: ${bad.slice(0, 8).
 // 2026-11-06 (TEXTFIX1): a key that sits quoted in any game source (a table of keys, a data row, a TX(...) wrapper) is used too
 const allSrc = fs.readdirSync(R).filter(f=> /^(arena_app\.js|arena_template\.html|bramblewood-(?!texts).*\.js)$/.test(f)).map(f=> fs.readFileSync(path.join(R, f), 'utf8')).join('\n');
 // 2026-11-06 (TEXTFIX1): a name built from a prefix ("TX('ui.bal13-tactic-' + t)", "TX(`ui.c11-${id}-name`)") uses every key that starts with the prefix; TESTFIX2's list was cut at 8 and hid ~350 of these
-const dynPre = [...new Set([...src.matchAll(/\bTX\(\s*'([^']+)'\s*\+/g), ...src.matchAll(/\bTX\(\s*`([^`$]+)\$\{/g)].filter(m=> !inComment(m.index)).map(m=> m[1]))];
+// 2026-11-14 (TESTFIX3): a prefix handed to a helper (pill('cx1', 'ui.ui35-pill-cx' + n)) is a dynamic use too
+const dynPre = [...new Set([...src.matchAll(/\bTX\(\s*'([^']+)'\s*\+/g), ...src.matchAll(/\bTX\(\s*`([^`$]+)\$\{/g), ...src.matchAll(/'((?:ui|coach|results|toast|net)\.[\w-]+)'\s*\+/g)].filter(m=> !inComment(m.index)).map(m=> m[1]))];
 const unused = Object.keys(TEXT).filter(k=> !uses.some(m=> m[1] === k) && !ternary.includes(k) && !dynPre.some(p=> k.startsWith(p)) && !quoted(k));
 function quoted(k){ return ["'", '"', '`'].some(q=> allSrc.includes(q + k + q)); }
 ok(!unused.length, `no text in the table goes unused (${unused.length}: ${unused.slice(0, 40).join(', ')})`);

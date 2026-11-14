@@ -206,7 +206,7 @@ async function browser(){
         // #28 + #7 in the skirmish editor; ✏️ opens the card editor over it and closing brings it back
         await pg.evaluate(`openSkirmishEditor('${pick.map}', '${pick.key}'); 1`); await pg.waitForTimeout(600);
         const se = await pg.evaluate(`(()=>{ const ov = document.getElementById('skirmishEditorOverlay'); const chip = ov.querySelector('.modal-head-row h2 .ed-kind-chip'); const el = ov.querySelector('#seEnemyLevel');
-          return {chip: chip && chip.textContent, label: KIND_LABEL['${pick.kind}'], ph: el && el.placeholder, val: el && el.value, curve: roadEnemyLevelExact(findConquestNode('${pick.map}', '${pick.key}').node), edits: ov.querySelectorAll('.se-deck [data-ed-edit]').length}; })()`);
+          return {chip: chip && EmojiStyle.textOf(chip) /* 2026-11-14 TESTFIX3: the emoji style draws ⭐ as an <img>; textOf reads it back */, label: KIND_LABEL['${pick.kind}'], ph: el && el.placeholder, val: el && el.value, curve: roadEnemyLevelExact(findConquestNode('${pick.map}', '${pick.key}').node), edits: ov.querySelectorAll('.se-deck [data-ed-edit]').length}; })()`);
         ok(se.chip === se.label, `B#28 the header's kind chip says "${se.label}" (${se.chip})`);
         ok(se.ph === String(se.curve) && se.val === '' && se.edits > 0, `B#7 Enemy level: blank, the curve as its placeholder; ✏️ on the deck (${JSON.stringify(se)})`);
         await pg.evaluate("(()=>{ const el = document.getElementById('seEnemyLevel'); el.value = '6'; el.dispatchEvent(new Event('change')); return 1; })()"); await pg.waitForTimeout(300);
