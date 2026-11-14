@@ -86,14 +86,14 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 **SIDE2-1. Side bosses the list can't make hard enough** · Decide · Balance · asked 2026-11-13
-- The strongest list-only deck (BPRO-1) in the hardest fight, Map reference win rate at 400 games: Eye of the Volcano 69% (target 36, +33), Basalt Foundry 51% (target 40, +11). In road fights K14 holds Carried cards to 1 copy, so the boss is weaker than BPRO-1 itself. Both keep that strongest deck; no Shield or Health change.
+- BPRO-1 in the hardest fight, 400 games: Eye of the Volcano 69% (target 36), Basalt Foundry 51% (target 40). WHATIF1 measured (b): Basalt Foundry falls to 31-33%, in band at its low edge. Eye of the Volcano doesn't change (its 10-card size, not K14, is the limit), so only (a) can fix it. Under SIDE2-2 (c) Basalt Foundry reads 39-41%.
   - a) Add one stronger NEW! card each (theme pick)
   - b) Let a side boss hold Carried cards at 2 copies
   - c) Leave them easy for now
 - **Default:** a
 
 **SIDE2-2. Thin side lists lock many side decks** · Decide · Balance · asked 2026-11-13
-- With few own cards and K14 (Carried 1 copy each, 6 in all), many side decks have no room to move. 0-B-3, 2-A-6 and 14-A-5 can't be built at all and keep their old decks. Others can't be fitted: Clovermead 1-A-1 / 1-A-2 at 42% / 24% (targets 90 / 80), Lilypad Reach 2-A-4 23% (72), The Canopy 14-A-3 24% (70), all at Shield 0. Side maps: 39 of 77 fights in band.
+- With few own cards and K14 (Carried 1 copy each), many side decks have no room: 0-B-3, 2-A-6 and 14-A-5 can't be built; Clovermead, Lilypad Reach and The Canopy are stuck. WHATIF1 measured all 77 side fights: today 39 in band (mean gap 11.8); (a) 48 in band, gap 9.4, all 9 new ones hold on fresh seeds; (c) 47, gap 10.3, 2 of its 9 drop on fresh seeds. (a) fixes the thin lists, (c) the fuller ones. Both together: not measured.
   - a) Carried cards up to 2 copies on side maps
   - b) More own cards on the thinnest lists
   - c) Smaller side-map decks
@@ -107,11 +107,12 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 **SIDE2-4. Three side bosses stay too hard** · Decide · Balance · asked 2026-11-13
-- Still too hard after the fit's easing, or with the builder's blend: The Old Bramble 0-B-4 22% (target 40, Shield 0), The Sunken Depths 10-A-5 17% (40, Shield 0), The Pale Desert 18-A-9 26% (40; Shield 41 by the desert's rule, which the fit never moves). Only you can change Health, level or that Shield.
+- Still too hard (boss band 30-49): The Old Bramble 0-B-4 22%, The Sunken Depths 10-A-5 17%, The Pale Desert 18-A-9 26% (Shield 41). WHATIF1's smallest fixes, in band on two seed sets: Old Bramble level 4 to 3 or Health 18 to 11 (or nothing, if SIDE2-2 a); Sunken Depths Health 16 to 11 (no level works); Pale Desert level 4 to 3 or Shield 41 to 23 (no Health works).
   - a) Lower their bramble Health (the Pale Desert: its Shield)
   - b) A lower enemy level for these three
   - c) Leave them hard
-- **Default:** a
+  - d) Mix: Old Bramble by SIDE2-2 a, Sunken Depths Health 11, Pale Desert level 3
+- **Default:** d
 
 **FX9-1. More cards fly to the Graveyard?** · Decide · UI · asked 2026-11-13
 - A card you pitch now arcs into the Graveyard (note 7). Cards that get there another way (a field card used up, Feed, overdraw) still jump straight to the pile. Make those fly too?
