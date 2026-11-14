@@ -11,10 +11,10 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - c) Leave them
 - **Default:** a
 
-**SIDE3-1. Last six side fights far off target** · Decide · Balance · asked 2026-11-15
-- With SIDE2-2 e and SIDE2-4 e, six side fights still miss by over 20. Enemy deck changes, no Shield or stat edits, checked on fresh seed sets: 1-A-2 80% (target 80), 2-A-2 83% (84), 2-A-4 71% (72), 20-A-4 43% (36) in band; 18-A-1 80% (90) and 10-A-4 51% (60) within 10. 1-A-2 and 2-A-2 need SIDE2-2's Carried x2. All together: side fights 58/77 in band, 66 within 10, 0 beyond 20 (now 38/42/13). Files: docs/balance/side3p/, side2p/side2p-refit-fixes.jsonl.
-  - a) Apply all six with SIDE2-2 e and SIDE2-4 e
-  - b) Only the four that work under today's rules (2-A-4, 20-A-4, 18-A-1, 10-A-4)
+**SIDE3-1. Last seven side fights far off target** · Decide · Balance · asked 2026-11-15
+- With SIDE2-2 e and SIDE2-4 e, seven side fights still miss by about 20 or more. Enemy deck changes, no Shield or stat edits, checked on fresh seed sets: 1-A-2 80% (target 80), 2-A-2 83% (84), 2-A-4 71% (72), 20-A-4 43% (36), 18-A-7 67% (64) in band; 18-A-1 80% (90) and 10-A-4 51% (60) within 10. 1-A-2 and 2-A-2 need SIDE2-2's Carried x2. All together: side fights 59/77 in band, 66 within 10, 0 beyond 20 (now 38/42/13). Files: docs/balance/side3p/.
+  - a) Apply all seven with SIDE2-2 e and SIDE2-4 e
+  - b) Only the five that work under today's rules (2-A-4, 20-A-4, 18-A-7, 18-A-1, 10-A-4)
   - c) Wait for the card redesign
 - **Default:** a
 
