@@ -4,6 +4,43 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKW1-1. Trigger weights** · Decide · Budget · asked 2026-11-14
+- SKW1 measured each trigger's worth against On Spawn. It is about 0.5-0.75 x how often the trigger fires per copy played. Today's weights run high: On Kill 1.33 (measured 0.42), On Death 0.76 (0.26), On Enemy Spawn 2.86 (0.08). The pair prices still looked right only because the action values (SKW1-2) are low and the two errors cancel. Details: docs/balance/skw1/skw1-2026-11-14.md.
+  - a) Adopt the measured table
+  - b) Rule: weight = 0.6 x fires per copy played
+  - c) Keep
+- **Default:** a
+
+**SKW1-2. Action values** · Decide · Budget · asked 2026-11-14
+- Measured worth of one On Play firing: Deal 2 is 3.1 (the budget implies 0.7), so about 1.5 a point against 0.4; +2 Health, Shield 2 and Heal 2 are 2-3x their prices; Draw 1 is lower (2.0 against 3.4). Changing this means changing SKW1-1 with it, then a re-fit of every card's price.
+  - a) Re-base actions with SKW1-1, then re-fit
+  - b) Keep
+- **Default:** a
+
+**SKW1-3. Pairs that do nothing, and repeating Draw** · Decide · Budget · asked 2026-11-14
+- Some pairs can never do anything: a self action On Death, or Heal On Spawn at full Health. Repeating Draw saturates: On Turn Start Draw 1 measured 4.3 against a price of 12.3. Proposal: those pairs cost 0, and repeating Draw is capped at about 1.6x its On Play worth.
+  - a) Yes
+  - b) No
+- **Default:** a
+
+**SKW1-4. Four skills priced off their worth** · Decide · Budget · asked 2026-11-14
+- Over seven contexts: Dry costs 4 but measured 0.2 (it only matters on heat or sandstorm fields); Fork 4.95, measured 3.1; Reach 1, measured -0.4; Diurnal 1 costs 1.14 but measured 2.3 (a fight with no day/night rule is day all match). Guardian is below zero everywhere; Keen Eye never changed a game.
+  - a) Re-price by measure and home share
+  - b) Keep
+- **Default:** a
+
+**SKW1-5. Attack weight** · Decide · Budget · asked 2026-11-14
+- +1 Attack measured worth 4.3-9.9 Health points in all seven contexts, against the budget's 3. That would change every card's price, so measure it properly first (at bramble 15) before any re-fit.
+  - a) Measure it properly first
+  - b) Keep 3
+- **Default:** a
+
+**SKW1-6. Named-skill cap** · Decide · Budget · asked 2026-11-14
+- A player meets 151 named skills by Map 20; your 25-30 is passed at Map 1. 101 of them sit on a single card, and Map 11 alone adds 49. The SKW1 doc lists near-duplicate groups (e.g. Poison 2 / Bleed 2 measured 5.3 / 5.6; Flying / Evasive 3.45 / 3.34) and marks the skills that carry theme. No cuts are proposed.
+  - a) Set a cap and merge from the list
+  - b) No cap
+- **Default:** a
+
 **UI54-1. Codex World 1 roll: show the map total?** · Decide · UI · asked 2026-11-14
 - World 1 is Maps 0-40, but only Maps 0-24 exist yet, so its roll reads "x of 25 reached".
   - a) Keep "x of 25" (grows as maps are added)
