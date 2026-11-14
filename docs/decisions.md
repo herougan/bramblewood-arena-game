@@ -150,12 +150,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 **SIDE2-2. Thin side lists lock many side decks** · Decide · Balance · asked 2026-11-13
-- With few own cards and K14 (Carried 1 copy each), many side decks have no room: 0-B-3, 2-A-6 and 14-A-5 can't be built; Clovermead, Lilypad Reach and The Canopy are stuck. WHATIF1 measured all 77 side fights: today 39 in band (mean gap 11.8); (a) 48 in band, gap 9.4, all 9 new ones hold on fresh seeds; (c) 47, gap 10.3, 2 of its 9 drop on fresh seeds. (a) fixes the thin lists, (c) the fuller ones. Both together: not measured.
+- With few own cards and K14 (Carried 1 copy each), many side decks have no room: 0-B-3, 2-A-6 and 14-A-5 can't be built; Clovermead, Lilypad Reach and The Canopy are stuck. Of 77 side fights in band: today 39 (mean gap 11.8); (a) 48 (9.4); (c) 47 (10.3); (a)+(c) 53 (7.9), 8 beyond 20, about 51 on fresh seeds. (a)+(c) builds 0-B-3 and 14-A-5 in band; 2-A-6 stays too hard. Bosses 10-A-5 and 18-A-9 still need SIDE2-4.
   - a) Carried cards up to 2 copies on side maps
   - b) More own cards on the thinnest lists
   - c) Smaller side-map decks
   - d) Keep the rules
-- **Default:** a
+  - e) Both a and c
+- **Default:** e
 
 **SIDE2-3. Re-price Chained now that chains soak damage?** · Decide · Balance · asked 2026-11-13
 - ENG-RC1 made each chain 1 Armor that breaks as it soaks, worth about a Shield N that chainedMult doesn't count. Chained Binturong, the only Chained card, has been on no list since 11-02, so no road fight holds it: the 400-game road read of Basalt Foundry and Maps 0-20 is unchanged.
