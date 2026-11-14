@@ -7143,6 +7143,7 @@ function ui32CounterRows(c){
   add('🌵', N('thornsBonus'), TX('ui.ui32-ctr-thorns', {n: N('thornsBonus')}));
   return out;
 }
+function ui53StatusHTML(uid){ const c = currentCardByUid(uid); return c ? liveStatusGlossHTML(c) : ''; } // 2026-11-13 (package UI53 #1): the hover's live token / status rows (the sheet itself shows the printed card)
 function liveStatusGlossHTML(c){
   if(!c) return '';
   const rows = [];
@@ -7276,7 +7277,7 @@ function fullCardHTML(defId, liveCard, opts){
     ${pitchYieldHTML}
     ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
     ${opts.line ? `<div class="cp-line">${escapeHtml(opts.line)}</div>` : '' /* 2026-10-30 (CS-C): a caller's extra line (data-pop-line) */}
-    ${liveCard ? cardActionLogHTML(liveCard.uid) : opts.logUid != null ? cardActionLogHTML(opts.logUid) : '' /* 2026-10-30 (UI6, X4): the printed card plus this unit's own hit log */}`;
+    ${!liveCard && opts.logUid != null ? ui53StatusHTML(opts.logUid) : '' /* 2026-11-13 (package UI53 #1): the tokens and statuses on this unit now, above its hit log */}${liveCard ? cardActionLogHTML(liveCard.uid) : opts.logUid != null ? cardActionLogHTML(opts.logUid) : '' /* 2026-10-30 (UI6, X4): the printed card plus this unit's own hit log */}`;
 }
 // The popover's text for a card outside a fight (2026-10-30, package CS-C, owner CS-1): its skills and flavour, the same lines as fullCardHTML,
 // for the gallery popover beside a preview or a chip (wireRewardZoom), which shows the Full card above it.
@@ -7539,7 +7540,9 @@ function castleHoverHTML(hqSide){
     TipWatch.track(pop, el, ()=>{ if(!rebindPop() && !holdPop()) closePopLost(); }, {steady: !!matchState});
     // the hit log is the one live part: refreshed in place when it changed
     try{ const lc = matchState ? liveCardFromHoverEl(el) : null, old = pop.querySelector('.card-txn-log');
-      if(lc){ const h = (cardActionLogHTML(lc.uid) || '').trim(); if(old ? old.outerHTML !== h : h){ if(old) old.remove(); if(h) pop.insertAdjacentHTML('beforeend', h); } } }catch(e){}
+      if(lc){ const h = (cardActionLogHTML(lc.uid) || '').trim(); if(old ? old.outerHTML !== h : h){ if(old) old.remove(); if(h) pop.insertAdjacentHTML('beforeend', h); }
+        const og = pop.querySelector('.live-status-gloss'), g = ui53StatusHTML(lc.uid).trim(); // 2026-11-13 (package UI53 #1): the status rows follow the unit too
+        if(og ? og.outerHTML !== g : g){ if(og) og.remove(); if(g){ const lg = pop.querySelector('.card-txn-log'); if(lg) lg.insertAdjacentHTML('beforebegin', g); else pop.insertAdjacentHTML('beforeend', g); } } } }catch(e){}
   }
   // the card under the pointer, or (a fight only) the same unit anywhere while the pointer still rests on the spot it stood on
   function rebindPop(){
@@ -43085,6 +43088,7 @@ function boardCardHTML(c, defs, opts){
   // effect around it, maybe metal like barricade/armor/sheets extending from the left and right. Revivification needs to
   // have angel wings effect on the card (after it enters the battlefield)"). The wings fold away once the revive is spent.
   const guards = !!((d.effects||{}).guardian) && !fog, winged = !!((d.effects||{}).undead) && !c.revivedOnce && !fog; /* ENG9: Undead (was Revive) */
+  if(guards) ui53PlatesOn(); // 2026-11-13 (package UI53 #2)
   const guardHTML = guards ? '<span class="guard-plates" aria-hidden="true"><i class="gp-l"></i><i class="gp-r"></i></span>' : '';
   // Unit light (2026-10-15, user: "Leader should have abit of light in darkness. (Night too) Just abit. Creatures with Light Aura shine
   // brighter ... maybe immolation is one?"): a faint warm pool under a leader, a brighter one under a Light Aura unit (Illuminate or
@@ -43142,8 +43146,8 @@ function eng15CowerChip(e, on){
 // a pip rebuilt within the tick's time keeps it through ui30TickCls); only the last counter (1 -> 0) pops the greyed pip out. Effects None or
 // reduced motion: no tick.
 function eng33PlayingDeadChip(){ const t = escapeAttr(TX('ui.eng33-playing-dead')); return `<span class="abadge playing-dead" title="${t}" aria-label="${t}">😵</span>`; } // ENG33 (2026-11-07): Thanatosis
-function ui7PoisonChip(c){ const t = escapeAttr(TX('ui.ui7-poison-tip', {n: c.poison})); return `<span class="abadge poison${ui30TickCls(c.uid, 'poison')}" title="${t}" aria-label="${t}">☠</span>`; }
-function ui30BleedChip(c){ const t = escapeAttr(TX('ui.ui30-bleed-tip', {n: c.bleed})); return `<span class="abadge bleed${ui30TickCls(c.uid, 'bleed')}" title="${t}" aria-label="${t}">🩸</span>`; }
+function ui7PoisonChip(c){ const t = escapeAttr(TX('ui.ui7-poison-tip', {n: c.poison})); return `<span class="abadge poison${ui30TickCls(c.uid, 'poison')}" title="${t}" aria-label="${t}">☠${c.poison}</span>`; } // 2026-11-13 (package UI53 #1, owner 17:29): the count on the pip (1 stays bare, ui14ChipCount)
+function ui30BleedChip(c){ const t = escapeAttr(TX('ui.ui30-bleed-tip', {n: c.bleed})); return `<span class="abadge bleed${ui30TickCls(c.uid, 'bleed')}" title="${t}" aria-label="${t}">🩸${c.bleed}</span>`; } // 2026-11-13 (package UI53 #1): counted like Venom
 var UI30_TICK = {}; // 'uid:kind' -> when its counter last went
 function ui30TickOn(){ try{ if(typeof reducedMotion === 'function' && reducedMotion()) return false; return !(typeof fxLevel === 'function' && fxLevel() === 'none'); }catch(e){ return true; } }
 function ui30TickCls(uid, kind){ const t = uid != null && UI30_TICK[uid + ':' + kind]; return (t && Date.now() - t < 450 && ui30TickOn()) ? ' ui30-tick' : ''; }
@@ -51281,6 +51285,13 @@ function fx9GuardMem(c, up){ const m = typeof matchState !== 'undefined' ? match
   const mem = m._fx9Guard || (m._fx9Guard = new Map()), k = String(c.uid), was = mem.has(k) ? mem.get(k) : up; mem.set(k, up); return was; }
 function fx9GuardCls(c){ const up = fx9GuardUp(c), was = fx9GuardMem(c, up), anim = was !== up && fxLevel() !== 'none';
   return (up ? '' : 'guard-down') + (anim ? (up ? ' gp-rise' : ' gp-fall') : ''); }
+// 2026-11-13 (package UI53 #2, owner 17:29: "the overlay doesn't follow the card ... leaves a pale slot"): every lunge, recoil and squash animates the inner .card-tile (never the
+// .board-card, which Flip owns), so a Guardian's plates, a sibling of the tile, stayed behind as a pale slot. One GSAP tick copies the tile's transform onto the plates of each Guardian
+// (plates inside the tile would paint over its art: the art is the tile's own background). Added once, when the first Guardian is drawn.
+var UI53_PLATES_ON = false;
+function ui53PlatesOn(){ if(UI53_PLATES_ON || !hasGsap()) return; UI53_PLATES_ON = true; gsap.ticker.add(()=>{
+  document.querySelectorAll('.board-card.has-guard').forEach(b=>{ const gp = b.querySelector(':scope > .guard-plates'), t = gp && b.querySelector('.card-tile'); if(!t) return;
+    const v = t.style.transform || ''; if(gp.style.transform !== v) gp.style.transform = v; }); }); }
 function fx9GuardSync(el, c){
   if(!el || !c || !el.classList.contains('has-guard')) return; const up = fx9GuardUp(c); fx9GuardMem(c, up);
   if(up === !el.classList.contains('guard-down')) return;
