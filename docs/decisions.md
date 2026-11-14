@@ -4,6 +4,26 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**REF7-1. Map 16 walls** · Decide · Balance · asked 2026-11-14
+- Even decks built well from a player's collection fall short on 16-2, 16-3, 16-4 and 16-6. The cause is the enemy Cone-cutter Squirrel's economy and the enemy at level 4 against the player's 3. Measured, 200 games: 16-3 enemy level 4 to 3 goes from 46% to 68% (target 68). Cutting Squirrel copies fixes each fight too (table in docs/balance/ref7/ref7-2026-11-14.md).
+  - a) Cut Squirrel copies per the table
+  - b) Enemy level 3 on 16-3 and 16-4
+  - c) Keep it as a deliberate step
+- **Default:** b
+
+**REF7-2. Windfall on Map 18** · Decide · Balance · asked 2026-11-14
+- Windfall drives every Map 18 wall: switching it off adds 14-42 points in every fight. 18-4 (33% vs target 72) can only be fixed through it (79% with Windfall off); the best level, Health, Shield or card change reaches 54%. Note: the Map reference deck finds 18-4 too easy (BAL42-1), so the two decks disagree.
+  - a) Windfall off on 18-4
+  - b) Windfall off on all of Map 18
+  - c) Keep it; accept 18-4 at about 33%
+- **Default:** a
+
+**REF7-3. 19-5 has no single fix** · Decide · Balance · asked 2026-11-14
+- 19-5 reads 18.5% against a target of 60 for well-built player decks. Taking out all 3 Obsidian Scorpions reaches 44.5%; no level, Health or Shield change does better. One Scorpion is also behind 19-1 (68 to 92.5% without it).
+  - a) Take out the Scorpions and lower the level (two changes)
+  - b) Redesign the fight in your card pass
+- **Default:** b
+
 **SKW1-1. Trigger weights** · Decide · Budget · asked 2026-11-14
 - SKW1 measured each trigger's worth against On Spawn. It is about 0.5-0.75 x how often the trigger fires per copy played. Today's weights run high: On Kill 1.33 (measured 0.42), On Death 0.76 (0.26), On Enemy Spawn 2.86 (0.08). The pair prices still looked right only because the action values (SKW1-2) are low and the two errors cancel. Details: docs/balance/skw1/skw1-2026-11-14.md.
   - a) Adopt the measured table
