@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package SKW3 (re-fitting cap 1 to SKW2's H/A shape, on paper; study only, nothing changed)
+- Cap 1 is the binding cap on all 472 live cards. On Maps 0-20, 31 of 283 are over today (11 of those are owner-set).
+- Three candidate forms, each scaled to keep the mean card where it is:
+  - sqrt((A+0.6)(H+0.1)): 22 Maps 0-20 cards go over.
+  - (A+0.6)(H+0.1)/q: 66 go over.
+  - Cap 2 alone (x0.34): 43 go over, but it ranks cards closest to their measured contribution on both saved runs.
+- Report: `docs/balance/skw3/skw3-2026-11-14.md`. Tool: `tools/skw3/skw3.js`.
+
 ## 2026-11-14 Package SKW2 (what +1 Attack is worth in Health at bramble 15; measurement only, nothing changed)
 - 17 commons in the Map reference decks against every road fight of Maps 3, 8, 13 and 18, bramble 15, about 405,000 paired games (`docs/balance/skw2/skw2-2026-11-14.md`, tool `tools/skw2/skw2.js`).
 - On average, +1 Attack = 2.9 Health (pooled, 95% 2.7-3.1; median 3.2), which is the budget's 3.
