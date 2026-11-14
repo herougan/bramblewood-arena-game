@@ -4454,5 +4454,16 @@
  "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "マップTからマップ3までのレッスンをもう一度。トリガーのレッスンも。",
  "Reset all tutorials": "すべてのチュートリアルをリセット",
  "Replay every lesson and tip.": "すべてのレッスンとヒントをもう一度。",
- "Tutorials reset: they play again in your next fights.": "チュートリアルをリセット：次のバトルでまた表示されます。"
+ "Tutorials reset: they play again in your next fights.": "チュートリアルをリセット：次のバトルでまた表示されます。",
+ "Every map you've reached, by world. Tap a scroll to unroll it.": "到達したマップをワールド別に表示。巻物をタップして広げよう。",
+ "World {n}": "ワールド {n}",
+ "Maps {a}–{b}": "マップ {a}–{b}",
+ "Maps {a}+": "マップ {a}+",
+ "{n} of {total} reached": "{total}中{n}到達",
+ "{n}/{total} cleared": "{n}/{total} クリア",
+ "Side map": "サイドマップ",
+ "No field effects.": "フィールド効果なし。",
+ "New!": "新着！",
+ "+{n} from earlier maps": "+{n} 前のマップから",
+ "Opens after {name}": "{name} の後に解放"
 }

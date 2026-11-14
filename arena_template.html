@@ -12108,6 +12108,60 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 @container (max-width: 70px){ .card-tile[data-size="full"] .nm{display:flex;} }
 /* At 1366 the Codex's two album pages need 1274px for 8 Full cards a row (the column is 80% of the window, 1093px) */
 @media (min-width:1100px){ .content-wrap:has(> #view-codex:not([hidden])){max-width:min(1330px, 98vw);} }
+/* UI54:BEGIN (2026-11-14, package UI54, owner 11:11): the Codex is a place like the Nest (library shelves, a sign), and its Maps page is rolls of maps: a roll per world, a scroll per map that unrolls */
+#view-codex.codex-scene:not(.is-forge){position:relative; padding:64px clamp(10px,2.4vw,32px) 22px; border-radius:22px; margin-top:4px; isolation:isolate;
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255,226,170,.26), transparent 72%),
+    radial-gradient(ellipse 120% 95% at 50% 45%, transparent 55%, rgba(24,14,6,.6) 100%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.16) 0 2px, transparent 2px 56px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, #5c3b24, #3a2515);
+  box-shadow:inset 0 0 0 8px rgba(52,33,19,.92), inset 0 0 0 11px rgba(150,108,62,.5), 0 10px 30px rgba(0,0,0,.35);}
+#view-codex.codex-scene:not(.is-forge)::after{content:attr(data-sign); position:absolute; top:18px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
+  font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
+  background:linear-gradient(180deg,#efe2c4,#d5bd8c); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
+#view-codex.codex-scene:not(.is-forge) > *{position:relative; z-index:1;}
+#view-codex.codex-scene.is-forge::after{content:none;}
+@media (max-width:560px){ #view-codex.codex-scene:not(.is-forge){padding:52px 4px 14px; border-radius:16px; box-shadow:inset 0 0 0 5px rgba(52,33,19,.92), inset 0 0 0 7px rgba(150,108,62,.5), 0 8px 22px rgba(0,0,0,.35);}
+  #view-codex.codex-scene:not(.is-forge)::after{font-size:12.5px; top:14px;} }
+/* the rolls: a rolled cylinder (the head), a sheet that unrolls under it (the fold), wooden rod knobs at both ends */
+.mx-panel{display:flex; flex-direction:column; gap:12px;}
+.mx-panel > h2{margin:0;} .mx-panel > .panel-sub{margin:0;}
+.mx-world, .mx-scroll{display:block; min-width:0;}
+.mx-roll{position:relative; display:flex; align-items:center; gap:10px; width:100%; min-height:52px; margin:0; padding:6px 30px 6px 10px; text-align:left; cursor:pointer; color:var(--ink); font:inherit; border:1px solid var(--surface-border); border-radius:14px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--ink) 18%, var(--surface-3)) 0, var(--surface-2) 22%, var(--surface) 52%, var(--surface-3) 86%, color-mix(in srgb, var(--ink) 22%, var(--surface-3)) 100%);
+  box-shadow:0 2px 0 color-mix(in srgb, var(--ink) 28%, transparent), 0 6px 10px rgba(0,0,0,.22);}
+.mx-roll::before, .mx-roll::after{content:''; position:absolute; top:-4px; bottom:-4px; width:10px; border-radius:5px; pointer-events:none;
+  background:linear-gradient(90deg, color-mix(in srgb, var(--accent-strong) 55%, var(--ink)), var(--accent) 45%, color-mix(in srgb, var(--accent-strong) 55%, var(--ink)));}
+.mx-roll::before{left:-5px;} .mx-roll::after{right:-5px;}
+.mx-roll:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+.mx-roll .mx-t{display:flex; flex-direction:column; min-width:0; flex:1;} .mx-roll .mx-t b{font-weight:800; overflow-wrap:anywhere;} .mx-roll .mx-t small{color:var(--ink-muted); line-height:1.3;}
+.mx-thumb{flex:0 0 auto; display:grid; place-items:center; width:40px; height:40px; border-radius:10px; font-size:22px; box-shadow:inset 0 0 0 2px color-mix(in srgb, var(--ink) 30%, transparent);
+  background:var(--map-art, none) center / cover no-repeat, radial-gradient(circle at 30% 20%, var(--mt-a, var(--surface-3)), var(--mt-b, var(--surface-2)));}
+.mx-wroll .mx-thumb{background:radial-gradient(circle at 30% 20%, var(--accent), var(--accent-strong)); color:var(--accent-ink);}
+.mx-wroll{min-height:60px;} .mx-wroll .mx-t b{font-size:17px;}
+.mx-rod{position:absolute; right:12px; top:50%; width:9px; height:9px; margin-top:-6px; border-right:2.5px solid var(--ink-muted); border-bottom:2.5px solid var(--ink-muted); transform:rotate(45deg);}
+.is-open > .mx-roll > .mx-rod{transform:rotate(-135deg); margin-top:-2px;}
+.mx-fold{display:grid; grid-template-rows:0fr; margin:0 8px;}
+.is-open > .mx-fold{grid-template-rows:1fr;}
+.mx-in{min-height:0; overflow:hidden; border:0 solid var(--surface-border); border-radius:0 0 12px 12px; background:var(--surface-2); color:var(--ink);}
+.is-open > .mx-fold > .mx-in{border-width:0 1px 3px; padding:10px 12px 12px; box-shadow:inset 0 8px 8px -8px rgba(0,0,0,.35);}
+.mx-anim .mx-fold{transition:grid-template-rows .28s cubic-bezier(.2,.7,.3,1);}
+.mx-list{display:flex; flex-direction:column; gap:10px;}
+.is-open > .mx-fold > .mx-list{padding-top:14px;}
+.mx-in .mx-h{margin:10px 0 4px; font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-muted);} .mx-in .mx-h:first-child{margin-top:0;}
+.mx-blurb{margin:0; font-size:13px; color:var(--ink-muted);}
+.mx-fx{padding:0;} .mx-fx li > small{color:var(--ink-muted);}
+.mx-cards{display:flex; flex-wrap:wrap; gap:6px 8px; align-items:center;}
+.mx-nc{position:relative; display:inline-flex; align-items:center; gap:4px; cursor:pointer;}
+.mx-new{padding:0 6px; border-radius:8px; font:800 10px/16px 'Baloo 2',system-ui,sans-serif; letter-spacing:.03em; color:var(--accent-ink); background:var(--attack);}
+.mx-more{color:var(--ink-muted);}
+.mx-facts{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:4px 14px; font-size:13px;} .mx-facts li{display:flex; gap:6px; align-items:baseline;} .mx-facts li > span{color:var(--ink-muted);}
+.mx-subs{display:flex; flex-direction:column; gap:10px; padding-top:6px;}
+.mx-subs .mx-roll{min-height:44px;} .mx-subs .mx-thumb{width:32px; height:32px; font-size:18px;}
+@media (min-width:1100px){ .mx-list{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px 22px; align-items:start;} }
+@media (prefers-reduced-motion: reduce){ .mx-anim .mx-fold{transition:none;} }
+/* UI54:END */
 /* CS-A:END */
 /* CS-B:BEGIN (2026-10-30, package CS-B, card sizes steps 2-3; plan docs/design/card-sizes-2026-10-29.md; owner decisions CS-2/CS-4 10-30 10:34).
    Compact (--card-compact-w, 64px) for the previews outside a match: the map fight panel's leader, enemy squad and first-clear reward, the cards

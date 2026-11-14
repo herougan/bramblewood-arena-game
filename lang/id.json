@@ -4455,5 +4455,16 @@
  "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "Ulangi pelajaran dari Peta T sampai Peta 3, termasuk pelajaran pemicu.",
  "Reset all tutorials": "Atur ulang semua tutorial",
  "Replay every lesson and tip.": "Ulangi setiap pelajaran dan tip.",
- "Tutorials reset: they play again in your next fights.": "Tutorial diatur ulang: muncul lagi di pertarunganmu berikutnya."
+ "Tutorials reset: they play again in your next fights.": "Tutorial diatur ulang: muncul lagi di pertarunganmu berikutnya.",
+ "Every map you've reached, by world. Tap a scroll to unroll it.": "Semua peta yang kamu capai, per dunia. Ketuk gulungan untuk membukanya.",
+ "World {n}": "Dunia {n}",
+ "Maps {a}–{b}": "Peta {a}–{b}",
+ "Maps {a}+": "Peta {a}+",
+ "{n} of {total} reached": "{n} dari {total} dicapai",
+ "{n}/{total} cleared": "{n}/{total} selesai",
+ "Side map": "Peta samping",
+ "No field effects.": "Tidak ada efek medan.",
+ "New!": "Baru!",
+ "+{n} from earlier maps": "+{n} dari peta sebelumnya",
+ "Opens after {name}": "Terbuka setelah {name}"
 }

@@ -4453,5 +4453,16 @@
  "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "Spielt die Lektionen von Karte T bis Karte 3 erneut, auch die zu Auslösern.",
  "Reset all tutorials": "Alle Tutorials zurücksetzen",
  "Replay every lesson and tip.": "Spielt jede Lektion und jeden Tipp erneut.",
- "Tutorials reset: they play again in your next fights.": "Tutorials zurückgesetzt: Sie kommen in deinen nächsten Kämpfen wieder."
+ "Tutorials reset: they play again in your next fights.": "Tutorials zurückgesetzt: Sie kommen in deinen nächsten Kämpfen wieder.",
+ "Every map you've reached, by world. Tap a scroll to unroll it.": "Alle erreichten Karten, nach Welt. Tippe auf eine Schriftrolle, um sie zu öffnen.",
+ "World {n}": "Welt {n}",
+ "Maps {a}–{b}": "Karten {a}–{b}",
+ "Maps {a}+": "Karten {a}+",
+ "{n} of {total} reached": "{n} von {total} erreicht",
+ "{n}/{total} cleared": "{n}/{total} geschafft",
+ "Side map": "Nebenkarte",
+ "No field effects.": "Keine Feldeffekte.",
+ "New!": "Neu!",
+ "+{n} from earlier maps": "+{n} von früheren Karten",
+ "Opens after {name}": "Öffnet nach {name}"
 }
