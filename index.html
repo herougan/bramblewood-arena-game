@@ -47994,7 +47994,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=3a12ea440c", "es": "assets/lang/es.js?v=093ba3cfaf", "fr": "assets/lang/fr.js?v=12ab728d0c", "id": "assets/lang/id.js?v=9deaccbb0c", "it": "assets/lang/it.js?v=bc6b9e6d14", "ja": "assets/lang/ja.js?v=d0d9f3241d", "ko": "assets/lang/ko.js?v=79869bd808", "pt": "assets/lang/pt.js?v=889d735648", "ta": "assets/lang/ta.js?v=2d57869106", "tl": "assets/lang/tl.js?v=2e2b404e77", "zh-Hans": "assets/lang/zh-Hans.js?v=d71a0f9ff4", "zh-Hant": "assets/lang/zh-Hant.js?v=8516eaa444"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=ef906d2786", "es": "assets/lang/es.js?v=4914a1bb59", "fr": "assets/lang/fr.js?v=f64eec2495", "id": "assets/lang/id.js?v=60b693c00d", "it": "assets/lang/it.js?v=214b594e49", "ja": "assets/lang/ja.js?v=0caee83f26", "ko": "assets/lang/ko.js?v=69e36a709f", "pt": "assets/lang/pt.js?v=be81c0263f", "ta": "assets/lang/ta.js?v=35385eff3f", "tl": "assets/lang/tl.js?v=b3ba94dd57", "zh-Hans": "assets/lang/zh-Hans.js?v=77c33e7736", "zh-Hant": "assets/lang/zh-Hant.js?v=619f28b526"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -48503,7 +48503,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "net.guild-list-failed": "Couldn't load the list of guilds.",
   "net.guild-create-rolled-back": "Couldn't set up your guild ({err}). Nothing was saved, so try again.",
   "net.guild-create-half-done": "Your guild “{name}” was made, but you couldn't be added to it ({err}). Find it under Join a Guild and tap Join to take it as its owner.",
-  "net.match-history-failed": "Couldn't load your match history.",
   "net.friends-failed": "Couldn't reach Friends right now. Check your connection and try again.",
   "net.friends-list-failed": "Couldn't load your friends list.",
   "net.market-mine-failed": "Couldn't load your listings.",
@@ -48769,26 +48768,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.dungeon-sweep-tip": "Sweep floor {floor}: the CPU plays it. Costs {e}⚡ and a key.",
   "ui.upgrades-tab": "Upgrades",
   "ui.forge-upgrades-blurb": "Upgrade the Forge itself: its tier (how far it can temper), your max Energy and the key ring for the Dailies.",
-  "ui.budget-head-ok": "⚖️ Within budget · N = {n} (Base = {base})",
-  "ui.budget-head-over": "⚖️ Over budget · N = {n} (Base = {base})",
-  "ui.budget-head-under": "⚖️ Well under budget · N = {n} (Base = {base})",
-  "ui.budget-line": "Level {level} · {rarity} · Wait {wait} · Lumber {lumber}",
-  "ui.budget-stats": "Stats: {f}((2×{a} + {h}){m} + {s} skills) = {x} {op} N = {n} {mark}",
-  "ui.budget-product": "Product: {f}({a}×{h}{m} + {s}×|{s}|) = {x} {op} (N/3)² = {n2} {mark}",
-  "ui.budget-miss": "× {m}: {skills} makes about half the attacks at it miss, so its stats count half again.",
-  "ui.budget-base-line": "Base = {parts} = {base}",
-  "ui.budget-part-wait": "Wait {v}",
-  "ui.budget-part-lumber": "Lumber {v}",
-  "ui.budget-part-ritual": "Ritual {v}",
-  "ui.budget-part-map": "Map {map} × {coef} = {v}",
   "ui.budget-nmult-plain": "No abilities: N × {k}.",
   "ui.budget-nmult-light": "Only light abilities (Flying, Tide, day and night): N × {k}.",
   "ui.budget-nmult-fragile": "Fragile: both scores × {k} (more stats for a card that takes double damage).",
   "ui.budget-lab-nmult": "N multipliers: no abilities × {plain}, only light abilities × {light}. Fragile is not one: it multiplies both scores by {fragile} instead.",
   "ui.budget-scale": "Then all of N × {scale}.",
   "ui.budget-formula": "N = (Base + Level/{lin}) × (1 + Level/{div}); Level 0: Base − {zero}. Base = {base} + Rarity + {w}×Wait + {w2}×Wait² + {l}×Lumber + {l2}×Lumber² + {rt}×Ritual + {mc}×Map.",
-  "ui.budget-pink": "(pink: under {pct}% of N)",
-  "ui.budget-pink-tip": "Pink: Stats are at or below {pct}% of N, so there is room to grow.",
   "ui.budget-lab-intro": "A card passes when both hold: f × ((2×Attack + Health) × m + Skills) ≤ N and f × (Attack × Health × m + Skills × |Skills|) ≤ (N/3)². Here m is the half-miss multiplier (on Attack and Health only) and f is the Fragile factor (1 for other cards). Level is the level the card starts at (Base and quest cards 0, rewards 1).",
   "ui.budget-lab-miss": "m: each skill that makes about half the attacks at a card miss ({skills}) multiplies the Attack and Health terms by {m}, not the skills; those skills cost 0.",
   "ui.forge-curve-title": "📈 What each level gives",
@@ -48971,7 +48956,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.log-confused-fumbles": "😵 {name} is confused and fumbles.",
   "ui.log-quiet-stills": "🧘 Quiet Contemplation stills {name}.",
   "ui.log-revive": "{name} rises again at 1 Health! ✨",
-  "ui.skill-revive": "The first time it dies, it dies in full, then comes back with 1 Health and no statuses.",
   "coach.blind-this-card-s-swings-miss": "👁 Blind: this card's swings miss half the time.",
   "coach.smoke-attacks-at-this-card-miss": "🌫️ Smoke: attacks at this card miss half the time until the end of next round.",
   "coach.chained-can-t-attack-until-its": "⛓️ Chained: can’t act until its chains break. Each chain is 1 Armor.",
@@ -48980,8 +48964,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "coach.their-castle-has-a-passive-of": "Their bramble has a passive of its own.",
   "coach.your-leader-drag-it-onto-the": "👑 Your Leader. Drag it onto the field, once a fight.",
   "coach.you-can-hold-5-cards-extra": "✋ You can hold 5 cards. Extra cards turn into 🪵 Lumber.",
-  "coach.this-badge-is-a-trigger-an": "⚡ This badge is a trigger: an effect the card fires by itself. Greyed out means it is off for now: triggers that fire every round or when hit stay off while the card is Waiting (⏳), Stunned, Frozen or Asleep.",
-  "coach.lit-up-means-ready-once-its": "⚡ Lit up means ready: once its Wait runs out the trigger switches on and fires every time its moment comes. “When played” and “When it dies” triggers work even while Waiting, and a Primed card’s triggers are on from the start.",
   "ui.pl2-reward": "reward",
   "ui.res3-forge-locked": "Locked for now",
   "ui.res3-lt-card": "A card",
@@ -48995,8 +48977,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pl2-pack-n": "Pack {n}",
   "ui.pl2-coop": "Multiplayer",
   "coach.pl2-trigger": "⚡ This chip is a trigger — read the card.",
-  "coach.tl-what": "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.",
-  "coach.tl-when": "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.",
   "coach.okay-next-turn-you-ll-draw": "Okay — next turn you’ll draw 1 more card.",
   "coach.this-card-needs-lumber-get-lumber": "🪵 This card needs Lumber. Get Lumber by giving up a card.",
   "coach.drag-a-card-you-don-t": "👉 Drag a card you don’t need onto the Graveyard.",
@@ -49072,10 +49052,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.now-in-your-codex": "{v1} — now in your Codex",
   "results.first-clear-bonus": "— first-clear bonus",
   "results.repeat-clear-payout": "— repeat-clear payout",
-  "results.an-s-rank-win-on-this": "A top-rank win on this map turned up a card (once per map)",
-  "results.rare-find": "🎁 Rare find",
   "results.it-s-safe-in-your-nest": "It's safe in your Nest and will grow into a {v1} card",
-  "results.rescued-a-baby": "🐣 Rescued a baby",
   "results.fix3-rescued-baby": "Rescued a {type} baby",
   "results.res3-kibble-tip": "For nurturing cards in the Nest",
   "results.res3-baby-name": "Baby {type}",
@@ -49088,15 +49065,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.materia-for-the-blacksmith-forge": "Materia for the Blacksmith (Forge)",
   "results.a-base-card-in-your-deck": "A Base card in your deck grew from this boss",
   "results.lv": "🌱 {v1} Lv {to}",
-  "results.a-spare-copy-of-a-base": "A spare copy of a Base card in your deck: feed it in the Forge",
   "results.your-base-cards-had-nothing-left": "Your Base cards had nothing left to grow, so it came as Dust",
   "results.spare-bramble-tip": "{name}: already owned. Fuse the spare in the Forge.",
   "results.spare": "SPARE",
   "results.dungeon-climb-resets": "The climb starts again from floor 1 (you fell on floor {floor}; best: floor {best}).",
-  "results.trains-a-level-0-card-to": "Trains a Level-0 card to Level 1 in the Nest",
   "results.kibble-2": "🦴 {conquestKibbleEarned} Kibble",
   "results.it-s-in-your-pack-place": "It's in your pack: place it in a hay nest in the Nest",
-  "results.an-egg": "An egg",
   "results.egg-card-hatch": "An egg! You'll need a place to hatch it.",
   "results.raid-claim-kicker": "Raid reward",
   "results.raid-claim-fell": "{name} has fallen!",
@@ -49132,8 +49106,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.first-clear-bonus-2": "First-clear bonus",
   "results.repeat-clear-payout-2": "Repeat-clear payout",
   "results.dust": "✨ {v1} Dust",
-  "results.a-rare-find-for-an-s": "A rare find for a top-rank win on this map (once per map)",
-  "results.rare-find-2": "🎁 Rare find!",
   "results.defeating-a-named-conquest-leader-boss": "Defeating a named Conquest leader (Boss/Raid Boss) pays out Metal",
   "results.metal": "🔩 {v1} Metal",
   "results.food-tokens-buy-sunfeather-packs-in": "Food tokens buy Sunfeather packs in the Shop",
@@ -49230,7 +49202,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.your-hero-takes-a-deck-slot": "🦸 Your Hero takes a deck slot — take one card out to get back to {DECK_SIZE}.",
   "toast.deck-saved": "💾 Deck saved.",
   "toast.you-bought-the-bread-it-smells": "🍞 You bought the bread. It smells wonderful. It does nothing.",
-  "toast.you-found-a-set-it-in": "{v1} You found a {v2} ({v3})! Set it in a nest in the Nest to warm it.",
   "toast.hidden-skirmish-found": "{v1} A hidden skirmish: {v2} ({v3}).",
   "toast.new-card-it-cracks-open-on": "🥚 New card: {v1}. It cracks open on the battlefield into a random {v2} card.",
   "toast.is-in-training-back-in-h": "🌱 {v1} is in training. Back in {NURTURE_HOURS}h at Level 1.",
@@ -49340,7 +49311,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.field-dark": "Dark-blind creatures miss 1/4 the time.",
   "ui.field-pitch": "Dark-blind creatures miss 1/2 the time.",
   "ui.field-absolute": "Dark-blind creatures miss every attack.",
-  "ui.fxx-dark": "Dark-blind: a unit without Darksight. An Illuminate unit lights its own side, and the enemy facing it.",
   "ui.field-dark-cast": "Cast by a unit: it lifts when that unit dies.",
   "ui.term-dark-blind": "a unit without Darksight.",
   "ui.dark-miss-share": "🌘 Darkness: it misses {share} the time.",
@@ -49480,9 +49450,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fx-wildfire-log": "🔥 The wildfire front burns {name}: {n} 🔥 fire damage.",
   "ui.fxx-wildfire": "It crosses both front lines from left to right. Units that resist fire, and Mountain Climbers, are spared.",
   "ui.fx-lava-tide": "Lava may flood a random column: 2 fire damage to non-flyers.",
-  "ui.fx-scorching1": "Each round, 2 random units a side take 1 fire damage. Heat-resistant units are spared.",
-  "ui.fx-scorching2": "Scorching, level 2: each round 3 random units on each side take 1 fire damage. Heat-resistant units are spared.",
-  "ui.fx-scorching3": "Scorching, level 3: each round 4 random units on each side take 1 fire damage. Heat-resistant units are spared.",
   "ui.fxx-lava-tide": "From round 2, both sides; fire-resistant units take half.",
   "ui.fx-petrify": "A random unit a side may petrify: no attack, half damage.",
   "ui.fxx-petrify": "From round 2, for the round.",
@@ -49698,7 +49665,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.log-thunder-hit-wet": "🌩️ Lightning strikes {name} for {dmg} (it is Wet).",
   "ui.log-tangled-roots": "🪢 Roots writhe up through the ground.",
   "ui.log-roots-grab": "🪢 Roots grab {name}: Webbed this round.",
-  "ui.log-detonate": "🎆 {att} detonates the Venom on {name}: +{n} damage.",
   "ui.log-proliferate": "🧫 The Venom spreads from {from} to {name}.",
   "ui.log-brittle": "🫙 {att} makes {name} Brittle ({n}).",
   "ui.log-field-break": "🧹 {name} breaks the field: its round effects stop for {n} rounds.",
@@ -50007,7 +49973,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.en3-log-rampart": "🚧 {name} takes {n} of the hit on its bramble; the bramble takes {b}.",
   "ui.en3-log-bramble-armor": "🌿🛡️ {name} fortifies its bramble: the hit is 1 less.",
   "ui.en3-log-boom-miss": "🪃 {name} misses, but throws its boomerang anyway.",
-  "ui.en3-float-guard-hop": "🦺 Covered!",
   "ui.en3-float-boom-miss": "🪃 Thrown!",
   "ui.en3-float-bramble-armor": "🛡️ −1",
   "ui.skn-hemorrhage": "Hemorrhage",
@@ -50529,7 +50494,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ar3-leave-sure": "Tap again to leave",
   "ui.ar3-connecting": "Looking for the room…",
   "ui.ar3-seat-empty": "Empty seat",
-  "ui.ar3-seat-cpu-start": "A CPU ally takes it if nobody does.",
   "ui.ar3-host": "Host",
   "ui.ar3-away": "Away",
   "ui.ar3-ready": "Ready",
@@ -50559,7 +50523,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ar3-wait-host-next": "Waiting for the host to go deeper.",
   "ui.ar3-run-over": "The climb is over",
   "ui.ar3-floors-cleared": "Parts won: {n}/{total}",
-  "ui.ar3-back": "Back to Multiplayer",
   "ui.coop2-tab-sub": "Dungeons you climb with friends, side by side on one board. Each run uses Energy.",
   "ui.coop2-group-sub": "A normal fight with a friend: each of you holds a row on one board, and you may also play into your ally's row, adjacent to one of your units.",
   "ui.coop2-group-facts": "{floors} parts and a boss · {n} players · ⚡{energy} each",
@@ -50883,7 +50846,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.en8-felling": "When it kills a unit, you gain {n} Lumber.",
   "ui.en8-felling-codex": "On Kill: a kill of its own. Lumberjack adds to it.",
   "ui.en8-pearl-bed": "Every turn while it is Ready, you gain {n} Pearl. A Pearl pays for 1 Lumber or 1 Stone.",
-  "ui.en8-pearl-bed-codex": "Pearls are spent only when you are short: Lumber and Stone go first, then Pearls make up the rest.",
   "ui.en8-coppice": "Each round it takes no damage, you gain {n} Lumber at the start of the next.",
   "ui.en8-coppice-codex": "From its second round on the field. Any damage that lands on it spoils that round; a Shield that soaks the hit keeps it whole.",
   "ui.en8-driftwood": "At the start of each Ebb round on a beach, you gain {n} Lumber.",
@@ -51201,9 +51163,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rv1-cut": "Cut cards",
   "ui.rv1-maybe": "Maybe",
   "ui.rv1-none": "No review yet",
-  "ui.rv1-by-owner": "owner",
-  "ui.rv1-by-claude": "Claude",
-  "ui.rv1-by-kept": "kept",
   "ui.rv1-act-cut": "✂",
   "ui.rv1-act-keep": "↩ Keep",
   "ui.rv1-undo": "Undo",
@@ -51575,7 +51534,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui24-power": "Power: {n}",
   "ui.ui24-power-none": "Power: not measured",
   "ui.ui24-power-date": "Measured {date}",
-  "ui.ui24-power-tip": "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker.",
   "ui.ui28-power-adv": "Advanced: {n}",
   "ui.ui28-suggested": "Suggested",
   "ui.ui28-suggested-tip": "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.",
@@ -51732,8 +51690,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng36-log-constricted-skip": "is Constricted and can't act. 🐍",
   "ui.eng36-constricted-pip": "Constricted: it can't attack or use skills this round.",
   "ui.eng36-hoard": "+{n}/+{n} for every 3 Lumber you hold.",
-  "ui.eng40-hoard-stone": "+{n}/+{n} for every 2 Stone you hold.",
-  "ui.eng40-hoard-metal": "+{n}/+{n} for each Metal you hold.",
   "ui.ui32-sk-counters": "Counters to this map's cards",
   "ui.ui34-counter-ctx": "Counters {n} of this map's cards: {cards}",
   "ui.ui34-resist-of": "{name} resistance",
@@ -51785,7 +51741,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui36-next-card": "Face-down card, likely {rarity}",
   "ui.ui36-cards-tip": "Achievements that give a card. The card is drawn from your faction pool when you claim it.",
   "ui.ui36-none": "No card achievements match this filter.",
-  "ui.ui37-sub": "Every card that could fit this map: its list, Claude's picks and your picks. Flag each Yes or No. NEW! means no earlier main map gives it; a Yes on an earlier map makes a card Carried here. Side-map cards are not shown.",
   "ui.ui37-new": "NEW!",
   "ui.ui37-carried": "Carried",
   "ui.ui37-flagged-new": "NEW! flagged",
@@ -51801,14 +51756,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui37-src-flag": "Your pick",
   "ui.ui37-src-earlier": "Yes earlier",
   "ui.ui37-from": "Map {n}",
-  "ui.ui37-from-tip": "Available from Map {n}",
   "ui.ui37-export": "Export picks",
   "ui.ui37-export-tip": "Every map's Yes / No flags as a file.",
   "ui.ui37-saved-cloud": "Saved online",
   "ui.ui37-saved-local": "Saved in this browser",
   "ui.ui37-prev": "Previous map",
   "ui.ui37-next": "Next map",
-  "ui.ui37-earlier": "More cards from earlier maps",
   "ui.ui38-sub": "A bigger pool for this map. NEW!: its list, cards that fit the map that no earlier main map gives, then proposed new cards (no stats or skills yet). Carried: cards from earlier main maps, best fit first. Flag each Yes or No; a Yes on an earlier map makes a card Carried here. Side maps come later.",
   "ui.ui38-min": "at least {n}",
   "ui.ui44-unlocks-after": "Unlocks after:",
@@ -57826,7 +57779,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '9883d8c25be0', BUILD_CARD_HASH = '51cc9f277a8b761681f0efc25adfcd298cf9c130ed3943694e8fdd0492d28135';
+const BUILD_ID = '520025d062d0', BUILD_CARD_HASH = '51cc9f277a8b761681f0efc25adfcd298cf9c130ed3943694e8fdd0492d28135';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -69031,7 +68984,7 @@ function energyShortToast(cost){
   document.body.appendChild(t);
   setTimeout(()=>{ t.classList.add('is-out'); setTimeout(()=> t.remove(), 450); }, 2000);
 }
-function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ const short = e < (+b.dataset.energyCost||0); b.disabled = false; b.classList.toggle('is-energy-short', short); if(short || b.dataset.noKeys) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled'); }); } // + a daily dungeon fight with no key stays disabled (2026-10-18, package DK)
+function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ const short = e < (+b.dataset.energyCost||0); b.disabled = !!b.dataset.edLocked; /* 2026-11-14 (TESTFIX3): a results button held for its rewards stays disabled */ b.classList.toggle('is-energy-short', short); if(short || b.dataset.noKeys) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled'); }); } // + a daily dungeon fight with no key stays disabled (2026-10-18, package DK)
 document.addEventListener('click', e=>{ // 2026-10-18 (package DK): a daily dungeon fight with no key in hand says why instead of starting
   const b = e.target && e.target.closest ? e.target.closest('button[data-no-keys]') : null; if(!b || dungeonTicketsLeft() > 0) return;
   e.preventDefault(); e.stopImmediatePropagation(); dungeonNoKeys(b);
