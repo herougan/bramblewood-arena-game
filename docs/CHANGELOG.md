@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-15 Package SIDE2P (side maps if SIDE2-2 e and SIDE2-4 e are picked)
+- Measure only, nothing applied: the 77 side fights of Maps 0-20 at 400 games on four seed sets read 54 in band / 60 within 10 / 6 beyond 20 on the mean (today 38 / 42 / 13). `docs/balance/side2p/`.
+
 ## 2026-11-15 Package E2EFIX1 (browser tests brought up to the current game)
 - Game: a board card's lit state chip (Timbered, Plenty, Heat ...) now redraws when only its state changes (the row signature missed `en5On` / `ctxOn`). Tests only otherwise: Forge tabs need Admin (map reach), decks must be owned, pips are chips, Admin lists SK / WK rows, Bleed drops on the last counter, Dive strikes the unit opposite. Still failing, pinned to removed designs: pref (X-REF), pl2 (4), eq2 (bar), bl / en5 (Bloom), coop2, rarity_limit_craft (forager-ant is Base).
 
