@@ -1,0 +1,4419 @@
+{
+ "about": "SKR1 redesign worklist: live Maps 0-20 cards (BAL25 scope, no token/test/pool/unattainable) with the owner rank of each skill key. bucket = the card's lowest-ranked skill (cut = carries a blank-rank skill); bestIs4OrLower = its best numeric rank is 4..8 and it has no S/tag skill (or only cut skills).",
+ "cards": [
+  {
+   "id": "abyss-lantern-squid",
+   "name": "Abyss Lantern Squid",
+   "rarity": "uncommon",
+   "skills": {
+    "shock": null,
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "acacia-giraffe",
+   "name": "Acacia Giraffe",
+   "rarity": "common",
+   "skills": {
+    "evasive": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "acorn-chipmunk",
+   "name": "Acorn Chipmunk",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "adder-ambusher",
+   "name": "Adder Ambusher",
+   "rarity": "rare",
+   "skills": {
+    "poison": ""
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": "uncommon",
+   "skills": {
+    "bleed": "1",
+    "twinStrike": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "rarity": "rare",
+   "skills": {
+    "armor": "1",
+    "bleed": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "rarity": "common",
+   "skills": {
+    "guardian": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "alpine-salamander",
+   "name": "Alpine Salamander",
+   "rarity": "common",
+   "skills": {
+    "regen": "7"
+   },
+   "cut": [],
+   "best": "7",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "rarity": "common",
+   "skills": {
+    "flying": "1",
+    "quick": ""
+   },
+   "cut": [
+    "quick"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ancient-sloth-titan",
+   "name": "Ancient Sloth Titan",
+   "rarity": "common",
+   "skills": {
+    "bulwark": "2",
+    "slow": "3"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "rarity": "uncommon",
+   "skills": {
+    "pounce": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "rarity": "starter",
+   "skills": {
+    "swarm": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "antlion-pit",
+   "name": "Antlion Pit",
+   "rarity": "uncommon",
+   "skills": {
+    "trap": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "anvilwhisker-otter",
+   "name": "Anvilwhisker Otter",
+   "rarity": "uncommon",
+   "skills": {
+    "forgeWeapon": null
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "unranked keys only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "apollo-butterfly",
+   "name": "Apollo Butterfly",
+   "rarity": "uncommon",
+   "skills": {
+    "flying": "1",
+    "thorns": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ash-cloud-condor",
+   "name": "Ash Cloud Condor",
+   "rarity": "rare",
+   "skills": {
+    "flying": "1",
+    "stun": null
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ash-moth",
+   "name": "Ash Moth",
+   "rarity": "common",
+   "skills": {
+    "flying": "1",
+    "nocturnal": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ashbone-ghoul",
+   "name": "Ashbone Ghoul",
+   "rarity": "common",
+   "skills": {
+    "exileSelf": null,
+    "remember": "GOD"
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "S/tag/note only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "badger-lumberjack",
+   "name": "Badger Lumberjack",
+   "rarity": "uncommon",
+   "skills": {
+    "guardian": "1",
+    "lumberjack": "5"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "5",
+   "bucket": "5",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "rarity": "uncommon",
+   "skills": {
+    "nocturnal": "1",
+    "poison": ""
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "bark-buckler",
+   "name": "Bark Buckler",
+   "rarity": "common",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "barnacle-bulwark",
+   "name": "Barnacle Bulwark",
+   "rarity": "rare",
+   "skills": {
+    "armor": "1",
+    "guardian": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "rarity": "starter",
+   "skills": {
+    "flying": "1",
+    "heal": null
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "rarity": "starter",
+   "skills": {
+    "flying": "1",
+    "poison": ""
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "rarity": "rare",
+   "skills": {
+    "inspiring": "2",
+    "sonar": "",
+    "tide": "1"
+   },
+   "cut": [
+    "sonar"
+   ],
+   "best": "1",
+   "worst": "2",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "berserker-boar",
+   "name": "Berserker Boar",
+   "rarity": "common",
+   "skills": {
+    "rage": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "birdlime-dauber",
+   "name": "Birdlime Dauber",
+   "rarity": "uncommon",
+   "skills": {
+    "reach": "3",
+    "strangle": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "bison-bulldozer",
+   "name": "Bison Bulldozer",
+   "rarity": "uncommon",
+   "skills": {
+    "bulldoze": "",
+    "onslaught": ""
+   },
+   "cut": [
+    "bulldoze",
+    "onslaught"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "blind-cave-fish",
+   "name": "Blind Cave Fish",
+   "rarity": "common",
+   "skills": {
+    "evasive": "1",
+    "keenSense": "2",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "blue-ringed-octopus",
+   "name": "Blue-ringed Octopus",
+   "rarity": "rare",
+   "skills": {
+    "octolash": "7"
+   },
+   "cut": [],
+   "best": "7",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "bog-leech",
+   "name": "Bog Leech",
+   "rarity": "uncommon",
+   "skills": {
+    "bleed": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "bombardier-beetle",
+   "name": "Bombardier Beetle",
+   "rarity": "uncommon",
+   "skills": {
+    "rocket": ""
+   },
+   "cut": [
+    "rocket"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "rarity": "uncommon",
+   "skills": {
+    "daunt": "2",
+    "invisible": ""
+   },
+   "cut": [
+    "invisible"
+   ],
+   "best": "2",
+   "worst": "2",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "border-collie",
+   "name": "Border Collie",
+   "rarity": "uncommon",
+   "skills": {
+    "converge": ""
+   },
+   "cut": [
+    "converge"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "rarity": "common",
+   "skills": {
+    "riled": "4",
+    "sweep": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "bramble-hoglet",
+   "name": "Bramble Hoglet",
+   "rarity": "common",
+   "skills": {
+    "regen": "7"
+   },
+   "cut": [],
+   "best": "7",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "bramblewood-lynx",
+   "name": "Bramblewood Lynx",
+   "rarity": "rare",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "burrow-rabbit",
+   "name": "Burrow Rabbit",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "caustic-scorpion",
+   "name": "Caustic Scorpion",
+   "rarity": "uncommon",
+   "skills": {
+    "poison": ""
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "deep-cave-troll",
+   "name": "Cave Bear",
+   "rarity": "common",
+   "skills": {
+    "rage": "3",
+    "siege": ""
+   },
+   "cut": [
+    "siege"
+   ],
+   "best": "3",
+   "worst": "3",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "cave-olm",
+   "name": "Cave Olm",
+   "rarity": "common",
+   "skills": {
+    "regen": "7"
+   },
+   "cut": [],
+   "best": "7",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "rarity": "uncommon",
+   "skills": {
+    "mountainClimber": "4",
+    "pounce": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "rarity": "common",
+   "skills": {
+    "delivery": ""
+   },
+   "cut": [
+    "delivery"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "cinder-skeleton",
+   "name": "Cinder Skeleton",
+   "rarity": "common",
+   "skills": {
+    "carnage": "4",
+    "undead": null
+   },
+   "cut": [],
+   "best": "4",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "clap-net-trapper",
+   "name": "Clap-net Trapper",
+   "rarity": "common",
+   "skills": {
+    "magnet": null
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "unranked keys only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "clownfish-scout",
+   "name": "Clownfish Scout",
+   "rarity": "common",
+   "skills": {
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "cobalt-talon-fledgling",
+   "name": "Cobalt Fledgling",
+   "rarity": "starter",
+   "skills": {
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "cobalt-talon-honour-guard",
+   "name": "Cobalt Talon Honour-guard",
+   "rarity": "uncommon",
+   "skills": {
+    "flying": "1",
+    "loyal": "3"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "cobalt-talon-skirmisher",
+   "name": "Cobalt Talon Skirmisher",
+   "rarity": "starter",
+   "skills": {
+    "diurnal": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "egg-bug",
+   "name": "Cocoon",
+   "rarity": "uncommon",
+   "skills": {
+    "chrysalis": "EVO"
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "S/tag/note only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "rarity": "veryrare",
+   "skills": {
+    "fork": "6",
+    "gash": "",
+    "tide": "1"
+   },
+   "cut": [
+    "gash"
+   ],
+   "best": "1",
+   "worst": "6",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "conch-herald",
+   "name": "Conch Herald",
+   "rarity": "uncommon",
+   "skills": {
+    "inspiring": "2",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "cone-cutter-squirrel",
+   "name": "Cone-cutter Squirrel",
+   "rarity": "common",
+   "skills": {
+    "almanac": "4",
+    "gain": null
+   },
+   "cut": [],
+   "best": "4",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "coral-polyp-colony",
+   "name": "Coral Polyp Colony",
+   "rarity": "uncommon",
+   "skills": {
+    "delivery": "",
+    "meld": "",
+    "tide": "1"
+   },
+   "cut": [
+    "delivery",
+    "meld"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "cottontail",
+   "name": "Cottontail",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "rarity": "common",
+   "skills": {
+    "inspiring": "2"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "crimson-wing-recruit",
+   "name": "Crimson Recruit",
+   "rarity": "starter",
+   "skills": {
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "crimson-wing-duelist-cadet",
+   "name": "Crimson Wing Duelist Cadet",
+   "rarity": "starter",
+   "skills": {
+    "diurnal": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "crossed-eyes",
+   "name": "Crossed-Eyes",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "rarity": "uncommon",
+   "skills": {
+    "backstab": "",
+    "evasive": "1"
+   },
+   "cut": [
+    "backstab"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "daily-post",
+   "name": "Daily Post",
+   "rarity": "common",
+   "skills": {
+    "drawCard": null,
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "dawn-bellringer",
+   "name": "Dawn Bellringer",
+   "rarity": "uncommon",
+   "skills": {
+    "diurnal": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "egg-beast",
+   "name": "Den Bundle",
+   "rarity": "uncommon",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "dhole-matriarch",
+   "name": "Dhole Matriarch",
+   "rarity": "veryrare",
+   "skills": {
+    "guardian": "1",
+    "packLeader": "2"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "dolphin-knight",
+   "name": "Dolphin Outrider",
+   "rarity": "rare",
+   "skills": {
+    "sonar": "",
+    "tide": "1"
+   },
+   "cut": [
+    "sonar"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "dragonscale-mail",
+   "name": "Dragonscale Mail",
+   "rarity": "legendary",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "driftwood-crab",
+   "name": "Driftwood Crab",
+   "rarity": "common",
+   "skills": {
+    "crabClaws": "2",
+    "gain": null,
+    "guardian": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "dromedary",
+   "name": "Dromedary",
+   "rarity": "uncommon",
+   "skills": {
+    "drought": "4",
+    "dry": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "duckling",
+   "name": "Duckling",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "dust-hyena",
+   "name": "Dust Hyena",
+   "rarity": "uncommon",
+   "skills": {
+    "carnage": "4",
+    "gain": null
+   },
+   "cut": [],
+   "best": "4",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "dust-devil-kestrel",
+   "name": "Dust-devil Kestrel",
+   "rarity": "veryrare",
+   "skills": {
+    "tornado": "S"
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "S/tag/note only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "name": "Eagle-Owl Quartermaster",
+   "rarity": "rare",
+   "skills": {
+    "arrow": "1",
+    "fletcher": "5",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "5",
+   "bucket": "5",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "earthworm",
+   "name": "Earthworm",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "echo-matriarch",
+   "name": "Echo Matriarch",
+   "rarity": "rare",
+   "skills": {
+    "flying": "1",
+    "leader": "1",
+    "missile": "",
+    "nocturnal": "1"
+   },
+   "cut": [
+    "missile"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "echo-screecher",
+   "name": "Echo Screecher",
+   "rarity": "rare",
+   "skills": {
+    "flying": "1",
+    "nocturnal": "1",
+    "onReadyDamage": null
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "electric-ray",
+   "name": "Electric Ray",
+   "rarity": "uncommon",
+   "skills": {
+    "charge": "note"
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "S/tag/note only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "rarity": "common",
+   "skills": {
+    "dry": "3",
+    "quick": ""
+   },
+   "cut": [
+    "quick"
+   ],
+   "best": "3",
+   "worst": "3",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ember-jackal",
+   "name": "Ember Jackal",
+   "rarity": "rare",
+   "skills": {
+    "frenzy": "7"
+   },
+   "cut": [],
+   "best": "7",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "rarity": "common",
+   "skills": {
+    "daunt": "2",
+    "flying": "1",
+    "onReadyDamage": null
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "fathom-leviathan",
+   "name": "Fathom Leviathan",
+   "rarity": "legendary",
+   "skills": {
+    "supreme": "",
+    "tide": "1",
+    "tsunami": "S",
+    "wave": "3"
+   },
+   "cut": [
+    "supreme"
+   ],
+   "best": "1",
+   "worst": "3",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "fawn-scout",
+   "name": "Fawn Scout",
+   "rarity": "rare",
+   "skills": {
+    "canopyCover": "",
+    "keenEye": "MAGIC"
+   },
+   "cut": [
+    "canopyCover"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "fen-mink",
+   "name": "Fen Mink",
+   "rarity": "uncommon",
+   "skills": {
+    "hunter": "5"
+   },
+   "cut": [],
+   "best": "5",
+   "worst": "5",
+   "bucket": "5",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "fennec-fox",
+   "name": "Fennec Fox",
+   "rarity": "uncommon",
+   "skills": {
+    "dry": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ferry-toll-frog",
+   "name": "Ferry Toll-Frog",
+   "rarity": "common",
+   "skills": {
+    "gain": null
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "unranked keys only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "rarity": "uncommon",
+   "skills": {
+    "poison": "",
+    "swarm": "1",
+    "tide": "1"
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "fire-drake-hatchling",
+   "name": "Fire Drake Hatchling",
+   "rarity": "heroic",
+   "skills": {
+    "arrow": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "fire-salamander",
+   "name": "Fire Salamander",
+   "rarity": "uncommon",
+   "skills": {
+    "spitfire": ""
+   },
+   "cut": [
+    "spitfire"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "fleetfootd",
+   "name": "Fleetfoot'd",
+   "rarity": "uncommon",
+   "skills": {
+    "quick": "",
+    "tide": "1"
+   },
+   "cut": [
+    "quick"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ford-kingfisher",
+   "name": "Ford Kingfisher",
+   "rarity": "uncommon",
+   "skills": {
+    "ambush": "1",
+    "flying": "1",
+    "pounce": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "fox-kit",
+   "name": "Fox Kit",
+   "rarity": "common",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "rarity": "rare",
+   "skills": {
+    "mountainClimber": "4",
+    "pounce": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "fungal-colossus",
+   "name": "Fungal Colossus",
+   "rarity": "uncommon",
+   "skills": {
+    "bloomCopy": "2",
+    "onDeathSpawn": null
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "gale-swift",
+   "name": "Gale Swift",
+   "rarity": "common",
+   "skills": {
+    "flying": "1",
+    "storm": "4"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "rarity": "uncommon",
+   "skills": {
+    "poison": "",
+    "web": "3"
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "3",
+   "worst": "3",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "gangrenous-leech",
+   "name": "Gangrenous Leech",
+   "rarity": "uncommon",
+   "skills": {
+    "fester": "",
+    "parasite": "1",
+    "poison": ""
+   },
+   "cut": [
+    "fester",
+    "poison"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "garden-snail",
+   "name": "Garden Snail",
+   "rarity": "starter",
+   "skills": {
+    "armor": "1",
+    "slow": "3"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "rarity": "rare",
+   "skills": {
+    "pounce": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "cataphract-destrier",
+   "name": "Gilded Roadwarden",
+   "rarity": "common",
+   "skills": {
+    "overwhelm": "3",
+    "pounce": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "glacier-wolf-pack",
+   "name": "Glacier Wolf Pack",
+   "rarity": "common",
+   "skills": {
+    "bleed": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "glass-changeling",
+   "name": "Glass Changeling",
+   "rarity": "rare",
+   "skills": {
+    "changeling": "",
+    "flying": "1"
+   },
+   "cut": [
+    "changeling"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "glass-golem",
+   "name": "Glass Golem",
+   "rarity": "rare",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "glass-octopus",
+   "name": "Glass Octopus",
+   "rarity": "rare",
+   "skills": {
+    "corrode": "1",
+    "stealth": "3"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "gold-throat-elder",
+   "name": "Gold-throat Elder",
+   "rarity": "rare",
+   "skills": {
+    "esprit": "2A",
+    "flying": "1",
+    "leader": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2A",
+   "bucket": "2A",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "gold-throated-acolyte",
+   "name": "Gold-throated Acolyte",
+   "rarity": "uncommon",
+   "skills": {
+    "evasive": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "golden-eagle-diver",
+   "name": "Golden Eagle Diver",
+   "rarity": "uncommon",
+   "skills": {
+    "diurnal": "1",
+    "flying": "1",
+    "pounce": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "goliath-broodmother",
+   "name": "Goliath Broodmother",
+   "rarity": "legendary",
+   "skills": {
+    "inspiring": "2",
+    "onDeathSpawn": null
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "goliath-tentacle",
+   "name": "Goliath Tentacle",
+   "rarity": "epic",
+   "skills": {
+    "sweep": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "granite-ox-golem",
+   "name": "Granite Ox Golem",
+   "rarity": "rare",
+   "skills": {
+    "recoil": "2",
+    "stun": null
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "rarity": "uncommon",
+   "skills": {
+    "poison": ""
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "grave-grin-hyena",
+   "name": "Grave-Grin Hyena",
+   "rarity": "uncommon",
+   "skills": {
+    "executioner": "5"
+   },
+   "cut": [],
+   "best": "5",
+   "worst": "5",
+   "bucket": "5",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "great-barracuda",
+   "name": "Great Barracuda",
+   "rarity": "rare",
+   "skills": {
+    "quick": "",
+    "tide": "1"
+   },
+   "cut": [
+    "quick"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "greyplume-fledgling",
+   "name": "Greyplume Fledgling",
+   "rarity": "starter",
+   "skills": {
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "grizzly-vanguard",
+   "name": "Grizzly Vanguard",
+   "rarity": "common",
+   "skills": {
+    "guardian": "1",
+    "sweep": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "guppy",
+   "name": "Guppy",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "harbor-seal",
+   "name": "Harbor Seal",
+   "rarity": "common",
+   "skills": {
+    "dive": "3",
+    "evasive": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "harvest-mouse",
+   "name": "Harvest Mouse",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "name": "Hawthorn Shieldbug",
+   "rarity": "common",
+   "skills": {
+    "armor": "1",
+    "guardian": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "hedge-changeling",
+   "name": "Hedge Changeling",
+   "rarity": "uncommon",
+   "skills": {
+    "changeling": "",
+    "swarm": "1"
+   },
+   "cut": [
+    "changeling"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "hedgehog-herbalist",
+   "name": "Hedgehog Herbalist",
+   "rarity": "rare",
+   "skills": {
+    "herbalist": "5",
+    "immunity": "5"
+   },
+   "cut": [],
+   "best": "5",
+   "worst": "5",
+   "bucket": "5",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "helmeted-otter",
+   "name": "Helmeted Otter",
+   "rarity": "common",
+   "skills": {
+    "helmet": "5"
+   },
+   "cut": [],
+   "best": "5",
+   "worst": "5",
+   "bucket": "5",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "hercules-beetle",
+   "name": "Hercules Beetle",
+   "rarity": "rare",
+   "skills": {
+    "mighty": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "rarity": "starter",
+   "skills": {
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "rarity": "uncommon",
+   "skills": {
+    "coffee": "6",
+    "flying": "1",
+    "kinship": ""
+   },
+   "cut": [
+    "kinship"
+   ],
+   "best": "1",
+   "worst": "6",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "hoopoe-herald",
+   "name": "Hoopoe Herald",
+   "rarity": "common",
+   "skills": {
+    "nightblind": ""
+   },
+   "cut": [
+    "nightblind"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "horseshoe-crab",
+   "name": "Horseshoe Crab",
+   "rarity": "common",
+   "skills": {
+    "armor": "1",
+    "relict": "",
+    "salt": "4"
+   },
+   "cut": [
+    "relict"
+   ],
+   "best": "1",
+   "worst": "4",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "hummingbird-needler",
+   "name": "Hummingbird Needler",
+   "rarity": "uncommon",
+   "skills": {
+    "bleed": "1",
+    "flying": "1",
+    "pierce": "2"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "hush-wing-spy",
+   "name": "Hush-Wing Spy",
+   "rarity": "common",
+   "skills": {
+    "flying": "1",
+    "stealth": "3"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ibex-rockcaller",
+   "name": "Ibex Rockcaller",
+   "rarity": "veryrare",
+   "skills": {
+    "avalanche": "S"
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "S/tag/note only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "inkcloud-squid",
+   "name": "Inkcloud Squid",
+   "rarity": "common",
+   "skills": {
+    "evasive": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "inside-out-hedgehog",
+   "name": "Inside-Out Hedgehog",
+   "rarity": "uncommon",
+   "skills": {
+    "thorns": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "irradiated-axolotl",
+   "name": "Irradiated Axolotl",
+   "rarity": "uncommon",
+   "skills": {
+    "delivery": ""
+   },
+   "cut": [
+    "delivery"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "irradiated-glow-wyrm",
+   "name": "Irradiated Glow Wyrm",
+   "rarity": "rare",
+   "skills": {
+    "irradiated": ""
+   },
+   "cut": [
+    "irradiated"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "jaguar-stalker",
+   "name": "Jaguar Stalker",
+   "rarity": "rare",
+   "skills": {
+    "quick": ""
+   },
+   "cut": [
+    "quick"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "kinkajou-lurker",
+   "name": "Kinkajou Lurker",
+   "rarity": "uncommon",
+   "skills": {
+    "nocturnal": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling",
+   "rarity": "common",
+   "skills": {
+    "fork": "6",
+    "gash": ""
+   },
+   "cut": [
+    "gash"
+   ],
+   "best": "6",
+   "worst": "6",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "lantern-bearer",
+   "name": "Lantern Bearer",
+   "rarity": "uncommon",
+   "skills": {
+    "flying": "1",
+    "illuminate": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "lantern-spark-fly",
+   "name": "Lantern Spark Fly",
+   "rarity": "uncommon",
+   "skills": {
+    "flying": "1",
+    "illuminate": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "lava-waders",
+   "name": "Lava Waders",
+   "rarity": "uncommon",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "egg-scaly",
+   "name": "Leathery Egg",
+   "rarity": "uncommon",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "legate-of-rivergate",
+   "name": "Legate of Rivergate",
+   "rarity": "rare",
+   "skills": {
+    "armor": "1",
+    "inspiring": "2",
+    "leader": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "lodge-engineer",
+   "name": "Lodge Engineer",
+   "rarity": "uncommon",
+   "skills": {
+    "delivery": "",
+    "timbered": "4"
+   },
+   "cut": [
+    "delivery"
+   ],
+   "best": "4",
+   "worst": "4",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "lone-grey-wolf",
+   "name": "Lone Grey Wolf",
+   "rarity": "veryrare",
+   "skills": {
+    "loneWolf": "4"
+   },
+   "cut": [],
+   "best": "4",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "lucky-hopper",
+   "name": "Lucky Hopper",
+   "rarity": "uncommon",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "lyrebird-mimic",
+   "name": "Lyrebird Mimic",
+   "rarity": "uncommon",
+   "skills": {
+    "confuse": null
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "unranked keys only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "magma-titan",
+   "name": "Magma Rhino",
+   "rarity": "common",
+   "skills": {
+    "exploit": "6",
+    "immolation": "MAGIC"
+   },
+   "cut": [],
+   "best": "6",
+   "worst": "6",
+   "bucket": "6",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "rarity": "veryrare",
+   "skills": {
+    "arrow": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "magma-wraith",
+   "name": "Magma Wraith",
+   "rarity": "uncommon",
+   "skills": {
+    "arrow": "1",
+    "evasive": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "mangrove-kingfisher",
+   "name": "Mangrove Kingfisher",
+   "rarity": "rare",
+   "skills": {
+    "evasive": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "mangrove-manatee",
+   "name": "Mangrove Manatee",
+   "rarity": "rare",
+   "skills": {
+    "guardian": "1",
+    "regen": "7",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "mangrove-monitor",
+   "name": "Mangrove Monitor",
+   "rarity": "common",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "name": "Mangrove Mudskipper",
+   "rarity": "common",
+   "skills": {
+    "skitter": "",
+    "tide": "1"
+   },
+   "cut": [
+    "skitter"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "name": "Marshal of Rivergate",
+   "rarity": "epic",
+   "skills": {
+    "armor": "1",
+    "sweep": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "rarity": "uncommon",
+   "skills": {
+    "drunk": "6",
+    "guardian": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "6",
+   "bucket": "6",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "meadow-rabbit",
+   "name": "Meadow Rabbit",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "meerkat-burrower",
+   "name": "Meerkat Burrower",
+   "rarity": "common",
+   "skills": {
+    "keenSense": "2"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "meerkat-wayfarer",
+   "name": "Meerkat Wayfarer",
+   "rarity": "common",
+   "skills": {
+    "inspiring": "2",
+    "reach": "3"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "mirror-moth",
+   "name": "Mirror Moth",
+   "rarity": "rare",
+   "skills": {
+    "evasive": "1",
+    "flying": "1",
+    "reflect": "7"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "mist-net-otter",
+   "name": "Mist-net Otter",
+   "rarity": "common",
+   "skills": {
+    "reach": "3",
+    "web": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "mosswing-laborer",
+   "name": "Mosswing",
+   "rarity": "starter",
+   "skills": {
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "mountain-hare",
+   "name": "Mountain Hare",
+   "rarity": "common",
+   "skills": {
+    "evasive": "1",
+    "frostbite": "4"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "mouse-sapper",
+   "name": "Mouse Sapper",
+   "rarity": "common",
+   "skills": {
+    "siege": ""
+   },
+   "cut": [
+    "siege"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "rarity": "uncommon",
+   "skills": {
+    "bulwark": "2",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "nectar-sipper",
+   "name": "Nectar Sipper",
+   "rarity": "common",
+   "skills": {
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "nectar-vintner",
+   "name": "Nectar Vintner",
+   "rarity": "common",
+   "skills": {
+    "flying": "1",
+    "healing": ""
+   },
+   "cut": [
+    "healing"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "net-thrower",
+   "name": "Net Thrower",
+   "rarity": "uncommon",
+   "skills": {
+    "bola": "2"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "netmender-harpoon",
+   "name": "Netmender's Harpoon",
+   "rarity": "uncommon",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "rarity": "uncommon",
+   "skills": {
+    "healing": ""
+   },
+   "cut": [
+    "healing"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "oathsworn-legionary",
+   "name": "Oathsworn Legionary",
+   "rarity": "uncommon",
+   "skills": {
+    "loyal": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "obsidian-scorpion",
+   "name": "Obsidian Scorpion",
+   "rarity": "rare",
+   "skills": {
+    "armor": "1",
+    "poison": ""
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "rarity": "uncommon",
+   "skills": {
+    "sweep": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "old-snapjaw",
+   "name": "Old Snapjaw",
+   "rarity": "rare",
+   "skills": {
+    "armor": "1",
+    "bleed": "1",
+    "leader": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "old-sturgeon",
+   "name": "Old Sturgeon",
+   "rarity": "uncommon",
+   "skills": {
+    "armor": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "name": "Old Willow of the Ford",
+   "rarity": "legendary",
+   "skills": {
+    "delivery": "",
+    "regen": "7"
+   },
+   "cut": [
+    "delivery"
+   ],
+   "best": "7",
+   "worst": "7",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "optio-of-the-ford",
+   "name": "Optio of the Ford",
+   "rarity": "veryrare",
+   "skills": {
+    "guardian": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "orca-vanguard",
+   "name": "Orca Vanguard",
+   "rarity": "common",
+   "skills": {
+    "sweep": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ossuary-lammergeier",
+   "name": "Ossuary Lammergeier",
+   "rarity": "superrare",
+   "skills": {
+    "carrion": "3",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-angler",
+   "name": "Otter Angler",
+   "rarity": "common",
+   "skills": {
+    "delivery": "",
+    "tide": "1"
+   },
+   "cut": [
+    "delivery"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-ferryman",
+   "name": "Otter Ferryman",
+   "rarity": "common",
+   "skills": {
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-flag-bearer",
+   "name": "Otter Flag Bearer",
+   "rarity": "uncommon",
+   "skills": {
+    "inspiring": "2"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "rarity": "uncommon",
+   "skills": {
+    "arrow": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-kit",
+   "name": "Otter Kit",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-lantern-bearer",
+   "name": "Otter Lantern Bearer",
+   "rarity": "uncommon",
+   "skills": {
+    "illuminate": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-netmender",
+   "name": "Otter Netmender",
+   "rarity": "common",
+   "skills": {
+    "armor": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-paddler",
+   "name": "Otter Paddler",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-riverguard",
+   "name": "Otter Riverguard",
+   "rarity": "common",
+   "skills": {
+    "armor": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-scout",
+   "name": "Otter Scout",
+   "rarity": "rare",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-shieldback",
+   "name": "Otter Shieldback",
+   "rarity": "uncommon",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "rarity": "common",
+   "skills": {
+    "flying": "1",
+    "nocturnal": "1",
+    "stealth": "3"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "pack-mule",
+   "name": "Pack Mule",
+   "rarity": "common",
+   "skills": {
+    "bounty": null
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "unranked keys only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "pangolin-roller",
+   "name": "Pangolin Roller",
+   "rarity": "rare",
+   "skills": {
+    "sturdy": "5"
+   },
+   "cut": [],
+   "best": "5",
+   "worst": "5",
+   "bucket": "5",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "rarity": "uncommon",
+   "skills": {
+    "flying": "1",
+    "pounce": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "petal-fletcher",
+   "name": "Petal Fletcher",
+   "rarity": "common",
+   "skills": {
+    "arrow": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "pike-lancer",
+   "name": "Pike Lancer",
+   "rarity": "rare",
+   "skills": {
+    "pierce": "2",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "skills": {
+    "meiosis": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "platypus-spur",
+   "name": "Platypus Spur",
+   "rarity": "uncommon",
+   "skills": {
+    "poison": ""
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "poison-dart-croaker",
+   "name": "Poison Dart Croaker",
+   "rarity": "common",
+   "skills": {
+    "poison": "",
+    "sequestration": "",
+    "tide": "1"
+   },
+   "cut": [
+    "poison",
+    "sequestration"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "rarity": "veryrare",
+   "skills": {
+    "ambush": "1",
+    "hibernate": "7"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "pond-duck",
+   "name": "Pond Duck",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "pride-queen",
+   "name": "Pride Queen",
+   "rarity": "veryrare",
+   "skills": {
+    "leader": "1",
+    "quick": ""
+   },
+   "cut": [
+    "quick"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "proboscis-monkey",
+   "name": "Proboscis Monkey",
+   "rarity": "uncommon",
+   "skills": {
+    "taunt": "7",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "pronghorn-racer",
+   "name": "Pronghorn Racer",
+   "rarity": "common",
+   "skills": {
+    "speed": ""
+   },
+   "cut": [
+    "speed"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "rarity": "common",
+   "skills": {
+    "dive": "3",
+    "flying": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "pumice-beetle",
+   "name": "Pumice Beetle",
+   "rarity": "uncommon",
+   "skills": {
+    "gain": null
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "unranked keys only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "pyrenean-desman",
+   "name": "Pyrenean Desman",
+   "rarity": "uncommon",
+   "skills": {
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "quarry-mole",
+   "name": "Quarry Mole",
+   "rarity": "common",
+   "skills": {
+    "bedrock": "4",
+    "keenSense": "2"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "quicksand-queen",
+   "name": "Quicksand Queen",
+   "rarity": "veryrare",
+   "skills": {
+    "strangle": "3",
+    "trap": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "quill-spear",
+   "name": "Quill Spear",
+   "rarity": "uncommon",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "quill-volley",
+   "name": "Quill Volley",
+   "rarity": "rare",
+   "skills": {
+    "pounce": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "rarity": "rare",
+   "skills": {
+    "thorns": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "quillback-elder",
+   "name": "Quillback Elder",
+   "rarity": "common",
+   "skills": {
+    "armor": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "quillguard",
+   "name": "Quillguard",
+   "rarity": "rare",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "raccoon-bandit",
+   "name": "Raccoon Bandit",
+   "rarity": "rare",
+   "skills": {
+    "bounty": null,
+    "nocturnal": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "razorbill",
+   "name": "Razorbill",
+   "rarity": "uncommon",
+   "skills": {
+    "bleed": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "redwood-woodpecker",
+   "name": "Redwood Woodpecker",
+   "rarity": "uncommon",
+   "skills": {
+    "milling": ""
+   },
+   "cut": [
+    "milling"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "reef-admiral",
+   "name": "Reef Admiral",
+   "rarity": "veryrare",
+   "skills": {
+    "evasive": "1",
+    "leader": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "reef-shark",
+   "name": "Reef Shark",
+   "rarity": "common",
+   "skills": {
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "reefback-turtle",
+   "name": "Reefback Turtle",
+   "rarity": "veryrare",
+   "skills": {
+    "guardian": "1",
+    "shell": "note"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "riptide-eel",
+   "name": "Riptide Eel",
+   "rarity": "uncommon",
+   "skills": {
+    "reload": "",
+    "tide": "1"
+   },
+   "cut": [
+    "reload"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "egg-otter",
+   "name": "River Bundle",
+   "rarity": "uncommon",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "river-carp",
+   "name": "River Carp",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "river-warden",
+   "name": "River Warden",
+   "rarity": "rare",
+   "skills": {
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "riverbed-diver",
+   "name": "Riverbed Diver",
+   "rarity": "uncommon",
+   "skills": {
+    "evasive": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "rivergate-drummer",
+   "name": "Rivergate Drummer",
+   "rarity": "uncommon",
+   "skills": {
+    "kinRally": ""
+   },
+   "cut": [
+    "kinRally"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "rivergate-recruit",
+   "name": "Rivergate Recruit",
+   "rarity": "common",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "rivergate-tribune",
+   "name": "Rivergate Tribune",
+   "rarity": "heroic",
+   "skills": {
+    "armor": "1",
+    "kinship": ""
+   },
+   "cut": [
+    "kinship"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "riverside-peddler",
+   "name": "Riverside Peddler",
+   "rarity": "common",
+   "skills": {
+    "bounty": null
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "unranked keys only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "riverstone-slinger",
+   "name": "Riverstone Slinger",
+   "rarity": "rare",
+   "skills": {
+    "reach": "3"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "3",
+   "bucket": "3",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "riverwing-envoy",
+   "name": "Riverwing Envoy",
+   "rarity": "uncommon",
+   "skills": {
+    "esprit": "2A"
+   },
+   "cut": [],
+   "best": "2A",
+   "worst": "2A",
+   "bucket": "2A",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "riverworks-bastion",
+   "name": "Riverworks Bastion",
+   "rarity": "common",
+   "skills": {
+    "rampart": "7"
+   },
+   "cut": [],
+   "best": "7",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "roadrunner-courier",
+   "name": "Roadrunner Courier",
+   "rarity": "common",
+   "skills": {
+    "haste": ""
+   },
+   "cut": [
+    "haste"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "rarity": "uncommon",
+   "skills": {
+    "diurnal": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "rarity": "common",
+   "skills": {
+    "diurnal": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "egg-water",
+   "name": "Roe Pearl",
+   "rarity": "uncommon",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "rootworm-colony",
+   "name": "Rootworm Colony",
+   "rarity": "common",
+   "skills": {
+    "poisonBarbs": "2"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "otter-royal-guard",
+   "name": "Royal Guard",
+   "rarity": "superrare",
+   "skills": {
+    "grantShield": null
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "unranked keys only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "ruby-throat-duelist",
+   "name": "Ruby-Throat Duelist",
+   "rarity": "rare",
+   "skills": {
+    "flying": "1",
+    "pierce": "2",
+    "quick": ""
+   },
+   "cut": [
+    "quick"
+   ],
+   "best": "1",
+   "worst": "2",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sand-widow",
+   "name": "Sand Widow",
+   "rarity": "common",
+   "skills": {
+    "poison": ""
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "savanna-cheetah",
+   "name": "Savanna Cheetah",
+   "rarity": "veryrare",
+   "skills": {
+    "quick": ""
+   },
+   "cut": [
+    "quick"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "rarity": "common",
+   "skills": {
+    "armor": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sergeant-bramblefox",
+   "name": "Sergeant Bramblefox",
+   "rarity": "rare",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sheep",
+   "name": "Sheep",
+   "rarity": "starter",
+   "skills": {
+    "taunt": "7"
+   },
+   "cut": [],
+   "best": "7",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "shell-cracker",
+   "name": "Shell-Cracker",
+   "rarity": "common",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "shellwright-apprentice",
+   "name": "Shellwright Apprentice",
+   "rarity": "common",
+   "skills": {
+    "shell": "note"
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "S/tag/note only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "shimmerwing-stag",
+   "name": "Shimmerwing Stag",
+   "rarity": "veryrare",
+   "skills": {
+    "evasive": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "shoal-shark",
+   "name": "Shoal Shark",
+   "rarity": "uncommon",
+   "skills": {
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "siege-hammer",
+   "name": "Siege Hammer",
+   "rarity": "rare",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "silver-minnow",
+   "name": "Silver Minnow",
+   "rarity": "starter",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sleepless-shrew",
+   "name": "Sleepless Shrew",
+   "rarity": "common",
+   "skills": {
+    "wakeful": ""
+   },
+   "cut": [
+    "wakeful"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "snail-mail",
+   "name": "Snail Mail",
+   "rarity": "uncommon",
+   "skills": {
+    "armor": "1",
+    "drawCard": null
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "snapstick-turtle",
+   "name": "Snapstick Turtle",
+   "rarity": "common",
+   "skills": {
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "snow-ermine",
+   "name": "Snow Ermine",
+   "rarity": "common",
+   "skills": {
+    "evasive": "1",
+    "frost": "4"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "snowshoe-hare",
+   "name": "Snowshoe Hare",
+   "rarity": "common",
+   "skills": {
+    "evasive": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sparrow-chick",
+   "name": "Sparrow Chick",
+   "rarity": "starter",
+   "skills": {
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "egg-bird",
+   "name": "Speckled Egg",
+   "rarity": "uncommon",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "spitting-cobra",
+   "name": "Spitting Cobra",
+   "rarity": "rare",
+   "skills": {
+    "twinShot": "2"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "stalactite-golem",
+   "name": "Stalactite Pill Bug",
+   "rarity": "common",
+   "skills": {
+    "guardian": "1",
+    "shell": "note"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "rarity": "common",
+   "skills": {
+    "purblind": ""
+   },
+   "cut": [
+    "purblind"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "stoat-cutthroat",
+   "name": "Stoat Cutthroat",
+   "rarity": "rare",
+   "skills": {
+    "backstab": "",
+    "foeScarcity": ""
+   },
+   "cut": [
+    "backstab",
+    "foeScarcity"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "sulfur-cinder-moth",
+   "name": "Sulfur Cinder Moth",
+   "rarity": "common",
+   "skills": {
+    "damage": "",
+    "flying": "1",
+    "illuminate": "1"
+   },
+   "cut": [
+    "damage"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sunbittern-strider",
+   "name": "Sunbittern Strider",
+   "rarity": "uncommon",
+   "skills": {
+    "diurnal": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "dominion-nestguard",
+   "name": "Sunfeather Nestguard",
+   "rarity": "common",
+   "skills": {
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sunfeather-plume",
+   "name": "Sunfeather Plume",
+   "rarity": "rare",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sunfeather-scout",
+   "name": "Sunfeather Scout",
+   "rarity": "common",
+   "skills": {
+    "delivery": "",
+    "flying": "1"
+   },
+   "cut": [
+    "delivery"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sunspire-choirmother",
+   "name": "Sunspire Choirmother",
+   "rarity": "veryrare",
+   "skills": {
+    "diurnal": "1",
+    "esprit": "2A",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2A",
+   "bucket": "2A",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sunspire-envoy",
+   "name": "Sunspire Envoy",
+   "rarity": "rare",
+   "skills": {
+    "esprit": "2A",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2A",
+   "bucket": "2A",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sunspire-sky-sovereign",
+   "name": "Sunspire Sky-Sovereign",
+   "rarity": "heroic",
+   "skills": {
+    "esprit": "2A",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2A",
+   "bucket": "2A",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "sunthroat-courier",
+   "name": "Sunthroat Courier",
+   "rarity": "common",
+   "skills": {
+    "esprit": "2A",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "2A",
+   "bucket": "2A",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "swordbill-challenger",
+   "name": "Swordbill Challenger",
+   "rarity": "rare",
+   "skills": {
+    "counterattack": "3",
+    "flying": "1",
+    "taunt": "7"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "taiga-lynx",
+   "name": "Taiga Lynx",
+   "rarity": "rare",
+   "skills": {
+    "evasive": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "talon-archer",
+   "name": "Talon Archer",
+   "rarity": "veryrare",
+   "skills": {
+    "arrow": "1",
+    "diurnal": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "rarity": "uncommon",
+   "skills": {
+    "harbinger": "2"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "teatime-toad",
+   "name": "Teatime Toad",
+   "rarity": "uncommon",
+   "skills": {
+    "regen": "7"
+   },
+   "cut": [],
+   "best": "7",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "caldera-wyrm",
+   "name": "The Caldera Wyrm",
+   "rarity": "heroic",
+   "skills": {
+    "armor": "1",
+    "damage": "",
+    "pounce": "1"
+   },
+   "cut": [
+    "damage"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "the-contradiction",
+   "name": "The Contradiction",
+   "rarity": "epic",
+   "skills": {
+    "rage": "3",
+    "regen": "7"
+   },
+   "cut": [],
+   "best": "3",
+   "worst": "7",
+   "bucket": "7",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "drowned-matriarch",
+   "name": "The Drowned Matriarch",
+   "rarity": "uncommon",
+   "skills": {
+    "fork": "6",
+    "leader": "1",
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "6",
+   "bucket": "6",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "heron-hag",
+   "name": "The Heron Hag",
+   "rarity": "rare",
+   "skills": {
+    "flying": "1",
+    "leader": "1",
+    "poison": ""
+   },
+   "cut": [
+    "poison"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "old-shell",
+   "name": "The Old Shell",
+   "rarity": "uncommon",
+   "skills": {
+    "armor": "1",
+    "guardian": "1",
+    "leader": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "thorn-shrike",
+   "name": "Thorn Shrike",
+   "rarity": "rare",
+   "skills": {
+    "bleed": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "thorny-devil",
+   "name": "Thorny Devil",
+   "rarity": "uncommon",
+   "skills": {
+    "guardian": "1",
+    "thorns": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "tide-spirit",
+   "name": "Tide Seahorse",
+   "rarity": "veryrare",
+   "skills": {
+    "tide": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "name": "Tiny Cave Dweller",
+   "rarity": "uncommon",
+   "skills": {
+    "armor": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "torch",
+   "name": "Torch",
+   "rarity": "common",
+   "skills": {
+    "illuminate": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "trash-panda-trickster",
+   "name": "Trash Panda Trickster",
+   "rarity": "common",
+   "skills": {
+    "bounty": null,
+    "nocturnal": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "truce-heron",
+   "name": "Truce Heron",
+   "rarity": "rare",
+   "skills": {
+    "flying": "1",
+    "guardian": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "truffle-piglet",
+   "name": "Truffle Piglet",
+   "rarity": "uncommon",
+   "skills": {
+    "delivery": ""
+   },
+   "cut": [
+    "delivery"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "rarity": "rare",
+   "skills": {
+    "ambush": "1",
+    "swarm": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "two-headed-calf",
+   "name": "Two-Headed Calf",
+   "rarity": "rare",
+   "skills": {
+    "fork": "6"
+   },
+   "cut": [],
+   "best": "6",
+   "worst": "6",
+   "bucket": "6",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "upside-down-bat",
+   "name": "Upside-Down Bat",
+   "rarity": "uncommon",
+   "skills": {
+    "diurnal": "1",
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "vampire-roost",
+   "name": "Vampire Roost",
+   "rarity": "common",
+   "skills": {
+    "nocturnal": "1",
+    "onDeathSpawn": null
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "vampire-squid",
+   "name": "Vampire Squid",
+   "rarity": "rare",
+   "skills": {
+    "bleed": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "violet-vane-fletcher",
+   "name": "Violet Vane Fletcher",
+   "rarity": "starter",
+   "skills": {
+    "flying": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "voidfeather-scout",
+   "name": "Voidfeather Scout",
+   "rarity": "uncommon",
+   "skills": {
+    "flying": "1",
+    "nocturnal": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "1",
+   "bucket": "1",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "walrus-icebreaker",
+   "name": "Walrus Icebreaker",
+   "rarity": "veryrare",
+   "skills": {
+    "freeze": null,
+    "shatter": ""
+   },
+   "cut": [
+    "shatter"
+   ],
+   "best": "",
+   "worst": "",
+   "bucket": "cut",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "whip-spider",
+   "name": "Whip Spider",
+   "rarity": "uncommon",
+   "skills": {
+    "bleed": "1",
+    "sonar": ""
+   },
+   "cut": [
+    "sonar"
+   ],
+   "best": "1",
+   "worst": "1",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "rarity": "rare",
+   "skills": {
+    "brood": "2"
+   },
+   "cut": [],
+   "best": "2",
+   "worst": "2",
+   "bucket": "2",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "wolfsbane-alpha",
+   "name": "Wolfsbane Alpha",
+   "rarity": "veryrare",
+   "skills": {
+    "bleed": "1",
+    "carnage": "4",
+    "leader": "1",
+    "nocturnal": "1"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "woodland-caribou",
+   "name": "Woodland Caribou",
+   "rarity": "uncommon",
+   "skills": {
+    "frostbite": "4",
+    "mountainClimber": "4"
+   },
+   "cut": [],
+   "best": "4",
+   "worst": "4",
+   "bucket": "4",
+   "bestIs4OrLower": true
+  },
+  {
+   "id": "egg-woodland",
+   "name": "Woodland Egg",
+   "rarity": "common",
+   "skills": {},
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "no skills",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "rarity": "starter",
+   "skills": {
+    "drawCard": null
+   },
+   "cut": [],
+   "best": "",
+   "worst": "",
+   "bucket": "unranked keys only",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "wound-reaver",
+   "name": "Wound Reaver",
+   "rarity": "rare",
+   "skills": {
+    "bleed": "1",
+    "rupture": "5"
+   },
+   "cut": [],
+   "best": "1",
+   "worst": "5",
+   "bucket": "5",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "wrong-way-salmon",
+   "name": "Wrong-Way Salmon",
+   "rarity": "uncommon",
+   "skills": {
+    "anadromous": "3",
+    "backstab": ""
+   },
+   "cut": [
+    "backstab"
+   ],
+   "best": "3",
+   "worst": "3",
+   "bucket": "cut",
+   "bestIs4OrLower": false
+  },
+  {
+   "id": "yeti",
+   "name": "Yeti",
+   "rarity": "common",
+   "skills": {
+    "scare": "5"
+   },
+   "cut": [],
+   "best": "5",
+   "worst": "5",
+   "bucket": "5",
+   "bestIs4OrLower": true
+  }
+ ],
+ "bucketCounts": {
+  "1": 94,
+  "no skills": 41,
+  "cut": 67,
+  "7": 14,
+  "3": 21,
+  "unranked keys only": 9,
+  "S/tag/note only": 6,
+  "5": 9,
+  "2": 20,
+  "4": 14,
+  "2A": 6,
+  "6": 4
+ },
+ "cutSkillCardCounts": [
+  [
+   "poison",
+   13
+  ],
+  [
+   "quick",
+   8
+  ],
+  [
+   "delivery",
+   8
+  ],
+  [
+   "sonar",
+   3
+  ],
+  [
+   "backstab",
+   3
+  ],
+  [
+   "siege",
+   2
+  ],
+  [
+   "gash",
+   2
+  ],
+  [
+   "changeling",
+   2
+  ],
+  [
+   "kinship",
+   2
+  ],
+  [
+   "healing",
+   2
+  ],
+  [
+   "damage",
+   2
+  ],
+  [
+   "bulldoze",
+   1
+  ],
+  [
+   "onslaught",
+   1
+  ],
+  [
+   "rocket",
+   1
+  ],
+  [
+   "invisible",
+   1
+  ],
+  [
+   "converge",
+   1
+  ],
+  [
+   "meld",
+   1
+  ],
+  [
+   "missile",
+   1
+  ],
+  [
+   "supreme",
+   1
+  ],
+  [
+   "canopyCover",
+   1
+  ],
+  [
+   "spitfire",
+   1
+  ],
+  [
+   "fester",
+   1
+  ],
+  [
+   "nightblind",
+   1
+  ],
+  [
+   "relict",
+   1
+  ],
+  [
+   "irradiated",
+   1
+  ],
+  [
+   "skitter",
+   1
+  ],
+  [
+   "sequestration",
+   1
+  ],
+  [
+   "speed",
+   1
+  ],
+  [
+   "milling",
+   1
+  ],
+  [
+   "reload",
+   1
+  ],
+  [
+   "kinRally",
+   1
+  ],
+  [
+   "haste",
+   1
+  ],
+  [
+   "wakeful",
+   1
+  ],
+  [
+   "purblind",
+   1
+  ],
+  [
+   "foeScarcity",
+   1
+  ],
+  [
+   "shatter",
+   1
+  ]
+ ],
+ "keysMissingFromSheet": {
+  "spawnCard": 5,
+  "gain": 12,
+  "onReadyDamage": 4,
+  "onDeathSpawn": 5,
+  "bounty": 7,
+  "render": 2,
+  "reduceWaitOfSpawned": 1,
+  "buff": 5,
+  "explode": 3,
+  "stun": 3,
+  "swapPositions": 1,
+  "renewal": 1,
+  "grit": 1,
+  "addWait": 3,
+  "freeze": 4,
+  "sleep": 1,
+  "shock": 2,
+  "heal": 1,
+  "drawCard": 5,
+  "stagger": 1,
+  "exileGrave": 2,
+  "exileSelf": 4,
+  "onSpawnDevilry": 1,
+  "stunPlayer": 1,
+  "beware": 1,
+  "mindControl": 1,
+  "undead": 2,
+  "grantShield": 1,
+  "weakness": 1,
+  "debuff": 1,
+  "blind": 1,
+  "tipsy": 2,
+  "confuse": 2,
+  "chained": 1,
+  "thanatosis": 3,
+  "forgeWeapon": 1,
+  "magnet": 1
+ }
+}

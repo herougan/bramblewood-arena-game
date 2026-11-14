@@ -1,0 +1,4485 @@
+{
+ "about": "Owner ranking of the skills, 2026-11-14 22:53 (docs/owner-input/skills-ranking-2026-11-14.xlsx, sheet Skills, column J). rank: 1, 1A, 2, 2A, 3..8, S, tags GOD / MAGIC (MAG) / EVO / KINGDOM / WEP, \"note\" = a note only, \"\" = blank (not important or a duplicate: cut). note = the owner text after the rank, brackets kept. written = the cell as typed. idea = an owner idea for a new skill (no key); noKey = another row without a key.",
+ "skills": [
+  {
+   "name": "Absolute Zero",
+   "key": "absoluteZero",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "none",
+   "category": "evergreen",
+   "type": "boolean"
+  },
+  {
+   "name": "Acid",
+   "key": "acidBolt",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Almanac",
+   "key": "almanac",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Almanac",
+   "key": "almanacGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Ambush",
+   "key": "ambush",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Amore",
+   "key": "amore",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Amplifier",
+   "key": "amplifier",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Anadromous",
+   "key": "anadromous",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Anchor",
+   "key": "anchor",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Anti-air",
+   "key": "antiAirOnly",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Archer",
+   "key": "archer",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Archer look",
+   "key": "archerStyle",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "select"
+  },
+  {
+   "name": "Armor",
+   "key": "armor",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Arrow",
+   "key": "arrow",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Arrow Count",
+   "key": "arrowCount",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Arrow – bleed",
+   "key": "arrowBleed",
+   "rank": "note",
+   "note": "(Laceration / Laced)",
+   "written": "(Laceration / Laced)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Arrow – bramble",
+   "key": "arrowBramble",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Arrow – venom",
+   "key": "arrowPoison",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Arson",
+   "key": "arson",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Assault",
+   "key": "assault",
+   "rank": "2",
+   "note": "(If it's attacking first)",
+   "written": "2 (If it's attacking first)",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Atheist",
+   "key": "atheist",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Avalanche",
+   "key": "avalanche",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "ranged",
+   "category": "evergreen",
+   "type": "number"
+  },
+  {
+   "name": "Backstab",
+   "key": "backstab",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "melee",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Banana",
+   "key": "banana",
+   "rank": "6",
+   "note": "",
+   "written": "6.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Bananarang",
+   "key": "bananarang",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Bedrock",
+   "key": "bedrock",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Bedrock",
+   "key": "bedrockGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Berserk",
+   "key": "berserk",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Beset",
+   "key": "beset",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Beset",
+   "key": "besetGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Bleed",
+   "key": "bleed",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Blitz",
+   "key": "blitz",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Blood Tithe",
+   "key": "bloodTithe",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Bloodlust",
+   "key": "bloodlust",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Bloom",
+   "key": "bloom",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Bloom",
+   "key": "bloomCopy",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Bloom When",
+   "key": "bloomWhen",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Bludgeon",
+   "key": "bludgeon",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Bola",
+   "key": "bola",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Bolster",
+   "key": "bolster",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Boomerang",
+   "key": "boomerang",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Breach",
+   "key": "breach",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Brittle",
+   "key": "brittle",
+   "rank": "2",
+   "note": "(Brittle should be the name of the status effect, but to make brittle - a new skill name)",
+   "written": "2 (Brittle should be the name of the status effect, but to make brittle - a new skill name)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Brood",
+   "key": "brood",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Broodkeeper",
+   "key": "broodkeeper",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Build",
+   "key": "fortification",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Bulldoze",
+   "key": "bulldoze",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Bulwark",
+   "key": "bulwark",
+   "rank": "2",
+   "note": "(Starts at 0/5 -> 0/8 at level 10)",
+   "written": "2 (Starts at 0/5 -> 0/8 at level 10)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Canopy Cover",
+   "key": "canopyCover",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Carnage",
+   "key": "carnage",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Carnage",
+   "key": "carnageGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Carrion",
+   "key": "carrion",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Cast Darkness",
+   "key": "castDarkness",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Chain Lightning",
+   "key": "chainLightning",
+   "rank": "S",
+   "note": "(Then create a new skill called Bioelectric for normal purposes, as 1.)",
+   "written": "S (Then create a new skill called Bioelectric for normal purposes, as 1.)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Changeling",
+   "key": "changeling",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Charge",
+   "key": "charge",
+   "rank": "note",
+   "note": "(Move it to triggers instead)",
+   "written": "(Move it to triggers instead)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Chilli",
+   "key": "chilli",
+   "rank": "6",
+   "note": "",
+   "written": "6.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Chrysalis",
+   "key": "chrysalis",
+   "rank": "EVO",
+   "note": "",
+   "written": "EVO",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Cinder",
+   "key": "fireBolt",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Cleave",
+   "key": "sweep",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Coffee",
+   "key": "coffee",
+   "rank": "6",
+   "note": "",
+   "written": "6.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Consecration",
+   "key": "consecration",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Converge",
+   "key": "converge",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "evergreen",
+   "type": "select"
+  },
+  {
+   "name": "Coppice",
+   "key": "coppice",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Core Evil",
+   "key": "coreEvil",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Corpsefeeder",
+   "key": "corpsefeeder",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Corrode",
+   "key": "corrode",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Counterattack",
+   "key": "counterattack",
+   "rank": "3",
+   "note": "(Counterattackers don't attack on their own. Unless there isn't an opposing enemy in its range, then it would attack the opposing bramble)",
+   "written": "3 (Counterattackers don't attack on their own. Unless there isn't an opposing enemy in its range, then it would attack the opposing bramble)",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Cower",
+   "key": "cower",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "selectNumber"
+  },
+  {
+   "name": "Crab Claws",
+   "key": "crabClaws",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Creative",
+   "key": "creative",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Crepuscular",
+   "key": "crepuscular",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Crepuscular {Day} → {Night}",
+   "key": "crepuscularGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant2"
+  },
+  {
+   "name": "Crit",
+   "key": "crit",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Crystallise",
+   "key": "crystallise",
+   "rank": "EVO",
+   "note": "",
+   "written": "EVO",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Cull",
+   "key": "hunter",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "selectNumber"
+  },
+  {
+   "name": "Cure",
+   "key": "cure",
+   "rank": "1",
+   "note": "(Cure 1 only)",
+   "written": "1 (Cure 1 only)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Darksight",
+   "key": "darksight",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Daunt",
+   "key": "daunt",
+   "rank": "2",
+   "note": "(Instead daunt when attacking)",
+   "written": "2 (Instead daunt when attacking)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Deadly Poison",
+   "key": "greaterPoison",
+   "rank": "5",
+   "note": "(S)",
+   "written": "5 (S)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Decay",
+   "key": "decay",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Defiance",
+   "key": "defiance",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "types"
+  },
+  {
+   "name": "Delivery",
+   "key": "delivery",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Delivery resource",
+   "key": "deliveryRes",
+   "rank": "1",
+   "note": "(Just call it Delivery)",
+   "written": "1 (Just call it Delivery)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "select"
+  },
+  {
+   "name": "Delivery, every turn",
+   "key": "deliveryEvery",
+   "rank": "1",
+   "note": "(The aciton version of this is just called Deliver)",
+   "written": "1 (The aciton version of this is just called Deliver)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Desecrate",
+   "key": "desecrate",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Desecration",
+   "key": "desecration",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Detonate",
+   "key": "detonate",
+   "rank": "5",
+   "note": "(Means payoff for a Rating-1 mechanic + it's not interesting enough to be a 3)",
+   "written": "5 (Means payoff for a Rating-1 mechanic + it's not interesting enough to be a 3)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Devour",
+   "key": "devour",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Dictator",
+   "key": "dictator",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Dirge",
+   "key": "dirge",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Dirge",
+   "key": "dirgeGrant",
+   "rank": "note",
+   "note": "(Explicit remove, and similar remove all other duplicates)",
+   "written": "(Explicit remove, and similar remove all other duplicates)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Disarm",
+   "key": "disarm",
+   "rank": "WEP",
+   "note": "",
+   "written": "WEP",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Dismantle",
+   "key": "dismantle",
+   "rank": "WEP",
+   "note": "",
+   "written": "WEP",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Diurnal",
+   "key": "diurnal",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Diurnal",
+   "key": "diurnalGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Dive",
+   "key": "dive",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Double Time",
+   "key": "doubleTime",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Dragon Lightning",
+   "key": "dragonLightning",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Driftwood",
+   "key": "driftwood",
+   "rank": "6",
+   "note": "(Similar to 5, but worse)",
+   "written": "6 (Similar to 5, but worse)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Drought",
+   "key": "drought",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Drought",
+   "key": "droughtGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Drunk",
+   "key": "drunk",
+   "rank": "6",
+   "note": "",
+   "written": "6.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Dry",
+   "key": "dry",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Durian",
+   "key": "durian",
+   "rank": "6",
+   "note": "",
+   "written": "6.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Dynamite",
+   "key": "dynamite",
+   "rank": "1A",
+   "note": "(Same as 1, but mainly to represent the 'civilised society' animals)",
+   "written": "1A (Same as 1, but mainly to represent the 'civilised society' animals)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Earthquake",
+   "key": "earthquake",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "ranged",
+   "category": "evergreen",
+   "type": "number"
+  },
+  {
+   "name": "Electricity",
+   "key": "electricity",
+   "rank": "1",
+   "note": "(To me, Electricity and Electric type attacks count as 1 skill. Same as Venom type and Venomous.)",
+   "written": "1 (To me, Electricity and Electric type attacks count as 1 skill. Same as Venom type and Venomous.)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Encore",
+   "key": "encore",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "melee",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Esprit",
+   "key": "esprit",
+   "rank": "2A",
+   "note": "",
+   "written": "2A",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Evasive",
+   "key": "evasive",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Evolute",
+   "key": "evolute",
+   "rank": "EVO",
+   "note": "",
+   "written": "EVO",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Evolute Alpha",
+   "key": "evoluteAlpha",
+   "rank": "EVO",
+   "note": "",
+   "written": "EVO",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Evolute Omega",
+   "key": "evoluteOmega",
+   "rank": "EVO",
+   "note": "",
+   "written": "EVO",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Executioner",
+   "key": "executioner",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Exhaust",
+   "key": "exhaust",
+   "rank": "6",
+   "note": "(Exhaust, exploit and expose are similar. Giving tactical depth.)",
+   "written": "6 (Exhaust, exploit and expose are similar. Giving tactical depth.)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Exploit",
+   "key": "exploit",
+   "rank": "6",
+   "note": "",
+   "written": "6.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Expose",
+   "key": "expose",
+   "rank": "6",
+   "note": "",
+   "written": "6.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Fast Forward",
+   "key": "fastForward",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Feeble",
+   "key": "feeble",
+   "rank": "6",
+   "note": "",
+   "written": "6.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Felling",
+   "key": "felling",
+   "rank": "note",
+   "note": "(Just use On kill -> Deliver (Lumber))",
+   "written": "(Just use On kill -> Deliver (Lumber))",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Fencing",
+   "key": "fencing",
+   "rank": "2A",
+   "note": "",
+   "written": "2A",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Field Breaker",
+   "key": "fieldBreaker",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "evergreen",
+   "type": "number"
+  },
+  {
+   "name": "Fire Arrow",
+   "key": "fireArrow",
+   "rank": "note",
+   "note": "(Same as above, Just use Arrow (Flaming))",
+   "written": "(Same as above, Just use Arrow (Flaming))",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Fire Arrow – bleed",
+   "key": "fireArrowBleed",
+   "rank": "note",
+   "note": "(Explicit remove)",
+   "written": "(Explicit remove)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Fire Arrow – bramble",
+   "key": "fireArrowBramble",
+   "rank": "note",
+   "note": "(Explicit remove)",
+   "written": "(Explicit remove)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Fire Arrow – venom",
+   "key": "fireArrowPoison",
+   "rank": "note",
+   "note": "(Explicit remove)",
+   "written": "(Explicit remove)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Fire Bolt – bleed",
+   "key": "fireBoltBleed",
+   "rank": "note",
+   "note": "(Explicit remove)",
+   "written": "(Explicit remove)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Fire Bolt – bramble",
+   "key": "fireBoltBramble",
+   "rank": "note",
+   "note": "(Explicit remove)",
+   "written": "(Explicit remove)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Fire Bolt – venom",
+   "key": "fireBoltPoison",
+   "rank": "note",
+   "note": "(Explicit remove)",
+   "written": "(Explicit remove)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Fireball",
+   "key": "fireball",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Fletcher",
+   "key": "fletcher",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Flying",
+   "key": "flying",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Foe's Full Hand",
+   "key": "foeFullHand",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Foe's Lean",
+   "key": "foeLean",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Foe's Plenty",
+   "key": "foePlenty",
+   "rank": "4",
+   "note": "(\"Against all odds\")",
+   "written": "4 (\"Against all odds\")",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Foe's Plenty",
+   "key": "foePlentyGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Foe's Scarcity",
+   "key": "foeScarcity",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Foe's Scarcity",
+   "key": "foeScarcityGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Fog",
+   "key": "fog",
+   "rank": "4",
+   "note": "(The thing after the colon is the default. However, Fog should be a field tracker, not the skill name -> field tracker are like sun and tide. Field effects grant field effects. It would just write \"Fog\" in a pill)",
+   "written": "4 (The thing after the colon is the default. However, Fog should be a field tracker, not the skill name -> field tracker are like sun and tide. Field effects grant field effects. It would just write \"Fog\" in a pill)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Fog",
+   "key": "fogGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Foraging",
+   "key": "foraging",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Forged",
+   "key": "forged",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Forged",
+   "key": "forgedGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Fork",
+   "key": "fork",
+   "rank": "6",
+   "note": "",
+   "written": "6.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Formation",
+   "key": "formation",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Fortify",
+   "key": "fortify",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Fortify (Armor 1), while it lives",
+   "key": "brambleArmor",
+   "rank": "3",
+   "note": "(Fortify: +1 Armor)",
+   "written": "3 (Fortify: +1 Armor)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Fragile",
+   "key": "fragile",
+   "rank": "note",
+   "note": "(like Brittle, however this is more 'generic' in flavour - better)",
+   "written": "(like Brittle, however this is more 'generic' in flavour - better)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Frenzy",
+   "key": "frenzy",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Friction",
+   "key": "friction",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Frost",
+   "key": "frost",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Frost",
+   "key": "frostGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Frostbite",
+   "key": "frostbite",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Full Hand",
+   "key": "fullHand",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Full Moon",
+   "key": "fullMoon",
+   "rank": "4",
+   "note": "(\"Gains '+X/X' upon full moon)",
+   "written": "4 (\"Gains '+X/X' upon full moon)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Full Moon",
+   "key": "fullMoonGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Gash",
+   "key": "gash",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "melee",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Ghost",
+   "key": "ghost",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAG",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Glean",
+   "key": "glean",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Gorge",
+   "key": "fester",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Grant",
+   "key": "grantSkill",
+   "rank": "note",
+   "note": "(Convert to action: Grant {who} {what})",
+   "written": "(Convert to action: Grant {who} {what})",
+   "delivery": "none",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Growth",
+   "key": "growth",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Guardian",
+   "key": "guardian",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Harbinger",
+   "key": "harbinger",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Harvest",
+   "key": "harvest",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Haste",
+   "key": "haste",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Hatchling",
+   "key": "hatchling",
+   "rank": "EVO",
+   "note": "",
+   "written": "EVO",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Healing",
+   "key": "healing",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Heat",
+   "key": "heat",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Heat",
+   "key": "heatGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Heavy Metal",
+   "key": "heavyMetal",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Helmet",
+   "key": "helmet",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Hemorrhage",
+   "key": "hemorrhage",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Herald",
+   "key": "herald",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Herbalist",
+   "key": "herbalist",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Hibernate",
+   "key": "hibernate",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Hive Mind",
+   "key": "hiveMind",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Hoard",
+   "key": "hoard",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Hydra",
+   "key": "hydra",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Hype",
+   "key": "hype",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Ice",
+   "key": "iceBolt",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Ice Arrow",
+   "key": "iceArrow",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Ichor",
+   "key": "ichor",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Illuminate",
+   "key": "illuminate",
+   "rank": "1",
+   "note": "(We need to find an alternate use. Don't give diurnal units anything. it isn't the sun!)",
+   "written": "1 (We need to find an alternate use. Don't give diurnal units anything. it isn't the sun!)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Immolation",
+   "key": "immolation",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAGIC",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Immortal",
+   "key": "immortal",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Immunity",
+   "key": "immunity",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Inherent Darkness",
+   "key": "inherentDarkness",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Injured",
+   "key": "injured",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Inspiring",
+   "key": "inspiring",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Invincible",
+   "key": "invincible",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Invisible",
+   "key": "invisible",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Iron-will",
+   "key": "ironWill",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Irradiated",
+   "key": "irradiated",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Isolation",
+   "key": "isolation",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Keen Sense",
+   "key": "keenSense",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Kin Rally",
+   "key": "kinRally",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "King",
+   "key": "king",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "King",
+   "key": "kinglyGrant",
+   "rank": "KINGDOM",
+   "note": "",
+   "written": "KINGDOM",
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "King Slayer",
+   "key": "kingSlayer",
+   "rank": "KINGDOM",
+   "note": "",
+   "written": "KINGDOM",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Kinship",
+   "key": "kinship",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "typeTwoNumber"
+  },
+  {
+   "name": "Landslide",
+   "key": "landslide",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Lantern",
+   "key": "lantern",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Lasso",
+   "key": "lasso",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Last Stand",
+   "key": "lastStand",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Last Stand",
+   "key": "lastStandGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Lean",
+   "key": "lean",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Leech",
+   "key": "sap",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Liege",
+   "key": "liege",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Liege",
+   "key": "liegeGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Lightning",
+   "key": "lightning",
+   "rank": "note",
+   "note": "(See Electricity)",
+   "written": "(See Electricity)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Lingering",
+   "key": "festering",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Lone Wolf",
+   "key": "loneWolf",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Loyal",
+   "key": "loyal",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Loyal",
+   "key": "loyalGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Lumber Feast",
+   "key": "lumberFeast",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Lumberjack",
+   "key": "lumberjack",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Mach",
+   "key": "mach",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Magic",
+   "key": "magic",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAGIC",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Magic Armor",
+   "key": "magicArmor",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAGIC",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Majesty",
+   "key": "majesty",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Meiosis",
+   "key": "meiosis",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Meld",
+   "key": "meld",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Meteor",
+   "key": "meteor",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Midas Touch",
+   "key": "midas",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Mighty",
+   "key": "mighty",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Milling",
+   "key": "milling",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Mimic",
+   "key": "mimic",
+   "rank": "5",
+   "note": "(Param 1: 3 types: Copy Attack, Copy Defence, Copy N Skills of Param 2 <Target>)",
+   "written": "5 (Param 1: 3 types: Copy Attack, Copy Defence, Copy N Skills of Param 2 <Target>)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Molting",
+   "key": "molting",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Momentum",
+   "key": "momentum",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Moonborn",
+   "key": "moonborn",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Moonpull",
+   "key": "moonpull",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "evergreen",
+   "type": "boolean"
+  },
+  {
+   "name": "Mountain Climber",
+   "key": "mountainClimber",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Mulligan",
+   "key": "mulligan",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Muster",
+   "key": "muster",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Muster",
+   "key": "musterGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Natural Leader",
+   "key": "leader",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Nature's Force",
+   "key": "natureForce",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Night-blind",
+   "key": "nightblind",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Nocturnal",
+   "key": "nocturnal",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Nocturnal",
+   "key": "nocturnalGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Nova",
+   "key": "nova",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAGIC",
+   "delivery": "ranged",
+   "category": "evergreen",
+   "type": "number"
+  },
+  {
+   "name": "Nullify",
+   "key": "nullify",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAGIC",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Nursing",
+   "key": "nursing",
+   "rank": "1",
+   "note": "(I think we'll use this instead of \"Heal\". And the action of Heal will be called \"Nurse\".)",
+   "written": "1 (I think we'll use this instead of \"Heal\". And the action of Heal will be called \"Nurse\".)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Octolash",
+   "key": "octolash",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Offspring",
+   "key": "offspring",
+   "rank": "3",
+   "note": "(Uses 1 additional lumber - otherwise no offspring)",
+   "written": "3 (Uses 1 additional lumber - otherwise no offspring)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Onslaught",
+   "key": "onslaught",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Onslaught",
+   "key": "onslaughtGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Pack",
+   "key": "pack",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Pack Howl",
+   "key": "packHowl",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Pack Leader",
+   "key": "packLeader",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Parasite",
+   "key": "parasite",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Pearl",
+   "key": "pearl",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Pearl Bed",
+   "key": "pearlBed",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Penance",
+   "key": "penance",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Perforate",
+   "key": "perforate",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Petrify",
+   "key": "petrify",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Pickpocket",
+   "key": "pickpocket",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Pierce",
+   "key": "pierce",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Pitchfork",
+   "key": "pitchfork",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Plenty",
+   "key": "plenty",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Plenty",
+   "key": "plentyGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Poison Barbs",
+   "key": "poisonBarbs",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Poison Gas",
+   "key": "poisonGas",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "none",
+   "category": "evergreen",
+   "type": "number"
+  },
+  {
+   "name": "Poisonous",
+   "key": "poisonous",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Pounce",
+   "key": "pounce",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "selectNumber"
+  },
+  {
+   "name": "Prayer",
+   "key": "prayer",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Prayer Ward",
+   "key": "prayerWard",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Predator",
+   "key": "predator",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Prey",
+   "key": "prey",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Primed",
+   "key": "primed",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Proliferate",
+   "key": "proliferate",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Prospector",
+   "key": "prospector",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Pry",
+   "key": "pry",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Psychic",
+   "key": "psychic",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAGIC",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Pulse",
+   "key": "venomPulse",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Pulverise",
+   "key": "pulverise",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Puncture",
+   "key": "puncture",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Purblind",
+   "key": "purblind",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Quarry",
+   "key": "quarry",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Quick",
+   "key": "quick",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Rabid",
+   "key": "rabid",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Rage",
+   "key": "rage",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Rage",
+   "key": "rageGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Rage (N%)",
+   "key": "rageAt",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Rain",
+   "key": "rain",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Rain",
+   "key": "rainGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Rainmaker",
+   "key": "rainmaker",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "none",
+   "category": "evergreen",
+   "type": "number"
+  },
+  {
+   "name": "Rainrunner",
+   "key": "rainrunner",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Rainrunner",
+   "key": "rainrunnerGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Rally",
+   "key": "rally",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Rampart",
+   "key": "rampart",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Reach",
+   "key": "reach",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Rebuild",
+   "key": "rebuild",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Recoil",
+   "key": "recoil",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Reflect",
+   "key": "reflect",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Regeneration",
+   "key": "regen",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Relic",
+   "key": "relic",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Relict",
+   "key": "relict",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Reload",
+   "key": "reload",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Remember",
+   "key": "remember",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Repair",
+   "key": "repair",
+   "rank": "note",
+   "note": "(Same as Rebuild but for structures. Not sure about this one)",
+   "written": "(Same as Rebuild but for structures. Not sure about this one)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Requiem",
+   "key": "requiem",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Requiem",
+   "key": "requiemGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Restless",
+   "key": "restless",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Retribution",
+   "key": "retribution",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Revive",
+   "key": "revive",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Riled",
+   "key": "riled",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Riled",
+   "key": "riledGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Ritual",
+   "key": "ritual",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "none",
+   "category": "passive",
+   "type": "ritual"
+  },
+  {
+   "name": "Rock-solid",
+   "key": "rockSolid",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Rocket",
+   "key": "rocket",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Rupture",
+   "key": "rupture",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Sabotage",
+   "key": "sabotage",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Sacrifice",
+   "key": "sacrifice",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Salt",
+   "key": "salt",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Salt",
+   "key": "saltGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Salvage",
+   "key": "salvage",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Scarcity",
+   "key": "scarcity",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Scarcity",
+   "key": "scarcityGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Scare",
+   "key": "scare",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Scatterbrained",
+   "key": "scatterbrained",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Scavenge",
+   "key": "scavenge",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Season",
+   "key": "season",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "select"
+  },
+  {
+   "name": "Season",
+   "key": "seasonGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Sentry",
+   "key": "sentry",
+   "rank": "note",
+   "note": "(Turn this into a trigger. So Sentry -> {Heal 2 Random Ally} e.g. (Btw, never heal ally at max health unless only option)",
+   "written": "(Turn this into a trigger. So Sentry -> {Heal 2 Random Ally} e.g. (Btw, never heal ally at max health unless only option)",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Sequestration",
+   "key": "sequestration",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Shade",
+   "key": "shade",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAGIC",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Shadow",
+   "key": "shadow",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAGIC",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Shapeshifter",
+   "key": "shapeshifter",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Shatter",
+   "key": "shatter",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Shedding",
+   "key": "shedding",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Shell",
+   "key": "shell",
+   "rank": "note",
+   "note": "(Same as Turtle)",
+   "written": "(Same as Turtle)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Shield",
+   "key": "shield",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Shield Call",
+   "key": "shieldCall",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Shieldwall",
+   "key": "shieldwall",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Shore Up",
+   "key": "shoreUp",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Siege",
+   "key": "demolisher",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Siege",
+   "key": "siege",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Silence",
+   "key": "silence",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Skitter",
+   "key": "skitter",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Skyfall",
+   "key": "skyfall",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Slash & Burn",
+   "key": "slashBurn",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Slow",
+   "key": "slow",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Smelter",
+   "key": "smelter",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Smoke Bomb",
+   "key": "smokeBomb",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Snipe",
+   "key": "snipe",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Sociable",
+   "key": "sociable",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Socket",
+   "key": "socket",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAGIC",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Sonar",
+   "key": "sonar",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Spark",
+   "key": "shockBolt",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Spawner",
+   "key": "spawner",
+   "rank": "7",
+   "note": "(Maybe better to use this instead of Every turn -> {Spawn} trigger-action pairs)",
+   "written": "7 (Maybe better to use this instead of Every turn -> {Spawn} trigger-action pairs)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "cardCount"
+  },
+  {
+   "name": "Speed",
+   "key": "speed",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Spellward",
+   "key": "spellward",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Spiteful",
+   "key": "spiteful",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Spitfire",
+   "key": "spitfire",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Spoils",
+   "key": "spoils",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Spotter",
+   "key": "spotter",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Sprout",
+   "key": "sprout",
+   "rank": "8",
+   "note": "",
+   "written": "8.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Stampede",
+   "key": "overwhelm",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Stealth",
+   "key": "stealth",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Stem",
+   "key": "stem",
+   "rank": "EVO",
+   "note": "",
+   "written": "EVO",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Stem",
+   "key": "stemGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Stench",
+   "key": "stench",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Stockpile",
+   "key": "stockpile",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Stonecutter",
+   "key": "stonecutter",
+   "rank": "7",
+   "note": "(But maybe instead it's every turn, turn 2 lumber into 1 stone)",
+   "written": "7 (But maybe instead it's every turn, turn 2 lumber into 1 stone)",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Stop, Drop and Roll",
+   "key": "dropRoll",
+   "rank": "",
+   "note": "",
+   "written": "",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Storm",
+   "key": "storm",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Storm",
+   "key": "stormGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Strangle",
+   "key": "strangle",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Stun",
+   "key": "stunOnHit",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Sturdy",
+   "key": "sturdy",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Stymie",
+   "key": "stymie",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Sun-shy",
+   "key": "sunshy",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Sunder",
+   "key": "sunder",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Supreme",
+   "key": "supreme",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Supreme Tide",
+   "key": "supremeTide",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Swarm",
+   "key": "swarm",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "types"
+  },
+  {
+   "name": "Swift",
+   "key": "swift",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Swimmer",
+   "key": "swimmer",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "select"
+  },
+  {
+   "name": "Swimmer Skills",
+   "key": "swimmerGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Swipe",
+   "key": "swipe",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Tally",
+   "key": "tally",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Tally",
+   "key": "tallyGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Tangleweed",
+   "key": "tangle",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Taunt",
+   "key": "taunt",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Thorns",
+   "key": "thorns",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Throng",
+   "key": "throng",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Throng",
+   "key": "throngGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Tide",
+   "key": "tide",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Tide",
+   "key": "tideGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant2"
+  },
+  {
+   "name": "Timber",
+   "key": "timber",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Timbered",
+   "key": "timbered",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Timbered",
+   "key": "timberedGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Tornado",
+   "key": "tornado",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "ranged",
+   "category": "evergreen",
+   "type": "number"
+  },
+  {
+   "name": "Toxin",
+   "key": "toxin",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Transform",
+   "key": "transform",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "transform"
+  },
+  {
+   "name": "Trap",
+   "key": "trap",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Tribe Delivery",
+   "key": "tribeDelivery",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Tribe Delivery resource",
+   "key": "tribeDeliveryRes",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "select"
+  },
+  {
+   "name": "Tribute",
+   "key": "tribute",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Trident",
+   "key": "trident",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "True Sight",
+   "key": "keenEye",
+   "rank": "MAGIC",
+   "note": "",
+   "written": "MAGIC",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "True Strike",
+   "key": "trueStrike",
+   "rank": "7",
+   "note": "",
+   "written": "7.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Tsunami",
+   "key": "tsunami",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "ranged",
+   "category": "evergreen",
+   "type": "number"
+  },
+  {
+   "name": "Twin",
+   "key": "twin",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Twin Shot",
+   "key": "twinShot",
+   "rank": "2",
+   "note": "",
+   "written": "2.0",
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Twin Strike",
+   "key": "twinStrike",
+   "rank": "1",
+   "note": "",
+   "written": "1.0",
+   "delivery": "melee",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Unfortify",
+   "key": "unfortify",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "text"
+  },
+  {
+   "name": "Usurper",
+   "key": "usurper",
+   "rank": "4",
+   "note": "",
+   "written": "4.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "twoNumber"
+  },
+  {
+   "name": "Usurper",
+   "key": "usurperGrant",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "grant"
+  },
+  {
+   "name": "Vanguard",
+   "key": "vanguard",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Venom Master",
+   "key": "venomMaster",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Venom Spit",
+   "key": "poisonBolt",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Venomous",
+   "key": "poison",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Venomous (old)",
+   "key": "venomous",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Volley",
+   "key": "volley",
+   "rank": "S",
+   "note": "(Same as arrow but hits all opposing units, is also an action.",
+   "written": "S (Same as arrow but hits all opposing units, is also an action.",
+   "delivery": "ranged",
+   "category": "evergreen",
+   "type": "number"
+  },
+  {
+   "name": "Wakeful",
+   "key": "wakeful",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "War Banner",
+   "key": "banner",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Warcry",
+   "key": "warcry",
+   "rank": "5",
+   "note": "(Maybe make this permanent0",
+   "written": "5 (Maybe make this permanent0",
+   "delivery": "none",
+   "category": "evergreen",
+   "type": "number"
+  },
+  {
+   "name": "Wave",
+   "key": "wave",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "selectNumber"
+  },
+  {
+   "name": "Weaken",
+   "key": "weaken",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Weapon Master",
+   "key": "weaponMaster",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Web",
+   "key": "web",
+   "rank": "3",
+   "note": "",
+   "written": "3.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Well Fed",
+   "key": "satiety",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Wilting",
+   "key": "wilting",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Wither",
+   "key": "wither",
+   "rank": "5",
+   "note": "",
+   "written": "5.0",
+   "delivery": "none",
+   "category": "passive",
+   "type": "number"
+  },
+  {
+   "name": "Worship",
+   "key": "worship",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "none",
+   "category": "passive",
+   "type": "boolean"
+  },
+  {
+   "name": "Deal damage (custom action)",
+   "key": "action:damage",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "action",
+   "type": ""
+  },
+  {
+   "name": "Missile (custom action)",
+   "key": "action:missile",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "action",
+   "type": ""
+  },
+  {
+   "name": "Position Beam (custom action)",
+   "key": "action:positionBeam",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "action",
+   "type": ""
+  },
+  {
+   "name": "Fire on hit (custom action)",
+   "key": "action:fireHit",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "melee",
+   "category": "action",
+   "type": ""
+  },
+  {
+   "name": "Barrage (custom action)",
+   "key": "action:barrage",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "action",
+   "type": ""
+  },
+  {
+   "name": "Venom Tick (custom action)",
+   "key": "action:poisonTick",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "action",
+   "type": ""
+  },
+  {
+   "name": "Pulse (custom action)",
+   "key": "action:pulse",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "none",
+   "category": "action",
+   "type": ""
+  },
+  {
+   "name": "Arrow (custom action)",
+   "key": "action:arrow",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "ranged",
+   "category": "action",
+   "type": ""
+  },
+  {
+   "name": "???",
+   "key": "",
+   "rank": "note",
+   "note": "(When it ingests an item.)",
+   "written": "(When it ingests an item.)",
+   "delivery": "none",
+   "category": "trigger",
+   "type": "",
+   "idea": true
+  },
+  {
+   "name": "Buff",
+   "key": "",
+   "rank": "note",
+   "note": "(If we can do a better name, I'd prefer that.) Buff: {Who} {What};",
+   "written": "(If we can do a better name, I'd prefer that.) Buff: {Who} {What};",
+   "delivery": "",
+   "category": "action",
+   "type": "",
+   "idea": true
+  },
+  {
+   "name": "Impact (Buff on Play)",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "evergreen",
+   "type": "",
+   "noKey": true
+  },
+  {
+   "name": "Quake",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "evergreen",
+   "type": "",
+   "noKey": true
+  },
+  {
+   "name": "Bulldoze",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "noKey": true
+  },
+  {
+   "name": "Slayer",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "noKey": true
+  },
+  {
+   "name": "Havoc (counter)",
+   "key": "",
+   "rank": "note",
+   "note": "Upon dealing N damage, do {action}, then reset.",
+   "written": "Upon dealing N damage, do {action}, then reset.",
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true
+  },
+  {
+   "name": "Industry",
+   "key": "",
+   "rank": "note",
+   "note": "Something about resources",
+   "written": "Something about resources",
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true
+  },
+  {
+   "name": "Butcher/Onslaught/Rampage/Ferocity",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "noKey": true
+  },
+  {
+   "name": "Assiduous",
+   "key": "",
+   "rank": "note",
+   "note": "Player discards or exiles N cards, do {action}",
+   "written": "Player discards or exiles N cards, do {action}",
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true
+  }
+ ]
+}

@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package SKR1 (owner skill ranking recorded)
+- The owner's 11-14 skill ranking as `docs/skill-ranking.json` and `docs/skill-ranking.md` (counts, notes, Maps 0-20 redesign worklist, `docs/balance/skr1/`); `tools/skill_ranking.py`. Recording only: no card, engine or text changed.
+
 ## 2026-11-14 Package TIP2 (tooltips of 20 words or fewer)
 - 11 long tooltip texts shortened to 20 words or fewer (budget formula, S, base level, burn, power, status, new skills, reference); the 12 language packs follow.
 
