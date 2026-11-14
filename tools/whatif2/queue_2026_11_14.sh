@@ -32,4 +32,15 @@ step from-ac $AC node -e 'const fs=require("fs"),f="docs/balance/skirmish-pass-w
 step fit-ac $AC sh -c "node tools/side2/fit_2026_11_13.js apply --dir ../whatif2/fit-ac; exec $R tools/side2/fit_2026_11_13.js run --codes $FIT --dir ../whatif2/fit-ac --from whatif2-base-ac --resume"
 step apply-ac $AC node tools/side2/fit_2026_11_13.js apply --dir ../whatif2/fit-ac
 step measure-ac $AC node tools/skirmish_pass.js measure 400 0 1 --tag=whatif2-ac --only=$CODES
+# fresh seeds (5100 + 37g): the 14 fights whose band status moved vs today (tools/whatif2/report_2026_11_14.js "movers"; today's fresh reads
+# for all 14 are WHATIF1's measure-base-fresh), plus 0-B-3 and the fights still out that the brief names (2-A-6, 10-A-5, 18-A-9)
+FRESH=1-A-4,2-A-3,19-A-7,19-A-8,19-A-10,14-A-3,14-A-5,17-A-1,17-A-2,17-A-4,0-B-1,0-B-4,18-A-2,18-A-3,0-B-3,2-A-6,10-A-5,18-A-9
+step fresh-ac $AC node tools/skirmish_pass.js measure 400 0 1 --seed=5100 --tag=whatif2-ac-fresh --only=$FRESH
+# engine drift: ENG-OD1 (2026-11-14, after WHATIF1's copies were made) changed bramblewood-engine.js; today and a+c re-read with the current
+# engine (the worktree's), every other file as above (arena_app.js's other changes since are UI only)
+NOW=$W/whatif2-now; ACN=$W/whatif2-ac-now; ENG=$(cd "$(dirname "$0")/../.." && pwd)/bramblewood-engine.js
+[ -d $NOW ] || { mkdir -p $NOW && cp -a $W/whatif1-b/. $NOW/ && cp "$ENG" $NOW/; }
+[ -d $ACN ] || { mkdir -p $ACN && cp -a $AC/. $ACN/ && cp "$ENG" $ACN/; }
+step measure-now $NOW node tools/skirmish_pass.js measure 400 0 1 --tag=whatif2-now --only=$CODES
+step measure-ac-now $ACN node tools/skirmish_pass.js measure 400 0 1 --tag=whatif2-ac-now --only=$CODES
 echo "queue done ($(date +%H:%M))"
