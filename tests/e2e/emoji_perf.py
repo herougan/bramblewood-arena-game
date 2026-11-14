@@ -74,6 +74,7 @@ CHECK_JS = """(async()=>{
   const tile = document.querySelector('#codexGrid .card-tile'); out.textOfHasEmoji = /\\p{Extended_Pictographic}/u.test(EmojiStyle.textOf(tile));
   out.html = EmojiStyle.html('🦦'); out.block = EmojiStyle.htmlBlock('<b title="🦦">🦦 Otter</b><svg><text>🦦</text></svg>');
   // the battle
+  adminModeEnabled = true; Object.keys(myDeckCounts).forEach(k=>{ for(let i=0;i<myDeckCounts[k];i++) unlockCardForPlayer(k,'test'); }); /* E2EFIX1: own the deck's copies */
   switchTab('play'); startConquestMatch('m2','4-3'); await new Promise(r=> setTimeout(r, 1500));
   const bp = [...document.querySelectorAll('#rowMine img.tw-emoji, #rowEnemy img.tw-emoji, #handStrip img.tw-emoji')];
   out.battlePics = bp.length; out.battleSvg = bp.filter(i=> !i.classList.contains('emo')).length;

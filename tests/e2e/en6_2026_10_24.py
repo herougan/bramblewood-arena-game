@@ -49,7 +49,7 @@ BOARD = """(async(mine, theirs)=>{ adminModeEnabled = true; try{ skipTriggerLess
   m.replayCards = null; renderMatchUI(); await new Promise(r=> setTimeout(r, 900));
   m.replayCards = {}; [1,2].forEach(pid=> ['left','center','right'].forEach(s=> m.players[pid].row[s].forEach(c=> m.replayCards[c.uid] = {uid:c.uid, defId:c.defId, atk:c.atk, hp:c.hp, maxHp:c.maxHp, slot:c.slot, poison:0, bleed:0, gpoison:0, shield:0, en5On:'', hibernating:false})));
   return uids; })"""
-BADGES = "(uid=>{ const el = document.querySelector(`.board-card[data-uid=\"${uid}\"]`); return el ? [...el.querySelectorAll('.abadge')].map(b=> (b.className.replace('abadge', '').trim()) + ':' + (b.dataset.en5 || b.textContent.trim())) : null; })"
+BADGES = "(uid=>{ [1, 2].forEach(p=> ['left', 'center', 'right'].forEach(r=> matchState.players[p].row[r].forEach(c=>{ const rc = matchState.replayCards && matchState.replayCards[c.uid]; if(rc && rc.en5On != null) c._en5On = rc.en5On; }))); renderMatchUI(); /* E2EFIX1: ENG25 #7 draws a state skill's lit chip in the strip, from the engine card's _en5On, on a full render */ const el = document.querySelector(`.board-card[data-uid=\"${uid}\"]`); return el ? [...el.querySelectorAll('.abadge')].map(b=> (b.className.replace('abadge', '').trim()) + ':' + (b.dataset.en5 || b.textContent.trim())).concat([...el.querySelectorAll('.ab-sk.zeit-live')].map(b=> 'en5-state:' + b.dataset.sk)) : null; })"
 HQ = "(side=>{ const m = matchState; return m && m.displayHqHp ? m.displayHqHp[side] : (m.players[side === 'A' ? 1 : 2].hq.hp); })"
 STATE = "(([uid, id, name, on])=>{ renderVfxForEvent({type:'statusFx', kind:'stateSkill', name, on, side:'A', attUid:uid, attDefId:id, targetUid:uid, targetDefId:id}); })"
 
@@ -110,7 +110,7 @@ async def run(b, url, w):
     ok(any(x.startswith('en6-hib') for x in (hb or [])), f'Hibernate: the 🛌 pip while it sleeps ({hb})')
     logs = await pg.evaluate("(()=>{ const nm = id=> (getCardDefs()[id]||{}).name; return [en6LogText({type:'statusFx', kind:'hibernate', on:true, targetDefId:'polar-bear'}, nm), en6LogText({type:'heal', cause:'hibernate', targetDefId:'polar-bear', amount:2}, nm), en6LogText({type:'season', season:'winter'}, nm)].map(x=> x && x.text); })()")
     ok('hibernates' in (logs[0] or '') and 'heals 2 in its sleep' in (logs[1] or '') and 'Winter' in (logs[2] or ''), f'the log lines ({logs})')
-    await pg.evaluate(f"""(()=>{{ renderVfxForEvent({{type:'statusFx', kind:'hibernate', on:false, side:'A', attUid:{u['1:0']}, attDefId:'polar-bear', targetSide:'A', targetUid:{u['1:0']}, targetDefId:'polar-bear'}}); }})()""")
+    await pg.evaluate(f"""(()=>{{ const hc = matchState.players[1].row.center[0]; hc.hibernating = false; hc.asleep = 0; /* E2EFIX1: the card wakes with the event (BADGES renders in full now) */ renderVfxForEvent({{type:'statusFx', kind:'hibernate', on:false, side:'A', attUid:{u['1:0']}, attDefId:'polar-bear', targetSide:'A', targetUid:{u['1:0']}, targetDefId:'polar-bear'}}); }})()""")
     await pg.wait_for_timeout(250)
     hb2 = await pg.evaluate(BADGES + f"({u['1:0']})")
     ok(not any(x.startswith('en6-hib') for x in (hb2 or [])), f'awake: the pip goes ({hb2})')

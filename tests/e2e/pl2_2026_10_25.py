@@ -112,9 +112,9 @@ async def run(b, url, w):
     await pg.evaluate(BOARD + "('m11', '20-7', [['fire-ant-raft', -1], ['ant-scout', 0], ['fire-ant-raft', 1]], [['voidfeather-scout', -1], ['ember-tetra', 0]])")
     r = await pg.evaluate(E("""const live = matchState.players[2].row.left[0]; live.maxHp = 7; live.hp = 6; live.baseHp = 5; renderMatchUI(); await new Promise(r=> setTimeout(r, 700));
       const el = [...document.querySelectorAll('#rowEnemy .board-card')].find(x=> x.querySelector('[data-defid="voidfeather-scout"]')); const bar = el && el.querySelector('.eq2-hpbar');
-      const ys = []; for(let i = 0; i < 8; i++){ const a = el.querySelector('.card-tile').getBoundingClientRect(), c = bar.getBoundingClientRect(); ys.push(Math.round(c.top - a.top)); await new Promise(r=> setTimeout(r, 240)); }
+      const ys = []; if(bar) for(let i = 0; i < 8; i++){ const a = el.querySelector('.card-tile').getBoundingClientRect(), c = bar.getBoundingClientRect(); ys.push(Math.round(c.top - a.top)); await new Promise(r=> setTimeout(r, 240)); }
       const ico = document.querySelector('#rowMine .card-tile.no-art .ico');
-      return {inBody: !!(bar && bar.parentElement.classList.contains('fly-body')), spread: Math.max(...ys) - Math.min(...ys), ys, op: ico ? +getComputedStyle(ico).opacity : null};"""))
+      return {inBody: !bar /* E2EFIX1: VIS3 (2026-10-26) took the unit Health bar away: none is drawn */ || bar.parentElement.classList.contains('fly-body'), spread: ys.length ? Math.max(...ys) - Math.min(...ys) : 0, ys, op: ico ? +getComputedStyle(ico).opacity : null};"""))
     ok(r['inBody'] and r['spread'] <= 2, f'00:02 SS#1 the flyer\'s Health bar rides in its .fly-body (bar-to-card offset steady while it sways) {r}')
     ok(r['op'] == 1, f'00:02 SS#1 an artless card\'s emoji is drawn whole {r["op"]}')
     await shot(pg, 'flyer-bar-noart', w, '.battlefield', 0)

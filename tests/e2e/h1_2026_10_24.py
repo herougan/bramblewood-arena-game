@@ -19,7 +19,7 @@ CHROME = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_sh
 SKIP = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_tutorial2_done_v1','1'); sessionStorage.setItem('bramblewood_seen_splash','1');"
         "localStorage.setItem('bramblewood_pitch_open_v1','1'); localStorage.setItem('bramblewood_arena_faction','otters'); localStorage.setItem('bramblewood_map_revealed_v1','[\"*\"]');"
         "localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek','skill-flying']));")
-OWN = ("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); try{ setDialogueFlag('seen:forge_cobble_intro', true); }catch(e){}"
+OWN = ("adminModeEnabled = true; /* E2EFIX1: Forge tabs open by map reach (RES3 / RES4-2); admin opens all */ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); try{ setDialogueFlag('seen:forge_cobble_intro', true); }catch(e){}"
        "window.showCoachTip = ()=>{}; window.maybeShowCoachTip = ()=>{}; window.playDialogue = ()=>{};")
 fails = []; shots = []
 

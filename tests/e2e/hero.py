@@ -17,9 +17,10 @@ async def main():
         for vw in ([(1280, 860, 'desk'), (390, 844, 'phone')] if SHOTS else [(1280, 860, 'desk')]):
             pg = await b.new_page(viewport={'width':vw[0], 'height':vw[1]}); errs = []
             pg.on('pageerror', lambda e: errs.append(str(e)))
-            await pg.add_init_script("localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1');")
+            await pg.add_init_script("localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_tutorial2_done_v1','1'); localStorage.setItem('bramblewood_conquest_progress_v1', JSON.stringify({completed:['mtut:tutorial','mtut:tutorial2'], raidUnlocked:[], ranks:{}}));")  # E2EFIX1: the 2nd tutorial gates the first skirmish
+
             await pg.goto('file://' + os.path.join(ROOT, 'index.html')); await pg.wait_for_timeout(1300)
-            await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); switchTab('stomp'); 1"); await pg.wait_for_timeout(500)
+            await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); claimTutorialWin('otters'); switchTab('stomp'); 1"); await pg.wait_for_timeout(500)
             if not await pg.query_selector('#stompBody #heroCreateBtn'): bad.append('no Hero Hall (Raise a Hero) in the Stomping Grounds'); await pg.close(); continue
             if SHOTS: await pg.screenshot(path=f'{SHOTS}/hero_create_{vw[2]}.png', full_page=False)
             await pg.click('[data-people="tribes"]'); await pg.wait_for_timeout(200)
@@ -53,7 +54,7 @@ async def main():
             if await pg.evaluate("'hero' in publicDeck(myDeckCounts)"): bad.append('publicDeck leaks the hero')
             if vw[2] == 'desk':
                 xp1 = await pg.evaluate("myHero.xp")
-                await pg.evaluate("(()=>{const m=CONQUEST_MAPS[0]; const n=m.nodes.find(n=>n.kind==='skirmish'); conquestSelectedMap=m.id; playSubTab='conquest'; switchTab('play'); startConquestMatch(m.id,n.key); return 1;})()")
+                await pg.evaluate("(()=>{const m=CONQUEST_MAPS[0]; const n=m.nodes.find(n=>n.kind==='skirmish'); conquestSelectedMap=m.id; playSubTab='conquest'; Object.keys(myDeckCounts).forEach(k=>{ for(let i=0;i<myDeckCounts[k];i++) unlockCardForPlayer(k,'test'); }); /* E2EFIX1: own the deck's copies */ switchTab('play'); startConquestMatch(m.id,n.key); return 1;})()")
                 await pg.wait_for_timeout(900)
                 if not await pg.evaluate("[...matchState.players[1].deck, ...matchState.players[1].hand, ...(matchState.players[1].discard||[])].some(c=> (c&&c.defId||c)==='hero')"): bad.append('hero not in the match deck')
                 await pg.evaluate("matchState.players[2].hq.hp=1; 1")

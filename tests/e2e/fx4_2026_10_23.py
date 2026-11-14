@@ -58,6 +58,8 @@ async def run(b, url, w):
     r = await pg.evaluate("""(async()=>{ setDialogueFlag(SWAP_TUTORIAL_FLAG, true); const defs = getCardDefs();
       const pool = Object.keys(defs).filter(id=> swapEligibleDef(defs[id]) && !(myDeckCounts[id] > 0) && !(defs[id].cost > 0) && !isUnattainable(defs[id]) && ['common','uncommon'].includes(defs[id].rarity) && Object.keys(myDeckCounts).some(o=> myDeckCounts[o] > 0 && swapStrength(defs[id]) > swapStrength(defs[o]) + 2)).slice(0, 40);
       const ids = []; for(const id of pool){ if(ids.length >= 3) break; unlockCardForPlayer(id, 'test'); if(multiSwapCandidates(id, myDeckCounts, defs).length) ids.push(id); }
+      // E2EFIX1: the swap rule (clearly better) leaves one weak deck card per pack card; give the deck two more that all three pack cards beat, so "Swap Again" has something left
+      Object.keys(defs).filter(k=> swapEligibleDef(defs[k]) && !myDeckCounts[k] && !(defs[k].cost > 0) && ids.every(i=> multiSwapCandidates(i, {[k]: 1}, defs).length)).slice(0, 2).forEach(k=> myDeckCounts[k] = 1);
       const before = deckTotal(myDeckCounts);
       pendingDeckSwap = []; queueMultiDeckSwap(ids, 'factionPack'); maybeOfferDeckSwap(); await new Promise(r=> setTimeout(r, 700));
       return {ids, before, rows: document.querySelectorAll('.ds3-row').length, thumbsIn: document.querySelectorAll('[data-col="in"] .ds2-thumb').length, outCard: !!document.querySelector('.ds2-old'), swap: !!document.getElementById('dsSwap')}; })()""")

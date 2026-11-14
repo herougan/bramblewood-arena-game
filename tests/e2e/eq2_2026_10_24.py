@@ -82,12 +82,12 @@ async def run(b, url, w):
     await pg.evaluate("(()=>{ const d = getCardDefs()['barrow-leech-bat']; liveCards['barrow-leech-bat'] = Object.assign({}, d, {effects: Object.assign({}, d.effects, {dive: 2})}); _cardDefsCache = null; return 1; })()")
     u = await pg.evaluate(BOARD + "([['barrow-leech-bat', 0, 30]], [['bee-knight', 0, 30], ['honey-bee', 1, 4]])")
     dv = await pg.evaluate(f"""(async()=>{{ const m = matchState, e = m.engine;
-      const ev = []; m.resolving = true; e.resolveCombat(m.players, m.sideOf || (id=> id===1?'A':'B'), m.stats || {{}}, ev, 1); const dive = ev.find(x=> x.type === 'dive');
+      const ev = []; m.resolving = true; e.resolveCombat(m.players, m.sideOf || (id=> id===1?'A':'B'), m.stats || {{}}, ev, 1); e.resolveCombat(m.players, m.sideOf || (id=> id===1?'A':'B'), m.stats || {{}}, ev, 2); /* E2EFIX1: EN7 / ENG32: round 1 it rises, round 2 it strikes the unit opposite */ const dive = ev.find(x=> x.type === 'dive');
       if(dive){{ const el = boardCardEl(dive.attUid); renderVfxForEvent(dive); }}
       return dive ? {{target: dive.targetDefId, bonus: dive.bonus, cls: !!document.querySelector('.board-card.eq2-diving')}} : null; }})()""")
     await pg.wait_for_timeout(260)
     await shot(pg, 'dive', w)
-    ok(dv and dv['target'] == 'honey-bee' and dv['bonus'] == 2 and dv['cls'], f'Dive 2 (the real engine): the bat dives past the knight onto the weakest unit, the swoop plays ({dv})')
+    ok(dv and dv['target'] == 'bee-knight' and dv['bonus'] == 2 and dv['cls'], f'Dive 2 (the real engine): the bat rises, then dives onto the unit opposite (ENG32), the swoop plays ({dv})')
     await pg.wait_for_timeout(700)
     # ---- the Health bar: printed Health green, bonus gold, Bolster's temporary pale blue
     u = await pg.evaluate(BOARD + "([['otter-guard', 0, 9, {maxHp:13, hp:12, tempHpR:3}], ['otter-paddler', 1, 8]], [['bee-knight', 0, 20]])")

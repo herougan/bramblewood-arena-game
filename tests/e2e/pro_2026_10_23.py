@@ -7,7 +7,7 @@ fight starting from it (the VS opener, then the board), the deep link #pro=3-PRO
 
 Build first. Exits 1 on a failed check.
 """
-import argparse, asyncio, http.server, socketserver, threading, functools, json, os, sys
+import argparse, re, asyncio, http.server, socketserver, threading, functools, json, os, sys
 from playwright.async_api import async_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, 'tests', 'out', 'shots'); os.makedirs(OUT, exist_ok=True)
@@ -51,15 +51,18 @@ async def run(b, url, w):
       if(p) p.scrollIntoView({block:'start'}); window.scrollBy(0, -8); await new Promise(r=> setTimeout(r, 300));
       const over = [...(p ? p.querySelectorAll('*') : [])].filter(e=> e.getBoundingClientRect().right > window.innerWidth + 1).length;
       return {shown: !!p, rows: p ? [...p.querySelectorAll('.pro-row')].map(x=> x.dataset.proKey) : [], over, docW: document.documentElement.scrollWidth, vw: window.innerWidth}; })()""")
-    want = [e['id'] for m in DATA['maps'].values() for e in m['pro'] + m.get('bpro', [])]  # + BPRO (2026-10-25, PL2)
-    ok(r['shown'] and [k for k in r['rows'] if not k.endswith('-REF')] == want, f"Admin lists the PRO fights {r['rows']}")  # 2026-10-25 (package PREF): + each map's X-REF row, checked in tests/e2e/pref_2026_10_25.py
+    # E2EFIX1 (2026-11-15): UI10 / GG10 made Admin's list one SK and one WK row per map (the hidden skirmish decks); the PRO / BPRO fights start from
+    # their panel (pl2ProPreview, as PL2's own test), the #pro= link and the editor row, which are still checked below.
+    want = sorted({re.sub(r'-B?PRO-\d+$', '', e['id']) + '-SK' for m in DATA['maps'].values() for e in m['pro']})
+    got = [k for k in r['rows'] if k.endswith('-SK')]
+    ok(r['shown'] and sorted(got) == want and all(re.search(r'-(SK|WK|REF)$', k) for k in r['rows']), f"Admin lists a skirmish row per map {r['rows'][:6]} ({len(got)} SK, {len(want)} wanted)")
     ok(r['over'] == 0 and r['docW'] <= r['vw'] + 1, f"Admin's PRO list fits the width (overflowing elements {r['over']}, page {r['docW']} / {r['vw']})")
     await shot(pg, 'admin-list', w)
     # a PRO fight starting from it
-    await pg.click('#adminProFights [data-pro-start="3-PRO-1"]'); await pg.wait_for_timeout(900)
+    await pg.evaluate("pl2ProPreview('3-PRO-1')"); await pg.wait_for_timeout(900)
     # 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO click opens the fight's panel; its Fight button (#cnpFightBtn) starts it
     r = await pg.evaluate("({sel: conquestSelectedNodeKey, panel: !!document.querySelector('#conquestNodePanel:not([hidden]) #cnpFightBtn'), ms: !!matchState})")
-    ok(r['sel'] == '3-PRO-1' and r['panel'] and not r['ms'], f'the PRO click opens its fight panel {r}')
+    ok(r['sel'] == '3-SK' and r['panel'] and not r['ms'], f'the PRO click opens its fight panel {r}')
     await shot(pg, 'preview', w)
     await pg.click('#cnpFightBtn')
     vs_name = ''
@@ -73,7 +76,7 @@ async def run(b, url, w):
     await pg.evaluate("document.querySelectorAll('.pro-shot-still').forEach(e=> e.remove())")
     r = await pg.evaluate("({pro: matchState && matchState.proFight, admin: !!(matchState && matchState.adminTest)})")
     r['vs'] = vs_name
-    ok(r['pro'] == '3-PRO-1' and r['admin'] and vs_name == '3-PRO-1', f"Fight starts 3-PRO-1 with its VS opener {r}")
+    ok(r['pro'] == '3-SK' and r['admin'] and vs_name == '3-SK', f"Fight starts 3-PRO-1 with its VS opener {r}")
     await pg.wait_for_timeout(3200)
     r = await pg.evaluate("({board: !!document.getElementById('rowMine'), enemy: matchState && matchState.players[2].deck.length + matchState.players[2].hand.length})")
     ok(r['board'] and r['enemy'] >= 18, f"the board is up, the enemy holds its 20-card PRO deck {r}")
@@ -84,12 +87,12 @@ async def run(b, url, w):
     pg = await fresh(b, url + '#pro=0-PRO-1', w)
     await pg.click('#cnpFightBtn'); await pg.wait_for_timeout(1500)  # 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO click opens the fight's panel; its Fight button (#cnpFightBtn) starts it
     r = await pg.evaluate("({pro: matchState && matchState.proFight, hash: location.hash, energy: currentEnergy(), err: window.__setupErr || null})")
-    ok(r['pro'] == '0-PRO-1' and r['hash'] == '' and r['energy'] == 40, f"#pro=0-PRO-1 starts that fight, free, the link cleared {r}")
+    ok(r['pro'] == '0-SK' and r['hash'] == '' and r['energy'] == 40, f"#pro=0-PRO-1 starts that fight, free, the link cleared {r}")
     await pg.wait_for_timeout(2600)
     # the skirmish editor's row
     r = await pg.evaluate("""(async()=>{ endMatch(); switchTab('play'); openSkirmishEditor('mc', '3-2'); await new Promise(r=> setTimeout(r, 400)); const f = document.querySelector('#skirmishEditorOverlay .pro-editor');
       if(f) f.scrollIntoView({block:'center'}); await new Promise(r=> setTimeout(r, 300)); return {shown: !!f, keys: f ? [...f.querySelectorAll('[data-pro-start]')].map(x=> x.dataset.proStart) : []}; })()""")
-    ok(r['shown'] and r['keys'] == [e['id'] for e in DATA['maps']['mc']['pro'] + DATA['maps']['mc'].get('bpro', [])], f"the skirmish editor shows Map 3's PRO and BPRO fights {r}")
+    ok(r['shown'] and r['keys'] == ['3-SK', '3-WK'], f"the skirmish editor shows Map 3's SK and WK fights (the PRO ids open as these, GG10; E2EFIX1) {r}")
     await shot(pg, 'editor-row', w)
     ok(not pg._errs, f'no page errors {pg._errs[:3]}')
     await pg.close()

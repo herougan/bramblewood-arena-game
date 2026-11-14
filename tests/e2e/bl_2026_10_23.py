@@ -76,11 +76,11 @@ async def run(b, url, w):
     # 2026-10-24 (package EN5, owner BL-1: "the copy can bloom"): only the unit that bloomed greys its chip; the copy's stays lit (was: both grey)
     ok(after['petals'] == 0 and not after['chipSpent'] and after['srcSpent'], f'Bloom: the look is over; the bloomed unit\'s chip is greyed, the copy\'s stays lit (it can bloom too) ({after})')
     # ---- Bleed fades: one grey drop from the pip to the ground
-    u = await pg.evaluate(BOARD + "([['bee-knight', 0, 12, {bleed:2}]], [['bee-knight', 0]])")
+    u = await pg.evaluate(BOARD + "([['bee-knight', 0, 12, {bleed:1}]], [['bee-knight', 0]])")
     pip = await pg.evaluate(f"""(()=>{{ const el = boardCardEl({u['1:0']}), p = el && el.querySelector('.abadge.bleed'); if(!p) return null; const r = p.getBoundingClientRect(), c = el.getBoundingClientRect(); return {{top: r.top, left: r.left, bottom: c.bottom, text: p.textContent}}; }})()""")
-    ok(pip and '2' in pip['text'], f'Bleed: the card shows its Bleed pip ({pip})')
+    ok(bool(pip), f'Bleed: the card shows its Bleed pip ({pip})')  # E2EFIX1: the pip is an emoji picture, so it has no text to read
     await pg.evaluate(f"""(()=>{{ const m = matchState; m.replayCards = {{}}; [1,2].forEach(pid=> ['left','center','right'].forEach(s=> m.players[pid].row[s].forEach(c=> m.replayCards[c.uid] = {{uid:c.uid, defId:c.defId, atk:c.atk, hp:c.hp, maxHp:c.maxHp, slot:c.slot, bleed:c.bleed}})));
-      window.__drop = []; renderVfxForEvent({{type:'bleedFade', side:'A', defId:'bee-knight', uid:{u['1:0']}, left:1}});
+      window.__drop = []; renderVfxForEvent({{type:'bleedFade', side:'A', defId:'bee-knight', uid:{u['1:0']}, left:0}});
       const iv = setInterval(()=>{{ const d = document.querySelector('.bleed-drop'); if(d){{ const r = d.getBoundingClientRect(); window.__drop.push([Math.round(r.top), getComputedStyle(d).filter]); }} }}, 50); setTimeout(()=> clearInterval(iv), 1500); }})()""")
     await pg.wait_for_timeout(120); await shot(pg, 'bleed-drop-start', w)
     await pg.wait_for_timeout(420); await shot(pg, 'bleed-drop-ground', w)
@@ -88,7 +88,7 @@ async def run(b, url, w):
     drop = await pg.evaluate(f"""(()=>{{ const el = boardCardEl({u['1:0']}), p = el && el.querySelector('.abadge.bleed'); return {{pts: window.__drop, left: document.querySelectorAll('.bleed-drop').length, pip: p ? p.textContent : null}}; }})()""")
     pts = drop['pts'] or []
     ok(len(pts) >= 5 and 'grayscale' in (pts[0][1] or '') and pts[0][0] <= pip['top'] + 6 and max(p[0] for p in pts) >= pip['bottom'] - 4, f"Bleed: one grey 🩸 falls from the pip to the ground under the card ({pts[:3]} ... max {max([p[0] for p in pts] or [0])}, card bottom {pip['bottom']:.0f})")
-    ok(drop['left'] == 0 and drop['pip'] and '1' in drop['pip'], f'Bleed: the drop is gone and the pip reads 1 ({drop["pip"]})')
+    ok(drop['left'] == 0 and not drop['pip'], f'Bleed: the drop is gone and the pip with it ({drop["pip"]})')  # E2EFIX1: UI30 #2 (2026-11-07) drops the grey drop only for the last counter (1 -> 0)
     # ---- card text: a default Diurnal has a bare name; a non-default keeps its numbers; Bloom's line
     lines = await pg.evaluate("""(()=>{ const t = h=> String(h).replace(/<[^>]+>/g, '').replace(/&amp;/g, '&'); const d = getCardDefs();
       const one = id=> { const x = describeEffects(d[id]); return (Array.isArray(x) ? x : [x]).map(t); };

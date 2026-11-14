@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-15 Package E2EFIX1 (browser tests brought up to the current game)
+- Game: a board card's lit state chip (Timbered, Plenty, Heat ...) now redraws when only its state changes (the row signature missed `en5On` / `ctxOn`). Tests only otherwise: Forge tabs need Admin (map reach), decks must be owned, pips are chips, Admin lists SK / WK rows, Bleed drops on the last counter, Dive strikes the unit opposite. Still failing, pinned to removed designs: pref (X-REF), pl2 (4), eq2 (bar), bl / en5 (Bloom), coop2, rarity_limit_craft (forager-ant is Base).
+
 ## 2026-11-14 Package SKR1 (owner skill ranking recorded)
 - The owner's 11-14 skill ranking as `docs/skill-ranking.json` and `docs/skill-ranking.md` (counts, notes, Maps 0-20 redesign worklist, `docs/balance/skr1/`); `tools/skill_ranking.py`. Recording only: no card, engine or text changed.
 

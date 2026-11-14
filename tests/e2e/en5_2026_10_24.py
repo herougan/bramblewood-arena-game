@@ -49,7 +49,7 @@ BOARD = """(async(mine, theirs)=>{ adminModeEnabled = true; switchTab('play'); s
   m.replayCards = null; renderMatchUI(); await new Promise(r=> setTimeout(r, 900));
   m.replayCards = {}; [1,2].forEach(pid=> ['left','center','right'].forEach(s=> m.players[pid].row[s].forEach(c=> m.replayCards[c.uid] = {uid:c.uid, defId:c.defId, atk:c.atk, hp:c.hp, maxHp:c.maxHp, slot:c.slot, poison:0, bleed:0, gpoison:0, shield:0, en5On:''})));
   return uids; })"""
-BADGES = "(uid=>{ const el = document.querySelector(`.board-card[data-uid=\"${uid}\"]`); return el ? [...el.querySelectorAll('.abadge')].map(b=> (b.className.replace('abadge', '').trim()) + ':' + (b.dataset.en5 || b.textContent.trim())) : null; })"
+BADGES = "(uid=>{ [1, 2].forEach(p=> ['left', 'center', 'right'].forEach(r=> matchState.players[p].row[r].forEach(c=>{ const rc = matchState.replayCards && matchState.replayCards[c.uid]; if(rc && rc.en5On != null) c._en5On = rc.en5On; }))); renderMatchUI(); /* E2EFIX1: ENG25 #7 draws a state skill's lit chip in the strip, from the engine card's _en5On, on a full render */ const el = document.querySelector(`.board-card[data-uid=\"${uid}\"]`); return el ? [...el.querySelectorAll('.abadge')].map(b=> (b.className.replace('abadge', '').trim()) + ':' + (b.dataset.en5 || b.textContent.trim())).concat([...el.querySelectorAll('.ab-sk.zeit-live')].map(b=> 'en5-state:' + b.dataset.sk)) : null; })"
 HQ = "(side=>{ const m = matchState; return m && m.displayHqHp ? m.displayHqHp[side] : (m.players[side === 'A' ? 1 : 2].hq.hp); })"
 
 async def run(b, url, w):

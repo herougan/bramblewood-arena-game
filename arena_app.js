@@ -40833,7 +40833,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${pl1AuraAtk(c)}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.ffCounters||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.inspTokens||0}:${c.pounceSpent?1:0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}`; // + the Evolute stack (EV, 2026-10-21)
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${pl1AuraAtk(c)}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.ffCounters||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.inspTokens||0}:${c.pounceSpent?1:0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}:${c.en5On != null ? c.en5On : (c._en5On || '')}:${c.ctxOn != null ? c.ctxOn : (c._ctxOn || '')}`; // + the Evolute stack (EV, 2026-10-21); 2026-11-15 (package E2EFIX1): + the lit state chips (ENG25 #7 draws them from en5On / ctxOn, which the signature missed, so a chip stayed dark until something else changed)
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
