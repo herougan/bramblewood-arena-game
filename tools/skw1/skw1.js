@@ -141,12 +141,14 @@ async function measure(B, X, tests, M) {
 // W[t][a] with se: (1) additive W = mu + a_t + b_a (weighted two-way); (2) multiplicative W = f_t x g_a (weighted rank 1, alternating least
 // squares); (3) multiplicative + additive offset per action W = f_t x g_a + c_a. Reports weighted R² (1 - Σw r² / Σw (W - W̄)²), χ² / df and
 // the cells with |z| > 2.5 (a real interaction the factor model misses).
-function fitGrid(T, A, W, S) {
-  const w = (i, j) => 1 / Math.max(0.05, S[i][j]) ** 2, nT = T.length, nA = A.length;
+// mask(i, j) true = the cell is left out of the fit (a pair the rules make empty: a self action On Death, Heal On Spawn at full Health)
+function fitGrid(T, A, W, S, mask) {
+  const nT = T.length, nA = A.length, w = (i, j) => mask && mask(i, j) ? 0 : 1 / Math.max(0.05, S[i][j]) ** 2;
   let wm = 0, ws = 0; for (let i = 0; i < nT; i++) for (let j = 0; j < nA; j++) { wm += w(i, j) * W[i][j]; ws += w(i, j); } wm /= ws;
   let sst = 0; for (let i = 0; i < nT; i++) for (let j = 0; j < nA; j++) sst += w(i, j) * (W[i][j] - wm) ** 2;
-  const stats = (pred, npar, name) => { let ssr = 0, z = []; for (let i = 0; i < nT; i++) for (let j = 0; j < nA; j++) { const r = W[i][j] - pred(i, j); ssr += w(i, j) * r * r; z.push({ t: T[i], a: A[j], W: r3(W[i][j]), fit: r3(pred(i, j)), z: r3(r / Math.max(0.05, S[i][j])) }); }
-    const df = nT * nA - npar; return { name, r2: r3(1 - ssr / sst), chi2: r3(ssr), df, chi2df: r3(ssr / df), big: z.filter(x => Math.abs(x.z) > 2.5).sort((a, b) => Math.abs(b.z) - Math.abs(a.z)), cells: z }; };
+  const nMask = mask ? T.reduce((t, x, i) => t + A.filter((y, j) => mask(i, j)).length, 0) : 0;
+  const stats = (pred, npar, name) => { let ssr = 0, z = []; for (let i = 0; i < nT; i++) for (let j = 0; j < nA; j++) { if (mask && mask(i, j)) continue; const r = W[i][j] - pred(i, j); ssr += w(i, j) * r * r; z.push({ t: T[i], a: A[j], W: r3(W[i][j]), fit: r3(pred(i, j)), z: r3(r / Math.max(0.05, S[i][j])) }); }
+    const df = nT * nA - nMask - npar; return { name, r2: r3(1 - ssr / sst), chi2: r3(ssr), df, chi2df: r3(ssr / df), big: z.filter(x => Math.abs(x.z) > 2.5).sort((a, b) => Math.abs(b.z) - Math.abs(a.z)), cells: z }; };
   // additive
   let mu = wm, at = new Array(nT).fill(0), ba = new Array(nA).fill(0);
   for (let it = 0; it < 200; it++) {
@@ -197,7 +199,7 @@ function report() {
       const chi2 = ws.reduce((t, x, j) => t + ((x - mean) / Math.max(0.1, ses[j])) ** 2, 0), spread = n > 1 ? sd(ws) : 0, noise = Math.sqrt(ses.reduce((a, b) => a + b * b, 0) / n);
       const off = mean - price, offZ = off / Math.max(0.1, seMean);
       return { key: k, n, mean: r3(mean), seMean: r3(seMean), spread: r3(spread), noise: r3(noise), chi2: r3(chi2), df: n - 1, min: r3(Math.min(...ws)), max: r3(Math.max(...ws)), price: r3(price), off: r3(off), offZ: r3(offZ),
-        verdict: Math.abs(offZ) > 2 && Math.abs(off) > 1 ? (off > 0 ? 'UNDER-priced' : 'OVER-priced') : 'ok', contextual: n > 2 && chi2 > 2.5 * (n - 1) && spread > 1.5, per: Object.fromEntries(Object.entries(per).map(([c, t]) => [c, { w: t.worth.m, se: t.worth.se, price: t.price }])) }; });
+        verdict: Math.abs(offZ) > 2 && Math.abs(off) > 1 ? (off > 0 ? 'UNDER-priced' : 'OVER-priced') : 'ok', contextual: n > 2 && chi2 > 2.5 * (n - 1) && (spread > 1 || spread > 0.5 * Math.abs(mean)), per: Object.fromEntries(Object.entries(per).map(([c, t]) => [c, { w: t.worth.m, se: t.worth.se, price: t.price }])) }; });
     rows.sort((a, b) => Math.abs(b.off) - Math.abs(a.off));
     sum.partA = { contexts: Object.fromEntries(ctxs.map(c => [c, { about: A[c].context.about, fights: A[c].context.fights, level: A[c].context.level, fields: A[c].context.fields, rate: A[c].ruler.rate, attackWeight: A[c].ruler.aw, placeboWorth: A[c].ruler.placeboWorth, baseWin: A[c].baseWin }])), rows };
     lines.push('| Skill | Price | Mean worth (se) | ' + ctxs.join(' | ') + ' | Spread (sd) / noise | Verdict | Context-dependent |', '|---|---|---|' + ctxs.map(() => '---|').join('') + '---|---|---|');
@@ -210,19 +212,41 @@ function report() {
     const r = Bx[c], T = TRIGGERS.filter(t => r.tests.some(x => x.key.startsWith(t + '>'))), Ak = Object.keys(ACTIONS).filter(a => r.tests.some(x => x.key.endsWith('>' + a)));
     const cell = (t, a) => r.tests.find(x => x.key === t + '>' + a);
     const W = T.map(t => Ak.map(a => cell(t, a).worth.m)), S = T.map(t => Ak.map(a => cell(t, a).worth.se)), P = T.map(t => Ak.map(a => cell(t, a).price));
-    const fit = fitGrid(T, Ak, W, S), fitP = fitGrid(T, Ak, P, P.map(row => row.map(() => 1)));
+    const SELF = ['heal2', 'atk1', 'hp2', 'shield2'], mask = (i, j) => (T[i] === 'onDeath' && SELF.includes(Ak[j])) || (T[i] === 'onSpawn' && Ak[j] === 'heal2');
+    const fit = fitGrid(T, Ak, W, S), fitP = fitGrid(T, Ak, P, P.map(row => row.map(() => 1))), fitM = fitGrid(T, Ak, W, S, mask);
+    // 95% intervals of the masked rank-1 parameters: a parametric bootstrap (each cell redrawn from N(W, se), refitted, 200 times)
+    { const rng = L.O.mulberry(L.fnv('skw1-pb|' + c)), gauss = () => { let u = 0, v = 0; while (u === 0) u = rng.next(); v = rng.next(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+      const fs_ = T.map(() => []), gs_ = Ak.map(() => []);
+      for (let b = 0; b < 200; b++) { const Wb = W.map((row, i) => row.map((x, j) => x + gauss() * Math.max(0.05, S[i][j]))), fb = fitGrid(T, Ak, Wb, S, mask).multiplicative.params;
+        T.forEach((t, i) => fs_[i].push(fb.trigger[t])); Ak.forEach((a, j) => gs_[j].push(fb.action[a])); }
+      fitM.multiplicative.ci = { trigger: Object.fromEntries(T.map((t, i) => [t, [r3(q(fs_[i], 0.025)), r3(q(fs_[i], 0.975))]])), action: Object.fromEntries(Ak.map((a, j) => [a, [r3(q(gs_[j], 0.025)), r3(q(gs_[j], 0.975))]])) }; }
+    // the frequency model: f_t = the trigger's fires per copy played (fires-<ctx>.json), one free base value per action
+    const FX = fs.existsSync(path.join(OUT, 'fires-' + c + '.json')) ? JSON.parse(fs.readFileSync(path.join(OUT, 'fires-' + c + '.json'), 'utf8')).hooks : null;
+    let fireFit = null;
+    if (FX) { const f = T.map(t => FX[t] ? FX[t].perCopy : null); if (f.every(x => x != null)) {
+      const wt = (i, j) => mask(i, j) ? 0 : 1 / Math.max(0.05, S[i][j]) ** 2, g = Ak.map((a, j) => { let s = 0, s2 = 0; T.forEach((t, i) => { s += wt(i, j) * f[i] * W[i][j]; s2 += wt(i, j) * f[i] * f[i]; }); return s / s2; });
+      // the same with a per-fire discount: f_t = perCopy^b (b fitted by a scan), one base value per action
+      const fitB = b => { const fb = f.map(x => Math.pow(Math.max(1e-6, x), b)), gb = Ak.map((a, j) => { let s = 0, s2 = 0; T.forEach((t, i) => { s += wt(i, j) * fb[i] * W[i][j]; s2 += wt(i, j) * fb[i] * fb[i]; }); return s / s2; });
+        let ssr = 0, sst2 = 0, mw = 0, sw2 = 0; T.forEach((t, i) => Ak.forEach((a, j) => { mw += wt(i, j) * W[i][j]; sw2 += wt(i, j); })); mw /= sw2;
+        T.forEach((t, i) => Ak.forEach((a, j) => { ssr += wt(i, j) * (W[i][j] - fb[i] * gb[j]) ** 2; sst2 += wt(i, j) * (W[i][j] - mw) ** 2; })); return { b, r2: r3(1 - ssr / sst2), chi2df: r3(ssr / (T.length * Ak.length - T.reduce((t, x, i) => t + Ak.filter((y, j) => mask(i, j)).length, 0) - Ak.length - 1)), g: gb, f: fb }; };
+      let best = fitB(1); for (let b = 0.3; b <= 1.3001; b += 0.01) { const x = fitB(b); if (x.r2 > best.r2) best = x; }
+      const lin = fitB(1);
+      fireFit = { perCopy: Object.fromEntries(T.map((t, i) => [t, f[i]])), linear: { r2: lin.r2, chi2df: lin.chi2df, action: Object.fromEntries(Ak.map((a, j) => [a, r3(lin.g[j])])) }, power: { b: r3(best.b), r2: best.r2, chi2df: best.chi2df, trigger: Object.fromEntries(T.map((t, i) => [t, r3(best.f[i])])), action: Object.fromEntries(Ak.map((a, j) => [a, r3(best.g[j])])) } }; } }
     // the measure against the price, cell by cell
     let sw = 0, sr = 0; const off = []; T.forEach((t, i) => Ak.forEach((a, j) => { const z = (W[i][j] - P[i][j]) / Math.max(0.05, S[i][j]); off.push({ t, a, W: W[i][j], price: P[i][j], z: r3(z) }); }));
-    sum.partB[c] = { fights: r.context.fights, ruler: r.ruler, triggers: T, actions: Ak, W, S, P, fit, priceFit: { multiplicative: { r2: fitP.multiplicative.r2, params: fitP.multiplicative.params }, additive: { r2: fitP.additive.r2 } }, offCells: off.filter(x => Math.abs(x.z) > 2.5 && Math.abs(x.W - x.price) > 1).sort((a, b) => Math.abs(b.z) - Math.abs(a.z)) };
+    sum.partB[c] = { fights: r.context.fights, ruler: r.ruler, triggers: T, actions: Ak, W, S, P, fit, fitMasked: fitM, fireFit, priceFit: { multiplicative: { r2: fitP.multiplicative.r2, params: fitP.multiplicative.params }, additive: { r2: fitP.additive.r2 } }, offCells: off.filter(x => Math.abs(x.z) > 2.5 && Math.abs(x.W - x.price) > 1).sort((a, b) => Math.abs(b.z) - Math.abs(a.z)) };
     lines.push(`## Part B (${c}, ${r.context.fights} fights a variant, ruler ${(r.ruler.rate.m * 100).toFixed(2)} win pts a point): worth (se) / budget price`, '', '| Trigger | ' + Ak.join(' | ') + ' |', '|---|' + Ak.map(() => '---|').join(''));
     T.forEach((t, i) => lines.push(`| ${t} | ` + Ak.map((a, j) => `${W[i][j]} (${S[i][j]}) / ${P[i][j]}`).join(' | ') + ' |'));
     lines.push('', '| Fit | R² (weighted) | χ²/df | cells with abs z > 2.5 |', '|---|---|---|---|');
     ['additive', 'multiplicative', 'multiplicativeOffset'].forEach(k => lines.push(`| ${fit[k].name} | ${fit[k].r2} | ${fit[k].chi2df} | ${fit[k].big.length}: ${fit[k].big.slice(0, 8).map(x => x.t + '>' + x.a + ' ' + x.W + ' vs ' + x.fit).join('; ')} |`));
-    const mp = fit.multiplicative.params, pp = fitP.multiplicative.params;
-    lines.push('', '| Trigger | Measured multiplier (On Spawn = 1) | Price-implied multiplier | Budget trigger weight / On Spawn\'s |', '|---|---|---|---|');
-    T.forEach(t => lines.push(`| ${t} | ${mp.trigger[t]} | ${pp.trigger[t]} | ${BM.trig[t] != null ? r3(BM.trig[t] / BM.trig.onSpawn) : '-'} |`));
-    lines.push('', '| Action | Measured base value (On Spawn once) | Price-implied base value | Additive offset fit (g, c) |', '|---|---|---|---|');
-    Ak.forEach(a => lines.push(`| ${a} | ${mp.action[a]} | ${pp.action[a]} | ${fit.multiplicativeOffset.params.action[a]}, ${fit.multiplicativeOffset.params.offset[a]} |`));
+    ['additive', 'multiplicative', 'multiplicativeOffset'].forEach(k => lines.push(`| ${fitM[k].name}, rule-empty cells left out | ${fitM[k].r2} | ${fitM[k].chi2df} | ${fitM[k].big.length}: ${fitM[k].big.slice(0, 8).map(x => x.t + '>' + x.a + ' ' + x.W + ' vs ' + x.fit).join('; ')} |`));
+    if (fireFit) lines.push(`| frequency: f = fires per copy played, rule-empty out | ${fireFit.linear.r2} | ${fireFit.linear.chi2df} | |`, `| frequency^b, b = ${fireFit.power.b}, rule-empty out | ${fireFit.power.r2} | ${fireFit.power.chi2df} | |`);
+    const mp = fitM.multiplicative.params, pp = fitP.multiplicative.params;
+    lines.push('', '| Trigger | Fires per copy played | Measured multiplier (On Spawn = 1; rule-empty out) | Frequency^b model | Price-implied multiplier | Budget trigger weight / On Spawn\'s |', '|---|---|---|---|---|---|');
+    const ci = fitM.multiplicative.ci;
+    T.forEach(t => lines.push(`| ${t} | ${fireFit ? fireFit.perCopy[t] : '-'} | ${mp.trigger[t]} [${ci.trigger[t].join(', ')}] | ${fireFit ? fireFit.power.trigger[t] : '-'} | ${pp.trigger[t]} | ${BM.trig[t] != null ? r3(BM.trig[t] / BM.trig.onSpawn) : '-'} |`));
+    lines.push('', '| Action | Measured base value (On Spawn once; rule-empty out) | Frequency^b model base | Price-implied base value | Additive offset fit (g, c) |', '|---|---|---|---|---|');
+    Ak.forEach(a => lines.push(`| ${a} | ${mp.action[a]} [${ci.action[a].join(', ')}] | ${fireFit ? fireFit.power.action[a] : '-'} | ${pp.action[a]} | ${fitM.multiplicativeOffset.params.action[a]}, ${fitM.multiplicativeOffset.params.offset[a]} |`));
     lines.push('');
   });
   // ---- Part B2: the amount

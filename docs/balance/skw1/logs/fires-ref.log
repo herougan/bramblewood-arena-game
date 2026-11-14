@@ -1,0 +1,49 @@
+  onSpawn        2.157 a fight (2.14 / 2.1 / 0 / 2.96 / 3.38 / 2.36)  [600 games, 27 s]
+  perTurn        7.71 a fight (5.2 / 5.44 / 0 / 11.54 / 13.16 / 10.92)  [900 games, 38 s]
+  onRoundStart   7.71 a fight (5.2 / 5.44 / 0 / 11.54 / 13.16 / 10.92)  [1200 games, 48 s]
+  onAttack       6.583 a fight (4.2 / 4.36 / 0 / 9.84 / 11.4 / 9.7)  [1500 games, 57 s]
+  onAttacked     3.91 a fight (1.08 / 2.52 / 0 / 5.4 / 7.64 / 6.82)  [1800 games, 68 s]
+  onDeath        0.957 a fight (1.42 / 1.1 / 0 / 1.34 / 1.22 / 0.66)  [2100 games, 77 s]
+  onKill         0.957 a fight (0.46 / 1.68 / 0 / 1.26 / 2 / 0.34)  [2400 games, 86 s]
+  onAllyDie      2.567 a fight (1.8 / 1.34 / 0 / 4.24 / 4.94 / 3.08)  [2700 games, 95 s]
+  onEnemySpawn   0.197 a fight (0.16 / 0.14 / 0 / 0.18 / 0.52 / 0.18)  [3000 games, 103 s]
+  onAllyPlayed   5.233 a fight (2.64 / 3.76 / 0 / 7.54 / 11.32 / 6.14)  [3300 games, 114 s]
+  onReady        2.15 a fight (2.14 / 2.1 / 0 / 2.96 / 3.34 / 2.36)  [3600 games, 125 s]
+  onAction       6.587 a fight (4.2 / 4.36 / 0 / 9.86 / 11.38 / 9.72)  [3900 games, 135 s]
+  onHit          4.133 a fight (2.08 / 2.18 / 0 / 6.08 / 7.76 / 6.7)  [4200 games, 144 s]
+  onKillCreature 0.503 a fight (0.36 / 0.96 / 0 / 0.64 / 0.84 / 0.22)  [4500 games, 153 s]
+  onAnyDeath     4.8 a fight (2.98 / 3.46 / 0 / 7.44 / 9.84 / 5.08)  [4800 games, 163 s]
+  onAllySpawn    0.26 a fight (0.22 / 0.26 / 0 / 0.3 / 0.46 / 0.32)  [5100 games, 174 s]
+  onEnemyPlayed  6.323 a fight (3.86 / 4.8 / 0 / 9.16 / 11.52 / 8.6)  [5400 games, 185 s]
+  onAllyReady    5.197 a fight (2.5 / 3.6 / 0 / 7.6 / 11.52 / 5.96)  [5700 games, 195 s]
+  onEnemyReady   7.133 a fight (4.08 / 5.6 / 0 / 10.22 / 13.8 / 9.1)  [6000 games, 205 s]
+  onEnemyEnter   2.66 a fight (2.22 / 2.58 / 0 / 4.06 / 4.22 / 2.88)  [6300 games, 215 s]
+  onMove         0 a fight (0 / 0 / 0 / 0 / 0 / 0)  [6600 games, 225 s]
+  onHealed       0.013 a fight (0 / 0.02 / 0 / 0.02 / 0.02 / 0.02)  [6900 games, 234 s]
+  onEnterSlot    2.157 a fight (2.14 / 2.1 / 0 / 2.96 / 3.38 / 2.36)  [7200 games, 243 s]
+  onColumnSpawn  1.023 a fight (1.14 / 0.92 / 0 / 1.82 / 1.18 / 1.08)  [7500 games, 251 s]
+7500 games in 251 s -> docs/balance/skw1/fires-ref.json
+  onSpawn         2.157 a fight, 1 a copy played
+  perTurn          7.71 a fight, 3.574 a copy played
+  onRoundStart     7.71 a fight, 3.574 a copy played
+  onAttack        6.583 a fight, 3.052 a copy played
+  onAttacked       3.91 a fight, 1.813 a copy played
+  onDeath         0.957 a fight, 0.444 a copy played
+  onKill          0.957 a fight, 0.444 a copy played
+  onAllyDie       2.567 a fight, 1.19 a copy played
+  onEnemySpawn    0.197 a fight, 0.091 a copy played
+  onAllyPlayed    5.233 a fight, 2.426 a copy played
+  onReady          2.15 a fight, 0.997 a copy played
+  onAction        6.587 a fight, 3.054 a copy played
+  onHit           4.133 a fight, 1.916 a copy played
+  onKillCreature  0.503 a fight, 0.233 a copy played
+  onAnyDeath        4.8 a fight, 2.225 a copy played
+  onAllySpawn      0.26 a fight, 0.121 a copy played
+  onEnemyPlayed   6.323 a fight, 2.931 a copy played
+  onAllyReady     5.197 a fight, 2.409 a copy played
+  onEnemyReady    7.133 a fight, 3.307 a copy played
+  onEnemyEnter     2.66 a fight, 1.233 a copy played
+  onMove              0 a fight, 0 a copy played
+  onHealed        0.013 a fight, 0.006 a copy played
+  onEnterSlot     2.157 a fight, 1 a copy played
+  onColumnSpawn   1.023 a fight, 0.474 a copy played

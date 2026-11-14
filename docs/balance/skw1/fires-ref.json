@@ -1,0 +1,752 @@
+{
+ "tool": "tools/skw1/skw1.js 1.0.0 (2026-11-14, SKW1)",
+ "generated": "2026-11-14T05:48:45.824Z",
+ "fingerprint": "07fb06988482",
+ "context": {
+  "name": "skw1-ref",
+  "about": "opponent = a PRO / BPRO deck of Maps 0-20 on its field, rest from that map pool, Level 1",
+  "level": 1,
+  "fights": 50,
+  "copies": 6
+ },
+ "carriers": [
+  "house-cat",
+  "bramblewood-lynx",
+  "blessed-avatar",
+  "stable-colt",
+  "rivergate-recruit",
+  "lucky-hopper"
+ ],
+ "background": {
+  "house-cat": 0,
+  "bramblewood-lynx": 0,
+  "blessed-avatar": 0,
+  "stable-colt": 0,
+  "rivergate-recruit": 0,
+  "lucky-hopper": 0
+ },
+ "games": 7500,
+ "seconds": 251,
+ "hooks": {
+  "onSpawn": {
+   "perFight": 2.157,
+   "byCarrier": {
+    "house-cat": {
+     "m": 2.14,
+     "se": 0.137
+    },
+    "bramblewood-lynx": {
+     "m": 2.1,
+     "se": 0.144
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 2.96,
+     "se": 0.154
+    },
+    "rivergate-recruit": {
+     "m": 3.38,
+     "se": 0.187
+    },
+    "lucky-hopper": {
+     "m": 2.36,
+     "se": 0.145
+    }
+   },
+   "perCopy": 1
+  },
+  "perTurn": {
+   "perFight": 7.71,
+   "byCarrier": {
+    "house-cat": {
+     "m": 5.2,
+     "se": 0.469
+    },
+    "bramblewood-lynx": {
+     "m": 5.44,
+     "se": 0.553
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 11.54,
+     "se": 0.888
+    },
+    "rivergate-recruit": {
+     "m": 13.16,
+     "se": 1.165
+    },
+    "lucky-hopper": {
+     "m": 10.92,
+     "se": 0.82
+    }
+   },
+   "perCopy": 3.574
+  },
+  "onRoundStart": {
+   "perFight": 7.71,
+   "byCarrier": {
+    "house-cat": {
+     "m": 5.2,
+     "se": 0.469
+    },
+    "bramblewood-lynx": {
+     "m": 5.44,
+     "se": 0.553
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 11.54,
+     "se": 0.888
+    },
+    "rivergate-recruit": {
+     "m": 13.16,
+     "se": 1.165
+    },
+    "lucky-hopper": {
+     "m": 10.92,
+     "se": 0.82
+    }
+   },
+   "perCopy": 3.574
+  },
+  "onAttack": {
+   "perFight": 6.583,
+   "byCarrier": {
+    "house-cat": {
+     "m": 4.2,
+     "se": 0.397
+    },
+    "bramblewood-lynx": {
+     "m": 4.36,
+     "se": 0.499
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 9.84,
+     "se": 0.8
+    },
+    "rivergate-recruit": {
+     "m": 11.4,
+     "se": 1.153
+    },
+    "lucky-hopper": {
+     "m": 9.7,
+     "se": 0.842
+    }
+   },
+   "perCopy": 3.052
+  },
+  "onAttacked": {
+   "perFight": 3.91,
+   "byCarrier": {
+    "house-cat": {
+     "m": 1.08,
+     "se": 0.206
+    },
+    "bramblewood-lynx": {
+     "m": 2.52,
+     "se": 0.385
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 5.4,
+     "se": 0.598
+    },
+    "rivergate-recruit": {
+     "m": 7.64,
+     "se": 0.793
+    },
+    "lucky-hopper": {
+     "m": 6.82,
+     "se": 0.787
+    }
+   },
+   "perCopy": 1.813
+  },
+  "onDeath": {
+   "perFight": 0.957,
+   "byCarrier": {
+    "house-cat": {
+     "m": 1.42,
+     "se": 0.154
+    },
+    "bramblewood-lynx": {
+     "m": 1.1,
+     "se": 0.152
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 1.34,
+     "se": 0.17
+    },
+    "rivergate-recruit": {
+     "m": 1.22,
+     "se": 0.16
+    },
+    "lucky-hopper": {
+     "m": 0.66,
+     "se": 0.113
+    }
+   },
+   "perCopy": 0.444
+  },
+  "onKill": {
+   "perFight": 0.957,
+   "byCarrier": {
+    "house-cat": {
+     "m": 0.46,
+     "se": 0.132
+    },
+    "bramblewood-lynx": {
+     "m": 1.68,
+     "se": 0.383
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 1.26,
+     "se": 0.278
+    },
+    "rivergate-recruit": {
+     "m": 2,
+     "se": 0.382
+    },
+    "lucky-hopper": {
+     "m": 0.34,
+     "se": 0.158
+    }
+   },
+   "perCopy": 0.444
+  },
+  "onAllyDie": {
+   "perFight": 2.567,
+   "byCarrier": {
+    "house-cat": {
+     "m": 1.8,
+     "se": 0.305
+    },
+    "bramblewood-lynx": {
+     "m": 1.34,
+     "se": 0.281
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 4.24,
+     "se": 0.528
+    },
+    "rivergate-recruit": {
+     "m": 4.94,
+     "se": 0.622
+    },
+    "lucky-hopper": {
+     "m": 3.08,
+     "se": 0.369
+    }
+   },
+   "perCopy": 1.19
+  },
+  "onEnemySpawn": {
+   "perFight": 0.197,
+   "byCarrier": {
+    "house-cat": {
+     "m": 0.16,
+     "se": 0.126
+    },
+    "bramblewood-lynx": {
+     "m": 0.14,
+     "se": 0.14
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 0.18,
+     "se": 0.145
+    },
+    "rivergate-recruit": {
+     "m": 0.52,
+     "se": 0.317
+    },
+    "lucky-hopper": {
+     "m": 0.18,
+     "se": 0.145
+    }
+   },
+   "perCopy": 0.091
+  },
+  "onAllyPlayed": {
+   "perFight": 5.233,
+   "byCarrier": {
+    "house-cat": {
+     "m": 2.64,
+     "se": 0.335
+    },
+    "bramblewood-lynx": {
+     "m": 3.76,
+     "se": 0.394
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 7.54,
+     "se": 0.726
+    },
+    "rivergate-recruit": {
+     "m": 11.32,
+     "se": 1.012
+    },
+    "lucky-hopper": {
+     "m": 6.14,
+     "se": 0.521
+    }
+   },
+   "perCopy": 2.426
+  },
+  "onReady": {
+   "perFight": 2.15,
+   "byCarrier": {
+    "house-cat": {
+     "m": 2.14,
+     "se": 0.137
+    },
+    "bramblewood-lynx": {
+     "m": 2.1,
+     "se": 0.144
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 2.96,
+     "se": 0.154
+    },
+    "rivergate-recruit": {
+     "m": 3.34,
+     "se": 0.184
+    },
+    "lucky-hopper": {
+     "m": 2.36,
+     "se": 0.145
+    }
+   },
+   "perCopy": 0.997
+  },
+  "onAction": {
+   "perFight": 6.587,
+   "byCarrier": {
+    "house-cat": {
+     "m": 4.2,
+     "se": 0.397
+    },
+    "bramblewood-lynx": {
+     "m": 4.36,
+     "se": 0.499
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 9.86,
+     "se": 0.804
+    },
+    "rivergate-recruit": {
+     "m": 11.38,
+     "se": 1.156
+    },
+    "lucky-hopper": {
+     "m": 9.72,
+     "se": 0.842
+    }
+   },
+   "perCopy": 3.054
+  },
+  "onHit": {
+   "perFight": 4.133,
+   "byCarrier": {
+    "house-cat": {
+     "m": 2.08,
+     "se": 0.319
+    },
+    "bramblewood-lynx": {
+     "m": 2.18,
+     "se": 0.39
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 6.08,
+     "se": 0.764
+    },
+    "rivergate-recruit": {
+     "m": 7.76,
+     "se": 0.912
+    },
+    "lucky-hopper": {
+     "m": 6.7,
+     "se": 0.829
+    }
+   },
+   "perCopy": 1.916
+  },
+  "onKillCreature": {
+   "perFight": 0.503,
+   "byCarrier": {
+    "house-cat": {
+     "m": 0.36,
+     "se": 0.098
+    },
+    "bramblewood-lynx": {
+     "m": 0.96,
+     "se": 0.171
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 0.64,
+     "se": 0.13
+    },
+    "rivergate-recruit": {
+     "m": 0.84,
+     "se": 0.157
+    },
+    "lucky-hopper": {
+     "m": 0.22,
+     "se": 0.096
+    }
+   },
+   "perCopy": 0.233
+  },
+  "onAnyDeath": {
+   "perFight": 4.8,
+   "byCarrier": {
+    "house-cat": {
+     "m": 2.98,
+     "se": 0.479
+    },
+    "bramblewood-lynx": {
+     "m": 3.46,
+     "se": 0.576
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 7.44,
+     "se": 0.849
+    },
+    "rivergate-recruit": {
+     "m": 9.84,
+     "se": 1.172
+    },
+    "lucky-hopper": {
+     "m": 5.08,
+     "se": 0.535
+    }
+   },
+   "perCopy": 2.225
+  },
+  "onAllySpawn": {
+   "perFight": 0.26,
+   "byCarrier": {
+    "house-cat": {
+     "m": 0.22,
+     "se": 0.138
+    },
+    "bramblewood-lynx": {
+     "m": 0.26,
+     "se": 0.164
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 0.3,
+     "se": 0.177
+    },
+    "rivergate-recruit": {
+     "m": 0.46,
+     "se": 0.285
+    },
+    "lucky-hopper": {
+     "m": 0.32,
+     "se": 0.172
+    }
+   },
+   "perCopy": 0.121
+  },
+  "onEnemyPlayed": {
+   "perFight": 6.323,
+   "byCarrier": {
+    "house-cat": {
+     "m": 3.86,
+     "se": 0.418
+    },
+    "bramblewood-lynx": {
+     "m": 4.8,
+     "se": 0.477
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 9.16,
+     "se": 0.823
+    },
+    "rivergate-recruit": {
+     "m": 11.52,
+     "se": 1.054
+    },
+    "lucky-hopper": {
+     "m": 8.6,
+     "se": 0.652
+    }
+   },
+   "perCopy": 2.931
+  },
+  "onAllyReady": {
+   "perFight": 5.197,
+   "byCarrier": {
+    "house-cat": {
+     "m": 2.5,
+     "se": 0.354
+    },
+    "bramblewood-lynx": {
+     "m": 3.6,
+     "se": 0.453
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 7.6,
+     "se": 0.768
+    },
+    "rivergate-recruit": {
+     "m": 11.52,
+     "se": 1.126
+    },
+    "lucky-hopper": {
+     "m": 5.96,
+     "se": 0.47
+    }
+   },
+   "perCopy": 2.409
+  },
+  "onEnemyReady": {
+   "perFight": 7.133,
+   "byCarrier": {
+    "house-cat": {
+     "m": 4.08,
+     "se": 0.451
+    },
+    "bramblewood-lynx": {
+     "m": 5.6,
+     "se": 0.52
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 10.22,
+     "se": 0.938
+    },
+    "rivergate-recruit": {
+     "m": 13.8,
+     "se": 1.354
+    },
+    "lucky-hopper": {
+     "m": 9.1,
+     "se": 0.644
+    }
+   },
+   "perCopy": 3.307
+  },
+  "onEnemyEnter": {
+   "perFight": 2.66,
+   "byCarrier": {
+    "house-cat": {
+     "m": 2.22,
+     "se": 0.28
+    },
+    "bramblewood-lynx": {
+     "m": 2.58,
+     "se": 0.302
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 4.06,
+     "se": 0.448
+    },
+    "rivergate-recruit": {
+     "m": 4.22,
+     "se": 0.439
+    },
+    "lucky-hopper": {
+     "m": 2.88,
+     "se": 0.267
+    }
+   },
+   "perCopy": 1.233
+  },
+  "onMove": {
+   "perFight": 0,
+   "byCarrier": {
+    "house-cat": {
+     "m": 0,
+     "se": 0
+    },
+    "bramblewood-lynx": {
+     "m": 0,
+     "se": 0
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 0,
+     "se": 0
+    },
+    "rivergate-recruit": {
+     "m": 0,
+     "se": 0
+    },
+    "lucky-hopper": {
+     "m": 0,
+     "se": 0
+    }
+   },
+   "perCopy": 0
+  },
+  "onHealed": {
+   "perFight": 0.013,
+   "byCarrier": {
+    "house-cat": {
+     "m": 0,
+     "se": 0
+    },
+    "bramblewood-lynx": {
+     "m": 0.02,
+     "se": 0.02
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 0.02,
+     "se": 0.02
+    },
+    "rivergate-recruit": {
+     "m": 0.02,
+     "se": 0.02
+    },
+    "lucky-hopper": {
+     "m": 0.02,
+     "se": 0.02
+    }
+   },
+   "perCopy": 0.006
+  },
+  "onEnterSlot": {
+   "perFight": 2.157,
+   "byCarrier": {
+    "house-cat": {
+     "m": 2.14,
+     "se": 0.137
+    },
+    "bramblewood-lynx": {
+     "m": 2.1,
+     "se": 0.144
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 2.96,
+     "se": 0.154
+    },
+    "rivergate-recruit": {
+     "m": 3.38,
+     "se": 0.187
+    },
+    "lucky-hopper": {
+     "m": 2.36,
+     "se": 0.145
+    }
+   },
+   "perCopy": 1
+  },
+  "onColumnSpawn": {
+   "perFight": 1.023,
+   "byCarrier": {
+    "house-cat": {
+     "m": 1.14,
+     "se": 0.148
+    },
+    "bramblewood-lynx": {
+     "m": 0.92,
+     "se": 0.161
+    },
+    "blessed-avatar": {
+     "m": 0,
+     "se": 0
+    },
+    "stable-colt": {
+     "m": 1.82,
+     "se": 0.239
+    },
+    "rivergate-recruit": {
+     "m": 1.18,
+     "se": 0.18
+    },
+    "lucky-hopper": {
+     "m": 1.08,
+     "se": 0.148
+    }
+   },
+   "perCopy": 0.474
+  }
+ }
+}

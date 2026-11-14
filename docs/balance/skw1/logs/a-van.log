@@ -1,0 +1,43 @@
+skw1-van: vanilla cards only, no field, Level 1; 1 fields, pool 69, Level 1; 228 variants x 100 fights
+  3192/22752 games, 53.1/s, about 6 min left
+  7209/22752 games, 60.0/s, about 4 min left
+  10826/22752 games, 60.0/s, about 3 min left
+  14168/22752 games, 58.8/s, about 2 min left
+  18335/22752 games, 60.9/s, about 1 min left
+  21452/22752 games, 59.4/s, about 0 min left
+  played 22752 games in 389 s
+ruler: 2.80 win pts a budget point; Attack weight 4.769 [3.61, 6.677]; placebo 0.653; base win 0.563; 22752 games in 389 s -> docs/balance/skw1/a-van.json
+  diurnal=1                worth   3.327 [2.688, 4.2]  price 1.14
+  siege=4                  worth   3.208 [2.412, 4.22]  price 3.21
+  regen=2                  worth   2.792 [2.165, 3.618]  price 2.9
+  rage                     worth   2.851 [2.118, 3.6]  price 3.01
+  esprit=2                 worth   3.208 [2.431, 4.235]  price 3.37
+  pierce=1                 worth       0 [0, 0]  price 0.23
+  evasive                  worth    3.03 [2.257, 3.982]  price 3.27
+  flying                   worth   3.208 [2.412, 4.286]  price 3.452
+  armor=1                  worth    2.02 [1.472, 2.697]  price 2.33
+  keenEye                  worth       0 [0, 0]  price 0.34
+  tide                     worth       0 [0, 0]  price 0.5
+  illuminate               worth       0 [0, 0]  price 0.51
+  poison=1                 worth   2.198 [1.737, 2.745]  price 2.72
+  armor=2                  worth   3.149 [2.348, 4.114]  price 3.7
+  shell=2                  worth       0 [0, 0]  price 0.57
+  pounce=2                 worth   2.257 [1.366, 3.306]  price 2.96
+  sweep=2                  worth   4.337 [3.462, 5.634]  price 5.08
+  bleed=1                  worth   2.139 [1.517, 2.87]  price 2.89
+  poison=2                 worth   3.921 [3.033, 5.065]  price 4.75
+  regen=1                  worth   1.426 [0.957, 1.963]  price 2.3
+  quick                    worth   1.248 [0.629, 1.898]  price 2.23
+  backstab=2               worth  -0.772 [-1.971, 0.188]  price 0.33
+  bleed=2                  worth   3.743 [2.862, 4.893]  price 4.87
+  inspiring=1              worth   2.673 [1.963, 3.542]  price 3.96
+  thorns=1                 worth   1.901 [1.212, 2.778]  price 3.22
+  guardian                 worth  -1.485 [-2.757, -0.478]  price 0
+  stealth                  worth   5.287 [4.224, 6.75]  price 6.88
+  thorns=2                 worth   3.446 [2.68, 4.648]  price 5.08
+  arrow=1                  worth   2.614 [2, 3.486]  price 4.26
+  reach                    worth  -0.772 [-1.636, 0]  price 1
+  nocturnal=1              worth       0 [0, 0]  price 1.89
+  fork                     worth   2.376 [1.308, 3.429]  price 4.95
+  delivery                 worth    4.04 [3, 5.631]  price 6.65
+  dry                      worth       0 [-0.336, 0.242]  price 4

@@ -1,0 +1,3427 @@
+{
+ "tool": "tools/skw1/skw1.js 1.0.0 (2026-11-14, SKW1)",
+ "generated": "2026-11-14T04:22:11.720Z",
+ "fingerprint": "07fb06988482",
+ "context": {
+  "name": "skw1-g1",
+  "about": "global pool, every road field, Level 1",
+  "level": 1,
+  "fights": 100,
+  "copies": 6,
+  "bramble": 15,
+  "pool": 810,
+  "fields": 410,
+  "seed": "skw1"
+ },
+ "carriers": [
+  "house-cat",
+  "bramblewood-lynx",
+  "blessed-avatar",
+  "stable-colt",
+  "rivergate-recruit",
+  "lucky-hopper"
+ ],
+ "baseWin": 0.473,
+ "ruler": {
+  "rate": {
+   "m": 0.032,
+   "lo": 0.022,
+   "hi": 0.041,
+   "se": 0.005
+  },
+  "aw": {
+   "m": 4.34,
+   "lo": 3.143,
+   "hi": 6.444,
+   "se": 0.882
+  },
+  "gA": {
+   "m": 0.113,
+   "lo": 0.077,
+   "hi": 0.144,
+   "se": 0.017
+  },
+  "gH3": {
+   "m": 0.078,
+   "lo": 0.043,
+   "hi": 0.107,
+   "se": 0.016
+  },
+  "placebo": {
+   "m": 0.009,
+   "lo": -0.016,
+   "hi": 0.035,
+   "se": 0.013
+  },
+  "placeboWorth": {
+   "m": 0.287,
+   "lo": -0.617,
+   "hi": 1.003,
+   "se": 0.412
+  }
+ },
+ "tests": [
+  {
+   "key": "onSpawn>dmg2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.075,
+    "lo": 0.033,
+    "hi": 0.11,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 2.348,
+    "lo": 1.2,
+    "hi": 3.652,
+    "se": 0.639
+   },
+   "price": 0.84,
+   "priceBy": [
+    0.84,
+    0.84,
+    0.84,
+    0.84,
+    0.84,
+    0.84
+   ],
+   "rawGainBy": {
+    "house-cat": 0.05,
+    "bramblewood-lynx": 0.14,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.08,
+    "rivergate-recruit": 0.13,
+    "lucky-hopper": 0.095
+   }
+  },
+  {
+   "key": "onSpawn>poison1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "poison",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.037,
+    "lo": -0.002,
+    "hi": 0.068,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 1.148,
+    "lo": -0.049,
+    "hi": 2.4,
+    "se": 0.617
+   },
+   "price": 1.47,
+   "priceBy": [
+    1.47,
+    1.47,
+    1.47,
+    1.47,
+    1.47,
+    1.47
+   ],
+   "rawGainBy": {
+    "house-cat": -0.02,
+    "bramblewood-lynx": 0.13,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.02,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.075
+   }
+  },
+  {
+   "key": "onSpawn>heal2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "heal",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.002,
+    "lo": 0,
+    "hi": 0.005,
+    "se": 0.002
+   },
+   "worth": {
+    "m": 0.052,
+    "lo": 0,
+    "hi": 0.18,
+    "se": 0.054
+   },
+   "price": 0.42,
+   "priceBy": [
+    0.42,
+    0.42,
+    0.42,
+    0.42,
+    0.42,
+    0.42
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.05,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.01,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.015
+   }
+  },
+  {
+   "key": "onSpawn>atk1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "buff",
+      "amount": 1,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.121,
+    "lo": 0.085,
+    "hi": 0.152,
+    "se": 0.018
+   },
+   "worth": {
+    "m": 3.783,
+    "lo": 2.88,
+    "hi": 5,
+    "se": 0.542
+   },
+   "price": 2.21,
+   "priceBy": [
+    2.21,
+    2.21,
+    2.21,
+    2.21,
+    2.21,
+    2.21
+   ],
+   "rawGainBy": {
+    "house-cat": 0,
+    "bramblewood-lynx": 0.185,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.14,
+    "rivergate-recruit": 0.12,
+    "lucky-hopper": 0.325
+   }
+  },
+  {
+   "key": "onSpawn>hp2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "buff",
+      "amount2": 2,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.064,
+    "lo": 0.038,
+    "hi": 0.094,
+    "se": 0.014
+   },
+   "worth": {
+    "m": 2.009,
+    "lo": 1.307,
+    "hi": 2.659,
+    "se": 0.358
+   },
+   "price": 1.05,
+   "priceBy": [
+    1.05,
+    1.05,
+    1.05,
+    1.05,
+    1.05,
+    1.05
+   ],
+   "rawGainBy": {
+    "house-cat": 0.105,
+    "bramblewood-lynx": 0.15,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.03,
+    "rivergate-recruit": 0.1,
+    "lucky-hopper": 0.045
+   }
+  },
+  {
+   "key": "onSpawn>shield2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "shield",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.064,
+    "lo": 0.038,
+    "hi": 0.093,
+    "se": 0.014
+   },
+   "worth": {
+    "m": 2.009,
+    "lo": 1.353,
+    "hi": 2.658,
+    "se": 0.355
+   },
+   "price": 0.84,
+   "priceBy": [
+    0.84,
+    0.84,
+    0.84,
+    0.84,
+    0.84,
+    0.84
+   ],
+   "rawGainBy": {
+    "house-cat": 0.105,
+    "bramblewood-lynx": 0.15,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.03,
+    "rivergate-recruit": 0.1,
+    "lucky-hopper": 0.045
+   }
+  },
+  {
+   "key": "onSpawn>draw1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.124,
+    "lo": 0.084,
+    "hi": 0.165,
+    "se": 0.02
+   },
+   "worth": {
+    "m": 3.887,
+    "lo": 2.68,
+    "hi": 5.505,
+    "se": 0.73
+   },
+   "price": 2.58,
+   "priceBy": [
+    2.58,
+    2.58,
+    2.58,
+    2.58,
+    2.58,
+    2.58
+   ],
+   "rawGainBy": {
+    "house-cat": 0.015,
+    "bramblewood-lynx": 0.24,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.11,
+    "rivergate-recruit": 0.14,
+    "lucky-hopper": 0.285
+   }
+  },
+  {
+   "key": "onSpawn>lumber1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.102,
+    "lo": 0.065,
+    "hi": 0.143,
+    "se": 0.02
+   },
+   "worth": {
+    "m": 3.183,
+    "lo": 2.107,
+    "hi": 4.416,
+    "se": 0.599
+   },
+   "price": 2.59,
+   "priceBy": [
+    2.59,
+    2.59,
+    2.59,
+    2.59,
+    2.59,
+    2.59
+   ],
+   "rawGainBy": {
+    "house-cat": 0.01,
+    "bramblewood-lynx": 0.21,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.05,
+    "rivergate-recruit": 0.14,
+    "lucky-hopper": 0.245
+   }
+  },
+  {
+   "key": "perTurn>dmg2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "perTurn",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.208,
+    "lo": 0.163,
+    "hi": 0.248,
+    "se": 0.023
+   },
+   "worth": {
+    "m": 6.522,
+    "lo": 4.845,
+    "hi": 9.117,
+    "se": 1.089
+   },
+   "price": 2.4,
+   "priceBy": [
+    2.4,
+    2.4,
+    2.4,
+    2.4,
+    2.4,
+    2.4
+   ],
+   "rawGainBy": {
+    "house-cat": 0.13,
+    "bramblewood-lynx": 0.24,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.23,
+    "rivergate-recruit": 0.23,
+    "lucky-hopper": 0.465
+   }
+  },
+  {
+   "key": "perTurn>poison1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "perTurn",
+      "do": "poison",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.107,
+    "lo": 0.067,
+    "hi": 0.142,
+    "se": 0.02
+   },
+   "worth": {
+    "m": 3.365,
+    "lo": 2.128,
+    "hi": 4.723,
+    "se": 0.67
+   },
+   "price": 4.2,
+   "priceBy": [
+    4.2,
+    4.2,
+    4.2,
+    4.2,
+    4.2,
+    4.2
+   ],
+   "rawGainBy": {
+    "house-cat": 0.04,
+    "bramblewood-lynx": 0.175,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.09,
+    "rivergate-recruit": 0.14,
+    "lucky-hopper": 0.245
+   }
+  },
+  {
+   "key": "perTurn>heal2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "perTurn",
+      "do": "heal",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.093,
+    "lo": 0.063,
+    "hi": 0.128,
+    "se": 0.016
+   },
+   "worth": {
+    "m": 2.922,
+    "lo": 2.054,
+    "hi": 4.031,
+    "se": 0.506
+   },
+   "price": 1.2,
+   "priceBy": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+   ],
+   "rawGainBy": {
+    "house-cat": 0.08,
+    "bramblewood-lynx": 0.19,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.09,
+    "rivergate-recruit": 0.17,
+    "lucky-hopper": 0.075
+   }
+  },
+  {
+   "key": "perTurn>atk1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "perTurn",
+      "do": "buff",
+      "amount": 1,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.207,
+    "lo": 0.16,
+    "hi": 0.247,
+    "se": 0.022
+   },
+   "worth": {
+    "m": 6.47,
+    "lo": 4.918,
+    "hi": 9.073,
+    "se": 1.067
+   },
+   "price": 6.3,
+   "priceBy": [
+    6.3,
+    6.3,
+    6.3,
+    6.3,
+    6.3,
+    6.3
+   ],
+   "rawGainBy": {
+    "house-cat": 0.1,
+    "bramblewood-lynx": 0.23,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.21,
+    "rivergate-recruit": 0.19,
+    "lucky-hopper": 0.555
+   }
+  },
+  {
+   "key": "perTurn>hp2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "perTurn",
+      "do": "buff",
+      "amount2": 2,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.131,
+    "lo": 0.096,
+    "hi": 0.172,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 4.096,
+    "lo": 3.085,
+    "hi": 5.652,
+    "se": 0.651
+   },
+   "price": 3,
+   "priceBy": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "rawGainBy": {
+    "house-cat": 0.205,
+    "bramblewood-lynx": 0.2,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.13,
+    "rivergate-recruit": 0.19,
+    "lucky-hopper": 0.105
+   }
+  },
+  {
+   "key": "perTurn>shield2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "perTurn",
+      "do": "shield",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.126,
+    "lo": 0.093,
+    "hi": 0.167,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 3.939,
+    "lo": 2.933,
+    "hi": 5.497,
+    "se": 0.646
+   },
+   "price": 2.4,
+   "priceBy": [
+    2.4,
+    2.4,
+    2.4,
+    2.4,
+    2.4,
+    2.4
+   ],
+   "rawGainBy": {
+    "house-cat": 0.195,
+    "bramblewood-lynx": 0.2,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.13,
+    "rivergate-recruit": 0.18,
+    "lucky-hopper": 0.095
+   }
+  },
+  {
+   "key": "perTurn>draw1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "perTurn",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.137,
+    "lo": 0.095,
+    "hi": 0.178,
+    "se": 0.022
+   },
+   "worth": {
+    "m": 4.304,
+    "lo": 2.987,
+    "hi": 6.106,
+    "se": 0.825
+   },
+   "price": 12.3,
+   "priceBy": [
+    12.3,
+    12.3,
+    12.3,
+    12.3,
+    12.3,
+    12.3
+   ],
+   "rawGainBy": {
+    "house-cat": 0.035,
+    "bramblewood-lynx": 0.25,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.15,
+    "rivergate-recruit": 0.1,
+    "lucky-hopper": 0.335
+   }
+  },
+  {
+   "key": "perTurn>lumber1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "perTurn",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.151,
+    "lo": 0.108,
+    "hi": 0.191,
+    "se": 0.022
+   },
+   "worth": {
+    "m": 4.722,
+    "lo": 3.429,
+    "hi": 6.56,
+    "se": 0.82
+   },
+   "price": 3,
+   "priceBy": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "rawGainBy": {
+    "house-cat": 0.06,
+    "bramblewood-lynx": 0.21,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.11,
+    "rivergate-recruit": 0.155,
+    "lucky-hopper": 0.415
+   }
+  },
+  {
+   "key": "onRoundStart>dmg2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onRoundStart",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.208,
+    "lo": 0.163,
+    "hi": 0.248,
+    "se": 0.023
+   },
+   "worth": {
+    "m": 6.522,
+    "lo": 4.845,
+    "hi": 9.117,
+    "se": 1.089
+   },
+   "price": 2.8,
+   "priceBy": [
+    2.8,
+    2.8,
+    2.8,
+    2.8,
+    2.8,
+    2.8
+   ],
+   "rawGainBy": {
+    "house-cat": 0.13,
+    "bramblewood-lynx": 0.24,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.23,
+    "rivergate-recruit": 0.23,
+    "lucky-hopper": 0.465
+   }
+  },
+  {
+   "key": "onRoundStart>poison1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onRoundStart",
+      "do": "poison",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.107,
+    "lo": 0.067,
+    "hi": 0.142,
+    "se": 0.02
+   },
+   "worth": {
+    "m": 3.365,
+    "lo": 2.128,
+    "hi": 4.723,
+    "se": 0.67
+   },
+   "price": 4.9,
+   "priceBy": [
+    4.9,
+    4.9,
+    4.9,
+    4.9,
+    4.9,
+    4.9
+   ],
+   "rawGainBy": {
+    "house-cat": 0.04,
+    "bramblewood-lynx": 0.175,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.09,
+    "rivergate-recruit": 0.14,
+    "lucky-hopper": 0.245
+   }
+  },
+  {
+   "key": "onRoundStart>heal2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onRoundStart",
+      "do": "heal",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.093,
+    "lo": 0.063,
+    "hi": 0.128,
+    "se": 0.016
+   },
+   "worth": {
+    "m": 2.922,
+    "lo": 2.054,
+    "hi": 4.031,
+    "se": 0.506
+   },
+   "price": 1.4,
+   "priceBy": [
+    1.4,
+    1.4,
+    1.4,
+    1.4,
+    1.4,
+    1.4
+   ],
+   "rawGainBy": {
+    "house-cat": 0.08,
+    "bramblewood-lynx": 0.19,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.09,
+    "rivergate-recruit": 0.17,
+    "lucky-hopper": 0.075
+   }
+  },
+  {
+   "key": "onRoundStart>atk1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onRoundStart",
+      "do": "buff",
+      "amount": 1,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.207,
+    "lo": 0.16,
+    "hi": 0.247,
+    "se": 0.022
+   },
+   "worth": {
+    "m": 6.47,
+    "lo": 4.918,
+    "hi": 9.073,
+    "se": 1.067
+   },
+   "price": 7.35,
+   "priceBy": [
+    7.35,
+    7.35,
+    7.35,
+    7.35,
+    7.35,
+    7.35
+   ],
+   "rawGainBy": {
+    "house-cat": 0.1,
+    "bramblewood-lynx": 0.23,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.21,
+    "rivergate-recruit": 0.19,
+    "lucky-hopper": 0.555
+   }
+  },
+  {
+   "key": "onRoundStart>hp2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onRoundStart",
+      "do": "buff",
+      "amount2": 2,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.131,
+    "lo": 0.096,
+    "hi": 0.172,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 4.096,
+    "lo": 3.085,
+    "hi": 5.652,
+    "se": 0.651
+   },
+   "price": 3.5,
+   "priceBy": [
+    3.5,
+    3.5,
+    3.5,
+    3.5,
+    3.5,
+    3.5
+   ],
+   "rawGainBy": {
+    "house-cat": 0.205,
+    "bramblewood-lynx": 0.2,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.13,
+    "rivergate-recruit": 0.19,
+    "lucky-hopper": 0.105
+   }
+  },
+  {
+   "key": "onRoundStart>shield2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onRoundStart",
+      "do": "shield",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.126,
+    "lo": 0.093,
+    "hi": 0.167,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 3.939,
+    "lo": 2.933,
+    "hi": 5.497,
+    "se": 0.646
+   },
+   "price": 2.8,
+   "priceBy": [
+    2.8,
+    2.8,
+    2.8,
+    2.8,
+    2.8,
+    2.8
+   ],
+   "rawGainBy": {
+    "house-cat": 0.195,
+    "bramblewood-lynx": 0.2,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.13,
+    "rivergate-recruit": 0.18,
+    "lucky-hopper": 0.095
+   }
+  },
+  {
+   "key": "onRoundStart>draw1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onRoundStart",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.137,
+    "lo": 0.095,
+    "hi": 0.178,
+    "se": 0.022
+   },
+   "worth": {
+    "m": 4.304,
+    "lo": 2.987,
+    "hi": 6.106,
+    "se": 0.825
+   },
+   "price": 14.35,
+   "priceBy": [
+    14.35,
+    14.35,
+    14.35,
+    14.35,
+    14.35,
+    14.35
+   ],
+   "rawGainBy": {
+    "house-cat": 0.035,
+    "bramblewood-lynx": 0.25,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.15,
+    "rivergate-recruit": 0.1,
+    "lucky-hopper": 0.335
+   }
+  },
+  {
+   "key": "onRoundStart>lumber1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onRoundStart",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.151,
+    "lo": 0.108,
+    "hi": 0.191,
+    "se": 0.022
+   },
+   "worth": {
+    "m": 4.722,
+    "lo": 3.429,
+    "hi": 6.56,
+    "se": 0.82
+   },
+   "price": 3.5,
+   "priceBy": [
+    3.5,
+    3.5,
+    3.5,
+    3.5,
+    3.5,
+    3.5
+   ],
+   "rawGainBy": {
+    "house-cat": 0.06,
+    "bramblewood-lynx": 0.21,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.11,
+    "rivergate-recruit": 0.155,
+    "lucky-hopper": 0.415
+   }
+  },
+  {
+   "key": "onAttack>dmg2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttack",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.18,
+    "lo": 0.137,
+    "hi": 0.225,
+    "se": 0.023
+   },
+   "worth": {
+    "m": 5.635,
+    "lo": 4.223,
+    "hi": 7.838,
+    "se": 0.933
+   },
+   "price": 1.08,
+   "priceBy": [
+    1.08,
+    1.08,
+    1.08,
+    1.08,
+    1.08,
+    1.08
+   ],
+   "rawGainBy": {
+    "house-cat": 0.06,
+    "bramblewood-lynx": 0.27,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.19,
+    "rivergate-recruit": 0.2,
+    "lucky-hopper": 0.405
+   }
+  },
+  {
+   "key": "onAttack>poison1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttack",
+      "do": "poison",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.112,
+    "lo": 0.072,
+    "hi": 0.153,
+    "se": 0.021
+   },
+   "worth": {
+    "m": 3.496,
+    "lo": 2.275,
+    "hi": 5.224,
+    "se": 0.737
+   },
+   "price": 1.89,
+   "priceBy": [
+    1.89,
+    1.89,
+    1.89,
+    1.89,
+    1.89,
+    1.89
+   ],
+   "rawGainBy": {
+    "house-cat": 0.03,
+    "bramblewood-lynx": 0.16,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.12,
+    "rivergate-recruit": 0.18,
+    "lucky-hopper": 0.225
+   }
+  },
+  {
+   "key": "onAttack>heal2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttack",
+      "do": "heal",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.078,
+    "lo": 0.05,
+    "hi": 0.11,
+    "se": 0.015
+   },
+   "worth": {
+    "m": 2.452,
+    "lo": 1.693,
+    "hi": 3.502,
+    "se": 0.476
+   },
+   "price": 5.27,
+   "priceBy": [
+    5.27,
+    5.27,
+    5.27,
+    5.27,
+    5.27,
+    5.27
+   ],
+   "rawGainBy": {
+    "house-cat": 0.06,
+    "bramblewood-lynx": 0.15,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.08,
+    "rivergate-recruit": 0.15,
+    "lucky-hopper": 0.075
+   }
+  },
+  {
+   "key": "onAttack>atk1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttack",
+      "do": "buff",
+      "amount": 1,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.148,
+    "lo": 0.112,
+    "hi": 0.183,
+    "se": 0.02
+   },
+   "worth": {
+    "m": 4.643,
+    "lo": 3.329,
+    "hi": 6.404,
+    "se": 0.762
+   },
+   "price": 3.46,
+   "priceBy": [
+    3.46,
+    3.46,
+    3.46,
+    3.46,
+    3.46,
+    3.46
+   ],
+   "rawGainBy": {
+    "house-cat": 0,
+    "bramblewood-lynx": 0.16,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.16,
+    "rivergate-recruit": 0.16,
+    "lucky-hopper": 0.455
+   }
+  },
+  {
+   "key": "onAttack>hp2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttack",
+      "do": "buff",
+      "amount2": 2,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.112,
+    "lo": 0.078,
+    "hi": 0.145,
+    "se": 0.017
+   },
+   "worth": {
+    "m": 3.496,
+    "lo": 2.574,
+    "hi": 4.828,
+    "se": 0.577
+   },
+   "price": 1.65,
+   "priceBy": [
+    1.65,
+    1.65,
+    1.65,
+    1.65,
+    1.65,
+    1.65
+   ],
+   "rawGainBy": {
+    "house-cat": 0.16,
+    "bramblewood-lynx": 0.18,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.12,
+    "rivergate-recruit": 0.15,
+    "lucky-hopper": 0.105
+   }
+  },
+  {
+   "key": "onAttack>shield2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttack",
+      "do": "shield",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.103,
+    "lo": 0.072,
+    "hi": 0.137,
+    "se": 0.016
+   },
+   "worth": {
+    "m": 3.235,
+    "lo": 2.342,
+    "hi": 4.421,
+    "se": 0.572
+   },
+   "price": 1.08,
+   "priceBy": [
+    1.08,
+    1.08,
+    1.08,
+    1.08,
+    1.08,
+    1.08
+   ],
+   "rawGainBy": {
+    "house-cat": 0.15,
+    "bramblewood-lynx": 0.18,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.11,
+    "rivergate-recruit": 0.14,
+    "lucky-hopper": 0.085
+   }
+  },
+  {
+   "key": "onAttack>draw1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttack",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.132,
+    "lo": 0.088,
+    "hi": 0.176,
+    "se": 0.023
+   },
+   "worth": {
+    "m": 4.148,
+    "lo": 2.853,
+    "hi": 5.94,
+    "se": 0.832
+   },
+   "price": 5.54,
+   "priceBy": [
+    5.54,
+    5.54,
+    5.54,
+    5.54,
+    5.54,
+    5.54
+   ],
+   "rawGainBy": {
+    "house-cat": 0.04,
+    "bramblewood-lynx": 0.23,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.14,
+    "rivergate-recruit": 0.095,
+    "lucky-hopper": 0.335
+   }
+  },
+  {
+   "key": "onAttack>lumber1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttack",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.148,
+    "lo": 0.105,
+    "hi": 0.19,
+    "se": 0.021
+   },
+   "worth": {
+    "m": 4.643,
+    "lo": 3.413,
+    "hi": 6.261,
+    "se": 0.802
+   },
+   "price": 1.35,
+   "priceBy": [
+    1.35,
+    1.35,
+    1.35,
+    1.35,
+    1.35,
+    1.35
+   ],
+   "rawGainBy": {
+    "house-cat": 0.06,
+    "bramblewood-lynx": 0.21,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.12,
+    "rivergate-recruit": 0.15,
+    "lucky-hopper": 0.395
+   }
+  },
+  {
+   "key": "onAttacked>dmg2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttacked",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.08,
+    "lo": 0.047,
+    "hi": 0.115,
+    "se": 0.018
+   },
+   "worth": {
+    "m": 2.504,
+    "lo": 1.527,
+    "hi": 3.832,
+    "se": 0.599
+   },
+   "price": 1.52,
+   "priceBy": [
+    1.52,
+    1.52,
+    1.52,
+    1.52,
+    1.52,
+    1.52
+   ],
+   "rawGainBy": {
+    "house-cat": 0.03,
+    "bramblewood-lynx": 0.08,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.07,
+    "rivergate-recruit": 0.13,
+    "lucky-hopper": 0.215
+   }
+  },
+  {
+   "key": "onAttacked>poison1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttacked",
+      "do": "poison",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.044,
+    "lo": 0.008,
+    "hi": 0.077,
+    "se": 0.017
+   },
+   "worth": {
+    "m": 1.383,
+    "lo": 0.311,
+    "hi": 2.407,
+    "se": 0.527
+   },
+   "price": 2.66,
+   "priceBy": [
+    2.66,
+    2.66,
+    2.66,
+    2.66,
+    2.66,
+    2.66
+   ],
+   "rawGainBy": {
+    "house-cat": 0,
+    "bramblewood-lynx": 0.085,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.07,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.095
+   }
+  },
+  {
+   "key": "onAttacked>heal2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttacked",
+      "do": "heal",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.085,
+    "lo": 0.053,
+    "hi": 0.118,
+    "se": 0.016
+   },
+   "worth": {
+    "m": 2.661,
+    "lo": 1.827,
+    "hi": 3.826,
+    "se": 0.508
+   },
+   "price": 0.76,
+   "priceBy": [
+    0.76,
+    0.76,
+    0.76,
+    0.76,
+    0.76,
+    0.76
+   ],
+   "rawGainBy": {
+    "house-cat": 0.09,
+    "bramblewood-lynx": 0.16,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.09,
+    "rivergate-recruit": 0.15,
+    "lucky-hopper": 0.065
+   }
+  },
+  {
+   "key": "onAttacked>atk1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttacked",
+      "do": "buff",
+      "amount": 1,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.09,
+    "lo": 0.062,
+    "hi": 0.115,
+    "se": 0.014
+   },
+   "worth": {
+    "m": 2.817,
+    "lo": 2.008,
+    "hi": 4.085,
+    "se": 0.502
+   },
+   "price": 3.99,
+   "priceBy": [
+    3.99,
+    3.99,
+    3.99,
+    3.99,
+    3.99,
+    3.99
+   ],
+   "rawGainBy": {
+    "house-cat": -0.01,
+    "bramblewood-lynx": 0.1,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.08,
+    "rivergate-recruit": 0.13,
+    "lucky-hopper": 0.285
+   }
+  },
+  {
+   "key": "onAttacked>hp2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttacked",
+      "do": "buff",
+      "amount2": 2,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.085,
+    "lo": 0.055,
+    "hi": 0.118,
+    "se": 0.017
+   },
+   "worth": {
+    "m": 2.661,
+    "lo": 1.831,
+    "hi": 3.783,
+    "se": 0.511
+   },
+   "price": 1.9,
+   "priceBy": [
+    1.9,
+    1.9,
+    1.9,
+    1.9,
+    1.9,
+    1.9
+   ],
+   "rawGainBy": {
+    "house-cat": 0.1,
+    "bramblewood-lynx": 0.16,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.09,
+    "rivergate-recruit": 0.14,
+    "lucky-hopper": 0.065
+   }
+  },
+  {
+   "key": "onAttacked>shield2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttacked",
+      "do": "shield",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.085,
+    "lo": 0.053,
+    "hi": 0.12,
+    "se": 0.016
+   },
+   "worth": {
+    "m": 2.661,
+    "lo": 1.81,
+    "hi": 3.826,
+    "se": 0.506
+   },
+   "price": 1.52,
+   "priceBy": [
+    1.52,
+    1.52,
+    1.52,
+    1.52,
+    1.52,
+    1.52
+   ],
+   "rawGainBy": {
+    "house-cat": 0.1,
+    "bramblewood-lynx": 0.17,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.08,
+    "rivergate-recruit": 0.13,
+    "lucky-hopper": 0.075
+   }
+  },
+  {
+   "key": "onAttacked>draw1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttacked",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.082,
+    "lo": 0.048,
+    "hi": 0.115,
+    "se": 0.017
+   },
+   "worth": {
+    "m": 2.557,
+    "lo": 1.646,
+    "hi": 3.812,
+    "se": 0.56
+   },
+   "price": 7.79,
+   "priceBy": [
+    7.79,
+    7.79,
+    7.79,
+    7.79,
+    7.79,
+    7.79
+   ],
+   "rawGainBy": {
+    "house-cat": 0.01,
+    "bramblewood-lynx": 0.16,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.02,
+    "rivergate-recruit": 0.12,
+    "lucky-hopper": 0.225
+   }
+  },
+  {
+   "key": "onAttacked>lumber1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAttacked",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.087,
+    "lo": 0.052,
+    "hi": 0.123,
+    "se": 0.019
+   },
+   "worth": {
+    "m": 2.739,
+    "lo": 1.707,
+    "hi": 4.084,
+    "se": 0.558
+   },
+   "price": 1.9,
+   "priceBy": [
+    1.9,
+    1.9,
+    1.9,
+    1.9,
+    1.9,
+    1.9
+   ],
+   "rawGainBy": {
+    "house-cat": -0.005,
+    "bramblewood-lynx": 0.13,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.07,
+    "rivergate-recruit": 0.1,
+    "lucky-hopper": 0.275
+   }
+  },
+  {
+   "key": "onDeath>dmg2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.023,
+    "lo": -0.002,
+    "hi": 0.043,
+    "se": 0.012
+   },
+   "worth": {
+    "m": 0.73,
+    "lo": -0.044,
+    "hi": 1.44,
+    "se": 0.385
+   },
+   "price": 1.19,
+   "priceBy": [
+    1.19,
+    1.19,
+    1.19,
+    1.19,
+    1.19,
+    1.19
+   ],
+   "rawGainBy": {
+    "house-cat": -0.02,
+    "bramblewood-lynx": 0.1,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.01,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.055
+   }
+  },
+  {
+   "key": "onDeath>poison1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "poison",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.004,
+    "lo": -0.016,
+    "hi": 0.024,
+    "se": 0.01
+   },
+   "worth": {
+    "m": 0.13,
+    "lo": -0.473,
+    "hi": 0.738,
+    "se": 0.327
+   },
+   "price": 1.12,
+   "priceBy": [
+    1.12,
+    1.12,
+    1.12,
+    1.12,
+    1.12,
+    1.12
+   ],
+   "rawGainBy": {
+    "house-cat": -0.025,
+    "bramblewood-lynx": 0.09,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.02,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": -0.005
+   }
+  },
+  {
+   "key": "onDeath>heal2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "heal",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0,
+    "se": 0
+   },
+   "worth": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0,
+    "se": 0
+   },
+   "price": 0.32,
+   "priceBy": [
+    0.32,
+    0.32,
+    0.32,
+    0.32,
+    0.32,
+    0.32
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.04,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.01,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.015
+   }
+  },
+  {
+   "key": "onDeath>atk1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "buff",
+      "amount": 1,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0,
+    "se": 0
+   },
+   "worth": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0,
+    "se": 0
+   },
+   "price": 1.68,
+   "priceBy": [
+    1.68,
+    1.68,
+    1.68,
+    1.68,
+    1.68,
+    1.68
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.04,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.01,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.015
+   }
+  },
+  {
+   "key": "onDeath>hp2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "buff",
+      "amount2": 2,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.167,
+    "lo": 0.13,
+    "hi": 0.212,
+    "se": 0.021
+   },
+   "worth": {
+    "m": 5.243,
+    "lo": 4.009,
+    "hi": 7.162,
+    "se": 0.846
+   },
+   "price": 0.8,
+   "priceBy": [
+    0.8,
+    0.8,
+    0.8,
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rawGainBy": {
+    "house-cat": 0.245,
+    "bramblewood-lynx": 0.3,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.16,
+    "rivergate-recruit": 0.2,
+    "lucky-hopper": 0.145
+   }
+  },
+  {
+   "key": "onDeath>shield2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "shield",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0,
+    "se": 0
+   },
+   "worth": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0,
+    "se": 0
+   },
+   "price": 0.64,
+   "priceBy": [
+    0.64,
+    0.64,
+    0.64,
+    0.64,
+    0.64,
+    0.64
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.04,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.01,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.015
+   }
+  },
+  {
+   "key": "onDeath>draw1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.017,
+    "lo": -0.006,
+    "hi": 0.036,
+    "se": 0.011
+   },
+   "worth": {
+    "m": 0.522,
+    "lo": -0.166,
+    "hi": 1.206,
+    "se": 0.353
+   },
+   "price": 3.28,
+   "priceBy": [
+    3.28,
+    3.28,
+    3.28,
+    3.28,
+    3.28,
+    3.28
+   ],
+   "rawGainBy": {
+    "house-cat": 0.015,
+    "bramblewood-lynx": 0.08,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.025,
+    "rivergate-recruit": 0.02,
+    "lucky-hopper": 0.055
+   }
+  },
+  {
+   "key": "onDeath>lumber1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.017,
+    "lo": 0,
+    "hi": 0.038,
+    "se": 0.01
+   },
+   "worth": {
+    "m": 0.522,
+    "lo": 0,
+    "hi": 1.249,
+    "se": 0.327
+   },
+   "price": 0.8,
+   "priceBy": [
+    0.8,
+    0.8,
+    0.8,
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rawGainBy": {
+    "house-cat": -0.01,
+    "bramblewood-lynx": 0.07,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.01,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.015
+   }
+  },
+  {
+   "key": "onKill>dmg2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.038,
+    "lo": 0.017,
+    "hi": 0.062,
+    "se": 0.011
+   },
+   "worth": {
+    "m": 1.2,
+    "lo": 0.503,
+    "hi": 2,
+    "se": 0.391
+   },
+   "price": 1.12,
+   "priceBy": [
+    1.12,
+    1.12,
+    1.12,
+    1.12,
+    1.12,
+    1.12
+   ],
+   "rawGainBy": {
+    "house-cat": 0.01,
+    "bramblewood-lynx": 0.14,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.04,
+    "rivergate-recruit": 0.04,
+    "lucky-hopper": 0.045
+   }
+  },
+  {
+   "key": "onKill>poison1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "poison",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.02,
+    "lo": 0,
+    "hi": 0.038,
+    "se": 0.01
+   },
+   "worth": {
+    "m": 0.626,
+    "lo": 0,
+    "hi": 1.219,
+    "se": 0.321
+   },
+   "price": 1.96,
+   "priceBy": [
+    1.96,
+    1.96,
+    1.96,
+    1.96,
+    1.96,
+    1.96
+   ],
+   "rawGainBy": {
+    "house-cat": -0.02,
+    "bramblewood-lynx": 0.11,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.02,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.025
+   }
+  },
+  {
+   "key": "onKill>heal2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "heal",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.028,
+    "lo": 0.01,
+    "hi": 0.047,
+    "se": 0.01
+   },
+   "worth": {
+    "m": 0.887,
+    "lo": 0.345,
+    "hi": 1.478,
+    "se": 0.291
+   },
+   "price": 0.56,
+   "priceBy": [
+    0.56,
+    0.56,
+    0.56,
+    0.56,
+    0.56,
+    0.56
+   ],
+   "rawGainBy": {
+    "house-cat": -0.01,
+    "bramblewood-lynx": 0.12,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.01,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.035
+   }
+  },
+  {
+   "key": "onKill>atk1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "buff",
+      "amount": 1,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.032,
+    "lo": 0.014,
+    "hi": 0.053,
+    "se": 0.01
+   },
+   "worth": {
+    "m": 1.017,
+    "lo": 0.46,
+    "hi": 1.7,
+    "se": 0.316
+   },
+   "price": 2.94,
+   "priceBy": [
+    2.94,
+    2.94,
+    2.94,
+    2.94,
+    2.94,
+    2.94
+   ],
+   "rawGainBy": {
+    "house-cat": 0,
+    "bramblewood-lynx": 0.11,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.035,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.035
+   }
+  },
+  {
+   "key": "onKill>hp2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "buff",
+      "amount2": 2,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.033,
+    "lo": 0.015,
+    "hi": 0.053,
+    "se": 0.01
+   },
+   "worth": {
+    "m": 1.043,
+    "lo": 0.48,
+    "hi": 1.698,
+    "se": 0.311
+   },
+   "price": 1.4,
+   "priceBy": [
+    1.4,
+    1.4,
+    1.4,
+    1.4,
+    1.4,
+    1.4
+   ],
+   "rawGainBy": {
+    "house-cat": 0,
+    "bramblewood-lynx": 0.13,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.02,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.035
+   }
+  },
+  {
+   "key": "onKill>shield2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "shield",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.03,
+    "lo": 0.013,
+    "hi": 0.048,
+    "se": 0.01
+   },
+   "worth": {
+    "m": 0.939,
+    "lo": 0.426,
+    "hi": 1.557,
+    "se": 0.289
+   },
+   "price": 1.12,
+   "priceBy": [
+    1.12,
+    1.12,
+    1.12,
+    1.12,
+    1.12,
+    1.12
+   ],
+   "rawGainBy": {
+    "house-cat": 0,
+    "bramblewood-lynx": 0.12,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.01,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.035
+   }
+  },
+  {
+   "key": "onKill>draw1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.033,
+    "lo": 0.012,
+    "hi": 0.053,
+    "se": 0.012
+   },
+   "worth": {
+    "m": 1.043,
+    "lo": 0.346,
+    "hi": 1.773,
+    "se": 0.368
+   },
+   "price": 5.74,
+   "priceBy": [
+    5.74,
+    5.74,
+    5.74,
+    5.74,
+    5.74,
+    5.74
+   ],
+   "rawGainBy": {
+    "house-cat": -0.02,
+    "bramblewood-lynx": 0.14,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.01,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.055
+   }
+  },
+  {
+   "key": "onKill>lumber1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.023,
+    "lo": 0.005,
+    "hi": 0.042,
+    "se": 0.009
+   },
+   "worth": {
+    "m": 0.73,
+    "lo": 0.161,
+    "hi": 1.408,
+    "se": 0.315
+   },
+   "price": 1.2,
+   "priceBy": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+   ],
+   "rawGainBy": {
+    "house-cat": -0.04,
+    "bramblewood-lynx": 0.11,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0,
+    "rivergate-recruit": 0.06,
+    "lucky-hopper": 0.055
+   }
+  },
+  {
+   "key": "onAllyDie>dmg2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyDie",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.09,
+    "lo": 0.058,
+    "hi": 0.122,
+    "se": 0.016
+   },
+   "worth": {
+    "m": 2.817,
+    "lo": 1.937,
+    "hi": 3.976,
+    "se": 0.58
+   },
+   "price": 0.96,
+   "priceBy": [
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96
+   ],
+   "rawGainBy": {
+    "house-cat": -0.01,
+    "bramblewood-lynx": 0.17,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.1,
+    "rivergate-recruit": 0.12,
+    "lucky-hopper": 0.205
+   }
+  },
+  {
+   "key": "onAllyDie>poison1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyDie",
+      "do": "poison",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.032,
+    "lo": 0.008,
+    "hi": 0.055,
+    "se": 0.013
+   },
+   "worth": {
+    "m": 0.991,
+    "lo": 0.241,
+    "hi": 1.762,
+    "se": 0.407
+   },
+   "price": 1.68,
+   "priceBy": [
+    1.68,
+    1.68,
+    1.68,
+    1.68,
+    1.68,
+    1.68
+   ],
+   "rawGainBy": {
+    "house-cat": -0.07,
+    "bramblewood-lynx": 0.13,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.05,
+    "rivergate-recruit": 0.1,
+    "lucky-hopper": 0.025
+   }
+  },
+  {
+   "key": "onAllyDie>heal2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyDie",
+      "do": "heal",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.033,
+    "lo": 0.013,
+    "hi": 0.053,
+    "se": 0.01
+   },
+   "worth": {
+    "m": 1.017,
+    "lo": 0.416,
+    "hi": 1.545,
+    "se": 0.294
+   },
+   "price": 0.48,
+   "priceBy": [
+    0.48,
+    0.48,
+    0.48,
+    0.48,
+    0.48,
+    0.48
+   ],
+   "rawGainBy": {
+    "house-cat": -0.02,
+    "bramblewood-lynx": 0.11,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.02,
+    "rivergate-recruit": 0.11,
+    "lucky-hopper": 0.02
+   }
+  },
+  {
+   "key": "onAllyDie>atk1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyDie",
+      "do": "buff",
+      "amount": 1,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.06,
+    "lo": 0.038,
+    "hi": 0.085,
+    "se": 0.012
+   },
+   "worth": {
+    "m": 1.878,
+    "lo": 1.234,
+    "hi": 2.667,
+    "se": 0.372
+   },
+   "price": 2.52,
+   "priceBy": [
+    2.52,
+    2.52,
+    2.52,
+    2.52,
+    2.52,
+    2.52
+   ],
+   "rawGainBy": {
+    "house-cat": 0,
+    "bramblewood-lynx": 0.11,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.08,
+    "rivergate-recruit": 0.07,
+    "lucky-hopper": 0.145
+   }
+  },
+  {
+   "key": "onAllyDie>hp2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyDie",
+      "do": "buff",
+      "amount2": 2,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.048,
+    "lo": 0.022,
+    "hi": 0.073,
+    "se": 0.013
+   },
+   "worth": {
+    "m": 1.487,
+    "lo": 0.789,
+    "hi": 2.175,
+    "se": 0.371
+   },
+   "price": 1.2,
+   "priceBy": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+   ],
+   "rawGainBy": {
+    "house-cat": 0.03,
+    "bramblewood-lynx": 0.12,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.05,
+    "rivergate-recruit": 0.11,
+    "lucky-hopper": 0.02
+   }
+  },
+  {
+   "key": "onAllyDie>shield2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyDie",
+      "do": "shield",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.051,
+    "lo": 0.028,
+    "hi": 0.075,
+    "se": 0.012
+   },
+   "worth": {
+    "m": 1.591,
+    "lo": 0.945,
+    "hi": 2.317,
+    "se": 0.363
+   },
+   "price": 0.96,
+   "priceBy": [
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96
+   ],
+   "rawGainBy": {
+    "house-cat": 0.04,
+    "bramblewood-lynx": 0.13,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.05,
+    "rivergate-recruit": 0.11,
+    "lucky-hopper": 0.02
+   }
+  },
+  {
+   "key": "onAllyDie>draw1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyDie",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.068,
+    "lo": 0.037,
+    "hi": 0.098,
+    "se": 0.016
+   },
+   "worth": {
+    "m": 2.139,
+    "lo": 1.187,
+    "hi": 3.253,
+    "se": 0.545
+   },
+   "price": 4.92,
+   "priceBy": [
+    4.92,
+    4.92,
+    4.92,
+    4.92,
+    4.92,
+    4.92
+   ],
+   "rawGainBy": {
+    "house-cat": 0.02,
+    "bramblewood-lynx": 0.16,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.03,
+    "rivergate-recruit": 0.11,
+    "lucky-hopper": 0.135
+   }
+  },
+  {
+   "key": "onAllyDie>lumber1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyDie",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.05,
+    "lo": 0.022,
+    "hi": 0.078,
+    "se": 0.014
+   },
+   "worth": {
+    "m": 1.565,
+    "lo": 0.78,
+    "hi": 2.609,
+    "se": 0.463
+   },
+   "price": 1.2,
+   "priceBy": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+   ],
+   "rawGainBy": {
+    "house-cat": 0,
+    "bramblewood-lynx": 0.13,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.01,
+    "rivergate-recruit": 0.07,
+    "lucky-hopper": 0.135
+   }
+  },
+  {
+   "key": "onEnemySpawn>dmg2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onEnemySpawn",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.005,
+    "lo": -0.002,
+    "hi": 0.013,
+    "se": 0.004
+   },
+   "worth": {
+    "m": 0.157,
+    "lo": -0.058,
+    "hi": 0.466,
+    "se": 0.131
+   },
+   "price": 2.4,
+   "priceBy": [
+    2.4,
+    2.4,
+    2.4,
+    2.4,
+    2.4,
+    2.4
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.07,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.01,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.015
+   }
+  },
+  {
+   "key": "onEnemySpawn>poison1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onEnemySpawn",
+      "do": "poison",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.007,
+    "lo": -0.005,
+    "hi": 0.02,
+    "se": 0.006
+   },
+   "worth": {
+    "m": 0.209,
+    "lo": -0.145,
+    "hi": 0.65,
+    "se": 0.201
+   },
+   "price": 4.2,
+   "priceBy": [
+    4.2,
+    4.2,
+    4.2,
+    4.2,
+    4.2,
+    4.2
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.07,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.015
+   }
+  },
+  {
+   "key": "onEnemySpawn>heal2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onEnemySpawn",
+      "do": "heal",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.002,
+    "lo": 0,
+    "hi": 0.005,
+    "se": 0.002
+   },
+   "worth": {
+    "m": 0.052,
+    "lo": 0,
+    "hi": 0.178,
+    "se": 0.054
+   },
+   "price": 1.2,
+   "priceBy": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.05,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.01,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.015
+   }
+  },
+  {
+   "key": "onEnemySpawn>atk1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onEnemySpawn",
+      "do": "buff",
+      "amount": 1,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.01,
+    "lo": 0,
+    "hi": 0.022,
+    "se": 0.006
+   },
+   "worth": {
+    "m": 0.313,
+    "lo": 0,
+    "hi": 0.742,
+    "se": 0.192
+   },
+   "price": 6.3,
+   "priceBy": [
+    6.3,
+    6.3,
+    6.3,
+    6.3,
+    6.3,
+    6.3
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.06,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0,
+    "rivergate-recruit": 0.04,
+    "lucky-hopper": 0.035
+   }
+  },
+  {
+   "key": "onEnemySpawn>hp2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onEnemySpawn",
+      "do": "buff",
+      "amount2": 2,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.003,
+    "lo": 0,
+    "hi": 0.01,
+    "se": 0.003
+   },
+   "worth": {
+    "m": 0.104,
+    "lo": 0,
+    "hi": 0.356,
+    "se": 0.108
+   },
+   "price": 3,
+   "priceBy": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.05,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.01,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.025
+   }
+  },
+  {
+   "key": "onEnemySpawn>shield2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onEnemySpawn",
+      "do": "shield",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.003,
+    "lo": 0,
+    "hi": 0.01,
+    "se": 0.003
+   },
+   "worth": {
+    "m": 0.104,
+    "lo": 0,
+    "hi": 0.356,
+    "se": 0.108
+   },
+   "price": 2.4,
+   "priceBy": [
+    2.4,
+    2.4,
+    2.4,
+    2.4,
+    2.4,
+    2.4
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.05,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.01,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.025
+   }
+  },
+  {
+   "key": "onEnemySpawn>draw1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onEnemySpawn",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.012,
+    "lo": -0.002,
+    "hi": 0.025,
+    "se": 0.007
+   },
+   "worth": {
+    "m": 0.365,
+    "lo": -0.06,
+    "hi": 0.838,
+    "se": 0.221
+   },
+   "price": 12.3,
+   "priceBy": [
+    12.3,
+    12.3,
+    12.3,
+    12.3,
+    12.3,
+    12.3
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.09,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0,
+    "rivergate-recruit": 0.03,
+    "lucky-hopper": 0.025
+   }
+  },
+  {
+   "key": "onEnemySpawn>lumber1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onEnemySpawn",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.007,
+    "lo": -0.002,
+    "hi": 0.017,
+    "se": 0.004
+   },
+   "worth": {
+    "m": 0.209,
+    "lo": -0.048,
+    "hi": 0.49,
+    "se": 0.138
+   },
+   "price": 3,
+   "priceBy": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "rawGainBy": {
+    "house-cat": -0.03,
+    "bramblewood-lynx": 0.07,
+    "blessed-avatar": 0.01,
+    "stable-colt": -0.01,
+    "rivergate-recruit": 0.02,
+    "lucky-hopper": 0.035
+   }
+  },
+  {
+   "key": "onAllyPlayed>dmg2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyPlayed",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.145,
+    "lo": 0.102,
+    "hi": 0.188,
+    "se": 0.022
+   },
+   "worth": {
+    "m": 4.539,
+    "lo": 3.281,
+    "hi": 6.18,
+    "se": 0.77
+   },
+   "price": 2,
+   "priceBy": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "rawGainBy": {
+    "house-cat": 0.03,
+    "bramblewood-lynx": 0.24,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.15,
+    "rivergate-recruit": 0.19,
+    "lucky-hopper": 0.305
+   }
+  },
+  {
+   "key": "onAllyPlayed>poison1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyPlayed",
+      "do": "poison",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "random"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.071,
+    "lo": 0.038,
+    "hi": 0.104,
+    "se": 0.017
+   },
+   "worth": {
+    "m": 2.217,
+    "lo": 1.238,
+    "hi": 3.304,
+    "se": 0.586
+   },
+   "price": 3.5,
+   "priceBy": [
+    3.5,
+    3.5,
+    3.5,
+    3.5,
+    3.5,
+    3.5
+   ],
+   "rawGainBy": {
+    "house-cat": -0.01,
+    "bramblewood-lynx": 0.145,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.06,
+    "rivergate-recruit": 0.12,
+    "lucky-hopper": 0.155
+   }
+  },
+  {
+   "key": "onAllyPlayed>heal2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyPlayed",
+      "do": "heal",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.082,
+    "lo": 0.052,
+    "hi": 0.115,
+    "se": 0.015
+   },
+   "worth": {
+    "m": 2.557,
+    "lo": 1.722,
+    "hi": 3.646,
+    "se": 0.514
+   },
+   "price": 1,
+   "priceBy": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "rawGainBy": {
+    "house-cat": 0.03,
+    "bramblewood-lynx": 0.16,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.1,
+    "rivergate-recruit": 0.17,
+    "lucky-hopper": 0.075
+   }
+  },
+  {
+   "key": "onAllyPlayed>atk1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyPlayed",
+      "do": "buff",
+      "amount": 1,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.133,
+    "lo": 0.095,
+    "hi": 0.167,
+    "se": 0.018
+   },
+   "worth": {
+    "m": 4.174,
+    "lo": 3.078,
+    "hi": 5.876,
+    "se": 0.708
+   },
+   "price": 5.25,
+   "priceBy": [
+    5.25,
+    5.25,
+    5.25,
+    5.25,
+    5.25,
+    5.25
+   ],
+   "rawGainBy": {
+    "house-cat": 0,
+    "bramblewood-lynx": 0.2,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.1,
+    "rivergate-recruit": 0.15,
+    "lucky-hopper": 0.395
+   }
+  },
+  {
+   "key": "onAllyPlayed>hp2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyPlayed",
+      "do": "buff",
+      "amount2": 2,
+      "who": "self"
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.1,
+    "lo": 0.067,
+    "hi": 0.138,
+    "se": 0.017
+   },
+   "worth": {
+    "m": 3.13,
+    "lo": 2.12,
+    "hi": 4.447,
+    "se": 0.602
+   },
+   "price": 2.5,
+   "priceBy": [
+    2.5,
+    2.5,
+    2.5,
+    2.5,
+    2.5,
+    2.5
+   ],
+   "rawGainBy": {
+    "house-cat": 0.11,
+    "bramblewood-lynx": 0.17,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.11,
+    "rivergate-recruit": 0.18,
+    "lucky-hopper": 0.075
+   }
+  },
+  {
+   "key": "onAllyPlayed>shield2",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyPlayed",
+      "do": "shield",
+      "amount": 2
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.092,
+    "lo": 0.062,
+    "hi": 0.126,
+    "se": 0.016
+   },
+   "worth": {
+    "m": 2.896,
+    "lo": 1.89,
+    "hi": 4.116,
+    "se": 0.58
+   },
+   "price": 2,
+   "priceBy": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "rawGainBy": {
+    "house-cat": 0.1,
+    "bramblewood-lynx": 0.17,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.085,
+    "rivergate-recruit": 0.17,
+    "lucky-hopper": 0.075
+   }
+  },
+  {
+   "key": "onAllyPlayed>draw1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyPlayed",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.115,
+    "lo": 0.072,
+    "hi": 0.155,
+    "se": 0.022
+   },
+   "worth": {
+    "m": 3.6,
+    "lo": 2.278,
+    "hi": 5.22,
+    "se": 0.752
+   },
+   "price": 10.25,
+   "priceBy": [
+    10.25,
+    10.25,
+    10.25,
+    10.25,
+    10.25,
+    10.25
+   ],
+   "rawGainBy": {
+    "house-cat": 0.01,
+    "bramblewood-lynx": 0.24,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.08,
+    "rivergate-recruit": 0.11,
+    "lucky-hopper": 0.295
+   }
+  },
+  {
+   "key": "onAllyPlayed>lumber1",
+   "eff": {
+    "triggers": [
+     {
+      "on": "onAllyPlayed",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "gain": {
+    "m": 0.124,
+    "lo": 0.086,
+    "hi": 0.158,
+    "se": 0.018
+   },
+   "worth": {
+    "m": 3.887,
+    "lo": 2.817,
+    "hi": 5.365,
+    "se": 0.658
+   },
+   "price": 2.5,
+   "priceBy": [
+    2.5,
+    2.5,
+    2.5,
+    2.5,
+    2.5,
+    2.5
+   ],
+   "rawGainBy": {
+    "house-cat": 0.01,
+    "bramblewood-lynx": 0.19,
+    "blessed-avatar": 0.01,
+    "stable-colt": 0.1,
+    "rivergate-recruit": 0.135,
+    "lucky-hopper": 0.355
+   }
+  }
+ ],
+ "seconds": 2032,
+ "played": 48000
+}

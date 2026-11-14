@@ -1,0 +1,24 @@
+skw1-g1: global pool, every road field, Level 1; 410 fields, pool 810, Level 1; 120 variants x 100 fights
+  1600/9600 games, 26.4/s, about 5 min left
+  3300/9600 games, 27.3/s, about 4 min left
+  4975/9600 games, 27.5/s, about 3 min left
+  6750/9600 games, 27.9/s, about 2 min left
+  8275/9600 games, 27.3/s, about 1 min left
+  played 9600 games in 351 s
+ruler: 3.20 win pts a budget point; Attack weight 4.34 [3.143, 6.444]; placebo 0.287; base win 0.473; 9600 games in 351 s -> docs/balance/skw1/b2-g1.json
+  perTurn>dmg4             worth    8.87 [6.983, 12.565]  price 4.8
+  onDeath>hp4              worth   5.087 [3.866, 7.012]  price 1.6
+  onSpawn>dmg4             worth   5.009 [3.647, 7.098]  price 1.68
+  perTurn>dmg1             worth   3.757 [2.486, 5.562]  price 1.2
+  onAttacked>dmg4          worth   5.348 [3.87, 7.84]  price 3.04
+  onSpawn>atk2             worth   6.287 [4.963, 8.933]  price 4.41
+  onSpawn>hp4              worth   3.026 [2.278, 4.215]  price 2.1
+  onAttacked>dmg1          worth   1.643 [0.75, 2.632]  price 0.76
+  onSpawn>dmg1             worth   0.887 [-0.332, 2.141]  price 0.42
+  onAttacked>hp4           worth     3.6 [2.571, 5.025]  price 3.8
+  onDeath>dmg1             worth   0.391 [-0.308, 1.086]  price 0.6
+  onDeath>dmg4             worth   1.852 [1.057, 2.866]  price 2.38
+  perTurn>hp4              worth   4.617 [3.491, 6.563]  price 6
+  onDeath>atk2             worth       0 [0, 0]  price 3.36
+  onAttacked>atk2          worth   4.591 [3.423, 6.452]  price 7.98
+  perTurn>atk2             worth   7.983 [6.149, 10.99]  price 12.6

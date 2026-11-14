@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package SKW1 (owner 11-14 11:11, 11:25, 11:31; measurement only)
+- Skill worth measured in seven contexts (global road fields at Level 1 and 10, vanilla mirror, no field, tide fields, dark fields, the PRO / BPRO decks of Maps 0-20): 27 of 34 skills priced within noise; Dry, Fork, Reach over-priced, Diurnal under-priced; Nocturnal, Diurnal, Tide, Illuminate, Delivery, Stealth context-dependent; +1 Attack measured above 3 Health everywhere.
+- Trigger x action decoupled: 80 pairs fit worth = trigger multiplier x action base within noise once the rule-empty pairs are out (R² 0.975); a trigger's multiplier is about half its fires per copy played. Flags: On Death + Health buff on itself keeps the unit alive; repeating Draw saturates.
+- Bramblewood's trigger (32) and action (45) tables counted; 151 named skills met by Map 20, near-duplicate groups listed. Tools `tools/skw1/`, results and the report `docs/balance/skw1/skw1-2026-11-14.md`. No card, budget, engine or decision changed.
+
 ## 2026-11-13 Package UI53 (owner notes 11-13 17:29 #1, #2, #4)
 - Battle pips: Venom and Bleed show their count on the pip (a bare 1 stays icon only, like every chip); every other counted pip already did.
 - The hover or hold sheet of a unit in a fight lists the tokens and statuses on it now (Venom 4, Bleed 3, Inspiration 2 ... each with its meaning), above its hit log, and follows them while it is open.
