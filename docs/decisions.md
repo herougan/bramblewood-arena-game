@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKR1-1. Which named skills each map introduces** · Decide · Skills · asked 2026-11-14
+- From your ranking: every rank-1 skill placed on Maps 0-11 and 13, rank 2 and 3 only where the theme fits. 4 new skills on Maps 0-2, 2-3 on Maps 3-12, 0-2 after; 47 in all. Poison is assumed kept (your Electricity note). Table: docs/skill-intro-proposal-2026-11-14.md.
+  - a) This split (47 skills)
+  - b) The leaner split (about 35: no rank 3s, no Daunt, Pack, Brittle)
+  - c) Change it (say which)
+- **Default:** a
+
 **SKW2-1. Attack's worth depends on Health** · Decide · Budget · asked 2026-11-14
 - SKW2: +1 Attack is worth about Health ÷ Attack (fragile units 0.8, sturdy 20+), not cap 1's flat 3. Cap 1 binds on all 472 cards; cap 2 (A·H) on none. SKW3 (no games): cap 2 alone ranks cards closer to their measured worth (0.32 vs 0.14; 0.37 vs 0.27), but puts 43 Maps 0-20 cards over budget. A softer cap 1 (square root of A·H) puts 22 over (mostly small Commons on Maps 0-5). Either needs a road check first.
   - a) Cap 2 alone (cap 1 dropped), after a road check
