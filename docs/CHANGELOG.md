@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package WHATIF2 (SIDE2-2 options a + c together; nothing applied)
+- WHATIF1's tools, rules and method in a scratch copy, Map reference win rate at 400 games a fight (`docs/balance/whatif2/whatif2-2026-11-14.md`).
+- Side maps in band, of 77: today 39, (a) Carried x2 48, (c) smaller decks 47, (a + c) 53. Within 10: 58. Beyond 20: 8. Mean gap: 7.9.
+- Of the 14 fights that moved into band, 12 hold on fresh seeds; 19-A-8 and 19-A-10 do not.
+- The three fights K14 can't build:
+  - 0-B-3 is in band (57.5) and 14-A-5 is in band (41.5).
+  - 2-A-6 is still too hard (34.8 vs 60).
+- The SIDE2-4 bosses:
+  - 0-B-4 is in band (41.3).
+  - 10-A-5 reads 27.5 and 18-A-9 reads 29.3. Both still need SIDE2-4's lever.
+- ENG-OD1 changes none of the 81 reads.
+
 ## 2026-11-14 Package REF7 (ladders on the REF6 prog decks; Maps 16-20 walls; measurement only)
 - BAL13 ladder rebuilt for Maps 0-20: its pool rule admits 15 of 180 prog decks (none on Maps 10-15, 17-20); 9 chosen, all at ranks 8-10. Saved as `docs/balance/ref7/ref-ladder-bal13-2026-11-14.json`; the game's ladder set stays BAL24's. REF6 ladder-100 rebuilt with the prog decks in each map's library (3,353 of 3,600 decks changed; strengths need a re-measure).
 - Walls, 200 games on fresh seeds: Map 16 Cone-cutter Squirrel and enemy Lv 4, Map 18 the Windfall field and Horned Lizard, Map 19 Obsidian Scorpion, Map 20 the bramble Shield. One lever brings 19 of 21 wall fights within 10; 18-4 and 19-5 need more. Report `docs/balance/ref7/ref7-2026-11-14.md`, tools `tools/ref7/`. No card, fight, budget or decision changed.
