@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**EDGE1-1. Five main fights just outside band** · Decide · Balance · asked 2026-11-14
+- At 1,000 games 2-4 (51%), 14-5 (60%) and 14-8 (28%) are too hard; 11-9 (71%) and 16-5 (75%) too easy, each 1-3 points out. The road tuner found one enemy deck change each (400 games, tune seeds): 2-4 2 Beaver Lumberjack to Riverworks Bastion, 58%; 14-5 2 Bramblewood Macaque to Jaguar Stalker, 67%; 14-8 1 Bramble Sprout to Jaguar Stalker, Shield 0, 39%; 11-9 2 Chipmunk Hoarder to Stonedrop Vulture, 59%; 16-5 +1 Mountain Hare, 69%. Fixes in docs/balance/b1114-edge-fixes.jsonl.
+  - a) Apply all five, then confirm on fresh seeds
+  - b) Apply some (say which)
+  - c) Leave them; they are close
+- **Default:** a
+
 **REF7-1. Map 16 walls** · Decide · Balance · asked 2026-11-14
 - Even decks built well from a player's collection fall short on 16-2, 16-3, 16-4 and 16-6. The cause is the enemy Cone-cutter Squirrel's economy and the enemy at level 4 against the player's 3. Measured, 200 games: 16-3 enemy level 4 to 3 goes from 46% to 68% (target 68). Cutting Squirrel copies fixes each fight too (table in docs/balance/ref7/ref7-2026-11-14.md).
   - a) Cut Squirrel copies per the table
