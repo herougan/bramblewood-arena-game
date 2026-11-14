@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-13 Package UI53 (owner notes 11-13 17:29 #1, #2, #4)
+- Battle pips: Venom and Bleed show their count on the pip (a bare 1 stays icon only, like every chip); every other counted pip already did.
+- The hover or hold sheet of a unit in a fight lists the tokens and statuses on it now (Venom 4, Bleed 3, Inspiration 2 ... each with its meaning), above its hit log, and follows them while it is open.
+- A Guardian's steel plates no longer stay behind as a pale slot when the card lunges or recoils: they take the card's transform every frame (cause: those animations move only the inner tile, the plates were its sibling).
+- Map cards window: a NEW! skill is a red tile with a white-on-red NEW! marker (was gold). Other NEW! tags unchanged.
+
 ## 2026-11-13 Package FIX11 (TESTFIX3's open items)
 - Tools: `tools/bench/deck.js` stops a focus after 40 passes with no new game (a small list whose neighbours are all read looped forever; The Canopy's 11 cards ran 3.5 h); SIDE2's copies of the guard dropped. `tools/opt/deckopt.js --compare`: `await ev.setup(spec)` sat inside a comment since REF5 (10-30), so the run exited 0 with no output (opt2's missing file).
 - Animal tags: Barrel Cactus (cactus, plant) and 21 later hand tags kept in `tools/animal_tags.py` (the fallback had turned a Cormorant into a raven); `canonical/animal-tags.json` and `bramblewood-taxonomy.js` regenerated.

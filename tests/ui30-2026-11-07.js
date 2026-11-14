@@ -37,8 +37,8 @@ ok(TEXT['ui.ui30-sugg-intro'] === 'Sugg. Intro' && /\{n\}/.test(TEXT['ui.ui30-bl
     (k, v)=> k + JSON.stringify(v || {}), s=> String(s), ()=> level, ()=> reduced, ()=> null,
     uid=> calls.push('drop:bleed:' + uid), uid=> calls.push('update:' + uid), {FX: {D: {poisonDrop: ()=> calls.push('drop:poison')}}}, {D: {poisonDrop: ()=> calls.push('drop:poison')}});
   const p3 = H.ui7PoisonChip({uid: 1, poison: 3}), b2 = H.ui30BleedChip({uid: 2, bleed: 2});
-  ok(/>☠<\/span>$/.test(p3) && !/has-n/.test(p3) && /"n":3/.test(p3), '#2 Poison 3: the icon alone, the count in the tooltip');
-  ok(/>🩸<\/span>$/.test(b2) && /ui30-bleed-tip/.test(b2) && /"n":2/.test(b2), '#2 Bleed 2: the icon alone, the count in the tooltip');
+  ok(/>☠3<\/span>$/.test(p3) && !/has-n/.test(p3) && /"n":3/.test(p3), '#2 Poison 3: the icon and its count (UI53), the count also in the tooltip');
+  ok(/>🩸2<\/span>$/.test(b2) && /ui30-bleed-tip/.test(b2) && /"n":2/.test(b2), '#2 Bleed 2: the icon and its count (UI53), the count also in the tooltip');
   calls.length = 0; H.ui30StackGo(2, 'bleed', 1); ok(calls.join() === 'update:2', '#2 a counter goes (2 -> 1): redraw and tick, no drop');
   ok(/ui30-tick/.test(H.ui30BleedChip({uid: 2, bleed: 1})), '#2 a pip rebuilt right after the tick keeps the tick class');
   calls.length = 0; H.ui30StackGo(2, 'bleed', 0); ok(calls.join() === 'drop:bleed:2,update:2', '#2 the last counter (1 -> 0): the greyed pip drops first, then the redraw');
@@ -128,7 +128,7 @@ async function browser(){
         c.bleed = 0; ui30StackGo(U, 'bleed', 0); const drop = document.querySelectorAll('.bleed-drop').length, gone = !bp();
         setFxLevel('none'); c.poison = 1; ui30StackGo(U, 'poison', 1); const tickNone = pp().classList.contains('ui30-tick'); setFxLevel('high');
         return {txt0, tick, drops0, drop, gone, tickNone, cls: document.documentElement.dataset.fx}; })()`);
-      ok(!/\d/.test(p.txt0.join('')), `@${w} #2 Poison 3 and Bleed 2 pips show no number (${JSON.stringify(p.txt0)})`);
+      ok(/3/.test(p.txt0.join("")) && /2/.test(p.txt0.join("")), `@${w} #2 Poison 3 and Bleed 2 pips show their count (UI53) (${JSON.stringify(p.txt0)})`);
       ok(p.tick && p.drops0 === 0, `@${w} #2 3 -> 2: the pip ticks, nothing drops`);
       ok(p.drop === 1 && p.gone, `@${w} #2 Bleed 1 -> 0: one greyed 🩸 drops and the pip is gone`);
       ok(!p.tickNone, `@${w} #2 Effects None: no tick`);
