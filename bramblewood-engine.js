@@ -8454,7 +8454,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         case 'buff': {
           const who = t.who || 'self';
           const target = resolveGeneralTarget(players, playerId, boardCard, who, t.sub);
-          if(!target || !target.card) break;
+          // ENG-OD1 (2026-11-14, SKW1): a unit at 0 Health is dead (Heal and Shield already skip it). An On Death "+N Health on itself"
+          // raised it above 0 inside the death pass, so it stayed on the board (and in the graveyard): a free Revive.
+          if(!target || !target.card || !(target.card.hp > 0)) break;
           const c = target.card;
           const atkAmt = t.amount||0, hpAmt = t.amount2||0;
           if(atkAmt){ c.atk += atkAmt; c.baseAtk += atkAmt; }
@@ -8495,7 +8497,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(who!=='self' && c.hp>0){ bleedTick(sideOf, who==='ally'?playerId:otherId(playerId), c, stats, events, 'defend'); runCustomTriggers(players, sideOf, who==='ally'?playerId:otherId(playerId), c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
           break;
         }
-        case 'buffHealth': boardCard.hp += (t.amount||0); boardCard.maxHp += (t.amount||0); if(recordEvents && events && t.amount) events.push({type:'namedBuff', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:0, amount2:t.amount||0}); break;
+        case 'buffHealth': if(!(boardCard.hp > 0)) break; /* ENG-OD1 (2026-11-14): as Buff */ boardCard.hp +=(t.amount||0); boardCard.maxHp += (t.amount||0); if(recordEvents && events && t.amount) events.push({type:'namedBuff', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:0, amount2:t.amount||0}); break;
         // heal (2026-09-16): restores CURRENT hp up to the existing max — unlike buffHealth,
         // which permanently raises max HP too. Self-only, same convention as buffAttack/
         // buffHealth defaulting to the caster; fires the new heal trigger trio.
