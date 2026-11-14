@@ -1,5 +1,5 @@
 {
- "about": "Owner ranking of the skills, 2026-11-14 22:53 (docs/owner-input/skills-ranking-2026-11-14.xlsx, sheet Skills, column J). rank: 1, 1A, 2, 2A, 3..8, S, tags GOD / MAGIC (MAG) / EVO / KINGDOM / WEP, \"note\" = a note only, \"\" = blank (not important or a duplicate: cut). note = the owner text after the rank, brackets kept. written = the cell as typed. idea = an owner idea for a new skill (no key); noKey = another row without a key.",
+ "about": "Owner ranking of the skills, 2026-11-14 22:53 (docs/owner-input/skills-ranking-2026-11-14.xlsx, sheet Skills, column J). rank: 1, 1A, 2, 2A, 3..8, S, tags GOD / MAGIC (MAG) / EVO / KINGDOM / WEP, \"note\" = a note only, \"\" = blank (not important or a duplicate: cut). note = the owner text after the rank, brackets kept. written = the cell as typed. idea = an owner idea for a new skill (no key); noKey = another row without a key. pass2: the owner's second pass, column J \"II\" of docs/owner-input/skills-ranking-2026-11-14b.xlsx (11-14 23:26): 1, 2, 3 or blank. written2: column K where it changed from the first pass.",
  "skills": [
   {
    "name": "Absolute Zero",
@@ -9,7 +9,8 @@
    "written": "S",
    "delivery": "none",
    "category": "evergreen",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Acid",
@@ -19,7 +20,9 @@
    "written": "2.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "3",
+   "written2": "2"
   },
   {
    "name": "Almanac",
@@ -29,7 +32,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Almanac",
@@ -39,7 +44,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Ambush",
@@ -49,7 +55,9 @@
    "written": "1.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Amore",
@@ -59,7 +67,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Amplifier",
@@ -69,7 +78,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Anadromous",
@@ -79,7 +89,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": ""
   },
   {
    "name": "Anchor",
@@ -89,7 +101,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Anti-air",
@@ -99,7 +112,8 @@
    "written": null,
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Archer",
@@ -109,7 +123,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Archer look",
@@ -119,7 +134,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "select"
+   "type": "select",
+   "pass2": ""
   },
   {
    "name": "Armor",
@@ -129,7 +145,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Arrow",
@@ -139,7 +157,9 @@
    "written": "1.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Arrow Count",
@@ -149,7 +169,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Arrow – bleed",
@@ -159,7 +180,8 @@
    "written": "(Laceration / Laced)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Arrow – bramble",
@@ -169,7 +191,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Arrow – venom",
@@ -179,7 +202,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Arson",
@@ -189,7 +213,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Assault",
@@ -199,7 +224,8 @@
    "written": "2 (If it's attacking first)",
    "delivery": "melee",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Atheist",
@@ -209,7 +235,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Avalanche",
@@ -219,7 +246,8 @@
    "written": "S",
    "delivery": "ranged",
    "category": "evergreen",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Backstab",
@@ -229,7 +257,8 @@
    "written": null,
    "delivery": "melee",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Banana",
@@ -239,7 +268,9 @@
    "written": "6.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "6"
   },
   {
    "name": "Bananarang",
@@ -249,7 +280,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Bedrock",
@@ -259,7 +291,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Bedrock",
@@ -269,7 +303,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Berserk",
@@ -279,7 +314,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Beset",
@@ -289,7 +325,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Beset",
@@ -299,7 +337,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Bleed",
@@ -309,7 +348,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Blitz",
@@ -319,7 +360,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Blood Tithe",
@@ -329,7 +371,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Bloodlust",
@@ -339,7 +382,8 @@
    "written": null,
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Bloom",
@@ -349,7 +393,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Bloom",
@@ -359,7 +404,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": "1",
+   "written2": "2"
   },
   {
    "name": "Bloom When",
@@ -369,7 +416,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": ""
   },
   {
    "name": "Bludgeon",
@@ -379,7 +427,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "2"
   },
   {
    "name": "Bola",
@@ -389,7 +439,9 @@
    "written": "2.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "3",
+   "written2": "2"
   },
   {
    "name": "Bolster",
@@ -399,7 +451,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Boomerang",
@@ -409,7 +462,9 @@
    "written": "2.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "3",
+   "written2": "2"
   },
   {
    "name": "Breach",
@@ -419,7 +474,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Brittle",
@@ -429,7 +485,8 @@
    "written": "2 (Brittle should be the name of the status effect, but to make brittle - a new skill name)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Brood",
@@ -439,7 +496,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "2"
   },
   {
    "name": "Broodkeeper",
@@ -449,7 +508,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "2",
+   "written2": "5"
   },
   {
    "name": "Build",
@@ -459,7 +520,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": ""
   },
   {
    "name": "Bulldoze",
@@ -469,7 +531,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Bulwark",
@@ -479,7 +542,8 @@
    "written": "2 (Starts at 0/5 -> 0/8 at level 10)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Canopy Cover",
@@ -489,7 +553,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Carnage",
@@ -499,7 +564,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Carnage",
@@ -509,7 +576,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Carrion",
@@ -519,7 +587,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "3"
   },
   {
    "name": "Cast Darkness",
@@ -529,7 +599,8 @@
    "written": "S",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Chain Lightning",
@@ -539,7 +610,8 @@
    "written": "S (Then create a new skill called Bioelectric for normal purposes, as 1.)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Changeling",
@@ -549,7 +621,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Charge",
@@ -559,7 +632,8 @@
    "written": "(Move it to triggers instead)",
    "delivery": "none",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": ""
   },
   {
    "name": "Chilli",
@@ -569,7 +643,9 @@
    "written": "6.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "6"
   },
   {
    "name": "Chrysalis",
@@ -579,7 +655,8 @@
    "written": "EVO",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Cinder",
@@ -589,7 +666,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Cleave",
@@ -599,7 +677,9 @@
    "written": "1.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Coffee",
@@ -609,7 +689,9 @@
    "written": "6.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "6"
   },
   {
    "name": "Consecration",
@@ -619,7 +701,8 @@
    "written": "GOD",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Converge",
@@ -629,7 +712,8 @@
    "written": null,
    "delivery": "none",
    "category": "evergreen",
-   "type": "select"
+   "type": "select",
+   "pass2": ""
   },
   {
    "name": "Coppice",
@@ -639,7 +723,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Core Evil",
@@ -649,7 +734,8 @@
    "written": "GOD",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Corpsefeeder",
@@ -659,7 +745,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Corrode",
@@ -669,7 +757,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "2"
   },
   {
    "name": "Counterattack",
@@ -679,7 +769,8 @@
    "written": "3 (Counterattackers don't attack on their own. Unless there isn't an opposing enemy in its range, then it would attack the opposing bramble)",
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Cower",
@@ -689,7 +780,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "selectNumber"
+   "type": "selectNumber",
+   "pass2": ""
   },
   {
    "name": "Crab Claws",
@@ -699,7 +791,9 @@
    "written": "2.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "3",
+   "written2": "2"
   },
   {
    "name": "Creative",
@@ -709,7 +803,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Crepuscular",
@@ -719,7 +814,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": ""
   },
   {
    "name": "Crepuscular {Day} → {Night}",
@@ -729,7 +825,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant2"
+   "type": "grant2",
+   "pass2": ""
   },
   {
    "name": "Crit",
@@ -739,7 +836,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "2"
   },
   {
    "name": "Crystallise",
@@ -749,7 +848,8 @@
    "written": "EVO",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Cull",
@@ -759,7 +859,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "selectNumber"
+   "type": "selectNumber",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Cure",
@@ -769,7 +871,8 @@
    "written": "1 (Cure 1 only)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Darksight",
@@ -779,7 +882,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Daunt",
@@ -789,7 +894,8 @@
    "written": "2 (Instead daunt when attacking)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Deadly Poison",
@@ -799,7 +905,8 @@
    "written": "5 (S)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Decay",
@@ -809,7 +916,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Defiance",
@@ -819,7 +928,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "types"
+   "type": "types",
+   "pass2": ""
   },
   {
    "name": "Delivery",
@@ -829,7 +939,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Delivery resource",
@@ -839,7 +950,8 @@
    "written": "1 (Just call it Delivery)",
    "delivery": "none",
    "category": "passive",
-   "type": "select"
+   "type": "select",
+   "pass2": ""
   },
   {
    "name": "Delivery, every turn",
@@ -849,7 +961,9 @@
    "written": "1 (The aciton version of this is just called Deliver)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "1 (The aciton version of this is just called Every Turn, Deliver)"
   },
   {
    "name": "Desecrate",
@@ -859,7 +973,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Desecration",
@@ -869,7 +984,8 @@
    "written": "GOD",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Detonate",
@@ -879,7 +995,8 @@
    "written": "5 (Means payoff for a Rating-1 mechanic + it's not interesting enough to be a 3)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Devour",
@@ -889,7 +1006,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "",
+   "written2": "2"
   },
   {
    "name": "Dictator",
@@ -899,7 +1018,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Dirge",
@@ -909,7 +1029,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Dirge",
@@ -919,7 +1041,8 @@
    "written": "(Explicit remove, and similar remove all other duplicates)",
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Disarm",
@@ -929,7 +1052,8 @@
    "written": "WEP",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Dismantle",
@@ -939,7 +1063,8 @@
    "written": "WEP",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Diurnal",
@@ -949,7 +1074,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Diurnal",
@@ -959,7 +1086,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Dive",
@@ -969,7 +1097,9 @@
    "written": "3.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Double Time",
@@ -979,7 +1109,8 @@
    "written": null,
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Dragon Lightning",
@@ -989,7 +1120,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Driftwood",
@@ -999,7 +1131,8 @@
    "written": "6 (Similar to 5, but worse)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Drought",
@@ -1009,7 +1142,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Drought",
@@ -1019,7 +1154,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Drunk",
@@ -1029,7 +1165,9 @@
    "written": "6.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "6"
   },
   {
    "name": "Dry",
@@ -1039,7 +1177,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Durian",
@@ -1049,7 +1189,9 @@
    "written": "6.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "6"
   },
   {
    "name": "Dynamite",
@@ -1059,7 +1201,8 @@
    "written": "1A (Same as 1, but mainly to represent the 'civilised society' animals)",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": ""
   },
   {
    "name": "Earthquake",
@@ -1069,7 +1212,8 @@
    "written": "S",
    "delivery": "ranged",
    "category": "evergreen",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Electricity",
@@ -1079,7 +1223,8 @@
    "written": "1 (To me, Electricity and Electric type attacks count as 1 skill. Same as Venom type and Venomous.)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Encore",
@@ -1089,7 +1234,8 @@
    "written": null,
    "delivery": "melee",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": ""
   },
   {
    "name": "Esprit",
@@ -1099,7 +1245,8 @@
    "written": "2A",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": ""
   },
   {
    "name": "Evasive",
@@ -1109,7 +1256,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Evolute",
@@ -1119,7 +1268,8 @@
    "written": "EVO",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Evolute Alpha",
@@ -1129,7 +1279,8 @@
    "written": "EVO",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Evolute Omega",
@@ -1139,7 +1290,8 @@
    "written": "EVO",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Executioner",
@@ -1149,7 +1301,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Exhaust",
@@ -1159,7 +1313,8 @@
    "written": "6 (Exhaust, exploit and expose are similar. Giving tactical depth.)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Exploit",
@@ -1169,7 +1324,9 @@
    "written": "6.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "3",
+   "written2": "6"
   },
   {
    "name": "Expose",
@@ -1179,7 +1336,9 @@
    "written": "6.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "3",
+   "written2": "6"
   },
   {
    "name": "Fast Forward",
@@ -1189,7 +1348,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Feeble",
@@ -1199,7 +1359,9 @@
    "written": "6.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "2",
+   "written2": "6"
   },
   {
    "name": "Felling",
@@ -1209,7 +1371,8 @@
    "written": "(Just use On kill -> Deliver (Lumber))",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Fencing",
@@ -1219,7 +1382,8 @@
    "written": "2A",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Field Breaker",
@@ -1229,7 +1393,8 @@
    "written": null,
    "delivery": "none",
    "category": "evergreen",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Fire Arrow",
@@ -1239,7 +1404,8 @@
    "written": "(Same as above, Just use Arrow (Flaming))",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Fire Arrow – bleed",
@@ -1249,7 +1415,8 @@
    "written": "(Explicit remove)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Fire Arrow – bramble",
@@ -1259,7 +1426,8 @@
    "written": "(Explicit remove)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Fire Arrow – venom",
@@ -1269,7 +1437,8 @@
    "written": "(Explicit remove)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Fire Bolt – bleed",
@@ -1279,7 +1448,8 @@
    "written": "(Explicit remove)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Fire Bolt – bramble",
@@ -1289,7 +1459,8 @@
    "written": "(Explicit remove)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Fire Bolt – venom",
@@ -1299,7 +1470,8 @@
    "written": "(Explicit remove)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Fireball",
@@ -1309,7 +1481,8 @@
    "written": "S",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Fletcher",
@@ -1319,7 +1492,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "2",
+   "written2": "5"
   },
   {
    "name": "Flying",
@@ -1329,7 +1504,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Foe's Full Hand",
@@ -1339,7 +1516,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Foe's Lean",
@@ -1349,7 +1527,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Foe's Plenty",
@@ -1359,7 +1538,8 @@
    "written": "4 (\"Against all odds\")",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Foe's Plenty",
@@ -1369,7 +1549,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Foe's Scarcity",
@@ -1379,7 +1560,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Foe's Scarcity",
@@ -1389,7 +1571,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Fog",
@@ -1399,7 +1582,8 @@
    "written": "4 (The thing after the colon is the default. However, Fog should be a field tracker, not the skill name -> field tracker are like sun and tide. Field effects grant field effects. It would just write \"Fog\" in a pill)",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Fog",
@@ -1409,7 +1593,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Foraging",
@@ -1419,7 +1604,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Forged",
@@ -1429,7 +1616,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Forged",
@@ -1439,7 +1628,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Fork",
@@ -1449,7 +1639,9 @@
    "written": "6.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "3",
+   "written2": "6"
   },
   {
    "name": "Formation",
@@ -1459,7 +1651,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Fortify",
@@ -1469,7 +1662,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": ""
   },
   {
    "name": "Fortify (Armor 1), while it lives",
@@ -1479,7 +1673,8 @@
    "written": "3 (Fortify: +1 Armor)",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Fragile",
@@ -1489,7 +1684,8 @@
    "written": "(like Brittle, however this is more 'generic' in flavour - better)",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Frenzy",
@@ -1499,7 +1695,9 @@
    "written": "7.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Friction",
@@ -1509,7 +1707,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Frost",
@@ -1519,7 +1719,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Frost",
@@ -1529,7 +1731,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Frostbite",
@@ -1539,7 +1742,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Full Hand",
@@ -1549,7 +1754,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Full Moon",
@@ -1559,7 +1766,8 @@
    "written": "4 (\"Gains '+X/X' upon full moon)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Full Moon",
@@ -1569,7 +1777,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Gash",
@@ -1579,7 +1788,8 @@
    "written": null,
    "delivery": "melee",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Ghost",
@@ -1589,7 +1799,8 @@
    "written": "MAG",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Glean",
@@ -1599,7 +1810,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Gorge",
@@ -1609,7 +1821,8 @@
    "written": null,
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Grant",
@@ -1619,7 +1832,8 @@
    "written": "(Convert to action: Grant {who} {what})",
    "delivery": "none",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": ""
   },
   {
    "name": "Growth",
@@ -1629,7 +1843,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Guardian",
@@ -1639,7 +1854,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Harbinger",
@@ -1649,7 +1866,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "2"
   },
   {
    "name": "Harvest",
@@ -1659,7 +1878,8 @@
    "written": null,
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Haste",
@@ -1669,7 +1889,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Hatchling",
@@ -1679,7 +1900,8 @@
    "written": "EVO",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Healing",
@@ -1689,7 +1911,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Heat",
@@ -1699,7 +1922,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Heat",
@@ -1709,7 +1934,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Heavy Metal",
@@ -1719,7 +1945,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Helmet",
@@ -1729,7 +1956,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "2",
+   "written2": "5"
   },
   {
    "name": "Hemorrhage",
@@ -1739,7 +1968,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Herald",
@@ -1749,7 +1980,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "2",
+   "written2": "7"
   },
   {
    "name": "Herbalist",
@@ -1759,7 +1992,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "2",
+   "written2": "5"
   },
   {
    "name": "Hibernate",
@@ -1769,7 +2004,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Hive Mind",
@@ -1779,7 +2016,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Hoard",
@@ -1789,7 +2027,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Hydra",
@@ -1799,7 +2039,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Hype",
@@ -1809,7 +2050,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Ice",
@@ -1819,7 +2062,9 @@
    "written": "3.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Ice Arrow",
@@ -1829,7 +2074,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Ichor",
@@ -1839,7 +2085,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Illuminate",
@@ -1849,7 +2097,8 @@
    "written": "1 (We need to find an alternate use. Don't give diurnal units anything. it isn't the sun!)",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Immolation",
@@ -1859,7 +2108,8 @@
    "written": "MAGIC",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Immortal",
@@ -1869,7 +2119,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Immunity",
@@ -1879,7 +2130,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Inherent Darkness",
@@ -1889,7 +2142,8 @@
    "written": "GOD",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Injured",
@@ -1899,7 +2153,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Inspiring",
@@ -1909,7 +2164,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "2"
   },
   {
    "name": "Invincible",
@@ -1919,7 +2176,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Invisible",
@@ -1929,7 +2187,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Iron-will",
@@ -1939,7 +2198,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Irradiated",
@@ -1949,7 +2210,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Isolation",
@@ -1959,7 +2221,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Keen Sense",
@@ -1969,7 +2233,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "2",
+   "written2": "2"
   },
   {
    "name": "Kin Rally",
@@ -1979,7 +2245,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "King",
@@ -1989,7 +2256,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "King",
@@ -1999,7 +2267,8 @@
    "written": "KINGDOM",
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "King Slayer",
@@ -2009,7 +2278,8 @@
    "written": "KINGDOM",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Kinship",
@@ -2019,7 +2289,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "typeTwoNumber"
+   "type": "typeTwoNumber",
+   "pass2": ""
   },
   {
    "name": "Landslide",
@@ -2029,7 +2300,9 @@
    "written": "3.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Lantern",
@@ -2039,7 +2312,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Lasso",
@@ -2049,7 +2323,9 @@
    "written": "7.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Last Stand",
@@ -2059,7 +2335,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "2",
+   "written2": "4"
   },
   {
    "name": "Last Stand",
@@ -2069,7 +2347,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Lean",
@@ -2079,7 +2358,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Leech",
@@ -2089,7 +2370,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Liege",
@@ -2099,7 +2382,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Liege",
@@ -2109,7 +2393,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Lightning",
@@ -2119,7 +2404,8 @@
    "written": "(See Electricity)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Lingering",
@@ -2129,7 +2415,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Lone Wolf",
@@ -2139,7 +2426,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "2",
+   "written2": "4"
   },
   {
    "name": "Loyal",
@@ -2149,7 +2438,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Loyal",
@@ -2159,7 +2450,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Lumber Feast",
@@ -2169,7 +2461,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Lumberjack",
@@ -2179,7 +2472,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "R"
   },
   {
    "name": "Mach",
@@ -2189,7 +2484,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Magic",
@@ -2199,7 +2495,8 @@
    "written": "MAGIC",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Magic Armor",
@@ -2209,7 +2506,8 @@
    "written": "MAGIC",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Majesty",
@@ -2219,7 +2517,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Meiosis",
@@ -2229,7 +2528,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "3"
   },
   {
    "name": "Meld",
@@ -2239,7 +2540,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": ""
   },
   {
    "name": "Meteor",
@@ -2249,7 +2551,8 @@
    "written": "S",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Midas Touch",
@@ -2259,7 +2562,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Mighty",
@@ -2269,7 +2573,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "3"
   },
   {
    "name": "Milling",
@@ -2279,7 +2585,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Mimic",
@@ -2289,7 +2596,8 @@
    "written": "5 (Param 1: 3 types: Copy Attack, Copy Defence, Copy N Skills of Param 2 <Target>)",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Molting",
@@ -2299,7 +2607,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "3",
+   "written2": "7"
   },
   {
    "name": "Momentum",
@@ -2309,7 +2619,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "2",
+   "written2": "3"
   },
   {
    "name": "Moonborn",
@@ -2319,7 +2631,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Moonpull",
@@ -2329,7 +2643,8 @@
    "written": null,
    "delivery": "none",
    "category": "evergreen",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Mountain Climber",
@@ -2339,7 +2654,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Mulligan",
@@ -2349,7 +2666,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Muster",
@@ -2359,7 +2677,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Muster",
@@ -2369,7 +2689,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Natural Leader",
@@ -2379,7 +2700,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Nature's Force",
@@ -2389,7 +2712,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Night-blind",
@@ -2399,7 +2723,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Nocturnal",
@@ -2409,7 +2734,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Nocturnal",
@@ -2419,7 +2746,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Nova",
@@ -2429,7 +2757,8 @@
    "written": "MAGIC",
    "delivery": "ranged",
    "category": "evergreen",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Nullify",
@@ -2439,7 +2768,8 @@
    "written": "MAGIC",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Nursing",
@@ -2449,7 +2779,8 @@
    "written": "1 (I think we'll use this instead of \"Heal\". And the action of Heal will be called \"Nurse\".)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Octolash",
@@ -2459,7 +2790,9 @@
    "written": "7.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "3",
+   "written2": "7"
   },
   {
    "name": "Offspring",
@@ -2469,7 +2802,8 @@
    "written": "3 (Uses 1 additional lumber - otherwise no offspring)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Onslaught",
@@ -2479,7 +2813,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Onslaught",
@@ -2489,7 +2824,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Pack",
@@ -2499,7 +2835,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "2"
   },
   {
    "name": "Pack Howl",
@@ -2509,7 +2847,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Pack Leader",
@@ -2519,7 +2858,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "2"
   },
   {
    "name": "Parasite",
@@ -2529,7 +2870,9 @@
    "written": "1.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Pearl",
@@ -2539,7 +2882,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Pearl Bed",
@@ -2549,7 +2894,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Penance",
@@ -2559,7 +2905,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Perforate",
@@ -2569,7 +2916,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Petrify",
@@ -2579,7 +2928,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Pickpocket",
@@ -2589,7 +2940,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Pierce",
@@ -2599,7 +2952,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "2"
   },
   {
    "name": "Pitchfork",
@@ -2609,7 +2964,9 @@
    "written": "5.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "2",
+   "written2": "5"
   },
   {
    "name": "Plenty",
@@ -2619,7 +2976,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Plenty",
@@ -2629,7 +2988,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Poison Barbs",
@@ -2639,7 +2999,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "2"
   },
   {
    "name": "Poison Gas",
@@ -2649,7 +3011,8 @@
    "written": "S",
    "delivery": "none",
    "category": "evergreen",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Poisonous",
@@ -2659,7 +3022,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Pounce",
@@ -2669,7 +3033,9 @@
    "written": "1.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "selectNumber"
+   "type": "selectNumber",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Prayer",
@@ -2679,7 +3045,8 @@
    "written": "GOD",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Prayer Ward",
@@ -2689,7 +3056,8 @@
    "written": "GOD",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Predator",
@@ -2699,7 +3067,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Prey",
@@ -2709,7 +3079,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Primed",
@@ -2719,7 +3091,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Proliferate",
@@ -2729,7 +3102,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Prospector",
@@ -2739,7 +3113,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Pry",
@@ -2749,7 +3125,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Psychic",
@@ -2759,7 +3136,8 @@
    "written": "MAGIC",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Pulse",
@@ -2769,7 +3147,8 @@
    "written": "S",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Pulverise",
@@ -2779,7 +3158,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Puncture",
@@ -2789,7 +3170,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Purblind",
@@ -2799,7 +3182,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Quarry",
@@ -2809,7 +3193,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Quick",
@@ -2819,7 +3204,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Rabid",
@@ -2829,7 +3215,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Rage",
@@ -2839,7 +3226,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Rage",
@@ -2849,7 +3238,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Rage (N%)",
@@ -2859,7 +3249,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Rain",
@@ -2869,7 +3260,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Rain",
@@ -2879,7 +3272,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Rainmaker",
@@ -2889,7 +3283,8 @@
    "written": "S",
    "delivery": "none",
    "category": "evergreen",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Rainrunner",
@@ -2899,7 +3294,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Rainrunner",
@@ -2909,7 +3305,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Rally",
@@ -2919,7 +3316,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Rampart",
@@ -2929,7 +3328,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Reach",
@@ -2939,7 +3340,9 @@
    "written": "3.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Rebuild",
@@ -2949,7 +3352,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "7"
   },
   {
    "name": "Recoil",
@@ -2959,7 +3364,9 @@
    "written": "2.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "2"
   },
   {
    "name": "Reflect",
@@ -2969,7 +3376,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Regeneration",
@@ -2979,7 +3388,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "7"
   },
   {
    "name": "Relic",
@@ -2989,7 +3400,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Relict",
@@ -2999,7 +3411,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Reload",
@@ -3009,7 +3422,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Remember",
@@ -3019,7 +3433,8 @@
    "written": "GOD",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Repair",
@@ -3029,7 +3444,8 @@
    "written": "(Same as Rebuild but for structures. Not sure about this one)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Requiem",
@@ -3039,7 +3455,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Requiem",
@@ -3049,7 +3467,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Restless",
@@ -3059,7 +3478,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Retribution",
@@ -3069,7 +3489,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Revive",
@@ -3079,7 +3500,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Riled",
@@ -3089,7 +3511,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Riled",
@@ -3099,7 +3523,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Ritual",
@@ -3109,7 +3534,8 @@
    "written": "GOD",
    "delivery": "none",
    "category": "passive",
-   "type": "ritual"
+   "type": "ritual",
+   "pass2": ""
   },
   {
    "name": "Rock-solid",
@@ -3119,7 +3545,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Rocket",
@@ -3129,7 +3557,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Rupture",
@@ -3139,7 +3568,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Sabotage",
@@ -3149,7 +3580,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Sacrifice",
@@ -3159,7 +3592,8 @@
    "written": "GOD",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Salt",
@@ -3169,7 +3603,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Salt",
@@ -3179,7 +3615,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Salvage",
@@ -3189,7 +3626,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Scarcity",
@@ -3199,7 +3637,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Scarcity",
@@ -3209,7 +3649,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Scare",
@@ -3219,7 +3660,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "2",
+   "written2": "5"
   },
   {
    "name": "Scatterbrained",
@@ -3229,7 +3672,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Scavenge",
@@ -3239,7 +3684,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Season",
@@ -3249,7 +3696,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "select"
+   "type": "select",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Season",
@@ -3259,7 +3708,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Sentry",
@@ -3269,7 +3719,9 @@
    "written": "(Turn this into a trigger. So Sentry -> {Heal 2 Random Ally} e.g. (Btw, never heal ally at max health unless only option)",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": ""
   },
   {
    "name": "Sequestration",
@@ -3279,7 +3731,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Shade",
@@ -3289,7 +3742,8 @@
    "written": "MAGIC",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Shadow",
@@ -3299,7 +3753,8 @@
    "written": "MAGIC",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Shapeshifter",
@@ -3309,7 +3764,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Shatter",
@@ -3319,7 +3775,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Shedding",
@@ -3329,7 +3786,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Shell",
@@ -3339,7 +3797,8 @@
    "written": "(Same as Turtle)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Shield",
@@ -3349,7 +3808,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Shield Call",
@@ -3359,7 +3820,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Shieldwall",
@@ -3369,7 +3831,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Shore Up",
@@ -3379,7 +3842,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Siege",
@@ -3389,7 +3853,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "5"
   },
   {
    "name": "Siege",
@@ -3399,7 +3865,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Silence",
@@ -3409,7 +3876,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Skitter",
@@ -3419,7 +3888,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Skyfall",
@@ -3429,7 +3899,8 @@
    "written": "S",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Slash & Burn",
@@ -3439,7 +3910,8 @@
    "written": "S",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Slow",
@@ -3449,7 +3921,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Smelter",
@@ -3459,7 +3933,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "R"
   },
   {
    "name": "Smoke Bomb",
@@ -3469,7 +3945,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "3",
+   "written2": "3"
   },
   {
    "name": "Snipe",
@@ -3479,7 +3957,9 @@
    "written": "3.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "3",
+   "written2": "3"
   },
   {
    "name": "Sociable",
@@ -3489,7 +3969,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Socket",
@@ -3499,7 +3981,8 @@
    "written": "MAGIC",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Sonar",
@@ -3509,7 +3992,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Spark",
@@ -3519,7 +4003,9 @@
    "written": "7.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Spawner",
@@ -3529,7 +4015,8 @@
    "written": "7 (Maybe better to use this instead of Every turn -> {Spawn} trigger-action pairs)",
    "delivery": "none",
    "category": "passive",
-   "type": "cardCount"
+   "type": "cardCount",
+   "pass2": ""
   },
   {
    "name": "Speed",
@@ -3539,7 +4026,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Spellward",
@@ -3549,7 +4037,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Spiteful",
@@ -3559,7 +4048,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Spitfire",
@@ -3569,7 +4059,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Spoils",
@@ -3579,7 +4070,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Spotter",
@@ -3589,7 +4082,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Sprout",
@@ -3599,7 +4094,9 @@
    "written": "8.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "8"
   },
   {
    "name": "Stampede",
@@ -3609,7 +4106,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "2",
+   "written2": "3"
   },
   {
    "name": "Stealth",
@@ -3619,7 +4118,9 @@
    "written": "3.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Stem",
@@ -3629,7 +4130,8 @@
    "written": "EVO",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Stem",
@@ -3639,7 +4141,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Stench",
@@ -3649,7 +4152,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Stockpile",
@@ -3659,7 +4164,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Stonecutter",
@@ -3669,7 +4175,8 @@
    "written": "7 (But maybe instead it's every turn, turn 2 lumber into 1 stone)",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Stop, Drop and Roll",
@@ -3679,7 +4186,8 @@
    "written": "",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Storm",
@@ -3689,7 +4197,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Storm",
@@ -3699,7 +4209,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Strangle",
@@ -3709,7 +4220,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "3"
   },
   {
    "name": "Stun",
@@ -3719,7 +4232,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Sturdy",
@@ -3729,7 +4244,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "5"
   },
   {
    "name": "Stymie",
@@ -3739,7 +4256,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Sun-shy",
@@ -3749,7 +4267,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Sunder",
@@ -3759,7 +4278,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Supreme",
@@ -3769,7 +4289,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Supreme Tide",
@@ -3779,7 +4300,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Swarm",
@@ -3789,7 +4311,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "types"
+   "type": "types",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Swift",
@@ -3799,7 +4323,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Swimmer",
@@ -3809,7 +4335,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "select"
+   "type": "select",
+   "pass2": ""
   },
   {
    "name": "Swimmer Skills",
@@ -3819,7 +4346,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": ""
   },
   {
    "name": "Swipe",
@@ -3829,7 +4357,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Tally",
@@ -3839,7 +4368,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Tally",
@@ -3849,7 +4380,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Tangleweed",
@@ -3859,7 +4391,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Taunt",
@@ -3869,7 +4402,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Thorns",
@@ -3879,7 +4414,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Throng",
@@ -3889,7 +4426,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Throng",
@@ -3899,7 +4438,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Tide",
@@ -3909,7 +4449,9 @@
    "written": "1.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Tide",
@@ -3919,7 +4461,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant2"
+   "type": "grant2",
+   "pass2": ""
   },
   {
    "name": "Timber",
@@ -3929,7 +4472,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Timbered",
@@ -3939,7 +4484,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Timbered",
@@ -3949,7 +4496,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Tornado",
@@ -3959,7 +4507,8 @@
    "written": "S",
    "delivery": "ranged",
    "category": "evergreen",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Toxin",
@@ -3969,7 +4518,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Transform",
@@ -3979,7 +4529,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "transform"
+   "type": "transform",
+   "pass2": ""
   },
   {
    "name": "Trap",
@@ -3989,7 +4540,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "3"
   },
   {
    "name": "Tribe Delivery",
@@ -3999,7 +4552,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": ""
   },
   {
    "name": "Tribe Delivery resource",
@@ -4009,7 +4563,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "select"
+   "type": "select",
+   "pass2": ""
   },
   {
    "name": "Tribute",
@@ -4019,7 +4574,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Trident",
@@ -4029,7 +4585,9 @@
    "written": "7.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "7"
   },
   {
    "name": "True Sight",
@@ -4039,7 +4597,8 @@
    "written": "MAGIC",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "True Strike",
@@ -4049,7 +4608,9 @@
    "written": "7.0",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Tsunami",
@@ -4059,7 +4620,8 @@
    "written": "S",
    "delivery": "ranged",
    "category": "evergreen",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Twin",
@@ -4069,7 +4631,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Twin Shot",
@@ -4079,7 +4642,9 @@
    "written": "2.0",
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "2"
   },
   {
    "name": "Twin Strike",
@@ -4089,7 +4654,9 @@
    "written": "1.0",
    "delivery": "melee",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": "1",
+   "written2": "1"
   },
   {
    "name": "Unfortify",
@@ -4099,7 +4666,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "text"
+   "type": "text",
+   "pass2": ""
   },
   {
    "name": "Usurper",
@@ -4109,7 +4677,9 @@
    "written": "4.0",
    "delivery": "none",
    "category": "passive",
-   "type": "twoNumber"
+   "type": "twoNumber",
+   "pass2": "",
+   "written2": "4"
   },
   {
    "name": "Usurper",
@@ -4119,7 +4689,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "grant"
+   "type": "grant",
+   "pass2": ""
   },
   {
    "name": "Vanguard",
@@ -4129,7 +4700,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Venom Master",
@@ -4139,7 +4711,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Venom Spit",
@@ -4149,7 +4722,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Venomous",
@@ -4159,7 +4733,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Venomous (old)",
@@ -4169,7 +4744,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Volley",
@@ -4179,7 +4755,8 @@
    "written": "S (Same as arrow but hits all opposing units, is also an action.",
    "delivery": "ranged",
    "category": "evergreen",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Wakeful",
@@ -4189,7 +4766,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "War Banner",
@@ -4199,7 +4777,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Warcry",
@@ -4209,7 +4788,8 @@
    "written": "5 (Maybe make this permanent0",
    "delivery": "none",
    "category": "evergreen",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Wave",
@@ -4219,7 +4799,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "selectNumber"
+   "type": "selectNumber",
+   "pass2": "",
+   "written2": "3"
   },
   {
    "name": "Weaken",
@@ -4229,7 +4811,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "5"
   },
   {
    "name": "Weapon Master",
@@ -4239,7 +4823,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Web",
@@ -4249,7 +4834,9 @@
    "written": "3.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "1",
+   "written2": "3"
   },
   {
    "name": "Well Fed",
@@ -4259,7 +4846,8 @@
    "written": null,
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": ""
   },
   {
    "name": "Wilting",
@@ -4269,7 +4857,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Wither",
@@ -4279,7 +4869,9 @@
    "written": "5.0",
    "delivery": "none",
    "category": "passive",
-   "type": "number"
+   "type": "number",
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Worship",
@@ -4289,7 +4881,8 @@
    "written": "GOD",
    "delivery": "none",
    "category": "passive",
-   "type": "boolean"
+   "type": "boolean",
+   "pass2": ""
   },
   {
    "name": "Deal damage (custom action)",
@@ -4299,7 +4892,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "action",
-   "type": ""
+   "type": "",
+   "pass2": ""
   },
   {
    "name": "Missile (custom action)",
@@ -4309,7 +4903,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "action",
-   "type": ""
+   "type": "",
+   "pass2": ""
   },
   {
    "name": "Position Beam (custom action)",
@@ -4319,7 +4914,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "action",
-   "type": ""
+   "type": "",
+   "pass2": ""
   },
   {
    "name": "Fire on hit (custom action)",
@@ -4329,7 +4925,8 @@
    "written": null,
    "delivery": "melee",
    "category": "action",
-   "type": ""
+   "type": "",
+   "pass2": ""
   },
   {
    "name": "Barrage (custom action)",
@@ -4339,7 +4936,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "action",
-   "type": ""
+   "type": "",
+   "pass2": ""
   },
   {
    "name": "Venom Tick (custom action)",
@@ -4349,7 +4947,8 @@
    "written": null,
    "delivery": "none",
    "category": "action",
-   "type": ""
+   "type": "",
+   "pass2": ""
   },
   {
    "name": "Pulse (custom action)",
@@ -4359,7 +4958,8 @@
    "written": null,
    "delivery": "none",
    "category": "action",
-   "type": ""
+   "type": "",
+   "pass2": ""
   },
   {
    "name": "Arrow (custom action)",
@@ -4369,7 +4969,8 @@
    "written": null,
    "delivery": "ranged",
    "category": "action",
-   "type": ""
+   "type": "",
+   "pass2": ""
   },
   {
    "name": "???",
@@ -4380,7 +4981,8 @@
    "delivery": "none",
    "category": "trigger",
    "type": "",
-   "idea": true
+   "idea": true,
+   "pass2": ""
   },
   {
    "name": "Buff",
@@ -4391,7 +4993,8 @@
    "delivery": "",
    "category": "action",
    "type": "",
-   "idea": true
+   "idea": true,
+   "pass2": ""
   },
   {
    "name": "Impact (Buff on Play)",
@@ -4402,7 +5005,8 @@
    "delivery": "",
    "category": "evergreen",
    "type": "",
-   "noKey": true
+   "noKey": true,
+   "pass2": ""
   },
   {
    "name": "Quake",
@@ -4413,7 +5017,9 @@
    "delivery": "",
    "category": "evergreen",
    "type": "",
-   "noKey": true
+   "noKey": true,
+   "pass2": "",
+   "written2": "7"
   },
   {
    "name": "Bulldoze",
@@ -4424,7 +5030,9 @@
    "delivery": "",
    "category": "",
    "type": "",
-   "noKey": true
+   "noKey": true,
+   "pass2": "",
+   "written2": "5"
   },
   {
    "name": "Slayer",
@@ -4435,7 +5043,8 @@
    "delivery": "",
    "category": "",
    "type": "",
-   "noKey": true
+   "noKey": true,
+   "pass2": ""
   },
   {
    "name": "Havoc (counter)",
@@ -4446,7 +5055,8 @@
    "delivery": "",
    "category": "",
    "type": "",
-   "idea": true
+   "idea": true,
+   "pass2": ""
   },
   {
    "name": "Industry",
@@ -4457,7 +5067,8 @@
    "delivery": "",
    "category": "",
    "type": "",
-   "idea": true
+   "idea": true,
+   "pass2": ""
   },
   {
    "name": "Butcher/Onslaught/Rampage/Ferocity",
@@ -4468,7 +5079,8 @@
    "delivery": "",
    "category": "",
    "type": "",
-   "noKey": true
+   "noKey": true,
+   "pass2": ""
   },
   {
    "name": "Assiduous",
@@ -4479,7 +5091,17 @@
    "delivery": "",
    "category": "",
    "type": "",
-   "idea": true
+   "idea": true,
+   "pass2": ""
+  },
+  {
+   "name": "Adrenaline",
+   "key": null,
+   "rank": "5",
+   "note": "",
+   "written": "5",
+   "pass2": "",
+   "addedIn": "11-14b"
   }
  ]
 }

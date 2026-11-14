@@ -5,9 +5,9 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 ## Waiting on you
 
 **SKR1-1. Which named skills each map introduces** · Decide · Skills · asked 2026-11-14
-- From your ranking: every rank-1 skill placed on Maps 0-11 and 13, rank 2 and 3 only where the theme fits. 4 new skills on Maps 0-2, 2-3 on Maps 3-12, 0-2 after; 47 in all. Poison is assumed kept (your Electricity note). Table: docs/skill-intro-proposal-2026-11-14.md.
-  - a) This split (47 skills)
-  - b) The leaner split (about 35: no rank 3s, no Daunt, Pack, Brittle)
+- From your second pass (column J): all 43 rank 1s and 11 of the 13 rank 2s on Maps 0-20; 3-4 new skills on Maps 0-10, 1-2 on Maps 11-20; 54 in all. Helmet, Pitchfork and the rank 3s wait for later maps or one-offs. Cure, Nursing, Delivery, Electricity and Illuminate are treated as actions or damage types, not named skills. Table: docs/skill-intro-proposal-2026-11-14.md.
+  - a) This split (54 skills)
+  - b) Rank 1 only on Maps 0-20 (43)
   - c) Change it (say which)
 - **Default:** a
 

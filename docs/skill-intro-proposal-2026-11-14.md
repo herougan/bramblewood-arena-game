@@ -1,35 +1,32 @@
-# Named skills by map, Maps 0-20 (proposal, 2026-11-14)
+# Named skills by map, Maps 0-20 (proposal v2, 2026-11-14 23:30)
 
-From the owner's ranking (docs/skill-ranking.md) and his rule (11-14 23:04): 0-4 new skills per map, advanced maps 0-2. Every rank-1 skill is placed; rank 2 and 3 only where a map's theme calls for it. "Now" = the earliest map a live card with it is obtainable today.
+From the owner's second pass (column J "II", docs/skill-ranking.md) and his rule (11-14 23:04): 0-4 new skills per map, advanced maps (11-20) 0-2. All 43 of pass-2 rank 1 are placed; 11 of the 13 rank 2s; the rank 3s wait. "Now" = the earliest map a live card with it is obtainable today.
 
 | Map | New skills | Why here | Now |
 |---|---|---|---|
 | 0 Bramblewood Outskirts | Flying, Armor, Arrow, Swarm | the four basics: over, block, shoot, many | m0 |
-| 1 Thistlewood | Thorns, Guardian, Pounce, Bleed | thistles: thorns and bleeding; first protector and first striker | Thorns m7, rest m1 |
-| 2 Pebble Beach | Tide, Shield, Crab Claws (2), Delivery | the shore: tide, shells, crabs; beachcombers bring resources | Tide m0, Delivery: renamed |
-| 3 Gannet Cliffs | Dive (3), Natural Leader, Inspiring (2) | seabird colonies: diving, leaders, rallying | Leader m2, Inspiring m0 |
-| 4 Sunken Hollow | Diurnal, Nocturnal, Ambush | day and night arrive; things lurk in the hollow | Diurnal m1, Nocturnal m5, Ambush m0 |
-| 5 Gatorback Swamp | Cleave, Leech, Poison* | gator tail sweeps, leeches, swamp venom | m5 |
-| 6 Sable Swampmire | Evasive, Cure | marsh dodgers; swamp herbs | Evasive m5 |
-| 7 The Morel Hollow | Foraging, Bloom (2), Parasite | mushrooms: foraging, spores, cordyceps | Parasite m7 |
-| 8 Caves & Alcoves | Darksight, Illuminate, Keen Sense (2) | dark caves, glow-worms, bats | Illuminate m5 |
-| 9 The Kelp Mangroves | Nursing, Brood (2) | mangroves are nurseries | Brood m7 |
-| 10 Coral Current | Electricity, Pierce (2) | electric rays, urchin and needlefish spines | Pierce m5 |
-| 11 Eyrie Heights | Twin Strike, Swift | raptors: two talons, speed | Twin Strike m1 |
-| 12 The Briar Maze | Trap (3), Stealth (3) | a maze of snares and hiders | Stealth m5 |
-| 13 The Redwood Deep | Corrode | rot in the old wood | m13 |
-| 14 Savanna Reaches | Pack Leader (2), Stampede (3) | herds and their leaders | m14-16 |
-| 15 The Long Grass | Daunt (2) | a roar in the grass | m6 |
-| 16 The Pinewood Taiga | Rage (3) | bears | m7 |
-| 17 Wolfsbane Tundra | Pack (2) | wolves | none yet |
-| 18 The Glass Dunes | Dry (3), Poison Barbs (2) | desert, scorpions | m14, m8 |
-| 19 Ashen Spurn | Brittle (2) | cooled obsidian | none yet |
-| 20 The Sundered Peak | Landslide (3) | the mountain falls | none yet |
+| 1 Thistlewood | Thorns, Guardian, Pounce, Bleed | thistles: thorns and bleeding; first protector and first striker | Thorns m7 |
+| 2 Pebble Beach | Tide, Shield, Pierce, Twin Strike | the shore: tide, shells, gull beaks that pierce and peck twice | Pierce m5, Shield none |
+| 3 Gannet Cliffs | Natural Leader, Inspiring, Swift | seabird colonies: leaders, rallying, fast divers | Leader m2, Inspiring m0 |
+| 4 Sunken Hollow | Diurnal, Nocturnal, Ambush, Trap | day and night arrive; things lurk and snare in the hollow | Diurnal m1, Nocturnal m5, Trap m18 |
+| 5 Gatorback Swamp | Cleave, Leech, Strangle / Constrict, Regeneration | gator tail sweeps, leeches, constrictors, newts | m5 |
+| 6 Sable Swampmire | Evasive, Poison Barbs, Weaken | marsh dodgers, toxic frogs, sapping mire | Evasive m5, Barbs m8 |
+| 7 The Morel Hollow | Foraging, Bloom, Parasite, Meiosis | mushrooms: foraging, growth, cordyceps, splitting spores | Bloom, Parasite, Meiosis m7 |
+| 8 Caves & Alcoves | Darksight, Web, Keen Sense (2) | dark caves, cave spiders, bats | Web m5, Keen Sense m7 |
+| 9 The Kelp Mangroves | Twin Shot, Broodkeeper (2) | archerfish; mangroves are nurseries | Twin Shot m14 |
+| 10 Coral Current | Trident, Corrode, Recoil | three-pronged reef hunters, stinging coral, the mantis shrimp's punch | Corrode m13, Recoil m14 |
+| 11 Eyrie Heights | Mighty, Fletcher (2) | eagles; feathers for arrows | Mighty m18, Fletcher m11 |
+| 12 The Briar Maze | Lone Wolf (2) | alone in the maze | m17 |
+| 13 The Redwood Deep | Rebuild, Herbalist (2) | the old wood mends the bramble; forest herbs | Herbalist m13 |
+| 14 Savanna Reaches | Carrion, Stampede (2) | vultures and herds | Carrion m20, Stampede m14 |
+| 15 The Long Grass | Harbinger, Momentum (2) | hunters in the grass grow with every kill | Harbinger m7 |
+| 16 The Pinewood Taiga | Last Stand (2) | a hard winter | none yet |
+| 17 Wolfsbane Tundra | Pack, Herald (2) | wolves and their alpha | none yet |
+| 18 The Glass Dunes | Feeble (2), Scare (2) | the heat saps strength; armoured lizards | Scare m19 |
+| 19 Ashen Spurn | Siege | volcanic boulders on the bramble | none yet |
+| 20 The Sundered Peak | Sturdy | mountain hide | m14 |
 
-**47 named skills**: all 28 rank 1 (Delivery = Delivery resource + every turn; Electricity covers Lightning), Poison*, 11 of rank 2, 7 of rank 3.
+**54 named skills**: 43 rank 1 and 11 rank 2.
 
-\* Poison is blank in the sheet, but the owner's Electricity note says the Venom type and Venomous count as one skill. Assumed kept.
-
-**After Map 20:** Dynamite and Esprit / Fencing (the "civilised" 1A / 2A), Acid, Assault, Bludgeon, Bola, Boomerang, Bulwark, Crit, Devour, Harbinger, Recoil, Twin Shot, the other rank 3s, all of 4-8. S skills go on boss units only. GOD, MAGIC, EVO, KINGDOM and WEP go to later worlds.
-
-**Leaner (about 35):** drop the seven rank 3s and Daunt, Pack and Brittle. Maps 12 and 15-20 then add nothing new.
+- **After Map 20:** Helmet and Pitchfork (equipment, for the "civilised" animals) and all eleven rank 3s: Acid, Bola, Boomerang, Crab Claws, Exploit, Expose, Fork, Molting, Octolash, Smoke Bomb, Snipe. Any of them can be a one-off on a themed map, for example Crab Claws on Pebble Beach or Octolash on Coral Current.
+- **No longer in the named list (pass-1 rank 1, pass-2 blank):** Cure, Nursing, Delivery, Electricity, Illuminate, Dynamite. Read as actions or damage types now (Nurse, Every Turn → Deliver, electric damage), not named skills.
