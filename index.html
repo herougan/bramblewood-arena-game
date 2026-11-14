@@ -57755,7 +57755,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '859bfaf9b4b9', BUILD_CARD_HASH = '51cc9f277a8b761681f0efc25adfcd298cf9c130ed3943694e8fdd0492d28135';
+const BUILD_ID = '5553a5ed876a', BUILD_CARD_HASH = '51cc9f277a8b761681f0efc25adfcd298cf9c130ed3943694e8fdd0492d28135';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -101551,11 +101551,18 @@ const FIELD_ART = {
   // trees (Restless), the red banner at dawn (First Blood), the twin hourglasses (Double Time) and the crumbling cliff (Collapse).
   fogofwar:{art:'assets/fields/fogofwar.png?v=74f67d1653'}, wildfire:{art:'assets/fields/wildfire.png?v=682b7b0f0a'}, quicksand:{art:'assets/fields/quicksand.png?v=7d365b3760'} /* 2026-11-05 (package ART9b, tools/make_field_art_2026_11_05.py): Fog of War, Wildfire and Quicksand no longer borrow Mist, Scorching and Sandstorm; Spore Cloud, Thunderstorm, Tangled Roots and Grasping Briars had no picture */, sporecloud:{art:'assets/fields/sporecloud.png?v=d72a1d3d84'}, thunderstorm:{art:'assets/fields/thunderstorm.png?v=a92bc85265'}, tangledroots:{art:'assets/fields/tangledroots.png?v=1fc41beb46'}, graspingbriars:{art:'assets/fields/graspingbriars.png?v=38b4c56b99'}, psychicdampener:{art:'assets/fields/psychicdampener.png?v=23af523fe8'}, timber:{art:'assets/fields/timberfair.png?v=84c454280d'}, lumberrush:{art:'assets/fields/lumberrush.png?v=a9a9400fac'}, midsummer:{art:'assets/fields/midsummer.png?v=07626d6f7a'},
   dusk:{art:'assets/fields/dusk.png?v=48bfd50758'}, restless:{art:'assets/fields/restless.png?v=6378c2f445'}, firstblood:{art:'assets/fields/firstblood.png?v=43524e7a53'}, doubletime:{art:'assets/fields/doubletime.png?v=3036516831'}, collapse:{art:'assets/fields/collapse.png?v=9926305627'},
+  // 2026-11-14 (package ART13, owner 11-14 11:11: "cards like windfall do not have art yet"; tools/make_field_art_2026_11_14.py): Windfall, Seasons, Quiet Contemplation
+  // and the twelve selfish boons (the boon row's art key is its id in lower case) had no key, so their tiles showed the icon.
+  windfall:{art:'assets/fields/windfall.png?v=d48094f00d'}, seasons:{art:'assets/fields/seasons.png?v=e50f214249'}, quietcontemplation:{art:'assets/fields/quietcontemplation.png?v=4c400e9456'},
+  blindfury:{art:'assets/fields/blindfury.png?v=38763e8eec'}, hivechorus:{art:'assets/fields/hivechorus.png?v=1cf0e71671'}, risingtide:{art:'assets/fields/risingtide.png?v=8a6fae6117'}, secondburrow:{art:'assets/fields/secondburrow.png?v=b9d85c1a92'},
+  wildrage:{art:'assets/fields/wildrage.png?v=18ee6ff478'}, snowveil:{art:'assets/fields/snowveil.png?v=22f2078d6f'}, sandveil:{art:'assets/fields/sandveil.png?v=c1f7721861'}, restlessdead:{art:'assets/fields/restlessdead.png?v=3c3f3849d1'},
+  emberborn:{art:'assets/fields/emberborn.png?v=61cc89e132'}, siegetrain:{art:'assets/fields/siegetrain.png?v=7d09431748'}, venomglands:{art:'assets/fields/venomglands.png?v=32c16a6a33'}, skyambush:{art:'assets/fields/skyambush.png?v=cb89dbfdab'},
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
   if(k === 'dark') return fr.dark === 'absolute' ? 'absolute' : fr.dark === 'pitch' ? 'pitch' : 'darkness';
   if(k === 'permaTide') return fr.rapids ? 'rapids' : 'permatide';
+  if(k === 'boon' && row.selfish) return String(row.selfish).toLowerCase(); // a selfish boon's own scene (ART13, 2026-11-14)
   if(k === 'lumberEvery' && /every 2 rounds/.test(row.text || '')) return 'lumberrush'; // Lumber Rush's sawmill, not the Timber Fair (2026-10-18)
   const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
     swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',

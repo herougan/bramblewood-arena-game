@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-14 Package ART13 (owner 11-14 11:11: "cards like windfall do not have art yet")
+- Fifteen Environment cards that showed their emoji now have scenes: Windfall, Seasons, Quiet Contemplation and the twelve selfish boons (Blind Fury, Hive Chorus, Rising Tide, Second Burrow, Wild Rage, Snow Veil, Sand Veil, Restless Dead, Ember-born, Siege Train, Venom Glands, Sky Ambush). Painted in code like the other field scenes (`tools/make_field_art_2026_11_14.py`, `art/fields/*.png`); nothing replaced. A boon's tile finds its scene by the boon id.
+- Creature and spell cards: none missing (Sanderling, Roseate Spoonbill, Water Scorpion and Wallcreeper have had PixelLab art since ART5; only the test-* cards have none). Contact sheet: `docs/art/art13-fields-contact.png`.
+
 ## 2026-11-13 Package UI53 (owner notes 11-13 17:29 #1, #2, #4)
 - Battle pips: Venom and Bleed show their count on the pip (a bare 1 stays icon only, like every chip); every other counted pip already did.
 - The hover or hold sheet of a unit in a fight lists the tokens and statuses on it now (Venom 4, Bleed 3, Inspiration 2 ... each with its meaning), above its hit log, and follows them while it is open.
