@@ -7980,6 +7980,7 @@ function renderCodex(){
   if((codexSubTab==='deleted' || codexSubTab==='txns' || codexSubTab==='reference') && !adminModeEnabled){ codexSubTab = 'browse'; } // Reference too (2026-10-15)
   if(codexSubTab==='forge' && !tabOpen('forge')) codexSubTab = 'browse';
   const root = document.getElementById('view-codex');
+  root.classList.toggle('is-forge', codexSubTab === 'forge'); // 2026-11-14 (package UI54): the library's scene is for the Codex, the Forge keeps its own
   root.innerHTML = codexShell();
   try{ refreshPageBar('codex'); }catch(e){}
   root.querySelectorAll('[data-codextab]').forEach(b=> b.addEventListener('click', ()=>{
@@ -8000,7 +8001,7 @@ function renderCodex(){
   if(codexSubTab==='skills' && !tabOpen('skillcodex')) codexSubTab = 'browse';
   if(codexSubTab==='maps' && !tabOpen('mapcodex')) codexSubTab = 'browse';
   if(codexSubTab==='skills'){ renderSkillBook(body); return; } // 2026-10-18 (package C): the skills book (skillCodexHTML was the list)
-  if(codexSubTab==='maps'){ body.innerHTML = mapCodexHTML(); return; }
+  if(codexSubTab==='maps'){ body.innerHTML = mapCodexHTML(); wireMapCodex(body); return; } // 2026-11-14 (package UI54): map scrolls
   if(codexSubTab==='reference'){ body.innerHTML = referenceHTML(); return; }
   if(codexSubTab==='halloffame'){
     body.innerHTML = hallOfFameTabHTML();
@@ -10418,20 +10419,75 @@ const SKILL_CODEX_NOTE = {smokeBomb: ()=> TX('ui.skx-smoke-bomb'), rocket: ()=> 
   shockBolt: ()=> TX('ui.skx-shock-bolt'), fork: ()=> TX('ui.skx-fork'), pack: ()=> TX('ui.skx-pack'), wave: ()=> TX('ui.skx-wave'), amore: ()=> TX('ui.skx-amore'),
   sleep: ()=> TX('ui.skx-sleep'), ritual: ()=> TX('ui.skx-ritual')};
 // Map Codex (2026-10-13, user: "2 maps after the skill codex, add the map codex + list of field effects learned from each map").
+// 2026-11-14 (package UI54, owner 11:11: "the maps section of the codex should look like rolls of maps, each holding info about each map and each world. (Map 0-40 is
+// world 1)"): a header roll per world (World 1 = Maps 0-40; later maps fall in World 2), a scroll per reached main map (side maps inside their parent's), each one tap
+// to unroll. Only the heads are drawn at first; a world's scrolls and a scroll's contents are built when it opens (the old page ran every fight's rules on open).
+// Which maps show is the rule from before (reached maps; admins see all); an effect still reads ? until seen; a card shows once the Codex shows it; the boss is ? until beaten.
+const MCX_LAST_W1 = 40;
+let mcxOpen = new Set(['w1']), mcxFirstMemo = null;
+function mcxWorldOf(n){ return n != null && n > MCX_LAST_W1 ? 2 : 1; }
+function mcxFirstMaps(){ // card id -> the first main map whose list holds it (so New! is the map that brings it)
+  if(mcxFirstMemo) return mcxFirstMemo; const out = new Map();
+  mainConquestMaps().forEach(m=>{ const n = mapNumberOf(m.id); if(n == null) return; try{ mpEntry(m.id).cards.forEach(id=>{ if(!out.has(id) || out.get(id) > n) out.set(id, n); }); }catch(e){} });
+  return (mcxFirstMemo = out);
+}
+function mcxMaps(){ // the shown main maps, the shown side maps by parent, every main map counted by world
+  const pr = loadConquestProgress(), all = CONQUEST_MAPS.filter(m=> !m.reserved && m.nodes.length && !m.endless), shown = m=> adminModeEnabled || isMapUnlocked(m, pr);
+  const total = {1: 0, 2: 0}; all.filter(m=> !m.sub).forEach(m=>{ total[mcxWorldOf(mapNumberOf(m.id))]++; });
+  const subs = {}; all.filter(m=> m.sub && shown(m)).forEach(m=>{ (subs[m.parent] = subs[m.parent] || []).push(m); });
+  return {pr, mains: all.filter(m=> !m.sub && shown(m)), subs, total};
+}
+function mcxFights(m, pr){ const f = m.nodes.filter(n=> n.kind !== 'tutorial'); return {n: f.length, done: f.filter(n=> pr.completed.includes(conquestNodeId(m.id, n.key))).length}; }
+function mcxScrollHTML(m, S, open){
+  const num = mapNumberOf(m.id), f = mcxFights(m, S.pr);
+  return `<article class="mx-scroll map-theme-${escapeAttr(m.id)}${open ? ' is-open' : ''}" data-mxs="m:${escapeAttr(m.id)}"><button type="button" class="mx-roll" aria-expanded="${!!open}">
+    <span class="mx-thumb" aria-hidden="true">${m.icon}</span><span class="mx-t"><b>${escapeHtml(m.name)}</b><small>${escapeHtml(m.sub ? TX('ui.ui54-side') : TX('ui.pg-map-n', {n: num ?? '?'}))} · ${escapeHtml(TX('ui.ui54-cleared', {n: f.done, total: f.n}))}</small></span><i class="mx-rod" aria-hidden="true"></i></button>
+    <div class="mx-fold"><div class="mx-in">${open ? mcxMapBody(m, S) : ''}</div></div></article>`;
+}
+function mcxMapBody(m, S){
+  const pr = S.pr, defs = getCardDefs(), num = mapNumberOf(m.id), out = [];
+  if(m.blurb) out.push(`<p class="mx-blurb">${escapeHtml(m.blurb)}</p>`);
+  // field effects: the rows every fight here shows (a "?" until learned)
+  const rows = new Map(); m.nodes.forEach(n=>{ if(n.kind === 'tutorial') return; let r = null; try{ r = fightRules(m.id, n); }catch(e){} fieldConditionRows(r).forEach(row=>{ if(!rows.has(row.key)) rows.set(row.key, row); }); });
+  const fx = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldRowState(row.key) !== 'unknown';
+    return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text + (row.codex ? ' ' + row.codex : '')))}</small>` : `<span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span>`}</li>`; }).join('');
+  out.push(`<h4 class="mx-h">${escapeHtml(TX('ui.ui54-fx'))}</h4>${fx ? `<ul class="mc-fx mx-fx">${fx}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui54-nofx'))}</p>`}`);
+  // cards the Codex shows for this map: the New! ones here as chips, the rest as a count
+  let list = []; try{ const e = mpEntry(m.sub ? m.parent : m.id); list = m.sub ? (e.submaps[m.id] || []) : e.cards; }catch(e){}
+  const vis = list.filter(id=>{ const d = defs[id]; return d && !d.test && !d.token && (adminModeEnabled || (!isCardHiddenForPlayer(d) && codexRevealedForPlayer(id, d))); });
+  const first = mcxFirstMaps(), fresh = vis.filter(id=> !m.sub && first.get(id) === num), old = vis.length - fresh.length;
+  if(vis.length) out.push(`<h4 class="mx-h">${escapeHtml(TX('ui.ui54-cards'))}</h4><div class="mx-cards">${fresh.map(id=> `<span class="mx-nc" data-mxcard="${escapeAttr(id)}">${cardChipHTML(defs[id], {noDefid: true})}<b class="mx-new">${escapeHtml(TX('ui.ui54-new'))}</b></span>`).join('')}${old ? `<small class="mx-more">${escapeHtml(TX('ui.ui54-earlier', {n: old}))}</small>` : ''}</div>`);
+  // the boss (? until beaten) and what opens the map
+  const bn = m.nodes.slice().reverse().find(n=> /boss/.test(n.kind || '')), beaten = bn && pr.completed.includes(conquestNodeId(m.id, bn.key));
+  const un = m.sub ? (mpMapById(m.parent) || {}).name : (m.unlockAfter ? (mpMapById(m.unlockAfter) || {}).name : (num ? (mainConquestMaps()[num - 1] || {}).name : ''));
+  const facts = (bn ? `<li><span>${escapeHtml(TX('ui.ui54-boss'))}</span><b>${beaten || adminModeEnabled ? `${bn.icon || '👑'} ${escapeHtml(bn.name || '')}` : '?'}</b></li>` : '') + (un ? `<li><span>${escapeHtml(TX('ui.ui54-opens', {name: un}))}</span></li>` : '');
+  if(facts) out.push(`<ul class="mx-facts">${facts}</ul>`);
+  const subs = S.subs[m.id] || [];
+  if(subs.length) out.push(`<h4 class="mx-h">${escapeHtml(TX('ui.ui54-sides'))}</h4><div class="mx-subs">${subs.map(s=> mcxScrollHTML(s, S, mcxOpen.has('m:' + s.id))).join('')}</div>`);
+  return out.join('');
+}
+function mcxWorldBody(n, S){ return S.mains.filter(m=> mcxWorldOf(mapNumberOf(m.id)) === n).map(m=> mcxScrollHTML(m, S, mcxOpen.has('m:' + m.id))).join(''); }
 function mapCodexHTML(){
-  const pr = loadConquestProgress();
-  const maps = CONQUEST_MAPS.filter(m=> !m.reserved && (adminModeEnabled || isMapUnlocked(m, pr)) && m.nodes.length && !m.endless);
-  const cards = maps.map(m=>{
-    const rows = new Map(); m.nodes.forEach(n=>{ if(n.kind === 'tutorial') return; let r = null; try{ r = fightRules(m.id, n); }catch(e){} fieldConditionRows(r).forEach(row=>{ if(!rows.has(row.key)) rows.set(row.key, row); }); });
-    const fights = m.nodes.filter(n=> n.kind !== 'tutorial'), done = fights.filter(n=> pr.completed.includes(conquestNodeId(m.id, n.key))).length;
-    // 2026-10-15 (user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): Map 0 no
-    // longer shows its field effects plainly; like every map, an effect reads "?" until it has been learned (on Map 1 onward).
-    const list = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldRowState(row.key) !== 'unknown';
-      return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text + (row.codex ? ' ' + row.codex : '')))}</small>` /* 2026-10-18 (package D): + the Codex line */ : `<span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span>`}</li>`; }).join('');
-    const num = mapNumberOf(m.id);
-    return `<div class="mc-card map-theme-${m.id}"><div class="mc-head"><span class="mc-ico">${m.icon}</span><div><b>${escapeHtml(m.name)}</b><small>${m.sub ? 'Side map' : 'Map ' + (num ?? '?')} · ${done}/${fights.length} cleared</small></div></div>
-      <p class="mc-blurb">${escapeHtml(m.blurb || '')}</p>${list ? `<ul class="mc-fx">${list}</ul>` : '<p class="panel-sub">No field effects.</p>'}</div>`; }).join('');
-  return `<div class="panel"><h2>🗺️ Maps</h2><p class="panel-sub">Every map you've reached and the field effects you've learned on it. An effect shows ? until you've seen it happen.</p><div class="mc-grid">${cards}</div></div>`;
+  mcxFirstMemo = null; const S = mcxMaps(), worlds = [1, 2].filter(w=> S.total[w]);
+  const head = w=>{ const mains = S.mains.filter(m=> mcxWorldOf(mapNumberOf(m.id)) === w), open = mcxOpen.has('w' + w);
+    let done = 0, all = 0; mains.forEach(m=>{ const f = mcxFights(m, S.pr); done += f.done; all += f.n; });
+    return `<section class="mx-world${open ? ' is-open' : ''}" data-mxs="w${w}"><button type="button" class="mx-roll mx-wroll" aria-expanded="${open}"><span class="mx-thumb" aria-hidden="true">🌍</span>
+      <span class="mx-t"><b>${escapeHtml(TX('ui.ui54-world', {n: w}))}</b><small>${escapeHtml(w === 1 ? TX('ui.ui54-range', {a: 0, b: MCX_LAST_W1}) : TX('ui.ui54-range-open', {a: MCX_LAST_W1 + 1}))} · ${escapeHtml(TX('ui.ui54-reached', {n: mains.length, total: S.total[w]}))} · ${escapeHtml(TX('ui.ui54-cleared', {n: done, total: all}))}</small></span><i class="mx-rod" aria-hidden="true"></i></button>
+      <div class="mx-fold"><div class="mx-in mx-list">${open ? mcxWorldBody(w, S) : ''}</div></div></section>`; };
+  return `<div class="panel mx-panel${fxAtLeast('med') && !reducedMotion() ? ' mx-anim' : ''}"><h2>🗺️ Maps</h2><p class="panel-sub">${escapeHtml(TX('ui.ui54-intro'))}</p>${worlds.map(head).join('')}</div>`;
+}
+function wireMapCodex(root){
+  const panel = root.querySelector('.mx-panel'); if(!panel) return;
+  panel.addEventListener('click', ev=>{
+    const chip = ev.target.closest('[data-mxcard]'); if(chip){ try{ openCardDetail(chip.getAttribute('data-mxcard')); }catch(e){} return; }
+    const btn = ev.target.closest('.mx-roll'); if(!btn) return;
+    const el = btn.parentElement, id = el.getAttribute('data-mxs'), open = !el.classList.contains('is-open'), inner = el.querySelector(':scope > .mx-fold > .mx-in');
+    if(open){ mcxOpen.add(id); if(!inner.firstChild){ const S = mcxMaps(); // built on the first unroll
+      if(id[0] === 'w') inner.innerHTML = mcxWorldBody(+id.slice(1), S); else { const m = mpMapById(id.slice(2)); if(m) inner.innerHTML = mcxMapBody(m, S); } } }
+    else mcxOpen.delete(id);
+    el.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open);
+    try{ if(typeof SoundKit !== 'undefined' && SoundKit.mapUnroll) SoundKit.mapUnroll(); }catch(e){}
+  });
 }
 function referenceHTML(){
   return `
@@ -64298,6 +64354,7 @@ const PLACES = {
   market: {cls:'flea-scene', icon:'🧺', sign:'Flea Market', ambience:'cart'},
   inventory: {cls:'satchel-scene', icon:'🎒', sign:'Inventory', ambience:'tent'}, // the traveller's camp shelf (2026-10-17)
   nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest'},
+  codex: {cls:'codex-scene', icon:'📖', sign:'Codex', ambience:''}, // 2026-11-14 (package UI54, owner 11:11): the Codex is a place with a sign too (no ambience: it stays quiet; the Forge view drops the scene, see renderCodex)
 };
 var tabSwitchSeq = 0; // counts screen changes (renderPlay tells a fresh arrival from a redraw)
 function switchTab(tab){
@@ -64335,7 +64392,7 @@ function switchTab(tab){
   // Places: some screens are places with their own look and sound (PLACES); bramblewood-ui-places.js plays their entrances (the hook below).
   try{
     const place = PLACES[tab];
-    if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
+    if(tab==='home') Ambience.play('home'); else if(place && place.ambience) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
     Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v){ v.classList.add(pl.cls); v.dataset.sign = pl.icon + ' ' + (window.i18 ? i18(pl.sign) : pl.sign); } });
     const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     // 2026-10-08: a screen change is the Codex's quick page turn (forward moving right along the menu, back moving left); a place's own entrance replaces it.

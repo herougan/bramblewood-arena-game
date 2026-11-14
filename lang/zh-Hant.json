@@ -4454,5 +4454,16 @@
  "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "重玩地圖 T 到地圖 3 的課程，包括觸發課程。",
  "Reset all tutorials": "重置全部教學",
  "Replay every lesson and tip.": "重玩每一課和每條提示。",
- "Tutorials reset: they play again in your next fights.": "教學已重置：下次戰鬥會再次出現。"
+ "Tutorials reset: they play again in your next fights.": "教學已重置：下次戰鬥會再次出現。",
+ "Every map you've reached, by world. Tap a scroll to unroll it.": "已抵達的所有地圖，依世界分組。點按卷軸即可展開。",
+ "World {n}": "世界 {n}",
+ "Maps {a}–{b}": "地圖 {a}–{b}",
+ "Maps {a}+": "地圖 {a}+",
+ "{n} of {total} reached": "已抵達 {n}/{total}",
+ "{n}/{total} cleared": "已通關 {n}/{total}",
+ "Side map": "支線地圖",
+ "No field effects.": "沒有場地效果。",
+ "New!": "新！",
+ "+{n} from earlier maps": "另有 {n} 張來自之前的地圖",
+ "Opens after {name}": "通關 {name} 後開啟"
 }

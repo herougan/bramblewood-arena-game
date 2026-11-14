@@ -4454,5 +4454,16 @@
  "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "Ulitin ang mga aralin mula Map T hanggang Map 3, pati ang aralin sa trigger.",
  "Reset all tutorials": "I-reset lahat ng tutorial",
  "Replay every lesson and tip.": "Ulitin ang bawat aralin at tip.",
- "Tutorials reset: they play again in your next fights.": "Na-reset ang mga tutorial: babalik sila sa susunod mong laban."
+ "Tutorials reset: they play again in your next fights.": "Na-reset ang mga tutorial: babalik sila sa susunod mong laban.",
+ "Every map you've reached, by world. Tap a scroll to unroll it.": "Lahat ng mapang naabot mo, ayon sa mundo. Pindutin ang balumbon para buksan.",
+ "World {n}": "Mundo {n}",
+ "Maps {a}–{b}": "Mapa {a}–{b}",
+ "Maps {a}+": "Mapa {a}+",
+ "{n} of {total} reached": "{n} sa {total} naabot",
+ "{n}/{total} cleared": "{n}/{total} tapos",
+ "Side map": "Gilid na mapa",
+ "No field effects.": "Walang epekto ng larangan.",
+ "New!": "Bago!",
+ "+{n} from earlier maps": "+{n} mula sa naunang mapa",
+ "Opens after {name}": "Bubukas pagkatapos ng {name}"
 }

@@ -12156,6 +12156,60 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 @container (max-width: 70px){ .card-tile[data-size="full"] .nm{display:flex;} }
 /* At 1366 the Codex's two album pages need 1274px for 8 Full cards a row (the column is 80% of the window, 1093px) */
 @media (min-width:1100px){ .content-wrap:has(> #view-codex:not([hidden])){max-width:min(1330px, 98vw);} }
+/* UI54:BEGIN (2026-11-14, package UI54, owner 11:11): the Codex is a place like the Nest (library shelves, a sign), and its Maps page is rolls of maps: a roll per world, a scroll per map that unrolls */
+#view-codex.codex-scene:not(.is-forge){position:relative; padding:64px clamp(10px,2.4vw,32px) 22px; border-radius:22px; margin-top:4px; isolation:isolate;
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255,226,170,.26), transparent 72%),
+    radial-gradient(ellipse 120% 95% at 50% 45%, transparent 55%, rgba(24,14,6,.6) 100%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.16) 0 2px, transparent 2px 56px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, #5c3b24, #3a2515);
+  box-shadow:inset 0 0 0 8px rgba(52,33,19,.92), inset 0 0 0 11px rgba(150,108,62,.5), 0 10px 30px rgba(0,0,0,.35);}
+#view-codex.codex-scene:not(.is-forge)::after{content:attr(data-sign); position:absolute; top:18px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
+  font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
+  background:linear-gradient(180deg,#efe2c4,#d5bd8c); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
+#view-codex.codex-scene:not(.is-forge) > *{position:relative; z-index:1;}
+#view-codex.codex-scene.is-forge::after{content:none;}
+@media (max-width:560px){ #view-codex.codex-scene:not(.is-forge){padding:52px 4px 14px; border-radius:16px; box-shadow:inset 0 0 0 5px rgba(52,33,19,.92), inset 0 0 0 7px rgba(150,108,62,.5), 0 8px 22px rgba(0,0,0,.35);}
+  #view-codex.codex-scene:not(.is-forge)::after{font-size:12.5px; top:14px;} }
+/* the rolls: a rolled cylinder (the head), a sheet that unrolls under it (the fold), wooden rod knobs at both ends */
+.mx-panel{display:flex; flex-direction:column; gap:12px;}
+.mx-panel > h2{margin:0;} .mx-panel > .panel-sub{margin:0;}
+.mx-world, .mx-scroll{display:block; min-width:0;}
+.mx-roll{position:relative; display:flex; align-items:center; gap:10px; width:100%; min-height:52px; margin:0; padding:6px 30px 6px 10px; text-align:left; cursor:pointer; color:var(--ink); font:inherit; border:1px solid var(--surface-border); border-radius:14px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--ink) 18%, var(--surface-3)) 0, var(--surface-2) 22%, var(--surface) 52%, var(--surface-3) 86%, color-mix(in srgb, var(--ink) 22%, var(--surface-3)) 100%);
+  box-shadow:0 2px 0 color-mix(in srgb, var(--ink) 28%, transparent), 0 6px 10px rgba(0,0,0,.22);}
+.mx-roll::before, .mx-roll::after{content:''; position:absolute; top:-4px; bottom:-4px; width:10px; border-radius:5px; pointer-events:none;
+  background:linear-gradient(90deg, color-mix(in srgb, var(--accent-strong) 55%, var(--ink)), var(--accent) 45%, color-mix(in srgb, var(--accent-strong) 55%, var(--ink)));}
+.mx-roll::before{left:-5px;} .mx-roll::after{right:-5px;}
+.mx-roll:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+.mx-roll .mx-t{display:flex; flex-direction:column; min-width:0; flex:1;} .mx-roll .mx-t b{font-weight:800; overflow-wrap:anywhere;} .mx-roll .mx-t small{color:var(--ink-muted); line-height:1.3;}
+.mx-thumb{flex:0 0 auto; display:grid; place-items:center; width:40px; height:40px; border-radius:10px; font-size:22px; box-shadow:inset 0 0 0 2px color-mix(in srgb, var(--ink) 30%, transparent);
+  background:var(--map-art, none) center / cover no-repeat, radial-gradient(circle at 30% 20%, var(--mt-a, var(--surface-3)), var(--mt-b, var(--surface-2)));}
+.mx-wroll .mx-thumb{background:radial-gradient(circle at 30% 20%, var(--accent), var(--accent-strong)); color:var(--accent-ink);}
+.mx-wroll{min-height:60px;} .mx-wroll .mx-t b{font-size:17px;}
+.mx-rod{position:absolute; right:12px; top:50%; width:9px; height:9px; margin-top:-6px; border-right:2.5px solid var(--ink-muted); border-bottom:2.5px solid var(--ink-muted); transform:rotate(45deg);}
+.is-open > .mx-roll > .mx-rod{transform:rotate(-135deg); margin-top:-2px;}
+.mx-fold{display:grid; grid-template-rows:0fr; margin:0 8px;}
+.is-open > .mx-fold{grid-template-rows:1fr;}
+.mx-in{min-height:0; overflow:hidden; border:0 solid var(--surface-border); border-radius:0 0 12px 12px; background:var(--surface-2); color:var(--ink);}
+.is-open > .mx-fold > .mx-in{border-width:0 1px 3px; padding:10px 12px 12px; box-shadow:inset 0 8px 8px -8px rgba(0,0,0,.35);}
+.mx-anim .mx-fold{transition:grid-template-rows .28s cubic-bezier(.2,.7,.3,1);}
+.mx-list{display:flex; flex-direction:column; gap:10px;}
+.is-open > .mx-fold > .mx-list{padding-top:14px;}
+.mx-in .mx-h{margin:10px 0 4px; font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-muted);} .mx-in .mx-h:first-child{margin-top:0;}
+.mx-blurb{margin:0; font-size:13px; color:var(--ink-muted);}
+.mx-fx{padding:0;} .mx-fx li > small{color:var(--ink-muted);}
+.mx-cards{display:flex; flex-wrap:wrap; gap:6px 8px; align-items:center;}
+.mx-nc{position:relative; display:inline-flex; align-items:center; gap:4px; cursor:pointer;}
+.mx-new{padding:0 6px; border-radius:8px; font:800 10px/16px 'Baloo 2',system-ui,sans-serif; letter-spacing:.03em; color:var(--accent-ink); background:var(--attack);}
+.mx-more{color:var(--ink-muted);}
+.mx-facts{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:4px 14px; font-size:13px;} .mx-facts li{display:flex; gap:6px; align-items:baseline;} .mx-facts li > span{color:var(--ink-muted);}
+.mx-subs{display:flex; flex-direction:column; gap:10px; padding-top:6px;}
+.mx-subs .mx-roll{min-height:44px;} .mx-subs .mx-thumb{width:32px; height:32px; font-size:18px;}
+@media (min-width:1100px){ .mx-list{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px 22px; align-items:start;} }
+@media (prefers-reduced-motion: reduce){ .mx-anim .mx-fold{transition:none;} }
+/* UI54:END */
 /* CS-A:END */
 /* CS-B:BEGIN (2026-10-30, package CS-B, card sizes steps 2-3; plan docs/design/card-sizes-2026-10-29.md; owner decisions CS-2/CS-4 10-30 10:34).
    Compact (--card-compact-w, 64px) for the previews outside a match: the map fight panel's leader, enemy squad and first-clear reward, the cards
@@ -47938,7 +47992,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=65326739e1", "es": "assets/lang/es.js?v=d22b473936", "fr": "assets/lang/fr.js?v=621a26049e", "id": "assets/lang/id.js?v=af3d8f537a", "it": "assets/lang/it.js?v=ecfca1a309", "ja": "assets/lang/ja.js?v=f1df84cf3f", "ko": "assets/lang/ko.js?v=1d05ee6062", "pt": "assets/lang/pt.js?v=c62d142072", "ta": "assets/lang/ta.js?v=a966bcd467", "tl": "assets/lang/tl.js?v=d48b6338f3", "zh-Hans": "assets/lang/zh-Hans.js?v=84fa598fb7", "zh-Hant": "assets/lang/zh-Hant.js?v=5ead85bdfe"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=3a12ea440c", "es": "assets/lang/es.js?v=093ba3cfaf", "fr": "assets/lang/fr.js?v=12ab728d0c", "id": "assets/lang/id.js?v=9deaccbb0c", "it": "assets/lang/it.js?v=bc6b9e6d14", "ja": "assets/lang/ja.js?v=d0d9f3241d", "ko": "assets/lang/ko.js?v=79869bd808", "pt": "assets/lang/pt.js?v=889d735648", "ta": "assets/lang/ta.js?v=2d57869106", "tl": "assets/lang/tl.js?v=2e2b404e77", "zh-Hans": "assets/lang/zh-Hans.js?v=d71a0f9ff4", "zh-Hant": "assets/lang/zh-Hant.js?v=8516eaa444"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -51830,7 +51884,22 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui52-reset-basic-tip": "Replay the lessons from Map T to Map 3, the Triggers lesson too.",
   "ui.ui52-reset-all": "Reset all tutorials",
   "ui.ui52-reset-all-tip": "Replay every lesson and tip.",
-  "ui.ui52-reset-done": "🎓 Tutorials reset: they play again in your next fights."
+  "ui.ui52-reset-done": "🎓 Tutorials reset: they play again in your next fights.",
+  "ui.ui54-intro": "Every map you've reached, by world. Tap a scroll to unroll it.",
+  "ui.ui54-world": "World {n}",
+  "ui.ui54-range": "Maps {a}–{b}",
+  "ui.ui54-range-open": "Maps {a}+",
+  "ui.ui54-reached": "{n} of {total} reached",
+  "ui.ui54-cleared": "{n}/{total} cleared",
+  "ui.ui54-side": "Side map",
+  "ui.ui54-sides": "Side maps",
+  "ui.ui54-fx": "Field effects",
+  "ui.ui54-nofx": "No field effects.",
+  "ui.ui54-cards": "Cards",
+  "ui.ui54-new": "New!",
+  "ui.ui54-earlier": "+{n} from earlier maps",
+  "ui.ui54-boss": "Boss",
+  "ui.ui54-opens": "Opens after {name}"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -57755,7 +57824,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '5553a5ed876a', BUILD_CARD_HASH = '51cc9f277a8b761681f0efc25adfcd298cf9c130ed3943694e8fdd0492d28135';
+const BUILD_ID = 'c5272e032c95', BUILD_CARD_HASH = '51cc9f277a8b761681f0efc25adfcd298cf9c130ed3943694e8fdd0492d28135';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -61716,6 +61785,7 @@ function renderCodex(){
   if((codexSubTab==='deleted' || codexSubTab==='txns' || codexSubTab==='reference') && !adminModeEnabled){ codexSubTab = 'browse'; } // Reference too (2026-10-15)
   if(codexSubTab==='forge' && !tabOpen('forge')) codexSubTab = 'browse';
   const root = document.getElementById('view-codex');
+  root.classList.toggle('is-forge', codexSubTab === 'forge'); // 2026-11-14 (package UI54): the library's scene is for the Codex, the Forge keeps its own
   root.innerHTML = codexShell();
   try{ refreshPageBar('codex'); }catch(e){}
   root.querySelectorAll('[data-codextab]').forEach(b=> b.addEventListener('click', ()=>{
@@ -61736,7 +61806,7 @@ function renderCodex(){
   if(codexSubTab==='skills' && !tabOpen('skillcodex')) codexSubTab = 'browse';
   if(codexSubTab==='maps' && !tabOpen('mapcodex')) codexSubTab = 'browse';
   if(codexSubTab==='skills'){ renderSkillBook(body); return; } // 2026-10-18 (package C): the skills book (skillCodexHTML was the list)
-  if(codexSubTab==='maps'){ body.innerHTML = mapCodexHTML(); return; }
+  if(codexSubTab==='maps'){ body.innerHTML = mapCodexHTML(); wireMapCodex(body); return; } // 2026-11-14 (package UI54): map scrolls
   if(codexSubTab==='reference'){ body.innerHTML = referenceHTML(); return; }
   if(codexSubTab==='halloffame'){
     body.innerHTML = hallOfFameTabHTML();
@@ -64154,20 +64224,75 @@ const SKILL_CODEX_NOTE = {smokeBomb: ()=> TX('ui.skx-smoke-bomb'), rocket: ()=> 
   shockBolt: ()=> TX('ui.skx-shock-bolt'), fork: ()=> TX('ui.skx-fork'), pack: ()=> TX('ui.skx-pack'), wave: ()=> TX('ui.skx-wave'), amore: ()=> TX('ui.skx-amore'),
   sleep: ()=> TX('ui.skx-sleep'), ritual: ()=> TX('ui.skx-ritual')};
 // Map Codex (2026-10-13, user: "2 maps after the skill codex, add the map codex + list of field effects learned from each map").
+// 2026-11-14 (package UI54, owner 11:11: "the maps section of the codex should look like rolls of maps, each holding info about each map and each world. (Map 0-40 is
+// world 1)"): a header roll per world (World 1 = Maps 0-40; later maps fall in World 2), a scroll per reached main map (side maps inside their parent's), each one tap
+// to unroll. Only the heads are drawn at first; a world's scrolls and a scroll's contents are built when it opens (the old page ran every fight's rules on open).
+// Which maps show is the rule from before (reached maps; admins see all); an effect still reads ? until seen; a card shows once the Codex shows it; the boss is ? until beaten.
+const MCX_LAST_W1 = 40;
+let mcxOpen = new Set(['w1']), mcxFirstMemo = null;
+function mcxWorldOf(n){ return n != null && n > MCX_LAST_W1 ? 2 : 1; }
+function mcxFirstMaps(){ // card id -> the first main map whose list holds it (so New! is the map that brings it)
+  if(mcxFirstMemo) return mcxFirstMemo; const out = new Map();
+  mainConquestMaps().forEach(m=>{ const n = mapNumberOf(m.id); if(n == null) return; try{ mpEntry(m.id).cards.forEach(id=>{ if(!out.has(id) || out.get(id) > n) out.set(id, n); }); }catch(e){} });
+  return (mcxFirstMemo = out);
+}
+function mcxMaps(){ // the shown main maps, the shown side maps by parent, every main map counted by world
+  const pr = loadConquestProgress(), all = CONQUEST_MAPS.filter(m=> !m.reserved && m.nodes.length && !m.endless), shown = m=> adminModeEnabled || isMapUnlocked(m, pr);
+  const total = {1: 0, 2: 0}; all.filter(m=> !m.sub).forEach(m=>{ total[mcxWorldOf(mapNumberOf(m.id))]++; });
+  const subs = {}; all.filter(m=> m.sub && shown(m)).forEach(m=>{ (subs[m.parent] = subs[m.parent] || []).push(m); });
+  return {pr, mains: all.filter(m=> !m.sub && shown(m)), subs, total};
+}
+function mcxFights(m, pr){ const f = m.nodes.filter(n=> n.kind !== 'tutorial'); return {n: f.length, done: f.filter(n=> pr.completed.includes(conquestNodeId(m.id, n.key))).length}; }
+function mcxScrollHTML(m, S, open){
+  const num = mapNumberOf(m.id), f = mcxFights(m, S.pr);
+  return `<article class="mx-scroll map-theme-${escapeAttr(m.id)}${open ? ' is-open' : ''}" data-mxs="m:${escapeAttr(m.id)}"><button type="button" class="mx-roll" aria-expanded="${!!open}">
+    <span class="mx-thumb" aria-hidden="true">${m.icon}</span><span class="mx-t"><b>${escapeHtml(m.name)}</b><small>${escapeHtml(m.sub ? TX('ui.ui54-side') : TX('ui.pg-map-n', {n: num ?? '?'}))} · ${escapeHtml(TX('ui.ui54-cleared', {n: f.done, total: f.n}))}</small></span><i class="mx-rod" aria-hidden="true"></i></button>
+    <div class="mx-fold"><div class="mx-in">${open ? mcxMapBody(m, S) : ''}</div></div></article>`;
+}
+function mcxMapBody(m, S){
+  const pr = S.pr, defs = getCardDefs(), num = mapNumberOf(m.id), out = [];
+  if(m.blurb) out.push(`<p class="mx-blurb">${escapeHtml(m.blurb)}</p>`);
+  // field effects: the rows every fight here shows (a "?" until learned)
+  const rows = new Map(); m.nodes.forEach(n=>{ if(n.kind === 'tutorial') return; let r = null; try{ r = fightRules(m.id, n); }catch(e){} fieldConditionRows(r).forEach(row=>{ if(!rows.has(row.key)) rows.set(row.key, row); }); });
+  const fx = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldRowState(row.key) !== 'unknown';
+    return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text + (row.codex ? ' ' + row.codex : '')))}</small>` : `<span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span>`}</li>`; }).join('');
+  out.push(`<h4 class="mx-h">${escapeHtml(TX('ui.ui54-fx'))}</h4>${fx ? `<ul class="mc-fx mx-fx">${fx}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui54-nofx'))}</p>`}`);
+  // cards the Codex shows for this map: the New! ones here as chips, the rest as a count
+  let list = []; try{ const e = mpEntry(m.sub ? m.parent : m.id); list = m.sub ? (e.submaps[m.id] || []) : e.cards; }catch(e){}
+  const vis = list.filter(id=>{ const d = defs[id]; return d && !d.test && !d.token && (adminModeEnabled || (!isCardHiddenForPlayer(d) && codexRevealedForPlayer(id, d))); });
+  const first = mcxFirstMaps(), fresh = vis.filter(id=> !m.sub && first.get(id) === num), old = vis.length - fresh.length;
+  if(vis.length) out.push(`<h4 class="mx-h">${escapeHtml(TX('ui.ui54-cards'))}</h4><div class="mx-cards">${fresh.map(id=> `<span class="mx-nc" data-mxcard="${escapeAttr(id)}">${cardChipHTML(defs[id], {noDefid: true})}<b class="mx-new">${escapeHtml(TX('ui.ui54-new'))}</b></span>`).join('')}${old ? `<small class="mx-more">${escapeHtml(TX('ui.ui54-earlier', {n: old}))}</small>` : ''}</div>`);
+  // the boss (? until beaten) and what opens the map
+  const bn = m.nodes.slice().reverse().find(n=> /boss/.test(n.kind || '')), beaten = bn && pr.completed.includes(conquestNodeId(m.id, bn.key));
+  const un = m.sub ? (mpMapById(m.parent) || {}).name : (m.unlockAfter ? (mpMapById(m.unlockAfter) || {}).name : (num ? (mainConquestMaps()[num - 1] || {}).name : ''));
+  const facts = (bn ? `<li><span>${escapeHtml(TX('ui.ui54-boss'))}</span><b>${beaten || adminModeEnabled ? `${bn.icon || '👑'} ${escapeHtml(bn.name || '')}` : '?'}</b></li>` : '') + (un ? `<li><span>${escapeHtml(TX('ui.ui54-opens', {name: un}))}</span></li>` : '');
+  if(facts) out.push(`<ul class="mx-facts">${facts}</ul>`);
+  const subs = S.subs[m.id] || [];
+  if(subs.length) out.push(`<h4 class="mx-h">${escapeHtml(TX('ui.ui54-sides'))}</h4><div class="mx-subs">${subs.map(s=> mcxScrollHTML(s, S, mcxOpen.has('m:' + s.id))).join('')}</div>`);
+  return out.join('');
+}
+function mcxWorldBody(n, S){ return S.mains.filter(m=> mcxWorldOf(mapNumberOf(m.id)) === n).map(m=> mcxScrollHTML(m, S, mcxOpen.has('m:' + m.id))).join(''); }
 function mapCodexHTML(){
-  const pr = loadConquestProgress();
-  const maps = CONQUEST_MAPS.filter(m=> !m.reserved && (adminModeEnabled || isMapUnlocked(m, pr)) && m.nodes.length && !m.endless);
-  const cards = maps.map(m=>{
-    const rows = new Map(); m.nodes.forEach(n=>{ if(n.kind === 'tutorial') return; let r = null; try{ r = fightRules(m.id, n); }catch(e){} fieldConditionRows(r).forEach(row=>{ if(!rows.has(row.key)) rows.set(row.key, row); }); });
-    const fights = m.nodes.filter(n=> n.kind !== 'tutorial'), done = fights.filter(n=> pr.completed.includes(conquestNodeId(m.id, n.key))).length;
-    // 2026-10-15 (user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): Map 0 no
-    // longer shows its field effects plainly; like every map, an effect reads "?" until it has been learned (on Map 1 onward).
-    const list = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldRowState(row.key) !== 'unknown';
-      return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text + (row.codex ? ' ' + row.codex : '')))}</small>` /* 2026-10-18 (package D): + the Codex line */ : `<span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span>`}</li>`; }).join('');
-    const num = mapNumberOf(m.id);
-    return `<div class="mc-card map-theme-${m.id}"><div class="mc-head"><span class="mc-ico">${m.icon}</span><div><b>${escapeHtml(m.name)}</b><small>${m.sub ? 'Side map' : 'Map ' + (num ?? '?')} · ${done}/${fights.length} cleared</small></div></div>
-      <p class="mc-blurb">${escapeHtml(m.blurb || '')}</p>${list ? `<ul class="mc-fx">${list}</ul>` : '<p class="panel-sub">No field effects.</p>'}</div>`; }).join('');
-  return `<div class="panel"><h2>🗺️ Maps</h2><p class="panel-sub">Every map you've reached and the field effects you've learned on it. An effect shows ? until you've seen it happen.</p><div class="mc-grid">${cards}</div></div>`;
+  mcxFirstMemo = null; const S = mcxMaps(), worlds = [1, 2].filter(w=> S.total[w]);
+  const head = w=>{ const mains = S.mains.filter(m=> mcxWorldOf(mapNumberOf(m.id)) === w), open = mcxOpen.has('w' + w);
+    let done = 0, all = 0; mains.forEach(m=>{ const f = mcxFights(m, S.pr); done += f.done; all += f.n; });
+    return `<section class="mx-world${open ? ' is-open' : ''}" data-mxs="w${w}"><button type="button" class="mx-roll mx-wroll" aria-expanded="${open}"><span class="mx-thumb" aria-hidden="true">🌍</span>
+      <span class="mx-t"><b>${escapeHtml(TX('ui.ui54-world', {n: w}))}</b><small>${escapeHtml(w === 1 ? TX('ui.ui54-range', {a: 0, b: MCX_LAST_W1}) : TX('ui.ui54-range-open', {a: MCX_LAST_W1 + 1}))} · ${escapeHtml(TX('ui.ui54-reached', {n: mains.length, total: S.total[w]}))} · ${escapeHtml(TX('ui.ui54-cleared', {n: done, total: all}))}</small></span><i class="mx-rod" aria-hidden="true"></i></button>
+      <div class="mx-fold"><div class="mx-in mx-list">${open ? mcxWorldBody(w, S) : ''}</div></div></section>`; };
+  return `<div class="panel mx-panel${fxAtLeast('med') && !reducedMotion() ? ' mx-anim' : ''}"><h2>🗺️ Maps</h2><p class="panel-sub">${escapeHtml(TX('ui.ui54-intro'))}</p>${worlds.map(head).join('')}</div>`;
+}
+function wireMapCodex(root){
+  const panel = root.querySelector('.mx-panel'); if(!panel) return;
+  panel.addEventListener('click', ev=>{
+    const chip = ev.target.closest('[data-mxcard]'); if(chip){ try{ openCardDetail(chip.getAttribute('data-mxcard')); }catch(e){} return; }
+    const btn = ev.target.closest('.mx-roll'); if(!btn) return;
+    const el = btn.parentElement, id = el.getAttribute('data-mxs'), open = !el.classList.contains('is-open'), inner = el.querySelector(':scope > .mx-fold > .mx-in');
+    if(open){ mcxOpen.add(id); if(!inner.firstChild){ const S = mcxMaps(); // built on the first unroll
+      if(id[0] === 'w') inner.innerHTML = mcxWorldBody(+id.slice(1), S); else { const m = mpMapById(id.slice(2)); if(m) inner.innerHTML = mcxMapBody(m, S); } } }
+    else mcxOpen.delete(id);
+    el.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open);
+    try{ if(typeof SoundKit !== 'undefined' && SoundKit.mapUnroll) SoundKit.mapUnroll(); }catch(e){}
+  });
 }
 function referenceHTML(){
   return `
@@ -118034,6 +118159,7 @@ const PLACES = {
   market: {cls:'flea-scene', icon:'🧺', sign:'Flea Market', ambience:'cart'},
   inventory: {cls:'satchel-scene', icon:'🎒', sign:'Inventory', ambience:'tent'}, // the traveller's camp shelf (2026-10-17)
   nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest'},
+  codex: {cls:'codex-scene', icon:'📖', sign:'Codex', ambience:''}, // 2026-11-14 (package UI54, owner 11:11): the Codex is a place with a sign too (no ambience: it stays quiet; the Forge view drops the scene, see renderCodex)
 };
 var tabSwitchSeq = 0; // counts screen changes (renderPlay tells a fresh arrival from a redraw)
 function switchTab(tab){
@@ -118071,7 +118197,7 @@ function switchTab(tab){
   // Places: some screens are places with their own look and sound (PLACES); bramblewood-ui-places.js plays their entrances (the hook below).
   try{
     const place = PLACES[tab];
-    if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
+    if(tab==='home') Ambience.play('home'); else if(place && place.ambience) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
     Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v){ v.classList.add(pl.cls); v.dataset.sign = pl.icon + ' ' + (window.i18 ? i18(pl.sign) : pl.sign); } });
     const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     // 2026-10-08: a screen change is the Codex's quick page turn (forward moving right along the menu, back moving left); a place's own entrance replaces it.

@@ -4456,5 +4456,16 @@
  "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "지도 T부터 지도 3까지의 수업을 다시. 트리거 수업도.",
  "Reset all tutorials": "모든 튜토리얼 초기화",
  "Replay every lesson and tip.": "모든 수업과 팁을 다시.",
- "Tutorials reset: they play again in your next fights.": "튜토리얼 초기화: 다음 전투에서 다시 나옵니다."
+ "Tutorials reset: they play again in your next fights.": "튜토리얼 초기화: 다음 전투에서 다시 나옵니다.",
+ "Every map you've reached, by world. Tap a scroll to unroll it.": "도달한 모든 지도를 월드별로 보여줘요. 두루마리를 눌러 펼치세요.",
+ "World {n}": "월드 {n}",
+ "Maps {a}–{b}": "지도 {a}–{b}",
+ "Maps {a}+": "지도 {a}+",
+ "{n} of {total} reached": "{total}개 중 {n}개 도달",
+ "{n}/{total} cleared": "{n}/{total} 클리어",
+ "Side map": "사이드 지도",
+ "No field effects.": "필드 효과 없음.",
+ "New!": "신규!",
+ "+{n} from earlier maps": "이전 지도에서 +{n}",
+ "Opens after {name}": "{name} 이후에 열림"
 }

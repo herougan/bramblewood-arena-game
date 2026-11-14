@@ -3766,7 +3766,22 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui52-reset-basic-tip": "Replay the lessons from Map T to Map 3, the Triggers lesson too.",
   "ui.ui52-reset-all": "Reset all tutorials",
   "ui.ui52-reset-all-tip": "Replay every lesson and tip.",
-  "ui.ui52-reset-done": "🎓 Tutorials reset: they play again in your next fights."
+  "ui.ui52-reset-done": "🎓 Tutorials reset: they play again in your next fights.",
+  "ui.ui54-intro": "Every map you've reached, by world. Tap a scroll to unroll it.",
+  "ui.ui54-world": "World {n}",
+  "ui.ui54-range": "Maps {a}–{b}",
+  "ui.ui54-range-open": "Maps {a}+",
+  "ui.ui54-reached": "{n} of {total} reached",
+  "ui.ui54-cleared": "{n}/{total} cleared",
+  "ui.ui54-side": "Side map",
+  "ui.ui54-sides": "Side maps",
+  "ui.ui54-fx": "Field effects",
+  "ui.ui54-nofx": "No field effects.",
+  "ui.ui54-cards": "Cards",
+  "ui.ui54-new": "New!",
+  "ui.ui54-earlier": "+{n} from earlier maps",
+  "ui.ui54-boss": "Boss",
+  "ui.ui54-opens": "Opens after {name}"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

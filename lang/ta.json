@@ -4456,5 +4456,16 @@
  "Replay the lessons from Map T to Map 3, the Triggers lesson too.": "வரைபடம் T முதல் வரைபடம் 3 வரையிலான பாடங்கள், தூண்டல் பாடமும்.",
  "Reset all tutorials": "எல்லாப் பயிற்சிகளையும் மீட்டமை",
  "Replay every lesson and tip.": "ஒவ்வொரு பாடமும் குறிப்பும் மீண்டும்.",
- "Tutorials reset: they play again in your next fights.": "பயிற்சிகள் மீட்டமைக்கப்பட்டன: அடுத்த சண்டைகளில் மீண்டும் வரும்."
+ "Tutorials reset: they play again in your next fights.": "பயிற்சிகள் மீட்டமைக்கப்பட்டன: அடுத்த சண்டைகளில் மீண்டும் வரும்.",
+ "Every map you've reached, by world. Tap a scroll to unroll it.": "நீங்கள் அடைந்த அனைத்து வரைபடங்களும், உலகவாரியாக. சுருளைத் தொட்டு விரிக்கவும்.",
+ "World {n}": "உலகம் {n}",
+ "Maps {a}–{b}": "வரைபடங்கள் {a}–{b}",
+ "Maps {a}+": "வரைபடங்கள் {a}+",
+ "{n} of {total} reached": "{total}-இல் {n} அடைந்தது",
+ "{n}/{total} cleared": "{n}/{total} முடிந்தது",
+ "Side map": "துணை வரைபடம்",
+ "No field effects.": "களத் தாக்கங்கள் இல்லை.",
+ "New!": "புதிது!",
+ "+{n} from earlier maps": "+{n} முந்தைய வரைபடங்களிலிருந்து",
+ "Opens after {name}": "{name}-க்குப் பிறகு திறக்கும்"
 }

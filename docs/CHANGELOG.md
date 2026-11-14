@@ -5,6 +5,10 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 ## 2026-11-14 Package ART13 (owner 11-14 11:11: "cards like windfall do not have art yet")
 - Fifteen Environment cards that showed their emoji now have scenes: Windfall, Seasons, Quiet Contemplation and the twelve selfish boons (Blind Fury, Hive Chorus, Rising Tide, Second Burrow, Wild Rage, Snow Veil, Sand Veil, Restless Dead, Ember-born, Siege Train, Venom Glands, Sky Ambush). Painted in code like the other field scenes (`tools/make_field_art_2026_11_14.py`, `art/fields/*.png`); nothing replaced. A boon's tile finds its scene by the boon id.
 - Creature and spell cards: none missing (Sanderling, Roseate Spoonbill, Water Scorpion and Wallcreeper have had PixelLab art since ART5; only the test-* cards have none). Contact sheet: `docs/art/art13-fields-contact.png`.
+## 2026-11-14 Package UI54 (owner note 11-14 11:11)
+- The Codex is a place of its own like the Nest: a library-shelf frame with a Codex sign (the book-opening entrance and the Codex entry on the places strip stay; the Forge, drawn in the same view, keeps its own look). Every way in is unchanged (strip, buttons, card and skill links, Profile score, admin skill-map toggle).
+- Codex Maps: rolls of maps. A roll per world (World 1 = Maps 0-40) with its range, maps reached and fights cleared; inside, a scroll per reached map (thumbnail, number, fights cleared) that unrolls on a tap to its blurb, field effects (? until learned), cards (New! on the map that brings them, a count for the rest), boss (? until beaten), what opens it and its side maps as scrolls inside. Locked maps stay hidden as before.
+- Faster: only the heads are drawn on open; a scroll's fight rules and cards are built when it unrolls (admin, 25 maps, 4x CPU: about 250-350 ms of drawing down to about 30-50 ms). The unroll is animated on Effects Medium and up, instant on Low/None and with reduced motion.
 
 ## 2026-11-13 Package UI53 (owner notes 11-13 17:29 #1, #2, #4)
 - Battle pips: Venom and Bleed show their count on the pip (a bare 1 stays icon only, like every chip); every other counted pip already did.
