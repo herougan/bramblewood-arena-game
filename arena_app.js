@@ -47815,11 +47815,18 @@ const FIELD_ART = {
   // trees (Restless), the red banner at dawn (First Blood), the twin hourglasses (Double Time) and the crumbling cliff (Collapse).
   fogofwar:{art:'art/fields/fogofwar.png'}, wildfire:{art:'art/fields/wildfire.png'}, quicksand:{art:'art/fields/quicksand.png'} /* 2026-11-05 (package ART9b, tools/make_field_art_2026_11_05.py): Fog of War, Wildfire and Quicksand no longer borrow Mist, Scorching and Sandstorm; Spore Cloud, Thunderstorm, Tangled Roots and Grasping Briars had no picture */, sporecloud:{art:'art/fields/sporecloud.png'}, thunderstorm:{art:'art/fields/thunderstorm.png'}, tangledroots:{art:'art/fields/tangledroots.png'}, graspingbriars:{art:'art/fields/graspingbriars.png'}, psychicdampener:{art:'art/fields/psychicdampener.png'}, timber:{art:'art/fields/timberfair.png'}, lumberrush:{art:'art/fields/lumberrush.png'}, midsummer:{art:'art/fields/midsummer.png'},
   dusk:{art:'art/fields/dusk.png'}, restless:{art:'art/fields/restless.png'}, firstblood:{art:'art/fields/firstblood.png'}, doubletime:{art:'art/fields/doubletime.png'}, collapse:{art:'art/fields/collapse.png'},
+  // 2026-11-14 (package ART13, owner 11-14 11:11: "cards like windfall do not have art yet"; tools/make_field_art_2026_11_14.py): Windfall, Seasons, Quiet Contemplation
+  // and the twelve selfish boons (the boon row's art key is its id in lower case) had no key, so their tiles showed the icon.
+  windfall:{art:'art/fields/windfall.png'}, seasons:{art:'art/fields/seasons.png'}, quietcontemplation:{art:'art/fields/quietcontemplation.png'},
+  blindfury:{art:'art/fields/blindfury.png'}, hivechorus:{art:'art/fields/hivechorus.png'}, risingtide:{art:'art/fields/risingtide.png'}, secondburrow:{art:'art/fields/secondburrow.png'},
+  wildrage:{art:'art/fields/wildrage.png'}, snowveil:{art:'art/fields/snowveil.png'}, sandveil:{art:'art/fields/sandveil.png'}, restlessdead:{art:'art/fields/restlessdead.png'},
+  emberborn:{art:'art/fields/emberborn.png'}, siegetrain:{art:'art/fields/siegetrain.png'}, venomglands:{art:'art/fields/venomglands.png'}, skyambush:{art:'art/fields/skyambush.png'},
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
   if(k === 'dark') return fr.dark === 'absolute' ? 'absolute' : fr.dark === 'pitch' ? 'pitch' : 'darkness';
   if(k === 'permaTide') return fr.rapids ? 'rapids' : 'permatide';
+  if(k === 'boon' && row.selfish) return String(row.selfish).toLowerCase(); // a selfish boon's own scene (ART13, 2026-11-14)
   if(k === 'lumberEvery' && /every 2 rounds/.test(row.text || '')) return 'lumberrush'; // Lumber Rush's sawmill, not the Timber Fair (2026-10-18)
   const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
     swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
