@@ -15,6 +15,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 2 | Measure skill weights more, across different ways of building the field; measure Trigger -> Action costs with trigger and action decoupled. | SKW1 |
 | 3 | Codex its own mega-page (places strip); its maps section as rolls of maps per map and per world (World 1 = Maps 0-40). | UI54 |
 - 11-14 11:15: UI53 merged (Venom/Bleed pip counts, live statuses in the battle hover, Guardian plates follow the card, red NEW! skills in Map cards). Running: REF6, WHATIF1 (side-map decision sims), ART13, SKW1, UI54.
+- 11-14: ART13, UI54, WHATIF1 and SKW1 merged. WHATIF1: SIDE2-2 (a) 48/77 side fights in band vs 39 today; SIDE2-4 smallest fixes (new option d). SKW1: trigger x action factors (R² 0.97); decisions SKW1-1..6. Running: REF6, ENG-OD1 (On Death self Health buff acts as a revive: engine check).
 
 ## 11-13 17:29: Owner notes -> UI53 (starts after FIX11 merges; same files)
 Shots: `docs/screens/owner-2026-11-13/` (1729-*.png).
