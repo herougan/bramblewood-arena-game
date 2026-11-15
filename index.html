@@ -3390,6 +3390,7 @@
   .dialogue-dock.is-idle .dlg-hide, .dialogue-dock.is-idle .dlg-chip{opacity:0; pointer-events:none;}
   @media (max-width:699px){
     .dialogue-dock{left:8px; top:64px; width:min(300px, calc(100vw - 56px));}
+    body.pg-in-match .dialogue-dock{top:150px;} /* 2026-11-16 (package UX4): below the fight HUD buttons (speed, log, full screen, settings), not over them */
     .dialogue-dock .dlg-line{padding:6px 8px; gap:8px;}
     .dialogue-dock .dlg-portrait{width:30px; height:30px;}
     .dialogue-dock .dlg-text{font-size:12.5px; line-height:1.3;}
@@ -13823,6 +13824,10 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
    NV's phone-only "no map strip" (1b) is gone too: the strip is back, compact, sharing the cluster's line (u3Styles). */
 body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row{overflow:visible !important; display:flex; align-items:center; flex-wrap:nowrap; gap:0; bottom:calc(14px + env(safe-area-inset-bottom, 0px));}
 body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row .play-subtabs{min-width:0; flex:0 1 auto; overflow-x:auto; scrollbar-width:none; flex-wrap:nowrap;}
+/* 2026-11-16 (package UX4): an edge fade on the side that still scrolls (syncSubtabsFade) */
+.play-subtabs.fade-r{-webkit-mask-image:linear-gradient(90deg, #000 calc(100% - 34px), transparent); mask-image:linear-gradient(90deg, #000 calc(100% - 34px), transparent);}
+.play-subtabs.fade-l{-webkit-mask-image:linear-gradient(270deg, #000 calc(100% - 34px), transparent); mask-image:linear-gradient(270deg, #000 calc(100% - 34px), transparent);}
+.play-subtabs.fade-l.fade-r{-webkit-mask-image:linear-gradient(90deg, transparent, #000 34px, #000 calc(100% - 34px), transparent); mask-image:linear-gradient(90deg, transparent, #000 34px, #000 calc(100% - 34px), transparent);}
 body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row .play-subtabs::-webkit-scrollbar{display:none;}
 /* 2. The pre-battle A-vs-B screen (showVsScreen): a card a side, the raid's side panel, a real start button. The sunburst, the split
    and the gold seam stay; on phones the split follows the VS word (--vs-split, set by showVsScreen). */
@@ -15649,7 +15654,7 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
   <div class="splash-inner">
     <div class="splash-mark" id="entranceLogoMark">🌰</div>
     <h1 class="splash-title" id="entranceLogoTitle">Bramblewood Arena</h1>
-    <div class="entrance-ribbon" aria-label="Otters versus Hummingbirds"><span>🦦 Otters</span><b>⚔</b><span>Hummingbirds 🐦</span></div>
+    <div class="entrance-ribbon" aria-label="Otters versus Hummingbirds"><span>🦦 Otters</span><b>⚔</b><span><span>Hummingbirds</span> 🐦</span></div>
     <p class="splash-tagline">Draft a woodland warband. Outwit your foe, lane by lane. Burn their bramble to the ground.</p>
     <div id="entranceAuthArea"></div>
     <p class="splash-sub">Free to play · No install · Runs right in your browser</p>
@@ -48333,7 +48338,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=ac4f553cce", "es": "assets/lang/es.js?v=e44e8da9f2", "fr": "assets/lang/fr.js?v=3483ca20cb", "id": "assets/lang/id.js?v=452db6faaf", "it": "assets/lang/it.js?v=8d0101dde2", "ja": "assets/lang/ja.js?v=c4428ddec3", "ko": "assets/lang/ko.js?v=342cd70379", "pt": "assets/lang/pt.js?v=10c9cb1458", "ta": "assets/lang/ta.js?v=da42e25fc2", "tl": "assets/lang/tl.js?v=66d175cbb9", "zh-Hans": "assets/lang/zh-Hans.js?v=4a4abafaf7", "zh-Hant": "assets/lang/zh-Hant.js?v=f716365649"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=3682b11deb", "es": "assets/lang/es.js?v=016ad86f5b", "fr": "assets/lang/fr.js?v=711caf4023", "id": "assets/lang/id.js?v=73beaed9ef", "it": "assets/lang/it.js?v=0bcc05c1b7", "ja": "assets/lang/ja.js?v=7a97b28368", "ko": "assets/lang/ko.js?v=07e0db80d5", "pt": "assets/lang/pt.js?v=6eb0b2ced2", "ta": "assets/lang/ta.js?v=3fc5f6547e", "tl": "assets/lang/tl.js?v=c6987380d1", "zh-Hans": "assets/lang/zh-Hans.js?v=b5b88bac7a", "zh-Hant": "assets/lang/zh-Hant.js?v=97015db0a6"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -48361,6 +48366,7 @@ function translateText(s){
 }
 const ATTRS = ['title', 'aria-label', 'placeholder', 'data-tip'];
 function skip(el){ return !el || el.closest && el.closest('[translate="no"], input, textarea, script, style, .no-i18n'); }
+function skipAttr(el){ return !el || el.closest && el.closest('[translate="no"], script, style, .no-i18n'); }
 function walk(rootNode){
   if(!rootNode) return;
   const els = rootNode.nodeType === 1 ? [rootNode, ...rootNode.querySelectorAll('*')] : [];
@@ -48375,7 +48381,7 @@ function walk(rootNode){
     if(n.nodeValue !== out){ n.nodeValue = out; wrote.set(n, out); }
   }
   els.forEach(el=>{
-    if(skip(el)) return;
+    if(skipAttr(el)) return; // 2026-11-16 (package UX4): inputs keep their text skipped but get placeholder/title/aria-label translated
     ATTRS.forEach(a=>{
       if(!el.hasAttribute(a)) return;
       let o = originals.get(el); if(!o){ o = {}; originals.set(el, o); }
@@ -58129,7 +58135,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'f8ae820f63b7', BUILD_CARD_HASH = '51cc9f277a8b761681f0efc25adfcd298cf9c130ed3943694e8fdd0492d28135';
+const BUILD_ID = '6e03cc16e090', BUILD_CARD_HASH = '51cc9f277a8b761681f0efc25adfcd298cf9c130ed3943694e8fdd0492d28135';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -63657,7 +63663,7 @@ const NM_ROOM_EM = 6.7, NM_MIN_SCALE = 0.7, NM_W_CACHE = new Map(); let nmCtx = 
 let nmFontOk = false; // 2026-11-13 (package UI51): document.fonts.check costs ~3 ms a call; once the font is in, it stays
 function nmWidthEm(name){ name = String(name || '');
   try{ if(NM_W_CACHE.has(name)) return NM_W_CACHE.get(name);
-    if(typeof document !== 'undefined' && document.fonts && (nmFontOk || (nmFontOk = document.fonts.check('700 20px "Baloo 2"')))){ nmCtx = nmCtx || document.createElement('canvas').getContext('2d'); nmCtx.font = '700 100px "Baloo 2"'; const w = nmCtx.measureText(name).width / 100; NM_W_CACHE.set(name, w); return w; } }catch(e){}
+    if(typeof document !== 'undefined' && document.fonts && (nmFontOk || (nmFontOk = document.fonts.check('700 20px "Baloo 2"')))){ nmCtx = nmCtx || document.createElement('canvas').getContext('2d'); nmCtx.font = '700 100px "Baloo 2"' + (document.documentElement.lang && document.documentElement.lang !== 'en' ? ', ' + (getComputedStyle(document.body).fontFamily || 'sans-serif') : ''); const w = nmCtx.measureText(name).width / 100; NM_W_CACHE.set(name, w); return w; } }catch(e){}
   let w = 0; for(const ch of name){ w += /[iIl1j.,'’:;!|]/.test(ch) ? .3 : /[ftr\- ]/.test(ch) ? .36 : /[mwMW@]/.test(ch) ? .75 : /[A-Z]/.test(ch) ? .63 : .52; } return w; } // the fallback before the font is ready
 function nmFitScale(name){ const w = nmWidthEm(name); return w <= NM_ROOM_EM ? 1 : Math.max(NM_MIN_SCALE, Math.round(NM_ROOM_EM / w * 100) / 100); }
 // 2026-11-04 (package UI20, owner 11-04: the Lumber cost badge hid the start of "Glacial Ape-King" in the large view): the cost badge (top left) and the wait badge (top right)
@@ -63666,11 +63672,13 @@ function nmFitScale(name){ const w = nmWidthEm(name); return w <= NM_ROOM_EM ? 1
 // narrows the scroll's width so its text starts past the badge. The name is not shrunk for it; a name that no longer fits wraps to a second line.
 function nmPartsEm(parts){ let em = 0; for(const p of (parts || [])){ const m = /data-n="(\d+)"/.exec(p); em += m ? (+m[1] > 4 ? 2.1 : .9 * (+m[1]) + .35) : 1.3 * [...String(p).replace(/<[^>]*>/g, '')].length; } return Math.round((em * 1.04 + .2 * Math.max(0, (parts || []).length - 1)) * 100) / 100; } // + 4% and .2em between two cost parts (measured: a Lumber + Stone badge ran .17em wider than the sum)
 function nmWaitEm(w){ w = w | 0; return w <= 0 ? 0 : w > 4 ? 2.1 : Math.round((.9 * w + .35) * 100) / 100; }
-function nmHTML(name, costParts, wait){ const sc = nmFitScale(name), ce = nmPartsEm(costParts), we = nmWaitEm(wait), st = (ce ? `--nm-cem:${ce};` : '') + (we ? `--nm-wem:${we};` : '');
+// 2026-11-16 (package UX4): the fit measures the name as shown (translated), in the language's own font stack; i18n swaps the text node after render
+function nmShown(name){ try{ return (window.BramblewoodI18n && BramblewoodI18n.translate(String(name || ''))) || name; }catch(e){ return name; } }
+function nmHTML(name, costParts, wait){ const eng = name; name = nmShown(name); const sc = nmFitScale(name), ce = nmPartsEm(costParts), we = nmWaitEm(wait), st = (ce ? `--nm-cem:${ce};` : '') + (we ? `--nm-wem:${we};` : '');
   // 2026-11-05 23:39 (owner: "The scroll display of names for long named cards are screwed up!": "Black Dragon" broke as Blac / k Drag / on on a board card): --nm-lw is the
   // longest word's width in em, so the CSS shrinks the text until that word fits the narrowed scroll; words never break inside (UI20's overflow-wrap:anywhere is gone)
   const lw = Math.max(1, ...String(name || '').split(/\s+/).filter(Boolean).map(nmWidthEm));
-  return `<div class="nm"${st ? ` style="${st}"` : ''}><span class="nmt" style="--nm-lw:${Math.round(lw * 100) / 100};${sc < 1 ? `--nm-s:${sc}` : ''}">${escapeHtml(name)}</span></div>`; }
+  return `<div class="nm"${st ? ` style="${st}"` : ''}><span class="nmt" style="--nm-lw:${Math.round(lw * 100) / 100};${sc < 1 ? `--nm-s:${sc}` : ''}">${escapeHtml(eng)}</span></div>`; }
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
@@ -82686,11 +82694,15 @@ function startTipTicker(el, tips){
   };
   show();
 }
+// 2026-11-16 (package UX4): the bottom map tab strip scrolls sideways; a fade on the edge that still has tabs hints at it
+function syncSubtabsFade(t){ if(!t) return; const f = ()=>{ const max = t.scrollWidth - t.clientWidth; t.classList.toggle('fade-r', max > 2 && t.scrollLeft < max - 2); t.classList.toggle('fade-l', max > 2 && t.scrollLeft > 2); };
+  if(!t._fadeWired){ t._fadeWired = true; t.addEventListener('scroll', f, {passive: true}); window.addEventListener('resize', f); } requestAnimationFrame(()=> requestAnimationFrame(f)); }
 function placePlayFullHud(){
   const wrap = document.getElementById('appWrap'), view = document.getElementById('view-play'); if(!wrap || !view) return;
   wrap.classList.add('cq-hud');
   const tabs = view.querySelector('.play-subtabs-row .play-subtabs');
   wrap.classList.toggle('cq-no-tabs', !tabs || tabs.hidden);
+  syncSubtabsFade(tabs);
   view.style.setProperty('--cq-top', '0px');
 }
 function placeConquestHud(){
@@ -82707,6 +82719,7 @@ function placeConquestHud(){
   }
   const tabs = view.querySelector('.play-subtabs-row .play-subtabs');
   wrap.classList.toggle('cq-no-tabs', !tabs || tabs.hidden);
+  syncSubtabsFade(tabs);
   requestAnimationFrame(()=>{ const pane = document.getElementById('conquestMain') || layout; const t = pane.getBoundingClientRect().top - view.getBoundingClientRect().top; view.style.setProperty('--cq-top', Math.max(0, Math.round(t)) + 'px'); });
 }
 // Map leaders (2026-10-10): each of Maps 1–10 has a Heroic leader as its boss's first-clear reward. Players who beat
@@ -103997,6 +104010,7 @@ function rewardsPanelHTML(m){
   // shows greyed, and its dust bursts into the Magic Dust pill, which counts on up (baseDustBurst).
   const bg = m.conquestBaseGrowth, bgDust = (bg && bg.dust) || 0;
   if(bgDust && !cur.some(c=> c[0]==='dust')) cur.push(['dust', 0]);
+  for(let i = cur.length - 1; i >= 0; i--) if(!(+cur[i][1] > 0) && !(cur[i][0] === 'dust' && bgDust)) cur.splice(i, 1); // 2026-11-16 (package UX4): no pill for a reward of 0 (the Base-growth dust pill starts at +0 on purpose)
   // 2026-10-17: everything else that was its own block (Kibble, Spare castle, Dungeon key, Found) is a chip in the Rewards block.
   const acts = [];
   if(m.conquestKibbleEarned) acts.push(`<span class="rw-act rw-kibble" data-tip="${escapeAttr(TX('results.res3-kibble-tip')) /* 2026-10-26 (package RES3, owner #8: "Kibble: 'For nuturing cards in the nest'") */}">${TX('results.kibble-2', {conquestKibbleEarned: m.conquestKibbleEarned})}</span>`);
@@ -112686,7 +112700,7 @@ function renderHome(){
         ${wildpathsOpen() ? (()=>{ const av = wildpathAvailable(); return `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: Conquest passives"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>✦ ${av} Path point${av===1?'':'s'}</small></button>`; })() : ''}
         ${featureUnlocked('tavern') ? (()=>{ try{ settleWeeklyBeer(); }catch(e){} const beer = myCurrencies.beer||0; return `<button type="button" class="home-note note-tavern" data-hometab="tavern" title="The Tavern: recruit cards, raise your max Energy"><i class="pin" aria-hidden="true">📌</i><b>🍺 The Tavern</b><small>${beer ? `${beer} Beer · Recruit` : 'Recruit · Stamina'}</small></button>`; })() : ''}
         ${tabOpen('codex') && featureUnlocked('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
-        ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
+        ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> _t(({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t])).join(' · ') /* 2026-11-16 (package UX4): each word through the pack */}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
       </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
       <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>

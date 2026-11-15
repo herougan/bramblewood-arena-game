@@ -4452,5 +4452,18 @@
  "None: no new skill on this map's cards": "Nessuna: nessuna nuova abilità sulle carte di questa mappa",
  "New: on no earlier map's cards": "Nuova: su nessuna mappa precedente",
  "Not on this map's cards now": "Non più sulle carte della mappa",
- "No longer new here": "Non più nuova qui"
+ "No longer new here": "Non più nuova qui",
+ "Dailies & quests": "Giornaliere e missioni",
+ "Daily Dungeons": "Dungeon giornalieri",
+ "Materia, eggs, packs": "Materia, uova, bustine",
+ "Trade with players": "Scambia con i giocatori",
+ "How long the travellers' lines stay up, and how soon the next one comes.": "Quanto restano visibili le battute dei viaggiatori e quanto presto arriva la successiva.",
+ "If a fight runs slowly, effects step down one level (once per session).": "Se uno scontro va lento, gli effetti scendono di un livello (una volta per sessione).",
+ "Short lines over the cards, read out in each animal's babble.": "Brevi battute sopra le carte, pronunciate nel borbottio di ogni animale.",
+ "Classic: the full look. Pixel: retro, hard-edged versions. Minimal: just what you need to read the fight.": "Classico: l'aspetto completo. Pixel: versioni retrò dai bordi netti. Minimo: solo ciò che serve per leggere lo scontro.",
+ "Let the river decide": "Decide il fiume",
+ "Otters versus Hummingbirds": "Lontre contro Colibrì",
+ "Send feedback": "Invia un commento",
+ "Pixel": "Pixel",
+ "Minimal": "Minimo"
 }

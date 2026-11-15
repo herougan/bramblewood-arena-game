@@ -223,6 +223,7 @@ function translateText(s){
 }
 const ATTRS = ['title', 'aria-label', 'placeholder', 'data-tip'];
 function skip(el){ return !el || el.closest && el.closest('[translate="no"], input, textarea, script, style, .no-i18n'); }
+function skipAttr(el){ return !el || el.closest && el.closest('[translate="no"], script, style, .no-i18n'); }
 function walk(rootNode){
   if(!rootNode) return;
   const els = rootNode.nodeType === 1 ? [rootNode, ...rootNode.querySelectorAll('*')] : [];
@@ -237,7 +238,7 @@ function walk(rootNode){
     if(n.nodeValue !== out){ n.nodeValue = out; wrote.set(n, out); }
   }
   els.forEach(el=>{
-    if(skip(el)) return;
+    if(skipAttr(el)) return; // 2026-11-16 (package UX4): inputs keep their text skipped but get placeholder/title/aria-label translated
     ATTRS.forEach(a=>{
       if(!el.hasAttribute(a)) return;
       let o = originals.get(el); if(!o){ o = {}; originals.set(el, o); }
