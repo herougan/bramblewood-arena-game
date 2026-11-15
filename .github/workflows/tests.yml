@@ -1,0 +1,107 @@
+# 2026-11-16 (package INFRA1, owner 11-09: "Testing should always happen off-claude"): the unit suite on GitHub's free runners.
+# On every push to main or a batch-* branch, and by hand (Actions tab -> "Tests" -> Run workflow): smoke first, then every unit test of
+# tests/run-all.sh split over 8 jobs (tests/run.js --shard i/8, no cache), then a summary. It tests the committed build (index.html is
+# what Vercel serves); no rebuild, no browser (e2e) tests. Each shard's failing names (tests/.last-failures.txt) and log are its artifact
+# "tests-shard-<i>". A newer push to the same branch cancels the older run.
+name: Tests
+on:
+  push:
+    branches:
+      - main
+      - 'batch-*'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  SHARDS: 8
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install Playwright and Chromium
+        run: bash tools/ci/setup_tests.sh
+      - name: Smoke
+        shell: bash
+        run: |
+          mkdir -p tests/out
+          node tests/run.js --smoke 2>&1 | tee tests/out/ci.log
+      - if: always()
+        run: cp tests/.last-failures.txt tests/out/failures.txt 2>/dev/null || true
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-smoke
+          path: |
+            tests/out/ci.log
+            tests/out/failures.txt
+          if-no-files-found: ignore
+  unit:
+    needs: smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8] # 1..SHARDS
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install Playwright and Chromium
+        run: bash tools/ci/setup_tests.sh
+      - name: Unit tests, shard ${{ matrix.shard }}
+        shell: bash
+        run: |
+          mkdir -p tests/out
+          node tests/run.js --full --shard "${{ matrix.shard }}/$SHARDS" 2>&1 | tee tests/out/ci.log
+      - if: always()
+        run: cp tests/.last-failures.txt tests/out/failures.txt 2>/dev/null || true
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-shard-${{ matrix.shard }}
+          path: |
+            tests/out/ci.log
+            tests/out/failures.txt
+          if-no-files-found: ignore
+  summary:
+    needs: [smoke, unit]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tests-*
+          path: res
+      - name: Summary
+        shell: bash
+        run: |
+          {
+            echo "## Tests (${GITHUB_REF_NAME} @ ${GITHUB_SHA::7})"
+            echo "| part | result | failed |"
+            echo "|---|---|---|"
+            for p in smoke $(seq -f 'shard-%g' 1 "$SHARDS"); do
+              d=res/tests-$p
+              line=$(grep -E '^(smoke|tests): ' "$d/ci.log" 2>/dev/null | tail -1 | sed 's/ (passed before.*//; s/ ·.*//' || true)
+              fails=$(paste -sd, "$d/failures.txt" 2>/dev/null | sed 's/,/, /g' || true)
+              echo "| $p | ${line:-no result (skipped, cancelled, timed out or crashed)} | ${fails} |"
+            done
+            all=$(cat res/*/failures.txt 2>/dev/null | sort -u)
+            echo
+            if [ -n "$all" ]; then echo "**Failed ($(echo "$all" | wc -l)):** $(echo "$all" | paste -sd, | sed 's/,/, /g')"; else echo "**No failing test reported.**"; fi
+          } >> "$GITHUB_STEP_SUMMARY"

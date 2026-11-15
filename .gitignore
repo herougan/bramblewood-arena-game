@@ -20,3 +20,5 @@ __pycache__/
 # emoji build cache (2026-10-17, tools/emoji/build_sets.py)
 tools/emoji/.src/
 tests/e2e/shots/**/_tmp.png
+# 2026-11-16 (package INFRA1): tests/run.js writes the last run's failing test names here
+tests/.last-failures.txt

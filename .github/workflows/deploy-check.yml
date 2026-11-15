@@ -1,0 +1,39 @@
+# 2026-11-16 (package INFRA1): after a push to main, waits until the live site serves this commit's build: polls
+# https://bramblewood-arena.vercel.app/version.json for up to 10 minutes until its "build" equals the pushed version.json's. Fails with
+# both stamps when it never does (the Vercel deploy failed, is stuck, or the build pair was not committed). A push that does not change
+# version.json passes at once. Read the result with tools/ci/deploy_status.sh.
+name: Deploy check
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: read
+concurrency:
+  group: deploy-check
+  cancel-in-progress: true
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: version.json
+          sparse-checkout-cone-mode: false
+      - name: Wait for the live build stamp
+        shell: bash
+        run: |
+          URL=https://bramblewood-arena.vercel.app/version.json
+          want=$(jq -r .build version.json)
+          got=""
+          for i in $(seq 1 40); do
+            got=$(curl -fsS -H 'Cache-Control: no-cache' "$URL?ci=$GITHUB_RUN_ID-$i" | jq -r .build 2>/dev/null || true)
+            if [ "$got" = "$want" ]; then
+              echo "Live site serves build $want (${GITHUB_SHA::7}) after $(( (i - 1) * 15 ))s." | tee -a "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            sleep 15
+          done
+          msg="Live site still serves build '${got:-nothing}' after 10 min; commit ${GITHUB_SHA::7} has build $want. Check the Vercel deploy."
+          echo "::error::$msg"; echo "$msg" >> "$GITHUB_STEP_SUMMARY"; exit 1

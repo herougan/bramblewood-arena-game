@@ -12,6 +12,8 @@
 //   node tests/run.js --full -j 2        no cache (use before a release), 2 at a time
 //   node tests/run.js --e2e              also the Playwright tests listed under --e2e in run-all.sh
 //   node tests/run.js --list             print what would run and why, run nothing
+//   node tests/run.js --shard 2/8        only every 8th test of the list, starting at the 2nd (CI: .github/workflows/tests.yml)
+// Every run writes the failing test names to tests/.last-failures.txt (empty when none failed).
 //
 // A test's inputs are: its own file, every repo file it names (by file name, or a quoted folder name such as 'lang'),
 // and the same for any tests/lib helper it requires. If a test names nothing recognisable, all source inputs count.
@@ -24,6 +26,7 @@ const { spawn, execFileSync } = require('child_process');
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'tests', 'out');
 const TIMINGS_FILE = path.join(OUT, 'test-timings.json');
+const FAILURES_FILE = path.join(ROOT, 'tests', '.last-failures.txt');
 
 // 2026-11-11 (package TOOLS1): the pass cache sits in the repo's common git dir, so every worktree reads and writes one file (a fresh
 // worktree used to start cold, up to 30 min). BW_TEST_CACHE_DIR overrides it; without git it stays in tests/out. `--cache-dir` prints it.
@@ -73,6 +76,13 @@ const e2eRuns = flag('--e2e') ? parseRuns(e2eLine).concat(unitRuns.filter(isE2E)
 let tests = unitRuns.filter(r => !isE2E(r)).concat(e2eRuns).map(r => Object.assign(r, { name: path.basename(r.file).replace(/\.(js|py)$/, '') + (r.extra ? ' ' + r.extra : '') }));
 if (MODE === 'smoke') tests = tests.filter(t => SMOKE.includes(path.basename(t.file).replace(/\.js$/, '')) && !t.extra);
 if (ONLY) { const re = new RegExp(ONLY); tests = tests.filter(t => re.test(t.file)); }
+// 2026-11-16 (package INFRA1): --shard i/n keeps the list's i-th of every n tests, so CI shards split the list without talking to each other
+const SHARD = opt('--shard', null);
+if (SHARD) {
+  const m = /^(\d+)\/(\d+)$/.exec(SHARD);
+  if (!m || +m[1] < 1 || +m[1] > +m[2]) { console.error(`--shard wants i/n with 1 <= i <= n, got ${SHARD}`); process.exit(2); }
+  tests = tests.filter((t, k) => k % +m[2] === +m[1] - 1);
+}
 
 // ---- inputs and hashes ----
 function walk(dir, filter, skip = []) {
@@ -106,6 +116,20 @@ function fileHash(rel) {
   hashCache.set(rel, h);
   return h;
 }
+// 2026-11-16 (INFRA1): the candidate names a source contains, found from each place an extension occurs (one includes() per candidate
+// over arena_app.js-sized sources made every run, --list too, spend about 4 minutes here). Same answer as src.includes(base).
+const BASES = new Set(CANDIDATES.map(c => path.basename(c)));
+const NO_EXT = [...BASES].filter(b => !b.includes('.'));
+const EXTS = [...new Set([...BASES].filter(b => b.includes('.')).map(b => b.slice(b.lastIndexOf('.'))))];
+const MAX_BASE = Math.max(...[...BASES].map(b => b.length));
+function namedBases(src) {
+  const hit = new Set(NO_EXT.filter(b => src.includes(b)));
+  for (const ext of EXTS) for (let i = src.indexOf(ext); i >= 0; i = src.indexOf(ext, i + 1)) {
+    const end = i + ext.length;
+    for (let s = Math.max(0, end - MAX_BASE); s <= i; s++) { const b = src.slice(s, end); if (BASES.has(b)) hit.add(b); }
+  }
+  return hit;
+}
 const refMemo = new Map();
 function referencedInputs(rel, seen = new Set()) {
   if (refMemo.has(rel)) return refMemo.get(rel);
@@ -114,10 +138,11 @@ function referencedInputs(rel, seen = new Set()) {
   let src = '';
   try { src = fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch (e) { }
   const refs = new Set([rel]);
+  const named = namedBases(src), dirHit = new Map(); // one regex per folder name, not per file
   for (const c of CANDIDATES) {
-    const base = path.basename(c);
     const dir = path.dirname(c).split(path.sep).pop();
-    if (src.includes(base) || (dir && dir !== '.' && new RegExp(`['"\`]${dir}['"\`/]`).test(src))) refs.add(c);
+    if (dir && dir !== '.' && !dirHit.has(dir)) dirHit.set(dir, new RegExp(`['"\`]${dir}['"\`/]`).test(src));
+    if (named.has(path.basename(c)) || dirHit.get(dir)) refs.add(c);
   }
   // local helpers it requires (tests/lib/*, other test files): their inputs count too
   const reqRe = /require\(\s*(?:path\.join\([^)]*?)?['"`]([^'"`]+)['"`]/g;
@@ -169,7 +194,7 @@ function record(name, key, passed) { // merges into what is on disk now, so runs
   } catch (e) { if (!warned) { warned = true; console.log(`warning: cannot write ${CACHE_FILE} (${e.code || e.message}); passes are not cached`); } }
 }
 fs.mkdirSync(OUT, { recursive: true });
-if (CACHE_DIR !== OUT && !process.env.BW_TEST_CACHE_DIR) { // fold the old per-checkout caches into the shared file
+if (!LIST && CACHE_DIR !== OUT && !process.env.BW_TEST_CACHE_DIR) { // fold the old per-checkout caches into the shared file (--list writes nothing)
   try {
     const own = path.join(OUT, 'test-cache.json'); // this checkout's: always, then deleted so a stale pass cannot come back after a failure
     const files = [MAIN_ROOT && !fs.existsSync(CACHE_FILE) ? path.join(MAIN_ROOT, 'tests', 'out', 'test-cache.json') : null, own].filter(f => f && fs.existsSync(f)); // the main checkout's: once, when the shared file is new
@@ -227,5 +252,8 @@ Promise.all(Array.from({ length: Math.min(JOBS, queue.length || 1) }, worker)).t
   const slow = results.slice().sort((a, b) => b.secs - a.secs).slice(0, 3).map(r => `${r.t.name} ${r.secs.toFixed(0)}s`).join(', ');
   console.log(`\n${MODE === 'smoke' ? 'smoke' : 'tests'}: ${results.length - failed.length} passed, ${failed.length} failed, ${cachedN} skipped (passed before on identical inputs)` +
     ` · ${((Date.now() - started) / 1000).toFixed(0)}s${slow ? ' · slowest: ' + slow : ''}`);
+  // 2026-11-16 (INFRA1): the failing names, one a line, for CI artifacts and for rerunning them (--only)
+  fs.writeFileSync(FAILURES_FILE, failed.map(r => r.t.name + '\n').join(''));
+  console.log(`failing tests: ${path.relative(process.cwd(), FAILURES_FILE) || FAILURES_FILE} (${failed.length})`);
   process.exit(failed.length ? 1 : 0);
 });

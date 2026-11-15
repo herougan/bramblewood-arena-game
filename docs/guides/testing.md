@@ -13,6 +13,12 @@ The list is `tests/run-all.sh` (about 400 tests); the runner is `tests/run.js`. 
 
 The slow ones: e2e `flows` 758 s, `qa1_2026_11_02` 548 s, `bv_2026_10_24` 527 s, `qa2_2026_11_03` 462 s; unit `pr-2026-10-23` 504 s, `ui2-2026-10-29` 232 s, `card-matrix` 195 s. Never add them to a package's `--only` set unless the package touches their area.
 
+## Off this machine (2026-11-16, INFRA1)
+- A push to `main` or `batch-*` runs smoke + the full unit list on GitHub (`.github/workflows/tests.yml`, 8 shards); read the run's summary or the `tests-shard-<i>` artifacts. Details: `docs/workflows/release.md`, "Off-machine runs".
+- `node tests/run.js --shard i/n` runs the list's i-th of every n tests (round robin over `run-all.sh`).
+- Every run writes its failing names to `tests/.last-failures.txt` (gitignored); rerun them with `--only "$(paste -sd'|' tests/.last-failures.txt)"`.
+- `--list` reads and prints only (about 15 s for the whole list; it used to take about 4 minutes).
+
 ## Pick the smallest set
 1. Find the tests that name what you changed:
    `grep -lE "functionName|tx-key|card-id" tests/*.js tests/e2e/*.py`

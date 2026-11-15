@@ -14,10 +14,17 @@ A release is one push to `main`, which deploys the live site, plus one hub repub
 4. Look at the changed screens with `python3 tools/shot.py`.
 
 ## Ship
-1. `git push origin main`, then check that Vercel finished the deploy.
+1. `git push origin main`, then `bash tools/ci/deploy_status.sh` (the Deploy check run, below) until it reads `success`.
 2. Hub: `python3 tools/hub/build.py` (see "The hub" below), then the coordinator publishes it with the Artifact tool. Publish only the files that changed.
 3. Project: write only the canonical docs that changed (the backlog, decisions, and a release note if needed). Each write clears every chat's cache in the Project.
 4. Record the package IDs that shipped in the CHANGELOG entry and move their items to "done" in `docs/action-items.md`.
+
+## Off-machine runs: GitHub Actions (2026-11-16, package INFRA1)
+Free on this public repo; nothing is bought, committed or deployed by them.
+- **Tests** (`.github/workflows/tests.yml`): every push to `main` or a `batch-*` branch runs smoke, then the whole unit list in 8 shards (`node tests/run.js --full --shard i/8`), then a summary (passed counts, failing names). Pushing the batch branch is how to test a batch off this machine. Artifacts `tests-shard-<i>`: `ci.log` and `failures.txt`.
+- **Road measure** (`road-measure.yml`): every push to `main` (400 games, tag `main-<sha>`) and by hand (games, seed, tag, `--only`): Maps 0-20 in 20 shards, merged. Fetch: `bash tools/ci/fetch_measure.sh <run-id|latest>` writes `docs/balance/skirmish-pass-<tag>.jsonl` and `-summary.md` (`tools/ci/road_summary.js`: main / side in band, within 10, beyond 20, worst 8).
+- **Deploy check** (`deploy-check.yml`): after a push to `main`, waits up to 10 min for the live `version.json` to carry the pushed build stamp. `bash tools/ci/deploy_status.sh` prints the latest result; it replaces "check that Vercel finished" below.
+- Locally, every run writes its failing names to `tests/.last-failures.txt`.
 
 ## Debugging
 - Start with the smallest repro: one test file (`node tests/run.js --only <name>`), a harness board scenario, or a `tools/shot.py --js` call.

@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package INFRA1: tests, road measure and deploy check on GitHub Actions)
+- `.github/workflows/tests.yml`: push to `main` / `batch-*` (or by hand): smoke, then the unit list in 8 shards, then a job summary; failing names and logs as artifacts. Chromium headless shell 1194 and Playwright 1.56.0 installed by `tools/ci/setup_tests.sh`.
+- `.github/workflows/road-measure.yml`: push to `main` (or by hand: games, seed, tag, only): Maps 0-20 in 20 shards, merged `skirmish-pass-<tag>.jsonl` + summary (`tools/ci/road_summary.js`); `tools/ci/fetch_measure.sh <run-id|latest>` downloads it into `docs/balance/`.
+- `.github/workflows/deploy-check.yml`: waits up to 10 min for the live `version.json` to carry the pushed build; `tools/ci/deploy_status.sh` prints the latest result.
+- `tests/run.js`: `--shard i/n`; failing names always written to `tests/.last-failures.txt`; `--list` writes nothing; finding each test's inputs takes about 15 s instead of about 4 min (every run paid it).
+
 ## 2026-11-15 (package BALREL1: the recommended balance fixes, applied where they keep the deck rules)
 - Owner 23:00 "Apply them (Recommended)": the defaults of EDGE1-1 to EDGE5-1, SIDE2-2 e, SIDE2-4 e, SIDE3-1 a, SIDE4-1 a (SIDE5-1 a: 19-A-1 left as is; 20-9 left for the card redesign).
 - Applied: 46 fights that keep every standing deck rule (tests/skir1: no new failure): 11-9, 13-4 (Shield) and 44 side fights (SIDE2's decks with Carried x2 and smaller side decks; Sunken Depths boss Health 13, Pale Desert boss level 3, 2-A-6 Health 8, 2-B-1 Health 7 and Shield 0).
