@@ -565,12 +565,6 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - b) You add a stronger Morel card to 7-6's list; Claude retunes.
 - **Default:** a
 
-**BAL43-2. Redwood Deep 13-3 Antler Grove a little easy** · Decide · Road · asked 2026-11-10
-- Antler Grove 88.5% (target 80, band top 88), 200 games. Its list allows only 15 legal decks; all read 90-98%, and no leader or Shield move helps.
-  - a) You add a stronger Redwood card (a stag fits the name) to 13-3's list; Claude retunes.
-  - b) Leave it (just over the band).
-- **Default:** a
-
 **BAL42-1. Glass Dunes 18-4 Sandstorm stays too easy** · Decide · Road · asked 2026-11-10
 - Sandstorm 18-4 83% (target 62), 200 games, after BAL42's best move (was 85.5%). Every legal deck from its list with Sand Veil on (all 679) reads 80-100%; its Shield is at the rule.
   - a) You add stronger Desert cards to 18-4's list; Claude retunes.
@@ -664,6 +658,12 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - b) Claude removes its adds where a map is over and re-fits those fights with deck swaps.
   - c) You press No on the adds you don't want; Claude re-fits after.
 - **Default:** c
+
+**BAL43-2. Redwood Deep 13-3 Antler Grove a little easy** · Decide · Road · asked 2026-11-10 · decided 2026-11-16
+- Antler Grove 88.5% (target 80, band top 88), 200 games. Its list allows only 15 legal decks; all read 90-98%, and no leader or Shield move helps.
+  - a) You add a stronger Redwood card (a stag fits the name) to 13-3's list; Claude retunes.
+  - b) Leave it (just over the band).
+- **Default:** a
 
 **BAL40-1. Glimmer Depths 8-A-3 stays too easy** · Decide · Road · asked 2026-11-10 · decided 2026-11-10
 - Shard Gallery 8-A-3 58% (target 50), 200 games. Its deck has its Sky Ambush boon off (7 of the 10 cards it needs), so no deck move is legal, and its Shield is at the rule.
