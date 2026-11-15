@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bramblewood Lab</title>
+<!-- 2026-11-16 (package LAB1): the Lab's page. No CDN: charts are small inline SVG, so it works offline. -->
+<style>
+:root{color-scheme:light;--bg:#f4f3ef;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#8a897f;--line:#e1e0d9;--axis:#c3c2b7;--accent:#2a78d6;
+  --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--good:#0ca30c;--warn:#fab219;--serious:#ec835a;--bad:#d03b3b;--band:rgba(12,163,12,.12);--faint:rgba(42,120,214,.25)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#111110;--surface:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--muted:#8a897f;--line:#2c2c2a;--axis:#383835;--accent:#3987e5;
+  --s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--band:rgba(12,163,12,.18);--faint:rgba(57,135,229,.3)}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#111110;--surface:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--muted:#8a897f;--line:#2c2c2a;--axis:#383835;--accent:#3987e5;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--band:rgba(12,163,12,.18);--faint:rgba(57,135,229,.3)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
+header h1{font-size:17px;margin:0 8px 0 0}.chip{font:12px ui-monospace,Menlo,monospace;color:var(--ink2);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:3px 7px}
+nav{display:flex;flex-wrap:wrap;gap:2px;padding:0 16px;background:var(--surface);border-bottom:1px solid var(--line)}
+nav button{border:0;background:none;color:var(--ink2);padding:10px 12px;font:inherit;cursor:pointer;border-bottom:2px solid transparent}nav button.on{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+main{padding:16px;max-width:1280px;margin:0 auto}section{display:none}section.on{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 14px}.card h2{font-size:15px;margin:0 0 10px}.card h3{font-size:13px;margin:12px 0 6px;color:var(--ink2)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}.grid.wide{grid-template-columns:repeat(auto-fit,minmax(min(460px,100%),1fr))}
+label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--ink2)}label.inline{flex-direction:row;align-items:center;gap:6px}
+input,select,textarea{max-width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 7px}input[type=number]{width:90px}textarea{width:100%;min-height:110px;font:12px ui-monospace,Menlo,monospace}
+button.go{background:var(--accent);color:#fff;border:0;border-radius:6px;padding:7px 14px;font:inherit;font-weight:600;cursor:pointer}button.alt{background:none;border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:6px 11px;font:inherit;cursor:pointer}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:4px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--ink2);font-weight:600;font-size:12px}td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}td:first-child{white-space:nowrap}
+.scroll{overflow-x:auto}.muted{color:var(--muted)}.small{font-size:12px}.mono{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.tiles{display:flex;flex-wrap:wrap;gap:12px}.tile{flex:1 1 110px;background:var(--bg);border-radius:8px;padding:10px 12px}.tile b{display:block;font-size:24px;font-variant-numeric:tabular-nums}.tile span{font-size:12px;color:var(--ink2)}
+.st{display:inline-flex;align-items:center;gap:5px}.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;min-width:120px}.bar i{display:block;height:100%;background:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--ink2);margin:0 0 4px}.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+svg.chart{width:100%;height:auto;display:block}svg text{fill:var(--ink2);font-size:11px}.hit:hover+.tip,.tipg:hover .tip{display:block}
+pre{white-space:pre-wrap;font:12px ui-monospace,Menlo,monospace;background:var(--bg);padding:8px;border-radius:6px;max-height:320px;overflow:auto;margin:6px 0}
+.pos{color:var(--good)}.neg{color:var(--bad)}details>summary{cursor:pointer;color:var(--ink2);margin:6px 0}
+#toast{position:fixed;bottom:16px;right:16px;background:var(--ink);color:var(--surface);padding:8px 14px;border-radius:8px;display:none;max-width:420px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Bramblewood Lab</h1>
+  <span class="chip" id="snap">no game data yet</span>
+  <button class="alt" id="pullBtn">Pull latest</button>
+  <label class="inline small" title="Lay the live card_overrides from Supabase over cards.json for new runs (read only)"><input type="checkbox" id="live"> live card edits</label>
+  <span class="small muted" id="busy"></span>
+</header>
+<nav id="tabs"></nav>
+<main>
+<section id="t-dash">
+  <div class="card"><div class="row"><label>Results <select id="grp" style="width:380px"></select></label><label>Up to map <input type="number" id="maxmap" value="20" min="0" max="40"></label><a class="small" id="grpCsv" href="#">CSV</a></div>
+    <p class="small muted" id="grpInfo"></p>
+    <div class="grid"><div><h3>Main road</h3><div class="tiles" id="tMain"></div></div><div><h3>Side maps</h3><div class="tiles" id="tSide"></div></div></div></div>
+  <div class="card"><h2>Trend across results</h2><p class="small muted">Each point is one set of pooled results (one data hash) or one saved file, oldest first, that covers most of the road (partial measures left out). Main road, curve fights, no endless floors.</p><div id="trend"></div></div>
+  <div class="grid">
+    <div class="card"><h2>Worst fights</h2><div class="scroll" id="worst"></div></div>
+    <div class="card"><h2>Per map</h2><div class="scroll" id="perMap"></div></div>
+  </div>
+  <div class="card"><details><summary>Every fight in these results</summary><div class="scroll" id="allF"></div></details></div>
+  <div class="card"><h2>What the store holds</h2><div id="kinds" class="small"></div></div>
+</section>
+
+<section id="t-measure">
+  <div class="card"><h2>Road measure</h2><p class="small muted">The Map reference deck against every road fight (tools/skirmish_pass.js measure), on all cores. A blank seed picks fresh games, so this run pools with earlier ones on the same game data.</p>
+    <div class="row"><label>Games a fight <input type="number" id="mGames" value="40" min="1"></label><label>Seed (blank = fresh) <input id="mSeed" style="width:110px"></label><label>Up to map <input type="number" id="mMax" value="20"></label>
+      <label>Only (fight keys or map ids) <input id="mOnly" placeholder="0-1,1-2 or mf" style="width:200px"></label><label>Reference deck <input id="mRef" value="map" style="width:90px" title="map, ref2, prog, ladder-1 ..."></label>
+      <label class="inline"><input type="checkbox" id="mMain"> main maps only</label><button class="go" id="mGo">Queue measure</button></div>
+    <p class="small muted" id="mEst"></p></div>
+  <div class="card"><h2>Recent road runs</h2><div class="scroll" id="mRuns"></div></div>
+</section>
+
+<section id="t-opt">
+  <div class="card"><h2>Deck optimiser from a card list</h2><p class="small muted">tools/opt/deckopt.js on exactly these cards (copies and levels optional; no count = up to the rarity's cap). One card a line: <span class="mono">otter-kit x4</span>, <span class="mono">3x soldier-ant @2</span>, <span class="mono">bee-forager</span>.</p>
+    <div class="row"><label>Map <select id="oMap"></select></label><label>Search games <input type="number" id="oBudget" value="2000"></label><label>Add card <input id="oPick" list="cardList" placeholder="type a name or id" style="width:220px"></label><button class="alt" id="oAdd">Add</button><button class="alt" id="oMapCards">Use the map's own cards</button></div>
+    <p></p><textarea id="oCards" placeholder="otter-kit x4&#10;bee-forager"></textarea><p></p><button class="go" id="oGo">Queue optimiser</button></div>
+  <div class="card"><h2>Results</h2><div class="row"><label>Run <select id="oRun" style="width:320px"></select></label></div><div id="oOut"></div></div>
+</section>
+
+<section id="t-journey">
+  <div class="card"><h2>Free player's journey</h2><p class="small muted">Seeded free players walk Map 0 to N with the game's own rewards and pack draws (tools/opt/ref5_prog.js walk), then farm for extra days at Map N on the ECON2 player's repeat income. Each map gets a deck from the player's collection (tools/ref6/ladder.js's rule, or the optimiser), measured against that map's road fights.</p>
+    <div class="row"><label>To map <input type="number" id="jTo" value="10" min="0" max="24"></label><label>Players <input type="number" id="jSeeds" value="5" min="1"></label><label>Farming days <input type="number" id="jFarm" value="30" min="0"></label>
+      <label>Player <select id="jProf"><option value="casual">casual (2 x 30 min)</option><option value="dedicated">dedicated (~2 h)</option></select></label>
+      <label>Deck <select id="jDeck"><option value="quick">quick pick (no games)</option><option value="optimise">optimiser every K maps</option></select></label><label>K <input type="number" id="jEvery" value="5" min="1"></label>
+      <label>Games a fight <input type="number" id="jGames" value="10" min="1"></label><label class="inline"><input type="checkbox" id="jSide"> side maps too</label><button class="go" id="jGo">Queue journey</button></div></div>
+  <div class="card"><div class="row"><label>Run <select id="jRun" style="width:320px"></select></label><a class="small" id="jCsv" href="#">CSV</a></div><p class="small muted" id="jInfo"></p>
+    <div class="grid wide" id="jCharts"></div><div class="scroll" id="jTable"></div></div>
+</section>
+
+<section id="t-econ">
+  <div class="card"><h2>Economy</h2><p class="small muted">tools/econ2/econ_sim_2026_11_03.js: the dedicated and casual players day by day with the game's Energy, rewards and Forge (expected values).</p><button class="go" id="eGo">Queue economy run</button></div>
+  <div class="card"><div class="row"><label>Run <select id="eRun" style="width:320px"></select></label></div><div class="grid wide" id="eCharts"></div><div class="scroll" id="eTable"></div></div>
+</section>
+
+<section id="t-whatif">
+  <div class="card"><h2>What-if</h2><p class="small muted">Edit one card in a private copy of the game data and re-measure the fights that hold it (in an enemy deck or the reference deck), before and after on the same games. Nothing is written to the live game or the repo.</p>
+    <div class="row"><label>Card <input id="wCard" list="cardList" style="width:220px"></label><span class="small muted" id="wNow"></span></div><p></p>
+    <div class="row"><label>Cost <input type="number" id="wCost"></label><label>Wait <input type="number" id="wWait"></label><label>Attack <input type="number" id="wAtk"></label><label>Health <input type="number" id="wHp"></label><label>Games a fight <input type="number" id="wGames" value="40"></label></div>
+    <details><summary>Skills (JSON, optional)</summary><textarea id="wFx" placeholder='{"armor":2}'></textarea></details><button class="go" id="wGo">Queue what-if</button></div>
+  <div class="card"><div class="row"><label>Run <select id="wRun" style="width:320px"></select></label></div><div class="scroll" id="wOut"></div></div>
+</section>
+
+<section id="t-compare">
+  <div class="card"><h2>Compare two results</h2><div class="row"><label>A <select id="cA" style="width:300px"></select></label><label>B <select id="cB" style="width:300px"></select></label></div><div id="cOut"></div></div>
+</section>
+
+<section id="t-tools">
+  <div class="card"><h2>Repo tools</h2><p class="small muted">Every other simulation tool, run as it is from the newest game data in a private copy. New files it writes under docs/balance are kept with the run.</p><div class="scroll" id="tList"></div></div>
+  <div class="card"><div class="row"><label>Run <select id="tRun" style="width:320px"></select></label></div><div id="tOut"></div></div>
+</section>
+
+<section id="t-runs">
+  <div class="card"><h2>Lab runs</h2><div class="scroll" id="rList"></div></div>
+  <div class="card"><h2>Saved history in docs/balance</h2><p class="small muted">Every road measure saved in the repo can be read in (fetched once, cached); other kinds show their headline numbers on demand.</p>
+    <button class="go" id="impGo">Import saved road results</button> <button class="alt" id="catGo">List every kind</button><div class="scroll" id="cat"></div></div>
+</section>
+
+<section id="t-queue">
+  <div class="card"><h2>Queue</h2><div class="row"><button class="alt" id="nightGo">Queue an overnight set</button><button class="alt" id="quitGo">Quit Lab</button><span class="small muted" id="qHome"></span></div><div class="scroll" id="qList"></div></div>
+</section>
+</main>
+<datalist id="cardList"></datalist>
+<div id="toast"></div>
+<script>
+'use strict';
+const $ = id => document.getElementById(id), esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pct = (v, d) => v == null || isNaN(v) ? '–' : (+v).toFixed(d || 0) + '%', n0 = v => v == null || isNaN(v) ? '–' : Math.round(v).toLocaleString();
+const sgn = v => v == null || isNaN(v) ? '–' : (v > 0 ? '+' : '') + v.toFixed(0);
+async function api(p, body) { const r = await fetch(p, body ? { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) } : {}); const j = await r.json(); if (!r.ok) throw new Error(j.error || r.status); return j; }
+function toast(t) { const e = $('toast'); e.textContent = t; e.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(() => { e.style.display = 'none'; }, 4000); }
+const TABS = [['dash', 'Dashboard'], ['measure', 'Road measure'], ['opt', 'Optimiser'], ['journey', 'Journey'], ['econ', 'Economy'], ['whatif', 'What-if'], ['compare', 'Compare'], ['tools', 'Tools'], ['runs', 'Runs'], ['queue', 'Queue']];
+let tab = 'dash', STATE = null, META = null, RUNS = [], DASH = null;
+try { tab = localStorage.getItem('lab.tab') || 'dash'; $('live').checked = localStorage.getItem('lab.live') === '1'; } catch (e) {}
+$('tabs').innerHTML = TABS.map(([k, t]) => `<button data-t="${k}">${t}</button>`).join('');
+$('tabs').onclick = e => { const k = e.target.dataset.t; if (k) show(k); };
+$('live').onchange = () => { try { localStorage.setItem('lab.live', $('live').checked ? '1' : '0'); } catch (e) {} };
+function show(k) { tab = k; try { localStorage.setItem('lab.tab', k); } catch (e) {} document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.t === k)); document.querySelectorAll('section').forEach(s => s.classList.toggle('on', s.id === 't-' + k)); refresh(); }
+async function queue(type, params) { params.live = $('live').checked || undefined; const j = await api('/api/jobs', { type, params }); toast('Queued ' + type + ' (' + j.id + ')'); poll(); }
+
+// ---------------------------------------------------------------- charts (inline SVG)
+// series: [{name, color, pts:[[x,y]], faint, dash, step}], band: [[x, lo, hi]], target: [[x,y]]
+function chart(o) {
+  const W = o.w || 600, H = o.h || 240, L = 44, R = 12, T = 10, B = 30, all = [];
+  o.series.forEach(s => s.pts.forEach(p => { if (p[1] != null && !isNaN(p[1])) all.push(p); })); (o.band || []).forEach(b => { all.push([b[0], b[1]], [b[0], b[2]]); });
+  if (!all.length) return '<p class="small muted">No data.</p>';
+  const xs = all.map(p => p[0]), ys = all.map(p => p[1]);
+  let x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = o.yMin != null ? o.yMin : Math.min(0, ...ys), y1 = o.yMax != null ? o.yMax : Math.max(...ys); if (x1 === x0) x1 = x0 + 1; if (y1 === y0) y1 = y0 + 1;
+  const X = x => L + (x - x0) / (x1 - x0) * (W - L - R), Y = y => T + (1 - (y - y0) / (y1 - y0)) * (H - T - B);
+  const ticks = (a, b, k) => { const s = Math.pow(10, Math.floor(Math.log10((b - a) / k))), st = [1, 2, 5, 10].map(m => m * s).find(m => (b - a) / m <= k) || s * 10, out = []; for (let v = Math.ceil(a / st) * st; v <= b + 1e-9; v += st) out.push(+v.toFixed(6)); return out; };
+  let g = '';
+  ticks(y0, y1, 5).forEach(v => { g += `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end">${o.yFmt ? o.yFmt(v) : v}</text>`; });
+  const xInt = xs.every(Number.isInteger), xt = o.xLabels ? o.xLabels.map((t, i) => [o.xLabels.length > 12 && i % Math.ceil(o.xLabels.length / 12) ? null : t, i]) : ticks(x0, x1, 8).filter(v => !xInt || Number.isInteger(v)).map(v => [v, v]);
+  xt.forEach(([t, v]) => { if (t != null) g += `<text x="${X(v)}" y="${H - B + 16}" text-anchor="middle">${esc(t)}</text>`; });
+  g += `<line x1="${L}" x2="${W - R}" y1="${Y(y0)}" y2="${Y(y0)}" stroke="var(--axis)"/>`;
+  if (o.band && o.band.length) { const b = o.band.filter(x => x[1] != null); g += `<path d="M${b.map(x => X(x[0]) + ',' + Y(x[2])).join('L')}L${b.slice().reverse().map(x => X(x[0]) + ',' + Y(x[1])).join('L')}Z" fill="var(--band)"/>`; }
+  o.series.forEach(s => { const p = s.pts.filter(q => q[1] != null && !isNaN(q[1])); if (!p.length) return;
+    let d = ''; p.forEach((q, i) => { d += (i ? (s.step ? `H${X(q[0])}V${Y(q[1])}` : `L${X(q[0])},${Y(q[1])}`) : `M${X(q[0])},${Y(q[1])}`); });
+    g += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.faint ? 1 : 2}" ${s.faint ? 'opacity=".35"' : ''} ${s.dash ? 'stroke-dasharray="5 4"' : ''} stroke-linejoin="round"/>`;
+    if (!s.faint) p.forEach(q => { g += `<g class="tipg"><circle cx="${X(q[0])}" cy="${Y(q[1])}" r="9" fill="transparent"/><circle cx="${X(q[0])}" cy="${Y(q[1])}" r="${p.length > 40 ? 0 : 3}" fill="${s.color}" stroke="var(--surface)" stroke-width="2"/><title>${esc(s.name)}: ${esc(o.xLabels ? o.xLabels[q[0]] : q[0])} → ${esc(o.yFmt ? o.yFmt(q[1]) : (+q[1]).toFixed(1))}${q[2] ? ' (' + esc(q[2]) + ')' : ''}</title></g>`; }); });
+  if (o.yLabel) g += `<text x="${L}" y="${T - 1}" font-size="10">${esc(o.yLabel)}</text>`; if (o.xLabel) g += `<text x="${W - R}" y="${H - 4}" text-anchor="end" font-size="10">${esc(o.xLabel)}</text>`;
+  const named = o.series.filter(s => s.name && !s.faint), leg = named.length > 1 || o.band ? `<div class="legend">${named.map(s => `<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join('')}${o.band ? '<span><i style="background:var(--band);height:9px"></i>' + esc(o.bandName || 'target band') + '</span>' : ''}</div>` : '';
+  return `<div><div class="small" style="font-weight:600;margin-bottom:2px">${esc(o.title || '')}</div>${leg}<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.title || 'chart')}">${g}</svg></div>`;
+}
+const STATUS = s => s === 'in' ? ['var(--good)', 'in band'] : s === 'near' ? ['var(--warn)', 'within 10'] : s === 'mid' ? ['var(--serious)', '10-20 off'] : ['var(--bad)', 'beyond 20'];
+const fstat = f => f.lo <= f.win && f.win <= f.hi ? 'in' : Math.abs(f.gap) <= 10 ? 'near' : Math.abs(f.gap) <= 20 ? 'mid' : 'far';
+const pill = f => { if (f.target == null) return ''; const [c, t] = STATUS(fstat(f)); return `<span class="st"><span class="dot" style="background:${c}"></span>${t}</span>`; };
+const tiles = s => !s || !s.total ? '<p class="small muted">No fights.</p>' : [['in band', s.inBand, 'var(--good)'], ['within 10', s.within10, 'var(--warn)'], ['beyond 20', s.beyond20, 'var(--bad)']].map(([t, v, c]) => `<div class="tile"><b>${v}<span class="muted" style="font-size:14px"> / ${s.total}</span></b><span class="st"><span class="dot" style="background:${c}"></span>${t}</span></div>`).join('') + `<div class="tile"><b>${n0(s.games)}</b><span>games</span></div>`;
+const fightTable = (L, full) => `<table><tr><th>Fight</th><th>Map</th><th class="n">Win</th><th class="n">95%</th><th class="n">Target</th><th class="n">Band</th><th class="n">Gap</th><th></th><th class="n">Games</th><th class="n" title="More games for a ±5 interval">+ for ±5</th>${full ? '<th>Kind</th>' : ''}</tr>` +
+  L.map(f => `<tr><td title="${esc(f.name)}">${esc(f.code)}</td><td>${f.mapNo}${f.side ? ' side' : ''}</td><td class="n">${pct(f.win)}</td><td class="n muted">${f.ci ? pct(f.ci[0]) + '–' + pct(f.ci[1]) : ''}</td><td class="n">${f.target == null ? '' : f.target + '%'}</td><td class="n muted">${f.lo == null ? '' : f.lo + '–' + f.hi}</td><td class="n ${f.gap < 0 ? 'neg' : 'pos'}">${sgn(f.gap)}</td><td>${pill(f)}</td><td class="n">${n0(f.games)}</td><td class="n muted">${f.need5 ? n0(f.need5) : ''}</td>${full ? `<td class="muted">${esc(f.kind || '')}${f.curve ? '' : ' (off curve)'}</td>` : ''}</tr>`).join('') + '</table>';
+
+// ---------------------------------------------------------------- dashboard
+async function dash() {
+  const g = $('grp').value, d = DASH = await api('/api/dashboard?maxmap=' + (+$('maxmap').value || 20) + (g ? '&group=' + encodeURIComponent(g) : ''));
+  $('grp').innerHTML = d.groups.map(x => `<option value="${esc(x.key)}" ${d.group && x.key === d.group.key ? 'selected' : ''}>${esc((x.date || '').slice(0, 10))} · ${esc(x.label)} · ${x.source === 'lab' ? x.runs + ' Lab run(s)' : 'saved'} · main ${x.main.inBand}/${x.main.total}</option>`).join('') || '<option>No road results yet: queue a road measure, or import the saved ones (Runs tab)</option>';
+  const G = d.group; $('grpCsv').href = G ? '/api/export.csv?group=' + encodeURIComponent(G.key) : '#';
+  $('grpInfo').textContent = G ? `Data hash ${G.dataHash} · reference ${G.ref} · game ${G.shas.map(s => String(s).slice(0, 7)).join(', ') || '(saved file)'} · ${G.runs} run(s) pooled (wins and games summed per fight; overlapping seeds counted once)` : '';
+  $('tMain').innerHTML = tiles(d.status && d.status.main); $('tSide').innerHTML = tiles(d.status && d.status.side);
+  const T = d.trend, lab = T.map(t => (t.date || '').slice(5, 10) || '?');
+  $('trend').innerHTML = chart({ title: 'Main-road fights (% of curve fights)', xLabels: lab, yMin: 0, yMax: 100, yFmt: v => v + '%', w: 1100, h: 300, series: [
+    { name: 'in band', color: 'var(--s3)', pts: T.map((t, i) => [i, 100 * t.main.inBand / t.main.total, t.label]) },
+    { name: 'within 10', color: 'var(--s1)', pts: T.map((t, i) => [i, 100 * t.main.within10 / t.main.total, t.label]) },
+    { name: 'beyond 20', color: 'var(--s2)', pts: T.map((t, i) => [i, 100 * t.main.beyond20 / t.main.total, t.label]) }] });
+  const st = d.status; $('worst').innerHTML = st ? fightTable(st.worst.map(w => Object.assign({ code: w.code, mapNo: w.mapNo }, w))) : '';
+  $('perMap').innerHTML = st ? `<table><tr><th>Map</th><th class="n">Fights</th><th class="n">In band</th><th class="n">Within 10</th><th class="n">Beyond 20</th><th class="n">Mean gap</th><th>Worst</th></tr>${st.maps.map(m => `<tr><td>${m.mapNo}</td><td class="n">${m.fights}</td><td class="n">${m.inBand}</td><td class="n">${m.within10}</td><td class="n ${m.beyond20 ? 'neg' : ''}">${m.beyond20}</td><td class="n">${sgn(m.meanGap)}</td><td>${esc(m.worst.code)} (${sgn(m.worst.gap)})</td></tr>`).join('')}</table>` : '';
+  $('allF').innerHTML = fightTable(d.fights, true);
+  $('kinds').innerHTML = Object.entries(d.kinds).map(([k, v]) => `<span class="chip">${esc(k)}: ${v}</span>`).join(' ') || 'Nothing yet.';
+}
+$('grp').onchange = dash; $('maxmap').onchange = dash;
+
+// ---------------------------------------------------------------- runs of one kind (selects)
+async function runs() { RUNS = await api('/api/runs'); return RUNS; }
+function fillRuns(sel, kind) { const cur = $(sel).value, L = RUNS.filter(r => r.kind === kind && r.source !== 'import'); $(sel).innerHTML = L.map(r => `<option value="${r.id}" ${r.id === cur ? 'selected' : ''}>${esc((r.created || '').slice(0, 16).replace('T', ' '))} · ${esc(r.label || r.id)}</option>`).join('') || '<option value="">No runs yet</option>'; return $(sel).value; }
+
+async function measureTab() {
+  await runs(); const L = RUNS.filter(r => r.kind === 'road' && r.source !== 'import').slice(0, 20);
+  $('mRuns').innerHTML = `<table><tr><th>When</th><th>Run</th><th class="n">Games</th><th class="n">Seed</th><th>Main in band</th><th>Side in band</th><th>Game</th><th></th></tr>${L.map(r => { const h = r.headline || {}; return `<tr><td>${esc((r.created || '').slice(0, 16).replace('T', ' '))}</td><td>${esc(r.label)}</td><td class="n">${r.games || ''}</td><td class="n mono">${r.seed == null ? '' : r.seed}</td><td>${h.main ? h.main.inBand + '/' + h.main.total : ''}</td><td>${h.side ? h.side.inBand + '/' + h.side.total : ''}</td><td class="mono">${esc(String(r.sha || '').slice(0, 7))}</td><td><a href="/api/export.csv?run=${r.id}">CSV</a></td></tr>`; }).join('')}</table>`;
+  if (META) { const max = +$('mMax').value, only = $('mOnly').value.split(',').map(s => s.trim()).filter(Boolean), F = META.fights.filter(f => f.mapNo != null && f.mapNo <= max && (!$('mMain').checked || !f.side) && (!only.length || only.includes(f.key) || only.includes(f.map)));
+    $('mEst').textContent = `About ${F.length} fights × ${$('mGames').value} games = ${n0(F.length * $('mGames').value)} games on ${STATE ? STATE.cores : '?'} cores.`; }
+}
+['mGames', 'mMax', 'mOnly', 'mMain'].forEach(id => { $(id).oninput = measureTab; });
+$('mGo').onclick = () => queue('measure', { games: +$('mGames').value, seed: $('mSeed').value.trim(), maxmap: +$('mMax').value, only: $('mOnly').value.trim(), main: $('mMain').checked, ref: $('mRef').value.trim() === 'map' ? '' : $('mRef').value.trim() });
+
+// ---------------------------------------------------------------- optimiser
+async function optTab() {
+  if (META && !$('oMap').options.length) $('oMap').innerHTML = META.maps.filter(m => !m.side).sort((a, b) => a.no - b.no).map(m => `<option value="${m.no}">Map ${m.no} · ${esc(m.name)}</option>`).join('');
+  await runs(); const id = fillRuns('oRun', 'optimise'); if (!id) { $('oOut').innerHTML = ''; return; }
+  const r = await api('/api/run?id=' + id), res = r.result || {}, name = cid => (META && (META.cards.find(c => c.id === cid) || {}).name) || cid;
+  $('oOut').innerHTML = `<p class="small muted">Map ${res.map ? res.map.no + ' ' + esc(res.map.name) : ''} · ${r.cards.length} cards · game ${esc(String(r.sha).slice(0, 7))} · score ${res.score != null ? pct(100 * res.score, 1) : '–'} · <span class="mono">${esc(res.reproduce || '')}</span></p>
+    <div class="grid"><div><h3>Best deck</h3><table><tr><th>Card</th><th class="n">Copies</th></tr>${Object.entries(res.deck || {}).sort((a, b) => b[1] - a[1]).map(([c, k]) => `<tr><td>${esc(name(c))} <span class="muted mono">${esc(c)}</span></td><td class="n">${k}</td></tr>`).join('')}</table></div>
+    <div><h3>Against the map's road fights</h3><table><tr><th>Fight</th><th class="n">Win</th><th class="n">95%</th><th class="n">Target</th></tr>${(res.road || []).map(x => `<tr><td>${esc(x.node)}</td><td class="n">${pct(100 * x.optimum)}</td><td class="n muted">${x.ci ? pct(100 * x.ci[0]) + '–' + pct(100 * x.ci[1]) : ''}</td><td class="n">${pct(100 * x.target)}</td></tr>`).join('')}</table></div></div>
+    ${(res.optima || []).length > 1 ? `<h3>Other distinct optima</h3><pre>${esc(res.optima.slice(1).map(o => JSON.stringify(o.deck)).join('\n'))}</pre>` : ''}`;
+}
+$('oRun').onchange = optTab;
+$('oAdd').onclick = () => { const v = $('oPick').value.trim(); if (!v) return; const c = META && META.cards.find(x => x.id === v || x.name.toLowerCase() === v.toLowerCase()); $('oCards').value = ($('oCards').value.trim() + '\n' + (c ? c.id : v)).trim(); $('oPick').value = ''; };
+$('oMapCards').onclick = () => { const m = META && META.maps.find(x => !x.side && x.no === +$('oMap').value); if (m && m.cards) { $('oCards').value = m.cards.join('\n'); toast(m.cards.length + ' cards: the map\'s list and its fight decks'); } };
+$('oGo').onclick = () => queue('optimise', { map: +$('oMap').value, cards: $('oCards').value, budget: +$('oBudget').value });
+
+// ---------------------------------------------------------------- journey
+async function journeyTab() {
+  await runs(); const id = fillRuns('jRun', 'journey'); $('jCsv').href = id ? '/api/export.csv?run=' + id : '#'; if (!id) { $('jCharts').innerHTML = $('jTable').innerHTML = ''; return; }
+  const r = await api('/api/run?id=' + id), S = r.summary, seeds = Object.keys(r.players), N = r.headline.to, dN = r.profile.days[N] != null ? r.profile.days[N] : N;
+  $('jInfo').textContent = `${seeds.length} players to Map ${N}, then ${r.headline.farmDays} farming days · ${r.profile.label} (${n0(r.profile.farmIncome.gold)} Leaves, ${n0(r.profile.farmIncome.dust)} Dust a day while farming) · ${r.games} games a fight · game ${String(r.sha).slice(0, 7)}`;
+  const dayOf = i => r.profile.days[i] != null ? r.profile.days[i] : i, per = (f, faint) => seeds.map(s => ({ name: 'player ' + s, color: 'var(--s1)', faint: true, pts: f(r.players[s]) }));
+  const owned = p => Object.values(p.maps).map(m => [dayOf(m.map), m.distinct]).concat(p.farm.map(f => [dN + f.day, f.distinct]));
+  const mean = (pts) => { const by = {}; pts.flat().forEach(([x, y]) => { (by[x] = by[x] || []).push(y); }); return Object.keys(by).map(Number).sort((a, b) => a - b).map(x => [x, by[x].reduce((t, v) => t + v, 0) / by[x].length]); };
+  const ownedAll = seeds.map(s => owned(r.players[s]));
+  const winFarm = r.headline.winAtNFarmed;
+  $('jCharts').innerHTML = [
+    chart({ title: 'Different cards owned', xLabel: 'day', series: per(owned).concat([{ name: 'mean of players', color: 'var(--s1)', pts: mean(ownedAll) }]) }),
+    chart({ title: 'Map reached', xLabel: 'day', yLabel: 'map', series: [{ name: 'map', color: 'var(--s3)', step: true, pts: S.filter(x => x.day != null).map(x => [x.day, x.map]) }] }),
+    chart({ title: 'Win rate against the map\'s road fights', xLabel: 'map', yMin: 0, yMax: 100, yFmt: v => v + '%', band: S.filter(x => x.lo != null).map(x => [x.map, x.lo, x.hi]),
+      series: [{ name: 'players\' deck (mean)', color: 'var(--s1)', pts: S.map(x => [x.map, x.win]) }, { name: 'target', color: 'var(--muted)', dash: true, pts: S.map(x => [x.map, x.target]) }].concat(winFarm != null ? [{ name: 'after farming', color: 'var(--s2)', pts: [[N, winFarm]] }] : []) }),
+    chart({ title: 'Deck power (mean card score of the deck)', xLabel: 'map', series: per(p => Object.values(p.maps).map(m => [m.map, m.power])).concat([{ name: 'mean of players', color: 'var(--s1)', pts: S.map(x => [x.map, x.power]) }]) }),
+    chart({ title: 'Leaves in the pack bank at arrival', xLabel: 'map', series: [{ name: 'Leaves', color: 'var(--s4)', pts: S.map(x => [x.map, x.packBank]) }] }),
+    chart({ title: 'Dust banked at arrival', xLabel: 'map', series: [{ name: 'Dust', color: 'var(--s2)', pts: S.map(x => [x.map, x.dust]) }] }),
+  ].map(c => `<div>${c}</div>`).join('');
+  $('jTable').innerHTML = `<table><tr><th>Map</th><th class="n">Day</th><th class="n">Cards</th><th class="n">Deck power</th><th class="n">Win</th><th class="n">Band</th><th class="n">Target</th><th class="n">Leaves</th><th class="n">Dust</th></tr>${S.map(x => `<tr><td>${x.map}</td><td class="n">${x.day == null ? '–' : x.day}</td><td class="n">${n0(x.distinct)}</td><td class="n">${x.power ? x.power.toFixed(2) : '–'}</td><td class="n">${pct(x.win)}</td><td class="n muted">${x.lo == null ? '' : pct(x.lo) + '–' + pct(x.hi)}</td><td class="n">${pct(x.target)}</td><td class="n">${n0(x.packBank)}</td><td class="n">${n0(x.dust)}</td></tr>`).join('')}</table>`;
+}
+$('jRun').onchange = journeyTab;
+$('jGo').onclick = () => queue('journey', { to: +$('jTo').value, seeds: +$('jSeeds').value, farmDays: +$('jFarm').value, profile: $('jProf').value, deck: $('jDeck').value, optEvery: +$('jEvery').value, games: +$('jGames').value, side: $('jSide').checked });
+
+// ---------------------------------------------------------------- economy
+async function econTab() {
+  await runs(); const id = fillRuns('eRun', 'econ'); if (!id) { $('eCharts').innerHTML = $('eTable').innerHTML = ''; return; }
+  const r = await api('/api/run?id=' + id), P = r.profiles, ks = Object.keys(P).filter(k => !/KeepDeck/.test(k)), col = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)'];
+  const snaps = k => Object.values(P[k].snaps || {}).sort((a, b) => a.map - b.map);
+  $('eCharts').innerHTML = [
+    chart({ title: 'Map reached', xLabel: 'day', yLabel: 'map', series: ks.map((k, i) => ({ name: k, color: col[i], step: true, pts: snaps(k).map(s => [s.day, s.map]) })) }),
+    chart({ title: 'Maple Leaves held', xLabel: 'map', series: ks.map((k, i) => ({ name: k, color: col[i], pts: snaps(k).map(s => [s.map, s.wallet.gold]) })) }),
+    chart({ title: 'Dust held', xLabel: 'map', series: ks.map((k, i) => ({ name: k, color: col[i], pts: snaps(k).map(s => [s.map, s.wallet.dust]) })) }),
+  ].join('');
+  $('eTable').innerHTML = `<table><tr><th>Player</th>${['0-5', '5-10', '10-15', '15-20', '20-end'].map(s => `<th class="n">Days ${s}</th>`).join('')}<th>Finished</th></tr>${Object.keys(P).map(k => `<tr><td>${esc(P[k].label)}</td>${['0-5', '5-10', '10-15', '15-20', '20-end'].map(s => `<td class="n">${P[k].stages[s] == null ? '–' : P[k].stages[s]}</td>`).join('')}<td>${P[k].finished ? 'day ' + P[k].day : 'no'}</td></tr>`).join('')}</table>`;
+}
+$('eRun').onchange = econTab; $('eGo').onclick = () => queue('econ', {});
+
+// ---------------------------------------------------------------- what-if
+async function whatifTab() {
+  await runs(); const id = fillRuns('wRun', 'whatif'); if (!id) { $('wOut').innerHTML = ''; return; }
+  const r = await api('/api/run?id=' + id);
+  $('wOut').innerHTML = `<p class="small">${esc(r.card)}: ${esc(JSON.stringify(r.before))} → ${esc(JSON.stringify(r.set))} · ${r.games} games a fight, same seeds before and after · mean change ${sgn(r.headline.meanDelta)} points</p>
+    <table><tr><th>Fight</th><th>Map</th><th class="n">Before</th><th class="n">After</th><th class="n">Change</th><th class="n">Target</th><th>After</th></tr>${r.rows.map(x => `<tr><td title="${esc(x.name)}">${esc(x.code)}</td><td>${x.mapNo}</td><td class="n">${pct(x.before)}</td><td class="n">${pct(x.after)}</td><td class="n ${x.delta < 0 ? 'neg' : 'pos'}">${sgn(x.delta)}</td><td class="n">${x.target == null ? '' : x.target + '%'}</td><td>${pill({ win: x.after, lo: x.lo, hi: x.hi, target: x.target, gap: x.after - x.target })}</td></tr>`).join('')}</table>`;
+}
+$('wRun').onchange = whatifTab;
+$('wCard').oninput = () => { const c = META && META.cards.find(x => x.id === $('wCard').value); $('wNow').textContent = c ? `now: ${c.name}, cost ${c.cost}, wait ${c.wait || 0}, ${c.attack}/${c.health}, ${c.rarity}` : ''; };
+$('wGo').onclick = () => queue('whatif', { card: $('wCard').value.trim(), cost: $('wCost').value, wait: $('wWait').value, attack: $('wAtk').value, health: $('wHp').value, effects: $('wFx').value.trim() || undefined, games: +$('wGames').value });
+
+// ---------------------------------------------------------------- compare
+async function compareTab() {
+  if (!DASH) DASH = await api('/api/dashboard');
+  const opts = DASH.groups.map(x => `<option value="${esc(x.key)}">${esc((x.date || '').slice(0, 10))} · ${esc(x.label)} · main ${x.main.inBand}/${x.main.total}</option>`).join('');
+  ['cA', 'cB'].forEach((s, i) => { const v = $(s).value; $(s).innerHTML = opts; $(s).value = v || (DASH.groups[i] || {}).key || ''; });
+  if (!$('cA').value || !$('cB').value) { $('cOut').innerHTML = '<p class="small muted">Two results needed.</p>'; return; }
+  const [a, b] = await Promise.all([$('cA').value, $('cB').value].map(k => api('/api/dashboard?group=' + encodeURIComponent(k))));
+  const by = {}; a.fights.forEach(f => { by[f.id] = { a: f }; }); b.fights.forEach(f => { (by[f.id] = by[f.id] || {}).b = f; });
+  const L = Object.values(by).filter(x => x.a && x.b).map(x => Object.assign(x, { d: x.b.win - x.a.win, sig: x.b.ci[0] > x.a.ci[1] || x.a.ci[0] > x.b.ci[1] })).sort((p, q) => Math.abs(q.d) - Math.abs(p.d));
+  const line = (s, n) => `${n}: in band ${s.inBand}/${s.total}, within 10 ${s.within10}, beyond 20 ${s.beyond20}`;
+  $('cOut').innerHTML = `<p class="small">A ${line(a.status.main, 'main')} · B ${line(b.status.main, 'main')}<br>A ${line(a.status.side, 'side')} · B ${line(b.status.side, 'side')}<br>${L.length} fights in both; ${L.filter(x => x.sig).length} differ beyond their 95% intervals.</p>
+    <table><tr><th>Fight</th><th>Map</th><th class="n">A</th><th class="n">B</th><th class="n">B − A</th><th>Beyond noise</th><th class="n">Target</th></tr>${L.map(x => `<tr><td>${esc(x.a.code)}</td><td>${x.a.mapNo}${x.a.side ? ' side' : ''}</td><td class="n">${pct(x.a.win)} <span class="muted small">(${n0(x.a.games)})</span></td><td class="n">${pct(x.b.win)} <span class="muted small">(${n0(x.b.games)})</span></td><td class="n ${x.d < 0 ? 'neg' : 'pos'}">${sgn(x.d)}</td><td>${x.sig ? 'yes' : ''}</td><td class="n">${x.a.target == null ? '' : x.a.target + '%'}</td></tr>`).join('')}</table>`;
+}
+$('cA').onchange = compareTab; $('cB').onchange = compareTab;
+
+// ---------------------------------------------------------------- tools
+async function toolsTab() {
+  if (STATE && !$('tList').innerHTML) $('tList').innerHTML = `<table><tr><th>Tool</th><th>Command</th><th>Options</th><th></th></tr>${Object.entries(STATE.presets).map(([k, p]) => `<tr><td>${esc(p.label)}</td><td class="mono">node ${esc(p.cmd)}</td><td>${Object.entries(p.defaults).map(([a, v]) => `<label class="inline small">${esc(a)} <input data-tool="${k}" data-arg="${esc(a)}" value="${esc(v)}" style="width:110px"></label>`).join(' ')}</td><td><button class="alt" data-run="${k}">Run</button></td></tr>`).join('')}</table>`;
+  await runs(); const id = fillRuns('tRun', 'tool'); if (!id) { $('tOut').innerHTML = ''; return; }
+  const r = await api('/api/run?id=' + id);
+  $('tOut').innerHTML = `<p class="small mono">${esc(r.tool)} · exit ${r.exit} · game ${esc(String(r.sha).slice(0, 7))}</p>${r.files.length ? `<p class="small">Files written (kept in ${esc(r.outDir)}):<br><span class="mono">${r.files.map(esc).join('<br>')}</span></p>` : ''}<pre>${esc(r.tail.join('\n'))}</pre>`;
+}
+$('tList').onclick = e => { const k = e.target.dataset.run; if (!k) return; const args = {}; document.querySelectorAll(`[data-tool="${k}"]`).forEach(i => { args[i.dataset.arg] = i.value; }); queue('tool', { preset: k, args }); };
+$('tRun').onchange = toolsTab;
+
+// ---------------------------------------------------------------- runs + catalogue
+async function runsTab() {
+  await runs();
+  $('rList').innerHTML = `<table><tr><th>When</th><th>Kind</th><th>Run</th><th>Game</th><th>Data</th><th>Headline</th><th></th></tr>${RUNS.filter(r => r.source !== 'import').slice(0, 100).map(r => `<tr><td>${esc((r.created || '').slice(0, 16).replace('T', ' '))}</td><td>${esc(r.kind)}</td><td>${esc(r.label)}</td><td class="mono">${esc(String(r.sha || '').slice(0, 7))}</td><td class="mono">${esc(r.dataHash || '')}</td><td class="small muted">${esc(JSON.stringify(r.headline || '').slice(0, 140))}</td><td><a href="/api/export.csv?run=${r.id}">CSV</a> <a href="/api/run?id=${r.id}" target="_blank">JSON</a></td></tr>`).join('')}</table><p class="small muted">${RUNS.filter(r => r.source === 'import').length} saved road results imported.</p>`;
+}
+$('impGo').onclick = () => queue('import', {});
+$('catGo').onclick = async () => { $('cat').innerHTML = '<p class="small muted">Listing…</p>'; const c = await api('/api/catalogue');
+  $('cat').innerHTML = `<p class="small">${n0(c.files)} files in ${c.kinds.length} kinds.</p><table><tr><th>Kind</th><th class="n">Files</th><th>Latest</th><th class="n">Size</th><th>Types</th><th></th></tr>${c.kinds.map(k => `<tr><td class="mono">${esc(k.kind)}</td><td class="n">${k.files}</td><td>${esc(k.latest || '')}</td><td class="n">${n0(k.bytes / 1024)} KB</td><td class="small muted">${esc(Object.entries(k.ext).map(([e, n]) => n + ' ' + e).join(', '))}</td><td><button class="alt" data-kind="${esc(k.kind)}">Headlines</button></td></tr><tr hidden><td colspan="6" id="k-${esc(k.kind).replace(/[^\w-]/g, '_')}"></td></tr>`).join('')}</table>`; };
+$('cat').onclick = async e => { const k = e.target.dataset.kind; if (!k) return; const cell = $('k-' + k.replace(/[^\w-]/g, '_')); cell.parentElement.hidden = false; cell.innerHTML = 'Fetching…';
+  const h = await api('/api/headlines?kind=' + encodeURIComponent(k)); cell.innerHTML = `<table>${h.map(x => `<tr><td class="mono small">${esc(x.path.replace('docs/balance/', ''))}</td><td class="small">${esc(x.headline || '')}</td></tr>`).join('')}</table>`; };
+
+// ---------------------------------------------------------------- queue + state
+function queueTab() {
+  if (!STATE) return; $('qHome').textContent = 'Data folder: ' + STATE.home;
+  $('qList').innerHTML = `<table><tr><th>Job</th><th>Kind</th><th>Status</th><th>Progress</th><th>Options</th><th></th></tr>${STATE.jobs.slice().reverse().map(j => { const p = j.progress || {}, w = p.total ? Math.min(100, 100 * p.done / p.total) : null;
+    return `<tr><td class="mono">${j.id}</td><td>${esc(j.type)}</td><td>${esc(j.status)}${j.error ? `<div class="small neg">${esc(j.error)}</div>` : ''}</td><td>${j.status === 'running' ? `${w != null ? `<div class="bar"><i style="width:${w}%"></i></div>` : ''}<div class="small muted">${esc(p.text || '')} ${p.done != null && p.total ? p.done + '/' + p.total : ''}</div><pre>${esc(j.log.join('\n'))}</pre>` : `<span class="small muted">${esc(j.log.slice(-1)[0] || '')}</span>`}</td><td class="small mono">${esc(JSON.stringify(j.params)).slice(0, 120)}</td><td>${/queued|running/.test(j.status) ? `<button class="alt" data-cancel="${j.id}">Cancel</button>` : ''}</td></tr>`; }).join('')}</table>`;
+}
+$('qList').onclick = async e => { const id = e.target.dataset.cancel; if (id) { await api('/api/cancel', { id }); poll(); } };
+$('nightGo').onclick = async () => { await queue('measure', { games: 200, maxmap: 20, label: 'overnight road 200 games' }); await queue('journey', { to: 20, seeds: 20, farmDays: 30, games: 20 }); await queue('econ', {}); };
+$('quitGo').onclick = async () => { if (confirm('Quit the Lab? A running job stops (a road measure resumes when queued again).')) { await api('/api/quit', {}); document.body.innerHTML = '<main><p>The Lab has stopped. Open it again from the app.</p></main>'; } };
+$('pullBtn').onclick = async () => { $('pullBtn').disabled = true; try { const m = await api('/api/pull', {}); toast('Game ' + String(m.sha).slice(0, 7) + ': ' + m.fetched + ' file(s) downloaded'); } catch (e) { toast('Pull failed: ' + e.message); } $('pullBtn').disabled = false; poll(); };
+let lastDone = null;
+async function poll() {
+  try { STATE = await api('/api/state'); } catch (e) { $('busy').textContent = 'Lab not reachable'; return; }
+  const s = STATE.snapshot; $('snap').textContent = s ? `game ${String(s.sha).slice(0, 7)}${s.local ? ' (local)' : ''} · ${(s.date || '').slice(0, 16).replace('T', ' ')} · data ${s.dataHash}` : 'no game data yet';
+  const run = STATE.jobs.find(j => j.status === 'running'), q = STATE.jobs.filter(j => j.status === 'queued').length;
+  $('busy').textContent = run ? `running ${run.type}${run.progress && run.progress.total ? ' ' + run.progress.done + '/' + run.progress.total : ''}${q ? ', ' + q + ' queued' : ''}` : q ? q + ' queued' : '';
+  const done = STATE.jobs.filter(j => j.status === 'done').map(j => j.id).join(); if (lastDone !== null && done !== lastDone) refresh(); lastDone = done;
+  if (tab === 'queue') queueTab();
+  if (!META && s) { META = await api('/api/meta').catch(() => null); if (META) { $('cardList').innerHTML = META.cards.map(c => `<option value="${esc(c.id)}">${esc(c.name)} (${esc(c.rarity)})</option>`).join(''); refresh(); } }
+}
+function refresh() { ({ dash, measure: measureTab, opt: optTab, journey: journeyTab, econ: econTab, whatif: whatifTab, compare: compareTab, tools: toolsTab, runs: runsTab, queue: queueTab })[tab]().catch(e => toast(e.message)); }
+show(tab); poll(); setInterval(poll, 2000);
+</script>
+</body>
+</html>

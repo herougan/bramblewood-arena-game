@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package LAB1: Bramblewood Lab)
+- New program for the owner's Mac (tools/lab, owner guide tools/lab/README.md): a local web UI plus a CLI that runs and sums up every simulation. Before each run it pulls main's newest commit from GitHub (only the ~785 files the sims read, ~100 MB once, then only changed blobs; checksummed), and records the commit and a data hash (cards, map lists, fights, reference decks, engine).
+- Tabs: dashboard (road status main / side: in band, within 10, beyond 20; worst fights; per map; trend across every result), road measure (tools/skirmish_pass.js, all cores), deck optimiser from a card list (tools/opt/deckopt.js --mode prog), F2P journey (ref5_prog walk + farming days on ECON2's repeat income, a deck per map, win rate vs each road fight, charts), economy (ECON2), what-if (a card edited in a private copy, fights re-measured before / after on the same seeds), compare, the repo's other sim tools as presets, runs and the docs/balance catalogue, an overnight queue.
+- Aggregation: runs with the same data hash pool (wins and games summed per fight, Wilson 95%, games still needed for ±5); fresh seeds per run, a repeated seed set counted once. The 350 saved road .jsonl files import as history (241 with road rows).
+- Optional live Supabase card_overrides overlay (read only). .github/workflows/lab-build.yml builds "Bramblewood Lab.app" (arm64, x64; ad-hoc signed) and a Linux smoke bundle. Test: tests/lab1-2026-11-16.js.
+
 ## 2026-11-15 (package BALREL1: the recommended balance fixes, applied where they keep the deck rules)
 - Owner 23:00 "Apply them (Recommended)": the defaults of EDGE1-1 to EDGE5-1, SIDE2-2 e, SIDE2-4 e, SIDE3-1 a, SIDE4-1 a (SIDE5-1 a: 19-A-1 left as is; 20-9 left for the card redesign).
 - Applied: 46 fights that keep every standing deck rule (tests/skir1: no new failure): 11-9, 13-4 (Shield) and 44 side fights (SIDE2's decks with Carried x2 and smaller side decks; Sunken Depths boss Health 13, Pale Desert boss level 3, 2-A-6 Health 8, 2-B-1 Health 7 and Shield 0).
