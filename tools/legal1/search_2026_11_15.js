@@ -18,7 +18,8 @@ const SEED1 = +arg('--seed1', 11300), SEED2 = +arg('--seed2', 12300), G1MAX = +a
 const OUT = arg('--out', path.join(ROOT, 'docs', 'balance', 'legal1', 'search-2026-11-15.jsonl'));
 const fx = {}; let own = null; if (arg('--fx') && fs.existsSync(arg('--fx'))) fs.readFileSync(arg('--fx'), 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse).forEach(x => { if (x.deck && x.key !== code) fx[x.key] = x.deck; if (x.key === code && x.deck) own = x.deck; });
 // --from-accepted: a second pass starts from this fight's last accepted deck (the --fx file's own line) instead of the live deck
-const band = fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'skirmish-pass-b1114r400.jsonl'), 'utf8').trim().split('\n').map(JSON.parse).find(x => x.key === code);
+// --bands: the measure file whose row gives the target and band (2026-11-16, BAL-LEGAL2: the release measure skirmish-pass-b1116-s7300.jsonl)
+const band = fs.readFileSync(path.resolve(ROOT, arg('--bands', 'docs/balance/skirmish-pass-b1114r400.jsonl')), 'utf8').trim().split('\n').map(JSON.parse).find(x => x.key === code);
 const T = band.target, LO = band.lo, HI = band.hi, { m, n, f } = X.byCode[code];
 const legalP = d => X.problemsFull(code, d, fx), legal = d => !legalP(d).length;
 let node = Object.assign({}, n); const cache = new Map();
