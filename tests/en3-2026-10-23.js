@@ -149,7 +149,8 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   // #19: the guard line is gone (the swapped guardPull draws no path)
   const gp = app.slice(app.indexOf('function en3PatchGuardPull'), app.indexOf('function en3BoomMissThrow')); // EN4 (2026-10-23): en3GuardChain is gone, so up to the next function ok(!/<path|svg/i.test(gp), 'the guard pull draws no line');
   const TXm = require(path.join(ROOT, 'bramblewood-texts.js'));
-  ['ui.skn-rampart', 'ui.sk-rampart', 'ui.sk-rampart-codex', 'ui.skn-bramble-armor', 'ui.sk-bramble-armor', 'ui.sk-bramble-armor-codex', 'ui.en3-log-rampart', 'ui.en3-log-bramble-armor', 'ui.en3-log-boom-miss', 'ui.en3-float-guard-hop', 'ui.en3-float-boom-miss'].forEach(k=> ok(TXm.TEXT[k], 'TX ' + k));
+// 2026-11-15 (TESTFIX4): ui.en3-float-guard-hop removed by TESTFIX3 (unused)
+  ['ui.skn-rampart', 'ui.sk-rampart', 'ui.sk-rampart-codex', 'ui.skn-bramble-armor', 'ui.sk-bramble-armor', 'ui.sk-bramble-armor-codex', 'ui.en3-log-rampart', 'ui.en3-log-bramble-armor', 'ui.en3-log-boom-miss', 'ui.en3-float-boom-miss'].forEach(k=> ok(TXm.TEXT[k], 'TX ' + k));
   ok(/then −1 stack at the round's end/.test(TXm.TEXT['ui.st-bleed']), 'the Bleed text: −1 at the round\'s end');
   ok(/never guards the bramble/.test(app) && /\(not the bramble\)/.test(app), 'Guardian says it never guards the bramble');
   const keys = ['Rampart', TXm.TEXT['ui.skn-bramble-armor'] /* 2026-10-26 (FIN2-a): Bramble Armor is called Fortify */, TXm.TEXT['ui.sk-rampart'], TXm.TEXT['ui.sk-bramble-armor'], TXm.TEXT['ui.sk-rampart-codex'], TXm.TEXT['ui.sk-bramble-armor-codex'], TXm.TEXT['ui.en3-log-rampart'].replace(/^\S+ /, ''), TXm.TEXT['ui.st-bleed'], TXm.TEXT['ui.ls-bleed'], TXm.TEXT['coach.bleeding-this-card-takes-damage-every'],

@@ -113,7 +113,8 @@ const swing = (e, P, c, ev)=>{ ev = ev || []; e.debugAttack(P, so, c.uid, {}, ev
 
 // ================= texts, packs, docs, decisions =================
 { const tx = rd('bramblewood-texts.js'), txv = k=> (tx.match(new RegExp('"' + k.replace(/[.]/g, '\\.') + '":\\s*"((?:[^"\\\\]|\\\\.)*)"')) || [])[1];
-  const T = {'ui.eng36-hoard': '+{n}/+{n} for every 3 Lumber you hold.', 'ui.eng40-hoard-stone': '+{n}/+{n} for every 2 Stone you hold.', 'ui.eng40-hoard-metal': '+{n}/+{n} for each Metal you hold.',
+// 2026-11-15 (TESTFIX4): ui.eng40-hoard-stone, ui.eng40-hoard-metal removed by TESTFIX3 (unused)
+  const T = {'ui.eng36-hoard': '+{n}/+{n} for every 3 Lumber you hold.',
     'ui.eng34-fletcher': "Your units' arrows deal {n} more damage.", 'ui.sk-weapon-master': "Your side's arrows deal {n} more; your equipped units get +1/+1."};
   for(const [k, v] of Object.entries(T)) ok(txv(k) === v, `${k}: "${txv(k)}"`);
   const long = "While it is on the field, your units' arrows deal {n} more damage (its own too). Bolts, spits and other shots don't.";
