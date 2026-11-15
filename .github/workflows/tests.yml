@@ -25,6 +25,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 2026-11-16 (coordinator): content8 / dec1 read git history
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -58,6 +60,8 @@ jobs:
         shard: [1, 2, 3, 4, 5, 6, 7, 8] # 1..SHARDS
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 2026-11-16 (coordinator): content8 / dec1 read git history
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
