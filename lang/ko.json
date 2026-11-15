@@ -4443,5 +4443,15 @@
  "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "{date}, 최신 pro-ease 사다리 실행에서 측정. '너무 약함 / 너무 강함' 표시는 이 값으로 판정.",
  "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "이전 메인 맵에 있는 스킬을 여기서 새 매개변수로 사용(스킬 계열은 하나로 셈).",
  "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: 참조 덱 {k}개로 이 전투 {g}판(덱당 {n}+); p10/p90 노이즈 제외. 맵 참조, 참조-2: 각 {m}판.",
- "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: 공격, H: 체력(방패 1점은 {sh}), m: 빗나감 배수, f: 취약, S: 스킬 값."
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: 공격, H: 체력(방패 1점은 {sh}), m: 빗나감 배수, f: 취약, S: 스킬 값.",
+ "Skills by map": "맵별 스킬",
+ "{picks} picks on {maps} maps · {fresh} new skills": "{maps}개 맵 {picks}개 추천 · 새 스킬 {fresh}",
+ "Map {n} · {name} · {cards} cards": "맵 {n} · {name} · 카드 {cards}장",
+ "On the cards": "카드에 있음",
+ "Suggested before": "이전 제안",
+ "Top picks": "추천",
+ "None: no new skill on this map's cards": "없음: 이 맵 카드에 새 스킬 없음",
+ "New: on no earlier map's cards": "신규: 이전 맵에 없음",
+ "Not on this map's cards now": "이 맵 카드에 없음",
+ "No longer new here": "여기서 더 이상 신규 아님"
 }

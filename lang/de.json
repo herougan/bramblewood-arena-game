@@ -4440,5 +4440,15 @@
  "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Gemessen am {date} im letzten Pro-Ease-Leiterlauf. Danach wird die Plakette ZU SCHWACH / ZU STARK beurteilt.",
  "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Eine Fertigkeit, die eine frühere Hauptkarte hat, hier mit neuem Parameter (eine Fertigkeitsfamilie zählt als eine).",
  "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: {k} Referenzdecks gegen diesen Kampf, {g} Spiele ({n}+ je Deck); p10/p90 rauschfrei. Kartenreferenz, Referenz-2: je {m}.",
- "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Angriff, H: Gesundheit ({sh} je Schildpunkt), m: Fehlschlag-Faktor, f: Fragil, S: Fertigkeitswert."
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Angriff, H: Gesundheit ({sh} je Schildpunkt), m: Fehlschlag-Faktor, f: Fragil, S: Fertigkeitswert.",
+ "Skills by map": "Fähigkeiten pro Karte",
+ "{picks} picks on {maps} maps · {fresh} new skills": "{picks} Picks auf {maps} Karten · {fresh} neue Fähigkeiten",
+ "Map {n} · {name} · {cards} cards": "Karte {n} · {name} · {cards} Karten",
+ "On the cards": "Auf den Karten",
+ "Suggested before": "Früher vorgeschlagen",
+ "Top picks": "Top-Picks",
+ "None: no new skill on this map's cards": "Keine: keine neue Fähigkeit auf den Karten dieser Karte",
+ "New: on no earlier map's cards": "Neu: auf keiner früheren Karte",
+ "Not on this map's cards now": "Nicht mehr auf den Karten dieser Karte",
+ "No longer new here": "Hier nicht mehr neu"
 }

@@ -4442,5 +4442,15 @@
  "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Diukur {date} pada putaran tangga pro-ease terbaru. Lencana TERLALU LEMAH / TERLALU KUAT dinilai dari ini.",
  "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Skill yang sudah dimiliki peta utama sebelumnya, dipakai di sini dengan parameter baru (satu keluarga skill dihitung satu).",
  "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: {k} dek referensi melawan pertarungan ini, {g} game ({n}+ per dek); p10/p90 bebas noise. Referensi peta, Referensi-2: masing-masing {m}.",
- "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Serangan, H: Nyawa ({sh} per poin Perisai), m: pengali meleset, f: Rapuh, S: nilai skill."
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Serangan, H: Nyawa ({sh} per poin Perisai), m: pengali meleset, f: Rapuh, S: nilai skill.",
+ "Skills by map": "Skill per peta",
+ "{picks} picks on {maps} maps · {fresh} new skills": "{picks} pilihan di {maps} peta · {fresh} skill baru",
+ "Map {n} · {name} · {cards} cards": "Peta {n} · {name} · {cards} kartu",
+ "On the cards": "Di kartu",
+ "Suggested before": "Disarankan dulu",
+ "Top picks": "Pilihan terbaik",
+ "None: no new skill on this map's cards": "Tidak ada: tak ada skill baru di kartu peta ini",
+ "New: on no earlier map's cards": "Baru: tak ada di peta sebelumnya",
+ "Not on this map's cards now": "Tak lagi di kartu peta ini",
+ "No longer new here": "Tak lagi baru di sini"
 }

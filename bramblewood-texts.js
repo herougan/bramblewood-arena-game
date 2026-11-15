@@ -3734,7 +3734,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui54-new": "New!",
   "ui.ui54-earlier": "+{n} from earlier maps",
   "ui.ui54-boss": "Boss",
-  "ui.ui54-opens": "Opens after {name}"
+  "ui.ui54-opens": "Opens after {name}",
+  "ui.skmap1-btn": "Skills by map",
+  "ui.skmap1-close": "Close",
+  "ui.skmap1-totals": "{picks} picks on {maps} maps · {fresh} new skills",
+  "ui.skmap1-head": "Map {n} · {name} · {cards} cards",
+  "ui.skmap1-cards": "On the cards",
+  "ui.skmap1-past": "Suggested before",
+  "ui.skmap1-picks": "Top picks",
+  "ui.skmap1-none": "None: no new skill on this map's cards",
+  "ui.skmap1-new-tip": "New: on no earlier map's cards",
+  "ui.skmap1-gone": "Not on this map's cards now",
+  "ui.skmap1-old": "No longer new here"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

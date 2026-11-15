@@ -4441,5 +4441,15 @@
  "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "{date} に最新の pro-ease ラダー実行で計測。「弱すぎ / 強すぎ」の判定はこの値を使う。",
  "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "以前のメインマップが持つスキルを、ここで新しいパラメータで使用（スキル系統は1つと数える）。",
  "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}、{date}：参照デッキ {k} 個がこの戦いに挑戦、計 {g} 戦（各 {n} 以上）；p10/p90 はノイズ除去済み。マップ参照・参照2：各 {m} 戦。",
- "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S)。A：攻撃、H：体力（シールド1点は {sh}）、m：ミス係数、f：脆弱、S：スキル値。"
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S)。A：攻撃、H：体力（シールド1点は {sh}）、m：ミス係数、f：脆弱、S：スキル値。",
+ "Skills by map": "マップ別スキル",
+ "{picks} picks on {maps} maps · {fresh} new skills": "{maps}マップで{picks}件 · 新スキル{fresh}",
+ "Map {n} · {name} · {cards} cards": "マップ{n} · {name} · {cards}枚",
+ "On the cards": "カード上",
+ "Suggested before": "過去の提案",
+ "Top picks": "おすすめ",
+ "None: no new skill on this map's cards": "なし：このマップのカードに新スキルなし",
+ "New: on no earlier map's cards": "新規：以前のマップにない",
+ "Not on this map's cards now": "このマップのカードにない",
+ "No longer new here": "ここでは新規でなくなった"
 }

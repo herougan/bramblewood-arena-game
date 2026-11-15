@@ -4442,5 +4442,15 @@
  "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Misurato il {date} nell'ultima esecuzione pro-ease della scala. Il badge TROPPO DEBOLE / TROPPO FORTE si basa su questo.",
  "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Un'abilità che ha già una mappa principale precedente, usata qui con un nuovo parametro (una famiglia di abilità conta come una).",
  "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: {k} mazzi di riferimento contro questo scontro, {g} partite ({n}+ ciascuno); p10/p90 senza rumore. Rif. mappa, Riferimento-2: {m} ciascuno.",
- "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Attacco, H: Salute ({sh} per punto Scudo), m: moltiplicatore di mancato, f: Fragile, S: valore abilità."
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Attacco, H: Salute ({sh} per punto Scudo), m: moltiplicatore di mancato, f: Fragile, S: valore abilità.",
+ "Skills by map": "Abilità per mappa",
+ "{picks} picks on {maps} maps · {fresh} new skills": "{picks} scelte su {maps} mappe · {fresh} nuove abilità",
+ "Map {n} · {name} · {cards} cards": "Mappa {n} · {name} · {cards} carte",
+ "On the cards": "Sulle carte",
+ "Suggested before": "Già suggerite",
+ "Top picks": "Scelte migliori",
+ "None: no new skill on this map's cards": "Nessuna: nessuna nuova abilità sulle carte di questa mappa",
+ "New: on no earlier map's cards": "Nuova: su nessuna mappa precedente",
+ "Not on this map's cards now": "Non più sulle carte della mappa",
+ "No longer new here": "Non più nuova qui"
 }

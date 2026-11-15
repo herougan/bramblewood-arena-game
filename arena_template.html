@@ -12023,8 +12023,17 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 /* 2026-11-13 (package UI52): the page count, and on a phone the turn buttons around it, in the filter row (no row of their own) */
 #bkWrap{position:relative;} .bk-maps-toggle{position:absolute; top:2px; right:0; z-index:10; min-width:40px; height:36px;} .bk-maps-toggle.is-on{background:var(--accent); color:var(--accent-ink); border-color:var(--accent-strong);} /* UI52: admin, overlaid */
 .bk-firstmap{display:inline-block; margin-left:8px; font:700 11px/1.4 'Nunito',system-ui,sans-serif; color:var(--accent-strong); padding:1px 7px; border-radius:999px; background:color-mix(in srgb, var(--accent) 14%, transparent); vertical-align:middle;}
+/* 2026-11-15 (package SKMAP1): admin Skills by map. New = red (--danger), text on --bg so it reads in light and dark. */
+.bk-skm-row{position:absolute; top:2px; right:46px; z-index:10;} .bk-skm-row .btn{min-width:40px; height:36px;} .skm-modal{max-width:860px; width:100%;} .skm-body{display:grid; grid-template-columns:1fr; gap:10px;}
+@media (min-width:821px){ .skm-body{grid-template-columns:1fr 1fr;} }
+.skm-row{background:var(--surface-2); border:1px solid var(--surface-border); border-radius:10px; padding:8px 10px;} .skm-row h3{margin:0 0 4px; font:800 14px/1.2 'Baloo 2',system-ui,sans-serif;}
+.skm-part{margin-top:6px;} .skm-part h4{margin:0 0 2px; font:700 11px/1.2 'Nunito',system-ui,sans-serif; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.04em;}
+.skm-chips,.skm-src{display:flex; flex-wrap:wrap; gap:4px; align-items:center;} .skm-src b{font:700 11px/1 'Nunito',system-ui,sans-serif; color:var(--ink-soft); margin-right:2px;} .skm-src{margin-bottom:3px;}
+.skm-chip{display:inline-block; font:700 12px/1.4 'Nunito',system-ui,sans-serif; padding:1px 8px; border-radius:999px; background:var(--surface-3); border:1px solid var(--surface-border); color:var(--ink);}
+.skm-chip.is-new{background:var(--danger); border-color:var(--danger); color:var(--bg);} .skm-past{opacity:.55;} .skm-past.is-hit{opacity:1; border-color:var(--accent-strong);}
+.skm-pick{border-color:var(--accent-strong);} .skm-pick.is-bad{text-decoration:line-through; opacity:.6;} .skm-none{font-size:12px; color:var(--ink-muted);}
 .bk-pager{display:flex; align-items:center; gap:4px;} .bk-pager .pg-info{margin:0;} .bk-pager .pg-edge{position:static; width:auto; flex-direction:row;} .bk-pager .pg-edge-l{order:-1;} .bk-pager .pg-edge-in{position:static; flex-direction:row; gap:4px;} .bk-pager .pg-edge-l .pg-edge-in{flex-direction:row-reverse;}
-@media (max-width:559px){ .bk-bar .bk-filter{flex-basis:100%;} #bkWrap.is-admin .bk-filter{padding-right:46px;} .bk-pager .pg-info .pg-of{min-width:7.5em; padding:6px 10px;} }
+@media (max-width:559px){ .bk-bar .bk-filter{flex-basis:100%;} #bkWrap.is-admin .bk-filter{padding-right:46px;} #bkWrap.is-admin.has-skm .bk-filter{padding-right:92px;} .bk-pager .pg-info .pg-of{min-width:7.5em; padding:6px 10px;} }
 .bk-bar .bk-filter small{color:var(--page-ink, #f5ecd2);}
 .bk-filter input{flex:1 1 auto; min-width:0; height:40px; padding:0 12px; border-radius:10px; border:1px solid var(--surface-border); font:inherit; background:var(--surface); color:var(--ink);}
 .bk-book{position:relative; touch-action:pan-y;}

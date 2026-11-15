@@ -4441,5 +4441,15 @@
  "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "{date} 在最新一次 pro-ease 天梯執行中測得。「太弱 / 太強」標籤以此判定。",
  "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "之前主地圖已有的技能，在此以新參數使用（一個技能族算一個技能）。",
  "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}，{date}：{k} 個參考牌組對陣本戰，共 {g} 局（每組至少 {n}）；p10/p90 已去噪。地圖參考、參考-2：各 {m} 局。",
- "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S)。A：攻擊，H：生命（每點護盾算 {sh}），m：未命中係數，f：脆弱，S：技能值。"
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S)。A：攻擊，H：生命（每點護盾算 {sh}），m：未命中係數，f：脆弱，S：技能值。",
+ "Skills by map": "各地圖技能",
+ "{picks} picks on {maps} maps · {fresh} new skills": "{maps} 張地圖 {picks} 個推薦 · {fresh} 個新技能",
+ "Map {n} · {name} · {cards} cards": "地圖 {n} · {name} · {cards} 張卡",
+ "On the cards": "卡牌上",
+ "Suggested before": "以往建議",
+ "Top picks": "首選",
+ "None: no new skill on this map's cards": "無：此地圖卡牌上沒有新技能",
+ "New: on no earlier map's cards": "新：之前地圖均沒有",
+ "Not on this map's cards now": "已不在此地圖卡牌上",
+ "No longer new here": "在此已不是新技能"
 }

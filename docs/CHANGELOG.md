@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-15 (package SKMAP1)
+- Admin only: "Skills by map" (Codex Skills book, turn the 🗺️ toggle on, then the button). Maps 0-20: skills on each map's cards (live, with the map-list edits), skills suggested before (4 sources, matches marked), new-on-this-map in red, Claude's strict 0-3 picks (struck through when no longer on the map or no longer new). THEME2's `introduces` lists are all empty in the file, so its `newSkills` are shown instead.
+
 ## 2026-11-15 (package TESTFIX4)
 - Tests only: eight unit tests (en3, eng40, fx3, pl2, rv, tt, ui24, ui37) no longer check the 47 text keys TESTFIX3 removed; every other check kept. ui27 untouched (its two failures come from the TIP2 tooltip rewording, not removed keys).
 - ui27 (coordinator): the product tooltip is a pure formula since TIP2, so its packs may match English; the B tooltip check accepts TIP2's 3A+H.

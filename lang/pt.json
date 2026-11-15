@@ -4442,5 +4442,15 @@
  "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Medido em {date} na última execução pro-ease da escada. A etiqueta FRACO DEMAIS / FORTE DEMAIS é julgada por ele.",
  "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Uma habilidade que um mapa principal anterior já tem, usada aqui com um parâmetro novo (uma família de habilidades conta como uma).",
  "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: {k} decks de referência contra esta luta, {g} partidas ({n}+ cada); p10/p90 sem ruído. Ref. do mapa, Referência-2: {m} cada.",
- "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Ataque, H: Vida ({sh} por ponto de Escudo), m: multiplicador de falha, f: Frágil, S: valor da habilidade."
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Ataque, H: Vida ({sh} por ponto de Escudo), m: multiplicador de falha, f: Frágil, S: valor da habilidade.",
+ "Skills by map": "Habilidades por mapa",
+ "{picks} picks on {maps} maps · {fresh} new skills": "{picks} escolhas em {maps} mapas · {fresh} habilidades novas",
+ "Map {n} · {name} · {cards} cards": "Mapa {n} · {name} · {cards} cartas",
+ "On the cards": "Nas cartas",
+ "Suggested before": "Sugeridas antes",
+ "Top picks": "Melhores escolhas",
+ "None: no new skill on this map's cards": "Nenhuma: sem habilidade nova nas cartas deste mapa",
+ "New: on no earlier map's cards": "Nova: em nenhum mapa anterior",
+ "Not on this map's cards now": "Já não está nas cartas do mapa",
+ "No longer new here": "Já não é nova aqui"
 }

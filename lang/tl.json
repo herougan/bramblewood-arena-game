@@ -4441,5 +4441,15 @@
  "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "Sinukat noong {date} sa pinakabagong pro-ease na takbo ng hagdan. Dito hinuhusgahan ang pill na MASYADONG MAHINA / MASYADONG MALAKAS.",
  "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "Kakayahang mayroon na ang naunang pangunahing mapa, ginamit dito na may bagong parameter (ang pamilya ng kakayahan ay isa).",
  "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: {k} reference deck laban sa laban na ito, {g} laro ({n}+ bawat isa); p10/p90 walang ingay. Reference ng mapa, Reference-2: {m} bawat isa.",
- "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Atake, H: Buhay ({sh} bawat puntos ng Kalasag), m: multiplier ng sablay, f: Marupok, S: halaga ng kakayahan."
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: Atake, H: Buhay ({sh} bawat puntos ng Kalasag), m: multiplier ng sablay, f: Marupok, S: halaga ng kakayahan.",
+ "Skills by map": "Mga skill kada mapa",
+ "{picks} picks on {maps} maps · {fresh} new skills": "{picks} pili sa {maps} mapa · {fresh} bagong skill",
+ "Map {n} · {name} · {cards} cards": "Mapa {n} · {name} · {cards} card",
+ "On the cards": "Sa mga card",
+ "Suggested before": "Naiminungkahi na",
+ "Top picks": "Mga top pick",
+ "None: no new skill on this map's cards": "Wala: walang bagong skill sa mga card ng mapang ito",
+ "New: on no earlier map's cards": "Bago: wala sa naunang mapa",
+ "Not on this map's cards now": "Wala na sa mga card ng mapa",
+ "No longer new here": "Hindi na bago rito"
 }

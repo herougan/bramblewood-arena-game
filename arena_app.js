@@ -10305,6 +10305,57 @@ function skillFirstMaps(){
       Object.keys(e).forEach(k=>{ if(k === 'triggers' || !skillValOn(e[k])) return; if(om == null) om = cardObtainMap(d); if(out[k] == null || om < out[k]) out[k] = om; }); }); }catch(e){}
   skillFirstMapMemo = {sig, map: out}; return out;
 }
+// 2026-11-15 (package SKMAP1, owner 11-15 22:52): admin only, "Skills by map" for Maps 0-20: the skills on each map's MAP list cards (live: card edits and
+// __cfg:map-pools edits count at once), the skills suggested before (static, dated), the ones new on the map (red), and Claude's strict 0-3 picks (live check).
+const SKMAP_PAST = [ // [label, "map skills | map skills"]; a name that is on the map's cards now is marked
+  ['Sketch 11-14', "0 Flying, Diurnal, Swarm, Slow | 1 Regenerate, Guardian, Forage, Pickpocket | 2 Tide, Shell, Crab Claws, Armor, Inspiring, Molting | 3 Arrow, Pounce, Reach, Swift, Evasive | 4 Bleed, Dive, Heal | 5 Bulwark, Ambush, Poison | 6 Harbinger, Cure, Leech, Constrict, Petrify, Rupture | 7 Poison Barbs, Paralysis, Sleep, Brood, Poison Gas, Web | 8 Keen Sense, Echolocate, Illuminate, Invisible, Darksight, Stealth | 9 Pressure, Tangleweed, Warcry, Volley | 10 Chain Lightning, Wave, Dive | 11 Daunt, Rend | 12 Thorns, Recoil, Stench, Amore, Dynamite, Rampart | 13 Predator, Carnage, Breach, Banana, Timbered, Cleave, Gash | 14 Prey, Stampede, Snipe, Mighty, Heat | 15 Trap, Bola, Blitz, Carrion, Lasso | 16 Hibernate, Frostbite, Frost Bolt, Lumberjack | 17 Pack, Pack Leader, Taunt, Cold, Momentum | 18 Acid, Brittle, Burrow, Shield, Fragile, Friction | 19 Smoke Screen, Immolation, Force of Nature | 20 Fireball, Earthquake, Fire Bolt, Meteor"],
+  ['Map list 11-07', "1 Flying, Diurnal, Forage, Quick, Swarm | 2 Nocturnal, Tide, Crab Claws, Evasive, Armor | 3 Pounce, Arrow, Reach | 4 Venomous, Bloom, Regenerate | 5 Ambush, Bulwark, Bleed | 6 Leech, Weaken, Cure | 7 Sleep Powder, Paralysis Powder | 9 Taunt, Fork, Rampart"],
+  ['THEME2 10-28', "0 Flying, Armor, Swarm, Quick | 1 Bounty, Keen Sense, Lumberjack | 2 Tide, Crab Claws, Shield, Shell | 3 Diurnal, Reload, Pounce, Mountain Climber | 4 Venomous, Bulwark, Cower | 6 Remember, Detonate, Invisible, Daunt | 7 Rage, Decay, Meiosis, Progeny | 8 Sonar, Leech, On ready damage, Purblind | 9 Acid Bolt, Diurnal | 10 Fork, Gash, Trident, Pierce | 11 Arrow, Fletcher, Avalanche, Frostbite | 12 Backstab, Predator, Confuse, Sprout | 13 Keen Eye, Fast Forward, Berserk, Perforate | 14 Night-blind, Executioner, Twin Shot, Drunk | 15 Bulldoze, Stampede, Converge, Speed | 16 Pack, Pack Leader | 17 Earthquake, King, Poison Bolt, Pack Howl | 18 Dry, Haste, Trap, Tornado | 19 Spitfire, Landslide, Volley, Scar | 20 Fire Arrow, Carrion"],
+  ['Claude 11-15', "0 Flying, Diurnal, Swarm | 1 Regeneration, Guardian, Foraging, Twin Strike | 2 Tide, Armor, Crab Claws, Nocturnal | 3 Arrow, Pounce, Swift, Evasive | 4 Bleed, Bloom, Inspiring | 5 Ambush, Strangle/Constrict, Parasite, Helmet | 6 Harbinger, Leech, Weaken, Corrode | 7 Poison Barbs, Web, Meiosis, Broodkeeper | 8 Darksight, Keen Sense, Feeble | 9 Trident, Fork, Pierce, Herald | 10 Twin Shot, Octolash | 11 Fletcher, Scare | 12 Thorns, Recoil | 13 Cleave, Herbalist | 14 Stampede, Mighty | 15 Trap, Pitchfork | 16 Sturdy, Lone Wolf | 17 Pack, Momentum | 18 Shield, Acid | 19 Smoke Bomb, Last Stand | 20 Carrion, Siege"]
+];
+const SKMAP_PICKS = "0 flying swarm evasive | 1 guardian foraging diurnal | 2 tide armor crabClaws | 3 arrow pounce dive | 4 bloomCopy meiosis bulwark | 5 bleed regen twinStrike | 6 daunt invisible | 7 brood scare | 8 keenSense web | 9 taunt chainLightning | 10 | 11 fletcher mountainClimber | 12 siege brambleArmor | 13 harbinger lumberjack | 14 carnage formation | 15 overwhelm loyal | 16 almanac riled | 17 hibernate frost | 18 trap dry | 19 smokeBomb rage | 20 ";
+// "n a, b, c" parts split by " | "; a pick list is space-separated keys
+function skmapParse(s, sep){ const o = {}; s.split(' | ').forEach(p=>{ const m = /^(\d+) ?(.*)$/.exec(p.trim()); if(m) o[m[1]] = m[2].split(sep).map(x=> x.trim()).filter(Boolean); }); return o; }
+// the data, read live each time (21 maps x ~15 cards: cheap): rows of {n, id, name, cards, skills:{key:count}, isNew:Set}
+function skmapRows(){
+  const src = Object.assign({}, CARD_DEFS_BASELINE, liveCards); Object.keys(liveDeletes || {}).forEach(id=>{ delete src[id]; });
+  const seen = new Set();
+  return mainConquestMaps().slice(0, 21).map((m, n)=>{
+    const ids = mpEntry(m.id).cards.filter(id=> src[id]), skills = {};
+    ids.forEach(id=>{ const e = src[id].effects || {}; Object.keys(e).forEach(k=>{ if(k !== 'triggers' && skillValOn(e[k])) skills[k] = (skills[k] || 0) + 1; }); });
+    const isNew = new Set(Object.keys(skills).filter(k=> !seen.has(k))); Object.keys(skills).forEach(k=> seen.add(k));
+    return {n, id: m.id, name: m.name, cards: ids.length, skills, isNew};
+  });
+}
+function skmapHTML(){
+  const rows = skmapRows(), past = SKMAP_PAST.map(p=> ({label: p[0], by: skmapParse(p[1], ',')})), picks = skmapParse(SKMAP_PICKS, ' ');
+  const nm = k=> codexSkillName(k), low = s=> String(s).toLowerCase();
+  let nPicks = 0, nNew = 0;
+  const body = rows.map(r=>{
+    const have = new Set(Object.keys(r.skills).map(k=> low(nm(k)))); nNew += r.isNew.size;
+    const keys = Object.keys(r.skills).sort((a, b)=> r.skills[b] - r.skills[a] || nm(a).localeCompare(nm(b)));
+    const chips = keys.map(k=> `<span class="skm-chip${r.isNew.has(k) ? ' is-new' : ''}"${r.isNew.has(k) ? ` title="${escapeAttr(TX('ui.skmap1-new-tip'))}"` : ''}>${escapeHtml(nm(k))} ×${r.skills[k]}</span>`).join('');
+    const pastHTML = past.map(p=> { const l = p.by[r.n] || []; return l.length ? `<div class="skm-src"><b>${escapeHtml(p.label)}</b>${l.map(x=> { const hit = x.split('/').some(y=> have.has(low(y.trim()))); return `<span class="skm-chip skm-past${hit ? ' is-hit' : ''}">${hit ? '✓ ' : ''}${escapeHtml(x)}</span>`; }).join('')}</div>` : ''; }).join('');
+    const pk = picks[r.n] || []; nPicks += pk.length;
+    const pickHTML = pk.length ? pk.map(k=> { const on = r.skills[k] != null, fresh = r.isNew.has(k), bad = !on ? TX('ui.skmap1-gone') : !fresh ? TX('ui.skmap1-old') : '';
+      return `<span class="skm-chip skm-pick${bad ? ' is-bad' : ''}"${bad ? ` title="${escapeAttr(bad)}"` : ''}>${escapeHtml(nm(k))}</span>`; }).join('') : `<span class="skm-none">${escapeHtml(TX('ui.skmap1-none'))}</span>`;
+    return `<section class="skm-row" data-skm-map="${r.n}"><h3>${escapeHtml(TX('ui.skmap1-head', {n: r.n, name: r.name, cards: r.cards}))}</h3>
+      <div class="skm-part"><h4>${escapeHtml(TX('ui.skmap1-cards'))}</h4><div class="skm-chips">${chips || '—'}</div></div>
+      <div class="skm-part"><h4>${escapeHtml(TX('ui.skmap1-past'))}</h4>${pastHTML || '—'}</div>
+      <div class="skm-part"><h4>${escapeHtml(TX('ui.skmap1-picks'))}</h4><div class="skm-chips">${pickHTML}</div></div></section>`; }).join('');
+  return `<div class="modal skm-modal" role="dialog" aria-modal="true" aria-labelledby="skmTitle"><div class="modal-head-row"><h2 id="skmTitle">🗺️ ${escapeHtml(TX('ui.skmap1-btn'))}</h2><button type="button" class="modal-close-btn" id="skmClose" aria-label="${escapeAttr(TX('ui.skmap1-close'))}">✕</button></div>
+    <p class="panel-sub" id="skmTotals">${escapeHtml(TX('ui.skmap1-totals', {picks: nPicks, maps: rows.length, fresh: nNew}))}</p><div class="skm-body">${body}</div></div>`;
+}
+function openSkillsByMap(){
+  if(!adminModeEnabled) return;
+  let ov = document.getElementById('skmap1Overlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'skmap1Overlay'; ov.className = 'modal-overlay skm-overlay'; document.body.appendChild(ov); }
+  ov.innerHTML = skmapHTML(); ov.hidden = false;
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
+  const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); };
+  document.addEventListener('keydown', onKey); ov.onclick = e=>{ if(e.target === ov) close(); };
+  document.getElementById('skmClose').addEventListener('click', close);
+}
 function bookFirstMapHTML(e){
   if(!skillMapsShown || !adminModeEnabled || e.ch !== 'sk' || e.hint) return '';
   const n = skillFirstMaps()[e.key];
@@ -10316,14 +10367,15 @@ function bookEntryHTML(e){
 }
 const BOOK_CHAPTERS = [{ch:'sk', icon:'📘', title:()=> TX('ui.book-skills')}, {ch:'st', icon:'🌀', title:()=> TX('ui.codex-statuses'), sub:()=> TX('ui.codex-statuses-sub')}, {ch:'fx', icon:'🗺️', title:()=> TX('ui.book-field-effects')}];
 function renderSkillBook(body){
-  body.innerHTML = `<div class="bk${adminModeEnabled ? ' is-admin' : ''}" id="bkWrap">
+  body.innerHTML = `<div class="bk${adminModeEnabled ? ' is-admin' : ''}${adminModeEnabled && skillMapsShown ? ' has-skm' : ''}" id="bkWrap">
     <div class="bk-bar">
       <div class="sk-filter bk-filter"><input data-text-filter type="search" id="skFilterInput" placeholder="${escapeAttr(TX('ui.book-filter'))}" aria-label="${escapeAttr(TX('ui.book-filter'))}" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>
       <div class="bk-pager" id="bkPager"></div></div>${adminModeEnabled ? `<button type="button" class="btn small bk-maps-toggle${skillMapsShown ? ' is-on' : ''}" id="bkMapsBtn" aria-pressed="${skillMapsShown}" title="${escapeAttr(TX('ui.ui52-skill-maps-tip'))}" aria-label="${escapeAttr(TX('ui.ui52-skill-maps-tip'))}">🗺️</button>` : ''}
-    <div class="bk-book" id="bkBook"></div></div>`; // 2026-11-13 (package UI52, owner 11:50 #4): the page count (on a phone with its turn buttons) sits in the filter row; the Triggers lesson resets from the Profile
+    ${adminModeEnabled ? `<div class="bk-skm-row"${skillMapsShown ? '' : ' hidden'}><button type="button" class="btn small" id="bkSkMapBtn" title="${escapeAttr(TX('ui.skmap1-btn'))}" aria-label="${escapeAttr(TX('ui.skmap1-btn'))}">📋</button></div>` : ''}<div class="bk-book" id="bkBook"></div></div>`; // 2026-11-15 (package SKMAP1): the Skills by map button; 2026-11-13 (package UI52, owner 11:50 #4): the page count (on a phone with its turn buttons) sits in the filter row; the Triggers lesson resets from the Profile
   const all = skillBookEntries();
   codexBookState = {all, entries:null, pages:null, items:null, L:null};
-  { const mb = body.querySelector('#bkMapsBtn'); if(mb) mb.addEventListener('click', ()=>{ skillMapsShown = !skillMapsShown; mb.classList.toggle('is-on', skillMapsShown); mb.setAttribute('aria-pressed', skillMapsShown); bookBuild(true); }); } // 2026-11-13 (package UI52)
+  { const mb = body.querySelector('#bkMapsBtn'); if(mb) mb.addEventListener('click', ()=>{ skillMapsShown = !skillMapsShown; mb.classList.toggle('is-on', skillMapsShown); mb.setAttribute('aria-pressed', skillMapsShown); const sr = body.querySelector('.bk-skm-row'); if(sr) sr.hidden = !skillMapsShown; document.getElementById('bkWrap').classList.toggle('has-skm', skillMapsShown); bookBuild(true); }); } // 2026-11-13 (package UI52)
+  { const sb = body.querySelector('#bkSkMapBtn'); if(sb) sb.addEventListener('click', openSkillsByMap); } // 2026-11-15 (package SKMAP1)
   const inp = body.querySelector('#skFilterInput'); let t = null;
   inp.addEventListener('input', ()=>{ clearTimeout(t); t = setTimeout(()=>{ skillCodexQuery = inp.value; uiStickySave('skills', {q: inp.value}); skillBookPage = 0; bookBuild(); }, 120); });
   codexWireSwipe(document.getElementById('bkBook'));

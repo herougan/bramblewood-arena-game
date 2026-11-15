@@ -4443,5 +4443,15 @@
  "Measured {date} in the latest pro-ease ladder run. The TOO WEAK / TOO STRONG pill is judged on it.": "{date} அன்று சமீபத்திய pro-ease ஏணி ஓட்டத்தில் அளவிடப்பட்டது. மிகவும் பலவீனம் / மிகவும் வலிமை குறிச்சொல் இதை வைத்தே தீர்மானிக்கப்படும்.",
  "A skill an earlier main map has, used here with a new parameter (a skill family counts as one skill).": "முந்தைய முதன்மை வரைபடத்தில் உள்ள திறன், இங்கே புதிய அளவுருவுடன் பயன்படுகிறது (திறன் குடும்பம் ஒரு திறனாகக் கணக்கு).",
  "{tag}, {date}: {k} reference decks vs this fight, {g} games ({n}+ each); p10/p90 noise-free. Map reference, Reference-2: {m} each.": "{tag}, {date}: இந்தச் சண்டைக்கு எதிராக {k} குறிப்பு அடுக்குகள், {g} ஆட்டங்கள் (ஒவ்வொன்றும் {n}+); p10/p90 இரைச்சல் இல்லாமல். வரைபட குறிப்பு, Reference-2: ஒவ்வொன்றும் {m}.",
- "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: தாக்குதல், H: உயிர் (கேடய புள்ளிக்கு {sh}), m: தவறல் பெருக்கி, f: உடையும், S: திறன் மதிப்பு."
+ "B = f×(({aw}A+H)×m+S). A: Attack, H: Health ({sh} per Shield point), m: miss multiplier, f: Fragile, S: skill value.": "B = f×(({aw}A+H)×m+S). A: தாக்குதல், H: உயிர் (கேடய புள்ளிக்கு {sh}), m: தவறல் பெருக்கி, f: உடையும், S: திறன் மதிப்பு.",
+ "Skills by map": "வரைபடம் வாரியாக திறன்கள்",
+ "{picks} picks on {maps} maps · {fresh} new skills": "{maps} வரைபடங்களில் {picks} தேர்வுகள் · {fresh} புதிய திறன்கள்",
+ "Map {n} · {name} · {cards} cards": "வரைபடம் {n} · {name} · {cards} அட்டைகள்",
+ "On the cards": "அட்டைகளில்",
+ "Suggested before": "முன்பு பரிந்துரைத்தவை",
+ "Top picks": "சிறந்த தேர்வுகள்",
+ "None: no new skill on this map's cards": "இல்லை: இந்த வரைபட அட்டைகளில் புதிய திறன் இல்லை",
+ "New: on no earlier map's cards": "புதியது: முந்தைய வரைபடங்களில் இல்லை",
+ "Not on this map's cards now": "இப்போது இந்த வரைபட அட்டைகளில் இல்லை",
+ "No longer new here": "இங்கு இனி புதியதல்ல"
 }
