@@ -8,6 +8,10 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-15: Unit tests out of date (coordinator)
+The full unit run on batch-1023e (11-15) has 55 failures. 45 of them also fail on the released main, so they come from earlier card, deck and budget changes (old budget numbers, re-carded decks, removed skills, rarity moves, 4 cards still waiting for art). Fix after the owner's card redesign, with the re-measure: bal12, bal13, bal14, bal2, bal21, bal3, bal7, bal9, bf5, budget2, bx, card-pool, content12, content14, content15, content16, df3, easter-eggs, eb, en2, eng10, eng21, fin2, fix6, gd2, gi, lead, level-curve, n221, opt2, pale-desert, prayer, pvp1, ref6, review1, rewards-pass, road-rarity, skills2, skir1, thematic, ts-status-chips, tut2, ui29, unit-themes, winrate-panel.
+The other 10 are new in this batch: 9 tests still check text keys TESTFIX3 removed (package TESTFIX4), and list1's 2-A-6 (fixed by the SIDE2 side re-fit when applied).
+
 ## 11-14 11:11: Owner notes
 | # | Note | Package |
 |---|---|---|
