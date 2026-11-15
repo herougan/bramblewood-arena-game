@@ -19,7 +19,7 @@ env:
   SHARDS: 8
 jobs:
   smoke:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # 2026-11-16 (coordinator): ubuntu-latest is Ubuntu 26, which Playwright 1.56 refuses
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
@@ -48,7 +48,7 @@ jobs:
           if-no-files-found: ignore
   unit:
     needs: smoke
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # 2026-11-16 (coordinator): ubuntu-latest is Ubuntu 26, which Playwright 1.56 refuses
     timeout-minutes: 90
     strategy:
       fail-fast: false
@@ -82,7 +82,7 @@ jobs:
   summary:
     needs: [smoke, unit]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # 2026-11-16 (coordinator): ubuntu-latest is Ubuntu 26, which Playwright 1.56 refuses
     steps:
       - uses: actions/download-artifact@v4
         with:

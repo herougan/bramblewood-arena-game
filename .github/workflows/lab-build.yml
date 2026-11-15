@@ -1,7 +1,7 @@
 # 2026-11-16 (package LAB1): builds Bramblewood Lab for the owner's Mac (tools/lab/build-app.sh): "Bramblewood Lab.app" with an official
 # Node binary, ad-hoc signed (no Apple account: first open with right-click -> Open, or System Settings -> Privacy & Security -> Open Anyway).
 # Runs on pushes that touch tools/lab/** (any branch) and by hand (Actions -> "Lab build" -> Run workflow). The zips are the run's artifacts;
-# nothing is released, deployed or signed with a secret. The x64 app is built on the arm64 runner (macos-13 runners are retired) and
+# nothing is released, deployed or signed with a secret. The x64 app is built on the arm64 runner (macos-13 retired; macos-14 refused 2026-11-16, so macos-15) and
 # smoke-tested under Rosetta when the runner has it. A Linux job builds the same bundle and runs the Lab's selftest and a pull as a smoke test.
 name: Lab build
 on:
@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   mac:
-    runs-on: macos-14
+    runs-on: macos-15 # 2026-11-16 (coordinator): macos-14 config refused by GitHub; x64 Node is fetched by arch, smoke via Rosetta
     timeout-minutes: 20
     strategy:
       fail-fast: false
