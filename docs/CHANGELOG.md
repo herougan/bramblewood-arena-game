@@ -22,6 +22,10 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Tabs: dashboard (road status main / side: in band, within 10, beyond 20; worst fights; per map; trend across every result), road measure (tools/skirmish_pass.js, all cores), deck optimiser from a card list (tools/opt/deckopt.js --mode prog), F2P journey (ref5_prog walk + farming days on ECON2's repeat income, a deck per map, win rate vs each road fight, charts), economy (ECON2), what-if (a card edited in a private copy, fights re-measured before / after on the same seeds), compare, the repo's other sim tools as presets, runs and the docs/balance catalogue, an overnight queue.
 - Aggregation: runs with the same data hash pool (wins and games summed per fight, Wilson 95%, games still needed for ±5); fresh seeds per run, a repeated seed set counted once. The 350 saved road .jsonl files import as history (241 with road rows).
 - Optional live Supabase card_overrides overlay (read only). .github/workflows/lab-build.yml builds "Bramblewood Lab.app" (arm64, x64; ad-hoc signed) and a Linux smoke bundle. Test: tests/lab1-2026-11-16.js.
+## 2026-11-15 (package BAL-LEGAL1)
+- Proposals only, nothing applied: legal re-fits of the 30 fights BALREL1 held. Every deck passes SKIR1's problems() with the side holds (a smaller side deck excepted, SIDE2-2 e), and tests/skir1 shows no new failure with all of them applied.
+- In band on three fresh seed sets (400 games): 22 fights. Improved but short: 19-3, 2-2, 7-A-2 and 19-5. The rules block 19-1, 19-A-4, 8-7 and 4-5 (closest reads in the report).
+- 2-1 also takes a base Health cut to 6 (EDGE2-1's lever). Projection, Maps 0-20: main 138/149 in band, 143 within 10, 1 beyond 20 (20-9); side 67/77, 73, 0 (live 122/131/9 and 61/67/2). `docs/balance/legal1/`, `tools/legal1/`.
 
 ## 2026-11-15 (package BALREL1: the recommended balance fixes, applied where they keep the deck rules)
 - Owner 23:00 "Apply them (Recommended)": the defaults of EDGE1-1 to EDGE5-1, SIDE2-2 e, SIDE2-4 e, SIDE3-1 a, SIDE4-1 a (SIDE5-1 a: 19-A-1 left as is; 20-9 left for the card redesign).

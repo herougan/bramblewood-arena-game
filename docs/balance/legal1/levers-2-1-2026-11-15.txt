@@ -1,0 +1,5 @@
+2-1 {"deck":{"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":3,"salvager-hermit-crab":4}} hp 15 shield 0 72 / 68.3 mean 70.2
+2-1 {"deck":{"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":3,"salvager-hermit-crab":4},"hqHp":13} hp 7 shield 0 79.8 / 80.3 mean 80.1
+2-1 {"deck":{"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":3,"salvager-hermit-crab":4},"hqHp":12} hp 6 shield 0 83.8 / 84 mean 83.9
+2-1 {"deck":{"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":3,"salvager-hermit-crab":4},"hqHp":10} hp 5 shield 0 85 / 85.5 mean 85.3
+2-1 {"deck":{"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":3,"salvager-hermit-crab":4},"hqHp":8} hp 4 shield 0 86.8 / 86.8 mean 86.8
