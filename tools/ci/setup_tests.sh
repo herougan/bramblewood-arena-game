@@ -12,4 +12,4 @@ PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers "$(npm root -g)/playwright/cli.js" ins
 test -x /opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell || { echo "Chromium is not at the path the tests name"; ls /opt/pw-browsers; exit 1; }
 { echo "NODE_PATH=$(npm root -g)"; echo "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers"; } >> "${GITHUB_ENV:-/dev/null}"
 # 2026-11-16 (coordinator): the Effects Lab build reads .fxcat/cards.json, captured from a running game (gitignored); capture it here
-( python3 -m http.server 8765 >/dev/null 2>&1 & echo $! > /tmp/srv.pid; sleep 2; python3 tools/effects-lab/capcards.py || echo "capcards failed (lab-errors may fail)"; kill "$(cat /tmp/srv.pid)" ) || true
+( mkdir -p .fxcat; python3 -m http.server 8765 >/dev/null 2>&1 & echo $! > /tmp/srv.pid; sleep 2; python3 tools/effects-lab/capcards.py || echo "capcards failed (lab-errors may fail)"; kill "$(cat /tmp/srv.pid)" ) || true
