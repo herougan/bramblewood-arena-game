@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (Package FX11: new effects)
+- Crab Claws + Ironclaw Fiddler: a scuttle, then a drawn claw snaps shut (clack, spark, knock-back; into the bramble at the castle). Old float, `.crab-pinch`, `FX.A.crabPinch` gone.
+- Irradiation: a green screen tint in 5 steps (max 0.62) with the board's tokens; gone after the match. Soft geiger.
+- Own looks + cues: Healing N, Worship, Gorge; Meiosis death = the Lab's slime split.
+- `bramblewood-fx-h.js`, `manifest/h.js`, `tests/fx11-2026-11-16.js`.
+
 ## 2026-11-15 (package BALREL1: the recommended balance fixes, applied where they keep the deck rules)
 - Owner 23:00 "Apply them (Recommended)": the defaults of EDGE1-1 to EDGE5-1, SIDE2-2 e, SIDE2-4 e, SIDE3-1 a, SIDE4-1 a (SIDE5-1 a: 19-A-1 left as is; 20-9 left for the card redesign).
 - Applied: 46 fights that keep every standing deck rule (tests/skir1: no new failure): 11-9, 13-4 (Shield) and 44 side fights (SIDE2's decks with Carried x2 and smaller side decks; Sunken Depths boss Health 13, Pale Desert boss level 3, 2-A-6 Health 8, 2-B-1 Health 7 and Shield 0).

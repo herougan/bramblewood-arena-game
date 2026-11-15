@@ -505,19 +505,6 @@ M.prongCastle = function(att, castle, o){
     nudge(castle, [{x:0}, {x:-4, o:.2}, {x:3, o:.5}, {x:0}], 300); }, o.delay == null ? 260 : o.delay);
   return done(1100);
 };
-// Crab Claws: a coral claw opens beside the card and snaps shut on the side it pinches.
-css('crab', `.fxa-claw path{stroke:#6d1d12; stroke-width:2;}`);
-M.crabPinch = function(el, o){
-  o = o || {}; const g = G(); if(!g || !el) return done(0); const c = centre(tileOf(el)), dir = o.dir === 'left' ? -1 : 1, x = c.x + dir*c.w*.62, y = c.y, s = c.w*.55;
-  const sv = svgL('fxa-claw');
-  sv.innerHTML = `<g transform="translate(${x},${y}) scale(${dir * s/60},${s/60})"><g class="j1"><path d="M-30,0 C-10,-34 26,-30 34,-8 C20,-14 4,-12 -10,0 Z" fill="#e8553a"/></g>
-    <g class="j2"><path d="M-30,0 C-10,30 22,28 30,8 C18,12 4,10 -10,0 Z" fill="#c8402a"/></g><circle cx="-30" cy="0" r="9" fill="#d84a30"/></g>`;
-  const j1 = sv.querySelector('.j1'), j2 = sv.querySelector('.j2'); g.set([j1, j2], {svgOrigin:'-30 0'}); g.set(j1, {rotation:-28}); g.set(j2, {rotation:28}); g.set(sv, {opacity:0});
-  g.timeline({onComplete:()=> kill(sv)}).to(sv, {opacity:1, duration:.08}).to([j1, j2], {rotation:0, duration:.09, ease:'power4.in', delay:.12})
-    .add(()=>{ spray(x - dir*s*.2, y, {n:6, html:'✦', size:10, color:'#fff2c4', d0:10, d1:24, dur:.3}); nudge(el, [{x:0}, {x:dir*6, o:.25}, {x:0}], 260); })
-    .to([j1, j2], {rotation:i=> i ? 10 : -10, duration:.08}).to([j1, j2], {rotation:0, duration:.06}).to(sv, {opacity:0, duration:.25, delay:.2});
-  return done(800);
-};
 // Ambush: the attacker goes to shadow with two glinting eyes, then springs out of a burst of dark smoke.
 css('ambush', `.fxa-eyes{font:900 12px/1 system-ui; color:#ffe14a; letter-spacing:6px; text-shadow:0 0 6px #ffcf2a;} .fxa-shade{background:rgba(10,8,16,.82); border-radius:12px;}`);
 M.ambushStrike = function(att, target, o){
@@ -1434,7 +1421,6 @@ M.onEvent = function(ev, env){
     case 'blindMiss': { const a = el(ev.attUid); if(a) env.at(Math.round(A.windup*.5), ()=> M.blindSwing(a, {night:!!ev.night})); break; }
     case 'confusedWhiff': { const a = el(ev.uid); if(a) M.fizzle(a); break; }
     case 'tipsySwing': { const a = el(ev.attUid); if(a) M.tipsyBubbles(a, {drift:ev.drift}); break; }
-    case 'crabClaw': { const a = el(ev.attUid); if(a) M.crabPinch(a, {dir:ev.dir}); break; }
     // 2026-10-17 (user: "2 boomerangs come back by the way - this is wrong. Only 1 should come back."): the return is one flight now,
     // SkillFX.boomerangReturn (started by the game on the return's hit or whiff, retracing the throw and ending in the catch). The
     // inbound swing stays in the Lab only; the catch and whiff looks only play when no return flight is in the air for that unit

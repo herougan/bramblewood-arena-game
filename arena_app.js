@@ -5538,6 +5538,7 @@ const SoundKit = (()=>{
     isMuted(){ return sfxVolume<=0; },
     setMuted(v){ this.setSfxVolume(v?0:1); },
     getSfxVolume(){ return sfxVolume; },
+    prim: {tone, noise, fnoise, sweep}, // 2026-11-16 (package FX11): the primitives, so effect modules (FX.H) build their named cues behind the same volume gate
     setSfxVolume(v){
       sfxVolume = Math.max(0, Math.min(1, v));
       try{ localStorage.setItem('bw_sfxVolume', String(sfxVolume)); }catch(e){}
@@ -54680,7 +54681,7 @@ function witherSmokeVfx(el){
 //   FX.X.onEvent(ev, env)       every replayed battle event (from renderVfxForEvent, after the built-in passes)
 //   FX.X.hooks.name(...a, env)  a named non-battle moment: fxHook('mapNodeCleared', nodeEl) at the spot in this file
 // Both are skipped with reduced motion or Effects "none", never throw, and never hold up the replay (fire and forget).
-const FX_BATCHES = ['A', 'B', 'C', 'D', 'E', 'F', 'G']; // + G (2026-10-16): map titles, map grandeur, the fun set (bramblewood-fx-g.js)
+const FX_BATCHES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']; // + G (2026-10-16): map titles, map grandeur, the fun set (bramblewood-fx-g.js); + H (2026-11-16, FX11): crab claw, irradiated air, Healing / Worship / Gorge, Meiosis
 function fxEnv(){
   return {
     el: uid=> uid == null ? null : boardCardEl(uid),                       // the .board-card wrapper of a unit
@@ -54869,7 +54870,7 @@ function en2GuardStepIn(ev){
 }
 // The Ironclaw Fiddler's looks (owner 13:16 #17: "on-play side-to-side 'clack' animation (1 s), a short claw attack animation"): card fx
 // {play:'crabClack', attack:'crabClaw'} in canonical/cards.json. The clack: the card sways side to side four times over 1 s while its one
-// big claw snaps open and shut beside it. The claw: the big claw closes on the target as the blow lands.
+// big claw snaps open and shut beside it. Its attack: FX.H.crabSnap (en2CrabClawHit).
 const EN2_CLAW_SVG = '<svg viewBox="0 0 64 48" width="100%" height="100%" style="display:block;overflow:visible"><g class="en2-jaw-top"><path d="M10 26 C 14 6, 40 0, 58 12 C 46 12, 34 16, 26 26 Z" fill="#e2552d" stroke="#7a1f0c" stroke-width="2.5" stroke-linejoin="round"/></g><g class="en2-jaw-bot"><path d="M10 26 C 18 40, 40 44, 54 34 C 42 32, 32 30, 26 26 Z" fill="#c43d1c" stroke="#7a1f0c" stroke-width="2.5" stroke-linejoin="round"/></g><circle cx="12" cy="26" r="7" fill="#e2552d" stroke="#7a1f0c" stroke-width="2.5"/></svg>';
 function en2Claw(x, y, size, flip){ const c = en2Layer(EN2_CLAW_SVG, 'en2-claw'); c.style.width = size + 'px'; c.style.height = Math.round(size*.75) + 'px';
   gsap.set(c, {x, y, xPercent:-50, yPercent:-50, scaleX: flip ? -1 : 1}); return {el:c, top:c.querySelector('.en2-jaw-top'), bot:c.querySelector('.en2-jaw-bot')}; }
@@ -54886,13 +54887,8 @@ function en2CrabClack(el){
   tl.to(t, {x:0, rotation:0, duration:.16, ease:'sine.out', clearProps:'transform'}, .88).to(cl.el, {opacity:0, scale:.7, duration:.14}, .86);
   floatText(el, '🦀 Clack!', 'quick');
 }
-function en2CrabClawHit(attEl, targetEl, impactMs){
-  if(!targetEl || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
-  const c = en2Ctr(targetEl), from = attEl ? en2Ctr(attEl) : null, flip = !!(from && from.x > c.x);
-  setTimeout(()=>{ const cl = en2Claw(c.x, c.y, Math.max(30, c.w*.55), flip); gsap.set(cl.el, {opacity:0, scale:.7}); gsap.set(cl.top, {rotation:-26, svgOrigin:'12 26'}); gsap.set(cl.bot, {rotation:22, svgOrigin:'12 26'});
-    gsap.timeline({onComplete:()=> cl.el.remove()}).to(cl.el, {opacity:1, scale:1, duration:.08}).to([cl.top, cl.bot], {rotation:0, svgOrigin:'12 26', duration:.07, ease:'power3.in'})
-      .add(()=>{ try{ SoundKit.clang(); }catch(e){} en2Knock(targetEl, flip ? 180 : 0, .9); }).to(cl.el, {opacity:0, scale:.85, duration:.18, delay:.1}); }, Math.max(0, impactMs - 150));
-}
+function en2CrabClawHit(attEl, targetEl, impactMs){ // 2026-11-16 (package FX11): the claw is FX.H.crabSnap, the crabs' one look
+  if(targetEl && !reducedMotion() && fxAtLeast('low') && window.FX && FX.H && FX.H.crabSnap) FX.H.crabSnap(targetEl, {from:attEl, impactMs, speed:(matchState && matchState.speedMult) || 1}); }
 function en2Vfx(ev){
   if(!ev || !matchState) return; en2PatchInFlight();
   const defs = getCardDefs();
@@ -55812,8 +55808,6 @@ function renderVfxForEvent(ev){
       const e2 = boardCardEl(ev.targetUid);
       if(e2 && fromRect && rideFx) SkillFX.waveRide(e2, {from:fromRect, dir:ev.dir, scale:sc, speed:(matchState && matchState.speedMult) || 1, touch:[ev.swapUid, ev.crashUid].filter(u=> u != null).map(u=> boardCardEl(u)).filter(Boolean)}); } // + the unit it crashes into rocks (Wave N, 2026-10-18)
   }
-  // Crab Claws (2026-10-14): a sideways pinch, or a snap at thin air.
-  if(ev.type==='crabClaw'){ const el = boardCardEl(ev.attUid); if(el){ floatText(el, ev.whiff ? '🦞 Whiff' : ev.dir === 'castle' ? '🦞 🏰' : (ev.dir === 'left' ? '🦞 ←' : '🦞 →'), 'quick'); el.style.setProperty('--crab-dx', ev.dir === 'right' ? '8px' : '-8px'); el.classList.remove('crab-pinch'); void el.offsetWidth; el.classList.add('crab-pinch'); setTimeout(()=> el.classList.remove('crab-pinch'), 500); } }
   // Charge N (2026-10-14): the yellow clock ticks; at 0 it flashes and the effect's own events follow.
   if(ev.type==='charge'){ updateChargeBadge(ev.uid, ev.left, !!ev.fired); if(ev.fired){ const el = boardCardEl(ev.uid); if(el) floatText(el, '⏲️ Charge!', 'gold'); try{ SoundKit.gritUp(); }catch(e){} } }
   // Restless (2026-10-14): it slides one column over (swapping with an ally there), like a Wave push.
@@ -56068,7 +56062,7 @@ function renderVfxForEvent(ev){
     if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : (ev.dmg ? dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.freeze ? 'cold' : 'heat'), mods: ev.mods}) : floatText(el, `🌧️+${ev.heal}`, 'heal')); }catch(e){} /* DN2: <type><number><mark> (fieldGlyph was the source) */ // Immolation's burn is a fire number (2026-10-16)
     if(ev.field==='petrify' && el){ el.classList.add('is-petrified'); try{ SoundKit.thud ? SoundKit.thud() : null; }catch(e){} }
     if(ev.field==='lavaTide' && el){ el.classList.add('lava-tide-hit'); setTimeout(()=> el.classList.remove('lava-tide-hit'), 900); eruptionGeyserVfx(el); try{ SoundKit.boom ? SoundKit.boom() : null; }catch(e){} }
-    if(ev.field==='irradiated'){ try{ SoundKit.geiger(ev.tokens||1); }catch(e){} } // 2026-10-14: the geiger counter goes off (throttled)
+    if(ev.field==='irradiated'){ try{ (SoundKit.geigerSoft || SoundKit.geiger)(ev.tokens||1); }catch(e){} } // 2026-11-16 (package FX11): a few soft geiger ticks (FX.H's cue; was the louder burst)
     if(ev.field==='irradiated'){ const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid]; if(rc) rc.irradiation = ev.total; try{ updateCardStatusDisplay(ev.uid); }catch(e){}
       const src = boardCardEl(ev.srcUid); if(src){ src.classList.add('irradiate-pulse'); setTimeout(()=> src.classList.remove('irradiate-pulse'), 900); } }
     // 2026-10-12 the volcano: an eruption rumbles the board and lights the struck card from below

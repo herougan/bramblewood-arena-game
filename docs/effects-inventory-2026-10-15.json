@@ -737,21 +737,22 @@
   "area": "combat-attack",
   "name": "Crab Claws pinch",
   "trigger": "crabClaw {dir} before the hit",
-  "current": ".crab-pinch + \"🦞 ←/→\" float",
-  "quality": "basic — no claw shape snapping; retired from the editor but still plays",
+  "current": "FX.H.crabScuttle (it side-steps toward the column it pinches, sand puffs) + FX.H.crabSnap (a drawn pincer opens beside the target, slides in and snaps shut on the blow: crabClack cue, a spark, knock-back; at the castle it reaches into the bramble and leaves and twigs fly)",
+  "quality": "good — FX11 (2026-11-16, owner: \"crab claw doesn't look very nice\"); no arrow label, the motion shows the side",
   "priority": 3,
   "themeNotes": "Pebble Beach crab.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
-   "bramblewood-engine.js:5091",
-   "arena_app.js:31720",
-   "arena_template.html:5215"
+   "bramblewood-engine.js:11537",
+   "bramblewood-fx-h.js",
+   "arena_app.js: en2CrabClawHit"
   ],
-  "batch": "A",
+  "batch": "H",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): crabClaw {dir}"
+  "lab": "h.js",
+  "inGameHook": "onEvent (bramblewood-fx-h.js): crabClaw, then its hit / hitHQ / evaded; en2CrabClawHit (Ironclaw Fiddler, fx.attack crabClaw)",
+  "updated": "2026-11-16"
  },
  {
   "id": "atk-backstab",
@@ -4902,7 +4903,7 @@
   "area": "status",
   "name": "Irradiation tokens: applied",
   "trigger": "fieldTick irradiated {tokens,total} / irradiation event",
-  "current": "\"☢️ +N\" float + geiger; source .irradiate-pulse",
+  "current": "\"☢️ +N\" float + geiger; source .irradiate-pulse; FX11 (2026-11-16): the geiger is SoundKit.geigerSoft (a few quiet ticks as the tokens land; was up to 15 clicks)",
   "quality": "basic — a generic or reused look that does not say what happened",
   "priority": 2,
   "themeNotes": "Uranium (World 3): green glow, sickly sparks; green = radiation losses.",
@@ -4915,7 +4916,8 @@
   "batch": "B",
   "status": "live",
   "lab": "b.js",
-  "inGameHook": "onEvent: fieldTick irradiated (source → unit)"
+  "inGameHook": "onEvent: fieldTick irradiated (source → unit)",
+  "updated": "2026-11-16"
  },
  {
   "id": "st-irradiation-active",
@@ -5574,9 +5576,11 @@
    "project:claude/weather-and-time-2026-10-13.md"
   ],
   "batch": "B",
-  "status": "lab-only",
+  "status": "retired",
   "lab": "b.js",
-  "inGameHook": "future"
+  "inGameHook": "future",
+  "updated": "2026-11-16",
+  "retired": "2026-11-16 (FX11 audit): Burn exists since ENG20 with its own looks (FX10 igniteFlare when it takes hold, burnLick on its tick); this D65 proposal is not used"
  },
  {
   "id": "st-chill-d65",
@@ -6817,9 +6821,11 @@
    "project:claude/world-roadmap-2026-10-13.md"
   ],
   "batch": "B",
-  "status": "lab-only",
+  "status": "retired",
   "lab": "b.js",
-  "inGameHook": "future"
+  "inGameHook": "future",
+  "updated": "2026-11-16",
+  "retired": "2026-11-16 (FX11 audit): the Wildfire Front field exists (FX4) and has its own line of fire in fights (scorchSweepVfx)"
  },
  {
   "id": "fld-future-migration",
@@ -8219,20 +8225,21 @@
   "id": "death-slime-split",
   "area": "death",
   "name": "Slime splits on death",
-  "trigger": "planned card idea",
-  "current": "none",
+  "trigger": "death of a Meiosis unit (effects.meiosis) with no look of its own; its halves then arrive by FX.C.meiosisSplit",
+  "current": "FX.C.deathSlimeSplit, played by FX.H.hooks.deathLook",
   "quality": "missing — planned",
   "priority": 3,
   "themeNotes": "Gooey split into two blobs.",
   "variantsSuggested": false,
-  "future": true,
+  "future": false,
   "sources": [
    "docs/design-notes-2026-10-14-ideas.md:10"
   ],
   "batch": "C",
-  "status": "lab-only",
+  "status": "live",
   "lab": "c.js",
-  "inGameHook": "future"
+  "inGameHook": "fxHook deathLook (bramblewood-fx-h.js): a Meiosis unit falls to an ordinary blow (Planarian Splitter, Phoenix Mushrooms)",
+  "updated": "2026-11-16"
  },
  {
   "id": "castle-hit",
@@ -9440,7 +9447,8 @@
   "batch": "D",
   "status": "lab-only",
   "lab": "d.js",
-  "inGameHook": "lab only: the tile needs its rarity key (data-rarity) for the game to place it"
+  "inGameHook": "lab only: no card carries these rarities yet (2026-11-16 FX11 audit); the tile would also need its rarity key (data-rarity)",
+  "updated": "2026-11-16"
  },
  {
   "id": "tr-elite-polish",
@@ -20618,5 +20626,88 @@
   "added": "2026-11-13",
   "lab": "story.js",
   "inGameHook": "showSpeechBubble → StoryUI.bubble(b, holdS) (arena_app.js)"
+ },
+ {
+  "id": "fld-irradiation-atmos",
+  "area": "field",
+  "name": "Irradiation in the air (the whole screen)",
+  "trigger": "the board carries Irradiation tokens (sum of the ☢️N badges), after each board render / status update",
+  "current": "FX.H.irrAtmos: one fixed layer in #view-play, a sickly green-yellow vignette, faint scanlines and grain (CSS gradients), a slow uneven flicker; opacity 0.26 / 0.36 / 0.46 / 0.55 / 0.62 at 1 / 3 / 6 / 10 / 15 tokens; fades as they drop; gone at the match end and off the battle screen",
+  "quality": "good — FX11 (owner: \"whole screen looks abit irradiated as irradiation increases\")",
+  "priority": 2,
+  "variantsSuggested": false,
+  "future": false,
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "added": "2026-11-16",
+  "themeNotes": "Uranium (World 3): sickly green, geiger flicker.",
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "inGameHook": "fxHook boardRendered / cardStatusShown / matchUI (FX.H.irrSync); resultsShown / mapShown clear it"
+ },
+ {
+  "id": "sk-healing-mend",
+  "area": "combat-skill",
+  "name": "Healing N: the healer mends",
+  "trigger": "heal {cause:'healing'} (upkeep: it heals the most wounded ally, itself included)",
+  "current": "FX.H.healingMend: a green cross pops over the healer with a ring of light; an orb hops over to the patient trailing pluses (or the cross sinks into its own card); mendChime cue",
+  "quality": "good — FX11 (was the patient's ➕ only)",
+  "priority": 2,
+  "variantsSuggested": false,
+  "future": false,
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "added": "2026-11-16",
+  "themeNotes": "Abbey / swamp medicine.",
+  "sources": [
+   "bramblewood-engine.js:9685",
+   "bramblewood-fx-h.js"
+  ],
+  "inGameHook": "onEvent (bramblewood-fx-h.js): heal with cause healing"
+ },
+ {
+  "id": "sk-worship-hymn",
+  "area": "combat-skill",
+  "name": "Worship hears a Prayer",
+  "trigger": "grace / statusFx prayer on its side (Worship: +1 Attack per 3 Prayer)",
+  "current": "FX.H.worshipHymn: a golden halo settles over the unit, a warm wash, three notes rise; hymnBell cue (once a round)",
+  "quality": "good — FX11 (was nothing)",
+  "priority": 2,
+  "variantsSuggested": false,
+  "future": false,
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "added": "2026-11-16",
+  "themeNotes": "Ecclesia: the Hymn Wren, the Cathedral Eagle.",
+  "sources": [
+   "bramblewood-engine.js:4363",
+   "bramblewood-fx-h.js"
+  ],
+  "inGameHook": "onEvent (bramblewood-fx-h.js): grace / statusFx prayer"
+ },
+ {
+  "id": "sk-gorge-gulp",
+  "area": "combat-skill",
+  "name": "Gorge: the parasite feeds again",
+  "trigger": "parasiteDrain {gorge:true} (round end, a hooked Parasite with Gorge)",
+  "current": "FX.H.gorgeGulp: a dark red rim on the host, drops of blood drawn into the parasite pip, two gulps; gorgeGulp cue",
+  "quality": "good — FX11 (was the number only)",
+  "priority": 2,
+  "variantsSuggested": false,
+  "future": false,
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "added": "2026-11-16",
+  "themeNotes": "The Gangrenous Leech.",
+  "sources": [
+   "bramblewood-engine.js (parasiteDrain)",
+   "bramblewood-fx-h.js"
+  ],
+  "inGameHook": "onEvent (bramblewood-fx-h.js): parasiteDrain with gorge"
  }
 ]
