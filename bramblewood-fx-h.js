@@ -170,7 +170,7 @@ function brambleBits(x, y, ang){
 css('atmos', `.fxh.fxh-atmos{inset:0; width:auto; height:auto; z-index:45; overflow:hidden; opacity:0; transition:opacity .9s ease; contain:strict;}
 .fxh-atmos.is-abs{position:absolute;}
 #appWrap:not(.in-match) .fxh-atmos:not(.is-abs){display:none;}
-.fxh-atmos[data-step="1"]{opacity:.26;} .fxh-atmos[data-step="2"]{opacity:.36;} .fxh-atmos[data-step="3"]{opacity:.46;} .fxh-atmos[data-step="4"]{opacity:.55;} .fxh-atmos[data-step="5"]{opacity:.62;}
+.fxh-atmos[data-step="1"]{opacity:.2;} .fxh-atmos[data-step="2"]{opacity:.28;} .fxh-atmos[data-step="3"]{opacity:.36;} .fxh-atmos[data-step="4"]{opacity:.44;} .fxh-atmos[data-step="5"]{opacity:.52;} /* 2026-11-16 (coordinator): softer, "abit irradiated"; the hand washed out at .62 */
 .fxh-atmos > i{position:absolute; inset:0;}
 .fxh-atmos > .v{background:radial-gradient(ellipse 78% 72% at 50% 48%, rgba(200,255,90,0) 34%, rgba(170,230,50,.22) 58%, rgba(120,200,30,.55) 82%, rgba(70,140,10,.82) 100%); will-change:opacity; animation:fxhFlicker 5.3s steps(1) infinite;}
 .fxh-atmos > .s{background:repeating-linear-gradient(0deg, rgba(200,255,110,.07) 0 1px, transparent 1px 3px); opacity:.7;}
