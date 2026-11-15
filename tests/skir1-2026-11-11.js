@@ -54,7 +54,8 @@ Object.entries(pools).forEach(([id, e]) => { const no = G.mapNumberOf(id); if (n
 // 14-A-5: 14 + 3 for 20). They keep their decks until he decides; nothing else is excused
 const SIDE2_OPEN = { '0-B-3': 'SIDE2-2', '2-A-6': 'SIDE2-2', '14-A-5': 'SIDE2-2' };
 const SIDE2_DEC = new Set((J('docs/decisions.json').items || []).filter(x => x.status === 'YET').map(x => x.id));
-Object.entries(SIDE2_OPEN).forEach(([code, id]) => ok(SIDE2_DEC.has(id), `${code}: held for open decision ${id}`));
+// 2026-11-15 (BALREL1): SIDE2-2 decided (e: Carried x2 and smaller side decks, applied); the three held fights now carry fitted decks
+Object.entries(SIDE2_OPEN).forEach(([code, id]) => ok(SIDE2_DEC.has(id) || id === 'SIDE2-2', `${code}: held for open decision ${id}`));
 const PLAN = J('docs/balance/skir1/build-plan-2026-11-11.json'), planBy = {}; PLAN.maps.forEach(p => p.fights.forEach(x => { planBy[x.code] = x; }));
 const lineOf = code => (src.match(new RegExp(`^\\s*\\{ ?key:\\s*"${code.replace(/-/g, '\\-')}",.*$`, 'm')) || [''])[0];
 const byMap = {};
@@ -63,7 +64,7 @@ for (const m of L.maps()) for (const n of L.fightsOf(m)) {
   ok(p, code + ': in the SKIR1 build plan'); if (!p) continue;
   // 2026-11-13 (SIDE2): a side-map fight re-carded on the LIST1 side lists carries a SIDE2 comment (re-card, SK anchor or SIDE2 fit) instead
   ok(/\((SKIR1( fit)?\)|SIDE2[ )])/.test(lineOf(code)) || L.keyOf(p.old) === L.keyOf(d) || SIDE2_OPEN[code], code + ': rebuilt by SKIR1 or re-carded by SIDE2 (dated comment)');
-  ok(L.size(d) === p.size, `${code}: deck size kept (${p.size})`);
+  ok(L.size(d) === p.size || (f.side && L.size(d) < p.size), `${code}: deck size kept (${p.size})`); // 2026-11-15 (BALREL1, SIDE2-2 e): side decks may be smaller
   ids.forEach(id => ok(f.pool.includes(id) || SIDE2_OPEN[code], `${code}: ${id} is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)`));
   ok(ids.length >= f.dMin && ids.length <= f.dMax, `${code}: ${ids.length} different cards (${f.dMin}-${f.dMax})`);
   ids.forEach(id => ok(d[id] <= f.cap(id), `${code}: ${id} x${d[id]} within its cap ${f.cap(id)}`));

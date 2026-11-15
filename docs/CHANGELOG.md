@@ -2,10 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
-## 2026-11-15 (package BALREL1: the recommended balance fixes, applied)
-- Owner 23:00 "Apply them (Recommended)": the default option of EDGE1-1 to EDGE5-1, SIDE2-2 e, SIDE2-4 e, SIDE3-1 a, SIDE4-1 a (SIDE5-1 a: 19-A-1 left as is). 76 road fights retuned: 23 main (enemy decks; Shield on 13-4, 13-5, 13-6, 13-8, 14-8; Health on 2-1) and 53 side (SIDE2's decks with Carried x2 and smaller side decks; Sunken Depths boss Health 13, Pale Desert boss level 3, 2-A-6 Health 8; 2-B-1 Health 7, Shield 0). 20-9 left for the card redesign.
-- Every fight as built matches the measured scratch copy (snapshot diff: only 20-9 and 19-A-1 differ). Projection, six fresh seed sets: main 144/149 in band, 147 within 10, 1 beyond 20; side 71/77, 74, 0 (was 120/130/9 and 38/42/13).
-- tools/skir1: side maps allow a Carried card up to 2 copies (K14 on side maps, project-state.md); all 81 side decks of Maps 0-20 pass problems().
+## 2026-11-15 (package BALREL1: the recommended balance fixes, applied where they keep the deck rules)
+- Owner 23:00 "Apply them (Recommended)": the defaults of EDGE1-1 to EDGE5-1, SIDE2-2 e, SIDE2-4 e, SIDE3-1 a, SIDE4-1 a (SIDE5-1 a: 19-A-1 left as is; 20-9 left for the card redesign).
+- Applied: 46 fights that keep every standing deck rule (tests/skir1: no new failure): 11-9, 13-4 (Shield) and 44 side fights (SIDE2's decks with Carried x2 and smaller side decks; Sunken Depths boss Health 13, Pale Desert boss level 3, 2-A-6 Health 8, 2-B-1 Health 7 and Shield 0).
+- Not applied, back to their old decks: 30 fights whose fix broke K14, the map's card list, the two-card family rule, first-clear cards, the usage line or the deck size: main 13-5, 13-6, 13-7, 13-8, 14-5, 14-8, 16-3, 16-4, 16-5, 16-6, 17-4, 17-8, 19-1, 19-3, 19-5, 2-1, 2-2, 2-4, 4-5, 6-2, 8-7; side 0-B-3, 1-A-2, 14-A-2, 18-A-2, 19-A-4, 19-A-6, 20-A-2, 20-A-6, 7-A-2. They go to a legal re-fit (BAL-LEGAL1).
+- Projection (applied fights at their six-seed reads, the rest at the four-seed live baseline): main 122/149 in band, 131 within 10, 9 beyond 20 (was 120/130/9); side 61/77, 67, 2 (was 38/42/13).
+- tools/skir1: side maps allow a Carried card up to 2 copies and smaller decks (K14 on side maps, project-state.md); tests/skir1 accepts both.
 
 ## 2026-11-15 (package SKMAP1)
 - Admin only: "Skills by map" (Codex Skills book, turn the 🗺️ toggle on, then the button). Maps 0-20: skills on each map's cards (live, with the map-list edits), skills suggested before (4 sources, matches marked), new-on-this-map in red, Claude's strict 0-3 picks (struck through when no longer on the map or no longer new). THEME2's `introduces` lists are all empty in the file, so its `newSkills` are shown instead.
