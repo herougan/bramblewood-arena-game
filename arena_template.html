@@ -3377,7 +3377,7 @@
   .dialogue-dock.is-peek .dlg-lines, .dialogue-dock.is-dragging .dlg-lines{opacity:.14;}
   .dialogue-dock.is-dragging .dlg-reply{pointer-events:none;}
   .dlg-hide, .dlg-chip{pointer-events:auto; border:0; cursor:pointer; font-family:'Baloo 2'; font-weight:800; color:#2b2117; background:#fff8e6; box-shadow:0 4px 12px rgba(0,0,0,.35);}
-  .dlg-hide{display:none; position:absolute; right:calc(4% - 16px); top:-10px; z-index:2; width:26px; height:26px; border-radius:50%; font-size:14px; line-height:26px; padding:0;}
+  .dlg-hide{display:none; position:absolute; right:calc(4% - 16px); top:-10px; z-index:2; width:34px; height:34px; border-radius:50%; font-size:15px; line-height:34px; padding:0;} /* 2026-11-16 (package UX3): 34px tap target (was 26px) */
   .dialogue-dock.has-lines:not(.is-collapsed) .dlg-hide{display:block;}
   .dlg-chip{display:none; align-self:flex-start; border-radius:999px; padding:4px 10px; font-size:16px; gap:4px; align-items:center;}
   .dlg-chip b{font-size:11px; background:#c9853a; color:#fff; border-radius:999px; padding:0 6px;}
@@ -3762,6 +3762,7 @@
   .page-back-bar .pb-back{width:40px; height:40px; border-radius:50%; border:0; cursor:pointer; display:grid; place-items:center; font-size:20px; font-weight:900; background:#fff8e6; color:#2b2117; box-shadow:0 0 0 2px #c9853a, 0 4px 10px rgba(0,0,0,.35);}
   .page-back-bar .pb-back:hover{background:#ffe9b8;}
   @media (max-width:900px){ .page-back-bar .pb-sc b{display:none;} .page-back-bar .pb-sc{padding:6px 8px;} }
+.page-back-bar .pb-sc{min-height:36px;} /* 2026-11-16 (package UX3): 36px tap target (was 31px) */
   /* 2026-10-15 (user: "the back button is not centered (in Nest etc.)"): the ↩ glyph came from whichever font had it, so it sat off
      centre (and as a colour emoji on some systems); it is now a drawn arrow centred in the circle. The Shop's own back button only
      hides ↩ while the Shop is showing (it used to hide it on every page after a Shop visit). */
@@ -7336,6 +7337,9 @@
   #rowEnemy .center-slot-empty .center-slot-inner{display:none !important;}
   /* (user: "The settings window is too thin") */
   .settings-panel{width:min(340px, calc(100vw - 24px)) !important; max-height:calc(100dvh - 90px); overflow-y:auto; padding:16px 18px 14px !important;}
+  @media (max-width:640px){ #appWrap:not(.in-match) .btn.small, .pg-tab.pg-corner{min-height:36px;} .ux-kind, .ux-lv{min-height:34px;} /* 2026-11-16 (package UX3): Codex tabs, filters, chips and pager were 26-32px tall */
+  #signInBannerGoogle, #signInBannerLater{min-height:36px;} .settings-panel input[type=range]{height:28px;} /* 2026-11-16 (package UX3): the sign-in banner links were 18px and the settings sliders 16px tall */
+  #settingsBtnPlaySub{width:36px !important; height:36px !important;} .settings-panel{position:fixed; top:56px; right:12px; left:auto; max-height:calc(100dvh - 70px);} } /* 2026-11-16 (package UX3): was anchored to the gear mid-bar, so 146px of it sat off the left edge at 390px */
   .leaf-sweep .ls-veil{display:none !important;} /* instant transitions: the leaves stay, the veil that dimmed the new screen goes */
   /* deck list card: the deck's cards (2026-10-08) */
   .dm-cards{display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 10px; padding:8px; border-radius:12px; background:color-mix(in srgb, var(--ink) 6%, transparent);}
@@ -13071,6 +13075,9 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
     #view-play .top-row-controls > .btn.small{padding:0 6px; min-height:28px; height:28px; min-width:28px; font-size:12.5px; line-height:1; display:inline-flex; align-items:center; justify-content:center; gap:2px;}
     #view-play .top-row-controls .settings-btn{width:28px; height:28px; min-width:28px; font-size:14px; padding:0;}
     #view-play .top-row-controls .autoplay-btn, #view-play .top-row-controls .admin-win-btn{font-size:10.5px !important; padding:0 5px !important;}
+    /* 2026-11-16 (package UX3): HUD and map buttons 36px tall (were 28-30px) */
+    #view-play .top-row-controls > .btn.small{min-height:36px; height:36px; min-width:36px;}
+    #appWrap:not(.mb2-raid) #view-play .top-row-controls .settings-btn, #appWrap:not(.mb2-raid) #view-play #settingsBtnHud{width:36px !important; height:36px !important; min-width:36px;}
   }
   /* Skill chips under a card (user screenshot: "☠2 🏆 🌵" spread wider than the card): tight, never wider than the card; a long
      strip shrinks its icons, and wraps only as a last resort. */
@@ -14434,7 +14441,7 @@ body.pg-pack-open #cardPop{z-index:9600 !important;} /* 2026-11-12 (package PERF
 /* #21: Home is an icon; the Conquest map leads the places bar */
 .topbar .home-nav-btn.ne-home-icon{width:38px; height:38px; padding:0 !important; justify-content:center; gap:0; border-radius:50%;} .home-nav-btn.ne-home-icon .tab-emoji{font-size:18px; margin:0; line-height:1;}
 .page-back-bar .pb-sc[data-pbsc="map"]{margin-right:4px; box-shadow:4px 0 0 -2px rgba(255,236,190,.25);}
-@media (max-width:480px){ .page-back-bar .pb-shortcuts{gap:0; min-width:0; overflow-x:auto; scrollbar-width:none;} .page-back-bar .pb-sc{padding:6px 3px;} .page-back-bar .pb-sc span{font-size:15px;} } /* 2026-11-13 (package UI52): room for Shop, Premium and one more place on a phone; never wider than the bar */
+@media (max-width:480px){ .page-back-bar .pb-shortcuts{gap:0; min-width:0; overflow-x:auto; scrollbar-width:none;} .page-back-bar .pb-sc{padding:6px 3px; min-width:36px; min-height:36px; justify-content:center;} .page-back-bar .pb-sc span{font-size:15px;} } /* 2026-11-13 (package UI52): room for Shop, Premium and one more place on a phone; never wider than the bar */
 /* #12: the Codex card detail's copies, one small card each, grouped by treatment; a tapped copy shows its level */
 .ne-cx-copies{margin:10px 0 4px;} .ne-cx-copies h3 small{font-weight:600; font-size:11.5px; opacity:.7; margin-left:6px;}
 .ne-cx-group{margin:4px 0 8px;} .ne-cx-g{display:block; font-weight:800; font-size:12px; opacity:.8; margin:0 0 4px;}
@@ -14979,10 +14986,14 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 .topbar .feedback-btn{width:32px; height:32px; margin:0;}
 @media (max-width:640px){
   .topbar{column-gap:6px;}
-  .topbar > .home-nav-btn.ne-home-icon, .topbar .settings-btn, .topbar .feedback-btn{width:28px !important; height:28px !important;}
-  .topbar > .home-nav-btn.ne-home-icon .tab-emoji{font-size:14px;}
-  .topbar > .dungeon-key-btn, .topbar .energy-pill, .topbar .account-chip{height:28px;}
+  /* 2026-11-16 (package UX3): 36px tap targets on a phone (were 28px); the 5 controls still fit 390px */
+  .topbar > .home-nav-btn.ne-home-icon, .topbar .settings-btn, .topbar .feedback-btn{width:36px !important; height:36px !important;}
+  .topbar > .home-nav-btn.ne-home-icon .tab-emoji{font-size:16px;}
+  .topbar > .dungeon-key-btn, .topbar .energy-pill, .topbar .account-chip{height:36px;}
+  .topbar .account-chip{font-size:12px;}
 }
+/* 2026-11-16 (package UX3): the 👤 is a dark glyph; on a cream disc it reads in dark mode too */
+.account-chip-ico{display:inline-grid; place-items:center; width:20px; height:20px; border-radius:50%; background:#fff8e6; font-size:12px; line-height:1;}
 /* JJ15: the status chips are centred on the card's top edge (centred in the room left of the Wait clock when there is one); Poison shows its stack from 2 */
 .board-card .card-tile .badges-bottom.status-chips{left:50% !important; transform:translate(-50%, -50%) !important; justify-content:center;}
 .board-card .card-tile > .waitbadge ~ .badges-bottom.status-chips{left:calc((100% - max(16px, 22cqw) - 4px) / 2) !important;} /* 2026-11-11 (PERF2): no :has(), as above */

@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package UX3: UI/UX audit at 390 and 1280 px, with fixes)
+- Phone tap targets: top bar (home, map, settings, account, feedback) 28 to 36 px; Codex tabs, Filters, pager 32 to 36 px; kind and level chips 26-28 to 34 px; page-bar shortcuts 31 to 36 px; fight and map HUD buttons 28-30 to 36 px; coach dismiss 26 to 34 px; settings sliders and sign-in banner links taller.
+- The Settings panel opened 146 px off the left edge on a phone; it is now fixed inside the screen.
+- The account chip's 👤 sits on a cream disc, so it shows in dark mode.
+- Audit list (21 rows, 8 fixed here): `docs/ux-audit-2026-11-16.md`; before/after shots in `docs/screens/ux3/`; test `tests/ux3-2026-11-16.js`.
+
 ## 2026-11-15 (package BALREL1: the recommended balance fixes, applied where they keep the deck rules)
 - Owner 23:00 "Apply them (Recommended)": the defaults of EDGE1-1 to EDGE5-1, SIDE2-2 e, SIDE2-4 e, SIDE3-1 a, SIDE4-1 a (SIDE5-1 a: 19-A-1 left as is; 20-9 left for the card redesign).
 - Applied: 46 fights that keep every standing deck rule (tests/skir1: no new failure): 11-9, 13-4 (Shield) and 44 side fights (SIDE2's decks with Carried x2 and smaller side decks; Sunken Depths boss Health 13, Pale Desert boss level 3, 2-A-6 Health 8, 2-B-1 Health 7 and Shield 0).
