@@ -91,7 +91,8 @@ ok(/function pl2ResultsPhase\(\)/.test(app) && /const PL2_RESULTS_DUCK = 0\.3, P
 
 // ---- texts: every new TX text translated in the 12 packs
 for(const k of ['coach.pl2-trigger', 'ui.pl2-coop', 'ui.pl2-reward', 'ui.pl2-rank-reward', 'ui.pl2-pack-n']){ const en = T.TEXT[k]; ok(!!en, `texts: ${k}`); if(en) CODES.forEach((c, i)=> ok(typeof packs[i][en] === 'string' && packs[i][en], `texts: ${c} "${en}"`)); }
-ok(!/\/\*|\/\/ /.test(TXT.slice(TXT.indexOf('"ui.pl2-pack-n"'), TXT.indexOf('"coach.tl-what"'))), 'texts: no comments inside the TEXT table');
+// 2026-11-15 (TESTFIX4): coach.tl-what removed by TESTFIX3 (unused)
+ok(!/\/\*|\/\/ /.test(TXT.slice(TXT.indexOf('"ui.pl2-pack-n"'), TXT.indexOf('"coach.okay-next-turn-you-ll-draw"'))), 'texts: no comments inside the TEXT table');
 // ---- records
 ok(/^## 2026-10-25 \(package PL2/m.test(rd('docs/CHANGELOG.md')), 'CHANGELOG entry');
 ok(/tests\/pl2-2026-10-25\.js/.test(rd('tests/run-all.sh')), 'run-all.sh lists the test');

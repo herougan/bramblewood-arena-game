@@ -63,10 +63,12 @@ const app = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8'),
 ok(!/'', `Burns a unit a side for/.test(app), '3. the field card no longer says "Burns a unit a side for N"');
 ok(/add\('eruption', '🔥', SCORCHED_NAME, scorchedGroundText\(\), '', TX\('ui\.fx-scorched-short'\)/.test(app), '3. the Scorched Ground card reads its TX lines');
 ok(/"ui\.fx-wildfire": "From round 2, a line of fire sweeps past each round: 1 fire damage to every unit it touches\."/.test(tx) && /"ui\.fx-wildfire-short": "A line of fire: 1 to every unit"/.test(tx), '3. TX: the line of fire, 1 (Wildfire Front since FX4)');
-ok(/"ui\.fx-lava-tide": "[^"]*2 fire damage/.test(tx) && /"ui\.fx-scorching3": "[^"]*4 random units on each side take 1 fire/.test(tx), '3. TX: Lava Tide 2, Scorching III 1');
+// 2026-11-15 (TESTFIX4): ui.fx-scorching1-3 removed by TESTFIX3 (unused)
+ok(/"ui\.fx-lava-tide": "[^"]*2 fire damage/.test(tx), '3. TX: Lava Tide 2');
 ok(!/take [23] fire damage\. Heat-resistant/.test(app + tx), '3. no Scorching text says 2 or 3 damage');
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
-const keys = ['ui.fx-scorched', 'ui.fx-scorched-short', 'ui.fxx-scorched', 'ui.fx-wildfire-sweep-log' /* FX4: was ui.fx-scorched-sweep-log */, 'ui.fx-lava-tide', 'ui.fx-scorching1', 'ui.fx-scorching2', 'ui.fx-scorching3'];
+// 2026-11-15 (TESTFIX4): ui.fx-scorching1-3 (keys list) removed by TESTFIX3 (unused)
+const keys = ['ui.fx-scorched', 'ui.fx-scorched-short', 'ui.fxx-scorched', 'ui.fx-wildfire-sweep-log' /* FX4: was ui.fx-scorched-sweep-log */, 'ui.fx-lava-tide'];
 const en = k=>{ const m = new RegExp('"' + k.replace(/\./g, '\\.') + '": "((?:[^"\\\\]|\\\\.)*)"').exec(tx); return m ? JSON.parse('"' + m[1] + '"') : null; };
 CODES.forEach(c=>{ const pk = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'lang', c + '.json'), 'utf8')); const miss = keys.filter(k=> !pk[en(k)]); ok(!miss.length, `3. ${c}: the ${keys.length} FX3 texts are translated (${miss})`); });
 // ---- 4. the line of fire on screen: the Effects Lab's Wildfire front, each number as the band reaches the card

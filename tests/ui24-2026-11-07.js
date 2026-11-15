@@ -17,7 +17,8 @@ const app = read('arena_app.js'), tpl = read('arena_template.html'), asm = read(
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
 
 // ---- static
-const KEYS = ['ui.ui24-type2', 'ui.ui24-phylum-tip', 'ui.ui24-thresholds', 'ui.ui24-power', 'ui.ui24-power-none', 'ui.ui24-power-date', 'ui.ui24-power-tip'];
+// 2026-11-15 (TESTFIX4): ui.ui24-power-tip removed by TESTFIX3 (unused)
+const KEYS = ['ui.ui24-type2', 'ui.ui24-phylum-tip', 'ui.ui24-thresholds', 'ui.ui24-power', 'ui.ui24-power-none', 'ui.ui24-power-date'];
 { const {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js'));
   KEYS.forEach(k=>{ const en = TEXT[k]; ok(!!en, 'TX key ' + k);
     CODES.forEach(c=>{ const pack = JSON.parse(read('lang/' + c + '.json')); ok(en && pack[en] && pack[en] !== en, `${c} translates "${en}"`); }); });
