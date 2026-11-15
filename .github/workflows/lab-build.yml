@@ -1,0 +1,70 @@
+# 2026-11-16 (package LAB1): builds Bramblewood Lab for the owner's Mac (tools/lab/build-app.sh): "Bramblewood Lab.app" with an official
+# Node binary, ad-hoc signed (no Apple account: first open with right-click -> Open, or System Settings -> Privacy & Security -> Open Anyway).
+# Runs on pushes that touch tools/lab/** (any branch) and by hand (Actions -> "Lab build" -> Run workflow). The zips are the run's artifacts;
+# nothing is released, deployed or signed with a secret. The x64 app is built on the arm64 runner (macos-13 runners are retired) and
+# smoke-tested under Rosetta when the runner has it. A Linux job builds the same bundle and runs the Lab's selftest and a pull as a smoke test.
+name: Lab build
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/lab/**'
+      - '.github/workflows/lab-build.yml'
+permissions:
+  contents: read
+concurrency:
+  group: lab-build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  mac:
+    runs-on: macos-14
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [arm64, x64]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: tools/lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build the app
+        run: bash tools/lab/build-app.sh mac-${{ matrix.arch }} dist
+      - name: Smoke test (version and selftest from inside the app)
+        run: |
+          cd dist && ditto -x -k BramblewoodLab-mac-${{ matrix.arch }}.zip app
+          L="app/Bramblewood Lab.app/Contents/MacOS/BramblewoodLab"
+          codesign --verify --deep --verbose=1 "app/Bramblewood Lab.app"
+          if [ "${{ matrix.arch }}" = arm64 ]; then "$L" --version && "$L" selftest;
+          elif arch -x86_64 /usr/bin/true 2>/dev/null; then arch -x86_64 "$L" --version && arch -x86_64 "$L" selftest;
+          else echo "no Rosetta on this runner: x64 app built, not run"; fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BramblewoodLab-mac-${{ matrix.arch }}
+          path: dist/BramblewoodLab-mac-${{ matrix.arch }}.zip
+          if-no-files-found: error
+  linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: tools/lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build the bundle
+        run: bash tools/lab/build-app.sh linux-x64 dist
+      - name: Smoke test (selftest, then a pull of main's game data)
+        run: |
+          cd dist && unzip -q BramblewoodLab-linux-x64.zip
+          ./BramblewoodLab/bramblewood-lab --version
+          ./BramblewoodLab/bramblewood-lab selftest
+          LAB_HOME="$RUNNER_TEMP/lab" GITHUB_TOKEN="${{ github.token }}" ./BramblewoodLab/bramblewood-lab pull
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BramblewoodLab-linux-x64
+          path: dist/BramblewoodLab-linux-x64.zip
+          if-no-files-found: error

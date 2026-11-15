@@ -1,0 +1,8 @@
+{
+  "name": "bramblewood-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bramblewood Lab: runs and summarises every simulation and optimisation (package LAB1)",
+  "main": "lab.js",
+  "bin": { "lab": "lab.js" }
+}
