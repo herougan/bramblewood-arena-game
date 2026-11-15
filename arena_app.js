@@ -9547,7 +9547,7 @@ const NM_ROOM_EM = 6.7, NM_MIN_SCALE = 0.7, NM_W_CACHE = new Map(); let nmCtx = 
 let nmFontOk = false; // 2026-11-13 (package UI51): document.fonts.check costs ~3 ms a call; once the font is in, it stays
 function nmWidthEm(name){ name = String(name || '');
   try{ if(NM_W_CACHE.has(name)) return NM_W_CACHE.get(name);
-    if(typeof document !== 'undefined' && document.fonts && (nmFontOk || (nmFontOk = document.fonts.check('700 20px "Baloo 2"')))){ nmCtx = nmCtx || document.createElement('canvas').getContext('2d'); nmCtx.font = '700 100px "Baloo 2"'; const w = nmCtx.measureText(name).width / 100; NM_W_CACHE.set(name, w); return w; } }catch(e){}
+    if(typeof document !== 'undefined' && document.fonts && (nmFontOk || (nmFontOk = document.fonts.check('700 20px "Baloo 2"')))){ nmCtx = nmCtx || document.createElement('canvas').getContext('2d'); nmCtx.font = '700 100px "Baloo 2"' + (document.documentElement.lang && document.documentElement.lang !== 'en' ? ', ' + (getComputedStyle(document.body).fontFamily || 'sans-serif') : ''); const w = nmCtx.measureText(name).width / 100; NM_W_CACHE.set(name, w); return w; } }catch(e){}
   let w = 0; for(const ch of name){ w += /[iIl1j.,'’:;!|]/.test(ch) ? .3 : /[ftr\- ]/.test(ch) ? .36 : /[mwMW@]/.test(ch) ? .75 : /[A-Z]/.test(ch) ? .63 : .52; } return w; } // the fallback before the font is ready
 function nmFitScale(name){ const w = nmWidthEm(name); return w <= NM_ROOM_EM ? 1 : Math.max(NM_MIN_SCALE, Math.round(NM_ROOM_EM / w * 100) / 100); }
 // 2026-11-04 (package UI20, owner 11-04: the Lumber cost badge hid the start of "Glacial Ape-King" in the large view): the cost badge (top left) and the wait badge (top right)
@@ -9556,11 +9556,13 @@ function nmFitScale(name){ const w = nmWidthEm(name); return w <= NM_ROOM_EM ? 1
 // narrows the scroll's width so its text starts past the badge. The name is not shrunk for it; a name that no longer fits wraps to a second line.
 function nmPartsEm(parts){ let em = 0; for(const p of (parts || [])){ const m = /data-n="(\d+)"/.exec(p); em += m ? (+m[1] > 4 ? 2.1 : .9 * (+m[1]) + .35) : 1.3 * [...String(p).replace(/<[^>]*>/g, '')].length; } return Math.round((em * 1.04 + .2 * Math.max(0, (parts || []).length - 1)) * 100) / 100; } // + 4% and .2em between two cost parts (measured: a Lumber + Stone badge ran .17em wider than the sum)
 function nmWaitEm(w){ w = w | 0; return w <= 0 ? 0 : w > 4 ? 2.1 : Math.round((.9 * w + .35) * 100) / 100; }
-function nmHTML(name, costParts, wait){ const sc = nmFitScale(name), ce = nmPartsEm(costParts), we = nmWaitEm(wait), st = (ce ? `--nm-cem:${ce};` : '') + (we ? `--nm-wem:${we};` : '');
+// 2026-11-16 (package UX4): the fit measures the name as shown (translated), in the language's own font stack; i18n swaps the text node after render
+function nmShown(name){ try{ return (window.BramblewoodI18n && BramblewoodI18n.translate(String(name || ''))) || name; }catch(e){ return name; } }
+function nmHTML(name, costParts, wait){ const eng = name; name = nmShown(name); const sc = nmFitScale(name), ce = nmPartsEm(costParts), we = nmWaitEm(wait), st = (ce ? `--nm-cem:${ce};` : '') + (we ? `--nm-wem:${we};` : '');
   // 2026-11-05 23:39 (owner: "The scroll display of names for long named cards are screwed up!": "Black Dragon" broke as Blac / k Drag / on on a board card): --nm-lw is the
   // longest word's width in em, so the CSS shrinks the text until that word fits the narrowed scroll; words never break inside (UI20's overflow-wrap:anywhere is gone)
   const lw = Math.max(1, ...String(name || '').split(/\s+/).filter(Boolean).map(nmWidthEm));
-  return `<div class="nm"${st ? ` style="${st}"` : ''}><span class="nmt" style="--nm-lw:${Math.round(lw * 100) / 100};${sc < 1 ? `--nm-s:${sc}` : ''}">${escapeHtml(name)}</span></div>`; }
+  return `<div class="nm"${st ? ` style="${st}"` : ''}><span class="nmt" style="--nm-lw:${Math.round(lw * 100) / 100};${sc < 1 ? `--nm-s:${sc}` : ''}">${escapeHtml(eng)}</span></div>`; }
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
@@ -28576,11 +28578,15 @@ function startTipTicker(el, tips){
   };
   show();
 }
+// 2026-11-16 (package UX4): the bottom map tab strip scrolls sideways; a fade on the edge that still has tabs hints at it
+function syncSubtabsFade(t){ if(!t) return; const f = ()=>{ const max = t.scrollWidth - t.clientWidth; t.classList.toggle('fade-r', max > 2 && t.scrollLeft < max - 2); t.classList.toggle('fade-l', max > 2 && t.scrollLeft > 2); };
+  if(!t._fadeWired){ t._fadeWired = true; t.addEventListener('scroll', f, {passive: true}); window.addEventListener('resize', f); } requestAnimationFrame(()=> requestAnimationFrame(f)); }
 function placePlayFullHud(){
   const wrap = document.getElementById('appWrap'), view = document.getElementById('view-play'); if(!wrap || !view) return;
   wrap.classList.add('cq-hud');
   const tabs = view.querySelector('.play-subtabs-row .play-subtabs');
   wrap.classList.toggle('cq-no-tabs', !tabs || tabs.hidden);
+  syncSubtabsFade(tabs);
   view.style.setProperty('--cq-top', '0px');
 }
 function placeConquestHud(){
@@ -28597,6 +28603,7 @@ function placeConquestHud(){
   }
   const tabs = view.querySelector('.play-subtabs-row .play-subtabs');
   wrap.classList.toggle('cq-no-tabs', !tabs || tabs.hidden);
+  syncSubtabsFade(tabs);
   requestAnimationFrame(()=>{ const pane = document.getElementById('conquestMain') || layout; const t = pane.getBoundingClientRect().top - view.getBoundingClientRect().top; view.style.setProperty('--cq-top', Math.max(0, Math.round(t)) + 'px'); });
 }
 // Map leaders (2026-10-10): each of Maps 1–10 has a Heroic leader as its boss's first-clear reward. Players who beat
@@ -49887,6 +49894,7 @@ function rewardsPanelHTML(m){
   // shows greyed, and its dust bursts into the Magic Dust pill, which counts on up (baseDustBurst).
   const bg = m.conquestBaseGrowth, bgDust = (bg && bg.dust) || 0;
   if(bgDust && !cur.some(c=> c[0]==='dust')) cur.push(['dust', 0]);
+  for(let i = cur.length - 1; i >= 0; i--) if(!(+cur[i][1] > 0) && !(cur[i][0] === 'dust' && bgDust)) cur.splice(i, 1); // 2026-11-16 (package UX4): no pill for a reward of 0 (the Base-growth dust pill starts at +0 on purpose)
   // 2026-10-17: everything else that was its own block (Kibble, Spare castle, Dungeon key, Found) is a chip in the Rewards block.
   const acts = [];
   if(m.conquestKibbleEarned) acts.push(`<span class="rw-act rw-kibble" data-tip="${escapeAttr(TX('results.res3-kibble-tip')) /* 2026-10-26 (package RES3, owner #8: "Kibble: 'For nuturing cards in the nest'") */}">${TX('results.kibble-2', {conquestKibbleEarned: m.conquestKibbleEarned})}</span>`);
@@ -58576,7 +58584,7 @@ function renderHome(){
         ${wildpathsOpen() ? (()=>{ const av = wildpathAvailable(); return `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: Conquest passives"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>✦ ${av} Path point${av===1?'':'s'}</small></button>`; })() : ''}
         ${featureUnlocked('tavern') ? (()=>{ try{ settleWeeklyBeer(); }catch(e){} const beer = myCurrencies.beer||0; return `<button type="button" class="home-note note-tavern" data-hometab="tavern" title="The Tavern: recruit cards, raise your max Energy"><i class="pin" aria-hidden="true">📌</i><b>🍺 The Tavern</b><small>${beer ? `${beer} Beer · Recruit` : 'Recruit · Stamina'}</small></button>`; })() : ''}
         ${tabOpen('codex') && featureUnlocked('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
-        ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
+        ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> _t(({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t])).join(' · ') /* 2026-11-16 (package UX4): each word through the pack */}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
       </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
       <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>

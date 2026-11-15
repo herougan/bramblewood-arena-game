@@ -4451,5 +4451,18 @@
  "None: no new skill on this map's cards": "無：此地圖卡牌上沒有新技能",
  "New: on no earlier map's cards": "新：之前地圖均沒有",
  "Not on this map's cards now": "已不在此地圖卡牌上",
- "No longer new here": "在此已不是新技能"
+ "No longer new here": "在此已不是新技能",
+ "Dailies & quests": "每日與任務",
+ "Daily Dungeons": "每日地牢",
+ "Materia, eggs, packs": "魔晶、蛋、卡包",
+ "Trade with players": "與玩家交易",
+ "How long the travellers' lines stay up, and how soon the next one comes.": "旅人的台詞停留多久，下一句多快出現。",
+ "If a fight runs slowly, effects step down one level (once per session).": "戰鬥卡頓時，特效會降低一檔（每次遊戲一次）。",
+ "Short lines over the cards, read out in each animal's babble.": "卡牌上方的短句，用每種動物的咿呀聲唸出。",
+ "Classic: the full look. Pixel: retro, hard-edged versions. Minimal: just what you need to read the fight.": "經典：完整外觀。像素：復古的硬邊版本。極簡：只保留讀懂戰鬥所需的內容。",
+ "Let the river decide": "讓河流來決定",
+ "Otters versus Hummingbirds": "水獺對蜂鳥",
+ "Send feedback": "傳送意見回饋",
+ "Pixel": "像素",
+ "Minimal": "極簡"
 }

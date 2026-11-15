@@ -4453,5 +4453,18 @@
  "None: no new skill on this map's cards": "없음: 이 맵 카드에 새 스킬 없음",
  "New: on no earlier map's cards": "신규: 이전 맵에 없음",
  "Not on this map's cards now": "이 맵 카드에 없음",
- "No longer new here": "여기서 더 이상 신규 아님"
+ "No longer new here": "여기서 더 이상 신규 아님",
+ "Dailies & quests": "일일 및 퀘스트",
+ "Daily Dungeons": "일일 던전",
+ "Materia, eggs, packs": "마테리아, 알, 팩",
+ "Trade with players": "플레이어와 거래",
+ "How long the travellers' lines stay up, and how soon the next one comes.": "여행자의 대사가 얼마나 오래 보이는지, 다음 대사가 얼마나 빨리 나오는지.",
+ "If a fight runs slowly, effects step down one level (once per session).": "전투가 느려지면 효과가 한 단계 낮아집니다(세션당 한 번).",
+ "Short lines over the cards, read out in each animal's babble.": "카드 위에 짧은 대사를 각 동물의 옹알이로 읽어 줍니다.",
+ "Classic: the full look. Pixel: retro, hard-edged versions. Minimal: just what you need to read the fight.": "클래식: 풀 룩. 픽셀: 레트로 느낌의 각진 버전. 미니멀: 전투를 읽는 데 필요한 것만.",
+ "Let the river decide": "강물이 정하게 하기",
+ "Otters versus Hummingbirds": "수달 대 벌새",
+ "Send feedback": "의견 보내기",
+ "Pixel": "픽셀",
+ "Minimal": "미니멀"
 }

@@ -3390,6 +3390,7 @@
   .dialogue-dock.is-idle .dlg-hide, .dialogue-dock.is-idle .dlg-chip{opacity:0; pointer-events:none;}
   @media (max-width:699px){
     .dialogue-dock{left:8px; top:64px; width:min(300px, calc(100vw - 56px));}
+    body.pg-in-match .dialogue-dock{top:150px;} /* 2026-11-16 (package UX4): below the fight HUD buttons (speed, log, full screen, settings), not over them */
     .dialogue-dock .dlg-line{padding:6px 8px; gap:8px;}
     .dialogue-dock .dlg-portrait{width:30px; height:30px;}
     .dialogue-dock .dlg-text{font-size:12.5px; line-height:1.3;}
@@ -13775,6 +13776,10 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
    NV's phone-only "no map strip" (1b) is gone too: the strip is back, compact, sharing the cluster's line (u3Styles). */
 body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row{overflow:visible !important; display:flex; align-items:center; flex-wrap:nowrap; gap:0; bottom:calc(14px + env(safe-area-inset-bottom, 0px));}
 body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row .play-subtabs{min-width:0; flex:0 1 auto; overflow-x:auto; scrollbar-width:none; flex-wrap:nowrap;}
+/* 2026-11-16 (package UX4): an edge fade on the side that still scrolls (syncSubtabsFade) */
+.play-subtabs.fade-r{-webkit-mask-image:linear-gradient(90deg, #000 calc(100% - 34px), transparent); mask-image:linear-gradient(90deg, #000 calc(100% - 34px), transparent);}
+.play-subtabs.fade-l{-webkit-mask-image:linear-gradient(270deg, #000 calc(100% - 34px), transparent); mask-image:linear-gradient(270deg, #000 calc(100% - 34px), transparent);}
+.play-subtabs.fade-l.fade-r{-webkit-mask-image:linear-gradient(90deg, transparent, #000 34px, #000 calc(100% - 34px), transparent); mask-image:linear-gradient(90deg, transparent, #000 34px, #000 calc(100% - 34px), transparent);}
 body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row .play-subtabs::-webkit-scrollbar{display:none;}
 /* 2. The pre-battle A-vs-B screen (showVsScreen): a card a side, the raid's side panel, a real start button. The sunburst, the split
    and the gold seam stay; on phones the split follows the VS word (--vs-split, set by showVsScreen). */
@@ -15601,7 +15606,7 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
   <div class="splash-inner">
     <div class="splash-mark" id="entranceLogoMark">🌰</div>
     <h1 class="splash-title" id="entranceLogoTitle">Bramblewood Arena</h1>
-    <div class="entrance-ribbon" aria-label="Otters versus Hummingbirds"><span>🦦 Otters</span><b>⚔</b><span>Hummingbirds 🐦</span></div>
+    <div class="entrance-ribbon" aria-label="Otters versus Hummingbirds"><span>🦦 Otters</span><b>⚔</b><span><span>Hummingbirds</span> 🐦</span></div>
     <p class="splash-tagline">Draft a woodland warband. Outwit your foe, lane by lane. Burn their bramble to the ground.</p>
     <div id="entranceAuthArea"></div>
     <p class="splash-sub">Free to play · No install · Runs right in your browser</p>
