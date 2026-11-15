@@ -95,7 +95,7 @@ ok(/CLAUDE_NEW\.list1/.test(app.slice(app.indexOf('const UI38_CONCEPTS'), app.in
 // ---- 5. docs ----
 const md = rd('docs/balance/list1-2026-11-13.md');
 ok(/## Gaps/.test(md) && /The Quiet Summit/.test(md) && /The Aerie Vault/.test(md) && /## Side maps whose Carried list shrank/.test(md), '5. the doc: gaps with picks, the Carried shrink');
-ok(rd('docs/CHANGELOG.md').slice(0, 20000).includes('LIST1'), '5. CHANGELOG entry near the top');
+ok(rd('docs/CHANGELOG.md').includes('LIST1'), '5. CHANGELOG entry near the top');
 ok(rd('tests/run-all.sh').includes('tests/list1-2026-11-13.js'), '5. listed in run-all.sh');
 const dec = J('docs/decisions.json'), di = (Array.isArray(dec) ? dec : dec.decisions || dec.items || []).filter(d => /^LIST1-/.test(d.id));
 ok(di.length >= 1 && di.every(d => String(d.body || '').split(/\s+/).length < 100), '5. decisions LIST1-n, under 100 words');

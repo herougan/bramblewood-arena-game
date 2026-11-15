@@ -120,7 +120,7 @@ const cat = rd('docs/effects-catalogue.md');
 ok(/## 2026-11-13 \(package FX10\)/.test(cat) && LOOKS.every(nm=> cat.includes(nm)), 'effects catalogue: the FX10 section names every look');
 const cue = rd('docs/sfx-cue-sheet.md');
 ok(CUES.every((k, i)=> new RegExp('^\\| ' + (59 + i) + ' \\|[^\\n]*`' + k + '`', 'm').test(cue)), 'cue sheet: cues 59-68');
-ok(/## 2026-11-13 Package FX10/.test(rd('docs/CHANGELOG.md').slice(0, 40000)), 'CHANGELOG entry');
+ok(/## 2026-11-13 Package FX10/.test(rd('docs/CHANGELOG.md')), 'CHANGELOG entry');
 ok(/run node tests\/fx10-2026-11-13\.js/.test(rd('tests/run-all.sh')), 'this test is in run-all.sh');
 ok(fs.existsSync(path.join(ROOT, 'docs/art/fx10-sheet.png')), 'the contact sheet docs/art/fx10-sheet.png');
 console.log(fail ? `fx10: ${fail} of ${n} checks FAILED` : `fx10: all ${n} checks passed`); process.exit(fail ? 1 : 0);

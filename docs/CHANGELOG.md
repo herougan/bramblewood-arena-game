@@ -2,6 +2,8 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package BALREL2: the legal re-fit applied)
+- 26 road fights get BAL-LEGAL1's re-fit decks (all pass the deck rules; tests/skir1 has no new failure and clears 4 old ones: K14 on 14-5 and 19-5, the m5 and m6 mix). Projected: main 138/149 in band (was 122), side 67/77 (was 61). 4-5 and 8-7 stay as they were (no legal deck helps); 19-1 and 19-A-4 need card changes.
 ## 2026-11-16 (package INFRA1: tests, road measure and deploy check on GitHub Actions)
 - `.github/workflows/tests.yml`: push to `main` / `batch-*` (or by hand): smoke, then the unit list in 8 shards, then a job summary; failing names and logs as artifacts. Chromium headless shell 1194 and Playwright 1.56.0 installed by `tools/ci/setup_tests.sh`.
 - `.github/workflows/road-measure.yml`: push to `main` (or by hand: games, seed, tag, only): Maps 0-20 in 20 shards, merged `skirmish-pass-<tag>.jsonl` + summary (`tools/ci/road_summary.js`); `tools/ci/fetch_measure.sh <run-id|latest>` downloads it into `docs/balance/`.

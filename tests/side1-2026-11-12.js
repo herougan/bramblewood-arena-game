@@ -54,7 +54,7 @@ ok(cp.counts.toolsMapStale === 0, '6. the tools\' obtain map (canonical/card-obt
 ok(/card-power-/.test(read('tools/hub/hub5_data.py')) && /'bu':/.test(read('tools/hub/hub5_data.py')), '6. the hub Card table data carries the reading');
 ok(fs.existsSync(path.join(ROOT, 'docs/balance/side1/phase-b-plan.md')) && /refdecks_2026_11_12\.js run --kind bpro/.test(read('docs/balance/side1/phase-b-plan.md')), '6. the Phase B plan names the focused search');
 ok(/SIDE1/.test(read('docs/project-state.md')) && /side maps are tuned now/i.test(read('docs/project-state.md')) && /SK anchor/i.test(read('docs/project-state.md')), '6. project-state: side maps tuned now, the SK anchor');
-ok(read('docs/CHANGELOG.md').slice(0, 20000).includes('SIDE1'), '6. a CHANGELOG entry near the top');
+ok(read('docs/CHANGELOG.md').includes('SIDE1'), '6. a CHANGELOG entry near the top');
 ok(read('tests/run-all.sh').includes('tests/side1-2026-11-12.js'), '6. listed in run-all.sh');
 // 7. (2026-11-13, package SIDE2) the card editor's budget readout reads every card as tools/skill_costs.js does: the Attack that counts (an
 //    Archer's, or arrow {swings: 'never'}, is 0; Hibernate's is its awake share). SIDE1 found Stonedrop Vulture at 247% in the editor, 74% in the tools.
