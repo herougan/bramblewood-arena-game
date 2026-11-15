@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**UX4-1. Atmosphere tint dims the menus at night** · Decide · UI · asked 2026-11-16
+- With Atmosphere set to Live, the night tint (#atmoTint) lies over the whole screen, so the top bar, small text and the splash fine print read dim. The battle board is meant to darken; the menus probably are not.
+  - a) Keep the tint under the top bar and dialogs (menus stay clear)
+  - b) Lighten the tint everywhere
+  - c) Leave it as it is
+- **Default:** a
+
 **SKR1-1. Which named skills each map introduces** · Decide · Skills · asked 2026-11-14
 - From your second pass (column J): all 43 rank 1s and 11 of the 13 rank 2s on Maps 0-20; 3-4 new skills on Maps 0-10, 1-2 on Maps 11-20; 54 in all. Helmet, Pitchfork and the rank 3s wait for later maps or one-offs. Cure, Nursing, Delivery, Electricity and Illuminate are treated as actions or damage types, not named skills. Table: docs/skill-intro-proposal-2026-11-14.md.
   - a) This split (54 skills)
