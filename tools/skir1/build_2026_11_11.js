@@ -37,7 +37,7 @@ function fill(f, want, weight, R, avoid) {
   f.keep.forEach((k, id) => add(id, nonU(id) ? 1 : Math.max(k, Math.min(f.old[id] || k, f.cap(id), k + 1))));
   // a kept first-clear or showcase card keeps the copies it had (a boss reward is often its strongest card); a leader may grow
   const lim = id => f.keep.has(id) && !f.L0.includes(id) ? Math.max(f.keep.get(id), Math.min(f.old[id] || 1, f.cap(id))) : f.cap(id);
-  const room = id => { const c = lim(id) - (d[id] || 0); if (c <= 0) return 0; if (nonU(id)) return d[id] ? 0 : (nonUTot() < 6 ? 1 : 0); return c; };
+  const room = id => { const c = lim(id) - (d[id] || 0); if (c <= 0) return 0; if (nonU(id)) return Math.max(0, Math.min(c, (f.carriedMax || 1) - (d[id] || 0), 6 - nonUTot())); return c; }; // 2026-11-15 (BALREL1, SIDE2-2 e): Carried room per fight (2 on side maps)
   const clash = id => avoid && avoid(d, id);
   // wanted cards first (most wanted first)
   Object.entries(want).sort((p, q) => q[1] - p[1] || (p[0] < q[0] ? -1 : 1)).forEach(([id, w]) => {

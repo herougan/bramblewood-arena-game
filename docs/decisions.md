@@ -4,53 +4,6 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**SIDE5-1. 19-A-1 almost always won** · Decide · Balance · asked 2026-11-15
-- With every other proposed fix in, side fight 19-A-1 reads 99% against a target of 90 (band 82-98). The only legal deck move that reaches the band swaps 2 Granite Ox Golem for 2 Obsidian Scorpion: 88 / 88 / 89 on three seed sets. Cost: with SIDE4-1, Obsidian Scorpion would be in 9 of Map 19's 10 fights. File: docs/balance/allfix/side19a1-fixes.jsonl.
-  - a) Leave it for the card redesign, 1 point over band
-  - b) Apply the swap
-- **Default:** a
-
-**EDGE5-1. 13-7 a little too easy** · Decide · Balance · asked 2026-11-15
-- With every other proposed fix in, 13-7 still reads 70% against a target of 60 (band 52-68) on three seed sets. Swapping 2 Owl Nightwatch for 2 Fungus Gnat Cloud in the enemy deck gives 59 / 64 / 59, in band on all three. With EDGE1-4 too: main road 142/149 in band, 147 within 10, 1 beyond 20 (20-9). File: docs/balance/allfix/edge5-fixes.jsonl.
-  - a) Apply it with EDGE1-4
-  - b) Leave 13-7 as it is
-- **Default:** a
-
-**SIDE4-1. Ten side fights just outside band** · Decide · Balance · asked 2026-11-15
-- Ten side fights still sit 3-18 points outside band after SIDE3-1 (Maps 2, 7, 14, 18, 19, 20). Enemy deck changes put all ten in band on three fresh seed sets. 2-B-1 also needs Health 15 to 7 and Shield 0. 19-A-8 and 20-A-7 need Carried x2. With SIDE3-1 a: side 69/77 in band, 77 within 10, 0 beyond 20 (now 38/42/13). Files: docs/balance/side4p/.
-  - a) All ten, with SIDE3-1 a
-  - b) Skip 2-B-1's Health cut
-  - c) Wait for the card redesign
-- **Default:** a
-
-**EDGE4-1. Seven main fights just outside band** · Decide · Balance · asked 2026-11-15
-- These sit 2-9 points outside their band on all four seed sets: 4-5, 16-6, 17-4, 19-1, 19-3 too hard; 13-4, 13-5 too easy. Fixes are enemy deck changes, except 13-4 (Shield 64 only) and 13-5 (one swap plus Shield 37). All seven land in band on three fresh seed sets. With EDGE1-1, EDGE2-1 and EDGE3-1 too: main road 141/149 in band, 148 within 10, 1 beyond 20 (20-9; now 120/130/9). Fixes: docs/balance/allfix/edge4-fixes.jsonl.
-  - a) Apply all seven
-  - b) Deck changes only (skip the Shield ones, 13-4 and 13-5)
-  - c) Leave them
-- **Default:** a
-
-**EDGE3-1. Two main fights sitting at 20 off** · Decide · Balance · asked 2026-11-15
-- 2-2 (61% vs 80) and 8-7 (40% vs 60) are both too hard by 19-20 points on every seed set. Enemy deck changes: 2-2 swaps its Rock Pool Starfish and Pincushion Urchins for 3 Riverworks Bastion, giving 74-78% on three fresh seed sets (in band); 8-7 swaps 1 Giant Cave Huntsman for a Rot-Swollen Carcass, giving 51-56% (in band on two, within 10 on all). Fixes: docs/balance/allfix/edge3-fixes.jsonl.
-  - a) Apply both
-  - b) Apply 2-2 only
-  - c) Leave them
-- **Default:** a
-
-**SIDE3-1. Last seven side fights far off target** · Decide · Balance · asked 2026-11-15
-- With SIDE2-2 e and SIDE2-4 e, seven side fights still miss by about 20 or more. Enemy deck changes, no Shield or stat edits, checked on fresh seed sets: 1-A-2 80% (target 80), 2-A-2 83% (84), 2-A-4 71% (72), 20-A-4 43% (36), 18-A-7 67% (64) in band; 18-A-1 80% (90) and 10-A-4 51% (60) within 10. 1-A-2 and 2-A-2 need SIDE2-2's Carried x2. All together: side fights 59/77 in band, 66 within 10, 0 beyond 20 (now 38/42/13). Files: docs/balance/side3p/.
-  - a) Apply all seven with SIDE2-2 e and SIDE2-4 e
-  - b) Only the five that work under today's rules (2-A-4, 20-A-4, 18-A-7, 18-A-1, 10-A-4)
-  - c) Wait for the card redesign
-- **Default:** a
-
-**EDGE2-1. Nine main fights far off target** · Decide · Balance · asked 2026-11-15
-- These miss by over 20 on all four seed sets: 2-1, 6-2, 16-3, 16-4, 17-8, 19-5 too hard; 13-6, 13-8, 20-9 too easy. The tuner found enemy deck changes (plus Shield for 13-6, 13-8; base Health for 2-1). Mean of four seed sets after: all but 20-9 within 10; 19-5 (51) and 17-8 (36) closest to the edge. 20-9 stays too easy (77 vs 50); it needs a card change. With EDGE1-1 a as well: main road 132/149 in band, 139 within 10, 1 beyond 20 (now 120/130/9). Fixes: docs/balance/b1115-edge2-fixes.jsonl.
-  - a) Apply the eight, leave 20-9 for the redesign
-  - b) Apply only the six that held on both
-  - c) Wait for the card redesign
-- **Default:** a
-
 **SKR1-1. Which named skills each map introduces** · Decide · Skills · asked 2026-11-14
 - From your second pass (column J): all 43 rank 1s and 11 of the 13 rank 2s on Maps 0-20; 3-4 new skills on Maps 0-10, 1-2 on Maps 11-20; 54 in all. Helmet, Pitchfork and the rank 3s wait for later maps or one-offs. Cure, Nursing, Delivery, Electricity and Illuminate are treated as actions or damage types, not named skills. Table: docs/skill-intro-proposal-2026-11-14.md.
   - a) This split (54 skills)
@@ -63,13 +16,6 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - a) Cap 2 alone (cap 1 dropped), after a road check
   - b) Square-root cap 1, after a road check
   - c) Keep both caps as they are
-- **Default:** a
-
-**EDGE1-1. Five main fights just outside band** · Decide · Balance · asked 2026-11-14
-- At 1,000 games 2-4 (51%), 14-5 (60%) and 14-8 (28%) are too hard; 11-9 (71%) and 16-5 (75%) too easy, each 1-3 points out. The road tuner found one enemy deck change each (400 games, tune seeds): 2-4 2 Beaver Lumberjack to Riverworks Bastion, 58%; 14-5 2 Bramblewood Macaque to Jaguar Stalker, 67%; 14-8 1 Bramble Sprout to Jaguar Stalker, Shield 0, 39%; 11-9 2 Chipmunk Hoarder to Stonedrop Vulture, 59%; 16-5 +1 Mountain Hare, 69%. Fresh seeds, 1,000 games: 2-4 60.5, 11-9 57.4, 14-8 38.1, 16-5 70.8 in band; 14-5 61.2, still 1 under. Fixes in docs/balance/b1114-edge-fixes.jsonl.
-  - a) Apply all five (14-5 may need one more step)
-  - b) Apply some (say which)
-  - c) Leave them; they are close
 - **Default:** a
 
 **REF7-1. Map 16 walls** · Decide · Balance · asked 2026-11-14
@@ -217,29 +163,11 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
   - c) Leave them easy for now
 - **Default:** a
 
-**SIDE2-2. Thin side lists lock many side decks** · Decide · Balance · asked 2026-11-13
-- With few own cards and K14 (Carried 1 copy each), many side decks have no room: 0-B-3, 2-A-6 and 14-A-5 can't be built; Clovermead, Lilypad Reach and The Canopy are stuck. Of 77 side fights in band: today 39 (mean gap 11.8); (a) 48 (9.4); (c) 47 (10.3); (a)+(c) 53 (7.9), 8 beyond 20, about 51 on fresh seeds. (a)+(c) builds 0-B-3 and 14-A-5 in band; 2-A-6 stays too hard. Bosses 10-A-5 and 18-A-9 still need SIDE2-4. Four seed sets, SIDE2-2 e with SIDE2-4 e: side fights 54/77 in band, 60 within 10, 6 beyond 20 (now 38/42/13); docs/balance/side2p/.
-  - a) Carried cards up to 2 copies on side maps
-  - b) More own cards on the thinnest lists
-  - c) Smaller side-map decks
-  - d) Keep the rules
-  - e) Both a and c
-- **Default:** e
-
 **SIDE2-3. Re-price Chained now that chains soak damage?** · Decide · Balance · asked 2026-11-13
 - ENG-RC1 made each chain 1 Armor that breaks as it soaks, worth about a Shield N that chainedMult doesn't count. Chained Binturong, the only Chained card, has been on no list since 11-02, so no road fight holds it: the 400-game road read of Basalt Foundry and Maps 0-20 is unchanged.
   - a) Re-price when a Chained card is back on a list
   - b) Re-price now (the chains as Shield N)
 - **Default:** a
-
-**SIDE2-4. Three side bosses stay too hard** · Decide · Balance · asked 2026-11-13
-- Too hard today (boss band 30-49): The Old Bramble 0-B-4 22%, The Sunken Depths 10-A-5 17%, The Pale Desert 18-A-9 26%. With SIDE2-2 e: Old Bramble in band as is (41%); Sunken Depths Health 16 to 13 gives 38%; Pale Desert level 4 to 3 gives 37% (or Shield 41 to 29). No single rule fits all three. 2-A-6 (band 52-68): Health 17 to 8 gives 59-62%; no deck move works. Four seed sets, SIDE2-2 e with SIDE2-4 e: side fights 54/77 in band, 60 within 10, 6 beyond 20 (now 38/42/13).
-  - a) Lower their bramble Health (the Pale Desert: its Shield)
-  - b) A lower enemy level for these three
-  - c) Leave them hard
-  - d) Mix: Old Bramble by SIDE2-2 a, Sunken Depths Health 11, Pale Desert level 3
-  - e) With SIDE2-2 e: Old Bramble as is, Sunken Depths Health 13, Pale Desert level 3, 2-A-6 Health 8
-- **Default:** e
 
 **FX9-1. More cards fly to the Graveyard?** · Decide · UI · asked 2026-11-13
 - A card you pitch now arcs into the Graveyard (note 7). Cards that get there another way (a field card used up, Feed, overdraw) still jump straight to the pile. Make those fly too?
@@ -644,6 +572,78 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 ## Decided
+
+**SIDE5-1. 19-A-1 almost always won** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
+- With every other proposed fix in, side fight 19-A-1 reads 99% against a target of 90 (band 82-98). The only legal deck move that reaches the band swaps 2 Granite Ox Golem for 2 Obsidian Scorpion: 88 / 88 / 89 on three seed sets. Cost: with SIDE4-1, Obsidian Scorpion would be in 9 of Map 19's 10 fights. File: docs/balance/allfix/side19a1-fixes.jsonl.
+  - a) Leave it for the card redesign, 1 point over band
+  - b) Apply the swap
+- **Default:** a
+
+**EDGE5-1. 13-7 a little too easy** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
+- With every other proposed fix in, 13-7 still reads 70% against a target of 60 (band 52-68) on three seed sets. Swapping 2 Owl Nightwatch for 2 Fungus Gnat Cloud in the enemy deck gives 59 / 64 / 59, in band on all three. With EDGE1-4 too: main road 142/149 in band, 147 within 10, 1 beyond 20 (20-9). File: docs/balance/allfix/edge5-fixes.jsonl.
+  - a) Apply it with EDGE1-4
+  - b) Leave 13-7 as it is
+- **Default:** a
+
+**SIDE4-1. Ten side fights just outside band** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
+- Ten side fights still sit 3-18 points outside band after SIDE3-1 (Maps 2, 7, 14, 18, 19, 20). Enemy deck changes put all ten in band on three fresh seed sets. 2-B-1 also needs Health 15 to 7 and Shield 0. 19-A-8 and 20-A-7 need Carried x2. With SIDE3-1 a: side 69/77 in band, 77 within 10, 0 beyond 20 (now 38/42/13). Files: docs/balance/side4p/.
+  - a) All ten, with SIDE3-1 a
+  - b) Skip 2-B-1's Health cut
+  - c) Wait for the card redesign
+- **Default:** a
+
+**EDGE4-1. Seven main fights just outside band** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
+- These sit 2-9 points outside their band on all four seed sets: 4-5, 16-6, 17-4, 19-1, 19-3 too hard; 13-4, 13-5 too easy. Fixes are enemy deck changes, except 13-4 (Shield 64 only) and 13-5 (one swap plus Shield 37). All seven land in band on three fresh seed sets. With EDGE1-1, EDGE2-1 and EDGE3-1 too: main road 141/149 in band, 148 within 10, 1 beyond 20 (20-9; now 120/130/9). Fixes: docs/balance/allfix/edge4-fixes.jsonl.
+  - a) Apply all seven
+  - b) Deck changes only (skip the Shield ones, 13-4 and 13-5)
+  - c) Leave them
+- **Default:** a
+
+**EDGE3-1. Two main fights sitting at 20 off** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
+- 2-2 (61% vs 80) and 8-7 (40% vs 60) are both too hard by 19-20 points on every seed set. Enemy deck changes: 2-2 swaps its Rock Pool Starfish and Pincushion Urchins for 3 Riverworks Bastion, giving 74-78% on three fresh seed sets (in band); 8-7 swaps 1 Giant Cave Huntsman for a Rot-Swollen Carcass, giving 51-56% (in band on two, within 10 on all). Fixes: docs/balance/allfix/edge3-fixes.jsonl.
+  - a) Apply both
+  - b) Apply 2-2 only
+  - c) Leave them
+- **Default:** a
+
+**SIDE3-1. Last seven side fights far off target** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
+- With SIDE2-2 e and SIDE2-4 e, seven side fights still miss by about 20 or more. Enemy deck changes, no Shield or stat edits, checked on fresh seed sets: 1-A-2 80% (target 80), 2-A-2 83% (84), 2-A-4 71% (72), 20-A-4 43% (36), 18-A-7 67% (64) in band; 18-A-1 80% (90) and 10-A-4 51% (60) within 10. 1-A-2 and 2-A-2 need SIDE2-2's Carried x2. All together: side fights 59/77 in band, 66 within 10, 0 beyond 20 (now 38/42/13). Files: docs/balance/side3p/.
+  - a) Apply all seven with SIDE2-2 e and SIDE2-4 e
+  - b) Only the five that work under today's rules (2-A-4, 20-A-4, 18-A-7, 18-A-1, 10-A-4)
+  - c) Wait for the card redesign
+- **Default:** a
+
+**EDGE2-1. Nine main fights far off target** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
+- These miss by over 20 on all four seed sets: 2-1, 6-2, 16-3, 16-4, 17-8, 19-5 too hard; 13-6, 13-8, 20-9 too easy. The tuner found enemy deck changes (plus Shield for 13-6, 13-8; base Health for 2-1). Mean of four seed sets after: all but 20-9 within 10; 19-5 (51) and 17-8 (36) closest to the edge. 20-9 stays too easy (77 vs 50); it needs a card change. With EDGE1-1 a as well: main road 132/149 in band, 139 within 10, 1 beyond 20 (now 120/130/9). Fixes: docs/balance/b1115-edge2-fixes.jsonl.
+  - a) Apply the eight, leave 20-9 for the redesign
+  - b) Apply only the six that held on both
+  - c) Wait for the card redesign
+- **Default:** a
+
+**EDGE1-1. Five main fights just outside band** · Decide · Balance · asked 2026-11-14 · decided 2026-11-15
+- At 1,000 games 2-4 (51%), 14-5 (60%) and 14-8 (28%) are too hard; 11-9 (71%) and 16-5 (75%) too easy, each 1-3 points out. The road tuner found one enemy deck change each (400 games, tune seeds): 2-4 2 Beaver Lumberjack to Riverworks Bastion, 58%; 14-5 2 Bramblewood Macaque to Jaguar Stalker, 67%; 14-8 1 Bramble Sprout to Jaguar Stalker, Shield 0, 39%; 11-9 2 Chipmunk Hoarder to Stonedrop Vulture, 59%; 16-5 +1 Mountain Hare, 69%. Fresh seeds, 1,000 games: 2-4 60.5, 11-9 57.4, 14-8 38.1, 16-5 70.8 in band; 14-5 61.2, still 1 under. Fixes in docs/balance/b1114-edge-fixes.jsonl.
+  - a) Apply all five (14-5 may need one more step)
+  - b) Apply some (say which)
+  - c) Leave them; they are close
+- **Default:** a
+
+**SIDE2-2. Thin side lists lock many side decks** · Decide · Balance · asked 2026-11-13 · decided 2026-11-15
+- With few own cards and K14 (Carried 1 copy each), many side decks have no room: 0-B-3, 2-A-6 and 14-A-5 can't be built; Clovermead, Lilypad Reach and The Canopy are stuck. Of 77 side fights in band: today 39 (mean gap 11.8); (a) 48 (9.4); (c) 47 (10.3); (a)+(c) 53 (7.9), 8 beyond 20, about 51 on fresh seeds. (a)+(c) builds 0-B-3 and 14-A-5 in band; 2-A-6 stays too hard. Bosses 10-A-5 and 18-A-9 still need SIDE2-4. Four seed sets, SIDE2-2 e with SIDE2-4 e: side fights 54/77 in band, 60 within 10, 6 beyond 20 (now 38/42/13); docs/balance/side2p/.
+  - a) Carried cards up to 2 copies on side maps
+  - b) More own cards on the thinnest lists
+  - c) Smaller side-map decks
+  - d) Keep the rules
+  - e) Both a and c
+- **Default:** e
+
+**SIDE2-4. Three side bosses stay too hard** · Decide · Balance · asked 2026-11-13 · decided 2026-11-15
+- Too hard today (boss band 30-49): The Old Bramble 0-B-4 22%, The Sunken Depths 10-A-5 17%, The Pale Desert 18-A-9 26%. With SIDE2-2 e: Old Bramble in band as is (41%); Sunken Depths Health 16 to 13 gives 38%; Pale Desert level 4 to 3 gives 37% (or Shield 41 to 29). No single rule fits all three. 2-A-6 (band 52-68): Health 17 to 8 gives 59-62%; no deck move works. Four seed sets, SIDE2-2 e with SIDE2-4 e: side fights 54/77 in band, 60 within 10, 6 beyond 20 (now 38/42/13).
+  - a) Lower their bramble Health (the Pale Desert: its Shield)
+  - b) A lower enemy level for these three
+  - c) Leave them hard
+  - d) Mix: Old Bramble by SIDE2-2 a, Sunken Depths Health 11, Pale Desert level 3
+  - e) With SIDE2-2 e: Old Bramble as is, Sunken Depths Health 13, Pale Desert level 3, 2-A-6 Health 8
+- **Default:** e
 
 **NET1-1. Apply the database speed-ups** · Decide · Network · asked 2026-11-12
 - supabase/proposed/20261112_net1_scale.sql: 5 indexes, 19 security rules rewritten to check the player once per query (not once per row), 3 duplicate rules dropped, and card_overrides' updated_at set by the server clock (an admin with a slow clock is then never missed). No rows change. Say "apply it" to run it.

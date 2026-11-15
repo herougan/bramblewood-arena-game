@@ -7,6 +7,8 @@
 // cards and leader cards it held, its showcase, a skirmish's Auto showcase leader (nodeShowcaseId stays the same card), a challenge deck's
 // selfish boon on (DF3), the content tests' copy floors (2-2 / 2-5 Rock Pool Starfish x2).
 'use strict';
+// 2026-11-15 (BALREL1, owner SIDE2-2 e applied 11-15 23:00): on side maps a Carried card (not unique to the map) may hold up to 2 copies (still 6 Carried copies in all)
+const CARRIED_SIDE = 2;
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
 const LB = require('../lib_bramble.js'), G = LB.G, D = LB.CARD_DEFS_BASELINE;
@@ -66,7 +68,7 @@ function fight(m, n) {
   const themedBoon = id => !!(n.rules && n.rules.boon) && ENG.selfishBoonCount(DX, { [id]: 1 }, n.rules.boon).have === 1;
   const cap = id => Math.max(keep.get(id) || 0, themedBoon(id) ? G.maxCopiesForRarity(D[id].rarity) : Math.min(4, G.maxCopiesForRarity(D[id].rarity)));
   const dMin = Math.min(5, n0, S), dMax = kind === 'skirmish' ? 6 : Math.max(7, Math.min(n0, 8));
-  const k14 = d => { if (!U) return []; const out = []; let tot = 0; Object.entries(d).forEach(([id, k]) => { if (U.has(id) || L0.includes(id)) return; tot += k; if (k > 1) out.push(id + ' x' + k); }); if (tot > 6) out.push(tot + ' non-unique copies'); return out; };
+  const k14 = d => { if (!U) return []; const out = []; let tot = 0; Object.entries(d).forEach(([id, k]) => { if (U.has(id) || L0.includes(id)) return; tot += k; if (k > (m && m.sub ? CARRIED_SIDE : 1)) out.push(id + ' x' + k); }); if (tot > 6) out.push(tot + ' non-unique copies'); return out; };
   const boonOn = d => !(n.rules && n.rules.boon) || ENG.selfishBoonCount(DX, d, n.rules.boon).on;
   const problems = d => { const out = [], ids = Object.keys(d);
     if (size(d) !== S) out.push(`${size(d)} cards, not ${S}`);
@@ -77,7 +79,7 @@ function fight(m, n) {
     if (L0.length && !explicit && !pin && JSON.stringify(leadOf(d)) !== JSON.stringify(L0)) out.push(`the showcase leader ${L0} would become ${leadOf(d)}`);
     if (!boonOn(d)) out.push('the challenge boon ' + n.rules.boon + ' is off');
     return out; };
-  return { m, n, map: m.id, mapNo: no, unlock, side: !!m.sub, cutOut, stoneOut, code: n.key, kind, name: n.name, old, S, n0, L0, explicit, stoneLeader, pin, keep, pool, list, own, cap, dMin, dMax, U, k14, problems, legal: d => !problems(d).length, leadOf };
+  return { carriedMax: m && m.sub ? CARRIED_SIDE : 1, m, n, map: m.id, mapNo: no, unlock, side: !!m.sub, cutOut, stoneOut, code: n.key, kind, name: n.name, old, S, n0, L0, explicit, stoneLeader, pin, keep, pool, list, own, cap, dMin, dMax, U, k14, problems, legal: d => !problems(d).length, leadOf };
 }
 // the map's usage line: a card in at most half its fights (2 at least); one fight more on a map docs/balance/skir1/slack-2026-11-11.json names
 // (a thin list, or a fight that could not reach its band inside the line: the reason is recorded there)
