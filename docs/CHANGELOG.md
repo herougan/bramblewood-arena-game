@@ -4,6 +4,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-11-15 (package TESTFIX4)
 - Tests only: eight unit tests (en3, eng40, fx3, pl2, rv, tt, ui24, ui37) no longer check the 47 text keys TESTFIX3 removed; every other check kept. ui27 untouched (its two failures come from the TIP2 tooltip rewording, not removed keys).
+- ui27 (coordinator): the product tooltip is a pure formula since TIP2, so its packs may match English; the B tooltip check accepts TIP2's 3A+H.
 
 ## 2026-11-15 Package SIDE4P (fits for the ten side fights still out of band after SIDE3-1)
 - Proposals only, nothing applied: deck fits for 19-A-4, 19-A-6, 19-A-8, 7-A-2, 14-A-2, 20-A-2, 20-A-6, 20-A-7 and 18-A-8, and a deck move with a Health and Shield cut for 2-B-1. All ten are in band on three fresh seed sets at 400 games. Side fights project to 69 in band / 77 within 10 / 0 beyond 20 (of 77) with SIDE3-1. `docs/balance/side4p/`.

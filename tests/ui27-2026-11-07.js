@@ -26,6 +26,7 @@ const KEYS = ['ui.ui27-budget-ok', 'ui.ui27-budget-over', 'ui.ui27-budget-under'
   'ui.ui27-nav-unsaved', 'ui.ui27-nav-tip', 'ui.ui27-two-skills', 'ui.ui27-two-skills-tip'];
 const {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js'));
 KEYS.forEach(k=>{ const en = TEXT[k]; ok(!!en, 'TX key ' + k);
+  if (k === 'ui.ui27-budget-product-tip') return; // 2026-11-15 (TESTFIX4): TIP2 cut it to a pure formula, the same in every language
   CODES.forEach(c=>{ const pack = JSON.parse(read('lang/' + c + '.json')), lk = en && en.replace(/^[^\w{]+/, ''); ok(en && pack[lk] && pack[lk] !== lk, `${c} translates "${lk}"`); }); });
 ok(!TEXT['ui.ui25-achv-cards'] && CODES.every(c=> !('{n} card{s} to claim' in JSON.parse(read('lang/' + c + '.json')))), '#12 the retired "cards to claim" text is gone from the table and the packs');
 ok(!/skills/i.test(['ui.ui27-budget-ok', 'ui.ui27-budget-over', 'ui.ui27-budget-under', 'ui.ui27-budget-product', 'ui.ui27-budget-b-tip', 'ui.ui27-budget-product-tip'].map(k=> TEXT[k]).join('|')), '#16 no "skills" in the budget formulas');
@@ -108,7 +109,7 @@ async function browser(){
           power: !!box.querySelector('.ce-power')}; })()`);
       ok(new RegExp('^\\s*(⚖️\\s*)?(Within budget|Over budget|Well under budget), B = ' + bx.x1.toString().replace('.', '\\.') + ' [<=>] ' + bx.n.toString().replace('.', '\\.') + ' = N$').test(bx.head || ''), `@${w} #16 heading "${bx.head}" (B ${bx.x1}, N ${bx.n})`);
       ok(/N = /.test(bx.headTip) && /Base = /.test(bx.headTip), `@${w} #16 the heading's hover has N's formula and Base (${bx.headTip})`);
-      ok(/^B = .* = [\d.]+ [✓✗]$/.test(bx.b || '') && (bx.b || '').includes('= ' + bx.x1 + ' ') && /3A \+ H/.test(bx.bTip) && /S: /.test(bx.bTip), `@${w} #16 the B line "${bx.b}" with its symbols on hover`);
+      ok(/^B = .* = [\d.]+ [✓✗]$/.test(bx.b || '') && (bx.b || '').includes('= ' + bx.x1 + ' ') && /3A ?\+ ?H/.test(bx.bTip) /* 2026-11-15 (TESTFIX4): TIP2 wrote 3A+H */ && /S: /.test(bx.bTip), `@${w} #16 the B line "${bx.b}" with its symbols on hover`);
       ok(/^Product: .* [<=>] [\d.]+ [✓✗]$/.test(bx.p || '') && /A × H × m/.test(bx.pTip), `@${w} #16 the Product line "${bx.p}" with its symbols on hover`);
       ok(!/\bskills\b/i.test(bx.all) && !/Level 1 ·|Wait \d+ · Lumber/.test(bx.all), `@${w} #16 no "skills" word, no parameters line`);
       ok(bx.power, `@${w} #16 the Power line stays`);
