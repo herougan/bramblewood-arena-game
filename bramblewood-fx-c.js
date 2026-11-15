@@ -1919,7 +1919,7 @@ M.onEvent = function(ev, env){
         const mine = PLAYS.filter(p=> p.side === ev.side && p.defId === ev.targetDefId && SEQ - p.seq < 12).slice(-(ev.amount || 1));
         mine.forEach((p, i)=> at(250 + i*120, ()=>{ const u = el(p.uid); if(u) M.marchOut(c, u, o); })); } }
       break;
-    case 'sacrifice': { const e = el(ev.uid); if(e) M.devilryCrack(e, o); break; }
+    // 2026-11-16 (FX12): Sacrifice plays FX.A.ritualSigil only (the offering sinks into the sigil); M.devilryCrack stays for the Lab, not used in game.
     case 'play': {
       PLAYS.push({uid:ev.uid, side:ev.side, defId:ev.defId, seq:SEQ}); while(PLAYS.length > 16) PLAYS.shift();
       if(ev.leader) LEADERS.set(String(ev.uid), {side:ev.side, gladiator:!!ev.gladiator});
@@ -1947,7 +1947,7 @@ M.onEvent = function(ev, env){
       else if(ev.kind === 'sprout') at(120, ()=> uids.forEach((u, i)=> at(i*80, ()=>{ const t = el(u); if(t) M.sproutPop(t, o); })));
       const d = defOf(env, ev.defId); if(d.effects && d.effects.skyfall && root.SkillFX && SkillFX.skyDrop) at(60, ()=>{ const es = uids.map(u=> el(u)).filter(Boolean); if(es.length) SkillFX.skyDrop(es, {fall:420}); });
       break; }
-    case 'mindControl': at(560, ()=>{ const e = el(ev.targetUid); if(e) M.mindArrive(e, o); }); break;
+    // 2026-11-16 (FX12): Mind Control plays FX.A.puppetStrings only (the strings, the pull across); M.mindArrive stays for the Lab, not used in game.
     // Mimic (2026-10-21, package MT): Twin's mirror sheen, reused: the sheen sweeps the ally it copies and a see-through copy peels off onto it
     case 'mimic': at(320, ()=>{ const s = el(ev.allyUid), t = el(ev.uid); if(s && t) M.twinPeel(s, t, o); }); break;
     case 'remember': if(ev.uid != null) at(80, ()=>{ const e = el(ev.uid); if(e) M.rememberRise(e, o); }); break;

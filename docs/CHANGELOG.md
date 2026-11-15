@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package FX12: one look per event)
+- Remember played two looks at once (a candle and smoke from one effect set, another from a second). Now it plays only the candle-smoke rise with its sound. The same fix for three more doubles found by a scan: Sacrifice (the red sigil only; the Dark Summon crack no longer fires on it), Mind Control (the puppet strings only), First Blood (the splat and stamp only). The stopped looks stay in the Effects Lab, marked "not used in game".
+- The sound cue sheet lists the five FX11 cues (crab clack, soft geiger, mend chime, hymn bell, gorge gulp).
 ## 2026-11-16 (package BALREL2: the legal re-fit applied)
 - 26 road fights get BAL-LEGAL1's re-fit decks (all pass the deck rules; tests/skir1 has no new failure and clears 4 old ones: K14 on 14-5 and 19-5, the m5 and m6 mix). Projected: main 138/149 in band (was 122), side 67/77 (was 61). 4-5 and 8-7 stay as they were (no legal deck helps); 19-1 and 19-A-4 need card changes.
 ## 2026-11-16 (package INFRA1: tests, road measure and deploy check on GitHub Actions)
