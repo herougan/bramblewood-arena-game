@@ -9,6 +9,8 @@ on:
     branches:
       - main
       - 'batch-*'
+    paths-ignore: # 2026-11-16 (coordinator): a data-only push (balance results, docs) must not cancel a running test run
+      - 'docs/**'
   workflow_dispatch:
 permissions:
   contents: read
