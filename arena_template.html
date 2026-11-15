@@ -13937,7 +13937,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 .vs2 .u3-bramble-abs li b, .r3-info .u3-bramble-abs li b{color:#e6c8ff;}
 .vs2 .u3-bramble-line{font-size:12.5px; opacity:.92; font-weight:700;}
 /* the boss card is taller with its bramble: on a phone the Start button stays in view at the bottom while the screen scrolls */
-@media (max-width:600px){ .vs2 .u3-bramble-abs li{font-size:11.5px; padding:4px 7px;} .vs2.is-raid .vs-start{position:sticky; bottom:calc(12px + env(safe-area-inset-bottom, 0px)); z-index:3;} }
+@media (max-width:600px){ .vs2 .u3-bramble-abs li{font-size:11.5px; padding:4px 7px;} .vs2.is-raid .vs-start{position:sticky; bottom:calc(2px + env(safe-area-inset-bottom, 0px)); z-index:3;} } /* 2026-11-16 (package UX5): sticky Start sat 7px over the boss art at 390x844; 2px from the edge clears it */
 .r3-bramble{display:flex; gap:10px; align-items:flex-start;}
 .r3-bramble > img{width:56px; height:56px; border-radius:10px; flex:0 0 auto; border:1px solid rgba(200,150,255,.45);}
 /* the bramble tile winds up as it smacks */
@@ -14444,7 +14444,8 @@ body.pg-pack-open #cardPop{z-index:9600 !important;} /* 2026-11-12 (package PERF
 /* #21: Home is an icon; the Conquest map leads the places bar */
 .topbar .home-nav-btn.ne-home-icon{width:38px; height:38px; padding:0 !important; justify-content:center; gap:0; border-radius:50%;} .home-nav-btn.ne-home-icon .tab-emoji{font-size:18px; margin:0; line-height:1;}
 .page-back-bar .pb-sc[data-pbsc="map"]{margin-right:4px; box-shadow:4px 0 0 -2px rgba(255,236,190,.25);}
-@media (max-width:480px){ .page-back-bar .pb-shortcuts{gap:0; min-width:0; overflow-x:auto; scrollbar-width:none;} .page-back-bar .pb-sc{padding:6px 3px; min-width:36px; min-height:36px; justify-content:center;} .page-back-bar .pb-sc span{font-size:15px;} } /* 2026-11-13 (package UI52): room for Shop, Premium and one more place on a phone; never wider than the bar */
+@media (max-width:480px){ .page-back-bar .pb-shortcuts{gap:0; min-width:0; overflow-x:auto; scrollbar-width:none;} .page-back-bar .pb-sc{padding:6px 0; min-width:26px; min-height:36px; justify-content:center;} .page-back-bar .pb-sc span{font-size:15px;} } /* 2026-11-13 (package UI52): room for Shop, Premium and one more place on a phone; never wider than the bar */ /* 2026-11-16 (package UX5): 26px wide (24px WCAG floor), still 36 tall, so nine places fit at 360 */
+@media (max-width:380px){ .page-back-bar .pb-sc{min-width:23px;} .page-back-bar .pb-sc span{font-size:14px;} } /* 2026-11-16 (package UX5): 360 px phones, 36 tall kept */
 /* #12: the Codex card detail's copies, one small card each, grouped by treatment; a tapped copy shows its level */
 .ne-cx-copies{margin:10px 0 4px;} .ne-cx-copies h3 small{font-weight:600; font-size:11.5px; opacity:.7; margin-left:6px;}
 .ne-cx-group{margin:4px 0 8px;} .ne-cx-g{display:block; font-weight:800; font-size:12px; opacity:.8; margin:0 0 4px;}
