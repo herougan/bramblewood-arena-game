@@ -26,7 +26,7 @@ async function browser(){
     await pg.goto('file://' + path.join(ROOT, 'index.html'), {waitUntil: 'domcontentloaded', timeout: 90000});
     await pg.waitForFunction("typeof switchTab === 'function'", null, {timeout: 90000}); await pg.waitForTimeout(1500);
     await pg.evaluate("(()=>{ try{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); }catch(e){} })()");
-    const small = `(sel, min)=> [...document.querySelectorAll(sel)].filter(e=>{ const r = e.getBoundingClientRect(); return r.width && r.height && (r.height < min || r.width < min); }).map(e=> (e.id || e.className) + ' ' + Math.round(e.getBoundingClientRect().width) + 'x' + Math.round(e.getBoundingClientRect().height))`;
+    const small = `(sel, min, minW)=> [...document.querySelectorAll(sel)].filter(e=>{ const r = e.getBoundingClientRect(); return r.width && r.height && (r.height < min || r.width < (minW || min)); }).map(e=> (e.id || e.className) + ' ' + Math.round(e.getBoundingClientRect().width) + 'x' + Math.round(e.getBoundingClientRect().height))`;
     for(const tab of ['home', 'deck', 'codex', 'shop', 'nest', 'profile']){
       await pg.evaluate(`switchTab('${tab}')`); await pg.waitForTimeout(900);
       const sw = await pg.evaluate("document.documentElement.scrollWidth");
@@ -34,8 +34,8 @@ async function browser(){
       if(tab !== 'home'){
         const s = await pg.evaluate(`(${small})('.topbar button.settings-btn, .topbar button.feedback-btn, .topbar .home-nav-btn.ne-home-icon, .topbar .account-chip', 36)`);
         ok(!s.length, `${tab}: topbar controls are 36px or more (${s.join(', ')})`);
-        const p = await pg.evaluate(`(${small})('.page-back-bar button.pb-sc', 34)`);
-        ok(!p.length, `${tab}: page-bar shortcuts are 34px or more (${p.join(', ')})`);
+        const p = await pg.evaluate(`(${small})('.page-back-bar button.pb-sc', 34, 23)`);
+        ok(!p.length, `${tab}: page-bar shortcuts are 34px tall, 23px wide or more (UX5: nine places on a phone) (${p.join(', ')})`);
       }
     }
     await pg.evaluate("switchTab('codex')"); await pg.waitForTimeout(900);

@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package UX5: two phone regressions)
+- The places strip in the page bar fits on 390 and 360 px phones again (narrower buttons, still 36 px tall), and the raid VS screen Start button no longer overlaps the boss art.
+
 ## 2026-11-16 (package FX12: one look per event)
 - Remember played two looks at once (a candle and smoke from one effect set, another from a second). Now it plays only the candle-smoke rise with its sound. The same fix for three more doubles found by a scan: Sacrifice (the red sigil only; the Dark Summon crack no longer fires on it), Mind Control (the puppet strings only), First Blood (the splat and stamp only). The stopped looks stay in the Effects Lab, marked "not used in game".
 - The sound cue sheet lists the five FX11 cues (crab clack, soft geiger, mend chime, hymn bell, gorge gulp).
