@@ -7,6 +7,11 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - `.github/workflows/road-measure.yml`: push to `main` (or by hand: games, seed, tag, only): Maps 0-20 in 20 shards, merged `skirmish-pass-<tag>.jsonl` + summary (`tools/ci/road_summary.js`); `tools/ci/fetch_measure.sh <run-id|latest>` downloads it into `docs/balance/`.
 - `.github/workflows/deploy-check.yml`: waits up to 10 min for the live `version.json` to carry the pushed build; `tools/ci/deploy_status.sh` prints the latest result.
 - `tests/run.js`: `--shard i/n`; failing names always written to `tests/.last-failures.txt`; `--list` writes nothing; finding each test's inputs takes about 15 s instead of about 4 min (every run paid it).
+## 2026-11-16 (package UX3: UI/UX audit at 390 and 1280 px, with fixes)
+- Phone tap targets: top bar (home, map, settings, account, feedback) 28 to 36 px; Codex tabs, Filters, pager 32 to 36 px; kind and level chips 26-28 to 34 px; page-bar shortcuts 31 to 36 px; fight and map HUD buttons 28-30 to 36 px; coach dismiss 26 to 34 px; settings sliders and sign-in banner links taller.
+- The Settings panel opened 146 px off the left edge on a phone; it is now fixed inside the screen.
+- The account chip's 👤 sits on a cream disc, so it shows in dark mode.
+- Audit list (21 rows, 8 fixed here): `docs/ux-audit-2026-11-16.md`; before/after shots in `docs/screens/ux3/`; test `tests/ux3-2026-11-16.js`.
 
 ## 2026-11-15 (package BALREL1: the recommended balance fixes, applied where they keep the deck rules)
 - Owner 23:00 "Apply them (Recommended)": the defaults of EDGE1-1 to EDGE5-1, SIDE2-2 e, SIDE2-4 e, SIDE3-1 a, SIDE4-1 a (SIDE5-1 a: 19-A-1 left as is; 20-9 left for the card redesign).
