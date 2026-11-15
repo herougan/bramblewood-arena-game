@@ -8,6 +8,16 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-16 02:00: Owner notes (night) -> FX11, FX12, UX3-5, INFRA1, LAB1, BALREL2 (shipped 11-16)
+- [x] New effects: Crab Claw redo, irradiation screen tint, Healing / Worship / Gorge, Meiosis slime death; doubled effects removed (FX11, FX12)
+- [x] UI/UX audit and fixes, two rounds (UX3, UX4, UX5); report docs/ux-audit-2026-11-16.md
+- [x] Infra: tests, road measure and deploy check on GitHub Actions (INFRA1)
+- [x] Bramblewood Lab Mac app (LAB1); zip sent to the owner, also built by Actions -> Lab build
+- [x] Legal re-fit of the 30 held fights applied (BALREL2)
+- [ ] Open UI: node panel "This map's cards" as name pills, sign-in banner over the node panel at 390, brand tile, first 0.8 s dim; decision UX4-1 (atmosphere tint)
+- [ ] Card redesign needed for 19-1, 19-A-4, 8-7, 4-5, 20-9, 10-A-4 (no legal deck reaches the band)
+- [ ] CI: remaining environment-only failures on GitHub (check after the first full run)
+
 ## 11-15: Unit tests out of date (coordinator)
 The full unit run on batch-1023e (11-15) has 55 failures. 45 of them also fail on the released main, so they come from earlier card, deck and budget changes (old budget numbers, re-carded decks, removed skills, rarity moves, 4 cards still waiting for art). Fix after the owner's card redesign, with the re-measure: bal12, bal13, bal14, bal2, bal21, bal3, bal7, bal9, bf5, budget2, bx, card-pool, content12, content14, content15, content16, df3, easter-eggs, eb, en2, eng10, eng21, fin2, fix6, gd2, gi, lead, level-curve, n221, opt2, pale-desert, prayer, pvp1, ref6, review1, rewards-pass, road-rarity, skills2, skir1, thematic, ts-status-chips, tut2, ui29, unit-themes, winrate-panel.
 The other 10 were new in this batch: 9 tests that still checked text keys TESTFIX3 removed or TIP2 reworded (fixed in TESTFIX4, 11-15), and list1's 2-A-6 (fixed by the SIDE2 side re-fit when applied).
