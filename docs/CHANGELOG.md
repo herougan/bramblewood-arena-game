@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package BAL-LEGAL2: legal deck re-fits after the 11-16 release measure)
+- Proposals only (not applied): 11 road decks re-fitted with legal swaps (`docs/balance/legal2/legal2-fixes.jsonl`), each in band on three fresh seed sets at 400 games: 20-B-3 90.5 to 62 (t60), 10-A-1 80.3 to 85 (t90), 13-3, 6-3, 6-5, 5-7, 18-5, 2-A-7, 19-A-1, 14-A-1, 19-A-10. Projected Maps 0-20: main 136/149 in band (from 131), side 76/81 (from 70). No legal move for 19-5, 7-A-2, 8-3; 2-2 gains under 2 points. Report: `docs/balance/legal2/legal2-2026-11-16.md`.
+
 ## 2026-11-16 (package UX5: two phone regressions)
 - The places strip in the page bar fits on 390 and 360 px phones again (narrower buttons, still 36 px tall), and the raid VS screen Start button no longer overlaps the boss art.
 
