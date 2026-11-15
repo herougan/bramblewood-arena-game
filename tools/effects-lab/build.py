@@ -40,7 +40,7 @@ gsapflip=open(f'{ROOT}/Flip.min.js').read().replace('</script','<\\/script')
 LAB = os.path.dirname(os.path.abspath(__file__))
 unitfx = open(f'{ROOT}/bramblewood-unitfx.js').read()
 # the six effect batches, exactly as the game bundles them (assemble_arena.py)
-fxbatches = '\n'.join(open(f'{ROOT}/bramblewood-fx-{b}.js', encoding='utf-8').read() for b in 'abcdefg')  # 2026-10-16: + G (map titles and grandeur, the fun set)
+fxbatches = '\n'.join(open(f'{ROOT}/bramblewood-fx-{b}.js', encoding='utf-8').read() for b in 'abcdefgh')  # 2026-10-16: + G (map titles and grandeur, the fun set); 2026-11-16 (FX11): + H
 # 2026-10-21 (package FX-WAR): + bramblewood-fx-war.js (window.WarFX, smoke and war). The lab loads it from here; the game's bundle does not include it until the owner picks effects to wire.
 fxbatches += '\n' + open(f'{ROOT}/bramblewood-fx-war.js', encoding='utf-8').read()
 fxwar = open(f'{LAB}/fxlab-war.js', encoding='utf-8').read()  # the "Smoke and war" tab and the in-game badges on the older tabs

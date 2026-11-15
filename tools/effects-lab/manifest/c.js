@@ -127,7 +127,7 @@ R({id:'death-lethal-number', stage:'board', inGameHook:"deathVfx → hooks.death
 R({id:'death-ghost', stage:'board', inGameHook:"deathVfx → hooks.deathLook: a Ghost (effects.ghost or the Ghost archetype; live 2026-10-18)", variants:[{key:'A', label:'Turns see-through and drifts up', play:deathOf('deathGhost')}]});
 R({id:'death-dragon', stage:'board', inGameHook:"deathVfx → hooks.deathLook: a Dragon (archetype Dragon or creatureRank 1); the round waits; the quake only at High (live 2026-10-18)", variants:[{key:'A', label:'Crashes down, scales scatter, a scale drops', play:ctx=> X().deathDragon(foe(ctx), {host:B(ctx).el})}]});
 R({id:'death-supreme', stage:'board', inGameHook:"deathVfx → hooks.deathLook: another Supreme unit or a rank-2 great beast (Leviathan, Dragon-Turtle); the round waits (live 2026-10-18)", variants:[{key:'A', label:'Prismatic burst in slow motion', play:deathOf('deathSupreme')}]});
-R({id:'death-slime-split', stage:'board', inGameHook:'future', variants:[{key:'A', label:'Sags into a blob that splits in two', play:deathOf('deathSlimeSplit')}]});
+R({id:'death-slime-split', stage:'board', inGameHook:'fxHook deathLook (FX.H, 2026-11-16 FX11): a Meiosis unit falls to an ordinary blow', variants:[{key:'A', label:'Sags into a blob that splits in two', play:deathOf('deathSlimeSplit')}]});
 
 // ===================================================== castle =====================================================
 const cFoe = ctx=> B(ctx).castleFoe, cMine = ctx=> B(ctx).castleMine;
