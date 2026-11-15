@@ -3050,9 +3050,9 @@
    "arena_app.js:31907"
   ],
   "batch": "A",
-  "status": "live",
+  "status": "lab-only",
   "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): remember {uid}"
+  "inGameHook": "variant not used in game (FX12, 2026-11-16: FX.A.candleRise no longer fires on its event; the game plays FX.C.rememberRise (sum-remember))"
  },
  {
   "id": "sk-gain-resource",
@@ -3326,9 +3326,9 @@
    "arena_app.js:31557"
   ],
   "batch": "A",
-  "status": "live",
+  "status": "lab-only",
   "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): statusFx firstBlood"
+  "inGameHook": "variant not used in game (FX12, 2026-11-16: FX.A.firstBloodSplash no longer fires on its event; the game plays FX.B.firstBlood (fld-first-blood-rule))"
  },
  {
   "id": "sk-bludgeon",
@@ -9071,9 +9071,9 @@
    "bramblewood-engine.js:3842"
   ],
   "batch": "C",
-  "status": "live",
+  "status": "lab-only",
   "lab": "c.js",
-  "inGameHook": "onEvent: mindControl (after the re-render)"
+  "inGameHook": "variant not used in game (FX12, 2026-11-16: FX.C.mindArrive no longer fires on its event; the game plays FX.A.puppetStrings (sk-mind-control))"
  },
  {
   "id": "sum-devilry-drop",
@@ -9090,9 +9090,9 @@
    "arena_app.js:25448"
   ],
   "batch": "C",
-  "status": "live",
+  "status": "lab-only",
   "lab": "c.js",
-  "inGameHook": "onEvent: sacrifice (a Dark Summon dropped onto a unit)"
+  "inGameHook": "variant not used in game (FX12, 2026-11-16: FX.C.devilryCrack no longer fires on its event; the game plays FX.A.ritualSigil (sk-sacrifice))"
  },
  {
   "id": "sum-seen-new",

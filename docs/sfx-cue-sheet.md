@@ -112,3 +112,15 @@ Each place's entrance (`bramblewood-ui-places.js`) plays existing cues, so no ne
 | Camp | `mapUnroll` 0 ms, `woodKnock` 600 ms | canvas rolling up, the roll knocks the frame |
 | Stomping Grounds | `woodKnock` 0 ms, `leaderSlam` 160 ms | the bar lifts, the gates boom open on a chord |
 | Inventory | `shelfPick` 0 ms, `pickup` 200 ms | the buckle clinks, the flap lifts |
+
+## FX11 cues (2026-11-16, package FX12 added the rows)
+
+Built in `bramblewood-fx-h.js` (`CUES`, installed on `SoundKit` from its `tone` / `noise` / `sweep` primitives); synthesized like every other cue, so these rows are the targets for later files.
+
+| # | Cue | Trigger | Mood (A, cosy/organic) | Mood (B, chiptune) | Length |
+|---|---|---|---|---|---|
+| 16 | `crabClack` | A Crab Claws unit's claw snaps shut on its target (`FX.H.crabSnap`; also a miss and the bramble) | Two dry shell clicks over a woody knock, a short high tick after | Square click and a quick down-blip | about 150 ms |
+| 17 | `geigerSoft` | Irradiation tokens land (`fieldTick irradiated`) | A few quiet counter ticks (3 to 7, more with more tokens), at most one burst per 320 ms | Soft noise ticks, same spacing | 0.4 to 0.9 s |
+| 18 | `mendChime` | Healing N heals (`FX.H.healingMend`) | Two soft glass notes, a high one just after, with a gentle upward shimmer | Two-note up-blip | about 250 ms |
+| 19 | `hymnBell` | Worship: a unit's halo settles (`FX.H.worshipHymn`, once a round) | Three warm bell notes rising in a chord, a faint high overtone | Three-note arpeggio, triangle | about 0.9 s |
+| 20 | `gorgeGulp` | Gorge: the parasite drinks (`FX.H.gorgeGulp`) | Two low wet gulps (a falling hum with a soft noise swallow) | Two descending blips | about 0.4 s |

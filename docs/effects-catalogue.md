@@ -1933,6 +1933,18 @@ Owner 00:03: "interesting vfx to improve our general UI experience and also skil
 
 Lab: group "FX10" (`tools/effects-lab/manifest/fx10.js`, ids `fun-fx10-*`; A the full look, B Effects Low / reduced motion / 4x). Contact sheet: `docs/art/fx10-sheet.png` (`python3 tests/e2e/fx10_2026_11_13.py`, which also checks the camera layer, the piece count, Low / 4x / None and that Brood and Confuse lost their shared looks). Check: `tests/fx10-2026-11-13.js`.
 
+## 2026-11-16 (package FX12): no two effects for one event
+Rule: effects never play together. FX11 left Remember with two looks; FX12 scanned every `onEvent` in `bramblewood-fx-a.js` to `-h.js` (case labels and `kind` / `field` / `reason` tests) for an event drawn by two modules. Kept one look per event, stopped the other from firing (the function and its Lab demo stay; the inventory entry is `lab-only`, "variant not used in game").
+
+| Date | Event | Played now | Stopped (Lab only) |
+|---|---|---|---|
+| 2026-11-16 | `remember` (Forgotten Ones) | `FX.C.rememberRise` (candle smoke, a candle each side, `nightSwell`; queued like the other FX.C looks) | `FX.A.candleRise` |
+| 2026-11-16 | `sacrifice` | `FX.A.ritualSigil` (the offering sinks into a red sigil) | `FX.C.devilryCrack` (a Dark Summon's ground crack, wrongly on every sacrifice) |
+| 2026-11-16 | `mindControl` | `FX.A.puppetStrings` (strings, the pull across) | `FX.C.mindArrive` (spiral and a "Now yours" chip) |
+| 2026-11-16 | `statusFx firstBlood` | `FX.B.firstBlood` (splat, "First Blood" stamp, drops) | `FX.A.firstBloodSplash` |
+
+Checked and left as they are (different moments or different things): `lumber` (FX.B the arena rule, FX.C the castle / perk), `fieldTick irradiated` (FX.A pulse on the source, FX.B glow on the target), `statusFx exposedHit` (FX.B only records it, FX.D draws), `hit` / `statusFx` / `skipTurn` / `play` (FX.A and FX.C handle different kinds), `blindMiss` (FX.A the swing, FX.B the dark whoosh, both gated by `night`), `fieldTick` heatwave (FX.A only). Not looked at on a live fight (no fight could be opened in the shot tool this run): the Remember pick was made from the code (FX.C adds a sound and the house `run()` queue).
+
 ## 2026-11-16 (package FX11): the crab's claw, irradiated air, Healing / Worship / Gorge, Meiosis's death (wired into fights)
 Owner: "new visual effects (e.g. crab claw doesn't look very nice), and also visual effects of cards we havent done yet such as irradiation (whole screen looks abit irradiated) as irradiation increases ... implement the effects you have in the game, such as those in the effects lab". Code: `bramblewood-fx-h.js` (`window.FX.H`, its `onEvent` and hooks; the game calls it through `FX_BATCHES`). Lab: `tools/effects-lab/manifest/h.js`. Cues: SoundKit methods built from `SoundKit.prim` (tone / noise / fnoise / sweep). Check: `tests/fx11-2026-11-16.js`. Frames: `docs/screens/fx11/`.
 

@@ -1455,7 +1455,7 @@ M.onEvent = function(ev, env){
     case 'stunPlayer': { const other = ev.side === 'A' ? 'B' : 'A', c = hq(other); if(c && low) M.bellToll(c, {area:sideRow(other)}); break; }
     case 'exile': if(ev.zone === 'hand' || ev.zone === 'graveyard'){ const anchor = ev.side === 'A' ? (ev.zone === 'hand' ? document.getElementById('handStrip') : document.getElementById('dropDiscard')) : hq(ev.side);
       if(anchor) M.exileWisp(anchor, {prayer:!!ev.prayer}); } break;
-    case 'remember': if(ev.uid != null){ const t = el(ev.uid); if(t) env.at(120, ()=> M.candleRise(el(ev.uid) || t)); } break;
+    // 2026-11-16 (FX12): Remember plays FX.C.rememberRise only (it had two looks at once); M.candleRise stays for the Effects Lab, not used in game.
     case 'spell': { const from = ev.side === 'A' ? document.getElementById('handStrip') : hq(ev.side), ts = (ev.targets || []).map(x=> el(x.uid)).filter(Boolean);
       if(ev.action === 'mend' && !(ev.targets || []).length) break; // 2026-10-19 (package HN): a Mend with no one hurt shows no green heal
       M.spellCast(from, ts, ev.action === 'sap' ? {c1:'#f0e0ff', c2:'#a46bff'} : ev.action === 'mend' ? {c1:'#e6ffe0', c2:'#5fd36a'} : {}); break; }
@@ -1492,7 +1492,7 @@ M.onEvent = function(ev, env){
       else if(k === 'pack' && self) env.at(420, ()=>{ const s2 = el(ev.attUid); if(s2) M.packHowl(s2, rowCards(s2)); });
       else if(k === 'satiety' && self) M.satietyFull(self);
       else if(k === 'shed'){ const s = t || self; if(s) M.skinShed(s, {molt:!!ev.molt}); }
-      else if(k === 'firstBlood' && t) M.firstBloodSplash(t);
+      // 2026-11-16 (FX12): First Blood plays FX.B.firstBlood only (splash + stamp + sound); M.firstBloodSplash stays for the Lab, not used in game.
       else if(k === 'bludgeon' && t) M.bludgeonBreak(t, {broke:ev.broke});
       // 2026-10-15: Pack chains are live since 2026-10-14 (no statusFx pack any more): a pack unit whose chain grows howls instead.
       else if(k === 'phaseGrow' && self && (fxOf(ev.attDefId).pack || fxOf(ev.attDefId).packLeader) && ((env.match && env.match.replayCards && env.match.replayCards[ev.attUid]) || {}).packChain > 1){
