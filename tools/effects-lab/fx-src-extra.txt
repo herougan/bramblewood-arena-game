@@ -65,6 +65,8 @@ tideSceneSet
 syncTideScene
 TIDE_EBB_OFFSET
 tideSceneY
+# 2026-11-16 (package FX13): High Tide's swells, drawn by FX.B (manifest/fx13.js)
+tideSwellHTML
 # 2026-10-24 (package BV): a Flood's random high side, no arrival swell, the Ebb's few-px lean (manifest/bv.js)
 TIDE_ARRIVE_SWELL_BV
 TIDE_RISE_TILT_MAX

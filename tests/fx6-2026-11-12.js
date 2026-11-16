@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 2026-11-12 (package FX6, owner 08:39): the four cheap effects, checked without a browser.
-//   1. High Tide's second layer: the scene markup carries .tw-wave, the CSS shows it only for data-k="high", Low / None / reduced motion stop or hide it
+//   1. High Tide's second layer (2026-11-16: replaced by FX13's swells, checked in tests/fx13-2026-11-16.js; here only that .tw-wave is gone)
 //   2. Guardian: the engine only lets a Guardian step in while Ready (blockerReady), the plates are drawn from placement (no wait gate): rules untouched
 //   3. Bulwark: the spawn event is kind 'bulwark'; its origin is kind 'rise' in the three places that set one; renderBoard has a riseUp branch (no flight);
 //      no spawn portal; the construction cue exists and is in the cue sheet
@@ -17,13 +17,9 @@ const fnSrc = name=>{ const i = src.indexOf(`\nfunction ${name}(`); if(i < 0) th
   let d = 0; for(let k = src.indexOf('{', src.indexOf(')', i)); k < src.length; k++){ const ch = src[k]; if(ch === '{') d++; else if(ch === '}'){ d--; if(!d) return src.slice(i, k + 1); } } throw new Error('unclosed ' + name); };
 
 // 1. the tide
-ok(/class="tw-body"><div class="tw-water">[\s\S]{0,200}<i class="tw-wave"><\/i>/.test(src), 'syncTideScene markup has .tw-wave in .tw-body');
-ok(/\.tide-scene\[data-k="high"\] \.tw-wave\{display:block/.test(tpl) && /\.tide-scene \.tw-wave\{display:none/.test(tpl), '.tw-wave shows only at High Tide');
-ok(/html\[data-fx="low"\] \.tide-scene \.tw-wave[^{]*\{animation:none/.test(tpl), 'Low effects hold the wave still');
-ok(/html\[data-fx="none"\] \.tide-scene \.tw-wave\{display:none/.test(tpl), 'Effects None leaves the wave out');
-ok(/prefers-reduced-motion: reduce\)\{ \.tide-scene \.tw-wave[^}]*animation:none/.test(tpl), 'reduced motion: no wave animation');
-{ const m = tpl.match(/\.tw-wave::before\{[^}]*\}/); ok(m && !/filter|mix-blend/.test(m[0]), 'the crest has no filter / blend mode');
-  ok(/@keyframes twWaveDrift\{from\{transform:translateX\(0\);\} to\{transform:translateX\(-240px\);\}\}/.test(tpl), 'the crest drifts by transform only, one tile (240 px) so it loops'); }
+// 2026-11-16 (package FX13, owner 20:20): the .tw-wave layer was replaced by High Tide's swells (FX.B.tideSwellHTML); tests/fx13-2026-11-16.js checks them
+ok(!/tw-wave/.test(src) && !/\.tw-wave/.test(tpl), 'FX13: the old .tw-wave markup and CSS are gone');
+ok(/tideSwellHTML\(\)/.test(src), 'FX13: the standing tide scene carries the swells instead');
 
 // 2. Guardian: the rule and the picture agree on what exists
 ok(/function blockerReady\(n\)\{ return !!n && (!inRitual\(n\)[^&]*&& )?!\(n\.wait > 0\)/.test(eng) /* 2026-11-13: ENG-RC1 adds the Ritual check first */ && /isLiveGuardian[^\n]*blockerReady\(n\)/.test(eng), 'engine: a Guardian steps in only while Ready (ENG9), unchanged');
@@ -73,7 +69,7 @@ ok(/ev\.attDefId === 'puffball-bombardier'[^\n]*sporePuffVfx/.test(src), 'the Pu
 ok(!/setInterval|requestAnimationFrame|onUpdate/.test([fnSrc('riseUpFx'), fnSrc('bugCrawlVfx'), fnSrc('sporePuffVfx')].join('')), 'no per-frame work in the three functions');
 
 // 5. docs and the Lab
-ok(/id:'wt-tide-high'/.test(rd('tools/effects-lab/manifest/fx6.js')) && /riseUpFx\nbugCrawlVfx\nsporePuffVfx/.test(rd('tools/effects-lab/fx-src-extra.txt')), 'Lab entries and function sources');
+ok(/id:'wt-tide-high'/.test(rd('tools/effects-lab/manifest/fx13.js')) /* 2026-11-16: FX13 owns the High Tide entry now */ && /riseUpFx\nbugCrawlVfx\nsporePuffVfx/.test(rd('tools/effects-lab/fx-src-extra.txt')), 'Lab entries and function sources');
 ok(/package FX6/.test(rd('docs/effects-catalogue.md')), 'effects catalogue entry');
 ok(/Package FX6/.test(rd('docs/CHANGELOG.md')), 'CHANGELOG entry'); // 2026-11-13: the night's packages sit above it
 console.log(fail ? `fx6: ${fail} of ${n} checks FAILED` : `fx6: all ${n} checks passed`); process.exit(fail ? 1 : 0);

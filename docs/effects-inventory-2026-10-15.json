@@ -7124,7 +7124,7 @@
   "area": "weather-time",
   "name": "Tide goes out (Ebb)",
   "trigger": "tide {tide:'ebb'}",
-  "current": ".tide-wave.is-ebb (tideOut) + SkillFX.tideSway {kind:'ebb'}: the cards settle a little as the water drains from the top down",
+  "current": ".tide-wave.is-ebb (tideOut) + SkillFX.tideSway {kind:'ebb'}: the cards settle a little as the water drains from the top down; FX13 (2026-11-16): the water's front edge (.tw-edge, Flood rising and the Ebb band) wears the swell's cream foam crest over a teal face (tile drawn by FX.B)",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "",
@@ -7135,7 +7135,7 @@
    "bramblewood-skillfx.js: tideSway"
   ],
   "batch": "B",
-  "updated": "2026-10-17",
+  "updated": "2026-11-16",
   "status": "live",
   "lab": "b.js, wave17.js",
   "inGameHook": "tideWaveVfx (arena_app.js) on tide {tide:'ebb'} → the water, then SkillFX.tideSway(every board card, {kind:'ebb'})"
@@ -7145,8 +7145,8 @@
   "area": "weather-time",
   "name": "High tide",
   "trigger": "tide {tide:'high'} (rules.highTide)",
-  "current": "reuses the Flow wave",
-  "quality": "basic — high tide looks the same as Flow",
+  "current": "FX13 (2026-11-16): the standing tide scene at High Tide carries three swells (FX.B.tideSwellHTML, .fxb-swell): each one continuous crest path across the board, a cream foam line with a bubbly top edge over a teal-blue face, rising from the bottom and fading out at the top, drifting sideways seamlessly; the tide event still adds FX.B.tideHigh's spray",
+  "quality": "good — FX13 (2026-11-16, owner 20:20: \"The waves aren't even connected ... they should disappear off at the top\")",
   "priority": 2,
   "themeNotes": "Bigger double crest, spray over the top row.",
   "variantsSuggested": false,
@@ -7156,8 +7156,9 @@
   ],
   "batch": "B",
   "status": "live",
-  "lab": "b.js",
-  "inGameHook": "onEvent: tide {tide:'high'}"
+  "lab": "fx13.js",
+  "inGameHook": "syncTideScene (arena_app.js) → tideSwellHTML → FX.B.tideSwellHTML, shown while .tide-scene[data-k='high']; onEvent: tide {tide:'high'} → FX.B.tideHigh {sprayOnly}",
+  "updated": "2026-11-16"
  },
  {
   "id": "wt-perma-tide",
