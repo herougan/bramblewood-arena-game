@@ -52,7 +52,7 @@ const polar = pool.filter(c=> ['m6', 'mi', 'mt'].includes(c.poolMap));
 ok(polar.length >= 8, `1. a polar set on the tundra / ice / taiga maps (${polar.length})`);
 ['polar-bear', 'harp-seal-pup', 'beluga', 'arctic-tern', 'musk-ox-calf'].forEach(id=> ok(polar.some(c=> c.id === id), `1. polar set has ${id}`));
 ok(polar.every(c=> (c.resist || []).includes('cold')), '1. the polar cards resist Cold');
-const urchin = pool.find(c=> /urchin/i.test(c.name)); ok(urchin && urchin.effects.thorns >= 1 && (urchin.archetypes || []).includes('Coastal'), '1. owner: a sea urchin with Thorns on a coastal map');
+const urchin = pool.find(c=> /urchin/i.test(c.name)); ok(urchin && (urchin.effects.thorns >= 1 || urchin.effects.poisonBarbs >= 1 /* FOLD5: his 11-06 edit, Thorns -> Poison Barbs 2 */) && (urchin.archetypes || []).includes('Coastal'), '1. owner: a sea urchin with Thorns (or Poison Barbs) on a coastal map');
 const snakes = pool.filter(c=> /sea (snake|krait)/i.test(c.name));
 ok(snakes.length >= 1 && snakes.every(c=> c.effects.tide && (c.effects.poison || c.effects.venomous)), '1. owner: sea snakes, Poison (or Venomous) and Tide (Swimmer = Tide)');
 const spider = pool.find(c=> c.id === 'giant-cave-huntsman');
@@ -74,7 +74,8 @@ const BANDS = {common:[35, 60], uncommon:[45, 68], rare:[52, 75], veryrare:[56, 
 // waiting for the owner's re-fit (step 3, 'pending': docs/balance/listfix1-pending-budget-2026-10-29.json) is reported, not failed
 const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js')), HELD = {unplaced: [], pending: []};
 // 2026-11-06 (package CONTENT12, CONTENT11-2 a): the owner's live card edits folded in stay as he set them (BAL-ROLES; call CONTENT12-1)
-const C12FOLD = new Set(JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'server-overrides', 'fold-plan-2026-11-06.json'), 'utf8')).rows.map(r=> r.id));
+// 2026-11-16 (package FOLD5): + the 11-06 .. 11-13 edits (fold-plan-2026-11-16.json), same rule
+const C12FOLD = new Set(['06', '16'].flatMap(d=> JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'server-overrides', 'fold-plan-2026-11-' + d + '.json'), 'utf8')).rows.map(r=> r.id)));
 pool.forEach(c=>{
   const b = T.budget(c), hold = b.ok || QUEUE.has(c.id) ? '' : LMP.budgetHold(c.id); if(hold) HELD[hold].push(c.id);
   ok(b.ok || QUEUE.has(c.id) || !!hold || C12FOLD.has(c.id) /* CONTENT12: the owner's live cards as he set them, his call CONTENT12-1 */, `2. ${c.id}: inside budget v3 (2A+H+S ${b.x1} < N ${b.N}, A·H+S ${b.x2} < ${b.N2}) or on the post-balance queue`);

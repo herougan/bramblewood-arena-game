@@ -253,13 +253,10 @@
  "Piranha Shoal": "피라냐 떼",
  "Pit Glutton": "구덩이 먹보",
  "Plague Gnat Cloud": "역병 각다귀 떼",
- "Planarian Splitter": "분열 플라나리아",
- "Platypus Spur": "오리너구리 며느리발톱",
  "Pride Queen": "사자 무리 여왕",
  "Pronghorn Racer": "가지뿔영양 질주자",
  "Puddle Changeling": "웅덩이 둔갑쟁이",
  "Puddle Skimmer": "웅덩이 소금쟁이",
- "Puffball Bombardier": "말불버섯 폭격수",
  "Puppeteer Imp": "꼭두각시 임프",
  "Quarry Troll": "채석장 트롤",
  "Quicksand Queen": "모래늪 여왕",
@@ -604,5 +601,9 @@
  "Glow-worm": "반딧불이 애벌레",
  "Bumblebee Queen": "뒤영벌 여왕",
  "Sea Bass": "농어",
- "Barrel Cactus": "통선인장"
+ "Barrel Cactus": "통선인장",
+ "Golden Eagle": "검독수리",
+ "Planarian": "플라나리아",
+ "Platypus": "오리너구리",
+ "Puffball": "먼지버섯"
 }

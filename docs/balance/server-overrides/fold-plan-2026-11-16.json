@@ -1,0 +1,3424 @@
+{
+ "_about": "FOLD5 (2026-11-16, CONTENT11-2 a): the live card_overrides rows of 10-29 .. 11-05 folded into canonical/cards.json (tools/fold_server_overrides_2026_11_16.js). Field rule: the owner's value unless the file changed that field after his save; effects three-way merged; source / unattainable not folded.",
+ "generated": "2026-11-16",
+ "cards": 77,
+ "alreadyFolded": [],
+ "rows": [
+  {
+   "id": "blister-beetle",
+   "name": "Blister Beetle",
+   "upd": "2026-11-06T14:16:00.786Z",
+   "server": [
+    2,
+    1
+   ],
+   "fileNow": [
+    2,
+    1
+   ],
+   "now": [
+    2,
+    1
+   ],
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "poison",
+      "amount": 5,
+      "who": "killer"
+     }
+    ]
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "upd": "2026-11-06T14:54:46.813Z",
+   "server": [
+    1,
+    4
+   ],
+   "fileNow": [
+    2,
+    5
+   ],
+   "now": [
+    1,
+    4
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 1
+    },
+    {
+     "field": "health",
+     "from": 5,
+     "to": 4
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "diurnal": 1
+     },
+     "to": {
+      "flying": true,
+      "diurnal": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "diurnal": 2
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "upd": "2026-11-06T14:59:39.925Z",
+   "server": [
+    0,
+    4
+   ],
+   "fileNow": [
+    0,
+    4
+   ],
+   "now": [
+    0,
+    4
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "triggers": [
+       {
+        "do": "heal",
+        "on": "perTurn",
+        "sub": "random",
+        "who": "ally",
+        "amount": 1,
+        "turnOf": "self"
+       }
+      ]
+     },
+     "to": {
+      "flying": true,
+      "healing": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "healing": 1
+   },
+   "rarity": "starter"
+  },
+  {
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "upd": "2026-11-06T15:00:48.358Z",
+   "server": [
+    1,
+    4
+   ],
+   "fileNow": [
+    1,
+    4
+   ],
+   "now": [
+    1,
+    4
+   ],
+   "changes": [
+    {
+     "field": "levelSkills",
+     "from": null,
+     "to": {
+      "1": {
+       "diurnal": 1
+      }
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true
+   },
+   "levelSkills": {
+    "1": {
+     "diurnal": 1
+    }
+   },
+   "rarity": "starter"
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "upd": "2026-11-06T15:27:58.683Z",
+   "server": [
+    0,
+    6
+   ],
+   "fileNow": [
+    0,
+    6
+   ],
+   "now": [
+    0,
+    6
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "tide": true,
+      "thorns": 3
+     },
+     "to": {
+      "tide": true,
+      "poisonBarbs": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": true,
+    "poisonBarbs": 2
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "gull-thief",
+   "name": "Gull Thief",
+   "upd": "2026-11-06T15:28:39.984Z",
+   "server": [
+    1,
+    7
+   ],
+   "fileNow": [
+    1,
+    7
+   ],
+   "now": [
+    1,
+    7
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "triggers": [
+       {
+        "do": "gain",
+        "on": "onKill",
+        "amount": 1,
+        "resource": "lumber"
+       }
+      ]
+     },
+     "to": {
+      "flying": true,
+      "triggers": [
+       {
+        "do": "gain",
+        "on": "onHit",
+        "amount": 1,
+        "resource": "lumber"
+       }
+      ]
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "do": "gain",
+      "on": "onHit",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ]
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "oystercatcher",
+   "name": "Oystercatcher",
+   "upd": "2026-11-06T15:30:26.067Z",
+   "server": [
+    2,
+    7
+   ],
+   "fileNow": [
+    2,
+    6
+   ],
+   "now": [
+    2,
+    7
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 6,
+     "to": 7
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "pierce": 2
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "sparrow-chick",
+   "name": "Sparrow Chick",
+   "upd": "2026-11-06T15:38:51.675Z",
+   "server": [
+    1,
+    3
+   ],
+   "fileNow": [
+    1,
+    3
+   ],
+   "now": [
+    1,
+    3
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "flying": true
+     },
+     "to": {}
+    },
+    {
+     "field": "levelSkills",
+     "from": {
+      "1": {
+       "flying": true,
+       "hatchling": true
+      }
+     },
+     "to": {
+      "1": {
+       "bleed": 1,
+       "flying": true,
+       "hatchling": true
+      }
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [
+    {
+     "field": "unattainable",
+     "server": true,
+     "file": null,
+     "why": "echo of the build; the map lists decide"
+    }
+   ],
+   "merged": [],
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "bleed": 1,
+     "flying": true,
+     "hatchling": true
+    }
+   },
+   "rarity": "starter"
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "upd": "2026-11-06T15:44:22.585Z",
+   "server": [
+    2,
+    8
+   ],
+   "fileNow": [
+    2,
+    5
+   ],
+   "now": [
+    2,
+    8
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 5,
+     "to": 8
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "tide": true,
+      "dive": 2
+     },
+     "to": {
+      "tide": 2,
+      "flying": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": 2,
+    "flying": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "upd": "2026-11-06T15:44:40.319Z",
+   "server": [
+    2,
+    5
+   ],
+   "fileNow": [
+    2,
+    8
+   ],
+   "now": [
+    2,
+    5
+   ],
+   "changes": [
+    {
+     "field": "wait",
+     "from": 1,
+     "to": 0
+    },
+    {
+     "field": "health",
+     "from": 8,
+     "to": 5
+    },
+    {
+     "field": "effects",
+     "from": {
+      "pounce": 2,
+      "flying": true
+     },
+     "to": {
+      "flying": true,
+      "pounce": 3
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "pounce": 3
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "snapstick-turtle",
+   "name": "Snapstick Turtle",
+   "upd": "2026-11-06T15:48:37.370Z",
+   "server": [
+    4,
+    6
+   ],
+   "fileNow": [
+    2,
+    12
+   ],
+   "now": [
+    4,
+    6
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 4
+    },
+    {
+     "field": "health",
+     "from": 12,
+     "to": 6
+    },
+    {
+     "field": "effects",
+     "from": {
+      "tide": true
+     },
+     "to": {
+      "tide": true,
+      "armor": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": true,
+    "armor": 1
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "name": "Hawthorn Shieldbug",
+   "upd": "2026-11-06T15:53:31.418Z",
+   "server": [
+    1,
+    15
+   ],
+   "fileNow": [
+    2,
+    12
+   ],
+   "now": [
+    1,
+    15
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 1
+    },
+    {
+     "field": "health",
+     "from": 12,
+     "to": 15
+    },
+    {
+     "field": "effects",
+     "from": {
+      "armor": 1,
+      "guardian": true
+     },
+     "to": {
+      "guardian": true,
+      "counterattack": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "guardian": true,
+    "counterattack": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "upd": "2026-11-07T01:01:31.389Z",
+   "server": [
+    1,
+    5
+   ],
+   "fileNow": [
+    2,
+    5
+   ],
+   "now": [
+    1,
+    5
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 1
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "poison": 1
+   },
+   "rarity": "starter"
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "upd": "2026-11-07T01:01:42.206Z",
+   "server": [
+    1,
+    4
+   ],
+   "fileNow": [
+    1,
+    5
+   ],
+   "now": [
+    1,
+    4
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 5,
+     "to": 4
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "swarm": [
+     "Ants"
+    ]
+   },
+   "rarity": "starter"
+  },
+  {
+   "id": "beaver-lumberjack",
+   "name": "Beaver Lumberjack",
+   "upd": "2026-11-07T01:01:46.906Z",
+   "server": [
+    3,
+    5
+   ],
+   "fileNow": [
+    3,
+    5
+   ],
+   "now": [
+    3,
+    5
+   ],
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "delivery": 1
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "upd": "2026-11-07T01:02:12.373Z",
+   "server": [
+    2,
+    7
+   ],
+   "fileNow": [
+    2,
+    8
+   ],
+   "now": [
+    2,
+    7
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 8,
+     "to": 7
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "swarm": [
+     "Ants"
+    ]
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "upd": "2026-11-07T01:02:56.405Z",
+   "server": [
+    1,
+    8
+   ],
+   "fileNow": [
+    1,
+    8
+   ],
+   "now": [
+    1,
+    8
+   ],
+   "changes": [
+    {
+     "field": "levelSkills",
+     "from": null,
+     "to": {
+      "1": {
+       "foraging": 1
+      }
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "foraging": 1
+    }
+   },
+   "rarity": "starter"
+  },
+  {
+   "id": "badger-lumberjack",
+   "name": "Badger Lumberjack",
+   "upd": "2026-11-07T01:21:05.497Z",
+   "server": [
+    2,
+    10
+   ],
+   "fileNow": [
+    2,
+    11
+   ],
+   "now": [
+    2,
+    10
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 11,
+     "to": 10
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "lumberjack": true,
+    "guardian": true
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "hollow-belly-rat",
+   "name": "Hollow-belly Rat",
+   "upd": "2026-11-07T01:26:32.354Z",
+   "server": [
+    2,
+    11
+   ],
+   "fileNow": [
+    2,
+    12
+   ],
+   "now": [
+    2,
+    11
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 12,
+     "to": 11
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "devour": {
+     "attack": 2,
+     "health": 2
+    }
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "bog-shrew",
+   "name": "Bog Shrew",
+   "upd": "2026-11-07T01:27:45.487Z",
+   "server": [
+    2,
+    5
+   ],
+   "fileNow": [
+    2,
+    4
+   ],
+   "now": [
+    2,
+    5
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 4,
+     "to": 5
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "sap": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "woodcock-lookout",
+   "name": "Woodcock Lookout",
+   "upd": "2026-11-07T01:28:42.106Z",
+   "server": [
+    2,
+    8
+   ],
+   "fileNow": [
+    1,
+    7
+   ],
+   "now": [
+    2,
+    8
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 1,
+     "to": 2
+    },
+    {
+     "field": "health",
+     "from": 7,
+     "to": 8
+    },
+    {
+     "field": "effects",
+     "from": {
+      "timbered": true,
+      "crepuscular": 1
+     },
+     "to": {
+      "timbered": true,
+      "crepuscular": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "timbered": true,
+    "crepuscular": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "upd": "2026-11-07T01:30:11.767Z",
+   "server": [
+    1,
+    5
+   ],
+   "fileNow": [
+    0,
+    6
+   ],
+   "now": [
+    1,
+    5
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 0,
+     "to": 1
+    },
+    {
+     "field": "health",
+     "from": 6,
+     "to": 5
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "triggers": [
+       {
+        "do": "spawnCard",
+        "on": "onAttacked",
+        "count": 1,
+        "defId": "bee-swarmling"
+       }
+      ],
+      "tribeDelivery": "Bee"
+     },
+     "to": {
+      "flying": true,
+      "triggers": [
+       {
+        "do": "spawnCard",
+        "on": "onAttacked",
+        "count": 1,
+        "defId": "bee-swarmling"
+       }
+      ]
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "do": "spawnCard",
+      "on": "onAttacked",
+      "count": 1,
+      "defId": "bee-swarmling"
+     }
+    ]
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "glintsnatch-magpie",
+   "name": "Glintsnatch Magpie",
+   "upd": "2026-11-07T01:31:10.900Z",
+   "server": [
+    1,
+    6
+   ],
+   "fileNow": [
+    1,
+    6
+   ],
+   "now": [
+    1,
+    6
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "disarm": true,
+      "flying": true
+     },
+     "to": {
+      "disarm": true,
+      "flying": true,
+      "pickpocket": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "disarm": true,
+    "flying": true,
+    "pickpocket": 1
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "puddle-skimmer",
+   "name": "Puddle Skimmer",
+   "upd": "2026-11-07T01:31:37.372Z",
+   "server": [
+    2,
+    7
+   ],
+   "fileNow": [
+    2,
+    6
+   ],
+   "now": [
+    2,
+    7
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 6,
+     "to": 7
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "rainrunner": 2
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "river-mink",
+   "name": "River Mink",
+   "upd": "2026-11-07T01:39:12.496Z",
+   "server": [
+    4,
+    8
+   ],
+   "fileNow": [
+    3,
+    9
+   ],
+   "now": [
+    4,
+    8
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 3,
+     "to": 4
+    },
+    {
+     "field": "health",
+     "from": 9,
+     "to": 8
+    },
+    {
+     "field": "effects",
+     "from": {
+      "tide": true
+     },
+     "to": {
+      "dive": 1,
+      "tide": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [
+    {
+     "field": "unattainable",
+     "server": true,
+     "file": null,
+     "why": "echo of the build; the map lists decide"
+    }
+   ],
+   "merged": [],
+   "effects": {
+    "dive": 1,
+    "tide": true
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "name": "Open-Ocean Hermit Crab",
+   "upd": "2026-11-07T01:42:24.551Z",
+   "server": [
+    2,
+    3
+   ],
+   "fileNow": [
+    2,
+    2
+   ],
+   "now": [
+    2,
+    3
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 2,
+     "to": 3
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "armor": 1,
+    "crabClaws": true,
+    "tide": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "driftwood-crab",
+   "name": "Driftwood Crab",
+   "upd": "2026-11-07T01:43:16.067Z",
+   "server": [
+    2,
+    10
+   ],
+   "fileNow": [
+    2,
+    12
+   ],
+   "now": [
+    2,
+    10
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 12,
+     "to": 10
+    },
+    {
+     "field": "effects",
+     "from": {
+      "triggers": [
+       {
+        "do": "gain",
+        "on": "onAttacked",
+        "amount": 1,
+        "resource": "lumber"
+       }
+      ],
+      "guardian": true,
+      "crabClaws": true
+     },
+     "to": {
+      "triggers": [
+       {
+        "do": "gain",
+        "on": "onAttacked",
+        "amount": 1,
+        "resource": "lumber"
+       }
+      ],
+      "crabClaws": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "triggers": [
+     {
+      "do": "gain",
+      "on": "onAttacked",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ],
+    "crabClaws": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "upd": "2026-11-07T01:43:32.117Z",
+   "server": [
+    1,
+    7
+   ],
+   "fileNow": [
+    2,
+    7
+   ],
+   "now": [
+    1,
+    7
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 1
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": true,
+    "diurnal": 2
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "dolphin-knight",
+   "name": "Dolphin Outrider",
+   "upd": "2026-11-07T01:43:39.434Z",
+   "server": [
+    2,
+    8
+   ],
+   "fileNow": [
+    3,
+    9
+   ],
+   "now": [
+    2,
+    8
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 3,
+     "to": 2
+    },
+    {
+     "field": "health",
+     "from": 9,
+     "to": 8
+    },
+    {
+     "field": "effects",
+     "from": {
+      "tide": true,
+      "sonar": true
+     },
+     "to": {
+      "tide": 2,
+      "sonar": true,
+      "breach": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": 2,
+    "sonar": true,
+    "breach": 2
+   },
+   "rarity": "rare"
+  },
+  {
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "upd": "2026-11-07T01:43:48.900Z",
+   "server": [
+    4,
+    5
+   ],
+   "fileNow": [
+    1,
+    3
+   ],
+   "now": [
+    4,
+    5
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 1,
+     "to": 4
+    },
+    {
+     "field": "health",
+     "from": 3,
+     "to": 5
+    },
+    {
+     "field": "dmgType",
+     "from": "physical",
+     "to": "poison"
+    },
+    {
+     "field": "effects",
+     "from": {
+      "tide": true,
+      "poison": 4
+     },
+     "to": {
+      "tide": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "fulmar-spitter",
+   "name": "Fulmar Spitter",
+   "upd": "2026-11-07T01:44:33.884Z",
+   "server": [
+    3,
+    5
+   ],
+   "fileNow": [
+    2,
+    4
+   ],
+   "now": [
+    3,
+    5
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 3
+    },
+    {
+     "field": "health",
+     "from": 4,
+     "to": 5
+    },
+    {
+     "field": "effects",
+     "from": {
+      "storm": true,
+      "flying": true
+     },
+     "to": {
+      "storm": true,
+      "flying": true,
+      "stormGrant": {
+       "attack": 2,
+       "health": 2
+      }
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "storm": true,
+    "flying": true,
+    "stormGrant": {
+     "attack": 2,
+     "health": 2
+    }
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "great-skua",
+   "name": "Great Skua",
+   "upd": "2026-11-07T01:45:10.751Z",
+   "server": [
+    2,
+    5
+   ],
+   "fileNow": [
+    2,
+    5
+   ],
+   "now": [
+    2,
+    5
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "hemorrhage": true
+     },
+     "to": {
+      "bleed": 2,
+      "flying": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "bleed": 2,
+    "flying": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "kittiwake-flock",
+   "name": "Kittiwake Flock",
+   "upd": "2026-11-07T01:45:52.023Z",
+   "server": [
+    1,
+    4
+   ],
+   "fileNow": [
+    1,
+    5
+   ],
+   "now": [
+    1,
+    4
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 5,
+     "to": 4
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "swarm": true
+     },
+     "to": {
+      "brood": 1,
+      "flying": true,
+      "guardian": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "brood": 1,
+    "flying": true,
+    "guardian": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "peak-condor",
+   "name": "Peak Condor",
+   "upd": "2026-11-07T01:56:19.510Z",
+   "server": [
+    4,
+    10
+   ],
+   "fileNow": [
+    4,
+    10
+   ],
+   "now": [
+    4,
+    10
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "reload": 1,
+      "flying": true
+     },
+     "to": {
+      "breach": 2,
+      "flying": true,
+      "reload": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "breach": 2,
+    "flying": true,
+    "reload": 1
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "golden-eagle-diver",
+   "name": "Golden Eagle",
+   "upd": "2026-11-07T01:57:44.867Z",
+   "server": [
+    3,
+    5
+   ],
+   "fileNow": [
+    2,
+    2
+   ],
+   "now": [
+    3,
+    5
+   ],
+   "changes": [
+    {
+     "field": "name",
+     "from": "Golden Eagle Diver",
+     "to": "Golden Eagle"
+    },
+    {
+     "field": "wait",
+     "from": 0,
+     "to": 1
+    },
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 3
+    },
+    {
+     "field": "health",
+     "from": 2,
+     "to": 5
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "pounce": 3,
+      "diurnal": true
+     },
+     "to": {
+      "daunt": 2,
+      "flying": true,
+      "diurnal": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "daunt": 2,
+    "flying": true,
+    "diurnal": 1
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "upd": "2026-11-07T01:57:57.119Z",
+   "server": [
+    3,
+    5
+   ],
+   "fileNow": [
+    3,
+    2
+   ],
+   "now": [
+    3,
+    5
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 2,
+     "to": 5
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "mountainClimber": true
+     },
+     "to": {
+      "flying": true,
+      "foraging": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "foraging": 1
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "upd": "2026-11-07T01:59:47.968Z",
+   "server": [
+    1,
+    5
+   ],
+   "fileNow": [
+    1,
+    5
+   ],
+   "now": [
+    1,
+    5
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "tide": true,
+      "shell": 2,
+      "shield": 4
+     },
+     "to": {
+      "tide": true,
+      "shell": 1,
+      "shield": 5
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": true,
+    "shell": 1,
+    "shield": 5
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "mosswing-laborer",
+   "name": "Mosswing",
+   "upd": "2026-11-07T02:01:22.135Z",
+   "server": [
+    0,
+    7
+   ],
+   "fileNow": [
+    0,
+    7
+   ],
+   "now": [
+    0,
+    7
+   ],
+   "changes": [
+    {
+     "field": "levelSkills",
+     "from": null,
+     "to": {
+      "1": {
+       "timbered": true
+      }
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true
+   },
+   "levelSkills": {
+    "1": {
+     "timbered": true
+    }
+   },
+   "rarity": "starter"
+  },
+  {
+   "id": "riverwing-envoy",
+   "name": "Riverwing Envoy",
+   "upd": "2026-11-07T02:02:09.969Z",
+   "server": [
+    1,
+    6
+   ],
+   "fileNow": [
+    1,
+    6
+   ],
+   "now": [
+    1,
+    6
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "esprit": 1
+     },
+     "to": {}
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "esprit": 1
+    }
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "drowned-matriarch",
+   "name": "The Drowned Matriarch",
+   "upd": "2026-11-07T02:04:13.722Z",
+   "server": [
+    2,
+    12
+   ],
+   "fileNow": [
+    2,
+    13
+   ],
+   "now": [
+    2,
+    12
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 13,
+     "to": 12
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": true,
+    "fork": true,
+    "leader": true
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "truffle-piglet",
+   "name": "Truffle Piglet",
+   "upd": "2026-11-07T10:54:13.981Z",
+   "server": [
+    2,
+    8
+   ],
+   "fileNow": [
+    2,
+    9
+   ],
+   "now": [
+    2,
+    8
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 9,
+     "to": 8
+    },
+    {
+     "field": "effects",
+     "from": {
+      "delivery": {
+       "v": 1,
+       "every": "round"
+      }
+     },
+     "to": {
+      "delivery": {
+       "v": 1,
+       "every": "round"
+      },
+      "foraging": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [
+    {
+     "field": "effects",
+     "fileAt": "2026-11-09T23:45:02+08:00",
+     "fileCommit": "d9d50587",
+     "server": {
+      "foraging": 1,
+      "deliveryEvery": 1
+     },
+     "file": {
+      "delivery": {
+       "v": 1,
+       "every": "round"
+      }
+     },
+     "result": {
+      "delivery": {
+       "v": 1,
+       "every": "round"
+      },
+      "foraging": 1
+     },
+     "ownerChange": [
+      {
+       "key": "foraging",
+       "base": null,
+       "owner": 1
+      }
+     ]
+    }
+   ],
+   "effects": {
+    "delivery": {
+     "v": 1,
+     "every": "round"
+    },
+    "foraging": 1
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "upd": "2026-11-07T10:54:31.745Z",
+   "server": [
+    2,
+    6
+   ],
+   "fileNow": [
+    2,
+    7
+   ],
+   "now": [
+    2,
+    6
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 7,
+     "to": 6
+    },
+    {
+     "field": "effects",
+     "from": {
+      "brood": 2
+     },
+     "to": {
+      "brood": 2,
+      "swarm": [
+       "Arachnid"
+      ]
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "brood": 2,
+    "swarm": [
+     "Arachnid"
+    ]
+   },
+   "rarity": "rare"
+  },
+  {
+   "id": "old-shell",
+   "name": "The Old Shell",
+   "upd": "2026-11-07T13:12:41.228Z",
+   "server": [
+    2,
+    12
+   ],
+   "fileNow": [
+    2,
+    20
+   ],
+   "now": [
+    2,
+    12
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 20,
+     "to": 12
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "armor": 2,
+    "leader": true,
+    "guardian": true
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "pyrenean-desman",
+   "name": "Pyrenean Desman",
+   "upd": "2026-11-07T13:17:28.704Z",
+   "server": [
+    2,
+    7
+   ],
+   "fileNow": [
+    2,
+    10
+   ],
+   "now": [
+    2,
+    7
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 10,
+     "to": 7
+    },
+    {
+     "field": "effects",
+     "from": {
+      "tide": true
+     },
+     "to": {
+      "tide": true,
+      "nocturnal": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": true,
+    "nocturnal": 1
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "platypus-spur",
+   "name": "Platypus",
+   "upd": "2026-11-07T13:57:33.651Z",
+   "server": [
+    4,
+    5
+   ],
+   "fileNow": [
+    4,
+    4
+   ],
+   "now": [
+    4,
+    5
+   ],
+   "changes": [
+    {
+     "field": "name",
+     "from": "Platypus Spur",
+     "to": "Platypus"
+    },
+    {
+     "field": "health",
+     "from": 4,
+     "to": 5
+    },
+    {
+     "field": "effects",
+     "from": {
+      "poison": 2
+     },
+     "to": {
+      "poison": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "poison": 1
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "pond-algae",
+   "name": "Pond Algae",
+   "upd": "2026-11-07T13:58:09.487Z",
+   "server": [
+    1,
+    8
+   ],
+   "fileNow": [
+    1,
+    7
+   ],
+   "now": [
+    1,
+    8
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 7,
+     "to": 8
+    },
+    {
+     "field": "dmgType",
+     "from": "physical",
+     "to": "water"
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "bloomCopy": {
+     "when": [
+      "wet",
+      "sunny"
+     ],
+     "mode": "and"
+    }
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "lions-mane-jelly",
+   "name": "Lion's Mane Jelly",
+   "upd": "2026-11-07T14:04:00.436Z",
+   "server": [
+    3,
+    11
+   ],
+   "fileNow": [
+    1,
+    16
+   ],
+   "now": [
+    3,
+    11
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 1,
+     "to": 3
+    },
+    {
+     "field": "health",
+     "from": 16,
+     "to": 11
+    },
+    {
+     "field": "dmgType",
+     "from": "physical",
+     "to": "shock"
+    },
+    {
+     "field": "effects",
+     "from": {
+      "poison": 2
+     },
+     "to": {
+      "poisonBarbs": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "poisonBarbs": 2
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "shoal-shark",
+   "name": "Shoal Shark",
+   "upd": "2026-11-07T14:04:16.734Z",
+   "server": [
+    3,
+    11
+   ],
+   "fileNow": [
+    4,
+    11
+   ],
+   "now": [
+    3,
+    11
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 4,
+     "to": 3
+    },
+    {
+     "field": "effects",
+     "from": {
+      "tide": true
+     },
+     "to": {
+      "tide": 3
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": 3
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "grass-snake",
+   "name": "Grass Snake",
+   "upd": "2026-11-07T14:06:21.169Z",
+   "server": [
+    2,
+    9
+   ],
+   "fileNow": [
+    2,
+    10
+   ],
+   "now": [
+    2,
+    9
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 10,
+     "to": 9
+    },
+    {
+     "field": "effects",
+     "from": {
+      "thanatosis": true
+     },
+     "to": {
+      "regen": 1,
+      "thanatosis": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [
+    {
+     "field": "unattainable",
+     "server": true,
+     "file": null,
+     "why": "echo of the build; the map lists decide"
+    }
+   ],
+   "merged": [],
+   "effects": {
+    "regen": 1,
+    "thanatosis": true
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "upd": "2026-11-07T14:34:05.207Z",
+   "server": [
+    3,
+    7
+   ],
+   "fileNow": [
+    5,
+    5
+   ],
+   "now": [
+    3,
+    7
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 5,
+     "to": 3
+    },
+    {
+     "field": "health",
+     "from": 5,
+     "to": 7
+    },
+    {
+     "field": "effects",
+     "from": {
+      "armor": 1,
+      "bleed": 1,
+      "tide": true
+     },
+     "to": {
+      "tide": true,
+      "armor": 1,
+      "bleed": 3
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": true,
+    "armor": 1,
+    "bleed": 3
+   },
+   "rarity": "rare"
+  },
+  {
+   "id": "field-vole",
+   "name": "Field Vole",
+   "upd": "2026-11-07T14:34:56.120Z",
+   "server": [
+    1,
+    4
+   ],
+   "fileNow": [
+    1,
+    8
+   ],
+   "now": [
+    1,
+    4
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 8,
+     "to": 4
+    },
+    {
+     "field": "effects",
+     "from": {
+      "foraging": 2
+     },
+     "to": {
+      "cure": 1,
+      "foraging": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "cure": 1,
+    "foraging": 2
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "upd": "2026-11-07T15:05:35.927Z",
+   "server": [
+    2,
+    6
+   ],
+   "fileNow": [
+    1,
+    8
+   ],
+   "now": [
+    2,
+    6
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 1,
+     "to": 2
+    },
+    {
+     "field": "health",
+     "from": 8,
+     "to": 6
+    },
+    {
+     "field": "effects",
+     "from": {
+      "poison": 1
+     },
+     "to": {
+      "pierce": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "pierce": 2
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "cypress-root-lurker",
+   "name": "Cypress Root Lurker",
+   "upd": "2026-11-07T15:06:30.032Z",
+   "server": [
+    4,
+    12
+   ],
+   "fileNow": [
+    4,
+    12
+   ],
+   "now": [
+    4,
+    12
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "repair": 1,
+      "guardian": true
+     },
+     "to": {
+      "repair": 2,
+      "guardian": true
+     }
+    }
+   ],
+   "conflicts": [
+    {
+     "field": "species",
+     "server": [
+      "Elemental"
+     ],
+     "file": [
+      "Plant"
+     ],
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-11-10T00:28:44+08:00",
+     "fileCommit": "70173684"
+    }
+   ],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "repair": 2,
+    "guardian": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "box-turtle",
+   "name": "Box Turtle",
+   "upd": "2026-11-07T15:08:29.215Z",
+   "server": [
+    2,
+    7
+   ],
+   "fileNow": [
+    2,
+    7
+   ],
+   "now": [
+    2,
+    7
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "cower": "shell"
+     },
+     "to": {
+      "shell": 3
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "shell": 3
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "old-snapjaw",
+   "name": "Old Snapjaw",
+   "upd": "2026-11-07T15:09:39.524Z",
+   "server": [
+    4,
+    17
+   ],
+   "fileNow": [
+    4,
+    17
+   ],
+   "now": [
+    4,
+    17
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "bleed": 1,
+      "armor": 1,
+      "leader": true
+     },
+     "to": {
+      "armor": 1,
+      "leader": true,
+      "perforate": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "armor": 1,
+    "leader": true,
+    "perforate": 2
+   },
+   "rarity": "rare"
+  },
+  {
+   "id": "fen-mink",
+   "name": "Fen Mink",
+   "upd": "2026-11-07T15:10:34.336Z",
+   "server": [
+    1,
+    10
+   ],
+   "fileNow": [
+    1,
+    10
+   ],
+   "now": [
+    1,
+    10
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "hunter": {
+       "v": 2,
+       "vs": "poison"
+      }
+     },
+     "to": {
+      "sentry": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [
+    {
+     "field": "effects",
+     "fileAt": "2026-11-08T03:46:40+08:00",
+     "fileCommit": "befe12ee",
+     "server": {
+      "sentry": 2
+     },
+     "file": {
+      "hunter": {
+       "v": 2,
+       "vs": "poison"
+      }
+     },
+     "result": {
+      "sentry": 2
+     },
+     "ownerChange": [
+      {
+       "key": "hunter",
+       "base": 2,
+       "owner": null
+      },
+      {
+       "key": "hunterVs",
+       "base": "poison",
+       "owner": null
+      },
+      {
+       "key": "sentry",
+       "base": null,
+       "owner": 2
+      }
+     ]
+    }
+   ],
+   "effects": {
+    "sentry": 2
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "constrictor-coil",
+   "name": "Constrictor Coil",
+   "upd": "2026-11-07T15:11:53.701Z",
+   "server": [
+    4,
+    16
+   ],
+   "fileNow": [
+    4,
+    16
+   ],
+   "now": [
+    4,
+    16
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {},
+     "to": {
+      "strangle": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "strangle": 2
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "swamp-alligator",
+   "name": "Swamp Alligator",
+   "upd": "2026-11-07T15:16:10.230Z",
+   "server": [
+    2,
+    12
+   ],
+   "fileNow": [
+    2,
+    15
+   ],
+   "now": [
+    2,
+    12
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 15,
+     "to": 12
+    },
+    {
+     "field": "effects",
+     "from": {
+      "armor": 2
+     },
+     "to": {
+      "armor": 2,
+      "hemorrhage": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "armor": 2,
+    "hemorrhage": 2
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "nutria-reedcutter",
+   "name": "Nutria Reedcutter",
+   "upd": "2026-11-07T15:17:54.822Z",
+   "server": [
+    3,
+    8
+   ],
+   "fileNow": [
+    2,
+    7
+   ],
+   "now": [
+    3,
+    8
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 3
+    },
+    {
+     "field": "health",
+     "from": 7,
+     "to": 8
+    },
+    {
+     "field": "effects",
+     "from": {
+      "delivery": 2
+     },
+     "to": {
+      "delivery": 2,
+      "foraging": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "delivery": 2,
+    "foraging": 1
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "crocodile-ambusher",
+   "name": "Crocodile Ambusher",
+   "upd": "2026-11-07T15:18:16.822Z",
+   "server": [
+    3,
+    16
+   ],
+   "fileNow": [
+    5,
+    17
+   ],
+   "now": [
+    3,
+    16
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 5,
+     "to": 3
+    },
+    {
+     "field": "health",
+     "from": 17,
+     "to": 16
+    },
+    {
+     "field": "effects",
+     "from": {},
+     "to": {
+      "gash": 2,
+      "ambush": 5
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "gash": 2,
+    "ambush": 5
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "upd": "2026-11-07T15:20:00.050Z",
+   "server": [
+    1,
+    11
+   ],
+   "fileNow": [
+    1,
+    12
+   ],
+   "now": [
+    1,
+    11
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 12,
+     "to": 11
+    },
+    {
+     "field": "effects",
+     "from": {
+      "pounce": 2
+     },
+     "to": {
+      "hoard": 2,
+      "herbalist": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "hoard": 2,
+    "herbalist": 1
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "the-unremembered",
+   "name": "Unremembered Heron",
+   "upd": "2026-11-07T15:22:36.145Z",
+   "server": [
+    3,
+    10
+   ],
+   "fileNow": [
+    3,
+    12
+   ],
+   "now": [
+    3,
+    10
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 12,
+     "to": 10
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "remember": 3,
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "exileSelf"
+     }
+    ]
+   },
+   "rarity": "rare"
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "upd": "2026-11-07T15:23:39.141Z",
+   "server": [
+    8,
+    24
+   ],
+   "fileNow": [
+    1,
+    22
+   ],
+   "now": [
+    8,
+    24
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 1,
+     "to": 8
+    },
+    {
+     "field": "health",
+     "from": 22,
+     "to": 24
+    },
+    {
+     "field": "dmgType",
+     "from": null,
+     "to": "poison"
+    },
+    {
+     "field": "effects",
+     "from": {
+      "poison": 3,
+      "guardian": true,
+      "immunity": true
+     },
+     "to": {
+      "guardian": true,
+      "immunity": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "guardian": true,
+    "immunity": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "water-shrew",
+   "name": "Water Shrew",
+   "upd": "2026-11-07T15:24:49.893Z",
+   "server": [
+    1,
+    4
+   ],
+   "fileNow": [
+    1,
+    6
+   ],
+   "now": [
+    1,
+    4
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 6,
+     "to": 4
+    },
+    {
+     "field": "effects",
+     "from": {
+      "poison": 1
+     },
+     "to": {
+      "poison": 1,
+      "pounce": 1,
+      "evasive": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "poison": 1,
+    "pounce": 1,
+    "evasive": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "heron-hag",
+   "name": "The Heron Hag",
+   "upd": "2026-11-07T15:26:47.176Z",
+   "server": [
+    2,
+    15
+   ],
+   "fileNow": [
+    2,
+    11
+   ],
+   "now": [
+    2,
+    15
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 11,
+     "to": 15
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "poison": 2,
+      "leader": true
+     },
+     "to": {
+      "leader": true,
+      "harbinger": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "leader": true,
+    "harbinger": 1
+   },
+   "rarity": "rare"
+  },
+  {
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "upd": "2026-11-07T15:27:44.032Z",
+   "server": [
+    2,
+    7
+   ],
+   "fileNow": [
+    4,
+    3
+   ],
+   "now": [
+    2,
+    7
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 4,
+     "to": 2
+    },
+    {
+     "field": "health",
+     "from": 3,
+     "to": 7
+    },
+    {
+     "field": "effects",
+     "from": {
+      "healing": 1
+     },
+     "to": {
+      "healing": 1,
+      "herbalist": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "healing": 1,
+    "herbalist": 1
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "upd": "2026-11-07T15:28:26.981Z",
+   "server": [
+    2,
+    10
+   ],
+   "fileNow": [
+    1,
+    12
+   ],
+   "now": [
+    2,
+    10
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 1,
+     "to": 2
+    },
+    {
+     "field": "health",
+     "from": 12,
+     "to": 10
+    },
+    {
+     "field": "effects",
+     "from": {
+      "invisible": 2,
+      "daunt": 1
+     },
+     "to": {
+      "daunt": 2,
+      "invisible": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "daunt": 2,
+    "invisible": 1
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "raven-scout",
+   "name": "Raven Scout",
+   "upd": "2026-11-07T15:29:15.710Z",
+   "server": [
+    1,
+    5
+   ],
+   "fileNow": [
+    2,
+    5
+   ],
+   "now": [
+    1,
+    5
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 1
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "carnage": {
+       "v": 3,
+       "who": "foes"
+      }
+     },
+     "to": {
+      "flying": true,
+      "carnage": {
+       "v": 3,
+       "who": "foes"
+      },
+      "tally": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [
+    {
+     "field": "effects",
+     "fileAt": "2026-11-09T23:45:02+08:00",
+     "fileCommit": "d9d50587",
+     "server": {
+      "tally": 2,
+      "flying": true
+     },
+     "file": {
+      "flying": true,
+      "carnage": {
+       "v": 3,
+       "who": "foes"
+      }
+     },
+     "result": {
+      "flying": true,
+      "carnage": {
+       "v": 3,
+       "who": "foes"
+      },
+      "tally": 2
+     },
+     "ownerChange": [
+      {
+       "key": "tally",
+       "base": 3,
+       "owner": 2
+      }
+     ]
+    }
+   ],
+   "effects": {
+    "flying": true,
+    "carnage": {
+     "v": 3,
+     "who": "foes"
+    },
+    "tally": 2
+   },
+   "rarity": "rare"
+  },
+  {
+   "id": "lamprey",
+   "name": "Lamprey",
+   "upd": "2026-11-07T15:31:05.381Z",
+   "server": [
+    2,
+    5
+   ],
+   "fileNow": [
+    2,
+    5
+   ],
+   "now": [
+    2,
+    5
+   ],
+   "changes": [
+    {
+     "field": "dmgType",
+     "from": "physical",
+     "to": "shock"
+    },
+    {
+     "field": "effects",
+     "from": {
+      "daunt": {
+       "v": 1,
+       "lasts": "lasting"
+      }
+     },
+     "to": {
+      "daunt": {
+       "v": 1,
+       "lasts": "lasting"
+      },
+      "sap": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [
+    {
+     "field": "effects",
+     "fileAt": "2026-11-09T23:45:02+08:00",
+     "fileCommit": "d9d50587",
+     "server": {
+      "sap": true,
+      "weaken": 1
+     },
+     "file": {
+      "daunt": {
+       "v": 1,
+       "lasts": "lasting"
+      }
+     },
+     "result": {
+      "daunt": {
+       "v": 1,
+       "lasts": "lasting"
+      },
+      "sap": true
+     },
+     "ownerChange": [
+      {
+       "key": "sap",
+       "base": null,
+       "owner": true
+      }
+     ]
+    }
+   ],
+   "effects": {
+    "daunt": {
+     "v": 1,
+     "lasts": "lasting"
+    },
+    "sap": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "upd": "2026-11-08T01:16:41.715Z",
+   "server": [
+    1,
+    5
+   ],
+   "fileNow": [
+    2,
+    7
+   ],
+   "now": [
+    1,
+    5
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 1
+    },
+    {
+     "field": "health",
+     "from": 7,
+     "to": 5
+    },
+    {
+     "field": "effects",
+     "from": {
+      "inspiring": 1
+     },
+     "to": {
+      "inspiring": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "inspiring": 2
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian",
+   "upd": "2026-11-08T10:17:31.799Z",
+   "server": [
+    3,
+    8
+   ],
+   "fileNow": [
+    3,
+    8
+   ],
+   "now": [
+    3,
+    8
+   ],
+   "changes": [
+    {
+     "field": "name",
+     "from": "Planarian Splitter",
+     "to": "Planarian"
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "meiosis": 1
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball",
+   "upd": "2026-11-13T02:22:33.173Z",
+   "server": [
+    1,
+    5
+   ],
+   "fileNow": [
+    1,
+    5
+   ],
+   "now": [
+    1,
+    5
+   ],
+   "changes": [
+    {
+     "field": "name",
+     "from": "Puffball Bombardier",
+     "to": "Puffball"
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "arrow": 1,
+    "poison": 1,
+    "bloomCopy": {
+     "when": [
+      "wet",
+      "kill"
+     ],
+     "mode": "and"
+    }
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "chipmunk-skirmisher",
+   "name": "Chipmunk Skirmisher",
+   "upd": "2026-11-13T02:28:24.992Z",
+   "server": [
+    1,
+    4
+   ],
+   "fileNow": [
+    2,
+    5
+   ],
+   "now": [
+    1,
+    4
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 1
+    },
+    {
+     "field": "health",
+     "from": 5,
+     "to": 4
+    },
+    {
+     "field": "effects",
+     "from": {
+      "triggers": [
+       {
+        "do": "gain",
+        "on": "onAttack",
+        "amount": 1,
+        "resource": "lumber"
+       }
+      ]
+     },
+     "to": {
+      "arrow": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "arrow": 2
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "upd": "2026-11-13T02:35:31.936Z",
+   "server": [
+    1,
+    3
+   ],
+   "fileNow": [
+    1,
+    3
+   ],
+   "now": [
+    1,
+    3
+   ],
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "stealth": true,
+    "nocturnal": 3
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "grindstone-boar",
+   "name": "Grindstone Boar",
+   "upd": "2026-11-13T02:46:43.305Z",
+   "server": [
+    3,
+    12
+   ],
+   "fileNow": [
+    3,
+    12
+   ],
+   "now": [
+    3,
+    12
+   ],
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "friction": 2
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "rootworm-colony",
+   "name": "Rootworm Colony",
+   "upd": "2026-11-13T03:01:28.378Z",
+   "server": [
+    4,
+    4
+   ],
+   "fileNow": [
+    4,
+    4
+   ],
+   "now": [
+    4,
+    4
+   ],
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "poisonBarbs": 1
+   },
+   "levelSkills": {
+    "2": {
+     "bloomCopy": {
+      "mode": "and",
+      "when": [
+       "wet",
+       "dark",
+       "kill"
+      ]
+     }
+    }
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "dormouse",
+   "name": "Dormouse",
+   "upd": "2026-11-13T03:23:21.586Z",
+   "server": [
+    2,
+    5
+   ],
+   "fileNow": [
+    2,
+    5
+   ],
+   "now": [
+    2,
+    5
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "nocturnal": 1
+     },
+     "to": {
+      "nocturnal": 2
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "nocturnal": 2
+   },
+   "rarity": "common"
+  }
+ ]
+}

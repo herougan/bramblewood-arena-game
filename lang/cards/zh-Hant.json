@@ -253,13 +253,10 @@
  "Piranha Shoal": "食人魚群",
  "Pit Glutton": "深坑饕餮",
  "Plague Gnat Cloud": "瘟疫蚋群",
- "Planarian Splitter": "分裂渦蟲",
- "Platypus Spur": "鴨嘴獸毒刺",
  "Pride Queen": "獅群女王",
  "Pronghorn Racer": "叉角羚賽跑者",
  "Puddle Changeling": "水窪換形者",
  "Puddle Skimmer": "水窪水黽",
- "Puffball Bombardier": "馬勃轟炸手",
  "Puppeteer Imp": "傀儡師小惡魔",
  "Quarry Troll": "採石場巨魔",
  "Quicksand Queen": "流沙女王",
@@ -604,5 +601,9 @@
  "Glow-worm": "螢火蟲幼蟲",
  "Bumblebee Queen": "熊蜂女王",
  "Sea Bass": "海鱸魚",
- "Barrel Cactus": "金琥仙人掌"
+ "Barrel Cactus": "金琥仙人掌",
+ "Golden Eagle": "金雕",
+ "Planarian": "渦蟲",
+ "Platypus": "鴨嘴獸",
+ "Puffball": "馬勃"
 }

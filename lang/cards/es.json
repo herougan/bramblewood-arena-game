@@ -253,13 +253,10 @@
  "Piranha Shoal": "Banco de pirañas",
  "Pit Glutton": "Tragón del foso",
  "Plague Gnat Cloud": "Nube de jejenes de la plaga",
- "Planarian Splitter": "Planaria divisora",
- "Platypus Spur": "Ornitorrinco espolón",
  "Pride Queen": "Reina de la manada",
  "Pronghorn Racer": "Berrendo corredor",
  "Puddle Changeling": "Cambiaformas del charco",
  "Puddle Skimmer": "Patinador de charcos",
- "Puffball Bombardier": "Bejín bombardero",
  "Puppeteer Imp": "Diablillo titiritero",
  "Quarry Troll": "Trol de la cantera",
  "Quicksand Queen": "Reina de las arenas movedizas",
@@ -604,5 +601,9 @@
  "Glow-worm": "Luciérnaga",
  "Bumblebee Queen": "Reina abejorro",
  "Sea Bass": "Lubina",
- "Barrel Cactus": "Cactus barril"
+ "Barrel Cactus": "Cactus barril",
+ "Golden Eagle": "Águila real",
+ "Planarian": "Planaria",
+ "Platypus": "Ornitorrinco",
+ "Puffball": "Bejín"
 }

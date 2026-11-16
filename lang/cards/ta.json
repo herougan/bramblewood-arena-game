@@ -253,13 +253,10 @@
  "Piranha Shoal": "பிரானா கூட்டம்",
  "Pit Glutton": "குழிப் பெருந்தீனி",
  "Plague Gnat Cloud": "கொள்ளைநோய்க் கொசு மேகம்",
- "Planarian Splitter": "பிளனேரியப் பிளவன்",
- "Platypus Spur": "பிளாட்டிபஸ் முள்",
  "Pride Queen": "சிங்கக்கூட்ட அரசி",
  "Pronghorn Racer": "பிரோங்ஹார்ன் ஓட்டப்பந்தயன்",
  "Puddle Changeling": "குட்டை உருமாறி",
  "Puddle Skimmer": "குட்டைச் சறுக்கி",
- "Puffball Bombardier": "பஞ்சுக்காளான் குண்டுவீச்சன்",
  "Puppeteer Imp": "பொம்மலாட்டக் குட்டிப்பேய்",
  "Quarry Troll": "குவாரி அரக்கன்",
  "Quicksand Queen": "புதைமணல் அரசி",
@@ -604,5 +601,9 @@
  "Glow-worm": "மின்மினிப் புழு",
  "Bumblebee Queen": "வண்டுத் தேனீ ராணி",
  "Sea Bass": "கொடுவா மீன்",
- "Barrel Cactus": "பீப்பாய் கள்ளி"
+ "Barrel Cactus": "பீப்பாய் கள்ளி",
+ "Golden Eagle": "தங்கக் கழுகு",
+ "Planarian": "பிளனேரியா",
+ "Platypus": "பிளாடிபஸ்",
+ "Puffball": "பஃப்பால்"
 }
