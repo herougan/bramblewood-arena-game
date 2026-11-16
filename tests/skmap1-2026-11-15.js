@@ -33,14 +33,14 @@ async function browser(){
         const open = async ()=>{ openSkillsByMap(); await new Promise(r=> setTimeout(r, 50)); return document.getElementById('skmap1Overlay'); };
         const rowOf = (ov, n)=> ov.querySelector('[data-skm-map="' + n + '"]'), chips = (row, i)=> [...row.querySelectorAll('.skm-part')[i].querySelectorAll('.skm-chip')];
         let ov = await open(); out.rows = ov.querySelectorAll('.skm-row').length; out.totals = document.getElementById('skmTotals').textContent;
-        const tide = chips(rowOf(ov, 2), 0).find(c=> /^Tide /.test(c.textContent)); out.tideNew = !!tide && tide.classList.contains('is-new') && tide.classList.contains('is-focus'); // UX7: Tide is Map 2's focus skill
+        const tide = chips(rowOf(ov, 2), 0).find(c=> /^Armor /.test(c.textContent)); out.tideNew = !!tide && tide.classList.contains('is-new') && tide.classList.contains('is-focus'); // UX7: Map 2's focus skill (2026-11-16: Armor in the REDESIGN2 table)
         out.tideBg = tide ? getComputedStyle(tide).backgroundColor : '';
-        out.picks2 = chips(rowOf(ov, 2), 2).map(c=> c.textContent); out.none10 = !!rowOf(ov, 17).querySelector('.skm-none'); /* 2026-11-16 (UX7): Map 17 has no focus skill */
+        out.picks2 = chips(rowOf(ov, 2), 2).map(c=> c.textContent); out.none10 = !!rowOf(ov, 20).querySelector('.skm-none'); /* 2026-11-16 (UX7; REDESIGN2 table): Map 20 has no focus skill */
         out.pastTags = [...rowOf(ov, 2).querySelectorAll('.skm-src b')].map(x=> x.textContent);
         // a live edit: a Map 0 card gains Tide -> Map 0 shows it as new, Map 2's Tide is no longer new
-        const id = mpEntry(skmapRows()[0].id).cards[0]; const base = Object.assign({}, CARD_DEFS_BASELINE[id]); base.effects = Object.assign({}, base.effects, {tide: 1}); liveCards[id] = base;
-        ov = await open(); const t0 = chips(rowOf(ov, 0), 0).find(c=> /^Tide /.test(c.textContent)); out.t0new = !!t0 && t0.classList.contains('is-new');
-        const t2 = chips(rowOf(ov, 2), 0).find(c=> /^Tide /.test(c.textContent)); out.t2new = !!t2 && t2.classList.contains('is-new');
+        const id = mpEntry(skmapRows()[0].id).cards[0]; const base = Object.assign({}, CARD_DEFS_BASELINE[id]); base.effects = Object.assign({}, base.effects, {armor: 1}); liveCards[id] = base;
+        ov = await open(); const t0 = chips(rowOf(ov, 0), 0).find(c=> /^Armor /.test(c.textContent)); out.t0new = !!t0 && t0.classList.contains('is-new');
+        const t2 = chips(rowOf(ov, 2), 0).find(c=> /^Armor /.test(c.textContent)); out.t2new = !!t2 && t2.classList.contains('is-new');
         out.tideStruck = chips(rowOf(ov, 2), 2).filter(c=> c.classList.contains('is-bad')).map(c=> c.textContent);
         delete liveCards[id];
         // a pick that leaves the map: pretend Map 2's pick list lost Tide via a map-list edit is heavy; check Map 4's picks vs the data instead

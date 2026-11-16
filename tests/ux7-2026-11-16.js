@@ -14,7 +14,7 @@ ok(/\.ui19-sk\.is-focus\{border-color:#c62828/.test(tpl) && /\.ui19-new\.is-mino
 ok(/ux7-2026-11-16/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
 const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')();
 ok(Object.keys(F).length === 21 && Object.values(F).every(a=> a.length <= 3), '21 maps, 0-3 focus skills each');
-ok(F[0].join() === 'flying,swarm,evasive' && F[19].join() === 'lastStand,smokeBomb' && F[17].length === 0, 'the REDESIGN1 draft values');
+ok(F[0].join() === 'evasive,swarm,nursing' && F[19].join() === 'recoil' && F[20].length === 0, 'the REDESIGN2 draft values'); // 2026-11-16 (coordinator): the table now holds REDESIGN2's focus
 
 async function browser(){
   let pw; try{ pw = require('playwright'); }catch(e){ try{ pw = require(path.join(require('child_process').execSync('npm root -g').toString().trim(), 'playwright')); }catch(_){ console.log('  (browser part skipped: no playwright)'); return; } }
@@ -47,7 +47,7 @@ async function browser(){
       // a side map has no focus skills
       const sub = (typeof mpSubsOf === 'function' ? mpSubsOf(mapId) : [])[0]; out.subRed = sub ? mapFocusSet(sub.id).size : 0;
       return out; })()`);
-    ok(r.red.includes('arrow') && r.red.includes('swift') && r.red.includes('pounce') && r.red.length === 3, `only the three focus skills are red (${r.red})`);
+    ok(r.red.includes('sweep') && r.red.includes('swift') && r.red.includes('pounce') && r.red.length === 3, /* 2026-11-16: REDESIGN2's Map 3 focus */ `only the three focus skills are red (${r.red})`);
     ok(r.cls.indexOf('red') < r.cls.indexOf('normal') && r.cls.indexOf('normal') < r.cls.indexOf('add') && (r.cls.indexOf('counter') < 0 || r.cls.indexOf('add') < r.cls.indexOf('counter')) && (r.cls.indexOf('other') < 0 || r.cls.lastIndexOf('add') < r.cls.indexOf('other')) && r.cls.indexOf('sugg') > r.cls.lastIndexOf('add'), `red, normal, to-add, blue, muted order (${r.cls.join(',')})`);
     ok(r.newN === '3', `N new counts the red chips (${r.newN})`);
     ok(r.bleedMinor && r.pounceOther === 0, `a new non-focus skill keeps a muted tag; a focus skill leaves the muted group (${r.bleedMinor} ${r.pounceOther})`);

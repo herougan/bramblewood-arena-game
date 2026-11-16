@@ -1,0 +1,4052 @@
+[
+{
+"name": "Ambush",
+"key": "ambush",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 5.0,
+"tip": "When an enemy unit enters the slot facing it (played, spawned or moved in), deal 3 damage to it."
+},
+{
+"name": "Armor",
+"key": "armor",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 51.0,
+"tip": "Takes N less damage from every swing, arrow and spit but magic (never below 0). Magic goes past it."
+},
+{
+"name": "Arrow",
+"key": "arrow",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 12.0,
+"tip": "While Ready, shoot the enemy facing it (or the nearest) for N damage every upkeep."
+},
+{
+"name": "Bleed",
+"key": "bleed",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 17.0,
+"tip": "Every melee hit it lands adds N Bleed."
+},
+{
+"name": "Cleave",
+"key": "sweep",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 14.0,
+"tip": "Also deals 1 damage to the units beside its target."
+},
+{
+"name": "Corrode",
+"key": "corrode",
+"ii": 1,
+"iiNote": null,
+"k": "2.0",
+"cards": 2.0,
+"tip": "Its hits add N Corrode."
+},
+{
+"name": "Darksight",
+"key": "darksight",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 6.0,
+"tip": "It can see in darkness."
+},
+{
+"name": "Diurnal",
+"key": "diurnal",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 15.0,
+"tip": "By day: +0/+0."
+},
+{
+"name": "Evasive",
+"key": "evasive",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 30.0,
+"tip": "Dodges half of all single-target attacks and skills."
+},
+{
+"name": "Flying",
+"key": "flying",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 133.0,
+"tip": "Dodges half of all attacks from units without Flying."
+},
+{
+"name": "Foraging",
+"key": "foraging",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 2.0,
+"tip": "+1 Berry each turn. 3 Berries heal your most hurt other ally 3."
+},
+{
+"name": "Guardian",
+"key": "guardian",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 28.0,
+"tip": "Takes the plain attacks aimed at its adjacent allies (not the bramble)."
+},
+{
+"name": "Leech",
+"key": "sap",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 2.0,
+"tip": "Heals for the damage its hits deal."
+},
+{
+"name": "Natural Leader",
+"key": "leader",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 15.0,
+"tip": "Can be your Leader."
+},
+{
+"name": "Nocturnal",
+"key": "nocturnal",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 36.0,
+"tip": "At night: +0/+0."
+},
+{
+"name": "Parasite",
+"key": "parasite",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 2.0,
+"tip": "Can be played onto an enemy unit in reach. It feeds on it each round: its Attack in damage."
+},
+{
+"name": "Pounce",
+"key": "pounce",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 18.0,
+"tip": "When played: 1 damage to the foe facing it, else one beside it, else the bramble."
+},
+{
+"name": "Shield",
+"key": "shield",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 4.0,
+"tip": "Arrives with 1 Shield: temporary Health that soaks damage first."
+},
+{
+"name": "Swarm",
+"key": "swarm",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 9.0,
+"tip": "+1 Attack for every ally that shares a type with it."
+},
+{
+"name": "Swift",
+"key": "swift",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 0.0,
+"tip": "Always attacks first, and dodges half the attacks from units without Swift."
+},
+{
+"name": "Thorns",
+"key": "thorns",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 18.0,
+"tip": "Melee attackers take N damage."
+},
+{
+"name": "Tide",
+"key": "tide",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 93.0,
+"tip": "Flood: +1 Attack. Ebb: +1 Armor."
+},
+{
+"name": "Twin Strike",
+"key": "twinStrike",
+"ii": 1,
+"iiNote": null,
+"k": "1.0",
+"cards": 2.0,
+"tip": "Attacks twice."
+},
+{
+"name": "Bloom",
+"key": "bloomCopy",
+"ii": 1,
+"iiNote": null,
+"k": "2.0",
+"cards": 6.0,
+"tip": "Each Ready round its conditions hold: a copy with +1/+1 grows in an adjacent slot."
+},
+{
+"name": "Harbinger",
+"key": "harbinger",
+"ii": 1,
+"iiNote": null,
+"k": "2.0",
+"cards": 0.0,
+"tip": "Whenever another unit dies, on either side, it gains +1/+1 (up to 3 a round)."
+},
+{
+"name": "Inspiring",
+"key": "inspiring",
+"ii": 1,
+"iiNote": null,
+"k": "2.0",
+"cards": 10.0,
+"tip": "Attacking gives adjacent allies N Inspiration: +1 Attack each, spent on their next hit."
+},
+{
+"name": "Pack",
+"key": "pack",
+"ii": 1,
+"iiNote": null,
+"k": "2.0",
+"cards": 3.0,
+"tip": "Pack units of its type side by side each get +1/+1 per Pack point in the chain."
+},
+{
+"name": "Pierce",
+"key": "pierce",
+"ii": 1,
+"iiNote": null,
+"k": "2.0",
+"cards": 11.0,
+"tip": "Its melee hits ignore N Armor."
+},
+{
+"name": "Poison Barbs",
+"key": "poisonBarbs",
+"ii": 1,
+"iiNote": null,
+"k": "2.0",
+"cards": 1.0,
+"tip": "Each unit that swings at it gets 1 Venom. Like Thorns, it can't be redirected."
+},
+{
+"name": "Recoil",
+"key": "recoil",
+"ii": 1,
+"iiNote": null,
+"k": "2.0",
+"cards": 2.0,
+"tip": "Each attack also deals N damage to itself."
+},
+{
+"name": "Twin Shot",
+"key": "twinShot",
+"ii": 1,
+"iiNote": null,
+"k": "2.0",
+"cards": 1.0,
+"tip": "While Ready, shoot two random enemy units for 2 damage each every upkeep."
+},
+{
+"name": "Carrion",
+"key": "carrion",
+"ii": 1,
+"iiNote": null,
+"k": "3.0",
+"cards": 3.0,
+"tip": "Whenever another unit dies, heal 2."
+},
+{
+"name": "Meiosis",
+"key": "meiosis",
+"ii": 1,
+"iiNote": null,
+"k": "3.0",
+"cards": 2.0,
+"tip": "When it dies, it splits into 2 halves: half the stats and skill numbers, no Meiosis."
+},
+{
+"name": "Mighty",
+"key": "mighty",
+"ii": 1,
+"iiNote": null,
+"k": "3.0",
+"cards": 1.0,
+"tip": "Deals double damage."
+},
+{
+"name": "Strangle/Constrict",
+"key": "strangle",
+"ii": 1,
+"iiNote": null,
+"k": "3.0",
+"cards": 2.0,
+"tip": "Its hits Bind the target for a round and squeeze it for 2."
+},
+{
+"name": "Trap",
+"key": "trap",
+"ii": 1,
+"iiNote": null,
+"k": "3.0",
+"cards": 2.0,
+"tip": "When played, trap the empty enemy slot facing it: the next card played there takes 5 damage."
+},
+{
+"name": "Web",
+"key": "web",
+"ii": 1,
+"iiNote": null,
+"k": "3.0",
+"cards": 2.0,
+"tip": "Its hits Web the target for 1 round."
+},
+{
+"name": "Siege",
+"key": "demolisher",
+"ii": 1,
+"iiNote": null,
+"k": "5.0",
+"cards": 0.0,
+"tip": "Deals 2 more damage to Structures and to the enemy bramble."
+},
+{
+"name": "Sturdy",
+"key": "sturdy",
+"ii": 1,
+"iiNote": null,
+"k": "5.0",
+"cards": 3.0,
+"tip": "Takes half damage."
+},
+{
+"name": "Weaken",
+"key": "weaken",
+"ii": 1,
+"iiNote": null,
+"k": "5.0",
+"cards": 1.0,
+"tip": "Its hits take 1 Attack from the target for good."
+},
+{
+"name": "Rebuild",
+"key": "rebuild",
+"ii": 1,
+"iiNote": null,
+"k": "7.0",
+"cards": 0.0,
+"tip": "While Ready, restore 2 Health to your bramble every upkeep."
+},
+{
+"name": "Regeneration",
+"key": "regen",
+"ii": 1,
+"iiNote": null,
+"k": "7.0",
+"cards": 15.0,
+"tip": "Heals N every upkeep."
+},
+{
+"name": "Trident",
+"key": "trident",
+"ii": 1,
+"iiNote": null,
+"k": "7.0",
+"cards": 2.0,
+"tip": "One three-pronged swing straight ahead: full Attack in front, half to the units on its left and right."
+},
+{
+"name": "Cure",
+"key": "cure",
+"ii": 1,
+"iiNote": null,
+"k": "1 (Cure 1 only)",
+"cards": 5.0,
+"tip": "Every upkeep, cure up to 2 Venom from your most envenomed unit. Venom only."
+},
+{
+"name": "Nursing",
+"key": "nursing",
+"ii": 1,
+"iiNote": null,
+"k": "1 (I think we'll use this instead of \"Heal\". And the action of Heal will be called \"Nurse\".)",
+"cards": 1.0,
+"tip": "Heal your weakest wounded unit for 2 every upkeep."
+},
+{
+"name": "Keen Sense",
+"key": "keenSense",
+"ii": 2,
+"iiNote": null,
+"k": "2.0",
+"cards": 1.0,
+"tip": "Darkness and Blind don't make it miss grounded units; it can't be Blinded."
+},
+{
+"name": "Momentum",
+"key": "momentum",
+"ii": 2,
+"iiNote": null,
+"k": "3.0",
+"cards": 0.0,
+"tip": "+N Attack every time it kills a unit."
+},
+{
+"name": "Stampede",
+"key": "overwhelm",
+"ii": 2,
+"iiNote": null,
+"k": "3.0",
+"cards": 4.0,
+"tip": "Damage left over from a kill carries on into the enemy bramble."
+},
+{
+"name": "Fletcher",
+"key": "fletcher",
+"ii": 2,
+"iiNote": null,
+"k": "5.0",
+"cards": 2.0,
+"tip": "Your units' ranged shots deal 1 more damage."
+},
+{
+"name": "Helmet",
+"key": "helmet",
+"ii": 2,
+"iiNote": null,
+"k": "5.0",
+"cards": 2.0,
+"tip": "Half the shots aimed at it glance off, once; then the helmet is gone."
+},
+{
+"name": "Pitchfork",
+"key": "pitchfork",
+"ii": 2,
+"iiNote": null,
+"k": "5.0",
+"cards": 1.0,
+"tip": "One four-pronged swing, aimed left or right at random: half Attack on each of 4 neighbouring columns."
+},
+{
+"name": "Scare",
+"key": "scare",
+"ii": 2,
+"iiNote": null,
+"k": "5.0",
+"cards": 6.0,
+"tip": "Attacks against it deal N less damage."
+},
+{
+"name": "Feeble",
+"key": "feeble",
+"ii": 2,
+"iiNote": null,
+"k": "6.0",
+"cards": 1.0,
+"tip": "Deals half damage."
+},
+{
+"name": "Herald",
+"key": "herald",
+"ii": 2,
+"iiNote": null,
+"k": "7.0",
+"cards": 0.0,
+"tip": "Your Leader has {+N/+N} while it lives."
+},
+{
+"name": "Stealth",
+"key": "stealth",
+"ii": 2,
+"iiNote": null,
+"k": "3.0",
+"cards": 6.0,
+"tip": "Always attacks the enemy bramble."
+},
+{
+"name": "Wave",
+"key": "wave",
+"ii": 2,
+"iiNote": null,
+"k": "3.0",
+"cards": 4.0,
+"tip": "Hits push the target 1 column either way; crashing into a unit deals 1 to both."
+},
+{
+"name": "Repair",
+"key": "repair",
+"ii": 2,
+"iiNote": null,
+"k": "(Same as Rebuild but for structures. Not sure about this one)",
+"cards": 1.0,
+"tip": "Each turn, repairs the most damaged nearby structure for 2; with none, your bramble for 1."
+},
+{
+"name": "Electricity",
+"key": "electricity",
+"ii": 2,
+"iiNote": null,
+"k": "1 (To me, Electricity and Electric type attacks count as 1 skill. Same as Venom type and Venomous.)",
+"cards": 3.0,
+"tip": "Its hits arc to a unit adjacent to the target for 1 lightning damage."
+},
+{
+"name": "Illuminate",
+"key": "illuminate",
+"ii": 2,
+"iiNote": null,
+"k": "1 (We need to find an alternate use. Don't give diurnal units anything. it isn't the sun!)",
+"cards": 6.0,
+"tip": "Lights up the dark: your units don't miss in darkness, and nor does the enemy unit facing it."
+},
+{
+"name": "Acid",
+"key": "acidBolt",
+"ii": 3,
+"iiNote": null,
+"k": "2.0",
+"cards": 1.0,
+"tip": "While Ready, every upkeep: 2 acid damage and 1 Corrode to the foe facing it (or nearest)."
+},
+{
+"name": "Bola",
+"key": "bola",
+"ii": 3,
+"iiNote": null,
+"k": "2.0",
+"cards": 2.0,
+"tip": "Each Ready round: a 1-damage bola; the unit hit is Pinned next turn (no swing, move or dodge)."
+},
+{
+"name": "Boomerang",
+"key": "boomerang",
+"ii": 3,
+"iiNote": null,
+"k": "2.0",
+"cards": 0.0,
+"tip": "Its throw comes back next round and hits the same target again. Catch it!"
+},
+{
+"name": "Crab Claws",
+"key": "crabClaws",
+"ii": 3,
+"iiNote": null,
+"k": "2.0",
+"cards": 7.0,
+"tip": "Pinches a random enemy to its left or right, never the one in front; with none, the bramble."
+},
+{
+"name": "Smoke Bomb",
+"key": "smokeBomb",
+"ii": 3,
+"iiNote": null,
+"k": "3.0",
+"cards": 2.0,
+"tip": "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded."
+},
+{
+"name": "Snipe",
+"key": "snipe",
+"ii": 3,
+"iiNote": null,
+"k": "3.0",
+"cards": 1.0,
+"tip": "While Ready, if nothing faces it, shoot a random enemy unit for 1 every upkeep."
+},
+{
+"name": "Exploit",
+"key": "exploit",
+"ii": 3,
+"iiNote": null,
+"k": "6.0",
+"cards": 0.0,
+"tip": "Its hits put 2 Exploit tokens on the target: each later hit on it deals 1 more."
+},
+{
+"name": "Fork",
+"key": "fork",
+"ii": 3,
+"iiNote": null,
+"k": "6.0",
+"cards": 8.0,
+"tip": "Strikes up to 2 adjacent enemies in front of this unit"
+},
+{
+"name": "Loyal",
+"key": "loyal",
+"ii": 3,
+"iiNote": null,
+"k": "3.0",
+"cards": 3.0,
+"tip": "While an ally leader is on the field: +0/+0."
+},
+{
+"name": "Reach",
+"key": "reach",
+"ii": 3,
+"iiNote": null,
+"k": "3.0",
+"cards": 4.0,
+"tip": "Flying can't dodge its attacks."
+},
+{
+"name": "Dynamite",
+"key": "dynamite",
+"ii": 3,
+"iiNote": null,
+"k": "1A (Same as 1, but mainly to represent the 'civilised society' animals)",
+"cards": 1.0,
+"tip": "A 3-upkeep fuse; at 0 it blows: 5 fire damage to every surrounding unit."
+},
+{
+"name": "Rainrunner",
+"key": "rainrunner",
+"ii": 3,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "In rain: +N/+N, and it can't be blocked."
+},
+{
+"name": "Pillage",
+"key": null,
+"ii": 3,
+"iiNote": null,
+"k": null,
+"cards": null,
+"tip": "Steals one (1) random resource."
+},
+{
+"name": "Last Stand",
+"key": "lastStand",
+"ii": 4,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While your bramble is at a third of its Health or less: +1/+1."
+},
+{
+"name": "Lone Wolf",
+"key": "loneWolf",
+"ii": 4,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "+0/+0 for each empty slot within 2 of it, and +0/+0 more when all 4 are empty."
+},
+{
+"name": "Herbalist",
+"key": "herbalist",
+"ii": 4,
+"iiNote": null,
+"k": "5.0",
+"cards": 1.0,
+"tip": "Every heal on your units heals 1 more."
+},
+{
+"name": "Expose",
+"key": "expose",
+"ii": 4,
+"iiNote": null,
+"k": "6.0",
+"cards": 2.0,
+"tip": "Its hits strip the target's hiding for 2 rounds: Invisible, Evasive, Smoke and Shadow stop working."
+},
+{
+"name": "Molting",
+"key": "molting",
+"ii": 4,
+"iiNote": null,
+"k": "7.0",
+"cards": 0.0,
+"tip": "Every 2 rounds: +1/+1 for good, but +1 Wait."
+},
+{
+"name": "Esprit",
+"key": "esprit",
+"ii": 4,
+"iiNote": null,
+"k": "2A",
+"cards": 5.0,
+"tip": "+0/+0 whenever another of your Kin enters play."
+},
+{
+"name": "Fencing",
+"key": "fencing",
+"ii": 4,
+"iiNote": null,
+"k": "2A",
+"cards": 1.0,
+"tip": "Its attacks can't be dodged by Evasive or Swift units."
+},
+{
+"name": "Octolash",
+"key": "octolash",
+"ii": 5,
+"iiNote": null,
+"k": "7.0",
+"cards": 1.0,
+"tip": "Hits the 8 nearest enemy units with full Attack."
+},
+{
+"name": "Smelter",
+"key": "smelter",
+"ii": 5,
+"iiNote": null,
+"k": "R",
+"cards": 0.0,
+"tip": "Each turn while Ready, turns 2 Lumber and 2 Stone into 1 Metal, if you have them."
+},
+{
+"name": "Pearl",
+"key": "pearl",
+"ii": 5,
+"iiNote": null,
+"k": "7.0",
+"cards": 0.0,
+"tip": "When it becomes Ready, you gain 1 Pearl. A Pearl pays for 1 Lumber or 1 Stone."
+},
+{
+"name": "Delivery",
+"key": "deliveryRes",
+"ii": 5,
+"iiNote": null,
+"k": "1 (Just call it Delivery)",
+"cards": 5.0,
+"tip": "Resource"
+},
+{
+"name": "Stonecutter",
+"key": "stonecutter",
+"ii": 5,
+"iiNote": null,
+"k": "7 (But maybe instead it's every turn, turn 2 lumber into 1 stone)",
+"cards": 1.0,
+"tip": "Every second turn while Ready, you gain 1 Stone."
+},
+{
+"name": "Spawner",
+"key": "spawner",
+"ii": 5,
+"iiNote": null,
+"k": "7 (Maybe better to use this instead of Every turn -> {Spawn} trigger-action pairs)",
+"cards": 0.0,
+"tip": "While Ready, it spawns N into the free slot nearest it every turn."
+},
+{
+"name": "Taunt",
+"key": "taunt",
+"ii": 6,
+"iiNote": null,
+"k": "7.0",
+"cards": 4.0,
+"tip": "Enemies facing it or beside that column must attack it."
+},
+{
+"name": "Fragile",
+"key": "fragile",
+"ii": 6,
+"iiNote": null,
+"k": "(like Brittle, however this is more 'generic' in flavour - better)",
+"cards": 1.0,
+"tip": "Takes double damage."
+},
+{
+"name": "Daunt",
+"key": "daunt",
+"ii": 6,
+"iiNote": null,
+"k": "2 (Instead daunt when attacking)",
+"cards": 5.0,
+"tip": "On every melee hit it lands, the target loses N Attack until the end of next round. Stacks."
+},
+{
+"name": "Offspring",
+"key": "offspring",
+"ii": 6,
+"iiNote": null,
+"k": "3 (Uses 1 additional lumber - otherwise no offspring)",
+"cards": 0.0,
+"tip": "When it arrives, 1 copies hatch beside it: half its Attack and Health (rounded down), Wait 1, no Offspring."
+},
+{
+"name": "Bludgeon",
+"key": "bludgeon",
+"ii": 7,
+"iiNote": null,
+"k": "2.0",
+"cards": 2.0,
+"tip": "Its hits take 1 Attack and knock out one of the target's skills."
+},
+{
+"name": "Perforate",
+"key": "perforate",
+"ii": 7,
+"iiNote": null,
+"k": "5.0",
+"cards": 1.0,
+"tip": "Its melee hits ignore and strip N Armor, add N Bleed and deal N damage to the enemy bramble."
+},
+{
+"name": "Pulverise",
+"key": "pulverise",
+"ii": 7,
+"iiNote": null,
+"k": "5.0",
+"cards": 0.0,
+"tip": "Ignores Armor, double damage to Structures. A landed swing breaks the target's Armor, Magic Armor and equipment."
+},
+{
+"name": "Puncture",
+"key": "puncture",
+"ii": 7,
+"iiNote": null,
+"k": "5.0",
+"cards": 0.0,
+"tip": "Each melee hit also deals N damage to the enemy bramble."
+},
+{
+"name": "Pickpocket",
+"key": "pickpocket",
+"ii": 3,
+"iiNote": "I think this steals items only",
+"k": "5.0",
+"cards": 1.0,
+"tip": "Its hits steal 1 of the target's tokens; on the bramble, 1 of its lowest-ranked resource."
+},
+{
+"name": "Broodkeeper",
+"key": "broodkeeper",
+"ii": 4,
+"iiNote": "I don't really like the name",
+"k": "5.0",
+"cards": 0.0,
+"tip": "Your units made by abilities arrive with +1/+1."
+},
+{
+"name": "Rain",
+"key": "rain",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While it rains: +1/+1."
+},
+{
+"name": "Brood",
+"key": "brood",
+"ii": null,
+"iiNote": null,
+"k": "2.0",
+"cards": 5.0,
+"tip": "When it arrives, a 1/1 copy of it (Wait 1, every skill but Brood) hatches beside it."
+},
+{
+"name": "Crit",
+"key": "crit",
+"ii": null,
+"iiNote": null,
+"k": "2.0",
+"cards": 0.0,
+"tip": "Each round, a 1-in-2 chance to deal double damage."
+},
+{
+"name": "Devour",
+"key": "devour",
+"ii": null,
+"iiNote": null,
+"k": "2.0",
+"cards": 2.0,
+"tip": "Once, using your play: drag a hand card onto it to eat it for +1/+0."
+},
+{
+"name": "Pack Leader",
+"key": "packLeader",
+"ii": null,
+"iiNote": null,
+"k": "2.0",
+"cards": 2.0,
+"tip": "Links all your Pack units of its type into one chain, side by side or not, and adds +2/+2."
+},
+{
+"name": "Anadromous",
+"key": "anadromous",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Tide map: salt water +1/+1 and Tide; fresh water leaves a Tide Fry at death. No Tide: +0/+1."
+},
+{
+"name": "Corpsefeeder",
+"key": "corpsefeeder",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 0.0,
+"tip": "Each turn while Ready, it exiles your oldest graveyard card and gains +1/+1."
+},
+{
+"name": "Decay",
+"key": "decay",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 1.0,
+"tip": "Its hits add N Decay."
+},
+{
+"name": "Dive",
+"key": "dive",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 2.0,
+"tip": "Once a fight: a turn out of reach, then strikes the unit opposite (none: the bramble) for 1 more."
+},
+{
+"name": "Dry",
+"key": "dry",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 8.0,
+"tip": "Takes half fire damage, and Scorching days can't touch it."
+},
+{
+"name": "Friction",
+"key": "friction",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 1.0,
+"tip": "When it attacks, deal N damage to adjacent allies."
+},
+{
+"name": "Ice",
+"key": "iceBolt",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 1.0,
+"tip": "While Ready, every upkeep: 2 cold damage to the foe facing it (or nearest), and it Freezes."
+},
+{
+"name": "Ichor",
+"key": "ichor",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 1.0,
+"tip": "Whoever hits it takes N acid damage, loses 1 Armor and Bleeds 1."
+},
+{
+"name": "Landslide",
+"key": "landslide",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 1.0,
+"tip": "When it dies, deal 1 damage to the enemy facing it and the enemies beside that one (not Flying)."
+},
+{
+"name": "Rage",
+"key": "rage",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 7.0,
+"tip": "Below half Health: double Attack and takes half damage."
+},
+{
+"name": "Rally",
+"key": "rally",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 0.0,
+"tip": "When it enters play, your units on the field gain +1 Attack until the end of the next round."
+},
+{
+"name": "Slow",
+"key": "slow",
+"ii": null,
+"iiNote": null,
+"k": "3.0",
+"cards": 3.0,
+"tip": "Acts last among units of the same Speed. Two Slow units take turns as usual."
+},
+{
+"name": "Almanac",
+"key": "almanac",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While you have drawn 4 or more cards this fight (after your opening hand): +2/+2."
+},
+{
+"name": "Bedrock",
+"key": "bedrock",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While you hold 2 or more Stone: 🛡 Armor."
+},
+{
+"name": "Beset",
+"key": "beset",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While the enemy has 6 or more units: +2/+2."
+},
+{
+"name": "Carnage",
+"key": "carnage",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While it has seen 3 or more enemy units die (since it came onto the field): +2/+2."
+},
+{
+"name": "Dirge",
+"key": "dirge",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While 3 or more of your units have died this fight: +2/+2."
+},
+{
+"name": "Drought",
+"key": "drought",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "After 3 rounds in a row without rain: +1/+0."
+},
+{
+"name": "Forged",
+"key": "forged",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 0.0,
+"tip": "While you hold 1 or more Metal: +1/+0."
+},
+{
+"name": "Frost",
+"key": "frost",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While the field is cold: +0/+2."
+},
+{
+"name": "Frostbite",
+"key": "frostbite",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 5.0,
+"tip": "Each time frost chills it, it gains +N/+N for good."
+},
+{
+"name": "Full Hand",
+"key": "fullHand",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 0.0,
+"tip": "+1 Attack for each card in your hand."
+},
+{
+"name": "Heat",
+"key": "heat",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While the field is hot: +1/+0."
+},
+{
+"name": "Hoard",
+"key": "hoard",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 2.0,
+"tip": "+1 Attack for every 2 Lumber you hold."
+},
+{
+"name": "Iron-will",
+"key": "ironWill",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "+3/+3 for each Metal you hold."
+},
+{
+"name": "Isolation",
+"key": "isolation",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 0.0,
+"tip": "A drawback: −4/−4 with no ally within 2 columns, 1 less for each ally nearby."
+},
+{
+"name": "Lean",
+"key": "lean",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 0.0,
+"tip": "+1 Attack for each empty slot in your hand (a hand holds 5)."
+},
+{
+"name": "Moonborn",
+"key": "moonborn",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 2.0,
+"tip": "At night: up to +N/+N, depending on the moon's phase."
+},
+{
+"name": "Mountain Climber",
+"key": "mountainClimber",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 6.0,
+"tip": "Field and terrain hazards pass it by."
+},
+{
+"name": "Muster",
+"key": "muster",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While your side has 6 or more units (this one included): +2/+2."
+},
+{
+"name": "Plenty",
+"key": "plenty",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While you hold 4 or more cards: +1/+1."
+},
+{
+"name": "Requiem",
+"key": "requiem",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While 5 or more units have died this fight: +2/+2."
+},
+{
+"name": "Riled",
+"key": "riled",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While it took 3 or more damage last round: +2/+2."
+},
+{
+"name": "Rock-solid",
+"key": "rockSolid",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "+2/+2 for each Stone you hold."
+},
+{
+"name": "Salt",
+"key": "salt",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "On a salt-water shore while the tide is out: 🛡 Armor."
+},
+{
+"name": "Scarcity",
+"key": "scarcity",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 0.0,
+"tip": "While you hold 1 card or none: +1/+0."
+},
+{
+"name": "Season",
+"key": "season",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 0.0,
+"tip": "In Winter: +1/+1."
+},
+{
+"name": "Sociable",
+"key": "sociable",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "+0/+0 for each ally within 2 slots of it, and +0/+0 more when all 4 are filled."
+},
+{
+"name": "Spoils",
+"key": "spoils",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 0.0,
+"tip": "When it kills an enemy creature, it gains +0/+2."
+},
+{
+"name": "Spotter",
+"key": "spotter",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 0.0,
+"tip": "While it lives, your units' attacks, shots and skills can't miss or be dodged."
+},
+{
+"name": "Storm",
+"key": "storm",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 3.0,
+"tip": "In a storm: +2/+0."
+},
+{
+"name": "Tally",
+"key": "tally",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While 3 or more enemy units have died this fight: +2/+2."
+},
+{
+"name": "Throng",
+"key": "throng",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While the field holds 10 or more units (both sides): +2/+2."
+},
+{
+"name": "Timber",
+"key": "timber",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "+1/+1 for each Lumber you hold."
+},
+{
+"name": "Timbered",
+"key": "timbered",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 2.0,
+"tip": "While you hold 3 or more Lumber: +0/+2."
+},
+{
+"name": "Usurper",
+"key": "usurper",
+"ii": null,
+"iiNote": null,
+"k": "4.0",
+"cards": 1.0,
+"tip": "While the enemy leader is on the field: +0/+0. If it kills the crowned King, it steals the Crown."
+},
+{
+"name": "Cull",
+"key": "hunter",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 2.0,
+"tip": "Its hits and shots deal 1 more to weak units (Attack 2 or less, Health 4 or less)."
+},
+{
+"name": "Executioner",
+"key": "executioner",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 1.0,
+"tip": "Its hits and shots deal 1 more to units below a quarter of their Health."
+},
+{
+"name": "Hemorrhage",
+"key": "hemorrhage",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 2.0,
+"tip": "Its hits double the Bleed the target already has."
+},
+{
+"name": "Hype",
+"key": "hype",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 1.0,
+"tip": "On play, 1 ready allies with the most Attack act again right away."
+},
+{
+"name": "Immunity",
+"key": "immunity",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 3.0,
+"tip": "It can't be Envenomed or catch Decay, Toxin or other sickness."
+},
+{
+"name": "Lumberjack",
+"key": "lumberjack",
+"ii": null,
+"iiNote": null,
+"k": "R",
+"cards": 1.0,
+"tip": "Whenever you gain Lumber, gain 1 more."
+},
+{
+"name": "Petrify",
+"key": "petrify",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 0.0,
+"tip": "Its attacks turn the target to stone for a round."
+},
+{
+"name": "Predator",
+"key": "predator",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 3.0,
+"tip": "Deals 1 more damage to units with less Attack."
+},
+{
+"name": "Prey",
+"key": "prey",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 1.0,
+"tip": "Evasive while an enemy Predator is on the field."
+},
+{
+"name": "Rupture",
+"key": "rupture",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 1.0,
+"tip": "Deals extra damage equal to its own Bleed."
+},
+{
+"name": "Silence",
+"key": "silence",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 0.0,
+"tip": "Its attacks Silence the target for 2 rounds."
+},
+{
+"name": "Stench",
+"key": "stench",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 0.0,
+"tip": "When played, 1 Stench on the enemy facing it and the units adjacent to that one."
+},
+{
+"name": "Stun",
+"key": "stunOnHit",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 2.0,
+"tip": "Its hits have a 1 in 3 chance to Stun the target for 1 round."
+},
+{
+"name": "Wilting",
+"key": "wilting",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 1.0,
+"tip": "Each time it is hit, it loses 1 Attack for good."
+},
+{
+"name": "Wither",
+"key": "wither",
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": 1.0,
+"tip": "Its hits wither: -N max Health a round for 3 rounds, and no healing meanwhile."
+},
+{
+"name": "Banana",
+"key": "banana",
+"ii": null,
+"iiNote": null,
+"k": "6.0",
+"cards": 1.0,
+"tip": "Each round, last: eats its banana (+3 Health, if hurt) or throws it at a random enemy (3 damage)."
+},
+{
+"name": "Chilli",
+"key": "chilli",
+"ii": null,
+"iiNote": null,
+"k": "6.0",
+"cards": 2.0,
+"tip": "When first Ready: +2 Attack and fire attacks, but it takes 1 damage every upkeep."
+},
+{
+"name": "Coffee",
+"key": "coffee",
+"ii": null,
+"iiNote": null,
+"k": "6.0",
+"cards": 2.0,
+"tip": "Every 2 turns: acts twice, then Stunned for a round."
+},
+{
+"name": "Drunk",
+"key": "drunk",
+"ii": null,
+"iiNote": null,
+"k": "6.0",
+"cards": 1.0,
+"tip": "Always Tipsy."
+},
+{
+"name": "Durian",
+"key": "durian",
+"ii": null,
+"iiNote": null,
+"k": "6.0",
+"cards": 1.0,
+"tip": "Every round, last: 1 in 2 it eats a durian for Thorns +1 (stacks)."
+},
+{
+"name": "Frenzy",
+"key": "frenzy",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 1.0,
+"tip": "While it has any status, it attacks twice and each hit adds 1 Bleed."
+},
+{
+"name": "Hibernate",
+"key": "hibernate",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 1.0,
+"tip": "Sleeps in the cold or on cold nights: can't attack, no Taunt or Guardian, heals 2 a round."
+},
+{
+"name": "Lasso",
+"key": "lasso",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 0.0,
+"tip": "Once when Ready: a 1-damage lasso; it and its target are tied (no swing or move) until one dies."
+},
+{
+"name": "Prospector",
+"key": "prospector",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 1.0,
+"tip": "When it kills a unit, you gain 1 Metal."
+},
+{
+"name": "Rampart",
+"key": "rampart",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 3.0,
+"tip": "Takes half (rounded up) of each hit on your bramble from its column or beside it."
+},
+{
+"name": "Reflect",
+"key": "reflect",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 1.0,
+"tip": "Shots aimed at it (arrows, bolts, missiles, fireballs) bounce off and hit a random enemy unit."
+},
+{
+"name": "Sabotage",
+"key": "sabotage",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 0.0,
+"tip": "Its hits destroy 1 of the opponent's resources, lowest rank first."
+},
+{
+"name": "Scatterbrained",
+"key": "scatterbrained",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 1.0,
+"tip": "Always Confused."
+},
+{
+"name": "Scavenge",
+"key": "scavenge",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 1.0,
+"tip": "When a surrounding unit dies, +1 scavenge points. Every 3 points: 1 Lumber."
+},
+{
+"name": "Spark",
+"key": "shockBolt",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 1.0,
+"tip": "While Ready, every upkeep: 2 lightning damage to the foe facing it (or nearest), and Shocks it."
+},
+{
+"name": "True Strike",
+"key": "trueStrike",
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": 1.0,
+"tip": "Its attacks never miss."
+},
+{
+"name": "Sprout",
+"key": "sprout",
+"ii": null,
+"iiNote": null,
+"k": "8.0",
+"cards": 2.0,
+"tip": "When it arrives, a 1/3 Growth Sprout sprouts beside it."
+},
+{
+"name": "Stop, Drop and Roll",
+"key": "dropRoll",
+"ii": null,
+"iiNote": null,
+"k": "",
+"cards": 0.0,
+"tip": "When it would catch fire it rolls instead: no Burn, but Wait +1."
+},
+{
+"name": "Grant",
+"key": "grantSkill",
+"ii": null,
+"iiNote": null,
+"k": "(Convert to action: Grant {who} {what})",
+"cards": 0.0,
+"tip": "On play, the 2 nearest allies gain nothing for the fight."
+},
+{
+"name": "Dirge",
+"key": "dirgeGrant",
+"ii": null,
+"iiNote": null,
+"k": "(Explicit remove, and similar remove all other duplicates)",
+"cards": 0.0,
+"tip": "While 3 or more of your units have died this fight: nothing."
+},
+{
+"name": "Fire Arrow – bleed",
+"key": "fireArrowBleed",
+"ii": null,
+"iiNote": null,
+"k": "(Explicit remove)",
+"cards": 0.0,
+"tip": "Its Fire Arrow also gives its Bleed where it lands (at least 1)."
+},
+{
+"name": "Fire Arrow – bramble",
+"key": "fireArrowBramble",
+"ii": null,
+"iiNote": null,
+"k": "(Explicit remove)",
+"cards": 0.0,
+"tip": "Its Fire Arrow aims at the enemy bramble instead of a unit."
+},
+{
+"name": "Fire Arrow – venom",
+"key": "fireArrowPoison",
+"ii": null,
+"iiNote": null,
+"k": "(Explicit remove)",
+"cards": 0.0,
+"tip": "Its Fire Arrow also gives its Venom where it lands (at least 1)."
+},
+{
+"name": "Fire Bolt – bleed",
+"key": "fireBoltBleed",
+"ii": null,
+"iiNote": null,
+"k": "(Explicit remove)",
+"cards": 0.0,
+"tip": "Its Cinder also gives its Bleed where it lands (at least 1)."
+},
+{
+"name": "Fire Bolt – bramble",
+"key": "fireBoltBramble",
+"ii": null,
+"iiNote": null,
+"k": "(Explicit remove)",
+"cards": 0.0,
+"tip": "Its Cinder aims at the enemy bramble instead of a unit."
+},
+{
+"name": "Fire Bolt – venom",
+"key": "fireBoltPoison",
+"ii": null,
+"iiNote": null,
+"k": "(Explicit remove)",
+"cards": 0.0,
+"tip": "Its Cinder also gives its Venom where it lands (at least 1)."
+},
+{
+"name": "Buff",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": "(If we can do a better name, I'd prefer that.) Buff: {Who} {What};",
+"cards": null,
+"tip": ""
+},
+{
+"name": "Felling",
+"key": "felling",
+"ii": null,
+"iiNote": null,
+"k": "(Just use On kill -> Deliver (Lumber))",
+"cards": 3.0,
+"tip": "When it kills a unit, you gain 1 Lumber."
+},
+{
+"name": "Arrow – bleed",
+"key": "arrowBleed",
+"ii": null,
+"iiNote": null,
+"k": "(Laceration / Laced)",
+"cards": 0.0,
+"tip": "Its Arrow also gives its Bleed where it lands (at least 1)."
+},
+{
+"name": "Charge",
+"key": "charge",
+"ii": null,
+"iiNote": null,
+"k": "(Move it to triggers instead)",
+"cards": 2.0,
+"tip": "Once Ready, a clock counts down each upkeep; at 0 its effect happens and the clock restarts."
+},
+{
+"name": "Fire Arrow",
+"key": "fireArrow",
+"ii": null,
+"iiNote": null,
+"k": "(Same as above, Just use Arrow (Flaming))",
+"cards": 5.0,
+"tip": "While Ready, shoot the enemy facing it (or the nearest) for N fire damage every upkeep."
+},
+{
+"name": "Shell",
+"key": "shell",
+"ii": null,
+"iiNote": null,
+"k": "(Same as Turtle)",
+"cards": 7.0,
+"tip": "Each round, when first hit: +N Armor until the round ends."
+},
+{
+"name": "Lightning",
+"key": "lightning",
+"ii": null,
+"iiNote": null,
+"k": "(See Electricity)",
+"cards": 2.0,
+"tip": "When played, deal N lightning damage to a random enemy unit, +1 for every 4 Prayer (none to a bramble: it can't be shocked)."
+},
+{
+"name": "Sentry",
+"key": "sentry",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 3.0,
+"tip": "When an enemy enters one of the 3 slots facing it, deal 2 damage to it."
+},
+{
+"name": "???",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": "(When it ingests an item.)",
+"cards": null,
+"tip": "When it ingests an item. (Inventory items and battlefield-spawned items work the same)"
+},
+{
+"name": "Delivery, every turn",
+"key": "deliveryEvery",
+"ii": null,
+"iiNote": null,
+"k": "1 (The aciton version of this is just called Every Turn, Deliver)",
+"cards": 11.0,
+"tip": "Every turn while it is Ready: gain 1 Lumber."
+},
+{
+"name": "Brittle",
+"key": "brittle",
+"ii": null,
+"iiNote": null,
+"k": "2 (Brittle should be the name of the status effect, but to make brittle - a new skill name)",
+"cards": 1.0,
+"tip": "Its hits make the target Brittle for a round."
+},
+{
+"name": "Assault",
+"key": "assault",
+"ii": null,
+"iiNote": null,
+"k": "2 (If it's attacking first)",
+"cards": 0.0,
+"tip": "+2 Attack on its own attacks, not on counterattacks."
+},
+{
+"name": "Bulwark",
+"key": "bulwark",
+"ii": null,
+"iiNote": null,
+"k": "2 (Starts at 0/5 -> 0/8 at level 10)",
+"cards": 2.0,
+"tip": "As it arrives it builds 1 × Log Wall (0/8 each) in the free front-row slots nearest it."
+},
+{
+"name": "Counterattack",
+"key": "counterattack",
+"ii": null,
+"iiNote": null,
+"k": "3 (Counterattackers don't attack on their own. Unless there isn't an opposing enemy in its range, then it would attack the opposing bramble)",
+"cards": 2.0,
+"tip": "Never attacks on its own. Each time an enemy hits it, it strikes the enemy facing it."
+},
+{
+"name": "Fortify (Armor 1), while it lives",
+"key": "brambleArmor",
+"ii": null,
+"iiNote": null,
+"k": "3 (Fortify: +1 Armor)",
+"cards": 2.0,
+"tip": "Your bramble takes 1 less damage from each hit."
+},
+{
+"name": "Foe's Plenty",
+"key": "foePlenty",
+"ii": null,
+"iiNote": null,
+"k": "4 (\"Against all odds\")",
+"cards": 0.0,
+"tip": "While your opponent holds 4 or more cards: +0/+2."
+},
+{
+"name": "Full Moon",
+"key": "fullMoon",
+"ii": null,
+"iiNote": null,
+"k": "4 (\"Gains '+X/X' upon full moon)",
+"cards": 1.0,
+"tip": "The first full moon over it: +3/+3 for the rest of the fight."
+},
+{
+"name": "Fog",
+"key": "fog",
+"ii": null,
+"iiNote": null,
+"k": "4 (The thing after the colon is the default. However, Fog should be a field tracker, not the skill name -> field tracker are like sun and tide. Field effects grant field effects. It would just write \"Fog\" in a pill)",
+"cards": 1.0,
+"tip": "In fog: 🍃 Evasive."
+},
+{
+"name": "Warcry",
+"key": "warcry",
+"ii": null,
+"iiNote": null,
+"k": "5 (Maybe make this permanent0",
+"cards": 0.0,
+"tip": "When played, your other units get +1/+1."
+},
+{
+"name": "Detonate",
+"key": "detonate",
+"ii": null,
+"iiNote": null,
+"k": "5 (Means payoff for a Rating-1 mechanic + it's not interesting enough to be a 3)",
+"cards": 1.0,
+"tip": "Its hits make the target's Venom tick 1 times at once, each tick taking a counter off."
+},
+{
+"name": "Mimic",
+"key": "mimic",
+"ii": null,
+"iiNote": null,
+"k": "5 (Param 1: 3 types: Copy Attack, Copy Defence, Copy N Skills of Param 2 <Target>)",
+"cards": 1.0,
+"tip": "When it enters play, it copies a random ally: its skills, and the higher of each stat."
+},
+{
+"name": "Deadly Poison",
+"key": "greaterPoison",
+"ii": null,
+"iiNote": null,
+"k": "5 (S)",
+"cards": 2.0,
+"tip": "Its hits turn the target's Venom into Deadly Poison and add 1 Deadly Poison."
+},
+{
+"name": "Exhaust",
+"key": "exhaust",
+"ii": null,
+"iiNote": null,
+"k": "6 (Exhaust, exploit and expose are similar. Giving tactical depth.)",
+"cards": 0.0,
+"tip": "Its attacks give the target 2 Exhaust tokens."
+},
+{
+"name": "Driftwood",
+"key": "driftwood",
+"ii": null,
+"iiNote": null,
+"k": "6 (Similar to 5, but worse)",
+"cards": 1.0,
+"tip": "At the start of each Ebb round on a beach, you gain 1 Lumber."
+},
+{
+"name": "Chrysalis",
+"key": "chrysalis",
+"ii": null,
+"iiNote": null,
+"k": "EVO",
+"cards": 1.0,
+"tip": "A Stem an Evolute Alpha can be played straight onto. The evolute gains +1/+2."
+},
+{
+"name": "Crystallise",
+"key": "crystallise",
+"ii": null,
+"iiNote": null,
+"k": "EVO",
+"cards": 1.0,
+"tip": "When it dies, it becomes a 0/5 crystal in its slot."
+},
+{
+"name": "Evolute",
+"key": "evolute",
+"ii": null,
+"iiNote": null,
+"k": "EVO",
+"cards": 3.0,
+"tip": "Play it onto your unit of a shared type: it adds that unit's stats and keeps its statuses."
+},
+{
+"name": "Evolute Alpha",
+"key": "evoluteAlpha",
+"ii": null,
+"iiNote": null,
+"k": "EVO",
+"cards": 3.0,
+"tip": "Play it onto your Evolute unit, or a Chrysalis, of a shared type. It adds that unit's stats."
+},
+{
+"name": "Evolute Omega",
+"key": "evoluteOmega",
+"ii": null,
+"iiNote": null,
+"k": "EVO",
+"cards": 1.0,
+"tip": "Play it onto your Evolute Alpha unit of a shared type. It adds that unit's stats."
+},
+{
+"name": "Hatchling",
+"key": "hatchling",
+"ii": null,
+"iiNote": null,
+"k": "EVO",
+"cards": 0.0,
+"tip": "An evolute played onto it gains +1/+2. From Level 1."
+},
+{
+"name": "Stem",
+"key": "stem",
+"ii": null,
+"iiNote": null,
+"k": "EVO",
+"cards": 1.0,
+"tip": "An evolute played onto it gains +1/+2."
+},
+{
+"name": "Consecration",
+"key": "consecration",
+"ii": null,
+"iiNote": null,
+"k": "GOD",
+"cards": 0.0,
+"tip": "Exalted ground: your units heal 1 at every round start."
+},
+{
+"name": "Core Evil",
+"key": "coreEvil",
+"ii": null,
+"iiNote": null,
+"k": "GOD",
+"cards": 1.0,
+"tip": "When pitched, gain 1 Darkness."
+},
+{
+"name": "Desecration",
+"key": "desecration",
+"ii": null,
+"iiNote": null,
+"k": "GOD",
+"cards": 0.0,
+"tip": "Cursed ground: enemy units take 1 damage at every round start."
+},
+{
+"name": "Inherent Darkness",
+"key": "inherentDarkness",
+"ii": null,
+"iiNote": null,
+"k": "GOD",
+"cards": 1.0,
+"tip": "While Ready, gain N Darkness every upkeep."
+},
+{
+"name": "Prayer",
+"key": "prayer",
+"ii": null,
+"iiNote": null,
+"k": "GOD",
+"cards": 8.0,
+"tip": "Gains 1 📿 Prayer a turn as tokens; they go if it leaves the field."
+},
+{
+"name": "Prayer Ward",
+"key": "prayerWard",
+"ii": null,
+"iiNote": null,
+"k": "GOD",
+"cards": 1.0,
+"tip": "Armor 1 while it holds Prayer tokens."
+},
+{
+"name": "Remember",
+"key": "remember",
+"ii": null,
+"iiNote": null,
+"k": "GOD",
+"cards": 4.0,
+"tip": "In your Removal Zone: at upkeep, spend N Echoes to return with +N/+N."
+},
+{
+"name": "Ritual",
+"key": "ritual",
+"ii": null,
+"iiNote": null,
+"k": "GOD",
+"cards": 1.0,
+"tip": "No Wait, but it can't act until 0 units perish, you draw 0 cards and deal 0 bramble damage."
+},
+{
+"name": "Sacrifice",
+"key": "sacrifice",
+"ii": null,
+"iiNote": null,
+"k": "GOD",
+"cards": 2.0,
+"tip": "A Dark Summon played onto it costs N less, and this unit perishes."
+},
+{
+"name": "Worship",
+"key": "worship",
+"ii": null,
+"iiNote": null,
+"k": "GOD",
+"cards": 2.0,
+"tip": "+1 Attack for every 3 Prayer you have."
+},
+{
+"name": "King",
+"key": "kinglyGrant",
+"ii": null,
+"iiNote": null,
+"k": "KINGDOM",
+"cards": 0.0,
+"tip": "The first King in play takes the Crown. While it holds it: n."
+},
+{
+"name": "King Slayer",
+"key": "kingSlayer",
+"ii": null,
+"iiNote": null,
+"k": "KINGDOM",
+"cards": 1.0,
+"tip": "Deals 1 bonus damage on every hit against Royalty, a King or the crowned unit or a leader."
+},
+{
+"name": "Ghost",
+"key": "ghost",
+"ii": null,
+"iiNote": null,
+"k": "MAG",
+"cards": 1.0,
+"tip": "Normal attacks pass through it; other elements deal half, magic full. It can't Bleed."
+},
+{
+"name": "Immolation",
+"key": "immolation",
+"ii": null,
+"iiNote": null,
+"k": "MAGIC",
+"cards": 4.0,
+"tip": "Every upkeep: N fire damage to adjacent units and the enemy facing it."
+},
+{
+"name": "Magic",
+"key": "magic",
+"ii": null,
+"iiNote": null,
+"k": "MAGIC",
+"cards": 1.0,
+"tip": "Its attacks deal magic damage."
+},
+{
+"name": "Magic Armor",
+"key": "magicArmor",
+"ii": null,
+"iiNote": null,
+"k": "MAGIC",
+"cards": 1.0,
+"tip": "Each magic hit on it deals 1 less. Other hits ignore it."
+},
+{
+"name": "Nova",
+"key": "nova",
+"ii": null,
+"iiNote": null,
+"k": "MAGIC",
+"cards": 2.0,
+"tip": "When it dies, every enemy unit takes 3 magic damage."
+},
+{
+"name": "Nullify",
+"key": "nullify",
+"ii": null,
+"iiNote": null,
+"k": "MAGIC",
+"cards": 1.0,
+"tip": "Its hits trigger no reactions. Units it kills skip their death effects and go to the Removal Zone."
+},
+{
+"name": "Psychic",
+"key": "psychic",
+"ii": null,
+"iiNote": null,
+"k": "MAGIC",
+"cards": 1.0,
+"tip": "Its hits also deal 1 psychic damage, through Armor, Shield, Shell and Ghost. Elementals and Plants are immune."
+},
+{
+"name": "Shade",
+"key": "shade",
+"ii": null,
+"iiNote": null,
+"k": "MAGIC",
+"cards": 2.0,
+"tip": "At night or in darkness: half damage from non-magic attacks."
+},
+{
+"name": "Shadow",
+"key": "shadow",
+"ii": null,
+"iiNote": null,
+"k": "MAGIC",
+"cards": 1.0,
+"tip": "At night or in darkness: attacks at it miss 1 in 2 (not magic)."
+},
+{
+"name": "Socket",
+"key": "socket",
+"ii": null,
+"iiNote": null,
+"k": "MAGIC",
+"cards": 0.0,
+"tip": "Each copy has 1 more gem socket(s)."
+},
+{
+"name": "True Sight",
+"key": "keenEye",
+"ii": null,
+"iiNote": null,
+"k": "MAGIC",
+"cards": 3.0,
+"tip": "Sees and hits Invisible units; reveals fog."
+},
+{
+"name": "Assiduous",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": "Player discards or exiles N cards, do {action}",
+"cards": null,
+"tip": "Assiduous N: {action}"
+},
+{
+"name": "Absolute Zero",
+"key": "absoluteZero",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 1.0,
+"tip": "When played, every enemy unit is Frozen for the round."
+},
+{
+"name": "Avalanche",
+"key": "avalanche",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 1.0,
+"tip": "When it arrives, every enemy unit without Flying takes N cold damage and +1 Wait."
+},
+{
+"name": "Cast Darkness",
+"key": "castDarkness",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 1.0,
+"tip": "On Play: Darkness falls on the field while it lives."
+},
+{
+"name": "Earthquake",
+"key": "earthquake",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 2.0,
+"tip": "When played, deal N damage to every other unit without Flying, yours included."
+},
+{
+"name": "Fireball",
+"key": "fireball",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 1.0,
+"tip": "When Ready: a fireball hits a random enemy unit and the units beside it for 15 fire damage each."
+},
+{
+"name": "Meteor",
+"key": "meteor",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 1.0,
+"tip": "When Ready: a meteor hits a random enemy column for 20 (5 beside it); the crater burns 2 rounds."
+},
+{
+"name": "Poison Gas",
+"key": "poisonGas",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 1.0,
+"tip": "When played, every enemy unit gets 2 Venom."
+},
+{
+"name": "Pulse",
+"key": "venomPulse",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 0.0,
+"tip": "Its hits make the target's Venom and Bleed tick once more, at once."
+},
+{
+"name": "Rainmaker",
+"key": "rainmaker",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 1.0,
+"tip": "When played, Spring Rain falls for 3 rounds (every unit heals 2 a round)."
+},
+{
+"name": "Skyfall",
+"key": "skyfall",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 0.0,
+"tip": "When played, deal N damage to a random enemy unit, or the bramble if there are no targets."
+},
+{
+"name": "Slash & Burn",
+"key": "slashBurn",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 1.0,
+"tip": "When it kills a unit, the next enemy card played there takes 3 fire damage."
+},
+{
+"name": "Tornado",
+"key": "tornado",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 1.0,
+"tip": "When it arrives, a random enemy unit is flung to another column for 1 damage (2 for flyers)."
+},
+{
+"name": "Tsunami",
+"key": "tsunami",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 2.0,
+"tip": "When it arrives, every enemy unit gets +1 Wait; non-swimmers take N water damage. Starts the Tide."
+},
+{
+"name": "Volley",
+"key": "volley",
+"ii": null,
+"iiNote": null,
+"k": "S (Same as arrow but hits all opposing units, is also an action.",
+"cards": 2.0,
+"tip": "While Ready, every other upkeep, shoot every enemy unit for 1 damage."
+},
+{
+"name": "Chain Lightning",
+"key": "chainLightning",
+"ii": null,
+"iiNote": null,
+"k": "S (Then create a new skill called Bioelectric for normal purposes, as 1.)",
+"cards": 1.0,
+"tip": "Its hits chain lightning on through 2 more enemy units adjacent to the target, 2 lightning damage each."
+},
+{
+"name": "Industry",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": "Something about resources",
+"cards": null,
+"tip": ""
+},
+{
+"name": "Havoc (counter)",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": "Upon dealing N damage, do {action}, then reset.",
+"cards": null,
+"tip": "Bloodlust N: {action}"
+},
+{
+"name": "Disarm",
+"key": "disarm",
+"ii": null,
+"iiNote": null,
+"k": "WEP",
+"cards": 1.0,
+"tip": "On play, takes the enemy's nearest lying weapon; its hits take a unit's weapon. Not if it has one."
+},
+{
+"name": "Dismantle",
+"key": "dismantle",
+"ii": null,
+"iiNote": null,
+"k": "WEP",
+"cards": 0.0,
+"tip": "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life)."
+},
+{
+"name": "Almanac",
+"key": "almanacGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While you have drawn 4 or more cards this fight (after your opening hand): nothing."
+},
+{
+"name": "Amore",
+"key": "amore",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Arriving with another of your Amore units of its Type, both fall in love: +0/+3 and Regeneration 3."
+},
+{
+"name": "Amplifier",
+"key": "amplifier",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Its adjacent allies have +1 on each skill number, up to +2."
+},
+{
+"name": "Anchor",
+"key": "anchor",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Nothing can move it: no push, pull, swap, Wave, Tornado or Restless step."
+},
+{
+"name": "Anti-air",
+"key": "antiAirOnly",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Its swings hit only Flying or Mach units and the bramble, never ground units."
+},
+{
+"name": "Archer",
+"key": "archer",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Never attacks: each turn it shoots an arrow for 2 damage at the enemy in front, or the nearest."
+},
+{
+"name": "Archer look",
+"key": "archerStyle",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Bow: it shoots an arrow"
+},
+{
+"name": "Arrow Count",
+"key": "arrowCount",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Its Arrow fires N times a round, each arrow aimed on its own."
+},
+{
+"name": "Arrow – bramble",
+"key": "arrowBramble",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Its Arrow aims at the enemy bramble instead of a unit."
+},
+{
+"name": "Arrow – venom",
+"key": "arrowPoison",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Its Arrow also gives its Venom where it lands (at least 1)."
+},
+{
+"name": "Arson",
+"key": "arson",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Its hits burn 1 of the opponent's Lumber."
+},
+{
+"name": "Atheist",
+"key": "atheist",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Half damage from magic, Devilry and Ecclesia. Immune to the Leylines."
+},
+{
+"name": "Backstab",
+"key": "backstab",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 4.0,
+"tip": "Attacks the nearest enemy unit, never the bramble. +2 damage when that unit is worse at combat."
+},
+{
+"name": "Bananarang",
+"key": "bananarang",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "A Boomerang that may be eaten when it comes home (+3 Health, 1 in 2, only if hurt)."
+},
+{
+"name": "Bedrock",
+"key": "bedrockGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While you hold 2 or more Stone: nothing."
+},
+{
+"name": "Berserk",
+"key": "berserk",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "+N Attack whenever one of your units dies."
+},
+{
+"name": "Beset",
+"key": "besetGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While the enemy has 6 or more units: nothing."
+},
+{
+"name": "Blitz",
+"key": "blitz",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Its swing and its shots act at Speed 10."
+},
+{
+"name": "Blood Tithe",
+"key": "bloodTithe",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "When played, deal 2 damage to a random ally (your bramble if there is none)."
+},
+{
+"name": "Bloodlust",
+"key": "bloodlust",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "After killing the foe facing it, it leaps to the nearest enemy. Half damage to Structures and brambles."
+},
+{
+"name": "Bloom",
+"key": "bloom",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Heal a random wounded ally for N every upkeep."
+},
+{
+"name": "Bloom When",
+"key": "bloomWhen",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "In bloom 🌸 while its conditions hold: it has the bonus."
+},
+{
+"name": "Bolster",
+"key": "bolster",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Each round's fight begins with 2 temporary Health for it, used up first and gone next round."
+},
+{
+"name": "Breach",
+"key": "breach",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 3.0,
+"tip": "Every melee hit it lands also deals 1 damage to the enemy bramble."
+},
+{
+"name": "Build",
+"key": "fortification",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "On play, builds a 0/6 Palisade, a Structure, in an empty slot beside it."
+},
+{
+"name": "Bulldoze",
+"key": "bulldoze",
+"ii": null,
+"iiNote": null,
+"k": "6.0",
+"cards": 2.0,
+"tip": "Its hits shove a Ready target back: +1 Wait."
+},
+{
+"name": "Canopy Cover",
+"key": "canopyCover",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it."
+},
+{
+"name": "Carnage",
+"key": "carnageGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While it has seen 3 or more enemy units die (since it came onto the field): nothing."
+},
+{
+"name": "Changeling",
+"key": "changeling",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 3.0,
+"tip": "Shares a type with every unit. The enemy sees it in disguise."
+},
+{
+"name": "Cinder",
+"key": "fireBolt",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "While Ready, spit fire at the enemy facing it (or the nearest) for 2 fire damage every upkeep."
+},
+{
+"name": "Converge",
+"key": "converge",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "When it becomes Ready, the enemy's units close their gaps toward the centre."
+},
+{
+"name": "Coppice",
+"key": "coppice",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Each round it takes no damage, you gain 1 Lumber at the start of the next."
+},
+{
+"name": "Cower",
+"key": "cower",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Hit last turn: it hides in its shell this turn (no attack, attacks can't hurt it)."
+},
+{
+"name": "Creative",
+"key": "creative",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While Ready, give 1 Creativity to a random ally every upkeep."
+},
+{
+"name": "Crepuscular",
+"key": "crepuscular",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "By day: +0/+0. At night: +0/+0. Twilight brings both."
+},
+{
+"name": "Crepuscular {Day} → {Night}",
+"key": "crepuscularGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "By day it has nothing; at night, nothing; in Twilight, both."
+},
+{
+"name": "Defiance",
+"key": "defiance",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "+1 Attack for every enemy unit that is of its chosen type."
+},
+{
+"name": "Delivery",
+"key": "delivery",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 14.0,
+"tip": "When it becomes Ready: gain 1 Lumber, once."
+},
+{
+"name": "Desecrate",
+"key": "desecrate",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Its hits curse the ground: whoever stands there takes N damage every upkeep. Stacks."
+},
+{
+"name": "Dictator",
+"key": "dictator",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Can only be your Leader. It never goes in your deck."
+},
+{
+"name": "Diurnal",
+"key": "diurnalGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "By day it has n instead of a plain bonus."
+},
+{
+"name": "Double Time",
+"key": "doubleTime",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "It performs its actions twice: two swings, and its shots twice."
+},
+{
+"name": "Dragon Lightning",
+"key": "dragonLightning",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Its hits call red lightning: N damage to the target and a unit adjacent to it, ignoring Armor."
+},
+{
+"name": "Drought",
+"key": "droughtGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "After 3 rounds in a row without rain: nothing."
+},
+{
+"name": "Encore",
+"key": "encore",
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": 0.0,
+"tip": "Once a round, if Kill holds after its swing, it swings again."
+},
+{
+"name": "Fast Forward",
+"key": "fastForward",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Takes N extra turns when it arrives."
+},
+{
+"name": "Field Breaker",
+"key": "fieldBreaker",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "When played, the field's round effects stop for 2 rounds."
+},
+{
+"name": "Foe's Full Hand",
+"key": "foeFullHand",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "+1 Attack for each card in your opponent's hand."
+},
+{
+"name": "Foe's Lean",
+"key": "foeLean",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "+1 Attack for each empty slot in your opponent's hand (a hand holds 5)."
+},
+{
+"name": "Foe's Plenty",
+"key": "foePlentyGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While your opponent holds 4 or more cards: nothing."
+},
+{
+"name": "Foe's Scarcity",
+"key": "foeScarcity",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "While your opponent holds 1 card or none: +1/+0."
+},
+{
+"name": "Foe's Scarcity",
+"key": "foeScarcityGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While your opponent holds 1 card or none: nothing."
+},
+{
+"name": "Fog",
+"key": "fogGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "In fog: nothing."
+},
+{
+"name": "Forged",
+"key": "forgedGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While you hold 1 or more Metal: nothing."
+},
+{
+"name": "Formation",
+"key": "formation",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "+1/+1 for each adjacent ally, up to 2."
+},
+{
+"name": "Fortify",
+"key": "fortify",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Your bramble gets it for the fight, even after this unit dies."
+},
+{
+"name": "Frost",
+"key": "frostGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While the field is cold: nothing."
+},
+{
+"name": "Full Moon",
+"key": "fullMoonGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "The first full moon over it: n for the rest of the fight."
+},
+{
+"name": "Gash",
+"key": "gash",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 4.0,
+"tip": "When played, add N Bleed to the enemy facing it."
+},
+{
+"name": "Glean",
+"key": "glean",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Each turn while Ready, it takes every Berry on the board, both sides, and gains +1 Shield for each."
+},
+{
+"name": "Gorge",
+"key": "fester",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "As a Parasite, it feeds again as the round ends, at half its Attack, healing as much."
+},
+{
+"name": "Growth",
+"key": "growth",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Counts toward every ally's Swarm."
+},
+{
+"name": "Harvest",
+"key": "harvest",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Half its swings harvest 1 Lumber instead. With nothing opposite, it always harvests."
+},
+{
+"name": "Haste",
+"key": "haste",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Speed +2, and +1 to adjacent allies."
+},
+{
+"name": "Healing",
+"key": "healing",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 4.0,
+"tip": "Every upkeep, heal your most wounded unit for 1. It heals Health only."
+},
+{
+"name": "Heat",
+"key": "heatGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While the field is hot: nothing."
+},
+{
+"name": "Heavy Metal",
+"key": "heavyMetal",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Whenever you gain Stone or Metal, gain 1 more."
+},
+{
+"name": "Hive Mind",
+"key": "hiveMind",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "When it dies, your newest Swarm ally gets +1/+1."
+},
+{
+"name": "Hydra",
+"key": "hydra",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "When it dies, two half-size token copies with Hydra appear beside it."
+},
+{
+"name": "Ice Arrow",
+"key": "iceArrow",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "While Ready, every upkeep: shoots 2 cold damage at the foe facing it (or nearest), and it Freezes."
+},
+{
+"name": "Immortal",
+"key": "immortal",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "When it dies, a token copy with Immortal takes its place, Waiting 1 round."
+},
+{
+"name": "Injured",
+"key": "injured",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Comes into play with 1 damage already on it (at least 1 Health left). It can be healed."
+},
+{
+"name": "Invincible",
+"key": "invincible",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Takes no damage for its first 1 round."
+},
+{
+"name": "Invisible",
+"key": "invisible",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 5.0,
+"tip": "Can't be found for its first 2 rounds, or until it attacks."
+},
+{
+"name": "Irradiated",
+"key": "irradiated",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "Every upkeep: gives N Irradiation to adjacent units and the enemy facing it, and 1 to itself."
+},
+{
+"name": "Kin Rally",
+"key": "kinRally",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "When you play one of its Kin, that unit gets +1/+1."
+},
+{
+"name": "King",
+"key": "king",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "The first King in play takes the Crown. While it holds it: 🪙 Tribute, 🛡 Armor 2."
+},
+{
+"name": "Kinship",
+"key": "kinship",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "All your units of its chosen type get +X/+Y (itself too). Stacks."
+},
+{
+"name": "Lantern",
+"key": "lantern",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Lights up the dark: your units don't miss in darkness."
+},
+{
+"name": "Last Stand",
+"key": "lastStandGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While your bramble is at a third of its Health or less: nothing."
+},
+{
+"name": "Liege",
+"key": "liege",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While a King is on your side: ⚔️ Assault 2."
+},
+{
+"name": "Liege",
+"key": "liegeGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While a King is on your side: nothing."
+},
+{
+"name": "Lingering",
+"key": "festering",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "While it's on the field, Bleed and Venom don't wear off."
+},
+{
+"name": "Loyal",
+"key": "loyalGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 3.0,
+"tip": "While one of your leaders is on the battlefield, it has nothing."
+},
+{
+"name": "Lumber Feast",
+"key": "lumberFeast",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "As it arrives it eats up to 3 of your Lumber: +1/+1 for each one."
+},
+{
+"name": "Mach",
+"key": "mach",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Flying. Ground swings always miss it; flying and ranged attacks miss half the time."
+},
+{
+"name": "Majesty",
+"key": "majesty",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While Ready, enemy units facing it (its column and the next ones) attack with 1 less Attack."
+},
+{
+"name": "Meld",
+"key": "meld",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "Your other Meld units have nothing while it lives."
+},
+{
+"name": "Midas Touch",
+"key": "midas",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "When it kills a unit, gain N Lumber."
+},
+{
+"name": "Milling",
+"key": "milling",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Each turn while Ready, 1 of your Lumber becomes 2. It still attacks."
+},
+{
+"name": "Moonpull",
+"key": "moonpull",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "When it arrives, the Tide comes in."
+},
+{
+"name": "Mulligan",
+"key": "mulligan",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "In your opening hand, it shuffles back into your deck and you draw a card."
+},
+{
+"name": "Muster",
+"key": "musterGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While your side has 6 or more units (this one included): nothing."
+},
+{
+"name": "Nature's Force",
+"key": "natureForce",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Your Elementals get +1/+1."
+},
+{
+"name": "Night-blind",
+"key": "nightblind",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Blind at night, unless an Illuminate unit lights your side (or faces it)."
+},
+{
+"name": "Nocturnal",
+"key": "nocturnalGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "At night it has n instead of a plain bonus."
+},
+{
+"name": "Onslaught",
+"key": "onslaught",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "While your side dealt 3 or more damage to the enemy bramble last round: +2/+2."
+},
+{
+"name": "Onslaught",
+"key": "onslaughtGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While your side dealt 3 or more damage to the enemy bramble last round: nothing."
+},
+{
+"name": "Pack Howl",
+"key": "packHowl",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "When you play a Wolf, the enemy facing it Bleeds 1."
+},
+{
+"name": "Pearl Bed",
+"key": "pearlBed",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Every turn while it is Ready, you gain 1 Pearl. A Pearl pays for 1 Lumber or 1 Stone."
+},
+{
+"name": "Penance",
+"key": "penance",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "When played, deal 3 damage to your own bramble."
+},
+{
+"name": "Plenty",
+"key": "plentyGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While you hold 4 or more cards: nothing."
+},
+{
+"name": "Poisonous",
+"key": "poisonous",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "When an enemy unit kills it, or a unit devours it, that unit gets 2 Venom."
+},
+{
+"name": "Primed",
+"key": "primed",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Its triggers work even while Waiting, Stunned, Frozen or Asleep."
+},
+{
+"name": "Proliferate",
+"key": "proliferate",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Each round, an Envenomed enemy passes 1 Venom to a unit adjacent to it."
+},
+{
+"name": "Pry",
+"key": "pry",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Its hits strip 1 Armor for good."
+},
+{
+"name": "Purblind",
+"key": "purblind",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Always Blind."
+},
+{
+"name": "Quarry",
+"key": "quarry",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Each turn while Ready, pay 1 Lumber to gain 1 Stone. Can't pay: nothing happens."
+},
+{
+"name": "Quick",
+"key": "quick",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 13.0,
+"tip": "Swings at Speed 2: before Arrows and Bolts and units without Quick."
+},
+{
+"name": "Rabid",
+"key": "rabid",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Its hits add 2 Venom. Swimmers and water damage hit it for double."
+},
+{
+"name": "Rage",
+"key": "rageGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Below half Health: double Attack, takes half damage, and nothing."
+},
+{
+"name": "Rage (N%)",
+"key": "rageAt",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Rages below 75% Health instead of below half."
+},
+{
+"name": "Rain",
+"key": "rainGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While it rains: nothing."
+},
+{
+"name": "Rainrunner",
+"key": "rainrunnerGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While it rains it has nothing, and it can't be blocked."
+},
+{
+"name": "Relic",
+"key": "relic",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 5.0,
+"tip": "When it dies, leaves a 1/1 Relic in its slot with its plain keywords."
+},
+{
+"name": "Relict",
+"key": "relict",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "Field effects and field-wide skills pass it by, good and bad."
+},
+{
+"name": "Reload",
+"key": "reload",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "After attacking, sits out N rounds."
+},
+{
+"name": "Requiem",
+"key": "requiemGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While 5 or more units have died this fight: nothing."
+},
+{
+"name": "Restless",
+"key": "restless",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "Every upkeep it steps one column toward the nearest enemy."
+},
+{
+"name": "Retribution",
+"key": "retribution",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "When one of your units dies, deal N damage to a random enemy unit."
+},
+{
+"name": "Revive",
+"key": "revive",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "When played: Revive 1: that many random creature cards return from your graveyard beside it, as real cards."
+},
+{
+"name": "Riled",
+"key": "riledGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While it took 3 or more damage last round: nothing."
+},
+{
+"name": "Rocket",
+"key": "rocket",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Once, when Ready: 1 fire damage to the strongest enemy and 1 to its neighbours (or the bramble)."
+},
+{
+"name": "Salt",
+"key": "saltGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "On a salt-water shore while the tide is out: nothing."
+},
+{
+"name": "Salvage",
+"key": "salvage",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "When a surrounding structure dies, +1 salvage points. Every 3 points: 1 Stone."
+},
+{
+"name": "Scarcity",
+"key": "scarcityGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While you hold 1 card or none: nothing."
+},
+{
+"name": "Season",
+"key": "seasonGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "In Winter: nothing."
+},
+{
+"name": "Sequestration",
+"key": "sequestration",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "Its hit steals the target's status skills until the end of next round."
+},
+{
+"name": "Shapeshifter",
+"key": "shapeshifter",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Counts as every kind of Structure: it shares a type with every Structure."
+},
+{
+"name": "Shatter",
+"key": "shatter",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Its hits and shots deal 2 more to Frozen, Brittle, Petrified or heavily armored units."
+},
+{
+"name": "Shedding",
+"key": "shedding",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Every 3 rounds: +1/+1 for good, and it sheds its Venom, Bleed, Corrode, Scar and Exposed."
+},
+{
+"name": "Shield Call",
+"key": "shieldCall",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Once a battle, the first enemy skill aimed at one of your units hits a 0/10 Guardian shield instead."
+},
+{
+"name": "Shieldwall",
+"key": "shieldwall",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Its adjacent allies have +1 Armor while it lives."
+},
+{
+"name": "Shore Up",
+"key": "shoreUp",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "When it is hit and survives, the allies beside it gain Shield 1."
+},
+{
+"name": "Siege",
+"key": "siege",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 6.0,
+"tip": "Deals 2 more damage to Structures and to the enemy bramble."
+},
+{
+"name": "Skitter",
+"key": "skitter",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "After one of its hits lands, it has Haste and Evasive for its next turn."
+},
+{
+"name": "Sonar",
+"key": "sonar",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 5.0,
+"tip": "Never misses from Darkness, Blind, Smoke or Fog, and can't be Blinded."
+},
+{
+"name": "Speed",
+"key": "speed",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Speed N: faster units swing first."
+},
+{
+"name": "Spellward",
+"key": "spellward",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Single-target skills aimed at an adjacent ally hit this unit instead."
+},
+{
+"name": "Spiteful",
+"key": "spiteful",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Deal N damage back to any enemy that damages it."
+},
+{
+"name": "Spitfire",
+"key": "spitfire",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Every upkeep while Ready: 2 fire damage to a random enemy; half the time, 1 to an adjacent unit."
+},
+{
+"name": "Stem",
+"key": "stemGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "An evolute played onto it gains n."
+},
+{
+"name": "Stockpile",
+"key": "stockpile",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "When it becomes Ready: gain 1 Lumber, once."
+},
+{
+"name": "Storm",
+"key": "stormGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "In a storm: nothing."
+},
+{
+"name": "Stymie",
+"key": "stymie",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Its attacks Stymie the target for 2 rounds."
+},
+{
+"name": "Sun-shy",
+"key": "sunshy",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Blind by day."
+},
+{
+"name": "Sunder",
+"key": "sunder",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "On Hit: 50% to break the target's equipment (one Hardy life)."
+},
+{
+"name": "Supreme",
+"key": "supreme",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 6.0,
+"tip": "Its attacks are magic and crush Armor, shields and Ward. Takes half from non-magic damage."
+},
+{
+"name": "Supreme Tide",
+"key": "supremeTide",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "A Tide unit: +2 Attack and +2 Armor every round, Flood or Ebb. Tide effects can't take them away."
+},
+{
+"name": "Swimmer",
+"key": "swimmer",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "On Tide, +1 Attack, +1 Attack. On Ebb, +1 Armor."
+},
+{
+"name": "Swimmer Skills",
+"key": "swimmerGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "On a Flood round it gains nothing."
+},
+{
+"name": "Swipe",
+"key": "swipe",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "Each hit steals N Lumber."
+},
+{
+"name": "Tally",
+"key": "tallyGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While 3 or more enemy units have died this fight: nothing."
+},
+{
+"name": "Tangleweed",
+"key": "tangle",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "Its hits Bind the target: it can't attack for 1 round."
+},
+{
+"name": "Throng",
+"key": "throngGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While the field holds 10 or more units (both sides): nothing."
+},
+{
+"name": "Tide",
+"key": "tideGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 2.0,
+"tip": "On Flood and on Ebb it has the skills in its braces; at High Tide, both."
+},
+{
+"name": "Timbered",
+"key": "timberedGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While you hold 3 or more Lumber: nothing."
+},
+{
+"name": "Toxin",
+"key": "toxin",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Its hits add 1 Toxin: a poison that never wears off and can't be cured."
+},
+{
+"name": "Transform",
+"key": "transform",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "The first time ? holds, it gains nothing for the rest of the fight."
+},
+{
+"name": "Tribe Delivery",
+"key": "tribeDelivery",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "When you play an ally Bee, you gain 1 Lumber."
+},
+{
+"name": "Tribe Delivery resource",
+"key": "tribeDeliveryRes",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Lumber"
+},
+{
+"name": "Tribute",
+"key": "tribute",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Gains 1 Gold each turn while Ready."
+},
+{
+"name": "Twin",
+"key": "twin",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "When it arrives, a twin token of it appears beside it."
+},
+{
+"name": "Unfortify",
+"key": "unfortify",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "A drawback: on play, your own bramble gets Vulnerable 1 for the fight."
+},
+{
+"name": "Usurper",
+"key": "usurperGrant",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "While the opposing leader is on the battlefield, it has nothing."
+},
+{
+"name": "Vanguard",
+"key": "vanguard",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Starts in your opening hand (a random card is discarded for it). As your first card this game: +1/+1."
+},
+{
+"name": "Venom Master",
+"key": "venomMaster",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Your units' Venom and Bleed hits add 1 more."
+},
+{
+"name": "Venom Spit",
+"key": "poisonBolt",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "While Ready, spit venom at the enemy facing it (or the nearest): 2 Venom every upkeep."
+},
+{
+"name": "Venomous",
+"key": "poison",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 36.0,
+"tip": "Every melee hit it lands adds N Venom."
+},
+{
+"name": "Venomous (old)",
+"key": "venomous",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Every melee hit it lands adds 2 Venom."
+},
+{
+"name": "Wakeful",
+"key": "wakeful",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "It never falls Asleep: no Sleep hit and no Spore Cloud puts it to sleep."
+},
+{
+"name": "War Banner",
+"key": "banner",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Your other units have +1 Attack while it lives."
+},
+{
+"name": "Weapon Master",
+"key": "weaponMaster",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Your side's ranged shots deal 1 more; your equipped units get +1/+1."
+},
+{
+"name": "Well Fed",
+"key": "satiety",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "At full Health, gains +N max Health every upkeep."
+},
+{
+"name": "Deal damage (custom action)",
+"key": "action:damage",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 4.0,
+"tip": "Deal damage to a chosen target — self, an ally, your Kin or an enemy — picked by Adjacent/Random/Furthest (or every card on that side, with \"all\")."
+},
+{
+"name": "Missile (custom action)",
+"key": "action:missile",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 1.0,
+"tip": "Deal that much damage to a random live enemy unit (the enemy bramble, if none are left)."
+},
+{
+"name": "Position Beam (custom action)",
+"key": "action:positionBeam",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "fire a N beam, aimed by its column"
+},
+{
+"name": "Fire on hit (custom action)",
+"key": "action:fireHit",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "Pair with On Attack: this attack's hit also deals N fire damage to what it hits (a unit, or the bramble)."
+},
+{
+"name": "Barrage (custom action)",
+"key": "action:barrage",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "An arrow (or a bolt) of N at every enemy unit."
+},
+{
+"name": "Venom Tick (custom action)",
+"key": "action:poisonTick",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "The chosen target's Venom ticks N times now, its whole stack each; the stack doesn't wear down."
+},
+{
+"name": "Pulse (custom action)",
+"key": "action:pulse",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 0.0,
+"tip": "The chosen target's Venom (and Deadly Poison) and Bleed tick N times now, each its whole stack; no stack wears down."
+},
+{
+"name": "Arrow (custom action)",
+"key": "action:arrow",
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": 12.0,
+"tip": "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty)."
+},
+{
+"name": "Impact (Buff on Play)",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": null,
+"tip": "(Evergreen are like passives, but they don't last forever! Like Quake)"
+},
+{
+"name": "Quake",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": "7.0",
+"cards": null,
+"tip": ""
+},
+{
+"name": "Bulldoze",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": null,
+"tip": ""
+},
+{
+"name": "Slayer",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": null,
+"tip": ""
+},
+{
+"name": "Butcher/Onslaught/Rampage/Ferocity",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": null,
+"cards": null,
+"tip": "Skill name suggestions"
+},
+{
+"name": "Adrenaline",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": "5.0",
+"cards": null,
+"tip": ""
+},
+{
+"name": "Broodmother",
+"key": null,
+"ii": null,
+"iiNote": null,
+"k": "S",
+"cards": null,
+"tip": "Increases strength of ally Swarm by +1/1."
+}
+]

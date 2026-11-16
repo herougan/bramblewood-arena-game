@@ -1,0 +1,205 @@
+0 ; ant-scout ; Ant Scout ; starter ; W0L0 ; O ; 1/4 ; 86.2 ; {"swarm":["Ants"]} ; {"swarm":["Ants"]} 1/4 ; Insect|ant
+0 ; duckling ; Duckling ; starter ; W0L0 ; O ; 1/4 ; 56.7 ; {} ; {} 1/4 ; Bird|duck
+0 ; duck-paddler ; Duck Paddler ; starter ; W1L0 ;  ; 2/10 ; 98 ; {} ; {} 2/10 ; Bird|duck
+0 ; crossed-eyes ; Crossed-Eyes ; starter ; W0L0 ; O ; 2/2 ; 64.8 ; {} ; {} 2/2 ; Bird|pigeon
+0 ; honey-bee ; Honey Bee ; starter ; W0L0 ;  ; 1/4 ; 69.5 ; {"flying":true} ; {"flying":true} 1/6 ; Insect|honey bee
+0 ; earthworm ; Earthworm ; starter ; W0L0 ; O ; 0/6 ; 48.6 ; {} ; {} 0/6 ; Annelid|earthworm
+0 ; house-cat ; House Cat ; common ; W0L0 ;  ; 3/3 ; 88.4 ; {} ; {} 3/3 ; Mammal|cat
+0 ; silver-minnow ; Silver Minnow ; starter ; W0L0 ; O ; 2/3 ; 72.9 ; {} ; {} 2/3 ; Fish|minnow
+0 ; cottontail ; Cottontail ; starter ; W0L0 ; O ; 3/1 ; 81 ; {} ; {} 3/1 ; Lagomorph|rabbit
+0 ; rabbit-kit ; Rabbit Kit ; common ; W0L0 ;  ; 2/2 ; 73.1 ; {"evasive":true} ; {"evasive":true} 2/4 ; Lagomorph|rabbit
+0 ; soldier-ant ; Soldier Ant ; common ; W1L0 ; O ; 2/7 ; 96.5 ; {"swarm":["Ants"]} ; {"swarm":["Ants"]} 2/7 ; Insect|ant
+0 ; bee-forager ; Bee Forager ; starter ; W0L0 ; O ; 0/4 ; 70.1 ; {"flying":true,"healing":1} ; {"flying":true,"nursing":1} 0/5 ; Insect|bee
+0 ; bee-sentry ; Bee Sentry ; starter ; W1L0 ; O ; 1/5 ; 78.7 ; {"flying":true,"poison":1} ; {"flying":true,"poison":1} 1/5 ; Insect|bee
+0 ; farm-dog ; Farm Dog ; common ; W0L0 ;  ; 2/7 ; 95.8 ; {} ; {} 2/7 ; Mammal|dog
+0 ; chipmunk-forager ; Chipmunk Forager ; starter ; W0L0 ;  ; 1/8 ; 89.1 ; {} ; {} 1/8 ; Rodent|chipmunk
+0 ; worker-ant ; Worker Ant ; starter ; W0L0 ; O ; 1/6 ; 123.7 ; {"triggers":[{"do":"drawCard","on":"onAttack","count":1}]} ; {"triggers":[{"do":"drawCard","on":"onAttack","count":1}]} 1/6 ; Insect|ant
+0 ; pond-trout ; Pond Trout ; starter ; W0L0 ; O ; 2/4 ; 81 ; {} ; {} 2/4 ; Fish|trout
+1 ; bramble-sprout ; Bramble Sprout ; common ; W0L0 ; O ; 1/5 ; 101.2 ; {"thorns":2} ; {"thorns":2} 1/5 ; Plant|hedgehog
+1 ; terrier-pup ; Terrier Pup ; common ; W0L0 ; O ; 2/5 ; 85.1 ; {"guardian":true} ; {"guardian":true} 2/5 ; Canid|dog
+1 ; cricket-drummer ; Cricket Drummer ; common ; W0L0 ;  ; 1/5 ; 105.6 ; {"inspiring":2} ; {"inspiring":1} 1/5 ; Insect|cricket
+1 ; chipmunk-skirmisher ; Chipmunk Skirmisher ; common ; W0L0 ; O ; 1/4 ; 108.4 ; {"arrow":2} ; {"arrow":2} 1/4 ; Rodent|chipmunk
+1 ; chipmunk-cavalry ; Chipmunk Cavalry ; common ; W0L1 ; O ; 3/4 ; 94.8 ; {"quick":true} ; {} 3/6 ; Rodent|chipmunk
+1 ; hedgerow-shrew ; Hedgerow Shrew ; common ; W0L0 ; O ; 2/7 ; 98.1 ; {"injured":2,"foraging":1} ; {"injured":2,"foraging":1} 2/7 ; Mammal|shrew
+1 ; meadow-rabbit ; Meadow Rabbit ; starter ; W0L0 ;  ; 3/2 ; 89.1 ; {} ; {} 3/2 ; Lagomorph|rabbit
+1 ; moonlit-hare ; Moonlit Hare ; uncommon ; W1L0 ; O ; 2/7 ; 85.3 ; {"moonborn":3} ; {"evasive":true} 2/8 ; Lagomorph|hare
+1 ; dormouse ; Dormouse ; common ; W0L0 ;  ; 2/5 ; 109.9 ; {"nocturnal":2} ; {"nocturnal":2} 2/3 ; Rodent|dormouse
+1 ; puddle-skimmer ; Puddle Skimmer ; uncommon ; W1L0 ; O ; 2/7 ; 93.8 ; {"rainrunner":2} ; {"evasive":true} 2/8 ; Insect|pond skater
+1 ; bee-knight ; Bee Warden ; common ; W0L0 ; O ; 1/2 ; 36.8 ; {} ; {} 1/2 ; Insect|bee
+1 ; robin-redbreast ; Robin Redbreast ; uncommon ; W0L0 ; O ; 1/4 ; 74.7 ; {"flying":true,"diurnal":2} ; {"flying":true,"diurnal":2} 1/4 ; Bird|robin
+2 ; beaver-lumberjack ; Beaver Lumberjack ; common ; W1L0 ; O ; 3/5 ; 111.4 ; {"delivery":1} ; {"delivery":1} 3/5 ; Rodent|beaver
+2 ; driftwood-crab ; Driftwood Crab ; common ; W1L1 ; O ; 2/10 ; 84.3 ; {"triggers":[{"do":"gain","on":"onAttacked","amount":1,"resource":"lumber"}],"crabClaws":true} ; {"triggers":[{"do":"gain","on":"onAttacked","amount":1,"resource":"lumber"}],"crabClaws":true} 2/10 ; Crustacean|crab
+2 ; gull-thief ; Gull Thief ; common ; W0L0 ; O ; 1/7 ; 102.9 ; {"flying":true,"triggers":[{"do":"gain","on":"onHit","amount":1,"resource":"lumber"}]} ; {"flying":true,"triggers":[{"do":"gain","on":"onHit","amount":1,"resource":"lumber"}]} 1/7 ; Bird|gull
+2 ; open-ocean-hermit-crab ; Open-Ocean Hermit Crab ; common ; W0L0 ;  ; 2/3 ; 92.3 ; {"armor":1,"crabClaws":true,"tide":true} ; {"armor":1,"crabClaws":true} 2/3 ; Crustacean|hermit crab
+2 ; oystercatcher ; Oystercatcher ; common ; W1L1 ;  ; 2/7 ; 79.4 ; {"flying":true,"pierce":2} ; {"flying":true,"tide":true} 2/8 ; Bird|oystercatcher
+2 ; pincushion-urchin ; Pincushion Urchin ; common ; W1L0 ; O ; 0/6 ; 58 ; {"tide":true,"poisonBarbs":2} ; {"tide":true,"poisonBarbs":2} 0/6 ; Echinoderm|sea urchin
+2 ; dolphin-knight ; Dolphin Outrider ; rare ; W1L0 ;  ; 2/8 ; 112.2 ; {"tide":2,"sonar":true,"puncture":{"v":2,"kind":"breach"}} ; {"tide":2,"armor":1} 2/8 ; Cetacean|dolphin
+2 ; conch-herald ; Conch Herald ; uncommon ; W1L1 ; O ; 1/11 ; 94.9 ; {"tide":true,"inspiring":2} ; {"tide":true,"inspiring":2} 1/11 ; Crustacean|hermit crab
+2 ; rock-pool-starfish ; Rock Pool Starfish ; common ; W1L0 ; O ; 1/7 ; 74.4 ; {"tide":true,"diurnal":2} ; {"tide":true,"diurnal":2} 1/7 ; Echinoderm|starfish
+2 ; beachcomber-sanderling ; Beachcomber Sanderling ; common ; W0L0 ; O ; 2/7 ; 106.4 ; {"driftwood":1} ; {"tide":true} 2/6 ; Bird|sanderling
+2 ; limpet-clinger ; Limpet Clinger ; common ; W0L0 ;  ; 2/4 ; 85.7 ; {"shell":2,"tide":true} ; {"armor":1,"tide":true} 2/4 ; Mollusc|limpet
+3 ; conch-crawler ; Conch Crawler ; common ; W1L0 ;  ; 1/5 ; 92.1 ; {"tide":true,"shell":1,"shield":5} ; {"armor":1,"tide":true} 1/9 ; Mollusc|conch
+3 ; cormorant ; Cormorant ; common ; W1L0 ;  ; 3/7 ; 101.7 ; {"reach":true} ; {"tide":true} 3/7 ; Bird|cormorant
+3 ; fiddler-crab-swarm ; Fiddler Crab Swarm ; common ; W0L0 ;  ; 1/8 ; 89.8 ; {"tide":true,"crabClaws":true,"guardian":true} ; {"crabClaws":true,"guardian":true} 1/8 ; Crustacean|fiddler crab
+3 ; kittiwake-flock ; Kittiwake Flock ; common ; W0L0 ; O ; 1/4 ; 89.2 ; {"brood":1,"flying":true,"guardian":true} ; {"flying":true,"guardian":true} 1/7 ; Bird|kittiwake
+3 ; puffin-diver ; Puffin Diver ; common ; W1L1 ;  ; 2/8 ; 85.5 ; {"tide":2,"flying":true} ; {"tide":2,"flying":true} 2/8 ; Bird|puffin
+3 ; peak-condor ; Peak Condor ; common ; W1L1 ; O ; 4/10 ; 146.4 ; {"puncture":{"v":2,"kind":"breach"},"flying":true,"reload":1} ; {"flying":true} 3/8 ; Bird|condor
+3 ; gannet-nestweaver ; Gannet Nestweaver ; common ; W1L0 ;  ; 1/7 ; 86.7 ; {"flying":true,"triggers":[{"on":"onSpawn","do":"gain","resource":"lumber","amount":1}]} ; {"flying":true,"triggers":[{"on":"onSpawn","do":"gain","resource":"lumber","amount":1}]} 1/7 ; Bird|gannet
+3 ; feral-tomcat ; Tomcat ; common ; W0L0 ; O ; 1/4 ; 99.2 ; {"quick":true,"sweep":1} ; {"swift":true} 1/5 ; Felid|cat
+3 ; peregrine-stooper ; Peregrine Stooper ; uncommon ; W0L1 ; O ; 2/5 ; 96.1 ; {"flying":true,"pounce":3} ; {"flying":true,"pounce":3} 2/5 ; Bird|peregrine falcon
+3 ; eagle-sharpshooter ; Eagle Sharpshooter ; common ; W1L2 ;  ; 2/6 ; 94.6 ; {"flying":true,"arrow":2,"diurnal":true} ; {"flying":true,"arrow":2,"diurnal":true} 2/6 ; Bird|eagle
+3 ; pika-hoarder ; Pika Hoarder ; common ; W0L0 ;  ; 3/13 ; 96.4 ; {"scatterbrained":true} ; {"foraging":1} 1/13 ; Lagomorph|pika
+4 ; pond-algae ; Pond Algae ; common ; W1L0 ;  ; 1/8 ; 110.5 ; {"bloomCopy":{"when":["wet","sunny"],"mode":"and"}} ; {"bloomCopy":{"when":["wet","sunny"],"mode":"and"}} 1/6 ; Plant|algae
+4 ; slow-worm ; Slow-worm ; common ; W1L0 ;  ; 1/9 ; 83.7 ; {"thanatosis":true} ; {"shield":3} 1/8 ; Reptile|slow-worm
+4 ; water-shrew ; Water Shrew ; common ; W0L0 ;  ; 1/4 ; 104.8 ; {"poison":1,"pounce":1,"evasive":true} ; {"poison":1,"pounce":1} 1/4 ; Mammal|shrew
+4 ; snapstick-turtle ; Snapstick Turtle ; common ; W1L1 ;  ; 4/6 ; 100.1 ; {"tide":true,"armor":1} ; {"tide":true,"armor":1} 4/5 ; Reptile|snapping turtle
+4 ; shoal-shark ; Shoal Shark ; uncommon ; W2L1 ;  ; 3/11 ; 83.2 ; {"tide":3} ; {"tide":3} 3/12 ; Fish|shark
+4 ; platypus-spur ; Platypus ; uncommon ; W1L1 ;  ; 4/5 ; 89.8 ; {"poison":1} ; {"poison":1} 4/5 ; Mammal|platypus
+4 ; muskrat-lodgekeeper ; Muskrat Lodgekeeper ; uncommon ; W2L1 ;  ; 1/7 ; 73 ; {"tide":true,"bulwark":2} ; {"tide":true,"shield":4} 1/14 ; Rodent|muskrat
+4 ; grass-snake ; Grass Snake ; uncommon ; W1L1 ;  ; 2/9 ; 90.7 ; {"regen":1,"thanatosis":true} ; {"evasive":true} 2/10 ; Reptile|grass snake
+4 ; river-mink ; River Mink ; uncommon ; W1L1 ;  ; 4/8 ; 84.6 ; {"dive":1,"tide":true} ; {"tide":true,"pounce":1} 4/7 ; Mustelid|mink
+4 ; planarian-splitter ; Planarian ; uncommon ; W1L1 ;  ; 3/8 ; 101.3 ; {"meiosis":1} ; {"meiosis":1} 3/7 ; Annelid|flatworm
+5 ; newt-doctor ; Newt Doctor ; uncommon ; W1L0 ;  ; 2/7 ; 86.6 ; {"healing":1,"herbalist":1} ; {"nursing":1,"regen":1} 2/5 ; Amphibian|newt
+5 ; mosquito-cloud ; Mosquito Cloud ; common ; W0L0 ;  ; 1/4 ; 86.8 ; {"flying":true,"bleed":1} ; {"flying":true,"bleed":1} 1/4 ; Insect|mosquito
+5 ; alley-cat ; Alley Cat ; uncommon ; W0L0 ; O ; 1/4 ; 123.2 ; {"bleed":1,"twinStrike":true} ; {"bleed":1,"twinStrike":true} 1/4 ; Felid|cat
+5 ; marsh-mallow-hare ; Marsh-mallow Hare ; common ; W1L0 ; O ; 4/4 ; 98.7 ; {"cure":1} ; {"cure":1} 4/4 ; Lagomorph|hare
+5 ; mudpuppy ; Mudpuppy ; common ; W1L0 ;  ; 2/9 ; 103.5 ; {"regen":1} ; {"regen":1} 2/8 ; Amphibian|mudpuppy
+5 ; muskrat-reedgatherer ; Muskrat Reedgatherer ; common ; W1L0 ;  ; 1/8 ; 108 ; {"delivery":2} ; {"delivery":2} 1/6 ; Rodent|muskrat
+5 ; swamp-alligator ; Swamp Alligator ; common ; W2L2 ;  ; 2/12 ; 95.3 ; {"armor":2,"hemorrhage":2} ; {"armor":2,"bleed":1} 2/12 ; Reptile|alligator
+5 ; raft-spider ; Raft Spider ; common ; W1L1 ;  ; 3/8 ; 88.1 ; {"tide":true} ; {"tide":true} 3/8 ; Arachnid|raft spider
+5 ; fire-ant-raft ; Fire Ant Raft ; uncommon ; W1L1 ; O ; 2/7 ; 91 ; {"tide":true,"swarm":["Ants"],"poison":1} ; {"tide":true,"swarm":["Ants"],"poison":1} 2/7 ; Insect|fire ant
+5 ; constrictor-coil ; Constrictor Coil ; common ; W2L2 ;  ; 4/16 ; 120.5 ; {"strangle":2} ; {"strangle":2} 2/16 ; Reptile|python
+6 ; cypress-root-lurker ; Cypress Root Lurker ; common ; W2L1 ; O ; 4/12 ; 111.2 ; {"repair":2,"guardian":true} ; {"guardian":true} 4/12 ; Plant|alligator
+6 ; lamprey ; Lamprey ; common ; W0L1 ;  ; 2/5 ; 99.2 ; {"daunt":{"v":1,"lasts":"lasting"},"sap":true} ; {"parasite":true} 2/7 ; Fish|lamprey
+6 ; alligator-gar ; Alligator Gar ; rare ; W2L1 ;  ; 3/7 ; 91.7 ; {"tide":true,"armor":1,"bleed":3} ; {"armor":1,"bleed":3} 3/7 ; Fish|gar
+6 ; camouflage-frog ; Camouflage Frog ; common ; W1L1 ;  ; 2/5 ; 67.8 ; {"evasive":true,"tide":true} ; {"evasive":true,"tide":true} 2/8 ; Amphibian|frog
+6 ; adder-ambusher ; Adder Ambusher ; rare ; W1L1 ;  ; 2/11 ; 92.1 ; {"poison":2} ; {"ambush":3,"poison":1} 2/11 ; Reptile|adder
+6 ; anhinga-spearbird ; Anhinga Spearbird ; uncommon ; W1L1 ;  ; 1/11 ; 76.3 ; {"hoard":2,"herbalist":1} ; {"tide":true,"pounce":1} 1/13 ; Bird|anhinga
+6 ; booming-bittern ; Booming Bittern ; uncommon ; W1L1 ;  ; 2/10 ; 87.4 ; {"daunt":2,"invisible":1} ; {"ambush":2} 2/12 ; Bird|bittern
+6 ; nutria-reedcutter ; Nutria Reedcutter ; common ; W2L0 ;  ; 3/8 ; 122.7 ; {"delivery":2,"foraging":1} ; {"delivery":2,"foraging":1} 2/6 ; Rodent|nutria
+6 ; grass-viper ; Grass Viper ; uncommon ; W0L0 ;  ; 2/6 ; 80.6 ; {"pierce":2} ; {"poison":1} 2/6 ; Reptile|viper
+6 ; crocodile-ambusher ; Crocodile Ambusher ; common ; W3L2 ;  ; 3/16 ; 94.3 ; {"gash":2,"ambush":5} ; {"ambush":5,"bleed":1} 3/15 ; Reptile|crocodile
+7 ; corpse-flower-beetle ; Corpse-flower Beetle ; rare ; W2L1 ;  ; 4/10 ; 96.2 ; {"wither":1} ; {"carrion":2} 4/10 ; Insect|beetle
+7 ; wolf-spider-mother ; Wolf Spider Mother ; rare ; W1L1 ; O ; 2/6 ; 89.4 ; {"brood":2,"swarm":["Arachnid"]} ; {"swarm":["Arachnid"],"pounce":1} 2/10 ; Arachnid|wolf spider
+7 ; fungus-gnat-cloud ; Fungus Gnat Cloud ; common ; W0L0 ;  ; 1/4 ; 78.7 ; {"flying":true,"swarm":true} ; {"flying":true,"swarm":true} 1/5 ; Insect|fungus gnat
+7 ; rot-swollen-carcass ; Rot-Swollen Carcass ; common ; W2L3 ;  ; 3/11 ; 77 ; {"onDeathSpawn":{"defId":"maggot-swarmling","count":3},"triggers":[{"on":"onSpawn","do":"addWait","amount":2,"who":"enemy","sub":"adjacent"}]} ; {"onDeathSpawn":{"defId":"maggot-swarmling","count":3},"triggers":[{"on":"onSpawn","do":"addWait","amount":2,"who":"enemy","sub":"adjacent"}]} 3/14 ; Annelid|maggot
+7 ; puffball-bombardier ; Puffball ; uncommon ; W1L0 ;  ; 1/5 ; 96.1 ; {"arrow":1,"poison":1,"bloomCopy":{"when":["wet","kill"],"mode":"and"}} ; {"arrow":1,"poison":1} 1/7 ; Fungi|toad
+7 ; compost-grub ; Compost Grub ; common ; W0L0 ;  ; 1/10 ; 95.8 ; {} ; {} 1/10 ; Annelid|grub
+7 ; leopard-slug ; Leopard Slug ; common ; W1L0 ;  ; 1/10 ; 83.4 ; {"regen":1} ; {"regen":1,"corrode":1} 1/10 ; Mollusc|leopard slug
+7 ; amber-cicada ; Amber Cicada ; uncommon ; W3L1 ;  ; 1/21 ; 87.3 ; {"scare":1,"triggers":[{"on":"onReady","do":"shield","who":"ally","sub":"all","amount":2}]} ; {"triggers":[{"on":"onReady","do":"shield","who":"ally","sub":"all","amount":2}]} 1/23 ; Insect|cicada
+7 ; hawthorn-shieldbug ; Hawthorn Shieldbug ; common ; W1L1 ;  ; 1/15 ; 83.7 ; {"guardian":true,"counterattack":true} ; {"guardian":true,"corrode":1} 1/15 ; Insect|shieldbug
+7 ; phoenix-mushrooms ; Phoenix Mushrooms ; epic ; W1L1 ;  ; 1/8 ; 97.4 ; {"meiosis":1,"bloomCopy":{"mode":"and","when":["wet","sunny"]},"thanatosis":true} ; {"meiosis":1,"bloomCopy":{"mode":"and","when":["wet","sunny"]}} 1/8 ; Fungi|mushroom
+8 ; quarry-mole ; Quarry Mole ; common ; W1L1 ;  ; 2/12 ; 87.2 ; {"keenSense":true,"bedrock":true} ; {"darksight":true} 2/12 ; Rodent|mole
+8 ; cave-olm ; Cave Olm ; common ; W1L0 ;  ; 1/11 ; 88.8 ; {"regen":1} ; {"regen":1,"darksight":true} 1/10 ; Amphibian|olm
+8 ; sulfur-cinder-moth ; Sulfur Cinder Moth ; common ; W0L1 ;  ; 1/7 ; 76.8 ; {"illuminate":true,"triggers":[{"do":"damage","on":"onDeath","sub":"adjacent","who":"enemy","amount":2,"dmgType":"heat"}],"flying":true} ; {"flying":true,"triggers":[{"do":"damage","on":"onDeath","sub":"adjacent","who":"enemy","amount":2,"dmgType":"heat"}]} 1/9 ; Insect|moth
+8 ; star-nosed-mole ; Star-nosed Mole ; common ; W0L0 ;  ; 5/5 ; 94.7 ; {"purblind":true} ; {"purblind":true} 5/5 ; Rodent|mole
+8 ; stalactite-golem ; Stalactite Pill Bug ; common ; W3L2 ;  ; 1/23 ; 78 ; {"shell":4,"guardian":true} ; {"armor":2,"guardian":true} 1/23 ; Elemental|pill bug
+8 ; echo-screecher ; Echo Screecher ; rare ; W1L1 ;  ; 2/5 ; 85.2 ; {"onReadyDamage":{"amount":3,"dmgType":"physical"},"flying":true,"nocturnal":true} ; {"flying":true,"nocturnal":true,"sap":true} 2/8 ; Bat|bat
+8 ; giant-cave-huntsman ; Giant Cave Huntsman ; rare ; W2L1 ;  ; 3/15 ; 98.9 ; {"pounce":3} ; {"pounce":3} 3/15 ; Arachnid|huntsman spider
+8 ; gallery-orb-weaver ; Gallery Orb-Weaver ; uncommon ; W1L1 ;  ; 4/7 ; 100.1 ; {"web":1,"poison":1} ; {"web":1,"poison":1} 4/6 ; Arachnid|orb-weaver spider
+8 ; barrow-leech-bat ; Barrow Leech ; rare ; W0L1 ;  ; 1/8 ; 73.3 ; {"flying":true,"nocturnal":1} ; {"flying":true,"nocturnal":1,"parasite":true} 1/9 ; Bat|leech
+9 ; banded-sea-krait ; Banded Sea Krait ; uncommon ; W1L1 ;  ; 4/3 ; 93.4 ; {"poison":2,"nocturnal":true} ; {"poison":2,"nocturnal":true} 4/3 ; Reptile|sea krait
+9 ; mangrove-mudskipper ; Mangrove Mudskipper ; common ; W0L0 ;  ; 1/7 ; 96.2 ; {"tide":true,"skitter":true} ; {"tide":true,"evasive":true} 1/8 ; Fish|mudskipper
+9 ; mangrove-monitor ; Mangrove Monitor ; common ; W1L1 ;  ; 3/12 ; 93 ; {} ; {"trident":true} 3/10 ; Reptile|monitor lizard
+9 ; horseshoe-crab ; Horseshoe Crab ; common ; W1L1 ;  ; 2/9 ; 94.5 ; {"armor":2,"salt":true,"relict":true} ; {"armor":2} 2/9 ; Arachnid|horseshoe crab
+9 ; proboscis-monkey ; Proboscis Monkey ; uncommon ; W1L1 ;  ; 2/11 ; 79 ; {"tide":true,"taunt":true} ; {"tide":true,"guardian":true} 2/13 ; Primate|proboscis monkey
+9 ; ironclaw-fiddler ; Ironclaw Fiddler ; rare ; W3L2 ;  ; 7/12 ; 108.1 ; {"tide":true,"bludgeon":true,"armor":1} ; {"trident":true,"armor":1} 7/11 ; Crustacean|fiddler crab
+9 ; fishing-cat ; Fishing Cat ; rare ; W1L1 ;  ; 1/14 ; 83.7 ; {"pounce":2} ; {"pounce":2} 1/15 ; Felid|fishing cat
+9 ; tide-spirit ; Tide Seahorse ; veryrare ; W1L0 ;  ; 5/5 ; 90.9 ; {"tide":true} ; {"tide":true} 5/5 ; Elemental|seahorse
+9 ; voltaic-eel ; Voltaic Eel ; rare ; W0L2 ;  ; 1/7 ; 81.7 ; {"shock":{"chance":40,"duration":1},"chainLightning":2,"tide":true} ; {"electricity":2,"tide":true} 1/11 ; Fish|electric eel
+10 ; coral-current-eel ; Coral Current Eel ; rare ; W0L1 ;  ; 3/9 ; 92.3 ; {"tide":true} ; {"tide":true,"electricity":1} 3/7 ; Fish|eel
+10 ; riptide-eel ; Riptide Eel ; uncommon ; W1L1 ;  ; 6/7 ; 94 ; {"reload":1,"tide":true} ; {"tide":true,"weaken":1} 4/7 ; Fish|eel
+10 ; krill-swarm ; Krill Swarm ; common ; W0L0 ; O ; 0/7 ; 73 ; {"tide":true,"swarm":true} ; {"tide":true,"swarm":true} 0/7 ; Crustacean|krill
+10 ; moon-jelly ; Moon Jelly ; common ; W1L0 ; O ; 4/5 ; 95.4 ; {"tide":true} ; {"tide":true} 4/5 ; Cnidaria|jellyfish
+10 ; sea-turtle-elder ; Sea Turtle Elder ; common ; W3L2 ;  ; 4/9 ; 76.4 ; {"armor":3,"tide":true} ; {"armor":3,"tide":true} 4/12 ; Reptile|sea turtle
+10 ; reef-shark ; Reef Shark ; common ; W3L2 ;  ; 6/13 ; 91.4 ; {"tide":true} ; {"tide":true} 6/13 ; Fish|shark
+10 ; clownfish-scout ; Clownfish Scout ; common ; W0L0 ;  ; 1/9 ; 85.9 ; {"tide":true} ; {"tide":true,"poisonBarbs":1} 1/9 ; Fish|clownfish
+10 ; crown-of-thorns-star ; Crown-of-thorns Star ; uncommon ; W1L1 ;  ; 4/4 ; 107.2 ; {"thorns":2,"poison":1,"tide":true} ; {"tide":true,"poisonBarbs":2} 4/4 ; Echinoderm|starfish
+10 ; giant-clam ; Giant Clam ; common ; W2L1 ;  ; 5/4 ; 91.8 ; {"shell":2,"tide":true,"delivery":{"v":1,"res":"pearl"}} ; {"delivery":{"v":1,"res":"pearl"}} 5/4 ; Mollusc|giant clam
+11 ; stonedrop-vulture ; Stonedrop Vulture ; uncommon ; W1L1 ;  ; 11/11 ; 73.6 ; {"flying":true,"arrow":{"v":3,"swings":"never","style":"drop"}} ; {"flying":true,"arrow":{"v":3,"swings":"never","style":"drop"}} 11/14 ; Bird|vulture
+11 ; anvil-thrush ; Anvil Thrush ; common ; W1L0 ;  ; 1/6 ; 60 ; {"flying":true,"pierce":2} ; {"flying":true,"pierce":2} 1/10 ; Bird|thrush
+11 ; eagle-owl-quartermaster ; Eagle-Owl Quartermaster ; rare ; W1L1 ; O ; 1/6 ; 73.3 ; {"arrow":1,"fletcher":1,"flying":true} ; {"arrow":1,"fletcher":1,"flying":true} 1/6 ; Bird|eagle owl
+11 ; eyrie-warden ; Eyrie Warden ; common ; W3L3 ;  ; 3/11 ; 80.6 ; {"onReadyDamage":{"amount":6,"dmgType":"physical"},"flying":true,"daunt":1} ; {"flying":true,"twinShot":1} 3/13 ; Bird|eagle
+11 ; golden-eagle-diver ; Golden Eagle ; uncommon ; W1L1 ;  ; 3/5 ; 93.8 ; {"daunt":2,"flying":true,"diurnal":1} ; {"flying":true,"diurnal":1,"pierce":1} 3/6 ; Bird|eagle
+11 ; chamois-leaper ; Chamois Leaper ; uncommon ; W1L1 ;  ; 1/10 ; 84.5 ; {"mountainClimber":true,"pounce":2} ; {"pounce":2} 1/15 ; Bovine|chamois
+11 ; mountain-hare ; Mountain Hare ; common ; W0L0 ;  ; 2/3 ; 74.2 ; {"evasive":true,"frostbite":1} ; {"evasive":true} 2/5 ; Lagomorph|hare
+11 ; chipmunk-hoarder ; Chipmunk Hoarder ; common ; W1L0 ;  ; 2/5 ; 96.2 ; {"delivery":{"v":1,"every":"round"}} ; {"delivery":{"v":1,"every":"round"}} 2/5 ; Rodent|chipmunk
+11 ; the-gannet-queen ; The Gannet Queen ; uncommon ; W2L2 ;  ; 1/15 ; 79.8 ; {"flying":true,"pounce":2,"leader":true} ; {"flying":true,"leader":true} 1/19 ; Bird|gannet
+12 ; quillguard ; Quillguard ; rare ; W2L1 ;  ; 2/22 ; 90.7 ; {} ; {"thorns":2} 1/21 ; Rodent|porcupine
+12 ; barkplate-beetle ; Barkplate Beetle ; uncommon ; W2L2 ;  ; 4/13 ; 95.6 ; {"brambleArmor":true,"thorns":1} ; {"armor":1,"thorns":1} 4/13 ; Insect|bark beetle
+12 ; quill-thorn-boar ; Quill-Thorn Boar ; rare ; W1L1 ;  ; 4/5 ; 99.1 ; {"thorns":3} ; {"thorns":2} 4/5 ; Suid|boar
+12 ; briarback-hedgehog ; Briarback Hedgehog ; common ; W1L1 ;  ; 2/11 ; 84.2 ; {"brambleArmor":true} ; {"thorns":1} 2/11 ; Erinaceid|hedgehog
+12 ; cunning-vixen ; Cunning Vixen ; uncommon ; W1L1 ;  ; 1/10 ; 65.7 ; {"evasive":true,"backstab":2} ; {"evasive":true} 1/15 ; Canid|fox
+12 ; mouse-sapper ; Mouse Sapper ; common ; W1L1 ;  ; 3/11 ; 98 ; {"siege":1} ; {"siege":1} 3/11 ; Rodent|mouse
+12 ; fawn-scout ; Fawn Scout ; rare ; W0L0 ;  ; 2/8 ; 80 ; {"keenEye":true,"canopyCover":true} ; {"evasive":true} 2/8 ; Cervid|deer
+12 ; hollow-belly-rat ; Hollow-belly Rat ; uncommon ; W1L1 ; O ; 2/11 ; 90.3 ; {"devour":{"attack":2,"health":2}} ; {"carrion":1} 2/11 ; Rodent|rat
+12 ; alpine-marmot ; Alpine Marmot ; common ; W1L0 ;  ; 3/9 ; 93.3 ; {"guardian":true} ; {"guardian":true} 3/9 ; Rodent|marmot
+13 ; grizzly-vanguard ; Grizzly Vanguard ; common ; W3L2 ;  ; 1/19 ; 78.6 ; {"sweep":2,"guardian":true} ; {"sweep":2,"guardian":true} 1/22 ; Ursid|bear
+13 ; badger-lumberjack ; Badger Lumberjack ; uncommon ; W1L1 ; O ; 2/10 ; 98 ; {"lumberjack":true,"guardian":true} ; {"guardian":true} 2/13 ; Mustelid|badger
+13 ; tasmanian-devil ; Tasmanian Devil ; uncommon ; W1L1 ;  ; 1/11 ; 78 ; {"harbinger":{"v":2,"who":"ally"}} ; {"harbinger":{"v":2,"who":"ally"}} 1/13 ; Mammal|tasmanian devil
+13 ; redwood-woodpecker ; Redwood Woodpecker ; uncommon ; W1L1 ;  ; 2/11 ; 85.8 ; {"milling":1} ; {"pierce":2} 2/13 ; Bird|woodpecker
+13 ; bear-cub ; Bear Cub ; uncommon ; W0L0 ;  ; 2/8 ; 84.8 ; {} ; {} 2/9 ; Ursid|bear
+13 ; pine-marten ; Pine Marten ; rare ; W1L1 ;  ; 1/14 ; 83.7 ; {"pounce":2} ; {"pounce":2} 1/15 ; Mustelid|pine marten
+13 ; bramblewood-lynx ; Bramblewood Lynx ; rare ; W1L1 ;  ; 5/7 ; 87.9 ; {} ; {"twinStrike":true} 3/7 ; Felid|lynx
+13 ; balloon-archer ; Balloon Archer ; uncommon ; W2L1 ;  ; 2/8 ; 84.9 ; {"flying":true,"arrow":{"v":2,"bramble":true}} ; {"flying":true,"twinShot":1} 2/8 ; Rodent|mouse
+13 ; monarch-wingblade ; Monarch Wingblade ; rare ; W1L1 ;  ; 3/6 ; 86.3 ; {"poison":1,"flying":true} ; {"poison":1,"flying":true} 3/6 ; Insect|monarch butterfly
+13 ; beaver-feller ; Beaver Feller ; common ; W1L0 ;  ; 2/10 ; 91.2 ; {"felling":1} ; {"triggers":[{"on":"onKill","do":"gain","resource":"lumber","amount":1}]} 2/10 ; Rodent|beaver
+14 ; acacia-giraffe ; Acacia Giraffe ; common ; W2L2 ;  ; 2/11 ; 64.4 ; {"evasive":true} ; {"mighty":true} 2/16 ; Megafauna|giraffe
+14 ; meerkat-sentry ; Meerkat Sentry ; common ; W1L1 ;  ; 2/7 ; 82.1 ; {"formation":{"v":[1,1],"range":2}} ; {"pack":1} 2/11 ; Herpestid|meerkat
+14 ; hoopoe-herald ; Hoopoe Herald ; common ; W0L0 ;  ; 2/12 ; 96.7 ; {"nightblind":true} ; {"diurnal":1} 1/12 ; Bird|hoopoe
+14 ; dust-hyena ; Dust Hyena ; uncommon ; W0L0 ;  ; 2/6 ; 85.8 ; {"triggers":[{"on":"onKill","do":"gain","amount":1,"resource":"lumber"}],"carnage":3} ; {"pack":1,"triggers":[{"on":"onKill","do":"gain","amount":1,"resource":"lumber"}]} 2/6 ; Hyaenid|hyena
+14 ; savanna-cheetah ; Savanna Cheetah ; veryrare ; W0L1 ;  ; 4/4 ; 79.8 ; {"quick":true} ; {"swift":true} 4/3 ; Felid|cheetah
+14 ; marula-elephant ; Marula Elephant ; uncommon ; W2L2 ;  ; 4/20 ; 87.6 ; {"drunk":true,"guardian":true} ; {"mighty":true,"guardian":true} 3/18 ; Megafauna|elephant
+14 ; plains-zebra ; Plains Zebra ; uncommon ; W0L0 ;  ; 1/7 ; 68 ; {"evasive":true} ; {"evasive":true} 1/10 ; Equid|zebra
+14 ; bramblewood-macaque ; Bramblewood Macaque ; rare ; W1L0 ;  ; 4/4 ; 94.1 ; {"banana":true} ; {"pack":1} 4/4 ; Primate|macaque
+14 ; stoat-cutthroat ; Stoat Cutthroat ; rare ; W1L1 ;  ; 3/10 ; 92.5 ; {"backstab":3,"foeScarcity":true} ; {"bleed":2} 3/10 ; Mustelid|stoat
+15 ; pronghorn-racer ; Pronghorn Racer ; common ; W0L1 ;  ; 1/10 ; 79.8 ; {"speed":2} ; {"swift":true} 1/9 ; Cervid|pronghorn
+15 ; warhorse-charger ; Warhorse Charger ; common ; W2L2 ;  ; 4/19 ; 94.8 ; {} ; {"overwhelm":true} 4/18 ; Equid|horse
+15 ; border-collie ; Border Collie ; uncommon ; W1L1 ;  ; 3/14 ; 93.7 ; {"converge":"enemy"} ; {"guardian":true} 3/14 ; Canid|dog
+15 ; mallard-marauder ; Mallard Marauder ; rare ; W0L1 ;  ; 2/5 ; 68 ; {"flying":true,"pounce":1} ; {"flying":true,"pounce":1} 2/9 ; Bird|mallard
+15 ; sworn-shieldbearer ; Sworn Shieldbearer ; uncommon ; W1L1 ;  ; 3/10 ; 82 ; {"loyal":{"v":[1,3],"gives":{"armor":1}}} ; {"shield":4} 3/9 ; Mustelid|stoat
+15 ; elderhorn-monarch ; Elderhorn Monarch ; common ; W4L3 ;  ; 2/30 ; 93.5 ; {"delivery":{"v":1,"every":"round"}} ; {"delivery":{"v":1,"every":"round"}} 2/30 ; Cervid|deer
+15 ; siege-rhino ; Siege Rhino ; veryrare ; W3L1 ;  ; 5/17 ; 97.9 ; {"siege":4} ; {"siege":4} 5/17 ; Mammal|rhino
+15 ; village-miller ; Village Miller ; common ; W0L0 ;  ; 2/7 ; 76.5 ; {} ; {"foraging":1} 2/7 ; Rodent|mouse
+15 ; cataphract-destrier ; Gilded Roadwarden ; common ; W4L4 ;  ; 3/28 ; 90.3 ; {"pounce":6,"overwhelm":true} ; {"pounce":6,"overwhelm":true} 3/28 ; Equid|horse
+16 ; boreal-elk ; Boreal Elk ; common ; W1L2 ;  ; 5/4 ; 97.8 ; {"sweep":2,"riled":3} ; {"sweep":2} 5/4 ; Cervid|elk
+16 ; woodland-caribou ; Woodland Caribou ; uncommon ; W1L1 ;  ; 3/8 ; 85.5 ; {"mountainClimber":true,"frostbite":1} ; {"sturdy":true} 3/10 ; Cervid|caribou
+16 ; cone-cutter-squirrel ; Cone-cutter Squirrel ; common ; W1L0 ;  ; 2/5 ; 106.5 ; {"triggers":[{"on":"onSpawn","do":"gain","resource":"lumber","amount":2}],"almanac":4} ; {"foraging":1,"triggers":[{"on":"onSpawn","do":"gain","resource":"lumber","amount":2}]} 2/6 ; Rodent|red squirrel
+16 ; snowshoe-hare ; Snowshoe Hare ; common ; W0L0 ;  ; 1/7 ; 72.9 ; {"evasive":true} ; {"evasive":true} 1/9 ; Lagomorph|hare
+16 ; taiga-lynx ; Taiga Lynx ; rare ; W0L1 ;  ; 2/8 ; 74.6 ; {"evasive":true} ; {"evasive":true} 2/10 ; Felid|lynx
+16 ; pinecone-sapper ; Pinecone Sapper ; common ; W1L0 ;  ; 0/13 ; 93.8 ; {"explode":{"time":1,"damage":4}} ; {"sturdy":true} 0/15 ; Plant|pangolin
+16 ; upside-down-bat ; Upside-Down Bat ; uncommon ; W0L0 ;  ; 2/4 ; 74.6 ; {"flying":true,"diurnal":true} ; {"flying":true,"diurnal":true} 2/6 ; Bat|bat
+16 ; owl-sentinel ; Owl Sentinel ; common ; W2L1 ; O ; 3/9 ; 85.8 ; {"flying":true,"keenEye":true,"nocturnal":1} ; {"flying":true,"nocturnal":1} 3/10 ; Bird|owl
+17 ; snow-ermine ; Snow Ermine ; common ; W0L0 ;  ; 2/4 ; 79.8 ; {"evasive":true,"frost":true} ; {"evasive":true} 2/6 ; Mustelid|stoat
+17 ; ringed-seal ; Ringed Seal ; common ; W1L1 ;  ; 1/11 ; 69.7 ; {"tide":true,"invisible":2} ; {"tide":true,"shield":4} 1/11 ; Pinniped|ringed seal
+17 ; glacier-yak ; Glacier Yak ; common ; W1L3 ;  ; 1/17 ; 79.1 ; {"freeze":{"chance":40,"duration":2},"triggers":[{"on":"onSpawn","do":"addWait","amount":2,"who":"enemy","sub":"adjacent"}]} ; {"sturdy":true,"triggers":[{"on":"onSpawn","do":"addWait","amount":2,"who":"enemy","sub":"adjacent"}]} 1/19 ; Bovine|yak
+17 ; arctic-tern ; Arctic Tern ; uncommon ; W1L0 ;  ; 1/8 ; 66 ; {"flying":true,"diurnal":true} ; {"flying":true,"diurnal":true} 1/12 ; Bird|arctic tern
+17 ; walrus-icebreaker ; Walrus Icebreaker ; veryrare ; W2L1 ;  ; 4/17 ; 100.6 ; {"freeze":{"chance":25,"duration":1},"shatter":2} ; {"sturdy":true} 4/16 ; Pinniped|walrus
+17 ; ice-crevasse-wolf ; Ice-Crevasse Wolf ; rare ; W1L1 ;  ; 1/16 ; 93.7 ; {"bleed":2} ; {"pack":1,"bleed":1} 1/16 ; Canid|wolf
+17 ; polar-bear ; Polar Bear ; veryrare ; W2L1 ;  ; 2/17 ; 80.4 ; {"ambush":4,"hibernate":true} ; {"ambush":4} 2/18 ; Ursid|polar bear
+17 ; nightshade-moth ; Nightshade Moth ; common ; W0L2 ;  ; 2/2 ; 61.8 ; {"sleep":{"chance":50,"duration":2},"flying":true,"nocturnal":true} ; {"flying":true,"nocturnal":true,"poison":1} 2/7 ; Insect|moth
+18 ; frillneck-duelist ; Frillneck Duelist ; rare ; W1L2 ;  ; 2/15 ; 79.9 ; {"quick":true,"fencing":true} ; {"swift":true} 2/13 ; Reptile|frilled lizard
+18 ; horned-lizard ; Horned Lizard ; uncommon ; W1L1 ;  ; 5/8 ; 100.7 ; {"blind":{"chance":50,"duration":2}} ; {"thorns":1} 5/6 ; Reptile|horned lizard
+18 ; caustic-scorpion ; Caustic Scorpion ; uncommon ; W2L1 ;  ; 1/18 ; 86.9 ; {"poison":2} ; {"poison":2} 1/18 ; Arachnid|scorpion
+18 ; antlion-pit ; Antlion Pit ; uncommon ; W1L1 ;  ; 3/13 ; 99 ; {"trap":5} ; {"trap":5} 3/13 ; Insect|antlion
+18 ; roadrunner-courier ; Roadrunner Courier ; common ; W0L1 ;  ; 3/6 ; 90.8 ; {"haste":true} ; {"swift":true} 2/6 ; Bird|roadrunner
+18 ; dune-jackal ; Dune Jackal ; common ; W0L1 ;  ; 1/1 ; 52.9 ; {"quick":true,"dry":true} ; {"swift":true} 1/8 ; Canid|jackal
+18 ; armadillo-guard ; Armadillo Guard ; common ; W0L1 ;  ; 3/8 ; 113.4 ; {"shield":3} ; {"shield":3} 2/8 ; Xenarthran|armadillo
+18 ; sand-widow ; Sand Widow ; common ; W2L2 ;  ; 2/17 ; 89.1 ; {"poison":2} ; {"web":1,"poison":1} 2/17 ; Arachnid|widow spider
+18 ; barrel-cactus ; Barrel Cactus ; rare ; W2L1 ;  ; 1/18 ; 100.8 ; {"dry":true,"thorns":2} ; {"thorns":2} 1/18 ; Plant|cactus
+19 ; honey-badger-fury ; Honey Badger Fury ; common ; W0L1 ;  ; 1/6 ; 62.1 ; {"rage":true} ; {"lastStand":true} 1/13 ; Mustelid|honey badger
+19 ; cinder-hornet ; Cinder Hornet ; common ; W0L2 ;  ; 3/3 ; 71.9 ; {"stunOnHit":1,"flying":true} ; {"flying":true,"weaken":1} 3/6 ; Insect|hornet
+19 ; quillback-elder ; Quillback Elder ; common ; W2L2 ;  ; 5/5 ; 79.8 ; {"armor":3} ; {"armor":3} 5/7 ; Rodent|porcupine
+19 ; basalt-boar ; Basalt Boar ; common ; W1L1 ;  ; 2/15 ; 91 ; {"grit":1} ; {"lastStand":true} 2/15 ; Suid|boar
+19 ; smoke-raccoon ; Smokescreen Raccoon ; uncommon ; W1L1 ;  ; 3/9 ; 82.3 ; {"smokeBomb":true} ; {"smokeBomb":true} 3/10 ; Procyonid|raccoon
+19 ; fire-salamander ; Fire Salamander ; uncommon ; W1L1 ;  ; 3/7 ; 93.1 ; {"spitfire":1} ; {"arrow":{"v":1,"type":"fire"}} 3/7 ; Amphibian|salamander
+19 ; obsidian-scorpion ; Obsidian Scorpion ; rare ; W1L1 ;  ; 4/4 ; 96 ; {"armor":2,"poison":2} ; {"armor":2,"poison":2} 4/4 ; Arachnid|scorpion
+19 ; caldera-snow-leopard ; Caldera Snow Leopard ; superrare ; W1L1 ;  ; 3/15 ; 94.8 ; {"pounce":3} ; {"pounce":3} 3/15 ; Felid|snow leopard
+20 ; deep-cave-troll ; Cave Bear ; common ; W2L3 ;  ; 4/13 ; 88.6 ; {"rage":true,"siege":4} ; {"recoil":1,"siege":4} 4/19 ; Ursid|bear
+20 ; fumarole-ibex ; Fumarole Ibex ; rare ; W1L1 ;  ; 1/12 ; 86.2 ; {"mountainClimber":true,"pounce":2} ; {"pounce":2} 1/16 ; Mammal|ibex
+20 ; ash-cloud-condor ; Ash Cloud Condor ; rare ; W1L1 ;  ; 3/4 ; 64.8 ; {"triggers":[{"on":"onSpawn","do":"stun","who":"enemy","sub":"adjacent"}],"flying":true} ; {"flying":true,"carrion":2} 3/8 ; Bird|condor
+20 ; magma-salamander ; Magma Salamander ; veryrare ; W1L1 ;  ; 3/11 ; 94.7 ; {"arrow":{"v":1,"type":"fire"}} ; {"arrow":{"v":1,"type":"fire"}} 3/11 ; Amphibian,Elemental|salamander
+20 ; pack-mule ; Pack Mule ; common ; W0L0 ;  ; 1/11 ; 89.8 ; {"bounty":1} ; {"bounty":1} 1/11 ; Equid|mule
+20 ; pumice-beetle ; Pumice Beetle ; uncommon ; W1L1 ;  ; 3/11 ; 91.9 ; {"triggers":[{"on":"onSpawn","do":"gain","resource":"stone","amount":2}]} ; {"triggers":[{"on":"onSpawn","do":"gain","resource":"stone","amount":2}]} 3/11 ; Insect|dung beetle
+20 ; ur-elk ; Ür-Elk ; veryrare ; W3L1 ;  ; 4/11 ; 71.5 ; {"overwhelm":true,"rage":true} ; {"overwhelm":true,"sturdy":true} 4/17 ; Mammal|elk
+20 ; berserker-boar ; Berserker Boar ; common ; W1L2 ;  ; 3/9 ; 78.5 ; {"rage":true} ; {"twinStrike":true,"recoil":2} 3/12 ; Suid|boar
