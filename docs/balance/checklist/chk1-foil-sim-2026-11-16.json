@@ -1,0 +1,555 @@
+{
+ "tool": "node tools/chk1/foil_sim_2026_11_16.js",
+ "generated": "2026-11-16T06:17:08.573Z",
+ "packsPerType": 100000,
+ "seed": "chk1",
+ "constants": {
+  "SHINY_CHANCE": 0.005,
+  "MYSTERY_EGG_CHANCE": 0.0005,
+  "FACTION_PACK_FOIL": 0.01,
+  "foilChance": {
+   "bronze": 0.01,
+   "silver": 0.015,
+   "mystery": 0.02,
+   "gold": 0.02
+  }
+ },
+ "results": [
+  {
+   "label": "bronze",
+   "pack": {
+    "id": "bronze",
+    "name": "Hedgerow Pouch",
+    "cards": 3,
+    "foilChance": 0.01,
+    "mainFoilChance": null
+   },
+   "packs": 100000,
+   "ms": 3253,
+   "rates": [
+    {
+     "name": "foil per card",
+     "k": 2975,
+     "n": 300000,
+     "observed": 0.992,
+     "ci95": [
+      0.957,
+      1.028
+     ],
+     "settled": 1,
+     "pass": true
+    },
+    {
+     "name": "Shiny per card pulled",
+     "k": 1495,
+     "n": 300000,
+     "observed": 0.498,
+     "ci95": [
+      0.474,
+      0.524
+     ],
+     "settled": 0.5,
+     "pass": true
+    },
+    {
+     "name": "Shiny per copy credited (info; a bonus copy matches its card)",
+     "k": 1560,
+     "n": 313050,
+     "observed": 0.498,
+     "ci95": [
+      0.474,
+      0.524
+     ],
+     "settled": null,
+     "pass": null
+    },
+    {
+     "name": "bonus copies per card (info)",
+     "k": 13050,
+     "n": 300000,
+     "observed": 4.35,
+     "ci95": [
+      4.278,
+      4.424
+     ],
+     "settled": null,
+     "pass": null
+    }
+   ],
+   "copies": 313050,
+   "eggCopies": 0
+  },
+  {
+   "label": "silver",
+   "pack": {
+    "id": "silver",
+    "name": "Tidemire Chest",
+    "cards": 3,
+    "foilChance": 0.015,
+    "mainFoilChance": null
+   },
+   "packs": 100000,
+   "ms": 3484,
+   "rates": [
+    {
+     "name": "foil per card",
+     "k": 4443,
+     "n": 300000,
+     "observed": 1.481,
+     "ci95": [
+      1.438,
+      1.525
+     ],
+     "settled": 1.5,
+     "pass": true
+    },
+    {
+     "name": "Shiny per card pulled",
+     "k": 1509,
+     "n": 300000,
+     "observed": 0.503,
+     "ci95": [
+      0.478,
+      0.529
+     ],
+     "settled": 0.5,
+     "pass": true
+    },
+    {
+     "name": "Shiny per copy credited (info; a bonus copy matches its card)",
+     "k": 1568,
+     "n": 312741,
+     "observed": 0.501,
+     "ci95": [
+      0.477,
+      0.527
+     ],
+     "settled": null,
+     "pass": null
+    },
+    {
+     "name": "bonus copies per card (info)",
+     "k": 12741,
+     "n": 300000,
+     "observed": 4.247,
+     "ci95": [
+      4.175,
+      4.32
+     ],
+     "settled": null,
+     "pass": null
+    }
+   ],
+   "copies": 312741,
+   "eggCopies": 0
+  },
+  {
+   "label": "gold",
+   "pack": {
+    "id": "gold",
+    "name": "Highcrest Case",
+    "cards": 3,
+    "foilChance": 0.02,
+    "mainFoilChance": null
+   },
+   "packs": 100000,
+   "ms": 3330,
+   "rates": [
+    {
+     "name": "foil per card",
+     "k": 6098,
+     "n": 300000,
+     "observed": 2.033,
+     "ci95": [
+      1.983,
+      2.084
+     ],
+     "settled": 2,
+     "pass": true
+    },
+    {
+     "name": "Shiny per card pulled",
+     "k": 1531,
+     "n": 300000,
+     "observed": 0.51,
+     "ci95": [
+      0.485,
+      0.536
+     ],
+     "settled": 0.5,
+     "pass": true
+    },
+    {
+     "name": "Shiny per copy credited (info; a bonus copy matches its card)",
+     "k": 1581,
+     "n": 312520,
+     "observed": 0.506,
+     "ci95": [
+      0.482,
+      0.531
+     ],
+     "settled": null,
+     "pass": null
+    },
+    {
+     "name": "bonus copies per card (info)",
+     "k": 12520,
+     "n": 300000,
+     "observed": 4.173,
+     "ci95": [
+      4.102,
+      4.245
+     ],
+     "settled": null,
+     "pass": null
+    }
+   ],
+   "copies": 312520,
+   "eggCopies": 0
+  },
+  {
+   "label": "mystery",
+   "pack": {
+    "id": "mystery",
+    "name": "Mystery Booster",
+    "cards": 3,
+    "foilChance": 0.02,
+    "mainFoilChance": null
+   },
+   "packs": 100000,
+   "ms": 1164,
+   "rates": [
+    {
+     "name": "foil per card",
+     "k": 6028,
+     "n": 300000,
+     "observed": 2.009,
+     "ci95": [
+      1.96,
+      2.06
+     ],
+     "settled": 2,
+     "pass": true
+    },
+    {
+     "name": "Shiny per card pulled",
+     "k": 1538,
+     "n": 300000,
+     "observed": 0.513,
+     "ci95": [
+      0.488,
+      0.539
+     ],
+     "settled": 0.5,
+     "pass": true
+    },
+    {
+     "name": "Shiny per copy credited (info; a bonus copy matches its card)",
+     "k": 1600,
+     "n": 311090,
+     "observed": 0.514,
+     "ci95": [
+      0.49,
+      0.54
+     ],
+     "settled": null,
+     "pass": null
+    },
+    {
+     "name": "bonus copies per card (info)",
+     "k": 11092,
+     "n": 300000,
+     "observed": 3.697,
+     "ci95": [
+      3.63,
+      3.765
+     ],
+     "settled": null,
+     "pass": null
+    },
+    {
+     "name": "Easter egg per card (credited)",
+     "k": 149,
+     "n": 300000,
+     "observed": 0.05,
+     "ci95": [
+      0.042,
+      0.058
+     ],
+     "settled": 0.05,
+     "pass": true
+    },
+    {
+     "name": "Easter egg per card (rolled, info)",
+     "k": 149,
+     "n": 300000,
+     "observed": 0.05,
+     "ci95": [
+      0.042,
+      0.058
+     ],
+     "settled": null,
+     "pass": null
+    }
+   ],
+   "copies": 311090,
+   "eggCopies": 149
+  },
+  {
+   "label": "faction-otter",
+   "pack": {
+    "id": "fp-otter",
+    "name": "Rivergate Pack",
+    "cards": 3,
+    "foilChance": 0.01,
+    "mainFoilChance": null
+   },
+   "packs": 100000,
+   "ms": 3782,
+   "rates": [
+    {
+     "name": "foil per card",
+     "k": 3025,
+     "n": 300000,
+     "observed": 1.008,
+     "ci95": [
+      0.973,
+      1.045
+     ],
+     "settled": 1,
+     "pass": true
+    },
+    {
+     "name": "Shiny per card pulled",
+     "k": 1561,
+     "n": 300000,
+     "observed": 0.52,
+     "ci95": [
+      0.495,
+      0.547
+     ],
+     "settled": 0.5,
+     "pass": true
+    },
+    {
+     "name": "Shiny per copy credited (info; a bonus copy matches its card)",
+     "k": 1626,
+     "n": 312745,
+     "observed": 0.52,
+     "ci95": [
+      0.495,
+      0.546
+     ],
+     "settled": null,
+     "pass": null
+    },
+    {
+     "name": "bonus copies per card (info)",
+     "k": 12745,
+     "n": 300000,
+     "observed": 4.248,
+     "ci95": [
+      4.177,
+      4.321
+     ],
+     "settled": null,
+     "pass": null
+    }
+   ],
+   "copies": 312745,
+   "eggCopies": 0
+  },
+  {
+   "label": "bronze-collector",
+   "pack": {
+    "id": "bronze-adv",
+    "name": "ui.rw5-collector-pack",
+    "cards": 5,
+    "foilChance": 0.01,
+    "mainFoilChance": 0.1
+   },
+   "packs": 100000,
+   "ms": 6506,
+   "rates": [
+    {
+     "name": "foil per card",
+     "k": 49892,
+     "n": 500000,
+     "observed": 9.978,
+     "ci95": [
+      9.896,
+      10.062
+     ],
+     "settled": 10,
+     "pass": true
+    },
+    {
+     "name": "Shiny per card pulled",
+     "k": 2503,
+     "n": 500000,
+     "observed": 0.501,
+     "ci95": [
+      0.481,
+      0.521
+     ],
+     "settled": 0.5,
+     "pass": true
+    },
+    {
+     "name": "Shiny per copy credited (info; a bonus copy matches its card)",
+     "k": 2623,
+     "n": 522049,
+     "observed": 0.502,
+     "ci95": [
+      0.484,
+      0.522
+     ],
+     "settled": null,
+     "pass": null
+    },
+    {
+     "name": "bonus copies per card (info)",
+     "k": 22049,
+     "n": 500000,
+     "observed": 4.41,
+     "ci95": [
+      4.353,
+      4.467
+     ],
+     "settled": null,
+     "pass": null
+    }
+   ],
+   "copies": 522049,
+   "eggCopies": 0
+  },
+  {
+   "label": "silver-collector",
+   "pack": {
+    "id": "silver-adv",
+    "name": "ui.rw5-collector-pack",
+    "cards": 5,
+    "foilChance": 0.015,
+    "mainFoilChance": 0.15
+   },
+   "packs": 100000,
+   "ms": 7504,
+   "rates": [
+    {
+     "name": "foil per card",
+     "k": 75172,
+     "n": 500000,
+     "observed": 15.034,
+     "ci95": [
+      14.936,
+      15.134
+     ],
+     "settled": 15,
+     "pass": true
+    },
+    {
+     "name": "Shiny per card pulled",
+     "k": 2491,
+     "n": 500000,
+     "observed": 0.498,
+     "ci95": [
+      0.479,
+      0.518
+     ],
+     "settled": 0.5,
+     "pass": true
+    },
+    {
+     "name": "Shiny per copy credited (info; a bonus copy matches its card)",
+     "k": 2588,
+     "n": 521157,
+     "observed": 0.497,
+     "ci95": [
+      0.478,
+      0.516
+     ],
+     "settled": null,
+     "pass": null
+    },
+    {
+     "name": "bonus copies per card (info)",
+     "k": 21157,
+     "n": 500000,
+     "observed": 4.231,
+     "ci95": [
+      4.176,
+      4.288
+     ],
+     "settled": null,
+     "pass": null
+    }
+   ],
+   "copies": 521157,
+   "eggCopies": 0
+  },
+  {
+   "label": "gold-collector",
+   "pack": {
+    "id": "gold-adv",
+    "name": "ui.rw5-collector-pack",
+    "cards": 5,
+    "foilChance": 0.02,
+    "mainFoilChance": 0.2
+   },
+   "packs": 100000,
+   "ms": 7161,
+   "rates": [
+    {
+     "name": "foil per card",
+     "k": 99914,
+     "n": 500000,
+     "observed": 19.983,
+     "ci95": [
+      19.872,
+      20.094
+     ],
+     "settled": 20,
+     "pass": true
+    },
+    {
+     "name": "Shiny per card pulled",
+     "k": 2522,
+     "n": 500000,
+     "observed": 0.504,
+     "ci95": [
+      0.485,
+      0.524
+     ],
+     "settled": 0.5,
+     "pass": true
+    },
+    {
+     "name": "Shiny per copy credited (info; a bonus copy matches its card)",
+     "k": 2612,
+     "n": 520721,
+     "observed": 0.502,
+     "ci95": [
+      0.483,
+      0.521
+     ],
+     "settled": null,
+     "pass": null
+    },
+    {
+     "name": "bonus copies per card (info)",
+     "k": 20721,
+     "n": 500000,
+     "observed": 4.144,
+     "ci95": [
+      4.089,
+      4.2
+     ],
+     "settled": null,
+     "pass": null
+    }
+   ],
+   "copies": 520721,
+   "eggCopies": 0
+  }
+ ]
+}

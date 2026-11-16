@@ -1,0 +1,39 @@
+bronze             foil per card                                       2975/300000 = 0.992% [0.957, 1.028] settled 1% PASS
+bronze             Shiny per card pulled                               1495/300000 = 0.498% [0.474, 0.524] settled 0.5% PASS
+bronze             Shiny per copy credited (info; a bonus copy matches its card)    1560/313050 = 0.498% [0.474, 0.524] settled - 
+bronze             bonus copies per card (info)                       13050/300000 = 4.35% [4.278, 4.424] settled - 
+silver             foil per card                                       4443/300000 = 1.481% [1.438, 1.525] settled 1.5% PASS
+silver             Shiny per card pulled                               1509/300000 = 0.503% [0.478, 0.529] settled 0.5% PASS
+silver             Shiny per copy credited (info; a bonus copy matches its card)    1568/312741 = 0.501% [0.477, 0.527] settled - 
+silver             bonus copies per card (info)                       12741/300000 = 4.247% [4.175, 4.32] settled - 
+gold               foil per card                                       6098/300000 = 2.033% [1.983, 2.084] settled 2% PASS
+gold               Shiny per card pulled                               1531/300000 = 0.51% [0.485, 0.536] settled 0.5% PASS
+gold               Shiny per copy credited (info; a bonus copy matches its card)    1581/312520 = 0.506% [0.482, 0.531] settled - 
+gold               bonus copies per card (info)                       12520/300000 = 4.173% [4.102, 4.245] settled - 
+mystery            foil per card                                       6028/300000 = 2.009% [1.96, 2.06] settled 2% PASS
+mystery            Shiny per card pulled                               1538/300000 = 0.513% [0.488, 0.539] settled 0.5% PASS
+mystery            Shiny per copy credited (info; a bonus copy matches its card)    1600/311090 = 0.514% [0.49, 0.54] settled - 
+mystery            bonus copies per card (info)                       11092/300000 = 3.697% [3.63, 3.765] settled - 
+mystery            Easter egg per card (credited)                       149/300000 = 0.05% [0.042, 0.058] settled 0.05% PASS
+mystery            Easter egg per card (rolled, info)                   149/300000 = 0.05% [0.042, 0.058] settled - 
+faction-otter      foil per card                                       3025/300000 = 1.008% [0.973, 1.045] settled 1% PASS
+faction-otter      Shiny per card pulled                               1561/300000 = 0.52% [0.495, 0.547] settled 0.5% PASS
+faction-otter      Shiny per copy credited (info; a bonus copy matches its card)    1626/312745 = 0.52% [0.495, 0.546] settled - 
+faction-otter      bonus copies per card (info)                       12745/300000 = 4.248% [4.177, 4.321] settled - 
+bronze-collector   foil per card                                      49892/500000 = 9.978% [9.896, 10.062] settled 10% PASS
+bronze-collector   Shiny per card pulled                               2503/500000 = 0.501% [0.481, 0.521] settled 0.5% PASS
+bronze-collector   Shiny per copy credited (info; a bonus copy matches its card)    2623/522049 = 0.502% [0.484, 0.522] settled - 
+bronze-collector   bonus copies per card (info)                       22049/500000 = 4.41% [4.353, 4.467] settled - 
+silver-collector   foil per card                                      75172/500000 = 15.034% [14.936, 15.134] settled 15% PASS
+silver-collector   Shiny per card pulled                               2491/500000 = 0.498% [0.479, 0.518] settled 0.5% PASS
+silver-collector   Shiny per copy credited (info; a bonus copy matches its card)    2588/521157 = 0.497% [0.478, 0.516] settled - 
+silver-collector   bonus copies per card (info)                       21157/500000 = 4.231% [4.176, 4.288] settled - 
+gold-collector     foil per card                                      99914/500000 = 19.983% [19.872, 20.094] settled 20% PASS
+gold-collector     Shiny per card pulled                               2522/500000 = 0.504% [0.485, 0.524] settled 0.5% PASS
+gold-collector     Shiny per copy credited (info; a bonus copy matches its card)    2612/520721 = 0.502% [0.483, 0.521] settled - 
+gold-collector     bonus copies per card (info)                       20721/500000 = 4.144% [4.089, 4.2] settled - 
+-> docs/balance/checklist/chk1-foil-sim-2026-11-16.json
+
+real	0m38.276s
+user	0m36.726s
+sys	0m0.360s

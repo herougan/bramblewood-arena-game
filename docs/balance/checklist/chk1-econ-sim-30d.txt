@@ -1,0 +1,83 @@
+
+== dedicated: Dedicated (checks in all day, ~2 h of fights) | finished false on day 30
+stages (days): {"0-5":2,"5-10":1,"10-15":13,"15-20":null,"20-end":null} | Forge waits by map: {"11":2,"12":3,"13":7,"14":1,"15":6,"16":2,"17":1,"18":4,"19":2} | bound by: {"0-4":{"time":1},"5-10":{"time":1},"11-15":{"forge":19},"16-20":{"forge":9}}
+  Map 0 day 0: {"gold":0,"dust":0,"gems":0,"metal":0,"kibble":0,"xp":0,"iron":0,"pearl":0,"temper":0,"strange":0,"cards":0,"packs":0,"capsules":0} Lv0 ⚡20 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 5 day 2: {"gold":1341,"dust":987,"gems":1,"metal":0,"kibble":34,"xp":353,"iron":7,"pearl":0,"temper":0,"strange":0,"cards":21,"packs":1,"capsules":0} Lv1 ⚡25 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 10 day 3: {"gold":3014,"dust":2382,"gems":2,"metal":0,"kibble":85,"xp":755,"iron":20,"pearl":1,"temper":1,"strange":0,"cards":45,"packs":2,"capsules":1} Lv3 ⚡30 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 15 day 16: {"gold":5542,"dust":491,"gems":16,"metal":15,"kibble":235,"xp":9512,"iron":92,"pearl":2,"temper":4,"strange":1,"cards":93,"packs":11,"capsules":0} Lv16 ⚡35 forge T1 ref 3 gap {"dust":3837,"gold":2554}
+  income: {"firstClear":{"gold":7350,"dust":5921,"kibble":193,"cards":70,"capsules":8,"iron":62,"pearl":3,"temper":5,"strange":2},"wins":{"xp":2418},"mapPack":{"packs":8,"cards":24},"notices":{"gold":6336,"dust":7297.2,"gems":31.5,"xp":8236.8},"levelTrack":{"cards":17,"packs":4,"gold":1600,"dust":800},"trail":{"gold":440,"dust":450,"packs":7,"cards":23,"kibble":40,"capsules":2,"metal":2},"errands":{"dust":551,"gold":348,"xp":580,"iron":8.3},"repeat":{"gold":5648.8,"dust":2432,"kibble":100.8,"iron":100.8},"pvp":{"gold":371,"dust":19.3,"xp":588},"weekly":{"gold":3262,"dust":5002,"metal":28,"xp":7480},"raids":{"gold":143.8,"dust":108.9}}
+  spent: {"forge":{"gold":13646,"dust":20505},"forgeTier":{"gold":600,"dust":300},"energy":{"gold":0,"dust":1110},"nest":{"gold":1650,"dust":410}}
+  log: [{"day":1,"map":4,"ev":"Max Energy 25"},{"day":2,"map":8,"ev":"Max Energy 30"},{"day":14,"map":13,"ev":"Max Energy 35"},{"day":22,"map":16,"ev":"Iron Forge"},{"day":28,"map":18,"ev":"Max Energy 40"}]
+
+== casual: Casual (2 sessions of 30 min a day) | finished false on day 30
+stages (days): {"0-5":3,"5-10":4,"10-15":21,"15-20":null,"20-end":null} | Forge waits by map: {"12":4,"13":8,"14":5,"15":3} | bound by: {"0-4":{"time":1,"energy":1},"5-10":{"energy":6},"11-15":{"energy":2,"forge":20}}
+  Map 0 day 0: {"gold":0,"dust":0,"gems":0,"metal":0,"kibble":0,"xp":0,"iron":0,"pearl":0,"temper":0,"strange":0,"cards":0,"packs":0,"capsules":0} Lv0 ⚡20 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 5 day 3: {"gold":1236,"dust":866,"gems":1,"metal":0,"kibble":34,"xp":215,"iron":7,"pearl":0,"temper":0,"strange":0,"cards":21,"packs":1,"capsules":0} Lv1 ⚡25 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 10 day 7: {"gold":3130,"dust":2569,"gems":3,"metal":0,"kibble":85,"xp":908,"iron":21,"pearl":1,"temper":1,"strange":0,"cards":45,"packs":2,"capsules":0} Lv3 ⚡30 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 15 day 28: {"gold":5674,"dust":425,"gems":14,"metal":22,"kibble":195,"xp":9969,"iron":72,"pearl":1,"temper":4,"strange":1,"cards":93,"packs":11,"capsules":0} Lv17 ⚡40 forge T1 ref 3 gap {"dust":3837,"gold":2554}
+  income: {"firstClear":{"gold":5750,"dust":4616,"kibble":150,"cards":55,"capsules":6,"iron":48,"pearl":2,"temper":4,"strange":1},"wins":{"xp":894},"mapPack":{"packs":5,"cards":15},"notices":{"gold":3062.4,"dust":3527,"gems":15.2,"xp":3981.1},"levelTrack":{"cards":14,"packs":3,"gold":1200,"dust":600},"trail":{"gold":230,"dust":245,"packs":3,"cards":9,"kibble":40,"capsules":1,"metal":1},"errands":{"dust":421.8,"gold":266.4,"xp":444,"iron":6.3},"weekly":{"gold":3042,"dust":4662,"metal":28,"xp":7000},"pvp":{"gold":87.4,"dust":4.5,"xp":138.6},"repeat":{"gold":1792.7,"dust":775.9,"kibble":29,"iron":29},"raids":{"gold":100,"dust":75.8}}
+  spent: {"forge":{"gold":9036,"dust":13584},"forgeTier":{"gold":0,"dust":0},"energy":{"gold":0,"dust":1110},"nest":{"gold":650,"dust":160}}
+  log: [{"day":2,"map":4,"ev":"Max Energy 25"},{"day":3,"map":5,"ev":"Max Energy 30"},{"day":9,"map":11,"ev":"Max Energy 35"},{"day":10,"map":11,"ev":"Max Energy 40"}]
+
+== dedicatedKeepDeck: Dedicated, keeps one deck from Map 11 (variant: the Forge bill's lower bound) | finished true on day 10
+stages (days): {"0-5":2,"5-10":1,"10-15":3,"15-20":3,"20-end":2} | Forge waits by map: {"11":2,"16":1} | bound by: {"0-4":{"time":1},"5-10":{"time":1},"11-15":{"forge":2,"energy":2},"16-20":{"forge":1,"energy":2,"done":1}}
+  Map 0 day 0: {"gold":0,"dust":0,"gems":0,"metal":0,"kibble":0,"xp":0,"iron":0,"pearl":0,"temper":0,"strange":0,"cards":0,"packs":0,"capsules":0} Lv0 ⚡20 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 5 day 2: {"gold":1341,"dust":987,"gems":1,"metal":0,"kibble":34,"xp":353,"iron":7,"pearl":0,"temper":0,"strange":0,"cards":21,"packs":1,"capsules":0} Lv1 ⚡25 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 10 day 3: {"gold":3014,"dust":2382,"gems":2,"metal":0,"kibble":85,"xp":755,"iron":20,"pearl":1,"temper":1,"strange":0,"cards":45,"packs":2,"capsules":1} Lv3 ⚡30 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 15 day 6: {"gold":3381,"dust":1584,"gems":5,"metal":0,"kibble":155,"xp":1939,"iron":50,"pearl":2,"temper":4,"strange":1,"cards":78,"packs":6,"capsules":0} Lv6 ⚡35 forge T1 ref 3 gap {"dust":0,"gold":0}
+  Map 20 day 9: {"gold":4334,"dust":1904,"gems":8,"metal":7,"kibble":231,"xp":4977,"iron":69,"pearl":2,"temper":2,"strange":1,"cards":112,"packs":11,"capsules":0} Lv11 ⚡50 forge T2 ref 3.9 gap {"dust":1166,"gold":776}
+  Map 21 day 11: {"gold":794,"dust":970,"gems":11,"metal":7,"kibble":252,"xp":5626,"iron":82,"pearl":3,"temper":7,"strange":0,"cards":123,"packs":13,"capsules":0} Lv12 ⚡50 forge T3 ref 4.08 gap {"dust":0,"gold":0}
+  income: {"firstClear":{"gold":8670,"dust":7294,"kibble":224,"cards":79,"capsules":8,"iron":78,"pearl":4,"temper":10,"strange":2},"wins":{"xp":618},"mapPack":{"packs":9,"cards":27},"notices":{"gold":2112,"dust":2432.4,"gems":10.5,"xp":2745.6},"levelTrack":{"cards":11,"packs":2,"gold":600,"dust":300},"trail":{"gold":120,"dust":110,"packs":2,"cards":6,"kibble":20,"capsules":1},"errands":{"dust":155.8,"gold":98.4,"xp":164,"iron":2.3},"repeat":{"gold":427.4,"dust":183.2,"kibble":8.3,"iron":8.3},"pvp":{"gold":106,"dust":5.5,"xp":168},"raids":{"gold":31.3,"dust":23.7},"weekly":{"gold":843,"dust":1293,"metal":7,"xp":1930}}
+  spent: {"forge":{"gold":3864,"dust":5808},"forgeTier":{"gold":2100,"dust":1100},"energy":{"gold":0,"dust":2510},"nest":{"gold":6250,"dust":1410}}
+  log: [{"day":1,"map":4,"ev":"Max Energy 25"},{"day":2,"map":8,"ev":"Max Energy 30"},{"day":5,"map":12,"ev":"Max Energy 35"},{"day":6,"map":15,"ev":"Max Energy 40"},{"day":7,"map":16,"ev":"Iron Forge"},{"day":7,"map":16,"ev":"Max Energy 45"},{"day":8,"map":18,"ev":"Max Energy 50"},{"day":10,"map":21,"ev":"Ember Forge"}]
+
+== casualKeepDeck: Casual, keeps one deck from Map 11 (variant) | finished true on day 20
+stages (days): {"0-5":3,"5-10":4,"10-15":6,"15-20":4,"20-end":4} | Forge waits by map: {"16":1} | bound by: {"0-4":{"time":1,"energy":1},"5-10":{"energy":6},"11-15":{"energy":5},"16-20":{"forge":1,"energy":5,"done":1}}
+  Map 0 day 0: {"gold":0,"dust":0,"gems":0,"metal":0,"kibble":0,"xp":0,"iron":0,"pearl":0,"temper":0,"strange":0,"cards":0,"packs":0,"capsules":0} Lv0 ⚡20 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 5 day 3: {"gold":1236,"dust":866,"gems":1,"metal":0,"kibble":34,"xp":215,"iron":7,"pearl":0,"temper":0,"strange":0,"cards":21,"packs":1,"capsules":0} Lv1 ⚡25 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 10 day 7: {"gold":3130,"dust":2569,"gems":3,"metal":0,"kibble":85,"xp":908,"iron":21,"pearl":1,"temper":1,"strange":0,"cards":45,"packs":2,"capsules":0} Lv3 ⚡30 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 15 day 13: {"gold":4142,"dust":943,"gems":6,"metal":7,"kibble":150,"xp":3418,"iron":43,"pearl":1,"temper":1,"strange":1,"cards":81,"packs":7,"capsules":0} Lv9 ⚡50 forge T1 ref 3 gap {"dust":0,"gold":0}
+  Map 20 day 17: {"gold":4591,"dust":2694,"gems":8,"metal":14,"kibble":224,"xp":6130,"iron":63,"pearl":2,"temper":2,"strange":1,"cards":112,"packs":11,"capsules":0} Lv12 ⚡50 forge T2 ref 3.9 gap {"dust":1166,"gold":776}
+  Map 21 day 21: {"gold":1061,"dust":1842,"gems":10,"metal":14,"kibble":245,"xp":6775,"iron":76,"pearl":3,"temper":7,"strange":0,"cards":123,"packs":13,"capsules":0} Lv13 ⚡50 forge T3 ref 4.08 gap {"dust":0,"gold":0}
+  income: {"firstClear":{"gold":8670,"dust":7294,"kibble":224,"cards":79,"capsules":8,"iron":78,"pearl":4,"temper":10,"strange":2},"wins":{"xp":477},"mapPack":{"packs":9,"cards":27},"notices":{"gold":2006.4,"dust":2310.8,"gems":10,"xp":2608.3},"levelTrack":{"cards":11,"packs":2,"gold":700,"dust":350},"trail":{"gold":120,"dust":170,"packs":2,"cards":6,"kibble":20,"capsules":1},"errands":{"dust":222.3,"gold":140.4,"xp":234,"iron":3.3},"weekly":{"gold":1466,"dust":2246,"metal":14,"xp":3380},"pvp":{"gold":47.7,"dust":2.5,"xp":75.6},"raids":{"gold":62.5,"dust":47.4},"repeat":{"gold":62.2,"dust":26.6,"kibble":1.2,"iron":1.2}}
+  spent: {"forge":{"gold":3864,"dust":5808},"forgeTier":{"gold":2100,"dust":1100},"energy":{"gold":0,"dust":2510},"nest":{"gold":6250,"dust":1410}}
+  log: [{"day":2,"map":4,"ev":"Max Energy 25"},{"day":3,"map":5,"ev":"Max Energy 30"},{"day":9,"map":11,"ev":"Max Energy 35"},{"day":10,"map":11,"ev":"Max Energy 40"},{"day":11,"map":13,"ev":"Max Energy 45"},{"day":12,"map":14,"ev":"Max Energy 50"},{"day":14,"map":16,"ev":"Iron Forge"},{"day":20,"map":21,"ev":"Ember Forge"}]
+
+== dedicatedWeeklyOnce: Dedicated, a weekly tier paid once (variant) | finished false on day 30
+stages (days): {"0-5":2,"5-10":1,"10-15":16,"15-20":null,"20-end":null} | Forge waits by map: {"11":2,"12":5,"13":6,"14":3,"15":8,"16":2,"17":1,"18":1} | bound by: {"0-4":{"time":1},"5-10":{"time":1},"11-15":{"forge":24},"16-20":{"forge":4}}
+  Map 0 day 0: {"gold":0,"dust":0,"gems":0,"metal":0,"kibble":0,"xp":0,"iron":0,"pearl":0,"temper":0,"strange":0,"cards":0,"packs":0,"capsules":0} Lv0 ⚡20 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 5 day 2: {"gold":1341,"dust":987,"gems":1,"metal":0,"kibble":34,"xp":353,"iron":7,"pearl":0,"temper":0,"strange":0,"cards":21,"packs":1,"capsules":0} Lv1 ⚡25 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 10 day 3: {"gold":3014,"dust":2382,"gems":2,"metal":0,"kibble":85,"xp":755,"iron":20,"pearl":1,"temper":1,"strange":0,"cards":45,"packs":2,"capsules":1} Lv3 ⚡30 forge T1 ref 0 gap {"dust":0,"gold":0}
+  Map 15 day 19: {"gold":7351,"dust":511,"gems":19,"metal":7,"kibble":245,"xp":10651,"iron":103,"pearl":2,"temper":4,"strange":1,"cards":93,"packs":11,"capsules":0} Lv17 ⚡35 forge T1 ref 3 gap {"dust":3837,"gold":2554}
+  income: {"firstClear":{"gold":6980,"dust":5637,"kibble":183,"cards":65,"capsules":7,"iron":59,"pearl":3,"temper":5,"strange":2},"wins":{"xp":2379},"mapPack":{"packs":7,"cards":21},"notices":{"gold":6336,"dust":7297.2,"gems":31.5,"xp":8236.8},"levelTrack":{"cards":17,"packs":4,"gold":1600,"dust":800},"trail":{"gold":440,"dust":450,"packs":7,"cards":23,"kibble":40,"capsules":2,"metal":2},"errands":{"dust":551,"gold":348,"xp":580,"iron":8.3},"repeat":{"gold":5992.9,"dust":2589.6,"kibble":99.9,"iron":99.9},"pvp":{"gold":371,"dust":19.3,"xp":588},"weekly":{"xp":7480,"gold":1297,"dust":1987,"metal":12},"raids":{"gold":131.3,"dust":99.5}}
+  spent: {"forge":{"gold":11713,"dust":17599},"forgeTier":{"gold":600,"dust":300},"energy":{"gold":0,"dust":1110},"nest":{"gold":1650,"dust":410}}
+  log: [{"day":1,"map":4,"ev":"Max Energy 25"},{"day":2,"map":8,"ev":"Max Energy 30"},{"day":9,"map":12,"ev":"Max Energy 35"},{"day":27,"map":16,"ev":"Iron Forge"},{"day":28,"map":16,"ev":"Max Energy 40"}]
+
+road:
+  0 m1 4f ⚡7/12 🍁160 ✨80 cards 2 🔋0  g/⚡ 13.85 d/⚡ 6.92 rep {"energy":1,"gold":4,"dust":1,"goldPerEnergy":4}
+  1 mf 5f ⚡9/13 🍁230 ✨148 cards 2 🔋1  g/⚡ 17.08 d/⚡ 10.99 rep {"energy":1,"gold":4,"dust":1,"goldPerEnergy":4}
+  2 mb 5f ⚡14/23 🍁230 ✨148 cards 4 🔋1  g/⚡ 10.11 d/⚡ 6.5 rep {"energy":2,"gold":4,"dust":1,"goldPerEnergy":2}
+  3 mc 7f ⚡28/43 🍁370 ✨284 cards 4 🔋0 bronze g/⚡ 8.68 d/⚡ 6.66 rep {"energy":4,"gold":4,"dust":1,"goldPerEnergy":1}
+  4 m2 5f ⚡25/40 🍁290 ✨244 cards 5 🔋1  g/⚡ 7.29 d/⚡ 6.13 rep {"energy":5,"gold":4,"dust":1,"goldPerEnergy":0.8}
+  5 mw 7f ⚡40/66 🍁420 ✨385 cards 4 🔋0  g/⚡ 6.39 d/⚡ 5.85 rep {"energy":5,"gold":4,"dust":1,"goldPerEnergy":0.8}
+  6 m8 8f ⚡48/72 🍁440 ✨352 cards 5 🔋1  g/⚡ 6.11 d/⚡ 4.89 rep {"energy":6,"gold":4,"dust":1,"goldPerEnergy":0.67}
+  7 mu 6f ⚡36/56 🍁300 ✨216 cards 2 🔋0 silver g/⚡ 5.37 d/⚡ 3.87 rep {"energy":6,"gold":4,"dust":1,"goldPerEnergy":0.67}
+  8 m4 8f ⚡48/72 🍁380 ✨256 cards 5 🔋0  g/⚡ 5.28 d/⚡ 3.55 rep {"energy":6,"gold":4,"dust":1,"goldPerEnergy":0.67}
+  9 mk 7f ⚡49/75 🍁370 ✨284 cards 3 🔋1  g/⚡ 4.96 d/⚡ 3.81 rep {"energy":7,"gold":4,"dust":1,"goldPerEnergy":0.57}
+  10 m7 9f ⚡70/111 🍁530 ✨473 cards 4 🔋0 mystery g/⚡ 4.78 d/⚡ 4.26 rep {"energy":7,"gold":4,"dust":1,"goldPerEnergy":0.57}
+  11 m10 11f ⚡84/173 🍁780 ✨758 cards 4 🔋0 gold g/⚡ 4.51 d/⚡ 4.38 rep {"energy":7,"gold":4,"dust":1,"goldPerEnergy":0.57}
+  12 mh 7f ⚡49/75 🍁370 ✨284 cards 4 🔋1  g/⚡ 4.96 d/⚡ 3.81 rep {"energy":7,"gold":4,"dust":1,"goldPerEnergy":0.57}
+  13 mr 8f ⚡64/96 🍁440 ✨352 cards 3 🔋0 bronze g/⚡ 4.58 d/⚡ 3.67 rep {"energy":8,"gold":4,"dust":1,"goldPerEnergy":0.5}
+  14 m5 8f ⚡64/96 🍁440 ✨352 cards 4 🔋0  g/⚡ 4.58 d/⚡ 3.67 rep {"energy":8,"gold":4,"dust":1,"goldPerEnergy":0.5}
+  15 ml 7f ⚡64/105 🍁420 ✨385 cards 3 🔋1 mystery g/⚡ 3.99 d/⚡ 3.66 rep {"energy":8,"gold":4,"dust":1,"goldPerEnergy":0.5}
+  16 mt 7f ⚡56/85 🍁370 ✨284 cards 3 🔋0 silver g/⚡ 4.34 d/⚡ 3.33 rep {"energy":8,"gold":4,"dust":1,"goldPerEnergy":0.5}
+  17 m6 8f ⚡64/96 🍁440 ✨352 cards 4 🔋0  g/⚡ 4.58 d/⚡ 3.67 rep {"energy":8,"gold":4,"dust":1,"goldPerEnergy":0.5}
+  18 md 7f ⚡63/96 🍁370 ✨284 cards 5 🔋1 gold g/⚡ 3.86 d/⚡ 2.96 rep {"energy":9,"gold":4,"dust":1,"goldPerEnergy":0.44}
+  19 m3 6f ⚡54/84 🍁360 ✨312 cards 4 🔋0  g/⚡ 4.3 d/⚡ 3.73 rep {"energy":9,"gold":4,"dust":1,"goldPerEnergy":0.44}
+  20 m11 11f ⚡126/269 🍁960 ✨1061 cards 5 🔋0 mystery g/⚡ 3.57 d/⚡ 3.95 rep {"energy":9,"gold":4,"dust":1,"goldPerEnergy":0.44}
+noticeEV {"gold":35.2,"dust":40.5} features {"deck":0,"fieldkit":12,"backpack":5,"nest":3,"quests":4,"shop":5,"autobattle":5,"skillcodex":9,"mapcodex":11,"codex":7,"arena":11,"shop2":8,"questboard":8,"forge":11,"raid":13,"shop3":13,"wanderer":13,"tavern":14,"gauntlet":16,"stomp":21,"testlab":21,"market":31}
+-> docs/balance/checklist/chk1-econ-sim-30d.json
+
+real	0m2.442s
+user	0m1.975s
+sys	0m0.150s
