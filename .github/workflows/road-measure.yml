@@ -1,42 +1,28 @@
-# 2026-11-16 (package INFRA1, owner 11-06: "always be running the balancing exes in the background"): the road measure (the Map
-# reference against every fight of Maps 0-20 and their side maps, tools/skirmish_pass.js measure --maxmap=20) on GitHub's free runners.
-# On every push to main (400 games, seeds 9100 + 37g, tag main-<sha>) and by hand (Actions tab -> "Road measure" -> Run workflow).
-# 20 jobs each play every 20th fight; the parts are merged into skirmish-pass-<tag>.jsonl and summarised (tools/ci/road_summary.js).
-# Artifact "road-measure": the jsonl and the summary. Nothing is committed. Fetch it with tools/ci/fetch_measure.sh <run-id|latest>.
+# THROWAWAY BRANCH cardpow1-ci ONLY (package CARDPOW1, 2026-11-17): the card power v3 measure (tools/card_balance.js --v3 --scope=all) split
+# over 20 runners, dispatched as "Road measure" with --ref cardpow1-ci. Input "only" = the stage: basic (basic pass) or adv (advanced pass, needs
+# the merged basic progress committed on this branch). Each shard prints its progress lines between BEGIN-ROWS / END-ROWS in its log. Never merge.
 name: Road measure
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       games:
-        description: 'Games per fight'
+        description: 'Games per card'
         required: true
         default: '400'
       seed:
-        description: 'Seed K (games use K + 37g; empty = the usual 9100)'
+        description: 'unused'
         required: false
         default: ''
       tag:
-        description: 'Tag (file skirmish-pass-<tag>.jsonl; empty = ci-<run number>)'
+        description: 'unused'
         required: false
         default: ''
       only:
-        description: 'Only these fights or maps, e.g. "19-5,16-4,mf" (empty = all)'
+        description: 'Stage: basic or adv'
         required: false
-        default: ''
+        default: 'basic'
 permissions:
   contents: read
-concurrency:
-  group: road-measure-${{ github.event_name == 'push' && github.ref || github.run_id }}
-  cancel-in-progress: true
-env:
-  NSHARDS: 20
-  GAMES: ${{ inputs.games || '400' }}
-  SEED: ${{ inputs.seed }}
-  ONLY: ${{ inputs.only }}
-  TAG: ${{ inputs.tag || (github.event_name == 'push' && format('main-{0}', github.sha) || format('ci-{0}', github.run_number)) }}
 jobs:
   measure:
     runs-on: ubuntu-latest
@@ -44,52 +30,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19] # 0..NSHARDS-1
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Measure, shard ${{ matrix.shard }} of 20
+      - name: Card power, stage ${{ inputs.only }}, shard ${{ matrix.shard }} of 20
         shell: bash
         run: |
-          rm -f "docs/balance/skirmish-pass-$TAG.jsonl"
-          node tools/skirmish_pass.js measure "$GAMES" "${{ matrix.shard }}" "$NSHARDS" --maxmap=20 --tag="$TAG" \
-            ${SEED:+--seed=$SEED} ${ONLY:+--only=$ONLY}
-          touch "docs/balance/skirmish-pass-$TAG.jsonl"
-          mkdir -p part && mv "docs/balance/skirmish-pass-$TAG.jsonl" "part/${{ matrix.shard }}.jsonl"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: road-part-${{ matrix.shard }}
-          path: part/
-  merge:
-    needs: measure
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          sparse-checkout: tools/ci
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: road-part-*
-          path: parts
-          merge-multiple: true
-      - name: Merge and summarise
-        shell: bash
-        run: |
-          mkdir -p out
-          F="out/skirmish-pass-$TAG.jsonl"
-          cat parts/*.jsonl > "$F"
-          node tools/ci/road_summary.js "$F" | tee "out/skirmish-pass-$TAG-summary.md" # 2026-11-16 (coordinator): also in the log (artifact storage is unreachable from the Claude sandbox; gh run view --log is)
-          echo "BEGIN-ROWS $TAG"; cat "$F"; echo "END-ROWS" # 2026-11-16 (coordinator): rows in the log too, so tools/ci/fetch_measure.sh works where artifact storage is blocked
-          n=$(ls parts/*.jsonl | wc -l)
-          { cat "out/skirmish-pass-$TAG-summary.md"; echo; echo "$n of $NSHARDS shards, $(wc -l < "$F") rows. Fetch: \`bash tools/ci/fetch_measure.sh $GITHUB_RUN_ID\`"; } >> "$GITHUB_STEP_SUMMARY"
-          [ "$n" = "$NSHARDS" ] || { echo "::error::only $n of $NSHARDS shards finished"; exit 1; }
-      - uses: actions/upload-artifact@v4
-        with:
-          name: road-measure
-          path: out/
+          P=docs/balance/bal25/card-power-progress.jsonl
+          if [ "${{ inputs.only }}" = "adv" ]; then FLAG=--resume; N0=$(wc -l < $P); else FLAG=--basic-only; rm -f $P; N0=0; fi
+          node tools/card_balance.js --v3 "${{ inputs.games }}" --scope=all --workers=$(nproc) --shard=${{ matrix.shard }}/20 $FLAG
+          echo "BEGIN-ROWS"; tail -n +$((N0 + 1)) $P; echo "END-ROWS"
