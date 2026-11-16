@@ -44,6 +44,10 @@
 //              expected = a least-squares line of power on N (bramblewood-budget.js through tools/skill_costs.js, at the level the
 //              card is measured at; low-sample cards left out of the fit); forBudget = power - expected (+ = stronger than its
 //              rarity, Lumber, Wait, map and skills say). Writes docs/balance/bal25/card-power.json (progress card-power-progress.jsonl).
+// 2026-11-16 (package CARDPOW1, owner 11-16 23:53: every card power rated): --scope=all rates every playable card (Maps 0-20 rows as before,
+//   the rest marked scope "extra" and left out of the advanced pool and the fit); --scope=all --only=<ids> folds new or edited cards into
+//   the full report (how to rate a card added after the run: tests/cardpow1-2026-11-16.js asks for it); --shard=K/N splits a run over runners
+//   (tools/cardpow1/merge_ci_2026_11_16.js folds the shards' progress lines). Map 0 cards the game hands out are in the Maps 0-20 scope now.
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -82,7 +86,20 @@ function atLevel1(d){ if(!baseLevel0(d)) return d; const ov = d.levelStats && (d
 // BAL25 (--v3): the obtain map per card, the Maps 0-20 scope and the balancing-only Faction-Starter rarity
 const OBTAIN = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/card-obtain-maps.json'), 'utf8')).maps || {}; }catch(e){ return {}; } })();
 const SCOPE_MAX_MAP = 20;
-function inScopeV3(c){ const m = OBTAIN[c.id], k = c.source && c.source.kind; if(m != null) return m <= SCOPE_MAX_MAP; return !!(c.faction || c.rarity === 'starter' || k === 'base'); }
+// 2026-11-17 (package CARDPOW1, owner 11-16 23:53: "farm dog isn't power rated yet"): card-obtain-maps.json leaves out every Map 0 card (0 is
+// its default), so an obtainable Map 0 card that is not a faction / Starter / Base card (Farm Dog, a pack-1 card of Map 0's list) fell out of
+// the scope. An unlisted card now counts when the game can hand it out (arena_app.js isUnattainable false, read through tools/lib_bramble.js;
+// the parent process only, workers never compute the scope).
+let GAME_G = null; const gameG = ()=> GAME_G || (GAME_G = require(path.join(__dirname, 'lib_bramble.js')).G);
+function obtainable0(c){ try{ return !gameG().isUnattainable(c); }catch(e){ return false; } }
+function inScopeV3(c){ const m = OBTAIN[c.id], k = c.source && c.source.kind; if(m != null) return m <= SCOPE_MAX_MAP; return !!(c.faction || c.rarity === 'starter' || k === 'base') || (!c.token && !c.test && !c.hallOfFame && !c.field && !c.pool && obtainable0(c)); }
+// CARDPOW1: --scope=all (with --v3) rates every card that can be on the board: the Maps 0-20 scope above plus Map 21+ cards, cards in no list
+// yet, playable tokens, field cards and pool candidates. Test cards, Hall of Fame variants and materia (gem sockets, outside the budget) stay out.
+// The advanced pool and the "for its budget" fit still come from the Maps 0-20 scope only, so the yardsticks are BAL25's / BAL34's.
+// --shard=K/N plays every N-th card still to do (K = 0..N-1) for runs split over GitHub runners; the progress files merge line by line.
+const SCOPE_ALL = V3 && optv('scope', '') === 'all';
+const SHARD = (()=>{ const m = /^(\d+)\/(\d+)$/.exec(optv('shard', '') || ''); return m ? {k: +m[1], n: Math.max(1, +m[2])} : null; })();
+const playableAll = c=> !!c && !c.test && !c.hallOfFame && !c.baseId && c.cardType !== 'materia';
 function isFactionStarter(c){ return !!(c && c.faction && OBTAIN[c.id] == null && c.rarity === 'starter'); }
 const defs = {}; cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; defs[c.id] = V3 && isFactionStarter(c) ? Object.assign(d, {factionStarter: true}) : atLevel1(d); });
 // 2026-10-19 (package AN): pool cards ("pool": true, unplaced candidates) are measured only when asked for: --only=<ids>, or --pool
@@ -99,6 +116,18 @@ const FILLER = ['warren-scout', 'fawn-scout', 'bee-sentry', 'mouse-sapper', 'poi
 // of the later situational traits (Swimmer etc.), or every new trait on a filler card would move every card's score.
 const RAW = {}; cards.forEach(c=>{ RAW[c.id] = c; });
 FILLER.forEach(id=>{ const d = Object.assign({effects:{}}, RAW[id]); delete d.art; d.effects = Object.assign({}, d.effects); ['swimmer','tailwind','headwind','darksight','dry'].forEach(k=> delete d.effects[k]); if(V3 && isFactionStarter(RAW[id])) d.factionStarter = true; /* BAL25: Bee Sentry */ defs[id] = d; });
+// CARDPOW1 (2026-11-16): a card that costs Stone, Metal or Uranium was never played against the filler (it has Lumber only), so it had no
+// rating. With --v3 its test deck swaps 2 filler slots per such resource for a card that delivers it (the Lumber filler's idea, BAL25): Pumice
+// Beetle (Stone 2 on arrival), Ore Smelter Mole (Delivery Metal 1), Irradiated Axolotl (Delivery Uranium 1). Its row lists them (`helpers`).
+const RES_HELPERS = {stoneCost: 'pumice-beetle', metalCost: 'ore-smelter-mole', uraniumCost: 'irradiated-axolotl'};
+// CARDPOW1: why the test side (k copies + filler) could not play a card in 20+ games: the rating needs a deck built for it
+function unplayedWhy(c){ const e = (c && c.effects) || {};
+  if(c.prayerReq) return 'needs Prayer ' + c.prayerReq + ' (Ecclesia; no Prayer source in the filler)';
+  if(e.evolute || e.evoluteAlpha || e.evoluteOmega) return 'an Evolute: needs a legal base of its line on the field';
+  if(c.exileCost) return 'needs cards to exile (' + (typeof c.exileCost === 'object' ? (c.exileCost.count || 1) + ' from the ' + (c.exileCost.zone || 'graveyard') : c.exileCost) + ')';
+  if(c.cardType === 'spell') return 'a spell the CPU did not cast in the test';
+  return 'rarely played by the CPU in the test'; }
+function helpersOf(d){ const out = {}; if(!V3 || !d) return out; Object.entries(RES_HELPERS).forEach(([f, h])=>{ if(d[f] && defs[h] && h !== d.id) out[h] = 2; }); return out; }
 function fillerDeck(n){ const d = {}; for(let i=0;i<n;i++){ const id = FILLER[i % FILLER.length]; d[id] = (d[id]||0) + 1; } return d; }
 const OPP = fillerDeck(20);
 const COPIES_BY_COST = [8, 6, 4, 3];
@@ -165,7 +194,8 @@ function measure(id, over, pool){
   const D = over ? Object.assign({}, defs, {[id]: Object.assign({}, defs[id], over)}) : defs;
   // Expensive cards can't be played eight times a match, so the test deck carries fewer of them.
   const k = COPIES_BY_COST[Math.min(3, defs[id].cost||0)];
-  const deck = fillerDeck(20 - k); deck[id] = (deck[id]||0) + k;
+  const hp = helpersOf(defs[id]), nh = Object.values(hp).reduce((a, b)=> a + b, 0);
+  const deck = fillerDeck(20 - k - nh); deck[id] = (deck[id]||0) + k; Object.entries(hp).forEach(([h, c])=>{ deck[h] = (deck[h]||0) + c; }); // CARDPOW1: resource helpers
   let w = 0, wAll = 0, played = 0, games = 0; const byPhase = V3 ? {cycle: [0, 0], day: [0, 0], night: [0, 0]} : null; // BAL25: [played, wins]
   for(let g=0; g<N; g++){
     const opp = pool ? advDeck(pool, id, g) : OPP; if(!opp) continue;
@@ -227,7 +257,7 @@ function fitBudget(rows){
   rows.forEach(r=>{ const hasA = r.advRate != null && !(r.adv && r.adv.lowSample); r.power = r.winRate == null ? null : Math.round((hasA ? (r.winRate + r.advRate) / 2 : r.winRate) * 10) / 10; });
   // eggs (hatchInto: Wait 5-10, so N 40-83, but the card is a shell that hatches into another) are left out of the fit and get no forBudget
   const egg = r=> !!(RAW[r.id] && RAW[r.id].hatchInto);
-  const pts = rows.filter(r=> r.power != null && !r.lowSample && Number.isFinite(r.N) && !egg(r));
+  const pts = rows.filter(r=> r.power != null && !r.lowSample && Number.isFinite(r.N) && !egg(r) && r.scope !== 'extra'); // CARDPOW1: fitted on the Maps 0-20 cards
   const n = pts.length; if(n < 3) return null;
   const mx = pts.reduce((s, r)=> s + r.N, 0) / n, my = pts.reduce((s, r)=> s + r.power, 0) / n;
   const sxy = pts.reduce((s, r)=> s + (r.N - mx) * (r.power - my), 0), sxx = pts.reduce((s, r)=> s + (r.N - mx) * (r.N - mx), 0);
@@ -240,14 +270,15 @@ function fitBudget(rows){
 }
 
 const t0 = Date.now();
-const LIVE = fieldable.filter(id=> (!ONLY.length || ONLY.includes(id)) && (!V3 || ONLY.length || inScopeV3(RAW[id]))).sort(); // BAL25: --v3 keeps the Maps 0-20 cards
+const LIVE = (SCOPE_ALL ? Object.keys(RAW).filter(id=> playableAll(RAW[id]) && defs[id]) : fieldable).filter(id=> (!ONLY.length || ONLY.includes(id)) && (!V3 || ONLY.length || SCOPE_ALL || inScopeV3(RAW[id]))).sort(); // BAL25: --v3 keeps the Maps 0-20 cards; CARDPOW1: --scope=all every playable card
+const IN_SCOPE = new Set(V3 ? LIVE.filter(id=> inScopeV3(RAW[id])) : LIVE); // CARDPOW1: the Maps 0-20 scope (advanced pool, fit)
 // ---- run the cards over WORKERS child processes, one card at a time; results saved line by line so --resume can pick up.
 // BAL25: --v3 writes under docs/balance/bal25/ (the v2 report stays as it was)
 const OUT_DIR = V3 ? path.join(ROOT, 'docs', 'balance', 'bal25') : path.join(ROOT, 'docs', 'balance');
 const OUT_NAME = V3 ? (ONLY.length ? 'card-power-partial' : 'card-power') : (ONLY.length ? 'card-balance-partial' : 'card-balance');
 fs.mkdirSync(OUT_DIR, {recursive: true});
 const PROG = path.join(OUT_DIR, OUT_NAME + '-progress.jsonl');
-const SETTINGS = Object.assign({games: N, mode: MODE, seed: SEED, only: ONLY.slice().sort().join(','), filler: FILLER.join(',')}, V3 ? {v: 3, top: TOP, advMix: ADV_MIX, scopeMaxMap: SCOPE_MAX_MAP, phases: PHASE_ROLL.map(x=> x.join(':')).join(','), fields: !!ROBUST} : {});
+const SETTINGS = Object.assign({games: N, mode: MODE, seed: SEED, only: ONLY.slice().sort().join(','), filler: FILLER.join(',')}, V3 ? {v: 3, top: TOP, advMix: ADV_MIX, scopeMaxMap: SCOPE_MAX_MAP, phases: PHASE_ROLL.map(x=> x.join(':')).join(','), fields: !!ROBUST} : {}, SCOPE_ALL ? {scope: 'all'} : {}); // CARDPOW1: --scope=all
 const done = {basic: {}, adv: {}};
 if(args.includes('--resume') && fs.existsSync(PROG)){
   const lines = fs.readFileSync(PROG, 'utf8').split('\n').filter(Boolean).map(l=>{ try{ return JSON.parse(l); }catch(e){ return null; } }).filter(Boolean);
@@ -261,7 +292,7 @@ if(args.includes('--resume') && fs.existsSync(PROG)){
 }
 if(!Object.keys(done.basic).length) fs.writeFileSync(PROG, JSON.stringify({settings: SETTINGS}) + '\n');
 function runPhase(phase, ids, pool){
-  const todo = ids.filter(id=> !done[phase][id]);
+  const todo = ids.filter(id=> !done[phase][id]).filter((id, i)=> !SHARD || i % SHARD.n === SHARD.k); // CARDPOW1: --shard=K/N
   if(!todo.length || REPORT_ONLY) return Promise.resolve();
   const { fork } = require('child_process');
   const total = todo.length; let next = 0, got = 0, tP = Date.now();
@@ -294,7 +325,7 @@ const tBasic = (Date.now() - t0) / 1000;
 let pool = null, poolFrom = null, advAll = null;
 if(!BASIC_ONLY){
   let rated;
-  if(!ONLY.length){ rated = LIVE.map(id=> ({id, rate: done.basic[id].rate, played: done.basic[id].played})); poolFrom = 'this run (basic pass)'; }
+  if(!ONLY.length){ rated = LIVE.filter(id=> IN_SCOPE.has(id) && done.basic[id]).map(id=> ({id, rate: done.basic[id].rate, played: done.basic[id].played})); poolFrom = 'this run (basic pass)' + (SCOPE_ALL ? ', Maps 0-20 cards' : ''); } // CARDPOW1: the Maps 0-20 cards only
   else { const rel = V3 ? 'docs/balance/bal25/card-power.json' : 'docs/balance/card-balance.json', prev = JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
     rated = (prev.rows || []).map(r=> ({id: r.id, rate: r.winRate, played: r.played})); poolFrom = rel + ' (' + prev.generated + ', ' + prev.games + ' games)'; }
   pool = topPool(rated);
@@ -306,14 +337,14 @@ const rows = LIVE.filter(id=> done.basic[id]).map(id=>{
   const d = defs[id], b = done.basic[id], a = done.adv[id], wr = b.rate, [lo, hi] = bandOf(d);
   const verdict = wr == null ? 'unplayed' : wr > hi ? 'strong' : wr < lo ? 'weak' : 'ok';
   return {id, name:d.name, rarity:d.rarity || null, cost:d.cost||0, wait:d.wait||0, attack:d.attack||0, health:d.health||0,
-    skills:Object.keys(d.effects||{}).filter(k=> k!=='triggers').concat((d.effects.triggers||[]).length ? ['triggers'] : []),
+    skills:Object.keys(d.effects||{}).filter(k=> k!=='triggers').concat((d.effects.triggers||[]).length ? ['triggers'] : []), helpers: Object.keys(helpersOf(d)).length ? helpersOf(d) : undefined /* CARDPOW1 */, unplayedWhy: V3 && b.played < LOW_SAMPLE ? unplayedWhy(RAW[id]) : undefined,
     winRate: r1(wr), advRate: a ? r1(a.rate) : null, played: b.played, games: b.games, playedShare: b.games ? Math.round(b.played / b.games * 1000) / 1000 : 0,
     wins: b.wins, winRateAll: r1(b.rateAll), lowSample: b.played < LOW_SAMPLE || undefined,
     adv: a ? {played: a.played, games: a.games, playedShare: a.games ? Math.round(a.played / a.games * 1000) / 1000 : 0, wins: a.wins, rateAll: r1(a.rateAll), lowSample: a.played < LOW_SAMPLE || undefined} : undefined,
     band:[lo*100, hi*100], verdict, locked: !!d.locked, source: (d.source||{}).kind || 'base', startsAt0: !!d.startsAt0, budget: budgetV3(RAW[id]), note: d.startsAt0 ? 'measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)' : undefined,
     // BAL25 (--v3): obtain map, the balancing rarity, wins by phase, the N the fit reads
     ...(V3 ? {map: OBTAIN[id] != null ? OBTAIN[id] : 0, rarityClass: d.factionStarter ? 'factionStarter' : (d.rarity || 'common'), measuredAt: d.factionStarter ? 0 : 1,
-      byPhase: b.byPhase, advByPhase: a && a.byPhase, N: fitN(id)} : {})};
+      byPhase: b.byPhase, advByPhase: a && a.byPhase, N: fitN(id), scope: IN_SCOPE.has(id) ? undefined : 'extra' /* CARDPOW1: outside Maps 0-20 */} : {})};
 });
 
 // Suggest a fix for outliers: step Attack, then Health, toward the band (max 4 steps each).
@@ -349,10 +380,16 @@ const out = {generated: new Date().toISOString().slice(0,10), games: N, mode: MO
     seconds: REPORT_ONLY ? null : {basic: Math.round(tBasic), total: Math.round((Date.now() - t0) / 1000)}},
   advanced: pool ? {seed: SEED, topShare: TOP, poolCards: V3 ? ADV_MIX : 20, restFrom: advAll ? 'every measured Maps 0-20 card (' + advAll.length + ')' : null, poolFrom, pool, measured: LIVE.filter(id=> done.adv[id]).length, complete: LIVE.every(id=> done.adv[id]), matchSeeds: (SEED + 99991) + ' + 131g'} : null,
   rows};
-if(V3){ out.v = 3; out.scope = {maxMap: SCOPE_MAX_MAP, rule: 'card-obtain-maps.json map <= ' + SCOPE_MAX_MAP + ', plus unlisted faction / Starter / Base-source cards', cards: LIVE.length};
+if(V3){ out.v = 3; out.scope = {maxMap: SCOPE_MAX_MAP, rule: 'card-obtain-maps.json map <= ' + SCOPE_MAX_MAP + ', plus unlisted faction / Starter / Base-source cards and unlisted (Map 0) cards the game hands out' + (SCOPE_ALL ? '; --scope=all: also every other playable card (rows marked scope "extra": Map 21+, in no list, tokens, fields, pool candidates), left out of the advanced pool and the fit' : ''), cards: LIVE.length, maps0to20: IN_SCOPE.size};
   out.env = {phases: Object.fromEntries(PHASE_ROLL), fields: ROBUST ? 'tools/skill_test_robust.js FIELDS / FIELD_CONFIG (Day/Night replaced by the phase roll)' : 'none (skill_test_robust.js not loaded)'};
-  out.fit = fitBudget(rows); }
-fs.writeFileSync(path.join(OUT_DIR, OUT_NAME + '.json'), JSON.stringify(out, null, 1) + '\n');
+  // CARDPOW1 (2026-11-16): --scope=all --only=<ids> rates new or edited cards into the full report: their rows replace their old ones (the
+  // advanced pool is the full report's, as any --only run), the rest are kept, the fit is re-run over all. The run's settings go in `merged`.
+  if(SCOPE_ALL && ONLY.length){ const full = path.join(OUT_DIR, 'card-power.json'), prev = fs.existsSync(full) ? JSON.parse(fs.readFileSync(full, 'utf8')) : null;
+    if(prev){ const mine = new Set(rows.map(r=> r.id)); out.rows = (prev.rows || []).filter(r=> !mine.has(r.id)).concat(rows).sort((a, b)=> a.id < b.id ? -1 : 1);
+      ['generated', 'games', 'filler', 'method', 'advanced', 'scope'].forEach(k=>{ if(prev[k] != null) out[k] = prev[k]; });
+      out.merged = (prev.merged || []).concat([{date: new Date().toISOString().slice(0, 10), games: N, cards: rows.map(r=> r.id)}]); } }
+  out.fit = fitBudget(out.rows); }
+fs.writeFileSync(path.join(OUT_DIR, (V3 && SCOPE_ALL && ONLY.length ? 'card-power' : OUT_NAME) + '.json'), JSON.stringify(out, null, 1) + '\n'); // CARDPOW1: --scope=all --only folds into the full report
 // BAL25: a finished v3 run keeps its progress file, so --resume --report-only can re-fit the report without playing again
 if(!V3 && LIVE.every(id=> done.basic[id] && (BASIC_ONLY || done.adv[id]))){ try{ fs.unlinkSync(PROG); }catch(e){} }
 const cnt = v=> rows.filter(r=> r.verdict===v).length;

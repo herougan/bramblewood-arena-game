@@ -1,8 +1,28 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-11-08). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-11-16). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
+
+**CARDPOW1-1. Level 0 cards: Level 1 gives too little** · Decide · Balance · asked 2026-11-16
+- The 18 Level 0 cards (tutorial, Base, Baby) get a third of their 0-1 budget gain at Level 1, so Level 2 jumps: median +12 fill points (other cards dip 3). Card stats are unchanged either way.
+  - a) Level 1 counts as a major level for Level 0 cards (one line in bramblewood-budget.js).
+  - b) Leave it.
+- **Default:** a
+
+**CARDPOW1-2. Cards outside 85-100% at Level 1 (Maps 0-20)** · Decide · Balance · asked 2026-11-16
+- Of 398 in-play Maps 0-20 cards, 161 sit under 85% and 47 over 100% of N at Level 1. Fixes are proposed per card in the CardPower workbook (OK? column); nothing changed.
+  - a) You mark OK? in the workbook; Claude applies the OK'd rows.
+  - b) Fold them into your REDESIGN2 workbook instead.
+  - c) Leave them.
+- **Default:** a
+
+**CHEAT2-1. Apply the cheat-detection SQL ("apply it")** · Approve · Supabase · asked 2026-11-16
+- supabase/proposed/cheat2-2026-11-16.sql. A: the old market functions let two accounts create Leaves; they now run the safe versions (urgent). B: a flags table the game reports to. C: fight hand-in checks. D: daily caps on server-paid rewards. E: card and raid burst notes. F: a ranked draw moves no rating; the same pair 6+ times a day is noted. G: six functions hardened. All only flag; nothing changes for players. H (server-paid rewards) is a separate call.
+  - a) Apply A-G.
+  - b) Apply A only.
+  - c) Not yet.
+- **Default:** a
 
 **SKN1-1. Warcry: already permanent** · Decide · Skills · asked 2026-11-16
 - Your note: "Maybe make this permanent." It already is: when played, your other units get +N/+N for the rest of the fight (added to their base Attack and max Health). Warcry is on no card. The text could say "for the fight" so it reads as permanent.
@@ -750,6 +770,11 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 - **Default:** a
 
 ## Decided
+
+**ARROW1-1. Arrows and Bolts are one skill each; Arrows slow, Bolts fast** · Decide · Skills · asked 2026-11-16 · decided 2026-11-16
+- All arrow variants (serrated/bleed, poison, sleep, paralysis and other status arrows, fire, electric, water and other elements) count as one skill; the same for bolts. Arrows fire slower than normal (speed 0), Bolts faster (speed 2). Arrow (Flaming) is Map 20's skill; Fire Bolt goes on the Dragon Lair map. Some list skills may sit on submaps instead of Maps 0-20.
+  - a) As stated
+- **Default:** a
 
 **SIDE5-1. 19-A-1 almost always won** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
 - With every other proposed fix in, side fight 19-A-1 reads 99% against a target of 90 (band 82-98). The only legal deck move that reaches the band swaps 2 Granite Ox Golem for 2 Obsidian Scorpion: 88 / 88 / 89 on three seed sets. Cost: with SIDE4-1, Obsidian Scorpion would be in 9 of Map 19's 10 fights. File: docs/balance/allfix/side19a1-fixes.jsonl.
