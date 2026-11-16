@@ -4471,5 +4471,7 @@
  "Arrow (Flaming)": "அம்பு (எரியும்)",
  "While it's on your board, your units don't miss in the dark. The enemy unit facing it doesn't either.": "அது உங்கள் பலகையில் இருக்கும்வரை, உங்கள் அலகுகள் இருளில் தவறாது. எதிரே உள்ள எதிரி அலகும் தவறாது.",
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "வரும்போது, 1 மரம் செலுத்தி பாதி தாக்குதல், ஆரோக்கியத்துடன் {n} நகல்கள், காத்திருப்பு 1. மரம் இல்லையெனில் நகல் இல்லை.",
- "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "தாக்கப்பட்டால், எதிரே உள்ள எதிரியைத் தாக்கும். எதிரே எதிரி இல்லையெனில் மட்டுமே தானாகத் தாக்கும்."
+ "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "தாக்கப்பட்டால், எதிரே உள்ள எதிரியைத் தாக்கும். எதிரே எதிரி இல்லையெனில் மட்டுமே தானாகத் தாக்கும்.",
+ "To add": "சேர்க்க",
+ "Focus skill for this map that no main card has yet: put it on a card": "இந்த வரைபடத்தின் முக்கிய திறன்; எந்த முதன்மை அட்டையிலும் இன்னும் இல்லை: ஒரு அட்டையில் சேர்க்கவும்"
 }

@@ -4471,5 +4471,7 @@
  "Arrow (Flaming)": "화살 (불타는)",
  "While it's on your board, your units don't miss in the dark. The enemy unit facing it doesn't either.": "보드에 있는 동안 아군 유닛은 어둠 속에서 빗나가지 않는다. 맞은편 적 유닛도 마찬가지다.",
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "등장할 때 목재 1을 내고 공격력과 체력이 절반인 복제 {n}개를 얻는다. 대기 1. 목재가 없으면 복제도 없다.",
- "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "맞으면 맞은편 적을 친다. 맞은편에 적이 없을 때만 스스로 공격한다."
+ "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "맞으면 맞은편 적을 친다. 맞은편에 적이 없을 때만 스스로 공격한다.",
+ "To add": "추가 예정",
+ "Focus skill for this map that no main card has yet: put it on a card": "이 맵의 집중 스킬이며 메인 카드에 아직 없습니다: 카드에 넣으세요"
 }

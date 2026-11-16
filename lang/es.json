@@ -4468,5 +4468,7 @@
  "Arrow (Flaming)": "Flecha (en llamas)",
  "While it's on your board, your units don't miss in the dark. The enemy unit facing it doesn't either.": "Mientras esté en tu tablero, tus unidades no fallan en la oscuridad. La unidad enemiga de enfrente tampoco.",
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "Al llegar, paga 1 de Madera por {n} copias con la mitad de Ataque y Salud, Espera 1. Sin Madera, no hay copias.",
- "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Al ser golpeada, golpea al enemigo de enfrente. Solo ataca por sí misma si no tiene enemigo enfrente."
+ "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Al ser golpeada, golpea al enemigo de enfrente. Solo ataca por sí misma si no tiene enemigo enfrente.",
+ "To add": "Por añadir",
+ "Focus skill for this map that no main card has yet: put it on a card": "Habilidad prioritaria de este mapa que ninguna carta principal tiene aún: ponla en una carta"
 }

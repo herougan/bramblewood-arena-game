@@ -9,7 +9,7 @@ let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  x'
 const app = read('arena_app.js'), tpl = read('arena_template.html'), texts = read('bramblewood-texts.js');
 ok(/function skmapRows\(/.test(app) && /mpEntry\(m\.id\)\.cards/.test(app) && /liveDeletes/.test(app.slice(app.indexOf('function skmapRows('), app.indexOf('function skmapHTML('))), 'rows read the live map list and live cards');
 ok(/function openSkillsByMap\(\)\{\s*if\(!adminModeEnabled\) return;/.test(app) && /adminModeEnabled \? `<div class="bk-skm-row"/.test(app), 'admin only');
-ok(/\.skm-chip\.is-new\{background:var\(--danger\)/.test(tpl), 'new chip uses the --danger token');
+ok(/\.skm-chip\.is-focus\{background:var\(--danger\)/.test(tpl), 'focus chip uses the --danger token'); // 2026-11-16 (UX7): red = focus skills (was: every new skill)
 ['btn', 'close', 'totals', 'head', 'cards', 'past', 'picks', 'none', 'new-tip', 'gone', 'old'].forEach(k=>{ ok(new RegExp('"ui\\.skmap1-' + k + '"').test(texts), 'text ' + k);
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(c=>{ ok(Object.keys(JSON.parse(read('lang/' + c + '.json'))).length > 0, c); }); });
 ok(/skmap1-2026-11-15/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
@@ -33,9 +33,9 @@ async function browser(){
         const open = async ()=>{ openSkillsByMap(); await new Promise(r=> setTimeout(r, 50)); return document.getElementById('skmap1Overlay'); };
         const rowOf = (ov, n)=> ov.querySelector('[data-skm-map="' + n + '"]'), chips = (row, i)=> [...row.querySelectorAll('.skm-part')[i].querySelectorAll('.skm-chip')];
         let ov = await open(); out.rows = ov.querySelectorAll('.skm-row').length; out.totals = document.getElementById('skmTotals').textContent;
-        const tide = chips(rowOf(ov, 2), 0).find(c=> /^Tide /.test(c.textContent)); out.tideNew = !!tide && tide.classList.contains('is-new');
+        const tide = chips(rowOf(ov, 2), 0).find(c=> /^Tide /.test(c.textContent)); out.tideNew = !!tide && tide.classList.contains('is-new') && tide.classList.contains('is-focus'); // UX7: Tide is Map 2's focus skill
         out.tideBg = tide ? getComputedStyle(tide).backgroundColor : '';
-        out.picks2 = chips(rowOf(ov, 2), 2).map(c=> c.textContent); out.none10 = !!rowOf(ov, 10).querySelector('.skm-none');
+        out.picks2 = chips(rowOf(ov, 2), 2).map(c=> c.textContent); out.none10 = !!rowOf(ov, 17).querySelector('.skm-none'); /* 2026-11-16 (UX7): Map 17 has no focus skill */
         out.pastTags = [...rowOf(ov, 2).querySelectorAll('.skm-src b')].map(x=> x.textContent);
         // a live edit: a Map 0 card gains Tide -> Map 0 shows it as new, Map 2's Tide is no longer new
         const id = mpEntry(skmapRows()[0].id).cards[0]; const base = Object.assign({}, CARD_DEFS_BASELINE[id]); base.effects = Object.assign({}, base.effects, {tide: 1}); liveCards[id] = base;
@@ -44,7 +44,7 @@ async function browser(){
         out.tideStruck = chips(rowOf(ov, 2), 2).filter(c=> c.classList.contains('is-bad')).map(c=> c.textContent);
         delete liveCards[id];
         // a pick that leaves the map: pretend Map 2's pick list lost Tide via a map-list edit is heavy; check Map 4's picks vs the data instead
-        const rows = skmapRows(); out.gone = chips(rowOf(await open(), 4), 2).filter(c=> c.classList.contains('is-bad')).length === SKMAP_PICKS.split(' | ')[4].split(' ').slice(1).filter(k=> rows[4].skills[k] == null || !rows[4].isNew.has(k)).length;
+        const rows = skmapRows(); out.gone = chips(rowOf(await open(), 4), 2).filter(c=> c.classList.contains('is-bad')).length === mapFocusKeys(4).filter(k=> rows[4].skills[k] == null || !rows[4].isNew.has(k)).length; // UX7: the picks are the focus table
         ov.querySelector('#skmClose').click(); out.closed = ov.hidden;
         // players never see it
         adminModeEnabled = false; codexSubTab = 'skills'; switchTab('codex'); BramblewoodPlaces.skip(); await new Promise(r=> setTimeout(r, 500));
