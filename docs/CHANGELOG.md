@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package REDESIGN1: Maps 0-20 card redesign, proposal only)
+- No game change. A draft of the Maps 0-20 cards against the owner's skill priority (G6 workbook, column II; brief change 11-16 17:43; `SKMAP_PICKS` not used for Maps 6-19). 205 cards, each on its first map's MAP list. 145 change: 113 get new skills, 32 only have their stats moved into the 85-100% band at Level 1 (`bramblewood-budget.js` via `tools/skill_costs.js`). 185/205 cards land in the band (100 before); the 20 outside are owner-set cards, flagged and left as they are.
+- Plan: 50 named skills new on Maps 0-20 (42 II-1, 2 II-2, 2 II-3, 4 core skills with no II); the owner's 25-30 target is passed by the II-1 skills alone (open question). 84 off-plan skills are listed with their cards (the moved-away list, K 4-8, categories, unranked). `docs/design/redesign1-2026-11-16.md` / `.json`, workbook `/home/claude/out/Redesign1 - Bramblewood.xlsx` (Change? column for the owner).
+
 ## 2026-11-16 (package BALREL4: REFIT1 applied)
 - 54 road fights get REFIT1's legal decks, fitted to the owner's folded cards (FOLD5); 3-7 and 6-4 also lose their Shield (BAL19-1 a). problems() clean; tests/skir1 36 -> 35 (7-5's K14 cleared). Projected main 125/149 in band (was 86 after the fold), side 71/81 (was 58). The fold's biggest mover is Cricket Drummer (2/7 -> 1/5, in the Map 2-6 reference deck): 34 fights harder.
 ## 2026-11-16 (coordinator: DGFIX1)
