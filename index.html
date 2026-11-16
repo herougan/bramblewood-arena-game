@@ -58157,7 +58157,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '0ffa04f7f158', BUILD_CARD_HASH = '96387efb9de6c387d43a47fa23a583078e7684b8a68d2522e9f7d2c56d0a2ef2';
+const BUILD_ID = '8c717cfdcc67', BUILD_CARD_HASH = '96387efb9de6c387d43a47fa23a583078e7684b8a68d2522e9f7d2c56d0a2ef2';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -85044,8 +85044,12 @@ function startRaidFullBattle(def, partId, f, st){
   // the fight, my allies play first, and you can see their cards go down. The castle will be the combined health of 3 of us,
   // looking slightly bigger, with ALL our effects"): two allies (real raiders' decks when the cloud has them, the raid's
   // ally decks otherwise). Each has a castle; the three castles are one: their Health added up and their passives merged.
-  const allies = (m0=> m0)(trenchAllies(def, [], (Math.random()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i));
-  const b = buildRaidFullFight(def, partId, f, st, {rng: nextMatchRng(), allies, myCastle: myCastleDef(), myDeck: ownedDeckForMatch(myDeckCounts), leaderId: matchLeaderId()}); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
+  // 2026-11-16 (package E5DET1, alpha checklist E5: same seed, same result): the raid's own draws (which allies, their deck order, the boss's
+  // board and Commons, an ally's reshuffle) came from Math.random, so a raid could not be replayed from its match seed; they come from
+  // raidRand now, a second stream off the match seed (the engine's own RNG is untouched). Tools that pass no raidRand keep Math.random.
+  const rng = nextMatchRng(), raidRand = seededRng((currentMatchSeed ^ 0x5A1DF00D) >>> 0);
+  const allies = (m0=> m0)(trenchAllies(def, [], (raidRand()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i, raidRand));
+  const b = buildRaidFullFight(def, partId, f, st, {rng, rand: raidRand, allies, myCastle: myCastleDef(), myDeck: ownedDeckForMatch(myDeckCounts), leaderId: matchLeaderId()}); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
   matchDefsOverlay = b.overlay;
   const {engine, players, sideOf, stats, cfg, mine} = b, bossHpBonus = b.bossHpBonus;
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, battleMode:'open',
@@ -85055,7 +85059,7 @@ function startRaidFullBattle(def, partId, f, st){
     raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your bramble'].concat(allies.map(a=> a.castle.name)),
     raidFieldRules: b.raidRules, raidCommonPool: b.commonPool, raidBossUnitId: b.bossUnitId, raidBossHpBonus: bossHpBonus, raidBossRowDecks: b.rowDecks, // + its rows' decks (2026-10-19, RV2)
     raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0, // 2026-10-18 (R3-WP2)
-    raidSeed: currentMatchSeed}; // the Tentacle Smack's seeded rolls (raidSmackRoll: its row, its column; 2026-10-18)
+    raidSeed: currentMatchSeed, raidRand}; // the Tentacle Smack's seeded rolls (raidSmackRoll: its row, its column; 2026-10-18); E5DET1: raidRand
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidSmackTarget(matchState, 2, i, a); }); // a row or a column (2026-10-18)
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
@@ -85254,9 +85258,9 @@ function raidPartBRLine(def, partId, st){
   const side = mine + 2 * r.allyAvg, cls = deckLevelGapClass(r.boss.total, side);
   return `<span class="r2-note r3-br ${cls}" title="${escapeAttr(TX('ui.raid-br-boss-tip') + ' ' + TX('ui.raid-br-side-tip') + ' · ' + deckLevelGapTip(cls))}">⚔ ${escapeHtml(TX('ui.raid-br-line', {boss: r.boss.total.toLocaleString(raidLocale()), side: side.toLocaleString(raidLocale())}))}</span>`;
 }
-function raidAllyOf(a, i){
-  const defs = getCardDefs(), ids = Object.entries(a.deck||{}).filter(([id])=> defs[id]).flatMap(([id, n])=> Array(Math.max(1, n|0)).fill(id));
-  for(let k = ids.length - 1; k > 0; k--){ const j = Math.floor(Math.random()*(k + 1)); [ids[k], ids[j]] = [ids[j], ids[k]]; }
+function raidAllyOf(a, i, rand){ // E5DET1 (2026-11-16): rand, the raid's seeded stream (a tool without one: the global RNG)
+  const defs = getCardDefs(), ids = Object.entries(a.deck||{}).filter(([id])=> defs[id]).flatMap(([id, n])=> Array(Math.max(1, n|0)).fill(id)), rnd = rand || Math.random;
+  for(let k = ids.length - 1; k > 0; k--){ const j = Math.floor(rnd()*(k + 1)); [ids[k], ids[j]] = [ids[j], ids[k]]; }
   const castles = Object.values(CHARACTER_DEFS).filter(ch=> ch.id !== 'castle' && ch.health), h = [...String(a.name||'')].reduce((t, ch)=> t + ch.charCodeAt(0), 0);
   const castle = castles.length ? castles[(h + i*5) % castles.length] : CHARACTER_DEFS.castle;
   return {name: a.name, level: a.level || 0, real: !!a.real, deck: ids, played: 0, row: i + 1, castle: Object.assign({}, castle)};
@@ -85322,7 +85326,7 @@ function raidBrambleAbsHTML(lines, notes){
 // already hold 6. The rule itself is RaidM.bossReinforce (bramblewood-raid.js); the pool is the raid's commonPool.
 function raidBossCommons(m, events){
   if(!m || !m.raidFull || m.over || !(m.raidCommonPool||[]).length || !RaidM || !RaidM.bossReinforce) return;
-  const got = RaidM.bossReinforce(m.engine, m.players[2], m.raidCommonPool, Math.random, Object.assign({}, ((m.raidDef || {}).tuning || {}).reinforce || {}, {round: m.round})); // + the raid's reinforce tuning (2026-10-19)
+  const got = RaidM.bossReinforce(m.engine, m.players[2], m.raidCommonPool, m.raidRand || Math.random /* E5DET1 */, Object.assign({}, ((m.raidDef || {}).tuning || {}).reinforce || {}, {round: m.round})); // + the raid's reinforce tuning (2026-10-19)
   if(!got.length) return;
   got.forEach(g=>{ g.card.bossCommon = true; });
   (events || []).push({type:'raidCommons', side:'B', defIds: got.map(g=> g.defId), rows: got.map(g=> g.row), uids: got.map(g=> g.card.uid)});
@@ -85495,7 +85499,7 @@ function raidAllyPlays(m, a, events){
   // more: the old unit leaves the board (no death, no On Death); (2) a deck that runs out is shuffled again, so a long fight never
   // leaves an ally with nothing to play.
   if(!a || !Array.isArray(a.deck) || !a.deck.length) return;
-  if(a.played >= a.deck.length){ const ids = a.deck.slice(); for(let k = ids.length - 1; k > 0; k--){ const j = Math.floor(Math.random()*(k + 1)); [ids[k], ids[j]] = [ids[j], ids[k]]; } a.deck = ids; a.played = 0; a.cycles = (a.cycles || 0) + 1; }
+  if(a.played >= a.deck.length){ const ids = a.deck.slice(), rnd = m.raidRand || Math.random /* E5DET1 */; for(let k = ids.length - 1; k > 0; k--){ const j = Math.floor(rnd()*(k + 1)); [ids[k], ids[j]] = [ids[j], ids[k]]; } a.deck = ids; a.played = 0; a.cycles = (a.cycles || 0) + 1; }
   if(!defs[a.deck[a.played]]) { a.played++; return; }
   // 2026-10-17 (user: "for 3 lane raids, the CPU allies can only place on their own rows!"): an ally plays ONLY into its own row
   // (RaidM.allySlot). It used to fall back to the other ally's middle row and then to your front row; now, with its row full, it
