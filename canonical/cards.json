@@ -8153,7 +8153,7 @@
     "health": 10,
     "effects": {
       "renewal": true,
-      "cure": 2,
+      "cure": 1,
       "flying": true
     },
     "archetypes": [
@@ -26839,7 +26839,7 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "cure": 2
+      "cure": 1
     },
     "species": [
       "Fish"
@@ -34703,7 +34703,7 @@
     ],
     "animal": "water vole",
     "effects": {
-      "cure": 2
+      "cure": 1
     },
     "flavor": "It packs bog moss into every bite and scratch. The moss draws the poison out. Mostly.",
     "numericId": 9169,
@@ -35477,7 +35477,7 @@
     "tags": [],
     "effects": {
       "healing": 3,
-      "cure": 2
+      "cure": 1
     },
     "flavor": "Where it steps, the grass stands up again. Where it is struck, nothing stays wounded for long.",
     "numericId": 9190,

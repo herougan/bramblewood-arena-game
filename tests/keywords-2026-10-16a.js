@@ -129,7 +129,7 @@ const fight = (e, P, ev, first)=> e.resolveCombat(P, so, {}, ev || [], first || 
   ok(ev.some(x=> x.type === 'spawn' && x.kind === 'crystal'), 'the spawn says it is a crystal'); }
 // ---- Cure
 { const {e, P} = mk(); put(e, P, 1, 'w2-cure', 0); const a = put(e, P, 1, 'w2-wall', 1); a.poison = 3; a.bleed = 1; a.toxin = 2; const ev = []; fight(e, P, ev, 1);
-  ok(a.toxin === 2 && ev.some(x=> x.type === 'statusFx' && x.kind === 'cure' && x.targetUid === a.uid && x.amount === 2), `Cure 2: two Poison off, Toxin stays (${a.poison} poison, ${a.toxin} toxin)`); }
+  ok(a.toxin === 2 && ev.some(x=> x.type === 'statusFx' && x.kind === 'cure' && x.targetUid === a.uid && x.amount === 1 /* 2026-11-16 (SKN1): Cure 1 only */), `Cure 2: one Poison off, Toxin stays (${a.poison} poison, ${a.toxin} toxin)`); }
 // ---- Mountain Climber
 { const {e, P} = mk(); const c = put(e, P, 2, 'w2-climb', 0), w = put(e, P, 2, 'w2-wall', 1); put(e, P, 1, 'w2-aval', 0);
   ok(c.hp === 500 && c.wait === 0 && w.hp === 498, `Avalanche passes a Mountain Climber by (${c.hp}, wall ${w.hp})`); }

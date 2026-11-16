@@ -33,10 +33,10 @@ function setup(a, b){ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEv
   const hp2 = B.hp; e.debugAttack(P, so, A.uid, {}, []); ok(hp2 - B.hp === 4, `second hit: 2 Armor left, Pierce 1 ignores 1 (took ${hp2 - B.hp}, want 4)`); }
 { const {e, P, A, B} = setup('kw-hit', 'kw-counter'); const hp = A.hp; e.debugAttack(P, so, A.uid, {}, []); ok(hp - A.hp === 4, `Counterattack strikes back for its Attack (${hp - A.hp})`); }
 { const {e, P, A, B} = setup('kw-hit', 'kw-spite'); const hp = A.hp; e.debugAttack(P, so, A.uid, {}, []); ok(hp - A.hp === 3, `Spiteful 3 hurts the attacker (${hp - A.hp})`); }
-// Counterattack units never take a turn of their own
+// Counterattack units take no turn of their own while an enemy faces them (SKN1, 2026-11-16)
 { const e = E.makeSimEngine(defs, E.mulberry32(9), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}; const st = {};
   e.debugSpawnCard(P, so, 1, 'kw-counter', 'left', {}, []); const hq = P[2].hq.hp; const ev = []; e.resolveCombat(P, so, st, ev, 1);
-  ok(P[2].hq.hp === hq, 'a Counterattack unit with nobody hitting it never attacks'); }
+  ok(P[2].hq.hp < hq, 'with no enemy facing it, a Counterattack unit attacks the bramble'); } // 2026-11-16 (SKN1, owner workbook note 11-16; was: never attacks)
 // Actions per turn: 2 plays a turn; the side playing second gets +1 Shield on its bramble (EN, 2026-10-23; was 2 cards and 1 Health)
 { const e = E.makeSimEngine(defs, E.mulberry32(3), {battleMode:'open', rules:{actions:2}}); const P = {1:e.newPlayer(1,{'kw-hit':10}), 2:e.newPlayer(2,{'kw-hit':10})}; const st = {};
   e.draw(P[1], 3, 'A', st, []); const h = P[1].hand.slice();

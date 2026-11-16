@@ -149,7 +149,7 @@ const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cos
   const txt = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8'); const a = txt.indexOf('const TEXT = '), b = txt.indexOf('/*TEXT-TABLE-END*/') > 0 ? txt.indexOf('/*TEXT-TABLE-END*/') : txt.indexOf('};', a);
   ok(!/\n\s*\/\/|\/\*(?!TEXT-TABLE)/.test(txt.slice(txt.indexOf('{', a) + 1, b)), 'no comments inside the TEXT object');
   const K = Object.keys(TXm.TEXT).filter(k=> /^ui\.(en6-|skn-(plenty|scarcity|foe-plenty|foe-scarcity|heat|frost|rain|storm|fog|salt|drought|season|full-hand|lean|foe-full-hand|foe-lean|hibernate|arrow-bramble|fire-arrow-bramble|fire-bolt-bramble)$|sk-(plenty|scarcity|foe-plenty|foe-scarcity|heat|frost|rain|storm|fog|salt|drought|season|full-hand|lean|foe-full-hand|foe-lean|foe-hand|hibernate|shot-bramble)(-codex)?$|fxx?-(name-)?seasons(-short)?$)/.test(k));
-  ok(K.length >= 79, `EN6 TX keys (${K.length})`);
+  ok(K.length >= 77, `EN6 TX keys (${K.length})`); // 2026-11-16 (SKN1): the Fire Arrow / Fire Bolt – bramble labels deleted (owner "Explicit remove")
   const peel = s=> s.replace(/^[^\w{(\[+–]+\s/, '');
   const rows = K.map(k=> /log-/.test(k) ? peel(TXm.TEXT[k]) : TXm.TEXT[k]);
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8')), ui = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', 'ui', code + '.json'), 'utf8'));

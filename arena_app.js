@@ -752,7 +752,7 @@ const PASSIVE_DEFS = [
   // that dmgType, both, or neither.
   {key:'decay', category:'passive', label:'Decay', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Decay.`},
   {key:'armor', category:'passive', label:'Armor', kind:'number', min:0, desc:v=>`Takes ${v} less damage from every hit (never below 0).`},
-  {key:'counterattack', category:'passive', label:'Counterattack', kind:'boolean', desc:()=>`Doesn't attack on its own. Each time an enemy unit hits it, it strikes the enemy in front of it.`},
+  {key:'counterattack', category:'passive', label:'Counterattack', kind:'boolean', desc:()=> TX('ui.sk-counterattack')}, // SKN1 (2026-11-16, owner workbook note 11-16): swings only with no enemy facing it
   {key:'spiteful', category:'passive', label:'Spiteful', kind:'number', min:0, desc:v=>`Whatever enemy unit damages it, by attack, arrow or skill, takes ${v} damage back.`},
   {key:'thorns', category:'passive', label:'Thorns', kind:'number', min:0, desc:v=>`Melee attackers take ${v} damage back, every time.`},
   // 2026-09-21 redesign, per explicit user spec: Swipe is now a flag, not a count. It hits the
@@ -857,7 +857,7 @@ const PASSIVE_DEFS = [
   // Illuminate (2026-10-15, user: "Lantern Bearer should have 'Illuminate' - lights up in darkness. Removes darkness debuff for all
   // allies."): Lantern's new name, and a little stronger: Absolute darkness is lit too. Lantern stays in the engine for old saves
   // and published edits (it reads as Illuminate) but leaves the editor and the lists.
-  {key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean', desc:()=>`Lights up the dark. While it's on your board, none of your units miss because of Darkness, Pitch Black or Absolute darkness, and at Night your Diurnal units keep their daytime bonus. The catch: its light also reaches the enemy unit directly facing it, which doesn't miss for the dark either (nor for Night-blindness).`}, // 2026-10-16; 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate.")
+  {key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean', desc:()=> TX('ui.sk-illuminate')}, // SKN1 (2026-11-16, owner workbook note 11-16): lights the dark; no day for Diurnal units
   {key:'lantern', category:'passive', hidden:true, retired:true, label:'Lantern', kind:'boolean', desc:()=>`Now called Illuminate: while it's on your board, your units don't miss because of the dark.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=> TX('ui.sk-backstab', {n: numOr(n, 2)})}, // 2026-10-23 (package EN, owner D21); the EN block below patches it
   {key:'shieldCall', category:'passive', hidden:true, retired:true /* 2026-10-21 (BF6, owner 15:15: "Shield call -> Armor"): no card has it now; the engine's rule stays so an old save or a server override with it still works */, label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
@@ -1142,7 +1142,7 @@ const PASSIVE_DEFS = [
   // Overwhelm (Runeterra's word for trample). Now called Stampede; the data key stays `overwhelm`.
   {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy bramble.`},
   {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 whenever ANY ally of yours dies.`},
-  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 4 /* owner 22:13: Log Wall 0/4 */})}, // 2026-10-23 (package EN, owner 01:57 note 2): two 0/4N shields as it arrives
+  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 5 /* SKN1 (2026-11-16): Log Wall 0/5 at Level 1 */})}, // 2026-10-23 (package EN, owner 01:57 note 2): two 0/4N shields as it arrives
   // 2026-10-17 (user: "Add a new skill Reflect: that reflects ranged skills back at a random enemy unit."): the engine's reflectShotOf.
   // A flag now (was Reflect N%: a melee hit's full damage thrown back); an old stored number reads as that % chance to bounce a shot.
   {key:'reflect', category:'passive', label:'Reflect', kind:'boolean', desc:v=>`${typeof v === 'number' && v < 100 ? `${v}% of the time, a` : 'A'} shot aimed at it bounces off and hits a random enemy unit instead (their bramble if they have none). Shots: Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire, Snipe, Fireball (the whole burst), Rocket, a thrown Banana, Missile and On Ready damage, a Damage trigger at a random enemy, and the bramble's bolt. Melee, Pounce and what falls from the sky or bursts over an area (Skyfall, Meteor, Lightning, Earthquake…) aren't shots. A bounced shot can be dodged, but never bounces again.`},
@@ -1238,7 +1238,7 @@ const PASSIVE_DEFS = [
   // Arrow / Fire Arrow (2026-10-04): see fireArrowVolley in bramblewood-engine.js.
   // 2026-10-16 skill audit: the arrows aim at the enemy facing it first, then the nearest (fireArrowVolley / arrowTargetOf).
   {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 0 (after the swings): shoots an arrow for ${v} damage at the enemy facing it (with none there, the nearest enemy, a random one if two are as near; the bramble if the board is empty). Never misses Flying units.`}, /* ENG27 (2026-11-06, item 11): arrows act at Speed 0, after the swings */
-  {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 0 (after the swings): shoots a flaming arrow for ${v} fire damage at the enemy facing it (or the nearest; fire resistance and weakness apply). Never misses Flying units.`}, /* ENG27 (2026-11-06, item 11): arrows act at Speed 0, after the swings */
+  {key:'fireArrow', category:'evergreen', label:TX('ui.skn-fire-arrow') /* SKN1 (2026-11-16, owner workbook note 11-16): "Arrow (Flaming)" */, kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 0 (after the swings): shoots a flaming arrow for ${v} fire damage at the enemy facing it (or the nearest; fire resistance and weakness apply). Never misses Flying units.`}, /* ENG27 (2026-11-06, item 11): arrows act at Speed 0, after the swings */
   // Ice Arrow / Twin Shot / Volley (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire Arrow, Ice
   // Arrow etc. will be more normal."): see fireArrowVolley in bramblewood-engine.js.
   {key:'iceArrow', category:'evergreen', label:'Ice Arrow', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 0 (after the swings): shoots an icy arrow for ${v||2} cold damage at the enemy facing it (or the nearest). A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter). Never misses Flying units.`}, /* ENG27 (2026-11-06, item 11): arrows act at Speed 0, after the swings */
@@ -1747,7 +1747,7 @@ sk1Patch(PASSIVE_DEFS, 'sentry', {category:'passive', label:TX('ui.skn-sentry'),
 sk1Patch(PASSIVE_DEFS, 'expose', {category:'evergreen', label:TX('ui.skn-expose'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-expose', {n: numOr(v, 2)}), codexNote:TX('ui.sk-expose-codex'), get:e=> e.expose ? numOr(e.expose, 2) : undefined});
 sk1Patch(PASSIVE_DEFS, 'siege', {category:'passive', label:TX('ui.skn-siege'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-siege', {n: numOr(v, 2)}), codexNote:TX('ui.sk-siege-codex'), get:e=> (e.siege || e.demolisher) ? Math.max(e.siege ? numOr(e.siege, 2) : 0, e.demolisher ? numOr(e.demolisher, 2) : 0) : undefined});
 sk1Patch(PASSIVE_DEFS, 'demolisher', {hidden:true, retired:true, label:TX('ui.skn-siege'), desc:v=> TX('ui.sk-siege', {n: numOr(v, 2)})}); // an old save's key: read as Siege
-sk1Patch(PASSIVE_DEFS, 'cure', {desc:v=> TX('ui.sk-cure', {n: numOr(v, 2)})});
+sk1Patch(PASSIVE_DEFS, 'cure', {kind:'boolean', desc:()=> TX('ui.sk-cure', {n: 1}), apply:e=>{ e.cure = 1; }}); // SKN1 (2026-11-16, owner workbook note 11-16: "Cure 1 only")
 sk1Patch(PASSIVE_DEFS, 'healing', {desc:v=> TX('ui.sk-healing', {n: numOr(v, 1)})});
 PASSIVE_DEFS.push(
   {key:'formation', category:'passive', label:TX('ui.skn-formation'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-formation', {n: numOr(v, 1)}), codexNote:TX('ui.sk-formation-codex'), get:e=> e.formation ? numOr(e.formation, 1) : undefined},
@@ -1878,7 +1878,7 @@ PASSIVE_DEFS.push({key:'fullHand', category:'passive', label:TX('ui.skn-full-han
   {key:'foeLean', category:'passive', label:TX('ui.skn-foe-lean'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-foe-lean', {n: numOr(v, 1)}), codexNote:TX('ui.sk-foe-hand-codex')},
   {key:'hibernate', category:'passive', label:TX('ui.skn-hibernate'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-hibernate', {n: numOr(v, 2)}), codexNote:TX('ui.sk-hibernate-codex')});
 // – bramble on the skill shots: a toggle row beside the shot (its own line folds into the shot's: "Arrow 2 – bramble")
-const EN6_BRAMBLE_APP = {arrowBramble:{base:'arrow', tx:'arrow-bramble'}, fireArrowBramble:{base:'fireArrow', tx:'fire-arrow-bramble'}, fireBoltBramble:{base:'fireBolt', tx:'fire-bolt-bramble'}};
+const EN6_BRAMBLE_APP = {arrowBramble:{base:'arrow', tx:'arrow-bramble'}}; // SKN1 (2026-11-16, owner workbook note 11-16 "Explicit remove"): no Fire Arrow / Fire Bolt – bramble
 const EN6_BRAMBLE_ACTS = ['arrow', 'missile', 'damage'];
 Object.keys(EN6_BRAMBLE_APP).forEach(k=>{ const b = EN6_BRAMBLE_APP[k], pd = PASSIVE_DEFS.find(p=> p.key === b.base);
   PASSIVE_DEFS.push({key:k, category:'evergreen', label:TX('ui.skn-' + b.tx), kind:'boolean', desc:()=> TX('ui.sk-shot-bramble', {skill: pd ? pd.label : b.base}), codexNote:TX('ui.sk-shot-bramble-codex')}); });
@@ -1886,16 +1886,15 @@ Object.keys(EN6_BRAMBLE_APP).forEach(k=>{ const b = EN6_BRAMBLE_APP[k], pd = PAS
 // Poison / Bleed unless the card says so: "Arrow 2 – poison" (effects.arrowPoison ...), a toggle row beside the shot as EN6's – bramble; on
 // the Arrow, Missile and Deal damage (one opponent) actions a "– poison" / "– bleed" box (t.withPoison / t.withBleed). Rules in
 // bramblewood-engine.js (en7HitStatuses).
-const EN7_TIP_APP = {arrowPoison:{base:'arrow', st:'poison', tx:'arrow-poison'}, arrowBleed:{base:'arrow', st:'bleed', tx:'arrow-bleed'}, fireArrowPoison:{base:'fireArrow', st:'poison', tx:'fire-arrow-poison'},
-  fireArrowBleed:{base:'fireArrow', st:'bleed', tx:'fire-arrow-bleed'}, fireBoltPoison:{base:'fireBolt', st:'poison', tx:'fire-bolt-poison'}, fireBoltBleed:{base:'fireBolt', st:'bleed', tx:'fire-bolt-bleed'}};
+const EN7_TIP_APP = {arrowPoison:{base:'arrow', st:'poison', tx:'arrow-poison'}, arrowBleed:{base:'arrow', st:'bleed', tx:'arrow-bleed'}}; // SKN1 (2026-11-16): no Fire Arrow / Fire Bolt – venom / – bleed
 const EN7_TIP_ACTS = ['arrow', 'missile', 'damage'];
 function en7TipsOn(e, base){ return ['poison', 'bleed'].filter(st=> Object.keys(EN7_TIP_APP).some(k=> EN7_TIP_APP[k].base === base && EN7_TIP_APP[k].st === st && e && e[k])); }
 Object.keys(EN7_TIP_APP).forEach(k=>{ const b = EN7_TIP_APP[k], pd = PASSIVE_DEFS.find(p=> p.key === b.base);
   PASSIVE_DEFS.push({key:k, category:'evergreen', label:TX('ui.skn-' + b.tx), kind:'boolean', desc:()=> TX('ui.sk-shot-' + b.st, {skill: pd ? pd.label : b.base}), codexNote:TX('ui.sk-shot-tip-codex')}); });
-Object.assign(SKILL_ICON, {arrowPoison:'🤢', arrowBleed:'🩸', fireArrowPoison:'🤢', fireArrowBleed:'🩸', fireBoltPoison:'🤢', fireBoltBleed:'🩸'});
+Object.assign(SKILL_ICON, {arrowPoison:'🤢', arrowBleed:'🩸'});
 Object.assign(SKILL_ICON, {plenty:'🃏', plentyGrant:'🃏', scarcity:'🫗', scarcityGrant:'🫗', foePlenty:'🎴', foePlentyGrant:'🎴', foeScarcity:'🪹', foeScarcityGrant:'🪹', heat:'🌡️', heatGrant:'🌡️', frost:'❄️', frostGrant:'❄️',
   rain:'☔', rainGrant:'☔', storm:'⛈️', stormGrant:'⛈️', fog:'🌁', fogGrant:'🌁', salt:'🧂', saltGrant:'🧂', drought:'🔆', droughtGrant:'🔆', season:'🍂', seasonGrant:'🍂',
-  fullHand:'✋', lean:'🫳', foeFullHand:'🤚', foeLean:'🫴', hibernate:'🛌', arrowBramble:'🏹', fireArrowBramble:'🏹', fireBoltBramble:'🔥'});
+  fullHand:'✋', lean:'🫳', foeFullHand:'🤚', foeLean:'🫴', hibernate:'🛌', arrowBramble:'🏹'});
 // ==== Package EQ2 (2026-10-24; rules in bramblewood-engine.js, the Package EQ2 block; priced in canonical/skill-costs.json):
 //   Dive N      (owner N21-5) once a fight its swing dives on the weakest enemy unit of the row it faces for N more; a diving Flyer is exposed
 //               (no dodge) for the rest of that round. Only a Flyer, a Tide unit or a Sprinter can take it;
@@ -2245,7 +2244,7 @@ PASSIVE_DEFS.push({key:'rageAt', category:'passive', label:TX('ui.eng27-rage-at-
   get:e=> Number(e.rageAt) > 0 ? Math.round(Number(e.rageAt) * 100) : undefined, apply:(e, v)=>{ const n = Math.max(10, Math.min(90, Number(v) || 75)); e.rageAt = n / 100; e.rage = true; }});
 SKILL_ICON.rageAt = '😡';
 sk1Patch(PASSIVE_DEFS, 'shapeshifter', {category:'passive', label:TX('ui.skn-shapeshifter'), kind:'boolean', desc:()=> TX('ui.sk-shapeshifter')});
-sk1Patch(PASSIVE_DEFS, 'bulwark', {category:'passive', label:'Bulwark', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 4 /* owner 22:13: Log Wall 0/4 */}), codexNote:TX('ui.sk-bulwark-codex')}); // ENG33 (2026-11-07, owner #10): N Log Walls, 0/8 each
+sk1Patch(PASSIVE_DEFS, 'bulwark', {category:'passive', label:'Bulwark', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 5 /* SKN1 (2026-11-16): Log Wall 0/5 at Level 1 */}), codexNote:TX('ui.sk-bulwark-codex')}); // ENG33 (2026-11-07, owner #10): N Log Walls, 0/8 each
 sk1Patch(PASSIVE_DEFS, 'backstab', {category:'passive', label:'Backstab', kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-backstab', {n: numOr(v, 2)}), codexNote:TX('ui.sk-backstab-codex')});
 Object.assign(SKILL_ICON, {assault:'⚔️', liege:'🛡️👑', liegeGrant:'🛡️👑', rageGrant:'😡', shapeshifter:'🧰'});
 // BF6 (owner 15:15: "Rally: temporary increase in attack. War Banner: passive increase in attack while this unit is present."): Rally N is
@@ -3181,7 +3180,7 @@ function waveParts(v, e){
 const SKILL_TEXT = {
   poison: v=> TX('ui.eng33-venomous', {n: v}) /* ENG33 */, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> TX('ui.eng34-bleed', {n: v}) /* ENG34 */, corrode: v=> `Its hits add ${v} Corrode.`,
   armor: v=> `Takes ${v} less damage from every hit.`,
-  counterattack: ()=> `Never attacks on its own. Each time an enemy hits it, it strikes the enemy facing it.`, // 2026-10-16 skill audit: it hits the unit in front, not the attacker (counterStrike)
+  counterattack: ()=> TX('ui.sk-counterattack'), // SKN1 (2026-11-16): it hits the unit facing it, not the attacker; swings only with no enemy facing it
   spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,
   thorns: v=> `Melee attackers take ${v} damage.`,
   fork: ()=> TX('ui.eng9-fork'), // 2026-10-17; 2026-10-18 (package D): terse; 2026-10-26 (ENG9, owner G2): "Strikes up to 2 adjacent enemies in front of this unit"
@@ -3274,7 +3273,7 @@ const SKILL_TEXT = {
   gash: v=> `When played, add ${v} Bleed to the enemy facing it.`,
   overwhelm: ()=> `Damage left over from a kill carries on into the enemy bramble.`,
   berserk: v=> `+${v} Attack whenever one of your units dies.`,
-  bulwark: v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 4 /* owner 22:13: Log Wall 0/4 */}), // ENG33 (2026-11-07): N Log Walls // 2026-10-23 (package EN, owner 01:57 note 2): two shields as it arrives
+  bulwark: v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 5 /* SKN1 (2026-11-16): Log Wall 0/5 at Level 1 */}), // ENG33 (2026-11-07): N Log Walls // 2026-10-23 (package EN, owner 01:57 note 2): two shields as it arrives
   reflect: v=> `${typeof v === 'number' && v < 100 ? `${v}% of the time, a shot` : 'Shots'} aimed at it (arrows, bolts, missiles, fireballs) bounce${typeof v === 'number' && v < 100 ? 's' : ''} off and hit${typeof v === 'number' && v < 100 ? 's' : ''} a random enemy unit.`, // 2026-10-17 (user: "reflects ranged skills back at a random enemy unit")
   momentum: v=> `+${v} Attack every time it kills a unit.`,
   bloom: v=> `Heal a random wounded ally for ${v} every upkeep.`,
@@ -7015,7 +7014,7 @@ Object.assign(SKILL_TEXT, {
   spoils: v=> TX('ui.sk-spoils', {n: numOr(v, SK1_DEFAULTS.spoils)}),
   venomPulse: v=> numOr(v, 1) === 1 ? TX('ui.sk-venom-pulse') : TX('ui.sk-venom-pulse-n', {n: numOr(v, 1)}),
   punish: v=> TX('ui.sk-punish', {n: numOr(v, SK1_DEFAULTS.punish)}),
-  cure: v=> TX('ui.sk-cure', {n: numOr(v, 2)}),
+  cure: ()=> TX('ui.sk-cure', {n: 1}), // SKN1 (2026-11-16): Cure 1 only
   healing: v=> TX('ui.sk-healing', {n: numOr(v, 1)}),
 });
 // ENG27 (2026-11-06): the match log lines for the package's rules
@@ -10002,7 +10001,7 @@ function abilityBadges(d, bopts){
   // W2 skills (2026-10-16): one chip each, with its number (dv = the default; 0 = a skill with no number).
   [['venomous', 'Venomous', 2], ['toxin', 'Toxin', 1], ['weaken', 'Weaken', 1], ['wilting', 'Wilting', 1], ['bulldoze', 'Bulldoze', 1], ['tangle', 'Tangleweed', 1], ['strangle', 'Strangle', 2],
     ['invincible', 'Invincible', 1], ['invisible', 'Invisible', 2], ['sonar', 'Echolocation', 0], ['poisonGas', 'Poison Gas', 2], ['absoluteZero', 'Absolute Zero', 0], ['spitfire', 'Spitfire', 2],
-    ['slashBurn', 'Slash & Burn', 3], ['trap', 'Trap', 5], ['predator', 'Predator', 1], ['prey', 'Prey', 0], ['nova', 'Nova', 3], ['crystallise', 'Crystallise', 5], ['cure', 'Cure', 2],
+    ['slashBurn', 'Slash & Burn', 3], ['trap', 'Trap', 5], ['predator', 'Predator', 1], ['prey', 'Prey', 0], ['nova', 'Nova', 3], ['crystallise', 'Crystallise', 5], ['cure', 'Cure', 1],
     ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2], ['atheist', 'Atheist', 0]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
     if(k === 'trap' && bopts && bopts.live && matchState && matchState.ui9Laid && matchState.ui9Laid[bopts.live.uid]) return; // UI9 (BB2): laid, the chip is spent
     if(k === 'sonar' && eng28DarkPipOff(bopts)) return; // ENG28 (2026-11-07, owner 23:35 #11): only in the dark
@@ -47827,6 +47826,13 @@ function mistPillHTML(m){
   return bfPillHTML('mist-pill', '🌫️', 'Mist', 'Mist', lines ? pillTipHTML('Mist', lines) : '<b class="pt-h">?</b>', lines ? 'Mist: ' + lines.join(' ') : 'Mist', 'bf:mist', 'misty');
 }
 function mistLines(m){ return [MISTY_TEXT].concat(mistHidesMoon(m) ? [MISTY_MOON_TEXT] : []); }
+// 2026-11-16 (SKN1, owner workbook note 11-16: "Fog should be a field tracker ... like sun and tide ... It would just write 'Fog' in a pill"): a Fog pill
+// while the fight's field is fog (Thick Fog, rules.fog); the Mist has its own pill. The Fog skills (Fog – {…}) read the same state (engine en6Fog).
+function fogPillHTML(m){
+  const fr = matchFieldRules(m) || {}; if(!m || m.over || fr.misty || !(fieldEffectOf(m) === 'fog' || fr.fog)) return '';
+  const nm = TX('ui.skn1-fog'), line = (FIELD_TEXT.fog && FIELD_TEXT.fog.text) || '';
+  return bfPillHTML('fog-pill', '🌫️', nm, '', pillTipHTML(nm, [line]), nm + (line ? ': ' + line : ''));
+}
 function mistHidesMoon(m){ try{ return !!(m && matchHasMoonCards(m)); }catch(e){ return false; } }
 
 const FIELD_EVERY_ROUND = new Set(['frozen', 'heatwave', 'rain']);
@@ -47851,7 +47857,7 @@ function bfPillsHTML(m){
   // 2026-10-17 (user: "That should be a field effect. not a pill that just says that."): the Arena's day rules are Environment cards now
   // (arenaExtraRows), so the ruleset pill is gone.
   const rs = '';
-  let inner = ''; try{ inner = phasePillHTML(m) + mistPillHTML(m) + windPillHTML(m) + tidePillHTML(m) + rs + suddenDeathPillHTML(m); }catch(e){} // 2026-10-15: state only (no forecast, the moon in the Night pill)
+  let inner = ''; try{ inner = phasePillHTML(m) + mistPillHTML(m) + fogPillHTML(m) /* SKN1 */ + windPillHTML(m) + tidePillHTML(m) + rs + suddenDeathPillHTML(m); }catch(e){} // 2026-10-15: state only (no forecast, the moon in the Night pill)
   return `<div class="bf-pills" id="bfPills">${inner}</div>`;
 }
 // Sudden death pill (2026-10-15): ☠️ while sudden death is on (☠️☠️ in stage II), with what it does in the tooltip.

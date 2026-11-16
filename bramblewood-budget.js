@@ -251,8 +251,13 @@ function abilitiesOf(effects, params){ const e = XP(effects) || {}, P = params |
 // TR; owner, decision HB2-1): the plain Flying / Tide / Diurnal / Nocturnal counted 0, plus 1 when a card had two or more of them.
 const TWO_SKILL_LIGHT = ['flying', 'tide', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind', 'purblind'];
 function twoSkillLight(k, e){ return TWO_SKILL_LIGHT.includes(k) && !(e && e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object'); }
-// [{k, w}]: each ability and its weight (1, or 0.5 when light)
-function skillCountParts(effects, params){ const e = XP(effects) || {}; return abilitiesOf(e, params).map(k=> ({k, w: twoSkillLight(k, e) ? 0.5 : 1})); }
+// 2026-11-16 (SKN1, owner workbook note 11-16: "Electricity and Electric type attacks count as 1 skill. Same as Venom type and Venomous."):
+// the skills of one damage type count once together: a card with Electricity and Lightning counts 1.
+const TWO_SKILL_TYPES = [['electricity', 'lightning', 'shockBolt', 'chainLightning', 'dragonLightning'], ['poison', 'poisonBolt', 'venomPulse']];
+// [{k, w}]: each ability and its weight (1, or 0.5 when light; 0 for a second skill of the same damage type)
+function skillCountParts(effects, params){ const e = XP(effects) || {}, parts = abilitiesOf(e, params).map(k=> ({k, w: twoSkillLight(k, e) ? 0.5 : 1}));
+  TWO_SKILL_TYPES.forEach(g=>{ const ps = parts.filter(p=> g.includes(p.k)); ps.slice(1).forEach(p=>{ p.w = 0; }); });
+  return parts; }
 function skillCountOf(effects, params){ return skillCountParts(effects, params).reduce((t, p)=> t + p.w, 0); }
 // Chained as an N multiplier (ENG9, 2026-10-26, owner G19: "Being chained should grant a larger budget - multiplicatively"): a Chained unit
 // can't act until its chain breaks, so its stats are worth less for those rounds. By the 4-round rule: it takes about 3 damage a round in the

@@ -84,14 +84,14 @@ ok(Object.keys(E.ENG36_STATUS).filter(k=> E.ENG36_STATUS[k].dot).sort().join() =
 // ================= 2. summons at the summoner's level =================
 function wallsOf(id){ const {e, P} = mk(); const h = {uid: 9500, defId:id}; P[1].hand.push(h); P[1].lumber = 5; e.placeCard(P, so, 1, h.uid, 0, {}, []);
   const dd = c=> e.derivedDefs[c.defId] || defs[c.defId] || {}; return all(P[1]).filter(c=> dd(c).bulwarkWall); }
-{ const w10 = wallsOf('e36-bul@10'), w1 = wallsOf('e36-bul@1'), w0 = wallsOf('e36-bul@0'), wn = wallsOf('e36-bul');
-  ok(wn.length === 1 && wn[0].hp === 4, `a summoner with no level: the Log Wall as printed, 0/4 (${wn.map(c=> c.atk + '/' + c.hp)})`);
-  ok(w1.length === 1 && w1[0].hp === 4, `Level 1 Bulwark: 0/4 (${w1.map(c=> c.atk + '/' + c.hp)})`);
-  ok(w10.length === 1 && w10[0].hp === 6 && (w10[0].atk | 0) === 0, `Level 10 Bulwark: 0/6, half the level curve's growth (ENG40, decision ENG36-3 b; was 0/8) (${w10.map(c=> c.atk + '/' + c.hp)})`);
-  ok(w0.length === 1 && w0[0].hp === 3, `Level 0 Bulwark: 0/3 (x0.85, a hatchling) (${w0.map(c=> c.atk + '/' + c.hp)})`); }
+{ const w10 = wallsOf('e36-bul@10'), w1 = wallsOf('e36-bul@1'), w0 = wallsOf('e36-bul@0'), wn = wallsOf('e36-bul'); // 2026-11-16 (SKN1, owner workbook note 11-16): Log Wall 0/5 -> 0/8 at Level 10 (was 0/4 -> 0/6)
+  ok(wn.length === 1 && wn[0].hp === 5, `a summoner with no level: the Log Wall as printed, 0/5 (${wn.map(c=> c.atk + '/' + c.hp)})`);
+  ok(w1.length === 1 && w1[0].hp === 5, `Level 1 Bulwark: 0/5 (${w1.map(c=> c.atk + '/' + c.hp)})`);
+  ok(w10.length === 1 && w10[0].hp === 8 && (w10[0].atk | 0) === 0, `Level 10 Bulwark: 0/8 (SKN1; its own levelStats) (${w10.map(c=> c.atk + '/' + c.hp)})`);
+  ok(w0.length === 1 && w0[0].hp === 4, `Level 0 Bulwark: 0/4 (x0.85, a hatchling) (${w0.map(c=> c.atk + '/' + c.hp)})`); }
 { const BB = require(path.join(ROOT, 'bramblewood-budget.js')); const c = BB.forgeCurve({id:'bulwark-wall', attack:0, health:4, wait:0, cost:0, rarity:'common', token:true, effects:{guardian:true}, obtainMap:0}, 1, 11);
   ok(c.rows[10].health === 8 && c.rows[4].health === 5, 'the wall follows the Forge curve (bramblewood-budget.js forgeCurve): L4 0/5, L10 0/8');
-  ok(rd('bramblewood-engine.js').includes('bulwarkWallHp: 4'), 'the Log Wall\'s base stays 0/4 (ENG33_DEF.bulwarkWallHp)'); }
+  ok(rd('bramblewood-engine.js').includes('bulwarkWallHp: 5'), 'the Log Wall\'s base is 0/5 (ENG33_DEF.bulwarkWallHp, SKN1)'); }
 { const {e, P} = mk(); const h = {uid: 9600, defId:'e36-spawner@10'}; P[1].hand.push(h); P[1].lumber = 5; e.placeCard(P, so, 1, h.uid, 0, {}, []);
   const tok = all(P[1]).find(c=> (e.derivedDefs[c.defId] || defs[c.defId] || {}).derivedFrom === 'e36-tok' || c.defId === 'e36-tok');
   const st = e.eng36StatsAt(defs['e36-tok'], 10); ok(tok && tok.atk === st.attack && tok.hp === st.health && (st.attack + st.health) > 6, `a Level 10 spawner's token comes out at Level 10 (${tok && tok.atk + '/' + tok.hp}, curve ${st.attack}/${st.health})`); }
