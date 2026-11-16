@@ -116,6 +116,18 @@ const FILLER = ['warren-scout', 'fawn-scout', 'bee-sentry', 'mouse-sapper', 'poi
 // of the later situational traits (Swimmer etc.), or every new trait on a filler card would move every card's score.
 const RAW = {}; cards.forEach(c=>{ RAW[c.id] = c; });
 FILLER.forEach(id=>{ const d = Object.assign({effects:{}}, RAW[id]); delete d.art; d.effects = Object.assign({}, d.effects); ['swimmer','tailwind','headwind','darksight','dry'].forEach(k=> delete d.effects[k]); if(V3 && isFactionStarter(RAW[id])) d.factionStarter = true; /* BAL25: Bee Sentry */ defs[id] = d; });
+// CARDPOW1 (2026-11-16): a card that costs Stone, Metal or Uranium was never played against the filler (it has Lumber only), so it had no
+// rating. With --v3 its test deck swaps 2 filler slots per such resource for a card that delivers it (the Lumber filler's idea, BAL25): Pumice
+// Beetle (Stone 2 on arrival), Ore Smelter Mole (Delivery Metal 1), Irradiated Axolotl (Delivery Uranium 1). Its row lists them (`helpers`).
+const RES_HELPERS = {stoneCost: 'pumice-beetle', metalCost: 'ore-smelter-mole', uraniumCost: 'irradiated-axolotl'};
+// CARDPOW1: why the test side (k copies + filler) could not play a card in 20+ games: the rating needs a deck built for it
+function unplayedWhy(c){ const e = (c && c.effects) || {};
+  if(c.prayerReq) return 'needs Prayer ' + c.prayerReq + ' (Ecclesia; no Prayer source in the filler)';
+  if(e.evolute || e.evoluteAlpha || e.evoluteOmega) return 'an Evolute: needs a legal base of its line on the field';
+  if(c.exileCost) return 'needs cards to exile (' + (typeof c.exileCost === 'object' ? (c.exileCost.count || 1) + ' from the ' + (c.exileCost.zone || 'graveyard') : c.exileCost) + ')';
+  if(c.cardType === 'spell') return 'a spell the CPU did not cast in the test';
+  return 'rarely played by the CPU in the test'; }
+function helpersOf(d){ const out = {}; if(!V3 || !d) return out; Object.entries(RES_HELPERS).forEach(([f, h])=>{ if(d[f] && defs[h] && h !== d.id) out[h] = 2; }); return out; }
 function fillerDeck(n){ const d = {}; for(let i=0;i<n;i++){ const id = FILLER[i % FILLER.length]; d[id] = (d[id]||0) + 1; } return d; }
 const OPP = fillerDeck(20);
 const COPIES_BY_COST = [8, 6, 4, 3];
@@ -182,7 +194,8 @@ function measure(id, over, pool){
   const D = over ? Object.assign({}, defs, {[id]: Object.assign({}, defs[id], over)}) : defs;
   // Expensive cards can't be played eight times a match, so the test deck carries fewer of them.
   const k = COPIES_BY_COST[Math.min(3, defs[id].cost||0)];
-  const deck = fillerDeck(20 - k); deck[id] = (deck[id]||0) + k;
+  const hp = helpersOf(defs[id]), nh = Object.values(hp).reduce((a, b)=> a + b, 0);
+  const deck = fillerDeck(20 - k - nh); deck[id] = (deck[id]||0) + k; Object.entries(hp).forEach(([h, c])=>{ deck[h] = (deck[h]||0) + c; }); // CARDPOW1: resource helpers
   let w = 0, wAll = 0, played = 0, games = 0; const byPhase = V3 ? {cycle: [0, 0], day: [0, 0], night: [0, 0]} : null; // BAL25: [played, wins]
   for(let g=0; g<N; g++){
     const opp = pool ? advDeck(pool, id, g) : OPP; if(!opp) continue;
@@ -324,7 +337,7 @@ const rows = LIVE.filter(id=> done.basic[id]).map(id=>{
   const d = defs[id], b = done.basic[id], a = done.adv[id], wr = b.rate, [lo, hi] = bandOf(d);
   const verdict = wr == null ? 'unplayed' : wr > hi ? 'strong' : wr < lo ? 'weak' : 'ok';
   return {id, name:d.name, rarity:d.rarity || null, cost:d.cost||0, wait:d.wait||0, attack:d.attack||0, health:d.health||0,
-    skills:Object.keys(d.effects||{}).filter(k=> k!=='triggers').concat((d.effects.triggers||[]).length ? ['triggers'] : []),
+    skills:Object.keys(d.effects||{}).filter(k=> k!=='triggers').concat((d.effects.triggers||[]).length ? ['triggers'] : []), helpers: Object.keys(helpersOf(d)).length ? helpersOf(d) : undefined /* CARDPOW1 */, unplayedWhy: V3 && b.played < LOW_SAMPLE ? unplayedWhy(RAW[id]) : undefined,
     winRate: r1(wr), advRate: a ? r1(a.rate) : null, played: b.played, games: b.games, playedShare: b.games ? Math.round(b.played / b.games * 1000) / 1000 : 0,
     wins: b.wins, winRateAll: r1(b.rateAll), lowSample: b.played < LOW_SAMPLE || undefined,
     adv: a ? {played: a.played, games: a.games, playedShare: a.games ? Math.round(a.played / a.games * 1000) / 1000 : 0, wins: a.wins, rateAll: r1(a.rateAll), lowSample: a.played < LOW_SAMPLE || undefined} : undefined,

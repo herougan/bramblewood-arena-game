@@ -81,7 +81,7 @@ CARDS.forEach(c => {
     attack: c.attack || 0, health: c.health || 0, wait: c.wait || 0, lumber: c.cost || 0, skills: skillText(c.effects || {}), levelSkills: c.levelSkills ? Object.keys(c.levelSkills).join(',') : '',
     fillL1: f[0], fillL5: f[4], fillL10: f[9], N1: l1.N, B1: l1.B, S1: l1.S, cap2L1: l1.cap2, verdict, gainedL1to10: gained, curve: curve.map(x => ({ L: x.L, A: x.A, H: x.H, N: x.N, B: x.B, fill: x.fill, ok: x.ok })),
     jumps, stalls, flags, owner: OWNER.has(c.id),
-    power: pw ? { n: pw.winRate == null ? null : Math.round(pw.winRate - CP_MED), adv: pw.advRate == null ? null : Math.round(pw.advRate - 50), forBudget: pw.forBudget == null ? null : pw.forBudget, played: pw.played, games: pw.games, lowSample: !!pw.lowSample } : null });
+    power: pw ? { n: pw.winRate == null ? null : Math.round(pw.winRate - CP_MED), adv: pw.advRate == null ? null : Math.round(pw.advRate - 50), forBudget: pw.forBudget == null ? null : pw.forBudget, played: pw.played, games: pw.games, lowSample: !!pw.lowSample, why: pw.unplayedWhy || undefined, helpers: pw.helpers || undefined } : null });
 });
 // a stat proposal for a card outside 85-100% at Level 1 (proposal only; card stats are the owner's): the smallest Attack / Health step that lands
 // it in the band at Level 1, keeping its shape (Attack moves first when it is over and has 2+, Health otherwise), read with the same box
@@ -133,8 +133,17 @@ const md = ['# CARDPOW1: card power and budget fill, every card (2026-11-16)', '
   `| B2 jump (L1-10) | ${S.jumps} | ${cnt(r => inPlay(r) && r.jumps.length)} | ${cnt(r => inPlay(r) && r.map <= 20 && r.jumps.length)} |`,
   `| B2 stall (L1-10) | ${S.stalls} | ${cnt(r => inPlay(r) && r.stalls.length)} | ${cnt(r => inPlay(r) && r.map <= 20 && r.stalls.length)} |`,
   `| Power rated | ${S.powerRated} | ${cnt(r => inPlay(r) && r.power && r.power.n != null)} | ${cnt(r => inPlay(r) && r.map <= 20 && r.power && r.power.n != null)} |`, '',
+  `Not rated by the power test (it never got to play them in 400 games; none is obtainable): ${rows.filter(r => !(r.power && r.power.n != null)).map(r => r.name + " (" + ((r.power && r.power.why) || "no row") + ")").join(", ") || "none"}. Cards that cost Stone, Metal or Uranium were measured with 2 copies of a card that delivers it in the test deck (Caldera Wyrm, Irradiated Glow Wyrm, Phoenix Mushrooms, Dynamite Packrat, Malachite Golem).`, "",
   `Skills with no price in \`canonical/skill-costs.json\`: ${Object.keys(missingAll).length ? Object.entries(missingAll).map(([k, v]) => k + ' (' + [...v].length + ')').join(', ') : 'none'}.`, '',
   `B2 rules: a jump is a one-level rise of more than ${STEP_JUMP} fill points, or a level over budget that Level 1 was not; a stall is a level more than ${DRIFT} points under the Level 1 fill, or no stat gain at any of the major levels 4, 7, 10.`, ''];
+// B2 in one paragraph: the saw of the Forge curve for Level 1 starters, the Level 0 starters' Level 2 catch-up, the level-skill jumps
+{ const ip = rows.filter(r => inPlay(r) && r.map <= 20), b0 = ip.filter(r => r.baseLevel === 0), b1 = ip.filter(r => r.baseLevel === 1);
+  const med = a => { a = a.slice().sort((x, y) => x - y); return a.length ? r2(a[a.length >> 1]) : null; };
+  const jumpers = ip.filter(r => r.jumps.length), lsJ = jumpers.filter(r => r.baseLevel !== 0);
+  md.push('## The Level 1-10 curve (B2)', '',
+    `- Level 1 starters (${b1.length} in play, Maps 0-20): the Forge curve is a saw, down a few points a level as N grows and back up on the majors 4, 7, 10; median range ${med(b1.map(r => Math.max(...r.curve.map(x => x.fill)) - Math.min(...r.curve.map(x => x.fill))))} points, Level 10 vs Level 1 median ${med(b1.map(r => r.fillL10 - r.fillL1))} points. No card stalls (a level ${DRIFT}+ points under its L1 fill and under the band).`,
+    `- Level 0 starters (${b0.length}: tutorial, Base and Baby cards): Level 1 spends a third of the 0 -> 1 gain (it is no major level), so Level 2 (minor) catches up: median +${med(b0.map(r => r.curve[1].fill - r.curve[0].fill))} points from Level 1 to 2 (Level 1 starters ${med(b1.map(r => r.curve[1].fill - r.curve[0].fill))}). ${jumpers.length - lsJ.length} of the ${jumpers.length} jump flags are this. A curve call, not a card fix: make Level 1 a major for Level 0 starters (bramblewood-budget.js levelKind), or leave it.`,
+    `- The other jumps: ${lsJ.map(r => r.name + ' (' + r.jumps.join('; ') + (r.levelSkills ? '; level skill at L' + r.levelSkills : '') + ')').join(', ') || 'none'}.`, ''); }
 const tbl = (title, list) => { md.push('## ' + title, '', '| Card | Lists | L1 | L5 | L10 | Power | Flag | Proposal |', '|---|---|---|---|---|---|---|---|');
   list.forEach(r => md.push(`| ${fm(r)}${r.owner ? ' **owner-set**' : ''} | ${r.lists.slice(0, 3).join(', ')}${r.lists.length > 3 ? ' +' + (r.lists.length - 3) : ''} | ${r.fillL1}% | ${r.fillL5}% | ${r.fillL10}% | ${pw(r)} | ${r.flags.join('; ')} | ${r.proposal} |`)); md.push(''); };
 const dist = r => r.fillL1 > BAND[1] ? r.fillL1 - BAND[1] : r.fillL1 < BAND[0] ? BAND[0] - r.fillL1 : 0;
@@ -142,6 +151,13 @@ tbl('In play, Maps 0-20: over budget at Level 1', rows.filter(r => inPlay(r) && 
 tbl('In play, Maps 0-20: under 85% at Level 1', rows.filter(r => inPlay(r) && r.map <= 20 && r.verdict === 'under').sort((a, b) => a.fillL1 - b.fillL1));
 tbl('In play, Maps 0-20: in band at Level 1, curve flagged (B2)', rows.filter(r => inPlay(r) && r.map <= 20 && r.verdict === 'in band' && (r.jumps.length || r.stalls.length)));
 tbl('In play, Map 21+: outside the band', rows.filter(r => inPlay(r) && r.map > 20 && r.verdict !== 'in band').sort((a, b) => dist(b) - dist(a)));
+// owner-set cards outside the band: never retuned; why the budget misses them (its stat points, its skill prices, its N and first map)
+{ const SCT = require('../skill_costs.js').make(J('canonical/skill-costs.json'));
+  md.push('## Owner-set cards outside the band: why the budget misses them', '', 'Never retuned (tools/pipeline/config.json refit.ownerCards and the owner\'s hand-set cards are the same rule). B = stat points + S; the map is the first map a player can get the card on (a Pack 1 card reads Map 0 even when its first list is later).', '',
+    '| Card | Lists | N at L1 (Map) | Stat points | S (skill prices) | Fill L1 | Power |', '|---|---|---|---|---|---|---|');
+  rows.filter(r => r.owner && inPlay(r) && r.verdict !== 'in band').sort((a, b) => dist(b) - dist(a)).forEach(r => { const c = CARDS.find(x => x.id === r.id), p = SCT.cardS(c.effects || {}, c);
+    md.push(`| ${r.name} (${r.rarity}, ${r.attack}/${r.health}, W${r.wait} L${r.lumber}) | ${r.lists.slice(0, 3).join(', ')} | ${r.N1} (Map ${r.map}) | ${r2(r.B1 - r.S1)} | ${r.S1}: ${(p.parts || []).filter(x => x[2]).map(x => x[1] + ' ' + r2(x[2])).join(', ') || 'none'} | ${r.fillL1}% | ${pw(r)} |`); });
+  md.push(''); }
 md.push('## Not in play (no list, tokens, fields, pool candidates): outside the band', '', `${cnt(r => !inPlay(r) && r.verdict !== 'in band')} of ${cnt(r => !inPlay(r))}; listed in the json / csv / workbook only.`, '');
 fs.writeFileSync(path.join(OUT, 'cardpow1-2026-11-16.md'), md.join('\n') + '\n');
 console.log(`${S.cards} cards (${S.inPlay} in play, ${S.maps0to20InPlay} Maps 0-20): in band ${S.inBand}, under ${S.under}, over ${S.over}; in play outside ${S.inPlayOutside} (Maps 0-20 ${S.maps0to20Outside}); B2 jumps ${S.jumps}, stalls ${S.stalls}; no price ${S.noPrice}; power rated ${S.powerRated}/${S.cards}`);

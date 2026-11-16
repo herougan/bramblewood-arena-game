@@ -36,11 +36,17 @@ const OBT = JSON.parse(read('docs/balance/skir1/card-obtain-maps-before-2026-11-
 const inScope = c=> OBT[c.id] != null ? OBT[c.id] <= 20 : !!(c.faction || c.rarity === 'starter' || (c.source && c.source.kind === 'base'));
 const fieldable = c=> !c.token && !c.test && !c.hallOfFame && !c.baseId && !c.field && !c.pool;
 ok(rep.v === 3 && rep.games === 400, 'v3 report at 400 games a card (' + rep.games + ')');
-const rows = rep.rows || [], byId = {}; rows.forEach(r=> byId[r.id] = r);
+const allRows = rep.rows || [], byId = {}; allRows.forEach(r=> byId[r.id] = r);
+// 2026-11-16 (CARDPOW1): the report rates every playable card (--scope=all); rows outside the Maps 0-20 scope carry scope "extra" and stay out of
+// the advanced pool, the fit and the editor's zero. The checks below read the Maps 0-20 rows; tests/cardpow1-2026-11-16.js checks the rest.
+const rows = allRows.filter(r=> r.scope !== 'extra');
+// the tool's Maps 0-20 rule today: canonical/card-obtain-maps.json <= 20, unlisted faction / Starter / Base cards, unlisted cards the game hands out (Map 0)
+const OBT_NOW = JSON.parse(read('canonical/card-obtain-maps.json')).maps, GB = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G;
+const inScopeNow = c=> OBT_NOW[c.id] != null ? OBT_NOW[c.id] <= 20 : !!(c.faction || c.rarity === 'starter' || (c.source && c.source.kind === 'base')) || (!c.token && !c.field && !c.pool && !GB.isUnattainable(c));
 const want = cards.filter(c=> fieldable(c) && inScope(c)).map(c=> c.id);
 ok(want.every(id=> byId[id]), 'every Maps 0-20 card measured (' + want.filter(id=> !byId[id]).slice(0, 5).join(', ') + ')');
-ok(rows.every(r=> RAW[r.id] && inScope(RAW[r.id])), 'no card outside Maps 0-20 (' + rows.filter(r=> !(RAW[r.id] && inScope(RAW[r.id]))).map(r=> r.id).slice(0, 5).join(', ') + ')');
-ok(rep.scope && rep.scope.maxMap === 20 && rep.scope.cards === rows.length, 'scope recorded');
+ok(rows.every(r=> RAW[r.id] && inScopeNow(RAW[r.id])) && allRows.filter(r=> r.scope === 'extra').every(r=> RAW[r.id] && !inScopeNow(RAW[r.id])), 'Maps 0-20 rows are the tool\'s scope, extra rows outside it (' + rows.filter(r=> !(RAW[r.id] && inScopeNow(RAW[r.id]))).map(r=> r.id).slice(0, 5).join(', ') + ')');
+ok(rep.scope && rep.scope.maxMap === 20 && rep.scope.cards === allRows.length && rep.scope.maps0to20 === rows.length, 'scope recorded');
 ok(rep.filler.includes('termite-forager') && rep.filler.includes('land-tiller'), 'the report names the Lumber filler');
 ok(rep.env && rep.env.phases && rep.env.phases.cycle === 0.5 && /skill_test_robust/.test(rep.env.fields), 'the report names the phase roll and the fields');
 ok(rows.every(r=> r.games === 400 && Number.isFinite(r.played) && Math.abs(r.playedShare - r.played / r.games) < 0.001), 'games, played, playedShare');
@@ -58,7 +64,7 @@ ok(rows.every(r=> r.byPhase && ['cycle', 'day', 'night'].reduce((s, k)=> s + r.b
   ok(!st.length || avgN(fs1) < avgN(st), 'Faction-Starter N below the other Starters\' (' + avgN(fs1).toFixed(1) + ' vs ' + avgN(st).toFixed(1) + ')'); }
 ok(rows.every(r=> RAW[r.id].rarity === r.rarity || r.rarity === null), 'card data untouched: the report\'s rarity is the card\'s');
 // advanced
-{ const A = rep.advanced; ok(A && A.topShare === 0.4 && A.complete === true && A.measured === rows.length, 'advanced pass complete, top 40%');
+{ const A = rep.advanced; ok(A && A.topShare === 0.4 && A.complete === true && A.measured === allRows.length, 'advanced pass complete, top 40%');
   ok(A.poolCards === 20 && !A.restFrom, 'advanced opponent recorded: 20 top-pool cards (2026-11-10 BAL34, BAL25-1 b; was 5 + the field)');
   ok(JSON.parse(read('docs/balance/bal25/adv-calibration-2026-11-07.json')).rows.some(r=> /picked/.test(r.opponent)), 'the calibration of the mix is committed');
   const elig = rows.filter(r=> r.winRate != null && r.played >= 20);
@@ -77,7 +83,7 @@ ok(rows.every(r=> RAW[r.id].rarity === r.rarity || r.rarity === null), 'card dat
   ok(rows.filter(r=> r.fitNote).every(r=> RAW[r.id].hatchInto) && (F.leftOut || []).every(id=> RAW[id].hatchInto), 'only eggs are left out of the fit');
   const pts = rows.filter(r=> r.forBudget != null && !r.lowSample), mean = pts.reduce((s, r)=> s + r.forBudget, 0) / pts.length;
   ok(Math.abs(mean) < 0.5, 'forBudget averages 0 over the fitted cards (' + mean.toFixed(2) + ')');
-  ok(F.n === pts.length, 'the fit reads every non-low-sample card'); }
+  ok(F.n === pts.length, 'the fit reads every non-low-sample Maps 0-20 card'); }
 
 // ---- the build
 const asm = read('assemble_arena.py');
@@ -86,7 +92,7 @@ const html = read('index.html'), m = html.match(/const CARD_POWER = (\{.*?\});\n
 let CP = null; try{ CP = m && JSON.parse(m[1]); }catch(e){}
 ok(CP && CP.v === 3 && CP.games === 400 && CP.date === rep.generated, 'index.html carries the v3 table and its date');
 { const wr = rows.filter(r=> r.winRate != null).map(r=> r.winRate).sort((a, b)=> a - b), L = wr.length, med = L % 2 ? wr[(L - 1) / 2] : (wr[L / 2 - 1] + wr[L / 2]) / 2;
-  ok(CP && Math.abs(CP.median - med) < 1e-9 && rows.every(r=> r.winRate == null || Math.abs(CP.wr[r.id] - Math.round((r.winRate - med + 50) * 10) / 10) < 0.051), 'wr centred on the median card');
+  ok(CP && Math.abs(CP.median - med) < 1e-9 && rows.every(r=> r.winRate == null || Math.abs(CP.wr[r.id] - Math.round((r.winRate - med + 50) * 10) / 10) < 0.11 /* CARDPOW1 (2026-11-16): a median ending in .x5 puts some values on a rounding edge, where Python's round and JS's Math.round differ by 0.1 */), 'wr centred on the median card');
   ok(CP && rows.every(r=> r.forBudget == null || CP.fb[r.id] === r.forBudget) && rows.every(r=> r.advRate == null || CP.adv[r.id] === r.advRate), 'fb and adv as in the report'); }
 
 // ---- package bookkeeping
