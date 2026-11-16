@@ -4,6 +4,139 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKN1-1. Warcry: already permanent** · Decide · Skills · asked 2026-11-16
+- Your note: "Maybe make this permanent." It already is: when played, your other units get +N/+N for the rest of the fight (added to their base Attack and max Health). Warcry is on no card. The text could say "for the fight" so it reads as permanent.
+  - a) Keep it; add "for the fight" to the text
+  - b) Make it temporary (this round only) instead
+  - c) Keep as is
+- **Default:** a
+
+**SKN1-2. Repair: keep or cut?** · Decide · Skills · asked 2026-11-16
+- Your note: "Same as Rebuild but for structures. Not sure about this one." Repair N: each turn it repairs the most damaged structure within 1 column for N; with none, your bramble for half. One card: Cypress Root Lurker (Repair 2, Guardian).
+  - a) Keep Repair (structures first, bramble second)
+  - b) Cut it; Cypress Root Lurker gets Rebuild N instead (bramble only)
+  - c) Repair heals structures only, never the bramble
+- **Default:** a
+
+**SKN1-3. Stonecutter: every turn, 2 Lumber into 1 Stone?** · Decide · Skills · asked 2026-11-16
+- Your note: "maybe instead it's every turn, turn 2 Lumber into 1 Stone." Today: every second turn while Ready you gain N Stone, free. One card: Marmot Stonecutter. A converter needs Lumber to work, so it is weaker early and better beside Lumber makers.
+  - a) Every turn while Ready: pay 2 Lumber, gain 1 Stone (nothing if short)
+  - b) Keep the free Stone every second turn
+  - c) Both, as two kinds of Stonecutter
+- **Default:** a
+
+**SKN1-4. Spawner instead of Every turn: Spawn triggers** · Decide · Skills · asked 2026-11-16
+- Your note: "Maybe better to use this instead of Every turn -> {Spawn} trigger-action pairs." Spawner {card}: while Ready, it spawns the card into the nearest free slot every turn. Two cards spawn through the trigger form today: Ant Hill and Mother Carrier. Same rule, one keyword instead of a trigger line.
+  - a) Move both cards to Spawner {card}; the trigger form stays for odd cases
+  - b) Keep the trigger form on cards
+  - c) Spawner only on new cards
+- **Default:** a
+
+**SKN1-5. Mimic's parameters** · Decide · Skills · asked 2026-11-16
+- Your note: "Param 1: 3 types: Copy Attack, Copy Defence, Copy N Skills of Param 2 <Target>." Today Mimic copies a random ally's skills and the higher of each stat as it enters. One card: Mirrorhide Mutant. Proposed: Mimic {copy: attack / health / N skills} {target: random ally / facing enemy / strongest ally}.
+  - a) Build both parameters; Mirrorhide Mutant keeps today's effect as its default
+  - b) Copy type only; the target stays a random ally
+  - c) Keep Mimic as is
+- **Default:** a
+
+**SKN1-6. Assiduous: a new trigger** · Decide · Skills · asked 2026-11-16
+- Your idea: "Player discards or exiles N cards, do {action}." A counter trigger: after you discard or exile N cards (pitches count as discards), the action fires, then the count resets. On no card until you place it.
+  - a) Build it as a trigger (N, then any action); discards and exiles count
+  - b) Discards only
+  - c) Not now
+- **Default:** a
+
+**SKN1-7. Industry: what should it do?** · Decide · Skills · asked 2026-11-16
+- Your idea: "Something about resources." Three shapes that fit the resource tiers: a counter trigger (after you spend N resources, do {action}); +1 to the first resource you gain each turn; or +N/+N while you hold Stone or Metal.
+  - a) A counter trigger: after you spend N resources, do {action}
+  - b) +1 to the first resource gain each turn
+  - c) +N/+N while you hold Stone or Metal
+- **Default:** a
+
+**SKN1-8. Havoc: a new counter trigger** · Decide · Skills · asked 2026-11-16
+- Your idea: "Upon dealing N damage, do {action}, then reset." The unit counts the damage it deals (to units and the bramble); at N it fires the action and starts again. Shown as a pip with the count.
+  - a) Build it: its own damage only, N default 10
+  - b) Count your whole side's damage
+  - c) Not now
+- **Default:** a
+
+**SKN1-9. "???": a trigger when it ingests an item** · Decide · Skills · asked 2026-11-16
+- Your note: "(When it ingests an item.)" A trigger for eating: fires when the unit eats something (Devour, Berries, Lumber Feast, food items). It needs a name and the list of what counts as eating.
+  - a) "On Feed": fires when it eats a Berry, an item or a unit (Devour)
+  - b) Items only (equipment or food it consumes)
+  - c) Not now
+- **Default:** a
+
+**SKN1-10. Bioelectric, and Chain Lightning for bosses** · Decide · Skills · asked 2026-11-16
+- Your note: Chain Lightning is S (bosses only), with a new normal skill, Bioelectric, at rank 1. Voltaic Eel (rare, Chain Lightning 2, Shock 40%) is the only card with it. Proposed Bioelectric N: its melee hits deal N extra shock damage to the target (no jump). It counts with Electricity as one skill.
+  - a) Bioelectric N as proposed; Voltaic Eel swaps Chain Lightning for Bioelectric 2
+  - b) Bioelectric = Electricity renamed; Chain Lightning off the Eel
+  - c) Keep Chain Lightning on the Eel
+- **Default:** a
+
+**SKN1-11. A better name for "Buff: {who} {what}"** · Decide · Skills · asked 2026-11-16
+- Your note: "If we can do a better name, I'd prefer that. Buff: {Who} {What}." The stat action (+Attack / +Health / both, on itself, an ally or every ally). Rally and Bolster are taken.
+  - a) Empower: {who} {what}
+  - b) Hearten: {who} {what}
+  - c) Boost: {who} {what}
+- **Default:** a
+
+**SKN1-12. Illuminate: what else should it do?** · Decide · Skills · asked 2026-11-16
+- Your note: "find an alternate use. Don't give diurnal units anything." SKN1 took the Diurnal day away; Illuminate now only stops dark misses (your units and the enemy facing it). Six cards carry it: Lantern Bearer, Otter Lantern Bearer, Lantern Spark-fly, Sulfur Cinder Moth, Nyoogle, Torch.
+  - a) Also reveals Invisible and Stealth units in its column and the ones beside it
+  - b) Also Blinds the enemy facing it for its first round
+  - c) Keep it as dark sight only
+- **Default:** a
+
+**SKN1-13. A new name for the skill that makes units Brittle** · Decide · Skills · asked 2026-11-16
+- Your note: Brittle should be the status's name, and the skill that causes it needs a new name (Fragile stays the generic drawback). One card: Glasswing Moth (its hits make the target Brittle for 2 rounds). Shatter is taken.
+  - a) Embrittle N
+  - b) Crack N
+  - c) Splinter N
+- **Default:** a
+
+**SKN1-14. Arrow – bleed: Laceration or Laced?** · Decide · Skills · asked 2026-11-16
+- Your note: "(Laceration / Laced)." Fire Arrow now reads "Arrow (Flaming)" (SKN1). The bleed form would match as "Arrow (Laced)"; or the rider becomes a skill of its own, "Laceration". On no card.
+  - a) Arrow (Laced) 2
+  - b) Laceration 2 (its own line)
+  - c) Arrow 2 – bleed, as now
+- **Default:** a
+
+**SKN1-15. Shell "same as Turtle": what did you mean?** · Decide · Skills · asked 2026-11-16
+- Your note on Shell: "(Same as Turtle)." There is no Turtle skill. Shell N: the first hit each round gives it N Armor until the round ends. Eight cards carry it (Box Turtle, Reefback Turtle, Giant Clam, Conch Crawler, Limpet Clinger, Shellwright Apprentice, two golems).
+  - a) Rename Shell to Turtle
+  - b) Shell only on shelled animals; the golems lose it
+  - c) Keep Shell as is
+- **Default:** c
+
+**SKN1-16. Nursing instead of Heal; the action is Nurse** · Decide · Skills · asked 2026-11-16
+- Your note: "I think we'll use this instead of Heal. And the action of Heal will be called Nurse." Heal N (9 cards) heals your most wounded unit each round; Nursing N (on no card) heals your lowest-Health wounded unit, not itself. Merging changes who gets healed on those 9 cards.
+  - a) Heal becomes Nursing (lowest Health); the Heal action reads Nurse
+  - b) Rename only: the skill and action read Nursing / Nurse, the rule stays most wounded
+  - c) Keep both
+- **Default:** b
+
+**SKN1-17. Assault: what is "attacking first"?** · Decide · Skills · asked 2026-11-16
+- Your note: "(If it's attacking first)." Today Assault N is +N Attack on its own swings, not on counterattacks. On no card. "First" can mean three things.
+  - a) +N Attack when its side strikes first this round (initiative)
+  - b) +N Attack when it swings before the unit it attacks has acted this round
+  - c) +N on its first attack of the fight only
+- **Default:** b
+
+**SKN1-18. Deliver and Every Turn: the action names** · Decide · Skills · asked 2026-11-16
+- Your notes: Felling should be "On kill -> Deliver (Lumber)"; Delivery every turn's action version is "Every Turn, Deliver". Today the action reads "Gain" and the trigger "On Turn Start". Felling (4 cards) would then be written as a trigger line; the 11 Delivery every turn cards keep the keyword.
+  - a) Rename Gain to Deliver and On Turn Start to Every Turn; Felling's 4 cards become On Kill: Deliver
+  - b) Rename only; cards keep Felling
+  - c) Keep the names
+- **Default:** a
+
+**SKN1-19. The Fog skill's new name** · Decide · Skills · asked 2026-11-16
+- Your note: Fog should be a field tracker, not the skill name. SKN1 added a "Fog" pill on foggy fields (Thick Fog). The skill "Fog – {Evasive}" (one card, the Ent) still reads Fog; it gives its braces while the field is foggy.
+  - a) In Fog – {…}
+  - b) Mistwalker – {…}
+  - c) Foggy – {…}
+- **Default:** a
+
 **REFIT1-1. Road re-fit after your folded card edits** · Decide · Balance · asked 2026-11-16
 - Your 11-06..11-13 edits dropped the main road from 136 to 86 of 149 fights in band. Cricket Drummer (2/7 to 1/5, Inspiring 2), in the Map 2-6 reference deck, alone makes 34 fights harder; Wolf Spider Mother's Swarm makes 22 fights on Maps 10-12 easier; then Peak Condor, Soldier Ant, Moon Jelly, Dormouse, Water Shrew. REFIT1 re-fits 54 decks to the cards as they are: 125/149 in band. If Cricket Drummer goes back, 13 of them become too easy. Table: docs/balance/refit1/attribution-2026-11-16.md.
   - a) Keep the edits; apply the 54 decks
