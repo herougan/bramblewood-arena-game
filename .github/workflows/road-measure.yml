@@ -85,6 +85,7 @@ jobs:
           F="out/skirmish-pass-$TAG.jsonl"
           cat parts/*.jsonl > "$F"
           node tools/ci/road_summary.js "$F" | tee "out/skirmish-pass-$TAG-summary.md" # 2026-11-16 (coordinator): also in the log (artifact storage is unreachable from the Claude sandbox; gh run view --log is)
+          echo "BEGIN-ROWS $TAG"; cat "$F"; echo "END-ROWS" # 2026-11-16 (coordinator): rows in the log too, so tools/ci/fetch_measure.sh works where artifact storage is blocked
           n=$(ls parts/*.jsonl | wc -l)
           { cat "out/skirmish-pass-$TAG-summary.md"; echo; echo "$n of $NSHARDS shards, $(wc -l < "$F") rows. Fetch: \`bash tools/ci/fetch_measure.sh $GITHUB_RUN_ID\`"; } >> "$GITHUB_STEP_SUMMARY"
           [ "$n" = "$NSHARDS" ] || { echo "::error::only $n of $NSHARDS shards finished"; exit 1; }

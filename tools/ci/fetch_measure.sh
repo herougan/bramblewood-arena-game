@@ -11,7 +11,12 @@ if [ "$id" = latest ]; then
   [ -n "$id" ] || { echo "no successful road-measure run yet"; exit 1; }
 fi
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
-gh run download "$id" -R "$REPO" -n road-measure -D "$tmp"
+if ! gh run download "$id" -R "$REPO" -n road-measure -D "$tmp" 2>/dev/null; then
+  # 2026-11-16 (coordinator): artifact storage unreachable (e.g. the Claude sandbox): read the rows the merge job prints to its log
+  gh run view "$id" -R "$REPO" --log | sed 's/^[^\t]*\t[^\t]*\t[^ ]* //' | awk '/^BEGIN-ROWS /{t=$2; on=1; next} /^END-ROWS/{on=0} on{print > "'"$tmp"'/skirmish-pass-" t ".jsonl"}'
+  f=$(ls "$tmp"/skirmish-pass-*.jsonl 2>/dev/null | head -1); [ -n "$f" ] || { echo "no rows in the log of run $id"; exit 1; }
+  node tools/ci/road_summary.js "$f" > "${f%.jsonl}-summary.md"
+fi
 cp "$tmp"/skirmish-pass-*.jsonl "$tmp"/skirmish-pass-*-summary.md docs/balance/
 ls "$tmp" | sed 's|^|docs/balance/|'
 cat "$tmp"/skirmish-pass-*-summary.md
