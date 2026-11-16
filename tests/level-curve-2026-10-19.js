@@ -59,12 +59,14 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
   ok(/floorPct: \(ctx\.node\.floor - 1\) \* ENDLESS_FLOOR_CURVE\.floorPct/.test(B.src) && /floorPct: \(node\.floor - 1\) \* ENDLESS_FLOOR_CURVE\.floorPct/.test(B.src), '2. the game and the reference fight both use the floor curve'); }
 
 // ---- 3. overrides
-{ const MAX_SHIELD = 50 /* 2026-10-19 (BF): the retune after the Forge curve set a few more, none over 2x the rule */, MAX_HEALTH = 20; let nS = 0, nH = 0; const over = [], low = [];
+{ const MAX_SHIELD = 50 /* 2026-10-19 (BF): the retune after the Forge curve set a few more, none over 2x the rule */, MAX_HEALTH = 20, OWNER_SET = {'13-4': 'BALREL1', '2-1': 'BALREL1', '2-B-1': 'BALREL1', '18-A-5': 'PD'}; let nS = 0, nH = 0; const over = [], low = [];
   for(const m of G.CONQUEST_MAPS){ if(m.reserved || m.tower) continue; for(const nd of m.nodes){ if(!nd.deck || nd.kind === 'tutorial') continue; G.NODE_MAP_HINT.set(nd, m.id);
     const sc = G.skirmishCastle(nd), bare = Object.assign({}, nd); delete bare.hqHp; delete bare.shieldOverride; G.NODE_MAP_HINT.set(bare, m.id); const own = G.skirmishCastle(bare);
-    if(sc.overridden){ nS++; if(sc.shield > 2 * Math.max(1, own.rule)) over.push(`${nd.key} ${sc.shield} (rule ${own.rule})`); }
-    if(sc.hp < own.hp){ nH++; if(!(m.id === 'm1' || m.id === 'mf' /* 2026-10-23 (EB): Map 1's small brambles */) && sc.hp < Math.round(own.hp * 0.6)) low.push(`${nd.key} ${sc.hp} of ${own.hp}`); } } }
-  ok(nS <= MAX_SHIELD, `3. ${nS} fights with a Shield override (was 96; at most ${MAX_SHIELD})`);
+    // 2026-11-16 (TESTFIX5): a Shield between 0 and the rule is BAL19-1's road-retune lever (137 fights); the limit counts the overrides that raise it.
+    // Owner-applied exceptions: BALREL1 (11-15, EDGE1-5 defaults) Shield on 13-4, Health 2-1 and 2-B-1 (SIDE2-4 e); 18-A-5's Shield 60 (PD retune, dated on the fight)
+    if(sc.overridden){ if(sc.shield > own.rule) nS++; if(sc.shield > 2 * Math.max(1, own.rule) && !OWNER_SET[nd.key]) over.push(`${nd.key} ${sc.shield} (rule ${own.rule})`); }
+    if(sc.hp < own.hp){ nH++; if(!(m.id === 'm1' || m.id === 'mf' /* 2026-10-23 (EB): Map 1's small brambles */) && !OWNER_SET[nd.key] && sc.hp < Math.round(own.hp * 0.6)) low.push(`${nd.key} ${sc.hp} of ${own.hp}`); } } }
+  ok(nS <= MAX_SHIELD, `3. ${nS} fights with a Shield override above the rule (was 96; at most ${MAX_SHIELD})`);
   ok(!over.length, '3. no Shield override over 2x the rule: ' + over.join(', '));
   ok(nH <= MAX_HEALTH, `3. ${nH} fights with a lower Health (was 53; at most ${MAX_HEALTH})`);
   ok(!low.length, '3. a lower Health is never under 60% of the bramble\'s own: ' + low.join(', ')); }

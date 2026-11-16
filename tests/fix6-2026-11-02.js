@@ -37,24 +37,26 @@ function game(ctx, g, deal){
   ok(/else \{ myLeaderId = id \|\| null; saveMyLeader\(\); \}/.test(app) && /d\.leaderId = myLeaderId;\n  saveMyDecks\(\);/.test(app), 'the picker writes the choice onto the active deck (it sticks)');
   ok(!/drowned-matriarch/.test(app.slice(app.indexOf('function loadMyLeader'), app.indexOf('function matchLeaderId'))), 'nothing in the leader code names the Drowned Matriarch');
   // The "Reference (Random)" decks (the REF fights' default) name their own leader: the Drowned Matriarch on Maps 5-8 (BAL9, JJ7)
-  const prog = G.REF_DECK_SETS.prog; ok(prog && prog.decks && prog.decks[5].every(d=> d.leader === 'drowned-matriarch'), 'Reference (Random) Map 5: every deck leads with the Drowned Matriarch (the owner\'s report)');
+  // 2026-11-16 (TESTFIX5): the REF6 re-run (11-14) rebuilt these decks on the 11-13 lists; Map 5's leaders are now Old Shell x4 and the Drowned Matriarch x1. The rule: each names a Leader card it does not hold
+  const prog = G.REF_DECK_SETS.prog, DF = G.getCardDefs(); ok(prog && prog.decks && prog.decks[5].every(d=> d.leader && DF[d.leader] && DF[d.leader].effects.leader && !(d.counts[d.leader] > 0)), 'Reference (Random) Map 5: every deck names a leader it may field (the owner\'s report: ' + prog.decks[5].map(d=> d.leader).join(', ') + ')');
   ok(/!\(\(counts \|\| \{\}\)\[id\] > 0\)/.test(rd('tools/opt/ref5_prog.js')), 'ref5_prog chooseLeader: never a card the deck already holds'); }
 
 // b) the engine: a leaderPlan seat brings its leader out; the CPU's leaders keep LEAD-4
 { ok(/if\(ready\.length && \(ai\.leaderPlan \|\| !affordable\.length \|\| rules\.bossSurge \|\| rnd\(\) < 0\.35\)\)/.test(eng), 'the CPU rule keeps its dice: leaderPlan is checked before the 35% roll');
   ok(/function aiLeaderToGather\(players, aiId\)\{\n    const ai = players\[aiId\]; if\(!ai \|\| !ai\.leaderPlan/.test(eng), 'aiLeaderToGather: leaderPlan seats only');
   const ctx = G.referenceFightSetup('mw', B.byKey('mw', '5-7'), {refSet: 'prog-1'});
-  ok(ctx.ref.leader === 'drowned-matriarch', '5-7 with Reference (Random) 1: its leader is the Drowned Matriarch');
+  ok(ctx.ref.leader === G.REF_DECK_SETS.prog.decks[5][0].leader, `5-7 with Reference (Random) 1: its leader is that deck's (${ctx.ref.leader})`);
   const N = 12, runs = {}; ['none', 'reserve', 'plan'].forEach(k=>{ runs[k] = []; for(let g = 0; g < N; g++) runs[k].push(game(ctx, g, k)); });
   const out = k=> runs[k].filter(r=> r.A.length).length;
   ok(out('none') === 0, '5-7: no leader dealt, none summoned');
   ok(out('reserve') <= N / 2, `5-7: the CPU's rule alone (no Lumber saved) rarely brings a cost-1 leader out in a free-card deck (${out('reserve')}/${N}; LEAD-4)`);
   ok(out('plan') === N, `5-7: dealt with leaderPlan, the leader comes out every game (${out('plan')}/${N})`);
   ok(runs.plan.every(r=> r.A.length <= 1), 'the leader is summoned at most once');
-  ok(runs.plan.every(r=> !r.A.length || r.A[0].defId === 'drowned-matriarch'), 'it is the Drowned Matriarch that comes out');
+  ok(runs.plan.every(r=> !r.A.length || r.A[0].defId === ctx.ref.leader), 'it is the deck\'s leader that comes out');
   const bOut = k=> runs[k].filter(r=> r.B.length).length; ok(bOut('plan') > 0, `5-7: the CPU still brings its leader out (${bOut('plan')}/${N})`);
   // 4-5, the CPU's side: the Drowned Matriarch in its deck is played from hand, Old Sturgeon leads
-  const c45 = G.referenceFightSetup('m2', B.byKey('m2', '4-5'), {}); ok((c45.setup.reserveLeaders || []).includes('lions-mane-jelly') /* 2026-11-06 TESTFIX2: BAL16 / BAL19 (BAL19-1 leaders lever) rebuilt the 4-5 deck without Old Sturgeon; Lion's Mane Jelly leads */, '4-5 is led by the Lion\'s Mane Jelly (was Old Sturgeon)');
+  // 2026-11-16 (TESTFIX5): the deck was rebuilt again (SKIR3 / BALREL); its leader is whatever skirmishLeadersOf names (Shoal Shark now), never the Drowned Matriarch
+  const L45 = G.skirmishLeadersOf(B.byKey('m2', '4-5'), 'm2') || [], c45 = G.referenceFightSetup('m2', B.byKey('m2', '4-5'), {}); ok(L45.length && !L45.includes('drowned-matriarch') && L45.every(id=> (c45.setup.reserveLeaders || []).includes(id)), `4-5 is led by its own leader, not the Drowned Matriarch (${L45})`);
   let dmPlays = 0; for(let g = 0; g < 10; g++){ const engine = E.makeSimEngine(c45.defs, rng(9100 + g * 37), {recordEvents: true, battleMode: c45.mode, rules: c45.rules, aiAim: true, aiLevel: c45.cpu});
     const sideOf = id=> id === 1 ? 'A' : 'B', st = {}, ev = [], P = {1: engine.newPlayer(1, c45.mine, c45.myCastle), 2: engine.newPlayer(2, c45.enemyDeck, c45.sc.character)}; P[2].loopCards = []; P[2].reserveLeaders = c45.setup.reserveLeaders.slice();
     engine.draw(P[1], 3, 'A', st, ev); engine.draw(P[2], 3, 'B', st, ev);

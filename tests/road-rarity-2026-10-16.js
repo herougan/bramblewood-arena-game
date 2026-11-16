@@ -85,7 +85,8 @@ const sh = n=> PK.packCommonShare(n);
 for(let n = 2; n < 40; n++) ok(sh(n) <= sh(n - 1), `3. Pack ${n} has no more commons than Pack ${n - 1}`);
 ok(PK.packNumberOf({id:'bronze'}) === 1 && PK.packNumberOf({id:'silver'}) === 2 && PK.packNumberOf({id:'gold'}) === 3 && PK.packNumberOf({id:'mystery'}) === null, '3. Hedgerow Pouch, Tidemire Chest, Highcrest Case are Packs 1-3; the Mystery Booster has no number');
 ok(PK.packNumberOf({id:'gold-adv', baseId:'gold'}) === 3, '3. an Advanced pack keeps its pack number');
-ok(/function legendaryHeldBack\(d\)/.test(src) && /!legendaryHeldBack\(defs\[id\]\)\); if\(!live\.length\)/.test(src), '3. faction rewards hold back Legendaries before Map 21');
+// 2026-11-16 (TESTFIX5): CONTENT14 added a second filter after it (factionLeaderHeld)
+ok(/function legendaryHeldBack\(d\)/.test(src) && /!legendaryHeldBack\(defs\[id\]\)[^;\n]*\); if\(!live\.length\)/.test(src), '3. faction rewards hold back Legendaries before Map 21');
 
 // 4. the field curriculum
 ok(/const MISTY_MAPS = new Set\(\['m1', 'mo', 'mtut'\]\);/.test(src), '4. 0-T (the Tutorial) is misty');

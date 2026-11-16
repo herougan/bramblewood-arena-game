@@ -73,11 +73,12 @@ ok(fac.every(c=>{ const s = c.source.side || ''; const hb = (c.archetypes || [])
 ok(defs['sunspire-envoy'].source.side === 'tribes', '3. the Sunspire Envoy (a Hummingbird) moved off the Otter side');
 const S = require(path.join(ROOT, 'tools', 'faction_track_sim_2026_10_21.js')), T = S.load();
 const Gt = T.FACTION_RARITY_GATES;
-ok(Gt.common.at === 0 && Gt.uncommon.at === 25 && Gt.rare.at === 40 && Gt.veryrare.at === 50 && Gt.rare.map === 14 && Gt.veryrare.map >= 25, '3. the gates: Uncommon after 25 received, Rare after 15 more and Map 14, Very Rare after 10 more and Map 25+ (owner: "25 commons ... 15 later ... 10 later")');
+// 2026-11-16 (TESTFIX5): DV (owner 10-22 00:43): Very Rare waits on Map 20 and the Volcano Lair cleared (was Map 25); Unique and up ('high') at Map 40 (was 50)
+ok(Gt.common.at === 0 && Gt.uncommon.at === 25 && Gt.rare.at === 40 && Gt.veryrare.at === 50 && Gt.rare.map === 14 && Gt.veryrare.map >= 20 && Gt.veryrare.side === 'mx', '3. the gates: Uncommon after 25 received, Rare after 15 more and Map 14, Very Rare after 10 more, Map 20 and the Volcano Lair (owner: "25 commons ... 15 later ... 10 later"; DV)');
 ok(Object.keys(Gt).every((k, i, a)=> !i || (Gt[k].at > Gt[a[i - 1]].at && Gt[k].map >= Gt[a[i - 1]].map)), '3. each gate later than the one before (received and map)');
 ok(/^const FACTION_RARITY_GATES = \{/m.test(src) && /^const FACTION_REWARD_TRACK = \{/m.test(src) && /^const PLAIN_REWARDS_UPTO_MAP = 1;/m.test(src), '3. the thresholds are constants (FACTION_RARITY_GATES, FACTION_REWARD_TRACK, PLAIN_REWARDS_UPTO_MAP)');
 [[{received: 24, map: 30}, 'uncommon', false], [{received: 25, map: 0}, 'uncommon', true], [{received: 39, map: 30}, 'rare', false], [{received: 99, map: 13}, 'rare', false], [{received: 40, map: 14}, 'rare', true],
- [{received: 49, map: 40}, 'veryrare', false], [{received: 99, map: 24}, 'veryrare', false], [{received: 50, map: 25}, 'veryrare', true], [{received: 0, map: 0}, 'starter', true], [{received: 200, map: 49}, 'legendary', false]]
+ [{received: 49, map: 40}, 'veryrare', false], [{received: 99, map: 19, sides: ['mx']}, 'veryrare', false], [{received: 50, map: 25}, 'veryrare', false], [{received: 50, map: 20, sides: ['mx']}, 'veryrare', true], [{received: 0, map: 0}, 'starter', true], [{received: 200, map: 39}, 'legendary', false], [{received: 200, map: 40}, 'legendary', true]]
   .forEach(([c, r, want])=> ok(T.factionRarityOpen(r, c) === want, `3. ${r} at ${c.received} received, Map ${c.map}: ${want ? 'open' : 'closed'}`));
 { // factionTrackPick never hands out a closed rarity, and the lowest open one almost always
   const otter = fac.filter(c=> !c.source.side || c.source.side === 'shared').map(c=> c.id), rnd = (s=> ()=>{ s = (s * 16807) % 2147483647; return s / 2147483647; })(42);
@@ -90,14 +91,15 @@ ok(/^const FACTION_RARITY_GATES = \{/m.test(src) && /^const FACTION_REWARD_TRACK
   ok(Object.keys(early).length && Object.keys(early).every(id=> !Object.keys(T.defs[id].effects || {}).length), `3. Maps 0-1: a plain faction card first (${Object.keys(early)})`); }
 // the hooks
 const fnSrc = name=> grab(name);
-ok(/factionTrackPick\(live, rnd/.test(fnSrc('factionReward')) && /noteFactionReceived\(1, st\)/.test(fnSrc('factionReward')), '3. a Faction Reward picks through the track and counts as received');
+// 2026-11-16 (TESTFIX5): RW5's pool: factionReward takes the set pattern's pick, else factionRandomReward's track pick; factionTakeOut counts it as received
+ok(/factionRandomReward\(rnd\)/.test(fnSrc('factionReward')) && /factionTakeOut\(st, pick\)/.test(fnSrc('factionReward')) && /factionTrackPick\(live, rnd/.test(fnSrc('factionRandomReward')) && /noteFactionReceived\(1, st\)/.test(fnSrc('factionTakeOut')), '3. a Faction Reward picks through the track and counts as received');
 ok(/factionRarityOpen\(/.test(fnSrc('factionGrowth')) && /noteFactionReceived\(1, st\)/.test(fnSrc('factionGrowth')), '3. a Faction Growth takes only open rarities and counts');
 ok(/fp\.kind === 'faction' \? .*factionTrackPick/.test(fnSrc('rollFactionPackCards')) && /noteFactionReceived\(roll\.pulls\.filter/.test(fnSrc('creditFactionPack')), '3. a faction pack\'s own cards follow the track and count');
 ok(/factionTrackOnWin\(node, isFirstClear\)/.test(fnSrc('rollConquestPackDrops')) && /factionMilestone\(node\) \? factionReward\(\)/.test(fnSrc('rollConquestPackDrops')), '3. skirmish progress: the map milestone and every everyWins-th first clear');
 ok(/achievementFactionCards\(id\)/.test(fnSrc('claimAchievement')) && /grantFactionRewardCards\(fn\)/.test(fnSrc('claimAchievement')) && Object.keys(T.FACTION_REWARD_TRACK.achievements).every(id=> new RegExp(`id:'${id}'`).test(src)), '3. the listed achievements drop faction cards (and exist)');
 ok(/achievementFactionChipHTML\(achvId\)/.test(fnSrc('achievementRewardChipsHTML')), '3. the achievement shows its faction cards');
 for(const side of ['otters', 'hummingbirds']){ const r = S.simulate({side});
-  ok(r.firstOpen.uncommon >= 3 && r.firstOpen.rare === 14 && r.firstOpen.veryrare >= 25, `3. the sim (${side}): Uncommon opens at Map ${r.firstOpen.uncommon}, Rare at Map ${r.firstOpen.rare}, Very Rare at ${r.firstOpen.veryrare}`);
+  ok(r.firstOpen.uncommon >= 3 && r.firstOpen.rare === 14 && !(r.firstOpen.veryrare < 20) /* 2026-11-16 (TESTFIX5): DV: not before Map 20 (the sim clears no side map, so it stays shut) */, `3. the sim (${side}): Uncommon opens at Map ${r.firstOpen.uncommon}, Rare at Map ${r.firstOpen.rare}, Very Rare at ${r.firstOpen.veryrare}`);
   ok(r.countReachedAt.rare >= 12 && r.countReachedAt.rare <= 14, `3. the sim (${side}): the count passes 40 in Map ${r.countReachedAt.rare} (the hand-out rate is paced for the Map 14 Rare)`);
   ok(r.log.every(x=> !x.id || x.map >= Gt[x.rarity].map), `3. the sim (${side}): no card before its rarity's map`);
   ok(!r.log.filter(x=> x.map <= 20).some(x=> !x.id), `3. the sim (${side}): no hand-out comes back empty through Map 20 (the pool has the copies)`); }
@@ -116,10 +118,11 @@ ok(/if\(typeof PLAIN_REWARDS_UPTO_MAP === 'number' && PLAIN_REWARDS_UPTO_MAP >= 
 ok(!defs['meadow-frog'].source && defs['meadow-frog'].basic, '4. the Meadow Frog is a Base card only (it was Base and a 1-1 reward)');
 
 // ---- 5. the archetype gates
-const gateBad = live.filter(c=>{ const L = R.lineOf(c); if(!L || !R.obtainable(c)) return false; return G.cardObtainMap(c) < R.LINE_GATE[L]; }).map(c=> `${c.id} (${R.lineOf(c)}, Map ${G.cardObtainMap(c)})`);
+// 2026-11-16 (TESTFIX5): SKIR3 / LIST1 mark the cards on no list unattainable (out of play) and clear awaitingSource; such a card waits too
+const gateBad = live.filter(c=>{ const L = R.lineOf(c); if(!L || !R.obtainable(c) || c.unattainable) return false; return G.cardObtainMap(c) < R.LINE_GATE[L]; }).map(c=> `${c.id} (${R.lineOf(c)}, Map ${G.cardObtainMap(c)})`);
 ok(R.LINE_GATE.devilry === 66 && R.LINE_GATE.ecclesia === 77 && R.LINE_GATE.evomax === 30 && !gateBad.length, '5. no Devilry card before Map 66, no Ecclesia before 77, no Evomax before 30: ' + gateBad.slice(0, 6).join(', '));
-const held = live.filter(c=> R.lineOf(c) && c.awaitingSource);
-ok(held.length >= 30 && held.every(c=> !c.source), `5. the ${held.length} Devilry / Ecclesia cards wait (awaitingSource), listed in the record`);
+const held = live.filter(c=> R.lineOf(c) && (c.awaitingSource || c.unattainable));
+ok(held.length >= 29 && held.every(c=> !c.source || c.unattainable), `5. the ${held.length} Devilry / Ecclesia cards wait (awaitingSource or unattainable), listed in the record`);
 
 // ---- 6. side maps
 const subs = MAPS.filter(m=> m.sub && !m.endless && !m.tower && !m.reserved);
@@ -132,7 +135,8 @@ ok(gate(MAPS.find(m=> m.id === 'mg')) === 7, '6. Smugglers\' Grotto opens after 
 // the Pale Desert keeps the gate it was built with on 10-19 (the whole Glass Dunes cleared; tests/pale-desert-2026-10-19.js): an owner call
 const GATE_KEPT = {mpd: 'the whole Glass Dunes (Map 18) cleared, as built on 2026-10-19'};
 subs.filter(m=> m.id !== 'mtut' && !GATE_KEPT[m.id] && mapNo(m.parent) <= 19).forEach(m=>{ const g = gate(m);
-  ok(g != null && g >= mapNo(m.parent) + 4, `6. ${m.name} (off Map ${mapNo(m.parent)}) opens late: after Map ${g}`);
+  // 2026-11-16 (TESTFIX5): DV (10-22) re-gated the side maps (the Mycelium Deep after Map 8, the Sunken Depths after 11 ...): later than the parent, not 4 maps later
+  ok(g != null && g > mapNo(m.parent), `6. ${m.name} (off Map ${mapNo(m.parent)}) opens late: after Map ${g}`);
   ok(m.shieldMap == null || m.id === 'mo' || m.id === 'mpd' || m.shieldMap === g, `6. ${m.name}: its fights count as its gate map (shieldMap ${m.shieldMap}, gate ${g})`); });
 ok(REC.submaps && Object.keys(REC.submaps).length >= subs.length, '6. the record lists every side map with its gate and its unique card');
 

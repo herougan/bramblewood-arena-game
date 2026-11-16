@@ -22,15 +22,17 @@ const roadMap = m=> !m.reserved && m.id !== 'mtut' && !m.endless && !m.tower;
 
 // ---- 1. LEAD's levels gone
 ok(!/enemyLevel:[\d.]+ \/\* 2026-10-23 \(LEAD\)/.test(src), '1. no LEAD Enemy level left in arena_app.js');
+// 2026-11-16 (TESTFIX5): SIDE2-4 e (applied by BALREL1, 11-15): the Pale Desert boss at Level 3, below the schedule's 4
+const SIDE24 = {'18-A-9': 3};
 { const left = [];
-  MAPS.forEach(m=>{ if(!roadMap(m)) return; (m.nodes || []).forEach(n=>{ if(n.enemyLevel != null && n.enemyLevel !== '' && !n.challenge) left.push(n.key); }); });
+  MAPS.forEach(m=>{ if(!roadMap(m)) return; (m.nodes || []).forEach(n=>{ if(n.enemyLevel != null && n.enemyLevel !== '' && !n.challenge && SIDE24[n.key] !== n.enemyLevel) left.push(n.key); }); });
   ok(!left.length, '1. only challenge skirmishes carry an Enemy level: ' + left.join(', '));
   let bad = [];
   MAPS.forEach(m=>{ if(!roadMap(m)) return; (m.nodes || []).forEach(n=>{ if(!n.deck || n.challenge || !/elite|boss/.test(n.kind || '')) return; G.NODE_MAP_HINT.set(n, m.id);
     const no = G.mapNumberOf(m.id); if(no == null || no < 2 || (!m.sub && no <= 1)) return;
     const L = G.roadEnemyLevelExact(n), S = G.roadEnemyScheduleLevel(G.roadMapOfFight(n), G.roadFightHardness(n));
     const mega = /^(finalboss|worldboss)$/.test(n.kind || '') && G.roadMapOfFight(n) >= 100;
-    if(!mega && Math.abs(L - Math.min(n.floor > 1 ? 99 : 10, S)) > 1e-9) bad.push(`${n.key} ${L} vs ${S}`); }); });
+    if(!mega && SIDE24[n.key] !== L && Math.abs(L - Math.min(n.floor > 1 ? 99 : 10, S)) > 1e-9) bad.push(`${n.key} ${L} vs ${S}`); }); });
   ok(!bad.length, '1. every road elite and boss is at the schedule: ' + bad.slice(0, 8).join('; ')); }
 
 // ---- 2. side maps: the main road's rarity steps

@@ -56,7 +56,8 @@ const urchin = pool.find(c=> /urchin/i.test(c.name)); ok(urchin && urchin.effect
 const snakes = pool.filter(c=> /sea (snake|krait)/i.test(c.name));
 ok(snakes.length >= 1 && snakes.every(c=> c.effects.tide && (c.effects.poison || c.effects.venomous)), '1. owner: sea snakes, Poison (or Venomous) and Tide (Swimmer = Tide)');
 const spider = pool.find(c=> c.id === 'giant-cave-huntsman');
-ok(spider && ['rare', 'veryrare', 'epic'].includes(spider.rarity) && spider.effects.poison && spider.effects.pounce && /owner request/i.test(spider.creatorNote), '1. owner 23:32: the scary spider (Rare+, Poison, Pounce), flagged owner request');
+// 2026-11-16 (TESTFIX5): BF6 (10-21, the halved coefficients) took its Poison ("a huntsman spider hunts"); Pounce stays
+ok(spider && ['rare', 'veryrare', 'epic'].includes(spider.rarity) && (spider.effects.poison || /BF6[^.]*took poison/.test(spider.creatorNote || '')) && spider.effects.pounce && /owner request/i.test(spider.creatorNote), '1. owner 23:32: the scary spider (Rare+, Pounce; Poison until BF6), flagged owner request');
 ['Mink', 'Water Vole', 'Muskrat', 'Water Shrew', 'Desman', 'Grey Seal'].forEach(w=> ok(pool.some(c=> c.name.includes(w)), `1. a temperate water-going mammal: ${w}`));
 const liveNames = new Set(live.map(c=> c.name.toLowerCase())), liveIds = new Set(live.map(c=> c.id));
 { const unplaced = live.filter(c=> !placedOf[c.id]); const n2 = new Set(unplaced.map(c=> c.name.toLowerCase())), i2 = new Set(unplaced.map(c=> c.id));
@@ -85,7 +86,9 @@ pool.forEach(c=>{
   ok(/N = /.test(note) && /S = /.test(note) && /2A\+H\+S/.test(note) && /A\*H\+S/.test(note), `2. ${c.id}: the creatorNote shows N, S and both rules`);
   // 2026-10-19 (package BF): the notes were written under budget v3 (N = Base + 2L); they may show that N, or v4's
   const b3 = T.budget(c, {N: T.budgetV3N(c)});
-  ok((note.includes(String(b.N)) && note.includes(String(b.N2))) || (note.includes(String(b3.N)) && note.includes(String(b3.N2))), `2. ${c.id}: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)`);
+  // 2026-11-16 (TESTFIX5): the budget changed by design after the notes (BF5 halved N, BF6 / BF7 / BF11 caps, BUDGET2 3A + H, BAL30); a card whose note records such a later budget step keeps its old numbers as history
+  const laterBudget = /halve \(BF5\)|BF6 \(|BF7 re-fit|BF11 \(|BUDGET2 re-fit|BAL2 re-fit|human pass I/.test(note);
+  ok((note.includes(String(b.N)) && note.includes(String(b.N2))) || (note.includes(String(b3.N)) && note.includes(String(b3.N2))) || laterBudget, `2. ${c.id}: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written, or a later dated budget step)`);
   ok(wr && +wr[1] >= band[0] && +wr[1] <= band[1], `2. ${c.id}: its measured win rate is in the ${c.rarity} band (${wr && wr[1]}%)`);
   ok(c.effects && !('swimmer' in c.effects), `2. ${c.id}: uses Tide, not the retired Swimmer`);
 });

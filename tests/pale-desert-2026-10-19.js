@@ -23,11 +23,16 @@ let fail = 0, checks = 0; const ok = (c, m)=>{ checks++; if(!c){ fail++; console
 const fn = name=>{ const i = src.indexOf(`function ${name}(`); if(i < 0) return ''; let d = 0, j = src.indexOf('{', i); for(; j < src.length; j++){ if(src[j] === '{') d++; else if(src[j] === '}' && --d === 0) break; } return src.slice(i, j + 1); };
 const constLine = name=>{ const m = src.match(new RegExp(`^const ${name} = [^\\n]*$`, 'm')); return m ? m[0] : ''; };
 const NEW = ['sandfish', 'pale-oryx', 'quicksand-queen'];
+// 2026-11-16 (TESTFIX5): the map the Pale Desert opens on (its gate, DV7), whose road deck it plays (PREF-3)
+const GATE_NO = (()=>{ const M = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, mp = M.CONQUEST_MAPS.find(m=> m.id === 'mpd'); return M.mapNumberOf(mp.entry.afterMapCleared || 'md'); })();
 // 2026-10-21 (package RP, the rewards and sources pass): it moved some of these cards on (docs/balance/rewards-pass-2026-10-21.json:
 // one unique reward a side map, plain rewards on Maps 0-1, the Devilry / Ecclesia gates, Otters and Hummingbirds to the faction
 // rewards). A card it moved is checked against its new source there.
 const RP_MOVES = (()=>{ try{ return Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'rewards-pass-2026-10-21.json'), 'utf8')).moves.map(m=> [m.id, m])); }catch(e){ return {}; } })();
 const rpMoved = c=>{ const m = c && RP_MOVES[c.id]; if(!m) return false; if(m.to === 'awaitingSource') return !c.source && c.awaitingSource === true; if(m.to === 'base') return !c.source; return JSON.stringify(c.source) === JSON.stringify(m.to); };
+// 2026-11-16 (TESTFIX5): SKIR3 / LIST1 (11-12, 11-13) rebuilt every list from the owner's picks: a card is now placed by those lists (a pack card of a map that lists it) or cut (unattainable)
+const POOLS_TXT = Object.values(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps).map(e=> JSON.stringify(e));
+const ownerListed = c=> !!c && (c.unattainable === true || (!!c.source && POOLS_TXT.some(t=> t.includes('"' + c.id + '"'))));
 // a held (awaitingSource) card keeps the obtain map it had for the budget's map term until it is placed again
 const rpBudgetCard = d=> d && RP_MOVES[d.id] && RP_MOVES[d.id].to === 'awaitingSource' ? Object.assign({}, d, {obtainMap: RP_MOVES[d.id].obtainBefore}) : d;
 const KEYS = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i=> '18-A-' + i);
@@ -103,15 +108,18 @@ map.nodes.forEach((n, i)=> ok(i === 0 ? !n.requires.length : n.requires.length &
   progress = JSON.parse(JSON.stringify(before)); clear(progress, dunes, 1);
   const btn = (entrances(dunes, progress).match(/<button[^>]*data-lkey="~sub:mpd"[\s\S]*?<\/button>/) || [''])[0];
   ok(/class="map-cave map-subcave map-subemblem is-locked/.test(btn) && /\sdisabled\s/.test(btn) && /mse-lock/.test(btn) && !/data-submap=/.test(btn), '2. the locked entrance is the standard locked emblem (padlock, no way in)');
-  ok(/title="The pale sands — Clear The Glass Dunes \(Map 18\) to open"/.test(btn), '2. it reads "Clear The Glass Dunes (Map 18) to open"');
-  progress = JSON.parse(JSON.stringify(before)); clear(progress, dunes);
+  // 2026-11-16 (TESTFIX5): DV7 (QA1, 11-02): the entrance waits on its gate map (Ashen Spurn, Map 19), so the lock names that map; it opens once both are won
+  const gate = byId(mpd.entry.afterMapCleared) || dunes, gateName = `${gate.name} (Map ${mains.indexOf(gate)})`;
+  ok(btn.includes(`title="The pale sands — Clear ${gateName} to open"`), `2. it reads "Clear ${gateName} to open"`);
+  progress = JSON.parse(JSON.stringify(before)); clear(progress, dunes); if(gate !== dunes) clear(progress, gate);
   const open = (entrances(dunes, progress).match(/<button[^>]*data-lkey="~sub:mpd"[\s\S]*?<\/button>/) || [''])[0];
   ok(/data-submap="mpd"/.test(open) && !/is-locked/.test(open) && /The Pale Desert — 0\/9 cleared/.test(open), '2. once Map 18 is cleared the entrance opens: "The Pale Desert — 0/9 cleared"');
 }
 
 // --- 3. the fights
 const RR = new Function(src.slice(src.indexOf('// ROAD_RARITY:BEGIN'), src.indexOf('// ROAD_RARITY:END')) + '\nreturn {roadRarityOk, roadRarityCap};')();
-const FIELD_KEYS = new Set(['field', 'heatLevel', 'sandstorm', 'mirage']);
+// 2026-11-16 (TESTFIX5): + DF3's selfish boon (one a side map: 18-A-3 Sand Veil) and ENG16-1's Quicksand (owner JJ19: on the Pale Desert boss)
+const FIELD_KEYS = new Set(['field', 'heatLevel', 'sandstorm', 'mirage', 'boon', 'quicksand']);
 map.nodes.forEach(n=>{
   const ids = Object.keys(n.deck || {}), size = Object.values(n.deck || {}).reduce((a, b)=> a + b, 0);
   ok(ids.length && ids.every(id=> defs[id] && !defs[id].test && !defs[id].token && defs[id].cardType !== 'equipment'), `3. ${n.key}: every card exists and is fieldable (${ids.filter(id=> !defs[id])})`);
@@ -125,22 +133,25 @@ map.nodes.forEach(n=>{
   if(/boss/.test(n.kind || '')) ok(rw.length === 1 && rw.every(id=> RR.roadRarityOk(defs[id].rarity, 18, n.kind)), `3. ${n.key}: the side map's one unique card reward, inside the cap (${rw})`);
   else ok(!rw.length, `3. ${n.key}: no card reward (one unique a side map, on its boss) (${rw})`);
   ok(n.rewards && n.rewards.first && n.rewards.first.gold > 0 && n.rewards.first.dust > 0, `3. ${n.key}: first-clear Gold and Dust`);
-  ok(!n.shieldOverride && !n.hqHp, `3. ${n.key}: the bramble by rule (Shield = Map 18 x kind, its own Health)`);
+  // 2026-11-16 (TESTFIX5): the road retunes set a dated Shield override on 18-A-5 (60) and 18-A-9 (82, LEAD 10-23); Health stays the bramble's own
+  const DATED_SHIELD = {'18-A-5': 60, '18-A-9': 82};
+  ok((!n.shieldOverride || DATED_SHIELD[n.key] === n.shieldOverride) && !n.hqHp, `3. ${n.key}: the bramble by rule (Shield = Map 18 x kind or its dated retune, its own Health)`);
 });
 const boss = map.nodes[8], oasis = chars.find(c=> c.id === 'last-oasis');
-ok(boss.characterId === 'last-oasis' && oasis && oasis.unlockMap === 'mpd' && /^data:image\/png;base64,/.test(oasis.art || '') && oasis.effects && oasis.effects.castleRegen === 1, '3. the boss defends The Last Oasis, the bramble its first win gives (unlockMap mpd, art, Regen 1)');
+ok(boss.characterId === 'last-oasis' && oasis && oasis.unlockMap === 'mpd' && /^data:image\/png;base64,/.test(oasis.art || '') && oasis.effects && oasis.effects.castleRegen === (oasis.eng24Plus2 ? 3 : 1), '3. the boss defends The Last Oasis, the bramble its first win gives (unlockMap mpd, art, Regen 1, +2 since ENG24)'); // 2026-11-16 (TESTFIX5): ENG24 gave the brambles +2
 ok(G.skirmishCastle(boss).character.id === 'last-oasis', '3. the fight builds that bramble');
-ok(Object.keys(boss.deck).includes('quicksand-queen') && boss.deck['quicksand-queen'] === 1, '3. the Quicksand Queen leads her own fight');
+// 2026-11-16 (TESTFIX5): SKIR1 pinned her as the fight's showcase leader and SIDE2's fit (BALREL1) holds 2 copies
+ok(boss.deck['quicksand-queen'] >= 1 && (boss.showcase === 'quicksand-queen' || boss.deck['quicksand-queen'] === 1), '3. the Quicksand Queen leads her own fight');
 ok(new Set(map.nodes.map(n=> n.icon)).size >= 8 && map.nodes.every(n=> n.flavor && n.name), '3. every fight has its own icon, name and flavour');
 
 // --- 4. the new cards
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')));
 NEW.forEach(id=>{ const d = defs[id], b = d && T.budget(d);
   ok(d && b.ok && !b.missing.length, `4. ${id} fits the stat budget (2A+H+S ${b && b.x1} < N ${b && b.N}, A*H+S ${b && b.x2} < ${b && b.N2})`);
-  ok(d && d.locked && ((d.source && d.source.kind === 'map' && d.source.id === 'mpd' && KEYS.includes(d.source.node)) || rpMoved(d)), `4. ${id} is a Pale Desert reward, or package RP moved it on (${JSON.stringify(d && d.source)})`);
+  ok(d && d.locked && ((d.source && d.source.kind === 'map' && d.source.id === 'mpd' && KEYS.includes(d.source.node)) || rpMoved(d) || ownerListed(d)), `4. ${id} is a Pale Desert reward, or package RP or the owner's lists moved it on (${JSON.stringify(d && d.source)})`);
   ok(d && JSON.stringify(d.revealAfter) === JSON.stringify({map: 'md'}), `4. ${id}'s skills stay "?" until Map 18 is cleared`);
   ok(d && d.icon && d.flavor && (d.archetypes || []).includes('Desert') && /NightCafe/.test(d.creatorNote || ''), `4. ${id}: emoji, flavour, Desert, and the art brief in its note`);
-  ok(d && map.nodes.some(n=> n.deck[id]), `4. ${id} turns up in a Pale Desert fight`);
+  ok(d && (d.unattainable === true || map.nodes.some(n=> n.deck[id])), `4. ${id} turns up in a Pale Desert fight (or is cut from the lists)`);
 });
 { const a = src.indexOf('[SKILL_REVEAL_BEGIN]'), b = src.indexOf('/* [SKILL_REVEAL_END] */');
   const block = src.slice(src.lastIndexOf('/*', a), b), store = {}, cleared = new Set();
@@ -153,7 +164,7 @@ NEW.forEach(id=>{ const d = defs[id], b = d && T.budget(d);
   cleared.add('md'); ok(ctx.R.maskHiddenSkills(q) === q, '4. Map 18 cleared: she reads in full');
 }
 ['rabid-jackal', 'dust-devil-kestrel', 'meerkat-burrower', 'stonedrop-vulture', 'glowing-gecko', 'dust-hyena'].forEach(id=>
-  ok(((defs[id].source && defs[id].source.id === 'mpd') || rpMoved(defs[id])) && T.budget(rpBudgetCard(defs[id])).ok, `4. ${id} (it had no source) is a Pale Desert reward now (or package RP moved it on), within budget`));
+  ok(((defs[id].source && defs[id].source.id === 'mpd') || rpMoved(defs[id]) || ownerListed(defs[id])) && T.budget(rpBudgetCard(defs[id])).ok, `4. ${id} (it had no source) is a Pale Desert reward now (or package RP moved it on), within budget`));
 
 // --- 5. win rates
 let stored = null; try{ stored = JSON.parse(fs.readFileSync(STORE, 'utf8')); }catch(e){}
@@ -172,7 +183,8 @@ if(stored){ const trail = stored.fights.slice(0, 8).filter(f=> !PD_GAPS.has('mpd
 // a quick live run: the first and last fights, 30 games each, land near the stored numbers
 [map.nodes[0], boss].forEach(n=>{ const s = stored && stored.fights.find(f=> f.key === n.key); const r = G.simulateReferenceFight('mpd', n, 30);
   ok(s && Math.abs(r.win - s.win) <= 0.2, `5. ${n.key} live (30 games): ${(r.win * 100).toFixed(0)}% vs stored ${s && (s.win * 100).toFixed(0)}%`);
-  ok(r.deckMap === 18 && r.stage === 'road', `5. ${n.key} plays the Map 18 reference deck (a side map plays its parent's)`); });
+  // 2026-11-16 (TESTFIX5): PREF-3: a side map that opens late plays the road deck of the map it opens on (the gate, Map 19)
+  ok(r.deckMap === GATE_NO && r.stage === 'road', `5. ${n.key} plays the Map ${GATE_NO} reference deck (the map it opens on)`); });
 
 // --- 6. texts
 const {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js'));
@@ -191,8 +203,8 @@ CODES.forEach(code=>{ const main = JSON.parse(fs.readFileSync(path.join(ROOT, 'l
 
 // --- 7. tools and look
 const list = execFileSync('node', [path.join(ROOT, 'tools', 'skirmish_pass.js'), 'list'], {cwd: ROOT, encoding: 'utf8', timeout: 120000});
-KEYS.forEach(k=> ok(new RegExp(`^${k}\\s+mpd\\s+\\w+\\s+deck road 18 `, 'm').test(list), `7. tools/skirmish_pass.js lists ${k} with the Map 18 road deck`));
-ok(/mpd:'map-mpd'/.test(src) && /"mpd"\]\);/.test(constLine('MAP_ART_IDS')) && fs.existsSync(path.join(ROOT, 'art', 'maps', 'mpd.png')), '7. battlefield class, map art id and art/maps/mpd.png');
+KEYS.forEach(k=> ok(new RegExp(`^${k}\\s+mpd\\s+\\w+\\s+deck road ${GATE_NO} `, 'm').test(list), `7. tools/skirmish_pass.js lists ${k} with the Map ${GATE_NO} road deck (PREF-3)`));
+ok(/mpd:'map-mpd'/.test(src) && /"mpd"[,\]]/.test(constLine('MAP_ART_IDS')) /* 2026-11-16 (TESTFIX5): later maps follow it in the set */ && fs.existsSync(path.join(ROOT, 'art', 'maps', 'mpd.png')), '7. battlefield class, map art id and art/maps/mpd.png');
 ok(/def mpd\(rng\):/.test(fs.readFileSync(path.join(ROOT, 'tools', 'make_map_backgrounds.py'), 'utf8')) && /"abyss", "pd"\]/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')), '7. the art is painted by make_map_backgrounds.py and baked in by the build');
 ok(/\.battlefield\.map-mpd\{/.test(tpl) && /\.map-theme-mpd\{/.test(tpl) && /\.scene-paledesert \.pd-sun\{/.test(tpl) && /'paledesert'/.test(fn('syncSceneFx')), '7. the pale sand scene: floor gradient, map theme, white-sun glare and heat haze');
 ok(/mpd:'map_sand'/.test(src) && /mpd:\{arrive:\[[^\]]*\][^\n]*gusts:true/.test(src) /* 2026-10-19 (CX): the arrive hiss became intermittent sand gusts */ && /mpd:'paledesert'/.test(constLine('MAP_BIOME_OF')) && /paledesert:\{trees:/.test(src), '7. music, ambient sound, map decor');

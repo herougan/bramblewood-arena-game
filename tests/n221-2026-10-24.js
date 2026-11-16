@@ -36,12 +36,12 @@ const n221Probs = ((chk.stdout || '') + (chk.stderr || '')).trim().split('\n').m
   m = /^(\S+): a pack card of (m\w+) but not in its pool/.exec(l); if(m && !t2Has(m[2], m[1])) return false;
   m = /^(\S+): (in one map pool|card-obtain-maps)/.exec(l); if(m && !t2Any(m[1])) return false;
   m = /^(\S+): homed as \w+ \(a proposal\) but has a source now/.exec(l); if(m && (LF1SRC[m[1]] || placedSince(m[1]))) return false; // 2026-10-29 LISTFIX1 (+ TESTFIX1: placed since)
-  m = /^no home: (\S+)/.exec(l); if(m && laterHome(m[1])) return false; // TESTFIX1: homed by a later owner call
+  m = /^no home: (\S+)/.exec(l); if(m && (laterHome(m[1]) || (by[m[1]] && by[m[1]].unattainable))) return false; // TESTFIX1: homed by a later owner call; 2026-11-16 (TESTFIX5): or cut by the owner's 11-12 / 11-13 lists (unattainable, SKIR3 / LIST1)
   return true; });
 ok(chk.status === 0 || !n221Probs.length, `the N221 check passes, but for THEME2's lists (${n221Probs.slice(0, 6).join(' | ') || 'ok'})`);
 
 // ---- 2. one home each
-const waiting = cards.filter(c=> c.awaitingSource).map(c=> c.id);
+const waiting = cards.filter(c=> c.awaitingSource && !c.unattainable).map(c=> c.id); // 2026-11-16 (TESTFIX5): a card the owner's lists cut (unattainable) needs no home
 waiting.filter(id=> !laterHome(id)).forEach(id=> ok(N.HOME[id], `${id} (waiting) has a home`));
 const KINDS = new Set(['pool', 'map', 'quest', 'secrets', 'faction', 'smith', 'decision', 'hold']);
 Object.entries(N.HOME).forEach(([id, h])=>{ ok(by[id], `home for a real card: ${id}`); ok(KINDS.has(h.kind), `${id}: home kind ${h.kind}`);
@@ -49,7 +49,8 @@ Object.entries(N.HOME).forEach(([id, h])=>{ ok(by[id], `home for a real card: ${
   else ok(by[id] && (by[id].awaitingSource || placedSince(id)), `${id}: a proposal home, so still waiting (or placed since)`); });
 { const lf1 = Object.keys(N.HOME).filter(id=> N.HOME[id].kind !== 'pool' && LF1SRC[id]).length; // 2026-10-29 LISTFIX1
   const since = Object.keys(N.HOME).filter(id=> N.HOME[id].kind !== 'pool' && !LF1SRC[id] && placedSince(id)).length;
-  ok(Object.keys(N.HOME).length === waiting.filter(id=> !laterHome(id)).length + Object.keys(N.APPLY).length + lf1 + since, `homes = waiting (${waiting.length}) + applied (${Object.keys(N.APPLY).length}) + sourced by LISTFIX1 (${lf1}) + placed since (${since})`); }
+  const cut = Object.keys(N.HOME).filter(id=> N.HOME[id].kind !== 'pool' && !LF1SRC[id] && !placedSince(id) && by[id] && by[id].awaitingSource && by[id].unattainable).length; // 2026-11-16 (TESTFIX5): cut by the owner's lists
+  ok(Object.keys(N.HOME).length === waiting.filter(id=> !laterHome(id)).length + Object.keys(N.APPLY).length + lf1 + since + cut, `homes = waiting (${waiting.length}) + applied (${Object.keys(N.APPLY).length}) + sourced by LISTFIX1 (${lf1}) + placed since (${since}) + cut by the lists (${cut})`); }
 const onMaps = {}; Object.entries(N.PLAN).forEach(([no, P])=> [...P.held, ...P.carry, ...P.unsorted, ...(P.quest || [])].forEach(id=> (onMaps[id] = onMaps[id] || []).push(+no)));
 Object.entries(onMaps).forEach(([id, ms])=> ok(ms.length === 1, `${id} is proposed on one map only (${ms.join(', ')})`));
 Object.entries(N.HOME).filter(([, h])=> h.kind === 'map' && !h.existing).forEach(([id, h])=> ok((onMaps[id] || []).includes(h.map), `${id}: its home Map ${h.map} lists it`));

@@ -85,8 +85,10 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
 
 // ---- ENG9-9 Armor's price ---------------------------------------------------------------------------------------------------------------
 { const c1 = T.skillCost('armor', 1), c5 = T.skillCost('armor', 5);
-  ok(Math.abs(c5 / c1 - 10) < 0.3, `ENG9-9 Armor 5 is about 10x Armor 1 (${c1} -> ${c5})`);
-  ok(T.skillCost('armor', 2) > 2 * c1 && T.skillCost('armor', 3) > 3 * c1, 'ENG9-9 ... slightly exponential (each point worth more than the last)');
+  // 2026-11-16 (TESTFIX5): SKILL2 (BUDGET2-2) and BAL12 (BAL11-2 a) re-set Armor as a canon skill from its measured anchors (Armor 1 2.33, Armor 2 3.69 at bramble 15); ENG9-9's x10 curve is kept as skill2Was
+  const ae = (JSON.parse(rd('canonical/skill-costs.json')).skills || []).find(x=> x.id === 'armor');
+  ok(ae && ae.canon && Math.abs(c1 - 2.33) < 0.01 && Math.abs(T.skillCost('armor', 2) - 3.69) < 0.05 && ae.skill2Was && ae.skill2Was.pow === 1.43, `ENG9-9 Armor priced on its measured canon (${c1} -> Armor 5 ${c5}; ENG9-9's 1.68 x N^1.43 in skill2Was)`);
+  ok(T.skillCost('armor', 2) > c1 && T.skillCost('armor', 5) > T.skillCost('armor', 4), 'ENG9-9 ... each point still adds to the price');
   const m = JSON.parse(rd('docs/balance/eng10-armor-hits-2026-10-26.json'));
   ok(m.hits > 10000 && m.perN['5'].cancelled > 0.9, `ENG9-9 measured: Armor 5 cancels ${Math.round(m.perN['5'].cancelled * 100)}% of ${m.hits} hits`);
   ok((cid['tide-pool-crab'].health === 3 || /BAL9 refit: re-fit 1\/3 -> 1\/2/.test(cid['tide-pool-crab'].creatorNote || '')) /* 2026-10-26 (FIN2-c): Shield at 0.8 Health re-fit it 1/2 -> 1/3; 2026-11-04 (TESTFIX1): BAL9 (owner JJ21) back to 1/2 */ && cid['hawthorn-shieldbug'].health === 12, 'ENG9-9 the two held cards cut to the line: Tide Pool Crab 1/2, Hawthorn Shieldbug 2/12');
@@ -100,7 +102,7 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   const bg2 = new Set((()=>{ try{ return JSON.parse(rd('docs/balance/budget2-refit-2026-10-31.json')).changes.map(r=> r.id); }catch(e){ return []; } })()); // 2026-10-31 BUDGET2: re-fit under 3A + H
   // 2026-11-04 (TESTFIX1): BAL9 (2026-11-02, owner JJ12 / JJ21, call BAL9-1) lowered the early boss leaders' rarity and re-fit them (creatorNote "BUDGET2 fit")
   const bal9 = id=> /owner JJ12|owner JJ21|BAL9 refit/.test((cid[id] || {}).creatorNote || '');
-  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id) && !rc1.has(r.id) && !bg2.has(r.id) && !bal9(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && (T.budget(c, {level: 1}).ok || HOLD(r.id)), `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
+  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id) && !rc1.has(r.id) && !bg2.has(r.id) && !bal9(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && (`${c.attack}/${c.health}` === r.to || /CONTENT12, CONTENT11-2 a\): the owner's live edit/.test(c.creatorNote || '') /* 2026-11-16 (TESTFIX5): the owner's later live edit, folded by CONTENT12, sets the line (Old Sturgeon 2/12) */) && (T.budget(c, {level: 1}).ok || HOLD(r.id)), `ENG9-9 ${r.id} at ${r.to} (or the owner's later edit), inside its budget`); }); }
 
 // ---- ENG9-7 On Ready at Wait 0 ---------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(71); const l0 = P[1].lumber || 0; const ev = []; put(e, P, 1, 'x-ready0', 0, ev);
@@ -129,7 +131,8 @@ const arm = (c)=>{ c.equipment = 'x-mail'; c.equipOn = true; c.equipDur = 3; c.e
   ok(hit > tries * 0.38 && hit < tries * 0.62, `PROP1-1 Dismantle: one 50% roll as it is played (${hit}/${tries})`); }
 { ok(cid['dragonscale-mail'].equip.hardy === 2, 'PROP1-1 Dragonscale Mail has Hardy 2');
   ok(BB.equipLifeMult(cid['dragonscale-mail']) === 1.35 && BB.equipLifeMult({rarity: 'common'}) === 0.75, `PROP1-1 the price: equipLifeMult with lives (${BB.equipLifeMult(cid['dragonscale-mail'])})`);
-  ok(by.sunder.value === 1 && by.dismantle.value === 0.5 && by.pulverise.value === 2.1, 'PROP1-1 prices: Sunder 1.0, Dismantle 0.5, Pulverise 2.1'); }
+  // 2026-11-16 (TESTFIX5): BAL32 (owner BAL31-1/2/3, 11-09) re-priced Pulverise from its payoffs (2.1 kept in bal32Was)
+  ok(by.sunder.value === 1 && by.dismantle.value === 0.5 && (by.pulverise.value === 2.1 || (/BAL32/.test(by.pulverise.bal32 || '') && by.pulverise.bal32Was && by.pulverise.bal32Was.value === 2.1)), 'PROP1-1 prices: Sunder 1.0, Dismantle 0.5, Pulverise 2.1 (BAL32: ' + by.pulverise.value + ')'); }
 
 // ---- PROP1-3 Gorge -------------------------------------------------------------------------------------------------------------------------
 const hook = (P, pid, p, host)=>{ const pl = P[pid]; ['left', 'center', 'right'].forEach(k=> pl.row[k] = pl.row[k].filter(x=> x !== p)); p.parasiteOf = host.uid; p.parasitePid = pid; host.parasite = p; };
@@ -163,8 +166,10 @@ const hook = (P, pid, p, host)=>{ const pl = P[pid]; ['left', 'center', 'right']
   ok(BB.thrS('requiem', 3, {requiem: 3}).S > BB.thrS('requiem', 7, {requiem: 7}).S, 'PROP1-4 a lower threshold costs more');
   const homes = {throng: 'carrion-fly-swarm', dirge: 'wolfsbane-alpha', carnage: 'dust-hyena', muster: 'wolf-pack-runner', beset: 'ravenous-wolverine', requiem: 'cinder-skeleton'};
   const om = JSON.parse(rd('canonical/card-obtain-maps.json')).maps;
-  Object.entries(homes).forEach(([k, id])=> ok(cid[id] && cid[id].effects[k] && (om[id] == null || om[id] <= 20) && T.budget(cid[id], {level: 1}).ok, `PROP1-4 ${k} on ${id} (Maps 0-20, inside its budget)`));
-  const carriers = cards.filter(c=> c.effects && Object.keys(homes).some(k=> c.effects[k]) && !c.test);
+  // 2026-11-16 (TESTFIX5): ENG39 (DES2-3 a) stores these as kinds of Carnage / Throng ({v, who}); read them expanded to their flat keys, as the engine does
+  const SPX = require('../bramblewood-skillparams.js'), cardsX = cards.map(c=> SPX.expandDef(c)), cidX = {}; cardsX.forEach(c=> cidX[c.id] = c);
+  Object.entries(homes).forEach(([k, id])=> ok(cidX[id] && cidX[id].effects[k] && (om[id] == null || om[id] <= 20) && T.budget(cidX[id], {level: 1}).ok, `PROP1-4 ${k} on ${id} (Maps 0-20, inside its budget)`));
+  const carriers = cardsX.filter(c=> c.effects && Object.keys(homes).some(k=> c.effects[k]) && !c.test);
   ok(carriers.length === 6, `PROP1-4 no other card carries a threshold skill (${carriers.map(c=> c.id).join(', ')})`);
   Object.keys(homes).forEach(k=> ok(tx['ui.skn-e10-' + k] && tx['ui.sk-e10-' + k], `PROP1-4 ${k}: name and text`)); }
 

@@ -79,7 +79,8 @@ async function browser(){
         ok(ms.every(x=> x.chipH > 0 && x.chipH <= Math.max(14, x.w * 0.24)), `${tag}: chips scale with the card (chip ${ms.map(x=> x.chipH + '/' + x.w).join(' ')})`);
         ok(ms.some(x=> x.more && /\+\d/.test(x.text)), `${tag}: a crowded strip condenses into "+N" (${ms.filter(x=> x.more).map(x=> x.text).join(' | ')})`);
         // Poison 3, Bleed 1, Sleep 2: a chip each where the card has 3 slots or more; on a 2-slot card, Poison 3 and "+2"
-        const three = x=> x.text === '☠3 🩸1 💤2', two = x=> x.text === '☠3 +2';
+        // 2026-11-16 (TESTFIX5): UI53 (owner 11-13): a count of 1 shows the icon alone, like every chip, so Bleed 1 reads 🩸
+        const three = x=> x.text === '☠3 🩸 💤2', two = x=> x.text === '☠3 +2';
         ok(ms.some(x=> three(x) || two(x)) && ms.filter(x=> /^☠3 /.test(x.text)).every(x=> three(x) || two(x)), `${tag}: Poison 3, Bleed 1, Sleep 2 read (${ms.slice(0, 3).map(x=> x.text).join(' | ')})`);
         // the live patch (a status landing or wearing off mid-replay) rebuilds the same strip in place
         // 2026-10-21 (package TT2): BF5's halved stats changed which cards SETUP picks; the crowded unit is now the Soldier Ant, whose

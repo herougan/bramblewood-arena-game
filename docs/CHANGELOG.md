@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package TESTFIX5: unit test triage)
+- Tests only, except one label: 44 failing unit tests triaged (`docs/test-triage-2026-11-16.md`); stale checks fixed in 24 tests with dated comments, 664 -> 375 failing checks, 7 tests pass now (eng21, fix6, level-curve, ref6, review1, skills2, ts-status-chips).
+- Game: the hidden, retired "Venomous (old)" card-editor entry is labelled "Old Venomous" (skills2: no notes in brackets in skill names).
+- Left for the owner's card redesign, list calls, deck balance, re-measures and art: listed in the triage doc and action items.
 ## 2026-11-16 (package BALREL3: the second legal re-fit applied)
 - 11 road fights get BAL-LEGAL2's decks (20-B-3, 10-A-1, 13-3, 6-3, 6-5, 5-7, 18-5, 2-A-7, 19-A-1, 14-A-1, 19-A-10); all pass the deck rules, tests/skir1 unchanged (same 36). Projected: main 136/149 in band (was 131), side 76/81 (was 70), none beyond 20 on the side.
 ## 2026-11-16 (package BAL-LEGAL2: legal deck re-fits after the 11-16 release measure)
