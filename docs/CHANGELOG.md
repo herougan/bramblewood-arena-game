@@ -2,6 +2,8 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package BALREL4: REFIT1 applied)
+- 54 road fights get REFIT1's legal decks, fitted to the owner's folded cards (FOLD5); 3-7 and 6-4 also lose their Shield (BAL19-1 a). problems() clean; tests/skir1 36 -> 35 (7-5's K14 cleared). Projected main 125/149 in band (was 86 after the fold), side 71/81 (was 58). The fold's biggest mover is Cricket Drummer (2/7 -> 1/5, in the Map 2-6 reference deck): 34 fights harder.
 ## 2026-11-16 (coordinator: DGFIX1)
 - Players see: dungeon rounds with their own deck (the Dungeon editor's per-round decks, owner 10-12) use it again. Since 10-22 (package DR) a comment had swallowed the line that loads it, so every round drew from the first deck. The round deck's shuffle now draws from a stream off the match seed (E5 replay).
 
