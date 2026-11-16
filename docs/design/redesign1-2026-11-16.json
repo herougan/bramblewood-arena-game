@@ -1,0 +1,7631 @@
+{
+ "package": "REDESIGN1",
+ "date": "2026-11-16",
+ "status": "proposal (owner approves or edits; not folded)",
+ "budget": {
+  "file": "bramblewood-budget.js via tools/skill_costs.js budget()",
+  "level": 1,
+  "fill": "max(x1/N, x2/N2) x 100",
+  "band": [
+   85,
+   100
+  ]
+ },
+ "source": {
+  "plan": "G6 - Bramblewood_1.xlsx, sheet Skills, column II (owner brief change 2026-11-16 17:43)",
+  "lists": "canonical/map-pools.json MAP lists, first map per card",
+  "cards": "canonical/cards.json (post-FOLD5)"
+ },
+ "counts": {
+  "cards": 205,
+  "changed": 145,
+  "skillsChanged": 113,
+  "inBandBefore": 100,
+  "inBandAfter": 185,
+  "namedNew": {
+   "total": 50,
+   "ii1": 42,
+   "ii2": 2,
+   "ii3": 2,
+   "k1": 4,
+   "light": 4
+  }
+ },
+ "plan": [
+  {
+   "map": 0,
+   "name": "Bramblewood Outskirts",
+   "newSkills": [
+    {
+     "key": "flying",
+     "name": "Flying",
+     "rank": 1,
+     "carriers": [
+      "honey-bee",
+      "bee-forager",
+      "bee-sentry",
+      "robin-redbreast",
+      "gull-thief",
+      "oystercatcher",
+      "kittiwake-flock",
+      "puffin-diver",
+      "peak-condor",
+      "gannet-nestweaver",
+      "peregrine-stooper",
+      "eagle-sharpshooter",
+      "mosquito-cloud",
+      "fungus-gnat-cloud",
+      "sulfur-cinder-moth",
+      "echo-screecher",
+      "barrow-leech-bat",
+      "stonedrop-vulture",
+      "anvil-thrush",
+      "eagle-owl-quartermaster",
+      "eyrie-warden",
+      "golden-eagle-diver",
+      "the-gannet-queen",
+      "balloon-archer",
+      "monarch-wingblade",
+      "mallard-marauder",
+      "upside-down-bat",
+      "owl-sentinel",
+      "arctic-tern",
+      "nightshade-moth",
+      "cinder-hornet",
+      "ash-cloud-condor"
+     ]
+    },
+    {
+     "key": "swarm",
+     "name": "Swarm",
+     "rank": 1,
+     "carriers": [
+      "ant-scout",
+      "soldier-ant",
+      "fire-ant-raft",
+      "wolf-spider-mother",
+      "fungus-gnat-cloud",
+      "krill-swarm"
+     ]
+    },
+    {
+     "key": "evasive",
+     "name": "Evasive",
+     "rank": 1,
+     "carriers": [
+      "rabbit-kit",
+      "moonlit-hare",
+      "puddle-skimmer",
+      "grass-snake",
+      "camouflage-frog",
+      "mangrove-mudskipper",
+      "mountain-hare",
+      "cunning-vixen",
+      "fawn-scout",
+      "plains-zebra",
+      "snowshoe-hare",
+      "taiga-lynx",
+      "snow-ermine"
+     ]
+    },
+    {
+     "key": "poison",
+     "name": "Venomous",
+     "rank": "core",
+     "carriers": [
+      "bee-sentry",
+      "water-shrew",
+      "platypus-spur",
+      "fire-ant-raft",
+      "adder-ambusher",
+      "grass-viper",
+      "puffball-bombardier",
+      "gallery-orb-weaver",
+      "banded-sea-krait",
+      "monarch-wingblade",
+      "nightshade-moth",
+      "caustic-scorpion",
+      "sand-widow",
+      "obsidian-scorpion"
+     ]
+    },
+    {
+     "key": "nursing",
+     "name": "Nursing",
+     "rank": "K1",
+     "carriers": [
+      "bee-forager",
+      "newt-doctor"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 1,
+   "name": "Thistlewood",
+   "newSkills": [
+    {
+     "key": "guardian",
+     "name": "Guardian",
+     "rank": 1,
+     "carriers": [
+      "terrier-pup",
+      "fiddler-crab-swarm",
+      "kittiwake-flock",
+      "cypress-root-lurker",
+      "hawthorn-shieldbug",
+      "stalactite-golem",
+      "proboscis-monkey",
+      "alpine-marmot",
+      "grizzly-vanguard",
+      "badger-lumberjack",
+      "marula-elephant",
+      "border-collie"
+     ]
+    },
+    {
+     "key": "foraging",
+     "name": "Foraging",
+     "rank": 1,
+     "carriers": [
+      "hedgerow-shrew",
+      "pika-hoarder",
+      "nutria-reedcutter",
+      "village-miller",
+      "cone-cutter-squirrel"
+     ]
+    },
+    {
+     "key": "inspiring",
+     "name": "Inspiring",
+     "rank": 1,
+     "carriers": [
+      "cricket-drummer",
+      "conch-herald"
+     ]
+    },
+    {
+     "key": "diurnal",
+     "name": "Diurnal",
+     "rank": 1,
+     "carriers": [
+      "robin-redbreast",
+      "rock-pool-starfish",
+      "eagle-sharpshooter",
+      "golden-eagle-diver",
+      "hoopoe-herald",
+      "upside-down-bat",
+      "arctic-tern"
+     ]
+    },
+    {
+     "key": "nocturnal",
+     "name": "Nocturnal",
+     "rank": 1,
+     "carriers": [
+      "dormouse",
+      "echo-screecher",
+      "barrow-leech-bat",
+      "banded-sea-krait",
+      "owl-sentinel",
+      "nightshade-moth"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 2,
+   "name": "Pebble Beach",
+   "newSkills": [
+    {
+     "key": "tide",
+     "name": "Tide",
+     "rank": 1,
+     "carriers": [
+      "oystercatcher",
+      "pincushion-urchin",
+      "dolphin-knight",
+      "conch-herald",
+      "rock-pool-starfish",
+      "beachcomber-sanderling",
+      "limpet-clinger",
+      "conch-crawler",
+      "cormorant",
+      "puffin-diver",
+      "snapstick-turtle",
+      "shoal-shark",
+      "muskrat-lodgekeeper",
+      "river-mink",
+      "raft-spider",
+      "fire-ant-raft",
+      "camouflage-frog",
+      "anhinga-spearbird",
+      "mangrove-mudskipper",
+      "proboscis-monkey",
+      "tide-spirit",
+      "voltaic-eel",
+      "coral-current-eel",
+      "riptide-eel",
+      "krill-swarm",
+      "moon-jelly",
+      "sea-turtle-elder",
+      "reef-shark",
+      "clownfish-scout",
+      "crown-of-thorns-star",
+      "ringed-seal"
+     ]
+    },
+    {
+     "key": "armor",
+     "name": "Armor",
+     "rank": 1,
+     "carriers": [
+      "open-ocean-hermit-crab",
+      "dolphin-knight",
+      "limpet-clinger",
+      "conch-crawler",
+      "snapstick-turtle",
+      "swamp-alligator",
+      "alligator-gar",
+      "stalactite-golem",
+      "horseshoe-crab",
+      "ironclaw-fiddler",
+      "sea-turtle-elder",
+      "barkplate-beetle",
+      "quillback-elder",
+      "obsidian-scorpion"
+     ]
+    },
+    {
+     "key": "crabClaws",
+     "name": "Crab Claws",
+     "rank": 3,
+     "carriers": [
+      "driftwood-crab",
+      "open-ocean-hermit-crab",
+      "fiddler-crab-swarm"
+     ]
+    },
+    {
+     "key": "delivery",
+     "name": "Delivery",
+     "rank": "K1",
+     "carriers": [
+      "beaver-lumberjack",
+      "muskrat-reedgatherer",
+      "nutria-reedcutter",
+      "giant-clam",
+      "chipmunk-hoarder",
+      "elderhorn-monarch"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 3,
+   "name": "Gannet Cliffs",
+   "newSkills": [
+    {
+     "key": "arrow",
+     "name": "Arrow",
+     "rank": 1,
+     "carriers": [
+      "chipmunk-skirmisher",
+      "eagle-sharpshooter",
+      "puffball-bombardier",
+      "stonedrop-vulture",
+      "eagle-owl-quartermaster",
+      "fire-salamander",
+      "magma-salamander"
+     ]
+    },
+    {
+     "key": "swift",
+     "name": "Swift",
+     "rank": 1,
+     "carriers": [
+      "feral-tomcat",
+      "savanna-cheetah",
+      "pronghorn-racer",
+      "frillneck-duelist",
+      "roadrunner-courier",
+      "dune-jackal"
+     ]
+    },
+    {
+     "key": "pounce",
+     "name": "Pounce",
+     "rank": 1,
+     "carriers": [
+      "peregrine-stooper",
+      "water-shrew",
+      "river-mink",
+      "anhinga-spearbird",
+      "wolf-spider-mother",
+      "giant-cave-huntsman",
+      "fishing-cat",
+      "chamois-leaper",
+      "pine-marten",
+      "mallard-marauder",
+      "cataphract-destrier",
+      "caldera-snow-leopard",
+      "fumarole-ibex"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 4,
+   "name": "Sunken Hollow",
+   "newSkills": [
+    {
+     "key": "bloomCopy",
+     "name": "Bloom",
+     "rank": 1,
+     "carriers": [
+      "pond-algae",
+      "phoenix-mushrooms"
+     ]
+    },
+    {
+     "key": "meiosis",
+     "name": "Meiosis",
+     "rank": 1,
+     "carriers": [
+      "planarian-splitter",
+      "phoenix-mushrooms"
+     ]
+    },
+    {
+     "key": "shield",
+     "name": "Shield",
+     "rank": 1,
+     "carriers": [
+      "slow-worm",
+      "muskrat-lodgekeeper",
+      "sworn-shieldbearer",
+      "ringed-seal",
+      "armadillo-guard"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 5,
+   "name": "Gatorback Swamp",
+   "newSkills": [
+    {
+     "key": "bleed",
+     "name": "Bleed",
+     "rank": 1,
+     "carriers": [
+      "mosquito-cloud",
+      "alley-cat",
+      "swamp-alligator",
+      "alligator-gar",
+      "crocodile-ambusher",
+      "stoat-cutthroat",
+      "ice-crevasse-wolf"
+     ]
+    },
+    {
+     "key": "regen",
+     "name": "Regeneration",
+     "rank": 1,
+     "carriers": [
+      "newt-doctor",
+      "mudpuppy",
+      "leopard-slug",
+      "cave-olm"
+     ]
+    },
+    {
+     "key": "twinStrike",
+     "name": "Twin Strike",
+     "rank": 1,
+     "carriers": [
+      "alley-cat",
+      "bramblewood-lynx",
+      "berserker-boar"
+     ]
+    },
+    {
+     "key": "strangle",
+     "name": "Constrict",
+     "rank": 1,
+     "carriers": [
+      "constrictor-coil"
+     ]
+    },
+    {
+     "key": "cure",
+     "name": "Cure",
+     "rank": "K1",
+     "carriers": [
+      "marsh-mallow-hare"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 6,
+   "name": "Sable Swampmire",
+   "newSkills": [
+    {
+     "key": "parasite",
+     "name": "Parasite",
+     "rank": 1,
+     "carriers": [
+      "lamprey",
+      "barrow-leech-bat"
+     ]
+    },
+    {
+     "key": "ambush",
+     "name": "Ambush",
+     "rank": 1,
+     "carriers": [
+      "adder-ambusher",
+      "booming-bittern",
+      "crocodile-ambusher",
+      "polar-bear"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 7,
+   "name": "The Morel Hollow",
+   "newSkills": [
+    {
+     "key": "corrode",
+     "name": "Corrode",
+     "rank": 1,
+     "carriers": [
+      "leopard-slug",
+      "hawthorn-shieldbug"
+     ]
+    },
+    {
+     "key": "carrion",
+     "name": "Carrion",
+     "rank": 1,
+     "carriers": [
+      "corpse-flower-beetle",
+      "hollow-belly-rat",
+      "ash-cloud-condor"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 8,
+   "name": "Caves & Alcoves",
+   "newSkills": [
+    {
+     "key": "darksight",
+     "name": "Darksight",
+     "rank": 1,
+     "carriers": [
+      "quarry-mole",
+      "cave-olm"
+     ]
+    },
+    {
+     "key": "web",
+     "name": "Web",
+     "rank": 1,
+     "carriers": [
+      "gallery-orb-weaver",
+      "sand-widow"
+     ]
+    },
+    {
+     "key": "sap",
+     "name": "Leech",
+     "rank": 1,
+     "carriers": [
+      "echo-screecher"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 9,
+   "name": "The Kelp Mangroves",
+   "newSkills": [
+    {
+     "key": "trident",
+     "name": "Trident",
+     "rank": 1,
+     "carriers": [
+      "mangrove-monitor",
+      "ironclaw-fiddler"
+     ]
+    },
+    {
+     "key": "electricity",
+     "name": "Bioelectric",
+     "rank": 1,
+     "carriers": [
+      "voltaic-eel",
+      "coral-current-eel"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 10,
+   "name": "Coral Current",
+   "newSkills": [
+    {
+     "key": "poisonBarbs",
+     "name": "Poison Barbs",
+     "rank": 1,
+     "carriers": [
+      "pincushion-urchin",
+      "clownfish-scout",
+      "crown-of-thorns-star"
+     ]
+    },
+    {
+     "key": "weaken",
+     "name": "Weaken",
+     "rank": 1,
+     "carriers": [
+      "riptide-eel",
+      "cinder-hornet"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 11,
+   "name": "Eyrie Heights",
+   "newSkills": [
+    {
+     "key": "pierce",
+     "name": "Pierce",
+     "rank": 1,
+     "carriers": [
+      "anvil-thrush",
+      "golden-eagle-diver",
+      "redwood-woodpecker"
+     ]
+    },
+    {
+     "key": "twinShot",
+     "name": "Twin Shot",
+     "rank": 1,
+     "carriers": [
+      "eyrie-warden",
+      "balloon-archer"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 12,
+   "name": "The Briar Maze",
+   "newSkills": [
+    {
+     "key": "thorns",
+     "name": "Thorns",
+     "rank": 1,
+     "carriers": [
+      "bramble-sprout",
+      "quillguard",
+      "barkplate-beetle",
+      "quill-thorn-boar",
+      "briarback-hedgehog",
+      "horned-lizard",
+      "barrel-cactus"
+     ]
+    },
+    {
+     "key": "siege",
+     "name": "Siege",
+     "rank": 1,
+     "carriers": [
+      "mouse-sapper",
+      "siege-rhino",
+      "deep-cave-troll"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 13,
+   "name": "The Redwood Deep",
+   "newSkills": [
+    {
+     "key": "sweep",
+     "name": "Cleave",
+     "rank": 1,
+     "carriers": [
+      "grizzly-vanguard",
+      "boreal-elk"
+     ]
+    },
+    {
+     "key": "harbinger",
+     "name": "Harbinger",
+     "rank": 1,
+     "carriers": [
+      "tasmanian-devil"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 14,
+   "name": "Savanna Reaches",
+   "newSkills": [
+    {
+     "key": "mighty",
+     "name": "Mighty",
+     "rank": 1,
+     "carriers": [
+      "acacia-giraffe",
+      "marula-elephant"
+     ]
+    },
+    {
+     "key": "pack",
+     "name": "Pack",
+     "rank": 1,
+     "carriers": [
+      "meerkat-sentry",
+      "dust-hyena",
+      "bramblewood-macaque",
+      "ice-crevasse-wolf"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 15,
+   "name": "The Long Grass",
+   "newSkills": [
+    {
+     "key": "overwhelm",
+     "name": "Stampede",
+     "rank": 2,
+     "carriers": [
+      "warhorse-charger",
+      "cataphract-destrier",
+      "ur-elk"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 16,
+   "name": "The Pinewood Taiga",
+   "newSkills": [
+    {
+     "key": "sturdy",
+     "name": "Sturdy",
+     "rank": 1,
+     "carriers": [
+      "woodland-caribou",
+      "pinecone-sapper",
+      "glacier-yak",
+      "walrus-icebreaker",
+      "ur-elk"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 17,
+   "name": "Wolfsbane Tundra",
+   "newSkills": []
+  },
+  {
+   "map": 18,
+   "name": "The Glass Dunes",
+   "newSkills": [
+    {
+     "key": "trap",
+     "name": "Trap",
+     "rank": 1,
+     "carriers": [
+      "antlion-pit"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 19,
+   "name": "Ashen Spurn",
+   "newSkills": [
+    {
+     "key": "lastStand",
+     "name": "Last Stand",
+     "rank": 2,
+     "carriers": [
+      "honey-badger-fury",
+      "basalt-boar"
+     ]
+    },
+    {
+     "key": "smokeBomb",
+     "name": "Smoke Bomb",
+     "rank": 3,
+     "carriers": [
+      "smoke-raccoon"
+     ]
+    }
+   ]
+  },
+  {
+   "map": 20,
+   "name": "The Sundered Peak",
+   "newSkills": [
+    {
+     "key": "recoil",
+     "name": "Recoil",
+     "rank": 1,
+     "carriers": [
+      "deep-cave-troll",
+      "berserker-boar"
+     ]
+    }
+   ]
+  }
+ ],
+ "movedOff": [
+  {
+   "key": "almanac",
+   "name": "Almanac",
+   "rank": "K 4",
+   "from": [
+    "cone-cutter-squirrel"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "arrow",
+   "name": "Arrow",
+   "rank": "II 1",
+   "from": [
+    "balloon-archer"
+   ],
+   "why": "still in the plan: swapped on this card (two skills a card, or a better fit)"
+  },
+  {
+   "key": "backstab",
+   "name": "Backstab",
+   "rank": "unranked",
+   "from": [
+    "cunning-vixen",
+    "stoat-cutthroat"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "banana",
+   "name": "Banana",
+   "rank": "K 6",
+   "from": [
+    "bramblewood-macaque"
+   ],
+   "why": "no II, older rank 6"
+  },
+  {
+   "key": "bedrock",
+   "name": "Bedrock",
+   "rank": "K 4",
+   "from": [
+    "quarry-mole"
+   ],
+   "why": "no II, older rank 4"
+  },
+  {
+   "key": "blind",
+   "name": "Blind",
+   "rank": "unranked",
+   "from": [
+    "horned-lizard"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "bloomCopy",
+   "name": "Bloom",
+   "rank": "II 1",
+   "from": [
+    "puffball-bombardier"
+   ],
+   "why": "still in the plan: swapped on this card (two skills a card, or a better fit)"
+  },
+  {
+   "key": "bludgeon",
+   "name": "Bludgeon",
+   "rank": "K 2",
+   "from": [
+    "ironclaw-fiddler"
+   ],
+   "why": "no II (K 2): not in the plan"
+  },
+  {
+   "key": "brood",
+   "name": "Brood",
+   "rank": "K 2",
+   "from": [
+    "kittiwake-flock",
+    "wolf-spider-mother"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "bulwark",
+   "name": "Bulwark",
+   "rank": "K 2",
+   "from": [
+    "muskrat-lodgekeeper"
+   ],
+   "why": "no II (K 2): not in the plan"
+  },
+  {
+   "key": "canopyCover",
+   "name": "Canopy Cover",
+   "rank": "unranked",
+   "from": [
+    "fawn-scout"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "carnage",
+   "name": "Carnage",
+   "rank": "K 4",
+   "from": [
+    "dust-hyena"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "chainLightning",
+   "name": "Chain Lightning",
+   "rank": "K S",
+   "from": [
+    "voltaic-eel"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "sweep",
+   "name": "Cleave",
+   "rank": "II 1",
+   "from": [
+    "feral-tomcat"
+   ],
+   "why": "Map 13's pick; these cards come earlier"
+  },
+  {
+   "key": "converge",
+   "name": "Converge",
+   "rank": "unranked",
+   "from": [
+    "border-collie"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "counterattack",
+   "name": "Counterattack",
+   "rank": "K 3",
+   "from": [
+    "hawthorn-shieldbug"
+   ],
+   "why": "no II (K 3): not in the plan"
+  },
+  {
+   "key": "daunt",
+   "name": "Daunt",
+   "rank": "K 2",
+   "from": [
+    "lamprey",
+    "booming-bittern",
+    "eyrie-warden",
+    "golden-eagle-diver"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "devour",
+   "name": "Devour",
+   "rank": "K 2",
+   "from": [
+    "hollow-belly-rat"
+   ],
+   "why": "no II (K 2): not in the plan"
+  },
+  {
+   "key": "dive",
+   "name": "Dive",
+   "rank": "K 3",
+   "from": [
+    "river-mink"
+   ],
+   "why": "no II (K 3): not in the plan"
+  },
+  {
+   "key": "driftwood",
+   "name": "Driftwood",
+   "rank": "K 6",
+   "from": [
+    "beachcomber-sanderling"
+   ],
+   "why": "no II, older rank 6"
+  },
+  {
+   "key": "drunk",
+   "name": "Drunk",
+   "rank": "K 6",
+   "from": [
+    "marula-elephant"
+   ],
+   "why": "no II, older rank 6"
+  },
+  {
+   "key": "dry",
+   "name": "Dry",
+   "rank": "K 3",
+   "from": [
+    "dune-jackal",
+    "barrel-cactus"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "evasive",
+   "name": "Evasive",
+   "rank": "II 1",
+   "from": [
+    "water-shrew",
+    "acacia-giraffe"
+   ],
+   "why": "still in the plan: swapped on this card (two skills a card, or a better fit)"
+  },
+  {
+   "key": "explode",
+   "name": "Explode",
+   "rank": "unranked",
+   "from": [
+    "pinecone-sapper"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "felling",
+   "name": "Felling",
+   "rank": "your note",
+   "from": [
+    "beaver-feller"
+   ],
+   "why": "your note: use On Kill -> Deliver (Lumber) (done on this card)"
+  },
+  {
+   "key": "fencing",
+   "name": "Fencing",
+   "rank": "K 2A",
+   "from": [
+    "frillneck-duelist"
+   ],
+   "why": "no II (K 2A): not in the plan"
+  },
+  {
+   "key": "foeScarcity",
+   "name": "Foe's Scarcity",
+   "rank": "unranked",
+   "from": [
+    "stoat-cutthroat"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "formation",
+   "name": "Formation",
+   "rank": "unranked",
+   "from": [
+    "meerkat-sentry"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "brambleArmor",
+   "name": "Fortify (Armor 1), while it lives",
+   "rank": "K 3",
+   "from": [
+    "barkplate-beetle",
+    "briarback-hedgehog"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "freeze",
+   "name": "Freeze",
+   "rank": "unranked",
+   "from": [
+    "glacier-yak",
+    "walrus-icebreaker"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "frost",
+   "name": "Frost",
+   "rank": "K 4",
+   "from": [
+    "snow-ermine"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "frostbite",
+   "name": "Frostbite",
+   "rank": "K 4",
+   "from": [
+    "mountain-hare",
+    "woodland-caribou"
+   ],
+   "why": "no II, older rank 4"
+  },
+  {
+   "key": "gash",
+   "name": "Gash",
+   "rank": "unranked",
+   "from": [
+    "crocodile-ambusher"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "grit",
+   "name": "Grit",
+   "rank": "unranked",
+   "from": [
+    "basalt-boar"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "haste",
+   "name": "Haste",
+   "rank": "unranked",
+   "from": [
+    "roadrunner-courier"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "healing",
+   "name": "Heal",
+   "rank": "unranked",
+   "from": [
+    "bee-forager",
+    "newt-doctor"
+   ],
+   "why": "Heal is Nursing now (your note)"
+  },
+  {
+   "key": "hemorrhage",
+   "name": "Hemorrhage",
+   "rank": "K 5",
+   "from": [
+    "swamp-alligator"
+   ],
+   "why": "no II, older rank 5"
+  },
+  {
+   "key": "herbalist",
+   "name": "Herbalist",
+   "rank": "II 2",
+   "from": [
+    "newt-doctor",
+    "anhinga-spearbird"
+   ],
+   "why": "II 2: no slot under the cap"
+  },
+  {
+   "key": "hibernate",
+   "name": "Hibernate",
+   "rank": "K 7",
+   "from": [
+    "polar-bear"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "hoard",
+   "name": "Hoard",
+   "rank": "K 4",
+   "from": [
+    "anhinga-spearbird"
+   ],
+   "why": "no II, older rank 4"
+  },
+  {
+   "key": "illuminate",
+   "name": "Illuminate",
+   "rank": "K 1",
+   "from": [
+    "sulfur-cinder-moth"
+   ],
+   "why": "no II (K 1): not in the plan"
+  },
+  {
+   "key": "invisible",
+   "name": "Invisible",
+   "rank": "unranked",
+   "from": [
+    "booming-bittern",
+    "ringed-seal"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "keenSense",
+   "name": "Keen Sense",
+   "rank": "II 2",
+   "from": [
+    "quarry-mole"
+   ],
+   "why": "II 2: no slot under the cap"
+  },
+  {
+   "key": "sap",
+   "name": "Leech",
+   "rank": "II 1",
+   "from": [
+    "lamprey"
+   ],
+   "why": "Map 8's pick; these cards come earlier"
+  },
+  {
+   "key": "loyal",
+   "name": "Loyal",
+   "rank": "K 3",
+   "from": [
+    "sworn-shieldbearer"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "lumberjack",
+   "name": "Lumberjack",
+   "rank": "K R",
+   "from": [
+    "badger-lumberjack"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "milling",
+   "name": "Milling",
+   "rank": "unranked",
+   "from": [
+    "redwood-woodpecker"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "moonborn",
+   "name": "Moonborn",
+   "rank": "K 4",
+   "from": [
+    "moonlit-hare"
+   ],
+   "why": "no II, older rank 4"
+  },
+  {
+   "key": "mountainClimber",
+   "name": "Mountain Climber",
+   "rank": "K 4",
+   "from": [
+    "chamois-leaper",
+    "woodland-caribou",
+    "fumarole-ibex"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "nightblind",
+   "name": "Night-blind",
+   "rank": "unranked",
+   "from": [
+    "hoopoe-herald"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "onReadyDamage",
+   "name": "On Ready damage",
+   "rank": "unranked",
+   "from": [
+    "echo-screecher",
+    "eyrie-warden"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "pierce",
+   "name": "Pierce",
+   "rank": "II 1",
+   "from": [
+    "oystercatcher",
+    "grass-viper"
+   ],
+   "why": "Map 11's pick; these cards come earlier"
+  },
+  {
+   "key": "pounce",
+   "name": "Pounce",
+   "rank": "II 1",
+   "from": [
+    "the-gannet-queen"
+   ],
+   "why": "still in the plan: swapped on this card (two skills a card, or a better fit)"
+  },
+  {
+   "key": "puncture",
+   "name": "Puncture",
+   "rank": "K 5",
+   "from": [
+    "dolphin-knight",
+    "peak-condor"
+   ],
+   "why": "no II, older rank 5"
+  },
+  {
+   "key": "quick",
+   "name": "Quick",
+   "rank": "unranked",
+   "from": [
+    "chipmunk-cavalry",
+    "feral-tomcat",
+    "savanna-cheetah",
+    "frillneck-duelist",
+    "dune-jackal"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "rage",
+   "name": "Rage",
+   "rank": "K 3",
+   "from": [
+    "honey-badger-fury",
+    "deep-cave-troll",
+    "ur-elk",
+    "berserker-boar"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "rainrunner",
+   "name": "Rainrunner",
+   "rank": "unranked",
+   "from": [
+    "puddle-skimmer"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "reach",
+   "name": "Reach",
+   "rank": "K 3",
+   "from": [
+    "cormorant"
+   ],
+   "why": "no II (K 3): not in the plan"
+  },
+  {
+   "key": "regen",
+   "name": "Regeneration",
+   "rank": "II 1",
+   "from": [
+    "grass-snake"
+   ],
+   "why": "Map 5's pick; these cards come earlier"
+  },
+  {
+   "key": "relict",
+   "name": "Relict",
+   "rank": "unranked",
+   "from": [
+    "horseshoe-crab"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "reload",
+   "name": "Reload",
+   "rank": "unranked",
+   "from": [
+    "peak-condor",
+    "riptide-eel"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "repair",
+   "name": "Repair",
+   "rank": "your note",
+   "from": [
+    "cypress-root-lurker"
+   ],
+   "why": "your note: \"not sure about this one\"; unranked"
+  },
+  {
+   "key": "riled",
+   "name": "Riled",
+   "rank": "K 4",
+   "from": [
+    "boreal-elk"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "salt",
+   "name": "Salt",
+   "rank": "K 4",
+   "from": [
+    "horseshoe-crab"
+   ],
+   "why": "no II, older rank 4"
+  },
+  {
+   "key": "scare",
+   "name": "Scare",
+   "rank": "II 2",
+   "from": [
+    "amber-cicada"
+   ],
+   "why": "II 2: no slot under the cap"
+  },
+  {
+   "key": "scatterbrained",
+   "name": "Scatterbrained",
+   "rank": "K 7",
+   "from": [
+    "pika-hoarder"
+   ],
+   "why": "no II, older rank 7"
+  },
+  {
+   "key": "shatter",
+   "name": "Shatter",
+   "rank": "unranked",
+   "from": [
+    "walrus-icebreaker"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "shell",
+   "name": "Shell",
+   "rank": "your note",
+   "from": [
+    "limpet-clinger",
+    "conch-crawler",
+    "stalactite-golem",
+    "giant-clam"
+   ],
+   "why": "Shell = Turtle (your note), unranked: shell becomes Armor"
+  },
+  {
+   "key": "shield",
+   "name": "Shield",
+   "rank": "II 1",
+   "from": [
+    "conch-crawler"
+   ],
+   "why": "Map 4's pick; these cards come earlier"
+  },
+  {
+   "key": "shock",
+   "name": "Shock",
+   "rank": "unranked",
+   "from": [
+    "voltaic-eel"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "skitter",
+   "name": "Skitter",
+   "rank": "unranked",
+   "from": [
+    "mangrove-mudskipper"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "sleep",
+   "name": "Sleep",
+   "rank": "unranked",
+   "from": [
+    "nightshade-moth"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "sonar",
+   "name": "Sonar",
+   "rank": "unranked",
+   "from": [
+    "dolphin-knight"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "speed",
+   "name": "Speed",
+   "rank": "unranked",
+   "from": [
+    "pronghorn-racer"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "spitfire",
+   "name": "Spitfire",
+   "rank": "unranked",
+   "from": [
+    "fire-salamander"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "stunOnHit",
+   "name": "Stun",
+   "rank": "K 5",
+   "from": [
+    "cinder-hornet"
+   ],
+   "why": "no II, older rank 5"
+  },
+  {
+   "key": "taunt",
+   "name": "Taunt",
+   "rank": "K 7",
+   "from": [
+    "proboscis-monkey"
+   ],
+   "why": "on your moved-away list"
+  },
+  {
+   "key": "thanatosis",
+   "name": "Thanatosis",
+   "rank": "unranked",
+   "from": [
+    "slow-worm",
+    "grass-snake",
+    "phoenix-mushrooms"
+   ],
+   "why": "no II, no rank: not in the plan"
+  },
+  {
+   "key": "thorns",
+   "name": "Thorns",
+   "rank": "II 1",
+   "from": [
+    "crown-of-thorns-star"
+   ],
+   "why": "Map 12's pick; these cards come earlier"
+  },
+  {
+   "key": "tide",
+   "name": "Tide",
+   "rank": "II 1",
+   "from": [
+    "open-ocean-hermit-crab",
+    "fiddler-crab-swarm",
+    "alligator-gar",
+    "ironclaw-fiddler",
+    "giant-clam"
+   ],
+   "why": "still in the plan: swapped on this card (two skills a card, or a better fit)"
+  },
+  {
+   "key": "triggers",
+   "name": "triggers",
+   "rank": "unranked",
+   "from": [
+    "ash-cloud-condor"
+   ],
+   "why": "trigger replaced by a plan skill"
+  },
+  {
+   "key": "keenEye",
+   "name": "True Sight",
+   "rank": "K MAGIC",
+   "from": [
+    "fawn-scout",
+    "owl-sentinel"
+   ],
+   "why": "category MAGIC: not a road skill"
+  },
+  {
+   "key": "poison",
+   "name": "Venomous",
+   "rank": "unranked",
+   "from": [
+    "crown-of-thorns-star"
+   ],
+   "why": "still in the plan: swapped on this card (two skills a card, or a better fit)"
+  },
+  {
+   "key": "wither",
+   "name": "Wither",
+   "rank": "K 5",
+   "from": [
+    "corpse-flower-beetle"
+   ],
+   "why": "no II, older rank 5"
+  }
+ ],
+ "cards": [
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "map": 0,
+   "rarity": "starter",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "swarm": [
+     "Ants"
+    ]
+   },
+   "attack": 1,
+   "health": 4,
+   "wait": 0,
+   "cost": 0,
+   "fill": 86.2,
+   "before": {
+    "effects": {
+     "swarm": [
+      "Ants"
+     ]
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 86.2
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "duckling",
+   "name": "Duckling",
+   "map": 0,
+   "rarity": "starter",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 1,
+   "health": 4,
+   "wait": 0,
+   "cost": 0,
+   "fill": 56.7,
+   "before": {
+    "effects": {},
+    "attack": 1,
+    "health": 4,
+    "fill": 56.7
+   },
+   "note": "",
+   "flags": [
+    "owner card at 56.7%: not refitted"
+   ]
+  },
+  {
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "map": 0,
+   "rarity": "starter",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 2,
+   "health": 10,
+   "wait": 1,
+   "cost": 0,
+   "fill": 98,
+   "before": {
+    "effects": {},
+    "attack": 2,
+    "health": 10,
+    "fill": 98
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "crossed-eyes",
+   "name": "Crossed-Eyes",
+   "map": 0,
+   "rarity": "starter",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 2,
+   "health": 2,
+   "wait": 0,
+   "cost": 0,
+   "fill": 64.8,
+   "before": {
+    "effects": {},
+    "attack": 2,
+    "health": 2,
+    "fill": 64.8
+   },
+   "note": "",
+   "flags": [
+    "owner card at 64.8%: not refitted"
+   ]
+  },
+  {
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "map": 0,
+   "rarity": "starter",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true
+   },
+   "attack": 1,
+   "health": 6,
+   "wait": 0,
+   "cost": 0,
+   "fill": 89.3,
+   "before": {
+    "effects": {
+     "flying": true
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 69.5
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "earthworm",
+   "name": "Earthworm",
+   "map": 0,
+   "rarity": "starter",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 0,
+   "health": 6,
+   "wait": 0,
+   "cost": 0,
+   "fill": 48.6,
+   "before": {
+    "effects": {},
+    "attack": 0,
+    "health": 6,
+    "fill": 48.6
+   },
+   "note": "",
+   "flags": [
+    "owner card at 48.6%: not refitted"
+   ]
+  },
+  {
+   "id": "house-cat",
+   "name": "House Cat",
+   "map": 0,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 3,
+   "health": 3,
+   "wait": 0,
+   "cost": 0,
+   "fill": 88.4,
+   "before": {
+    "effects": {},
+    "attack": 3,
+    "health": 3,
+    "fill": 88.4
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "silver-minnow",
+   "name": "Silver Minnow",
+   "map": 0,
+   "rarity": "starter",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 2,
+   "health": 3,
+   "wait": 0,
+   "cost": 0,
+   "fill": 72.9,
+   "before": {
+    "effects": {},
+    "attack": 2,
+    "health": 3,
+    "fill": 72.9
+   },
+   "note": "",
+   "flags": [
+    "owner card at 72.9%: not refitted"
+   ]
+  },
+  {
+   "id": "cottontail",
+   "name": "Cottontail",
+   "map": 0,
+   "rarity": "starter",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 3,
+   "health": 1,
+   "wait": 0,
+   "cost": 0,
+   "fill": 81,
+   "before": {
+    "effects": {},
+    "attack": 3,
+    "health": 1,
+    "fill": 81
+   },
+   "note": "",
+   "flags": [
+    "owner card at 81%: not refitted"
+   ]
+  },
+  {
+   "id": "rabbit-kit",
+   "name": "Rabbit Kit",
+   "map": 0,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 2,
+   "health": 4,
+   "wait": 0,
+   "cost": 0,
+   "fill": 91.3,
+   "before": {
+    "effects": {
+     "evasive": true
+    },
+    "attack": 2,
+    "health": 2,
+    "fill": 73.1
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "map": 0,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "swarm": [
+     "Ants"
+    ]
+   },
+   "attack": 2,
+   "health": 7,
+   "wait": 1,
+   "cost": 0,
+   "fill": 96.5,
+   "before": {
+    "effects": {
+     "swarm": [
+      "Ants"
+     ]
+    },
+    "attack": 2,
+    "health": 7,
+    "fill": 96.5
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "map": 0,
+   "rarity": "starter",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "nursing": 1
+   },
+   "attack": 0,
+   "health": 5,
+   "wait": 0,
+   "cost": 0,
+   "fill": 93.2,
+   "before": {
+    "effects": {
+     "flying": true,
+     "healing": 1
+    },
+    "attack": 0,
+    "health": 4,
+    "fill": 70.1
+   },
+   "note": "Heal is Nursing now (your K note); same job, Map 0",
+   "flags": []
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "map": 0,
+   "rarity": "starter",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "poison": 1
+   },
+   "attack": 1,
+   "health": 5,
+   "wait": 1,
+   "cost": 0,
+   "fill": 78.7,
+   "before": {
+    "effects": {
+     "flying": true,
+     "poison": 1
+    },
+    "attack": 1,
+    "health": 5,
+    "fill": 78.7
+   },
+   "note": "",
+   "flags": [
+    "owner card at 78.7%: not refitted"
+   ]
+  },
+  {
+   "id": "farm-dog",
+   "name": "Farm Dog",
+   "map": 0,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 2,
+   "health": 7,
+   "wait": 0,
+   "cost": 0,
+   "fill": 95.8,
+   "before": {
+    "effects": {},
+    "attack": 2,
+    "health": 7,
+    "fill": 95.8
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "map": 0,
+   "rarity": "starter",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 1,
+   "health": 8,
+   "wait": 0,
+   "cost": 0,
+   "fill": 89.1,
+   "before": {
+    "effects": {},
+    "attack": 1,
+    "health": 8,
+    "fill": 89.1
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "map": 0,
+   "rarity": "starter",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "triggers": [
+     {
+      "do": "drawCard",
+      "on": "onAttack",
+      "count": 1
+     }
+    ]
+   },
+   "attack": 1,
+   "health": 6,
+   "wait": 0,
+   "cost": 0,
+   "fill": 123.7,
+   "before": {
+    "effects": {
+     "triggers": [
+      {
+       "do": "drawCard",
+       "on": "onAttack",
+       "count": 1
+      }
+     ]
+    },
+    "attack": 1,
+    "health": 6,
+    "fill": 123.7
+   },
+   "note": "",
+   "flags": [
+    "owner card at 123.7%: not refitted"
+   ]
+  },
+  {
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "map": 0,
+   "rarity": "starter",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 2,
+   "health": 4,
+   "wait": 0,
+   "cost": 0,
+   "fill": 81,
+   "before": {
+    "effects": {},
+    "attack": 2,
+    "health": 4,
+    "fill": 81
+   },
+   "note": "",
+   "flags": [
+    "owner card at 81%: not refitted"
+   ]
+  },
+  {
+   "id": "bramble-sprout",
+   "name": "Bramble Sprout",
+   "map": 1,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "thorns": 2
+   },
+   "attack": 1,
+   "health": 5,
+   "wait": 0,
+   "cost": 0,
+   "fill": 101.2,
+   "before": {
+    "effects": {
+     "thorns": 2
+    },
+    "attack": 1,
+    "health": 5,
+    "fill": 101.2
+   },
+   "note": "",
+   "flags": [
+    "owner card at 101.2%: not refitted"
+   ]
+  },
+  {
+   "id": "terrier-pup",
+   "name": "Terrier Pup",
+   "map": 1,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "guardian": true
+   },
+   "attack": 2,
+   "health": 5,
+   "wait": 0,
+   "cost": 0,
+   "fill": 85.1,
+   "before": {
+    "effects": {
+     "guardian": true
+    },
+    "attack": 2,
+    "health": 5,
+    "fill": 85.1
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "map": 1,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "inspiring": 1
+   },
+   "attack": 1,
+   "health": 5,
+   "wait": 0,
+   "cost": 0,
+   "fill": 90.9,
+   "before": {
+    "effects": {
+     "inspiring": 2
+    },
+    "attack": 1,
+    "health": 5,
+    "fill": 105.6
+   },
+   "note": "Inspiring 2 -> 1 (owner 11-03: \"I like the drummer having Inspire 1\")",
+   "flags": []
+  },
+  {
+   "id": "chipmunk-skirmisher",
+   "name": "Chipmunk Skirmisher",
+   "map": 1,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "arrow": 2
+   },
+   "attack": 1,
+   "health": 4,
+   "wait": 0,
+   "cost": 0,
+   "fill": 108.4,
+   "before": {
+    "effects": {
+     "arrow": 2
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 108.4
+   },
+   "note": "",
+   "flags": [
+    "owner card at 108.4%: not refitted"
+   ]
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "name": "Chipmunk Cavalry",
+   "map": 1,
+   "rarity": "common",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {},
+   "attack": 3,
+   "health": 6,
+   "wait": 0,
+   "cost": 1,
+   "fill": 88.9,
+   "before": {
+    "effects": {
+     "quick": true
+    },
+    "attack": 3,
+    "health": 4,
+    "fill": 94.8
+   },
+   "note": "Quick is unranked: vanilla on Map 1 (Swift comes Map 3)",
+   "flags": []
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "map": 1,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "injured": 2,
+    "foraging": 1
+   },
+   "attack": 2,
+   "health": 7,
+   "wait": 0,
+   "cost": 0,
+   "fill": 98.1,
+   "before": {
+    "effects": {
+     "injured": 2,
+     "foraging": 1
+    },
+    "attack": 2,
+    "health": 7,
+    "fill": 98.1
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "meadow-rabbit",
+   "name": "Meadow Rabbit",
+   "map": 1,
+   "rarity": "starter",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 3,
+   "health": 2,
+   "wait": 0,
+   "cost": 0,
+   "fill": 89.1,
+   "before": {
+    "effects": {},
+    "attack": 3,
+    "health": 2,
+    "fill": 89.1
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "moonlit-hare",
+   "name": "Moonlit Hare",
+   "map": 1,
+   "rarity": "uncommon",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 1,
+   "cost": 0,
+   "fill": 91.2,
+   "before": {
+    "effects": {
+     "moonborn": 3
+    },
+    "attack": 2,
+    "health": 7,
+    "fill": 85.3
+   },
+   "note": "Moonborn (K4) off; hares dodge: Evasive (Map 0)",
+   "flags": []
+  },
+  {
+   "id": "dormouse",
+   "name": "Dormouse",
+   "map": 1,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "nocturnal": 2
+   },
+   "attack": 2,
+   "health": 3,
+   "wait": 0,
+   "cost": 0,
+   "fill": 94.7,
+   "before": {
+    "effects": {
+     "nocturnal": 2
+    },
+    "attack": 2,
+    "health": 5,
+    "fill": 109.9
+   },
+   "note": "kept: Nocturnal is now a Map 1 skill (light, the night half of Diurnal)",
+   "flags": []
+  },
+  {
+   "id": "puddle-skimmer",
+   "name": "Puddle Skimmer",
+   "map": 1,
+   "rarity": "uncommon",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 1,
+   "cost": 0,
+   "fill": 91.2,
+   "before": {
+    "effects": {
+     "rainrunner": 2
+    },
+    "attack": 2,
+    "health": 7,
+    "fill": 93.8
+   },
+   "note": "Rainrunner unranked: off; a pond skater skates away: Evasive",
+   "flags": []
+  },
+  {
+   "id": "bee-knight",
+   "name": "Bee Warden",
+   "map": 1,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 1,
+   "health": 2,
+   "wait": 0,
+   "cost": 0,
+   "fill": 36.8,
+   "before": {
+    "effects": {},
+    "attack": 1,
+    "health": 2,
+    "fill": 36.8
+   },
+   "note": "",
+   "flags": [
+    "owner card at 36.8%: not refitted"
+   ]
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "map": 1,
+   "rarity": "uncommon",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "diurnal": 2
+   },
+   "attack": 1,
+   "health": 4,
+   "wait": 0,
+   "cost": 0,
+   "fill": 74.7,
+   "before": {
+    "effects": {
+     "flying": true,
+     "diurnal": 2
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 74.7
+   },
+   "note": "",
+   "flags": [
+    "owner card at 74.7%: not refitted"
+   ]
+  },
+  {
+   "id": "beaver-lumberjack",
+   "name": "Beaver Lumberjack",
+   "map": 2,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "delivery": 1
+   },
+   "attack": 3,
+   "health": 5,
+   "wait": 1,
+   "cost": 0,
+   "fill": 111.4,
+   "before": {
+    "effects": {
+     "delivery": 1
+    },
+    "attack": 3,
+    "health": 5,
+    "fill": 111.4
+   },
+   "note": "",
+   "flags": [
+    "owner card at 111.4%: not refitted"
+   ]
+  },
+  {
+   "id": "driftwood-crab",
+   "name": "Driftwood Crab",
+   "map": 2,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "triggers": [
+     {
+      "do": "gain",
+      "on": "onAttacked",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ],
+    "crabClaws": true
+   },
+   "attack": 2,
+   "health": 10,
+   "wait": 1,
+   "cost": 1,
+   "fill": 84.3,
+   "before": {
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttacked",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ],
+     "crabClaws": true
+    },
+    "attack": 2,
+    "health": 10,
+    "fill": 84.3
+   },
+   "note": "",
+   "flags": [
+    "owner card at 84.3%: not refitted"
+   ]
+  },
+  {
+   "id": "gull-thief",
+   "name": "Gull Thief",
+   "map": 2,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "do": "gain",
+      "on": "onHit",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ]
+   },
+   "attack": 1,
+   "health": 7,
+   "wait": 0,
+   "cost": 0,
+   "fill": 102.9,
+   "before": {
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onHit",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    },
+    "attack": 1,
+    "health": 7,
+    "fill": 102.9
+   },
+   "note": "",
+   "flags": [
+    "owner card at 102.9%: not refitted"
+   ]
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "name": "Open-Ocean Hermit Crab",
+   "map": 2,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "armor": 1,
+    "crabClaws": true
+   },
+   "attack": 2,
+   "health": 3,
+   "wait": 0,
+   "cost": 0,
+   "fill": 88.5,
+   "before": {
+    "effects": {
+     "armor": 1,
+     "crabClaws": true,
+     "tide": true
+    },
+    "attack": 2,
+    "health": 3,
+    "fill": 92.3
+   },
+   "note": "three skills -> two: Tide off (shell Armor + claws stay)",
+   "flags": []
+  },
+  {
+   "id": "oystercatcher",
+   "name": "Oystercatcher",
+   "map": 2,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "tide": true
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 1,
+   "cost": 1,
+   "fill": 86.4,
+   "before": {
+    "effects": {
+     "flying": true,
+     "pierce": 2
+    },
+    "attack": 2,
+    "health": 7,
+    "fill": 79.4
+   },
+   "note": "Pierce is Map 11: feeds on the tideline instead (Tide)",
+   "flags": []
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "map": 2,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "tide": true,
+    "poisonBarbs": 2
+   },
+   "attack": 0,
+   "health": 6,
+   "wait": 1,
+   "cost": 0,
+   "fill": 58,
+   "before": {
+    "effects": {
+     "tide": true,
+     "poisonBarbs": 2
+    },
+    "attack": 0,
+    "health": 6,
+    "fill": 58
+   },
+   "note": "",
+   "flags": [
+    "owner card at 58%: not refitted"
+   ]
+  },
+  {
+   "id": "dolphin-knight",
+   "name": "Dolphin Outrider",
+   "map": 2,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": 2,
+    "armor": 1
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 1,
+   "cost": 0,
+   "fill": 85.4,
+   "before": {
+    "effects": {
+     "tide": 2,
+     "sonar": true,
+     "puncture": {
+      "v": 2,
+      "kind": "breach"
+     }
+    },
+    "attack": 2,
+    "health": 8,
+    "fill": 112.2
+   },
+   "note": "Sonar (unranked) and Puncture (K5) off; a knight wears Armor",
+   "flags": []
+  },
+  {
+   "id": "conch-herald",
+   "name": "Conch Herald",
+   "map": 2,
+   "rarity": "uncommon",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "tide": true,
+    "inspiring": 2
+   },
+   "attack": 1,
+   "health": 11,
+   "wait": 1,
+   "cost": 1,
+   "fill": 94.9,
+   "before": {
+    "effects": {
+     "tide": true,
+     "inspiring": 2
+    },
+    "attack": 1,
+    "health": 11,
+    "fill": 94.9
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "map": 2,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "tide": true,
+    "diurnal": 2
+   },
+   "attack": 1,
+   "health": 7,
+   "wait": 1,
+   "cost": 0,
+   "fill": 74.4,
+   "before": {
+    "effects": {
+     "tide": true,
+     "diurnal": 2
+    },
+    "attack": 1,
+    "health": 7,
+    "fill": 74.4
+   },
+   "note": "",
+   "flags": [
+    "owner card at 74.4%: not refitted"
+   ]
+  },
+  {
+   "id": "beachcomber-sanderling",
+   "name": "Beachcomber Sanderling",
+   "map": 2,
+   "rarity": "common",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true
+   },
+   "attack": 2,
+   "health": 6,
+   "wait": 0,
+   "cost": 0,
+   "fill": 96.7,
+   "before": {
+    "effects": {
+     "driftwood": 1
+    },
+    "attack": 2,
+    "health": 7,
+    "fill": 106.4
+   },
+   "note": "Driftwood (K6) off; sanderlings chase the waves: Tide",
+   "flags": []
+  },
+  {
+   "id": "limpet-clinger",
+   "name": "Limpet Clinger",
+   "map": 2,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "armor": 1,
+    "tide": true
+   },
+   "attack": 2,
+   "health": 4,
+   "wait": 0,
+   "cost": 0,
+   "fill": 99.3,
+   "before": {
+    "effects": {
+     "shell": 2,
+     "tide": true
+    },
+    "attack": 2,
+    "health": 4,
+    "fill": 85.7
+   },
+   "note": "Shell = Turtle (unranked): a limpet shell is Armor 1",
+   "flags": []
+  },
+  {
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "map": 3,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "armor": 1,
+    "tide": true
+   },
+   "attack": 1,
+   "health": 9,
+   "wait": 1,
+   "cost": 0,
+   "fill": 88.7,
+   "before": {
+    "effects": {
+     "tide": true,
+     "shell": 1,
+     "shield": 5
+    },
+    "attack": 1,
+    "health": 5,
+    "fill": 92.1
+   },
+   "note": "Shield is Map 4 and Shell is unranked: shell = Armor 1",
+   "flags": []
+  },
+  {
+   "id": "cormorant",
+   "name": "Cormorant",
+   "map": 3,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true
+   },
+   "attack": 3,
+   "health": 7,
+   "wait": 1,
+   "cost": 0,
+   "fill": 98.7,
+   "before": {
+    "effects": {
+     "reach": true
+    },
+    "attack": 3,
+    "health": 7,
+    "fill": 101.7
+   },
+   "note": "Reach (K3, unranked) off; dives with the tide",
+   "flags": []
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "name": "Fiddler Crab Swarm",
+   "map": 3,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "crabClaws": true,
+    "guardian": true
+   },
+   "attack": 1,
+   "health": 8,
+   "wait": 0,
+   "cost": 0,
+   "fill": 85.9,
+   "before": {
+    "effects": {
+     "tide": true,
+     "crabClaws": true,
+     "guardian": true
+    },
+    "attack": 1,
+    "health": 8,
+    "fill": 89.8
+   },
+   "note": "three skills -> two: Tide off",
+   "flags": []
+  },
+  {
+   "id": "kittiwake-flock",
+   "name": "Kittiwake Flock",
+   "map": 3,
+   "rarity": "common",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "guardian": true
+   },
+   "attack": 1,
+   "health": 7,
+   "wait": 0,
+   "cost": 0,
+   "fill": 92.1,
+   "before": {
+    "effects": {
+     "brood": 1,
+     "flying": true,
+     "guardian": true
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 89.2
+   },
+   "note": "Brood moved away (your list)",
+   "flags": []
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "map": 3,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "tide": 2,
+    "flying": true
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 1,
+   "cost": 1,
+   "fill": 85.5,
+   "before": {
+    "effects": {
+     "tide": 2,
+     "flying": true
+    },
+    "attack": 2,
+    "health": 8,
+    "fill": 85.5
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "peak-condor",
+   "name": "Peak Condor",
+   "map": 3,
+   "rarity": "common",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true
+   },
+   "attack": 3,
+   "health": 8,
+   "wait": 1,
+   "cost": 1,
+   "fill": 99.8,
+   "before": {
+    "effects": {
+     "puncture": {
+      "v": 2,
+      "kind": "breach"
+     },
+     "flying": true,
+     "reload": 1
+    },
+    "attack": 4,
+    "health": 10,
+    "fill": 146.4
+   },
+   "note": "Puncture (K5) and Reload off; 146% over now. Carrion comes Map 7",
+   "flags": []
+  },
+  {
+   "id": "gannet-nestweaver",
+   "name": "Gannet Nestweaver",
+   "map": 3,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "attack": 1,
+   "health": 7,
+   "wait": 1,
+   "cost": 0,
+   "fill": 86.7,
+   "before": {
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    },
+    "attack": 1,
+    "health": 7,
+    "fill": 86.7
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "map": 3,
+   "rarity": "common",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "swift": true
+   },
+   "attack": 1,
+   "health": 5,
+   "wait": 0,
+   "cost": 0,
+   "fill": 92.9,
+   "before": {
+    "effects": {
+     "quick": true,
+     "sweep": 1
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 99.2
+   },
+   "note": "Quick -> Swift (Map 3); Cleave is Map 13",
+   "flags": []
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "map": 3,
+   "rarity": "uncommon",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "pounce": 3
+   },
+   "attack": 2,
+   "health": 5,
+   "wait": 0,
+   "cost": 1,
+   "fill": 96.1,
+   "before": {
+    "effects": {
+     "flying": true,
+     "pounce": 3
+    },
+    "attack": 2,
+    "health": 5,
+    "fill": 96.1
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "name": "Eagle Sharpshooter",
+   "map": 3,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "arrow": 2,
+    "diurnal": true
+   },
+   "attack": 2,
+   "health": 6,
+   "wait": 1,
+   "cost": 2,
+   "fill": 94.6,
+   "before": {
+    "effects": {
+     "flying": true,
+     "arrow": 2,
+     "diurnal": true
+    },
+    "attack": 2,
+    "health": 6,
+    "fill": 94.6
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "pika-hoarder",
+   "name": "Pika Hoarder",
+   "map": 3,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "foraging": 1
+   },
+   "attack": 1,
+   "health": 13,
+   "wait": 0,
+   "cost": 0,
+   "fill": 99.2,
+   "before": {
+    "effects": {
+     "scatterbrained": true
+    },
+    "attack": 3,
+    "health": 13,
+    "fill": 96.4
+   },
+   "note": "Scatterbrained (K7) off; a hay-pile hoarder: Foraging",
+   "flags": []
+  },
+  {
+   "id": "pond-algae",
+   "name": "Pond Algae",
+   "map": 4,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "bloomCopy": {
+     "when": [
+      "wet",
+      "sunny"
+     ],
+     "mode": "and"
+    }
+   },
+   "attack": 1,
+   "health": 6,
+   "wait": 1,
+   "cost": 0,
+   "fill": 93.3,
+   "before": {
+    "effects": {
+     "bloomCopy": {
+      "when": [
+       "wet",
+       "sunny"
+      ],
+      "mode": "and"
+     }
+    },
+    "attack": 1,
+    "health": 8,
+    "fill": 110.5
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "slow-worm",
+   "name": "Slow-worm",
+   "map": 4,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "shield": 3
+   },
+   "attack": 1,
+   "health": 8,
+   "wait": 1,
+   "cost": 0,
+   "fill": 95.3,
+   "before": {
+    "effects": {
+     "thanatosis": true
+    },
+    "attack": 1,
+    "health": 9,
+    "fill": 83.7
+   },
+   "note": "Thanatosis unranked; bony scales: Shield 3",
+   "flags": []
+  },
+  {
+   "id": "water-shrew",
+   "name": "Water Shrew",
+   "map": 4,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "poison": 1,
+    "pounce": 1
+   },
+   "attack": 1,
+   "health": 4,
+   "wait": 0,
+   "cost": 0,
+   "fill": 95,
+   "before": {
+    "effects": {
+     "poison": 1,
+     "pounce": 1,
+     "evasive": true
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 104.8
+   },
+   "note": "three skills -> two: Evasive off (venomous, pouncing shrew stays)",
+   "flags": []
+  },
+  {
+   "id": "snapstick-turtle",
+   "name": "Snapstick Turtle",
+   "map": 4,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "tide": true,
+    "armor": 1
+   },
+   "attack": 4,
+   "health": 5,
+   "wait": 1,
+   "cost": 1,
+   "fill": 95.3,
+   "before": {
+    "effects": {
+     "tide": true,
+     "armor": 1
+    },
+    "attack": 4,
+    "health": 6,
+    "fill": 100.1
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "shoal-shark",
+   "name": "Shoal Shark",
+   "map": 4,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "tide": 3
+   },
+   "attack": 3,
+   "health": 12,
+   "wait": 2,
+   "cost": 1,
+   "fill": 87.1,
+   "before": {
+    "effects": {
+     "tide": 3
+    },
+    "attack": 3,
+    "health": 11,
+    "fill": 83.2
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "platypus-spur",
+   "name": "Platypus",
+   "map": 4,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "poison": 1
+   },
+   "attack": 4,
+   "health": 5,
+   "wait": 1,
+   "cost": 1,
+   "fill": 89.8,
+   "before": {
+    "effects": {
+     "poison": 1
+    },
+    "attack": 4,
+    "health": 5,
+    "fill": 89.8
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "map": 4,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true,
+    "shield": 4
+   },
+   "attack": 1,
+   "health": 14,
+   "wait": 2,
+   "cost": 1,
+   "fill": 88.2,
+   "before": {
+    "effects": {
+     "tide": true,
+     "bulwark": 2
+    },
+    "attack": 1,
+    "health": 7,
+    "fill": 73
+   },
+   "note": "Bulwark (K2, unranked) -> its own Shield 4: the lodge",
+   "flags": []
+  },
+  {
+   "id": "grass-snake",
+   "name": "Grass Snake",
+   "map": 4,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 2,
+   "health": 10,
+   "wait": 1,
+   "cost": 1,
+   "fill": 88.8,
+   "before": {
+    "effects": {
+     "regen": 1,
+     "thanatosis": true
+    },
+    "attack": 2,
+    "health": 9,
+    "fill": 90.7
+   },
+   "note": "Regeneration is Map 5, Thanatosis unranked: slips away (Evasive)",
+   "flags": []
+  },
+  {
+   "id": "river-mink",
+   "name": "River Mink",
+   "map": 4,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true,
+    "pounce": 1
+   },
+   "attack": 4,
+   "health": 7,
+   "wait": 1,
+   "cost": 1,
+   "fill": 99.5,
+   "before": {
+    "effects": {
+     "dive": 1,
+     "tide": true
+    },
+    "attack": 4,
+    "health": 8,
+    "fill": 84.6
+   },
+   "note": "Dive (K3, unranked) -> Pounce",
+   "flags": []
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian",
+   "map": 4,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "meiosis": 1
+   },
+   "attack": 3,
+   "health": 7,
+   "wait": 1,
+   "cost": 1,
+   "fill": 96.6,
+   "before": {
+    "effects": {
+     "meiosis": 1
+    },
+    "attack": 3,
+    "health": 8,
+    "fill": 101.3
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "map": 5,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "nursing": 1,
+    "regen": 1
+   },
+   "attack": 2,
+   "health": 5,
+   "wait": 1,
+   "cost": 0,
+   "fill": 94.9,
+   "before": {
+    "effects": {
+     "healing": 1,
+     "herbalist": 1
+    },
+    "attack": 2,
+    "health": 7,
+    "fill": 86.6
+   },
+   "note": "Heal -> Nursing; Herbalist (II 2) has no slot; newts regrow: Regeneration",
+   "flags": []
+  },
+  {
+   "id": "mosquito-cloud",
+   "name": "Mosquito Cloud",
+   "map": 5,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "bleed": 1
+   },
+   "attack": 1,
+   "health": 4,
+   "wait": 0,
+   "cost": 0,
+   "fill": 86.8,
+   "before": {
+    "effects": {
+     "flying": true,
+     "bleed": 1
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 86.8
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "map": 5,
+   "rarity": "uncommon",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "bleed": 1,
+    "twinStrike": true
+   },
+   "attack": 1,
+   "health": 4,
+   "wait": 0,
+   "cost": 0,
+   "fill": 123.2,
+   "before": {
+    "effects": {
+     "bleed": 1,
+     "twinStrike": true
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 123.2
+   },
+   "note": "",
+   "flags": [
+    "owner card at 123.2%: not refitted"
+   ]
+  },
+  {
+   "id": "marsh-mallow-hare",
+   "name": "Marsh-mallow Hare",
+   "map": 5,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "cure": 1
+   },
+   "attack": 4,
+   "health": 4,
+   "wait": 1,
+   "cost": 0,
+   "fill": 98.7,
+   "before": {
+    "effects": {
+     "cure": 1
+    },
+    "attack": 4,
+    "health": 4,
+    "fill": 98.7
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "mudpuppy",
+   "name": "Mudpuppy",
+   "map": 5,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "regen": 1
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 1,
+   "cost": 0,
+   "fill": 97.5,
+   "before": {
+    "effects": {
+     "regen": 1
+    },
+    "attack": 2,
+    "health": 9,
+    "fill": 103.5
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "muskrat-reedgatherer",
+   "name": "Muskrat Reedgatherer",
+   "map": 5,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "delivery": 2
+   },
+   "attack": 1,
+   "health": 6,
+   "wait": 1,
+   "cost": 0,
+   "fill": 96.1,
+   "before": {
+    "effects": {
+     "delivery": 2
+    },
+    "attack": 1,
+    "health": 8,
+    "fill": 108
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "swamp-alligator",
+   "name": "Swamp Alligator",
+   "map": 5,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "armor": 2,
+    "bleed": 1
+   },
+   "attack": 2,
+   "health": 12,
+   "wait": 2,
+   "cost": 2,
+   "fill": 88.2,
+   "before": {
+    "effects": {
+     "armor": 2,
+     "hemorrhage": 2
+    },
+    "attack": 2,
+    "health": 12,
+    "fill": 95.3
+   },
+   "note": "Hemorrhage (K5) -> Bleed 1 (the death roll)",
+   "flags": []
+  },
+  {
+   "id": "raft-spider",
+   "name": "Raft Spider",
+   "map": 5,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "tide": true
+   },
+   "attack": 3,
+   "health": 8,
+   "wait": 1,
+   "cost": 1,
+   "fill": 88.1,
+   "before": {
+    "effects": {
+     "tide": true
+    },
+    "attack": 3,
+    "health": 8,
+    "fill": 88.1
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "map": 5,
+   "rarity": "uncommon",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "tide": true,
+    "swarm": [
+     "Ants"
+    ],
+    "poison": 1
+   },
+   "attack": 2,
+   "health": 7,
+   "wait": 1,
+   "cost": 1,
+   "fill": 91,
+   "before": {
+    "effects": {
+     "tide": true,
+     "swarm": [
+      "Ants"
+     ],
+     "poison": 1
+    },
+    "attack": 2,
+    "health": 7,
+    "fill": 91
+   },
+   "note": "",
+   "flags": [
+    "skill count 2.5"
+   ]
+  },
+  {
+   "id": "constrictor-coil",
+   "name": "Constrictor Coil",
+   "map": 5,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "strangle": 2
+   },
+   "attack": 2,
+   "health": 16,
+   "wait": 2,
+   "cost": 2,
+   "fill": 98.9,
+   "before": {
+    "effects": {
+     "strangle": 2
+    },
+    "attack": 4,
+    "health": 16,
+    "fill": 120.5
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "cypress-root-lurker",
+   "name": "Cypress Root Lurker",
+   "map": 6,
+   "rarity": "common",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "guardian": true
+   },
+   "attack": 4,
+   "health": 12,
+   "wait": 2,
+   "cost": 1,
+   "fill": 99,
+   "before": {
+    "effects": {
+     "repair": 2,
+     "guardian": true
+    },
+    "attack": 4,
+    "health": 12,
+    "fill": 111.2
+   },
+   "note": "Repair unranked (\"not sure\") off",
+   "flags": []
+  },
+  {
+   "id": "lamprey",
+   "name": "Lamprey",
+   "map": 6,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "parasite": true
+   },
+   "attack": 2,
+   "health": 7,
+   "wait": 0,
+   "cost": 1,
+   "fill": 87.1,
+   "before": {
+    "effects": {
+     "daunt": {
+      "v": 1,
+      "lasts": "lasting"
+     },
+     "sap": true
+    },
+    "attack": 2,
+    "health": 5,
+    "fill": 99.2
+   },
+   "note": "Daunt moved away; Leech is Map 8: a lamprey is the Parasite",
+   "flags": []
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "map": 6,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "armor": 1,
+    "bleed": 3
+   },
+   "attack": 3,
+   "health": 7,
+   "wait": 2,
+   "cost": 1,
+   "fill": 89.9,
+   "before": {
+    "effects": {
+     "tide": true,
+     "armor": 1,
+     "bleed": 3
+    },
+    "attack": 3,
+    "health": 7,
+    "fill": 91.7
+   },
+   "note": "three skills -> two: Tide off",
+   "flags": []
+  },
+  {
+   "id": "camouflage-frog",
+   "name": "Camouflage Frog",
+   "map": 6,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "evasive": true,
+    "tide": true
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 1,
+   "cost": 1,
+   "fill": 85.7,
+   "before": {
+    "effects": {
+     "evasive": true,
+     "tide": true
+    },
+    "attack": 2,
+    "health": 5,
+    "fill": 67.8
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "adder-ambusher",
+   "name": "Adder Ambusher",
+   "map": 6,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "ambush": 3,
+    "poison": 1
+   },
+   "attack": 2,
+   "health": 11,
+   "wait": 1,
+   "cost": 1,
+   "fill": 97.1,
+   "before": {
+    "effects": {
+     "poison": 2
+    },
+    "attack": 2,
+    "health": 11,
+    "fill": 92.1
+   },
+   "note": "the name says it: Ambush 3 + Venomous 1",
+   "flags": []
+  },
+  {
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "map": 6,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true,
+    "pounce": 1
+   },
+   "attack": 1,
+   "health": 13,
+   "wait": 1,
+   "cost": 1,
+   "fill": 85.4,
+   "before": {
+    "effects": {
+     "hoard": 2,
+     "herbalist": 1
+    },
+    "attack": 1,
+    "health": 11,
+    "fill": 76.3
+   },
+   "note": "Hoard (K4) off, Herbalist (II 2) no slot; spear-fishing strike: Pounce",
+   "flags": []
+  },
+  {
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "map": 6,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "ambush": 2
+   },
+   "attack": 2,
+   "health": 12,
+   "wait": 1,
+   "cost": 1,
+   "fill": 86.5,
+   "before": {
+    "effects": {
+     "daunt": 2,
+     "invisible": 1
+    },
+    "attack": 2,
+    "health": 10,
+    "fill": 87.4
+   },
+   "note": "Daunt, Invisible moved away; stands still in the reeds, then strikes: Ambush",
+   "flags": []
+  },
+  {
+   "id": "nutria-reedcutter",
+   "name": "Nutria Reedcutter",
+   "map": 6,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "delivery": 2,
+    "foraging": 1
+   },
+   "attack": 2,
+   "health": 6,
+   "wait": 2,
+   "cost": 0,
+   "fill": 99,
+   "before": {
+    "effects": {
+     "delivery": 2,
+     "foraging": 1
+    },
+    "attack": 3,
+    "health": 8,
+    "fill": 122.7
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "map": 6,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "poison": 1
+   },
+   "attack": 2,
+   "health": 6,
+   "wait": 0,
+   "cost": 0,
+   "fill": 96.5,
+   "before": {
+    "effects": {
+     "pierce": 2
+    },
+    "attack": 2,
+    "health": 6,
+    "fill": 80.6
+   },
+   "note": "Pierce is Map 11: a viper is Venomous",
+   "flags": []
+  },
+  {
+   "id": "crocodile-ambusher",
+   "name": "Crocodile Ambusher",
+   "map": 6,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "ambush": 5,
+    "bleed": 1
+   },
+   "attack": 3,
+   "health": 15,
+   "wait": 3,
+   "cost": 2,
+   "fill": 98.4,
+   "before": {
+    "effects": {
+     "gash": 2,
+     "ambush": 5
+    },
+    "attack": 3,
+    "health": 16,
+    "fill": 94.3
+   },
+   "note": "Gash unranked -> Bleed 1",
+   "flags": []
+  },
+  {
+   "id": "corpse-flower-beetle",
+   "name": "Corpse-flower Beetle",
+   "map": 7,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "carrion": 2
+   },
+   "attack": 4,
+   "health": 10,
+   "wait": 2,
+   "cost": 1,
+   "fill": 92.9,
+   "before": {
+    "effects": {
+     "wither": 1
+    },
+    "attack": 4,
+    "health": 10,
+    "fill": 96.2
+   },
+   "note": "Wither (K5) off; a carrion beetle: Carrion 2",
+   "flags": []
+  },
+  {
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "map": 7,
+   "rarity": "rare",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "swarm": [
+     "Arachnid"
+    ],
+    "pounce": 1
+   },
+   "attack": 2,
+   "health": 10,
+   "wait": 1,
+   "cost": 1,
+   "fill": 87.2,
+   "before": {
+    "effects": {
+     "brood": 2,
+     "swarm": [
+      "Arachnid"
+     ]
+    },
+    "attack": 2,
+    "health": 6,
+    "fill": 89.4
+   },
+   "note": "Brood moved away; wolf spiders pounce",
+   "flags": []
+  },
+  {
+   "id": "fungus-gnat-cloud",
+   "name": "Fungus Gnat Cloud",
+   "map": 7,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "swarm": true
+   },
+   "attack": 1,
+   "health": 5,
+   "wait": 0,
+   "cost": 0,
+   "fill": 86.9,
+   "before": {
+    "effects": {
+     "flying": true,
+     "swarm": true
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 78.7
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "rot-swollen-carcass",
+   "name": "Rot-Swollen Carcass",
+   "map": 7,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "onDeathSpawn": {
+     "defId": "maggot-swarmling",
+     "count": 3
+    },
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "addWait",
+      "amount": 2,
+      "who": "enemy",
+      "sub": "adjacent"
+     }
+    ]
+   },
+   "attack": 3,
+   "health": 14,
+   "wait": 2,
+   "cost": 3,
+   "fill": 86,
+   "before": {
+    "effects": {
+     "onDeathSpawn": {
+      "defId": "maggot-swarmling",
+      "count": 3
+     },
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "addWait",
+       "amount": 2,
+       "who": "enemy",
+       "sub": "adjacent"
+      }
+     ]
+    },
+    "attack": 3,
+    "health": 11,
+    "fill": 77
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball",
+   "map": 7,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "arrow": 1,
+    "poison": 1
+   },
+   "attack": 1,
+   "health": 7,
+   "wait": 1,
+   "cost": 0,
+   "fill": 87,
+   "before": {
+    "effects": {
+     "arrow": 1,
+     "poison": 1,
+     "bloomCopy": {
+      "when": [
+       "wet",
+       "kill"
+      ],
+      "mode": "and"
+     }
+    },
+    "attack": 1,
+    "health": 5,
+    "fill": 96.1
+   },
+   "note": "three skills -> two: Bloom off (a toad spits, it does not bloom)",
+   "flags": []
+  },
+  {
+   "id": "compost-grub",
+   "name": "Compost Grub",
+   "map": 7,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 1,
+   "health": 10,
+   "wait": 0,
+   "cost": 0,
+   "fill": 95.8,
+   "before": {
+    "effects": {},
+    "attack": 1,
+    "health": 10,
+    "fill": 95.8
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "leopard-slug",
+   "name": "Leopard Slug",
+   "map": 7,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "regen": 1,
+    "corrode": 1
+   },
+   "attack": 1,
+   "health": 10,
+   "wait": 1,
+   "cost": 0,
+   "fill": 96.5,
+   "before": {
+    "effects": {
+     "regen": 1
+    },
+    "attack": 1,
+    "health": 10,
+    "fill": 83.4
+   },
+   "note": "slime eats armour: + Corrode 1",
+   "flags": []
+  },
+  {
+   "id": "amber-cicada",
+   "name": "Amber Cicada",
+   "map": 7,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "triggers": [
+     {
+      "on": "onReady",
+      "do": "shield",
+      "who": "ally",
+      "sub": "all",
+      "amount": 2
+     }
+    ]
+   },
+   "attack": 1,
+   "health": 23,
+   "wait": 3,
+   "cost": 1,
+   "fill": 85.7,
+   "before": {
+    "effects": {
+     "scare": 1,
+     "triggers": [
+      {
+       "on": "onReady",
+       "do": "shield",
+       "who": "ally",
+       "sub": "all",
+       "amount": 2
+      }
+     ]
+    },
+    "attack": 1,
+    "health": 21,
+    "fill": 87.3
+   },
+   "note": "Scare (II 2) has no slot; its On Ready Shield stays",
+   "flags": []
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "name": "Hawthorn Shieldbug",
+   "map": 7,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "guardian": true,
+    "corrode": 1
+   },
+   "attack": 1,
+   "health": 15,
+   "wait": 1,
+   "cost": 1,
+   "fill": 94.9,
+   "before": {
+    "effects": {
+     "guardian": true,
+     "counterattack": true
+    },
+    "attack": 1,
+    "health": 15,
+    "fill": 83.7
+   },
+   "note": "Counterattack (K3, unranked) -> Corrode: a stink bug's spray",
+   "flags": []
+  },
+  {
+   "id": "phoenix-mushrooms",
+   "name": "Phoenix Mushrooms",
+   "map": 7,
+   "rarity": "epic",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "meiosis": 1,
+    "bloomCopy": {
+     "mode": "and",
+     "when": [
+      "wet",
+      "sunny"
+     ]
+    }
+   },
+   "attack": 1,
+   "health": 8,
+   "wait": 1,
+   "cost": 1,
+   "fill": 89.6,
+   "before": {
+    "effects": {
+     "meiosis": 1,
+     "bloomCopy": {
+      "mode": "and",
+      "when": [
+       "wet",
+       "sunny"
+      ]
+     },
+     "thanatosis": true
+    },
+    "attack": 1,
+    "health": 8,
+    "fill": 97.4
+   },
+   "note": "three skills -> two: Thanatosis off",
+   "flags": []
+  },
+  {
+   "id": "quarry-mole",
+   "name": "Quarry Mole",
+   "map": 8,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "darksight": true
+   },
+   "attack": 2,
+   "health": 12,
+   "wait": 1,
+   "cost": 1,
+   "fill": 96.6,
+   "before": {
+    "effects": {
+     "keenSense": true,
+     "bedrock": true
+    },
+    "attack": 2,
+    "health": 12,
+    "fill": 87.2
+   },
+   "note": "Keen Sense (II 2) no slot, Bedrock (K4) off: Darksight",
+   "flags": []
+  },
+  {
+   "id": "cave-olm",
+   "name": "Cave Olm",
+   "map": 8,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "regen": 1,
+    "darksight": true
+   },
+   "attack": 1,
+   "health": 10,
+   "wait": 1,
+   "cost": 0,
+   "fill": 99.7,
+   "before": {
+    "effects": {
+     "regen": 1
+    },
+    "attack": 1,
+    "health": 11,
+    "fill": 88.8
+   },
+   "note": "a blind cave salamander: + Darksight",
+   "flags": []
+  },
+  {
+   "id": "sulfur-cinder-moth",
+   "name": "Sulfur Cinder Moth",
+   "map": 8,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "do": "damage",
+      "on": "onDeath",
+      "sub": "adjacent",
+      "who": "enemy",
+      "amount": 2,
+      "dmgType": "heat"
+     }
+    ]
+   },
+   "attack": 1,
+   "health": 9,
+   "wait": 0,
+   "cost": 1,
+   "fill": 87.4,
+   "before": {
+    "effects": {
+     "illuminate": true,
+     "triggers": [
+      {
+       "do": "damage",
+       "on": "onDeath",
+       "sub": "adjacent",
+       "who": "enemy",
+       "amount": 2,
+       "dmgType": "heat"
+      }
+     ],
+     "flying": true
+    },
+    "attack": 1,
+    "health": 7,
+    "fill": 76.8
+   },
+   "note": "Illuminate (K1, unranked) off; \"find another use\" - your note",
+   "flags": []
+  },
+  {
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "map": 8,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "purblind": true
+   },
+   "attack": 5,
+   "health": 5,
+   "wait": 0,
+   "cost": 0,
+   "fill": 94.7,
+   "before": {
+    "effects": {
+     "purblind": true
+    },
+    "attack": 5,
+    "health": 5,
+    "fill": 94.7
+   },
+   "note": "kept: Purblind is its drawback (nearly blind); Darksight would cost it 3 of its 5 Attack",
+   "flags": []
+  },
+  {
+   "id": "stalactite-golem",
+   "name": "Stalactite Pill Bug",
+   "map": 8,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "armor": 2,
+    "guardian": true
+   },
+   "attack": 1,
+   "health": 23,
+   "wait": 3,
+   "cost": 2,
+   "fill": 86.2,
+   "before": {
+    "effects": {
+     "shell": 4,
+     "guardian": true
+    },
+    "attack": 1,
+    "health": 23,
+    "fill": 78
+   },
+   "note": "Shell (unranked) -> Armor 2 (pill bug plates)",
+   "flags": []
+  },
+  {
+   "id": "echo-screecher",
+   "name": "Echo Screecher",
+   "map": 8,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "nocturnal": true,
+    "sap": true
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 1,
+   "cost": 1,
+   "fill": 86.5,
+   "before": {
+    "effects": {
+     "onReadyDamage": {
+      "amount": 3,
+      "dmgType": "physical"
+     },
+     "flying": true,
+     "nocturnal": true
+    },
+    "attack": 2,
+    "health": 5,
+    "fill": 85.2
+   },
+   "note": "On Ready damage unranked -> Leech (a blood bat)",
+   "flags": []
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "map": 8,
+   "rarity": "rare",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "pounce": 3
+   },
+   "attack": 3,
+   "health": 15,
+   "wait": 2,
+   "cost": 1,
+   "fill": 98.9,
+   "before": {
+    "effects": {
+     "pounce": 3
+    },
+    "attack": 3,
+    "health": 15,
+    "fill": 98.9
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "map": 8,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "web": 1,
+    "poison": 1
+   },
+   "attack": 4,
+   "health": 6,
+   "wait": 1,
+   "cost": 1,
+   "fill": 95.7,
+   "before": {
+    "effects": {
+     "web": 1,
+     "poison": 1
+    },
+    "attack": 4,
+    "health": 7,
+    "fill": 100.1
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "barrow-leech-bat",
+   "name": "Barrow Leech",
+   "map": 8,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "nocturnal": 1,
+    "parasite": true
+   },
+   "attack": 1,
+   "health": 9,
+   "wait": 0,
+   "cost": 1,
+   "fill": 85.7,
+   "before": {
+    "effects": {
+     "flying": true,
+     "nocturnal": 1
+    },
+    "attack": 1,
+    "health": 8,
+    "fill": 73.3
+   },
+   "note": "a leech: + Parasite",
+   "flags": []
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "map": 9,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "poison": 2,
+    "nocturnal": true
+   },
+   "attack": 4,
+   "health": 3,
+   "wait": 1,
+   "cost": 1,
+   "fill": 93.4,
+   "before": {
+    "effects": {
+     "poison": 2,
+     "nocturnal": true
+    },
+    "attack": 4,
+    "health": 3,
+    "fill": 93.4
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "name": "Mangrove Mudskipper",
+   "map": 9,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true,
+    "evasive": true
+   },
+   "attack": 1,
+   "health": 8,
+   "wait": 0,
+   "cost": 0,
+   "fill": 92.6,
+   "before": {
+    "effects": {
+     "tide": true,
+     "skitter": true
+    },
+    "attack": 1,
+    "health": 7,
+    "fill": 96.2
+   },
+   "note": "Skitter unranked -> Evasive (its dodge part)",
+   "flags": []
+  },
+  {
+   "id": "mangrove-monitor",
+   "name": "Mangrove Monitor",
+   "map": 9,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "trident": true
+   },
+   "attack": 3,
+   "health": 10,
+   "wait": 1,
+   "cost": 1,
+   "fill": 99,
+   "before": {
+    "effects": {},
+    "attack": 3,
+    "health": 12,
+    "fill": 93
+   },
+   "note": "vanilla -> Trident (tail lash), a Map 9 carrier",
+   "flags": []
+  },
+  {
+   "id": "horseshoe-crab",
+   "name": "Horseshoe Crab",
+   "map": 9,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "armor": 2
+   },
+   "attack": 2,
+   "health": 9,
+   "wait": 1,
+   "cost": 1,
+   "fill": 87,
+   "before": {
+    "effects": {
+     "armor": 2,
+     "salt": true,
+     "relict": true
+    },
+    "attack": 2,
+    "health": 9,
+    "fill": 94.5
+   },
+   "note": "Salt (K4), Relict (unranked) off",
+   "flags": []
+  },
+  {
+   "id": "proboscis-monkey",
+   "name": "Proboscis Monkey",
+   "map": 9,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true,
+    "guardian": true
+   },
+   "attack": 2,
+   "health": 13,
+   "wait": 1,
+   "cost": 1,
+   "fill": 86,
+   "before": {
+    "effects": {
+     "tide": true,
+     "taunt": true
+    },
+    "attack": 2,
+    "health": 11,
+    "fill": 79
+   },
+   "note": "Taunt (K7) moved away; a big male stands guard: Guardian",
+   "flags": []
+  },
+  {
+   "id": "ironclaw-fiddler",
+   "name": "Ironclaw Fiddler",
+   "map": 9,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "trident": true,
+    "armor": 1
+   },
+   "attack": 7,
+   "health": 11,
+   "wait": 3,
+   "cost": 2,
+   "fill": 99.5,
+   "before": {
+    "effects": {
+     "tide": true,
+     "bludgeon": true,
+     "armor": 1
+    },
+    "attack": 7,
+    "health": 12,
+    "fill": 108.1
+   },
+   "note": "Bludgeon (K2, unranked) -> Trident (one wide claw sweep); Tide off",
+   "flags": []
+  },
+  {
+   "id": "fishing-cat",
+   "name": "Fishing Cat",
+   "map": 9,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "pounce": 2
+   },
+   "attack": 1,
+   "health": 15,
+   "wait": 1,
+   "cost": 1,
+   "fill": 87.9,
+   "before": {
+    "effects": {
+     "pounce": 2
+    },
+    "attack": 1,
+    "health": 14,
+    "fill": 83.7
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "tide-spirit",
+   "name": "Tide Seahorse",
+   "map": 9,
+   "rarity": "veryrare",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "tide": true
+   },
+   "attack": 5,
+   "health": 5,
+   "wait": 1,
+   "cost": 0,
+   "fill": 90.9,
+   "before": {
+    "effects": {
+     "tide": true
+    },
+    "attack": 5,
+    "health": 5,
+    "fill": 90.9
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "voltaic-eel",
+   "name": "Voltaic Eel",
+   "map": 9,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "electricity": 2,
+    "tide": true
+   },
+   "attack": 1,
+   "health": 11,
+   "wait": 0,
+   "cost": 2,
+   "fill": 86.6,
+   "before": {
+    "effects": {
+     "shock": {
+      "chance": 40,
+      "duration": 1
+     },
+     "chainLightning": 2,
+     "tide": true
+    },
+    "attack": 1,
+    "health": 7,
+    "fill": 81.7
+   },
+   "note": "Chain Lightning is S (boss only): Bioelectric 2 (Electricity + its Shock are one skill)",
+   "flags": []
+  },
+  {
+   "id": "coral-current-eel",
+   "name": "Coral Current Eel",
+   "map": 10,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true,
+    "electricity": 1
+   },
+   "attack": 3,
+   "health": 7,
+   "wait": 0,
+   "cost": 1,
+   "fill": 97.3,
+   "before": {
+    "effects": {
+     "tide": true
+    },
+    "attack": 3,
+    "health": 9,
+    "fill": 92.3
+   },
+   "note": "a second Bioelectric carrier",
+   "flags": []
+  },
+  {
+   "id": "riptide-eel",
+   "name": "Riptide Eel",
+   "map": 10,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true,
+    "weaken": 1
+   },
+   "attack": 4,
+   "health": 7,
+   "wait": 1,
+   "cost": 1,
+   "fill": 97.7,
+   "before": {
+    "effects": {
+     "reload": 1,
+     "tide": true
+    },
+    "attack": 6,
+    "health": 7,
+    "fill": 94
+   },
+   "note": "Reload off; a moray bite: Weaken 1",
+   "flags": []
+  },
+  {
+   "id": "krill-swarm",
+   "name": "Krill Swarm",
+   "map": 10,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "tide": true,
+    "swarm": true
+   },
+   "attack": 0,
+   "health": 7,
+   "wait": 0,
+   "cost": 0,
+   "fill": 73,
+   "before": {
+    "effects": {
+     "tide": true,
+     "swarm": true
+    },
+    "attack": 0,
+    "health": 7,
+    "fill": 73
+   },
+   "note": "",
+   "flags": [
+    "owner card at 73%: not refitted"
+   ]
+  },
+  {
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "map": 10,
+   "rarity": "common",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "tide": true
+   },
+   "attack": 4,
+   "health": 5,
+   "wait": 1,
+   "cost": 0,
+   "fill": 95.4,
+   "before": {
+    "effects": {
+     "tide": true
+    },
+    "attack": 4,
+    "health": 5,
+    "fill": 95.4
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "map": 10,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "armor": 3,
+    "tide": true
+   },
+   "attack": 4,
+   "health": 12,
+   "wait": 3,
+   "cost": 2,
+   "fill": 85.1,
+   "before": {
+    "effects": {
+     "armor": 3,
+     "tide": true
+    },
+    "attack": 4,
+    "health": 9,
+    "fill": 76.4
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "reef-shark",
+   "name": "Reef Shark",
+   "map": 10,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "tide": true
+   },
+   "attack": 6,
+   "health": 13,
+   "wait": 3,
+   "cost": 2,
+   "fill": 91.4,
+   "before": {
+    "effects": {
+     "tide": true
+    },
+    "attack": 6,
+    "health": 13,
+    "fill": 91.4
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "clownfish-scout",
+   "name": "Clownfish Scout",
+   "map": 10,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true,
+    "poisonBarbs": 1
+   },
+   "attack": 1,
+   "health": 9,
+   "wait": 0,
+   "cost": 0,
+   "fill": 96.8,
+   "before": {
+    "effects": {
+     "tide": true
+    },
+    "attack": 1,
+    "health": 9,
+    "fill": 85.9
+   },
+   "note": "lives in a stinging anemone: Poison Barbs 1",
+   "flags": []
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "name": "Crown-of-thorns Star",
+   "map": 10,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true,
+    "poisonBarbs": 2
+   },
+   "attack": 4,
+   "health": 4,
+   "wait": 1,
+   "cost": 1,
+   "fill": 86.9,
+   "before": {
+    "effects": {
+     "thorns": 2,
+     "poison": 1,
+     "tide": true
+    },
+    "attack": 4,
+    "health": 4,
+    "fill": 107.2
+   },
+   "note": "Thorns + Venomous -> Poison Barbs 2 (venom spines)",
+   "flags": []
+  },
+  {
+   "id": "giant-clam",
+   "name": "Giant Clam",
+   "map": 10,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "delivery": {
+     "v": 1,
+     "res": "pearl"
+    }
+   },
+   "attack": 5,
+   "health": 4,
+   "wait": 2,
+   "cost": 1,
+   "fill": 87.7,
+   "before": {
+    "effects": {
+     "shell": 2,
+     "tide": true,
+     "delivery": {
+      "v": 1,
+      "res": "pearl"
+     }
+    },
+    "attack": 5,
+    "health": 4,
+    "fill": 91.8
+   },
+   "note": "Shell (unranked) and Tide off: Delivery {Pearl} is its job (the rule counts it as 2)",
+   "flags": []
+  },
+  {
+   "id": "stonedrop-vulture",
+   "name": "Stonedrop Vulture",
+   "map": 11,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "arrow": {
+     "v": 3,
+     "swings": "never",
+     "style": "drop"
+    }
+   },
+   "attack": 11,
+   "health": 14,
+   "wait": 1,
+   "cost": 1,
+   "fill": 89.4,
+   "before": {
+    "effects": {
+     "flying": true,
+     "arrow": {
+      "v": 3,
+      "swings": "never",
+      "style": "drop"
+     }
+    },
+    "attack": 11,
+    "health": 11,
+    "fill": 73.6
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "anvil-thrush",
+   "name": "Anvil Thrush",
+   "map": 11,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "pierce": 2
+   },
+   "attack": 1,
+   "health": 10,
+   "wait": 1,
+   "cost": 0,
+   "fill": 85.9,
+   "before": {
+    "effects": {
+     "flying": true,
+     "pierce": 2
+    },
+    "attack": 1,
+    "health": 6,
+    "fill": 60
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "name": "Eagle-Owl Quartermaster",
+   "map": 11,
+   "rarity": "rare",
+   "owner": true,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "arrow": 1,
+    "fletcher": 1,
+    "flying": true
+   },
+   "attack": 1,
+   "health": 6,
+   "wait": 1,
+   "cost": 1,
+   "fill": 73.3,
+   "before": {
+    "effects": {
+     "arrow": 1,
+     "fletcher": 1,
+     "flying": true
+    },
+    "attack": 1,
+    "health": 6,
+    "fill": 73.3
+   },
+   "note": "",
+   "flags": [
+    "owner card at 73.3%: not refitted",
+    "skill count 2.5"
+   ]
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "map": 11,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "twinShot": 1
+   },
+   "attack": 3,
+   "health": 13,
+   "wait": 3,
+   "cost": 3,
+   "fill": 85.1,
+   "before": {
+    "effects": {
+     "onReadyDamage": {
+      "amount": 6,
+      "dmgType": "physical"
+     },
+     "flying": true,
+     "daunt": 1
+    },
+    "attack": 3,
+    "health": 11,
+    "fill": 80.6
+   },
+   "note": "On Ready damage unranked, Daunt moved away: Twin Shot 1",
+   "flags": []
+  },
+  {
+   "id": "golden-eagle-diver",
+   "name": "Golden Eagle",
+   "map": 11,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "diurnal": 1,
+    "pierce": 1
+   },
+   "attack": 3,
+   "health": 6,
+   "wait": 1,
+   "cost": 1,
+   "fill": 88.5,
+   "before": {
+    "effects": {
+     "daunt": 2,
+     "flying": true,
+     "diurnal": 1
+    },
+    "attack": 3,
+    "health": 5,
+    "fill": 93.8
+   },
+   "note": "Daunt moved away: talons Pierce 1",
+   "flags": []
+  },
+  {
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "map": 11,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "pounce": 2
+   },
+   "attack": 1,
+   "health": 15,
+   "wait": 1,
+   "cost": 1,
+   "fill": 88.8,
+   "before": {
+    "effects": {
+     "mountainClimber": true,
+     "pounce": 2
+    },
+    "attack": 1,
+    "health": 10,
+    "fill": 84.5
+   },
+   "note": "Mountain Climber (K4) moved away",
+   "flags": []
+  },
+  {
+   "id": "mountain-hare",
+   "name": "Mountain Hare",
+   "map": 11,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 2,
+   "health": 5,
+   "wait": 0,
+   "cost": 0,
+   "fill": 89.1,
+   "before": {
+    "effects": {
+     "evasive": true,
+     "frostbite": 1
+    },
+    "attack": 2,
+    "health": 3,
+    "fill": 74.2
+   },
+   "note": "Frostbite (K4) off",
+   "flags": []
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "map": 11,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "delivery": {
+     "v": 1,
+     "every": "round"
+    }
+   },
+   "attack": 2,
+   "health": 5,
+   "wait": 1,
+   "cost": 0,
+   "fill": 96.2,
+   "before": {
+    "effects": {
+     "delivery": {
+      "v": 1,
+      "every": "round"
+     }
+    },
+    "attack": 2,
+    "health": 5,
+    "fill": 96.2
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "the-gannet-queen",
+   "name": "The Gannet Queen",
+   "map": 11,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "leader": true
+   },
+   "attack": 1,
+   "health": 19,
+   "wait": 2,
+   "cost": 2,
+   "fill": 85.7,
+   "before": {
+    "effects": {
+     "flying": true,
+     "pounce": 2,
+     "leader": true
+    },
+    "attack": 1,
+    "health": 15,
+    "fill": 79.8
+   },
+   "note": "three skills -> two: Pounce off (Natural Leader is her role)",
+   "flags": []
+  },
+  {
+   "id": "quillguard",
+   "name": "Quillguard",
+   "map": 12,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "thorns": 2
+   },
+   "attack": 1,
+   "health": 21,
+   "wait": 2,
+   "cost": 1,
+   "fill": 98.9,
+   "before": {
+    "effects": {},
+    "attack": 2,
+    "health": 22,
+    "fill": 90.7
+   },
+   "note": "a porcupine: Thorns 2",
+   "flags": []
+  },
+  {
+   "id": "barkplate-beetle",
+   "name": "Barkplate Beetle",
+   "map": 12,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "armor": 1,
+    "thorns": 1
+   },
+   "attack": 4,
+   "health": 13,
+   "wait": 2,
+   "cost": 2,
+   "fill": 99.6,
+   "before": {
+    "effects": {
+     "brambleArmor": true,
+     "thorns": 1
+    },
+    "attack": 4,
+    "health": 13,
+    "fill": 95.6
+   },
+   "note": "Bramble Armor (Fortify) moved away -> its own Armor 1",
+   "flags": []
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "map": 12,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "thorns": 2
+   },
+   "attack": 4,
+   "health": 5,
+   "wait": 1,
+   "cost": 1,
+   "fill": 92.6,
+   "before": {
+    "effects": {
+     "thorns": 3
+    },
+    "attack": 4,
+    "health": 5,
+    "fill": 99.1
+   },
+   "note": "Thorns 3 -> 2 (cap 2 room)",
+   "flags": []
+  },
+  {
+   "id": "briarback-hedgehog",
+   "name": "Briarback Hedgehog",
+   "map": 12,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "thorns": 1
+   },
+   "attack": 2,
+   "health": 11,
+   "wait": 1,
+   "cost": 1,
+   "fill": 94,
+   "before": {
+    "effects": {
+     "brambleArmor": true
+    },
+    "attack": 2,
+    "health": 11,
+    "fill": 84.2
+   },
+   "note": "Bramble Armor moved away -> Thorns 1",
+   "flags": []
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "map": 12,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 1,
+   "health": 15,
+   "wait": 1,
+   "cost": 1,
+   "fill": 89.1,
+   "before": {
+    "effects": {
+     "evasive": true,
+     "backstab": 2
+    },
+    "attack": 1,
+    "health": 10,
+    "fill": 65.7
+   },
+   "note": "Backstab unranked off",
+   "flags": []
+  },
+  {
+   "id": "mouse-sapper",
+   "name": "Mouse Sapper",
+   "map": 12,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "siege": 1
+   },
+   "attack": 3,
+   "health": 11,
+   "wait": 1,
+   "cost": 1,
+   "fill": 98,
+   "before": {
+    "effects": {
+     "siege": 1
+    },
+    "attack": 3,
+    "health": 11,
+    "fill": 98
+   },
+   "note": "kept: Siege is a Map 12 skill now (earliest fit)",
+   "flags": []
+  },
+  {
+   "id": "fawn-scout",
+   "name": "Fawn Scout",
+   "map": 12,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 0,
+   "cost": 0,
+   "fill": 90.3,
+   "before": {
+    "effects": {
+     "keenEye": true,
+     "canopyCover": true
+    },
+    "attack": 2,
+    "health": 8,
+    "fill": 80
+   },
+   "note": "True Sight (MAGIC), Canopy Cover off; a fawn bolts: Evasive",
+   "flags": []
+  },
+  {
+   "id": "hollow-belly-rat",
+   "name": "Hollow-belly Rat",
+   "map": 12,
+   "rarity": "uncommon",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "carrion": 1
+   },
+   "attack": 2,
+   "health": 11,
+   "wait": 1,
+   "cost": 1,
+   "fill": 87.2,
+   "before": {
+    "effects": {
+     "devour": {
+      "attack": 2,
+      "health": 2
+     }
+    },
+    "attack": 2,
+    "health": 11,
+    "fill": 90.3
+   },
+   "note": "Devour (K2, unranked) -> Carrion 1 (a rat eats anything)",
+   "flags": []
+  },
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "map": 12,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "guardian": true
+   },
+   "attack": 3,
+   "health": 9,
+   "wait": 1,
+   "cost": 0,
+   "fill": 93.3,
+   "before": {
+    "effects": {
+     "guardian": true
+    },
+    "attack": 3,
+    "health": 9,
+    "fill": 93.3
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "grizzly-vanguard",
+   "name": "Grizzly Vanguard",
+   "map": 13,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "sweep": 2,
+    "guardian": true
+   },
+   "attack": 1,
+   "health": 22,
+   "wait": 3,
+   "cost": 2,
+   "fill": 87.3,
+   "before": {
+    "effects": {
+     "sweep": 2,
+     "guardian": true
+    },
+    "attack": 1,
+    "health": 19,
+    "fill": 78.6
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "badger-lumberjack",
+   "name": "Badger Lumberjack",
+   "map": 13,
+   "rarity": "uncommon",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "guardian": true
+   },
+   "attack": 2,
+   "health": 13,
+   "wait": 1,
+   "cost": 1,
+   "fill": 89.3,
+   "before": {
+    "effects": {
+     "lumberjack": true,
+     "guardian": true
+    },
+    "attack": 2,
+    "health": 10,
+    "fill": 98
+   },
+   "note": "Lumberjack (R) moved away",
+   "flags": []
+  },
+  {
+   "id": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "map": 13,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "harbinger": {
+     "v": 2,
+     "who": "ally"
+    }
+   },
+   "attack": 1,
+   "health": 13,
+   "wait": 1,
+   "cost": 1,
+   "fill": 86.8,
+   "before": {
+    "effects": {
+     "harbinger": {
+      "v": 2,
+      "who": "ally"
+     }
+    },
+    "attack": 1,
+    "health": 11,
+    "fill": 78
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "redwood-woodpecker",
+   "name": "Redwood Woodpecker",
+   "map": 13,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "pierce": 2
+   },
+   "attack": 2,
+   "health": 13,
+   "wait": 1,
+   "cost": 1,
+   "fill": 85.1,
+   "before": {
+    "effects": {
+     "milling": 1
+    },
+    "attack": 2,
+    "health": 11,
+    "fill": 85.8
+   },
+   "note": "Milling unranked -> Pierce 2 (drills bark)",
+   "flags": []
+  },
+  {
+   "id": "bear-cub",
+   "name": "Bear Cub",
+   "map": 13,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {},
+   "attack": 2,
+   "health": 9,
+   "wait": 0,
+   "cost": 0,
+   "fill": 90.9,
+   "before": {
+    "effects": {},
+    "attack": 2,
+    "health": 8,
+    "fill": 84.8
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "pine-marten",
+   "name": "Pine Marten",
+   "map": 13,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "pounce": 2
+   },
+   "attack": 1,
+   "health": 15,
+   "wait": 1,
+   "cost": 1,
+   "fill": 87.9,
+   "before": {
+    "effects": {
+     "pounce": 2
+    },
+    "attack": 1,
+    "health": 14,
+    "fill": 83.7
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "bramblewood-lynx",
+   "name": "Bramblewood Lynx",
+   "map": 13,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "twinStrike": true
+   },
+   "attack": 3,
+   "health": 7,
+   "wait": 1,
+   "cost": 1,
+   "fill": 99.6,
+   "before": {
+    "effects": {},
+    "attack": 5,
+    "health": 7,
+    "fill": 87.9
+   },
+   "note": "vanilla -> Twin Strike (a second Twin Strike carrier)",
+   "flags": []
+  },
+  {
+   "id": "balloon-archer",
+   "name": "Balloon Archer",
+   "map": 13,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "twinShot": 1
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 2,
+   "cost": 1,
+   "fill": 86.1,
+   "before": {
+    "effects": {
+     "flying": true,
+     "arrow": {
+      "v": 2,
+      "bramble": true
+     }
+    },
+    "attack": 2,
+    "health": 8,
+    "fill": 84.9
+   },
+   "note": "Arrow 2 (bramble) -> Twin Shot 1: a second Twin Shot carrier",
+   "flags": []
+  },
+  {
+   "id": "monarch-wingblade",
+   "name": "Monarch Wingblade",
+   "map": 13,
+   "rarity": "rare",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "poison": 1,
+    "flying": true
+   },
+   "attack": 3,
+   "health": 6,
+   "wait": 1,
+   "cost": 1,
+   "fill": 86.3,
+   "before": {
+    "effects": {
+     "poison": 1,
+     "flying": true
+    },
+    "attack": 3,
+    "health": 6,
+    "fill": 86.3
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "beaver-feller",
+   "name": "Beaver Feller",
+   "map": 13,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "attack": 2,
+   "health": 10,
+   "wait": 1,
+   "cost": 0,
+   "fill": 93.7,
+   "before": {
+    "effects": {
+     "felling": 1
+    },
+    "attack": 2,
+    "health": 10,
+    "fill": 91.2
+   },
+   "note": "Felling -> On Kill: Deliver (Lumber) (your K note)",
+   "flags": []
+  },
+  {
+   "id": "acacia-giraffe",
+   "name": "Acacia Giraffe",
+   "map": 14,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "mighty": true
+   },
+   "attack": 2,
+   "health": 16,
+   "wait": 2,
+   "cost": 2,
+   "fill": 86,
+   "before": {
+    "effects": {
+     "evasive": true
+    },
+    "attack": 2,
+    "health": 11,
+    "fill": 64.4
+   },
+   "note": "Evasive -> Mighty (a giraffe kick)",
+   "flags": []
+  },
+  {
+   "id": "meerkat-sentry",
+   "name": "Meerkat Sentry",
+   "map": 14,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "pack": 1
+   },
+   "attack": 2,
+   "health": 11,
+   "wait": 1,
+   "cost": 1,
+   "fill": 87.5,
+   "before": {
+    "effects": {
+     "formation": {
+      "v": [
+       1,
+       1
+      ],
+      "range": 2
+     }
+    },
+    "attack": 2,
+    "health": 7,
+    "fill": 82.1
+   },
+   "note": "Formation moved away: a mob of meerkats is a Pack",
+   "flags": []
+  },
+  {
+   "id": "hoopoe-herald",
+   "name": "Hoopoe Herald",
+   "map": 14,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "diurnal": 1
+   },
+   "attack": 1,
+   "health": 12,
+   "wait": 0,
+   "cost": 0,
+   "fill": 97.8,
+   "before": {
+    "effects": {
+     "nightblind": true
+    },
+    "attack": 2,
+    "health": 12,
+    "fill": 96.7
+   },
+   "note": "Night-blind (drawback) -> Diurnal 1",
+   "flags": []
+  },
+  {
+   "id": "dust-hyena",
+   "name": "Dust Hyena",
+   "map": 14,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "pack": 1,
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "gain",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ]
+   },
+   "attack": 2,
+   "health": 6,
+   "wait": 0,
+   "cost": 0,
+   "fill": 94.8,
+   "before": {
+    "effects": {
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ],
+     "carnage": 3
+    },
+    "attack": 2,
+    "health": 6,
+    "fill": 85.8
+   },
+   "note": "Carnage moved away: hyenas hunt as a Pack",
+   "flags": []
+  },
+  {
+   "id": "savanna-cheetah",
+   "name": "Savanna Cheetah",
+   "map": 14,
+   "rarity": "veryrare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "swift": true
+   },
+   "attack": 4,
+   "health": 3,
+   "wait": 0,
+   "cost": 1,
+   "fill": 98.5,
+   "before": {
+    "effects": {
+     "quick": true
+    },
+    "attack": 4,
+    "health": 4,
+    "fill": 79.8
+   },
+   "note": "Quick -> Swift",
+   "flags": []
+  },
+  {
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "map": 14,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "mighty": true,
+    "guardian": true
+   },
+   "attack": 3,
+   "health": 18,
+   "wait": 2,
+   "cost": 2,
+   "fill": 98.4,
+   "before": {
+    "effects": {
+     "drunk": true,
+     "guardian": true
+    },
+    "attack": 4,
+    "health": 20,
+    "fill": 87.6
+   },
+   "note": "Drunk (K6) off: Mighty",
+   "flags": []
+  },
+  {
+   "id": "plains-zebra",
+   "name": "Plains Zebra",
+   "map": 14,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 1,
+   "health": 10,
+   "wait": 0,
+   "cost": 0,
+   "fill": 88.4,
+   "before": {
+    "effects": {
+     "evasive": true
+    },
+    "attack": 1,
+    "health": 7,
+    "fill": 68
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "bramblewood-macaque",
+   "name": "Bramblewood Macaque",
+   "map": 14,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "pack": 1
+   },
+   "attack": 4,
+   "health": 4,
+   "wait": 1,
+   "cost": 0,
+   "fill": 86.2,
+   "before": {
+    "effects": {
+     "banana": true
+    },
+    "attack": 4,
+    "health": 4,
+    "fill": 94.1
+   },
+   "note": "Banana (K6) off: a troop is a Pack",
+   "flags": []
+  },
+  {
+   "id": "stoat-cutthroat",
+   "name": "Stoat Cutthroat",
+   "map": 14,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "bleed": 2
+   },
+   "attack": 3,
+   "health": 10,
+   "wait": 1,
+   "cost": 1,
+   "fill": 92.8,
+   "before": {
+    "effects": {
+     "backstab": 3,
+     "foeScarcity": true
+    },
+    "attack": 3,
+    "health": 10,
+    "fill": 92.5
+   },
+   "note": "Backstab, Foe's Scarcity unranked -> Bleed 2 (cutthroat)",
+   "flags": []
+  },
+  {
+   "id": "pronghorn-racer",
+   "name": "Pronghorn Racer",
+   "map": 15,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "swift": true
+   },
+   "attack": 1,
+   "health": 9,
+   "wait": 0,
+   "cost": 1,
+   "fill": 93.1,
+   "before": {
+    "effects": {
+     "speed": 2
+    },
+    "attack": 1,
+    "health": 10,
+    "fill": 79.8
+   },
+   "note": "Speed -> Swift",
+   "flags": []
+  },
+  {
+   "id": "warhorse-charger",
+   "name": "Warhorse Charger",
+   "map": 15,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "overwhelm": true
+   },
+   "attack": 4,
+   "health": 18,
+   "wait": 2,
+   "cost": 2,
+   "fill": 99.7,
+   "before": {
+    "effects": {},
+    "attack": 4,
+    "health": 19,
+    "fill": 94.8
+   },
+   "note": "vanilla -> Stampede (a second carrier)",
+   "flags": []
+  },
+  {
+   "id": "border-collie",
+   "name": "Border Collie",
+   "map": 15,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "guardian": true
+   },
+   "attack": 3,
+   "health": 14,
+   "wait": 1,
+   "cost": 1,
+   "fill": 93.7,
+   "before": {
+    "effects": {
+     "converge": "enemy"
+    },
+    "attack": 3,
+    "health": 14,
+    "fill": 93.7
+   },
+   "note": "Converge unranked -> Guardian",
+   "flags": []
+  },
+  {
+   "id": "mallard-marauder",
+   "name": "Mallard Marauder",
+   "map": 15,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "pounce": 1
+   },
+   "attack": 2,
+   "health": 9,
+   "wait": 0,
+   "cost": 1,
+   "fill": 90,
+   "before": {
+    "effects": {
+     "flying": true,
+     "pounce": 1
+    },
+    "attack": 2,
+    "health": 5,
+    "fill": 68
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "sworn-shieldbearer",
+   "name": "Sworn Shieldbearer",
+   "map": 15,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "shield": 4
+   },
+   "attack": 3,
+   "health": 9,
+   "wait": 1,
+   "cost": 1,
+   "fill": 97.6,
+   "before": {
+    "effects": {
+     "loyal": {
+      "v": [
+       1,
+       3
+      ],
+      "gives": {
+       "armor": 1
+      }
+     }
+    },
+    "attack": 3,
+    "health": 10,
+    "fill": 82
+   },
+   "note": "Loyal moved away; the shieldbearer: Shield 4",
+   "flags": []
+  },
+  {
+   "id": "elderhorn-monarch",
+   "name": "Elderhorn Monarch",
+   "map": 15,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "delivery": {
+     "v": 1,
+     "every": "round"
+    }
+   },
+   "attack": 2,
+   "health": 30,
+   "wait": 4,
+   "cost": 3,
+   "fill": 93.5,
+   "before": {
+    "effects": {
+     "delivery": {
+      "v": 1,
+      "every": "round"
+     }
+    },
+    "attack": 2,
+    "health": 30,
+    "fill": 93.5
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "siege-rhino",
+   "name": "Siege Rhino",
+   "map": 15,
+   "rarity": "veryrare",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "siege": 4
+   },
+   "attack": 5,
+   "health": 17,
+   "wait": 3,
+   "cost": 1,
+   "fill": 97.9,
+   "before": {
+    "effects": {
+     "siege": 4
+    },
+    "attack": 5,
+    "health": 17,
+    "fill": 97.9
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "village-miller",
+   "name": "Village Miller",
+   "map": 15,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "foraging": 1
+   },
+   "attack": 2,
+   "health": 7,
+   "wait": 0,
+   "cost": 0,
+   "fill": 90.7,
+   "before": {
+    "effects": {},
+    "attack": 2,
+    "health": 7,
+    "fill": 76.5
+   },
+   "note": "vanilla -> Foraging (grain)",
+   "flags": []
+  },
+  {
+   "id": "cataphract-destrier",
+   "name": "Gilded Roadwarden",
+   "map": 15,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "pounce": 6,
+    "overwhelm": true
+   },
+   "attack": 3,
+   "health": 28,
+   "wait": 4,
+   "cost": 4,
+   "fill": 90.3,
+   "before": {
+    "effects": {
+     "pounce": 6,
+     "overwhelm": true
+    },
+    "attack": 3,
+    "health": 28,
+    "fill": 90.3
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "map": 16,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "sweep": 2
+   },
+   "attack": 5,
+   "health": 4,
+   "wait": 1,
+   "cost": 2,
+   "fill": 90,
+   "before": {
+    "effects": {
+     "sweep": 2,
+     "riled": 3
+    },
+    "attack": 5,
+    "health": 4,
+    "fill": 97.8
+   },
+   "note": "Riled moved away",
+   "flags": []
+  },
+  {
+   "id": "woodland-caribou",
+   "name": "Woodland Caribou",
+   "map": 16,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "sturdy": true
+   },
+   "attack": 3,
+   "health": 10,
+   "wait": 1,
+   "cost": 1,
+   "fill": 88.1,
+   "before": {
+    "effects": {
+     "mountainClimber": true,
+     "frostbite": 1
+    },
+    "attack": 3,
+    "health": 8,
+    "fill": 85.5
+   },
+   "note": "Mountain Climber (K4), Frostbite (K4) off: Sturdy",
+   "flags": []
+  },
+  {
+   "id": "cone-cutter-squirrel",
+   "name": "Cone-cutter Squirrel",
+   "map": 16,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "foraging": 1,
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 2
+     }
+    ]
+   },
+   "attack": 2,
+   "health": 6,
+   "wait": 1,
+   "cost": 0,
+   "fill": 89.8,
+   "before": {
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 2
+      }
+     ],
+     "almanac": 4
+    },
+    "attack": 2,
+    "health": 5,
+    "fill": 106.5
+   },
+   "note": "Almanac moved away: caches cones (Foraging)",
+   "flags": []
+  },
+  {
+   "id": "snowshoe-hare",
+   "name": "Snowshoe Hare",
+   "map": 16,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 1,
+   "health": 9,
+   "wait": 0,
+   "cost": 0,
+   "fill": 87.5,
+   "before": {
+    "effects": {
+     "evasive": true
+    },
+    "attack": 1,
+    "health": 7,
+    "fill": 72.9
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "taiga-lynx",
+   "name": "Taiga Lynx",
+   "map": 16,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 2,
+   "health": 10,
+   "wait": 0,
+   "cost": 1,
+   "fill": 85.2,
+   "before": {
+    "effects": {
+     "evasive": true
+    },
+    "attack": 2,
+    "health": 8,
+    "fill": 74.6
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "pinecone-sapper",
+   "name": "Pinecone Sapper",
+   "map": 16,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "sturdy": true
+   },
+   "attack": 0,
+   "health": 15,
+   "wait": 1,
+   "cost": 0,
+   "fill": 89.1,
+   "before": {
+    "effects": {
+     "explode": {
+      "time": 1,
+      "damage": 4
+     }
+    },
+    "attack": 0,
+    "health": 13,
+    "fill": 93.8
+   },
+   "note": "Explode unranked -> Sturdy (pangolin scales)",
+   "flags": []
+  },
+  {
+   "id": "upside-down-bat",
+   "name": "Upside-Down Bat",
+   "map": 16,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "diurnal": true
+   },
+   "attack": 2,
+   "health": 6,
+   "wait": 0,
+   "cost": 0,
+   "fill": 88.3,
+   "before": {
+    "effects": {
+     "flying": true,
+     "diurnal": true
+    },
+    "attack": 2,
+    "health": 4,
+    "fill": 74.6
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "owl-sentinel",
+   "name": "Owl Sentinel",
+   "map": 16,
+   "rarity": "common",
+   "owner": true,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "nocturnal": 1
+   },
+   "attack": 3,
+   "health": 10,
+   "wait": 2,
+   "cost": 1,
+   "fill": 87.2,
+   "before": {
+    "effects": {
+     "flying": true,
+     "keenEye": true,
+     "nocturnal": 1
+    },
+    "attack": 3,
+    "health": 9,
+    "fill": 85.8
+   },
+   "note": "True Sight (MAGIC) off",
+   "flags": []
+  },
+  {
+   "id": "snow-ermine",
+   "name": "Snow Ermine",
+   "map": 17,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "evasive": true
+   },
+   "attack": 2,
+   "health": 6,
+   "wait": 0,
+   "cost": 0,
+   "fill": 87.5,
+   "before": {
+    "effects": {
+     "evasive": true,
+     "frost": true
+    },
+    "attack": 2,
+    "health": 4,
+    "fill": 79.8
+   },
+   "note": "Frost moved away",
+   "flags": []
+  },
+  {
+   "id": "ringed-seal",
+   "name": "Ringed Seal",
+   "map": 17,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "tide": true,
+    "shield": 4
+   },
+   "attack": 1,
+   "health": 11,
+   "wait": 1,
+   "cost": 1,
+   "fill": 87.4,
+   "before": {
+    "effects": {
+     "tide": true,
+     "invisible": 2
+    },
+    "attack": 1,
+    "health": 11,
+    "fill": 69.7
+   },
+   "note": "Invisible moved away; blubber: Shield 4",
+   "flags": []
+  },
+  {
+   "id": "glacier-yak",
+   "name": "Glacier Yak",
+   "map": 17,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "sturdy": true,
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "addWait",
+      "amount": 2,
+      "who": "enemy",
+      "sub": "adjacent"
+     }
+    ]
+   },
+   "attack": 1,
+   "health": 19,
+   "wait": 1,
+   "cost": 3,
+   "fill": 85.4,
+   "before": {
+    "effects": {
+     "freeze": {
+      "chance": 40,
+      "duration": 2
+     },
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "addWait",
+       "amount": 2,
+       "who": "enemy",
+       "sub": "adjacent"
+      }
+     ]
+    },
+    "attack": 1,
+    "health": 17,
+    "fill": 79.1
+   },
+   "note": "Freeze (unranked status) -> Sturdy",
+   "flags": []
+  },
+  {
+   "id": "arctic-tern",
+   "name": "Arctic Tern",
+   "map": 17,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "flying": true,
+    "diurnal": true
+   },
+   "attack": 1,
+   "health": 12,
+   "wait": 1,
+   "cost": 0,
+   "fill": 88,
+   "before": {
+    "effects": {
+     "flying": true,
+     "diurnal": true
+    },
+    "attack": 1,
+    "health": 8,
+    "fill": 66
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "walrus-icebreaker",
+   "name": "Walrus Icebreaker",
+   "map": 17,
+   "rarity": "veryrare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "sturdy": true
+   },
+   "attack": 4,
+   "health": 16,
+   "wait": 2,
+   "cost": 1,
+   "fill": 97.1,
+   "before": {
+    "effects": {
+     "freeze": {
+      "chance": 25,
+      "duration": 1
+     },
+     "shatter": 2
+    },
+    "attack": 4,
+    "health": 17,
+    "fill": 100.6
+   },
+   "note": "Freeze, Shatter unranked -> Sturdy",
+   "flags": []
+  },
+  {
+   "id": "ice-crevasse-wolf",
+   "name": "Ice-Crevasse Wolf",
+   "map": 17,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "pack": 1,
+    "bleed": 1
+   },
+   "attack": 1,
+   "health": 16,
+   "wait": 1,
+   "cost": 1,
+   "fill": 98.7,
+   "before": {
+    "effects": {
+     "bleed": 2
+    },
+    "attack": 1,
+    "health": 16,
+    "fill": 93.7
+   },
+   "note": "wolves: + Pack 1 (Bleed 2 -> 1)",
+   "flags": []
+  },
+  {
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "map": 17,
+   "rarity": "veryrare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "ambush": 4
+   },
+   "attack": 2,
+   "health": 18,
+   "wait": 2,
+   "cost": 1,
+   "fill": 86.4,
+   "before": {
+    "effects": {
+     "ambush": 4,
+     "hibernate": true
+    },
+    "attack": 2,
+    "health": 17,
+    "fill": 80.4
+   },
+   "note": "Hibernate (K7) moved away",
+   "flags": []
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth",
+   "map": 17,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "nocturnal": true,
+    "poison": 1
+   },
+   "attack": 2,
+   "health": 7,
+   "wait": 0,
+   "cost": 2,
+   "fill": 87.5,
+   "before": {
+    "effects": {
+     "sleep": {
+      "chance": 50,
+      "duration": 2
+     },
+     "flying": true,
+     "nocturnal": true
+    },
+    "attack": 2,
+    "health": 2,
+    "fill": 61.8
+   },
+   "note": "Sleep (unranked status) -> Venomous 1 (nightshade)",
+   "flags": []
+  },
+  {
+   "id": "frillneck-duelist",
+   "name": "Frillneck Duelist",
+   "map": 18,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "swift": true
+   },
+   "attack": 2,
+   "health": 13,
+   "wait": 1,
+   "cost": 2,
+   "fill": 98,
+   "before": {
+    "effects": {
+     "quick": true,
+     "fencing": true
+    },
+    "attack": 2,
+    "health": 15,
+    "fill": 79.9
+   },
+   "note": "Quick, Fencing (2A) -> Swift",
+   "flags": []
+  },
+  {
+   "id": "horned-lizard",
+   "name": "Horned Lizard",
+   "map": 18,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "thorns": 1
+   },
+   "attack": 5,
+   "health": 6,
+   "wait": 1,
+   "cost": 1,
+   "fill": 99.6,
+   "before": {
+    "effects": {
+     "blind": {
+      "chance": 50,
+      "duration": 2
+     }
+    },
+    "attack": 5,
+    "health": 8,
+    "fill": 100.7
+   },
+   "note": "Blind (unranked status) -> Thorns 1 (horns)",
+   "flags": []
+  },
+  {
+   "id": "caustic-scorpion",
+   "name": "Caustic Scorpion",
+   "map": 18,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "poison": 2
+   },
+   "attack": 1,
+   "health": 18,
+   "wait": 2,
+   "cost": 1,
+   "fill": 86.9,
+   "before": {
+    "effects": {
+     "poison": 2
+    },
+    "attack": 1,
+    "health": 18,
+    "fill": 86.9
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "antlion-pit",
+   "name": "Antlion Pit",
+   "map": 18,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "trap": 5
+   },
+   "attack": 3,
+   "health": 13,
+   "wait": 1,
+   "cost": 1,
+   "fill": 99,
+   "before": {
+    "effects": {
+     "trap": 5
+    },
+    "attack": 3,
+    "health": 13,
+    "fill": 99
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "roadrunner-courier",
+   "name": "Roadrunner Courier",
+   "map": 18,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "swift": true
+   },
+   "attack": 2,
+   "health": 6,
+   "wait": 0,
+   "cost": 1,
+   "fill": 93.1,
+   "before": {
+    "effects": {
+     "haste": true
+    },
+    "attack": 3,
+    "health": 6,
+    "fill": 90.8
+   },
+   "note": "Haste unranked -> Swift",
+   "flags": []
+  },
+  {
+   "id": "dune-jackal",
+   "name": "Dune Jackal",
+   "map": 18,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "swift": true
+   },
+   "attack": 1,
+   "health": 8,
+   "wait": 0,
+   "cost": 1,
+   "fill": 85.3,
+   "before": {
+    "effects": {
+     "quick": true,
+     "dry": true
+    },
+    "attack": 1,
+    "health": 1,
+    "fill": 52.9
+   },
+   "note": "Quick -> Swift; Dry moved away",
+   "flags": []
+  },
+  {
+   "id": "armadillo-guard",
+   "name": "Armadillo Guard",
+   "map": 18,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "shield": 3
+   },
+   "attack": 2,
+   "health": 8,
+   "wait": 0,
+   "cost": 1,
+   "fill": 97.9,
+   "before": {
+    "effects": {
+     "shield": 3
+    },
+    "attack": 3,
+    "health": 8,
+    "fill": 113.4
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "sand-widow",
+   "name": "Sand Widow",
+   "map": 18,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "web": 1,
+    "poison": 1
+   },
+   "attack": 2,
+   "health": 17,
+   "wait": 2,
+   "cost": 2,
+   "fill": 85.7,
+   "before": {
+    "effects": {
+     "poison": 2
+    },
+    "attack": 2,
+    "health": 17,
+    "fill": 89.1
+   },
+   "note": "a widow spider: Web 1 + Venomous 1",
+   "flags": []
+  },
+  {
+   "id": "barrel-cactus",
+   "name": "Barrel Cactus",
+   "map": 18,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "thorns": 2
+   },
+   "attack": 1,
+   "health": 18,
+   "wait": 2,
+   "cost": 1,
+   "fill": 87.4,
+   "before": {
+    "effects": {
+     "dry": true,
+     "thorns": 2
+    },
+    "attack": 1,
+    "health": 18,
+    "fill": 100.8
+   },
+   "note": "Dry moved away",
+   "flags": []
+  },
+  {
+   "id": "honey-badger-fury",
+   "name": "Honey Badger Fury",
+   "map": 19,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "lastStand": true
+   },
+   "attack": 1,
+   "health": 13,
+   "wait": 0,
+   "cost": 1,
+   "fill": 85.1,
+   "before": {
+    "effects": {
+     "rage": true
+    },
+    "attack": 1,
+    "health": 6,
+    "fill": 62.1
+   },
+   "note": "Rage moved away -> Last Stand",
+   "flags": []
+  },
+  {
+   "id": "cinder-hornet",
+   "name": "Cinder Hornet",
+   "map": 19,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "weaken": 1
+   },
+   "attack": 3,
+   "health": 6,
+   "wait": 0,
+   "cost": 2,
+   "fill": 89.2,
+   "before": {
+    "effects": {
+     "stunOnHit": 1,
+     "flying": true
+    },
+    "attack": 3,
+    "health": 3,
+    "fill": 71.9
+   },
+   "note": "Stun (K5) -> Weaken 1",
+   "flags": []
+  },
+  {
+   "id": "quillback-elder",
+   "name": "Quillback Elder",
+   "map": 19,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "armor": 3
+   },
+   "attack": 5,
+   "health": 7,
+   "wait": 2,
+   "cost": 2,
+   "fill": 86.2,
+   "before": {
+    "effects": {
+     "armor": 3
+    },
+    "attack": 5,
+    "health": 5,
+    "fill": 79.8
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "basalt-boar",
+   "name": "Basalt Boar",
+   "map": 19,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "lastStand": true
+   },
+   "attack": 2,
+   "health": 15,
+   "wait": 1,
+   "cost": 1,
+   "fill": 92.7,
+   "before": {
+    "effects": {
+     "grit": 1
+    },
+    "attack": 2,
+    "health": 15,
+    "fill": 91
+   },
+   "note": "Grit unranked -> Last Stand",
+   "flags": []
+  },
+  {
+   "id": "smoke-raccoon",
+   "name": "Smokescreen Raccoon",
+   "map": 19,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": false,
+   "effects": {
+    "smokeBomb": true
+   },
+   "attack": 3,
+   "health": 10,
+   "wait": 1,
+   "cost": 1,
+   "fill": 86.4,
+   "before": {
+    "effects": {
+     "smokeBomb": true
+    },
+    "attack": 3,
+    "health": 9,
+    "fill": 82.3
+   },
+   "note": "skills kept; stats re-fitted into the 85-100% band",
+   "flags": []
+  },
+  {
+   "id": "fire-salamander",
+   "name": "Fire Salamander",
+   "map": 19,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "arrow": {
+     "v": 1,
+     "type": "fire"
+    }
+   },
+   "attack": 3,
+   "health": 7,
+   "wait": 1,
+   "cost": 1,
+   "fill": 88.6,
+   "before": {
+    "effects": {
+     "spitfire": 1
+    },
+    "attack": 3,
+    "health": 7,
+    "fill": 93.1
+   },
+   "note": "Spitfire unranked -> Arrow (Flaming) 1, as the Magma Salamander",
+   "flags": []
+  },
+  {
+   "id": "obsidian-scorpion",
+   "name": "Obsidian Scorpion",
+   "map": 19,
+   "rarity": "rare",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "armor": 2,
+    "poison": 2
+   },
+   "attack": 4,
+   "health": 4,
+   "wait": 1,
+   "cost": 1,
+   "fill": 96,
+   "before": {
+    "effects": {
+     "armor": 2,
+     "poison": 2
+    },
+    "attack": 4,
+    "health": 4,
+    "fill": 96
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "name": "Caldera Snow Leopard",
+   "map": 19,
+   "rarity": "superrare",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "pounce": 3
+   },
+   "attack": 3,
+   "health": 15,
+   "wait": 1,
+   "cost": 1,
+   "fill": 94.8,
+   "before": {
+    "effects": {
+     "pounce": 3
+    },
+    "attack": 3,
+    "health": 15,
+    "fill": 94.8
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "deep-cave-troll",
+   "name": "Cave Bear",
+   "map": 20,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "recoil": 1,
+    "siege": 4
+   },
+   "attack": 4,
+   "health": 19,
+   "wait": 2,
+   "cost": 3,
+   "fill": 87.3,
+   "before": {
+    "effects": {
+     "rage": true,
+     "siege": 4
+    },
+    "attack": 4,
+    "health": 13,
+    "fill": 88.6
+   },
+   "note": "Rage moved away -> Recoil 1 (reckless)",
+   "flags": []
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "map": 20,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "pounce": 2
+   },
+   "attack": 1,
+   "health": 16,
+   "wait": 1,
+   "cost": 1,
+   "fill": 86.2,
+   "before": {
+    "effects": {
+     "mountainClimber": true,
+     "pounce": 2
+    },
+    "attack": 1,
+    "health": 12,
+    "fill": 86.2
+   },
+   "note": "Mountain Climber moved away",
+   "flags": []
+  },
+  {
+   "id": "ash-cloud-condor",
+   "name": "Ash Cloud Condor",
+   "map": 20,
+   "rarity": "rare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "flying": true,
+    "carrion": 2
+   },
+   "attack": 3,
+   "health": 8,
+   "wait": 1,
+   "cost": 1,
+   "fill": 85.2,
+   "before": {
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "stun",
+       "who": "enemy",
+       "sub": "adjacent"
+      }
+     ],
+     "flying": true
+    },
+    "attack": 3,
+    "health": 4,
+    "fill": 64.8
+   },
+   "note": "On Spawn Stun -> Carrion 2 (a condor)",
+   "flags": []
+  },
+  {
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "map": 20,
+   "rarity": "veryrare",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "arrow": {
+     "v": 1,
+     "type": "fire"
+    }
+   },
+   "attack": 3,
+   "health": 11,
+   "wait": 1,
+   "cost": 1,
+   "fill": 94.7,
+   "before": {
+    "effects": {
+     "arrow": {
+      "v": 1,
+      "type": "fire"
+     }
+    },
+    "attack": 3,
+    "health": 11,
+    "fill": 94.7
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "pack-mule",
+   "name": "Pack Mule",
+   "map": 20,
+   "rarity": "common",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "bounty": 1
+   },
+   "attack": 1,
+   "health": 11,
+   "wait": 0,
+   "cost": 0,
+   "fill": 89.8,
+   "before": {
+    "effects": {
+     "bounty": 1
+    },
+    "attack": 1,
+    "health": 11,
+    "fill": 89.8
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "pumice-beetle",
+   "name": "Pumice Beetle",
+   "map": 20,
+   "rarity": "uncommon",
+   "owner": false,
+   "change": false,
+   "skillsChanged": false,
+   "effects": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "gain",
+      "resource": "stone",
+      "amount": 2
+     }
+    ]
+   },
+   "attack": 3,
+   "health": 11,
+   "wait": 1,
+   "cost": 1,
+   "fill": 91.9,
+   "before": {
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "stone",
+       "amount": 2
+      }
+     ]
+    },
+    "attack": 3,
+    "health": 11,
+    "fill": 91.9
+   },
+   "note": "",
+   "flags": []
+  },
+  {
+   "id": "ur-elk",
+   "name": "Ür-Elk",
+   "map": 20,
+   "rarity": "veryrare",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "overwhelm": true,
+    "sturdy": true
+   },
+   "attack": 4,
+   "health": 17,
+   "wait": 3,
+   "cost": 1,
+   "fill": 86.8,
+   "before": {
+    "effects": {
+     "overwhelm": true,
+     "rage": true
+    },
+    "attack": 4,
+    "health": 11,
+    "fill": 71.5
+   },
+   "note": "Rage moved away -> Sturdy (an elk, as Map 16)",
+   "flags": []
+  },
+  {
+   "id": "berserker-boar",
+   "name": "Berserker Boar",
+   "map": 20,
+   "rarity": "common",
+   "owner": false,
+   "change": true,
+   "skillsChanged": true,
+   "effects": {
+    "twinStrike": true,
+    "recoil": 2
+   },
+   "attack": 3,
+   "health": 12,
+   "wait": 1,
+   "cost": 2,
+   "fill": 85.5,
+   "before": {
+    "effects": {
+     "rage": true
+    },
+    "attack": 3,
+    "health": 9,
+    "fill": 78.5
+   },
+   "note": "Rage moved away -> Twin Strike + Recoil 2 (a berserker)",
+   "flags": []
+  }
+ ]
+}
