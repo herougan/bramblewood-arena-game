@@ -253,13 +253,10 @@
  "Piranha Shoal": "Banco di Piranha",
  "Pit Glutton": "Ingordo della Fossa",
  "Plague Gnat Cloud": "Nube di moscerini della peste",
- "Planarian Splitter": "Planaria Scissionista",
- "Platypus Spur": "Ornitorinco Sperone",
  "Pride Queen": "Regina del Branco",
  "Pronghorn Racer": "Antilocapra Corridore",
  "Puddle Changeling": "Mutaforma della Pozzanghera",
  "Puddle Skimmer": "Pattinatore delle Pozzanghere",
- "Puffball Bombardier": "Vescia Bombardiera",
  "Puppeteer Imp": "Diavoletto Burattinaio",
  "Quarry Troll": "Troll della Cava",
  "Quicksand Queen": "Regina delle sabbie mobili",
@@ -604,5 +601,9 @@
  "Glow-worm": "Lucciola",
  "Bumblebee Queen": "Regina dei bombi",
  "Sea Bass": "Spigola",
- "Barrel Cactus": "Echinocactus"
+ "Barrel Cactus": "Echinocactus",
+ "Golden Eagle": "Aquila reale",
+ "Planarian": "Planaria",
+ "Platypus": "Ornitorinco",
+ "Puffball": "Vescia"
 }

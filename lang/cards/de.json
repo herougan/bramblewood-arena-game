@@ -253,13 +253,10 @@
  "Piranha Shoal": "Piranha-Schwarm",
  "Pit Glutton": "Grubenfresser",
  "Plague Gnat Cloud": "Seuchenmückenwolke",
- "Planarian Splitter": "Planarien-Spalter",
- "Platypus Spur": "Schnabeltier-Sporn",
  "Pride Queen": "Rudelkönigin",
  "Pronghorn Racer": "Gabelbock-Renner",
  "Puddle Changeling": "Pfützen-Wechselbalg",
  "Puddle Skimmer": "Pfützenläufer",
- "Puffball Bombardier": "Bovist-Bombardier",
  "Puppeteer Imp": "Puppenspielerwichtel",
  "Quarry Troll": "Steinbruch-Troll",
  "Quicksand Queen": "Treibsandkönigin",
@@ -604,5 +601,9 @@
  "Glow-worm": "Glühwürmchen",
  "Bumblebee Queen": "Hummelkönigin",
  "Sea Bass": "Wolfsbarsch",
- "Barrel Cactus": "Fasskaktus"
+ "Barrel Cactus": "Fasskaktus",
+ "Golden Eagle": "Steinadler",
+ "Planarian": "Planarie",
+ "Platypus": "Schnabeltier",
+ "Puffball": "Bovist"
 }

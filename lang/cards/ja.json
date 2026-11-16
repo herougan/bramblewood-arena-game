@@ -253,13 +253,10 @@
  "Piranha Shoal": "ピラニアの群れ",
  "Pit Glutton": "穴の大食らい",
  "Plague Gnat Cloud": "疫病ブヨの群れ",
- "Planarian Splitter": "プラナリアの分裂者",
- "Platypus Spur": "カモノハシの蹴爪",
  "Pride Queen": "獅子群れの女王",
  "Pronghorn Racer": "プロングホーンの走者",
  "Puddle Changeling": "水たまりの取り替え子",
  "Puddle Skimmer": "水たまりアメンボ",
- "Puffball Bombardier": "ホコリタケの爆撃手",
  "Puppeteer Imp": "人形使いインプ",
  "Quarry Troll": "石切り場のトロール",
  "Quicksand Queen": "流砂の女王",
@@ -604,5 +601,9 @@
  "Glow-worm": "ツチボタル",
  "Bumblebee Queen": "マルハナバチの女王",
  "Sea Bass": "スズキ",
- "Barrel Cactus": "ビーカクタス"
+ "Barrel Cactus": "ビーカクタス",
+ "Golden Eagle": "イヌワシ",
+ "Planarian": "プラナリア",
+ "Platypus": "カモノハシ",
+ "Puffball": "ホコリタケ"
 }

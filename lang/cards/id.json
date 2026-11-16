@@ -253,13 +253,10 @@
  "Piranha Shoal": "Kawanan Piranha",
  "Pit Glutton": "Si Rakus Lubang",
  "Plague Gnat Cloud": "Awan Agas Wabah",
- "Planarian Splitter": "Planaria Pembelah",
- "Platypus Spur": "Platipus Taji",
  "Pride Queen": "Ratu Kawanan",
  "Pronghorn Racer": "Pronghorn Pelari",
  "Puddle Changeling": "Pengubah Wujud Genangan",
  "Puddle Skimmer": "Peluncur Genangan",
- "Puffball Bombardier": "Jamur Bola Pengebom",
  "Puppeteer Imp": "Iblis Kecil Dalang",
  "Quarry Troll": "Troll Tambang",
  "Quicksand Queen": "Ratu Pasir Isap",
@@ -604,5 +601,9 @@
  "Glow-worm": "Cacing Bercahaya",
  "Bumblebee Queen": "Ratu Lebah Tanah",
  "Sea Bass": "Ikan Kakap",
- "Barrel Cactus": "Kaktus Tong"
+ "Barrel Cactus": "Kaktus Tong",
+ "Golden Eagle": "Elang Emas",
+ "Planarian": "Planaria",
+ "Platypus": "Platipus",
+ "Puffball": "Jamur Puffball"
 }
