@@ -1,0 +1,4565 @@
+[
+ {
+  "id": "cricket-drummer",
+  "change": "2/7→1/5, inspiring 1→2",
+  "fights": [
+   {
+    "key": "4-4",
+    "side": "ref",
+    "mv": 12,
+    "post": 38.5,
+    "pre": 65.5,
+    "target": 60
+   },
+   {
+    "key": "4-5",
+    "side": "ref",
+    "mv": 8,
+    "post": 9.5,
+    "pre": 16.8,
+    "target": 40
+   },
+   {
+    "key": "3-1",
+    "side": "ref",
+    "mv": 5,
+    "post": 61.3,
+    "pre": 86.3,
+    "target": 90
+   },
+   {
+    "key": "6-2",
+    "side": "ref",
+    "mv": 13.5,
+    "post": 61.8,
+    "pre": 85.5,
+    "target": 85
+   },
+   {
+    "key": "2-A-4",
+    "side": "ref",
+    "mv": 19.3,
+    "post": 55,
+    "pre": 67.3,
+    "target": 72
+   },
+   {
+    "key": "3-2",
+    "side": "ref",
+    "mv": 3.5,
+    "post": 76.3,
+    "pre": 83.8,
+    "target": 84
+   },
+   {
+    "key": "6-3",
+    "side": "ref",
+    "mv": 12.7,
+    "post": 40.3,
+    "pre": 73.3,
+    "target": 80
+   },
+   {
+    "key": "2-A-5",
+    "side": "ref",
+    "mv": 12.5,
+    "post": 62.3,
+    "pre": 71.5,
+    "target": 66
+   },
+   {
+    "key": "3-3",
+    "side": "ref",
+    "mv": 8.8,
+    "post": 40,
+    "pre": 73.3,
+    "target": 78
+   },
+   {
+    "key": "6-4",
+    "side": "ref",
+    "mv": 15.5,
+    "post": 49.8,
+    "pre": 73,
+    "target": 75
+   },
+   {
+    "key": "2-A-6",
+    "side": "ref",
+    "mv": 11.2,
+    "post": 44.8,
+    "pre": 56.3,
+    "target": 60
+   },
+   {
+    "key": "3-4",
+    "side": "ref",
+    "mv": 8,
+    "post": 18,
+    "pre": 68.8,
+    "target": 72
+   },
+   {
+    "key": "6-5",
+    "side": "ref",
+    "mv": 5.2,
+    "post": 9.3,
+    "pre": 71.8,
+    "target": 70
+   },
+   {
+    "key": "2-A-7",
+    "side": "ref",
+    "mv": 11.7,
+    "post": 30.8,
+    "pre": 40.8,
+    "target": 40
+   },
+   {
+    "key": "3-5",
+    "side": "ref",
+    "mv": 11.3,
+    "post": 37.5,
+    "pre": 65.5,
+    "target": 66
+   },
+   {
+    "key": "6-6",
+    "side": "ref",
+    "mv": 19,
+    "post": 12.5,
+    "pre": 62.5,
+    "target": 65
+   },
+   {
+    "key": "3-6",
+    "side": "ref",
+    "mv": 7.3,
+    "post": 21.5,
+    "pre": 57,
+    "target": 60
+   },
+   {
+    "key": "6-7",
+    "side": "ref",
+    "mv": 13.8,
+    "post": 48,
+    "pre": 62,
+    "target": 60
+   },
+   {
+    "key": "3-7",
+    "side": "ref",
+    "mv": 0.5,
+    "post": 8.5,
+    "pre": 33.8,
+    "target": 40
+   },
+   {
+    "key": "6-8",
+    "side": "ref",
+    "mv": 9.2,
+    "post": 20.3,
+    "pre": 33.3,
+    "target": 40
+   },
+   {
+    "key": "4-1",
+    "side": "ref",
+    "mv": 14,
+    "post": 38.3,
+    "pre": 85.3,
+    "target": 90
+   },
+   {
+    "key": "4-2",
+    "side": "ref",
+    "mv": 13.3,
+    "post": 29.5,
+    "pre": 84.3,
+    "target": 80
+   },
+   {
+    "key": "4-3",
+    "side": "ref",
+    "mv": 16.5,
+    "post": 43,
+    "pre": 69.3,
+    "target": 70
+   },
+   {
+    "key": "1-1",
+    "side": "enemy",
+    "mv": -2.3,
+    "post": 89.3,
+    "pre": 86.8,
+    "target": 90
+   },
+   {
+    "key": "5-1",
+    "side": "ref",
+    "mv": 11.5,
+    "post": 78.3,
+    "pre": 91,
+    "target": 90
+   },
+   {
+    "key": "1-2",
+    "side": "enemy",
+    "mv": -7,
+    "post": 84.8,
+    "pre": 85,
+    "target": 80
+   },
+   {
+    "key": "5-2",
+    "side": "ref",
+    "mv": 29.5,
+    "post": 39,
+    "pre": 81.8,
+    "target": 84
+   },
+   {
+    "key": "5-3",
+    "side": "ref",
+    "mv": 23.3,
+    "post": 39.5,
+    "pre": 67,
+    "target": 68
+   },
+   {
+    "key": "2-1",
+    "side": "ref",
+    "mv": 6.2,
+    "post": 74.3,
+    "pre": 82.3,
+    "target": 90
+   },
+   {
+    "key": "5-4",
+    "side": "ref",
+    "mv": 25.2,
+    "post": 19.8,
+    "pre": 70.8,
+    "target": 72
+   },
+   {
+    "key": "2-2",
+    "side": "ref",
+    "mv": -0.8,
+    "post": 58.8,
+    "pre": 67,
+    "target": 80
+   },
+   {
+    "key": "5-5",
+    "side": "ref",
+    "mv": 21.8,
+    "post": 45,
+    "pre": 69,
+    "target": 66
+   },
+   {
+    "key": "2-3",
+    "side": "ref",
+    "mv": 0,
+    "post": 61,
+    "pre": 66.8,
+    "target": 70
+   },
+   {
+    "key": "5-6",
+    "side": "ref",
+    "mv": 11,
+    "post": 7,
+    "pre": 57.3,
+    "target": 60
+   },
+   {
+    "key": "2-A-1",
+    "side": "ref",
+    "mv": 11.7,
+    "post": 71.3,
+    "pre": 83.3,
+    "target": 90
+   },
+   {
+    "key": "2-4",
+    "side": "ref",
+    "mv": -3.2,
+    "post": 60,
+    "pre": 62.3,
+    "target": 60
+   },
+   {
+    "key": "5-7",
+    "side": "ref",
+    "mv": 14.5,
+    "post": 9.3,
+    "pre": 43.3,
+    "target": 40
+   },
+   {
+    "key": "2-A-2",
+    "side": "ref",
+    "mv": 7,
+    "post": 81,
+    "pre": 85.5,
+    "target": 84
+   },
+   {
+    "key": "2-5",
+    "side": "ref",
+    "mv": 0.8,
+    "post": 31,
+    "pre": 38.8,
+    "target": 40
+   },
+   {
+    "key": "6-1",
+    "side": "ref",
+    "mv": 13.8,
+    "post": 75,
+    "pre": 91,
+    "target": 90
+   },
+   {
+    "key": "2-A-3",
+    "side": "ref",
+    "mv": 12.2,
+    "post": 72.8,
+    "pre": 83.5,
+    "target": 78
+   }
+  ],
+  "n5": 34,
+  "lost": 435.5,
+  "gained": 7,
+  "abs5": 442.5,
+  "max": {
+   "key": "5-2",
+   "side": "ref",
+   "mv": 29.5,
+   "post": 39,
+   "pre": 81.8,
+   "target": 84
+  }
+ },
+ {
+  "id": "wolf-spider-mother",
+  "change": "2/7→2/6, +swarm [Arachnid]",
+  "fights": [
+   {
+    "key": "7-6",
+    "side": "enemy",
+    "mv": 5.5,
+    "post": 41.3,
+    "pre": 45,
+    "target": 40
+   },
+   {
+    "key": "11-5",
+    "side": "ref",
+    "mv": -16.7,
+    "post": 70,
+    "pre": 76.3,
+    "target": 75
+   },
+   {
+    "key": "19-A-7",
+    "side": "ref",
+    "mv": -0.3,
+    "post": 67.8,
+    "pre": 67.5,
+    "target": 67.5
+   },
+   {
+    "key": "11-6",
+    "side": "ref",
+    "mv": -22.5,
+    "post": 80.8,
+    "pre": 77.8,
+    "target": 71.3
+   },
+   {
+    "key": "19-A-8",
+    "side": "ref",
+    "mv": -2,
+    "post": 46.3,
+    "pre": 63.8,
+    "target": 63.8
+   },
+   {
+    "key": "10-4",
+    "side": "ref",
+    "mv": -13.8,
+    "post": 79.3,
+    "pre": 71.3,
+    "target": 77.1
+   },
+   {
+    "key": "12-5",
+    "side": "ref",
+    "mv": -4,
+    "post": 75.5,
+    "pre": 71.5,
+    "target": 66
+   },
+   {
+    "key": "10-5",
+    "side": "ref",
+    "mv": -12.2,
+    "post": 85.5,
+    "pre": 73.3,
+    "target": 72.9
+   },
+   {
+    "key": "12-6",
+    "side": "ref",
+    "mv": -4.3,
+    "post": 67.3,
+    "pre": 64.5,
+    "target": 60
+   },
+   {
+    "key": "10-6",
+    "side": "ref",
+    "mv": -22.5,
+    "post": 85.8,
+    "pre": 64.3,
+    "target": 68.6
+   },
+   {
+    "key": "12-7",
+    "side": "ref",
+    "mv": -6.2,
+    "post": 51,
+    "pre": 44.8,
+    "target": 40
+   },
+   {
+    "key": "8-A-1",
+    "side": "ref",
+    "mv": 0,
+    "post": 85.8,
+    "pre": 87.3,
+    "target": 90
+   },
+   {
+    "key": "10-7",
+    "side": "ref",
+    "mv": -14,
+    "post": 74,
+    "pre": 60,
+    "target": 64.3
+   },
+   {
+    "key": "16-1",
+    "side": "ref",
+    "mv": 0,
+    "post": 86,
+    "pre": 88,
+    "target": 90
+   },
+   {
+    "key": "8-A-2",
+    "side": "ref",
+    "mv": 0,
+    "post": 69,
+    "pre": 69.5,
+    "target": 75
+   },
+   {
+    "key": "10-8",
+    "side": "ref",
+    "mv": -22,
+    "post": 77,
+    "pre": 66.8,
+    "target": 60
+   },
+   {
+    "key": "16-2",
+    "side": "ref",
+    "mv": -0.2,
+    "post": 73.5,
+    "pre": 76.3,
+    "target": 84
+   },
+   {
+    "key": "19-A-1",
+    "side": "ref",
+    "mv": -1,
+    "post": 89,
+    "pre": 91.5,
+    "target": 90
+   },
+   {
+    "key": "8-A-3",
+    "side": "ref",
+    "mv": 0,
+    "post": 51.3,
+    "pre": 52.5,
+    "target": 50
+   },
+   {
+    "key": "10-9",
+    "side": "ref",
+    "mv": -11.5,
+    "post": 46,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "16-3",
+    "side": "ref",
+    "mv": -0.5,
+    "post": 69,
+    "pre": 69.3,
+    "target": 68
+   },
+   {
+    "key": "19-A-2",
+    "side": "ref",
+    "mv": -2,
+    "post": 85,
+    "pre": 86.3,
+    "target": 86.3
+   },
+   {
+    "key": "8-A-4",
+    "side": "ref",
+    "mv": 0,
+    "post": 38.3,
+    "pre": 39.8,
+    "target": 40
+   },
+   {
+    "key": "11-1",
+    "side": "ref",
+    "mv": -7.3,
+    "post": 91.3,
+    "pre": 93,
+    "target": 90
+   },
+   {
+    "key": "16-4",
+    "side": "ref",
+    "mv": -0.5,
+    "post": 69,
+    "pre": 67,
+    "target": 72
+   },
+   {
+    "key": "19-A-3",
+    "side": "ref",
+    "mv": -0.2,
+    "post": 78.5,
+    "pre": 78.3,
+    "target": 72.5
+   },
+   {
+    "key": "17-A-1",
+    "side": "ref",
+    "mv": -4.7,
+    "post": 80,
+    "pre": 74.3,
+    "target": 80
+   },
+   {
+    "key": "11-2",
+    "side": "ref",
+    "mv": -6.8,
+    "post": 91.8,
+    "pre": 85.5,
+    "target": 86.3
+   },
+   {
+    "key": "16-5",
+    "side": "ref",
+    "mv": 0,
+    "post": 64.8,
+    "pre": 63.8,
+    "target": 66
+   },
+   {
+    "key": "19-A-4",
+    "side": "ref",
+    "mv": -0.8,
+    "post": 90.8,
+    "pre": 94.5,
+    "target": 78.8
+   },
+   {
+    "key": "17-A-2",
+    "side": "ref",
+    "mv": -2.5,
+    "post": 81,
+    "pre": 78.5,
+    "target": 75
+   },
+   {
+    "key": "11-3",
+    "side": "ref",
+    "mv": -13.5,
+    "post": 85.5,
+    "pre": 78,
+    "target": 82.5
+   },
+   {
+    "key": "16-6",
+    "side": "ref",
+    "mv": -0.5,
+    "post": 55.8,
+    "pre": 58.5,
+    "target": 60
+   },
+   {
+    "key": "19-A-5",
+    "side": "ref",
+    "mv": -1.2,
+    "post": 81,
+    "pre": 79.8,
+    "target": 75
+   },
+   {
+    "key": "17-A-3",
+    "side": "ref",
+    "mv": -4.8,
+    "post": 62.8,
+    "pre": 58,
+    "target": 60
+   },
+   {
+    "key": "11-4",
+    "side": "ref",
+    "mv": -9.2,
+    "post": 93,
+    "pre": 84.3,
+    "target": 78.8
+   },
+   {
+    "key": "16-7",
+    "side": "ref",
+    "mv": 0,
+    "post": 41.8,
+    "pre": 41.8,
+    "target": 40
+   },
+   {
+    "key": "19-A-6",
+    "side": "ref",
+    "mv": -1.7,
+    "post": 81,
+    "pre": 79.3,
+    "target": 71.3
+   },
+   {
+    "key": "17-A-4",
+    "side": "ref",
+    "mv": -5.5,
+    "post": 51.8,
+    "pre": 46.3,
+    "target": 40
+   },
+   {
+    "key": "11-7",
+    "side": "ref",
+    "mv": -16,
+    "post": 83,
+    "pre": 76,
+    "target": 67.5
+   },
+   {
+    "key": "1-A-1",
+    "side": "ref",
+    "mv": 1,
+    "post": 69.3,
+    "pre": 80.5,
+    "target": 90
+   },
+   {
+    "key": "19-A-9",
+    "side": "ref",
+    "mv": -1.3,
+    "post": 58.3,
+    "pre": 57,
+    "target": 60
+   },
+   {
+    "key": "11-8",
+    "side": "ref",
+    "mv": -6.5,
+    "post": 89,
+    "pre": 63,
+    "target": 63.8
+   },
+   {
+    "key": "1-A-2",
+    "side": "ref",
+    "mv": -1.2,
+    "post": 45.5,
+    "pre": 75.3,
+    "target": 80
+   },
+   {
+    "key": "19-A-10",
+    "side": "ref",
+    "mv": -1.7,
+    "post": 46,
+    "pre": 44.3,
+    "target": 40
+   },
+   {
+    "key": "11-9",
+    "side": "ref",
+    "mv": -9.7,
+    "post": 72.5,
+    "pre": 59.3,
+    "target": 60
+   },
+   {
+    "key": "1-A-3",
+    "side": "ref",
+    "mv": -1.2,
+    "post": 38,
+    "pre": 68.8,
+    "target": 70
+   },
+   {
+    "key": "10-A-1",
+    "side": "ref",
+    "mv": 2,
+    "post": 78,
+    "pre": 84.3,
+    "target": 90
+   },
+   {
+    "key": "11-10",
+    "side": "ref",
+    "mv": -13,
+    "post": 22.5,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "1-A-4",
+    "side": "ref",
+    "mv": -1.2,
+    "post": 43,
+    "pre": 62,
+    "target": 60
+   },
+   {
+    "key": "10-A-2",
+    "side": "ref",
+    "mv": 2.5,
+    "post": 71,
+    "pre": 73.5,
+    "target": 70
+   },
+   {
+    "key": "12-1",
+    "side": "ref",
+    "mv": -0.7,
+    "post": 92,
+    "pre": 90.8,
+    "target": 90
+   },
+   {
+    "key": "1-A-5",
+    "side": "ref",
+    "mv": -0.2,
+    "post": 67.5,
+    "pre": 42.8,
+    "target": 40
+   },
+   {
+    "key": "10-A-3",
+    "side": "ref",
+    "mv": 2.7,
+    "post": 33.8,
+    "pre": 67.5,
+    "target": 70
+   },
+   {
+    "key": "10-1",
+    "side": "ref",
+    "mv": -9.2,
+    "post": 88.5,
+    "pre": 86,
+    "target": 90
+   },
+   {
+    "key": "12-2",
+    "side": "ref",
+    "mv": -1.5,
+    "post": 86.3,
+    "pre": 84.8,
+    "target": 84
+   },
+   {
+    "key": "10-A-4",
+    "side": "ref",
+    "mv": 3.5,
+    "post": 51,
+    "pre": 54.5,
+    "target": 60
+   },
+   {
+    "key": "10-2",
+    "side": "ref",
+    "mv": -16,
+    "post": 73,
+    "pre": 80.5,
+    "target": 85.7
+   },
+   {
+    "key": "12-3",
+    "side": "ref",
+    "mv": -4,
+    "post": 73.5,
+    "pre": 69.5,
+    "target": 68
+   },
+   {
+    "key": "10-A-5",
+    "side": "ref",
+    "mv": 2.7,
+    "post": 24.8,
+    "pre": 38.3,
+    "target": 40
+   },
+   {
+    "key": "10-3",
+    "side": "ref",
+    "mv": -8.5,
+    "post": 86.8,
+    "pre": 78,
+    "target": 81.4
+   },
+   {
+    "key": "12-4",
+    "side": "ref",
+    "mv": -4.8,
+    "post": 81.3,
+    "pre": 76.5,
+    "target": 72
+   }
+  ],
+  "n5": 22,
+  "lost": 5.5,
+  "gained": 262.6,
+  "abs5": 268.1,
+  "max": {
+   "key": "11-6",
+   "side": "ref",
+   "mv": -22.5,
+   "post": 80.8,
+   "pre": 77.8,
+   "target": 71.3
+  }
+ },
+ {
+  "id": "soldier-ant",
+  "change": "2/8→2/7",
+  "fights": [
+   {
+    "key": "0-1",
+    "side": "enemy",
+    "mv": -11.3,
+    "post": 81.3,
+    "pre": 87,
+    "target": 90
+   },
+   {
+    "key": "8-7",
+    "side": "ref",
+    "mv": 5,
+    "post": 41.3,
+    "pre": 41.5,
+    "target": 60
+   },
+   {
+    "key": "7-A-3",
+    "side": "ref",
+    "mv": 0.8,
+    "post": 81.5,
+    "pre": 69.8,
+    "target": 70
+   },
+   {
+    "key": "8-8",
+    "side": "ref",
+    "mv": -0.2,
+    "post": 31.5,
+    "pre": 38.3,
+    "target": 40
+   },
+   {
+    "key": "7-A-4",
+    "side": "ref",
+    "mv": 5.5,
+    "post": 52.5,
+    "pre": 58,
+    "target": 60
+   },
+   {
+    "key": "2-3",
+    "side": "ref",
+    "mv": 6.5,
+    "post": 61,
+    "pre": 66.8,
+    "target": 70
+   },
+   {
+    "key": "7-3",
+    "side": "ref",
+    "mv": 5.5,
+    "post": 76,
+    "pre": 80,
+    "target": 75
+   },
+   {
+    "key": "2-4",
+    "side": "ref",
+    "mv": 7.3,
+    "post": 60,
+    "pre": 62.3,
+    "target": 60
+   },
+   {
+    "key": "7-4",
+    "side": "ref",
+    "mv": 8.5,
+    "post": 60.8,
+    "pre": 69.3,
+    "target": 67.5
+   },
+   {
+    "key": "2-5",
+    "side": "ref",
+    "mv": 3.8,
+    "post": 31,
+    "pre": 38.8,
+    "target": 40
+   },
+   {
+    "key": "7-5",
+    "side": "ref",
+    "mv": 6,
+    "post": 67.5,
+    "pre": 56,
+    "target": 60
+   },
+   {
+    "key": "7-6",
+    "side": "ref",
+    "mv": 5.5,
+    "post": 41.3,
+    "pre": 45,
+    "target": 40
+   },
+   {
+    "key": "8-1",
+    "side": "ref",
+    "mv": 1,
+    "post": 91.8,
+    "pre": 92.5,
+    "target": 90
+   },
+   {
+    "key": "2-B-1",
+    "side": "ref",
+    "mv": 6.3,
+    "post": 70.5,
+    "pre": 87.3,
+    "target": 90
+   },
+   {
+    "key": "8-2",
+    "side": "ref",
+    "mv": 3.5,
+    "post": 76.5,
+    "pre": 80,
+    "target": 85
+   },
+   {
+    "key": "2-B-2",
+    "side": "ref",
+    "mv": 5.8,
+    "post": 47,
+    "pre": 80.5,
+    "target": 75
+   },
+   {
+    "key": "8-3",
+    "side": "ref",
+    "mv": 1.2,
+    "post": 71.8,
+    "pre": 70.3,
+    "target": 80
+   },
+   {
+    "key": "2-B-3",
+    "side": "ref",
+    "mv": 5.5,
+    "post": 65.3,
+    "pre": 59.8,
+    "target": 60
+   },
+   {
+    "key": "8-4",
+    "side": "ref",
+    "mv": 3.8,
+    "post": 78,
+    "pre": 77,
+    "target": 75
+   },
+   {
+    "key": "2-B-4",
+    "side": "ref",
+    "mv": 3,
+    "post": 34.8,
+    "pre": 38,
+    "target": 40
+   },
+   {
+    "key": "8-5",
+    "side": "ref",
+    "mv": 4.5,
+    "post": 50.5,
+    "pre": 54.3,
+    "target": 60
+   },
+   {
+    "key": "7-A-1",
+    "side": "ref",
+    "mv": 0.8,
+    "post": 97.5,
+    "pre": 92.8,
+    "target": 90
+   },
+   {
+    "key": "8-6",
+    "side": "ref",
+    "mv": 0.8,
+    "post": 64,
+    "pre": 64.8,
+    "target": 65
+   },
+   {
+    "key": "7-A-2",
+    "side": "ref",
+    "mv": 2.2,
+    "post": 84.3,
+    "pre": 80,
+    "target": 70
+   },
+   {
+    "key": "9-1",
+    "side": "ref",
+    "mv": 2.5,
+    "post": 79,
+    "pre": 87,
+    "target": 90
+   },
+   {
+    "key": "7-A-5",
+    "side": "ref",
+    "mv": 4,
+    "post": 28.5,
+    "pre": 32.5,
+    "target": 40
+   },
+   {
+    "key": "1-1",
+    "side": "ref",
+    "mv": 2.7,
+    "post": 89.3,
+    "pre": 86.8,
+    "target": 90
+   },
+   {
+    "key": "9-2",
+    "side": "ref",
+    "mv": 4.8,
+    "post": 73,
+    "pre": 77.8,
+    "target": 84
+   },
+   {
+    "key": "1-2",
+    "side": "ref",
+    "mv": 1.2,
+    "post": 84.8,
+    "pre": 85,
+    "target": 80
+   },
+   {
+    "key": "9-3",
+    "side": "ref",
+    "mv": 4,
+    "post": 67,
+    "pre": 71,
+    "target": 78
+   },
+   {
+    "key": "1-3",
+    "side": "ref",
+    "mv": 2.8,
+    "post": 87,
+    "pre": 89.3,
+    "target": 85
+   },
+   {
+    "key": "9-4",
+    "side": "ref",
+    "mv": 6.3,
+    "post": 57,
+    "pre": 63.3,
+    "target": 62
+   },
+   {
+    "key": "1-4",
+    "side": "ref",
+    "mv": 3.7,
+    "post": 83.3,
+    "pre": 89.3,
+    "target": 80
+   },
+   {
+    "key": "9-5",
+    "side": "ref",
+    "mv": 4.3,
+    "post": 58.5,
+    "pre": 66.5,
+    "target": 66
+   },
+   {
+    "key": "1-5",
+    "side": "ref",
+    "mv": 3.8,
+    "post": 58.5,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "9-6",
+    "side": "ref",
+    "mv": 5.5,
+    "post": 52.5,
+    "pre": 59,
+    "target": 60
+   },
+   {
+    "key": "2-1",
+    "side": "ref",
+    "mv": 5.5,
+    "post": 74.3,
+    "pre": 82.3,
+    "target": 90
+   },
+   {
+    "key": "7-1",
+    "side": "ref",
+    "mv": 2,
+    "post": 93,
+    "pre": 97,
+    "target": 90
+   },
+   {
+    "key": "9-7",
+    "side": "ref",
+    "mv": 9.2,
+    "post": 27.3,
+    "pre": 38.5,
+    "target": 40
+   },
+   {
+    "key": "2-2",
+    "side": "ref",
+    "mv": 7.5,
+    "post": 58.8,
+    "pre": 67,
+    "target": 80
+   },
+   {
+    "key": "7-2",
+    "side": "ref",
+    "mv": 4.5,
+    "post": 77.5,
+    "pre": 82,
+    "target": 82.5
+   }
+  ],
+  "n5": 17,
+  "lost": 101.4,
+  "gained": 11.3,
+  "abs5": 112.7,
+  "max": {
+   "key": "0-1",
+   "side": "enemy",
+   "mv": -11.3,
+   "post": 81.3,
+   "pre": 87,
+   "target": 90
+  }
+ },
+ {
+  "id": "peak-condor",
+  "change": "+breach 2",
+  "fights": [
+   {
+    "key": "3-1",
+    "side": "enemy",
+    "mv": 14.2,
+    "post": 61.3,
+    "pre": 86.3,
+    "target": 90
+   },
+   {
+    "key": "3-2",
+    "side": "enemy",
+    "mv": 4.2,
+    "post": 76.3,
+    "pre": 83.8,
+    "target": 84
+   },
+   {
+    "key": "11-3",
+    "side": "enemy",
+    "mv": 2,
+    "post": 85.5,
+    "pre": 78,
+    "target": 82.5
+   },
+   {
+    "key": "3-3",
+    "side": "enemy",
+    "mv": 24,
+    "post": 40,
+    "pre": 73.3,
+    "target": 78
+   },
+   {
+    "key": "11-6",
+    "side": "leader",
+    "mv": 6.5,
+    "post": 80.8,
+    "pre": 77.8,
+    "target": 71.3
+   },
+   {
+    "key": "3-4",
+    "side": "enemy",
+    "mv": 17.5,
+    "post": 18,
+    "pre": 68.8,
+    "target": 72
+   },
+   {
+    "key": "11-7",
+    "side": "enemy",
+    "mv": 2.3,
+    "post": 83,
+    "pre": 76,
+    "target": 67.5
+   },
+   {
+    "key": "11-A-2",
+    "side": "enemy",
+    "mv": 6,
+    "post": 71.3,
+    "pre": 75.3,
+    "target": 75
+   },
+   {
+    "key": "3-6",
+    "side": "enemy",
+    "mv": 18.5,
+    "post": 21.5,
+    "pre": 57,
+    "target": 60
+   },
+   {
+    "key": "11-A-4",
+    "side": "enemy",
+    "mv": 5.5,
+    "post": 36,
+    "pre": 40.3,
+    "target": 40
+   },
+   {
+    "key": "3-7",
+    "side": "enemy+leader",
+    "mv": 3.8,
+    "post": 8.5,
+    "pre": 33.8,
+    "target": 40
+   },
+   {
+    "key": "19-A-1",
+    "side": "enemy",
+    "mv": 3.5,
+    "post": 89,
+    "pre": 91.5,
+    "target": 90
+   },
+   {
+    "key": "19-A-2",
+    "side": "enemy",
+    "mv": 2.5,
+    "post": 85,
+    "pre": 86.3,
+    "target": 86.3
+   },
+   {
+    "key": "19-A-4",
+    "side": "enemy",
+    "mv": 4.5,
+    "post": 90.8,
+    "pre": 94.5,
+    "target": 78.8
+   },
+   {
+    "key": "19-A-8",
+    "side": "enemy",
+    "mv": 18.2,
+    "post": 46.3,
+    "pre": 63.8,
+    "target": 63.8
+   }
+  ],
+  "n5": 8,
+  "lost": 110.4,
+  "gained": 0,
+  "abs5": 110.4,
+  "max": {
+   "key": "3-3",
+   "side": "enemy",
+   "mv": 24,
+   "post": 40,
+   "pre": 73.3,
+   "target": 78
+  }
+ },
+ {
+  "id": "bee-forager",
+  "change": "+healing 1, -triggers [{do:heal,on:perTurn,sub:random,who:ally,amount:1,turnOf:self}]",
+  "fights": [
+   {
+    "key": "0-1",
+    "side": "enemy",
+    "mv": 8.5,
+    "post": 81.3,
+    "pre": 87,
+    "target": 90
+   },
+   {
+    "key": "1-1",
+    "side": "ref",
+    "mv": -2.8,
+    "post": 89.3,
+    "pre": 86.8,
+    "target": 90
+   },
+   {
+    "key": "2-5",
+    "side": "ref",
+    "mv": -7.7,
+    "post": 31,
+    "pre": 38.8,
+    "target": 40
+   },
+   {
+    "key": "1-A-2",
+    "side": "enemy",
+    "mv": 15.8,
+    "post": 45.5,
+    "pre": 75.3,
+    "target": 80
+   },
+   {
+    "key": "1-A-3",
+    "side": "enemy",
+    "mv": 6.3,
+    "post": 38,
+    "pre": 68.8,
+    "target": 70
+   },
+   {
+    "key": "1-A-4",
+    "side": "enemy",
+    "mv": 10.3,
+    "post": 43,
+    "pre": 62,
+    "target": 60
+   },
+   {
+    "key": "1-2",
+    "side": "ref",
+    "mv": -4.3,
+    "post": 84.8,
+    "pre": 85,
+    "target": 80
+   },
+   {
+    "key": "1-3",
+    "side": "ref",
+    "mv": -2,
+    "post": 87,
+    "pre": 89.3,
+    "target": 85
+   },
+   {
+    "key": "1-4",
+    "side": "ref",
+    "mv": -3.5,
+    "post": 83.3,
+    "pre": 89.3,
+    "target": 80
+   },
+   {
+    "key": "1-5",
+    "side": "ref",
+    "mv": 0.5,
+    "post": 58.5,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "2-1",
+    "side": "ref",
+    "mv": -4.3,
+    "post": 74.3,
+    "pre": 82.3,
+    "target": 90
+   },
+   {
+    "key": "2-2",
+    "side": "ref",
+    "mv": -6.3,
+    "post": 58.8,
+    "pre": 67,
+    "target": 80
+   },
+   {
+    "key": "2-3",
+    "side": "ref",
+    "mv": -12.2,
+    "post": 61,
+    "pre": 66.8,
+    "target": 70
+   },
+   {
+    "key": "2-4",
+    "side": "ref",
+    "mv": -19.2,
+    "post": 60,
+    "pre": 62.3,
+    "target": 60
+   }
+  ],
+  "n5": 8,
+  "lost": 40.9,
+  "gained": 45.4,
+  "abs5": 86.3,
+  "max": {
+   "key": "2-4",
+   "side": "ref",
+   "mv": -19.2,
+   "post": 60,
+   "pre": 62.3,
+   "target": 60
+  }
+ },
+ {
+  "id": "moon-jelly",
+  "change": "1/3→4/5, dmgType physical→poison,-poison 4",
+  "fights": [
+   {
+    "key": "10-4",
+    "side": "enemy",
+    "mv": 3.2,
+    "post": 79.3,
+    "pre": 71.3,
+    "target": 77.1
+   },
+   {
+    "key": "10-A-1",
+    "side": "enemy",
+    "mv": 6.3,
+    "post": 78,
+    "pre": 84.3,
+    "target": 90
+   },
+   {
+    "key": "10-6",
+    "side": "enemy",
+    "mv": 0.5,
+    "post": 85.8,
+    "pre": 64.3,
+    "target": 68.6
+   },
+   {
+    "key": "10-A-3",
+    "side": "enemy",
+    "mv": 30.7,
+    "post": 33.8,
+    "pre": 67.5,
+    "target": 70
+   },
+   {
+    "key": "10-8",
+    "side": "enemy",
+    "mv": 4.3,
+    "post": 77,
+    "pre": 66.8,
+    "target": 60
+   },
+   {
+    "key": "10-A-5",
+    "side": "enemy",
+    "mv": 11,
+    "post": 24.8,
+    "pre": 38.3,
+    "target": 40
+   },
+   {
+    "key": "10-9",
+    "side": "enemy",
+    "mv": 6,
+    "post": 46,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "10-1",
+    "side": "enemy",
+    "mv": 4.3,
+    "post": 88.5,
+    "pre": 86,
+    "target": 90
+   }
+  ],
+  "n5": 4,
+  "lost": 54,
+  "gained": 0,
+  "abs5": 54,
+  "max": {
+   "key": "10-A-3",
+   "side": "enemy",
+   "mv": 30.7,
+   "post": 33.8,
+   "pre": 67.5,
+   "target": 70
+  }
+ },
+ {
+  "id": "water-shrew",
+  "change": "1/6→1/4, +pounce 1, +evasive",
+  "fights": [
+   {
+    "key": "2-A-5",
+    "side": "enemy",
+    "mv": -6.3,
+    "post": 62.3,
+    "pre": 71.5,
+    "target": 66
+   },
+   {
+    "key": "4-1",
+    "side": "enemy",
+    "mv": 4.2,
+    "post": 38.3,
+    "pre": 85.3,
+    "target": 90
+   },
+   {
+    "key": "4-2",
+    "side": "enemy+leader",
+    "mv": 38.8,
+    "post": 29.5,
+    "pre": 84.3,
+    "target": 80
+   },
+   {
+    "key": "4-3",
+    "side": "enemy",
+    "mv": 3.3,
+    "post": 43,
+    "pre": 69.3,
+    "target": 70
+   },
+   {
+    "key": "4-4",
+    "side": "enemy",
+    "mv": 2,
+    "post": 38.5,
+    "pre": 65.5,
+    "target": 60
+   },
+   {
+    "key": "6-1",
+    "side": "enemy",
+    "mv": 2.8,
+    "post": 75,
+    "pre": 91,
+    "target": 90
+   },
+   {
+    "key": "6-4",
+    "side": "enemy",
+    "mv": 8,
+    "post": 49.8,
+    "pre": 73,
+    "target": 75
+   },
+   {
+    "key": "6-5",
+    "side": "enemy",
+    "mv": 0.5,
+    "post": 9.3,
+    "pre": 71.8,
+    "target": 70
+   },
+   {
+    "key": "6-6",
+    "side": "enemy",
+    "mv": 1.5,
+    "post": 12.5,
+    "pre": 62.5,
+    "target": 65
+   },
+   {
+    "key": "2-A-2",
+    "side": "enemy",
+    "mv": -1.5,
+    "post": 81,
+    "pre": 85.5,
+    "target": 84
+   },
+   {
+    "key": "2-A-3",
+    "side": "enemy",
+    "mv": -2.3,
+    "post": 72.8,
+    "pre": 83.5,
+    "target": 78
+   },
+   {
+    "key": "2-A-4",
+    "side": "enemy",
+    "mv": -1,
+    "post": 55,
+    "pre": 67.3,
+    "target": 72
+   }
+  ],
+  "n5": 3,
+  "lost": 46.8,
+  "gained": 6.3,
+  "abs5": 53.1,
+  "max": {
+   "key": "4-2",
+   "side": "enemy+leader",
+   "mv": 38.8,
+   "post": 29.5,
+   "pre": 84.3,
+   "target": 80
+  }
+ },
+ {
+  "id": "dormouse",
+  "change": "nocturnal 1→2",
+  "fights": [
+   {
+    "key": "1-A-3",
+    "side": "enemy",
+    "mv": 23.8,
+    "post": 38,
+    "pre": 68.8,
+    "target": 70
+   },
+   {
+    "key": "1-A-4",
+    "side": "enemy",
+    "mv": 5.5,
+    "post": 43,
+    "pre": 62,
+    "target": 60
+   },
+   {
+    "key": "17-A-1",
+    "side": "enemy",
+    "mv": 0,
+    "post": 80,
+    "pre": 74.3,
+    "target": 80
+   },
+   {
+    "key": "1-2",
+    "side": "enemy",
+    "mv": 3.2,
+    "post": 84.8,
+    "pre": 85,
+    "target": 80
+   },
+   {
+    "key": "1-3",
+    "side": "enemy",
+    "mv": 3.5,
+    "post": 87,
+    "pre": 89.3,
+    "target": 85
+   },
+   {
+    "key": "1-4",
+    "side": "enemy",
+    "mv": 5,
+    "post": 83.3,
+    "pre": 89.3,
+    "target": 80
+   },
+   {
+    "key": "1-5",
+    "side": "enemy",
+    "mv": 0.3,
+    "post": 58.5,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "1-A-2",
+    "side": "enemy",
+    "mv": 18,
+    "post": 45.5,
+    "pre": 75.3,
+    "target": 80
+   }
+  ],
+  "n5": 4,
+  "lost": 52.3,
+  "gained": 0,
+  "abs5": 52.3,
+  "max": {
+   "key": "1-A-3",
+   "side": "enemy",
+   "mv": 23.8,
+   "post": 38,
+   "pre": 68.8,
+   "target": 70
+  }
+ },
+ {
+  "id": "hawthorn-shieldbug",
+  "change": "2/12→1/15, +counterattack, -armor 1",
+  "fights": [
+   {
+    "key": "8-1",
+    "side": "enemy",
+    "mv": -0.8,
+    "post": 91.8,
+    "pre": 92.5,
+    "target": 90
+   },
+   {
+    "key": "7-A-2",
+    "side": "enemy",
+    "mv": -8.3,
+    "post": 84.3,
+    "pre": 80,
+    "target": 70
+   },
+   {
+    "key": "7-A-3",
+    "side": "enemy",
+    "mv": -16,
+    "post": 81.5,
+    "pre": 69.8,
+    "target": 70
+   },
+   {
+    "key": "7-1",
+    "side": "enemy",
+    "mv": -1.2,
+    "post": 93,
+    "pre": 97,
+    "target": 90
+   },
+   {
+    "key": "7-3",
+    "side": "enemy",
+    "mv": -2,
+    "post": 76,
+    "pre": 80,
+    "target": 75
+   },
+   {
+    "key": "7-5",
+    "side": "enemy",
+    "mv": -21.5,
+    "post": 67.5,
+    "pre": 56,
+    "target": 60
+   },
+   {
+    "key": "8-3",
+    "side": "enemy",
+    "mv": -2,
+    "post": 71.8,
+    "pre": 70.3,
+    "target": 80
+   },
+   {
+    "key": "8-4",
+    "side": "enemy",
+    "mv": -4.7,
+    "post": 78,
+    "pre": 77,
+    "target": 75
+   },
+   {
+    "key": "8-5",
+    "side": "enemy",
+    "mv": -2.7,
+    "post": 50.5,
+    "pre": 54.3,
+    "target": 60
+   },
+   {
+    "key": "8-7",
+    "side": "enemy",
+    "mv": -1.3,
+    "post": 41.3,
+    "pre": 41.5,
+    "target": 60
+   },
+   {
+    "key": "8-8",
+    "side": "enemy",
+    "mv": 5.3,
+    "post": 31.5,
+    "pre": 38.3,
+    "target": 40
+   },
+   {
+    "key": "7-A-1",
+    "side": "enemy",
+    "mv": -4.7,
+    "post": 97.5,
+    "pre": 92.8,
+    "target": 90
+   }
+  ],
+  "n5": 4,
+  "lost": 5.3,
+  "gained": 45.8,
+  "abs5": 51.1,
+  "max": {
+   "key": "7-5",
+   "side": "enemy",
+   "mv": -21.5,
+   "post": 67.5,
+   "pre": 56,
+   "target": 60
+  }
+ },
+ {
+  "id": "nutria-reedcutter",
+  "change": "2/7→3/8, +foraging 1",
+  "fights": [
+   {
+    "key": "6-3",
+    "side": "enemy",
+    "mv": 13,
+    "post": 40.3,
+    "pre": 73.3,
+    "target": 80
+   },
+   {
+    "key": "5-A-1",
+    "side": "enemy",
+    "mv": 4.2,
+    "post": 90.3,
+    "pre": 94.8,
+    "target": 90
+   },
+   {
+    "key": "5-A-3",
+    "side": "enemy",
+    "mv": 5,
+    "post": 47,
+    "pre": 68.5,
+    "target": 60
+   },
+   {
+    "key": "6-6",
+    "side": "enemy",
+    "mv": 17,
+    "post": 12.5,
+    "pre": 62.5,
+    "target": 65
+   },
+   {
+    "key": "6-8",
+    "side": "enemy",
+    "mv": 14.2,
+    "post": 20.3,
+    "pre": 33.3,
+    "target": 40
+   },
+   {
+    "key": "9-1",
+    "side": "enemy",
+    "mv": 3.8,
+    "post": 79,
+    "pre": 87,
+    "target": 90
+   },
+   {
+    "key": "9-5",
+    "side": "enemy",
+    "mv": 4,
+    "post": 58.5,
+    "pre": 66.5,
+    "target": 66
+   },
+   {
+    "key": "9-6",
+    "side": "enemy",
+    "mv": -0.5,
+    "post": 52.5,
+    "pre": 59,
+    "target": 60
+   },
+   {
+    "key": "9-7",
+    "side": "enemy",
+    "mv": 1.7,
+    "post": 27.3,
+    "pre": 38.5,
+    "target": 40
+   }
+  ],
+  "n5": 4,
+  "lost": 49.2,
+  "gained": 0,
+  "abs5": 49.2,
+  "max": {
+   "key": "6-6",
+   "side": "enemy",
+   "mv": 17,
+   "post": 12.5,
+   "pre": 62.5,
+   "target": 65
+  }
+ },
+ {
+  "id": "red-billed-chough",
+  "change": "3/2→3/5, +foraging 1, -mountainClimber",
+  "fights": [
+   {
+    "key": "11-5",
+    "side": "leader",
+    "mv": 12.8,
+    "post": 70,
+    "pre": 76.3,
+    "target": 75
+   },
+   {
+    "key": "11-10",
+    "side": "enemy+leader",
+    "mv": 30.3,
+    "post": 22.5,
+    "pre": 37,
+    "target": 40
+   }
+  ],
+  "n5": 2,
+  "lost": 43.1,
+  "gained": 0,
+  "abs5": 43.1,
+  "max": {
+   "key": "11-10",
+   "side": "enemy+leader",
+   "mv": 30.3,
+   "post": 22.5,
+   "pre": 37,
+   "target": 40
+  }
+ },
+ {
+  "id": "open-ocean-hermit-crab",
+  "change": "2/2→2/3",
+  "fights": [
+   {
+    "key": "2-1",
+    "side": "enemy+leader",
+    "mv": 7.7,
+    "post": 74.3,
+    "pre": 82.3,
+    "target": 90
+   },
+   {
+    "key": "2-B-1",
+    "side": "enemy",
+    "mv": 10,
+    "post": 70.5,
+    "pre": 87.3,
+    "target": 90
+   },
+   {
+    "key": "2-2",
+    "side": "enemy+leader",
+    "mv": 12.2,
+    "post": 58.8,
+    "pre": 67,
+    "target": 80
+   },
+   {
+    "key": "2-B-2",
+    "side": "enemy",
+    "mv": 1.5,
+    "post": 47,
+    "pre": 80.5,
+    "target": 75
+   },
+   {
+    "key": "2-5",
+    "side": "enemy+leader",
+    "mv": 13,
+    "post": 31,
+    "pre": 38.8,
+    "target": 40
+   },
+   {
+    "key": "2-B-3",
+    "side": "enemy",
+    "mv": 0.7,
+    "post": 65.3,
+    "pre": 59.8,
+    "target": 60
+   }
+  ],
+  "n5": 4,
+  "lost": 42.9,
+  "gained": 0,
+  "abs5": 42.9,
+  "max": {
+   "key": "2-5",
+   "side": "enemy+leader",
+   "mv": 13,
+   "post": 31,
+   "pre": 38.8,
+   "target": 40
+  }
+ },
+ {
+  "id": "anhinga-spearbird",
+  "change": "1/12→1/11, +hoard 2, +herbalist 1, -pounce 2",
+  "fights": [
+   {
+    "key": "6-1",
+    "side": "enemy",
+    "mv": -9,
+    "post": 75,
+    "pre": 91,
+    "target": 90
+   },
+   {
+    "key": "13-1",
+    "side": "enemy",
+    "mv": -1.7,
+    "post": 97.5,
+    "pre": 95.8,
+    "target": 90
+   },
+   {
+    "key": "13-7",
+    "side": "enemy",
+    "mv": -12,
+    "post": 70,
+    "pre": 58,
+    "target": 60
+   },
+   {
+    "key": "5-A-1",
+    "side": "enemy+leader",
+    "mv": -6.3,
+    "post": 90.3,
+    "pre": 94.8,
+    "target": 90
+   },
+   {
+    "key": "6-3",
+    "side": "enemy",
+    "mv": -4.8,
+    "post": 40.3,
+    "pre": 73.3,
+    "target": 80
+   },
+   {
+    "key": "6-6",
+    "side": "enemy",
+    "mv": -1,
+    "post": 12.5,
+    "pre": 62.5,
+    "target": 65
+   },
+   {
+    "key": "6-7",
+    "side": "enemy",
+    "mv": -9.2,
+    "post": 48,
+    "pre": 62,
+    "target": 60
+   },
+   {
+    "key": "6-8",
+    "side": "enemy",
+    "mv": -5.8,
+    "post": 20.3,
+    "pre": 33.3,
+    "target": 40
+   }
+  ],
+  "n5": 5,
+  "lost": 0,
+  "gained": 42.3,
+  "abs5": 42.3,
+  "max": {
+   "key": "13-7",
+   "side": "enemy",
+   "mv": -12,
+   "post": 70,
+   "pre": 58,
+   "target": 60
+  }
+ },
+ {
+  "id": "gull-thief",
+  "change": "triggers [{do:gain,on:onKill,amount:1,resource:lumber}]→[{do:gain,on:onHit,amount:1,resource:lumber}]",
+  "fights": [
+   {
+    "key": "2-3",
+    "side": "enemy",
+    "mv": 3.5,
+    "post": 61,
+    "pre": 66.8,
+    "target": 70
+   },
+   {
+    "key": "2-4",
+    "side": "enemy",
+    "mv": 7.8,
+    "post": 60,
+    "pre": 62.3,
+    "target": 60
+   },
+   {
+    "key": "2-B-1",
+    "side": "enemy",
+    "mv": 7.5,
+    "post": 70.5,
+    "pre": 87.3,
+    "target": 90
+   },
+   {
+    "key": "2-B-2",
+    "side": "enemy",
+    "mv": 23.3,
+    "post": 47,
+    "pre": 80.5,
+    "target": 75
+   },
+   {
+    "key": "3-3",
+    "side": "enemy",
+    "mv": -0.2,
+    "post": 40,
+    "pre": 73.3,
+    "target": 78
+   },
+   {
+    "key": "2-B-3",
+    "side": "enemy",
+    "mv": 0,
+    "post": 65.3,
+    "pre": 59.8,
+    "target": 60
+   }
+  ],
+  "n5": 3,
+  "lost": 38.6,
+  "gained": 0,
+  "abs5": 38.6,
+  "max": {
+   "key": "2-B-2",
+   "side": "enemy",
+   "mv": 23.3,
+   "post": 47,
+   "pre": 80.5,
+   "target": 75
+  }
+ },
+ {
+  "id": "field-vole",
+  "change": "1/8→1/4, +cure 1",
+  "fights": [
+   {
+    "key": "1-5",
+    "side": "leader",
+    "mv": -22,
+    "post": 58.5,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "1-A-5",
+    "side": "leader",
+    "mv": -16.2,
+    "post": 67.5,
+    "pre": 42.8,
+    "target": 40
+   }
+  ],
+  "n5": 2,
+  "lost": 0,
+  "gained": 38.2,
+  "abs5": 38.2,
+  "max": {
+   "key": "1-5",
+   "side": "leader",
+   "mv": -22,
+   "post": 58.5,
+   "pre": 37,
+   "target": 40
+  }
+ },
+ {
+  "id": "golden-eagle-diver",
+  "change": "2/2→3/5, renamed,wait 0→1,+daunt 2, diurnal→1, -pounce 3",
+  "fights": [
+   {
+    "key": "15-4",
+    "side": "ref",
+    "mv": 4,
+    "post": 72.8,
+    "pre": 76.8,
+    "target": 72
+   },
+   {
+    "key": "18-2",
+    "side": "ref",
+    "mv": -2.5,
+    "post": 81.5,
+    "pre": 79,
+    "target": 84
+   },
+   {
+    "key": "15-5",
+    "side": "ref",
+    "mv": 1.2,
+    "post": 71.3,
+    "pre": 72.5,
+    "target": 66
+   },
+   {
+    "key": "18-3",
+    "side": "ref",
+    "mv": -7.5,
+    "post": 74.5,
+    "pre": 68.3,
+    "target": 78
+   },
+   {
+    "key": "16-7",
+    "side": "ref",
+    "mv": 0.7,
+    "post": 41.8,
+    "pre": 41.8,
+    "target": 40
+   },
+   {
+    "key": "8-A-3",
+    "side": "ref",
+    "mv": 2,
+    "post": 51.3,
+    "pre": 52.5,
+    "target": 50
+   },
+   {
+    "key": "17-1",
+    "side": "ref",
+    "mv": -1.2,
+    "post": 92,
+    "pre": 90.8,
+    "target": 90
+   },
+   {
+    "key": "8-A-4",
+    "side": "ref",
+    "mv": 1.7,
+    "post": 38.3,
+    "pre": 39.8,
+    "target": 40
+   },
+   {
+    "key": "17-2",
+    "side": "ref",
+    "mv": -1.7,
+    "post": 91.5,
+    "pre": 89.8,
+    "target": 85
+   },
+   {
+    "key": "11-A-1",
+    "side": "ref",
+    "mv": -0.8,
+    "post": 78.3,
+    "pre": 81.8,
+    "target": 80
+   },
+   {
+    "key": "3-5",
+    "side": "enemy+leader",
+    "mv": 2.5,
+    "post": 37.5,
+    "pre": 65.5,
+    "target": 66
+   },
+   {
+    "key": "17-3",
+    "side": "ref",
+    "mv": 0.8,
+    "post": 81.5,
+    "pre": 82.3,
+    "target": 80
+   },
+   {
+    "key": "11-A-2",
+    "side": "ref",
+    "mv": -0.5,
+    "post": 71.3,
+    "pre": 75.3,
+    "target": 75
+   },
+   {
+    "key": "3-7",
+    "side": "enemy",
+    "mv": 0.5,
+    "post": 8.5,
+    "pre": 33.8,
+    "target": 40
+   },
+   {
+    "key": "17-4",
+    "side": "ref",
+    "mv": -2.2,
+    "post": 80.5,
+    "pre": 78.3,
+    "target": 75
+   },
+   {
+    "key": "11-A-3",
+    "side": "ref",
+    "mv": -2.5,
+    "post": 53.8,
+    "pre": 53.3,
+    "target": 60
+   },
+   {
+    "key": "17-5",
+    "side": "ref",
+    "mv": -3.2,
+    "post": 70.5,
+    "pre": 67.3,
+    "target": 70
+   },
+   {
+    "key": "11-A-4",
+    "side": "ref",
+    "mv": -0.5,
+    "post": 36,
+    "pre": 40.3,
+    "target": 40
+   },
+   {
+    "key": "17-6",
+    "side": "ref",
+    "mv": -0.5,
+    "post": 67.5,
+    "pre": 67,
+    "target": 65
+   },
+   {
+    "key": "0-B-1",
+    "side": "ref",
+    "mv": -0.7,
+    "post": 85.5,
+    "pre": 84.8,
+    "target": 90
+   },
+   {
+    "key": "15-1",
+    "side": "ref",
+    "mv": 0,
+    "post": 87,
+    "pre": 87,
+    "target": 90
+   },
+   {
+    "key": "17-7",
+    "side": "ref",
+    "mv": -1,
+    "post": 62,
+    "pre": 61,
+    "target": 60
+   },
+   {
+    "key": "0-B-2",
+    "side": "ref",
+    "mv": -1.5,
+    "post": 73.8,
+    "pre": 72.3,
+    "target": 75
+   },
+   {
+    "key": "15-2",
+    "side": "ref",
+    "mv": -2,
+    "post": 73,
+    "pre": 71,
+    "target": 84
+   },
+   {
+    "key": "17-8",
+    "side": "ref",
+    "mv": -1,
+    "post": 35.8,
+    "pre": 34.8,
+    "target": 40
+   },
+   {
+    "key": "0-B-3",
+    "side": "ref",
+    "mv": -1.5,
+    "post": 58.3,
+    "pre": 62.5,
+    "target": 60
+   },
+   {
+    "key": "15-3",
+    "side": "ref",
+    "mv": 3,
+    "post": 79,
+    "pre": 82,
+    "target": 78
+   },
+   {
+    "key": "18-1",
+    "side": "ref",
+    "mv": -0.2,
+    "post": 81.5,
+    "pre": 81.3,
+    "target": 90
+   },
+   {
+    "key": "0-B-4",
+    "side": "ref",
+    "mv": -4,
+    "post": 41.8,
+    "pre": 41.3,
+    "target": 40
+   },
+   {
+    "key": "15-6",
+    "side": "ref",
+    "mv": 4,
+    "post": 52,
+    "pre": 56,
+    "target": 60
+   },
+   {
+    "key": "18-4",
+    "side": "ref",
+    "mv": -8.5,
+    "post": 66,
+    "pre": 57.3,
+    "target": 62
+   },
+   {
+    "key": "15-7",
+    "side": "ref",
+    "mv": -1.2,
+    "post": 45.5,
+    "pre": 44.3,
+    "target": 40
+   },
+   {
+    "key": "18-5",
+    "side": "ref",
+    "mv": 1,
+    "post": 64,
+    "pre": 65,
+    "target": 66
+   },
+   {
+    "key": "14-A-1",
+    "side": "ref",
+    "mv": 0.5,
+    "post": 93,
+    "pre": 93.5,
+    "target": 90
+   },
+   {
+    "key": "16-1",
+    "side": "ref",
+    "mv": 2.5,
+    "post": 86,
+    "pre": 88,
+    "target": 90
+   },
+   {
+    "key": "18-6",
+    "side": "ref",
+    "mv": -5.3,
+    "post": 61.8,
+    "pre": 56.5,
+    "target": 60
+   },
+   {
+    "key": "14-A-2",
+    "side": "ref",
+    "mv": 2.2,
+    "post": 79.3,
+    "pre": 81.5,
+    "target": 80
+   },
+   {
+    "key": "16-2",
+    "side": "ref",
+    "mv": 4,
+    "post": 73.5,
+    "pre": 76.3,
+    "target": 84
+   },
+   {
+    "key": "18-7",
+    "side": "ref",
+    "mv": -5.8,
+    "post": 46.8,
+    "pre": 42.5,
+    "target": 40
+   },
+   {
+    "key": "14-A-3",
+    "side": "ref",
+    "mv": -0.5,
+    "post": 69,
+    "pre": 68.5,
+    "target": 70
+   },
+   {
+    "key": "16-3",
+    "side": "ref",
+    "mv": 3.5,
+    "post": 69,
+    "pre": 69.3,
+    "target": 68
+   },
+   {
+    "key": "14-A-4",
+    "side": "ref",
+    "mv": -5,
+    "post": 62.3,
+    "pre": 57.3,
+    "target": 60
+   },
+   {
+    "key": "16-4",
+    "side": "ref",
+    "mv": 0.3,
+    "post": 69,
+    "pre": 67,
+    "target": 72
+   },
+   {
+    "key": "14-A-5",
+    "side": "ref",
+    "mv": -0.8,
+    "post": 43.8,
+    "pre": 43,
+    "target": 40
+   },
+   {
+    "key": "16-5",
+    "side": "ref",
+    "mv": 1.5,
+    "post": 64.8,
+    "pre": 63.8,
+    "target": 66
+   },
+   {
+    "key": "8-A-1",
+    "side": "ref",
+    "mv": 2.5,
+    "post": 85.8,
+    "pre": 87.3,
+    "target": 90
+   },
+   {
+    "key": "16-6",
+    "side": "ref",
+    "mv": 5,
+    "post": 55.8,
+    "pre": 58.5,
+    "target": 60
+   },
+   {
+    "key": "8-A-2",
+    "side": "ref",
+    "mv": 1.3,
+    "post": 69,
+    "pre": 69.5,
+    "target": 75
+   }
+  ],
+  "n5": 6,
+  "lost": 5,
+  "gained": 32.1,
+  "abs5": 37.1,
+  "max": {
+   "key": "18-4",
+   "side": "ref",
+   "mv": -8.5,
+   "post": 66,
+   "pre": 57.3,
+   "target": 62
+  }
+ },
+ {
+  "id": "fen-mink",
+  "change": "+sentry 2, -hunter {v:2,vs:poison}",
+  "fights": [
+   {
+    "key": "5-4",
+    "side": "enemy+leader",
+    "mv": 24,
+    "post": 19.8,
+    "pre": 70.8,
+    "target": 72
+   },
+   {
+    "key": "5-6",
+    "side": "enemy+leader",
+    "mv": 13,
+    "post": 7,
+    "pre": 57.3,
+    "target": 60
+   }
+  ],
+  "n5": 2,
+  "lost": 37,
+  "gained": 0,
+  "abs5": 37,
+  "max": {
+   "key": "5-4",
+   "side": "enemy+leader",
+   "mv": 24,
+   "post": 19.8,
+   "pre": 70.8,
+   "target": 72
+  }
+ },
+ {
+  "id": "newt-doctor",
+  "change": "4/3→2/7, +herbalist 1",
+  "fights": [
+   {
+    "key": "6-5",
+    "side": "enemy",
+    "mv": 35,
+    "post": 9.3,
+    "pre": 71.8,
+    "target": 70
+   }
+  ],
+  "n5": 1,
+  "lost": 35,
+  "gained": 0,
+  "abs5": 35,
+  "max": {
+   "key": "6-5",
+   "side": "enemy",
+   "mv": 35,
+   "post": 9.3,
+   "pre": 71.8,
+   "target": 70
+  }
+ },
+ {
+  "id": "peregrine-stooper",
+  "change": "2/8→2/5, wait 1→0,pounce 2→3",
+  "fights": [
+   {
+    "key": "3-4",
+    "side": "enemy+leader",
+    "mv": 15.5,
+    "post": 18,
+    "pre": 68.8,
+    "target": 72
+   },
+   {
+    "key": "3-5",
+    "side": "enemy",
+    "mv": 7.8,
+    "post": 37.5,
+    "pre": 65.5,
+    "target": 66
+   }
+  ],
+  "n5": 2,
+  "lost": 23.3,
+  "gained": 0,
+  "abs5": 23.3,
+  "max": {
+   "key": "3-4",
+   "side": "enemy+leader",
+   "mv": 15.5,
+   "post": 18,
+   "pre": 68.8,
+   "target": 72
+  }
+ },
+ {
+  "id": "rock-pool-starfish",
+  "change": "2/7→1/7",
+  "fights": [
+   {
+    "key": "2-5",
+    "side": "enemy",
+    "mv": -8.2,
+    "post": 31,
+    "pre": 38.8,
+    "target": 40
+   },
+   {
+    "key": "2-1",
+    "side": "enemy",
+    "mv": -7.8,
+    "post": 74.3,
+    "pre": 82.3,
+    "target": 90
+   },
+   {
+    "key": "2-2",
+    "side": "enemy",
+    "mv": -6,
+    "post": 58.8,
+    "pre": 67,
+    "target": 80
+   }
+  ],
+  "n5": 3,
+  "lost": 0,
+  "gained": 22,
+  "abs5": 22,
+  "max": {
+   "key": "2-5",
+   "side": "enemy",
+   "mv": -8.2,
+   "post": 31,
+   "pre": 38.8,
+   "target": 40
+  }
+ },
+ {
+  "id": "puffin-diver",
+  "change": "2/5→2/8, tide→2, -dive 2",
+  "fights": [
+   {
+    "key": "3-1",
+    "side": "enemy",
+    "mv": 12,
+    "post": 61.3,
+    "pre": 86.3,
+    "target": 90
+   },
+   {
+    "key": "3-2",
+    "side": "enemy",
+    "mv": 4.5,
+    "post": 76.3,
+    "pre": 83.8,
+    "target": 84
+   },
+   {
+    "key": "3-7",
+    "side": "enemy",
+    "mv": 10,
+    "post": 8.5,
+    "pre": 33.8,
+    "target": 40
+   }
+  ],
+  "n5": 2,
+  "lost": 22,
+  "gained": 0,
+  "abs5": 22,
+  "max": {
+   "key": "3-1",
+   "side": "enemy",
+   "mv": 12,
+   "post": 61.3,
+   "pre": 86.3,
+   "target": 90
+  }
+ },
+ {
+  "id": "dolphin-knight",
+  "change": "3/9→2/8, tide→2, +breach 2",
+  "fights": [
+   {
+    "key": "10-2",
+    "side": "enemy+leader",
+    "mv": 19,
+    "post": 73,
+    "pre": 80.5,
+    "target": 85.7
+   }
+  ],
+  "n5": 1,
+  "lost": 19,
+  "gained": 0,
+  "abs5": 19,
+  "max": {
+   "key": "10-2",
+   "side": "enemy+leader",
+   "mv": 19,
+   "post": 73,
+   "pre": 80.5,
+   "target": 85.7
+  }
+ },
+ {
+  "id": "venomlord-serpent",
+  "change": "1/22→8/24, dmgType -→poison,-poison 3",
+  "fights": [
+   {
+    "key": "6-2",
+    "side": "enemy",
+    "mv": -6.8,
+    "post": 61.8,
+    "pre": 85.5,
+    "target": 85
+   },
+   {
+    "key": "6-4",
+    "side": "enemy",
+    "mv": 3.7,
+    "post": 49.8,
+    "pre": 73,
+    "target": 75
+   },
+   {
+    "key": "6-5",
+    "side": "enemy+leader",
+    "mv": 0.7,
+    "post": 9.3,
+    "pre": 71.8,
+    "target": 70
+   },
+   {
+    "key": "6-6",
+    "side": "enemy",
+    "mv": 7,
+    "post": 12.5,
+    "pre": 62.5,
+    "target": 65
+   },
+   {
+    "key": "6-7",
+    "side": "enemy",
+    "mv": -5,
+    "post": 48,
+    "pre": 62,
+    "target": 60
+   },
+   {
+    "key": "6-8",
+    "side": "enemy",
+    "mv": -2.8,
+    "post": 20.3,
+    "pre": 33.3,
+    "target": 40
+   }
+  ],
+  "n5": 3,
+  "lost": 7,
+  "gained": 11.8,
+  "abs5": 18.8,
+  "max": {
+   "key": "6-6",
+   "side": "enemy",
+   "mv": 7,
+   "post": 12.5,
+   "pre": 62.5,
+   "target": 65
+  }
+ },
+ {
+  "id": "swamp-alligator",
+  "change": "2/15→2/12, +hemorrhage 2",
+  "fights": [
+   {
+    "key": "11-1",
+    "side": "enemy+leader",
+    "mv": 5.2,
+    "post": 91.3,
+    "pre": 93,
+    "target": 90
+   },
+   {
+    "key": "11-2",
+    "side": "enemy",
+    "mv": 0.2,
+    "post": 91.8,
+    "pre": 85.5,
+    "target": 86.3
+   },
+   {
+    "key": "11-4",
+    "side": "enemy",
+    "mv": -0.2,
+    "post": 93,
+    "pre": 84.3,
+    "target": 78.8
+   },
+   {
+    "key": "11-5",
+    "side": "enemy",
+    "mv": 2,
+    "post": 70,
+    "pre": 76.3,
+    "target": 75
+   },
+   {
+    "key": "5-1",
+    "side": "enemy",
+    "mv": 0.5,
+    "post": 78.3,
+    "pre": 91,
+    "target": 90
+   },
+   {
+    "key": "11-6",
+    "side": "enemy",
+    "mv": 3.2,
+    "post": 80.8,
+    "pre": 77.8,
+    "target": 71.3
+   },
+   {
+    "key": "5-2",
+    "side": "enemy",
+    "mv": 0.3,
+    "post": 39,
+    "pre": 81.8,
+    "target": 84
+   },
+   {
+    "key": "11-7",
+    "side": "enemy",
+    "mv": 1.8,
+    "post": 83,
+    "pre": 76,
+    "target": 67.5
+   },
+   {
+    "key": "5-A-3",
+    "side": "enemy",
+    "mv": 11.5,
+    "post": 47,
+    "pre": 68.5,
+    "target": 60
+   },
+   {
+    "key": "5-3",
+    "side": "enemy",
+    "mv": 0,
+    "post": 39.5,
+    "pre": 67,
+    "target": 68
+   },
+   {
+    "key": "5-A-4",
+    "side": "enemy",
+    "mv": 2.5,
+    "post": 42,
+    "pre": 44.5,
+    "target": 40
+   },
+   {
+    "key": "5-5",
+    "side": "enemy",
+    "mv": 1.8,
+    "post": 45,
+    "pre": 69,
+    "target": 66
+   },
+   {
+    "key": "11-A-1",
+    "side": "enemy",
+    "mv": 4.2,
+    "post": 78.3,
+    "pre": 81.8,
+    "target": 80
+   },
+   {
+    "key": "5-6",
+    "side": "enemy",
+    "mv": 0.5,
+    "post": 7,
+    "pre": 57.3,
+    "target": 60
+   },
+   {
+    "key": "11-A-3",
+    "side": "enemy",
+    "mv": 1,
+    "post": 53.8,
+    "pre": 53.3,
+    "target": 60
+   }
+  ],
+  "n5": 2,
+  "lost": 16.7,
+  "gained": 0,
+  "abs5": 16.7,
+  "max": {
+   "key": "5-A-3",
+   "side": "enemy",
+   "mv": 11.5,
+   "post": 47,
+   "pre": 68.5,
+   "target": 60
+  }
+ },
+ {
+  "id": "lamprey",
+  "change": "dmgType physical→shock,+sap",
+  "fights": [
+   {
+    "key": "6-1",
+    "side": "enemy+leader",
+    "mv": 5.8,
+    "post": 75,
+    "pre": 91,
+    "target": 90
+   },
+   {
+    "key": "6-2",
+    "side": "enemy",
+    "mv": 5,
+    "post": 61.8,
+    "pre": 85.5,
+    "target": 85
+   },
+   {
+    "key": "6-3",
+    "side": "enemy+leader",
+    "mv": 5.5,
+    "post": 40.3,
+    "pre": 73.3,
+    "target": 80
+   },
+   {
+    "key": "7-5",
+    "side": "enemy",
+    "mv": -1,
+    "post": 67.5,
+    "pre": 56,
+    "target": 60
+   },
+   {
+    "key": "7-6",
+    "side": "enemy",
+    "mv": -3.5,
+    "post": 41.3,
+    "pre": 45,
+    "target": 40
+   }
+  ],
+  "n5": 3,
+  "lost": 16.3,
+  "gained": 0,
+  "abs5": 16.3,
+  "max": {
+   "key": "6-1",
+   "side": "enemy+leader",
+   "mv": 5.8,
+   "post": 75,
+   "pre": 91,
+   "target": 90
+  }
+ },
+ {
+  "id": "alligator-gar",
+  "change": "5/5→3/7, bleed 1→3",
+  "fights": [
+   {
+    "key": "5-7",
+    "side": "enemy+leader",
+    "mv": 15,
+    "post": 9.3,
+    "pre": 43.3,
+    "target": 40
+   }
+  ],
+  "n5": 1,
+  "lost": 15,
+  "gained": 0,
+  "abs5": 15,
+  "max": {
+   "key": "5-7",
+   "side": "enemy+leader",
+   "mv": 15,
+   "post": 9.3,
+   "pre": 43.3,
+   "target": 40
+  }
+ },
+ {
+  "id": "box-turtle",
+  "change": "+shell 3, -cower shell",
+  "fights": [
+   {
+    "key": "5-2",
+    "side": "leader",
+    "mv": 12.5,
+    "post": 39,
+    "pre": 81.8,
+    "target": 84
+   }
+  ],
+  "n5": 1,
+  "lost": 12.5,
+  "gained": 0,
+  "abs5": 12.5,
+  "max": {
+   "key": "5-2",
+   "side": "leader",
+   "mv": 12.5,
+   "post": 39,
+   "pre": 81.8,
+   "target": 84
+  }
+ },
+ {
+  "id": "crocodile-ambusher",
+  "change": "5/17→3/16, +gash 2, +ambush 5",
+  "fights": [
+   {
+    "key": "9-1",
+    "side": "enemy+leader",
+    "mv": 0,
+    "post": 79,
+    "pre": 87,
+    "target": 90
+   },
+   {
+    "key": "6-1",
+    "side": "enemy",
+    "mv": 1.3,
+    "post": 75,
+    "pre": 91,
+    "target": 90
+   },
+   {
+    "key": "6-3",
+    "side": "enemy",
+    "mv": 2.2,
+    "post": 40.3,
+    "pre": 73.3,
+    "target": 80
+   },
+   {
+    "key": "6-7",
+    "side": "enemy",
+    "mv": 11,
+    "post": 48,
+    "pre": 62,
+    "target": 60
+   },
+   {
+    "key": "14-8",
+    "side": "enemy",
+    "mv": 0.5,
+    "post": 33.8,
+    "pre": 34.3,
+    "target": 40
+   },
+   {
+    "key": "20-7",
+    "side": "enemy",
+    "mv": -3.5,
+    "post": 67.8,
+    "pre": 64.3,
+    "target": 64.3
+   },
+   {
+    "key": "5-A-1",
+    "side": "enemy",
+    "mv": 2.2,
+    "post": 90.3,
+    "pre": 94.8,
+    "target": 90
+   }
+  ],
+  "n5": 1,
+  "lost": 11,
+  "gained": 0,
+  "abs5": 11,
+  "max": {
+   "key": "6-7",
+   "side": "enemy",
+   "mv": 11,
+   "post": 48,
+   "pre": 62,
+   "target": 60
+  }
+ },
+ {
+  "id": "booming-bittern",
+  "change": "1/12→2/10, daunt 1→2, invisible 2→1",
+  "fights": [
+   {
+    "key": "6-2",
+    "side": "enemy",
+    "mv": 10.2,
+    "post": 61.8,
+    "pre": 85.5,
+    "target": 85
+   },
+   {
+    "key": "6-5",
+    "side": "enemy",
+    "mv": 2,
+    "post": 9.3,
+    "pre": 71.8,
+    "target": 70
+   }
+  ],
+  "n5": 1,
+  "lost": 10.2,
+  "gained": 0,
+  "abs5": 10.2,
+  "max": {
+   "key": "6-2",
+   "side": "enemy",
+   "mv": 10.2,
+   "post": 61.8,
+   "pre": 85.5,
+   "target": 85
+  }
+ },
+ {
+  "id": "snapstick-turtle",
+  "change": "2/12→4/6, +armor 1",
+  "fights": [
+   {
+    "key": "4-1",
+    "side": "enemy",
+    "mv": 9.7,
+    "post": 38.3,
+    "pre": 85.3,
+    "target": 90
+   }
+  ],
+  "n5": 1,
+  "lost": 9.7,
+  "gained": 0,
+  "abs5": 9.7,
+  "max": {
+   "key": "4-1",
+   "side": "enemy",
+   "mv": 9.7,
+   "post": 38.3,
+   "pre": 85.3,
+   "target": 90
+  }
+ },
+ {
+  "id": "honey-bee",
+  "change": "levelSkills -→{1:{diurnal:1}}",
+  "fights": [
+   {
+    "key": "0-1",
+    "side": "ref",
+    "mv": 0,
+    "post": 81.3,
+    "pre": 87,
+    "target": 90
+   },
+   {
+    "key": "0-2",
+    "side": "ref",
+    "mv": 0,
+    "post": 85.8,
+    "pre": 77.3,
+    "target": 75
+   },
+   {
+    "key": "0-3",
+    "side": "ref",
+    "mv": 0,
+    "post": 62.8,
+    "pre": 61.3,
+    "target": 60
+   },
+   {
+    "key": "0-4",
+    "side": "ref",
+    "mv": 0,
+    "post": 53.3,
+    "pre": 42.5,
+    "target": 45
+   },
+   {
+    "key": "1-A-1",
+    "side": "enemy",
+    "mv": 9.5,
+    "post": 69.3,
+    "pre": 80.5,
+    "target": 90
+   }
+  ],
+  "n5": 1,
+  "lost": 9.5,
+  "gained": 0,
+  "abs5": 9.5,
+  "max": {
+   "key": "1-A-1",
+   "side": "enemy",
+   "mv": 9.5,
+   "post": 69.3,
+   "pre": 80.5,
+   "target": 90
+  }
+ },
+ {
+  "id": "kittiwake-flock",
+  "change": "1/5→1/4, +brood 1, +guardian, -swarm",
+  "fights": [
+   {
+    "key": "4-4",
+    "side": "enemy",
+    "mv": 0.5,
+    "post": 38.5,
+    "pre": 65.5,
+    "target": 60
+   },
+   {
+    "key": "11-8",
+    "side": "enemy",
+    "mv": -9,
+    "post": 89,
+    "pre": 63,
+    "target": 63.8
+   },
+   {
+    "key": "11-9",
+    "side": "enemy",
+    "mv": -3,
+    "post": 72.5,
+    "pre": 59.3,
+    "target": 60
+   },
+   {
+    "key": "11-10",
+    "side": "enemy",
+    "mv": -0.2,
+    "post": 22.5,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "3-2",
+    "side": "enemy",
+    "mv": -1.3,
+    "post": 76.3,
+    "pre": 83.8,
+    "target": 84
+   }
+  ],
+  "n5": 1,
+  "lost": 0,
+  "gained": 9,
+  "abs5": 9,
+  "max": {
+   "key": "11-8",
+   "side": "enemy",
+   "mv": -9,
+   "post": 89,
+   "pre": 63,
+   "target": 63.8
+  }
+ },
+ {
+  "id": "robin-redbreast",
+  "change": "2/5→1/4, diurnal 1→2",
+  "fights": [
+   {
+    "key": "1-A-5",
+    "side": "enemy",
+    "mv": -6.7,
+    "post": 67.5,
+    "pre": 42.8,
+    "target": 40
+   }
+  ],
+  "n5": 1,
+  "lost": 0,
+  "gained": 6.7,
+  "abs5": 6.7,
+  "max": {
+   "key": "1-A-5",
+   "side": "enemy",
+   "mv": -6.7,
+   "post": 67.5,
+   "pre": 42.8,
+   "target": 40
+  }
+ },
+ {
+  "id": "bee-sentry",
+  "change": "2/5→1/5",
+  "fights": [
+   {
+    "key": "0-2",
+    "side": "enemy",
+    "mv": -6.5,
+    "post": 85.8,
+    "pre": 77.3,
+    "target": 75
+   },
+   {
+    "key": "0-4",
+    "side": "enemy",
+    "mv": -4.5,
+    "post": 53.3,
+    "pre": 42.5,
+    "target": 45
+   }
+  ],
+  "n5": 1,
+  "lost": 0,
+  "gained": 6.5,
+  "abs5": 6.5,
+  "max": {
+   "key": "0-2",
+   "side": "enemy",
+   "mv": -6.5,
+   "post": 85.8,
+   "pre": 77.3,
+   "target": 75
+  }
+ },
+ {
+  "id": "grass-snake",
+  "change": "2/10→2/9, +regen 1",
+  "fights": [
+   {
+    "key": "4-4",
+    "side": "enemy",
+    "mv": 1.3,
+    "post": 38.5,
+    "pre": 65.5,
+    "target": 60
+   },
+   {
+    "key": "13-3",
+    "side": "enemy",
+    "mv": -1.2,
+    "post": 79,
+    "pre": 77.8,
+    "target": 80
+   },
+   {
+    "key": "13-4",
+    "side": "enemy",
+    "mv": -1.8,
+    "post": 68.8,
+    "pre": 67,
+    "target": 65
+   },
+   {
+    "key": "0-B-3",
+    "side": "enemy",
+    "mv": 6.5,
+    "post": 58.3,
+    "pre": 62.5,
+    "target": 60
+   },
+   {
+    "key": "0-B-4",
+    "side": "enemy",
+    "mv": 4,
+    "post": 41.8,
+    "pre": 41.3,
+    "target": 40
+   },
+   {
+    "key": "4-2",
+    "side": "enemy",
+    "mv": 2.3,
+    "post": 29.5,
+    "pre": 84.3,
+    "target": 80
+   },
+   {
+    "key": "4-3",
+    "side": "enemy",
+    "mv": 3.5,
+    "post": 43,
+    "pre": 69.3,
+    "target": 70
+   }
+  ],
+  "n5": 1,
+  "lost": 6.5,
+  "gained": 0,
+  "abs5": 6.5,
+  "max": {
+   "key": "0-B-3",
+   "side": "enemy",
+   "mv": 6.5,
+   "post": 58.3,
+   "pre": 62.5,
+   "target": 60
+  }
+ },
+ {
+  "id": "constrictor-coil",
+  "change": "+strangle 2",
+  "fights": [
+   {
+    "key": "6-5",
+    "side": "enemy",
+    "mv": 0,
+    "post": 9.3,
+    "pre": 71.8,
+    "target": 70
+   },
+   {
+    "key": "6-8",
+    "side": "enemy",
+    "mv": -0.3,
+    "post": 20.3,
+    "pre": 33.3,
+    "target": 40
+   },
+   {
+    "key": "5-A-3",
+    "side": "enemy",
+    "mv": 5.8,
+    "post": 47,
+    "pre": 68.5,
+    "target": 60
+   },
+   {
+    "key": "5-1",
+    "side": "enemy",
+    "mv": 1.7,
+    "post": 78.3,
+    "pre": 91,
+    "target": 90
+   },
+   {
+    "key": "5-2",
+    "side": "enemy",
+    "mv": 2.5,
+    "post": 39,
+    "pre": 81.8,
+    "target": 84
+   },
+   {
+    "key": "5-3",
+    "side": "enemy",
+    "mv": 2.8,
+    "post": 39.5,
+    "pre": 67,
+    "target": 68
+   },
+   {
+    "key": "6-3",
+    "side": "enemy",
+    "mv": -0.8,
+    "post": 40.3,
+    "pre": 73.3,
+    "target": 80
+   }
+  ],
+  "n5": 1,
+  "lost": 5.8,
+  "gained": 0,
+  "abs5": 5.8,
+  "max": {
+   "key": "5-A-3",
+   "side": "enemy",
+   "mv": 5.8,
+   "post": 47,
+   "pre": 68.5,
+   "target": 60
+  }
+ },
+ {
+  "id": "platypus-spur",
+  "change": "4/4→4/5, renamed,poison 2→1",
+  "fights": [
+   {
+    "key": "4-1",
+    "side": "enemy",
+    "mv": 5.5,
+    "post": 38.3,
+    "pre": 85.3,
+    "target": 90
+   },
+   {
+    "key": "4-3",
+    "side": "enemy",
+    "mv": 3.3,
+    "post": 43,
+    "pre": 69.3,
+    "target": 70
+   },
+   {
+    "key": "4-4",
+    "side": "enemy",
+    "mv": 0.5,
+    "post": 38.5,
+    "pre": 65.5,
+    "target": 60
+   }
+  ],
+  "n5": 1,
+  "lost": 5.5,
+  "gained": 0,
+  "abs5": 5.5,
+  "max": {
+   "key": "4-1",
+   "side": "enemy",
+   "mv": 5.5,
+   "post": 38.3,
+   "pre": 85.3,
+   "target": 90
+  }
+ },
+ {
+  "id": "chipmunk-forager",
+  "change": "levelSkills -→{1:{foraging:1}}",
+  "fights": [
+   {
+    "key": "0-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 85.8,
+    "pre": 77.3,
+    "target": 75
+   },
+   {
+    "key": "18-3",
+    "side": "enemy",
+    "mv": 1,
+    "post": 74.5,
+    "pre": 68.3,
+    "target": 78
+   },
+   {
+    "key": "0-3",
+    "side": "enemy",
+    "mv": 0,
+    "post": 62.8,
+    "pre": 61.3,
+    "target": 60
+   },
+   {
+    "key": "18-7",
+    "side": "enemy",
+    "mv": 1,
+    "post": 46.8,
+    "pre": 42.5,
+    "target": 40
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "18-3",
+   "side": "enemy",
+   "mv": 1,
+   "post": 74.5,
+   "pre": 68.3,
+   "target": 78
+  }
+ },
+ {
+  "id": "badger-lumberjack",
+  "change": "2/11→2/10",
+  "fights": [
+   {
+    "key": "1-5",
+    "side": "enemy",
+    "mv": -1.5,
+    "post": 58.5,
+    "pre": 37,
+    "target": 40
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "1-5",
+   "side": "enemy",
+   "mv": -1.5,
+   "post": 58.5,
+   "pre": 37,
+   "target": 40
+  }
+ },
+ {
+  "id": "drowned-matriarch",
+  "change": "2/13→2/12",
+  "fights": [
+   {
+    "key": "4-5",
+    "side": "enemy",
+    "mv": -1,
+    "post": 9.5,
+    "pre": 16.8,
+    "target": 40
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "4-5",
+   "side": "enemy",
+   "mv": -1,
+   "post": 9.5,
+   "pre": 16.8,
+   "target": 40
+  }
+ },
+ {
+  "id": "pond-algae",
+  "change": "1/7→1/8, dmgType physical→water",
+  "fights": [
+   {
+    "key": "2-A-1",
+    "side": "enemy",
+    "mv": 0,
+    "post": 71.3,
+    "pre": 83.3,
+    "target": 90
+   },
+   {
+    "key": "2-A-2",
+    "side": "enemy",
+    "mv": -1.5,
+    "post": 81,
+    "pre": 85.5,
+    "target": 84
+   },
+   {
+    "key": "2-A-3",
+    "side": "enemy",
+    "mv": 0.5,
+    "post": 72.8,
+    "pre": 83.5,
+    "target": 78
+   },
+   {
+    "key": "6-1",
+    "side": "enemy",
+    "mv": 0,
+    "post": 75,
+    "pre": 91,
+    "target": 90
+   },
+   {
+    "key": "2-A-5",
+    "side": "enemy",
+    "mv": -1.8,
+    "post": 62.3,
+    "pre": 71.5,
+    "target": 66
+   },
+   {
+    "key": "6-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 61.8,
+    "pre": 85.5,
+    "target": 85
+   },
+   {
+    "key": "2-A-6",
+    "side": "enemy",
+    "mv": 0.2,
+    "post": 44.8,
+    "pre": 56.3,
+    "target": 60
+   },
+   {
+    "key": "6-4",
+    "side": "enemy",
+    "mv": -1,
+    "post": 49.8,
+    "pre": 73,
+    "target": 75
+   },
+   {
+    "key": "2-A-7",
+    "side": "enemy",
+    "mv": -3.5,
+    "post": 30.8,
+    "pre": 40.8,
+    "target": 40
+   },
+   {
+    "key": "6-6",
+    "side": "enemy",
+    "mv": 0.8,
+    "post": 12.5,
+    "pre": 62.5,
+    "target": 65
+   },
+   {
+    "key": "6-8",
+    "side": "enemy",
+    "mv": 0,
+    "post": 20.3,
+    "pre": 33.3,
+    "target": 40
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "2-A-7",
+   "side": "enemy",
+   "mv": -3.5,
+   "post": 30.8,
+   "pre": 40.8,
+   "target": 40
+  }
+ },
+ {
+  "id": "pyrenean-desman",
+  "change": "2/10→2/7, +nocturnal 1",
+  "fights": [
+   {
+    "key": "4-5",
+    "side": "enemy",
+    "mv": 0.8,
+    "post": 9.5,
+    "pre": 16.8,
+    "target": 40
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "4-5",
+   "side": "enemy",
+   "mv": 0.8,
+   "post": 9.5,
+   "pre": 16.8,
+   "target": 40
+  }
+ },
+ {
+  "id": "puffball-bombardier",
+  "change": "renamed",
+  "fights": [
+   {
+    "key": "7-3",
+    "side": "enemy",
+    "mv": 0,
+    "post": 76,
+    "pre": 80,
+    "target": 75
+   },
+   {
+    "key": "7-A-1",
+    "side": "enemy",
+    "mv": 0,
+    "post": 97.5,
+    "pre": 92.8,
+    "target": 90
+   },
+   {
+    "key": "7-4",
+    "side": "enemy",
+    "mv": 0,
+    "post": 60.8,
+    "pre": 69.3,
+    "target": 67.5
+   },
+   {
+    "key": "7-A-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 84.3,
+    "pre": 80,
+    "target": 70
+   },
+   {
+    "key": "7-A-4",
+    "side": "enemy",
+    "mv": 0,
+    "post": 52.5,
+    "pre": 58,
+    "target": 60
+   },
+   {
+    "key": "7-A-5",
+    "side": "enemy",
+    "mv": 0,
+    "post": 28.5,
+    "pre": 32.5,
+    "target": 40
+   },
+   {
+    "key": "7-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 77.5,
+    "pre": 82,
+    "target": 82.5
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "mv": 0
+  }
+ },
+ {
+  "id": "grass-viper",
+  "change": "1/8→2/6, +pierce 2, -poison 1",
+  "fights": [
+   {
+    "key": "5-4",
+    "side": "enemy",
+    "mv": 2.5,
+    "post": 19.8,
+    "pre": 70.8,
+    "target": 72
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "5-4",
+   "side": "enemy",
+   "mv": 2.5,
+   "post": 19.8,
+   "pre": 70.8,
+   "target": 72
+  }
+ },
+ {
+  "id": "ant-scout",
+  "change": "1/5→1/4",
+  "fights": [
+   {
+    "key": "0-2",
+    "side": "enemy",
+    "mv": -0.5,
+    "post": 85.8,
+    "pre": 77.3,
+    "target": 75
+   },
+   {
+    "key": "0-3",
+    "side": "enemy",
+    "mv": 0.2,
+    "post": 62.8,
+    "pre": 61.3,
+    "target": 60
+   },
+   {
+    "key": "0-4",
+    "side": "enemy",
+    "mv": -4.5,
+    "post": 53.3,
+    "pre": 42.5,
+    "target": 45
+   },
+   {
+    "key": "1-5",
+    "side": "enemy",
+    "mv": 0.3,
+    "post": 58.5,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "18-4",
+    "side": "enemy",
+    "mv": -0.2,
+    "post": 66,
+    "pre": 57.3,
+    "target": 62
+   },
+   {
+    "key": "1-A-1",
+    "side": "enemy",
+    "mv": 2,
+    "post": 69.3,
+    "pre": 80.5,
+    "target": 90
+   },
+   {
+    "key": "1-A-2",
+    "side": "enemy",
+    "mv": 2,
+    "post": 45.5,
+    "pre": 75.3,
+    "target": 80
+   },
+   {
+    "key": "1-A-3",
+    "side": "enemy",
+    "mv": 1.3,
+    "post": 38,
+    "pre": 68.8,
+    "target": 70
+   },
+   {
+    "key": "1-A-4",
+    "side": "enemy",
+    "mv": 1,
+    "post": 43,
+    "pre": 62,
+    "target": 60
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "0-4",
+   "side": "enemy",
+   "mv": -4.5,
+   "post": 53.3,
+   "pre": 42.5,
+   "target": 45
+  }
+ },
+ {
+  "id": "pincushion-urchin",
+  "change": "+poisonBarbs 2, -thorns 3",
+  "fights": [
+   {
+    "key": "17-A-1",
+    "side": "enemy",
+    "mv": -1,
+    "post": 80,
+    "pre": 74.3,
+    "target": 80
+   },
+   {
+    "key": "10-3",
+    "side": "enemy",
+    "mv": -1.8,
+    "post": 86.8,
+    "pre": 78,
+    "target": 81.4
+   },
+   {
+    "key": "2-B-1",
+    "side": "enemy",
+    "mv": -0.7,
+    "post": 70.5,
+    "pre": 87.3,
+    "target": 90
+   },
+   {
+    "key": "2-B-3",
+    "side": "enemy",
+    "mv": 0,
+    "post": 65.3,
+    "pre": 59.8,
+    "target": 60
+   },
+   {
+    "key": "2-B-4",
+    "side": "enemy",
+    "mv": -0.3,
+    "post": 34.8,
+    "pre": 38,
+    "target": 40
+   },
+   {
+    "key": "2-1",
+    "side": "enemy",
+    "mv": 0.7,
+    "post": 74.3,
+    "pre": 82.3,
+    "target": 90
+   },
+   {
+    "key": "2-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 58.8,
+    "pre": 67,
+    "target": 80
+   },
+   {
+    "key": "2-3",
+    "side": "enemy",
+    "mv": -2,
+    "post": 61,
+    "pre": 66.8,
+    "target": 70
+   },
+   {
+    "key": "2-4",
+    "side": "enemy",
+    "mv": 0,
+    "post": 60,
+    "pre": 62.3,
+    "target": 60
+   },
+   {
+    "key": "2-5",
+    "side": "enemy",
+    "mv": -0.7,
+    "post": 31,
+    "pre": 38.8,
+    "target": 40
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "2-3",
+   "side": "enemy",
+   "mv": -2,
+   "post": 61,
+   "pre": 66.8,
+   "target": 70
+  }
+ },
+ {
+  "id": "planarian-splitter",
+  "change": "renamed",
+  "fights": [
+   {
+    "key": "4-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 29.5,
+    "pre": 84.3,
+    "target": 80
+   },
+   {
+    "key": "7-A-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 84.3,
+    "pre": 80,
+    "target": 70
+   },
+   {
+    "key": "7-A-4",
+    "side": "enemy+leader",
+    "mv": 0,
+    "post": 52.5,
+    "pre": 58,
+    "target": 60
+   },
+   {
+    "key": "7-1",
+    "side": "enemy+leader",
+    "mv": 0,
+    "post": 93,
+    "pre": 97,
+    "target": 90
+   },
+   {
+    "key": "7-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 77.5,
+    "pre": 82,
+    "target": 82.5
+   },
+   {
+    "key": "7-5",
+    "side": "enemy",
+    "mv": 0,
+    "post": 67.5,
+    "pre": 56,
+    "target": 60
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "mv": 0
+  }
+ },
+ {
+  "id": "river-mink",
+  "change": "3/9→4/8, +dive 1",
+  "fights": [
+   {
+    "key": "4-3",
+    "side": "enemy+leader",
+    "mv": 1.3,
+    "post": 43,
+    "pre": 69.3,
+    "target": 70
+   },
+   {
+    "key": "14-3",
+    "side": "enemy",
+    "mv": 4.2,
+    "post": 78.3,
+    "pre": 82.5,
+    "target": 80
+   },
+   {
+    "key": "14-4",
+    "side": "enemy",
+    "mv": -1,
+    "post": 68.8,
+    "pre": 67.3,
+    "target": 75
+   },
+   {
+    "key": "14-7",
+    "side": "enemy",
+    "mv": 0.2,
+    "post": 60.8,
+    "pre": 61,
+    "target": 60
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "14-3",
+   "side": "enemy",
+   "mv": 4.2,
+   "post": 78.3,
+   "pre": 82.5,
+   "target": 80
+  }
+ },
+ {
+  "id": "shoal-shark",
+  "change": "4/11→3/11, tide→3",
+  "fights": [
+   {
+    "key": "5-1",
+    "side": "enemy",
+    "mv": -2.8,
+    "post": 78.3,
+    "pre": 91,
+    "target": 90
+   },
+   {
+    "key": "2-A-4",
+    "side": "enemy+leader",
+    "mv": 1.8,
+    "post": 55,
+    "pre": 67.3,
+    "target": 72
+   },
+   {
+    "key": "4-1",
+    "side": "enemy",
+    "mv": 0.5,
+    "post": 38.3,
+    "pre": 85.3,
+    "target": 90
+   },
+   {
+    "key": "4-4",
+    "side": "enemy",
+    "mv": 3.5,
+    "post": 38.5,
+    "pre": 65.5,
+    "target": 60
+   },
+   {
+    "key": "4-5",
+    "side": "enemy+leader",
+    "mv": 2.8,
+    "post": 9.5,
+    "pre": 16.8,
+    "target": 40
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "4-4",
+   "side": "enemy",
+   "mv": 3.5,
+   "post": 38.5,
+   "pre": 65.5,
+   "target": 60
+  }
+ },
+ {
+  "id": "sparrow-chick",
+  "change": "-flying,levelSkills {1:{flying:true,hatchling:true}}→{1:{bleed:1,flying:true,hatchling:true}}",
+  "fights": [
+   {
+    "key": "0-1",
+    "side": "ref",
+    "mv": -2.5,
+    "post": 81.3,
+    "pre": 87,
+    "target": 90
+   },
+   {
+    "key": "0-2",
+    "side": "ref",
+    "mv": -1.8,
+    "post": 85.8,
+    "pre": 77.3,
+    "target": 75
+   },
+   {
+    "key": "0-3",
+    "side": "ref",
+    "mv": 0,
+    "post": 62.8,
+    "pre": 61.3,
+    "target": 60
+   },
+   {
+    "key": "0-4",
+    "side": "ref",
+    "mv": -3.8,
+    "post": 53.3,
+    "pre": 42.5,
+    "target": 45
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "0-4",
+   "side": "ref",
+   "mv": -3.8,
+   "post": 53.3,
+   "pre": 42.5,
+   "target": 45
+  }
+ },
+ {
+  "id": "conch-crawler",
+  "change": "shell 2→1, shield 4→5",
+  "fights": [
+   {
+    "key": "10-9",
+    "side": "enemy",
+    "mv": -0.2,
+    "post": 46,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "4-5",
+    "side": "enemy",
+    "mv": 0,
+    "post": 9.5,
+    "pre": 16.8,
+    "target": 40
+   },
+   {
+    "key": "4-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 29.5,
+    "pre": 84.3,
+    "target": 80
+   },
+   {
+    "key": "4-3",
+    "side": "enemy",
+    "mv": -0.5,
+    "post": 43,
+    "pre": 69.3,
+    "target": 70
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "4-3",
+   "side": "enemy",
+   "mv": -0.5,
+   "post": 43,
+   "pre": 69.3,
+   "target": 70
+  }
+ },
+ {
+  "id": "cypress-root-lurker",
+  "change": "repair 1→2",
+  "fights": [
+   {
+    "key": "6-2",
+    "side": "enemy+leader",
+    "mv": 0,
+    "post": 61.8,
+    "pre": 85.5,
+    "target": 85
+   },
+   {
+    "key": "6-4",
+    "side": "enemy",
+    "mv": 0,
+    "post": 49.8,
+    "pre": 73,
+    "target": 75
+   },
+   {
+    "key": "6-5",
+    "side": "enemy",
+    "mv": 0,
+    "post": 9.3,
+    "pre": 71.8,
+    "target": 70
+   },
+   {
+    "key": "6-6",
+    "side": "enemy",
+    "mv": 0,
+    "post": 12.5,
+    "pre": 62.5,
+    "target": 65
+   },
+   {
+    "key": "7-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 77.5,
+    "pre": 82,
+    "target": 82.5
+   },
+   {
+    "key": "7-3",
+    "side": "enemy",
+    "mv": 0,
+    "post": 76,
+    "pre": 80,
+    "target": 75
+   },
+   {
+    "key": "5-A-2",
+    "side": "enemy",
+    "mv": 0,
+    "post": 57.3,
+    "pre": 57.3,
+    "target": 65
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "mv": 0
+  }
+ },
+ {
+  "id": "puddle-skimmer",
+  "change": "2/6→2/7",
+  "fights": [
+   {
+    "key": "1-5",
+    "side": "enemy",
+    "mv": -0.7,
+    "post": 58.5,
+    "pre": 37,
+    "target": 40
+   },
+   {
+    "key": "2-1",
+    "side": "enemy",
+    "mv": 0.2,
+    "post": 74.3,
+    "pre": 82.3,
+    "target": 90
+   },
+   {
+    "key": "1-A-5",
+    "side": "enemy",
+    "mv": 1.8,
+    "post": 67.5,
+    "pre": 42.8,
+    "target": 40
+   },
+   {
+    "key": "2-5",
+    "side": "enemy",
+    "mv": -0.7,
+    "post": 31,
+    "pre": 38.8,
+    "target": 40
+   }
+  ],
+  "n5": 0,
+  "lost": 0,
+  "gained": 0,
+  "abs5": 0,
+  "max": {
+   "key": "1-A-5",
+   "side": "enemy",
+   "mv": 1.8,
+   "post": 67.5,
+   "pre": 42.8,
+   "target": 40
+  }
+ }
+]

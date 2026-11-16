@@ -1,0 +1,2276 @@
+{
+ "changed": {
+  "robin-redbreast": "2/5→1/4, diurnal 1→2",
+  "bee-forager": "+healing 1, -triggers [{do:heal,on:perTurn,sub:random,who:ally,amount:1,turnOf:self}]",
+  "honey-bee": "levelSkills -→{1:{diurnal:1}}",
+  "pincushion-urchin": "+poisonBarbs 2, -thorns 3",
+  "gull-thief": "triggers [{do:gain,on:onKill,amount:1,resource:lumber}]→[{do:gain,on:onHit,amount:1,resource:lumber}]",
+  "oystercatcher": "2/6→2/7",
+  "sparrow-chick": "-flying,levelSkills {1:{flying:true,hatchling:true}}→{1:{bleed:1,flying:true,hatchling:true}}",
+  "puffin-diver": "2/5→2/8, tide→2, -dive 2",
+  "peregrine-stooper": "2/8→2/5, wait 1→0,pounce 2→3",
+  "snapstick-turtle": "2/12→4/6, +armor 1",
+  "hawthorn-shieldbug": "2/12→1/15, +counterattack, -armor 1",
+  "bee-sentry": "2/5→1/5",
+  "ant-scout": "1/5→1/4",
+  "soldier-ant": "2/8→2/7",
+  "chipmunk-forager": "levelSkills -→{1:{foraging:1}}",
+  "badger-lumberjack": "2/11→2/10",
+  "hollow-belly-rat": "2/12→2/11",
+  "bog-shrew": "2/4→2/5",
+  "woodcock-lookout": "1/7→2/8, crepuscular 1→",
+  "bee-drone": "0/6→1/5, -tribeDelivery Bee",
+  "glintsnatch-magpie": "+pickpocket 1",
+  "puddle-skimmer": "2/6→2/7",
+  "river-mink": "3/9→4/8, +dive 1",
+  "open-ocean-hermit-crab": "2/2→2/3",
+  "driftwood-crab": "2/12→2/10, -guardian",
+  "rock-pool-starfish": "2/7→1/7",
+  "dolphin-knight": "3/9→2/8, tide→2, +breach 2",
+  "moon-jelly": "1/3→4/5, dmgType physical→poison,-poison 4",
+  "fulmar-spitter": "2/4→3/5, +stormGrant {attack:2,health:2}",
+  "great-skua": "+bleed 2, -hemorrhage",
+  "kittiwake-flock": "1/5→1/4, +brood 1, +guardian, -swarm",
+  "peak-condor": "+breach 2",
+  "golden-eagle-diver": "2/2→3/5, renamed,wait 0→1,+daunt 2, diurnal→1, -pounce 3",
+  "red-billed-chough": "3/2→3/5, +foraging 1, -mountainClimber",
+  "conch-crawler": "shell 2→1, shield 4→5",
+  "mosswing-laborer": "levelSkills -→{1:{timbered:true}}",
+  "riverwing-envoy": "-esprit 1",
+  "drowned-matriarch": "2/13→2/12",
+  "truffle-piglet": "2/9→2/8, +foraging 1",
+  "wolf-spider-mother": "2/7→2/6, +swarm [Arachnid]",
+  "old-shell": "2/20→2/12",
+  "pyrenean-desman": "2/10→2/7, +nocturnal 1",
+  "platypus-spur": "4/4→4/5, renamed,poison 2→1",
+  "pond-algae": "1/7→1/8, dmgType physical→water",
+  "lions-mane-jelly": "1/16→3/11, dmgType physical→shock,+poisonBarbs 2, -poison 2",
+  "shoal-shark": "4/11→3/11, tide→3",
+  "grass-snake": "2/10→2/9, +regen 1",
+  "alligator-gar": "5/5→3/7, bleed 1→3",
+  "field-vole": "1/8→1/4, +cure 1",
+  "grass-viper": "1/8→2/6, +pierce 2, -poison 1",
+  "cypress-root-lurker": "repair 1→2",
+  "box-turtle": "+shell 3, -cower shell",
+  "old-snapjaw": "+perforate 2, -bleed 1",
+  "fen-mink": "+sentry 2, -hunter {v:2,vs:poison}",
+  "constrictor-coil": "+strangle 2",
+  "swamp-alligator": "2/15→2/12, +hemorrhage 2",
+  "nutria-reedcutter": "2/7→3/8, +foraging 1",
+  "crocodile-ambusher": "5/17→3/16, +gash 2, +ambush 5",
+  "anhinga-spearbird": "1/12→1/11, +hoard 2, +herbalist 1, -pounce 2",
+  "the-unremembered": "3/12→3/10",
+  "venomlord-serpent": "1/22→8/24, dmgType -→poison,-poison 3",
+  "water-shrew": "1/6→1/4, +pounce 1, +evasive",
+  "heron-hag": "2/11→2/15, +harbinger 1, -flying, -poison 2",
+  "newt-doctor": "4/3→2/7, +herbalist 1",
+  "booming-bittern": "1/12→2/10, daunt 1→2, invisible 2→1",
+  "raven-scout": "2/5→1/5, +tally 2",
+  "lamprey": "dmgType physical→shock,+sap",
+  "cricket-drummer": "2/7→1/5, inspiring 1→2",
+  "planarian-splitter": "renamed",
+  "puffball-bombardier": "renamed",
+  "chipmunk-skirmisher": "2/5→1/4, +arrow 2, -triggers [{do:gain,on:onAttack,amount:1,resource:lumber}]",
+  "dormouse": "nocturnal 1→2"
+ },
+ "fights": [
+  {
+   "key": "6-5",
+   "side": false,
+   "win": 9.3,
+   "target": 70,
+   "gap": -60.7,
+   "pre": 71.8,
+   "move": -62.5,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "booming-bittern",
+     "k": 3,
+     "ch": "1/12→2/10, daunt 1→2, invisible 2→1"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "k": 1,
+     "ch": "repair 1→2"
+    },
+    {
+     "id": "newt-doctor",
+     "k": 4,
+     "ch": "4/3→2/7, +herbalist 1"
+    },
+    {
+     "id": "venomlord-serpent",
+     "k": 3,
+     "ch": "1/22→8/24, dmgType -→poison,-poison 3"
+    },
+    {
+     "id": "water-shrew",
+     "k": 1,
+     "ch": "1/6→1/4, +pounce 1, +evasive"
+    },
+    {
+     "id": "constrictor-coil",
+     "k": 1,
+     "ch": "+strangle 2"
+    },
+    {
+     "id": "venomlord-serpent",
+     "k": "leader",
+     "ch": "1/22→8/24, dmgType -→poison,-poison 3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "3-4",
+   "side": false,
+   "win": 18,
+   "target": 72,
+   "gap": -54,
+   "pre": 68.8,
+   "move": -50.8,
+   "refMap": 3,
+   "enemy": [
+    {
+     "id": "peak-condor",
+     "k": 3,
+     "ch": "+breach 2"
+    },
+    {
+     "id": "peregrine-stooper",
+     "k": 4,
+     "ch": "2/8→2/5, wait 1→0,pounce 2→3"
+    },
+    {
+     "id": "peregrine-stooper",
+     "k": "leader",
+     "ch": "2/8→2/5, wait 1→0,pounce 2→3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "5-6",
+   "side": false,
+   "win": 7,
+   "target": 60,
+   "gap": -53,
+   "pre": 57.3,
+   "move": -50.3,
+   "refMap": 5,
+   "enemy": [
+    {
+     "id": "fen-mink",
+     "k": 4,
+     "ch": "+sentry 2, -hunter {v:2,vs:poison}"
+    },
+    {
+     "id": "swamp-alligator",
+     "k": 3,
+     "ch": "2/15→2/12, +hemorrhage 2"
+    },
+    {
+     "id": "fen-mink",
+     "k": "leader",
+     "ch": "+sentry 2, -hunter {v:2,vs:poison}"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "6-6",
+   "side": false,
+   "win": 12.5,
+   "target": 65,
+   "gap": -52.5,
+   "pre": 62.5,
+   "move": -50,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "anhinga-spearbird",
+     "k": 1,
+     "ch": "1/12→1/11, +hoard 2, +herbalist 1, -pounce 2"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "k": 1,
+     "ch": "repair 1→2"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "k": 4,
+     "ch": "2/7→3/8, +foraging 1"
+    },
+    {
+     "id": "pond-algae",
+     "k": 1,
+     "ch": "1/7→1/8, dmgType physical→water"
+    },
+    {
+     "id": "venomlord-serpent",
+     "k": 4,
+     "ch": "1/22→8/24, dmgType -→poison,-poison 3"
+    },
+    {
+     "id": "water-shrew",
+     "k": 1,
+     "ch": "1/6→1/4, +pounce 1, +evasive"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "5-4",
+   "side": false,
+   "win": 19.8,
+   "target": 72,
+   "gap": -52.2,
+   "pre": 70.8,
+   "move": -51,
+   "refMap": 5,
+   "enemy": [
+    {
+     "id": "fen-mink",
+     "k": 2,
+     "ch": "+sentry 2, -hunter {v:2,vs:poison}"
+    },
+    {
+     "id": "grass-viper",
+     "k": 2,
+     "ch": "1/8→2/6, +pierce 2, -poison 1"
+    },
+    {
+     "id": "fen-mink",
+     "k": "leader",
+     "ch": "+sentry 2, -hunter {v:2,vs:poison}"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "4-1",
+   "side": false,
+   "win": 38.3,
+   "target": 90,
+   "gap": -51.7,
+   "pre": 85.3,
+   "move": -47,
+   "refMap": 4,
+   "enemy": [
+    {
+     "id": "platypus-spur",
+     "k": 4,
+     "ch": "4/4→4/5, renamed,poison 2→1"
+    },
+    {
+     "id": "shoal-shark",
+     "k": 1,
+     "ch": "4/11→3/11, tide→3"
+    },
+    {
+     "id": "snapstick-turtle",
+     "k": 2,
+     "ch": "2/12→4/6, +armor 1"
+    },
+    {
+     "id": "water-shrew",
+     "k": 3,
+     "ch": "1/6→1/4, +pounce 1, +evasive"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "4-2",
+   "side": false,
+   "win": 29.5,
+   "target": 80,
+   "gap": -50.5,
+   "pre": 84.3,
+   "move": -54.8,
+   "refMap": 4,
+   "enemy": [
+    {
+     "id": "conch-crawler",
+     "k": 1,
+     "ch": "shell 2→1, shield 4→5"
+    },
+    {
+     "id": "grass-snake",
+     "k": 1,
+     "ch": "2/10→2/9, +regen 1"
+    },
+    {
+     "id": "planarian-splitter",
+     "k": 3,
+     "ch": "renamed"
+    },
+    {
+     "id": "water-shrew",
+     "k": 4,
+     "ch": "1/6→1/4, +pounce 1, +evasive"
+    },
+    {
+     "id": "water-shrew",
+     "k": "leader",
+     "ch": "1/6→1/4, +pounce 1, +evasive"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "20-9",
+   "side": false,
+   "win": 99,
+   "target": 50,
+   "gap": 49,
+   "pre": 99,
+   "move": 0,
+   "refMap": 20,
+   "enemy": [],
+   "mine": []
+  },
+  {
+   "key": "5-2",
+   "side": false,
+   "win": 39,
+   "target": 84,
+   "gap": -45,
+   "pre": 81.8,
+   "move": -42.8,
+   "refMap": 5,
+   "enemy": [
+    {
+     "id": "constrictor-coil",
+     "k": 3,
+     "ch": "+strangle 2"
+    },
+    {
+     "id": "swamp-alligator",
+     "k": 4,
+     "ch": "2/15→2/12, +hemorrhage 2"
+    },
+    {
+     "id": "box-turtle",
+     "k": "leader",
+     "ch": "+shell 3, -cower shell"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "6-3",
+   "side": false,
+   "win": 40.3,
+   "target": 80,
+   "gap": -39.7,
+   "pre": 73.3,
+   "move": -33,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "anhinga-spearbird",
+     "k": 4,
+     "ch": "1/12→1/11, +hoard 2, +herbalist 1, -pounce 2"
+    },
+    {
+     "id": "constrictor-coil",
+     "k": 1,
+     "ch": "+strangle 2"
+    },
+    {
+     "id": "crocodile-ambusher",
+     "k": 4,
+     "ch": "5/17→3/16, +gash 2, +ambush 5"
+    },
+    {
+     "id": "lamprey",
+     "k": 2,
+     "ch": "dmgType physical→shock,+sap"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "k": 3,
+     "ch": "2/7→3/8, +foraging 1"
+    },
+    {
+     "id": "lamprey",
+     "k": "leader",
+     "ch": "dmgType physical→shock,+sap"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "3-6",
+   "side": false,
+   "win": 21.5,
+   "target": 60,
+   "gap": -38.5,
+   "pre": 57,
+   "move": -35.5,
+   "refMap": 3,
+   "enemy": [
+    {
+     "id": "peak-condor",
+     "k": 4,
+     "ch": "+breach 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "3-3",
+   "side": false,
+   "win": 40,
+   "target": 78,
+   "gap": -38,
+   "pre": 73.3,
+   "move": -33.3,
+   "refMap": 3,
+   "enemy": [
+    {
+     "id": "gull-thief",
+     "k": 1,
+     "ch": "triggers [{do:gain,on:onKill,amount:1,resource:lumber}]→[{do:gain,on:onHit,amount:1,resource:lumber}]"
+    },
+    {
+     "id": "peak-condor",
+     "k": 4,
+     "ch": "+breach 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "10-A-3",
+   "side": true,
+   "win": 33.8,
+   "target": 70,
+   "gap": -36.2,
+   "pre": 67.5,
+   "move": -33.7,
+   "refMap": 11,
+   "enemy": [
+    {
+     "id": "moon-jelly",
+     "k": 4,
+     "ch": "1/3→4/5, dmgType physical→poison,-poison 4"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "1-A-2",
+   "side": true,
+   "win": 45.5,
+   "target": 80,
+   "gap": -34.5,
+   "pre": 75.3,
+   "move": -29.8,
+   "refMap": 12,
+   "enemy": [
+    {
+     "id": "bee-forager",
+     "k": 2,
+     "ch": "+healing 1, -triggers [{do:heal,on:perTurn,sub:random,who:ally,amount:1,turnOf:self}]"
+    },
+    {
+     "id": "ant-scout",
+     "k": 2,
+     "ch": "1/5→1/4"
+    },
+    {
+     "id": "dormouse",
+     "k": 3,
+     "ch": "nocturnal 1→2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 3,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "1-A-3",
+   "side": true,
+   "win": 38,
+   "target": 70,
+   "gap": -32,
+   "pre": 68.8,
+   "move": -30.8,
+   "refMap": 12,
+   "enemy": [
+    {
+     "id": "ant-scout",
+     "k": 1,
+     "ch": "1/5→1/4"
+    },
+    {
+     "id": "bee-forager",
+     "k": 1,
+     "ch": "+healing 1, -triggers [{do:heal,on:perTurn,sub:random,who:ally,amount:1,turnOf:self}]"
+    },
+    {
+     "id": "dormouse",
+     "k": 3,
+     "ch": "nocturnal 1→2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 3,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "3-7",
+   "side": false,
+   "win": 8.5,
+   "target": 40,
+   "gap": -31.5,
+   "pre": 33.8,
+   "move": -25.3,
+   "refMap": 3,
+   "enemy": [
+    {
+     "id": "golden-eagle-diver",
+     "k": 1,
+     "ch": "2/2→3/5, renamed,wait 0→1,+daunt 2, diurnal→1, -pounce 3"
+    },
+    {
+     "id": "peak-condor",
+     "k": 2,
+     "ch": "+breach 2"
+    },
+    {
+     "id": "puffin-diver",
+     "k": 3,
+     "ch": "2/5→2/8, tide→2, -dive 2"
+    },
+    {
+     "id": "peak-condor",
+     "k": "leader",
+     "ch": "+breach 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "5-7",
+   "side": false,
+   "win": 9.3,
+   "target": 40,
+   "gap": -30.7,
+   "pre": 43.3,
+   "move": -34,
+   "refMap": 5,
+   "enemy": [
+    {
+     "id": "alligator-gar",
+     "k": 3,
+     "ch": "5/5→3/7, bleed 1→3"
+    },
+    {
+     "id": "alligator-gar",
+     "k": "leader",
+     "ch": "5/5→3/7, bleed 1→3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "4-5",
+   "side": false,
+   "win": 9.5,
+   "target": 40,
+   "gap": -30.5,
+   "pre": 16.8,
+   "move": -7.3,
+   "refMap": 4,
+   "enemy": [
+    {
+     "id": "conch-crawler",
+     "k": 4,
+     "ch": "shell 2→1, shield 4→5"
+    },
+    {
+     "id": "drowned-matriarch",
+     "k": 2,
+     "ch": "2/13→2/12"
+    },
+    {
+     "id": "pyrenean-desman",
+     "k": 4,
+     "ch": "2/10→2/7, +nocturnal 1"
+    },
+    {
+     "id": "shoal-shark",
+     "k": 1,
+     "ch": "4/11→3/11, tide→3"
+    },
+    {
+     "id": "shoal-shark",
+     "k": "leader",
+     "ch": "4/11→3/11, tide→3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "3-1",
+   "side": false,
+   "win": 61.3,
+   "target": 90,
+   "gap": -28.7,
+   "pre": 86.3,
+   "move": -25,
+   "refMap": 3,
+   "enemy": [
+    {
+     "id": "peak-condor",
+     "k": 3,
+     "ch": "+breach 2"
+    },
+    {
+     "id": "puffin-diver",
+     "k": 3,
+     "ch": "2/5→2/8, tide→2, -dive 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "3-5",
+   "side": false,
+   "win": 37.5,
+   "target": 66,
+   "gap": -28.5,
+   "pre": 65.5,
+   "move": -28,
+   "refMap": 3,
+   "enemy": [
+    {
+     "id": "golden-eagle-diver",
+     "k": 1,
+     "ch": "2/2→3/5, renamed,wait 0→1,+daunt 2, diurnal→1, -pounce 3"
+    },
+    {
+     "id": "peregrine-stooper",
+     "k": 4,
+     "ch": "2/8→2/5, wait 1→0,pounce 2→3"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "k": "leader",
+     "ch": "2/2→3/5, renamed,wait 0→1,+daunt 2, diurnal→1, -pounce 3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "5-3",
+   "side": false,
+   "win": 39.5,
+   "target": 68,
+   "gap": -28.5,
+   "pre": 67,
+   "move": -27.5,
+   "refMap": 5,
+   "enemy": [
+    {
+     "id": "constrictor-coil",
+     "k": 5,
+     "ch": "+strangle 2"
+    },
+    {
+     "id": "swamp-alligator",
+     "k": 4,
+     "ch": "2/15→2/12, +hemorrhage 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "2-B-2",
+   "side": true,
+   "win": 47,
+   "target": 75,
+   "gap": -28,
+   "pre": 80.5,
+   "move": -33.5,
+   "refMap": 7,
+   "enemy": [
+    {
+     "id": "gull-thief",
+     "k": 4,
+     "ch": "triggers [{do:gain,on:onKill,amount:1,resource:lumber}]→[{do:gain,on:onHit,amount:1,resource:lumber}]"
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "k": 2,
+     "ch": "2/2→2/3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    }
+   ]
+  },
+  {
+   "key": "1-A-5",
+   "side": true,
+   "win": 67.5,
+   "target": 40,
+   "gap": 27.5,
+   "pre": 42.8,
+   "move": 24.7,
+   "refMap": 12,
+   "enemy": [
+    {
+     "id": "puddle-skimmer",
+     "k": 4,
+     "ch": "2/6→2/7"
+    },
+    {
+     "id": "robin-redbreast",
+     "k": 2,
+     "ch": "2/5→1/4, diurnal 1→2"
+    },
+    {
+     "id": "field-vole",
+     "k": "leader",
+     "ch": "1/8→1/4, +cure 1"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 3,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "4-3",
+   "side": false,
+   "win": 43,
+   "target": 70,
+   "gap": -27,
+   "pre": 69.3,
+   "move": -26.3,
+   "refMap": 4,
+   "enemy": [
+    {
+     "id": "conch-crawler",
+     "k": 4,
+     "ch": "shell 2→1, shield 4→5"
+    },
+    {
+     "id": "grass-snake",
+     "k": 4,
+     "ch": "2/10→2/9, +regen 1"
+    },
+    {
+     "id": "platypus-spur",
+     "k": 3,
+     "ch": "4/4→4/5, renamed,poison 2→1"
+    },
+    {
+     "id": "river-mink",
+     "k": 1,
+     "ch": "3/9→4/8, +dive 1"
+    },
+    {
+     "id": "water-shrew",
+     "k": 1,
+     "ch": "1/6→1/4, +pounce 1, +evasive"
+    },
+    {
+     "id": "river-mink",
+     "k": "leader",
+     "ch": "3/9→4/8, +dive 1"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "6-4",
+   "side": false,
+   "win": 49.8,
+   "target": 75,
+   "gap": -25.2,
+   "pre": 73,
+   "move": -23.2,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "cypress-root-lurker",
+     "k": 2,
+     "ch": "repair 1→2"
+    },
+    {
+     "id": "pond-algae",
+     "k": 1,
+     "ch": "1/7→1/8, dmgType physical→water"
+    },
+    {
+     "id": "venomlord-serpent",
+     "k": 4,
+     "ch": "1/22→8/24, dmgType -→poison,-poison 3"
+    },
+    {
+     "id": "water-shrew",
+     "k": 1,
+     "ch": "1/6→1/4, +pounce 1, +evasive"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "11-8",
+   "side": false,
+   "win": 89,
+   "target": 63.8,
+   "gap": 25.2,
+   "pre": 63,
+   "move": 26,
+   "refMap": 11,
+   "enemy": [
+    {
+     "id": "kittiwake-flock",
+     "k": 1,
+     "ch": "1/5→1/4, +brood 1, +guardian, -swarm"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "6-2",
+   "side": false,
+   "win": 61.8,
+   "target": 85,
+   "gap": -23.2,
+   "pre": 85.5,
+   "move": -23.7,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "booming-bittern",
+     "k": 4,
+     "ch": "1/12→2/10, daunt 1→2, invisible 2→1"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "k": 3,
+     "ch": "repair 1→2"
+    },
+    {
+     "id": "pond-algae",
+     "k": 1,
+     "ch": "1/7→1/8, dmgType physical→water"
+    },
+    {
+     "id": "venomlord-serpent",
+     "k": 4,
+     "ch": "1/22→8/24, dmgType -→poison,-poison 3"
+    },
+    {
+     "id": "lamprey",
+     "k": 4,
+     "ch": "dmgType physical→shock,+sap"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "k": "leader",
+     "ch": "repair 1→2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "4-4",
+   "side": false,
+   "win": 38.5,
+   "target": 60,
+   "gap": -21.5,
+   "pre": 65.5,
+   "move": -27,
+   "refMap": 4,
+   "enemy": [
+    {
+     "id": "grass-snake",
+     "k": 4,
+     "ch": "2/10→2/9, +regen 1"
+    },
+    {
+     "id": "kittiwake-flock",
+     "k": 1,
+     "ch": "1/5→1/4, +brood 1, +guardian, -swarm"
+    },
+    {
+     "id": "platypus-spur",
+     "k": 1,
+     "ch": "4/4→4/5, renamed,poison 2→1"
+    },
+    {
+     "id": "shoal-shark",
+     "k": 3,
+     "ch": "4/11→3/11, tide→3"
+    },
+    {
+     "id": "water-shrew",
+     "k": 3,
+     "ch": "1/6→1/4, +pounce 1, +evasive"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "2-2",
+   "side": false,
+   "win": 58.8,
+   "target": 80,
+   "gap": -21.2,
+   "pre": 67,
+   "move": -8.2,
+   "refMap": 2,
+   "enemy": [
+    {
+     "id": "open-ocean-hermit-crab",
+     "k": 4,
+     "ch": "2/2→2/3"
+    },
+    {
+     "id": "rock-pool-starfish",
+     "k": 3,
+     "ch": "2/7→1/7"
+    },
+    {
+     "id": "pincushion-urchin",
+     "k": 4,
+     "ch": "+poisonBarbs 2, -thorns 3"
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "k": "leader",
+     "ch": "2/2→2/3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    },
+    {
+     "id": "bee-forager",
+     "k": 4,
+     "ch": "+healing 1, -triggers [{do:heal,on:perTurn,sub:random,who:ally,amount:1,turnOf:self}]"
+    },
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "5-5",
+   "side": false,
+   "win": 45,
+   "target": 66,
+   "gap": -21,
+   "pre": 69,
+   "move": -24,
+   "refMap": 5,
+   "enemy": [
+    {
+     "id": "swamp-alligator",
+     "k": 3,
+     "ch": "2/15→2/12, +hemorrhage 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "1-A-1",
+   "side": true,
+   "win": 69.3,
+   "target": 90,
+   "gap": -20.7,
+   "pre": 80.5,
+   "move": -11.2,
+   "refMap": 12,
+   "enemy": [
+    {
+     "id": "ant-scout",
+     "k": 2,
+     "ch": "1/5→1/4"
+    },
+    {
+     "id": "honey-bee",
+     "k": 2,
+     "ch": "levelSkills -→{1:{diurnal:1}}"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 3,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "6-8",
+   "side": false,
+   "win": 20.3,
+   "target": 40,
+   "gap": -19.7,
+   "pre": 33.3,
+   "move": -13,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "anhinga-spearbird",
+     "k": 4,
+     "ch": "1/12→1/11, +hoard 2, +herbalist 1, -pounce 2"
+    },
+    {
+     "id": "constrictor-coil",
+     "k": 1,
+     "ch": "+strangle 2"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "k": 4,
+     "ch": "2/7→3/8, +foraging 1"
+    },
+    {
+     "id": "pond-algae",
+     "k": 1,
+     "ch": "1/7→1/8, dmgType physical→water"
+    },
+    {
+     "id": "venomlord-serpent",
+     "k": 4,
+     "ch": "1/22→8/24, dmgType -→poison,-poison 3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "2-B-1",
+   "side": true,
+   "win": 70.5,
+   "target": 90,
+   "gap": -19.5,
+   "pre": 87.3,
+   "move": -16.8,
+   "refMap": 7,
+   "enemy": [
+    {
+     "id": "gull-thief",
+     "k": 3,
+     "ch": "triggers [{do:gain,on:onKill,amount:1,resource:lumber}]→[{do:gain,on:onHit,amount:1,resource:lumber}]"
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "k": 4,
+     "ch": "2/2→2/3"
+    },
+    {
+     "id": "pincushion-urchin",
+     "k": 3,
+     "ch": "+poisonBarbs 2, -thorns 3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    }
+   ]
+  },
+  {
+   "key": "8-7",
+   "side": false,
+   "win": 41.3,
+   "target": 60,
+   "gap": -18.7,
+   "pre": 41.5,
+   "move": -0.2,
+   "refMap": 8,
+   "enemy": [
+    {
+     "id": "hawthorn-shieldbug",
+     "k": 1,
+     "ch": "2/12→1/15, +counterattack, -armor 1"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    }
+   ]
+  },
+  {
+   "key": "2-A-1",
+   "side": true,
+   "win": 71.3,
+   "target": 90,
+   "gap": -18.7,
+   "pre": 83.3,
+   "move": -12,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "pond-algae",
+     "k": 2,
+     "ch": "1/7→1/8, dmgType physical→water"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "1-5",
+   "side": false,
+   "win": 58.5,
+   "target": 40,
+   "gap": 18.5,
+   "pre": 37,
+   "move": 21.5,
+   "refMap": 1,
+   "enemy": [
+    {
+     "id": "ant-scout",
+     "k": 1,
+     "ch": "1/5→1/4"
+    },
+    {
+     "id": "badger-lumberjack",
+     "k": 4,
+     "ch": "2/11→2/10"
+    },
+    {
+     "id": "dormouse",
+     "k": 2,
+     "ch": "nocturnal 1→2"
+    },
+    {
+     "id": "puddle-skimmer",
+     "k": 4,
+     "ch": "2/6→2/7"
+    },
+    {
+     "id": "field-vole",
+     "k": "leader",
+     "ch": "1/8→1/4, +cure 1"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    },
+    {
+     "id": "bee-forager",
+     "k": 4,
+     "ch": "+healing 1, -triggers [{do:heal,on:perTurn,sub:random,who:ally,amount:1,turnOf:self}]"
+    }
+   ]
+  },
+  {
+   "key": "19-5",
+   "side": false,
+   "win": 42.3,
+   "target": 60,
+   "gap": -17.7,
+   "pre": 42.3,
+   "move": 0,
+   "refMap": 19,
+   "enemy": [],
+   "mine": []
+  },
+  {
+   "key": "11-10",
+   "side": false,
+   "win": 22.5,
+   "target": 40,
+   "gap": -17.5,
+   "pre": 37,
+   "move": -14.5,
+   "refMap": 11,
+   "enemy": [
+    {
+     "id": "kittiwake-flock",
+     "k": 1,
+     "ch": "1/5→1/4, +brood 1, +guardian, -swarm"
+    },
+    {
+     "id": "red-billed-chough",
+     "k": 4,
+     "ch": "3/2→3/5, +foraging 1, -mountainClimber"
+    },
+    {
+     "id": "red-billed-chough",
+     "k": "leader",
+     "ch": "3/2→3/5, +foraging 1, -mountainClimber"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "19-A-8",
+   "side": true,
+   "win": 46.3,
+   "target": 63.8,
+   "gap": -17.5,
+   "pre": 63.8,
+   "move": -17.5,
+   "refMap": 23,
+   "enemy": [
+    {
+     "id": "peak-condor",
+     "k": 2,
+     "ch": "+breach 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 3,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "10-6",
+   "side": false,
+   "win": 85.8,
+   "target": 68.6,
+   "gap": 17.2,
+   "pre": 64.3,
+   "move": 21.5,
+   "refMap": 10,
+   "enemy": [
+    {
+     "id": "moon-jelly",
+     "k": 1,
+     "ch": "1/3→4/5, dmgType physical→poison,-poison 4"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "2-A-4",
+   "side": true,
+   "win": 55,
+   "target": 72,
+   "gap": -17,
+   "pre": 67.3,
+   "move": -12.3,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "shoal-shark",
+     "k": 2,
+     "ch": "4/11→3/11, tide→3"
+    },
+    {
+     "id": "water-shrew",
+     "k": 1,
+     "ch": "1/6→1/4, +pounce 1, +evasive"
+    },
+    {
+     "id": "shoal-shark",
+     "k": "leader",
+     "ch": "4/11→3/11, tide→3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "1-A-4",
+   "side": true,
+   "win": 43,
+   "target": 60,
+   "gap": -17,
+   "pre": 62,
+   "move": -19,
+   "refMap": 12,
+   "enemy": [
+    {
+     "id": "ant-scout",
+     "k": 2,
+     "ch": "1/5→1/4"
+    },
+    {
+     "id": "bee-forager",
+     "k": 2,
+     "ch": "+healing 1, -triggers [{do:heal,on:perTurn,sub:random,who:ally,amount:1,turnOf:self}]"
+    },
+    {
+     "id": "dormouse",
+     "k": 2,
+     "ch": "nocturnal 1→2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 3,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "10-8",
+   "side": false,
+   "win": 77,
+   "target": 60,
+   "gap": 17,
+   "pre": 66.8,
+   "move": 10.2,
+   "refMap": 10,
+   "enemy": [
+    {
+     "id": "moon-jelly",
+     "k": 3,
+     "ch": "1/3→4/5, dmgType physical→poison,-poison 4"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "19-1",
+   "side": false,
+   "win": 74.3,
+   "target": 90,
+   "gap": -15.7,
+   "pre": 74.3,
+   "move": 0,
+   "refMap": 19,
+   "enemy": [],
+   "mine": []
+  },
+  {
+   "key": "2-1",
+   "side": false,
+   "win": 74.3,
+   "target": 90,
+   "gap": -15.7,
+   "pre": 82.3,
+   "move": -8,
+   "refMap": 2,
+   "enemy": [
+    {
+     "id": "open-ocean-hermit-crab",
+     "k": 4,
+     "ch": "2/2→2/3"
+    },
+    {
+     "id": "pincushion-urchin",
+     "k": 4,
+     "ch": "+poisonBarbs 2, -thorns 3"
+    },
+    {
+     "id": "puddle-skimmer",
+     "k": 1,
+     "ch": "2/6→2/7"
+    },
+    {
+     "id": "rock-pool-starfish",
+     "k": 3,
+     "ch": "2/7→1/7"
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "k": "leader",
+     "ch": "2/2→2/3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    },
+    {
+     "id": "bee-forager",
+     "k": 4,
+     "ch": "+healing 1, -triggers [{do:heal,on:perTurn,sub:random,who:ally,amount:1,turnOf:self}]"
+    },
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "11-7",
+   "side": false,
+   "win": 83,
+   "target": 67.5,
+   "gap": 15.5,
+   "pre": 76,
+   "move": 7,
+   "refMap": 11,
+   "enemy": [
+    {
+     "id": "peak-condor",
+     "k": 1,
+     "ch": "+breach 2"
+    },
+    {
+     "id": "swamp-alligator",
+     "k": 1,
+     "ch": "2/15→2/12, +hemorrhage 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "10-A-5",
+   "side": true,
+   "win": 24.8,
+   "target": 40,
+   "gap": -15.2,
+   "pre": 38.3,
+   "move": -13.5,
+   "refMap": 11,
+   "enemy": [
+    {
+     "id": "moon-jelly",
+     "k": 3,
+     "ch": "1/3→4/5, dmgType physical→poison,-poison 4"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "2-A-6",
+   "side": true,
+   "win": 44.8,
+   "target": 60,
+   "gap": -15.2,
+   "pre": 56.3,
+   "move": -11.5,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "pond-algae",
+     "k": 1,
+     "ch": "1/7→1/8, dmgType physical→water"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "6-1",
+   "side": false,
+   "win": 75,
+   "target": 90,
+   "gap": -15,
+   "pre": 91,
+   "move": -16,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "anhinga-spearbird",
+     "k": 4,
+     "ch": "1/12→1/11, +hoard 2, +herbalist 1, -pounce 2"
+    },
+    {
+     "id": "crocodile-ambusher",
+     "k": 4,
+     "ch": "5/17→3/16, +gash 2, +ambush 5"
+    },
+    {
+     "id": "lamprey",
+     "k": 4,
+     "ch": "dmgType physical→shock,+sap"
+    },
+    {
+     "id": "pond-algae",
+     "k": 1,
+     "ch": "1/7→1/8, dmgType physical→water"
+    },
+    {
+     "id": "water-shrew",
+     "k": 1,
+     "ch": "1/6→1/4, +pounce 1, +evasive"
+    },
+    {
+     "id": "lamprey",
+     "k": "leader",
+     "ch": "dmgType physical→shock,+sap"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "7-A-2",
+   "side": true,
+   "win": 84.3,
+   "target": 70,
+   "gap": 14.3,
+   "pre": 80,
+   "move": 4.3,
+   "refMap": 8,
+   "enemy": [
+    {
+     "id": "hawthorn-shieldbug",
+     "k": 4,
+     "ch": "2/12→1/15, +counterattack, -armor 1"
+    },
+    {
+     "id": "planarian-splitter",
+     "k": 3,
+     "ch": "renamed"
+    },
+    {
+     "id": "puffball-bombardier",
+     "k": 2,
+     "ch": "renamed"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    }
+   ]
+  },
+  {
+   "key": "11-4",
+   "side": false,
+   "win": 93,
+   "target": 78.8,
+   "gap": 14.2,
+   "pre": 84.3,
+   "move": 8.7,
+   "refMap": 11,
+   "enemy": [
+    {
+     "id": "swamp-alligator",
+     "k": 1,
+     "ch": "2/15→2/12, +hemorrhage 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "20-A-4",
+   "side": true,
+   "win": 48.8,
+   "target": 35.5,
+   "gap": 13.3,
+   "pre": 48.8,
+   "move": 0,
+   "refMap": 20,
+   "enemy": [],
+   "mine": []
+  },
+  {
+   "key": "5-A-3",
+   "side": true,
+   "win": 47,
+   "target": 60,
+   "gap": -13,
+   "pre": 68.5,
+   "move": -21.5,
+   "refMap": 13,
+   "enemy": [
+    {
+     "id": "constrictor-coil",
+     "k": 1,
+     "ch": "+strangle 2"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "k": 1,
+     "ch": "2/7→3/8, +foraging 1"
+    },
+    {
+     "id": "swamp-alligator",
+     "k": 3,
+     "ch": "2/15→2/12, +hemorrhage 2"
+    }
+   ],
+   "mine": []
+  },
+  {
+   "key": "9-7",
+   "side": false,
+   "win": 27.3,
+   "target": 40,
+   "gap": -12.7,
+   "pre": 38.5,
+   "move": -11.2,
+   "refMap": 9,
+   "enemy": [
+    {
+     "id": "nutria-reedcutter",
+     "k": 1,
+     "ch": "2/7→3/8, +foraging 1"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    }
+   ]
+  },
+  {
+   "key": "10-2",
+   "side": false,
+   "win": 73,
+   "target": 85.7,
+   "gap": -12.7,
+   "pre": 80.5,
+   "move": -7.5,
+   "refMap": 10,
+   "enemy": [
+    {
+     "id": "dolphin-knight",
+     "k": 1,
+     "ch": "3/9→2/8, tide→2, +breach 2"
+    },
+    {
+     "id": "dolphin-knight",
+     "k": "leader",
+     "ch": "3/9→2/8, tide→2, +breach 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "10-5",
+   "side": false,
+   "win": 85.5,
+   "target": 72.9,
+   "gap": 12.6,
+   "pre": 73.3,
+   "move": 12.2,
+   "refMap": 10,
+   "enemy": [],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "11-9",
+   "side": false,
+   "win": 72.5,
+   "target": 60,
+   "gap": 12.5,
+   "pre": 59.3,
+   "move": 13.2,
+   "refMap": 11,
+   "enemy": [
+    {
+     "id": "kittiwake-flock",
+     "k": 1,
+     "ch": "1/5→1/4, +brood 1, +guardian, -swarm"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "10-A-1",
+   "side": true,
+   "win": 78,
+   "target": 90,
+   "gap": -12,
+   "pre": 84.3,
+   "move": -6.3,
+   "refMap": 11,
+   "enemy": [
+    {
+     "id": "moon-jelly",
+     "k": 1,
+     "ch": "1/3→4/5, dmgType physical→poison,-poison 4"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 4,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "6-7",
+   "side": false,
+   "win": 48,
+   "target": 60,
+   "gap": -12,
+   "pre": 62,
+   "move": -14,
+   "refMap": 6,
+   "enemy": [
+    {
+     "id": "anhinga-spearbird",
+     "k": 1,
+     "ch": "1/12→1/11, +hoard 2, +herbalist 1, -pounce 2"
+    },
+    {
+     "id": "crocodile-ambusher",
+     "k": 2,
+     "ch": "5/17→3/16, +gash 2, +ambush 5"
+    },
+    {
+     "id": "venomlord-serpent",
+     "k": 4,
+     "ch": "1/22→8/24, dmgType -→poison,-poison 3"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "19-A-4",
+   "side": true,
+   "win": 90.8,
+   "target": 78.8,
+   "gap": 12,
+   "pre": 94.5,
+   "move": -3.7,
+   "refMap": 23,
+   "enemy": [
+    {
+     "id": "peak-condor",
+     "k": 1,
+     "ch": "+breach 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 3,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "17-A-4",
+   "side": true,
+   "win": 51.8,
+   "target": 40,
+   "gap": 11.8,
+   "pre": 46.3,
+   "move": 5.5,
+   "refMap": 21,
+   "enemy": [],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 3,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "5-1",
+   "side": false,
+   "win": 78.3,
+   "target": 90,
+   "gap": -11.7,
+   "pre": 91,
+   "move": -12.7,
+   "refMap": 5,
+   "enemy": [
+    {
+     "id": "constrictor-coil",
+     "k": 4,
+     "ch": "+strangle 2"
+    },
+    {
+     "id": "shoal-shark",
+     "k": 1,
+     "ch": "4/11→3/11, tide→3"
+    },
+    {
+     "id": "swamp-alligator",
+     "k": 4,
+     "ch": "2/15→2/12, +hemorrhage 2"
+    }
+   ],
+   "mine": [
+    {
+     "id": "cricket-drummer",
+     "k": 4,
+     "ch": "2/7→1/5, inspiring 1→2"
+    }
+   ]
+  },
+  {
+   "key": "7-A-3",
+   "side": true,
+   "win": 81.5,
+   "target": 70,
+   "gap": 11.5,
+   "pre": 69.8,
+   "move": 11.7,
+   "refMap": 8,
+   "enemy": [
+    {
+     "id": "hawthorn-shieldbug",
+     "k": 4,
+     "ch": "2/12→1/15, +counterattack, -armor 1"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    }
+   ]
+  },
+  {
+   "key": "7-A-5",
+   "side": true,
+   "win": 28.5,
+   "target": 40,
+   "gap": -11.5,
+   "pre": 32.5,
+   "move": -4,
+   "refMap": 8,
+   "enemy": [
+    {
+     "id": "puffball-bombardier",
+     "k": 3,
+     "ch": "renamed"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    }
+   ]
+  },
+  {
+   "key": "9-1",
+   "side": false,
+   "win": 79,
+   "target": 90,
+   "gap": -11,
+   "pre": 87,
+   "move": -8,
+   "refMap": 9,
+   "enemy": [
+    {
+     "id": "crocodile-ambusher",
+     "k": 4,
+     "ch": "5/17→3/16, +gash 2, +ambush 5"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "k": 1,
+     "ch": "2/7→3/8, +foraging 1"
+    },
+    {
+     "id": "crocodile-ambusher",
+     "k": "leader",
+     "ch": "5/17→3/16, +gash 2, +ambush 5"
+    }
+   ],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    }
+   ]
+  },
+  {
+   "key": "9-2",
+   "side": false,
+   "win": 73,
+   "target": 84,
+   "gap": -11,
+   "pre": 77.8,
+   "move": -4.8,
+   "refMap": 9,
+   "enemy": [],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    }
+   ]
+  },
+  {
+   "key": "9-3",
+   "side": false,
+   "win": 67,
+   "target": 78,
+   "gap": -11,
+   "pre": 71,
+   "move": -4,
+   "refMap": 9,
+   "enemy": [],
+   "mine": [
+    {
+     "id": "soldier-ant",
+     "k": 4,
+     "ch": "2/8→2/7"
+    }
+   ]
+  },
+  {
+   "key": "15-2",
+   "side": false,
+   "win": 73,
+   "target": 84,
+   "gap": -11,
+   "pre": 71,
+   "move": 2,
+   "refMap": 15,
+   "enemy": [],
+   "mine": [
+    {
+     "id": "golden-eagle-diver",
+     "k": 1,
+     "ch": "2/2→3/5, renamed,wait 0→1,+daunt 2, diurnal→1, -pounce 3"
+    }
+   ]
+  },
+  {
+   "key": "12-7",
+   "side": false,
+   "win": 51,
+   "target": 40,
+   "gap": 11,
+   "pre": 44.8,
+   "move": 6.2,
+   "refMap": 12,
+   "enemy": [],
+   "mine": [
+    {
+     "id": "wolf-spider-mother",
+     "k": 3,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  },
+  {
+   "key": "0-2",
+   "side": false,
+   "win": 85.8,
+   "target": 75,
+   "gap": 10.8,
+   "pre": 77.3,
+   "move": 8.5,
+   "refMap": 0,
+   "enemy": [
+    {
+     "id": "ant-scout",
+     "k": 2,
+     "ch": "1/5→1/4"
+    },
+    {
+     "id": "bee-sentry",
+     "k": 2,
+     "ch": "2/5→1/5"
+    },
+    {
+     "id": "chipmunk-forager",
+     "k": 4,
+     "ch": "levelSkills -→{1:{foraging:1}}"
+    }
+   ],
+   "mine": [
+    {
+     "id": "honey-bee",
+     "k": 3,
+     "ch": "levelSkills -→{1:{diurnal:1}}"
+    },
+    {
+     "id": "sparrow-chick",
+     "k": 3,
+     "ch": "-flying,levelSkills {1:{flying:true,hatchling:true}}→{1:{bleed:1,flying:true,hatchling:true}}"
+    }
+   ]
+  },
+  {
+   "key": "16-2",
+   "side": false,
+   "win": 73.5,
+   "target": 84,
+   "gap": -10.5,
+   "pre": 76.3,
+   "move": -2.8,
+   "refMap": 16,
+   "enemy": [],
+   "mine": [
+    {
+     "id": "golden-eagle-diver",
+     "k": 1,
+     "ch": "2/2→3/5, renamed,wait 0→1,+daunt 2, diurnal→1, -pounce 3"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "k": 1,
+     "ch": "2/7→2/6, +swarm [Arachnid]"
+    }
+   ]
+  }
+ ]
+}

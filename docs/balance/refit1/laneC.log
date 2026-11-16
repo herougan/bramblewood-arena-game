@@ -1,0 +1,60 @@
+5-4 target 72 (64-80) size 18 start {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"mudflat-godwit":4} problems []
+start {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"mudflat-godwit":4} 57.9
+round 1: cur 56.7/57.9; 60 legal, 60 read + 8 predicted (of 33); top: -3 mudflat-godwit +3 grass-viper 63.3/51.7 | -4 mudflat-godwit +1 shoal-shark +3 grass-viper 66.7/51.3 | -4 mudflat-godwit +1 shoal-shark +3 fen-mink 66.7/50
+no nearer move
+shield 0 61.3
+RESULT 5-4 {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"mudflat-godwit":4} 61.3 {"shieldOverride":0} moves:  problems: []
+6-4 target 75 (67-83) size 13 start {"fire-ant-raft":4,"mosquito-cloud":1,"pond-algae":1,"venomlord-serpent":4,"constrictor-coil":1,"crocodile-ambusher":2} problems []
+start {"fire-ant-raft":4,"mosquito-cloud":1,"pond-algae":1,"venomlord-serpent":4,"constrictor-coil":1,"crocodile-ambusher":2} 72.9
+RESULT 6-4 {"fire-ant-raft":4,"mosquito-cloud":1,"pond-algae":1,"venomlord-serpent":4,"constrictor-coil":1,"crocodile-ambusher":2} 72.9 {} moves:  problems: []
+6-6 target 65 (57-73) size 15 start {"anhinga-spearbird":4,"camouflage-frog":4,"cypress-root-lurker":1,"pond-algae":1,"venomlord-serpent":4,"water-shrew":1} problems []
+start {"anhinga-spearbird":4,"camouflage-frog":4,"cypress-root-lurker":1,"pond-algae":1,"venomlord-serpent":4,"water-shrew":1} 55.4
+round 1: cur 60/55.4; 55 legal, 55 read + 8 predicted (of 44); top: -1 pond-algae +1 lamprey 66.7/53.8 | -1 venomlord-serpent +1 lamprey 66.7/51.3 | -3 camouflage-frog +3 lamprey 70/48.3
+no nearer move
+shield 1 55.4
+shield 0 60
+RESULT 6-6 {"anhinga-spearbird":4,"camouflage-frog":4,"cypress-root-lurker":1,"pond-algae":1,"venomlord-serpent":4,"water-shrew":1} 60 {"shieldOverride":0} moves:  problems: []
+5-5 target 66 (58-74) size 14 start {"bog-leech":1,"fire-ant-raft":4,"marsh-mallow-hare":1,"mosquito-cloud":1,"muskrat-reedgatherer":1,"raft-spider":3,"swamp-alligator":3} problems []
+start {"bog-leech":1,"fire-ant-raft":4,"marsh-mallow-hare":1,"mosquito-cloud":1,"muskrat-reedgatherer":1,"raft-spider":3,"swamp-alligator":3} 41.3
+round 1: cur 50/41.3; 108 legal, 90 read + 8 predicted (of 46); top: -1 bog-leech +1 swamp-alligator 60/43.8 | -1 bog-leech +1 raft-spider 60/42.1 | -1 bog-leech +1 constrictor-coil 60/42.1
+round 2: cur 60/43.8; 127 legal, 90 read + 8 predicted (of 47); top: -3 fire-ant-raft +3 constrictor-coil 66.7/47.1 | -1 marsh-mallow-hare +1 raft-spider 63.3/43.3 | -1 mosquito-cloud +1 raft-spider 66.7/42.9
+round 3: cur 66.7/47.1; 109 legal, 90 read + 8 predicted (of 48); top: -1 marsh-mallow-hare +1 constrictor-coil 66.7/58.3 | -1 mosquito-cloud +1 shoal-shark 66.7/54.2 | -1 mosquito-cloud +1 alley-cat 66.7/47.5
+round 4: cur 66.7/58.3; 128 legal, 90 read + 8 predicted (of 51); top: -1 mosquito-cloud +1 shoal-shark 66.7/62.9 | -1 mosquito-cloud +1 bog-leech 66.7/53.8 | -3 raft-spider +1 shoal-shark +2 fire-ant-raft 66.7/45.4
+round 5: cur 66.7/62.9; 114 legal, 90 read + 8 predicted (of 57); top: -1 shoal-shark +1 mosquito-cloud 66.7/58.3 | -1 swamp-alligator +1 marsh-mallow-hare 66.7/55.8 | -1 shoal-shark +1 bog-leech 66.7/53.8
+no nearer move
+RESULT 5-5 {"fire-ant-raft":1,"muskrat-reedgatherer":1,"raft-spider":3,"swamp-alligator":4,"constrictor-coil":4,"shoal-shark":1} 62.9 {} moves: -1 bog-leech +1 swamp-alligator ; -3 fire-ant-raft +3 constrictor-coil ; -1 marsh-mallow-hare +1 constrictor-coil ; -1 mosquito-cloud +1 shoal-shark problems: []
+5-2 target 84 (76-92) size 14 start {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} problems []
+start {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} 55
+round 1: cur 63.3/55; 115 legal, 90 read + 8 predicted (of 48); top: -1 constrictor-coil +1 fire-ant-raft 70/55 | -2 raft-spider +2 fire-ant-raft 66.7/48.8 | -1 constrictor-coil -1 swamp-alligator +1 fire-ant-raft +1 mudflat-godwit 66.7/46.7
+no nearer move
+shield 0 55
+RESULT 5-2 {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} 55 {} moves:  problems: []
+5-6 target 60 (52-68) size 17 start {"fen-mink":3,"muskrat-reedgatherer":2,"raft-spider":4,"swamp-alligator":3,"marsh-mallow-hare":4,"shoal-shark":1} problems []
+start {"fen-mink":3,"muskrat-reedgatherer":2,"raft-spider":4,"swamp-alligator":3,"marsh-mallow-hare":4,"shoal-shark":1} 20.4
+round 1: cur 16.7/20.4; 140 legal, 90 read + 8 predicted (of 22); top: -3 swamp-alligator -4 raft-spider +3 mosquito-cloud +4 bog-leech 40/42.5 | -3 swamp-alligator -1 raft-spider +3 mosquito-cloud +1 bog-leech 43.3/37.5 | -3 swamp-alligator +3 mosquito-cloud 43.3/36.7
+round 2: cur 40/42.5; 140 legal, 90 read + 8 predicted (of 43); top: -4 bog-leech +4 raft-spider 43.3/36.7 | -1 marsh-mallow-hare -1 bog-leech +1 fire-ant-raft +1 mosquito-cloud 43.3/36.3 | -1 marsh-mallow-hare +1 fire-ant-raft 43.3/35.4
+no nearer move
+shield 0 50.8
+RESULT 5-6 {"fen-mink":3,"muskrat-reedgatherer":2,"marsh-mallow-hare":4,"shoal-shark":1,"mosquito-cloud":3,"bog-leech":4} 50.8 {"shieldOverride":0} moves: -3 swamp-alligator -4 raft-spider +3 mosquito-cloud +4 bog-leech problems: []
+5-7 target 40 (30-49) size 19 start {"alligator-gar":3,"fire-ant-raft":4,"marsh-mallow-hare":1,"mosquito-cloud":4,"raft-spider":2,"mudflat-godwit":4,"alley-cat":1} problems []
+start {"alligator-gar":3,"fire-ant-raft":4,"marsh-mallow-hare":1,"mosquito-cloud":4,"raft-spider":2,"mudflat-godwit":4,"alley-cat":1} 22.5
+round 1: cur 16.7/22.5; 78 legal, 78 read + 8 predicted (of 42); top: -2 alligator-gar -1 alley-cat +3 marsh-mallow-hare 36.7/26.3 | -1 alligator-gar -1 mudflat-godwit +1 marsh-mallow-hare +1 raft-spider 36.7/25.4 | -1 mudflat-godwit -1 alley-cat +1 raft-spider +1 marsh-mallow-hare 36.7/21.7
+round 2: cur 36.7/26.3; 132 legal, 90 read + 8 predicted (of 46); top: -1 mosquito-cloud +1 alligator-gar 40/27.1 | -1 mudflat-godwit +1 constrictor-coil 40/26.3 | -1 fire-ant-raft +1 mudpuppy 40/20
+no nearer move
+shield 0 26.3
+RESULT 5-7 {"alligator-gar":1,"fire-ant-raft":4,"marsh-mallow-hare":4,"mosquito-cloud":4,"raft-spider":2,"mudflat-godwit":4} 26.3 {} moves: -2 alligator-gar -1 alley-cat +3 marsh-mallow-hare problems: []
+6-8 target 40 (30-49) size 19 start {"adder-ambusher":2,"anhinga-spearbird":4,"camouflage-frog":3,"constrictor-coil":1,"nutria-reedcutter":4,"pond-algae":1,"venomlord-serpent":4} problems []
+start {"adder-ambusher":2,"anhinga-spearbird":4,"camouflage-frog":3,"constrictor-coil":1,"nutria-reedcutter":4,"pond-algae":1,"venomlord-serpent":4} 24.6
+round 1: cur 16.7/24.6; 26 legal, 26 read + 8 predicted (of 44); top: -2 nutria-reedcutter +1 adder-ambusher +1 camouflage-frog 40/34.2 | -1 constrictor-coil -1 nutria-reedcutter +1 cypress-root-lurker +1 camouflage-frog 33.3/27.5 | -1 nutria-reedcutter -1 pond-algae +1 camouflage-frog +1 mosquito-cloud 36.7/25.4
+round 2: cur 40/34.2; 24 legal, 24 read + 8 predicted (of 47); top: -1 constrictor-coil +1 cypress-root-lurker 33.3/37.1 | -1 constrictor-coil +1 lamprey 33.3/33.8 | -1 constrictor-coil -1 adder-ambusher +1 cypress-root-lurker +1 nutria-reedcutter 33.3/27.5
+round 3: cur 33.3/37.1; 43 legal, 43 read + 8 predicted (of 26); top: -1 cypress-root-lurker +1 constrictor-coil 40/34.2 | -4 camouflage-frog +1 mosquito-cloud +3 cypress-root-lurker 40/24.6 | -4 camouflage-frog +1 water-shrew +3 cypress-root-lurker 40/24.6
+no nearer move
+RESULT 6-8 {"adder-ambusher":3,"anhinga-spearbird":4,"camouflage-frog":4,"nutria-reedcutter":2,"pond-algae":1,"venomlord-serpent":4,"cypress-root-lurker":1} 37.1 {} moves: -2 nutria-reedcutter +1 adder-ambusher +1 camouflage-frog ; -1 constrictor-coil +1 cypress-root-lurker problems: []
+6-2 target 85 (77-93) size 20 start {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"pond-algae":1,"venomlord-serpent":4,"lamprey":4} problems []
+start {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"pond-algae":1,"venomlord-serpent":4,"lamprey":4} 63.8
+round 1: cur 70/63.8; 12 legal, 12 read + 8 predicted (of 37); top: -1 lamprey +1 cypress-root-lurker 76.7/66.3 | -1 booming-bittern +1 cypress-root-lurker 63.3/61.3 | -1 camouflage-frog +1 cypress-root-lurker 66.7/60.4
+round 2: cur 76.7/66.3; 12 legal, 12 read + 8 predicted (of 35); top: -1 cypress-root-lurker +1 lamprey 70/63.8 | -1 booming-bittern +1 lamprey 63.3/61.3 | -1 camouflage-frog +1 lamprey 66.7/60.4
+no nearer move
+shield 0 66.3
+RESULT 6-2 {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":4,"pond-algae":1,"venomlord-serpent":4,"lamprey":3} 66.3 {} moves: -1 lamprey +1 cypress-root-lurker problems: []
+LANE DONE

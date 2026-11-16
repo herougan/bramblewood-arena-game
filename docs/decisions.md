@@ -4,6 +4,50 @@ _Generated from `decisions.json` (2026-11-08). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**REFIT1-1. Road re-fit after your folded card edits** · Decide · Balance · asked 2026-11-16
+- Your 11-06..11-13 edits dropped the main road from 136 to 86 of 149 fights in band. Cricket Drummer (2/7 to 1/5, Inspiring 2), in the Map 2-6 reference deck, alone makes 34 fights harder; Wolf Spider Mother's Swarm makes 22 fights on Maps 10-12 easier; then Peak Condor, Soldier Ant, Moon Jelly, Dormouse, Water Shrew. REFIT1 re-fits 54 decks to the cards as they are: 125/149 in band. If Cricket Drummer goes back, 13 of them become too easy. Table: docs/balance/refit1/attribution-2026-11-16.md.
+  - a) Keep the edits; apply the 54 decks
+  - b) Also apply the 9 nearer decks (still outside the band)
+  - c) Some edits were typos: fix those first, then re-fit
+- **Default:** a
+
+**CHK1-1. Progression check: flag too-easy fights too?** · Decide · Balance · asked 2026-11-16
+- The progression-deck tournament (checklist B5) flags fights 25+ points off either way: 18 too easy, 14 too hard. Too easy for a progression deck may be fine.
+  - a) Flag only fights too hard for the progression decks
+  - b) Keep flagging both ways (±25)
+- **Default:** a
+
+**CHK1-2. What counts as a wall (checklist B6)?** · Decide · Balance · asked 2026-11-16
+- B6 says no PRO/BPRO fight may be a wall, but never defines one. Two readings: both the ladder decks and the Map reference win under 5% (6 decks today), or the ladder wins under the 15% band floor (66 decks).
+  - a) Ladder and Map reference both under 5%
+  - b) Ladder under 15%
+- **Default:** a
+
+**TF5-1. Armor 5 costs 2.9x Armor 1, not 10x** · Decide · Skills · asked 2026-11-16
+- ENG9-9 said Armor 5 should cost about 10x Armor 1. Since the SKILL2/BAL12 re-measure it costs 2.9x (measured worth). The test now checks the measured price.
+  - a) Keep the measured price (2.9x)
+  - b) Set Armor 5 to about 10x as ENG9-9 said
+- **Default:** a
+
+**TF5-2. Siege Rhino priced for Map 23, sits on Maps 15/16** · Decide · Cards · asked 2026-11-16
+- Siege Rhino's budget assumes Map 23, but it is on the Map 15 and 16 lists and in 12 decks there, so it is over budget where it is met.
+  - a) Move it off the Map 15/16 lists
+  - b) Price it for Map 15 (weaker card)
+  - c) Keep it as an early strong card
+- **Default:** a
+
+**TF5-3. Honey Badger Fury: unattainable but a reward** · Decide · Cards · asked 2026-11-16
+- Honey Badger Fury is flagged unattainable, yet it is on 3 map lists and is 19-1's first-clear reward.
+  - a) Make it attainable (keep it as the 19-1 reward)
+  - b) Replace the 19-1 reward and take it off the lists
+- **Default:** a
+
+**FOLD5-1. Does Lion's Mane Jelly resist Poison?** · Decide · Cards · asked 2026-11-16
+- Your 11-06..11-13 live edits gave Lion's Mane Jelly and Venomlord Serpent a resist-Poison entry in a place the game ignores. Venomlord already resists Poison properly; Lion's Mane does not. Should it?
+  - a) Yes, Lion's Mane resists Poison
+  - b) No, drop it
+- **Default:** a
+
 **UX4-1. Atmosphere tint dims the menus at night** · Decide · UI · asked 2026-11-16
 - With Atmosphere set to Live, the night tint (#atmoTint) lies over the whole screen, so the top bar, small text and the splash fine print read dim. The battle board is meant to darken; the menus probably are not.
   - a) Keep the tint under the top bar and dialogs (menus stay clear)

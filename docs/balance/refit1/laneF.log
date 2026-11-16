@@ -1,0 +1,8 @@
+5-3 target 68 (60-76) size 17 start {"constrictor-coil":5,"fire-ant-raft":1,"marsh-mallow-hare":2,"mudpuppy":4,"muskrat-reedgatherer":1,"swamp-alligator":4} problems []
+start {"constrictor-coil":5,"fire-ant-raft":1,"marsh-mallow-hare":2,"mudpuppy":4,"muskrat-reedgatherer":1,"swamp-alligator":4} 40
+round 1: cur 50/40; 30 legal, 30 read + 8 predicted (of 42); top: -2 mudpuppy -1 muskrat-reedgatherer +2 marsh-mallow-hare +1 raft-spider 66.7/57.5 | -2 mudpuppy -1 muskrat-reedgatherer +2 marsh-mallow-hare +1 mosquito-cloud 70/50 | -2 mudpuppy -1 muskrat-reedgatherer +2 marsh-mallow-hare +1 bog-leech 70/49.2
+round 2: cur 66.7/57.5; 30 legal, 30 read + 8 predicted (of 32); top: -1 mudpuppy +1 fire-ant-raft 66.7/65 | -2 mudpuppy +2 fire-ant-raft 66.7/71.7 | -4 marsh-mallow-hare +4 mosquito-cloud 66.7/49.2
+round 3: cur 66.7/65; 31 legal, 31 read + 8 predicted (of 37); top: -1 mudpuppy +1 fire-ant-raft 66.7/71.7 | -1 constrictor-coil +1 swamp-alligator 66.7/63.8 | -1 fire-ant-raft +1 mudpuppy 66.7/57.5
+no nearer move
+RESULT 5-3 {"constrictor-coil":5,"fire-ant-raft":2,"marsh-mallow-hare":4,"mudpuppy":1,"swamp-alligator":4,"raft-spider":1} 65 {} moves: -2 mudpuppy -1 muskrat-reedgatherer +2 marsh-mallow-hare +1 raft-spider ; -1 mudpuppy +1 fire-ant-raft problems: []
+LANE DONE
