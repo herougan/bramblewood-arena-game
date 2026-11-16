@@ -414,7 +414,9 @@ if os.path.exists(_cp_path):
     _cpr = {r["id"]: r["winRate"] for r in _cpd.get("rows", []) if r.get("id") is not None and r.get("winRate") is not None}
     # 2026-11-07 (owner 11-06 23:35 #7: "0 means average"): the tool's 50% means "adds nothing over filler", and the median card
     # sits well below it (about 30% on 11-07), so the editor's number is centred on the median measured card: shown = win% - median + 50
-    _cpv = sorted(_cpr.values())
+    # 2026-11-16 (package CARDPOW1): the median of the Maps 0-20 cards only; the rows of a --scope=all run outside them (scope "extra": Map 21+,
+    # no list, tokens, fields) are rated but do not move the zero
+    _cpv = sorted(r["winRate"] for r in _cpd.get("rows", []) if r.get("id") is not None and r.get("winRate") is not None and r.get("scope") != "extra")
     _cpm = (_cpv[len(_cpv) // 2] if len(_cpv) % 2 else (_cpv[len(_cpv) // 2 - 1] + _cpv[len(_cpv) // 2]) / 2) if _cpv else 50
     _cp = {"date": _cpd.get("generated", ""), "wr": {k: round(v - _cpm + 50, 1) for k, v in _cpr.items()}, "median": _cpm}
     # 2026-11-07 (package BAL22, owner 07:37): the advanced win % (against decks of the top-20% cards; shown as advRate - 50, not

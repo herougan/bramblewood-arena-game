@@ -44,6 +44,10 @@
 //              expected = a least-squares line of power on N (bramblewood-budget.js through tools/skill_costs.js, at the level the
 //              card is measured at; low-sample cards left out of the fit); forBudget = power - expected (+ = stronger than its
 //              rarity, Lumber, Wait, map and skills say). Writes docs/balance/bal25/card-power.json (progress card-power-progress.jsonl).
+// 2026-11-16 (package CARDPOW1, owner 11-16 23:53: every card power rated): --scope=all rates every playable card (Maps 0-20 rows as before,
+//   the rest marked scope "extra" and left out of the advanced pool and the fit); --scope=all --only=<ids> folds new or edited cards into
+//   the full report (how to rate a card added after the run: tests/cardpow1-2026-11-16.js asks for it); --shard=K/N splits a run over runners
+//   (tools/cardpow1/merge_ci_2026_11_16.js folds the shards' progress lines). Map 0 cards the game hands out are in the Maps 0-20 scope now.
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -365,8 +369,14 @@ const out = {generated: new Date().toISOString().slice(0,10), games: N, mode: MO
   rows};
 if(V3){ out.v = 3; out.scope = {maxMap: SCOPE_MAX_MAP, rule: 'card-obtain-maps.json map <= ' + SCOPE_MAX_MAP + ', plus unlisted faction / Starter / Base-source cards and unlisted (Map 0) cards the game hands out' + (SCOPE_ALL ? '; --scope=all: also every other playable card (rows marked scope "extra": Map 21+, in no list, tokens, fields, pool candidates), left out of the advanced pool and the fit' : ''), cards: LIVE.length, maps0to20: IN_SCOPE.size};
   out.env = {phases: Object.fromEntries(PHASE_ROLL), fields: ROBUST ? 'tools/skill_test_robust.js FIELDS / FIELD_CONFIG (Day/Night replaced by the phase roll)' : 'none (skill_test_robust.js not loaded)'};
-  out.fit = fitBudget(rows); }
-fs.writeFileSync(path.join(OUT_DIR, OUT_NAME + '.json'), JSON.stringify(out, null, 1) + '\n');
+  // CARDPOW1 (2026-11-16): --scope=all --only=<ids> rates new or edited cards into the full report: their rows replace their old ones (the
+  // advanced pool is the full report's, as any --only run), the rest are kept, the fit is re-run over all. The run's settings go in `merged`.
+  if(SCOPE_ALL && ONLY.length){ const full = path.join(OUT_DIR, 'card-power.json'), prev = fs.existsSync(full) ? JSON.parse(fs.readFileSync(full, 'utf8')) : null;
+    if(prev){ const mine = new Set(rows.map(r=> r.id)); out.rows = (prev.rows || []).filter(r=> !mine.has(r.id)).concat(rows).sort((a, b)=> a.id < b.id ? -1 : 1);
+      ['generated', 'games', 'filler', 'method', 'advanced', 'scope'].forEach(k=>{ if(prev[k] != null) out[k] = prev[k]; });
+      out.merged = (prev.merged || []).concat([{date: new Date().toISOString().slice(0, 10), games: N, cards: rows.map(r=> r.id)}]); } }
+  out.fit = fitBudget(out.rows); }
+fs.writeFileSync(path.join(OUT_DIR, (V3 && SCOPE_ALL && ONLY.length ? 'card-power' : OUT_NAME) + '.json'), JSON.stringify(out, null, 1) + '\n'); // CARDPOW1: --scope=all --only folds into the full report
 // BAL25: a finished v3 run keeps its progress file, so --resume --report-only can re-fit the report without playing again
 if(!V3 && LIVE.every(id=> done.basic[id] && (BASIC_ONLY || done.adv[id]))){ try{ fs.unlinkSync(PROG); }catch(e){} }
 const cnt = v=> rows.filter(r=> r.verdict===v).length;
