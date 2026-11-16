@@ -2,7 +2,7 @@
 // ECON2 (2026-11-03, owner 18:37: "Quest and reward and trail rewards balancing ... Game economy balancing basically"): plays the economy of a
 // new player forward, day by day, from Map 0 to the end of Map 20, with the game's own numbers, and reports currencies and card power at
 // Maps 0 / 5 / 10 / 15 / 20, where the player is starved or flooded, and how many days each stage takes. MEASURES ONLY: it changes no number.
-//   node tools/econ2/econ_sim_2026_11_03.js [--out docs/balance/econ2-sim-2026-11-03.json] [--quiet]
+//   node tools/econ2/econ_sim_2026_11_03.js [--out docs/balance/econ2-sim-2026-11-03.json] [--days 400] [--quiet]
 // Read from arena_app.js (tools/lib_bramble.js grab, with the ECON1 halving applied exactly as the source applies it): CONQUEST_NODE_REWARDS
 // (nodeRewardTier), nodeEnergyCost / mapEnergyBase, roadCurveTarget (each road fight's designed win rate), referencePlayerLevel /
 // referenceDeckFor (the deck level the road curve is tuned for), QUEST_RANK_REWARD / _WEIGHT, QUEST_TIERS, TRAIL_*, RES3_LEVEL_TRACK,
@@ -66,7 +66,7 @@ const A = {
   forgeToReference: true,      // from Map 11 the player keeps the deck at referencePlayerLevel(map), the level the road curve is tuned for, and
                                // waits (farming) before a map's fights until it can pay for that. Before Map 11 there is nothing to buy.
   buyEnergySteps: true,        // Max Energy steps (Nest from Map 3, Forge from Map 11) bought as soon as Dust and Materia allow, after the deck
-  days: 400,
+  days: +(opt('days') || 400), // 2026-11-16 (CHK1, checklist B12): --days N stops the play after N days (30 for the checklist)
 };
 const MILESTONES = [0, 5, 10, 15, 20];
 
