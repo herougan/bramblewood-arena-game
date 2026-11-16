@@ -48096,7 +48096,7 @@ function syncTideScene(m){
   let w = bf.querySelector(':scope > .tide-scene');
   if(st.k === 'none' && !moving){ if(w) w.remove(); delete bf.dataset.tide; return; }
   if(!w){ w = document.createElement('div'); w.className = 'tide-scene'; w.setAttribute('aria-hidden', 'true');
-    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><div class="tw-surf"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div></div><i class="tw-wave"></i><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
+    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><div class="tw-surf"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div></div>' + tideSwellHTML() + '<i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
     bf.insertBefore(w, bf.firstChild); }
   const key = st.k + '|' + st.at;
   if(w.dataset.key !== key){
@@ -48126,6 +48126,9 @@ function syncTideScene(m){
     if(host.querySelector(':scope > .unit-wet')) return;
     const i = document.createElement('i'); i.className = 'unit-wet'; i.setAttribute('aria-hidden', 'true'); host.appendChild(i); });
 }
+// 2026-11-16 (package FX13, owner 20:20: "The waves aren't even connected ... they should disappear off at the top"): High Tide's swells
+// (three continuous foam crests rising up the board and fading at its top) replace FX6's crest layer; FX.B draws them (bramblewood-fx-b.js).
+function tideSwellHTML(){ try{ return (window.FX && FX.B && FX.B.tideSwellHTML) ? FX.B.tideSwellHTML() : ''; }catch(e){ return ''; } }
 function tideWaveVfx(kind){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
   const high = kind === 'high';

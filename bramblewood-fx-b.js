@@ -1035,6 +1035,79 @@ M.permaTide_A = function(host, opts){ // the look before 2026-10-24 (BV), for th
     c.style.cssText = 'position:absolute; left:0; right:0; bottom:0; height:30%; z-index:1; pointer-events:none; overflow:hidden; border-radius:0 0 14px 14px; background:repeating-linear-gradient(100deg, rgba(220,245,255,0) 0 40px, rgba(220,245,255,.22) 46px 52px, rgba(220,245,255,0) 60px 120px); background-size:240px 100%; opacity:.85; -webkit-mask:linear-gradient(0deg, #000 30%, transparent);';
     host.appendChild(c); }
   return c; };
+// ---- High Tide's swell and the foam crest (2026-11-16, package FX13) ----
+// Owner 11-16 20:20: "The high tide looks a bit ugly. The waves aren't even connected. And they don't resemble the foamy colour at the top
+// of waves. Anyway, they should disappear off at the top." FX6's .tw-wave (one 240 px tile of a curled lip with flat gaps between,
+// a grey-blue fill and a thin white line) is gone. High Tide now has three swells (.fxb-swell, built here, put in the standing tide
+// scene by syncTideScene in arena_app.js): each is ONE continuous crest path across the whole board (a trochoid, sharp crests and broad
+// troughs, two crests of different heights per loop so it doesn't read as a ruler), a soft cream foam line with a bubbly top edge
+// (zero-length dashes with round caps; pathLength makes the dashes repeat exactly once per loop, so the sideways drift is seamless)
+// over a deeper teal-blue face. They rise from the bottom of the board and fade out at its top (a mask), a new one every 3.5 s. Only
+// transform and opacity animate; the delays come from the clock, so a board redraw picks the loop up where it was. Effects Low holds
+// them still, None leaves them out, reduced motion shows one still frame (the template's .tide-scene * rule). The Flood / Ebb front edge
+// (.tw-edge, its back line .tw-edge-b) wears the same foam: its tile is drawn here from the same crest.
+const SWELL_RISE_MS = 10500, SWELL_H = 110, SWELL_MIN_W = 2600; // one rise, bottom to top; the crest strip's height; the narrowest strip (px)
+// crest spacing P (px; a loop is 2P), height, the second crest's difference, sharpness (0 round .. 1 cusp), sideways drift (s, sign = way)
+const SWELL_ROWS = [{P:230, ay:12, a2:3.5, sh:.66, d:13, y0:'76%'}, {P:262, ay:13.5, a2:4, sh:.7, d:-17, y0:'45%'}, {P:204, ay:11, a2:3, sh:.62, d:11, y0:'14%'}];
+const f1 = n=> (Math.round(n*10)/10).toString();
+// points of one crest line: n crests of spacing P from x = 0, baseline y; x is squeezed toward each crest (trochoid), every other crest lower
+function crestPts(P, n, y, ay, a2, sh, N, h3){ const k = sh*P/(2*Math.PI), pts = []; h3 = h3 == null ? .8 : h3; // h3: a small third harmonic (periodic over a 2-crest loop only)
+  for(let i = 0; i <= n*N; i++){ const th = i/N*2*Math.PI;
+    pts.push(f1(P*i/N - k*Math.sin(th)) + ' ' + f1(y - ay*Math.cos(th) - a2*Math.cos(th/2) + h3*Math.cos(1.5*th + .7))); }
+  return pts; }
+let swRows = null, swN = 0;
+function swellRows(){
+  if(swRows) return swRows;
+  return swRows = SWELL_ROWS.map(r=>{ const loop = 2*r.P, loops = Math.ceil((SWELL_MIN_W + loop)/loop), W = loops*loop, n = loops*2, pl = n*100;
+    const d = 'M' + crestPts(r.P, n, 29, r.ay, r.a2, r.sh, 14).join(' L'), u = (attrs, o)=> `<use href="#__ID__c"${o ? ` transform="translate(0 ${o})"` : ''} fill="none" ${attrs}/>`;
+    const dot = (w, o, gap, off, op)=> u(`stroke="#fffaf0" stroke-opacity="${op}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="0 ${f1(gap)}" stroke-dashoffset="${off}"`, o);
+    const svg = `<svg class="fxb-sw-svg" __ST__ width="${W}" height="${SWELL_H}" viewBox="0 0 ${W} ${SWELL_H}">` // one crest path (defs), drawn five times by <use>
+      + `<defs><path id="__ID__c" d="${d}" pathLength="${pl}"/><linearGradient id="__ID__g" x1="0" y1="12" x2="0" y2="${SWELL_H}" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(22,112,180)" stop-opacity=".5"/><stop offset=".3" stop-color="rgb(38,128,204)" stop-opacity=".3"/><stop offset="1" stop-color="rgb(60,142,216)" stop-opacity="0"/></linearGradient></defs>`
+      + `<path d="${d} L${W} ${SWELL_H} L0 ${SWELL_H} Z" fill="url(#__ID__g)"/>` // the teal face under the crest
+      + dot(2.6, 5.2, 100/8, 5, .5) + dot(1.8, 8.6, 100/5, 2, .38) // foam bubbles trailing down the face
+      + u('stroke="#fff6e4" stroke-opacity=".28" stroke-width="12" stroke-linejoin="round"') // soft foam halo
+      + u('stroke="#fffaf0" stroke-opacity=".55" stroke-width="6.5" stroke-linejoin="round"', 1.2) // the foam's body
+      + u('class="fxb-sw-crest" stroke="#fffdf8" stroke-opacity=".95" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"') // the foam line
+      + dot(5, -3, 100/14, 0, .9) + dot(3.4, -4.8, 100/9, 3, .85) + dot(2.2, -6.6, 100/6, 7, .75) + '</svg>'; // the bubbly top edge
+    return {svg, loop, r}; });
+}
+// The swell markup for the standing tide scene (one <i>, three strips); shown only while the tide is High (CSS below).
+M.tideSwellHTML = function(){
+  const now = Date.now(), id = 'fxbsw' + (++swN);
+  return '<i class="fxb-swell" aria-hidden="true">' + swellRows().map((s, i)=>{
+    const rise = -((now + i*SWELL_RISE_MS/3) % SWELL_RISE_MS), dm = Math.abs(s.r.d)*1000, drift = -(now % dm);
+    return `<b class="fxb-sw-lane" style="transform:translateY(${s.r.y0}); animation-delay:${Math.round(rise)}ms">` // transform: the still frame (reduced motion)
+      + s.svg.replace('__ST__', `style="--sw-l:${s.loop}px; animation-duration:${dm}ms; animation-delay:${Math.round(drift)}ms;${s.r.d < 0 ? ' animation-direction:reverse;' : ''}"`).replace(/__ID__/g, id + '-' + i)
+      + '</b>'; }).join('') + '</i>';
+};
+// The Flood / Ebb front edge's tile (160 x 28, one crest): the same crest, foam and face as the swell, ending in the water's own blue
+// at the bottom so it joins .tw-water (rgba(126,200,246,.34)). back: the fainter foam line behind it (.tw-edge-b).
+function edgeTileURL(back){
+  const P = 160, N = 32, y = back ? 11.5 : 14, ay = back ? 3.2 : 4.4, d = 'M' + crestPts(P, 1, y, ay, 0, .5, N, 0).join(' L'), xy = th=>{ const k = .5*P/(2*Math.PI);
+    return [P*th/(2*Math.PI) - k*Math.sin(th), y - ay*Math.cos(th)]; };
+  const bub = (ths, o, rr, op)=> ths.map((th, i)=>{ const [x, y] = xy(th); return `<circle cx='${f1(x)}' cy='${f1(y + o)}' r='${rr[i % rr.length]}' fill='#fffdf6' fill-opacity='${op}'/>`; }).join('');
+  const svg = back
+    ? `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 28' width='160' height='28' preserveAspectRatio='none'><path d='${d}' fill='none' stroke='#fff6e4' stroke-opacity='.6' stroke-width='1.8' stroke-linecap='round'/>${bub([1.3, 4.6], -1.6, [1.1, .9], .7)}</svg>`
+    : `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 28' width='160' height='28' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='8' x2='0' y2='28' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='rgb(34,140,178)' stop-opacity='.46'/><stop offset='1' stop-color='rgb(126,200,246)' stop-opacity='.34'/></linearGradient></defs>`
+      + `<path d='${d} L160 28 L0 28 Z' fill='url(#g)'/><path d='${d}' transform='translate(0 3.6)' fill='none' stroke='#eef9ff' stroke-opacity='.3' stroke-width='1.1' stroke-dasharray='5 4'/>`
+      + `<path d='${d}' fill='none' stroke='#fff6e4' stroke-opacity='.3' stroke-width='8' stroke-linejoin='round'/><path d='${d}' transform='translate(0 .8)' fill='none' stroke='#fffaf0' stroke-opacity='.5' stroke-width='4.4' stroke-linejoin='round'/><path d='${d}' fill='none' stroke='#fffdf8' stroke-opacity='.95' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/>`
+      + bub([.3, .75, 1.3, 2.2, 3.4, 4.4, 5.1, 5.6, 6.0], -2.2, [2, 1.4, 1.7, 1.1, 1.5], .9) + bub([.55, 1.9, 3.9, 5.35], 3.4, [1.2, .9], .5) + `</svg>`;
+  return 'data:image/svg+xml,' + svg.replace(/</g, '%3C').replace(/>/g, '%3E').replace(/"/g, "'").replace(/#/g, '%23');
+}
+css('tideSwell', `
+.tide-scene .fxb-swell{display:block; position:absolute; left:-24px; right:-24px; top:0; bottom:-14px; overflow:hidden; pointer-events:none; contain:layout paint;
+  -webkit-mask-image:linear-gradient(0deg, #000 0, #000 40%, rgba(0,0,0,.55) 64%, transparent 90%); mask-image:linear-gradient(0deg, #000 0, #000 40%, rgba(0,0,0,.55) 64%, transparent 90%);
+  opacity:0; visibility:hidden; transition:opacity .9s ease, visibility 0s linear .9s;}
+.tide-scene[data-k="high"] .fxb-swell{opacity:1; visibility:visible; transition:opacity .9s ease;}
+.fxb-swell .fxb-sw-lane{position:absolute; left:0; top:0; width:100%; height:100%; display:block; will-change:transform, opacity; animation:fxbSwRise ${SWELL_RISE_MS}ms linear infinite;}
+.fxb-swell .fxb-sw-svg{position:absolute; left:0; top:0; display:block; overflow:visible; will-change:transform; animation:fxbSwDrift 13s linear infinite;}
+@keyframes fxbSwRise{0%{transform:translateY(100%); opacity:0;} 9%{opacity:1;} 100%{transform:translateY(-${SWELL_H + 10}px); opacity:1;}}
+@keyframes fxbSwDrift{from{transform:translateX(0);} to{transform:translateX(calc(-1 * var(--sw-l, 460px)));}}
+.tide-scene:not([data-k="high"]) .fxb-swell :is(.fxb-sw-lane, .fxb-sw-svg), html[data-fx="low"] .fxb-swell :is(.fxb-sw-lane, .fxb-sw-svg){animation-play-state:paused;}
+html[data-fx="none"] .tide-scene .fxb-swell{display:none;}
+@media (prefers-reduced-motion: reduce){ .fxb-swell :is(.fxb-sw-lane, .fxb-sw-svg){animation-play-state:paused;} }
+.tide-scene .tw-sheet .tw-edge{background-image:url("${edgeTileURL(false)}");}
+.tide-scene .tw-sheet .tw-edge.tw-edge-b{background-image:url("${edgeTileURL(true)}");}`);
 // Moonpull brings the tide in (wt-moonpull): the Moon Jelly glows silver and the water rises toward it.
 M.moonpull = function(el, opts){
   opts = opts || {}; const r = rectOf(el); if(!r) return Promise.resolve(); const H = hostRect(opts, el);

@@ -1820,7 +1820,7 @@ All four are cheap by design: one element or a handful of spans (WAAPI, transfor
 
 | Effect | Where | Look | Code |
 |---|---|---|---|
-| ✅ High Tide's second layer | the standing tide scene while the tide is High | one `.tw-wave` over the settled water: the tide's blue wash, a breaking crest (long back, curled lip) with the same soft white crest line, drifting 9 s a tile; fades and rises in after the tide arrives; still on Low effects / reduced motion, gone on None | `.tw-wave` in `arena_template.html`, `syncTideScene` |
+| ↩️ High Tide's second layer (replaced 2026-11-16 by FX13's swells, below) | the standing tide scene while the tide is High | one `.tw-wave` over the settled water: the tide's blue wash, a breaking crest (long back, curled lip) with the same soft white crest line, drifting 9 s a tile; fades and rises in after the tide arrives; still on Low effects / reduced motion, gone on None | `.tw-wave` in `arena_template.html`, `syncTideScene` |
 | ✅ Bulwark: walls rise | spawn `kind:'bulwark'` | the Log Wall is revealed bottom-up behind a clip while it lifts 34 px into its slot, dust at its foot, a hammer-knock cue (`constructTone`, cue 40); no flight from the card, no summon portal; reduced motion / Low: a fade | `riseUpFx`, renderBoard `riseUp` branch, origin kind `rise` |
 | ✅ Swarm, Spawn on death: bugs | Swarm hit; spawn `cause:'onDeathSpawn'` | 9-10 small bug silhouettes scatter from the unit, crawl through two turns, fade by 0.9 s; the game's Swarm now uses this instead of the 26-bug steered cloud (`SkillFX.swarm` stays in the Lab) | `bugCrawlVfx` |
 | ✅ Spore puff | Spore Cloud's sleep tick (`statusFx` `field:'sporeCloud'`); a Puffball Bombardier's hit | five dark lime-green puffs billow up off the card and thin out in under 1 s; reduced motion: one soft fade | `sporePuffVfx(el)` (reusable) |
@@ -1932,6 +1932,16 @@ Owner 00:03: "interesting vfx to improve our general UI experience and also skil
 **Next candidates** (same audit): Grit (Esprit's aura reused, 0.14 a fight), Spawn on death (the bugs or the ring), Hibernate (a tint), Foraging's berry eaten, the Windfall field's Lumber (nothing drawn, 3.3 a fight on 5 maps, a field rather than a skill).
 
 Lab: group "FX10" (`tools/effects-lab/manifest/fx10.js`, ids `fun-fx10-*`; A the full look, B Effects Low / reduced motion / 4x). Contact sheet: `docs/art/fx10-sheet.png` (`python3 tests/e2e/fx10_2026_11_13.py`, which also checks the camera layer, the piece count, Low / 4x / None and that Brood and Confuse lost their shared looks). Check: `tests/fx10-2026-11-13.js`.
+
+## 2026-11-16 (package FX13): High Tide's swells, the foam crest
+Owner 20:20 (a fight under High Tide): "The high tide looks a bit ugly. The waves aren't even connected. And they don't resemble the foamy colour at the top of waves. Anyway, they should disappear off at the top."
+
+| Date | Effect | Where | Look | Code |
+|---|---|---|---|---|
+| 2026-11-16 | ✅ High Tide's swells | the standing tide scene while the tide is High (`.tide-scene[data-k="high"]`) | three swells, each ONE continuous crest path across the whole board (sharp crests, broad troughs, every other crest lower): a cream foam line with a soft halo and a bubbly top edge, foam bubbles trailing down a deeper teal-blue face. They rise from the bottom and fade out at the board's top (a mask), a new one every 3.5 s, each drifting sideways (seamless loop). Fade in / out with the tide in 0.9 s. Transform / opacity only, delays from the clock so a redraw resumes them; Effects Low holds them still, None leaves them out, reduced motion shows one still frame | `FX.B.tideSwellHTML` (bramblewood-fx-b.js), put in the scene by `syncTideScene` (`tideSwellHTML`); replaces FX6's `.tw-wave` |
+| 2026-11-16 | ✅ The water's front edge (Flood rising, the Ebb band) | `.tw-edge`, `.tw-edge-b` | the same cream foam crest and bubbles over a teal face, ending in the water's own blue; the Pixel style keeps its stepped edge | `edgeTileURL` (bramblewood-fx-b.js, CSS `tideSwell`) |
+
+Lab: `tools/effects-lab/manifest/fx13.js` (`wt-tide-high` FX13 settled, RISE from Ebb; `wt-tide-ebb` FX13). Shots: `docs/screens/fx13/`. Check: `tests/fx13-2026-11-16.js`.
 
 ## 2026-11-16 (package FX12): no two effects for one event
 Rule: effects never play together. FX11 left Remember with two looks; FX12 scanned every `onEvent` in `bramblewood-fx-a.js` to `-h.js` (case labels and `kind` / `field` / `reason` tests) for an event drawn by two modules. Kept one look per event, stopped the other from firing (the function and its Lab demo stay; the inventory entry is `lab-only`, "variant not used in game").
