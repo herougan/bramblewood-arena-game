@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (coordinator: DGFIX1)
+- Players see: dungeon rounds with their own deck (the Dungeon editor's per-round decks, owner 10-12) use it again. Since 10-22 (package DR) a comment had swallowed the line that loads it, so every round drew from the first deck. The round deck's shuffle now draws from a stream off the match seed (E5 replay).
+
 ## 2026-11-16 (package A11Y2: alpha checklist U7, accessibility audit)
 - Keyboard focus ring is blue (`--focus-ring`, 3:1 or better on cream, wood and dark; the gold one was 1.3:1). "Skip to content" link as the first Tab stop, a `main` landmark and a hidden h1 per screen. The Victory / Defeat screen is a real dialog (focus moves in, Tab trapped). Focus returns to a card tile that was rebuilt while its dialog was open. Contrast raised on home sub-lines, the notice badge, short-cost numbers and empty Codex chips; the chestnut stops bobbing under reduced motion; pip counters get `role=img`. 12 language rows. Open: battle announcements for screen readers, the board by keyboard (`docs/a11y-audit-2026-11-16.md`, U7: pass with open items). Test `tests/a11y2-2026-11-16.js`; shots `docs/screens/a11y2/`.
 ## 2026-11-16 (package E5DET1: alpha checklist E5, determinism)

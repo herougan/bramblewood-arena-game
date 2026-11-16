@@ -33200,8 +33200,11 @@ function advanceDungeonWave(m, carry){
   P2.hq.maxHp = w.hp + (carry||0); P2.hq.hp = P2.hq.maxHp; P2.hq.shield = w.shield || 0; P2.hq.maxShield = P2.hq.shield;
   // Per-round decks (2026-10-12, user: "Dungeon editor - edit each round's deck"): a castle with its own deck swaps the
   // enemy's draw pile and hand for it; the old hand goes to the Graveyard.
-  { const wd = fitEnemyDeckRankCaps(null, (d.cfg.waveDecks||[])[d.wave]); const ids = []; // + the top-rank deck caps (2026-10-22, package DR) if(wd) Object.entries(wd).forEach(([id, n])=>{ if(getCardDefs()[id]) for(let i = 0; i < (n|0); i++) ids.push(id); });
-    if(ids.length){ for(let i = ids.length - 1; i > 0; i--){ const j = Math.floor(Math.random()*(i + 1)); [ids[i], ids[j]] = [ids[j], ids[i]]; }
+  // + the top-rank deck caps (2026-10-22, package DR). 2026-11-16 (coordinator, found by E5DET1): DR's comment had swallowed the fill below, so
+  // wave decks never applied since 10-22; the comment moved off the code line, and the shuffle draws from a stream off the match seed (E5 replay).
+  { const wd = fitEnemyDeckRankCaps(null, (d.cfg.waveDecks||[])[d.wave]); const ids = []; if(wd) Object.entries(wd).forEach(([id, n])=>{ if(getCardDefs()[id]) for(let i = 0; i < (n|0); i++) ids.push(id); });
+    const waveRand = seededRng(((typeof currentMatchSeed === 'number' ? currentMatchSeed : 0) ^ (0x0D0E0A00 + (d.wave|0))) >>> 0);
+    if(ids.length){ for(let i = ids.length - 1; i > 0; i--){ const j = Math.floor(waveRand()*(i + 1)); [ids[i], ids[j]] = [ids[j], ids[i]]; }
       P2.graveyard = (P2.graveyard||[]).concat(P2.hand.map(h=> ({defId: h.defId}))); P2.hand = []; P2.deck = ids; } }
   const plan = planWaveSummons(P2, d.cfg.setupTurns, d.cfg.pitches, ()=> E.draw(P2, 1, 'B', m.stats, []));
   P2.graveyard = (P2.graveyard||[]).concat(plan.pitchedCards.map(h=> ({defId: h.defId})));
