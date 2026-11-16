@@ -47,7 +47,7 @@
     --stone:#5b6b74; --stone-soft:#dbe2e4;
     --lumber:#8b5e34; --lumber-soft:#e8dbc8; --elementalenergy:#0891b2; --elementalenergy-soft:#cdeef4;
     --p1:#3f5c3a; --p1-soft:#cfe0bd; --p2:#7d4a15; --p2-soft:#ecd8b6;
-    --danger:#a5342a; --shadow:rgba(44,51,32,0.24); --focus:#3f5c3a; --overlay:rgba(20,25,14,0.72);
+    --danger:#a5342a; --shadow:rgba(44,51,32,0.24); --focus:#3f5c3a; --overlay:rgba(20,25,14,0.72); --focus-ring:#2b7bb9; --focus-gap:#fffdf4; /* 2026-11-16 (A11Y2): a ring that holds 3:1 on cream, wood and dark surfaces */
     --poison:#5c8a3f; --armor:#5b6b7a; --rage:#c23b2c; --bleed:#a5342a; --scar:#6b3fa0; --heal:#2f8f5b;
     --devilry-bg:#3a3a3a; --devilry-border:#8b0000; --devilry-ink:#e8e0e0;
     /* Item #58: page background — deep wood brown, tainted mint green — kept SEPARATE from
@@ -163,7 +163,7 @@
       --stone:#9aa8b0; --stone-soft:#2a3236;
       --lumber:#c9985f; --lumber-soft:#332a1c; --elementalenergy:#22d3ee; --elementalenergy-soft:#173238;
       --p1:#82c25f; --p1-soft:#26351f; --p2:#f0b972; --p2-soft:#3a2e1a;
-      --danger:#e17564; --shadow:rgba(0,0,0,0.5); --focus:#d99a4e; --overlay:rgba(10,12,7,0.82);
+      --danger:#e17564; --shadow:rgba(0,0,0,0.5); --focus:#d99a4e; --overlay:rgba(10,12,7,0.82); --focus-ring:#4a9be0; --focus-gap:#10140c;
       --poison:#8fd66a; --armor:#9db3c7; --rage:#f0685a; --bleed:#e17564; --scar:#b48ce8; --heal:#7fe0ab;
       --devilry-bg:#3a3a3a; --devilry-border:#b8203a; --devilry-ink:#e8e0e0;
       --page-wood:#140d08; --page-wood-2:#2a1c10; --page-mint:#3f6b53;
@@ -181,7 +181,7 @@
     --stone:#9aa8b0; --stone-soft:#2a3236;
     --lumber:#c9985f; --lumber-soft:#332a1c; --elementalenergy:#22d3ee; --elementalenergy-soft:#173238;
     --p1:#82c25f; --p1-soft:#26351f; --p2:#f0b972; --p2-soft:#3a2e1a;
-    --danger:#e17564; --shadow:rgba(0,0,0,0.5); --focus:#d99a4e; --overlay:rgba(10,12,7,0.82);
+    --danger:#e17564; --shadow:rgba(0,0,0,0.5); --focus:#d99a4e; --overlay:rgba(10,12,7,0.82); --focus-ring:#4a9be0; --focus-gap:#10140c;
     --poison:#8fd66a; --armor:#9db3c7; --rage:#f0685a; --bleed:#e17564; --scar:#b48ce8; --heal:#7fe0ab;
     --devilry-bg:#3a3a3a; --devilry-border:#b8203a; --devilry-ink:#e8e0e0;
     --page-wood:#140d08; --page-wood-2:#2a1c10; --page-mint:#3f6b53;
@@ -214,7 +214,7 @@
   h1,h2,h3{font-family:'Baloo 2',system-ui,sans-serif; text-wrap:balance; margin:0;}
   button{font-family:'Nunito'; cursor:pointer;}
   button:disabled{cursor:not-allowed; opacity:.5;}
-  button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
+  button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus-ring); outline-offset:2px;} /* 2026-11-16 (A11Y2): --focus-ring */
   ::selection{background:var(--accent); color:var(--accent-ink);}
   [hidden]{display:none !important;}
   /* Task list item 3 (2026-09-18, "the widths keep changing... becomes a bit disorientating...
@@ -3193,8 +3193,14 @@
   .cur-pill{display:inline-flex; align-items:center; gap:4px;}
   .cur-pill .cur-label{font-size:10.5px; font-weight:700; opacity:1; margin-left:2px; white-space:nowrap;}
   @media (max-width:460px){ .cur-pill .cur-label{display:none;} }
+  /* 2026-11-16 (A11Y2): skip link (first Tab stop, visible on focus) and calm the idle chestnut bob for reduced motion */
+  .skip-link{position:fixed; left:8px; top:-60px; z-index:100000; padding:10px 16px; border-radius:10px; background:var(--surface); color:var(--ink); font-weight:800; text-decoration:none; border:2px solid var(--focus-ring);}
+  .skip-link:focus{top:8px;}
+  #mainContent:focus{outline:none;}
+  @media (prefers-reduced-motion: reduce){ .home-menu-mark, .home-menu-mark.chestnut-knock{animation:none !important;} }
   /* UX A12 (2026-10-03): a clear keyboard focus ring on every interactive control, site-wide. */
-  button:focus-visible, [role="button"]:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, .map-node:focus-visible{outline:3px solid #ffd27a; outline-offset:2px;}
+  button:focus-visible, [role="button"]:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, .map-node:focus-visible{outline:3px solid var(--focus-ring); outline-offset:2px; box-shadow:0 0 0 2px var(--focus-gap);}
+  /* 2026-11-16 (A11Y2): the gold ring was 1.3:1 on cream (WCAG 1.4.11 wants 3:1): a blue ring with a light/dark gap holds on every surface */
   /* ---- Results rewards panel (2026-10-03) — one spacing scale: 16px between sections, 8px inside ---- */
   .winloss-card{max-width:440px;}
   .rw-panel.winloss-conquest-rewards{display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start; flex-wrap:nowrap; gap:16px; margin:0 0 16px; padding:16px; border-radius:14px; background:rgba(0,0,0,.14); text-align:center;}
@@ -3802,7 +3808,7 @@
   /* ---- Social: Friends / invites / Market (2026-10-02) ---- */
   .home-menu-row{grid-template-columns:repeat(4, minmax(0,1fr)) !important; grid-auto-flow:row;}
   .home-menu-btn-small{position:relative;}
-  .home-badge{position:absolute; top:6px; right:6px; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:#d9412b; color:#fff; font-size:11px; font-weight:800; line-height:18px; text-align:center; box-shadow:0 0 0 2px rgba(0,0,0,.25);}
+  .home-badge{position:absolute; top:6px; right:6px; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:#c2381f; color:#fff; font-size:11px; font-weight:800; line-height:18px; /* 2026-11-16 (A11Y2): #d9412b was 4.4:1 */ text-align:center; box-shadow:0 0 0 2px rgba(0,0,0,.25);}
   #view-friends{max-width:760px; margin:0 auto;}
   .fr-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
   .fr-head h2{margin:0;}
@@ -6255,7 +6261,7 @@
   .home-community-wrap{position:relative;}
   /* Home (2026-10-08): live detail lines and pinned notes. */
   .home-grid{position:relative;}
-  .home-tile .home-sub{display:block; font-family:'Nunito', system-ui, sans-serif; font-size:12.5px; font-weight:700; opacity:.85; letter-spacing:0; margin-top:2px; max-width:92%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .home-tile .home-sub{display:block; font-family:'Nunito', system-ui, sans-serif; font-size:12.5px; font-weight:700; opacity:.96; letter-spacing:0; margin-top:2px; max-width:92%; /* 2026-11-16 (A11Y2): .85 -> .96, 4.2:1 -> over 4.5:1 */ white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .home-play .home-sub{font-size:14px;}
   .home-play.is-rejoin{background:linear-gradient(180deg,#3f8f5a,#22603a) !important; border-color:#9fe0b0 !important; box-shadow:0 0 0 2px rgba(159,224,176,.35), 0 0 22px rgba(80,200,120,.35) !important; animation:rejoinPulse 2.4s ease-in-out infinite;}
   @keyframes rejoinPulse{50%{box-shadow:0 0 0 3px rgba(159,224,176,.55), 0 0 30px rgba(80,200,120,.5);}}
@@ -13091,7 +13097,7 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   .btn .btn-cost .bc-sep{opacity:.65; margin-right:-1px;}
   .btn .btn-cost .bc{display:inline-flex; align-items:center; gap:2px;}
   .btn .btn-cost .bc.is-short{color:#ffd6cc; text-decoration:underline wavy #ff7a66; text-underline-offset:3px;}
-  .btn.ghost .btn-cost .bc.is-short, .btn:not(.primary) .btn-cost .bc.is-short{color:#b3261e;}
+  .btn.ghost .btn-cost .bc.is-short, .btn:not(.primary) .btn-cost .bc.is-short{color:var(--danger);} /* 2026-11-16 (A11Y2): #b3261e was 1.8:1 on a dark button */
   .forge-act{flex-wrap:wrap; justify-content:center; row-gap:2px;}
   /* Forge text against the brick (user: "Village Forge, the text against the background - not enough contrast"): the bars that
      sit straight on the brick and the glow are solid now, and their small print is full strength (AA on every line). */
@@ -14245,7 +14251,7 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
 .ux-kind, .ux-lv{display:inline-flex; align-items:center; gap:5px; padding:5px 11px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2, rgba(255,255,255,.06)); color:var(--ink); font:700 12.5px/1.1 inherit; font-family:inherit; cursor:pointer; white-space:nowrap;}
 .ux-kind .ux-kind-n{font:800 11.5px/1 'Baloo 2',system-ui,sans-serif; padding:2px 6px; border-radius:999px; background:rgba(0,0,0,.25); min-width:1.4em; text-align:center;}
 .ux-kind.on, .ux-lv.on{background:#e0b85a; border-color:#e0b85a; color:#2b1d10;} .ux-kind.on .ux-kind-n{background:rgba(43,29,16,.18);}
-.ux-kind.is-empty:not(.on){opacity:.55; border-style:dashed;}
+.ux-kind.is-empty:not(.on){opacity:.75; border-style:dashed;} /* 2026-11-16 (A11Y2): .55 -> .75 (3:1 -> 4.5:1) */
 .ux-kind:focus-visible, .ux-lv:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
 .ux-cx-level{display:inline-flex; border-radius:999px; overflow:hidden; border:1px solid var(--surface-border); flex:none;}
 .ux-cx-level .ux-lv{border:0; border-radius:0;} .ux-cx-level .ux-lv + .ux-lv{border-left:1px solid var(--surface-border);}
@@ -15689,6 +15695,7 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
        the nav bar"): the topbar now lives in its OWN fixed-width wrapper, completely decoupled
        from whichever content width (.content-wrap below) the current tab needs — see the
        .topbar-wrap/.content-wrap CSS for the full mechanism. -->
+  <a class="skip-link" id="skipLink" href="#view-home">Skip to content</a>
   <div class="topbar-wrap">
   <div class="topbar">
     <div class="brand" id="brandHomeBtn" role="button" tabindex="0" title="Home" aria-label="Bramblewood Arena — Home"><span class="mark">🌰</span><span class="word">Bramblewood Arena</span></div>
@@ -15815,7 +15822,7 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
   </div>
   </div>
 
-  <div class="content-wrap">
+  <div class="content-wrap" id="mainContent" role="main" tabindex="-1">
   <div class="page-back-bar" id="pageBackBar" hidden><button type="button" class="btn page-back-btn" id="pageBackBtn">← Back</button></div>
   <div id="view-home"></div>
   <div id="view-codex" hidden></div>

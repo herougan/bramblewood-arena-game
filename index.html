@@ -47,7 +47,7 @@
     --stone:#5b6b74; --stone-soft:#dbe2e4;
     --lumber:#8b5e34; --lumber-soft:#e8dbc8; --elementalenergy:#0891b2; --elementalenergy-soft:#cdeef4;
     --p1:#3f5c3a; --p1-soft:#cfe0bd; --p2:#7d4a15; --p2-soft:#ecd8b6;
-    --danger:#a5342a; --shadow:rgba(44,51,32,0.24); --focus:#3f5c3a; --overlay:rgba(20,25,14,0.72);
+    --danger:#a5342a; --shadow:rgba(44,51,32,0.24); --focus:#3f5c3a; --overlay:rgba(20,25,14,0.72); --focus-ring:#2b7bb9; --focus-gap:#fffdf4; /* 2026-11-16 (A11Y2): a ring that holds 3:1 on cream, wood and dark surfaces */
     --poison:#5c8a3f; --armor:#5b6b7a; --rage:#c23b2c; --bleed:#a5342a; --scar:#6b3fa0; --heal:#2f8f5b;
     --devilry-bg:#3a3a3a; --devilry-border:#8b0000; --devilry-ink:#e8e0e0;
     /* Item #58: page background — deep wood brown, tainted mint green — kept SEPARATE from
@@ -163,7 +163,7 @@
       --stone:#9aa8b0; --stone-soft:#2a3236;
       --lumber:#c9985f; --lumber-soft:#332a1c; --elementalenergy:#22d3ee; --elementalenergy-soft:#173238;
       --p1:#82c25f; --p1-soft:#26351f; --p2:#f0b972; --p2-soft:#3a2e1a;
-      --danger:#e17564; --shadow:rgba(0,0,0,0.5); --focus:#d99a4e; --overlay:rgba(10,12,7,0.82);
+      --danger:#e17564; --shadow:rgba(0,0,0,0.5); --focus:#d99a4e; --overlay:rgba(10,12,7,0.82); --focus-ring:#4a9be0; --focus-gap:#10140c;
       --poison:#8fd66a; --armor:#9db3c7; --rage:#f0685a; --bleed:#e17564; --scar:#b48ce8; --heal:#7fe0ab;
       --devilry-bg:#3a3a3a; --devilry-border:#b8203a; --devilry-ink:#e8e0e0;
       --page-wood:#140d08; --page-wood-2:#2a1c10; --page-mint:#3f6b53;
@@ -181,7 +181,7 @@
     --stone:#9aa8b0; --stone-soft:#2a3236;
     --lumber:#c9985f; --lumber-soft:#332a1c; --elementalenergy:#22d3ee; --elementalenergy-soft:#173238;
     --p1:#82c25f; --p1-soft:#26351f; --p2:#f0b972; --p2-soft:#3a2e1a;
-    --danger:#e17564; --shadow:rgba(0,0,0,0.5); --focus:#d99a4e; --overlay:rgba(10,12,7,0.82);
+    --danger:#e17564; --shadow:rgba(0,0,0,0.5); --focus:#d99a4e; --overlay:rgba(10,12,7,0.82); --focus-ring:#4a9be0; --focus-gap:#10140c;
     --poison:#8fd66a; --armor:#9db3c7; --rage:#f0685a; --bleed:#e17564; --scar:#b48ce8; --heal:#7fe0ab;
     --devilry-bg:#3a3a3a; --devilry-border:#b8203a; --devilry-ink:#e8e0e0;
     --page-wood:#140d08; --page-wood-2:#2a1c10; --page-mint:#3f6b53;
@@ -214,7 +214,7 @@
   h1,h2,h3{font-family:'Baloo 2',system-ui,sans-serif; text-wrap:balance; margin:0;}
   button{font-family:'Nunito'; cursor:pointer;}
   button:disabled{cursor:not-allowed; opacity:.5;}
-  button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
+  button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus-ring); outline-offset:2px;} /* 2026-11-16 (A11Y2): --focus-ring */
   ::selection{background:var(--accent); color:var(--accent-ink);}
   [hidden]{display:none !important;}
   /* Task list item 3 (2026-09-18, "the widths keep changing... becomes a bit disorientating...
@@ -3193,8 +3193,14 @@
   .cur-pill{display:inline-flex; align-items:center; gap:4px;}
   .cur-pill .cur-label{font-size:10.5px; font-weight:700; opacity:1; margin-left:2px; white-space:nowrap;}
   @media (max-width:460px){ .cur-pill .cur-label{display:none;} }
+  /* 2026-11-16 (A11Y2): skip link (first Tab stop, visible on focus) and calm the idle chestnut bob for reduced motion */
+  .skip-link{position:fixed; left:8px; top:-60px; z-index:100000; padding:10px 16px; border-radius:10px; background:var(--surface); color:var(--ink); font-weight:800; text-decoration:none; border:2px solid var(--focus-ring);}
+  .skip-link:focus{top:8px;}
+  #mainContent:focus{outline:none;}
+  @media (prefers-reduced-motion: reduce){ .home-menu-mark, .home-menu-mark.chestnut-knock{animation:none !important;} }
   /* UX A12 (2026-10-03): a clear keyboard focus ring on every interactive control, site-wide. */
-  button:focus-visible, [role="button"]:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, .map-node:focus-visible{outline:3px solid #ffd27a; outline-offset:2px;}
+  button:focus-visible, [role="button"]:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, .map-node:focus-visible{outline:3px solid var(--focus-ring); outline-offset:2px; box-shadow:0 0 0 2px var(--focus-gap);}
+  /* 2026-11-16 (A11Y2): the gold ring was 1.3:1 on cream (WCAG 1.4.11 wants 3:1): a blue ring with a light/dark gap holds on every surface */
   /* ---- Results rewards panel (2026-10-03) — one spacing scale: 16px between sections, 8px inside ---- */
   .winloss-card{max-width:440px;}
   .rw-panel.winloss-conquest-rewards{display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start; flex-wrap:nowrap; gap:16px; margin:0 0 16px; padding:16px; border-radius:14px; background:rgba(0,0,0,.14); text-align:center;}
@@ -3802,7 +3808,7 @@
   /* ---- Social: Friends / invites / Market (2026-10-02) ---- */
   .home-menu-row{grid-template-columns:repeat(4, minmax(0,1fr)) !important; grid-auto-flow:row;}
   .home-menu-btn-small{position:relative;}
-  .home-badge{position:absolute; top:6px; right:6px; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:#d9412b; color:#fff; font-size:11px; font-weight:800; line-height:18px; text-align:center; box-shadow:0 0 0 2px rgba(0,0,0,.25);}
+  .home-badge{position:absolute; top:6px; right:6px; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:#c2381f; color:#fff; font-size:11px; font-weight:800; line-height:18px; /* 2026-11-16 (A11Y2): #d9412b was 4.4:1 */ text-align:center; box-shadow:0 0 0 2px rgba(0,0,0,.25);}
   #view-friends{max-width:760px; margin:0 auto;}
   .fr-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
   .fr-head h2{margin:0;}
@@ -6303,7 +6309,7 @@
   .home-community-wrap{position:relative;}
   /* Home (2026-10-08): live detail lines and pinned notes. */
   .home-grid{position:relative;}
-  .home-tile .home-sub{display:block; font-family:'Nunito', system-ui, sans-serif; font-size:12.5px; font-weight:700; opacity:.85; letter-spacing:0; margin-top:2px; max-width:92%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .home-tile .home-sub{display:block; font-family:'Nunito', system-ui, sans-serif; font-size:12.5px; font-weight:700; opacity:.96; letter-spacing:0; margin-top:2px; max-width:92%; /* 2026-11-16 (A11Y2): .85 -> .96, 4.2:1 -> over 4.5:1 */ white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .home-play .home-sub{font-size:14px;}
   .home-play.is-rejoin{background:linear-gradient(180deg,#3f8f5a,#22603a) !important; border-color:#9fe0b0 !important; box-shadow:0 0 0 2px rgba(159,224,176,.35), 0 0 22px rgba(80,200,120,.35) !important; animation:rejoinPulse 2.4s ease-in-out infinite;}
   @keyframes rejoinPulse{50%{box-shadow:0 0 0 3px rgba(159,224,176,.55), 0 0 30px rgba(80,200,120,.5);}}
@@ -13139,7 +13145,7 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   .btn .btn-cost .bc-sep{opacity:.65; margin-right:-1px;}
   .btn .btn-cost .bc{display:inline-flex; align-items:center; gap:2px;}
   .btn .btn-cost .bc.is-short{color:#ffd6cc; text-decoration:underline wavy #ff7a66; text-underline-offset:3px;}
-  .btn.ghost .btn-cost .bc.is-short, .btn:not(.primary) .btn-cost .bc.is-short{color:#b3261e;}
+  .btn.ghost .btn-cost .bc.is-short, .btn:not(.primary) .btn-cost .bc.is-short{color:var(--danger);} /* 2026-11-16 (A11Y2): #b3261e was 1.8:1 on a dark button */
   .forge-act{flex-wrap:wrap; justify-content:center; row-gap:2px;}
   /* Forge text against the brick (user: "Village Forge, the text against the background - not enough contrast"): the bars that
      sit straight on the brick and the glow are solid now, and their small print is full strength (AA on every line). */
@@ -14293,7 +14299,7 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
 .ux-kind, .ux-lv{display:inline-flex; align-items:center; gap:5px; padding:5px 11px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2, rgba(255,255,255,.06)); color:var(--ink); font:700 12.5px/1.1 inherit; font-family:inherit; cursor:pointer; white-space:nowrap;}
 .ux-kind .ux-kind-n{font:800 11.5px/1 'Baloo 2',system-ui,sans-serif; padding:2px 6px; border-radius:999px; background:rgba(0,0,0,.25); min-width:1.4em; text-align:center;}
 .ux-kind.on, .ux-lv.on{background:#e0b85a; border-color:#e0b85a; color:#2b1d10;} .ux-kind.on .ux-kind-n{background:rgba(43,29,16,.18);}
-.ux-kind.is-empty:not(.on){opacity:.55; border-style:dashed;}
+.ux-kind.is-empty:not(.on){opacity:.75; border-style:dashed;} /* 2026-11-16 (A11Y2): .55 -> .75 (3:1 -> 4.5:1) */
 .ux-kind:focus-visible, .ux-lv:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
 .ux-cx-level{display:inline-flex; border-radius:999px; overflow:hidden; border:1px solid var(--surface-border); flex:none;}
 .ux-cx-level .ux-lv{border:0; border-radius:0;} .ux-cx-level .ux-lv + .ux-lv{border-left:1px solid var(--surface-border);}
@@ -15737,6 +15743,7 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
        the nav bar"): the topbar now lives in its OWN fixed-width wrapper, completely decoupled
        from whichever content width (.content-wrap below) the current tab needs — see the
        .topbar-wrap/.content-wrap CSS for the full mechanism. -->
+  <a class="skip-link" id="skipLink" href="#view-home">Skip to content</a>
   <div class="topbar-wrap">
   <div class="topbar">
     <div class="brand" id="brandHomeBtn" role="button" tabindex="0" title="Home" aria-label="Bramblewood Arena — Home"><span class="mark">🌰</span><span class="word">Bramblewood Arena</span></div>
@@ -15863,7 +15870,7 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
   </div>
   </div>
 
-  <div class="content-wrap">
+  <div class="content-wrap" id="mainContent" role="main" tabindex="-1">
   <div class="page-back-bar" id="pageBackBar" hidden><button type="button" class="btn page-back-btn" id="pageBackBtn">← Back</button></div>
   <div id="view-home"></div>
   <div id="view-codex" hidden></div>
@@ -48339,7 +48346,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=80148f6273", "es": "assets/lang/es.js?v=ce61caf698", "fr": "assets/lang/fr.js?v=a12bd45f6b", "id": "assets/lang/id.js?v=f95984130d", "it": "assets/lang/it.js?v=18edbfface", "ja": "assets/lang/ja.js?v=4a73e2cbce", "ko": "assets/lang/ko.js?v=77234939d0", "pt": "assets/lang/pt.js?v=c278640afc", "ta": "assets/lang/ta.js?v=5934f2dfc1", "tl": "assets/lang/tl.js?v=a96ec6f0c8", "zh-Hans": "assets/lang/zh-Hans.js?v=e833c6fee4", "zh-Hant": "assets/lang/zh-Hant.js?v=50e0c2e358"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=4f68fab09d", "es": "assets/lang/es.js?v=ef4b7e894d", "fr": "assets/lang/fr.js?v=f663769231", "id": "assets/lang/id.js?v=1fa89f7761", "it": "assets/lang/it.js?v=f5537409bc", "ja": "assets/lang/ja.js?v=85c20f81f0", "ko": "assets/lang/ko.js?v=66ba548a2c", "pt": "assets/lang/pt.js?v=8d6e9e0db5", "ta": "assets/lang/ta.js?v=8d8323be2c", "tl": "assets/lang/tl.js?v=3f35dda987", "zh-Hans": "assets/lang/zh-Hans.js?v=10c5e5cd9f", "zh-Hant": "assets/lang/zh-Hant.js?v=d22f24f25c"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -52318,7 +52325,7 @@ if(typeof module !== 'undefined' && module.exports) module.exports = {TEXT, TX};
         const a = document.activeElement;
         let opener = a && a !== document.body && !host.contains(a) ? a : null;
         if(!opener) for(let i = history.length - 1; i >= 0; i--){ const h = history[i]; if(h.isConnected && !host.contains(h)){ opener = h; break; } }
-        r = {host, root, opener, seq: ++seq, light};
+        r = {host, root, opener, seq: ++seq, light, openerKey: describe(opener)};
         recs.set(host, r);
         // Let the game's own focus code run first (several builders focus a button after ~30 ms).
         setTimeout(()=>{ if(recs.get(host) === r && top() === r) initialFocus(r); }, 60);
@@ -52346,12 +52353,26 @@ if(typeof module !== 'undefined' && module.exports) module.exports = {TEXT, TX};
     const first = (auto && usable(auto)) ? auto : list.find(el=> !isTextEntry(el));
     if(!(first && focusEl(first))) focusRoot(r.root);
   }
+  // 2026-11-16 (A11Y2): Codex and deck tiles are rebuilt while their card dialog is open, so the remembered opener was gone and focus
+  // fell to <body>. Remember how to find it again: its id, else its aria-label (same tag), else its data-id / data-uid / data-cid.
+  function describe(el){
+    if(!el || !el.getAttribute) return null;
+    const d = ['data-id', 'data-uid', 'data-cid', 'data-card', 'data-key'].find(n=> el.getAttribute(n));
+    return {tag: el.tagName, id: el.id || '', label: el.getAttribute('aria-label') || '', dn: d || '', dv: d ? el.getAttribute(d) : ''};
+  }
+  function refind(k){
+    if(!k) return null;
+    if(k.id){ const e = document.getElementById(k.id); if(e) return e; }
+    const list = [...document.querySelectorAll(k.tag.toLowerCase() + (k.dn ? '[' + k.dn + '="' + CSS.escape(k.dv) + '"]' : ''))];
+    return list.find(e=> usable(e) && (k.dn || (k.label && e.getAttribute('aria-label') === k.label))) || null;
+  }
   function onClose(r){
     const a = document.activeElement;
     const lost = !a || a === document.body || !a.isConnected || r.host.contains(a) || !visible(a);
     if(!lost) return;
     const t = top();
     if(r.opener && usable(r.opener) && (!t || t.host.contains(r.opener)) && focusEl(r.opener)) return;
+    const again = !t && r.opener && !r.opener.isConnected ? refind(r.openerKey) : null; if(again && usable(again) && focusEl(again)) return;
     if(t) initialFocus(t);
   }
   function queue(){ if(!scanQueued){ scanQueued = true; setTimeout(scan, 0); } }
@@ -58136,7 +58157,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd78e8b440471', BUILD_CARD_HASH = '96387efb9de6c387d43a47fa23a583078e7684b8a68d2522e9f7d2c56d0a2ef2';
+const BUILD_ID = '0ffa04f7f158', BUILD_CARD_HASH = '96387efb9de6c387d43a47fa23a583078e7684b8a68d2522e9f7d2c56d0a2ef2';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -69098,7 +69119,7 @@ function staminaPanelHTML(where){
   const done = {nest:'Done: 30 from the Nest. The Forge takes it to 50.', forge:'Done: 50 from the Forge. The Tavern takes it to 60.', tavern:'Done: 60. More will come from elsewhere.'}[where];
   return `<section class="stamina-panel" aria-label="Max Energy"><h3>⚡ Max Energy <b>${energyMax()}</b></h3>
     <p>${blurb}</p>
-    <div class="wp-stam-row"><span class="wp-stam-pips" aria-label="${k} of ${steps}">${Array.from({length: steps}, (_, i)=> `<i class="${i < k ? 'on' : ''}"></i>`).join('')}</span>
+    <div class="wp-stam-row"><span class="wp-stam-pips" role="img" aria-label="${k} of ${steps}">${Array.from({length: steps}, (_, i)=> `<i class="${i < k ? 'on' : ''}"></i>`).join('')}</span>
     ${full ? `<small>${done}</small>` : lock ? `<small>Raise it to ${STAMINA_PLACES[lock].to} in the ${STAMINA_PLACES[lock].label} first.</small>` : `<button type="button" class="btn small primary" data-stamina-buy="${where}" ${staminaAffordable(c) ? '' : 'aria-disabled="true"'}>Raise to ${energyMax() + P.each}${btnCostHTML(c)}</button>`}</div></section>`;
 }
 // Facility upgrades (2026-10-18, package DK, owner 00:08: "The forge upgrades on your profile (and nest etc., tavern upgrades)
@@ -71501,7 +71522,7 @@ function deckSlotPanelHTML(where){
   const pips = Array.from({length: Math.max(n, DECK_SLOT_STEPS[DECK_SLOT_STEPS.length - 1].slot)}, (_, i)=> `<i class="${i < used ? 'is-used' : i < n ? 'on' : ''}"></i>`).join('');
   return `<section class="deck-slot-panel ${where === 'camp' ? 'is-camp' : ''}" id="${where === 'camp' ? 'campDeckSlots' : 'tavernDeckSlots'}" aria-label="${escapeAttr(TX('ui.ui4-slots-title'))}">
     <h3>🗂 ${escapeHtml(TX('ui.ui4-slots-title'))} <b>${used}/${n}</b></h3>${where === 'camp' && st && !gate ? neWalletHTML(['dust', 'gold']) : '' /* 2026-10-24 (package NE, #9) */}
-    <div class="wp-stam-row"><span class="wp-stam-pips ds-slot-pips" aria-label="${escapeAttr(TX('ui.ui4-slots-aria', {used, n}))}">${pips}</span>
+    <div class="wp-stam-row"><span class="wp-stam-pips ds-slot-pips" role="img" aria-label="${escapeAttr(TX('ui.ui4-slots-aria', {used, n}))}">${pips}</span>
     ${!st ? `<small>${escapeHtml(TX('ui.ui4-slots-full'))}</small>` : gate ? `<small>${escapeHtml(TX('ui.ui4-slots-gate', {slot: st.slot, map: gate}))}</small>`
       : `<button type="button" class="btn small primary" data-deck-slot-buy="${where}" ${deckSlotAffordable(st) ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.ui4-slots-buy', {slot: st.slot}))}${btnCostHTML(st.cost)}</button>`}</div></section>`;
 }
@@ -93795,7 +93816,7 @@ function renderMatchUI(){
     </div>
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
-    <div class="pass-overlay winloss-overlay">
+    <div class="pass-overlay winloss-overlay" role="dialog" aria-modal="true">
       <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}${!isPc && isTowerResults(m) ? ' is-tower' : '' /* 2026-10-18 (RW): a new Spire floor */}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
@@ -118528,6 +118549,15 @@ const PLACES = {
   codex: {cls:'codex-scene', icon:'📖', sign:'Codex', ambience:''}, // 2026-11-14 (package UI54, owner 11:11): the Codex is a place with a sign too (no ambience: it stays quiet; the Forge view drops the scene, see renderCodex)
 };
 var tabSwitchSeq = 0; // counts screen changes (renderPlay tells a fresh arrival from a redraw)
+// 2026-11-16 (A11Y2): every screen gets one visually hidden <h1> (the page had none), and the skip link jumps past the top bar.
+const A11Y_TAB_H1 = {home:'Home', play:'Conquest map', deck:'Camp', codex:'Codex', shop:'Shop', nest:'Nest', profile:'Profile', ranking:'Ranking', friends:'Friends', market:'Market'};
+function a11yPageH1(tab){
+  const wrap = document.getElementById('mainContent'); if(!wrap) return;
+  let h = document.getElementById('pageH1');
+  if(!h){ h = document.createElement('h1'); h.id = 'pageH1'; h.className = 'sr-only'; wrap.insertBefore(h, wrap.firstChild);
+    const sk = document.getElementById('skipLink'); if(sk) sk.addEventListener('click', e=>{ e.preventDefault(); wrap.focus({preventScroll: true}); }); }
+  h.textContent = _t(A11Y_TAB_H1[tab] || (String(tab).charAt(0).toUpperCase() + String(tab).slice(1)));
+}
 function switchTab(tab){
   tabSwitchSeq++;
   setTimeout(()=>{ try{ pl2MapViewed(); }catch(e){} }, 0); // RES3 (2026-10-26, R8): waiting XP plays on whichever screen comes up
@@ -118583,6 +118613,7 @@ function switchTab(tab){
   { const FEATURE = !['home','play','admin'].includes(tab);
     if(FEATURE && currentTabBeforeSwitch && currentTabBeforeSwitch !== tab && !['admin'].includes(currentTabBeforeSwitch)) pageCameFrom = {tab:currentTabBeforeSwitch, sub: (typeof playSubTab!=='undefined' ? playSubTab : null), map: (typeof conquestSelectedMap!=='undefined' ? conquestSelectedMap : null), forge: leftForge};
     refreshPageBar(tab); }
+  try{ a11yPageH1(tab); }catch(e){} // 2026-11-16 (A11Y2): one h1 per screen for screen readers
   document.getElementById('view-home').hidden = tab!=='home';
   document.getElementById('view-codex').hidden = tab!=='codex';
   document.getElementById('view-play').hidden = tab!=='play';

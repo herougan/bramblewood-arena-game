@@ -14981,7 +14981,7 @@ function staminaPanelHTML(where){
   const done = {nest:'Done: 30 from the Nest. The Forge takes it to 50.', forge:'Done: 50 from the Forge. The Tavern takes it to 60.', tavern:'Done: 60. More will come from elsewhere.'}[where];
   return `<section class="stamina-panel" aria-label="Max Energy"><h3>⚡ Max Energy <b>${energyMax()}</b></h3>
     <p>${blurb}</p>
-    <div class="wp-stam-row"><span class="wp-stam-pips" aria-label="${k} of ${steps}">${Array.from({length: steps}, (_, i)=> `<i class="${i < k ? 'on' : ''}"></i>`).join('')}</span>
+    <div class="wp-stam-row"><span class="wp-stam-pips" role="img" aria-label="${k} of ${steps}">${Array.from({length: steps}, (_, i)=> `<i class="${i < k ? 'on' : ''}"></i>`).join('')}</span>
     ${full ? `<small>${done}</small>` : lock ? `<small>Raise it to ${STAMINA_PLACES[lock].to} in the ${STAMINA_PLACES[lock].label} first.</small>` : `<button type="button" class="btn small primary" data-stamina-buy="${where}" ${staminaAffordable(c) ? '' : 'aria-disabled="true"'}>Raise to ${energyMax() + P.each}${btnCostHTML(c)}</button>`}</div></section>`;
 }
 // Facility upgrades (2026-10-18, package DK, owner 00:08: "The forge upgrades on your profile (and nest etc., tavern upgrades)
@@ -17384,7 +17384,7 @@ function deckSlotPanelHTML(where){
   const pips = Array.from({length: Math.max(n, DECK_SLOT_STEPS[DECK_SLOT_STEPS.length - 1].slot)}, (_, i)=> `<i class="${i < used ? 'is-used' : i < n ? 'on' : ''}"></i>`).join('');
   return `<section class="deck-slot-panel ${where === 'camp' ? 'is-camp' : ''}" id="${where === 'camp' ? 'campDeckSlots' : 'tavernDeckSlots'}" aria-label="${escapeAttr(TX('ui.ui4-slots-title'))}">
     <h3>🗂 ${escapeHtml(TX('ui.ui4-slots-title'))} <b>${used}/${n}</b></h3>${where === 'camp' && st && !gate ? neWalletHTML(['dust', 'gold']) : '' /* 2026-10-24 (package NE, #9) */}
-    <div class="wp-stam-row"><span class="wp-stam-pips ds-slot-pips" aria-label="${escapeAttr(TX('ui.ui4-slots-aria', {used, n}))}">${pips}</span>
+    <div class="wp-stam-row"><span class="wp-stam-pips ds-slot-pips" role="img" aria-label="${escapeAttr(TX('ui.ui4-slots-aria', {used, n}))}">${pips}</span>
     ${!st ? `<small>${escapeHtml(TX('ui.ui4-slots-full'))}</small>` : gate ? `<small>${escapeHtml(TX('ui.ui4-slots-gate', {slot: st.slot, map: gate}))}</small>`
       : `<button type="button" class="btn small primary" data-deck-slot-buy="${where}" ${deckSlotAffordable(st) ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.ui4-slots-buy', {slot: st.slot}))}${btnCostHTML(st.cost)}</button>`}</div></section>`;
 }
@@ -39678,7 +39678,7 @@ function renderMatchUI(){
     </div>
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
-    <div class="pass-overlay winloss-overlay">
+    <div class="pass-overlay winloss-overlay" role="dialog" aria-modal="true">
       <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}${!isPc && isTowerResults(m) ? ' is-tower' : '' /* 2026-10-18 (RW): a new Spire floor */}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
@@ -64411,6 +64411,15 @@ const PLACES = {
   codex: {cls:'codex-scene', icon:'📖', sign:'Codex', ambience:''}, // 2026-11-14 (package UI54, owner 11:11): the Codex is a place with a sign too (no ambience: it stays quiet; the Forge view drops the scene, see renderCodex)
 };
 var tabSwitchSeq = 0; // counts screen changes (renderPlay tells a fresh arrival from a redraw)
+// 2026-11-16 (A11Y2): every screen gets one visually hidden <h1> (the page had none), and the skip link jumps past the top bar.
+const A11Y_TAB_H1 = {home:'Home', play:'Conquest map', deck:'Camp', codex:'Codex', shop:'Shop', nest:'Nest', profile:'Profile', ranking:'Ranking', friends:'Friends', market:'Market'};
+function a11yPageH1(tab){
+  const wrap = document.getElementById('mainContent'); if(!wrap) return;
+  let h = document.getElementById('pageH1');
+  if(!h){ h = document.createElement('h1'); h.id = 'pageH1'; h.className = 'sr-only'; wrap.insertBefore(h, wrap.firstChild);
+    const sk = document.getElementById('skipLink'); if(sk) sk.addEventListener('click', e=>{ e.preventDefault(); wrap.focus({preventScroll: true}); }); }
+  h.textContent = _t(A11Y_TAB_H1[tab] || (String(tab).charAt(0).toUpperCase() + String(tab).slice(1)));
+}
 function switchTab(tab){
   tabSwitchSeq++;
   setTimeout(()=>{ try{ pl2MapViewed(); }catch(e){} }, 0); // RES3 (2026-10-26, R8): waiting XP plays on whichever screen comes up
@@ -64466,6 +64475,7 @@ function switchTab(tab){
   { const FEATURE = !['home','play','admin'].includes(tab);
     if(FEATURE && currentTabBeforeSwitch && currentTabBeforeSwitch !== tab && !['admin'].includes(currentTabBeforeSwitch)) pageCameFrom = {tab:currentTabBeforeSwitch, sub: (typeof playSubTab!=='undefined' ? playSubTab : null), map: (typeof conquestSelectedMap!=='undefined' ? conquestSelectedMap : null), forge: leftForge};
     refreshPageBar(tab); }
+  try{ a11yPageH1(tab); }catch(e){} // 2026-11-16 (A11Y2): one h1 per screen for screen readers
   document.getElementById('view-home').hidden = tab!=='home';
   document.getElementById('view-codex').hidden = tab!=='codex';
   document.getElementById('view-play').hidden = tab!=='play';

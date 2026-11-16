@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package A11Y2: alpha checklist U7, accessibility audit)
+- Keyboard focus ring is blue (`--focus-ring`, 3:1 or better on cream, wood and dark; the gold one was 1.3:1). "Skip to content" link as the first Tab stop, a `main` landmark and a hidden h1 per screen. The Victory / Defeat screen is a real dialog (focus moves in, Tab trapped). Focus returns to a card tile that was rebuilt while its dialog was open. Contrast raised on home sub-lines, the notice badge, short-cost numbers and empty Codex chips; the chestnut stops bobbing under reduced motion; pip counters get `role=img`. 12 language rows. Open: battle announcements for screen readers, the board by keyboard (`docs/a11y-audit-2026-11-16.md`, U7: pass with open items). Test `tests/a11y2-2026-11-16.js`; shots `docs/screens/a11y2/`.
+
 ## 2026-11-16 (package CHK1: alpha checklist B5, B6, B12, C7, measured after FOLD5)
 - No game change. B5 progression decks FAIL: 32 of 149 road fights flagged; the decks average 71-75% against a 70% target. B6 PRO / BPRO FAIL: 6 decks over 85% for the Map reference (13-BPRO-4, 20-BPRO-2, 20-A x4); 6 walls. B12 economy PASS: Gold Leaves 1.05 a day, no loop. C7 foils PASS: every rate within its 95% interval over 100k packs a type. New `tools/chk1/foil_sim_2026_11_16.js`, econ sim `--days`. Report: `docs/balance/checklist/chk1-2026-11-16.md`.
 

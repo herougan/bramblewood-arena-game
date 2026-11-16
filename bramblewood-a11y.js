@@ -93,7 +93,7 @@
         const a = document.activeElement;
         let opener = a && a !== document.body && !host.contains(a) ? a : null;
         if(!opener) for(let i = history.length - 1; i >= 0; i--){ const h = history[i]; if(h.isConnected && !host.contains(h)){ opener = h; break; } }
-        r = {host, root, opener, seq: ++seq, light};
+        r = {host, root, opener, seq: ++seq, light, openerKey: describe(opener)};
         recs.set(host, r);
         // Let the game's own focus code run first (several builders focus a button after ~30 ms).
         setTimeout(()=>{ if(recs.get(host) === r && top() === r) initialFocus(r); }, 60);
@@ -121,12 +121,26 @@
     const first = (auto && usable(auto)) ? auto : list.find(el=> !isTextEntry(el));
     if(!(first && focusEl(first))) focusRoot(r.root);
   }
+  // 2026-11-16 (A11Y2): Codex and deck tiles are rebuilt while their card dialog is open, so the remembered opener was gone and focus
+  // fell to <body>. Remember how to find it again: its id, else its aria-label (same tag), else its data-id / data-uid / data-cid.
+  function describe(el){
+    if(!el || !el.getAttribute) return null;
+    const d = ['data-id', 'data-uid', 'data-cid', 'data-card', 'data-key'].find(n=> el.getAttribute(n));
+    return {tag: el.tagName, id: el.id || '', label: el.getAttribute('aria-label') || '', dn: d || '', dv: d ? el.getAttribute(d) : ''};
+  }
+  function refind(k){
+    if(!k) return null;
+    if(k.id){ const e = document.getElementById(k.id); if(e) return e; }
+    const list = [...document.querySelectorAll(k.tag.toLowerCase() + (k.dn ? '[' + k.dn + '="' + CSS.escape(k.dv) + '"]' : ''))];
+    return list.find(e=> usable(e) && (k.dn || (k.label && e.getAttribute('aria-label') === k.label))) || null;
+  }
   function onClose(r){
     const a = document.activeElement;
     const lost = !a || a === document.body || !a.isConnected || r.host.contains(a) || !visible(a);
     if(!lost) return;
     const t = top();
     if(r.opener && usable(r.opener) && (!t || t.host.contains(r.opener)) && focusEl(r.opener)) return;
+    const again = !t && r.opener && !r.opener.isConnected ? refind(r.openerKey) : null; if(again && usable(again) && focusEl(again)) return;
     if(t) initialFocus(t);
   }
   function queue(){ if(!scanQueued){ scanQueued = true; setTimeout(scan, 0); } }
