@@ -1,0 +1,197 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "tournament",
+ "status": "ok",
+ "started": "2026-11-16T05:20:52.100Z",
+ "finished": "2026-11-16T05:29:45.017Z",
+ "durationSec": 532.9,
+ "args": [
+  "--games",
+  "24",
+  "--maps",
+  "0-20",
+  "--tag",
+  "chk1-fold",
+  "--minutes",
+  "60",
+  "--wait"
+ ],
+ "head": "bcfce10d",
+ "inputs": {
+  "games": 24,
+  "maps": "0-20",
+  "tag": "chk1-fold",
+  "band": 0.25,
+  "dir": "tests/out/pipeline-tournament/chk1-fold",
+  "refs": [
+   "map",
+   "prog-1",
+   "prog-2",
+   "prog-3",
+   "prog-4",
+   "prog-5"
+  ],
+  "means": {
+   "map": 0.6397999999999999,
+   "prog-1": 0.7145,
+   "prog-2": 0.7273000000000001,
+   "prog-3": 0.7081000000000001,
+   "prog-4": 0.7458,
+   "prog-5": 0.7234
+  }
+ },
+ "counts": {
+  "fights": 149,
+  "rows played now": 894,
+  "rows on file": 894
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "m1:0-3",
+   "why": "prog mean 0.96 against the road target 0.6 (Map reference 0.542)"
+  },
+  {
+   "id": "mf:1-5",
+   "why": "prog mean 0.79 against the road target 0.4 (Map reference 0.625)"
+  },
+  {
+   "id": "mb:2-1",
+   "why": "prog mean 0.62 against the road target 0.9 (Map reference 0.708)"
+  },
+  {
+   "id": "mb:2-2",
+   "why": "prog mean 0.38 against the road target 0.8 (Map reference 0.708)"
+  },
+  {
+   "id": "mc:3-4",
+   "why": "prog mean 0.4 against the road target 0.72 (Map reference 0.125)"
+  },
+  {
+   "id": "mw:5-5",
+   "why": "prog mean 0.94 against the road target 0.66 (Map reference 0.458)"
+  },
+  {
+   "id": "mw:5-6",
+   "why": "prog mean 0.86 against the road target 0.6 (Map reference 0.125)"
+  },
+  {
+   "id": "mw:5-7",
+   "why": "prog mean 0.68 against the road target 0.4 (Map reference 0.083)"
+  },
+  {
+   "id": "m8:6-5",
+   "why": "prog mean 0.33 against the road target 0.7 (Map reference 0.167)"
+  },
+  {
+   "id": "m8:6-7",
+   "why": "prog mean 1 against the road target 0.6 (Map reference 0.417)"
+  },
+  {
+   "id": "m8:6-8",
+   "why": "prog mean 0.66 against the road target 0.4 (Map reference 0.125)"
+  },
+  {
+   "id": "m4:8-7",
+   "why": "prog mean 0.91 against the road target 0.6 (Map reference 0.333)"
+  },
+  {
+   "id": "mk:9-5",
+   "why": "prog mean 0.98 against the road target 0.66 (Map reference 0.708)"
+  },
+  {
+   "id": "mk:9-6",
+   "why": "prog mean 0.88 against the road target 0.6 (Map reference 0.542)"
+  },
+  {
+   "id": "m10:11-5",
+   "why": "prog mean 0.45 against the road target 0.75 (Map reference 0.708)"
+  },
+  {
+   "id": "m10:11-6",
+   "why": "prog mean 0.42 against the road target 0.713 (Map reference 0.792)"
+  },
+  {
+   "id": "m10:11-7",
+   "why": "prog mean 0.38 against the road target 0.675 (Map reference 0.75)"
+  },
+  {
+   "id": "m10:11-8",
+   "why": "prog mean 0.98 against the road target 0.638 (Map reference 0.917)"
+  },
+  {
+   "id": "m10:11-9",
+   "why": "prog mean 0.86 against the road target 0.6 (Map reference 0.792)"
+  },
+  {
+   "id": "m10:11-10",
+   "why": "prog mean 0.08 against the road target 0.4 (Map reference 0.292)"
+  },
+  {
+   "id": "mh:12-6",
+   "why": "prog mean 0.95 against the road target 0.6 (Map reference 0.625)"
+  },
+  {
+   "id": "mh:12-7",
+   "why": "prog mean 0.82 against the road target 0.4 (Map reference 0.458)"
+  },
+  {
+   "id": "mr:13-7",
+   "why": "prog mean 0.91 against the road target 0.6 (Map reference 0.792)"
+  },
+  {
+   "id": "mr:13-8",
+   "why": "prog mean 0.75 against the road target 0.4 (Map reference 0.458)"
+  },
+  {
+   "id": "ml:15-7",
+   "why": "prog mean 0.73 against the road target 0.4 (Map reference 0.375)"
+  },
+  {
+   "id": "md:18-3",
+   "why": "prog mean 0.53 against the road target 0.78 (Map reference 0.583)"
+  },
+  {
+   "id": "md:18-4",
+   "why": "prog mean 0.36 against the road target 0.72 (Map reference 0.5)"
+  },
+  {
+   "id": "m3:19-1",
+   "why": "prog mean 0.58 against the road target 0.9 (Map reference 0.792)"
+  },
+  {
+   "id": "m3:19-5",
+   "why": "prog mean 0.34 against the road target 0.6 (Map reference 0.292)"
+  },
+  {
+   "id": "m11:20-4",
+   "why": "prog mean 0.44 against the road target 0.771 (Map reference 0.583)"
+  },
+  {
+   "id": "m11:20-6",
+   "why": "prog mean 0.34 against the road target 0.686 (Map reference 0.708)"
+  },
+  {
+   "id": "m11:20-9",
+   "why": "prog mean 0.92 against the road target 0.5 (Map reference 1)"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 894
+ },
+ "notes": [
+  "map mean win 0.6397999999999999",
+  "prog-1 mean win 0.7145",
+  "prog-2 mean win 0.7273000000000001",
+  "prog-3 mean win 0.7081000000000001",
+  "prog-4 mean win 0.7458",
+  "prog-5 mean win 0.7234"
+ ],
+ "files": [
+  "tests/out/pipeline-tournament/chk1-fold/ref5-road.jsonl"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/tournament-2026-11-16-1320.json"
+}

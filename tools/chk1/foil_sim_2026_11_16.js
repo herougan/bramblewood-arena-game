@@ -25,7 +25,9 @@ const NAMES = ['SPELLS_SHELVED', 'isHofVariant', 'hofBlocked', 'RARITY_INTRO', '
   'SHOP_PACKS_DEFAULT', 'PACK_TIER_POOL', 'SHOP_PACKS_COMING_SOON', 'PACK_FOIL_FINISHES_DEFAULT', 'normalizePack', 'RES3_COLLECTOR_CARDS', 'advancedPackOf',
   'SHINY_CHANCE', 'grantCardCopy', 'EASTER_EGG_IDS', 'EASTER_EGG_GRANT_SOURCES', 'UNATTAINABLE_ADMIN_SOURCES', 'isTutorialCopySource', 'isEasterEgg', 'mysteryEggPick', 'MYSTERY_EGG_CHANCE', 'MYSTERY_PACK_ID',
   'pickFoilFinish', 'rollPackFoils', 'rollBonusCopy', 'PACK_JACKPOT_CHANCE', 'PACK_MATERIA_PCT', 'unlockCardForPlayer', 'purchasePackOnce', 'FACTION_PACKS', 'FACTION_PACK_OWN', 'FACTION_PACK_FOIL', 'creditFactionPack'];
-const parts = [...new Set(NAMES.map(B.grab))];
+// packCardPool is a pure function of (defs, pool, exact, gated, reach) here; it is memoised (renamed, wrapped) so 100k packs run in minutes
+const parts = [...new Set(NAMES.map(B.grab))].map(t => /^function packCardPool\(/.test(t) ? t.replace('function packCardPool(', 'function __packCardPoolRaw(') +
+  '\nconst __poolMemo = new Map(); function packCardPool(defs, pool, exact, gated){ const k = [pool, !!exact, !!gated, __rt.reach].join("|"); if(!__poolMemo.has(k)) __poolMemo.set(k, __packCardPoolRaw(defs, pool, exact, gated)); return __poolMemo.get(k).slice(); }' : t);
 // the derived-rarity fill that runs at load (PACK_RARITY_WEIGHT / BONUS_COPY_ALIAS / ROAD_RARITY_ALIAS rows for 'questrare' ...), as the source has it
 { const a = B.src.indexOf('RARITY_DEFS.filter(r=> r.derived).forEach('), b = B.src.indexOf('});', B.src.indexOf('ROAD_RARITY_ALIAS[k] == null', a)) + 3; if (a > 0 && b > a) parts.push(B.src.slice(a, b)); }
 const stubs = [
