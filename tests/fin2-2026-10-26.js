@@ -45,7 +45,8 @@ ok(BB.shieldHealthOf({shield: 3}) === 2.4 && BB.shieldHealthOf({shield: true}) =
 // 2026-11-04 (TESTFIX1): SKILL2 (2026-10-31, BUDGET2-1) measured Shield's own skill worth on top of the 0.8 Health (2.53 fixed; skill2Was 0, FIN2's)
 ok(table.skills.find(x=> x.id === 'shield').skill2Was.value === 0 && T.skillCost('shield', 3) === table.skills.find(x=> x.id === 'shield').value && T.cardS({shield: 3}).S === T.skillCost('shield', 3), 'c. Shield costs nothing in S (FIN2); SKILL2 priced its skill part since');
 ok(BB.contextS('tideGrant', {flood: {shield: 5}}, ()=> 0).inner === 4, 'c. a Shield in braces counts as 0.8 Health there too');
-ok(/sbCheck\(A, D, S, N, M, F, SH\)/.test(src) && /c = sbCheck\(A, D, S, N, M, F, SH\)/.test(src) && /sbCheck\(A, D, S, N, M, F, sbShieldH\(d\)\)/.test(src), 'c. the game\'s budget panel and Stat budget pass the Shield');
+// 2026-11-16 (TESTFIX5): SIDE2 (11-13) added the card's effects as an eighth argument and the counted Attack (sbAttackOf); the Shield is still passed
+ok(/function sbCheck\(A, D, S, N, M, F, SH, E\)/.test(src) && /sbCheck\(A, D, S, N, M, F, SH, sbEffectsOf\(d\)\)/.test(src) && /sbCheck\(sbAttackOf\(d\)[^,]*, D, S, N, M, F, sbShieldH\(d\), sbEffectsOf\(d\)\)/.test(src), 'c. the game\'s budget panel and Stat budget pass the Shield');
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), by = id=> cards.find(c=> c.id === id), st = c=> `${c.attack}/${c.health}`;
   const crab = by('tide-pool-crab'), conch = by('conch-crawler'), arm = by('armadillo-guard');
   // 2026-11-04 (TESTFIX1): BAL9 (2026-11-02, owner JJ21) re-fit both onto the band (their notes): Tide Pool Crab 1/2, Conch Crawler 1/3

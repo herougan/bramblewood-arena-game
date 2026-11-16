@@ -1313,7 +1313,7 @@ const PASSIVE_DEFS = [
   // nothing there. Does 5 damage if a card is played there." + "Skill: When hit, its attack decreases by 1." + "Bulldoze" + "Add a sheep
   // card (basic) - it has taunt.". No card has them yet; the designer assigns them. Engine: the W2 block in bramblewood-engine.js.
   // (Blind / Paralyse / Confuse on hit already exist: the Blind, Paralyze and Confuse rows above. Rupture already exists too.)
-  {key:'venomous', category:'passive', label:'Venomous (old)', hidden:true, retired:true /* ENG33 (2026-11-07, owner #9: "Remove the previous venomous skill"): an old effects.venomous reads as Venomous N (the poison key) */, kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.eng33-venomous', {n: numOr(v, 2)})},
+  {key:'venomous', category:'passive', label:'Old Venomous', hidden:true, retired:true /* ENG33 (2026-11-07, owner #9: "Remove the previous venomous skill"); 2026-11-16 (TESTFIX5): a plain label, no note in brackets (skills2 rule): an old effects.venomous reads as Venomous N (the poison key) */, kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.eng33-venomous', {n: numOr(v, 2)})},
   {key:'toxin', category:'passive', label:'Toxin', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits add ${numOr(v, 1)} Toxin: a deadlier poison that deals its whole stack every round and never wears off. Nothing cures it (not Cure, Cleanse or Shedding).`},
   {key:'weaken', category:'passive', label:'Weaken', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits take ${numOr(v, 1)} Attack from the target for good.`},
   {key:'wilting', category:'passive', label:'Wilting', kind:'number', min:1, defaultValue:1, desc:v=>`A drawback: each time it is hit, it loses ${numOr(v, 1)} Attack for good.`},

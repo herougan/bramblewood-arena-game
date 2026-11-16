@@ -165,7 +165,8 @@ const sk = id=> table.skills.find(x=> x.id === id);
   // 2026-11-04 (TESTFIX1): later re-measures (SKILL2 2026-10-31, BUDGET2-1; the bramble-15 pipeline BAL10 / BAL12 / BAL14) re-priced some in place
   // (value = measuredS, scale n with a pow); GI's value must then sit in the entry's history
   .forEach(([id, sc, v])=>{ const e = sk(id) || {}, hist = [e.prevValue, e.skill2Was && e.skill2Was.value, e.skill2Was && e.skill2Was.prevValue, e.recost1Was && e.recost1Was.prevValue];
-    ok(sk(id) && ((e.scale === sc && (e.value === v || (e.appliedAt && e.prevValue === v && e.value === Math.max(0, e.measuredS)))) || (Math.abs(e.value - e.measuredS) < 0.011 && hist.includes(v))),
+    // 2026-11-16 (TESTFIX5): BAL32 (owner BAL31-1/2/3, 11-09) re-priced the enablers (Detonate, Brittle) from their payoffs; the price before is in bal32Was
+    ok(sk(id) && ((e.scale === sc && (e.value === v || (e.appliedAt && e.prevValue === v && e.value === Math.max(0, e.measuredS)))) || (Math.abs(e.value - e.measuredS) < 0.011 && hist.includes(v)) || (/BAL32/.test(e.bal32 || '') && e.bal32Was && e.bal32Was.scale === sc && e.bal32Was.value === v)),
     `skill-costs: ${id} ${sc} ${v} (or its applied measured worth: ${sk(id) && sk(id).value})`); });
 ok(table.shorthands.kinRally && table.shorthands.kinRally.trigger === 'onAllyPlayed' && table.shorthands.kinRally.action === 'buff' && table.shorthands.kinRally.both, 'Kin Rally is a shorthand: On Ally Played × Buff (+N/+N)');
 ok(table.shorthands.packHowl && table.shorthands.packHowl.trigger === 'onAllyPlayed' && table.shorthands.packHowl.action === 'bleed', 'Pack Howl is a shorthand: On Ally Played × Bleed');
@@ -225,7 +226,8 @@ const TKEYS = Object.keys(TXT).filter(k=> /^ui\.(skn-|sk-(hunter|executioner|det
 // (and any later package's ui.skn-* name, e.g. EQ's: only GI's nine skill names count here)
 const SK3_NOT_GI = k=> /^ui\.(sk-hunter-weak|hunter-vs-weak)$/.test(k) || (/^ui\.skn-/.test(k) && !/^ui\.skn-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)$/.test(k));
 SK3_NOT_GI.test = SK3_NOT_GI;
-ok(TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length === 67, `67 package GI TX keys (${TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length})`);
+// 2026-11-16 (TESTFIX5): 66 since TESTFIX3 (11-14) removed the unused ui.log-detonate (retired by CONTENT3, below)
+ok(TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length === 66, `66 package GI TX keys (${TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length})`);
 const RETIRED_C3 = new Set(['ui.log-detonate', 'ui.sk-detonate', 'ui.sk-detonate-codex']); // 2026-10-26 (CONTENT3, E18): the old cash-in's lines; Detonate N reads ui.c3-*
 // 2026-11-04 (TESTFIX1): EN5 / EN6 / EN7 build these names from a prefix ("TX('ui.skn-' + t)", t from their key tables), so a key is used when its
 // prefix is asked for that way and its rest is a quoted name in the app

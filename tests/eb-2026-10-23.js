@@ -64,8 +64,9 @@ const byMap = id=> G.CONQUEST_MAPS.find(m=> m.id === id), node = (mid, k)=> byMa
 // --- 3. the enemy's level
 { ok(G.roadEnemyLevelExact(node('m1', '0-3')) === 0 && G.roadEnemyLevelExact(node('mf', '1-1')) === 0 && G.roadEnemyLevelExact(node('mf', '1-5')) === 0.5, '3. Map 0 Level 0; Map 1 from 0 to 0.5');
   ok(G.roadEnemyLevelExact(node('mb', '2-1')) === 1, '3. Map 2 is Level 1 as before');
-  const d0 = G.levelledEnemyDeck(node('m1', '0-3'), node('m1', '0-3').deck), sk = G.overlay()['chipmunk-skirmisher@lv0'];
-  ok(d0['chipmunk-skirmisher@lv0'] === node('m1', '0-3').deck['chipmunk-skirmisher'] /* 2026-11-06 TESTFIX2: the 0-3 deck was rebuilt (BAL16 / BAL19): the copy count follows the deck (1), not the old 3 */ && sk && sk.health === G.statsAtLevel(D['chipmunk-skirmisher'], 0).health && sk.health < D['chipmunk-skirmisher'].health, '3. a Map 0 enemy card fights at its Level 0 stats, below its own level');
+  // 2026-11-16 (TESTFIX5): SKIR3 rebuilt the 0-3 deck without the Chipmunk Skirmisher; any of its cards whose Level 0 Health is below its own shows the rule
+  const d0 = G.levelledEnemyDeck(node('m1', '0-3'), node('m1', '0-3').deck), ov0 = G.overlay(), cid = Object.keys(node('m1', '0-3').deck).find(id=> G.statsAtLevel(D[id], 0).health < D[id].health), sk = cid && ov0[cid + '@lv0'];
+  ok(cid && d0[cid + '@lv0'] === node('m1', '0-3').deck[cid] && sk && sk.health === G.statsAtLevel(D[cid], 0).health && sk.health < D[cid].health, `3. a Map 0 enemy card fights at its Level 0 stats, below its own level (${cid})`);
   const n15 = node('mf', '1-5'), d15 = G.levelledEnemyDeck(n15, n15.deck), lv = {0: 0, 1: 0}; Object.entries(d15).forEach(([id, k])=>{ const m = /@lv(\d+)$/.exec(id); if(m) lv[m[1]] = (lv[m[1]] || 0) + k; });
   ok(lv[0] > 0 && lv[1] > 0, '3. the Baron\'s copies are part Level 0, part Level 1: ' + JSON.stringify(lv));
   const ov = Object.assign({}, node('mf', '1-1'), {enemyLevel: 2}); G.NODE_MAP_HINT.set(ov, 'mf'); ok(G.roadEnemyLevelExact(ov) === 2, '3. the skirmish editor\'s Enemy level still wins');
@@ -77,7 +78,8 @@ const byMap = id=> G.CONQUEST_MAPS.find(m=> m.id === id), node = (mid, k)=> byMa
   if(J){ const row = (run, code)=> run.fights.find(x=> x.code === code);
     ['1-1', '1-2', '1-3', '1-4', '1-5'].forEach(code=>{ const a = row(J.after, code), b = row(J.before, code), t = G.roadCurveTarget('mf', node('mf', code));
       ok(b && b.mean < 15, `4. ${code} was under 15% before (${b && b.mean})`);
-      ok(a && a.mean / 100 >= t.lo - 1e-9 && a.mean / 100 <= t.hi + 1e-9, `4. ${code} is inside its band ${Math.round(t.lo * 100)}-${Math.round(t.hi * 100)} (${a && a.mean})`); });
+      // 2026-11-16 (TESTFIX5): the road curve's targets moved since (1-3 70 -> 85); the 10-23 run is judged on the target it recorded, with today's band width
+      const hw = (t.hi - t.lo) * 50; ok(a && Math.abs(a.mean - a.target) <= hw + 1e-9, `4. ${code} was inside its band then: ${a && a.mean} vs target ${a && a.target} ±${hw}`); });
     ['0-1', '0-2', '0-3', '0-4'].forEach(code=>{ const a = row(J.after, code), t = G.roadCurveTarget('m1', node('m1', code)); ok(a && a.mean / 100 >= t.lo - 1e-9 && a.mean / 100 <= t.hi + 1e-9, `4. ${code} is inside its band (${a && a.mean})`); });
     ok(row(J.after, 'T-1').win >= 75 && row(J.after, 'T-2').win >= 70, '4. the tutorial fights stay easy'); }
   const mf = byMap('mf'); ok(mf.nodes.slice(0, 4).every(n=> n.characterId === 'castle'), '4. Map 1\'s skirmishes defend a plain bramble');

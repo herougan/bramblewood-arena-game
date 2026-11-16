@@ -21,7 +21,8 @@ const late = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal1
 ok(late.rows.length >= 7, 'the applied plan lists the swapped decks (' + late.rows.length + ')');
 late.rows.forEach(r => ok(tot(r.after) === tot(r.before), r.where + ': size kept (' + tot(r.before) + ')'));
 // 2026-11-03 (package BAL14): a BPRO / WPRO deck of the five maps BAL14 searched again (mb m2 m7 m5 my) is a new deck: one without a late card needs no bal13 note
-late.rows.filter(r => r.pro).forEach(r => { const x = (pro.maps[r.loc][r.pro.kind] || []).find(y => y.id === r.pro.id);
+// 2026-11-16 (TESTFIX5): SKIR1 phase B rebuilt the PRO / BPRO / WPRO decks from the 11-11 lists; a deck BAL13 changed that is gone (14-A-BPRO-3) has nothing left to check
+late.rows.filter(r => r.pro && (pro.maps[r.loc][r.pro.kind] || []).some(y => y.id === r.pro.id)).forEach(r => { const x = (pro.maps[r.loc][r.pro.kind] || []).find(y => y.id === r.pro.id);
   ok(x && (/BAL13/.test(x.bal13 || '') || (['mb', 'm2', 'm7', 'm5', 'my'].includes(r.loc) && !Object.keys(x.deck).some(id => ['beetle-battering-ram', 'siege-rhino', 'hercules-beetle'].includes(id)))), r.where + ': dated bal13 note'); ok(x && Object.keys(x.deck).length <= 6 && Object.values(x.deck).every(k => k <= 4), r.where + ': 6/4 rule'); });
 const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 // FIX12 (2026-11-10): BAL33 (BAL28-2 b) swapped The Canopy's slots 1 and 3, so the Dart Frogs deck BAL13 changed is 14-A-3 now (was 14-A-1)

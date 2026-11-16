@@ -107,9 +107,11 @@ const withTimeout = (p, ms, what)=> Promise.race([p, new Promise((_, rej)=> setT
       const eb = G.skirmishTargetBand(m.id, ender); if(!(eb.role === 'boss' && eb.lo === .30 && eb.hi === .49 && eb.t < .5 && eb.t >= .4)) bossOk = false;
       const line = bands.filter(([n, b])=> b.role === 'skirmish' || b.role === 'elite');
       if(line.length){ const [n0, b0] = line[0], [nL, bL] = line[line.length - 1];
-        if(Math.abs(b0.t - .90) > 1e-9 || Math.abs(bL.t - .60) > 1e-9) lineOk = false;
-        line.forEach(([n, b], i)=>{ if(i && b.t > line[i - 1][1].t + 1e-9) monoOk = false;
-          if(Math.abs(b.t - Math.round((.90 - .30 * i / Math.max(1, line.length - 1)) * 1000) / 1000) > 1e-9) lineOk = false; // a straight line, elites on it
+        if((Math.abs(b0.t - .90) > 1e-9 && !(Number(n0.curveTarget) > 0)) || (Math.abs(bL.t - .60) > 1e-9 && !(Number(nL.curveTarget) > 0))) lineOk = false;
+        line.forEach(([n, b], i)=>{ if(i && b.t > line[i - 1][1].t + 1e-9 && !(Number(n.curveTarget) > 0)) monoOk = false; // BAL35-1 a's own targets aside
+          // 2026-11-16 (TESTFIX5): BAL35-1 a (11-10): a fight's own curveTarget replaces its place on the line (Thistlewood 1-3 / 1-4 at 85 / 80)
+          const ovT = Number(n.curveTarget), want = ovT > 0 && ovT < 1 ? ovT : Math.round((.90 - .30 * i / Math.max(1, line.length - 1)) * 1000) / 1000;
+          if(Math.abs(b.t - want) > 1e-9) lineOk = false; // a straight line, elites on it
           if(Math.abs(b.hi - Math.min(1, b.t + .08)) > 1e-9 || Math.abs(b.lo - (b.t - .08)) > 1e-9) lineOk = false; }); } });
     ok(lineOk, 'every main-map fight is on the road curve: 90% for the first, 60% for the last before the boss (elites too), green ±8');
     ok(monoOk, 'the curve only falls along a map');
@@ -125,8 +127,11 @@ const withTimeout = (p, ms, what)=> Promise.race([p, new Promise((_, rej)=> setT
     // your reference deck, as Lilypad Reach), so it is no longer a map ahead of your deck and keeps the main curve's 90%; the Pale Desert
     // (counts as Map 19 on the Map 18 deck) still shows the step
     { const q1 = G.skirmishTargetBand('mq', B.byKey('mq', '1-A-1')), pd1 = G.skirmishTargetBand('mpd', B.byKey('mpd', '18-A-1'));
-      ok(q1.t === .9 && !q1.ahead && G.fightMapNumber(B.byKey('mq', '1-A-1')) === 5 && G.skirmishTargetBand('mq', B.byKey('mq', '1-A-5')).role === 'boss', `Clovermead counts as Map 5 with the Map 5 deck: the main curve (${q1.t})`);
-      ok(Math.abs(pd1.t - SIDE90) < 0.002 && pd1.ahead === 1, `side maps a map ahead of your deck sit a step lower (90% becomes 88.2%: the Pale Desert's ${pd1.t})`); }
+      // 2026-11-16 (TESTFIX5): Clovermead opens after Map 12 now (shieldMap 12) and the Pale Desert counts as Map 19 on the Map 19 deck (PREF-3), so neither is a map ahead;
+      // the Eye of the Volcano (20-A, counts as Map 21 on the Map 20 deck) still shows the step
+      const mqMap = G.CONQUEST_MAPS.find(m=> m.id === 'mq'), e1 = G.skirmishTargetBand('me', B.byKey('me', '20-A-1'));
+      ok(q1.t === .9 && !q1.ahead && G.fightMapNumber(B.byKey('mq', '1-A-1')) === mqMap.shieldMap && G.skirmishTargetBand('mq', B.byKey('mq', '1-A-5')).role === 'boss', `Clovermead counts as Map ${mqMap.shieldMap} with that map's deck: the main curve (${q1.t})`);
+      ok(pd1.t === .9 && !pd1.ahead && Math.abs(e1.t - SIDE90) < 0.002 && e1.ahead === 1, `side maps a map ahead of your deck sit a step lower (90% becomes 88.2%: the Eye of the Volcano's ${e1.t}; the Pale Desert's ${pd1.t})`); }
     const n1 = B.byKey('mc', '3-1'), nB = B.byKey('mc', '3-7'), cls = (mid, n, v)=>{ G.skirmishCurveCache[mid + ':' + n.key] = v; const h = G.skirmishCurveChipHTML(mid, n, ''); return (/se-curve-chip (\w*)/.exec(h) || [])[1]; };
     ok(cls('mc', n1, .90) === 'ok' && cls('mc', n1, .83) === 'ok' && cls('mc', n1, .80) === 'hard' && cls('mc', n1, .99) === 'easy', 'the first fight: 82-98% green, under red, over blue');
     ok(cls('mc', nB, .45) === 'ok' && cls('mc', nB, .30) === 'ok' && cls('mc', nB, .55) === 'easy' && cls('mc', nB, .25) === 'hard', 'the boss: 30-49% green, 50%+ blue, under 30% red');

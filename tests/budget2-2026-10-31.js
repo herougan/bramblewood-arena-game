@@ -35,7 +35,9 @@ const SPD = new Set(['gold-throated-acolyte', 'mangrove-kingfisher', 'mirror-mot
 SPD.add('net-thrower'); // 2026-10-31 (package ENG15, decision ENG14-3): Bola 1 in place of Boomerang, re-fit 3/10 -> 2/9 (tests/eng15-2026-10-31.js)
 // 2026-11-03 (package BAL14): a card BAL14 re-fit after the full bramble-15 re-measure is BAL14's now (docs/balance/bal14/refit-2026-11-03.json, tests/bal14-2026-11-03.js)
 JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal14', 'refit-2026-11-03.json'), 'utf8')).edits.forEach(e=> SPD.add(e.id));
-const bad = plan.changes.filter(r=> !SK2.has(r.id) && !SPD.has(r.id)).filter(r=>{ const c = byId[r.id]; if(!c || `${c.attack == null ? '-' : c.attack}/${c.health}` !== r.to) return true;
+// 2026-11-16 (TESTFIX5): a card changed again after BUDGET2 (owner live edits folded by CONTENT12, CONTENT11-1 thematic lines, BAL30 ...) carries the later line; its note records it after the BUDGET2 entry. The band still applies.
+const laterLine = c=> { const n = c.creatorNote || '', i = n.indexOf('BUDGET2 re-fit'); return i >= 0 && /->|folded in/.test(n.slice(n.indexOf('now ', i) + 4)); };
+const bad = plan.changes.filter(r=> !SK2.has(r.id) && !SPD.has(r.id)).filter(r=>{ const c = byId[r.id]; if(!c || (`${c.attack == null ? '-' : c.attack}/${c.health}` !== r.to && !laterLine(c))) return true;
   const b = T.budget(c), b1 = T.budget(c, {level: 1}); if(!(b.ok && b1.ok && b.x1 > 0.6 * b.N)) return true;
   if(TUT12.has(r.id)){ const st = G.statsAtLevel(c, 0); if(!T.budget(Object.assign({}, c, {attack: st.attack, health: st.health, effects: {}}), {level: 0}).ok) return true; }
   return !/BUDGET2 re-fit/.test(c.creatorNote || ''); }).map(r=> r.id);

@@ -39,7 +39,8 @@ ok(!fs.existsSync(path.join(ROOT, 'index.html')) || /const MAP_REVIEW = \{"built
   const ov = {querySelectorAll: ()=> [sec]};
   ok(f(ov) === 'Map 4 / Map: keep Beta, Gamma; cut Alpha', '4. picks text: flipped chosen = cut, flipped cut / maybe = keep (' + f(ov) + ')'); }
 ok(/\.rv1-tile\{/.test(css) && /\.rv1-tile\.is-cut \.vis4-mc-card\{/.test(css) && /\.rv1-act\{[^}]*min-height:24px/.test(css), '5. its CSS (tiles, dimmed cut cards, tap-size buttons)');
-{ const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, keys = ['chosen', 'cut', 'maybe', 'none', 'by-owner', 'by-claude', 'by-kept', 'act-cut', 'act-keep', 'undo', 'copy', 'copied', 'copy-none'].map(k=> 'ui.rv1-' + k);
+// 2026-11-16 (TESTFIX5): TESTFIX3 (11-14) removed the unused by-owner / by-claude / by-kept keys (nothing shows them)
+{ const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, keys = ['chosen', 'cut', 'maybe', 'none', 'act-cut', 'act-keep', 'undo', 'copy', 'copied', 'copy-none'].map(k=> 'ui.rv1-' + k);
   ok(keys.every(k=> T[k]), '6. the TX keys exist');
   const codes = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
   ok(codes.every(c=>{ const p = JSON.parse(rd('lang/' + c + '.json')); return keys.every(k=> p[T[k]]); }), '6. each has a row in all 12 language packs'); }

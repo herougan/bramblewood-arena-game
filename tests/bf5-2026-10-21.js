@@ -47,8 +47,10 @@ ok(sc && JSON.stringify(Object.keys(sc.effects)) === '["swarm"]' && (sc.wait || 
 // 2026-11-04 (TESTFIX1): the owner's own live edit of 2026-10-22 (folded by CONTENT3 OVR, 10-26) left it Swarm only
 ok(so && so.effects.swarm && !so.effects.formation && so.wait === 1 && (so.cost || 0) === 0, '3. Soldier Ant: Swarm, Wait 1 (Formation 1 until the owner\'s 10-22 edit)');
 ok(tu && tu.effects.swarm && tu.effects.ambush === 2 && tu.wait === 1 && tu.cost === 1, '3. Tunnel Ant: Swarm + Ambush 2, Wait 1, Lumber 1');
-ok(byId['giant-cave-huntsman'].effects.poison != null && byId['giant-cave-huntsman'].effects.pounce != null, '3. the owner\'s scary spider keeps Poison + Pounce');
-ok(byId['moon-jelly'].effects.moonpull != null && byId['moon-jelly'].effects.tide, '3. Moon Jelly keeps Tide + Moonpull');
+// 2026-11-16 (TESTFIX5): BF6 (10-21, the halved coefficients) took its Poison ("a huntsman spider hunts"); Pounce is the skill it keeps
+ok(byId['giant-cave-huntsman'].effects.pounce != null && /BF6[^.]*took poison/.test(byId['giant-cave-huntsman'].creatorNote || ''), '3. the owner\'s scary spider keeps Pounce (BF6 took Poison)');
+// 2026-11-16 (TESTFIX5): the owner's live edit of 11-05 (folded by CONTENT12, CONTENT11-2 a) set it to Tide + Poison 4
+ok(byId['moon-jelly'].effects.tide && byId['moon-jelly'].effects.poison === 4, '3. Moon Jelly keeps Tide (+ Poison 4, the owner\'s 11-05 edit)');
 
 // 4. every live card re-derived: inside the band, or a listed owner call
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(table);
@@ -59,7 +61,8 @@ ok(!bad.length, '4. every live card fits the halved budget at Level 1, or is a l
 const under = cards.filter(R.live).filter(c=>{ const b = T.budget(c, {level: 1}); return b.ok && b.x1 / b.N <= 0.6 && !ownerIds.has(c.id) && !P.prop.some(r=> r.id === c.id) && P.rows.some(r=> r.id === c.id && r.verdict === 'band'); });
 ok(!under.length, '4. the re-derived cards sit over 60% of N: ' + under.slice(0, 6).map(c=> c.id).join(', '));
 ok(P.owner === 16 && P.skillsFillN.length === 2, `4. the plan lists 16 owner calls (17 before main's obtain maps moved the Cinder Gecko into the band), 2 of them skills that alone fill N (${P.owner}, ${P.skillsFillN})`);
-ok(byId['cave-bat-swarm'].attack === 1 && byId['cave-bat-swarm'].health === 2, '4. the Cave Bat Swarm is 1/2 (owner 21:36)');
+// 2026-11-16 (TESTFIX5): the owner's hub skill costs (human pass I, 10-21) made it 2/2
+ok(byId['cave-bat-swarm'].attack === 2 && byId['cave-bat-swarm'].health === 2, '4. the Cave Bat Swarm is 2/2 (owner 21:36 1/2, then human pass I)');
 ok(byId.terraumbra.attack === 1 && byId.terraumbra.health === 1, '4. Terraumbra (an equipment Easter egg, measured with its grant) is 1/1');
 
 // 5. the brambles halved when a fight is built; the stored numbers stay full-size
@@ -73,7 +76,9 @@ ok((src.match(/RaidM\.raidShield\(raidDefScaled\(def\), st, (partId|ps\.id)\)/g)
 const F = JSON.parse(read('docs/balance/server-overrides/fold-plan-2026-10-21.json'));
 ok(F.rows.length === 13, `6. the fold plan holds the owner's 13 card edits (${F.rows.length})`);
 const OE = JSON.parse(read('docs/balance/owner-edits-bf5-2026-10-21.json'));
-ok(OE.rows.length === 13 && OE.rows.every(r=> byId[r.id] && byId[r.id].attack === r.now.stats[0] && byId[r.id].health === r.now.stats[1]), '6. the owner-edit evaluation matches the cards as they are now');
+// 2026-11-16 (TESTFIX5): all 13 were changed again later (human pass I, BF7, BAL2, BUDGET2, the owner's live edits folded by CONTENT12): a row matches the card or the card's note records the later change after the BF5 fold
+const laterEdit = c=> { const n = c.creatorNote || '', i = n.indexOf("2026-10-21 (BF5): the owner's live edit of"); return i >= 0 && /->|was \d+\/\d+|folded in/.test(n.slice(i + 40)); };
+ok(OE.rows.length === 13 && OE.rows.every(r=> byId[r.id] && ((byId[r.id].attack === r.now.stats[0] && byId[r.id].health === r.now.stats[1]) || laterEdit(byId[r.id]))), '6. the owner-edit evaluation matches the cards, or a later dated note records the change: ' + OE.rows.filter(r=> byId[r.id] && !(byId[r.id].attack === r.now.stats[0] && byId[r.id].health === r.now.stats[1]) && !laterEdit(byId[r.id])).map(r=> r.id).join(', '));
 ok(F.rows.every(r=> /2026-10-21 \(BF5\): the owner's live edit of/.test(byId[r.id].creatorNote || '')), '6. each folded card notes the owner\'s edit');
 // 2026-11-02 (QA1): the SQL was applied 10-21 (B13) and moved to supabase/migrations/; read it from there (proposed/ if it is ever back)
 const sql = fs.existsSync(path.join(ROOT, 'supabase/proposed/20261021_clear_folded_overrides_2.sql')) ? read('supabase/proposed/20261021_clear_folded_overrides_2.sql') : read('supabase/migrations/20261021_clear_folded_overrides_2.sql');

@@ -60,7 +60,8 @@ if (mm && best) { const B = JSON.parse(mm[1]); ok(B.file === 'docs/balance/ref6/
   ok(F.ref6LabelHTML('mc', node) === '', 'players see no label (Admin off)');
   F.set(true); const h = F.ref6LabelHTML('mc', node);
   ok(/Ref 100: 52% \(p10 31 – p90 70\)/.test(h) && /Map ref 61%/.test(h) && /Ref-2 74%/.test(h), 'Admin: "Ref 100: 52% (p10 31 – p90 70) · Map ref 61% · Ref-2 74%"');
-  ok(/title="Measure t1, 2026-11-11: the 100 reference players&#39;|title="Measure t1, 2026-11-11: the 100 reference players'/.test(h) && /304 games in all \(at least 16 a deck\)/.test(h), 'the tooltip names the measure, its date and games');
+  // 2026-11-16 (TESTFIX5): TIP2 (11-14, tooltips of 20 words or fewer) reworded ui.ref6-tip
+  ok(/title="t1, 2026-11-11: 100 reference decks vs this fight/.test(h) && /304 games \(16\+ each\)/.test(h), 'the tooltip names the measure, its date and games');
   ok(!/· Map ref/.test(F.ref6LabelHTML('mc', { key: '3-3' })) && /Ref 100: 40%/.test(F.ref6LabelHTML('mc', { key: '3-3' })) && F.ref6LabelHTML('mc', { key: '3-9' }) === '' && F.ref6LabelHTML('m21', node) === '', 'no Map ref part without its number; nothing on a fight with no measure'); }
 
 // ---- 4. texts, docs, tests ----

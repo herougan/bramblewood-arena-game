@@ -107,7 +107,9 @@ ok(/\{key:'spellward', category:'passive'/.test(app) && /spellward:'/.test(app),
   const byId = Object.fromEntries(cards.map(c=> [c.id, c])), pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps;
   const ents = Object.entries(T);
   ok(ents.length >= 30, `GD-5: ${ents.length} skirmishes pay a first-clear pack card`);
-  ok(ents.every(([k, id])=>{ const [m] = k.split(':'), c = byId[id]; return c && c.source && c.source.kind === 'pack' && c.source.map === m && ((pools[m].cards || []).includes(id) || (pools[m].special || []).includes(id)); }), "GD-5: each is a basic-pack card of that map's own pool, MAP or SPECIAL (its source unchanged)"); // 2026-10-29 RELFIX3: LISTFIX1 / THEME3 keep the first-clear cards cut from a map's list on its SPECIAL list (still reachable)
+  // 2026-11-16 (TESTFIX5): since SKIR3 (11-12) a card's source.map is the first map whose list holds it, so a card listed on several maps may name an earlier one; it must still be in play and on this map's list
+  const badGD5 = ents.filter(([k, id])=>{ const [m] = k.split(':'), c = byId[id]; return !(c && c.source && c.source.kind === 'pack' && !c.unattainable && ((pools[m].cards || []).includes(id) || (pools[m].special || []).includes(id))); }).map(([k, id])=> k + ' ' + id);
+  ok(!badGD5.length, "GD-5: each is an in-play basic-pack card of that map's own pool, MAP or SPECIAL: " + badGD5.join(', ')); // 2026-10-29 RELFIX3: LISTFIX1 / THEME3 keep the first-clear cards cut from a map's list on its SPECIAL list (still reachable)
   ok(new Set(ents.map(([, id])=> id)).size === ents.length, 'GD-5: no pack card is paid by two skirmishes');
   ok(ents.every(([k])=> !cards.some(c=> c.source && c.source.kind === 'map' && c.source.id + ':' + c.source.node === k)), 'GD-5: a skirmish paying an exclusive card gets no pack card on top');
   const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), mains = B.G.CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved);

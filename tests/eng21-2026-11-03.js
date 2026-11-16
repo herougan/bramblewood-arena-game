@@ -71,7 +71,8 @@ ok(/inspiring: v=> TX\('ui\.eng21-sk-inspiring'/.test(app) && /desc:v=> TX\('ui\
 
 // ---- 1c. the price, the docs
 { const sc = J('canonical/skill-costs.json'), rows = Array.isArray(sc) ? sc : (sc.skills || sc.table || Object.values(sc).find(Array.isArray));
-  const r = rows.find(x=> x && x.id === 'inspiring'); ok(r && /ENG21/.test(r.appliedAt || ''), 'inspiring is re-priced by ENG21');
+  // 2026-11-16 (TESTFIX5): ENG27-7 (owner 11-07 09:10) then set Inspiring 1 to 3 by hand; ENG21's price 5.43 is kept as eng27Was
+  const r = rows.find(x=> x && x.id === 'inspiring'); ok(r && (/ENG21/.test(r.appliedAt || '') || (/ENG27/.test(r.appliedAt || '') && r.eng27Was && r.eng27Was.value === 5.43)), 'inspiring is re-priced by ENG21 (then ENG27-7)');
   ok(r && r.eng21Was && r.eng21Was.value === 3.3, 'its old price is kept (eng21Was 3.3)'); }
 { const st = R('docs/project-state.md'); ok(/Inspiring N[^\n]*Inspiration[^\n]*ENG21-1/.test(st) && /It stacks!/.test(st), 'project-state records the rule, the owner quote and ENG21-1'); }
 { const d = J('docs/decisions.json'); ok(d.items.some(x=> x.id === 'ENG21-1'), 'decision ENG21-1'); }

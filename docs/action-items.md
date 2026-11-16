@@ -18,9 +18,17 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - [ ] Card redesign needed for 19-1, 19-A-4, 8-7, 4-5, 20-9, 10-A-4 (no legal deck reaches the band)
 - [ ] CI: remaining environment-only failures on GitHub (check after the first full run)
 
-## 11-15: Unit tests out of date (coordinator)
-The full unit run on batch-1023e (11-15) has 55 failures. 45 of them also fail on the released main, so they come from earlier card, deck and budget changes (old budget numbers, re-carded decks, removed skills, rarity moves, 4 cards still waiting for art). Fix after the owner's card redesign, with the re-measure: bal12, bal13, bal14, bal2, bal21, bal3, bal7, bal9, bf5, budget2, bx, card-pool, content12, content14, content15, content16, df3, easter-eggs, eb, en2, eng10, eng21, fin2, fix6, gd2, gi, lead, level-curve, n221, opt2, pale-desert, prayer, pvp1, ref6, review1, rewards-pass, road-rarity, skills2, skir1, thematic, ts-status-chips, tut2, ui29, unit-themes, winrate-panel.
-The other 10 were new in this batch: 9 tests that still checked text keys TESTFIX3 removed or TIP2 reworded (fixed in TESTFIX4, 11-15), and list1's 2-A-6 (fixed by the SIDE2 side re-fit when applied).
+## 11-15: Unit tests out of date (coordinator; triaged 11-16, TESTFIX5)
+GitHub's full run on main: 47 failing. lab-errors and mapfx1 are CI environment, skir1's 36 deck-rule failures are balance work. The other 44: `docs/test-triage-2026-11-16.md`.
+- [x] Stale checks fixed in 24 tests (288 checks; failing checks 664 -> 375); 7 pass now: eng21, fix6, level-curve, ref6, review1, skills2, ts-status-chips.
+- [x] skills2: the hidden "Venomous (old)" editor label is "Old Venomous".
+- [ ] unit-themes (224 checks): regenerate `canonical/unit-themes.json` with `node tools/unit_themes.js` (163 left after it: biomes, families, Dire / Elder bodies).
+- [ ] content16 + ui29: re-run `tools/content16_pack_plan_2026_11_07.js` on the 11-13 lists (canonical/pack-plan.json).
+- [ ] Card redesign (owner): budget overages (bal2, bal12, bal9, bf5, budget2, bx, easter-eggs, en2, eng10, fin2, gi, prayer, tut2, pale-desert), 61 cards over the UI27-4 a two-skill count, rarities (opt2, card-pool), identical lines (content12), Banded Sea Krait without Tide.
+- [ ] Lists and rewards (owner): Siege Rhino priced for Map 23 on the Map 15 / 16 lists (bal13, bal21); reward slots, rarities and defenders off the lists (bal9, rewards-pass, gd2, thematic, n221, eng10).
+- [ ] Decks (balance): K14 on 47 fights (bal7), boons off on 13-4 / 20-4 and 21-3 with 8 cards (bal3, df3), 9 stale `leaders` overrides (lead), 4 PvP test decks with cut cards (pvp1), Maps 21-24 rarity (road-rarity), 14-2's Ant Hill (bal9).
+- [ ] Re-measures (balance): bal14's 78 unmeasured skill items, the Pale Desert's stored measure, thematic's measure, skirmish-pass-decks.json (winrate-panel).
+- [ ] Art (ART13): content14, content15 (4 cards).
 
 ## 11-14 11:11: Owner notes
 | # | Note | Package |
