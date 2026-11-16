@@ -84,7 +84,8 @@ async function browser(){
       const g = await pg.evaluate("(()=>{ const s = [...ui27UngatedSkills()].sort(), h = [...hiddenSkillSet()]; return {s, h, tide: skillHiddenNow('tide'), sonar: skillHiddenNow('sonar'), far: furthestMapReached()}; })()");
       // UI25 counted 17 with the unobtainable cards (cardObtainMap 0); Frostbite, Fire Arrow, Molting and Stem sit early only on cards no one can own
       // 2026-11-12 (SKIR3): Crepuscular and Keen Eye left the list; their early carriers are off the 11-12 map lists, so their maps gate them again
-      ok(['nocturnal', 'tide', 'evasive', 'delivery', 'diurnal', 'taunt', 'inspiring', 'esprit', 'reach', 'chrysalis'].every(k=> g.s.includes(k)), `@${w} #11 the skills on cards owned before their map are un-gated (${g.s.join(', ')})`);
+      // 2026-11-16 (coordinator): Esprit left the list: FOLD5 folded the owner's 11-06..11-13 edits, so its early carriers changed and its map gates it again
+      ok(['nocturnal', 'tide', 'evasive', 'delivery', 'diurnal', 'taunt', 'inspiring', 'reach', 'chrysalis'].every(k=> g.s.includes(k)), `@${w} #11 the skills on cards owned before their map are un-gated (${g.s.join(', ')})`);
       ok(['frostbite', 'fireArrow', 'molting', 'stem'].every(k=> !g.s.includes(k)), `@${w} #11 skills whose early cards can't be owned keep their gate`);
       ok(!g.s.includes('sonar') && !g.s.includes('keenSense'), `@${w} #11 Sonar / Keen Sense keep ENG28's gate`);
       ok(g.far < 1 && !g.tide && g.sonar, `@${w} #11 on a fresh save Tide reads as itself, Sonar is still "?" (hidden: ${g.h.join(', ')})`);
@@ -124,10 +125,10 @@ async function browser(){
       // ---- 19 the two-skill warning
       const sw = await pg.evaluate(`(()=>{ const a = ui27SkillCount({flying:true, tide:true, cleave:3}), b = ui27SkillCount({flying:true, cleave:3, armor:2}), c = ui27SkillCount({tide:true, tideGrant:{armor:1}, cleave:3, armor:1});
         const h = ceSkillWarnHTML({effects:{flying:true, cleave:3, armor:2}}), el = document.getElementById('ceSkillWarn'), sec = el && el.closest('.section-divider');
-        return {a: a.n, b: b.n, c: c.n, none: ceSkillWarnHTML({effects:{flying:true, tide:true, cleave:3}}), h, rowHidden: el && el.hidden, inSkills: !!(sec && sec.querySelector('#triggerRows')), boxWarn: /two at most|skills count/i.test((document.getElementById('ceBudget')||{}).textContent || '')}; })()`);
+        const dn = (()=>{ try{ return ui27SkillCount((editorDraftFromForm() || {}).effects || {}).n; }catch(e){ return 0; } })(); return {dn, a: a.n, b: b.n, c: c.n, none: ceSkillWarnHTML({effects:{flying:true, tide:true, cleave:3}}), h, rowHidden: el && el.hidden, inSkills: !!(sec && sec.querySelector('#triggerRows')), boxWarn: /two at most|skills count/i.test((document.getElementById('ceBudget')||{}).textContent || '')}; })()`);
       ok(sw.a === 2 && sw.b === 2.5 && sw.c === 3 && sw.none === '', `@${w} #19 a skill 1, a plain light one 0.5, Tide with braces 1; at 2 no warning (${JSON.stringify(sw).slice(0, 200)})`);
       ok(/Over the two-skill limit \(2\.5\)/.test(sw.h) && /Flying 0\.5 \+ \w+ 1 \+ Armor 1 = 2\.5/i.test(sw.h), `@${w} #19 "Over the two-skill limit (2.5)", the sum on hover (${sw.h})`);
-      ok(sw.rowHidden === true && sw.inSkills && !sw.boxWarn, `@${w} #19 the row sits in the skill section, hidden for a card within the rule; no skill-count line in the budget box`);
+      ok(sw.rowHidden === (sw.dn <= 2) && sw.inSkills && !sw.boxWarn, `@${w} #19 the row sits in the skill section, hidden for a card within the rule (open card counts ${sw.dn}; 2026-11-16: since FOLD5 the picked card can be over the rule); no skill-count line in the budget box`);
       await pg.evaluate("(()=>{ const r = document.getElementById('ceSkillWarn'); r.innerHTML = ceSkillWarnHTML({effects:{flying:true, cleave:3, armor:2}}); r.hidden = false; r.scrollIntoView({block:'center'}); })()"); await pg.waitForTimeout(200);
       { const el = await pg.$('#ceSkillWarn'); if(el) await el.screenshot({path: path.join(SHOTS, `editor-skillwarn-${w}.png`)}); }
 
