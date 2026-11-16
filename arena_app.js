@@ -4020,6 +4020,7 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
 const BUILD_ID = '__BUILD_ID__', BUILD_CARD_HASH = '__BUILD_CARD_HASH__';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
+const VERSION_CHECK_MS = 5 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh)
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
   const b = document.createElement('div'); b.id = 'versionBanner'; b.className = 'version-banner is-' + kind; b.setAttribute('role', 'alert');
@@ -4038,7 +4039,7 @@ async function checkGameVersion(force){
   }
   try{
     const last = Number(sessionStorage.getItem(VERSION_SEEN_KEY)) || 0;
-    if(!force && last && Date.now() - last < 3600e3) return 'skipped';
+    if(!force && last && Date.now() - last < VERSION_CHECK_MS) return 'skipped'; // 2026-11-16 (coordinator, owner 20:21: "the update button wasn't available"): was once an hour
     sessionStorage.setItem(VERSION_SEEN_KEY, String(Date.now()));
   }catch(e){}
   let v = null;
@@ -4083,6 +4084,7 @@ try{ if(typeof location !== 'undefined' && /[?&]v=/.test(location.search) && typ
 if(typeof window !== 'undefined'){
   window.addEventListener('load', ()=> setTimeout(()=> (window.requestIdleCallback || setTimeout)(()=> checkGameVersion(false)), 4000)); // 2026-11-12 (package PERF3): idle, it hashes the card data on first run
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) checkGameVersion(false); });
+  setInterval(()=>{ if(!document.hidden) checkGameVersion(false); }, VERSION_CHECK_MS); // 2026-11-16 (coordinator): a tab left open learns of a deploy (a tiny no-store fetch of version.json)
 }
 // Perf (2026-10-08, user: "clicking ... should instantly transit you"): one Codex render called
 // getCardDefs ~280 times (~125 ms). The result is now reused within the same synchronous task while

@@ -58164,8 +58164,9 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'eccaa6c21e36', BUILD_CARD_HASH = '764c23110d3d94fa59350f15c0e90cff60eeaa3bf25b6577591b38c0f3037a1d';
+const BUILD_ID = '95ff8fc6d3af', BUILD_CARD_HASH = '764c23110d3d94fa59350f15c0e90cff60eeaa3bf25b6577591b38c0f3037a1d';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
+const VERSION_CHECK_MS = 5 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh)
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
   const b = document.createElement('div'); b.id = 'versionBanner'; b.className = 'version-banner is-' + kind; b.setAttribute('role', 'alert');
@@ -58184,7 +58185,7 @@ async function checkGameVersion(force){
   }
   try{
     const last = Number(sessionStorage.getItem(VERSION_SEEN_KEY)) || 0;
-    if(!force && last && Date.now() - last < 3600e3) return 'skipped';
+    if(!force && last && Date.now() - last < VERSION_CHECK_MS) return 'skipped'; // 2026-11-16 (coordinator, owner 20:21: "the update button wasn't available"): was once an hour
     sessionStorage.setItem(VERSION_SEEN_KEY, String(Date.now()));
   }catch(e){}
   let v = null;
@@ -58229,6 +58230,7 @@ try{ if(typeof location !== 'undefined' && /[?&]v=/.test(location.search) && typ
 if(typeof window !== 'undefined'){
   window.addEventListener('load', ()=> setTimeout(()=> (window.requestIdleCallback || setTimeout)(()=> checkGameVersion(false)), 4000)); // 2026-11-12 (package PERF3): idle, it hashes the card data on first run
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) checkGameVersion(false); });
+  setInterval(()=>{ if(!document.hidden) checkGameVersion(false); }, VERSION_CHECK_MS); // 2026-11-16 (coordinator): a tab left open learns of a deploy (a tiny no-store fetch of version.json)
 }
 // Perf (2026-10-08, user: "clicking ... should instantly transit you"): one Codex render called
 // getCardDefs ~280 times (~125 ms). The result is now reused within the same synchronous task while
