@@ -13,3 +13,4 @@ test -x /opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shel
 { echo "NODE_PATH=$(npm root -g)"; echo "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers"; } >> "${GITHUB_ENV:-/dev/null}"
 # 2026-11-16 (coordinator): the Effects Lab build reads .fxcat/cards.json, captured from a running game (gitignored); capture it here
 ( mkdir -p .fxcat; python3 -m http.server 8765 >/dev/null 2>&1 & echo $! > /tmp/srv.pid; sleep 2; python3 tools/effects-lab/capcards.py || echo "capcards failed (lab-errors may fail)"; kill "$(cat /tmp/srv.pid)" ) || true
+python3 -c "import PIL,numpy,sys;print(\"py\",sys.version.split()[0],\"pillow\",PIL.__version__,\"numpy\",numpy.__version__)" # 2026-11-16 (coordinator): mapfx1 differs on CI only; versions for the log
