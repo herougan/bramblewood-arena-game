@@ -3743,7 +3743,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.skn-fire-arrow": "Arrow (Flaming)",
   "ui.sk-illuminate": "While it's on your board, your units don't miss in the dark. The enemy unit facing it doesn't either.",
   "ui.sk-counterattack": "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.",
-  "ui.skn1-fog": "Fog"
+  "ui.skn1-fog": "Fog",
+  "ui.ux7-focus-add": "To add",
+  "ui.ux7-focus-add-tip": "Focus skill for this map that no main card has yet: put it on a card"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

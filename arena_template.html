@@ -12039,8 +12039,8 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .skm-part{margin-top:6px;} .skm-part h4{margin:0 0 2px; font:700 11px/1.2 'Nunito',system-ui,sans-serif; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.04em;}
 .skm-chips,.skm-src{display:flex; flex-wrap:wrap; gap:4px; align-items:center;} .skm-src b{font:700 11px/1 'Nunito',system-ui,sans-serif; color:var(--ink-soft); margin-right:2px;} .skm-src{margin-bottom:3px;}
 .skm-chip{display:inline-block; font:700 12px/1.4 'Nunito',system-ui,sans-serif; padding:1px 8px; border-radius:999px; background:var(--surface-3); border:1px solid var(--surface-border); color:var(--ink);}
-.skm-chip.is-new{background:var(--danger); border-color:var(--danger); color:var(--bg);} .skm-past{opacity:.55;} .skm-past.is-hit{opacity:1; border-color:var(--accent-strong);}
-.skm-pick{border-color:var(--accent-strong);} .skm-pick.is-bad{text-decoration:line-through; opacity:.6;} .skm-none{font-size:12px; color:var(--ink-muted);}
+.skm-chip.is-new{border-style:dotted; border-color:var(--ink-muted);} .skm-chip.is-focus{background:var(--danger); border-color:var(--danger); border-style:solid; color:var(--bg);} /* 2026-11-16 (UX7): red = focus skills (MAP_FOCUS_SKILLS); new-but-not-focus is a dotted edge */ .skm-past{opacity:.55;} .skm-past.is-hit{opacity:1; border-color:var(--accent-strong);}
+.skm-pick{border-color:var(--danger); color:var(--danger);} .skm-pick.is-bad{text-decoration:line-through; opacity:.6;} .skm-none{font-size:12px; color:var(--ink-muted);}
 .bk-pager{display:flex; align-items:center; gap:4px;} .bk-pager .pg-info{margin:0;} .bk-pager .pg-edge{position:static; width:auto; flex-direction:row;} .bk-pager .pg-edge-l{order:-1;} .bk-pager .pg-edge-in{position:static; flex-direction:row; gap:4px;} .bk-pager .pg-edge-l .pg-edge-in{flex-direction:row-reverse;}
 @media (max-width:559px){ .bk-bar .bk-filter{flex-basis:100%;} #bkWrap.is-admin .bk-filter{padding-right:46px;} #bkWrap.is-admin.has-skm .bk-filter{padding-right:92px;} .bk-pager .pg-info .pg-of{min-width:7.5em; padding:6px 10px;} }
 .bk-bar .bk-filter small{color:var(--page-ink, #f5ecd2);}
@@ -15354,6 +15354,16 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .pk1-mc-overlay .ui19-sk.is-grey .ui19-sk-ico{filter:grayscale(1); opacity:.7;}
 .pk1-mc-overlay .ui19-sk.is-grey .ui19-sk-main b{color:var(--ink-muted);}
 .ui28-sug{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; letter-spacing:.03em; padding:1px 5px; border-radius:999px; background:#4f8ee8; color:#fff; cursor:help; vertical-align:1px; white-space:nowrap;}
+/* 2026-11-16 (package UX7, owner 20:24): the Map cards skill list's colours. RED = the map's focus skills only; main-card skills normal (a new one keeps a small muted NEW!); counters BLUE; suggestions a lighter blue; special-only skills muted. */
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new{border-color:var(--surface-border); background:var(--bg);}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new.is-intro{border-color:#e0b23a; background:linear-gradient(135deg, color-mix(in srgb, #ffd36b 34%, var(--bg)), color-mix(in srgb, #ffffff 22%, var(--bg)));}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus{border-color:#c62828; background:linear-gradient(135deg, color-mix(in srgb, #e53935 30%, var(--bg)), color-mix(in srgb, #e53935 14%, var(--bg)));}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus-add{border:2px solid #c62828; background:var(--bg); padding:1px 4px;}
+.pk1-mc-overlay .ui19-sk .ui19-new.is-minor{background:var(--ink-muted); color:var(--bg); box-shadow:none;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter.is-intro{border-color:#2f6fd0; background:linear-gradient(135deg, color-mix(in srgb, #3b7de0 30%, var(--bg)), color-mix(in srgb, #3b7de0 14%, var(--bg)));}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-rec, .pk1-mc-overlay .ui19-sk-list .ui19-sk.ui30-sugg-tile, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-sugg{border-color:color-mix(in srgb, #3b7de0 45%, var(--surface-border)); border-style:solid; background:color-mix(in srgb, #3b7de0 9%, var(--bg));}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-other{border-color:var(--surface-border); background:transparent; color:var(--ink-muted); opacity:.8;}
+.ui35-pill.is-counter{background:#2f6fd0; color:#fff;} .ui35-pill.is-focus{background:#c62828; color:#fff;} .ui19-sk .ui34-cn{background:color-mix(in srgb, #2f6fd0 24%, transparent);}
 @media (max-width:560px){ .pk1-mc-overlay .rv2-panel{padding:6px 6px 4px; margin:6px 0 8px;} .pk1-mc-overlay .rv1-row{gap:8px 8px;} }
 /* ===== 2026-11-07 (package UI29): the admin 📦 Pack editor (ui29OpenPackEditor), on the Map cards window's parts: a left column of lists,
    the list's cards on the right; Suggested tiles, source and origin pills; the Shop's 📦 Edit on a pack tile and its Starter · Base · Factions bar ===== */

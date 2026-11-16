@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package UX7: focus skills, admin Map cards list)
+- Admin only. One table of focus skills per map (0-3 each, `MAP_FOCUS_SKILLS`, a draft from REDESIGN1's II plan the owner may edit; a live `__cfg:map-focus` row overrides) now drives both the Map cards "Skills on these cards" list and "Skills by map" (replaces `SKMAP_PICKS`).
+- List order and colours (owner 20:24): red focus skills on main cards, normal main skills, new-but-not-focus (normal, small grey NEW!), red-outlined focus skills no main card has ("To add"), blue counters, lighter blue suggestions, muted special-only skills. "N new" counts the red chips. Shots in `docs/screens/ux7/`.
+
 ## 2026-11-16 (coordinator: VER2)
 - An open, visible game tab now checks for a new version every 5 minutes (was once an hour, only on load or on returning to the tab), so the Update banner shows soon after a deploy (owner 20:21: "the update button wasn't available").
 ## 2026-11-16 (package REDESIGN1: Maps 0-20 card redesign, proposal only)

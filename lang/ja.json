@@ -4469,5 +4469,7 @@
  "Arrow (Flaming)": "矢（炎）",
  "While it's on your board, your units don't miss in the dark. The enemy unit facing it doesn't either.": "場にいる間、味方ユニットは暗闇で外さない。正面の敵ユニットも外さない。",
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "登場時、木材1を払い、攻撃力と体力が半分のコピーを{n}体得る。待機1。木材がなければコピーなし。",
- "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "攻撃されると正面の敵を攻撃する。正面に敵がいないときだけ自分から攻撃する。"
+ "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "攻撃されると正面の敵を攻撃する。正面に敵がいないときだけ自分から攻撃する。",
+ "To add": "追加予定",
+ "Focus skill for this map that no main card has yet: put it on a card": "このマップの重点スキル。メインカードにまだありません：カードに付けてください"
 }
