@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package CHEAT2: cheat detection)
+- Players see no change. The game now notes impossible states instead of blocking anything: a save edited outside the game (the wallet or card copies no longer match what the game last wrote), a currency jump with no matching reward beyond the server's per-write cap, impossible balances or copy counts, Conquest wins under 3 s, impossible rounds, 60+ wins in 10 minutes, a won deck with a card never owned, card data that fails its hash (checklist E6), and a device clock that went back or is 15+ minutes off the server. Notes stay in the browser (last 50); a signed-in player's are sent to `report_cheat_flags`, or, until that SQL is applied, as one batched feedback row a day. Guests are never reported. Admin Mode, Admin test fights, the Admin win and the cloud load are exempt.
+- Hand-ins now carry a compact fight record (`transcript.rec`: seed, deck and copy levels, leader, build, card hash, duration) for a later server replay (Tier 3).
+- Proposed SQL, not applied (decision CHEAT2-1): `supabase/proposed/cheat2-2026-11-16.sql` + `.md`. Found in the audit: the old v1 market functions let two accounts create Leaves (block A makes them run v2). Also a flags table, hand-in checks, daily caps on server-paid rewards, card / raid burst notes, ranked draws and pair farming, six `search_path` pins; Tier 2 as a commented option. All flag only until `anticheat_settings.strict` is turned on.
+- Code: the `CHEAT2` block in `arena_app.js` with typeof-guarded hooks in `saveCurrencies`, `grantCurrency`, `saveCardCopies`, `cloudPullState`, `takeFightTicket`, `handInFight`, the fight end and `checkGameVersion`. Test: `tests/cheat2-2026-11-16.js`.
+
 ## 2026-11-16 (package UX7: focus skills, admin Map cards list)
 - Admin only. One table of focus skills per map (0-3 each, `MAP_FOCUS_SKILLS`, a draft from REDESIGN1's II plan the owner may edit; a live `__cfg:map-focus` row overrides) now drives both the Map cards "Skills on these cards" list and "Skills by map" (replaces `SKMAP_PICKS`).
 - List order and colours (owner 20:24): red focus skills on main cards, normal main skills, new-but-not-focus (normal, small grey NEW!), red-outlined focus skills no main card has ("To add"), blue counters, lighter blue suggestions, muted special-only skills. "N new" counts the red chips. Shots in `docs/screens/ux7/`.

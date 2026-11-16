@@ -58227,6 +58227,159 @@ function currentCardDataHash(){
 // 2026-11-12 (package PERF3): worked out on first use (the version check, a minute after load), not at load: a JS sha256 of every card cost ~250 ms of startup.
 let _baselineHash = null;
 function baselineCardHash(){ if(_baselineHash === null) _baselineHash = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELINE) : ''; return _baselineHash; }
+// CHEAT2:BEGIN (tests/cheat2-2026-11-16.js evaluates this block)
+// Cheat signals (2026-11-16, package CHEAT2, owner 11-16 23:53: "upgrade cheat-detection"). They FLAG, never block: nothing here changes what
+// a player sees or can do, and a flag is a note for an admin, not a ban. Kept in this browser (CHEAT2_KEY, the last 50) and, for a signed-in
+// player only, sent to the server: report_cheat_flags (supabase/proposed/cheat2-2026-11-16.sql); until that is applied, one batched row a
+// day goes to the feedback table (Admin -> Feedback). A guest is never reported: nothing of theirs reaches another player.
+//   save-edited         a watched save key (the wallet, the card copies) holds text this game never wrote there: edited outside the game
+//   currency-jump       one save adds more Maple Leaves / Gold Leaves / Dust / Metal than the grants noted since the last save, beyond the
+//                       server's per-write cap (2,000 / 200 / 2,000 / 50, anti-cheat tier 1). A cloud load and Admin Mode are trusted.
+//   wallet-impossible   a balance that is not a number, below 0 or beyond CHEAT2_SANE; copies-impossible: over 200 copies of a card (card_copies_ok)
+//   fight-too-fast      a Conquest win under 3 s of wall time from its start; fight-rounds: a win at round < 1 or > 200 (verify-fight's bounds)
+//   win-streak          more than 60 Conquest wins in 10 minutes (the server lets 40 fights start in 10)
+//   deck-unowned        a won fight's deck held a card the player neither owns a copy of nor has unlocked
+//   card-hash           this page's card data differs from the hash it was built with, or from version.json's cardHash (alpha checklist E6)
+//   clock-back / time-skew  the device clock went back over an hour, or is 15+ minutes off the server's (version.json's Date header)
+// The fight record (cheat2FightRecord) rides with the hand-in (submit_fight's transcript.rec) so a later server replay (Tier 3, verify-fight;
+// E5DET1: same seed, same fight) has the seed, the deck as it went in with its copy levels, the leader, the build and the card-data hash.
+const CHEAT2_KEY = 'bramblewood_cheat2_v1';
+const CHEAT2_SEALED = ['bramblewood_arena_currencies', 'bramblewood_arena_card_copies'];
+const CHEAT2_GAIN_CAP = {gold: 2000, gems: 200, dust: 2000, metal: 50};
+const CHEAT2_SANE = {gold: 5e6, gems: 5e5, dust: 5e6, metal: 1e5};
+const CHEAT2_COPIES_MAX = 200, CHEAT2_FIGHT_MIN_MS = 3000, CHEAT2_ROUNDS_MAX = 200, CHEAT2_WINS_MAX = 60, CHEAT2_WINS_MS = 10 * 60e3;
+const CHEAT2_SKEW_MS = 15 * 60e3, CHEAT2_BACK_MS = 60 * 60e3, CHEAT2_REPEAT_MS = 60 * 60e3;
+const cheat2Mem = {last: null, granted: {}, sealChecked: false, wins: [], fight: null, timer: null, sending: false};
+function cheat2Ls(){ try{ return typeof localStorage !== 'undefined' ? localStorage : null; }catch(e){ return null; } }
+function cheat2Hash(s){ s = 'bw-cheat2|' + String(s); let h = 2166136261; for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); }
+function cheat2State(){ const ls = cheat2Ls(); let st = null; try{ st = JSON.parse((ls && ls.getItem(CHEAT2_KEY)) || 'null'); }catch(e){}
+  st = st && typeof st === 'object' ? st : {}; if(!st.seal || typeof st.seal !== 'object') st.seal = {}; if(!Array.isArray(st.flags)) st.flags = [];
+  st.sent = +st.sent || 0; st.clock = +st.clock || 0; return st; }
+function cheat2Put(st){ const ls = cheat2Ls(); try{ if(ls) ls.setItem(CHEAT2_KEY, JSON.stringify(st)); }catch(e){} }
+function cheat2Build(){ try{ return (typeof BUILD_ID !== 'undefined' && !String(BUILD_ID).startsWith('__')) ? BUILD_ID : 'dev'; }catch(e){ return 'dev'; } }
+// Notes a flag (one kind at most once an hour); returns it, or null for a repeat.
+function cheat2Flag(kind, detail){
+  const st = cheat2State(), now = Date.now();
+  if(st.flags.some(f=> f.k === kind && now - f.at < CHEAT2_REPEAT_MS)) return null;
+  const f = {k: kind, d: detail || {}, at: now, b: cheat2Build()};
+  st.flags.push(f); st.flags = st.flags.slice(-50); cheat2Put(st); cheat2SoonReport();
+  return f;
+}
+function cheat2Flags(){ return cheat2State().flags.slice(); }
+// The seal: hashes of the last few texts the game wrote to each watched key (a few, so two tabs saving at once don't trip it).
+function cheat2Seal(key, text){ const st = cheat2State(), h = cheat2Hash(text), a = Array.isArray(st.seal[key]) ? st.seal[key] : [];
+  st.seal[key] = [h].concat(a.filter(x=> x !== h)).slice(0, 6); cheat2Put(st); }
+// Once a session, before the game's first write: does each watched key still hold text the game wrote? No seal yet (a first run, or a
+// save from before CHEAT2): sealed now, not flagged. An edited key is flagged once, then sealed as it is.
+function cheat2SealCheck(){
+  if(cheat2Mem.sealChecked) return []; cheat2Mem.sealChecked = true;
+  const ls = cheat2Ls(); if(!ls) return []; const st = cheat2State(), edited = [];
+  CHEAT2_SEALED.forEach(key=>{ let text = null; try{ text = ls.getItem(key); }catch(e){}
+    if(text == null){ delete st.seal[key]; return; }
+    const a = Array.isArray(st.seal[key]) && st.seal[key].length ? st.seal[key] : null, h = cheat2Hash(text);
+    if(a && !a.includes(h)) edited.push(key);
+    if(!a || !a.includes(h)) st.seal[key] = [h]; });
+  cheat2Put(st);
+  if(edited.length) cheat2Flag('save-edited', {keys: edited});
+  return edited;
+}
+function cheat2WalletOf(w){ const o = {}; Object.keys(CHEAT2_GAIN_CAP).forEach(k=>{ o[k] = Number((w || {})[k]) || 0; }); return o; }
+function cheat2WalletIssues(w){ const out = []; if(!w || typeof w !== 'object') return out;
+  Object.keys(CHEAT2_SANE).forEach(k=>{ if(w[k] == null) return; const v = Number(w[k]); if(!isFinite(v) || v < 0 || v > CHEAT2_SANE[k]) out.push(k); }); return out; }
+function cheat2GainIssues(prev, next, granted){ const out = []; if(!prev || !next) return out;
+  Object.keys(CHEAT2_GAIN_CAP).forEach(k=>{ const up = (Number(next[k]) || 0) - (Number(prev[k]) || 0) - ((granted || {})[k] || 0); if(up > CHEAT2_GAIN_CAP[k]) out.push({k, up: Math.round(up)}); });
+  return out; }
+function cheat2AdminOn(){ try{ return typeof adminModeEnabled !== 'undefined' && !!adminModeEnabled && typeof adminAllowed === 'function' && !!adminAllowed(); }catch(e){ return false; } }
+function cheat2NoteGrant(kind, amount){ if(CHEAT2_GAIN_CAP[kind] != null && amount > 0) cheat2Mem.granted[kind] = (cheat2Mem.granted[kind] || 0) + amount; }
+function cheat2Rebase(w){ cheat2Mem.last = cheat2WalletOf(w); cheat2Mem.granted = {}; } // cloudPullState: the server's numbers are the new start
+// saveCurrencies' hook, after it stored `text` (null: the write failed, nothing to seal). trusted: the cloud load's own save.
+function cheat2OnWalletSave(w, text, trusted){
+  cheat2SealCheck();
+  if(!trusted && !cheat2AdminOn()){
+    const jump = cheat2GainIssues(cheat2Mem.last, w, cheat2Mem.granted); if(jump.length) cheat2Flag('currency-jump', {jump});
+    const bad = cheat2WalletIssues(w); if(bad.length) cheat2Flag('wallet-impossible', {kinds: bad, w: cheat2WalletOf(w)});
+  }
+  cheat2Rebase(w);
+  if(text != null) cheat2Seal(CHEAT2_SEALED[0], text);
+}
+function cheat2OnCopiesSave(copies, text){
+  cheat2SealCheck();
+  const big = Object.keys(copies || {}).filter(id=> Array.isArray(copies[id]) && copies[id].length > CHEAT2_COPIES_MAX);
+  if(big.length && !cheat2AdminOn()) cheat2Flag('copies-impossible', {ids: big.slice(0, 10)});
+  if(text != null) cheat2Seal(CHEAT2_SEALED[1], text);
+}
+// takeFightTicket's hook (every Conquest fight start, signed in or not): when it began and the deck as it goes in.
+function cheat2FightStart(deck){
+  const d = {}, lv = {}, missing = [], hero = typeof HERO_ID !== 'undefined' ? HERO_ID : 'hero';
+  Object.keys(deck || {}).forEach(id=>{ const n = deck[id] | 0; if(n <= 0) return; d[id] = n; if(id === hero || /[~@]/.test(id)) return;
+    try{ if(typeof deckCopyEntries === 'function') lv[id] = deckCopyEntries(id, n).map(e=> e.gem ? [e.L, e.gem] : e.L); }catch(e){}
+    try{ if(typeof ownedCopiesOf === 'function' && typeof getCardDefs === 'function' && getCardDefs()[id] && ownedCopiesOf(id) === 0
+      && !(typeof isUnlimitedCard === 'function' && isUnlimitedCard(id))) missing.push(id); }catch(e){} });
+  cheat2Mem.fight = {at: Date.now(), deck: d, lv, missing};
+}
+// The fight-end hook (resolveRoundCore, a Conquest fight over): the kinds this fight raised (also kept on m.cheat2Flags for the record).
+function cheat2FightEnd(m){
+  if(!m || m.mode !== 'conquest' || m.adminTest || m.adminWin || m.cheat2Flags) return []; // adminWin: the Admin win button (adminAutoWin)
+  const f = cheat2Mem.fight, now = Date.now(), out = [];
+  if(f) m.cheat2Ms = now - f.at;
+  if(m.winner === 1){
+    if(f && now - f.at < CHEAT2_FIGHT_MIN_MS) out.push(['fight-too-fast', {ms: now - f.at, round: m.round}]);
+    if(!(m.round >= 1 && m.round <= CHEAT2_ROUNDS_MAX)) out.push(['fight-rounds', {round: m.round}]);
+    cheat2Mem.wins = cheat2Mem.wins.filter(t=> now - t < CHEAT2_WINS_MS).concat(now);
+    if(cheat2Mem.wins.length > CHEAT2_WINS_MAX) out.push(['win-streak', {n: cheat2Mem.wins.length}]);
+    if(f && f.missing.length) out.push(['deck-unowned', {ids: f.missing.slice(0, 10)}]);
+  }
+  const node = m.conquestNode ? m.conquestNode.mapId + ':' + m.conquestNode.nodeId : null;
+  out.forEach(([k, d])=> cheat2Flag(k, Object.assign({node}, d)));
+  return (m.cheat2Flags = out.map(x=> x[0]));
+}
+// The compact fight record for a server replay: everything but the moves, which the transcript already carries (transcript.actions).
+function cheat2FightRecord(m){
+  const f = cheat2Mem.fight || {}; let hash = ''; try{ hash = typeof currentCardDataHash === 'function' ? currentCardDataHash() : ''; }catch(e){}
+  return {v: 1, seed: typeof currentMatchSeed === 'number' ? currentMatchSeed >>> 0 : null, build: cheat2Build(), cardsHash: hash,
+    node: m && m.conquestNode ? m.conquestNode.mapId + ':' + m.conquestNode.nodeId : null, bm: (m && m.battleMode) || null, leader: (m && m.leaderDefId) || null,
+    deck: f.deck || null, lv: f.lv || null, ms: m && m.cheat2Ms != null ? m.cheat2Ms : null, round: m ? m.round : null, winner: m ? m.winner : null,
+    acts: m && Array.isArray(m.transcript) ? m.transcript.length : 0, flags: (m && m.cheat2Flags) || []};
+}
+// The device clock (at load and at each version check; serverMs: version.json's Date header, or null).
+function cheat2Clock(serverMs){
+  const st = cheat2State(), now = Date.now(), out = [];
+  if(st.clock && now < st.clock - CHEAT2_BACK_MS) out.push(['clock-back', {min: Math.round((st.clock - now) / 60e3)}]);
+  if(serverMs && isFinite(serverMs) && Math.abs(now - serverMs) > CHEAT2_SKEW_MS) out.push(['time-skew', {min: Math.round((now - serverMs) / 60e3)}]);
+  st.clock = out.some(x=> x[0] === 'clock-back') ? now : Math.max(st.clock, now); cheat2Put(st);
+  out.forEach(([k, d])=> cheat2Flag(k, d));
+  if(st.flags.some(f=> f.at > st.sent)) cheat2SoonReport(); // notes from an earlier visit that weren't sent yet
+  return out.map(x=> x[0]);
+}
+function cheat2SoonReport(){ if(cheat2Mem.timer || typeof setTimeout !== 'function') return; cheat2Mem.timer = setTimeout(()=>{ cheat2Mem.timer = null; cheat2Report(); }, 20000); }
+// Sends the notes not sent yet, for a signed-in player only: report_cheat_flags first; before it exists (rpcMissing), one batched feedback
+// row a day. A failure keeps them for a later try. Nothing is shown to the player either way.
+async function cheat2Report(){
+  if(cheat2Mem.sending || typeof sbClient === 'undefined' || !sbClient || typeof isSignedIn !== 'function' || !isSignedIn()) return 'skip';
+  const st = cheat2State(), news = st.flags.filter(f=> f.at > st.sent); if(!news.length) return 'none';
+  cheat2Mem.sending = true;
+  try{
+    const rows = news.slice(-10).map(f=> ({kind: f.k, detail: f.d, at: new Date(f.at).toISOString(), build: f.b})), day = new Date().toISOString().slice(0, 10);
+    let how = 'rpc';
+    const { error } = await sbClient.rpc('report_cheat_flags', {p_flags: rows});
+    if(error){
+      if(!(typeof rpcMissing === 'function' && rpcMissing(error))) return 'error';
+      if(st.fbDay === day) return 'later';
+      const row = {category: 'other', text: '[auto] integrity notes: ' + Array.from(new Set(rows.map(r=> r.kind))).join(', '), context: {auto: 'cheat2', build: cheat2Build(), flags: rows}};
+      if(typeof cloudUserId !== 'undefined' && cloudUserId) row.user_id = cloudUserId;
+      const r2 = await sbClient.from('feedback').insert(row); if(r2 && r2.error) return 'error';
+      how = 'feedback';
+    }
+    const s2 = cheat2State(); s2.sent = Math.max(s2.sent, news[news.length - 1].at); if(how === 'feedback') s2.fbDay = day; cheat2Put(s2);
+    return how;
+  }catch(e){ return 'error'; }
+  finally{ cheat2Mem.sending = false; }
+}
+function cheat2Boot(){
+  try{ const ls = cheat2Ls(), raw = ls && ls.getItem(CHEAT2_SEALED[0]); if(raw) cheat2Rebase(JSON.parse(raw)); }catch(e){}
+  cheat2SealCheck(); cheat2Clock(null);
+}
+// CHEAT2:END
 // Version + card-data check (2026-10-11, user: "a per-session card_data hash plus version check: if the client is
 // outdated, ask to update; if the hash is wrong for that version, the data is corrupted"). The build stamps its id and
 // the hash its card data should have (assemble_arena.py, also written to version.json). Once per session, and again when
@@ -58234,7 +58387,8 @@ function baselineCardHash(){ if(_baselineHash === null) _baselineHash = Integrit
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'b819fac09e62', BUILD_CARD_HASH = '764c23110d3d94fa59350f15c0e90cff60eeaa3bf25b6577591b38c0f3037a1d';
+const BUILD_ID = '69101c4db0fb', BUILD_CARD_HASH = '764c23110d3d94fa59350f15c0e90cff60eeaa3bf25b6577591b38c0f3037a1d';
+try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 5 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh)
 function versionBanner(kind, text, btnLabel, onBtn){
@@ -58251,6 +58405,7 @@ async function checkGameVersion(force){
   if(typeof location === 'undefined' || !/^https?:/.test(location.protocol) || BUILD_ID.startsWith('__')) return null;
   if(!cardDataIntact()){
     versionBanner('bad', 'This copy of the game’s card data is damaged. Reload to get a clean copy.', 'Reload', ()=> location.reload());
+    try{ if(typeof cheat2Flag === 'function') cheat2Flag('card-hash', {where: 'page'}); }catch(e){} // CHEAT2 (2026-11-16): noted, the banner is as before
     return 'corrupt-local';
   }
   try{
@@ -58259,7 +58414,9 @@ async function checkGameVersion(force){
     sessionStorage.setItem(VERSION_SEEN_KEY, String(Date.now()));
   }catch(e){}
   let v = null;
-  try{ const r = await fetch('version.json?t=' + Date.now(), {cache:'no-store'}); if(r.ok) v = await r.json(); }catch(e){ return null; }
+  try{ const r = await fetch('version.json?t=' + Date.now(), {cache:'no-store'});
+    try{ if(typeof cheat2Clock === 'function') cheat2Clock(Date.parse((r.headers && r.headers.get('date')) || '')); }catch(e){} // CHEAT2 (2026-11-16): device clock vs the server's
+    if(r.ok) v = await r.json(); }catch(e){ return null; }
   if(!v || !v.build) return null;
   if(v.build !== BUILD_ID){
     // 2026-11-07 (package UI27 #5, owner 08:54: "after pressing Update the game still asks to update; a refresh fixed it"). Cause: main shipped
@@ -58275,6 +58432,7 @@ async function checkGameVersion(force){
   }
   if(v.cardHash && v.cardHash !== baselineCardHash()){
     versionBanner('bad', 'The card data for this version doesn’t check out. Reload, and tell us if this keeps happening.', 'Reload', ()=> location.reload());
+    try{ if(typeof cheat2Flag === 'function') cheat2Flag('card-hash', {where: 'version.json'}); }catch(e){} // CHEAT2 (2026-11-16)
     return 'corrupt';
   }
   return 'ok';
@@ -68272,6 +68430,7 @@ async function cloudPullState(){
         // 2026-10-30 (ECON1): Briar Blossoms from the row's blossoms column (supabase/migrations/20261030_bramble_resource.sql, APPLIED 2026-11-03);
         // until then (no column: undefined) this browser's are kept, like the trophy shards
         blossoms: cur.blossoms != null ? Math.max(0, Number(cur.blossoms)||0) : Math.max(0, Number((myCurrencies && myCurrencies.blossoms) || 0))};
+      try{ if(typeof cheat2Rebase === 'function') cheat2Rebase(myCurrencies); }catch(e){} // CHEAT2 (2026-11-16): the server's wallet is the new start, not a jump
       settleRaidPoints();
       saveCurrencies(true);
     }
@@ -69062,11 +69221,14 @@ function loadCurrencies(){
   return {gold:200, gems:20, dust:60, metal:0, raidPoints:5, raidPointsUpdatedAt:null, kibble:4};
 }
 let myCurrencies = loadCurrencies();
-function saveCurrencies(skipCloudPush){ try{ localStorage.setItem('bramblewood_arena_currencies', JSON.stringify(myCurrencies)); }catch(e){} if(!skipCloudPush) cloudPushCurrencies(); }
+function saveCurrencies(skipCloudPush){ let t = null; try{ const s = JSON.stringify(myCurrencies); localStorage.setItem('bramblewood_arena_currencies', s); t = s; }catch(e){}
+  try{ if(typeof cheat2OnWalletSave === 'function') cheat2OnWalletSave(myCurrencies, t, !!skipCloudPush); }catch(e){} // CHEAT2 (2026-11-16): seal + flags, never blocks
+  if(!skipCloudPush) cloudPushCurrencies(); }
 function grantCurrency(kind, amount){
   if(!CURRENCY_META[kind] || !(amount>0)) return;
   if(kind === 'kroon' && KROONI_RETIRED) return; // 2026-10-23 (TU2): retired, none earned (a saved balance stays)
   myCurrencies[kind] = (myCurrencies[kind]||0) + amount;
+  try{ if(typeof cheat2NoteGrant === 'function') cheat2NoteGrant(kind, amount); }catch(e){} // CHEAT2 (2026-11-16): a gain with a matching grant
   saveCurrencies();
 }
 // ECON1_INCOME:BEGIN (tests/econ1-2026-10-30.js evaluates this block)
@@ -70048,7 +70210,9 @@ function loadCardDupsLifetime(){
 }
 let myCardDupsLifetime = loadCardDupsLifetime();
 function lifetimeDuplicates(id){ return Math.max(myCardDupsLifetime[id]|0, Math.max(0, (myCardCopies[id]||[]).filter(c=> !(c && c.m)).length - 1)); } // 2026-10-18 (package NF): a Base copy made for a deck (m) isn't a duplicate
-function saveCardCopies(){ try{ localStorage.setItem('bramblewood_arena_card_copies', JSON.stringify(myCardCopies)); localStorage.setItem(CARD_DUPS_LIFETIME_KEY, JSON.stringify(myCardDupsLifetime)); }catch(e){} soonCheckMilestones(); }
+function saveCardCopies(){ let t = null; try{ const s = JSON.stringify(myCardCopies); localStorage.setItem('bramblewood_arena_card_copies', s); t = s; localStorage.setItem(CARD_DUPS_LIFETIME_KEY, JSON.stringify(myCardDupsLifetime)); }catch(e){}
+  try{ if(typeof cheat2OnCopiesSave === 'function') cheat2OnCopiesSave(myCardCopies, t); }catch(e){} // CHEAT2 (2026-11-16): seal + flags, never blocks
+  soonCheckMilestones(); }
 // One-time migration (2026-09-27): every card this player unlocked BEFORE the Nest existed has
 // no copy record at all yet — without this, those cards would show as owned x0 in the new
 // screen despite being real, played, unlocked cards. Seeds exactly 1 non-foil copy for any
@@ -87301,6 +87465,7 @@ async function prefetchFightTicket(mode, nodeKey){
   }catch(e){ delete fightTickets[mode + '|' + (nodeKey||'')]; }
 }
 function takeFightTicket(mode, nodeKey){
+  try{ if(typeof cheat2FightStart === 'function') cheat2FightStart(typeof myDeckCounts !== 'undefined' ? myDeckCounts : null); }catch(e){} // CHEAT2 (2026-11-16): every Conquest start, ticket or not
   const key = mode + '|' + (nodeKey||''); const t = fightTickets[key];
   if(!t || t.pending || !t.id) return null;
   delete fightTickets[key];
@@ -87313,7 +87478,8 @@ async function handInFight(m){
   m.fightHandedIn = true;
   try{
     const result = {v:1, winner: m.winner, round: m.round, hp: {1: m.players[1].hq.hp, 2: m.players[2].hq.hp}, rank: m.conquestRankEarned || null, firstClear: !!m.fightFirstClear, cardsHash: currentCardDataHash(), seed: currentMatchSeed};
-    const { data, error } = await sbClient.rpc('submit_fight', {p_session: m.fightSession, p_transcript: {v:1, actions: m.transcript || []}, p_result: result});
+    let rec = null; try{ if(typeof cheat2FightRecord === 'function') rec = cheat2FightRecord(m); }catch(e){} // CHEAT2 (2026-11-16): seed, deck + copy levels, leader, build: for a server replay
+    const { data, error } = await sbClient.rpc('submit_fight', {p_session: m.fightSession, p_transcript: rec ? {v:1, actions: m.transcript || [], rec} : {v:1, actions: m.transcript || []}, p_result: result});
     m.fightHandIn = error ? 'error' : data;
   }catch(e){ m.fightHandIn = 'error'; }
   if(m.fightReward && !m.fightReward.settled){
@@ -101174,6 +101340,7 @@ async function resolveRoundCore(opts){
       const nxt = m1.nodes.find(n=> n.kind!=='tutorial' && (n.requires||[]).includes('tutorial') && !p.completed.includes(conquestNodeId('m1', n.key)));
       m.nextBattle = nxt ? {mapId:'m1', key:nxt.key, node:nxt} : null;
     }
+    try{ if(m.mode==='conquest' && typeof cheat2FightEnd === 'function') cheat2FightEnd(m); }catch(e){} // CHEAT2 (2026-11-16): flags only (before the hand-in, so its record lists them)
     if(m.mode==='conquest' && m.fightSession) setTimeout(()=> handInFight(m), 0);
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ m.conquestRankEarned = lossRankFor(m); }catch(e){} } // F / FF / FFF (2026-10-11)
     // Daily dungeons (2026-10-16): a lost or forfeited floor keeps the key and sends the climb back to floor 1 (dungeonRunLost);
