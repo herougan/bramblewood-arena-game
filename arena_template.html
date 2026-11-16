@@ -9117,17 +9117,18 @@
     background:rgba(255,214,120,.16); border:1px solid rgba(201,164,106,.55); font-size:14px; line-height:1.4;}
   .loss-tip-ico{font-size:22px; line-height:1;}
   .loss-tip-body{display:flex; flex-direction:column; gap:8px; align-items:flex-start;}
-  /* Pitch callout */
-  .pitch-callout{position:absolute; left:50%; top:50%; z-index:40; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:2px; pointer-events:none;
-    padding:10px 22px 12px; border-radius:16px; background:rgba(28,22,14,.82); border:2px solid #e3b23c; box-shadow:0 10px 30px rgba(0,0,0,.45);
-    color:#fff6dc; font-family:'Baloo 2',system-ui,sans-serif; animation:pitchCallout 1.7s ease forwards;}
-  .pitch-callout .pc-from{font-size:13px; font-weight:700; opacity:.8;}
-  .pitch-callout .pc-gain{font-size:34px; font-weight:800; line-height:1.05; text-shadow:0 2px 0 rgba(0,0,0,.4);}
-  .pitch-callout .pc-gain small{font-size:15px; margin-left:6px; opacity:.85;}
-  @keyframes pitchCallout{0%{opacity:0; transform:translate(-50%,-30%) scale(.7);} 12%{opacity:1; transform:translate(-50%,-50%) scale(1.06);} 22%{transform:translate(-50%,-50%) scale(1);} 78%{opacity:1; transform:translate(-50%,-56%);} 100%{opacity:0; transform:translate(-50%,-70%);}}
+  /* 2026-11-16 (package UX6): the battle-notice lane (replaces the pitch callout banner): a compact pill centred on your Bramble's HP ribbon (16px high, bottom:0; a pill 22px high pokes 3px past both its edges: higher, it would sit on the units' skill strips),
+     under the units and above the hand; tokens only, so it reads in light and dark. */
+  .battlefield > .bn-host{position:absolute; left:50%; bottom:8px; z-index:41; transform:translate(-50%,50%); display:flex; justify-content:center; width:max-content; max-width:calc(100% - 16px); pointer-events:none;}
+  .bn-pill{display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:2px 7px; padding:2px 12px 3px; border-radius:16px; background:var(--surface); color:var(--ink); border:1px solid var(--accent); box-shadow:0 3px 10px rgba(0,0,0,.3);
+    font:700 12.5px/1.2 'Baloo 2',system-ui,sans-serif; text-align:center; animation:bnIn .22s cubic-bezier(.2,1.4,.4,1) backwards; transition:opacity .2s, transform .2s;}
+  .bn-pill.bn-warn{border-color:var(--attack);} .bn-pill.bn-info{border-color:var(--surface-border);} .bn-pill.bn-out{opacity:0; transform:translateY(4px);}
+  .bn-pill .pc-from{font-size:11px; opacity:.8;} .bn-pill .pc-gain{font-size:14px; font-weight:800;} .bn-pill .pc-gain small{font-size:11px; margin-left:4px; opacity:.85;}
+  .bn-pill .ic-ico{font-size:18px; line-height:1;} .bn-pill .ic-txt{display:flex; flex-direction:column; align-items:flex-start; text-align:left; min-width:0;} .bn-pill .ic-txt small{font-size:11px; font-weight:600; opacity:.9;}
+  @keyframes bnIn{from{opacity:0; transform:translateY(6px) scale(.85);} to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion: reduce){ .bn-pill{animation:none; transition:opacity .2s;} .bn-pill.bn-out{transform:none;} }
   .pill-gain-pulse{animation:pillGainPulse .9s ease;}
   @keyframes pillGainPulse{0%,100%{transform:scale(1); box-shadow:none;} 30%{transform:scale(1.25); box-shadow:0 0 0 4px rgba(227,178,60,.55);}}
-  @media (prefers-reduced-motion: reduce){ .pitch-callout{animation-duration:2.2s;} }
   #rowMine.turn-glow{animation:turnGlow 1.8s ease-out;}
   @keyframes turnGlow{0%{box-shadow:inset 0 0 0 0 rgba(255,215,122,0);} 25%{box-shadow:inset 0 -40px 60px -30px rgba(255,215,122,.55);} 100%{box-shadow:inset 0 0 0 0 rgba(255,215,122,0);}}
   /* ---- Forge rework (2026-10-03) ---- */
@@ -9576,9 +9577,6 @@
   .discardzone.dragover .pitch-badge, .discardzone.pitch-hot .pitch-badge{transform:translateX(-50%) scale(1.12); border-color:#ffd56e; box-shadow:0 0 0 2px rgba(255,213,110,.35), 0 10px 24px rgba(0,0,0,.5);}
   .discardzone.dragover.pitch-ready{transform:scale(1.12) !important;}
   @media (prefers-reduced-motion:reduce){ .discardzone.pitch-ready{animation:none;} }
-  /* The "+1 Lumber" confirmation after a pitch: quieter now that the preview carries the news. */
-  .pitch-callout{padding:4px 12px 5px !important; border-width:1px !important; background:rgba(28,22,14,.6) !important; box-shadow:0 4px 12px rgba(0,0,0,.3) !important; top:62% !important; animation-duration:1.1s !important;}
-  .pitch-callout .pc-gain{font-size:18px !important;} .pitch-callout .pc-from{font-size:10.5px !important;} .pitch-callout .pc-gain small{font-size:11px !important;}
 
   /* Coach tips stay pointed at their card (2026-10-05) */
   .coach-tip.anchor-lost::after, .coach-tip.anchor-lost::before{display:none;}
