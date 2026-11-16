@@ -28027,7 +28027,7 @@ function gdClaimPlay(uid, side, dropPoint, popts){
   const T = m.coop.T, me = m.players[1], hc = me.hand.find(h=> h.uid === uid), d = hc && gdDefOf(hc.defId);
   const tile = document.querySelector(`.card-tile[data-handuid="${uid}"]`);
   if(!hc) return;
-  if(CoopM.unsupportedCard(d)){ denyShake(tile); showToast(TX('ui.coop2-unsupported'), 'warn'); return; }
+  if(CoopM.unsupportedCard(d)){ denyShake(tile); battleToast(TX('ui.coop2-unsupported'), 'warn'); return; }
   const row = popts && popts.reserve ? Number(popts.reserve) : 0;
   let act;
   if(CoopM.noSlotCard(d)) act = {kind: 'play', uid};
@@ -28038,14 +28038,14 @@ function gdClaimPlay(uid, side, dropPoint, popts){
     act = {kind: 'play', uid, row, slot}; }
   const r = S.claim(act);
   if(!r || !r.ok){ denyShake(tile);
-    const why = r && r.why; showToast(why === 'cost' ? TX('ui.coop2-need-lumber') : why === 'done' || why === 'pending' ? TX('ui.coop2-one-play') : why === 'taken' || why === 'cell' ? TX('ui.coop2-taken-anon') : TX('ui.coop2-refused'), 'warn'); return; }
+    const why = r && r.why; battleToast(why === 'cost' ? TX('ui.coop2-need-lumber') : why === 'done' || why === 'pending' ? TX('ui.coop2-one-play') : why === 'taken' || why === 'cell' ? TX('ui.coop2-taken-anon') : TX('ui.coop2-refused'), 'warn'); return; }
   if(tile){ const hr = tile.getBoundingClientRect(); m.coop.origins[uid] = dropPoint ? {x: dropPoint.x, y: dropPoint.y, kind: 'hand'} : {x: hr.left + hr.width / 2, y: hr.top + hr.height / 2, kind: 'hand', fromTile: true, w: hr.width}; }
   if(m.selectedUid === uid) m.selectedUid = null;
   lastBoardSig = {1: null, 2: null}; fightSafe(renderHand, 'renderHand'); fightSafe(renderBoard, 'renderBoard'); fightSafe(updateControlsDisabled); gdRenderCoopBar();
 }
 function gdClaim(c){
   const m = matchState, S = GD.s; if(!m || !m.coop || !S || m.over || m.resolving) return;
-  const r = S.claim(c); if(!r || !r.ok){ if(c.kind === 'pitch') denyShake(document.querySelector(`.card-tile[data-handuid="${c.uid}"]`) || document.getElementById('dropDiscard')); if(r && r.why === 'done' && c.kind === 'pass') return; if(c.kind === 'pitch' && r && r.why === 'pitched') return; showToast(TX('ui.coop2-refused'), 'warn'); return; }
+  const r = S.claim(c); if(!r || !r.ok){ if(c.kind === 'pitch') denyShake(document.querySelector(`.card-tile[data-handuid="${c.uid}"]`) || document.getElementById('dropDiscard')); if(r && r.why === 'done' && c.kind === 'pass') return; if(c.kind === 'pitch' && r && r.why === 'pitched') return; battleToast(TX('ui.coop2-refused'), 'warn'); return; }
   fightSafe(renderHand, 'renderHand'); fightSafe(updateControlsDisabled); gdRenderCoopBar();
 }
 // 2026-10-30 (package COOP3, owner W6: "Give auto-play to multi-player dungeons."): Auto plays my seat as a CPU ally would (CoopM.cpuChoice:
@@ -31519,10 +31519,8 @@ function raidScrollToHand(m){
 }
 // The raid's last turn (2026-10-18): a banner over the board as it starts ("the tide turns after this one"), so the end isn't a surprise.
 function raidLastTurnBanner(m){
-  const bf = document.querySelector('.battlefield'); if(!bf || !m) return;
-  const el = document.createElement('div'); el.className = 'next-turn-sign raid-last-turn'; el.setAttribute('role', 'status');
-  el.innerHTML = `🌊 Last turn<small>The tide turns after turn ${m.raidRoundCap}: the raid ends then, whatever the brambles’ Health.</small>`;
-  bf.appendChild(el); setTimeout(()=>{ el.classList.add('next-turn-sign-out'); setTimeout(()=> el.remove(), 260); }, 2600);
+  if(!m) return; // 2026-11-16 (package UX6): a notice in the lane under the board, not a sign over the units
+  battleNotice(`<span class="ic-ico" aria-hidden="true">🌊</span><span class="ic-txt"><b>Last turn</b><small>The tide turns after turn ${m.raidRoundCap}: the raid ends then, whatever the brambles’ Health.</small></span>`, {key:'raid', kind:'warn', ms:2600});
 }
 // A raid fight's rank (2026-10-19, package RV2, owner 08:46: "If you actually win the fight, you get a special emblemed rank ... higher
 // rank = more damage"): graded as any fight on your bramble's Health left (rankForHqFraction: S 90%+, A 70%+, B 50%+ ...), SS with no
@@ -33249,7 +33247,7 @@ function syncDungeonChip(){
 setInterval(()=>{ try{ syncDungeonChip(); }catch(e){} }, 500);
 function dungeonWaveVfx(m){
   const d = m.dungeon; if(!d) return;
-  try{ showToast(`🗝️ ${_t('A new bramble rises')}: ${d.wave + 1}/${d.waves.length}${d.lastCarry ? ` (+${d.lastCarry} ${_t('Health carried over')})` : ''}`, 'ok'); }catch(e){}
+  try{ battleToast(`🗝️ ${_t('A new bramble rises')}: ${d.wave + 1}/${d.waves.length}${d.lastCarry ? ` (+${d.lastCarry} ${_t('Health carried over')})` : ''}`, 'ok', 'wave'); }catch(e){} // UX6
   try{ SoundKit.bossRumble && SoundKit.bossRumble(); }catch(e){}
   const castle = document.querySelector('[data-hq="B"]'); if(castle){ castle.classList.remove('castle-pop'); void castle.offsetWidth; castle.classList.add('castle-pop'); }
   (d.justSpawned||[]).forEach((uid, i)=>{ const el = boardCardEl(uid); if(!el || typeof gsap === 'undefined' || reducedMotion()) return;
@@ -38628,6 +38626,7 @@ function endMatch(opts){
   if(matchState && matchState.coop && !(opts && opts.coopKeep)){ try{ gdClose(true); }catch(e){} return; } // 2026-10-28 (package COOP2): leaving a group-dungeon fight leaves its room (gdClose ends the match)
   try{ packHoldForReplay = 0; }catch(e){} // 2026-10-17: leaving a fight lets held packs open (a Play again sets the hold again)
   standardMatchActive = false;
+  try{ battleNoticeClear(); }catch(e){} // 2026-11-16 (package UX6): no battle notice outlives its fight
   if(!(opts && opts.keepResume) && matchState && matchState.mode !== 'tutorial') bumpFightSerial(); // D53: a row's "New!" lasts the fight it first happened in
   try{ EMOTE_LAST_HIT.clear(); }catch(e){}
   try{ document.querySelectorAll('body > .speech-bubble').forEach(b=> b.remove()); barkCurrent = null; }catch(e){} // 2026-11-03 (package FIX8, QA2 minor 3): the fight's last speech bubble ("Victory is ours!") stayed on the map
@@ -38879,7 +38878,7 @@ async function attemptSummonLeader(preferredLane){
   }
   const widgetEl = document.getElementById('leaderWidget');
   if(!m.leaderDefId || m.leaderUid!=null){ denyShake(widgetEl); return; }
-  if(m.caged){ denyShake(widgetEl); showToast(TX('toast.your-leader-is-caged-on-the'), 'warn'); return; }
+  if(m.caged){ denyShake(widgetEl); battleToast(TX('toast.your-leader-is-caged-on-the'), 'warn'); return; } // UX6: battle notice lane
   const activePid = activePlayerId(m);
   const me = m.players[activePid];
   // 2026-10-03 (user report: "I couldn't play my Wandering Traveller on the left of my Dominion
@@ -39997,6 +39996,7 @@ function renderMatchUI(){
   if(keepLog){ const fresh = document.getElementById('battleLog'); if(fresh && fresh !== keptLog){ try{ fresh.replaceWith(keptLog); }catch(e){} } }
   keptRows.forEach(old=>{ const fresh = document.getElementById(old.id); if(fresh && fresh !== old){ try{ fresh.replaceWith(old); }catch(e){} } }); // 2026-10-23 (package UI4)
   { const inn = keptFx.length && document.getElementById('battlefieldInner'); if(inn) keptFx.forEach(h=> inn.appendChild(h)); } // FX9 #6
+  if(m.over) battleNoticeClear(); else if(BN.cur) bnHost(); // 2026-11-16 (package UX6): the lane is cleared when the fight is decided; a redraw carries a showing notice to the new board
   renderBoard();
   BOARD_ROW_IDS.forEach(id=>{ const el = document.getElementById(id); if(el) el.__bwMatch = m; }); // 2026-10-23 (package UI4): which match drew these rows
   syncWindField(m); // 2026-10-15: the wind layer survives the repaint
@@ -43447,7 +43447,7 @@ function evolvePlayOnto(handUid, targetUid, dropPoint){
   const h = evoHandCard(m, handUid), d = h && getCardDefs()[h.defId]; if(!d || !isEvoluteCardApp(d)) return false;
   if(targetUid == null || !evoLegalBaseUids(m, h.defId).includes(targetUid)){
     denyShake(document.querySelector(`.card-tile[data-handuid="${handUid}"]`));
-    if(Date.now() - (m._evoHintAt||0) > 1500){ m._evoHintAt = Date.now(); showToast(TX('ui.evo-pick-base', {name: d.name}), 'warn'); }
+    if(Date.now() - (m._evoHintAt||0) > 1500){ m._evoHintAt = Date.now(); battleToast(TX('ui.evo-pick-base', {name: d.name}), 'warn'); }
     return true; }
   const tgt = allCardsOnBoard(m.players[viewerHandPid(m)]).find(c=> c.uid === targetUid);
   playCardByUid(handUid, tgt && Number.isInteger(tgt.slot) ? tgt.slot : 'center', dropPoint, {onto: targetUid});
@@ -43537,15 +43537,15 @@ function devilryDropOnto(targetUid, handUid){
       setTimeout(()=>{ const el = boardCardEl(targetUid); if(el){ floatText(el, `⚒️ ${hd.name}`, 'buff'); try{ if(window.SkillFX && SkillFX.shieldUp) SkillFX.shieldUp(el); }catch(e){} } }, 60);
       m.selectedUid = null; renderMatchUI(); return true;
     }
-    showToast(tgt.equipment ? TX('toast.already-carries', {name: td.name, v2: (defs[tgt.equipment]||{}).name || 'equipment'}) : pl.playedThisTurn ? TX('toast.equipping-uses-your-play-for-the') : TX('toast.not-enough-lumber-to-equip', {name: hd.name}), 'warn');
+    battleToast(tgt.equipment ? TX('toast.already-carries', {name: td.name, v2: (defs[tgt.equipment]||{}).name || 'equipment'}) : pl.playedThisTurn ? TX('toast.equipping-uses-your-play-for-the') : TX('toast.not-enough-lumber-to-equip', {name: hd.name}), 'warn');
     return true;
   }
   if(hd.darkSummon && te.sacrifice) done = m.engine.sacrificeSummon(m.players, m.sideOf, pid, handUid, targetUid, m.stats, ev);
   else if(te.devour && !tgt.devoured) done = m.engine.devour(m.players, m.sideOf, pid, targetUid, handUid, m.stats, ev);
   if(!done){
-    if(te.devour && tgt.devoured) showToast(TX('toast.has-already-devoured', {name: td.name}), 'warn');
-    else if(te.devour && pl.playedThisTurn) showToast(TX('toast.devouring-uses-your-play-for-the'), 'warn');
-    else if(te.sacrifice && hd.darkSummon) showToast(TX('toast.can-t-summon-over-right-now', {name: hd.name, name2: td.name}), 'warn');
+    if(te.devour && tgt.devoured) battleToast(TX('toast.has-already-devoured', {name: td.name}), 'warn');
+    else if(te.devour && pl.playedThisTurn) battleToast(TX('toast.devouring-uses-your-play-for-the'), 'warn');
+    else if(te.sacrifice && hd.darkSummon) battleToast(TX('toast.can-t-summon-over-right-now', {name: hd.name, name2: td.name}), 'warn');
     return te.devour || (te.sacrifice && hd.darkSummon); // the drop was aimed at it: don't also place the card
   }
   ev.forEach(x=>{ pushLog(x); try{ renderVfxForEvent(x); }catch(e){} });
@@ -43565,7 +43565,7 @@ function openExileCastPanel(){
   document.body.appendChild(ov);
   const close = ()=> ov.remove();
   ov.addEventListener('click', e=>{ if(e.target===ov || e.target.closest('[data-exile-close]')) close();
-    const b = e.target.closest('[data-exile-cast]'); if(b){ const ev = []; if(m.engine.castFromExile(m.players, m.sideOf, pid, Number(b.getAttribute('data-exile-cast')), Math.random() < .5 ? 'left' : 'right', m.stats, ev)){ ev.forEach(x=>{ pushLog(x); try{ renderVfxForEvent(x); }catch(err){} }); close(); renderMatchUI(); } else showToast(TX('toast.no-room-to-cast-it-or'), 'warn'); } });
+    const b = e.target.closest('[data-exile-cast]'); if(b){ const ev = []; if(m.engine.castFromExile(m.players, m.sideOf, pid, Number(b.getAttribute('data-exile-cast')), Math.random() < .5 ? 'left' : 'right', m.stats, ev)){ ev.forEach(x=>{ pushLog(x); try{ renderVfxForEvent(x); }catch(err){} }); close(); renderMatchUI(); } else battleToast(TX('toast.no-room-to-cast-it-or'), 'warn'); } });
 }
 document.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('[data-open-exile]'); if(b) openExileCastPanel(); });
 // 2026-10-10 (phone screenshots): long-press on a card opened the browser's image/selection menu. Game surfaces get no context menu.
@@ -44133,7 +44133,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
       if(pl.playedThisTurn && m._needsCommit && !m._committing && !m.resolving && m.mode!=='liveRanked' && m.mode!=='pc'){ afterPlayerAction(activePid); return; }
       const why = pl.playedThisTurn ? 'One play per turn. Press Pass turn to fight.'
         : (d && (d.cost||0) > (pl.lumber||0)) ? `${d.name}: need ${d.cost - (pl.lumber||0)} more 🪵 Lumber. Drop a card on the Graveyard for +1.` : null;
-      if(why && Date.now() - (m._denyToastAt||0) > 2500){ m._denyToastAt = Date.now(); showToast(why, 'warn'); }
+      if(why && Date.now() - (m._denyToastAt||0) > 2500){ m._denyToastAt = Date.now(); battleToast(why, 'warn'); }
     }catch(e){}
     return;
   }
@@ -44553,7 +44553,7 @@ async function eng23AimedBolt(slot){
 }
 document.addEventListener('click', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-eng23-feed], [data-eng23-bolt]'); if(!t || t.disabled) return; const m = matchState; if(!m) return;
   e.preventDefault(); if(t.dataset.eng23Bolt){ eng23OpenBoltPicker(t); return; }
-  if(m.selectedUid != null) eng23FeedByUid(m.selectedUid); else { try{ showToast(TX('ui.eng23-feed-how'), 'info'); }catch(err){} } });
+  if(m.selectedUid != null) eng23FeedByUid(m.selectedUid); else { try{ battleToast(TX('ui.eng23-feed-how'), 'info'); }catch(err){} } });
 const eng23FeedTarget = e=>{ const m = matchState; if(!m || !e.target || !e.target.closest) return null; const t = e.target.closest('[data-eng23-feed], [data-hq="A"]');
   if(!t || !eng23ActsOn(m)) return null; const pl = m.players[viewerHandPid(m)]; return pl && pl.feed && (t.dataset.eng23Feed || viewerHandPid(m) === 1) ? t : null; };
 document.addEventListener('dragover', e=>{ if(eng23FeedTarget(e)) e.preventDefault(); });
@@ -51990,16 +51990,48 @@ function animateAttacker(attUid, isMine, opts){
 // without needing another pass through this code). `fromRect` is the drop point (the discard
 // zone's own rect works for both a genuine drag-drop and a tap-to-discard, since either way
 // that's where the card visually lands); `gains` is [{amount, glyph, pillId}, ...].
+// 2026-11-16 (package UX6, owner 20:18: "The pitched toast in-game shouldn't be on the battlefield but below, maybe on the HP bar boundary ... Use these
+// toasts for everything else battlefield related ... [the bottom slide-up toast is] for meta, out-of-game notices"): one lane for battle notices. A compact
+// pill centred on your Bramble's HP bar (under the units, above the hand), one at a time, ~1.1-1.6 s each; a notice of the same key replaces
+// the one showing (and any waiting) instead of stacking; role=status. Cleared when the fight ends. showToast stays for meta notices (saves, sign-in, shop).
+// battleNotice(html, {key, kind:'ok'|'warn'|'info', ms}) takes trusted HTML; battleToast(text, kind, key) escapes plain text. Outside a fight both fall back to showToast.
+const BN = {cur:null, q:[], t:0};
+function bnHost(){
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return null;
+  let h = bf.querySelector(':scope > .bn-host');
+  if(!h){ h = document.createElement('div'); h.className = 'bn-host'; h.id = 'battleNoticeHost'; h.setAttribute('role', 'status'); h.setAttribute('aria-live', 'polite'); bf.appendChild(h); }
+  if(BN.cur && BN.cur.el.parentNode !== h) h.appendChild(BN.cur.el); // the board redraw threw the old host away: the pill moves to the new one
+  return h;
+}
+function bnNext(){
+  clearTimeout(BN.t); BN.cur = null;
+  const n = BN.q.shift(); if(!n) return;
+  const h = bnHost(); if(!h) return;
+  const el = document.createElement('div'); el.className = 'bn-pill bn-' + (n.kind || 'info'); el.innerHTML = n.html;
+  h.textContent = ''; h.appendChild(el); BN.cur = {el, key: n.key};
+  const k = Math.max(0.5, (typeof matchState !== 'undefined' && matchState && matchState.speedMult) || 1), ms = Math.max(800, Math.round((n.ms || 1400) / Math.sqrt(k)));
+  BN.t = setTimeout(()=>{ el.classList.add('bn-out'); BN.t = setTimeout(()=>{ el.remove(); bnNext(); }, 200); }, ms);
+}
+function battleNotice(html, opts){
+  opts = opts || {}; const m = typeof matchState !== 'undefined' ? matchState : null;
+  if(!m || m.over || !document.getElementById('battlefieldEl')){ if(opts.text) showToast(opts.text, opts.kind); return false; }
+  const key = opts.key || opts.kind || 'info';
+  BN.q = BN.q.filter(x=> x.key !== key);
+  const n = {html, key, kind: opts.kind, ms: opts.ms};
+  if(BN.cur && BN.cur.key === key){ BN.q.unshift(n); bnNext(); } // same kind: replaces the one showing
+  else { BN.q.push(n); if(BN.q.length > 3) BN.q.shift(); if(!BN.cur) bnNext(); }
+  return true;
+}
+function battleToast(text, kind, key){ return battleNotice(escapeHtml(text), {kind, key, text}); }
+function battleNoticeClear(){ clearTimeout(BN.t); BN.q = []; BN.cur = null; document.querySelectorAll('.bn-host').forEach(e=> e.remove()); }
 // Pitch callout (2026-10-04, "cards don't announce how much resource they give on pitch"): a big
 // "+2 🪵 Lumber" banner over the board for a beat, and the matching resource pill pulses.
+// 2026-11-16 (package UX6): the banner over the units became a pill in the battle-notice lane (battleNotice, above); the pill pulse and the chime stay.
 function pitchCallout(gains, def){
-  const host = document.getElementById('battlefieldEl'); if(!host) return;
+  if(!document.getElementById('battlefieldEl')) return;
   const names = {lumber:'Lumber', grace:'Grace', stone:'Stone', devilry:'Dark Points'};
   const label = gains.map(g=>{ const key = Object.keys(PITCH_RESOURCE_META).find(k=> PITCH_RESOURCE_META[k].pillId===g.pillId); return `<span class="pc-gain">+${g.amount} ${g.glyph}<small>${names[key]||''}</small></span>`; }).join('');
-  host.querySelectorAll('.pitch-callout').forEach(e=> e.remove());
-  const el = document.createElement('div'); el.className = 'pitch-callout'; el.setAttribute('role','status');
-  el.innerHTML = `<span class="pc-from">${def ? escapeHtml(def.name) + ' pitched' : 'Pitched'}</span>${label}`;
-  host.appendChild(el); setTimeout(()=> el.remove(), 1150);
+  battleNotice(`<span class="pc-from">${def ? escapeHtml(def.name) + ' pitched' : 'Pitched'}</span>${label}`, {key:'pitch', kind:'ok', ms:1150});
   try{ SoundKit.pitchChime(); }catch(e){}
   gains.forEach(g=>{ const pill = document.getElementById(g.pillId); if(pill){ pill.classList.remove('pill-gain-pulse'); void pill.offsetWidth; pill.classList.add('pill-gain-pulse'); setTimeout(()=> pill.classList.remove('pill-gain-pulse'), 900); } });
 }
@@ -53823,7 +53855,7 @@ function eqPlayHazardAt(uid, cell, dropPoint){
   const m = matchState; if(!m || uid == null || !cell) return false;
   const [tp, sl] = String(cell.getAttribute('data-hzcell')).split(':').map(Number);
   const ok = (m.engine.hazardTargets(m.players, activePlayerId(m), (m.players[activePlayerId(m)].hand.find(h=> h.uid === uid) || {}).defId) || []).some(t=> t.pid === tp && t.slot === sl);
-  if(!ok){ showToast(TX('toast.eq-hz-no'), 'warn'); return true; }
+  if(!ok){ battleToast(TX('toast.eq-hz-no'), 'warn'); return true; }
   playCardByUid(uid, sl, dropPoint, {hazardPid: tp}); return true;
 }
 document.addEventListener('dragover', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-hzcell]'); if(t && document.body.classList.contains('eq-hz-holding')){ e.preventDefault(); e.stopPropagation();
@@ -54007,7 +54039,7 @@ function eq2SyncHolding(){ if(eq2HoldQueued) return; eq2HoldQueued = true; reque
 function eq2PlayParasiteOn(uid, cell, dropPoint){
   const m = matchState; if(!m || uid == null || !cell) return false; const host = Number(cell.getAttribute('data-parauid'));
   const tgt = (m.engine.parasiteTargets(m.players, viewerHandPid(m)) || []).find(c=> c.uid === host);
-  if(!tgt){ showToast(TX('toast.eq2-para-no'), 'warn'); return true; }
+  if(!tgt){ battleToast(TX('toast.eq2-para-no'), 'warn'); return true; }
   playCardByUid(uid, tgt.slot, dropPoint, {parasiteOn: host}); return true;
 }
 document.addEventListener('dragover', e=>{ const t = e.target && e.target.closest && e.target.closest('.eq2-para-drop.is-ok'); if(t && document.body.classList.contains('eq2-para-holding')){ e.preventDefault(); e.stopPropagation(); t.classList.add('is-over'); } }, true);
@@ -56090,7 +56122,7 @@ function renderVfxForEvent(ev){
     if(el) try{ floatText(el, `☢️${lost.hp ? ' −' + lost.hp + '❤' : ''}${lost.atk ? ' −' + lost.atk + '⚔' : ''}${lost.sk ? ' −' + lost.sk + ' skill' : ''}`, 'debuff'); el.classList.add('irradiate-pulse'); setTimeout(()=> el.classList.remove('irradiate-pulse'), 900); }catch(e){} }
   if(ev.type==='fieldTick' && ev.field==='cometRain') cometRainVfx(); // comets after an Eruption (2026-10-14)
   if(ev.type==='fieldTick' && ev.field==='comet') cometStrikeVfx(ev);
-  if(ev.type==='fieldTick' && ev.field==='eruptionReset'){ try{ showToast(TX('toast.the-mountain-settles-and-comets-will'), 'warn'); }catch(e){} }
+  if(ev.type==='fieldTick' && ev.field==='eruptionReset'){ try{ battleToast(TX('toast.the-mountain-settles-and-comets-will'), 'warn', 'field'); }catch(e){} }
   // New field effects (2026-10-15): Swamp Fever adds a Poison stack; Freezing freezes a unit as it lands.
   if(ev.type==='fieldTick' && (ev.field==='swampFever' || ev.field==='freezing')){ const el = boardCardEl(ev.uid), rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(ev.field==='swampFever'){ if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; if(el) try{ floatText(el, TX('ui.en7-float-poison', {n: 1}), 'poison'); SoundKit.poisonApply(); }catch(e){} } // EN7 (2026-10-24, owner 13:12 #7: "Why are there too emojis and the + sign. Just do the 🤢N"): was "🤢 +1☠"
@@ -56114,7 +56146,7 @@ function renderVfxForEvent(ev){
     if(ev.field==='immolation'){ const src = boardCardEl(ev.srcUid); if(src){ src.classList.add('immolate-pulse'); setTimeout(()=> src.classList.remove('immolate-pulse'), 900); } } }
   if(ev.type==='remember' && ev.uid != null){ const el = boardCardEl(ev.uid); const rcR = matchState && matchState.replayCards && matchState.replayCards[ev.uid]; if(rcR) rcR.rememberSpent = true; /* ENG20-1 */
     if(el){ try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} en20CandleVfx(el); } } // ENG20-1 (2026-11-02, owner: "should involve candlesticks")
-  if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') showToast(TX('toast.your-leader-is-free'), 'ok'); }
+  if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') battleToast(TX('toast.your-leader-is-free'), 'ok'); }
   if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ dnFloat(el, ev.dmg, {type:'curse', mods: ev.mods}); }catch(e){} } /* DN2 */
   if(ev.type==='exaltTick'){ const el = boardCardEl(ev.uid), rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid]; if(el) try{ floatText(el, `✨ +${ev.heal}`, 'heal'); }catch(e){}
     if(rc){ rc.hp = Math.min(rc.maxHp || (rc.hp + ev.heal), (rc.hp || 0) + ev.heal); } try{ updateCardHpDisplay(ev.uid); }catch(e){} } /* ENG30 (2026-11-07): Exalted ground's heal, like Sap's */
@@ -56129,9 +56161,9 @@ function renderVfxForEvent(ev){
   if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine, kind: ev.kind || null /* ENG20-4 */};
       if(matchState && ev.windy && ev.kind !== 'cross' && ev.kind !== 'heavyCross') matchState._windLastMine = mine; // FIX7 (2026-11-03): a Crosswind blows neither way
       const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } syncWindField(matchState); syncWindBadges(); }catch(e){} } // + the wind layer (2026-10-15); + the Flyers' wind marks (2026-10-18, BP)
-  if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
+  if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; battleToast(`${mp[0]} ${mp[1]} tonight.`, 'ok', 'world'); }catch(e){} }
   // 2026-10-15 (FX batch B): Twilight has its own toast (it used to be announced as "Day breaks").
-  if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ showToast(ev.phase==='night' ? TX('toast.night-falls') : ev.phase==='twilight' ? TX('toast.twilight-day-and-night-creatures-are') : TX('toast.day-breaks'), 'ok'); }catch(e){}
+  if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ battleToast(ev.phase==='night' ? TX('toast.night-falls') : ev.phase==='twilight' ? TX('toast.twilight-day-and-night-creatures-are') : TX('toast.day-breaks'), 'ok', 'world'); }catch(e){} // UX6
     try{ if(ev.phase==='night'){ SoundKit.nightSwell(); if(fullMoonFieldUp(matchState)){ SoundKit.moonHowl(); moonHowlVfx(); } else SoundKit.wolfHowl(); } else if(ev.phase==='twilight') SoundKit.nightSwell(); else SoundKit.dawnChime(); }catch(e){} } // 2026-10-15: a softer dawn (was roosterCrow)
   // 2026-10-15 (user: "Full moon - if a full moon card is on the field, it howls similarly to night (maybe a tad different to
   // differentiate)"): the Full Moon field card arriving howls (one higher, longer wolf with a silver shimmer) and the moon glows.
@@ -56148,12 +56180,12 @@ function renderVfxForEvent(ev){
   }
   if(ev.type==='spell'){
     try{ SoundKit.trigger(); }catch(e){}
-    try{ showToast(`✨ ${(getCardDefs()[ev.defId]||{}).name || 'Spell'}: ${spellText(getCardDefs()[ev.defId])}`, 'ok'); }catch(e){}
+    try{ battleToast(`✨ ${(getCardDefs()[ev.defId]||{}).name || 'Spell'}: ${spellText(getCardDefs()[ev.defId])}`, 'ok', 'spell'); }catch(e){}
     const lbl = (ev.action==='hasten' || ev.action==='tailwind') ? n=> '−'+n+' ⏳' : ev.action==='mend' ? n=> '+'+n+' ❤' : n=> '−'+n+' ⚔';
     (ev.targets||[]).forEach((t, i)=> setTimeout(()=>{ const el = boardCardEl(t.uid); if(el){ floatText(el, lbl(t.amount), ev.action==='sap' ? 'debuff' : 'heal'); } }, i*90));
     setTimeout(()=>{ try{ renderBoard(); }catch(e){} }, 300);
   }
-  if(ev.type==='fieldSet'){ try{ const F = matchState && matchState.engine && matchState.engine.FIELDS && matchState.engine.FIELDS[ev.field]; if(F) showToast(`${F.icon} ${F.name}: ${F.text}`, 'ok'); }catch(e){} }
+  if(ev.type==='fieldSet'){ try{ const F = matchState && matchState.engine && matchState.engine.FIELDS && matchState.engine.FIELDS[ev.field]; if(F) battleToast(`${F.icon} ${F.name}: ${F.text}`, 'ok', 'field'); }catch(e){} }
   if(ev.type==='elementalEnergy') floatResourceGain(ev, '✨', 'hudElementalEnergyPill', SoundKit.grace);
   // Item drop (item #3, 2026-09-16): a bounty payout now visibly drops a coin out of the
   // kill (gravity + side variation + a little rotation), sourced from the dying card's own
@@ -58945,7 +58977,7 @@ const ITEM_SOUND = {draught:'healTone', kindling:'woodKnock', scoutmap:'mapUnrol
 function useItem(id){
   const m = matchState; if(!itemsUsableIn(m)) return false;
   const why = itemBlockReason(id, m);
-  if(why){ if(why !== 'none' && why !== 'used'){ showToast(why, 'warn'); try{ SoundKit.deny(); }catch(e){} } return false; }
+  if(why){ if(why !== 'none' && why !== 'used'){ battleToast(why, 'warn'); try{ SoundKit.deny(); }catch(e){} } return false; }
   const o = loadItems();
   const me = m.players[1], E = m.engine, d = ITEM_DEFS[id];
   // 2026-10-17 (UIUX feedback): the state changes at once (so nothing can slip in between), but the board, hand and castle
@@ -59022,16 +59054,8 @@ function itemLanded(m, id, r, targets, deaths){
   else redraw();
 }
 function itemCallout(id, text){
-  document.querySelectorAll('.item-callout').forEach(e=> e.remove());
-  const d = ITEM_DEFS[id], bf = document.getElementById('battlefieldEl'); if(!d) return;
-  const c = document.createElement('div'); c.className = 'item-callout'; c.setAttribute('role', 'status');
-  c.style.setProperty('--ik', ITEM_TINT[id] || '#ffd36a');
-  c.innerHTML = `<span class="ic-ico" aria-hidden="true">${d.icon}</span><span class="ic-txt"><b>${escapeHtml(d.name)}</b><small>${escapeHtml(text)}</small></span>`;
-  document.body.appendChild(c);
-  const r = bf ? bf.getBoundingClientRect() : {left:0, top:0, width:innerWidth, height:innerHeight};
-  c.style.left = Math.max(8, Math.min(innerWidth - c.offsetWidth - 8, r.left + r.width/2 - c.offsetWidth/2)) + 'px';
-  c.style.top = Math.max(8, r.top + r.height*.5 - c.offsetHeight/2) + 'px';
-  setTimeout(()=> c.classList.add('is-out'), 1700); setTimeout(()=> c.remove(), 2100);
+  const d = ITEM_DEFS[id]; if(!d) return; // 2026-11-16 (package UX6): the item callout is a battle notice now (lane under the board), not a card over it
+  battleNotice(`<span class="ic-ico" aria-hidden="true">${d.icon}</span><span class="ic-txt"><b>${escapeHtml(d.name)}</b><small>${escapeHtml(text)}</small></span>`, {key:'item', kind:'ok', ms:1800});
 }
 function openPackPopover(btn){
   let pop = document.getElementById('packPop'); if(pop){ pop.remove(); return; }
