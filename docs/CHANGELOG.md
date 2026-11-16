@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package REDESIGN2: Maps 0-20 cards on the owner's new skill list, proposal only; supersedes REDESIGN1)
+- No game change. Source: G6 workbook 2, Skills column II (owner 20:43) and the 20:48 call "stick to 50+". Basics for Maps 0-20: all 45 II 1 skills + 6 II 2 (Keen Sense for the Blind gap; Illuminate, Electricity, Stampede, Stealth, Momentum by fit) = 51, ~2-4 new a map, MAP_FOCUS per map. Other II 2-7 skills: one card each (30), or off Maps 0-20 (14). Unranked and category skills leave the Maps 0-20 cards (Venomous included: owner question).
+- 205 cards: 151 change (117 skills, 34 stats only); 185/205 in the 85-100% band at Level 1 (100 before; the 20 outside are unchanged owner cards). Coverage check over all 151 fights: real gaps Stone on Map 7 (Phoenix Mushrooms) and no rain for Rainrunner; Pillage is new (to build), Pickpocket's "items only" and Broodkeeper's name asked. `docs/design/redesign2-2026-11-16.md` / `.json`, workbook `/home/claude/out/Redesign2 - Bramblewood.xlsx`.
+
 ## 2026-11-16 (coordinator: VER2)
 - An open, visible game tab now checks for a new version every 5 minutes (was once an hour, only on load or on returning to the tab), so the Update banner shows soon after a deploy (owner 20:21: "the update button wasn't available").
 ## 2026-11-16 (package ART14: Windfall field art, candidates only)
