@@ -28,7 +28,7 @@ for(const [k, v] of [['attack', 'melee'], ['twinStrike', 'melee'], ['pounce', 'm
   ['arrow', 'ranged'], ['fireArrow', 'ranged'], ['acidBolt', 'ranged'], ['boomerang', 'ranged'], ['reach', 'melee'] /* ENG40 (2026-11-09, ENG34-1 b: "reach counts as melee"; was ranged) */, ['volley', 'ranged'], ['shockBolt', 'ranged'], ['fireball', 'ranged'], ['tsunami', 'ranged'],
   ['armor', 'none'], ['regen', 'none'], ['tide', 'none'], ['swarm', 'none'], ['flying', 'none'], ['bleed', 'none'], ['immolation', 'none'], ['action:damage', 'ranged'], ['action:fireHit', 'melee']])
   ok(D.delivery[k] === v, `${k} is ${v} (${D.delivery[k]})`);
-ok(D.rides.bleed === 'melee' && D.rides.poison === 'melee' && D.rides.daunt === 'melee' && D.rides.breach === 'melee' && D.rides.sap === 'melee', 'Bleed, Venomous, Daunt, Breach and Leech ride every melee hit');
+ok(D.rides.bleed === 'melee' && D.rides.poison === 'melee' && D.rides.daunt === 'swing' /* 2026-11-16 (SKN1, owner workbook note 11-16: "daunt when attacking"): its own swing only */ && D.rides.breach === 'melee' && D.rides.sap === 'melee', 'Bleed, Venomous, Breach and Leech ride every melee hit; Daunt its swing (SKN1)');
 ok(D.rides.fletcher === 'ranged' && D.rides.weaponMaster === 'ranged', 'Fletcher and Weapon Master ride every ranged hit');
 ok(D.against.thorns === 'melee' && D.against.reflect === 'ranged' && D.against.mach === 'ranged' && D.against.canopyCover === 'ranged', 'the defences name the hits they answer');
 ok(['boomerang', 'bananarang'].every(k=> D.swing.includes(k)) && !D.swing.includes('reach'), 'Boomerang and Bananarang make the swing ranged; Reach does not (ENG40, ENG34-1 b)');
@@ -63,7 +63,7 @@ const swing = (e, P, c, ev)=>{ ev = ev || []; e.debugAttack(P, so, c.uid, {}, ev
 { const {e, P} = mk(); const a = put(e, P, 1, 'e34-cleave', 0); const t = put(e, P, 2, 'e34-wall', 0), l = put(e, P, 2, 'e34-wall', -1), r = put(e, P, 2, 'e34-wall', 1);
   swing(e, P, a); ok(t.bleed === 2 && (t.daunts || []).length === 1, `the swing: Bleed 2 and a Daunt mark (${t.bleed}, ${(t.daunts || []).length})`);
   ok(l.bleed === 2 && r.bleed === 2, `Cleave's side hits (melee): Bleed 2 each (${l.bleed}, ${r.bleed})`);
-  ok((l.daunts || []).length === 1 && (r.daunts || []).length === 1, `Cleave's side hits: Daunt too (${(l.daunts || []).length}, ${(r.daunts || []).length})`); }
+  ok(!(l.daunts || []).length && !(r.daunts || []).length /* SKN1 (2026-11-16): Daunt rides the swing only */, `Cleave's side hits: no Daunt (${(l.daunts || []).length}, ${(r.daunts || []).length})`); }
 { const {e, P} = mk(); const a = put(e, P, 1, 'e34-cleave-ven', 0); put(e, P, 2, 'e34-wall', 0); const l = put(e, P, 2, 'e34-wall', -1);
   swing(e, P, a); ok(l.poison === 2, `Venomous 2 on a Cleave side hit: 2 Venom (${l.poison})`); }
 // Thorns answers a melee skill hit (a Cleave side hit), not only the swing
@@ -72,11 +72,11 @@ const swing = (e, P, c, ev)=>{ ev = ev || []; e.debugAttack(P, so, c.uid, {}, ev
 // Fork prongs: Daunt and Breach ride them now
 { const {e, P} = mk(); const a = put(e, P, 1, 'e34-fork', 0); put(e, P, 2, 'e34-wall', 0); const l = put(e, P, 2, 'e34-wall', -1), r = put(e, P, 2, 'e34-wall', 1);
   const hq0 = P[2].hq.hp; swing(e, P, a); const dn = (l.daunts || []).length + (r.daunts || []).length;
-  ok(dn >= 1, `a Fork prong lands a Daunt mark (${dn})`); ok(hq0 - P[2].hq.hp >= 2, `Breach rides the swing and its prongs (${hq0 - P[2].hq.hp} to the bramble)`); }
+  ok(dn === 0 /* SKN1 (2026-11-16): Daunt rides the swing only */, `a Fork prong lands no Daunt mark (${dn})`); ok(hq0 - P[2].hq.hp >= 2, `Breach rides the swing and its prongs (${hq0 - P[2].hq.hp} to the bramble)`); }
 // Pounce: Venom, Daunt and Breach ride the leap (was Venom and Bleed only)
 { const {e, P} = mk(); const t = put(e, P, 2, 'e34-wall', 0); const h = {uid: 9301, defId:'e34-pounce'}; P[1].hand.push(h); P[1].lumber = 9; const hq0 = P[2].hq.hp; const ev = [];
   e.placeCard(P, so, 1, h.uid, 0, {}, ev);
-  ok(t.poison === 2, `Pounce (melee): Venomous 2 lands (${t.poison})`); ok((t.daunts || []).length === 1, `Pounce: Daunt lands (${(t.daunts || []).length})`);
+  ok(t.poison === 2, `Pounce (melee): Venomous 2 lands (${t.poison})`); ok(!(t.daunts || []).length /* SKN1 (2026-11-16): Daunt rides the swing only */, `Pounce: no Daunt (${(t.daunts || []).length})`);
   ok(hq0 - P[2].hq.hp === 2, `Pounce: Breach 2 to the bramble (${hq0 - P[2].hq.hp})`); }
 // Counterattack: its strike carries Bleed
 { const {e, P} = mk(); const c = put(e, P, 2, 'e34-counter', 0), a = put(e, P, 1, 'e34-hitter', 0); void c; swing(e, P, a); ok(a.bleed === 2, `Counterattack's strike (melee) carries Bleed 2 (${a.bleed || 0})`); }
@@ -96,7 +96,7 @@ for(const [id, base, plus] of [['e34-cinder', 2, 0], ['e34-arrow', 2, 1]]){
 // ---- texts and translations
 const tx = rd('bramblewood-texts.js'), txv = k=> (tx.match(new RegExp('"' + k.replace(/[.]/g, '\\.') + '":\\s*"([^"]*)"')) || [])[1];
 const T = {'ui.eng33-venomous': 'Every melee hit it lands adds {n} Venom.', 'ui.eng34-bleed': 'Every melee hit it lands adds {n} Bleed.',
-  'ui.ui31-daunt': 'On every melee hit it lands, the target loses {n} Attack until the end of next round. Stacks.', 'ui.sk-breach': 'Every melee hit it lands also deals {n} damage to the enemy bramble.',
+  'ui.ui31-daunt': 'When it attacks, the unit it hits loses {n} Attack until the end of next round. Stacks.' /* SKN1 (2026-11-16) */, 'ui.sk-breach': 'Every melee hit it lands also deals {n} damage to the enemy bramble.',
   'ui.eng34-fletcher': "Your units' arrows deal {n} more damage.", 'ui.sk-weapon-master': "Your side's arrows deal {n} more; your equipped units get +1/+1." /* ENG40 (2026-11-09, ENG34-3 c): arrows only */};
 for(const [k, v] of Object.entries(T)) ok(txv(k) === v, `${k}: "${txv(k)}"`);
 ok(/TX\('ui\.eng34-bleed'/.test(app) && /TX\('ui\.eng34-fletcher'/.test(app), 'the card line and the editor read the new keys');

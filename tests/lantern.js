@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// 2026-10-11: Lantern (Lantern Bearer). While one is on your board at Night, your Diurnal units keep their day bonus;
-// the enemy's Diurnal units don't; without a Lantern the bonus fades as before.
+// 2026-10-11: Lantern (Lantern Bearer). 2026-11-16 (SKN1, owner workbook note 11-16: "Don't give diurnal units anything. it isn't the sun!"):
+// a Lantern / Illuminate no longer keeps a Diurnal unit's day bonus at night.
 'use strict';
 const H = require('./lib/harness.js');
 const E = H.Engine;
@@ -19,7 +19,7 @@ const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
   const mine = all(P[1]).find(c=> c.defId==='tl-day'), theirs = all(P[2]).find(c=> c.defId==='tl-day');
   e.roundStart(P, 2, so, {}, []); // night
   ok(e.getPhase()==='night', `round 2 is night (got ${e.getPhase()})`);
-  ok(mine.phaseAtk===2 && mine.maxHp===8, `my Diurnal unit keeps +2/+3 at night with a Lantern (atk ${mine.phaseAtk}, max ${mine.maxHp})`);
+  ok(!mine.phaseAtk && mine.maxHp===5, `my Diurnal unit loses its bonus at night, Lantern or not (atk ${mine.phaseAtk}, max ${mine.maxHp})`);
   ok(!theirs.phaseAtk && theirs.maxHp===5, `the enemy's Diurnal unit loses its bonus (atk ${theirs.phaseAtk}, max ${theirs.maxHp})`);
   const lamp = all(P[1]).find(c=> c.defId==='tl-lamp'); lamp.hp = 0; P[1].row.right = P[1].row.right.filter(c=> c !== lamp);
   e.roundStart(P, 3, so, {}, []); e.roundStart(P, 4, so, {}, []); // day, then night again without the lantern

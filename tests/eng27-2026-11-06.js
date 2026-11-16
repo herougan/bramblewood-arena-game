@@ -59,7 +59,7 @@ const fight = (e, P, ev)=>{ ev = ev || []; e.resolveCombat(P, so, {}, ev, 1); re
   put(e, P, 2, 'x-hitter', 3); const hp0 = P[1].hq.hp; const ev2 = fight(e, P);
   ok(hp0 - P[1].hq.hp === 6 && ev2.some(x=> x.type === 'brambleVulnerable' && x.extra === 1), `#10 a 5 swing lands as 6 on a Vulnerable 1 bramble (${hp0 - P[1].hq.hp})`); }
 { const {e, P} = mk(); put(e, P, 1, 'x-unfort2', 0); ok(P[1].hqVulnerable === 2 && P[1].hq.maxHp === 497 && P[1].eng27Fort.minusHealth === 3, '#10 Unfortify {Vulnerable 2, -3 Health}'); }
-ok(T['ui.e22-fortify-head'] === 'Fortify ({x})' && T['ui.eng24-barmor-head'] === 'Fortify (Armor {n}), while it lives', '#10 the short form "Fortify (Armor 1)"');
+ok(T['ui.e22-fortify-head'] === 'Fortify ({x})' && T['ui.eng24-barmor-head'] === 'Fortify: +{n} Armor' /* 2026-11-16 (SKN1, owner workbook note 11-16) */, '#10 the short form "Fortify: +1 Armor"');
 ok(/function eng27FortPipsHTML\(side\)/.test(app) && /eng27FortPipsHTML\(hqSide\)/.test(app) && /\.match-castle-tile \.eng27-fort\{/.test(tpl), '#10 the pips are drawn on the bramble tile');
 
 // ---- 11. Speed: Blitz 10, arrows 0 after the swings, bolts 1 ---------------------------------------------------------------------

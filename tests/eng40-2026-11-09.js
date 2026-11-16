@@ -64,7 +64,7 @@ const swing = (e, P, c, ev)=>{ ev = ev || []; e.debugAttack(P, so, c.uid, {}, ev
   ok(E.makeSimEngine(defs, E.mulberry32(1), {}).ENG40_SUMMON_GROWTH === 0.5, 'ENG40_SUMMON_GROWTH 0.5');
   const wallsOf = id=>{ const {e, P} = mk(); const h = {uid: 9500, defId:id}; P[1].hand.push(h); P[1].lumber = 5; e.placeCard(P, so, 1, h.uid, 0, {}, []);
     const dd = c=> e.derivedDefs[c.defId] || defs[c.defId] || {}; return all(P[1]).filter(c=> dd(c).bulwarkWall).map(c=> c.atk + '/' + c.hp).join(','); };
-  ok(wallsOf('e40-bul@10') === '0/6' && wallsOf('e40-bul@7') === '0/5' && wallsOf('e40-bul@5') === '0/4', `Bulwark at Level 10 / 7 / 5: ${wallsOf('e40-bul@10')} / ${wallsOf('e40-bul@7')} / ${wallsOf('e40-bul@5')}`);
+  ok(wallsOf('e40-bul@10') === '0/8' && wallsOf('e40-bul@7') === '0/7' && wallsOf('e40-bul@5') === '0/6' /* 2026-11-16 (SKN1, owner workbook note 11-16): the wall's own levelStats, 0/5 -> 0/8 */, `Bulwark at Level 10 / 7 / 5: ${wallsOf('e40-bul@10')} / ${wallsOf('e40-bul@7')} / ${wallsOf('e40-bul@5')}`);
   const big = {id:'e40-big', attack:3, health:12, token:true, rarity:'common', effects:{}}, eng = E.makeSimEngine(defs, E.mulberry32(1), {}), s10 = eng.eng36StatsAt(big, 10);
   ok(s10.attack === 3 && s10.health === 14, `other summons the same way: a 3/12 token is 3/14 at Level 10 (${s10.attack}/${s10.health})`); }
 

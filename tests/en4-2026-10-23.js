@@ -108,7 +108,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
 // (Cure runs after the upkeep's ticks: Poison 2 -> 1, Greater Poison 4 stays)
 { const {e, P} = mk(); const C = spawn(e, P, 2, 'x-cure'); C.poison = 2; C.gpoison = 4; spawn(e, P, 1, 'x-wall'); const ev = round(e, P);
   const cu = ev.find(x=> x.type === 'statusFx' && x.kind === 'cure');
-  ok(cu && cu.poison === 1 && cu.gpoison === 2 && C.gpoison === 2, `Cure 3: Poison 1 first, then 2 Greater Poison (${cu && JSON.stringify({p:cu.poison, g:cu.gpoison})}, left ${C.gpoison})`); }
+  ok(cu && cu.poison === 1 && !cu.gpoison && C.gpoison === 4 /* 2026-11-16 (SKN1, owner workbook note 11-16): Cure 1 only, so the Poison takes it all */, `Cure 3 (now 1): Poison 1 first, Greater Poison left (${cu && JSON.stringify({p:cu.poison, g:cu.gpoison})}, left ${C.gpoison})`); }
 
 // ---- #4 Shore Up --------------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(); spawn(e, P, 1, 'x-hit'); const S = spawn(e, P, 2, 'x-shore'), L = spawn(e, P, 2, 'x-wall'), R = spawn(e, P, 2, 'x-wall', 'right'), F = spawn(e, P, 2, 'x-wall');

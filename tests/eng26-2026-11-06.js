@@ -102,7 +102,7 @@ ok(/\+\{a\}\/\+\{a\}/.test(T['ui.eng26-bloom-log']) && /'ui\.eng26-bloom-log-lum
 { // Cure N on a poisoned Undead: no Poison off, Bleed N on
   const {e, P} = mk(); put(e, P, 1, 'x-curer', 0); const u = put(e, P, 1, 'x-undead', 1); u.poison = 3;
   const ev = []; e.resolveCombat(P, so, {}, ev, 1); const uc = ev.find(x=> x.type === 'undeadCure');
-  ok(uc && uc.bleed === 2 && uc.kind === 'cure' && ev.some(x=> x.type === 'undeadCure' && x.uid === u.uid), `Cure 2 on a poisoned Undead unit: Bleed 2 instead (${uc && uc.bleed}, bleed now ${u.bleed})`);
+  ok(uc && uc.bleed === 1 /* 2026-11-16 (SKN1, owner workbook note 11-16): Cure 1 only, so Bleed 1 (was 2) */ && uc.kind === 'cure' && ev.some(x=> x.type === 'undeadCure' && x.uid === u.uid), `Cure 2 on a poisoned Undead unit: Bleed 1 instead (${uc && uc.bleed}, bleed now ${u.bleed})`);
   ok(!ev.some(x=> x.type === 'statusFx' && x.kind === 'cure' && x.targetUid === u.uid), 'no Poison was cured'); }
 { // Renewal on an Undead that bleeds: Bleed 1 more, nothing cleansed; with nothing on it, nothing happens
   const {e, P} = mk(); const u = put(e, P, 1, 'x-renew-undead', 0); u.bleed = 2;

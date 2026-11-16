@@ -1323,8 +1323,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     { const fm = isFullMoon(); if(fm && !fullMoonWas && recordEvents && events && players && anyMoonborn(players)) events.push({type:'fullMoonRise', moonField: !!(field && field.id === 'moon')}); fullMoonWas = fm; }
     [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl || !pl.row) return;
       const units = [...pl.row.left, ...pl.row.center, ...pl.row.right];
-      // Lantern (2026-10-11, Lantern Bearer): while one is on your board at Night, your Diurnal units keep their day bonus.
-      const lit = ph==='night' && units.some(c=> c && !c.gap && c.hp > 0 && illuminates(CARD_DEFS[c.defId])); // Illuminate (or an old Lantern), 2026-10-15
+      // 2026-11-16 (SKN1, owner workbook note 11-16: "Don't give diurnal units anything. it isn't the sun!"): Illuminate no longer keeps a Diurnal unit's day.
       const packs = packChainsOf(pl); // Pack chains (2026-10-14): their bonus rides on the same situational +A/+H as day and night
       units.forEach(c=>{
         if(!c || c.gap || c.hp <= 0) return;
@@ -1336,7 +1335,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'statusFx', kind: moon ? 'fullMoon' : 'transform', name: tf.name || null, side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:0, grant: Object.keys(gn).filter(k=> k !== 'attack' && k !== 'health'), atk: Number(gn.attack)||0, hp: Number(gn.health)||0, stem: isMaturedTf(tf) || undefined}); }
         if((e.fullMoon || e.fullMoonGrant) && !c.fullMoonRisen && ((phReal === 'night' && moonPhase() === 4) || (field && field.id === 'moon'))){ c.fullMoonRisen = true;
           if(recordEvents && events) events.push({type:'statusFx', kind:'fullMoon', side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount: e.fullMoonGrant ? 0 : (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0), grant: e.fullMoonGrant ? Object.keys(e.fullMoonGrant) : null}); }
-        let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
+        let [a, h] = ph ? phaseStatsOf(e, ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
         a += c.packChainBonus; h += c.packChainBonus;
         { const [wa, wh] = eqSituational(c, pid, players); a += wa; h += wh; } // Weapon Master's +1/+1 on equipped units (EQ, 2026-10-19)
         try{ en6HibernateSync(c, e, sideOf ? sideOf(pid) : (pid===1?'A':'B'), events); }catch(err){} // EN6 (2026-10-24): Hibernate
@@ -3155,8 +3154,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const add = (v, g)=>{ const [x, y] = pairOf(v); a += x; h += y; if(g && typeof g === 'object') grant = Object.assign(grant || {}, g); };
     const addGrant = g=>{ const [x, y, r] = grantStats(g); a += x; h += y; if(r) grant = Object.assign(grant || {}, r); };
     { const ph = zeitPhase(); // Diurnal – {…} / Nocturnal – {…} (2026-10-15); ENG11 (K6): a dark fight is night
-      const lit = ph === 'night' && pl && upkeepUnitsOf(pl).some(u=> u && !u.gap && u.hp > 0 && (effectsOf(u).illuminate || effectsOf(u).lantern)); /* + a raid's middle / back rows (2026-10-19, RR) */ // an Illuminate unit keeps a Diurnal unit's day (2026-10-15)
-      if(e.diurnalGrant && typeof e.diurnalGrant === 'object' && (ph === 'day' || ph === 'twilight' || (lit && !(e.nocturnal || e.nocturnalHp)))) addGrant(e.diurnalGrant);
+      if(e.diurnalGrant && typeof e.diurnalGrant === 'object' && (ph === 'day' || ph === 'twilight')) addGrant(e.diurnalGrant); // SKN1 (2026-11-16): Illuminate gives no day
       if(e.nocturnalGrant && typeof e.nocturnalGrant === 'object' && (ph === 'night' || ph === 'twilight')) addGrant(e.nocturnalGrant);
       // Crepuscular – {day}{night} (2026-10-21, package CX2): the day part by day, the night part at night, both in Twilight
       if(e.crepuscularGrant && typeof e.crepuscularGrant === 'object'){ if(ph === 'day' || ph === 'twilight') addGrant(e.crepuscularGrant.day); if(ph === 'night' || ph === 'twilight') addGrant(e.crepuscularGrant.night); } }
@@ -3737,14 +3735,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // opening hand, so a token would gain nothing from it; call EN-3.) One derived card per size ('bulwark-shield~<H>'); the app names it
   // TX('ui.en-bulwark-shield'). Priced by what it raises: 2 x 4N Health = 8 a point (canonical/skill-costs.json).
   // ENG33 (2026-11-07, owner 11-07 10:25 #10: "Bulwark N (default 1) summons N log-wall constructs (medieval palisade, not a literal shield)"):
-  // it raises N Log Walls (was two shields of 4N): each a 0/4 (owner 22:13; was 0/8) Structure token with Guardian, a short wall of upright logs, in the free
-  // front-row slots nearest it; no free slot, no wall. Bulwark 2 is the old Bulwark 2 again (two 0/8); Bulwark 1 is one 0/8 (was two 0/4).
+  // it raises N Log Walls: each a 0/5 Structure token (0/8 at Level 10; SKN1 2026-11-16) with Guardian, a short wall of upright logs, in the free
+  // front-row slots nearest it; no free slot, no wall.
   // One def ('bulwark-wall'); it keeps bulwarkShield: true (the app names it, tests and the AI read the flag). Priced by reasoning:
   // canonical/skill-costs.json (3.5 a wall).
   const BULWARK_WALL_ID = 'bulwark-wall';
   function bulwarkShieldDefOf(n){
     const id = BULWARK_WALL_ID, hp = ENG33_DEF.bulwarkWallHp; void n;
-    if(!CARD_DEFS[id]) CARD_DEFS[id] = derivedDefs[id] = {id, name:'Log Wall', icon:'🪵', attack:0, health:hp, wait:0, cost:0, rarity:'common', token:true,
+    // 2026-11-16 (SKN1, owner workbook note 11-16: "Starts at 0/5 -> 0/8 at level 10"): +1 Health every 3 summoner levels (levelStats win in eng36StatsAt)
+    const levelStats = {}; for(let L = 1; L <= 15; L++) levelStats[L] = {attack: 0, health: hp + Math.floor((L - 1) / 3)};
+    if(!CARD_DEFS[id]) CARD_DEFS[id] = derivedDefs[id] = {id, name:'Log Wall', icon:'🪵', attack:0, health:hp, wait:0, cost:0, rarity:'common', token:true, levelStats,
       bulwarkShield:true, bulwarkWall:true, archetypes:['Structure'], species:[], subtype:'structure', effects:{guardian:true}};
     return id;
   }
@@ -3756,8 +3756,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // levelStats win. The summon is a derived def '<id>~lv<L>' (derivedFrom the token, every flag kept, so the app and the AI read it as the
   // token). A summoner with no level (a base-level card, the card matrix's fights) summons the token as printed: nothing changes there.
   // Copies of the summoner itself (Duplicate, Meiosis, Hydra, Bloom, Offspring) are made from its own levelled def already and are left alone.
-  // Log Wall: 0/4 at Level 1 (ENG33_DEF.bulwarkWallHp, unchanged); ENG40 (2026-11-09, decision ENG36-3 b): half the normal growth, 0/5 at 7-9,
-  // 0/6 at 10 (was the normal curve: 0/5 at 4-6, 0/7 at 7-9, 0/8 at 10, 0/9 at 11).
+  // Log Wall: its own levelStats (bulwarkShieldDefOf, SKN1 2026-11-16): 0/5 at Level 1, 0/6 at 4, 0/7 at 7, 0/8 at 10.
   const ENG40_SUMMON_GROWTH = 0.5;
   let eng36BBc = null;
   function eng36BB(){ if(eng36BBc) return eng36BBc; eng36BBc = (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget) || (()=>{ try{ return typeof require === 'function' ? require('./bramblewood-budget.js') : null; }catch(e){ return null; } })(); return eng36BBc; }
@@ -3773,8 +3772,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(L < base){ const r = v=> v == null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85)); return {attack: r(A0), health: r(H0)}; }
     const BB = eng36BB(); if(!BB || !BB.forgeCurve) return {attack: A0, health: H0};
     const row = BB.forgeCurve(Object.assign({}, td, {obtainMap: td.obtainMap || 0}), base, L).rows[L];
-    // ENG40 (2026-11-09, owner on ENG36-3: "Log wall should be 0/6 at lvl 10. 0/8 is too much, it's twice!"): a summon grows half as fast
-    // as the normal curve (ENG40_SUMMON_GROWTH), each stat rounded down: Log Wall 0/4 at Levels 1-6, 0/5 at 7-9, 0/6 at 10-11 (was 0/8 at 10).
+    // ENG40 (2026-11-09, decision ENG36-3): a summon grows half as fast as the normal curve (ENG40_SUMMON_GROWTH), each stat rounded down.
     const g = (v0, v)=> (v0 == null || v == null) ? v : v0 + Math.max(0, Math.floor((v - v0) * ENG40_SUMMON_GROWTH + 1e-9));
     return {attack: row ? g(A0, row.attack) : A0, health: row ? g(H0, row.health) : H0};
   }
@@ -4446,7 +4444,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   enemy unit's blow (its killer: card.killedBy, a live unit on the other side) that unit gets N Venom (the poison counters); when a Devour
   //   unit eats it from the hand, the eater gets N Venom. Venom-proof (resist poison 0) and Immunity units take none; ticks, the weather and
   //   brambles give no killer. Event statusFx kind 'poisonous' {amount}. On no card yet.
-  const ENG33_DEF = {poisonous: 2, bulwarkWallHp: 4}; // 2026-11-07 (owner 22:13: "Log wall should be 0/4. Not 0/8"): was 8
+  const ENG33_DEF = {poisonous: 2, bulwarkWallHp: 5}; // 2026-11-16 (SKN1, owner workbook note 11-16): a Level 1 Log Wall is 0/5, 0/8 at Level 10
   function eng33PoisonousN(def){ const v = def && def.effects && def.effects.poisonous; return !v ? 0 : v === true ? ENG33_DEF.poisonous : Math.max(0, Math.round(Number(v) || 0)); }
   function eng33Envenom(src, t, n, side, tSide, events){
     if(!(n > 0) || !t || !(t.hp > 0) || t.cageOf || isStructureCard(t) || resistFactor(t.defId, 'poison', CARD_DEFS[src.defId]) === 0 || immunityOf(t)) return 0;
@@ -4848,6 +4846,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     eng34MeleeHit(players, sideOf, ownerId, card, opp.card, r.dmg, events, killCredit, 'counter', null, {stats, elemental: r.elementalAmount > 0}); // ENG34 (2026-11-07): a counter is a melee hit: every melee rider and the melee defences
     if(opp.card.hp <= 0 && killCredit){ killCredit[opp.card.uid] = killCredit[opp.card.uid] || new Set(); killCredit[opp.card.uid].add(statKey(sideOf(ownerId), card.defId)); }
     if(opp.card.hp <= 0 && !card.duelWon){ card.duelWon = true; trDirty = true; } // Championed (TR, 2026-10-21): a counter that kills its attacker wins the duel too
+  }
+  // 2026-11-16 (SKN1, owner workbook note 11-16: "Counterattackers don't attack on their own. Unless there isn't an opposing enemy in its range,
+  // then it would attack the opposing bramble"): true while an enemy unit stands where its counter would strike; with none, it swings as usual.
+  function counterHolds(players, ownerId, card){
+    const opp = opposingCardOf(players, ownerId, card); if(opp && opp.card && opp.card.hp > 0) return true;
+    return !!(RESERVE_ACTS && slotMode && rowTargetAt(players[otherId(ownerId)], card.slot));
   }
   function opposingCardOf(players, ownerId, boardCard){
     if(slotMode){
@@ -5796,11 +5800,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Trap N       on arrival, if the slot facing it is empty, a trap is set there: the next enemy card played there takes N
   //   Nova N       (magic; a Map 50+ idea) when it dies, every enemy unit takes N magic damage
   //   Crystallise N  when it dies it becomes a 0/N crystal (a Structure) in its slot
-  //   Cure N       every upkeep: removes up to N Poison from your most poisoned unit (Toxin stays); Poison only (2026-10-18; SK1 2026-10-19: "A cure skill only works on poison")
+  //   Cure         every upkeep: removes 1 Poison from your most poisoned unit (SKN1 2026-11-16: always 1) (Toxin stays); Poison only (2026-10-18; SK1 2026-10-19: "A cure skill only works on poison")
   //   Mountain Climber  the field's and the terrain's hazards pass it by: Frigid, Scorching, Scorched Ground, the volcano, Avalanche,
   //                Landslide and Earthquake
   //   Taunt        enemy units facing it or the column beside it must attack it (Guardian only takes hits meant for its neighbours)
-  const W2_DEF = {venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, predator:1, tangle:1, strangle:2, constrict:2 /* ENG36 (2026-11-08) */, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, nova:3, crystallise:5, cure:2, molting:1};
+  const W2_DEF = {venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, predator:1, tangle:1, strangle:2, constrict:2 /* ENG36 (2026-11-08) */, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, nova:3, crystallise:5, cure:1 /* SKN1 (2026-11-16): Cure 1 only */, molting:1};
   const w2N = (src, k)=> numN((src && src.effects ? src.effects : effectsOf(src))[k], W2_DEF[k]);
   // ENG24 (2026-11-04, RELICT-1, owner 11-04 22:34: "a. and also general field-level skills like earthquake etc, weather changes etc, everything.
   // Normal skills are fine"): a Relict counts as a Mountain Climber for every field and terrain hazard (and Avalanche, Landslide, Earthquake),
@@ -7758,7 +7762,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects.unfortify) fortifyBramble(players, sideOf, playerId, boardCard, events, true); // ENG27 (2026-11-06, item 10): Unfortify {…}, the drawback form
     if(def.effects.grantSkill) eng27Grant(players, sideOf, playerId, boardCard, events); // ENG27 (item 22): Grant {skill} N
     if(def.effects.hype) eng27Hype(players, sideOf, playerId, boardCard, stats, events); // ENG27 (item 22): Hype N
-    if(def.effects.bulwark) bulwarkRaise(players, sideOf, playerId, boardCard, stats, events); // Bulwark N (2026-10-23, package EN): two 0/4N Vanguard shields nearest it
+    if(def.effects.bulwark) bulwarkRaise(players, sideOf, playerId, boardCard, stats, events); // Bulwark N (2026-10-23, package EN): N Log Walls nearest it
     // Bounty N (2026-10-15, user: "I think Bounty and Worthy should be fused. Just Bounty. Bounty means - I give lumber to my owner on
     // play, but also to the enemy on kill."): on play its owner gains N Lumber; when it dies, the other side gains N (removeDeadCards).
     // (An old Worthy N on a saved or published card is turned into Bounty N when the app loads it, 2026-10-16.)
@@ -7884,7 +7888,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(Number(def.effects.brood) > 0 || def.effects.brood === true){ const n = def.effects.brood === true ? 1 : Math.min(6, Number(def.effects.brood)||0), bid = broodDefOf(boardCard.defId);
       for(let k = 0; k < n; k++){ if(!spawnBeside(players, sideOf, playerId, boardCard, bid, stats, events, 'brood')) break; } }
     if(Number(def.effects.offspring) > 0 || def.effects.offspring === true){ const n = def.effects.offspring === true ? 1 : Math.min(6, Number(def.effects.offspring)||0), oid = offspringDefOf(boardCard.defId); // ENG28 (2026-11-07): Offspring N
-      if(oid) for(let k = 0; k < n; k++){ if(!spawnBeside(players, sideOf, playerId, boardCard, oid, stats, events, 'offspring')) break; } }
+      // 2026-11-16 (SKN1, owner workbook note 11-16: "Uses 1 additional lumber - otherwise no offspring"): the copies cost 1 more Lumber, paid as it arrives
+      if(oid && (pl.lumber || 0) >= 1){ pl.lumber -= 1; for(let k = 0; k < n; k++){ if(!spawnBeside(players, sideOf, playerId, boardCard, oid, stats, events, 'offspring')) break; } } }
     if(def.effects.moonpull && tideInNow() && recordEvents && events) events.push({type:'tide', tide:getTide(), round:turnNo, moonpull:true, side:mySide, defId:boardCard.defId, uid:boardCard.uid}); // Moonpull (2026-10-14)
     if(def.effects.rocket && !(boardCard.wait > 0) && !boardCard._readyAtPlay) fireRocket(players, sideOf, playerId, boardCard, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
     // Shield N, Fireball N and Meteor N (2026-10-14, sixth pass): a Wait-0 unit is Ready on arrival, so its Fireball/Meteor goes then.
@@ -9684,13 +9689,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const hurt = [eng38Best(upkeepUnitsOf(pl).filter(o=> o.hp>0 && o.hp<o.maxHp), (a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp))].filter(Boolean); // 2026-10-18: Poison no longer counts; 2026-10-19 (SK1): nor Bleed; ENG38 (2026-11-09): a tie at random (was: the left one)
           if(hurt.length){ const h = applyHeal(hurt[0], (Number(def.effects.healing)||0) + ((pl.perks && pl.perks.pollen) || 0) /* Wildpath "Pollen Drift" moved here from the retired Bloom heal (BL, 2026-10-23) */, sideOf(pl.id), events); if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:hurt[0].uid, targetDefId:hurt[0].defId, amount:h, cause:'healing'}); fireHealTriggers(players, sideOf, pl.id, c, hurt[0], h, stats, events); } }
         }
-        // Cure N (2026-10-16, user: "Cure."): every upkeep it cures your most poisoned unit (itself included) of up to N Poison.
+        // Cure (2026-10-16): every upkeep it cures your most poisoned unit (itself included) of 1 Poison (SKN1, 2026-11-16).
         // 2026-10-18 (user: "Cure doesn't heal bleed."): Poison only now; heals stanch Bleed. Toxin can't be cured.
         if(c.hp>0 && def.effects && def.effects.cure && !c.stunned){
           // EN4 (2026-10-23): Greater Poison counts too (the most poisoned: Poison + Greater Poison); Cure takes Poison first, then Greater Poison.
           const sick = [eng38Best(upkeepUnitsOf(pl).filter(o=> o && !o.gap && o.hp>0 && ((o.poison||0) + (o.gpoison||0)) > 0), (a,b)=> ((b.poison||0) + (b.gpoison||0)) - ((a.poison||0) + (a.gpoison||0)))].filter(Boolean); // ENG38 (2026-11-09): a tie at random (was: the left one)
-          if(sick.length && eng26IsUndead(sick[0])) eng26UndeadCure(sick[0], w2N(def, 'cure'), sideOf(pl.id), events, c, 'cure'); // ENG26: Bleed instead of the cure
-          else if(sick.length){ const t = sick[0], cn = w2N(def, 'cure'); const p0 = Math.min(cn, t.poison||0); t.poison -= p0; const g0 = Math.min(cn - p0, t.gpoison||0); if(g0 > 0) t.gpoison -= g0;
+          const cn = Math.min(1, w2N(def, 'cure')); // 2026-11-16 (SKN1, owner workbook note 11-16: "Cure 1 only"): every Cure is 1, whatever an old card says
+          if(sick.length && eng26IsUndead(sick[0])) eng26UndeadCure(sick[0], cn, sideOf(pl.id), events, c, 'cure'); // ENG26: Bleed instead of the cure
+          else if(sick.length){ const t = sick[0]; const p0 = Math.min(cn, t.poison||0); t.poison -= p0; const g0 = Math.min(cn - p0, t.gpoison||0); if(g0 > 0) t.gpoison -= g0;
             if(p0 + g0 > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cure', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:p0 + g0, poison:p0, gpoison:g0 || undefined, bleed:0}); } // 2026-10-19 (package HN): a Cure of 0 makes no event
         }
         // Satiety N (Ecclesia, 2026-10-10, my reading of the name): well fed. At the start of a round at full health it gains +N max HP.
@@ -11230,9 +11236,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             // to handledUids here: leaving it unconsidered means it's automatically picked up by
             // a LATER call to this same function, the instant such an effect makes it eligible).
             if(card.hp<=0 || card.wait!==0) return;
-            // Counterattack (2026-10-11, user: "Attacks the front unit when it gets hit by an opponent. It doesn't attack
-            // normally"): such a unit never takes a turn of its own; see counterStrike below.
-            { const cd = CARD_DEFS[card.defId]; if(cd && cd.effects && cd.effects.counterattack){ handledUids.add(uid); return; } }
+            // Counterattack (2026-10-11): it takes no turn of its own while an enemy unit faces it (counterHolds; see counterStrike).
+            { const cd = CARD_DEFS[card.defId]; if(cd && cd.effects && cd.effects.counterattack && counterHolds(players, ownId, card)){ handledUids.add(uid); return; } }
             if(card._boomerangCombat === combatNo && !passOnlyUid){ handledUids.add(uid); return; } // its boomerang came back: that was its attack
             if(card.reloadRemaining>0){ skipTurn('reload', card, ownId); handledUids.add(uid); return; }
             if(card.stunned){ skipTurn('stunned', card, ownId); handledUids.add(uid); return; }
@@ -11263,11 +11268,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // May this middle- or back-row unit swing now? (2026-10-19, package TS.) The checks a front-row unit's turn gets (discoverEligibleAttackers),
     // in the order its strike had them: Stunned, Frozen (that freeze is then spent, as FZ has it for the front row) or Asleep, it does
     // nothing; Waiting, it counts its Wait down by 1 (its Wait counts on its action, since 2026-10-18); then Paralyzed's coin, Chained,
-    // Bound, Reload, Ritual, Shell, Cower, Petrified, Frightened, and at 0 Attack it holds. A Counterattack unit never swings on its
-    // own; a cage never acts.
+    // Bound, Reload, Ritual, Shell, Cower, Petrified, Frightened, and at 0 Attack it holds. A Counterattack unit swings only with no enemy facing it
+    // (counterHolds); a cage never acts.
     function rowSwingReady(c, ownId){
       if(!c || !(c.hp > 0) || c.cageOf) return false;
-      if(((CARD_DEFS[c.defId]||{}).effects||{}).counterattack) return false;
+      if(((CARD_DEFS[c.defId]||{}).effects||{}).counterattack && counterHolds(players, ownId, c)) return false; // SKN1 (2026-11-16)
       if(c.stunned){ skipTurn('stunned', c, ownId); return false; }
       if(c.constricted > 0){ skipTurn('constricted', c, ownId); return false; } // ENG36 (2026-11-08)
       if(c.frozen>0){ if(!frozeNoted.has(c.uid)){ frozeNoted.add(c.uid); skipTurn('frozen', c, ownId); } c._frozenJustSet = false; return false; }

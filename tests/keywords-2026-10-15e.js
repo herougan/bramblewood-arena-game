@@ -147,7 +147,7 @@ ok(!/<div class="spawnbadge"/.test(src), '5. no "🔁 Spawn" corner pill on toke
 ok(!/title:'An environment card: a rule of this battlefield'/.test(src) && !/Environment card: a rule of this battlefield\.<\/p>/.test(src), '14. the Environment card no longer says "a rule of this battlefield"');
 // ---- 15. pills
 { const bp = src.slice(src.indexOf('function bfPillsHTML(m){'), src.indexOf('function refreshBfPills('));
-  ok(/phasePillHTML\(m\) \+ mistPillHTML\(m\) \+ windPillHTML\(m\) \+ tidePillHTML\(m\) \+ rs/.test(bp) && !/forecastPillHTML/.test(src), '15. state only: no "next round" pill, the moon in the Night pill');
+  ok(/phasePillHTML\(m\) \+ mistPillHTML\(m\) \+ fogPillHTML\(m\) \/\* SKN1 \*\/ \+ windPillHTML\(m\) \+ tidePillHTML\(m\) \+ rs/.test(bp) /* 2026-11-16 (SKN1): + the Fog pill */ && !/forecastPillHTML/.test(src), '15. state only: no "next round" pill, the moon in the Night pill');
   ok(/\.bf-pills\{position:absolute; top:50%; left:0;/.test(tpl) && !/\.bf-pills\{left:-12px/.test(tpl), '15. the pills start inside the board (no negative left)');
   ok(/const TIDE_PILL_TIP = 'Tide goes in, Ebb goes out\.';/.test(src), '15. the tide pill tooltip: "Tide goes in, Ebb goes out."');
   ok(/<span class="wind-ico">💨<i class="wind-dir">\$\{w\.mine \? '⬆' : '⬇'\}<\/i><\/span>/.test(src), '15. wind: 💨 with its arrow stacked on it');

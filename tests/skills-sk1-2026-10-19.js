@@ -168,7 +168,7 @@ const fx = (ev, kind)=> ev.filter(x=> x.type === 'statusFx' && x.kind === kind);
 { const {e, P} = mk(); const c = put(e, P, 1, 'sk-wall'); c.hp = 20; c.bleed = 3; const n0 = e.debugHeal(P, so, c.uid, 5, {}, []); ok(n0 === 5 && c.hp === 25 && c.bleed === 3, `Heal only heals: +5 Health, the Bleed stays (${c.hp}, bleed ${c.bleed})`);
   c.hp = 30; const ev = []; const n1 = e.debugHeal(P, so, c.uid, 5, {}, ev); ok(n1 === 0 && c.bleed === 3 && !ev.length, 'a full-Health Bleeding unit has nothing to heal (no stanch, no event)'); }
 { const {e, P} = mk(); put(e, P, 1, 'sk-cure'); const a = put(e, P, 1, 'sk-wall', 'right'); a.poison = 5; a.bleed = 2; const ev = fight(e, P);
-  ok(fx(ev, 'cure').some(x=> x.targetUid === a.uid && x.poison === 2 && !x.bleed) && a.bleed === 1 /* only the upkeep's fade */, `Cure removes Poison only (poison ${a.poison}, bleed ${a.bleed})`); }
+  ok(fx(ev, 'cure').some(x=> x.targetUid === a.uid && x.poison === 1 /* 2026-11-16 (SKN1): Cure 1 only */ && !x.bleed) && a.bleed === 1 /* only the upkeep's fade */, `Cure removes Poison only (poison ${a.poison}, bleed ${a.bleed})`); }
 { const {e, P} = mk(); put(e, P, 2, 'sk-wall'); const c = put(e, P, 1, 'sk-cleanser'); Object.assign(c, {poison:3, bleed:2, scar:1, exposed:2, exploit:2, shocked:1, brittle:1, corrode:1, armorLoss:1, blind:2, tipsy:1});
   c.daunts = [{n:1, until:99}]; e.debugFireTrigger(P, so, c.uid, 'onRoundStart', {}, []);
   ok(c.bleed === 0 && c.scar === 0 && c.exposed === 0 && c.exploit === 0 && c.shocked === 0 && c.brittle === 0 && c.corrode === 0 && c.armorLoss === 0 && !c.daunts.length, 'Cleanse removes the physical debuffs (Bleed, Scar, Exposed, Exploit, Vulnerable, Brittle, Corrosion, Rend, Weakness)');

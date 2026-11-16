@@ -42,8 +42,8 @@ const tickOf = (ev, c)=> ev.filter(x=> x.type === 'poisonTick' && x.uid === c.ui
 // 6) Cure takes Poison only, never Bleed
 { const {c, ev} = run('hp-curer', c=>{ c.poison = 6; c.bleed = 5; });
   const cu = ev.find(x=> x.kind === 'cure');
-  ok(cu && cu.poison === 3 && cu.bleed === 0, `Cure 3 removes 3 Poison and no Bleed (${JSON.stringify(cu && {p:cu.poison, b:cu.bleed})})`);
-  ok(c.poison === 2 && c.bleed === 4, `Poison 6 -1 tick -3 cure = 2, Bleed 5 -1 a round = 4 (poison ${c.poison}, bleed ${c.bleed})`); }
+  ok(cu && cu.poison === 1 /* 2026-11-16 (SKN1, owner workbook note 11-16): Cure 1 only */ && cu.bleed === 0, `Cure 3 removes 1 Poison and no Bleed (${JSON.stringify(cu && {p:cu.poison, b:cu.bleed})})`);
+  ok(c.poison === 4 && c.bleed === 4, `Poison 6 -1 tick -1 cure = 4 (SKN1), Bleed 5 -1 a round = 4 (poison ${c.poison}, bleed ${c.bleed})`); }
 { const {ev} = run('hp-curer', c=>{ c.bleed = 5; });
   ok(!ev.some(x=> x.kind === 'cure'), 'Cure ignores a unit that only Bleeds'); }
 console.log(fail ? `heal-poison: ${fail} failure(s)` : 'heal-poison: all passed'); process.exit(fail ? 1 : 0);
