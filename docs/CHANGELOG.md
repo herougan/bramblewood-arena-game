@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package E5DET1: alpha checklist E5, determinism)
+- Replay test `tests/e5det-2026-11-16.js`: 30 fights over Maps 0-20 (21 main, 8 side, a dungeon floor; 51 fight rules) hashed call by call (both players' full state, new events, RNG draws). Same seed twice in Node: 30/30 identical; events on/off: same ends; another seed: 30/30 differ; built page vs Node: 30/30 identical; real conquest fights with Auto-play at 8x and 40x: 3/3 identical, and the page writes no fight state between engine calls except the game's own flow.
+- Fix (raids): the game's raid took allies, their deck order, the boss's rows and Commons and an ally's reshuffle from Math.random, so a raid could not be replayed from its seed. They come from a second stream off the match seed now (`raidRand`). Odds unchanged; the raid tool's results are byte-identical.
+
 ## 2026-11-16 (package CHK1: alpha checklist B5, B6, B12, C7, measured after FOLD5)
 - No game change. B5 progression decks FAIL: 32 of 149 road fights flagged; the decks average 71-75% against a 70% target. B6 PRO / BPRO FAIL: 6 decks over 85% for the Map reference (13-BPRO-4, 20-BPRO-2, 20-A x4); 6 walls. B12 economy PASS: Gold Leaves 1.05 a day, no loop. C7 foils PASS: every rate within its 95% interval over 100k packs a type. New `tools/chk1/foil_sim_2026_11_16.js`, econ sim `--days`. Report: `docs/balance/checklist/chk1-2026-11-16.md`.
 
