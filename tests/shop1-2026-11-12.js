@@ -22,7 +22,7 @@ ok(/prem && shopRaidTicketOnShelf\(\)/.test(rows), 'Raid Ticket (Gold Leaves) on
 ok(/prem \? \[\] : packs\.map/.test(rows) && /!prem && shopKitToday\(\)/.test(rows) && /prem \? \[\] : \[\{bread:true/.test(rows), 'packs, kit and bread only in the normal shop');
 ok(/!prem && onSale\.length === 1/.test(rows), 'pack bundles only in the normal shop');
 const rs = fnSrc('renderShop');
-ok(!/data-shopmode/.test(rs) && /key:'shop', icon:'🛒', get name\(\)\{ return TX\('ui\.shop1-normal'\)/.test(src) && /key:'premium', icon:'🍂', get name\(\)\{ return TX\('ui\.shop1-premium'\)/.test(src), 'entry: Shop and Premium on the places strip (UI52; was a switch in the shop)');
+ok(!/data-shopmode/.test(rs) && /nav1ShopTabsHTML\(\)/.test(rs) && /TX\('ui\.shop1-normal'\)/.test(fnSrc('nav1ShopTabsHTML')) && /TX\('ui\.shop1-premium'\)/.test(fnSrc('nav1ShopTabsHTML')), 'entry: Shop and Premium are two tabs on the Shop page (NAV1; were places on the strip, UI52)');
 ok(/is-premium-shop/.test(rs) && /is-premium-shop/.test(tpl), 'Premium look class in JS and CSS');
 ok(/shopMode = 'premium'; shopSelected = 'ticket:1'/.test(src), 'the guild "Shop" link opens Premium on the ticket');
 ok(/RENAME_TICKET_PRICE/.test(fnSrc('shopTicketCounter')) && /RAID_TICKET_ITEM_COST = \{gold:400, gems:5\}/.test(src), 'prices and purchase code unchanged');

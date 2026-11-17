@@ -15,7 +15,7 @@ ok(/codex: \{cls:'codex-scene', icon:'📖', sign:'Codex'/.test(app), 'PLACES li
 ok(/is-forge', codexSubTab === 'forge'/.test(fn(app, 'renderCodex')), 'renderCodex marks the Forge view, which keeps its own scene');
 ok(/#view-codex\.codex-scene:not\(\.is-forge\)\{/.test(tpl) && /#view-codex\.codex-scene:not\(\.is-forge\)::after\{content:attr\(data-sign\)/.test(tpl), 'CSS: the Codex scene and its sign, not on the Forge view');
 ok(/codex: \{ms: 900/.test(places) && /return null;/.test(places.slice(places.indexOf('function placeOf('), places.indexOf('function placeOf(') + 400)), 'the book entrance is kept (and the Forge view still has none)');
-ok(/key:'codex', icon:'📖'/.test(app) && /key:'forge', icon:'🔨'/.test(app), 'the places strip keeps Codex and Forge');
+ok(!/key:'codex', icon:'📖'/.test(app) && /key:'forge', icon:'🔨'/.test(app), 'the Camp bar keeps the Forge; the Codex left it (2026-11-17, NAV1: its own page)');
 // every way in is still switchTab('codex') (no new tab): the callers that set a sub-tab first
 ['codexSubTab = \'brambles\'', 'codexSubTab = \'forge\'; switchTab(\'codex\')', 'codexSubTab = \'browse\'; switchTab(\'codex\')'].forEach(s=> ok(app.includes(s), 'still in the code: ' + s));
 ok(!/if\(place\) Ambience\.play/.test(app) && /place && place\.ambience/.test(app), 'a place with no ambience (the Codex) stays quiet instead of playing ""');
@@ -55,7 +55,7 @@ async function browser(){
       const r = await pg.evaluate(`(async()=>{ const wait = ms=> new Promise(r=> setTimeout(r, ms)); const out = {};
         codexSubTab = 'browse'; switchTab('codex'); BramblewoodPlaces.skip(); await wait(300); const v = document.getElementById('view-codex');
         out.scene = v.classList.contains('codex-scene') && !v.classList.contains('is-forge'); out.sign = v.dataset.sign; out.signShown = getComputedStyle(v, '::after').content;
-        out.strip = !!document.querySelector('#pageBackBar [data-pbsc="codex"].is-here');
+        out.strip = !document.querySelector('#pageBackBar .pb-shortcuts'); // 2026-11-17 (package NAV1): the Codex is its own page, without the Camp bar
         codexSubTab = 'forge'; switchTab('codex'); BramblewoodPlaces.skip(); await wait(300);
         out.forge = v.classList.contains('is-forge') && !!v.querySelector('#view-forge') && getComputedStyle(v, '::after').content === 'none';
         out.forgeStrip = !!document.querySelector('#pageBackBar [data-pbsc="forge"].is-here');
@@ -73,7 +73,7 @@ async function browser(){
         out.noOverflow = document.documentElement.scrollWidth <= window.innerWidth + 1;
         adminModeEnabled = false; return out; })()`);
       ok(r.scene && r.sign && /Codex/.test(r.sign), `${t} the Codex page has the scene and its sign (${JSON.stringify([r.scene, r.sign])})`);
-      ok(r.strip && r.forge && r.forgeStrip, `${t} the strip marks Codex on Browse and Forge on the Forge; the Forge keeps its own scene (${JSON.stringify([r.strip, r.forge, r.forgeStrip])})`);
+      ok(r.strip && r.forge && r.forgeStrip, `${t} no Camp bar on the Codex (NAV1); the Camp bar marks Forge on the Forge; the Forge keeps its own scene (${JSON.stringify([r.strip, r.forge, r.forgeStrip])})`);
       ok(r.heads >= 20 && /World 1/.test(r.world) && r.range, `${t} World 1 (Maps 0-40) lists a scroll per map (${r.heads}, ${r.world})`);
       ok(r.open && r.body > 40 && r.fx && r.height > 40 && r.sideInside, `${t} a tap unrolls a scroll with its info and its side maps inside (${JSON.stringify([r.open, r.body, r.height, r.sideInside])})`);
       ok(r.closed, `${t} a second tap rolls it up`);

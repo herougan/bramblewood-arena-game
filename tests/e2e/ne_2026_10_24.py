@@ -93,12 +93,12 @@ async def run(b, url, w):
       const slots = document.querySelectorAll('#deckMenuGrid .ne-slot'), m = document.querySelector('#deckMenuGrid .deck-medium-preview'), pr = m.getBoundingClientRect(), sr = slots[0] && slots[0].getBoundingClientRect();
       const em = document.querySelector('#deckMenuGrid .dmp-types'), er = em && em.getBoundingClientRect();
       return {slots: slots.length, sameH: sr && Math.abs(sr.height - pr.height) < 3, emojiRight: !!er && er.left > pr.left + pr.width * .6, sub: /You play with this one/.test(m.textContent),
-        map: !!document.querySelector('#pageBackBar [data-pbsc="map"]'), home: document.getElementById('homeNavBtn').textContent.trim()};"""))
+        map: !document.querySelector('#pageBackBar [data-pbsc="map"]') && !document.getElementById('ui14MapNavBtn').hidden, home: document.getElementById('homeNavBtn').textContent.trim()};"""))
     ok(r['slots'] == 2 and r['sameH'], f"#13 two empty leather slots, deck-preview sized {r['slots'], r['sameH']}")
     ok(r['emojiRight'] and r['sub'], f"#19 the type emojis on the right; the subtitle {r['emojiRight'], r['sub']}")
     ok(r['map'] and 'Home' not in r['home'], f"#21 the map shortcut and the icon Home {r['map'], r['home']!r}")
     await shot(pg, 'decks-slots', w)
-    r = await pg.evaluate(E("""document.querySelector('#pageBackBar [data-pbsc="map"]').click(); await new Promise(r=>setTimeout(r,500)); return currentTab + ':' + playSubTab;"""))
+    r = await pg.evaluate(E("""document.getElementById('ui14MapNavBtn').click(); /* NAV1: the round 🗺️ */ await new Promise(r=>setTimeout(r,500)); return currentTab + ':' + playSubTab;"""))
     ok(r == 'play:conquest', f'#21 the shortcut opens the Conquest map ({r})'); await pg.close()
     # ---- the Codex detail's copies, filter reset
     pg = await page(b, url, w)

@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-17 (package NAV1, owner OWN-1117-3 23:41 / 23:43)
+- Players see: the game is now a set of pages, all on the main menu: Play (Conquest), Arena (PvP), Dungeons & Raids, Camp, Shop and Codex. The Camp's bar holds Camp, Forge, Nest, Stomping Grounds, Inventory and Wildpaths, and appears only on those pages; the Conquest map left it (the round 🗺️ at the top right takes you there). The Shop page has two tabs, Shop and Premium. The Codex has no Camp bar. On the map, Arena and Dungeons & Raids are their own pages: the tab strip shows only the page's own tabs, and the round 🗺️ / 🏟️ / 🐲 buttons at the top right move between them. The main menu puts the pages in one grid of tiles (three a row on a desktop), and Notices, Achievements, Tavern, Community, Trail and Flea Market sit as same-size notes on one board under the tiles; nothing hangs beside the buttons any more. Notices and the Tavern stay panels.
+- Under the hood: `PAGE_SHORTCUTS` is the Camp bar (`nav1InCamp`); `nav1PlayPage` / `nav1PlayTabs` group the Play sub-tabs; `nav1ShopTabsHTML` (tabs drive the existing `shopMode`). The Forge is still drawn in the Codex view (`codexSubTab = 'forge'`), so every way in, test and save keeps working. Texts `ui.nav1-dungeons-raids`, `ui.nav1-shop-tabs` in 12 packs. Test `tests/nav1-2026-11-17.js`; ne, shop1, ui52, ui54 updated. Shots in `docs/screens/nav1/`.
+
 ## 2026-11-17 (package SFX2, owner 23:05)
 - Players see: when a unit inspires its neighbours, a short bugle fanfare ("ta-ta-TAAA", about 0.65 s) plays with the 📯 burst. It follows the Sound volume and mute; several Inspiring triggers in one beat play it once.
 - Under the hood: `SoundKit.rallyHorn` (the call in `pl2InspireFx` already existed and fell back to `curse`), synthesized with a sawtooth, a swelling low-pass and vibrato; no audio files, no RNG. Lab: Sound tab "Inspiring horn". Test `tests/sfx2-2026-11-17.js`.
