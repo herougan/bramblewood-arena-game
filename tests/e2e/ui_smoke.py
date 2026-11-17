@@ -65,7 +65,8 @@ async def main():
         pg, errs = await new_page(b, 1366, 900)
         # 2: Home
         await pg.evaluate("switchTab('home'); 1"); await pg.wait_for_timeout(300)
-        check(await pg.evaluate("!!document.querySelector('.home-grid .home-play') && document.querySelectorAll('.home-grid .home-tile').length===5"), 'Home should have a Play hero + 4 tiles')
+        # 2026-11-17 (package NAV1): the grid holds the pages (Play, Arena, Dungeons & Raids, Camp, Shop, Codex, as opened); the notes sit on the board under it
+        check(await pg.evaluate("!!document.querySelector('.home-grid .home-play') && document.querySelectorAll('.home-grid .home-tile').length>=4 && !document.querySelector('.home-grid .home-note') && !!document.querySelector('.home-notes .home-note')"), 'Home should have a Play hero + page tiles, and the notes on their board')
         await pg.click('#settingsBtn'); await pg.wait_for_timeout(150)
         links = await pg.evaluate("[...document.querySelectorAll('#settingsLinks button')].map(b=>b.textContent)")
         check(any('Workshop' in l for l in links), 'Settings should link to the Workshop')
