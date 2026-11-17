@@ -93,7 +93,7 @@ const puffOf = uid=> x=> x.type === 'powder' && x.uid === uid;
 ok(BB.skillCountOf({sleepPowder:1, poisonPowder:2}) === 1, 'Sleeping Powder + Poison Powder count 1');
 ok(BB.skillCountOf({sleepPowder:1, arrow:1}) === 2 && BB.skillCountOf({poisonPowder:1, fireBolt:1}) === 2, 'a powder and an arrow (or a bolt) are two skills');
 ok(BB.skillCountOf({poisonPowder:1, poison:1}) === 1, 'Poison Powder sits with the poison skills, as Poison Bolt does');
-ok(Array.isArray(BB.POWDER_FAMILY) && BB.POWDER_FAMILY.join() === 'sleepPowder,poisonPowder', 'the budget exports the powder family');
+ok(Array.isArray(BB.POWDER_FAMILY) && BB.POWDER_FAMILY.slice(0, 2).join() === 'sleepPowder,poisonPowder' /* ENG50 (2026-11-17): + paralysisPowder */, 'the budget exports the powder family');
 { const SC = require('../tools/skill_costs.js'), T = SC.make(J('canonical/skill-costs.json')), S = e=> T.budget({id:'x', attack:1, health:3, effects:e, rarity:'common', level:1});
   const sp1 = S({sleepPowder:1}), sp2 = S({sleepPowder:2}), pp2 = S({poisonPowder:2}), pb2 = S({poisonBolt:2});
   ok(!sp1.missing.length && sp1.S === 2.5 && sp2.S > sp1.S && sp2.S < 2 * sp1.S, `Sleeping Powder priced: N 1 ${sp1.S}, N 2 ${sp2.S}`);

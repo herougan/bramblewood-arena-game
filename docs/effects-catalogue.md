@@ -1933,6 +1933,15 @@ Owner 00:03: "interesting vfx to improve our general UI experience and also skil
 
 Lab: group "FX10" (`tools/effects-lab/manifest/fx10.js`, ids `fun-fx10-*`; A the full look, B Effects Low / reduced motion / 4x). Contact sheet: `docs/art/fx10-sheet.png` (`python3 tests/e2e/fx10_2026_11_13.py`, which also checks the camera layer, the piece count, Low / 4x / None and that Brood and Confuse lost their shared looks). Check: `tests/fx10-2026-11-13.js`.
 
+## 2026-11-17 (package ENG50): Paralysis Powder, the token statuses, Grant
+Owner 11-17 23:14 / 23:36 (OWN-1117-2, REDESIGN3-1). Code: `bramblewood-fx-h.js` section 6 (`PWD.paralysis`, the `sporePuff` cue's crackle); `sk1Vfx`, `sk1StatusBadges` and `sk1LogText` in `arena_app.js` (the token marks reuse Exploit's float style and `exposeTone`). Lab: `tools/effects-lab/manifest/h.js` (`sk-paralysis-powder`). Check: `tests/eng50-2026-11-17.js`.
+
+| Date | Skill / moment (event) | Look | Cue | Status |
+|---|---|---|---|---|
+| 2026-11-17 | Paralysis Powder (`powder` element `paralysis`, then `statusFx` stunOnHit `powder:true`) | Sleeping Powder's drift in yellow, a pale gold cloud and a few sparks; then the existing Stun mark (shake, "💫 Stunned!") | `sporePuff` (a dry crackle) | live (Low and up) |
+| 2026-11-17 | Vulnerable / Feeble tokens given (`statusFx` rend / enfeeble) and used (vulnHit / feebleHit) | a float ("💔 Vulnerable", "🪶 Feeble"; "💔 ×2", "🪶 ×½" as one is used) and a 💔 / 🪶 badge with the count; the damage number's 💢 mark on a doubled hit | `exposeTone` | live |
+| 2026-11-17 | Grant (`statusFx` grant) | "🎁 <skill>" floats on the unit, as Grant {skill} N's | `rallyTone` | live |
+
 ## 2026-11-17 (package POWDER1): the powders' spore puff
 Owner 11-17 17:32 (OWN-1117-1): "Status Powder: Start with Sleeping Powder and Poison Powder for now. Powders would be Speed -1 actions." Code: section 6 of `bramblewood-fx-h.js` (`FX.H.powderPuff`, `powder1Event` from `FX.H.onEvent`); the engine's `powder` event (`fireShotsOf`), a 0.62 s beat in `delayForEvent` and a log line in `arena_app.js`. Transform / opacity only, no filter or blend mode; reduced motion and Effects None draw nothing (the status mark still shows). Lab: `tools/effects-lab/manifest/h.js` (`sk-sleep-powder`, `sk-poison-powder`). Check: `tests/powder1-2026-11-17.js`.
 

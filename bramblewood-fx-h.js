@@ -89,7 +89,7 @@ const CUES = {
   pearlChime(P){ P.tone(1568, 0.25, 'sine', 0.03); P.tone(2349, 0.3, 'sine', 0.02, 0.08); P.sweep(3000, 4200, 0.12, 'sine', 0.008, 0.1); },
   // POWDER1 (2026-11-17): a soft breathy poof as the spores bloom, a drowsy falling chime (Sleeping) or a low bubble (Poison) under it
   sporePuff(P, el){ P.fnoise(0.26, 0.05, {type:'lowpass', freq:1400, freqEnd:380, attack:0.035}); P.fnoise(0.14, 0.025, {type:'bandpass', freq:2600, freqEnd:1500, q:0.7, attack:0.02, delay:0.05});
-    if(el === 'poison') P.sweep(260, 150, 0.14, 'sine', 0.05, 0.04); else { P.tone(784, 0.18, 'sine', 0.025, 0.05); P.tone(587, 0.24, 'sine', 0.02, 0.16); } },
+    if(el === 'poison') P.sweep(260, 150, 0.14, 'sine', 0.05, 0.04); else if(el === 'paralysis'){ P.tone(1760, 0.04, 'square', 0.012, 0.04); P.tone(1320, 0.04, 'square', 0.012, 0.1); P.tone(1760, 0.05, 'square', 0.01, 0.16); } /* ENG50 (2026-11-17): Paralysis, a dry crackle */ else { P.tone(784, 0.18, 'sine', 0.025, 0.05); P.tone(587, 0.24, 'sine', 0.02, 0.16); } },
   pickChip(P){ P.tone(1900, 0.03, 'square', 0.015); P.fnoise(0.03, 0.07, {type:'bandpass', freq:2500, q:2, attack:0.001}); P.tone(640, 0.05, 'triangle', 0.05, 0.02); },
 };
 M.CUES = Object.keys(CUES);
@@ -732,10 +732,10 @@ M.oreChip = function(src, dest, o){
 // 6. THE POWDERS (2026-11-17, package POWDER1, owner 11-17 17:32, OWN-1117-1: "Status Powder: Start with Sleeping Powder and Poison Powder").
 //    A powder is a Speed -1 action that puts its status on the enemy facing it, no damage: the shooter shakes (a quick squash), a loose drift
 //    of spores wobbles across (slower and softer than a bolt's spit, so it reads as a puff, not a shot), and blooms into a soft cloud on the
-//    target: Sleeping lavender with a few rising z's, Poison green with drips. A dodge (the 'evaded' after it): the drift thins out beside it.
+//    target: Sleeping lavender with a few rising z's, Poison green with drips, Paralysis yellow with sparks (ENG50, 2026-11-17). A dodge (the 'evaded' after it): the drift thins out beside it.
 //    Transform / opacity only, no filter or blend mode; reduced motion and Effects None: nothing here (the status mark still shows).
 // =====================================================================================================================
-const PWD = {sleep:{cls:'sleep', glyph:'z'}, poison:{cls:'poison', glyph:''}};
+const PWD = {sleep:{cls:'sleep', glyph:'z'}, poison:{cls:'poison', glyph:''}, paralysis:{cls:'paralysis', glyph:'', dot:'zap'} /* ENG50 (2026-11-17): yellow spores, sparks */};
 const POWDER1 = new Map();
 // FX.H.powderPuff(from, to, {element, total, speed}): total = ms until the spores reach the target (default 560 / speed). Returns a promise
 // with .miss() (the drift thins out beside the target, no bloom).
@@ -761,7 +761,7 @@ M.powderPuff = function(from, to, o){
       if(P.glyph) for(let i = 0; i < 3; i++){ const z = bit('fxh-zz', P.glyph, b.x + 8 + i*7, b.y - 6, {scale:.5 + i*.15, opacity:0});
         g.to(z, {opacity:1, duration:.1, delay:.1 + i*.16}); g.to(z, {x:'+=' + (6 + i*4), y:'-=' + (18 + i*8), rotation:-12, duration:.6, delay:.1 + i*.16, ease:'sine.out'});
         g.to(z, {opacity:0, duration:.2, delay:.5 + i*.16, onComplete:()=> kill(z)}); }
-      else spray14(b.x, b.y, {n:5, cls:'fxh-dot venom', a0:30, a1:150, d0:6, d1:16, grav:14, dur:.42});
+      else spray14(b.x, b.y, {n:5, cls:'fxh-dot ' + (P.dot || 'venom'), a0:30, a1:150, d0:6, d1:16, grav:14, dur:.42});
       res(); }, total + 30);
   });
   p.miss = ()=>{ h.missed = true; };
@@ -774,6 +774,9 @@ css('powder1', `
 .fxh-cloud{width:34px; height:34px; margin:-17px; border-radius:50%;}
 .fxh-cloud.sleep{background:radial-gradient(circle, rgba(225,214,255,.8), rgba(170,150,245,.4) 50%, rgba(170,150,245,0) 72%);}
 .fxh-cloud.poison{background:radial-gradient(circle, rgba(196,240,120,.75), rgba(120,190,60,.38) 50%, rgba(120,190,60,0) 72%);}
+.fxh-spore.paralysis{background:radial-gradient(circle, #fffbe0, #ffd84a 50%, rgba(255,200,40,0) 75%); box-shadow:0 0 4px rgba(255,214,70,.7);}
+.fxh-cloud.paralysis{background:radial-gradient(circle, rgba(255,240,150,.8), rgba(240,200,60,.4) 50%, rgba(240,200,60,0) 72%);}
+.fxh-dot.zap{width:3px; height:9px; margin:-4.5px -1.5px; border-radius:2px; background:#ffe14a; box-shadow:0 0 3px #ffb300;}
 .fxh-zz{font:700 13px/1 system-ui, sans-serif; color:#efe8ff; text-shadow:0 0 3px #6b4fc8, 0 1px 0 #3a2a80; margin:-7px -4px;}
 `);
 function powder1Event(ev, env){
