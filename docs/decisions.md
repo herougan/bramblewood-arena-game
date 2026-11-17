@@ -791,6 +791,10 @@ _Generated from `decisions.json` (2026-11-17). The hub has a searchable, filtera
 
 ## Decided
 
+**OWN-1117-2. Damage-taken and damage-dealt modifiers** · Decide · Skills · asked 2026-11-17 · decided 2026-11-17
+- Owner 11-17 23:14: Rend N gives the opposing unit Vulnerable N (on hit: double damage taken, remove 1 token). Exploit N: Exploit tokens, extra damage by tokens, then remove 1. Weaken N: linear. Enfeeble N: halving. Expose: as is. Rend and Enfeeble not featured (2x / 0.5x too strong). Sturdy and Mighty only as card passives (granting them via Grant {}). Feeble and Vulnerable also as passives (drawbacks that free budget). All need action forms too, e.g. Weaken 1 on Ally Spawn.
+  - As stated
+
 **OWN-1117-1. Bolts and powders on Maps 0-20** · Decide · Skills · asked 2026-11-17 · decided 2026-11-17
 - Owner 11-17 17:32: "Bolts - only fire bolt in Map 20. The rest of the bolts e.g. Archer Fish's Water Bolt is in Map 21+. Status Powder: Start with Sleeping Powder and Poison Powder for now. Powders would be Speed -1 actions." Built as BOLT2 (bolt cards off Maps 0-19) and POWDER1 (the powder family).
   - As stated
