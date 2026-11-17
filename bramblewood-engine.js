@@ -2617,7 +2617,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // no fam: the old single action, at 2 when it has a bolt).
   const BLITZ_SPEED = 10;
   function swingSpeedOf(c){ const e = effectsOf(c); const quickNow = (e.quick && !(c && c.diveAloft != null)) || (c && c._windQuick === combatNo && combatNo > 0); return (Number(c && c.speed)||0) + (e.blitz ? BLITZ_SPEED : quickNow ? 2 : 0); }
-  function shotSpeedOf(c, fam){ const e = effectsOf(c); return e.blitz ? BLITZ_SPEED : (fam === 'bolt' || (fam !== 'arrow' && BOLT_SHOT_KEYS.some(k=> e[k]))) ? SHOT_SPEED : 0; }
+  // POWDER1 (2026-11-17, owner 11-17 17:32, OWN-1117-1: "Powders would be Speed -1 actions"): a powder puff (POWDERS) goes at -1, after the arrows.
+  const POWDER_SPEED = -1;
+  function shotSpeedOf(c, fam){ const e = effectsOf(c); return e.blitz ? BLITZ_SPEED : fam === 'powder' ? POWDER_SPEED : (fam === 'bolt' || (fam !== 'arrow' && BOLT_SHOT_KEYS.some(k=> e[k]))) ? SHOT_SPEED : 0; }
   // Cower (2026-10-14, user: "Cower (and maybe another skill also about a Turtle going into a shell) - Do {} when hit previous
   // turn"): the "when hit last turn" trigger. A unit that took damage in the previous round does its cower action this round:
   //   'shell' (the default) pulls into its shell: no attack this round, and attacks can't hurt it this round (Poison, Bleed,
@@ -8044,11 +8046,26 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     iceBolt:    {element:'ice',    dmgType:'cold',     status:'freezeCounter'},
     shockBolt:  {element:'shock',  dmgType:'shock',    status:'shock'}, // 2026-10-17: lightning (shock) damage, was physical (the Wet rule reads it)
   };
+  // The Powders (2026-11-17, package POWDER1, owner 11-17 17:32, OWN-1117-1: "Status Powder: Start with Sleeping Powder and Poison Powder for
+  // now. Powders would be Speed -1 actions."): every round while Ready, at Speed -1 (after the arrows), a puff at the enemy unit opposite (the
+  // nearest one if none is; no puff when the enemy has no unit). No damage: Poison Bolt's no-damage spit (Evasive, Mach, Invisible, the dark,
+  // a Helmet and Reflect apply as for any shot; Flying does not dodge it), carrying its status. One skill as a family (bramblewood-budget.js).
+  //   Sleeping Powder N  N Sleep tokens (the Sleep status: a hit wakes it; Wakeful, Resist / Immune Sleep apply). Not on a unit asleep (or
+  //                      woken this round), as Ice Arrow skips a Frozen unit, so it can't keep one unit asleep every round.
+  //   Poison Powder N    N Poison (Venom Master adds, as on Poison Bolt; not on a poison-proof unit).
+  const POWDERS = {
+    sleepPowder:  {element:'sleep',  status:'sleep'},
+    poisonPowder: {element:'poison', status:'poison', dmgType:'poison'},
+  };
+  const POWDER_KEYS = Object.keys(POWDERS);
   // What a landed Ice Arrow or Bolt leaves on the unit it hit (2026-10-15).
   function applyShotStatus(kind, n, c, src, side, tSide, events, aStat){
     if(!c || !(c.hp > 0)) return;
     const fx = (k, amount)=>{ if(recordEvents && events) events.push({type:'statusFx', kind:k, side, attDefId:src.defId, attUid:src.uid, targetSide:tSide, targetDefId:c.defId, targetUid:c.uid, amount}); };
     if(kind === 'corrode'){ if(!eng36Lands(c, 'corrode')) return; /* ENG36 */ c.corrode = (c.corrode||0) + 1; c._corrodeJustSet = true; fx('corrode', 1); if(c.equipment) eq2Wear(c, EQ2_DEF.corrodeWear, 'corrode'); } // + EQ2: Corrode eats the piece
+    else if(kind === 'sleep'){ if(dozing(c)) return; // Sleeping Powder N (POWDER1, 2026-11-17): Sleep's tokens, no stacking (see POWDERS)
+      if(effectsOf(c).wakeful){ fx('wakeful'); return; } if(!eng36Lands(c, 'sleep')) return;
+      c.asleep = n; c._asleepJustSet = true; if(recordEvents && events) events.push({type:'statusFx', kind:'sleep', side, attDefId:src.defId, attUid:src.uid, targetSide:tSide, targetDefId:c.defId, targetUid:c.uid, amount:n, left:c.asleep, powder:true}); }
     else if(kind === 'poison'){ if(poisonProof(c)) return; c.poison = (c.poison||0) + n; /* Structures too (2026-10-15) */ if(aStat) aStat.poisonApplied = (aStat.poisonApplied||0) + n; fx('poison', n); }
     else if(kind === 'freezeCounter'){ if(c.frozen > 0 || resistFactor(c.defId, 'cold') === 0 || rnd() >= 0.5 || !eng36Lands(c, 'freeze') /* ENG36 */) return; c.frozen = 1; fx('freeze', 1); } // melts at this round's end, like the frost's chill
     else if(kind === 'shock'){ if(!eng36Lands(c, 'shock')) return; /* ENG36 */ c.shocked = Math.max(c.shocked||0, 1); c._shockedJustSet = true; fx('shock', 1); }
@@ -8081,9 +8098,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // longer all go off in one volley before anyone swings. Each shooter's shots are one action at Speed 1 in the round's main
   // order (see pickNextAttacker): after every Speed 2+ swing (Quick, Haste), before the Speed 0 swings. hasShotSkill says who
   // gets that action; fireShotsOf fires one shooter's shots (it re-checks that the shooter can still act at that moment).
-  const SHOT_KEYS = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'spitfire', 'snipe', 'bola' /* ENG14 (2026-10-30, X26) */, 'lasso' /* ENG15 (2026-10-31) */].concat(Object.keys(BOLT_ELEMENTS));
+  const SHOT_KEYS = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'spitfire', 'snipe', 'bola' /* ENG14 (2026-10-30, X26) */, 'lasso' /* ENG15 (2026-10-31) */].concat(Object.keys(BOLT_ELEMENTS), POWDER_KEYS /* POWDER1 */);
   const BOLT_SHOT_KEYS = Object.keys(BOLT_ELEMENTS).concat('spitfire'); // ARROW1 (2026-11-16): the bolt family; every other shot key is an arrow
-  const shotKeysOf = fam=> fam === 'bolt' ? BOLT_SHOT_KEYS : fam === 'arrow' ? SHOT_KEYS.filter(k=> !BOLT_SHOT_KEYS.includes(k)) : SHOT_KEYS;
+  const shotKeysOf = fam=> fam === 'bolt' ? BOLT_SHOT_KEYS : fam === 'powder' ? POWDER_KEYS : fam === 'arrow' ? SHOT_KEYS.filter(k=> !BOLT_SHOT_KEYS.includes(k) && !POWDER_KEYS.includes(k)) : SHOT_KEYS; // + the powders (POWDER1)
   function hasShotSkill(c, fam){ const fx = effectsOf(c); return shotKeysOf(fam).some(k=> fx[k] && !(Number(fx[k]) < 0) && !(k === 'lasso' && c && c.lassoUsed)); } // a thrown Lasso is spent (ENG15)
   function fireArrowVolley(players, sideOf, stats, events){ // every shooter at once (kept for callers outside the round order)
     let fired = false; const kc = {}; // 2026-10-18: its kills are credited
@@ -8097,8 +8114,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // killCredit (2026-10-18, engine parity): the book its kills go in, as a melee swing's do (kills, MVP, Crown of Thorns, Midas,
   // On Kill). It was always null, so ~30 shooters never counted a kill. On-hit skills on shots are unchanged (an owner decision).
   // fam (ARROW1, 2026-11-16): 'arrow' or 'bolt' fires that family's shots only (its own action in the round order); none: all of them.
+  // POWDER1 (2026-11-17): or 'powder', the powder puffs (POWDERS).
   function fireShotsOf(players, sideOf, pid, c, stats, events, killCredit, fam){
-    killCredit = killCredit || {}; const wantA = fam !== 'bolt', wantB = fam !== 'arrow';
+    killCredit = killCredit || {}; const wantA = !fam || fam === 'arrow', wantB = !fam || fam === 'bolt', wantP = !fam || fam === 'powder';
     let fired = false;
     {
       const pl = players[pid]; if(!pl) return false;
@@ -8110,7 +8128,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(hasShotSkill(c, fam) && confusedFumbles(c, sideOf(pid), events, 'shot')) return false; // Confused (2026-10-19, package FZ): the shot action fumbles 1 in 2
         const shots = [];
         const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
-        const eng40IsArrow = sh=> !sh.bolt && !sh.bola && !sh.lasso && !sh.spitfire; // ENG40 (2026-11-09, ENG34-3 c): Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley
+        const eng40IsArrow = sh=> !sh.bolt && !sh.bola && !sh.lasso && !sh.spitfire && !sh.powder /* POWDER1 */; // ENG40 (2026-11-09, ENG34-3 c): Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley
         const fl17 = eng34FletchOf(pl); // Fletcher N (2026-10-17) + Weapon Master N (EQ, 2026-10-19); ENG34 (2026-11-07): fireDamageAction adds it to every shot now (eng34FletchOf), so the shots below no longer carry it, except a status-only shot's counters (below)
         // 2026-10-17 (user: "First creature to have 2x Arrow 2."): a skill can't sit on a card twice (effects is one key each), so
         // effects.arrowCount N says how many Arrow shots it looses: War Elephant has Arrow 2 and arrowCount 2, two arrows of 2 a round,
@@ -8148,6 +8166,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // random enemy unit (the castle if there are none), and 1 in 2 the flames catch a unit beside it for 1.
         if(wantB && fx.spitfire){ const foes = liveFoesOf(enemy).filter(x=> !isInvisible(x, c)), n = w2N(def, 'spitfire');
           shots.push({amount:n, n, dmgType:'heat', bolt:'fire', boltKey:'spitfire', spitfire:true, at: foes.length ? foes[Math.floor(rnd()*foes.length)] : 'hq'}); }
+        if(wantP && liveFoesOf(enemy).length) POWDER_KEYS.forEach(k=>{ const n = Number(fx[k]) || (fx[k] === true ? 1 : 0); if(!(n > 0)) return; // POWDER1 (2026-11-17): a puff per powder
+          shots.push({amount: 0, n, dmgType: POWDERS[k].dmgType || 'poison', powder: POWDERS[k].element, powderKey: k, status: POWDERS[k].status}); });
         if(shots.length && c.invisible > 0){ c.invisible = 0; if(recordEvents && events) events.push({type:'statusEnd', status:'invisible', side:sideOf(pid), uid:c.uid, defId:c.defId, attacked:true}); } // shooting gives it away (2026-10-16)
         // Snipe N (2026-10-13, user: "Snipe N: If there is no opposing unit, shoot a random enemy for N damage").
         // EN2 (2026-10-23): a Headwind doubles Snipe too (an active skill, like Arrow); asked once, so Quiet Contemplation logs once.
@@ -8170,9 +8190,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           else { const opp = opposingCardOf(players, pid, c);
             const near0 = (opp && opp.card && opp.card.hp>0) ? opp.card : arrowTargetOf(players, pid, c), near = near0 ? shotRedirect(players, sideOf, pid, c, near0, events) : near0; // ENG22
             target = near ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'}; }
+          if(shot.powder && target.kind !== 'card') return; // POWDER1: a puff is for a unit, never the bramble
           const pulled = shot.volley ? null : lastShotPull; lastShotPull = null;
-          const tEv = {side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: shot.bolt ? shot.n : shot.amount, guardianRedirect: pulled === 'guardian' || undefined, taunted: pulled === 'taunt' || undefined};
-          if(recordEvents && events) events.push(shot.bolt ? Object.assign({type:'bolt', element: shot.bolt, key: shot.boltKey}, tEv)
+          const tEv = {side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: (shot.bolt || shot.powder) ? shot.n : shot.amount, guardianRedirect: pulled === 'guardian' || undefined, taunted: pulled === 'taunt' || undefined};
+          if(recordEvents && events) events.push(shot.powder ? Object.assign({type:'powder', element: shot.powder, key: shot.powderKey}, tEv) /* POWDER1 */ : shot.bolt ? Object.assign({type:'bolt', element: shot.bolt, key: shot.boltKey}, tEv)
             : Object.assign({type:'arrow', fire: !!shot.fire, ice: shot.ice || undefined, twin: shot.twin || undefined, volley: shot.volley || undefined, bola: shot.bola || undefined /* ENG14 */, lasso: shot.lasso || undefined /* ENG15 */}, tEv));
           fired = true;
           if(eng28DarkShotMiss(c, pid, target)){ if(recordEvents && events) events.push({type:'blindMiss', side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetKind:target.kind, targetUid: target.kind === 'card' && target.card ? target.card.uid : undefined, night:true, ranged:true, eng28:true}); return; } // ENG28: the dark
@@ -8181,7 +8202,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(shot.amount > 0 || target.kind !== 'card'){ const fd = ()=> fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, killCredit, c.uid, true, true); hitCard = eng40IsArrow(shot) ? eng40ArrowShot(fd) : fd(); } // true: a shot, Reflect bounces it (2026-10-17); ENG40: Fletcher on the arrows only
           else { // a no-damage spit (Poison Bolt): it can still be dodged (no Guardian since GD2)
             const rf = reflectShotOf(players, sideOf, pid, target.card, events); // Reflect (2026-10-17): the spit bounces back at the spitter's side
-            if(rf){ if(rf.target.kind === 'hq') fireDamageAction(players, sideOf, rf.pid, rf.src.defId, shot.n, shot.dmgType, rf.target, stats, events, killCredit, rf.src.uid);
+            if(rf){ if(rf.target.kind === 'hq'){ if(shot.status !== 'sleep') /* POWDER1: a bounced Sleeping Powder puff on the bramble does nothing */ fireDamageAction(players, sideOf, rf.pid, rf.src.defId, shot.n, shot.dmgType, rf.target, stats, events, killCredit, rf.src.uid); }
               else if(dodgeCheck(rf.target.card, rf.src.defId)) hitCard = rf.target.card; // no Guardian for a skill (GD2, GD-3)
               else if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(rf.pid), attDefId:rf.src.defId, attUid:rf.src.uid, targetSide:sideOf(pid), targetDefId:rf.target.card.defId, targetUid:rf.target.card.uid, ranged:true}); }
             else if(!dodgeCheck(target.card, c.defId)){ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(otherId(pid)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true}); }
@@ -11180,7 +11201,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // main order below. Units that arrive or turn Ready later this round shoot from next round. ARROW1 (2026-11-16): one action per shot
     // family it has (arrows at Speed 0 after the swings, bolts at 2), keyed uid + ':' + fam.
     const shotPool = new Map(); // uid:fam -> {att, attId, fam, row?}
-    const poolShots = (c, ownId, row)=> ['bolt', 'arrow'].forEach(fam=>{ if(hasShotSkill(c, fam)) shotPool.set(c.uid + ':' + fam, Object.assign({att:c, attId:ownId, fam}, row ? {row} : {})); });
+    const poolShots = (c, ownId, row)=> ['bolt', 'arrow', 'powder' /* POWDER1 (2026-11-17): Speed -1 */].forEach(fam=>{ if(hasShotSkill(c, fam)) shotPool.set(c.uid + ':' + fam, Object.assign({att:c, attId:ownId, fam}, row ? {row} : {})); });
     [[p1,1],[p2,2]].forEach(([pl, ownId])=>{ if(!pl || (passAttackerIds && !passAttackerIds.includes(ownId))) return;
       allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid)) poolShots(c, ownId); });
       // 2026-10-19 (package RR): in a raid (RESERVE_ACTS) a middle- or back-row shooter shoots too, as at the front (its shot aims from its
@@ -11355,7 +11376,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       shotPool.forEach((meta, key)=>{ // 2026-10-17: the shot actions (see shotPool above)
         if(!(meta.att.hp > 0)){ shotPool.delete(key); return; } const uid = meta.att.uid;
         const pos = meta.row ? (reserveRowOf(players[meta.attId], meta.att) === meta.row ? meta.att.slot : null) : liveSharedPos(players[meta.attId], uid); if(pos===null){ shotPool.delete(key); return; } // a row shooter: its column (2026-10-19, RR)
-        candidates.push({uid, key, fam:meta.fam, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos, spd: shotSpeedOf(meta.att, meta.fam), shot:true, shotRow: meta.row || 0}); // arrows 0, bolts 2 (ARROW1), Blitz 10
+        candidates.push({uid, key, fam:meta.fam, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos, spd: shotSpeedOf(meta.att, meta.fam), shot:true, shotRow: meta.row || 0}); // arrows 0, bolts 2 (ARROW1), powders -1 (POWDER1), Blitz 10
       });
       reservePool.forEach((meta, uid)=>{ // 2026-10-18: a reserve unit acts at its own column, after that column's front row (resRow below)
         const rw = players[meta.attId].reserve[meta.row - 1]; if(!rw || rw[meta.slot] !== meta.att || !(meta.att.hp > 0)){ reservePool.delete(uid); return; }
@@ -11379,7 +11400,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(ra!==rb) return ra-rb;
         if(a.pos!==b.pos) return a.pos-b.pos;
         if((a.reserve||a.shotRow||0) !== (b.reserve||b.shotRow||0)) return (a.reserve||a.shotRow||0) - (b.reserve||b.shotRow||0); // one column: the front row, then the middle, then the back (2026-10-18; + a row's shots, 2026-10-19 RR)
-        if(a.uid===b.uid) return a.shot && b.shot ? (a.fam === 'bolt' ? -1 : 1) : a.shot ? -1 : 1; // one unit at one Speed both ways: it shoots (its bolt, then its arrow), then swings
+        if(a.uid===b.uid) return a.shot && b.shot ? ((a.fam === 'bolt' || (a.fam === 'arrow' && b.fam === 'powder')) ? -1 : 1) : a.shot ? -1 : 1; // one unit at one Speed both ways: it shoots (its bolt, then its arrow), then swings
         const winsTies = firstAttackerSide || 2;
         return a.attId===winsTies ? -1 : 1;
       });
