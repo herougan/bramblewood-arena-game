@@ -3776,7 +3776,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.skn-sleep-powder": "Sleeping Powder",
   "ui.skn-poison-powder": "Poison Powder",
   "ui.skn-powder": "Powder",
-  "ui.sk-sleep-powder": "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.",
+  "ui.sk-sleep-powder": "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.",
   "ui.sk-poison-powder": "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.",
   "ui.sk-powder-family-codex": "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.",
   "ui.powder-log-sleep": "{name} puffs Sleeping Powder at {target}. 💤",

@@ -4514,9 +4514,9 @@
  "Sleeping Powder": "Polvere del sonno",
  "Poison Powder": "Polvere velenosa",
  "Powder": "Polvere",
- "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.": "Ogni turno, dopo le frecce: Sonno {n} sul nemico di fronte o sul più vicino, se è sveglio. Nessun danno.",
  "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.": "Ogni turno, dopo le frecce: {n} Veleno sul nemico di fronte o sul più vicino. Nessun danno.",
  "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "Tutte le polveri contano insieme come un’abilità. Agiscono a Velocità -1, dopo le frecce. Elusione ne schiva metà; Volo no.",
  "{name} puffs Sleeping Powder at {target}. 💤": "{name} soffia polvere del sonno su {target}. 💤",
- "{name} puffs Poison Powder at {target}. ☠️": "{name} soffia polvere velenosa su {target}. ☠️"
+ "{name} puffs Poison Powder at {target}. ☠️": "{name} soffia polvere velenosa su {target}. ☠️",
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "Ogni turno, dopo le frecce: Sonno {n} sul nemico di fronte o sul più vicino, se è sveglio. Nessun danno."
 }

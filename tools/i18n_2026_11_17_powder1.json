@@ -3,7 +3,7 @@
   "ui.skn-sleep-powder": ["Sleeping Powder", "Poudre de sommeil", "Schlafpulver", "Polvo de sueño", "Polvere del sonno", "Pó do sono", "Pulbos ng Tulog", "உறக்கப் பொடி", "Serbuk Tidur", "睡眠粉", "睡眠粉", "ねむりごな", "수면 가루"],
   "ui.skn-poison-powder": ["Poison Powder", "Poudre de venin", "Giftpulver", "Polvo venenoso", "Polvere velenosa", "Pó venenoso", "Pulbos ng Kamandag", "நஞ்சுப் பொடி", "Serbuk Bisa", "毒粉", "毒粉", "どくのこな", "독 가루"],
   "ui.skn-powder": ["Powder", "Poudre", "Pulver", "Polvo", "Polvere", "Pó", "Pulbos", "பொடி", "Serbuk", "粉", "粉", "こな", "가루"],
-  "ui.sk-sleep-powder": ["Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.",
+  "ui.sk-sleep-powder": ["Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.",
    "À chaque tour, après les flèches : Sommeil {n} sur l’ennemi en face ou le plus proche, s’il est éveillé. Aucun dégât.",
    "Jede Runde nach den Pfeilen: Schlaf {n} auf den Gegner davor oder den nächsten, wenn er wach ist. Kein Schaden.",
    "Cada turno, tras las flechas: Sueño {n} al enemigo de enfrente o al más cercano, si está despierto. Sin daño.",

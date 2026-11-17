@@ -4513,9 +4513,9 @@
  "Sleeping Powder": "睡眠粉",
  "Poison Powder": "毒粉",
  "Powder": "粉",
- "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.": "每回合在箭之后：对正前方（没有则最近）醒着的敌人施加睡眠 {n}。不造成伤害。",
  "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.": "每回合在箭之后：对正前方（没有则最近）的敌人施加 {n} 层毒液。不造成伤害。",
  "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "所有粉类技能合计只算一个技能。粉以速度 -1 施放，在箭之后。闪避能躲开一半；飞行不能。",
  "{name} puffs Sleeping Powder at {target}. 💤": "{name}向{target}撒出睡眠粉。💤",
- "{name} puffs Poison Powder at {target}. ☠️": "{name}向{target}撒出毒粉。☠️"
+ "{name} puffs Poison Powder at {target}. ☠️": "{name}向{target}撒出毒粉。☠️",
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "每回合在箭之后：对正前方（没有则最近）醒着的敌人施加睡眠 {n}。不造成伤害。"
 }
