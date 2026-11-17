@@ -15342,8 +15342,9 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 /* 2026-11-16 (package UX7, owner 20:24): the Map cards skill list's colours. RED = the map's focus skills only; main-card skills normal (a new one keeps a small muted NEW!); counters BLUE; suggestions a lighter blue; special-only skills muted. */
 .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new{border-color:var(--surface-border); background:var(--bg);}
 .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new.is-intro{border-color:#e0b23a; background:linear-gradient(135deg, color-mix(in srgb, #ffd36b 34%, var(--bg)), color-mix(in srgb, #ffffff 22%, var(--bg)));}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus{border-color:#c62828; background:linear-gradient(135deg, color-mix(in srgb, #e53935 30%, var(--bg)), color-mix(in srgb, #e53935 14%, var(--bg)));}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus-add{border:2px solid #c62828; background:var(--bg); padding:1px 4px;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus{border-color:#c62828; background:#c62828; color:#fff;} /* 2026-11-17 (UX9, owner 22:33): a focus skill is a solid red pill (red fill and red border), on the main cards or still to add */
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui19-sk-main b, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui19-sk-main small{color:#fff;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui35-pill, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui19-new{background:#fff; color:#c62828; box-shadow:none;}
 .pk1-mc-overlay .ui19-sk .ui19-new.is-minor{background:var(--ink-muted); color:var(--bg); box-shadow:none;}
 .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter.is-intro{border-color:#2f6fd0; background:linear-gradient(135deg, color-mix(in srgb, #3b7de0 30%, var(--bg)), color-mix(in srgb, #3b7de0 14%, var(--bg)));}
 .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-rec, .pk1-mc-overlay .ui19-sk-list .ui19-sk.ui30-sugg-tile, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-sugg{border-color:color-mix(in srgb, #3b7de0 45%, var(--surface-border)); border-style:solid; background:color-mix(in srgb, #3b7de0 9%, var(--bg));}

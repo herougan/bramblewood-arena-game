@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-17 (package UX9, owner 22:33)
+- Players see: in the Map cards window, a focus (New!) skill is a solid red pill, red fill and red border with white text, whether a main card has it or it is still "To Add". Order: red skills on the main cards, the other main skills, then the red "To Add" pills, then counters, suggestions and the rest. No new texts. Test: `tests/ux9-2026-11-17.js`.
+
 ## 2026-11-17 (HPCUT1 and ARROW1-2: owner 11-17 21:28)
 - Players see: Maps 4-5 fights 5-6, 5-4, 5-2, 4-3 and 4-5 have a weaker enemy deck, Shield 0 and lower bramble Health (5-6 15 -> 12, 5-4 15 -> 6, 5-2 15 -> 7, 4-3 13 -> 5, 4-5 8 -> 4). Decision REFIT2-2 a ("a) Apply all 5 cuts"), an exception to the 11-04 "Don't lower bramble health anymore" for these five fights. Lines from docs/balance/refit2/hp/ (in band on two fresh seed sets), applied from docs/balance/hpcut1/hpcut1-fixes.jsonl. Deck problems 19 -> 17; skir1 32 -> 30, none new.
 - Fire Drake Hatchling (Volcano Lair): Arrow 2 (Flaming) becomes Fire Bolt 2 (decision ARROW1-2, "Yes, Fire Bolt 2"); budget S 8.04 -> 5, within N.
