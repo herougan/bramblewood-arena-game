@@ -125,3 +125,12 @@
 {"key":"5-6","label":"platypus-spur:attack=3","set":"platypus-spur:attack=3","fix":true,"hqHp":69,"hp":15,"shield":0,"games":400,"seed":81100,"win":54.8,"ms":22068}
 {"key":"5-4","label":"platypus-spur:attack=3","set":"platypus-spur:attack=3","fix":true,"hqHp":null,"hp":15,"shield":1,"games":400,"seed":81100,"win":39.3,"ms":14190}
 {"key":"5-2","label":"platypus-spur:attack=3","set":"platypus-spur:attack=3","fix":true,"hqHp":134,"hp":15,"shield":0,"games":400,"seed":81100,"win":52.8,"ms":11819}
+{"key":"4-1","label":"platypus-spur:attack=3","set":"platypus-spur:attack=3","fix":true,"hqHp":19,"hp":10,"shield":0,"games":400,"seed":81100,"win":78.8,"ms":18252}
+{"key":"4-3","label":"platypus-spur:attack=3","set":"platypus-spur:attack=3","fix":true,"hqHp":null,"hp":13,"shield":0,"games":400,"seed":81100,"win":50.2,"ms":24190}
+{"key":"4-5","label":"platypus-spur:attack=3","set":"platypus-spur:attack=3","fix":true,"hqHp":15,"hp":8,"shield":0,"games":400,"seed":81100,"win":14,"ms":15468}
+{"key":"5-6","label":"muskrat-lodgekeeper:fx.bulwark=1","set":"muskrat-lodgekeeper:fx.bulwark=1","fix":true,"hqHp":69,"hp":15,"shield":0,"games":400,"seed":81100,"win":54.8,"ms":24318}
+{"key":"5-4","label":"muskrat-lodgekeeper:fx.bulwark=1","set":"muskrat-lodgekeeper:fx.bulwark=1","fix":true,"hqHp":null,"hp":15,"shield":1,"games":400,"seed":81100,"win":39.3,"ms":16464}
+{"key":"5-2","label":"muskrat-lodgekeeper:fx.bulwark=1","set":"muskrat-lodgekeeper:fx.bulwark=1","fix":true,"hqHp":134,"hp":15,"shield":0,"games":400,"seed":81100,"win":52.8,"ms":17445}
+{"key":"4-1","label":"muskrat-lodgekeeper:fx.bulwark=1","set":"muskrat-lodgekeeper:fx.bulwark=1","fix":true,"hqHp":19,"hp":10,"shield":0,"games":400,"seed":81100,"win":78.8,"ms":18132}
+{"key":"4-3","label":"muskrat-lodgekeeper:fx.bulwark=1","set":"muskrat-lodgekeeper:fx.bulwark=1","fix":true,"hqHp":null,"hp":13,"shield":0,"games":400,"seed":81100,"win":46,"ms":19584}
+{"key":"4-5","label":"muskrat-lodgekeeper:fx.bulwark=1","set":"muskrat-lodgekeeper:fx.bulwark=1","fix":true,"hqHp":15,"hp":8,"shield":0,"games":400,"seed":81100,"win":14,"ms":19403}

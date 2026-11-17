@@ -131,3 +131,12 @@ round 2: cur 80/76.5; 16 legal, 16 read + 8 predicted (of 39); top: -4 bison-bul
 no nearer move
 RESULT 12-4 {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quill-thorn-boar":3,"quillguard":3,"bison-bulldozer":4} 76.5 {} moves: -4 mouse-sapper +4 bison-bulldozer problems: []
 LANE DONE
+=== lane A3 2026-11-17T02:02:23Z: second pass on the fights still out (seeds 55300/56300, g1 40, g2 300)
+4-1 target 90 (82-98) size 13 start {"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1} problems []
+start {"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1} 79.7
+round 1: cur 77.5/79.7; 88 legal, 53 read + 10 predicted (of 33); top: -1 beaver-lumberjack +1 slow-worm 82.5/80 | -1 beaver-lumberjack -1 duck-paddler +1 slow-worm +1 muskrat-lodgekeeper 80/74.7 | -1 beaver-lumberjack +1 planarian-splitter 80/71 | -2 beaver-lumberjack +1 slow-worm +1 planarian-splitter 80/70.3
+no nearer move
+shield 0 79.7
+RESULT 4-1 {"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1} 79.7 {} moves:  problems: []
+5-6 target 60 (52-68) size 17 start {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} problems []
+start {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} 39.3

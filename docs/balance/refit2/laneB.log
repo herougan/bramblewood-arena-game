@@ -156,3 +156,5 @@ shield 0 41
 RESULT 19-5 {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":2,"quillback-elder":4,"smoke-raccoon":4,"cinder-hornet":4} 41 {} moves:  problems: []
 19-1 target 90 (82-98) size 13 start {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":1,"quillback-elder":3,"cinder-hornet":3} problems []
 start {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":1,"quillback-elder":3,"cinder-hornet":3} 70.7
+round 1: cur 67.5/70.7; 50 legal, 50 read + 10 predicted (of 40); top: -4 honey-badger-fury -1 elderhorn-monarch +4 smoke-raccoon +1 stalactite-golem 77.5/73 | -4 honey-badger-fury -1 glacier-yak +4 smoke-raccoon +1 stalactite-golem 82.5/72 | -4 honey-badger-fury +4 smoke-raccoon 77.5/70.7 | -4 honey-badger-fury -1 cinder-hornet +4 smoke-raccoon +1 quillback-elder 77.5/70.7
+round 2: cur 77.5/73; 50 legal, 50 read + 10 predicted (of 38); top: -1 smoke-raccoon -1 stalactite-golem +1 quillback-elder +1 elderhorn-monarch 85/79.7 | -1 smoke-raccoon +1 quillback-elder 87.5/74 | -1 glacier-yak +1 elderhorn-monarch 82.5/72 | -1 cinder-hornet +1 quillback-elder 82.5/71.7

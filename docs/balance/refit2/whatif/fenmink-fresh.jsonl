@@ -1,0 +1,4 @@
+{"key":"5-4","label":"fen-mink 1/8 + lane decks","set":"fen-mink:health=8","fix":true,"hqHp":null,"hp":15,"shield":1,"games":400,"seed":51100,"win":63.8,"ms":22305}
+{"key":"5-6","label":"fen-mink 1/8 + lane decks","set":"fen-mink:health=8","fix":true,"hqHp":69,"hp":15,"shield":0,"games":400,"seed":51100,"win":58.8,"ms":26823}
+{"key":"5-4","label":"fen-mink 1/8, live decks","set":"fen-mink:health=8","fix":false,"hqHp":null,"hp":15,"shield":1,"games":400,"seed":51100,"win":29.8,"ms":29236}
+{"key":"5-6","label":"fen-mink 1/8, live decks","set":"fen-mink:health=8","fix":false,"hqHp":69,"hp":15,"shield":4,"games":400,"seed":51100,"win":16.5,"ms":26308}
