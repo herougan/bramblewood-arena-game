@@ -5,6 +5,8 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 ## 2026-11-17 (package SFX2, owner 23:05)
 - Players see: when a unit inspires its neighbours, a short bugle fanfare ("ta-ta-TAAA", about 0.65 s) plays with the 📯 burst. It follows the Sound volume and mute; several Inspiring triggers in one beat play it once.
 - Under the hood: `SoundKit.rallyHorn` (the call in `pl2InspireFx` already existed and fell back to `curse`), synthesized with a sawtooth, a swelling low-pass and vibrato; no audio files, no RNG. Lab: Sound tab "Inspiring horn". Test `tests/sfx2-2026-11-17.js`.
+## 2026-11-17 (package REDESIGN3: proposal on the owner's 11-17 sheet, nothing applied)
+- Owner-facing: `docs/design/redesign3-2026-11-17.md` / `.xlsx` (tick column) / `.json` (fold list). Maps 0-20: 134 of 210 cards change (17 moves, 38 stat moves), all within `budget().ok`; 63/63 focus skills New! on their map, 62 with 2+ carriers (Meiosis on Map 4 has one). Enfeeble and Rend not featured (OWN-1117-2): Map 14 gets Exploit, Map 16 Helmet. Upgraders, missing mechanics (Paralysis Powder, Weaken action, Grant action, Vulnerable passive) listed. Generator `tools/redesign3/`. Decision REDESIGN3-1.
 
 ## 2026-11-17 (package UX9, owner 22:33)
 - Players see: in the Map cards window, a focus (New!) skill is a solid red pill, red fill and red border with white text, whether a main card has it or it is still "To Add". Order: red skills on the main cards, the other main skills, then the red "To Add" pills, then counters, suggestions and the rest. No new texts. Test: `tests/ux9-2026-11-17.js`.
