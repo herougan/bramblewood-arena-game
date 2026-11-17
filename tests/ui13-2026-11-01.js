@@ -40,7 +40,7 @@ ok(/id="fKind"/.test(app) && /if\(k\.value === 'baby'\) c\.kind = 'baby'; else d
   ok(/ui13BabyPanelHTML\(mapId, defs\)/.test(op) && /eggKindForNode\(n\)/.test(fnSrc('ui13MapEggs')) && /eggChanceFor\(n, mapId, true\)/.test(fnSrc('ui13MapEggs')), 'the gallery adds a Baby cards panel: the eggs the map\'s own fights drop (kind by deck, first-clear chance)'); }
 
 // ---- 2. HH7 + Baby pills -------------------------------------------------------------------------------------------------------
-const TXs = {'ui.rv2-tag-skirmish': 'Skirmish', 'ui.rv2-tag-carried': 'Carried', 'ui.rv2-tag-unique': 'Unique', 'ui.rv2-tag-owner': 'Your note', 'ui.rv2-tag-claude': "Claude's pick", 'ui.rv2-tip-owner': 'o', 'ui.rv2-tip-claude': 'c',
+const TXs = {'ui.rv2-tag-skirmish': 'Skirmish', 'ui.rv2-tag-carried': 'Carried', 'ui.rv2-tag-unique': 'Unique', 'ui.rv2-tag-owner': 'Your note', 'ui.rv2-tag-claude': 'AI pick', 'ui.rv2-tip-owner': 'o', 'ui.rv2-tip-claude': 'c',
   'ui.ui13-tag-unlikely': 'Unlikely', 'ui.ui13-tip-unlikely': 'over', 'ui.ui13-tag-baby': 'Baby', 'ui.ui13-tip-baby': 'b'};
 const TX = (k, v)=> String(TXs[k] || k).replace(/\{(\w+)\}/g, (_, n)=> v && n in v ? v[n] : '{' + n + '}');
 const A = new Function('TX', ['rv2IsCarried', 'rv2TagsOf'].map(fnSrc).join('\n') + '\nreturn {rv2IsCarried, rv2TagsOf};')(TX);

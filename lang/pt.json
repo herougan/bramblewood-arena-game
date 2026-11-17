@@ -4472,5 +4472,12 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "Ao chegar, paga 1 Madeira por {n} cópias com metade do Ataque e da Vida, Espera 1. Sem Madeira, sem cópias.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Quando atingida, golpeia o inimigo em frente. Só ataca por si se não houver inimigo à sua frente.",
  "To add": "A adicionar",
- "Focus skill for this map that no main card has yet: put it on a card": "Habilidade prioritária deste mapa que nenhuma carta principal tem ainda: coloque-a numa carta"
+ "Focus skill for this map that no main card has yet: put it on a card": "Habilidade prioritária deste mapa que nenhuma carta principal tem ainda: coloque-a numa carta",
+ "A Starter card: it starts at Level 0": "Uma carta inicial: começa no nível 0",
+ "Only Baby cards carry this skill, and not yet at their map level, so it is not really in the map": "Só cartas Filhote têm esta habilidade, e ainda não no nível delas no mapa, então ela não está de fato no mapa",
+ "LvL": "Nív.",
+ "AI pick": "Escolha IA",
+ "Picked by an AI, or by you through Add cards.": "Escolhida por uma IA, ou por você em Adicionar cartas.",
+ "AI pick {card} carries it (theme: {theme})": "A escolha IA {card} a tem (tema: {theme})",
+ "My pick": "Minha escolha"
 }

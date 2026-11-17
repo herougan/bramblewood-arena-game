@@ -4472,5 +4472,12 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "All’arrivo, paga 1 Legname per {n} copie a metà Attacco e Salute, Attesa 1. Senza Legname, niente copie.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Se colpita, colpisce il nemico di fronte. Attacca da sola solo se nessun nemico le sta di fronte.",
  "To add": "Da aggiungere",
- "Focus skill for this map that no main card has yet: put it on a card": "Abilità prioritaria di questa mappa che nessuna carta principale ha ancora: mettila su una carta"
+ "Focus skill for this map that no main card has yet: put it on a card": "Abilità prioritaria di questa mappa che nessuna carta principale ha ancora: mettila su una carta",
+ "A Starter card: it starts at Level 0": "Una carta iniziale: parte dal livello 0",
+ "Only Baby cards carry this skill, and not yet at their map level, so it is not really in the map": "Solo le carte Cucciolo hanno questa abilità, e non ancora al loro livello nella mappa, quindi non è davvero nella mappa",
+ "LvL": "Liv.",
+ "AI pick": "Scelta IA",
+ "Picked by an AI, or by you through Add cards.": "Scelta da un'IA, o da te con Aggiungi carte.",
+ "AI pick {card} carries it (theme: {theme})": "La scelta IA {card} ce l'ha (tema: {theme})",
+ "My pick": "La mia scelta"
 }

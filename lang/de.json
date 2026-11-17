@@ -4470,5 +4470,12 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "Bei Ankunft zahlt sie 1 Holz für {n} Kopien mit halbem Angriff und halber Gesundheit, Warten 1. Kein Holz, keine Kopien.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Getroffen, schlägt sie den Gegner gegenüber. Greift von selbst nur an, wenn ihr kein Gegner gegenübersteht.",
  "To add": "Hinzufügen",
- "Focus skill for this map that no main card has yet: put it on a card": "Fokus-Fähigkeit dieser Karte, die noch keine Hauptkarte hat: auf eine Karte setzen"
+ "Focus skill for this map that no main card has yet: put it on a card": "Fokus-Fähigkeit dieser Karte, die noch keine Hauptkarte hat: auf eine Karte setzen",
+ "A Starter card: it starts at Level 0": "Eine Starterkarte: sie beginnt auf Stufe 0",
+ "Only Baby cards carry this skill, and not yet at their map level, so it is not really in the map": "Nur Babykarten haben diese Fähigkeit, und noch nicht auf ihrer Kartenstufe, also ist sie nicht wirklich in der Karte",
+ "LvL": "Stufe",
+ "AI pick": "KI-Wahl",
+ "Picked by an AI, or by you through Add cards.": "Von einer KI gewählt oder von dir über Karten hinzufügen.",
+ "AI pick {card} carries it (theme: {theme})": "Die KI-Wahl {card} hat sie (Thema: {theme})",
+ "My pick": "Meine Wahl"
 }

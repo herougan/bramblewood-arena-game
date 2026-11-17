@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package UX8: Baby and Starter tags, late skills last, LvL button)
+- Admin only. Map cards: tiles wear "Baby" and "Starter" (why a card starts at Level 0); the "Your note" tag is gone; "Claude's pick" is now "AI pick" (the owner's own flag reads "My pick").
+- Skills list: a skill only Baby cards carry, not yet at their map-list level, is listed last with a "Baby" tag (it is not really in the map). Fox, Otter and Rabbit Kit were already Baby.
+- Worker Ant is a Level 0 starter (`baseLevel` 0 in cards.json, the app and the engine both read it; its Draw trigger arrives at Level 1, stats unchanged). The card editor's level button, now "LvL", is on trigger rows too (saved as `levelSkills[L].triggers`). Test `tests/ux8-2026-11-16.js`; shots `docs/screens/ux8/`.
+
 ## 2026-11-16 (package CHEAT2: cheat detection)
 - Players see no change. The game now notes impossible states instead of blocking anything: a save edited outside the game (the wallet or card copies no longer match what the game last wrote), a currency jump with no matching reward beyond the server's per-write cap, impossible balances or copy counts, Conquest wins under 3 s, impossible rounds, 60+ wins in 10 minutes, a won deck with a card never owned, card data that fails its hash (checklist E6), and a device clock that went back or is 15+ minutes off the server. Notes stay in the browser (last 50); a signed-in player's are sent to `report_cheat_flags`, or, until that SQL is applied, as one batched feedback row a day. Guests are never reported. Admin Mode, Admin test fights, the Admin win and the cloud load are exempt.
 - Hand-ins now carry a compact fight record (`transcript.rec`: seed, deck and copy levels, leader, build, card hash, duration) for a later server replay (Tier 3).

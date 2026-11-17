@@ -4473,5 +4473,12 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "등장할 때 목재 1을 내고 공격력과 체력이 절반인 복제 {n}개를 얻는다. 대기 1. 목재가 없으면 복제도 없다.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "맞으면 맞은편 적을 친다. 맞은편에 적이 없을 때만 스스로 공격한다.",
  "To add": "추가 예정",
- "Focus skill for this map that no main card has yet: put it on a card": "이 맵의 집중 스킬이며 메인 카드에 아직 없습니다: 카드에 넣으세요"
+ "Focus skill for this map that no main card has yet: put it on a card": "이 맵의 집중 스킬이며 메인 카드에 아직 없습니다: 카드에 넣으세요",
+ "A Starter card: it starts at Level 0": "스타터 카드: 레벨 0에서 시작합니다",
+ "Only Baby cards carry this skill, and not yet at their map level, so it is not really in the map": "이 스킬은 베이비 카드만 가지고 있고 아직 맵 레벨에서는 없으므로 사실상 맵에 없습니다",
+ "LvL": "레벨",
+ "AI pick": "AI 추천",
+ "Picked by an AI, or by you through Add cards.": "AI 또는 사용자가 카드 추가에서 선택했습니다.",
+ "AI pick {card} carries it (theme: {theme})": "AI 추천 {card} 이(가) 가지고 있습니다 (테마: {theme})",
+ "My pick": "내 선택"
 }
