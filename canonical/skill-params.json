@@ -1292,6 +1292,16 @@
    "stat": null,
    "ability": null,
    "about": "Formation N. range 2 = Sociable (+A/+H for each ally within 2 slots). (ENG39, decision DES2-3)"
+  },
+  "plunder": {
+   "params": {
+    "res": "plunderRes"
+   },
+   "default": "a landed swing steals up to N Gold",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "SKAUD1 (2026-11-18): v = how many it steals; res = the resource (gold by default; lumber = the old Swipe N, merged into Plunder)."
   }
  },
  "_aboutKinds": "ENG39 (2026-11-09, owner decision DES2-3 a): a family may list kinds, its named versions: {\"<selector>\": {\"<value>\": \"<old key>\"}}. On a card the old skill is written as the family key with the selector, e.g. \"daunt\": {\"v\": 1, \"lasts\": \"lasting\"} (was \"weaken\": 1), \"carnage\": {\"v\": 5, \"who\": \"any\"} (was \"requiem\": 5); a kind that is itself a family keeps its parts (\"arrow\": {\"v\": 3, \"swings\": \"never\", \"style\": \"drop\"}). A kind named by two selectors at once is listed in \"kindSets\": [{\"match\": {\"type\": \"fire\", \"form\": \"bolt\"}, \"key\": \"fireBolt\"}]. Expanding gives back the old key, so its rule and its price are unchanged; old keys still read. A card that holds two versions of one family keeps the second as its old key."

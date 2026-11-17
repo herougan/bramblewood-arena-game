@@ -1378,8 +1378,8 @@ const PASSIVE_DEFS = [
     codexNote:TX('ui.creative-codex-note')},
   // ---- Package GI (2026-10-19, owner 00:19: "continue with action items, and considering our gameplay-ideas ... create what you want to
   // create"; docs/gameplay-ideas-built-2026-10-19.md). Rules in bramblewood-engine.js (the Package GI block). On pool cards only so far.
-  {key:'hunter', category:'passive', label:TX('ui.skn-hunter'), kind:'selectNumber', numberWhen:['weak', 'poison', 'bleed', 'wet', 'exposed'] /* + Weak, the default (2026-10-19, SK3) */, numberTitle:'Hunter N: how much more damage',
-    selectOptions:()=> [{value:'weak', label:TX('ui.hunter-vs-weak')}, {value:'poison', label:TX('ui.hunter-vs-poison')}, {value:'bleed', label:'Bleeding'}, {value:'wet', label:'Wet'}, {value:'exposed', label:'Exposed'}],
+  {key:'hunter', category:'passive', label:TX('ui.skn-hunter'), kind:'selectNumber', numberWhen:['weak', 'poison', 'bleed', 'wet', 'exposed', 'weaker', 'wounded', 'frozen'] /* + Weak, the default (2026-10-19, SK3); + SKAUD1 (2026-11-18): Predator, Executioner, Shatter */, numberTitle:'Hunter N: how much more damage',
+    selectOptions:()=> [{value:'weak', label:TX('ui.hunter-vs-weak')}, {value:'poison', label:TX('ui.hunter-vs-poison')}, {value:'bleed', label:'Bleeding'}, {value:'wet', label:'Wet'}, {value:'exposed', label:'Exposed'}, {value:'weaker', label:TX('ui.hunter-vs-weaker')}, {value:'wounded', label:TX('ui.hunter-vs-wounded')}, {value:'frozen', label:TX('ui.hunter-vs-frozen')}],
     desc:(v, n, e)=> giHunterText(v, e), codexNote:TX('ui.sk-hunter-codex'),
     get:e=> e.hunter ? [GI_HUNTER_VS.includes(e.hunterVs) ? e.hunterVs : 'weak', numOr(e.hunter, 1)] : undefined,
     apply:(e, vals)=>{ const vs = Array.isArray(vals) ? vals[0] : 'weak', n = Number(Array.isArray(vals) ? vals[1] : vals) || 0; if(n > 0){ e.hunter = n; if(vs && vs !== 'weak') e.hunterVs = vs; } }},
@@ -1394,9 +1394,9 @@ const PASSIVE_DEFS = [
 ];
 // Package GI (2026-10-19): Hunter's line names its status (one TX key each, so every language gets a whole sentence).
 // 2026-10-19 (package SK3): + Weak (Attack <= 2 AND Health <= 4, the engine's SK3_DEF.cullAtk / cullHp), the new default; shown as "Cull".
-const GI_HUNTER_VS = ['weak', 'poison', 'bleed', 'wet', 'exposed'];
-const GI_HUNTER_TX = {weak: n=> TX('ui.sk-hunter-weak', {n, a: 2, h: 4}), poison: n=> TX('ui.sk-hunter-poison', {n}), bleed: n=> TX('ui.sk-hunter-bleed', {n}), wet: n=> TX('ui.sk-hunter-wet', {n}), exposed: n=> TX('ui.sk-hunter-exposed', {n})};
-const GI_HUNTER_WORD = {weak: ()=> TX('ui.hunter-vs-weak'), poison: ()=> TX('ui.hunter-vs-poison'), bleed: ()=> TX('ui.hunter-vs-bleed'), wet: ()=> TX('ui.hunter-vs-wet'), exposed: ()=> TX('ui.hunter-vs-exposed')};
+const GI_HUNTER_VS = ['weak', 'poison', 'bleed', 'wet', 'exposed', 'weaker', 'wounded', 'frozen']; // + SKAUD1 (2026-11-18): Predator, Executioner and Shatter are Cull targets
+const GI_HUNTER_TX = {weaker: n=> TX('ui.sk-hunter-weaker', {n}), wounded: n=> TX('ui.sk-executioner', {n}), frozen: n=> TX('ui.sk3-shatter', {n}), weak: n=> TX('ui.sk-hunter-weak', {n, a: 2, h: 4}), poison: n=> TX('ui.sk-hunter-poison', {n}), bleed: n=> TX('ui.sk-hunter-bleed', {n}), wet: n=> TX('ui.sk-hunter-wet', {n}), exposed: n=> TX('ui.sk-hunter-exposed', {n})};
+const GI_HUNTER_WORD = {weaker: ()=> TX('ui.hunter-vs-weaker'), wounded: ()=> TX('ui.hunter-vs-wounded'), frozen: ()=> TX('ui.hunter-vs-frozen'), weak: ()=> TX('ui.hunter-vs-weak'), poison: ()=> TX('ui.hunter-vs-poison'), bleed: ()=> TX('ui.hunter-vs-bleed'), wet: ()=> TX('ui.hunter-vs-wet'), exposed: ()=> TX('ui.hunter-vs-exposed')};
 function giHunterParts(v, e){ const vs = e && e.hunter ? e.hunterVs : (Array.isArray(v) ? v[0] : null), n = e && e.hunter ? numOr(e.hunter, 1) : (Array.isArray(v) ? numOr(v[1], 1) : 1);
   return {vs: GI_HUNTER_VS.includes(vs) ? vs : 'weak', n}; }
 function giHunterText(v, e){ const h = giHunterParts(v, e); return GI_HUNTER_TX[h.vs](h.n); }
@@ -1449,7 +1449,7 @@ const SK2_LINE = {
   quarry: v=> TX('ui.sk2-quarry', {n: sk2Num(v, 'quarryN'), l: SK2_UI.quarryLumber}),
   smelter: v=>{ const n = sk2Num(v, 'smelterN'); return n === 1 ? TX('ui.sk2-smelter-1', {l: SK2_UI.smelterLumber, s: SK2_UI.smelterStone, m: SK2_UI.smelterMetal}) : TX('ui.sk2-smelter', {n, l: SK2_UI.smelterLumber, s: SK2_UI.smelterStone, m: SK2_UI.smelterMetal}); },
   disarm: ()=> TX('ui.sk2-disarm'),
-  pickpocket: v=> TX('ui.sk2-pickpocket', {n: sk2Num(v, 'pickpocketN')}),
+  pickpocket: ()=> TX('ui.sk2-disarm'), // SKAUD1 (2026-11-18): Disarm's rule
   sabotage: v=> TX('ui.sk2-sabotage', {n: sk2Num(v, 'sabotageN')}),
   arson: v=> TX('ui.sk2-arson', {n: sk2Num(v, 'arsonN')}),
   fortification: v=>{ const z = e22BuildSize(v); return TX('ui.sk2-fortification', {a: z.atk, h: z.hp}); }, // ENG22 (2026-11-03): Build {A/H Palisade}, the card's size
@@ -1464,7 +1464,7 @@ PASSIVE_DEFS.push(
   {key:'quarry', category:'passive', label:TX('ui.sk2n-quarry'), kind:'number', min:1, defaultValue:SK2_UI.quarryN, desc:v=> SK2_LINE.quarry(v), codexNote:TX('ui.sk2-quarry-codex'), get:e=> e.quarry ? sk2Num(e.quarry, 'quarryN') : undefined}, // SK2b (2026-10-19, owner 23:43): the Stone tier
   {key:'smelter', category:'passive', label:TX('ui.sk2n-smelter'), kind:'number', min:1, defaultValue:SK2_UI.smelterN, desc:v=> SK2_LINE.smelter(v), codexNote:TX('ui.sk2-smelter-codex'), get:e=> e.smelter ? sk2Num(e.smelter, 'smelterN') : undefined}, // SK2b: the Metal tier
   {key:'disarm', category:'passive', label:TX('ui.sk2n-disarm'), kind:'boolean', desc:()=> SK2_LINE.disarm(), codexNote:TX('ui.sk2-disarm-codex')}, // SK2b (owner, Oct 21): "Weapon stealer"
-  {key:'pickpocket', category:'passive', label:TX('ui.sk2n-pickpocket'), kind:'number', min:1, defaultValue:SK2_UI.pickpocketN, desc:v=> SK2_LINE.pickpocket(v), codexNote:TX('ui.sk2-pickpocket-codex'), get:e=> e.pickpocket ? sk2Num(e.pickpocket, 'pickpocketN') : undefined},
+  {key:'pickpocket', category:'passive', label:TX('ui.sk2n-pickpocket'), kind:'boolean', desc:()=> SK2_LINE.disarm(), codexNote:TX('ui.sk2-disarm-codex')}, // SKAUD1 (2026-11-18, SKAUD1-2 a, owner note "steals items only"): Disarm's rule, Disarm merged in
   {key:'sabotage', category:'passive', label:TX('ui.sk2n-sabotage'), kind:'number', min:1, defaultValue:SK2_UI.sabotageN, desc:v=> SK2_LINE.sabotage(v), codexNote:TX('ui.sk2-sabotage-codex'), get:e=> e.sabotage ? sk2Num(e.sabotage, 'sabotageN') : undefined},
   {key:'arson', category:'passive', label:TX('ui.sk2n-arson'), kind:'number', min:1, defaultValue:SK2_UI.arsonN, desc:v=> SK2_LINE.arson(v), codexNote:TX('ui.sk2-arson-codex'), get:e=> e.arson ? sk2Num(e.arson, 'arsonN') : undefined},
   // ENG22 (2026-11-03, owner SKILL-BUILD-1: "Fortification renamed to Build - {}. So it would be written as Build - { 0/6 Palisade }"): named
@@ -2017,7 +2017,7 @@ PASSIVE_DEFS.push(
   {key:'poisonBarbs', category:'passive', label:TX('ui.eng9-poison-barbs-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng9-poison-barbs', {n: numOr(v, 1)})},
   {key:'stockpile', category:'passive', label:TX('ui.eng9-stockpile-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng9-stockpile', {n: numOr(v, 1)})});
 sk1Patch(PASSIVE_DEFS, 'tangle', {desc:v=> TX('ui.eng9-tangle', {n: numOr(v, 1)})});
-sk1Patch(PASSIVE_DEFS, 'strangle', {desc:v=> TX('ui.eng9-strangle', {n: numOr(v, 2)})});
+sk1Patch(PASSIVE_DEFS, 'strangle', {desc:v=> TX('ui.eng9-strangle', {n: numOr(v, 2)}), label:TX('ui.eng36-constrict-name')}); // SKAUD1 (2026-11-18): the Proposal's name, Constrict (its full-hold kind merged in)
 sk1Patch(PASSIVE_DEFS, 'fork', {desc:()=> TX('ui.eng9-fork'), codexNote:TX('ui.eng9-fork-codex')});
 sk1Patch(PASSIVE_DEFS, 'trident', {desc:()=> TX('ui.eng9-trident')});
 sk1Patch(PASSIVE_DEFS, 'pitchfork', {desc:()=> TX('ui.eng9-pitchfork')});
@@ -2164,7 +2164,7 @@ PASSIVE_DEFS.push(
   {key:'refining', category:'passive', label:TX('ui.sk2n-smelter'), kind:'number', min:1, defaultValue:SK2_UI.smelterN, desc:v=> SK2_LINE.smelter(v), codexNote:TX('ui.sk2-smelter-codex'), get:e=> e.refining ? sk2Num(e.refining, 'smelterN') : undefined},
   {key:'metallurgy', category:'passive', label:TX('ui.skn-metallurgy'), kind:'boolean', desc:()=> TX('ui.sk-metallurgy'), codexNote:TX('ui.sk-metallurgy-codex')},
   {key:'prospecting', category:'passive', label:TX('ui.skn-prospecting'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-prospecting', {n: numOr(v, 1)}), codexNote:TX('ui.sk-prospecting-codex')},
-  {key:'plunder', category:'passive', label:TX('ui.skn-plunder'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-plunder', {n: numOr(v, 1)})},
+  {key:'plunder', category:'passive', label:TX('ui.skn-plunder'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX(e && e.plunderRes === 'lumber' ? 'ui.sk-plunder-lumber' : 'ui.sk-plunder', {n: numOr(v, 1)})}, // SKAUD1 (2026-11-18): Plunder (Lumber) is the old Swipe N
   {key:'barter', category:'passive', label:TX('ui.skn-barter'), kind:'boolean', desc:()=> TX('ui.sk-barter'), codexNote:TX('ui.sk-barter-codex')});
 Object.assign(SKILL_ICON, {forestry:'🌲', quarrying:'⛰️', mining:'⚒️', masonry:'🏗️', refining:'⚙️', metallurgy:'🔬', prospecting:'💰', plunder:'🏴‍☠️', barter:'🤝'}); // none shared with another skill
 sk1Patch(PASSIVE_DEFS, 'smelter', {hidden:true}); // ECONSK1: Refining replaces it in "+ Add Skill"; an old card still reads it
@@ -3558,6 +3558,9 @@ Object.assign(SKILL_ICON, {mulligan:'🔀', offspring:'👶', devour:'🫦'});
 // 2026-11-05 (package EDIT1, owner: Hatchling and others missing from the card editor): every PASSIVE_DEFS skill pushed after SKILL_DEFS was built joins it.
 function syncLateSkillDefs(){ PASSIVE_DEFS.forEach(p=>{ if(p && p.key && !SKILL_DEFS.some(s=> s.key === p.key)) SKILL_DEFS.push(passiveToSkillDef(p)); }); }
 syncLateSkillDefs();
+// SKAUD1 (2026-11-18, owner OWN-1117-3; docs/design/skaud1-2026-11-17.json): the merged and removed skills leave the card editor, the Codex and
+// the Test Kit (retired). A card that still holds one (a live cloud edit, a hero) reads as its survivor (BramblewoodSkillParams.retire in buildCardDefs).
+{ const r = ((typeof BramblewoodSkillParams !== 'undefined' && BramblewoodSkillParams) || {}).RETIRED, gone = new Set(Array.isArray(r) ? r : []); [PASSIVE_DEFS, SKILL_DEFS].forEach(list=> list.forEach(p=>{ if(p && gone.has(p.key)) p.retired = true; })); }
 Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
 Object.assign(SKILL_TEXT, {mimic: ()=> TX('ui.sk-mimic')}); // Package MT (2026-10-21): Mimic's card line
 // Package EV (2026-10-21): the Evolute, Stem and Chrysalis card lines
@@ -3570,6 +3573,7 @@ Object.assign(SKILL_TEXT, {injured: v=> TX('ui.sk-injured', {n: numOr(v, 1)}), r
 Object.assign(SKILL_TEXT, {king: (v, n, e)=> TX('ui.sk-king', {skills: grantText(kinglyOfApp(e))}), kinglyGrant: v=> TX('ui.sk-king', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}),
   tribute: v=> TX('ui.sk-tribute', {n: numOr(v, 1)}), kingSlayer: v=> TX('ui.sk-king-slayer', {n: numOr(v, 1)})});
 { const u0 = SKILL_TEXT.usurper; if(u0) SKILL_TEXT.usurper = (v, n, e)=> u0(v, n, e) + ' ' + TX('ui.sk-usurper-crown'); }
+TRIGGER_DEFS.push({key:'onCharge', label:TX('ui.trg-charge'), desc:TX('ui.sk-charge-clock')}); // SKAUD1 (2026-11-18, owner note "Move it to triggers instead"): Charge N is a trigger line ({on:'onCharge', n})
 TRIGGER_DEFS.push({key:'onEnterSlot', label:TX('ui.trg-enter-slot'), desc:TX('ui.trg-enter-slot-desc')});
 Object.assign(SKILL_TEXT, SK2_LINE); // Package SK2 (2026-10-19): the short card lines (each under 20 words; the rest is the Codex note)
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
@@ -4432,8 +4436,9 @@ function buildCardDefs(){
   Object.keys(liveCards).forEach(id=>{ const m = eng17MigrateHatchling(liveCards[id], CARD_DEFS_BASELINE[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-11-02 (package ENG17, BABY-2): a Baby card's Fodder / Stem from Level 1 is Hatchling
   Object.keys(liveCards).forEach(id=>{ const m = eng23MigrateDelivery(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-11-04 (package ENG23): a pre-ENG22 live edit's Stockpile reads as Delivery
   Object.keys(liveCards).forEach(id=>{ const m = eng35ExpandDef(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-11-07 (package ENG35): a fused skill ("nocturnal": {"v": 2, "hp": 1}) in a cloud edit reads as the flat keys the game uses
+  Object.keys(liveCards).forEach(id=>{ const m = skaud1RetireDef(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-11-18 (package SKAUD1): a retired skill in a cloud edit reads as its survivor
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
-  try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
+  try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = skaud1RetireDef(hd); } }catch(e){} // SKAUD1 (2026-11-18): a hero's retired skill reads as its survivor
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
   if(typeof testKitDefsOverlay!=='undefined' && testKitDefsOverlay) Object.assign(out, testKitDefsOverlay); // 🧪 Test Kit synthetic cards, only while it's open
   // Card unlocking (2026-09-22): additively OR a per-player unlock overlay onto the static
@@ -13104,7 +13109,7 @@ function readTriggerRow(row){
 function triggerPreviewText(t){
   const FILL = '<<>>';
   const trig = TRIGGER_DEFS.find(x=>x.key===t.on);
-  const trigLabel0 = trig ? (t.filterArchetype ? `${trig.label} (${t.filterArchetype} only)` : (t.on==='perTurn' && t.turnOf && t.turnOf!=='both') ? `${trig.label} (${t.turnOf==='self'?'your turn':"opponent's turn"})` : trig.label) : FILL;
+  const trigLabel0 = trig ? (t.on === 'onCharge' ? `${trig.label} ${Math.max(1, Math.floor(Number(t.n) || 1))}` /* SKAUD1: Charge N */ : t.filterArchetype ? `${trig.label} (${t.filterArchetype} only)` : (t.on==='perTurn' && t.turnOf && t.turnOf!=='both') ? `${trig.label} (${t.turnOf==='self'?'your turn':"opponent's turn"})` : trig.label) : FILL;
   const trigLabel = trigLabel0===FILL || TRIGGER_ALWAYS_ON.has(t.on) ? trigLabel0 : (t.whileWaiting ? trigLabel0+' (even while Waiting)' : trigLabel0+' (once Ready)');
   const aDef = ACTION_DEFS.find(x=>x.key===t.do) || (t.do === 'exileSelf' ? ACTION_DEFS.find(x=>x.key==='exile') : null); // 2026-11-07 (package UI33): the legacy exileSelf reads as Exile: itself
   if(!aDef) return `${trigLabel}, ${FILL}.`;
@@ -34438,6 +34443,7 @@ function eng35FusedKey(k){ const L = eng35Lib(); return L ? L.fusedKey(k) : k; }
 function eng35AliasOf(k){ const L = eng35Lib(); return L ? L.aliasOf(k) : null; }
 function eng35Expand(e){ const L = eng35Lib(); return L && e ? L.expand(e) : e; }
 function eng35ExpandDef(d){ const L = eng35Lib(); return L && d ? L.expandDef(d) : d; }
+function skaud1RetireDef(d){ const L = eng35Lib(); return L && L.retireDef && d ? L.retireDef(d) : d; } // SKAUD1 (2026-11-18): flat effects with a retired skill -> its survivor
 function eng35FamilyOf(k){ const L = eng35Lib(); return L ? L.familyOf(k) : null; }
 // the braces key of a family (diurnal -> diurnalGrant, king -> kinglyGrant), or null
 function eng35GivesKeyOf(k){ const f = eng35FamilyOf(k); return (f && f.key === k && f.params && f.params.gives) || null; }
@@ -52938,7 +52944,7 @@ function ui14HitBonus(ev){
   const t = Object.assign({}, live || {}, rc, {uid: ev.targetUid, defId: rc.defId || ev.targetDefId});
   let n = 0, wet = false;
   if(e.hunter){ const vs = E.hunterVsOf ? E.hunterVsOf(e) : 'weak';
-    const marked = vs === 'weak' ? !!(E.sk3Weak && E.sk3Weak(t)) : vs === 'bleed' ? t.bleed > 0 : vs === 'exposed' ? t.exposed > 0
+    const marked = vs === 'weaker' ? false /* SKAUD1: needs the attacker's Attack; no number shown */ : vs === 'wounded' ? !!(E.sk3ExecLow && E.sk3ExecLow(t)) : vs === 'frozen' ? (t.frozen > 0 || t.brittle > 0) : vs === 'weak' ? !!(E.sk3Weak && E.sk3Weak(t)) : vs === 'bleed' ? t.bleed > 0 : vs === 'exposed' ? t.exposed > 0
       : vs === 'wet' ? !!(E.wetCountOf && E.wetCountOf(live || t) > 0) : (t.poison > 0 || t.gpoison > 0);
     if(marked){ n += num(e.hunter); wet = vs === 'wet'; } }
   if(e.executioner && E.sk3ExecLow && E.sk3ExecLow(t)) n += num(e.executioner);
@@ -54742,7 +54748,7 @@ function sk2LogText(ev, nm){
     if(ev.kind === 'pickpocketRes') return {cls:'gold', text:TX('ui.sk2-log-pickpocket-res', {name, list: sk2ResList(ev.taken)})};
     if(ev.kind === 'sabotage') return {cls:'', text:TX('ui.sk2-log-sabotage', {name, list: sk2ResList(ev.lost)})};
     if(ev.kind === 'arson') return {cls:'', text:TX('ui.sk2-log-arson', {name, n: ev.amount})};
-    if(ev.kind === 'plunder') return {cls:'gold', text:TX('ui.econ-log-plunder', {name, n: ev.amount})}; // ECONSK1 (2026-11-16)
+    if(ev.kind === 'plunder') return {cls:'gold', text:TX(ev.res === 'lumber' ? 'ui.econ-log-plunder-lumber' : 'ui.econ-log-plunder', {name, n: ev.amount})}; // ECONSK1 (2026-11-16); SKAUD1: Plunder (Lumber)
     if(ev.kind === 'fortify') return {cls:'', text:TX('ui.sk2-log-fortify', {name})};
     if(ev.kind === 'noRoom') return {cls:'', text:TX('ui.sk2-log-no-room', {name})};
     if(ev.kind === 'disarmFull') return {cls:'', text:TX('ui.sk2-log-disarm-full', {name})};

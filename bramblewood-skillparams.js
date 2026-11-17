@@ -123,6 +123,81 @@
     Object.keys(defs).forEach(id=>{ const d = defs[id], x = expandDef(d); if(x !== d) defs[id] = x; });
     return defs;
   }
+  // SKAUD1 (2026-11-18, owner OWN-1117-3: "remove useless ones or duplicate ones, or very closely-overlapping ones"; plan
+  // docs/design/skaud1-2026-11-17.json): the retired skills. An old key (a live cloud edit, a hero, an old save) reads as its survivor;
+  // a removed one is dropped. retire(flat effects) -> flat effects (the same object when nothing is retired). canonical/cards.json
+  // carries the survivors already (tools/skaud1/apply.js); the engine still knows the old keys, so a test def written with one still runs.
+  const sn = (v, d)=> v === true || v == null ? d : (typeof v === 'object' && !Array.isArray(v) ? sn(v.v, d) : (Number(v) || d));
+  const trg = (on, act)=> ({triggers: [Object.assign({on}, act)]});
+  const DROP = ('poisonous wither crit blind petrify silence stymie majesty scatterbrained drunk nightblind cower bolster shieldwall unfortify spellward mach ' +
+    'atheist antiAirOnly hydra immortal corpsefeeder retribution harvest glean lumberFeast creative arson sabotage mulligan satiety shedding spotter pry ' +
+    'skitter converge formation sociable isolation banana hibernate doubleTime spoils stench pearlBed onReadyGold drought frost salt season bedrock forged ' +
+    'almanac riled scarcity fullHand lean foeFullHand foeLean foeScarcity injured grantSkill venomous bloom bloomWhen swimmer swimmerGrant hiveMind ' +
+    'shieldCall lantern worthy fullMoonGrant arrowPoison fireArrowBleed fireArrowBramble fireArrowPoison fireBoltBleed fireBoltBramble fireBoltPoison ' +
+    'blitz almanacGrant bedrockGrant droughtGrant foeScarcityGrant forgedGrant frostGrant riledGrant saltGrant scarcityGrant seasonGrant dirgeGrant').split(' ');
+  const ECON_BY_RES = {lumber: 'forestry', stone: 'quarrying', metal: 'mining', gold: 'prospecting'};
+  const RETIRE = {
+    quick: ()=> ({swift: true}), speed: ()=> ({swift: true}), haste: ()=> ({swift: true}),
+    healing: v=> ({nursing: sn(v, 1)}), sonar: ()=> ({keenSense: true}),
+    spiteful: v=> ({thorns: sn(v, 1)}), ichor: v=> ({thorns: sn(v, 1)}), punish: v=> ({thorns: sn(v, 1)}),
+    prey: ()=> ({evasive: true}), canopyCover: ()=> ({evasive: true}),
+    predator: v=> ({hunter: sn(v, 1), hunterVs: 'weaker'}), executioner: v=> ({hunter: sn(v, 1), hunterVs: 'wounded'}), shatter: v=> ({hunter: sn(v, 2), hunterVs: 'frozen'}),
+    rockSolid: ()=> ({hoard: 1, hoardRes: 'stone'}), ironWill: ()=> ({hoard: 1, hoardRes: 'metal'}), timber: ()=> ({hoard: 1}),
+    rain: v=> ({rainrunner: sn(v, 1)}), rainGrant: v=> ({rainrunnerGrant: v}), moonborn: v=> ({fullMoon: Math.max(1, sn(v, 2) - 1)}),
+    brood: v=> ({offspring: sn(v, 1)}), twin: ()=> ({offspring: 1}),
+    sprout: v=> trg('onSpawn', {do: 'spawnCard', defId: 'growth-sprout', count: sn(v, 1)}),
+    quarry: v=> ({masonry: sn(v, 1)}), stonecutter: v=> ({masonry: sn(v, 1)}), milling: v=> ({forestry: sn(v, 1)}),
+    deliveryEvery: (v, e)=> ({[ECON_BY_RES[String(e.deliveryRes || 'lumber').toLowerCase().replace(/s$/, '')] || 'forestry']: sn(v, 1)}),
+    stockpile: v=> ({delivery: sn(v, 1)}), tribute: v=> ({prospecting: sn(v, 1)}), smelter: v=> ({refining: sn(v, 1)}),
+    demolisher: v=> ({siege: sn(v, 2)}), breach: v=> ({puncture: sn(v, 1)}),
+    swipe: v=> v === true ? undefined /* an old swipe: true is Fork */ : ({plunder: sn(v, 1), plunderRes: 'lumber'}),
+    dismantle: ()=> ({sunder: true}), disarm: ()=> ({pickpocket: 1}) /* SKAUD1-2 a: Pickpocket steals items only (Disarm's rule) */,
+    lasso: ()=> ({bola: 1}), rabid: ()=> ({poison: 2}), toxin: v=> ({poison: sn(v, 1)}), venomPulse: v=> ({detonate: sn(v, 1)}),
+    perforate: v=> ({pierce: sn(v, 1)}), friction: v=> ({recoil: sn(v, 1)}), weaponMaster: v=> ({fletcher: sn(v, 1)}),
+    sentry: v=> ({ambush: sn(v, 2)}), dragonLightning: v=> ({electricity: sn(v, 1)}), skyfall: v=> ({lightning: sn(v, 1)}),
+    rocket: ()=> ({fireBolt: 1}), spitfire: v=> ({fireBolt: sn(v, 2)}), explode: v=> ({dynamite: v && v.damage >= 6 ? 3 : 2}),
+    relict: ()=> ({mountainClimber: true}), shapeshifter: ()=> ({changeling: true}),
+    natureForce: v=> ({kinship: {type: 'Elemental', atk: sn(v, 1), hp: sn(v, 1)}}), bananarang: ()=> ({boomerang: true}), dropRoll: ()=> ({dry: true}),
+    fortification: ()=> ({bulwark: 1}), brambleArmor: ()=> ({fortify: {armor: 1}}), rally: v=> ({warcry: sn(v, 1)}), constrict: v=> ({strangle: sn(v, 2)}),
+    berserk: v=> ({harbinger: Math.ceil(sn(v, 1) / 2)}), scar: v=> ({exploit: sn(v, 1)}), grit: v=> ({momentum: sn(v, 1)}),
+    dirge: v=> ({carnage: sn(v, 3)}), tally: v=> ({carnage: sn(v, 3)}), requiem: v=> ({carnage: Math.max(1, sn(v, 5) - 2)}),
+    tallyGrant: v=> ({carnageGrant: v}), requiemGrant: v=> ({carnageGrant: v}),
+    muster: v=> ({throng: sn(v, 6) + 4}), beset: v=> ({throng: sn(v, 6) + 4}), musterGrant: v=> ({throngGrant: v}), besetGrant: v=> ({throngGrant: v}),
+    felling: v=> trg('onKill', {do: 'gain', resource: 'lumber', amount: sn(v, 1)}), midas: v=> trg('onKill', {do: 'gain', resource: 'lumber', amount: sn(v, 1)}),
+    prospector: v=> trg('onKill', {do: 'gain', resource: 'metal', amount: sn(v, 1)}),
+    onReadyDamage: v=> trg('onReady', {do: 'damage', amount: v && typeof v === 'object' ? (v.amount || 1) : sn(v, 1), dmgType: (v && v.dmgType) || 'physical'}),
+    onSpawnDevilry: v=> trg('onSpawn', {do: 'gain', resource: 'devilry', amount: sn(v, 1)}),
+    charge: v=> v && typeof v === 'object' ? trg('onCharge', Object.assign({n: Math.max(1, Math.floor(Number(v.n) || 1))}, v.do && typeof v.do === 'object' ? v.do : (()=>{ const a = Object.assign({}, v); delete a.n; return a; })())) : null,
+    sleep: ()=> ({sleepPowder: 1}), paralyze: ()=> ({paralysisPowder: 1})
+  };
+  DROP.forEach(k=>{ RETIRE[k] = ()=> null; });
+  // merge a survivor into what the card already has: the higher number, both triggers, an object kept as it is
+  function retireMerge(out, patch){
+    Object.keys(patch).forEach(k=>{ const v = patch[k], o = out[k];
+      if(k === 'triggers'){ out.triggers = (Array.isArray(o) ? o : []).concat(v); return; }
+      if(o === undefined || o === false || o === null || o === 0){ out[k] = v; return; }
+      if(typeof o === 'number' && typeof v === 'number'){ out[k] = Math.max(o, v); return; }
+      if(o === true && typeof v === 'number'){ out[k] = v; } });
+  }
+  function needsRetire(e){ if(!plainObj(e)) return false; for(const k in e){ if(has(RETIRE, k) && !(k === 'swipe' && e[k] === true)) return true; } return false; }
+  function retire(e){
+    if(!needsRetire(e)) return e;
+    const out = {}, patches = [];
+    Object.keys(e).forEach(k=>{ if(!has(RETIRE, k)){ out[k] = e[k]; return; } const p = RETIRE[k](e[k], e); if(p === undefined){ out[k] = e[k]; return; } if(p) patches.push(p); });
+    patches.forEach(p=> retireMerge(out, p));
+    if(out.deliveryRes && !out.delivery && !out.tribeDelivery) delete out.deliveryRes; // Delivery every turn's resource went with it
+    return out;
+  }
+  function retireDef(d){
+    if(!d || typeof d !== 'object') return d;
+    const ls = d.levelSkills, eNeed = needsRetire(d.effects), lNeed = plainObj(ls) && Object.keys(ls).some(L=> needsRetire(ls[L]));
+    if(!eNeed && !lNeed) return d;
+    const out = Object.assign({}, d);
+    if(eNeed) out.effects = retire(d.effects);
+    if(lNeed){ out.levelSkills = {}; Object.keys(ls).forEach(L=>{ out.levelSkills[L] = retire(ls[L]); }); }
+    return out;
+  }
+  const RETIRED = Object.keys(RETIRE);
   function aliasOf(k){ return has(ALIAS, k) ? ALIAS[k].slice() : null; }
   function familyOf(k){ if(has(FAM, k)) return Object.assign({key: k}, FAM[k]); const a = aliasOf(k); return a ? Object.assign({key: a[0]}, FAM[a[0]]) : null; }
   // the fused key for any key: an old twin key's family, else the key itself
@@ -131,5 +206,5 @@
   function kindOf(k){ return has(KIND, k) ? [KIND[k][0], typedMatch(KIND[k][1])] : null; }
   function rootOf(k){ const b = fusedKey(k); return has(KIND, b) ? KIND[b][0] : b; }
   function kindsOf(k){ return (has(FK, k) ? FK[k] : []).map(e=> ({match: typedMatch(e.match), key: e.key})); }
-  return {PARAMS: P, FAMILIES: FAM, ALIAS, KIND, isFused, needsExpand, expand, fuse, expandDef, fuseDef, expandDefsInPlace, aliasOf, familyOf, fusedKey, kindOf, rootOf, kindsOf};
+  return {PARAMS: P, FAMILIES: FAM, ALIAS, KIND, isFused, needsExpand, expand, fuse, expandDef, fuseDef, expandDefsInPlace, aliasOf, familyOf, fusedKey, kindOf, rootOf, kindsOf, retire, retireDef, needsRetire, RETIRED};
 });

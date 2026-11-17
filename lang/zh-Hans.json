@@ -1416,7 +1416,6 @@
  "Its hits make the target's Venom tick {n} times at once, each tick taking a counter off.": "它的攻击让目标的中毒一次发作 {n} 次，每次移除一层。",
  "Its hits put the target to Sleep for {n} round{s}, stacking to {m}.": "它的命中使目标睡眠 {n} 回合，最多叠加到 {m}。",
  "Its hits put {n} Exploit tokens on the target: each later hit on it deals 1 more.": "它的攻击在目标身上放{n}个破绽标记：之后每次命中多造成1点伤害。",
- "Its hits steal {n} of the target's tokens; on the bramble, {n} of its lowest-ranked resource.": "它的命中偷走目标的 {n} 个标记；打到荆棘丛时，偷走 {n} 个其最低级资源。",
  "Its hits strip the target's hiding for {n} rounds: Invisible, Evasive, Smoke and Shadow stop working.": "它的攻击让目标{n}回合内无处可藏：隐形、闪避、烟雾和暗影都失效。",
  "Its hits strip {n} Armor for good.": "其命中永久移除 {n} 点护甲。",
  "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "它的命中会缠绕目标（{n} 回合）：目标的攻击、射击、技能和触发有一半几率失败。",
@@ -2837,7 +2836,6 @@
  "to the bramble": "对荆棘丛",
  "Today's field": "今日战场",
  "Tokens count. It gathers while Waiting too. Lumberjack adds to it.": "衍生物也算。等待中也会收集。伐木工会叠加。",
- "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "标记：祈祷标记、浆果、拾荒点数、创造力；从不偷减益。它们移到小偷身上。资源顺序：木材、岩石、金属、铀。",
  "Top hunters earn the 🐞 Bug Hunter title.": "顶尖猎人可获得 🐞 漏洞猎人称号。",
  "Top level": "已满级",
  "Top rank reached: let your side play itself.": "已达最高评级：让己方自动出牌。",
@@ -4555,5 +4553,12 @@
  "{name} is Exploited: +{b} damage ({n} left).": "{name}露出破绽：+{b}伤害（剩{n}个）。",
  "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "移除所选目标（默认此卡）至多N个物理减益：流血、伤疤、腐蚀、易碎、暴露、破绽、易伤、孱弱、感电、踉跄、破损护甲、威吓。留空：全部。不含中毒、冰冻和眩晕。",
  "Dungeons & Raids": "地下城与突袭",
- "Shop sections": "商店分区"
+ "Shop sections": "商店分区",
+ "Weaker": "更弱",
+ "Wounded": "受伤",
+ "Its hits deal {n} more to units with less Attack than it.": "它的攻击对攻击力比它低的单位多造成{n}点伤害。",
+ "When its swing lands: steal up to {n} Lumber.": "挥击命中时：偷取至多 {n} 木材。",
+ "Charge": "充能",
+ "Broodmother": "育雏母",
+ "{name} plunders {n} Lumber.": "{name} 掠夺了 {n} 木材。"
 }

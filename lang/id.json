@@ -1417,7 +1417,6 @@
  "Its hits make the target's Venom tick {n} times at once, each tick taking a counter off.": "Serangannya membuat Racun target berdetak {n} kali sekaligus, tiap detak mengurangi satu penanda.",
  "Its hits put the target to Sleep for {n} round{s}, stacking to {m}.": "Serangannya menidurkan sasaran selama {n} ronde, bertumpuk hingga {m}.",
  "Its hits put {n} Exploit tokens on the target: each later hit on it deals 1 more.": "Serangannya memasang {n} token Eksploitasi pada target: tiap serangan berikutnya memberi 1 lebih.",
- "Its hits steal {n} of the target's tokens; on the bramble, {n} of its lowest-ranked resource.": "Serangannya mencuri {n} token target; pada Semak, {n} sumber daya peringkat terendahnya.",
  "Its hits strip the target's hiding for {n} rounds: Invisible, Evasive, Smoke and Shadow stop working.": "Serangannya melepas persembunyian target selama {n} ronde: Tak Terlihat, Mengelak, Asap, dan Bayangan tak berfungsi.",
  "Its hits strip {n} Armor for good.": "Serangannya mencopot {n} Zirah untuk selamanya.",
  "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Serangannya Menjerat target ({n} ronde): separuh waktu, serangan, tembakan, skill, dan pemicunya gagal.",
@@ -2840,7 +2839,6 @@
  "to the bramble": "ke semak",
  "Today's field": "Medan hari ini",
  "Tokens count. It gathers while Waiting too. Lumberjack adds to it.": "Token ikut dihitung. Tetap mengumpulkan saat Menunggu. Penebang menambahnya.",
- "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Token: token Doa, Beri, poin pulung, Kreativitas; tak pernah debuff. Pindah ke si pencuri. Sumber daya: Kayu, Batu, Logam, Uranium.",
  "Top hunters earn the 🐞 Bug Hunter title.": "Pemburu terbaik mendapat gelar 🐞 Pemburu Bug.",
  "Top level": "Level tertinggi",
  "Top rank reached: let your side play itself.": "Peringkat tertinggi tercapai: biarkan pihakmu bermain sendiri.",
@@ -4556,5 +4554,12 @@
  "{name} is Exploited: +{b} damage ({n} left).": "{name} dieksploitasi: +{b} kerusakan (sisa {n}).",
  "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "Hapus hingga N pelemahan fisik dari target pilihan (kartu ini secara bawaan): Pendarahan, Luka, Korosi, Rapuh, Terungkap, Eksploitasi, Rentan, Lemah, Sengatan, Terhuyung, Zirah koyak, Gentar. Kosong: semua. Bukan Racun, Beku, atau Pingsan.",
  "Dungeons & Raids": "Dungeon & Raid",
- "Shop sections": "Bagian toko"
+ "Shop sections": "Bagian toko",
+ "Weaker": "Lebih lemah",
+ "Wounded": "Terluka",
+ "Its hits deal {n} more to units with less Attack than it.": "Serangannya memberi {n} lebih ke unit dengan Serangan lebih rendah.",
+ "When its swing lands: steal up to {n} Lumber.": "Saat serangannya kena: curi hingga {n} Kayu.",
+ "Charge": "Isi daya",
+ "Broodmother": "Induk Anakan",
+ "{name} plunders {n} Lumber.": "{name} menjarah {n} Kayu."
 }

@@ -1433,7 +1433,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk2-smelter-1": "Each turn while Ready, turns {l} Lumber and {s} Stone into {m} Metal, if you have them.",
   "ui.sk2-smelter": "Each turn while Ready, turns {l} Lumber and {s} Stone into {m} Metal, up to {n} times.",
   "ui.sk2-disarm": "On play, takes the enemy's nearest lying weapon; its hits take a unit's weapon. Not if it has one.",
-  "ui.sk2-pickpocket": "Its hits steal {n} of the target's tokens; on the bramble, {n} of its lowest-ranked resource.",
   "ui.sk2-sabotage": "Its hits destroy {n} of the opponent's resources, lowest rank first.",
   "ui.sk2-arson": "Its hits burn {n} of the opponent's Lumber.",
   "ui.sk2-fortification": "On play, builds a {a}/{h} Palisade, a Structure, in an empty slot beside it.",
@@ -1446,7 +1445,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk2-quarry-codex": "An On Turn Start trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.",
   "ui.sk2-smelter-codex": "Each conversion is paid whole or not at all. Heavy Metal adds to the Metal. Units act in upkeep order: let a Quarry act first.",
   "ui.sk2-disarm-codex": "A weapon is any equipment. An equipped piece takes its Attack, Health and skills with it. The thief equips it for a round, as with any piece.",
-  "ui.sk2-pickpocket-codex": "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.",
   "ui.sk2-sabotage-codex": "Lumber first, then Stone, Metal and Uranium. A missed or dodged swing destroys nothing.",
   "ui.sk2-arson-codex": "Only Lumber burns. A missed or dodged swing burns nothing.",
   "ui.sk2-fortification-codex": "The Palisade has no skills: it blocks its column, takes no Venom, and Repair mends it. No free slot beside it: nothing is built.",
@@ -1660,7 +1658,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.skn-corpsefeeder": "Corpsefeeder",
   "ui.skn-amplifier": "Amplifier",
   "ui.skn-stench": "Stench",
-  "ui.skn-broodkeeper": "Broodkeeper",
+  "ui.skn-broodkeeper": "Broodmother",
   "ui.skn-herald": "Herald",
   "ui.skn-harbinger": "Harbinger",
   "ui.skn-spotter": "Spotter",
@@ -3824,7 +3822,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.float-vulnerable": "💔 Vulnerable",
   "ui.float-feeble": "🪶 Feeble",
   "ui.eng36-st-vulnerable": "Vulnerable",
-  "ui.eng36-st-feeble": "Feeble"
+  "ui.eng36-st-feeble": "Feeble",
+  "ui.hunter-vs-weaker": "Weaker",
+  "ui.hunter-vs-wounded": "Wounded",
+  "ui.hunter-vs-frozen": "Frozen",
+  "ui.sk-hunter-weaker": "Its hits deal {n} more to units with less Attack than it.",
+  "ui.sk-plunder-lumber": "When its swing lands: steal up to {n} Lumber.",
+  "ui.trg-charge": "Charge",
+  "ui.econ-log-plunder-lumber": "🏴‍☠️ {name} plunders {n} Lumber."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

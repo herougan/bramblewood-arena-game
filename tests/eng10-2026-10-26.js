@@ -168,9 +168,11 @@ const hook = (P, pid, p, host)=>{ const pl = P[pid]; ['left', 'center', 'right']
   const om = JSON.parse(rd('canonical/card-obtain-maps.json')).maps;
   // 2026-11-16 (TESTFIX5): ENG39 (DES2-3 a) stores these as kinds of Carnage / Throng ({v, who}); read them expanded to their flat keys, as the engine does
   const SPX = require('../bramblewood-skillparams.js'), cardsX = cards.map(c=> SPX.expandDef(c)), cidX = {}; cardsX.forEach(c=> cidX[c.id] = c);
-  Object.entries(homes).forEach(([k, id])=> ok(cidX[id] && cidX[id].effects[k] && (om[id] == null || om[id] <= 20) && T.budget(cidX[id], {level: 1}).ok, `PROP1-4 ${k} on ${id} (Maps 0-20, inside its budget)`));
-  const carriers = cardsX.filter(c=> c.effects && Object.keys(homes).some(k=> c.effects[k]) && !c.test);
-  ok(carriers.length === 6, `PROP1-4 no other card carries a threshold skill (${carriers.map(c=> c.id).join(', ')})`);
+  // 2026-11-18 (SKAUD1, owner on Dirge: "Explicit remove, and remove other duplicates"): Dirge, Requiem and Tally merged into Carnage, Muster and
+  // Beset into Throng; their cards carry the survivor, and the old keys are on no card (the engine and the prices still read them for old saves)
+  const SKAUD1_TO = {dirge: 'carnage', requiem: 'carnage', muster: 'throng', beset: 'throng'};
+  Object.entries(homes).forEach(([k, id])=>{ const k2 = SKAUD1_TO[k] || k; ok(cidX[id] && cidX[id].effects[k2] && (om[id] == null || om[id] <= 20) && T.budget(cidX[id], {level: 1}).ok, `PROP1-4 ${k2} on ${id} (Maps 0-20, inside its budget)`); });
+  ok(!cardsX.some(c=> c.effects && ['dirge', 'requiem', 'tally', 'muster', 'beset'].some(k=> c.effects[k])), 'PROP1-4 no card carries Dirge, Requiem, Tally, Muster or Beset (SKAUD1)');
   Object.keys(homes).forEach(k=> ok(tx['ui.skn-e10-' + k] && tx['ui.sk-e10-' + k], `PROP1-4 ${k}: name and text`)); }
 
 // ---- FIX3-4 and PREF-3 (the app's functions, run headless) --------------------------------------------------------------------------------

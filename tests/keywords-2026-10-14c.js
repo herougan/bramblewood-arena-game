@@ -126,8 +126,8 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   e.debugSpawnCard(P, so, 1, 'kc-ant', 'right', {}, []); ok(e.swarmBonusOf(P, byDef(P[1], 'kc-ant')) === 3, 'and for another Ant\'s'); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'kc-bfly', 'left', {}, []); const k = all(P[1]).find(c=> /~brood$/.test(c.defId)); const d = k && e.derivedDefs[k.defId];
   ok(d && d.effects.flying && d.effects.swarm && d.effects.poison === 1 && !d.effects.brood, 'a flying parent: its brood flies too, with the parent\'s other skills (2026-11-07, ENG32: a 1/1 copy without Brood; was Flying and Swarm only)'); }
-{ const b = Object.keys(base).filter(id=> base[id].effects && base[id].effects.brood).sort(); ok(['carrion-fly-swarm','swarm-matriarch'].every(id=> b.includes(id)) /* 2026-10-19: newer Brood cards (Grotto Lobster, the placed pool cards) may join */ /* 2026-10-19: + Grotto Lobster (owner art, Brood 1) */ /* 2026-10-15: your published Bee Drone has no Brood */, `Brood 1 on the rare swarms (${b})`);
-  ok(['carrion-fly-swarm','swarm-matriarch'].every(id=> base[id].rarity === 'rare' && base[id].effects.brood === 1), 'the two rare swarms keep Brood 1'); }
+{ const b = Object.keys(base).filter(id=> base[id].effects && (base[id].effects.brood || base[id].effects.offspring /* 2026-11-18 (SKAUD1): Brood merged into Offspring */)).sort(); ok(['carrion-fly-swarm','swarm-matriarch'].every(id=> b.includes(id)) /* 2026-10-19: newer Brood cards (Grotto Lobster, the placed pool cards) may join */ /* 2026-10-19: + Grotto Lobster (owner art, Brood 1) */ /* 2026-10-15: your published Bee Drone has no Brood */, `Brood 1 on the rare swarms (${b})`);
+  ok(['carrion-fly-swarm','swarm-matriarch'].every(id=> base[id].rarity === 'rare' && (base[id].effects.brood === 1 || base[id].effects.offspring === 1)), 'the two rare swarms keep Brood 1 (Offspring 1 since SKAUD1)'); }
 
 // ---- 7. Pack
 { const {e, P} = mk(); const A = put(e, P, 1, 'kc-wolf', 0), B = put(e, P, 1, 'kc-wolf', 1);
