@@ -86,7 +86,8 @@ ok(BB.POWDER_FAMILY.includes('paralysisPowder') && BB.skillCountOf({paralysisPow
 { const {e, P} = mk(); const a = put(e, P, 1, 'e50-pierceAll', 0), t = put(e, P, 2, 'e50-armor', 0); const ev = swing(e, P, a);
   ok(t.hp === 495 && ev.some(x=> x.type === 'hit' && x.pierced === true) && !ev.some(x=> x.type === 'hit' && 'rend' in x), 'Pierce (no number) still ignores all Armor; the hit event says pierced (was rend)'); }
 { const cards = J('canonical/cards.json'), list = Array.isArray(cards) ? cards : Object.values(cards.cards || cards);
-  ok(!list.some(c=> c && c.effects && 'rend' in c.effects), 'no card in canonical/cards.json carries the key rend (nothing to migrate: the old meaning is Pierce)');
+  // 2026-11-18 (CONTENT13): Fossa Ambusher carries the new Rend N; only cards made after ENG50 may hold the key (none to migrate from the old Pierce meaning).
+  { const NEW_REND = ['fossa-ambusher']; ok(list.filter(c=> c && c.effects && 'rend' in c.effects).every(c=> NEW_REND.includes(c.id)), 'only post-ENG50 cards carry the key rend (nothing to migrate: the old meaning is Pierce)'); }
   ok(!/ae\.rend\b/.test(rd('bramblewood-engine.js')), 'the engine reads no ae.rend alias any more'); }
 
 // ================= 3. Enfeeble N: Feeble tokens =================
