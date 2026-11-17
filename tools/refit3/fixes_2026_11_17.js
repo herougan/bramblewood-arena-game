@@ -16,6 +16,10 @@ const moves = (from, to) => { const ids = [...new Set(Object.keys(from).concat(O
   ids.forEach(id => { const d = (to[id] || 0) - (from[id] || 0); if (d < 0) out.push(`${d} ${id}`); if (d > 0) inn.push(`+${d} ${id}`); }); return out.concat(inn).join(' '); };
 const lines = Object.values(by).sort((a, b) => (b.t.accept - a.t.accept) || a.x.key.localeCompare(b.x.key)).map(({ x, t, tag }) => {
   const live = X.byCode[x.key].n.deck, f = {}; const fresh = { live: {}, fix: {} }; S.forEach((k, i) => { fresh.live[k] = t.live[i]; fresh.fix[k] = t.fix[i]; });
-  return { key: x.key, deck: x.deck, shieldOverride: null, hqHp: null, moves: [moves(live, x.deck)], src: x.src, batch: tag, apply: !!t.accept, fresh }; });
+  const o = { key: x.key, deck: x.deck, shieldOverride: null, hqHp: null, moves: [moves(live, x.deck)], src: x.src, batch: tag, apply: !!t.accept, fresh };
+  // the whole-road reads with the accepted fixes in (road/after4-s7600 / -s91100) next to live on the same seeds
+  if (o.apply) { o.road = { live: {}, fix: {} }; ['7600', '91100'].forEach(k => { const g = (f, key) => (rd(path.join(ROOT, 'docs', 'balance', 'refit3', 'road', f + '-s' + k + '.jsonl')).find(r => r.key === key) || {}).win;
+    o.road.live[k] = g('live', x.key); o.road.fix[k] = g('after4', x.key); }); }
+  return o; });
 fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'refit3', 'refit3-fixes.jsonl'), lines.map(l => JSON.stringify(l)).join('\n') + '\n');
 lines.forEach(l => console.log(`${l.apply ? 'apply' : '  -  '} ${l.key} ${l.moves[0]} | live ${S.map(k => l.fresh.live[k]).join('/')} -> ${S.map(k => l.fresh.fix[k]).join('/')}`));
