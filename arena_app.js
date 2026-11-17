@@ -12310,7 +12310,7 @@ function renderEditorInner(){
     </div>
 
     <div class="section-divider subsection"><span class="st-label">Custom Triggers</span><span class="st-sub">On ⟨Trigger⟩, Do ⟨Action⟩</span>
-      <div id="triggerRows">${c.effects.triggers.map((t,i)=>triggerRowHTML(t,i)).join('')}</div>
+      <div id="triggerRows">${(ux8TriggerLevels(c), c.effects.triggers).map((t,i)=>triggerRowHTML(t,i,true)).join('')}</div>
       <button class="btn small" id="addTrigger">+ Add trigger</button>
       ${'' /* 2026-11-07 (package UI27 #16): the skill points, each skill in its own price form, adding up to S (ceSkillPtsHTML, filled by ceBudgetRefresh) */}
       <div id="ceSkillWarn" class="ui27-skwarn-row" hidden></div>${'' /* UI27 #19: the two-skill warning, only when broken */}
@@ -12590,6 +12590,9 @@ function renderEditorInner(){
     renderEditor();
   }));
   document.getElementById('addTrigger').addEventListener('click', ()=>{ c.effects.triggers.push({on:'onSpawn', do:'gain', resource:'lumber', amount:1}); renderEditor(); });
+  overlay.querySelectorAll('#triggerRows [data-tlvadd]').forEach(b=> b.addEventListener('click', ()=>{ const t = c.effects.triggers[Number(b.getAttribute('data-tlvadd'))]; if(t){ t.lv = edit1DefaultLv(c); renderEditor(); } })); // 2026-11-16 (UX8)
+  overlay.querySelectorAll('#triggerRows [data-tlvrm]').forEach(b=> b.addEventListener('click', ()=>{ const t = c.effects.triggers[Number(b.getAttribute('data-tlvrm'))]; if(t){ delete t.lv; renderEditor(); } }));
+  overlay.querySelectorAll('#triggerRows select[data-tlv]').forEach(sel=> sel.addEventListener('change', ()=>{ const t = c.effects.triggers[Number(sel.getAttribute('data-tlv'))]; if(t) t.lv = Number(sel.value); }));
   overlay.querySelectorAll('.trigger-row [data-rm]').forEach(b=> b.addEventListener('click', ()=>{ c.effects.triggers.splice(Number(b.getAttribute('data-rm')),1); renderEditor(); }));
   // On-trigger change: re-render (not just retitle) so the optional archetype filter dropdown
   // (see FILTERABLE_TRIGGERS), the sub-picker (see onSub just below), and the Do-action's own
@@ -12621,7 +12624,7 @@ function renderEditorInner(){
   overlay.querySelectorAll('.trigger-row select[data-t="do"]').forEach(sel=> sel.addEventListener('change', ()=>{
     const i = Number(sel.getAttribute('data-i'));
     const row = sel.closest('.trigger-row');
-    c.effects.triggers[i] = {on: readOnValue(row), do: sel.value};
+    c.effects.triggers[i] = Object.assign({on: readOnValue(row), do: sel.value}, c.effects.triggers[i] && c.effects.triggers[i].lv != null ? {lv: c.effects.triggers[i].lv} : {}); // UX8: a level stays
     renderEditor();
   }));
   // 2026-10-12: changing Target or Distance redraws the row, so the distance and "how many" pickers appear as they apply.
@@ -12701,6 +12704,13 @@ function grantPickAdd(sel){ const box = sel.closest('.grant-box'), inp = box && 
 // dropdown never offers 0. A Level 0 row that already exists (a Baby's Hatchling, levelSkills 0) is shown as it is, never moved.
 const EDIT1_FROM_LV1 = new Set(['hatchling', 'regen']);
 const EDIT1_OPTION_ICON = {archerStyle:'🎨'}; // the one skill with no card icon (a look, not a chip): its glyph in the skills dropdown only
+// 2026-11-16 (UX8, owner 23:35 #5): a trigger -> action skill can arrive at a level too. Stored as levelSkills[L].triggers = every trigger on by that level
+// (effectsAtLevel assigns the key whole); the editor keeps the level on the row (t.lv, editor-only, stripped at Save). A trigger in the card's base-level list only is unlevelled.
+function ux8TriggerLevels(c){
+  if(c._ux8Lv || !c.effects || !Array.isArray(c.effects.triggers)) return; c._ux8Lv = true;
+  const ls = c.levelSkills || {}, Ls = Object.keys(ls).map(Number).filter(L=> Array.isArray((ls[L] || {}).triggers)).sort((a, b)=> a - b), jk = t=> JSON.stringify(Object.assign({}, t, {lv: undefined}));
+  c.effects.triggers.forEach(t=>{ const L = Ls.find(L=> ls[L].triggers.some(x=> jk(x) === jk(t))); if(L != null && L > cardBaseLevel(c)) t.lv = L; });
+}
 function edit1DefaultLv(c){ return Math.min(11, Math.max(1, cardBaseLevel(c || editingCard) + 1)); }
 function edit1NewRow(c, key, old){ const row = {key, value:defaultSkillValue(key)}; if(old && old.lv != null) row.lv = old.lv;
   if(EDIT1_FROM_LV1.has(key) && (row.lv === 0 || (row.lv == null && cardBaseLevel(c) < 1))) row.lv = 1; return row; }
@@ -12860,7 +12870,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     ${'' /* 2026-10-13 (user: "In the future, i want to be able to add skills at different levels. To not clump up the UI, just have a + button per row"): a row can arrive at a level; ＋ adds a row for the same skill one level up */}
     ${'' /* 2026-11-05 (package EDIT1, owner 23:35: "When I press the + on a skill, it shouldn't spawn a new line but just add the level parameter in its own line."): the Lv box is always in the row (hidden until the skill has a level, so a typed value survives the redraw); ＋ shows it, its ✕ hides it. Level 0 only shows for a row that already has it. */}
     <span class="sk-lv" ${row.lv != null ? '' : 'hidden'} title="This skill arrives at this level"><span class="sk-lv-t">Lv</span> <select data-sk="lv" data-i="${i}" aria-label="Lv">${Array.from({length:12}, (_, k)=> k).filter(L=> L >= 1 || row.lv === 0).map(L=> `<option value="${L}" ${(row.lv != null ? row.lv : edit1DefaultLv())===L?'selected':''}>${L}</option>`).join('')}</select>${(row.lv != null && row.lv > 0 && !(EDIT1_FROM_LV1.has(row.key) && cardBaseLevel(editingCard) < 1)) ? `<button type="button" class="btn small ghost sk-rm-lv" data-rmlv="${i}" aria-label="${escapeAttr(TX('ui.edit1-rm-lv'))}" title="${escapeAttr(TX('ui.edit1-rm-lv'))}">✕</button>` : ''}</span>
-    ${(CONTEXT_ROW_KINDS.has(s.kind) || row.lv != null || (EDIT1_FROM_LV1.has(row.key) && cardBaseLevel(editingCard) < 1)) ? '' : `<button class="btn small ghost sk-add-lv" data-addskillrow="${i}" aria-label="${escapeAttr(TX('ui.edit1-add-lv'))}" title="${escapeAttr(TX('ui.edit1-add-lv'))}">＋</button>`}
+    ${(CONTEXT_ROW_KINDS.has(s.kind) || row.lv != null || (EDIT1_FROM_LV1.has(row.key) && cardBaseLevel(editingCard) < 1)) ? '' : `<button class="btn small ghost sk-add-lv" data-addskillrow="${i}" aria-label="${escapeAttr(TX('ui.edit1-add-lv'))}" title="${escapeAttr(TX('ui.edit1-add-lv'))}">${escapeHtml(TX('ui.ux8-lvl-btn'))}</button>`}
     <button class="btn small danger rm" data-rmskill="${i}" aria-label="Remove this skill" title="Remove this skill">✕</button>
   </div>`;
 }
@@ -12869,7 +12879,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
 // Spawn, filtered to Ant" ("On Ally Ant Spawn"). Triggers with no such subject (onAttack,
 // onKill, onRoundStart, perTurn...) don't offer the filter — nothing for it to match against.
 const FILTERABLE_TRIGGERS = ['onAllySpawn','onEnemySpawn','onColumnSpawn','onAllyDie','onAllyHealed','onHealed','onAllyPlayed','onEnemyPlayed','onAllyReady','onEnemyReady','onMove'];
-function triggerRowHTML(t,i){
+function triggerRowHTML(t,i,withLv){ // 2026-11-16 (UX8, owner 23:35 #5): withLv gives the row the LvL button (the card editor only)
   const showFilter = FILTERABLE_TRIGGERS.includes(t.on);
   const filterHtml = showFilter ? `<span>filtered to</span><select data-t="filterArchetype" data-i="${i}" title="Only fires when the other card involved belongs to this Type/archetype. Leave on (any) for no filter.">
     <option value="" ${!t.filterArchetype?'selected':''}>(any)</option>
@@ -12893,6 +12903,7 @@ function triggerRowHTML(t,i){
     <span>Pay</span><select data-t="cost" data-i="${i}" title="A cost paid first. With nothing to pay, the trigger doesn't go off."><option value="" ${!t.cost?'selected':''}>nothing</option><option value="burnLumber" ${t.cost==='burnLumber'?'selected':''}>Burn 1 Lumber</option></select>
     <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].filter(x=> !x.retired || x.key === t.do /* EN4 (2026-10-23): retired actions only on a card that still has one */).sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}${t.do && !ACTION_DEFS.some(x=> x.key===t.do) ? `<option value="${escapeAttr(t.do)}" selected>${escapeHtml(t.do)}</option>` /* FIN2-b (2026-10-26): an action the list lacks (exileSelf) stays as it is, not the first option */ : ''}</select>
     ${actionFieldsHTML(t,i)}
+    ${withLv ? `<span class="sk-lv" ${t.lv != null ? '' : 'hidden'} title="This skill arrives at this level"><span class="sk-lv-t">Lv</span> <select data-tlv="${i}" aria-label="Lv">${Array.from({length:12}, (_, k)=> k).filter(L=> L >= 1 || t.lv === 0).map(L=> `<option value="${L}" ${(t.lv != null ? t.lv : edit1DefaultLv())===L?'selected':''}>${L}</option>`).join('')}</select>${t.lv != null && t.lv > 0 ? `<button type="button" class="btn small ghost sk-rm-lv" data-tlvrm="${i}" aria-label="${escapeAttr(TX('ui.edit1-rm-lv'))}" title="${escapeAttr(TX('ui.edit1-rm-lv'))}">✕</button>` : ''}</span>${t.lv != null ? '' : `<button type="button" class="btn small ghost sk-add-lv" data-tlvadd="${i}" aria-label="${escapeAttr(TX('ui.edit1-add-lv'))}" title="${escapeAttr(TX('ui.edit1-add-lv'))}">${escapeHtml(TX('ui.ux8-lvl-btn'))}</button>`}` : ''}
     <button class="btn small danger rm" data-rm="${i}" aria-label="Remove this trigger" title="Remove this trigger">✕</button>
   </div>
   <div class="trigger-preview" data-preview-i="${i}">${escapeHtml(triggerPreviewText(t))}</div>
@@ -13251,7 +13262,7 @@ function readEditorFormIntoCard(){
     }
     { const bb = row.querySelector('[data-sk="eng39bramble"]'), bk = bb && eng39BrambleKeyOf(key); if(bk){ eng39BrambleSet.add(bk); if(bb.checked) fx[bk] = true; else delete fx[bk]; } } // ENG39 (ENG35-4): the Bramble box
   });
-  const triggers = [];
+  const triggers = [], tlv = [];
   // FIN2-b (2026-10-26, owner: "The card edit - doesn't work anymore"): a trigger keeps the fields the row has no control for
   // (whenReady, once, everyone, pay, a sub the action's picker doesn't offer ...) while its On and Do are unchanged; a plain Save
   // used to drop them (Scraper of Skies' When Ready, Nest's once, Sea Cucumber's once).
@@ -13260,9 +13271,12 @@ function readEditorFormIntoCard(){
     const t = readTriggerRow(row);
     const doEl = row.querySelector('[data-t="do"]'), o = oldTrigs[Number(doEl && doEl.getAttribute('data-i'))];
     if(o && o.on === t.on && o.do === t.do) Object.keys(o).forEach(k=>{ if(!(k in t) && !row.querySelector(`[data-t="${k}"]`)) t[k] = o[k]; });
+    { const ls = row.querySelector('[data-tlv]'), bx = ls && ls.closest('.sk-lv'); delete t.lv; tlv.push(ls && !(bx && bx.hidden) ? Number(ls.value) : NaN); } // 2026-11-16 (UX8): the row's level, kept out of the trigger itself
     triggers.push(t);
   });
   if(triggers.length) newEffects.triggers = triggers;
+  { const lvs = [...new Set(tlv.filter(Number.isFinite))]; // 2026-11-16 (UX8): levelSkills[L].triggers = the triggers on by level L (the unlevelled ones count from Level 0)
+    if(lvs.length) (tlv.some(x=> !Number.isFinite(x)) ? [0] : []).concat(lvs).forEach(L=>{ (levelFx[L] = levelFx[L] || {}).triggers = triggers.filter((t, k)=> !Number.isFinite(tlv[k]) || tlv[k] <= L).map(t=> Object.assign({}, t)); }); }
   // Resistance / Weakness pills (2026-09-16) mutate c.effects.resist/.weakness live on every
   // add/remove (see the wireAddSelect()-driven Element/Type select handlers above), same as
   // Type Tags does for c.archetypes — carry them over into the freshly-built newEffects here,
@@ -13282,7 +13296,7 @@ function readEditorFormIntoCard(){
   if(newEffects.devour && c.effects && c.effects.devour && c.effects.devour.grant && !newEffects.devour.grant) newEffects.devour.grant = c.effects.devour.grant; // ENG28 (#5): the row edits +A/+H; a granted skill list stays
   c.effects = newEffects;
   if(Object.keys(levelFx).length) c.levelSkills = levelFx; else delete c.levelSkills; // skills that arrive at a level (2026-10-13)
-  delete c._skillRows; // transient editor-only state — never persisted
+  delete c._ux8Lv; delete c._skillRows; // transient editor-only state — never persisted
   delete c._speechTrigger; delete c._speechSlot; // same — just remembers which dropdown combo was showing
   if(!c.id){
     c.id = (c.name||'card').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') + '-' + Math.random().toString(36).slice(2,6);
@@ -15628,6 +15642,7 @@ function cardBaseLevel(d){
   // the eggs and the two starter babies Otter Kit and Duckling included) has base Level 0: its printed stats are its Level 0 stats. Ahead of
   // the faction rule below, so the starter babies are Level 0 too. (Inline, so the tools that lift this function alone still run.)
   if(d.kind === 'baby' && !d.token) return 0;
+  if(d.baseLevel != null && Number.isFinite(Number(d.baseLevel))) return Number(d.baseLevel); // 2026-11-16 (UX8, owner 23:35 #5): a card's own baseLevel (Worker Ant: a starter at Level 0); the engine's eng36BaseLevel reads it too
   // 2026-10-12 (user: "base creatures start at 0, rewarded creatures at 1, quest creatures should also start at 0").
   const qs = d.source && (d.source.kind==='quest' || d.source.kind==='errand' || d.source.kind==='base'); // 2026-10-13: "all quest cards and base cards start at level 0"
   // 2026-10-14 (22:50, user: "Faction cards come in at level 1. Wandering Trader comes in at level 1."): a faction's own cards
@@ -33873,13 +33888,13 @@ const RV2_SIDE_UNIQUE = {delve: 3, challenge: 1, ask: 2, boss: 5}; // its rules.
 function rv2IsCarried(e){ return /carried/i.test(String((e && e.why) || '')); }
 // 2026-11-01 (package UI13): baby (HH1): a Baby card shows "Baby" instead of Carried / Unique (it counts toward neither number); e.flag "unlikely"
 // (HH7, THEME4's over-limit chosen cards, canonical/map-review.json) adds an "Unlikely" pill whose tooltip is e.flagWhy.
-function rv2TagsOf(e, baby){
+function rv2TagsOf(e, baby, starter){
   const why = String((e && e.why) || ''), t = [];
   if(/skirmish reward|first-clear/i.test(why)) t.push(['skirmish', TX('ui.rv2-tag-skirmish'), '']);
   if(e && e.flag === 'unlikely') t.push(['unlikely', TX('ui.ui13-tag-unlikely'), String(e.flagWhy || '') || TX('ui.ui13-tip-unlikely')]);
   t.push(baby ? ['baby', TX('ui.ui13-tag-baby'), TX('ui.ui13-tip-baby')] : rv2IsCarried(e) ? ['carried', TX('ui.rv2-tag-carried'), ''] : ['unique', TX('ui.rv2-tag-unique'), '']);
-  if(e.by === 'owner') t.push(['owner', TX('ui.rv2-tag-owner'), TX('ui.rv2-tip-owner')]);
-  else if(e.by === 'claude') t.push(['claude', TX('ui.rv2-tag-claude'), TX('ui.rv2-tip-claude')]);
+  if(starter) t.push(['starter', TX('ui.ux8-tag-starter'), TX('ui.ux8-tip-starter')]); // 2026-11-16 (UX8, owner 23:35 #3): Baby and Starter say why a card starts at Level 0; the "Your note" tag is gone
+  if(e.by === 'claude') t.push(['claude', TX('ui.rv2-tag-claude'), TX('ui.rv2-tip-claude')]);
   return t;
 }
 // 2026-11-03 (package LISTFIX2; owner 22:02: "cut cards still stay, but are just flagged as cut"): a Cut card's tile says whether the cut is
@@ -33914,6 +33929,7 @@ function rv1TilesHTML(list, kind, defs, secKey){
 // 2026-11-01 (package UI13): one tile, so a tile can be drawn again on its own (HH3: after the card editor saves). rvTileEntries keeps each
 // tile's review entry ("<list key>|<card id>|<part>") for that redraw. data-rv-baby (HH1) and data-rv-unlikely (HH7) feed rv2Update's counts.
 const rvTileEntries = new Map();
+function ux8IsStarter(id, defs){ const d = (defs || getCardDefs())[id]; return !!d && d.rarity === 'starter' && cardBaseLevel(d) === 0; } // 2026-11-16 (UX8): a starter card starts at Level 0
 function ui13IsBaby(id, defs){ const d = (defs || getCardDefs())[id]; return cardKindOf(d) === 'baby'; }
 function rv1TileHTML(e, kind, defs, secKey){
   rvTileEntries.set(secKey + '|' + e.id + '|' + kind, e);
@@ -33921,7 +33937,7 @@ function rv1TileHTML(e, kind, defs, secKey){
   const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
   const dd = defs[e.id], pt = dd ? basicPackTierOf(dd) : 0; // the pack a basic pack also gives it from, as a pill (was a tag under the small tile)
   const baby = ui13IsBaby(e.id, defs), unlikely = e.flag === 'unlikely';
-  const pills = (kind === 'cut' ? lf2CutPillHTML(e, secKey) /* 2026-11-03 (LISTFIX2) */ : '') + rv2TagsOf(e, baby).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
+  const pills = (kind === 'cut' ? lf2CutPillHTML(e, secKey) /* 2026-11-03 (LISTFIX2) */ : '') + rv2TagsOf(e, baby, ux8IsStarter(e.id, defs)).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
   const fl = !!rvFlips[rvFlipTop + '|' + secKey + '|' + e.id]; // 2026-10-29 (UI3, S10): a toggle made earlier this session is still on
   return `<span class="rv1-tile is-${kind}${fl ? ' is-flipped' : ''}${baby ? ' is-baby' : ''}${unlikely ? ' is-unlikely' : ''}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}" data-rv-baby="${baby ? 1 : 0}" data-rv-unlikely="${unlikely ? 1 : 0}">`
     + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, power: true, why: e.why || ''})
@@ -34101,10 +34117,17 @@ function ui13RefreshTile(ov, tile){
 // 2026-11-04 (package UI19, owner 2026-11-03 23:01 + 11-04 07:42: "also list the skills on this page ... which are the first time showing with the NEW! flag"):
 // the 🃏 Map cards window lists the skills the shown lists' cards carry (a skill a card only gets at a later level counts too), each with its short text
 // and "n of N cards"; NEW! marks a skill no card of an EARLIER map (road order, mapNumberOf, any of that map's lists) carries. Admin-only like the window.
+// 2026-11-16 (UX8, owner 23:35 #2): a card's skills as [{key, lvl}] with lvl = the level the skill ARRIVES at: the first levelSkills level that lists it (effects holds ALL of a card's skills;
+// a Baby's Evasive sits in effects but arrives at Level 1), else 0. Compared with cardBaseLevel(d), the level a card has in a map list.
+function ux8CardSkillKeys(d){
+  const base = ui18CardSkillKeys(d), ls = (d && d.levelSkills) || {}, first = new Map(), fk = k=> typeof eng35FusedKey === 'function' ? eng35FusedKey(k) : k;
+  Object.keys(ls).map(Number).sort((a, b)=> a - b).forEach(L=>{ const o = ls[L] || ls[String(L)] || {}; Object.keys(o).forEach(k=>{ if(skillValOn(o[k]) && !first.has(fk(k))) first.set(fk(k), L); }); });
+  return base.map(x=> ({key: x.key, lvl: first.has(x.key) ? first.get(x.key) : x.lvl}));
+}
 function ui19McSkillRows(ids, defs){
-  const by = new Map();
+  const by = new Map(), keysOf = typeof ux8CardSkillKeys === 'function' ? ux8CardSkillKeys : ui18CardSkillKeys; // typeof guard: tests lift this function alone
   [...new Set(ids)].forEach(id=>{ const d = defs[id]; if(!d) return;
-    ui18CardSkillKeys(d).forEach(({key, lvl})=>{ let r = by.get(key); if(!r){ r = {key, ids: [], lvl, fx: lvl > 0 ? (((d.levelSkills || {})[lvl]) || {}) : (d.effects || {})}; by.set(key, r); } r.ids.push(id); }); });
+    keysOf(d).forEach(({key, lvl})=>{ let r = by.get(key); if(!r){ r = {key, ids: [], lvl, fx: lvl > 0 ? (((d.levelSkills || {})[lvl]) || {}) : (d.effects || {})}; by.set(key, r); } r.ids.push(id); }); });
   return [...by.values()];
 }
 function ui19McEarlierSkillKeys(top, defs, ok){
@@ -34206,8 +34229,9 @@ function ui28SkillHiddenOnMap(key, d, n){
 }
 function ui28SkillMeet(r, defs, n){
   let met = false, minLvl = Infinity;
-  (r.ids || []).forEach(id=>{ const d = defs[id]; if(!d) return; const x = ui18CardSkillKeys(d).find(q=> q.key === r.key); if(!x) return;
-    if(x.lvl > 0) minLvl = Math.min(minLvl, x.lvl); else if(!ui28SkillHiddenOnMap(r.key, d, n)) met = true; });
+  const keysOf = typeof ux8CardSkillKeys === 'function' ? ux8CardSkillKeys : ui18CardSkillKeys, baseOf = d=> typeof cardBaseLevel === 'function' ? cardBaseLevel(d) : 0; // 2026-11-16 (UX8): a skill is there when it arrives by the card's level in the map list
+  (r.ids || []).forEach(id=>{ const d = defs[id]; if(!d) return; const x = keysOf(d).find(q=> q.key === r.key); if(!x) return;
+    if(x.lvl > baseOf(d)) minLvl = Math.min(minLvl, x.lvl); else if(!ui28SkillHiddenOnMap(r.key, d, n)) met = true; });
   return {met, lvl: Number.isFinite(minLvl) ? minLvl : 0};
 }
 // UI28_MC:END
@@ -34372,7 +34396,7 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   const recs0 = typeof ui24McRecs === 'function' ? ui24McRecs(mapId || top, defs) : [], recBy = new Map(); recs0.forEach(r=>{ if(!recBy.has(r.key)) recBy.set(r.key, r); });
   const sugg = typeof ui30McSugg === 'function' ? ui30McSugg(mapId || top) : new Map(), sp = k=> typeof ui30SuggPillHTML === 'function' ? ui30SuggPillHTML(k, sugg) : ''; // 2026-11-07 (UI30 #16): the Sugg. Intro pills
   const flagOf = (arr, isMain)=> arr.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; const useSet = new Set(); if(typeof ui35UseSigs === 'function') r.ids.forEach(id=>{ const u = ui35UseSigs(defs[id]).get(r.key); if(u) u.forEach(x=> useSet.add(x)); }); const seenUse = (early.uses && early.uses.get(r.key)) || new Set(), isNewUse = isMain && mt.met && early.has(r.key) && useSet.size > 0 && [...useSet].some(x=> !seenUse.has(x)); // UI35 #7: a known skill with a parameter no earlier main map used
-    return Object.assign(r, {isNew: isMain && mt.met && !early.has(r.key), isNewUse, p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl, outside: !isMain}); }).filter(r=> r.p).map(r=> Object.assign(r, {isFocus: isMain && focus.has(r.key) && !r.grey})).sort((a, b)=> (ux7Rank(a) - ux7Rank(b)) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
+    return Object.assign(r, {isNew: isMain && mt.met && !early.has(r.key), isNewUse, p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl, outside: !isMain, late: !mt.met && mt.lvl > 0, lateBaby: !mt.met && mt.lvl > 0 && r.ids.every(id=> cardKindOf(defs[id]) === 'baby')}); }).filter(r=> r.p).map(r=> Object.assign(r, {isFocus: isMain && focus.has(r.key) && !r.grey})).sort((a, b)=> (ux7Rank(a) - ux7Rank(b)) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
   // 2026-11-16 (UX7, owner 20:24): main-card order: red focus, normal, new-but-not-focus (normal colour, small NEW!), grey (not unlocked yet); the rest follow below
   function ux7Rank(r){ return r.outside ? 0 : r.isFocus ? 0 : r.grey ? 3 : r.isNew ? 2 : 1; }
   const flaggedMain = flagOf(rows, true), flaggedOther = flagOf(rowsO, false), flagged = flaggedMain.concat(flaggedOther);
@@ -34386,7 +34410,7 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   const cxo = typeof ui35CodexOf === 'function' ? ui35CodexOf(mapId || top) : null, cx = k=> cxo && cxo.map.has(k) ? pill('cx' + cxo.map.get(k), 'ui.ui35-pill-cx' + cxo.map.get(k), 'ui.ui35-pill-cx' + cxo.map.get(k) + '-tip') : ''; // UI35 #22
   const sugPill = tip=> ` <i class="ui28-sug" title="${escapeAttr(tip)}">${escapeHtml(TX('ui.ui28-suggested'))}</i>`;
   const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
-    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.isFocus ? ' is-focus' : ''}${r.outside ? ' is-other' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.outside ? '' : pill('main', 'ui.ui35-pill-main', 'ui.ui35-pill-main-tip')}${r.isNew ? ` <i class="ui19-new${r.isFocus ? '' : ' is-minor'}" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : r.isNewUse ? pill('newuse', 'ui.ui35-pill-newuse', 'ui.ui35-pill-newuse-tip') : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}${cx(r.key)}</span></li>`; };
+    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.isFocus ? ' is-focus' : ''}${r.outside ? ' is-other' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}${r.late ? ' is-late' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.lateBaby ? pill('baby', 'ui.ui13-tag-baby', 'ui.ux8-late-baby-tip') /* 2026-11-16 (UX8): only Baby cards carry it, not yet at their map level */ : r.outside ? '' : pill('main', 'ui.ui35-pill-main', 'ui.ui35-pill-main-tip')}${r.isNew ? ` <i class="ui19-new${r.isFocus ? '' : ' is-minor'}" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : r.isNewUse ? pill('newuse', 'ui.ui35-pill-newuse', 'ui.ui35-pill-newuse-tip') : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}${cx(r.key)}</span></li>`; };
   const focusAdd = [...focus].filter(k=> !mainKeys.has(k) && skillDefOf(k)); // 2026-11-16 (UX7): focus skills no main card carries yet: red outline, to add
   const have = new Set(rows.concat(rowsO).map(r=> r.key).concat(focusAdd)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
   // 2026-11-08 (package UI34, owner 23:49): a Counters group (skills that answer the main cards' skills, canonical/skill-counters.json); a counter is a tile once: not in Main / Other, and off the blue group
@@ -34412,7 +34436,7 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   const newN = flaggedMain.filter(r=> r.isFocus).length + focusAdd.length; // 2026-11-16 (UX7, owner 20:24): the header count is the red focus chips only (was: every new skill, UI35 #9)
   ; // 2026-11-08 (UI35 #6): how many skills this map introduces (the owner wants 2-3 on a main map, 0-1 on a side map)
   const tileN = flaggedMain.length + focusAdd.length + ctr.length + (cxTiles ? 1 : 0) + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + recs.length + picks.length + flaggedOther.length;
-  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<ul class="ui19-sk-list">${flaggedMain.map(li).join('')}${addTiles}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${cxTiles}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
+  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<ul class="ui19-sk-list">${flaggedMain.filter(r=> !r.late).map(li).join('')}${addTiles}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${cxTiles}${hd('other', flaggedOther.length)}${flaggedOther.filter(r=> !r.late).map(li).join('')}${flagged.filter(r=> r.late).map(li).join('') /* 2026-11-16 (UX8, owner 23:35 #2): a skill no carrier has yet at its map level is not in the map: listed last */}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
 // UI34_COUNTERS:START
@@ -34864,7 +34888,7 @@ function ui37TileHTML(top, p, kind, defs, idx, rvMap){
 function ui39PlainTileHTML(id, defs, why, x){
   const dd = defs[id], pt = dd ? basicPackTierOf(dd) : 0; x = x || {};
   const pack = pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '';
-  return `<span class="rv1-tile is-ui39${x.cls ? ' ' + x.cls : ''}" data-rv-id="${escapeAttr(id)}" data-rv-sec="ui39" data-rv-kind="ui39"${x.attrs || ''}${x.title ? ` title="${escapeAttr(x.title)}"` : ''}>${x.mark || ''}${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true, why})}<span class="rv2-pills">${pack}${x.pills || ''}</span></span>`;
+  return `<span class="rv1-tile is-ui39${x.cls ? ' ' + x.cls : ''}" data-rv-id="${escapeAttr(id)}" data-rv-sec="ui39" data-rv-kind="ui39"${x.attrs || ''}${x.title ? ` title="${escapeAttr(x.title)}"` : ''}>${x.mark || ''}${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true, why})}<span class="rv2-pills">${ui13IsBaby(id, defs) ? `<b class="rv2-pill is-baby" title="${escapeAttr(TX('ui.ui13-tip-baby'))}">${escapeHtml(TX('ui.ui13-tag-baby'))}</b>` : ''}${ux8IsStarter(id, defs) ? `<b class="rv2-pill is-starter" title="${escapeAttr(TX('ui.ux8-tip-starter'))}">${escapeHtml(TX('ui.ux8-tag-starter'))}</b>` : ''}${pack}${x.pills || ''}</span></span>`; // 2026-11-16 (UX8, owner 23:35 #3): Baby and Starter on a card no review lists too
 }
 // a proposed concept (no art, no stats): a full-size card-shaped placeholder with its name, animal, element, suggested rarity and role; the hover shows it all
 function ui39ConceptCardHTML(c){

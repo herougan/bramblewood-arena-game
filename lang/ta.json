@@ -3963,7 +3963,7 @@
  "Remove the level (the skill is there from the start)": "நிலையை நீக்கு (திறன் தொடக்கத்திலிருந்தே இருக்கும்)",
  "Second species (optional, makes a hybrid)": "இரண்டாவது இனம் (விருப்பம், கலப்பினம் ஆகும்)",
  "— none —": "— இல்லை —",
- "Starter": "தொடக்கம்",
+ "Starter": "தொடக்க",
  "Stops Venom, Deadly Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Venomous or decay damage still hurts.": "நஞ்சு, கொடிய நஞ்சு, நச்சுப்பொருள், சிதைவு (சிதைவு சேதத்தின் தாக்குதல் இழப்பும்), சதுப்புக் காய்ச்சல், வித்து மேகம் ஆகியவற்றைத் தடுக்கும். நஞ்சு அல்லது சிதைவு சேதம் இன்னும் வலிக்கும்.",
  "On the map's SPECIAL list, not this one: a fight can still lead with it or reward it.": "வரைபடத்தின் SPECIAL பட்டியலில் உள்ளது, இதில் இல்லை: ஒரு போர் இன்னும் அதைத் தலைவராகக் கொள்ளலாம் அல்லது பரிசாகத் தரலாம்.",
  "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.": "ஈரம் {n}: ஒவ்வொரு மின்னல் அடியும் {n} கூடுதல். ஒவ்வொரு சுற்றும் ஒரு குறி குறையும்; தீ எரிவதற்கு முன் ஒன்றை உலர்த்தும்.",
@@ -4473,5 +4473,12 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "வரும்போது, 1 மரம் செலுத்தி பாதி தாக்குதல், ஆரோக்கியத்துடன் {n} நகல்கள், காத்திருப்பு 1. மரம் இல்லையெனில் நகல் இல்லை.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "தாக்கப்பட்டால், எதிரே உள்ள எதிரியைத் தாக்கும். எதிரே எதிரி இல்லையெனில் மட்டுமே தானாகத் தாக்கும்.",
  "To add": "சேர்க்க",
- "Focus skill for this map that no main card has yet: put it on a card": "இந்த வரைபடத்தின் முக்கிய திறன்; எந்த முதன்மை அட்டையிலும் இன்னும் இல்லை: ஒரு அட்டையில் சேர்க்கவும்"
+ "Focus skill for this map that no main card has yet: put it on a card": "இந்த வரைபடத்தின் முக்கிய திறன்; எந்த முதன்மை அட்டையிலும் இன்னும் இல்லை: ஒரு அட்டையில் சேர்க்கவும்",
+ "A Starter card: it starts at Level 0": "தொடக்க அட்டை: நிலை 0 இல் தொடங்கும்",
+ "Only Baby cards carry this skill, and not yet at their map level, so it is not really in the map": "இந்த திறன் குட்டி அட்டைகளிடம் மட்டுமே உள்ளது, வரைபட நிலையில் இன்னும் இல்லை, எனவே இது உண்மையில் வரைபடத்தில் இல்லை",
+ "LvL": "நிலை",
+ "AI pick": "AI தேர்வு",
+ "Picked by an AI, or by you through Add cards.": "AI அல்லது நீங்கள் 'அட்டைகளைச் சேர்' மூலம் தேர்ந்தெடுத்தது.",
+ "AI pick {card} carries it (theme: {theme})": "AI தேர்வு {card} இதைக் கொண்டுள்ளது (கருப்பொருள்: {theme})",
+ "My pick": "என் தேர்வு"
 }

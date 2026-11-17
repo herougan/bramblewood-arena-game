@@ -15,7 +15,7 @@ function fnSrc(name){
   for(; i < app.length; i++){ const ch = app[i]; if(ch === '{') depth++; else if(ch === '}'){ depth--; if(!depth) break; } }
   return app.slice(a + 1, i + 1);
 }
-const TXs = {'ui.rv2-tag-skirmish': 'Skirmish', 'ui.rv2-tag-carried': 'Carried', 'ui.rv2-tag-unique': 'Unique', 'ui.rv2-tag-owner': 'Your note', 'ui.rv2-tag-claude': "Claude's pick", 'ui.rv2-tip-owner': 'o', 'ui.rv2-tip-claude': 'c',
+const TXs = {'ui.rv2-tag-skirmish': 'Skirmish', 'ui.rv2-tag-carried': 'Carried', 'ui.rv2-tag-unique': 'Unique', 'ui.rv2-tag-owner': 'Your note', 'ui.rv2-tag-claude': 'AI pick', 'ui.rv2-tip-owner': 'o', 'ui.rv2-tip-claude': 'c', // 2026-11-16 (UX8): AI pick
   'ui.rv2-count': '{x}/{n} new cards, {y}/{m} carried cards', 'ui.rv2-count-new': '{x}/{n} new cards', 'ui.rv2-count-free': '{x} new cards, {y} carried cards'};
 const TX = (k, v)=> String(TXs[k] || k).replace(/\{(\w+)\}/g, (_, n)=> v && n in v ? v[n] : '{' + n + '}');
 
@@ -28,11 +28,11 @@ const names = e=> A.rv2TagsOf(e).map(t=> t[1]).join('+');
 ok(names({why: 'Volcanic & ash card; skirmish reward of 6-3', by: 'kept'}) === 'Skirmish+Unique', 'A1. a skirmish reward: Skirmish + Unique, no kept pill (' + names({why: 'Volcanic & ash card; skirmish reward of 6-3', by: 'kept'}) + ')');
 ok(names({why: 'Village & keep card; first-clear card of 6-5', by: 'kept'}) === 'Skirmish+Unique', 'A1. a first-clear card is a Skirmish card too');
 ok(names({why: 'Carried from The Sundered Peak (Map 20); Volcanic & ash card', by: 'kept'}) === 'Carried', 'A1. carried from an earlier map: Carried only');
-ok(names({why: 'Owner L2: carried from T-1 / T-2', by: 'owner'}) === 'Carried+Your note', 'A1. the owner\'s note adds "Your note" (' + names({why: 'Owner L2: carried from T-1 / T-2', by: 'owner'}) + ')');
-ok(names({why: 'Too strong early', by: 'claude'}) === 'Unique+Claude\'s pick', 'A1. Claude\'s own pick is "Claude\'s pick"');
+ok(names({why: 'Owner L2: carried from T-1 / T-2', by: 'owner'}) === 'Carried', 'A1. 2026-11-16 (UX8, owner 23:35 #3): no "Your note" tag (' + names({why: 'Owner L2: carried from T-1 / T-2', by: 'owner'}) + ')');
+ok(names({why: 'Too strong early', by: 'claude'}) === 'Unique+AI pick', 'A1. an AI pick is "AI pick" (UX8: was Claude\'s pick)');
 ok(names({why: 'Swamp & bog card, on no list now'}) === 'Unique', 'A1. a maybe (no by) shows no author pill');
 ok(!A.rv2TagsOf({why: 'x', by: 'kept'}).some(t=> /kept/i.test(t[0] + t[1])), 'A1. there is no kept pill');
-ok(A.rv2TagsOf({why: 'x', by: 'owner'}).find(t=> t[0] === 'owner')[2] && A.rv2TagsOf({why: 'x', by: 'claude'}).find(t=> t[0] === 'claude')[2], 'A1. the owner and Claude pills carry a tooltip saying what they mean');
+ok(A.rv2TagsOf({why: 'x', by: 'claude'}).find(t=> t[0] === 'claude')[2], 'A1. the owner and Claude pills carry a tooltip saying what they mean');
 // --- A2. targets
 const u = n=> Array.from({length: n}, ()=> ({why: 'Meadow card'})), c = n=> Array.from({length: n}, ()=> ({why: 'Carried from Map 1'}));
 // 2026-11-05 (CONTENT10, THEME6-1): main maps follow the owner's count rule by map number (was 8-11 own, 4-5 carried on every main map)
@@ -89,7 +89,7 @@ ok(side.every(x=> A.RV2_SIDE_CLASS[x.key] === x.class), 'A2. the class table mat
   ok(/if\(to\.ambush \|\| from\.ambush\) return;/.test(app) && /if\(t\.classList\.contains\('is-ambush'\)\) return;/.test(app), 'B8. the link editor takes no link to or from the Ambush');
 }
 // --- texts
-{ const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, keys = ['tag-skirmish', 'tag-carried', 'tag-unique', 'tag-owner', 'tag-claude', 'tip-owner', 'tip-claude', 'copy-tip', 'count', 'count-new', 'count-free', 'ambush-fixed'].map(k=> 'ui.rv2-' + k);
+{ const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, keys = ['tag-skirmish', 'tag-carried', 'tag-unique', 'tag-claude', 'tip-claude', 'copy-tip', 'count', 'count-new', 'count-free', 'ambush-fixed'].map(k=> 'ui.rv2-' + k);
   ok(keys.every(k=> T[k]), 'T. the TX keys exist');
   const codes = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
   ok(codes.every(c=>{ const p = JSON.parse(rd('lang/' + c + '.json')); return keys.every(k=> p[T[k]] && (T[k].match(/\{\w+\}/g) || []).every(ph=> p[T[k]].includes(ph))); }), 'T. each has a row in all 12 packs, placeholders kept'); }

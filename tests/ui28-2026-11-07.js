@@ -68,7 +68,8 @@ async function browser(){
       ok(scan.length >= 20, `@${w} scanned Maps 0-20 (${scan.length})`);
       ok(scan.every(x=> x.dupRec.length === 0), `@${w} no recommendation tile repeats a skill already shown as a tile`);
       ok(scan.every(x=> x.sugOutsideGrey === 0 && x.greyNew === 0 && x.sugWithoutRec === 0), `@${w} the Suggested pill is only on grey and recommendation tiles; grey tiles carry no NEW!`);
-      ok(scan.some(x=> x.grey > 0) && scan.some(x=> x.greySug > 0), `@${w} some map has a grey tile and one has a Suggested grey tile (${scan.filter(x=> x.greySug).map(x=> x.k).join(',')})`);
+      // 2026-11-16 (UX8, owner 23:35 #2): a skill is grey only when no carrier has it at its map-list level; a Level 1 skill on a Level 1 card is in the map, so no map keeps a Suggested grey tile now (only Baby cards at Level 0 give grey)
+      ok(scan.some(x=> x.grey > 0), `@${w} some map has a grey tile (${scan.filter(x=> x.greySug).map(x=> x.k).join(',')})`);
       // Map 5 and Map 6 windows
       for(const num of [5, 6, 0]){
         const id = await pg.evaluate(`mainConquestMaps().find(m=> mapNumberOf(m.id) === ${num}).id`);

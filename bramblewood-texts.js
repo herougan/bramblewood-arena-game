@@ -3046,10 +3046,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rv2-tag-skirmish": "Skirmish",
   "ui.rv2-tag-carried": "Carried",
   "ui.rv2-tag-unique": "Unique",
-  "ui.rv2-tag-owner": "Your note",
-  "ui.rv2-tag-claude": "Claude's pick",
-  "ui.rv2-tip-owner": "You asked for this card (or this cut) in one of your notes.",
-  "ui.rv2-tip-claude": "Claude chose this one; you did not ask for it.",
+  "ui.rv2-tag-claude": "AI pick",
+  "ui.rv2-tip-claude": "Picked by an AI, or by you through Add cards.",
   "ui.rv2-copy-tip": "Copies your Cut/Keep choices as text, ready to paste to Claude",
   "ui.ui3-export-all": "Export all",
   "ui.ui3-export-all-tip": "Copies every map's card lists, with your Cut/Keep choices, as text for Claude.",
@@ -3571,7 +3569,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui34-resist-why": "A {name} Resist or Immune entry softens or stops it.",
   "ui.ui34-unsure": "unsure",
   "ui.ui34-cn-tip": "Answers {n} of this map's cards",
-  "ui.ui34-pick-tip": "Claude's pick {card} carries it (theme: {theme})",
+  "ui.ui34-pick-tip": "AI pick {card} carries it (theme: {theme})",
   "ui.ui35-view-label": "Card view",
   "ui.ui35-view-full": "Full art",
   "ui.ui35-view-compact": "Compact",
@@ -3625,9 +3623,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui37-flag-label": "Flag {name}",
   "ui.ui37-src-list": "On list",
   "ui.ui37-src-maybe": "Maybe",
-  "ui.ui37-src-claude": "Claude's pick",
+  "ui.ui37-src-claude": "AI pick",
   "ui.ui37-src-newcard": "New card",
-  "ui.ui37-src-flag": "Your pick",
+  "ui.ui37-src-flag": "My pick",
   "ui.ui37-src-earlier": "Yes earlier",
   "ui.ui37-from": "Map {n}",
   "ui.ui37-export": "Export picks",
@@ -3745,7 +3743,11 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-counterattack": "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.",
   "ui.skn1-fog": "Fog",
   "ui.ux7-focus-add": "To add",
-  "ui.ux7-focus-add-tip": "Focus skill for this map that no main card has yet: put it on a card"
+  "ui.ux7-focus-add-tip": "Focus skill for this map that no main card has yet: put it on a card",
+  "ui.ux8-tag-starter": "Starter",
+  "ui.ux8-tip-starter": "A Starter card: it starts at Level 0",
+  "ui.ux8-late-baby-tip": "Only Baby cards carry this skill, and not yet at their map level, so it is not really in the map",
+  "ui.ux8-lvl-btn": "LvL"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

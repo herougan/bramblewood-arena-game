@@ -3960,7 +3960,7 @@
  "Remove the level (the skill is there from the start)": "移除等级（技能从一开始就有）",
  "Second species (optional, makes a hybrid)": "第二物种（可选，成为混种）",
  "— none —": "— 无 —",
- "Starter": "新手",
+ "Starter": "初始",
  "Rage": "狂怒",
  "Stops Venom, Deadly Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Venomous or decay damage still hurts.": "阻止中毒、剧毒、毒素、腐朽（及腐朽伤害造成的攻击下降）、沼泽热和孢子云。毒素或腐朽伤害仍会造成伤害。",
  "On the map's SPECIAL list, not this one: a fight can still lead with it or reward it.": "在地图的 SPECIAL 列表中，不在此列表：战斗仍可用它作首领或奖励。",
@@ -4471,5 +4471,12 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "登场时支付 1 木材，获得 {n} 个攻击和生命减半的复制，等待 1。没有木材就没有复制。",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "被击中时，攻击对面的敌人。只有对面没有敌人时才主动攻击。",
  "To add": "待添加",
- "Focus skill for this map that no main card has yet: put it on a card": "本地图的重点技能，主卡上还没有：放到一张卡上"
+ "Focus skill for this map that no main card has yet: put it on a card": "本地图的重点技能，主卡上还没有：放到一张卡上",
+ "A Starter card: it starts at Level 0": "初始卡牌：从 0 级开始",
+ "Only Baby cards carry this skill, and not yet at their map level, so it is not really in the map": "只有幼崽卡带有此技能，且尚未到其地图等级，所以实际上不在该地图中",
+ "LvL": "等级",
+ "AI pick": "AI 精选",
+ "Picked by an AI, or by you through Add cards.": "由 AI 挑选，或由你通过“添加卡牌”挑选。",
+ "AI pick {card} carries it (theme: {theme})": "AI 精选 {card} 带有它（主题：{theme}）",
+ "My pick": "我的精选"
 }
