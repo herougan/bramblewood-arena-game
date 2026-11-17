@@ -2175,6 +2175,26 @@ PASSIVE_DEFS.push(
   {key:'sleepPowder', category:'evergreen', label:TX('ui.skn-sleep-powder'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-sleep-powder', {n: numOr(v, 1)})},
   {key:'poisonPowder', category:'evergreen', label:TX('ui.skn-poison-powder'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-poison-powder', {n: numOr(v, 2)})});
 Object.assign(SKILL_ICON, {sleepPowder:'😴', poisonPowder:'🍄'}); // none shared with another skill
+// ==== ENG50 (2026-11-17, owner 11-17 23:14 / 23:36, decisions OWN-1117-2 and REDESIGN3-1; rules in bramblewood-engine.js (ENG50), prices in
+// canonical/skill-costs.json): Paralysis Powder N (the third powder: Stun N), Rend N (Vulnerable tokens: x2 on the next hit), Enfeeble N (Feeble
+// tokens: its next hit x0.5), Armourer N (while Ready, each ally you play comes in +0/+N); the actions Rend, Enfeeble, Weaken and Grant {who} {what}.
+// On no card yet (the redesign fold adds them; Rend and Enfeeble are not featured on Maps 0-20).
+PASSIVE_DEFS.push(
+  {key:'paralysisPowder', category:'evergreen', label:TX('ui.skn-paralysis-powder'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-paralysis-powder', {n: numOr(v, 1)})},
+  {key:'rend', category:'evergreen', label:TX('ui.skn-rend'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-rend', {n: numOr(v, 1)}), codexNote:TX('ui.sk-rend-codex')},
+  {key:'enfeeble', category:'evergreen', label:TX('ui.skn-enfeeble'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-enfeeble', {n: numOr(v, 1)}), codexNote:TX('ui.sk-enfeeble-codex')},
+  {key:'armourer', category:'passive', label:TX('ui.skn-armourer'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-armourer', {n: numOr(v, 1)}), codexNote:TX('ui.sk-armourer-codex')});
+ACTION_DEFS.push(
+  {key:'rend', label:TX('ui.act-rend'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-rend-desc')},
+  {key:'enfeeble', label:TX('ui.act-enfeeble'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-enfeeble-desc')},
+  {key:'weaken', label:TX('ui.act-weaken'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-weaken-desc')},
+  {key:'grant', label:TX('ui.act-grant'), fields:['grantSkill','who','sub','targets'], whoOptions:['ally','self','kin'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-grant-desc')});
+Object.assign(SKILL_ICON, {paralysisPowder:'⚡', rend:'💔', enfeeble:'🪶', armourer:'⚒️'});
+// Grant's skills: the ones with a price row (canonical/skill-costs.json grant.<key>), so every Grant on a card is priced; t.skill names it and
+// t[t.skill] holds its value (true for a plain skill), the shape the engine and the price table read.
+function eng50GrantChoices(){ try{ return (SKILL_COSTS_TABLE.actions || []).filter(a=> /^grant\.[a-z]/.test(a.id)).map(a=> a.id.slice(6)).filter(k=> PASSIVE_DEFS.some(p=> p.key === k)); }catch(e){ return []; } }
+function eng50GrantText(t){ const k = t && t.skill; if(!k) return ''; const p = PASSIVE_DEFS.find(x=> x.key === k), v = t[k];
+  return ((p && p.label) || k) + (typeof v === 'number' && v > 0 && !(p && p.kind === 'boolean') ? ' ' + v : ''); }
 // ==== Package ENG24 (2026-11-04, owner 11-04 22:34 in docs/decisions.json; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
 //   Bramble Armor (key brambleArmor) reads as a Fortify form: "Fortify { Armor N }, while it lives" (ENG22-2 b); the rule is unchanged.
 //   Relict (RELICT-1), Meld {X}, Immunity, Sequestration (RELICT-2): on no card; texts under 15 words.
@@ -7210,7 +7230,14 @@ const LIVE_STATUS_ROUNDS = new Set(['shocked', 'staggered', 'frozen', 'asleep', 
 // (The Exposed row keeps its number, now the rounds left: ui.ls-exposed says "no hiding for N more rounds".)
 { const ex = LIVE_STATUS_ROWS.findIndex(r=> r[0] === 'exposed');
   LIVE_STATUS_ROWS.splice(ex + 1, 0, ['exploit', 'exploit', TX('ui.skn-exploit'), n=> TX('ui.ls-exploit', {n, s: n === 1 ? '' : 's'}), true]); }
-STATUS_KEYWORDS.push({k:'exploit', re:/\b(vulnerable|exploit(?:ed|s)?)\b/gi, cs:true, name:TX('ui.skn-exploit'), c:'#c0563b', text:TX('ui.st-exploit')}); // ENG39 (2026-11-09, decision DES2-3 a): its tokens are shown as Vulnerable
+STATUS_KEYWORDS.push({k:'exploit', re:/\b(exploit(?:ed|s)?)\b/gi, cs:true, name:TX('ui.skn-exploit'), c:'#c0563b', text:TX('ui.st-exploit')}); // ENG39 (2026-11-09) showed its tokens as Vulnerable; ENG50 (2026-11-17, OWN-1117-2: "Exploit N: Exploit tokens") names them Exploit again
+// ENG50 (2026-11-17, OWN-1117-2): Rend's Vulnerable tokens (x2 on the next hit taken) and Enfeeble's Feeble tokens (x0.5 on the next hit dealt):
+// their lines under the unit's skills, glossary words, badges, floats and log lines.
+{ const ex = LIVE_STATUS_ROWS.findIndex(r=> r[0] === 'exploit');
+  LIVE_STATUS_ROWS.splice(ex + 1, 0, ['vulnerable', 'vulnerable', TX('ui.stn-vulnerable'), n=> TX('ui.ls-vulnerable', {n, s: n === 1 ? '' : 's'}), true],
+    ['feeble', 'feebleTokens', TX('ui.stn-feeble'), n=> TX('ui.ls-feeble', {n, s: n === 1 ? '' : 's'}), true]); }
+STATUS_KEYWORDS.push({k:'vulnerable', re:/\b(vulnerable)\b/gi, cs:true, name:TX('ui.stn-vulnerable'), c:'#c2185b', text:TX('ui.st-vulnerable')},
+  {k:'feebleTokens', re:/\b(feeble tokens?)\b/gi, cs:true, name:TX('ui.stn-feeble'), c:'#8d6e63', text:TX('ui.st-feeble-tokens')});
 Object.assign(SKILL_TEXT, {
   sentry: v=> TX('ui.sk-sentry', {n: numOr(v, SK1_DEFAULTS.sentry)}),
   expose: v=> TX('ui.sk-expose', {n: numOr(v, SK1_DEFAULTS.expose)}),
@@ -7270,6 +7297,11 @@ function sk1LogText(ev, nm){
   if(ev.kind === 'exploit') return {cls:'', text:TX('ui.log-exploit', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1, s: s(ev.amount||1)})};
   if(ev.kind === 'exploitHit') return {cls:'', text:TX('ui.log-exploit-hit', {name: nm(ev.targetDefId), b: ev.bonus||1, n: ev.amount||0})};
   if(ev.kind === 'exploitFade') return {cls:'', text:TX('ui.log-exploit-fade', {name: nm(ev.targetDefId)})};
+  if(ev.kind === 'rend') return {cls:'', text:TX('ui.log-rend', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1})}; // ENG50 (2026-11-17)
+  if(ev.kind === 'vulnHit') return {cls:'', text:TX('ui.log-vuln-hit', {name: nm(ev.targetDefId), n: ev.amount||0})};
+  if(ev.kind === 'enfeeble') return {cls:'', text:TX('ui.log-enfeeble', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1})};
+  if(ev.kind === 'feebleHit') return {cls:'', text:TX('ui.log-feeble-hit', {name: nm(ev.targetDefId), n: ev.amount||0})};
+  if(ev.kind === 'grant') return {cls:'gold', text:TX('ui.log-grant', {att: nm(ev.attDefId), name: nm(ev.targetDefId), skill: (ev.skills || []).map(k=> (PASSIVE_DEFS.find(p=> p.key === k) || {}).label || k).join(', ')})};
   if(ev.kind === 'poisonPulse') return {cls:'poison', text:TX('ui.log-poison-pulse', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})};
   if(ev.kind === 'punish') return {cls:'', text:TX('ui.log-punish', {att: nm(ev.attDefId), name: nm(ev.targetDefId), dmg: ev.dmg||0})};
   if(ev.kind === 'sk1Aura'){ if(ev.atk > 0) return {cls:'', text:TX('ui.log-formation', {name: nm(ev.targetDefId), n: ev.atk})};
@@ -7294,6 +7326,12 @@ function sk1Vfx(ev){
   if(ev.kind === 'exploit'){ if(rc) rc.exploit = (rc.exploit||0) + (ev.amount||1); fl(el, TX('ui.float-exploit'), 'debuff'); snd('exposeTone'); refresh(ev.targetUid); return; }
   if(ev.kind === 'exploitHit'){ if(rc) rc.exploit = ev.amount||0; fl(el, `🩻 +${ev.bonus||1}`, 'debuff'); refresh(ev.targetUid); return; }
   if(ev.kind === 'exploitFade'){ if(rc) rc.exploit = 0; refresh(ev.targetUid); return; }
+  // ENG50 (2026-11-17): the token marks reuse the Exploit float and sound (exposeTone); a used token ticks the badge down; Grant floats its gift
+  if(ev.kind === 'rend'){ if(rc) rc.vulnerable = (rc.vulnerable||0) + (ev.amount||1); fl(el, TX('ui.float-vulnerable'), 'debuff'); snd('exposeTone'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'vulnHit'){ if(rc) rc.vulnerable = ev.amount||0; fl(el, '💔 ×2', 'debuff'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'enfeeble'){ if(rc) rc.feeble = (rc.feeble||0) + (ev.amount||1); fl(el, TX('ui.float-feeble'), 'debuff'); snd('exposeTone'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'feebleHit'){ if(rc) rc.feeble = ev.amount||0; fl(el, '🪶 ×½', 'debuff'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'grant'){ fl(el, `🎁 ${(ev.skills || []).map(k=> (PASSIVE_DEFS.find(p=> p.key === k) || {}).label || k).join(', ')}`, 'buff'); snd('rallyTone'); return; }
   if(ev.kind === 'punish'){ fl(el, TX('ui.float-punish'), 'debuff'); snd('ambushTone'); return; }
   if(ev.kind === 'spellward' || ev.kind === 'spellshield'){ const se = boardCardEl(ev.attUid); if(se){ fl(se, '🪬', 'buff'); try{ flashShield(se); }catch(e){} } return; } // GD2 (2026-10-22): the Spellward unit steps in (EN, 2026-10-23)
   if(ev.kind === 'sk1Aura'){ if(rc){ rc.sk1Atk = ev.atk||0; if(ev.maxHpNow != null){ rc.maxHp = ev.maxHpNow; rc.hp = ev.hpNow; } }
@@ -7304,6 +7342,8 @@ function sk1Vfx(ev){
 function sk1StatusBadges(c, badges){
   if(c.ffCounters > 0) badges.push(`<span class="abadge ff-tokens" data-ff="${c.ffCounters}" title="${escapeAttr(TX('ui.eng23-ff-tip', {n: c.ffCounters}))}">⏩${c.ffCounters}</span>`); // ENG23 (2026-11-04): fast-forward tokens
   if(c.exploit > 0) badges.push(`<span class="abadge exploit" title="${escapeAttr(TX('ui.exploit-tip', {n: c.exploit, s: c.exploit === 1 ? '' : 's'}))}">🩻${c.exploit}</span>`);
+  if(c.vulnerable > 0) badges.push(`<span class="abadge exploit vulnerable" title="${escapeAttr(TX('ui.vulnerable-tip', {n: c.vulnerable, s: c.vulnerable === 1 ? '' : 's'}))}">💔${c.vulnerable}</span>`); // ENG50 (2026-11-17)
+  if(c.feeble > 0) badges.push(`<span class="abadge exploit feeble" title="${escapeAttr(TX('ui.feeble-tip', {n: c.feeble, s: c.feeble === 1 ? '' : 's'}))}">🪶${c.feeble}</span>`); // ENG50
   const a = c.sk1Atk || 0; if(a > 0) badges.push(`<span class="abadge formation" title="${escapeAttr(TX('ui.aura-formation-tip', {n: a}))}">🔗+${a}</span>`);
   else if(a < 0) badges.push(`<span class="abadge isolation" title="${escapeAttr(TX('ui.aura-isolation-tip', {n: -a}))}">🏝️${a}</span>`);
 }
@@ -13101,6 +13141,10 @@ function triggerPreviewText(t){
     case 'bleed': doText = `apply ${amt} bleed to ${whoTarget}`; break;
     case 'expose': doText = `put ${amt} Expose counter${amt==1 ? '' : 's'} on ${whoTarget} (each later hit crits and removes 1)`; break; // 2026-10-15; counters (2026-10-16)
     case 'stun': doText = `stun ${whoTarget}`; break;
+    case 'rend': doText = TX('ui.act-rend-text', {n: amt, who: whoTarget}); break; // ENG50 (2026-11-17)
+    case 'enfeeble': doText = TX('ui.act-enfeeble-text', {n: amt, who: whoTarget}); break;
+    case 'weaken': doText = TX('ui.act-weaken-text', {n: amt, who: whoTarget}); break;
+    case 'grant': doText = TX('ui.act-grant-text', {who: t.who === 'self' ? TX('ui.eng23-itself') : whoTarget, skill: eng50GrantText(t) || FILL}); break;
     case 'reduceWaitOfSpawned': doText = `reduce the just-played ally's Wait by ${amt}`; break;
     case 'missile': doText = `deal ${amt} damage to a random enemy unit`; break;
     case 'positionBeam': doText = TX('ui.act-position-beam-desc', {n: amt}); break; // 2026-10-19 (package EE)
@@ -13159,6 +13203,10 @@ function actionFieldsHTML(t,i){
   if(aDef.fields.includes('matchMode')) html += `<select data-t="matchMode" data-i="${i}"><option value="exact" ${t.matchMode==='exact'?'selected':''}>exact name</option><option value="contains" ${t.matchMode!=='exact'?'selected':''}>name contains…</option></select>`;
   if(aDef.fields.includes('count')) html += `<input type="number" placeholder="count" class="w-56" data-t="count" data-i="${i}" value="${t.count||1}">`;
   [['gsAdjacent', 'adjacent'], ['gsSurrounding', 'surrounding'], ['gsAllies', 'allies']].forEach(([f, k])=>{ if(aDef.fields.includes(f)) html += `<input type="number" min="0" placeholder="${k}" title="${k}" class="w-64" data-t="${k}" data-i="${i}" value="${t[k]!=null?t[k]:''}">`; }); // ENG19: Grant Shield's groups
+  // ENG50 (2026-11-17): Grant's skill (the priced ones, eng50GrantChoices) and, for a skill with a number, its value
+  if(aDef.fields.includes('grantSkill')){ const ks = eng50GrantChoices(), cur = t.skill && ks.includes(t.skill) ? t.skill : '', pd = PASSIVE_DEFS.find(p=> p.key === cur);
+    html += `<select data-t="grantSkill" data-i="${i}"><option value="">${escapeHtml(TX('ui.act-grant-pick'))}</option>${ks.map(k=> `<option value="${k}" ${cur===k?'selected':''}>${escapeHtml((PASSIVE_DEFS.find(p=> p.key === k) || {}).label || k)}</option>`).join('')}</select>`;
+    if(pd && pd.kind !== 'boolean') html += `<input type="number" min="1" placeholder="N" class="w-56" data-t="grantN" data-i="${i}" value="${typeof t[cur] === 'number' ? t[cur] : 1}">`; }
   if(aDef.fields.includes('dmgType')) html += `<select data-t="dmgType" data-i="${i}">${[...DMG_TYPES].sort().map(dt=>`<option value="${dt}" ${(t.dmgType===dt||(!t.dmgType&&dt==='physical'))?'selected':''}>${dmgTypeOptLabel(dt)}</option>`).join('')}</select>`;
   // Gain's resource picker (2026-09-30, new — see the 'gain' ACTION_DEFS entry's own comment).
   if(aDef.fields.includes('resource')){
@@ -21340,7 +21388,8 @@ const FIELD2 = {
   psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', revealAfter:{mapNum:41} /* 2026-10-18 (package U): "?" until a Map 41+ win */, short:'Psychic halved; Confuse 1 round less', text:TX('ui.fx-psychic-dampener'), codex:TX('ui.fxx-psychic-dampener')},
   // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now. "Awashed" will be for
   // something else - reserved."): on screen this field is "Wave" (Wave 1–3 on a random unit); the key stays awash for saves and data.
-  awash:         {icon:'〰️', name:'Wave', editor:'awash', short:'A unit rides a Wave 1–3 columns; crashes hurt', text:TX('ui.fx-awash'), codex:TX('ui.fxx-awash')}, // 2026-10-18: crash damage
+  // ENG50 (2026-11-17, owner 11-17 23:36, REDESIGN3-1): the owner's "Underwater Currents" (it moves units): the field's name on screen (was "Wave").
+  awash:         {icon:'〰️', name:'Underwater Currents', editor:'awash', short:'A unit rides a Wave 1–3 columns; crashes hurt', text:TX('ui.fx-awash'), codex:TX('ui.fxx-awash')}, // 2026-10-18: crash damage
   // 2026-10-19 (package RV, owner 00:19: "Quiet Contemplation on Map 21's boss: no 2x and re-enablement effects."): rules.quietContemplation,
   // the Cathedral Eagle's fight (21-6). The engine's quietOn / quietStills hold the list (the Codex line names it).
   quietContemplation:{icon:'🧘', name:TX('ui.fx-name-quiet-contemplation'), editor:'quietcontemplation', short:TX('ui.fx-quiet-contemplation-short'), text:TX('ui.fx-quiet-contemplation'), codex:TX('ui.fxx-quiet-contemplation')},
@@ -41025,7 +41074,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, chains:rc.chains||0 /* ENG-RC1 */, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0, ffCounters:rc.ffCounters||0 /* ENG23 */, inspTokens:rc.inspTokens||0, pounceSpent:!!rc.pounceSpent, helmetGone:!!rc.helmetGone /* ENG27 */ /* ENG21 */ /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, ctxOn:rc.ctxOn||'' /* ENG25 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, chains:rc.chains||0 /* ENG-RC1 */, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, vulnerable:rc.vulnerable||0, feeble:rc.feeble||0 /* ENG50 */, sk1Atk:rc.sk1Atk||0, ffCounters:rc.ffCounters||0 /* ENG23 */, inspTokens:rc.inspTokens||0, pounceSpent:!!rc.pounceSpent, helmetGone:!!rc.helmetGone /* ENG27 */ /* ENG21 */ /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, ctxOn:rc.ctxOn||'' /* ENG25 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -41167,7 +41216,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${pl1AuraAtk(c)}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.ffCounters||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.inspTokens||0}:${c.pounceSpent?1:0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}:${c.en5On != null ? c.en5On : (c._en5On || '')}:${c.ctxOn != null ? c.ctxOn : (c._ctxOn || '')}`; // + the Evolute stack (EV, 2026-10-21); 2026-11-15 (package E2EFIX1): + the lit state chips (ENG25 #7 draws them from en5On / ctxOn, which the signature missed, so a chip stayed dark until something else changed)
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${pl1AuraAtk(c)}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.vulnerable||0}:${c.feeble||0}:${c.ffCounters||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.inspTokens||0}:${c.pounceSpent?1:0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}:${c.en5On != null ? c.en5On : (c._en5On || '')}:${c.ctxOn != null ? c.ctxOn : (c._ctxOn || '')}`; // + the Evolute stack (EV, 2026-10-21); 2026-11-15 (package E2EFIX1): + the lit state chips (ENG25 #7 draws them from en5On / ctxOn, which the signature missed, so a chip stayed dark until something else changed)
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -46721,7 +46770,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, chains:c.chains||0 /* ENG-RC1 */, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0, ffCounters:c.ffCounters||0 /* ENG23 */, inspTokens:c.inspTokens||0, pounceSpent:!!c.pounceSpent, helmetGone:!!c.helmetGone /* ENG27 */ /* ENG21 */ /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, ctxOn:c._ctxOn||'' /* ENG25 (2026-11-05): Loyal / Usurper / Liege on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, chains:c.chains||0 /* ENG-RC1 */, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, vulnerable:c.vulnerable||0, feeble:c.feeble||0 /* ENG50 */, sk1Atk:c.sk1Atk||0, ffCounters:c.ffCounters||0 /* ENG23 */, inspTokens:c.inspTokens||0, pounceSpent:!!c.pounceSpent, helmetGone:!!c.helmetGone /* ENG27 */ /* ENG21 */ /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, ctxOn:c._ctxOn||'' /* ENG25 (2026-11-05): Loyal / Usurper / Liege on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -50730,7 +50779,7 @@ function logText(ev){
     case 'arrow': if(ev.style === 'drop') return {cls:'', text: ev.targetDefId ? TX('ui.bx-log-drop', {name: nm(ev.defId), target: nm(ev.targetDefId)}) : TX('ui.bx-log-drop-bramble', {name: nm(ev.defId)})}; // Package BX (2026-10-21)
       return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};
     case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'venom 🐍' /* ENG33: Venom Spit */, ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
-    case 'powder': return {cls: ev.element === 'poison' ? 'poison' : '', text:TX(ev.element === 'poison' ? 'ui.powder-log-poison' : 'ui.powder-log-sleep', {name: nm(ev.defId), target: nm(ev.targetDefId)})}; // POWDER1 (2026-11-17)
+    case 'powder': return {cls: ev.element === 'poison' ? 'poison' : '', text:TX(ev.element === 'poison' ? 'ui.powder-log-poison' : ev.element === 'paralysis' ? 'ui.powder-log-paralysis' /* ENG50 */ : 'ui.powder-log-sleep', {name: nm(ev.defId), target: nm(ev.targetDefId)})}; // POWDER1 (2026-11-17)
     case 'boonFire': return {cls:'', text:TX('ui.df3-log', {boon: boonName(ev.boon), name: nm(ev.defId)})}; // 2026-10-24 (package DF3): a selfish boon helped one of theirs
     case 'bossGimmick': return {cls:'', text:TX('ui.c11-' + ev.gimmick + '-log', {name: ev.defId ? nm(ev.defId) : '', n: ev.dmg || ev.heal || ev.shield || ev.shieldLost || ''})}; // CONTENT11 (2026-11-05): a boss gimmick
     case 'revive': return {cls:'gold', text:TX('ui.log-revive', {name: nm(ev.defId)})}; // 2026-10-19 (package RV): it did die (the death line is just before)
@@ -52717,13 +52766,13 @@ function applySkinClasses(root){
 // has none. A crit puts the game's crit fist 👊 first (alone for a physical crit, 👊❄️ for an elemental one; the game's own crit mark is
 // used instead of the note's ❇). The mark is the target's damage modifier on that hit (ev.mods from the engine), the strongest one only.
 const DN_MOD_GLYPH = {immune:'🚫', blocked:'⛨', fragile:'🦴', weak:'💢', reduced:'⛨'};
-const DN_REDUCED = ['armor', 'resist', 'sturdy', 'shield', 'stone', 'rage', 'scare'];
+const DN_REDUCED = ['armor', 'resist', 'sturdy', 'shield', 'stone', 'rage', 'scare', 'feeble' /* ENG50 */];
 function dnModKey(mods, blocked, dmg){
   const m = Array.isArray(mods) ? mods : [];
   if(m.includes('immune') && !(dmg > 0)) return 'immune';
   if(blocked && !(dmg > 0)) return 'blocked';
   if(m.includes('fragile')) return 'fragile';
-  if(m.includes('weak') || m.includes('shocked')) return 'weak';
+  if(m.includes('weak') || m.includes('shocked') || m.includes('vulnerable') /* ENG50 */) return 'weak';
   if(m.some(k=> DN_REDUCED.includes(k))) return 'reduced';
   return null;
 }
@@ -55969,7 +56018,7 @@ function renderVfxForEvent(ev){
       if(rc){ rc.cowering = true; try{ const ce = boardCardEl(ev.targetUid); if(ce) ce.querySelectorAll('.ab-cower').forEach(x=> x.outerHTML = eng15CowerChip(getCardDefs()[rc.defId] && getCardDefs()[rc.defId].effects || {}, true)); }catch(e){} } } // ENG15 (2026-10-31, FF6): the pip lights while it cowers
     else if(ev.kind==='armorShred'){ try{ SoundKit.rendTone(); }catch(e){} if(el) floatText(el, '−'+ev.amount+'🛡 for good', 'debuff'); if(rc) rc.armorLoss = (rc.armorLoss||0) + ev.amount; }
     else if(ev.kind==='scar'){ SoundKit.scarMark(); if(el) floatText(el, '+'+ev.amount+'🗡', 'debuff'); if(rc) rc.scar = (rc.scar||0) + ev.amount; }
-    else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.bleed=0; rc.scar=0; rc.exposed=0; rc.exploit=0; rc.shocked=0; rc.corrode=0; rc.brittle=0; rc.staggered=0; rc.armorLoss=0; } /* the physical debuffs only (2026-10-19, SK1) */ }
+    else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.bleed=0; rc.scar=0; rc.exposed=0; rc.exploit=0; rc.vulnerable=0; rc.feeble=0; /* ENG50 */ rc.shocked=0; rc.corrode=0; rc.brittle=0; rc.staggered=0; rc.armorLoss=0; } /* the physical debuffs only (2026-10-19, SK1) */ }
     else if(ev.kind==='stanch'){ try{ SoundKit.cleanseTone(); }catch(e){} if(el){ floatText(el, `🩹 -${ev.amount} 🩸`, 'heal'); cleanseVfx(el); } if(rc) rc.bleed = Math.max(0, (rc.bleed||0) - (ev.amount||0)); }
     else if(ev.kind==='grit'){ SoundKit.gritUp(); if(el) floatText(el, '+'+ev.amount+'⚔', 'gold'); }
     // Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid),
@@ -56552,6 +56601,8 @@ function overlayDelegateChanges(){
     if(key==='dmgType') t.dmgType = e.target.value;
     if(key==='target') t.target = e.target.value;
     if(key==='defId') t.defId = e.target.value;
+    if(key==='grantSkill'){ if(t.skill) delete t[t.skill]; const k = e.target.value, pd = PASSIVE_DEFS.find(p=> p.key === k); if(k){ t.skill = k; t[k] = pd && pd.kind === 'boolean' ? true : 1; } else delete t.skill; renderEditor(); return; } // ENG50 (2026-11-17): Grant
+    if(key==='grantN' && t.skill) t[t.skill] = Math.max(1, Number(e.target.value) || 1);
     if(key==='bramble'){ if(e.target.checked) t.bramble = true; else delete t.bramble; } // EN6 (2026-10-24)
     if(key==='withPoison' || key==='withBleed'){ if(e.target.checked) t[key] = true; else delete t[key]; } // EN7 (2026-10-24)
   });
