@@ -20994,5 +20994,26 @@
   "current": "FX.H.powderPuff {poison}: green spores wobble across and bloom into a sickly green cloud, venom drips (sporePuff, a low bubble)",
   "themeNotes": "A toadstool puff; not the Poison Bolt’s purple droplet.",
   "inGameHook": "onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff"
+ },
+ {
+  "area": "skill",
+  "quality": "good — ENG50",
+  "priority": 2,
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js",
+   "bramblewood-engine.js (POWDERS)"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "added": "2026-11-17",
+  "id": "sk-paralysis-powder",
+  "name": "Paralysis Powder N",
+  "trigger": "powder {element:'paralysis'}, then statusFx stunOnHit {powder:true}",
+  "current": "FX.H.powderPuff {paralysis}: yellow spores wobble across and bloom into a pale gold cloud, sparks jump (sporePuff, a dry crackle); then the Stun mark",
+  "themeNotes": "A numbing puff; the third powder (ENG50, REDESIGN3-1).",
+  "inGameHook": "onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff"
  }
 ]

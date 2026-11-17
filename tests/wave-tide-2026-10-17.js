@@ -140,7 +140,7 @@ const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
 const sfx = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-skillfx.js'), 'utf8');
 const fxa = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-fx-a.js'), 'utf8');
 const tpl = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), 'utf8');
-{ const m = src.match(/const FIELD2 = \{([\s\S]*?)\n\};/); ok(m && /\n  awash:\s*\{icon:'〰️', name:'Wave', editor:'awash'/.test('\n' + m[1]), 'FIELD2 has the Wave field, named Wave (the field card, Edit skirmish and the Environment row come from it)'); }
+{ const m = src.match(/const FIELD2 = \{([\s\S]*?)\n\};/); ok(m && /\n  awash:\s*\{icon:'〰️', name:'Underwater Currents', editor:'awash'/.test('\n' + m[1]), 'FIELD2 has the Wave field, named Underwater Currents since ENG50 (2026-11-17, REDESIGN3-1; was Wave) (the field card, Edit skirmish and the Environment row come from it)'); }
 ok(/\['awash', \{awash:true\}/.test(src), 'the Effects library stages Awash');
 // 2026-10-18 (user: "We can call all of them wave for now. "Awashed" will be for something else - reserved."): nothing on screen says Awash
 ok(!/〰️ Awash|name:'Awash'|`Awash /.test(src), 'no player-facing "Awash" left (the log, the float, the field card say Wave)');
