@@ -1770,6 +1770,47 @@
     }
    ],
    "source": "as arrow; Taunt text: a Volley is not pulled"
+  },
+  "waterBolt": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "bramblewood-engine.js BOLT_ELEMENTS waterBolt (ENG51, 2026-11-18): a shot, as Fire Bolt"
   }
  },
  "applies": {

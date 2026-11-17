@@ -4561,5 +4561,8 @@
  "When its swing lands: steal up to {n} Lumber.": "Quando o seu golpe acerta: rouba até {n} de Madeira.",
  "Charge": "Carga",
  "Broodmother": "Mãe da ninhada",
- "{name} plunders {n} Lumber.": "{name} pilha {n} de Madeira."
+ "{name} plunders {n} Lumber.": "{name} pilha {n} de Madeira.",
+ "Water Bolt": "Virote de água",
+ "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "Enquanto Pronta, em cada manutenção: {n} de dano de água ao inimigo à frente (ou o mais próximo), e deixa-o Molhado.",
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Cada ponto deixa uma ficha de Molhada (3 no máximo; uma seca por ronda) e apaga a Queimadura. Molhada: +1 de dano de raio por ficha."
 }

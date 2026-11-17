@@ -4561,5 +4561,8 @@
  "When its swing lands: steal up to {n} Lumber.": "Quando il suo colpo va a segno: ruba fino a {n} Legname.",
  "Charge": "Carica",
  "Broodmother": "Madre della covata",
- "{name} plunders {n} Lumber.": "{name} saccheggia {n} Legname."
+ "{name} plunders {n} Lumber.": "{name} saccheggia {n} Legname.",
+ "Water Bolt": "Dardo d’acqua",
+ "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "Finché è Pronta, a ogni mantenimento: {n} danni d’acqua al nemico di fronte (o al più vicino), e lo rende Bagnato.",
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Ogni punto lascia un segnalino Bagnato (al massimo 3; uno si asciuga a ogni round) e spegne la Bruciatura. Bagnato: +1 danno da fulmine per segnalino."
 }

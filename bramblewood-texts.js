@@ -3829,7 +3829,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-hunter-weaker": "Its hits deal {n} more to units with less Attack than it.",
   "ui.sk-plunder-lumber": "When its swing lands: steal up to {n} Lumber.",
   "ui.trg-charge": "Charge",
-  "ui.econ-log-plunder-lumber": "🏴‍☠️ {name} plunders {n} Lumber."
+  "ui.econ-log-plunder-lumber": "🏴‍☠️ {name} plunders {n} Lumber.",
+  "ui.skn-water-bolt": "Water Bolt",
+  "ui.sk-water-bolt": "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.",
+  "ui.sk-water-bolt-codex": "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

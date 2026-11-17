@@ -37,14 +37,15 @@ const ELEMENTS = ['physical', 'heat', 'cold', 'shock', 'poison', 'acid', 'water'
 ok(ELEMENTS.every(el=> C.SHOOTERS.some(s=> s.element === el)) && C.SHOOTERS.length === ELEMENTS.length, '1 one shooter for each element the engine has rules for');
 const DT = (app.match(/const DMG_TYPES = \[([^\]]+)\]/) || [])[1] || '';
 ok(['stone', 'metal'].every(x=> DT.includes(`'${x}'`)) && !/dmgType ?=== ?'stone'|dmgType ?=== ?'metal'/.test(eng), '1 stone / metal are editor names only (no engine rule): no shooter for them');
-const BOLT_EL = {fireBolt: 'heat', fireArrow: 'heat', iceBolt: 'cold', iceArrow: 'cold', shockBolt: 'shock', poisonBolt: 'poison', acidBolt: 'acid', arrow: 'physical'};
+const BOLT_EL = {fireBolt: 'heat', fireArrow: 'heat', iceBolt: 'cold', iceArrow: 'cold', shockBolt: 'shock', poisonBolt: 'poison', acidBolt: 'acid', waterBolt: 'water' /* ENG51 */, arrow: 'physical'};
 C.SHOOTERS.forEach(s=>{
   const c = by[s.id]; ok(!!c, `1 ${s.id} exists`); if(!c) return;
   ok(ranged(c.effects), `1 ${s.id} is ranged (canonical/skill-delivery.json)`);
   // FIX12 (2026-11-10): ENG39 (DES2-3 a) stores the bolts and arrows as kinds of Arrow ({arrow: {v, type, form}}); read the element from the
   // expanded keys (fireBolt, iceArrow ...), as the build and the engine do
   const fx = c.effects || {}, fxX = require(path.join(ROOT, 'bramblewood-skillparams.js')).expand(fx), el = Object.keys(fxX).map(k=> BOLT_EL[k]).find(Boolean) || ((fx.triggers || []).find(t=> (t.do || t.action) === 'damage') || {}).dmgType;
-  ok(el === s.element, `1 ${s.id} shoots ${s.element} (${el})`);
+  const want = s.id === 'archerfish' ? 'water' : s.element; // 2026-11-18 (ENG51, owner 11-17 17:32): the Archerfish spits Water Bolt now
+  ok(el === want, `1 ${s.id} shoots ${want} (${el})`);
   // 2026-11-11 (LISTFIX3): or a THEME8 suggestion the 11-11 lists took up (SKIR1, owner 00:16: Glow-worm on The Glimmer Depths), still awaiting the
   // owner's placement (awaitingSource, no source: enemy-only, not in a pack)
   const sug = Object.values(SUGGEST).some(l=> l.includes(s.id)) || OWN1113.has(s.id); // 2026-11-13 TESTFIX3: or an owner Yes pick of LIST1 awaiting placement

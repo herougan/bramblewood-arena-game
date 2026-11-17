@@ -1710,6 +1710,7 @@ const BOLT_LOOK = {
   poison: {core:'#f0d8ff', mid:'#9a4fd8', edge:'#4a1d6e', glow:'170,80,255',  bit:'poison'},
   ice:    {core:'#ffffff', mid:'#a8dcff', edge:'#3f8fd8', glow:'140,200,255', bit:'ice'},
   shock:  {core:'#ffffff', mid:'#fff36a', edge:'#e0b000', glow:'255,230,60',  bit:'zap'},
+  water:  {core:'#ffffff', mid:'#7cc8ff', edge:'#1d5fae', glow:'80,170,255',  bit:'ice'}, // ENG51 (2026-11-18): Water Bolt under reduced motion
 };
 const NINTH_CSS = `
 .sfx-glob{width:22px; height:22px; border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;}

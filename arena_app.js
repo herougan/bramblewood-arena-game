@@ -2190,6 +2190,10 @@ ACTION_DEFS.push(
   {key:'weaken', label:TX('ui.act-weaken'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-weaken-desc')},
   {key:'grant', label:TX('ui.act-grant'), fields:['grantSkill','who','sub','targets'], whoOptions:['ally','self','kin'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-grant-desc')});
 Object.assign(SKILL_ICON, {paralysisPowder:'⚡', rend:'💔', enfeeble:'🪶', armourer:'⚒️'});
+// ==== ENG51 (2026-11-18, owner 11-17 17:32: "Archer Fish's Water Bolt is in Map 21+"; rule in bramblewood-engine.js BOLT_ELEMENTS, price in
+// canonical/skill-costs.json): Water Bolt N, a bolt (Speed 2, one skill with the other bolts) of N water damage; water damage leaves Wet counters.
+PASSIVE_DEFS.push({key:'waterBolt', category:'evergreen', label:TX('ui.skn-water-bolt'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-water-bolt', {n: numOr(v, 1)}), codexNote:TX('ui.sk-water-bolt-codex')});
+Object.assign(SKILL_ICON, {waterBolt:'💧'}); // not shared with another skill (Wash is 💦)
 // Grant's skills: the ones with a price row (canonical/skill-costs.json grant.<key>), so every Grant on a card is priced; t.skill names it and
 // t[t.skill] holds its value (true for a plain skill), the shape the engine and the price table read.
 function eng50GrantChoices(){ try{ return (SKILL_COSTS_TABLE.actions || []).filter(a=> /^grant\.[a-z]/.test(a.id)).map(a=> a.id.slice(6)).filter(k=> PASSIVE_DEFS.some(p=> p.key === k)); }catch(e){ return []; } }
@@ -31260,6 +31264,10 @@ function startRaidFullBattle(def, partId, f, st){
     raidFieldRules: b.raidRules, raidCommonPool: b.commonPool, raidBossUnitId: b.bossUnitId, raidBossHpBonus: bossHpBonus, raidBossRowDecks: b.rowDecks, // + its rows' decks (2026-10-19, RV2)
     raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0, // 2026-10-18 (R3-WP2)
     raidSeed: currentMatchSeed, raidRand}; // the Tentacle Smack's seeded rolls (raidSmackRoll: its row, its column; 2026-10-18); E5DET1: raidRand
+  // 2026-11-18 (package ENG51): the allies' opening play waits for the VS screen (+ 0.7 s), and Auto-play used to take your Turn 1 under the VS
+  // screen, so one seed gave two fights by the timers' phase (tests/e5det). Until the allies have played, your turn waits (autoplayStep,
+  // playCardByUid); an End turn in that moment lets them play first (afterPlayerAction). Allies first, as tools/raid_full_sim.js plays it.
+  if(allies.length) matchState._alliesOpening = true;
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidSmackTarget(matchState, 2, i, a); }); // a row or a column (2026-10-18)
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
@@ -31685,6 +31693,7 @@ function mergeRaidCastles(list){
 // The allies play first each turn: ally 1 into your middle row, ally 2 into your back row (behind your front), or straight
 // onto the front when there's nothing to stand behind. One of them plays each turn, in turn.
 function raidAlliesTurn(m, events, first){
+  if(m && first){ if(m._alliesOpening === false) return; m._alliesOpening = false; } // ENG51: the opening play, once, before your Turn 1
   if(!m || !m.raidFull || m.over || !(m.raidAllies||[]).length) return;
   // 2026-10-19 (package RX): tuning.alliesPerTurn of the allies play each turn (1 = one of them, in turn, as before; 2 = both).
   const n = Math.max(1, Math.min(m.raidAllies.length, Math.round(raidTune(m.raidDef, 'alliesPerTurn')) || 1));
@@ -39081,6 +39090,7 @@ const syncPageFlags = (()=>{
 })();
 async function afterPlayerAction(actingPid){
   const m = matchState; if(!m) return;
+  if(m._alliesOpening) try{ raidAlliesTurn(m, null, true); }catch(e){} // ENG51: a raid's allies open before your Turn 1 resolves
   // a commit already in flight is the one that will resolve this round; a stale one (well past any real wait) is overridden
   if(m._committing && performance.now() - (m._committingAt||0) < 20000) return;
   const tok = {}; m._committing = tok; m._committingAt = performance.now();
@@ -44406,7 +44416,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   if(m.awaitingPass) return; // hand is hidden behind the pass-the-device overlay right now
   if(!(popts && popts.onto != null) && evolvePlayOnto(uid, null)) return; // Package EV (2026-10-21): an evolute goes only onto a lit base (never a slot)
   // 2026-10-16: nothing goes in while the turn is being committed (the cards landing before the round) or during the upkeep
-  if(m._committing || m._upkeep){ denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`)); return; }
+  if(m._committing || m._upkeep || m._alliesOpening){ denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`)); return; }
   recordFightAction(m, {a:'play', uid, side: side||null});
   if(m.mode==='liveRanked'){
     if(m.liveRole==='peer'){
@@ -44747,7 +44757,7 @@ async function discardCardByUid(uid, at){ // at: where the card was let go ({x, 
   if(m.awaitingPass) return;
   // 2026-10-16 (user: "I played the card and pitched at the same time" / "Don't let me be able to play or pitch cards during
   // upkeep"): no pitch while the turn is being committed or during the upkeep.
-  if(m._committing || m._upkeep){ denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`) || document.getElementById('dropDiscard')); return; }
+  if(m._committing || m._upkeep || m._alliesOpening){ denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`) || document.getElementById('dropDiscard')); return; }
   if(m.coop){ gdClaim({kind:'pitch', uid}); return; } // 2026-10-28 (package COOP2): the pitch goes to the room's host as a claim
   recordFightAction(m, {a:'discard', uid});
   if(m.mode==='liveRanked'){
@@ -45089,7 +45099,7 @@ function ui16PitchToGrave(m, tile, ev){
   if(typeof requestAnimationFrame === 'function') requestAnimationFrame(fly); else setTimeout(fly, 0);
 }
 async function autoplayStep(){
-  const m = matchState; if(!m || !m.autoplay || m.over || m.resolving || m._autoBusy || m.awaitingPass) return;
+  const m = matchState; if(!m || !m.autoplay || m.over || m.resolving || m._autoBusy || m.awaitingPass || m._alliesOpening) return; // ENG51: never before a raid's allies open
   if(m.coop) return gdAutoStep(m); // COOP2 had no Auto in a group dungeon; 2026-10-30 (package COOP3, W6): my seat's turn, as a claim
   if(document.querySelector('.coach-tip.is-blocking, #npcPromptOverlay:not([hidden]), .dialogue-overlay:not([hidden])')) return;
   m._autoBusy = true;
@@ -45102,7 +45112,7 @@ async function autoplayStep(){
     if(matchState === m && m.autoplay && !m.over && !m.resolving) await afterPlayerAction(1);
   }catch(e){} finally{ m._autoBusy = false; }
 }
-setInterval(()=>{ try{ autoplayStep(); }catch(e){} }, 900); // 2026-11-18 (POLL1): left free-running on purpose: gating it (and fightWatchdog, playAnimWatchdog) on a match made tests/e5det's raid game path give different fights for one seed (the phase of these ticks reaches the fight) // 2026-11-18 (POLL1): was a 900 ms timer all the time; now only while a match exists, none while hidden
+bwLoop(()=>{ try{ autoplayStep(); }catch(e){} }, 900, ()=> !!matchState); // 2026-11-18 (package ENG51, after POLL1): only while a match exists, none while hidden. POLL1 found gating it changed tests/e5det's raid fights: Auto-play took your Turn 1 under the raid's VS screen, before the allies' opening play (now it waits for them: _alliesOpening)
 // Fight watchdog (2026-10-16, user: "Sometimes the battle gets stuck ... you can't pass turn, but you also can't play a card. Auto
 // play also doesnt work"): a card went in this turn (m._needsCommit, set by playCardByUid) but its round never started and nothing
 // is in flight (no commit, no round, no tutorial pause, no lesson on screen). After 2.5 s the turn is committed again.
@@ -45116,7 +45126,7 @@ function fightWatchdog(){
   try{ console.warn('[fight] a played turn never reached its round; starting the round'); }catch(e){}
   afterPlayerAction(activePlayerId(m));
 }
-setInterval(()=>{ try{ fightWatchdog(); }catch(e){} }, 1000); // 2026-11-18 (POLL1): free-running, see autoplayStep above // 2026-11-18 (POLL1): only while a match exists, none while hidden
+bwLoop(()=>{ try{ fightWatchdog(); }catch(e){} }, 1000, ()=> !!matchState); // 2026-11-18 (ENG51): only while a match exists, none while hidden (see autoplayStep above)
 // The play-animation watchdog (2026-10-19, package RX, owner 20:46: "In Raids, when you play a card, it gets stuck in the shortened
 // part of the anim. This sometimes happens in normal gameplay — very rarely."). Root cause: a card's arrival (its entrance timeline in
 // renderBoard, and your hand play's flying copy, handFlightProxy) runs on GSAP's clock, which only moves when the browser draws a
@@ -45165,7 +45175,7 @@ function playAnimWatchdog(){
   });
 }
 const tileRestSeen = new WeakMap();
-setInterval(()=>{ try{ playAnimWatchdog(); }catch(e){} }, 200); // 2026-11-18 (POLL1): free-running with autoplayStep and fightWatchdog (gating the three made tests/e5det's raid fights differ under load: their tick phase reaches the fight)
+bwLoop(()=>{ try{ playAnimWatchdog(); }catch(e){} }, 200, ()=> !!matchState); // 2026-11-18 (ENG51): only while a match exists, none while hidden (see autoplayStep above)
 // Full screen (2026-10-12, 10:57 list: "full-screen is not vertically centered"): the match sits in the middle of the screen.
 document.addEventListener('fullscreenchange', ()=>{ document.documentElement.classList.toggle('is-fs', !!document.fullscreenElement); });
 // 2026-10-12 (user: "On a full screen, try to capture the field in the centre of the screen (mobile and PC)"): in full screen
@@ -50822,7 +50832,7 @@ function logText(ev){
     case 'boomerangThrow': return {cls:'quick', text:TX('ui.en3-log-boom-miss', {name: nm(ev.defId)})};
     case 'arrow': if(ev.style === 'drop') return {cls:'', text: ev.targetDefId ? TX('ui.bx-log-drop', {name: nm(ev.defId), target: nm(ev.targetDefId)}) : TX('ui.bx-log-drop-bramble', {name: nm(ev.defId)})}; // Package BX (2026-10-21)
       return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};
-    case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'venom 🐍' /* ENG33: Venom Spit */, ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
+    case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'venom 🐍' /* ENG33: Venom Spit */, ice:'an ice bolt ❄️', shock:'a shock bolt ⚡', water:'a water bolt 💧' /* ENG51 */})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
     case 'powder': return {cls: ev.element === 'poison' ? 'poison' : '', text:TX(ev.element === 'poison' ? 'ui.powder-log-poison' : ev.element === 'paralysis' ? 'ui.powder-log-paralysis' /* ENG50 */ : 'ui.powder-log-sleep', {name: nm(ev.defId), target: nm(ev.targetDefId)})}; // POWDER1 (2026-11-17)
     case 'boonFire': return {cls:'', text:TX('ui.df3-log', {boon: boonName(ev.boon), name: nm(ev.defId)})}; // 2026-10-24 (package DF3): a selfish boon helped one of theirs
     case 'bossGimmick': return {cls:'', text:TX('ui.c11-' + ev.gimmick + '-log', {name: ev.defId ? nm(ev.defId) : '', n: ev.dmg || ev.heal || ev.shield || ev.shieldLost || ''})}; // CONTENT11 (2026-11-05): a boss gimmick

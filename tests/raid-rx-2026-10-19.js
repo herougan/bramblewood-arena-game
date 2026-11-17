@@ -100,7 +100,7 @@ ok(/fadeIn: 0\.45/.test(src) && /opacity: origin\.fadeIn \?/.test(src), 'the all
   const eb2 = new Map([['8', {tl: tl2, at: 4900, el}]]);
   let threw = false; try{ new Function('document', 'window', 'performance', 'gsap', 'hasGsap', 'entranceBorn', 'enteringTimelines', 'enteringUids', 'handFlightDue', 'handFlightsLive', body)(doc, win, perf, gsap, ()=> true, eb2, new Map([['8', tl2]]), new Set(['8']), new Map(), new Set())(); }catch(e){ threw = true; }
   ok(!threw && eb2.size === 1, 'an entrance still within its time is left alone'); }
-ok(/setInterval\(\(\)=>\{ try\{ playAnimWatchdog\(\); \}catch\(e\)\{\} \}, 200\);/.test(src), 'the watchdog runs on a 200 ms timer');
+ok(/bwLoop\(\(\)=>\{ try\{ playAnimWatchdog\(\); \}catch\(e\)\{\} \}, 200, \(\)=> !!matchState\);/.test(src), 'the watchdog runs on a 200 ms timer (2026-11-18, ENG51: while a match exists, bwLoop)');
 ok(/entranceBorn\.set\(uid, \{tl: entranceTl, at: performance\.now\(\), el\}\)/.test(src) && /handFlightDue\.set\(key, \{due:/.test(src), 'entrances and hand flights are registered with the watchdog');
 
 // ---- Play rows (tag-team dungeons: "Your row only" / "Anywhere") and the leader cost cap

@@ -25195,7 +25195,7 @@
     "effects": {
       "arrow": {
         "v": 1,
-        "type": "acid",
+        "type": "water",
         "form": "bolt"
       }
     },
@@ -25212,7 +25212,7 @@
       "Fish",
       "Mangrove"
     ],
-    "creatorNote": "2026-10-16: one card for Acid Bolt, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; placed 2026-10-16 on 9-6 Drifting Shell (The Kelp Mangroves), its card reward (suggested: Map 19). 2026-10-19 retune (v5 L/10): was 3/8 (well under: 2A+H+S 44.5% -> 66.7% of N 35.96). 2026-10-19 halve (BF5): was 5/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/6. 2026-10-28 BAL7 M1 re-balance (contribution 16.9, +17.9 vs its band): 4/9 -> 3/6, acidBolt 2 -> 1. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 3/6 (cap-1 use 0.98 of N under 2A + H, 1.01 under 3A + H, now 0.96).",
+    "creatorNote": "2026-10-16: one card for Acid Bolt, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; placed 2026-10-16 on 9-6 Drifting Shell (The Kelp Mangroves), its card reward (suggested: Map 19). 2026-10-19 retune (v5 L/10): was 3/8 (well under: 2A+H+S 44.5% -> 66.7% of N 35.96). 2026-10-19 halve (BF5): was 5/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/6. 2026-10-28 BAL7 M1 re-balance (contribution 16.9, +17.9 vs its band): 4/9 -> 3/6, acidBolt 2 -> 1. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 3/6 (cap-1 use 0.98 of N under 2A + H, 1.01 under 3A + H, now 0.96). 2026-11-18 ENG51 (owner 11-17 17:32: \"Archer Fish's Water Bolt is in Map 21+\"): Acid Bolt 1 -> Water Bolt 1 (budget 4.76 S, use 18.76 of N 25.94, ok).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none",

@@ -16,9 +16,9 @@ ok(loops >= 15, `1. the always-on checks run through bwLoop (${loops} sites)`);
 
 // 2. the always-on timers are gated: only with a match / only on the cave screen / none while hidden
 const has = (re, m)=> ok(re.test(app), m);
-has(/setInterval\(\(\)=>\{ try\{ autoplayStep\(\); \}catch\(e\)\{\} \}, 900\);/, '2. autoplay tick stays free-running (e5det: its phase reaches the raid fight)');
-has(/setInterval\(\(\)=>\{ try\{ fightWatchdog\(\); \}catch\(e\)\{\} \}, 1000\);/, '2. fight watchdog stays free-running');
-has(/setInterval\(\(\)=>\{ try\{ playAnimWatchdog\(\); \}catch\(e\)\{\} \}, 200\);/, '2. play-animation watchdog stays free-running (e5det)');
+has(/bwLoop\(\(\)=>\{ try\{ autoplayStep\(\); \}catch\(e\)\{\} \}, 900, \(\)=> !!matchState\);/, '2. autoplay tick only with a match (2026-11-18, ENG51: the raid fight no longer depends on its phase)');
+has(/bwLoop\(\(\)=>\{ try\{ fightWatchdog\(\); \}catch\(e\)\{\} \}, 1000, \(\)=> !!matchState\);/, '2. fight watchdog only with a match (ENG51)');
+has(/bwLoop\(\(\)=>\{ try\{ playAnimWatchdog\(\); \}catch\(e\)\{\} \}, 200, \(\)=> !!matchState\);/, '2. play-animation watchdog only with a match (ENG51)');
 has(/bwLoop\(syncDungeonChip, 500, \(\)=> !!matchState\)/, '2. dungeon chip only with a match');
 has(/bwLoop\(syncCaveScreen, 400, \(\)=> document\.body\.classList\.contains\('cave-screen'\)\)/, '2. cave screen sync only on the cave screen');
 has(/bwLoop\(tick, 400,/, '2. calm music tick through bwLoop');
