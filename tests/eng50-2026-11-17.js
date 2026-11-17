@@ -178,7 +178,10 @@ ok(/paralysis:\{cls:'paralysis'/.test(rd('bramblewood-fx-h.js')) && /id:'sk-para
 ok(/ENG50/.test(rd('docs/CHANGELOG.md').slice(0, 4000)) && /eng50-2026-11-17/.test(rd('tests/run-all.sh')), 'CHANGELOG entry and run-all.sh');
 { const ps = rd('docs/project-state.md'); ok(['Vulnerable', 'Feeble', 'Rend', 'Enfeeble', 'Weaken', 'Grant', 'Armourer'].every(w=> new RegExp(w).test(ps)) && /OWN-1117-2/.test(ps), 'project-state names the statuses and skills with OWN-1117-2'); }
 { const cards = J('canonical/cards.json'), list = Array.isArray(cards) ? cards : Object.values(cards.cards || cards);
-  ok(!list.some(c=> c && c.effects && ['paralysisPowder', 'rend', 'enfeeble', 'armourer'].some(k=> c.effects[k]) || (c && c.effects && (c.effects.triggers || []).some(t=> ['rend', 'enfeeble', 'weaken', 'grant'].includes(t && t.do)))), 'no card carries a new skill yet (the redesign fold adds them)'); }
+  // 2026-11-18 (FOLD6): the redesign fold put the new skills on cards (Anvilwhisker Otter: Armourer); each carrier must now be in budget.
+  const K = require('../tools/skill_costs.js').make(J('canonical/skill-costs.json'));
+  const carriers = list.filter(c=> c && !/^test-/.test(c.id) && c.effects && (['paralysisPowder', 'rend', 'enfeeble', 'armourer'].some(k=> c.effects[k]) || (c.effects.triggers || []).some(t=> ['rend', 'enfeeble', 'weaken', 'grant'].includes(t && t.do))));
+  ok(carriers.every(c=> K.budget(c).ok), 'cards carrying a new skill are within budget: ' + carriers.filter(c=> !K.budget(c).ok).map(c=> c.id).join(', ')); }
 
 // ================= 11. determinism and the CPU =================
 { const run = seed=>{ const {e, P} = mk(seed); put(e, P, 1, 'e50-para', 0); put(e, P, 1, 'e50-rend', -1); put(e, P, 1, 'e50-enf', 1); put(e, P, 2, 'e50-hit4', 0); put(e, P, 2, 'e50-hit4', -1); put(e, P, 2, 'e50-noStun', 1);
