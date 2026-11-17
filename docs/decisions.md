@@ -1,6 +1,6 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-11-16). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-11-17). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
 
@@ -184,6 +184,13 @@ _Generated from `decisions.json` (2026-11-16). The hub has a searchable, filtera
   - b) Also apply the 9 nearer decks (still outside the band)
   - c) Some edits were typos: fix those first, then re-fit
 - **Default:** a
+
+**REFIT2-2. Maps 4-5 stay too hard: lower Health or a card edit?** · Decide · Balance · asked 2026-11-17
+- With their weakest legal decks and Shield 0 these stay too hard: 5-6 52% (target 60), 5-4 39 (72), 5-2 56 (84), 4-3 43 (70), 4-5 16 (40), 4-1 81 (90). Lower enemy Health puts five in band on two fresh seed sets: 5-6 15 to 12, 5-4 15 to 6, 5-2 15 to 7, 4-3 13 to 5, 4-5 8 to 4 (your 11-04 rule: no more cuts). Fen Mink 1/10 to 1/8 instead fixes 5-6 and nearly 5-4. 4-1 moves with neither; Cricket Drummer 2/5 (REFIT1-1) lifts it to 84.
+  - a) The five Health cuts
+  - b) Fen Mink 1/8 plus the Health cuts for 5-2, 4-3, 4-5
+  - c) Leave them; decide REFIT1-1 first
+- **Default:** b
 
 **CHK1-1. Progression check: flag too-easy fights too?** · Decide · Balance · asked 2026-11-16
 - The progression-deck tournament (checklist B5) flags fights 25+ points off either way: 18 too easy, 14 too hard. Too easy for a progression deck may be fine.
@@ -795,6 +802,12 @@ _Generated from `decisions.json` (2026-11-16). The hub has a searchable, filtera
 **ARROW1-1. Arrows and Bolts are one skill each; Arrows slow, Bolts fast** · Decide · Skills · asked 2026-11-16 · decided 2026-11-16
 - All arrow variants (serrated/bleed, poison, sleep, paralysis and other status arrows, fire, electric, water and other elements) count as one skill; the same for bolts. Arrows fire slower than normal (speed 0), Bolts faster (speed 2). Arrow (Flaming) is Map 20's skill; Fire Bolt goes on the Dragon Lair map. Some list skills may sit on submaps instead of Maps 0-20.
   - a) As stated
+- **Default:** a
+
+**REFIT2-1. Road re-fit after SKN1, ARROW1, ECONSK1, CARDPOW1** · Decide · Balance · asked 2026-11-17 · decided 2026-11-17
+- 17 road fights get legal enemy-deck changes (no Shield or Health change), each in band on two fresh seed sets at 400 games. The whole road with them, seed 7600: main 128/149 in band (was 121), 134 within 10 (130), 9 beyond 20 (10); side 78/81 (72). Maps 4-5 and 20-9 stay out (REFIT2-2). Fixes: docs/balance/refit2/refit2-fixes.jsonl.
+  - a) Apply the 17
+  - b) Leave them
 - **Default:** a
 
 **SIDE5-1. 19-A-1 almost always won** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
