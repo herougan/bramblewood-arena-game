@@ -47,6 +47,7 @@ const sql = read('supabase/proposed/20261112_side1_map_picks.sql');
 ok(/PROPOSED ONLY/.test(sql) && (sql.match(/insert into card_overrides/g) || []).length === 14 && !/map-picks:mo'/.test(sql) && /jsonb_array_length\(card_overrides\.data->'yes'\), 0\) = 0/.test(sql), '6. proposed SQL: 14 side maps, not The Old Bramble, a filled row left alone');
 const cp = J('docs/balance/card-power-2026-11-12.json'), md = read('docs/balance/card-power-2026-11-12.md'), have = new Set(cp.cards.map(r => r.id));
 const inPlay = new Set(); L.mainByNo().filter(m => m.n <= 21).forEach(m => P[m.id].cards.forEach(id => inPlay.add(id))); L.SIDES.forEach(s => P[L.parentOf(s, P)].submaps[s].forEach(id => inPlay.add(id)));
+inPlay.delete('archerfish'); // 2026-11-17 (BOLT2, owner 11-17 17:32): Archerfish joined Map 21's list after this dated report
 ok([...inPlay].every(id => have.has(id) || !C[id]), '6. card power: every card in play on the 11-12 lists has a row (' + [...inPlay].filter(id => !have.has(id)).slice(0, 5).join(', ') + ')');
 ok(cp.cards.every(r => ['over', 'in', 'under'].includes(r.verdict) && typeof r.margin === 'number' && r.firstMap != null), '6. card power: each row reads over / in / under with its margin and first map');
 ok(cp.skillsAMap.length === 22 + 15 && /## Over budget/.test(md) && md.indexOf('## Over budget') < md.indexOf('## Every card') && /## Skills a map/.test(md), '6. card power report: outliers first, then the full table; skills for 22 main and 15 side maps');

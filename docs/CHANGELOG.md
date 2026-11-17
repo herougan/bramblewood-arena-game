@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-17 (package BOLT2: bolts off Maps 0-19, owner 11-17 17:32 "only fire bolt in Map 20")
+- Players see: Fire Salamander (Spitfire) is now on Map 20 only (the 20-3 first-clear reward, was 19-3) and in Volcano Lair; it left Map 19's list and The Undercroft. Archerfish (acid bolt) left The Undercroft for Map 21's list and can now be found in Map 21 packs (tier 4; it was unobtainable). Owner OK for both card source moves: "Yes, both".
+- 19-3 deck: fire-salamander x4 -> cinder-hornet x4; 70.3% -> 78 / 73.5 at 400 games (seeds 7600 / 51100; target 75, band 67-83). Deck problems 19 = 19; skir1 34 -> 32, none new. `canonical/card-obtain-maps.json` regenerated (fire-salamander 20, archerfish 21).
+
 ## 2026-11-17 (package POWDER1: Sleeping Powder and Poison Powder, the powder family)
 - New skills (owner 11-17 17:32, OWN-1117-1: "Powders would be Speed -1 actions"), on no card yet (the redesign fold adds carriers; Map focus unchanged): every round while Ready, at Speed -1 (after the arrows), a puff at the enemy in front (else the nearest; no puff on an empty board, never the bramble). No damage. **Sleeping Powder N**: N Sleep tokens, not on a unit asleep (so one unit sleeps N rounds in N + 1, as Ice Arrow skips a Frozen unit; owner call POWDER1-1, default keep); Wakeful, Resist / Immune Sleep apply, a hit wakes it. **Poison Powder N**: N Poison (Venom Master adds; not on a poison-proof unit). As Poison Bolt's spit: Evasive dodges 1 in 2, Mach, Invisible, the dark, a Helmet and Reflect apply; Flying does not dodge it.
 - All powders count as one skill (`POWDER_FAMILY` in `bramblewood-budget.js`; Poison Powder also sits with the poison skills, as Poison Bolt does); the Codex filter shows one "Powder" chip with a family note. Prices (`canonical/skill-costs.json`, 4-round estimates): Sleeping Powder 2.5 x N^0.42 (N 1 2.5, N 2 3.34; Bola's Pin is 2), Poison Powder 3.2 half (N 2 6.4, Poison Bolt 2 7.06). Delivery ranged; counters classified.
