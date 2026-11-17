@@ -204,6 +204,9 @@ MANUAL = {
   'hazel-coppice': ('dormouse', 'plant', 'proposed', 'a coppiced hazel; proposed: the hazel dormouse that lives in it, like the Ent\'s owl (was subtype structure: a tree, as the Elder Willow)'),
   'phoenix-mushrooms': ('mushroom', 'fungus', 'name', ''),
   'barrel-cactus': ('cactus', 'plant', 'name', '2026-11-13 FIX11: a plant card (CACTI1), as Pond Algae; kept as set in cards.json'),
+  # 2026-11-18 (CONTENT13): two new cards the name table does not know
+  'cape-buffalo-bulwark': ('cape buffalo', None, 'name', ''),
+  'strangler-fig-sapling': ('strangler fig', 'plant', 'name', 'a plant card, as Barrel Cactus'),
   # 2026-11-02 (CARD5): tags later packages set in cards.json by hand; without these rows the tool's name / type / icon fallback rewrote them
   # (talus-pika a hamster, inland-taipan a plain snake, two subtypes dropped)
   'ironclaw-fiddler': ('fiddler crab', None, 'name', 'kept as set in cards.json'),

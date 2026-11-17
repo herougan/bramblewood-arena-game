@@ -65,12 +65,12 @@
   }
  ],
  "counts": {
-  "cards": 941,
-  "creatures": 842,
-  "tagged": 844,
-  "animals": 378,
-  "groups": 146,
-  "withSubtype": 112,
+  "cards": 957,
+  "creatures": 858,
+  "tagged": 860,
+  "animals": 380,
+  "groups": 148,
+  "withSubtype": 113,
   "proposed": 23,
   "subtype": {
    "changeling": 3,
@@ -83,7 +83,7 @@
    "glitch": 1,
    "mutant": 5,
    "mythic": 16,
-   "plant": 17,
+   "plant": 18,
    "spirit": 7,
    "structure": 16,
    "undead": 5,
@@ -93,10 +93,10 @@
    "art": 59,
    "ee": 8,
    "flavor": 15,
-   "icon": 37,
-   "name": 631,
+   "icon": 48,
+   "name": 635,
    "proposed": 23,
-   "type": 69
+   "type": 70
   },
   "topGroups": {
    "otter": 34,
@@ -105,30 +105,30 @@
    "beetle": 22,
    "fox": 19,
    "turtle": 18,
+   "cat": 17,
    "bat": 17,
    "frog": 17,
    "salamander": 17,
-   "cat": 16,
    "rabbit": 16,
+   "duck": 16,
    "lizard": 15,
    "wolf": 15,
-   "duck": 15,
+   "snake": 15,
    "heron": 14,
-   "snake": 14,
    "crow": 13,
    "songbird": 13,
    "owl": 12,
    "squirrel": 12,
    "mouse": 12,
+   "crab": 12,
    "ant": 11,
    "spider": 11,
    "bear": 11,
    "badger": 11,
-   "crab": 11,
    "bee": 10,
    "deer": 10,
-   "dog": 9,
-   "worm": 9
+   "rat": 10,
+   "dog": 9
   }
  },
  "ownerCalls": [
@@ -9960,6 +9960,167 @@
    "subtype": "plant",
    "how": "name",
    "note": "2026-11-13 FIX11: a plant card (CACTI1), as Pond Algae; kept as set in cards.json"
+  },
+  {
+   "id": "fossa-ambusher",
+   "name": "Fossa Ambusher",
+   "icon": "🐈",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "osprey-plunger",
+   "name": "Osprey Plunger",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "eagle",
+   "group": "eagle",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "tsetse-drainer",
+   "name": "Tsetse Drainer",
+   "icon": "🪰",
+   "creature": true,
+   "animal": "fly",
+   "group": "fly",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "drongo-mocker",
+   "name": "Drongo Mocker",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "bird",
+   "group": "bird",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "cape-buffalo-bulwark",
+   "name": "Cape Buffalo Bulwark",
+   "icon": "🐃",
+   "creature": true,
+   "animal": "cape buffalo",
+   "group": "buffalo",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bar-headed-goose-leader",
+   "name": "Bar-headed Goose Leader",
+   "icon": "🪿",
+   "creature": true,
+   "animal": "goose",
+   "group": "duck",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "caddisfly-casemaker",
+   "name": "Caddisfly Casemaker",
+   "icon": "🐛",
+   "creature": true,
+   "animal": "caterpillar",
+   "group": "caterpillar",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "opossum-faker",
+   "name": "Opossum Faker",
+   "icon": "🐀",
+   "creature": true,
+   "animal": "rat",
+   "group": "rat",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "strangler-fig-sapling",
+   "name": "Strangler Fig Sapling",
+   "icon": "🌳",
+   "creature": true,
+   "animal": "strangler fig",
+   "group": "fig",
+   "subtype": "plant",
+   "how": "name",
+   "note": "a plant card, as Barrel Cactus"
+  },
+  {
+   "id": "pearl-mussel-anchorer",
+   "name": "Pearl Mussel Anchorer",
+   "icon": "🦪",
+   "creature": true,
+   "animal": "oyster",
+   "group": "oyster",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "mole-cricket-megaphone",
+   "name": "Mole Cricket Megaphone",
+   "icon": "🦗",
+   "creature": true,
+   "animal": "cricket",
+   "group": "cricket",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "praying-mantis-striker",
+   "name": "Praying Mantis Striker",
+   "icon": "🦗",
+   "creature": true,
+   "animal": "cricket",
+   "group": "cricket",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "secretary-bird-stomper",
+   "name": "Secretary Bird Stomper",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "eagle",
+   "group": "eagle",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "spitfire-sawfly-grubs",
+   "name": "Spitfire Sawfly Grubs",
+   "icon": "🐛",
+   "creature": true,
+   "animal": "caterpillar",
+   "group": "caterpillar",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "rinkhals-spitter",
+   "name": "Rinkhals Spitter",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "snake",
+   "group": "snake",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "soft-shell-crab-newmoult",
+   "name": "Newly Moulted Crab",
+   "icon": "🦀",
+   "creature": true,
+   "animal": "crab",
+   "group": "crab",
+   "subtype": null,
+   "how": "name"
   }
  ]
 }
