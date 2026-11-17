@@ -45,7 +45,7 @@ Rule for moves: a skill that leaves a map is demoted to light where its first ca
 | 8 Caves & Alcoves | Darksight, Web, Illuminate | same | Darksight, Web, Illuminate | dark caves, cave spiders, glow moths | - |
 | 9 The Kelp Mangroves | Trident, Electricity | same | Trident, Electricity, Regeneration | spearfishers, eels, starfish that regrow | - |
 | 10 Coral Current | Weaken, Wave | same | Weaken, Wave | stinging reef, currents | Poison Barbs (lionfish) |
-| 11 Eyrie Heights | (none) | Natural Leader | Natural Leader | the Gannet Queen's eyrie | Fletcher (Eagle-Owl Quartermaster) |
+| 11 Eyrie Heights | (none) | Natural Leader | Fletcher | the eyrie's armoury (Eagle-Owl Quartermaster) | Avalanche (Ibex Rockcaller), Frostbite (Mountain Hare) |
 | 12 The Briar Maze | Siege, Keen Sense, Stealth, Bulldoze | Siege, Keen Sense, Stealth | Siege, Keen Sense, Stealth | sappers, sniffers, a hedge maze | - |
 | 13 The Redwood Deep | Harbinger | Harbinger, Twin Strike, Regeneration | Harbinger, Twin Strike | omens in the deep wood, bears' two paws | Forestry, if Map 5 should not have it (the timber map) |
 | 14 Savanna Reaches | Mighty, Pack | same | Mighty, Pack | elephants, hyena packs | Carnage (Dust Hyena) |
@@ -57,3 +57,5 @@ Rule for moves: a skill that leaves a map is demoted to light where its first ca
 | 20 The Sundered Peak | Arrow (Fire), Bulldoze?, Recoil? | Arrow (Flaming), Bulldoze | Arrow (Flaming), Bulldoze | fire archers, rams at the summit | Fire Bolt (the only bolt on Maps 0-20; other bolts on Maps 21+) |
 
 Owner 11-17 17:32 (OWN-1117-1): only Fire Bolt on Map 20, every other bolt on Maps 21+ (BOLT2); powders start with Sleeping Powder and Poison Powder, Speed -1 actions, one skill family (POWDER1).
+
+Owner 11-17 22:33: Natural Leader is not considered; Map 11 takes Fletcher (new on Map 11: Eagle-Owl Quartermaster).
