@@ -55,6 +55,10 @@
     "x2": 46,
     "N2": 130.39,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute fossa, a slender cat-like Madagascan predator with a long tail and rounded ears, crouched on a mossy branch with one paw raised,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct mammal: four legs, long tail, forest canopy with hanging vines behind, soft green light, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   },
   {
@@ -116,6 +120,10 @@
     "x2": 34.42,
     "N2": 119.56,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute osprey diving feet-first toward a river, wings swept back, talons forward,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct bird: two wings, two legs with talons, one head, river with misty cliffs behind, warm morning light, a full scenic background filling the whole frame, no text",
+    "variant": "B"
    }
   },
   {
@@ -169,6 +177,10 @@
     "x2": 22.98,
     "N2": 132.69,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute tsetse fly on a drooping swamp reed, folded wings over its back, long forward-pointing mouthpart,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct insect: three body segments, six legs from the middle segment, two wings, humid swamp with lily pads behind, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   },
   {
@@ -229,6 +241,10 @@
     "x2": 36.89,
     "N2": 121.67,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute fork-tailed drongo, glossy black bird with a deeply forked tail and red eye, beak open mid-call on a thorn branch,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct bird: two wings, two legs, one head, golden savanna with acacia trees behind, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   },
   {
@@ -290,6 +306,10 @@
     "x2": 69.97,
     "N2": 220.71,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute cape buffalo with broad curved horns joined at the forehead, standing in front of a small calf,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct bovine: four legs, tail, two horns, dusty savanna waterhole behind, warm sunset light, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   },
   {
@@ -352,6 +372,10 @@
     "x2": 32.93,
     "N2": 117.38,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute bar-headed goose, grey body with two dark bars on a white head, wings spread, leading a small V of geese,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct bird: two wings, two legs, one head, snowy mountain ridge and pale blue sky behind, a full scenic background filling the whole frame, no text",
+    "variant": "C"
    }
   },
   {
@@ -399,6 +423,10 @@
     "x2": 23.39,
     "N2": 134.91,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute caddisfly larva peeking out of a tube case made of tiny river pebbles and twigs, soft pale body,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct larva: segmented body, three pairs of legs near the head, clear stream bed with waving weed behind, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   },
   {
@@ -451,6 +479,10 @@
     "x2": 37,
     "N2": 119.56,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute opossum lying stiff on its side with tongue out and eyes closed in a leaf pile, pointed pink snout, long bare tail,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct marsupial: four legs, prehensile tail, autumn forest floor with fallen leaves behind, a full scenic background filling the whole frame, no text",
+    "variant": "B"
    }
   },
   {
@@ -503,6 +535,10 @@
     "x2": 25.54,
     "N2": 160.37,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute strangler fig, a young tree with a network of woody aerial roots wrapped around an old trunk, two small leaf-eyes, natural plant anatomy, not anthropomorphic, no animal body parts, rainforest clearing with shafts of light behind, a full scenic background filling the whole frame, no text",
+    "variant": "B"
    }
   },
   {
@@ -557,6 +593,10 @@
     "x2": 26.66,
     "N2": 160.37,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute freshwater pearl mussel, dark elongated bivalve shell half-open showing a single pearl, rooted in river gravel,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct bivalve: two hinged shell halves, no legs, clear river bottom with sunlit ripples behind, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   },
   {
@@ -604,6 +644,10 @@
     "x2": 23.25,
     "N2": 130.39,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute mole cricket with broad digging front legs singing at the mouth of a horn-shaped burrow,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct insect: three body segments, six legs from the middle segment, folded wings, moonlit meadow earth behind, a full scenic background filling the whole frame, no text",
+    "variant": "B"
    }
   },
   {
@@ -656,6 +700,10 @@
     "x2": 37.29,
     "N2": 130.39,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute praying mantis with folded forelegs and triangular head, perched on a flower stem,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct insect: three body segments, six legs, two raptorial forelegs held up, wildflower meadow with soft haze behind, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   },
   {
@@ -708,6 +756,10 @@
     "x2": 59.54,
     "N2": 169.81,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute secretary bird with long legs, crest of quill feathers and black thigh plumes, one foot raised to stamp,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct bird: two wings, two long legs, one head, dry golden grassland with a lone acacia behind, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   },
   {
@@ -760,6 +812,10 @@
     "x2": 29.9,
     "N2": 119.56,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute cluster of sawfly larvae rearing up together on a eucalyptus leaf, each with a dark head and green striped body, a little fiery orange spit in the air,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct larvae: segmented bodies, three pairs of true legs, bright bush gum tree with golden light behind, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   },
   {
@@ -816,6 +872,10 @@
     "x2": 39.12,
     "N2": 132.69,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute rinkhals, a stocky snake with a flared hood and keeled scales, rearing with hood spread and mouth open, a small arc of spit,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct snake: no legs, long body, forked tongue, dry grass scrub with orange dusk behind, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   },
   {
@@ -868,6 +928,10 @@
     "x2": 54.44,
     "N2": 107.03,
     "ok": true
+   },
+   "artFinal": {
+    "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, cute blue crab with a pale soft shell and big pincers raised, a cast-off old shell beside it,, natural animal anatomy, not anthropomorphic, no hands, anatomically correct crab: ten legs including two claws, eyes on stalks, shallow tide pool with sandy bottom behind, a full scenic background filling the whole frame, no text",
+    "variant": "A"
    }
   }
  ]
