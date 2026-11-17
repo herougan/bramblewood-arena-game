@@ -45047,7 +45047,7 @@ async function autoplayStep(){
     if(matchState === m && m.autoplay && !m.over && !m.resolving) await afterPlayerAction(1);
   }catch(e){} finally{ m._autoBusy = false; }
 }
-setInterval(()=>{ try{ autoplayStep(); }catch(e){} }, 900); // 2026-11-18 (POLL1): left free-running on purpose: gating it (and fightWatchdog) on a match made tests/e5det's raid game path give different fights for one seed (the phase of these ticks reaches the fight) // 2026-11-18 (POLL1): was a 900 ms timer all the time; now only while a match exists, none while hidden
+setInterval(()=>{ try{ autoplayStep(); }catch(e){} }, 900); // 2026-11-18 (POLL1): left free-running on purpose: gating it (and fightWatchdog, playAnimWatchdog) on a match made tests/e5det's raid game path give different fights for one seed (the phase of these ticks reaches the fight) // 2026-11-18 (POLL1): was a 900 ms timer all the time; now only while a match exists, none while hidden
 // Fight watchdog (2026-10-16, user: "Sometimes the battle gets stuck ... you can't pass turn, but you also can't play a card. Auto
 // play also doesnt work"): a card went in this turn (m._needsCommit, set by playCardByUid) but its round never started and nothing
 // is in flight (no commit, no round, no tutorial pause, no lesson on screen). After 2.5 s the turn is committed again.
@@ -45110,7 +45110,7 @@ function playAnimWatchdog(){
   });
 }
 const tileRestSeen = new WeakMap();
-bwLoop(playAnimWatchdog, 200, ()=> !!matchState); // 2026-11-18 (POLL1): only while a match exists, none while hidden (the card's arrival runs on GSAP's clock, which is stopped then too)
+setInterval(()=>{ try{ playAnimWatchdog(); }catch(e){} }, 200); // 2026-11-18 (POLL1): free-running with autoplayStep and fightWatchdog (gating the three made tests/e5det's raid fights differ under load: their tick phase reaches the fight)
 // Full screen (2026-10-12, 10:57 list: "full-screen is not vertically centered"): the match sits in the middle of the screen.
 document.addEventListener('fullscreenchange', ()=>{ document.documentElement.classList.toggle('is-fs', !!document.fullscreenElement); });
 // 2026-10-12 (user: "On a full screen, try to capture the field in the centre of the screen (mobile and PC)"): in full screen

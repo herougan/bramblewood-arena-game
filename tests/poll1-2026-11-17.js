@@ -12,13 +12,13 @@ const code = app.replace(/\/\/.*$/gm, '');
 const bare = (code.match(/(^|[^a-zA-Z.])setInterval\(/gm) || []).length;
 ok(bare <= 21, `1. at most 21 bare setInterval( sites in arena_app.js (now ${bare}; was 33 before POLL1); use bwLoop`);
 const loops = (code.match(/\bbwLoop\(/g) || []).length;
-ok(loops >= 16, `1. the always-on checks run through bwLoop (${loops} sites)`);
+ok(loops >= 15, `1. the always-on checks run through bwLoop (${loops} sites)`);
 
 // 2. the always-on timers are gated: only with a match / only on the cave screen / none while hidden
 const has = (re, m)=> ok(re.test(app), m);
 has(/setInterval\(\(\)=>\{ try\{ autoplayStep\(\); \}catch\(e\)\{\} \}, 900\);/, '2. autoplay tick stays free-running (e5det: its phase reaches the raid fight)');
 has(/setInterval\(\(\)=>\{ try\{ fightWatchdog\(\); \}catch\(e\)\{\} \}, 1000\);/, '2. fight watchdog stays free-running');
-has(/bwLoop\(playAnimWatchdog, 200, \(\)=> !!matchState\)/, '2. play-animation watchdog only with a match');
+has(/setInterval\(\(\)=>\{ try\{ playAnimWatchdog\(\); \}catch\(e\)\{\} \}, 200\);/, '2. play-animation watchdog stays free-running (e5det)');
 has(/bwLoop\(syncDungeonChip, 500, \(\)=> !!matchState\)/, '2. dungeon chip only with a match');
 has(/bwLoop\(syncCaveScreen, 400, \(\)=> document\.body\.classList\.contains\('cave-screen'\)\)/, '2. cave screen sync only on the cave screen');
 has(/bwLoop\(tick, 400,/, '2. calm music tick through bwLoop');
