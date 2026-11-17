@@ -23,3 +23,40 @@ RESULT 5-2 {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alliga
 5-7 target 40 (30-49) size 19 start {"alligator-gar":1,"fire-ant-raft":4,"marsh-mallow-hare":4,"mosquito-cloud":4,"raft-spider":2,"mudflat-godwit":4} problems []
 start {"alligator-gar":1,"fire-ant-raft":4,"marsh-mallow-hare":4,"mosquito-cloud":4,"raft-spider":2,"mudflat-godwit":4} 24
 round 1: cur 33.3/24; 120 legal, 70 read + 8 predicted (of 44); top: -4 mudflat-godwit +1 raft-spider +3 constrictor-coil 40/28 | -1 mosquito-cloud -1 mudflat-godwit +2 raft-spider 40/24.5 | -1 mudflat-godwit +1 raft-spider 43.3/23.5
+=== resumed 2026-11-17T01:23:12Z after container restart
+5-7 target 40 (30-49) size 19 start {"alligator-gar":1,"fire-ant-raft":4,"marsh-mallow-hare":4,"mosquito-cloud":4,"raft-spider":2,"mudflat-godwit":4} problems []
+5-7 target 40 (30-49) size 19 start {"alligator-gar":1,"fire-ant-raft":4,"marsh-mallow-hare":4,"mosquito-cloud":4,"raft-spider":2,"mudflat-godwit":4} problems []
+start {"alligator-gar":1,"fire-ant-raft":4,"marsh-mallow-hare":4,"mosquito-cloud":4,"raft-spider":2,"mudflat-godwit":4} 24
+round 1: cur 33.3/24; 120 legal, 62 read + 8 predicted (of 45); top: -4 mudflat-godwit +1 raft-spider +3 constrictor-coil 40/28 | -1 mudflat-godwit -1 marsh-mallow-hare +2 raft-spider 40/25 | -1 mudflat-godwit +1 raft-spider 43.3/23.5
+round 2: cur 40/28; 122 legal, 70 read + 8 predicted (of 34); top: -1 constrictor-coil +1 mudflat-godwit 40/28 | -1 constrictor-coil +1 planarian-splitter 40/27 | -1 constrictor-coil -1 raft-spider +1 planarian-splitter +1 alligator-gar 40/24.5
+no nearer move
+shield 0 28
+RESULT 5-7 {"alligator-gar":1,"fire-ant-raft":4,"marsh-mallow-hare":4,"mosquito-cloud":4,"raft-spider":3,"constrictor-coil":3} 28 {} moves: -4 mudflat-godwit +1 raft-spider +3 constrictor-coil problems: []
+4-1 target 90 (82-98) size 13 start {"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1} problems []
+start {"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1} 80.5
+round 1: cur 76.7/80.5; 88 legal, 53 read + 8 predicted (of 33); top: -1 beaver-lumberjack +1 slow-worm 86.7/80 | -1 pond-algae +1 muskrat-lodgekeeper 80/75 | -1 beaver-lumberjack -1 duck-paddler +1 slow-worm +1 platypus-spur 83.3/73.5
+no nearer move
+shield 0 80.5
+RESULT 4-1 {"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1} 80.5 {} moves:  problems: []
+4-3 target 70 (62-78) size 15 start {"grass-snake":4,"muskrat-lodgekeeper":3,"platypus-spur":4,"river-mink":1,"pond-algae":2,"beaver-lumberjack":1} problems []
+start {"grass-snake":4,"muskrat-lodgekeeper":3,"platypus-spur":4,"river-mink":1,"pond-algae":2,"beaver-lumberjack":1} 48
+round 1: cur 46.7/48; 82 legal, 15 read + 8 predicted (of 36); top: -1 beaver-lumberjack -1 grass-snake +1 pond-algae +1 muskrat-lodgekeeper 60/49 | -1 pond-algae +1 muskrat-lodgekeeper 56.7/49 | -1 beaver-lumberjack +1 pond-algae 53.3/47
+round 2: cur 60/49; 76 legal, 7 read + 8 predicted (of 8); top: -1 pond-algae +1 grass-snake 53.3/48.5 | -2 pond-algae +1 grass-snake +1 planarian-splitter 46.7/47.5 | -1 pond-algae +1 planarian-splitter 50/47
+no nearer move
+shield 0 49
+RESULT 4-3 {"grass-snake":3,"muskrat-lodgekeeper":4,"platypus-spur":4,"river-mink":1,"pond-algae":3} 49 {} moves: -1 beaver-lumberjack -1 grass-snake +1 pond-algae +1 muskrat-lodgekeeper problems: []
+4-5 target 40 (30-49) size 20 start {"conch-crawler":1,"drowned-matriarch":2,"pyrenean-desman":4,"shoal-shark":4,"river-mink":4,"grass-snake":4,"duck-paddler":1} problems []
+start {"conch-crawler":1,"drowned-matriarch":2,"pyrenean-desman":4,"shoal-shark":4,"river-mink":4,"grass-snake":4,"duck-paddler":1} 22
+round 1: cur 13.3/22; 30 legal, 30 read + 8 predicted (of 46); top: -1 duck-paddler +1 muskrat-lodgekeeper 16.7/22 | -1 duck-paddler +1 planarian-splitter 16.7/22 | -1 duck-paddler -4 river-mink +1 muskrat-lodgekeeper +4 planarian-splitter 16.7/10.5
+no nearer move
+shield 0 22
+RESULT 4-5 {"conch-crawler":1,"drowned-matriarch":2,"pyrenean-desman":4,"shoal-shark":4,"river-mink":4,"grass-snake":4,"duck-paddler":1} 22 {} moves:  problems: []
+8-7 target 60 (52-68) size 14 start {"barrow-leech-bat":2,"blind-cave-fish":4,"cave-olm":1,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4} problems []
+start {"barrow-leech-bat":2,"blind-cave-fish":4,"cave-olm":1,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4} 37.5
+round 1: cur 43.3/37.5; 37 legal, 37 read + 8 predicted (of 27); top: -1 barrow-leech-bat +1 cave-olm 50/41 | -2 barrow-leech-bat -1 blind-cave-fish +1 corpse-flower-beetle +2 cave-olm 53.3/38.5 | -1 blind-cave-fish -1 cave-olm +1 barrow-leech-bat +1 sulfur-cinder-moth 53.3/30.5
+round 2: cur 50/41; 35 legal, 35 read + 8 predicted (of 41); top: -1 barrow-leech-bat +1 corpse-flower-beetle 46.7/41.5 | -1 cave-olm +1 giant-cave-huntsman 46.7/30.5 | -1 blind-cave-fish +1 giant-cave-huntsman 46.7/30
+no nearer move
+shield 0 41
+RESULT 8-7 {"barrow-leech-bat":1,"blind-cave-fish":4,"cave-olm":2,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4} 41 {} moves: -1 barrow-leech-bat +1 cave-olm problems: []
+12-7 target 40 (30-49) size 20 start {"barkplate-beetle":4,"bison-bulldozer":4,"briarback-hedgehog":4,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":3} problems []
+start {"barkplate-beetle":4,"bison-bulldozer":4,"briarback-hedgehog":4,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":3} 51.5
