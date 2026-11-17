@@ -35,3 +35,8 @@
 {"key":"9-2","deck":{"horseshoe-crab":4,"mangrove-monitor":2,"proboscis-monkey":4,"sunbittern-strider":1,"mangrove-mudskipper":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":76.3,"seed2":56300,"games":300},"moves":[]}
 {"key":"10-A-1","deck":{"coral-polyp-colony":1,"kraken-spawnling":2,"mantis-shrimp":2,"orca-vanguard":4,"moon-jelly":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":81,"seed2":56300,"games":300},"moves":[]}
 {"key":"8-7","deck":{"barrow-leech-bat":1,"blind-cave-fish":4,"cave-olm":2,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":49,"seed2":56300,"games":300},"moves":[]}
+{"key":"12-7","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":49.3,"seed2":56300,"games":300},"moves":[]}
+{"key":"5-4","deck":{"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"swamp-alligator":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":38.7,"seed2":56300,"games":300},"moves":[]}
+{"key":"5-2","deck":{"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":54.3,"seed2":56300,"games":300},"moves":[]}
+{"key":"4-3","deck":{"grass-snake":3,"muskrat-lodgekeeper":4,"platypus-spur":4,"river-mink":1,"pond-algae":3},"shieldOverride":null,"hqHp":null,"tune":{"w2":43.3,"seed2":56300,"games":300},"moves":[]}
+{"key":"4-5","deck":{"drowned-matriarch":2,"pyrenean-desman":4,"shoal-shark":4,"river-mink":4,"grass-snake":4,"duck-paddler":1,"beaver-lumberjack":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":15,"seed2":56300,"games":300},"moves":["-1 conch-crawler +1 beaver-lumberjack"]}

@@ -179,3 +179,32 @@ shield 0 49
 RESULT 8-7 {"barrow-leech-bat":1,"blind-cave-fish":4,"cave-olm":2,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4} 49 {} moves:  problems: []
 12-7 target 40 (30-49) size 20 start {"barkplate-beetle":4,"bison-bulldozer":4,"briarback-hedgehog":4,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":3} problems []
 start {"barkplate-beetle":4,"bison-bulldozer":4,"briarback-hedgehog":4,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":3} 49.3
+round 1: cur 42.5/49.3; 64 legal, 64 read + 5 predicted (of 5); top: -3 briarback-hedgehog +3 quill-thorn-boar 42.5/50.7 | -3 bison-bulldozer +3 quill-thorn-boar 40/51.7 | -1 mouse-sapper +1 barrow-leech-bat 42.5/54.7 | -1 mouse-sapper +1 eyrie-warden 42.5/58.3
+no nearer move
+RESULT 12-7 {"barkplate-beetle":4,"bison-bulldozer":4,"briarback-hedgehog":4,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":3} 49.3 {} moves:  problems: []
+5-4 target 72 (64-80) size 18 start {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"swamp-alligator":4} problems []
+start {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"swamp-alligator":4} 38.7
+round 1: cur 40/38.7; 44 legal, 44 read + 10 predicted (of 41); top: -4 raft-spider -1 fire-ant-raft +4 mosquito-cloud +1 grass-viper 47.5/33.3 | -2 fire-ant-raft -4 raft-spider +2 grass-viper +4 mosquito-cloud 47.5/32.7 | -4 raft-spider -1 marsh-mallow-hare +4 mosquito-cloud +1 grass-viper 45/31.3 | -4 raft-spider -3 fire-ant-raft +4 mosquito-cloud +3 grass-viper 45/29.3
+no nearer move
+shield 0 38.3
+RESULT 5-4 {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"swamp-alligator":4} 38.7 {} moves:  problems: []
+5-2 target 84 (76-92) size 14 start {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} problems []
+start {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} 54.3
+round 1: cur 55/54.3; 115 legal, 3 read + 1 predicted (of 1); top: -1 raft-spider +1 planarian-splitter 50/51.3 | -1 fire-ant-raft +1 planarian-splitter 45/50.3 | -1 fire-ant-raft +1 mudflat-godwit 52.5/49.7 | -1 fire-ant-raft -1 raft-spider +1 mudflat-godwit +1 planarian-splitter 37.5/44.7
+no nearer move
+shield 0 54.3
+RESULT 5-2 {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} 54.3 {} moves:  problems: []
+4-3 target 70 (62-78) size 15 start {"grass-snake":3,"muskrat-lodgekeeper":4,"platypus-spur":4,"river-mink":1,"pond-algae":3} problems []
+start {"grass-snake":3,"muskrat-lodgekeeper":4,"platypus-spur":4,"river-mink":1,"pond-algae":3} 43.3
+round 1: cur 47.5/43.3; 76 legal, 7 read + 8 predicted (of 8); top: -1 pond-algae +1 grass-snake 50/41.7 | -1 pond-algae +1 planarian-splitter 47.5/39.7 | -2 pond-algae +1 grass-snake +1 planarian-splitter 47.5/39.3 | -2 pond-algae +2 planarian-splitter 47.5/36
+no nearer move
+shield 0 43.3
+RESULT 4-3 {"grass-snake":3,"muskrat-lodgekeeper":4,"platypus-spur":4,"river-mink":1,"pond-algae":3} 43.3 {} moves:  problems: []
+4-5 target 40 (30-49) size 20 start {"conch-crawler":1,"drowned-matriarch":2,"pyrenean-desman":4,"shoal-shark":4,"river-mink":4,"grass-snake":4,"duck-paddler":1} problems []
+start {"conch-crawler":1,"drowned-matriarch":2,"pyrenean-desman":4,"shoal-shark":4,"river-mink":4,"grass-snake":4,"duck-paddler":1} 13.3
+round 1: cur 20/13.3; 30 legal, 30 read + 10 predicted (of 35); top: -1 conch-crawler +1 beaver-lumberjack 22.5/15 | -1 conch-crawler +1 planarian-splitter 22.5/14.7 | -1 conch-crawler +1 muskrat-lodgekeeper 22.5/14.3 | -1 conch-crawler +1 kittiwake-flock 22.5/14
+round 2: cur 22.5/15; 30 legal, 30 read + 10 predicted (of 30); top: -1 duck-paddler +1 muskrat-lodgekeeper 22.5/14.3 | -1 duck-paddler +1 kittiwake-flock 22.5/14 | -4 grass-snake +4 slow-worm 22.5/13 | -4 grass-snake +4 planarian-splitter 22.5/12.3
+no nearer move
+shield 0 15
+RESULT 4-5 {"drowned-matriarch":2,"pyrenean-desman":4,"shoal-shark":4,"river-mink":4,"grass-snake":4,"duck-paddler":1,"beaver-lumberjack":1} 15 {} moves: -1 conch-crawler +1 beaver-lumberjack problems: []
+LANE DONE
