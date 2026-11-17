@@ -48021,6 +48021,7 @@ function fogPillHTML(m){
 function mistHidesMoon(m){ try{ return !!(m && matchHasMoonCards(m)); }catch(e){ return false; } }
 
 const FIELD_EVERY_ROUND = new Set(['frozen', 'heatwave', 'rain']);
+function phasePillShows(m){ return !!(dayNightOn(m) && matchPhaseMatters(m) && m.engine.getPhase()); } // 2026-11-16 (COACH2): the phase pill's own condition
 function phasePillHTML(m){
   const phase = (dayNightOn(m) && matchPhaseMatters(m)) ? m.engine.getPhase() : null; if(!phase) return '';
   const PL = (m.engine && m.engine.getPhaseLen) ? m.engine.getPhaseLen() : 3;
@@ -48656,7 +48657,9 @@ function passiveTipCandidates(){
   // 2026-10-15: a skill still hidden as "?" (SKILL_REVEAL) gets no tip yet; it comes once the skill is revealed. Retired skills none.
   Registry.skills().filter(sd=> sd.key !== 'leader' && !sd.retired && !skillHiddenNow(sd.key)).forEach(sd=>{
     const desc = (()=>{ const p = PASSIVE_DEFS.find(x=> x.key === sd.key), at = v=>{ try{ return p ? skillText(p, v, {}) : sd.desc(v); }catch(e){ try{ return sd.desc(v); }catch(_){ return ''; } } }; return ui23NoNumbers(at(1), at(2)); })(); // UI23 (#31)
-    out.push({id:'skill-'+sd.key, text:`✨ ${sd.label}: ${desc}`, anchor:()=> coachBoardEl(d=> d.effects && sd.get(d.effects)!==undefined)});
+    // 2026-11-16 (package COACH2, owner 23:38): Diurnal / Nocturnal / Crepuscular are taught only while the phase pill shows (a day/night cycle runs); skipped, it stays unseen for a later fight
+    const dayNightLesson = /^(diurnal|nocturnal|crepuscular)/.test(sd.key);
+    out.push({id:'skill-'+sd.key, text:`✨ ${sd.label}: ${desc}`, anchor:()=> (dayNightLesson && !phasePillShows(m)) ? null : coachBoardEl(d=> d.effects && sd.get(d.effects)!==undefined)});
   });
   // statuses, the first time one shows up on any card
   STATUS_TIPS.forEach(t=> out.push({id:t.id, text:t.text, anchor:()=>{

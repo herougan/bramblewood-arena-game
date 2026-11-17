@@ -2,6 +2,7 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+
 ## 2026-11-16 (package CHEAT2: cheat detection)
 - Players see no change. The game now notes impossible states instead of blocking anything: a save edited outside the game (the wallet or card copies no longer match what the game last wrote), a currency jump with no matching reward beyond the server's per-write cap, impossible balances or copy counts, Conquest wins under 3 s, impossible rounds, 60+ wins in 10 minutes, a won deck with a card never owned, card data that fails its hash (checklist E6), and a device clock that went back or is 15+ minutes off the server. Notes stay in the browser (last 50); a signed-in player's are sent to `report_cheat_flags`, or, until that SQL is applied, as one batched feedback row a day. Guests are never reported. Admin Mode, Admin test fights, the Admin win and the cloud load are exempt.
 - Hand-ins now carry a compact fight record (`transcript.rec`: seed, deck and copy levels, leader, build, card hash, duration) for a later server replay (Tier 3).
@@ -10,6 +11,9 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 ## 2026-11-16 (package CARDPOW1: every card power rated and budget-checked, owner 11-16 23:53)
 - Card editor: a Power number now shows for 858 of the 875 playable cards (was 348). Why Farm Dog had none: the card power test's scope read `canonical/card-obtain-maps.json`, which leaves out every Map 0 card, so an obtainable Map 0 card that is not a faction / Starter / Base card fell out; cards added since 11-09 were never measured. Fixed in `tools/card_balance.js` (Map 0 cards the game hands out are in scope; `--scope=all` rates every playable card, rows outside Maps 0-20 marked "extra" and kept out of the advanced pool, the fit and the editor's zero; `--scope=all --only=<ids>` folds a new card into the full report; `--shard=K/N`; Stone / Metal / Uranium cards get 2 resource helpers in the test deck). Re-measured all 875 at 400 games on GitHub runners (filler and engine had moved since 11-09). The 17 left are unobtainable Prayer / Evolute / spell cards the test cannot play; each row says why.
 - Budget fill at Levels 1-10 for every card (editor reading, Forge curve, level skills): in play Maps 0-20, 190 of 398 cards in 85-100% at Level 1, 161 under, 47 over; 18 curve jumps (16 are the Level 0 cards' Level 2 catch-up, call CARDPOW1-1). Proposals only, no card changed (CARDPOW1-2). `docs/balance/cardpow1/cardpow1-2026-11-16.md` / `.json` / `.csv`, workbook `/home/claude/out/CardPower - Bramblewood.xlsx`; test `tests/cardpow1-2026-11-16.js` (no card without a rating).
+
+## 2026-11-16 (package COACH2: day/night tips only with a cycle)
+- The Diurnal / Nocturnal / Crepuscular coach tips now wait for a fight where the day/night pill shows (not misty fields or phase-less maps); a skipped tip stays unseen. Test `tests/coach2-2026-11-16.js`.
 
 ## 2026-11-16 (package UX7: focus skills, admin Map cards list)
 - Admin only. One table of focus skills per map (0-3 each, `MAP_FOCUS_SKILLS`, a draft from REDESIGN1's II plan the owner may edit; a live `__cfg:map-focus` row overrides) now drives both the Map cards "Skills on these cards" list and "Skills by map" (replaces `SKMAP_PICKS`).
