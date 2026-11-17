@@ -223,3 +223,4 @@ RESULT 19-5 {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":4,"obsidi
 LANE DONE
 === lane B5 2026-11-17T02:44:33Z: 7-A-3 read 81 on s7600 with its fix (band top 78): one more pass
 7-A-3 target 70 (62-78) size 16 side (min 12) start {"fungus-gnat-cloud":4,"garden-snail":3,"hawthorn-shieldbug":1,"leopard-slug":4,"sleepless-shrew":4} problems []
+start {"fungus-gnat-cloud":4,"garden-snail":3,"hawthorn-shieldbug":1,"leopard-slug":4,"sleepless-shrew":4} 74

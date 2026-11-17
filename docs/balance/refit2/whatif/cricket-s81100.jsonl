@@ -59,3 +59,10 @@
 {"key":"2-4","label":"cricket-drummer:attack=2,health=5","set":"cricket-drummer:attack=2,health=5","fix":false,"hqHp":null,"hp":15,"shield":0,"games":400,"seed":81100,"win":59.8,"ms":9816}
 {"key":"5-7","label":"cricket-drummer:attack=2,health=5","set":"cricket-drummer:attack=2,health=5","fix":true,"hqHp":87,"hp":15,"shield":0,"games":400,"seed":81100,"win":42.8,"ms":4727}
 {"key":"2-5","label":"cricket-drummer:attack=2,health=5","set":"cricket-drummer:attack=2,health=5","fix":false,"hqHp":null,"hp":17,"shield":0,"games":400,"seed":81100,"win":33,"ms":9938}
+{"key":"6-1","label":"cricket-drummer:attack=2,health=5","set":"cricket-drummer:attack=2,health=5","fix":false,"hqHp":95,"hp":13,"shield":2,"games":400,"seed":81100,"win":90.8,"ms":5460}
+{"key":"3-1","label":"cricket-drummer:attack=2,health=5","set":"cricket-drummer:attack=2,health=5","fix":false,"hqHp":null,"hp":15,"shield":2,"games":400,"seed":81100,"win":89.8,"ms":8407}
+{"key":"6-2","label":"cricket-drummer:attack=2,health=5","set":"cricket-drummer:attack=2,health=5","fix":false,"hqHp":null,"hp":13,"shield":0,"games":400,"seed":81100,"win":73.8,"ms":5782}
+{"key":"3-2","label":"cricket-drummer:attack=2,health=5","set":"cricket-drummer:attack=2,health=5","fix":false,"hqHp":63,"hp":15,"shield":2,"games":400,"seed":81100,"win":83.5,"ms":6668}
+{"key":"6-3","label":"cricket-drummer:attack=2,health=5","set":"cricket-drummer:attack=2,health=5","fix":false,"hqHp":235,"hp":13,"shield":3,"games":400,"seed":81100,"win":88,"ms":5377}
+{"key":"3-3","label":"cricket-drummer:attack=2,health=5","set":"cricket-drummer:attack=2,health=5","fix":false,"hqHp":37,"hp":15,"shield":2,"games":400,"seed":81100,"win":83,"ms":7069}
+{"key":"6-4","label":"cricket-drummer:attack=2,health=5","set":"cricket-drummer:attack=2,health=5","fix":false,"hqHp":107,"hp":13,"shield":0,"games":400,"seed":81100,"win":88,"ms":5854}
