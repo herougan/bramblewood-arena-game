@@ -1,7 +1,6 @@
 #!/bin/bash
 # 2026-11-17 (package REFIT3): one lane of the wide search (tools/refit3/wide_2026_11_17.js), the fights in order, each with the decks accepted
-# before it in the same lane file (--fx / --accept: a map's fights stay jointly legal). Then REFIT1's local search polishes each accepted deck
-# (--from-accepted, strict legality) unless POLISH=0.
+# before it in the same lane file (--fx / --accept: a map's fights stay jointly legal). The second stage is tools/refit3/polish_2026_11_17.sh.
 #   bash tools/refit3/lane_2026_11_17.sh <accepted.jsonl> <log> CODE...
 cd "$(dirname "$0")/../.." || exit 1
 ACC=$1; LOG=$2; shift 2
