@@ -375,8 +375,8 @@
   "area": "combat-attack",
   "name": "Arrow shot",
   "trigger": "arrow event (pendingArrow) then ranged hit → SkillFX.bowShot (draw, release, flight, thunk)",
-  "current": "SkillFX.bowShot + bowDraw/arrowLoose/arrowThunk",
-  "quality": "good — full bow choreography",
+  "current": "FX.H.arrowShot: a bow appears at the shooter, the fletched arrow (cream and red feathers) is drawn back, loosed with a twang on an arc (a near-vertical shot bows aside and swells), sticks and quivers, splinters fly; the shooter leans back and recoils",
+  "quality": "good — FX14 drawn bow, fletched arrow on an arc, sticks and quivers",
   "priority": 2,
   "themeNotes": "",
   "variantsSuggested": false,
@@ -384,90 +384,100 @@
   "sources": [
    "bramblewood-engine.js:3422",
    "arena_app.js:31325",
-   "bramblewood-skillfx.js:65"
+   "bramblewood-skillfx.js:65",
+   "bramblewood-fx-h.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "_existing.js",
-  "inGameHook": "renderVfxForEvent → ranged hit (matchState.pendingArrow)"
+  "lab": "h.js",
+  "inGameHook": "ranged hit → FX.H.arrowShot (arena_app.js, bramblewood-fx-h.js)",
+  "updated": "2026-11-17"
  },
  {
   "id": "atk-fire-arrow",
   "area": "combat-attack",
   "name": "Fire Arrow",
   "trigger": "arrow {fire:true} + hit → SkillFX.bowShot({fire})",
-  "current": "bowShot fire: flame tip, ember trail, ignite ring",
-  "quality": "good — has its own look that plays at the right moment",
+  "current": "FX.H.arrowShot {variant fire}: orange fletching, a flame on the tip, rising embers along the arc, a burst of fire on impact",
+  "quality": "good — FX14 flame tip, ember trail, fire burst",
   "priority": 2,
   "themeNotes": "",
   "variantsSuggested": false,
   "future": false,
   "sources": [
-   "arena_app.js:31427"
+   "arena_app.js:31427",
+   "bramblewood-fx-h.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "_existing.js",
-  "inGameHook": "renderVfxForEvent → ranged hit with matchState.pendingArrow {fire}: SkillFX.bowShot({fire})"
+  "lab": "h.js",
+  "inGameHook": "ranged hit → FX.H.arrowShot (arena_app.js, bramblewood-fx-h.js)",
+  "updated": "2026-11-17"
  },
  {
   "id": "atk-ice-arrow",
   "area": "combat-attack",
   "name": "Ice Arrow",
   "trigger": "arrow (ice) + cold hit, 1 in 2 statusFx freeze",
-  "current": "bowShot (plain) then freezeEncase",
-  "quality": "basic — the arrow itself is a normal arrow: no frost tip, no rime trail",
+  "current": "FX.H.arrowShot {variant ice}: pale-blue arrow with an icy head, a frost trail with flakes, a crystal pop on impact (crystalPop); FX.A.iceArrow's hue-rotate filter no longer plays",
+  "quality": "good — FX14 frost trail, crystal pop",
   "priority": 2,
   "themeNotes": "Frost-blue fletching, snowflake trail; Pinewood Taiga archers.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
    "bramblewood-engine.js:3400",
-   "arena_app.js:31114"
+   "arena_app.js:31114",
+   "bramblewood-fx-h.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): arrow {ice} + its hit: frost tint, snowflake trail, rime burst"
+  "lab": "h.js",
+  "inGameHook": "ranged hit → FX.H.arrowShot (arena_app.js, bramblewood-fx-h.js)",
+  "updated": "2026-11-17"
  },
  {
   "id": "atk-twin-shot",
   "area": "combat-attack",
   "name": "Twin Shot",
   "trigger": "two arrow events + hits in quick succession",
-  "current": "bowShot ×2",
-  "quality": "good — has its own look that plays at the right moment",
+  "current": "FX.H.arrowShot {twin}: two arrows, the bow stays up for the second, each arcs its own way",
+  "quality": "good — FX14 the pair reads as one volley of two",
   "priority": 3,
   "themeNotes": "",
   "variantsSuggested": false,
   "future": false,
   "sources": [
-   "bramblewood-engine.js:3362"
+   "bramblewood-engine.js:3362",
+   "bramblewood-fx-h.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "two arrow events → SkillFX.bowShot ×2"
+  "lab": "h.js",
+  "inGameHook": "ranged hit → FX.H.arrowShot (arena_app.js, bramblewood-fx-h.js)",
+  "updated": "2026-11-17"
  },
  {
   "id": "atk-volley",
   "area": "combat-attack",
   "name": "Volley (arrow at every enemy)",
   "trigger": "Volley N on 1st/3rd/5th Ready round: arrow+hit per enemy unit",
-  "current": "bowShot per arrow, one after another",
-  "quality": "basic — reads as many single shots; SkillFX.volley (a real arrow rain prototype) is not wired",
+  "current": "FX.H.volleyLoose (first Volley arrow of a round, Medium and up): five arrows fan up into the sky; each arrow's own hit plunges onto its target from above (FX.H.arrowShot {plunge}); FX.A.arrowRain no longer plays",
+  "quality": "good — FX14 loose upward, plunge on each target",
   "priority": 2,
   "themeNotes": "Eyrie Heights: a dark cloud of arrows arcs over and rains.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
    "bramblewood-skillfx.js:133",
-   "bramblewood-engine.js:3362"
+   "bramblewood-engine.js:3362",
+   "bramblewood-fx-h.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "_existing.js, a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): first Volley arrow of a round: SkillFX.volley lead arrows + a rain of arrows over the whole line (High effects)"
+  "lab": "h.js",
+  "inGameHook": "onEvent arrow {volley} → FX.H.volleyLoose; each hit → FX.H.arrowShot {plunge}",
+  "updated": "2026-11-17"
  },
  {
   "id": "atk-snipe",
@@ -493,8 +503,8 @@
   "area": "combat-attack",
   "name": "Fire Bolt",
   "trigger": "bolt event {element:'fire'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx",
-  "current": "SkillFX.boltGlob (ember splat)",
-  "quality": "good — spit squash, lobbed glob, coloured splat",
+  "current": "FX.H.boltShot {fire}: a 0.26 s charge in the mouth (the shooter squashes), a tumbling ember with a flame tail and a heat trail, 0.33 s flight, a small burst of sparks (boltFire)",
+  "quality": "good — FX14 tumbling ember, heat trail, small burst",
   "priority": 2,
   "themeNotes": "Glass Dunes fire-spitters: orange glob, ember burst.",
   "variantsSuggested": false,
@@ -502,20 +512,22 @@
   "sources": [
    "bramblewood-engine.js:3371",
    "arena_app.js:31140",
-   "bramblewood-skillfx.js:1351"
+   "bramblewood-skillfx.js:1351",
+   "bramblewood-fx-h.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "ninthPassVfx → SkillFX.boltGlob"
+  "lab": "h.js",
+  "inGameHook": "ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js)",
+  "updated": "2026-11-17"
  },
  {
   "id": "atk-bolt-acid",
   "area": "combat-attack",
   "name": "Acid Bolt",
   "trigger": "bolt event {element:'acid'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx",
-  "current": "SkillFX.boltGlob (acid drip splat)",
-  "quality": "good — spit squash, lobbed glob, coloured splat",
+  "current": "FX.H.boltShot {acid}: a wobbling green glob dripping as it flies, a splash ring, droplets and a sizzle of bubbles (boltAcid)",
+  "quality": "good — FX14 glob, splash and sizzle",
   "priority": 2,
   "themeNotes": "Ant acid: yellow-green, fizz.",
   "variantsSuggested": false,
@@ -523,20 +535,22 @@
   "sources": [
    "bramblewood-engine.js:3372",
    "arena_app.js:31140",
-   "bramblewood-skillfx.js:1351"
+   "bramblewood-skillfx.js:1351",
+   "bramblewood-fx-h.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "ninthPassVfx → SkillFX.boltGlob"
+  "lab": "h.js",
+  "inGameHook": "ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js)",
+  "updated": "2026-11-17"
  },
  {
   "id": "atk-bolt-poison",
   "area": "combat-attack",
   "name": "Poison Bolt",
   "trigger": "bolt event {element:'poison'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx",
-  "current": "SkillFX.boltGlob (green glob + 🐍 +N ☠)",
-  "quality": "good — spit squash, lobbed glob, coloured splat",
+  "current": "FX.H.boltShot {poison}: a purple droplet trailing fumes, a puff of purple smoke and drips (boltPoison)",
+  "quality": "good — FX14 droplet and fume puff",
   "priority": 2,
   "themeNotes": "Swamp spit.",
   "variantsSuggested": false,
@@ -544,20 +558,22 @@
   "sources": [
    "bramblewood-engine.js:3373",
    "arena_app.js:31140",
-   "bramblewood-skillfx.js:1351"
+   "bramblewood-skillfx.js:1351",
+   "bramblewood-fx-h.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "ninthPassVfx → SkillFX.boltGlob"
+  "lab": "h.js",
+  "inGameHook": "ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js)",
+  "updated": "2026-11-17"
  },
  {
   "id": "atk-bolt-ice",
   "area": "combat-attack",
   "name": "Ice Bolt",
   "trigger": "bolt event {element:'ice'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx",
-  "current": "SkillFX.boltGlob (ice-shard splat)",
-  "quality": "good — spit squash, lobbed glob, coloured splat",
+  "current": "FX.H.boltShot {ice}: a frosted shard flying point first, a frost trail, it shatters into shards and flakes (boltIce)",
+  "quality": "good — FX14 frosted shard shattering",
   "priority": 2,
   "themeNotes": "Tundra frost spit.",
   "variantsSuggested": false,
@@ -565,20 +581,22 @@
   "sources": [
    "bramblewood-engine.js:3374",
    "arena_app.js:31140",
-   "bramblewood-skillfx.js:1351"
+   "bramblewood-skillfx.js:1351",
+   "bramblewood-fx-h.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "ninthPassVfx → SkillFX.boltGlob"
+  "lab": "h.js",
+  "inGameHook": "ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js)",
+  "updated": "2026-11-17"
  },
  {
   "id": "atk-bolt-shock",
   "area": "combat-attack",
   "name": "Shock Bolt",
   "trigger": "bolt event {element:'shock'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx",
-  "current": "SkillFX.boltGlob (spark splat)",
-  "quality": "good — spit squash, lobbed glob, coloured splat",
+  "current": "the game's lightning bolt (drawLightningBolt) + FX.H.shockBolt: a crackle round the shooter as it charges, the bolt forks where it lands (three jagged branches, two twigs, a flash, sparks)",
+  "quality": "good — FX14 crackle and fork on impact",
   "priority": 2,
   "themeNotes": "Electric cave bats.",
   "variantsSuggested": false,
@@ -586,12 +604,14 @@
   "sources": [
    "bramblewood-engine.js:3375",
    "arena_app.js:31140",
-   "bramblewood-skillfx.js:1351"
+   "bramblewood-skillfx.js:1351",
+   "bramblewood-fx-h.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "ninthPassVfx → SkillFX.boltGlob"
+  "lab": "h.js",
+  "inGameHook": "onEvent (bramblewood-fx-h.js): bolt shock, then its ranged hit → FX.H.shockBolt",
+  "updated": "2026-11-17"
  },
  {
   "id": "atk-cleave",
@@ -18701,8 +18721,8 @@
   "area": "combat-skill",
   "name": "Spitfire",
   "trigger": "bolt {element fire, key spitfire}",
-  "current": "SkillFX.boltGlob fire at a random enemy (shared with Fire Bolt)",
-  "quality": "good — has its own look that plays at the right moment",
+  "current": "FX.H.boltShot {spitfire}: a fast spit of three small flame blobs (0.24 s), a small flare (spitfire cue)",
+  "quality": "good — FX14 fast flame spit",
   "priority": 2,
   "themeNotes": "Fire-spitting lizards.",
   "variantsSuggested": false,
@@ -18710,12 +18730,14 @@
   "sources": [
    "bramblewood-engine.js: the W2 block (2026-10-16)",
    "bramblewood-skillfx.js: the W2 section",
-   "arena_app.js: w2SkillVfx"
+   "arena_app.js: w2SkillVfx",
+   "bramblewood-fx-h.js"
   ],
   "batch": "W2",
   "status": "live",
-  "lab": "w2.js",
-  "inGameHook": "ninthPassVfx: bolt {element fire, key spitfire} → SkillFX.boltGlob; the splash is an ordinary hit"
+  "lab": "h.js",
+  "inGameHook": "ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js)",
+  "updated": "2026-11-17"
  },
  {
   "id": "sk-trap-set",
@@ -20710,5 +20732,225 @@
    "bramblewood-fx-h.js"
   ],
   "inGameHook": "onEvent (bramblewood-fx-h.js): parasiteDrain with gorge"
+ },
+ {
+  "id": "atk-bolt-miss",
+  "area": "combat-attack",
+  "name": "A bolt is dodged",
+  "trigger": "bolt, then evaded {ranged}",
+  "current": "FX.H.boltShot's miss(): the spit sails past the target with no splash (it used to splat on the target anyway)",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "A dodge should read as a dodge.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "onEvent (bramblewood-fx-h.js): evaded after a bolt",
+  "added": "2026-11-17"
+ },
+ {
+  "id": "atk-arrow-bleed",
+  "area": "combat-attack",
+  "name": "Arrow – bleed (serrated)",
+  "trigger": "arrow from a card with an – bleed tip (arrowBleed / fireArrowBleed), then its hit",
+  "current": "FX.H.arrowShot {variant bleed}: dark red fletching, a serrated head, a faint red streak, a small slash and drops of blood on impact (arrowSlash)",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "Owner: \"The arrows — blood etc — do they look nice?\"",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "ranged hit → FX.H.arrowShot {variant bleed}",
+  "added": "2026-11-17"
+ },
+ {
+  "id": "atk-arrow-venom",
+  "area": "combat-attack",
+  "name": "Arrow – poison (venom)",
+  "trigger": "arrow from a card with an – poison tip (arrowPoison / fireArrowPoison), then its hit",
+  "current": "FX.H.arrowShot {variant venom}: green fletching, a green-dipped head that drips, a drip trail, a green puff on impact (venomPuff)",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "Venom is green here; the Poison Bolt is purple.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "ranged hit → FX.H.arrowShot {variant venom}",
+  "added": "2026-11-17"
+ },
+ {
+  "id": "atk-archer-arrow",
+  "area": "combat-attack",
+  "name": "Archer N: its turn is an arrow",
+  "trigger": "arrow {archer} (onAction trigger), then its hit",
+  "current": "FX.H.arrowShot {archer}: a bigger bow, blue fletching, a glint at the head before the loose (Stonedrop Vulture keeps its stone drop, archerStyle drop)",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "ranged hit → FX.H.arrowShot {archer}",
+  "added": "2026-11-17"
+ },
+ {
+  "id": "atk-arrow-miss",
+  "area": "combat-attack",
+  "name": "An arrow is dodged",
+  "trigger": "arrow, then evaded {ranged}",
+  "current": "FX.H.arrowShot {miss}: it sails past the target and skids into a puff of dust (it used to strike the target anyway)",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "ranged evaded → FX.H.arrowShot {miss}",
+  "added": "2026-11-17"
+ },
+ {
+  "id": "sk-forestry-log",
+  "area": "combat-skill",
+  "name": "Forestry N: +N Lumber every turn",
+  "trigger": "lumber {cause:'forestry'}",
+  "current": "FX.H.forestryLog: a log pops out of the card and tumbles end over end into the Lumber pill (up to 3), wood chips as it lands (logTumble); the generic Lumber arc skips it",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "ECONSK1 resource skills.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "onEvent (bramblewood-fx-h.js): lumber with cause forestry",
+  "added": "2026-11-17"
+ },
+ {
+  "id": "sk-gold-coin",
+  "area": "combat-skill",
+  "name": "Prospecting N / Delivery {Gold} / Barter: Gold",
+  "trigger": "gold {why:'prospecting' | 'delivery'}; Gold going down with a Barter unit on the board (fxHook fieldRes)",
+  "current": "FX.H.coinFlip: a coin flips up with a glint and drops into the Gold pill (coinFlip); Barter paying: a coin flips out of the Gold pill",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "ECONSK1 resource skills.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "onEvent gold; fxHook fieldRes (fieldResSideHTML)",
+  "added": "2026-11-17"
+ },
+ {
+  "id": "sk-plunder-coins",
+  "area": "combat-skill",
+  "name": "Plunder N: Gold stolen",
+  "trigger": "sk2 {kind:'plunder'}",
+  "current": "FX.H.plunderCoins: coins flip out of the robbed side's Gold pill (or bramble) and land in the plunderer (the 🪙 glyph projectile stays below Medium)",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "ECONSK1 resource skills.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "onEvent (bramblewood-fx-h.js): sk2 plunder",
+  "added": "2026-11-17"
+ },
+ {
+  "id": "sk-anvil-forge",
+  "area": "combat-skill",
+  "name": "Masonry / Refining: Stone or Metal made",
+  "trigger": "stone / metal (no cause) from a Masonry or Refining (Smelter) unit's turn trigger",
+  "current": "FX.H.anvilSpark: a little anvil drops onto the card, two strikes of sparks, the Stone (or a glowing Metal nugget that cools) hops off (anvilTink)",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "ECONSK1 resource skills.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "onEvent (bramblewood-fx-h.js): stone / metal from a masonry / refining card",
+  "added": "2026-11-17"
+ },
+ {
+  "id": "sk-pearl-glint",
+  "area": "combat-skill",
+  "name": "Pearls gained or spent",
+  "trigger": "pearl (Delivery {Pearl}); Pearls going down (fxHook fieldRes)",
+  "current": "FX.H.pearlGlint: a pearl rolls up to the Pearl pill and a four-point glint turns over it (pearlChime); spent, it rises out of the pill and glints",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "onEvent pearl; fxHook fieldRes",
+  "added": "2026-11-17"
+ },
+ {
+  "id": "sk-ore-chip",
+  "area": "combat-skill",
+  "name": "Quarrying / Mining: Stone or Metal dug",
+  "trigger": "stone {cause:'quarrying'} / metal {cause:'mining'}",
+  "current": "FX.H.oreChip: a chip of stone (or a nugget of ore) knocks off the card with grit and hops into its pill (pickChip)",
+  "quality": "good — FX14",
+  "priority": 2,
+  "themeNotes": "ECONSK1 resource skills.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "onEvent (bramblewood-fx-h.js)",
+  "added": "2026-11-17"
  }
 ]

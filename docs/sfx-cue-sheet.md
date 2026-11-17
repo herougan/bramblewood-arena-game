@@ -124,3 +124,23 @@ Built in `bramblewood-fx-h.js` (`CUES`, installed on `SoundKit` from its `tone` 
 | 18 | `mendChime` | Healing N heals (`FX.H.healingMend`) | Two soft glass notes, a high one just after, with a gentle upward shimmer | Two-note up-blip | about 250 ms |
 | 19 | `hymnBell` | Worship: a unit's halo settles (`FX.H.worshipHymn`, once a round) | Three warm bell notes rising in a chord, a faint high overtone | Three-note arpeggio, triangle | about 0.9 s |
 | 20 | `gorgeGulp` | Gorge: the parasite drinks (`FX.H.gorgeGulp`) | Two low wet gulps (a falling hum with a soft noise swallow) | Two descending blips | about 0.4 s |
+
+## FX14 cues (2026-11-17)
+
+Also in `bramblewood-fx-h.js` (`CUES`, from `SoundKit.prim`).
+
+| # | Cue | Trigger | Mood (A, cosy/organic) | Mood (B, chiptune) | Length |
+|---|---|---|---|---|---|
+| 21 | `boltFire` | A Fire Bolt lands (`FX.H.boltShot`) | A soft whoomph of flame, a falling warm note | Noise burst down-sweep | about 160 ms |
+| 22 | `boltIce` | An Ice Bolt shatters | Four tiny glassy tinkles | Four high blips | about 150 ms |
+| 23 | `boltAcid` | An Acid Bolt splashes | A wet splat, then a hissing sizzle | Low blip, crackly hiss | about 320 ms |
+| 24 | `boltPoison` | A Poison Bolt pops | A soft plop and a fume puff | Falling blip, soft noise | about 270 ms |
+| 25 | `spitfire` | Spitfire spits | Two quick flame puffs | Two noise puffs | about 150 ms |
+| 26 | `arrowSlash` | A – bleed arrow lands | A sharp slice and a dull knock | High noise flick, low blip | about 90 ms |
+| 27 | `venomPuff` | A – poison arrow lands | A rising puff, a soft note | Noise swell | about 200 ms |
+| 28 | `crystalPop` | An Ice Arrow lands | Two bright glass notes and a tick | Two-note up-blip | about 120 ms |
+| 29 | `logTumble` | Forestry's log tumbles | Three woody knocks, falling | Three triangle blips | about 250 ms |
+| 30 | `coinFlip` | A Gold coin flips (Prospecting, Delivery, Barter) | A coin ring rising in pitch | Square tick, two sine pings | about 330 ms |
+| 31 | `anvilTink` | Masonry / Refining strike | Two small anvil tinks with a spark tick | Two triangle pings | about 360 ms |
+| 32 | `pearlChime` | Pearls gained or spent | A soft glassy chime with a shimmer | Two-note chime | about 380 ms |
+| 33 | `pickChip` | Quarrying / Mining chip | A pick tick and a stone knock | Square tick, low blip | about 70 ms |

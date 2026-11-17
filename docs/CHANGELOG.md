@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-17 (package FX14: bolts and arrows redrawn, resource skill looks)
+- Players see: owner 11-16 23:53 "The bolt as is, isn't so nice looking. The arrows — blood etc — do they look nice?". Bolts are quick spits now: a short charge in the mouth and 0.33 s of flight, each element its own look (Fire a tumbling ember with a heat trail and a small burst, Ice a frosted shard that shatters into flakes, Acid a green glob that splashes and sizzles, Poison a purple droplet and a fume puff, Spitfire a fast stream of flame, Shock Bolt crackles and forks where it lands). A dodged bolt sails past.
+- Arrows: a bow is drawn, a fletched arrow flies 0.38 s on an arc (was 0.26 s) and sticks and quivers; the variant shows in the fletching, the trail and the impact (flaming, ice with a crystal pop, – bleed with a serrated head, a slash and drops of blood, – poison dripping green, Archer's bigger bow). Twin Shot's two arrows arc each way; Volley looses a fan into the sky and each arrow plunges onto its target; a dodged arrow sails past (it used to strike anyway).
+- Resource skills: Forestry tumbles a log into the Lumber pill, Prospecting / Delivery Gold flip a coin, Plunder flips coins out of the robbed side, Barter flips one out of the Gold pill when it pays, Masonry / Refining strike a little anvil, Pearls glint, Quarrying / Mining knock off a chip. 13 new cues (SoundKit.prim).
+- Code: section 5 of `bramblewood-fx-h.js`; `arena_app.js` calls it from `ninthPassVfx`, the ranged hit, the Plunder line and `fieldResSideHTML` (hook `fieldRes`); `arrowFlightMs` 260 -> 380 ms; FX.A's ice tint and arrow rain step aside. Same impact times, no rule change (e5det). Lab: `manifest/h.js` (FX14 variants), inventory +11 / 11 updated, catalogue, cue sheet. Test `tests/fx14-2026-11-17.js`; shots `docs/screens/fx14/`.
+
 ## 2026-11-16 (package ART15: Chipmunk Skirmisher art candidates)
 
 - Owner 11-16 23:37 "Redo chipmunk skirmisher's art": four PixelLab candidates (a crouched striped chipmunk on a mossy log, sling-bag of acorns, acorn mid-throw), contact sheet `docs/art/art15-chipmunk-skirmisher-candidates.png`. Candidates only; `python3 tools/art15_import.py <1-4>` imports one. Notes: `docs/art/art15-2026-11-16.md`.
