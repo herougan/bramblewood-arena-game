@@ -18390,6 +18390,10 @@ function deckBreakdownHTML(deckIds, defs){
   if(!rows.length) return `<div class="dht-empty">Deck is empty.</div>`;
   return `<div class="dht-list">${rows.map(r=>`<div class="dht-row"><span class="dht-ico">${r.icon}</span><span class="dht-name">${escapeHtml(r.name)}</span><span class="dht-n">×${r.n}</span></div>`).join('')}</div>`;
 }
+// 2026-11-17 (package NAV1, owner OWN-1117-3 23:43): Conquest, Arena (PvP) and Dungeons & Raids are three pages in the Play view; each shows only its own tabs.
+function nav1PlayPage(){ return ['raid','dungeons'].includes(playSubTab) ? 'dr' : ['arena','autobattle'].includes(playSubTab) ? 'arena' : 'conquest'; }
+function nav1PlayTabs(){ const pg = nav1PlayPage();
+  return pg === 'dr' ? [tabOpen('raid') && 'raid', dungeonsTabOpen() && 'dungeons'].filter(Boolean) : pg === 'arena' ? [] : (adminModeEnabled || featureUnlocked('testlab')) ? ['conquest', 'sandbox'] : []; }
 function renderPlay(){
   const root = document.getElementById('view-play');
   syncTextFilterPage(); // 2026-10-18: a new Play sub-tab starts with empty search boxes
@@ -18423,21 +18427,21 @@ function renderPlay(){
         ${'' /* 2026-10-19 (package U3, owner 13:41: "I think the home button shouldnt be on the btm bar but as an icon beside the fullscreen
              button and arena button."): NV's 🌰 Home left the floating tab bar; it is the first icon of the top-right cluster again
              (#homeNavBtnPlay below), as an acorn, sized like the 🏟️ / ⚙️ beside it. NV's iOS fix stays: only the tab strip scrolls, never
-             the row that holds the cluster. */}<div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
-          ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
+             the row that holds the cluster. */}<div class="play-subtabs" role="tablist" ${nav1PlayTabs().length > 1 ? '' : 'hidden' /* 2026-11-17 (package NAV1): only this page's own tabs */}>
+          ${nav1PlayTabs().includes('conquest') ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
           <!-- 2026-09-20, per explicit request ("Home landing page contains the Play, Deck,
                Codex"): deck-building now lives in its own top-level Deck section (see
                renderDeckSection in Part 8), so the old "Player" sub-tab here — which showed that
                exact same builder — is retired to avoid two different paths to the same screen.
                renderPlayerSubTab itself is untouched and still the fallback below for safety. -->
-          ${tabOpen('arena') ? `<button class="tab-btn ${(playSubTab==='arena'||playSubTab==='autobattle')?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'||playSubTab==='autobattle'}"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
+          ${nav1PlayTabs().includes('arena') ? `<button class="tab-btn ${(playSubTab==='arena'||playSubTab==='autobattle')?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'||playSubTab==='autobattle'}"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
           ${'' /* 2026-10-11 (user: "Raid as a menu item, beside Arena. Autobattler will be in the Arena"): the Autobattler is a tile inside the Arena now, so Raid sits right beside Arena here */}
-          ${tabOpen('raid') ? `<button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> ${escapeHtml(raidTabLabel())}</button>` : ''}
-          ${'' /* 2026-10-15 (user: "Maybe, it's its own, just another tab in 'Play'."): the daily dungeons */}${dungeonsTabOpen() ? `<button class="tab-btn ${playSubTab==='dungeons'?'active':''}" data-playtab="dungeons" role="tab" aria-selected="${playSubTab==='dungeons'}"><span class="tab-emoji">🗝️</span> ${escapeHtml(dungeonTabLabel()) /* 2026-10-16 (user: "when you unlock the first daily dungeon, it just says the name aka Murgle. But once you unlock the 2nd, it just says Daily Dungeons") */}</button>` : ''}
+          ${nav1PlayTabs().includes('raid') ? `<button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> ${escapeHtml(raidTabLabel())}</button>` : ''}
+          ${'' /* 2026-10-15 (user: "Maybe, it's its own, just another tab in 'Play'."): the daily dungeons */}${nav1PlayTabs().includes('dungeons') ? `<button class="tab-btn ${playSubTab==='dungeons'?'active':''}" data-playtab="dungeons" role="tab" aria-selected="${playSubTab==='dungeons'}"><span class="tab-emoji">🗝️</span> ${escapeHtml(dungeonTabLabel()) /* 2026-10-16 (user: "when you unlock the first daily dungeon, it just says the name aka Murgle. But once you unlock the 2nd, it just says Daily Dungeons") */}</button>` : ''}
           <!-- Sandbox (2026-09-22, Test Suite feature, tasks #309-314): Developer-Mode-only, same
                gate as the Codex's Test filter and the editor's Test-card checkbox — a normal
                player never sees this tab at all. -->
-          ${(adminModeEnabled || featureUnlocked('testlab')) ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Test Lab</button>` : ''}
+          ${nav1PlayTabs().includes('sandbox') ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Test Lab</button>` : ''}
         </div>
         <div class="play-subtabs-actions">
           <!-- 2026-09-26 (explicit request: "The energy left should be displayed in the Play
@@ -18451,7 +18455,7 @@ function renderPlay(){
                refreshEnergyHud() alongside the topbar original, closes that gap without touching
                the topbar-hiding behavior that gave the map its room in the first place. -->
           <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span> ${escapeHtml(TX('ui.nv-home'))}</button>${'' /* 2026-10-19 (package U3): the acorn Home, first in the cluster on Conquest, Arena, Raid and Dungeons */}
-          ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' && playSubTab !== 'raid' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-tip'))}" aria-label="${escapeAttr(TX('ui.u4-arena-tip'))}"><span class="tab-emoji" aria-hidden="true">🏟️</span> ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-back'))}" aria-label="${escapeAttr(TX('ui.u4-arena-back'))}">← ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}
+          ${nav1PlayPage() !== 'conquest' ? `<button class="home-nav-btn" id="nav1MapBtnPlay" type="button" title="${escapeAttr(TX('ui.ui14-map-nav'))}" aria-label="${escapeAttr(TX('ui.ui14-map-nav'))}"><span class="tab-emoji" aria-hidden="true">🗺️</span></button>` : '' /* 2026-11-17 (package NAV1): Conquest is its own page; the corner's 🗺️ goes back to it */}${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-tip'))}" aria-label="${escapeAttr(TX('ui.u4-arena-tip'))}"><span class="tab-emoji" aria-hidden="true">🏟️</span> ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-back'))}" aria-label="${escapeAttr(TX('ui.u4-arena-back'))}">← ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}
           ${'' /* 2026-10-19 (package U4, owner 23:34: "there should be a forge shortcut in the top right corner of the screen, together with
                arena and home. Home of course comes first."): Home, Arena, then the Forge (its own 🔨, as in the page bar's shortcuts), once
                the Forge is open. Same trip as PAGE_SHORTCUTS' Forge: the Codex view on its Forge page (switchTab remembers where you came from). */}${tabOpen('forge') ? `<button class="home-nav-btn" id="forgeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.place-forge'))}" aria-label="${escapeAttr(TX('ui.place-forge'))}"><span class="tab-emoji" aria-hidden="true">🔨</span> ${escapeHtml(TX('ui.u4-forge'))}</button>` : ''}
@@ -18502,6 +18506,7 @@ function renderPlay(){
     if(backBtn) backBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); // 2026-10-19 (package U3): the cluster's 🌰 Home (was NV's tab-bar button)
     const arenaBtn = document.getElementById('arenaNavBtnPlay');
     if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = 'arena'; exitConquestImmersive(); renderPlay(); });
+    { const mb = document.getElementById('nav1MapBtnPlay'); if(mb) mb.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} playSubTab = 'conquest'; playerStatsOpen = false; renderPlay(); }); } // 2026-11-17 (package NAV1)
     const forgeBtn = document.getElementById('forgeNavBtnPlay'); // 2026-10-19 (package U4): the cluster's Forge
     if(forgeBtn) forgeBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); codexSubTab = 'forge'; switchTab('codex'); });
     const trailBtn = document.getElementById('trailNavBtnPlay'); // 2026-10-26 (package RES4): the Trail Mix Trek from the map's corner cluster
@@ -58890,7 +58895,8 @@ function renderHome(){
   const arenaHome = tabOpen('arena') && featureUnlocked('arena');
   // 2026-10-11 (user: "Raid as a menu item, beside Arena"): once Raids are open, Arena and Raid share the row under Play,
   // Armoury and Shop the next, and the Nest becomes a pinned note (keeps the grid even: "I don't want too many menu items").
-  const raidHome = arenaHome && tabOpen('raid') && featureUnlocked('raid');
+  const raidHome = tabOpen('raid') && featureUnlocked('raid'), dgHome = dungeonsTabOpen(); // 2026-11-17 (package NAV1): Dungeons & Raids is a page of its own (no longer waits on the Arena)
+  const drLabel = raidHome && dgHome ? TX('ui.nav1-dungeons-raids') : raidHome ? (()=>{ try{ return liveRaidDefs().length >= 2 ? 'Raids' : 'Raid'; }catch(e){ return 'Raid'; } })() : dungeonTabLabel();
   const arenaTile = `<button class="btn primary big home-menu-btn home-tile" id="homeArenaBtn"><span class="tab-emoji">🏟️</span><span>Arena</span><small class="home-sub">${escapeHtml(sub.arena || 'Quick battles, challenges, ranked')}</small></button>`;
   const qn = tabOpen('quests') ? claimableQuestCount() : 0;
   const rsnap = (!matchState && loadTutorialDone()) ? loadResumeSnapshot() : null;
@@ -58904,22 +58910,22 @@ function renderHome(){
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
         ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Continue</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
           : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"${sub.playMap ? ` data-fix8map="${escapeAttr(sub.playMap)}"` : ''}><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
-        ${raidHome ? `${arenaTile}<button class="btn primary big home-menu-btn home-tile" id="homeRaidBtn"><span class="tab-emoji">🐲</span><span>${(()=>{ try{ return liveRaidDefs().length >= 2 ? 'Raids' : 'Raid'; }catch(e){ return 'Raid'; } })()}</span><small class="home-sub">${escapeHtml(sub.raid || 'Team up against a raid boss')}</small></button>${big('deck','⛺','Camp')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}`
-          : `${big('deck','⛺','Camp')}${arenaHome ? arenaTile : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}`}
-        ${raidHome && tabOpen('nest') ? `<button type="button" class="home-note note-nest" data-hometab="nest" title="Nest"><i class="pin" aria-hidden="true">📌</i><b>🪺 Nest</b><small>${escapeHtml(sub.nest || 'Eggs and babies')}</small></button>` : ''}
+        ${arenaHome ? arenaTile : ''}
+        ${raidHome || dgHome ? `<button class="btn primary big home-menu-btn home-tile" id="homeRaidBtn"><span class="tab-emoji">🐲</span><span>${escapeHtml(drLabel)}</span><small class="home-sub">${escapeHtml(sub.raid || (dgHome ? dungeonTabLabel() : 'Team up against a raid boss'))}</small></button>` : ''}
+        ${big('deck','⛺','Camp')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('codex','📖','Codex')}
+      </div>
+      ${'' /* 2026-11-17 (package NAV1, owner 23:43: "button-cards are hanging awkwardly, not tethered to the central buttons"): the pages are tiles above;
+         the notes (panels and the smaller pages) sit together on one board under them. The Nest, Inventory and Wildpaths moved into the Camp's bar. */}
+      <div class="home-notes">
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Notices"><i class="pin" aria-hidden="true">📌</i><b>📌 Notices</b><small>${qn ? `${qn} to claim!` : 'Dailies &amp; quests'}</small></button>` : ''}
-        ${res4TrailHomeNoteHTML() /* 2026-10-26 (package RES4): the Trail Mix Trek, from the end of the tutorials */}
-        ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
-        ${/* 2026-10-22 (package TU, owner 11:58: "In mobile mode, the Profile icon should be a button in the main menu."): phones get a Profile note with the others; wider screens keep the 👤 chip in the top bar only (CSS) */ ''}
-        <button type="button" class="home-note note-profile" data-hometab="profile" title="${escapeAttr(TX('ui.home-profile'))}"><i class="pin" aria-hidden="true">📌</i><b>👤 ${escapeHtml(TX('ui.home-profile'))}</b><small>${escapeHtml(TX('ui.home-profile-sub'))}</small></button>
-        ${tabOpen('inventory') ? `<button type="button" class="home-note note-inv" data-hometab="inventory" title="Inventory"><i class="pin" aria-hidden="true">📌</i><b>🎒 Inventory</b><small>Materia, eggs, packs</small></button>` : ''}
-        ${wildpathsOpen() ? (()=>{ const av = wildpathAvailable(); return `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: Conquest passives"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>✦ ${av} Path point${av===1?'':'s'}</small></button>`; })() : ''}
         ${featureUnlocked('tavern') ? (()=>{ try{ settleWeeklyBeer(); }catch(e){} const beer = myCurrencies.beer||0; return `<button type="button" class="home-note note-tavern" data-hometab="tavern" title="The Tavern: recruit cards, raise your max Energy"><i class="pin" aria-hidden="true">📌</i><b>🍺 The Tavern</b><small>${beer ? `${beer} Beer · Recruit` : 'Recruit · Stamina'}</small></button>`; })() : ''}
-        ${tabOpen('codex') && featureUnlocked('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> _t(({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t])).join(' · ') /* 2026-11-16 (package UX4): each word through the pack */}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
+        ${res4TrailHomeNoteHTML() /* 2026-10-26 (package RES4): the Trail Mix Trek, from the end of the tutorials */}
+        ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
+        <button type="button" class="home-note note-profile" data-hometab="profile" title="${escapeAttr(TX('ui.home-profile'))}"><i class="pin" aria-hidden="true">📌</i><b>👤 ${escapeHtml(TX('ui.home-profile'))}</b><small>${escapeHtml(TX('ui.home-profile-sub'))}</small></button>
       </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
       <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>
     </div>`;
@@ -58931,8 +58937,7 @@ function renderHome(){
   const cb = document.getElementById('homeCommunityBtn');
   if(cb) cb.addEventListener('click', e=>{ e.stopPropagation(); const t = community[0]; if(t) switchTab(t); });
   const ab = document.getElementById('homeArenaBtn'); if(ab) ab.addEventListener('click', ()=> homeGo('play', 'arena'));
-  const rb = document.getElementById('homeRaidBtn'); if(rb) rb.addEventListener('click', ()=> homeGo('play', 'raid'));
-  const cx = document.getElementById('homeCodexBtn'); if(cx) cx.addEventListener('click', ()=> homeGo('codex'));
+  const rb = document.getElementById('homeRaidBtn'); if(rb) rb.addEventListener('click', ()=> homeGo('play', raidHome ? 'raid' : 'dungeons')); // NAV1
   setTimeout(()=>{ try{ checkXpMilestones(); }catch(e){} }, 900);
   wireHomeMenuFlourish(root);
   wireHomeScene(root);
@@ -60494,20 +60499,17 @@ function renderShopShelves(grid, signedIn){
 }
 let shopTab = 'packs';
 let shopCameFrom = null, pageCameFrom = null;
+// 2026-11-17 (package NAV1, owner OWN-1117-3 23:41 / 23:43): this strip is the Camp's nav bar: the Camp and its subpages, shown only on them.
+// Conquest (the corner's round 🗺️), the Codex and the Shop (Shop | Premium tabs inside it) are pages of their own and left it.
 const PAGE_SHORTCUTS = [
-  // 2026-10-24 (package NE, owner 17:34 #21: "In the camp/grounds/nest etc screen(s) there should be a conquest map shortcut on the top nav
-  // bar"): 🗺️ first in the places bar, straight to the Conquest map (where you left it).
-  {key:'map', icon:'🗺️', name:'Conquest map', open:()=> true, go:()=>{ playSubTab = 'conquest'; switchTab('play'); }, here:t=> t==='play', map:true},
   {key:'deck', icon:'⛺', name:'Camp', open:()=> tabOpen('deck'), go:()=> switchTab('deck'), here:t=> t==='deck'},
-  {key:'stomp', icon:'🐾', name:'Stomping Grounds', open:()=> tabOpen('stomp'), go:()=> switchTab('stomp'), here:t=> t==='stomp'},
-  {key:'codex', icon:'📖', name:'Codex', open:()=> tabOpen('codex'), go:()=>{ codexSubTab = 'browse'; switchTab('codex'); }, here:t=> t==='codex' && codexSubTab !== 'forge'},
   {key:'forge', icon:'🔨', name:'Forge', open:()=> tabOpen('forge'), go:()=>{ codexSubTab = 'forge'; switchTab('codex'); }, here:t=> t==='codex' && codexSubTab === 'forge'},
   {key:'nest', icon:'🪺', name:'Nest', open:()=> tabOpen('nest'), go:()=> switchTab('nest'), here:t=> t==='nest'},
+  {key:'stomp', icon:'🐾', name:'Stomping Grounds', open:()=> tabOpen('stomp'), go:()=> switchTab('stomp'), here:t=> t==='stomp'},
   {key:'inventory', icon:'🎒', name:'Inventory', open:()=> tabOpen('inventory'), go:()=> switchTab('inventory'), here:t=> t==='inventory'},
-  // 2026-11-13 (package UI52, owner 11:55 #9): the Shop and the Premium shop are places on this strip (were a switch inside the shop); a Trail pass joins once designed
-  {key:'shop', icon:'🛒', get name(){ return TX('ui.shop1-normal'); }, open:()=> tabOpen('shop'), go:()=>{ shopMode = 'normal'; shopSelected = null; switchTab('shop'); }, here:t=> t==='shop' && shopMode !== 'premium'},
-  {key:'premium', icon:'🍂', get name(){ return TX('ui.shop1-premium'); }, open:()=> tabOpen('shop'), go:()=>{ shopMode = 'premium'; shopSelected = null; switchTab('shop'); }, here:t=> t==='shop' && shopMode === 'premium'},
+  {key:'paths', get icon(){ return wildpathsLogoSVG(18); }, name:'Wildpaths', open:()=> wildpathsOpen(), go:()=> switchTab('paths'), here:t=> t==='paths'},
 ];
+function nav1InCamp(tab){ return PAGE_SHORTCUTS.some(x=> x.here(tab)); }
 // 2026-10-15 (user: "the back button is not centered (in Nest etc.)"): a drawn return arrow, centred on its own 24×24 box.
 const PB_BACK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 4.5 5 9l4.5 4.5"/><path d="M5 9h9.5a4.75 4.75 0 0 1 0 9.5H11"/></svg>';
 function refreshPageBar(tab){
@@ -60515,8 +60517,8 @@ function refreshPageBar(tab){
   const bar = document.getElementById('pageBackBar'); if(!bar) return;
   const FEATURE = !['home','play','admin'].includes(tab); bar.hidden = !FEATURE; if(!FEATURE){ bar.innerHTML = ''; return; }
   const c = pageCameFrom, back = c && c.tab === 'play' ? 'Back to the map' : c && c.tab !== 'home' && c.tab !== tab ? 'Back' : 'Home';
-  const sc = PAGE_SHORTCUTS.filter(x=>{ try{ return x.open(); }catch(e){ return false; } });
-  bar.innerHTML = `${sc.length > 1 ? `<nav class="pb-shortcuts" aria-label="Places">${sc.map(x=> `<button type="button" class="pb-sc ${x.here(tab) ? 'is-here' : ''}" data-pbsc="${x.key}" title="${escapeAttr(x.name)}" aria-label="${escapeAttr(x.name)}" ${x.here(tab) ? 'aria-current="page"' : ''}><span aria-hidden="true">${x.icon}</span><b>${escapeHtml(x.name)}</b></button>`).join('')}</nav>` : ''}<button type="button" class="pb-back" id="pageBackBtn" title="${escapeAttr(back)}" aria-label="${escapeAttr(back)}">${PB_BACK_SVG}</button>`;
+  const sc = nav1InCamp(tab) ? PAGE_SHORTCUTS.filter(x=>{ try{ return x.open(); }catch(e){ return false; } }) : []; // 2026-11-17 (package NAV1): the Camp's pages only
+  bar.innerHTML = `${sc.length > 1 ? `<nav class="pb-shortcuts" aria-label="${escapeAttr(_t('Camp'))}">${sc.map(x=> `<button type="button" class="pb-sc ${x.here(tab) ? 'is-here' : ''}" data-pbsc="${x.key}" title="${escapeAttr(x.name)}" aria-label="${escapeAttr(x.name)}" ${x.here(tab) ? 'aria-current="page"' : ''}><span aria-hidden="true">${x.icon}</span><b>${escapeHtml(x.name)}</b></button>`).join('')}</nav>` : ''}<button type="button" class="pb-back" id="pageBackBtn" title="${escapeAttr(back)}" aria-label="${escapeAttr(back)}">${PB_BACK_SVG}</button>`;
   bar.querySelectorAll('[data-pbsc]').forEach(b=> b.onclick = ()=>{ const x = PAGE_SHORTCUTS.find(y=> y.key === b.dataset.pbsc); if(x && !x.here(tab)) x.go(); });
   bar.querySelector('#pageBackBtn').onclick = ()=>{ const c2 = pageCameFrom; pageCameFrom = null; if(c2 && c2.tab === 'play'){ if(c2.sub) playSubTab = c2.sub; if(c2.map) conquestSelectedMap = c2.map; } if(c2 && c2.forge) codexSubTab = 'forge'; switchTab(c2 && c2.tab !== tab ? c2.tab : 'home'); };
 }
@@ -60609,6 +60611,10 @@ function cartDoodadsHTML(){
   return `<div class="cart-doodads" aria-hidden="true"><i class="cd-lantern is-l"></i><i class="cd-lantern is-r"></i>
     <div class="cd-floor"><i class="cd-crate"></i><i class="cd-sack"></i><span class="cd-folk">${pixelSpriteSVG('mouse')}</span><i class="cd-barrel"></i><i class="cd-crate is-r"></i></div></div>`;
 }
+// 2026-11-17 (package NAV1, owner OWN-1117-3: "Shop and Premium are their own page"): one page, two tabs (the shelves are big; Premium has its own shelf).
+function nav1ShopTabsHTML(){ const prem = shopMode === 'premium';
+  return `<div class="nav1-shop-tabs" role="tablist" aria-label="${escapeAttr(TX('ui.nav1-shop-tabs'))}">${[['normal', '🛒', TX('ui.shop1-normal')], ['premium', '🍂', TX('ui.shop1-premium')]].map(([k, ico, name])=> { const on = prem === (k === 'premium');
+    return `<button type="button" class="btn small ${on ? 'primary' : ''}" role="tab" data-nav1shop="${k}" aria-selected="${on}"><span aria-hidden="true">${ico}</span> ${escapeHtml(name)}</button>`; }).join('')}</div>`; }
 function renderShop(){
   const root = document.getElementById('view-shop');
   try{ ensureMarketStreet(); }catch(e){}
@@ -60622,7 +60628,7 @@ function renderShop(){
       <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}${escapeHtml(TX('ui.rw5-shop-sub'))}</p> <!-- 2026-10-23 (package RW5): each pack its own pool; was "Packs of cards from Pack 1 (N cards)" -->
       ${prem ? '' : wanderingMerchantShopHTML()}
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
-      <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}${typeof ui29ShopBarHTML === 'function' ? ui29ShopBarHTML() : '' /* 2026-11-07 (package UI29) */}
+      <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${nav1ShopTabsHTML() /* 2026-11-17 (package NAV1) */}${tabsHTML}${typeof ui29ShopBarHTML === 'function' ? ui29ShopBarHTML() : '' /* 2026-11-07 (package UI29) */}
     </div>
     ${prem ? '' : factionPackShelfHTML()}
     <div class="shop-pack-grid" id="shopPackGrid"></div>
@@ -60638,6 +60644,7 @@ function renderShop(){
          "arrives locked" data model this would eventually feed into. -->
     `;
   root.classList.toggle('is-premium-shop', prem);
+  root.querySelectorAll('[data-nav1shop]').forEach(b=> b.onclick = ()=>{ if(shopMode === b.dataset.nav1shop) return; shopMode = b.dataset.nav1shop; shopSelected = null; try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} renderShop(); }); // 2026-11-17 (package NAV1)
   if(prem){ // 2026-11-12 (package SHOP1): the Premium shop is its own shelf; no pack shelf, no merchant
     const g = document.getElementById('shopPackGrid'), has = shelfRows().length > 0;
     if(!has) g.innerHTML = `<div class="panel"><p class="panel-sub">${escapeHtml(TX('ui.shop1-premium-empty'))}</p></div>`; else renderShopShelves(g, isSignedIn());
