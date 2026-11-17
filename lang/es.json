@@ -4559,5 +4559,8 @@
  "When its swing lands: steal up to {n} Lumber.": "Cuando su golpe impacta: roba hasta {n} de Madera.",
  "Charge": "Carga",
  "Broodmother": "Madre de la cría",
- "{name} plunders {n} Lumber.": "{name} saquea {n} de Madera."
+ "{name} plunders {n} Lumber.": "{name} saquea {n} de Madera.",
+ "Water Bolt": "Saeta de agua",
+ "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "Mientras está Lista, cada mantenimiento: {n} de daño de agua al enemigo de enfrente (o el más cercano), y lo deja Mojado.",
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Cada punto deja una ficha de Mojada (3 como máximo; una se seca cada ronda) y apaga la Quemadura. Mojada: +1 de daño de rayo por ficha."
 }

@@ -254,7 +254,7 @@ function twoSkillLight(k, e){ return TWO_SKILL_LIGHT.includes(k) && !(e && e[k +
 // 2026-11-16 (SKN1, owner workbook note 11-16): the skills of one damage type count once together (Electricity with Lightning counts 1).
 // 2026-11-16 (ARROW1, owner 11-16 23:10: "all the arrows ... count as 1, same for the bolts"): every arrow counts once, every bolt once.
 const ARROW_FAMILY = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'archer'];
-const BOLT_FAMILY = ['fireBolt', 'acidBolt', 'poisonBolt', 'iceBolt', 'shockBolt', 'spitfire'];
+const BOLT_FAMILY = ['fireBolt', 'acidBolt', 'poisonBolt', 'iceBolt', 'shockBolt', 'spitfire', 'waterBolt' /* ENG51 (2026-11-18): the bolts count once */];
 // 2026-11-17 (POWDER1, owner 11-17 17:32, OWN-1117-1): every powder counts once too; Poison Powder sits with the poison skills, as Poison Bolt does.
 const POWDER_FAMILY = ['sleepPowder', 'poisonPowder', 'paralysisPowder' /* ENG50 (2026-11-17, REDESIGN3-1): the third powder */];
 const TWO_SKILL_TYPES = [['electricity', 'lightning', 'shockBolt', 'chainLightning', 'dragonLightning'], ['poison', 'poisonBolt', 'venomPulse', 'poisonPowder'], ARROW_FAMILY, BOLT_FAMILY, POWDER_FAMILY];

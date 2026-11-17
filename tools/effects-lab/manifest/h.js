@@ -45,7 +45,7 @@ R({id:'sk-gorge-gulp', stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js):
 const B14 = {total:1080, draw:234, flight:380};
 const sp14 = ctx=> ctx.speed || 1;
 const boltPlay = (el, o)=> ctx=>{ o = o || {}; ctx.sound('launch'); const t = o.to ? o.to(ctx) : foe(ctx); const p = H().boltShot(o.from ? o.from(ctx) : mine(ctx), t, Object.assign({element:el, total:B14.total/sp14(ctx)}, o.opt || {}));
-  if(o.miss) ctx.wait(60).then(()=> p.miss()); else ctx.wait(B14.total/sp14(ctx)).then(()=> ctx.float(t, '-2', {fire:'heat', ice:'cold', acid:'acid', poison:'poison'}[el] || ''));
+  if(o.miss) ctx.wait(60).then(()=> p.miss()); else ctx.wait(B14.total/sp14(ctx)).then(()=> ctx.float(t, '-2', {fire:'heat', ice:'cold', acid:'acid', poison:'poison', water:'water' /* ENG51 */}[el] || ''));
   return p.then(()=> ctx.wait(500)); };
 const arrowPlay = (v, o)=> ctx=>{ o = o || {}; const s = sp14(ctx), a = o.from ? o.from(ctx) : mine(ctx, 0), t = o.to ? o.to(ctx) : foe(ctx); ctx.sound('bowDraw', v === 'fire', B14.draw/s);
   ctx.wait(B14.draw/s).then(()=> ctx.sound('arrowLoose', v === 'fire')); ctx.wait((B14.draw + B14.flight)/s).then(()=>{ if(!o.miss){ ctx.sound('arrowThunk', v === 'fire'); ctx.float(t, '-2'); } });
@@ -53,6 +53,9 @@ const arrowPlay = (v, o)=> ctx=>{ o = o || {}; const s = sp14(ctx), a = o.from ?
 [['fire', 'atk-bolt-fire', 'A tumbling ember with a heat trail, a small burst of sparks'], ['ice', 'atk-bolt-ice', 'A frosted shard that shatters into shards and flakes'],
  ['acid', 'atk-bolt-acid', 'A wobbling green glob, drips falling, a splash ring and a sizzle of bubbles'], ['poison', 'atk-bolt-poison', 'A purple droplet trailing fumes, a puff of purple smoke']].forEach(([el, id, label])=>
   R({id, stage:'board', inGameHook:'ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js); the old SkillFX.boltGlob under reduced motion', variants:[{key:'FX14', label:'FX14 · ' + label + ' (0.26 s charge in the mouth, 0.33 s flight)', play:boltPlay(el)}]}));
+// ENG51 (2026-11-18, owner 11-17 17:32): Water Bolt (the Archerfish), the blue bolt; it lands with SoundKit's own splash
+R({id:'atk-bolt-water', name:'Water Bolt', trigger:"bolt event {element:'water'}, then its hit and statusFx en20Soak", stage:'board', inGameHook:'ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js)', variants:[
+  {key:'ENG51', label:'ENG51 · A clear blue droplet dripping as it flies, a splash ring and a crown of droplets (0.26 s charge, 0.33 s flight; splash)', play:boltPlay('water')}]});
 R({id:'sk-spitfire', stage:'board', variants:[{key:'FX14', label:'FX14 · A fast spit of three flame blobs (0.24 s), a small flare', play:boltPlay('fire', {opt:{spitfire:true}, to:ctx=> foe(ctx, Math.floor(Math.random()*3))})}]});
 R({id:'atk-bolt-shock', stage:'board', variants:[{key:'FX14', label:'FX14 · Crackle round the shooter, then the bolt forks where it lands (the game draws the bolt itself)', play:ctx=> H().shockBolt(mine(ctx), foe(ctx), {impactMs:300/sp14(ctx)}).then(()=> ctx.wait(300))}]});
 R({id:'atk-bolt-miss', name:'A bolt is dodged', trigger:'bolt, then evaded {ranged}', stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js): evaded after a bolt → the shot’s .miss()', variants:[

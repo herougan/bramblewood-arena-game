@@ -4560,5 +4560,8 @@
  "When its swing lands: steal up to {n} Lumber.": "攻撃が当たった時：木材を最大{n}奪う。",
  "Charge": "チャージ",
  "Broodmother": "母虫",
- "{name} plunders {n} Lumber.": "{name}が木材を{n}略奪。"
+ "{name} plunders {n} Lumber.": "{name}が木材を{n}略奪。",
+ "Water Bolt": "ウォーターボルト",
+ "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "準備OKの間、毎アップキープ：正面（または最寄り）の敵に {n} の水ダメージを与え、濡れにする。",
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "1点ごとに濡れカウンターを1つ置く（最大3つ、毎ラウンド1つ乾く）。炎上を消す。濡れ：カウンター1つにつき雷ダメージ +1。"
 }

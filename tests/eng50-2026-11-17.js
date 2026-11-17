@@ -175,7 +175,7 @@ ok(/\{key:'paralysisPowder', category:'evergreen'/.test(app) && /\{key:'rend', c
 ok(/paralysisPowder:'⚡', rend:'💔', enfeeble:'🪶', armourer:'⚒️'/.test(app), 'icons');
 ok(/if\(ev\.kind === 'rend'\)\{ if\(rc\) rc\.vulnerable/.test(app) && /if\(ev\.kind === 'feebleHit'\)/.test(app) && /if\(ev\.kind === 'grant'\)\{ fl\(/.test(app) && /c\.vulnerable > 0\) badges\.push/.test(app), 'the effect: floats, badges and replay state for the tokens and Grant');
 ok(/paralysis:\{cls:'paralysis'/.test(rd('bramblewood-fx-h.js')) && /id:'sk-paralysis-powder'/.test(rd('tools/effects-lab/manifest/h.js')) && /package ENG50/.test(rd('docs/effects-catalogue.md')), 'the paralysis puff (FX.H), its Effects Lab entry and the catalogue');
-ok(/ENG50/.test(rd('docs/CHANGELOG.md').slice(0, 4000)) && /eng50-2026-11-17/.test(rd('tests/run-all.sh')), 'CHANGELOG entry and run-all.sh');
+ok(/ENG50/.test(rd('docs/CHANGELOG.md').slice(0, 12000)) /* 2026-11-18 (ENG51): later entries sit above it */ && /eng50-2026-11-17/.test(rd('tests/run-all.sh')), 'CHANGELOG entry and run-all.sh');
 { const ps = rd('docs/project-state.md'); ok(['Vulnerable', 'Feeble', 'Rend', 'Enfeeble', 'Weaken', 'Grant', 'Armourer'].every(w=> new RegExp(w).test(ps)) && /OWN-1117-2/.test(ps), 'project-state names the statuses and skills with OWN-1117-2'); }
 { const cards = J('canonical/cards.json'), list = Array.isArray(cards) ? cards : Object.values(cards.cards || cards);
   // 2026-11-18 (FOLD6): the redesign fold put the new skills on cards (Anvilwhisker Otter: Armourer); each carrier must now be in budget.

@@ -26,7 +26,7 @@ const W1 = (f, p, v)=> [f, {[p]: v}];
 const WANT = {
   iceArrow: W1('arrow', 'type', 'ice'), fireArrow: W1('arrow', 'type', 'fire'), archer: W1('arrow', 'swings', 'never'),
   fireBolt: ['arrow', {type: 'fire', form: 'bolt'}], iceBolt: ['arrow', {type: 'ice', form: 'bolt'}], acidBolt: ['arrow', {type: 'acid', form: 'bolt'}],
-  poisonBolt: ['arrow', {type: 'poison', form: 'bolt'}], shockBolt: ['arrow', {type: 'shock', form: 'bolt'}],
+  poisonBolt: ['arrow', {type: 'poison', form: 'bolt'}], shockBolt: ['arrow', {type: 'shock', form: 'bolt'}], waterBolt: ['arrow', {type: 'water', form: 'bolt'}] /* ENG51 (2026-11-18) */,
   darksight: W1('keenSense', 'sees', 'dark'), blitz: W1('speed', 'kind', 'blitz'), swift: W1('speed', 'kind', 'swift'),
   stockpile: W1('delivery', 'kind', 'stockpile'), pearl: W1('delivery', 'kind', 'pearl'), deliveryEvery: W1('delivery', 'every', 'round'),
   weaken: W1('daunt', 'lasts', 'lasting'), stench: W1('daunt', 'lasts', 'washed'), constrict: W1('strangle', 'hold', 'full'), tangle: W1('strangle', 'hold', 'bind'),

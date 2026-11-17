@@ -545,6 +545,28 @@
   "updated": "2026-11-17"
  },
  {
+  "id": "atk-bolt-water",
+  "area": "combat-attack",
+  "name": "Water Bolt",
+  "trigger": "bolt event {element:'water'} → ninthPassVfx → FX.H.boltShot, then ranged hit / statusFx en20Soak",
+  "current": "FX.H.boltShot {water}: a clear blue droplet with a misty trail, a splash crown and falling droplets (splash)",
+  "quality": "good — ENG51 blue bolt",
+  "priority": 2,
+  "themeNotes": "Archerfish spit: clear blue water, a splash (ENG51, owner 11-17 17:32).",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js (BOLT_ELEMENTS waterBolt)",
+   "arena_app.js (ninthPassVfx)",
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js)",
+  "added": "2026-11-18"
+ },
+ {
   "id": "atk-bolt-poison",
   "area": "combat-attack",
   "name": "Poison Bolt",
