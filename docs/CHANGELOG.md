@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-17 (package POLL1, owner 23:41, OWN-1117-3: "If our game polls alot, remove that as well.")
+- Players see: nothing changes on screen. A tab left open does far less in the background: no timer runs while it is hidden, and the fight timers (watchdogs, auto-play, night light, dungeon chip) sleep outside a fight.
+- Under the hood: new `bwLoop(fn, ms, gate)` for recurring checks (stops hidden, sleeps when its gate is closed, wakes on visibility / app-frame class / body class). Timers firing per idle minute on the map 1830 -> see docs/perf/poll1-2026-11-17.md. The version check runs at most every 20 minutes (was 5) and on focus / coming online; the raid-fall and world-event reads every 15 minutes (was 3); card_overrides polls players every 5 minutes with no 30 s timer (admins keep 30 s). Battle timing, saves, sync and anti-cheat are untouched. Test: tests/poll1-2026-11-17.js; probe: tests/e2e/poll_probe.py.
+
 ## 2026-11-17 (package SFX2, owner 23:05)
 - Players see: when a unit inspires its neighbours, a short bugle fanfare ("ta-ta-TAAA", about 0.65 s) plays with the 📯 burst. It follows the Sound volume and mute; several Inspiring triggers in one beat play it once.
 - Under the hood: `SoundKit.rallyHorn` (the call in `pl2InspireFx` already existed and fell back to `curse`), synthesized with a sawtooth, a swelling low-pass and vibrato; no audio files, no RNG. Lab: Sound tab "Inspiring horn". Test `tests/sfx2-2026-11-17.js`.

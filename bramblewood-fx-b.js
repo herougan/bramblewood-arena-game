@@ -1773,7 +1773,10 @@ function ui7Tick(now){
     if(card.classList.contains('is-struggling') || card.classList.contains('is-fogged')) return;
     ui7Struggle(card); });
 }
-if(typeof setInterval === 'function') setInterval(()=>{ try{ ui7Tick(Date.now()); }catch(err){} }, 1000);
+// 2026-11-18 (package POLL1): held cards only struggle in a fight, so the 1 s tick runs only with a match and never while the tab is hidden
+// (bwLoop lives in arena_app.js, which loads after this file: it is set up on load; without it (the tests) the old plain timer stays).
+if(typeof window !== 'undefined' && typeof window.addEventListener === 'function') window.addEventListener('load', ()=>{ try{ if(typeof bwLoop === 'function') bwLoop(()=> ui7Tick(Date.now()), 1000, ()=> typeof matchState !== 'undefined' && !!matchState); else setInterval(()=>{ try{ ui7Tick(Date.now()); }catch(err){} }, 1000); }catch(err){} });
+else if(typeof setInterval === 'function') setInterval(()=>{ try{ ui7Tick(Date.now()); }catch(err){} }, 1000);
 M.ui7Struggle = ui7Struggle; // the test and a future Lasso hook can call it
 if(typeof window !== 'undefined') window.ui7StruggleNow = ()=>{ if(ui7Allowed()) document.querySelectorAll('.board-card.is-held').forEach(ui7Struggle); }; // test hook: every held card rolls now (still gated by level and reduced motion)
 

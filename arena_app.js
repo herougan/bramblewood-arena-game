@@ -4195,7 +4195,30 @@ function cheat2Boot(){
 const BUILD_ID = '__BUILD_ID__', BUILD_CARD_HASH = '__BUILD_CARD_HASH__';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
-const VERSION_CHECK_MS = 5 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh)
+const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
+// 2026-11-18 (package POLL1, owner OWN-1117-3 "if our game polls alot, remove that"): one helper for the page's recurring checks.
+// bwLoop(fn, ms, gate, idleMs) runs fn every ms while the tab is visible and gate() is true (no gate: always). Hidden tab: no timer at all.
+// Gate false: the loop sleeps (a slow look at the gate, idleMs, default 3 s) and bwLoopWake() (visibility, the app frame's class, the body's
+// class, a tooltip showing) puts it back at once. Visible again: fn runs once, then on its rhythm. Returns {wake, stop}.
+const BW_LOOPS = [];
+function bwLoop(fn, ms, gate, idleMs){
+  let id = 0, mode = 0, dead = false; // mode 0 stopped, 1 running, 2 sleeping
+  const ok = ()=>{ try{ return !gate || !!gate(); }catch(e){ return true; } };
+  const run = ()=>{ try{ fn(); }catch(e){} };
+  const set = m=>{ if(m === mode) return; if(id) clearInterval(id); id = 0; mode = m;
+    if(m === 1) id = setInterval(()=>{ if(!ok()) set(2); else run(); }, ms);
+    else if(m === 2) id = setInterval(()=>{ if(ok()){ set(1); run(); } }, idleMs || 3000); };
+  const L = {wake(wasHidden){ if(dead) return; if(document.hidden) return set(0); const g = ok(); set(g ? 1 : 2); if(g && wasHidden) run(); },
+    stop(){ dead = true; set(0); } };
+  BW_LOOPS.push(L); L.wake(false); return L;
+}
+function bwLoopWake(wasHidden){ BW_LOOPS.forEach(L=> L.wake(wasHidden)); }
+if(typeof document !== 'undefined'){
+  document.addEventListener('visibilitychange', ()=> bwLoopWake(true));
+  const bwWatch = ()=>{ try{ const mo = new MutationObserver(()=> bwLoopWake(false)), aw = document.getElementById('appWrap');
+    if(aw) mo.observe(aw, {attributes:true, attributeFilter:['class']}); if(document.body) mo.observe(document.body, {attributes:true, attributeFilter:['class']}); }catch(e){} };
+  if(document.body) bwWatch(); else document.addEventListener('DOMContentLoaded', bwWatch);
+}
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
   const b = document.createElement('div'); b.id = 'versionBanner'; b.className = 'version-banner is-' + kind; b.setAttribute('role', 'alert');
@@ -4263,7 +4286,8 @@ try{ if(typeof location !== 'undefined' && /[?&]v=/.test(location.search) && typ
 if(typeof window !== 'undefined'){
   window.addEventListener('load', ()=> setTimeout(()=> (window.requestIdleCallback || setTimeout)(()=> checkGameVersion(false)), 4000)); // 2026-11-12 (package PERF3): idle, it hashes the card data on first run
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) checkGameVersion(false); });
-  setInterval(()=>{ if(!document.hidden) checkGameVersion(false); }, VERSION_CHECK_MS); // 2026-11-16 (coordinator): a tab left open learns of a deploy (a tiny no-store fetch of version.json)
+  window.addEventListener('focus', ()=>{ if(!document.hidden) checkGameVersion(false); }); window.addEventListener('online', ()=> checkGameVersion(false)); // 2026-11-18 (POLL1): events first, the slow loop is the backstop
+  bwLoop(()=> checkGameVersion(false), VERSION_CHECK_MS); // 2026-11-18 (POLL1): was setInterval every 5 min; now every 20 min, none while hidden (a tiny no-store fetch of version.json)
 }
 // Perf (2026-10-08, user: "clicking ... should instantly transit you"): one Codex render called
 // getCardDefs ~280 times (~125 ms). The result is now reused within the same synchronous task while
@@ -5330,7 +5354,8 @@ async function pollCloudOverrides(){
     }
   }catch(e){}
 }
-setInterval(pollCloudOverrides, 30000);
+bwLoop(pollCloudOverrides, NET1_OVR_POLL_PLAYER_MS); // 2026-11-18 (POLL1): players every 5 minutes (was a 30 s timer that returned early 9 times in 10), none while hidden
+bwLoop(pollCloudOverrides, 30000, ()=> cloudCardAdmin, 60000); // admins keep their 30 s cadence (only while signed in as one)
 document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) pollCloudOverrides(); });
 const cloudOverrideIds = new Set();
 async function loadCloudCardOverrides(){
@@ -6830,7 +6855,7 @@ const CalmMusic = (()=>{
     try{ s.bus.gain.cancelScheduledValues(c.currentTime); s.bus.gain.setValueAtTime(Math.max(0.0001, s.bus.gain.value), c.currentTime); s.bus.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 2.5); }catch(e){}
     setTimeout(()=>{ try{ s.bus.disconnect(); }catch(e){} }, 3000);
   }
-  setInterval(()=>{ try{ tick(); }catch(e){} }, 400);
+  bwLoop(tick, 400, ()=>{ if(st) return true; const c = C(); return !!c && c.state === 'running'; }, 1000); // 2026-11-18 (POLL1): none while hidden (the tick stops the music then anyway), a slow look until the audio is running
   return {
     stop, playing(){ return !!st; },
     setVolume(v){ const c = C(); if(master && c) master.gain.setTargetAtTime(v*LEVEL, c.currentTime, 0.15); if(v <= 0) stop(); },
@@ -7102,7 +7127,7 @@ const Songbook = (()=>{
     pl2WasResults = res || (pl2WasResults && !!st && st.ducked);
     while(st && st.next < c.currentTime + 0.8) st.next = scheduleBar(c, Math.max(st.next, c.currentTime + 0.05));
   }
-  setInterval(()=>{ try{ tick(); }catch(e){} }, 300);
+  bwLoop(tick, 300, ()=>{ if(st) return true; const c = C(); return !!c && c.state === 'running'; }, 1000); // 2026-11-18 (POLL1): as the battle music
   return {
     stop, playing(){ return st ? st.key : null; }, themes: SONGBOOK,
     // The Effects Lab plays a theme on demand (null goes back to following the place).
@@ -10377,7 +10402,7 @@ function abilityBadges(d, bopts){
 }
 // Badge cycling ticker: every 3 s (ENG26, 2026-11-06: was 2 s, owner "+50%") every cycling slot shows the page of the shared tick.
 var BADGE_CYCLE_TICK = 0;
-setInterval(()=>{ if(document.hidden) return; BADGE_CYCLE_TICK++; document.querySelectorAll('.badge-cycle').forEach(el=>{ const items = el.querySelectorAll(':scope > .bc-item'); if(items.length < 2) return; const k = BADGE_CYCLE_TICK % items.length; items.forEach((it, i)=> it.classList.toggle('is-shown', i === k)); }); }, 3000);
+bwLoop(()=>{ BADGE_CYCLE_TICK++; document.querySelectorAll('.badge-cycle').forEach(el=>{ const items = el.querySelectorAll(':scope > .bc-item'); if(items.length < 2) return; const k = BADGE_CYCLE_TICK % items.length; items.forEach((it, i)=> it.classList.toggle('is-shown', i === k)); }); }, 3000); // 2026-11-18 (POLL1): no timer while hidden
 function escapeAttr(s){ return (s==null || s===false ? '' : String(s)).replace(/"/g,'&quot;'); } // numbers too (2026-10-11)
 function escapeHtml(s){ return (s==null || s===false ? '' : String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
@@ -19248,7 +19273,7 @@ function livePushProgress(force){
 }
 // 2026-11-12 (package NET1): the blob is up to ~40 KB and went up on any change every 20 s (browsing the Codex changes the seen list); now at most
 // once a minute from the tick, and at once when the tab is hidden or closed, so nothing waits on a device that is put away
-setInterval(()=>{ try{ if(Date.now() - (LiveData.progressPushAt || 0) < 60000) return; livePushProgress(false); }catch(e){} }, 20000);
+bwLoop(()=>{ if(Date.now() - (LiveData.progressPushAt || 0) < 60000) return; livePushProgress(false); }, 20000); // 2026-11-18 (POLL1): none while hidden (the hide itself pushes, below)
 window.addEventListener('pagehide', ()=>{ try{ livePushProgress(false); }catch(e){} });
 document.addEventListener('visibilitychange', ()=>{ try{ if(document.hidden) livePushProgress(false); }catch(e){} });
 // ---- Dialogue (2026-10-03, explicit: "There is non-interrupting dialogue in the game, where
@@ -21226,7 +21251,7 @@ const pointerLight = {x:null, y:null, sx:null, sy:null, type:'mouse', moved:0, t
   };
   function kick(){ if(!P.raf) P.raf = requestAnimationFrame(frame); }
   // a fight that turns to Night (or opens in the dark) wakes the loop even before the pointer moves
-  setInterval(()=>{ try{ const bf = document.getElementById('battlefieldEl'); if(bf && (bf.classList.contains('bf-night-cursor') || bf.classList.contains('bf-lantern'))) kick(); else document.querySelectorAll('.night-cursor-light.is-on').forEach(l=> l.classList.remove('is-on')); }catch(e){} }, 500);
+  bwLoop(()=>{ const bf = document.getElementById('battlefieldEl'); if(bf && (bf.classList.contains('bf-night-cursor') || bf.classList.contains('bf-lantern'))) kick(); else document.querySelectorAll('.night-cursor-light.is-on').forEach(l=> l.classList.remove('is-on')); }, 500, ()=> !!matchState || !!document.querySelector('.night-cursor-light.is-on')); // 2026-11-18 (POLL1): only with a match (or a light left on to clear), none while hidden
 })();
 function terrainOfMatch(m){ try{ const r = m && m.engine && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.engine && m.arenaRuleset && m.arenaRuleset.rules) || null; /* the Arena's portent can bring home ground or the eruption too */ return r && r.terrain ? {t: r.terrain, rules: r} : (r && Number(r.eruption) > 0 && !volcanoRulesOn(r) ? {t: null, rules: r} : null); /* the volcano's hazards (2026-10-14) list as field rows instead */ }catch(e){ return null; } }
 // The eruption you can see (2026-10-12, user: "The fire effects of the volcano are not visible on the field"): a lava geyser
@@ -26145,6 +26170,7 @@ function mountMapFx(canvas, map){
   let raf = 0; const kick = ()=>{ if(raf) return; raf = requestAnimationFrame(()=>{ raf = 0; if(!layer.isConnected) return; place(); }); };
   window.addEventListener('resize', kick); document.addEventListener('scroll', kick, {capture: true, passive: true});
   const iv = setInterval(()=>{ if(!layer.isConnected){ stop(); return; }
+    if(document.hidden) return; // 2026-11-18 (POLL1): nothing to place while the tab is hidden
     if(layout && swayLayer.parentNode === layout && layout.firstChild !== swayLayer) layout.insertBefore(swayLayer, layout.firstChild); // first = under the time-of-day tint and the weather shader, so the copies are lit like the art
     const g = mfxGeo(canvas); if(g && (!G || g.key !== G.key)) place(); }, 500);
   // 2026-10-31 (package UI12, GG8, owner: "after clicking a skirmish on the conquest map, the map's trees light up for 1 s"): a click re-draws the map;
@@ -30181,12 +30207,14 @@ async function sendWorldEvent(kind, title, body, hours){
 // 2026-11-12 (NET1): a hidden tab checks every 9 minutes instead of 3 (one tab left open in the background made 346 of each read a day); that is
 // still inside the 10 minutes that count as "there when it fell", and coming back to the tab checks at once when one is due
 let net1WorldCheckAt = 0;
+const NET1_WORLD_MS = 15*60*1000; // 2026-11-18 (POLL1): the raid-fall and world-event reads, at most this often (and when the tab comes back after it)
 function net1WorldCheck(){
   if(typeof document !== 'undefined' && document.hidden && Date.now() - net1WorldCheckAt < 9*60*1000) return;
   net1WorldCheckAt = Date.now(); checkRaidFalls(); checkWorldEvents();
 }
-setTimeout(()=>{ net1WorldCheck(); setInterval(net1WorldCheck, 3*60*1000); }, 20000);
-document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && net1WorldCheckAt && Date.now() - net1WorldCheckAt >= 3*60*1000) net1WorldCheck(); });
+setTimeout(()=>{ net1WorldCheck(); bwLoop(net1WorldCheck, NET1_WORLD_MS); }, 20000); // 2026-11-18 (POLL1): every 15 minutes (was 3), none while hidden
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && net1WorldCheckAt && Date.now() - net1WorldCheckAt >= NET1_WORLD_MS) net1WorldCheck(); });
+window.addEventListener('focus', ()=>{ if(!document.hidden && net1WorldCheckAt && Date.now() - net1WorldCheckAt >= NET1_WORLD_MS) net1WorldCheck(); });
 // 2026-10-19 (package RO): your instance's attempts only (an attempt without one is instance 1).
 function currentRaidAttempts(def, cycle, inst){
   inst = inst || myRaidInstance(def, cycle);
@@ -33482,7 +33510,7 @@ function syncDungeonChip(){
   if(!chip){ chip = document.createElement('div'); chip.id = 'dungeonChip'; chip.className = 'dungeon-chip'; chip.setAttribute('role', 'status'); document.body.appendChild(chip); }
   chip.textContent = dungeonChipHTML(m);
 }
-setInterval(()=>{ try{ syncDungeonChip(); }catch(e){} }, 500);
+bwLoop(syncDungeonChip, 500, ()=> !!matchState); // 2026-11-18 (POLL1): only with a match, none while hidden
 function dungeonWaveVfx(m){
   const d = m.dungeon; if(!d) return;
   try{ battleToast(`🗝️ ${_t('A new bramble rises')}: ${d.wave + 1}/${d.waves.length}${d.lastCarry ? ` (+${d.lastCarry} ${_t('Health carried over')})` : ''}`, 'ok', 'wave'); }catch(e){} // UX6
@@ -43644,8 +43672,8 @@ function clipLightsToBoard(bf){
   });
   plan.forEach(x=>{ if(x && x[0].style.clipPath !== x[1]) x[0].style.clipPath = x[1]; });
 }
-if(typeof window !== 'undefined') setInterval(()=>{ try{ if(document.hidden) return; const bf = document.getElementById('battlefieldEl');
-  if(bf && (bf.classList.contains('is-dark-scene') || bf.classList.contains('bf-lantern'))) clipLightsToBoard(bf); }catch(e){} }, 250);
+if(typeof window !== 'undefined') bwLoop(()=>{ const bf = document.getElementById('battlefieldEl');
+  if(bf && (bf.classList.contains('is-dark-scene') || bf.classList.contains('bf-lantern'))) clipLightsToBoard(bf); }, 250, ()=> !!matchState); // 2026-11-18 (POLL1): only with a match, none while hidden
 function bountyHoldingNow(){
   const m = matchState; if(!m || m.over || m.resolving) return false;
   return m.selectedUid!=null || !!(bwPressedCard && bwPressedCard.isConnected) || !!document.querySelector('#handStrip .card-tile.dragging, #leaderWidget.dragging, .hand-drag-ghost');
@@ -45009,7 +45037,7 @@ async function autoplayStep(){
     if(matchState === m && m.autoplay && !m.over && !m.resolving) await afterPlayerAction(1);
   }catch(e){} finally{ m._autoBusy = false; }
 }
-setInterval(()=>{ try{ autoplayStep(); }catch(e){} }, 900);
+bwLoop(autoplayStep, 900, ()=> !!matchState); // 2026-11-18 (POLL1): was a 900 ms timer all the time; now only while a match exists, none while hidden
 // Fight watchdog (2026-10-16, user: "Sometimes the battle gets stuck ... you can't pass turn, but you also can't play a card. Auto
 // play also doesnt work"): a card went in this turn (m._needsCommit, set by playCardByUid) but its round never started and nothing
 // is in flight (no commit, no round, no tutorial pause, no lesson on screen). After 2.5 s the turn is committed again.
@@ -45023,7 +45051,7 @@ function fightWatchdog(){
   try{ console.warn('[fight] a played turn never reached its round; starting the round'); }catch(e){}
   afterPlayerAction(activePlayerId(m));
 }
-setInterval(()=>{ try{ fightWatchdog(); }catch(e){} }, 1000);
+bwLoop(fightWatchdog, 1000, ()=> !!matchState); // 2026-11-18 (POLL1): only while a match exists, none while hidden
 // The play-animation watchdog (2026-10-19, package RX, owner 20:46: "In Raids, when you play a card, it gets stuck in the shortened
 // part of the anim. This sometimes happens in normal gameplay — very rarely."). Root cause: a card's arrival (its entrance timeline in
 // renderBoard, and your hand play's flying copy, handFlightProxy) runs on GSAP's clock, which only moves when the browser draws a
@@ -45072,7 +45100,7 @@ function playAnimWatchdog(){
   });
 }
 const tileRestSeen = new WeakMap();
-setInterval(()=>{ try{ playAnimWatchdog(); }catch(e){} }, 200);
+bwLoop(playAnimWatchdog, 200, ()=> !!matchState); // 2026-11-18 (POLL1): only while a match exists, none while hidden (the card's arrival runs on GSAP's clock, which is stopped then too)
 // Full screen (2026-10-12, 10:57 list: "full-screen is not vertically centered"): the match sits in the middle of the screen.
 document.addEventListener('fullscreenchange', ()=>{ document.documentElement.classList.toggle('is-fs', !!document.fullscreenElement); });
 // 2026-10-12 (user: "On a full screen, try to capture the field in the centre of the screen (mobile and PC)"): in full screen
@@ -48148,7 +48176,7 @@ const BfPillTip = (()=>{
   let tip = null, src = null;
   const show = p=>{ const inner = p && p.querySelector('.tp-tip'); if(!inner) return;
     if(!tip){ tip = document.createElement('div'); tip.id = 'bfPillTip'; tip.className = 'bf-tip-float'; tip.setAttribute('role', 'tooltip'); document.body.appendChild(tip); }
-    tip.innerHTML = inner.innerHTML; tip.hidden = false; src = p;
+    tip.innerHTML = inner.innerHTML; tip.hidden = false; src = p; srcWatch.wake();
     const r = p.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight; tip.style.left = '0px'; tip.style.top = '0px';
     const w = tip.offsetWidth, h = tip.offsetHeight; let y = r.bottom + 8; if(y + h > vh - 8 && r.top - 8 - h > 8) y = r.top - 8 - h;
     tip.style.left = Math.max(8, Math.min(r.left, vw - w - 8)) + 'px'; tip.style.top = Math.max(8, y) + 'px'; };
@@ -48158,7 +48186,7 @@ const BfPillTip = (()=>{
   document.addEventListener('focusin', e=>{ const p = e.target.closest && e.target.closest('.bf-pill, .cnp-fpill'); if(p) show(p); });
   document.addEventListener('focusout', ()=>{ if(src && !src.classList.contains('open')) hide(); });
   window.addEventListener('scroll', ()=>{ if(src) hide(); }, {passive:true, capture:true});
-  setInterval(()=>{ if(src && !src.isConnected) hide(); }, 500);
+  const srcWatch = bwLoop(()=>{ if(src && !src.isConnected) hide(); }, 500, ()=> !!src, 60000); // 2026-11-18 (POLL1): only while a tooltip is showing (show() wakes it)
   return {show, hide};
 })();
 document.addEventListener('click', e=>{ const p = e.target.closest && e.target.closest('.bf-pill, .cnp-fpill'); document.querySelectorAll('.bf-pill.open, .cnp-fpill.open').forEach(x=>{ if(x !== p){ x.classList.remove('open'); x.setAttribute('aria-expanded', 'false'); } }); if(p){ const on = !p.classList.contains('open'); p.classList.toggle('open', on); p.setAttribute('aria-expanded', String(on)); if(on) BfPillTip.show(p); else BfPillTip.hide(); } else BfPillTip.hide(); });
@@ -49017,7 +49045,7 @@ function showCoachTip(tip, anchorEl){
   };
   place();
   anchorEl.classList.add('coach-anchor'); if(tip.block) anchorEl.classList.add('coach-locked');
-  const tick = setInterval(place, 250);
+  const tick = setInterval(()=>{ if(!document.hidden) place(); }, 250); // 2026-11-18 (POLL1): no placing while the tab is hidden
   coachOpen = {tip, el:b, get anchorEl(){ return anchorEl; }, tick, spot, pointer};
   // 2026-10-31 (package UI12, GG1): a timed tip counts as seen at once and fades by itself; nothing else shows until it has gone
   if(tip.fadeMs){ b.classList.add('is-timed'); markCoachSeen(tip.id);
@@ -64153,7 +64181,7 @@ async function socialInit(){
   const beat = ()=>{ if(!sbClient || !cloudUserId || document.hidden) return; Social.beatAt = Date.now();
     sbClient.from('profiles').update({last_seen_at: new Date().toISOString()}).eq('id', cloudUserId).then(()=>{}, ()=>{});
     if(currentTab==='friends') net1RefreshFriendsSeen(); };
-  Social.beat = beat; beat(); Social.heartbeat = setInterval(beat, 120000);
+  Social.beat = beat; beat(); Social.heartbeat = bwLoop(beat, 120000); // 2026-11-18 (POLL1): no timer while hidden (it beat nothing then anyway)
 }
 // NET1 (2026-11-12): friends seen in the last UI17_ONLINE_MIN (5) minutes count as online
 function net1OnlineFromSeen(profiles, now){
@@ -64180,7 +64208,7 @@ document.addEventListener('visibilitychange', ()=>{ try{ if(!document.hidden && 
 function socialTeardown(){
   Social.beat = null; Social.seenAt = 0;
   ['presence','friendSub','inviteSub'].forEach(k=>{ try{ if(Social[k] && sbClient) sbClient.removeChannel(Social[k]); }catch(e){} Social[k] = null; });
-  if(Social.heartbeat){ clearInterval(Social.heartbeat); Social.heartbeat = null; }
+  if(Social.heartbeat){ Social.heartbeat.stop(); Social.heartbeat = null; }
   try{ if(GD.inviteSub && sbClient) sbClient.removeChannel(GD.inviteSub); }catch(e){} try{ GD.inviteSub = null; GD.invites = []; }catch(e){} // AR3 (2026-10-23)
   Social.rows = []; Social.online = new Set(); Social.incomingInvites = []; Social.myCode = null; Social.outgoingInvite = null; Social.listError = false;
   hideInviteBanner();
@@ -64895,7 +64923,7 @@ document.getElementById('ui14MapNavBtn').addEventListener('click', ui14GoToMap);
 // Energy HUD (2026-09-22): the topbar pill is always in the DOM (unlike per-tab currency rows),
 // so one ticking interval keeps its countdown live everywhere, not just on tabs that re-render.
 refreshEnergyHud();
-setInterval(refreshEnergyHud, 1000);
+bwLoop(refreshEnergyHud, 1000); // 2026-11-18 (POLL1): none while hidden (it catches up when the tab returns)
 // Idle battlefield chatter (2026-09-29, per explicit request — the 6th of the 6 speech triggers,
 // "Idle"): the one trigger with no underlying combat event to hang off of at all, unlike On Spawn/
 // On Hit/On Attack/On Death/On Skill which all piggyback on an existing events[] entry. Runs as
@@ -64905,7 +64933,7 @@ setInterval(refreshEnergyHud, 1000);
 // matchState=null) — it's a plain no-op whenever matchState is absent or the match is already over.
 // Picks ONE random live card per tick (not every card every tick) so idle lines read as occasional
 // ambient flavor, never a wall of simultaneous bubbles.
-setInterval(()=>{
+bwLoop(()=>{ // 2026-11-18 (POLL1): only with a match, none while hidden
   const m = matchState;
   if(!m || m.over || !m.replayCards) return;
   const liveUids = Object.keys(m.replayCards).filter(uid=> m.replayCards[uid] && m.replayCards[uid].hp>0);
@@ -64913,7 +64941,7 @@ setInterval(()=>{
   const uid = liveUids[Math.floor(Math.random()*liveUids.length)];
   maybeSpeak(uid, null, 'idle');
   if(Math.random() < 0.5) maybeEmote(uid, 'idle');
-}, 4000);
+}, 4000, ()=> !!matchState);
 // Task #94: keep the fullscreen button's icon/title in sync even when fullscreen is exited
 // via Esc/F11 rather than the button itself (no renderMatchUI re-render happens on that path).
 document.addEventListener('fullscreenchange', ()=>{
@@ -65542,7 +65570,7 @@ function syncCaveScreen(){
   if(!on) caveScreenOff();
   return on;
 }
-setInterval(()=>{ try{ if(document.body.classList.contains('cave-screen')) syncCaveScreen(); }catch(e){} }, 400);
+bwLoop(syncCaveScreen, 400, ()=> document.body.classList.contains('cave-screen')); // 2026-11-18 (POLL1): only on the cave screen (the body's class wakes it), none while hidden
 // 2026-10-12 (user: "After completing the cave levels, the torchlight gets a 30% larger diameter and the map 10% less dark").
 function caveMapCleared(map){ try{ const p = loadConquestProgress(); const f = map.nodes.filter(n=> n.kind!=='tutorial'); return f.length > 0 && f.every(n=> p.completed.includes(conquestNodeId(map.id, n.key))); }catch(e){ return false; } }
 function caveLampBaseR(){ const m = CONQUEST_MAPS.find(x=> x.id === conquestSelectedMap); return (m && mapBlotsOut(m) && caveMapCleared(m)) ? 195 : 150; }

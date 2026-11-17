@@ -95,7 +95,7 @@ function fakeDb(tables, opts){
   ok(/if\(!cloudCardAdmin && Date\.now\(\) - net1OvrPolledAt < NET1_OVR_POLL_PLAYER_MS\) return;/.test(poll) && /document\.hidden/.test(poll), '1. the poll: hidden tab never, players every 5 minutes, admins every 30 s');
   ok(/net1OvrCacheWrite\(data, 0, true\)/.test(poll), '1. a poll keeps this device\'s copy up to date');
   ok(/await net1OvrLoadRows\(\)/.test(load) && !/from\('card_overrides'\)/.test(load), '1. the load goes through the copy');
-  ok(/setInterval\(pollCloudOverrides, 30000\)/.test(src), '1. the 30 s timer is kept (the admin cadence)');
+  ok(/bwLoop\(pollCloudOverrides, 30000, \(\)=> cloudCardAdmin, 60000\)/.test(src), '1. the 30 s timer is kept for admins only (POLL1 2026-11-18: through bwLoop, none while hidden)');
 }
 
 // ======================================================================= 2. raid bars
@@ -178,7 +178,7 @@ function fakeDb(tables, opts){
   ok(!/channel\('bw-online'/.test(src) && !/\.track\(\{at:/.test(src), '4. no global presence channel (its messages grew with the square of the players online)');
   const init = fnSrc('socialInit');
   ok(/channel\('bw-me-'\+cloudUserId\)/.test(init) && (init.match(/\.on\('postgres_changes'/g) || []).length === 5 && !/bw-invites-/.test(init) && !/bw-friends-/.test(init), '4. one channel carries friend requests and invites (5 listeners)');
-  ok(/document\.hidden\) return; Social\.beatAt = Date\.now\(\)/.test(init) && /setInterval\(beat, 120000\)/.test(init), '4. the heartbeat only while the game is on screen, every 2 minutes');
+  ok(/document\.hidden\) return; Social\.beatAt = Date\.now\(\)/.test(init) && /bwLoop\(beat, 120000\)/.test(init), '4. the heartbeat only while the game is on screen, every 2 minutes');
   ok(/Social\.beat\(\)/.test(src) && /Date\.now\(\) - \(Social\.beatAt \|\| 0\) >= 120000/.test(src), '4. coming back to the tab sends a heartbeat when one is due');
   const S = {UI17_ONLINE_MIN: 5}; vm.runInNewContext(fnSrc('net1OnlineFromSeen') + '\nthis.f = net1OnlineFromSeen;', S);
   const now = Date.parse('2026-11-12T10:00:00Z');
@@ -191,7 +191,7 @@ function fakeDb(tables, opts){
 
 // ======================================================================= 5. timers
 {
-  ok(/document\.hidden && Date\.now\(\) - net1WorldCheckAt < 9\*60\*1000\) return;/.test(fnSrc('net1WorldCheck')) && /setInterval\(net1WorldCheck, 3\*60\*1000\)/.test(src), '5. the 3-minute world check runs every 9 minutes in a hidden tab (inside the 10-minute "there when it fell")');
+  ok(/document\.hidden && Date\.now\(\) - net1WorldCheckAt < 9\*60\*1000\) return;/.test(fnSrc('net1WorldCheck')) && /bwLoop\(net1WorldCheck, NET1_WORLD_MS\)/.test(src), '5. the world check (POLL1 2026-11-18: every 15 minutes, none while hidden) keeps its hidden-tab guard');
   ok(/Math\.floor\(\(Date\.now\(\) - 24\*3600\*1000\) \/ 3600e3\) \* 3600e3/.test(fnSrc('checkWorldEvents')), '5. the world_events cut-off is to the hour (the same request repeats)');
   ok(/if\(Date\.now\(\) - \(LiveData\.progressPushAt \|\| 0\) < 60000\) return; livePushProgress\(false\)/.test(src) && /LiveData\.progressPushAt = now/.test(fnSrc('livePushProgress')), '5. the progress tick sends at most once a minute');
   ok(/if\(document\.hidden\) livePushProgress\(false\)/.test(src) && /addEventListener\('pagehide', \(\)=>\{ try\{ livePushProgress\(false\)/.test(src), '5. hiding or closing the tab sends at once');
