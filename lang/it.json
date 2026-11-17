@@ -1417,7 +1417,6 @@
  "Its hits make the target's Venom tick {n} times at once, each tick taking a counter off.": "I suoi colpi fanno agire il Veleno del bersaglio {n} volte in un colpo, togliendo un segnalino ogni volta.",
  "Its hits put the target to Sleep for {n} round{s}, stacking to {m}.": "I suoi colpi addormentano il bersaglio per {n} round, cumulabile fino a {m}.",
  "Its hits put {n} Exploit tokens on the target: each later hit on it deals 1 more.": "I suoi colpi mettono {n} segnalini Sfruttare sul bersaglio: ogni colpo successivo infligge 1 in più.",
- "Its hits steal {n} of the target's tokens; on the bramble, {n} of its lowest-ranked resource.": "I suoi colpi rubano {n} dei segnalini del bersaglio; sul Rovo, {n} della sua risorsa di grado più basso.",
  "Its hits strip the target's hiding for {n} rounds: Invisible, Evasive, Smoke and Shadow stop working.": "I suoi colpi tolgono al bersaglio ogni nascondiglio per {n} turni: Invisibile, Elusivo, Fumo e Ombra non funzionano.",
  "Its hits strip {n} Armor for good.": "I suoi colpi tolgono {n} di Armatura per sempre.",
  "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "I suoi colpi Intralciano il bersaglio ({n} round): metà delle volte falliscono i suoi attacchi, tiri, abilità e inneschi.",
@@ -2840,7 +2839,6 @@
  "to the bramble": "al rovo",
  "Today's field": "Il campo di oggi",
  "Tokens count. It gathers while Waiting too. Lumberjack adds to it.": "Le pedine contano. Raccoglie anche in Attesa. Taglialegna si somma.",
- "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Segnalini: segnalini Preghiera, Bacche, punti di spigolatura, Creatività; mai un malus. Passano al ladro. Risorse: Legno, Pietra, Metallo, Uranio.",
  "Top hunters earn the 🐞 Bug Hunter title.": "I migliori cacciatori ottengono il titolo 🐞 Cacciatore di bug.",
  "Top level": "Livello massimo",
  "Top rank reached: let your side play itself.": "Rango massimo raggiunto: lascia giocare da sola la tua squadra.",
@@ -4556,5 +4554,12 @@
  "{name} is Exploited: +{b} damage ({n} left).": "{name} è sfruttata: +{b} danni ({n} rimasti).",
  "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "Rimuove fino a N indebolimenti fisici da un bersaglio scelto (questa carta di base): Sanguinamento, Cicatrice, Corrosione, Fragile, Esposto, Sfruttare, Vulnerabile, Debole, Shock, Barcollo, Armatura lacerata, Intimidazione. Vuoto: tutti. Non Veleno, Gelo né Stordimento.",
  "Dungeons & Raids": "Dungeon e raid",
- "Shop sections": "Reparti del negozio"
+ "Shop sections": "Reparti del negozio",
+ "Weaker": "Più debole",
+ "Wounded": "Ferito",
+ "Its hits deal {n} more to units with less Attack than it.": "I suoi colpi infliggono {n} in più alle unità con meno Attacco.",
+ "When its swing lands: steal up to {n} Lumber.": "Quando il suo colpo va a segno: ruba fino a {n} Legname.",
+ "Charge": "Carica",
+ "Broodmother": "Madre della covata",
+ "{name} plunders {n} Lumber.": "{name} saccheggia {n} Legname."
 }

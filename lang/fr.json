@@ -1416,7 +1416,6 @@
  "Its hits make the target's Venom tick {n} times at once, each tick taking a counter off.": "Ses coups font agir le Venin de la cible {n} fois d'un coup, chaque fois en retirant un marqueur.",
  "Its hits put the target to Sleep for {n} round{s}, stacking to {m}.": "Ses coups endorment la cible pendant {n} tour{s}, jusqu’à {m} en tout.",
  "Its hits put {n} Exploit tokens on the target: each later hit on it deals 1 more.": "Ses coups posent {n} jetons Exploiter sur la cible : chaque coup suivant lui inflige 1 de plus.",
- "Its hits steal {n} of the target's tokens; on the bramble, {n} of its lowest-ranked resource.": "Ses coups volent {n} des jetons de la cible ; sur le Roncier, {n} de sa ressource de plus bas rang.",
  "Its hits strip the target's hiding for {n} rounds: Invisible, Evasive, Smoke and Shadow stop working.": "Ses coups ôtent toute cachette à la cible pendant {n} tours : Invisible, Évasion, Fumée et Ombre ne marchent plus.",
  "Its hits strip {n} Armor for good.": "Ses coups retirent {n} d'Armure pour de bon.",
  "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Ses coups Empêtrent la cible ({n} tours) : une fois sur deux, ses attaques, tirs, compétences et déclencheurs échouent.",
@@ -2837,7 +2836,6 @@
  "to the bramble": "sur le roncier",
  "Today's field": "Le terrain du jour",
  "Tokens count. It gathers while Waiting too. Lumberjack adds to it.": "Les jetons comptent. Il récolte même en Attente. Bûcheron s’y ajoute.",
- "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Jetons : jetons de Prière, Baies, points de glanage, Créativité ; jamais un affaiblissement. Ils passent sur le voleur. Ressources : Bois, Pierre, Métal, Uranium.",
  "Top hunters earn the 🐞 Bug Hunter title.": "Les meilleurs chasseurs gagnent le titre 🐞 Chasseur de bugs.",
  "Top level": "Niveau max",
  "Top rank reached: let your side play itself.": "Rang maximal atteint : laisse ton camp jouer seul.",
@@ -4555,5 +4553,12 @@
  "{name} is Exploited: +{b} damage ({n} left).": "{name} est exploitée : +{b} dégâts ({n} restant(s)).",
  "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "Retire jusqu’à N affaiblissements physiques d’une cible choisie (cette carte par défaut) : Saignement, Cicatrice, Corrosion, Fragile, Exposé, Exploiter, Vulnérable, Chétive, Choc, Chancelant, Armure déchirée, Intimidation. Vide : tous. Pas le Venin, le Gel ni l’Étourdissement.",
  "Dungeons & Raids": "Donjons et raids",
- "Shop sections": "Rayons de la boutique"
+ "Shop sections": "Rayons de la boutique",
+ "Weaker": "Plus faible",
+ "Wounded": "Blessé",
+ "Its hits deal {n} more to units with less Attack than it.": "Ses coups infligent {n} de plus aux unités moins fortes en Attaque.",
+ "When its swing lands: steal up to {n} Lumber.": "Quand son coup touche : volez jusqu’à {n} Bois.",
+ "Charge": "Charge",
+ "Broodmother": "Mère de couvée",
+ "{name} plunders {n} Lumber.": "{name} pille {n} Bois."
 }

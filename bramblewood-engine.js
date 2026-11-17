@@ -3445,6 +3445,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Keen Eye (2026-10-11): sees through Changelings and hits them 2 harder.
     // (Keen Eye's +2 against a Changeling is gone: 2026-10-31, package ENG15, FF4: True Sight sees Invisible units and lifts fog instead.)
     if(attDef && attDef.effects && attDef.effects.predator && attCard && targetCard.hp > 0 && effAtk(targetCard) < effAtk(attCard)) amt += w2N(attDef, 'predator'); // Predator N (2026-10-16): +N on prey weaker than it
+    if(attDef && attDef.effects && attDef.effects.hunter && attDef.effects.hunterVs === 'weaker' && attCard && targetCard.hp > 0 && targetCard.kind !== 'hq' && effAtk(targetCard) < effAtk(attCard)) amt += numN(attDef.effects.hunter, 1); // SKAUD1: Cull N (weaker), the old Predator
     amt += shatterBonus(attDef, targetCard); // Shatter N (2026-10-17): +N on a Frozen unit (2026-10-19, GI: or a Brittle one)
     amt += giHitBonus(attDef, targetCard, dmgType) + detonateBonus(attDef, targetCard, dmgType); // Hunter N, Executioner N, Detonate (2026-10-19, package GI)
     amt += wetShockBonus(targetCard, dmgType); // Wet (2026-10-17): +1 lightning damage per Wet counter (wetCountOf)
@@ -6634,9 +6635,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Neither adds to a status tick (Poison, Bleed ... are not hits), nor to a bramble.
   // 2026-10-19 (package SK3, owner 21:56: "bonus damage when target is extremely weak and low"): + 'weak' (Attack <= 2 AND Health <= 4,
   // SK3_DEF.cullAtk / cullHp), the new default; a card that stores no hunterVs reads Weak now (Fen Mink keeps its Poisoned explicitly).
-  const GI_HUNTER_VS = ['weak', 'poison', 'bleed', 'wet', 'exposed'];
+  // SKAUD1 (2026-11-18, owner OWN-1117-3): Predator, Executioner and Shatter are Cull targets now: 'weaker' (less Attack than it, read beside
+  // the old Predator line, which knows the attacker), 'wounded' (below a quarter of its Health), 'frozen' (Frozen, Brittle, Petrified or Armor 3+).
+  const GI_HUNTER_VS = ['weak', 'poison', 'bleed', 'wet', 'exposed', 'weaker', 'wounded', 'frozen'];
   function hunterVsOf(e){ const v = e && e.hunterVs; return GI_HUNTER_VS.includes(v) ? v : 'weak'; }
-  function hunterMarked(t, vs){ if(!t || t.kind === 'hq') return false; return vs === 'weak' ? sk3Weak(t) : vs === 'bleed' ? t.bleed > 0 : vs === 'wet' ? wetCountOf(t) > 0 : vs === 'exposed' ? t.exposed > 0 : (t.poison > 0 || t.gpoison > 0); } // + Greater Poison (EN4, 2026-10-23)
+  function hunterMarked(t, vs){ if(!t || t.kind === 'hq') return false; if(vs === 'weaker') return false; if(vs === 'wounded') return sk3ExecLow(t); if(vs === 'frozen') return t.frozen > 0 || t.brittle > 0 || sk3ShatterMore(t);
+    return vs === 'weak' ? sk3Weak(t) : vs === 'bleed' ? t.bleed > 0 : vs === 'wet' ? wetCountOf(t) > 0 : vs === 'exposed' ? t.exposed > 0 : (t.poison > 0 || t.gpoison > 0); } // + Greater Poison (EN4, 2026-10-23)
   function giHitBonus(attDef, t, dmgType){
     const e = (attDef && attDef.effects) || {}; if(!t || t.kind === 'hq' || !(t.hp > 0) || EXPOSE_TICKS.has(dmgType)) return 0; let b = 0;
     if(e.hunter && hunterMarked(t, hunterVsOf(e))) b += numN(e.hunter, 1);
@@ -6690,8 +6694,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
     const s3 = sk3Sig(e); // Package SK3 (2026-10-19): Spawner, Harbinger, Corpsefeeder, Warcry, Stench, Silence / Stymie / Exhaust / Petrify
-    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.refining && !e.masonry && !e.disarm && !e.armourer /* ENG50 */ && !s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, base)), def); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === econSig(e) && m.dz === e.disarm && m.ar === e.armourer && m.s3 === s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, m.list)), def);
+    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.refining && !e.masonry && !e.disarm && !e.pickpocket /* SKAUD1 */ && !e.armourer /* ENG50 */ && !s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, base)), def); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === econSig(e) && m.dz === (e.disarm || e.pickpocket) && m.ar === e.armourer && m.s3 === s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, m.list)), def);
     const list = base.slice(); if(s3) sk3Trigs(e, list);
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     // Armourer N (ENG50, 2026-11-17, owner 11-17 23:36, REDESIGN3-1: "(When ready) Played allied cards come with +0/+N"): On Ally Played, Buff the
@@ -6700,7 +6704,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
     if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
     sk2EconomyTrigs(e, list); // Quarry N, Smelter N (2026-10-19, SK2b): On Turn Start × Gain, with a price (t.pay)
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:econSig(e), dz:e.disarm, ar:e.armourer, s3, list}); return en8Trigs(e, bxTrigs(e, sk1Trigs(e, list)), def);
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:econSig(e), dz:(e.disarm || e.pickpocket), ar:e.armourer, s3, list}); return en8Trigs(e, bxTrigs(e, sk1Trigs(e, list)), def);
   }
   // ==== EN8 (2026-10-24, owner 22:28 #2: "We need to build up our stonecutter, prospector, felling, salvage, scavenger, coppice, windfall,
   // driftwood skills! (default 1). Shellfish (new) can create 'Pearls' which can be used as stone OR wood."; decision LUM-1). The resource
@@ -10031,24 +10035,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function diveEligible(defOrCard){ const def = defOrCard && defOrCard.defId ? CARD_DEFS[defOrCard.defId] : defOrCard; if(!def) return false;
     const e = def.effects || {}; return !!(e.flying || e.tide || e.quick || isSprinterDef(def)); } // + Quick (ENG9, 2026-10-26, owner EN7-4: "'quick' creatures can dive as well")
   // After a swing: Pickpocket, Sabotage, Arson on what the swing landed on.
+  const PLUNDER_RES = ['gold', 'lumber', 'stone', 'metal'];
   function sk2AfterSwing(players, sideOf, a, stats, events){
     const hit = sk2SwingHit; sk2SwingHit = null; if(!hit || hit.att !== a.att) return;
-    const e = effectsOf(a.att); if(!(e.pickpocket || e.sabotage || e.arson || e.plunder)) return;
+    const e = effectsOf(a.att); if(!(e.sabotage || e.arson || e.plunder)) return; // SKAUD1 (2026-11-18): Pickpocket no longer steals tokens or resources (it steals items: Disarm's rule, sk2EconomyTrigs)
     const me = players[a.attId], foe = players[a.enemyId], side = sideOf(a.attId), tSide = sideOf(a.enemyId), ev = recordEvents && events;
     const base = {type:'sk2', side, uid:a.att.uid, defId:a.att.defId, targetSide:tSide};
-    if(e.plunder){ const k = Math.min(Math.max(0, Math.floor(Number(foe.gold)||0)), Math.max(1, Math.round(numN(e.plunder, 1)))); // ECONSK1 (2026-11-16): Plunder N, a landed swing steals up to N Gold
-      if(k > 0){ foe.gold -= k; me.gold = (me.gold||0) + k; if(ev) events.push(Object.assign({}, base, {kind:'plunder', amount:k})); } }
-    if(e.pickpocket){ const n = sk2N(a.att, 'pickpocket', SK2.pickpocketN);
-      if(hit.target === 'hq'){ const took = sk2TakeRes(foe, n); took.forEach(t=>{ me[t.res] = (Number(me[t.res])||0) + t.n; });
-        if(took.length && ev) events.push(Object.assign({}, base, {kind:'pickpocketRes', taken:took, amount:took.reduce((s, t)=> s + t.n, 0)})); }
-      else { const t = hit.target; let left = n; const taken = [];
-        SK2_STEALABLE.forEach(k=>{ if(left <= 0 || !t) return; const have = Math.max(0, Math.floor(Number(t[k])||0)), k2 = Math.min(have, left); if(!(k2 > 0)) return;
-          t[k] = have - k2; a.att[k] = (Number(a.att[k])||0) + k2; left -= k2; taken.push({key:k, n:k2, left:t[k], total:a.att[k]}); });
-        if(taken.length && ev) events.push(Object.assign({}, base, {kind:'pickpocket', targetUid:t.uid, targetDefId:t.defId, taken, amount:n - left}));
-        // ENG28 (2026-11-07, owner 11-06 23:35 #6: "Pickpocket takes tokens, or a resource from the bramble, lowest tier first"): what the unit's
-        // tokens did not cover (it had none, or fewer than N) comes out of the opponent's resources at the bramble, lowest rank first (sk2TakeRes).
-        if(left > 0){ const took = sk2TakeRes(foe, left); took.forEach(r=>{ me[r.res] = (Number(me[r.res])||0) + r.n; });
-          if(took.length && ev) events.push(Object.assign({}, base, {kind:'pickpocketRes', taken:took, amount:took.reduce((s2, r)=> s2 + r.n, 0), fallback:true})); } } }
+    if(e.plunder){ const res = PLUNDER_RES.includes(e.plunderRes) ? e.plunderRes : 'gold'; // SKAUD1 (2026-11-18): Plunder takes a resource (Swipe N merged in: Plunder N, Lumber)
+      const k = Math.min(Math.max(0, Math.floor(Number(foe[res])||0)), Math.max(1, Math.round(numN(e.plunder, 1)))); // ECONSK1 (2026-11-16): Plunder N, a landed swing steals up to N Gold
+      if(k > 0){ foe[res] -= k; me[res] = (me[res]||0) + k; if(ev) events.push(Object.assign({}, base, {kind:'plunder', amount:k, res})); } }
     if(e.sabotage){ const lost = sk2TakeRes(foe, sk2N(a.att, 'sabotage', SK2.sabotageN));
       if(lost.length && ev) events.push(Object.assign({}, base, {kind:'sabotage', lost, amount:lost.reduce((s, t)=> s + t.n, 0)})); }
     if(e.arson){ const have = Math.max(0, Math.floor(Number(foe.lumber)||0)), k = Math.min(have, sk2N(a.att, 'arson', SK2.arsonN));
@@ -10211,7 +10206,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const ref = e.refining || e.smelter, timesOf = v=> Math.max(1, Math.min(8, Math.round(numN(v, SK2.smelterN))));
     if(ref){ for(let k = 0, n = timesOf(ref); k < n; k++) list.push({on:'perTurn', do:'gain', resource:'metal', amount:SK2.smelterMetal, pay:{lumber:SK2.smelterLumber, stone:SK2.smelterStone}, keyword:'refining'}); }
     if(e.masonry){ for(let k = 0, n = timesOf(e.masonry); k < n; k++) list.push({on:'perTurn', do:'gain', resource:'stone', amount:1, pay:{lumber:2}, keyword:'masonry'}); }
-    if(e.disarm){ list.push({on:'onSpawn', do:'disarm', lone:true, keyword:'disarm'}); list.push({on:'onHit', do:'disarm', who:'enemy', sub:'subject', keyword:'disarm'}); } // Disarm = On Play / On Hit × Disarm
+    // SKAUD1 (2026-11-18, decision SKAUD1-2 a, owner note "Pickpocket steals items only"): Pickpocket is Disarm's rule now (it took Disarm's place)
+    if(e.disarm || e.pickpocket){ const kw = e.pickpocket ? 'pickpocket' : 'disarm'; list.push({on:'onSpawn', do:'disarm', lone:true, keyword:kw}); list.push({on:'onHit', do:'disarm', who:'enemy', sub:'subject', keyword:kw}); } // Disarm = On Play / On Hit × Disarm
   }
   function econSig(e){ return [e.smelter, e.refining, e.masonry].join('|'); }
   function sk2Price(pay){ return SK2_RES_RANK.map(r=> ({res:r, n:Math.max(0, Math.floor(Number(pay && pay[r])||0))})).filter(x=> x.n > 0); }
@@ -10575,7 +10571,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     patchUnitDef(c, patch);
     if(recordEvents && events) events.push({type:'skillSpent', side, uid:c.uid, defId:c.defId, keys});
   }
-  function chargeOf(d){ const c = d && d.effects && d.effects.charge; if(!c || typeof c !== 'object') return null; const n = Math.max(1, Math.floor(Number(c.n)||1)); const act = c.do && typeof c.do === 'object' ? c.do : c; return act && act.do ? {n, act} : null; }
+  // SKAUD1 (2026-11-18, owner note "Move it to triggers instead"): the trigger form, a line {on:'onCharge', n, do, ...}, runs the same clock.
+  function chargeOf(d){ const e = d && d.effects; let c = e && e.charge; if(!c || typeof c !== 'object') c = e && Array.isArray(e.triggers) ? e.triggers.find(t=> t && t.on === 'onCharge') : null; if(!c || typeof c !== 'object') return null; const n = Math.max(1, Math.floor(Number(c.n)||1)); const act = c.do && typeof c.do === 'object' ? c.do : c; return act && act.do ? {n, act} : null; }
   function chargeTick(players, sideOf, stats, events, inUp){
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || (inUp && !inUp(pl))) return;
       upkeepUnitsOf(pl).slice().forEach(c=>{ const def = CARD_DEFS[c.defId], ch = chargeOf(def); if(!ch || !(c.hp > 0) || c.cageOf) return; // + a raid's middle / back rows (2026-10-19, RR)

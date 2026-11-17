@@ -29,6 +29,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'x-off': U('x-off', {offspring:1, thorns:1}, {attack:5, health:9}),
   'x-off2': U('x-off2', {offspring:2}, {attack:1, health:1}),
   'x-pp': U('x-pp', {pickpocket:2}, {attack:1}),
+  'x-brood-lobster': U('x-brood-lobster', {crabClaws:true, brood:1}, {attack:3, health:14, species:['Crustacean']}), // SKAUD1 (2026-11-18): the engine still runs Brood (old saves)
   'x-rocket': U('x-rocket', {rocket:3}, {attack:1, health:20}),
   'x-crab': U('x-crab', {}, {attack:0, health:30, archetypes:['Desert'], species:['Crustacean']}),
   'x-mouse': U('x-mouse', {}, {attack:0, health:30, archetypes:['Coastal', 'Cave'], species:['Rodent']}),
@@ -108,13 +109,10 @@ ok(/\{key:'devour', category:'passive', label:TX\('ui\.eng28-devour-name'\), kin
 ok(/newEffects\.devour\.grant = c\.effects\.devour\.grant/.test(app) && /if\(p\.key==='devour'\) return;/.test(app), 'a Save keeps its granted skills; its card line is not doubled');
 
 // ---- 23:35 #6 Pickpocket -------------------------------------------------------------------------------------------------------
-{ const {e, P} = mk(); put(e, P, 1, 'x-pp', 0); put(e, P, 2, 'x-dummy', 0); P[2].lumber = 1; P[2].stone = 3; P[1].lumber = 0; P[1].stone = 0;
+// 2026-11-18 (SKAUD1, decision SKAUD1-2 a, owner note "I think this steals items only"): Pickpocket took Disarm's rule; a hit steals no token and no resource now
+{ const {e, P} = mk(); put(e, P, 1, 'x-pp', 0); const t = put(e, P, 2, 'x-dummy', 0); t.sk2Berries = 3; P[2].lumber = 1; P[2].stone = 3; P[1].lumber = 0; P[1].stone = 0;
   const ev = []; e.resolveCombat(P, so, {}, ev, 1);
-  ok(P[1].lumber === 1 && P[1].stone === 1 && P[2].lumber === 0 && P[2].stone === 2, `a token-less unit hit: 2 resources from the bramble, Lumber first (me ${P[1].lumber}/${P[1].stone}, them ${P[2].lumber}/${P[2].stone})`);
-  ok(ev.some(x=> x.type === 'sk2' && x.kind === 'pickpocketRes' && x.fallback), 'its event: pickpocketRes (fallback)'); }
-{ const {e, P} = mk(); put(e, P, 1, 'x-pp', 0); const t = put(e, P, 2, 'x-dummy', 0); t.sk2Berries = 3; P[2].lumber = 5; P[1].lumber = 0;
-  e.resolveCombat(P, so, {}, [], 1);
-  ok(t.sk2Berries === 1 && P[2].lumber === 5, `a unit with tokens: it takes the tokens, not resources (berries ${t.sk2Berries}, their Lumber ${P[2].lumber})`); }
+  ok(t.sk2Berries === 3 && P[1].lumber === 0 && P[2].lumber === 1 && P[2].stone === 3 && !ev.some(x=> x.type === 'sk2' && /^pickpocket/.test(x.kind)), `Pickpocket's hit takes no token and no resource (SKAUD1-2) (berries ${t.sk2Berries}, them ${P[2].lumber}/${P[2].stone})`); }
 
 // ---- 23:35 #9 pips by default --------------------------------------------------------------------------------------------------
 { const a = app.indexOf('\nfunction abilityBadges('), b = app.indexOf('\n// Badge cycling ticker', a), ta = app.indexOf('\nfunction triggerBadges('), tb = app.indexOf('\nconst CHIP_FALLBACK_SKILLS', ta);
@@ -138,7 +136,8 @@ ok(/if\(e\.keenSense && !eng28DarkPipOff\(bopts\)\)/.test(app) && /if\(k === 'so
 ok(B.OFFSPRING_COPY === 0.32 && B.bloomBodyMult({offspring:1}) === 1.32 && B.bloomBodyMult({offspring:2}) === 1.64 && B.capScores(2, 4, 0, {offspring:1}).k === 1.32, 'its price: k = 1 + 0.32 N on cap 1\'s stat terms (0.5 x 0.85 x 0.75)');
 
 // ---- 23:35 #17 Brood: Swarm (Species) ------------------------------------------------------------------------------------------
-{ const {e, P} = mk(); P[1].hand.push({uid:99283, defId:'grotto-lobster'}); P[1].lumber = 30; e.placeCard(P, so, 1, 99283, 'center', {}, []);
+// 2026-11-18 (SKAUD1): Grotto Lobster has Offspring now; the old Brood rule on a test def
+{ const {e, P} = mk(); P[1].hand.push({uid:99283, defId:'x-brood-lobster'}); P[1].lumber = 30; e.placeCard(P, so, 1, 99283, 'center', {}, []);
   const tok = all(P[1]).find(c=> /~brood$/.test(c.defId)), td = tok && dv(e, tok.defId);
   // 2026-11-07 (ENG32, owner 09:47 #15: "Brood: no Swarm"): #17 undone: the token is a 1/1 copy of the parent (Crab claws) with no Swarm
   ok(td && !td.effects.swarm && !td.effects.swarmSpecies && td.effects.crabClaws && !td.effects.brood, 'a Grotto Lobster brood token: a 1/1 copy (Crab claws), no Swarm (ENG32 undid Swarm (Species))');

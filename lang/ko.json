@@ -1417,7 +1417,6 @@
  "Its hits make the target's Venom tick {n} times at once, each tick taking a counter off.": "공격이 대상의 독을 한 번에 {n}번 발동시키고, 매번 카운터를 하나 없앱니다.",
  "Its hits put the target to Sleep for {n} round{s}, stacking to {m}.": "공격이 대상을 {n}라운드 동안 잠재운다. 최대 {m}까지 쌓인다.",
  "Its hits put {n} Exploit tokens on the target: each later hit on it deals 1 more.": "공격이 대상에게 약점 토큰 {n}개를 놓아요: 이후 명중마다 1 더 줘요.",
- "Its hits steal {n} of the target's tokens; on the bramble, {n} of its lowest-ranked resource.": "적중 시 대상의 토큰 {n}개를 훔칩니다. 덤불이면 그쪽의 가장 낮은 등급 자원 {n}.",
  "Its hits strip the target's hiding for {n} rounds: Invisible, Evasive, Smoke and Shadow stop working.": "공격이 {n}라운드 동안 대상의 은신을 벗겨요: 투명, 회피, 연막, 그림자가 통하지 않아요.",
  "Its hits strip {n} Armor for good.": "적중할 때마다 방어구를 {n} 영구히 벗겨냅니다.",
  "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "이 유닛의 공격은 대상을 휘감습니다({n}라운드): 절반 확률로 공격, 사격, 스킬, 발동이 실패합니다.",
@@ -2840,7 +2839,6 @@
  "to the bramble": "덤불에",
  "Today's field": "오늘의 필드",
  "Tokens count. It gathers while Waiting too. Lumberjack adds to it.": "토큰도 셉니다. 대기 중에도 모읍니다. 나무꾼이 더해집니다.",
- "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "토큰: 기도 토큰, 베리, 줍기 점수, 창의력; 약화 효과는 절대 아님. 도둑에게 옮겨집니다. 자원 순서: 목재, 돌, 금속, 우라늄.",
  "Top hunters earn the 🐞 Bug Hunter title.": "최고의 헌터에게는 🐞 버그 헌터 칭호를 드려요.",
  "Top level": "최고 레벨",
  "Top rank reached: let your side play itself.": "최고 등급 달성: 우리 편이 알아서 플레이하게 합니다.",
@@ -4557,5 +4555,12 @@
  "{name} is Exploited: +{b} damage ({n} left).": "{name}의 약점을 공략해요: 피해 +{b} (남은 {n}).",
  "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "고른 대상(기본은 이 카드)의 물리 약화를 최대 N개 제거: 출혈, 흉터, 부식, 부서짐, 노출, 약점, 취약, 허약, 감전, 비틀거림, 찢긴 방어구, 위협. 비우면 전부. 독·빙결·기절은 제외.",
  "Dungeons & Raids": "던전과 레이드",
- "Shop sections": "상점 코너"
+ "Shop sections": "상점 코너",
+ "Weaker": "더 약함",
+ "Wounded": "빈사",
+ "Its hits deal {n} more to units with less Attack than it.": "공격이 자신보다 공격력이 낮은 유닛에게 {n} 더 피해를 줘요.",
+ "When its swing lands: steal up to {n} Lumber.": "공격이 적중하면: 목재를 최대 {n} 훔친다.",
+ "Charge": "충전",
+ "Broodmother": "어미 둥지",
+ "{name} plunders {n} Lumber.": "{name}이(가) 목재 {n}을(를) 약탈."
 }

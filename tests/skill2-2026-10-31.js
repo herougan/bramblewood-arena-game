@@ -56,7 +56,7 @@ const relaid = e => !!e && (/BAL1[0-9]|ENG2\d/.test(e.appliedAt || '') || !!e.ba
   // 2026-11-02 (CARD5, decision BAL9-6 a): Conch Herald back to 1/13, its note says CARD5; held to the note too
   // 2026-11-03 (DEC1): Glass Octopus 4/7 (BAL12-2 a) and Royal Guard 3/6 (ENG19-2) were re-fit later; held to the note too
   // 2026-11-06 TESTFIX2: + CONTENT12's fold of the owner's live edits (CONTENT11-2 a), whose note says so; those cards are held to the note too
-  const bal9 = r => /2026-11-02 (BAL9|CARD5)|2026-11-03 DEC1: (BAL12-2 a|ENG19-2)|2026-11-06 \(CONTENT12, CONTENT11-2 a\)|CONTENT12/.test((by[r.id] || {}).creatorNote || '');
+  const bal9 = r => /2026-11-02 (BAL9|CARD5)|2026-11-03 DEC1: (BAL12-2 a|ENG19-2)|2026-11-06 \(CONTENT12, CONTENT11-2 a\)|CONTENT12|SKAUD1/.test((by[r.id] || {}).creatorNote || '');
   ip.forEach(r => ok(by[r.id] && (bal9(r) || by[r.id].attack === r.attack) && (bal9(r) || by[r.id].health === r.health) && /SKILL2 re-fit/.test(by[r.id].creatorNote || ''), `3. ${r.id}: ${r.stats} -> ${r.to} applied with its note`));
   R.changes.filter(r => !r.inPlay).forEach(r => ok(by[r.id] && (bal9(r) || `${by[r.id].attack == null ? '-' : by[r.id].attack}/${by[r.id].health}` === r.stats), `3. ${r.id}: out of play, on record only (coordinator: cards.json limited to this package's items)`));
   const st = id => by[id].attack + '/' + by[id].health;

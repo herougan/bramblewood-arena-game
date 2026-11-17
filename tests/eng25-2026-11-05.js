@@ -109,8 +109,10 @@ const unit = (id, a, h, fx, more)=> Object.assign({id, name:id, attack:a, health
 // ---- 2. duplicates in the cards and the engine
 {
   const has = k=> cards.filter(c=> c.effects && c.effects[k] != null).map(c=> c.id);
-  ok(!has('midas').length && !has('puncture').length, `no card carries Midas Touch or Puncture (${has('midas')} ${has('puncture')})`);
-  ok(byId['golden-magpie'].effects.felling === 2 && byId['magnate-duck'].effects.felling === 3 && byId['sawfish'].effects.breach === 2, 'Midas Touch -> Felling, Puncture -> Breach, same numbers');
+  // 2026-11-18 (SKAUD1, owner OWN-1117-3): Felling is an On Kill: Deliver line now, and Breach merged back into Puncture (the same rule)
+  const kill = id=> ((byId[id].effects.triggers || []).find(t=> t.on === 'onKill' && t.do === 'gain') || {}).amount;
+  ok(!has('midas').length && !has('breach').length && !has('felling').length, `no card carries Midas Touch, Felling or Breach (${has('midas')} ${has('breach')} ${has('felling')})`);
+  ok(kill('golden-magpie') === 2 && kill('magnate-duck') === 3 && byId['sawfish'].effects.puncture === 2, 'Midas Touch -> Felling -> On Kill: Deliver, Breach -> Puncture, same numbers');
   // the old keys still play the same rule
   const {e, P} = X({'e25-pn': unit('e25-pn', 2, 50, {puncture:2}), 'e25-br': unit('e25-br', 2, 50, {breach:2}), 'e25-w': unit('e25-w', 0, 500)});
   const run = id=>{ const {e: en, P: PP} = X({'e25-pn': unit('e25-pn', 2, 50, {puncture:2}), 'e25-br': unit('e25-br', 2, 50, {breach:2}), 'e25-w': unit('e25-w', 0, 500)}, 7);

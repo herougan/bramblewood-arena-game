@@ -3,9 +3,9 @@
    "A":[{"id":"pyroclast-wyrm","wait":0,"hp":200}], "B":[{"id":"stone-turtle-warden","hp":200,"attack":0}],
    "expect":[{"event":"hit","where":{"attDefId":"pyroclast-wyrm","pierced":true},"min":1}]},
 
-  {"name":"Grit triggers against a stronger card", "rounds":6, "hqHp":{"A":60,"B":60},
-   "A":[{"id":"basalt-boar","wait":0,"hp":200}], "B":[{"id":"yeti","wait":0,"hp":200}],
-   "expect":[{"event":"statusFx","where":{"kind":"grit"},"min":1}]},
+  {"name":"Momentum grows on a kill (SKAUD1: Grit merged into Momentum)", "rounds":4, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"snow-ermine","wait":0,"hp":200}], "B":[{"id":"earthworm","wait":0,"hp":1}],
+   "expect":[{"event":"statusFx","where":{"kind":"momentum"},"min":1}]},
 
   {"name":"On Kill: gain Lumber (Dust Hyena)", "rounds":6, "hqHp":{"A":60,"B":60},
    "A":[{"id":"dust-hyena","wait":0,"hp":200}], "B":[{"id":"alley-cat","attack":0}],

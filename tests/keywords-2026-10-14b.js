@@ -164,7 +164,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   ok(ev.some(x=> x.type==='spawn' && x.kind==='twin' && x.nearUid === u.find(c=> !c.isTwin).uid), 'it jumps out of the original');
   ok(Math.abs(tw.slot - u.find(c=> !c.isTwin).slot) === 1, 'in the nearest free slot'); }
 { const pc = base['puddle-changeling'], mm = base['mirrorhide-mutant'];
-  ok(pc && pc.effects.twin, 'Puddle Changeling has Twin');
+  ok(pc && (pc.effects.twin || pc.effects.offspring), 'Puddle Changeling has Twin (Offspring 1 since SKAUD1, 2026-11-18: Twin merged into Offspring)');
   ok(mm && mm.rarity === 'rare' && mm.effects.mimic && !mm.effects.twin, 'Mirrorhide Mutant: rare, Mimic in place of Twin (2026-10-21, package MT, owner B15)'); }
 { const {e, P} = mk(); const ev = []; e.debugSpawnCard(P, so, 1, 'kb-sprout', 'left', {}, ev); const sp = all(P[1]).filter(c=> c.defId==='growth-sprout');
   // 2026-10-21 (BF5): the Growth Sprout token is halved with the rest (1/3 -> 1/2)

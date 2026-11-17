@@ -62,7 +62,7 @@ const firstSwing = ev=> ev.find(x=> x.type==='hit' || x.type==='hitHQ');
 // 2026-10-21 (package TT): 3/5 since the 2026-10-19 card retune (BF3, v5 L/10 + Map term: raised to 65% of N); was 2/3
 // 2026-10-21 (BF5): N halved, Rabid's measured worth (S 6.23) kept: 3/5 -> 1/1 (docs/balance/halve-2026-10-19.md)
 // 2026-10-24 (package BAL2): or the DF-1 re-fit's line (Map term 0.2: 2/2 -> 3/3)
-{ const d = defs['rabid-jackal']; ok(d && ((d.attack === 2 && d.health === 2) || /2026-10-24 BAL2 re-fit[^\n]*2\/2 -> \d+\/\d+/.test(d.creatorNote || '')) && d.effects.rabid && d.rarity === 'uncommon', 'Rabid Jackal is a 2/2 uncommon with Rabid (BF11 re-fit, 2026-10-23; BF5 1/1, was 3/5), or BAL2 re-fitted it'); }
+{ const d = defs['rabid-jackal']; ok(d && ((d.attack === 2 && d.health === 2) || /2026-10-24 BAL2 re-fit[^\n]*2\/2 -> \d+\/\d+/.test(d.creatorNote || '')) && (d.effects.rabid || d.effects.poison === 2 /* 2026-11-18 (SKAUD1): Rabid merged into Venomous 2 */) && d.rarity === 'uncommon', 'Rabid Jackal is a 2/2 uncommon with Rabid (BF11 re-fit, 2026-10-23; BF5 1/1, was 3/5), or BAL2 re-fitted it; Venomous 2 since SKAUD1'); }
 // ---- Cower: hit last round -> this round it hides (shell: no attack, no damage from attacks) or backs off (flee: no attack, heals 2)
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k4-cower', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-hit', 'left', {}, []);
   const C = byDef(P[1], 'k4-cower'), F = byDef(P[2], 'k4-hit');

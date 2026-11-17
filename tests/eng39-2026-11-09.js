@@ -132,7 +132,7 @@ ok(D.rides.weaken && D.rides.breach && D.rides.constrict, 'rides keeps the old k
   ok(I.cardDataHash(cards) === I.cardDataHash(flatList) && I.cardDataHash(cards) === I.cardDataHash(oldList), 'the card-data hash is the same for cards.json (fused), the flat cards the page gets and the pre-fold cards'); }
 { const SCT = J('canonical/skill-counters.json'), named = new Set(Object.keys(SCT.counters || {}).concat(SCT.noCounter || [], Object.keys(SCT.applies || {})));
   const carried = [...new Set(kindCards.flatMap(c=> Object.keys(SPL.expandDef(c).effects || {}).filter(k=> kindSet.has(k))))];
-  ok(carried.length >= 15 && carried.every(k=> named.has(k)), 'the counters table classifies each kind the cards carry, read from the expanded card as before (' + carried.filter(k=> !named.has(k)).join(', ') + ')'); }
+  ok(carried.length >= 12 /* 2026-11-18 (SKAUD1): 15 -> 12, the merged kinds (Weaken's family aside) left the cards */ && carried.every(k=> named.has(k)), 'the counters table classifies each kind the cards carry, read from the expanded card as before (' + carried.filter(k=> !named.has(k)).join(', ') + ')'); }
 { const html = fs.existsSync(path.join(ROOT, 'index.html')) ? rd('index.html') : '';
   ok(/"kinds": \{/.test(html) && /function kindOf\(k\)/.test(html), 'index.html carries the kinds and the helper (rebuilt)');
   const m = html.match(/"id": ?"lamprey"[^\n]{0,4000}?"effects": ?\{([^}]*)\}/), m2 = html.match(/"id": ?"ice-petrel"[^\n]{0,4000}?"effects": ?\{([^}]*)\}/);

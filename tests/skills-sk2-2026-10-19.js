@@ -117,15 +117,10 @@ ok(/list\.push\(\{on:'perTurn', do:'gain', resource:'lumber', amount:numN\(e\.mi
   const hold = b.ok ? '' : require('../tools/lib_map_pools.js').budgetHold(pt.id); if(hold) console.log(`  (petrified-tree ${hold}: budget not checked, ${b.x1} / N ${b.N})`);
   ok((b.ok || hold) && pt.cost >= 5 && pt.wait >= 3, `inside its budget at a high cost (Lumber ${pt.cost}, Wait ${pt.wait}; 2A+H+S ${b.x1} / N ${b.N})`); }
 
-// ---- 6. Pickpocket N: counters off the unit it hits (not debuffs); on the bramble, resources lowest rank first
-{ const {e, P} = mk(); const T = put(e, P, 1, 'k2-thief', 0), V = put(e, P, 2, 'k2-wall', 0); V.prayerTokens = 1; V.sk2Berries = 2; V.poison = 3; const ev = []; e.debugAttack(P, so, T.uid, {}, ev);
-  ok(T.prayerTokens === 1 && T.sk2Berries === 1 && V.prayerTokens === 0 && V.sk2Berries === 1, `Pickpocket 2: a Prayer token then a Berry move onto the thief (${T.prayerTokens}, ${T.sk2Berries}; ${V.prayerTokens}, ${V.sk2Berries})`);
-  ok(V.poison >= 3 && !(T.poison > 0), 'debuffs are not taken');
-  const pe = sk2Ev(ev, 'pickpocket')[0]; ok(pe && pe.amount === 2 && pe.taken.length === 2 && pe.taken[0].key === 'prayerTokens', 'a pickpocket event lists what it took'); }
-{ const {e, P} = mk(); const T = put(e, P, 1, 'k2-thief', 0); put(e, P, 2, 'k2-wall', 0); const ev = []; e.debugAttack(P, so, T.uid, {}, ev); ok(!sk2Ev(ev, 'pickpocket').length, 'nothing to take: no event'); }
-{ const {e, P} = mk(); const T = put(e, P, 1, 'k2-thief', 0); P[2].lumber = 1; P[2].stone = 3; const ev = []; e.debugAttack(P, so, T.uid, {}, ev);
-  ok(P[2].lumber === 0 && P[2].stone === 2 && P[1].lumber === 1 && P[1].stone === 1, `on the bramble: 2 stolen, Lumber first, then Stone (${P[2].lumber}/${P[2].stone} -> ${P[1].lumber}/${P[1].stone})`);
-  const pr = sk2Ev(ev, 'pickpocketRes')[0]; ok(pr && pr.taken.map(t=> t.res).join() === 'lumber,stone', 'the pickpocketRes event, in rank order'); }
+// ---- 6. Pickpocket: since 2026-11-18 (SKAUD1, decision SKAUD1-2 a, owner note "I think this steals items only") it is Disarm's rule; a hit
+// takes no counter and no resource (the item side is Disarm's, tested in its own section)
+{ const {e, P} = mk(); const T = put(e, P, 1, 'k2-thief', 0), V = put(e, P, 2, 'k2-wall', 0); V.prayerTokens = 1; V.sk2Berries = 2; P[2].lumber = 1; P[2].stone = 3; const ev = []; e.debugAttack(P, so, T.uid, {}, ev);
+  ok(!(T.prayerTokens > 0) && !(T.sk2Berries > 0) && V.prayerTokens === 1 && V.sk2Berries === 2 && P[2].lumber === 1 && P[2].stone === 3 && !sk2Ev(ev, 'pickpocket').length && !sk2Ev(ev, 'pickpocketRes').length, 'Pickpocket takes no counter and no resource (SKAUD1-2: items only, Disarm\'s rule)'); }
 
 // ---- 7. Sabotage N: destroys resources, lowest rank first. Arson N: only Lumber.
 { const {e, P} = mk(); const S = put(e, P, 1, 'k2-sab', 0); put(e, P, 2, 'k2-wall', 0); Object.assign(P[2], {lumber:1, stone:1, metal:5, uranium:2}); const ev = []; e.debugAttack(P, so, S.uid, {}, ev);
@@ -192,7 +187,7 @@ ok(/typeof SK2_DEFAULTS !== 'undefined'/.test(blkA), "the app's numbers come fro
 const TXT = (()=>{ const t = R('bramblewood-texts.js'); return JSON.parse(t.slice(t.indexOf('/*TEXT-TABLE-START*/') + 20, t.indexOf('/*TEXT-TABLE-END*/'))); })();
 const words = s=> String(s).trim().split(/\s+/).filter(Boolean).length;
 const TK = Object.keys(TXT).filter(k=> /^ui\.sk2/.test(k));
-ok(TK.length === 78, `78 package SK2 / SK2b TX keys (${TK.length})`);
+ok(TK.length === 76, `76 package SK2 / SK2b TX keys (${TK.length}; SKAUD1 2026-11-18: Pickpocket's own two lines went, it reads Disarm's)`);
 TK.forEach(k=> ok(src.includes(`TX('${k}'`), `${k} is used`));
 TK.filter(k=> !/-(codex|desc)$/.test(k)) /* an action's editor help (-desc) is not a card line */.forEach(k=> ok(words(TXT[k]) < 20, `${k} is under 20 words (${words(TXT[k])})`));
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];

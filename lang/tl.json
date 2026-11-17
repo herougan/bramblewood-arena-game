@@ -1417,7 +1417,6 @@
  "Its hits make the target's Venom tick {n} times at once, each tick taking a counter off.": "Pinapagana ng mga tama nito ang Lason ng target nang {n} beses nang sabay, at bawat isa ay nag-aalis ng isang counter.",
  "Its hits put the target to Sleep for {n} round{s}, stacking to {m}.": "Pinapatulog ng mga tama nito ang target nang {n} round, hanggang {m} kung magpapatong.",
  "Its hits put {n} Exploit tokens on the target: each later hit on it deals 1 more.": "Naglalagay ang mga tama nito ng {n} Samantalahin token sa target: dagdag na 1 sa bawat susunod na tama.",
- "Its hits steal {n} of the target's tokens; on the bramble, {n} of its lowest-ranked resource.": "Ang mga tama nito ay nagnanakaw ng {n} sa mga token ng target; sa dawag, {n} ng pinakamababang resource nito.",
  "Its hits strip the target's hiding for {n} rounds: Invisible, Evasive, Smoke and Shadow stop working.": "Inaalis ng mga tama nito ang pagtatago ng target nang {n} round: walang bisa ang Invisible, Evasive, Usok at Anino.",
  "Its hits strip {n} Armor for good.": "Ang mga tama nito ay nag-aalis ng {n} Baluti nang tuluyan.",
  "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Ang mga tama nito ay nagpapa-Tangle sa target ({n} round): kalahati ng beses, nabibigo ang mga atake, tira, skill at trigger nito.",
@@ -2839,7 +2838,6 @@
  "to the bramble": "sa dawag",
  "Today's field": "Ang larangan ngayon",
  "Tokens count. It gathers while Waiting too. Lumberjack adds to it.": "Kasama ang mga token. Nangangalap din habang Naghihintay. Dagdag ang Mangangahoy.",
- "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Mga token: Prayer token, Berry, puntos ng pulot, Creativity; hindi kailanman debuff. Lumilipat ang mga ito sa magnanakaw. Mga resource: Kahoy, Bato, Metal, Uranium.",
  "Top hunters earn the 🐞 Bug Hunter title.": "Makukuha ng pinakamahuhusay ang titulong 🐞 Bug Hunter.",
  "Top level": "Pinakamataas na level",
  "Top rank reached: let your side play itself.": "Naabot na ang pinakamataas na rank: hayaang maglaro nang mag-isa ang panig mo.",
@@ -4555,5 +4553,12 @@
  "{name} is Exploited: +{b} damage ({n} left).": "Sinamantala ang {name}: +{b} pinsala ({n} natitira).",
  "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "Alisin ang hanggang N pisikal na debuff ng napiling target (ang kard na ito kung wala): Pagdurugo, Peklat, Kalawang, Marupok, Nalantad, Samantalahin, Bulnerable, Mahina, Kuryente, Pagsuray, punit na Baluti, Pananakot. Walang laman: lahat. Hindi Lason, Yelo o Pagkatigil.",
  "Dungeons & Raids": "Dungeon at Raid",
- "Shop sections": "Mga bahagi ng tindahan"
+ "Shop sections": "Mga bahagi ng tindahan",
+ "Weaker": "Mas mahina",
+ "Wounded": "Sugatan",
+ "Its hits deal {n} more to units with less Attack than it.": "Ang mga tama nito ay {n} na dagdag sa mga unit na mas mababa ang Attack.",
+ "When its swing lands: steal up to {n} Lumber.": "Kapag tumama ang hampas nito: magnakaw ng hanggang {n} Kahoy.",
+ "Charge": "Karga",
+ "Broodmother": "Inang Supling",
+ "{name} plunders {n} Lumber.": "Nandambong ng {n} Kahoy si {name}."
 }

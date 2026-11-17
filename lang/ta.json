@@ -1417,7 +1417,6 @@
  "Its hits make the target's Venom tick {n} times at once, each tick taking a counter off.": "இதன் தாக்குதல்கள் இலக்கின் விஷத்தை ஒரேயடியாக {n} முறை செயல்படச் செய்யும்; ஒவ்வொரு முறையும் ஒரு குறி நீங்கும்.",
  "Its hits put the target to Sleep for {n} round{s}, stacking to {m}.": "இதன் அடிகள் இலக்கை {n} சுற்றுகள் தூங்கவைக்கும், {m} வரை அடுக்காகும்.",
  "Its hits put {n} Exploit tokens on the target: each later hit on it deals 1 more.": "இதன் தாக்குதல்கள் இலக்கில் {n} சுரண்டல் வில்லைகளை வைக்கும்: அடுத்த ஒவ்வொரு தாக்குதலும் 1 அதிகம்.",
- "Its hits steal {n} of the target's tokens; on the bramble, {n} of its lowest-ranked resource.": "அதன் தாக்குதல்கள் இலக்கின் டோக்கன்களில் {n} திருடும்; முட்புதரில், அதன் மிகக் குறைந்த நிலை வளத்தில் {n}.",
  "Its hits strip the target's hiding for {n} rounds: Invisible, Evasive, Smoke and Shadow stop working.": "இதன் தாக்குதல்கள் {n} சுற்றுகளுக்கு இலக்கின் மறைவை நீக்கும்: மறைவு, தவிர்ப்பு, புகை, நிழல் வேலை செய்யாது.",
  "Its hits strip {n} Armor for good.": "அதன் தாக்குதல்கள் {n} கவசத்தை நிரந்தரமாக நீக்கும்.",
  "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "இதன் அடிகள் இலக்கைச் சிக்க வைக்கும் ({n} சுற்றுகள்): பாதி நேரம், அதன் தாக்குதல்கள், எய்தல்கள், திறன்கள், தூண்டல்கள் தோல்வியடையும்.",
@@ -2840,7 +2839,6 @@
  "to the bramble": "முட்புதருக்கு",
  "Today's field": "இன்றைய களம்",
  "Tokens count. It gathers while Waiting too. Lumberjack adds to it.": "அடையாள அலகுகளும் கணக்கு. காத்திருக்கும்போதும் சேகரிக்கும். மரவெட்டி கூடுதலாகும்.",
- "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "டோக்கன்கள்: பிரார்த்தனை டோக்கன்கள், பெர்ரிகள், பொறுக்கு புள்ளிகள், படைப்பாற்றல்; ஒருபோதும் பலவீனம் அல்ல. அவை திருடனிடம் போகும். வளங்கள்: மரம், கல், உலோகம், யுரேனியம்.",
  "Top hunters earn the 🐞 Bug Hunter title.": "சிறந்த வேட்டையர்களுக்கு 🐞 பிழை வேட்டையர் பட்டம் கிடைக்கும்.",
  "Top level": "உச்ச நிலை",
  "Top rank reached: let your side play itself.": "உயர்ந்த தரம் எட்டப்பட்டது: உங்கள் தரப்பு தானே விளையாடட்டும்.",
@@ -4557,5 +4555,12 @@
  "{name} is Exploited: +{b} damage ({n} left).": "{name} சுரண்டப்படுகிறது: +{b} சேதம் ({n} மீதம்).",
  "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "தேர்ந்த இலக்கிலிருந்து (இயல்பாக இந்த அட்டை) N வரை உடல் பலவீனங்களை நீக்கும்: இரத்தக் கசிவு, தழும்பு, அரிப்பு, நொறுங்கல், வெளிப்பாடு, சுரண்டல், பாதிப்பு, பலவீனம், மின்னதிர்ச்சி, தடுமாற்றம், கிழிந்த கவசம், அச்சுறுத்தல். காலியெனில்: அனைத்தும். நஞ்சு, உறைவு, திகைப்பு அல்ல.",
  "Dungeons & Raids": "நிலவறைகள் & ரெய்டுகள்",
- "Shop sections": "கடைப் பிரிவுகள்"
+ "Shop sections": "கடைப் பிரிவுகள்",
+ "Weaker": "பலவீனமானது",
+ "Wounded": "காயமுற்றது",
+ "Its hits deal {n} more to units with less Attack than it.": "இதைவிடக் குறைந்த தாக்குதல் உள்ள அலகுகளுக்கு இதன் அடிகள் {n} அதிகம் தரும்.",
+ "When its swing lands: steal up to {n} Lumber.": "அதன் அடி படும்போது: {n} மரம் வரை திருடு.",
+ "Charge": "மின்னேற்றம்",
+ "Broodmother": "குஞ்சுத் தாய்",
+ "{name} plunders {n} Lumber.": "{name} {n} மரத்தைக் கொள்ளையடிக்கிறது."
 }

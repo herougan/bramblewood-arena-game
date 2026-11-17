@@ -1416,7 +1416,6 @@
  "Its hits make the target's Venom tick {n} times at once, each tick taking a counter off.": "その攻撃で対象の毒が一度に {n} 回発動し、そのたびにカウンターが1つ減る。",
  "Its hits put the target to Sleep for {n} round{s}, stacking to {m}.": "命中すると対象を {n} ラウンド睡眠させる（重ねて最大 {m}）。",
  "Its hits put {n} Exploit tokens on the target: each later hit on it deals 1 more.": "その攻撃は対象に弱点トークンを{n}個置く：以後の命中ごとに1多く与える。",
- "Its hits steal {n} of the target's tokens; on the bramble, {n} of its lowest-ranked resource.": "命中すると対象のトークンを{n}盗む。いばらなら、その最も低ランクの資源を{n}。",
  "Its hits strip the target's hiding for {n} rounds: Invisible, Evasive, Smoke and Shadow stop working.": "その攻撃は{n}ラウンドの間、対象の隠れを剥ぐ：透明・回避・煙・影が効かない。",
  "Its hits strip {n} Armor for good.": "攻撃が当たるたび、アーマーを {n} 永久に剥がす。",
  "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "その攻撃は対象を絡め取る（{n}ラウンド）：半分の確率で、攻撃・射撃・スキル・誘発が失敗する。",
@@ -2837,7 +2836,6 @@
  "to the bramble": "いばらへ",
  "Today's field": "今日のフィールド",
  "Tokens count. It gathers while Waiting too. Lumberjack adds to it.": "トークンも数える。待機中も集める。木こりが加算される。",
- "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "トークン：祈りトークン、ベリー、拾い集めポイント、創造力。弱体は盗まない。盗んだ分は盗人に移る。資源は木材、石、金属、ウランの順。",
  "Top hunters earn the 🐞 Bug Hunter title.": "トップハンターには 🐞 バグハンターの称号。",
  "Top level": "最大レベル",
  "Top rank reached: let your side play itself.": "最高ランク達成済み。自分の側を自動でプレイさせます。",
@@ -4555,5 +4553,12 @@
  "{name} is Exploited: +{b} damage ({n} left).": "{name}の弱点を突く：+{b}ダメージ（残り{n}）。",
  "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "選んだ対象（既定はこのカード）の物理的な弱体を最大N個消す：出血、傷跡、腐食、もろい、暴露、弱点突き、脆弱化、ひ弱、感電、よろめき、裂けた装甲、威圧。空欄：すべて。毒・凍結・スタンは除く。",
  "Dungeons & Raids": "ダンジョンとレイド",
- "Shop sections": "ショップの売り場"
+ "Shop sections": "ショップの売り場",
+ "Weaker": "格下",
+ "Wounded": "瀕死",
+ "Its hits deal {n} more to units with less Attack than it.": "その攻撃は自分より攻撃力が低いユニットに{n}多く与える。",
+ "When its swing lands: steal up to {n} Lumber.": "攻撃が当たった時：木材を最大{n}奪う。",
+ "Charge": "チャージ",
+ "Broodmother": "母虫",
+ "{name} plunders {n} Lumber.": "{name}が木材を{n}略奪。"
 }
