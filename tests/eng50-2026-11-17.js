@@ -158,7 +158,7 @@ ok(/"id": "ENG50-1"/.test(rd('docs/decisions.json')), 'decision ENG50-1 asks whe
 { const D = J('canonical/skill-delivery.json'), C = J('canonical/skill-counters.json');
   ok(D.delivery.paralysisPowder === 'ranged' && D.delivery.rend === 'none' && D.delivery.enfeeble === 'none' && D.delivery.armourer === 'none' && D.rides.rend === 'melee' && D.rides.enfeeble === 'melee', 'delivery: the powder ranged; Rend and Enfeeble ride every melee hit (as Exploit)');
   ok(C.applies.paralysisPowder === 'stun' && C.applies.rend === 'vulnerable' && C.applies.enfeeble === 'feeble' && C.statuses.vulnerable && C.statuses.feeble && C.noCounter.includes('armourer') && C.counters.paralysisPowder.counters.some(x=> x.skill === 'evasive'), 'counters: Stun / Vulnerable / Feeble statuses, the shot counters for the powder');
-  ok(E.ENG36_STATUS.vulnerable && E.ENG36_STATUS.feeble, 'Vulnerable and Feeble are statuses a Resist / Immune entry can name'); }
+  ok(E.ENG36_STATUS.vulnerable && E.ENG36_STATUS.feeble && ['vulnerable', 'feeble'].every(k=> J('canonical/skill-costs.json').statusResist[k].immune > 0 && require('../bramblewood-texts.js').TEXT['ui.eng36-st-' + k]), 'Vulnerable and Feeble are statuses a Resist / Immune entry can name (priced, named)'); }
 const app = rd('arena_app.js'), TX = require('../bramblewood-texts.js').TEXT;
 const KEYS = ['ui.skn-paralysis-powder', 'ui.sk-paralysis-powder', 'ui.powder-log-paralysis', 'ui.skn-rend', 'ui.sk-rend', 'ui.sk-rend-codex', 'ui.skn-enfeeble', 'ui.sk-enfeeble', 'ui.sk-enfeeble-codex',
   'ui.skn-armourer', 'ui.sk-armourer', 'ui.sk-armourer-codex', 'ui.act-rend', 'ui.act-rend-desc', 'ui.act-rend-text', 'ui.act-enfeeble', 'ui.act-enfeeble-desc', 'ui.act-enfeeble-text',

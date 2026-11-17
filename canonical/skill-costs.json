@@ -603,6 +603,8 @@
   "tangle":{"kind":"sure","carriers":2,"share":0,"odds":0.15,"S":2.34,"immune":0.35,"resist":0.18,"weak":0,"why":"mean price of 2 carrier skills"},
   "bound":{"kind":"sure","carriers":2,"share":0,"odds":0.15,"S":5.48,"immune":0.82,"resist":0.41,"weak":0,"why":"mean price of 2 carrier skills"},
   "constrict":{"kind":"sure","carriers":0,"share":0,"odds":0.15,"S":8,"immune":1.2,"resist":0.6,"weak":0,"why":"Constrict's own price (ENG36)"},
-  "soak":{"kind":"sure","carriers":1,"share":0,"odds":0.15,"S":0.5,"immune":0.08,"resist":0.04,"weak":0,"why":"Wet only adds lightning damage and puts out Burn: about 0.5"}
+  "soak":{"kind":"sure","carriers":1,"share":0,"odds":0.15,"S":0.5,"immune":0.08,"resist":0.04,"weak":0,"why":"Wet only adds lightning damage and puts out Burn: about 0.5"},
+  "vulnerable":{"kind":"sure","carriers":0,"share":0,"odds":0.15,"S":4,"immune":0.6,"resist":0.3,"weak":0,"why":"ENG50 (2026-11-17): Rend's tokens; Rend 1's price 4 (on no card yet), by reasoning as the others"},
+  "feeble":{"kind":"sure","carriers":0,"share":0,"odds":0.15,"S":2.5,"immune":0.38,"resist":0.19,"weak":0,"why":"ENG50 (2026-11-17): Enfeeble's tokens; Enfeeble 1's price 2.5 (on no card yet), by reasoning as the others"}
  }
 }

@@ -1,0 +1,6 @@
+{
+ "tx": {
+  "ui.eng36-st-vulnerable": ["Vulnerable", "Vulnérable", "Verwundbar", "Vulnerable", "Vulnerabile", "Vulnerável", "Bulnerable", "பாதிக்கப்படக்கூடியது", "Rentan", "易伤", "易傷", "脆弱化", "취약"],
+  "ui.eng36-st-feeble": ["Feeble", "Chétive", "Schwächlich", "Debilucha", "Debole", "Fraco", "Mahina", "பலவீனம்", "Lemah", "孱弱", "孱弱", "ひ弱", "허약"]
+ }
+}

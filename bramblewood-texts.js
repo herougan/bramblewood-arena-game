@@ -3820,7 +3820,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.log-feeble-hit": "🪶 {name} is Feeble: half damage ({n} left).",
   "ui.log-grant": "🎁 {att} grants {name} {skill}.",
   "ui.float-vulnerable": "💔 Vulnerable",
-  "ui.float-feeble": "🪶 Feeble"
+  "ui.float-feeble": "🪶 Feeble",
+  "ui.eng36-st-vulnerable": "Vulnerable",
+  "ui.eng36-st-feeble": "Feeble"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
