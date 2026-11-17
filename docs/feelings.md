@@ -40,7 +40,7 @@ Nine feelings. The first five are the owner's. **Forecast and payoff (5)** is ou
 **The moment (Map 23, The Goldfeather Siege, the owner's example):**
 - You have a 1/5 Ant Scout in the centre column and nothing on the far right.
 - The CPU holds a 3/11 Mouse Sapper. It plays the Sapper facing your Ant Scout: a kill it can make now scores highest in its slot choice (`aiSlotScorerSmartest`: a kill now is worth 3 or more; the basic and smart CPUs prefer kill-or-survive slots too).
-- With its last open blocker spent in the centre, you play the **Siege Rhino** (5/17, Wait 3, Siege 4) on the far right.
+- With its last open blocker spent in the centre, you play the **Siege Rhino** (5/15, Wait 3, Siege 3, Sweep 1; was 5/17 Siege 4 before the 11-17 redesign) on the far right.
 - For three rounds its ring counts down in plain view. The CPU keeps answering your small units. When the ring hits 0, the Rhino swings into the open column for 5 + 4 Siege on the bramble, every round, until something blocks it.
 - **The earlier version:** the **Cave Bear** (4/13, Wait 2, Rage, Siege 4) on Map 20's fights (20-8, 20-A-2, 20-A-5). The **Mouse Sapper** (Siege 1) teaches open columns on Map 12 (12-1 to 12-7).
 
@@ -124,12 +124,12 @@ Nine feelings. The first five are the owner's. **Forecast and payoff (5)** is ou
 **In the player's words:** "Whoa, that happened the moment it landed."
 
 **The moment:**
-- **Map 3 Gannet Cliffs (3-4 to 3-7):** you leave your 2/2 in a column with nothing facing it. The CPU plays a **Golden Eagle Diver** (2/2, Flying, Pounce 3, Wait 0) into that column. It pounces for 3 as it lands, your unit dies before combat, and the Eagle then swings this round.
+- **Map 3 Gannet Cliffs (3-4 to 3-7):** you leave your 2/2 in a column with nothing facing it. The CPU plays a **Golden Eagle** (then the Golden Eagle Diver, 2/2, Flying, Pounce 3, Wait 0) into that column. It pounces for 3 as it lands, your unit dies before combat, and the Eagle then swings this round. (2026-11-18: the 11-17 redesign made it 3/5 Flying, Daunt 2 with no Pounce, so this example needs a new Pounce card.)
 - **Map 5 Gatorback Swamp (5-1 to 5-A-4):** the **Caiman Hatchling** (Quick) swings before your unit.
 - **Map 11 Eyrie Heights (11-5 to 11-10):** the **Ibex Rockcaller** (Avalanche 1) buries your whole ground board with +1 Wait as it arrives.
 
 **What produces it today:**
-- **On Play / arrival:** Pounce (Map 1+: Anhinga Spearbird; Map 3 Golden Eagle Diver), Quick (Map 5+), Brood, Bulwark, On Spawn triggers (draw, stun, grant shield, add Wait).
+- **On Play / arrival:** Pounce (Map 1+: Anhinga Spearbird; Map 3 Golden Eagle, before the 11-17 redesign), Quick (Map 5+), Brood, Bulwark, On Spawn triggers (draw, stun, grant shield, add Wait).
 - **Arrival area effects:** Avalanche (Map 11), Earthquake (Gorge Wyrm, Map 20 pool), Tsunami (Fathom Leviathan, Map 13).
 - **Ambush** (feeling 2) is an instant surprise on the enemy's turn.
 
@@ -306,7 +306,7 @@ A forecast whose target is decided only at the moment it fires breaks rule 4. Ei
 
 | Wait (rounds of warning) | What it may do | Cards today that fit |
 |---|---|---|
-| 0 (instant, On Play) | small: one target up to about 3, or 1 to an area, a +1 Wait, a few Shield | Pounce 2-3 (Golden Eagle Diver), Bulwark 1, Royal Guard's +3 Shield, Avalanche 1 |
+| 0 (instant, On Play) | small: one target up to about 3, or 1 to an area, a +1 Wait, a few Shield | Pounce 2-3 (Anhinga Spearbird), Bulwark 1, Royal Guard's +3 Shield, Avalanche 1 |
 | 1-2 | one target, mid-size: up to about 5-6, or an area of 2 | Echo Screecher (Wait 1, 3 to one), Cave Bear's Siege 4 at Wait 2 |
 | 3-4 | one big target or a real area: 6-8 to one, 3 to an area, Siege 4 on a 5-Attack body | Eyrie Warden (Wait 3, 6), Siege Rhino (Wait 3), Salamander Pyromancer (Wait 3, Fireball 15: epic), Starfall Owl (Wait 4, Meteor 20: legendary) |
 | 5+ | board-changing: 8+ to one, every enemy, the bramble | Cave Warlord (Wait 5, 8) |
@@ -410,7 +410,7 @@ Each one uses the map's own cards and fights. "Now" is the cached road measure (
    - **The player learns:** dawn draws you a card, dusk makes the mice hit. Hold your blockers for the night.
    - Both fights are far too easy, so the night bump is also a balance lever.
 2. **Map 3 Gannet Cliffs, 3-5 to 3-7: the instant surprise.** Now 70 / 66, 80 / 60, 55 / 40 (The Gannet Queen).
-   - **Enemy:** Golden Eagle Diver x3-4 (Pounce 3, Wait 0) and the Gannet Queen (Pounce 2, leader).
+   - **Enemy:** Golden Eagle x3-4 (Pounce 3, Wait 0; now Daunt 2 after the redesign) and the Gannet Queen (Pounce 2, leader).
    - **The lesson:** a 2-3 Health unit left alone in a column is prey. Put the high-Health unit where the Eagle will dive.
    - **Teach:** 3-4 with one Eagle. **Test:** 3-7.
 3. **Map 6 Sable Swampmire, 6-2 to 6-6: the reveal, then the clutch save.** Now 90 / 85 to 62.5 / 65.
