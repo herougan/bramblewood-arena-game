@@ -52,3 +52,33 @@ RESULT 4-1 {"beaver-lumberjack":4,"slow-worm":4,"snapstick-turtle":1,"pond-algae
 START 5-6 target 60 refit2 46.7, wide 38, live 7
 5-6 target 60 (52-68) size 17 start {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} problems []
 start {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} 46.7
+round 1: cur 40/46.7; 135 legal, 135 read + 12 predicted (of 36); top: -3 bog-leech +3 fen-mink 55/45.3 | -1 muskrat-reedgatherer +1 fire-ant-raft 52.5/45 | -1 bog-leech +1 shoal-shark 55/43 | -3 muskrat-reedgatherer -1 mosquito-cloud +3 alley-cat +1 fire-ant-raft 57.5/40.7
+no nearer move
+RESULT 5-6 {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} 46.7 {} moves:  problems: []
+START 5-4 target 72 refit2 37.3, wide 32.7, live 17
+5-4 target 72 (64-80) size 18 start {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"swamp-alligator":4} problems []
+start {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"swamp-alligator":4} 37.3
+round 1: cur 35/37.3; 44 legal, 44 read + 12 predicted (of 39); top: -4 swamp-alligator +4 mosquito-cloud 45/40 | -1 swamp-alligator -4 raft-spider +1 fen-mink +4 mosquito-cloud 55/35.7 | -4 swamp-alligator -1 raft-spider +4 mosquito-cloud +1 fen-mink 55/34.3 | -1 swamp-alligator +1 fen-mink 45/33.3
+round 2: cur 45/40; 44 legal, 44 read + 12 predicted (of 47); top: -4 fire-ant-raft +4 muskrat-reedgatherer 55/38 | -1 mosquito-cloud +1 fen-mink 55/37.3 | -1 raft-spider +1 fen-mink 55/34.3 | -1 marsh-mallow-hare +1 grass-viper 50/34.3
+no nearer move
+RESULT 5-4 {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"mosquito-cloud":4} 40 {} moves: -4 swamp-alligator +4 mosquito-cloud problems: []
+START 5-2 target 84 refit2 50.3, live 40
+5-2 target 84 (76-92) size 14 start {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} problems []
+start {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} 50.3
+round 1: cur 62.5/50.3; 115 legal, 115 read + 12 predicted (of 39); top: -2 swamp-alligator -1 fire-ant-raft +2 fire-ant-raft +1 planarian-splitter 67.5/49.7 | -1 fire-ant-raft +1 planarian-splitter 62.5/49 | -1 constrictor-coil +1 fire-ant-raft 62.5/47.3 | -2 swamp-alligator +2 fire-ant-raft 65/46.3
+no nearer move
+RESULT 5-2 {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} 50.3 {} moves:  problems: []
+START 4-3 target 70 refit2 42.3
+4-3 target 70 (62-78) size 15 start {"grass-snake":3,"muskrat-lodgekeeper":4,"platypus-spur":4,"river-mink":1,"pond-algae":3} problems []
+start {"grass-snake":3,"muskrat-lodgekeeper":4,"platypus-spur":4,"river-mink":1,"pond-algae":3} 42.3
+round 1: cur 42.5/42.3; 63 legal, 63 read + 12 predicted (of 46); top: -1 muskrat-lodgekeeper +1 pond-algae 50/43.7 | -1 muskrat-lodgekeeper +1 beaver-lumberjack 50/43.3 | -1 muskrat-lodgekeeper +1 conch-crawler 47.5/41.7 | -1 muskrat-lodgekeeper +1 kittiwake-flock 50/35.7
+round 2: cur 50/43.7; 63 legal, 63 read + 12 predicted (of 48); top: -1 pond-algae +1 beaver-lumberjack 50/43.3 | -1 muskrat-lodgekeeper +1 grass-snake 50/42.7 | -1 platypus-spur +1 grass-snake 47.5/42.3 | -1 pond-algae +1 kittiwake-flock 50/35.7
+no nearer move
+RESULT 4-3 {"grass-snake":3,"muskrat-lodgekeeper":3,"platypus-spur":4,"river-mink":1,"pond-algae":4} 43.7 {} moves: -1 muskrat-lodgekeeper +1 pond-algae problems: []
+START 4-5 target 40 refit2 16.7
+4-5 target 40 (30-49) size 20 start {"conch-crawler":1,"drowned-matriarch":2,"pyrenean-desman":4,"shoal-shark":4,"river-mink":4,"grass-snake":4,"duck-paddler":1} problems []
+start {"conch-crawler":1,"drowned-matriarch":2,"pyrenean-desman":4,"shoal-shark":4,"river-mink":4,"grass-snake":4,"duck-paddler":1} 16.7
+round 1: cur 15/16.7; 30 legal, 30 read + 12 predicted (of 36); top: -1 conch-crawler +1 water-shrew 17.5/15.7 | -1 conch-crawler +1 muskrat-lodgekeeper 17.5/15 | -1 conch-crawler +1 planarian-splitter 17.5/14.3 | -4 grass-snake +4 planarian-splitter 17.5/12.3
+no nearer move
+RESULT 4-5 {"conch-crawler":1,"drowned-matriarch":2,"pyrenean-desman":4,"shoal-shark":4,"river-mink":4,"grass-snake":4,"duck-paddler":1} 16.7 {} moves:  problems: []
+LANE DONE

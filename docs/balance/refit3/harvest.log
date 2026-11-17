@@ -1,0 +1,91 @@
+11-9 target 60 (52-68) live 71.3 at 400 on 95100; 19 decks in the logs, 6 read
+  IN  64 (log 66.7, search-2026-11-17.jsonl) {"chamois-leaper":2,"chipmunk-hoarder":4,"eagle-owl-quartermaster":3,"stonedrop-vulture":4,"mountain-hare":4,"eagle-sharpshooter":1,"kittiwake-flock":1}
+  IN  64.5 (log 66.7, search-2026-11-17.jsonl) {"chamois-leaper":2,"chipmunk-hoarder":4,"eagle-owl-quartermaster":3,"stonedrop-vulture":4,"mountain-hare":4,"eagle-sharpshooter":1,"anvil-thrush":1}
+  IN  66 (log 68, search-2026-11-17.jsonl) {"chamois-leaper":3,"chipmunk-hoarder":3,"eagle-owl-quartermaster":3,"stonedrop-vulture":4,"mountain-hare":4,"eagle-sharpshooter":1,"kittiwake-flock":1}
+  IN  66.8 (log 67, search-2026-11-17.jsonl) {"chamois-leaper":2,"eagle-owl-quartermaster":3,"stonedrop-vulture":4,"mountain-hare":4,"eagle-sharpshooter":1,"kittiwake-flock":1,"anvil-thrush":4}
+      68.5 (log 67.3, search-2026-11-17.jsonl) {"chamois-leaper":4,"chipmunk-hoarder":2,"eagle-owl-quartermaster":3,"stonedrop-vulture":4,"mountain-hare":4,"eagle-sharpshooter":1,"kittiwake-flock":1}
+      69 (log 68.7, polish-2026-11-17.jsonl) {"chamois-leaper":3,"chipmunk-hoarder":4,"eagle-owl-quartermaster":3,"stonedrop-vulture":4,"beaver-lumberjack":1,"mountain-hare":4}
+12-4 target 72 (64-80) live 82.5 at 400 on 95100; 13 decks in the logs, 6 read
+  IN  78.5 (log 76.5, search-2026-11-17.jsonl) {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quill-thorn-boar":3,"quillguard":3,"bison-bulldozer":4}
+      81.8 (log 79, search-2026-11-17.jsonl) {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quill-thorn-boar":3,"quillguard":3,"mouse-sapper":4}
+      85.5 (log 80, search-2026-11-17.jsonl) {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quillguard":3,"mouse-sapper":4,"briarback-hedgehog":3}
+      87 (log 81.5, search-2026-11-17.jsonl) {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quill-thorn-boar":3,"quillguard":3,"briarback-hedgehog":4}
+      87.3 (log 82, search-2026-11-17.jsonl) {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quill-thorn-boar":3,"quillguard":3,"hollow-belly-rat":4}
+      87.5 (log 80.7, search-2026-11-17.jsonl) {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quillguard":3,"mouse-sapper":4,"hollow-belly-rat":3}
+12-7 target 40 (30-49) live 52.3 at 400 on 95100; 17 decks in the logs, 6 read
+  IN  48 (log 51.7, wide-2026-11-17.jsonl) {"quillguard":2,"briarback-hedgehog":4,"barkplate-beetle":3,"quill-thorn-boar":3,"bison-bulldozer":4,"chipmunk-hoarder":1,"mouse-sapper":3}
+      51 (log 50.7, search-2026-11-17.jsonl) {"barkplate-beetle":4,"bison-bulldozer":4,"briarback-hedgehog":1,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":3,"quill-thorn-boar":3}
+      51.5 (log 52, polish-2026-11-17.jsonl) {"barkplate-beetle":4,"bison-bulldozer":4,"briarback-hedgehog":4,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":2,"quill-thorn-boar":1}
+      52.3 (log 49.3, search-2026-11-17.jsonl) {"barkplate-beetle":4,"bison-bulldozer":4,"briarback-hedgehog":4,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":3}
+      52.5 (log 51.3, wide-2026-11-17.jsonl) {"quillguard":1,"chipmunk-hoarder":1,"quill-thorn-boar":3,"barkplate-beetle":3,"mouse-sapper":4,"bison-bulldozer":4,"briarback-hedgehog":4}
+      57.3 (log 51.7, search-2026-11-17.jsonl) {"barkplate-beetle":4,"bison-bulldozer":1,"briarback-hedgehog":4,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":3,"quill-thorn-boar":3}
+2-1 target 90 (82-98) live 77 at 400 on 95100; 21 decks in the logs, 6 read
+      77 (log 76.3, polish-2026-11-17.jsonl) {"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":3,"salvager-hermit-crab":4}
+      76.3 (log 74.3, polish-2026-11-17.jsonl) {"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":4,"salvager-hermit-crab":3}
+      76 (log 76, search-2026-11-17.jsonl) {"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":3,"salvager-hermit-crab":4,"gull-thief":4}
+      75 (log 84.5, search-2026-11-17.jsonl) {"open-ocean-hermit-crab":3,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":4,"salvager-hermit-crab":4,"gull-thief":4}
+      71.5 (log 73.3, polish-2026-11-17.jsonl) {"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"rock-pool-starfish":4,"salvager-hermit-crab":3,"duck-paddler":1}
+      71.3 (log 73, polish-2026-11-17.jsonl) {"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"rock-pool-starfish":4,"salvager-hermit-crab":3,"gull-thief":1}
+2-2 target 80 (72-88) live 62.5 at 400 on 95100; 22 decks in the logs, 6 read
+      65.5 (log 68.3, search-2026-11-17.jsonl) {"open-ocean-hermit-crab":1,"rock-pool-starfish":4,"salvager-hermit-crab":4,"pincushion-urchin":4,"beaver-lumberjack":4,"beachcomber-sanderling":3}
+      65 (log 67, search-2026-11-17.jsonl) {"open-ocean-hermit-crab":1,"rock-pool-starfish":4,"salvager-hermit-crab":4,"pincushion-urchin":4,"beaver-lumberjack":3,"beachcomber-sanderling":4}
+      63.8 (log 65.3, search-2026-11-17.jsonl) {"open-ocean-hermit-crab":1,"rock-pool-starfish":4,"salvager-hermit-crab":4,"beaver-lumberjack":3,"beachcomber-sanderling":4,"gull-thief":4}
+      62.8 (log 68.3, search-2026-11-17.jsonl) {"open-ocean-hermit-crab":1,"rock-pool-starfish":3,"salvager-hermit-crab":4,"pincushion-urchin":4,"beaver-lumberjack":4,"beachcomber-sanderling":4}
+      62.8 (log 65.3, wide-2026-11-17.jsonl) {"open-ocean-hermit-crab":1,"rock-pool-starfish":4,"limpet-clinger":4,"beaver-lumberjack":4,"pincushion-urchin":3,"salvager-hermit-crab":4}
+      62.3 (log 67.3, wide-2026-11-17.jsonl) {"open-ocean-hermit-crab":1,"rock-pool-starfish":3,"limpet-clinger":4,"beaver-lumberjack":4,"pincushion-urchin":4,"salvager-hermit-crab":4}
+19-1 target 90 (82-98) live 71.5 at 400 on 95100; 20 decks in the logs, 6 read
+      77 (log 77.7, wide-2026-11-17.jsonl) {"obsidian-scorpion":1,"honey-badger-fury":4,"glacier-yak":1,"smoke-raccoon":3,"elderhorn-monarch":1,"quillback-elder":3}
+      76.8 (log 79.7, search-2026-11-17.jsonl) {"glacier-yak":1,"obsidian-scorpion":1,"quillback-elder":4,"cinder-hornet":3,"smoke-raccoon":3,"elderhorn-monarch":1}
+      74.8 (log 81.3, wide-2026-11-17.jsonl) {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":3,"obsidian-scorpion":1,"quillback-elder":3,"smoke-raccoon":4}
+      74.5 (log 78.7, search-2026-11-17.jsonl) {"glacier-yak":1,"obsidian-scorpion":1,"quillback-elder":3,"cinder-hornet":4,"smoke-raccoon":3,"elderhorn-monarch":1}
+      72 (log 80, wide-2026-11-17.jsonl) {"obsidian-scorpion":1,"quillback-elder":4,"elderhorn-monarch":1,"honey-badger-fury":4,"glacier-yak":1,"smoke-raccoon":2}
+      71.5 (log 74.5, search-2026-11-17.jsonl) {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":1,"quillback-elder":3,"cinder-hornet":3}
+19-5 target 60 (52-68) live 42.5 at 400 on 95100; 21 decks in the logs, 6 read
+      46.5 (log 47, search-2026-11-17.jsonl) {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":2,"quillback-elder":4,"smoke-raccoon":4,"cinder-hornet":4}
+      42.3 (log 44.3, polish-2026-11-17.jsonl) {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":3,"obsidian-scorpion":3,"quillback-elder":4,"smoke-raccoon":4,"cinder-hornet":4}
+      42.3 (log 41, search-2026-11-17.jsonl) {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":3,"quillback-elder":4,"smoke-raccoon":3,"cinder-hornet":4}
+      40.3 (log 40.7, polish-2026-11-17.jsonl) {"elderhorn-monarch":1,"honey-badger-fury":4,"obsidian-scorpion":2,"quillback-elder":4,"smoke-raccoon":4,"cinder-hornet":4,"stalactite-golem":1}
+      39 (log 40.3, polish-2026-11-17.jsonl) {"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":2,"quillback-elder":4,"smoke-raccoon":4,"cinder-hornet":4,"stalactite-golem":1}
+      35.3 (log 41.5, search-2026-11-17.jsonl) {"elderhorn-monarch":1,"glacier-yak":1,"obsidian-scorpion":2,"quillback-elder":4,"smoke-raccoon":4,"cinder-hornet":4,"basalt-boar":4}
+6-2 target 85 (77-93) live 59.3 at 400 on 95100; 10 decks in the logs, 6 read
+      60.5 (log 71, search-2026-11-17.jsonl) {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":4,"venomlord-serpent":4,"lamprey":3,"constrictor-coil":1}
+      59 (log 61, search-2026-11-17.jsonl) {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":4,"venomlord-serpent":4,"lamprey":4}
+      58.3 (log 72, search-2026-11-17.jsonl) {"booming-bittern":3,"camouflage-frog":4,"cypress-root-lurker":4,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1}
+      57.8 (log 73.5, search-2026-11-17.jsonl) {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1}
+      56.8 (log 70.5, search-2026-11-17.jsonl) {"booming-bittern":4,"camouflage-frog":3,"cypress-root-lurker":4,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1}
+      56.8 (log 63, search-2026-11-17.jsonl) {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"venomlord-serpent":4,"lamprey":4,"pond-algae":1}
+1-A-5 target 40 (30-49) live 72.5 at 400 on 95100; 28 decks in the logs, 6 read
+      56.8 (log 59.3, polish-2026-11-17.jsonl) {"lucky-hopper":4,"puddle-skimmer":1,"robin-redbreast":1,"dormouse":4,"meadow-rabbit":2,"cottontail":1}
+      57.3 (log 55, polish-2026-11-17.jsonl) {"lucky-hopper":4,"puddle-skimmer":1,"robin-redbreast":2,"dormouse":4,"meadow-rabbit":2}
+      58 (log 58, polish-2026-11-17.jsonl) {"lucky-hopper":4,"puddle-skimmer":1,"robin-redbreast":2,"dormouse":3,"meadow-rabbit":2,"cottontail":1}
+      58.8 (log 58.7, polish-2026-11-17.jsonl) {"lucky-hopper":4,"puddle-skimmer":1,"robin-redbreast":4,"dormouse":2,"cottontail":2}
+      59.3 (log 56.3, polish-2026-11-17.jsonl) {"lucky-hopper":2,"puddle-skimmer":1,"robin-redbreast":4,"dormouse":4,"cottontail":2}
+      59.5 (log 59.3, polish-2026-11-17.jsonl) {"lucky-hopper":4,"puddle-skimmer":1,"robin-redbreast":2,"dormouse":2,"cottontail":2,"meadow-rabbit":2}
+4-1 target 90 (82-98) live 33.5 at 400 on 95100; 20 decks in the logs, 6 read
+      81.3 (log 83, polish-2026-11-17.jsonl) {"beaver-lumberjack":4,"slow-worm":4,"snapstick-turtle":1,"pond-algae":3,"duck-paddler":1}
+      80 (log 80, search-2026-11-17.jsonl) {"beaver-lumberjack":3,"slow-worm":4,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1}
+      79.8 (log 78.3, polish-2026-11-17.jsonl) {"beaver-lumberjack":4,"slow-worm":4,"snapstick-turtle":1,"pond-algae":3,"grass-snake":1}
+      79.3 (log 77, polish-2026-11-17.jsonl) {"beaver-lumberjack":4,"slow-worm":4,"snapstick-turtle":1,"pond-algae":2,"duck-paddler":1,"grass-snake":1}
+      78.8 (log 80.5, search-2026-11-17.jsonl) {"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1}
+      75.5 (log 76.3, polish-2026-11-17.jsonl) {"beaver-lumberjack":4,"slow-worm":4,"snapstick-turtle":1,"pond-algae":2,"duck-paddler":1,"platypus-spur":1}
+5-6 target 60 (52-68) live 7.3 at 400 on 95100; 22 decks in the logs, 6 read
+      47 (log 45, polish-2026-11-17.jsonl) {"fen-mink":1,"muskrat-reedgatherer":2,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1,"fire-ant-raft":1}
+      45.8 (log 45.3, polish-2026-11-17.jsonl) {"fen-mink":4,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":1,"raft-spider":1}
+      45 (log 43, polish-2026-11-17.jsonl) {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":3,"raft-spider":1,"shoal-shark":1}
+      43.8 (log 49, search-2026-11-17.jsonl) {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1}
+      41.3 (log 45, search-2026-11-17.jsonl) {"fen-mink":2,"muskrat-reedgatherer":2,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1}
+      39.3 (log 40.7, wide-2026-11-17.jsonl) {"fen-mink":4,"mosquito-cloud":4,"shoal-shark":1,"marsh-mallow-hare":4,"raft-spider":4}
+5-4 target 72 (64-80) live 19.5 at 400 on 95100; 22 decks in the logs, 6 read
+      43 (log 38, polish-2026-11-17.jsonl) {"fen-mink":1,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"mosquito-cloud":4,"muskrat-reedgatherer":4}
+      37.8 (log 41.3, wide-2026-11-17.jsonl) {"grass-viper":4,"fen-mink":1,"raft-spider":3,"mosquito-cloud":4,"marsh-mallow-hare":4,"fire-ant-raft":2}
+      37 (log 37.3, polish-2026-11-17.jsonl) {"fen-mink":2,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"mosquito-cloud":3}
+      36.3 (log 42, wide-2026-11-17.jsonl) {"grass-viper":4,"fen-mink":1,"raft-spider":4,"mosquito-cloud":3,"marsh-mallow-hare":4,"fire-ant-raft":2}
+      35.8 (log 40, polish-2026-11-17.jsonl) {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"mosquito-cloud":4}
+      35.5 (log 38.3, wide-2026-11-17.jsonl) {"grass-viper":3,"fen-mink":1,"fire-ant-raft":3,"marsh-mallow-hare":4,"mosquito-cloud":3,"raft-spider":4}
+7-A-2 target 70 (62-78) live 86.8 at 400 on 95100; 17 decks in the logs, 6 read
+      86.8 (log 86.7, search-2026-11-17.jsonl) {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"leopard-slug":2,"planarian-splitter":3,"puffball-bombardier":2}
+      87.3 (log 89.3, search-2026-11-17.jsonl) {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"leopard-slug":2,"planarian-splitter":3,"puffball-bombardier":1}
+      88 (log 88.3, search-2026-11-17.jsonl) {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"leopard-slug":2,"planarian-splitter":2,"puffball-bombardier":2}
+      88.5 (log 90.3, polish-2026-11-17.jsonl) {"bombardier-beetle":4,"fungal-colossus":2,"hawthorn-shieldbug":4,"leopard-slug":1,"planarian-splitter":3,"puffball-bombardier":2}
+      90 (log 89, search-2026-11-17.jsonl) {"bombardier-beetle":4,"fungal-colossus":2,"hawthorn-shieldbug":4,"leopard-slug":2,"planarian-splitter":2,"puffball-bombardier":2}
+      90.5 (log 89.7, polish-2026-11-17.jsonl) {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"planarian-splitter":4,"puffball-bombardier":2}
