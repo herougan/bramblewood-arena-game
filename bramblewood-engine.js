@@ -5032,7 +5032,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const isDark = CARD_DEFS[defId] && CARD_DEFS[defId].darkSummon;
     if(isDark ? (pl.darkUsed||0) >= darkPerTurn(pl) : isField ? pl.fieldTurn === turnNo : pl.playedThisTurn) return false;
     // 2026-09-22: card cost is paid in Lumber, not Gold. Stone, Metal, Uranium (2026-10-12). EN8 (2026-10-24): Pearls fill in for Lumber or Stone.
-    { const od = CARD_DEFS[defId] || {}; if(pearlGap(pl, defId, cost) > Math.max(0, pl.pearls||0) || (od.metalCost||0) > (pl.metal||0) || (od.uraniumCost||0) > (pl.uranium||0)) return false; }
+    { const od = CARD_DEFS[defId] || {}; if(!canAfford(pl, cost, od.stoneCost||0, od.metalCost||0) || (od.uraniumCost||0) > (pl.uranium||0)) return false; } // + Gold with Barter (ECONSK1)
     if(pCost > pl.grace) return false;
     if(dCost > pl.devilry) return false;
     if(!canAffordExile(pl, exCost, excludeUid)) return false;
@@ -6668,14 +6668,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
     const s3 = sk3Sig(e); // Package SK3 (2026-10-19): Spawner, Harbinger, Corpsefeeder, Warcry, Stench, Silence / Stymie / Exhaust / Petrify
-    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.disarm && !s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, base)), def); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === e.smelter && m.dz === e.disarm && m.s3 === s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, m.list)), def);
+    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.refining && !e.masonry && !e.disarm && !s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, base)), def); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === econSig(e) && m.dz === e.disarm && m.s3 === s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, m.list)), def);
     const list = base.slice(); if(s3) sk3Trigs(e, list);
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
     if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
     sk2EconomyTrigs(e, list); // Quarry N, Smelter N (2026-10-19, SK2b): On Turn Start × Gain, with a price (t.pay)
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:e.smelter, dz:e.disarm, s3, list}); return en8Trigs(e, bxTrigs(e, sk1Trigs(e, list)), def);
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:econSig(e), dz:e.disarm, s3, list}); return en8Trigs(e, bxTrigs(e, sk1Trigs(e, list)), def);
   }
   // ==== EN8 (2026-10-24, owner 22:28 #2: "We need to build up our stonecutter, prospector, felling, salvage, scavenger, coppice, windfall,
   // driftwood skills! (default 1). Shellfish (new) can create 'Pearls' which can be used as stone OR wood."; decision LUM-1). The resource
@@ -6730,25 +6730,47 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.delivery) out.push({on:'onReady', do:'gain', resource:deliveryResOf(e), amount:N('delivery', 1), keyword:'delivery'});
     en8TrigMemo.set(e, {src:list, key, out}); return out;
   }
-  const DELIVERY_RES = ['lumber', 'stone', 'metal', 'uranium', 'pearl', 'grace'];
+  const DELIVERY_RES = ['lumber', 'stone', 'metal', 'uranium', 'pearl', 'grace', 'gold']; // + Gold (ECONSK1, 2026-11-16)
   function deliveryResOf(e){ const r = e && typeof e.deliveryRes === 'string' ? e.deliveryRes.toLowerCase().replace(/s$/, '') : 'lumber'; return DELIVERY_RES.includes(r) ? r : 'lumber'; }
-  // Delivery {X}, every turn (ENG22): the onReadyGold upkeep pass's twin (same place, same rule: CARD_DEFS' effects, every upkeep while Ready).
+  // 2026-11-16 (ECONSK1, owner 23:28): the every-upkeep gatherers, while Ready (onReadyGold's pass): Forestry / Quarrying / Mining / Prospecting N
+  // = +N Lumber / Stone / Metal / Gold. deliveryEvery (old saves) pays its deliveryRes the same way.
+  const ECON_EVERY = [['forestry', 'lumber'], ['quarrying', 'stone'], ['mining', 'metal'], ['prospecting', 'gold']];
   function deliveryEveryTick(pl, c, def, stats, sideOf, events){
-    const e = def && def.effects; const n = e && numN(e.deliveryEvery, 1); if(!e || !e.deliveryEvery || !(n > 0)) return;
-    const res = deliveryResOf(e), side = sideOf(pl.id);
-    if(res === 'lumber'){ addLumber(pl, n); ensureStat(stats, side, c.defId).lumberGenerated += n; if(recordEvents && events) events.push({type:'lumber', side, defId:c.defId, uid:c.uid, amount:n, cause:'delivery'}); return; }
-    if(res === 'stone' || res === 'metal'){ const got = addOre(pl, res, n); if(recordEvents && events) events.push({type:res, side, defId:c.defId, uid:c.uid, amount: res === 'metal' ? got : n, cause:'delivery'}); return; }
-    if(res === 'uranium'){ pl.uranium = (pl.uranium||0) + n; if(recordEvents && events) events.push({type:'uranium', side, defId:c.defId, uid:c.uid, amount:n, cause:'delivery'}); return; }
-    if(res === 'pearl'){ pl.pearls = (pl.pearls||0) + n; if(recordEvents && events) events.push({type:'pearl', side, defId:c.defId, uid:c.uid, amount:n, cause:'delivery'}); return; }
-    if(res === 'grace'){ pl.grace = (pl.grace||0) + n; ensureStat(stats, side, c.defId).graceGenerated += n; if(recordEvents && events) events.push({type:'grace', side, defId:c.defId, uid:c.uid, amount:n, cause:'delivery'}); }
+    const e = def && def.effects; if(!e) return;
+    if(e.deliveryEvery) econGain(pl, c, deliveryResOf(e), numN(e.deliveryEvery, 1), 'delivery', stats, sideOf, events);
+    ECON_EVERY.forEach(([k, res])=>{ if(e[k]) econGain(pl, c, res, numN(e[k], 1), k, stats, sideOf, events); });
   }
-  // Pearls (EN8): after a payment took Lumber or Stone below 0 (canPlay let it through because Pearls cover the gap), Pearls make it good.
+  function econGain(pl, c, res, n, cause, stats, sideOf, events){
+    if(!(n > 0)) return; const side = sideOf(pl.id);
+    if(res === 'gold'){ const g = addGold(pl, n); if(g && recordEvents && events) events.push({type:'gold', side, defId:c.defId, uid:c.uid, amount:g, why:cause}); return; }
+    if(res === 'lumber'){ addLumber(pl, n); ensureStat(stats, side, c.defId).lumberGenerated += n; if(recordEvents && events) events.push({type:'lumber', side, defId:c.defId, uid:c.uid, amount:n, cause}); return; }
+    if(res === 'stone' || res === 'metal'){ const got = addOre(pl, res, n); if(recordEvents && events) events.push({type:res, side, defId:c.defId, uid:c.uid, amount: res === 'metal' ? got : n, cause}); return; }
+    if(res === 'uranium'){ pl.uranium = (pl.uranium||0) + n; if(recordEvents && events) events.push({type:'uranium', side, defId:c.defId, uid:c.uid, amount:n, cause}); return; }
+    if(res === 'pearl'){ pl.pearls = (pl.pearls||0) + n; if(recordEvents && events) events.push({type:'pearl', side, defId:c.defId, uid:c.uid, amount:n, cause}); return; }
+    if(res === 'grace'){ pl.grace = (pl.grace||0) + n; ensureStat(stats, side, c.defId).graceGenerated += n; if(recordEvents && events) events.push({type:'grace', side, defId:c.defId, uid:c.uid, amount:n, cause}); }
+  }
+  // 2026-11-16 (ECONSK1, owner 23:28): a cost is paid from real resources first; Pearls cover what Lumber / Stone lack, Stone first (the dearer);
+  // with a Barter unit on the board, Gold covers the rest (BARTER_GOLD a point). payGap -> what is still short after the Pearls.
+  const BARTER_GOLD = {lumber: 1, stone: 2, metal: 4};
+  function hasBarter(pl){ return !!pl && rowsUnitsOf(pl).some(c=> c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c).barter); }
+  function payGap(pl, l, s, m){
+    const sl = Math.max(0, l - (pl.lumber||0)), ss = Math.max(0, s - (pl.stone||0)), sm = Math.max(0, m - (pl.metal||0));
+    let p = Math.max(0, pl.pearls||0); const ps = Math.min(p, ss); p -= ps; const pL = Math.min(p, sl);
+    return {pearls: ps + pL, lumber: sl - pL, stone: ss - ps, metal: sm};
+  }
+  const barterGold = g=> g.lumber * BARTER_GOLD.lumber + g.stone * BARTER_GOLD.stone + g.metal * BARTER_GOLD.metal;
+  function canAfford(pl, l, s, m){ const g = payGap(pl, l, s, m); return !(g.lumber + g.stone + g.metal) || (hasBarter(pl) && barterGold(g) <= (pl.gold||0)); }
+  // after a payment took Lumber, Stone or Metal below 0 (canAfford let it through), Pearls then Gold make it good
   function pearlSettle(pl){
-    if(!pl) return; const owe = Math.max(0, -(pl.lumber||0)) + Math.max(0, -(pl.stone||0)); if(!(owe > 0)) return;
-    pl.pearls = Math.max(0, (pl.pearls||0) - owe); if((pl.lumber||0) < 0) pl.lumber = 0; if((pl.stone||0) < 0) pl.stone = 0;
-    pl.pearlsSpent = (pl.pearlsSpent||0) + owe;
+    if(!pl) return; const oL = Math.max(0, -(pl.lumber||0)), oS = Math.max(0, -(pl.stone||0)), oM = Math.max(0, -(pl.metal||0)); if(!(oL + oS + oM > 0)) return;
+    let p = Math.max(0, pl.pearls||0); const ps = Math.min(p, oS); p -= ps; const pL = Math.min(p, oL); p -= pL;
+    pl.pearls = p; if(ps + pL) pl.pearlsSpent = (pl.pearlsSpent||0) + ps + pL;
+    const gold = barterGold({lumber: oL - pL, stone: oS - ps, metal: oM});
+    if(gold > 0 && hasBarter(pl)){ pl.gold = Math.max(0, (pl.gold||0) - gold); pl.goldSpent = (pl.goldSpent||0) + gold; }
+    if((pl.lumber||0) < 0) pl.lumber = 0; if((pl.stone||0) < 0) pl.stone = 0; if((pl.metal||0) < 0) pl.metal = 0;
   }
   function pearlGap(pl, defId, lumberCost){ const od = CARD_DEFS[defId] || {}; return Math.max(0, lumberCost - (pl.lumber||0)) + Math.max(0, (od.stoneCost||0) - (pl.stone||0)); }
+  Object.assign(EQ_API, {payGap, canAfford, hasBarter, BARTER_GOLD}); // ECONSK1 (2026-11-16): for the app and its test
   // Salvage / Scavenge: called for every death (from carrionFeed, where SK2's feed was).
   function en8DeathFeed(players, sideOf, dead, pid, events){
     const pl = players && players[pid]; if(!dead || !pl || dead.cageOf) return; const struct = isStructureCard(dead);
@@ -8364,6 +8386,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           else if(t.resource==='metal' || t.resource==='uranium'){ const got = t.resource==='metal' ? addOre(pl, 'metal', amt) : (pl.uranium = (pl.uranium||0) + amt, amt); if(recordEvents&&events) events.push({type:t.resource, side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:got}); }
           else if(t.resource==='stone'){ addOre(pl, 'stone', amt); if(recordEvents&&events) events.push({type:'stone', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
           else if(t.resource==='pearl'){ pl.pearls = (pl.pearls||0) + amt; if(recordEvents&&events) events.push({type:'pearl', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); } // EN8 (2026-10-24): Pearl Bed
+          else if(t.resource==='gold'){ const g = addGold(pl, amt); if(g && recordEvents&&events) events.push({type:'gold', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:g, why:'delivery'}); } // ECONSK1 (2026-11-16): Delivery {Gold}
           else if(t.resource==='devilry'){ pl.devilry += amt; ensureStat(stats,mySide,boardCard.defId).devilryGenerated += amt; if(recordEvents&&events) events.push({type:'devilry', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
           else if(t.keyword === 'milling'){ // ENG16 (2026-11-02, JJ17, owner: "Milling: turns 1 of your Lumber into 2 Lumber"): N of your Lumber become 2N (net +N); with no Lumber nothing is milled
             const k = Math.min(amt, Math.max(0, Math.floor(pl.lumber||0))); if(k > 0){ pl.lumber -= k; const got = addLumber(pl, 2*k); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:got - k, mill:k}); } }
@@ -9249,8 +9272,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // How much Lumber / Stone / Metal the card still needs (Pearls fill in for Lumber or Stone: pearlCover), 0 when it is payable.
   function aiResourceGap(pl, defId){
-    const d = CARD_DEFS[defId] || {}, lum = Math.max(0, costOfCard(defId) - (pl.lumber||0)), st = Math.max(0, (d.stoneCost||0) - (pl.stone||0)), me = Math.max(0, (d.metalCost||0) - (pl.metal||0));
-    return Math.max(0, lum + st - Math.max(0, pl.pearls||0)) + me;
+    const d = CARD_DEFS[defId] || {}, g = payGap(pl, costOfCard(defId), d.stoneCost||0, d.metalCost||0); // ECONSK1: Pearls (Stone first), then Gold with Barter, cheapest first
+    let gold = hasBarter(pl) ? Math.max(0, pl.gold||0) : 0, left = 0;
+    ['lumber', 'stone', 'metal'].forEach(r=>{ const k = Math.min(g[r], Math.floor(gold / BARTER_GOLD[r])); gold -= k * BARTER_GOLD[r]; left += g[r] - k; });
+    return left;
   }
   // EN8 (2026-10-24, P24-7): the lethal guard. What your units would swing into its bramble this round (each Ready unit that can swing,
   // with nothing of the CPU's in its column; a Confused one counts half), against the bramble's Health and Shield. When that is lethal and
@@ -9911,9 +9936,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // After a swing: Pickpocket, Sabotage, Arson on what the swing landed on.
   function sk2AfterSwing(players, sideOf, a, stats, events){
     const hit = sk2SwingHit; sk2SwingHit = null; if(!hit || hit.att !== a.att) return;
-    const e = effectsOf(a.att); if(!(e.pickpocket || e.sabotage || e.arson)) return;
+    const e = effectsOf(a.att); if(!(e.pickpocket || e.sabotage || e.arson || e.plunder)) return;
     const me = players[a.attId], foe = players[a.enemyId], side = sideOf(a.attId), tSide = sideOf(a.enemyId), ev = recordEvents && events;
     const base = {type:'sk2', side, uid:a.att.uid, defId:a.att.defId, targetSide:tSide};
+    if(e.plunder){ const k = Math.min(Math.max(0, Math.floor(Number(foe.gold)||0)), Math.max(1, Math.round(numN(e.plunder, 1)))); // ECONSK1 (2026-11-16): Plunder N, a landed swing steals up to N Gold
+      if(k > 0){ foe.gold -= k; me.gold = (me.gold||0) + k; if(ev) events.push(Object.assign({}, base, {kind:'plunder', amount:k})); } }
     if(e.pickpocket){ const n = sk2N(a.att, 'pickpocket', SK2.pickpocketN);
       if(hit.target === 'hq'){ const took = sk2TakeRes(foe, n); took.forEach(t=>{ me[t.res] = (Number(me[t.res])||0) + t.n; });
         if(took.length && ev) events.push(Object.assign({}, base, {kind:'pickpocketRes', taken:took, amount:took.reduce((s, t)=> s + t.n, 0)})); }
@@ -10078,10 +10105,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // out, the centre, the right flank), so a Quarry that acts first can feed a Smelter. (The older t.cost 'burnLumber' is untouched.)
   function sk2EconomyTrigs(e, list){
     if(e.quarry) list.push({on:'perTurn', do:'gain', resource:'stone', amount:numN(e.quarry, SK2.quarryN), pay:{lumber:SK2.quarryLumber}, keyword:'quarry'});
-    if(e.smelter){ const n = Math.max(1, Math.min(8, Math.round(numN(e.smelter, SK2.smelterN))));
-      for(let k = 0; k < n; k++) list.push({on:'perTurn', do:'gain', resource:'metal', amount:SK2.smelterMetal, pay:{lumber:SK2.smelterLumber, stone:SK2.smelterStone}, keyword:'smelter'}); }
+    // 2026-11-16 (ECONSK1, owner 23:28): Refining N (old key smelter) = 2 Lumber + 2 Stone -> 1 Metal; Masonry N = 2 Lumber -> 1 Stone; each up to N times a Ready turn
+    const ref = e.refining || e.smelter, timesOf = v=> Math.max(1, Math.min(8, Math.round(numN(v, SK2.smelterN))));
+    if(ref){ for(let k = 0, n = timesOf(ref); k < n; k++) list.push({on:'perTurn', do:'gain', resource:'metal', amount:SK2.smelterMetal, pay:{lumber:SK2.smelterLumber, stone:SK2.smelterStone}, keyword:'refining'}); }
+    if(e.masonry){ for(let k = 0, n = timesOf(e.masonry); k < n; k++) list.push({on:'perTurn', do:'gain', resource:'stone', amount:1, pay:{lumber:2}, keyword:'masonry'}); }
     if(e.disarm){ list.push({on:'onSpawn', do:'disarm', lone:true, keyword:'disarm'}); list.push({on:'onHit', do:'disarm', who:'enemy', sub:'subject', keyword:'disarm'}); } // Disarm = On Play / On Hit × Disarm
   }
+  function econSig(e){ return [e.smelter, e.refining, e.masonry].join('|'); }
   function sk2Price(pay){ return SK2_RES_RANK.map(r=> ({res:r, n:Math.max(0, Math.floor(Number(pay && pay[r])||0))})).filter(x=> x.n > 0); }
   function sk2PayFor(pl, c, t, side, events){
     const price = sk2Price(t.pay), base = {type:'sk2', side, uid: c ? c.uid : null, defId: c ? c.defId : null, price, action:t.do, keyword:t.keyword};
@@ -10365,7 +10395,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           ensureStat(stats, sideOf(pl.id), c.defId).lumberGenerated += def.effects.onReadyGold;
           if(recordEvents && events) events.push({type:'lumber', side:sideOf(pl.id), defId:c.defId, uid:c.uid, amount:def.effects.onReadyGold});
         }
-        if(def.effects && def.effects.deliveryEvery) deliveryEveryTick(pl, c, def, stats, sideOf, events); // ENG22 (2026-11-03, DESIGN1-6): Delivery {X}, every turn
+        if(def.effects) deliveryEveryTick(pl, c, def, stats, sideOf, events); // Delivery {X} every turn (ENG22); Forestry, Quarrying, Mining, Prospecting (ECONSK1)
         tributeTick(players, sideOf, pl, c, stats, events); // Tribute N (TR, 2026-10-21): Gold while Ready (a crowned King's Kingly has Tribute 1)
         // Rebuild N (2026-10-17): every upkeep while Ready, like onReadyGold just above (so also the upkeep its Wait runs out).
         if(def.effects && def.effects.rebuild && c.hp > 0 && !c.cageOf) rebuildCastle(players, sideOf, pl.id, c, numN(def.effects.rebuild, REBUILD_DEF), stats, events, 'ready');

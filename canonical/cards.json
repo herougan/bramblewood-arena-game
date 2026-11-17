@@ -1506,10 +1506,7 @@
     "attack": 0,
     "health": 36,
     "effects": {
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      }
+      "forestry": 1
     },
     "flavor": "Roots older than the castle it now leans protectively over, and just as slow to give anything up.",
     "locked": true,
@@ -2325,10 +2322,7 @@
     "attack": 4,
     "health": 13,
     "effects": {
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      },
+      "forestry": 1,
       "relict": true
     },
     "flavor": "A living fossil, quietly hoarding pearls since the sea was young.",
@@ -2852,10 +2846,7 @@
     "attack": 2,
     "health": 30,
     "effects": {
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      }
+      "forestry": 1
     },
     "flavor": "The oldest set of antlers in the Bramblewood. Even the raccoons pay it tribute.",
     "locked": true,
@@ -3047,10 +3038,7 @@
     "health": 12,
     "effects": {
       "timbered": true,
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      }
+      "forestry": 1
     },
     "flavor": "Never stops building, never stops taxing everyone downstream for the privilege.",
     "locked": true,
@@ -3442,10 +3430,7 @@
     "attack": 3,
     "health": 13,
     "effects": {
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      }
+      "forestry": 1
     },
     "flavor": "Crowned by acclamation of every mouse in the granary. The granary has a lot of mice.",
     "locked": true,
@@ -5201,10 +5186,7 @@
     ],
     "effects": {
       "tide": true,
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      },
+      "forestry": 1,
       "meld": {
         "armor": 1
       }
@@ -7303,10 +7285,7 @@
       "Chipmunk"
     ],
     "effects": {
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      }
+      "forestry": 1
     },
     "flavor": "Every cheek pouch is, technically, a savings account.",
     "dmgType": "physical",
@@ -15194,10 +15173,7 @@
     "cost": 0,
     "wait": 0,
     "effects": {
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      }
+      "forestry": 1
     },
     "dmgType": "physical",
     "resist": [],
@@ -16804,10 +16780,7 @@
     "health": 4,
     "effects": {
       "flying": true,
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      }
+      "forestry": 1
     },
     "dmgType": "physical",
     "resist": [],
@@ -17197,10 +17170,7 @@
     "health": 21,
     "effects": {
       "regen": 3,
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      }
+      "forestry": 1
     },
     "dmgType": "physical",
     "resist": [],
@@ -30378,10 +30348,7 @@
       "Boar"
     ],
     "effects": {
-      "delivery": {
-        "v": 1,
-        "every": "round"
-      },
+      "forestry": 1,
       "foraging": 1
     },
     "flavor": "Nose to the leaf litter, it finds the treasure you were standing on.",
