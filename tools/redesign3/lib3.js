@@ -25,7 +25,7 @@ const NAMES = {swarm: 'Swarm', flying: 'Flying', nursing: 'Nursing', thorns: 'Th
   poisonBarbs: 'Poison Barbs', evasive: 'Evasive', cure: 'Cure', leader: 'Natural Leader', twinShot: 'Twin Shot', rebuild: 'Rebuild', reach: 'Reach', acid: 'Acid', pearl: 'Pearl',
   loneWolf: 'Lone Wolf', frostbite: 'Frostbite', freeze: 'Freeze', avalanche: 'Avalanche', herbalist: 'Herbalist', scare: 'Scare', taunt: 'Taunt', bludgeon: 'Bludgeon', daunt: 'Daunt',
   puncture: 'Puncture', pickpocket: 'Pickpocket', rainrunner: 'Rainrunner', lastStand: 'Last Stand', molting: 'Molting', herald: 'Herald', pitchfork: 'Pitchfork', feeble: 'Feeble',
-  stonecutter: 'Stonecutter', exploit: 'Exploit', helmet: 'Helmet', enfeeble: 'Enfeeble', vulnerable: 'Vulnerable', venomMaster: 'Venom Master', packLeader: 'Pack Leader', triggers: 'trigger x action', onDeathSpawn: 'On Death: spawn', injured: 'Injured', purblind: 'Purblind', bounty: 'Bounty'};
+  stonecutter: 'Stonecutter', exploit: 'Exploit', helmet: 'Helmet', pulverise: 'Pulverise', sonar: 'Sonar', shell: 'Shell', rage: 'Rage', quick: 'Quick', enfeeble: 'Enfeeble', vulnerable: 'Vulnerable', venomMaster: 'Venom Master', packLeader: 'Pack Leader', triggers: 'trigger x action', onDeathSpawn: 'On Death: spawn', injured: 'Injured', purblind: 'Purblind', bounty: 'Bounty'};
 const nameOf = id => NAMES[id] || id;
 // the owner's Proposal sheet (2026-11-17 23:05): focus = "Merged reco (red)", special = "Special/Faction", more = "More ideas" (skills only; fields in brackets dropped)
 const FOCUS = {

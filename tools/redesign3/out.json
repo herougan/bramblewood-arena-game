@@ -16,7 +16,7 @@
   "skillsChanged": 130,
   "moved": 17,
   "unchanged": 76,
-  "statsMoved": 40,
+  "statsMoved": 38,
   "changedOk": 134,
   "ownerChanged": 18,
   "specialChanged": 8,
@@ -1626,7 +1626,7 @@
      "where": "Base faction (Map 15 has no submap)",
      "why": "a shellwright armours the bramble: Fortify (Armor 1); Shell unranked",
      "changed": true,
-     "skillsNow": "shell 1",
+     "skillsNow": "Shell 1",
      "skillsProposed": "Fortify (Armor 1)",
      "effects": {
       "fortify": {
@@ -2666,7 +2666,7 @@
    "ok": true,
    "N": 11.75,
    "obtainMap": 0,
-   "skillsNow": "Flying, Nursing 1",
+   "skillsNow": "Flying, Heal 1",
    "skillsProposed": "Flying, Nursing 1",
    "why": "Heal is Nursing (your note)",
    "flags": []
@@ -3082,7 +3082,7 @@
    "ok": true,
    "N": 16.07,
    "obtainMap": 0,
-   "skillsNow": "quick",
+   "skillsNow": "Quick",
    "skillsProposed": "Guardian",
    "why": "Quick (unranked) off; the cavalry screens the line: 2nd Guardian",
    "flags": []
@@ -3663,7 +3663,7 @@
    "ok": true,
    "N": 20.22,
    "obtainMap": 5,
-   "skillsNow": "Tide 2, sonar, Puncture 2",
+   "skillsNow": "Tide 2, Sonar, Puncture 2",
    "skillsProposed": "Tide 2, Armor 1, Pierce 1",
    "why": "Sonar (unranked), Puncture (II 7, one card: Peak Condor) off; a lancer in mail: 2nd Armor and Pierce",
    "flags": []
@@ -3792,7 +3792,7 @@
    "ok": true,
    "N": 12.92,
    "obtainMap": 0,
-   "skillsNow": "shell 2, Tide",
+   "skillsNow": "Shell 2, Tide",
    "skillsProposed": "Shield 3, Tide",
    "why": "Shell (unranked) off; clamps down: 2nd Shield",
    "flags": []
@@ -3836,7 +3836,7 @@
    "ok": true,
    "N": 17.18,
    "obtainMap": 2,
-   "skillsNow": "Tide, shell 1, Shield 5",
+   "skillsNow": "Tide, Shell 1, Shield 5",
    "skillsProposed": "Shield 3, Tide",
    "why": "Shell (unranked) off; Shield 5 -> 3 (moves to Map 2)",
    "flags": []
@@ -4202,7 +4202,7 @@
    "ok": true,
    "N": 12.92,
    "obtainMap": 0,
-   "skillsNow": "quick, Cleave 1",
+   "skillsNow": "Quick, Cleave 1",
    "skillsProposed": "Swift",
    "why": "Quick -> Swift; Cleave is Map 15's focus: off",
    "flags": []
@@ -4957,7 +4957,7 @@
    "ok": true,
    "N": 19.29,
    "obtainMap": 6,
-   "skillsNow": "Nursing 1, Herbalist 1",
+   "skillsNow": "Heal 1, Herbalist 1",
    "skillsProposed": "Nursing 1, Herbalist 1",
    "why": "Heal is Nursing; Herbalist stays, its one card (II 4)",
    "flags": []
@@ -6464,7 +6464,7 @@
    "ok": true,
    "N": 34.47,
    "obtainMap": 7,
-   "skillsNow": "shell 4, Guardian",
+   "skillsNow": "Shell 4, Guardian",
    "skillsProposed": "Armor 2, Guardian",
    "why": "Shell (unranked) -> Armor",
    "flags": []
@@ -7397,7 +7397,7 @@
    "cost": 1,
    "skillsChanged": true,
    "changed": true,
-   "statsMoved": true,
+   "statsMoved": false,
    "before": {
     "effects": {
      "thorns": 2,
@@ -7411,19 +7411,19 @@
     "obtainMap": 7
    },
    "effects": {
-    "thorns": 2,
+    "thorns": 1,
     "weaken": 1,
     "tide": true
    },
    "attack": 4,
-   "health": 2,
-   "fill": 98,
+   "health": 4,
+   "fill": 98.6,
    "ok": true,
    "N": 22.67,
    "obtainMap": 7,
    "skillsNow": "Thorns 2, Venomous 1, Tide",
-   "skillsProposed": "Thorns 2, Weaken 1, Tide",
-   "why": "Venomous -> Weaken: its venom saps strength (2nd)",
+   "skillsProposed": "Thorns 1, Weaken 1, Tide",
+   "why": "Venomous -> Weaken: its venom saps strength (2nd); Thorns 2 -> 1",
    "flags": []
   },
   {
@@ -7471,7 +7471,7 @@
    "ok": true,
    "N": 25.88,
    "obtainMap": 7,
-   "skillsNow": "shell 2, Tide, Pearl 1",
+   "skillsNow": "Shell 2, Tide, Pearl 1",
    "skillsProposed": "Tide, Pearl 1",
    "why": "Shell (unranked) off; Pearl stays",
    "flags": []
@@ -8248,18 +8248,17 @@
     "obtainMap": 13
    },
    "effects": {
-    "stealth": true,
-    "keenSense": true
+    "stealth": true
    },
    "attack": 2,
-   "health": 4,
-   "fill": 95.9,
+   "health": 5,
+   "fill": 97.8,
    "ok": true,
    "N": 18.29,
    "obtainMap": 13,
    "skillsNow": "keenEye, canopyCover",
-   "skillsProposed": "Stealth, Keen Sense",
-   "why": "True Sight (MAGIC), Canopy Cover off: a still fawn hides (Stealth), alert (Keen Sense)",
+   "skillsProposed": "Stealth",
+   "why": "True Sight (MAGIC), Canopy Cover off: a still fawn hides: 2nd Stealth",
    "flags": []
   },
   {
@@ -9002,7 +9001,7 @@
    "ok": true,
    "N": 22.85,
    "obtainMap": 14,
-   "skillsNow": "quick",
+   "skillsNow": "Quick",
    "skillsProposed": "Swift, Exploit 1",
    "why": "Quick -> Swift; picks out the weak: Exploit",
    "flags": []
@@ -10244,7 +10243,7 @@
    "N": 31.72,
    "obtainMap": 17,
    "skillsNow": "Freeze, shatter 2",
-   "skillsProposed": "pulverise",
+   "skillsProposed": "Pulverise",
    "why": "Freeze, Shatter (unranked) -> Pulverise (II 7, one card)",
    "flags": []
   },
@@ -10371,7 +10370,7 @@
    "ok": true,
    "N": 29.09,
    "obtainMap": 14,
-   "skillsNow": "quick, Fencing",
+   "skillsNow": "Quick, Fencing",
    "skillsProposed": "Swift, Scare 1",
    "why": "Quick -> Swift; Fencing (II 4, one card) goes to the faction (Swordbill Challenger); the frill: Scare",
    "flags": []
@@ -10518,7 +10517,7 @@
    "cost": 1,
    "skillsChanged": true,
    "changed": true,
-   "statsMoved": true,
+   "statsMoved": false,
    "before": {
     "effects": {
      "haste": true
@@ -10530,18 +10529,17 @@
     "obtainMap": 14
    },
    "effects": {
-    "swift": true,
     "expose": 2
    },
    "attack": 3,
-   "health": 3,
-   "fill": 94,
+   "health": 6,
+   "fill": 78.5,
    "ok": true,
    "N": 19.34,
    "obtainMap": 14,
    "skillsNow": "haste",
-   "skillsProposed": "Swift, Expose 2",
-   "why": "Haste (unranked) -> Swift; flushes lizards out: Expose",
+   "skillsProposed": "Expose 2",
+   "why": "Haste (unranked) off; flushes lizards out: Expose",
    "flags": []
   },
   {
@@ -10582,7 +10580,7 @@
    "ok": true,
    "N": 19.34,
    "obtainMap": 14,
-   "skillsNow": "quick, dry",
+   "skillsNow": "Quick, dry",
    "skillsProposed": "Swift, Expose 2",
    "why": "Quick -> Swift, Dry (unranked) off; sniffs out: 2nd Expose",
    "flags": []
@@ -10750,7 +10748,7 @@
    "ok": true,
    "N": 19.34,
    "obtainMap": 14,
-   "skillsNow": "rage",
+   "skillsNow": "Rage",
    "skillsProposed": "Last Stand",
    "why": "Rage (unranked) -> Last Stand (II 4, one card)",
    "flags": []
@@ -11092,7 +11090,7 @@
    "ok": true,
    "N": 35.22,
    "obtainMap": 14,
-   "skillsNow": "rage, Siege 4",
+   "skillsNow": "Rage, Siege 4",
    "skillsProposed": "Mighty, Siege 4",
    "why": "Rage (unranked) -> Mighty",
    "flags": []
@@ -11375,7 +11373,7 @@
    "ok": true,
    "N": 37.85,
    "obtainMap": 22,
-   "skillsNow": "Stampede, rage",
+   "skillsNow": "Stampede, Rage",
    "skillsProposed": "Stampede, Sturdy",
    "why": "Rage (unranked) -> Sturdy",
    "flags": []
@@ -11417,7 +11415,7 @@
    "ok": true,
    "N": 26.76,
    "obtainMap": 14,
-   "skillsNow": "rage",
+   "skillsNow": "Rage",
    "skillsProposed": "Twin Strike, Recoil 2",
    "why": "Rage (unranked) -> Twin Strike + Recoil (the berserker's cost)",
    "flags": []

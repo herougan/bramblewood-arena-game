@@ -102,7 +102,7 @@ const PROPOSED = {
   'riptide-eel': [{tide: true, wave: true}, 'Reload (unranked) off; a riptide pushes: Wave'],
   'reef-shark': [{tide: true, weaken: 1}, 'a crippling bite: Weaken'],
   'clownfish-scout': [{tide: true, poisonBarbs: 1}, 'lives in a stinging anemone: Poison Barbs (your More idea)'],
-  'crown-of-thorns-star': [{thorns: 2, weaken: 1, tide: true}, 'Venomous -> Weaken: its venom saps strength (2nd)'],
+  'crown-of-thorns-star': [{thorns: 1, weaken: 1, tide: true}, 'Venomous -> Weaken: its venom saps strength (2nd); Thorns 2 -> 1'],
   'giant-clam': [{tide: true, delivery: {v: 1, res: 'pearl'}}, 'Shell (unranked) off; Pearl stays'],
   // Map 11
   'eyrie-warden': [{flying: true, twinShot: 1}, 'On Ready damage (unranked), Daunt (one card elsewhere) off: Twin Shot'],
@@ -117,7 +117,7 @@ const PROPOSED = {
   'briarback-hedgehog': [{bulldoze: 1}, 'Fortify-old (unranked) off; rolls into its foe: 2nd Bulldoze'],
   'cunning-vixen': [{evasive: true, stealth: true}, 'Backstab (unranked) -> Stealth'],
   'mouse-sapper': [{siege: 1, dynamite: 3}, 'a sapper: + Dynamite (your special; Map 12 has no submap)'],
-  'fawn-scout': [{stealth: true, keenSense: true}, 'True Sight (MAGIC), Canopy Cover off: a still fawn hides (Stealth), alert (Keen Sense)'],
+  'fawn-scout': [{stealth: true}, 'True Sight (MAGIC), Canopy Cover off: a still fawn hides: 2nd Stealth'],
   'hollow-belly-rat': [{siege: 1}, 'Devour (unranked) off; gnaws through the hedge: 2nd Siege'],
   // Map 13
   'grizzly-vanguard': [{twinStrike: true, guardian: true}, 'Cleave (Map 15) -> Twin Strike: two paws'],
@@ -162,7 +162,7 @@ const PROPOSED = {
   'frillneck-duelist': [{swift: true, scare: 1}, 'Quick -> Swift; Fencing (II 4, one card) goes to the faction (Swordbill Challenger); the frill: Scare'],
   'horned-lizard': [{thorns: 1}, 'Blind (unranked) off; spiny: Thorns'],
   'caustic-scorpion': [{acidBolt: 1}, 'Venomous -> Acid (your More idea)'],
-  'roadrunner-courier': [{swift: true, expose: 2}, 'Haste (unranked) -> Swift; flushes lizards out: Expose'],
+  'roadrunner-courier': [{expose: 2}, 'Haste (unranked) off; flushes lizards out: Expose'],
   'dune-jackal': [{swift: true, expose: 2}, 'Quick -> Swift, Dry (unranked) off; sniffs out: 2nd Expose'],
   'sand-widow': [{poison: 2, trap: 3}, 'a widow\'s lair: 2nd Trap'],
   'barrel-cactus': [{thorns: 2}, 'Dry (unranked) off'],

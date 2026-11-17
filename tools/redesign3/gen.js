@@ -33,7 +33,7 @@ const same = (a, b) => JSON.stringify(a || {}) === JSON.stringify(b || {});
 const label = eff => { const p = []; Object.entries(eff || {}).forEach(([k, v]) => {
   if (k === 'triggers') { (v || []).forEach(t => p.push(({onKill: 'On Kill', onSpawn: 'On Spawn', onHit: 'On Hit', onAttack: 'On Attack', onAttacked: 'On Attacked', onReady: 'On Ready', onDeath: 'On Death', onAction: 'On Action', onAllyDie: 'On Ally Death'}[t.on] || t.on) + ': ' + (t.do === 'gain' ? 'Deliver ' + (t.amount || 1) + ' ' + t.resource : t.do))); return; }
   if (k === 'onDeathSpawn') { p.push('On Death: spawn ' + (v.count || 1) + ' ' + v.defId); return; }
-  const id = L.skillId(k, v); let n = L.nameOf(id);
+  const id = k === 'healing' ? 'healing' : L.skillId(k, v); let n = id === 'healing' ? 'Heal' : L.nameOf(id);
   const num = typeof v === 'number' ? v : (v && typeof v === 'object' && !Array.isArray(v) && v.v != null && !Array.isArray(v.v) ? v.v : (Array.isArray(v) && v.every(x => typeof x === 'number') ? v.join('/') : null));
   if (id === 'swarm' && Array.isArray(v)) n += ' (' + v.join(', ') + ')';
   if (id === 'fortify' && v && v.armor) n += ' (Armor ' + v.armor + ')';
