@@ -571,7 +571,7 @@ M.arrowShot = function(shooter, target, o){
   const pull = o.plunge ? 0 : 10, s1 = {x:s0.x - ux*pull, y:s0.y - uy*pull};
   let end = {x:aim.x - ux*15, y:aim.y - uy*15};
   if(o.miss){ end = {x:aim.x + ux*T.c.h*.7 + uy*T.c.w*.4, y:aim.y + uy*T.c.h*.7 - ux*T.c.w*.4}; }
-  const dist = Math.hypot(end.x - s1.x, end.y - s1.y), lift = o.plunge ? 14 : Math.max(20, Math.min(90, dist*(o.archer ? .26 : .22)))*(o.twin ? .8 : 1);
+  const dist = Math.hypot(end.x - s1.x, end.y - s1.y), lift = o.plunge ? 14 : Math.max(12, Math.min(90, dist*((o.archer ? .08 : .06) + .16*Math.abs(ux))))*(o.twin ? 1.4 : 1); // a level shot arcs up; a near-vertical one only bows a little to the side (the swell gives it height)
   const c = arcCtl(s1, end, lift, side || (o.plunge ? (ux >= 0 ? -1 : 1) : 0)), bump = o.plunge ? -.15 : .32*(1 - Math.min(1, Math.abs(ux)*1.4)) + .06;
   const ang0 = qa(s1, c, end, 0), bits = [];
   const ar = layer('fxh-arrow ' + v, arrowSvg(v, o.archer) + (v === 'fire' || v === 'ice' || v === 'venom' ? '<i class="tipfx"></i>' : '')); bits.push(ar);
