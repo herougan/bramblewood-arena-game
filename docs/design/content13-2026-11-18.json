@@ -1,0 +1,874 @@
+{
+ "package": "CONTENT13",
+ "phase": 1,
+ "date": "2026-11-18",
+ "status": "spec (not folded; cards.json untouched, SKAUD1 phase 2 owns it)",
+ "rules": "append with awaitingSource:true; numericIds assigned after max at write time, re-check at fold; Level 1 (reward) budget; obtainMap = the budget Map term",
+ "cards": [
+  {
+   "card": {
+    "id": "fossa-ambusher",
+    "name": "Fossa Ambusher",
+    "icon": "🐈",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 14,
+    "effects": {
+     "rend": 1
+    },
+    "rarity": "rare",
+    "species": [
+     "Mammal"
+    ],
+    "animal": "fossa",
+    "archetypes": [
+     "Forest",
+     "Predator"
+    ],
+    "flavor": "Madagascar's only big hunter wraps its claws around a lemur and does not let go. The second blow always lands harder.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 4,
+     "map": "m22"
+    },
+    "numericId": 9228,
+    "awaitingSource": true
+   },
+   "covers": [
+    "rend"
+   ],
+   "level": 1,
+   "obtainMap": 22,
+   "obtain": "Map 22 pack (tier 4)",
+   "special": false,
+   "artPrompt": "cute fossa, a slender cat-like Madagascan predator with a long tail and rounded ears, crouched on a mossy branch with one paw raised, anatomically correct mammal: four legs, long tail, forest canopy with hanging vines behind, soft green light",
+   "budget": {
+    "S": 4,
+    "N": 27.34,
+    "x1": 27,
+    "x2": 46,
+    "N2": 130.39,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "osprey-plunger",
+    "name": "Osprey Plunger",
+    "icon": "🦅",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 14,
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "rend",
+       "who": "enemy",
+       "sub": "random",
+       "amount": 1
+      }
+     ]
+    },
+    "rarity": "uncommon",
+    "species": [
+     "Bird"
+    ],
+    "animal": "osprey",
+    "archetypes": [
+     "Bird",
+     "Coast"
+    ],
+    "flavor": "It folds its wings and drops into the water feet first. Whatever it grips is easier to grip again.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 3,
+     "map": "m22"
+    },
+    "numericId": 9229,
+    "awaitingSource": true
+   },
+   "covers": [
+    "rend action"
+   ],
+   "level": 1,
+   "obtainMap": 22,
+   "obtain": "Map 22 pack (tier 3)",
+   "special": false,
+   "artPrompt": "cute osprey diving feet-first toward a river, wings swept back, talons forward, anatomically correct bird: two wings, two legs with talons, one head, river with misty cliffs behind, warm morning light",
+   "budget": {
+    "S": 2.1,
+    "N": 26.18,
+    "x1": 25.9,
+    "x2": 34.42,
+    "N2": 119.56,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "tsetse-drainer",
+    "name": "Tsetse Drainer",
+    "icon": "🪰",
+    "cost": 1,
+    "wait": 1,
+    "attack": 1,
+    "health": 18,
+    "effects": {
+     "flying": true,
+     "enfeeble": 1
+    },
+    "rarity": "rare",
+    "species": [
+     "Insect"
+    ],
+    "animal": "tsetse fly",
+    "archetypes": [
+     "Insect",
+     "Swamp"
+    ],
+    "flavor": "One bite and the bitten wants to lie down. The fly has nothing against you; it simply lives off tired animals.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 4,
+     "map": "m23"
+    },
+    "numericId": 9230,
+    "awaitingSource": true
+   },
+   "covers": [
+    "enfeeble"
+   ],
+   "level": 1,
+   "obtainMap": 23,
+   "obtain": "Map 23 pack (tier 4)",
+   "special": false,
+   "artPrompt": "cute tsetse fly on a drooping swamp reed, folded wings over its back, long forward-pointing mouthpart, anatomically correct insect: three body segments, six legs from the middle segment, two wings, humid swamp with lily pads behind",
+   "budget": {
+    "S": 2.5,
+    "N": 27.58,
+    "x1": 27.49,
+    "x2": 22.98,
+    "N2": 132.69,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "drongo-mocker",
+    "name": "Drongo Mocker",
+    "icon": "🐦",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 15,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onAllyPlayed",
+       "do": "weaken",
+       "who": "enemy",
+       "sub": "random",
+       "amount": 1
+      }
+     ]
+    },
+    "rarity": "uncommon",
+    "species": [
+     "Bird"
+    ],
+    "animal": "fork-tailed drongo",
+    "archetypes": [
+     "Bird",
+     "Savanna"
+    ],
+    "flavor": "It screams the meerkats' alarm call when they are about to eat, then eats what they drop. Every new friend makes the lie louder.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 3,
+     "map": "m23"
+    },
+    "numericId": 9231,
+    "awaitingSource": true
+   },
+   "covers": [
+    "weaken action"
+   ],
+   "level": 1,
+   "obtainMap": 23,
+   "obtain": "Map 23 pack (tier 3)",
+   "special": false,
+   "artPrompt": "cute fork-tailed drongo, glossy black bird with a deeply forked tail and red eye, beak open mid-call on a thorn branch, anatomically correct bird: two wings, two legs, one head, golden savanna with acacia trees behind",
+   "budget": {
+    "S": 5.25,
+    "N": 26.41,
+    "x1": 26.25,
+    "x2": 36.89,
+    "N2": 121.67,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "cape-buffalo-bulwark",
+    "name": "Cape Buffalo Bulwark",
+    "icon": "🐃",
+    "cost": 2,
+    "wait": 2,
+    "attack": 3,
+    "health": 21,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onAllyPlayed",
+       "do": "grant",
+       "who": "ally",
+       "sub": "subject",
+       "skill": "sturdy",
+       "sturdy": true
+      }
+     ]
+    },
+    "rarity": "rare",
+    "species": [
+     "Bovine"
+    ],
+    "animal": "cape buffalo",
+    "archetypes": [
+     "Savanna",
+     "Herd"
+    ],
+    "flavor": "When a calf arrives the herd closes around it, and the calf is, for a few moments, harder to move than the ground.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 4,
+     "map": "m23"
+    },
+    "numericId": 9232,
+    "awaitingSource": true
+   },
+   "covers": [
+    "grant (sturdy)"
+   ],
+   "level": 1,
+   "obtainMap": 23,
+   "obtain": "Map 23 pack (tier 4)",
+   "special": false,
+   "artPrompt": "cute cape buffalo with broad curved horns joined at the forehead, standing in front of a small calf, anatomically correct bovine: four legs, tail, two horns, dusty savanna waterhole behind, warm sunset light",
+   "budget": {
+    "S": 5.28,
+    "N": 35.57,
+    "x1": 35.28,
+    "x2": 69.97,
+    "N2": 220.71,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "bar-headed-goose-leader",
+    "name": "Bar-headed Goose Leader",
+    "icon": "🪿",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 12,
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "on": "onAllyPlayed",
+       "do": "grant",
+       "who": "ally",
+       "sub": "subject",
+       "skill": "quick",
+       "quick": true
+      }
+     ]
+    },
+    "rarity": "uncommon",
+    "species": [
+     "Bird"
+    ],
+    "animal": "bar-headed goose",
+    "archetypes": [
+     "Bird",
+     "Mountain"
+    ],
+    "flavor": "It flies the Himalaya in a long line, and whoever falls in behind rides its draught a little faster.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 3,
+     "map": "m21"
+    },
+    "numericId": 9233,
+    "awaitingSource": true
+   },
+   "covers": [
+    "grant (quick)"
+   ],
+   "level": 1,
+   "obtainMap": 21,
+   "obtain": "Map 21 pack (tier 3)",
+   "special": false,
+   "artPrompt": "cute bar-headed goose, grey body with two dark bars on a white head, wings spread, leading a small V of geese, anatomically correct bird: two wings, two legs, one head, snowy mountain ridge and pale blue sky behind",
+   "budget": {
+    "S": 4.18,
+    "N": 25.94,
+    "x1": 25.6,
+    "x2": 32.93,
+    "N2": 117.38,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "caddisfly-casemaker",
+    "name": "Caddisfly Casemaker",
+    "icon": "🐛",
+    "cost": 1,
+    "wait": 1,
+    "attack": 1,
+    "health": 23,
+    "effects": {
+     "armourer": 1
+    },
+    "rarity": "rare",
+    "species": [
+     "Insect"
+    ],
+    "animal": "caddisfly larva",
+    "archetypes": [
+     "Insect",
+     "River"
+    ],
+    "flavor": "It glues river grit into a tube around itself, and has been quietly doing the same for its neighbours since before there were otters.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 9234,
+    "awaitingSource": true
+   },
+   "covers": [
+    "armourer"
+   ],
+   "level": 1,
+   "obtainMap": 24,
+   "obtain": "Special: a faction / submap carrier (Armourer is Special, owner 11-17), host map 24",
+   "special": true,
+   "artPrompt": "cute caddisfly larva peeking out of a tube case made of tiny river pebbles and twigs, soft pale body, anatomically correct larva: segmented body, three pairs of legs near the head, clear stream bed with waving weed behind",
+   "budget": {
+    "S": 1.25,
+    "N": 27.81,
+    "x1": 27.25,
+    "x2": 23.39,
+    "N2": 134.91,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "opossum-faker",
+    "name": "Opossum Faker",
+    "icon": "🐀",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 18,
+    "effects": {
+     "thanatosis": true
+    },
+    "rarity": "uncommon",
+    "species": [
+     "Mammal"
+    ],
+    "animal": "opossum",
+    "archetypes": [
+     "Forest",
+     "Night"
+    ],
+    "flavor": "When it is beaten it falls over, goes stiff and smells awful. A minute later it gets up and walks away, to everyone's confusion.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 3,
+     "map": "m22"
+    },
+    "numericId": 9235,
+    "awaitingSource": true
+   },
+   "covers": [
+    "thanatosis"
+   ],
+   "level": 1,
+   "obtainMap": 22,
+   "obtain": "Map 22 pack (tier 3)",
+   "special": false,
+   "artPrompt": "cute opossum lying stiff on its side with tongue out and eyes closed in a leaf pile, pointed pink snout, long bare tail, anatomically correct marsupial: four legs, prehensile tail, autumn forest floor with fallen leaves behind",
+   "budget": {
+    "S": 2,
+    "N": 26.18,
+    "x1": 26,
+    "x2": 37,
+    "N2": 119.56,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "strangler-fig-sapling",
+    "name": "Strangler Fig Sapling",
+    "icon": "🌳",
+    "cost": 1,
+    "wait": 2,
+    "attack": 1,
+    "health": 24,
+    "effects": {
+     "tangle": 1
+    },
+    "rarity": "uncommon",
+    "species": [
+     "Plant"
+    ],
+    "animal": "strangler fig",
+    "archetypes": [
+     "Plant",
+     "Jungle"
+    ],
+    "flavor": "It starts as a seed in a branch and ends as a cage of roots around a tree that is no longer there.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 3,
+     "map": "m21"
+    },
+    "numericId": 9236,
+    "awaitingSource": true
+   },
+   "covers": [
+    "tangle"
+   ],
+   "level": 1,
+   "obtainMap": 21,
+   "obtain": "Map 21 pack (tier 3)",
+   "special": false,
+   "artPrompt": "cute strangler fig, a young tree with a network of woody aerial roots wrapped around an old trunk, two small leaf-eyes, no animal body parts, rainforest clearing with shafts of light behind",
+   "budget": {
+    "S": 2.48,
+    "N": 30.32,
+    "x1": 29.48,
+    "x2": 25.54,
+    "N2": 160.37,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "pearl-mussel-anchorer",
+    "name": "Pearl Mussel Anchorer",
+    "icon": "🦪",
+    "cost": 1,
+    "wait": 2,
+    "attack": 1,
+    "health": 24,
+    "effects": {
+     "pearl": 1,
+     "anchor": true
+    },
+    "rarity": "uncommon",
+    "species": [
+     "Mollusc"
+    ],
+    "animal": "freshwater pearl mussel",
+    "archetypes": [
+     "Shellfish",
+     "River"
+    ],
+    "flavor": "It sits in the same patch of gravel for a hundred years, holds on through every flood, and keeps one grain of sand in the dark.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 3,
+     "map": "m21"
+    },
+    "numericId": 9237,
+    "awaitingSource": true
+   },
+   "covers": [
+    "pearl",
+    "anchor"
+   ],
+   "level": 1,
+   "obtainMap": 21,
+   "obtain": "Map 21 pack (tier 3); anchor matters on Map 10 Underwater Currents too",
+   "special": false,
+   "artPrompt": "cute freshwater pearl mussel, dark elongated bivalve shell half-open showing a single pearl, rooted in river gravel, anatomically correct bivalve: two hinged shell halves, no legs, clear river bottom with sunlit ripples behind",
+   "budget": {
+    "S": 3.26,
+    "N": 30.32,
+    "x1": 30.26,
+    "x2": 26.66,
+    "N2": 160.37,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "mole-cricket-megaphone",
+    "name": "Mole Cricket Megaphone",
+    "icon": "🦗",
+    "cost": 1,
+    "wait": 1,
+    "attack": 1,
+    "health": 21,
+    "effects": {
+     "amplifier": 1
+    },
+    "rarity": "rare",
+    "species": [
+     "Insect"
+    ],
+    "animal": "mole cricket",
+    "archetypes": [
+     "Insect",
+     "Burrow"
+    ],
+    "flavor": "It digs its burrow in the shape of a horn and sings into it. The song carries a kilometre; its neighbours sing a little louder for it.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 9238,
+    "awaitingSource": true
+   },
+   "covers": [
+    "amplifier"
+   ],
+   "level": 1,
+   "obtainMap": 22,
+   "obtain": "Submap upgrader on Map 22 or 24 (Amplifier is an upgrader candidate)",
+   "special": true,
+   "artPrompt": "cute mole cricket with broad digging front legs singing at the mouth of a horn-shaped burrow, anatomically correct insect: three body segments, six legs from the middle segment, folded wings, moonlit meadow earth behind",
+   "budget": {
+    "S": 3,
+    "N": 27.34,
+    "x1": 27,
+    "x2": 23.25,
+    "N2": 130.39,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "praying-mantis-striker",
+    "name": "Praying Mantis Striker",
+    "icon": "🦗",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 15,
+    "effects": {
+     "assault": 2
+    },
+    "rarity": "rare",
+    "species": [
+     "Insect"
+    ],
+    "animal": "praying mantis",
+    "archetypes": [
+     "Insect",
+     "Forest"
+    ],
+    "flavor": "It waits so still that you doubt it is there. It only moves when it strikes, and then it is quicker than your doubt.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 4,
+     "map": "m22"
+    },
+    "numericId": 9239,
+    "awaitingSource": true
+   },
+   "covers": [
+    "assault"
+   ],
+   "level": 1,
+   "obtainMap": 22,
+   "obtain": "Map 22 pack (tier 4)",
+   "special": false,
+   "artPrompt": "cute praying mantis with folded forelegs and triangular head, perched on a flower stem, anatomically correct insect: three body segments, six legs, two raptorial forelegs held up, wildflower meadow with soft haze behind",
+   "budget": {
+    "S": 5.4,
+    "N": 27.34,
+    "x1": 26.4,
+    "x2": 37.29,
+    "N2": 130.39,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "secretary-bird-stomper",
+    "name": "Secretary Bird Stomper",
+    "icon": "🦅",
+    "cost": 2,
+    "wait": 1,
+    "attack": 3,
+    "health": 19,
+    "effects": {
+     "encore": true
+    },
+    "rarity": "rare",
+    "species": [
+     "Bird"
+    ],
+    "animal": "secretary bird",
+    "archetypes": [
+     "Bird",
+     "Savanna"
+    ],
+    "flavor": "It stamps a snake flat, and while the snake is still thinking about it, stamps it again.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 4,
+     "map": "m23"
+    },
+    "numericId": 9240,
+    "awaitingSource": true
+   },
+   "covers": [
+    "encore"
+   ],
+   "level": 1,
+   "obtainMap": 23,
+   "obtain": "Map 23 pack (tier 4)",
+   "special": false,
+   "artPrompt": "cute secretary bird with long legs, crest of quill feathers and black thigh plumes, one foot raised to stamp, anatomically correct bird: two wings, two long legs, one head, dry golden grassland with a lone acacia behind",
+   "budget": {
+    "S": 3.19,
+    "N": 31.2,
+    "x1": 31.19,
+    "x2": 59.54,
+    "N2": 169.81,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "spitfire-sawfly-grubs",
+    "name": "Spitfire Sawfly Grubs",
+    "icon": "🐛",
+    "cost": 1,
+    "wait": 1,
+    "attack": 1,
+    "health": 15,
+    "effects": {
+     "spitfire": 1
+    },
+    "rarity": "uncommon",
+    "species": [
+     "Insect"
+    ],
+    "animal": "sawfly larva",
+    "archetypes": [
+     "Insect",
+     "Forest"
+    ],
+    "flavor": "The real name is spitfire grub. A cluster on a gum leaf rears up together and spits oil at whatever disturbs them.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 3,
+     "map": "m22"
+    },
+    "numericId": 9241,
+    "awaitingSource": true
+   },
+   "covers": [
+    "spitfire"
+   ],
+   "level": 1,
+   "obtainMap": 22,
+   "obtain": "Map 22 pack (tier 3) (bolts: Maps 21+ only)",
+   "special": false,
+   "artPrompt": "cute cluster of sawfly larvae rearing up together on a eucalyptus leaf, each with a dark head and green striped body, a little fiery orange spit in the air, anatomically correct larvae: segmented bodies, three pairs of true legs, bright bush gum tree with golden light behind",
+   "budget": {
+    "S": 7.72,
+    "N": 26.18,
+    "x1": 25.72,
+    "x2": 29.9,
+    "N2": 119.56,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "rinkhals-spitter",
+    "name": "Rinkhals Spitter",
+    "icon": "🐍",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 18,
+    "effects": {
+     "arrow": {
+      "v": 1,
+      "type": "poison",
+      "form": "bolt"
+     }
+    },
+    "rarity": "rare",
+    "species": [
+     "Reptile"
+    ],
+    "animal": "rinkhals",
+    "archetypes": [
+     "Snake",
+     "Savanna"
+    ],
+    "flavor": "It spits venom at the eyes from two metres. If that fails, it falls over and plays dead. Both are on purpose.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 4,
+     "map": "m23"
+    },
+    "numericId": 9242,
+    "awaitingSource": true
+   },
+   "covers": [
+    "poisonBolt"
+   ],
+   "level": 1,
+   "obtainMap": 23,
+   "obtain": "Map 23 pack (tier 4) (bolts: Maps 21+ only)",
+   "special": false,
+   "artPrompt": "cute rinkhals, a stocky snake with a flared hood and keeled scales, rearing with hood spread and mouth open, a small arc of spit, anatomically correct snake: no legs, long body, forked tongue, dry grass scrub with orange dusk behind",
+   "budget": {
+    "S": 3.53,
+    "N": 27.58,
+    "x1": 27.53,
+    "x2": 39.12,
+    "N2": 132.69,
+    "ok": true
+   }
+  },
+  {
+   "card": {
+    "id": "soft-shell-crab-newmoult",
+    "name": "Newly Moulted Crab",
+    "icon": "🦀",
+    "cost": 1,
+    "wait": 1,
+    "attack": 5,
+    "health": 11,
+    "effects": {
+     "vulnerable": true
+    },
+    "rarity": "common",
+    "species": [
+     "Crustacean"
+    ],
+    "animal": "blue crab",
+    "archetypes": [
+     "Crab",
+     "Coast"
+    ],
+    "flavor": "It has just climbed out of its old shell and the new one is still wet paper. It hits as hard as ever and dies faster than it should.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "source": {
+     "kind": "pack",
+     "tier": 2,
+     "map": "m21"
+    },
+    "numericId": 9243,
+    "awaitingSource": true
+   },
+   "covers": [
+    "vulnerable (passive)"
+   ],
+   "level": 1,
+   "obtainMap": 21,
+   "obtain": "Map 21 pack (tier 2)",
+   "special": false,
+   "artPrompt": "cute blue crab with a pale soft shell and big pincers raised, a cast-off old shell beside it, anatomically correct crab: ten legs including two claws, eyes on stalks, shallow tide pool with sandy bottom behind",
+   "budget": {
+    "S": -1.5,
+    "N": 24.77,
+    "x1": 24.5,
+    "x2": 54.44,
+    "N2": 107.03,
+    "ok": true
+   }
+  }
+ ]
+}
