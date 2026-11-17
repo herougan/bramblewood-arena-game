@@ -900,7 +900,7 @@
     "res": "stone"
    },
    "ability": null,
-   "about": "v = how many; res = the resource (lumber by default; stone, metal, uranium, pearl, grace). ENG39: kind stockpile = Stockpile (Lumber once, its own price); kind pearl = Pearl (a Pearl once). ENG39: kind stockpile = Stockpile (Lumber once, its own price); kind pearl = Pearl (a Pearl once); every round = Delivery every round (owner 23:05 on ENG35-2; its res as before).",
+   "about": "v = how many; res = the resource (lumber by default; stone, metal, gold (ECONSK1), uranium, pearl, grace). ENG39: kind stockpile = Stockpile (Lumber once, its own price); kind pearl = Pearl (a Pearl once). ENG39: kind stockpile = Stockpile (Lumber once, its own price); kind pearl = Pearl (a Pearl once); every round = Delivery every round (owner 23:05 on ENG35-2; its res as before).",
    "kinds": {
     "kind": {
      "stockpile": "stockpile",

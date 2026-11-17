@@ -2111,9 +2111,9 @@ function eng27UnfortifyParts(v){ const out = {}; if(v === true) return {vulnerab
   String(v).split(/[,;&]/).forEach(x=>{ const t = x.trim().toLowerCase(); if(!t) return; const m = /([+-]?\d+)/.exec(t), n = m ? Math.abs(Number(m[1])) : 1;
     const k = /health|hp/.test(t) ? 'health' : /vulnerab/.test(t) ? 'vulnerable' : null; if(k && n > 0) out[k] = (out[k]||0) + n; }); return out; }
 function eng27UnfortifyText(v){ const p = eng27UnfortifyParts(v); return [p.vulnerable ? TX('ui.eng27-fp-vulnerable', {n: p.vulnerable}) : '', p.health ? TX('ui.eng27-fp-minus-health', {n: p.health}) : ''].filter(Boolean).join(', '); }
-const E22_RES = ['lumber', 'stone', 'metal', 'uranium', 'pearl', 'grace'];
+const E22_RES = ['lumber', 'stone', 'metal', 'gold', 'pearl', 'uranium', 'grace']; // + Gold (ECONSK1, 2026-11-16)
 function e22ResOf(e){ const r = e && typeof e.deliveryRes === 'string' ? e.deliveryRes.toLowerCase().replace(/s$/, '') : 'lumber'; return E22_RES.includes(r) ? r : 'lumber'; }
-function e22ResName(r){ return ({lumber:()=> TX('ui.e22-res-lumber'), stone:()=> TX('ui.e22-res-stone'), metal:()=> TX('ui.e22-res-metal'), uranium:()=> TX('ui.e22-res-uranium'), pearl:()=> TX('ui.e22-res-pearl'), grace:()=> TX('ui.e22-res-grace')}[r] || (()=> TX('ui.e22-res-lumber')))(); }
+function e22ResName(r){ return ({lumber:()=> TX('ui.e22-res-lumber'), stone:()=> TX('ui.e22-res-stone'), metal:()=> TX('ui.e22-res-metal'), uranium:()=> TX('ui.e22-res-uranium'), pearl:()=> TX('ui.e22-res-pearl'), gold:()=> TX('ui.e22-res-gold'), grace:()=> TX('ui.e22-res-grace')}[r] || (()=> TX('ui.e22-res-lumber')))(); }
 // The card line's head (cardSkillLines): Build { 0/6 Palisade }, Fortify { Thorns 1, +1 Health }, Delivery { Lumber x1 }(, every turn)
 function e22Head(k, v, e){
   if(k === 'fortification'){ const z = e22BuildSize(v); return TX('ui.e22-build-head', {a: z.atk, h: z.hp}); }
@@ -2154,6 +2154,21 @@ Object.assign(SKILL_ICON, {unfortify:'💔', blitz:'⚡', mach:'💨', antiAirOn
 Object.assign(SKILL_ICON, {fortify:'🏰' /* 2026-11-06 (TEXTFIX1): was 🏯, Fortification's (SK2 icons are unique) */, delivery:'📦', deliveryEvery:'📦', deliveryRes:'📦'});
 sk1Patch(PASSIVE_DEFS, 'stockpile', {hidden:true}); // ENG22 (DESIGN1-6): Delivery {Lumber xN} replaces it in "+ Add Skill"; an old card still reads it
 sk1Patch(PASSIVE_DEFS, 'taunt', {desc:()=> TX('ui.e22-taunt')}); // ENG22 (DESIGN1-4): Taunt pulls the arrows and shots of the enemies around it
+// ==== ECONSK1 (2026-11-16, owner 23:28; rules in bramblewood-engine.js ECON_EVERY / payGap / sk2EconomyTrigs): the resource skills.
+// Delivery stays the one-shot; these pay every turn while Ready. Refining is Smelter's rule (the old key still plays); Metallurgy has no rule yet (ECONSK1-1).
+PASSIVE_DEFS.push(
+  {key:'forestry', category:'passive', label:TX('ui.skn-forestry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-forestry', {n: numOr(v, 1)})},
+  {key:'quarrying', category:'passive', label:TX('ui.skn-quarrying'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-quarrying', {n: numOr(v, 1)})},
+  {key:'mining', category:'passive', label:TX('ui.skn-mining'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-mining', {n: numOr(v, 1)})},
+  {key:'masonry', category:'passive', label:TX('ui.skn-masonry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-masonry', {n: numOr(v, 1)})},
+  {key:'refining', category:'passive', label:TX('ui.sk2n-smelter'), kind:'number', min:1, defaultValue:SK2_UI.smelterN, desc:v=> SK2_LINE.smelter(v), codexNote:TX('ui.sk2-smelter-codex'), get:e=> e.refining ? sk2Num(e.refining, 'smelterN') : undefined},
+  {key:'metallurgy', category:'passive', label:TX('ui.skn-metallurgy'), kind:'boolean', desc:()=> TX('ui.sk-metallurgy'), codexNote:TX('ui.sk-metallurgy-codex')},
+  {key:'prospecting', category:'passive', label:TX('ui.skn-prospecting'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-prospecting', {n: numOr(v, 1)}), codexNote:TX('ui.sk-prospecting-codex')},
+  {key:'plunder', category:'passive', label:TX('ui.skn-plunder'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-plunder', {n: numOr(v, 1)})},
+  {key:'barter', category:'passive', label:TX('ui.skn-barter'), kind:'boolean', desc:()=> TX('ui.sk-barter'), codexNote:TX('ui.sk-barter-codex')});
+Object.assign(SKILL_ICON, {forestry:'🌲', quarrying:'🪨', mining:'⛏️', masonry:'🧱', refining:'🏭', metallurgy:'⚗️', prospecting:'🪙', plunder:'🏴‍☠️', barter:'🤝'});
+sk1Patch(PASSIVE_DEFS, 'smelter', {hidden:true}); // ECONSK1: Refining replaces it in "+ Add Skill"; an old card still reads it
+sk1Patch(PASSIVE_DEFS, 'deliveryEvery', {hidden:true}); // ECONSK1: Forestry / Quarrying / Mining replace it; an old card still reads it
 // ==== Package ENG24 (2026-11-04, owner 11-04 22:34 in docs/decisions.json; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
 //   Bramble Armor (key brambleArmor) reads as a Fortify form: "Fortify { Armor N }, while it lives" (ENG22-2 b); the rule is unchanged.
 //   Relict (RELICT-1), Meld {X}, Immunity, Sequestration (RELICT-2): on no card; texts under 15 words.
@@ -45079,7 +45094,9 @@ function sideResourcePillsHTML(m, p, mine){
   const keepLumber = mine && (p.lumber||0) <= 0 && typeof coachOpen !== 'undefined' && coachOpen && coachOpen.tip && coachOpen.tip.id === 'pl-after';
   if((p.lumber||0) > 0 || keepLumber) out.push(pill('lumber' + (keepLumber ? ' is-zero' : ''), 'hudLumberPill', RESOURCE_TOOLTIP.lumber, `${iconHTML('lumber', '🪵')} ${p.lumber||0}`));
   if((p.stone||0) > 0) out.push(pill('stone', 'hudStonePill', RESOURCE_TOOLTIP.stone, `${iconHTML('stone', '🪨')} ${p.stone}`));
-  if((p.gold||0) > 0) out.push(pill('gold', 'hudGoldPill', TX('ui.gold-tip'), `🪙 ${p.gold}`)); // Package TR (2026-10-21): in-fight Gold (Tribute, the Crown's fade)
+  // ECONSK1 (2026-11-16): Gold shows while the side holds Gold or a unit with a Gold skill (Prospecting, Plunder, Barter)
+  const goldSkill = !!(m.engine && m.engine.allBoardCards) && m.engine.allBoardCards(p).some(c=>{ const e = c && !c.gap && m.engine.effectsOf(c); return e && (e.prospecting || e.plunder || e.barter); });
+  if((p.gold||0) > 0 || goldSkill) out.push(pill('gold', 'hudGoldPill', TX('ui.gold-tip'), `🪙 ${p.gold||0}`)); // Package TR (2026-10-21): in-fight Gold
   if((p.metal||0) > 0) out.push(pill('metal', 'hudMetalPill', 'Metal: some cards cost it; Iron-will units grow with it', `${iconHTML('metal', '🔩')} ${p.metal}`));
   if((p.pearls||0) > 0) out.push(pill('pearl', 'hudPearlPill', TX('ui.en8-pearl-tip'), `⚪ ${p.pearls}`)); // EN8 (2026-10-24): Pearls, paid as Lumber or Stone
   if((p.uranium||0) > 0) out.push(pill('uranium', 'hudUraniumPill', 'Uranium: only Irradiated cards make it and spend it', `${iconHTML('uranium', '☢️')} ${p.uranium}`));
@@ -54560,6 +54577,7 @@ function sk2LogText(ev, nm){
     if(ev.kind === 'pickpocketRes') return {cls:'gold', text:TX('ui.sk2-log-pickpocket-res', {name, list: sk2ResList(ev.taken)})};
     if(ev.kind === 'sabotage') return {cls:'', text:TX('ui.sk2-log-sabotage', {name, list: sk2ResList(ev.lost)})};
     if(ev.kind === 'arson') return {cls:'', text:TX('ui.sk2-log-arson', {name, n: ev.amount})};
+    if(ev.kind === 'plunder') return {cls:'gold', text:TX('ui.sk2-log-plunder', {name, n: ev.amount})}; // ECONSK1 (2026-11-16)
     if(ev.kind === 'fortify') return {cls:'', text:TX('ui.sk2-log-fortify', {name})};
     if(ev.kind === 'noRoom') return {cls:'', text:TX('ui.sk2-log-no-room', {name})};
     if(ev.kind === 'disarmFull') return {cls:'', text:TX('ui.sk2-log-disarm-full', {name})};
@@ -54580,7 +54598,7 @@ function sk2LogText(ev, nm){
     if(ev.kind === 'steal') return {cls:'gold', text:TX('ui.log-crown-steal', {name: who, from})};
     if(ev.kind === 'fade') return {cls:'gold', text:TX('ui.log-crown-fade', {n: ev.gold || 0})};
     return null; }
-  if(ev.type === 'gold') return ev.why === 'tribute' ? {cls:'gold', text:TX('ui.log-tribute', {name: nm(ev.defId), n: ev.amount})} : null;
+  if(ev.type === 'gold') return ev.why === 'tribute' ? {cls:'gold', text:TX('ui.log-tribute', {name: nm(ev.defId), n: ev.amount})} : ev.defId ? {cls:'gold', text:TX('ui.log-econ-gold', {name: nm(ev.defId), n: ev.amount})} : null; // + Prospecting, Delivery {Gold} (ECONSK1)
   if(ev.type === 'statusFx' && ev.kind === 'sk2Berry') return {cls:'', text:TX('ui.sk2-log-berry', {name: nm(ev.attDefId), total: ev.total})};
   if(ev.type === 'statusFx' && ev.kind === 'sk2BerryEat') return {cls:'', text:''};
   if(ev.type === 'heal' && ev.cause === 'repair') return {cls:'heal', text:TX('ui.sk2-log-repair', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})};
@@ -54610,6 +54628,7 @@ function sk2Vfx(ev){
   if(ev.kind === 'pickpocketRes'){ const from = hqTileEl(ev.targetSide); if(from && el){ try{ spawnProjectile(from, el, '🪵'); }catch(e){} } fl(el, `👛 +${ev.amount}`, 'gold'); snd('coin'); return; }
   if(ev.kind === 'sabotage'){ fl(hqTileEl(ev.targetSide), `🪫 −${ev.amount}`, 'debuff'); snd('curse'); return; }
   if(ev.kind === 'arson'){ fl(hqTileEl(ev.targetSide), `🔥 −${ev.amount}🪵`, 'debuff'); snd('curse'); return; }
+  if(ev.kind === 'plunder'){ const from = hqTileEl(ev.targetSide); if(from && el){ try{ spawnProjectile(from, el, '🪙'); }catch(e){} } fl(el, `🏴‍☠️ +${ev.amount}🪙`, 'gold'); snd('coin'); return; } // ECONSK1 (2026-11-16)
   if(ev.kind === 'fortify'){ fl(el, '🏰', 'quick'); return; }
   if(ev.kind === 'pay'){ fl(el, '−' + (ev.price || []).map(x=> x.n + (x.res === 'stone' ? '🪨' : x.res === 'metal' ? '🔩' : '🪵')).join(' '), 'debuff'); return; } // SK2b
   if(ev.kind === 'cantPay' || ev.kind === 'noRoom' || ev.kind === 'disarmFull'){ fl(el, '🚫', 'quick'); return; }
