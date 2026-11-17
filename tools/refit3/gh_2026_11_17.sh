@@ -24,7 +24,7 @@ trap 'git worktree remove --force "$WT" >/dev/null 2>&1 || true' EXIT
    for(const part of process.argv[1].split(";").filter(Boolean)){const [id,kv]=part.split(":"),c=arr.find(x=>x.id===id); if(!c) throw new Error("no card "+id);
      kv.split(",").forEach(x=>{const [k,v]=x.split("="); c[k]=+v;}); console.log("set",id,kv);}
    fs.writeFileSync(f,JSON.stringify(j,null,1)+"\n");' "$SET"; fi
- git -c user.name=claude -c user.email=noreply@anthropic.com commit -qam "REFIT3 scratch: $TAG (${ONLY:-whole road}${SET:+; $SET})"
+ git -c user.name=claude -c user.email=noreply@anthropic.com commit -q --allow-empty -am "REFIT3 scratch: $TAG (${ONLY:-whole road}${SET:+; $SET})"
  git push -qf origin HEAD:refs/heads/"$BR")
 for K in ${SEEDS//,/ }; do
   gh workflow run road-measure.yml --ref "$BR" -f games=400 -f seed="$K" -f tag="$TAG-s$K" -f only="$ONLY"
