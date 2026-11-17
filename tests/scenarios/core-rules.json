@@ -24,7 +24,7 @@
    "expect":[{"event":"evaded","min":3}, {"event":"hit","where":{"attDefId":"pond-trout"},"min":3}]},
 
   {"name":"Poison ticks every round", "rounds":8, "hqHp":{"A":60,"B":60},
-   "A":[{"id":"caustic-scorpion","wait":0,"hp":200}], "B":[{"id":"ent","hp":200,"attack":1}],
+   "A":[{"id":"adder-ambusher","wait":0,"hp":200}], "B":[{"id":"ent","hp":200,"attack":1}],
    "expect":[{"event":"poisonTick","min":3}]},
 
   {"name":"Thorns hurt the attacker", "rounds":6, "hqHp":{"A":60,"B":60},
