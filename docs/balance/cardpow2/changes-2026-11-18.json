@@ -1,0 +1,2929 @@
+[
+ {
+  "id": "camouflage-frog",
+  "name": "Camouflage Frog",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "2/5",
+  "skills": "Evasive, Tide",
+  "fill": 67.8,
+  "ok": true,
+  "editorL1": 67.8,
+  "power": -16,
+  "forBudget": -11.2,
+  "owner": false,
+  "lists": [
+   "Map 6",
+   "Map 7",
+   "The Canopy"
+  ],
+  "action": "change",
+  "how": "2/5 -> 3/5",
+  "after": {
+   "attack": 3,
+   "health": 5,
+   "effects": {
+    "evasive": true,
+    "tide": true
+   },
+   "fill": 85.7,
+   "ok": true
+  }
+ },
+ {
+  "id": "conch-crawler",
+  "name": "Conch Crawler",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/5",
+  "skills": "Shield 3, Tide",
+  "fill": 80.3,
+  "ok": true,
+  "editorL1": 80.3,
+  "power": -37,
+  "forBudget": -20.1,
+  "owner": false,
+  "lists": [
+   "Map 2",
+   "Map 4",
+   "Map 10"
+  ],
+  "action": "change",
+  "how": "1/5 -> 1/6",
+  "after": {
+   "attack": 1,
+   "health": 6,
+   "effects": {
+    "shield": 3,
+    "tide": true
+   },
+   "fill": 86.3,
+   "ok": true
+  }
+ },
+ {
+  "id": "constrictor-coil",
+  "name": "Constrictor Coil",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "4/11",
+  "skills": "Strangle 2",
+  "fill": 102.5,
+  "ok": false,
+  "editorL1": 102.5,
+  "power": -8,
+  "forBudget": -5.5,
+  "owner": false,
+  "lists": [
+   "The Sunken Grove",
+   "Map 6"
+  ],
+  "action": "change",
+  "how": "strangle 2 -> 1",
+  "after": {
+   "attack": 4,
+   "health": 11,
+   "effects": {
+    "strangle": 1
+   },
+   "fill": 97.6,
+   "ok": true
+  }
+ },
+ {
+  "id": "honey-bee",
+  "name": "Honey Bee",
+  "rarity": "starter",
+  "map": 0,
+  "base": 1,
+  "stats": "1/4",
+  "skills": "Flying",
+  "fill": 69.5,
+  "ok": true,
+  "editorL1": 79,
+  "power": -39,
+  "forBudget": -18.1,
+  "owner": false,
+  "lists": [
+   "Map 0",
+   "Map 1",
+   "Clovermead"
+  ],
+  "action": "change",
+  "how": "1/4 -> 1/5",
+  "after": {
+   "attack": 1,
+   "health": 5,
+   "effects": {
+    "flying": true
+   },
+   "fill": 79.4,
+   "ok": true
+  }
+ },
+ {
+  "id": "slow-worm",
+  "name": "Slow-worm",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/9",
+  "skills": "Nocturnal 1",
+  "fill": 81.5,
+  "ok": true,
+  "editorL1": 81.5,
+  "power": -28,
+  "forBudget": -13.9,
+  "owner": false,
+  "lists": [
+   "Map 4",
+   "Map 13"
+  ],
+  "action": "change",
+  "how": "nocturnal 1 -> 2",
+  "after": {
+   "attack": 1,
+   "health": 9,
+   "effects": {
+    "nocturnal": 2
+   },
+   "fill": 90.8,
+   "ok": true
+  }
+ },
+ {
+  "id": "planarian-splitter",
+  "name": "Planarian",
+  "rarity": "uncommon",
+  "map": 1,
+  "base": 1,
+  "stats": "3/8",
+  "skills": "Meiosis 1",
+  "fill": 101.3,
+  "ok": false,
+  "editorL1": 101.3,
+  "power": 17,
+  "forBudget": 12.8,
+  "owner": false,
+  "lists": [
+   "Map 4",
+   "Map 5",
+   "Map 7",
+   "The Mycelium Deep"
+  ],
+  "action": "change",
+  "how": "3/8 -> 3/7",
+  "after": {
+   "attack": 3,
+   "health": 7,
+   "effects": {
+    "meiosis": 1
+   },
+   "fill": 96.6,
+   "ok": true
+  }
+ },
+ {
+  "id": "muskrat-lodgekeeper",
+  "name": "Muskrat Lodgekeeper",
+  "rarity": "uncommon",
+  "map": 4,
+  "base": 1,
+  "stats": "1/7",
+  "skills": "Tide, Delivery 1",
+  "fill": 59.8,
+  "ok": true,
+  "editorL1": 59.8,
+  "power": -43,
+  "forBudget": -30.6,
+  "owner": false,
+  "lists": [
+   "Lilypad Reach",
+   "Map 4",
+   "Map 5",
+   "The Undercroft"
+  ],
+  "action": "change",
+  "how": "delivery 1 -> 2, 1/7 -> 3/7",
+  "after": {
+   "attack": 3,
+   "health": 7,
+   "effects": {
+    "tide": true,
+    "delivery": 2
+   },
+   "fill": 89.9,
+   "ok": true
+  }
+ },
+ {
+  "id": "snapstick-turtle",
+  "name": "Snapstick Turtle",
+  "rarity": "common",
+  "map": 4,
+  "base": 1,
+  "stats": "4/6",
+  "skills": "Tide, Armor 1",
+  "fill": 100.1,
+  "ok": false,
+  "editorL1": 100.1,
+  "power": 33,
+  "forBudget": 28.4,
+  "owner": false,
+  "lists": [
+   "Lilypad Reach",
+   "Map 4",
+   "Map 5"
+  ],
+  "action": "change",
+  "how": "4/6 -> 4/5",
+  "after": {
+   "attack": 4,
+   "health": 5,
+   "effects": {
+    "tide": true,
+    "armor": 1
+   },
+   "fill": 95.3,
+   "ok": true
+  }
+ },
+ {
+  "id": "anvil-thrush",
+  "name": "Anvil Thrush",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "1/6",
+  "skills": "Flying, Pierce 2",
+  "fill": 60,
+  "ok": true,
+  "editorL1": 60,
+  "power": -42,
+  "forBudget": -25.1,
+  "owner": false,
+  "lists": [
+   "Map 11",
+   "The Aerie Vault",
+   "Map 12"
+  ],
+  "action": "change",
+  "how": "pierce 2 -> 3, 1/6 -> 2/7",
+  "after": {
+   "attack": 2,
+   "health": 7,
+   "effects": {
+    "flying": true,
+    "pierce": 3
+   },
+   "fill": 86.2,
+   "ok": true
+  }
+ },
+ {
+  "id": "barkplate-beetle",
+  "name": "Barkplate Beetle",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 1,
+  "stats": "4/13",
+  "skills": "Thorns 1, Recoil 1",
+  "fill": 80.7,
+  "ok": true,
+  "editorL1": 80.7,
+  "power": -12,
+  "forBudget": -11.6,
+  "owner": false,
+  "lists": [
+   "The Old Bramble",
+   "Map 12",
+   "Map 18"
+  ],
+  "action": "change",
+  "how": "thorns 1 -> 2",
+  "after": {
+   "attack": 4,
+   "health": 13,
+   "effects": {
+    "thorns": 2,
+    "recoil": 1
+   },
+   "fill": 86.8,
+   "ok": true
+  }
+ },
+ {
+  "id": "eyrie-warden",
+  "name": "Eyrie Warden",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "3/11",
+  "skills": "Flying, Twin Shot 1",
+  "fill": 78.9,
+  "ok": true,
+  "editorL1": 78.9,
+  "power": -3,
+  "forBudget": -11.1,
+  "owner": false,
+  "lists": [
+   "Map 11",
+   "The Aerie Vault",
+   "Map 12",
+   "Map 21"
+  ],
+  "action": "change",
+  "how": "twinShot 1 -> 2",
+  "after": {
+   "attack": 3,
+   "health": 11,
+   "effects": {
+    "flying": true,
+    "twinShot": 2
+   },
+   "fill": 96.1,
+   "ok": true
+  }
+ },
+ {
+  "id": "fishing-cat",
+  "name": "Fishing Cat",
+  "rarity": "rare",
+  "map": 7,
+  "base": 1,
+  "stats": "1/14",
+  "skills": "Pounce 2",
+  "fill": 83.7,
+  "ok": true,
+  "editorL1": 83.7,
+  "power": -24,
+  "forBudget": -18.3,
+  "owner": false,
+  "lists": [
+   "Map 9",
+   "The Canopy"
+  ],
+  "action": "change",
+  "how": "pounce 2 -> 3",
+  "after": {
+   "attack": 1,
+   "health": 14,
+   "effects": {
+    "pounce": 3
+   },
+   "fill": 88.7,
+   "ok": true
+  }
+ },
+ {
+  "id": "gallery-orb-weaver",
+  "name": "Gallery Orb-Weaver",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 1,
+  "stats": "4/7",
+  "skills": "Web 1, Venomous 1",
+  "fill": 100.1,
+  "ok": false,
+  "editorL1": 100.1,
+  "power": 18,
+  "forBudget": 17.3,
+  "owner": false,
+  "lists": [
+   "Map 8",
+   "The Glimmer Depths",
+   "Map 18"
+  ],
+  "action": "change",
+  "how": "4/7 -> 4/6",
+  "after": {
+   "attack": 4,
+   "health": 6,
+   "effects": {
+    "web": 1,
+    "poison": 1
+   },
+   "fill": 95.7,
+   "ok": true
+  }
+ },
+ {
+  "id": "mantis-shrimp",
+  "name": "Mantis Shrimp",
+  "rarity": "rare",
+  "map": 7,
+  "base": 1,
+  "stats": "4/13",
+  "skills": "Recoil 2",
+  "fill": 69.6,
+  "ok": true,
+  "editorL1": 69.6,
+  "power": -16,
+  "forBudget": -16.3,
+  "owner": false,
+  "lists": [
+   "The Sunken Depths"
+  ],
+  "action": "change",
+  "how": "recoil 2 -> 1, 4/13 -> 5/13",
+  "after": {
+   "attack": 5,
+   "health": 13,
+   "effects": {
+    "recoil": 1
+   },
+   "fill": 89.4,
+   "ok": true
+  }
+ },
+ {
+  "id": "pine-marten",
+  "name": "Pine Marten",
+  "rarity": "rare",
+  "map": 7,
+  "base": 1,
+  "stats": "1/14",
+  "skills": "Pounce 2",
+  "fill": 83.7,
+  "ok": true,
+  "editorL1": 83.7,
+  "power": -24,
+  "forBudget": -18.3,
+  "owner": false,
+  "lists": [
+   "Map 13"
+  ],
+  "action": "change",
+  "how": "pounce 2 -> 3",
+  "after": {
+   "attack": 1,
+   "health": 14,
+   "effects": {
+    "pounce": 3
+   },
+   "fill": 88.7,
+   "ok": true
+  }
+ },
+ {
+  "id": "puffball-bombardier",
+  "name": "Puffball",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 1,
+  "stats": "1/5",
+  "skills": "Poison Powder 1, Bloom",
+  "fill": 76.7,
+  "ok": true,
+  "editorL1": 76.7,
+  "power": -26,
+  "forBudget": -13.5,
+  "owner": false,
+  "lists": [
+   "Map 7",
+   "The Mycelium Deep"
+  ],
+  "action": "change",
+  "how": "poisonPowder 1 -> 2",
+  "after": {
+   "attack": 1,
+   "health": 5,
+   "effects": {
+    "poisonPowder": 2,
+    "bloomCopy": {
+     "when": [
+      "wet",
+      "kill"
+     ],
+     "mode": "and"
+    }
+   },
+   "fill": 93.1,
+   "ok": true
+  }
+ },
+ {
+  "id": "quill-thorn-boar",
+  "name": "Quill-Thorn Boar",
+  "rarity": "rare",
+  "map": 7,
+  "base": 1,
+  "stats": "4/5",
+  "skills": "Thorns 2, Recoil 1",
+  "fill": 78.1,
+  "ok": true,
+  "editorL1": 78.1,
+  "power": -16,
+  "forBudget": -11.3,
+  "owner": false,
+  "lists": [
+   "The Old Bramble",
+   "Map 12"
+  ],
+  "action": "change",
+  "how": "thorns 2 -> 3, 4/5 -> 4/6",
+  "after": {
+   "attack": 4,
+   "health": 6,
+   "effects": {
+    "thorns": 3,
+    "recoil": 1
+   },
+   "fill": 88.8,
+   "ok": true
+  }
+ },
+ {
+  "id": "redwood-woodpecker",
+  "name": "Redwood Woodpecker",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 1,
+  "stats": "2/11",
+  "skills": "Pierce 2",
+  "fill": 76.3,
+  "ok": true,
+  "editorL1": 76.3,
+  "power": -20,
+  "forBudget": -11,
+  "owner": false,
+  "lists": [
+   "Map 13"
+  ],
+  "action": "change",
+  "how": "pierce 2 -> 3, 2/11 -> 3/11",
+  "after": {
+   "attack": 3,
+   "health": 11,
+   "effects": {
+    "pierce": 3
+   },
+   "fill": 89.7,
+   "ok": true
+  }
+ },
+ {
+  "id": "rot-swollen-carcass",
+  "name": "Rot-Swollen Carcass",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "3/11",
+  "skills": "Progeny, On Spawn: addWait",
+  "fill": 77,
+  "ok": true,
+  "editorL1": 77,
+  "power": -8,
+  "forBudget": -15.1,
+  "owner": false,
+  "lists": [
+   "Map 7",
+   "The Mycelium Deep",
+   "Map 8"
+  ],
+  "action": "change",
+  "how": "3/11 -> 4/11",
+  "after": {
+   "attack": 4,
+   "health": 11,
+   "effects": {
+    "onDeathSpawn": {
+     "defId": "maggot-swarmling",
+     "count": 3
+    },
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "addWait",
+      "amount": 2,
+      "who": "enemy",
+      "sub": "adjacent"
+     }
+    ]
+   },
+   "fill": 86,
+   "ok": true
+  }
+ },
+ {
+  "id": "the-gannet-queen",
+  "name": "The Gannet Queen",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 1,
+  "stats": "1/15",
+  "skills": "Flying, Pounce 2",
+  "fill": 79.5,
+  "ok": true,
+  "editorL1": 79.5,
+  "power": -23,
+  "forBudget": -19.2,
+  "owner": false,
+  "lists": [
+   "Map 11",
+   "The Aerie Vault",
+   "Map 13"
+  ],
+  "action": "change",
+  "how": "pounce 2 -> 3, 1/15 -> 1/16",
+  "after": {
+   "attack": 1,
+   "health": 16,
+   "effects": {
+    "flying": true,
+    "pounce": 3
+   },
+   "fill": 87.3,
+   "ok": true
+  }
+ },
+ {
+  "id": "voltaic-eel",
+  "name": "Voltaic Eel",
+  "rarity": "rare",
+  "map": 7,
+  "base": 1,
+  "stats": "1/7",
+  "skills": "Electricity 2, Tide",
+  "fill": 69.7,
+  "ok": true,
+  "editorL1": 69.7,
+  "power": -16,
+  "forBudget": -11,
+  "owner": false,
+  "lists": [
+   "Map 9",
+   "Map 10"
+  ],
+  "action": "change",
+  "how": "1/7 -> 2/8",
+  "after": {
+   "attack": 2,
+   "health": 8,
+   "effects": {
+    "electricity": 2,
+    "tide": true
+   },
+   "fill": 86.6,
+   "ok": true
+  }
+ },
+ {
+  "id": "echo-screecher",
+  "name": "Echo Screecher",
+  "rarity": "rare",
+  "map": 8,
+  "base": 1,
+  "stats": "2/5",
+  "skills": "Flying, Nocturnal, Darksight",
+  "fill": 73.3,
+  "ok": true,
+  "editorL1": 73.3,
+  "power": -22,
+  "forBudget": -13.6,
+  "owner": false,
+  "lists": [
+   "Map 8",
+   "The Glimmer Depths",
+   "The Undercroft",
+   "Map 20"
+  ],
+  "action": "change",
+  "how": "2/5 -> 3/5",
+  "after": {
+   "attack": 3,
+   "health": 5,
+   "effects": {
+    "flying": true,
+    "nocturnal": true,
+    "keenSense": {
+     "sees": "dark"
+    }
+   },
+   "fill": 88.2,
+   "ok": true
+  }
+ },
+ {
+  "id": "chamois-leaper",
+  "name": "Chamois Leaper",
+  "rarity": "uncommon",
+  "map": 11,
+  "base": 1,
+  "stats": "1/10",
+  "skills": "Pounce 2",
+  "fill": 67.6,
+  "ok": true,
+  "editorL1": 67.6,
+  "power": -28,
+  "forBudget": -17.9,
+  "owner": false,
+  "lists": [
+   "Map 11",
+   "The Aerie Vault",
+   "Map 12"
+  ],
+  "action": "change",
+  "how": "pounce 2 -> 3, 1/10 -> 2/10",
+  "after": {
+   "attack": 2,
+   "health": 10,
+   "effects": {
+    "pounce": 3
+   },
+   "fill": 85.3,
+   "ok": true
+  }
+ },
+ {
+  "id": "acacia-giraffe",
+  "name": "Acacia Giraffe",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "2/11",
+  "skills": "Mighty",
+  "fill": 70,
+  "ok": true,
+  "editorL1": 70,
+  "power": -17,
+  "forBudget": -17.6,
+  "owner": false,
+  "lists": [
+   "Map 14",
+   "Map 23",
+   "Map 24"
+  ],
+  "action": "change",
+  "how": "2/11 -> 4/11",
+  "after": {
+   "attack": 4,
+   "health": 11,
+   "effects": {
+    "mighty": true
+   },
+   "fill": 89.2,
+   "ok": true
+  }
+ },
+ {
+  "id": "armadillo-guard",
+  "name": "Armadillo Guard",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "3/8",
+  "skills": "Shield 3",
+  "fill": 113.4,
+  "ok": false,
+  "editorL1": 113.4,
+  "power": 25,
+  "forBudget": 17.6,
+  "owner": false,
+  "lists": [
+   "Map 18",
+   "Map 19"
+  ],
+  "action": "change",
+  "how": "3/8 -> 2/8",
+  "after": {
+   "attack": 2,
+   "health": 8,
+   "effects": {
+    "shield": 3
+   },
+   "fill": 97.9,
+   "ok": true
+  }
+ },
+ {
+  "id": "berserker-boar",
+  "name": "Berserker Boar",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "3/9",
+  "skills": "Twin Strike, Recoil 2",
+  "fill": 74.3,
+  "ok": true,
+  "editorL1": 74.3,
+  "power": -31,
+  "forBudget": -22.5,
+  "owner": false,
+  "lists": [
+   "Map 20",
+   "Eye of the Volcano"
+  ],
+  "action": "change",
+  "how": "recoil 2 -> 1, 3/9 -> 3/10",
+  "after": {
+   "attack": 3,
+   "health": 10,
+   "effects": {
+    "twinStrike": true,
+    "recoil": 1
+   },
+   "fill": 87,
+   "ok": true
+  }
+ },
+ {
+  "id": "cone-cutter-squirrel",
+  "name": "Cone-cutter Squirrel",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "2/5",
+  "skills": "Foraging 1, On Spawn: gain",
+  "fill": 84.8,
+  "ok": true,
+  "editorL1": 84.8,
+  "power": -26,
+  "forBudget": -13.2,
+  "owner": false,
+  "lists": [
+   "Map 16",
+   "Map 17"
+  ],
+  "action": "change",
+  "how": "foraging 1 -> 2",
+  "after": {
+   "attack": 2,
+   "health": 5,
+   "effects": {
+    "foraging": 2,
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 2
+     }
+    ]
+   },
+   "fill": 93.2,
+   "ok": true
+  }
+ },
+ {
+  "id": "dune-jackal",
+  "name": "Dune Jackal",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "1/1",
+  "skills": "Swift, Expose 2",
+  "fill": 32,
+  "ok": true,
+  "editorL1": 32,
+  "power": -40,
+  "forBudget": -24.4,
+  "owner": false,
+  "lists": [
+   "Map 18",
+   "The Pale Desert",
+   "Map 19"
+  ],
+  "action": "change",
+  "how": "1/1 -> 3/2",
+  "after": {
+   "attack": 3,
+   "health": 2,
+   "effects": {
+    "swift": true,
+    "expose": 2
+   },
+   "fill": 86.2,
+   "ok": true
+  }
+ },
+ {
+  "id": "fumarole-ibex",
+  "name": "Fumarole Ibex",
+  "rarity": "rare",
+  "map": 14,
+  "base": 1,
+  "stats": "1/12",
+  "skills": "Pounce 2",
+  "fill": 70.5,
+  "ok": true,
+  "editorL1": 70.5,
+  "power": -27,
+  "forBudget": -18.6,
+  "owner": false,
+  "lists": [
+   "Map 20",
+   "Map 21",
+   "Map 22"
+  ],
+  "action": "change",
+  "how": "pounce 2 -> 3, 1/12 -> 2/12",
+  "after": {
+   "attack": 2,
+   "health": 12,
+   "effects": {
+    "pounce": 3
+   },
+   "fill": 87,
+   "ok": true
+  }
+ },
+ {
+  "id": "gale-swift",
+  "name": "Gale Swift",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "1/4",
+  "skills": "Flying, Storm",
+  "fill": 62.6,
+  "ok": true,
+  "editorL1": 62.6,
+  "power": -40,
+  "forBudget": -23.1,
+  "owner": false,
+  "lists": [
+   "The Aerie Vault"
+  ],
+  "action": "change",
+  "how": "1/4 -> 2/5",
+  "after": {
+   "attack": 2,
+   "health": 5,
+   "effects": {
+    "flying": true,
+    "storm": true
+   },
+   "fill": 92,
+   "ok": true
+  }
+ },
+ {
+  "id": "glacier-yak",
+  "name": "Glacier Yak",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "1/17",
+  "skills": "Freeze, On Spawn: addWait",
+  "fill": 79.1,
+  "ok": true,
+  "editorL1": 79.1,
+  "power": -19,
+  "forBudget": -19.9,
+  "owner": false,
+  "lists": [
+   "Map 17",
+   "The Ice Hollow",
+   "Map 19",
+   "Map 21"
+  ],
+  "action": "change",
+  "how": "1/17 -> 2/17",
+  "after": {
+   "attack": 2,
+   "health": 17,
+   "effects": {
+    "freeze": {
+     "chance": 40,
+     "duration": 2
+    },
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "addWait",
+      "amount": 2,
+      "who": "enemy",
+      "sub": "adjacent"
+     }
+    ]
+   },
+   "fill": 88.8,
+   "ok": true
+  }
+ },
+ {
+  "id": "honey-badger-fury",
+  "name": "Honey Badger Fury",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "1/6",
+  "skills": "Last Stand",
+  "fill": 48.9,
+  "ok": true,
+  "editorL1": 48.9,
+  "power": -42,
+  "forBudget": -24.7,
+  "owner": false,
+  "lists": [
+   "Map 19",
+   "Map 20",
+   "Eye of the Volcano",
+   "Map 21"
+  ],
+  "action": "change",
+  "how": "1/6 -> 3/7",
+  "after": {
+   "attack": 3,
+   "health": 7,
+   "effects": {
+    "lastStand": true
+   },
+   "fill": 85.1,
+   "ok": true
+  }
+ },
+ {
+  "id": "magma-titan",
+  "name": "Magma Rhino",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "2/17",
+  "skills": "Exploit 2, Immolation 1",
+  "fill": 77.2,
+  "ok": true,
+  "editorL1": 77.2,
+  "power": -24,
+  "forBudget": -24.1,
+  "owner": false,
+  "lists": [
+   "The Undercroft",
+   "Basalt Foundry",
+   "Volcano Lair",
+   "Map 21"
+  ],
+  "action": "change",
+  "how": "exploit 2 -> 3, 2/17 -> 2/18",
+  "after": {
+   "attack": 2,
+   "health": 18,
+   "effects": {
+    "exploit": 3,
+    "immolation": 1
+   },
+   "fill": 86,
+   "ok": true
+  }
+ },
+ {
+  "id": "pinecone-sapper",
+  "name": "Pinecone Sapper",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "0/13",
+  "skills": "Sturdy",
+  "fill": 79.1,
+  "ok": true,
+  "editorL1": 79.1,
+  "power": -39,
+  "forBudget": -22.4,
+  "owner": false,
+  "lists": [
+   "Map 16",
+   "Map 17",
+   "Map 19"
+  ],
+  "action": "change",
+  "how": "0/13 -> 0/15",
+  "after": {
+   "attack": 0,
+   "health": 15,
+   "effects": {
+    "sturdy": true
+   },
+   "fill": 89.1,
+   "ok": true
+  }
+ },
+ {
+  "id": "ringed-seal",
+  "name": "Ringed Seal",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "1/11",
+  "skills": "Tide, Offspring 1",
+  "fill": 82,
+  "ok": true,
+  "editorL1": 82,
+  "power": -34,
+  "forBudget": -21.9,
+  "owner": false,
+  "lists": [
+   "Map 17",
+   "The Ice Hollow"
+  ],
+  "action": "change",
+  "how": "1/11 -> 1/12",
+  "after": {
+   "attack": 1,
+   "health": 12,
+   "effects": {
+    "tide": true,
+    "offspring": 1
+   },
+   "fill": 87.7,
+   "ok": true
+  }
+ },
+ {
+  "id": "spitting-cobra",
+  "name": "Spitting Cobra",
+  "rarity": "rare",
+  "map": 14,
+  "base": 1,
+  "stats": "4/7",
+  "skills": "Snipe 1",
+  "fill": 67,
+  "ok": true,
+  "editorL1": 67,
+  "power": -8,
+  "forBudget": -10.4,
+  "owner": false,
+  "lists": [
+   "The Undercroft",
+   "Map 14"
+  ],
+  "action": "change",
+  "how": "snipe 1 -> 2, 4/7 -> 6/7",
+  "after": {
+   "attack": 6,
+   "health": 7,
+   "effects": {
+    "snipe": 2
+   },
+   "fill": 90.5,
+   "ok": true
+  }
+ },
+ {
+  "id": "lone-grey-wolf",
+  "name": "Lone Grey Wolf",
+  "rarity": "veryrare",
+  "map": 17,
+  "base": 1,
+  "stats": "2/9",
+  "skills": "Lone Wolf",
+  "fill": 70.5,
+  "ok": true,
+  "editorL1": 70.5,
+  "power": -7,
+  "forBudget": -13.4,
+  "owner": false,
+  "lists": [
+   "The Undercroft"
+  ],
+  "action": "change",
+  "how": "2/9 -> 4/9",
+  "after": {
+   "attack": 4,
+   "health": 9,
+   "effects": {
+    "loneWolf": [
+     1,
+     1
+    ]
+   },
+   "fill": 89.4,
+   "ok": true
+  }
+ },
+ {
+  "id": "anvilwhisker-otter",
+  "name": "Anvilwhisker Otter",
+  "rarity": "uncommon",
+  "map": 19,
+  "base": 1,
+  "stats": "1/14",
+  "skills": "Armourer 1, On Turn Start: forgeWeapon",
+  "fill": 77.2,
+  "ok": true,
+  "editorL1": 77.2,
+  "power": -20,
+  "forBudget": -15.8,
+  "owner": false,
+  "lists": [
+   "Basalt Foundry"
+  ],
+  "action": "change",
+  "how": "armourer 1 -> 2, 1/14 -> 2/14",
+  "after": {
+   "attack": 2,
+   "health": 14,
+   "effects": {
+    "armourer": 2,
+    "triggers": [
+     {
+      "on": "perTurn",
+      "do": "forgeWeapon",
+      "amount": 1,
+      "pay": {
+       "stone": 1
+      }
+     }
+    ]
+   },
+   "fill": 91.8,
+   "ok": true
+  }
+ },
+ {
+  "id": "beachcomber-sanderling",
+  "name": "Beachcomber Sanderling",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/6",
+  "skills": "Swift",
+  "fill": 104.5,
+  "ok": false,
+  "editorL1": 104.5,
+  "power": 6,
+  "forBudget": 5.9,
+  "owner": true,
+  "lists": [
+   "Map 3"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "beaver-lumberjack",
+  "name": "Beaver Lumberjack",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "3/4",
+  "skills": "Delivery 1",
+  "fill": 105.4,
+  "ok": false,
+  "editorL1": 105.4,
+  "power": -23,
+  "forBudget": -12.2,
+  "owner": true,
+  "lists": [
+   "Lilypad Reach",
+   "Map 4",
+   "Map 11"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "bee-forager",
+  "name": "Bee Forager",
+  "rarity": "starter",
+  "map": 0,
+  "base": 1,
+  "stats": "0/4",
+  "skills": "Flying, Nursing 1",
+  "fill": 83.1,
+  "ok": true,
+  "editorL1": 83.1,
+  "power": -24,
+  "forBudget": -7.8,
+  "owner": true,
+  "lists": [
+   "Map 0",
+   "Clovermead"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "bee-knight",
+  "name": "Bee Warden",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/2",
+  "skills": "Diurnal 1",
+  "fill": 53.3,
+  "ok": true,
+  "editorL1": 79.1,
+  "power": -52,
+  "forBudget": -28.1,
+  "owner": true,
+  "lists": [
+   "mtut12",
+   "Tutorial",
+   "Map 1"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "bramble-sprout",
+  "name": "Bramble Sprout",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/5",
+  "skills": "Thorns 2",
+  "fill": 101.2,
+  "ok": false,
+  "editorL1": 101.2,
+  "power": -10,
+  "forBudget": -2.9,
+  "owner": true,
+  "lists": [
+   "The Old Bramble",
+   "Map 1",
+   "Map 14"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "chipmunk-cavalry",
+  "name": "Chipmunk Cavalry",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "3/4",
+  "skills": "Guardian",
+  "fill": 80.9,
+  "ok": true,
+  "editorL1": 80.9,
+  "power": -2,
+  "forBudget": -0.6,
+  "owner": true,
+  "lists": [
+   "Map 1",
+   "Clovermead",
+   "Map 3"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "chipmunk-skirmisher",
+  "name": "Chipmunk Skirmisher",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/3",
+  "skills": "Arrow 2",
+  "fill": 100.7,
+  "ok": false,
+  "editorL1": 100.7,
+  "power": 14,
+  "forBudget": 16.2,
+  "owner": true,
+  "lists": [
+   "Map 3"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "cottontail",
+  "name": "Cottontail",
+  "rarity": "starter",
+  "map": 0,
+  "base": 1,
+  "stats": "3/1",
+  "skills": "",
+  "fill": 81,
+  "ok": true,
+  "editorL1": 81,
+  "power": -40,
+  "forBudget": -17.4,
+  "owner": true,
+  "lists": [
+   "Map 0",
+   "mtut12",
+   "Clovermead"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "crossed-eyes",
+  "name": "Crossed-Eyes",
+  "rarity": "starter",
+  "map": 0,
+  "base": 0,
+  "stats": "2/2",
+  "skills": "",
+  "fill": 74.9,
+  "ok": true,
+  "editorL1": 64.8,
+  "power": -45,
+  "forBudget": -23.5,
+  "owner": true,
+  "lists": [
+   "Map 0",
+   "mtut12"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "duckling",
+  "name": "Duckling",
+  "rarity": "starter",
+  "map": 0,
+  "base": 0,
+  "stats": "1/4",
+  "skills": "",
+  "fill": 56.7,
+  "ok": true,
+  "editorL1": 67.9,
+  "power": -48,
+  "forBudget": -23.2,
+  "owner": true,
+  "lists": [
+   "Map 0",
+   "mtut12"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "earthworm",
+  "name": "Earthworm",
+  "rarity": "starter",
+  "map": 0,
+  "base": 0,
+  "stats": "0/6",
+  "skills": "",
+  "fill": 56.2,
+  "ok": true,
+  "editorL1": 70.6,
+  "power": -53,
+  "forBudget": -28.1,
+  "owner": true,
+  "lists": [
+   "Map 0",
+   "mtut12",
+   "Tutorial",
+   "The Old Bramble"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "gull-thief",
+  "name": "Gull Thief",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/7",
+  "skills": "Flying, On Hit: gain",
+  "fill": 102.9,
+  "ok": false,
+  "editorL1": 102.9,
+  "power": -9,
+  "forBudget": -1.7,
+  "owner": true,
+  "lists": [
+   "Tutorial",
+   "Map 2",
+   "Smugglers' Grotto",
+   "Map 3"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "kittiwake-flock",
+  "name": "Kittiwake Flock",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/4",
+  "skills": "Flying, Guardian",
+  "fill": 64.5,
+  "ok": true,
+  "editorL1": 64.5,
+  "power": 16,
+  "forBudget": 17.3,
+  "owner": true,
+  "lists": [
+   "Map 3",
+   "Map 4",
+   "Map 11",
+   "The Undercroft"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "meadow-frog",
+  "name": "Meadow Frog",
+  "rarity": "common",
+  "map": 0,
+  "base": 0,
+  "stats": "2/3",
+  "skills": "Tide",
+  "fill": 84.1,
+  "ok": true,
+  "editorL1": 73.5,
+  "power": -36,
+  "forBudget": -18.4,
+  "owner": false,
+  "lists": [
+   "Murgle Mayhem"
+  ],
+  "action": "flag: Level 0 card (CARDPOW1-1 curve)"
+ },
+ {
+  "id": "nutria-reedcutter",
+  "name": "Nutria Reedcutter",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "3/6",
+  "skills": "Forestry 1",
+  "fill": 102.6,
+  "ok": false,
+  "editorL1": 102.6,
+  "power": -29,
+  "forBudget": -18.2,
+  "owner": false,
+  "lists": [
+   "Map 5",
+   "The Sunken Grove",
+   "Map 9"
+  ],
+  "action": "flag: over budget but weak (budget over-prices it)"
+ },
+ {
+  "id": "oystercatcher",
+  "name": "Oystercatcher",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "2/7",
+  "skills": "Flying, Pierce 2",
+  "fill": 79.4,
+  "ok": true,
+  "editorL1": 79.4,
+  "power": -7,
+  "forBudget": -4.6,
+  "owner": false,
+  "lists": [
+   "Map 2"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "phoenix-mushrooms",
+  "name": "Phoenix Mushrooms",
+  "rarity": "epic",
+  "map": 0,
+  "base": 1,
+  "stats": "1/8",
+  "skills": "Sleeping Powder 1, Bloom",
+  "fill": 81.6,
+  "ok": true,
+  "editorL1": 81.6,
+  "power": 8,
+  "forBudget": 8.8,
+  "owner": false,
+  "lists": [
+   "The Old Bramble",
+   "Map 7"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "pincushion-urchin",
+  "name": "Pincushion Urchin",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "0/6",
+  "skills": "Tide, Poison Barbs 2",
+  "fill": 58,
+  "ok": true,
+  "editorL1": 58,
+  "power": -14,
+  "forBudget": -4.1,
+  "owner": true,
+  "lists": [
+   "Map 2",
+   "Smugglers' Grotto",
+   "Map 10",
+   "The Ice Hollow"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "pond-algae",
+  "name": "Pond Algae",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/8",
+  "skills": "Bloom",
+  "fill": 110.5,
+  "ok": false,
+  "editorL1": 110.5,
+  "power": -38,
+  "forBudget": -22.3,
+  "owner": false,
+  "lists": [
+   "Lilypad Reach",
+   "Map 4",
+   "Map 6"
+  ],
+  "action": "flag: over budget but weak (budget over-prices it)"
+ },
+ {
+  "id": "pond-trout",
+  "name": "Pond Trout",
+  "rarity": "starter",
+  "map": 0,
+  "base": 1,
+  "stats": "2/4",
+  "skills": "",
+  "fill": 81,
+  "ok": true,
+  "editorL1": 81,
+  "power": -28,
+  "forBudget": -12.2,
+  "owner": true,
+  "lists": [
+   "Map 0",
+   "mtut12",
+   "Tutorial"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "rabbit-kit",
+  "name": "Rabbit Kit",
+  "rarity": "common",
+  "map": 0,
+  "base": 0,
+  "stats": "2/2",
+  "skills": "Evasive",
+  "fill": 73.1,
+  "ok": true,
+  "editorL1": 88.5,
+  "power": -31,
+  "forBudget": -14.6,
+  "owner": false,
+  "lists": [
+   "Map 0"
+  ],
+  "action": "flag: Level 0 card (CARDPOW1-1 curve)"
+ },
+ {
+  "id": "silver-minnow",
+  "name": "Silver Minnow",
+  "rarity": "starter",
+  "map": 0,
+  "base": 1,
+  "stats": "2/3",
+  "skills": "",
+  "fill": 72.9,
+  "ok": true,
+  "editorL1": 80.9,
+  "power": -39,
+  "forBudget": -18.6,
+  "owner": true,
+  "lists": [
+   "Map 0",
+   "mtut12"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "feral-tomcat",
+  "name": "Tomcat",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/4",
+  "skills": "Swift",
+  "fill": 81.3,
+  "ok": true,
+  "editorL1": 81.3,
+  "power": -18,
+  "forBudget": -8.8,
+  "owner": true,
+  "lists": [
+   "Map 3",
+   "Map 13"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "water-shrew",
+  "name": "Water Shrew",
+  "rarity": "common",
+  "map": 0,
+  "base": 1,
+  "stats": "1/4",
+  "skills": "Pounce 1, Evasive",
+  "fill": 76.8,
+  "ok": true,
+  "editorL1": 76.8,
+  "power": -17,
+  "forBudget": -3.7,
+  "owner": false,
+  "lists": [
+   "Lilypad Reach",
+   "Map 4",
+   "Map 6"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "worker-ant",
+  "name": "Worker Ant",
+  "rarity": "starter",
+  "map": 0,
+  "base": 0,
+  "stats": "1/6",
+  "skills": "On Attack: drawCard",
+  "fill": 123.7,
+  "ok": false,
+  "editorL1": 123.7,
+  "power": -37,
+  "forBudget": -16.3,
+  "owner": true,
+  "lists": [
+   "Map 0",
+   "Tutorial",
+   "Map 18"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "alley-cat",
+  "name": "Alley Cat",
+  "rarity": "uncommon",
+  "map": 1,
+  "base": 1,
+  "stats": "1/4",
+  "skills": "Bleed 1",
+  "fill": 69.1,
+  "ok": true,
+  "editorL1": 69.1,
+  "power": 19,
+  "forBudget": 17.9,
+  "owner": true,
+  "lists": [
+   "Map 5",
+   "Map 9",
+   "Map 23",
+   "Map 24"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "lotus-frog",
+  "name": "Lotus Frog",
+  "rarity": "uncommon",
+  "map": 1,
+  "base": 1,
+  "stats": "2/7",
+  "skills": "Nocturnal 1, Pounce 1",
+  "fill": 77.8,
+  "ok": true,
+  "editorL1": 77.8,
+  "power": -15,
+  "forBudget": -9.2,
+  "owner": false,
+  "lists": [
+   "Map 4"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "moonlit-hare",
+  "name": "Moonlit Hare",
+  "rarity": "uncommon",
+  "map": 1,
+  "base": 1,
+  "stats": "2/7",
+  "skills": "Evasive",
+  "fill": 84.7,
+  "ok": true,
+  "editorL1": 84.7,
+  "power": 5,
+  "forBudget": 8.6,
+  "owner": true,
+  "lists": [
+   "Map 1",
+   "Map 2"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "old-sturgeon",
+  "name": "Old Sturgeon",
+  "rarity": "uncommon",
+  "map": 1,
+  "base": 1,
+  "stats": "2/12",
+  "skills": "Armor 2, Tide",
+  "fill": 72.5,
+  "ok": true,
+  "editorL1": 72.5,
+  "power": 4,
+  "forBudget": -2.1,
+  "owner": true,
+  "lists": [
+   "Lilypad Reach",
+   "The Undercroft"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "driftwood-crab",
+  "name": "Driftwood Crab",
+  "rarity": "common",
+  "map": 2,
+  "base": 1,
+  "stats": "2/10",
+  "skills": "Crab Claws, On Attacked: gain",
+  "fill": 84.3,
+  "ok": true,
+  "editorL1": 84.3,
+  "power": -2,
+  "forBudget": -1.6,
+  "owner": true,
+  "lists": [
+   "Map 2",
+   "Smugglers' Grotto",
+   "Map 8",
+   "Map 9"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "rock-pool-starfish",
+  "name": "Rock Pool Starfish",
+  "rarity": "common",
+  "map": 2,
+  "base": 1,
+  "stats": "1/7",
+  "skills": "Tide, Diurnal 2",
+  "fill": 74.4,
+  "ok": true,
+  "editorL1": 74.4,
+  "power": -16,
+  "forBudget": -9,
+  "owner": true,
+  "lists": [
+   "Map 2",
+   "Smugglers' Grotto",
+   "The Ice Hollow"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "razorbill",
+  "name": "Razorbill",
+  "rarity": "uncommon",
+  "map": 3,
+  "base": 1,
+  "stats": "2/5",
+  "skills": "Flying, Bleed 1",
+  "fill": 73.5,
+  "ok": true,
+  "editorL1": 73.5,
+  "power": -2,
+  "forBudget": -4.4,
+  "owner": false,
+  "lists": [
+   "The Undercroft"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "pyrenean-desman",
+  "name": "Pyrenean Desman",
+  "rarity": "uncommon",
+  "map": 4,
+  "base": 1,
+  "stats": "2/7",
+  "skills": "Tide, Nocturnal 1",
+  "fill": 81.8,
+  "ok": true,
+  "editorL1": 81.8,
+  "power": 5,
+  "forBudget": 3,
+  "owner": false,
+  "lists": [
+   "The Undercroft"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "booming-bittern",
+  "name": "Booming Bittern",
+  "rarity": "uncommon",
+  "map": 6,
+  "base": 1,
+  "stats": "2/10",
+  "skills": "Scare 1",
+  "fill": 82.5,
+  "ok": true,
+  "editorL1": 82.5,
+  "power": -13,
+  "forBudget": -6.6,
+  "owner": false,
+  "lists": [
+   "Map 6",
+   "Map 9",
+   "Basalt Foundry"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "riverworks-bastion",
+  "name": "Riverworks Bastion",
+  "rarity": "common",
+  "map": 6,
+  "base": 1,
+  "stats": "0/35",
+  "skills": "Rampart",
+  "fill": 77.3,
+  "ok": true,
+  "editorL1": 77.3,
+  "power": -34,
+  "forBudget": -40,
+  "owner": true,
+  "lists": [
+   "Lilypad Reach"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "anhinga-spearbird",
+  "name": "Anhinga Spearbird",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 1,
+  "stats": "1/11",
+  "skills": "Tide, Trident",
+  "fill": 74,
+  "ok": true,
+  "editorL1": 74,
+  "power": -3,
+  "forBudget": -0.5,
+  "owner": false,
+  "lists": [
+   "Map 9",
+   "Map 13"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "apollo-butterfly",
+  "name": "Apollo Butterfly",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 1,
+  "stats": "1/8",
+  "skills": "Flying, Paralysis Powder 1",
+  "fill": 84.2,
+  "ok": true,
+  "editorL1": 84.2,
+  "power": 14,
+  "forBudget": 28.8,
+  "owner": false,
+  "lists": [
+   "Map 11",
+   "The Aerie Vault",
+   "Map 21"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "bear-cub",
+  "name": "Bear Cub",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 0,
+  "stats": "2/8",
+  "skills": "",
+  "fill": 84.8,
+  "ok": true,
+  "editorL1": 101.8,
+  "power": 1,
+  "forBudget": 1.4,
+  "owner": false,
+  "lists": [
+   "Map 13",
+   "Map 16"
+  ],
+  "action": "flag: Level 0 card (CARDPOW1-1 curve)"
+ },
+ {
+  "id": "bombardier-beetle",
+  "name": "Bombardier Beetle",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 1,
+  "stats": "3/10",
+  "skills": "Fire Bolt",
+  "fill": 79.5,
+  "ok": true,
+  "editorL1": 79.5,
+  "power": 25,
+  "forBudget": 22.9,
+  "owner": false,
+  "lists": [
+   "The Mycelium Deep"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "clover-butterfly",
+  "name": "Clover Butterfly",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "2/4",
+  "skills": "Flying",
+  "fill": 80.1,
+  "ok": true,
+  "editorL1": 80.1,
+  "power": 5,
+  "forBudget": 5.3,
+  "owner": false,
+  "lists": [
+   "Clovermead"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "fungus-gnat-cloud",
+  "name": "Fungus Gnat Cloud",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "1/4",
+  "skills": "Flying, Poison Powder 1",
+  "fill": 79.2,
+  "ok": true,
+  "editorL1": 79.2,
+  "power": 18,
+  "forBudget": 22.9,
+  "owner": false,
+  "lists": [
+   "Map 7",
+   "The Mycelium Deep"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "krill-swarm",
+  "name": "Krill Swarm",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "0/7",
+  "skills": "Tide, Swarm",
+  "fill": 73,
+  "ok": true,
+  "editorL1": 73,
+  "power": -18,
+  "forBudget": -6.8,
+  "owner": true,
+  "lists": [
+   "Map 10",
+   "The Sunken Depths"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "ladybird-guard",
+  "name": "Ladybird Guard",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "1/8",
+  "skills": "Guardian",
+  "fill": 75.5,
+  "ok": true,
+  "editorL1": 75.5,
+  "power": -12,
+  "forBudget": -5,
+  "owner": false,
+  "lists": [
+   "Clovermead"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "mangrove-mudskipper",
+  "name": "Mangrove Mudskipper",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "1/7",
+  "skills": "Tide, Evasive",
+  "fill": 84.5,
+  "ok": true,
+  "editorL1": 84.5,
+  "power": -2,
+  "forBudget": 8.2,
+  "owner": false,
+  "lists": [
+   "Map 9"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "mountain-hare",
+  "name": "Mountain Hare",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "2/3",
+  "skills": "Evasive, Frostbite 1",
+  "fill": 74.2,
+  "ok": true,
+  "editorL1": 74.2,
+  "power": -18,
+  "forBudget": -7.3,
+  "owner": false,
+  "lists": [
+   "Map 11",
+   "Map 12",
+   "Map 16"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "nightshade-moth",
+  "name": "Nightshade Moth",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "2/2",
+  "skills": "Flying, Nocturnal, Paralysis Powder 1",
+  "fill": 69.2,
+  "ok": true,
+  "editorL1": 69.2,
+  "power": -19,
+  "forBudget": -7.9,
+  "owner": false,
+  "lists": [
+   "Map 11",
+   "Map 20"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "proboscis-monkey",
+  "name": "Proboscis Monkey",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 1,
+  "stats": "2/11",
+  "skills": "Tide, Taunt",
+  "fill": 79,
+  "ok": true,
+  "editorL1": 79,
+  "power": -11,
+  "forBudget": -9.8,
+  "owner": false,
+  "lists": [
+   "The Old Bramble",
+   "Map 9",
+   "The Canopy"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "raccoon-nightcrew",
+  "name": "Raccoon Nightcrew",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "3/6",
+  "skills": "Stealth, Nocturnal",
+  "fill": 110.6,
+  "ok": false,
+  "editorL1": 110.6,
+  "power": -41,
+  "forBudget": -26.4,
+  "owner": false,
+  "lists": [
+   "Smugglers' Grotto"
+  ],
+  "action": "flag: over budget but weak (budget over-prices it)"
+ },
+ {
+  "id": "sea-turtle-elder",
+  "name": "Sea Turtle Elder",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "4/9",
+  "skills": "Armor 3, Tide",
+  "fill": 76.4,
+  "ok": true,
+  "editorL1": 76.4,
+  "power": 5,
+  "forBudget": -5.2,
+  "owner": false,
+  "lists": [
+   "Map 10",
+   "The Sunken Depths"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "stonedrop-vulture",
+  "name": "Stonedrop Vulture",
+  "rarity": "uncommon",
+  "map": 7,
+  "base": 1,
+  "stats": "11/11",
+  "skills": "Flying, Archer",
+  "fill": 73.6,
+  "ok": true,
+  "editorL1": 73.6,
+  "power": 41,
+  "forBudget": 51.7,
+  "owner": false,
+  "lists": [
+   "Map 11"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "sulfur-cinder-moth",
+  "name": "Sulfur Cinder Moth",
+  "rarity": "common",
+  "map": 7,
+  "base": 1,
+  "stats": "1/7",
+  "skills": "Illuminate, Flying, On Death: damage",
+  "fill": 76.8,
+  "ok": true,
+  "editorL1": 76.8,
+  "power": 1,
+  "forBudget": 2.9,
+  "owner": false,
+  "lists": [
+   "Map 8",
+   "The Glimmer Depths",
+   "Map 19"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "wolf-spider-mother",
+  "name": "Wolf Spider Mother",
+  "rarity": "rare",
+  "map": 7,
+  "base": 1,
+  "stats": "2/6",
+  "skills": "Swarm, Broodmother 1",
+  "fill": 76,
+  "ok": true,
+  "editorL1": 76,
+  "power": 18,
+  "forBudget": 21.7,
+  "owner": true,
+  "lists": [
+   "The Old Bramble",
+   "Map 7",
+   "Map 8",
+   "The Undercroft"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "rootworm-colony",
+  "name": "Rootworm Colony",
+  "rarity": "common",
+  "map": 8,
+  "base": 1,
+  "stats": "4/4",
+  "skills": "Poison Barbs 1",
+  "fill": 81,
+  "ok": true,
+  "editorL1": 81,
+  "power": -18,
+  "forBudget": -13.8,
+  "owner": true,
+  "lists": [
+   "The Mycelium Deep"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "mangrove-kingfisher",
+  "name": "Mangrove Kingfisher",
+  "rarity": "rare",
+  "map": 9,
+  "base": 1,
+  "stats": "2/4",
+  "skills": "Evasive, Flying",
+  "fill": 68.5,
+  "ok": true,
+  "editorL1": 68.5,
+  "power": 6,
+  "forBudget": 4.9,
+  "owner": false,
+  "lists": [
+   "The Undercroft"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "blue-ringed-octopus",
+  "name": "Blue-ringed Octopus",
+  "rarity": "rare",
+  "map": 11,
+  "base": 1,
+  "stats": "2/11",
+  "skills": "Octolash",
+  "fill": 82.8,
+  "ok": true,
+  "editorL1": 82.8,
+  "power": 35,
+  "forBudget": 26.3,
+  "owner": false,
+  "lists": [
+   "The Sunken Depths"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "eagle-owl-quartermaster",
+  "name": "Eagle-Owl Quartermaster",
+  "rarity": "rare",
+  "map": 11,
+  "base": 1,
+  "stats": "1/6",
+  "skills": "Arrow 1, Fletcher 1, Flying",
+  "fill": 73.3,
+  "ok": true,
+  "editorL1": 73.3,
+  "power": 23,
+  "forBudget": 18.4,
+  "owner": true,
+  "lists": [
+   "Map 11",
+   "The Aerie Vault",
+   "Map 15",
+   "Map 23"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "shimmerwing-stag",
+  "name": "Shimmerwing Stag",
+  "rarity": "veryrare",
+  "map": 13,
+  "base": 1,
+  "stats": "2/13",
+  "skills": "Evasive",
+  "fill": 72.8,
+  "ok": true,
+  "editorL1": 72.8,
+  "power": 10,
+  "forBudget": 2.1,
+  "owner": false,
+  "lists": [
+   "The Undercroft"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "upside-down-bat",
+  "name": "Upside-Down Bat",
+  "rarity": "uncommon",
+  "map": 13,
+  "base": 1,
+  "stats": "2/4",
+  "skills": "Flying, Diurnal, Reach",
+  "fill": 82,
+  "ok": true,
+  "editorL1": 82,
+  "power": 33,
+  "forBudget": 36.4,
+  "owner": false,
+  "lists": [
+   "Map 16"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "arctic-tern",
+  "name": "Arctic Tern",
+  "rarity": "uncommon",
+  "map": 14,
+  "base": 1,
+  "stats": "1/8",
+  "skills": "Flying, Diurnal",
+  "fill": 66,
+  "ok": true,
+  "editorL1": 66,
+  "power": 5,
+  "forBudget": 3,
+  "owner": false,
+  "lists": [
+   "Map 17"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "bramblewood-macaque",
+  "name": "Bramblewood Macaque",
+  "rarity": "rare",
+  "map": 14,
+  "base": 1,
+  "stats": "4/4",
+  "skills": "Snipe 1, Siege 1",
+  "fill": 81,
+  "ok": true,
+  "editorL1": 81,
+  "power": 11,
+  "forBudget": 7.5,
+  "owner": false,
+  "lists": [
+   "Map 14",
+   "The Canopy"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "carrion-beetle",
+  "name": "Carrion Beetle",
+  "rarity": "uncommon",
+  "map": 14,
+  "base": 1,
+  "stats": "3/11",
+  "skills": "Lingering",
+  "fill": 82.3,
+  "ok": true,
+  "editorL1": 82.3,
+  "power": 18,
+  "forBudget": 10.1,
+  "owner": false,
+  "lists": [
+   "Eye of the Volcano"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "cinder-hornet",
+  "name": "Cinder Hornet",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "3/3",
+  "skills": "Flying, Weaken 1",
+  "fill": 73.7,
+  "ok": true,
+  "editorL1": 73.7,
+  "power": -12,
+  "forBudget": -5.8,
+  "owner": false,
+  "lists": [
+   "Map 19",
+   "Basalt Foundry",
+   "Volcano Lair",
+   "Map 21"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "granite-ox-golem",
+  "name": "Granite Ox Golem",
+  "rarity": "rare",
+  "map": 14,
+  "base": 1,
+  "stats": "3/17",
+  "skills": "Recoil 2, On Spawn: stun",
+  "fill": 54.6,
+  "ok": true,
+  "editorL1": 54.6,
+  "power": -41,
+  "forBudget": -41.9,
+  "owner": false,
+  "lists": [
+   "Basalt Foundry",
+   "Volcano Lair"
+  ],
+  "action": "flag: needs more than 3 stat points (proposal only)",
+  "how": "3/17 -> 6/22",
+  "after": {
+   "attack": 6,
+   "health": 22,
+   "effects": {
+    "recoil": 2,
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "stun",
+      "who": "enemy",
+      "sub": "all",
+      "everyone": true,
+      "count": 1
+     }
+    ]
+   },
+   "fill": 86.5,
+   "ok": true
+  }
+ },
+ {
+  "id": "grave-grin-hyena",
+  "name": "Grave-Grin Hyena",
+  "rarity": "uncommon",
+  "map": 14,
+  "base": 1,
+  "stats": "2/10",
+  "skills": "Cull",
+  "fill": 76.1,
+  "ok": true,
+  "editorL1": 76.1,
+  "power": 9,
+  "forBudget": 4.4,
+  "owner": true,
+  "lists": [
+   "The Undercroft"
+  ],
+  "action": "flag: owner-set"
+ },
+ {
+  "id": "mallard-marauder",
+  "name": "Mallard Marauder",
+  "rarity": "rare",
+  "map": 14,
+  "base": 1,
+  "stats": "2/5",
+  "skills": "Flying, Pounce 1",
+  "fill": 68,
+  "ok": true,
+  "editorL1": 68,
+  "power": 3,
+  "forBudget": -1.5,
+  "owner": false,
+  "lists": [
+   "Map 15",
+   "Map 16"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "meerkat-sentry",
+  "name": "Meerkat Sentry",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "2/7",
+  "skills": "Pack 1",
+  "fill": 70.2,
+  "ok": true,
+  "editorL1": 70.2,
+  "power": -6,
+  "forBudget": -1,
+  "owner": false,
+  "lists": [
+   "Map 14",
+   "Map 18"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "plains-zebra",
+  "name": "Plains Zebra",
+  "rarity": "uncommon",
+  "map": 14,
+  "base": 1,
+  "stats": "1/7",
+  "skills": "Evasive",
+  "fill": 68,
+  "ok": true,
+  "editorL1": 68,
+  "power": -15,
+  "forBudget": -7,
+  "owner": false,
+  "lists": [
+   "Map 14",
+   "Map 15"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "roadrunner-courier",
+  "name": "Roadrunner Courier",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "3/6",
+  "skills": "Expose 2",
+  "fill": 78.5,
+  "ok": true,
+  "editorL1": 78.5,
+  "power": -12,
+  "forBudget": -4.4,
+  "owner": false,
+  "lists": [
+   "The Undercroft",
+   "Map 18",
+   "The Pale Desert"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "smoke-raccoon",
+  "name": "Smokescreen Raccoon",
+  "rarity": "uncommon",
+  "map": 14,
+  "base": 1,
+  "stats": "3/9",
+  "skills": "Smoke Bomb",
+  "fill": 82.3,
+  "ok": true,
+  "editorL1": 82.3,
+  "power": 5,
+  "forBudget": -0.9,
+  "owner": false,
+  "lists": [
+   "Map 19",
+   "Basalt Foundry",
+   "Map 21"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "snow-ermine",
+  "name": "Snow Ermine",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "2/4",
+  "skills": "Evasive, Momentum 1",
+  "fill": 82.1,
+  "ok": true,
+  "editorL1": 82.1,
+  "power": 20,
+  "forBudget": 19.5,
+  "owner": false,
+  "lists": [
+   "The Undercroft",
+   "Map 17",
+   "The Ice Hollow"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "snowshoe-hare",
+  "name": "Snowshoe Hare",
+  "rarity": "common",
+  "map": 14,
+  "base": 1,
+  "stats": "1/7",
+  "skills": "Evasive",
+  "fill": 72.9,
+  "ok": true,
+  "editorL1": 72.9,
+  "power": -15,
+  "forBudget": -6.2,
+  "owner": false,
+  "lists": [
+   "The Undercroft",
+   "Map 16",
+   "Map 17"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "sparrow-chick",
+  "name": "Sparrow Chick",
+  "rarity": "starter",
+  "map": 14,
+  "base": 0,
+  "stats": "1/3",
+  "skills": "",
+  "fill": 42.9,
+  "ok": true,
+  "editorL1": 80.1,
+  "power": -51,
+  "forBudget": -29.5,
+  "owner": false,
+  "lists": [
+   "The Aerie Vault"
+  ],
+  "action": "flag: Level 0 card (CARDPOW1-1 curve)"
+ },
+ {
+  "id": "sunbittern-strider",
+  "name": "Sunbittern Strider",
+  "rarity": "uncommon",
+  "map": 14,
+  "base": 1,
+  "stats": "3/10",
+  "skills": "Diurnal",
+  "fill": 82.2,
+  "ok": true,
+  "editorL1": 82.2,
+  "power": 28,
+  "forBudget": 22.5,
+  "owner": false,
+  "lists": [
+   "The Undercroft"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "sworn-shieldbearer",
+  "name": "Sworn Shieldbearer",
+  "rarity": "uncommon",
+  "map": 14,
+  "base": 1,
+  "stats": "3/10",
+  "skills": "Loyal",
+  "fill": 82,
+  "ok": true,
+  "editorL1": 82,
+  "power": 14,
+  "forBudget": 4.8,
+  "owner": false,
+  "lists": [
+   "Map 15",
+   "Map 16"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "whip-spider",
+  "name": "Whip Spider",
+  "rarity": "uncommon",
+  "map": 14,
+  "base": 1,
+  "stats": "3/7",
+  "skills": "Keen Sense, Bleed 1",
+  "fill": 80.4,
+  "ok": true,
+  "editorL1": 80.4,
+  "power": 7,
+  "forBudget": 4.8,
+  "owner": false,
+  "lists": [
+   "The Glimmer Depths",
+   "The Undercroft"
+  ],
+  "action": "leave: under budget, power near its band"
+ },
+ {
+  "id": "talon-archer",
+  "name": "Talon Archer",
+  "rarity": "veryrare",
+  "map": 15,
+  "base": 1,
+  "stats": "2/6",
+  "skills": "Flying, Arrow 2, Diurnal",
+  "fill": 84.1,
+  "ok": true,
+  "editorL1": 84.1,
+  "power": 35,
+  "forBudget": 31.1,
+  "owner": false,
+  "lists": [
+   "The Undercroft"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "woodland-caribou",
+  "name": "Woodland Caribou",
+  "rarity": "uncommon",
+  "map": 16,
+  "base": 1,
+  "stats": "3/8",
+  "skills": "Sturdy",
+  "fill": 80,
+  "ok": true,
+  "editorL1": 80,
+  "power": 11,
+  "forBudget": 11.6,
+  "owner": false,
+  "lists": [
+   "The Undercroft",
+   "Map 16",
+   "Map 17"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "dust-devil-kestrel",
+  "name": "Dust-devil Kestrel",
+  "rarity": "veryrare",
+  "map": 18,
+  "base": 1,
+  "stats": "5/10",
+  "skills": "Tornado 1",
+  "fill": 81.9,
+  "ok": true,
+  "editorL1": 81.9,
+  "power": 32,
+  "forBudget": 22.4,
+  "owner": false,
+  "lists": [
+   "The Undercroft",
+   "The Pale Desert"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "kinkajou-lurker",
+  "name": "Kinkajou Lurker",
+  "rarity": "uncommon",
+  "map": 18,
+  "base": 1,
+  "stats": "4/6",
+  "skills": "Nocturnal",
+  "fill": 76.7,
+  "ok": true,
+  "editorL1": 76.7,
+  "power": 18,
+  "forBudget": 18.9,
+  "owner": false,
+  "lists": [
+   "The Canopy"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "ash-cloud-condor",
+  "name": "Ash Cloud Condor",
+  "rarity": "rare",
+  "map": 20,
+  "base": 1,
+  "stats": "3/4",
+  "skills": "Flying, On Spawn: stun",
+  "fill": 64.8,
+  "ok": true,
+  "editorL1": 64.8,
+  "power": 19,
+  "forBudget": 13.5,
+  "owner": false,
+  "lists": [
+   "Tutorial",
+   "Map 20",
+   "Map 22"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "magma-salamander",
+  "name": "Magma Salamander",
+  "rarity": "veryrare",
+  "map": 20,
+  "base": 1,
+  "stats": "3/11",
+  "skills": "Fire Bolt 1",
+  "fill": 80.2,
+  "ok": true,
+  "editorL1": 80.2,
+  "power": 41,
+  "forBudget": 45.1,
+  "owner": false,
+  "lists": [
+   "Map 20",
+   "Eye of the Volcano",
+   "Volcano Lair"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "ossuary-lammergeier",
+  "name": "Ossuary Lammergeier",
+  "rarity": "superrare",
+  "map": 20,
+  "base": 1,
+  "stats": "3/8",
+  "skills": "Flying, Carrion 2",
+  "fill": 78.4,
+  "ok": true,
+  "editorL1": 78.4,
+  "power": 39,
+  "forBudget": 38.5,
+  "owner": false,
+  "lists": [
+   "Eye of the Volcano",
+   "Map 21"
+  ],
+  "action": "flag: under budget but strong (budget misses it)"
+ },
+ {
+  "id": "caldera-wyrm",
+  "name": "The Caldera Wyrm",
+  "rarity": "heroic",
+  "map": 20,
+  "base": 1,
+  "stats": "4/7",
+  "skills": "Armor 1, Pounce 5, On Death: damage",
+  "fill": 108,
+  "ok": false,
+  "editorL1": 108,
+  "power": -1,
+  "forBudget": -4.7,
+  "owner": true,
+  "lists": [
+   "Volcano Lair"
+  ],
+  "action": "flag: owner-set"
+ }
+]
