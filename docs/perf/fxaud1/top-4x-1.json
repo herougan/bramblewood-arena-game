@@ -1,0 +1,1558 @@
+{
+"cpu": 4.0,
+"baseNodes": 1071,
+"endNodes": 1061,
+"infiniteAnims": 20,
+"gsapChildren": 0,
+"leftovers": {
+"__idle0": {
+"acc-long": 1
+},
+"penance": {
+"sg": 1,
+"SMALL": 1,
+"emoji.tw-emoji": 1
+},
+"statusFx|esprit": {
+"sg": 1,
+"emoji.tw-emoji": 1
+},
+"smokeBomb": {
+"sg": 1,
+"emoji.tw-emoji": 1
+},
+"mindControl": {
+"fxd-st.fxd-st-mind": 1
+},
+"pierceHQ": {
+"sg": 1,
+"SMALL": 1,
+"emoji.tw-emoji": 2
+},
+"wind": {
+"phase-pill.bf-pill": 2,
+"ab-wing": 1,
+"emoji.tw-emoji": 1
+},
+"equipBreak": {
+"sg": 1,
+"emoji.tw-emoji": 1
+},
+"parasiteDrain": {
+"sg": 1,
+"eq2-marks": 1,
+"emoji.tw-emoji": 1
+},
+"rally": {
+"tip-line": 1,
+"emoji.tw-emoji": 4,
+"weather-leaf": 3
+},
+"dynamite": {
+"weather-leaf": 1,
+"emoji.tw-emoji": 2,
+"energy-ico": 1
+}
+},
+"pageerrors": [],
+"events": {
+"__idle0": {
+"sync": 39.9,
+"err": null,
+"snd": [],
+"osc": 5,
+"src": 4,
+"added": 10,
+"still": 5,
+"attr": 561,
+"peakAn": 1,
+"peakGs": 0,
+"maxGap": 0,
+"lt": [
+52
+],
+"frames": 0,
+"jserr": [],
+"cls": [
+"acc-long",
+"fxf.fxf-ringhost",
+"fxf-ring",
+"fxf.fxf-gh",
+"fxf-label.is-gold",
+"tip-line"
+],
+"from": "synth",
+"task": 253.5,
+"script": 107.1,
+"layout": 17.5,
+"style": 58.9
+},
+"__idle1": {
+"sync": 0.4,
+"err": null,
+"snd": [],
+"osc": 0,
+"src": 0,
+"added": 2,
+"still": 2,
+"attr": 0,
+"peakAn": 0,
+"peakGs": 0,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"energy-ico",
+"emoji.tw-emoji"
+],
+"from": "synth",
+"task": 41.2,
+"script": 30.8,
+"layout": 0.0,
+"style": 0.0
+},
+"__idle2": {
+"sync": 0.2,
+"err": null,
+"snd": [],
+"osc": 13,
+"src": 4,
+"added": 2,
+"still": 2,
+"attr": 0,
+"peakAn": 0,
+"peakGs": 0,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"energy-ico",
+"emoji.tw-emoji"
+],
+"from": "synth",
+"task": 42.3,
+"script": 33.6,
+"layout": 0.0,
+"style": 0.0
+},
+"__idle3": {
+"sync": 0.4,
+"err": null,
+"snd": [],
+"osc": 0,
+"src": 0,
+"added": 10,
+"still": 10,
+"attr": 0,
+"peakAn": 8,
+"peakGs": 0,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"energy-ico",
+"emoji.tw-emoji",
+"bf-bolt",
+"bf-bolt-hit",
+"bolt-lit"
+],
+"from": "synth",
+"task": 61.1,
+"script": 24.4,
+"layout": 7.4,
+"style": 20.0
+},
+"__idle4": {
+"sync": 1.5,
+"err": null,
+"snd": [],
+"osc": 13,
+"src": 4,
+"added": 2,
+"still": 2,
+"attr": 1,
+"peakAn": 0,
+"peakGs": 0,
+"maxGap": 538,
+"lt": [
+82
+],
+"frames": 1,
+"jserr": [],
+"cls": [
+"energy-ico",
+"emoji.tw-emoji"
+],
+"from": "synth",
+"task": 158.5,
+"script": 41.5,
+"layout": 10.7,
+"style": 81.8
+},
+"__idle5": {
+"sync": 1.9,
+"err": null,
+"snd": [],
+"osc": 9,
+"src": 4,
+"added": 2,
+"still": 2,
+"attr": 0,
+"peakAn": 0,
+"peakGs": 0,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"energy-ico",
+"emoji.tw-emoji"
+],
+"from": "synth",
+"task": 76.8,
+"script": 53.9,
+"layout": 0.0,
+"style": 0.0
+},
+"__idle6": {
+"sync": 2.5,
+"err": null,
+"snd": [],
+"osc": 0,
+"src": 0,
+"added": 2,
+"still": 2,
+"attr": 0,
+"peakAn": 0,
+"peakGs": 0,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"energy-ico",
+"emoji.tw-emoji"
+],
+"from": "synth",
+"task": 113.1,
+"script": 68.7,
+"layout": 0.0,
+"style": 0.0
+},
+"__idle7": {
+"sync": 2,
+"err": null,
+"snd": [],
+"osc": 9,
+"src": 4,
+"added": 2,
+"still": 2,
+"attr": 0,
+"peakAn": 0,
+"peakGs": 0,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"energy-ico",
+"emoji.tw-emoji"
+],
+"from": "synth",
+"task": 271.7,
+"script": 49.9,
+"layout": 0.0,
+"style": 0.0
+},
+"powder|paralysis": {
+"sync": 8.2,
+"err": null,
+"snd": [
+"sporePuff"
+],
+"osc": 0,
+"src": 5,
+"added": 21,
+"still": 7,
+"attr": 1084,
+"peakAn": 2,
+"peakGs": 22,
+"maxGap": 82,
+"lt": [
+57
+],
+"frames": 1,
+"jserr": [],
+"cls": [
+"fxh.fxh-spore",
+"energy-ico",
+"emoji.tw-emoji",
+"fxh.fxh-cloud",
+"fxh.fxh-dot",
+"weather-leaf"
+],
+"from": "sample",
+"task": 266.6,
+"script": 181.3,
+"layout": 13.1,
+"style": 22.3
+},
+"namedBuff": {
+"sync": 122.1,
+"err": null,
+"snd": [
+"buffUp"
+],
+"osc": 0,
+"src": 2,
+"added": 15,
+"still": 8,
+"attr": 380,
+"peakAn": 4,
+"peakGs": 24,
+"maxGap": 0,
+"lt": [
+127
+],
+"frames": 0,
+"jserr": [],
+"cls": [
+"sfx.sfx-ring",
+"sfx.sfx-chev",
+"sg",
+"dmg-float.gold",
+"emoji.tw-emoji",
+"energy-ico"
+],
+"from": "sample",
+"task": 300.2,
+"script": 87.0,
+"layout": 72.7,
+"style": 85.2
+},
+"hitHQ": {
+"sync": 5.9,
+"err": null,
+"snd": [
+"at",
+"hitAt"
+],
+"osc": 11,
+"src": 10,
+"added": 16,
+"still": 16,
+"attr": 153,
+"peakAn": 11,
+"peakGs": 15,
+"maxGap": 0,
+"lt": [
+140
+],
+"frames": 0,
+"jserr": [],
+"cls": [
+"speech-bubble.is-emote",
+"fx-burst.hit-burst",
+"pl2-hq-flash",
+"pl2-chip",
+"hq-float-anchor",
+"dmg-float.hq-big"
+],
+"from": "sample",
+"task": 534.5,
+"script": 134.9,
+"layout": 23.7,
+"style": 217.8
+},
+"statusFx|rend": {
+"sync": 10.8,
+"err": null,
+"snd": [
+"exposeTone"
+],
+"osc": 0,
+"src": 2,
+"added": 8,
+"still": 8,
+"attr": 75,
+"peakAn": 0,
+"peakGs": 0,
+"maxGap": 755,
+"lt": [
+50
+],
+"frames": 1,
+"jserr": [],
+"cls": [
+"dmg-float.debuff",
+"sg",
+"emoji.tw-emoji",
+"energy-ico",
+"tip-line"
+],
+"from": "sample",
+"task": 133.8,
+"script": 25.5,
+"layout": 6.6,
+"style": 46.6
+},
+"statusFx|enfeeble": {
+"sync": 2.4,
+"err": null,
+"snd": [
+"exposeTone"
+],
+"osc": 13,
+"src": 6,
+"added": 14,
+"still": 14,
+"attr": 32,
+"peakAn": 5,
+"peakGs": 0,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"dmg-float.debuff",
+"sg",
+"emoji.tw-emoji",
+"energy-ico",
+"bf-bolt",
+"bf-bolt-hit"
+],
+"from": "sample",
+"task": 75.3,
+"script": 38.7,
+"layout": 5.4,
+"style": 21.5
+},
+"statusFx|weaken": {
+"sync": 82.2,
+"err": null,
+"snd": [
+"corrodeTone"
+],
+"osc": 11,
+"src": 7,
+"added": 11,
+"still": 7,
+"attr": 104,
+"peakAn": 3,
+"peakGs": 5,
+"maxGap": 0,
+"lt": [
+86
+],
+"frames": 0,
+"jserr": [],
+"cls": [
+"dmg-float.debuff",
+"sfx.sfx-w2-glyph",
+"sg",
+"emoji.tw-emoji",
+"energy-ico"
+],
+"from": "sample",
+"task": 213.6,
+"script": 62.7,
+"layout": 38.6,
+"style": 51.3
+},
+"statusFx|grant": {
+"sync": 10.6,
+"err": null,
+"snd": [
+"rallyTone"
+],
+"osc": 0,
+"src": 3,
+"added": 4,
+"still": 4,
+"attr": 5,
+"peakAn": 1,
+"peakGs": 0,
+"maxGap": 453,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"dmg-float.buff",
+"emoji.tw-emoji",
+"energy-ico"
+],
+"from": "sample",
+"task": 76.5,
+"script": 23.3,
+"layout": 0.5,
+"style": 20.4
+},
+"death": {
+"sync": 28.9,
+"err": null,
+"snd": [
+"at",
+"death",
+"clang",
+"knockOut"
+],
+"osc": 9,
+"src": 10,
+"added": 32,
+"still": 18,
+"attr": 862,
+"peakAn": 10,
+"peakGs": 25,
+"maxGap": 680,
+"lt": [
+63,
+64
+],
+"frames": 1,
+"jserr": [],
+"cls": [
+"ufx-guard-shards",
+"I",
+"B",
+"death-skull",
+"emoji.tw-emoji",
+"leaf-puff"
+],
+"from": "sample",
+"task": 281.9,
+"script": 86.3,
+"layout": 55.6,
+"style": 90.0
+},
+"collapseIn": {
+"sync": 0.8,
+"err": null,
+"snd": [
+"shift"
+],
+"osc": 11,
+"src": 6,
+"added": 2,
+"still": 2,
+"attr": 741,
+"peakAn": 0,
+"peakGs": 0,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"energy-ico",
+"emoji.tw-emoji"
+],
+"from": "sample",
+"task": 74.8,
+"script": 54.2,
+"layout": 1.6,
+"style": 10.4
+},
+"poisonTick": {
+"sync": 25.2,
+"err": null,
+"snd": [
+"bubble"
+],
+"osc": 0,
+"src": 3,
+"added": 38,
+"still": 33,
+"attr": 1568,
+"peakAn": 10,
+"peakGs": 75,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"sfx.sfx-puff",
+"sfx.sfx-bubble",
+"poison-bubble",
+"dmg-float.poison-tick",
+"sg",
+"emoji.tw-emoji"
+],
+"from": "sample",
+"task": 260.3,
+"script": 96.6,
+"layout": 37.8,
+"style": 87.1
+},
+"statusFx|shock": {
+"sync": 7.9,
+"err": null,
+"snd": [
+"shockTone"
+],
+"osc": 7,
+"src": 8,
+"added": 9,
+"still": 8,
+"attr": 390,
+"peakAn": 5,
+"peakGs": 2,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"speech-bubble.is-emote",
+"shock-arcs",
+"dmg-float.debuff",
+"sg",
+"emoji.tw-emoji",
+"energy-ico"
+],
+"from": "sample",
+"task": 152.2,
+"script": 75.4,
+"layout": 13.9,
+"style": 48.1
+},
+"evaded": {
+"sync": 0.8,
+"err": null,
+"snd": [
+"dodge"
+],
+"osc": 0,
+"src": 2,
+"added": 16,
+"still": 10,
+"attr": 631,
+"peakAn": 0,
+"peakGs": 21,
+"maxGap": 386,
+"lt": [],
+"frames": 2,
+"jserr": [],
+"cls": [
+"energy-ico",
+"emoji.tw-emoji",
+"fxa.fxa-p",
+"miss-float.miss-flying",
+"DIV",
+"sfx.sfx-feather"
+],
+"from": "sample",
+"task": 691.5,
+"script": 212.0,
+"layout": 30.4,
+"style": 369.0
+},
+"statusFx|coffee": {
+"sync": 10.3,
+"err": null,
+"snd": [],
+"osc": 13,
+"src": 4,
+"added": 5,
+"still": 4,
+"attr": 536,
+"peakAn": 3,
+"peakGs": 6,
+"maxGap": 644,
+"lt": [
+82,
+123,
+113
+],
+"frames": 2,
+"jserr": [],
+"cls": [
+"sfx.sfx-clock",
+"dmg-float.quick",
+"emoji.tw-emoji",
+"energy-ico"
+],
+"from": "sample",
+"task": 664.1,
+"script": 202.4,
+"layout": 59.8,
+"style": 235.0
+},
+"earthquake": {
+"sync": 56.6,
+"err": null,
+"snd": [
+"earthquakeTone"
+],
+"osc": 3,
+"src": 7,
+"added": 142,
+"still": 57,
+"attr": 703,
+"peakAn": 2,
+"peakGs": 44,
+"maxGap": 437,
+"lt": [
+64,
+257,
+153,
+196,
+116,
+323,
+50,
+182
+],
+"frames": 3,
+"jserr": [],
+"cls": [
+"sfx.sfx-quake",
+"dmg-float.debuff",
+"emoji.tw-emoji",
+"q-hair",
+"edge",
+"gap"
+],
+"from": "sample",
+"task": 1414.5,
+"script": 490.9,
+"layout": 22.0,
+"style": 597.0
+},
+"explode": {
+"sync": 50.9,
+"err": null,
+"snd": [
+"boom"
+],
+"osc": 0,
+"src": 2,
+"added": 32,
+"still": 6,
+"attr": 951,
+"peakAn": 3,
+"peakGs": 61,
+"maxGap": 674,
+"lt": [
+62,
+345,
+98
+],
+"frames": 1,
+"jserr": [],
+"cls": [
+"dmg-float.debuff",
+"emoji.tw-emoji",
+"fxa.fxa-p",
+"energy-ico",
+"weather-leaf"
+],
+"from": "sample",
+"task": 942.4,
+"script": 402.8,
+"layout": 38.3,
+"style": 391.7
+},
+"devilry": {
+"sync": 74,
+"err": null,
+"snd": [
+"devilryTone"
+],
+"osc": 0,
+"src": 2,
+"added": 45,
+"still": 17,
+"attr": 1393,
+"peakAn": 3,
+"peakGs": 102,
+"maxGap": 506,
+"lt": [
+78,
+88,
+104
+],
+"frames": 3,
+"jserr": [],
+"cls": [
+"fxb.",
+"fxb-bit.fxb-dstar",
+"fxb-bit.fxb-dember",
+"fxf.fxf-burst",
+"fxf-p",
+"fxf.fxf-ringhost"
+],
+"from": "sample",
+"task": 628.2,
+"script": 170.2,
+"layout": 19.5,
+"style": 261.1
+},
+"meteor": {
+"sync": 27.2,
+"err": null,
+"snd": [
+"knockOut"
+],
+"osc": 11,
+"src": 7,
+"added": 37,
+"still": 5,
+"attr": 2306,
+"peakAn": 0,
+"peakGs": 18,
+"maxGap": 497,
+"lt": [],
+"frames": 3,
+"jserr": [],
+"cls": [
+"sfx.sfx-meteor",
+"sfx.sfx-meteor-trail",
+"sfx.sfx-wave",
+"sfx.sfx-ring",
+"sfx.sfx-crater",
+"sfx.sfx-bit"
+],
+"from": "sample",
+"task": 629.9,
+"script": 184.3,
+"layout": 46.7,
+"style": 291.2
+},
+"meteorBurn": {
+"sync": 27,
+"err": null,
+"snd": [],
+"osc": 4,
+"src": 0,
+"added": 38,
+"still": 23,
+"attr": 3131,
+"peakAn": 13,
+"peakGs": 113,
+"maxGap": 1122,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"dmg-float.heat",
+"sfx.sfx-haze",
+"sfx.sfx-flamebox",
+"sfx.sfx-bit",
+"fxa.fxa-p",
+"energy-ico"
+],
+"from": "sample",
+"task": 316.4,
+"script": 132.5,
+"layout": 4.0,
+"style": 127.6
+},
+"stone": {
+"sync": 19.9,
+"err": null,
+"snd": [
+"gold"
+],
+"osc": 7,
+"src": 10,
+"added": 31,
+"still": 4,
+"attr": 2829,
+"peakAn": 1,
+"peakGs": 77,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"fxf.fxf-burst",
+"fxf-p",
+"fxf.fxf-ringhost",
+"fxf-ring",
+"fxf-p.is-chip",
+"fxf.fxf-gh"
+],
+"from": "sample",
+"task": 205.4,
+"script": 107.1,
+"layout": 10.7,
+"style": 48.0
+},
+"bounty": {
+"sync": 90.4,
+"err": null,
+"snd": [
+"itemDrop"
+],
+"osc": 9,
+"src": 6,
+"added": 9,
+"still": 4,
+"attr": 57,
+"peakAn": 4,
+"peakGs": 4,
+"maxGap": 1173,
+"lt": [
+99,
+72
+],
+"frames": 1,
+"jserr": [],
+"cls": [
+"item-drop",
+"DIV",
+"emoji.tw-emoji",
+"energy-ico",
+"dmg-float.gold"
+],
+"from": "sample",
+"task": 321.0,
+"script": 114.5,
+"layout": 34.4,
+"style": 32.1
+},
+"fireball": {
+"sync": 16.1,
+"err": null,
+"snd": [
+"burnAway"
+],
+"osc": 8,
+"src": 2,
+"added": 49,
+"still": 10,
+"attr": 2364,
+"peakAn": 8,
+"peakGs": 45,
+"maxGap": 1143,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"sfx.sfx-fb",
+"sfx.sfx-fb-tail",
+"sfx.sfx-flash",
+"sfx.sfx-fireball",
+"sfx.sfx-ring",
+"sfx.sfx-bit"
+],
+"from": "sample",
+"task": 629.9,
+"script": 232.5,
+"layout": 19.7,
+"style": 312.8
+},
+"wave": {
+"sync": 80.2,
+"err": null,
+"snd": [
+"splash"
+],
+"osc": 5,
+"src": 9,
+"added": 23,
+"still": 12,
+"attr": 1396,
+"peakAn": 0,
+"peakGs": 24,
+"maxGap": 1047,
+"lt": [
+99,
+87,
+56
+],
+"frames": 1,
+"jserr": [],
+"cls": [
+"dmg-float.quick",
+"sfx.sfx-crest17",
+"sfx.sfx-ring",
+"sfx.sfx-foam17",
+"energy-ico",
+"emoji.tw-emoji"
+],
+"from": "sample",
+"task": 708.7,
+"script": 196.6,
+"layout": 92.1,
+"style": 330.4
+},
+"penance": {
+"sync": 0.4,
+"err": null,
+"snd": [
+"curse"
+],
+"osc": 15,
+"src": 6,
+"added": 8,
+"still": 8,
+"attr": 31,
+"peakAn": 5,
+"peakGs": 0,
+"maxGap": 322,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"energy-ico",
+"emoji.tw-emoji",
+"devil-pay-pulse",
+"DIV",
+"dmg-float",
+"sg"
+],
+"from": "sample",
+"task": 116.2,
+"script": 45.7,
+"layout": 30.7,
+"style": 17.6
+},
+"decayTick": {
+"sync": 23.1,
+"err": null,
+"snd": [
+"corrodeTone"
+],
+"osc": 0,
+"src": 3,
+"added": 33,
+"still": 9,
+"attr": 1820,
+"peakAn": 7,
+"peakGs": 35,
+"maxGap": 908,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"fxb.fxb-round",
+"fxb-bit.fxb-mould",
+"fxb-bit.fxb-spore",
+"fxb-bit.fxb-sword",
+"fxb-bit.fxb-bit",
+"dmg-float.bleed-tick"
+],
+"from": "sample",
+"task": 167.2,
+"script": 59.9,
+"layout": 17.6,
+"style": 41.6
+},
+"mimic": {
+"sync": 3.8,
+"err": null,
+"snd": [
+"reflectTone"
+],
+"osc": 7,
+"src": 7,
+"added": 12,
+"still": 12,
+"attr": 324,
+"peakAn": 1,
+"peakGs": 39,
+"maxGap": 662,
+"lt": [
+71,
+50
+],
+"frames": 1,
+"jserr": [],
+"cls": [
+"dmg-float.quick",
+"emoji.tw-emoji",
+"fxc-ov.",
+"fxc.fxc-p",
+"card-tile.fr-unit",
+"energy-ico"
+],
+"from": "sample",
+"task": 373.7,
+"script": 110.0,
+"layout": 70.2,
+"style": 134.1
+},
+"statusFx|esprit": {
+"sync": 24.7,
+"err": null,
+"snd": [
+"espritTone"
+],
+"osc": 4,
+"src": 3,
+"added": 14,
+"still": 7,
+"attr": 486,
+"peakAn": 4,
+"peakGs": 26,
+"maxGap": 816,
+"lt": [
+68
+],
+"frames": 2,
+"jserr": [],
+"cls": [
+"sfx.sfx-ring",
+"sfx.sfx-chev",
+"sg",
+"dmg-float.gold",
+"emoji.tw-emoji",
+"energy-ico"
+],
+"from": "sample",
+"task": 275.6,
+"script": 76.4,
+"layout": 48.2,
+"style": 68.4
+},
+"spawn|twin": {
+"sync": 1.1,
+"err": null,
+"snd": [
+"buzz",
+"reflectTone"
+],
+"osc": 0,
+"src": 6,
+"added": 12,
+"still": 12,
+"attr": 505,
+"peakAn": 1,
+"peakGs": 39,
+"maxGap": 412,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"fxc-ov.",
+"fxc.fxc-p",
+"card-tile.fr-unit",
+"energy-ico",
+"emoji.tw-emoji",
+"tip-line"
+],
+"from": "sample",
+"task": 228.6,
+"script": 76.3,
+"layout": 22.8,
+"style": 103.3
+},
+"smokeBomb": {
+"sync": 20.5,
+"err": null,
+"snd": [
+"boomerangWhirr"
+],
+"osc": 9,
+"src": 15,
+"added": 41,
+"still": 41,
+"attr": 2127,
+"peakAn": 1,
+"peakGs": 151,
+"maxGap": 745,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"fxc.fxc-sbomb",
+"fxc.fxc-sblob",
+"fxc.fxc-flash",
+"fxc.fxc-ring",
+"fxc.fxc-p",
+"energy-ico"
+],
+"from": "sample",
+"task": 314.4,
+"script": 138.1,
+"layout": 17.7,
+"style": 98.0
+},
+"uranium": {
+"sync": 32.6,
+"err": null,
+"snd": [
+"gold"
+],
+"osc": 0,
+"src": 6,
+"added": 39,
+"still": 6,
+"attr": 3378,
+"peakAn": 4,
+"peakGs": 82,
+"maxGap": 761,
+"lt": [
+156
+],
+"frames": 2,
+"jserr": [],
+"cls": [
+"fxf.fxf-burst",
+"fxf-p",
+"fxf.fxf-ringhost",
+"fxf-ring",
+"fxf.fxf-halohost",
+"fxf-halo"
+],
+"from": "sample",
+"task": 595.2,
+"script": 228.0,
+"layout": 16.6,
+"style": 201.0
+},
+"mindControl": {
+"sync": 42.7,
+"err": null,
+"snd": [],
+"osc": 0,
+"src": 0,
+"added": 13,
+"still": 3,
+"attr": 408,
+"peakAn": 1,
+"peakGs": 11,
+"maxGap": 311,
+"lt": [
+52,
+84,
+53,
+142,
+93,
+78,
+67
+],
+"frames": 4,
+"jserr": [],
+"cls": [
+"sfx.sfx-mind",
+"fxa.fxa-svg",
+"fxa-string",
+"fxa.fxa-ghost",
+"fxa-gi",
+"card-tile.fr-unit"
+],
+"from": "sample",
+"task": 1015.4,
+"script": 317.0,
+"layout": 73.1,
+"style": 270.9
+},
+"pierceHQ": {
+"sync": 77.3,
+"err": null,
+"snd": [
+"pierceTone"
+],
+"osc": 15,
+"src": 6,
+"added": 27,
+"still": 8,
+"attr": 514,
+"peakAn": 4,
+"peakGs": 39,
+"maxGap": 704,
+"lt": [
+92,
+186,
+85,
+75,
+243,
+61
+],
+"frames": 2,
+"jserr": [],
+"cls": [
+"sfx.sfx-lance",
+"sfx.sfx-arrow",
+"hq-float-anchor",
+"dmg-float.hq-big",
+"sg",
+"SMALL"
+],
+"from": "sample",
+"task": 1128.5,
+"script": 344.3,
+"layout": 55.6,
+"style": 446.2
+},
+"overdraw": {
+"sync": 12.2,
+"err": null,
+"snd": [
+"draw"
+],
+"osc": 0,
+"src": 1,
+"added": 6,
+"still": 4,
+"attr": 46,
+"peakAn": 0,
+"peakGs": 4,
+"maxGap": 393,
+"lt": [
+541
+],
+"frames": 1,
+"jserr": [],
+"cls": [
+"overdraw-fly.bw-back",
+"emoji.tw-emoji",
+"energy-ico",
+"overdraw-gain"
+],
+"from": "synth",
+"task": 716.2,
+"script": 567.5,
+"layout": 1.6,
+"style": 16.0
+},
+"wind": {
+"sync": 27.9,
+"err": null,
+"snd": [],
+"osc": 7,
+"src": 4,
+"added": 21,
+"still": 21,
+"attr": 1421,
+"peakAn": 0,
+"peakGs": 29,
+"maxGap": 0,
+"lt": [],
+"frames": 0,
+"jserr": [],
+"cls": [
+"fxb.fxb-sky",
+"fxb-bit.fxb-bit",
+"phase-pill.bf-pill",
+"ab-wing",
+"emoji.tw-emoji",
+"energy-ico"
+],
+"from": "synth",
+"task": 179.0,
+"script": 104.6,
+"layout": 27.8,
+"style": 26.9
+},
+"fieldTick|swampFever": {
+"sync": 33,
+"err": null,
+"snd": [
+"poisonApply"
+],
+"osc": 13,
+"src": 6,
+"added": 42,
+"still": 18,
+"attr": 2892,
+"peakAn": 4,
+"peakGs": 86,
+"maxGap": 59,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"fxb.",
+"fxb-bit.fxb-bit",
+"sfx.sfx-puff",
+"sfx.sfx-bubble",
+"dmg-float.poison",
+"sg"
+],
+"from": "synth",
+"task": 379.4,
+"script": 128.4,
+"layout": 10.9,
+"style": 186.4
+},
+"evolve": {
+"sync": 143.1,
+"err": null,
+"snd": [
+"unlockChime"
+],
+"osc": 0,
+"src": 4,
+"added": 28,
+"still": 4,
+"attr": 1515,
+"peakAn": 2,
+"peakGs": 25,
+"maxGap": 1135,
+"lt": [
+146
+],
+"frames": 1,
+"jserr": [],
+"cls": [
+"dmg-float.quick",
+"fxa.fxa-p",
+"emoji.tw-emoji",
+"energy-ico"
+],
+"from": "synth",
+"task": 271.1,
+"script": 79.1,
+"layout": 77.9,
+"style": 39.6
+},
+"equipBreak": {
+"sync": 4.6,
+"err": null,
+"snd": [
+"lockBreak"
+],
+"osc": 15,
+"src": 7,
+"added": 11,
+"still": 9,
+"attr": 5,
+"peakAn": 7,
+"peakGs": 0,
+"maxGap": 788,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"eq2-shatter",
+"dmg-float.debuff",
+"sg",
+"eq2-marks",
+"emoji.tw-emoji",
+"energy-ico"
+],
+"from": "synth",
+"task": 120.3,
+"script": 50.1,
+"layout": 10.2,
+"style": 26.0
+},
+"parasiteDrain": {
+"sync": 36.6,
+"err": null,
+"snd": [
+"gorgeGulp",
+"http"
+],
+"osc": 11,
+"src": 8,
+"added": 12,
+"still": 6,
+"attr": 260,
+"peakAn": 5,
+"peakGs": 21,
+"maxGap": 871,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"sg",
+"dmg-float",
+"eq2-marks",
+"fxh.fxh-rim",
+"fxh.fxh-drop",
+"emoji.tw-emoji"
+],
+"from": "synth",
+"task": 159.9,
+"script": 54.4,
+"layout": 7.8,
+"style": 38.4
+},
+"bloodlustLeap": {
+"sync": 40.3,
+"err": null,
+"snd": [
+"swipeTone"
+],
+"osc": 0,
+"src": 2,
+"added": 8,
+"still": 4,
+"attr": 159,
+"peakAn": 2,
+"peakGs": 8,
+"maxGap": 556,
+"lt": [],
+"frames": 2,
+"jserr": [],
+"cls": [
+"dmg-float.debuff",
+"sfx.sfx-blood-flush",
+"sfx.sfx-blood-ring",
+"emoji.tw-emoji",
+"energy-ico"
+],
+"from": "synth",
+"task": 188.4,
+"script": 54.3,
+"layout": 17.5,
+"style": 57.4
+},
+"rally": {
+"sync": 12.5,
+"err": null,
+"snd": [
+"rallyTone"
+],
+"osc": 13,
+"src": 7,
+"added": 47,
+"still": 36,
+"attr": 910,
+"peakAn": 16,
+"peakGs": 25,
+"maxGap": 420,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"sfx.sfx-banner",
+"dmg-float.gold",
+"emoji.tw-emoji",
+"sfx.sfx-chevron",
+"tip-line",
+"bf-bolt"
+],
+"from": "synth",
+"task": 357.1,
+"script": 100.9,
+"layout": 76.3,
+"style": 147.1
+},
+"dynamite": {
+"sync": 25.3,
+"err": null,
+"snd": [
+"siegeTone"
+],
+"osc": 9,
+"src": 6,
+"added": 46,
+"still": 9,
+"attr": 2772,
+"peakAn": 2,
+"peakGs": 68,
+"maxGap": 742,
+"lt": [],
+"frames": 1,
+"jserr": [],
+"cls": [
+"sfx.sfx-dyn",
+"dyn-blast",
+"emoji.tw-emoji",
+"sfx.sfx-spark",
+"sfx.sfx-flash",
+"sfx.sfx-fireball"
+],
+"from": "synth",
+"task": 368.6,
+"script": 128.4,
+"layout": 32.1,
+"style": 162.6
+}
+}
+}

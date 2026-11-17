@@ -1,0 +1,426 @@
+{
+ "marks": {
+  "vuln": [
+   "weak",
+   "shocked",
+   "markShocked"
+  ],
+  "feeble": [
+   "reduced",
+   "armor",
+   "markArmor"
+  ],
+  "weak": [
+   "weak",
+   "markWeak"
+  ],
+  "shocked": [
+   "shocked",
+   "markShocked"
+  ]
+ },
+ "baseline": {
+  "hit": {
+   "audio": 4,
+   "cues": [
+    "at",
+    "hitAt"
+   ],
+   "nodes": 19,
+   "tweens": 0
+  },
+  "death": {
+   "audio": 6,
+   "cues": [
+    "at",
+    "death",
+    "clang",
+    "knockOut"
+   ],
+   "nodes": 32,
+   "tweens": 16
+  },
+  "statusFx|rend": {
+   "audio": 2,
+   "cues": [
+    "exposeTone"
+   ],
+   "nodes": 6,
+   "tweens": 0
+  },
+  "statusFx|weaken": {
+   "audio": 3,
+   "cues": [
+    "corrodeTone"
+   ],
+   "nodes": 9,
+   "tweens": 4
+  },
+  "powder|paralysis": {
+   "audio": 5,
+   "cues": [
+    "sporePuff"
+   ],
+   "nodes": 19,
+   "tweens": 27
+  },
+  "wave": {
+   "audio": 5,
+   "cues": [
+    "splash"
+   ],
+   "nodes": 26,
+   "tweens": 26
+  },
+  "statusFx|inspired": {
+   "audio": 1,
+   "cues": [
+    "rallyHorn"
+   ],
+   "nodes": 9,
+   "tweens": 12
+  },
+  "statusFx|stunOnHit": {
+   "audio": 1,
+   "cues": [
+    "stunTone"
+   ],
+   "nodes": 10,
+   "tweens": 10
+  },
+  "earthquake": {
+   "audio": 3,
+   "cues": [
+    "earthquakeTone"
+   ],
+   "nodes": 134,
+   "tweens": 59
+  },
+  "meteor": {
+   "audio": 3,
+   "cues": [
+    "knockOut"
+   ],
+   "nodes": 39,
+   "tweens": 31
+  },
+  "namedBuff": {
+   "audio": 2,
+   "cues": [
+    "buffUp"
+   ],
+   "nodes": 15,
+   "tweens": 20
+  },
+  "fireball": {
+   "audio": 2,
+   "cues": [
+    "burnAway"
+   ],
+   "nodes": 47,
+   "tweens": 47
+  }
+ },
+ "idle_audio": 0,
+ "hidden": {
+  "hit": {
+   "audio": 0,
+   "cues": [
+    "at",
+    "hitAt"
+   ],
+   "nodes": 9,
+   "tweens": 7
+  },
+  "death": {
+   "audio": 0,
+   "cues": [
+    "at",
+    "death",
+    "knockOut"
+   ],
+   "nodes": 18,
+   "tweens": 27
+  },
+  "statusFx|rend": {
+   "audio": 0,
+   "cues": [
+    "exposeTone"
+   ],
+   "nodes": 4,
+   "tweens": 0
+  },
+  "statusFx|weaken": {
+   "audio": 0,
+   "cues": [
+    "corrodeTone"
+   ],
+   "nodes": 5,
+   "tweens": 0
+  },
+  "powder|paralysis": {
+   "audio": 0,
+   "cues": [],
+   "nodes": 0,
+   "tweens": 0
+  },
+  "wave": {
+   "audio": 0,
+   "cues": [
+    "splash"
+   ],
+   "nodes": 1,
+   "tweens": 0
+  },
+  "statusFx|inspired": {
+   "audio": 0,
+   "cues": [
+    "rallyHorn"
+   ],
+   "nodes": 4,
+   "tweens": 1
+  },
+  "statusFx|stunOnHit": {
+   "audio": 0,
+   "cues": [
+    "stunTone"
+   ],
+   "nodes": 4,
+   "tweens": 5
+  },
+  "earthquake": {
+   "audio": 0,
+   "cues": [
+    "earthquakeTone"
+   ],
+   "nodes": 2,
+   "tweens": 0
+  },
+  "meteor": {
+   "audio": 0,
+   "cues": [
+    "knockOut"
+   ],
+   "nodes": 35,
+   "tweens": 43
+  },
+  "namedBuff": {
+   "audio": 0,
+   "cues": [
+    "buffUp"
+   ],
+   "nodes": 6,
+   "tweens": 0
+  },
+  "fireball": {
+   "audio": 0,
+   "cues": [
+    "burnAway"
+   ],
+   "nodes": 44,
+   "tweens": 47
+  }
+ },
+ "muted_api": "function",
+ "muted": {
+  "hit": {
+   "audio": 0,
+   "cues": [
+    "at",
+    "hitAt"
+   ],
+   "nodes": 27,
+   "tweens": 24
+  },
+  "death": {
+   "audio": 0,
+   "cues": [
+    "at",
+    "death",
+    "clang",
+    "knockOut"
+   ],
+   "nodes": 19,
+   "tweens": 29
+  },
+  "statusFx|rend": {
+   "audio": 0,
+   "cues": [
+    "exposeTone"
+   ],
+   "nodes": 4,
+   "tweens": 0
+  },
+  "statusFx|weaken": {
+   "audio": 0,
+   "cues": [
+    "corrodeTone"
+   ],
+   "nodes": 22,
+   "tweens": 30
+  },
+  "powder|paralysis": {
+   "audio": 0,
+   "cues": [
+    "sporePuff"
+   ],
+   "nodes": 19,
+   "tweens": 19
+  },
+  "wave": {
+   "audio": 0,
+   "cues": [
+    "splash"
+   ],
+   "nodes": 24,
+   "tweens": 23
+  },
+  "statusFx|inspired": {
+   "audio": 0,
+   "cues": [
+    "rallyHorn"
+   ],
+   "nodes": 11,
+   "tweens": 12
+  },
+  "statusFx|stunOnHit": {
+   "audio": 0,
+   "cues": [
+    "stunTone"
+   ],
+   "nodes": 10,
+   "tweens": 10
+  },
+  "earthquake": {
+   "audio": 0,
+   "cues": [
+    "earthquakeTone"
+   ],
+   "nodes": 138,
+   "tweens": 56
+  },
+  "meteor": {
+   "audio": 0,
+   "cues": [
+    "knockOut"
+   ],
+   "nodes": 37,
+   "tweens": 33
+  },
+  "namedBuff": {
+   "audio": 0,
+   "cues": [
+    "buffUp"
+   ],
+   "nodes": 15,
+   "tweens": 22
+  },
+  "fireball": {
+   "audio": 0,
+   "cues": [
+    "burnAway"
+   ],
+   "nodes": 48,
+   "tweens": 46
+  }
+ },
+ "fx_none": {
+  "hit": {
+   "audio": 4,
+   "cues": [
+    "at",
+    "hitAt"
+   ],
+   "nodes": 11,
+   "tweens": 0
+  },
+  "death": {
+   "audio": 4,
+   "cues": [
+    "at",
+    "death",
+    "knockOut"
+   ],
+   "nodes": 22,
+   "tweens": 28
+  },
+  "statusFx|rend": {
+   "audio": 2,
+   "cues": [
+    "exposeTone"
+   ],
+   "nodes": 6,
+   "tweens": 0
+  },
+  "statusFx|weaken": {
+   "audio": 3,
+   "cues": [
+    "corrodeTone"
+   ],
+   "nodes": 7,
+   "tweens": 0
+  },
+  "powder|paralysis": {
+   "audio": 0,
+   "cues": [],
+   "nodes": 2,
+   "tweens": 0
+  },
+  "wave": {
+   "audio": 5,
+   "cues": [
+    "splash"
+   ],
+   "nodes": 3,
+   "tweens": 0
+  },
+  "statusFx|inspired": {
+   "audio": 1,
+   "cues": [
+    "rallyHorn"
+   ],
+   "nodes": 8,
+   "tweens": 1
+  },
+  "statusFx|stunOnHit": {
+   "audio": 1,
+   "cues": [
+    "stunTone"
+   ],
+   "nodes": 6,
+   "tweens": 5
+  },
+  "earthquake": {
+   "audio": 3,
+   "cues": [
+    "earthquakeTone"
+   ],
+   "nodes": 4,
+   "tweens": 0
+  },
+  "meteor": {
+   "audio": 3,
+   "cues": [
+    "knockOut"
+   ],
+   "nodes": 37,
+   "tweens": 43
+  },
+  "namedBuff": {
+   "audio": 2,
+   "cues": [
+    "buffUp"
+   ],
+   "nodes": 8,
+   "tweens": 0
+  },
+  "fireball": {
+   "audio": 2,
+   "cues": [
+    "burnAway"
+   ],
+   "nodes": 43,
+   "tweens": 40
+  }
+ }
+}

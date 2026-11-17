@@ -1,0 +1,2825 @@
+{
+ "samples": {
+  "play": {
+   "ev": {
+    "type": "play",
+    "side": "A",
+    "defId": "x-para",
+    "uid": 1,
+    "boardSide": "center"
+   },
+   "src": "x-para"
+  },
+  "ready": {
+   "ev": {
+    "type": "ready",
+    "side": "A",
+    "defId": "x-para",
+    "uid": 1
+   },
+   "src": "x-para"
+  },
+  "roundStart": {
+   "ev": {
+    "type": "roundStart",
+    "round": 1
+   },
+   "src": "x-para"
+  },
+  "skipTurn": {
+   "ev": {
+    "type": "skipTurn",
+    "reason": "zeroAttack",
+    "side": "A",
+    "defId": "x-para",
+    "uid": 1
+   },
+   "src": "x-para"
+  },
+  "hit": {
+   "ev": {
+    "type": "hit",
+    "side": "B",
+    "attDefId": "x-dummy",
+    "attUid": 4,
+    "targetSide": "A",
+    "targetDefId": "x-dummy",
+    "targetUid": 2,
+    "dmg": 1,
+    "dmgType": "physical",
+    "armorBlocked": false,
+    "armorSoaked": 0,
+    "guardianRedirect": false,
+    "liveAtk": 1,
+    "crit": false,
+    "exposedCrit": false,
+    "pierced": false,
+    "festerBonus": 0,
+    "ruptureBonus": 0,
+    "elementalConvert": null,
+    "elementalAmount": 0,
+    "backstab": 0
+   },
+   "src": "x-para"
+  },
+  "powder|paralysis": {
+   "ev": {
+    "type": "powder",
+    "element": "paralysis",
+    "key": "paralysisPowder",
+    "side": "A",
+    "defId": "x-para",
+    "uid": 1,
+    "targetSide": "B",
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "amount": 1
+   },
+   "src": "x-para"
+  },
+  "statusFx|stunOnHit": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "stunOnHit",
+    "side": "A",
+    "attDefId": "x-para",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3,
+    "amount": 1,
+    "powder": true
+   },
+   "src": "x-para"
+  },
+  "statusEnd": {
+   "ev": {
+    "type": "statusEnd",
+    "status": "stunned",
+    "side": "B",
+    "uid": 3,
+    "defId": "x-dummy"
+   },
+   "src": "x-para"
+  },
+  "triggerFired": {
+   "ev": {
+    "type": "triggerFired",
+    "side": "B",
+    "defId": "x-arm",
+    "uid": 2,
+    "hook": "onAllyPlayed",
+    "action": "buff"
+   },
+   "src": "x-para"
+  },
+  "namedBuff": {
+   "ev": {
+    "type": "namedBuff",
+    "side": "B",
+    "attDefId": "x-arm",
+    "attUid": 2,
+    "targetDefId": "x-para",
+    "targetUid": 3,
+    "amount": 0,
+    "amount2": 2
+   },
+   "src": "x-para"
+  },
+  "hitHQ": {
+   "ev": {
+    "type": "hitHQ",
+    "side": "B",
+    "attDefId": "x-dummy",
+    "attUid": 4,
+    "targetSide": "A",
+    "dmg": 1,
+    "crit": false,
+    "siege": false,
+    "bulwark": 0,
+    "festerBonus": 0,
+    "ruptureBonus": 0
+   },
+   "src": "x-para"
+  },
+  "statusFx|rend": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "rend",
+    "side": "A",
+    "attDefId": "x-rend",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3,
+    "amount": 1
+   },
+   "src": "x-rend"
+  },
+  "statusFx|vulnHit": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "vulnHit",
+    "side": "B",
+    "targetSide": "B",
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "amount": 0
+   },
+   "src": "x-rend"
+  },
+  "statusFx|enfeeble": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "enfeeble",
+    "side": "A",
+    "attDefId": "x-enf",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3,
+    "amount": 1
+   },
+   "src": "x-enf"
+  },
+  "statusFx|feebleHit": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "feebleHit",
+    "side": "B",
+    "targetSide": "B",
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "amount": 1
+   },
+   "src": "x-enf"
+  },
+  "statusFx|weaken": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "weaken",
+    "side": "B",
+    "attDefId": "x-weak",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "x-dummy",
+    "targetUid": 1,
+    "amount": 2
+   },
+   "src": "x-weak"
+  },
+  "statusFx|grant": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "grant",
+    "side": "B",
+    "attDefId": "x-grant",
+    "attUid": 3,
+    "targetSide": "B",
+    "targetDefId": "x-arm~dv1",
+    "targetUid": 2,
+    "skills": [
+     "armor"
+    ],
+    "amount": 2
+   },
+   "src": "x-grant"
+  },
+  "death": {
+   "ev": {
+    "type": "death",
+    "side": "A",
+    "defId": "abbey-goose",
+    "uid": 1
+   },
+   "src": "abbey-goose"
+  },
+  "collapseIn": {
+   "ev": {
+    "type": "collapseIn",
+    "side": "A",
+    "defId": "adder",
+    "uid": 2,
+    "fromSide": "left"
+   },
+   "src": "abbey-goose"
+  },
+  "bolt|poison": {
+   "ev": {
+    "type": "bolt",
+    "element": "poison",
+    "key": "poisonBolt",
+    "side": "A",
+    "defId": "adder",
+    "uid": 2,
+    "targetSide": "B",
+    "targetUid": 4,
+    "targetDefId": "x-dummy",
+    "amount": 1
+   },
+   "src": "abbey-goose"
+  },
+  "statusFx|poison": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "poison",
+    "side": "A",
+    "attDefId": "adder",
+    "attUid": 2,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 4,
+    "amount": 1
+   },
+   "src": "abbey-goose"
+  },
+  "poisonTick": {
+   "ev": {
+    "type": "poisonTick",
+    "side": "B",
+    "defId": "x-dummy",
+    "uid": 4,
+    "dmg": 1,
+    "decay": true
+   },
+   "src": "abbey-goose"
+  },
+  "waitTick": {
+   "ev": {
+    "type": "waitTick",
+    "side": "A",
+    "defId": "ant-hill",
+    "uid": 2,
+    "waitRemaining": 2
+   },
+   "src": "abyss-lantern-squid"
+  },
+  "spawn": {
+   "ev": {
+    "type": "spawn",
+    "side": "A",
+    "defId": "ant-scout",
+    "count": 1,
+    "cause": "triggerSpawn",
+    "uids": [
+     5
+    ],
+    "lane": "left",
+    "nearUid": 2
+   },
+   "src": "abyss-lantern-squid"
+  },
+  "statusFx|shock": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "shock",
+    "side": "A",
+    "attDefId": "abyss-lantern-squid",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3
+   },
+   "src": "abyss-lantern-squid"
+  },
+  "forkSwing|fork": {
+   "ev": {
+    "type": "forkSwing",
+    "side": "B",
+    "attUid": 3,
+    "attDefId": "alpine-avalanche",
+    "kind": "fork",
+    "swing": 1,
+    "aim": null,
+    "prong": null,
+    "lines": [
+     {
+      "off": 0,
+      "targetUid": 1,
+      "castle": false,
+      "half": false,
+      "main": true
+     },
+     {
+      "off": -1,
+      "targetUid": 2,
+      "castle": false,
+      "half": false,
+      "main": false
+     }
+    ]
+   },
+   "src": "abyss-lantern-squid"
+  },
+  "forkSwing|trident": {
+   "ev": {
+    "type": "forkSwing",
+    "side": "B",
+    "attUid": 3,
+    "attDefId": "anhinga-spearbird",
+    "kind": "trident",
+    "swing": 1,
+    "aim": null,
+    "prong": null,
+    "lines": [
+     {
+      "off": -1,
+      "targetUid": 2,
+      "castle": false,
+      "half": true,
+      "main": false
+     },
+     {
+      "off": 0,
+      "targetUid": 1,
+      "castle": false,
+      "half": false,
+      "main": true
+     },
+     {
+      "off": 1,
+      "targetUid": null,
+      "castle": false,
+      "half": true,
+      "main": false
+     }
+    ]
+   },
+   "src": "acacia-giraffe"
+  },
+  "breachHQ": {
+   "ev": {
+    "type": "breachHQ",
+    "side": "A",
+    "attDefId": "badger-sapper",
+    "attUid": 2,
+    "targetSide": "B",
+    "dmg": 1,
+    "n": 1
+   },
+   "src": "acorn-chipmunk"
+  },
+  "sk2|noRoom": {
+   "ev": {
+    "type": "sk2",
+    "side": "B",
+    "uid": 3,
+    "defId": "anvilwhisker-otter",
+    "price": [
+     {
+      "res": "stone",
+      "n": 1
+     }
+    ],
+    "action": "forgeWeapon",
+    "kind": "noRoom"
+   },
+   "src": "acorn-chipmunk"
+  },
+  "sk2|cantPay": {
+   "ev": {
+    "type": "sk2",
+    "side": "B",
+    "uid": 3,
+    "defId": "anvilwhisker-otter",
+    "price": [
+     {
+      "res": "stone",
+      "n": 1
+     }
+    ],
+    "action": "forgeWeapon",
+    "kind": "cantPay"
+   },
+   "src": "acorn-chipmunk"
+  },
+  "arrow": {
+   "ev": {
+    "type": "arrow",
+    "fire": false,
+    "side": "A",
+    "defId": "acorn-pelter-squirrel",
+    "uid": 1,
+    "targetSide": "B",
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "amount": 1
+   },
+   "src": "acorn-pelter-squirrel"
+  },
+  "statusFx|bulldoze": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "bulldoze",
+    "side": "A",
+    "attDefId": "bison-bulldozer",
+    "attUid": 2,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 4,
+    "amount": 1
+   },
+   "src": "adder"
+  },
+  "evaded": {
+   "ev": {
+    "type": "evaded",
+    "reason": "flying",
+    "side": "A",
+    "attDefId": "adder",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "ashwing-ptarmigan",
+    "targetUid": 3
+   },
+   "src": "adder"
+  },
+  "ambush": {
+   "ev": {
+    "type": "ambush",
+    "side": "A",
+    "uid": 1,
+    "defId": "adder-ambusher",
+    "targetSide": "B",
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "amount": 3
+   },
+   "src": "adder-ambusher"
+  },
+  "heal": {
+   "ev": {
+    "type": "heal",
+    "side": "A",
+    "attDefId": "bog-behemoth",
+    "attUid": 2,
+    "targetDefId": "bog-behemoth",
+    "targetUid": 2,
+    "amount": 1
+   },
+   "src": "adder-ambusher"
+  },
+  "statusFx|shellUp": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "shellUp",
+    "side": "A",
+    "attUid": 2,
+    "attDefId": "box-turtle",
+    "targetUid": 2,
+    "targetDefId": "box-turtle",
+    "amount": 3,
+    "armorOnly": true
+   },
+   "src": "alley-cat"
+  },
+  "statusFx|shellDown": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "shellDown",
+    "side": "A",
+    "attUid": 2,
+    "attDefId": "box-turtle",
+    "targetUid": 2,
+    "targetDefId": "box-turtle"
+   },
+   "src": "alley-cat"
+  },
+  "bleedTick": {
+   "ev": {
+    "type": "bleedTick",
+    "side": "B",
+    "defId": "x-dummy",
+    "uid": 3,
+    "dmg": 2,
+    "cause": "attack",
+    "decay": false
+   },
+   "src": "alley-cat"
+  },
+  "bleedFade": {
+   "ev": {
+    "type": "bleedFade",
+    "side": "B",
+    "defId": "x-dummy",
+    "uid": 3,
+    "left": 1,
+    "atEnd": true
+   },
+   "src": "alley-cat"
+  },
+  "thorns": {
+   "ev": {
+    "type": "thorns",
+    "side": "B",
+    "fromDefId": "barrel-cactus",
+    "fromUid": 3,
+    "targetSide": "A",
+    "targetDefId": "alley-cat",
+    "targetUid": 1,
+    "dmg": 2
+   },
+   "src": "alley-cat"
+  },
+  "sweepWhiff": {
+   "ev": {
+    "type": "sweepWhiff",
+    "side": "A",
+    "attDefId": "alpha-howler",
+    "attUid": 1,
+    "targetSide": "B",
+    "nearUid": 3,
+    "dir": "right"
+   },
+   "src": "alpha-howler"
+  },
+  "statusFx|octolash": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "octolash",
+    "side": "B",
+    "attUid": 3,
+    "attDefId": "blue-ringed-octopus",
+    "targetUid": 3,
+    "targetDefId": "blue-ringed-octopus",
+    "amount": 2
+   },
+   "src": "alpine-marmot"
+  },
+  "statusFx|phaseGrow": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "phaseGrow",
+    "side": "A",
+    "attUid": 2,
+    "attDefId": "crimson-wing-duelist-cadet",
+    "targetUid": 2,
+    "targetDefId": "crimson-wing-duelist-cadet",
+    "amount": 1,
+    "hp": 0,
+    "phase": "day"
+   },
+   "src": "alpine-swift"
+  },
+  "statusFx|unitShield": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "unitShield",
+    "side": "A",
+    "attDefId": "amber-cicada",
+    "attUid": 1,
+    "targetSide": "A",
+    "targetDefId": "deep-cave-troll",
+    "targetUid": 2,
+    "amount": 2,
+    "total": 2
+   },
+   "src": "amber-cicada"
+  },
+  "skillSpent": {
+   "ev": {
+    "type": "skillSpent",
+    "side": "A",
+    "uid": 1,
+    "defId": "amber-cicada~dv1",
+    "keys": [
+     "triggers:onReady"
+    ]
+   },
+   "src": "amber-cicada"
+  },
+  "shieldSoak": {
+   "ev": {
+    "type": "shieldSoak",
+    "uid": 2,
+    "defId": "deep-cave-troll",
+    "soaked": 1,
+    "left": 1
+   },
+   "src": "amber-cicada"
+  },
+  "powder|sleep": {
+   "ev": {
+    "type": "powder",
+    "element": "sleep",
+    "key": "sleepPowder",
+    "side": "A",
+    "defId": "amber-cicada~dv1",
+    "uid": 1,
+    "targetSide": "B",
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "amount": 1
+   },
+   "src": "amber-cicada"
+  },
+  "statusFx|sleep": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "sleep",
+    "side": "A",
+    "attDefId": "amber-cicada~dv1",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3,
+    "amount": 1,
+    "left": 1,
+    "powder": true
+   },
+   "src": "amber-cicada"
+  },
+  "statusFx|bound": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "bound",
+    "side": "A",
+    "attDefId": "anaconda-coil",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3,
+    "amount": 1,
+    "strangle": 2
+   },
+   "src": "anaconda-coil"
+  },
+  "strangleTick": {
+   "ev": {
+    "type": "strangleTick",
+    "side": "B",
+    "defId": "x-dummy",
+    "uid": 3,
+    "dmg": 2
+   },
+   "src": "anaconda-coil"
+  },
+  "statusFx|coffee": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "coffee",
+    "twice": true,
+    "side": "B",
+    "attDefId": "buzzed-chipmunk",
+    "attUid": 3,
+    "targetSide": "B",
+    "targetDefId": "buzzed-chipmunk",
+    "targetUid": 3,
+    "amount": 2
+   },
+   "src": "anaconda-coil"
+  },
+  "frenzy": {
+   "ev": {
+    "type": "frenzy",
+    "side": "B",
+    "attDefId": "buzzed-chipmunk",
+    "attUid": 3,
+    "twin": true,
+    "coffee": true
+   },
+   "src": "anaconda-coil"
+  },
+  "statusFx|coffeeCrash": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "coffeeCrash",
+    "side": "B",
+    "attDefId": "buzzed-chipmunk",
+    "attUid": 3,
+    "targetSide": "B",
+    "targetDefId": "buzzed-chipmunk",
+    "targetUid": 3
+   },
+   "src": "anaconda-coil"
+  },
+  "spawn|bulwark": {
+   "ev": {
+    "type": "spawn",
+    "side": "A",
+    "defId": "bulwark-wall",
+    "count": 1,
+    "cause": "triggerSpawn",
+    "kind": "bulwark",
+    "uids": [
+     2
+    ],
+    "lane": "left",
+    "nearUid": 1
+   },
+   "src": "ancient-sloth-titan"
+  },
+  "statusFx|bulwark": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "bulwark",
+    "side": "A",
+    "attUid": 1,
+    "attDefId": "ancient-sloth-titan",
+    "targetSide": "A",
+    "targetUid": 1,
+    "targetDefId": "ancient-sloth-titan",
+    "amount": 2,
+    "hp": 5
+   },
+   "src": "ancient-sloth-titan"
+  },
+  "lumber": {
+   "ev": {
+    "type": "lumber",
+    "side": "A",
+    "defId": "elder-willow",
+    "uid": 2,
+    "amount": 1,
+    "cause": "forestry"
+   },
+   "src": "anhinga-spearbird"
+  },
+  "statusFx|daunt": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "daunt",
+    "side": "B",
+    "attDefId": "cave-warlord~dv1",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "ant-hill",
+    "targetUid": 1,
+    "amount": 2
+   },
+   "src": "ant-hill"
+  },
+  "revive": {
+   "ev": {
+    "type": "revive",
+    "side": "B",
+    "defId": "cinder-skeleton",
+    "uid": 3,
+    "undead": true,
+    "token": true
+   },
+   "src": "ant-warrior"
+  },
+  "pounce": {
+   "ev": {
+    "type": "pounce",
+    "side": "A",
+    "defId": "giant-cave-huntsman",
+    "uid": 2,
+    "amount": 3,
+    "scale": null,
+    "targetSide": "B"
+   },
+   "src": "antlion-pit"
+  },
+  "hazardSet|trap": {
+   "ev": {
+    "type": "hazardSet",
+    "kind": "trap",
+    "n": 5,
+    "pid": 2,
+    "slot": 0,
+    "side": "B",
+    "srcUid": 1,
+    "srcDefId": "antlion-pit"
+   },
+   "src": "antlion-pit"
+  },
+  "hazardSprung|trap": {
+   "ev": {
+    "type": "hazardSprung",
+    "kind": "trap",
+    "side": "B",
+    "pid": 2,
+    "slot": 0,
+    "uid": 3,
+    "defId": "x-dummy",
+    "dmg": 5,
+    "dmgType": "physical"
+   },
+   "src": "antlion-pit"
+  },
+  "sk2|pickpocketRes": {
+   "ev": {
+    "type": "sk2",
+    "side": "A",
+    "uid": 2,
+    "defId": "glintsnatch-magpie",
+    "targetSide": "B",
+    "kind": "pickpocketRes",
+    "taken": [
+     {
+      "res": "lumber",
+      "n": 1
+     }
+    ],
+    "amount": 1,
+    "fallback": true
+   },
+   "src": "anvil-thrush"
+  },
+  "earthquake": {
+   "ev": {
+    "type": "earthquake",
+    "side": "A",
+    "defId": "gorge-wyrm",
+    "uid": 2,
+    "amount": 3
+   },
+   "src": "anvilwhisker-otter"
+  },
+  "explode": {
+   "ev": {
+    "type": "explode",
+    "side": "B",
+    "defId": "creeper",
+    "uid": 3,
+    "targetSide": "A",
+    "targetDefId": "anvilwhisker-otter",
+    "targetUid": 1,
+    "dmg": 8
+   },
+   "src": "anvilwhisker-otter"
+  },
+  "electricity": {
+   "ev": {
+    "type": "electricity",
+    "side": "A",
+    "attUid": 1,
+    "attDefId": "arc-bat",
+    "targetSide": "B",
+    "targetUid": 3,
+    "arcUid": 4,
+    "n": 2
+   },
+   "src": "arc-bat"
+  },
+  "bolt|acid": {
+   "ev": {
+    "type": "bolt",
+    "element": "acid",
+    "key": "acidBolt",
+    "side": "A",
+    "defId": "archerfish",
+    "uid": 1,
+    "targetSide": "B",
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "amount": 1
+   },
+   "src": "archerfish"
+  },
+  "statusFx|corrode": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "corrode",
+    "side": "A",
+    "attDefId": "archerfish",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3,
+    "amount": 1
+   },
+   "src": "archerfish"
+  },
+  "statusFx|freeze": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "freeze",
+    "side": "B",
+    "attUid": 4,
+    "attDefId": "x-dummy",
+    "targetSide": "B",
+    "targetUid": 4,
+    "targetDefId": "x-dummy",
+    "amount": 1,
+    "eng28": true
+   },
+   "src": "arctic-tern"
+  },
+  "statusFx|thaw": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "thaw",
+    "side": "B",
+    "attUid": 4,
+    "attDefId": "x-dummy",
+    "targetSide": "B",
+    "targetUid": 4,
+    "targetDefId": "x-dummy",
+    "left": 0
+   },
+   "src": "arctic-tern"
+  },
+  "tornado": {
+   "ev": {
+    "type": "tornado",
+    "side": "B",
+    "attUid": 3,
+    "attDefId": "dust-devil-kestrel",
+    "targetSide": "A",
+    "slotMode": false,
+    "moves": [],
+    "swaps": [
+     [
+      2,
+      1
+     ]
+    ],
+    "hits": [
+     2
+    ]
+   },
+   "src": "arctic-tern"
+  },
+  "statusFx|en20Ignite": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "en20Ignite",
+    "side": "B",
+    "attUid": 3,
+    "attDefId": "x-dummy",
+    "targetSide": "B",
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "amount": 1,
+    "total": 1,
+    "fresh": true
+   },
+   "src": "ash-cloud-condor"
+  },
+  "burnTick": {
+   "ev": {
+    "type": "burnTick",
+    "side": "B",
+    "defId": "x-dummy",
+    "uid": 3,
+    "dmg": 1,
+    "left": 0
+   },
+   "src": "ash-cloud-condor"
+  },
+  "devilry": {
+   "ev": {
+    "type": "devilry",
+    "side": "A",
+    "defId": "ash-imp",
+    "uid": 1,
+    "amount": 1
+   },
+   "src": "ash-imp"
+  },
+  "tsunami": {
+   "ev": {
+    "type": "tsunami",
+    "side": "B",
+    "attUid": 3,
+    "attDefId": "fathom-leviathan",
+    "targetSide": "A",
+    "n": 2,
+    "pushed": [
+     2,
+     1
+    ],
+    "hits": [
+     2,
+     1
+    ],
+    "tideStarted": true
+   },
+   "src": "ash-imp"
+  },
+  "wash": {
+   "ev": {
+    "type": "wash",
+    "tsunami": true,
+    "side": "B",
+    "uid": 3,
+    "defId": "fathom-leviathan",
+    "targetUid": 2,
+    "targetDefId": "marsh-mallow-hare"
+   },
+   "src": "ash-imp"
+  },
+  "crabClaw": {
+   "ev": {
+    "type": "crabClaw",
+    "side": "B",
+    "attUid": 3,
+    "attDefId": "fiddler-crab-swarm",
+    "dir": "left",
+    "targetUid": 1
+   },
+   "src": "ash-moth"
+  },
+  "exile": {
+   "ev": {
+    "type": "exile",
+    "side": "A",
+    "defId": "ashbone-ghoul",
+    "zone": "board"
+   },
+   "src": "ashbone-ghoul"
+  },
+  "statusFx|pinDown": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "pinDown",
+    "side": "A",
+    "attDefId": "net-thrower",
+    "attUid": 2,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 4,
+    "amount": 1
+   },
+   "src": "ashwing-ptarmigan"
+  },
+  "blindMiss": {
+   "ev": {
+    "type": "blindMiss",
+    "side": "A",
+    "attDefId": "aye-aye-prowler",
+    "attUid": 1,
+    "targetKind": "card",
+    "targetUid": 3,
+    "night": true
+   },
+   "src": "aye-aye-prowler"
+  },
+  "statusFx|webbed": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "webbed",
+    "side": "B",
+    "attDefId": "gallery-orb-weaver",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "baby-bat",
+    "targetUid": 1,
+    "amount": 1
+   },
+   "src": "baby-bat"
+  },
+  "statusFx|addWait": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "addWait",
+    "side": "B",
+    "attDefId": "glacier-yak",
+    "attUid": 4,
+    "targetSide": "A",
+    "targetDefId": "peat-cutter-vole",
+    "targetUid": 2,
+    "amount": 2
+   },
+   "src": "badger-berserker"
+  },
+  "rebuild": {
+   "ev": {
+    "type": "rebuild",
+    "side": "A",
+    "defId": "badger-lumberjack",
+    "uid": 1,
+    "amount": 1,
+    "n": 1,
+    "trigger": false,
+    "hp": 100,
+    "maxHp": 100,
+    "repair": true
+   },
+   "src": "badger-lumberjack"
+  },
+  "statusFx|stun": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "stun",
+    "side": "B",
+    "attDefId": "granite-ox-golem",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "puddle-skimmer",
+    "targetUid": 2,
+    "everyone": true
+   },
+   "src": "badger-stonemason"
+  },
+  "statusFx|recoil": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "recoil",
+    "side": "B",
+    "attDefId": "granite-ox-golem",
+    "attUid": 3,
+    "targetSide": "B",
+    "targetDefId": "granite-ox-golem",
+    "targetUid": 3,
+    "amount": 2
+   },
+   "src": "badger-stonemason"
+  },
+  "rampart": {
+   "ev": {
+    "type": "rampart",
+    "side": "A",
+    "uid": 2,
+    "defId": "riverworks-bastion",
+    "dmg": 1,
+    "share": 1,
+    "bramble": 0
+   },
+   "src": "barkplate-beetle"
+  },
+  "statusFx|shed": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "shed",
+    "side": "B",
+    "attDefId": "harp-seal-pup",
+    "attUid": 3,
+    "targetSide": "B",
+    "targetDefId": "harp-seal-pup",
+    "targetUid": 3,
+    "amount": 1,
+    "molt": true,
+    "wait": 1
+   },
+   "src": "barkplate-beetle"
+  },
+  "statusFx|prayer": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "prayer",
+    "side": "A",
+    "attDefId": "shrine-high-priest",
+    "attUid": 2,
+    "targetSide": "A",
+    "targetDefId": "shrine-high-priest",
+    "targetUid": 2,
+    "amount": 2,
+    "total": 2
+   },
+   "src": "barrel-cactus"
+  },
+  "sap": {
+   "ev": {
+    "type": "sap",
+    "side": "A",
+    "attDefId": "barrow-leech-bat",
+    "attUid": 1,
+    "amount": 1
+   },
+   "src": "barrow-leech-bat"
+  },
+  "bolt|ice": {
+   "ev": {
+    "type": "bolt",
+    "element": "ice",
+    "key": "iceBolt",
+    "side": "B",
+    "defId": "ice-petrel",
+    "uid": 3,
+    "targetSide": "A",
+    "targetUid": 1,
+    "targetDefId": "basalt-boar",
+    "amount": 2
+   },
+   "src": "basalt-boar"
+  },
+  "meteor": {
+   "ev": {
+    "type": "meteor",
+    "side": "A",
+    "attUid": 2,
+    "attDefId": "starfall-owl",
+    "targetSide": "B",
+    "targetUid": 4,
+    "sideUids": [
+     3
+    ],
+    "n": 20,
+    "sideN": 5,
+    "burn": 2,
+    "slot": null
+   },
+   "src": "battlement-heron"
+  },
+  "meteorBurn": {
+   "ev": {
+    "type": "meteorBurn",
+    "side": "A",
+    "attDefId": "starfall-owl",
+    "attUid": 2,
+    "targetSide": "B",
+    "uid": 4,
+    "defId": "x-dummy",
+    "dmg": 2,
+    "left": 1,
+    "craterUid": 4,
+    "slot": null
+   },
+   "src": "battlement-heron"
+  },
+  "statusFx|bludgeon": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "bludgeon",
+    "broke": "sentry",
+    "atkLost": 1,
+    "side": "B",
+    "attDefId": "ironclaw-fiddler",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "battlement-heron~dv1",
+    "targetUid": 1
+   },
+   "src": "battlement-heron"
+  },
+  "dragonLightning": {
+   "ev": {
+    "type": "dragonLightning",
+    "side": "A",
+    "attUid": 2,
+    "attDefId": "thunder-lizard",
+    "targetSide": "B",
+    "targetUid": 4,
+    "uids": [
+     4,
+     3
+    ],
+    "n": 1
+   },
+   "src": "beaver-feller"
+  },
+  "crown|take": {
+   "ev": {
+    "type": "crown",
+    "kind": "take",
+    "side": "B",
+    "uid": 3,
+    "defId": "magnate-duck",
+    "fromUid": null,
+    "fromDefId": null
+   },
+   "src": "bee-drone"
+  },
+  "gold": {
+   "ev": {
+    "type": "gold",
+    "side": "B",
+    "defId": "magnate-duck~dv1",
+    "uid": 3,
+    "amount": 1,
+    "why": "tribute"
+   },
+   "src": "bee-drone"
+  },
+  "fieldBreak": {
+   "ev": {
+    "type": "fieldBreak",
+    "side": "A",
+    "defId": "weathervane-swift",
+    "uid": 2,
+    "rounds": 2,
+    "until": 2
+   },
+   "src": "bee-knight"
+  },
+  "stone": {
+   "ev": {
+    "type": "stone",
+    "side": "B",
+    "defId": "marmot-stonecutter",
+    "uid": 3,
+    "amount": 1
+   },
+   "src": "bee-knight"
+  },
+  "render": {
+   "ev": {
+    "type": "render",
+    "side": "B",
+    "attDefId": "mire-witch-heron",
+    "attUid": 3,
+    "targetDefId": "anaconda-coil",
+    "targetUid": 2,
+    "amount": 2,
+    "daunt": true,
+    "total": 2
+   },
+   "src": "beetle-grunt"
+  },
+  "statusFx|dauntFade": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "dauntFade",
+    "side": "A",
+    "targetUid": 2,
+    "targetDefId": "anaconda-coil",
+    "left": 1,
+    "why": "act"
+   },
+   "src": "beetle-grunt"
+  },
+  "statusFx|inspired": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "inspired",
+    "side": "A",
+    "attUid": 1,
+    "attDefId": "beluga",
+    "targetUid": 2,
+    "targetDefId": "arctic-fox-raider",
+    "amount": 1,
+    "tokens": 1,
+    "total": 1
+   },
+   "src": "beluga"
+  },
+  "statusFx|inspiredSpent": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "inspiredSpent",
+    "side": "A",
+    "attUid": 2,
+    "attDefId": "arctic-fox-raider",
+    "targetUid": 2,
+    "targetDefId": "arctic-fox-raider",
+    "amount": 1,
+    "tokens": 1
+   },
+   "src": "beluga"
+  },
+  "statusFx|reachAim": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "reachAim",
+    "side": "A",
+    "attUid": 1,
+    "attDefId": "birdlime-dauber",
+    "targetSide": "B",
+    "targetUid": 4,
+    "targetDefId": "x-dummy"
+   },
+   "src": "birdlime-dauber"
+  },
+  "statusFx|expose": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "expose",
+    "side": "B",
+    "attDefId": "narwhal-lancer",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "bison-bulldozer",
+    "targetUid": 1,
+    "amount": 2
+   },
+   "src": "bison-bulldozer"
+  },
+  "curse": {
+   "ev": {
+    "type": "curse",
+    "cell": "2:center0",
+    "total": 1,
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "pid": 2
+   },
+   "src": "blackmass-acolyte"
+  },
+  "curseTick": {
+   "ev": {
+    "type": "curseTick",
+    "side": "B",
+    "defId": "x-dummy",
+    "uid": 3,
+    "dmg": 1
+   },
+   "src": "blackmass-acolyte"
+  },
+  "metal": {
+   "ev": {
+    "type": "metal",
+    "side": "B",
+    "defId": "ore-smelter-mole",
+    "uid": 3,
+    "amount": 2
+   },
+   "src": "blind-cave-fish"
+  },
+  "statusFx|lightning": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "lightning",
+    "side": "A",
+    "attDefId": "blue-dragon",
+    "attUid": 1,
+    "amount": 4,
+    "targetSide": "B",
+    "targetUid": null,
+    "targetDefId": null
+   },
+   "src": "blue-dragon"
+  },
+  "hatch": {
+   "ev": {
+    "type": "hatch",
+    "side": "A",
+    "uid": 2,
+    "fromDefId": "egg-water",
+    "defId": "nudibranch",
+    "hp": 9,
+    "atk": 4
+   },
+   "src": "bobbit-worm"
+  },
+  "powder|poison": {
+   "ev": {
+    "type": "powder",
+    "element": "poison",
+    "key": "poisonPowder",
+    "side": "B",
+    "defId": "puffball-bombardier",
+    "uid": 3,
+    "targetSide": "A",
+    "targetUid": 1,
+    "targetDefId": "bog-leech",
+    "amount": 1
+   },
+   "src": "bog-leech"
+  },
+  "statusFx|rocket": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "rocket",
+    "side": "A",
+    "attDefId": "bombardier-beetle",
+    "attUid": 1,
+    "targetSide": "B",
+    "amount": 4
+   },
+   "src": "bombardier-beetle"
+  },
+  "statusFx|stateSkill": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "stateSkill",
+    "name": "timbered",
+    "on": true,
+    "side": "A",
+    "attUid": 2,
+    "attDefId": "lodge-engineer",
+    "targetUid": 2,
+    "targetDefId": "lodge-engineer"
+   },
+   "src": "bramble-hoglet"
+  },
+  "statusFx|stagger": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "stagger",
+    "side": "A",
+    "attDefId": "bramblewood-bonebreaker",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3
+   },
+   "src": "bramblewood-bonebreaker"
+  },
+  "bolt|shock": {
+   "ev": {
+    "type": "bolt",
+    "element": "shock",
+    "key": "shockBolt",
+    "side": "B",
+    "defId": "snapgun-shrimp",
+    "uid": 3,
+    "targetSide": "A",
+    "targetUid": 1,
+    "targetDefId": "bramblewood-bonebreaker",
+    "amount": 1
+   },
+   "src": "bramblewood-bonebreaker"
+  },
+  "forkSwing|pitchfork": {
+   "ev": {
+    "type": "forkSwing",
+    "side": "A",
+    "attUid": 1,
+    "attDefId": "brimstone-hound",
+    "kind": "pitchfork",
+    "swing": 1,
+    "aim": "left",
+    "prong": null,
+    "lines": [
+     {
+      "off": -2,
+      "targetUid": null,
+      "castle": false,
+      "half": true,
+      "main": false
+     },
+     {
+      "off": -1,
+      "targetUid": 4,
+      "castle": false,
+      "half": true,
+      "main": false
+     },
+     {
+      "off": 0,
+      "targetUid": 3,
+      "castle": false,
+      "half": true,
+      "main": true
+     },
+     {
+      "off": 1,
+      "targetUid": null,
+      "castle": false,
+      "half": true,
+      "main": false
+     }
+    ]
+   },
+   "src": "brimstone-hound"
+  },
+  "statusFx|carrion": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "carrion",
+    "side": "A",
+    "attDefId": "ossuary-lammergeier",
+    "attUid": 2,
+    "targetSide": "A",
+    "targetDefId": "ossuary-lammergeier",
+    "targetUid": 2,
+    "amount": 2,
+    "fromUid": 3
+   },
+   "src": "bucketknee-wolf"
+  },
+  "fastForward": {
+   "ev": {
+    "type": "fastForward",
+    "side": "B",
+    "defId": "swift-fox",
+    "uid": 3,
+    "n": 1
+   },
+   "src": "bumblebee-queen"
+  },
+  "statusFx|sk2Berry": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "sk2Berry",
+    "side": "A",
+    "attDefId": "pika-hoarder",
+    "attUid": 2,
+    "targetSide": "A",
+    "targetDefId": "pika-hoarder",
+    "targetUid": 2,
+    "amount": 1,
+    "total": 1
+   },
+   "src": "buzzed-chipmunk"
+  },
+  "statusFx|sk2BerryEat": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "sk2BerryEat",
+    "side": "A",
+    "attDefId": "pika-hoarder",
+    "attUid": 2,
+    "targetSide": "A",
+    "targetDefId": "buzzed-chipmunk",
+    "targetUid": 1,
+    "amount": 3,
+    "total": 0
+   },
+   "src": "buzzed-chipmunk"
+  },
+  "spawn|meiosis": {
+   "ev": {
+    "type": "spawn",
+    "side": "A",
+    "defId": "planarian-splitter~half",
+    "count": 2,
+    "cause": "onDeathSpawn",
+    "kind": "meiosis",
+    "uids": [
+     5,
+     6
+    ],
+    "placements": [
+     {
+      "uid": 5,
+      "lane": "center"
+     },
+     {
+      "uid": 6,
+      "lane": "left"
+     }
+    ],
+    "fromUid": 2,
+    "nearUid": 2
+   },
+   "src": "caiman-hatchling"
+  },
+  "statusFx|tangled": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "tangled",
+    "side": "A",
+    "attDefId": "quicksand-queen",
+    "attUid": 2,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 4,
+    "amount": 1
+   },
+   "src": "caldera-wyrm"
+  },
+  "confusedWhiff": {
+   "ev": {
+    "type": "confusedWhiff",
+    "side": "B",
+    "defId": "x-dummy",
+    "uid": 4,
+    "what": "attack",
+    "tangled": true
+   },
+   "src": "caldera-wyrm"
+  },
+  "statusFx|chilli": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "chilli",
+    "side": "B",
+    "attDefId": "tobasco-drakon",
+    "attUid": 3,
+    "targetSide": "B",
+    "targetDefId": "tobasco-drakon",
+    "targetUid": 3,
+    "amount": 2
+   },
+   "src": "caldera-wyrm"
+  },
+  "statusFx|chilliBurn": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "chilliBurn",
+    "side": "B",
+    "attDefId": "tobasco-drakon~dv1",
+    "attUid": 3,
+    "targetSide": "B",
+    "targetDefId": "tobasco-drakon~dv1",
+    "targetUid": 3,
+    "amount": 1
+   },
+   "src": "caldera-wyrm"
+  },
+  "bolt|fire": {
+   "ev": {
+    "type": "bolt",
+    "element": "fire",
+    "key": "fireBolt",
+    "side": "B",
+    "defId": "tobasco-drakon~dv1",
+    "uid": 3,
+    "targetSide": "A",
+    "targetUid": 1,
+    "targetDefId": "caldera-wyrm",
+    "amount": 2
+   },
+   "src": "caldera-wyrm"
+  },
+  "fieldSet|rain": {
+   "ev": {
+    "type": "fieldSet",
+    "side": "A",
+    "defId": "rainmaker-frog",
+    "field": "rain",
+    "rounds": 3,
+    "rainmaker": true
+   },
+   "src": "camouflage-frog"
+  },
+  "statusFx|greaterPoison": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "greaterPoison",
+    "side": "A",
+    "attDefId": "cane-toad",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3,
+    "converted": 2,
+    "amount": 1,
+    "total": 3,
+    "poison": 1
+   },
+   "src": "cane-toad"
+  },
+  "greaterPoisonTick": {
+   "ev": {
+    "type": "greaterPoisonTick",
+    "side": "B",
+    "defId": "x-dummy",
+    "uid": 3,
+    "dmg": 3,
+    "stack": 3,
+    "decay": false
+   },
+   "src": "cane-toad"
+  },
+  "bounty": {
+   "ev": {
+    "type": "bounty",
+    "side": "B",
+    "amount": 1,
+    "fromDefId": "riverside-peddler",
+    "uid": 2
+   },
+   "src": "cane-toad"
+  },
+  "bloodTithe": {
+   "ev": {
+    "type": "bloodTithe",
+    "side": "B",
+    "uid": 3,
+    "defId": "vampire-finch",
+    "amount": 2,
+    "castle": true,
+    "dmg": 2
+   },
+   "src": "cane-toad"
+  },
+  "fireball": {
+   "ev": {
+    "type": "fireball",
+    "side": "A",
+    "attUid": 2,
+    "attDefId": "salamander-pyromancer",
+    "targetSide": "B",
+    "targetUid": 4,
+    "uids": [
+     4,
+     3
+    ],
+    "n": 15
+   },
+   "src": "canopy-sloth-guardian"
+  },
+  "spawn|brood": {
+   "ev": {
+    "type": "spawn",
+    "side": "A",
+    "defId": "carrion-fly-swarm~brood",
+    "count": 1,
+    "cause": "triggerSpawn",
+    "kind": "brood",
+    "uids": [
+     2
+    ],
+    "lane": "left",
+    "nearUid": 1
+   },
+   "src": "carrion-fly-swarm"
+  },
+  "overwhelmHQ": {
+   "ev": {
+    "type": "overwhelmHQ",
+    "side": "A",
+    "attDefId": "cataphract-destrier",
+    "attUid": 1,
+    "targetSide": "B",
+    "dmg": 1
+   },
+   "src": "cataphract-destrier"
+  },
+  "spawn|relic": {
+   "ev": {
+    "type": "spawn",
+    "side": "A",
+    "defId": "cathedral-eagle~relic",
+    "count": 1,
+    "cause": "onDeathSpawn",
+    "kind": "relic",
+    "relic": true,
+    "placements": [
+     {
+      "uid": 5,
+      "lane": "center"
+     }
+    ],
+    "fromUid": 1
+   },
+   "src": "cathedral-eagle"
+  },
+  "chainBreak": {
+   "ev": {
+    "type": "chainBreak",
+    "side": "A",
+    "defId": "chained-binturong",
+    "uid": 1,
+    "cause": "damage"
+   },
+   "src": "chained-binturong"
+  },
+  "wave": {
+   "ev": {
+    "type": "wave",
+    "side": "B",
+    "attUid": 3,
+    "attDefId": "coral-current-eel",
+    "targetSide": "A",
+    "targetUid": 1,
+    "targetDefId": "cinder-stoker",
+    "moves": [],
+    "blocked": false,
+    "slotMode": false,
+    "n": 1,
+    "dir": "left",
+    "crashUid": 2,
+    "cols": 0
+   },
+   "src": "cinder-stoker"
+  },
+  "washCrash": {
+   "ev": {
+    "type": "washCrash",
+    "side": "A",
+    "uid": 1,
+    "defId": "cinder-stoker",
+    "otherUid": 2,
+    "otherDefId": "cuttlefish-illusionist",
+    "n": 1,
+    "dmg": 1,
+    "otherDmg": 1
+   },
+   "src": "cinder-stoker"
+  },
+  "penance": {
+   "ev": {
+    "type": "penance",
+    "side": "A",
+    "uid": 2,
+    "defId": "flagellant-vulture",
+    "amount": 3,
+    "dmg": 3
+   },
+   "src": "cobalt-talon-fledgling"
+  },
+  "decayTick": {
+   "ev": {
+    "type": "decayTick",
+    "side": "A",
+    "defId": "cobalt-talon-fledgling",
+    "uid": 1,
+    "dmg": 1,
+    "atk": 1
+   },
+   "src": "cobalt-talon-fledgling"
+  },
+  "hazardSet|scorch": {
+   "ev": {
+    "type": "hazardSet",
+    "kind": "scorch",
+    "n": 3,
+    "pid": 1,
+    "slot": 0,
+    "side": "A",
+    "srcUid": 3,
+    "srcDefId": "fire-hawk"
+   },
+   "src": "conch-crawler"
+  },
+  "statusFx|toxin": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "toxin",
+    "side": "A",
+    "attDefId": "cone-snail",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3,
+    "amount": 1,
+    "total": 1
+   },
+   "src": "cone-snail"
+  },
+  "toxinTick": {
+   "ev": {
+    "type": "toxinTick",
+    "side": "B",
+    "defId": "x-dummy",
+    "uid": 3,
+    "dmg": 1,
+    "stack": 1
+   },
+   "src": "cone-snail"
+  },
+  "spawn|crystal": {
+   "ev": {
+    "type": "spawn",
+    "side": "B",
+    "defId": "geode-scorpion~crystal5",
+    "count": 1,
+    "cause": "onDeathSpawn",
+    "placements": [
+     {
+      "uid": 5,
+      "lane": "center"
+     }
+    ],
+    "fromUid": 3,
+    "kind": "crystal"
+   },
+   "src": "constrictor-coil"
+  },
+  "mimic": {
+   "ev": {
+    "type": "mimic",
+    "side": "A",
+    "uid": 2,
+    "defId": "mirrorhide-mutant~mimic~cormorant",
+    "fromDefId": "mirrorhide-mutant",
+    "allyUid": 1,
+    "allyDefId": "cormorant",
+    "atk": 3,
+    "hp": 11,
+    "maxHp": 11
+   },
+   "src": "cormorant"
+  },
+  "spawn|sprout": {
+   "ev": {
+    "type": "spawn",
+    "side": "B",
+    "defId": "growth-sprout",
+    "count": 1,
+    "cause": "triggerSpawn",
+    "kind": "sprout",
+    "uids": [
+     4
+    ],
+    "lane": "left",
+    "nearUid": 3
+   },
+   "src": "cottontail"
+  },
+  "diveRise": {
+   "ev": {
+    "type": "diveRise",
+    "side": "B",
+    "uid": 3,
+    "defId": "harbor-seal",
+    "mode": "tide",
+    "n": 2
+   },
+   "src": "courier-pigeon"
+  },
+  "dive": {
+   "ev": {
+    "type": "dive",
+    "side": "B",
+    "attUid": 3,
+    "attDefId": "harbor-seal",
+    "targetSide": "A",
+    "targetUid": 1,
+    "targetDefId": "courier-pigeon",
+    "bonus": 2,
+    "col": 0,
+    "mode": "tide",
+    "strike": true
+   },
+   "src": "courier-pigeon"
+  },
+  "darkCast": {
+   "ev": {
+    "type": "darkCast",
+    "on": true,
+    "side": "A",
+    "defId": "pall-wraith",
+    "uid": 2
+   },
+   "src": "cricket-drummer"
+  },
+  "boomerangReturn": {
+   "ev": {
+    "type": "boomerangReturn",
+    "side": "B",
+    "defId": "howler-monkey",
+    "uid": 3,
+    "thrownBy": 3,
+    "speed": 2,
+    "lane": 0,
+    "farUid": 1
+   },
+   "src": "crimson-wing-duelist-cadet"
+  },
+  "boomerangCaught": {
+   "ev": {
+    "type": "boomerangCaught",
+    "side": "B",
+    "uid": 3,
+    "defId": "howler-monkey"
+   },
+   "src": "crimson-wing-duelist-cadet"
+  },
+  "absoluteZero": {
+   "ev": {
+    "type": "absoluteZero",
+    "side": "B",
+    "uid": 3,
+    "defId": "ice-fish",
+    "targetSide": "A",
+    "hits": [
+     2,
+     1
+    ]
+   },
+   "src": "crimson-wing-recruit"
+  },
+  "gash": {
+   "ev": {
+    "type": "gash",
+    "side": "B",
+    "attDefId": "kraken-spawnling",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "reed-dart-bittern",
+    "targetUid": 2,
+    "amount": 3
+   },
+   "src": "crown-of-thorns-star"
+  },
+  "statusFx|tipsy": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "tipsy",
+    "side": "A",
+    "attDefId": "demo-panda",
+    "attUid": 1,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 3
+   },
+   "src": "demo-panda"
+  },
+  "tipsySwing": {
+   "ev": {
+    "type": "tipsySwing",
+    "side": "B",
+    "attDefId": "x-dummy",
+    "attUid": 3,
+    "drift": 1,
+    "miss": true
+   },
+   "src": "demo-panda"
+  },
+  "stunPlayer": {
+   "ev": {
+    "type": "stunPlayer",
+    "side": "A",
+    "attDefId": "dread-bell",
+    "attUid": 1,
+    "turns": 1
+   },
+   "src": "dread-bell"
+  },
+  "statusFx|debuffAttack": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "debuffAttack",
+    "side": "B",
+    "attDefId": "rafflesia",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "dynamite-packrat",
+    "targetUid": 1,
+    "amount": 1
+   },
+   "src": "dynamite-packrat"
+  },
+  "statusFx|en20Soak": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "en20Soak",
+    "side": "B",
+    "attUid": 4,
+    "attDefId": "x-dummy",
+    "targetSide": "B",
+    "targetUid": 4,
+    "targetDefId": "x-dummy",
+    "amount": 1,
+    "total": 1
+   },
+   "src": "echidna-quillshot"
+  },
+  "banana": {
+   "ev": {
+    "type": "banana",
+    "action": "eat",
+    "bananarang": true,
+    "side": "A",
+    "uid": 2,
+    "defId": "howler-monkey",
+    "amount": 3,
+    "n": 3
+   },
+   "src": "egg-woodland"
+  },
+  "statusFx|esprit": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "esprit",
+    "side": "B",
+    "attDefId": "swarm-matriarch",
+    "attUid": 3,
+    "amount": 1,
+    "hp": 0
+   },
+   "src": "elderhorn-monarch"
+  },
+  "statusFx|confuse": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "confuse",
+    "side": "A",
+    "attDefId": "lyrebird-mimic",
+    "attUid": 2,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 4
+   },
+   "src": "electric-catfish"
+  },
+  "psychic": {
+   "ev": {
+    "type": "psychic",
+    "side": "A",
+    "attUid": 1,
+    "attDefId": "elephant-nose-fish",
+    "targetSide": "B",
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "dmg": 1,
+    "n": 1
+   },
+   "src": "elephant-nose-fish"
+  },
+  "shoreUp": {
+   "ev": {
+    "type": "shoreUp",
+    "side": "A",
+    "uid": 2,
+    "defId": "musk-ox-matriarch",
+    "targets": [
+     1
+    ]
+   },
+   "src": "ember-jackal"
+  },
+  "nova": {
+   "ev": {
+    "type": "nova",
+    "side": "A",
+    "uid": 2,
+    "defId": "demo-panda",
+    "n": 3,
+    "hits": [
+     4,
+     3
+    ]
+   },
+   "src": "full-moon"
+  },
+  "charge": {
+   "ev": {
+    "type": "charge",
+    "side": "A",
+    "uid": 1,
+    "defId": "galactic-condor",
+    "left": 2,
+    "start": true
+   },
+   "src": "galactic-condor"
+  },
+  "positionBeam": {
+   "ev": {
+    "type": "positionBeam",
+    "side": "A",
+    "defId": "galactic-condor",
+    "uid": 1,
+    "lane": "centre",
+    "col": 0,
+    "amount": 5,
+    "targetSide": "B",
+    "targetUids": [
+     3
+    ],
+    "hq": true
+   },
+   "src": "galactic-condor"
+  },
+  "pearl": {
+   "ev": {
+    "type": "pearl",
+    "side": "A",
+    "defId": "giant-clam",
+    "uid": 2,
+    "amount": 1
+   },
+   "src": "gallery-orb-weaver"
+  },
+  "statusFx|brittle": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "brittle",
+    "side": "B",
+    "attDefId": "glasswing-moth",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "gannet-nestweaver",
+    "targetUid": 1,
+    "amount": 2
+   },
+   "src": "gannet-nestweaver"
+  },
+  "statusFx|taunted": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "taunted",
+    "side": "B",
+    "attDefId": "goose-sentry",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "hanging-loafer",
+    "targetUid": 2
+   },
+   "src": "garden-tiger-moth"
+  },
+  "statusFx|wilting": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "wilting",
+    "side": "B",
+    "attDefId": "paper-wasp",
+    "attUid": 3,
+    "targetSide": "B",
+    "targetDefId": "paper-wasp",
+    "targetUid": 3,
+    "amount": 1
+   },
+   "src": "grass-viper"
+  },
+  "friction": {
+   "ev": {
+    "type": "friction",
+    "side": "A",
+    "attUid": 1,
+    "attDefId": "grindstone-boar",
+    "targetSide": "A",
+    "targetUid": 2,
+    "targetDefId": "cathedral-eagle",
+    "dmg": 2
+   },
+   "src": "grindstone-boar"
+  },
+  "fortify": {
+   "ev": {
+    "type": "fortify",
+    "side": "B",
+    "uid": 5,
+    "defId": "shellwright-apprentice",
+    "parts": {
+     "armor": 1
+    },
+    "fort": {
+     "armor": 1
+    },
+    "hp": 100,
+    "maxHp": 100,
+    "shield": 0
+   },
+   "src": "grovebearer-dragon-turtle"
+  },
+  "brambleArmor": {
+   "ev": {
+    "type": "brambleArmor",
+    "side": "B",
+    "fortify": true,
+    "blocked": 1
+   },
+   "src": "grovebearer-dragon-turtle"
+  },
+  "poisonGas": {
+   "ev": {
+    "type": "poisonGas",
+    "side": "B",
+    "uid": 3,
+    "defId": "skunk-gasser",
+    "targetSide": "A",
+    "n": 2,
+    "hits": [
+     2,
+     1
+    ]
+   },
+   "src": "gull-thief"
+  },
+  "statusFx|nullify": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "nullify",
+    "side": "A",
+    "attUid": 1,
+    "attDefId": "hagfish-silencer",
+    "targetSide": "B",
+    "targetUid": 3,
+    "targetDefId": "x-dummy",
+    "killed": false
+   },
+   "src": "hagfish-silencer"
+  },
+  "swapPositions": {
+   "ev": {
+    "type": "swapPositions",
+    "side": "B",
+    "attDefId": "trickster-fox",
+    "attUid": 3,
+    "targetSide": "A",
+    "aDefId": "honeyjoe-brewer",
+    "aUid": 2,
+    "bDefId": "hedge-weasel",
+    "bUid": 1
+   },
+   "src": "hedge-weasel"
+  },
+  "statusFx|berserk": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "berserk",
+    "side": "A",
+    "attDefId": "monarch-wingblade",
+    "attUid": 2,
+    "amount": 1
+   },
+   "src": "hoatzin"
+  },
+  "spawn|twin": {
+   "ev": {
+    "type": "spawn",
+    "side": "A",
+    "defId": "puddle-changeling~twin",
+    "count": 1,
+    "cause": "triggerSpawn",
+    "kind": "twin",
+    "uids": [
+     3
+    ],
+    "lane": "left",
+    "nearUid": 2
+   },
+   "src": "house-cat"
+  },
+  "avalanche": {
+   "ev": {
+    "type": "avalanche",
+    "side": "A",
+    "attUid": 1,
+    "attDefId": "ibex-rockcaller",
+    "targetSide": "B",
+    "n": 1,
+    "hits": []
+   },
+   "src": "ibex-rockcaller"
+  },
+  "smokeBomb": {
+   "ev": {
+    "type": "smokeBomb",
+    "side": "A",
+    "uid": 2,
+    "defId": "smoke-raccoon",
+    "attUid": 2,
+    "attDefId": "smoke-raccoon",
+    "targetSide": "B",
+    "targetUid": 4,
+    "targetDefId": "x-dummy",
+    "ally": false,
+    "effect": "blind"
+   },
+   "src": "ice-crevasse-wolf"
+  },
+  "statusFx|momentum": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "momentum",
+    "side": "A",
+    "attDefId": "ice-crevasse-wolf",
+    "attUid": 1,
+    "amount": 1
+   },
+   "src": "ice-crevasse-wolf"
+  },
+  "statusFx|spite": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "spite",
+    "side": "A",
+    "attDefId": "thornwood-palisade",
+    "attUid": 2,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 4,
+    "amount": 2
+   },
+   "src": "inside-out-hedgehog"
+  },
+  "statusFx|cure": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "cure",
+    "side": "A",
+    "attDefId": "unicorn",
+    "attUid": 2,
+    "targetSide": "A",
+    "targetDefId": "ironback-gorilla",
+    "targetUid": 1,
+    "amount": 1,
+    "poison": 1,
+    "bleed": 0
+   },
+   "src": "ironback-gorilla"
+  },
+  "uranium": {
+   "ev": {
+    "type": "uranium",
+    "side": "A",
+    "defId": "irradiated-axolotl",
+    "uid": 1,
+    "amount": 1
+   },
+   "src": "irradiated-axolotl"
+  },
+  "statusFx|avalancheWait": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "avalancheWait",
+    "side": "B",
+    "attDefId": "ibex-rockcaller",
+    "attUid": 5,
+    "targetSide": "A",
+    "targetDefId": "grovebearer-dragon-turtle",
+    "targetUid": 2,
+    "amount": 1
+   },
+   "src": "lions-mane-jelly"
+  },
+  "statusFx|scar": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "scar",
+    "side": "B",
+    "attDefId": "magma-titan",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "lurking-dread",
+    "targetUid": 1,
+    "amount": 2
+   },
+   "src": "lurking-dread"
+  },
+  "mindControl": {
+   "ev": {
+    "type": "mindControl",
+    "side": "B",
+    "attDefId": "puppeteer-imp",
+    "attUid": 3,
+    "targetDefId": "marsh-wisp",
+    "targetUid": 1
+   },
+   "src": "marsh-wisp"
+  },
+  "pierceHQ": {
+   "ev": {
+    "type": "pierceHQ",
+    "side": "A",
+    "attDefId": "old-snapjaw",
+    "attUid": 1,
+    "targetSide": "B",
+    "dmg": 2
+   },
+   "src": "old-snapjaw"
+  },
+  "durian": {
+   "ev": {
+    "type": "durian",
+    "side": "A",
+    "uid": 2,
+    "defId": "war-drum-mandrill",
+    "thorns": 1,
+    "bonus": 1
+   },
+   "src": "optio-of-the-ford"
+  },
+  "statusFx|ichor": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "ichor",
+    "side": "B",
+    "attUid": 3,
+    "attDefId": "velvet-worm",
+    "targetSide": "A",
+    "targetUid": 1,
+    "targetDefId": "quarry-troll",
+    "amount": 2,
+    "armor": 0,
+    "bleed": 1
+   },
+   "src": "quarry-troll"
+  },
+  "statusFx|armorShred": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "armorShred",
+    "side": "B",
+    "attDefId": "woodpecker-sapper",
+    "attUid": 3,
+    "targetSide": "A",
+    "targetDefId": "quillback-elder",
+    "targetUid": 1,
+    "amount": 2
+   },
+   "src": "quillback-elder"
+  },
+  "statusFx|lasso": {
+   "ev": {
+    "type": "statusFx",
+    "kind": "lasso",
+    "side": "A",
+    "attDefId": "yeti-snarer",
+    "attUid": 2,
+    "targetSide": "B",
+    "targetDefId": "x-dummy",
+    "targetUid": 4,
+    "amount": 1
+   },
+   "src": "stag-knight"
+  },
+  "undeadHeal": {
+   "ev": {
+    "type": "undeadHeal",
+    "side": "A",
+    "uid": 2,
+    "defId": "bog-revenant",
+    "targetSide": "A",
+    "targetUid": 2,
+    "targetDefId": "bog-revenant",
+    "amount": 3,
+    "dmg": 3
+   },
+   "src": "truffle-piglet"
+  }
+ },
+ "counts": {
+  "play": 13784,
+  "ready": 13867,
+  "roundStart": 27352,
+  "skipTurn": 3599,
+  "hit": 73308,
+  "powder|paralysis": 115,
+  "statusFx|stunOnHit": 81,
+  "statusEnd": 1296,
+  "triggerFired": 1688,
+  "namedBuff": 220,
+  "hitHQ": 9671,
+  "statusFx|rend": 27,
+  "statusFx|vulnHit": 18,
+  "statusFx|enfeeble": 27,
+  "statusFx|feebleHit": 24,
+  "statusFx|weaken": 46,
+  "statusFx|grant": 3,
+  "death": 3907,
+  "collapseIn": 1022,
+  "bolt|poison": 83,
+  "statusFx|poison": 398,
+  "poisonTick": 1470,
+  "waitTick": 3676,
+  "spawn": 205,
+  "statusFx|shock": 122,
+  "forkSwing|fork": 563,
+  "forkSwing|trident": 300,
+  "breachHQ": 189,
+  "sk2|noRoom": 29,
+  "sk2|cantPay": 86,
+  "arrow": 2177,
+  "statusFx|bulldoze": 114,
+  "evaded": 4696,
+  "ambush": 96,
+  "heal": 1620,
+  "statusFx|shellUp": 186,
+  "statusFx|shellDown": 182,
+  "bleedTick": 1038,
+  "bleedFade": 1022,
+  "thorns": 1042,
+  "sweepWhiff": 496,
+  "statusFx|octolash": 73,
+  "statusFx|phaseGrow": 213,
+  "statusFx|unitShield": 190,
+  "skillSpent": 226,
+  "shieldSoak": 219,
+  "powder|sleep": 111,
+  "statusFx|sleep": 24,
+  "statusFx|bound": 212,
+  "strangleTick": 185,
+  "statusFx|coffee": 37,
+  "frenzy": 177,
+  "statusFx|coffeeCrash": 35,
+  "spawn|bulwark": 30,
+  "statusFx|bulwark": 20,
+  "lumber": 957,
+  "statusFx|daunt": 163,
+  "revive": 11,
+  "pounce": 214,
+  "hazardSet|trap": 12,
+  "hazardSprung|trap": 12,
+  "sk2|pickpocketRes": 14,
+  "earthquake": 24,
+  "explode": 20,
+  "electricity": 208,
+  "bolt|acid": 130,
+  "statusFx|corrode": 260,
+  "statusFx|freeze": 355,
+  "statusFx|thaw": 320,
+  "tornado": 10,
+  "statusFx|en20Ignite": 1523,
+  "burnTick": 1203,
+  "devilry": 75,
+  "tsunami": 20,
+  "wash": 8,
+  "crabClaw": 400,
+  "exile": 31,
+  "statusFx|pinDown": 36,
+  "blindMiss": 93,
+  "statusFx|webbed": 146,
+  "statusFx|addWait": 6,
+  "rebuild": 4,
+  "statusFx|stun": 17,
+  "statusFx|recoil": 222,
+  "rampart": 14,
+  "statusFx|shed": 34,
+  "statusFx|prayer": 504,
+  "sap": 128,
+  "bolt|ice": 70,
+  "meteor": 10,
+  "meteorBurn": 20,
+  "statusFx|bludgeon": 25,
+  "dragonLightning": 41,
+  "crown|take": 10,
+  "gold": 50,
+  "fieldBreak": 10,
+  "stone": 96,
+  "render": 4,
+  "statusFx|dauntFade": 5,
+  "statusFx|inspired": 550,
+  "statusFx|inspiredSpent": 483,
+  "statusFx|reachAim": 32,
+  "statusFx|expose": 164,
+  "curse": 10,
+  "curseTick": 42,
+  "metal": 10,
+  "statusFx|lightning": 20,
+  "hatch": 3,
+  "powder|poison": 71,
+  "statusFx|rocket": 10,
+  "statusFx|stateSkill": 20,
+  "statusFx|stagger": 27,
+  "bolt|shock": 113,
+  "forkSwing|pitchfork": 92,
+  "statusFx|carrion": 25,
+  "fastForward": 10,
+  "statusFx|sk2Berry": 334,
+  "statusFx|sk2BerryEat": 75,
+  "spawn|meiosis": 8,
+  "statusFx|tangled": 104,
+  "confusedWhiff": 59,
+  "statusFx|chilli": 20,
+  "statusFx|chilliBurn": 108,
+  "bolt|fire": 312,
+  "fieldSet|rain": 10,
+  "statusFx|greaterPoison": 92,
+  "greaterPoisonTick": 75,
+  "bounty": 39,
+  "bloodTithe": 10,
+  "fireball": 10,
+  "spawn|brood": 40,
+  "overwhelmHQ": 12,
+  "spawn|relic": 20,
+  "chainBreak": 10,
+  "wave": 158,
+  "washCrash": 101,
+  "penance": 10,
+  "decayTick": 58,
+  "hazardSet|scorch": 2,
+  "statusFx|toxin": 42,
+  "toxinTick": 48,
+  "spawn|crystal": 4,
+  "mimic": 4,
+  "spawn|sprout": 30,
+  "diveRise": 10,
+  "dive": 10,
+  "darkCast": 13,
+  "boomerangReturn": 45,
+  "boomerangCaught": 43,
+  "absoluteZero": 10,
+  "gash": 8,
+  "statusFx|tipsy": 56,
+  "tipsySwing": 50,
+  "stunPlayer": 10,
+  "statusFx|debuffAttack": 76,
+  "statusFx|en20Soak": 71,
+  "banana": 3,
+  "statusFx|esprit": 32,
+  "statusFx|confuse": 31,
+  "psychic": 47,
+  "shoreUp": 126,
+  "nova": 7,
+  "charge": 66,
+  "positionBeam": 28,
+  "pearl": 18,
+  "statusFx|brittle": 59,
+  "statusFx|taunted": 91,
+  "statusFx|wilting": 20,
+  "friction": 64,
+  "fortify": 10,
+  "brambleArmor": 28,
+  "poisonGas": 20,
+  "statusFx|nullify": 57,
+  "swapPositions": 2,
+  "statusFx|berserk": 9,
+  "spawn|twin": 10,
+  "avalanche": 10,
+  "smokeBomb": 73,
+  "statusFx|momentum": 4,
+  "statusFx|spite": 69,
+  "statusFx|cure": 6,
+  "uranium": 10,
+  "statusFx|avalancheWait": 8,
+  "statusFx|scar": 135,
+  "mindControl": 2,
+  "pierceHQ": 64,
+  "durian": 28,
+  "statusFx|ichor": 58,
+  "statusFx|armorShred": 2,
+  "statusFx|lasso": 8,
+  "undeadHeal": 6
+ }
+}
