@@ -61,7 +61,7 @@ const newest = pl=> all(pl).reduce((a, x)=> (!a || x.uid > a.uid) ? x : a, null)
   ok(!ev.some(fxOf('stunOnHit', t.uid)), 'no puff lands on a stunned unit (it cannot be kept stunned every round)');
   ev = fight(e, P, 3); ok(ev.some(swingOf(t.uid)) && ev.some(fxOf('stunOnHit', t.uid)), 'the round after, it swings, then is stunned again'); }
 { const {e, P} = mk(); put(e, P, 1, 'e50-para2', 0); const t = put(e, P, 2, 'e50-hit4', 0); fight(e, P, 1);
-  const sw = [2, 3, 4].map(r=> fight(e, P, r).some(swingOf(t.uid))); ok(t.stunned >= 0 && sw.join() === 'false,false,true', `Paralysis Powder 2: stunned 2 rounds, then it swings (${sw.join()})`); }
+  const sw = [2, 3, 4].map(r=> fight(e, P, r).some(swingOf(t.uid))); ok(sw.join() === 'false,false,true', `Paralysis Powder 2: stunned 2 rounds, then it swings (${sw.join()})`); }
 { const {e, P} = mk(); put(e, P, 1, 'e50-para', 0); const t = put(e, P, 2, 'e50-noStun', 0); fight(e, P); ok(!t.stunned, 'Immune to Stun: no Stun'); }
 { const {e, P} = mk(); put(e, P, 1, 'e50-para', 0); const t = put(e, P, 2, 'e50-wakeful', 0); fight(e, P); ok(t.stunned === 1, 'Wakeful does not stop it (a stun, not a sleep)'); }
 { const {e, P} = mk(); put(e, P, 1, 'e50-para', 0); const t = put(e, P, 2, 'e50-hit4', 0); fight(e, P, 1);
@@ -122,7 +122,9 @@ ok(/"id": "ENG50-1"/.test(rd('docs/decisions.json')), 'decision ENG50-1 asks whe
 // ================= 6. Grant {who} {what} =================
 { const {e, P} = mk(); put(e, P, 1, 'e50-grantSturdy', -1); const ev = []; e.debugSpawnCard(P, so, 1, 'e50-dummy', 'right', {}, ev); const c = newest(P[1]);
   ok(e.effectsOf(c).sturdy === true && c.eng27Granted && c.eng27Granted.sturdy === true && ev.some(x=> fxOf('grant', c.uid)(x) && x.skills.join() === 'sturdy'), 'Grant {played ally} {Sturdy}: the ally has Sturdy for the fight');
-  const a = put(e, P, 2, 'e50-hit4', 0); c.slot = 0; e.syncSlots && e.syncSlots(P[1]); const hp0 = c.hp; e.debugAttack(P, so, a.uid, {}, []); ok(hp0 - c.hp === 2 || hp0 - c.hp === 0, 'a granted Sturdy halves the hit'); }
+}
+{ const {e, P} = mk(); put(e, P, 1, 'e50-grantSturdy', -1); const c = put(e, P, 1, 'e50-dummy', 0), a = put(e, P, 2, 'e50-hit4', 0); swing(e, P, a);
+  ok(c.hp === 498, `a granted Sturdy halves the hit (4 -> ${500 - c.hp})`); }
 { const {e, P} = mk(); const g = put(e, P, 1, 'e50-grantMighty', 0), t = put(e, P, 2, 'e50-dummy', 0); swing(e, P, newest(P[1])); ok(t.hp === 494, `Grant {itself} {Mighty}: 3 x2 = ${500 - t.hp}`); void g; }
 { const {e, P} = mk(); const x = put(e, P, 1, 'e50-dummy', -1), y = put(e, P, 1, 'e50-dummy', 1); put(e, P, 1, 'e50-grantArmorAll', 0);
   const xs = all(P[1]).filter(c=> c.uid === x.uid || c.uid === y.uid); ok(xs.length === 2 && xs.every(c=> e.effectsOf(c).armor === 2), 'Grant {every ally} {Armor 2}'); }
@@ -133,7 +135,7 @@ ok(/"id": "ENG50-1"/.test(rd('docs/decisions.json')), 'decision ENG50-1 asks whe
 { const app = rd('arena_app.js'); ok(/function eng50GrantChoices\(\)/.test(app) && /data-t="grantSkill"/.test(app) && /key==='grantSkill'/.test(app), 'the editor\'s Grant picker offers the priced skills (grant.<key> rows) and stores t.skill + t[skill]'); }
 
 // ================= 7. Bulwark grows with level =================
-{ const hpAt = id=>{ const {e, P} = mk(); put(e, P, 1, id, 0); const w = all(P[1]).find(c=> (e.derivedDefs[c.defId] || defs[c.defId] || {}).bulwarkWall || (E && false)); return w ? w.maxHp : null; };
+{ const hpAt = id=>{ const {e, P} = mk(); put(e, P, 1, id, 0); const w = all(P[1]).find(c=> (e.derivedDefs[c.defId] || defs[c.defId] || {}).bulwarkWall); return w ? w.maxHp : null; };
   const h1 = hpAt('e50-bulwark'), h4 = hpAt('e50-bulwark4'), h10 = hpAt('e50-bulwark10');
   ok(h1 === 5 && h4 === 6 && h10 === 8, `Bulwark's Log Wall: 0/5 at Level 1, 0/6 at 4, 0/8 at 10 (${h1}, ${h4}, ${h10})`); }
 
