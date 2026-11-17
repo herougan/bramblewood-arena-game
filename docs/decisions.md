@@ -4,6 +4,12 @@ _Generated from `decisions.json` (2026-11-17). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**POWDER1-1. Sleeping Powder: can it keep one unit asleep?** · Decide · Engine · asked 2026-11-17
+- Sleeping Powder N puffs every round at Speed -1. Built so it skips a unit that is already asleep (as Ice Arrow skips a Frozen one): the unit facing it sleeps N rounds, then gets 1 round awake. Stacking like Sleep N (up to N+1 tokens) would keep that unit asleep every round while the powder unit lives.
+  - a) Keep it: no puff lands on a sleeping unit (N rounds asleep in N + 1).
+  - b) Stack like Sleep N: it can keep one unit asleep for good (priced about twice as high).
+- **Default:** a
+
 **ECONSK1-1. Metallurgy: what does it do?** · Decide · Engine · asked 2026-11-16
 - Metallurgy is on the skill list as "Unknown, Metal tier only" and does nothing yet (owner 11-16 23:28). It is on no card and priced 0. Pick its effect.
   - a) Every turn while Ready: Refining costs 1 Lumber less on your side (2 Lumber + 2 Stone becomes 1 Lumber + 2 Stone).
@@ -798,6 +804,10 @@ _Generated from `decisions.json` (2026-11-17). The hub has a searchable, filtera
 - **Default:** a
 
 ## Decided
+
+**OWN-1117-1. Bolts and powders on Maps 0-20** · Decide · Skills · asked 2026-11-17 · decided 2026-11-17
+- Owner 11-17 17:32: "Bolts - only fire bolt in Map 20. The rest of the bolts e.g. Archer Fish's Water Bolt is in Map 21+. Status Powder: Start with Sleeping Powder and Poison Powder for now. Powders would be Speed -1 actions." Built as BOLT2 (bolt cards off Maps 0-19) and POWDER1 (the powder family).
+  - As stated
 
 **REFIT3-1. REFIT3: 4 more road decks from a wider legal search** · Decide · Balance · asked 2026-11-17 · decided 2026-11-17
 - A wider legal search (random and exhaustive legal decks, multi-card and two-step moves) on the 26 fights REFIT2 left. 4 decks land in band on two fresh seed sets at 400 games: 1-5 61 to 44% (target 40), 10-A-1 81 to 89 (90), 12-7 54 to 47 (40), 11-9 69 to 65 (60; marginal, in band on 2 of 4 reads). Whole road with them: main 129/149 in band on seed 7600 (now 128), 126 on 91100 (124). Deck problems 21 = 21; skir1 failures 34 to 32, none new. The rest stop at their pools' legal limits.
