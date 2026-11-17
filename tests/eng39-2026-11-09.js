@@ -13,6 +13,7 @@
 //      type + form), Evolute / Supreme left apart; ENG35-4 the bramble rider beside the type, shown in the editor (a Bramble box);
 //      ENG35-3 b would change Sunthroat Courier's price, so it is not done (decision ENG39-3)
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const H = require('./lib/harness.js');
 const fs = require('fs'), path = require('path'), vm = require('vm'), cp = require('child_process');
 const ROOT = path.join(__dirname, '..');
@@ -73,22 +74,27 @@ ok(cards.every(c=> eq(SPL.fuseDef(c), c)), 'fuse is idempotent on cards.json');
 
 // ---- C: the pre-fold cards
 const PREF = J('tests/golden/eng39-pre-fold-effects.json'), PRE = PREF.effects, PRELS = PREF.levelSkills || {}, preIds = Object.keys(PRE), byId = {}; cards.forEach(c=> byId[c.id] = c);
+// 2026-11-18 (TESTFIX): the redesign (OWN-1117-3) re-set 23 of these cards; for them the fused side is their snapshot fused (SPL.fuse(PRE)), so the proof
+// still compares old keys with fused keys on the same skills, and only the untouched cards are compared with cards.json
+// (also re-set on purpose, with no dated note: ARROW1-2's Fire Drake Hatchling, owner 11-17 21:28; ECONSK1's Forestry cards, 11-16)
+const later = id=> redesigned(id) || id === 'fire-drake-hatchling' || !!(byId[id] && (byId[id].effects || {}).forestry);
+const keptIds = preIds.filter(id=> !later(id)), fusedOf = id=> later(id) ? SPL.fuse(PRE[id]) : byId[id].effects;
 ok(preIds.length === 54 && Object.keys(PRELS).join() === 'fire-drake-hatchling', 'the snapshot holds the 54 cards the fold changed (one with a level skill)');
-ok(Object.keys(PRELS).every(id=> Object.keys(PRELS[id]).every(L=> eq(SPL.expand(byId[id].levelSkills[L]), SPL.expand(PRELS[id][L])))), 'its level skills expand to the old ones');
-ok(preIds.every(id=> eq(SPL.expand(byId[id].effects), SPL.expand(PRE[id]))), 'every folded card expands to exactly its old effects (keys, values, order)');
-ok(preIds.every(id=> eq(SPL.fuse(PRE[id]), byId[id].effects)), 'and its old effects fuse to what cards.json holds');
+ok(Object.keys(PRELS).filter(id=> !later(id)).every(id=> Object.keys(PRELS[id]).every(L=> eq(SPL.expand(byId[id].levelSkills[L]), SPL.expand(PRELS[id][L])))), 'its level skills expand to the old ones');
+ok(keptIds.every(id=> eq(SPL.expand(byId[id].effects), SPL.expand(PRE[id]))), 'every folded card expands to exactly its old effects (keys, values, order)');
+ok(keptIds.every(id=> eq(SPL.fuse(PRE[id]), byId[id].effects)), 'and its old effects fuse to what cards.json holds');
 { const SC = require('../tools/skill_costs.js'), T = SC.make(J('canonical/skill-costs.json')), BB = require('../bramblewood-budget.js');
-  const diff = preIds.filter(id=> { const c = byId[id]; const a = T.budget(Object.assign({}, c, {effects: PRE[id]})), b = T.budget(c);
+  const diff = preIds.filter(id=> { const c = byId[id]; const a = T.budget(Object.assign({}, c, {effects: PRE[id]})), b = T.budget(Object.assign({}, c, {effects: fusedOf(id)}));
     return a.S !== b.S || a.N !== b.N || a.x1 !== b.x1 || a.x2 !== b.x2 || a.ok !== b.ok; });
   ok(!diff.length, 'the budget prices each folded card the same with old or fused keys (S, N, both caps) (' + diff.join(', ') + ')');
-  ok(preIds.every(id=> BB.skillCountOf(PRE[id]) === BB.skillCountOf(byId[id].effects) && BB.nMultOf(PRE[id], {}) === BB.nMultOf(byId[id].effects, {})), 'skill count and N multiplier the same');
+  ok(preIds.every(id=> BB.skillCountOf(PRE[id]) === BB.skillCountOf(fusedOf(id)) && BB.nMultOf(PRE[id], {}) === BB.nMultOf(fusedOf(id), {})), 'skill count and N multiplier the same');
   // every kind priced alone, old key vs fused, at a few values
   const kd = []; Object.keys(WANT).forEach(k=> [true, 1, 2, 3].forEach(v=>{ const a = T.skillCost ? T.skillCost(k, v) : null, f = SPL.fuse({[k]: v}), fk = Object.keys(f)[0]; const ex = SPL.expand(f);
     if(!eq(ex, {[k]: v})) kd.push(k + ' ' + v); void a; void fk; }));
   ok(!kd.length, 'every kind at true / 1 / 2 / 3 round-trips to its old key, so the price table reads it (' + kd.join(', ') + ')'); }
 const base = H.loadCardDefs();
 function defsWith(fx, lsx){ const d = Object.assign({}, base); preIds.forEach(id=>{ if(d[id]){ d[id] = Object.assign({}, d[id], {effects: JSON.parse(JSON.stringify(fx(id)))}); const L = lsx(id); if(L) d[id].levelSkills = JSON.parse(JSON.stringify(L)); } }); return d; }
-const flat = id=> PRE[id], fused = id=> byId[id].effects, flatLs = id=> PRELS[id] || null, fusedLs = id=> PRELS[id] ? byId[id].levelSkills : null;
+const flat = id=> PRE[id], fused = id=> fusedOf(id), flatLs = id=> PRELS[id] || null, fusedLs = id=> PRELS[id] ? (later(id) ? Object.fromEntries(Object.entries(PRELS[id]).map(([L, o])=> [L, SPL.fuse(o)])) : byId[id].levelSkills) : null;
 const opp = H.fieldableIds(base).filter((id, i)=> i % 37 === 0).slice(0, 14);
 let boards = 0; const boardDiff = [];
 preIds.filter(id=> base[id]).forEach(id=> opp.forEach((o, j)=> [1, 2].forEach(seed=>{
@@ -128,7 +134,7 @@ ok(D.rides.weaken && D.rides.breach && D.rides.constrict, 'rides keeps the old k
   const want = k=> WANT[k][0] + '.' + Object.keys(WANT[k][1]).map(p=> p + '=' + WANT[k][1][p]).join(',');
   ok(Object.keys(WANT).every(k=> marked[k] === want(k)), 'skill-costs.json marks each kind kindOf family.selector=value (' + Object.keys(WANT).filter(k=> marked[k] !== want(k)).join(', ') + ')');
   ok(!(C.actions || []).some(a=> a.kindOf), 'the actions list is untouched (Stench and Constrict are also actions)'); }
-{ const I = require('../bramblewood-integrity.js'), flatList = cards.map(c=> SPL.expandDef(c)), oldList = cards.map(c=> PRE[c.id] ? Object.assign({}, c, {effects: PRE[c.id]}) : c);
+{ const I = require('../bramblewood-integrity.js'), flatList = cards.map(c=> SPL.expandDef(c)), oldList = cards.map(c=> PRE[c.id] && !later(c.id) ? Object.assign({}, c, {effects: PRE[c.id]}) : c);
   ok(I.cardDataHash(cards) === I.cardDataHash(flatList) && I.cardDataHash(cards) === I.cardDataHash(oldList), 'the card-data hash is the same for cards.json (fused), the flat cards the page gets and the pre-fold cards'); }
 { const SCT = J('canonical/skill-counters.json'), named = new Set(Object.keys(SCT.counters || {}).concat(SCT.noCounter || [], Object.keys(SCT.applies || {})));
   const carried = [...new Set(kindCards.flatMap(c=> Object.keys(SPL.expandDef(c).effects || {}).filter(k=> kindSet.has(k))))];
@@ -136,7 +142,7 @@ ok(D.rides.weaken && D.rides.breach && D.rides.constrict, 'rides keeps the old k
 { const html = fs.existsSync(path.join(ROOT, 'index.html')) ? rd('index.html') : '';
   ok(/"kinds": \{/.test(html) && /function kindOf\(k\)/.test(html), 'index.html carries the kinds and the helper (rebuilt)');
   const m = html.match(/"id": ?"lamprey"[^\n]{0,4000}?"effects": ?\{([^}]*)\}/), m2 = html.match(/"id": ?"ice-petrel"[^\n]{0,4000}?"effects": ?\{([^}]*)\}/);
-  ok(m && /"weaken": ?1/.test(m[1]) && m2 && /"iceBolt": ?2/.test(m2[1]), 'index.html card data is flat (Lamprey has weaken, Ice Petrel iceBolt: no fused kind reaches the page)'); }
+  ok((redesigned('lamprey') /* 2026-11-18 (TESTFIX): FOLD6 took its Weaken */ || (m && /"weaken": ?1/.test(m[1]))) && m2 && /"iceBolt": ?2/.test(m2[1]), 'index.html card data is flat (Lamprey has weaken, Ice Petrel iceBolt: no fused kind reaches the page)'); }
 
 // ---- E: texts
 const {TEXT} = require('../bramblewood-texts.js');

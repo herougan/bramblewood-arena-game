@@ -49,6 +49,9 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
     ok(b.some(x=> x.map === id && x.key === nd.key && x.games === 40) && a.some(x=> x.map === id && x.key === nd.key && x.games === 40), `3. ${id} ${nd.key} measured before and after (40 games)`); }); }); }
 
 // ---- 4. L7 is a proposal
+const { listAdded, withListMoves } = require('./lib/redesign.js');
+// 2026-11-18 (TESTFIX): BOLT2 (owner 11-17 17:32) moved Archerfish from the Uncommons list to Map 21 and took Fire Salamander off it
+const BOLT2_ON = { m21: 'archerfish' }, BOLT2_OFF = { muc: ['archerfish', 'fire-salamander'] };
 { const plan = J('docs/balance/content4-map-pools-plan-2026-10-28.json'), pools = J('canonical/map-pools.json').maps, cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, c]));
   ok(fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-trim-2026-10-28.js')) && fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-apply-2026-10-28.py')) && fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-plan-2026-10-28-keeppro.json')), '4. the script, the apply step and both plans exist');
   // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05). The lists THEME2 rewrote are its proposal now (main map: the proposal; submap: the
@@ -67,16 +70,17 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
     // record has the map, the expectation is LIST1's (a side map: his Yes + the kept Carried cards; a main map: SKIR3's list less LIST1's drops plus its
     // adds), compared as a set; the Yes check reads his 11-13 picks (docs/design/map-picks-owner-2026-11-13.json, LIST1's file of them)
     const L1 = J('docs/balance/list1/fold-2026-11-13.json'), l1 = L.sub ? L1.side[L.sub] : L1.main[L.map], sameSet = (a, b)=> JSON.stringify([...new Set(a)].sort()) === JSON.stringify([...new Set(b)].sort());
-    if(!L.sub && PK[L.map]) ok(live && live.every(id=> PK[L.map].yes.includes(id) || ['barrel-cactus', 'planarian-splitter', 'nutria-reedcutter'].includes(id)), `4. ${L.map}: every listed card is one of the owner's 11-13 Yes picks (or a SKIR3 add)`);
+    // 2026-11-18 (TESTFIX): + FOLD6's list moves and CONTENT13's cards (OWN-1117-3), tests/lib/redesign.js
+    if(!L.sub && PK[L.map]) ok(live && live.every(id=> PK[L.map].yes.includes(id) || ['barrel-cactus', 'planarian-splitter', 'nutria-reedcutter'].includes(id) || listAdded(L.map, id) || BOLT2_ON[L.map] === id), `4. ${L.map}: every listed card is one of the owner's 11-13 Yes picks (or a SKIR3 add)`);
     if(t2 && l1){ const want1 = L.sub ? l1.ownerYes.concat(l1.keptCarried) : ((s3r && s3r.list) || []).filter(id=> !(l1.dropped || []).includes(id)).concat(l1.added || []);
-      ok(live && sameSet(live, want1), `4. ${k}: the live list is LIST1's (the owner's 11-13 picks; ${live && live.length} vs ${new Set(want1).size})`); return; }
+      ok(live && sameSet(live, withListMoves(L.map, L.sub, want1, live).concat(BOLT2_ON[L.sub || L.map] && live.includes(BOLT2_ON[L.sub || L.map]) ? [BOLT2_ON[L.sub || L.map]] : [])), `4. ${k}: the live list is LIST1's (the owner's 11-13 picks; ${live && live.length} vs ${new Set(want1).size})`); return; }
     if(t2){ const want = ((s3r && s3r.list) || (T3[L.sub || L.map]) || t2.proposed).filter(id=> L.sub || RELFIX3_BOSS[L.map] !== id || !(pools[L.map].special || []).includes(id));
       // 2026-11-04 (TESTFIX1): CONTENT8 (2026-11-02, owner 21:12, CONTENT7-1 / KK17) placed new sea cards on four lists after THEME3; they are not THEME3's to list
       const c8 = id=> /package CONTENT8, owner 21:12, CONTENT7-1 \/ KK17\): placed on the /.test((by[id] || {}).creatorNote || ''), liveT = live && live.filter(id=> !c8(id));
       // 2026-11-05 (CONTENT10): map-review.json now lists CONTENT8's placements too (so the Map cards window counts them); they stay aside here
-      const wantT = want.filter(id=> !c8(id));
+      const wantT = withListMoves(L.map, L.sub, want, live).filter(id=> !c8(id));
       ok(live && JSON.stringify(liveT) === JSON.stringify(wantT), `4. ${k}: the live list is THEME3's (THEME2's where THEME3 has none; ${liveT && liveT.length} vs ${wantT.length}, CONTENT8's placements aside)`); return; }
-    ok(live && live.length === L.before, `4. ${k}: the live pool is the plan's "before" (${live && live.length} vs ${L.before}): not applied`);
+    ok(live && live.length + (BOLT2_OFF[L.sub || L.map] || []).filter(id=> !live.includes(id)).length === L.before, `4. ${k}: the live pool is the plan's "before" (${live && live.length} vs ${L.before}): not applied`);
     if(!L.skipped){ ok(L.afterNew <= Math.max(7, L.keptNew.filter(s=> / \(/.test(s)).length), `4. ${k}: new cards capped (${L.afterNew})`);
       ok(L.keep.every(id=> live.includes(id) || (L.addedOld || []).includes(id)), `4. ${k}: the plan keeps only cards of its list (or carried deck cards)`); } });
   ok(plan.awaiting.every(a=> by[a.id] && !by[a.id].awaitingSource && by[a.id].source), '4. none of the plan\'s cards was sent to awaiting (nothing applied)');

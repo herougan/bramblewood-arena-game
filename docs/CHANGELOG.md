@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-18 (package TESTFIX: tests follow the redesign, OWN-1117-3)
+- Players see: nothing (tests only).
+- Under the hood: `tests/lib/redesign.js` (+ `redesign-changed.json`, the 254 cards FOLD6 / SKAUD1 / CONTENT13 / ENG51 changed against main b33ef951): old pins of a card's stats, skills or list accept a re-set card, a dated later note, FOLD6's list moves and CONTENT13's cards; untouched cards keep their pins. About 70 test files updated; scenes that used a real card for a mechanic its redesign took (Rage, Venom Glands, Devour, Willow-o'-Wisp, Puffin's Dive) deal a test copy instead. Deck pins (REFIT4), balance bands (CARDPOW2) and data bugs are left failing and listed in the package report.
+
 ## 2026-11-18 (package FXAUD2: the effects and sound audit's fix list)
 - Players see: Rend (Vulnerable) and Enfeeble have their own sounds, with a short tick when a token is spent; a hit on a Vulnerable unit no longer sounds Shocked and a hit by a Feeble unit no longer sounds like armour. Weaken has its own sound and a 🪓 (💔 stays Vulnerable's). Twelve statuses that were silent now make a short sound (Chilli, Coffee, Wilting, Taunt, Shed, Thaw, Prayer, Recoil, unit Shield, Stun Player, Curse tick, Strangle tick). The Inspire horn is quieter, the quiet new cues louder, three harsh peaks softer. The log and floats say "Underwater Currents" (12 languages), Armourer's line says what it did; five engine events that showed nothing now float a small mark.
 - Under the hood: fireball, meteor, poison bubbles, bloom petals and the crater scorch draw nothing at Effects None or in a hidden tab; an HP-only buff skips its aura below Medium; Paralysis Powder keeps its cue at Effects None; the elite glint stops in fights; the audio context suspends while hidden; the Home tip ticker and Energy HUD wait during a fight. Tests: `tests/fxaud2-2026-11-18.js`, `tests/e2e/fxaud2_gates.py` (--e2e). Left for later: `evolve` (28 ms call), shared `curse` / `boom` / `swipeTone` variants.

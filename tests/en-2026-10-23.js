@@ -2,6 +2,7 @@
 // 2026-10-23 (package EN): the owner's 10-23 00:10 answers GD2-1, GD2-5, TR-4 .. TR-6, EV-1 .. EV-7, FX2-1, D21, D24, FOG1 and his 01:57
 // notes 2 (Bulwark N), 5 (the Mimic) and 10 (Swarm without Structures). Engine scenarios, prices and data pins.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const H = require('./lib/harness.js');
 const E = H.Engine;
 const fs = require('fs'), path = require('path');
@@ -137,7 +138,8 @@ ok(!cards.some(c=> c.effects && (c.effects.spellshield || (c.effects.transform &
   // 2026-10-24 (package EN8, owner 21:20 #7: "don't introduce stem first"): Fodder stays only on the babies first obtainable on Map 20+ (3)
   ok(babies.length >= 3 && babies.every(c=> !(c.effects || {}).stem && c.mechanicLine !== 'evolution'), `EV-6: ${babies.length} baby-like cards gain Stem (Fodder) at Level 1, none has it at Level 0`); }
 { const m = byId.get('coffer-mimic');
-  ok(m && m.effects.shapeshifter && m.effects.thorns === 2 && m.cost === 1 && m.wait === 1 && (m.archetypes || []).includes('Structure') && !m.effects.changeling, 'the Coffer Mimic: a Structure Shapeshifter, Thorns 2 (BF11, owner EN-4), Lumber 1, Wait 1');
+  // 2026-11-18 (TESTFIX): SKAUD1 merged Shapeshifter into Changeling (a Structure Changeling shares a type with every Structure)
+ok(m && (m.effects.shapeshifter ? !m.effects.changeling : m.effects.changeling && redesigned('coffer-mimic')) && m.effects.thorns === 2 && m.cost === 1 && m.wait === 1 && (m.archetypes || []).includes('Structure'), 'the Coffer Mimic: a Structure Shapeshifter, Thorns 2 (BF11, owner EN-4), Lumber 1, Wait 1');
   const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8'));
   // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05); THEME2 leaves the Coffer Mimic off the caves' list (on no list: not obtainable yet)
   const t2 = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'theme2-proposal-2026-10-28.json'), 'utf8')).maps.find(m=> m.key === 'm4');

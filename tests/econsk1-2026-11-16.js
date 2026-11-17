@@ -84,7 +84,8 @@ ok(!every.length, `no card keeps Delivery every round (${every.map(c=> c.id).joi
 const forest = cards.filter(c=> c.effects && c.effects.forestry === 1).map(c=> c.id);
 ok(forest.length >= 11 && ['land-tiller', 'rodent-king', 'nautilus-drifter', 'chipmunk-hoarder'].every(id=> forest.includes(id)), `the every-round Lumber deliverers are Forestry 1 (${forest.length})`);
 ok(!cards.some(c=> c.effects && (c.effects.smelter)), 'no card carries the old Smelter key');
-ok(cards.some(c=> c.effects && c.effects.stonecutter), 'Stonecutter (Stone every 2nd turn, not 2 Lumber -> 1 Stone) stays');
+// 2026-11-18 (TESTFIX): SKAUD1 merged Stonecutter into Masonry (docs/design/skaud1-2026-11-17.json); the old key must not come back
+ok(!cards.some(c=> c.effects && c.effects.stonecutter), 'Stonecutter merged into Masonry (SKAUD1): no card keeps it');
 
 // ---- 8. app, texts, prices, decision, notes
 const app = R('arena_app.js'), blk = app.slice(app.indexOf('// ==== ECONSK1 (2026-11-16'), app.indexOf('// ==== Package ENG24 (2026-11-04'));
@@ -96,7 +97,7 @@ ok(/ev\.kind === 'plunder'/.test(app.slice(app.indexOf('function sk2Vfx('))), 'P
 const TXT = (()=>{ const t = R('bramblewood-texts.js'); return JSON.parse(t.slice(t.indexOf('/*TEXT-TABLE-START*/') + 20, t.indexOf('/*TEXT-TABLE-END*/'))); })();
 const TK = ['ui.e22-res-gold', 'ui.skn-forestry', 'ui.sk-forestry', 'ui.skn-quarrying', 'ui.sk-quarrying', 'ui.skn-mining', 'ui.sk-mining', 'ui.skn-masonry', 'ui.sk-masonry', 'ui.skn-metallurgy', 'ui.sk-metallurgy', 'ui.sk-metallurgy-codex',
   'ui.skn-prospecting', 'ui.sk-prospecting', 'ui.sk-prospecting-codex', 'ui.skn-plunder', 'ui.sk-plunder', 'ui.skn-barter', 'ui.sk-barter', 'ui.sk-barter-codex', 'ui.log-econ-gold', 'ui.econ-log-plunder'];
-TK.forEach(k=> ok(TXT[k] && app.includes(`TX('${k}'`), `${k}: a text, used`));
+TK.forEach(k=> ok(TXT[k] && (app.includes(`TX('${k}'`) || app.includes(`: '${k}'`)) /* 2026-11-18 (TESTFIX): SKAUD1's plunderRes picks the key in a ternary */, `${k}: a text, used`));
 ok(TXT['ui.sk2n-smelter'] === 'Refining', 'Smelter reads as Refining');
 const strip = s=> String(s).replace(/^[^\p{L}{]+/u, '');
 ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const pack = JSON.parse(R('lang/' + code + '.json'));

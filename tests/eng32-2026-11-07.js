@@ -7,6 +7,7 @@
 //   3. Preternatural: stated, not built (docs/project-state.md), on no card, no engine effect;
 //   4. prices, texts in the 12 packs, the board's three looks (app source).
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT || path.join(__dirname, '..');
@@ -15,7 +16,7 @@ const so = id=> id === 1 ? 'A' : 'B';
 const U = (id, effects, o)=> Object.assign({id, name:id, attack:1, health:100, wait:0, cost:0, effects}, o || {});
 const defs = Object.assign({}, H.loadCardDefs(), {
   'x-dive': U('x-dive', {flying:true, dive:2}, {attack:3, health:50}), 'x-dive0': U('x-dive0', {flying:true, dive:true}, {attack:3, health:50}),
-  'x-dive-t': U('x-dive-t', {tide:true, dive:1}, {attack:3, health:50}), 'x-dive-q': U('x-dive-q', {quick:true, dive:1}, {attack:3, health:50}),
+  'x-dive-t': U('x-dive-t', {tide:true, dive:1}, {attack:3, health:50}), 'x-puffin': U('x-puffin', {tide:true, flying:true, dive:2}, {attack:2, health:5, wait:1}) /* 2026-11-18 (TESTFIX): Puffin Diver's Dive 2 line before FOLD6 */, 'x-dive-q': U('x-dive-q', {quick:true, dive:1}, {attack:3, health:50}),
   'x-hit': U('x-hit', {}, {attack:2, health:500}), 'x-wall': U('x-wall', {}, {attack:0, health:500, wait:9}), 'x-weak': U('x-weak', {}, {attack:0, health:5, wait:9}),
   'x-taunt': U('x-taunt', {taunt:true}, {attack:0, health:40, wait:9}),
   'x-brood': U('x-brood', {brood:2, armor:1, flying:true}, {attack:4, health:9, species:['Arachnid'], archetypes:['Forest']}),
@@ -69,8 +70,9 @@ let huid = 90000; const give = (P, pid, defId)=>{ const uid = huid++; P[pid].han
 // the two Dive cards
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), by = id=> cards.find(c=> c.id === id);
   const pf = by('puffin-diver'), hs = by('harbor-seal');
-  ok(pf.effects.dive === 2 && pf.attack === 2 && pf.health === 5 && hs.effects.dive === 2 && hs.attack === 1 && hs.health === 9, 'the two Dive cards are unchanged (Dive 2 = + 2 bonus)');
-  const {e, P} = mk(); const S = put(e, P, 1, 'puffin-diver', 0); put(e, P, 2, 'x-wall', 0); const r = [...round(e, P), ...round(e, P)].find(x=> x.type === 'diveRise'); // Wait 1: it rises in round 2
+  // 2026-11-18 (TESTFIX): FOLD6 made Puffin Diver a 2/8 Tide 2 pouncer (no Dive); its old line is the scene's x-puffin
+  ok((redesigned('puffin-diver') || (pf.effects.dive === 2 && pf.attack === 2 && pf.health === 5)) && hs.effects.dive === 2 && hs.attack === 1 && hs.health === 9, 'the two Dive cards are unchanged (Dive 2 = + 2 bonus)');
+  const {e, P} = mk(); const S = put(e, P, 1, pf.effects.dive ? 'puffin-diver' : 'x-puffin', 0); put(e, P, 2, 'x-wall', 0); const r = [...round(e, P), ...round(e, P)].find(x=> x.type === 'diveRise'); // Wait 1: it rises in round 2
   ok(r && r.mode === 'fly' && r.n === 2, 'Puffin Diver (Flying + Tide): aloft, + 2'); void S;
   const g = mk(); put(g.e, g.P, 1, 'harbor-seal', 0); put(g.e, g.P, 2, 'x-wall', 0); const r2 = [...round(g.e, g.P), ...round(g.e, g.P)].find(x=> x.type === 'diveRise');
   ok(r2 && r2.mode === 'tide' && r2.n === 2, 'Harbor Seal (Tide): under, + 2'); }

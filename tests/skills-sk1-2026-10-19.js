@@ -5,6 +5,7 @@
 //   parameter), Anchor (each displacement), Expose N (strips hiding, for N rounds), Exploit N (tokens, used one a hit), Punish N (flag),
 //   Siege N (Structures and the bramble, the old Demolisher alias), Spoils N, Venom Pulse N, and the Cure / Heal / Cleanse split.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js'), E = H.Engine;
 const ROOT = path.join(__dirname, '..'), R = f=> fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -254,7 +255,7 @@ ok(Tc.cardS({spoils:2}).S === Math.round(table.triggers.find(x=> x.id === 'onKil
 // ---- 16. No live card carries a new skill; the docs
 const ALL = JSON.parse(R('canonical/cards.json')).map(c=> require('../bramblewood-skillparams.js').expandDef(c)); // ENG39 (2026-11-09): kinds read as their old keys (Sociable is Formation {range: 2})
 // 2026-10-21 (BF5, the owner's 10-21 ruling on the ants: "give each a distinct second skill"): the Soldier Ant carries Formation 1, the one exception
-ok(!ALL.some(c=> c.id !== 'soldier-ant' && c.effects && ['formation', 'isolation', 'anchor', 'spoils', 'venomPulse', 'punish' /* 2026-11-18 (SKAUD1): Exploit is a Map 14 skill (REDESIGN3) */].some(k=> c.effects[k] != null)), 'no card has a new skill yet (owner: not on existing cards; BF5: but the Soldier Ant\'s Formation)');
+ok(!ALL.some(c=> c.id !== 'soldier-ant' && !redesigned(c.id) /* 2026-11-18 (TESTFIX): the redesign (OWN-1117-3) places skills on purpose */ && c.effects && ['formation', 'isolation', 'anchor', 'spoils', 'venomPulse', 'punish' /* 2026-11-18 (SKAUD1): Exploit is a Map 14 skill (REDESIGN3) */].some(k=> c.effects[k] != null)), 'no card has a new skill yet (owner: not on existing cards; BF5: but the Soldier Ant\'s Formation)');
 const D = JSON.parse(R('docs/decisions.json')), md = R('docs/decisions.md'), sk = (D.rules || []).find(r=> /Package SK1/.test(r.intro || ''));
 ok(sk && sk.items.some(x=> /Maps 21–40 are mostly about using the skills already learnt/.test(x)) && sk.items.some(x=> /canonical animals, arrange skills and stats/.test(x)), 'decisions.json: the two design notes');
 ok(md.includes('**Maps 21–40 are mostly about using the skills already learnt**') && md.includes('**Cure / Heal / Cleanse**'), 'decisions.md regenerated with them');

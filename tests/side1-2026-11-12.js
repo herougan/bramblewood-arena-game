@@ -11,6 +11,7 @@
 //      every card in play on the 11-12 lists, the hub's Card table carrying the reading, the Phase B plan, project-state's rule, a CHANGELOG entry
 //   node tests/side1-2026-11-12.js
 'use strict';
+const { withListMoves } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8')), read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -24,7 +25,7 @@ ok(L.SIDES.length === 15 && L.SIDES.every(s => PR[s]), '0. a proposal for each o
 // as the list) are not asked of it; the proposal file and the record checks below stay
 const L1 = J('docs/balance/list1/fold-2026-11-13.json').side, sameSet = (a, b) => JSON.stringify([...new Set(a)].sort()) === JSON.stringify([...new Set(b)].sort());
 L.SIDES.filter(s => L1[s]).forEach(s => { const live = (P[L.parentOf(s, P)].submaps || {})[s] || [], r = L1[s];
-  ok(sameSet(live, r.ownerYes.concat(r.keptCarried)), `1. ${s}: the list is LIST1's (the owner's 11-13 Yes + kept Carried)`);
+  ok(sameSet(live, withListMoves(Object.keys(P).find(t=> (P[t].submaps || {})[s]), s, r.ownerYes.concat(r.keptCarried), live)) /* 2026-11-18 (TESTFIX): + FOLD6's list moves */, `1. ${s}: the list is LIST1's (the owner's 11-13 Yes + kept Carried)`);
   ok(r.ownerYes.every(id => live.includes(id)), `1. ${s}: every one of the owner's 11-13 Yes picks is listed`); });
 L.SIDES.filter(s => !L1[s]).forEach(s => {
   const par = L.parentOf(s, P), list = (P[par].submaps || {})[s] || [], pr = PR[s] || { yes: [] }, idx = L.carriedIndex(L.unlockOf(s), P);

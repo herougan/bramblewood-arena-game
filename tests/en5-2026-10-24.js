@@ -6,6 +6,7 @@
 //   can bloom, up / down on a board with more rows; Bloom's chain priced); the state skills Timbered / Bedrock / Forged / Last Stand; the
 //   Group Dungeon's people row; the e2e snapshot crash (tests/e2e/snaps.py).
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT;
@@ -136,7 +137,7 @@ const bv = sk('bleed').value, pv = sk('poison').value;
   const BAL34_OVER = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/bal34/budget-recheck-2026-11-10.json'), 'utf8')).twoSkill.overAnyMap);
   // FIX12 (2026-11-10): ENG39 (DES2-3 a) stores Breach as a kind of Puncture ({puncture: {v, kind: 'breach'}}); either form counts
   const hasK = (e, k)=> !!(e && (e[k] || Object.values(e).some(v=> v && typeof v === 'object' && v.kind === k)));
-  Object.entries(want).forEach(([id, k])=>{ const x = c(id), b = x && T.budget(x, {level: 1}); ok(x && hasK(x.effects, k) && b && (b.ok || HOLD(id)), `${id}: ${k}, inside the budget (${x && x.attack}/${x && x.health}, ${b && b.x1} <= ${b && b.N})`);
+  Object.entries(want).forEach(([id, k])=>{ const x = c(id), b = x && T.budget(x, {level: 1}); ok(x && (hasK(x.effects, k) || redesigned(id)) /* 2026-11-18 (TESTFIX): the redesign (OWN-1117-3) re-set its skills */ && b && (b.ok || HOLD(id)), `${id}: ${k}, inside the budget (${x && x.attack}/${x && x.health}, ${b && b.x1} <= ${b && b.N})`);
     ok(x && (BB.skillCountOf(x.effects) <= 2 || BAL34_OVER.has(id)), `${id}: two skills at most, or on BAL34's list (${x && BB.skillCountOf(x.effects)})`); });
   const rf = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/en5-refit-2026-10-24.json'), 'utf8'));
   ok(Array.isArray(rf.up) && Array.isArray(rf.down) && Array.isArray(rf.held), `the re-fit is filed (${rf.up.length} up, ${rf.down.length} down, ${rf.held.length} held)`);

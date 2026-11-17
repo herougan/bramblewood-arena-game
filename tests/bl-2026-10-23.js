@@ -12,6 +12,7 @@
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT;
+const { redesigned } = require('./lib/redesign.js');
 const BB = require(path.join(ROOT, 'bramblewood-budget.js'));
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 const so = id=> id === 1 ? 'A' : 'B';
@@ -115,8 +116,9 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
   const w = c=> JSON.stringify(c.effects.bloomCopy);
   ok(w(fc) === JSON.stringify({when:['wet','sunny'], mode:'and', lumber:1}), '10. Fungal Colossus: Bloom (Wet & Sunny + 1 Lumber)');
   ok(w(pb) === JSON.stringify({when:['wet','kill'], mode:'and'}), '10. Puffball Bombardier: Bloom (Wet & Killed an enemy)');
-  ok(w(lf) === JSON.stringify({when:['tide','night'], mode:'and'}) && !lf.effects.bloomWhen, '10. Lotus Frog: Bloom (Tide & Night), no Bloom When');
-  ok(nv.effects.healing === 1 && nv.effects.bloom == null, '10. Nectar Vintner: Healing 1, no Bloom');
+  // 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3) made Lotus Frog a Nocturnal pouncer without Bloom; only the no-Bloom-When half still applies to it
+ok((w(lf) === JSON.stringify({when:['tide','night'], mode:'and'}) || (redesigned('lotus-frog') && !lf.effects.bloomCopy)) && !lf.effects.bloomWhen, '10. Lotus Frog: Bloom (Tide & Night) or none since the redesign, no Bloom When');
+  ok((nv.effects.healing === 1 || (nv.effects.healing && nv.effects.healing.v === 1)) /* 2026-11-18 (TESTFIX): SKAUD1 writes Healing as {v, who} */ && nv.effects.bloom == null, '10. Nectar Vintner: Healing 1, no Bloom');
   ok(pa && w(pa) === JSON.stringify({when:['wet','sunny'], mode:'and'}) && (pa.awaitingSource || /RW5, owner 22:23/.test(pa.creatorNote || '') /* 2026-10-23 (package RW5): placed in Maps 0-9 by tools/rw5_place_new_cards_2026_10_23.js */) && pa.subtype === 'plant' && cards.filter(c=> c.numericId === pa.numericId).length === 1, '10. Pond Algae: Bloom (Wet & Sunny), awaiting a source, a unique numericId');
   ok(tb && tb.effects.bloomCopy && tb.effects.bloom == null, '10. Test: Bloom carries the new Bloom');
   ok(!cards.some(c=> c.effects && c.effects.bloomWhen) && !cards.some(c=> c.effects && c.effects.bloom != null), '10. no card has the old Bloom heal or Bloom When');

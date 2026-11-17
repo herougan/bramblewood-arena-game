@@ -9,6 +9,7 @@
 //   9. Moonpull: while it lives your Tide bonuses double; 10. Tide N.
 //   node tests/eng25-2026-11-05.js
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const ROOT = H.ROOT, E = H.Engine;
@@ -92,7 +93,7 @@ const unit = (id, a, h, fx, more)=> Object.assign({id, name:id, attack:a, health
   const t2 = e.trigsOf({effects:{tribeDelivery:'Otter', tribeDeliveryRes:'stone'}}).find(x=> x.keyword === 'tribeDelivery');
   ok(t2 && t2.filterArchetype === 'Otter' && t2.resource === 'stone', 'Otter Delivery { Stone }: the tribe and the resource are the card\'s');
   ok(/if\(e\.tribeDelivery\)\{ const tr = /.test(fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8')), 'Tribe Delivery: an On Ally Played gain with the tribe filter (en8Trigs)');
-  const bd = byId['bee-drone']; ok(bd && bd.effects.tribeDelivery === 'Bee' && bd.attack === 0 && bd.health === 6, 'Bee Drone: Bee Delivery { Lumber }, the owner\'s live 0/6 (folded in by CONTENT12, 2026-11-06)');
+  const bd = byId['bee-drone']; ok(bd && (redesigned('bee-drone') /* 2026-11-18 (TESTFIX): FOLD6 made it a 1/5 flyer that spawns a Swarmling when attacked */ || (bd.effects.tribeDelivery === 'Bee' && bd.attack === 0 && bd.health === 6)), 'Bee Drone: Bee Delivery { Lumber }, the owner\'s live 0/6 (folded in by CONTENT12, 2026-11-06)');
 }
 // ---- 4. Berries and 6. Forage
 {

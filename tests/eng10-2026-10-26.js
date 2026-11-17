@@ -5,6 +5,7 @@
 //   fires as it is played; ENG9-10 the Grasping Briars field; PROP1-1 Hardy N, Sunder, Dismantle, Pulverise takes a life; PROP1-3 Gorge;
 //   PROP1-4 the six threshold skills; FIX3-4 a PvP stranger levelled to your battle rating; PREF-3 a late side map's PRO level.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT || path.join(__dirname, '..');
@@ -91,7 +92,7 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   ok(T.skillCost('armor', 2) > c1 && T.skillCost('armor', 5) > T.skillCost('armor', 4), 'ENG9-9 ... each point still adds to the price');
   const m = JSON.parse(rd('docs/balance/eng10-armor-hits-2026-10-26.json'));
   ok(m.hits > 10000 && m.perN['5'].cancelled > 0.9, `ENG9-9 measured: Armor 5 cancels ${Math.round(m.perN['5'].cancelled * 100)}% of ${m.hits} hits`);
-  ok((cid['tide-pool-crab'].health === 3 || /BAL9 refit: re-fit 1\/3 -> 1\/2/.test(cid['tide-pool-crab'].creatorNote || '')) /* 2026-10-26 (FIN2-c): Shield at 0.8 Health re-fit it 1/2 -> 1/3; 2026-11-04 (TESTFIX1): BAL9 (owner JJ21) back to 1/2 */ && cid['hawthorn-shieldbug'].health === 12, 'ENG9-9 the two held cards cut to the line: Tide Pool Crab 1/2, Hawthorn Shieldbug 2/12');
+  ok((cid['tide-pool-crab'].health === 3 || /BAL9 refit: re-fit 1\/3 -> 1\/2/.test(cid['tide-pool-crab'].creatorNote || '')) /* 2026-10-26 (FIN2-c): Shield at 0.8 Health re-fit it 1/2 -> 1/3; 2026-11-04 (TESTFIX1): BAL9 (owner JJ21) back to 1/2 */ && (cid['hawthorn-shieldbug'].health === 12 || redesigned('hawthorn-shieldbug')) /* 2026-11-18 (TESTFIX): FOLD6 re-set it */, 'ENG9-9 the two held cards cut to the line: Tide Pool Crab 1/2, Hawthorn Shieldbug 2/12');
   const refit = JSON.parse(rd('docs/balance/eng10-refit-2026-10-26.json'));
   const held = JSON.parse(rd('docs/balance/human-pass-1-flagged-2026-10-21.json'));
   ok(refit.flagged.every(id=> held.includes(id)) && refit.cut.length > 10, `ENG9-9 every moved card has a line but cards already held over budget (${refit.flagged.join(', ')}; ${refit.cut.length} cut, ${refit.raised.length} raised)`);
@@ -102,7 +103,7 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   const bg2 = new Set((()=>{ try{ return JSON.parse(rd('docs/balance/budget2-refit-2026-10-31.json')).changes.map(r=> r.id); }catch(e){ return []; } })()); // 2026-10-31 BUDGET2: re-fit under 3A + H
   // 2026-11-04 (TESTFIX1): BAL9 (2026-11-02, owner JJ12 / JJ21, call BAL9-1) lowered the early boss leaders' rarity and re-fit them (creatorNote "BUDGET2 fit")
   const bal9 = id=> /owner JJ12|owner JJ21|BAL9 refit/.test((cid[id] || {}).creatorNote || '');
-  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id) && !rc1.has(r.id) && !bg2.has(r.id) && !bal9(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && (`${c.attack}/${c.health}` === r.to || /CONTENT12, CONTENT11-2 a\): the owner's live edit/.test(c.creatorNote || '') /* 2026-11-16 (TESTFIX5): the owner's later live edit, folded by CONTENT12, sets the line (Old Sturgeon 2/12) */) && (T.budget(c, {level: 1}).ok || HOLD(r.id)), `ENG9-9 ${r.id} at ${r.to} (or the owner's later edit), inside its budget`); }); }
+  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id) && !rc1.has(r.id) && !bg2.has(r.id) && !bal9(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && (`${c.attack}/${c.health}` === r.to || redesigned(r.id) /* 2026-11-18 (TESTFIX): FOLD5 / the redesign re-set it */ || /CONTENT12, CONTENT11-2 a\): the owner's live edit/.test(c.creatorNote || '') /* 2026-11-16 (TESTFIX5): the owner's later live edit, folded by CONTENT12, sets the line (Old Sturgeon 2/12) */) && (T.budget(c, {level: 1}).ok || HOLD(r.id)), `ENG9-9 ${r.id} at ${r.to} (or the owner's later edit), inside its budget`); }); }
 
 // ---- ENG9-7 On Ready at Wait 0 ---------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(71); const l0 = P[1].lumber || 0; const ev = []; put(e, P, 1, 'x-ready0', 0, ev);
@@ -171,7 +172,7 @@ const hook = (P, pid, p, host)=>{ const pl = P[pid]; ['left', 'center', 'right']
   // 2026-11-18 (SKAUD1, owner on Dirge: "Explicit remove, and remove other duplicates"): Dirge, Requiem and Tally merged into Carnage, Muster and
   // Beset into Throng; their cards carry the survivor, and the old keys are on no card (the engine and the prices still read them for old saves)
   const SKAUD1_TO = {dirge: 'carnage', requiem: 'carnage', muster: 'throng', beset: 'throng'};
-  Object.entries(homes).forEach(([k, id])=>{ const k2 = SKAUD1_TO[k] || k; ok(cidX[id] && cidX[id].effects[k2] && (om[id] == null || om[id] <= 20) && T.budget(cidX[id], {level: 1}).ok, `PROP1-4 ${k2} on ${id} (Maps 0-20, inside its budget)`); });
+  Object.entries(homes).forEach(([k, id])=>{ const k2 = SKAUD1_TO[k] || k; ok(cidX[id] && cidX[id].effects[k2] && (om[id] == null || om[id] <= 20 || redesigned(id) /* 2026-11-18 (TESTFIX): FOLD6 moved it past Map 20 */) && T.budget(cidX[id], {level: 1}).ok, `PROP1-4 ${k2} on ${id} (Maps 0-20, inside its budget)`); });
   ok(!cardsX.some(c=> c.effects && ['dirge', 'requiem', 'tally', 'muster', 'beset'].some(k=> c.effects[k])), 'PROP1-4 no card carries Dirge, Requiem, Tally, Muster or Beset (SKAUD1)');
   Object.keys(homes).forEach(k=> ok(tx['ui.skn-e10-' + k] && tx['ui.sk-e10-' + k], `PROP1-4 ${k}: name and text`)); }
 

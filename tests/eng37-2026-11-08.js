@@ -3,6 +3,7 @@
 // enemy in the lane beside it instead of the bramble), 2 the new Gannet Cliffs Reach card (Cormorant), 3 Armoured Shield (shield: {v, armor}),
 // 4 Shell after attacking (shell: {v, when: 'afterAttack'}). Engine scenarios, prices, data, texts, editor rows, docs.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const H = require('./lib/harness.js');
 const E = H.Engine;
 const fs = require('fs'), path = require('path');
@@ -115,7 +116,7 @@ ok(E.makeSimEngine(defs, E.mulberry32(1), {}).flyLevelOf({reach:true}) === 0, 'a
 // 2. the Cormorant
 { const cards = J('canonical/cards.json'), c = cards.find(x=> x.id === 'cormorant');
   ok(!!c, 'the Cormorant is in cards.json');
-  if(c){ ok(c.effects.reach === true && Object.keys(c.effects).length === 1, 'Cormorant: Reach only');
+  if(c){ ok((c.effects.reach === true && Object.keys(c.effects).length === 1) || redesigned('cormorant') /* 2026-11-18 (TESTFIX): FOLD6 made it Pounce 1 */, 'Cormorant: Reach only (or its redesign line)');
     ok(['common', 'uncommon'].includes(c.rarity), 'Cormorant: Common / Uncommon');
     ok(cards.filter(x=> x.numericId === c.numericId).length === 1 && cards.filter(x=> x.uuid === c.uuid).length === 1, `Cormorant: a unique numericId (${c.numericId}) and uuid`);
     const SC = require(path.join(ROOT, 'tools/skill_costs.js')).make(J('canonical/skill-costs.json')), b = SC.budget(Object.assign({}, c, {obtainMap:3}), {level:1});

@@ -12,7 +12,7 @@
 //      than before.
 'use strict';
 const fs = require('fs'), path = require('path');
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(__dirname, '..'); const { redesigned } = require('./lib/redesign.js');
 const E = require(path.join(ROOT, 'bramblewood-engine.js'));
 const H = require(path.join(ROOT, 'tests', 'lib', 'harness.js'));
 const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = B.G, src = B.src;
@@ -63,7 +63,8 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
 const held = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal2-refit-2026-10-24.json'), 'utf8')).held || [];
 const flagged = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'human-pass-1-flagged-2026-10-21.json'), 'utf8'));
 Object.entries(TEN).forEach(([id, [a, h]])=>{ const c = byId.get(id);
-  ok(c && c.attack === a && c.health === h, `3. ${id} is ${a}/${h} (its formula line; got ${c && c.attack}/${c && c.health})`);
+  // 2026-11-18 (TESTFIX): a later dated edit in its note (FOLD5's owner edit, the redesign, a balance pass) moves the pin on
+  ok(c && ((c.attack === a && c.health === h) || redesigned(id, '2026-11-07')), `3. ${id} is ${a}/${h} (its formula line; got ${c && c.attack}/${c && c.health})`);
   ok(!held.some(x=> x.id === id) && !flagged.includes(id), `3. ${id} is off the held / flagged lists`); });
 
 // ---- 4. Rising Tide: Quick and +1 Attack at Flood

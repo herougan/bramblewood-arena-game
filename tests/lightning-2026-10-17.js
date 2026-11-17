@@ -10,6 +10,7 @@
 // wet bonus, the new Chain Lightning N, Shock Bolt and Lightning as lightning (shock) damage, Voltaic Eel's skills, and the board side
 // (every lightning hit is its own bolt, never a thrown projectile; element emoji on numbers and log lines; Electricity's cyan bolt).
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const {TEXT: TEXT_D, TX: TX_D} = require(path.join(__dirname, '..', 'bramblewood-texts.js')); // 2026-10-18 (package D): the terse texts are TX keys
 const H = require('./lib/harness.js');
@@ -93,10 +94,11 @@ function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setF
   const hs = ev.filter(x=> x.type === 'hit' && x.dragonLightning); ok(hs.length === 2 && hs[0].jump === 0 && hs[1].jump === 1 && hs[1].viaUid === T.uid && hs.every(h=> h.dmgType === 'magic'), 'Dragon Lightning: strike 0 on the target, strike 1 from the target to the unit beside it (still magic)'); }
 
 // ---- 4. Voltaic Eel
-{ const d = base['voltaic-eel']; ok(d && d.effects.chainLightning === 2 && !('electricity' in d.effects), 'Voltaic Eel: Chain Lightning 2, no Electricity');
+// 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3) made the Eel Electricity 2 + Tide (no Shock); its two lines below hold only before that
+{ const d = base['voltaic-eel'], rd = redesigned('voltaic-eel'); ok(d && (rd || (d.effects.chainLightning === 2 && !('electricity' in d.effects))), 'Voltaic Eel: Chain Lightning 2, no Electricity');
   // 2026-10-21 (package TT2): BF5's two-skill cut kept Shock + Chain Lightning and dropped Tide and the on-spawn trigger (docs/balance/two-skills-2026-10-21.json)
   // 2026-10-21 (package TR, owner HB2-1): plain Tide doesn't count toward two skills, so the Eel has it back
-  ok(d.effects.shock && d.effects.tide === true && d.rarity === 'rare', 'the rest of the Eel: Shock kept, Tide back (TR, HB2-1)'); }
+  ok((rd || d.effects.shock) && d.effects.tide === true && d.rarity === 'rare', 'the rest of the Eel: Shock kept, Tide back (TR, HB2-1)'); }
 
 // ---- 5. The text: no wet sentence on Electricity's line; Wet is a keyword with its gloss; the Codex carries the note
 const src = fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8');

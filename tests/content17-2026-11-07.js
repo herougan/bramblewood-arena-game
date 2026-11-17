@@ -16,6 +16,7 @@ const ROOT = path.join(__dirname, '..'), R = f=> fs.readFileSync(path.join(ROOT,
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
 const C17 = require(path.join(ROOT, 'tools', 'content17_2026_11_07.js'));
+const RD = require('./lib/redesign.js'), { redesigned, MADE_OBTAINABLE, listAdded } = RD, CHANGED_ADDED = require('./lib/redesign-changed.json').added.length;
 const cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, require('../bramblewood-skillparams.js').expandDef(c)])); // ENG39 (2026-11-09): kinds read as their old keys (Ice Arrow is Arrow {type: ice})
 const POOLS = J('canonical/map-pools.json').maps, DELIV = J('canonical/skill-delivery.json'), CN = J('canonical/claude-new-cards.json');
 const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js'));
@@ -54,11 +55,13 @@ MAPS.forEach(m=>{
     // FIX12 (2026-11-10): ENG40 (owner ENG34-1 b "reach counts as melee") made Reach melee again; CONTENT17 stored 'ranged' for its Reach
     // throwers, and the Map cards window reads the live delivery now (c17LiveDelivery), so that stored label is stale, not wrong
     const eng40Reach = p.delivery === 'ranged' && want === 'melee' && c.effects.reach === true;
+    // 2026-11-18 (TESTFIX): the redesign (OWN-1117-3) re-set some picks' skills; the window shows the live delivery (c17LiveDelivery), so their stored label is stale, not wrong
+    const redone = p.delivery !== want && redesigned(p.id); if(redone) p.delivery = want;
     ok(p.delivery === want || eng40Reach, `${m}: ${p.id} delivery ${p.delivery} (skill-delivery says ${want})`);
     if(eng40Reach) p.delivery = want; // the live label, for the ranged count below
     ok(p.source === (newIds.has(p.id) ? 'new' : 'existing'), `${m}: ${p.id} source ${p.source}`);
     ok(typeof p.why === 'string' && p.why.trim().length > 3, `${m}: ${p.id} has a why`);
-    ok(!lists.has(p.id) || tookUp(m, p.id), `${m}: ${p.id} is not already on this map's lists (or the 11-11 picks / adds / suggestions put it there)`); });
+    ok(!lists.has(p.id) || tookUp(m, p.id) || MADE_OBTAINABLE.has(p.id) || listAdded(parent[m] || m, p.id) /* 2026-11-18 (TESTFIX): FOLD6 listed it */, `${m}: ${p.id} is not already on this map's lists (or the 11-11 picks / adds / suggestions put it there)`); });
   const r = picks.filter(p=> p.delivery === 'ranged').length; ranged += r; ok(r >= 1, `${m}: at least one ranged pick`);
 });
 ok(total >= 34 * 8, `1: ${total} picks in all, ${ranged} ranged`);
@@ -73,7 +76,7 @@ const prompts = R('docs/art-style-prompts.md'), BANNED = ['no clothes', 'spiked'
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
 const packs = CODES.map(code=> ({code, cards: J(`lang/cards/${code}.json`), ui: J(`lang/ui/${code}.json`), main: J(`lang/${code}.json`)}));
 const firstNew = cards.findIndex(c=> newIds.has(c.id));
-ok(firstNew >= cards.length - C17.NEW.length - 12 /* 2026-11-08: room for later packages' appends (ENG37 1, CONTENT18 5) */ && cards.slice(firstNew).every(c=> newIds.has(c.id) || cards.indexOf(c) > firstNew), '2: the new cards are appended at the end');
+ok(firstNew >= cards.length - C17.NEW.length - 12 - CHANGED_ADDED /* 2026-11-08: room for later packages' appends (ENG37 1, CONTENT18 5); 2026-11-18 (TESTFIX): + CONTENT13's 16 */ && cards.slice(firstNew).every(c=> newIds.has(c.id) || cards.indexOf(c) > firstNew), '2: the new cards are appended at the end');
 C17.NEW.forEach(s=>{ const c = by[s.id]; ok(!!c, `${s.id}: in cards.json`); if(!c) return;
   ok(c.awaitingSource === true && c.unattainable === true && !c.source, `${s.id}: awaitingSource + unattainable, no source`);
   ok((!listed.has(s.id) || Object.values(SUGGEST).some(l=> l.includes(s.id)) || OWN1113.has(s.id)) && !JSON.stringify(extras).includes('"' + s.id + '"'), `${s.id}: on no list (or a THEME8 suggestion SKIR1 listed, still awaiting the owner's placement) and in no pack's extras`); // 2026-11-11 (LISTFIX3)
@@ -92,7 +95,7 @@ C17.NEW.forEach(s=>{ const c = by[s.id]; ok(!!c, `${s.id}: in cards.json`); if(!
 ok(by['trident-caiman'] && by['trident-caiman'].effects.reach === true && !isRanged(by['trident-caiman']), '2: the Trident Caiman keeps Reach, a melee swing since ENG40');
 ok(/function c17LiveDelivery\(/.test(R('arena_app.js')) && /delivery: c17LiveDelivery\(p, defs\[p\.id\]\)/.test(R('arena_app.js')), '3: the Map cards window marks a pick by its live delivery (FIX12, after ENG40)');
 ok(by['icefletch-fox'] && Number(by['icefletch-fox'].effects.iceArrow) > 0, '2: an ice animal with Ice Arrow');
-ok(['peat-smoke-shaman', 'mossmother-newt'].every(id=> by[id] && by[id].effects.healing), '2: the bog healers heal');
+ok(['peat-smoke-shaman', 'mossmother-newt'].every(id=> by[id] && (by[id].effects.healing || by[id].effects.nursing)), '2: the bog healers heal'); // 2026-11-18 (TESTFIX): SKAUD1 merged Heal into Nursing
 
 // ---- 3. the Map cards window -----------------------------------------------------------------------------------------------------
 const app = R('arena_app.js'), tpl = R('arena_template.html'), asm = R('assemble_arena.py'), {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js'));
@@ -117,7 +120,7 @@ ok(/yeti hunters/i.test(note) && /ice arrow/i.test(note) && /temple/i.test(note)
 ok(/[Yy]eti hunters/.test(R('docs/card-ideas.md')) && /yeti-tracker/.test(R('docs/card-ideas.md')), '4: docs/card-ideas.md has the yeti hunters (ideas and built)');
 const run = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools', 'content17_2026_11_07.js')], {encoding: 'utf8'});
 // 2026-11-11 (LISTFIX3): the tool's "already on this map's lists" lines are the picks the 11-11 lists took up (section 1); any other problem fails
-const runProbs = (run.stdout.split('PROBLEMS:')[1] || '').split('\n').map(l=> l.trim()).filter(Boolean).filter(l=>{ const m = l.match(/^(\w+): ([a-z0-9-]+) is already on this map's lists$/); return !(m && tookUp(m[1], m[2])); });
+const runProbs = (run.stdout.split('PROBLEMS:')[1] || '').split('\n').map(l=> l.trim()).filter(Boolean).filter(l=>{ const m = l.match(/^(\w+): ([a-z0-9-]+) is already on this map's lists$/); return !(m && (tookUp(m[1], m[2]) || MADE_OBTAINABLE.has(m[2]) || listAdded(parent[m[1]] || m[1], m[2]))); });
 ok((run.status === 0 || /PROBLEMS:/.test(run.stdout)) && !runProbs.length, `4: a dry run of tools/content17_2026_11_07.js reports no problem but picks the 11-11 lists took up (${runProbs.slice(0, 3).join('; ')})`);
 const dec = J('docs/decisions.json'), decs = JSON.stringify(dec);
 ok(/CONTENT17-1/.test(decs), '4: decisions CONTENT17-* in docs/decisions.json');

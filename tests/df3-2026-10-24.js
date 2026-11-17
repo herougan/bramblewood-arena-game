@@ -97,7 +97,10 @@ const mark = (s, pid)=> H.boardCards(s.players[pid]).map(c=> c.boon || null);
   const s0 = scene({rules: {}, deckB: {'chipmunk-forager': 10}, B: [{id: 'chipmunk-forager', hp: 1, wait: 0, attack: 0}], A: [{id: 'beaver-builder', attack: 9, wait: 0}]});
   ok(!s0.players[2].hand.some(h=> h.boonBack), '2. without the boon it stays dead'); }
 // Wild Rage: Rage at 3/4 Health
-{ const mk = rules=> scene({rules, deckB: {'berserker-boar': 10}, B: [{id: 'berserker-boar', wait: 0, hp: 6, maxHp: 9}], A: [{id: 'beaver-builder', attack: 0, hp: 60, maxHp: 60}]});
+// 2026-11-18 (TESTFIX): the redesign took Berserker Boar's Rage (the only Wild Rage Types with Rage left also Regenerate); the scene deals a
+// test copy of the boar (Suid) with Rage alone, so it checks the boon, not a card
+{ const RAGER = 'df3-rage-boar'; D0[RAGER] = Object.assign({}, D0['berserker-boar'], {id: RAGER, effects: {rage: true}});
+  const mk = rules=> scene({rules, deckB: {[RAGER]: 10}, B: [{id: RAGER, wait: 0, hp: 6, maxHp: 9}], A: [{id: 'beaver-builder', attack: 0, hp: 60, maxHp: 60}]});
   const on = mk({boon: 'wildRage'}), off = mk({}), h1 = firstHit(on, 'B'), h0 = firstHit(off, 'B');
   ok(h1 && h0 && h0.dmg > 0 && h1.dmg === 2 * h0.dmg, `2. Wild Rage: a Rage unit at 2/3 Health rages (${h0 && h0.dmg} -> ${h1 && h1.dmg})`); }
 // Snow Veil / Sand Veil: the dodge odds, over many seeds
@@ -122,8 +125,10 @@ const mark = (s, pid)=> H.boardCards(s.players[pid]).map(c=> c.boon || null);
 // skills); a deck of Mouse Sappers (Type Mouse) no longer turns it on, so the scene deals Badger Sappers (Type Badger, Siege 2)
 { const s = scene({rules: {boon: 'siegeTrain'}, deckB: {'badger-sapper': 10}, B: [{id: 'badger-sapper'}], rounds: 0}), c = H.boardCards(s.players[2])[0];
   ok(s.defs[c.defId].effects.siege === 2 * D0['badger-sapper'].effects.siege, `2. Siege Train: Siege ${D0['badger-sapper'].effects.siege} -> ${s.defs[c.defId].effects.siege}`);
-  const v = scene({rules: {boon: 'venomGlands'}, deckB: {'grass-viper': 10}, B: [{id: 'grass-viper'}], rounds: 0}), cv = H.boardCards(v.players[2])[0];
-  ok(v.defs[cv.defId].effects.poison === 2 * D0['grass-viper'].effects.poison, `2. Venom Glands: Poison ${D0['grass-viper'].effects.poison} -> ${v.defs[cv.defId].effects.poison}`);
+  // 2026-11-18 (TESTFIX): the redesign took Grass Viper's Poison; the scene deals a current Reptile with Poison
+  const VIPER = Object.keys(D0).filter(id=> D0[id].effects && D0[id].effects.poison > 0 && !D0[id].token && !D0[id].test && (D0[id].species || []).includes('Reptile')).sort((a, b)=> Object.keys(D0[a].effects).length - Object.keys(D0[b].effects).length)[0];
+  const v = scene({rules: {boon: 'venomGlands'}, deckB: {[VIPER]: 10}, B: [{id: VIPER}], rounds: 0}), cv = H.boardCards(v.players[2])[0];
+  ok(v.defs[cv.defId].effects.poison === 2 * D0[VIPER].effects.poison, `2. Venom Glands: ${VIPER}'s Poison ${D0[VIPER].effects.poison} -> ${v.defs[cv.defId].effects.poison}`);
   const k = scene({rules: {boon: 'skyAmbush'}, deckB: {'cave-flitter': 10}, B: [{id: 'cave-flitter'}], rounds: 0}), ck = H.boardCards(k.players[2])[0];
   ok(!!k.defs[ck.defId].effects.quick && !D0['cave-flitter'].effects.quick, '2. Sky Ambush: a Flyer is Quick');
   const kA = scene({rules: {boon: 'skyAmbush'}, deckA: {'cave-flitter': 10}, deckB: {'cave-flitter': 10}, A: [{id: 'cave-flitter'}], rounds: 0}), cA = H.boardCards(kA.players[1])[0];

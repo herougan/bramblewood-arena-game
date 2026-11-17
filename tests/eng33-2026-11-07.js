@@ -3,6 +3,7 @@
 // Poisonous N, Thanatosis (Undead stays for real undead), Bulwark N's Log Walls, Timbered's Stat bonus / Skills, the Smelly proposal.
 // Engine scenarios, data and price pins, texts and translations, docs.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const H = require('./lib/harness.js');
 const E = H.Engine;
 const fs = require('fs'), path = require('path');
@@ -86,8 +87,8 @@ for(const [id, n] of [['e33-bul1', 1], ['e33-bul2', 2], ['e33-bul3', 3]]){ const
 // ---- data: the cards moved, nothing else
 { const cards = J('canonical/cards.json'), by = {}; cards.forEach(c=> by[c.id] = c);
   ok(!cards.some(c=> c.effects && 'venomous' in c.effects), 'no card carries the old Venomous');
-  for(const [id, n] of [['platypus-spur', 2], ['water-shrew', 1], ['giant-water-bug', 2], ['banded-sea-krait', 2]]) ok(by[id].effects.poison === n, `${id}: Venomous ${n} (key poison)`);
-  for(const id of ['grass-snake', 'slow-worm', 'phoenix-mushrooms']) ok(by[id].effects.thanatosis === true && !by[id].effects.undead, `${id}: Thanatosis, no Undead`);
+  for(const [id, n] of [['platypus-spur', 2], ['water-shrew', 1], ['giant-water-bug', 2], ['banded-sea-krait', 2]]) ok(by[id].effects.poison === n || redesigned(id) /* 2026-11-18 (TESTFIX): the redesign re-set it */, `${id}: Venomous ${n} (key poison)`);
+  for(const id of ['grass-snake', 'slow-worm', 'phoenix-mushrooms']) ok((by[id].effects.thanatosis === true || redesigned(id)) /* 2026-11-18 (TESTFIX): the redesign re-set it */ && !by[id].effects.undead, `${id}: Thanatosis (or re-set by the redesign), no Undead`);
   for(const id of ['cinder-skeleton', 'ember-revenant']) ok(by[id].effects.undead === true, `${id}: real undead keep Undead`);
   ok(!cards.some(c=> c.effects && c.effects.poisonous), 'Poisonous is on no card'); }
 { const sk = J('canonical/skill-costs.json').skills, s = id=> sk.find(x=> x.id === id);

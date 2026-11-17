@@ -7,6 +7,7 @@
 //   5  FIX8-4: the defeat advice ("build a new deck around one plan") waits for the Camp.
 //   6  ENG22-5 a: Carnage's uptime re-measured for its "sees the deaths" rule (THR_UPTIME.carnage) and its price.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT, R = f=> fs.readFileSync(path.join(ROOT, f), 'utf8'), J = f=> JSON.parse(R(f));
@@ -77,7 +78,9 @@ ok(SK.relict && SK.relict.value > 0 && SK.relict.theoretical !== true && /measur
 // 2026-11-05 (package CONTENT11, NUDI-1): the new Nudibranch carries Sequestration + Immunity (a nudibranch keeps the stings it eats); no
 // existing card does (carriers on existing cards are the owner's call, decision CONTENT11-3)
 // 2026-11-06 (package CONTENT12, CONTENT11-3 a): the carriers
-ok(J('canonical/cards.json').filter(c=> c.id !== 'nudibranch' && c.effects && (c.effects.relict || c.effects.meld || c.effects.immunity || c.effects.sequestration)).map(c=> c.id).sort().join(',') === 'coral-polyp-colony,hedgehog-herbalist,horseshoe-crab,leafcutter-gardener,nautilus-drifter,poison-dart-croaker,venomlord-serpent', '2-3: the new skills are on the CONTENT12 carriers only (and the Nudibranch)');
+// 2026-11-18 (TESTFIX): FOLD6 took Relict off Horseshoe Crab and Nautilus Drifter; no other card may carry these four
+ok((()=>{ const have = J('canonical/cards.json').filter(c=> c.id !== 'nudibranch' && c.effects && (c.effects.relict || c.effects.meld || c.effects.immunity || c.effects.sequestration)).map(c=> c.id), was = ['coral-polyp-colony', 'hedgehog-herbalist', 'horseshoe-crab', 'leafcutter-gardener', 'nautilus-drifter', 'poison-dart-croaker', 'venomlord-serpent'];
+  return have.every(id=> was.includes(id)) && was.every(id=> have.includes(id) || redesigned(id)); })(), '2-3: the new skills are on the CONTENT12 carriers only (and the Nudibranch)');
 
 // ---- 3. Immunity ----------------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(11); const s = put(e, P, 1, 'x-psn', 0), t = put(e, P, 2, 'x-imm', 0); const ev = [];

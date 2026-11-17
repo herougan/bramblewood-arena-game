@@ -13,6 +13,7 @@
 //   4. the record files exist; decisions SKIR1-n under 100 words.
 //   node tests/skir1-2026-11-11.js
 'use strict';
+const { withListMoves } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
@@ -36,7 +37,7 @@ Object.entries(S3.main).filter(([id]) => !L1main[id]).forEach(([id, r]) => ok(sa
 // Carried cards); SKIR3's record stays the expectation for a map LIST1 does not record
 const L1 = J('docs/balance/list1/fold-2026-11-13.json'), sameSet = (a, b) => JSON.stringify([...new Set(a)].sort()) === JSON.stringify([...new Set(b)].sort());
 Object.entries(S3.side).forEach(([sid, r]) => { const l1 = L1.side[sid], want = l1 ? l1.ownerYes.concat(l1.keptCarried) : r.list;
-  ok(sameSet(((pools[r.parent] || {}).submaps || {})[sid] || [], want), `${sid}: its list is ${l1 ? 'LIST1' : 'SKIR3'}'s`); });
+  ok(sameSet(((pools[r.parent] || {}).submaps || {})[sid] || [], withListMoves(r.parent, sid, want, ((pools[r.parent] || {}).submaps || {})[sid] || [])) /* 2026-11-18 (TESTFIX): + FOLD6's list moves */, `${sid}: its list is ${l1 ? 'LIST1' : 'SKIR3'}'s`); });
 if (!S3) for (const [id, m] of Object.entries(SUG.maps)) {
   const yes = (PICKS[id] || {}).yes || [], want = (m.mapNo <= 11 ? yes.concat(UI47_ADMIN_ADD[id] || []) : m.mapNo === 12 ? yes.concat(UI47_SUGGEST[id] || []) : UI47_SUGGEST[id] || [])
     .concat(Object.keys((EXTRA.main || {})[id] || {}), Object.keys((EXTRA.batch || {})[id] || {})).filter(x => D[x] && !((EXTRA.drop || {})[id] || {})[x]);

@@ -65,7 +65,7 @@ ok(same(r.hit, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6]), `the left edge sweeps rig
   ok(hits.length === 1 && hits[0].targetUid === mid.uid && hq0 - P[2].hq.hp === 3, `gravity centre: the unit across and the bramble (hits ${hits.length}, bramble ${hq0 - P[2].hq.hp})`); }
 // 5. the real card: Galactic Condor's Charge fires the beam
 const gc = defs['galactic-condor'];
-ok(gc && gc.effects && gc.effects.charge && (gc.effects.charge.do || {}).do === 'positionBeam', 'Galactic Condor charges a positionBeam');
+ok(gc && gc.effects && ((gc.effects.charge && (gc.effects.charge.do || {}).do === 'positionBeam') || (gc.effects.triggers || []).some(t=> t.on === 'onCharge' && t.do === 'positionBeam')) /* 2026-11-18 (TESTFIX): SKAUD1 writes Charge as an On Charge trigger */, 'Galactic Condor charges a positionBeam');
 if(gc){
   const res = H.runBoard({defs, seed:9, rounds:6, noSuddenDeath:true, hqHp:{A:500, B:500}, A:[{id:'galactic-condor', side:'center', wait:0}], B:[{id:'pb-wall', side:'center', hp:500}]});
   const beams = res.events.filter(x=> x.type==='positionBeam');

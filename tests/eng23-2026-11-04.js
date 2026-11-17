@@ -9,6 +9,7 @@
 //   6  Rodent's shown name is Rodentia (the key stays).
 //   7  CONTENT9-2: the Gnawed Larder's Feed and Ballista Keep's Aimed Bolt.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT, R = f=> fs.readFileSync(path.join(ROOT, f), 'utf8'), J = f=> JSON.parse(R(f));
@@ -67,7 +68,7 @@ function phaseStats(id, phase){ const {e, P} = mk(2, {phase}); const c = put(e, 
   ok(F.eng23CrepText([0, 0, 0, 1]) === 'At night: +0/+1. Twilight brings it too.' && F.eng23CrepText([1, 0, 0, 2]) === 'By day: +1/+0. At night: +0/+2. Twilight brings both.' && F.eng23CrepHead([1, 0, 0, 2]) === 'Crepuscular { +1/+0 } → { +0/+2 }', '1: the card text and head'); }
 ok(/placeholders:\[TX\('ui\.eng23-crep-day-atk'\), TX\('ui\.eng23-crep-day-hp'\), TX\('ui\.eng23-crep-night-atk'\), TX\('ui\.eng23-crep-night-hp'\)\], defaultValue:\[1, 0, 0, 1\] \/\* ENG27 \(ENG23-1\) \*\//.test(app) /* 2026-11-06 (ENG27, owner ENG23-1): the default +1/+0, +0/+1 */ && /data-sk="val\$\{j \+ 2\}"/.test(app) && /v3El && v2El \? \[v0, v1, v2El\.value, v3El\.value\]/.test(app), '1: the editor row has four numbers (day / night Attack and Health), +0/+0 / +0/+1 by default');
 ok(TXT['ui.eng23-crep-braced'] === 'Crepuscular {day} → {night}' && /key:'crepuscularGrant', category:'passive', get label\(\)\{ return TX\('ui\.eng23-crep-braced', \{day: '\{' \+ TX\('ui\.cx-day'\) \+ '\}', night: '\{' \+ TX\('ui\.cx-night'\) \+ '\}'\}\);/.test(app), '1: the braced form is offered as "Crepuscular {day} → {night}" (stats or skills in each brace)');
-ok(byId['nightjar-drifter'].effects.crepuscular === 1 && byId['nightjar-drifter'].effects.crepuscularHp === 1 && byId['woodcock-lookout'].effects.crepuscular === 1, '1: no card changed');
+ok(byId['nightjar-drifter'].effects.crepuscular === 1 && byId['nightjar-drifter'].effects.crepuscularHp === 1 && (byId['woodcock-lookout'].effects.crepuscular === 1 || redesigned('woodcock-lookout')) /* 2026-11-18 (TESTFIX): FOLD6 re-set it */, '1: no card changed');
 
 // ---- 2. Skitter ----------------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(3); const s = put(e, P, 1, 'x-skit', 0); put(e, P, 2, 'x-dummy', 0);
@@ -82,7 +83,8 @@ ok(byId['nightjar-drifter'].effects.crepuscular === 1 && byId['nightjar-drifter'
   e.roundStart(P, 2, so, {}, []); ok(e.eng23SkitterOn(s), '2: a killing hit counts too'); }
 ok(SK.skitter && SK.skitter.value === 3.5 && SK.skitter.bal29Was && SK.skitter.bal29Was.value === 1.44 /* 2026-11-08 (FIX10): BAL30 prices Skitter at the BAL29 ladder (3.5), ENG23's 1.44 kept in bal29Was */ && SK.skitter.theoretical && BB.SKITTER_MISS_MULT === 1.1 && BB.missMultOf({skitter:true}) === 1.1 && BB.missMultOf({skitter:true, evasive:true}) === BB.missMultOf({evasive:true}), '2: priced: Haste 2.57 x 0.56 = 1.44 S (BAL30: 3.5), Evasive x1.1 on the stat terms (nothing extra beside its own Evasive)');
 // 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live edit that put Skitter on Mangrove Mudskipper (it is on that one card; Field Vole still has none)
-ok(cards.filter(c=> c.effects && c.effects.skitter).map(c=> c.id).join() === 'mangrove-mudskipper' && !(byId['field-vole'] && byId['field-vole'].effects && byId['field-vole'].effects.skitter), '2: on one card only, the owner\'s Mangrove Mudskipper');
+// 2026-11-18 (TESTFIX): FOLD6 gave the Mudskipper Evasive for Skitter, so no card may carry it now
+ok(['mangrove-mudskipper', ...(redesigned('mangrove-mudskipper') ? [''] : [])].includes(cards.filter(c=> c.effects && c.effects.skitter).map(c=> c.id).join()) && !(byId['field-vole'] && byId['field-vole'].effects && byId['field-vole'].effects.skitter), '2: on one card only, the owner\'s Mangrove Mudskipper');
 ok(/key:'skitter', category:'passive', label:TX\('ui\.eng23-skitter-name'\)/.test(app) && TXT['ui.eng23-skitter'], '2: in "+ Add Skill" with its text');
 
 // ---- 3. Fast-forward tokens ---------------------------------------------------------------------------------------------------
