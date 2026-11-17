@@ -4517,5 +4517,7 @@
  "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "こなのスキルはすべて合わせて1つのスキルとして数える。こなはスピード-1で、矢の後にまかれる。回避は半分をかわす。飛行はかわせない。",
  "{name} puffs Sleeping Powder at {target}. 💤": "{name}が{target}にねむりごなをまいた。💤",
  "{name} puffs Poison Powder at {target}. ☠️": "{name}が{target}にどくのこなをまいた。☠️",
- "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "毎ターン、矢の後に：正面（いなければ最も近い）の起きている敵に睡眠 {n}。ダメージなし。"
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "毎ターン、矢の後に：正面（いなければ最も近い）の起きている敵に睡眠 {n}。ダメージなし。",
+ "Dungeons & Raids": "ダンジョンとレイド",
+ "Shop sections": "ショップの売り場"
 }

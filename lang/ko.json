@@ -4519,5 +4519,7 @@
  "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "가루 스킬은 모두 합쳐 하나의 스킬로 센다. 가루는 속도 -1로, 화살 다음에 뿌려진다. 회피는 절반을 피하고 비행은 못 피한다.",
  "{name} puffs Sleeping Powder at {target}. 💤": "{name}이(가) {target}에게 수면 가루를 뿌린다. 💤",
  "{name} puffs Poison Powder at {target}. ☠️": "{name}이(가) {target}에게 독 가루를 뿌린다. ☠️",
- "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "매 턴 화살 다음에: 앞(없으면 가장 가까운)의 깨어 있는 적에게 수면 {n}. 피해 없음."
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "매 턴 화살 다음에: 앞(없으면 가장 가까운)의 깨어 있는 적에게 수면 {n}. 피해 없음.",
+ "Dungeons & Raids": "던전과 레이드",
+ "Shop sections": "상점 코너"
 }

@@ -31,7 +31,7 @@ ok(!/bwp-cover|bwp-rim|bwp-sflap/.test(places) && /bwp-bk/.test(places) && /bwp-
 const stomp = places.slice(places.indexOf('  stomp: {'), places.indexOf('  inventory: {'));
 ok(!/translate\(/.test(stomp.slice(0, stomp.indexOf('motes('))) && /rotateY\(\$\{s \* 100\}deg\)/.test(stomp) && /swing\(l, -1/.test(stomp) && /backface-visibility:hidden/.test(places.slice(places.indexOf('.bwp-gate{'), places.indexOf('.bwp-gate.is-l'))), '#7 the gates swing toward you (left -100, right +100 deg), no shake, their backs hidden');
 // #9
-ok(!/data-shopmode|shop-modes/.test(app + tpl) && /key:'shop', icon:'🛒'/.test(app) && /key:'premium', icon:'🍂'/.test(app), '#9 Shop and Premium are on the places strip; the switch is gone');
+ok(!/data-shopmode|shop-modes/.test(app + tpl) && /data-nav1shop/.test(app), '#9 Shop and Premium: tabs on the Shop page (2026-11-17, NAV1; were on the places strip); the old switch is gone');
 ok(/ui52-2026-11-13/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
 
 async function browser(){
@@ -79,11 +79,12 @@ async function browser(){
         ab.click(); ab.click(); return {btn: true, once, basic, all: coachSeen.size === 0}; })()`);
       ok(pf.btn && pf.once && pf.basic && pf.all, `${t} #4 Reset basic (tap twice) clears the early lessons only; Reset all clears every tip (${JSON.stringify(pf)})`);
       // #9 the strip
-      const sh = await pg.evaluate(`(async()=>{ shopMode = 'normal'; switchTab('shop'); BramblewoodPlaces.skip(); await new Promise(r=> setTimeout(r, 400)); const nav = document.querySelector('#pageBackBar .pb-shortcuts');
-        const r = {shop: !!nav.querySelector('[data-pbsc="shop"].is-here'), prem: !!nav.querySelector('[data-pbsc="premium"]'), sw: !!document.querySelector('#view-shop .shop-modes'), fits: nav.scrollWidth <= nav.clientWidth + 1 && nav.getBoundingClientRect().right <= document.getElementById('pageBackBar').getBoundingClientRect().right + 1 && nav.getBoundingClientRect().left >= -1};
-        nav.querySelector('[data-pbsc="premium"]').click(); await new Promise(r=> setTimeout(r, 300)); BramblewoodPlaces.skip();
-        r.premium = document.getElementById('view-shop').classList.contains('is-premium-shop') && !!document.querySelector('#pageBackBar [data-pbsc="premium"].is-here'); shopMode = 'normal'; return r; })()`);
-      ok(sh.shop && sh.prem && !sh.sw && sh.fits && sh.premium, `${t} #9 Shop and Premium on the places strip, inside the bar; Premium opens the Premium shop (${JSON.stringify(sh)})`);
+      // 2026-11-17 (package NAV1, owner OWN-1117-3): Shop and Premium are one page with two tabs; the Camp bar is not on it
+      const sh = await pg.evaluate(`(async()=>{ shopMode = 'normal'; switchTab('shop'); BramblewoodPlaces.skip(); await new Promise(r=> setTimeout(r, 400)); const tabs = document.querySelector('#view-shop .nav1-shop-tabs');
+        const r = {shop: !!tabs.querySelector('[data-nav1shop="normal"][aria-selected="true"]'), prem: !!tabs.querySelector('[data-nav1shop="premium"]'), sw: !!document.querySelector('#view-shop .shop-modes'), noBar: !document.querySelector('#pageBackBar .pb-shortcuts'), fits: tabs.getBoundingClientRect().right <= innerWidth + 1 && tabs.getBoundingClientRect().left >= -1};
+        tabs.querySelector('[data-nav1shop="premium"]').click(); await new Promise(r=> setTimeout(r, 300)); BramblewoodPlaces.skip();
+        r.premium = document.getElementById('view-shop').classList.contains('is-premium-shop') && !!document.querySelector('#view-shop [data-nav1shop="premium"][aria-selected="true"]'); shopMode = 'normal'; return r; })()`);
+      ok(sh.shop && sh.prem && !sh.sw && sh.noBar && sh.fits && sh.premium, `${t} #9 Shop and Premium are tabs on the Shop page; Premium opens the Premium shop (${JSON.stringify(sh)})`);
       // #6-8 the entrances: within 1 s; the gates end turned past edge-on; nothing left after
       const en = await pg.evaluate(`(async()=>{ const out = {};
         for(const k of ['codex', 'nest', 'stomp', 'inventory']){ switchTab(k); BramblewoodPlaces.skip(); await new Promise(r=> setTimeout(r, 200));

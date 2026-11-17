@@ -4516,5 +4516,7 @@
  "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "Todos los polvos cuentan juntos como una habilidad. Actúan a Velocidad -1, tras las flechas. Evasión esquiva la mitad; Vuelo no.",
  "{name} puffs Sleeping Powder at {target}. 💤": "{name} sopla polvo de sueño a {target}. 💤",
  "{name} puffs Poison Powder at {target}. ☠️": "{name} sopla polvo venenoso a {target}. ☠️",
- "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "Cada turno, tras las flechas: Sueño {n} al enemigo de enfrente o al más cercano, si está despierto. Sin daño."
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "Cada turno, tras las flechas: Sueño {n} al enemigo de enfrente o al más cercano, si está despierto. Sin daño.",
+ "Dungeons & Raids": "Mazmorras y asaltos",
+ "Shop sections": "Secciones de la tienda"
 }

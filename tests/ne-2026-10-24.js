@@ -89,7 +89,8 @@ ok(/deckTypeEmojisHTML\(d, sig\)/.test(fnSrc('deckMediumPreviewHTML')) && /dmp-t
 ok(/\+ neEmptySlotsHTML\(\)/.test(src) && /deckSlotsOwned\(\) - myDecks\.length/.test(fnSrc('neEmptySlotsHTML')) && /\.dmp-btn\.ne-slot\{position:relative; height:150px/.test(tpl), '#13 every open slot is a leather deck case the size of a deck preview');
 ok(/neSlotJustOpened = Date\.now\(\)/.test(fnSrc('wireDeckSlots')) && /@keyframes neSlotIn/.test(tpl), '#13 the slot just opened appears with a stitch-in');
 // ---- #21
-ok(/\{key:'map', icon:'🗺️', name:'Conquest map'/.test(src) && /playSubTab = 'conquest'; switchTab\('play'\)/.test(src), '#21 the Conquest map leads the places bar');
+// 2026-11-17 (package NAV1, owner 23:43: "Conquest map ... don't need to include it in the camp nav bar. The top right mini circular nav bar is sufficient"): the topbar's round 🗺️
+ok(!/\{key:'map', icon:'🗺️'/.test(src) && /id="ui14MapNavBtn"/.test(tpl) && /playSubTab = 'conquest';/.test(fnSrc('ui14GoToMap')), '#21 the Conquest map is the round 🗺️ at the top right (NAV1: off the Camp bar)');
 ok(/id="homeNavBtn" type="button" title="Home" aria-label="Home" hidden><span class="tab-emoji" aria-hidden="true">🏠<\/span><\/button>/.test(tpl), '#21 Home is just the icon');
 // ---- #12
 ok(/fromCodex \? neCodexCopiesHTML\(defId\)/.test(fnSrc('openCardDetail')) && /forgeCopyTreatment\(c\)/.test(fnSrc('neCodexCopiesHTML')) && /ne-cx-lv/.test(fnSrc('neCodexCopiesHTML')), '#12 the Codex detail shows each copy as a card, by treatment, with its level');

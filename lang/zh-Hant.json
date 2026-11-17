@@ -4517,5 +4517,7 @@
  "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "所有粉類技能合計只算一個技能。粉以速度 -1 施放，在箭之後。閃避能躲開一半；飛行不能。",
  "{name} puffs Sleeping Powder at {target}. 💤": "{name}向{target}撒出睡眠粉。💤",
  "{name} puffs Poison Powder at {target}. ☠️": "{name}向{target}撒出毒粉。☠️",
- "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "每回合在箭之後：對正前方（沒有則最近）醒著的敵人施加睡眠 {n}。不造成傷害。"
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "每回合在箭之後：對正前方（沒有則最近）醒著的敵人施加睡眠 {n}。不造成傷害。",
+ "Dungeons & Raids": "地下城與突襲",
+ "Shop sections": "商店分區"
 }

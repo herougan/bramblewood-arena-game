@@ -3780,7 +3780,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-poison-powder": "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.",
   "ui.sk-powder-family-codex": "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.",
   "ui.powder-log-sleep": "{name} puffs Sleeping Powder at {target}. 💤",
-  "ui.powder-log-poison": "{name} puffs Poison Powder at {target}. ☠️"
+  "ui.powder-log-poison": "{name} puffs Poison Powder at {target}. ☠️",
+  "ui.nav1-dungeons-raids": "Dungeons & Raids",
+  "ui.nav1-shop-tabs": "Shop sections"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

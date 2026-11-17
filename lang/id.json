@@ -4518,5 +4518,7 @@
  "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "Semua serbuk dihitung bersama sebagai satu skill. Serbuk bekerja di Kecepatan -1, setelah panah. Mengelak menghindari separuh; Terbang tidak.",
  "{name} puffs Sleeping Powder at {target}. 💤": "{name} meniupkan Serbuk Tidur ke {target}. 💤",
  "{name} puffs Poison Powder at {target}. ☠️": "{name} meniupkan Serbuk Bisa ke {target}. ☠️",
- "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "Tiap giliran, setelah panah: Tidur {n} pada musuh di depan atau terdekat, jika sedang bangun. Tanpa kerusakan."
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "Tiap giliran, setelah panah: Tidur {n} pada musuh di depan atau terdekat, jika sedang bangun. Tanpa kerusakan.",
+ "Dungeons & Raids": "Dungeon & Raid",
+ "Shop sections": "Bagian toko"
 }

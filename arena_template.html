@@ -15539,6 +15539,29 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
 .ui37-yn-b:focus-visible{outline:2px solid #ffd98a; outline-offset:-2px;}
 @media (max-width:560px){ .ui37-head{gap:6px 8px;} .ui37-map{white-space:normal;} .ui37-tile{border-radius:12px;} }
 /* #8 the fight's settings panel on a phone: a sheet under the top row, inside the screen (it opened off the left edge), scrolling */
+/* 2026-11-17 (package NAV1, owner 23:43): the main menu. Page tiles in the grid (a lone last tile takes the row), and the notes on one board
+   under them, the grid's width, every note the same size (they used to hang loose beside the tiles on a desktop). */
+.home-grid > .home-tile:nth-child(even):last-child{grid-column:1 / -1; flex-direction:row; flex-wrap:wrap; column-gap:10px; min-height:0;}
+.home-grid > .home-tile:nth-child(even):last-child .home-sub{flex-basis:100%;}
+/* a desktop: three tiles a row under Play (six columns: a row of two takes halves, a lone tile the row) */
+@media (min-width:861px){
+  #view-home .home-menu{max-width:640px;} #view-home .home-grid{width:100%;}
+  #view-home .home-grid{grid-template-columns:repeat(6, minmax(0,1fr));}
+  #view-home .home-grid > .home-tile{grid-column:span 2;} #view-home .home-grid > .home-play{grid-column:1 / -1;}
+  #view-home .home-grid > .home-tile:nth-child(3n):last-child, #view-home .home-grid > .home-tile:nth-child(3n+2):nth-last-child(2){grid-column:span 3;}
+  #view-home .home-grid > .home-tile:nth-child(3n+2):last-child{grid-column:1 / -1; flex-direction:row; flex-wrap:wrap; column-gap:10px; min-height:0;}
+  #view-home .home-grid > .home-tile:nth-child(3n+2):last-child .home-sub{flex-basis:100%;}
+  #view-home .home-grid > .home-tile:nth-child(even):last-child:not(:nth-child(3n+2)){flex-direction:column; flex-wrap:nowrap;}
+}
+#view-home .home-notes{display:flex; flex-wrap:wrap; justify-content:center; gap:16px 12px; width:100%; margin:14px auto 4px; padding:20px 12px 14px; box-sizing:border-box;
+  border-radius:14px; background:color-mix(in srgb, var(--surface) 22%, transparent); border:1px solid color-mix(in srgb, var(--surface-border) 60%, transparent);}
+#view-home .home-notes > .home-note, #view-home .home-notes > .home-note-wrap{position:relative; left:auto; right:auto !important; top:auto; flex:0 1 calc((100% - 24px) / 3); min-width:0; box-sizing:border-box;}
+#view-home .home-notes > .home-note:nth-child(odd){rotate:-1.5deg;} #view-home .home-notes > .home-note:nth-child(even){rotate:1.5deg;}
+#view-home .home-notes .home-note-wrap .home-note{position:relative; width:100%; rotate:1deg;}
+#view-home .home-notes .home-note{min-height:58px; justify-content:center;}
+@media (max-width:520px){ #view-home .home-notes > .home-note, #view-home .home-notes > .home-note-wrap{flex-basis:calc((100% - 12px) / 2);} #view-home .home-notes{padding:12px 8px 10px; gap:10px;} #view-home .home-notes .home-note{padding:8px 6px 7px; min-height:52px;} #view-home .home-notes .home-note b{font-size:14px; line-height:1.2;} }
+.nav1-shop-tabs{display:flex; gap:6px; flex-wrap:wrap; margin:0 0 10px;}
+.nav1-shop-tabs .btn{min-height:36px;}
 @media (max-width: 600px){ #settingsPanelHud{position:fixed !important; left:8px !important; right:8px !important; top:56px !important; width:auto !important; max-height:70vh; overflow-y:auto; transform:none !important;} }
 </style>
 
