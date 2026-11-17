@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-17 (ART15 import: Chipmunk Skirmisher)
+- New art for Chipmunk Skirmisher: candidate 2 (owner 11-17 16:48 "image #2 is ok"), imported with `tools/art15_import.py 2`; prompt in `art/cards/chipmunk-skirmisher.prompt.txt`.
+
 ## 2026-11-17 (package REFIT3: wider legal search for the road fights REFIT2 left; REFIT2-2 whole-road what-ifs)
 - Applied 2026-11-17 (REFIT3-1, standing order): the 4 decks in `arena_app.js` with dated comments; deck problems 19 = 19, skir1 34 → 32. Players see new enemy decks in 1-5, 10-A-1, 12-7, 11-9. Live road after release (GitHub, 400 games): seed 9100 main 131/133/10, side 75/77/1; seed 7600 main 129/135/9, side 78/78/1. 11-9 61 / 69.3 (target 60), 12-7 48.5 / 50.5 (40).
 - 4 legal deck fixes, each in band on two fresh seed sets at 400 games (GitHub 93100 / 94100): 1-5 62.8 / 60.3 → 43.5 / 44.5 (target 40), 10-A-1 78.3 / 83 → 87 / 90.8 (90), 12-7 53.5 / 54.3 → 45.8 / 47.3 (40), 11-9 69 / 69.8 → 64 / 65.8 (60; 69.3 / 68.5 on 7600 / 91100, marginal). No Shield, Health or card change; deck problems 21 = 21, skir1 34 → 32 failures, none new. Whole road with them: main 129/135/9 on seed 7600 (live 128/134/9), 126/133/8 on 91100 (124/130/9); side 78/78/1 (78/78/1) and 70/76/1 (69/76/1).
