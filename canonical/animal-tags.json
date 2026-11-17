@@ -253,7 +253,7 @@
   },
   {
    "id": "puffball-bombardier",
-   "name": "Puffball Bombardier",
+   "name": "Puffball",
    "animal": "toad",
    "subtype": "fungus",
    "why": "art is a puffball with a face; proposed: a toad (toadstool)"
@@ -1870,7 +1870,7 @@
   },
   {
    "id": "golden-eagle-diver",
-   "name": "Golden Eagle Diver",
+   "name": "Golden Eagle",
    "icon": "🦅",
    "creature": true,
    "animal": "eagle",
@@ -6261,7 +6261,7 @@
   },
   {
    "id": "puffball-bombardier",
-   "name": "Puffball Bombardier",
+   "name": "Puffball",
    "icon": "🍄",
    "creature": true,
    "animal": "toad",
@@ -6737,7 +6737,7 @@
   },
   {
    "id": "planarian-splitter",
-   "name": "Planarian Splitter",
+   "name": "Planarian",
    "icon": "🪱",
    "creature": true,
    "animal": "flatworm",
@@ -7089,7 +7089,7 @@
   },
   {
    "id": "platypus-spur",
-   "name": "Platypus Spur",
+   "name": "Platypus",
    "icon": "🦆",
    "creature": true,
    "animal": "platypus",
