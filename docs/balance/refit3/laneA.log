@@ -1,0 +1,47 @@
+5-6 target 60 (52-68) size 17 pool 14 live {"bog-leech":4,"fen-mink":4,"muskrat-reedgatherer":4,"raft-spider":2,"swamp-alligator":3}
+sampled 240 legal decks (410 distinct tried) in 0s
+sample reads (16 games): min 0 p10 0 median 6.3 p90 18.8 max 43.8 (69s)
+per copy (model): mudpuppy -1.4, planarian-splitter -0.9, swamp-alligator -0.8, muskrat-reedgatherer -0.5, fen-mink -0.4, mudflat-godwit -0.4, alley-cat -0.3, constrictor-coil 0, bog-leech 0.1, shoal-shark 0.1, mosquito-cloud 0.6, raft-spider 0.7, fire-ant-raft 1.1, marsh-mallow-hare 2.1
+model: 2361 decks visited, 16 read at 60: 27/38.3 27/33.3 27/33.3 27/25 27/30 26/25
+re-read (300 games, seed 64300): live 10; {"fen-mink":4,"mosquito-cloud":4,"shoal-shark":1,"marsh-mallow-hare":4,"raft-spider":4} 33.3/40.7 | {"fen-mink":1,"mosquito-cloud":3,"muskrat-reedgatherer":2,"fire-ant-raft":2,"bog-leech":2,"alley-cat":4,"marsh-mallow-hare":3} 33.3/37.7 | {"fen-mink":4,"mosquito-cloud":4,"marsh-mallow-hare":3,"fire-ant-raft":2,"raft-spider":4} 33.3/36.7 | {"fen-mink":1,"marsh-mallow-hare":4,"fire-ant-raft":4,"raft-spider":4,"mosquito-cloud":4} 38.3/35 | {"fen-mink":4,"mosquito-cloud":4,"marsh-mallow-hare":3,"planarian-splitter":1,"alley-cat":4,"shoal-shark":1} 35/29.7
+RESULT 5-6 {"fen-mink":4,"mosquito-cloud":4,"shoal-shark":1,"marsh-mallow-hare":4,"raft-spider":4} 40.7 live 10 target 60 (52-68) 128s
+5-4 target 72 (64-80) size 18 pool 15 live {"fen-mink":2,"fire-ant-raft":4,"grass-viper":2,"marsh-mallow-hare":3,"mudpuppy":4,"raft-spider":3}
+sampled 44 legal decks (147 distinct tried) in 6s
+sample reads (16 games): min 0 p10 6.3 median 18.8 p90 43.8 max 62.5 (21s)
+per copy (model): mudpuppy -3.6, swamp-alligator -1.9, bog-leech -0.9, fen-mink -0.8, alley-cat -0.3, constrictor-coil 0, mudflat-godwit 0, planarian-splitter 0, shoal-shark 0, grass-viper 0.2, muskrat-reedgatherer 0.3, fire-ant-raft 0.7, mosquito-cloud 0.8, raft-spider 0.8, marsh-mallow-hare 4.5
+model: 3596 decks visited, 16 read at 60: 50/40 49/41.7 49/43.3 49/45 49/50 49/50
+re-read (300 games, seed 64300): live 24; {"grass-viper":4,"fen-mink":1,"raft-spider":4,"mosquito-cloud":3,"marsh-mallow-hare":4,"fire-ant-raft":2} 48.3/42 | {"grass-viper":4,"fen-mink":1,"raft-spider":3,"mosquito-cloud":4,"marsh-mallow-hare":4,"fire-ant-raft":2} 50/41.3 | {"grass-viper":3,"fen-mink":1,"fire-ant-raft":3,"marsh-mallow-hare":4,"mosquito-cloud":3,"raft-spider":4} 50/38.3 | {"grass-viper":3,"fen-mink":1,"fire-ant-raft":2,"marsh-mallow-hare":4,"mosquito-cloud":4,"raft-spider":4} 50/36 | {"grass-viper":4,"fen-mink":2,"raft-spider":4,"muskrat-reedgatherer":4,"marsh-mallow-hare":4} 46.7/35.7
+RESULT 5-4 {"grass-viper":4,"fen-mink":1,"raft-spider":4,"mosquito-cloud":3,"marsh-mallow-hare":4,"fire-ant-raft":2} 42 live 24 target 72 (64-80) 75s
+5-2 target 84 (76-92) size 14 pool 13 live {"constrictor-coil":3,"fire-ant-raft":4,"muskrat-reedgatherer":1,"raft-spider":2,"swamp-alligator":4}
+sampled 240 legal decks (240 distinct tried) in 0s
+sample reads (16 games): min 0 p10 0 median 12.5 p90 31.3 max 56.3 (59s)
+per copy (model): mudpuppy -2.8, planarian-splitter -1.9, bog-leech -1.3, alley-cat -1, mudflat-godwit -0.6, raft-spider -0.1, constrictor-coil 0, mosquito-cloud 0.2, fire-ant-raft 0.5, muskrat-reedgatherer 0.5, swamp-alligator 0.7, marsh-mallow-hare 2.8, shoal-shark 3.2
+model: 1914 decks visited, 16 read at 60: 36/45 36/45 36/40 36/48.3 36/51.7 36/33.3
+re-read (300 games, seed 64300): live 42; {"fire-ant-raft":4,"swamp-alligator":4,"marsh-mallow-hare":4,"shoal-shark":1,"muskrat-reedgatherer":1} 48.3/40.3 | {"shoal-shark":1,"marsh-mallow-hare":4,"muskrat-reedgatherer":4,"fire-ant-raft":2,"swamp-alligator":3} 51.7/36.7 | {"mosquito-cloud":4,"muskrat-reedgatherer":4,"marsh-mallow-hare":3,"swamp-alligator":2,"mudflat-godwit":1} 45/36.3 | {"muskrat-reedgatherer":4,"marsh-mallow-hare":4,"raft-spider":4,"shoal-shark":1,"planarian-splitter":1} 50/34.7 | {"shoal-shark":1,"constrictor-coil":2,"mosquito-cloud":3,"planarian-splitter":1,"marsh-mallow-hare":4,"swamp-alligator":3} 50/31.7
+RESULT 5-2 live kept 42 live 42 target 84 (76-92) 112s
+4-1 target 90 (82-98) size 13 pool 14 live {"beaver-lumberjack":1,"platypus-spur":4,"shoal-shark":1,"slow-worm":2,"snapstick-turtle":2,"water-shrew":3}
+sampled 240 legal decks (345 distinct tried) in 0s
+sample reads (16 games): min 6.3 p10 18.8 median 25 p90 43.8 max 75 (54s)
+per copy (model): snapstick-turtle -4, planarian-splitter -2.1, water-shrew -1.6, shoal-shark -1.1, muskrat-lodgekeeper -0.8, platypus-spur -0.8, kittiwake-flock -0.5, conch-crawler 0, slow-worm 0.7, grass-snake 1, pond-algae 1, duck-paddler 1.4, beaver-lumberjack 1.7, river-mink 5.2
+model: 1913 decks visited, 16 read at 60: 63/53.3 63/65 63/58.3 63/63.3 62/56.7 62/63.3
+re-read (300 games, seed 64300): live 36.7; {"snapstick-turtle":1,"beaver-lumberjack":4,"muskrat-lodgekeeper":2,"pond-algae":3,"slow-worm":3} 71.7/74 | {"beaver-lumberjack":4,"slow-worm":2,"snapstick-turtle":1,"river-mink":4,"duck-paddler":1,"pond-algae":1} 65/66.3 | {"snapstick-turtle":1,"beaver-lumberjack":4,"river-mink":4,"pond-algae":3,"grass-snake":1} 68.3/65.7 | {"snapstick-turtle":1,"beaver-lumberjack":4,"river-mink":4,"pond-algae":2,"slow-worm":1,"grass-snake":1} 66.7/65 | {"snapstick-turtle":1,"beaver-lumberjack":4,"duck-paddler":1,"river-mink":4,"grass-snake":2,"pond-algae":1} 65/60
+RESULT 4-1 {"snapstick-turtle":1,"beaver-lumberjack":4,"muskrat-lodgekeeper":2,"pond-algae":3,"slow-worm":3} 74 live 36.7 target 90 (82-98) 100s
+4-3 target 70 (62-78) size 15 pool 13 live {"conch-crawler":4,"grass-snake":4,"muskrat-lodgekeeper":2,"platypus-spur":3,"river-mink":1,"water-shrew":1}
+sampled 71 legal decks (168 distinct tried) in 4s
+sample reads (16 games): min 18.8 p10 25 median 37.5 p90 43.8 max 50 (24s)
+per copy (model): planarian-splitter -2.3, kittiwake-flock -1.3, duck-paddler -1.1, grass-snake -0.7, water-shrew -0.6, platypus-spur -0.4, muskrat-lodgekeeper 0, shoal-shark 0, slow-worm 0, pond-algae 0.8, river-mink 1.2, beaver-lumberjack 1.3, conch-crawler 3
+model: 2927 decks visited, 16 read at 60: 56/36.7 56/43.3 56/36.7 56/38.3 55/40 55/40
+re-read (300 games, seed 64300): live 41.7; {"platypus-spur":2,"river-mink":4,"conch-crawler":4,"pond-algae":4,"beaver-lumberjack":1} 43.3/42.3 | {"platypus-spur":1,"river-mink":4,"beaver-lumberjack":1,"grass-snake":1,"conch-crawler":4,"pond-algae":3,"muskrat-lodgekeeper":1} 41.7/42.3 | {"platypus-spur":1,"river-mink":4,"muskrat-lodgekeeper":3,"conch-crawler":4,"beaver-lumberjack":1,"pond-algae":2} 43.3/41.3 | {"platypus-spur":1,"river-mink":4,"conch-crawler":4,"beaver-lumberjack":1,"kittiwake-flock":1,"pond-algae":4} 43.3/38.7 | {"platypus-spur":1,"river-mink":3,"pond-algae":4,"beaver-lumberjack":1,"muskrat-lodgekeeper":4,"kittiwake-flock":1,"duck-paddler":1} 45/36.7
+RESULT 4-3 live kept 41.7 live 41.7 target 70 (62-78) 80s
+4-5 target 40 (30-49) size 20 pool 14 live {"conch-crawler":4,"drowned-matriarch":2,"duck-paddler":1,"muskrat-lodgekeeper":4,"pyrenean-desman":4,"shoal-shark":1,"slow-worm":4}
+sampled 45 legal decks (45 distinct tried) in 8s
+sample reads (16 games): min 0 p10 0 median 6.3 p90 12.5 max 18.8 (20s)
+per copy (model): beaver-lumberjack -1.9, conch-crawler -1.2, shoal-shark -0.7, planarian-splitter -0.6, slow-worm -0.4, water-shrew -0.4, pyrenean-desman -0.3, pond-algae -0.1, grass-snake 0, kittiwake-flock 0.8, muskrat-lodgekeeper 0.8, drowned-matriarch 1, duck-paddler 1, river-mink 1.8
+model: 5706 decks visited, 16 read at 60: 20/20 19/20 19/15 19/20 19/15 19/13.3
+re-read (300 games, seed 64300): live 14.3; {"drowned-matriarch":4,"pyrenean-desman":4,"shoal-shark":2,"grass-snake":2,"river-mink":4,"pond-algae":4} 20/16 | {"drowned-matriarch":4,"pyrenean-desman":2,"shoal-shark":1,"river-mink":4,"muskrat-lodgekeeper":4,"grass-snake":4,"kittiwake-flock":1} 20/16 | {"drowned-matriarch":4,"pyrenean-desman":2,"shoal-shark":1,"grass-snake":4,"river-mink":4,"muskrat-lodgekeeper":4,"duck-paddler":1} 20/14.7 | {"drowned-matriarch":4,"pyrenean-desman":4,"shoal-shark":4,"water-shrew":4,"river-mink":4} 20/13.7 | {"drowned-matriarch":4,"pyrenean-desman":4,"shoal-shark":4,"slow-worm":4,"river-mink":3,"conch-crawler":1} 20/12.7
+RESULT 4-5 {"drowned-matriarch":4,"pyrenean-desman":4,"shoal-shark":2,"grass-snake":2,"river-mink":4,"pond-algae":4} 16 live 14.3 target 40 (30-49) 71s
+2-2 target 80 (72-88) size 20 pool 14 live {"limpet-clinger":4,"open-ocean-hermit-crab":4,"rock-pool-starfish":3,"salvager-hermit-crab":4,"pincushion-urchin":4,"beaver-lumberjack":1}
+sampled 22 legal decks (29 distinct tried) in 16s
+sample reads (16 games): min 37.5 p10 50 median 68.8 p90 75 max 87.5 (25s)
+per copy (model): hedgerow-shrew -7, open-ocean-hermit-crab -5, rock-pool-starfish -3.1, beachcomber-sanderling -2.5, oystercatcher -2.2, duck-paddler -1.6, puddle-skimmer 0.4, pincushion-urchin 1, gull-thief 1.2, limpet-clinger 2.2, beaver-lumberjack 2.5, robin-redbreast 3.3, salvager-hermit-crab 4.9, moonlit-hare 5.9
+model: 6218 decks visited, 16 read at 60: 86/60 86/61.7 86/66.7 86/70 86/58.3 86/73.3

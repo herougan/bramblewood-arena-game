@@ -19,7 +19,7 @@ const STARTS = +arg('--starts', 12), PRED = +arg('--pred', 16), SEED1 = +arg('--
 const OUT = arg('--out', path.join(ROOT, 'docs', 'balance', 'refit3', 'wide-2026-11-17.jsonl'));
 const rd = f => fs.existsSync(f) ? fs.readFileSync(f, 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse) : [];
 const fx = {}; rd(arg('--fx', '')).forEach(x => { if (x.deck && x.key !== code) fx[x.key] = x.deck; });
-const band = rd(path.resolve(ROOT, arg('--bands', 'docs/balance/refit3/live-s7600.jsonl'))).find(x => x.key === code);
+const band = rd(path.resolve(ROOT, arg('--bands', 'docs/balance/refit3/road/live-s9100-main.jsonl'))).find(x => x.key === code);
 const T = band.target, LO = band.lo, HI = band.hi, { m, n, f } = X.byCode[code];
 const leadersOf = d => { const nn = Object.assign({}, n, { deck: d }); G.NODE_MAP_HINT.set(nn, m.id); return JSON.stringify(G.skirmishLeadersOf(nn, m.id) || []); }, lead0 = leadersOf(n.deck);
 // not worse than now: a problem the live deck already has (4-3 / 4-5 K14, 20-4's boon off) does not count against a candidate
