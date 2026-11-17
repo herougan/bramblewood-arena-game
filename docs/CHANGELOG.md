@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-17 (HPCUT1 and ARROW1-2: owner 11-17 21:28)
+- Players see: Maps 4-5 fights 5-6, 5-4, 5-2, 4-3 and 4-5 have a weaker enemy deck, Shield 0 and lower bramble Health (5-6 15 -> 12, 5-4 15 -> 6, 5-2 15 -> 7, 4-3 13 -> 5, 4-5 8 -> 4). Decision REFIT2-2 a ("a) Apply all 5 cuts"), an exception to the 11-04 "Don't lower bramble health anymore" for these five fights. Lines from docs/balance/refit2/hp/ (in band on two fresh seed sets), applied from docs/balance/hpcut1/hpcut1-fixes.jsonl. Deck problems 19 -> 17; skir1 32 -> 30, none new.
+- Fire Drake Hatchling (Volcano Lair): Arrow 2 (Flaming) becomes Fire Bolt 2 (decision ARROW1-2, "Yes, Fire Bolt 2"); budget S 8.04 -> 5, within N.
+
 ## 2026-11-17 (package BOLT2: bolts off Maps 0-19, owner 11-17 17:32 "only fire bolt in Map 20")
 - Players see: Fire Salamander (Spitfire) is now on Map 20 only (the 20-3 first-clear reward, was 19-3) and in Volcano Lair; it left Map 19's list and The Undercroft. Archerfish (acid bolt) left The Undercroft for Map 21's list and can now be found in Map 21 packs (tier 4; it was unobtainable). Owner OK for both card source moves: "Yes, both".
 - 19-3 deck: fire-salamander x4 -> cinder-hornet x4; 70.3% -> 78 / 73.5 at 400 games (seeds 7600 / 51100; target 75, band 67-83). Deck problems 19 = 19; skir1 34 -> 32, none new. `canonical/card-obtain-maps.json` regenerated (fire-salamander 20, archerfish 21). Live road after release (GitHub run 44088302391, seed 9100): main 131/133/10, side 75/77/1; 19-3 71.8.

@@ -5922,7 +5922,8 @@
     "effects": {
       "arrow": {
         "v": 2,
-        "type": "fire"
+        "type": "fire",
+        "form": "bolt"
       }
     },
     "flavor": "Too young to fly. Old enough to already be a problem.",
