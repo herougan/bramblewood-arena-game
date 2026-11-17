@@ -4198,23 +4198,28 @@ const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
 // 2026-11-18 (package POLL1, owner OWN-1117-3 "if our game polls alot, remove that"): one helper for the page's recurring checks.
 // bwLoop(fn, ms, gate, idleMs) runs fn every ms while the tab is visible and gate() is true (no gate: always). Hidden tab: no timer at all.
-// Gate false: the loop sleeps (a slow look at the gate, idleMs, default 3 s) and bwLoopWake() (visibility, the app frame's class, the body's
-// class, a tooltip showing) puts it back at once. Visible again: fn runs once, then on its rhythm. Returns {wake, stop}.
-const BW_LOOPS = [];
+// Gate false: the loop sleeps on ONE shared 2 s look (every sleeping loop, not one timer each; idleMs, default 2 s, is its own minimum) and
+// bwLoopWake() (visibility, the app frame's class, the body's class, a tooltip showing, a click / key a moment ago) puts it back at once.
+// Visible again: fn runs once, then on its rhythm. Returns {wake, stop}.
+const BW_LOOPS = [], BW_SLEEP = new Set(); let bwSleepId = 0;
 function bwLoop(fn, ms, gate, idleMs){
-  let id = 0, mode = 0, dead = false; // mode 0 stopped, 1 running, 2 sleeping
+  let id = 0, mode = 0, dead = false, last = 0; // mode 0 stopped, 1 running, 2 sleeping
   const ok = ()=>{ try{ return !gate || !!gate(); }catch(e){ return true; } };
   const run = ()=>{ try{ fn(); }catch(e){} };
-  const set = m=>{ if(m === mode) return; if(id) clearInterval(id); id = 0; mode = m;
+  const set = m=>{ if(m === mode) return; if(id) clearInterval(id); id = 0; if(mode === 2) BW_SLEEP.delete(L); mode = m;
     if(m === 1) id = setInterval(()=>{ if(!ok()) set(2); else run(); }, ms);
-    else if(m === 2) id = setInterval(()=>{ if(ok()){ set(1); run(); } }, idleMs || 3000); };
+    else if(m === 2){ last = Date.now(); BW_SLEEP.add(L); if(!bwSleepId) bwSleepId = setInterval(()=>{ if(!BW_SLEEP.size){ clearInterval(bwSleepId); bwSleepId = 0; return; } const t = Date.now(); Array.from(BW_SLEEP).forEach(x=> x.look(t)); }, 2000); }
+    if(!BW_SLEEP.size && bwSleepId){ clearInterval(bwSleepId); bwSleepId = 0; } };
   const L = {wake(wasHidden){ if(dead) return; if(document.hidden) return set(0); const g = ok(); set(g ? 1 : 2); if(g && wasHidden) run(); },
+    look(t){ if(mode !== 2 || t - last < (idleMs || 2000) - 50) return; last = t; if(ok()){ set(1); run(); } },
     stop(){ dead = true; set(0); } };
   BW_LOOPS.push(L); L.wake(false); return L;
 }
 function bwLoopWake(wasHidden){ BW_LOOPS.forEach(L=> L.wake(wasHidden)); }
 if(typeof document !== 'undefined'){
   document.addEventListener('visibilitychange', ()=> bwLoopWake(true));
+  let bwKickQ = 0; const bwKick = ()=>{ if(bwKickQ) return; bwKickQ = setTimeout(()=>{ bwKickQ = 0; bwLoopWake(false); }, 250); }; // a click or key may have unlocked the audio or changed a setting
+  document.addEventListener('pointerdown', bwKick, {capture:true, passive:true}); document.addEventListener('keydown', bwKick, {capture:true, passive:true});
   const bwWatch = ()=>{ try{ const mo = new MutationObserver(()=> bwLoopWake(false)), aw = document.getElementById('appWrap');
     if(aw) mo.observe(aw, {attributes:true, attributeFilter:['class']}); if(document.body) mo.observe(document.body, {attributes:true, attributeFilter:['class']}); }catch(e){} };
   if(document.body) bwWatch(); else document.addEventListener('DOMContentLoaded', bwWatch);
@@ -6855,7 +6860,7 @@ const CalmMusic = (()=>{
     try{ s.bus.gain.cancelScheduledValues(c.currentTime); s.bus.gain.setValueAtTime(Math.max(0.0001, s.bus.gain.value), c.currentTime); s.bus.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 2.5); }catch(e){}
     setTimeout(()=>{ try{ s.bus.disconnect(); }catch(e){} }, 3000);
   }
-  bwLoop(tick, 400, ()=>{ if(st) return true; const c = C(); return !!c && c.state === 'running'; }, 1000); // 2026-11-18 (POLL1): none while hidden (the tick stops the music then anyway), a slow look until the audio is running
+  bwLoop(tick, 400, ()=>{ if(st) return true; const c = C(); return !!c && c.state === 'running' && wanted(); }); // 2026-11-18 (POLL1): none while hidden (the tick stops the music then anyway), asleep until the audio is running and this music is wanted
   return {
     stop, playing(){ return !!st; },
     setVolume(v){ const c = C(); if(master && c) master.gain.setTargetAtTime(v*LEVEL, c.currentTime, 0.15); if(v <= 0) stop(); },
@@ -7127,7 +7132,7 @@ const Songbook = (()=>{
     pl2WasResults = res || (pl2WasResults && !!st && st.ducked);
     while(st && st.next < c.currentTime + 0.8) st.next = scheduleBar(c, Math.max(st.next, c.currentTime + 0.05));
   }
-  bwLoop(tick, 300, ()=>{ if(st) return true; const c = C(); return !!c && c.state === 'running'; }, 1000); // 2026-11-18 (POLL1): as the battle music
+  bwLoop(tick, 300, ()=>{ if(st) return true; const c = C(); return !!c && c.state === 'running' && !!wanted(); }); // 2026-11-18 (POLL1): as the battle music
   return {
     stop, playing(){ return st ? st.key : null; }, themes: SONGBOOK,
     // The Effects Lab plays a theme on demand (null goes back to following the place).
@@ -45037,7 +45042,7 @@ async function autoplayStep(){
     if(matchState === m && m.autoplay && !m.over && !m.resolving) await afterPlayerAction(1);
   }catch(e){} finally{ m._autoBusy = false; }
 }
-bwLoop(autoplayStep, 900, ()=> !!matchState); // 2026-11-18 (POLL1): was a 900 ms timer all the time; now only while a match exists, none while hidden
+setInterval(()=>{ try{ autoplayStep(); }catch(e){} }, 900); // 2026-11-18 (POLL1): left free-running on purpose: gating it (and fightWatchdog) on a match made tests/e5det's raid game path give different fights for one seed (the phase of these ticks reaches the fight) // 2026-11-18 (POLL1): was a 900 ms timer all the time; now only while a match exists, none while hidden
 // Fight watchdog (2026-10-16, user: "Sometimes the battle gets stuck ... you can't pass turn, but you also can't play a card. Auto
 // play also doesnt work"): a card went in this turn (m._needsCommit, set by playCardByUid) but its round never started and nothing
 // is in flight (no commit, no round, no tutorial pause, no lesson on screen). After 2.5 s the turn is committed again.
@@ -45051,7 +45056,7 @@ function fightWatchdog(){
   try{ console.warn('[fight] a played turn never reached its round; starting the round'); }catch(e){}
   afterPlayerAction(activePlayerId(m));
 }
-bwLoop(fightWatchdog, 1000, ()=> !!matchState); // 2026-11-18 (POLL1): only while a match exists, none while hidden
+setInterval(()=>{ try{ fightWatchdog(); }catch(e){} }, 1000); // 2026-11-18 (POLL1): free-running, see autoplayStep above // 2026-11-18 (POLL1): only while a match exists, none while hidden
 // The play-animation watchdog (2026-10-19, package RX, owner 20:46: "In Raids, when you play a card, it gets stuck in the shortened
 // part of the anim. This sometimes happens in normal gameplay — very rarely."). Root cause: a card's arrival (its entrance timeline in
 // renderBoard, and your hand play's flying copy, handFlightProxy) runs on GSAP's clock, which only moves when the browser draws a

@@ -10,19 +10,19 @@ const code = app.replace(/\/\/.*$/gm, '');
 
 // 1. limits: bare setInterval sites in arena_app.js (a new recurring check goes through bwLoop, which stops when the tab is hidden)
 const bare = (code.match(/(^|[^a-zA-Z.])setInterval\(/gm) || []).length;
-ok(bare <= 19, `1. at most 19 bare setInterval( sites in arena_app.js (now ${bare}; was 33 before POLL1); use bwLoop`);
+ok(bare <= 21, `1. at most 21 bare setInterval( sites in arena_app.js (now ${bare}; was 33 before POLL1); use bwLoop`);
 const loops = (code.match(/\bbwLoop\(/g) || []).length;
-ok(loops >= 18, `1. the always-on checks run through bwLoop (${loops} sites)`);
+ok(loops >= 16, `1. the always-on checks run through bwLoop (${loops} sites)`);
 
 // 2. the always-on timers are gated: only with a match / only on the cave screen / none while hidden
 const has = (re, m)=> ok(re.test(app), m);
-has(/bwLoop\(autoplayStep, 900, \(\)=> !!matchState\)/, '2. autoplay tick only with a match');
-has(/bwLoop\(fightWatchdog, 1000, \(\)=> !!matchState\)/, '2. fight watchdog only with a match');
+has(/setInterval\(\(\)=>\{ try\{ autoplayStep\(\); \}catch\(e\)\{\} \}, 900\);/, '2. autoplay tick stays free-running (e5det: its phase reaches the raid fight)');
+has(/setInterval\(\(\)=>\{ try\{ fightWatchdog\(\); \}catch\(e\)\{\} \}, 1000\);/, '2. fight watchdog stays free-running');
 has(/bwLoop\(playAnimWatchdog, 200, \(\)=> !!matchState\)/, '2. play-animation watchdog only with a match');
 has(/bwLoop\(syncDungeonChip, 500, \(\)=> !!matchState\)/, '2. dungeon chip only with a match');
 has(/bwLoop\(syncCaveScreen, 400, \(\)=> document\.body\.classList\.contains\('cave-screen'\)\)/, '2. cave screen sync only on the cave screen');
-has(/bwLoop\(tick, 400,/, '2. battle music tick through bwLoop');
-has(/bwLoop\(tick, 300,/, '2. calm music tick through bwLoop');
+has(/bwLoop\(tick, 400,/, '2. calm music tick through bwLoop');
+has(/bwLoop\(tick, 300,/, '2. songbook music tick through bwLoop');
 ok(/bwLoop\(\(\)=> ui7Tick\(Date\.now\(\)\), 1000, \(\)=> typeof matchState !== 'undefined' && !!matchState\)/.test(fxb), '2. held-card struggle tick only with a match');
 
 // 3. network checks: slower, event-driven first
@@ -36,24 +36,25 @@ has(/Social\.heartbeat = bwLoop\(beat, 120000\)/, '3. presence heartbeat through
 has(/Social\.heartbeat\.stop\(\)/, '3. sign-out stops the heartbeat loop');
 
 // 4. bwLoop behaviour (fake timers and document)
-const src = app.match(/const BW_LOOPS = \[\];[\s\S]*?function bwLoopWake\(wasHidden\)\{[^\n]*\}/)[0];
+const src = app.match(/const BW_LOOPS = \[\], BW_SLEEP[\s\S]*?function bwLoopWake\(wasHidden\)\{[^\n]*\}/)[0];
 const timers = new Map(); let nextId = 1, now = 0;
 const doc = {hidden: false};
-const ctx = {document: doc, setInterval: (f, ms)=>{ const id = nextId++; timers.set(id, {f, ms, at: now + ms}); return id; }, clearInterval: id=> timers.delete(id)};
+const ctx = {document: doc, Date: {now: ()=> now}, Array, setInterval: (f, ms)=>{ const id = nextId++; timers.set(id, {f, ms, at: now + ms}); return id; }, clearInterval: id=> timers.delete(id)};
 vm.createContext(ctx); vm.runInContext(src + '\nthis.bwLoop = bwLoop; this.bwLoopWake = bwLoopWake;', ctx);
 const advance = ms=>{ const end = now + ms; for(;;){ let best = null, bid = 0; timers.forEach((t, id)=>{ if(t.at <= end && (!best || t.at < best.at)){ best = t; bid = id; } }); if(!best) break; now = best.at; best.at += best.ms; best.f(); } now = end; };
 let fires = 0, gate = false;
-const L = ctx.bwLoop(()=>{ fires++; }, 100, ()=> gate, 1000);
+const L = ctx.bwLoop(()=>{ fires++; }, 100, ()=> gate);
+const L2 = ctx.bwLoop(()=>{}, 100, ()=> false), L3 = ctx.bwLoop(()=>{}, 100, ()=> false);
 advance(10000); ok(fires === 0, `4. gate closed: fn never runs (${fires})`);
-ok([...timers.values()].every(t=> t.ms === 1000), '4. gate closed: only the slow look remains (1 s)');
-gate = true; advance(1000); ok(fires >= 1, '4. the slow look finds the gate open and starts the loop');
+ok(timers.size === 1 && [...timers.values()][0].ms === 2000, `4. gate closed: three sleeping loops share ONE 2 s timer (${timers.size} timers)`);
+gate = true; advance(2000); ok(fires >= 1, '4. the slow look finds the gate open and starts the loop');
 fires = 0; advance(1000); ok(fires === 10, `4. gate open: runs on its rhythm (${fires} in 1 s)`);
-doc.hidden = true; ctx.bwLoopWake(true); ok(timers.size === 0, '4. hidden: no timer at all');
+doc.hidden = true; ctx.bwLoopWake(true); ok(timers.size === 0, `4. hidden: no timer at all (${timers.size})`);
 fires = 0; advance(60000); ok(fires === 0, '4. hidden: nothing fires');
 doc.hidden = false; ctx.bwLoopWake(true); ok(fires === 1, '4. visible again: runs once at once');
-gate = false; advance(200); ok([...timers.values()].every(t=> t.ms === 1000), '4. the gate closing puts it back to sleep');
+gate = false; advance(200); ok(![...timers.values()].some(t=> t.ms === 100), '4. the gate closing puts it back to sleep (no 100 ms timer left)');
 gate = true; L.wake(false); fires = 0; advance(100); ok(fires === 1, '4. wake() restarts it at once');
-L.stop(); ok(timers.size === 0, '4. stop() removes the timer'); L.wake(false); ok(timers.size === 0, '4. a stopped loop stays stopped');
+L2.stop(); L3.stop(); L.stop(); ok(timers.size === 0, '4. stop() removes the timer'); L.wake(false); ok(timers.size === 0, '4. a stopped loop stays stopped');
 let thrown = 0; const T = ctx.bwLoop(()=>{ thrown++; throw new Error('x'); }, 50); advance(200); ok(thrown >= 3, '4. a throwing fn does not stop the loop'); T.stop();
 
 console.log(`poll1-2026-11-17: ${n - fail}/${n} checks passed`); process.exit(fail ? 1 : 0);
