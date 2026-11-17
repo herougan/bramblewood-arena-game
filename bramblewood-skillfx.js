@@ -1196,8 +1196,10 @@ const SIXTH_CSS = `
 function sixthCss(){ if(document.getElementById('sfx-sixth-css')) return; const s = document.createElement('style'); s.id = 'sfx-sixth-css'; s.textContent = SIXTH_CSS; (document.head || document.body).appendChild(s); }
 // Fireball: a flaming ball arcs from the caster to the target, leaving embers, then bursts 3 columns wide (the dynamite blast's flash,
 // fire core, smoke and debris), the cards beside it knocked outward.
+// 2026-11-18 (package FXAUD2): fireball and meteor built ~40 nodes at Effects None and in a hidden tab; both now skip the particles there (the hit, number and shake come from the event)
+const quiet = ()=>{ try{ return (typeof fxAtLeast === 'function' && !fxAtLeast('low')) || (typeof ui27Away === 'function' && ui27Away()); }catch(e){ return false; } };
 function fireball(caster, target, o){
-  o = o || {}; if(!ready() || !caster || !target){ later(o.onImpact, 500); return; } sixthCss();
+  o = o || {}; if(!ready() || quiet() || !caster || !target){ later(o.onImpact, 500); return; } sixthCss();
   const g = G(), a = centre(caster), b = centre(target), ball = layer('sfx-fb'), m = {x:(a.x + b.x)/2 + rnd(-40, 40), y:Math.min(a.y, b.y) - 110}, s = {t:0}, fly = (o.flight || 520)/1000;
   g.set(ball, {x:a.x - 13, y:a.y - 13, scale:.6}); let k = 0;
   const ember = ()=>{ if(k++ % 2) return; const r = ball.getBoundingClientRect(), e = layer('sfx-fb-tail'); g.set(e, {x:r.left + r.width/2 - 5, y:r.top + r.height/2 - 5, opacity:.95});
@@ -1217,7 +1219,7 @@ function fireball(caster, target, o){
 }
 // Meteor: a burning rock streaks down from the top of the screen onto the target, a shockwave rolls out, and the crater glows.
 function meteor(target, o){
-  o = o || {}; if(!ready() || !target){ later(o.onImpact, 600); return; } sixthCss();
+  o = o || {}; if(!ready() || quiet() || !target){ later(o.onImpact, 600); return; } sixthCss();
   const g = G(), b = centre(target), rock = layer('sfx-meteor'), trail = layer('sfx-meteor-trail'), fall = (o.fall || 560)/1000;
   const sx = b.x - Math.min(260, window.innerWidth*.3), sy = -60, ang = Math.atan2(b.y - sy, b.x - sx)*57.3, len = Math.hypot(b.x - sx, b.y - sy);
   g.set(rock, {x:sx - 17, y:sy - 17}); g.set(trail, {x:sx - 140, y:sy - 5, width:140, rotation:ang, opacity:.9});
@@ -1710,6 +1712,7 @@ const BOLT_LOOK = {
   poison: {core:'#f0d8ff', mid:'#9a4fd8', edge:'#4a1d6e', glow:'170,80,255',  bit:'poison'},
   ice:    {core:'#ffffff', mid:'#a8dcff', edge:'#3f8fd8', glow:'140,200,255', bit:'ice'},
   shock:  {core:'#ffffff', mid:'#fff36a', edge:'#e0b000', glow:'255,230,60',  bit:'zap'},
+  water:  {core:'#ffffff', mid:'#7cc8ff', edge:'#1d5fae', glow:'80,170,255',  bit:'ice'}, // ENG51 (2026-11-18): Water Bolt under reduced motion
 };
 const NINTH_CSS = `
 .sfx-glob{width:22px; height:22px; border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;}

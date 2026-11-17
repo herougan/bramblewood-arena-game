@@ -8,6 +8,7 @@
 //      no "Apply my cuts" (a list change is a live card_overrides write); the note under Copy my picks
 //   4. the texts: 8 ui.lf2-* keys, each English text in the 12 language packs; decisions LISTFIX2-1 and -2
 'use strict';
+const { listAdded } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const ROOT = path.join(__dirname, '..');
 const J = p=> JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
@@ -49,6 +50,7 @@ const HOLD = new Set(); Object.entries(J('docs/balance/list1/fold-2026-11-13.jso
 const cutArc = (J('canonical/map-review.json').cutArchive || {}).maps || {}; // 2026-11-05 22:49 (owner: reset the Map cards cut lists): the cut entries moved to map-review.json cutArchive
 Object.entries(review).forEach(([k, r])=>{ if(!topOf[k]) return; ((r.cut || []).concat(cutArc[k] || [])).forEach(e=>{
   if(ownList(k).includes(e.id) && REPICKED.has(k + '|' + e.id)) repicked.add(k + '|' + e.id);
+  else if(ownList(k).includes(e.id) && listAdded(k, e.id)){ /* 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3) listed it again on purpose */ }
   else if(ownList(k).includes(e.id)){ still.push(k + '|' + e.id); ok(!!e.statusWhy, `${k}: cut ${e.id} is still listed and says why (statusWhy)`); }
   else if(k === topOf[k] && specialOf(k).includes(e.id) && HOLD.has(k + '|' + e.id)) holds.push(k + '|' + e.id); // 2026-11-14 (TESTFIX1; LIST1-2): the owner's 11-13 picks dropped it, a fight still fields it, so the fold put it on SPECIAL as a hold (not a kept cut)
   else if(k === topOf[k] && specialOf(k).includes(e.id)){ spec.push(k + '|' + e.id);

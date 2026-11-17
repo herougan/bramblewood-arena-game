@@ -235,7 +235,7 @@ const kill = (e, P, c, ev)=>{ c.hp = 0; e.removeDeadCards(P, so, {}, {}, ev || [
   ok(/\{key:'relic', category:'passive', label:'Relic', kind:'boolean', desc:\(\)=> TX\('ui\.relic-desc'\), codexNote:TX\('ui\.relic-codex-note'\)\}/.test(src), '8. PASSIVE_DEFS: Relic, with its Codex note');
   ok(/relic:'🏺'/.test(src) && /'relic' \/\* 2026-10-19 \*\//.test(src), '8. Relic: icon and skill chip');
   ok((src.match(/if\(c\.prayerTokens>0\) badges\.push\(`<span class="abadge prayer"/g) || []).length === 2 && /\.abadge\.prayer\{/.test(tpl), '8. the 📿 token badge, on both card renderers, styled');
-  ok(/prayerTokens:rc\.prayerTokens\|\|0/.test(src) && /prayerTokens:c\.prayerTokens\|\|0/.test(src) && /ev\.kind==='prayer'\)\{ if\(el\) floatText/.test(src), '8. the replay carries the tokens and follows each upkeep\'s gain');
+  ok(/prayerTokens:rc\.prayerTokens\|\|0/.test(src) && /prayerTokens:c\.prayerTokens\|\|0/.test(src) && /ev\.kind==='prayer'\)\{[^\n]*?if\(el\) floatText/.test(src) /* 2026-11-18 (TESTFIX): SFX2 plays its tone first */, '8. the replay carries the tokens and follows each upkeep\'s gain');
   ok(/d\.relicOf \? 'is-relic' : ''/.test(src) && /\.board-card\.is-relic \.card-tile\{filter:grayscale/.test(tpl), '8. the Relic shows its card\'s art faded and ghostly');
   ok(/m\.engine\.prayerRateOf/.test(src) && /RESOURCE_TOOLTIP[\s\S]{0,4000}prayer: TX\('ui\.prayer-hud-tip'\)/.test(src), '8. the Prayer pill: tokens on the field, + a turn, its tooltip');
   ok(/r\.relicOf && !r\._relicNamed/.test(src), '8. the Relic\'s shown name comes from the text table');

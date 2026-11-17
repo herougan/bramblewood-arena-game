@@ -4,7 +4,7 @@
 // 2 -> 2.5, the 13 rarities of RAR-1 and the re-fit (no in-play card outside the band but the listed and held ones).
 'use strict';
 const fs = require('fs'), path = require('path'), cp = require('child_process');
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(__dirname, '..'); const { redesigned } = require('./lib/redesign.js');
 let fail = 0, n = 0; const ok = (c, m) => { n++; if (!c) { fail++; console.log('  ✗', m); } else console.log('  ✓', m); };
 const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
 const BB = require(path.join(ROOT, 'bramblewood-budget.js')), SC = require(path.join(ROOT, 'tools', 'skill_costs.js'));
@@ -60,7 +60,7 @@ ok(BB.DEFAULTS.perLumber === 2.5 && table.budget.perLumber === 2.5, 'perLumber 2
   const fits = r.split('\n').filter(l => /^\s+fit /.test(l)).map(l => l.trim().split(/\s+/)[1]), DEC1_HOLD = ['echo-matriarch', 'otter-angler'];
   ok(/^re-fit: \d+;/.test(r.split('\n')[0]) && fits.every(id => DEC1_HOLD.includes(id)), `no in-play card outside the band but the held and listed ones (${r.split('\n')[0]}; DEC1 holds: ${fits.join(', ') || 'none'})`);
   const plan = J('docs/balance/bal12/refit-2026-11-02.json'); ok(plan.edits.every(e => Math.abs((e.set.attack != null ? e.set.attack : 0) - (+e.from.stats.split('/')[0] || 0)) <= 2 && Math.abs(e.set.health - +e.from.stats.split('/')[1]) <= 2), `each re-fit moves a stat by at most 2 (${plan.edits.map(e => e.id + ' ' + e.from.stats + ' -> ' + e.to).join(', ')})`);
-  ok(['glass-octopus', 'subterraneaner', 'badger-sapper'].every(id => !plan.edits.some(e => e.id === id)) && C['glass-octopus'].attack === 4 && (C['glass-octopus'].health === 9 || (C['glass-octopus'].health === 7 && /DEC1: BAL12-2 a/.test(C['glass-octopus'].creatorNote || ''))) /* 2026-11-03 (DEC1, BAL12-2 a): 4/7 */ && C['subterraneaner'].attack === 4 && C['badger-sapper'].health === 15, 'the three cards BAL11 held keep their lines (the owner picks)'); }
+  ok(['glass-octopus', 'subterraneaner', 'badger-sapper'].every(id => !plan.edits.some(e => e.id === id)) && C['glass-octopus'].attack === 4 && (C['glass-octopus'].health === 9 || (C['glass-octopus'].health === 7 && /DEC1: BAL12-2 a/.test(C['glass-octopus'].creatorNote || ''))) /* 2026-11-03 (DEC1, BAL12-2 a): 4/7 */ && C['subterraneaner'].attack === 4 && (C['badger-sapper'].health === 15 || redesigned('badger-sapper')) /* 2026-11-18 (TESTFIX): SKAUD1 trimmed it to 3/12 */, 'the three cards BAL11 held keep their lines (the owner picks)'); }
 
 // ---- decisions --------------------------------------------------------------------------------------------------------------------
 { const items = J('docs/decisions.json').items.filter(x => /^BAL12-/.test(x.id)); ok(items.length >= 3 && items.every(x => x.group === 'game'), `BAL12 owner calls filed (${items.map(x => x.id).join(', ')})`); }

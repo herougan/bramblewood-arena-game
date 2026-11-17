@@ -29,7 +29,7 @@ Object.entries(LEAD).forEach(([side, id])=>{
   ok(c.flavor && c.name && c.species && c.species.length, `1. ${id}: name, species, flavour`);
   const b = T.budget(c, {}); const use = b && b.N > 0 ? b.x1 / b.N : 0;
   ok(b && b.ok && !b.wellUnder, `1. ${id} inside the budget band at Level 1 (${Math.round(100 * use)}% of N ${b && b.N})`);
-  ok(!c.art, `1. ${id}: no art file yet`);
+  ok(!c.art || /^data:image\/(png|webp|jpeg);base64,/.test(c.art), `1. ${id}: no art yet, or its drawn art`); // 2026-11-18 (TESTFIX): the art was drawn since
   ok(new RegExp('### ' + c.name + '\\n> ').test(rd('docs/art-style-prompts.md')), `1. ${id}: an art prompt`);
 });
 const nids = cards.map(c=> c.numericId).filter(n=> n != null); ok(new Set(nids).size === nids.length, '1. numericIds are unique');

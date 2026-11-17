@@ -35,7 +35,8 @@ LIST.forEach(id=>{ const c = byId[id]; if(!c) return ok(false, id + ' exists');
   ok(/package EE/.test(c.creatorNote || '') && /N = [\d.]+; S = /.test(c.creatorNote), `${id}: creatorNote shows the budget`);
   ok(c.locked === true, `${id}: locked`); });
 ok(byId.terraumbra && byId.terraumbra.mechanicLine === 'evolution' && byId.terraumbra.cardType === 'equipment', 'Terraumbra: an Evomax (evolution) equipment card');
-ok(byId['galactic-condor'] && byId['galactic-condor'].effects.charge.do.do === 'positionBeam', 'the Galactic Condor charges a positionBeam');
+// 2026-11-18 (TESTFIX): SKAUD1 writes Charge as an On Charge trigger
+ok(byId['galactic-condor'] && ((byId['galactic-condor'].effects.charge && byId['galactic-condor'].effects.charge.do.do === 'positionBeam') || (byId['galactic-condor'].effects.triggers || []).some(t=> t.on === 'onCharge' && t.do === 'positionBeam')), 'the Galactic Condor charges a positionBeam');
 // the last cards of the file are the new ones (they go at the end)
 { const EE7 = ['terraumbra', 'exo-podas', 'galactic-condor', 'pink-maus', 'nyoogle', 'tobasco-drakon', 'demo-panda'], at = cards.findIndex(c=> c.id === EE7[0]); // 2026-10-19 (package EQ): later packages' cards go after them
   ok(at > 0 && EE7.every((id, i)=> cards[at + i] && cards[at + i].id === id) && cards.slice(at).every(c=> !c.pool), 'the seven new Easter eggs sit together, after every older card'); }

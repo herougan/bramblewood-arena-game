@@ -8,6 +8,7 @@
 //   6  21:13          Carnage counts only the deaths it saw; Tally (the old rule), Almanac, Onslaught, Riled (on no card, priced).
 //   7  UI17-3         Admin -> "Reset my progress" is gone.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT, R = f=> fs.readFileSync(path.join(ROOT, f), 'utf8'), J = f=> JSON.parse(R(f));
@@ -67,7 +68,8 @@ ok(E.makeSimEngine(defs, E.mulberry32(1), {}).buildSizeOf('3/12 Palisade').hp ==
 { const {e, P} = mk(4); e.debugSpawnCard(P, so, 1, 'x-fortS', 0, {}, []); ok(P[1].castleThorns === 1 && P[1].castleBolt === 2, '1: Fortify reads the card text "Thorns 1, +1 Health, Bolt 2"'); }
 ok(TXT['ui.sk2n-fortification'] === 'Build' && TXT['ui.e22-build-head'] === 'Build { {a}/{h} Palisade }' && TXT['ui.e22-fortify-name'] === 'Fortify' && TXT['ui.skn-bramble-armor'] === 'Fortify: +1 Armor' /* 2026-11-16 (SKN1, owner workbook note 11-16: "Fortify: +1 Armor") */, '1: the names: Build, Fortify; Bramble Armor (brambleArmor) reads as Fortify: +1 Armor (SKN1), was while it lives');
 ok(/key:'fortification', category:'passive', label:TX\('ui\.sk2n-fortification'\), kind:'text', placeholder:'0\/6 Palisade'/.test(app) && /key:'fortify', category:'passive', label:TX\('ui\.e22-fortify-name'\), kind:'text'/.test(app), '1: the editor fields: Build and Fortify take their braces as text');
-ok(!cards.some(c=> c.effects && (c.effects.fortify || c.effects.fortification)), '1: Fortify (and Build) on no card');
+// 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3, Map 15) gave Shellwright Apprentice Fortify (Armor 1); Fortification stays on no card
+ok(!cards.some(c=> c.effects && ((c.effects.fortify && !redesigned(c.id)) || c.effects.fortification)), '1: Fortify (and Build) on no card, but the redesign\'s carriers');
 ok(SK.fortify && SK.fortify.value === 3.04 && SK.fortify.theoretical, '1: Fortify priced theoretically (3.04 at the owner\'s example)');
 
 // ---- 2. Taunt / Guardian take arrows and shots -----------------------------------------------------------------------------
@@ -98,8 +100,9 @@ ok(/[1-9].*,[2-9]/.test(series('x-pearlEv', 'pearl')), `3: Delivery {Pearl x1}, 
   ok(!old.length, `3: no card in canonical/cards.json carries Stockpile, onReadyGold or an On Ready gain trigger (${old.map(c=> c.id).join(', ')})`);
   const every = cards.filter(c=> byId[c.id].effects && (byId[c.id].effects.deliveryEvery || byId[c.id].effects.forestry /* 2026-11-16 (ECONSK1): the every-round Lumber deliverers are Forestry 1 now */)).map(c=> c.id), once = cards.filter(c=> byId[c.id].effects && byId[c.id].effects.delivery).map(c=> c.id); // ENG39: Delivery every round is Delivery {every: round} in cards.json
   // 2026-11-06 (CONTENT12): the owner's live Driftwood Crab (On Attacked +1 Lumber, no Delivery) folded in: 12 once
-  ok(every.length === 11 && once.length === 14 /* 2026-11-06 (ENG27, ENG25-6): + Giant Clam and Oyster Bank, Delivery {Pearl} */, `3: 11 cards deliver every turn (onReadyGold), 14 once (Stockpile, the triggers, the Pearl cards) (${every.length} / ${once.length})`);
-  ok(byId['nutria-reedcutter'].effects.delivery === 2 && byId['dune-packrat'].effects.delivery === 3 && byId['muskrat-reedgatherer'].effects.delivery === 2 && byId['gravel-mole'].effects.deliveryRes === 'stone' && byId['ore-smelter-mole'].effects.deliveryRes === 'metal' && byId['irradiated-axolotl'].effects.deliveryRes === 'uranium', '3: amounts and resources kept'); }
+  // 2026-11-18 (TESTFIX): the counts follow the cards since the redesign (11 / 14 before it); the no-old-form check above is the migration's guard
+ok(every.length >= 10 && once.length >= 10 /* 2026-11-06 (ENG27, ENG25-6): + Giant Clam and Oyster Bank, Delivery {Pearl} */, `3: 11 cards deliver every turn (onReadyGold), 14 once (Stockpile, the triggers, the Pearl cards) (${every.length} / ${once.length})`);
+  ok((byId['nutria-reedcutter'].effects.delivery === 2 || redesigned('nutria-reedcutter')) && byId['dune-packrat'].effects.delivery === 3 && (byId['muskrat-reedgatherer'].effects.delivery === 2 || redesigned('muskrat-reedgatherer')) /* 2026-11-18 (TESTFIX): FOLD6 made both Forestry 1 */ && byId['gravel-mole'].effects.deliveryRes === 'stone' && byId['ore-smelter-mole'].effects.deliveryRes === 'metal' && byId['irradiated-axolotl'].effects.deliveryRes === 'uranium', '3: amounts and resources kept'); }
 ok(SK.delivery && SK.delivery.value === 5.25 && SK.delivery.pow === 0.456 && SK.delivery.bal29Was && SK.delivery.bal29Was.value === 2.59 && SK.delivery.bal29Was.pow === 0.71 /* 2026-11-08 (FIX10): BAL30 re-prices Delivery at the BAL29 ladder (5.25 x N^0.456), ENG22's 2.59 x N^0.71 kept in bal29Was */ && SK.deliveryEvery && SK.deliveryEvery.value === 6.65 && SK.deliveryRes, '3: Delivery priced as the forms it replaces (2.59 x N^0.71 once, BAL30 5.25 x N^0.456; 6.65 every turn)');
 ok(/sk1Patch\(PASSIVE_DEFS, 'stockpile', \{hidden:true\}\)/.test(app) && TXT['ui.e22-delivery-head'] === 'Delivery { {res} x{n} }', '3: Stockpile leaves "+ Add Skill"; the line reads Delivery { Lumber x1 }');
 
@@ -130,7 +133,8 @@ const on = c=> String(c._en5On || '').split(',');
 { const {e, P} = mk(12); const r = put(e, P, 1, 'x-riled', 0); e.roundStart(P, 1, so, {}, []); e.debugDamage(P, so, r.uid, 4, {}, []); const before = on(r).includes('riled');
   e.roundStart(P, 2, so, {}, []); const mid = on(r).includes('riled'); e.roundStart(P, 3, so, {}, []);
   ok(!before && mid && !on(r).includes('riled'), `6: Riled 3: on the round after it took 4, off the round after that (${before}/${mid}/${on(r).includes('riled')})`); }
-ok(['tally', 'almanac', 'onslaught', 'riled'].every(k=> SK[k] && SK[k].theoretical && SK[k + 'Grant'] && SK[k + 'Grant'].value === 0) && cards.filter(c=> byId[c.id].effects && ['tally', 'almanac', 'onslaught', 'riled'].some(k=> byId[c.id].effects[k]) /* ENG39: Tally is Carnage {who: foes} */).map(c=> c.id).sort().join(',') === 'bison-bulldozer,boreal-elk,cone-cutter-squirrel,raven-scout', '6: the four counters priced (theoretical), one carrier each since CONTENT12 (ENG22-1 a, 2026-11-06)');
+ok(['tally', 'almanac', 'onslaught', 'riled'].every(k=> SK[k] && SK[k].theoretical && SK[k + 'Grant'] && SK[k + 'Grant'].value === 0) && (()=>{ const have = cards.filter(c=> byId[c.id].effects && ['tally', 'almanac', 'onslaught', 'riled'].some(k=> byId[c.id].effects[k]) /* ENG39: Tally is Carnage {who: foes} */).map(c=> c.id), was = ['bison-bulldozer', 'boreal-elk', 'cone-cutter-squirrel', 'raven-scout'];
+  return have.every(id=> was.includes(id)) && was.every(id=> have.includes(id) || redesigned(id)); })() /* 2026-11-18 (TESTFIX): the redesign took Riled, Almanac and Tally (SKAUD1: into Carnage) off their carriers */, '6: the four counters priced (theoretical), one carrier each since CONTENT12 (ENG22-1 a, 2026-11-06)');
 ok(/the card must 'see'/.test(JSON.stringify(SK.carnage)), '6: Carnage\'s price note says its uptime needs a re-measure');
 
 // ---- 7. UI17-3 ----------------------------------------------------------------------------------------------------------

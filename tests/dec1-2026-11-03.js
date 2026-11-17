@@ -12,6 +12,7 @@
 //      a one-row fight as before.
 //   node tests/dec1-2026-11-03.js
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path'), cp = require('child_process');
 const ROOT = path.join(__dirname, '..');
 let fail = 0, n = 0; const ok = (c, m) => { n++; if (!c) { fail++; console.log('  ✗', m); } else console.log('  ✓', m); };
@@ -42,7 +43,7 @@ const cards = J('canonical/cards.json').map(c=> c && require('../bramblewood-ski
 { process.env.SKILL2_MISSMULT = process.env.SKILL2_MISSMULT || '1'; process.env.SKILL2_NO_NAMED = '1';
   const R = require(path.join(ROOT, 'tools', 'skill2_refit_2026_10_31.js')), v = id => R.verdict(R.NEW, C[id]);
   const rg = C['otter-royal-guard'];
-  ok(rg.attack === 3 && rg.health === 6 && JSON.stringify(rg.effects) === JSON.stringify({ triggers: [{ on: 'onSpawn', do: 'grantShield', allies: 3 }] }) && v('otter-royal-guard').ok, `ENG19-2: Royal Guard 3/6, On Play +3 Shield to every ally, in band (use ${v('otter-royal-guard').use})`);
+  ok(rg.attack === 3 && rg.health === 6 && JSON.stringify(rg.effects.triggers) === JSON.stringify([{ on: 'onSpawn', do: 'grantShield', allies: 3 }]) && (Object.keys(rg.effects).length === 1 || redesigned('otter-royal-guard')) /* 2026-11-18 (TESTFIX): FOLD6 added Loyal */ && v('otter-royal-guard').ok, `ENG19-2: Royal Guard 3/6, On Play +3 Shield to every ally, in band (use ${v('otter-royal-guard').use})`);
   ok(C['oyster-bank'].effects.delivery === 1 && C['oyster-bank'].effects.deliveryRes === 'pearl' && C['giant-clam'].effects.delivery === 1 && C['giant-clam'].effects.deliveryRes === 'pearl' /* 2026-11-06 (ENG27, owner ENG25-6): Pearl 1 is Delivery {Pearl x1} now */ && C['oyster-bank'].health === 13 && C['giant-clam'].attack === 5 && C['giant-clam'].health === 4 /* 2026-11-06 TESTFIX2: CONTENT12 re-fit Giant Clam 5/5 -> 5/4 (102% -> 98%) */, 'ENG19-3: Oyster Bank and Giant Clam Pearl 1 (not Pearl Bed), stats kept');
   ok(v('oyster-bank').ok && v('giant-clam').ok /* 2026-11-06 TESTFIX2: CONTENT12 5/5 -> 5/4: Giant Clam is in band now (98%) */, `ENG19-3: Oyster Bank in band (${v('oyster-bank').use}); Giant Clam in band since CONTENT12 (${v('giant-clam').use})`);
   ok(C['glass-octopus'].attack === 4 && C['glass-octopus'].health === 7 && v('glass-octopus').ok, `BAL12-2 a: Glass Octopus 4/7, in band (${v('glass-octopus').use})`);

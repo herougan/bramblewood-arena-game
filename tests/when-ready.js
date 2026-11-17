@@ -7,6 +7,8 @@ const E = H.Engine;
 let fail = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  ✗', m); } };
 const so = id=> id===1 ? 'A' : 'B';
 const defs = H.loadCardDefs();
+// 2026-11-18 (TESTFIX): FOLD6 gave the Willow-o'-Wisp Smoke Bomb; the scene deals a test copy with its old On Death Exile 2 from the graveyard
+defs['wr-wisp'] = Object.assign({}, defs['willow-o-wisp'], {id: 'wr-wisp', effects: {triggers: [{on: 'onDeath', do: 'exileGrave', count: 2}], nocturnal: 1}});
 ok(defs['scraper-of-skies'].effects.triggers[0].whenReady === true, 'Scraper of Skies bee trigger is flagged whenReady');
 function run(wait){
   const e = E.makeSimEngine(defs, E.mulberry32(7), {recordEvents:true, battleMode:'open'});
@@ -31,7 +33,7 @@ ok(run(0) === 1, 'one bee once the Scraper is Ready');
   ok(atkAfter('tw-react', 0) === 2, 'the same trigger works once Ready');
   ok(atkAfter('tw-react2', 2) === 2, 'whileWaiting lets it fire while Waiting');
   const e = E.makeSimEngine(defs, E.mulberry32(4), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
-  e.debugSpawnCard(P, so, 1, 'willow-o-wisp', 'left', {}, []); const w = e.allBoardCards(P[1])[0]; w.wait = 1;
+  e.debugSpawnCard(P, so, 1, 'wr-wisp', 'left', {}, []); const w = e.allBoardCards(P[1])[0]; w.wait = 1;
   P[1].graveyard.push({uid:8001, defId:'bee-drone'}, {uid:8002, defId:'bee-drone'}, {uid:8003, defId:'bee-drone'});
   e.debugFireTrigger(P, so, w.uid, 'onDeath', {}, []);
   ok(P[1].exile.length === 2 && P[1].graveyard.length === 1, `Willow-o'-Wisp's On Death exiles 2 from the graveyard even while Waiting (exile ${P[1].exile.length})`);

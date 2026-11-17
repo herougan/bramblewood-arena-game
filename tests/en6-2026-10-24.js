@@ -5,6 +5,7 @@
 //   Deal damage actions; their prices (the 4-round rule x the measured uptime); the thematic cards and the Bounty clean-up; the page's
 //   registry, texts in the 12 packs, docs.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT;
@@ -133,7 +134,7 @@ const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cos
   const want = {'polar-bear':'hibernate', 'snow-ermine':'frost', 'cinder-stoker':'heat', 'dromedary':'drought', 'fulmar-spitter':'storm', 'horseshoe-crab':'salt', 'puddle-hopper':'rain', 'ent':'fog',
     'seed-cache-squirrel':'plenty', /* 2026-10-26 (ENG10, PROP1-4): the Ravenous Wolverine's Scarcity became Beset */ 'gull-thief':'flying' /* 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live edit: Gull Thief lost foePlenty (now Flying + On Kill +1 Lumber); the budget check stays */, 'stoat-cutthroat':'foeScarcity', 'balloon-archer':'arrowBramble'};
   const HOLD = id=>{ const h = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(id); if(h) console.log(`  · ${id}: budget not checked, ${h === 'unplaced' ? 'unplaced (on no list, out of play)' : 'pending step 3 (re-fit)'}`); return !!h; }; // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): an 'unplaced' card (on no list) or one 'pending' the owner's re-fit (step 3) is reported, not failed (tools/lib_map_pools.js budgetHold)
-  Object.entries(want).forEach(([id, k])=>{ const x = c(id), b = x && T.budget(x, {level: 1}); ok(x && x.effects && x.effects[k] && b && (b.ok || HOLD(id)), `${id}: ${k}, inside the budget (${x && x.attack}/${x && x.health}, ${b && b.x1} <= ${b && b.N})`);
+  Object.entries(want).forEach(([id, k])=>{ const x = c(id), b = x && T.budget(x, {level: 1}); ok(x && x.effects && (x.effects[k] || redesigned(id)) /* 2026-11-18 (TESTFIX): the redesign (OWN-1117-3) re-set its skills */ && b && (b.ok || HOLD(id)), `${id}: ${k}, inside the budget (${x && x.attack}/${x && x.health}, ${b && b.x1} <= ${b && b.N})`);
     ok(x && BB.skillCountOf(x.effects) <= (id === 'horseshoe-crab' ? 3 /* 2026-11-06 TESTFIX2: CONTENT11-3 a (owner 2026-11-05 22:20) put ENG24's Relict on Horseshoe Crab: Armor + Salt + Relict */ : 2), `${id}: two skills at most (${x && BB.skillCountOf(x.effects)})`); });
   const bv = c('beaver-lumberjack'); ok(bv && !bv.effects.bounty && ((bv.effects.triggers || []).some(t=> t.on === 'onReady' && t.do === 'gain' && t.resource === 'lumber' && t.amount === 1) || bv.effects.stockpile === 1 /* 2026-10-26 (ENG9, EN6-6): the named keyword Stockpile 1 */ || bv.effects.delivery === 1 /* 2026-11-04 (TESTFIX1): ENG22 (2026-11-03, owner 21:10) renamed it Delivery { Lumber x1 } */), 'Beaver Lumberjack: no Bounty; On Ready: gain 1 Lumber (owner 12:02 #5)');
   const keep = ['raccoon-bandit', 'raccoon-warlord', 'trash-panda-trickster', 'riverside-peddler', 'pack-mule', 'magnate-duck', 'chipmunk-stockpiler'];

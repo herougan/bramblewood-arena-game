@@ -15,6 +15,7 @@
 const def = (k, v)=>{ if(typeof W[k] !== 'function') W[k] = v; };
 def('boardCardEl', uid=> document.querySelector(`.fxl-stage .board-card[data-uid="${uid}"]`) || document.querySelector(`.board-card[data-uid="${uid}"]`));
 def('hqTileEl', side=> document.querySelector(`.fxl-stage [data-hq="${side}"]`) || document.querySelector(`[data-hq="${side}"]`));
+def('escapeAttr', s=> (s == null || s === false ? '' : String(s)).replace(/"/g, '&quot;')); // 2026-11-18 (FXAUD2): floatText (ctx.float) calls it; sync_fx_src.py cannot lift this one-liner, so every lab float threw
 def('fightSafe', (fn)=>{ try{ return fn(); }catch(e){ return null; } });
 def('pullKillTrigger', ()=>{});
 def('matchFieldRules', m=> (m && m._rules) || {});

@@ -6874,7 +6874,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     banner:1, herald:2, shieldwall:1, broodkeeper:1, corpsefeeder:1, harbinger:1, warcry:1, amplifier:1, stench:1, silence:2, stymie:2, exhaust:2, petrify:1},
     (rules && rules.sk3) || {});
   const SK3_AMP_KEYS = (rules && rules.sk3 && Array.isArray(rules.sk3.ampKeys)) ? rules.sk3.ampKeys : ['poison', 'bleed', 'thorns', 'armor', 'regen', 'rebuild', 'shatter',
-    'executioner', 'hunter', 'venomous', 'toxin', 'arrow', 'fireArrow', 'iceArrow', 'fireBolt', 'iceBolt', 'acidBolt', 'poisonBolt', 'shockBolt', 'snipe', 'healing',
+    'executioner', 'hunter', 'venomous', 'toxin', 'arrow', 'fireArrow', 'iceArrow', 'fireBolt', 'iceBolt', 'acidBolt', 'poisonBolt', 'shockBolt', 'waterBolt' /* ENG51 */, 'snipe', 'healing',
     'nursing', 'cure', 'kingSlayer', 'demolisher', 'predator', 'brittle', 'web', 'prayerWard', 'shieldwall', 'banner', 'herald', 'harbinger', 'corpsefeeder', 'stench',
     'proliferate', 'carrion', 'venomMaster', 'fletcher', 'herbalist', 'spiteful', 'retribution'];
   const SK3_ACTIONS = ['duplicate', 'devourGrave', 'buffAll', 'stench', 'silence', 'stymie', 'exhaust', 'petrify', 'vulnerable', 'barrage', 'smokeScreen', 'magnet', 'graveCall'];
@@ -8065,12 +8065,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Poison Bolt N  no damage; N Poison (at the castle: N poison damage)
   //   Ice Bolt N     N cold damage + a 1 in 2 chance of a Freeze counter (only on a unit with none)
   //   Shock Bolt N   N lightning (shock) damage + Shocked for a round (takes 50% more damage); 2026-10-17: shock, so Wet adds to it
+  //   Water Bolt N   N water damage, so up to N water counters (Soaked: Wet; Burn put out); ENG51 (2026-11-18)
   const BOLT_ELEMENTS = {
     fireBolt:   {element:'fire',   dmgType:'heat'},
     acidBolt:   {element:'acid',   dmgType:'acid',     status:'corrode'},
     poisonBolt: {element:'poison', dmgType:'poison',   status:'poison', noDamage:true},
     iceBolt:    {element:'ice',    dmgType:'cold',     status:'freezeCounter'},
     shockBolt:  {element:'shock',  dmgType:'shock',    status:'shock'}, // 2026-10-17: lightning (shock) damage, was physical (the Wet rule reads it)
+    // Water Bolt N (2026-11-18, package ENG51, owner 11-17 17:32: "the rest of the bolts e.g. Archer Fish's Water Bolt is in Map 21+"): N water damage;
+    // its rider is water damage's own Soak (en20Elements: water counters equal to the damage, at most 3, so the unit is Wet; it puts Burn out)
+    waterBolt:  {element:'water',  dmgType:'water'},
   };
   // The Powders (2026-11-17, package POWDER1, owner 11-17 17:32, OWN-1117-1: "Status Powder: Start with Sleeping Powder and Poison Powder for
   // now. Powders would be Speed -1 actions."): every round while Ready, at Speed -1 (after the arrows), a puff at the enemy unit opposite (the

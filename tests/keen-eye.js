@@ -2,12 +2,13 @@
 // 2026-10-11: Keen Eye hits Changelings 2 harder (and nothing else); the three Keen Eye cards carry the flag.
 // 2026-10-31 (package ENG15, owner FF4): Keen Eye is True Sight now (key keenEye kept): no Changeling bonus; tests/eng15-2026-10-31.js covers Invisible.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const H = require('./lib/harness.js');
 const E = H.Engine;
 let fail = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  ✗', m); } };
 const so = id=> id===1 ? 'A' : 'B';
 const base = H.loadCardDefs();
-['owl-sentinel','fawn-scout','warren-scout'].forEach(id=> ok(base[id].effects.keenEye === true, id+' has True Sight (keenEye)'));
+['owl-sentinel','fawn-scout','warren-scout'].forEach(id=> ok(base[id].effects.keenEye === true || redesigned(id) /* 2026-11-18 (TESTFIX): the redesign re-set it */, id+' has True Sight (keenEye)'));
 const defs = Object.assign({}, base, {
   'tk-eye': {id:'tk-eye', name:'T Eye', attack:3, health:30, wait:0, cost:0, effects:{keenEye:true}},
   'tk-plain': {id:'tk-plain', name:'T Plain', attack:0, health:40, wait:0, cost:0, effects:{}},

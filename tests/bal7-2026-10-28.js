@@ -101,8 +101,8 @@ const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUE
   // 2026-11-12 (TESTFIX1): SKIR3 rebuilt the lists from the owner's 11-12 picks (cut to the unique-card limits), so THEME2/THEME3 are no longer the expectation. Same rule, current source:
   // CONTENT4-1's cap plan is still not applied, and every MAP card of a map the owner picked for is one of his Yes picks (SKIR3's three adds aside: Barrel Cactus md, Planarian Splitter mu, Nutria Reedcutter mk)
   // 2026-11-16 (TESTFIX5): LIST1 (11-13) folded the owner's 11-13 picks into the lists; they are the expectation now
-  const PK = J('docs/design/map-picks-owner-2026-11-13.json').maps, ADDS = new Set(['barrel-cactus', 'planarian-splitter', 'nutria-reedcutter']);
-  const offPick = Object.keys(PK).filter(k=> pools[k] && !PK[k].side && pools[k].cards.some(id=> !PK[k].yes.includes(id) && !ADDS.has(id)));
+  const { listAdded } = require('./lib/redesign.js'), PK = J('docs/design/map-picks-owner-2026-11-13.json').maps, ADDS = new Set(['barrel-cactus', 'planarian-splitter', 'nutria-reedcutter', 'archerfish' /* 2026-11-18 (TESTFIX): BOLT2 put it on Map 21 (owner 11-17 17:32) */]);
+  const offPick = Object.keys(PK).filter(k=> pools[k] && !PK[k].side && pools[k].cards.some(id=> !PK[k].yes.includes(id) && !ADDS.has(id) && !listAdded(k, id))); // 2026-11-18 (TESTFIX): + FOLD6's list moves and CONTENT13's cards (OWN-1117-3)
   ok(len !== base.summary.cardsBefore && !offPick.length, `CONTENT4-1 not applied: the map lists are the owner's 11-13 picks under the unique-card limits (${len} entries; off his picks: ${offPick.join(' ')})`); }
 
 console.log(`\nbal7: ${n - fail}/${n} passed`);

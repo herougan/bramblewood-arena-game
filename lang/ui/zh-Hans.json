@@ -3963,7 +3963,6 @@
  "The water is very high.": "水位非常高。",
  "The water remembers you, little thing.": "水记得你，小东西。",
  "The water rises.": "水位上涨。",
- "The Wave": "浪潮",
  "The whole caravan’s in on this one, I’m afraid.": "恐怕整个商队都参与了。",
  "The whole Current clears out the moment his pod surfaces.": "他的鲸群一浮出水面，整片洋流就空了。",
  "The whole garrison drills here. They are very good at drilling.": "整个驻军都在这里操练。他们非常擅长操练。",
@@ -4796,7 +4795,6 @@
  "{v1} wakes up.": "{v1} 醒了。",
  "{v1} was exiled from {v2}. 🌫": "{v1} 被放逐出 {v2}。 🌫",
  "{v1} washes {v2} back: +1 Wait.": "{v1} 把 {v2} 冲了回去：等待 +1。",
- "{v1} weakens {v2}: −{v3} Attack for good 💔": "{v1} 削弱了 {v2}：永久 −{v3} 攻击 💔",
  "{v1} webs {v2}: it can't dodge or move for {v3} round{s}.": "{v1} 用蛛网缠住 {v2}：{v3} 轮内无法闪避或移动。",
  "{v1} wilts in the heat ({v2}).": "{v1} 在高温中枯萎（{v2}）。",
  "{v1} wilts: −{v2} Attack 🥀": "{v1} 枯萎了：−{v2} 攻击 🥀",
@@ -4901,7 +4899,6 @@
  "↑ Way out": "↑ 出口",
  "−1 max Health": "生命上限 −1",
  "〰️ The water swirls over an empty field.": "〰️ 水在空旷的场地上打着旋。",
- "〰️ Wave {v1}: the water takes {v2}.": "〰️ 第 {v1} 波：水卷走了 {v2}。",
  "〰️ {v1} breaks on {v2}: no room to push it {v3}.": "〰️ {v1} 拍在 {v2} 身上：没有空间把它推向{v3}。",
  "〰️ {v1} lifts {v2}, but it's boxed in: it bobs in place.": "〰️ {v1} 托起了 {v2}，但它被卡住了：只能在原地晃动。",
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ {v1} 把 {v2} 向{v3}猛撞到旁边的单位上！",
@@ -5011,6 +5008,7 @@
  "The fishermen call it the wolf of the sea. It hunts the surf in loose packs and never fights the current.": "渔民称它为海中之狼。它三五成群地在拍岸浪中捕猎，从不逆流而战。",
  "It keeps its water to itself, and it keeps its distance.": "它把水留给自己，也和旁人保持距离。",
  "Underwater Currents": "海底暗流",
+ "a water bolt 💧": "一发水弹 💧",
  "Madagascar's only big hunter wraps its claws around a lemur and does not let go. The second blow always lands harder.": "马达加斯加唯一的大型猎手用爪子扣住狐猴就不松开。第二击总是更重。",
  "It folds its wings and drops into the water feet first. Whatever it grips is easier to grip again.": "它收起翅膀，双脚朝前扎进水里。被它抓过的，下次更容易再被抓住。",
  "One bite and the bitten wants to lie down. The fly has nothing against you; it simply lives off tired animals.": "一口下去，被咬的就想躺下。这只蝇对你并无恶意，它只是靠疲惫的动物为生。",
@@ -5026,5 +5024,6 @@
  "It stamps a snake flat, and while the snake is still thinking about it, stamps it again.": "它一脚把蛇踩扁，趁蛇还在琢磨，又踩一脚。",
  "The real name is spitfire grub. A cluster on a gum leaf rears up together and spits oil at whatever disturbs them.": "它的真名叫喷火幼虫。桉树叶上的一群同时昂起身子，朝打扰它们的东西喷油。",
  "It spits venom at the eyes from two metres. If that fails, it falls over and plays dead. Both are on purpose.": "它从两米外朝眼睛喷毒液。喷不中就翻身装死。两样都是故意的。",
- "It has just climbed out of its old shell and the new one is still wet paper. It hits as hard as ever and dies faster than it should.": "它刚爬出旧壳，新壳还像湿纸。它出手依旧很重，却死得比该有的更快。"
+ "It has just climbed out of its old shell and the new one is still wet paper. It hits as hard as ever and dies faster than it should.": "它刚爬出旧壳，新壳还像湿纸。它出手依旧很重，却死得比该有的更快。",
+ "{v1} weakens {v2}: −{v3} Attack for good": "{v1} 削弱了 {v2}：永久 −{v3} 攻击"
 }

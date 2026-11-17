@@ -4560,5 +4560,13 @@
  "When its swing lands: steal up to {n} Lumber.": "揮擊命中時：偷取至多 {n} 木材。",
  "Charge": "充能",
  "Broodmother": "育雛母",
- "{name} plunders {n} Lumber.": "{name} 掠奪了 {n} 木材。"
+ "{name} plunders {n} Lumber.": "{name} 掠奪了 {n} 木材。",
+ "Water Bolt": "水彈",
+ "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "可進行期間，每個維持階段：對正對（或最近）的敵人造成 {n} 點水傷害，並使其潮溼。",
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "每點傷害留下一枚潮溼標記（最多 3 枚；每回合乾掉一枚），並撲滅灼燒。潮溼：每枚標記雷電傷害 +1。",
+ "The Underwater Currents": "水下暗流",
+ "{a} fits {t} with armour: +{hp}❤.": "{a}為{t}披上護甲：+{hp}❤。",
+ "Underwater Currents {n}": "水下暗流 {n}",
+ "Underwater Currents": "水下暗流",
+ "Underwater Currents {n}: the water takes {name}.": "水下暗流 {n}: 水流捲走了{name}。"
 }

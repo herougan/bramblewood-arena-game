@@ -7,6 +7,7 @@
 //   Legendary dodge still rolls), Smoke Screen (spell) and Magnet (spell, Grounded).
 // Engine scenarios, then the data: skill costs (estimates), the cards, the app's registry, TX keys in the 12 packs.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js'), E = H.Engine;
 const ROOT = path.join(__dirname, '..'), R = f=> fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -147,7 +148,7 @@ ok(JSON.stringify(E.makeSimEngine(defs, E.mulberry32(1), {}).sk3Trigs({spawner:'
 { const {e, P} = mk(); put(e, P, 1, 'sk-cull'); const t = put(e, P, 2, 'sk-wall'); t.hp = 4; t.atk = 3; const ev = fight(e, P); ok(hitOn(ev, t.uid) === 3, 'Cull (Weak): Attack 3 is not weak (Attack AND Health)'); }
 { const {e, P} = mk(); put(e, P, 1, 'sk-cull'); const t = put(e, P, 2, 'sk-wall'); t.hp = 5; const ev = fight(e, P); ok(hitOn(ev, t.uid) === 3, 'Cull (Weak): Health 5 is not low'); }
 { const {e, P} = mk(); put(e, P, 1, 'sk-cullP'); const t = put(e, P, 2, 'sk-wall'); t.poison = 3; const ev = fight(e, P); ok(hitOn(ev, t.uid) === 5, 'Cull (Poisoned): the old picker still works'); }
-ok(byId['fen-mink'].effects.hunterVs === 'poison', 'Fen Mink keeps its Poisoned pick (explicit now)');
+ok(byId['fen-mink'].effects.hunterVs === 'poison' || redesigned('fen-mink') /* 2026-11-18 (TESTFIX): FOLD6 made it Ambush 2 (no Hunter) */, 'Fen Mink keeps its Poisoned pick (explicit now)');
 // ---- 13. Broodkeeper N
 { const {e, P} = mk(); put(e, P, 1, 'sk-keeper', 'left'); put(e, P, 1, 'sk-brood', 'right'); const b = all(P[1]).find(c=> /~brood$/.test(c.defId));
   ok(b && b.atk === 3 && b.maxHp === 3, `Broodkeeper 2: a brood token arrives +2/+2 (${b && b.atk}/${b && b.maxHp})`);

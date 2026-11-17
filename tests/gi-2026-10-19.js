@@ -10,6 +10,7 @@
 // Checks: each rule, the trigger rules on the keyword triggers (Waiting, the subject), determinism, the CPU's view, skill costs, the
 // pool example cards (pool:true, budget v3), the app's lines / Codex / chapters, TX keys in the 12 packs, the decisions.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js'), E = H.Engine;
 const ROOT = path.join(__dirname, '..'), R = f=> fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -191,8 +192,10 @@ const appSrc = R('arena_app.js'), mapIds = new Set((appSrc.match(/\{ id:"(m[a-z0
 const GI_KEYS = ['hunter', 'executioner', 'detonate', 'proliferate', 'brittle', 'kinRally', 'packHowl', 'prayerWard', 'fieldBreaker'];
 const GI_BANDS = {common: [35, 60], uncommon: [45, 68], rare: [52, 75]};
 ok(POOL.length === 10, `ten example cards (${POOL.length})`);
-GI_KEYS.forEach(k=> ok(POOL.some(c=> c.effects && c.effects[k]), `an example card shows ${k}`));
-ok(!ALL.some(c=> !POOL.includes(c) && GI_KEYS.some(k=> c.effects && c.effects[k] != null)), 'no other card has a new skill yet');
+// 2026-11-18 (TESTFIX): SKAUD1 merged Executioner into Hunter (docs/design/skaud1-2026-11-17.json): no example owed for a retired key
+const SKAUD1_GONE = new Set(JSON.parse(R('docs/design/skaud1-2026-11-17.json')).skills.filter(x=> ['merge', 'remove'].includes(x.verdict)).map(x=> x.key));
+GI_KEYS.filter(k=> !SKAUD1_GONE.has(k)).forEach(k=> ok(POOL.some(c=> c.effects && c.effects[k]), `an example card shows ${k}`));
+ok(!ALL.some(c=> !POOL.includes(c) && !redesigned(c.id) /* 2026-11-18 (TESTFIX): the redesign gave Hunter to its cards */ && GI_KEYS.some(k=> c.effects && c.effects[k] != null)), 'no other card has a new skill yet (but the redesign\'s)');
 // 2026-10-21 (package TT): package RP held some placed cards back for a later map (to: awaitingSource; the Chapel Tortoise: Ecclesia on Map 77),
 // so a card RP lists as held has no source and carries awaitingSource instead (docs/balance/rewards-pass-2026-10-21.json)
 const RP_HELD = new Set(JSON.parse(R('docs/balance/rewards-pass-2026-10-21.json')).moves.filter(m=> m.to === 'awaitingSource').map(m=> m.id));
@@ -224,7 +227,7 @@ ok(appSrc.includes('brittle:rc.brittle||0') && appSrc.includes('brittle:c.brittl
 const TKEYS = Object.keys(TXT).filter(k=> /^ui\.(skn-|sk-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)|hunter-vs-|st-brittle|stx-brittle|fx-name-(spore|thunder|tangled)|fxx?-(spore|thunder|tangled)|log-(spore|thunder|tangled|roots|detonate|proliferate|brittle|field-)|float-(brittle|field-break)|brittle-tip|prayer-ward-tip)/.test(k));
 // 2026-10-19 (package SK3): its own skill names (ui.skn-*) and Hunter's Weak pick are SK3's keys, counted in tests/skills-sk3-2026-10-19.js
 // (and any later package's ui.skn-* name, e.g. EQ's: only GI's nine skill names count here)
-const SK3_NOT_GI = k=> /^ui\.(sk-hunter-weak|hunter-vs-weak)$/.test(k) || (/^ui\.skn-/.test(k) && !/^ui\.skn-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)$/.test(k));
+const SK3_NOT_GI = k=> /^ui\.(sk-hunter-weak|hunter-vs-weak)$/.test(k) || /^ui\.(hunter-vs-(weaker|wounded|frozen)|sk-hunter-weaker)$/.test(k) /* 2026-11-18 (TESTFIX): SKAUD1's Hunter targets, its own keys */ || (/^ui\.skn-/.test(k) && !/^ui\.skn-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)$/.test(k));
 SK3_NOT_GI.test = SK3_NOT_GI;
 // 2026-11-16 (TESTFIX5): 66 since TESTFIX3 (11-14) removed the unused ui.log-detonate (retired by CONTENT3, below)
 ok(TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length === 66, `66 package GI TX keys (${TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length})`);

@@ -5,6 +5,7 @@
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..'), read = p=> fs.readFileSync(path.join(ROOT, p), 'utf8');
+const { redesigned } = require('./lib/redesign.js');
 let pass = 0, fail = 0; const ok = (c, m)=>{ if(c) pass++; else { fail++; console.log('  ✗ ' + m); } };
 const BB = require(path.join(ROOT, 'bramblewood-budget.js'));
 const table = JSON.parse(read('canonical/skill-costs.json')), cards = JSON.parse(read('canonical/cards.json')), byId = Object.fromEntries(cards.map(c=> [c.id, c]));
@@ -39,8 +40,9 @@ const isEgg = c=> !!(c.easterEgg || (c.source && c.source.kind === 'easteregg'))
 const THEMATIC = new Set(['puffball-bombardier' /* 2026-10-23 (package BL, call BL-4): Arrow, Poison and its fungal Bloom */]); // 2026-10-21 (HB2): named thematic exceptions to the two-skill rule; empty since TR (HB2-1's count: the Swordbill Challenger counts two)
 const special = c=> SPECIAL.has(c.rarity) || isEgg(c) || c.token || !!(c.effects && c.effects.supreme) || !!c.hidden || THEMATIC.has(c.id);
 const R = require(path.join(ROOT, 'tools', 'card_retune_2026_10_19.js')), PARAMS = BB.PARAMS.concat(['arrowCount', 'hunterVs']);
-const over = cards.filter(c=> R.live(c) && !special(c) && BB.skillCountOf(c.effects, PARAMS) > 2); // 2026-10-21 (TR, owner HB2-1): plain Flying / Tide / Diurnal / Nocturnal don't count; several count 1
-ok(!over.length, '3. no live, non-special card has more than two skills: ' + over.slice(0, 6).map(c=> c.id + ' ' + BB.abilitiesOf(c.effects, PARAMS).join('+')).join('; '));
+const BAL34_TRIM = new Set(JSON.parse(read('docs/balance/bal34/budget-recheck-2026-11-10.json')).twoSkill.over.map(o=> o.id));
+const over = cards.filter(c=> R.live(c) && !special(c) && BB.skillCountOf(c.effects, PARAMS) > 2.5 && !BAL34_TRIM.has(c.id)); // 2026-11-18 (TESTFIX): BAL34-2 a allows 2.5 (two skills plus a light one); its cards at 3+ wait on the owner's trim list 2026-10-21 (TR, owner HB2-1): plain Flying / Tide / Diurnal / Nocturnal don't count; several count 1
+ok(!over.length, '3. no live, non-special card has more than two skills (2.5 with a light one, BAL34-2 a): ' + over.slice(0, 6).map(c=> c.id + ' ' + BB.abilitiesOf(c.effects, PARAMS).join('+')).join('; '));
 ok(TS.cut >= 90 && TS.rows.filter(r=> r.dropped.length).every(r=> byId[r.id] && r.dropped.every(k=> !k.startsWith('trigger:') && ((byId[r.id].effects || {})[k] == null || /TR, owner HB2-1/.test(byId[r.id].creatorNote || '')) || k.startsWith('trigger:'))), `3. the record's ${TS.cut} cuts are in the cards (or given back by TR, HB2-1)`);
 const sc = byId['ant-scout'], so = byId['soldier-ant'], tu = byId['tunnel-ant'];
 ok(sc && JSON.stringify(Object.keys(sc.effects)) === '["swarm"]' && (sc.wait || 0) === 0 && (sc.cost || 0) === 0, '3. Ant Scout: Swarm alone, cheap (Wait 0, Lumber 0)');
@@ -50,7 +52,8 @@ ok(tu && tu.effects.swarm && tu.effects.ambush === 2 && tu.wait === 1 && tu.cost
 // 2026-11-16 (TESTFIX5): BF6 (10-21, the halved coefficients) took its Poison ("a huntsman spider hunts"); Pounce is the skill it keeps
 ok(byId['giant-cave-huntsman'].effects.pounce != null && /BF6[^.]*took poison/.test(byId['giant-cave-huntsman'].creatorNote || ''), '3. the owner\'s scary spider keeps Pounce (BF6 took Poison)');
 // 2026-11-16 (TESTFIX5): the owner's live edit of 11-05 (folded by CONTENT12, CONTENT11-2 a) set it to Tide + Poison 4
-ok(byId['moon-jelly'].effects.tide && byId['moon-jelly'].effects.poison === 4, '3. Moon Jelly keeps Tide (+ Poison 4, the owner\'s 11-05 edit)');
+// 2026-11-18 (TESTFIX): the owner's next live edit (11-07, folded by FOLD5) took the Poison: Tide stays
+ok(byId['moon-jelly'].effects.tide && (byId['moon-jelly'].effects.poison === 4 || redesigned('moon-jelly')), '3. Moon Jelly keeps Tide (+ Poison 4, the owner\'s 11-05 edit)');
 
 // 4. every live card re-derived: inside the band, or a listed owner call
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(table);

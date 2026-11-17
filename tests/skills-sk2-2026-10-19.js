@@ -4,6 +4,7 @@
 //   Harvest (odds over seeds, the no-opposing case), Scavenge N, M (diagonals, the conversion), Repair N (targeting, half on the bramble),
 //   Foraging N, Milling N, Pickpocket N (tokens, the bramble), Sabotage N (rank order), Arson N, Fortification (a Palisade structure).
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js'), E = H.Engine;
 const ROOT = path.join(__dirname, '..'), R = f=> fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -206,6 +207,6 @@ ok(SCt.shorthands.fortification && SCt.shorthands.fortification.trigger === 'onS
 // 2026-10-24 (RELFIX): new cards made with an SK2 skill later are not "existing cards": CONTENT2's Redwood Woodpecker (Milling 1) and Badger
 // Stonemason (Quarry 1), owner 13:12 #8 (calls CONTENT2-1 / CONTENT2-2); their creatorNote starts with "2026-10-24 (package CONTENT2)"
 const C12FOLD = new Set(JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'server-overrides', 'fold-plan-2026-11-06.json'), 'utf8')).rows.map(r=> r.id)); // 2026-11-06 (CONTENT12): the owner's live edits gave Foraging / Pickpocket / Repair to some of his cards
-ok(!JSON.parse(R('canonical/cards.json')).some(c=> !['petrified-tree', 'glintsnatch-magpie'].includes(c.id) && !C12FOLD.has(c.id) && !/^2026-10-24 \(package CONTENT2\)/.test(c.creatorNote || '') && !/2026-10-24 \(package EN8\)/.test(c.creatorNote || '') /* EN8 (2026-10-24): its Scavenge / Salvage cards */ && c.effects && SK2_KEYS.some(k=> c.effects[k] != null)), 'no existing card was given an SK2 skill');
+ok(!JSON.parse(R('canonical/cards.json')).some(c=> !['petrified-tree', 'glintsnatch-magpie'].includes(c.id) && !C12FOLD.has(c.id) && !redesigned(c.id) /* 2026-11-18 (TESTFIX): FOLD5's owner edits and the redesign place skills on purpose */ && !/^2026-10-24 \(package CONTENT2\)/.test(c.creatorNote || '') && !/2026-10-24 \(package EN8\)/.test(c.creatorNote || '') /* EN8 (2026-10-24): its Scavenge / Salvage cards */ && c.effects && SK2_KEYS.some(k=> c.effects[k] != null)), 'no existing card was given an SK2 skill');
 
 console.log(fail ? `skills-sk2-2026-10-19: ${fail} of ${n} checks FAILED` : `skills-sk2-2026-10-19: all ${n} checks passed`); process.exit(fail ? 1 : 0);

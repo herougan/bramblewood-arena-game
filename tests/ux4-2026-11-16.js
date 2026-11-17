@@ -33,7 +33,8 @@ async function browser(){
     await pg.evaluate("(()=>{ try{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); }catch(e){} })()");
     await pg.evaluate("switchTab('home')"); await pg.waitForTimeout(1500);
     const small = await pg.evaluate("[...document.querySelectorAll('.home-note small')].map(e=> e.textContent)");
-    ok(small.includes('Mit Spielern handeln') && small.includes('Materia, Eier, Packs') && small.includes('Freunde · Rangliste · Gilde'), 'home notes are German (' + small.join(' | ') + ')');
+    // 2026-11-18 (TESTFIX): NAV1 moved the Inventory into the Camp bar; the home's Profile note (Stats, wallet, medals) stands in its place
+    ok(small.includes('Mit Spielern handeln') && (small.includes('Materia, Eier, Packs') || small.includes('Werte, Geldbeutel, Medaillen')) && small.includes('Freunde · Rangliste · Gilde'), 'home notes are German (' + small.join(' | ') + ')');
     await pg.evaluate("switchTab('codex')"); await pg.waitForTimeout(1800);
     const ph = await pg.evaluate("[...document.querySelectorAll('input[placeholder]')].map(i=> i.placeholder)");
     ok(ph.length && ph.every(x=> !/^Search/.test(x)), 'Codex placeholders are translated (' + ph.join(' | ') + ')');

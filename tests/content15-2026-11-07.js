@@ -31,7 +31,7 @@ Object.entries(NEW).forEach(([side, id])=>{
   ok(OM[id] === 5, `1. ${id}: Map 5 in card-obtain-maps.json, like the other faction cards (${OM[id]})`);
   [0, 5].forEach(m=>{ const b = T.budget(Object.assign({}, c, {obtainMap: m}), {}); const use = b && b.N > 0 ? b.x1 / b.N : 0;
     ok(b && b.ok && !b.wellUnder, `1. ${id} inside the budget band at Level 1, Map ${m} (${Math.round(100 * use)}% of N ${b && b.N})`); });
-  ok(!c.art, `1. ${id}: no art file yet`);
+  ok(!c.art || /^data:image\/(png|webp|jpeg);base64,/.test(c.art), `1. ${id}: no art yet, or its drawn art`); // 2026-11-18 (TESTFIX): the art was drawn since
   ok(new RegExp('### ' + c.name + '\\n> ').test(rd('docs/art-style-prompts.md')), `1. ${id}: an art prompt`);
 });
 const nids = cards.map(c=> c.numericId).filter(n=> n != null); ok(new Set(nids).size === nids.length, '1. numericIds are unique');

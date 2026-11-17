@@ -7,6 +7,7 @@
 //       or Banana from a unit while it is Asleep. (The replay's 💤 badge now clears when a hit wakes the unit: arena_app.js w2SkillVfx.)
 //   L11 Nocturnal / Diurnal / Crepuscular (+A/+H) priced by their measured uptime (bramblewood-budget.js zeitS).
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = path.join(__dirname, '..');
@@ -96,7 +97,7 @@ ok(BB.zeitS('diurnal', {diurnal: true, diurnalGrant: {evasive: true}}).S === 0 &
   ok(T.skillCost('nocturnal', 4) === 6.36 /* BUDGET2: 0.53 x 3 x 4 */ && T.skillCost('shock', {chance: 40, duration: 1}) === BB.shockS({chance: 40, duration: 1}, 0), 'L5/L11 skill_costs prices one skill the same way without a card');
   const eel = T.budget(card('voltaic-eel')).parts.find(x=> x[1] === 'shock'), cat = T.budget(card('electric-catfish')).parts.find(x=> x[1] === 'shockBolt');
   // 2026-11-04 (TESTFIX1): Shock Bolt is Arrow N + its Shock; SKILL2 (BUDGET2-1) re-measured Arrow (3 -> 4.26), so the Catfish's part is 8.99 now
-  ok(eel && eel[2] === 0.83 && cat && cat[2] === 8.99, `L5 the Voltaic Eel's Shock 40%/1 at Attack 1: 0.83 (was 0.93); the Catfish's Shock Bolt 2: 7.98 (was 6) (${eel && eel[2]}, ${cat && cat[2]})`); }
+  ok(((eel && eel[2] === 0.83) || (!eel && redesigned('voltaic-eel')) /* 2026-11-18 (TESTFIX): FOLD6 gave the eel Electricity 2 for Shock */) && cat && cat[2] === 8.99, `L5 the Voltaic Eel's Shock 40%/1 at Attack 1: 0.83 (was 0.93); the Catfish's Shock Bolt 2: 7.98 (was 6) (${eel && eel[2]}, ${cat && cat[2]})`); }
 ok(BB.shockS({chance: 100, duration: 2}, 3) > BB.shockS({chance: 100, duration: 1}, 3) && BB.shockS({chance: 100, duration: 1}, 3) > BB.shockS({chance: 50, duration: 1}, 3) && BB.shockS({chance: 50, duration: 1}, 5) > BB.shockS({chance: 50, duration: 1}, 1),
   'L5 Shock costs more with more chance, more rounds and more Attack (it was a flat 0.93)');
 ok(BB.shockS({chance: 40, duration: 1}, 1) === 0.83 && BB.shockS({chance: 30, duration: 1}, 3) === 1.07 && BB.shockS({chance: 100, duration: 2}, 3) === 4.09, 'L5 Shock 40%/1 at Attack 1 0.83, 30%/1 at Attack 3 1.07, 100%/2 at Attack 3 4.09');

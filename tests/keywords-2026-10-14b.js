@@ -2,6 +2,7 @@
 // 2026-10-14, second pass: Swimmers are Tide units (and float), Moonpull, the beach's Tide-spout, day and night by map (no card brings
 // them), Irradiation tokens, Ghost's elemental half, Shade, Shadow, Supreme beasts, Twin, Sprout and Growth tokens.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine;
@@ -43,7 +44,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
 { const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8'));
   const both = cards.filter(c=> c.effects && c.effects.tide && c.effects.swimmer).map(c=> c.id);
   ok(!both.length, `no card carries both Tide and Swimmer any more (${both})`);
-  const mj = cards.find(c=> c.id==='moon-jelly'); ok(mj && mj.effects.tide && (mj.effects.moonpull || mj.effects.poison === 4), 'Moon Jelly has Moonpull (or the owner\'s live 1/3 Tide, Poison 4, folded in by CONTENT12 on 2026-11-06)'); }
+  const mj = cards.find(c=> c.id==='moon-jelly'); ok(mj && mj.effects.tide && (mj.effects.moonpull || mj.effects.poison === 4 || redesigned('moon-jelly') /* 2026-11-18 (TESTFIX): the owner's 11-07 edit (FOLD5) left Tide only */), 'Moon Jelly has Moonpull (or the owner\'s live 1/3 Tide, Poison 4, folded in by CONTENT12 on 2026-11-06)'); }
 { const {e, P} = mk(); e.startTide(); e.debugSpawnCard(P, so, 1, 'kb-swim', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'kb-wall', 'left', {}, []);
   const S = byDef(P[1], 'kb-swim'); ok(e.isTide(S), 'a Swimmer is a Tide unit');
   e.roundStart(P, 2, so, {}, []); ok(e.getTide() === 'flow', 'round 2 is Flow');

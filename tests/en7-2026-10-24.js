@@ -9,6 +9,7 @@
 //   3. Parasite x Bloom: the copy hooks onto an enemy unit beside the host (none: it waits), or facing a Parasite played as a unit;
 //   4. prices (4-round rule), the two Dive cards, texts in the 12 packs, the board's looks (app source), keyify finds nothing new.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path'), cp = require('child_process');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT || path.join(__dirname, '..');
@@ -135,7 +136,7 @@ const hitsOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid
   ok(T.cardS({dive:1, diveUses:2}, {}).S === 2 * T.skillCost('dive', 1), 'diveUses 2: Dive\'s price twice'); // 2026-11-07 (ENG32): Dive 1 is -0.5 now (was 1.25)
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), by = id=> cards.find(c=> c.id === id);
   const pf = by('puffin-diver'), hs = by('harbor-seal');
-  ok(pf.effects.dive === 2 && pf.effects.flying && pf.attack === 2 && pf.health === 5 && T.budget(pf).ok, 'Puffin Diver: Dive 2 (a Flyer: aloft), 2/5, in its budget');
+  ok(redesigned('puffin-diver') /* 2026-11-18 (TESTFIX): FOLD6 made it a 2/8 Tide 2 pouncer; Dive's carrier checks stay in the scenes */ || (pf.effects.dive === 2 && pf.effects.flying && pf.attack === 2 && pf.health === 5 && T.budget(pf).ok), 'Puffin Diver: Dive 2 (a Flyer: aloft), 2/5, in its budget');
   ok(hs.effects.dive === 2 && hs.effects.tide && !hs.effects.flying && hs.attack === 1 && hs.health === 9 && T.budget(hs).ok, 'Harbor Seal: Dive 2 (Tide: under), 1/9, in its budget');
   ok(pf.source && hs.source, 'both are already placed (no new source)'); }
 { const TXT = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT; const strip = s=> String(s).replace(/^[\p{Extended_Pictographic}✀-➿️‍\s]+/u, '');

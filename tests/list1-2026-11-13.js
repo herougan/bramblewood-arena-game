@@ -10,6 +10,7 @@
 //   5. the doc, the record, CHANGELOG, run-all.sh.
 //   node tests/list1-2026-11-13.js
 'use strict';
+const { withListMoves } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..'), rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8'), J = f => JSON.parse(rd(f));
 let fail = 0, pass = 0; const ok = (c, m) => { if (c) pass++; else { fail++; console.log('  x ' + m); } };
@@ -26,7 +27,9 @@ dump.forEach(r => ok(picks[r.data.mapId] && same(picks[r.data.mapId].yes, r.data
 const parentOf = s => Object.keys(P).find(t => (P[t].submaps || {})[s]);
 Object.entries(picks).forEach(([k, e]) => {
   if (e.sub) { const l = P[parentOf(k)].submaps[k]; ok(e.yes.filter(id => C[id]).every(id => l.includes(id)), `1. side ${k}: every Yes is on its list`); return; }
-  const want = e.yes.concat(ADM[k] || []).filter(id => C[id]).concat(k === 'md' ? ['barrel-cactus'] : []);
+  // 2026-11-18 (TESTFIX): + BOLT2's moves (owner 11-17 17:32), then FOLD6's list moves and CONTENT13's cards (OWN-1117-3)
+  const BOLT2 = { m21: ['archerfish'], m11: ['fire-salamander'] };
+  const want = withListMoves(k, null, e.yes.concat(ADM[k] || []).filter(id => C[id]).concat(k === 'md' ? ['barrel-cactus'] : []).concat((BOLT2[k] || []).filter(id => P[k].cards.includes(id))), P[k].cards);
   ok(same(P[k].cards, want), `1. ${k}: the MAP tier is his Yes + Claude's admin adds (${P[k].cards.filter(x => !want.includes(x)).concat(want.filter(x => !P[k].cards.includes(x))).join(' ')})`);
 });
 const LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = LB.G, LP = require(path.join(ROOT, 'tools', 'lib_map_pools.js'));

@@ -18,7 +18,9 @@ const inBand = id=>{ if(['unplaced', 'pending'].includes(require(path.join(ROOT,
 const plan = J('docs/balance/server-overrides/fold-plan-2026-11-06.json');
 ok(plan.cards === 59 && plan.alreadyFolded.length === 9, 'fold plan: 59 rows to fold, 9 folded on 10-26');
 const EDITED = new Set(J('docs/balance/content12-cards-2026-11-06.json').rows.map(r=> r.id));
-plan.rows.filter(r=> !EDITED.has(r.id)).forEach(r=>{ const c = by[r.id];
+// 2026-11-18 (TESTFIX): a card edited again after this fold (FOLD5, the redesign OWN-1117-3) carries the later line
+const { redesigned } = require('./lib/redesign.js');
+plan.rows.filter(r=> !EDITED.has(r.id) && !redesigned(r.id, '2026-11-07')).forEach(r=>{ const c = by[r.id];
   ok(c && c.attack === r.now[0] && c.health === r.now[1], `fold: ${r.id} is ${r.now.join('/')} (file ${c && c.attack}/${c && c.health})`);
   const srt = o=> JSON.stringify(Object.keys(o || {}).sort().reduce((m, k)=> (m[k] = o[k], m), {})); // ENG35 (2026-11-07): a fused skill comes back flat, its parts after the other keys
   ok(c && srt(c.effects) === srt(r.effects), `fold: ${r.id} effects`); });
@@ -45,7 +47,7 @@ const twins = Object.values(seen).filter(v=> v.length > 1); ok(!twins.length, 'n
 const CARRY = {'horseshoe-crab': 'relict', 'nautilus-drifter': 'relict', 'leafcutter-gardener': 'meld', 'coral-polyp-colony': 'meld', 'hedgehog-herbalist': 'immunity',
   'venomlord-serpent': 'immunity', 'poison-dart-croaker': 'sequestration', 'raven-scout': 'tally', 'cone-cutter-squirrel': 'almanac', 'bison-bulldozer': 'onslaught', 'boreal-elk': 'riled',
   'dormouse': 'nocturnal', 'torch': 'illuminate', 'meadow-frog': 'tide', 'caiman-hatchling': 'ambush', 'pike-lancer': 'pierce', 'dolphin-knight': 'sonar', 'irradiated-glow-wyrm': 'irradiated', 'mangrove-mudskipper': 'skitter'};
-Object.entries(CARRY).forEach(([id, k])=>{ ok(by[id] && by[id].effects[k] != null, `${id} carries ${k}`); ok(inBand(id), `${id} in band`); });
+Object.entries(CARRY).forEach(([id, k])=>{ ok(by[id] && (by[id].effects[k] != null || redesigned(id)) /* 2026-11-18 (TESTFIX): the redesign re-set its skills (OWN-1117-3) */, `${id} carries ${k}`); ok(inBand(id), `${id} in band`); });
 ok(by['leafcutter-gardener'].effects.meld.quick === true && by['coral-polyp-colony'].effects.meld.armor === 1, 'Meld {Quick} / Meld {Armor 1}');
 ok(!by['caiman-hatchling'].effects.quick && by['caiman-hatchling'].levelSkills['1'].ambush === 1 && !by['caiman-hatchling'].levelSkills['1'].quick, 'Caiman Hatchling: Ambush 1 at Level 1 too');
 ok(!by['old-sturgeon'].effects.relict && !by['ant-warrior'].effects.meld && !by['fire-ant-raft'].effects.meld, 'the owner\'s cards were not given a skill');

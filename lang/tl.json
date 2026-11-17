@@ -4560,5 +4560,13 @@
  "When its swing lands: steal up to {n} Lumber.": "Kapag tumama ang hampas nito: magnakaw ng hanggang {n} Kahoy.",
  "Charge": "Karga",
  "Broodmother": "Inang Supling",
- "{name} plunders {n} Lumber.": "Nandambong ng {n} Kahoy si {name}."
+ "{name} plunders {n} Lumber.": "Nandambong ng {n} Kahoy si {name}.",
+ "Water Bolt": "Water Bolt",
+ "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "Habang Handa, bawat upkeep: {n} pinsalang tubig sa kaharap na kaaway (o sa pinakamalapit), at ginagawa itong Basa.",
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Bawat punto ay nag-iiwan ng Basa counter (hanggang 3; isa ang natutuyo bawat round) at pinapatay ang Paso. Basa: +1 pinsalang kidlat bawat counter.",
+ "The Underwater Currents": "Ang Agos sa Ilalim ng Tubig",
+ "{a} fits {t} with armour: +{hp}❤.": "Binalutan ni {a} si {t}: +{hp}❤.",
+ "Underwater Currents {n}": "Agos sa Ilalim ng Tubig {n}",
+ "Underwater Currents": "Agos sa Ilalim ng Tubig",
+ "Underwater Currents {n}: the water takes {name}.": "Agos sa Ilalim ng Tubig {n}: dinadala ng tubig si {name}."
 }

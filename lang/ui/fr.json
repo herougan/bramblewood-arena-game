@@ -3963,7 +3963,6 @@
  "The water is very high.": "L’eau est très haute.",
  "The water remembers you, little thing.": "L’eau se souvient de vous, petite chose.",
  "The water rises.": "L’eau monte.",
- "The Wave": "La Vague",
  "The whole caravan’s in on this one, I’m afraid.": "Toute la caravane est dans le coup, j’en ai peur.",
  "The whole Current clears out the moment his pod surfaces.": "Tout le Courant se vide dès que son groupe fait surface.",
  "The whole garrison drills here. They are very good at drilling.": "Toute la garnison s’entraîne ici. Elle est très douée pour s’entraîner.",
@@ -4796,7 +4795,6 @@
  "{v1} wakes up.": "{v1} se réveille.",
  "{v1} was exiled from {v2}. 🌫": "{v1} a été exilée de {v2}. 🌫",
  "{v1} washes {v2} back: +1 Wait.": "{v1} repousse {v2} : +1 Attente.",
- "{v1} weakens {v2}: −{v3} Attack for good 💔": "{v1} affaiblit {v2} : −{v3} Attaque pour de bon 💔",
  "{v1} webs {v2}: it can't dodge or move for {v3} round{s}.": "{v1} englue {v2} : elle ne peut ni esquiver ni bouger pendant {v3} tour{s}.",
  "{v1} wilts in the heat ({v2}).": "{v1} se flétrit dans la chaleur ({v2}).",
  "{v1} wilts: −{v2} Attack 🥀": "{v1} se fane : −{v2} Attaque 🥀",
@@ -4901,7 +4899,6 @@
  "↑ Way out": "↑ Sortie",
  "−1 max Health": "−1 Santé max",
  "〰️ The water swirls over an empty field.": "〰️ L’eau tourbillonne sur un terrain vide.",
- "〰️ Wave {v1}: the water takes {v2}.": "〰️ Vague {v1} : l’eau emporte {v2}.",
  "〰️ {v1} breaks on {v2}: no room to push it {v3}.": "〰️ {v1} se brise sur {v2} : pas de place pour la pousser {v3}.",
  "〰️ {v1} lifts {v2}, but it's boxed in: it bobs in place.": "〰️ {v1} soulève {v2}, mais elle est coincée : elle tangue sur place.",
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ {v1} projette {v2} {v3} contre l’unité d’à côté !",
@@ -5011,6 +5008,7 @@
  "The fishermen call it the wolf of the sea. It hunts the surf in loose packs and never fights the current.": "Les pêcheurs l’appellent le loup de mer. Il chasse dans les vagues, en bandes lâches, et ne lutte jamais contre le courant.",
  "It keeps its water to itself, and it keeps its distance.": "Il garde son eau pour lui, et ses distances aussi.",
  "Underwater Currents": "Courants sous-marins",
+ "a water bolt 💧": "un carreau d’eau 💧",
  "Madagascar's only big hunter wraps its claws around a lemur and does not let go. The second blow always lands harder.": "Le seul grand chasseur de Madagascar referme ses griffes sur un lémur et ne lâche pas. Le second coup porte toujours plus fort.",
  "It folds its wings and drops into the water feet first. Whatever it grips is easier to grip again.": "Il replie ses ailes et plonge les pattes en avant. Ce qu'il a saisi se saisit plus facilement la fois suivante.",
  "One bite and the bitten wants to lie down. The fly has nothing against you; it simply lives off tired animals.": "Une piqûre et la victime veut s'allonger. La mouche n'a rien contre vous : elle vit simplement d'animaux fatigués.",
@@ -5026,5 +5024,6 @@
  "It stamps a snake flat, and while the snake is still thinking about it, stamps it again.": "Il aplatit un serpent d'un coup de patte et, pendant que le serpent y réfléchit encore, recommence.",
  "The real name is spitfire grub. A cluster on a gum leaf rears up together and spits oil at whatever disturbs them.": "Son vrai nom est larve crache-feu. Un groupe sur une feuille d'eucalyptus se dresse ensemble et crache de l'huile sur ce qui le dérange.",
  "It spits venom at the eyes from two metres. If that fails, it falls over and plays dead. Both are on purpose.": "Il crache du venin aux yeux à deux mètres. Si cela échoue, il se renverse et fait le mort. Les deux sont voulus.",
- "It has just climbed out of its old shell and the new one is still wet paper. It hits as hard as ever and dies faster than it should.": "Il vient de sortir de sa vieille carapace et la nouvelle est encore du papier mouillé. Il frappe aussi fort que jamais et meurt plus vite que de raison."
+ "It has just climbed out of its old shell and the new one is still wet paper. It hits as hard as ever and dies faster than it should.": "Il vient de sortir de sa vieille carapace et la nouvelle est encore du papier mouillé. Il frappe aussi fort que jamais et meurt plus vite que de raison.",
+ "{v1} weakens {v2}: −{v3} Attack for good": "{v1} affaiblit {v2} : −{v3} Attaque pour de bon"
 }

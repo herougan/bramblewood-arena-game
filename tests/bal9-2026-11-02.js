@@ -3,7 +3,7 @@
 // rarities against the ladder, the budget band, Grey Seal Bull, defenders, the Map 40+ deck-fill rule.
 'use strict';
 const fs = require('fs'), path = require('path'), cp = require('child_process');
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(__dirname, '..'); const { MADE_OBTAINABLE } = require('./lib/redesign.js');
 let fail = 0, n = 0; const ok = (c, m) => { n++; if (!c) { fail++; console.log('  ✗', m); } else console.log('  ✓', m); };
 const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
 const run = (args) => { const r = cp.spawnSync('node', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20 }); return (r.stdout || '') + (r.stderr || ''); };
@@ -28,7 +28,7 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
   ok(/^rarity lowered: \d+;/.test(q) && low.every(id => id === 'echidna-quillshot'), `JJ12 every listed card is at or below its first list's cap (${q}; held by RAR-1: ${low.join(', ') || 'none'})`);
   ok(C['old-shell'].rarity === 'uncommon' && C['old-shell'].effects.leader === true, `JJ12 Old Shell (Map 2) is Uncommon and still leads (${C['old-shell'].rarity}, leader ${C['old-shell'].effects.leader})`);
   ok(C['dolphin-knight'].rarity === 'rare', 'JJ12 Dolphin Knight stays Rare (owner HH6: limits ignored)');
-  ok(C['hedgehog-scout'].unattainable === true && C['lyrebird-mimic'].source.kind === 'map' && C['lyrebird-mimic'].source.node === '12-5', 'JJ12 Hedgehog Scout (cut) is out of play; Lyrebird Mimic holds the 12-5 reward slot');
+  ok((C['hedgehog-scout'].unattainable === true || MADE_OBTAINABLE.has('hedgehog-scout')) /* 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3 clearUnattainable) brought it back on purpose */ && C['lyrebird-mimic'].source.kind === 'map' && C['lyrebird-mimic'].source.node === '12-5', 'JJ12 Hedgehog Scout (cut) is out of play; Lyrebird Mimic holds the 12-5 reward slot');
   const applied = J('docs/balance/bal9/applied-2026-11-02.json'); ok(applied.passes.some(p => p.step === 'rarity' && p.edits.length >= 15), 'JJ12 the rarity pass is on record'); }
 
 // ---- JJ21: the budget band -----------------------------------------------------------------------------------------------------

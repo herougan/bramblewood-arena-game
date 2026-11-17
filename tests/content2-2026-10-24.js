@@ -61,9 +61,10 @@ ok(utBy['gannet-nestweaver'].biomes[0] === 'cliffs' && utBy['redwood-woodpecker'
 const SP = require(path.join(ROOT, 'bramblewood-skillparams.js')); // 2026-11-12 (TESTFIX1): ENG35 fused skills (delivery {v, res}) read as their flat keys, as content12 does
 // 2026-11-12 (TESTFIX1): + the owner's On Attacked (Driftwood Crab) and On Kill (Gull Thief) gathers
 const pays = (c, res)=>{ c = SP.expandDef(c); const e = c.effects || {}; return (res === 'lumber' && (e.milling || e.onReadyGold || e.forestry /* 2026-11-16 (ECONSK1): Delivery every round -> Forestry */ || ((e.delivery || e.deliveryEvery) && (!e.deliveryRes || e.deliveryRes === 'lumber')))) || (res !== 'lumber' && (e.delivery || e.deliveryEvery) && e.deliveryRes === res) || (e.triggers || []).some(t=> t.do === 'gain' && t.resource === res && ['onReady', 'onSpawn', 'onAttacked', 'onKill'].includes(t.on)); };
-['driftwood-crab', 'gannet-nestweaver', 'nutria-reedcutter', 'redwood-woodpecker', 'termite-forager', 'cone-cutter-squirrel', 'talus-pika', 'dune-packrat', 'land-tiller', 'coral-polyp-colony', 'rodent-king']
+// 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3) made Redwood Woodpecker a Pierce 2 card: it no longer gathers
+['driftwood-crab', 'gannet-nestweaver', 'nutria-reedcutter', 'termite-forager', 'cone-cutter-squirrel', 'talus-pika', 'dune-packrat', 'land-tiller', 'coral-polyp-colony', 'rodent-king']
   .forEach(id=> ok(pays(by[id], 'lumber'), `${id} gathers Lumber`));
-const gainOf = c=> c.effects.delivery || (c.effects.triggers || [])[0] && c.effects.triggers[0].amount; // TESTFIX1: Delivery N since ENG22
+const gainOf = c=> c.effects.delivery || c.effects.forestry /* 2026-11-18 (TESTFIX): ECONSK1's Forestry N */ || (c.effects.triggers || [])[0] && c.effects.triggers[0].amount; // TESTFIX1: Delivery N since ENG22
 ok(new Set(['driftwood-crab', 'nutria-reedcutter', 'cone-cutter-squirrel', 'dune-packrat'].map(id=> gainOf(by[id]))).size === 3, 'the gatherers come at different strengths (+1, +2, +3)');
 // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the card's place on its map's list is THEME2's (the Land Tiller is on Maps 23-24's lists now)
 Object.entries(C2.EXISTING).forEach(([id, [map, tier]])=> ok(pools[map].cards.includes(id) === (T2[map] || []).includes(id) && by[id].source.map === map && by[id].source.tier === tier, `${id}: its source is ${map}, its place on ${map}'s list follows THEME2`));
@@ -71,15 +72,16 @@ ok(pays(by['gravel-mole'], 'stone') && pays(by['pumice-beetle'], 'stone'), 'two 
 // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the Gravel Mole is off the caves' list; the Stone gatherer there is THEME2's mix pick
 // 2026-11-12 (TESTFIX1): SKIR1's rule (owner 11-11 "No stone until Map 21+") took every Stone card off the lists of Maps 0-20, so the converter and the Gravel Mole sit on no list there; the rule that stays: Quarry 1, and no list of Maps 0-20 holds either
 { const GN = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, early = id=> Object.entries(pools).filter(([k, e])=> { const no = GN.mapNumberOf(k); return no != null && no <= 20 && [].concat(e.cards, e.special || [], ...Object.values(e.submaps || {}).map(l=> Array.isArray(l) ? l : l.cards || [])).includes(id); }).map(([k])=> k);
-  ok(by['badger-stonemason'].effects.quarry === 1 && !early('badger-stonemason').length && !early('gravel-mole').length, `the converter (Quarry 1) and the Gravel Mole are on no list before Map 21 (${early('badger-stonemason').concat(early('gravel-mole')).join(', ') || 'none'})`); }
+  ok((by['badger-stonemason'].effects.quarry === 1 || by['badger-stonemason'].effects.masonry === 1 /* 2026-11-18 (TESTFIX): SKAUD1 merged Quarry into Masonry */) && !early('badger-stonemason').length && !early('gravel-mole').length, `the converter (Quarry 1) and the Gravel Mole are on no list before Map 21 (${early('badger-stonemason').concat(early('gravel-mole')).join(', ') || 'none'})`); }
 { const H = require('./lib/harness.js'), E = H.Engine, defs = H.loadCardDefs();
   const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
   const mk = ()=>{ const e = E.makeSimEngine(defs, E.mulberry32(7), {recordEvents: true, battleMode: 'open'}); return {e, P: {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}}; };
   const put = (e, P, id)=>{ const pl = P[1], c = e.makeBoardCard(id); c.slot = 0; c._seenAt = 0; c.wait = 0; pl.row.center = all(pl).concat(c).filter(x=> x.slot === 0); e.syncSlots(pl); return c; };
   { const {e, P} = mk(); put(e, P, 'badger-stonemason'); P[1].lumber = 3; P[1].stone = 0; e.resolveCombat(P, id=> id === 1 ? 'A' : 'B', {}, [], 1);
-    ok(P[1].lumber === 2 && P[1].stone === 1, `Badger Stonemason: 1 Lumber -> 1 Stone a turn (${P[1].lumber}L ${P[1].stone}S)`); }
+    const pay = by['badger-stonemason'].effects.masonry ? 2 : 1; // 2026-11-18 (TESTFIX): Masonry pays 2 Lumber a Stone (engine perTurn pay:{lumber:2})
+    ok(P[1].lumber === 3 - pay && P[1].stone === 1, `Badger Stonemason: ${pay} Lumber -> 1 Stone a turn (${P[1].lumber}L ${P[1].stone}S)`); }
   // 2026-11-04 (TESTFIX1): ENG16 (2026-11-02, owner JJ17) made Milling turn 1 of your Lumber into 2 (it needs Lumber you hold, net +N): it starts with 1
-  { const {e, P} = mk(); put(e, P, 'redwood-woodpecker'); P[1].lumber = 1; e.resolveCombat(P, id=> id === 1 ? 'A' : 'B', {}, [], 1);
+  if(by['redwood-woodpecker'].effects.milling) /* 2026-11-18 (TESTFIX): no Milling since FOLD6 */ { const {e, P} = mk(); put(e, P, 'redwood-woodpecker'); P[1].lumber = 1; e.resolveCombat(P, id=> id === 1 ? 'A' : 'B', {}, [], 1);
     ok(P[1].lumber === 2, `Redwood Woodpecker: +1 Lumber a turn while Ready (net; ${P[1].lumber})`); } }
 
 // ---- 3. the decks (N21-1, N21-2)

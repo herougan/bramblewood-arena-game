@@ -545,6 +545,28 @@
   "updated": "2026-11-17"
  },
  {
+  "id": "atk-bolt-water",
+  "area": "combat-attack",
+  "name": "Water Bolt",
+  "trigger": "bolt event {element:'water'} → ninthPassVfx → FX.H.boltShot, then ranged hit / statusFx en20Soak",
+  "current": "FX.H.boltShot {water}: a clear blue droplet with a misty trail, a splash crown and falling droplets (splash)",
+  "quality": "good — ENG51 blue bolt",
+  "priority": 2,
+  "themeNotes": "Archerfish spit: clear blue water, a splash (ENG51, owner 11-17 17:32).",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js (BOLT_ELEMENTS waterBolt)",
+   "arena_app.js (ninthPassVfx)",
+   "bramblewood-fx-h.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "inGameHook": "ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js)",
+  "added": "2026-11-18"
+ },
+ {
   "id": "atk-bolt-poison",
   "area": "combat-attack",
   "name": "Poison Bolt",
@@ -21015,5 +21037,45 @@
   "current": "FX.H.powderPuff {paralysis}: yellow spores wobble across and bloom into a pale gold cloud, sparks jump (sporePuff, a dry crackle); then the Stun mark",
   "themeNotes": "A numbing puff; the third powder (ENG50, REDESIGN3-1).",
   "inGameHook": "onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff"
+ },
+ {
+  "area": "skill",
+  "quality": "good — FXAUD2",
+  "priority": 2,
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "added": "2026-11-18",
+  "id": "sk-rend-enfeeble",
+  "name": "Rend / Enfeeble tokens (Vulnerable x2, Feeble x1/2)",
+  "trigger": "statusFx rend / enfeeble, then vulnHit / feebleHit",
+  "current": "own cues: rendMarkTone (low, hard) and enfeebleTone (falling, thin); vulnTick / feebleTick when a token is spent; the hit plays markWeak / markFeeble, not Shocked / armour",
+  "themeNotes": "Opposite meanings, opposite sounds.",
+  "inGameHook": "sk1Vfx (arena_app.js)"
+ },
+ {
+  "area": "skill",
+  "quality": "good — FXAUD2",
+  "priority": 2,
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "added": "2026-11-18",
+  "id": "sk-weaken-axe",
+  "name": "Weaken N (🪓 −N⚔)",
+  "trigger": "statusFx weaken",
+  "current": "weakenTone (a sapping drop), float 🪓 −N⚔, SkillFX.weakenDrain",
+  "themeNotes": "Was 💔 and Corrode's cue.",
+  "inGameHook": "w2SkillVfx (arena_app.js)"
  }
 ]

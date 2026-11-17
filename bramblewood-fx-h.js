@@ -18,6 +18,7 @@
      FX.H.volleyLoose(shooter)                         Volley: a fan of arrows lofted at once (each hit then plunges from above)
      FX.H.forestryLog / coinFlip / plunderCoins / anvilSpark / pearlGlint / oreChip   Forestry, Gold (Prospecting, Delivery, Barter),
                                                        Plunder, Masonry / Refining, Pearls, Quarrying / Mining
+   2026-11-18 (package ENG51): boltShot {element:'water'}, Water Bolt: a blue droplet, drips, a splash crown (SoundKit.splash)
    2026-11-17 (package POWDER1): the powders (section 6)
      FX.H.powderPuff(from, to, {element, total, speed})   Sleeping / Poison Powder: the shooter shakes out a drift of spores that blooms on the target
    Cues (SoundKit, built from its tone / noise / sweep primitives, SoundKit.prim): crabClack, geigerSoft, mendChime, hymnBell, gorgeGulp;
@@ -377,12 +378,15 @@ css('fx14', `.fxh-pj{width:0; height:0; will-change:transform, opacity;}
 .fxh-pj.acid > .co{left:-9px; top:-8px; width:18px; height:16px; border-radius:52% 48% 56% 44% / 58% 52% 48% 42%; background:radial-gradient(circle at 36% 32%, #f8ffc8 0 14%, #b8f03a 42%, #6aa814 78%, #3d6a08 100%); box-shadow:0 0 8px 2px rgba(170,240,40,.55);}
 .fxh-pj.poison > .tl{left:-18px; top:-4px; width:12px; height:8px; clip-path:polygon(0 50%, 100% 0, 100% 100%); background:#8a45d0;}
 .fxh-pj.poison > .co{left:-10px; top:-7px; width:17px; height:14px; border-radius:50%; background:radial-gradient(circle at 62% 38%, #f3dcff 0 14%, #b26cf0 45%, #6a2aa6 80%, #3e1270 100%); box-shadow:0 0 8px 2px rgba(170,90,255,.5);}
+.fxh-pj.water > .tl{left:-22px; top:-5px; width:22px; height:10px; border-radius:50%; background:linear-gradient(90deg, rgba(150,210,255,0), rgba(170,220,255,.55));}
+.fxh-pj.water > .co{left:-9px; top:-8px; width:18px; height:16px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:radial-gradient(circle at 36% 32%, #ffffff 0 14%, #9fdcff 40%, #3a9be8 76%, #1d5fae 100%); box-shadow:0 0 8px 2px rgba(80,170,255,.55);}
 .fxh-pj.spit > .co{left:-7px; top:-6px; width:14px; height:12px; border-radius:60% 40% 40% 60% / 50%; background:radial-gradient(circle at 60% 45%, #fff6c0 0 18%, #ffb02a 50%, #e8420c 100%); box-shadow:0 0 7px 2px rgba(255,120,30,.6);}
 .fxh-dot{width:6px; height:6px; margin:-3px; border-radius:50%;}
 .fxh-dot.fire{background:radial-gradient(circle, #fff1a8, #ff8a1e 60%, rgba(255,90,20,0));}
 .fxh-dot.frost{background:radial-gradient(circle, #ffffff, #cdeeff 55%, rgba(170,220,255,0));}
 .fxh-dot.acid, .fxh-dot.venom, .fxh-dot.blood, .fxh-dot.vdrop{width:5px; height:7px; margin:-3.5px -2.5px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;}
-.fxh-dot.acid{background:#9ad82a;} .fxh-dot.venom{background:#7ccf3a; box-shadow:0 0 3px #3e8a12;} .fxh-dot.vdrop{background:#9a52dc;}
+.fxh-dot.water{width:5px; height:7px; margin:-3.5px -2.5px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:#6cc0ff; box-shadow:0 0 3px rgba(60,150,240,.7);}
+.fxh-dot.acid{background:#9ad82a;}.fxh-dot.venom{background:#7ccf3a; box-shadow:0 0 3px #3e8a12;} .fxh-dot.vdrop{background:#9a52dc;}
 .fxh-dot.blood{background:radial-gradient(circle at 35% 30%, #ff8a8a, #c3122a 60%, #6a0010);}
 .fxh-dot.fume{width:14px; height:14px; margin:-7px; background:radial-gradient(circle, rgba(190,120,240,.55), rgba(150,80,220,0) 70%);}
 .fxh-dot.streak{width:14px; height:2px; margin:-1px -7px; border-radius:2px; background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.8));}
@@ -392,6 +396,8 @@ css('fx14', `.fxh-pj{width:0; height:0; will-change:transform, opacity;}
 .fxh-flare.fire{background:radial-gradient(circle, rgba(255,250,210,.95) 0 14%, rgba(255,160,40,.75) 38%, rgba(255,90,20,0) 70%);}
 .fxh-flare.ice{background:radial-gradient(circle, rgba(255,255,255,.95) 0 12%, rgba(190,230,255,.6) 40%, rgba(150,210,255,0) 70%);}
 .fxh-flare.acid{background:radial-gradient(circle, rgba(240,255,190,.9) 0 12%, rgba(170,230,50,.55) 42%, rgba(120,200,30,0) 70%);}
+.fxh-flare.water{background:radial-gradient(circle, rgba(240,250,255,.95) 0 12%, rgba(120,195,255,.6) 42%, rgba(80,160,255,0) 70%);}
+.fxh-splat.water{border-color:rgba(110,190,255,.9); box-shadow:inset 0 0 8px rgba(110,190,255,.6);}
 .fxh-flare.shock{background:radial-gradient(circle, #ffffff 0 14%, rgba(255,246,140,.75) 36%, rgba(255,230,60,0) 70%);}
 .fxh-flare.gold{background:radial-gradient(circle, rgba(255,250,210,.95) 0 12%, rgba(255,215,80,.55) 40%, rgba(255,200,60,0) 70%);}
 .fxh-splat{width:46px; height:18px; margin:-9px -23px; border-radius:50%; border:3px solid rgba(160,230,40,.9); box-shadow:inset 0 0 8px rgba(160,230,40,.6);}
@@ -456,7 +462,8 @@ const aimOf = el=>{ const c = centre(tileOf(el)); return {x:c.x, y:c.y, c}; };
 
 // ---- the bolts ----
 const BOLT14 = {fire:{parts:['tl', 'co'], cue:'boltFire', lift:.12, trail:'fire'}, ice:{parts:['gl', 'co'], cue:'boltIce', lift:.05, trail:'frost'},
-  acid:{parts:['co'], cue:'boltAcid', lift:.2, trail:'acid'}, poison:{parts:['tl', 'co'], cue:'boltPoison', lift:.16, trail:'fume'}, spit:{parts:['co'], cue:'spitfire', lift:.04, trail:'fire'}};
+  acid:{parts:['co'], cue:'boltAcid', lift:.2, trail:'acid'}, poison:{parts:['tl', 'co'], cue:'boltPoison', lift:.16, trail:'fume'}, spit:{parts:['co'], cue:'spitfire', lift:.04, trail:'fire'},
+  water:{parts:['tl', 'co'], cue:'splash' /* SoundKit's own water cue (ENG51) */, lift:.1, trail:'water'}}; // ENG51 (2026-11-18): Water Bolt, the blue one
 // FX.H.boltShot(from, to, {element, spitfire, total, flight, uid, speed}): total = ms until the bolt's hit lands (the game's windup +
 // projectile); it charges in the shooter's mouth for the last ~0.26 s before the spit and flies for `flight` (0.33 s, Spitfire 0.24 s).
 // The returned promise has .miss(): a dodge (the 'evaded' that follows) sends it sailing past the target with no splash.
@@ -492,6 +499,7 @@ M.boltShot = function(from, to, o){
         if(B.trail === 'fire'){ const e = bit('fxh-dot fire', '', q.x, q.y, {scale:rnd(.8, 1.3)}); g.to(e, {y:q.y - rnd(8, 16), x:q.x + rnd(-4, 4), scale:.2, opacity:0, duration:.35, onComplete:()=> kill(e)}); }
         else if(B.trail === 'frost'){ const e = bit('fxh-dot frost', '', q.x + rnd(-3, 3), q.y + rnd(-3, 3), {scale:rnd(.7, 1.2)}); g.to(e, {y:'+=' + rnd(6, 12), scale:.2, opacity:0, duration:.4, onComplete:()=> kill(e)}); }
         else if(B.trail === 'acid'){ if(t > .7) return; const e = bit('fxh-dot acid', '', q.x, q.y); g.to(e, {y:q.y + 16, opacity:0, duration:.32, ease:'power1.in', onComplete:()=> kill(e)}); }
+        else if(B.trail === 'water'){ const e = bit('fxh-dot water', '', q.x + rnd(-2, 2), q.y); g.to(e, {y:q.y + rnd(10, 18), opacity:0, duration:.3, ease:'power1.in', onComplete:()=> kill(e)}); } // ENG51: drips off the droplet
         else { const e = bit('fxh-dot fume', '', q.x, q.y, {scale:.5, opacity:.8}); g.to(e, {scale:1.5, opacity:0, y:q.y - 6, duration:.45, onComplete:()=> kill(e)}); } });
       later(()=>{ if(!miss && to.isConnected){ snd(B.cue); BOLT_HIT[kind](b.x, b.y, ux, uy, to); call(o.onImpact); } res(); }, flight + (n - 1)*45);
     }, charge);
@@ -511,6 +519,9 @@ const BOLT_HIT = {
   poison(x, y, ux, uy, to){ const g = G(); for(let i = 0; i < 3; i++){ const e = bit('fxh-puff', '', x + (i - 1)*12, y + rnd(-4, 4), {scale:.3, opacity:.9});
       g.to(e, {scale:rnd(1.3, 1.7), opacity:0, y:'-=' + rnd(10, 18), duration:.55, delay:i*.05, ease:'power1.out', onComplete:()=> kill(e)}); }
     spray14(x, y, {n:5, cls:'fxh-dot vdrop', a0:30, a1:150, d0:6, d1:16, grav:14, dur:.4}); knock14(tileOf(to), ux, uy, .5); },
+  // ENG51 (2026-11-18): Water Bolt, a blue splash: a ring on the card, a crown of droplets thrown up and falling back, a knock
+  water(x, y, ux, uy, to){ const g = G(), s = bit('fxh-splat water', '', x, y + 4, {scale:.3, opacity:1}); g.to(s, {scale:1.3, opacity:0, duration:.4, ease:'power2.out', onComplete:()=> kill(s)});
+    flare14(x, y, 'water', 46, 260); spray14(x, y, {n:9, cls:'fxh-dot water', a0:200, a1:340, d0:12, d1:28, grav:24, dur:.46, rot:true, rotOff:90}); knock14(tileOf(to), ux, uy, .7); },
   spit(x, y, ux, uy, to){ flare14(x, y, 'fire', 42, 240); spray14(x, y, {n:5, cls:'fxh-dot fire', d0:8, d1:20, grav:-8, dur:.3}); knock14(tileOf(to), ux, uy, .6); },
 };
 // Shock Bolt: the game draws the bolt itself (drawLightningBolt); this adds the crackle around the shooter as it charges and the fork
@@ -779,10 +790,13 @@ css('powder1', `
 .fxh-dot.zap{width:3px; height:9px; margin:-4.5px -1.5px; border-radius:2px; background:#ffe14a; box-shadow:0 0 3px #ffb300;}
 .fxh-zz{font:700 13px/1 system-ui, sans-serif; color:#efe8ff; text-shadow:0 0 3px #6b4fc8, 0 1px 0 #3a2a80; margin:-7px -4px;}
 `);
+M.powder1Event = (ev, env)=> powder1Event(ev, env); // 2026-11-18 (FXAUD2): fxBatchVfx calls it for the cue alone at Effects None / reduced motion
 function powder1Event(ev, env){
   const T = ev.type;
   if(T === 'evaded' && ev.ranged && ev.attUid != null){ const k = String(ev.attUid), b = POWDER1.get(k); if(b){ POWDER1.delete(k); if(Date.now() - b.t < 1500) b.h.missed = true; } return; }
-  if(T !== 'powder' || !env.fxAtLeast('low')) return;
+  if(T === 'powder' && (!env.fxAtLeast('low') || env.reduced)){ // 2026-11-18 (package FXAUD2): Effects None drops the puff but keeps its cue (gameplay feedback; the Stun mark follows anyway)
+    if(!(typeof document !== 'undefined' && document.hidden)) setTimeout(()=>{ try{ snd('sporePuff', ev.element); }catch(e){} }, Math.round(560/Math.max(1, (env.match && env.match.speedMult) || 1))); return; }
+  if(T !== 'powder') return;
   const from = env.el(ev.uid), to = ev.targetUid != null ? env.el(ev.targetUid) : null; if(!from || !to) return;
   M.powderPuff(from, to, {element: ev.element, uid: ev.uid, speed: Math.max(1, (env.match && env.match.speedMult) || 1)});
 }

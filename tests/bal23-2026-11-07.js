@@ -24,13 +24,14 @@ ok(p.items.some(x => x.key === 'twinStrike' && x.n === true), 'plan: Twin Strike
 const keys = [...new Set(p.items.map(x => x.key))];
 ok(keys.every(k => priced.has(k)), 'plan: every skill is in canonical/skill-costs.json');
 ok(keys.every(k => { const ns = p.items.filter(x => x.key === k).map(x => x.n); return ns.length === new Set(ns).size && (ns[0] === true ? ns.length === 1 : k === 'shield' || (ns[0] === 1 && ns.length >= 2 && ns.every((n, i) => n === i + 1))); }), 'plan: a ladder is 1..N (2 or more) or one on/off point');
-['armor', 'poison'].forEach(k => ok(JSON.stringify(p.items.filter(x => x.key === k).map(x => x.n)) === '[1,2,3,4]', 'plan: ' + k + ' at 1-4'));
+// 2026-11-18 (TESTFIX): the ladder tops at the highest number a Maps 0-20 card carries (no card has Poison 4 since the redesign), capped at 4
+['armor', 'poison'].forEach(k => { const ns = p.items.filter(x => x.key === k).map(x => x.n), top = Math.min(S.CAP, Math.max(...ns)); ok(top >= 3 && JSON.stringify(ns) === JSON.stringify(Array.from({ length: top }, (_, i) => i + 1)), 'plan: ' + k + ' at 1-' + top + ' (3 or 4)'); });
 ok(p.items.some(x => x.key === 'flying' && x.n === true), 'plan: Flying once');
 ok(p.pairs.length === 25, 'plan: 25 pairs (got ' + p.pairs.length + ')');
 ok(p.pairs.every(pr => pr.cards >= 1 && pr.a.key < pr.b.key && p.ladders[pr.a.key].includes(pr.a.n) && p.ladders[pr.b.key].includes(pr.b.n)), 'plan: every pair shares a card and sits on its skills\' ladders');
 ok(S.onLadder('shield', 1, [2, 4, 6]) === 2 && S.onLadder('shield', 3, [2, 4, 6]) === 4 && S.onLadder('poison', 5, [1, 2, 3, 4]) === 4 && S.onLadder('flying', true, [true]) === true, 'plan: a card\'s number put on the ladder');
 const only = S.planOf({ only: ['armor', 'poison'] });
-ok(only.items.length === 8 && only.pairs.every(pr => ['armor', 'poison'].includes(pr.a.key) && ['armor', 'poison'].includes(pr.b.key)), 'plan: --only keeps its skills and their pairs');
+ok(only.items.length === p.items.filter(x => ['armor', 'poison'].includes(x.key)).length /* 2026-11-18 (TESTFIX): was 8, the ladders follow the cards */ && only.pairs.every(pr => ['armor', 'poison'].includes(pr.a.key) && ['armor', 'poison'].includes(pr.b.key)), 'plan: --only keeps its skills and their pairs');
 
 // ---- 2. the bodies ----
 const b23 = S.bodiesOf(23, 'armor', 8);

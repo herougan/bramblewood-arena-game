@@ -14,6 +14,7 @@
 //  23. New field effects: Swamp Fever, Freezing, Sandstorm, River Rapids (+ Scorching II in the editor).
 //  56. Hidden skirmishes.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const H = require('./lib/harness.js');
 const E = H.Engine;
@@ -60,15 +61,17 @@ const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical',
   // 2026-10-21 (package TT): + the Nyoogle (package EE's Easter egg, its lantern) and the Sulfur Cinder Moth (the owner's live edit of
   // 2026-10-16, folded into cards.json by BF4: docs/balance/server-overrides-fold-2026-10-19.md)
   // 2026-11-06 (package CONTENT12, CONTENT11-1 a): + the Torch (a torch lights its row)
-  ok(lamps === 'lantern-bearer,lantern-spark-fly,nyoogle,otter-lantern-bearer,sulfur-cinder-moth,torch', `6. the three lantern cards, the Nyoogle, the Sulfur Cinder Moth and the Torch carry Illuminate (${lamps})`);
+  // 2026-11-18 (TESTFIX): + the Glow-worm (FOLD6, REDESIGN3: an obtainable Illuminate + Web card)
+  ok(lamps === 'lantern-bearer,lantern-spark-fly,nyoogle,otter-lantern-bearer,sulfur-cinder-moth,torch' || lamps === 'glow-worm,lantern-bearer,lantern-spark-fly,nyoogle,otter-lantern-bearer,sulfur-cinder-moth,torch', `6. the three lantern cards, the Nyoogle, the Sulfur Cinder Moth and the Torch carry Illuminate (${lamps})`);
   ok(!cards.some(c=> (c.effects||{}).lantern), '6. no card still carries Lantern'); }
 ok(/\{key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean',/.test(src) && /\{key:'lantern', category:'passive', hidden:true, retired:true,/.test(src), '6. Illuminate in the editor; Lantern retired');
 ok(/function unitLightKindOf\(c, d\)/.test(src) && /Number\(e\.immolation\) > 0\) return 'fire'/.test(src) && /\.board-card \.unit-light\.ul-leader\{/.test(tpl) && /\.battlefield\.is-dark-scene \.board-card \.unit-light\{opacity:1;\}/.test(tpl), '6. leaders and Light Aura units glow at night and in the dark');
 ok(/mask-image:var\(--unit-lights, none\)/.test(tpl) && /function syncUnitLightPools\(\)/.test(src), '6. ...and open the darkness overlay in Pitch Black / Absolute');
 
 // ---- 14. Swift
-{ const sw = cards.filter(c=> (c.effects||{}).swift).map(c=> c.id); ok(!sw.length, `14. no card carries Swift (${sw})`);
-  ok(cards.find(c=> c.id === 'dune-jackal').effects.quick === true, '14. Dune Jackal keeps Quick'); }
+// 2026-11-18 (TESTFIX): SKAUD1 (OWN-1117-3) merged Quick into Swift, the reverse of 10-15's rename: now no card carries Quick, and Dune Jackal is Swift
+{ const qk = cards.filter(c=> (c.effects||{}).quick).map(c=> c.id); ok(!qk.length, `14. no card carries Quick since SKAUD1 (${qk})`);
+  ok(cards.find(c=> c.id === 'dune-jackal').effects.swift === true, '14. Dune Jackal keeps its speed (Swift since SKAUD1)'); }
 
 // ---- 18. Full moon
 { const {e, P} = mk({phase:'night', field:'moon'}); const ev = []; put(e, P, 1, 'kr-moon', 0, ev); e.syncPhaseStats(P, so, ev);

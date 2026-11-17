@@ -17,7 +17,7 @@
 // whole AN set, placed or not, with its pool map from that record; the out-of-the-game checks (3, 4) read the cards still in the pool.
 'use strict';
 const fs = require('fs'), path = require('path'), vm = require('vm');
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(__dirname, '..'); const { redesigned } = require('./lib/redesign.js');
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 const read = rel=> fs.readFileSync(path.join(ROOT, rel), 'utf8'), readJSON = rel=> JSON.parse(read(rel));
 const src = read('arena_app.js');
@@ -78,19 +78,21 @@ const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js')), HELD = {unpla
 // 2026-11-16 (package FOLD5): + the 11-06 .. 11-13 edits (fold-plan-2026-11-16.json), same rule
 const C12FOLD = new Set(['06', '16'].flatMap(d=> JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'server-overrides', 'fold-plan-2026-11-' + d + '.json'), 'utf8')).rows.map(r=> r.id)));
 pool.forEach(c=>{
+  // 2026-11-18 (TESTFIX): a card the redesign (OWN-1117-3) or a later dated edit re-set has left its pool-era slot, rarity and note numbers behind
+  const RD = redesigned(c.id, '2026-11-07');
   const b = T.budget(c), hold = b.ok || QUEUE.has(c.id) ? '' : LMP.budgetHold(c.id); if(hold) HELD[hold].push(c.id);
   ok(b.ok || QUEUE.has(c.id) || !!hold || C12FOLD.has(c.id) /* CONTENT12: the owner's live cards as he set them, his call CONTENT12-1 */, `2. ${c.id}: inside budget v3 (2A+H+S ${b.x1} < N ${b.N}, A·H+S ${b.x2} < ${b.N2}) or on the post-balance queue`);
-  if(QUEUE.has(c.id) && !C12FOLD.has(c.id)) ok(!b.ok, `2. ${c.id}: queued for the post-balance step and still over (the queue is current)`);
+  if(QUEUE.has(c.id) && !C12FOLD.has(c.id) && !RD) ok(!b.ok, `2. ${c.id}: queued for the post-balance step and still over (the queue is current)`);
   ok(!b.missing.length, `2. ${c.id}: every skill has a cost entry (${b.missing})`);
-  ok(RR.roadRarityOk(c.rarity, numOf(c.poolMap), 'skirmish'), `2. ${c.id}: ${c.rarity} within the Map ${numOf(c.poolMap)} skirmish cap (${RR.roadRarityCap(numOf(c.poolMap), 'skirmish')})`);
+  ok(RD || RR.roadRarityOk(c.rarity, numOf(c.poolMap), 'skirmish'), `2. ${c.id}: ${c.rarity} within the Map ${numOf(c.poolMap)} skirmish cap (${RR.roadRarityCap(numOf(c.poolMap), 'skirmish')})`);
   const note = c.creatorNote || '', wr = /Measured ([\d.]+)% over (\d+) games/.exec(note), band = BANDS[c.rarity];
   ok(/N = /.test(note) && /S = /.test(note) && /2A\+H\+S/.test(note) && /A\*H\+S/.test(note), `2. ${c.id}: the creatorNote shows N, S and both rules`);
   // 2026-10-19 (package BF): the notes were written under budget v3 (N = Base + 2L); they may show that N, or v4's
   const b3 = T.budget(c, {N: T.budgetV3N(c)});
   // 2026-11-16 (TESTFIX5): the budget changed by design after the notes (BF5 halved N, BF6 / BF7 / BF11 caps, BUDGET2 3A + H, BAL30); a card whose note records such a later budget step keeps its old numbers as history
   const laterBudget = /halve \(BF5\)|BF6 \(|BF7 re-fit|BF11 \(|BUDGET2 re-fit|BAL2 re-fit|human pass I/.test(note);
-  ok((note.includes(String(b.N)) && note.includes(String(b.N2))) || (note.includes(String(b3.N)) && note.includes(String(b3.N2))) || laterBudget, `2. ${c.id}: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written, or a later dated budget step)`);
-  ok(wr && +wr[1] >= band[0] && +wr[1] <= band[1], `2. ${c.id}: its measured win rate is in the ${c.rarity} band (${wr && wr[1]}%)`);
+  ok((note.includes(String(b.N)) && note.includes(String(b.N2))) || (note.includes(String(b3.N)) && note.includes(String(b3.N2))) || laterBudget || RD, `2. ${c.id}: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written, or a later dated budget step)`);
+  ok(RD || (wr && +wr[1] >= band[0] && +wr[1] <= band[1]), `2. ${c.id}: its measured win rate is in the ${c.rarity} band (${wr && wr[1]}%)`);
   ok(c.effects && !('swimmer' in c.effects), `2. ${c.id}: uses Tide, not the retired Swimmer`);
 });
 

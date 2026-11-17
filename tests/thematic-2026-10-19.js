@@ -101,12 +101,13 @@ ok(!bb.length, '4. Badger Berserkers only on the badger maps (Ashen Spurn, the L
 ok(Object.keys(TH.THEMES).length >= 40 && mains.every(m=> TH.THEMES[m.id] && TH.THEMES[m.id].name), '4. every main map has a theme');
 
 // ---- 5. the new fields: a few fights each, on their maps
-const FIELDS = {sporeCloud: 'mu', tangledRoots: 'mk', thunderstorm: 'm7', ashRain: 'm3', ashy: 'm3'};
+// 2026-11-18 (TESTFIX): FOLD6 moved the Storm from Map 10 (m7, now Underwater Currents) to Map 11 (m10)
+const FIELDS = {sporeCloud: 'mu', tangledRoots: 'mk', thunderstorm: 'm10', ashRain: 'm3', ashy: 'm3'};
 Object.entries(FIELDS).forEach(([k, mid])=>{ const m = MAPS.find(x=> x.id === mid), on = m.nodes.filter(x=> x.rules && x.rules[k]);
   ok(on.length >= 1 && on.length <= Math.ceil(m.nodes.filter(x=> x.deck).length / 2), `5. ${k} on ${on.length} of ${m.name}'s fights (${on.map(x=> x.key)})`); });
 ok(MAPS.find(x=> x.id === 'm3').nodes.some(x=> x.rules && x.rules.ashy && /boss/.test(x.kind)), '5. Ashy on the Ashen Spurn boss');
 const NEW = ['sporeCloud', 'tangledRoots', 'thunderstorm'];
-ok(MAPS.every(m=> m.id === 'mu' || m.id === 'mk' || m.id === 'm7' || m.nodes.every(x=> !x.rules || !NEW.some(k=> x.rules[k]))), '5. the GI fields only on their own maps');
+ok(MAPS.every(m=> m.id === 'mu' || m.id === 'mk' || m.id === 'm10' || m.nodes.every(x=> !x.rules || !NEW.some(k=> x.rules[k]))), '5. the GI fields only on their own maps');
 
 // ---- 6. the road curve
 // 2026-10-19 (package CB): the card pass changed card stats, rebuilt the reference decks and retuned the curve after TH, so the latest

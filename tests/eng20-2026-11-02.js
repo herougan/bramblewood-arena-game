@@ -34,6 +34,8 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'x-weak':  {id:'x-weak', name:'Weak', attack:1, health:1, wait:1, cost:0, effects:{}},
   'x-cheap': {id:'x-cheap', name:'Cheap', attack:5, health:20, wait:1, cost:0, effects:{guardian:true, regen:2}},
 });
+// 2026-11-18 (TESTFIX): FOLD6 gave the Hollow-belly Rat Siege for Devour; the CPU scenes deal a test copy with its old Devour +2/+2
+defs['x-devour'] = Object.assign({}, defs['hollow-belly-rat'], {id: 'x-devour', effects: {devour: {attack: 2, health: 2}}});
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 function mk(seed, rules){ const e = E.makeSimEngine(defs, E.mulberry32(seed || 5), {recordEvents:true, battleMode:'open', rules: rules || undefined}); return {e, P:{1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}}; }
 const spawn = (e, P, pid, id, side)=>{ e.debugSpawnCard(P, so, pid, id, side || 'left', {}, []); return all(P[pid]).find(c=> c.defId === id && !c.__t && (c.__t = true)); };
@@ -136,7 +138,7 @@ ok(TXT['ui.eng20-wind-calm-tip'] === 'Calm: no wind' && /wind-ico is-still/.test
 ok((eng.match(/en20HpAfter\(/g) || []).length >= 7, '5: the aura Health (Nature, Kinship, Pack, Formation / Isolation, Herald) uses the rule');
 
 // ---- 6 the CPU's Devour ------------------------------------------------------------------------------------------------------
-function devourGame(seed, hand, lumber){ const {e, P} = mk(seed); const dv = spawn(e, P, 2, 'hollow-belly-rat'); spawn(e, P, 1, 'x-wall');
+function devourGame(seed, hand, lumber){ const {e, P} = mk(seed); const dv = spawn(e, P, 2, 'x-devour'); spawn(e, P, 1, 'x-wall');
   P[2].hand = hand.map((id, i)=> ({uid: 9000 + i, defId: id})); P[2].lumber = lumber; P[2].deck = []; const ev = []; e.aiTakeTurn(P, so, 2, {}, ev); return {e, P, dv, ev}; }
 { let fed = 0; for(let s = 1; s <= 20; s++){ const g = devourGame(s, ['x-big', 'x-big'], 0); if(g.ev.some(x=> x.type === 'devour')) fed++; }
   ok(fed === 20, `6: nothing affordable in hand: the CPU feeds its Devourer every time (${fed}/20; was a 40% coin flip)`); }
@@ -144,7 +146,7 @@ function devourGame(seed, hand, lumber){ const {e, P} = mk(seed); const dv = spa
   ok(fed === 0, `6: a good play waiting and a small hand: it plays the card instead (${fed}/20 fed)`); }
 { const g = devourGame(3, ['x-big', 'x-big', 'x-big', 'x-weak'], 0); const d = g.ev.find(x=> x.type === 'devour');
   ok(d && d.eatenDefId === 'x-big' && g.dv.devoured, '6: with a full-ish hand it eats an unaffordable card, not its playable one'); }
-{ const {e, P} = mk(1); const dv = spawn(e, P, 2, 'hollow-belly-rat'); dv.hp = 2; P[2].hand = [{uid:1, defId:'x-big'}, {uid:2, defId:'x-big'}];
+{ const {e, P} = mk(1); const dv = spawn(e, P, 2, 'x-devour'); dv.hp = 2; P[2].hand = [{uid:1, defId:'x-big'}, {uid:2, defId:'x-big'}];
   ok(!e.aiDevourPlan(P[2], ()=> 1), '6: a Devourer about to die (2 Health) is not fed'); }
 
 // ---- 7 King Slayer on leaders --------------------------------------------------------------------------------------------------

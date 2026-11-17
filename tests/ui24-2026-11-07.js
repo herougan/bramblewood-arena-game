@@ -106,7 +106,8 @@ async function browser(){
       // ---- 12 Codex skill list
       const bk = await pg.evaluate("(()=>{ adminModeEnabled = true; skillBookMemo = null; const l = skillBookEntriesNow().filter(e=> e.ch === 'sk' && !e.hint), seen = {}; l.forEach(e=>{ seen[e.name] = (seen[e.name] || 0) + 1; }); const t = l.find(e=> e.name === 'Tally'), g = l.find(e=> e.name === 'Throng'), td = l.find(e=> e.name === 'Tide'); return {dups: Object.keys(seen).filter(k=> seen[k] > 1), tally: t && t.html.replace(/<[^>]*>/g, ''), throng: g && g.key, tide: td && td.key, tideTxt: td && td.html.replace(/<[^>]*>/g, '')}; })()");
       ok(bk.dups.length === 0, `@${w} one Codex entry per skill (twice: ${bk.dups.join(', ') || 'none'})`);
-      ok(bk.tally && /Thresholds: [\d, ]+\./.test(bk.tally) && /3 or more/.test(bk.tally) && bk.throng === 'throng' && bk.tide === 'tide' && /Flood/.test(bk.tideTxt) && /braces/.test(bk.tideTxt), `@${w} Tally lists its thresholds, Throng and Tide keep their plain keys (${bk.tally && bk.tally.slice(-60)})`);
+      // 2026-11-18 (TESTFIX): SKAUD1 merged Tally into Carnage (no card carries it, so no Codex entry); its thresholds are checked while it has one
+      ok((bk.tally === undefined || (/Thresholds: [\d, ]+\./.test(bk.tally) && /3 or more/.test(bk.tally))) && bk.throng === 'throng' && bk.tide === 'tide' && /Flood/.test(bk.tideTxt) && /braces/.test(bk.tideTxt), `@${w} Tally lists its thresholds, Throng and Tide keep their plain keys (${bk.tally && bk.tally.slice(-60)})`);
       await ctx.close();
     }
   } finally { await b.close(); }

@@ -4561,5 +4561,13 @@
  "When its swing lands: steal up to {n} Lumber.": "Saat serangannya kena: curi hingga {n} Kayu.",
  "Charge": "Isi daya",
  "Broodmother": "Induk Anakan",
- "{name} plunders {n} Lumber.": "{name} menjarah {n} Kayu."
+ "{name} plunders {n} Lumber.": "{name} menjarah {n} Kayu.",
+ "Water Bolt": "Bolt Air",
+ "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "Selama Siap, tiap giliran perawatan: {n} kerusakan air ke musuh di hadapannya (atau terdekat), dan membuatnya Basah.",
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Tiap poin meninggalkan penanda Basah (paling banyak 3; satu mengering tiap ronde) dan memadamkan Terbakar. Basah: +1 kerusakan petir per penanda.",
+ "The Underwater Currents": "Arus Bawah Laut",
+ "{a} fits {t} with armour: +{hp}❤.": "{a} memasang baju zirah pada {t}: +{hp}❤.",
+ "Underwater Currents {n}": "Arus Bawah Laut {n}",
+ "Underwater Currents": "Arus Bawah Laut",
+ "Underwater Currents {n}: the water takes {name}.": "Arus Bawah Laut {n}: air menyeret {name}."
 }

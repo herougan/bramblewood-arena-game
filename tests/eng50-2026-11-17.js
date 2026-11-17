@@ -86,7 +86,8 @@ ok(BB.POWDER_FAMILY.includes('paralysisPowder') && BB.skillCountOf({paralysisPow
 { const {e, P} = mk(); const a = put(e, P, 1, 'e50-pierceAll', 0), t = put(e, P, 2, 'e50-armor', 0); const ev = swing(e, P, a);
   ok(t.hp === 495 && ev.some(x=> x.type === 'hit' && x.pierced === true) && !ev.some(x=> x.type === 'hit' && 'rend' in x), 'Pierce (no number) still ignores all Armor; the hit event says pierced (was rend)'); }
 { const cards = J('canonical/cards.json'), list = Array.isArray(cards) ? cards : Object.values(cards.cards || cards);
-  ok(!list.some(c=> c && c.effects && 'rend' in c.effects), 'no card in canonical/cards.json carries the key rend (nothing to migrate: the old meaning is Pierce)');
+  // 2026-11-18 (CONTENT13): Fossa Ambusher carries the new Rend N; only cards made after ENG50 may hold the key (none to migrate from the old Pierce meaning).
+  { const NEW_REND = ['fossa-ambusher']; ok(list.filter(c=> c && c.effects && 'rend' in c.effects).every(c=> NEW_REND.includes(c.id)), 'only post-ENG50 cards carry the key rend (nothing to migrate: the old meaning is Pierce)'); }
   ok(!/ae\.rend\b/.test(rd('bramblewood-engine.js')), 'the engine reads no ae.rend alias any more'); }
 
 // ================= 3. Enfeeble N: Feeble tokens =================
@@ -175,7 +176,7 @@ ok(/\{key:'paralysisPowder', category:'evergreen'/.test(app) && /\{key:'rend', c
 ok(/paralysisPowder:'⚡', rend:'💔', enfeeble:'🪶', armourer:'⚒️'/.test(app), 'icons');
 ok(/if\(ev\.kind === 'rend'\)\{ if\(rc\) rc\.vulnerable/.test(app) && /if\(ev\.kind === 'feebleHit'\)/.test(app) && /if\(ev\.kind === 'grant'\)\{ fl\(/.test(app) && /c\.vulnerable > 0\) badges\.push/.test(app), 'the effect: floats, badges and replay state for the tokens and Grant');
 ok(/paralysis:\{cls:'paralysis'/.test(rd('bramblewood-fx-h.js')) && /id:'sk-paralysis-powder'/.test(rd('tools/effects-lab/manifest/h.js')) && /package ENG50/.test(rd('docs/effects-catalogue.md')), 'the paralysis puff (FX.H), its Effects Lab entry and the catalogue');
-ok(/ENG50/.test(rd('docs/CHANGELOG.md').slice(0, 4000)) && /eng50-2026-11-17/.test(rd('tests/run-all.sh')), 'CHANGELOG entry and run-all.sh');
+ok(/ENG50/.test(rd('docs/CHANGELOG.md').slice(0, 12000)) /* 2026-11-18 (ENG51): later entries sit above it */ && /eng50-2026-11-17/.test(rd('tests/run-all.sh')), 'CHANGELOG entry and run-all.sh');
 { const ps = rd('docs/project-state.md'); ok(['Vulnerable', 'Feeble', 'Rend', 'Enfeeble', 'Weaken', 'Grant', 'Armourer'].every(w=> new RegExp(w).test(ps)) && /OWN-1117-2/.test(ps), 'project-state names the statuses and skills with OWN-1117-2'); }
 { const cards = J('canonical/cards.json'), list = Array.isArray(cards) ? cards : Object.values(cards.cards || cards);
   // 2026-11-18 (FOLD6): the redesign fold put the new skills on cards (Anvilwhisker Otter: Armourer); each carrier must now be in budget.

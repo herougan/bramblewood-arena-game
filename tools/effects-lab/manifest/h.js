@@ -45,7 +45,7 @@ R({id:'sk-gorge-gulp', stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js):
 const B14 = {total:1080, draw:234, flight:380};
 const sp14 = ctx=> ctx.speed || 1;
 const boltPlay = (el, o)=> ctx=>{ o = o || {}; ctx.sound('launch'); const t = o.to ? o.to(ctx) : foe(ctx); const p = H().boltShot(o.from ? o.from(ctx) : mine(ctx), t, Object.assign({element:el, total:B14.total/sp14(ctx)}, o.opt || {}));
-  if(o.miss) ctx.wait(60).then(()=> p.miss()); else ctx.wait(B14.total/sp14(ctx)).then(()=> ctx.float(t, '-2', {fire:'heat', ice:'cold', acid:'acid', poison:'poison'}[el] || ''));
+  if(o.miss) ctx.wait(60).then(()=> p.miss()); else ctx.wait(B14.total/sp14(ctx)).then(()=> ctx.float(t, '-2', {fire:'heat', ice:'cold', acid:'acid', poison:'poison', water:'water' /* ENG51 */}[el] || ''));
   return p.then(()=> ctx.wait(500)); };
 const arrowPlay = (v, o)=> ctx=>{ o = o || {}; const s = sp14(ctx), a = o.from ? o.from(ctx) : mine(ctx, 0), t = o.to ? o.to(ctx) : foe(ctx); ctx.sound('bowDraw', v === 'fire', B14.draw/s);
   ctx.wait(B14.draw/s).then(()=> ctx.sound('arrowLoose', v === 'fire')); ctx.wait((B14.draw + B14.flight)/s).then(()=>{ if(!o.miss){ ctx.sound('arrowThunk', v === 'fire'); ctx.float(t, '-2'); } });
@@ -53,6 +53,9 @@ const arrowPlay = (v, o)=> ctx=>{ o = o || {}; const s = sp14(ctx), a = o.from ?
 [['fire', 'atk-bolt-fire', 'A tumbling ember with a heat trail, a small burst of sparks'], ['ice', 'atk-bolt-ice', 'A frosted shard that shatters into shards and flakes'],
  ['acid', 'atk-bolt-acid', 'A wobbling green glob, drips falling, a splash ring and a sizzle of bubbles'], ['poison', 'atk-bolt-poison', 'A purple droplet trailing fumes, a puff of purple smoke']].forEach(([el, id, label])=>
   R({id, stage:'board', inGameHook:'ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js); the old SkillFX.boltGlob under reduced motion', variants:[{key:'FX14', label:'FX14 · ' + label + ' (0.26 s charge in the mouth, 0.33 s flight)', play:boltPlay(el)}]}));
+// ENG51 (2026-11-18, owner 11-17 17:32): Water Bolt (the Archerfish), the blue bolt; it lands with SoundKit's own splash
+R({id:'atk-bolt-water', name:'Water Bolt', trigger:"bolt event {element:'water'}, then its hit and statusFx en20Soak", stage:'board', inGameHook:'ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js)', variants:[
+  {key:'E51', label:'ENG51 · A clear blue droplet dripping as it flies, a splash ring and a crown of droplets (0.26 s charge, 0.33 s flight; splash)', play:boltPlay('water')}]});
 R({id:'sk-spitfire', stage:'board', variants:[{key:'FX14', label:'FX14 · A fast spit of three flame blobs (0.24 s), a small flare', play:boltPlay('fire', {opt:{spitfire:true}, to:ctx=> foe(ctx, Math.floor(Math.random()*3))})}]});
 R({id:'atk-bolt-shock', stage:'board', variants:[{key:'FX14', label:'FX14 · Crackle round the shooter, then the bolt forks where it lands (the game draws the bolt itself)', play:ctx=> H().shockBolt(mine(ctx), foe(ctx), {impactMs:300/sp14(ctx)}).then(()=> ctx.wait(300))}]});
 R({id:'atk-bolt-miss', name:'A bolt is dodged', trigger:'bolt, then evaded {ranged}', stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js): evaded after a bolt → the shot’s .miss()', variants:[
@@ -101,4 +104,10 @@ R({id:'sk-poison-powder', name:'Poison Powder N', trigger:"powder {element:'pois
 // ENG50 (2026-11-17, owner 11-17 23:36, REDESIGN3-1): Paralysis Powder, the third powder (statusFx stunOnHit after the puff: the existing Stun mark)
 R({id:'sk-paralysis-powder', name:'Paralysis Powder N', trigger:"powder {element:'paralysis'}, then statusFx stunOnHit {powder:true}", stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff', variants:[
   {key:'A', label:'ENG50 · Yellow spores drift across and bloom into a pale gold cloud, sparks jump (sporePuff, a dry crackle)', play:powderPlay('paralysis')}]});
+// FXAUD2 (2026-11-18): Rend / Enfeeble got their own cues (and short ticks when a token is spent), Weaken its own cue and a 🪓 glyph (it shared 💔 with Vulnerable)
+R({id:'sk-rend-enfeeble', name:'Rend / Enfeeble tokens (Vulnerable x2, Feeble x1/2)', trigger:"statusFx rend / enfeeble, then vulnHit / feebleHit", stage:'board', inGameHook:'sk1Vfx (arena_app.js): rend → rendMarkTone, vulnHit → vulnTick, enfeeble → enfeebleTone, feebleHit → feebleTick', variants:[
+  {key:'A', label:'FXAUD2 · Rend: a low, hard chop and "💔 Vulnerable"; the doubled hit ticks "💔 ×2" and plays the weak-mark cue (no Shocked)', play: async ctx=>{ const t = foe(ctx); ctx.sound('rendMarkTone'); ctx.float(t, '💔 Vulnerable', 'debuff'); await ctx.wait(800); ctx.sound('vulnTick'); ctx.float(t, '💔 ×2', 'debuff'); ctx.sound('markWeak'); await ctx.wait(600); }},
+  {key:'B', label:'FXAUD2 · Enfeeble: a thin falling whine and "🪶 Feeble"; the weakened swing ticks "🪶 ×½" and plays the soft reduced-hit cue (no armour ting)', play: async ctx=>{ const t = foe(ctx); ctx.sound('enfeebleTone'); ctx.float(t, '🪶 Feeble', 'debuff'); await ctx.wait(800); ctx.sound('feebleTick'); ctx.float(t, '🪶 ×½', 'debuff'); ctx.sound('markFeeble'); await ctx.wait(600); }}]});
+R({id:'sk-weaken-axe', name:'Weaken N (🪓 −N⚔)', trigger:"statusFx weaken", stage:'board', inGameHook:'w2SkillVfx (arena_app.js): weaken → weakenTone + SkillFX.weakenDrain', variants:[
+  {key:'A', label:'FXAUD2 · Weaken: a sapping drop (its own cue, not Corrode\'s sizzle), "🪓 −2⚔" and the drain look; 💔 stays Vulnerable\'s', play: async ctx=>{ const t = foe(ctx); ctx.sound('weakenTone'); ctx.float(t, '🪓 −2⚔', 'debuff'); if(window.SkillFX && SkillFX.weakenDrain) try{ SkillFX.weakenDrain(t); }catch(e){} await ctx.wait(900); }}]});
 })();

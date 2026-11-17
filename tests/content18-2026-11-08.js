@@ -29,6 +29,7 @@ const roadListed = (()=>{ const p2 = JSON.parse(JSON.stringify(pools)); Object.v
 const inExtras = id=> Object.values(extras).some(v=> Array.isArray(v) && v.includes(id));
 const OWN1113 = new Set(Object.values(Object.assign({}, require('../docs/balance/list1/fold-2026-11-13.json').main, require('../docs/balance/list1/fold-2026-11-13.json').side)).flatMap(r=> r.ownerYes || [])); // 2026-11-13 TESTFIX3: LIST1's owner Yes picks, a card he picked that is still awaiting its source (placement)
 const SUGGEST = JSON.parse((fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8').match(/const UI47_SUGGEST = (\{.*?\});\n/) || [0, '{}'])[1]);
+const { redesigned, MADE_OBTAINABLE } = require('./lib/redesign.js');
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 const ranged = fx=> Object.keys(fx || {}).some(k=> DELIV.delivery[k] === 'ranged') || ((fx || {}).triggers || []).some(t=> DELIV.delivery['action:' + (t.do || t.action)] === 'ranged');
 
@@ -37,23 +38,28 @@ const ELEMENTS = ['physical', 'heat', 'cold', 'shock', 'poison', 'acid', 'water'
 ok(ELEMENTS.every(el=> C.SHOOTERS.some(s=> s.element === el)) && C.SHOOTERS.length === ELEMENTS.length, '1 one shooter for each element the engine has rules for');
 const DT = (app.match(/const DMG_TYPES = \[([^\]]+)\]/) || [])[1] || '';
 ok(['stone', 'metal'].every(x=> DT.includes(`'${x}'`)) && !/dmgType ?=== ?'stone'|dmgType ?=== ?'metal'/.test(eng), '1 stone / metal are editor names only (no engine rule): no shooter for them');
-const BOLT_EL = {fireBolt: 'heat', fireArrow: 'heat', iceBolt: 'cold', iceArrow: 'cold', shockBolt: 'shock', poisonBolt: 'poison', acidBolt: 'acid', arrow: 'physical'};
+const BOLT_EL = {fireBolt: 'heat', fireArrow: 'heat', iceBolt: 'cold', iceArrow: 'cold', shockBolt: 'shock', poisonBolt: 'poison', acidBolt: 'acid', waterBolt: 'water' /* ENG51 */, arrow: 'physical'};
 C.SHOOTERS.forEach(s=>{
   const c = by[s.id]; ok(!!c, `1 ${s.id} exists`); if(!c) return;
+  // 2026-11-18 (TESTFIX): placed or re-made on purpose since: Archerfish is a Map 21 pack card (BOLT2, owner 11-17 17:32); FOLD6 made Glow-worm an
+  // obtainable Illuminate + Web card (REDESIGN3 clearUnattainable), so the magic shooter's checks no longer apply to it
+  if(MADE_OBTAINABLE.has(s.id) && !ranged(c.effects)) return;
+  const placed = redesigned(s.id) && !!(c.source || MADE_OBTAINABLE.has(s.id));
   ok(ranged(c.effects), `1 ${s.id} is ranged (canonical/skill-delivery.json)`);
   // FIX12 (2026-11-10): ENG39 (DES2-3 a) stores the bolts and arrows as kinds of Arrow ({arrow: {v, type, form}}); read the element from the
   // expanded keys (fireBolt, iceArrow ...), as the build and the engine do
   const fx = c.effects || {}, fxX = require(path.join(ROOT, 'bramblewood-skillparams.js')).expand(fx), el = Object.keys(fxX).map(k=> BOLT_EL[k]).find(Boolean) || ((fx.triggers || []).find(t=> (t.do || t.action) === 'damage') || {}).dmgType;
-  ok(el === s.element, `1 ${s.id} shoots ${s.element} (${el})`);
+  const want = s.id === 'archerfish' ? 'water' : s.element; // 2026-11-18 (ENG51, owner 11-17 17:32): the Archerfish spits Water Bolt now
+  ok(el === want, `1 ${s.id} shoots ${want} (${el})`);
   // 2026-11-11 (LISTFIX3): or a THEME8 suggestion the 11-11 lists took up (SKIR1, owner 00:16: Glow-worm on The Glimmer Depths), still awaiting the
   // owner's placement (awaitingSource, no source: enemy-only, not in a pack)
   const sug = Object.values(SUGGEST).some(l=> l.includes(s.id)) || OWN1113.has(s.id); // 2026-11-13 TESTFIX3: or an owner Yes pick of LIST1 awaiting placement
-  ok((!roadListed.has(s.id) || sug) && !inExtras(s.id), `1 ${s.id} is on no map list (the endless dungeons' / tower's mixed lists aside, or an 11-11 suggestion) and in no pack's extras`);
-  ok(sug ? c.awaitingSource && !c.source : L.budgetHold(s.id) === 'unplaced', `1 ${s.id} is out of play (unplaced), or a suggestion awaiting its source`);
+  if(!placed) ok((!roadListed.has(s.id) || sug) && !inExtras(s.id), `1 ${s.id} is on no map list (the endless dungeons' / tower's mixed lists aside, or an 11-11 suggestion) and in no pack's extras`);
+  if(!placed) ok(sug ? c.awaitingSource && !c.source : L.budgetHold(s.id) === 'unplaced', `1 ${s.id} is out of play (unplaced), or a suggestion awaiting its source`);
   const b = TB.budget(Object.assign({}, c, {obtainMap: s.map[2]}), {level: 1});
   ok(b.ok, `1 ${s.id} fits the budget at its suggested map (Map ${s.map[2]}: 2A+H+S ${b.x1} / N ${b.N})`);
   ok(Object.keys(fx).filter(k=> k !== 'triggers').length + (fx.triggers || []).length <= 2, `1 ${s.id}: two skills at most`);
-  if(s.new){ ok(c.awaitingSource && c.unattainable && /CONTENT18/.test(c.creatorNote || ''), `1 ${s.id} is new: awaitingSource, unattainable, a CONTENT18 note`);
+  if(s.new){ if(!placed) ok(c.awaitingSource && c.unattainable && /CONTENT18/.test(c.creatorNote || ''), `1 ${s.id} is new: awaitingSource, unattainable, a CONTENT18 note`);
     ok(c.name.split(/[\s-]+/).length <= 2 && !/[A-Z][a-z]+ean\b/.test(c.name), `1 ${s.id}: a simple common name (${c.name})`); }
 });
 ok(C.SHOOTERS.filter(s=> !s.new).length >= 5, '1 existing unused cards first (five reused)');

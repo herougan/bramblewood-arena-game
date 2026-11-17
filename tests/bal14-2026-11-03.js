@@ -5,7 +5,7 @@
 // the progression decks at their map's level (no Baby card above it), and the balance summary at the tool's default game counts.
 'use strict';
 const fs = require('fs'), path = require('path'), cp = require('child_process');
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(__dirname, '..'); const { redesigned } = require('./lib/redesign.js');
 let fail = 0, n = 0; const ok = (c, m) => { n++; if (!c) { fail++; console.log('  ✗', m); } else console.log('  ✓', m); };
 const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
 const table = J('canonical/skill-costs.json'), SK = {}; table.skills.forEach(e => { SK[e.id] = e; });
@@ -35,7 +35,7 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
 
 // ---- 3. the re-fit -------------------------------------------------------------------------------------------------------------------
 { const f = J('docs/balance/bal14/refit-2026-11-03.json');
-  ok(f.edits.length >= 1 && f.edits.every(e => Object.keys(e.set).every(k => C[e.id][k] === e.set[k])), `the re-fit is in cards.json (${f.edits.map(e => e.id + ' ' + e.from.stats + ' -> ' + e.to).join(', ')})`);
+  ok(f.edits.length >= 1 && f.edits.every(e => redesigned(e.id) /* 2026-11-18 (TESTFIX): the redesign (OWN-1117-3) re-set it */ || Object.keys(e.set).every(k => C[e.id][k] === e.set[k])), `the re-fit is in cards.json (${f.edits.map(e => e.id + ' ' + e.from.stats + ' -> ' + e.to).join(', ')})`);
   ok(f.edits.every(e => { const [a0, h0] = e.from.stats.split('/').map(Number), [a1, h1] = e.to.split('/').map(Number); return Math.abs(a1 - a0) <= 2 && Math.abs(h1 - h0) <= 2; }), 'each re-fit moves a stat by at most 2');
   const owner = new Set(J('tools/pipeline/config.json').refit.ownerCards); ok(!f.edits.some(e => owner.has(e.id)), 'no owner card re-fit'); }
 

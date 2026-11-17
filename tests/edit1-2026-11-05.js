@@ -96,7 +96,8 @@ async function browser(){
       const lost = await pg.evaluate("PASSIVE_DEFS.filter(p=> !SKILL_DEFS.some(s=> s.key === p.key)).map(p=> p.key)");
       ok(lost.length === 0, `@${w} no PASSIVE_DEFS skill is missing from SKILL_DEFS (${lost.join(', ')})`);
       await open('armory');
-      ok(await pg.evaluate("[...document.querySelectorAll('#skillRows .skill-row')].some(r=> r.querySelector('[data-sk=key]').value === 'weaponMaster')"), `@${w} Weapon Master (Armory) has a row`);
+      // 2026-11-18 (TESTFIX): SKAUD1 merged Weapon Master into Fletcher; the Armory carries Fletcher 1
+      ok(await pg.evaluate("[...document.querySelectorAll('#skillRows .skill-row')].some(r=> ['weaponMaster', 'fletcher'].includes(r.querySelector('[data-sk=key]').value))"), `@${w} the Armory's Fletcher (was Weapon Master) has a row`);
 
       // ---- 3 Species dropdown, skills dropdown with emoji
       await open('tunnel-ant');

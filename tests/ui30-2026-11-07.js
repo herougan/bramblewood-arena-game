@@ -109,7 +109,8 @@ async function browser(){
       ok(scan.out.some(x=> x.tiles > 0), `@${w} #16 a pick no card has shows as its own tile (${scan.out.filter(x=> x.tiles).map(x=> x.id).join(',')})`);
       ok(scan.subs > 0 && scan.subPills === 0, `@${w} #16 sub-maps show no pill (${scan.subs} checked)`);
       // #14, #7
-      const ic = await pg.evaluate(`(()=>{ const h = abilityBadges(getCardDefs()['bee-drone'], {compact: true}); return {pb: SKILL_ICON.poisonBarbs, boxes: (h.match(/alt="📦"|>📦</g) || []).length}; })()`);
+      // 2026-11-18 (TESTFIX): FOLD5 took Tribe Delivery off the Bee Drone (no card carries it now); the badge is checked on a def that has it
+      const ic = await pg.evaluate(`(()=>{ const h = abilityBadges(Object.assign({}, getCardDefs()['bee-drone'], {effects: {tribeDelivery: 'Bee'}}), {compact: true}); return {pb: SKILL_ICON.poisonBarbs, boxes: (h.match(/alt="📦"|>📦</g) || []).length}; })()`);
       ok(ic.pb === '🌵☠️', `@${w} #14 Poison Barbs icon ${ic.pb}`);
       ok(ic.boxes === 1, `@${w} #7 Bee Drone (Tribe Delivery) has one 📦 (${ic.boxes})`);
       // a fight: #1 toasts, #2 pips, #3 the quake line

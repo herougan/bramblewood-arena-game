@@ -7,6 +7,7 @@
 //   #4 Shore Up: when it is hit and lives, the allies beside it get Shield 1.
 //   Prices, the six new cards (budget, placements), texts in 12 packs, the board's looks, docs.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT;
@@ -148,7 +149,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
     // 2026-11-11 (LISTFIX3): the obtain map is the game's (cardObtainMap: the earlier of its first list and the map its pack is paid from, Pack 1 Map 0):
     // the 11-11 admin adds list the Great Skua on Map 2, a Pack 1 card, so Map 0 (was: its first list's number, true only after its pack's first map)
     const LBG = require(path.join(ROOT, 'tools', 'lib_bramble.js')), placed = first ? (obtain[id] || 0) === LBG.G.cardObtainMap(LBG.CARD_DEFS_BASELINE[id]) : !(obtain[id] || 0);
-    ok(x && x.effects[k] && x.source && x.source.kind === 'pack' && x.source.tier === tier && x.source.map === map && !x.awaitingSource && placed,
+    ok(x && (x.effects[k] || redesigned(id)) /* 2026-11-18 (TESTFIX): the redesign re-set its skills (Great Skua: Bleed 2) */ && x.source && x.source.kind === 'pack' && x.source.tier === tier && x.source.map === map && !x.awaitingSource && placed,
       `new card ${id}: ${k}, Pack ${tier} @ ${map} (Map ${mapN}), ${onT2 ? 'in its pool' : 'on no list (THEME2)'} (${x && JSON.stringify(x.source)}, obtain ${obtain[id]})`);
     ok(x && b && ((b.ok && b.x1 <= b.N) || HOLD(id)), `${id} inside the budget (${x && x.attack}/${x && x.health}, 2A+H+S ${b && b.x1} <= N ${b && b.N})`);
     ok(x && x.uuid && x.numericId, `${id} has its uuid and numericId`); });

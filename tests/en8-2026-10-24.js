@@ -175,7 +175,9 @@ for(const lv of [0, 1, 2]){
   // 2026-11-12 (SKIR3): the lists are now the owner's 11-12 picks under the limits; a card he left out is off its list
   const PICKS12 = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/design/map-picks-owner-2026-11-12.json'), 'utf8')).maps, picked12 = (m, id)=> [(PICKS12[m] || {}).yes, ADM11[m]].some(l=> (l || []).includes(id));
   C.NEW.forEach(s=>{ const c = by[s.id], m = s.place[0], on = (pools[m].cards || []).includes(s.id); ok(c && !c.faction && (on === (T2[m] || []).includes(s.id) || on === picked11(m, s.id) || on === picked12(m, s.id)) && c.source && c.source.map === m, `${s.id}: its source is ${m}, its place on ${m}'s list follows THEME2, no faction`); });
-  const skills = ['stonecutter', 'prospector', 'felling', 'pearlBed', 'coppice', 'driftwood', 'scavenge', 'salvage', 'magicArmor'];
+  // 2026-11-18 (TESTFIX): SKAUD1 merged or removed Stonecutter, Prospector, Felling and Driftwood (docs/design/skaud1-2026-11-17.json): no carrier owed
+  const RETIRED = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/design/skaud1-2026-11-17.json'), 'utf8')).skills.filter(x=> ['merge', 'remove'].includes(x.verdict)).map(x=> x.key));
+  const skills = ['stonecutter', 'prospector', 'felling', 'pearlBed', 'coppice', 'driftwood', 'scavenge', 'salvage', 'magicArmor'].filter(k=> !RETIRED.has(k));
   skills.forEach(k=> ok(cards.some(c=> c.effects && (c.effects[k] || (k === 'pearlBed' && (c.effects.pearl || c.effects.deliveryRes === 'pearl')) /* 2026-11-06 (ENG27, ENG25-6): Delivery {Pearl} */) && !c.pool && !c.awaitingSource), `a placed card carries ${k}`)); // 2026-11-03 (DEC1, ENG19-3): the Shellfish carry Pearl (Pearl Bed's old once rule) now
   const pearls = c=> c.effects.pearl || (c.effects.delivery && c.effects.deliveryRes === 'pearl'); // 2026-11-06 (ENG27, owner ENG25-6): Delivery {Pearl x1}
   ok(pearls(by['oyster-bank']) && pearls(by['giant-clam']), 'the Shellfish (Oyster Bank, Giant Clam) grow Pearls (Pearl 1 since 2026-11-03, DEC1 ENG19-3: as they played before ENG19)');

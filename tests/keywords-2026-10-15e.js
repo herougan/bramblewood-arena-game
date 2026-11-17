@@ -12,6 +12,7 @@
 //  14. "Remove 'Environment Card: a rule of this battlefield'".
 //  15. The board's pills: state only, inside the board, no forecast, Mist on Map 0.
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const H = require('./lib/harness.js');
 const E = H.Engine;
@@ -116,7 +117,7 @@ ok(fs.existsSync(path.join(__dirname, '..', 'tools', 'effects-lab', 'manifest', 
   const sw = cards.filter(c=> c.effects && (c.effects.swimmer || c.effects.swimmerGrant)).map(c=> c.id);
   ok(!sw.length, `11. no card carries Swimmer (${sw})`);
   // 2026-10-21 (BF5, two skills at most): the Colossal Squid keeps Fork + Gash (Tide cut); TR (HB2-1): plain Tide is back beside them
-  ok(['dolphin-knight', 'reef-shark', 'otter-angler'].every(id=>{ const c = cards.find(x=> x.id === id); return c && c.effects.tide === true; }), '11. the former Swimmers carry plain Tide'); }
+  ok(['dolphin-knight', 'reef-shark', 'otter-angler'].every(id=>{ const c = cards.find(x=> x.id === id); return c && (c.effects.tide === true || (redesigned(id) && c.effects.tide != null) /* 2026-11-18 (TESTFIX): FOLD6 gave Dolphin Knight Tide 2 */); }), '11. the former Swimmers carry plain Tide'); }
 ok(/\{key:'swimmer', category:'passive', hidden:true, retired:true,/.test(src) && /\{key:'swimmerGrant', category:'passive', hidden:true, retired:true,/.test(src), '11. Swimmer is out of the editor and the lists (the engine keeps it)');
 ['diurnalGrant', 'nocturnalGrant', 'fullMoonGrant'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'passive', label:'(Diurnal|Nocturnal|Full Moon)', kind:'grant'`).test(src), `11. ${k}: an editor row with a skill picker (a plain name since 2026-10-16)`));
 ok(/\{key:'tideGrant', category:'passive', label:'Tide', kind:'grant2', placeholders:\['Flood', 'Ebb'\]/.test(src), '11. Tide (Gives: Skills): two facets in the editor (plain name since 2026-10-16)');

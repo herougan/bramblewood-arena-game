@@ -10,7 +10,7 @@
 //   node tests/bal34-2026-11-10.js
 'use strict';
 const fs = require('fs'), path = require('path');
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(__dirname, '..'); const { redesigned } = require('./lib/redesign.js');
 const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
 const BB = require(path.join(ROOT, 'bramblewood-budget.js')), SC = require(path.join(ROOT, 'tools', 'skill_costs.js'));
 const costs = J('canonical/skill-costs.json'), T = SC.make(costs), sk = id => costs.skills.find(r => r.id === id);
@@ -59,7 +59,7 @@ ok(!('TWO_SKILL_FREE' in BB), 'the old count (TWO_SKILL_FREE) is gone');
 
 // ---- 6. pins, files, decisions ----
 const PINS = { 'puffin-diver': [2, 5, 1], 'harbor-seal': [1, 9, 1], 'ancient-sloth-titan': [2, 31, 3], 'muskrat-lodgekeeper': [1, 7, 1], 'heartwood-treant': [2, 19, 2], 'tax-collector-teal': [1, 4, 0], 'magnate-duck': [2, 37, 4] };
-Object.entries(PINS).forEach(([id, [a, h, c]]) => { const x = by(id); ok(x && x.attack === a && x.health === h && x.cost === c, `${id}: ${a}/${h} cost ${c} unchanged`); });
+Object.entries(PINS).forEach(([id, [a, h, c]]) => { const x = by(id); ok(x && ((x.attack === a && x.health === h && x.cost === c) || redesigned(id)), `${id}: ${a}/${h} cost ${c} unchanged (or re-set by the redesign)`); }); // 2026-11-18 (TESTFIX): FOLD6 made Puffin Diver 2/8
 ['reprice-2026-11-10.json', 'budget-recheck-2026-11-10.json'].forEach(f => ok(fs.existsSync(path.join(ROOT, 'docs', 'balance', 'bal34', f)), f + ' exists'));
 ok(fs.existsSync(path.join(ROOT, 'docs', 'balance', 'skirmish-pass-bal34.jsonl')), 'the road measure skirmish-pass-bal34.jsonl exists');
 const dec = J('docs/decisions.json'), items = dec.items || [];

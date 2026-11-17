@@ -99,7 +99,8 @@ ok(sh('me', '20-A-4') === BS(32) && sh('mx', '20-B-4') === BS(63) && sh('m11', '
 // --- 4. where it is shown and used
 ok(/players\[2\]\.hq\.shield = sc\.shield; players\[2\]\.hq\.maxShield = sc\.shield; players\[2\]\.hq\.shieldLayers = sc\.layers;/.test(fn('applySkirmishSetup')), 'the fight build puts the Shield on the enemy bramble');
 { const d = byKey('me', '20-A-4'), w = H.dungeonWaves(d); ok(w[w.length - 1].shield === BS(36) && w[0].shield === Math.round(BS(36) * 0.25), /* BF: Map 21's 32; BF5: halved; LEAD (2026-10-23): 36 with its new leader */ `the dungeon's castles: first ${w[0].shield}, last ${w[w.length - 1].shield}`); }
-ok(H.castleLineText(byKey('mc', '3-7')) === `🏰 ${H.skirmishCastle(byKey('mc', '3-7')).hp} HP · 🔷 ${H.skirmishCastle(byKey('mc', '3-7')).shield} Armour`, 'the VS / tooltip line shows the fight\'s Shield (the rule, or the skirmish pass\'s override)');
+// 2026-11-18 (TESTFIX): a castle with no Shield shows no Armour part (castleLineText); 3-7's castle may carry none since the HP cuts
+{ const sc37 = H.skirmishCastle(byKey('mc', '3-7')); ok(H.castleLineText(byKey('mc', '3-7')) === `🏰 ${sc37.hp} HP` + (sc37.shield ? ` · 🔷 ${sc37.shield} Armour` : ''), 'the VS / tooltip line shows the fight\'s Shield (the rule, or the skirmish pass\'s override)'); }
 // 2026-11-03 (release 11-03a): UI16 (owner 22:15 #9: "removing info of hp and shield") took the castle line off the versus card
 ok(!/castleLineText\(node\)/.test(fn('showVersusOpener')), 'the VS screen no longer shows the castle HP / Armour line (UI16)');
 // 2026-10-21 (package TT): since package UX (2026-10-19) the tutorial node's tooltip reads its summary node (tutorialSummaryNode)

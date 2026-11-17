@@ -999,6 +999,13 @@
       "form": "bolt"
      },
      "key": "shockBolt"
+    },
+    {
+     "match": {
+      "type": "water",
+      "form": "bolt"
+     },
+     "key": "waterBolt"
     }
    ]
   },

@@ -7,6 +7,7 @@
 //   #8 a Guardian guarding the Guardian that stepped in takes the swing (one hop); #19 no guard line.
 //   #2 Guardian never guards the bramble (its text); #3 Rampart and Bramble Armor; #4 Shore Up proposals (decisions only).
 'use strict';
+const { redesigned } = require('./lib/redesign.js');
 const fs = require('fs'), path = require('path');
 const H = require('./lib/harness.js');
 const E = H.Engine, ROOT = H.ROOT;
@@ -130,7 +131,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const HOLD = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold;
   const NEWC = {'dam-keeper-beaver': 'rampart', 'moat-snapper': 'rampart', 'briarback-hedgehog': 'brambleArmor', 'barkplate-beetle': 'brambleArmor'};
   Object.entries(NEWC).forEach(([id, k])=>{ const x = c(id); const bb = x && (()=>{ if(!process.argv.includes('--world=half')) process.argv.push('--world=half'); const S2 = require(path.join(ROOT, 'tools/card_retune_2026_10_19.js')).SC; return S2.make(sc).budget(x, {level: 1}); })();
-    ok(x && x.effects[k] === true && (x.awaitingSource || /RW5, owner 22:23/.test(x.creatorNote || '') /* 2026-10-23 (package RW5): placed in Maps 0-9 by tools/rw5_place_new_cards_2026_10_23.js */) && x.uuid && x.numericId && bb && ((bb.ok && bb.x1 <= bb.N) || !!HOLD(id)), `new card ${id}: ${k}, awaiting its source, inside the budget or held (${x && x.attack}/${x && x.health}, ${bb && bb.x1} <= ${bb && bb.N}${HOLD(id) ? ', held: ' + HOLD(id) : ''})`); });
+    ok(x && (x.effects[k] === true || redesigned(id)) /* 2026-11-18 (TESTFIX): the redesign re-set its skills */ && (x.awaitingSource || /RW5, owner 22:23/.test(x.creatorNote || '') /* 2026-10-23 (package RW5): placed in Maps 0-9 by tools/rw5_place_new_cards_2026_10_23.js */) && x.uuid && x.numericId && bb && ((bb.ok && bb.x1 <= bb.N) || !!HOLD(id)), `new card ${id}: ${k}, awaiting its source, inside the budget or held (${x && x.attack}/${x && x.health}, ${bb && bb.x1} <= ${bb && bb.N}${HOLD(id) ? ', held: ' + HOLD(id) : ''})`); });
   ok(new Set(cards.map(x=> x.numericId)).size === cards.length, 'numericIds stay unique');
   const art = fs.readFileSync(path.join(ROOT, 'docs/art/new-cards-2026-10-21-briefs.md'), 'utf8').split('## Package EN3')[1] || '';
   ok(Object.keys(NEWC).every(id=> art.includes('`' + id + '`')) && (art.match(/full background/g) || []).length >= 4 && !/spiked|studded|monitor|sword|spear|blade|axe/i.test(art), 'their NightCafe prompts (a background each, none of the banned words)');
