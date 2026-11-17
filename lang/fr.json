@@ -4563,5 +4563,10 @@
  "{name} plunders {n} Lumber.": "{name} pille {n} Bois.",
  "Water Bolt": "Carreau d’eau",
  "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "Tant qu’elle est Prête, à chaque entretien : {n} dégâts d’eau à l’ennemie en face (ou la plus proche), et la rend Mouillée.",
- "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Chaque point laisse un marqueur Mouillé (3 au plus ; un sèche par manche) et éteint la Brûlure. Mouillé : +1 dégât de foudre par marqueur."
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Chaque point laisse un marqueur Mouillé (3 au plus ; un sèche par manche) et éteint la Brûlure. Mouillé : +1 dégât de foudre par marqueur.",
+ "The Underwater Currents": "Les courants sous-marins",
+ "{a} fits {t} with armour: +{hp}❤.": "{a} équipe {t} d’une armure : +{hp}❤.",
+ "Underwater Currents {n}": "Courants sous-marins {n}",
+ "Underwater Currents": "Courants sous-marins",
+ "Underwater Currents {n}: the water takes {name}.": "Courants sous-marins {n} : l’eau emporte {name}."
 }

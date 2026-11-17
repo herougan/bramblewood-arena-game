@@ -4562,5 +4562,10 @@
  "{name} plunders {n} Lumber.": "{name} plündert {n} Holz.",
  "Water Bolt": "Wasserbolzen",
  "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "Solange bereit, jede Unterhaltsphase: {n} Wasserschaden am Feind gegenüber (oder dem nächsten), und macht ihn nass.",
- "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Jeder Punkt lässt eine Nass-Marke (höchstens 3; eine trocknet je Runde) und löscht Brand. Nass: +1 Blitzschaden pro Marke."
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Jeder Punkt lässt eine Nass-Marke (höchstens 3; eine trocknet je Runde) und löscht Brand. Nass: +1 Blitzschaden pro Marke.",
+ "The Underwater Currents": "Die Unterwasserströmungen",
+ "{a} fits {t} with armour: +{hp}❤.": "{a} rüstet {t} aus: +{hp}❤.",
+ "Underwater Currents {n}": "Unterwasserströmungen {n}",
+ "Underwater Currents": "Unterwasserströmungen",
+ "Underwater Currents {n}: the water takes {name}.": "Unterwasserströmungen {n}: das Wasser packt {name}."
 }

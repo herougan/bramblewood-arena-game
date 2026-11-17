@@ -231,3 +231,4 @@ ui16PitchToGrave
 UI16_PITCH_MS
 PITCH_RESOURCE_META
 noteMatchFx
+floatText

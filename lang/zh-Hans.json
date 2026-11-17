@@ -4563,5 +4563,10 @@
  "{name} plunders {n} Lumber.": "{name} 掠夺了 {n} 木材。",
  "Water Bolt": "水弹",
  "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "可进行期间，每个维持阶段：对正对（或最近）的敌人造成 {n} 点水伤害，并使其潮湿。",
- "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "每点伤害留下一枚潮湿标记（最多 3 枚；每回合干掉一枚），并扑灭灼烧。潮湿：每枚标记雷电伤害 +1。"
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "每点伤害留下一枚潮湿标记（最多 3 枚；每回合干掉一枚），并扑灭灼烧。潮湿：每枚标记雷电伤害 +1。",
+ "The Underwater Currents": "水下暗流",
+ "{a} fits {t} with armour: +{hp}❤.": "{a}为{t}披上护甲：+{hp}❤。",
+ "Underwater Currents {n}": "水下暗流 {n}",
+ "Underwater Currents": "水下暗流",
+ "Underwater Currents {n}: the water takes {name}.": "水下暗流 {n}: 水流卷走了{name}。"
 }

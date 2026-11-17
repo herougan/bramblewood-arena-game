@@ -3832,7 +3832,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.econ-log-plunder-lumber": "🏴‍☠️ {name} plunders {n} Lumber.",
   "ui.skn-water-bolt": "Water Bolt",
   "ui.sk-water-bolt": "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.",
-  "ui.sk-water-bolt-codex": "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter."
+  "ui.sk-water-bolt-codex": "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.",
+  "ui.fxaud2-float-currents-n": "Underwater Currents {n}",
+  "ui.fxaud2-float-currents": "Underwater Currents",
+  "ui.fxaud2-log-currents-n": "Underwater Currents {n}: the water takes {name}.",
+  "ui.fxaud2-who-currents": "The Underwater Currents",
+  "ui.fxaud2-log-armourer": "⚒️ {a} fits {t} with armour: +{hp}❤."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

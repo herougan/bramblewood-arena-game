@@ -1452,7 +1452,7 @@ M.onEvent = function(ev, env){
     case 'swapPositions': { const a = el(ev.aUid), b = el(ev.bUid); if(a && b) M.swapArcs(a, b); break; }
     case 'converge': { const row = sideRow(ev.targetSide), cards = row ? [...row.querySelectorAll('.board-card')].filter(b=> b.querySelector('.card-tile')) : []; if(cards.length) M.magnetPull(cards); break; }
     case 'restless': { const a = el(ev.uid); if(a) M.footsteps(a, {to:ev.swapUid != null ? el(ev.swapUid) : null, dir:(ev.to || 0) >= (ev.from || 0) ? 1 : -1}); break; }
-    case 'stunPlayer': { const other = ev.side === 'A' ? 'B' : 'A', c = hq(other); if(c && low) M.bellToll(c, {area:sideRow(other)}); break; }
+    case 'stunPlayer': { const other = ev.side === 'A' ? 'B' : 'A', c = hq(other); try{ SoundKit.stunPlayerTone(); }catch(e){} /* 2026-11-18 (FXAUD2): a bell toll, was silent */ if(c && low) M.bellToll(c, {area:sideRow(other)}); break; }
     case 'exile': if(ev.zone === 'hand' || ev.zone === 'graveyard'){ const anchor = ev.side === 'A' ? (ev.zone === 'hand' ? document.getElementById('handStrip') : document.getElementById('dropDiscard')) : hq(ev.side);
       if(anchor) M.exileWisp(anchor, {prayer:!!ev.prayer}); } break;
     // 2026-11-16 (FX12): Remember plays FX.C.rememberRise only (it had two looks at once); M.candleRise stays for the Effects Lab, not used in game.

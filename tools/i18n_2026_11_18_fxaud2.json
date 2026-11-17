@@ -1,0 +1,79 @@
+{
+ "tx": {
+  "ui.fxaud2-float-currents-n": {
+   "en": "Underwater Currents {n}",
+   "fr": "Courants sous-marins {n}",
+   "de": "Unterwasserströmungen {n}",
+   "es": "Corrientes submarinas {n}",
+   "it": "Correnti sottomarine {n}",
+   "pt": "Correntes submarinas {n}",
+   "tl": "Agos sa Ilalim ng Tubig {n}",
+   "ta": "நீருக்கடி நீரோட்டங்கள் {n}",
+   "id": "Arus Bawah Laut {n}",
+   "zh-Hans": "水下暗流 {n}",
+   "zh-Hant": "水下暗流 {n}",
+   "ja": "海中の潮流 {n}",
+   "ko": "수중 해류 {n}"
+  },
+  "ui.fxaud2-float-currents": {
+   "en": "Underwater Currents",
+   "fr": "Courants sous-marins",
+   "de": "Unterwasserströmungen",
+   "es": "Corrientes submarinas",
+   "it": "Correnti sottomarine",
+   "pt": "Correntes submarinas",
+   "tl": "Agos sa Ilalim ng Tubig",
+   "ta": "நீருக்கடி நீரோட்டங்கள்",
+   "id": "Arus Bawah Laut",
+   "zh-Hans": "水下暗流",
+   "zh-Hant": "水下暗流",
+   "ja": "海中の潮流",
+   "ko": "수중 해류"
+  },
+  "ui.fxaud2-log-currents-n": {
+   "en": "Underwater Currents {n}: the water takes {name}.",
+   "fr": "Courants sous-marins {n} : l’eau emporte {name}.",
+   "de": "Unterwasserströmungen {n}: das Wasser packt {name}.",
+   "es": "Corrientes submarinas {n}: el agua se lleva a {name}.",
+   "it": "Correnti sottomarine {n}: l’acqua afferra {name}.",
+   "pt": "Correntes submarinas {n}: a água leva {name}.",
+   "tl": "Agos sa Ilalim ng Tubig {n}: dinadala ng tubig si {name}.",
+   "ta": "நீருக்கடி நீரோட்டங்கள் {n}: நீர் {name} ஐ இழுக்கிறது.",
+   "id": "Arus Bawah Laut {n}: air menyeret {name}.",
+   "zh-Hans": "水下暗流 {n}: 水流卷走了{name}。",
+   "zh-Hant": "水下暗流 {n}: 水流捲走了{name}。",
+   "ja": "海中の潮流 {n}: 水が{name}をさらう。",
+   "ko": "수중 해류 {n}: 물이 {name}을(를) 휩쓴다."
+  },
+  "ui.fxaud2-who-currents": {
+   "en": "The Underwater Currents",
+   "fr": "Les courants sous-marins",
+   "de": "Die Unterwasserströmungen",
+   "es": "Las corrientes submarinas",
+   "it": "Le correnti sottomarine",
+   "pt": "As correntes submarinas",
+   "tl": "Ang Agos sa Ilalim ng Tubig",
+   "ta": "நீருக்கடி நீரோட்டங்கள்",
+   "id": "Arus Bawah Laut",
+   "zh-Hans": "水下暗流",
+   "zh-Hant": "水下暗流",
+   "ja": "海中の潮流",
+   "ko": "수중 해류"
+  },
+  "ui.fxaud2-log-armourer": {
+   "en": "⚒️ {a} fits {t} with armour: +{hp}❤.",
+   "fr": "⚒️ {a} équipe {t} d’une armure : +{hp}❤.",
+   "de": "⚒️ {a} rüstet {t} aus: +{hp}❤.",
+   "es": "⚒️ {a} arma a {t}: +{hp}❤.",
+   "it": "⚒️ {a} corazza {t}: +{hp}❤.",
+   "pt": "⚒️ {a} blinda {t}: +{hp}❤.",
+   "tl": "⚒️ Binalutan ni {a} si {t}: +{hp}❤.",
+   "ta": "⚒️ {a} {t} க்கு கவசம்: +{hp}❤.",
+   "id": "⚒️ {a} memasang baju zirah pada {t}: +{hp}❤.",
+   "zh-Hans": "⚒️ {a}为{t}披上护甲：+{hp}❤。",
+   "zh-Hant": "⚒️ {a}為{t}披上護甲：+{hp}❤。",
+   "ja": "⚒️ {a}が{t}に鎧を着せた：+{hp}❤。",
+   "ko": "⚒️ {a}이(가) {t}에게 갑옷을 입힘: +{hp}❤."
+  }
+ }
+}

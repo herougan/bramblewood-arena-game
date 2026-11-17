@@ -47,4 +47,4 @@ async def main():
     for k in EVS:
         f = lambda s: (rep[s][k]['audio'], rep[s][k]['nodes'], len(rep[s][k]['cues']))
         print(f'{k:22} base(audio,nodes,cues) {f("baseline")}  hidden {f("hidden")}  muted {f("muted")}  fxnone {f("fx_none")}')
-asyncio.run(main())
+if __name__ == "__main__": asyncio.run(main())  # 2026-11-18 (FXAUD2): importable by tests/e2e/fxaud2_gates.py

@@ -4564,5 +4564,10 @@
  "{name} plunders {n} Lumber.": "{name} saccheggia {n} Legname.",
  "Water Bolt": "Dardo d’acqua",
  "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "Finché è Pronta, a ogni mantenimento: {n} danni d’acqua al nemico di fronte (o al più vicino), e lo rende Bagnato.",
- "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Ogni punto lascia un segnalino Bagnato (al massimo 3; uno si asciuga a ogni round) e spegne la Bruciatura. Bagnato: +1 danno da fulmine per segnalino."
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Ogni punto lascia un segnalino Bagnato (al massimo 3; uno si asciuga a ogni round) e spegne la Bruciatura. Bagnato: +1 danno da fulmine per segnalino.",
+ "The Underwater Currents": "Le correnti sottomarine",
+ "{a} fits {t} with armour: +{hp}❤.": "{a} corazza {t}: +{hp}❤.",
+ "Underwater Currents {n}": "Correnti sottomarine {n}",
+ "Underwater Currents": "Correnti sottomarine",
+ "Underwater Currents {n}: the water takes {name}.": "Correnti sottomarine {n}: l’acqua afferra {name}."
 }

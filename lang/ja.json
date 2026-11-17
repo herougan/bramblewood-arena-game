@@ -4563,5 +4563,10 @@
  "{name} plunders {n} Lumber.": "{name}が木材を{n}略奪。",
  "Water Bolt": "ウォーターボルト",
  "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "準備OKの間、毎アップキープ：正面（または最寄り）の敵に {n} の水ダメージを与え、濡れにする。",
- "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "1点ごとに濡れカウンターを1つ置く（最大3つ、毎ラウンド1つ乾く）。炎上を消す。濡れ：カウンター1つにつき雷ダメージ +1。"
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "1点ごとに濡れカウンターを1つ置く（最大3つ、毎ラウンド1つ乾く）。炎上を消す。濡れ：カウンター1つにつき雷ダメージ +1。",
+ "The Underwater Currents": "海中の潮流",
+ "{a} fits {t} with armour: +{hp}❤.": "{a}が{t}に鎧を着せた：+{hp}❤。",
+ "Underwater Currents {n}": "海中の潮流 {n}",
+ "Underwater Currents": "海中の潮流",
+ "Underwater Currents {n}: the water takes {name}.": "海中の潮流 {n}: 水が{name}をさらう。"
 }

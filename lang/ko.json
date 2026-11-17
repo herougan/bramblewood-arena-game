@@ -4565,5 +4565,10 @@
  "{name} plunders {n} Lumber.": "{name}이(가) 목재 {n}을(를) 약탈.",
  "Water Bolt": "물 볼트",
  "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "가능한 동안 매 유지 단계: 마주한(또는 가장 가까운) 적에게 물 피해 {n}, 그리고 젖게 한다.",
- "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "1점마다 젖음 카운터를 하나 남긴다(최대 3개, 매 라운드 하나씩 마른다). 화상을 끈다. 젖음: 카운터마다 번개 피해 +1."
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "1점마다 젖음 카운터를 하나 남긴다(최대 3개, 매 라운드 하나씩 마른다). 화상을 끈다. 젖음: 카운터마다 번개 피해 +1.",
+ "The Underwater Currents": "수중 해류",
+ "{a} fits {t} with armour: +{hp}❤.": "{a}이(가) {t}에게 갑옷을 입힘: +{hp}❤.",
+ "Underwater Currents {n}": "수중 해류 {n}",
+ "Underwater Currents": "수중 해류",
+ "Underwater Currents {n}: the water takes {name}.": "수중 해류 {n}: 물이 {name}을(를) 휩쓴다."
 }

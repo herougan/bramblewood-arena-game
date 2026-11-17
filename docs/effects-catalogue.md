@@ -1933,6 +1933,20 @@ Owner 00:03: "interesting vfx to improve our general UI experience and also skil
 
 Lab: group "FX10" (`tools/effects-lab/manifest/fx10.js`, ids `fun-fx10-*`; A the full look, B Effects Low / reduced motion / 4x). Contact sheet: `docs/art/fx10-sheet.png` (`python3 tests/e2e/fx10_2026_11_13.py`, which also checks the camera layer, the piece count, Low / 4x / None and that Brood and Confuse lost their shared looks). Check: `tests/fx10-2026-11-13.js`.
 
+## 2026-11-18 (package FXAUD2): the audit's fix list (sound, text, guardrails)
+Spec `docs/perf/fxaud1-2026-11-18.md` ("Fix list by file"). Code: `arena_app.js` (SoundKit cue list, `sk1Vfx`, `w2SkillVfx`, `dnMarkSoundKey`), `bramblewood-skillfx.js` (`quiet()`), `bramblewood-fx-h.js` (`powder1Event`), `arena_template.html` (`.elite-polish::after`). Lab: `tools/effects-lab/manifest/h.js` (`sk-rend-enfeeble`, `sk-weaken-axe`; the sound grid lists every new cue). Check: `tests/fxaud2-2026-11-18.js`, browser gates `tests/e2e/fxaud2_gates.py`.
+
+| Date | Moment (event) | Look | Cue | Status |
+|---|---|---|---|---|
+| 2026-11-18 | Rend (`statusFx` rend) / the doubled hit (`vulnHit`) | "💔 Vulnerable"; "💔 ×2" | `rendMarkTone` (low, hard chop), then `vulnTick`; the hit's number plays `markWeak` (it played `markShocked`) | live |
+| 2026-11-18 | Enfeeble (`enfeeble`) / a swing at half (`feebleHit`) | "🪶 Feeble"; "🪶 ×½" | `enfeebleTone` (thin, falling), then `feebleTick`; the hit plays `markFeeble` (it played the armour ting) | live |
+| 2026-11-18 | Weaken (`statusFx` weaken) | float "🪓 −N⚔" (it shared 💔 with Vulnerable), the drain look | `weakenTone` (a sapping drop; Corrode keeps `corrodeTone`) | live |
+| 2026-11-18 | Chilli, Coffee, Wilting, Taunt, Shed, Thaw, Prayer, Recoil, unit Shield, Stun Player, Curse tick, Strangle tick | unchanged | `chilliTone`, `coffeeTone`, `wiltTone`, `tauntTone`, `shedTone`, `thawTone`, `prayerTone`, `recoilTone`, `shieldTone`, `stunPlayerTone`, `curseTickTone`, `strangleTone` (each was silent) | live |
+| 2026-11-18 | `fireHitReady`, `sequester`, `sequesterEnd` / `sequesterBack`, `triggerCapped` (the engine sent them, the client had no handler) | a float each: "🔥 +N", "🫳 −n / +n", "↩️", "🔁⛔" | `swipeTone` on `sequester` | live |
+| 2026-11-18 | Underwater Currents (`awash` tick, `wave` {awash}) | log and floats read "Underwater Currents", not "Wave"; Armourer's log line says what it did | none new | live |
+
+Levels: `rallyHorn` gain 0.11 → 0.06; `exposeTone`, `corrodeTone`, `splash` +4 dB; `shellCrackTone`, `iceShatter`, `burnCrackle` peaks down. Guardrails: `SkillFX.fireball` / `meteor`, the poison bubbles, the bloom petals and the crater scorch draw nothing at Effects None or in a hidden tab (number, shake and cue stay); an HP-only `namedBuff` skips its aura below Medium; Paralysis Powder keeps its cue at Effects None and reduced motion; the elite glint stops and loses its blend layer in a fight; music and ambience suspend the audio context while hidden; the Home tip ticker and the Energy HUD wait while a fight is up.
+
 ## 2026-11-18 (package ENG51): Water Bolt, the blue bolt
 Owner 11-17 17:32 ("Archer Fish's Water Bolt is in Map 21+"). Code: `bramblewood-fx-h.js` section 5 (`BOLT14.water`, `BOLT_HIT.water`, the `fxh-pj.water` / `fxh-dot.water` / `fxh-flare.water` styles); `ninthPassVfx` in `arena_app.js` hands the bolt's element on as for the other bolts. Lab: `tools/effects-lab/manifest/h.js` (`atk-bolt-water`).
 

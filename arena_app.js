@@ -322,7 +322,7 @@ Object.assign(SKILL_ICON, {hunter:'🐆', executioner:'🪦', detonate:'🎆', p
 Object.assign(SKILL_ICON, {vanguard:'🎖️', web:'🕸️', webbed:'🕸️', sentry:'🗼', carrion:'🦴', hoard:'🐿️', venomMaster:'⚗️', fletcher:'🪶', herbalist:'🌿', shatter:'💥'}); // 2026-10-17 skills (Leech keeps sap's 🧛, Reflect its 🪞)
 Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', quarry:'🪓🪨', smelter:'🏭', disarm:'🫴', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪫' /* 2026-11-06 (TEXTFIX1): was 🪛, shared with Poison Barbs */, arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
 // W2 skills (2026-10-16), none shared with another skill's chip.
-Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
+Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'🪓', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
 Object.assign(SKILL_ICON, {diurnalGrant:'☀️', nocturnalGrant:'🌙', tideGrant:'🌊', fullMoon:'🌕', fullMoonGrant:'🌕'}); // Zeitgeber advanced forms (2026-10-15)
 Object.assign(SKILL_ICON, {crepuscularGrant:'🌆', rainrunnerGrant:'🌦️', loyalGrant:'🎖️', usurperGrant:'🗡️👑', transform:'🐺', ritual:'⛧'}); // CX2 (2026-10-21): the new context-skill rows
@@ -5593,6 +5593,12 @@ const SoundKit = (()=>{
   // fire their callbacks all at once) is skipped, not queued. The music and the ambience use audioContext() (ungated); the music already fades out
   // while hidden.
   function ac(){ return ui27Away() ? null : acRaw(); }
+  // 2026-11-18 (package FXAUD2): the music and ambience schedulers kept running with the tab hidden (only their master gain faded to 0): suspend the whole
+  // context while hidden (the OS audio thread sleeps too) and resume it on return, only if we suspended it.
+  try{ if(typeof document !== 'undefined'){ let hiddenSuspend = false;
+    document.addEventListener('visibilitychange', ()=>{ try{ if(!ctx) return;
+      if(document.hidden){ if(ctx.state === 'running'){ hiddenSuspend = true; ctx.suspend(); } }
+      else if(hiddenSuspend){ hiddenSuspend = false; ctx.resume(); } }catch(e){} }); } }catch(e){}
   // Item #15 (2026-09-18, "the sound continues playing even after I end the turn"): every cue
   // here is scheduled with real Web Audio timestamps (c.currentTime + delay/duration), which run
   // on their OWN clock independent of the JS setTimeout-driven replay loop in resolveRound() that
@@ -6205,7 +6211,28 @@ const SoundKit = (()=>{
     stealthTone(){ tone(220,0.12,'sine',0.05); tone(160,0.15,'sine',0.04,0.06); },
     reloadTone(){ tone(420,0.05,'square',0.05); tone(300,0.06,'square',0.04,0.05); },
     shellUp(){ tone(260,0.09,'square',0.07); tone(190,0.11,'square',0.05,0.05); },
-    exposeTone(){ tone(760,0.05,'sawtooth',0.06); tone(540,0.06,'sawtooth',0.05,0.04); },
+    exposeTone(){ tone(760,0.05,'sawtooth',0.095); tone(540,0.06,'sawtooth',0.08,0.04); }, // 2026-11-18 (package FXAUD2): +4 dB, it was 4-7 dB under the median cue
+    // 2026-11-18 (package FXAUD2): Rend and Enfeeble stop sharing exposeTone (they mean opposite things; rendTone below is Pierce's cue, so Rend's is rendMarkTone). Rend: a low, hard chop (take double);
+    // Enfeeble: a thin falling whine (deal half). vulnTick / feebleTick: the short tick when a token is spent (the hit's own mark cue follows).
+    rendMarkTone(){ sweep(300,110,0.1,'square',0.08); tone(90,0.13,'sawtooth',0.08,0.03); noise(0.04,0.05); },
+    enfeebleTone(){ sweep(950,360,0.2,'triangle',0.075); tone(280,0.1,'sine',0.045,0.14); },
+    vulnTick(){ tone(1500,0.025,'square',0.05); tone(2000,0.025,'square',0.04,0.03); },
+    feebleTick(){ tone(520,0.035,'triangle',0.055); tone(360,0.04,'triangle',0.045,0.03); },
+    markFeeble(){ const d = SX_MARK_DELAY; tone(300,0.09,'triangle',0.05,d); tone(210,0.1,'triangle',0.04,d+0.05); fnoise(0.08,0.025,{type:'lowpass', freq:600, freqEnd:250, attack:0.01, delay:d}); }, // a hit by a Feeble unit: a soft, falling thud (not the armour ting)
+    // 2026-11-18 (package FXAUD2): short cues for statuses that were silent (gameplay-relevant): one per kind, from tone() / sweep() / fnoise() only
+    weakenTone(){ sweep(640,230,0.16,'square',0.07); tone(150,0.12,'triangle',0.07,0.13); }, // Weaken (permanent Attack loss): a sapping drop, not Corrode's sizzle
+    chilliTone(){ sweep(380,820,0.12,'sawtooth',0.05); fnoise(0.12,0.03,{type:'highpass', freq:2500, crackle:0.4, delay:0.06}); },
+    coffeeTone(){ tone(880,0.03,'triangle',0.05); tone(1175,0.03,'triangle',0.05,0.05); tone(1480,0.05,'triangle',0.045,0.1); },
+    wiltTone(){ sweep(420,170,0.28,'sine',0.06); },
+    tauntTone(){ tone(520,0.06,'square',0.05); tone(520,0.06,'square',0.05,0.09); tone(660,0.1,'square',0.05,0.18); },
+    shedTone(){ fnoise(0.22,0.05,{type:'bandpass', freq:3200, freqEnd:1800, q:0.9, crackle:0.35, attack:0.01}); },
+    thawTone(){ tone(1400,0.04,'sine',0.05); tone(1000,0.05,'sine',0.045,0.08); tone(760,0.07,'sine',0.04,0.17); },
+    prayerTone(){ tone(784,0.2,'triangle',0.05); tone(1175,0.26,'sine',0.035,0.06); },
+    recoilTone(){ tone(110,0.1,'triangle',0.09); noise(0.04,0.04); },
+    shieldTone(){ tone(440,0.07,'triangle',0.06); tone(660,0.12,'sine',0.05,0.05); },
+    stunPlayerTone(){ tone(196,0.35,'sine',0.08); tone(392,0.3,'sine',0.04,0.02); tone(147,0.4,'sine',0.06,0.3); }, // a bell toll: the enemy player skips a turn
+    curseTickTone(){ tone(150,0.12,'sawtooth',0.05); fnoise(0.15,0.03,{type:'lowpass', freq:900, freqEnd:300}); },
+    strangleTone(){ sweep(260,180,0.16,'sawtooth',0.045); fnoise(0.12,0.025,{type:'bandpass', freq:500, q:2, delay:0.04}); },
     stunTone(){ tone(150,0.22,'square',0.08); },
     curse(){ tone(360,0.1,'sawtooth',0.06); tone(260,0.13,'sawtooth',0.05,0.05); },
     poisonApply(){ tone(520,0.08,'sine',0.06); tone(360,0.1,'sine',0.05,0.05); },
@@ -6262,12 +6289,12 @@ const SoundKit = (()=>{
     constructTone(){ sweep(240,420,0.32,'sawtooth',0.03); [0,0.12,0.25].forEach((d,i)=>{ tone(150-i*10,0.07,'square',0.09,d); fnoise(0.05,0.06,{type:'bandpass',freq:900,delay:d}); }); },
     // 2026-11-13 (package FX9 #14 / #15): a tortoise shell cracking (a dry crack, then its plates clattering down) and a dragon's wings passing over
     // the board (a low rush of air that swells and fades, three deep wing beats in it).
-    shellCrackTone(){ fnoise(0.07,0.09,{type:'highpass',freq:1600,crackle:0.4,attack:0.002}); [0.3,0.38,0.47,0.55].forEach((d,i)=>{ tone(520-i*55,0.05,'square',0.045,d); fnoise(0.04,0.04,{type:'bandpass',freq:1400-i*150,delay:d}); }); },
+    shellCrackTone(){ fnoise(0.07,0.055,{type:'highpass',freq:1600,crackle:0.4,attack:0.002}); /* 2026-11-18 (FXAUD2): peak was -8 dBFS */ [0.3,0.38,0.47,0.55].forEach((d,i)=>{ tone(520-i*55,0.05,'square',0.045,d); fnoise(0.04,0.04,{type:'bandpass',freq:1400-i*150,delay:d}); }); },
     dragonGust(){ fnoise(1.0,0.07,{type:'lowpass',freq:320,freqEnd:900,q:0.8,attack:0.35}); [0.05,0.43,0.81].forEach(d=> fnoise(0.18,0.06,{type:'lowpass',freq:260,freqEnd:110,attack:0.03,delay:d})); },
     // 2026-11-13 (package FX10): one cue for each of the ten skill looks (docs/sfx-cue-sheet.md 59-68)
     snowThump(){ fnoise(0.22,0.12,{type:'lowpass',freq:500,freqEnd:180,attack:0.004}); tone(90,0.12,'sine',0.08); fnoise(0.3,0.04,{type:'highpass',freq:3000,delay:0.05}); },
     igniteWhoosh(){ fnoise(0.4,0.08,{type:'bandpass',freq:500,freqEnd:2400,q:1.2,attack:0.12}); fnoise(0.3,0.04,{type:'highpass',freq:2500,crackle:0.35,delay:0.15}); },
-    burnCrackle(){ fnoise(0.25,0.06,{type:'highpass',freq:2200,crackle:0.5}); fnoise(0.3,0.03,{type:'lowpass',freq:600,delay:0.02}); },
+    burnCrackle(){ fnoise(0.25,0.04,{type:'highpass',freq:2200,crackle:0.5}); fnoise(0.3,0.03,{type:'lowpass',freq:600,delay:0.02}); },
     spentPuff(){ fnoise(0.12,0.05,{type:'bandpass',freq:1400,freqEnd:600}); tone(660,0.05,'triangle',0.05,0.02); tone(440,0.07,'triangle',0.045,0.08); },
     silkDrop(){ sweep(900,1700,0.3,'sine',0.04); tone(520,0.04,'square',0.04,0.5); fnoise(0.06,0.05,{type:'bandpass',freq:1800,delay:0.5}); },
     confuseWarble(){ [880,620,990,560].forEach((f,i)=> tone(f,0.07,'sine',0.06,i*0.09)); sweep(700,420,0.25,'triangle',0.03,0.34); },
@@ -6307,7 +6334,7 @@ const SoundKit = (()=>{
       const now = Date.now(); if(now - lastHornAt < 450) return false;
       const c = ac(); if(!c) return false;
       lastHornAt = now;
-      playBuf(c, bakedBuf(c, 'rallyHorn', ()=> hornBuf(c)), 0.11 * sfxVolume, 0);
+      playBuf(c, bakedBuf(c, 'rallyHorn', ()=> hornBuf(c)), 0.06 * sfxVolume, 0); // 2026-11-18 (package FXAUD2): was 0.11 (RMS -27.5, 10 dB over the median cue)
       return true;
     },
     earthquakeTone(){ tone(55,0.5,'sawtooth',0.14); tone(48,0.4,'sawtooth',0.1,0.12); noise(0.42,0.13); },
@@ -6318,7 +6345,7 @@ const SoundKit = (()=>{
     kingSlayerTone(){ tone(1046,0.08,'triangle',0.09); tone(1568,0.09,'triangle',0.08,0.06); noise(0.1,0.07); },
     blindTone(){ tone(2400,0.05,'sine',0.09); tone(2400,0.02,'sine',0.05,0.06); }, // a bright, brief whiteout flash-ring
     shockTone(){ tone(1900,0.02,'square',0.08); tone(300,0.02,'square',0.07,0.02); tone(1900,0.02,'square',0.08,0.04); tone(300,0.02,'square',0.06,0.06); }, // rapid jagged crackle, distinct from paralyzeBuzz's steadier triple
-    corrodeTone(){ tone(500,0.08,'sawtooth',0.06); tone(340,0.1,'sawtooth',0.05,0.06); tone(200,0.14,'sawtooth',0.045,0.14); }, // a slow, descending sizzle-decay
+    corrodeTone(){ tone(500,0.08,'sawtooth',0.095); tone(340,0.1,'sawtooth',0.08,0.06); tone(200,0.14,'sawtooth',0.07,0.14); }, // a slow, descending sizzle-decay
     // Stagger (2026-09-24, task #109 — physical's elemental status, Shock's damage-dealt mirror):
     // one heavy low thud (the physical impact) immediately followed by a wavering, detuned
     // wobble-decay reading as "rattled/dazed" — deliberately dull and low-pitched, the opposite
@@ -6363,7 +6390,7 @@ const SoundKit = (()=>{
     // A card dissolving in flame (element deaths).
     burnAway2(){ fnoise(0.7, 0.06, {type:'lowpass', freq:1800, freqEnd:500, crackle:0.12, attack:0.08}); sweep(300, 120, 0.6, 'sawtooth', 0.025, 0.05); },
     // Ice cracking and falling apart (frost deaths).
-    iceShatter(){ for(let i = 0; i < 6; i++) tone(2400 + Math.random()*2400, 0.12, 'sine', 0.035, i*0.04); fnoise(0.18, 0.06, {type:'highpass', freq:4000, crackle:0.3, attack:0.003}); },
+    iceShatter(){ for(let i = 0; i < 6; i++) tone(2400 + Math.random()*2400, 0.12, 'sine', 0.028, i*0.04); fnoise(0.18, 0.04, {type:'highpass', freq:4000, crackle:0.3, attack:0.003}); },
     // Night falls: a low swell and a single owl-like hoot.
     nightSwell(){ sweep(110, 82, 1.2, 'sine', 0.06); tone(392, 0.25, 'sine', 0.03, 0.7); tone(330, 0.4, 'sine', 0.03, 0.98); },
     // 2026-09-21 Skills/VFX/SFX coverage audit — five more cues for mechanics that were landing
@@ -6414,8 +6441,8 @@ const SoundKit = (()=>{
       let t = 0; for(let i = 0; i < clicks; i++){ t += 0.012 + Math.random()*Math.random()*0.09; fnoise(0.008, 0.11, {type:'highpass', freq:3200 + Math.random()*1800, q:0.7, attack:0.0008, delay:t}); } },
     // Wave and the Tide-spout (2026-10-14): a quick splash, a whoosh of water with a few droplets.
     splash(){ const now = Date.now(); if(now - (SFX_THROTTLE.splash||0) < 180) return; SFX_THROTTLE.splash = now;
-      fnoise(0.32, 0.07, {type:'lowpass', freq:2400, freqEnd:500, q:0.8, attack:0.02});
-      for(let i = 0; i < 4; i++) sweep(900 + Math.random()*700, 1600 + Math.random()*900, 0.05, 'sine', 0.025, 0.08 + i*0.05); },
+      fnoise(0.32, 0.11, {type:'lowpass', freq:2400, freqEnd:500, q:0.8, attack:0.02}); // 2026-11-18 (FXAUD2): +4 dB
+      for(let i = 0; i < 4; i++) sweep(900 + Math.random()*700, 1600 + Math.random()*900, 0.05, 'sine', 0.04, 0.08 + i*0.05); },
   };
 })();
 // ---- The Pale Desert's sand gusts (2026-10-19, package CX, owner 14:07: "Pale Desert - the sand sfx plays here and there, but not
@@ -7366,10 +7393,10 @@ function sk1Vfx(ev){
   if(ev.kind === 'exploitHit'){ if(rc) rc.exploit = ev.amount||0; fl(el, `🩻 +${ev.bonus||1}`, 'debuff'); refresh(ev.targetUid); return; }
   if(ev.kind === 'exploitFade'){ if(rc) rc.exploit = 0; refresh(ev.targetUid); return; }
   // ENG50 (2026-11-17): the token marks reuse the Exploit float and sound (exposeTone); a used token ticks the badge down; Grant floats its gift
-  if(ev.kind === 'rend'){ if(rc) rc.vulnerable = (rc.vulnerable||0) + (ev.amount||1); fl(el, TX('ui.float-vulnerable'), 'debuff'); snd('exposeTone'); refresh(ev.targetUid); return; }
-  if(ev.kind === 'vulnHit'){ if(rc) rc.vulnerable = ev.amount||0; fl(el, '💔 ×2', 'debuff'); refresh(ev.targetUid); return; }
-  if(ev.kind === 'enfeeble'){ if(rc) rc.feeble = (rc.feeble||0) + (ev.amount||1); fl(el, TX('ui.float-feeble'), 'debuff'); snd('exposeTone'); refresh(ev.targetUid); return; }
-  if(ev.kind === 'feebleHit'){ if(rc) rc.feeble = ev.amount||0; fl(el, '🪶 ×½', 'debuff'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'rend'){ if(rc) rc.vulnerable = (rc.vulnerable||0) + (ev.amount||1); fl(el, TX('ui.float-vulnerable'), 'debuff'); snd('rendMarkTone'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'vulnHit'){ if(rc) rc.vulnerable = ev.amount||0; fl(el, '💔 ×2', 'debuff'); snd('vulnTick'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'enfeeble'){ if(rc) rc.feeble = (rc.feeble||0) + (ev.amount||1); fl(el, TX('ui.float-feeble'), 'debuff'); snd('enfeebleTone'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'feebleHit'){ if(rc) rc.feeble = ev.amount||0; fl(el, '🪶 ×½', 'debuff'); snd('feebleTick'); refresh(ev.targetUid); return; }
   if(ev.kind === 'grant'){ fl(el, `🎁 ${(ev.skills || []).map(k=> (PASSIVE_DEFS.find(p=> p.key === k) || {}).label || k).join(', ')}`, 'buff'); snd('rallyTone'); return; }
   if(ev.kind === 'punish'){ fl(el, TX('ui.float-punish'), 'debuff'); snd('ambushTone'); return; }
   if(ev.kind === 'spellward' || ev.kind === 'spellshield'){ const se = boardCardEl(ev.attUid); if(se){ fl(se, '🪬', 'buff'); try{ flashShield(se); }catch(e){} } return; } // GD2 (2026-10-22): the Spellward unit steps in (EN, 2026-10-23)
@@ -28900,6 +28927,7 @@ const GAME_TIPS = [
   TX('tutorial.out-of-moves-many-rivals-surrender'),
   TX('tutorial.more-opens-up-as-you-cross'),
 ];
+function fxaud2InMatch(){ try{ const w = document.getElementById('appWrap'); return !!(w && w.classList.contains('in-match')); }catch(e){ return false; } }
 function startTipTicker(el, tips){
   if(!el || el.dataset.ticking) return; el.dataset.ticking = '1';
   const list = tips || GAME_TIPS;
@@ -28907,7 +28935,7 @@ function startTipTicker(el, tips){
   let i = 0;
   const show = ()=>{
     if(!el.isConnected) return;
-    if(document.hidden){ setTimeout(show, 2000); return; }
+    if(document.hidden || fxaud2InMatch()){ setTimeout(show, 2000); return; } // 2026-11-18 (package FXAUD2): not while a fight is up (the Home tab is hidden then)
     const next = order[i++ % order.length];
     // 2026-10-08 (user): the tip keeps drifting very slowly while it shows (so it reads as temporary), leaves with a
     // fade and a zoom-out, the next one waits for most of that, and each tip stays twice as long (14 s).
@@ -50959,7 +50987,8 @@ function logText(ev){
       return {cls, text:`${nm(ev.attDefId)} ${kindText}.`};
     }
     case 'explode': return {cls:'exile', text:`${nm(ev.defId)}'s fuse ran out — 💣 ${ev.dmg} damage to ${ev.targetUid? nm(ev.targetDefId) : (ev.targetSide==='A'?'your bramble':'the enemy bramble')}!`};
-    case 'namedBuff': return {cls:'gold', text:`${nm(ev.attDefId)} buffed ${nm(ev.targetDefId)} +${ev.amount}⚔${ev.amount2?`/+${ev.amount2}❤`:''}. 🐝`};
+    case 'namedBuff': if(!(ev.amount > 0) && ev.amount2 > 0) return {cls:'gold', text:TX('ui.fxaud2-log-armourer', {a: nm(ev.attDefId), t: nm(ev.targetDefId), hp: ev.amount2})}; // 2026-11-18 (FXAUD2): HP-only buff (Armourer): no "+0⚔", no bee
+      return {cls:'gold', text:`${nm(ev.attDefId)} buffed ${nm(ev.targetDefId)} +${ev.amount}⚔${ev.amount2?`/+${ev.amount2}❤`:''}. 🐝`};
     case 'ready': return {cls:'', text:`${nm(ev.defId)} is ready to fight.`};
     case 'frenzy': return {cls:'quick', text:ev.twin ? `${nm(ev.attDefId)} strikes twice! ⚔⚔` : `${nm(ev.attDefId)} is in a frenzy: it strikes again! 🔥`};
     // 2026-09-20 (explicit bug report: "the battle log is missing some of the attack
@@ -51022,7 +51051,7 @@ function logText(ev){
     case 'burnTick': return {cls:'poison', text: '🔥 ' + TX('ui.eng20-log-burn', {name: nm(ev.defId), n: ev.dmg||0})}; // ENG20-2 (2026-11-02)
     case 'witherTick': return {cls:'poison', text:`💀 ${nm(ev.defId)} withers: −${ev.n} max Health${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the Wither fades)'}.`};
     case 'hatch': return {cls:'', text:`🥚 ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.fromDefId)} cracks open: out comes ${nm(ev.defId)}!`};
-    case 'wave': { const who = ev.awash ? 'The Wave' : `${nm(ev.attDefId)}'s Wave`, cols = ev.cols > 1 ? ` ${ev.cols} columns` : ''; // + Awash, the bob and the bounce (2026-10-17)
+    case 'wave': { const who = ev.awash ? TX('ui.fxaud2-who-currents') : `${nm(ev.attDefId)}'s Wave`, cols = ev.cols > 1 ? ` ${ev.cols} columns` : ''; // + Awash, the bob and the bounce (2026-10-17)
       return {cls:'', text: ev.bob ? `〰️ ${who} lifts ${nm(ev.targetDefId)}, but it's boxed in: it bobs in place.` : ev.blocked ? `〰️ ${who} breaks on ${nm(ev.targetDefId)}: no room to push it ${ev.dir}.`
         : ev.crashUid != null && !(ev.cols > 0) ? `〰️ ${who} slams ${nm(ev.targetDefId)} ${ev.dir} into the unit beside it!`
         : `〰️ ${who} ${ev.awash ? 'washes' : 'pushes'} ${nm(ev.targetDefId)} ${ev.dir}${cols}${ev.bounced ? ' (the edge turned it back)' : ''}${ev.swapUid != null ? ' (they swap places)' : ''}${ev.crashUid != null ? ', into another unit' : ''}!`}; } // Wave (2026-10-14); 2026-10-18: Wave N crashes, no swaps (swapUid only in old replays)
@@ -51680,6 +51709,7 @@ function bleedFadeDropVfx(uid){
 // fungus, a green film for an alga) drift from the blooming unit into the free slot, and the copy opens out of a soft ring of light there, a
 // circle widening from its centre. Reduced motion: the copy fades in.
 function bloomCopyVfx(srcUid, copyUid){
+  if(!fxAtLeast('low') || ui27Away()) return; // 2026-11-18 (package FXAUD2): the petals are decoration; the copy and its +1/+1 float still show
   setTimeout(()=>{ const el = boardCardEl(copyUid), src = boardCardEl(srcUid); if(!el) return;
     const r = el.getBoundingClientRect(), d = (getCardDefs()[(currentCardByUidSafe(copyUid) || {}).defId] || getCardDefs()[(src && src.dataset && src.dataset.defId) || ''] || {});
     const kind = d.subtype === 'fungus' ? 'spore' : d.animal === 'algae' ? 'algae' : 'petal', glyphs = kind === 'spore' ? ['🍄', '·', '•', '✨'] : kind === 'algae' ? ['🌿', '🫧', '·', '✨'] : ['🌸', '🌸', '🌼', '✨'];
@@ -52174,7 +52204,7 @@ function tintPulse(el, cls){
 // GSAP-timeline-with-CSS-fallback structure just above.
 function poisonBubbleBurstVfx(uid){
   const el = boardCardEl(uid);
-  if(!el) return;
+  if(!el || !fxAtLeast('low') || ui27Away() || reducedMotion()) return; // 2026-11-18 (package FXAUD2): the bubbles are decoration (the shake, tint and number stay)
   const count = 4 + Math.floor(Math.random()*3);
   for(let i=0;i<count;i++){
     const b = document.createElement('div');
@@ -52897,13 +52927,13 @@ function dnFloat(el, dmg, o){
 // reduced hit names its cause: Armor (and Bulwark) ting, Shield thuds, Shell toks, Sturdy thunks, stone clacks, Resist / Rage / Scare
 // muffle. null: no mark, no cue.
 const DN_MARK_CUE = {immune:'markImmune', blocked:'markBlocked', fragile:'markFragile', weak:'markWeak', shocked:'markShocked',
-  armor:'markArmor', shield:'markShield', shell:'markShell', sturdy:'markSturdy', stone:'markStone', resist:'markResist', rage:'markResist', scare:'markResist'};
-const DN_MARK_REDUCED_ORDER = ['armor', 'shield', 'shell', 'sturdy', 'stone', 'resist', 'rage', 'scare'];
+  feeble:'markFeeble', armor:'markArmor', shield:'markShield', shell:'markShell', sturdy:'markSturdy', stone:'markStone', resist:'markResist', rage:'markResist', scare:'markResist'};
+const DN_MARK_REDUCED_ORDER = ['armor', 'shield', 'shell', 'sturdy', 'stone', 'resist', 'rage', 'scare', 'feeble'];
 function dnMarkSoundKey(mods, blocked, dmg){
   const m = Array.isArray(mods) ? mods : [], k = dnModKey(m, blocked, dmg);
   if(!k) return null;
   if(k === 'blocked') return m.includes('shield') && !m.includes('armor') ? 'shield' : 'blocked';
-  if(k === 'weak') return m.includes('weak') ? 'weak' : 'shocked';
+  if(k === 'weak') return m.includes('weak') || m.includes('vulnerable') ? 'weak' : 'shocked'; // 2026-11-18 (package FXAUD2): Vulnerable (Rend) is not Shocked
   if(k === 'reduced') return DN_MARK_REDUCED_ORDER.find(x=> m.includes(x)) || 'armor';
   return k;
 }
@@ -53684,7 +53714,7 @@ function sixthPassVfx(ev){
   }
   if(ev.type==='meteorBurn'){
     const el = ev.uid != null ? boardCardEl(ev.uid) : null;
-    if(el){ try{ dnFloat(el, ev.dmg, {type:'heat', mods: ev.mods}); }catch(e){} /* DN2 */ if(F && F.scorch) try{ F.scorch(el, {}); }catch(e){} }
+    if(el){ try{ dnFloat(el, ev.dmg, {type:'heat', mods: ev.mods}); }catch(e){} /* DN2 */ if(F && F.scorch && fxAtLeast('low') && !ui27Away()) /* 2026-11-18 (FXAUD2) */ try{ F.scorch(el, {}); }catch(e){} }
     if(!ev.left){ const c = boardCardEl(ev.craterUid); if(c) c.classList.remove('meteor-crater'); if(el) el.classList.remove('meteor-crater'); if(matchState.meteorCraters) delete matchState.meteorCraters[ev.craterUid]; }
   }
   if(ev.type==='banana'){
@@ -53714,7 +53744,7 @@ function sixthPassVfx(ev){
     sfx('boomerangWhirr');
   }
   if(ev.type==='statusFx' && ev.kind==='unitShield'){
-    const rc = rcs[ev.targetUid]; if(rc) rc.shield = ev.total; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){}
+    const rc = rcs[ev.targetUid]; if(rc) rc.shield = ev.total; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} try{ SoundKit.shieldTone(); }catch(e){} // 2026-11-18 (FXAUD2): was silent
     const el = boardCardEl(ev.targetUid); if(el){ try{ floatText(el, '💠 +' + ev.amount, 'buff'); }catch(e){} if(F && F.shieldUp) try{ F.shieldUp(el, {}); }catch(e){} }
   }
   if(ev.type==='shieldSoak'){
@@ -53899,7 +53929,7 @@ function eighthPassVfx(ev){
     const sw = Object.keys(matchState.replayCards || {}).filter(u=>{ const rc = matchState.replayCards[u]; return rc && rc.hp > 0 && fxOf(rc.defId).swimmer; }).slice(0, 6);
     sw.forEach((u, i)=> at(350 + i*70, ()=>{ const x = el(u); if(x) F.splash(x); })); }
   if(ev.type === 'grace' && ev.uid != null && skillFxOnce('grace' + ev.uid)){ const t = el(ev.uid); if(t) F.prayerLight(t); }
-  if(ev.type === 'namedBuff' && (ev.amount||0) + (ev.amount2||0) > 0){ const t = el(ev.targetUid); if(t) F.espritAura(t); }
+  if(ev.type === 'namedBuff' && (ev.amount||0) + (ev.amount2||0) > 0 && (ev.amount > 0 || fxAtLeast('med'))){ const t = el(ev.targetUid); if(t) F.espritAura(t); } // 2026-11-18 (package FXAUD2): an HP-only buff (Armourer) skips the 29 ms aura at Effects Low
   if(ev.type === 'statusFx'){
     const t = el(ev.targetUid), self = el(ev.attUid), k = ev.kind;
     if(STATUS_ORBIT[k] && t) F.stunStars(t, {glyph: STATUS_ORBIT[k]});
@@ -54574,7 +54604,7 @@ function field2LogText(ev, nm){
       case 'ashRainCastle': return {cls:'', text:`🌋 Ash settles on ${who(ev.side)} bramble: −${ev.dmg}.`};
       case 'ashy': return {cls:'', text:'🌫️ The eruption leaves the ground Ashy: flyers are grounded and the air is thick (4 rounds).'};
       case 'arrowSlits': return {cls:'', text: ev.none ? '🏹 An arrow from the walls thuds into empty ground.' : `🏹 The walls loose an arrow at ${nm(ev.defId)}.`};
-      case 'awash': return {cls:'', text: ev.none ? '〰️ The water swirls over an empty field.' : `〰️ Wave ${ev.n}: the water takes ${nm(ev.defId)}.`}; // 2026-10-17; "Wave" on screen since 2026-10-18 (Awash and Wave are one)
+      case 'awash': return {cls:'', text: ev.none ? '〰️ The water swirls over an empty field.' : '〰️ ' + TX('ui.fxaud2-log-currents-n', {n: ev.n, name: nm(ev.defId)})}; // 2026-11-18 (FXAUD2): the field's name is Underwater Currents, // 2026-10-17; "Wave" on screen since 2026-10-18 (Awash and Wave are one)
       // The raid's back rows (2026-10-17)
       case 'volley': return {cls:'gold', text: ev.side === 'A' ? '🏹 Your allies\u2019 rows strike from behind the line.' : '🏹 The enemy\u2019s back rows strike.'};
       case 'volleyHit': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${nm(ev.defId)} for ${dnLogNum(ev.dmg, ev)}.`};
@@ -54642,7 +54672,7 @@ function field2Vfx(ev){
       case 'ashRain': snd('boom'); if(fx()) boardSweepVfx('hail', 'A'); break;
       case 'ashy': snd('boom'); if(bf && fx()){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } break;
       case 'arrowSlits': if(!ev.none) snd('swipeTone'); break;
-      case 'awash': if(!ev.none){ const el = boardCardEl(ev.uid); fl(el, `〰️ Wave ${ev.n}`, 'quick'); } break; // 2026-10-17: the ride itself is the wave event that follows (2026-10-18: "Wave", not "Awash")
+      case 'awash': if(!ev.none){ const el = boardCardEl(ev.uid); fl(el, '〰️ ' + TX('ui.fxaud2-float-currents-n', {n: ev.n}), 'quick'); } break; // 2026-10-17: the ride itself is the wave event that follows (2026-10-18: "Wave", not "Awash")
       // The raid's back-row volley (2026-10-17): the striker bobs forward, the struck card (or castle) shows the number.
       // 2026-10-19 (package RV2, owner 08:42: "It should look like the columns all attack for real"): a real attack now (raidStrikeVfx):
       // the lunge toward its target, then the impact (number, shake, squash, sound) as the blow lands, Health stepping down with it.
@@ -54832,7 +54862,7 @@ function w2LogText(ev, nm){
       case 'eng36Resist': return {cls:'', text: TX(ev.immune ? 'ui.eng36-log-immune' : 'ui.eng36-log-resist', {name: t, status: TX('ui.eng36-st-' + ev.status)})}; // ENG36: a status held off
       case 'poisonous': return {cls:'poison', text: TX('ui.eng33-log-poisonous', {name: a, t, n: ev.amount || 0})};
       case 'toxin': return {cls:'poison', text:`${a} leaves Toxin in ${t} (+${ev.amount}, ${ev.total} in all; it never wears off) ☣️`};
-      case 'weaken': return {cls:'', text:`${a} weakens ${t}: −${ev.amount} Attack for good 💔`};
+      case 'weaken': return {cls:'', text:`🪓 ${a} weakens ${t}: −${ev.amount} Attack for good`};
       case 'wilting': return {cls:'', text:`${t} wilts: −${ev.amount} Attack 🥀`};
       case 'bulldoze': return {cls:'', text:`${a} bulldozes ${t} back (+${ev.amount} Wait) 🚜`};
       case 'tangled': return {cls:'', text: TX('ui.eng9-log-tangled', {a, t, n: ev.amount||1})}; // ENG9 (2026-10-26, G25)
@@ -54880,21 +54910,26 @@ function w2SkillVfx(ev){
       case 'poisonous': snd('poisonApply'); fl(el, `🤢 +${ev.amount}☠`, 'poison'); if(rc) rc.poison = ev.total || ((rc.poison||0) + (ev.amount||0)); refresh(ev.targetUid); break;
       case 'venom': snd('poisonApply'); fl(el, `🦂 +${ev.amount}☠`, 'poison'); if(rc) rc.poison = (rc.poison||0) + (ev.amount||0); if(el && fx()) F.venomBite(el); refresh(ev.targetUid); break;
       case 'toxin': snd('poisonApply'); fl(el, `☣️ +${ev.amount}`, 'poison'); if(rc) rc.toxin = ev.total || ((rc.toxin||0) + (ev.amount||0)); if(el && fx()) F.toxinMark(el); refresh(ev.targetUid); break;
-      case 'weaken': snd('corrodeTone'); fl(el, `💔 −${ev.amount}⚔`, 'debuff'); if(rc && rc.atk != null) rc.atk = Math.max(0, rc.atk - (ev.amount||0)); if(el && fx('low')) F.weakenDrain(el); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} break;
-      case 'wilting': fl(el, `🥀 −${ev.amount}⚔`, 'debuff'); if(rc && rc.atk != null) rc.atk = Math.max(0, rc.atk - (ev.amount||0)); if(el && fx()) F.wilt(el); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} break;
+      case 'weaken': snd('weakenTone'); fl(el, `🪓 −${ev.amount}⚔`, 'debuff'); if(rc && rc.atk != null) rc.atk = Math.max(0, rc.atk - (ev.amount||0)); if(el && fx('low')) F.weakenDrain(el); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} break;
+      case 'wilting': snd('wiltTone'); fl(el, `🥀 −${ev.amount}⚔`, 'debuff'); if(rc && rc.atk != null) rc.atk = Math.max(0, rc.atk - (ev.amount||0)); if(el && fx()) F.wilt(el); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} break;
       case 'bulldoze': snd('swipeTone'); fl(el, `🚜 ⏪ +${ev.amount} Wait`, 'debuff wait-push'); if(rc) rc.wait = (rc.wait||0) + (ev.amount||0); if(el && fx('low')) F.bulldozeShove(el, {fromAbove: ev.targetSide === 'B'}); try{ updateCardWaitDisplay(ev.targetUid, rc ? rc.wait : (ev.amount||1)); }catch(e){} break;
       case 'tangled': snd('curse'); fl(el, '🌿 ' + TX('ui.eng9-tangled-name'), 'debuff'); if(rc) rc.tangled = Math.max(rc.tangled||0, ev.amount||1); if(el && fx()) F.vineBind(el, {}); break; // ENG9 (2026-10-26, G25)
       case 'bound': snd('curse'); fl(el, ev.strangle ? '🪢 Strangled' : '🪢 Bound', 'debuff'); if(rc) rc.bound = Math.max(rc.bound||0, ev.amount||1); if(el && fx()) F.vineBind(el, {strangle: !!ev.strangle}); refresh(ev.targetUid); break;
       case 'cure': snd('cleanseTone'); fl(el, `💊 Cured ${ev.amount}`, 'heal'); if(rc){ rc.poison = Math.max(0, (rc.poison||0) - (ev.poison||0)); rc.bleed = Math.max(0, (rc.bleed||0) - (ev.bleed||0)); } if(el && fx()) F.cure(el); refresh(ev.targetUid); break;
-      case 'taunted': { const t = boardCardEl(ev.attUid), a = boardCardEl(ev.targetUid); fl(t, '📢 Taunt!', 'quick'); if(t && fx()) F.tauntCall(t, a); break; }
+      case 'taunted': { const t = boardCardEl(ev.attUid), a = boardCardEl(ev.targetUid); fl(t, '📢 Taunt!', 'quick'); snd('tauntTone'); if(t && fx()) F.tauntCall(t, a); break; }
+      // 2026-11-18 (package FXAUD2): the engine sent these with no client handler; each gets a short float (no particles)
+      case 'fireHitReady': fl(boardCardEl(ev.attUid), `🔥 +${ev.amount||0}`, 'buff'); break; // Fire on hit N: the next hit carries N fire damage
+      case 'sequester': { snd('swipeTone'); fl(boardCardEl(ev.targetUid), '🫳 −' + (ev.skills||[]).length, 'debuff'); fl(boardCardEl(ev.attUid), '🫳 +' + (ev.skills||[]).length, 'buff'); break; }
+      case 'sequesterEnd': case 'sequesterBack': fl(boardCardEl(ev.targetUid), '↩️', 'quick'); break; // the borrowed / lost skills go home
       case 'reachAim': { const a = boardCardEl(ev.attUid); fl(a, TX('ui.eng37-reach-fl'), 'quick'); break; } // ENG37 (2026-11-08)
     }
     return;
   }
   switch(ev.type){
+    case 'triggerCapped': fl(boardCardEl(ev.uid), '🔁⛔', 'quick'); break; // 2026-11-18 (FXAUD2): a nested trigger hit the layer cap and did not fire
     case 'toxinTick': { const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0)); m.lastHurtBy = m.lastHurtBy || {}; m.lastHurtBy[ev.uid] = 'poison';
       snd('bubble'); try{ dnFloat(el, ev.dmg, {type:'poison', mods: ev.mods, cls:'poison-tick'}); }catch(e){} /* DN2 */ if(el){ try{ shakeEl(el); tintPulse(el, 'poison-tint-pulse'); }catch(e){} } try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
-    case 'strangleTick': { const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0));
+    case 'strangleTick': { const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); snd('strangleTone'); if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0));
       try{ dnFloat(el, ev.dmg, {type:'strangle', mods: ev.mods}); }catch(e){} if(el && fx()) F.squeeze(el); /* DN2 */ try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
     case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); vis5HzArm(ev); let ui9Snapped = false; if(ev.kind === 'trap'){ ui9TrapLaid(ev); if(fx('low')){ let c0 = w2CellEl(ev.pid, ev.slot); if(!c0){ const mk = document.querySelector('#battlefieldEl .w2-hazard-mark.trap'); c0 = mk && mk.parentElement; } if(c0) ui9Snapped = !!ui9TrapSnap(c0); } } /* UI9 (BB2): the closing plays as the trap is laid (the CPU's card often steps on the slot within half a second) */ w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')){ F.trapSet(c, {kind: ev.kind}); if(ev.kind === 'trap' && !ui9Snapped) ui9TrapSnap(c); } }); break; // + VIS5 (L4): the pip is armed in the replay, and stays until the card steps on it
     case 'hazardSprung': w2Later(560, ()=> vis5HzSprung(ev)); break; // VIS5 (L4, 2026-10-28): the card played onto it jumps and reels, a number flies from it (was a 3 px shake, and nothing if the card had not landed yet)
@@ -55139,7 +55174,9 @@ function fxEnv(){
 }
 function fxBatchVfx(ev){
   // 2026-10-19 (package BU): the raid boss's smack still shows under reduced motion, as a flash on the struck cards (FX.F)
-  const FX = window.FX; if(!FX || !ev || (reducedMotion() && ev.type !== 'raidSmack') || fxLevel() === 'none') return;
+  const FX = window.FX; if(!FX || !ev) return;
+  if(ev.type === 'powder' && (reducedMotion() || fxLevel() === 'none')){ try{ if(FX.H && FX.H.powder1Event) FX.H.powder1Event(ev, fxEnv()); }catch(e){} return; } // 2026-11-18 (package FXAUD2): the powder keeps its cue at Effects None / reduced motion (no puff)
+  if((reducedMotion() && ev.type !== 'raidSmack') || fxLevel() === 'none') return;
   let env = null;
   FX_BATCHES.forEach(k=>{ const M = FX[k]; if(!M || typeof M.onEvent !== 'function') return;
     try{ M.onEvent(ev, env || (env = fxEnv())); }catch(e){ if(window.__fxDebug) console.warn('FX.' + k + '.onEvent', e); } });
@@ -56023,7 +56060,7 @@ function renderVfxForEvent(ev){
     en20StatusFx(ev, el, rc); // ENG20 (2026-11-02): water, fire, Burn, the roll, Glean, Lumber Feast, the Crosswind
     if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, TX('ui.en7-float-poison', {n: ev.amount}), 'poison') /* EN7 (2026-10-24, owner 13:12 #7): "🤢N", was "+N☠"; PL2 (2026-10-25, owner 00:02 #4): "☠N" */; if(rc) rc.poison = (rc.poison||0) + ev.amount; }
     // 2026-10-14 (fourth pass): a freeze counter melts (the snowflakes fade with the last one), Nullify, Sacrifice.
-    if(ev.kind==='thaw'){ if(rc) rc.frozen = Math.max(0, ev.left|0); if(el && !ev.left) floatText(el, '❄ Thawed', 'heal'); updateCardStatusDisplay(ev.targetUid); }
+    if(ev.kind==='thaw'){ try{ SoundKit.thawTone(); }catch(e){} if(rc) rc.frozen = Math.max(0, ev.left|0); if(el && !ev.left) floatText(el, '❄ Thawed', 'heal'); updateCardStatusDisplay(ev.targetUid); }
     if(ev.kind==='nullify'){ try{ SoundKit.stunTone(); }catch(e){} if(el){ floatText(el, '🚫 Nullified', 'debuff'); el.classList.remove('nullify-flash'); void el.offsetWidth; el.classList.add('nullify-flash'); setTimeout(()=> el.classList.remove('nullify-flash'), 700); } }
     if(ev.kind==='sacrificed'){ const se = boardCardEl(ev.attUid); if(se){ floatText(se, '🦷 Sacrifice', 'debuff'); se.classList.add('sac-chomp'); setTimeout(()=> se.classList.remove('sac-chomp'), 700); } }
     // 2026-10-12 skills
@@ -56037,10 +56074,10 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, ev.heavy ? '🪁 ' + TX('ui.eng20-float-heavy-tail') : ev.quick ? '🪁 Tailwind: Quick!' : '🪁 Tailwind!', 'quick'); }
     else if(ev.kind==='headwind'){ if(el) floatText(el, ev.heavy ? '🌬️ ' + TX('ui.eng20-float-heavy-head') : TX('ui.wind-head-float'), 'debuff'); } /* ENG20-4: heavy */ // ENG16 (2026-11-02, WIND-2 a): a Headwind Flyer swings at -1 Attack this round
     else if(ev.kind==='bludgeon'){ const t = boardCardEl(ev.targetUid); if(t) floatText(t, '🔨 ' + [ev.atkLost ? '−1⚔' : '', ev.broke ? w2BrokeName(ev.broke) + ' broken' : ''].filter(Boolean).join(' · '), 'debuff'); if(ev.atkLost && rc && rc.atk != null){ rc.atk = Math.max(0, rc.atk - ev.atkLost); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} } } // 2026-10-16: -1 Attack, and any skill
-    else if(ev.kind==='shed'){ if(el) floatText(el, ev.molt ? `🦀 +${ev.amount||1}/+${ev.amount||1} · ⏪ +1 Wait` : '🐍 +1/+1', 'heal'); if(ev.molt && rc){ rc.wait = (rc.wait||0) + 1; try{ updateCardWaitDisplay(ev.targetUid, rc.wait); }catch(e){} } } // Molting (2026-10-16): +N/+N and +1 Wait
+    else if(ev.kind==='shed'){ try{ SoundKit.shedTone(); }catch(e){} if(el) floatText(el, ev.molt ? `🦀 +${ev.amount||1}/+${ev.amount||1} · ⏪ +1 Wait` : '🐍 +1/+1', 'heal'); if(ev.molt && rc){ rc.wait = (rc.wait||0) + 1; try{ updateCardWaitDisplay(ev.targetUid, rc.wait); }catch(e){} } } // Molting (2026-10-16): +N/+N and +1 Wait
     else if(ev.kind==='rocket'){ if(el) floatText(el, '🚀 Rocket!', 'quick'); }
-    else if(ev.kind==='coffee'){ if(el) floatText(el, ev.twice ? '☕ ×2' : `☕ −${ev.amount} ⏳`, 'quick'); } // ENG11 (K2): the new Coffee acts twice
-    else if(ev.kind==='chilli'){ if(el) floatText(el, `🌶️ +${ev.amount}⚔ 🔥`, 'buff'); } // Chilli (2026-10-15)
+    else if(ev.kind==='coffee'){ try{ SoundKit.coffeeTone(); }catch(e){} if(el) floatText(el, ev.twice ? '☕ ×2' : `☕ −${ev.amount} ⏳`, 'quick'); } // ENG11 (K2): the new Coffee acts twice
+    else if(ev.kind==='chilli'){ try{ SoundKit.chilliTone(); }catch(e){} if(el) floatText(el, `🌶️ +${ev.amount}⚔ 🔥`, 'buff'); } // Chilli (2026-10-15)
     else if(ev.kind==='chilliBurn'){ if(el) dnFloat(el, ev.amount, {type:'chilli', mods: ev.mods}); } /* DN2 */
     else if(ev.kind==='coffeeCrash'){ if(el) floatText(el, '😴 Crash', 'stun'); }
     else if(ev.kind==='inspiredSpent'){ pl2InspireSpent(ev); } // ENG21 (2026-11-03): a landing hit spent its Inspiration: the Attack number flares and comes back down
@@ -56049,7 +56086,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='firstBlood'){ if(el) floatText(el, `🩸 First blood +${ev.amount}`, 'debuff'); try{ SoundKit.backstabSlice ? SoundKit.backstabSlice() : null; }catch(e){} }
     else if(ev.kind==='octolash'){ if(el) floatText(el, `🐙 Octolash ×${ev.amount}`, 'quick'); }
     else if(ev.kind==='creativity'){ if(el) floatText(el, `🎨 +${ev.amount||1}`, 'buff'); if(rc){ rc.creativity = ev.total != null ? ev.total : (rc.creativity||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Creative N (2026-10-18)
-    else if(ev.kind==='prayer'){ if(el) floatText(el, `📿 +${ev.amount||1}`, 'buff'); if(rc){ rc.prayerTokens = ev.total != null ? ev.total : (rc.prayerTokens||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Prayer tokens (2026-10-19, package E)
+    else if(ev.kind==='prayer'){ try{ SoundKit.prayerTone(); }catch(e){} if(el) floatText(el, `📿 +${ev.amount||1}`, 'buff'); if(rc){ rc.prayerTokens = ev.total != null ? ev.total : (rc.prayerTokens||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Prayer tokens (2026-10-19, package E)
     else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); if(rc){ rc.exposed = Math.max(rc.exposed||0, ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Exposed (2026-10-15); N rounds, not stacking counters (2026-10-19, SK1)
     else if(ev.kind==='exposedHit'){ if(rc){ rc.exposed = ev.amount||0; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // one Exposed hit used up (its "🎯 +1" chip is FX.B.exposeCash)
     // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades off."):
@@ -56065,7 +56102,7 @@ function renderVfxForEvent(ev){
     // pulse, and Grit's permanent attack gain — same statusFx envelope as the four above,
     // just three new `kind`s.
     else if(ev.kind==='daunt'){ try{ SoundKit.curse(); }catch(e){} if(el) floatText(el, '😨 −'+ev.amount+'⚔', 'debuff'); if(rc){ (rc.daunts = rc.daunts || []).push({n:ev.amount}); } }
-    else if(ev.kind==='recoil'){ if(el){ dnFloat(el, ev.amount, {mods: ev.mods}); /* DN2 */ try{ recoilEl(el, 0.7); }catch(e){} } }
+    else if(ev.kind==='recoil'){ try{ SoundKit.recoilTone(); }catch(e){} if(el){ dnFloat(el, ev.amount, {mods: ev.mods}); /* DN2 */ try{ recoilEl(el, 0.7); }catch(e){} } }
     // 2026-10-14: Ichor's splash on the attacker, and a Cower unit hiding or backing off
     else if(ev.kind==='ichor'){ if(el){ dnFloat(el, ev.amount, {type:'acid', mods: ev.mods}); if(ev.armor) floatText(el, '−1🛡', 'debuff'); /* DN2 */ try{ recoilEl(el, 0.6); }catch(e){} } if(rc){ rc.bleed = (rc.bleed||0) + 1; if(ev.armor) rc.armorLoss = (rc.armorLoss||0) + 1; } }
     else if(ev.kind==='cower'){ if(el) floatText(el, ev.mode === 'flee' ? `🫣 Backs off${ev.amount ? ' +' + ev.amount : ''}` : ev.mode === 'armor' ? `🫣 +${ev.armor||0}🛡` : '🫣 Hides', ev.mode === 'flee' && ev.amount ? 'heal' : 'debuff');
@@ -56235,7 +56272,7 @@ function renderVfxForEvent(ev){
     const el = boardCardEl(ev.targetUid); try{ SoundKit.splash(); }catch(e){}
     const rideFx = !!(window.SkillFX && SkillFX.waveRide && hasGsap() && !reducedMotion() && fxAtLeast('low'));
     const sc = (()=>{ try{ const w = el && el.offsetWidth, r = w ? el.getBoundingClientRect().width / w : 1; return r > .05 && r < 20 ? r : 1; }catch(e){ return 1; } })(); // screen px per layout px (the board's scale)
-    if(el) floatText(el, ev.blocked ? (ev.bob ? '〰️ Bob' : '〰️ Wave!') : `〰️ ${ev.dir === 'left' ? '←' : '→'}${ev.cols > 1 ? ' ' + ev.cols : ''}`, 'quick');
+    if(el) floatText(el, ev.blocked ? (ev.bob ? '〰️ Bob' : ev.awash ? '〰️ ' + TX('ui.fxaud2-float-currents') : '〰️ Wave!') : `〰️ ${ev.dir === 'left' ? '←' : '→'}${ev.cols > 1 ? ' ' + ev.cols : ''}`, 'quick');
     if(ev.blocked && el && rideFx && SkillFX.waveBob) SkillFX.waveBob(el, {dir:ev.dir, scale:sc, speed:(matchState && matchState.speedMult) || 1, touch:(ev.touchUids || []).map(u=> boardCardEl(u)).filter(Boolean)});
     const fromRect = el && !ev.blocked ? el.getBoundingClientRect() : null;
     if(!ev.blocked){ const m = matchState, pid = ev.targetSide==='A' ? 1 : 2, rr = m && m.replayRows && m.replayRows[pid];
@@ -56518,7 +56555,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='remember' && ev.uid != null){ const el = boardCardEl(ev.uid); const rcR = matchState && matchState.replayCards && matchState.replayCards[ev.uid]; if(rcR) rcR.rememberSpent = true; /* ENG20-1 */
     if(el){ try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} en20CandleVfx(el); } } // ENG20-1 (2026-11-02, owner: "should involve candlesticks")
   if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') battleToast(TX('toast.your-leader-is-free'), 'ok'); }
-  if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ dnFloat(el, ev.dmg, {type:'curse', mods: ev.mods}); }catch(e){} } /* DN2 */
+  if(ev.type==='curseTick'){ try{ SoundKit.curseTickTone(); }catch(e){} const el = boardCardEl(ev.uid); if(el) try{ dnFloat(el, ev.dmg, {type:'curse', mods: ev.mods}); }catch(e){} } /* DN2 */
   if(ev.type==='exaltTick'){ const el = boardCardEl(ev.uid), rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid]; if(el) try{ floatText(el, `✨ +${ev.heal}`, 'heal'); }catch(e){}
     if(rc){ rc.hp = Math.min(rc.maxHp || (rc.hp + ev.heal), (rc.hp || 0) + ev.heal); } try{ updateCardHpDisplay(ev.uid); }catch(e){} } /* ENG30 (2026-11-07): Exalted ground's heal, like Sap's */
   if(ev.type==='wash'){ try{ washPushVfx(ev); }catch(e){}
@@ -65003,7 +65040,7 @@ document.getElementById('ui14MapNavBtn').addEventListener('click', ui14GoToMap);
 // Energy HUD (2026-09-22): the topbar pill is always in the DOM (unlike per-tab currency rows),
 // so one ticking interval keeps its countdown live everywhere, not just on tabs that re-render.
 refreshEnergyHud();
-bwLoop(refreshEnergyHud, 1000); // 2026-11-18 (POLL1): none while hidden (it catches up when the tab returns)
+bwLoop(refreshEnergyHud, 1000, ()=> !fxaud2InMatch()); // 2026-11-18 (FXAUD2): sleeps while a fight is up; // 2026-11-18 (POLL1): none while hidden (it catches up when the tab returns)
 // Idle battlefield chatter (2026-09-29, per explicit request — the 6th of the 6 speech triggers,
 // "Idle"): the one trigger with no underlying combat event to hang off of at all, unlike On Spawn/
 // On Hit/On Attack/On Death/On Skill which all piggyback on an existing events[] entry. Runs as

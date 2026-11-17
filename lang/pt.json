@@ -4564,5 +4564,10 @@
  "{name} plunders {n} Lumber.": "{name} pilha {n} de Madeira.",
  "Water Bolt": "Virote de água",
  "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "Enquanto Pronta, em cada manutenção: {n} de dano de água ao inimigo à frente (ou o mais próximo), e deixa-o Molhado.",
- "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Cada ponto deixa uma ficha de Molhada (3 no máximo; uma seca por ronda) e apaga a Queimadura. Molhada: +1 de dano de raio por ficha."
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "Cada ponto deixa uma ficha de Molhada (3 no máximo; uma seca por ronda) e apaga a Queimadura. Molhada: +1 de dano de raio por ficha.",
+ "The Underwater Currents": "As correntes submarinas",
+ "{a} fits {t} with armour: +{hp}❤.": "{a} blinda {t}: +{hp}❤.",
+ "Underwater Currents {n}": "Correntes submarinas {n}",
+ "Underwater Currents": "Correntes submarinas",
+ "Underwater Currents {n}: the water takes {name}.": "Correntes submarinas {n}: a água leva {name}."
 }

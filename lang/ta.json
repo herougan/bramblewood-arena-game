@@ -4565,5 +4565,10 @@
  "{name} plunders {n} Lumber.": "{name} {n} மரத்தைக் கொள்ளையடிக்கிறது.",
  "Water Bolt": "நீர் போல்ட்",
  "While Ready, every upkeep: {n} water damage to the foe facing it (or nearest), and makes it Wet.": "தயாராக இருக்கும் வரை, ஒவ்வொரு பராமரிப்பிலும்: எதிரே உள்ள (அல்லது அருகிலுள்ள) எதிரிக்கு {n} நீர் சேதம், அதை நனைக்கும்.",
- "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "ஒவ்வொரு புள்ளியும் ஒரு ஈரக் குறியை விடும் (அதிகபட்சம் 3; ஒவ்வொரு சுற்றிலும் ஒன்று காயும்), தீக்காயத்தை அணைக்கும். ஈரம்: ஒவ்வொரு குறிக்கும் +1 மின்னல் சேதம்."
+ "Each point leaves a Wet counter (3 at most; one dries each round) and puts out Burn. Wet adds 1 lightning damage per counter.": "ஒவ்வொரு புள்ளியும் ஒரு ஈரக் குறியை விடும் (அதிகபட்சம் 3; ஒவ்வொரு சுற்றிலும் ஒன்று காயும்), தீக்காயத்தை அணைக்கும். ஈரம்: ஒவ்வொரு குறிக்கும் +1 மின்னல் சேதம்.",
+ "The Underwater Currents": "நீருக்கடி நீரோட்டங்கள்",
+ "{a} fits {t} with armour: +{hp}❤.": "{a} {t} க்கு கவசம்: +{hp}❤.",
+ "Underwater Currents {n}": "நீருக்கடி நீரோட்டங்கள் {n}",
+ "Underwater Currents": "நீருக்கடி நீரோட்டங்கள்",
+ "Underwater Currents {n}: the water takes {name}.": "நீருக்கடி நீரோட்டங்கள் {n}: நீர் {name} ஐ இழுக்கிறது."
 }

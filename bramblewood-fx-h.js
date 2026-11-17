@@ -790,10 +790,13 @@ css('powder1', `
 .fxh-dot.zap{width:3px; height:9px; margin:-4.5px -1.5px; border-radius:2px; background:#ffe14a; box-shadow:0 0 3px #ffb300;}
 .fxh-zz{font:700 13px/1 system-ui, sans-serif; color:#efe8ff; text-shadow:0 0 3px #6b4fc8, 0 1px 0 #3a2a80; margin:-7px -4px;}
 `);
+M.powder1Event = (ev, env)=> powder1Event(ev, env); // 2026-11-18 (FXAUD2): fxBatchVfx calls it for the cue alone at Effects None / reduced motion
 function powder1Event(ev, env){
   const T = ev.type;
   if(T === 'evaded' && ev.ranged && ev.attUid != null){ const k = String(ev.attUid), b = POWDER1.get(k); if(b){ POWDER1.delete(k); if(Date.now() - b.t < 1500) b.h.missed = true; } return; }
-  if(T !== 'powder' || !env.fxAtLeast('low')) return;
+  if(T === 'powder' && (!env.fxAtLeast('low') || env.reduced)){ // 2026-11-18 (package FXAUD2): Effects None drops the puff but keeps its cue (gameplay feedback; the Stun mark follows anyway)
+    if(!(typeof document !== 'undefined' && document.hidden)) setTimeout(()=>{ try{ snd('sporePuff', ev.element); }catch(e){} }, Math.round(560/Math.max(1, (env.match && env.match.speedMult) || 1))); return; }
+  if(T !== 'powder') return;
   const from = env.el(ev.uid), to = ev.targetUid != null ? env.el(ev.targetUid) : null; if(!from || !to) return;
   M.powderPuff(from, to, {element: ev.element, uid: ev.uid, speed: Math.max(1, (env.match && env.match.speedMult) || 1)});
 }

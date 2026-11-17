@@ -872,6 +872,8 @@
       linear-gradient(105deg, transparent 38%, rgba(255,255,255,.22) 48%, transparent 58%) !important; background-size:100% 100%, 260% 100% !important; mix-blend-mode:soft-light; animation:elitePolish 6.5s ease-in-out infinite;}
   @keyframes elitePolish{0%{background-position:0 0, 130% 0;} 55%, 100%{background-position:0 0, -60% 0;}}
   @media (prefers-reduced-motion: reduce){ .card-tile.elite-polish::after{animation:none;} }
+  /* 2026-11-18 (package FXAUD2): no glint loop and no blend layer while a fight is live (decorative loops pause in a match); a faint static sheen stays */
+  #appWrap.in-match .card-tile.elite-polish::after{animation:none; mix-blend-mode:normal; opacity:.35;}
   .card-tile .archmark{position:absolute; z-index:3; top:-7px; right:-7px; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; line-height:1;
     background:var(--surface-2, #3a3226); border:2px solid var(--surface); box-shadow:0 1px 3px rgba(0,0,0,.35);}
   .card-tile .archmark.with-wait{right:calc(-7px + var(--ww, 26px) + 2px);}
