@@ -77,7 +77,7 @@ const app = rd('arena_app.js');
 ok(/function ui27SkillCount\(effects\)\{[^]*?B\.skillCountParts/.test(app), "the card editor's two-skill count is the budget's (families included)");
 ok(/BB?\.ARROW_FAMILY|ARROW_FAMILY/.test(app.slice(app.indexOf('function skillFamilies('), app.indexOf('function skillFamilyId('))), 'the Codex skill filter groups each family under one chip');
 ok(T['ui.skn-bolt'] === 'Bolt' && /arrow/i.test(T['ui.sk-arrow-family-codex']) && /Speed 2/.test(T['ui.sk-bolt-family-codex']), 'the Codex family notes and the Bolt chip name');
-ok(/after the swings/.test(T['ui.sk-archer']) && !/Speed 1/.test(T['ui.skx-shock-bolt']), "Archer's text says after the swings; Shock Bolt's note no longer says Speed 1");
+ok(/after the swings/.test(T['ui.sk-archer']) /* 2026-11-17: under 20 words (d-2026-10-19) */ && !/Speed 1/.test(T['ui.skx-shock-bolt']), "Archer's text says after the swings; Shock Bolt's note no longer says Speed 1");
 ok(!/at Speed 1 \(after Quick units/.test(app) && (app.match(/at Speed 2 \(with Quick units, before the rest swing\)/g) || []).length === 6, 'the six bolt descriptions read Speed 2');
 { const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')(); ok(F[20].join() === 'fireArrow', "Map 20's focus skill is Arrow (Flaming)"); }
 { const j = JSON.parse(rd('docs/design/redesign2-2026-11-16.json')); ok(j.MAP_FOCUS['20'].join() === 'Arrow (Flaming)' && /Fire Bolt/.test(rd('docs/design/redesign2-2026-11-16.md')), 'REDESIGN2: Map 20 Arrow (Flaming), Fire Bolt on the Dragon Lair'); }

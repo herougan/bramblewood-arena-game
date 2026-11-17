@@ -4475,7 +4475,7 @@
  "Bolt": "Bolt",
  "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "Iisang skill lang ang bilang ng lahat ng skill na palaso. Pumapana ang mga palaso sa Speed 0, pagkatapos ng mga atake.",
  "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Iisang skill lang ang bilang ng lahat ng skill na bolt. Pumuputok ang mga bolt sa Speed 2, kasabay ng mga Mabilis na unit, bago ang ibang atake.",
- "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Hindi umaatake: bawat turn, pagkatapos ng mga atake, pumapana ng {n} pinsala sa kalaban sa harap, o sa pinakamalapit.",
  "The Shock lasts a round.": "Isang round ang tagal ng gulat.",
- "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Umaatake sa Speed 2, kasabay ng mga Bolt: bago ang mga Palaso at mga unit na walang Mabilis."
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Umaatake sa Speed 2, kasabay ng mga Bolt: bago ang mga Palaso at mga unit na walang Mabilis.",
+ "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.": "Hindi umaatake: bawat turn, pagkatapos ng mga atake, pumapana ng {n} pinsala sa kalaban sa harap, o sa pinakamalapit."
 }

@@ -4477,7 +4477,7 @@
  "Bolt": "போல்ட்",
  "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "எல்லா அம்புத் திறன்களும் சேர்ந்து ஒரே திறனாகக் கணக்கிடப்படும். அம்புகள் வேகம் 0-இல், தாக்குதல்களுக்குப் பின் எய்யப்படும்.",
  "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "எல்லா போல்ட் திறன்களும் சேர்ந்து ஒரே திறனாகக் கணக்கிடப்படும். போல்ட்கள் வேகம் 2-இல், விரைவு அலகுகளுடன், மற்ற தாக்குதல்களுக்கு முன் சுடும்.",
- "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "தாக்காது: ஒவ்வொரு முறையும், தாக்குதல்களுக்குப் பின், முன்னுள்ள எதிரிக்கு (இல்லையெனில் அருகிலுள்ளதற்கு) {n} சேதம் அம்பு எய்யும்.",
  "The Shock lasts a round.": "அதிர்ச்சி ஒரு சுற்று நீடிக்கும்.",
- "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "வேகம் 2-இல் தாக்கும், போல்ட்களுடன்: அம்புகளுக்கும் விரைவு இல்லாத அலகுகளுக்கும் முன்."
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "வேகம் 2-இல் தாக்கும், போல்ட்களுடன்: அம்புகளுக்கும் விரைவு இல்லாத அலகுகளுக்கும் முன்.",
+ "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.": "தாக்காது: ஒவ்வொரு முறையும், தாக்குதல்களுக்குப் பின், முன்னுள்ள எதிரிக்கு (இல்லையெனில் அருகிலுள்ளதற்கு) {n} சேதம் அம்பு எய்யும்."
 }

@@ -4475,7 +4475,7 @@
  "Bolt": "弩箭",
  "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "所有箭類技能合計只算一個技能。箭以速度 0 發射，在其他攻擊之後。",
  "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "所有弩箭類技能合計只算一個技能。弩箭以速度 2 發射，與敏捷單位同時，在其他攻擊之前。",
- "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "從不攻擊：每回合在其他攻擊之後，向正前方的敵人（沒有則最近的敵人）射出造成{n}點傷害的箭。",
  "The Shock lasts a round.": "電擊持續一回合。",
- "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "以速度 2 出手，與弩箭同時：早於箭矢和沒有敏捷的單位。"
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "以速度 2 出手，與弩箭同時：早於箭矢和沒有敏捷的單位。",
+ "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.": "從不攻擊：每回合在其他攻擊之後，向正前方的敵人（沒有則最近的敵人）射出造成{n}點傷害的箭。"
 }

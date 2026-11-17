@@ -4474,7 +4474,7 @@
  "Bolt": "Bolzen",
  "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "Alle Pfeil-Fähigkeiten zählen zusammen als eine. Pfeile fliegen mit Tempo 0, nach den Hieben.",
  "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Alle Bolzen-Fähigkeiten zählen zusammen als eine. Bolzen fliegen mit Tempo 2, zusammen mit schnellen Einheiten, vor den anderen Hieben.",
- "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Greift nie an: Jede Runde schießt es nach den Hieben einen Pfeil für {n} Schaden auf den Gegner davor oder den nächsten.",
  "The Shock lasts a round.": "Der Schock hält eine Runde.",
- "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Schlägt mit Tempo 2 zu, zusammen mit Bolzen: vor Pfeilen und Einheiten ohne Schnell."
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Schlägt mit Tempo 2 zu, zusammen mit Bolzen: vor Pfeilen und Einheiten ohne Schnell.",
+ "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.": "Greift nie an: Jede Runde schießt es nach den Hieben einen Pfeil für {n} Schaden auf den Gegner davor oder den nächsten."
 }
