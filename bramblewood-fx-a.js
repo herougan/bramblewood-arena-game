@@ -1361,7 +1361,7 @@ M.onEvent = function(ev, env){
   const T = ev.type;
   if(T === 'arrow'){
     if(ev.ice || ev.volley) st.arrow[ev.uid] = {ice:!!ev.ice, volley:!!ev.volley};
-    if(ev.volley && high && env.once('volleyRain' + ev.uid)){ const sh = el(ev.uid), te = ev.targetUid != null ? el(ev.targetUid) : null, ts = te ? rowCards(te) : [hq(ev.targetSide)].filter(Boolean);
+    if(ev.volley && high && !(FX.H && FX.H.arrowShot) /* FX14 (2026-11-17): FX.H's loose and plunging arrows draw Volley */ && env.once('volleyRain' + ev.uid)){ const sh = el(ev.uid), te = ev.targetUid != null ? el(ev.targetUid) : null, ts = te ? rowCards(te) : [hq(ev.targetSide)].filter(Boolean);
       if(sh && ts.length) M.arrowRain(sh, ts, {lead:true, draw:Math.round(A.windup*.6), flight:arrowMs() + 80}); }
     return;
   }
@@ -1373,7 +1373,7 @@ M.onEvent = function(ev, env){
     let impactDone = false;
     if(ev.ranged && !ev.quake){
       if(isArrow){ const ar = st.arrow[ev.attUid]; delete st.arrow[ev.attUid];
-        if(ar && ar.ice && med) M.iceArrow(att || hq(ev.side), tgt, {overlayOnly:true, draw:Math.round(A.windup*.6), flight:arrowMs()}); }
+        if(ar && ar.ice && med && !(FX.H && FX.H.arrowShot) /* FX14: FX.H draws the ice arrow itself */) M.iceArrow(att || hq(ev.side), tgt, {overlayOnly:true, draw:Math.round(A.windup*.6), flight:arrowMs()}); }
       // 2026-10-17 (user: "all its lighting attacks should not throw a generic ball at the enemy"): a lightning hit (the game's
       // lightningBoltOf sets ev._bolt; the flags are a fallback for the Lab) is its own bolt, never a missile (it was a grey stone for
       // 'shock', a ✦ star for Dragon Lightning's magic).

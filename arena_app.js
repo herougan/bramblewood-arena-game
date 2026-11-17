@@ -45148,6 +45148,7 @@ function fieldResSideHTML(m, mine){
   const hold = m._resHold && m._resHold[pid], p0 = m.players[pid];
   const p = hold ? Object.assign({}, p0, Object.fromEntries(Object.keys(hold).map(k=> [k, Math.max(0, (p0[k]||0) - hold[k])]))) : p0;
   const pills = sideResourcePillsHTML(m, p, mine);
+  try{ fxHook('fieldRes', m, pid, p0, mine); }catch(e){} // FX14 (2026-11-17): Barter's Gold and spent Pearls flip out of their pills (FX.H.hooks.fieldRes)
   // 2026-10-15: the opponent's pills mirror yours on their half of the field (top-left), so they no longer need an "Enemy" tag.
   return mine ? `<div class="field-res mine" id="fieldResMine">${pills}</div>` : `<div class="field-res enemy" id="fieldResEnemy">${pills}</div>`;
 }
@@ -52431,7 +52432,7 @@ function vis4CapTip(id, counts, listSel){
 // Fire Arrow trails embers and glows.
 const ARROW_PNG = (()=>{ const v = "__ARROW_PNG__"; return v.indexOf('__ARROW') === 0 ? '' : v; })();
 const FIRE_ARROW_PNG = (()=>{ const v = "__FIRE_ARROW_PNG__"; return v.indexOf('__FIRE') === 0 ? '' : v; })();
-function arrowFlightMs(){ const mult = (matchState && matchState.speedMult) || 1; return Math.max(90, Math.round(260 / mult)); }
+function arrowFlightMs(){ const mult = (matchState && matchState.speedMult) || 1; return Math.max(120, Math.round(380 / mult)); } // 2026-11-17 (FX14): 380 ms on its arc (was 260, as quick as a bolt); the hit still lands inside its 760 ms beat
 // Package BX (2026-10-21, owner on Stonedrop Vulture: "it flies to the target and drops a stone, the card flies back"): the 'drop'
 // look of an Archer's arrow (effects.archerStyle). The card rises and flies over the target (outMs, the bow's draw time), lets a stone
 // fall onto it (fallMs, the arrow's flight: the hit lands as it would for an arrow), then flies back home. false = not drawn (no GSAP,
@@ -53750,7 +53751,7 @@ function eighthPassVfx(ev){
     const m5 = matchState, popped = m5 ? (m5._fix3Popped || (m5._fix3Popped = new Set())) : new Set(), fresh = uids.filter(u=> !popped.has(u));
     fresh.forEach(u=> popped.add(u));
     at(140, ()=> fresh.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) fix3PortalOver(F, t); }))); }
-  if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
+  if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && !(ev.cause === 'forestry' && window.FX && FX.H && FX.H.forestryLog) /* FX14: Forestry's log */ && skillFxOnce('loot' + ev.uid)){
     const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
     const arc = ()=> F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); if(src && dest){ if(ev.cause === 'delivery') at(Math.round(380 / Math.min(3, matchState.speedMult || 1)), arc); else arc(); } } // 2026-11-13 (FX10): a Delivery's logs leave its crate
   if(ev.type === 'play' && !ev.reserve && (Number(fxOf(ev.defId).prayer) > 0)) at(500, ()=>{ const t = el(ev.uid); if(t) F.prayerLight(t); }); // a Prayer card arrives
@@ -53795,7 +53796,10 @@ function ninthPassVfx(ev){
     if(ev.element === 'shock') return;
     const from = boardCardEl(ev.uid) || hqTileEl(ev.side), to = ev.targetUid != null ? boardCardEl(ev.targetUid) : hqTileEl(ev.targetSide);
     try{ SoundKit.launch(); }catch(e){}
-    if(F && F.boltGlob && fxLevel() !== 'none') F.boltGlob(from, to, {element: ev.element, flight: am.windup + am.projectile});
+    // 2026-11-17 (package FX14, owner 11-16 23:53: "The bolt as is, isn't so nice looking"): each element its own quick spit (FX.H.boltShot: a short
+    // charge in the mouth, 0.33 s of flight, its own splash; a dodge sends it past). Same impact time; the old glob stays for reduced motion.
+    if(window.FX && FX.H && FX.H.boltShot && fxLevel() !== 'none' && !reducedMotion() && from && to) FX.H.boltShot(from, to, {element: ev.element, spitfire: ev.key === 'spitfire', total: am.windup + am.projectile, uid: ev.uid});
+    else if(F && F.boltGlob && fxLevel() !== 'none') F.boltGlob(from, to, {element: ev.element, flight: am.windup + am.projectile});
     else if(to) setTimeout(()=> spawnProjectile(from, to, '●'), am.windup);
     if(ev.element === 'poison' && to) setTimeout(()=>{ try{ floatText(to, `🐍 +${ev.amount} ☠`, 'debuff'); }catch(e){} }, am.windup + am.projectile);
     return;
@@ -54665,7 +54669,7 @@ function sk2Vfx(ev){
   if(ev.kind === 'pickpocketRes'){ const from = hqTileEl(ev.targetSide); if(from && el){ try{ spawnProjectile(from, el, '🪵'); }catch(e){} } fl(el, `👛 +${ev.amount}`, 'gold'); snd('coin'); return; }
   if(ev.kind === 'sabotage'){ fl(hqTileEl(ev.targetSide), `🪫 −${ev.amount}`, 'debuff'); snd('curse'); return; }
   if(ev.kind === 'arson'){ fl(hqTileEl(ev.targetSide), `🔥 −${ev.amount}🪵`, 'debuff'); snd('curse'); return; }
-  if(ev.kind === 'plunder'){ const from = hqTileEl(ev.targetSide); if(from && el){ try{ spawnProjectile(from, el, '🪙'); }catch(e){} } fl(el, `🏴‍☠️ +${ev.amount}🪙`, 'gold'); snd('coin'); return; } // ECONSK1 (2026-11-16)
+  if(ev.kind === 'plunder'){ const from = hqTileEl(ev.targetSide); if(from && el && !(window.FX && FX.H && FX.H.plunderCoins && fxAtLeast('med') && !reducedMotion()) /* FX14: FX.H.plunderCoins flips them over */){ try{ spawnProjectile(from, el, '🪙'); }catch(e){} } fl(el, `🏴‍☠️ +${ev.amount}🪙`, 'gold'); snd('coin'); return; } // ECONSK1 (2026-11-16)
   if(ev.kind === 'fortify'){ fl(el, '🏰', 'quick'); return; }
   if(ev.kind === 'pay'){ fl(el, '−' + (ev.price || []).map(x=> x.n + (x.res === 'stone' ? '🪨' : x.res === 'metal' ? '🔩' : '🪵')).join(' '), 'debuff'); return; } // SK2b
   if(ev.kind === 'cantPay' || ev.kind === 'noRoom' || ev.kind === 'disarmFull'){ fl(el, '🚫', 'quick'); return; }
@@ -55620,6 +55624,10 @@ function renderVfxForEvent(ev){
         // 2026-10-06: the full bow choreography (draw, release + recoil, flight, impact) lives in
         // bramblewood-skillfx.js, shared with the Effects Lab; spawnArrowProjectile stays as a fallback.
         if(pa.style === 'drop' && bxDropStone(shooter, targetEl, arrowWind, arrowFlightMs())){} // Package BX (2026-10-21): flies over, drops a stone, flies back
+        // 2026-11-17 (package FX14, owner: "The arrows — blood etc — do they look nice?"): a drawn, fletched arrow on an arc, the variant in its
+        // fletching, trail and impact (FX.H.arrowShot: plain, flaming, ice, bleed, venom; Twin Shot arcs each way, Volley plunges, a dodge sails past)
+        else if(!pa.odd && window.FX && FX.H && FX.H.arrowShot && fxLevel() !== 'none' && FX.H.arrowShot(shooter || hqTileEl(ev.side), targetEl, {variant: FX.H.arrowVariant(pa, (getCardDefs()[ev.attDefId] || {}).effects), draw: arrowWind, flight: arrowFlightMs(),
+          miss: ev.type === 'evaded', twin: pa.twin, plunge: pa.volley, archer: pa.archer, castle: ev.type === 'hitHQ'})){}
         else if(window.SkillFX){ SkillFX.setImages(ARROW_PNG, FIRE_ARROW_PNG); SkillFX.bowShot(shooter || hqTileEl(ev.side), targetEl, {fire: pa.fire, draw: arrowWind, flight: arrowFlightMs(),
           light: (x, y, rgb, big)=>{ try{ const bfEl = document.getElementById('battlefieldEl'); if(battleWeather && battleWeather.flash && bfEl){ const b = bfEl.getBoundingClientRect(); battleWeather.flash((x - b.left)/b.width, (y - b.top)/b.height, rgb, big ? 0.9 : 0.55, big ? 0.5 : 0.3, big ? 800 : 500); } }catch(e){} }}); }
         else setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
@@ -55748,7 +55756,7 @@ function renderVfxForEvent(ev){
   // existing whole-battlefield playEarthquake() shake (the same "ground just shook" cue big-
   // creature spawns and castle hits already use) so this skill's AOE finally reads as one, plus
   // its own low rumbling tone and a banner on the caster.
-  if(ev.type==='arrow'){ matchState.pendingArrow = {uid: ev.uid, fire: !!ev.fire, style: ev.style || null}; } // + an Archer's look (BX, 2026-10-21)
+  if(ev.type==='arrow'){ matchState.pendingArrow = {uid: ev.uid, fire: !!ev.fire, style: ev.style || null, ice: !!ev.ice, twin: !!ev.twin, volley: !!ev.volley, archer: !!ev.archer, odd: !!(ev.bola || ev.lasso)}; } // + an Archer's look (BX, 2026-10-21); + the FX14 arrow's variant (2026-11-17)
   if(ev.type==='earthquake'){
     const el = boardCardEl(ev.uid);
     SoundKit.earthquakeTone();
