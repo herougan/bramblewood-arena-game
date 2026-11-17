@@ -24,3 +24,31 @@ start {"gallery-orb-weaver":1,"trash-panda-trickster":1,"pincushion-urchin":4,"l
 round 1: cur 80/83.3; 38 legal, 38 read + 12 predicted (of 46); top: -1 pincushion-urchin +1 trash-panda-trickster 85/78.3 | -1 open-ocean-hermit-crab +1 trash-panda-trickster 85/76 | -2 open-ocean-hermit-crab +2 trash-panda-trickster 85/75 | -1 open-ocean-hermit-crab -2 pincushion-urchin +3 trash-panda-trickster 87.5/72.7
 no nearer move
 RESULT 2-B-1 {"gallery-orb-weaver":1,"trash-panda-trickster":1,"pincushion-urchin":4,"limpet-clinger":4,"open-ocean-hermit-crab":4} 83.3 {} moves:  problems: []
+START 2-2 target 80 refit2 65.3, wide 63.7, live 60.7
+2-2 target 80 (72-88) size 20 start {"open-ocean-hermit-crab":1,"rock-pool-starfish":3,"salvager-hermit-crab":4,"pincushion-urchin":4,"beaver-lumberjack":4,"beachcomber-sanderling":4} problems []
+start {"open-ocean-hermit-crab":1,"rock-pool-starfish":3,"salvager-hermit-crab":4,"pincushion-urchin":4,"beaver-lumberjack":4,"beachcomber-sanderling":4} 65.3
+round 1: cur 50/65.3; 41 legal, 41 read + 12 predicted (of 15); top: -1 pincushion-urchin +1 open-ocean-hermit-crab 62.5/62 | -2 pincushion-urchin +2 open-ocean-hermit-crab 62.5/58.3 | -4 pincushion-urchin +1 hedgerow-shrew +3 open-ocean-hermit-crab 67.5/53.3 | -4 beaver-lumberjack +1 hedgerow-shrew +3 open-ocean-hermit-crab 65/52.7
+no nearer move
+RESULT 2-2 {"open-ocean-hermit-crab":1,"rock-pool-starfish":3,"salvager-hermit-crab":4,"pincushion-urchin":4,"beaver-lumberjack":4,"beachcomber-sanderling":4} 65.3 {} moves:  problems: []
+START 2-1 target 90 live 76.3, refit2 75.3
+2-1 target 90 (82-98) size 20 start {"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":3,"salvager-hermit-crab":4} problems []
+start {"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":3,"salvager-hermit-crab":4} 76.3
+round 1: cur 90/76.3; 25 legal, 25 read + 12 predicted (of 28); top: -1 salvager-hermit-crab +1 rock-pool-starfish 87.5/74.3 | -1 salvager-hermit-crab -1 puddle-skimmer +1 rock-pool-starfish +1 duck-paddler 90/73.3 | -1 salvager-hermit-crab -1 puddle-skimmer +1 rock-pool-starfish +1 gull-thief 87.5/73 | -1 salvager-hermit-crab -1 puddle-skimmer +1 rock-pool-starfish +1 moonlit-hare 87.5/72.7
+no nearer move
+RESULT 2-1 {"beaver-lumberjack":4,"open-ocean-hermit-crab":4,"pincushion-urchin":4,"puddle-skimmer":1,"rock-pool-starfish":3,"salvager-hermit-crab":4} 76.3 {} moves:  problems: []
+START 6-2 target 85 refit2 64, wide 64, live 63
+6-2 target 85 (77-93) size 20 start {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1} problems []
+start {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1} 64
+round 1: cur 75/64; 12 legal, 12 read + 12 predicted (of 37); top: -1 camouflage-frog +1 cypress-root-lurker 75/64.7 | -1 booming-bittern +1 cypress-root-lurker 77.5/64.3 | -1 lamprey +1 cypress-root-lurker 80/63.3 | -1 constrictor-coil +1 cypress-root-lurker 80/60
+no nearer move
+RESULT 6-2 {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1} 64 {} moves:  problems: []
+START 4-1 target 90 refit2 80, wide 71.3, live 39.7
+4-1 target 90 (82-98) size 13 start {"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1} problems []
+start {"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1} 80
+round 1: cur 72.5/80; 93 legal, 93 read + 12 predicted (of 19); top: -1 pond-algae +1 slow-worm 80/83 | -1 slow-worm +1 kittiwake-flock 82.5/72.3 | -1 beaver-lumberjack +1 kittiwake-flock 80/72.3 | -2 slow-worm +2 river-mink 80/64.7
+round 2: cur 80/83; 93 legal, 93 read + 12 predicted (of 28); top: -1 duck-paddler +1 grass-snake 77.5/78.3 | -1 pond-algae +1 grass-snake 77.5/77 | -1 pond-algae +1 platypus-spur 77.5/76.3 | -3 slow-worm +3 river-mink 77.5/60.3
+no nearer move
+RESULT 4-1 {"beaver-lumberjack":4,"slow-worm":4,"snapstick-turtle":1,"pond-algae":3,"duck-paddler":1} 83 {} moves: -1 pond-algae +1 slow-worm problems: []
+START 5-6 target 60 refit2 46.7, wide 38, live 7
+5-6 target 60 (52-68) size 17 start {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} problems []
+start {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} 46.7

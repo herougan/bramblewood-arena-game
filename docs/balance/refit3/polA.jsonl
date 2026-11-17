@@ -6,3 +6,12 @@
 {"key":"8-7","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":50,"seed2":66300,"games":300},"moves":[]}
 {"key":"2-B-1","deck":{"gallery-orb-weaver":1,"trash-panda-trickster":1,"pincushion-urchin":4,"limpet-clinger":4,"open-ocean-hermit-crab":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":83.3,"seed2":66300,"games":300},"moves":["start wide"]}
 {"key":"2-B-1","deck":{"gallery-orb-weaver":1,"trash-panda-trickster":1,"pincushion-urchin":4,"limpet-clinger":4,"open-ocean-hermit-crab":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":83.3,"seed2":66300,"games":300},"moves":[]}
+{"key":"2-2","deck":{"open-ocean-hermit-crab":1,"rock-pool-starfish":3,"salvager-hermit-crab":4,"pincushion-urchin":4,"beaver-lumberjack":4,"beachcomber-sanderling":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":65.3,"seed2":66300,"games":300},"moves":["start refit2"]}
+{"key":"2-2","deck":{"open-ocean-hermit-crab":1,"rock-pool-starfish":3,"salvager-hermit-crab":4,"pincushion-urchin":4,"beaver-lumberjack":4,"beachcomber-sanderling":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":65.3,"seed2":66300,"games":300},"moves":[]}
+{"key":"2-1","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":76.3,"seed2":66300,"games":300},"moves":["start live"]}
+{"key":"2-1","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":76.3,"seed2":66300,"games":300},"moves":[]}
+{"key":"6-2","deck":{"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":64,"seed2":66300,"games":300},"moves":["start refit2"]}
+{"key":"6-2","deck":{"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":64,"seed2":66300,"games":300},"moves":[]}
+{"key":"4-1","deck":{"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":80,"seed2":66300,"games":300},"moves":["start refit2"]}
+{"key":"4-1","deck":{"beaver-lumberjack":4,"slow-worm":4,"snapstick-turtle":1,"pond-algae":3,"duck-paddler":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":83,"seed2":66300,"games":300},"moves":["-1 pond-algae +1 slow-worm"]}
+{"key":"5-6","deck":{"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":46.7,"seed2":66300,"games":300},"moves":["start refit2"]}
