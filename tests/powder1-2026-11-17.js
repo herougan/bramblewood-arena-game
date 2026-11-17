@@ -133,7 +133,10 @@ ok(/\nM\.powderPuff = function/.test(FXH) && /\n  sporePuff\(P, el\)\{/.test(FXH
 ok(/package POWDER1/.test(rd('docs/effects-catalogue.md')) && /sporePuff/.test(rd('docs/sfx-cue-sheet.md')) && /POWDER1/.test(rd('docs/CHANGELOG.md')), 'catalogue, cue sheet, CHANGELOG');
 ok(/powder1-2026-11-17/.test(rd('tests/run-all.sh')), 'run-all.sh lists this test');
 { const cards = J('canonical/cards.json'), list = Array.isArray(cards) ? cards : Object.values(cards.cards || cards);
-  ok(!list.some(c=> c && c.effects && (c.effects.sleepPowder || c.effects.poisonPowder)), 'no card carries a powder yet (the redesign fold adds carriers)'); }
+  // 2026-11-18 (FXAUD2 merge): CONTENT13 added the first powder carriers, so check they are real cards in budget instead of "none yet"
+  const SC = require('../tools/skill_costs.js'), K = SC.make(J('canonical/skill-costs.json'));
+  const carriers = list.filter(c=> c && c.effects && (c.effects.sleepPowder || c.effects.poisonPowder) && !/^test-/.test(c.id));
+  ok(carriers.every(c=> K.budget(c).ok), 'powder carriers are in budget (' + carriers.map(c=> c.id).join(', ') + ')'); }
 { const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')(); ok(!Object.values(F).some(l=> l.some(k=> /Powder/.test(k))), 'MAP_FOCUS_SKILLS unchanged (no powder)'); }
 
 console.log(`powder1: ${pass} passed, ${fail} failed`);

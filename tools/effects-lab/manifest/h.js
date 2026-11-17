@@ -55,7 +55,7 @@ const arrowPlay = (v, o)=> ctx=>{ o = o || {}; const s = sp14(ctx), a = o.from ?
   R({id, stage:'board', inGameHook:'ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js); the old SkillFX.boltGlob under reduced motion', variants:[{key:'FX14', label:'FX14 · ' + label + ' (0.26 s charge in the mouth, 0.33 s flight)', play:boltPlay(el)}]}));
 // ENG51 (2026-11-18, owner 11-17 17:32): Water Bolt (the Archerfish), the blue bolt; it lands with SoundKit's own splash
 R({id:'atk-bolt-water', name:'Water Bolt', trigger:"bolt event {element:'water'}, then its hit and statusFx en20Soak", stage:'board', inGameHook:'ninthPassVfx → FX.H.boltShot (bramblewood-fx-h.js)', variants:[
-  {key:'ENG51', label:'ENG51 · A clear blue droplet dripping as it flies, a splash ring and a crown of droplets (0.26 s charge, 0.33 s flight; splash)', play:boltPlay('water')}]});
+  {key:'E51', label:'ENG51 · A clear blue droplet dripping as it flies, a splash ring and a crown of droplets (0.26 s charge, 0.33 s flight; splash)', play:boltPlay('water')}]});
 R({id:'sk-spitfire', stage:'board', variants:[{key:'FX14', label:'FX14 · A fast spit of three flame blobs (0.24 s), a small flare', play:boltPlay('fire', {opt:{spitfire:true}, to:ctx=> foe(ctx, Math.floor(Math.random()*3))})}]});
 R({id:'atk-bolt-shock', stage:'board', variants:[{key:'FX14', label:'FX14 · Crackle round the shooter, then the bolt forks where it lands (the game draws the bolt itself)', play:ctx=> H().shockBolt(mine(ctx), foe(ctx), {impactMs:300/sp14(ctx)}).then(()=> ctx.wait(300))}]});
 R({id:'atk-bolt-miss', name:'A bolt is dodged', trigger:'bolt, then evaded {ranged}', stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js): evaded after a bolt → the shot’s .miss()', variants:[
