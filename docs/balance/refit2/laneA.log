@@ -126,3 +126,8 @@ round 1: cur 26.7/44.5; 57 legal, 57 read + 8 predicted (of 44); top: -1 reef-sh
 RESULT 10-A-4 {"coral-current-eel":1,"mantis-shrimp":2,"reef-shark":3,"sea-turtle-elder":1,"orca-vanguard":4} 58 {} moves: -1 reef-shark -3 sea-turtle-elder +3 orca-vanguard problems: []
 12-4 target 72 (64-80) size 16 start {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"mouse-sapper":4,"quill-thorn-boar":3,"quillguard":3} problems []
 start {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"mouse-sapper":4,"quill-thorn-boar":3,"quillguard":3} 81
+round 1: cur 76.7/81; 16 legal, 16 read + 8 predicted (of 38); top: -4 mouse-sapper +4 bison-bulldozer 80/76.5 | -4 mouse-sapper +4 briarback-hedgehog 80/81.5 | -4 barkplate-beetle +4 briarback-hedgehog 80/89.5
+round 2: cur 80/76.5; 16 legal, 16 read + 8 predicted (of 39); top: -4 bison-bulldozer +4 mouse-sapper 76.7/81 | -4 bison-bulldozer +4 briarback-hedgehog 80/81.5 | -4 bison-bulldozer +4 hollow-belly-rat 80/82
+no nearer move
+RESULT 12-4 {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quill-thorn-boar":3,"quillguard":3,"bison-bulldozer":4} 76.5 {} moves: -4 mouse-sapper +4 bison-bulldozer problems: []
+LANE DONE
