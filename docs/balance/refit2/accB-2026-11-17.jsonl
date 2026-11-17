@@ -20,3 +20,4 @@
 {"key":"19-A-6","deck":{"cinder-gecko":2,"phoenix-fledgling":1,"smoke-raccoon":4,"cinder-hornet":1,"magma-titan":1,"peak-condor":2},"shieldOverride":null,"hqHp":null,"tune":{"w2":73.5,"seed2":54300,"games":200},"moves":["-2 phoenix-fledgling +2 peak-condor"]}
 {"key":"20-A-4","deck":{"basalt-boar":1,"berserker-boar":1,"brimstone-hound":4,"obsidian-scorpion":3,"the-contradiction":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":37,"seed2":54300,"games":200},"moves":["-1 berserker-boar +1 brimstone-hound"]}
 {"key":"18-A-1","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":87.5,"seed2":54300,"games":200},"moves":[]}
+{"key":"17-6","deck":{"arctic-tern":4,"boreal-elk":1,"glacier-yak":4,"ice-crevasse-wolf":2,"polar-bear":2,"ringed-seal":4,"snow-ermine":3},"shieldOverride":null,"hqHp":null,"tune":{"w2":64,"seed2":54300,"games":200},"moves":["-1 ice-crevasse-wolf +1 snow-ermine"]}

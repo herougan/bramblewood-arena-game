@@ -111,3 +111,7 @@ RESULT 20-4 NO LEGAL REFILL
 start {"dromedary":4,"dune-jackal":4,"dust-hyena":1,"roadrunner-courier":3,"pale-oryx":1} 87.5
 RESULT 18-A-1 {"dromedary":4,"dune-jackal":4,"dust-hyena":1,"roadrunner-courier":3,"pale-oryx":1} 87.5 {} moves:  problems: []
 17-6 target 65 (57-73) size 20 start {"arctic-tern":4,"boreal-elk":1,"glacier-yak":4,"ice-crevasse-wolf":3,"polar-bear":2,"ringed-seal":4,"snow-ermine":2} problems []
+start {"arctic-tern":4,"boreal-elk":1,"glacier-yak":4,"ice-crevasse-wolf":3,"polar-bear":2,"ringed-seal":4,"snow-ermine":2} 71
+round 1: cur 76.7/71; 30 legal, 30 read + 8 predicted (of 39); top: -1 ice-crevasse-wolf +1 snow-ermine 66.7/64 | -1 boreal-elk +1 snow-ermine 66.7/71.5 | -1 boreal-elk +1 snowshoe-hare 66.7/77.5
+RESULT 17-6 {"arctic-tern":4,"boreal-elk":1,"glacier-yak":4,"ice-crevasse-wolf":2,"polar-bear":2,"ringed-seal":4,"snow-ermine":3} 64 {} moves: -1 ice-crevasse-wolf +1 snow-ermine problems: []
+LANE DONE
