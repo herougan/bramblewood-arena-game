@@ -5650,6 +5650,23 @@ const SoundKit = (()=>{
     }
     return {d, len};
   }
+  // 2026-11-17 (package SFX2): the brass fanfare's waveform (see rallyHorn in the cue list). notes: [freq Hz, start s, length s]; deterministic.
+  let lastHornAt = 0;
+  function hornBuf(c){
+    const sr = c.sampleRate, notes = [[392, 0, 0.14], [523.25, 0.14, 0.14], [659.25, 0.28, 0.37]], total = 0.66, len = Math.floor(sr * (total + 0.02)), d = new Float32Array(len);
+    notes.forEach(([f, t0, dur], k)=>{
+      const i0 = Math.floor(t0 * sr), n = Math.floor(dur * sr), last = k === notes.length - 1; let ph = 0, y1 = 0, y2 = 0;
+      for(let i = 0; i < n && i0 + i < len; i++){
+        const t = i / sr, vib = last ? 1 + 0.012 * Math.min(1, t / 0.15) * Math.sin(2 * Math.PI * 5.5 * t) : 1;
+        ph += f * vib / sr; ph -= Math.floor(ph);
+        const cut = 600 + 3400 * (1 - Math.exp(-t / 0.035)), a = 1 - Math.exp(-2 * Math.PI * cut / sr); // the filter swell
+        y1 += a * ((2 * ph - 1) - y1); y2 += a * (y1 - y2);
+        const env = Math.min(1, t / 0.018) * (last ? Math.exp(-Math.max(0, t - 0.12) * 3.2) * Math.min(1, (dur - t) / 0.06) : Math.min(1, (dur - t) / 0.025));
+        d[i0 + i] += y2 * 0.9 * env;
+      }
+    });
+    return {d, len};
+  }
   function sweep(f0, f1, dur, type, gainPeak, delay){
     if(sfxVolume<=0) return;
     const c = ac(); if(!c) return;
@@ -6222,6 +6239,18 @@ const SoundKit = (()=>{
     // rumble distinct from boom()/siegeTone() (both single sharp impacts) — this one sustains
     // longer to read as ongoing ground-shaking rather than one hit.
     rallyTone(){ tone(330,0.1,'sawtooth',0.08); tone(392,0.1,'sawtooth',0.08,0.07); tone(494,0.16,'sawtooth',0.09,0.14); },
+    // 2026-11-17 (package SFX2, owner 23:05: "Can we play a stock trumpet sound when something inspires?"): a synthesized bugle "ta-ta-TAAA" (G4, C5, E5, about 0.65 s):
+    // sawtooth with a slight vibrato (on the held note), run through two low-pass poles whose cutoff swells on each note's attack (the brass "blat"). No sample, no licence,
+    // no RNG (the battle's randomness is untouched). Baked into one buffer, so it obeys the SFX volume / mute and the away gate like every cue. Played by pl2InspireFx;
+    // one horn per 450 ms however many Inspiring triggers fire in a beat.
+    rallyHorn(){
+      if(sfxVolume <= 0) return false;
+      const now = Date.now(); if(now - lastHornAt < 450) return false;
+      const c = ac(); if(!c) return false;
+      lastHornAt = now;
+      playBuf(c, bakedBuf(c, 'rallyHorn', ()=> hornBuf(c)), 0.11 * sfxVolume, 0);
+      return true;
+    },
     earthquakeTone(){ tone(55,0.5,'sawtooth',0.14); tone(48,0.4,'sawtooth',0.1,0.12); noise(0.42,0.13); },
     // King Slayer (2026-09-22): a bright, ringing double-chime (C6→G6, triangle) plus a light
     // metallic-clash noise tail — reads as "a decisive strike against something important,"

@@ -152,3 +152,11 @@ Also in `bramblewood-fx-h.js` (`CUES`, from `SoundKit.prim`).
 | # | Cue | Trigger | Mood (A, cosy/organic) | Mood (B, chiptune) | Length |
 |---|---|---|---|---|---|
 | 34 | `sporePuff` | A powder's spores bloom on the target (`FX.H.powderPuff`; Sleeping / Poison Powder) | A soft breathy poof; Sleeping: two drowsy falling sine notes; Poison: a low bubble | Soft noise poof, two falling blips (Sleeping) or one low blip (Poison) | about 400 ms |
+
+## SFX2 cue (2026-11-17)
+
+In `SoundKit` (`arena_app.js`), baked from one buffer like the other cues.
+
+| # | Cue | Trigger | Mood (A, cosy/organic) | Mood (B, chiptune) | Length |
+|---|---|---|---|---|---|
+| 35 | `rallyHorn` | An Inspiring skill fires in battle (`pl2InspireFx`, the `statusFx` kind `inspired` event; once per 450 ms however many trigger) | A bright bugle "ta-ta-TAAA": G4, C5, E5, sawtooth through a low-pass that swells on each attack, slight vibrato on the held note | Same, as a square-ish blip fanfare | about 0.65 s |
