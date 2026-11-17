@@ -1,0 +1,25 @@
+5-6 target 60 (52-68) size 17 start {"fen-mink":3,"muskrat-reedgatherer":2,"marsh-mallow-hare":4,"shoal-shark":1,"mosquito-cloud":3,"bog-leech":4} problems []
+start {"fen-mink":3,"muskrat-reedgatherer":2,"marsh-mallow-hare":4,"shoal-shark":1,"mosquito-cloud":3,"bog-leech":4} 37
+round 1: cur 13.3/37; 140 legal, 70 read + 8 predicted (of 40); top: -1 fen-mink -1 shoal-shark +1 raft-spider +1 mosquito-cloud 43.3/45 | -1 fen-mink +1 raft-spider 40/36.5 | -2 fen-mink +2 alley-cat 43.3/32
+round 2: cur 43.3/45; 147 legal, 70 read + 8 predicted (of 41); top: -1 fen-mink +1 muskrat-reedgatherer 50/46 | -1 fen-mink -1 raft-spider +1 muskrat-reedgatherer +1 planarian-splitter 46.7/37.5 | -1 fen-mink -1 marsh-mallow-hare +1 muskrat-reedgatherer +1 alley-cat 46.7/36.5
+round 3: cur 50/46; 151 legal, 70 read + 8 predicted (of 41); top: -1 marsh-mallow-hare +1 fire-ant-raft 46.7/36.5 | -2 bog-leech -1 raft-spider +2 alley-cat +1 planarian-splitter 53.3/34.5 | -2 bog-leech -1 raft-spider +2 alley-cat +1 mudflat-godwit 53.3/33.5
+no nearer move
+shield 0 49
+RESULT 5-6 {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} 49 {"shieldOverride":0} moves: -1 fen-mink -1 shoal-shark +1 raft-spider +1 mosquito-cloud ; -1 fen-mink +1 muskrat-reedgatherer problems: []
+5-4 target 72 (64-80) size 18 start {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"mudflat-godwit":4} problems ["leaders change to [\"mudflat-godwit\"]"]
+repair: 0 copies freed, 63 legal refills
+repair top: {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"swamp-alligator":4} 46.7/39.5 | {"fen-mink":3,"fire-ant-raft":4,"grass-viper":2,"marsh-mallow-hare":4,"raft-spider":4,"mudpuppy":1} 40/27 | {"fen-mink":1,"fire-ant-raft":4,"grass-viper":3,"marsh-mallow-hare":4,"raft-spider":4,"mudpuppy":2} 40/22.5
+start {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"swamp-alligator":4} 39.5
+round 1: cur 46.7/39.5; 44 legal, 44 read + 8 predicted (of 40); top: -4 raft-spider +4 mosquito-cloud 56.7/40 | -4 raft-spider -1 fire-ant-raft +4 mosquito-cloud +1 fen-mink 50/40 | -4 raft-spider -2 fire-ant-raft +4 mosquito-cloud +2 fen-mink 46.7/38
+no nearer move
+shield 0 40.5
+RESULT 5-4 {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"swamp-alligator":4} 39.5 {} moves: repair -> {"fen-mink":1,"fire-ant-raft":4,"grass-viper":1,"marsh-mallow-hare":4,"raft-spider":4,"swamp-alligator":4} problems: []
+5-2 target 84 (76-92) size 14 start {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} problems []
+start {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} 51
+round 1: cur 60/51; 115 legal, 70 read + 8 predicted (of 42); top: -1 raft-spider +1 fire-ant-raft 63.3/50 | -4 raft-spider +1 planarian-splitter +3 fire-ant-raft 63.3/43.5 | -4 raft-spider -1 shoal-shark +1 planarian-splitter +3 fire-ant-raft +1 mudflat-godwit 63.3/39
+no nearer move
+shield 0 51
+RESULT 5-2 {"constrictor-coil":4,"fire-ant-raft":1,"raft-spider":4,"swamp-alligator":4,"shoal-shark":1} 51 {} moves:  problems: []
+5-7 target 40 (30-49) size 19 start {"alligator-gar":1,"fire-ant-raft":4,"marsh-mallow-hare":4,"mosquito-cloud":4,"raft-spider":2,"mudflat-godwit":4} problems []
+start {"alligator-gar":1,"fire-ant-raft":4,"marsh-mallow-hare":4,"mosquito-cloud":4,"raft-spider":2,"mudflat-godwit":4} 24
+round 1: cur 33.3/24; 120 legal, 70 read + 8 predicted (of 44); top: -4 mudflat-godwit +1 raft-spider +3 constrictor-coil 40/28 | -1 mosquito-cloud -1 mudflat-godwit +2 raft-spider 40/24.5 | -1 mudflat-godwit +1 raft-spider 43.3/23.5
