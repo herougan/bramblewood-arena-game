@@ -1,0 +1,95 @@
+{
+ "tx": {
+  "ui.skn-bolt": [
+   "Bolt",
+   "Carreau",
+   "Bolzen",
+   "Saeta",
+   "Dardo",
+   "Virote",
+   "Bolt",
+   "போல்ட்",
+   "Bolt",
+   "弩箭",
+   "弩箭",
+   "ボルト",
+   "볼트"
+  ],
+  "ui.sk-arrow-family-codex": [
+   "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.",
+   "Toutes les compétences de flèche comptent ensemble pour une seule. Les flèches tirent à Vitesse 0, après les frappes.",
+   "Alle Pfeil-Fähigkeiten zählen zusammen als eine. Pfeile fliegen mit Tempo 0, nach den Hieben.",
+   "Todas las habilidades de flecha cuentan juntas como una. Las flechas se disparan a Velocidad 0, tras los golpes.",
+   "Tutte le abilità di freccia contano insieme come una. Le frecce partono a Velocità 0, dopo i colpi.",
+   "Todas as habilidades de flecha contam juntas como uma. As flechas disparam à Velocidade 0, depois dos ataques.",
+   "Iisang skill lang ang bilang ng lahat ng skill na palaso. Pumapana ang mga palaso sa Speed 0, pagkatapos ng mga atake.",
+   "எல்லா அம்புத் திறன்களும் சேர்ந்து ஒரே திறனாகக் கணக்கிடப்படும். அம்புகள் வேகம் 0-இல், தாக்குதல்களுக்குப் பின் எய்யப்படும்.",
+   "Semua skill panah dihitung bersama sebagai satu skill. Panah ditembakkan di Kecepatan 0, setelah serangan biasa.",
+   "所有箭类技能合计只算一个技能。箭以速度 0 发射，在其他攻击之后。",
+   "所有箭類技能合計只算一個技能。箭以速度 0 發射，在其他攻擊之後。",
+   "矢のスキルはすべて合わせて1つのスキルとして数える。矢はスピード0で、他の攻撃の後に放たれる。",
+   "화살 스킬은 모두 합쳐 스킬 하나로 센다. 화살은 속도 0으로, 다른 공격 다음에 쏜다."
+  ],
+  "ui.sk-bolt-family-codex": [
+   "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.",
+   "Toutes les compétences de carreau comptent ensemble pour une seule. Les carreaux partent à Vitesse 2, avec les unités Vives, avant les autres frappes.",
+   "Alle Bolzen-Fähigkeiten zählen zusammen als eine. Bolzen fliegen mit Tempo 2, zusammen mit schnellen Einheiten, vor den anderen Hieben.",
+   "Todas las habilidades de saeta cuentan juntas como una. Las saetas salen a Velocidad 2, con las unidades Rápidas, antes de los otros golpes.",
+   "Tutte le abilità di dardo contano insieme come una. I dardi partono a Velocità 2, con le unità Rapide, prima degli altri colpi.",
+   "Todas as habilidades de virote contam juntas como uma. Os virotes saem à Velocidade 2, com as unidades Rápidas, antes dos outros ataques.",
+   "Iisang skill lang ang bilang ng lahat ng skill na bolt. Pumuputok ang mga bolt sa Speed 2, kasabay ng mga Mabilis na unit, bago ang ibang atake.",
+   "எல்லா போல்ட் திறன்களும் சேர்ந்து ஒரே திறனாகக் கணக்கிடப்படும். போல்ட்கள் வேகம் 2-இல், விரைவு அலகுகளுடன், மற்ற தாக்குதல்களுக்கு முன் சுடும்.",
+   "Semua skill bolt dihitung bersama sebagai satu skill. Bolt ditembakkan di Kecepatan 2, bersama unit Cepat, sebelum serangan lain.",
+   "所有弩箭类技能合计只算一个技能。弩箭以速度 2 发射，与敏捷单位同时，在其他攻击之前。",
+   "所有弩箭類技能合計只算一個技能。弩箭以速度 2 發射，與敏捷單位同時，在其他攻擊之前。",
+   "ボルトのスキルはすべて合わせて1つのスキルとして数える。ボルトはスピード2で、素早いユニットと同時に、他の攻撃より先に放たれる。",
+   "볼트 스킬은 모두 합쳐 스킬 하나로 센다. 볼트는 속도 2로, 빠른 유닛과 함께, 다른 공격보다 먼저 쏜다."
+  ],
+  "ui.sk-archer": [
+   "Never attacks; each turn, after the swings, shoots a {n}-damage arrow at the enemy in front or nearest.",
+   "N’attaque jamais : à chaque tour, après les frappes, tire une flèche de {n} dégâts sur l’ennemi en face ou le plus proche.",
+   "Greift nie an: Jede Runde schießt es nach den Hieben einen Pfeil für {n} Schaden auf den Gegner davor oder den nächsten.",
+   "Nunca ataca: cada turno, tras los golpes, dispara una flecha de {n} de daño al enemigo de enfrente o al más cercano.",
+   "Non attacca mai: ogni turno, dopo i colpi, scocca una freccia da {n} danni al nemico di fronte o al più vicino.",
+   "Nunca ataca: a cada turno, depois dos ataques, dispara uma flecha de {n} de dano no inimigo à frente ou no mais próximo.",
+   "Hindi umaatake: bawat turn, pagkatapos ng mga atake, pumapana ng {n} pinsala sa kalaban sa harap, o sa pinakamalapit.",
+   "தாக்காது: ஒவ்வொரு முறையும், தாக்குதல்களுக்குப் பின், முன்னுள்ள எதிரிக்கு (இல்லையெனில் அருகிலுள்ளதற்கு) {n} சேதம் அம்பு எய்யும்.",
+   "Tak pernah menyerang: tiap giliran, setelah serangan biasa, menembakkan panah {n} kerusakan ke musuh di depan, atau yang terdekat.",
+   "从不攻击：每回合在其他攻击之后，向正前方的敌人（没有则最近的敌人）射出造成{n}点伤害的箭。",
+   "從不攻擊：每回合在其他攻擊之後，向正前方的敵人（沒有則最近的敵人）射出造成{n}點傷害的箭。",
+   "攻撃しない。毎ターン、他の攻撃の後に、正面の敵（いなければ最も近い敵）に{n}ダメージの矢を放つ。",
+   "공격하지 않음: 매 턴 다른 공격 다음에, 앞의 적(없으면 가장 가까운 적)에게 {n} 피해의 화살을 쏩니다."
+  ],
+  "ui.skx-shock-bolt": [
+   "The Shock lasts a round.",
+   "L’électrocution dure un tour.",
+   "Der Schock hält eine Runde.",
+   "La electrocución dura una ronda.",
+   "La folgorazione dura un round.",
+   "O choque dura uma ronda.",
+   "Isang round ang tagal ng gulat.",
+   "அதிர்ச்சி ஒரு சுற்று நீடிக்கும்.",
+   "Setrumnya bertahan satu ronde.",
+   "电击持续一回合。",
+   "電擊持續一回合。",
+   "感電は1ラウンド続く。",
+   "감전은 한 라운드 지속된다."
+  ]
+ },
+ "pack": {
+  "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": [
+   "Frappe à Vitesse 2, avec les Carreaux : avant les Flèches et les unités sans Vive.",
+   "Schlägt mit Tempo 2 zu, zusammen mit Bolzen: vor Pfeilen und Einheiten ohne Schnell.",
+   "Golpea a Velocidad 2, con las Saetas: antes que las Flechas y las unidades sin Rápida.",
+   "Colpisce a Velocità 2, con i Dardi: prima delle Frecce e delle unità senza Rapido.",
+   "Ataca à Velocidade 2, com os Virotes: antes das Flechas e das unidades sem Rápido.",
+   "Umaatake sa Speed 2, kasabay ng mga Bolt: bago ang mga Palaso at mga unit na walang Mabilis.",
+   "வேகம் 2-இல் தாக்கும், போல்ட்களுடன்: அம்புகளுக்கும் விரைவு இல்லாத அலகுகளுக்கும் முன்.",
+   "Menyerang di Kecepatan 2, bersama Bolt: sebelum Panah dan unit tanpa Cepat.",
+   "以速度 2 出手，与弩箭同时：早于箭矢和没有敏捷的单位。",
+   "以速度 2 出手，與弩箭同時：早於箭矢和沒有敏捷的單位。",
+   "スピード2で攻撃する（ボルトと同時）：矢や素早いを持たないユニットより先。",
+   "속도 2로 공격, 볼트와 함께: 화살과 빠른 없는 유닛보다 먼저."
+  ]
+ }
+}

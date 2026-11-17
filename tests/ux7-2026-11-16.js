@@ -14,7 +14,7 @@ ok(/\.ui19-sk\.is-focus\{border-color:#c62828/.test(tpl) && /\.ui19-new\.is-mino
 ok(/ux7-2026-11-16/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
 const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')();
 ok(Object.keys(F).length === 21 && Object.values(F).every(a=> a.length <= 3), '21 maps, 0-3 focus skills each');
-ok(F[0].join() === 'evasive,swarm,nursing' && F[19].join() === 'recoil' && F[20].length === 0, 'the REDESIGN2 draft values'); // 2026-11-16 (coordinator): the table now holds REDESIGN2's focus
+ok(F[0].join() === 'evasive,swarm,nursing' && F[19].join() === 'recoil' && F[20].join() === 'fireArrow', 'the REDESIGN2 draft values'); // 2026-11-16 (coordinator): the table now holds REDESIGN2's focus; Map 20 Arrow (Flaming) (ARROW1, owner 11-16 23:10)
 
 async function browser(){
   let pw; try{ pw = require('playwright'); }catch(e){ try{ pw = require(path.join(require('child_process').execSync('npm root -g').toString().trim(), 'playwright')); }catch(_){ console.log('  (browser part skipped: no playwright)'); return; } }

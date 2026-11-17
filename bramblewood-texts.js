@@ -1217,7 +1217,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-pack-leader": "Links all your Pack units of its type into one chain, side by side or not, and adds +2/+2.",
   "ui.skx-pack-leader": "It adds +2/+2 of its own and +2/+2 more for the shared type. With two types it can lead two packs.",
   "ui.sk-shock-bolt": "While Ready, every upkeep: {n} lightning damage to the foe facing it (or nearest), and Shocks it.",
-  "ui.skx-shock-bolt": "The Shock lasts a round. It fires at Speed 1: after Quick units, before the rest swing.",
+  "ui.skx-shock-bolt": "The Shock lasts a round.",
   "ui.sk-fork": "Strikes the two enemies to its left and right; if either is missing, just the one in front.",
   "ui.skx-fork": "A Taunt unit that draws the swing is always one of its lines.",
   "ui.sk-crab-claws": "Pinches a random enemy to its left or right, never the one in front; with none, the bramble.",
@@ -2074,7 +2074,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.mimic-copying": "Copying {name}",
   "ui.log-mimic": "🪞 {name} mimics {ally}: now {atk}/{hp}, with its skills.",
   "ui.skn-archer": "Archer",
-  "ui.sk-archer": "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.",
+  "ui.sk-archer": "Never attacks; each turn, after the swings, shoots a {n}-damage arrow at the enemy in front or nearest.",
   "ui.skn-archer-style": "Archer look",
   "ui.archer-style-bow": "Bow: it shoots an arrow",
   "ui.archer-style-drop": "Drop: it flies over the target, drops a stone and flies back",
@@ -3769,7 +3769,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-barter": "Pay what you lack with Gold: Lumber 1, Stone 2, Metal 4.",
   "ui.sk-barter-codex": "Your resources and Pearls pay first. Works while it is on your board, Waiting too.",
   "ui.log-econ-gold": "🪙 {name}: +{n} Gold.",
-  "ui.econ-log-plunder": "🏴‍☠️ {name} plunders {n} Gold."
+  "ui.econ-log-plunder": "🏴‍☠️ {name} plunders {n} Gold.",
+  "ui.skn-bolt": "Bolt",
+  "ui.sk-arrow-family-codex": "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.",
+  "ui.sk-bolt-family-codex": "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
