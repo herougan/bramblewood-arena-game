@@ -1,0 +1,5 @@
+12-4 target 72 (64-80) size 16 pool 13 live {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"mouse-sapper":4,"quill-thorn-boar":3,"quillguard":3}
+sampled 23 legal decks (97 distinct tried) in 17s
+sample reads (24 games): min 83.3 p10 87.5 median 95.8 p90 100 max 100 (34s)
+per copy (model): mountain-hare -4.8, chipmunk-hoarder -2.3, eyrie-warden -1.5, anvil-thrush -0.2, barrow-leech-bat 0, quillguard 0, quill-thorn-boar 0.3, barkplate-beetle 0.5, hedgerow-shrew 1, mouse-sapper 1.1, briarback-hedgehog 1.5, hollow-belly-rat 1.9, bison-bulldozer 2.6
+model: 4737 decks visited, 24 read at 100: 81/89 83/96 84/84 85/95 85/89 85/97
