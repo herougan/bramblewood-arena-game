@@ -9085,7 +9085,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     let v = 0;
     if(e.kinRally){ const n = numN(e.kinRally, 1); v += ai.hand.filter(h=> h.defId !== defId && sharesType(probe, {defId:h.defId})).length * n * 1.0; }
     if(e.packHowl){ const n = numN(e.packHowl, 1); v += ai.hand.filter(h=> isWolf(h.defId)).length * n * 0.8; }
+    // ENG50 (2026-11-17): Armourer N first, then the units it arms (+0/+N each, about half a point a Health point; 0 for every other card)
+    if(e.armourer) v += Math.min(3, ai.hand.filter(h=> h.defId !== defId && !(CARD_DEFS[h.defId] || {}).cardType).length) * numN(e.armourer, 1) * 0.5;
     mine.forEach(c=>{ const ce = effectsOf(c); if(!ready(c)) return;
+      if(ce.armourer) v += numN(ce.armourer, 1) * 0.5; // ENG50: a Ready Armourer arms this one as it arrives
       if(ce.kinRally && sharesType(c, probe)) v += numN(ce.kinRally, 1) * 1.5;
       if(ce.packHowl && isWolf(defId)) v += numN(ce.packHowl, 1); });
     if(e.proliferate) v += Math.min(numN(e.proliferate, 1), foes.filter(c=> c.poison > 0).length) * 0.75;

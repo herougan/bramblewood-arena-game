@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-18 (package ENG50, owner 11-17 23:14 / 23:36, OWN-1117-2 / REDESIGN3-1): the redesign's missing mechanics
+- Players see (on no card yet; the redesign fold adds them): **Paralysis Powder N** (the third powder: a Speed -1 puff of Stun N, yellow spores; not on a stunned unit), **Rend N** (its hits put Vulnerable tokens: the next hit on that unit deals double), **Enfeeble N** (Feeble tokens: the unit's next hit does half), **Armourer N** (while Ready, each ally you play comes in +0/+N), the actions **Rend, Enfeeble, Weaken** and **Grant {who} {what}** in the card editor (Grant offers the priced skills: Sturdy, Mighty, Armor, Thorns, Regeneration, Quick, Evasive). Badges 💔 / 🪶, floats, log lines; Cleanse lists the new tokens. **Exploit** reads Exploit again (it read Vulnerable since ENG39; Vulnerable is now Rend's x2 token). The Awash field reads **Underwater Currents**. 12 packs.
+- Behaviour: no card changes. The engine's last `ae.rend` read (Pierce's alias since 10-11: "ignores Armor") is gone; no card in cards.json used it (Pierce with no number keeps the rule). The hit event's `rend` display flag is `pierced`. Bulwark's 0/5 -> 0/8 wall was already built (SKN1); now tested.
+- Prices (4-round rule, estimates): Paralysis Powder 3.34 x N^0.24 (Sleeping Powder at N + 1, as REDESIGN3 assumed); Rend 4 x N^0.4; Enfeeble 2.5 x N^0.4; Armourer 1.25 a point (On Ally Played x Buff +0/+N); actions Rend 2 / Enfeeble 1 a token, Weaken 2.1 a point, Grant 0.75 x the granted skill's price (`grant.<skill>` rows).
+- CPU: places a Paralysis Powder card facing a unit it can stun; values an Armourer before the units it arms (only cards with these skills; the road does not move).
+- Decisions: ENG50-1 (show Fragile as Vulnerable?), ENG50-2 (Exploit +1 a hit, or + the tokens?). Test `tests/eng50-2026-11-17.js`; `powder1` and `eng39` tests follow the third powder and the Exploit name.
+
 ## 2026-11-17 (package SFX2, owner 23:05)
 - Players see: when a unit inspires its neighbours, a short bugle fanfare ("ta-ta-TAAA", about 0.65 s) plays with the 📯 burst. It follows the Sound volume and mute; several Inspiring triggers in one beat play it once.
 - Under the hood: `SoundKit.rallyHorn` (the call in `pl2InspireFx` already existed and fell back to `curse`), synthesized with a sawtooth, a swelling low-pass and vibrato; no audio files, no RNG. Lab: Sound tab "Inspiring horn". Test `tests/sfx2-2026-11-17.js`.
