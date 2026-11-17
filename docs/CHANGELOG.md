@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-18 (package SKAUD1 phase 1: skill audit plan, owner OWN-1117-3, nothing applied)
+- Owner-facing: `docs/design/skaud1-2026-11-17.md`; machine plan `docs/design/skaud1-2026-11-17.json` (every key, verdict, each card's new effects and stats); generator `tools/skaud1/`. 427 skills: keep 267, merge 71, remove 82 (Injured among them), rename 6, owner-call 3 (SKAUD1-1..3 in `docs/decisions.json`). 92 card moves on the REDESIGN3-folded cards, all within `budget().ok` (27 with a stat trim); 7 sit on Maps 0-20 lists. Proposal, REDESIGN3 and ENG50 skills untouched. Phase 2 applies it after ENG50 merges; no engine, card or text change yet, so the road does not move.
+
 ## 2026-11-17 (package SFX2, owner 23:05)
 - Players see: when a unit inspires its neighbours, a short bugle fanfare ("ta-ta-TAAA", about 0.65 s) plays with the 📯 burst. It follows the Sound volume and mute; several Inspiring triggers in one beat play it once.
 - Under the hood: `SoundKit.rallyHorn` (the call in `pl2InspireFx` already existed and fell back to `curse`), synthesized with a sawtooth, a swelling low-pass and vibrato; no audio files, no RNG. Lab: Sound tab "Inspiring horn". Test `tests/sfx2-2026-11-17.js`.
