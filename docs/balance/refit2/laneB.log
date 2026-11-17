@@ -210,3 +210,14 @@ shield 0 69
 RESULT 2-2 {"open-ocean-hermit-crab":1,"rock-pool-starfish":3,"salvager-hermit-crab":4,"pincushion-urchin":4,"beaver-lumberjack":4,"beachcomber-sanderling":4} 68.3 {} moves:  problems: []
 6-2 target 85 (77-93) size 20 start {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1} problems []
 start {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1} 64.3
+round 1: cur 58.3/64.3; 12 legal, 12 read + 16 predicted (of 37); top: -1 lamprey +1 cypress-root-lurker 73.3/64.3 | -1 constrictor-coil +1 pond-algae 61.7/61.7 | -1 constrictor-coil +1 cypress-root-lurker 66.7/60.3 | -1 lamprey -1 constrictor-coil +1 cypress-root-lurker +1 pond-algae 73.3/59 | -1 lamprey -1 constrictor-coil +1 cypress-root-lurker +1 mosquito-cloud 66.7/57.3 | -1 lamprey -1 constrictor-coil +1 cypress-root-lurker +1 water-shrew 63.3/53.7
+no nearer move
+shield 0 64.3
+RESULT 6-2 {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":3,"venomlord-serpent":4,"lamprey":4,"constrictor-coil":1} 64.3 {} moves:  problems: []
+19-5 target 60 (52-68) size 20 start {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":2,"quillback-elder":4,"smoke-raccoon":4,"cinder-hornet":4} problems []
+start {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":2,"quillback-elder":4,"smoke-raccoon":4,"cinder-hornet":4} 47
+round 1: cur 46.7/47; 24 legal, 24 read + 16 predicted (of 42); top: -1 honey-badger-fury +1 obsidian-scorpion 43.3/41.7 | -1 smoke-raccoon +1 obsidian-scorpion 43.3/41 | -1 quillback-elder +1 obsidian-scorpion 43.3/39.7 | -1 glacier-yak +1 horned-lizard 41.7/36.7 | -1 honey-badger-fury -1 glacier-yak +1 obsidian-scorpion +1 horned-lizard 41.7/34.7 | -1 glacier-yak +1 pinecone-sapper 41.7/33.3
+no nearer move
+shield 0 47
+RESULT 19-5 {"elderhorn-monarch":1,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":2,"quillback-elder":4,"smoke-raccoon":4,"cinder-hornet":4} 47 {} moves:  problems: []
+LANE DONE

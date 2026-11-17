@@ -4,11 +4,12 @@
 # branch (never main or batch-*), and one road-measure run per seed plays only those fights (400 games). Fetch with
 # tools/refit1/fetch_2026_11_16.sh <run-id> docs/balance/refit2 and rename to measure-fix-s<K>.jsonl (or append to it).
 #   bash tools/refit2/ghfix_2026_11_17.sh <fixes.jsonl> <branch refit2-...> <tag> <seed>[,<seed>...]
+#   ONLY= bash tools/refit2/ghfix_2026_11_17.sh ...   (empty ONLY: the whole road with the fixes in)
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 FX=$(realpath "$1"); BR=$2; TAG=$3; SEEDS=$4
 case "$BR" in refit2-*) ;; *) echo "branch must start with refit2-"; exit 1;; esac
-ONLY=$(node -e 'console.log(require("fs").readFileSync(process.argv[1],"utf8").trim().split("\n").filter(Boolean).map(l=>JSON.parse(l).key).join(","))' "$FX")
+ONLY=${ONLY-$(node -e 'console.log(require("fs").readFileSync(process.argv[1],"utf8").trim().split("\n").filter(Boolean).map(l=>JSON.parse(l).key).join(","))' "$FX")}
 WT=$(mktemp -d "${TMPDIR:-/tmp}/refit2-wt-XXXX"); rmdir "$WT"
 git worktree add -q --detach "$WT" HEAD
 trap 'git worktree remove --force "$WT" >/dev/null 2>&1 || true' EXIT
