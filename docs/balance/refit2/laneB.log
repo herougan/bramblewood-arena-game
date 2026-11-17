@@ -224,3 +224,6 @@ LANE DONE
 === lane B5 2026-11-17T02:44:33Z: 7-A-3 read 81 on s7600 with its fix (band top 78): one more pass
 7-A-3 target 70 (62-78) size 16 side (min 12) start {"fungus-gnat-cloud":4,"garden-snail":3,"hawthorn-shieldbug":1,"leopard-slug":4,"sleepless-shrew":4} problems []
 start {"fungus-gnat-cloud":4,"garden-snail":3,"hawthorn-shieldbug":1,"leopard-slug":4,"sleepless-shrew":4} 74
+round 1: cur 78.3/74; 112 legal, 112 read + 16 predicted (of 62); top: -1 garden-snail +1 planarian-splitter 71.7/70.3 | -1 garden-snail -3 leopard-slug +3 planarian-splitter 70/69.3 | -1 fungus-gnat-cloud +1 bombardier-beetle 71.7/71 | -1 garden-snail -1 leopard-slug +1 hawthorn-shieldbug 70/73.7 | -4 leopard-slug +4 planarian-splitter 70/76 | -1 garden-snail +1 millipede-hauler 68.3/62.3
+RESULT 7-A-3 {"fungus-gnat-cloud":4,"garden-snail":2,"hawthorn-shieldbug":1,"leopard-slug":4,"sleepless-shrew":4,"planarian-splitter":1} 70.3 {} moves: -1 garden-snail +1 planarian-splitter problems: []
+LANE DONE

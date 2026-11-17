@@ -3,7 +3,7 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-11-17 (package REFIT2: the Maps 0-20 road re-fitted after SKN1, ARROW1, ECONSK1 and CARDPOW1)
-- Proposals only, nothing applied. 17 road fights get legal enemy-deck changes (no Shield or Health change), each in band on two fresh seed sets at 400 games (GitHub); `problemsFull` clean, tests/skir1 34 = 34 failures. The whole road with them on seed 7600: main 128/149 in band (was 121), 134 within 10 (130), 9 beyond 20 (10); side 77/81 (72). `docs/balance/refit2/refit2-fixes.jsonl` (`skirmish_pass.js apply --fixes=refit2/refit2-fixes`), report `refit2-2026-11-17.md`.
+- Proposals only, nothing applied. 17 road fights get legal enemy-deck changes (no Shield or Health change), each in band on two fresh seed sets at 400 games (GitHub); `problemsFull` clean, tests/skir1 34 = 34 failures. The whole road with them on seed 7600: main 128/149 in band (was 121), 134 within 10 (130), 9 beyond 20 (10); side 78/81 (72). `docs/balance/refit2/refit2-fixes.jsonl` (`skirmish_pass.js apply --fixes=refit2/refit2-fixes`), report `refit2-2026-11-17.md`.
 - Maps 4-5 stay too hard with legal decks and Shield 0: lower bramble Health puts 5-6, 5-4, 5-2, 4-3, 4-5 in band; Fen Mink 1/10 → 1/8 fixes 5-6 and nearly 5-4 (decision REFIT2-2). 20-9: one legal move, 99 → 88 (target 50).
 
 ## 2026-11-16 (package ART15: Chipmunk Skirmisher art candidates)
