@@ -1,0 +1,1516 @@
+{
+"voiceTone": {
+"peak_db": -34.6,
+"rms_db": NaN,
+"len_s": 0.64,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"barkBabble": {
+"peak": 0,
+"len": 0,
+"err": null
+},
+"hit": {
+"peak_db": -22.0,
+"rms_db": -30.6,
+"len_s": 0.05,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"hitAt": {
+"peak_db": -17.4,
+"rms_db": -33.0,
+"len_s": 0.04,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"materiaForm": {
+"peak_db": -22.1,
+"rms_db": -36.0,
+"len_s": 0.53,
+"start_s": 0.07,
+"long": false,
+"err": null
+},
+"heroLevel": {
+"peak_db": -22.4,
+"rms_db": -36.1,
+"len_s": 0.82,
+"start_s": 0.28,
+"long": false,
+"err": null
+},
+"babble": {
+"peak": 0,
+"len": 0,
+"err": null
+},
+"storyArrive": {
+"peak_db": -34.6,
+"rms_db": -48.5,
+"len_s": 0.05,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"storyLetterbox": {
+"peak_db": -20.2,
+"rms_db": -33.8,
+"len_s": 0.42,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"lockBreak": {
+"peak_db": -28.1,
+"rms_db": -39.1,
+"len_s": 0.08,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"trigger": {
+"peak_db": -29.4,
+"rms_db": -42.1,
+"len_s": 0.13,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"pixelShatter": {
+"peak_db": -18.9,
+"rms_db": -38.5,
+"len_s": 0.14,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"riffle": {
+"peak_db": -34.7,
+"rms_db": -56.0,
+"len_s": 0.74,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"wolfHowl": {
+"peak_db": -20.7,
+"rms_db": -31.9,
+"len_s": 2.51,
+"start_s": 0.09,
+"long": true,
+"err": null
+},
+"roosterCrow": {
+"peak_db": -29.8,
+"rms_db": -46.2,
+"len_s": 0.74,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"dawnChime": {
+"peak_db": -18.1,
+"rms_db": -31.9,
+"len_s": 1.45,
+"start_s": 0.13,
+"long": false,
+"err": null
+},
+"moonHowl": {
+"peak_db": -24.6,
+"rms_db": -34.0,
+"len_s": 2.37,
+"start_s": 0.18,
+"long": true,
+"err": null
+},
+"neutralTick": {
+"peak_db": -26.8,
+"rms_db": -39.4,
+"len_s": 0.11,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"growthSwell": {
+"peak_db": -18.8,
+"rms_db": -32.7,
+"len_s": 0.42,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"leaderFanfare": {
+"peak_db": -23.4,
+"rms_db": -40.5,
+"len_s": 0.47,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"pageTurn": {
+"peak_db": -30.8,
+"rms_db": -51.1,
+"len_s": 0.19,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"bossRumble": {
+"peak_db": -18.7,
+"rms_db": -30.4,
+"len_s": 0.4,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"pawnStep": {
+"peak_db": -47.5,
+"rms_db": -54.8,
+"len_s": 0.0,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"featherFlutter": {
+"peak_db": -36.2,
+"rms_db": -49.8,
+"len_s": 0.05,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"knockOut": {
+"peak_db": -19.1,
+"rms_db": -36.3,
+"len_s": 0.4,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"healTone": {
+"peak_db": -20.9,
+"rms_db": -32.2,
+"len_s": 0.5,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"bowDraw": {
+"peak_db": -30.1,
+"rms_db": -45.1,
+"len_s": 0.17,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"rareRise": {
+"peak_db": -26.1,
+"rms_db": -42.3,
+"len_s": 0.37,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"heartbeat": {
+"peak_db": -19.4,
+"rms_db": -34.9,
+"len_s": 0.33,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"bossSting": {
+"peak_db": -15.2,
+"rms_db": -28.4,
+"len_s": 0.7,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"leaderSlam": {
+"peak_db": -15.2,
+"rms_db": -27.8,
+"len_s": 0.29,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"dangerSting": {
+"peak_db": -17.9,
+"rms_db": -32.5,
+"len_s": 0.39,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"suddenDeathSting": {
+"peak_db": -20.1,
+"rms_db": -34.2,
+"len_s": 1.01,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"death": {
+"peak_db": -20.2,
+"rms_db": -33.0,
+"len_s": 0.13,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"gold": {
+"peak_db": -21.7,
+"rms_db": -36.5,
+"len_s": 0.25,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"prestigeTone": {
+"peak_db": -19.6,
+"rms_db": -34.9,
+"len_s": 0.26,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"grace": {
+"peak_db": -20.2,
+"rms_db": -32.5,
+"len_s": 0.13,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"draw": {
+"peak_db": -24.6,
+"rms_db": -35.5,
+"len_s": 0.02,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"buzz": {
+"peak_db": -28.3,
+"rms_db": -41.8,
+"len_s": 0.13,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"drip": {
+"peak_db": -21.6,
+"rms_db": -38.1,
+"len_s": 0.12,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"clang": {
+"peak_db": -19.5,
+"rms_db": -30.9,
+"len_s": 0.05,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"konk": {
+"peak_db": -16.9,
+"rms_db": -30.8,
+"len_s": 0.07,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"markArmor": {
+"peak_db": -20.6,
+"rms_db": -35.0,
+"len_s": 0.1,
+"start_s": 0.1,
+"long": false,
+"err": null
+},
+"markBlocked": {
+"peak_db": -21.0,
+"rms_db": -35.2,
+"len_s": 0.18,
+"start_s": 0.12,
+"long": false,
+"err": null
+},
+"markShield": {
+"peak_db": -22.5,
+"rms_db": -31.9,
+"len_s": 0.06,
+"start_s": 0.11,
+"long": false,
+"err": null
+},
+"markShell": {
+"peak_db": -22.4,
+"rms_db": -35.4,
+"len_s": 0.03,
+"start_s": 0.09,
+"long": false,
+"err": null
+},
+"markSturdy": {
+"peak_db": -21.4,
+"rms_db": -31.9,
+"len_s": 0.08,
+"start_s": 0.09,
+"long": false,
+"err": null
+},
+"markResist": {
+"peak_db": -28.1,
+"rms_db": -39.0,
+"len_s": 0.04,
+"start_s": 0.12,
+"long": false,
+"err": null
+},
+"markStone": {
+"peak_db": -26.6,
+"rms_db": -41.2,
+"len_s": 0.06,
+"start_s": 0.09,
+"long": false,
+"err": null
+},
+"markFragile": {
+"peak_db": -14.2,
+"rms_db": -32.9,
+"len_s": 0.07,
+"start_s": 0.11,
+"long": false,
+"err": null
+},
+"markWeak": {
+"peak_db": -28.4,
+"rms_db": -43.7,
+"len_s": 0.1,
+"start_s": 0.1,
+"long": false,
+"err": null
+},
+"markShocked": {
+"peak_db": -18.2,
+"rms_db": -33.5,
+"len_s": 0.05,
+"start_s": 0.1,
+"long": false,
+"err": null
+},
+"markImmune": {
+"peak_db": -26.1,
+"rms_db": -36.8,
+"len_s": 0.07,
+"start_s": 0.1,
+"long": false,
+"err": null
+},
+"gadget": {
+"peak_db": -29.3,
+"rms_db": -43.1,
+"len_s": 0.11,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"forgeHit": {
+"peak_db": -15.1,
+"rms_db": -29.7,
+"len_s": 0.08,
+"start_s": 0.0,
+"long": false,
+"err": null
+},
+"energySurge": {
+"peak_db": -28.3,
+"rms_db": -40.0,
+"len_s": 0.26,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"forgeStrike": {
+"peak_db": -13.7,
+"rms_db": -36.7,
+"len_s": 1.57,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"claw": {
+"peak_db": -22.4,
+"rms_db": -37.3,
+"len_s": 0.13,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"bite": {
+"peak_db": -26.3,
+"rms_db": -37.3,
+"len_s": 0.05,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"sting": {
+"peak_db": -28.7,
+"rms_db": -43.7,
+"len_s": 0.06,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"peck": {
+"peak_db": -27.9,
+"rms_db": -43.0,
+"len_s": 0.13,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"burn": {
+"peak_db": -27.3,
+"rms_db": -44.4,
+"len_s": 0.15,
+"start_s": 0.06,
+"long": false,
+"err": null
+},
+"fireBreath": {
+"peak_db": -22.3,
+"rms_db": -39.6,
+"len_s": 0.27,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"roar": {
+"peak_db": -28.1,
+"rms_db": -40.1,
+"len_s": 0.21,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"growl": {
+"peak_db": -22.9,
+"rms_db": -35.0,
+"len_s": 0.13,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"play": {
+"peak_db": -22.5,
+"rms_db": -35.2,
+"len_s": 0.03,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"exile": {
+"peak_db": -23.5,
+"rms_db": -35.8,
+"len_s": 0.15,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"launch": {
+"peak_db": -25.0,
+"rms_db": -37.9,
+"len_s": 0.05,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"arrowLoose": {
+"peak_db": -19.6,
+"rms_db": -33.3,
+"len_s": 0.1,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"arrowThunk": {
+"peak_db": -18.5,
+"rms_db": -33.0,
+"len_s": 0.1,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"bleedOut": {
+"peak_db": -23.9,
+"rms_db": -44.0,
+"len_s": 0.47,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"burnAway": {
+"peak_db": -13.2,
+"rms_db": -36.6,
+"len_s": 0.3,
+"start_s": 0.06,
+"long": false,
+"err": null
+},
+"fireIgnite": {
+"peak_db": -20.2,
+"rms_db": -42.3,
+"len_s": 0.3,
+"start_s": 0.08,
+"long": false,
+"err": null
+},
+"fireOut": {
+"peak_db": -30.8,
+"rms_db": -44.5,
+"len_s": 0.09,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"crystalTing": {
+"peak_db": -20.2,
+"rms_db": -33.6,
+"len_s": 0.22,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"waterPlop": {
+"peak_db": -19.6,
+"rms_db": -34.9,
+"len_s": 0.14,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"bushRustle": {
+"peak_db": -26.6,
+"rms_db": -47.0,
+"len_s": 0.18,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"castleCollapse": {
+"peak_db": -17.8,
+"rms_db": -33.3,
+"len_s": 0.78,
+"start_s": 0.08,
+"long": false,
+"err": null
+},
+"pitchChime": {
+"peak_db": -22.4,
+"rms_db": -37.1,
+"len_s": 0.2,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"dodge": {
+"peak_db": -27.1,
+"rms_db": -41.8,
+"len_s": 0.06,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"shield": {
+"peak_db": -24.0,
+"rms_db": -33.9,
+"len_s": 0.07,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"pickup": {
+"peak_db": -26.3,
+"rms_db": -39.0,
+"len_s": 0.05,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"cardFlip": {
+"peak_db": -25.0,
+"rms_db": -39.3,
+"len_s": 0.11,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"codeCopy": {
+"peak_db": -23.9,
+"rms_db": -37.8,
+"len_s": 0.04,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"codeImport": {
+"peak_db": -23.8,
+"rms_db": -39.2,
+"len_s": 0.09,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"deny": {
+"peak_db": -23.9,
+"rms_db": -34.1,
+"len_s": 0.1,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"dullTap": {
+"peak_db": -20.8,
+"rms_db": -33.7,
+"len_s": 0.05,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"quick": {
+"peak_db": -25.6,
+"rms_db": -39.8,
+"len_s": 0.04,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"stealthTone": {
+"peak_db": -26.2,
+"rms_db": -38.6,
+"len_s": 0.11,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"reloadTone": {
+"peak_db": -28.1,
+"rms_db": -39.5,
+"len_s": 0.07,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"shellUp": {
+"peak_db": -25.1,
+"rms_db": -35.4,
+"len_s": 0.09,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"exposeTone": {
+"peak_db": -27.0,
+"rms_db": -41.6,
+"len_s": 0.06,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"stunTone": {
+"peak_db": -23.9,
+"rms_db": -32.3,
+"len_s": 0.08,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"curse": {
+"peak_db": -27.1,
+"rms_db": -40.1,
+"len_s": 0.09,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"poisonApply": {
+"peak_db": -24.6,
+"rms_db": -37.6,
+"len_s": 0.08,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"boom": {
+"peak_db": -12.3,
+"rms_db": -25.6,
+"len_s": 0.22,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"buffUp": {
+"peak_db": -22.5,
+"rms_db": -36.8,
+"len_s": 0.08,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"bubble": {
+"peak_db": -26.0,
+"rms_db": -40.1,
+"len_s": 0.11,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"bleedTick": {
+"peak_db": -28.7,
+"rms_db": -40.8,
+"len_s": 0.07,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"bleedApply": {
+"peak_db": -25.1,
+"rms_db": -39.4,
+"len_s": 0.05,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"shift": {
+"peak_db": -26.5,
+"rms_db": -40.3,
+"len_s": 0.06,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"itemDrop": {
+"peak_db": -22.5,
+"rms_db": -36.5,
+"len_s": 0.09,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"sapDrain": {
+"peak_db": -24.1,
+"rms_db": -36.5,
+"len_s": 0.1,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"scarMark": {
+"peak_db": -23.6,
+"rms_db": -38.1,
+"len_s": 0.08,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"cleanseTone": {
+"peak_db": -25.0,
+"rms_db": -38.6,
+"len_s": 0.11,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"gritUp": {
+"peak_db": -23.9,
+"rms_db": -33.7,
+"len_s": 0.09,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"freezeChime": {
+"peak_db": -26.3,
+"rms_db": -39.2,
+"len_s": 0.08,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"sleepTone": {
+"peak_db": -26.4,
+"rms_db": -39.1,
+"len_s": 0.13,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"paralyzeBuzz": {
+"peak_db": -25.2,
+"rms_db": -36.7,
+"len_s": 0.1,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"waitTickTone": {
+"peak_db": -28.1,
+"rms_db": -35.7,
+"len_s": 0.01,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"readyChime": {
+"peak_db": -22.8,
+"rms_db": -38.4,
+"len_s": 0.15,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"chainBreak": {
+"peak_db": -19.8,
+"rms_db": -33.2,
+"len_s": 0.08,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"pierceTone": {
+"peak_db": -25.2,
+"rms_db": -36.2,
+"len_s": 0.06,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"gashTone": {
+"peak_db": -25.1,
+"rms_db": -40.3,
+"len_s": 0.08,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"overwhelmTone": {
+"peak_db": -21.6,
+"rms_db": -35.8,
+"len_s": 0.16,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"berserkTone": {
+"peak_db": -23.3,
+"rms_db": -35.0,
+"len_s": 0.1,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"bulwarkTone": {
+"peak_db": -20.4,
+"rms_db": -31.9,
+"len_s": 0.11,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"constructTone": {
+"peak_db": -21.5,
+"rms_db": -36.4,
+"len_s": 0.28,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"shellCrackTone": {
+"peak_db": -8.3,
+"rms_db": -35.7,
+"len_s": 0.57,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"dragonGust": {
+"peak_db": -32.2,
+"rms_db": -53.6,
+"len_s": 0.78,
+"start_s": 0.12,
+"long": false,
+"err": null
+},
+"snowThump": {
+"peak_db": -24.5,
+"rms_db": -37.0,
+"len_s": 0.16,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"igniteWhoosh": {
+"peak_db": -11.5,
+"rms_db": -32.4,
+"len_s": 0.22,
+"start_s": 0.14,
+"long": false,
+"err": null
+},
+"burnCrackle": {
+"peak_db": -9.3,
+"rms_db": -27.2,
+"len_s": 0.14,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"spentPuff": {
+"peak_db": -27.6,
+"rms_db": -42.8,
+"len_s": 0.1,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"silkDrop": {
+"peak_db": -26.6,
+"rms_db": -45.2,
+"len_s": 0.52,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"confuseWarble": {
+"peak_db": -24.6,
+"rms_db": -41.2,
+"len_s": 0.41,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"carrionCaw": {
+"peak_db": -28.3,
+"rms_db": -43.4,
+"len_s": 0.21,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"crateThunk": {
+"peak_db": -22.6,
+"rms_db": -43.4,
+"len_s": 0.43,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"skitterPatter": {
+"peak_db": -32.4,
+"rms_db": -48.3,
+"len_s": 0.26,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"playDeadFlop": {
+"peak_db": -24.5,
+"rms_db": -40.0,
+"len_s": 0.44,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"reflectTone": {
+"peak_db": -23.8,
+"rms_db": -39.8,
+"len_s": 0.1,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"momentumTone": {
+"peak_db": -23.9,
+"rms_db": -35.3,
+"len_s": 0.13,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"espritTone": {
+"peak_db": -25.1,
+"rms_db": -40.3,
+"len_s": 0.14,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"bloomTone": {
+"peak_db": -26.4,
+"rms_db": -39.4,
+"len_s": 0.17,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"ambushTone": {
+"peak_db": -21.2,
+"rms_db": -30.0,
+"len_s": 0.03,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"siegeTone": {
+"peak_db": -14.4,
+"rms_db": -27.8,
+"len_s": 0.2,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"rallyTone": {
+"peak_db": -22.5,
+"rms_db": -37.7,
+"len_s": 0.2,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"rallyHorn": {
+"peak_db": -20.5,
+"rms_db": -27.5,
+"len_s": 0.65,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"earthquakeTone": {
+"peak_db": -13.1,
+"rms_db": -26.4,
+"len_s": 0.41,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"kingSlayerTone": {
+"peak_db": -17.2,
+"rms_db": -31.3,
+"len_s": 0.1,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"blindTone": {
+"peak_db": -21.9,
+"rms_db": -37.4,
+"len_s": 0.07,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"shockTone": {
+"peak_db": -24.1,
+"rms_db": -36.6,
+"len_s": 0.07,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"corrodeTone": {
+"peak_db": -26.2,
+"rms_db": -42.2,
+"len_s": 0.18,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"staggerTone": {
+"peak_db": -21.2,
+"rms_db": -33.9,
+"len_s": 0.21,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"devilryTone": {
+"peak_db": -23.5,
+"rms_db": -36.8,
+"len_s": 0.13,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"woodKnock": {
+"peak_db": -18.0,
+"rms_db": -32.2,
+"len_s": 0.07,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"shieldDrop": {
+"peak_db": -19.1,
+"rms_db": -33.3,
+"len_s": 0.23,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"backstabSlice": {
+"peak_db": -19.7,
+"rms_db": -41.3,
+"len_s": 0.15,
+"start_s": 0.06,
+"long": false,
+"err": null
+},
+"beamTurn": {
+"peak_db": -27.3,
+"rms_db": -42.5,
+"len_s": 0.37,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"boomerangWhirr": {
+"peak_db": -41.4,
+"rms_db": -64.1,
+"len_s": 0.79,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"shelfPick": {
+"peak_db": -23.8,
+"rms_db": -37.6,
+"len_s": 0.09,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"testTubeShake": {
+"peak_db": -29.2,
+"rms_db": -45.0,
+"len_s": 0.47,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"coinRegister": {
+"peak_db": -24.0,
+"rms_db": -38.5,
+"len_s": 0.42,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"mapUnroll": {
+"peak_db": -26.0,
+"rms_db": -48.9,
+"len_s": 0.42,
+"start_s": 0.07,
+"long": false,
+"err": null
+},
+"mysteryBoing": {
+"peak_db": -23.2,
+"rms_db": -37.6,
+"len_s": 0.27,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"tapeRip": {
+"peak_db": -12.2,
+"rms_db": -29.4,
+"len_s": 0.12,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"bowCreak": {
+"peak_db": -42.9,
+"rms_db": -61.9,
+"len_s": 0.15,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"burnAway2": {
+"peak_db": -20.9,
+"rms_db": -38.9,
+"len_s": 0.26,
+"start_s": 0.09,
+"long": false,
+"err": null
+},
+"iceShatter": {
+"peak_db": -9.3,
+"rms_db": -32.0,
+"len_s": 0.24,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"nightSwell": {
+"peak_db": -24.7,
+"rms_db": -39.2,
+"len_s": 1.1,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"critTone": {
+"peak_db": -23.0,
+"rms_db": -34.2,
+"len_s": 0.06,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"rendTone": {
+"peak_db": -21.1,
+"rms_db": -34.4,
+"len_s": 0.05,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"festerBite": {
+"peak_db": -26.5,
+"rms_db": -39.2,
+"len_s": 0.05,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"ruptureBite": {
+"peak_db": -28.3,
+"rms_db": -41.9,
+"len_s": 0.04,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"frenzyTone": {
+"peak_db": -22.6,
+"rms_db": -37.8,
+"len_s": 0.07,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"swipeTone": {
+"peak_db": -23.7,
+"rms_db": -37.8,
+"len_s": 0.05,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"sweepTone": {
+"peak_db": -23.7,
+"rms_db": -37.8,
+"len_s": 0.05,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"prongTone": {
+"peak_db": -25.0,
+"rms_db": -38.9,
+"len_s": 0.15,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"radSizzle": {
+"peak_db": -12.2,
+"rms_db": -32.8,
+"len_s": 0.13,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"geiger": {
+"peak_db": -19.0,
+"rms_db": -42.2,
+"len_s": 0.13,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"splash": {
+"peak_db": -27.8,
+"rms_db": -44.9,
+"len_s": 0.23,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"crabClack": {
+"peak_db": -19.0,
+"rms_db": -33.3,
+"len_s": 0.1,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"geigerSoft": {
+"peak_db": -31.7,
+"rms_db": -52.0,
+"len_s": 0.08,
+"start_s": 0.47,
+"long": false,
+"err": null
+},
+"mendChime": {
+"peak_db": -28.3,
+"rms_db": -40.6,
+"len_s": 0.12,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"hymnBell": {
+"peak_db": -28.9,
+"rms_db": -39.4,
+"len_s": 0.45,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"gorgeGulp": {
+"peak_db": -22.4,
+"rms_db": -39.4,
+"len_s": 0.25,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"boltFire": {
+"peak_db": -25.3,
+"rms_db": -38.6,
+"len_s": 0.04,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"boltIce": {
+"peak_db": -26.1,
+"rms_db": -42.7,
+"len_s": 0.1,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"boltAcid": {
+"peak_db": -15.1,
+"rms_db": -37.2,
+"len_s": 0.15,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"boltPoison": {
+"peak_db": -23.7,
+"rms_db": -39.3,
+"len_s": 0.1,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"spitfire": {
+"peak_db": -33.0,
+"rms_db": -49.1,
+"len_s": 0.07,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"arrowSlash": {
+"peak_db": -22.8,
+"rms_db": -36.6,
+"len_s": 0.04,
+"start_s": 0.02,
+"long": false,
+"err": null
+},
+"venomPuff": {
+"peak_db": -27.8,
+"rms_db": -42.9,
+"len_s": 0.05,
+"start_s": 0.06,
+"long": false,
+"err": null
+},
+"crystalPop": {
+"peak_db": -27.6,
+"rms_db": -39.3,
+"len_s": 0.06,
+"start_s": 0.05,
+"long": false,
+"err": null
+},
+"logTumble": {
+"peak_db": -23.5,
+"rms_db": -43.7,
+"len_s": 0.21,
+"start_s": 0.06,
+"long": false,
+"err": null
+},
+"coinFlip": {
+"peak_db": -29.2,
+"rms_db": -42.9,
+"len_s": 0.18,
+"start_s": 0.04,
+"long": false,
+"err": null
+},
+"anvilTink": {
+"peak_db": -24.2,
+"rms_db": -41.0,
+"len_s": 0.25,
+"start_s": 0.03,
+"long": false,
+"err": null
+},
+"pearlChime": {
+"peak_db": -30.7,
+"rms_db": -42.1,
+"len_s": 0.16,
+"start_s": 0.01,
+"long": false,
+"err": null
+},
+"sporePuff": {
+"peak_db": -30.5,
+"rms_db": -44.6,
+"len_s": 0.2,
+"start_s": 0.06,
+"long": false,
+"err": null
+},
+"pickChip": {
+"peak_db": -27.3,
+"rms_db": -42.0,
+"len_s": 0.04,
+"start_s": 0.01,
+"long": false,
+"err": null
+}
+}

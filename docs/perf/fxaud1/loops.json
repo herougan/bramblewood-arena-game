@@ -1,0 +1,82 @@
+{
+ "shipped@1x": {
+  "task_ms_median": 351,
+  "runs": [
+   229,
+   351,
+   891
+  ],
+  "style": 31,
+  "elite": 10
+ },
+ "no-elitePolish@1x": {
+  "task_ms_median": 146,
+  "runs": [
+   192,
+   80,
+   146
+  ],
+  "style": 40,
+  "elite": 10
+ },
+ "no-idleBreathe@1x": {
+  "task_ms_median": 304,
+  "runs": [
+   506,
+   304,
+   161
+  ],
+  "style": 19,
+  "elite": 10
+ },
+ "no-css-loops@1x": {
+  "task_ms_median": 404,
+  "runs": [
+   1213,
+   404,
+   220
+  ],
+  "style": 18,
+  "elite": 10
+ },
+ "shipped@4x": {
+  "task_ms_median": 409,
+  "runs": [
+   118,
+   409,
+   511
+  ],
+  "style": 86,
+  "elite": 10
+ },
+ "no-elitePolish@4x": {
+  "task_ms_median": 329,
+  "runs": [
+   145,
+   574,
+   329
+  ],
+  "style": 76,
+  "elite": 10
+ },
+ "no-idleBreathe@4x": {
+  "task_ms_median": 1084,
+  "runs": [
+   1084,
+   299,
+   1169
+  ],
+  "style": 55,
+  "elite": 10
+ },
+ "no-css-loops@4x": {
+  "task_ms_median": 548,
+  "runs": [
+   138,
+   1714,
+   548
+  ],
+  "style": 18,
+  "elite": 10
+ }
+}

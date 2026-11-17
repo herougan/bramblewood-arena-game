@@ -1,0 +1,3625 @@
+{
+"converge": {
+"type": "converge",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"targetSide": "A",
+"moves": 1
+},
+"advance": {
+"type": "advance",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"slot": 2,
+"from": 1,
+"to": 0
+},
+"fieldTick|volley": {
+"type": "fieldTick",
+"field": "volley",
+"side": "A"
+},
+"death": {
+"type": "death",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"reserve": true
+},
+"play": {
+"type": "play",
+"side": "A",
+"defId": 1,
+"uid": "UID",
+"boardSide": "center",
+"slot": 0,
+"leader": true,
+"gladiator": true
+},
+"overdraw": {
+"type": "overdraw",
+"side": 1,
+"defId": 1,
+"lumber": 1
+},
+"draw": {
+"type": "draw",
+"side": 1,
+"defId": 1,
+"uid": "UID"
+},
+"mulligan": {
+"type": "mulligan",
+"side": 1,
+"defId": 1,
+"drewDefId": 1
+},
+"boonFire": {
+"type": "boonFire",
+"boon": 2,
+"what": 1,
+"side": "A",
+"uid": "UID",
+"defId": "DEF"
+},
+"chainBreak": {
+"type": "chainBreak",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"cause": "x"
+},
+"confusedWhiff": {
+"type": "confusedWhiff",
+"what": 1
+},
+"quiet": {
+"type": "quiet",
+"what": 1,
+"uid": 1
+},
+"statusFx|coffee": {
+"type": "statusFx",
+"kind": "coffee",
+"twice": true,
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"fullMoonRise": {
+"type": "fullMoonRise",
+"moonField": 2
+},
+"statusFx|fullMoon": {
+"type": "statusFx",
+"kind": "fullMoon",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"grant": 2
+},
+"statusFx|stateSkill": {
+"type": "statusFx",
+"kind": "stateSkill",
+"name": 2,
+"on": 2,
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF"
+},
+"wind": {
+"type": "wind",
+"windy": false,
+"round": 2
+},
+"darkCast": {
+"type": "darkCast",
+"on": 2
+},
+"lumber": {
+"type": "lumber",
+"side": 1,
+"defId": "DEF",
+"amount": 2,
+"castle": true
+},
+"statusFx|castleBolt": {
+"type": "statusFx",
+"kind": "castleBolt",
+"side": 1,
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|herbHeal": {
+"type": "statusFx",
+"kind": "herbHeal",
+"side": 1,
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|herbBane": {
+"type": "statusFx",
+"kind": "herbBane",
+"side": 1,
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|castleSpawn": {
+"type": "statusFx",
+"kind": "castleSpawn",
+"side": 1,
+"targetSide": "A",
+"targetDefId": "DEF",
+"amount": 2
+},
+"phase": {
+"type": "phase",
+"phase": 1,
+"round": 1,
+"realtime": true
+},
+"castleRegen": {
+"type": "castleRegen",
+"side": "A",
+"amount": 2,
+"perk": true
+},
+"heal|brambleMend": {
+"type": "heal",
+"cause": "brambleMend",
+"side": "A",
+"castle": true,
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"fuse": {
+"type": "fuse",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"left": 2
+},
+"moon": {
+"type": "moon",
+"phase": 2,
+"round": 1
+},
+"dawn": {
+"type": "dawn",
+"round": 1
+},
+"remember": {
+"type": "remember",
+"side": "A",
+"defId": "DEF",
+"spent": 2,
+"uid": "UID"
+},
+"fieldPaused": {
+"type": "fieldPaused",
+"round": 1,
+"left": 2,
+"rules": 2
+},
+"tide": {
+"type": "tide",
+"tide": 2,
+"round": 1
+},
+"fieldTick": {
+"type": "fieldTick",
+"field": "x",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"wait": 1,
+"freeze": 1,
+"dmg": 2
+},
+"statusFx|frostbite": {
+"type": "statusFx",
+"kind": "frostbite",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"fieldEnd": {
+"type": "fieldEnd",
+"field": "x",
+"back": 2
+},
+"bossGimmick": {
+"type": "bossGimmick",
+"gimmick": 2,
+"side": "A",
+"round": 1
+},
+"fieldTick|swampFever": {
+"type": "fieldTick",
+"field": "swampFever",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"poison": 1,
+"total": 2
+},
+"fieldTick|1": {
+"type": "fieldTick",
+"field": 1,
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"dmg": 1,
+"dmgType": 2,
+"mods": 2
+},
+"stone": {
+"type": "stone",
+"side": "A",
+"defId": "DEF",
+"amount": 2,
+"rule": true,
+"leylines": true
+},
+"fieldTick|leylines": {
+"type": "fieldTick",
+"field": "leylines",
+"round": 1,
+"amount": 2
+},
+"fieldTick|leylinesHit": {
+"type": "fieldTick",
+"field": "leylinesHit",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"dmg": 0,
+"atheist": true
+},
+"fieldTick|leylinesCastle": {
+"type": "fieldTick",
+"field": "leylinesCastle",
+"side": "A",
+"dmg": 2
+},
+"statusFx|choking": {
+"type": "statusFx",
+"kind": "choking",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"fieldTick|sulphurFumes": {
+"type": "fieldTick",
+"field": "sulphurFumes",
+"round": 1,
+"amount": 2,
+"count": 2
+},
+"fieldTick|ashRain": {
+"type": "fieldTick",
+"field": "ashRain",
+"round": 1,
+"amount": 2
+},
+"fieldTick|ashRainCastle": {
+"type": "fieldTick",
+"field": "ashRainCastle",
+"side": "A",
+"dmg": 2
+},
+"fieldTick|arrowSlits": {
+"type": "fieldTick",
+"field": "arrowSlits",
+"round": 1,
+"amount": 2,
+"side": "A",
+"uid": "UID",
+"defId": "DEF"
+},
+"fieldTick|landslide": {
+"type": "fieldTick",
+"field": "landslide",
+"round": 1,
+"amount": 2,
+"col": 2,
+"cols": 2,
+"uids": [
+"UID"
+]
+},
+"fieldTick|crushingDepths": {
+"type": "fieldTick",
+"field": "crushingDepths",
+"round": 1,
+"amount": 2
+},
+"fieldTick|hail": {
+"type": "fieldTick",
+"field": "hail",
+"round": 1,
+"amount": 2
+},
+"fieldTick|glassStorm": {
+"type": "fieldTick",
+"field": "glassStorm",
+"round": 1,
+"amount": 2
+},
+"fieldTick|lavaSpout": {
+"type": "fieldTick",
+"field": "lavaSpout",
+"col": 2,
+"round": 1,
+"amount": 2
+},
+"fieldTick|consternation": {
+"type": "fieldTick",
+"field": "consternation",
+"side": "A",
+"count": 2,
+"amount": 2
+},
+"fieldTick|awash": {
+"type": "fieldTick",
+"field": "awash",
+"round": 1,
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"n": 1
+},
+"wave": {
+"type": "wave",
+"awash": true,
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"moves": [],
+"blocked": false,
+"slotMode": 1
+},
+"fieldTick|mirage": {
+"type": "fieldTick",
+"field": "mirage",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"illusionUid": "UID",
+"none": 2,
+"row": 2
+},
+"spawn|mirage|triggerSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 1,
+"cause": "triggerSpawn",
+"kind": "mirage",
+"uids": [
+"UID"
+],
+"lane": "x",
+"nearUid": "UID"
+},
+"fieldTick|sporeCloud": {
+"type": "fieldTick",
+"field": "sporeCloud",
+"round": 1
+},
+"statusFx|sleep|sporeCloud": {
+"type": "statusFx",
+"kind": "sleep",
+"field": "sporeCloud",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"left": 2
+},
+"fieldTick|thunderstorm": {
+"type": "fieldTick",
+"field": "thunderstorm",
+"round": 1,
+"amount": 2
+},
+"fieldTick|tangledRoots": {
+"type": "fieldTick",
+"field": "tangledRoots",
+"round": 1
+},
+"statusFx|webbed|tangledRoots": {
+"type": "statusFx",
+"kind": "webbed",
+"field": "tangledRoots",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"fieldTick|graspingBriars": {
+"type": "fieldTick",
+"field": "graspingBriars",
+"round": 1
+},
+"statusFx|tangled|graspingBriars": {
+"type": "statusFx",
+"kind": "tangled",
+"field": "graspingBriars",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"fieldTick|haunted": {
+"type": "fieldTick",
+"field": "haunted",
+"round": 1
+},
+"statusFx|frightened": {
+"type": "statusFx",
+"kind": "frightened",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF"
+},
+"fieldTick|tideSpout": {
+"type": "fieldTick",
+"field": "tideSpout",
+"col": 1,
+"round": 1,
+"tideIn": 1
+},
+"wash": {
+"type": "wash",
+"spout": true,
+"side": "A",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"dmg": 1,
+"col": 1,
+"mods": 1
+},
+"fieldTick|wildfireSweep": {
+"type": "fieldTick",
+"field": "wildfireSweep",
+"round": 1,
+"cols": 2,
+"dmg": 2
+},
+"fieldTick|wildfire": {
+"type": "fieldTick",
+"field": "wildfire",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"dmg": 2,
+"col": 1,
+"mods": 2
+},
+"fieldTick|cometRain": {
+"type": "fieldTick",
+"field": "cometRain",
+"round": 1,
+"left": 2
+},
+"fieldTick|comet": {
+"type": "fieldTick",
+"field": "comet",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"roll": 2,
+"dmg": 2,
+"mods": 2
+},
+"fieldTick|lavaTide": {
+"type": "fieldTick",
+"field": "lavaTide",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"dmg": 2,
+"col": 1,
+"mods": 2
+},
+"fieldTick|petrify": {
+"type": "fieldTick",
+"field": "petrify",
+"side": "A",
+"uid": "UID",
+"defId": "DEF"
+},
+"fieldTick|eruptionReset": {
+"type": "fieldTick",
+"field": "eruptionReset",
+"round": 1,
+"comets": 3
+},
+"fieldTick|ashy": {
+"type": "fieldTick",
+"field": "ashy",
+"round": 1,
+"until": 2,
+"rounds": 4
+},
+"fieldTick|immolation": {
+"type": "fieldTick",
+"field": "immolation",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"dmg": 2,
+"srcUid": "UID",
+"srcDefId": "DEF",
+"mods": 2
+},
+"fieldTick|irradiated": {
+"type": "fieldTick",
+"field": "irradiated",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"tokens": 2,
+"total": 2,
+"srcUid": "UID",
+"srcDefId": "DEF",
+"self": 2
+},
+"curse": {
+"type": "curse",
+"cell": 2,
+"total": 2,
+"targetUid": "UID",
+"targetDefId": "DEF",
+"slot": 2,
+"pid": 1
+},
+"exaltTick": {
+"type": "exaltTick",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"heal": 2
+},
+"statusFx|bludgeon": {
+"type": "statusFx",
+"kind": "bludgeon",
+"broke": 2,
+"atkLost": 2,
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": 1,
+"targetDefId": "DEF",
+"targetUid": "UID"
+},
+"washCrash": {
+"type": "washCrash",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"otherUid": "UID",
+"otherDefId": "DEF",
+"n": 1,
+"dmg": 2,
+"otherDmg": 2,
+"mods": 2,
+"otherMods": 2
+},
+"devour": {
+"type": "devour",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"eatenDefId": "DEF",
+"attack": 2,
+"health": 2,
+"grant": 2
+},
+"sacrifice": {
+"type": "sacrifice",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"forDefId": "DEF",
+"discount": 2
+},
+"statusFx|sacrificed": {
+"type": "statusFx",
+"kind": "sacrificed",
+"how": 1,
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"fromHand": 2
+},
+"cage": {
+"type": "cage",
+"side": "A",
+"uid": "UID",
+"owner": 2,
+"leaderDefId": 1,
+"hp": 1,
+"slot": 1
+},
+"beware": {
+"type": "beware",
+"side": "A",
+"defId": "DEF",
+"darkness": 2
+},
+"statusFx|firstBlood": {
+"type": "statusFx",
+"kind": "firstBlood",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"statusFx|shellUp": {
+"type": "statusFx",
+"kind": "shellUp",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"armorOnly": 2
+},
+"tempSoak": {
+"type": "tempSoak",
+"uid": "UID",
+"defId": "DEF",
+"soaked": 2,
+"left": 2
+},
+"shieldSoak": {
+"type": "shieldSoak",
+"uid": "UID",
+"defId": "DEF",
+"soaked": 2,
+"left": 2
+},
+"statusFx|cower": {
+"type": "statusFx",
+"kind": "cower",
+"mode": 2,
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"statusFx|greaterPoison": {
+"type": "statusFx",
+"kind": "greaterPoison",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"converted": 2,
+"amount": 2,
+"total": 2,
+"poison": 2
+},
+"statusFx|1": {
+"type": "statusFx",
+"kind": 1,
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 1,
+"via": 1,
+"eng34": true
+},
+"pierceHQ": {
+"type": "pierceHQ",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"dmg": 2,
+"via": 1,
+"eng34": true
+},
+"sap": {
+"type": "sap",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"amount": 2,
+"via": 1,
+"eng34": true
+},
+"thorns": {
+"type": "thorns",
+"side": "A",
+"fromDefId": "DEF",
+"fromUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"dmg": 2,
+"via": 1,
+"eng34": true
+},
+"statusFx|poison": {
+"type": "statusFx",
+"kind": "poison",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"via": "barbs",
+"eng34": true
+},
+"statusFx|hemorrhage": {
+"type": "statusFx",
+"kind": "hemorrhage",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"from": 2,
+"total": 2
+},
+"breachHQ": {
+"type": "breachHQ",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"dmg": 2,
+"n": 1
+},
+"statusFx|hibernate": {
+"type": "statusFx",
+"kind": "hibernate",
+"on": true,
+"side": 1,
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF"
+},
+"season": {
+"type": "season",
+"season": 2,
+"round": 2
+},
+"heal|hibernate": {
+"type": "heal",
+"cause": "hibernate",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"psychic": {
+"type": "psychic",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"dmg": 1,
+"n": 1,
+"immune": 2,
+"dampened": 2
+},
+"statusFx|ichor": {
+"type": "statusFx",
+"kind": "ichor",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"mods": 2,
+"armor": 2,
+"bleed": 1
+},
+"irradiation": {
+"type": "irradiation",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"points": 1,
+"left": 2
+},
+"bloom": {
+"type": "bloom",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"failed": true,
+"atk": 1,
+"hp": 1,
+"copyAtk": 0,
+"copyHp": 0,
+"lumber": 0,
+"slot": 2
+},
+"spawn|bloom|triggerSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 1,
+"cause": "triggerSpawn",
+"kind": "bloom",
+"uids": [
+"UID"
+],
+"lane": 1,
+"nearUid": "UID"
+},
+"parasiteAttach": {
+"type": "parasiteAttach",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"atk": 2,
+"hp": 2,
+"maxHp": 2,
+"wait": 2,
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"slot": 2,
+"bloom": true,
+"fromUid": "UID"
+},
+"spawn|bulwark|triggerSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": 1,
+"count": 1,
+"cause": "triggerSpawn",
+"kind": "bulwark",
+"uids": [
+"UID"
+],
+"lane": 1,
+"nearUid": "UID"
+},
+"statusFx|bulwark": {
+"type": "statusFx",
+"kind": "bulwark",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"hp": 2
+},
+"rampart": {
+"type": "rampart",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"dmg": 1,
+"share": 1,
+"bramble": 2,
+"mods": 2
+},
+"brambleArmor": {
+"type": "brambleArmor",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"blocked": 1
+},
+"brambleVulnerable": {
+"type": "brambleVulnerable",
+"side": "A",
+"extra": 2
+},
+"statusFx|shieldCall": {
+"type": "statusFx",
+"kind": "shieldCall",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"shieldUid": "UID"
+},
+"spawn|shieldCall": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 1,
+"cause": "shieldCall",
+"uids": [
+"UID"
+],
+"nearUid": "UID",
+"lane": "x",
+"toLane": 1,
+"fromSlot": 1,
+"toSlot": 2,
+"dogUid": "UID"
+},
+"evaded": {
+"type": "evaded",
+"reason": 2,
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID"
+},
+"statusFx|taunted": {
+"type": "statusFx",
+"kind": "taunted",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"shot": true
+},
+"statusFx|spellward": {
+"type": "statusFx",
+"kind": "spellward",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF"
+},
+"statusFx|dauntFade": {
+"type": "statusFx",
+"kind": "dauntFade",
+"side": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"left": 2,
+"why": 1
+},
+"statusFx|stanch": {
+"type": "statusFx",
+"kind": "stanch",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|thanatosis": {
+"type": "statusFx",
+"kind": "thanatosis",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF"
+},
+"statusFx|thanatosisWake": {
+"type": "statusFx",
+"kind": "thanatosisWake",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"hp": 2
+},
+"statusFx|poisonous": {
+"type": "statusFx",
+"kind": "poisonous",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"total": 2
+},
+"undeadHeal": {
+"type": "undeadHeal",
+"side": 1,
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"dmg": 1
+},
+"undeadCure|1": {
+"type": "undeadCure",
+"side": 1,
+"kind": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"bleed": 2
+},
+"bleedTick|1": {
+"type": "bleedTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"dmg": 1,
+"cause": 1,
+"decay": false,
+"mods": 2
+},
+"slipFizzle": {
+"type": "slipFizzle",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"what": 2
+},
+"statusFx|wakeful": {
+"type": "statusFx",
+"kind": "wakeful",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID"
+},
+"dampened": {
+"type": "dampened",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"targetUid": "UID",
+"what": "confuse",
+"left": 2
+},
+"statusFx|spite": {
+"type": "statusFx",
+"kind": "spite",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"hit": {
+"type": "hit",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"mods": 2,
+"dmg": 2,
+"dmgType": 2,
+"armorBlocked": 2,
+"armorSoaked": 2,
+"counter": true,
+"guardianRedirect": 2,
+"guardedUid": "UID"
+},
+"statusFx|counter": {
+"type": "statusFx",
+"kind": "counter",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"grace": {
+"type": "grace",
+"side": "A",
+"defId": 1,
+"amount": 2
+},
+"devilry": {
+"type": "devilry",
+"side": "A",
+"defId": 1,
+"amount": 2
+},
+"exile": {
+"type": "exile",
+"side": "A",
+"defId": "DEF",
+"zone": "graveyard"
+},
+"statusFx|prayer": {
+"type": "statusFx",
+"kind": "prayer",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"total": 2
+},
+"statusFx|tailwind": {
+"type": "statusFx",
+"kind": "tailwind",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 1
+},
+"spell": {
+"type": "spell",
+"side": "A",
+"defId": "DEF",
+"action": 2,
+"amount": 2,
+"targets": 2
+},
+"statusFx|logjam": {
+"type": "statusFx",
+"kind": "logjam",
+"side": "A",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"fieldSet": {
+"type": "fieldSet",
+"side": "A",
+"defId": "DEF",
+"field": "x",
+"rounds": 2
+},
+"statusFx|vanguard": {
+"type": "statusFx",
+"kind": "vanguard",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"spawn|1|triggerSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": 1,
+"count": 1,
+"cause": "triggerSpawn",
+"kind": 1,
+"uids": [
+"UID"
+],
+"lane": 1,
+"nearUid": "UID"
+},
+"restless": {
+"type": "restless",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"from": 2,
+"to": 2,
+"swapUid": "UID"
+},
+"spawn|meiosis|onDeathSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 2,
+"cause": "onDeathSpawn",
+"kind": "meiosis",
+"uids": [
+"UID"
+],
+"placements": 2,
+"fromUid": "UID",
+"nearUid": "UID"
+},
+"spawn|1|onDeathSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 2,
+"cause": "onDeathSpawn",
+"kind": 1,
+"uids": [
+"UID"
+],
+"placements": 2,
+"fromUid": "UID",
+"nearUid": "UID"
+},
+"mimic": {
+"type": "mimic",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"fromDefId": "DEF",
+"allyUid": "UID",
+"allyDefId": "DEF",
+"atk": 2,
+"hp": 2,
+"maxHp": 2
+},
+"evolve": {
+"type": "evolve",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"cardId": 2,
+"fromDefId": 1,
+"stage": 2,
+"stack": 2,
+"atk": 2,
+"hp": 2,
+"maxHp": 2,
+"wait": 2,
+"slot": 1,
+"boardSide": 2,
+"stem": 2
+},
+"gold": {
+"type": "gold",
+"side": 1,
+"uid?": 1,
+"defId?": 1,
+"amount": 1,
+"why": 1
+},
+"crown": {
+"type": "crown",
+"kind": "x",
+"side": 1,
+"uid": 1,
+"defId": 1,
+"fromUid": 1,
+"fromDefId": 1,
+"gold": 1
+},
+"statusFx|leaderBoon": {
+"type": "statusFx",
+"kind": "leaderBoon",
+"side": 1,
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"atk": 2,
+"hp": 2
+},
+"crown|1": {
+"type": "crown",
+"kind": 1,
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"fromUid": "UID",
+"fromDefId": "DEF"
+},
+"statusFx|surge": {
+"type": "statusFx",
+"kind": "surge",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"atk": 2,
+"hp": 2
+},
+"hitHQ": {
+"type": "hitHQ",
+"side": "A",
+"attDefId": 1,
+"attUid": 1,
+"targetSide": "A",
+"dmg": 1,
+"ranged": true,
+"bulwark": 2
+},
+"hazardSet|1": {
+"type": "hazardSet",
+"kind": 1,
+"n": 1,
+"pid": 1,
+"slot": 1,
+"side": "A",
+"srcUid": "UID",
+"srcDefId": "DEF"
+},
+"hazardSprung|1": {
+"type": "hazardSprung",
+"kind": 1,
+"side": "A",
+"pid": 1,
+"slot": 2,
+"uid": "UID",
+"defId": "DEF",
+"dmg": 1,
+"dmgType": 2,
+"mods": 2
+},
+"equipReady": {
+"type": "equipReady",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"equipDefId": "DEF",
+"attack": 2,
+"health": 2,
+"grant": 2
+},
+"equip": {
+"type": "equip",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"equipDefId": 1,
+"slot": 2,
+"pending": 2,
+"turns": 2,
+"how": 2,
+"dur": 2,
+"durMax": 2,
+"lives": 2,
+"livesMax": 2,
+"attack": 2,
+"health": 2,
+"grant": 2
+},
+"equipLaid": {
+"type": "equipLaid",
+"side": "A",
+"pid": 1,
+"slot": 2,
+"equipDefId": "DEF"
+},
+"equipCrack": {
+"type": "equipCrack",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"equipDefId": "DEF",
+"why": "worn",
+"lives": 1,
+"livesMax": 2,
+"dur": 1,
+"dropped": true
+},
+"equipBreak": {
+"type": "equipBreak",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"equipDefId": "DEF",
+"why": "worn",
+"dropped": true
+},
+"equipDrop": {
+"type": "equipDrop",
+"side": "A",
+"pid": 2,
+"slot": 2,
+"equipDefId": "DEF",
+"fromUid": "UID",
+"fromDefId": "DEF"
+},
+"floorTick": {
+"type": "floorTick",
+"kind": "x",
+"hook": 1,
+"side": "A",
+"pid": 1,
+"slot": 2,
+"uid": "UID",
+"defId": "DEF",
+"action": 2
+},
+"floorSlide": {
+"type": "floorSlide",
+"side": "A",
+"pid": 2,
+"uid": "UID",
+"defId": "DEF",
+"from": 2,
+"to": 2
+},
+"floorEnd": {
+"type": "floorEnd",
+"kind": "x",
+"side": "A",
+"pid": 1,
+"slot": 1
+},
+"floorSet": {
+"type": "floorSet",
+"kind": "x",
+"n": 2,
+"rounds": 2,
+"side": "A",
+"targetSide": "A",
+"pid": 2,
+"slot": 1,
+"defId": "DEF"
+},
+"statusFx|pulverise": {
+"type": "statusFx",
+"kind": "pulverise",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": 1,
+"targetDefId": "DEF",
+"targetUid": "UID",
+"broke": 1
+},
+"statusFx|armorShred": {
+"type": "statusFx",
+"kind": "armorShred",
+"pry": true,
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": 1,
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|sunder": {
+"type": "statusFx",
+"kind": "sunder",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF"
+},
+"statusFx|dismantle": {
+"type": "statusFx",
+"kind": "dismantle",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"slot": 2,
+"ok": 1
+},
+"equipWear": {
+"type": "equipWear",
+"side": 1,
+"uid": "UID",
+"defId": "DEF",
+"equipDefId": "DEF",
+"dur": 2,
+"max": 1,
+"n": 1,
+"why": 1
+},
+"statusFx|bolster": {
+"type": "statusFx",
+"kind": "bolster",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"diveRise": {
+"type": "diveRise",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"mode": 2,
+"n": 2
+},
+"parasiteDrain": {
+"type": "parasiteDrain",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"dmg": 1,
+"healed": 1,
+"hp": 2,
+"mods": 2,
+"gorge": 2
+},
+"parasiteDrop": {
+"type": "parasiteDrop",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"slot": 1,
+"placed": true,
+"hostUid": 1,
+"atk": 2,
+"hp": 2,
+"maxHp": 2
+},
+"spawn|parasite": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 1,
+"cause": "parasite",
+"uids": [
+"UID"
+],
+"lane": 1,
+"slot": 1
+},
+"ambush": {
+"type": "ambush",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"moved": 2
+},
+"statusFx|exploitHit": {
+"type": "statusFx",
+"kind": "exploitHit",
+"side": "A",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"bonus": 2
+},
+"poisonTick": {
+"type": "poisonTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"dmg": 1,
+"mods": 2,
+"decay": false,
+"pulse": true,
+"attUid": "UID",
+"attDefId": "DEF"
+},
+"bleedTick|pulse": {
+"type": "bleedTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"dmg": 1,
+"cause": "pulse",
+"decay": false,
+"mods": 2,
+"pulse": true,
+"attUid": "UID",
+"attDefId": "DEF"
+},
+"statusFx|sk1Aura": {
+"type": "statusFx",
+"kind": "sk1Aura",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"atk": 2,
+"hp": 2,
+"dAtk": 2,
+"dHp": 2,
+"formation": 2,
+"isolation": 2,
+"maxHpNow": 2,
+"hpNow": 2
+},
+"statusFx|punish": {
+"type": "statusFx",
+"kind": "punish",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"dmg": 1
+},
+"reflectShot": {
+"type": "reflectShot",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"castle": 2
+},
+"statusFx|webbed": {
+"type": "statusFx",
+"kind": "webbed",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"bloodlustLeap": {
+"type": "bloodlustLeap",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"from": 2,
+"to": 2,
+"row": 2,
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF"
+},
+"statusFx|carrion": {
+"type": "statusFx",
+"kind": "carrion",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"fromUid": "UID"
+},
+"statusFx|detonate": {
+"type": "statusFx",
+"kind": "detonate",
+"side": "A",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"ticks": 1,
+"left": 2
+},
+"statusFx|brittle": {
+"type": "statusFx",
+"kind": "brittle",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|proliferate": {
+"type": "statusFx",
+"kind": "proliferate",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"fromUid": "UID",
+"fromDefId": "DEF",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 1,
+"total": 2
+},
+"fieldBreak": {
+"type": "fieldBreak",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"rounds": 2,
+"until": 2
+},
+"lumber|1": {
+"type": "lumber",
+"side": 1,
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"cause": 1
+},
+"uranium|1": {
+"type": "uranium",
+"side": 1,
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"cause": 1
+},
+"pearl|1": {
+"type": "pearl",
+"side": 1,
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"cause": 1
+},
+"grace|1": {
+"type": "grace",
+"side": 1,
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"cause": 1
+},
+"lumber|scavenge": {
+"type": "lumber",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"cause": "scavenge"
+},
+"lumber|salvage": {
+"type": "lumber",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"cause": "salvage"
+},
+"lumber|coppice": {
+"type": "lumber",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"cause": "coppice"
+},
+"lumber|driftwood": {
+"type": "lumber",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"cause": "driftwood"
+},
+"lumber|True|windfall": {
+"type": "lumber",
+"side": "A",
+"defId": "DEF",
+"amount": 2,
+"cause": "windfall",
+"field": true
+},
+"statusFx|exhaustSpent": {
+"type": "statusFx",
+"kind": "exhaustSpent",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 1,
+"total": 2,
+"what": 1
+},
+"statusFx|stenchWash": {
+"type": "statusFx",
+"kind": "stenchWash",
+"side": 1,
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"total": 2
+},
+"namedBuff": {
+"type": "namedBuff",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"amount2": 2,
+"broodkeeper": true
+},
+"statusFx|duplicate": {
+"type": "statusFx",
+"kind": "duplicate",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"copyUid": "UID"
+},
+"statusFx|corpsefeed": {
+"type": "statusFx",
+"kind": "corpsefeed",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"amount2": 2,
+"eatenDefId": "DEF"
+},
+"statusFx|barrage": {
+"type": "statusFx",
+"kind": "barrage",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"amount": 2,
+"dmgType": 2
+},
+"spawn|revive|triggerSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 1,
+"cause": "triggerSpawn",
+"kind": "revive",
+"uids": [
+"UID"
+],
+"lane": 1,
+"nearUid": "UID"
+},
+"reviveGrave": {
+"type": "reviveGrave",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"fromGrave": true,
+"srcUid": "UID"
+},
+"spawn|graveCall|triggerSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 1,
+"cause": "triggerSpawn",
+"kind": "graveCall",
+"uids": [
+"UID"
+],
+"lane": 1
+},
+"statusFx|graveCall": {
+"type": "statusFx",
+"kind": "graveCall",
+"side": "A",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"amount2": 2
+},
+"vanguard": {
+"type": "vanguard",
+"side": 1,
+"defId": 1,
+"discardDefId": "DEF"
+},
+"amore": {
+"type": "amore",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"mateUid": "UID",
+"mateDefId": "DEF",
+"regen": 2,
+"hp": 2,
+"type2": 2
+},
+"amoreBroken": {
+"type": "amoreBroken",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"deadUid": "UID",
+"deadDefId": "DEF"
+},
+"fireHit": {
+"type": "fireHit",
+"side": 1,
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"dmg": 2,
+"n": 1,
+"mods": 2
+},
+"rebuild": {
+"type": "rebuild",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"n": 2,
+"trigger": true,
+"hp": 2,
+"maxHp": 2
+},
+"penance": {
+"type": "penance",
+"side": 1,
+"uid": "UID",
+"defId": "DEF",
+"amount": 2,
+"dmg": 2
+},
+"bloodTithe": {
+"type": "bloodTithe",
+"side": 1,
+"uid": "UID",
+"defId": "DEF",
+"amount": 2,
+"castle": true,
+"dmg": 2
+},
+"statusFx|tangled": {
+"type": "statusFx",
+"kind": "tangled",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|bound": {
+"type": "statusFx",
+"kind": "bound",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"strangle": 2
+},
+"statusFx|constrict": {
+"type": "statusFx",
+"kind": "constrict",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"strangle": 2
+},
+"statusFx|wilting": {
+"type": "statusFx",
+"kind": "wilting",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|toxin": {
+"type": "statusFx",
+"kind": "toxin",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"total": 2
+},
+"statusFx|weaken": {
+"type": "statusFx",
+"kind": "weaken",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|bulldoze": {
+"type": "statusFx",
+"kind": "bulldoze",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"nova": {
+"type": "nova",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"n": 1,
+"hits": 2
+},
+"poisonGas": {
+"type": "poisonGas",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A",
+"n": 1,
+"hits": 2
+},
+"absoluteZero": {
+"type": "absoluteZero",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A",
+"hits": 2
+},
+"statusFx|freeze": {
+"type": "statusFx",
+"kind": "freeze",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"absoluteZero": true
+},
+"tornado": {
+"type": "tornado",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"slotMode": 1,
+"moves": [],
+"swaps": [],
+"hits": 2
+},
+"avalanche": {
+"type": "avalanche",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"n": 1,
+"hits": 2
+},
+"statusFx|avalancheWait": {
+"type": "statusFx",
+"kind": "avalancheWait",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 1
+},
+"tsunami": {
+"type": "tsunami",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"n": 1,
+"pushed": 2,
+"hits": 2,
+"tideStarted": 1
+},
+"dragonLightning": {
+"type": "dragonLightning",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"uids": [
+"UID"
+],
+"n": 1
+},
+"statusFx|wither": {
+"type": "statusFx",
+"kind": "wither",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"witherTick": {
+"type": "witherTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"n": 1,
+"left": 2
+},
+"hatch": {
+"type": "hatch",
+"side": "A",
+"uid": "UID",
+"fromDefId": "DEF",
+"defId": "DEF",
+"hp": 2,
+"atk": 2
+},
+"fireball": {
+"type": "fireball",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"castle": true,
+"uids": [
+"UID"
+],
+"n": 1,
+"bounced": 2
+},
+"meteor": {
+"type": "meteor",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"castle": true,
+"sideUids": [
+"UID"
+],
+"n": 1,
+"sideN": 0
+},
+"meteorBurn": {
+"type": "meteorBurn",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"uid": "UID",
+"defId": "DEF",
+"dmg": 1,
+"left": 2,
+"craterUid": "UID",
+"slot": 2,
+"mods": 2
+},
+"banana": {
+"type": "banana",
+"action": "eat",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"amount": 2,
+"n": 1
+},
+"durian": {
+"type": "durian",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"thorns": 2,
+"bonus": 2
+},
+"smokeBomb": {
+"type": "smokeBomb",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"ally": 1,
+"effect": 1
+},
+"statusFx|unitShield": {
+"type": "statusFx",
+"kind": "unitShield",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"total": 2
+},
+"burnTick": {
+"type": "burnTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"dmg": 1,
+"left": 2,
+"mods": 2
+},
+"statusFx|en20Dry": {
+"type": "statusFx",
+"kind": "en20Dry",
+"drain": true,
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 1,
+"total": 2
+},
+"statusFx|en20Soak": {
+"type": "statusFx",
+"kind": "en20Soak",
+"tide": 2,
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"total": 2
+},
+"statusFx|en20Glean": {
+"type": "statusFx",
+"kind": "en20Glean",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"from": 1
+},
+"statusFx|en20LumberFeast": {
+"type": "statusFx",
+"kind": "en20LumberFeast",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"lumber": 2
+},
+"statusFx|crosswind": {
+"type": "statusFx",
+"kind": "crosswind",
+"heavy": 2,
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"electricity": {
+"type": "electricity",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"arcUid": "UID",
+"n": 1,
+"wetArc": 2
+},
+"chainLightning": {
+"type": "chainLightning",
+"uids": [
+"UID"
+]
+},
+"fieldTick|freezing": {
+"type": "fieldTick",
+"field": "freezing",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"freeze": 1
+},
+"statusFx|lightning": {
+"type": "statusFx",
+"kind": "lightning",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"amount": 2,
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF"
+},
+"fieldSet|rain": {
+"type": "fieldSet",
+"side": "A",
+"defId": "DEF",
+"field": "rain",
+"rounds": 2,
+"rainmaker": true
+},
+"lumber|bounty": {
+"type": "lumber",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"cause": "bounty"
+},
+"rally": {
+"type": "rally",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"uids": [
+"UID"
+]
+},
+"pounce": {
+"type": "pounce",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"scale": 2,
+"targetSide": "A"
+},
+"deflect": {
+"type": "deflect",
+"side": 1,
+"uid": "UID",
+"defId": "DEF",
+"helmetGone": true
+},
+"dynamite": {
+"type": "dynamite",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2,
+"hits": 2
+},
+"statusFx|chilli": {
+"type": "statusFx",
+"kind": "chilli",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|rocket": {
+"type": "statusFx",
+"kind": "rocket",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"amount": 1
+},
+"earthquake": {
+"type": "earthquake",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 1,
+"landslide": true
+},
+"statusFx|sleep": {
+"type": "statusFx",
+"kind": "sleep",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"left": 2,
+"powder": true
+},
+"statusFx|stunOnHit": {
+"type": "statusFx",
+"kind": "stunOnHit",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"powder": true
+},
+"statusEnd": {
+"type": "statusEnd",
+"status": "lassoed",
+"side": "A",
+"uid": "UID",
+"defId": "DEF"
+},
+"arrow": {
+"type": "arrow",
+"snipe": true,
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"headwind": 2
+},
+"blindMiss": {
+"type": "blindMiss",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetKind": "card",
+"targetUid": "UID",
+"night": true,
+"ranged": true,
+"eng28": true
+},
+"powder": {
+"type": "powder",
+"element": "x",
+"key": 2
+},
+"bolt": {
+"type": "bolt",
+"element": "x",
+"key": 2
+},
+"gash": {
+"type": "gash",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 1
+},
+"render": {
+"type": "render",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"daunt": true,
+"total": 2
+},
+"triggerCapped": {
+"type": "triggerCapped"
+},
+"shoreUp": {
+"type": "shoreUp",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"targets": 2
+},
+"lumberBurn": {
+"type": "lumberBurn",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 1,
+"left": 2,
+"action": 2
+},
+"triggerFired": {
+"type": "triggerFired",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"hook": 1,
+"action": 2
+},
+"pearl": {
+"type": "pearl",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2
+},
+"elementalEnergy": {
+"type": "elementalEnergy",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"amount": 2
+},
+"brambleShot": {
+"type": "brambleShot",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"targetSide": "A",
+"amount": 1,
+"act": "damage"
+},
+"statusFx|fireHitReady": {
+"type": "statusFx",
+"kind": "fireHitReady",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|debuffAttack": {
+"type": "statusFx",
+"kind": "debuffAttack",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"heal": {
+"type": "heal",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|grant": {
+"type": "statusFx",
+"kind": "grant",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"skills": 2,
+"amount": 2
+},
+"statusFx|stun": {
+"type": "statusFx",
+"kind": "stun",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"everyone": true
+},
+"statusFx|grantFastForward": {
+"type": "statusFx",
+"kind": "grantFastForward",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"spawn|triggerSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 2,
+"cause": "triggerSpawn",
+"uids": [
+"UID"
+],
+"lane": "x",
+"nearUid": "UID"
+},
+"statusFx|exile": {
+"type": "statusFx",
+"kind": "exile",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID"
+},
+"mindControl": {
+"type": "mindControl",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"slot": 2
+},
+"stunPlayer": {
+"type": "stunPlayer",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"turns": 2
+},
+"statusFx|cleanse": {
+"type": "statusFx",
+"kind": "cleanse",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"swapPositions": {
+"type": "swapPositions",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"aDefId": "DEF",
+"aUid": "UID",
+"bDefId": "DEF",
+"bUid": "UID"
+},
+"statusFx|esprit": {
+"type": "statusFx",
+"kind": "esprit",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"amount": 2,
+"hp": 2
+},
+"discard": {
+"type": "discard",
+"side": "A",
+"defId": "DEF",
+"resource": 2,
+"amount": 2
+},
+"statusFx|chilliBurn": {
+"type": "statusFx",
+"kind": "chilliBurn",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"mods": 2
+},
+"toxinTick": {
+"type": "toxinTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"dmg": 1,
+"stack": 2,
+"mods": 2
+},
+"strangleTick": {
+"type": "strangleTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"dmg": 1,
+"mods": 2
+},
+"greaterPoisonTick": {
+"type": "greaterPoisonTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"dmg": 1,
+"stack": 1,
+"decay": 1,
+"mods": 2
+},
+"curseTick": {
+"type": "curseTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"dmg": 1,
+"mods": 2,
+"ground": 2
+},
+"decayTick": {
+"type": "decayTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"dmg": 1,
+"atk": 2,
+"mods": 2
+},
+"heal|nursing": {
+"type": "heal",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"cause": "nursing"
+},
+"heal|healing": {
+"type": "heal",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"cause": "healing"
+},
+"statusFx|cure": {
+"type": "statusFx",
+"kind": "cure",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"poison": 2,
+"gpoison": 2,
+"bleed": 0
+},
+"statusFx|satiety": {
+"type": "statusFx",
+"kind": "satiety",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"amount": 2
+},
+"statusFx|exposedHit": {
+"type": "statusFx",
+"kind": "exposedHit",
+"side": "A",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"crit": 2
+},
+"skipTurn": {
+"type": "skipTurn",
+"reason": "milling",
+"side": 1,
+"defId": "DEF",
+"uid": "UID"
+},
+"sk2|harvest": {
+"type": "sk2",
+"kind": "harvest",
+"side": 1,
+"uid": "UID",
+"defId": "DEF",
+"amount": 2,
+"forced": 2
+},
+"sk2": {
+"type": "sk2",
+"side": 1,
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A"
+},
+"heal|repair": {
+"type": "heal",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"cause": "repair"
+},
+"statusFx|sk2Berry": {
+"type": "statusFx",
+"kind": "sk2Berry",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"total": 2
+},
+"statusFx|sk2BerryEat": {
+"type": "statusFx",
+"kind": "sk2BerryEat",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"total": 2
+},
+"statusFx|eng27Grant": {
+"type": "statusFx",
+"kind": "eng27Grant",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targets": 2,
+"skills": 2,
+"amount": 2
+},
+"statusFx|eng27Hype": {
+"type": "statusFx",
+"kind": "eng27Hype",
+"side": 1,
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 1,
+"ff": 2
+},
+"fortify": {
+"type": "fortify",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"parts": 2,
+"neg": 2,
+"fort": 2,
+"hp": 2,
+"maxHp": 2,
+"shield": 2
+},
+"sk2|fortify": {
+"type": "sk2",
+"kind": "fortify",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"tokenUid": "UID",
+"tokenDefId": "DEF",
+"slot": 2
+},
+"sk2|disarmFull": {
+"type": "sk2",
+"kind": "disarmFull",
+"side": 1,
+"uid": "UID",
+"defId": "DEF"
+},
+"sk2|disarm": {
+"type": "sk2",
+"kind": "disarm",
+"side": 1,
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A",
+"slot": 2,
+"equipDefId": "DEF",
+"lone": true
+},
+"sk2|disarmBlocked": {
+"type": "sk2",
+"kind": "disarmBlocked",
+"side": 1,
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"equipDefId": "DEF"
+},
+"bleedFade": {
+"type": "bleedFade",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"left": 2,
+"atEnd": true
+},
+"ready": {
+"type": "ready",
+"side": "A",
+"defId": "DEF",
+"uid": "UID"
+},
+"statusFx|shellDown": {
+"type": "statusFx",
+"kind": "shellDown",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF"
+},
+"explode": {
+"type": "explode",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"dmg": 1
+},
+"diveLand": {
+"type": "diveLand",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"mode": 2
+},
+"statusFx|shed": {
+"type": "statusFx",
+"kind": "shed",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 1
+},
+"statusFx|coffeeCrash": {
+"type": "statusFx",
+"kind": "coffeeCrash",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID"
+},
+"statusFx|thaw": {
+"type": "statusFx",
+"kind": "thaw",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"left": 2
+},
+"waitTick": {
+"type": "waitTick",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"waitRemaining": 2
+},
+"statusFx|creativity": {
+"type": "statusFx",
+"kind": "creativity",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"total": 2
+},
+"fieldTick|quicksand": {
+"type": "fieldTick",
+"field": "quicksand",
+"round": 2,
+"n": 1,
+"count": 2
+},
+"fieldTick|quicksandSink": {
+"type": "fieldTick",
+"field": "quicksandSink",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"hp": 1
+},
+"skillSpent": {
+"type": "skillSpent",
+"side": 1,
+"uid": "UID",
+"defId": "DEF",
+"keys": 1
+},
+"charge": {
+"type": "charge",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"left": 2,
+"start": true
+},
+"positionBeam": {
+"type": "positionBeam",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"lane": "x",
+"col": 2,
+"amount": 2,
+"targetSide": "A",
+"targetUids": [
+"UID"
+],
+"hq": 2
+},
+"statusFx|exploitFade": {
+"type": "statusFx",
+"kind": "exploitFade",
+"side": "A",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"revive": {
+"type": "revive",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"undead": true,
+"token": true
+},
+"statusFx|grit": {
+"type": "statusFx",
+"kind": "grit",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"amount": 1
+},
+"bounty": {
+"type": "bounty",
+"side": "A",
+"amount": 2,
+"fromDefId": "DEF",
+"uid": "UID"
+},
+"statusFx|berserk": {
+"type": "statusFx",
+"kind": "berserk",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"amount": 2
+},
+"cageBroken": {
+"type": "cageBroken",
+"side": "A",
+"uid": "UID",
+"owner": 2,
+"leaderDefId": "DEF"
+},
+"spawn|relic|onDeathSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 1,
+"cause": "onDeathSpawn",
+"kind": "relic",
+"relic": true,
+"placements": [],
+"fromUid": "UID"
+},
+"spawn|onDeathSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 2,
+"cause": "onDeathSpawn",
+"placements": 1,
+"fromUid": "UID",
+"row": 2
+},
+"collapseIn": {
+"type": "collapseIn",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"fromSide": 1
+},
+"statusFx|skitter": {
+"type": "statusFx",
+"kind": "skitter",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 1
+},
+"statusFx|sequester": {
+"type": "statusFx",
+"kind": "sequester",
+"side": 1,
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"skills": 2,
+"until": 1
+},
+"statusFx|sequesterEnd": {
+"type": "statusFx",
+"kind": "sequesterEnd",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"skills": 2
+},
+"statusFx|sequesterBack": {
+"type": "statusFx",
+"kind": "sequesterBack",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"skills": 2
+},
+"feed": {
+"type": "feed",
+"side": "A",
+"eatenDefId": "DEF",
+"repair": 2,
+"attack": 2,
+"uids": [
+"UID"
+],
+"left": 2,
+"hp": 2,
+"maxHp": 2
+},
+"statusFx|aimedBolt": {
+"type": "statusFx",
+"kind": "aimedBolt",
+"side": "A",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"castle": 2,
+"slot": 2,
+"amount": 2
+},
+"fastForward": {
+"type": "fastForward",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"n": 2
+},
+"boomerangReturn": {
+"type": "boomerangReturn",
+"side": "A",
+"defId": "DEF",
+"uid": "UID",
+"thrownBy": 2,
+"speed": 2,
+"homeUid": "UID",
+"homeCastle": 2,
+"lane": 1,
+"hitCastle": 2,
+"farUid": "UID"
+},
+"boomerangWhiff": {
+"type": "boomerangWhiff",
+"side": "A",
+"defId": "DEF",
+"uid": "UID"
+},
+"boomerangCaught": {
+"type": "boomerangCaught",
+"side": "A",
+"uid": "UID",
+"defId": "DEF"
+},
+"statusFx|headwind": {
+"type": "statusFx",
+"kind": "headwind",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"heavy": 2
+},
+"fieldTick|volleyHit": {
+"type": "fieldTick",
+"field": "volleyHit",
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"fromUid": "UID",
+"fromDefId": "DEF",
+"fromSide": "A",
+"row": 2,
+"slot": 2,
+"targetRow": 2
+},
+"fieldTick|volleyCastle": {
+"type": "fieldTick",
+"field": "volleyCastle",
+"side": "A",
+"dmg": 2,
+"fromUid": "UID",
+"fromDefId": "DEF",
+"fromSide": "A",
+"row": 2,
+"slot": 2,
+"crit": 2,
+"shielded": 2
+},
+"crabClaw": {
+"type": "crabClaw",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"dir": 2,
+"targetUid": "UID"
+},
+"statusFx|reachAim": {
+"type": "statusFx",
+"kind": "reachAim",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF"
+},
+"dive": {
+"type": "dive",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"bonus": 2,
+"col": 2,
+"mode": 1,
+"strike": true,
+"bramble": 2
+},
+"forkSwing": {
+"type": "forkSwing",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"kind": "x",
+"swing": 2,
+"aim": 1,
+"prong": 2,
+"lines": 2
+},
+"tipsySwing": {
+"type": "tipsySwing",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"drift": 2,
+"miss": 2
+},
+"statusFx|inspired": {
+"type": "statusFx",
+"kind": "inspired",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"tokens": 2,
+"total": 2
+},
+"friction": {
+"type": "friction",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"dmg": 2,
+"mods": 2
+},
+"sweepWhiff": {
+"type": "sweepWhiff",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"nearUid": "UID",
+"dir": 1
+},
+"kingSlayer": {
+"type": "kingSlayer",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|scar": {
+"type": "statusFx",
+"kind": "scar",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|nullify": {
+"type": "statusFx",
+"kind": "nullify",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"killed": 2
+},
+"statusFx|daunt": {
+"type": "statusFx",
+"kind": "daunt",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|corrode": {
+"type": "statusFx",
+"kind": "corrode",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"overwhelmHQ": {
+"type": "overwhelmHQ",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"dmg": 2
+},
+"statusFx|momentum": {
+"type": "statusFx",
+"kind": "momentum",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"amount": 2
+},
+"spawn|onAttackedSpawn": {
+"type": "spawn",
+"side": "A",
+"defId": "DEF",
+"count": 1,
+"cause": "onAttackedSpawn",
+"uids": [
+"UID"
+],
+"lane": "x",
+"nearUid": "UID"
+},
+"statusFx|castleThorns": {
+"type": "statusFx",
+"kind": "castleThorns",
+"side": "A",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2
+},
+"statusFx|octolash": {
+"type": "statusFx",
+"kind": "octolash",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2
+},
+"boomerangThrow": {
+"type": "boomerangThrow",
+"miss": true,
+"side": "A",
+"uid": "UID",
+"defId": "DEF",
+"targetSide": "A",
+"targetUid": "UID",
+"castle": 2
+},
+"statusFx|inspiredSpent": {
+"type": "statusFx",
+"kind": "inspiredSpent",
+"side": "A",
+"attUid": "UID",
+"attDefId": "DEF",
+"targetUid": "UID",
+"targetDefId": "DEF",
+"amount": 2,
+"tokens": 2
+},
+"statusFx|recoil": {
+"type": "statusFx",
+"kind": "recoil",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"targetDefId": "DEF",
+"targetUid": "UID",
+"amount": 2,
+"mods": 2
+},
+"swipeLumber": {
+"type": "swipeLumber",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"targetSide": "A",
+"amount": 2
+},
+"frenzy": {
+"type": "frenzy",
+"side": "A",
+"attDefId": "DEF",
+"attUid": "UID",
+"twin": 2
+},
+"roundStart": {
+"type": "roundStart",
+"round": 1
+}
+}

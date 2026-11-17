@@ -1,0 +1,395 @@
+key	from	visual	sound	cues	client_refs	err
+absoluteZero	sample	V	S	iceShatter	7	
+advance	synth	V	S	pawnStep	16	
+ambush	sample	V	-		27	
+amore	synth	V	S	rallyTone	9	
+amoreBroken	synth	V	S	curse	4	
+arrow	sample	-	-		46	
+avalanche	sample	V	S	freezeChime	14	
+banana	sample	V	-		10	
+beware	synth	V	-		3	
+bleedFade	sample	V	-		1	
+bleedTick	sample	V	S	bleedTick	9	
+blindMiss	sample	V	S	blindTone	14	
+bloodTithe	sample	V	S	curse	14	
+bloodlustLeap	synth	V	S	swipeTone	2	
+bloom	synth	V	-		20	
+bolt	synth	V	S	launch	29	
+bolt|acid	sample	V	S	launch,boltAcid	29	
+bolt|fire	sample	V	S	launch,boltFire	29	
+bolt|ice	sample	V	S	launch,boltIce,http	29	
+bolt|poison	sample	V	S	launch,boltPoison	29	
+bolt|shock	sample	V	-		29	
+boomerangCaught	sample	V	-		3	
+boomerangReturn	sample	V	-		5	
+boomerangThrow	synth	V	S	boomerangWhirr	3	
+boomerangWhiff	synth	V	S	boomerangWhirr	3	
+boonFire	synth	-	-		3	
+bossGimmick	synth	-	-		15	
+bounty	sample	V	S	itemDrop	18	
+brambleArmor	sample	V	S	markArmor	9	
+brambleShot	synth	V	-		2	
+brambleVulnerable	synth	V	-		2	
+breachHQ	sample	V	S	pierceTone	2	
+burnTick	sample	V	S	at,burnCrackle	3	
+cage	synth	-	-		6	
+cageBroken	synth	V	S	unlock	3	
+castleRegen	synth	V	S	healTone	4	
+chainBreak	sample	V	S	chainBreak	6	
+chainLightning	synth	-	-		11	
+charge	sample	-	-		20	
+collapseIn	sample	V	S	shift	9	
+confusedWhiff	sample	V	-		3	
+converge	synth	V	S	shift	15	
+crabClaw	sample	V	-		4	
+crown	synth	V	S	unlockChime	7	
+crown|1	synth	V	S	unlockChime	7	
+crown|take	sample	V	S	unlockChime	7	
+curse	sample	V	-		30	
+curseTick	sample	V	-		5	
+dampened	synth	V	-		1	
+darkCast	sample	V	-		5	
+dawn	synth	V	S		11	
+death	sample	V	S	at,death,clang,knockOut	56	
+decayTick	sample	V	S	corrodeTone	8	
+deflect	synth	V	-		3	
+devilry	sample	V	S	devilryTone	42	
+devour	synth	V	-		10	
+discard	synth	-	-		13	
+dive	sample	V	S	splash	12	
+diveLand	synth	V	-		2	
+diveRise	sample	V	S	splash	2	
+dragonLightning	sample	V	-		12	
+draw	synth	V	S	draw	53	
+durian	sample	V	-		12	
+dynamite	synth	V	S	siegeTone	13	
+earthquake	sample	V	S	earthquakeTone	17	
+electricity	sample	-	-		12	
+elementalEnergy	synth	V	S	grace	8	
+equip	synth	V	-		6	
+equipBreak	synth	V	S	lockBreak	2	
+equipCrack	synth	V	S	lockBreak	2	
+equipDrop	synth	V	-		2	
+equipLaid	synth	-	-		2	
+equipReady	synth	V	-		3	
+equipWear	synth	V	-		2	
+evaded	sample	V	S	dodge	58	
+evolve	synth	V	S	unlockChime	4	
+exaltTick	synth	V	-		2	
+exile	sample	V	S	exile	32	
+explode	sample	V	S	boom	17	
+fastForward	sample	V	S	swipeTone	9	
+feed	synth	V	S	healTone	5	
+fieldBreak	sample	V	S	swipeTone	2	
+fieldEnd	synth	V	-		3	
+fieldPaused	synth	V	-		1	
+fieldSet	synth	V	-		8	
+fieldSet|rain	sample	V	-		8	
+fieldTick	synth	V	-		48	
+fieldTick|1	synth	V	-		0	
+fieldTick|arrowSlits	synth	V	S	swipeTone	16	
+fieldTick|ashRain	synth	V	S	boom	10	
+fieldTick|ashRainCastle	synth	V	-		2	
+fieldTick|ashy	synth	V	S	boom	18	
+fieldTick|awash	synth	V	-		15	
+fieldTick|comet	synth	V	S	hitAt	5	
+fieldTick|cometRain	synth	-	-		4	
+fieldTick|consternation	synth	V	-		10	
+fieldTick|crushingDepths	synth	V	S	splash	15	
+fieldTick|eruptionReset	synth	V	-		6	
+fieldTick|freezing	synth	V	S	freezeChime	20	
+fieldTick|glassStorm	synth	V	S	swipeTone	10	
+fieldTick|graspingBriars	synth	V	S	curse	9	
+fieldTick|hail	synth	V	S	freezeChime	17	
+fieldTick|haunted	synth	V	-		9	
+fieldTick|immolation	synth	V	-		10	
+fieldTick|irradiated	synth	V	S	geigerSoft	12	
+fieldTick|landslide	synth	V	S	boom	20	
+fieldTick|lavaSpout	synth	V	S	boom	14	
+fieldTick|lavaTide	synth	V	S	boom	11	
+fieldTick|leylines	synth	V	S	curse	6	
+fieldTick|leylinesCastle	synth	-	-		2	
+fieldTick|leylinesHit	synth	V	-		3	
+fieldTick|mirage	synth	V	-		19	
+fieldTick|petrify	synth	V	-		28	
+fieldTick|quicksand	synth	V	-		13	
+fieldTick|quicksandSink	synth	V	-		3	
+fieldTick|sporeCloud	synth	V	S	sleepTone	11	
+fieldTick|sulphurFumes	synth	V	S	swipeTone	11	
+fieldTick|swampFever	synth	V	S	poisonApply	27	
+fieldTick|tangledRoots	synth	V	S	curse	10	
+fieldTick|thunderstorm	synth	V	S	boom	16	
+fieldTick|tideSpout	synth	V	S	splash	20	
+fieldTick|volley	synth	-	-		13	
+fieldTick|volleyCastle	synth	V	S	at,hitAt	7	
+fieldTick|volleyHit	synth	V	S	at,hitAt	4	
+fieldTick|wildfire	synth	V	-		18	
+fieldTick|wildfireSweep	synth	V	S	fireIgnite	7	
+fireHit	synth	V	-		6	
+fireball	sample	V	S	burnAway	13	
+floorEnd	synth	V	-		13	
+floorSet	synth	-	-		1	
+floorSlide	synth	V	-		2	
+floorTick	synth	-	-		3	
+forkSwing	synth	V	S	prongTone	10	
+forkSwing|fork	sample	V	S	prongTone	10	
+forkSwing|pitchfork	sample	V	S	prongTone	10	
+forkSwing|trident	sample	V	S	prongTone	10	
+fortify	sample	V	-		10	
+frenzy	sample	V	S	frenzyTone	17	
+friction	sample	V	S	hitAt	7	
+fullMoonRise	synth	-	-		1	
+fuse	synth	V	-		26	
+gash	sample	V	S	gashTone	10	
+gold	sample	V	S	gold	529	
+grace	synth	-	S	grace	44	
+greaterPoisonTick	sample	V	S	bubble	2	
+hatch	sample	V	S	unlockChime	19	
+hazardSet|1	synth	-	S	burnAway	3	
+hazardSet|scorch	sample	-	S	burnAway	3	
+hazardSet|trap	sample	V	S	swipeTone	3	
+hazardSprung|1	synth	V	-		3	
+hazardSprung|trap	sample	V	-		3	
+heal	sample	V	S	healTone	82	
+hit	sample	V	S	at,hitAt	167	
+hitHQ	sample	V	S	at,hitAt,voiceTone	58	
+irradiation	synth	V	-		25	(ev.points || []).forEach is not a function
+kingSlayer	synth	V	S	kingSlayerTone	9	
+lumber	sample	V	S	logTumble,http,gold	96	
+lumberBurn	synth	V	S	burnAway	3	
+lumber|True	synth	-	S	gold	96	
+metal	sample	V	S	gold	118	
+meteor	sample	V	S	knockOut	18	
+meteorBurn	sample	V	-		5	
+mimic	sample	V	S	reflectTone	9	
+mindControl	sample	V	-		8	
+moon	synth	-	-		29	
+mulligan	synth	-	-		7	
+namedBuff	sample	V	S	buffUp	4	
+nova	sample	V	S	curse	9	
+overdraw	synth	V	S	draw	2	
+overwhelmHQ	sample	V	S	overwhelmTone	4	
+parasiteAttach	synth	V	S	bloomTone,drip	3	
+parasiteDrain	synth	V	S	gorgeGulp,http	3	
+parasiteDrop	synth	V	-		2	
+pearl	sample	V	S	pearlChime,gold	19	
+penance	sample	V	S	curse	11	
+phase	synth	V	S	dawnChime	172	
+pierceHQ	sample	V	S	pierceTone	5	
+play	sample	-	-		196	
+poisonGas	sample	V	S	poisonApply	8	
+poisonTick	sample	V	S	bubble	12	
+positionBeam	sample	V	S	beamTurn	8	
+pounce	sample	V	-		25	
+powder	synth	-	-		5	
+powder|paralysis	sample	V	S	sporePuff	5	
+powder|poison	sample	V	S	sporePuff	5	
+powder|sleep	sample	V	S	sporePuff	5	
+psychic	sample	V	-		19	
+quiet	synth	V	-		10	
+rally	synth	V	S	rallyTone	10	
+rampart	sample	V	S	markArmor	9	
+ready	sample	-	S	readyChime	54	
+rebuild	sample	V	S	woodKnock,healTone	20	
+reflectShot	synth	V	S	reflectTone	2	
+remember	synth	V	S	nightSwell	10	
+render	sample	V	S	curse	25	
+restless	synth	V	-		17	
+revive	sample	V	S	buffUp	12	
+reviveGrave	synth	-	-		1	
+roundStart	sample	V	-		8	
+sacrifice	synth	V	-		7	
+sap	sample	V	S	sapDrain	21	
+season	synth	V	-		22	
+shieldSoak	sample	V	-		6	
+shoreUp	sample	V	-		5	
+sk2	synth	-	-		3	
+sk2|cantPay	sample	V	-		3	
+sk2|disarm	synth	V	S	swipeTone	3	
+sk2|disarmBlocked	synth	-	-		3	
+sk2|disarmFull	synth	V	-		3	
+sk2|fortify	synth	V	-		3	
+sk2|harvest	synth	V	-		3	
+sk2|noRoom	sample	V	S		3	
+sk2|pickpocketRes	sample	V	-		3	
+skillSpent	sample	V	S	at,spentPuff	2	
+skipTurn	sample	V	S	mysteryBoing	7	
+slipFizzle	synth	V	-		3	
+smokeBomb	sample	V	S	boomerangWhirr	11	
+spawn	sample	V	S	buzz	56	
+spawn|1	synth	V	S	buzz	56	
+spawn|bloom	synth	V	S	buzz	56	
+spawn|brood	sample	V	S	silkDrop	56	
+spawn|bulwark	sample	V	S	constructTone	56	
+spawn|crystal	sample	-	S	buzz	56	
+spawn|graveCall	synth	V	S	buzz	56	
+spawn|meiosis	sample	V	S	buzz,bubble,mysteryBoing	56	
+spawn|mirage	synth	V	S	buzz	56	
+spawn|relic	sample	-	S	buzz	56	
+spawn|revive	synth	-	S	buzz	56	
+spawn|sprout	sample	V	S	buzz,growthSwell,bloomTone	56	
+spawn|twin	sample	V	S	buzz,reflectTone	56	
+spell	synth	V	S	trigger	29	(ev.targets || []).forEach is not a function
+statusEnd	sample	V	S	readyChime	14	
+statusFx|1	synth	-	-		0	
+statusFx|addWait	sample	V	S	curse	7	
+statusFx|aimedBolt	synth	V	-		4	
+statusFx|armorShred	sample	V	S	rendTone	3	
+statusFx|avalancheWait	sample	V	S	at,snowThump	4	
+statusFx|barrage	synth	-	-		2	
+statusFx|berserk	sample	V	S	berserkTone	10	
+statusFx|bludgeon	sample	V	-		9	
+statusFx|bolster	synth	V	-		3	
+statusFx|bound	sample	V	S	curse	16	
+statusFx|brittle	sample	V	S	freezeChime	15	
+statusFx|bulldoze	sample	V	S	swipeTone	8	
+statusFx|bulwark	sample	-	-		13	
+statusFx|carrion	sample	V	S	at,carrionCaw	12	
+statusFx|castleBolt	synth	-	-		6	
+statusFx|castleSpawn	synth	-	-		3	
+statusFx|castleThorns	synth	V	S	swipeTone,hitAt	4	
+statusFx|chilli	sample	V	-		15	
+statusFx|chilliBurn	sample	V	-		5	
+statusFx|choking	synth	V	-		2	
+statusFx|cleanse	synth	V	S	cleanseTone	10	
+statusFx|coffee	sample	V	-		8	
+statusFx|coffeeCrash	sample	V	-		3	
+statusFx|confuse	sample	V	S	confuseWarble	19	
+statusFx|constrict	synth	V	S	curse	6	
+statusFx|corpsefeed	synth	V	-		2	
+statusFx|corrode	sample	V	S	corrodeTone	27	
+statusFx|counter	synth	V	-		64	
+statusFx|cower	synth	V	-		15	
+statusFx|creativity	synth	V	-		7	
+statusFx|crosswind	synth	V	-		4	
+statusFx|cure	sample	V	S	cleanseTone	14	
+statusFx|daunt	sample	V	S	curse	13	
+statusFx|dauntFade	sample	V	-		1	
+statusFx|debuffAttack	sample	V	S	curse	5	
+statusFx|detonate	synth	V	S	boom	5	
+statusFx|dismantle	synth	V	-		4	
+statusFx|duplicate	synth	V	-		3	
+statusFx|en20Dry	synth	V	-		2	
+statusFx|en20Glean	synth	-	-		2	
+statusFx|en20Ignite	sample	V	S	at,igniteWhoosh	4	
+statusFx|en20LumberFeast	synth	V	-		2	
+statusFx|en20Soak	sample	V	-		2	
+statusFx|enfeeble	sample	V	S	exposeTone	6	
+statusFx|eng27Grant	synth	-	-		2	
+statusFx|eng27Hype	synth	V	-		2	
+statusFx|esprit	sample	V	S	espritTone	21	
+statusFx|exhaustSpent	synth	V	-		4	
+statusFx|exile	synth	V	-		32	
+statusFx|exploitFade	synth	V	-		2	
+statusFx|exploitHit	synth	V	-		2	
+statusFx|expose	sample	V	S	exposeTone	28	
+statusFx|exposedHit	synth	V	-		5	
+statusFx|feebleHit	sample	V	-		2	
+statusFx|fireHitReady	synth	V	-		0	
+statusFx|firstBlood	synth	V	S	backstabSlice	20	
+statusFx|freeze	sample	V	S	freezeChime	16	
+statusFx|frightened	synth	V	-		3	
+statusFx|frostbite	synth	V	S	freezeChime	25	
+statusFx|fullMoon	synth	-	-		5	
+statusFx|grant	sample	V	S	rallyTone	47	
+statusFx|grantFastForward	synth	V	-		5	
+statusFx|graveCall	synth	V	-		4	
+statusFx|greaterPoison	sample	V	S	poisonApply	8	
+statusFx|grit	synth	V	S	gritUp	8	
+statusFx|headwind	synth	V	-		3	
+statusFx|hemorrhage	synth	V	S	bleedApply	7	
+statusFx|herbBane	synth	-	-		4	
+statusFx|herbHeal	synth	-	-		4	
+statusFx|hibernate	synth	V	-		5	
+statusFx|ichor	sample	V	-		8	
+statusFx|inspired	sample	V	S	rallyHorn	15	
+statusFx|inspiredSpent	sample	-	-		4	
+statusFx|lasso	sample	V	S	curse	5	
+statusFx|leaderBoon	synth	V	-		5	
+statusFx|lightning	sample	V	-		21	
+statusFx|logjam	synth	V	S	woodKnock	3	
+statusFx|momentum	sample	V	S	momentumTone	16	
+statusFx|nullify	sample	V	S	stunTone	7	
+statusFx|octolash	sample	V	-		8	
+statusFx|phaseGrow	sample	V	S	growthSwell	7	
+statusFx|pinDown	sample	V	S	curse	12	
+statusFx|poison	sample	V	S	poisonApply	192	
+statusFx|poisonous	synth	V	S	poisonApply	5	
+statusFx|prayer	sample	V	-		14	
+statusFx|proliferate	synth	V	S	poisonApply	5	
+statusFx|pulverise	synth	-	-		4	
+statusFx|punish	synth	V	S	ambushTone	6	
+statusFx|reachAim	sample	V	-		2	
+statusFx|recoil	sample	V	-		9	
+statusFx|rend	sample	V	S	exposeTone	6	
+statusFx|rocket	sample	V	-		11	
+statusFx|sacrificed	synth	V	-		7	
+statusFx|satiety	synth	V	-		5	
+statusFx|scar	sample	V	S	scarMark	23	
+statusFx|sequester	synth	V	-		0	
+statusFx|sequesterBack	synth	-	S		0	
+statusFx|sequesterEnd	synth	V	-		0	
+statusFx|shed	sample	V	-		4	
+statusFx|shellDown	sample	V	S	shellCrackTone	3	
+statusFx|shellUp	sample	V	S	shellUp	3	
+statusFx|shieldCall	synth	V	-		12	
+statusFx|shock	sample	V	S	shockTone	55	
+statusFx|sk1Aura	synth	V	-		2	
+statusFx|sk2Berry	sample	V	-		3	
+statusFx|sk2BerryEat	sample	V	-		3	
+statusFx|skitter	synth	V	-		6	
+statusFx|sleep	sample	V	S	sleepTone	21	
+statusFx|sleep|sporeCloud	synth	V	S	sleepTone	21	
+statusFx|spellward	synth	V	S	shield	7	
+statusFx|spite	sample	V	S		2	
+statusFx|stagger	sample	V	S	staggerTone	202	
+statusFx|stanch	synth	V	S	cleanseTone	3	
+statusFx|stateSkill	sample	V	S	unlock	3	
+statusFx|stenchWash	synth	V	-		2	
+statusFx|stun	sample	V	S	stunTone	15	
+statusFx|stunOnHit	sample	V	S	stunTone	13	
+statusFx|sunder	synth	V	S	konk	4	
+statusFx|surge	synth	V	S	swipeTone	5	
+statusFx|tailwind	synth	V	S	swipeTone	6	
+statusFx|tangled	sample	V	S	curse	9	
+statusFx|tangled|graspingBriars	synth	V	S	curse	9	
+statusFx|taunted	sample	V	-		2	
+statusFx|thanatosis	synth	V	S	at,playDeadFlop	13	
+statusFx|thanatosisWake	synth	V	-		2	
+statusFx|thaw	sample	V	-		4	
+statusFx|tipsy	sample	V	S	blindTone	23	
+statusFx|toxin	sample	V	S	poisonApply	15	
+statusFx|unitShield	sample	V	-		2	
+statusFx|vanguard	synth	V	-		9	
+statusFx|vulnHit	sample	V	-		2	
+statusFx|wakeful	synth	V	-		4	
+statusFx|weaken	sample	V	S	corrodeTone	14	
+statusFx|webbed	sample	V	S	curse	18	
+statusFx|webbed|tangledRoots	synth	V	S	curse	18	
+statusFx|wilting	sample	V	-		8	
+statusFx|wither	synth	V	-		19	
+stone	sample	V	S	gold	80	
+strangleTick	sample	V	-		2	
+stunPlayer	sample	V	-		7	
+swapPositions	sample	V	S	shift	7	
+sweepWhiff	sample	V	S	sweepTone	8	
+swipeLumber	synth	V	-		3	
+tempSoak	synth	V	-		1	
+thorns	sample	V	S	clang	28	
+tide	synth	-	-		104	
+tipsySwing	sample	V	-		7	
+tornado	sample	V	S	boomerangWhirr	10	
+toxinTick	sample	V	S	bubble	2	
+triggerCapped	synth	-	S		0	
+triggerFired	sample	V	S	trigger	9	
+tsunami	sample	V	S	splash	11	
+undeadCure|1	synth	V	-		2	
+undeadHeal	sample	V	S	bleedTick	2	
+uranium	sample	V	S	gold	18	
+vanguard	synth	-	-		9	
+waitTick	sample	-	S	waitTickTone	8	
+wash	sample	V	S	splash	16	
+washCrash	sample	V	S	quick	2	
+wave	sample	V	S	splash	65	
+wind	synth	V	-		35	
+witherTick	synth	V	-		4	
