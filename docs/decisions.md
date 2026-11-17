@@ -38,13 +38,6 @@ _Generated from `decisions.json` (2026-11-17). The hub has a searchable, filtera
   - c) Not yet.
 - **Default:** a
 
-**ARROW1-2. Fire Bolt on the Dragon Lair: which card** · Decide · Cards · asked 2026-11-16
-- Your note: "We can do Fire Bolt on the Dragon Lair map as well." No Dragon Lair (20-B) card has Fire Bolt yet. Fire Drake Hatchling has Arrow 2 (Flaming); a drake spitting fire reads as a bolt.
-  - a) Fire Drake Hatchling: Arrow 2 (Flaming) becomes Fire Bolt 2
-  - b) Cinder Hornet gets Fire Bolt
-  - c) A new Lair card later
-- **Default:** a
-
 **ARROW1-3. Snipe, Bola, Lasso: arrows?** · Decide · Skills · asked 2026-11-16
 - Every arrow now counts as one skill: Arrow, Arrow (Flaming), Ice Arrow, Twin Shot, Volley, Archer. Snipe, Bola and Lasso already fire at the arrows' time (after the swings) but are not arrows by name, so each still counts as its own skill.
   - a) Keep them apart (thrown or aimed, not arrows)
@@ -190,13 +183,6 @@ _Generated from `decisions.json` (2026-11-17). The hub has a searchable, filtera
   - b) Also apply the 9 nearer decks (still outside the band)
   - c) Some edits were typos: fix those first, then re-fit
 - **Default:** a
-
-**REFIT2-2. Maps 4-5 stay too hard: lower Health or a card edit?** · Decide · Balance · asked 2026-11-17
-- Too hard even with their weakest legal decks, Shield 0: 5-6 52% (target 60), 5-4 39 (72), 5-2 56 (84), 4-3 43 (70), 4-5 16 (40), 4-1 81 (90). a) Health cuts: 5-6 15 to 12, 5-4 15 to 6, 5-2 15 to 7, 4-3 13 to 5, 4-5 8 to 4 (against your 11-04 rule). b) Fen Mink 1/10 to 1/8, plus the 5-2, 4-3, 4-5 cuts. Main fights in band of 149 (seeds 7600 / 91100): now 128 / 124, a) 133 / 129, b) 132 / 129. Neither pushes a fight out. 4-1 moves with neither.
-  - a) The five Health cuts
-  - b) Fen Mink 1/8 plus the Health cuts for 5-2, 4-3, 4-5
-  - c) Leave them; decide REFIT1-1 first
-- **Default:** b
 
 **CHK1-1. Progression check: flag too-easy fights too?** · Decide · Balance · asked 2026-11-16
 - The progression-deck tournament (checklist B5) flags fights 25+ points off either way: 18 too easy, 14 too hard. Too easy for a progression deck may be fine.
@@ -821,11 +807,25 @@ _Generated from `decisions.json` (2026-11-17). The hub has a searchable, filtera
   - a) As stated
 - **Default:** a
 
+**ARROW1-2. Fire Bolt on the Dragon Lair: which card** · Decide · Cards · asked 2026-11-16 · decided 2026-11-17
+- Your note: "We can do Fire Bolt on the Dragon Lair map as well." No Dragon Lair (20-B) card has Fire Bolt yet. Fire Drake Hatchling has Arrow 2 (Flaming); a drake spitting fire reads as a bolt.
+  - a) Fire Drake Hatchling: Arrow 2 (Flaming) becomes Fire Bolt 2
+  - b) Cinder Hornet gets Fire Bolt
+  - c) A new Lair card later
+- **Default:** a
+
 **REFIT2-1. Road re-fit after SKN1, ARROW1, ECONSK1, CARDPOW1** · Decide · Balance · asked 2026-11-17 · decided 2026-11-17
 - 17 road fights get legal enemy-deck changes (no Shield or Health change), each in band on two fresh seed sets at 400 games. The whole road with them, seed 7600: main 128/149 in band (was 121), 134 within 10 (130), 9 beyond 20 (10); side 78/81 (72). Maps 4-5 and 20-9 stay out (REFIT2-2). Fixes: docs/balance/refit2/refit2-fixes.jsonl.
   - a) Apply the 17
   - b) Leave them
 - **Default:** a
+
+**REFIT2-2. Maps 4-5 stay too hard: lower Health or a card edit?** · Decide · Balance · asked 2026-11-17 · decided 2026-11-17
+- Too hard even with their weakest legal decks, Shield 0: 5-6 52% (target 60), 5-4 39 (72), 5-2 56 (84), 4-3 43 (70), 4-5 16 (40), 4-1 81 (90). a) Health cuts: 5-6 15 to 12, 5-4 15 to 6, 5-2 15 to 7, 4-3 13 to 5, 4-5 8 to 4 (against your 11-04 rule). b) Fen Mink 1/10 to 1/8, plus the 5-2, 4-3, 4-5 cuts. Main fights in band of 149 (seeds 7600 / 91100): now 128 / 124, a) 133 / 129, b) 132 / 129. Neither pushes a fight out. 4-1 moves with neither.
+  - a) The five Health cuts
+  - b) Fen Mink 1/8 plus the Health cuts for 5-2, 4-3, 4-5
+  - c) Leave them; decide REFIT1-1 first
+- **Default:** b
 
 **SIDE5-1. 19-A-1 almost always won** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
 - With every other proposed fix in, side fight 19-A-1 reads 99% against a target of 90 (band 82-98). The only legal deck move that reaches the band swaps 2 Granite Ox Golem for 2 Obsidian Scorpion: 88 / 88 / 89 on three seed sets. Cost: with SIDE4-1, Obsidian Scorpion would be in 9 of Map 19's 10 fights. File: docs/balance/allfix/side19a1-fixes.jsonl.
