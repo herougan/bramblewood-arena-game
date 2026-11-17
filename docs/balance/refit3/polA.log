@@ -1,0 +1,26 @@
+START 1-5 target 40 wide 44.3, refit2 49.3, live 56.3
+1-5 target 40 (30-49) size 20 start {"badger-lumberjack":1,"jackrabbit-sprinter":4,"moonlit-hare":4,"duck-paddler":1,"puddle-skimmer":2,"bramble-sprout":4,"meadow-rabbit":4} problems []
+start {"badger-lumberjack":1,"jackrabbit-sprinter":4,"moonlit-hare":4,"duck-paddler":1,"puddle-skimmer":2,"bramble-sprout":4,"meadow-rabbit":4} 44.3
+round 1: cur 35/44.3; 51 legal, 51 read + 12 predicted (of 43); top: -1 meadow-rabbit +1 puddle-skimmer 40/46.3 | -4 meadow-rabbit +4 robin-redbreast 40/46.7 | -1 bramble-sprout +1 puddle-skimmer 40/47.7 | -1 jackrabbit-sprinter -1 puddle-skimmer +2 badger-lumberjack 40/50.3
+no nearer move
+RESULT 1-5 {"badger-lumberjack":1,"jackrabbit-sprinter":4,"moonlit-hare":4,"duck-paddler":1,"puddle-skimmer":2,"bramble-sprout":4,"meadow-rabbit":4} 44.3 {} moves:  problems: []
+START 1-A-5 target 40 wide 60.7, refit2 65, live 66.7
+1-A-5 target 40 (30-49) size 16 side (min 12) start {"clover-butterfly":4,"lucky-hopper":2,"puddle-skimmer":1,"robin-redbreast":4,"dormouse":4,"meadow-rabbit":1} problems []
+start {"clover-butterfly":4,"lucky-hopper":2,"puddle-skimmer":1,"robin-redbreast":4,"dormouse":4,"meadow-rabbit":1} 60.7
+round 1: cur 65/60.7; 90 legal, 90 read + 12 predicted (of 54); top: -1 meadow-rabbit -4 clover-butterfly +2 cottontail 50/56.3 | -1 dormouse +1 chipmunk-cavalry 55/62.7 | -1 meadow-rabbit -1 clover-butterfly 45/63 | -1 meadow-rabbit 55/66.7
+round 2: cur 50/56.3; 61 legal, 61 read + 12 predicted (of 48); top: -2 robin-redbreast -2 cottontail +2 lucky-hopper +2 meadow-rabbit 40/55 | -2 dormouse +2 lucky-hopper 42.5/58.7 | -2 robin-redbreast -2 dormouse +2 lucky-hopper +2 meadow-rabbit 40/59.3 | -4 robin-redbreast +4 chipmunk-cavalry 42.5/64.7
+round 3: cur 40/55; 66 legal, 66 read + 12 predicted (of 47); top: -1 dormouse +1 cottontail 40/58 | -1 robin-redbreast +1 cottontail 40/59.3 | -2 dormouse +2 cottontail 40/59.3 | -3 dormouse +3 clover-butterfly 40/60
+no nearer move
+RESULT 1-A-5 {"lucky-hopper":4,"puddle-skimmer":1,"robin-redbreast":2,"dormouse":4,"meadow-rabbit":2} 55 {} moves: -1 meadow-rabbit -4 clover-butterfly +2 cottontail ; -2 robin-redbreast -2 cottontail +2 lucky-hopper +2 meadow-rabbit problems: []
+START 8-7 target 60 live 50, refit2 47.7, wide 44.3
+8-7 target 60 (52-68) size 14 start {"barrow-leech-bat":2,"blind-cave-fish":4,"cave-olm":1,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4} problems []
+start {"barrow-leech-bat":2,"blind-cave-fish":4,"cave-olm":1,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4} 50
+round 1: cur 40/50; 37 legal, 37 read + 12 predicted (of 30); top: -1 cave-olm +1 barrow-leech-bat 50/49 | -1 barrow-leech-bat +1 cave-olm 50/47.7 | -2 barrow-leech-bat +2 cave-olm 55/43 | -1 rot-swollen-carcass +1 cave-olm 50/37.3
+no nearer move
+RESULT 8-7 {"barrow-leech-bat":2,"blind-cave-fish":4,"cave-olm":1,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4} 50 {} moves:  problems: []
+START 2-B-1 target 90 wide 83.3, refit2 79.7, live 72.7
+2-B-1 target 90 (82-98) size 15 side (min 11) start {"gallery-orb-weaver":1,"trash-panda-trickster":1,"pincushion-urchin":4,"limpet-clinger":4,"open-ocean-hermit-crab":4} problems []
+start {"gallery-orb-weaver":1,"trash-panda-trickster":1,"pincushion-urchin":4,"limpet-clinger":4,"open-ocean-hermit-crab":4} 83.3
+round 1: cur 80/83.3; 38 legal, 38 read + 12 predicted (of 46); top: -1 pincushion-urchin +1 trash-panda-trickster 85/78.3 | -1 open-ocean-hermit-crab +1 trash-panda-trickster 85/76 | -2 open-ocean-hermit-crab +2 trash-panda-trickster 85/75 | -1 open-ocean-hermit-crab -2 pincushion-urchin +3 trash-panda-trickster 87.5/72.7
+no nearer move
+RESULT 2-B-1 {"gallery-orb-weaver":1,"trash-panda-trickster":1,"pincushion-urchin":4,"limpet-clinger":4,"open-ocean-hermit-crab":4} 83.3 {} moves:  problems: []
