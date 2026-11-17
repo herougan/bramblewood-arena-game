@@ -41,7 +41,7 @@ Rule for moves: a skill that leaves a map is demoted to light where its first ca
 | 4 Sunken Hollow | Bloom, Meiosis, Shield, Delivery | Bloom, Meiosis, Shield | Bloom, Meiosis, Delivery | pond algae, planarians, a beaver lodge | - |
 | 5 Gatorback Swamp | Forestry, Bleed, Twin Strike, Regeneration, Venomous | Forestry, Bleed, Venomous | Forestry, Bleed, Venomous | cypress loggers, gators and mosquitoes, swamp snakes | - |
 | 6 Sable Swampmire | Ambush, Leech, Parasite, Constrict | Ambush, Leech, Parasite | Ambush, Leech, Parasite | lurking crocs, leeches, lampreys | - |
-| 7 The Morel Hollow | Carrion, Corrode, {Status} Powder | same | Carrion, Corrode, {Status} Powder | rot, fungus, spores | - |
+| 7 The Morel Hollow | Carrion, Corrode, {Status} Powder | same | Carrion, Corrode, Powder (Sleeping, Poison; Speed -1) | rot, fungus, spores | - |
 | 8 Caves & Alcoves | Darksight, Web, Illuminate | same | Darksight, Web, Illuminate | dark caves, cave spiders, glow moths | - |
 | 9 The Kelp Mangroves | Trident, Electricity | same | Trident, Electricity, Regeneration | spearfishers, eels, starfish that regrow | - |
 | 10 Coral Current | Weaken, Wave | same | Weaken, Wave | stinging reef, currents | Poison Barbs (lionfish) |
@@ -54,4 +54,6 @@ Rule for moves: a skill that leaves a map is demoted to light where its first ca
 | 17 Wolfsbane Tundra | Momentum | same | Momentum | wolf runs on the ice | Freeze (Glacier Yak) |
 | 18 The Glass Dunes | Trap | same | Trap | antlion pits | Acid (Caustic Scorpion) |
 | 19 Ashen Spurn | Recoil | same | Recoil | lava, recoil off hot rock | Smoke Bomb (Smokescreen Raccoon) |
-| 20 The Sundered Peak | Arrow (Fire), Bulldoze?, Recoil? | Arrow (Flaming), Bulldoze | Arrow (Flaming), Bulldoze | fire archers, rams at the summit | Fire Bolt (Dragon Lair 20-B) |
+| 20 The Sundered Peak | Arrow (Fire), Bulldoze?, Recoil? | Arrow (Flaming), Bulldoze | Arrow (Flaming), Bulldoze | fire archers, rams at the summit | Fire Bolt (the only bolt on Maps 0-20; other bolts on Maps 21+) |
+
+Owner 11-17 17:32 (OWN-1117-1): only Fire Bolt on Map 20, every other bolt on Maps 21+ (BOLT2); powders start with Sleeping Powder and Poison Powder, Speed -1 actions, one skill family (POWDER1).
