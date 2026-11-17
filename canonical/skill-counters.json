@@ -1082,6 +1082,72 @@
    ],
    "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
   },
+  "poisonPowder": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "POWDER1 (2026-11-17): a no-damage puff, Poison Bolt's spit (fireShotsOf); Reflect, Helmet, Canopy Cover, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "sleepPowder": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "POWDER1 (2026-11-17): a no-damage puff, Poison Bolt's spit (fireShotsOf); Reflect, Helmet, Canopy Cover, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
   "prey": {
    "counters": [
     {
@@ -1694,11 +1760,13 @@
   "poison": "venom",
   "poisonBarbs": "venom",
   "poisonBolt": "venom",
+  "poisonPowder": "venom",
   "poisonGas": "venom",
   "scar": "scar",
   "shock": "shock",
   "silence": "silence",
   "sleep": "sleep",
+  "sleepPowder": "sleep",
   "stagger": "stagger",
   "stench": "stench",
   "strangle": "strangle",
