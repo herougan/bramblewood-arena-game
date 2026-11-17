@@ -48436,7 +48436,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=3887925a53", "es": "assets/lang/es.js?v=a4269f2d7a", "fr": "assets/lang/fr.js?v=3c21716db1", "id": "assets/lang/id.js?v=e45fadecc4", "it": "assets/lang/it.js?v=0d98388c78", "ja": "assets/lang/ja.js?v=afd1d36e50", "ko": "assets/lang/ko.js?v=5dea419bc0", "pt": "assets/lang/pt.js?v=6cc9c9e155", "ta": "assets/lang/ta.js?v=e1ff9ac3ce", "tl": "assets/lang/tl.js?v=b3ad555545", "zh-Hans": "assets/lang/zh-Hans.js?v=47ef6c6e85", "zh-Hant": "assets/lang/zh-Hant.js?v=c9af859cd7"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=a96afb7747", "es": "assets/lang/es.js?v=288f7216f7", "fr": "assets/lang/fr.js?v=c023b67fa1", "id": "assets/lang/id.js?v=452dbcfc93", "it": "assets/lang/it.js?v=a59be9b875", "ja": "assets/lang/ja.js?v=1884f31857", "ko": "assets/lang/ko.js?v=6ed8ff4e35", "pt": "assets/lang/pt.js?v=b6c68db374", "ta": "assets/lang/ta.js?v=c21434aa3a", "tl": "assets/lang/tl.js?v=fa5dadee80", "zh-Hans": "assets/lang/zh-Hans.js?v=37d7a89b7e", "zh-Hant": "assets/lang/zh-Hant.js?v=6dd095f39a"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -50637,7 +50637,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.mimic-copying": "Copying {name}",
   "ui.log-mimic": "🪞 {name} mimics {ally}: now {atk}/{hp}, with its skills.",
   "ui.skn-archer": "Archer",
-  "ui.sk-archer": "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.",
+  "ui.sk-archer": "Never attacks; each turn, after the swings, shoots a {n}-damage arrow at the enemy in front or nearest.",
   "ui.skn-archer-style": "Archer look",
   "ui.archer-style-bow": "Bow: it shoots an arrow",
   "ui.archer-style-drop": "Drop: it flies over the target, drops a stone and flies back",
@@ -58402,7 +58402,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c69b26690918', BUILD_CARD_HASH = '764c23110d3d94fa59350f15c0e90cff60eeaa3bf25b6577591b38c0f3037a1d';
+const BUILD_ID = 'bca2cb97a09c', BUILD_CARD_HASH = '764c23110d3d94fa59350f15c0e90cff60eeaa3bf25b6577591b38c0f3037a1d';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 5 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh)

@@ -2074,7 +2074,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.mimic-copying": "Copying {name}",
   "ui.log-mimic": "🪞 {name} mimics {ally}: now {atk}/{hp}, with its skills.",
   "ui.skn-archer": "Archer",
-  "ui.sk-archer": "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.",
+  "ui.sk-archer": "Never attacks; each turn, after the swings, shoots a {n}-damage arrow at the enemy in front or nearest.",
   "ui.skn-archer-style": "Archer look",
   "ui.archer-style-bow": "Bow: it shoots an arrow",
   "ui.archer-style-drop": "Drop: it flies over the target, drops a stone and flies back",

@@ -46,7 +46,7 @@
    "볼트 스킬은 모두 합쳐 스킬 하나로 센다. 볼트는 속도 2로, 빠른 유닛과 함께, 다른 공격보다 먼저 쏜다."
   ],
   "ui.sk-archer": [
-   "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.",
+   "Never attacks; each turn, after the swings, shoots a {n}-damage arrow at the enemy in front or nearest.",
    "N’attaque jamais : à chaque tour, après les frappes, tire une flèche de {n} dégâts sur l’ennemi en face ou le plus proche.",
    "Greift nie an: Jede Runde schießt es nach den Hieben einen Pfeil für {n} Schaden auf den Gegner davor oder den nächsten.",
    "Nunca ataca: cada turno, tras los golpes, dispara una flecha de {n} de daño al enemigo de enfrente o al más cercano.",

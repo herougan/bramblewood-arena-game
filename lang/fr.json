@@ -4477,5 +4477,5 @@
  "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Toutes les compétences de carreau comptent ensemble pour une seule. Les carreaux partent à Vitesse 2, avec les unités Vives, avant les autres frappes.",
  "The Shock lasts a round.": "L’électrocution dure un tour.",
  "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Frappe à Vitesse 2, avec les Carreaux : avant les Flèches et les unités sans Vive.",
- "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.": "N’attaque jamais : à chaque tour, après les frappes, tire une flèche de {n} dégâts sur l’ennemi en face ou le plus proche."
+ "Never attacks; each turn, after the swings, shoots a {n}-damage arrow at the enemy in front or nearest.": "N’attaque jamais : à chaque tour, après les frappes, tire une flèche de {n} dégâts sur l’ennemi en face ou le plus proche."
 }

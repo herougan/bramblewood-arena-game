@@ -4476,5 +4476,5 @@
  "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Todas las habilidades de saeta cuentan juntas como una. Las saetas salen a Velocidad 2, con las unidades Rápidas, antes de los otros golpes.",
  "The Shock lasts a round.": "La electrocución dura una ronda.",
  "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Golpea a Velocidad 2, con las Saetas: antes que las Flechas y las unidades sin Rápida.",
- "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.": "Nunca ataca: cada turno, tras los golpes, dispara una flecha de {n} de daño al enemigo de enfrente o al más cercano."
+ "Never attacks; each turn, after the swings, shoots a {n}-damage arrow at the enemy in front or nearest.": "Nunca ataca: cada turno, tras los golpes, dispara una flecha de {n} de daño al enemigo de enfrente o al más cercano."
 }

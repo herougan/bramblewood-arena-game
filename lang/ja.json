@@ -4477,5 +4477,5 @@
  "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "ボルトのスキルはすべて合わせて1つのスキルとして数える。ボルトはスピード2で、素早いユニットと同時に、他の攻撃より先に放たれる。",
  "The Shock lasts a round.": "感電は1ラウンド続く。",
  "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "スピード2で攻撃する（ボルトと同時）：矢や素早いを持たないユニットより先。",
- "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.": "攻撃しない。毎ターン、他の攻撃の後に、正面の敵（いなければ最も近い敵）に{n}ダメージの矢を放つ。"
+ "Never attacks; each turn, after the swings, shoots a {n}-damage arrow at the enemy in front or nearest.": "攻撃しない。毎ターン、他の攻撃の後に、正面の敵（いなければ最も近い敵）に{n}ダメージの矢を放つ。"
 }

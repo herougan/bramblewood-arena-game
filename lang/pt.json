@@ -4478,5 +4478,5 @@
  "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Todas as habilidades de virote contam juntas como uma. Os virotes saem à Velocidade 2, com as unidades Rápidas, antes dos outros ataques.",
  "The Shock lasts a round.": "O choque dura uma ronda.",
  "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Ataca à Velocidade 2, com os Virotes: antes das Flechas e das unidades sem Rápido.",
- "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.": "Nunca ataca: a cada turno, depois dos ataques, dispara uma flecha de {n} de dano no inimigo à frente ou no mais próximo."
+ "Never attacks; each turn, after the swings, shoots a {n}-damage arrow at the enemy in front or nearest.": "Nunca ataca: a cada turno, depois dos ataques, dispara uma flecha de {n} de dano no inimigo à frente ou no mais próximo."
 }

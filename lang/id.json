@@ -4478,5 +4478,5 @@
  "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Semua skill bolt dihitung bersama sebagai satu skill. Bolt ditembakkan di Kecepatan 2, bersama unit Cepat, sebelum serangan lain.",
  "The Shock lasts a round.": "Setrumnya bertahan satu ronde.",
  "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Menyerang di Kecepatan 2, bersama Bolt: sebelum Panah dan unit tanpa Cepat.",
- "Never attacks; shoots an arrow for {n} damage each turn, after the swings, at the enemy in front or nearest.": "Tak pernah menyerang: tiap giliran, setelah serangan biasa, menembakkan panah {n} kerusakan ke musuh di depan, atau yang terdekat."
+ "Never attacks; each turn, after the swings, shoots a {n}-damage arrow at the enemy in front or nearest.": "Tak pernah menyerang: tiap giliran, setelah serangan biasa, menembakkan panah {n} kerusakan ke musuh di depan, atau yang terdekat."
 }
