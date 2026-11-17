@@ -186,7 +186,7 @@ _Generated from `decisions.json` (2026-11-17). The hub has a searchable, filtera
 - **Default:** a
 
 **REFIT2-2. Maps 4-5 stay too hard: lower Health or a card edit?** · Decide · Balance · asked 2026-11-17
-- With their weakest legal decks and Shield 0 these stay too hard: 5-6 52% (target 60), 5-4 39 (72), 5-2 56 (84), 4-3 43 (70), 4-5 16 (40), 4-1 81 (90). Lower enemy Health puts five in band on two fresh seed sets: 5-6 15 to 12, 5-4 15 to 6, 5-2 15 to 7, 4-3 13 to 5, 4-5 8 to 4 (your 11-04 rule: no more cuts). Fen Mink 1/10 to 1/8 instead fixes 5-6 and nearly 5-4. 4-1 moves with neither; Cricket Drummer 2/5 (REFIT1-1) lifts it to 84.
+- Too hard even with their weakest legal decks, Shield 0: 5-6 52% (target 60), 5-4 39 (72), 5-2 56 (84), 4-3 43 (70), 4-5 16 (40), 4-1 81 (90). a) Health cuts: 5-6 15 to 12, 5-4 15 to 6, 5-2 15 to 7, 4-3 13 to 5, 4-5 8 to 4 (against your 11-04 rule). b) Fen Mink 1/10 to 1/8, plus the 5-2, 4-3, 4-5 cuts. Main fights in band of 149 (seeds 7600 / 91100): now 128 / 124, a) 133 / 129, b) 132 / 129. Neither pushes a fight out. 4-1 moves with neither.
   - a) The five Health cuts
   - b) Fen Mink 1/8 plus the Health cuts for 5-2, 4-3, 4-5
   - c) Leave them; decide REFIT1-1 first
@@ -798,6 +798,13 @@ _Generated from `decisions.json` (2026-11-17). The hub has a searchable, filtera
 - **Default:** a
 
 ## Decided
+
+**REFIT3-1. REFIT3: 4 more road decks from a wider legal search** · Decide · Balance · asked 2026-11-17 · decided 2026-11-17
+- A wider legal search (random and exhaustive legal decks, multi-card and two-step moves) on the 26 fights REFIT2 left. 4 decks land in band on two fresh seed sets at 400 games: 1-5 61 to 44% (target 40), 10-A-1 81 to 89 (90), 12-7 54 to 47 (40), 11-9 69 to 65 (60; marginal, in band on 2 of 4 reads). Whole road with them: main 129/149 in band on seed 7600 (now 128), 126 on 91100 (124). Deck problems 21 = 21; skir1 failures 34 to 32, none new. The rest stop at their pools' legal limits.
+  - a) Apply the 4
+  - b) Apply 1-5, 10-A-1, 12-7; leave 11-9 (marginal)
+  - c) Leave them
+- **Default:** a
 
 **ARROW1-1. Arrows and Bolts are one skill each; Arrows slow, Bolts fast** · Decide · Skills · asked 2026-11-16 · decided 2026-11-16
 - All arrow variants (serrated/bleed, poison, sleep, paralysis and other status arrows, fire, electric, water and other elements) count as one skill; the same for bolts. Arrows fire slower than normal (speed 0), Bolts faster (speed 2). Arrow (Flaming) is Map 20's skill; Fire Bolt goes on the Dragon Lair map. Some list skills may sit on submaps instead of Maps 0-20.
