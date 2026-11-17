@@ -11,7 +11,15 @@
      FX.H.healingMend(healer, target)                  Healing N: a green cross over the healer, its mend hops to the patient
      FX.H.worshipHymn(el)                              Worship: a halo settles and notes rise when its side gains Prayer
      FX.H.gorgeGulp(host)                              Gorge: the parasite gulps twice, drops of blood are sucked into it
-   Cues (SoundKit, built from its tone / noise / sweep primitives, SoundKit.prim): crabClack, geigerSoft, mendChime, hymnBell, gorgeGulp.
+   2026-11-17 (package FX14): the bolts and arrows redrawn, and the resource skills (section 5)
+     FX.H.boltShot(from, to, {element, spitfire, charge, flight})   a quick element spit: fire ember, ice shard, acid glob, poison drop
+     FX.H.shockBolt(from, to)                          Shock Bolt: a crackling zig-zag that forks where it lands
+     FX.H.arrowShot(shooter, target, {variant, draw, flight, miss, twin, plunge, archer})   a drawn, fletched arrow on an arc
+     FX.H.volleyLoose(shooter)                         Volley: a fan of arrows lofted at once (each hit then plunges from above)
+     FX.H.forestryLog / coinFlip / plunderCoins / anvilSpark / pearlGlint   Forestry, Gold (Prospecting, Delivery), Plunder,
+                                                       Masonry / Refining, Pearls
+   Cues (SoundKit, built from its tone / noise / sweep primitives, SoundKit.prim): crabClack, geigerSoft, mendChime, hymnBell, gorgeGulp;
+   FX14: boltFire, boltIce, boltAcid, boltPoison, spitfire, arrowSlash, venomPuff, crystalPop, logTumble, coinFlip, anvilTink, pearlChime.
    ============================================================ */
 (function(root){
 'use strict';
@@ -63,6 +71,19 @@ const CUES = {
   mendChime(P){ P.tone(1046, 0.12, 'sine', 0.04); P.tone(1568, 0.16, 'sine', 0.03, 0.07); P.sweep(700, 1400, 0.18, 'triangle', 0.018, 0.02); },
   hymnBell(P){ [659, 831, 988].forEach((f, i)=> P.tone(f, 0.5, 'sine', 0.035, i*0.11)); P.tone(1976, 0.6, 'sine', 0.01, 0.33); },
   gorgeGulp(P){ [0, 0.2].forEach(d=>{ P.sweep(240, 85, 0.12, 'triangle', 0.08, d); P.fnoise(0.1, 0.035, {type:'lowpass', freq:520, freqEnd:180, attack:0.01, delay:d}); }); },
+  // FX14 (2026-11-17): the bolts land with their element (the spit itself keeps SoundKit.launch), the arrow riders, the resource skills
+  boltFire(P){ P.fnoise(0.16, 0.07, {type:'bandpass', freq:900, freqEnd:300, q:0.8, attack:0.004}); P.sweep(420, 150, 0.12, 'triangle', 0.05); },
+  boltIce(P){ [2600, 3300, 2900, 3900].forEach((f, i)=> P.tone(f, 0.05, 'sine', 0.025, i*0.028)); P.fnoise(0.05, 0.05, {type:'highpass', freq:4200, attack:0.001}); },
+  boltAcid(P){ P.fnoise(0.32, 0.045, {type:'highpass', freq:2600, freqEnd:5200, attack:0.01, crackle:0.04}); P.sweep(300, 120, 0.08, 'sine', 0.05); },
+  boltPoison(P){ P.sweep(520, 180, 0.09, 'sine', 0.07); P.fnoise(0.22, 0.035, {type:'bandpass', freq:1400, freqEnd:700, q:1.2, attack:0.02, delay:0.05}); },
+  spitfire(P){ P.fnoise(0.12, 0.06, {type:'bandpass', freq:1300, freqEnd:500, q:0.9, attack:0.003}); P.fnoise(0.08, 0.04, {type:'bandpass', freq:1100, freqEnd:400, q:0.9, attack:0.003, delay:0.06}); },
+  arrowSlash(P){ P.fnoise(0.07, 0.07, {type:'highpass', freq:2200, freqEnd:5200, attack:0.002}); P.tone(180, 0.06, 'triangle', 0.05, 0.02); },
+  venomPuff(P){ P.fnoise(0.2, 0.05, {type:'bandpass', freq:900, freqEnd:2200, q:0.8, attack:0.03}); P.tone(330, 0.07, 'sine', 0.03, 0.02); },
+  crystalPop(P){ P.tone(1760, 0.07, 'sine', 0.04); P.tone(2637, 0.09, 'sine', 0.03, 0.03); P.fnoise(0.04, 0.04, {type:'highpass', freq:5000, attack:0.001, delay:0.02}); },
+  logTumble(P){ [0, 0.11, 0.19].forEach((d, i)=> P.tone(300 - i*40, 0.05, 'triangle', 0.07 - i*0.015, d)); P.fnoise(0.04, 0.04, {type:'lowpass', freq:900, attack:0.002, delay:0.11}); },
+  coinFlip(P){ P.tone(2093, 0.12, 'square', 0.012); P.tone(2637, 0.16, 'sine', 0.035, 0.05); P.tone(3136, 0.2, 'sine', 0.025, 0.13); },
+  anvilTink(P){ [0, 0.18].forEach(d=>{ P.tone(1320, 0.18, 'triangle', 0.045, d); P.tone(2470, 0.12, 'sine', 0.025, d); P.fnoise(0.02, 0.06, {type:'highpass', freq:3000, attack:0.001, delay:d}); }); },
+  pearlChime(P){ P.tone(1568, 0.25, 'sine', 0.03); P.tone(2349, 0.3, 'sine', 0.02, 0.08); P.sweep(3000, 4200, 0.12, 'sine', 0.008, 0.1); },
 };
 M.CUES = Object.keys(CUES);
 function soundKit(){
@@ -298,6 +319,7 @@ const hq = side=>{ try{ if(typeof hqTileEl === 'function') return hqTileEl(side)
 const sideCards = side=> [...document.querySelectorAll(`#battlefieldEl [id^="${side === 'A' ? 'rowMine' : 'rowEnemy'}"] .board-card[data-defid]`)];
 M.onEvent = function(ev, env){
   if(!ev || !env) return;
+  if(fx14Event(ev, env)) return; // FX14 (2026-11-17): the volley's loose and the resource skills (section 5)
   const T = ev.type, el = env.el, sp = Math.max(1, (env.match && env.match.speedMult) || 1);
   if(T === 'crabClaw'){ if(!env.fxAtLeast('low')) return; const a = el(ev.attUid); if(!a) return;
     CRAB.set(String(ev.attUid), {t:Date.now()}); if(CRAB.size > 24) CRAB.delete(CRAB.keys().next().value);
