@@ -360,6 +360,7 @@ ACTION_KEYS.push('forgeWeapon', 'disarm', 'revive' /* ENG9 (2026-10-26): Revive 
 ACTION_KEYS.push('exploit', 'poisonTick', 'pulse'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N; + Pulse N (EN4, 2026-10-23: Poison Tick is retired, it reads as Pulse)
 ACTION_KEYS.push('arrow');
 ACTION_KEYS.push('strangle', 'constrict'); // ENG36 (2026-11-08): Strangle / Constrict as actions
+ACTION_KEYS.push('rend', 'enfeeble', 'weaken', 'grant'); // ENG50 (2026-11-17, OWN-1117-2): Rend N, Enfeeble N, Weaken N, Grant {who} {what}
 // ENG36 (2026-11-08): the statuses a Resist / Weakness / Immune entry can name ('status:<key>'), their kind (dot: damage over time) and
 // icon. The engine's rules are in makeSimEngine (eng36Rel ...); the card editor lists these in its "+ Statuses" pickers.
 const ENG36_STATUS = {
@@ -368,7 +369,8 @@ const ENG36_STATUS = {
   freeze: {icon: '🧊'}, sleep: {icon: '💤'}, paralyze: {icon: '⚡'}, stun: {icon: '💫'}, blind: {icon: '🙈'}, tipsy: {icon: '🍺'}, confuse: {icon: '😵‍💫'},
   shock: {icon: '🎯'}, stagger: {icon: '🥴'}, silence: {icon: '🚫'}, stymie: {icon: '⏳'}, exhaust: {icon: '😫'}, petrify: {icon: '🗿'}, stench: {icon: '🦨'},
   web: {icon: '🕸️'}, brittle: {icon: '🧊'}, daunt: {icon: '😨'}, scar: {icon: '🩹'}, corrode: {icon: '🧪'}, tangle: {icon: '🌿'}, bound: {icon: '🪢'},
-  constrict: {icon: '🐍'}, soak: {icon: '💧'}
+  constrict: {icon: '🐍'}, soak: {icon: '💧'},
+  vulnerable: {icon: '💔'}, feeble: {icon: '🪶'} // ENG50 (2026-11-17): Rend's and Enfeeble's tokens
 };
 ACTION_KEYS.push('grantFastForward'); // ENG23 (2026-11-04): Grant Fast-forward N (fast-forward tokens), on no card
 ACTION_KEYS.push('forage'); // ENG25 (2026-11-05, owner 23:35 #6): Forage N, the unit gathers N Berries (a full basket of 3 heals an ally 3)
@@ -853,7 +855,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Frenzy (2026-10-12): a Frenzy card is frenzied while any status is on it.
   function isFrenzied(c){
     const d = c && CARD_DEFS[c.defId]; if(!d || !d.effects || !d.effects.frenzy) return false;
-    return (c.poison>0 || c.bleed>0 || c.decay>0 || c.scar>0 || c.exposed>0 || c.exploit>0 /* SK1 */ || c.corrode>0 || c.frozen>0 || c.asleep>0 || c.paralyzed>0 ||
+    return (c.poison>0 || c.bleed>0 || c.decay>0 || c.scar>0 || c.exposed>0 || c.exploit>0 /* SK1 */ || c.vulnerable>0 || c.feeble>0 /* ENG50 */ || c.corrode>0 || c.frozen>0 || c.asleep>0 || c.paralyzed>0 ||
       c.blind>0 || c.tipsy>0 || c.confused>0 || c.shocked>0 || c.staggered>0 || !!c.stunned || c.bound>0 || c.tangled>0 /* ENG9 */ || c.toxin>0 || c.webbed>0 || c.gpoison>0); /* + Greater Poison (EN4, 2026-10-23) */ // + Bound, Toxin (2026-10-16); + Webbed (2026-10-17)
   }
   // Wildpath perks on arrival (2026-10-13): Bark Skin, Hedge Wall, Old Growth, Sharpened Briars, Light Feet. Only the side
@@ -896,7 +898,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function makeBoardCard(defId){
     const def = CARD_DEFS[defId];
     thrNote(def); // ENG10 (2026-10-26, PROP1-4): a threshold skill in play
-    const board = {uid:uidCounter++, defId, hp:def.health, maxHp:def.health, atk:def.attack, baseAtk:def.attack, wait:def.wait, fuse: Number(def.effects && def.effects.dynamite) || 0, poison:0, decay:0, bleed:0, exposed:0, exploit:0, scar:0, firedOnce:{},
+    const board = {uid:uidCounter++, defId, hp:def.health, maxHp:def.health, atk:def.attack, baseAtk:def.attack, wait:def.wait, fuse: Number(def.effects && def.effects.dynamite) || 0, poison:0, decay:0, bleed:0, exposed:0, exploit:0, vulnerable:0, feeble:0 /* ENG50 (2026-11-17): Vulnerable / Feeble tokens */, scar:0, firedOnce:{},
       ffCounters: Math.max(0, Number(def.effects && def.effects.fastForward) || 0), // Fast Forward N (2026-10-12), see fastForwardPass
       reloadRemaining:0, _reloadJustSet:false, stunned:false, _stunnedJustSet:false, shellArmor:0, shellSkip:false, shellNext:0, tempHp:0, shellUntil:null, inspired:0, inspTokens:0 /* ENG21 */, _frenziedThisRound:false,
       critUsed:0, rallyBonus:0, tempHpR:0, baseHp:def.health, // EQ2 (2026-10-24): the round's temporary Health (Bolster); its printed Health (the bonus Health bar)
@@ -3478,14 +3480,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(attCard && attCard.bound > 0 && amt > 0){ amt = amt / 2; mods.push('bound'); } // ENG9 (2026-10-26, OWN-Q1): a Bound unit swings (and counters) at half damage
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
     // target's own Resist/Weakness/Fragile/Sturdy factor below.
-    const atkFactor = attackerDamageFactor(attDef);
+    const fbF = eng50FeebleUse(attCard); if(fbF !== 1) mods.push('feeble'); // ENG50 (2026-11-17): x0.5 while it has Feeble tokens (one used)
+    const atkFactor = attackerDamageFactor(attDef) * fbF;
     if(atkFactor!==1) amt = amt * atkFactor;
     // Resist (0.5x), Weakness (2x), Fragile (2x), and Sturdy (0.5x) all apply here and multiply
     // together if a card somehow has more than one for the same hit (e.g. 0.5 * 2 = 1x net — a
     // self-cancelling edge case, not specially handled, since a card author combining them is on
     // them).
     const rfH = resistFactor(targetCard.defId, dmgType, attDef), wfH = weaknessFactor(targetCard.defId, dmgType, attDef);
-    const factor = rfH * wfH * defenderDamageFactor(targetCard.defId);
+    const vulnF = eng50VulnUse(targetCard); if(vulnF !== 1) mods.push('vulnerable'); // ENG50 (2026-11-17): x2 while it has Vulnerable tokens (one used)
+    const factor = rfH * wfH * defenderDamageFactor(targetCard.defId) * vulnF;
     dnFactorMods(mods, targetCard.defId, rfH, wfH); // 2026-10-22 (package DN)
     // 2026-10-22 (package FX2): exact from here to applyDamage. The old "at least 1" after a Resist / Weakness / Fragile factor and after the
     // Atheist half was a patch for rounding down (a 1 resisted is 0.5, which now rounds to 1 anyway); dropped, so a 0 stays 0 and two halvings
@@ -3509,7 +3513,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // ignores all of it); Perforate N also counts as Pierce N. Armor a Perforate hit stripped (targetCard.armorLoss) is
     // gone for good.
     const ae = (attDef && attDef.effects) || {};
-    const pierceN = (ae.pierce === true || ae.rend || ae.supreme || ae.pulverise /* CONTENT3 (2026-10-26, OWN-Q5): Pulverise ignores Armor */) ? Infinity : /* Pitchfork no longer pierces (2026-10-13 rework) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
+    const pierceN = (ae.pierce === true || ae.supreme || ae.pulverise /* CONTENT3 (2026-10-26, OWN-Q5): Pulverise ignores Armor */) ? Infinity : /* Pitchfork no longer pierces (2026-10-13 rework) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
     const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + prayerWardOf(targetCard) + sk3ArmorOf(targetCard) + cowerArmorOf(targetCard) /* Cower N (ENG15) */ + eng37ShieldArmorOf(targetCard) /* ENG37: Armoured Shield */ + chainArmorOf(targetCard) /* ENG-RC1: 1 a chain */; /* + Prayer Ward (2026-10-19, package GI); + Shieldwall (2026-10-19, package SK3) */ // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
     // EN8 (2026-10-24, P24-16: "magic damage ignores Armor; normal damage ignores magic armor"): Armor (and everything nominalArmor sums:
     // Shell, the tide's, Prayer Ward, Shieldwall) takes only from physical damage. Magic and every element (fire / heat, frost / cold, shock,
@@ -3668,7 +3672,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     lastFlatArmorSoak = 0; if(inRitual(card)) return 0; // ENG-RC1 (2026-11-12): a unit in its Ritual isn't there to hit
     const giB = attDefId ? giHitBonus(CARD_DEFS[attDefId], card, dmgType) : 0; // Hunter N / Executioner N (2026-10-19, package GI): read before Exposed is used up
     const en20Tick = !!(fo && fo.tick); // ENG20 (2026-11-02): Burn's tick is a status tick (no Exploit, no wear, no Shell, no Punish)
-    if(attUid != null && !EXPOSE_TICKS.has(dmgType) && !en20Tick && curPlayers){ const ac = [1,2].map(p=> curPlayers[p] && allBoardCards(curPlayers[p]).find(x=> x && x.uid === attUid)).find(Boolean); if(ac && ac.dauntN > 0) amount = Math.max(0, amount - ac.dauntN); } // EN8 (2026-10-25): its Daunt counters cut its skill damage
+    let flatAtt = null; // ENG50 (2026-11-17): the shooter's card, for its Feeble tokens below
+    if(attUid != null && !EXPOSE_TICKS.has(dmgType) && !en20Tick && curPlayers){ const ac = [1,2].map(p=> curPlayers[p] && allBoardCards(curPlayers[p]).find(x=> x && x.uid === attUid)).find(Boolean); flatAtt = ac || null; if(ac && ac.dauntN > 0) amount = Math.max(0, amount - ac.dauntN); } // EN8 (2026-10-25): its Daunt counters cut its skill damage
     if(!EXPOSE_TICKS.has(dmgType) && !en20Tick) amount += sk1ExploitUse(card); // 2026-10-19 (package SK1): Exploit tokens (was Expose's crit) // (no ×2 under Quiet Contemplation, 2026-10-19) // Exposed: ranged/flat hits too, one counter used up (a Poison/Bleed tick isn't a hit); 2026-10-16 (user: "that hit is guaranteed a crit"): a crit (double), not +1
     const attDef = attDefId ? CARD_DEFS[attDefId] : null;
     // King Slayer applies to ranged/flat hits too, same "applies everywhere, not just melee"
@@ -3686,12 +3691,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     amount += wetShockBonus(card, dmgType); // Wet (2026-10-17): +1 lightning damage per Wet counter, from any shock hit
     // Feeble/Mighty (2026-09-29) apply to ranged/flat hits too, same "applies everywhere"
     // precedent Expose/King Slayer just above already set for this path.
-    const atkFactor = attackerDamageFactor(attDef);
+    const atkFactor = attackerDamageFactor(attDef) * eng50FeebleUse(flatAtt); // ENG50 (2026-11-17): a shot or skill of a unit with Feeble tokens too
     if(atkFactor!==1) amount = amount * atkFactor;
     const crush = !!(attDef && attDef.effects && attDef.effects.supreme); if(crush) dmgType = 'magic'; // Supreme (2026-10-14): its bolts are magic too, and crush shells
     const rfH = resistFactor(card.defId, dmgType, attDef), wfH = weaknessFactor(card.defId, dmgType, attDef);
-    const factor = rfH * wfH * defenderDamageFactor(card.defId);
-    const mods = []; dnFactorMods(mods, card.defId, rfH, wfH); // 2026-10-22 (package DN): display only
+    const vulnF = (EXPOSE_TICKS.has(dmgType) || en20Tick) ? 1 : eng50VulnUse(card); // ENG50 (2026-11-17): Vulnerable tokens: shots and skills too, not a status tick
+    const factor = rfH * wfH * defenderDamageFactor(card.defId) * vulnF;
+    const mods = []; dnFactorMods(mods, card.defId, rfH, wfH); if(vulnF !== 1) mods.push('vulnerable'); // 2026-10-22 (package DN): display only
     // 2026-10-22 (package FX2): exact all the way to applyDamage (no "at least 1" after a factor or the Atheist half, no rounding of a
     // halving, of Shock's x1.5 or of stone); see damageCard.
     let dmg = factor===0 ? 0 : factor!==1 ? amount*factor : amount; // Immune takes nothing
@@ -3703,7 +3709,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Shell, the tide's, Prayer Ward and Shieldwall, cut by the shooter's Pierce. Magic and true damage still pass it; Missiles, Fireballs and the
     // other damage skills still pass it too (they are not shots).
     if(fo && fo.armor && dmg > 0 && !isMagicDmg(dmgType) && dmgType !== 'true' && !crush){ const ae = (attDef && attDef.effects) || {}, td = CARD_DEFS[card.defId] || {};
-      const pierceN = (ae.pierce === true || ae.rend || ae.supreme || ae.pulverise) ? Infinity : (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
+      const pierceN = (ae.pierce === true || ae.supreme || ae.pulverise) ? Infinity : (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
       const nom = Math.max(0, (Number((td.effects || {}).armor) || 0) - (card.armorLoss || 0)) + (card.shellArmor || 0) + tideArmor(card) + prayerWardOf(card) + sk3ArmorOf(card) + cowerArmorOf(card) /* Cower N (ENG15) */ + eng37ShieldArmorOf(card) /* ENG37 */ + chainArmorOf(card) /* ENG-RC1 */, ar = Math.max(0, nom - pierceN);
       if(ar > 0){ const d0 = dmg; dmg = Math.max(0, dmg - ar); if(dmg < d0) mods.push('armor'); lastFlatArmorSoak = d0 - dmg; } }
     { const ma = magicArmorOf(card); if(ma > 0 && dmg > 0 && isMagicDmg(dmgType) && !crush){ dmg = Math.max(0, dmg - ma); mods.push('magicArmor'); } } // EN8 (P24-16): Magic Armor N off a magic shot or skill; ENG9 (2026-10-26): magic only, not the elements
@@ -4436,7 +4442,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     [1,2].forEach(pid=> players[pid] && (RESERVE_ACTS ? rowsUnitsOf(players[pid]) : allBoardCards(players[pid])).forEach(c=>{ if(!eng33CanPlayDead(c)) return;
       c.thanatosisUsed = true; c.playingDead = eng33Pass; c.hp = 1; n++;
       if(killCredit) delete killCredit[c.uid]; c.killedBy = null; c.killedByDef = null; c.killedByPid = null;
-      c.poison = 0; c.gpoison = 0; c.toxin = 0; c.decay = 0; c.bleed = 0; c.exposed = 0; c.exploit = 0; c.scar = 0; c.stunned = false; c.frozen = 0; c.paralyzed = 0; c.brittle = 0;
+      c.poison = 0; c.gpoison = 0; c.toxin = 0; c.decay = 0; c.bleed = 0; c.exposed = 0; c.exploit = 0; c.vulnerable = 0; c.feeble = 0; /* ENG50 */ c.scar = 0; c.stunned = false; c.frozen = 0; c.paralyzed = 0; c.brittle = 0;
       if(recordEvents && events) events.push({type:'statusFx', kind:'thanatosis', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId}); }));
     return n; }
   function eng33Wake(players, sideOf, events){
@@ -4543,7 +4549,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // and Blind events, addPoison (Venom Immune). Self-inflicted states (Drunk, Purblind, Hibernate) are the card's own and are not gated.
   // (ENG36_STATUS, the list of statuses and their kind, is top-level beside ACTION_KEYS: the app's editor reads it too)
   const ENG36_PREFIX = 'status:';
-  const ENG36_ACT_KEY = {stun:'stun'}; // applyTargetedStatus's sure statuses (Poison / Bleed land; their ticks are what Resist halves)
+  const ENG36_ACT_KEY = {stun:'stun', rend:'vulnerable', enfeeble:'feeble' /* ENG50 (2026-11-17) */}; // applyTargetedStatus's sure statuses (Poison / Bleed land; their ticks are what Resist halves)
   const ENG36_SK3_KEY = {silence:'silence', stymie:'stymie', exhaust:'exhaust', petrify:'petrify', vulnerable:'shock', stench:'stench'};
   const ENG36_HIT_KEY = {freeze:'freeze', sleep:'sleep', paralyze:'paralyze', stunOnHit:'stun', blind:'blind', tipsy:'tipsy', confuse:'confuse', shock:'shock', stagger:'stagger'};
   function eng36Rel(c, key){
@@ -6396,11 +6402,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card), sd = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'); shieldEvents.push({type:'statusFx', kind:'exploitHit', side:sd, targetSide:sd, targetUid:card.uid, targetDefId:card.defId, amount:card.exploit, bonus:SK1_DEF.exploitBonus}); }
     return Math.max(0, Number(SK1_DEF.exploitBonus) || 0);
   }
+  // ==== ENG50 (2026-11-17, owner 11-17 23:14, decision OWN-1117-2: "Rend N gives the opposing unit Vulnerable N (on hit: double damage taken,
+  // remove 1 token) ... Enfeeble N: halving"): two token statuses, both physical (Cleanse removes them), neither wears off with the rounds.
+  //   Vulnerable (c.vulnerable)  each hit it takes (a swing, a shot, a skill's damage; not a Venom / Bleed / Burn tick) deals double and uses one
+  //                              token, beside Fragile's x2 (the permanent form; the two multiply). Given by Rend N (On Hit) and the Rend action.
+  //   Feeble (c.feeble)          each hit it deals (a swing, a shot, a skill's damage) deals half and uses one token, beside the Feeble skill's
+  //                              x0.5 (the permanent form). Given by Enfeeble N (On Hit) and the Enfeeble action.
+  // Each returns the factor for this hit (1 with no token) and logs the token used (statusFx 'vulnHit' / 'feebleHit', amount: tokens left).
+  function eng50TokenEv(card, kind, left){ if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card), sd = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'); shieldEvents.push({type:'statusFx', kind, side:sd, targetSide:sd, targetUid:card.uid, targetDefId:card.defId, amount:left}); } }
+  function eng50VulnUse(card){ if(!card || !(card.vulnerable > 0)) return 1; card.vulnerable -= 1; eng50TokenEv(card, 'vulnHit', card.vulnerable); return 2; }
+  function eng50FeebleUse(card){ if(!card || card.kind === 'hq' || !(card.feeble > 0)) return 1; card.feeble -= 1; eng50TokenEv(card, 'feebleHit', card.feeble); return 0.5; }
   // The keyword shorthands (trigsOf appends them to a card's own triggers; memoised per effects object, like Kin Rally's).
+  // ENG50 (2026-11-17): + Rend N = On Hit: Rend N (Vulnerable N on the target), Enfeeble N = On Hit: Enfeeble N (Feeble N on it); 1 by default.
   const sk1TrigMemo = new WeakMap();
   function sk1Trigs(e, list){
-    if(!e || !(e.sentry || e.expose || e.exploit || e.venomPulse || e.spoils)) return list;
-    const m = sk1TrigMemo.get(e), key = [e.sentry, e.expose, e.exploit, e.venomPulse, e.spoils].join('|');
+    if(!e || !(e.sentry || e.expose || e.exploit || e.venomPulse || e.spoils || e.rend || e.enfeeble)) return list;
+    const m = sk1TrigMemo.get(e), key = [e.sentry, e.expose, e.exploit, e.venomPulse, e.spoils, e.rend, e.enfeeble].join('|');
     if(m && m.src === list && m.key === key) return m.out;
     const out = list.slice(), N = k=> numN(e[k], SK1_DEF[k]);
     if(e.sentry) out.push({on:'onEnemyEnter', do:'damage', who:'enemy', sub:'subject', amount:N('sentry'), keyword:'sentry'});
@@ -6408,6 +6425,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.exploit) out.push({on:'onHit', do:'exploit', who:'enemy', sub:'subject', amount:N('exploit'), keyword:'exploit'});
     if(e.venomPulse) out.push({on:'onHit', do:'pulse', who:'enemy', sub:'subject', amount:N('venomPulse'), keyword:'venomPulse'}); // Pulse N (EN4, 2026-10-23: was Venom Pulse = Poison Tick)
     if(e.spoils) out.push({on:'onKillCreature', do:'buff', who:'self', amount2:N('spoils'), keyword:'spoils'});
+    if(e.rend) out.push({on:'onHit', do:'rend', who:'enemy', sub:'subject', amount:numN(e.rend, 1), keyword:'rend'}); // ENG50 (2026-11-17)
+    if(e.enfeeble) out.push({on:'onHit', do:'enfeeble', who:'enemy', sub:'subject', amount:numN(e.enfeeble, 1), keyword:'enfeeble'}); // ENG50
     sk1TrigMemo.set(e, {src:list, key, out}); return out;
   }
   const sk1HasHook = (c, hook)=> !!(c && trigsOf(CARD_DEFS[c.defId]).some(t=> t.on === hook));
@@ -6487,9 +6506,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(hurt) removeDeadCards(players, sideOf, {}, stats, events);
   }
   // Cleanse (the action, Renewal, Cleanse N's budget after a curse): the physical debuffs (SK1_CLEANSE), up to n counters (Infinity =
-  // all). Daunt marks (Weakness) count one each; Rend is a Perforate's shredded Armor (armorLoss). 'burn' is listed for a future Burn
+  // all). Daunt marks (Weakness) count one each; a Perforate's shredded Armor (armorLoss) too; ENG50 (2026-11-17): Vulnerable and Feeble tokens. 'burn' is listed for a future Burn
   // status (none on units today). Freeze, Stun, Sleep, Paralyze, Blind, Tipsy, Confused, Decay and Poison are not physical: they stay.
-  const SK1_CLEANSE = ['bleed', 'scar', 'corrode', 'brittle', 'exposed', 'exploit', 'shocked', 'staggered', 'armorLoss', 'burn'];
+  const SK1_CLEANSE = ['bleed', 'scar', 'corrode', 'brittle', 'exposed', 'exploit', 'vulnerable', 'feeble' /* ENG50 (2026-11-17): Rend's and Enfeeble's tokens */, 'shocked', 'staggered', 'armorLoss', 'burn'];
   function sk1CleanseUnit(c, n){
     if(!c) return 0; let left = n == null ? Infinity : n, removed = 0;
     for(const k of SK1_CLEANSE){ if(left <= 0) break; if(!(c[k] > 0)) continue; const d = Math.min(left, c[k]); c[k] -= d; left -= d; removed += d; }
@@ -6671,14 +6690,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
     const s3 = sk3Sig(e); // Package SK3 (2026-10-19): Spawner, Harbinger, Corpsefeeder, Warcry, Stench, Silence / Stymie / Exhaust / Petrify
-    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.refining && !e.masonry && !e.disarm && !s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, base)), def); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === econSig(e) && m.dz === e.disarm && m.s3 === s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, m.list)), def);
+    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.refining && !e.masonry && !e.disarm && !e.armourer /* ENG50 */ && !s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, base)), def); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === econSig(e) && m.dz === e.disarm && m.ar === e.armourer && m.s3 === s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, m.list)), def);
     const list = base.slice(); if(s3) sk3Trigs(e, list);
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
+    // Armourer N (ENG50, 2026-11-17, owner 11-17 23:36, REDESIGN3-1: "(When ready) Played allied cards come with +0/+N"): On Ally Played, Buff the
+    // played ally +0/+N. A reactive trigger, so only while it is Ready (not Waiting, Stunned, Frozen or Asleep), as the owner's "(When ready)".
+    if(e.armourer) list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount2:numN(e.armourer, 1), keyword:'armourer'});
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
     if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
     sk2EconomyTrigs(e, list); // Quarry N, Smelter N (2026-10-19, SK2b): On Turn Start × Gain, with a price (t.pay)
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:econSig(e), dz:e.disarm, s3, list}); return en8Trigs(e, bxTrigs(e, sk1Trigs(e, list)), def);
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:econSig(e), dz:e.disarm, ar:e.armourer, s3, list}); return en8Trigs(e, bxTrigs(e, sk1Trigs(e, list)), def);
   }
   // ==== EN8 (2026-10-24, owner 22:28 #2: "We need to build up our stonecutter, prospector, felling, salvage, scavenger, coppice, windfall,
   // driftwood skills! (default 1). Shellfish (new) can create 'Pearls' which can be used as stone OR wood."; decision LUM-1). The resource
@@ -8053,9 +8075,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Sleeping Powder N  N Sleep tokens (the Sleep status: a hit wakes it; Wakeful, Resist / Immune Sleep apply). Not on a unit asleep (or
   //                      woken this round), as Ice Arrow skips a Frozen unit, so it can't keep one unit asleep every round.
   //   Poison Powder N    N Poison (Venom Master adds, as on Poison Bolt; not on a poison-proof unit).
+  //   Paralysis Powder N (ENG50, 2026-11-17, owner 11-17 23:36, REDESIGN3-1: "Paralysis Powder = stun for that turn"): N Stun counters (the
+  //                      stun status: it skips its turns, no Wait tick; a hit does not end it; Resist / Immune Stun apply). Not on a unit
+  //                      stunned now, as Sleeping Powder skips a sleeping one, so one unit can't be kept stunned every round.
   const POWDERS = {
     sleepPowder:  {element:'sleep',  status:'sleep'},
     poisonPowder: {element:'poison', status:'poison', dmgType:'poison'},
+    paralysisPowder: {element:'paralysis', status:'stun'}, // ENG50 (2026-11-17)
   };
   const POWDER_KEYS = Object.keys(POWDERS);
   // What a landed Ice Arrow or Bolt leaves on the unit it hit (2026-10-15).
@@ -8066,6 +8092,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     else if(kind === 'sleep'){ if(dozing(c)) return; // Sleeping Powder N (POWDER1, 2026-11-17): Sleep's tokens, no stacking (see POWDERS)
       if(effectsOf(c).wakeful){ fx('wakeful'); return; } if(!eng36Lands(c, 'sleep')) return;
       c.asleep = n; c._asleepJustSet = true; if(recordEvents && events) events.push({type:'statusFx', kind:'sleep', side, attDefId:src.defId, attUid:src.uid, targetSide:tSide, targetDefId:c.defId, targetUid:c.uid, amount:n, left:c.asleep, powder:true}); }
+    else if(kind === 'stun'){ if(c.stunned) return; if(!eng36Lands(c, 'stun')) return; // Paralysis Powder N (ENG50, 2026-11-17): N Stun counters, not on a stunned unit
+      c.stunned = n; c._stunnedJustSet = true; if(recordEvents && events) events.push({type:'statusFx', kind:'stunOnHit', side, attDefId:src.defId, attUid:src.uid, targetSide:tSide, targetDefId:c.defId, targetUid:c.uid, amount:n, powder:true}); }
     else if(kind === 'poison'){ if(poisonProof(c)) return; c.poison = (c.poison||0) + n; /* Structures too (2026-10-15) */ if(aStat) aStat.poisonApplied = (aStat.poisonApplied||0) + n; fx('poison', n); }
     else if(kind === 'freezeCounter'){ if(c.frozen > 0 || resistFactor(c.defId, 'cold') === 0 || rnd() >= 0.5 || !eng36Lands(c, 'freeze') /* ENG36 */) return; c.frozen = 1; fx('freeze', 1); } // melts at this round's end, like the frost's chill
     else if(kind === 'shock'){ if(!eng36Lands(c, 'shock')) return; /* ENG36 */ c.shocked = Math.max(c.shocked||0, 1); c._shockedJustSet = true; fx('shock', 1); }
@@ -8202,7 +8230,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(shot.amount > 0 || target.kind !== 'card'){ const fd = ()=> fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, killCredit, c.uid, true, true); hitCard = eng40IsArrow(shot) ? eng40ArrowShot(fd) : fd(); } // true: a shot, Reflect bounces it (2026-10-17); ENG40: Fletcher on the arrows only
           else { // a no-damage spit (Poison Bolt): it can still be dodged (no Guardian since GD2)
             const rf = reflectShotOf(players, sideOf, pid, target.card, events); // Reflect (2026-10-17): the spit bounces back at the spitter's side
-            if(rf){ if(rf.target.kind === 'hq'){ if(shot.status !== 'sleep') /* POWDER1: a bounced Sleeping Powder puff on the bramble does nothing */ fireDamageAction(players, sideOf, rf.pid, rf.src.defId, shot.n, shot.dmgType, rf.target, stats, events, killCredit, rf.src.uid); }
+            if(rf){ if(rf.target.kind === 'hq'){ if(shot.status !== 'sleep' && shot.status !== 'stun') /* POWDER1: a bounced Sleeping Powder puff on the bramble does nothing; ENG50: nor a Paralysis Powder puff */ fireDamageAction(players, sideOf, rf.pid, rf.src.defId, shot.n, shot.dmgType, rf.target, stats, events, killCredit, rf.src.uid); }
               else if(dodgeCheck(rf.target.card, rf.src.defId)) hitCard = rf.target.card; // no Guardian for a skill (GD2, GD-3)
               else if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(rf.pid), attDefId:rf.src.defId, attUid:rf.src.uid, targetSide:sideOf(pid), targetDefId:rf.target.card.defId, targetUid:rf.target.card.uid, ranged:true}); }
             else if(!dodgeCheck(target.card, c.defId)){ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(otherId(pid)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true}); }
@@ -8632,6 +8660,36 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, xn, stats, events, mySide, 'exploit', c=>{ c.exploit = (c.exploit||0) + xn; });
           break;
         }
+        // ENG50 (2026-11-17, owner 11-17 23:14, OWN-1117-2: "All need action forms too, e.g. Weaken 1 on Ally Spawn"): the token actions and Weaken.
+        //   Rend N      N Vulnerable tokens on the target (each hit on it deals double and uses one); the Rend N skill is On Hit: Rend N
+        //   Enfeeble N  N Feeble tokens on the target (each hit it deals does half and uses one); the Enfeeble N skill is On Hit: Enfeeble N
+        //   Weaken N    takes N Attack from the target for good (the Weaken skill's on-hit rule, as an action; never below 0)
+        // An enemy target dodges as for every status action (applyTargetedStatus); Resist / Immune Vulnerable or Feeble hold the tokens off.
+        case 'rend': case 'enfeeble': {
+          const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent'), tn = numN(t.amount, 1), fld = t.do === 'rend' ? 'vulnerable' : 'feeble';
+          applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, tn, stats, events, mySide, t.do, c=>{ c[fld] = (c[fld]||0) + tn; });
+          break;
+        }
+        case 'weaken': {
+          const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent'), wn = numN(t.amount, 1);
+          applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, wn, stats, events, mySide, 'weaken', c=>{ const n = Math.min(wn, Math.max(0, c.atk||0)); c.atk -= n; c.baseAtk = Math.max(0, (c.baseAtk||0) - n); });
+          break;
+        }
+        // Grant {who} {what} (ENG50, 2026-11-17, owner OWN-1117-2: "Sturdy and Mighty only as card passives (granting them via Grant {})"): the
+        // target gains one skill for the fight, as Grant {skill} N's allies do (c.eng27Granted, merged by condStatsOf). t.skill names it and
+        // t[t.skill] holds its value (true for a plain skill; the number for Armor 2 ...), so the price table reads it per skill. Itself, an
+        // ally, your Kin, or every ally (sub All); never dodged. A granted On Play / On Spawn does not fire (the unit is already there).
+        case 'grant': {
+          const g = eng50GrantOf(t); if(!g) break; const who = t.who || 'ally', got = [];
+          const give = c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf || got.includes(c)) return; c.eng27Granted = Object.assign(c.eng27Granted || {}, g); got.push(c); };
+          if(who === 'self') give(boardCard);
+          else if(t.sub === 'all') rowsUnitsOf(pl).forEach(c=>{ if(c && c !== boardCard && kinOk(boardCard, c)) give(c); });
+          else { const tg = resolveGeneralTarget(players, playerId, boardCard, 'ally', t.sub || 'adjacent'); if(tg) give(tg.card); }
+          if(!got.length) break;
+          syncPhaseStats(players, sideOf, events);
+          if(recordEvents && events) got.forEach(c=> events.push({type:'statusFx', kind:'grant', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:mySide, targetDefId:c.defId, targetUid:c.uid, skills:Object.keys(g), amount:g[t.skill] === true ? 1 : g[t.skill]}));
+          break;
+        }
         case 'pulse': // EN4 (2026-10-23, owner 23:45): Pulse N; the retired Poison Tick reads as it
         case 'poisonTick': {
           const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent'), pn = numN(t.amount, SK1_DEF.venomPulse);
@@ -9012,7 +9070,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // POWDER1 (2026-11-17): what its powder puffs are worth on unit f, the one facing the slot (the smart and smartest CPUs; the puff goes at
   // the one opposite first): Sleeping Powder on a unit that swings and can fall asleep (not asleep now, not Wakeful, not Immune to Sleep),
   // more for a bigger hitter; Poison Powder on a unit Poison reaches. 0 for a card without a powder, so every other card plays as before.
-  function aiPowderVs(d, f){ const e = (d && d.effects) || {}; if(!f || !(f.hp > 0) || !(e.sleepPowder || e.poisonPowder)) return 0; let v = 0;
+  // ENG50 (2026-11-17): Paralysis Powder on a unit that swings and can be stunned (not stunned now, not Immune to Stun), as Sleeping Powder.
+  function aiPowderVs(d, f){ const e = (d && d.effects) || {}; if(!f || !(f.hp > 0) || !(e.sleepPowder || e.poisonPowder || e.paralysisPowder)) return 0; let v = 0;
+    if(e.paralysisPowder && (f.atk || 0) > 0 && !f.stunned && eng36Rel(f, 'stun') !== 'immune') v += 0.5 + Math.min(f.atk || 0, 8) * 0.15;
     if(e.sleepPowder && (f.atk || 0) > 0 && !dozing(f) && !effectsOf(f).wakeful && eng36Rel(f, 'sleep') !== 'immune') v += 0.5 + Math.min(f.atk || 0, 8) * 0.15;
     if(e.poisonPowder && !poisonProof(f)) v += 0.3 + Math.min(numN(e.poisonPowder, 1), 4) * 0.15;
     return v; }
@@ -10081,6 +10141,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(allies.length){ syncPhaseStats(players, sideOf, events); if(recordEvents && events) events.push({type:'statusFx', kind:'eng27Grant', side:sideOf(pid), attUid:src.uid, attDefId:src.defId, targets: allies.map(c=> c.uid), skills: Object.keys(sk), amount:allies.length}); }
     return allies;
   }
+  // Grant {who} {what}'s skill (ENG50, 2026-11-17): {key: value} from t.skill and t[t.skill] (true when unset), or null (no skill, or a key that
+  // is not a plain skill: the trigger list, the context braces and Grant itself are never granted).
+  const ENG50_NO_GRANT = new Set(['triggers', 'grantSkill', 'levelStats']);
+  function eng50GrantOf(t){ const k = t && typeof t.skill === 'string' ? t.skill.trim() : ''; if(!/^[a-z][A-Za-z0-9]*$/.test(k) || ENG50_NO_GRANT.has(k) || /Grant$/.test(k)) return null;
+    const v = t[k]; return {[k]: v == null || v === '' ? true : v}; }
   // Hype N (ENG27, 2026-11-06, owner item 22: "N allies take their action again, right after"): on arrival, the N Ready allies (1 by default)
   // with the most Attack (a tie at random, ENG38 2026-11-09; was the nearest, then the left) take their action now: a swing and its shots, as the Test Kit's Attack runs it
   // (resolveCombat's onlyUid pass). Arriving during a fight's combat (a token, a revive), each gets one Fast Forward turn instead.
@@ -10636,7 +10701,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       delete killCredit[card.uid];
       card.revivedOnce = true; card.hasRemovalCounter = true; card.undeadToken = true; card.token = true; // ENG9: back as a token
       card.hp = 1; card.killedBy = null; card.killedByDef = null; card.killedByPid = null;
-      card.poison = 0; card.gpoison = 0; /* EN4 */ card.decay = 0; card.exposed = 0; card.exploit = 0; /* SK1 */ card.scar = 0; card.stunned = false;
+      card.poison = 0; card.gpoison = 0; /* EN4 */ card.decay = 0; card.exposed = 0; card.exploit = 0; /* SK1 */ card.vulnerable = 0; card.feeble = 0; /* ENG50 */ card.scar = 0; card.stunned = false;
       card.frozen = 0; card.asleep = 0; card._wokeRound = null; /* BAL7 (2026-10-28, ENG12-2) */ card.paralyzed = 0; card.bleed = 0; card.prayerTokens = 0; card.brittle = 0; /* 2026-10-19 (GI) */
       card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null; card.shellQuiet = null;
       if(slotMode && Number.isInteger(rv.slot)) card.slot = rv.slot;
@@ -11813,7 +11878,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               aStat.dealt += r3.dmg; if(rowSwing) rowStrikeTally += r3.dmg; // reserveVolley's total (2026-10-19, RR)
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
               const lb3 = relictOf(a.att) ? 0 : laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), lk3 = relictOf(a.att) ? null : lastLaneKind; // for the hit event (2026-10-16)
-              a.att._inspHit = 1; if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, guardedUid: c2GuardianRedirect ? c2raw.uid : undefined /* EN2 (2026-10-23): who it stepped in for */, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
+              a.att._inspHit = 1; if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, guardedUid: c2GuardianRedirect ? c2raw.uid : undefined /* EN2 (2026-10-23): who it stepped in for */, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, pierced:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg + (r3.armorSoaked||0)}); // ENG-RC1: before Armor
               psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
@@ -11898,7 +11963,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
         if(rowSwing) rowStrikeTally += dmg; // reserveVolley's total (2026-10-19, TS)
-        a.att._inspHit = 1; if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined, dive: diveBonus ? diveBonus : undefined})));
+        a.att._inspHit = 1; if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, pierced:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined, dive: diveBonus ? diveBonus : undefined})));
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.

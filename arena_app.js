@@ -50702,7 +50702,7 @@ function logText(ev){
       else if(ev.elementalConvert==='decay') elemNote = ` (also -${ev.elementalAmount} Attack, Decay 🦠)`;
       // 2026-10-17 (user: "Elemental damage has the respective elemental emoji attached."): "for 3 ⚡ lightning damage", and a Wet
       // unit's lightning hit says how many Wet counters added to it.
-      return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${dmgLogText(ev.dmg, ev.dmgType, ev)}${ev.wet ? ` (Wet ${ev.wet}: +${ev.wet} 💧)` : ''}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.rend?' (Pierce — Armor bypassed) 🗡':''}${ev.crit && ev.ambush?' 💥 Crit!':''}${ev.backstab?` 🗡️ Backstab +${ev.backstab}`:''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
+      return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${dmgLogText(ev.dmg, ev.dmgType, ev)}${ev.wet ? ` (Wet ${ev.wet}: +${ev.wet} 💧)` : ''}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.pierced?' (Pierce — Armor bypassed) 🗡':''}${ev.crit && ev.ambush?' 💥 Crit!':''}${ev.backstab?` 🗡️ Backstab +${ev.backstab}`:''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
     }
     case 'hitHQ': return {cls:'', text:`${nm(ev.attDefId)} struck ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble for ${dmgLogText(ev.dmg, ev.dmgType, ev)}${ev.swipe?' (swipe)':''}.`}; // 2026-10-17: + the element's emoji (a castle hit that carries a dmgType)
     case 'thorns': return {cls:'', text:`${nm(ev.fromDefId)}'s Thorns reflected ${dnLogNum(ev.dmg, ev)} onto ${nm(ev.targetDefId)}. 🌵`};
@@ -52909,10 +52909,10 @@ function keywordCuesForHit(ev, attEl, targetEl){
   if(ev.crit && !ev.ambush && (targetEl||attEl)){ setTimeout(()=> { SoundKit.critTone(); }, Math.max(0, animMs().windup-20)); }
   // Rend (2026-09-16 mechanic, same audit): bypasses Armor entirely, but a Rend hit against an
   // armored target looked pixel-identical to a hit against a target with no Armor at all — no
-  // signal Armor was ever in the picture. ev.rend only comes back true when the target actually
+  // signal Armor was ever in the picture. ev.pierced (ev.rend until ENG50, 2026-11-17) only comes back true when the target actually
   // carried real armor (see rendBypass in the engine), so a Rend card swinging at an unarmored
   // target stays silent — same "only when it actually mattered" convention as Bulwark just above.
-  if(ev.rend && targetEl){ setTimeout(()=> { SoundKit.rendTone(); floatText(targetEl, '🗡 Pierced!', 'debuff'); }, 100); }
+  if(ev.pierced && targetEl){ setTimeout(()=> { SoundKit.rendTone(); floatText(targetEl, '🗡 Pierced!', 'debuff'); }, 100); }
   // Fester / Rupture (same audit): both fold their bonus damage straight into ev.dmg with zero
   // attribution — a Fester hit for 9 and a plain hit for 9 read as identical. Each gets a small
   // secondary float crediting the bonus, in the same glyph/color as its source stack (☠/poison
@@ -53763,7 +53763,7 @@ function eighthPassVfx(ev){
     // any more; a flyer lunges like everyone else and its shadow draws in under it (SkillFX.flyDescend, from animateAttacker).
     if(a && t && ev.fork && ev.forkSwing == null && skillFxOnce('fork' + ev.attUid + ':' + ev.targetUid)) at(hitMs - 140, ()=>{ const a2 = el(ev.attUid), t2 = el(ev.targetUid); if(t2) F.forkProngs(a2, [t2], {kind: ev.prong}); });
     // (passive Expose: the engine sends a statusFx 'expose' now, 2026-10-15, and its targetMark plays from there)
-    if(t && ev.rend) at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.pierceThrough(t2, {from: degFrom(el(ev.attUid), t2)}); });
+    if(t && ev.pierced) at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.pierceThrough(t2, {from: degFrom(el(ev.attUid), t2)}); });
     else if(t && (ev.armorBlocked || (Number(te.armor) > 0 && (ev.dmg||0) >= 0)) && (ev.armorBlocked || skillFxOnce('armor' + ev.targetUid)))
       at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.armorBlock(t2, {from: degFrom(el(ev.attUid), t2), partial: !ev.armorBlocked}); });
   }
