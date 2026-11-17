@@ -140,3 +140,42 @@ shield 0 79.7
 RESULT 4-1 {"beaver-lumberjack":4,"slow-worm":3,"snapstick-turtle":1,"pond-algae":4,"duck-paddler":1} 79.7 {} moves:  problems: []
 5-6 target 60 (52-68) size 17 start {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} problems []
 start {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} 39.3
+round 1: cur 32.5/39.3; 119 legal, 70 read + 10 predicted (of 45); top: -3 muskrat-reedgatherer +3 fire-ant-raft 35/38 | -3 muskrat-reedgatherer +1 planarian-splitter +2 raft-spider 35/35.7 | -2 mosquito-cloud +2 fen-mink 37.5/35 | -2 bog-leech +2 mudpuppy 35/31.3
+no nearer move
+shield 0 45
+RESULT 5-6 {"fen-mink":1,"muskrat-reedgatherer":3,"marsh-mallow-hare":4,"mosquito-cloud":4,"bog-leech":4,"raft-spider":1} 45 {"shieldOverride":0} moves:  problems: []
+11-9 target 60 (52-68) size 19 start {"chamois-leaper":2,"chipmunk-hoarder":4,"eagle-owl-quartermaster":3,"stonedrop-vulture":4,"mountain-hare":4,"gannet-nestweaver":1,"eagle-sharpshooter":1} problems []
+start {"chamois-leaper":2,"chipmunk-hoarder":4,"eagle-owl-quartermaster":3,"stonedrop-vulture":4,"mountain-hare":4,"gannet-nestweaver":1,"eagle-sharpshooter":1} 68.3
+round 1: cur 55/68.3; 24 legal, 24 read + 10 predicted (of 41); top: -1 gannet-nestweaver +1 kittiwake-flock 60/66.7 | -1 gannet-nestweaver +1 anvil-thrush 62.5/66.7 | -1 eagle-sharpshooter +1 anvil-thrush 62.5/69.3 | -1 eagle-sharpshooter +1 eyrie-warden 62.5/70.7
+round 2: cur 60/66.7; 24 legal, 24 read + 10 predicted (of 49); top: -4 chipmunk-hoarder +4 anvil-thrush 62.5/67 | -2 chipmunk-hoarder +2 chamois-leaper 62.5/67.3 | -1 chipmunk-hoarder +1 chamois-leaper 57.5/68 | -1 stonedrop-vulture +1 chamois-leaper 60/69.7
+no nearer move
+RESULT 11-9 {"chamois-leaper":2,"chipmunk-hoarder":4,"eagle-owl-quartermaster":3,"stonedrop-vulture":4,"mountain-hare":4,"eagle-sharpshooter":1,"kittiwake-flock":1} 66.7 {} moves: -1 gannet-nestweaver +1 kittiwake-flock problems: []
+11-7 target 67.5 (59.5-75.5) size 15 start {"beaver-lumberjack":1,"chipmunk-hoarder":3,"eyrie-warden":4,"gangrenous-leech":2,"peak-condor":1,"swamp-alligator":4} problems []
+start {"beaver-lumberjack":1,"chipmunk-hoarder":3,"eyrie-warden":4,"gangrenous-leech":2,"peak-condor":1,"swamp-alligator":4} 71
+round 1: cur 72.5/71; 72 legal, 56 read + 10 predicted (of 22); top: -2 gangrenous-leech +2 mountain-hare 67.5/66.7 | -2 gangrenous-leech +1 kittiwake-flock +1 chipmunk-hoarder 67.5/66.3 | -2 eyrie-warden +2 mountain-hare 67.5/69.7 | -1 swamp-alligator +1 gannet-nestweaver 67.5/70.7
+RESULT 11-7 {"beaver-lumberjack":1,"chipmunk-hoarder":3,"eyrie-warden":4,"peak-condor":1,"swamp-alligator":4,"mountain-hare":2} 66.7 {} moves: -2 gangrenous-leech +2 mountain-hare problems: []
+12-4 target 72 (64-80) size 16 start {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quill-thorn-boar":3,"quillguard":3,"bison-bulldozer":4} problems []
+start {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quill-thorn-boar":3,"quillguard":3,"bison-bulldozer":4} 82
+round 1: cur 70/82; 16 legal, 16 read + 10 predicted (of 40); top: -4 bison-bulldozer +4 mouse-sapper 77.5/79 | -4 bison-bulldozer -3 quill-thorn-boar +4 mouse-sapper +3 briarback-hedgehog 82.5/80 | -4 bison-bulldozer +4 briarback-hedgehog 82.5/84.3 | -4 bison-bulldozer +4 hollow-belly-rat 82.5/86.3
+round 2: cur 77.5/79; 16 legal, 16 read + 10 predicted (of 38); top: -3 quill-thorn-boar +3 briarback-hedgehog 82.5/80 | -3 quill-thorn-boar +3 hollow-belly-rat 82.5/80.7 | -4 mouse-sapper +4 bison-bulldozer 70/82 | -4 mouse-sapper +4 briarback-hedgehog 82.5/84.3
+no nearer move
+RESULT 12-4 {"barkplate-beetle":4,"barrow-leech-bat":1,"chipmunk-hoarder":1,"quill-thorn-boar":3,"quillguard":3,"mouse-sapper":4} 79 {} moves: -4 bison-bulldozer +4 mouse-sapper problems: []
+9-2 target 84 (76-92) size 12 start {"horseshoe-crab":4,"mangrove-monitor":2,"proboscis-monkey":4,"sunbittern-strider":1,"mangrove-mudskipper":1} problems []
+start {"horseshoe-crab":4,"mangrove-monitor":2,"proboscis-monkey":4,"sunbittern-strider":1,"mangrove-mudskipper":1} 76.3
+round 1: cur 87.5/76.3; 48 legal, 48 read + 10 predicted (of 45); top: -2 proboscis-monkey +2 mangrove-monitor 85/75.3 | -1 mangrove-monitor +1 sunbittern-strider 85/74.3 | -1 proboscis-monkey +1 mangrove-monitor 85/74.3 | -1 proboscis-monkey +1 sunbittern-strider 85/72.7
+no nearer move
+RESULT 9-2 {"horseshoe-crab":4,"mangrove-monitor":2,"proboscis-monkey":4,"sunbittern-strider":1,"mangrove-mudskipper":1} 76.3 {} moves:  problems: []
+10-A-1 target 90 (82-98) size 10 side (min 10) start {"coral-polyp-colony":1,"kraken-spawnling":2,"mantis-shrimp":2,"orca-vanguard":4,"moon-jelly":1} problems []
+start {"coral-polyp-colony":1,"kraken-spawnling":2,"mantis-shrimp":2,"orca-vanguard":4,"moon-jelly":1} 81
+round 1: cur 77.5/81; 47 legal, 47 read + 10 predicted (of 34); top: -3 orca-vanguard +1 mantis-shrimp +2 kraken-spawnling 87.5/80.7 | -1 orca-vanguard +1 kraken-spawnling 80/80.7 | -1 orca-vanguard -1 mantis-shrimp +2 kraken-spawnling 82.5/79.7 | -1 orca-vanguard -1 mantis-shrimp +1 kraken-spawnling +1 riptide-eel 85/73
+no nearer move
+shield 0 81
+RESULT 10-A-1 {"coral-polyp-colony":1,"kraken-spawnling":2,"mantis-shrimp":2,"orca-vanguard":4,"moon-jelly":1} 81 {} moves:  problems: []
+8-7 target 60 (52-68) size 14 start {"barrow-leech-bat":1,"blind-cave-fish":4,"cave-olm":2,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4} problems []
+start {"barrow-leech-bat":1,"blind-cave-fish":4,"cave-olm":2,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4} 49
+round 1: cur 30/49; 35 legal, 35 read + 10 predicted (of 40); top: -1 blind-cave-fish +1 barrow-leech-bat 45/43.3 | -2 cave-olm +1 corpse-flower-beetle +1 barrow-leech-bat 52.5/40.7 | -1 blind-cave-fish -1 rot-swollen-carcass +1 barrow-leech-bat +1 cave-olm 47.5/35.7 | -1 rot-swollen-carcass +1 barrow-leech-bat 50/33.7
+no nearer move
+shield 0 49
+RESULT 8-7 {"barrow-leech-bat":1,"blind-cave-fish":4,"cave-olm":2,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4} 49 {} moves:  problems: []
+12-7 target 40 (30-49) size 20 start {"barkplate-beetle":4,"bison-bulldozer":4,"briarback-hedgehog":4,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":3} problems []
+start {"barkplate-beetle":4,"bison-bulldozer":4,"briarback-hedgehog":4,"chipmunk-hoarder":1,"mouse-sapper":4,"quillguard":3} 49.3
