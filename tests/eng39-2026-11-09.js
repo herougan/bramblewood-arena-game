@@ -63,7 +63,7 @@ const srcs = c=> [c.effects || {}].concat(Object.values(c.levelSkills || {}));
 const left = cards.filter(c=> srcs(c).some(o=> Object.keys(o).some(k=> kindSet.has(k)))).map(c=> c.id);
 ok(left.join() === 'rimefire-salamander' && (byIdEarly['rimefire-salamander'].effects || {}).iceArrow === 1, 'cards.json has no kind left as an old key but Rimefire Salamander\'s Ice Arrow (it also has Fire Arrow: one key holds one version; decision ENG39-2) (' + left.join(', ') + ')');
 const kindCards = cards.filter(c=> srcs(c).some(o=> Object.keys(o).some(k=> SPL.isFused(k, o[k]) && Object.keys(FAM[k].kinds || {}).some(s=> s in o[k]))));
-ok(kindCards.length >= 50, 'cards.json carries the fused kinds (' + kindCards.length + ' cards)');
+ok(kindCards.length >= 40 /* 2026-11-16 (ECONSK1): 11 Delivery {every: round} cards are Forestry 1 now (was >= 50) */, 'cards.json carries the fused kinds (' + kindCards.length + ' cards)');
 ok(cards.every(c=> eq(SPL.fuseDef(c), c)), 'fuse is idempotent on cards.json');
 { const r = cp.spawnSync('python3', ['-c', 'import json,sys; sys.path.insert(0, "tools"); import skill_params as SP; cs = json.load(open("canonical/cards.json")); print(json.dumps([[SP.expand_def(c).get("effects", {}), SP.fuse(SP.expand_def(c).get("effects", {}))] for c in cs]))'], {cwd: ROOT, encoding: 'utf8', maxBuffer: 1 << 28});
   const py = r.status === 0 ? JSON.parse(r.stdout) : null;

@@ -2166,7 +2166,7 @@ PASSIVE_DEFS.push(
   {key:'prospecting', category:'passive', label:TX('ui.skn-prospecting'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-prospecting', {n: numOr(v, 1)}), codexNote:TX('ui.sk-prospecting-codex')},
   {key:'plunder', category:'passive', label:TX('ui.skn-plunder'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-plunder', {n: numOr(v, 1)})},
   {key:'barter', category:'passive', label:TX('ui.skn-barter'), kind:'boolean', desc:()=> TX('ui.sk-barter'), codexNote:TX('ui.sk-barter-codex')});
-Object.assign(SKILL_ICON, {forestry:'🌲', quarrying:'🪨', mining:'⛏️', masonry:'🧱', refining:'🏭', metallurgy:'⚗️', prospecting:'🪙', plunder:'🏴‍☠️', barter:'🤝'});
+Object.assign(SKILL_ICON, {forestry:'🌲', quarrying:'⛰️', mining:'⚒️', masonry:'🏗️', refining:'⚙️', metallurgy:'🔬', prospecting:'💰', plunder:'🏴‍☠️', barter:'🤝'}); // none shared with another skill
 sk1Patch(PASSIVE_DEFS, 'smelter', {hidden:true}); // ECONSK1: Refining replaces it in "+ Add Skill"; an old card still reads it
 sk1Patch(PASSIVE_DEFS, 'deliveryEvery', {hidden:true}); // ECONSK1: Forestry / Quarrying / Mining replace it; an old card still reads it
 // ==== Package ENG24 (2026-11-04, owner 11-04 22:34 in docs/decisions.json; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
@@ -54577,7 +54577,7 @@ function sk2LogText(ev, nm){
     if(ev.kind === 'pickpocketRes') return {cls:'gold', text:TX('ui.sk2-log-pickpocket-res', {name, list: sk2ResList(ev.taken)})};
     if(ev.kind === 'sabotage') return {cls:'', text:TX('ui.sk2-log-sabotage', {name, list: sk2ResList(ev.lost)})};
     if(ev.kind === 'arson') return {cls:'', text:TX('ui.sk2-log-arson', {name, n: ev.amount})};
-    if(ev.kind === 'plunder') return {cls:'gold', text:TX('ui.sk2-log-plunder', {name, n: ev.amount})}; // ECONSK1 (2026-11-16)
+    if(ev.kind === 'plunder') return {cls:'gold', text:TX('ui.econ-log-plunder', {name, n: ev.amount})}; // ECONSK1 (2026-11-16)
     if(ev.kind === 'fortify') return {cls:'', text:TX('ui.sk2-log-fortify', {name})};
     if(ev.kind === 'noRoom') return {cls:'', text:TX('ui.sk2-log-no-room', {name})};
     if(ev.kind === 'disarmFull') return {cls:'', text:TX('ui.sk2-log-disarm-full', {name})};

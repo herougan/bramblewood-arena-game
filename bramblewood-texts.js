@@ -3767,7 +3767,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-barter": "Pay what you lack with Gold: Lumber 1, Stone 2, Metal 4.",
   "ui.sk-barter-codex": "Your resources and Pearls pay first. Works while it is on your board, Waiting too.",
   "ui.log-econ-gold": "🪙 {name}: +{n} Gold.",
-  "ui.sk2-log-plunder": "🏴‍☠️ {name} plunders {n} Gold."
+  "ui.econ-log-plunder": "🏴‍☠️ {name} plunders {n} Gold."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

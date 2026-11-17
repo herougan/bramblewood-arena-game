@@ -106,7 +106,7 @@ tx = {
    '先用你的资源和珍珠。只要它在你场上（等待中也算）就生效。','先用你的資源和珍珠。只要它在你場上（等待中也算）就生效。',
    '先に自分の資源と真珠で払う。場にいる間有効（待機中も）。','자원과 진주가 먼저 낸다. 보드에 있는 동안(대기 중에도) 작동한다.'),
  'ui.log-econ-gold': row('🪙 {name}: +{n} Gold.', *[('🪙 {name} : +{n} ' if l == 'fr' else '🪙 {name}: +{n} ') + gold[l] + '.' for l in L]),
- 'ui.sk2-log-plunder': row('🏴‍☠️ {name} plunders {n} Gold.',
+ 'ui.econ-log-plunder': row('🏴‍☠️ {name} plunders {n} Gold.',
    '🏴‍☠️ {name} pille {n} Or.','🏴‍☠️ {name} plündert {n} Gold.','🏴‍☠️ {name} saquea {n} de Oro.','🏴‍☠️ {name} saccheggia {n} Oro.','🏴‍☠️ {name} pilha {n} de Ouro.',
    '🏴‍☠️ Nandambong ng {n} Ginto si {name}.','🏴‍☠️ {name} {n} தங்கத்தைக் கொள்ளையடிக்கிறது.','🏴‍☠️ {name} menjarah {n} Emas.','🏴‍☠️ {name} 掠夺了 {n} 金币。','🏴‍☠️ {name} 掠奪了 {n} 金幣。','🏴‍☠️ {name}がゴールドを{n}略奪。','🏴‍☠️ {name}이(가) 골드 {n}을(를) 약탈.'),
 }
