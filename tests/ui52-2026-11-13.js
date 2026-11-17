@@ -31,7 +31,7 @@ ok(!/bwp-cover|bwp-rim|bwp-sflap/.test(places) && /bwp-bk/.test(places) && /bwp-
 const stomp = places.slice(places.indexOf('  stomp: {'), places.indexOf('  inventory: {'));
 ok(!/translate\(/.test(stomp.slice(0, stomp.indexOf('motes('))) && /rotateY\(\$\{s \* 100\}deg\)/.test(stomp) && /swing\(l, -1/.test(stomp) && /backface-visibility:hidden/.test(places.slice(places.indexOf('.bwp-gate{'), places.indexOf('.bwp-gate.is-l'))), '#7 the gates swing toward you (left -100, right +100 deg), no shake, their backs hidden');
 // #9
-ok(!/data-shopmode|shop-modes/.test(app + tpl) && /key:'shop', icon:'🛒'/.test(app) && /key:'premium', icon:'🍂'/.test(app), '#9 Shop and Premium are on the places strip; the switch is gone');
+ok(!/data-shopmode|shop-modes/.test(app + tpl) && /data-nav1shop/.test(app), '#9 Shop and Premium: tabs on the Shop page (2026-11-17, NAV1; were on the places strip); the old switch is gone');
 ok(/ui52-2026-11-13/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
 
 async function browser(){

@@ -15,7 +15,7 @@ ok(/codex: \{cls:'codex-scene', icon:'📖', sign:'Codex'/.test(app), 'PLACES li
 ok(/is-forge', codexSubTab === 'forge'/.test(fn(app, 'renderCodex')), 'renderCodex marks the Forge view, which keeps its own scene');
 ok(/#view-codex\.codex-scene:not\(\.is-forge\)\{/.test(tpl) && /#view-codex\.codex-scene:not\(\.is-forge\)::after\{content:attr\(data-sign\)/.test(tpl), 'CSS: the Codex scene and its sign, not on the Forge view');
 ok(/codex: \{ms: 900/.test(places) && /return null;/.test(places.slice(places.indexOf('function placeOf('), places.indexOf('function placeOf(') + 400)), 'the book entrance is kept (and the Forge view still has none)');
-ok(!/key:'codex', icon:'📖'/.test(app) && /key:'forge', icon:'🔨'/.test(app), 'the Camp bar keeps the Forge; the Codex left it (2026-11-17, NAV1: its own page)');
+ok((bar=> !/key:'codex'/.test(bar) && /key:'forge', icon:'🔨'/.test(bar))(app.slice(app.indexOf('const PAGE_SHORTCUTS = ['), app.indexOf('];', app.indexOf('const PAGE_SHORTCUTS = [')))), 'the Camp bar keeps the Forge; the Codex left it (2026-11-17, NAV1: its own page)');
 // every way in is still switchTab('codex') (no new tab): the callers that set a sub-tab first
 ['codexSubTab = \'brambles\'', 'codexSubTab = \'forge\'; switchTab(\'codex\')', 'codexSubTab = \'browse\'; switchTab(\'codex\')'].forEach(s=> ok(app.includes(s), 'still in the code: ' + s));
 ok(!/if\(place\) Ambience\.play/.test(app) && /place && place\.ambience/.test(app), 'a place with no ambience (the Codex) stays quiet instead of playing ""');
