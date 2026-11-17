@@ -460,14 +460,14 @@ M.boltShot = function(from, to, o){
   if(!g || !from || !to || RM()){ const p = wait(total); p.miss = ()=>{}; return p; }
   if(o.uid != null){ FX14.bolts.set(String(o.uid), {h, t:Date.now()}); if(FX14.bolts.size > 24) FX14.bolts.delete(FX14.bolts.keys().next().value); }
   const p = new Promise(res=>{
-    const n = kind === 'spit' ? 3 : 1, pjs = [], bits = []; let a, b, c, ux, uy, ang0;
+    const n = kind === 'spit' ? 3 : 1, pjs = [], bits = []; let a, b, c, ux, uy, ang0, sz = 1;
     later(()=>{ if(!from.isConnected || !to.isConnected){ res(); return; }
-      const A = centre(tileOf(from)), T = aimOf(to); ux = T.x - A.x; uy = T.y - A.y; const L = Math.hypot(ux, uy) || 1; ux /= L; uy /= L;
+      const A = centre(tileOf(from)), T = aimOf(to); sz = Math.max(1, Math.min(1.5, A.w/80)); ux = T.x - A.x; uy = T.y - A.y; const L = Math.hypot(ux, uy) || 1; ux /= L; uy /= L;
       a = {x:A.x + ux*Math.min(A.w, A.h)*.32, y:A.y + uy*Math.min(A.w, A.h)*.32}; b = {x:T.x - ux*T.c.w*.12, y:T.y - uy*T.c.h*.12};
       c = arcCtl(a, b, Math.hypot(b.x - a.x, b.y - a.y)*B.lift); ang0 = qa(a, c, b, 0);
       nudge(tileOf(from), [{scale:'1'}, {scale:'1.07 .9', offset:.7}, {scale:'.94 1.08', offset:.86}, {scale:'1'}], cs + 120);
       for(let i = 0; i < n; i++){ const e = layer('fxh-pj ' + kind, B.parts.map(k=> `<i class="${k}"></i>`).join('')); pjs.push(e); bits.push(e);
-        g.set(e, {x:a.x, y:a.y, rotation:ang0, scale:.2, opacity:0}); if(!i) g.to(e, {scale:kind === 'spit' ? .8 : .9, opacity:1, duration:cs/1000, ease:'power2.in'}); }
+        g.set(e, {x:a.x, y:a.y, rotation:ang0, scale:.2, opacity:0}); if(!i) g.to(e, {scale:(kind === 'spit' ? .8 : .9)*sz, opacity:1, duration:cs/1000, ease:'power2.in'}); }
       if(kind === 'fire'){ const co = pjs[0].querySelector('.co'); g.to(co, {rotation:720, duration:(cs + flight)/1000, ease:'none'}); }
       if(kind === 'acid'){ const co = pjs[0].querySelector('.co'); g.to(co, {scaleX:1.25, scaleY:.8, duration:.07, yoyo:true, repeat:Math.ceil((cs + flight)/70), ease:'sine.inOut'}); }
       if(kind === 'ice') g.fromTo(pjs[0].querySelector('.gl'), {opacity:.4}, {opacity:1, duration:.08, yoyo:true, repeat:Math.ceil((cs + flight)/80)});
@@ -478,7 +478,7 @@ M.boltShot = function(from, to, o){
       if(miss){ const T = Math.hypot(b.x - a.x, b.y - a.y); end = {x:b.x + ux*T*.45 - uy*34, y:b.y + uy*T*.45 + ux*34}; c = arcCtl(a, end, T*B.lift); }
       const path = t=> qb(a, c, end, t);
       pjs.forEach((e, i)=>{ const d = i*45, st = {t:0};
-        if(i) g.to(e, {opacity:1, scale:.75 - i*.12, duration:.04, delay:d/1000});
+        if(i) g.to(e, {opacity:1, scale:(.75 - i*.12)*sz, duration:.04, delay:d/1000});
         g.to(st, {t:1, duration:flight/1000, delay:d/1000, ease:'none', onUpdate:()=>{ const q = path(st.t); g.set(e, {x:q.x, y:q.y, rotation:qa(a, c, end, st.t)}); },
           onComplete:()=>{ if(miss) g.to(e, {opacity:0, scale:.4, duration:.15, onComplete:()=> kill(e)}); else kill(e); }}); });
       trail14(path, [.18, .34, .5, .66, .82], t=> flight*t, (q, t)=>{
@@ -563,30 +563,30 @@ M.arrowVariant = function(pa, fx){ pa = pa || {}; fx = fx || {};
 M.arrowShot = function(shooter, target, o){
   o = o || {}; const g = G(); if(!g || !shooter || !target || RM() || !target.isConnected) return false;
   const v = ARROW14[o.variant] ? o.variant : 'plain', draw = Math.max(60, o.draw == null ? 234 : o.draw), flight = Math.max(90, o.flight == null ? 380 : o.flight);
-  const S = centre(tileOf(shooter)), T = aimOf(target), aim = {x:T.x + T.c.w*rnd(-.14, .14), y:T.y + T.c.h*rnd(-.08, .14)};
+  const S = centre(tileOf(shooter)), sz = Math.max(1, Math.min(1.5, S.w/80)), T = aimOf(target), aim = {x:T.x + T.c.w*rnd(-.14, .14), y:T.y + T.c.h*rnd(-.08, .14)};
   let ux = aim.x - S.x, uy = aim.y - S.y; { const L = Math.hypot(ux, uy) || 1; ux /= L; uy /= L; }
   let side = 0, held = false;
   if(o.twin){ const prev = FX14.twin.get(shooter); held = !!(prev && Date.now() - prev.t < 1600); side = held ? -prev.side : (Math.abs(ux) > .6 ? 0 : 1); FX14.twin.set(shooter, {t:Date.now(), side: side || 1}); }
   const s0 = o.plunge ? {x:aim.x + rnd(-36, 36) - ux*30, y:T.c.r.top - rnd(170, 230)} : {x:S.x + ux*Math.min(S.w, S.h)*.3, y:S.y + uy*Math.min(S.w, S.h)*.3};
   const pull = o.plunge ? 0 : 10, s1 = {x:s0.x - ux*pull, y:s0.y - uy*pull};
-  let end = {x:aim.x - ux*15, y:aim.y - uy*15};
+  let end = {x:aim.x - ux*15*sz, y:aim.y - uy*15*sz};
   if(o.miss){ end = {x:aim.x + ux*T.c.h*.7 + uy*T.c.w*.4, y:aim.y + uy*T.c.h*.7 - ux*T.c.w*.4}; }
   const dist = Math.hypot(end.x - s1.x, end.y - s1.y), lift = o.plunge ? 14 : Math.max(12, Math.min(90, dist*((o.archer ? .08 : .06) + .16*Math.abs(ux))))*(o.twin ? 1.4 : 1); // a level shot arcs up; a near-vertical one only bows a little to the side (the swell gives it height)
-  const c = arcCtl(s1, end, lift, side || (o.plunge ? (ux >= 0 ? -1 : 1) : 0)), bump = o.plunge ? -.15 : .32*(1 - Math.min(1, Math.abs(ux)*1.4)) + .06;
+  const c = arcCtl(s1, end, lift, side || (o.plunge ? (ux >= 0 ? -1 : 1) : 0)), bump = o.plunge ? -.15 : .2*(1 - Math.min(1, Math.abs(ux)*1.4)) + .05;
   const ang0 = qa(s1, c, end, 0), bits = [];
   const ar = layer('fxh-arrow ' + v, arrowSvg(v, o.archer) + (v === 'fire' || v === 'ice' || v === 'venom' ? '<i class="tipfx"></i>' : '')); bits.push(ar);
   const tip = ar.querySelector('.tipfx');
   if(tip && v === 'fire') g.to(tip, {scaleY:1.25, scaleX:.85, duration:.09, yoyo:true, repeat:Math.ceil((draw + flight + 500)/90), transformOrigin:'50% 80%'});
   if(tip && v === 'venom') g.fromTo(tip, {y:0, opacity:1}, {y:5, opacity:0, duration:.32, repeat:Math.ceil((draw + flight)/320), ease:'power1.in'});
   // 1) the draw
-  if(o.plunge){ g.set(ar, {x:s0.x, y:s0.y, rotation:ang0, opacity:0, scale:.8}); g.to(ar, {opacity:1, duration:.12, delay:Math.max(0, draw - 120)/1000}); }
+  if(o.plunge){ g.set(ar, {x:s0.x, y:s0.y, rotation:ang0, opacity:0, scale:.8*sz}); g.to(ar, {opacity:1, duration:.12, delay:Math.max(0, draw - 120)/1000}); }
   else {
-    const bw = layer('fxh-bow', BOW_SVG); bits.push(bw); const bs = o.archer ? 1.3 : 1;
+    const bw = layer('fxh-bow', BOW_SVG); bits.push(bw); const bs = (o.archer ? 1.3 : 1)*sz;
     g.set(bw, {x:s0.x + ux*4, y:s0.y + uy*4, rotation:ang0, scale:held ? bs : .4*bs, opacity:held ? 1 : 0});
-    g.set(ar, {x:s0.x + ux*8, y:s0.y + uy*8, rotation:ang0, opacity:0, scale:.85});
+    g.set(ar, {x:s0.x + ux*8, y:s0.y + uy*8, rotation:ang0, opacity:0, scale:.85*sz});
     const tl = g.timeline();
     tl.to(bw, {opacity:1, scale:bs, duration:held ? .01 : .09, ease:'back.out(2)'}, 0).to(ar, {opacity:1, duration:.06}, 0)
-      .to(ar, {x:s1.x, y:s1.y, scale:.95, duration:draw/1000*.85, ease:'power2.out'}, .04).to(bw, {scaleX:bs*.8, duration:draw/1000*.85, ease:'power2.out'}, .04)
+      .to(ar, {x:s1.x, y:s1.y, scale:.95*sz, duration:draw/1000*.85, ease:'power2.out'}, .04).to(bw, {scaleX:bs*.8, duration:draw/1000*.85, ease:'power2.out'}, .04)
       .to(bw, {scaleX:bs*1.12, duration:.05, ease:'power3.out'}, draw/1000).to(bw, {scaleX:bs, duration:.2, ease:'elastic.out(1, .4)'}, draw/1000 + .05)
       .to(bw, {opacity:0, duration:.18}, draw/1000 + .16);
     nudge(tileOf(shooter), [{translate:'0 0'}, {translate:`${-ux*6}px ${-uy*6}px`, offset:draw/(draw + 260)}, {translate:`${ux*4}px ${uy*4}px`, offset:(draw + 60)/(draw + 260)}, {translate:'0 0'}], draw + 260);
@@ -596,8 +596,8 @@ M.arrowShot = function(shooter, target, o){
   }
   // 2) the flight
   const from = o.plunge ? s0 : s1, path = t=> qb(from, c, end, t), st = {t:0};
-  g.to(st, {t:1, duration:flight/1000, delay:draw/1000, ease:o.plunge ? 'power1.in' : 'none', onUpdate:()=>{ const q = path(st.t); g.set(ar, {x:q.x, y:q.y, rotation:qa(from, c, end, st.t), scale:1 + bump*4*st.t*(1 - st.t)}); }});
-  const tail = (q, t)=>{ const a = qa(from, c, end, t)*D2R; return {x:q.x - Math.cos(a)*22, y:q.y - Math.sin(a)*22, a:a/D2R}; };
+  g.to(st, {t:1, duration:flight/1000, delay:draw/1000, ease:o.plunge ? 'power1.in' : 'none', onUpdate:()=>{ const q = path(st.t); g.set(ar, {x:q.x, y:q.y, rotation:qa(from, c, end, st.t), scale:sz*(1 + bump*4*st.t*(1 - st.t))}); }});
+  const tail = (q, t)=>{ const a = qa(from, c, end, t)*D2R; return {x:q.x - Math.cos(a)*22*sz, y:q.y - Math.sin(a)*22*sz, a:a/D2R}; };
   trail14(path, [.12, .24, .36, .48, .6, .72, .84, .94], t=> draw + flight*t, (q, t)=>{ const p = tail(q, t);
     if(v === 'plain'){ const e = bit('fxh-dot streak', '', p.x, p.y, {rotation:p.a, opacity:.8}); g.to(e, {opacity:0, scaleX:.4, duration:.2, onComplete:()=> kill(e)}); }
     else if(v === 'fire'){ for(let i = 0; i < 2; i++){ const e = bit('fxh-dot fire', '', p.x + rnd(-3, 3), p.y + rnd(-3, 3), {scale:rnd(.9, 1.5)}); g.to(e, {y:'-=' + rnd(10, 20), x:'+=' + rnd(-5, 5), scale:.2, opacity:0, duration:.42, onComplete:()=> kill(e)}); } }
