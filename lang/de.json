@@ -4508,5 +4508,13 @@
  "AI pick": "KI-Wahl",
  "Picked by an AI, or by you through Add cards.": "Von einer KI gewählt oder von dir über Karten hinzufügen.",
  "AI pick {card} carries it (theme: {theme})": "Die KI-Wahl {card} hat sie (Thema: {theme})",
- "My pick": "Meine Wahl"
+ "My pick": "Meine Wahl",
+ "Sleeping Powder": "Schlafpulver",
+ "Poison Powder": "Giftpulver",
+ "Powder": "Pulver",
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.": "Jede Runde nach den Pfeilen: Schlaf {n} auf den Gegner davor oder den nächsten, wenn er wach ist. Kein Schaden.",
+ "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.": "Jede Runde nach den Pfeilen: {n} Gift auf den Gegner davor oder den nächsten. Kein Schaden.",
+ "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "Alle Pulver zählen zusammen als eine Fähigkeit. Sie wirken mit Tempo -1, nach den Pfeilen. Ausweichend weicht der Hälfte aus, Fliegend nicht.",
+ "{name} puffs Sleeping Powder at {target}. 💤": "{name} pustet Schlafpulver auf {target}. 💤",
+ "{name} puffs Poison Powder at {target}. ☠️": "{name} pustet Giftpulver auf {target}. ☠️"
 }

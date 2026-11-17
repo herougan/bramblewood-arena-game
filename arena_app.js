@@ -2169,6 +2169,12 @@ PASSIVE_DEFS.push(
 Object.assign(SKILL_ICON, {forestry:'🌲', quarrying:'⛰️', mining:'⚒️', masonry:'🏗️', refining:'⚙️', metallurgy:'🔬', prospecting:'💰', plunder:'🏴‍☠️', barter:'🤝'}); // none shared with another skill
 sk1Patch(PASSIVE_DEFS, 'smelter', {hidden:true}); // ECONSK1: Refining replaces it in "+ Add Skill"; an old card still reads it
 sk1Patch(PASSIVE_DEFS, 'deliveryEvery', {hidden:true}); // ECONSK1: Forestry / Quarrying / Mining replace it; an old card still reads it
+// ==== POWDER1 (2026-11-17, owner 11-17 17:32, OWN-1117-1; rules in bramblewood-engine.js POWDERS, prices in canonical/skill-costs.json): the powders.
+// A Speed -1 puff (after the arrows) at the enemy in front or nearest: its status, no damage. All powders count as one skill (BramblewoodBudget.POWDER_FAMILY).
+PASSIVE_DEFS.push(
+  {key:'sleepPowder', category:'evergreen', label:TX('ui.skn-sleep-powder'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-sleep-powder', {n: numOr(v, 1)})},
+  {key:'poisonPowder', category:'evergreen', label:TX('ui.skn-poison-powder'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-poison-powder', {n: numOr(v, 2)})});
+Object.assign(SKILL_ICON, {sleepPowder:'😴', poisonPowder:'🍄'}); // none shared with another skill
 // ==== Package ENG24 (2026-11-04, owner 11-04 22:34 in docs/decisions.json; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
 //   Bramble Armor (key brambleArmor) reads as a Fortify form: "Fortify { Armor N }, while it lives" (ENG22-2 b); the rule is unchanged.
 //   Relict (RELICT-1), Meld {X}, Immunity, Sequestration (RELICT-2): on no card; texts under 15 words.
@@ -8818,9 +8824,9 @@ function ui18LateSkillFlags(id, d){
 }
 // UI18_CODEX_SKILLS:END
 // 2026-10-21 (package TX, owner: "In the filter, Diurnal is the same as Diurnal {}. Same for swimmer and the rest."): one chip per skill family.
-function codexSkillChoices(){ try{ const seen = new Set(); return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:skillFamilyId(e.key), icon:SKILL_ICON[skillFamilyId(e.key)] || e.icon, name: ['arrow', 'fireBolt'].includes(skillFamilyId(e.key)) ? codexFamilyName(skillFamilyId(e.key)) : e.name})).filter(e=>{ if(seen.has(e.key)) return false; seen.add(e.key); return true; }); }catch(e){ return []; } }
+function codexSkillChoices(){ try{ const seen = new Set(); return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:skillFamilyId(e.key), icon:SKILL_ICON[skillFamilyId(e.key)] || e.icon, name: ['arrow', 'fireBolt', 'sleepPowder' /* POWDER1 */].includes(skillFamilyId(e.key)) ? codexFamilyName(skillFamilyId(e.key)) : e.name})).filter(e=>{ if(seen.has(e.key)) return false; seen.add(e.key); return true; }); }catch(e){ return []; } }
 function codexSkillName(key){ const p = skillDefOf(key); return (p && p.label) || key; }
-const codexFamilyName = id=> id === 'fireBolt' ? TX('ui.skn-bolt') : codexSkillName(id); // ARROW1 (2026-11-16): the arrow family's chip reads "Arrow", the bolts' "Bolt"
+const codexFamilyName = id=> id === 'fireBolt' ? TX('ui.skn-bolt') : id === 'sleepPowder' ? TX('ui.skn-powder') : codexSkillName(id); // ARROW1 (2026-11-16): the arrow family's chip reads "Arrow", the bolts' "Bolt"; POWDER1 (2026-11-17): the powders' "Powder"
 function codexSkillPanelHTML(){
   const list = codexSkillChoices(), on = new Set(codexSkillsChosen());
   return `<div class="cx-skill-head"><small>${escapeHtml(TX('ui.codex-skill-hint'))}</small><button type="button" class="btn small ghost" data-cxskillclear ${on.size ? '' : 'disabled'}>${escapeHtml(TX('ui.codex-skill-clear'))}</button></div>`
@@ -8902,7 +8908,7 @@ let skillFamMemo = null;
 function skillFamilies(){
   if(skillFamMemo) return skillFamMemo;
   const all = PASSIVE_DEFS.concat(SKILL_DEFS.filter(s=> !PASSIVE_DEFS.some(p=> p.key === s.key))), byKey = new Map(), byLabel = new Map(), fam = new Map();
-  const B = typeof BramblewoodBudget !== 'undefined' ? BramblewoodBudget : {}, shotFams = [B.ARROW_FAMILY, B.BOLT_FAMILY];
+  const B = typeof BramblewoodBudget !== 'undefined' ? BramblewoodBudget : {}, shotFams = [B.ARROW_FAMILY, B.BOLT_FAMILY, B.POWDER_FAMILY /* POWDER1 (2026-11-17) */];
   all.forEach(p=>{ if(!p || !p.key) return;
     // a parameter row of another skill: Diurnal {…} (diurnalGrant), Bloom (Tide & Night) (bloomWhen), Arrow's count (arrowCount)
     const base = /^(.+?)(Grant|When|Count|Hp|N|Who)$/.exec(p.key), lab = skillBareLabel(p.label);
@@ -10661,7 +10667,7 @@ const SKILL_CODEX_NOTE = {smokeBomb: ()=> TX('ui.skx-smoke-bomb'), rocket: ()=> 
   sleep: ()=> TX('ui.skx-sleep'), ritual: ()=> TX('ui.skx-ritual')};
 // ARROW1 (2026-11-16, owner 11-16 23:10): every arrow's and bolt's Codex entry says its family counts as one skill and when it fires.
 { const B = typeof BramblewoodBudget !== 'undefined' ? BramblewoodBudget : {};
-  [[B.ARROW_FAMILY, 'ui.sk-arrow-family-codex'], [B.BOLT_FAMILY, 'ui.sk-bolt-family-codex']].forEach(([ks, tx])=> (ks || []).forEach(k=>{
+  [[B.ARROW_FAMILY, 'ui.sk-arrow-family-codex'], [B.BOLT_FAMILY, 'ui.sk-bolt-family-codex'], [B.POWDER_FAMILY, 'ui.sk-powder-family-codex' /* POWDER1 (2026-11-17) */]].forEach(([ks, tx])=> (ks || []).forEach(k=>{
     const own = SKILL_CODEX_NOTE[k]; SKILL_CODEX_NOTE[k] = own ? ()=> own() + ' ' + TX(tx) : ()=> TX(tx); })); }
 // Map Codex (2026-10-13, user: "2 maps after the skill codex, add the map codex + list of field effects learned from each map").
 // 2026-11-14 (package UI54, owner 11:11: "the maps section of the codex should look like rolls of maps, each holding info about each map and each world. (Map 0-40 is
@@ -49752,6 +49758,7 @@ function delayForEvent(ev, prevKind){
   else if(ev.type==='forkSwing') base = 0; // the swing's lines follow at once (2026-10-17)
   else if(ev.type==='rampart' || ev.type==='brambleArmor') base = 0; // 2026-10-27 (package VIS4, K4): the hit they share plays at once, so the block lands with the blow
   else if(ev.type==='shieldSoak' && matchState && matchState.resolving) base = 0; // 2026-10-27 (package VIS4, K7): the same for a Shield's soak and the blow it soaks
+  else if(ev.type==='powder') base = 620; // POWDER1 (2026-11-17): the spores drift over (FX.H.powderPuff, 0.56 s) before the status mark
   else if(ev.type==='rebuild') base = 560; // Rebuild (2026-10-17): the planks are in the air; the bar fills as they land
   else if(ev.type==='statusFx' && ev.kind==='inspired') base = (prevKind!=null && vfxKindOf(ev)===prevKind) ? 60 : 380; // PL2 (2026-10-25, #4): the horn, and its allies' Attack going up 0.3 s in
   // Generic bucket pacing (was 200/500 through 2026-09-20; trimmed 2026-09-21 per explicit
@@ -50694,6 +50701,7 @@ function logText(ev){
     case 'arrow': if(ev.style === 'drop') return {cls:'', text: ev.targetDefId ? TX('ui.bx-log-drop', {name: nm(ev.defId), target: nm(ev.targetDefId)}) : TX('ui.bx-log-drop-bramble', {name: nm(ev.defId)})}; // Package BX (2026-10-21)
       return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};
     case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'venom 🐍' /* ENG33: Venom Spit */, ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
+    case 'powder': return {cls: ev.element === 'poison' ? 'poison' : '', text:TX(ev.element === 'poison' ? 'ui.powder-log-poison' : 'ui.powder-log-sleep', {name: nm(ev.defId), target: nm(ev.targetDefId)})}; // POWDER1 (2026-11-17)
     case 'boonFire': return {cls:'', text:TX('ui.df3-log', {boon: boonName(ev.boon), name: nm(ev.defId)})}; // 2026-10-24 (package DF3): a selfish boon helped one of theirs
     case 'bossGimmick': return {cls:'', text:TX('ui.c11-' + ev.gimmick + '-log', {name: ev.defId ? nm(ev.defId) : '', n: ev.dmg || ev.heal || ev.shield || ev.shieldLost || ''})}; // CONTENT11 (2026-11-05): a boss gimmick
     case 'revive': return {cls:'gold', text:TX('ui.log-revive', {name: nm(ev.defId)})}; // 2026-10-19 (package RV): it did die (the death line is just before)

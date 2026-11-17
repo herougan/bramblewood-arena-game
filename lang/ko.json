@@ -4511,5 +4511,13 @@
  "AI pick": "AI 추천",
  "Picked by an AI, or by you through Add cards.": "AI 또는 사용자가 카드 추가에서 선택했습니다.",
  "AI pick {card} carries it (theme: {theme})": "AI 추천 {card} 이(가) 가지고 있습니다 (테마: {theme})",
- "My pick": "내 선택"
+ "My pick": "내 선택",
+ "Sleeping Powder": "수면 가루",
+ "Poison Powder": "독 가루",
+ "Powder": "가루",
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.": "매 턴 화살 다음에: 앞(없으면 가장 가까운)의 깨어 있는 적에게 수면 {n}. 피해 없음.",
+ "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.": "매 턴 화살 다음에: 앞(없으면 가장 가까운)의 적에게 독 {n}. 피해 없음.",
+ "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "가루 스킬은 모두 합쳐 하나의 스킬로 센다. 가루는 속도 -1로, 화살 다음에 뿌려진다. 회피는 절반을 피하고 비행은 못 피한다.",
+ "{name} puffs Sleeping Powder at {target}. 💤": "{name}이(가) {target}에게 수면 가루를 뿌린다. 💤",
+ "{name} puffs Poison Powder at {target}. ☠️": "{name}이(가) {target}에게 독 가루를 뿌린다. ☠️"
 }

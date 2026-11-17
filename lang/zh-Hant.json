@@ -4509,5 +4509,13 @@
  "AI pick": "AI 精選",
  "Picked by an AI, or by you through Add cards.": "由 AI 挑選，或由你透過「新增卡牌」挑選。",
  "AI pick {card} carries it (theme: {theme})": "AI 精選 {card} 帶有它（主題：{theme}）",
- "My pick": "我的精選"
+ "My pick": "我的精選",
+ "Sleeping Powder": "睡眠粉",
+ "Poison Powder": "毒粉",
+ "Powder": "粉",
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.": "每回合在箭之後：對正前方（沒有則最近）醒著的敵人施加睡眠 {n}。不造成傷害。",
+ "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.": "每回合在箭之後：對正前方（沒有則最近）的敵人施加 {n} 層毒液。不造成傷害。",
+ "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "所有粉類技能合計只算一個技能。粉以速度 -1 施放，在箭之後。閃避能躲開一半；飛行不能。",
+ "{name} puffs Sleeping Powder at {target}. 💤": "{name}向{target}撒出睡眠粉。💤",
+ "{name} puffs Poison Powder at {target}. ☠️": "{name}向{target}撒出毒粉。☠️"
 }

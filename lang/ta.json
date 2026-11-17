@@ -4511,5 +4511,13 @@
  "AI pick": "AI தேர்வு",
  "Picked by an AI, or by you through Add cards.": "AI அல்லது நீங்கள் 'அட்டைகளைச் சேர்' மூலம் தேர்ந்தெடுத்தது.",
  "AI pick {card} carries it (theme: {theme})": "AI தேர்வு {card} இதைக் கொண்டுள்ளது (கருப்பொருள்: {theme})",
- "My pick": "என் தேர்வு"
+ "My pick": "என் தேர்வு",
+ "Sleeping Powder": "உறக்கப் பொடி",
+ "Poison Powder": "நஞ்சுப் பொடி",
+ "Powder": "பொடி",
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.": "ஒவ்வொரு முறையும், அம்புகளுக்குப் பின்: முன்னுள்ள அல்லது அருகிலுள்ள விழித்திருக்கும் எதிரிக்கு உறக்கம் {n}. சேதம் இல்லை.",
+ "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.": "ஒவ்வொரு முறையும், அம்புகளுக்குப் பின்: முன்னுள்ள அல்லது அருகிலுள்ள எதிரிக்கு {n} நஞ்சு. சேதம் இல்லை.",
+ "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "எல்லாப் பொடிகளும் சேர்ந்து ஒரே திறன். வேகம் -1-இல், அம்புகளுக்குப் பின் தூவப்படும். தப்பித்தல் பாதியைத் தவிர்க்கும்; பறத்தல் தவிர்க்காது.",
+ "{name} puffs Sleeping Powder at {target}. 💤": "{name} {target} மீது உறக்கப் பொடியைத் தூவுகிறது. 💤",
+ "{name} puffs Poison Powder at {target}. ☠️": "{name} {target} மீது நஞ்சுப் பொடியைத் தூவுகிறது. ☠️"
 }

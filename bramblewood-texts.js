@@ -3772,7 +3772,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.econ-log-plunder": "🏴‍☠️ {name} plunders {n} Gold.",
   "ui.skn-bolt": "Bolt",
   "ui.sk-arrow-family-codex": "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.",
-  "ui.sk-bolt-family-codex": "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings."
+  "ui.sk-bolt-family-codex": "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.",
+  "ui.skn-sleep-powder": "Sleeping Powder",
+  "ui.skn-poison-powder": "Poison Powder",
+  "ui.skn-powder": "Powder",
+  "ui.sk-sleep-powder": "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.",
+  "ui.sk-poison-powder": "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.",
+  "ui.sk-powder-family-codex": "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.",
+  "ui.powder-log-sleep": "{name} puffs Sleeping Powder at {target}. 💤",
+  "ui.powder-log-poison": "{name} puffs Poison Powder at {target}. ☠️"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

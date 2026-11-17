@@ -4510,5 +4510,13 @@
  "AI pick": "Scelta IA",
  "Picked by an AI, or by you through Add cards.": "Scelta da un'IA, o da te con Aggiungi carte.",
  "AI pick {card} carries it (theme: {theme})": "La scelta IA {card} ce l'ha (tema: {theme})",
- "My pick": "La mia scelta"
+ "My pick": "La mia scelta",
+ "Sleeping Powder": "Polvere del sonno",
+ "Poison Powder": "Polvere velenosa",
+ "Powder": "Polvere",
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.": "Ogni turno, dopo le frecce: Sonno {n} sul nemico di fronte o sul più vicino, se è sveglio. Nessun danno.",
+ "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.": "Ogni turno, dopo le frecce: {n} Veleno sul nemico di fronte o sul più vicino. Nessun danno.",
+ "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "Tutte le polveri contano insieme come un’abilità. Agiscono a Velocità -1, dopo le frecce. Elusione ne schiva metà; Volo no.",
+ "{name} puffs Sleeping Powder at {target}. 💤": "{name} soffia polvere del sonno su {target}. 💤",
+ "{name} puffs Poison Powder at {target}. ☠️": "{name} soffia polvere velenosa su {target}. ☠️"
 }

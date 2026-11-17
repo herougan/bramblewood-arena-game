@@ -4509,5 +4509,13 @@
  "AI pick": "Pili ng AI",
  "Picked by an AI, or by you through Add cards.": "Pinili ng AI, o ng ikaw sa Magdagdag ng mga card.",
  "AI pick {card} carries it (theme: {theme})": "Taglay ito ng pili ng AI na {card} (tema: {theme})",
- "My pick": "Pili ko"
+ "My pick": "Pili ko",
+ "Sleeping Powder": "Pulbos ng Tulog",
+ "Poison Powder": "Pulbos ng Kamandag",
+ "Powder": "Pulbos",
+ "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if it is awake. No damage.": "Bawat turn, pagkatapos ng mga palaso: Tulog {n} sa kalaban sa harap o pinakamalapit, kung gising. Walang pinsala.",
+ "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.": "Bawat turn, pagkatapos ng mga palaso: {n} Kamandag sa kalaban sa harap o pinakamalapit. Walang pinsala.",
+ "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "Iisang skill lang ang bilang ng lahat ng pulbos. Kumikilos sa Speed -1, pagkatapos ng mga palaso. Kalahati ang naiiwasan ng Evasive; hindi ng Lumilipad.",
+ "{name} puffs Sleeping Powder at {target}. 💤": "Hinipan ni {name} ng Pulbos ng Tulog si {target}. 💤",
+ "{name} puffs Poison Powder at {target}. ☠️": "Hinipan ni {name} ng Pulbos ng Kamandag si {target}. ☠️"
 }

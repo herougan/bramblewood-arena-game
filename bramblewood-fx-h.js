@@ -18,8 +18,11 @@
      FX.H.volleyLoose(shooter)                         Volley: a fan of arrows lofted at once (each hit then plunges from above)
      FX.H.forestryLog / coinFlip / plunderCoins / anvilSpark / pearlGlint / oreChip   Forestry, Gold (Prospecting, Delivery, Barter),
                                                        Plunder, Masonry / Refining, Pearls, Quarrying / Mining
+   2026-11-17 (package POWDER1): the powders (section 6)
+     FX.H.powderPuff(from, to, {element, total, speed})   Sleeping / Poison Powder: the shooter shakes out a drift of spores that blooms on the target
    Cues (SoundKit, built from its tone / noise / sweep primitives, SoundKit.prim): crabClack, geigerSoft, mendChime, hymnBell, gorgeGulp;
-   FX14: boltFire, boltIce, boltAcid, boltPoison, spitfire, arrowSlash, venomPuff, crystalPop, logTumble, coinFlip, anvilTink, pearlChime, pickChip.
+   FX14: boltFire, boltIce, boltAcid, boltPoison, spitfire, arrowSlash, venomPuff, crystalPop, logTumble, coinFlip, anvilTink, pearlChime, pickChip;
+   POWDER1: sporePuff.
    ============================================================ */
 (function(root){
 'use strict';
@@ -84,6 +87,9 @@ const CUES = {
   coinFlip(P){ P.tone(2093, 0.12, 'square', 0.012); P.tone(2637, 0.16, 'sine', 0.035, 0.05); P.tone(3136, 0.2, 'sine', 0.025, 0.13); },
   anvilTink(P){ [0, 0.18].forEach(d=>{ P.tone(1320, 0.18, 'triangle', 0.045, d); P.tone(2470, 0.12, 'sine', 0.025, d); P.fnoise(0.02, 0.06, {type:'highpass', freq:3000, attack:0.001, delay:d}); }); },
   pearlChime(P){ P.tone(1568, 0.25, 'sine', 0.03); P.tone(2349, 0.3, 'sine', 0.02, 0.08); P.sweep(3000, 4200, 0.12, 'sine', 0.008, 0.1); },
+  // POWDER1 (2026-11-17): a soft breathy poof as the spores bloom, a drowsy falling chime (Sleeping) or a low bubble (Poison) under it
+  sporePuff(P, el){ P.fnoise(0.26, 0.05, {type:'lowpass', freq:1400, freqEnd:380, attack:0.035}); P.fnoise(0.14, 0.025, {type:'bandpass', freq:2600, freqEnd:1500, q:0.7, attack:0.02, delay:0.05});
+    if(el === 'poison') P.sweep(260, 150, 0.14, 'sine', 0.05, 0.04); else { P.tone(784, 0.18, 'sine', 0.025, 0.05); P.tone(587, 0.24, 'sine', 0.02, 0.16); } },
   pickChip(P){ P.tone(1900, 0.03, 'square', 0.015); P.fnoise(0.03, 0.07, {type:'bandpass', freq:2500, q:2, attack:0.001}); P.tone(640, 0.05, 'triangle', 0.05, 0.02); },
 };
 M.CUES = Object.keys(CUES);
@@ -321,6 +327,7 @@ const sideCards = side=> [...document.querySelectorAll(`#battlefieldEl [id^="${s
 M.onEvent = function(ev, env){
   if(!ev || !env) return;
   fx14Event(ev, env); // FX14 (2026-11-17): bolt misses, the Shock Bolt's fork, the volley's loose and the resource skills (section 5)
+  powder1Event(ev, env); // POWDER1 (2026-11-17): the powder puffs and their dodges (section 6)
   const T = ev.type, el = env.el, sp = Math.max(1, (env.match && env.match.speedMult) || 1);
   if(T === 'crabClaw'){ if(!env.fxAtLeast('low')) return; const a = el(ev.attUid); if(!a) return;
     CRAB.set(String(ev.attUid), {t:Date.now()}); if(CRAB.size > 24) CRAB.delete(CRAB.keys().next().value);
@@ -720,6 +727,62 @@ M.oreChip = function(src, dest, o){
     .add(()=>{ if(b) hop14(e, {x:top.x, y:top.y - 12}, b, 380, 300, {rot0:30, s1:.65}).then(()=>{ bump14(dest); kill(e); res(); });
       else g.to(e, {opacity:0, y:'+=12', duration:.25, onComplete:()=>{ kill(e); res(); }}); }));
 };
+
+// =====================================================================================================================
+// 6. THE POWDERS (2026-11-17, package POWDER1, owner 11-17 17:32, OWN-1117-1: "Status Powder: Start with Sleeping Powder and Poison Powder").
+//    A powder is a Speed -1 action that puts its status on the enemy facing it, no damage: the shooter shakes (a quick squash), a loose drift
+//    of spores wobbles across (slower and softer than a bolt's spit, so it reads as a puff, not a shot), and blooms into a soft cloud on the
+//    target: Sleeping lavender with a few rising z's, Poison green with drips. A dodge (the 'evaded' after it): the drift thins out beside it.
+//    Transform / opacity only, no filter or blend mode; reduced motion and Effects None: nothing here (the status mark still shows).
+// =====================================================================================================================
+const PWD = {sleep:{cls:'sleep', glyph:'z'}, poison:{cls:'poison', glyph:''}};
+const POWDER1 = new Map();
+// FX.H.powderPuff(from, to, {element, total, speed}): total = ms until the spores reach the target (default 560 / speed). Returns a promise
+// with .miss() (the drift thins out beside the target, no bloom).
+M.powderPuff = function(from, to, o){
+  o = o || {}; const g = G(), P = PWD[o.element] || PWD.sleep, sp = speedOf(o), total = Math.max(180, o.total == null ? Math.round(560/sp) : o.total), h = {missed:false};
+  if(!g || !from || !to || RM()){ const p = wait(total); p.miss = ()=>{}; return p; }
+  if(o.uid != null){ POWDER1.set(String(o.uid), {h, t:Date.now()}); if(POWDER1.size > 24) POWDER1.delete(POWDER1.keys().next().value); }
+  const p = new Promise(res=>{ if(!from.isConnected || !to.isConnected){ res(); return; }
+    const A = centre(tileOf(from)), T = aimOf(to); let ux = T.x - A.x, uy = T.y - A.y; const L = Math.hypot(ux, uy) || 1; ux /= L; uy /= L;
+    const a = {x:A.x + ux*Math.min(A.w, A.h)*.3, y:A.y + uy*Math.min(A.w, A.h)*.3}, b = {x:T.x - ux*T.c.w*.08, y:T.y - uy*T.c.h*.08}, shake = Math.min(160, total*.3), fly = total - shake;
+    nudge(tileOf(from), [{scale:'1'}, {scale:'1.06 .92', offset:.35}, {scale:'.96 1.05', offset:.7}, {scale:'1'}], shake + 80);
+    const n = 9, spores = [];
+    for(let i = 0; i < n; i++){ const e = bit('fxh-spore ' + P.cls, '', a.x + rnd(-8, 8), a.y + rnd(-8, 8), {scale:.3, opacity:0}); spores.push(e);
+      const d = shake/1000*rnd(.2, 1), side = (i%2 ? 1 : -1)*rnd(10, 22), lag = i*.018;
+      g.to(e, {opacity:rnd(.65, 1), scale:rnd(.8, 1.35), duration:.12, delay:d});
+      later(()=>{ const end = h.missed ? {x:b.x + ux*30 - uy*side*1.6, y:b.y + uy*30 + ux*side*1.6} : {x:b.x + rnd(-10, 10), y:b.y + rnd(-10, 10)};
+        const c = {x:(a.x + end.x)/2 - uy*side, y:(a.y + end.y)/2 + ux*side - 10}, st = {t:0};
+        g.to(st, {t:1, duration:fly/1000, delay:lag, ease:'sine.inOut', onUpdate:()=>{ const q = qb(a, c, end, st.t); g.set(e, {x:q.x, y:q.y + Math.sin(st.t*7 + i)*3}); },
+          onComplete:()=> g.to(e, {opacity:0, scale:h.missed ? .3 : 1.8, duration:.22, onComplete:()=> kill(e)})}); }, shake); }
+    later(()=>{ if(h.missed || !to.isConnected){ res(); return; } snd('sporePuff', o.element);
+      for(let i = 0; i < 3; i++){ const c = bit('fxh-cloud ' + P.cls, '', b.x + (i - 1)*14, b.y + rnd(-5, 5), {scale:.3, opacity:.95});
+        g.to(c, {scale:rnd(1.4, 1.9), opacity:0, y:'-=' + rnd(6, 14), duration:.7, delay:i*.06, ease:'power1.out', onComplete:()=> kill(c)}); }
+      if(P.glyph) for(let i = 0; i < 3; i++){ const z = bit('fxh-zz', P.glyph, b.x + 8 + i*7, b.y - 6, {scale:.5 + i*.15, opacity:0});
+        g.to(z, {opacity:1, duration:.1, delay:.1 + i*.16}); g.to(z, {x:'+=' + (6 + i*4), y:'-=' + (18 + i*8), rotation:-12, duration:.6, delay:.1 + i*.16, ease:'sine.out'});
+        g.to(z, {opacity:0, duration:.2, delay:.5 + i*.16, onComplete:()=> kill(z)}); }
+      else spray14(b.x, b.y, {n:5, cls:'fxh-dot venom', a0:30, a1:150, d0:6, d1:16, grav:14, dur:.42});
+      res(); }, total + 30);
+  });
+  p.miss = ()=>{ h.missed = true; };
+  return p;
+};
+css('powder1', `
+.fxh-spore{width:7px; height:7px; margin:-3.5px; border-radius:50%;}
+.fxh-spore.sleep{background:radial-gradient(circle, #ffffff, #d9c8ff 50%, rgba(170,140,255,0) 75%); box-shadow:0 0 4px rgba(190,170,255,.7);}
+.fxh-spore.poison{background:radial-gradient(circle, #f4ffd0, #a6e04a 50%, rgba(120,200,40,0) 75%); box-shadow:0 0 4px rgba(150,220,70,.6);}
+.fxh-cloud{width:34px; height:34px; margin:-17px; border-radius:50%;}
+.fxh-cloud.sleep{background:radial-gradient(circle, rgba(225,214,255,.8), rgba(170,150,245,.4) 50%, rgba(170,150,245,0) 72%);}
+.fxh-cloud.poison{background:radial-gradient(circle, rgba(196,240,120,.75), rgba(120,190,60,.38) 50%, rgba(120,190,60,0) 72%);}
+.fxh-zz{font:700 13px/1 system-ui, sans-serif; color:#efe8ff; text-shadow:0 0 3px #6b4fc8, 0 1px 0 #3a2a80; margin:-7px -4px;}
+`);
+function powder1Event(ev, env){
+  const T = ev.type;
+  if(T === 'evaded' && ev.ranged && ev.attUid != null){ const k = String(ev.attUid), b = POWDER1.get(k); if(b){ POWDER1.delete(k); if(Date.now() - b.t < 1500) b.h.missed = true; } return; }
+  if(T !== 'powder' || !env.fxAtLeast('low')) return;
+  const from = env.el(ev.uid), to = ev.targetUid != null ? env.el(ev.targetUid) : null; if(!from || !to) return;
+  M.powderPuff(from, to, {element: ev.element, uid: ev.uid, speed: Math.max(1, (env.match && env.match.speedMult) || 1)});
+}
 
 // ---- the game's side: events and hooks ----
 const isMine = side=>{ try{ if(typeof trSideMine === 'function') return !!trSideMine(side); }catch(e){} return side === 'A'; };

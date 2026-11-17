@@ -8975,7 +8975,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const fights = legal.map(sl=>{ const f = across(sl); if(!f) return null;
         let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide && (!(d.effects||{}).trueStrike || legendaryDodge('tide'))) hit *= 0.5; /* True Strike (2026-10-18): no Tide dodge, unless Legendary (2026-10-18, owner 23:05) */
         const kills = atk > 0 && atk + aiBonusVs(d, f) >= (f.hp || 0) && hit > 0.5, lives = hp > (f.atk || 0) || (tideOn && myTide && !isTide(f) && hp * 2 > (f.atk || 0));
-        return (kills || lives) ? {sl, score: (kills ? 2 * hit : 0) + (lives ? 1 : 0) + rnd() * 0.5} : null; }).filter(Boolean);
+        const pw = aiPowderVs(d, f); // POWDER1 (2026-11-17): a unit worth a puff is a fight worth taking
+        return (kills || lives || pw > 0) ? {sl, score: (kills ? 2 * hit : 0) + (lives ? 1 : 0) + pw + rnd() * 0.5} : null; }).filter(Boolean);
       if(fights.length) return fights.reduce((a, b)=> b.score > a.score ? b : a).sl;
     }
     return aiLanePick(foe, legal); // EN2 (2026-10-23)
@@ -9008,6 +9009,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // worth on this board (the smart and smartest CPUs): Kin Rally and Pack Howl with their tribe in hand or on the field, Proliferate with
   // Poisoned foes, Prayer Ward on a Prayer unit, the marked foes a Hunter / Executioner / Detonate card would punish, Field Breaker while
   // the field's hazards hurt it, and the units a Spore Cloud, Thunderstorm or Tangled Roots field leaves alone.
+  // POWDER1 (2026-11-17): what its powder puffs are worth on unit f, the one facing the slot (the smart and smartest CPUs; the puff goes at
+  // the one opposite first): Sleeping Powder on a unit that swings and can fall asleep (not asleep now, not Wakeful, not Immune to Sleep),
+  // more for a bigger hitter; Poison Powder on a unit Poison reaches. 0 for a card without a powder, so every other card plays as before.
+  function aiPowderVs(d, f){ const e = (d && d.effects) || {}; if(!f || !(f.hp > 0) || !(e.sleepPowder || e.poisonPowder)) return 0; let v = 0;
+    if(e.sleepPowder && (f.atk || 0) > 0 && !dozing(f) && !effectsOf(f).wakeful && eng36Rel(f, 'sleep') !== 'immune') v += 0.5 + Math.min(f.atk || 0, 8) * 0.15;
+    if(e.poisonPowder && !poisonProof(f)) v += 0.3 + Math.min(numN(e.poisonPowder, 1), 4) * 0.15;
+    return v; }
   function aiBonusVs(d, f){ if(!d || !f || !(f.hp > 0)) return 0; const e = d.effects || {};
     return giHitBonus(d, f, 'physical') + (e.shatter && f.brittle > 0 && !(f.frozen > 0) ? numN(e.shatter, S17_DEF.shatter) : 0) + (e.detonate ? detonateWorth(f.poison || 0, numN(e.detonate, DETONATE_DEF)) : 0); } // (Shatter on a Brittle unit only: the CPU's old play with Frozen stays as it was)
   function aiGiWorth(players, aiId, defId){
@@ -9069,6 +9077,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       let s = killNow ? 3 + ((f.atk || 0) + (f.hp || 0) * 0.45) * 0.1 : kills ? 1.5 : 0;
       if(theyHit) s += Math.min(fAtk, 8) * blockW * odds; // the castle hit it stops (a Confused unit's swing half counts, 2026-10-19 FZ)
       if(dies) s += -(2.5 + prayerNOf({defId}) * 2) * odds + 0.5 * (1 - odds); else s += 0.5; // a Prayer unit's tokens die with it (2026-10-19, package E); a Confused killer only 1 in 2 (FZ)
+      s += aiPowderVs(d, f); // POWDER1 (2026-11-17): its powder on the unit facing it
       return s; };
     return score;
   }
