@@ -10,19 +10,19 @@
   "budget": "tools/skill_costs.js budget(card).ok at Level 1; obtain map = canonical/card-obtain-maps.json (0 when absent), the new map for a moved card; Paralysis Powder N priced as Sleeping Powder N+1"
  },
  "counts": {
-  "cards": 210,
+  "cards": 211,
   "today": 205,
-  "changed": 134,
-  "skillsChanged": 130,
-  "moved": 17,
-  "unchanged": 76,
-  "statsMoved": 38,
-  "changedOk": 134,
-  "ownerChanged": 18,
-  "specialChanged": 8,
+  "changed": 138,
+  "skillsChanged": 133,
+  "moved": 19,
+  "unchanged": 73,
+  "statsMoved": 43,
+  "changedOk": 138,
+  "ownerChanged": 19,
+  "specialChanged": 9,
   "focusSkills": 63,
   "focusNew": 63,
-  "focusFelt": 62
+  "focusFelt": 61
  },
  "notFeatured": {
   "enfeeble": {
@@ -31,7 +31,7 @@
   },
   "rend": {
    "map": 16,
-   "why": "OWN-1117-2: the 2x is too strong; replaced on Map 16 by Helmet (II 2: elk antlers and pangolin scales against the taiga archers)"
+   "why": "OWN-1117-2: the 2x is too strong; v2: Helmet went to Special (owner 23:36), so Map 16 gets Reach (II 3: a lynx springs at grouse flushing from the old pines). ENG50 builds the new Rend; still not featured on Maps 0-20"
   }
  },
  "focus": [
@@ -92,8 +92,8 @@
      "key": "thorns",
      "name": "Thorns",
      "carriers": [
-      "bramble-sprout",
-      "chipmunk-skirmisher"
+      "hedgehog-scout",
+      "bramble-sprout"
      ],
      "earlier": [],
      "isNew": true,
@@ -251,6 +251,7 @@
      "key": "pounce",
      "name": "Pounce",
      "carriers": [
+      "cormorant",
       "puffin-diver",
       "peregrine-stooper"
      ],
@@ -277,6 +278,7 @@
      "key": "arrow",
      "name": "Arrow",
      "carriers": [
+      "chipmunk-skirmisher",
       "eagle-sharpshooter",
       "balloon-archer"
      ],
@@ -301,12 +303,11 @@
      "key": "bloomCopy",
      "name": "Bloom",
      "carriers": [
-      "lotus-frog",
       "pond-algae"
      ],
      "earlier": [],
      "isNew": true,
-     "felt": true,
+     "felt": false,
      "built": true,
      "ii": 1
     },
@@ -339,6 +340,7 @@
      "key": "nocturnal",
      "name": "Nocturnal",
      "carriers": [
+      "lotus-frog",
       "slow-worm",
       "platypus-spur",
       "river-mink"
@@ -947,6 +949,7 @@
      "key": "sturdy",
      "name": "Sturdy",
      "carriers": [
+      "boreal-elk",
       "woodland-caribou",
       "pinecone-sapper"
      ],
@@ -957,20 +960,22 @@
      "ii": 1
     },
     {
-     "key": "helmet",
-     "name": "Helmet",
+     "key": "reach",
+     "name": "Reach",
      "carriers": [
-      "boreal-elk",
-      "pinecone-sapper"
+      "taiga-lynx",
+      "upside-down-bat"
      ],
      "earlier": [],
      "isNew": true,
      "felt": true,
      "built": true,
-     "ii": 2
+     "ii": 3
     }
    ],
-   "special": [],
+   "special": [
+    "Helmet"
+   ],
    "more": [
     "Lone Wolf"
    ],
@@ -1068,7 +1073,9 @@
      "ii": null
     }
    ],
-   "special": [],
+   "special": [
+    "Armourer"
+   ],
    "more": [
     "Smoke Bomb"
    ],
@@ -1097,6 +1104,523 @@
    "field": ""
   }
  ],
+ "fields": [
+  {
+   "name": "Bramblewood Outskirts",
+   "fightCount": 4,
+   "fights": "",
+   "map": 0,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "Mist: no day or night (MISTY_MAPS m1), every fight",
+   "propose": "",
+   "minor": ""
+  },
+  {
+   "name": "Thistlewood",
+   "fightCount": 5,
+   "fights": "",
+   "map": 1,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "Day and Night: the first map with the cycle (Map 0 is misty); Diurnal arrives here",
+   "propose": "",
+   "minor": "Undergrowth (mapField: Pounce +2, Swift dodge)"
+  },
+  {
+   "name": "Pebble Beach",
+   "fightCount": 5,
+   "fights": "2-1, 2-2, 2-3, 2-4, 2-5",
+   "map": 2,
+   "owner": "Tides",
+   "engine": "built: rules.tide (Flood, then Ebb); High Tide in the boss fight (water map)",
+   "keys": [
+    "tide"
+   ],
+   "wide": "",
+   "today": "",
+   "propose": "",
+   "minor": "Tide-spout (2-4, one-off)"
+  },
+  {
+   "name": "Gannet Cliffs",
+   "fightCount": 7,
+   "fights": "every fight (WINDY_MAPS mc)",
+   "map": 3,
+   "owner": "Wind",
+   "engine": "built: rules.wind = windy (strong wind every other round)",
+   "keys": [
+    "wind"
+   ],
+   "wide": "every fight (WINDY_MAPS mc)",
+   "today": "",
+   "propose": "",
+   "minor": "Windfall (+1 Lumber after a storm round)"
+  },
+  {
+   "name": "Sunken Hollow",
+   "fightCount": 5,
+   "fights": "",
+   "map": 4,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "River Rapids: always Flood (RAPIDS_MAPS m2), every fight",
+   "propose": "Dusk Start (built: phase nightFirst, it starts at night) in 4-3, 4-4, 4-5: Nocturnal is Map 4's focus",
+   "minor": ""
+  },
+  {
+   "name": "Gatorback Swamp",
+   "fightCount": 7,
+   "fights": "",
+   "map": 5,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "",
+   "propose": "Thick Fog (built: field fog, attacks miss 1 in 3, Flying sees over it) in the elite and boss fights 5-5, 5-6, 5-7: gators in the swamp mist",
+   "minor": "Swamp Fever (every fight)"
+  },
+  {
+   "name": "Sable Swampmire",
+   "fightCount": 8,
+   "fights": "",
+   "map": 6,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "Always night (MAP_DAYNIGHT m8), every fight",
+   "propose": "",
+   "minor": "Swamp Fever (6-5 to 6-7)"
+  },
+  {
+   "name": "The Morel Hollow",
+   "fightCount": 6,
+   "fights": "",
+   "map": 7,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "",
+   "propose": "Spring Rain (built: field rain, every unit heals 2 a round) in 7-5, 7-6: mushrooms come up after rain (no Maps 0-20 main fight has rain today; The Canopy and Smugglers' Grotto do)",
+   "minor": "Spore Cloud (mapField)"
+  },
+  {
+   "name": "Caves & Alcoves",
+   "fightCount": 8,
+   "fights": "every fight (DARK_MAPS m4: Darkness); 8-8",
+   "map": 8,
+   "owner": "Darkness",
+   "engine": "built: rules.dark (dark / pitch)",
+   "keys": [
+    "dark"
+   ],
+   "wide": "every fight (DARK_MAPS m4: Darkness)",
+   "today": "Pitch Black in 8-8",
+   "propose": "",
+   "minor": "Landslide (mapField)"
+  },
+  {
+   "name": "The Kelp Mangroves",
+   "fightCount": 7,
+   "fights": "",
+   "map": 9,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "Tide (9-1 to 9-4; from Map 2)",
+   "propose": "",
+   "minor": "Tangled Roots (mapField)"
+  },
+  {
+   "name": "Coral Current",
+   "fightCount": 9,
+   "fights": "none today",
+   "map": 10,
+   "owner": "Underwater Currents (the Awash field)",
+   "engine": "built: rules.awash (on screen \"Wave\": a random unit washed 1-3 columns a round)",
+   "keys": [
+    "awash"
+   ],
+   "wide": "",
+   "today": "Always Flood (mapField permaTide); Thunderstorm in 10-7, 10-9",
+   "propose": "Awash as Coral Current's mapField (every fight), shown as \"Underwater Currents\"; move the Thunderstorm of 10-7 and 10-9 to Map 11 so Storm arrives there",
+   "minor": ""
+  },
+  {
+   "name": "Eyrie Heights",
+   "fightCount": 11,
+   "fights": "Gale: every fight (WINDY_MAPS m10); Thunderstorm: no Map 11 main fight (The Aerie Vault has it map-wide)",
+   "map": 11,
+   "owner": "Strong Wind, Storm",
+   "engine": "built: rules.wind = gale (strong wind every round); rules.thunderstorm",
+   "keys": [
+    "wind",
+    "thunderstorm"
+   ],
+   "wide": "Gale: every fight (WINDY_MAPS m10); Thunderstorm: no Map 11 main fight (The Aerie Vault has it map-wide)",
+   "today": "",
+   "propose": "Thunderstorm in the elite and boss fights 11-5 to 11-10 (from 10-7, 10-9)",
+   "minor": "Windfall"
+  },
+  {
+   "name": "The Briar Maze",
+   "fightCount": 7,
+   "fights": "",
+   "map": 12,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "",
+   "propose": "",
+   "minor": "Grasping Briars (mapField), Rook's Row (12-2), Mirage (12-6)"
+  },
+  {
+   "name": "The Redwood Deep",
+   "fightCount": 8,
+   "fights": "",
+   "map": 13,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "High Canopy (every fight: Flying cannot dodge, Pounce +2, Swift dodges)",
+   "propose": "",
+   "minor": ""
+  },
+  {
+   "name": "Savanna Reaches",
+   "fightCount": 8,
+   "fights": "",
+   "map": 14,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "Scorching (heat) in 14-5, 14-7 and Wildfire in 14-6: heat arrives here",
+   "propose": "",
+   "minor": "First Blood (every fight)"
+  },
+  {
+   "name": "The Long Grass",
+   "fightCount": 7,
+   "fights": "",
+   "map": 15,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "Tall Grass (mapField: Stealth first, Pounce x2)",
+   "propose": "",
+   "minor": "Undergrowth"
+  },
+  {
+   "name": "The Pinewood Taiga",
+   "fightCount": 7,
+   "fights": "",
+   "map": 16,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "Frigid (mapField frozen: +1 Wait to a random card a side each round): frost arrives here; always night (MAP_DAYNIGHT mt)",
+   "propose": "",
+   "minor": "Consternation (16-6)"
+  },
+  {
+   "name": "Wolfsbane Tundra",
+   "fightCount": 8,
+   "fights": "",
+   "map": 17,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "Frigid (mapField); Freezing (units arrive frozen) in 17-5 to 17-8; Hail in 17-3",
+   "propose": "",
+   "minor": "Frostbite (17-5 to 17-8)"
+  },
+  {
+   "name": "The Glass Dunes",
+   "fightCount": 7,
+   "fights": "18-1, 18-2, 18-3, 18-4, 18-5, 18-6, 18-7",
+   "map": 18,
+   "owner": "Storm",
+   "engine": "built: rules.sandstorm (misses 1 in 4; blind variant), rules.glassStorm (one-off)",
+   "keys": [
+    "sandstorm",
+    "glassStorm"
+   ],
+   "wide": "",
+   "today": "Wind (WINDY_MAPS md); Scorching II in 18-7",
+   "propose": "",
+   "minor": "Quicksand (mapField)"
+  },
+  {
+   "name": "Ashen Spurn",
+   "fightCount": 6,
+   "fights": "",
+   "map": 19,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "Ashy (19-6: Flying grounded, misses 1 in 5), Ash Rain (19-3, 19-5), Scorching I (mapField), Wind",
+   "propose": "",
+   "minor": ""
+  },
+  {
+   "name": "The Sundered Peak",
+   "fightCount": 11,
+   "fights": "",
+   "map": 20,
+   "owner": "",
+   "engine": "",
+   "keys": [],
+   "wide": "",
+   "today": "The Volcano (eruptions in elite and boss fights), Scorching III (20-5 to 20-7, 20-9, 20-10), Wildfire (20-8), Wind",
+   "propose": "",
+   "minor": ""
+  }
+ ],
+ "lists": [
+  {
+   "op": "remove",
+   "id": "conch-crawler",
+   "map": "mc",
+   "why": "moves to Map 2"
+  },
+  {
+   "op": "add",
+   "id": "conch-crawler",
+   "map": "mb",
+   "why": "moves to Map 2"
+  },
+  {
+   "op": "remove",
+   "id": "beachcomber-sanderling",
+   "map": "mb",
+   "why": "moves to Map 3"
+  },
+  {
+   "op": "add",
+   "id": "beachcomber-sanderling",
+   "map": "mc",
+   "why": "moves to Map 3"
+  },
+  {
+   "op": "remove",
+   "id": "beaver-lumberjack",
+   "map": "mb",
+   "why": "moves to Map 4"
+  },
+  {
+   "op": "remove",
+   "id": "beaver-lumberjack",
+   "map": "mc",
+   "why": "moves to Map 4"
+  },
+  {
+   "op": "remove",
+   "id": "balloon-archer",
+   "map": "mr",
+   "why": "moves to Map 3"
+  },
+  {
+   "op": "add",
+   "id": "balloon-archer",
+   "map": "mc",
+   "why": "moves to Map 3"
+  },
+  {
+   "op": "add",
+   "id": "lotus-frog",
+   "map": "m2",
+   "why": "moves to Map 4 (from none)"
+  },
+  {
+   "op": "remove",
+   "id": "chipmunk-skirmisher",
+   "map": "mf",
+   "why": "moves to Map 3"
+  },
+  {
+   "op": "add",
+   "id": "chipmunk-skirmisher",
+   "map": "mc",
+   "why": "moves to Map 3"
+  },
+  {
+   "op": "add",
+   "id": "hedgehog-scout",
+   "map": "mf",
+   "why": "moves to Map 1 (from muc)"
+  },
+  {
+   "op": "remove",
+   "id": "nutria-reedcutter",
+   "map": "m8",
+   "why": "moves to Map 5"
+  },
+  {
+   "op": "add",
+   "id": "nutria-reedcutter",
+   "map": "mw",
+   "why": "moves to Map 5"
+  },
+  {
+   "op": "remove",
+   "id": "constrictor-coil",
+   "map": "mw",
+   "why": "moves to Map 6"
+  },
+  {
+   "op": "remove",
+   "id": "adder-ambusher",
+   "map": "m8",
+   "why": "moves to Map 15"
+  },
+  {
+   "op": "remove",
+   "id": "adder-ambusher",
+   "map": "mu",
+   "why": "moves to Map 15"
+  },
+  {
+   "op": "add",
+   "id": "adder-ambusher",
+   "map": "ml",
+   "why": "moves to Map 15"
+  },
+  {
+   "op": "remove",
+   "id": "grass-viper",
+   "map": "m8",
+   "why": "moves to Map 15"
+  },
+  {
+   "op": "add",
+   "id": "grass-viper",
+   "map": "ml",
+   "why": "moves to Map 15"
+  },
+  {
+   "op": "remove",
+   "id": "anhinga-spearbird",
+   "map": "m8",
+   "why": "moves to Map 9"
+  },
+  {
+   "op": "add",
+   "id": "anhinga-spearbird",
+   "map": "mk",
+   "why": "moves to Map 9"
+  },
+  {
+   "op": "remove",
+   "id": "barrow-leech-bat",
+   "map": "m4",
+   "why": "moves to Map 6"
+  },
+  {
+   "op": "add",
+   "id": "barrow-leech-bat",
+   "map": "m8",
+   "why": "moves to Map 6"
+  },
+  {
+   "op": "add",
+   "id": "glow-worm",
+   "map": "m4",
+   "why": "moves to Map 8 (from mn)"
+  },
+  {
+   "op": "add",
+   "id": "electric-ray",
+   "map": "mk",
+   "why": "moves to Map 9 (from none)"
+  },
+  {
+   "op": "add",
+   "id": "apollo-butterfly",
+   "map": "m10",
+   "why": "moves to Map 11 (from mv)"
+  },
+  {
+   "op": "remove",
+   "id": "nightshade-moth",
+   "map": "m6",
+   "why": "moves to Map 11"
+  },
+  {
+   "op": "add",
+   "id": "nightshade-moth",
+   "map": "m10",
+   "why": "moves to Map 11"
+  },
+  {
+   "op": "add",
+   "id": "spitting-cobra",
+   "map": "m5",
+   "why": "moves to Map 14 (from muc)"
+  },
+  {
+   "op": "remove",
+   "id": "fire-salamander",
+   "map": "m11",
+   "why": "moves to Map 19"
+  },
+  {
+   "op": "add",
+   "id": "fire-salamander",
+   "map": "m3",
+   "why": "moves to Map 19"
+  },
+  {
+   "op": "add",
+   "id": "ibex-rockcaller",
+   "map": "m10",
+   "sub": "mv",
+   "why": "Special carrier"
+  },
+  {
+   "op": "add",
+   "id": "anvilwhisker-otter",
+   "map": "m3",
+   "sub": "m9",
+   "why": "Special carrier"
+  },
+  {
+   "op": "add",
+   "id": "cottonmouth-matriarch",
+   "map": "mw",
+   "sub": "ms",
+   "why": "upgrader Venom Master"
+  },
+  {
+   "op": "add",
+   "id": "dhole-matriarch",
+   "map": "m5",
+   "sub": "my",
+   "why": "upgrader Pack Leader"
+  }
+ ],
+ "clearUnattainable": [
+  "lotus-frog",
+  "hedgehog-scout",
+  "glow-worm",
+  "cottonmouth-matriarch"
+ ],
  "special": [
   {
    "key": "esprit",
@@ -1107,6 +1631,7 @@
      "id": "sunthroat-courier",
      "name": "Sunthroat Courier",
      "where": "Hummingbirds faction (Kin)",
+     "add": null,
      "why": "already has Esprit",
      "changed": false,
      "skillsNow": "Flying, Esprit 0",
@@ -1132,6 +1657,7 @@
      "id": "dominion-nestguard",
      "name": "Sunfeather Nestguard",
      "where": "Hummingbirds faction (Kin)",
+     "add": null,
      "why": "a nest guard rallies with its Kin",
      "changed": true,
      "skillsNow": "Flying",
@@ -1164,6 +1690,7 @@
      "id": "otter-royal-guard",
      "name": "Royal Guard",
      "where": "Base faction",
+     "add": null,
      "why": "a royal guard, loyal to its leader",
      "changed": true,
      "skillsNow": "On Spawn: grantShield",
@@ -1197,6 +1724,7 @@
      "id": "sworn-shieldbearer",
      "name": "Sworn Shieldbearer",
      "where": "Map 15 main list",
+     "add": null,
      "why": "already has Loyal",
      "changed": false,
      "skillsNow": "Loyal",
@@ -1233,6 +1761,7 @@
      "id": "swordbill-challenger",
      "name": "Swordbill Challenger",
      "where": "Hummingbirds faction (Map 3 has no submap)",
+     "add": null,
      "why": "a swordbill fencer; Taunt (II 6) stays on Proboscis Monkey, Counterattack unranked",
      "changed": true,
      "skillsNow": "Flying, Taunt, counterattack",
@@ -1262,6 +1791,7 @@
      "id": "otter-angler",
      "name": "Otter Angler",
      "where": "Base faction (Map 4 has no submap)",
+     "add": null,
      "why": "an otter spear-fisher; Delivery is Map 4's focus",
      "changed": true,
      "skillsNow": "Tide, Delivery 1",
@@ -1291,6 +1821,7 @@
      "id": "octopus-tactician",
      "name": "Octopus Tactician",
      "where": "Smugglers' Grotto (Pebble Beach submap; Map 4 has none)",
+     "add": null,
      "why": "an octopus; Cleave 3 is Map 15's focus",
      "changed": true,
      "skillsNow": "Cleave 3, Tide",
@@ -1313,6 +1844,7 @@
      "id": "blue-ringed-octopus",
      "name": "Blue-ringed Octopus",
      "where": "The Sunken Depths (Map 10 submap)",
+     "add": null,
      "why": "already has Octolash",
      "changed": false,
      "skillsNow": "Octolash",
@@ -1341,6 +1873,7 @@
      "id": "peat-cutter-vole",
      "name": "Peat-cutter Vole",
      "where": "The Sunken Grove (Map 5 submap)",
+     "add": null,
      "why": "stacks peat walls (Delivery off: Map 4's focus, and the budget); Bulwark leaves Muskrat Lodgekeeper (Map 4 main)",
      "changed": true,
      "skillsNow": "Delivery 1",
@@ -1369,6 +1902,7 @@
      "id": "willow-o-wisp",
      "name": "Willow-o'-Wisp",
      "where": "mm (Map 6 submap)",
+     "add": null,
      "why": "marsh gas: its two triggers off",
      "changed": true,
      "skillsNow": "On Ally Death: buff, On Death: exileGrave, Nocturnal 1",
@@ -1391,6 +1925,7 @@
      "id": "smoke-raccoon",
      "name": "Smokescreen Raccoon",
      "where": "Map 19 main list",
+     "add": null,
      "why": "already has it (your More idea)",
      "changed": false,
      "skillsNow": "Smoke Bomb",
@@ -1419,6 +1954,7 @@
      "id": "wolf-spider-mother",
      "name": "Wolf Spider Mother",
      "where": "Map 7 main list (the Mycelium Deep has no mother)",
+     "add": null,
      "why": "carries her young; see the card change",
      "changed": false,
      "skillsNow": "brood 2, Swarm (Arachnid)",
@@ -1450,6 +1986,7 @@
      "id": "eagle-owl-quartermaster",
      "name": "Eagle-Owl Quartermaster",
      "where": "Map 11 main + The Aerie Vault",
+     "add": null,
      "why": "already has Fletcher",
      "changed": false,
      "skillsNow": "Arrow 1, Fletcher 1, Flying",
@@ -1480,6 +2017,10 @@
      "id": "ibex-rockcaller",
      "name": "Ibex Rockcaller",
      "where": "add to The Aerie Vault (Map 11 submap; on no list today)",
+     "add": {
+      "map": "m10",
+      "sub": "mv"
+     },
      "why": "your More idea; already has Avalanche",
      "changed": false,
      "skillsNow": "Avalanche 1",
@@ -1508,6 +2049,7 @@
      "id": "mouse-sapper",
      "name": "Mouse Sapper",
      "where": "Map 12 main list (no submap)",
+     "add": null,
      "why": "see the card change",
      "changed": false,
      "skillsNow": "Siege 1",
@@ -1530,6 +2072,7 @@
      "id": "dynamite-packrat",
      "name": "Dynamite Packrat",
      "where": "Tutorial (Map 0 submap)",
+     "add": null,
      "why": "already has Dynamite",
      "changed": false,
      "skillsNow": "Dynamite 3",
@@ -1558,6 +2101,7 @@
      "id": "dust-hyena",
      "name": "Dust Hyena",
      "where": "Map 14 main list (Map 13 has no submap)",
+     "add": null,
      "why": "already has Carnage (your More idea)",
      "changed": false,
      "skillsNow": "On Kill: Deliver 1 lumber, Carnage 3",
@@ -1595,6 +2139,7 @@
      "id": "bramblewood-macaque",
      "name": "Bramblewood Macaque",
      "where": "Map 14 main + The Canopy (Map 14 submap)",
+     "add": null,
      "why": "see the card change",
      "changed": false,
      "skillsNow": "banana",
@@ -1616,6 +2161,77 @@
    ]
   },
   {
+   "key": "helmet",
+   "name": "Helmet",
+   "map": 16,
+   "carriers": [
+    {
+     "id": "helmeted-otter",
+     "name": "Helmeted Otter",
+     "where": "Otter faction pool (Rivergate pack; Map 16 has no submap)",
+     "add": null,
+     "why": "already has Helmet (its cooking pot); owner 23:36: Helmet goes to Special, not a Map 16 card",
+     "changed": false,
+     "skillsNow": "Helmet",
+     "skillsProposed": "Helmet",
+     "effects": {
+      "helmet": true
+     },
+     "before": {
+      "attack": 2,
+      "health": 11
+     },
+     "attack": 2,
+     "health": 11,
+     "fill": 96.6,
+     "ok": true,
+     "rarity": "common"
+    }
+   ]
+  },
+  {
+   "key": "armourer",
+   "name": "Armourer",
+   "map": 19,
+   "carriers": [
+    {
+     "id": "anvilwhisker-otter",
+     "name": "Anvilwhisker Otter",
+     "where": "add to the Basalt Foundry (Map 19 submap, the forge with the old anvil; on no list today)",
+     "add": {
+      "map": "m3",
+      "sub": "m9"
+     },
+     "why": "an otter smith: Armourer 1 (owner 23:36, new Special; ENG50 builds it, key as ENG50 names it); keeps its blade forge. Its source says the 19-6 boss reward: a skirmish reward is never a pack card, so FOLD6 keeps one of the two",
+     "changed": true,
+     "skillsNow": "perTurn: forgeWeapon",
+     "skillsProposed": "Armourer 1, perTurn: forgeWeapon",
+     "effects": {
+      "armourer": 1,
+      "triggers": [
+       {
+        "on": "perTurn",
+        "do": "forgeWeapon",
+        "amount": 1,
+        "pay": {
+         "stone": 1
+        }
+       }
+      ]
+     },
+     "before": {
+      "attack": 1,
+      "health": 14
+     },
+     "attack": 1,
+     "health": 14,
+     "fill": 83.2,
+     "ok": true,
+     "rarity": "uncommon"
+    }
+   ]
+  },
+  {
    "key": "fortify",
    "name": "Fortify",
    "map": 15,
@@ -1624,6 +2240,7 @@
      "id": "shellwright-apprentice",
      "name": "Shellwright Apprentice",
      "where": "Base faction (Map 15 has no submap)",
+     "add": null,
      "why": "a shellwright armours the bramble: Fortify (Armor 1); Shell unranked",
      "changed": true,
      "skillsNow": "Shell 1",
@@ -1674,6 +2291,11 @@
    "exists": true,
    "map": 5,
    "card": "cottonmouth-matriarch",
+   "add": {
+    "map": "mw",
+    "sub": "ms"
+   },
+   "placed": true,
    "spec": "your units' Venom and Bleed hits add 1 more (built; Cottonmouth Matriarch has it, out of play): add her to The Sunken Grove (Map 5 submap), where Venomous and Bleed arrive"
   },
   {
@@ -1683,25 +2305,12 @@
    "exists": true,
    "map": 14,
    "card": "dhole-matriarch",
+   "add": {
+    "map": "m5",
+    "sub": "my"
+   },
+   "placed": true,
    "spec": "links all your Pack units of its type into one chain, +2/+2 (built; Dhole Matriarch has it in The Undercroft): add her to The Canopy (Map 14 submap). Check types: it links units that share a type with it (Canid), so Meerkat and Hyena need a shared tag"
-  },
-  {
-   "key": "conductor",
-   "name": "Conductor (new)",
-   "family": "Electricity",
-   "exists": false,
-   "map": 9,
-   "card": "voltaic-eel",
-   "spec": "your other units' Electricity arcs deal +1 (an aura like Fletcher on the arc in electricityArc); small: key, price, text"
-  },
-  {
-   "key": "shellsmith",
-   "name": "Shellsmith (new)",
-   "family": "Armor",
-   "exists": false,
-   "map": 2,
-   "card": "open-ocean-hermit-crab",
-   "spec": "your other units with Armor get +1 Armor while it lives (an aura read where Armor is summed); small: key, price, text"
   }
  ],
  "mechanics": [
@@ -1712,22 +2321,22 @@
   },
   {
    "name": "Paralysis Powder",
-   "state": "missing",
-   "spec": "a third Powder: the puff gives Paralyze N rounds (the existing paralyze status: it cannot attack; a hit does not wake it). One line in POWDERS + price + text. Priced here as Sleeping Powder N+1 until it has a price"
+   "state": "being built (ENG50)",
+   "spec": "owner 23:36: a stun for that turn. Priced here as Sleeping Powder N+1 until it has a price"
   },
   {
    "name": "Enfeeble",
-   "state": "not featured (OWN-1117-2)",
+   "state": "not featured (OWN-1117-2); being built (ENG50)",
    "spec": "Enfeeble N = the halving penalty; Feeble (deals 0.5x) stays a card passive drawback"
   },
   {
-   "name": "Rend",
-   "state": "not featured (OWN-1117-2)",
-   "spec": "Rend N = gives the opposing unit Vulnerable N; note today's engine key \"rend\" means \"ignores Armor\" (pierce), a name clash to settle before it is ever built"
+   "name": "Rend (the new Rend)",
+   "state": "not featured (OWN-1117-2); being built (ENG50)",
+   "spec": "Rend N = gives the opposing unit Vulnerable N (owner 23:36: use the new Rend); note today's engine key \"rend\" means \"ignores Armor\" (pierce), a name clash to settle before it is ever built"
   },
   {
-   "name": "Vulnerable (card passive)",
-   "state": "partly built",
+   "name": "Vulnerable / Feeble (card passives)",
+   "state": "being built (ENG50)",
    "spec": "a permanent drawback \"takes 2x\": the Vulnerable status exists (the Shocked x1.5 status and the SK3 action on every enemy); a card passive form with 2x is missing"
   },
   {
@@ -1811,9 +2420,9 @@
    "spec": null
   },
   {
-   "name": "Bulwark",
-   "state": "built (Log Wall 0/8)",
-   "spec": "your note \"starts at 0/5 -> 0/8 at level 10\": the wall's level scaling is missing"
+   "name": "Bulwark scaling",
+   "state": "being built (ENG50)",
+   "spec": "Bulwark is built (Log Wall 0/8); your note \"starts at 0/5 -> 0/8 at level 10\": the wall's level scaling is missing"
   },
   {
    "name": "Smoke Bomb",
@@ -1827,7 +2436,7 @@
   },
   {
    "name": "Weaken (action form)",
-   "state": "missing",
+   "state": "being built (ENG50)",
    "spec": "Weaken N as an action (e.g. Weaken 1 on Ally Spawn): today only the on-hit passive and the generic debuffAttack action exist; add the named action"
   },
   {
@@ -1842,13 +2451,18 @@
   },
   {
    "name": "Grant {who} {what}",
-   "state": "missing",
+   "state": "being built (ENG50)",
    "spec": "the action that grants a passive (Sturdy, Mighty) to a unit; today only the passive grantSkill exists"
   },
   {
-   "name": "Conductor / Shellsmith upgraders",
-   "state": "missing",
-   "spec": "see Upgraders"
+   "name": "Armourer N (new Special)",
+   "state": "being built (ENG50)",
+   "spec": "(When ready) played allied cards come with +0/+N (owner 23:36). On Anvilwhisker Otter (Map 19, the Basalt Foundry). Priced here as Broodkeeper N until it has a price"
+  },
+  {
+   "name": "Bulwark",
+   "state": "built (Log Wall 0/8)",
+   "spec": null
   }
  ],
  "maps": [
@@ -1902,13 +2516,13 @@
    "map": 3,
    "name": "Gannet Cliffs",
    "before": 11,
-   "after": 12,
+   "after": 13,
    "mixBefore": {
     "common": 10,
     "uncommon": 1
    },
    "mixAfter": {
-    "common": 10,
+    "common": 11,
     "uncommon": 2
    }
   },
@@ -2881,6 +3495,47 @@
    "flags": []
   },
   {
+   "id": "hedgehog-scout",
+   "name": "Hedgehog Scout",
+   "map": 1,
+   "mapName": "Thistlewood",
+   "from": "muc",
+   "moved": true,
+   "moveWhy": "a hedgehog in the thistles: 2nd Thorns on Map 1 now Chipmunk Skirmisher moves to Map 3 (also stays in The Undercroft)",
+   "rarity": "common",
+   "kind": "",
+   "baseLevel": 1,
+   "owner": false,
+   "wait": 0,
+   "cost": 0,
+   "skillsChanged": false,
+   "changed": true,
+   "statsMoved": true,
+   "before": {
+    "effects": {
+     "thorns": 1
+    },
+    "attack": 1,
+    "health": 10,
+    "fill": 125.5,
+    "ok": false,
+    "obtainMap": 0
+   },
+   "effects": {
+    "thorns": 1
+   },
+   "attack": 1,
+   "health": 6,
+   "fill": 92.9,
+   "ok": true,
+   "N": 13.16,
+   "obtainMap": 1,
+   "skillsNow": "Thorns 1",
+   "skillsProposed": "Thorns 1",
+   "why": "unchanged skills",
+   "flags": []
+  },
+  {
    "id": "bramble-sprout",
    "name": "Bramble Sprout",
    "map": 1,
@@ -3006,47 +3661,6 @@
    "flags": []
   },
   {
-   "id": "chipmunk-skirmisher",
-   "name": "Chipmunk Skirmisher",
-   "map": 1,
-   "mapName": "Thistlewood",
-   "from": 1,
-   "moved": false,
-   "moveWhy": "",
-   "rarity": "common",
-   "kind": "",
-   "baseLevel": 1,
-   "owner": true,
-   "wait": 0,
-   "cost": 0,
-   "skillsChanged": true,
-   "changed": true,
-   "statsMoved": false,
-   "before": {
-    "effects": {
-     "arrow": 2
-    },
-    "attack": 1,
-    "health": 4,
-    "fill": 108.4,
-    "ok": false,
-    "obtainMap": 0
-   },
-   "effects": {
-    "thorns": 1
-   },
-   "attack": 1,
-   "health": 4,
-   "fill": 79.1,
-   "ok": true,
-   "N": 12.92,
-   "obtainMap": 0,
-   "skillsNow": "Arrow 2",
-   "skillsProposed": "Thorns 1",
-   "why": "Arrow is Map 3's focus: off; darts through the thistles: 2nd Thorns",
-   "flags": []
-  },
-  {
    "id": "chipmunk-cavalry",
    "name": "Chipmunk Cavalry",
    "map": 1,
@@ -3101,9 +3715,9 @@
    "owner": true,
    "wait": 0,
    "cost": 0,
-   "skillsChanged": false,
-   "changed": false,
-   "statsMoved": false,
+   "skillsChanged": true,
+   "changed": true,
+   "statsMoved": true,
    "before": {
     "effects": {
      "injured": 2,
@@ -3116,18 +3730,17 @@
     "obtainMap": 0
    },
    "effects": {
-    "injured": 2,
     "foraging": 1
    },
    "attack": 2,
-   "health": 7,
+   "health": 5,
    "fill": 98.1,
    "ok": true,
    "N": 12.92,
    "obtainMap": 0,
    "skillsNow": "Injured 2, Foraging 1",
-   "skillsProposed": "Injured 2, Foraging 1",
-   "why": "",
+   "skillsProposed": "Foraging 1",
+   "why": "Injured off (OWN-1117-3: the skill leaves the game)",
    "flags": []
   },
   {
@@ -3326,7 +3939,7 @@
    "obtainMap": 0,
    "skillsNow": "vanilla",
    "skillsProposed": "Diurnal 1",
-   "why": "bees fly by day: 2nd Diurnal",
+   "why": "bees fly by day: 2nd Diurnal (OWN-1117-3: Map 1 needs two)",
    "flags": []
   },
   {
@@ -3842,6 +4455,47 @@
    "flags": []
   },
   {
+   "id": "chipmunk-skirmisher",
+   "name": "Chipmunk Skirmisher",
+   "map": 3,
+   "mapName": "Gannet Cliffs",
+   "from": 1,
+   "moved": true,
+   "moveWhy": "OWN-1117-3: Arrow is Map 3's focus, so the card moves there with its Arrow (3rd Arrow; unchanged owner card)",
+   "rarity": "common",
+   "kind": "",
+   "baseLevel": 1,
+   "owner": true,
+   "wait": 0,
+   "cost": 0,
+   "skillsChanged": false,
+   "changed": true,
+   "statsMoved": true,
+   "before": {
+    "effects": {
+     "arrow": 2
+    },
+    "attack": 1,
+    "health": 4,
+    "fill": 108.4,
+    "ok": false,
+    "obtainMap": 0
+   },
+   "effects": {
+    "arrow": 2
+   },
+   "attack": 1,
+   "health": 3,
+   "fill": 95.5,
+   "ok": true,
+   "N": 13.62,
+   "obtainMap": 3,
+   "skillsNow": "Arrow 2",
+   "skillsProposed": "Arrow 2",
+   "why": "unchanged skills",
+   "flags": []
+  },
+  {
    "id": "beachcomber-sanderling",
    "name": "Beachcomber Sanderling",
    "map": 3,
@@ -3896,9 +4550,9 @@
    "owner": false,
    "wait": 1,
    "cost": 0,
-   "skillsChanged": false,
-   "changed": false,
-   "statsMoved": false,
+   "skillsChanged": true,
+   "changed": true,
+   "statsMoved": true,
    "before": {
     "effects": {
      "reach": true
@@ -3910,20 +4564,18 @@
     "obtainMap": 0
    },
    "effects": {
-    "reach": true
+    "pounce": 1
    },
    "attack": 3,
-   "health": 7,
-   "fill": 101.7,
-   "ok": false,
+   "health": 6,
+   "fill": 99.6,
+   "ok": true,
    "N": 16.72,
    "obtainMap": 0,
    "skillsNow": "Reach",
-   "skillsProposed": "Reach",
-   "why": "",
-   "flags": [
-    "over budget today, unchanged"
-   ]
+   "skillsProposed": "Pounce 1",
+   "why": "Reach is Map 16's focus now (v2): off; a diving fisher: Pounce",
+   "flags": []
   },
   {
    "id": "fiddler-crab-swarm",
@@ -4392,14 +5044,14 @@
    "mapName": "Sunken Hollow",
    "from": "none",
    "moved": true,
-   "moveWhy": "a lily-pad frog that blooms: 2nd Bloom (on no list today)",
+   "moveWhy": "a night frog of the lily pads: Nocturnal is Map 4's focus (on no list today)",
    "rarity": "uncommon",
    "kind": "",
    "baseLevel": 1,
    "owner": false,
    "wait": 1,
    "cost": 1,
-   "skillsChanged": false,
+   "skillsChanged": true,
    "changed": true,
    "statsMoved": false,
    "before": {
@@ -4419,23 +5071,18 @@
     "obtainMap": 0
    },
    "effects": {
-    "bloomCopy": {
-     "when": [
-      "tide",
-      "night"
-     ],
-     "mode": "and"
-    }
+    "nocturnal": 1,
+    "pounce": 1
    },
    "attack": 2,
    "health": 7,
-   "fill": 92.9,
+   "fill": 75.3,
    "ok": true,
    "N": 21.97,
    "obtainMap": 4,
    "skillsNow": "Bloom",
-   "skillsProposed": "Bloom",
-   "why": "unchanged skills",
+   "skillsProposed": "Nocturnal 1, Pounce 1",
+   "why": "Bloom off (owner 23:36: a frog does not bloom); croaks at night and leaps off its pad: Nocturnal + Pounce. Its flavour line (opens like the flower) wants a new line",
    "flags": []
   },
   {
@@ -9663,7 +10310,7 @@
    "cost": 2,
    "skillsChanged": true,
    "changed": true,
-   "statsMoved": false,
+   "statsMoved": true,
    "before": {
     "effects": {
      "sweep": 2,
@@ -9677,17 +10324,17 @@
    },
    "effects": {
     "sweep": 2,
-    "helmet": true
+    "sturdy": true
    },
    "attack": 5,
-   "health": 4,
-   "fill": 91,
+   "health": 3,
+   "fill": 96.7,
    "ok": true,
    "N": 26.76,
    "obtainMap": 14,
    "skillsNow": "Cleave 2, riled 3",
-   "skillsProposed": "Cleave 2, Helmet",
-   "why": "Riled (unranked) off; an antler crown: Helmet",
+   "skillsProposed": "Cleave 2, Sturdy",
+   "why": "Riled (unranked) off; Helmet goes to Special (v2): a big bull elk: 3rd Sturdy",
    "flags": []
   },
   {
@@ -9858,21 +10505,21 @@
     "obtainMap": 16
    },
    "effects": {
-    "evasive": true,
+    "reach": true,
     "loneWolf": [
      1,
      1
     ]
    },
    "attack": 2,
-   "health": 6,
-   "fill": 97.2,
+   "health": 7,
+   "fill": 96.4,
    "ok": true,
    "N": 22.15,
    "obtainMap": 16,
    "skillsNow": "Evasive",
-   "skillsProposed": "Evasive, Lone Wolf 1/1",
-   "why": "a solitary hunter: Lone Wolf (your More idea; II 4, one card)",
+   "skillsProposed": "Reach, Lone Wolf 1/1",
+   "why": "a lynx springs at grouse as they flush: Reach (v2 focus); a solitary hunter: Lone Wolf (your More idea; II 4, one card); Evasive off for the two-skill rule",
    "flags": []
   },
   {
@@ -9906,18 +10553,17 @@
     "obtainMap": 14
    },
    "effects": {
-    "sturdy": true,
-    "helmet": true
+    "sturdy": true
    },
    "attack": 0,
    "health": 13,
-   "fill": 80.5,
+   "fill": 79.1,
    "ok": true,
    "N": 19.99,
    "obtainMap": 14,
    "skillsNow": "explode",
-   "skillsProposed": "Sturdy, Helmet",
-   "why": "Explode (unranked) off; pangolin scales: Sturdy + Helmet",
+   "skillsProposed": "Sturdy",
+   "why": "Explode (unranked) off; pangolin scales: Sturdy (Helmet goes to Special, v2)",
    "flags": []
   },
   {
@@ -9934,8 +10580,8 @@
    "owner": false,
    "wait": 0,
    "cost": 0,
-   "skillsChanged": false,
-   "changed": false,
+   "skillsChanged": true,
+   "changed": true,
    "statsMoved": false,
    "before": {
     "effects": {
@@ -9950,17 +10596,18 @@
    },
    "effects": {
     "flying": true,
-    "diurnal": true
+    "diurnal": true,
+    "reach": true
    },
    "attack": 2,
    "health": 4,
-   "fill": 74.6,
+   "fill": 82,
    "ok": true,
-   "N": 17.47,
+   "N": 17.13,
    "obtainMap": 13,
    "skillsNow": "Flying, Diurnal",
-   "skillsProposed": "Flying, Diurnal",
-   "why": "",
+   "skillsProposed": "Flying, Diurnal, Reach",
+   "why": "takes moths on the wing: 2nd Reach (v2 focus)",
    "flags": []
   },
   {
