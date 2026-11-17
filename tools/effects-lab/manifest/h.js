@@ -91,11 +91,14 @@ R({id:'sk-ore-chip', name:'Quarrying / Mining: Stone or Metal dug', trigger:'sto
 // ---- Package POWDER1 (2026-11-17, owner 11-17 17:32, OWN-1117-1): Sleeping Powder and Poison Powder, a Speed -1 puff after the arrows (powder
 // event, then its statusFx). The spores take 0.56 s to reach the target (the fight gives the powder event a 0.62 s beat), divided by the Lab's speed.
 const powderPlay = (el, o)=> ctx=>{ o = o || {}; const t = foe(ctx), s = sp14(ctx), p = H().powderPuff(mine(ctx), t, {element:el, total:560/s});
-  if(o.miss) ctx.wait(60).then(()=> p.miss()); else ctx.wait(600/s).then(()=> ctx.float(t, el === 'poison' ? '+2 ☠' : '💤', el === 'poison' ? 'poison' : ''));
+  if(o.miss) ctx.wait(60).then(()=> p.miss()); else ctx.wait(600/s).then(()=> ctx.float(t, el === 'poison' ? '+2 ☠' : el === 'paralysis' ? '💫' /* ENG50 */ : '💤', el === 'poison' ? 'poison' : ''));
   return p.then(()=> ctx.wait(500)); };
 R({id:'sk-sleep-powder', name:'Sleeping Powder N', trigger:"powder {element:'sleep'}, then statusFx sleep", stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff; evaded after it → .miss()', variants:[
   {key:'A', label:'POWDER1 · The shooter shakes out lavender spores; they wobble across and bloom into a soft cloud, z’s rise (sporePuff)', play:powderPlay('sleep')},
   {key:'B', label:'POWDER1 · Dodged (Evasive): the drift thins out beside the target, no bloom', play:powderPlay('sleep', {miss:true})}]});
 R({id:'sk-poison-powder', name:'Poison Powder N', trigger:"powder {element:'poison'}, then statusFx poison", stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff', variants:[
   {key:'A', label:'POWDER1 · Green spores drift across and bloom into a sickly cloud, venom drips (sporePuff, a low bubble)', play:powderPlay('poison')}]});
+// ENG50 (2026-11-17, owner 11-17 23:36, REDESIGN3-1): Paralysis Powder, the third powder (statusFx stunOnHit after the puff: the existing Stun mark)
+R({id:'sk-paralysis-powder', name:'Paralysis Powder N', trigger:"powder {element:'paralysis'}, then statusFx stunOnHit {powder:true}", stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff', variants:[
+  {key:'A', label:'ENG50 · Yellow spores drift across and bloom into a pale gold cloud, sparks jump (sporePuff, a dry crackle)', play:powderPlay('paralysis')}]});
 })();

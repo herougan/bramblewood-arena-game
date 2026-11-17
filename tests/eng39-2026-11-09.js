@@ -140,16 +140,16 @@ ok(D.rides.weaken && D.rides.breach && D.rides.constrict, 'rides keeps the old k
 
 // ---- E: texts
 const {TEXT} = require('../bramblewood-texts.js');
-ok(TEXT['ui.skn-exploit'] === 'Vulnerable' && TEXT['ui.act-exploit'] === 'Vulnerable' && TEXT['ui.float-exploit'] === '🩻 Vulnerable', 'Exploit is shown as Vulnerable (skill, action, float)');
+// ENG50 (2026-11-17, owner 11-17 23:14, OWN-1117-2: "Exploit N: Exploit tokens ... Rend N gives the opposing unit Vulnerable N"): Exploit reads
+// Exploit again; Vulnerable is Rend's x2 token (tests/eng50-2026-11-17.js). The SK3 action still reads Shock.
+ok(TEXT['ui.skn-exploit'] === 'Exploit' && TEXT['ui.act-exploit'] === 'Exploit' && TEXT['ui.float-exploit'] === '🩻 Exploit', 'Exploit is shown as Exploit again (ENG50; skill, action, float)');
 ok(TEXT['ui.act3-vulnerable'] === 'Shock' && TEXT['ui.log3-vulnerable'] === '{name} is Shocked for {n} rounds.' && /^Shock for N rounds/.test(TEXT['ui.act3-vulnerable-desc']), 'the SK3 status action reads Shock (its log line: Shocked)');
-const exploitWords = Object.keys(TEXT).filter(k=> /\bExploit|\bexploited\b/.test(TEXT[k]));
-ok(!exploitWords.length, 'no player text says Exploit any more (' + exploitWords.join(', ') + ')');
-ok(/Vulnerable tokens/.test(TEXT['ui.sk-exploit']) && /Exposed, Vulnerable, Shocked/.test(TEXT['ui.act-cleanse-desc']) && TEXT['ui.eng39-version'] === 'Version', 'the skill text, Cleanse\'s list and the editor\'s Version field');
+ok(/Exploit tokens/.test(TEXT['ui.sk-exploit']) && /Exposed, Exploit, Vulnerable, Feeble, Shocked/.test(TEXT['ui.act-cleanse-desc']) && TEXT['ui.eng39-version'] === 'Version', 'the skill text, Cleanse\'s list (ENG50) and the editor\'s Version field');
 const LEAD = /^[\s \u{1F000}-\u{1FAFF}☀-➿️‍↗]+/u;
 const ekeys = ['ui.act3-vulnerable', 'ui.log3-vulnerable', 'ui.skn-exploit', 'ui.sk-exploit', 'ui.sk-exploit-codex', 'ui.exploit-tip', 'ui.log-exploit', 'ui.log-exploit-hit', 'ui.log-exploit-fade', 'ui.float-exploit', 'ui.act-exploit', 'ui.act-exploit-desc', 'ui.act-cleanse-desc', 'ui.eng39-version'];
 for(const code of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']){ const pack = J('lang/' + code + '.json'); const miss = ekeys.filter(k=> pack[TEXT[k].replace(LEAD, '')] === undefined); ok(!miss.length, code + ' has every row (' + miss.join(', ') + ')'); }
 const app = rd('arena_app.js');
-ok(/STATUS_KEYWORDS\.push\(\{k:'exploit', re:\/\\b\(vulnerable\|exploit/.test(app), 'the Vulnerable word is the exploit status in the keyword glossary');
+ok(/STATUS_KEYWORDS\.push\(\{k:'exploit', re:\/\\b\(exploit/.test(app) && /\{k:'vulnerable', re:/.test(app), 'the glossary: Exploit is the exploit status, Vulnerable its own (ENG50)');
 
 // ---- F: the card editor
 { const i = app.indexOf('// ENG39 (2026-11-09, owner decision DES2-3 a'), j = app.indexOf('function skillRowHTML(', i); const src = app.slice(i, j);

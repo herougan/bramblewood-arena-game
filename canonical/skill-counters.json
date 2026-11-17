@@ -1082,6 +1082,39 @@
    ],
    "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
   },
+  "paralysisPowder": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "ENG50 (2026-11-17): Sleeping Powder's puff with Stun (fireShotsOf); Reflect, Helmet, Canopy Cover, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
   "poisonPowder": {
    "counters": [
     {
@@ -1749,18 +1782,21 @@
   "corrode": "corrode",
   "daunt": "daunt",
   "decay": "decay",
+  "enfeeble": "feeble",
   "exhaust": "exhaust",
   "freeze": "freeze",
   "gash": "bleed",
   "greaterPoison": "venom",
   "hemorrhage": "bleed",
   "paralyze": "paralyze",
+  "paralysisPowder": "stun",
   "perforate": "bleed",
   "petrify": "petrify",
   "poison": "venom",
   "poisonBarbs": "venom",
   "poisonBolt": "venom",
   "poisonPowder": "venom",
+  "rend": "vulnerable",
   "poisonGas": "venom",
   "scar": "scar",
   "shock": "shock",
@@ -1947,6 +1983,14 @@
    ],
    "source": "Cure, Immunity text; ENG36 Venom Resist halves ticks"
   },
+  "feeble": {
+   "counters": [],
+   "source": "ENG50 (2026-11-17): ENG36 status resistances; Cleanse removes the tokens"
+  },
+  "vulnerable": {
+   "counters": [],
+   "source": "ENG50 (2026-11-17): ENG36 status resistances; Cleanse removes the tokens"
+  },
   "web": {
    "counters": [
     {
@@ -1968,6 +2012,7 @@
   "ambush",
   "amore",
   "amplifier",
+  "armourer",
   "anadromous",
   "anchor",
   "antiAirOnly",

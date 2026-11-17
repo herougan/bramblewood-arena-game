@@ -256,7 +256,7 @@ function twoSkillLight(k, e){ return TWO_SKILL_LIGHT.includes(k) && !(e && e[k +
 const ARROW_FAMILY = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'archer'];
 const BOLT_FAMILY = ['fireBolt', 'acidBolt', 'poisonBolt', 'iceBolt', 'shockBolt', 'spitfire'];
 // 2026-11-17 (POWDER1, owner 11-17 17:32, OWN-1117-1): every powder counts once too; Poison Powder sits with the poison skills, as Poison Bolt does.
-const POWDER_FAMILY = ['sleepPowder', 'poisonPowder'];
+const POWDER_FAMILY = ['sleepPowder', 'poisonPowder', 'paralysisPowder' /* ENG50 (2026-11-17, REDESIGN3-1): the third powder */];
 const TWO_SKILL_TYPES = [['electricity', 'lightning', 'shockBolt', 'chainLightning', 'dragonLightning'], ['poison', 'poisonBolt', 'venomPulse', 'poisonPowder'], ARROW_FAMILY, BOLT_FAMILY, POWDER_FAMILY];
 // [{k, w}]: each ability and its weight (1, or 0.5 when light; 0 when a skill it shares a group with came first). Groups that share a
 // skill join (Electricity + Shock Bolt + Fire Bolt count 1), so the count never depends on key order.
