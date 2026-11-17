@@ -88,4 +88,14 @@ R({id:'sk-pearl-glint', name:'Pearls gained or spent', trigger:'pearl (Delivery 
 R({id:'sk-ore-chip', name:'Quarrying / Mining: Stone or Metal dug', trigger:'stone {cause:\'quarrying\'} / metal {cause:\'mining\'}', stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js)', variants:[
   {key:'A', label:'FX14 · Quarrying: a chip of stone knocks off with grit and hops into its pill (pickChip)', play:ctx=> H().oreChip(mine(ctx), pill14(ctx, 'Stone'), {res:'stone'}).then(()=> ctx.wait(300))},
   {key:'B', label:'FX14 · Mining: a nugget of ore', play:ctx=> H().oreChip(mine(ctx), pill14(ctx, 'Metal'), {res:'metal'}).then(()=> ctx.wait(300))}]});
+// ---- Package POWDER1 (2026-11-17, owner 11-17 17:32, OWN-1117-1): Sleeping Powder and Poison Powder, a Speed -1 puff after the arrows (powder
+// event, then its statusFx). The spores take 0.56 s to reach the target (the fight gives the powder event a 0.62 s beat), divided by the Lab's speed.
+const powderPlay = (el, o)=> ctx=>{ o = o || {}; const t = foe(ctx), s = sp14(ctx), p = H().powderPuff(mine(ctx), t, {element:el, total:560/s});
+  if(o.miss) ctx.wait(60).then(()=> p.miss()); else ctx.wait(600/s).then(()=> ctx.float(t, el === 'poison' ? '+2 ☠' : '💤', el === 'poison' ? 'poison' : ''));
+  return p.then(()=> ctx.wait(500)); };
+R({id:'sk-sleep-powder', name:'Sleeping Powder N', trigger:"powder {element:'sleep'}, then statusFx sleep", stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff; evaded after it → .miss()', variants:[
+  {key:'A', label:'POWDER1 · The shooter shakes out lavender spores; they wobble across and bloom into a soft cloud, z’s rise (sporePuff)', play:powderPlay('sleep')},
+  {key:'B', label:'POWDER1 · Dodged (Evasive): the drift thins out beside the target, no bloom', play:powderPlay('sleep', {miss:true})}]});
+R({id:'sk-poison-powder', name:'Poison Powder N', trigger:"powder {element:'poison'}, then statusFx poison", stage:'board', inGameHook:'onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff', variants:[
+  {key:'A', label:'POWDER1 · Green spores drift across and bloom into a sickly cloud, venom drips (sporePuff, a low bubble)', play:powderPlay('poison')}]});
 })();

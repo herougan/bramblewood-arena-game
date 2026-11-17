@@ -20952,5 +20952,47 @@
   "lab": "h.js",
   "inGameHook": "onEvent (bramblewood-fx-h.js)",
   "added": "2026-11-17"
+ },
+ {
+  "area": "skill",
+  "quality": "good — POWDER1",
+  "priority": 2,
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js",
+   "bramblewood-engine.js (POWDERS)"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "added": "2026-11-17",
+  "id": "sk-sleep-powder",
+  "name": "Sleeping Powder N",
+  "trigger": "powder {element:'sleep'}, then statusFx sleep",
+  "current": "FX.H.powderPuff {sleep}: the shooter squashes, nine lavender spores wobble across (0.56 s) and bloom into a soft cloud with rising z’s (sporePuff); a dodge thins the drift out beside the target",
+  "themeNotes": "A drowsy puff, softer and slower than a bolt.",
+  "inGameHook": "onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff"
+ },
+ {
+  "area": "skill",
+  "quality": "good — POWDER1",
+  "priority": 2,
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-h.js",
+   "bramblewood-engine.js (POWDERS)"
+  ],
+  "batch": "H",
+  "status": "live",
+  "lab": "h.js",
+  "added": "2026-11-17",
+  "id": "sk-poison-powder",
+  "name": "Poison Powder N",
+  "trigger": "powder {element:'poison'}, then statusFx poison",
+  "current": "FX.H.powderPuff {poison}: green spores wobble across and bloom into a sickly green cloud, venom drips (sporePuff, a low bubble)",
+  "themeNotes": "A toadstool puff; not the Poison Bolt’s purple droplet.",
+  "inGameHook": "onEvent (bramblewood-fx-h.js): powder → FX.H.powderPuff"
  }
 ]

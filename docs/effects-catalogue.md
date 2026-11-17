@@ -1933,6 +1933,15 @@ Owner 00:03: "interesting vfx to improve our general UI experience and also skil
 
 Lab: group "FX10" (`tools/effects-lab/manifest/fx10.js`, ids `fun-fx10-*`; A the full look, B Effects Low / reduced motion / 4x). Contact sheet: `docs/art/fx10-sheet.png` (`python3 tests/e2e/fx10_2026_11_13.py`, which also checks the camera layer, the piece count, Low / 4x / None and that Brood and Confuse lost their shared looks). Check: `tests/fx10-2026-11-13.js`.
 
+## 2026-11-17 (package POWDER1): the powders' spore puff
+Owner 11-17 17:32 (OWN-1117-1): "Status Powder: Start with Sleeping Powder and Poison Powder for now. Powders would be Speed -1 actions." Code: section 6 of `bramblewood-fx-h.js` (`FX.H.powderPuff`, `powder1Event` from `FX.H.onEvent`); the engine's `powder` event (`fireShotsOf`), a 0.62 s beat in `delayForEvent` and a log line in `arena_app.js`. Transform / opacity only, no filter or blend mode; reduced motion and Effects None draw nothing (the status mark still shows). Lab: `tools/effects-lab/manifest/h.js` (`sk-sleep-powder`, `sk-poison-powder`). Check: `tests/powder1-2026-11-17.js`.
+
+| Date | Skill / moment (event) | Look | Cue | Status |
+|---|---|---|---|---|
+| 2026-11-17 | Sleeping Powder (`powder` element `sleep`, then `statusFx` sleep) | `FX.H.powderPuff`: the shooter squashes, nine lavender spores wobble across on a loose arc (0.56 s, softer and slower than a bolt) and bloom into a soft cloud on the target, three z's rise | `sporePuff` (drowsy falling notes) | live (Low and up) |
+| 2026-11-17 | Poison Powder (`powder` element `poison`, then `statusFx` poison) | the same drift in green, a sickly green cloud and venom drips (not the Poison Bolt's purple droplet) | `sporePuff` (a low bubble) | live (Low and up) |
+| 2026-11-17 | A powder dodged (`evaded` after a `powder`) | the drift thins out beside the target, no bloom | — | live |
+
 ## 2026-11-17 (package FX14): the bolts and arrows redrawn, the resource skills
 Owner 11-16 23:53: "More effects etc. The bolt as is, isn't so nice looking. The arrows — blood etc — do they look nice? etc etc". Code: section 5 of `bramblewood-fx-h.js` (`FX.H.boltShot`, `shockBolt`, `arrowShot`, `volleyLoose`, `forestryLog`, `coinFlip`, `plunderCoins`, `anvilSpark`, `pearlGlint`, `oreChip`; events in `fx14Event`, the `fieldRes` hook). Called by `ninthPassVfx` (bolts) and the ranged hit (arrows) in `arena_app.js` with the impact times they already had; transform / opacity only, no filter or blend mode; Effects None and reduced motion keep the old looks. Lab: `tools/effects-lab/manifest/h.js` (FX14 variants). Shots: `docs/screens/fx14/`. Check: `tests/fx14-2026-11-17.js`.
 

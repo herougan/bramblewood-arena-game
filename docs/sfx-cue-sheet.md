@@ -144,3 +144,11 @@ Also in `bramblewood-fx-h.js` (`CUES`, from `SoundKit.prim`).
 | 31 | `anvilTink` | Masonry / Refining strike | Two small anvil tinks with a spark tick | Two triangle pings | about 360 ms |
 | 32 | `pearlChime` | Pearls gained or spent | A soft glassy chime with a shimmer | Two-note chime | about 380 ms |
 | 33 | `pickChip` | Quarrying / Mining chip | A pick tick and a stone knock | Square tick, low blip | about 70 ms |
+
+## POWDER1 cue (2026-11-17)
+
+Also in `bramblewood-fx-h.js` (`CUES`, from `SoundKit.prim`).
+
+| # | Cue | Trigger | Mood (A, cosy/organic) | Mood (B, chiptune) | Length |
+|---|---|---|---|---|---|
+| 34 | `sporePuff` | A powder's spores bloom on the target (`FX.H.powderPuff`; Sleeping / Poison Powder) | A soft breathy poof; Sleeping: two drowsy falling sine notes; Poison: a low bubble | Soft noise poof, two falling blips (Sleeping) or one low blip (Poison) | about 400 ms |
