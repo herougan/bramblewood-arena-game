@@ -64,7 +64,7 @@ ok(/function eng27FortPipsHTML\(side\)/.test(app) && /eng27FortPipsHTML\(hqSide\
 
 // ---- 11. Speed: Blitz 10, arrows 0 after the swings, bolts 1 ---------------------------------------------------------------------
 { const {e, P} = mk(); const b = put(e, P, 1, 'x-blitz', 0), a = put(e, P, 1, 'x-archer', 2), bo = put(e, P, 1, 'x-bolter', 4);
-  ok(e.swingSpeedOf(b) === 10 && e.shotSpeedOf(b) === 10 && e.shotSpeedOf(a) === 0 && e.shotSpeedOf(bo) === 1, '#11 Blitz 10 on swing and shots; arrow 0; bolt 1'); }
+  ok(e.swingSpeedOf(b) === 10 && e.shotSpeedOf(b) === 10 && e.shotSpeedOf(a) === 0 && e.shotSpeedOf(bo) === 2 /* 2026-11-16 (ARROW1, owner 11-16 23:10): bolts at 2 (was 1) */, '#11 Blitz 10 on swing and shots; arrow 0; bolt 2'); }
 { const {e, P} = mk(); put(e, P, 1, 'x-archer', -2); put(e, P, 2, 'x-swing', 2); put(e, P, 2, 'x-dummy', 2);
   const ev = fight(e, P); const iSwing = ev.findIndex(x=> (x.type === 'hit' || x.type === 'hitHQ') && x.side === 'B'), iArrow = ev.findIndex(x=> x.type === 'arrow');
   ok(iSwing >= 0 && iArrow > iSwing, `#11 an arrow goes after a Speed 0 swing (swing ${iSwing}, arrow ${iArrow})`); }

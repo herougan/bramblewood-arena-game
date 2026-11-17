@@ -4470,5 +4470,11 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "Al llegar, paga 1 de Madera por {n} copias con la mitad de Ataque y Salud, Espera 1. Sin Madera, no hay copias.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Al ser golpeada, golpea al enemigo de enfrente. Solo ataca por sí misma si no tiene enemigo enfrente.",
  "To add": "Por añadir",
- "Focus skill for this map that no main card has yet: put it on a card": "Habilidad prioritaria de este mapa que ninguna carta principal tiene aún: ponla en una carta"
+ "Focus skill for this map that no main card has yet: put it on a card": "Habilidad prioritaria de este mapa que ninguna carta principal tiene aún: ponla en una carta",
+ "Bolt": "Saeta",
+ "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "Todas las habilidades de flecha cuentan juntas como una. Las flechas se disparan a Velocidad 0, tras los golpes.",
+ "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Todas las habilidades de saeta cuentan juntas como una. Las saetas salen a Velocidad 2, con las unidades Rápidas, antes de los otros golpes.",
+ "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Nunca ataca: cada turno, tras los golpes, dispara una flecha de {n} de daño al enemigo de enfrente o al más cercano.",
+ "The Shock lasts a round.": "La electrocución dura una ronda.",
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Golpea a Velocidad 2, con las Saetas: antes que las Flechas y las unidades sin Rápida."
 }

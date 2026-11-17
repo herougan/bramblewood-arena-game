@@ -4471,5 +4471,11 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "À l’arrivée, paie 1 Bois pour {n} copies à moitié d’Attaque et de Santé, Attente 1. Sans Bois, pas de copies.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Touchée, elle frappe l’ennemi en face. N’attaque d’elle-même que si aucun ennemi ne lui fait face.",
  "To add": "À ajouter",
- "Focus skill for this map that no main card has yet: put it on a card": "Compétence prioritaire de cette carte qu'aucune carte principale n'a encore : mettez-la sur une carte"
+ "Focus skill for this map that no main card has yet: put it on a card": "Compétence prioritaire de cette carte qu'aucune carte principale n'a encore : mettez-la sur une carte",
+ "Bolt": "Carreau",
+ "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "Toutes les compétences de flèche comptent ensemble pour une seule. Les flèches tirent à Vitesse 0, après les frappes.",
+ "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Toutes les compétences de carreau comptent ensemble pour une seule. Les carreaux partent à Vitesse 2, avec les unités Vives, avant les autres frappes.",
+ "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "N’attaque jamais : à chaque tour, après les frappes, tire une flèche de {n} dégâts sur l’ennemi en face ou le plus proche.",
+ "The Shock lasts a round.": "L’électrocution dure un tour.",
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Frappe à Vitesse 2, avec les Carreaux : avant les Flèches et les unités sans Vive."
 }

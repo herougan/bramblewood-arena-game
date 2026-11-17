@@ -4470,5 +4470,11 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "Bei Ankunft zahlt sie 1 Holz für {n} Kopien mit halbem Angriff und halber Gesundheit, Warten 1. Kein Holz, keine Kopien.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Getroffen, schlägt sie den Gegner gegenüber. Greift von selbst nur an, wenn ihr kein Gegner gegenübersteht.",
  "To add": "Hinzufügen",
- "Focus skill for this map that no main card has yet: put it on a card": "Fokus-Fähigkeit dieser Karte, die noch keine Hauptkarte hat: auf eine Karte setzen"
+ "Focus skill for this map that no main card has yet: put it on a card": "Fokus-Fähigkeit dieser Karte, die noch keine Hauptkarte hat: auf eine Karte setzen",
+ "Bolt": "Bolzen",
+ "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "Alle Pfeil-Fähigkeiten zählen zusammen als eine. Pfeile fliegen mit Tempo 0, nach den Hieben.",
+ "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Alle Bolzen-Fähigkeiten zählen zusammen als eine. Bolzen fliegen mit Tempo 2, zusammen mit schnellen Einheiten, vor den anderen Hieben.",
+ "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Greift nie an: Jede Runde schießt es nach den Hieben einen Pfeil für {n} Schaden auf den Gegner davor oder den nächsten.",
+ "The Shock lasts a round.": "Der Schock hält eine Runde.",
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Schlägt mit Tempo 2 zu, zusammen mit Bolzen: vor Pfeilen und Einheiten ohne Schnell."
 }

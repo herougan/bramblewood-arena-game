@@ -4472,5 +4472,11 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "Saat tiba, membayar 1 Kayu untuk {n} salinan dengan setengah Serangan dan Nyawa, Tunggu 1. Tanpa Kayu, tanpa salinan.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Saat terkena, menghantam musuh di depannya. Menyerang sendiri hanya jika tak ada musuh di depannya.",
  "To add": "Tambahkan",
- "Focus skill for this map that no main card has yet: put it on a card": "Skill fokus peta ini yang belum dimiliki kartu utama mana pun: pasang pada sebuah kartu"
+ "Focus skill for this map that no main card has yet: put it on a card": "Skill fokus peta ini yang belum dimiliki kartu utama mana pun: pasang pada sebuah kartu",
+ "Bolt": "Bolt",
+ "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "Semua skill panah dihitung bersama sebagai satu skill. Panah ditembakkan di Kecepatan 0, setelah serangan biasa.",
+ "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Semua skill bolt dihitung bersama sebagai satu skill. Bolt ditembakkan di Kecepatan 2, bersama unit Cepat, sebelum serangan lain.",
+ "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Tak pernah menyerang: tiap giliran, setelah serangan biasa, menembakkan panah {n} kerusakan ke musuh di depan, atau yang terdekat.",
+ "The Shock lasts a round.": "Setrumnya bertahan satu ronde.",
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Menyerang di Kecepatan 2, bersama Bolt: sebelum Panah dan unit tanpa Cepat."
 }

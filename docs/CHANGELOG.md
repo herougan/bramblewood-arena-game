@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-16 (package ARROW1: arrow and bolt families)
+- Owner 11-16 23:10. Card rule: every arrow (Arrow, Arrow (Flaming), Ice Arrow, Twin Shot, Volley, Archer) counts as one skill toward the two-skill limit, every bolt (Cinder / Acid / Venom Spit / Ice / Spark Bolts, Spitfire) as one; groups that share a skill join (`bramblewood-budget.js` TWO_SKILL_TYPES). Rimefire Salamander (Arrow (Flaming) + Ice Arrow) now counts 1. The card editor's warning uses the same count (it ignored SKN1's groups).
+- Players see: bolts fire at Speed 2, beside Quick swings by column (were Speed 1, after every Quick swing; a Speed 1 unit now swings after them). Arrows stay at Speed 0 after the swings; Archer's turn joins them (it went in column order with the swings). A unit with an arrow and a bolt gets two actions, one per family (it fired everything at 1; no card has both).
+- Codex: one filter chip per family ("Arrow", "Bolt"); each member's entry says the family counts once and when it fires. Texts: Quick, the six bolt descriptions, Archer, Shock Bolt's note; 5 TX keys + 1 pack row x 12 (`tools/i18n_2026_11_16_arrow1.json`), 8 `lang/ui` rows renamed in the 6 languages that had them.
+- Map 20's focus skill is Arrow (Flaming) (`MAP_FOCUS_SKILLS[20]`, REDESIGN2 docs); Fire Bolt planned for the Dragon Lair (20-B), carrier asked (ARROW1-2); Snipe / Bola / Lasso as arrows asked (ARROW1-3). No card stat changes.
+- GOLDEN_LINE
 ## 2026-11-16 (package CHEAT2: cheat detection)
 - Players see no change. The game now notes impossible states instead of blocking anything: a save edited outside the game (the wallet or card copies no longer match what the game last wrote), a currency jump with no matching reward beyond the server's per-write cap, impossible balances or copy counts, Conquest wins under 3 s, impossible rounds, 60+ wins in 10 minutes, a won deck with a card never owned, card data that fails its hash (checklist E6), and a device clock that went back or is 15+ minutes off the server. Notes stay in the browser (last 50); a signed-in player's are sent to `report_cheat_flags`, or, until that SQL is applied, as one batched feedback row a day. Guests are never reported. Admin Mode, Admin test fights, the Admin win and the cloud load are exempt.
 - Hand-ins now carry a compact fight record (`transcript.rec`: seed, deck and copy levels, leader, build, card hash, duration) for a later server replay (Tier 3).

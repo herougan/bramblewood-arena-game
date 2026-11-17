@@ -4471,5 +4471,11 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "登場時、木材1を払い、攻撃力と体力が半分のコピーを{n}体得る。待機1。木材がなければコピーなし。",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "攻撃されると正面の敵を攻撃する。正面に敵がいないときだけ自分から攻撃する。",
  "To add": "追加予定",
- "Focus skill for this map that no main card has yet: put it on a card": "このマップの重点スキル。メインカードにまだありません：カードに付けてください"
+ "Focus skill for this map that no main card has yet: put it on a card": "このマップの重点スキル。メインカードにまだありません：カードに付けてください",
+ "Bolt": "ボルト",
+ "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "矢のスキルはすべて合わせて1つのスキルとして数える。矢はスピード0で、他の攻撃の後に放たれる。",
+ "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "ボルトのスキルはすべて合わせて1つのスキルとして数える。ボルトはスピード2で、素早いユニットと同時に、他の攻撃より先に放たれる。",
+ "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "攻撃しない。毎ターン、他の攻撃の後に、正面の敵（いなければ最も近い敵）に{n}ダメージの矢を放つ。",
+ "The Shock lasts a round.": "感電は1ラウンド続く。",
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "スピード2で攻撃する（ボルトと同時）：矢や素早いを持たないユニットより先。"
 }

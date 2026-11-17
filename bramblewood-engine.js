@@ -2600,23 +2600,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(v || c.speed) c.speed = v; });
     });
   }
-  // 2026-10-17 (user: "Arrows etc, and all these kind of skills happen at Speed = 1. Quick happens at Speed = 2."): one rule for
-  // the whole main order. A unit's swing goes at its Speed (c.speed above: its own Speed, Haste, a Haste ally beside it) on top
-  // of a base: Quick 2, everyone else 0 (a Boomerang throw was 1 until EN2, 2026-10-23). Every shooter's Arrows / Bolts / Snipe etc. are a separate action
-  // at Speed 1 (SHOT_SPEED). c.speed (the board's badge) leaves the base out; Quick shows as its own boots icon.
-  const SHOT_SPEED = 1;
+  // 2026-10-17: one rule for the whole main order. A unit's swing goes at its Speed (c.speed above: its own Speed, Haste, a Haste ally
+  // beside it) on top of a base: Quick 2, everyone else 0. Its shots are separate actions at their family's Speed (shotSpeedOf below).
+  // c.speed (the board's badge) leaves the base out; Quick shows as its own boots icon.
+  // 2026-11-16 (ARROW1, owner 11-16 23:10: "Arrows are slower than normal speed (speed 0), while Bolts are faster, at speed 2"): the
+  // owner's numbers are the engine's (Quick 2 since ENG27): a Bolt shot (BOLT_SHOT_KEYS) goes at 2, with Quick swings (by column).
+  const SHOT_SPEED = 2;
   // EN2 (2026-10-23, owner 13:16 #9: "Boomerang throw is speed 0"): the throw no longer has a base of 1; it swings at Speed 0 like any
   // unit without Quick (its Speed skill and Haste still add). Its skill price came down with it (canonical/skill-costs.json).
   // EN2 (17:34 #15): a Tailwind Flyer is Quick for the round (c._windQuick, set in resolveCombat).
   // ENG9 (2026-10-26, owner EN7-4: "temporarily removing their quick"): a unit aloft or under (Dive, from its rise to its strike) has no Quick.
   // ENG27 (2026-11-06, owner item 11: "Blitz: Speed 10 - to all its actions. Quick only makes its attack speed 2. Arrows and all arrow-likes
-  // are speed 0 (Slower than default). Bolts are speed 1."): Blitz puts its swing and its shots at Speed 10 (its Speed / Haste still add to
-  // the swing). A shot action goes at Speed 1 when the unit has a Bolt (BOLT_ELEMENTS, Spitfire), else at Speed 0 (Arrow, Fire / Ice Arrow,
-  // Twin Shot, Volley, Snipe, Bola, Lasso); inside Speed 0 an arrow goes after every swing (pickNextAttacker's slowRank), which is what
-  // "slower than default" means while a plain swing's Speed is 0. shortcut: a unit with both an arrow and a bolt fires all its shots at 1.
+  // are speed 0 (Slower than default)."): Blitz puts its swing and its shots at Speed 10 (its Speed / Haste still add to the swing). An arrow
+  // shot (Arrow, Fire / Ice Arrow, Twin Shot, Volley, Snipe, Bola, Lasso; Archer's turn) goes at Speed 0, after every swing (pickNextAttacker's
+  // slowRank). ARROW1 (2026-11-16): a unit with an arrow and a bolt has two shot actions, each at its family's Speed (fam 'arrow' / 'bolt';
+  // no fam: the old single action, at 2 when it has a bolt).
   const BLITZ_SPEED = 10;
   function swingSpeedOf(c){ const e = effectsOf(c); const quickNow = (e.quick && !(c && c.diveAloft != null)) || (c && c._windQuick === combatNo && combatNo > 0); return (Number(c && c.speed)||0) + (e.blitz ? BLITZ_SPEED : quickNow ? 2 : 0); }
-  function shotSpeedOf(c){ const e = effectsOf(c); return e.blitz ? BLITZ_SPEED : (e.spitfire || Object.keys(BOLT_ELEMENTS).some(k=> e[k])) ? SHOT_SPEED : 0; }
+  function shotSpeedOf(c, fam){ const e = effectsOf(c); return e.blitz ? BLITZ_SPEED : (fam === 'bolt' || (fam !== 'arrow' && BOLT_SHOT_KEYS.some(k=> e[k]))) ? SHOT_SPEED : 0; }
   // Cower (2026-10-14, user: "Cower (and maybe another skill also about a Turtle going into a shell) - Do {} when hit previous
   // turn"): the "when hit last turn" trigger. A unit that took damage in the previous round does its cower action this round:
   //   'shell' (the default) pulls into its shell: no attack this round, and attacks can't hurt it this round (Poison, Bleed,
@@ -8059,7 +8060,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // order (see pickNextAttacker): after every Speed 2+ swing (Quick, Haste), before the Speed 0 swings. hasShotSkill says who
   // gets that action; fireShotsOf fires one shooter's shots (it re-checks that the shooter can still act at that moment).
   const SHOT_KEYS = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'spitfire', 'snipe', 'bola' /* ENG14 (2026-10-30, X26) */, 'lasso' /* ENG15 (2026-10-31) */].concat(Object.keys(BOLT_ELEMENTS));
-  function hasShotSkill(c){ const fx = effectsOf(c); return SHOT_KEYS.some(k=> fx[k] && !(Number(fx[k]) < 0) && !(k === 'lasso' && c && c.lassoUsed)); } // a thrown Lasso is spent (ENG15)
+  const BOLT_SHOT_KEYS = Object.keys(BOLT_ELEMENTS).concat('spitfire'); // ARROW1 (2026-11-16): the bolt family; every other shot key is an arrow
+  const shotKeysOf = fam=> fam === 'bolt' ? BOLT_SHOT_KEYS : fam === 'arrow' ? SHOT_KEYS.filter(k=> !BOLT_SHOT_KEYS.includes(k)) : SHOT_KEYS;
+  function hasShotSkill(c, fam){ const fx = effectsOf(c); return shotKeysOf(fam).some(k=> fx[k] && !(Number(fx[k]) < 0) && !(k === 'lasso' && c && c.lassoUsed)); } // a thrown Lasso is spent (ENG15)
   function fireArrowVolley(players, sideOf, stats, events){ // every shooter at once (kept for callers outside the round order)
     let fired = false; const kc = {}; // 2026-10-18: its kills are credited
     [1,2].forEach(pid=>{
@@ -8071,8 +8074,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // killCredit (2026-10-18, engine parity): the book its kills go in, as a melee swing's do (kills, MVP, Crown of Thorns, Midas,
   // On Kill). It was always null, so ~30 shooters never counted a kill. On-hit skills on shots are unchanged (an owner decision).
-  function fireShotsOf(players, sideOf, pid, c, stats, events, killCredit){
-    killCredit = killCredit || {};
+  // fam (ARROW1, 2026-11-16): 'arrow' or 'bolt' fires that family's shots only (its own action in the round order); none: all of them.
+  function fireShotsOf(players, sideOf, pid, c, stats, events, killCredit, fam){
+    killCredit = killCredit || {}; const wantA = fam !== 'bolt', wantB = fam !== 'arrow';
     let fired = false;
     {
       const pl = players[pid]; if(!pl) return false;
@@ -8081,7 +8085,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(!c || c.hp<=0 || c.wait>0 || c.stunned || c.frozen>0 || dozing(c) || c.cageOf) return false;
         if(passOnlyUid && c.uid !== passOnlyUid) return false;
         const def = CARD_DEFS[c.defId]; const fx = def && def.effects; if(!fx) return false;
-        if(hasShotSkill(c) && confusedFumbles(c, sideOf(pid), events, 'shot')) return false; // Confused (2026-10-19, package FZ): the shot action fumbles 1 in 2
+        if(hasShotSkill(c, fam) && confusedFumbles(c, sideOf(pid), events, 'shot')) return false; // Confused (2026-10-19, package FZ): the shot action fumbles 1 in 2
         const shots = [];
         const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
         const eng40IsArrow = sh=> !sh.bolt && !sh.bola && !sh.lasso && !sh.spitfire; // ENG40 (2026-11-09, ENG34-3 c): Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley
@@ -8089,44 +8093,44 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // 2026-10-17 (user: "First creature to have 2x Arrow 2."): a skill can't sit on a card twice (effects is one key each), so
         // effects.arrowCount N says how many Arrow shots it looses: War Elephant has Arrow 2 and arrowCount 2, two arrows of 2 a round,
         // each aimed on its own (the second one goes on to the nearest if the first killed the target). The card reads "Arrow 2" twice.
-        if(fx.arrow > 0){ const nA = Math.max(1, Math.min(4, Math.round(Number(fx.arrowCount)||1))); for(let k = 0; k < nA; k++) shots.push({amount: fx.arrow + fletch, dmgType: 'physical', fire: false, nth: k || undefined, at: fx.arrowBramble ? 'hq' : undefined /* EN6: Arrow – bramble */, tip: en7ShotTip(fx, 'arrow') /* EN7: – poison / – bleed */}); }
-        if(fx.fireArrow > 0) shots.push({amount: fx.fireArrow, dmgType: 'heat', fire: true, at: fx.fireArrowBramble ? 'hq' : undefined /* EN6 */, tip: en7ShotTip(fx, 'fireArrow') /* EN7 */});
+        if(wantA && fx.arrow > 0){ const nA = Math.max(1, Math.min(4, Math.round(Number(fx.arrowCount)||1))); for(let k = 0; k < nA; k++) shots.push({amount: fx.arrow + fletch, dmgType: 'physical', fire: false, nth: k || undefined, at: fx.arrowBramble ? 'hq' : undefined /* EN6: Arrow – bramble */, tip: en7ShotTip(fx, 'arrow') /* EN7: – poison / – bleed */}); }
+        if(wantA && fx.fireArrow > 0) shots.push({amount: fx.fireArrow, dmgType: 'heat', fire: true, at: fx.fireArrowBramble ? 'hq' : undefined /* EN6 */, tip: en7ShotTip(fx, 'fireArrow') /* EN7 */});
         // Ice Arrow N, Twin Shot N, Volley N (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire
         // Arrow, Ice Arrow etc. will be more normal."). Ice Arrow: N cold, and a 1 in 2 chance to lay a Freeze counter on a unit
         // that has none (so it can't keep a unit locked every round). Twin Shot: two arrows of N at two different random enemy
         // units (both at the one if there is only one). Volley: once every 2 rounds (its 1st, 3rd, 5th... Ready round), an arrow of
         // N at every enemy unit.
-        if(Number(fx.iceArrow) > 0) shots.push({amount: Number(fx.iceArrow), dmgType: 'cold', ice: true, status: 'freezeCounter'});
+        if(wantA && Number(fx.iceArrow) > 0) shots.push({amount: Number(fx.iceArrow), dmgType: 'cold', ice: true, status: 'freezeCounter'});
         // Bola N (2026-10-30, package ENG14, owner X26: "Bola! Works like arrow, but pins targets down somehow... maybe they can't move and
         // attack? but can use skills?"): Arrow N's shot (the enemy facing it, else the nearest, else the bramble; Fletcher N adds), and a unit
         // it hits is Pinned (c.pinDown) for its next turn: it can't swing (its next swing is skipped) and can't move or be moved; its skills,
         // shots and triggers still work. Claude's call (decision ENG14-3): a unit that broke free of a Pin last round (or this one) can't be
         // pinned again yet, so one Bola costs a unit at most every other swing (as Ice Arrow never keeps a unit locked).
-        if(Number(fx.bola) > 0) shots.push({amount: Number(fx.bola), dmgType: 'physical', bola: true, status: 'pin'});
-        if(Number(fx.lasso) > 0 && !c.lassoUsed){ c.lassoUsed = true; shots.push({amount: Number(fx.lasso), dmgType: 'physical', lasso: true, status: 'lasso'}); } // Lasso N (ENG15, 2026-10-31): once
-        if(Number(fx.twinShot) > 0){ const foes = liveFoesOf(enemy); const pool = foes.slice(), picks = [];
+        if(wantA && Number(fx.bola) > 0) shots.push({amount: Number(fx.bola), dmgType: 'physical', bola: true, status: 'pin'});
+        if(wantA && Number(fx.lasso) > 0 && !c.lassoUsed){ c.lassoUsed = true; shots.push({amount: Number(fx.lasso), dmgType: 'physical', lasso: true, status: 'lasso'}); } // Lasso N (ENG15, 2026-10-31): once
+        if(wantA && Number(fx.twinShot) > 0){ const foes = liveFoesOf(enemy); const pool = foes.slice(), picks = [];
           while(picks.length < 2 && pool.length) picks.push(pool.splice(Math.floor(rnd()*pool.length), 1)[0]);
           if(picks.length === 1) picks.push(picks[0]);
           const nTw = quietStills(c, sideOf(pid), events, 'twinShot') ? 1 : 2; // Quiet Contemplation (2026-10-19): one arrow
           for(let k = 0; k < nTw; k++) shots.push({amount: Number(fx.twinShot), dmgType: 'physical', twin: true, at: picks[k] || 'hq'}); }
-        if(Number(fx.volley) > 0){ c.volleyClock = (c.volleyClock||0) + 1;
+        if(wantA && Number(fx.volley) > 0){ c.volleyClock = (c.volleyClock||0) + 1;
           if(c.volleyClock % 2 === 1){ const foes = liveFoesOf(enemy);
             (foes.length ? foes : ['hq']).forEach(t=> shots.push({amount: Number(fx.volley), dmgType: 'physical', volley: true, at: t})); } }
         // The Bolts (2026-10-15, user: "We need bolts - these might be quite creature-specific. All elemental or status-y. They just
         // represents 'spits' of something at the enemy."): every round while Ready, before melee, it spits at the enemy opposite
         // (the nearest enemy unit if none is opposite; the castle if the board is empty). One shot per Bolt skill; what each
         // element does is in BOLT_ELEMENTS.
-        Object.keys(BOLT_ELEMENTS).forEach(k=>{ const n = Number(fx[k]) || (fx[k] === true ? 1 : 0); if(!(n > 0)) return; const B = BOLT_ELEMENTS[k];
+        Object.keys(BOLT_ELEMENTS).forEach(k=>{ const n = Number(fx[k]) || (fx[k] === true ? 1 : 0); if(!wantB || !(n > 0)) return; const B = BOLT_ELEMENTS[k];
           shots.push({amount: B.noDamage ? 0 : n, n, dmgType: B.dmgType, bolt: B.element, status: B.status, boltKey: k, at: (k === 'fireBolt' && fx.fireBoltBramble) ? 'hq' : undefined /* EN6: Fire Bolt – bramble */, tip: k === 'fireBolt' ? en7ShotTip(fx, 'fireBolt') : null /* EN7 */}); });
         // Spitfire N (2026-10-16, user: "Spitfire - ?"): a Fire Bolt that doesn't aim: every round while Ready it spits N fire at a
         // random enemy unit (the castle if there are none), and 1 in 2 the flames catch a unit beside it for 1.
-        if(fx.spitfire){ const foes = liveFoesOf(enemy).filter(x=> !isInvisible(x, c)), n = w2N(def, 'spitfire');
+        if(wantB && fx.spitfire){ const foes = liveFoesOf(enemy).filter(x=> !isInvisible(x, c)), n = w2N(def, 'spitfire');
           shots.push({amount:n, n, dmgType:'heat', bolt:'fire', boltKey:'spitfire', spitfire:true, at: foes.length ? foes[Math.floor(rnd()*foes.length)] : 'hq'}); }
         if(shots.length && c.invisible > 0){ c.invisible = 0; if(recordEvents && events) events.push({type:'statusEnd', status:'invisible', side:sideOf(pid), uid:c.uid, defId:c.defId, attacked:true}); } // shooting gives it away (2026-10-16)
         // Snipe N (2026-10-13, user: "Snipe N: If there is no opposing unit, shoot a random enemy for N damage").
         // EN2 (2026-10-23): a Headwind doubles Snipe too (an active skill, like Arrow); asked once, so Quiet Contemplation logs once.
         let hw2 = null; const hwTwice = ()=> hw2 == null ? (hw2 = headwindTwice(c, pid, sideOf(pid), events)) : hw2;
-        if(fx.snipe){ const opp0 = opposingCardOf(players, pid, c); if(!(opp0 && opp0.card && opp0.card.hp>0)){
+        if(wantA && fx.snipe){ const opp0 = opposingCardOf(players, pid, c); if(!(opp0 && opp0.card && opp0.card.hp>0)){
           for(let sr = 0, sn = 1; sr < sn && c.hp > 0; sr++){ const foes = allBoardCards(enemy).filter(x=> x.hp>0 && !x.cageOf);
           if(foes.length){ const t = shotRedirect(players, sideOf, pid, c, foes[Math.floor(rnd()*foes.length)], events); const amt = Number(fx.snipe === true ? 1 : fx.snipe)||1; // ENG22: Taunt / Guardian
             if(recordEvents && events) events.push({type:'arrow', snipe:true, side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: t.uid, targetDefId: t.defId, amount: amt, headwind: sr > 0 || undefined});
@@ -11142,15 +11146,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // a Rally source that just poisoned itself to death no longer contributes this round.
     computeRallyBonuses(players);
     watchScan(players, sideOf, stats, events); // 2026-10-17: units that arrived or moved during upkeep meet Ambush / Sentry before melee
-    // 2026-10-17 (user: "Arrows etc, and all these kind of skills happen at Speed = 1."): the shooters on the field now (Ready ones;
-    // fireShotsOf checks again when their turn comes) each get one shot action at Speed 1 in the main order below, instead of
-    // one volley before it. Units that arrive or turn Ready later this round shoot from next round, as before.
-    const shotPool = new Map(); // uid -> {att, attId}
+    // 2026-10-17: the shooters on the field now (Ready ones; fireShotsOf checks again when their turn comes) each get a shot action in the
+    // main order below. Units that arrive or turn Ready later this round shoot from next round. ARROW1 (2026-11-16): one action per shot
+    // family it has (arrows at Speed 0 after the swings, bolts at 2), keyed uid + ':' + fam.
+    const shotPool = new Map(); // uid:fam -> {att, attId, fam, row?}
+    const poolShots = (c, ownId, row)=> ['bolt', 'arrow'].forEach(fam=>{ if(hasShotSkill(c, fam)) shotPool.set(c.uid + ':' + fam, Object.assign({att:c, attId:ownId, fam}, row ? {row} : {})); });
     [[p1,1],[p2,2]].forEach(([pl, ownId])=>{ if(!pl || (passAttackerIds && !passAttackerIds.includes(ownId))) return;
-      allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid) && hasShotSkill(c)) shotPool.set(c.uid, {att:c, attId:ownId}); });
+      allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid)) poolShots(c, ownId); });
       // 2026-10-19 (package RR): in a raid (RESERVE_ACTS) a middle- or back-row shooter shoots too, as at the front (its shot aims from its
       // column: opposingCardOf / arrowTargetOf), at its column's place in the order, after that column's front row.
-      if(RESERVE_ACTS && pl.reserve) pl.reserve.forEach((rw, i)=> Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid) && hasShotSkill(c)) shotPool.set(c.uid, {att:c, attId:ownId, row:i + 1}); })); });
+      if(RESERVE_ACTS && pl.reserve) pl.reserve.forEach((rw, i)=> Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid)) poolShots(c, ownId, i + 1); })); });
     // The reserve rows' actions (2026-10-18, RESERVE_ACTS): every reserve unit on the board as the round starts gets one, in the main order.
     const reservePool = new Map(); // uid -> {att, attId, row, slot}
     // 2026-10-19 (package TS): or the one reserve unit a single-unit pass names (reserveVolley's strikes, onlyUid), raid or not.
@@ -11300,6 +11305,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // liveSharedPos fresh for every candidate on every call (cheap — real boards are small) so a
     // kill or a mid-round spawn earlier this same loop is always reflected immediately, never a
     // stale snapshot.
+    // ARROW1 (2026-11-16, owner 11-16 23:10): Archer's turn is an arrow, so it goes at the arrows' Speed (0 after the swings; Blitz 10).
+    const actSpeedOf = c=> bxIsArcher(c) ? shotSpeedOf(c, 'arrow') : swingSpeedOf(c);
     function pickNextAttacker(){
       discoverEligibleAttackers();
       // ENG9 (2026-10-26, owner G4: a sleeping House Cat attacked): a unit found Ready earlier this round that has since been put to sleep,
@@ -11313,21 +11320,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       poolMeta.forEach((meta, uid)=>{
         const pos = liveSharedPos(players[meta.attId], uid);
         if(pos===null) return; // defensive only — hp>0 was already confirmed at discovery time
-        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:meta.enemyId, pos, spd: swingSpeedOf(meta.att)});
+        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:meta.enemyId, pos, spd: actSpeedOf(meta.att), archer: bxIsArcher(meta.att) || undefined});
       });
-      shotPool.forEach((meta, uid)=>{ // 2026-10-17: the Speed 1 shot actions (see shotPool above)
-        if(!(meta.att.hp > 0)){ shotPool.delete(uid); return; }
-        const pos = meta.row ? (reserveRowOf(players[meta.attId], meta.att) === meta.row ? meta.att.slot : null) : liveSharedPos(players[meta.attId], uid); if(pos===null){ shotPool.delete(uid); return; } // a row shooter: its column (2026-10-19, RR)
-        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos, spd: shotSpeedOf(meta.att), shot:true, shotRow: meta.row || 0}); // ENG27: arrows 0, bolts 1, Blitz 10
+      shotPool.forEach((meta, key)=>{ // 2026-10-17: the shot actions (see shotPool above)
+        if(!(meta.att.hp > 0)){ shotPool.delete(key); return; } const uid = meta.att.uid;
+        const pos = meta.row ? (reserveRowOf(players[meta.attId], meta.att) === meta.row ? meta.att.slot : null) : liveSharedPos(players[meta.attId], uid); if(pos===null){ shotPool.delete(key); return; } // a row shooter: its column (2026-10-19, RR)
+        candidates.push({uid, key, fam:meta.fam, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos, spd: shotSpeedOf(meta.att, meta.fam), shot:true, shotRow: meta.row || 0}); // arrows 0, bolts 2 (ARROW1), Blitz 10
       });
       reservePool.forEach((meta, uid)=>{ // 2026-10-18: a reserve unit acts at its own column, after that column's front row (resRow below)
         const rw = players[meta.attId].reserve[meta.row - 1]; if(!rw || rw[meta.slot] !== meta.att || !(meta.att.hp > 0)){ reservePool.delete(uid); return; }
-        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos:meta.slot, spd: swingSpeedOf(meta.att), reserve:meta.row, slot:meta.slot});
+        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos:meta.slot, spd: actSpeedOf(meta.att), archer: bxIsArcher(meta.att) || undefined, reserve:meta.row, slot:meta.slot});
       });
       if(!candidates.length) return null;
       // Swift (2026-10-02): inside one Speed it acts before the rest (no card has it at the moment). Since 2026-10-17 Quick is
       // no longer a rank here: it is Speed 2 (swingSpeedOf).
-      const slowRank = c=> (((CARD_DEFS[c.att.defId] || {}).effects || {}).slow || (c.shot && c.spd === 0)) ? 1 : 0; // ENG13 (2026-10-29); + an arrow at Speed 0 after the swings (ENG27)
+      const slowRank = c=> (((CARD_DEFS[c.att.defId] || {}).effects || {}).slow || ((c.shot || c.archer) && c.spd === 0)) ? 1 : 0; // ENG13 (2026-10-29); + an arrow (ENG27) or Archer's turn (ARROW1) at Speed 0, after the swings
       const speedRank = c=>{ if(c.shot) return 1; const e = CARD_DEFS[c.att.defId].effects || {}; return e.swift ? 0 : 1; };
       const grassFirst = c=> !c.shot && rules.tallGrass && (CARD_DEFS[c.att.defId].effects || {}).stealth ? 0 : 1; // Tall Grass (2026-10-16): "stealth units attack first"
       candidates.sort((a,b)=>{
@@ -11342,12 +11349,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(ra!==rb) return ra-rb;
         if(a.pos!==b.pos) return a.pos-b.pos;
         if((a.reserve||a.shotRow||0) !== (b.reserve||b.shotRow||0)) return (a.reserve||a.shotRow||0) - (b.reserve||b.shotRow||0); // one column: the front row, then the middle, then the back (2026-10-18; + a row's shots, 2026-10-19 RR)
-        if(a.uid===b.uid) return a.shot ? -1 : 1; // one unit at Speed 1 both ways: it shoots, then swings
+        if(a.uid===b.uid) return a.shot && b.shot ? (a.fam === 'bolt' ? -1 : 1) : a.shot ? -1 : 1; // one unit at one Speed both ways: it shoots (its bolt, then its arrow), then swings
         const winsTies = firstAttackerSide || 2;
         return a.attId===winsTies ? -1 : 1;
       });
       const chosen = candidates[0];
-      if(chosen.shot){ shotPool.delete(chosen.uid); return chosen; }
+      if(chosen.shot){ shotPool.delete(chosen.key); return chosen; }
       if(chosen.reserve){ reservePool.delete(chosen.uid); return chosen; }
       poolMeta.delete(chosen.uid);
       handledUids.add(chosen.uid);
@@ -11397,8 +11404,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(!frozeNoted.has(a.uid)){ frozeNoted.add(a.uid); skipTurn('frozen', a.att, a.attId); }
         a.att._frozenJustSet = false;
         pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
-      if(a.shot){ // 2026-10-17: this shooter's Speed 1 shot action; its kills are cleared away before the next action, like a swing's
-        if(fireShotsOf(players, sideOf, a.attId, a.att, stats, events, killCredit)) reflowAfterKills(null); // 2026-10-18: its kills credited like a swing's (was an empty book)
+      if(a.shot){ // 2026-10-17: this shooter's shot action; its kills are cleared away before the next action, like a swing's
+        if(fireShotsOf(players, sideOf, a.attId, a.att, stats, events, killCredit, a.fam)) reflowAfterKills(null); // 2026-10-18: its kills credited like a swing's (was an empty book)
         pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       // A middle- or back-row unit's action (2026-10-18, RESERVE_ACTS; reserveVolley's single-unit passes). 2026-10-19 (package TS, owner
       // 13:35: "somehow, thorns is not affecting the back row of the raid units. Fix this and related."): root cause, its strike was

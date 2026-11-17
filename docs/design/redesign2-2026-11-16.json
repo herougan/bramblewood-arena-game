@@ -115,7 +115,9 @@
   "19": [
    "Recoil"
   ],
-  "20": []
+  "20": [
+   "Arrow (Flaming)"
+  ]
  },
  "plan": [
   {
@@ -362,7 +364,15 @@
    "map": 20,
    "name": "The Sundered Peak",
    "newBasics": [],
-   "singles": []
+   "singles": [],
+   "focus": [
+    "fireArrow"
+   ],
+   "sideMaps": {
+    "20-B Dragon Lair (Volcano Lair)": [
+     "fireBolt"
+    ]
+   }
   }
  ],
  "basics": [
@@ -10465,7 +10475,8 @@
   "Pillage": "New. No key in the engine, the prices or the texts (`pillage` appears nowhere). Build it from Pickpocket's resource half: the engine already takes resources off the opposing bramble (`sk2TakeRes`, used by Pickpocket and Sabotage). A small engine package: key, price, text, 12 language packs. Proposed home: Gull Thief (owner card) in place of its \"On Hit: Deliver 1 Lumber\", once built.",
   "Rainrunner": "Exists (key `rainrunner`, bramblewood-engine.js: +N/+N and unblockable in a rain field). On Puddle Skimmer (owner card). No main map of 0-20 has rain, so on the road it never fires.",
   "Pickpocket": "Exists (key `pickpocket`, ENG28). Today a landed hit takes N of the unit's tokens (Berries, prayer tokens, Scavenge / Salvage points, Creativity) and, where the tokens fall short or it hits the bramble, the opponent's resources. Your note \"steals items only\": proposed Pickpocket keeps the token theft only and the resource part becomes Pillage. Open: do \"items\" include equipment? (question 3)",
-  "Broodkeeper": "Exists (key `broodkeeper`; on no card). Name candidates: **Nurture**, **Hatchery**, **Rearing** (question 4). Proposed home: Wolf Spider Mother (Map 7, where Bloom, Meiosis and the Carcass maggots make units)."
+  "Broodkeeper": "Exists (key `broodkeeper`; on no card). Name candidates: **Nurture**, **Hatchery**, **Rearing** (question 4). Proposed home: Wolf Spider Mother (Map 7, where Bloom, Meiosis and the Carcass maggots make units).",
+  "Arrow (Flaming) / Fire Bolt": "ARROW1 (owner 11-16 23:10: \"Arrow Flaming on Map 20 makes sense. We can do Fire Bolt on the Dragon Lair map as well.\"): Arrow (Flaming) is Map 20's focus skill (MAP_FOCUS_SKILLS[20] = fireArrow; carrier Magma Salamander, already Arrow 1 (Flaming)). Fire Bolt is the Dragon Lair side map's (20-B) skill: no Lair card carries it yet; the candidate is Fire Drake Hatchling (Arrow 2 (Flaming) -> Fire Bolt 2, a drake spits), a data change waiting for the owner (decision ARROW1-2). Every arrow counts as one skill, every bolt as one; arrows fire at Speed 0 after the swings, bolts at Speed 2."
  },
  "questions": [
   "**Venomous has no II rank**, so this plan moves it off its 13 Maps 0-20 cards (Bee Sentry, Water Shrew, Platypus, Fire Ant Raft, Adder Ambusher, Puffball, Gallery Orb-Weaver, Banded Sea Krait, Crown-of-thorns Star, Monarch Wingblade, Caustic Scorpion, Sand Widow, Obsidian Scorpion). Cure (II 1) is then left with Poison Barbs and Swamp Fever as the venom on the road. Rank Venomous II 1 (they keep it), or keep it off?",

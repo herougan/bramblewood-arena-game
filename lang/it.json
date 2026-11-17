@@ -4472,5 +4472,11 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "All’arrivo, paga 1 Legname per {n} copie a metà Attacco e Salute, Attesa 1. Senza Legname, niente copie.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Se colpita, colpisce il nemico di fronte. Attacca da sola solo se nessun nemico le sta di fronte.",
  "To add": "Da aggiungere",
- "Focus skill for this map that no main card has yet: put it on a card": "Abilità prioritaria di questa mappa che nessuna carta principale ha ancora: mettila su una carta"
+ "Focus skill for this map that no main card has yet: put it on a card": "Abilità prioritaria di questa mappa che nessuna carta principale ha ancora: mettila su una carta",
+ "Bolt": "Dardo",
+ "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "Tutte le abilità di freccia contano insieme come una. Le frecce partono a Velocità 0, dopo i colpi.",
+ "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Tutte le abilità di dardo contano insieme come una. I dardi partono a Velocità 2, con le unità Rapide, prima degli altri colpi.",
+ "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Non attacca mai: ogni turno, dopo i colpi, scocca una freccia da {n} danni al nemico di fronte o al più vicino.",
+ "The Shock lasts a round.": "La folgorazione dura un round.",
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Colpisce a Velocità 2, con i Dardi: prima delle Frecce e delle unità senza Rapido."
 }

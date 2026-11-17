@@ -4472,5 +4472,11 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "Ao chegar, paga 1 Madeira por {n} cópias com metade do Ataque e da Vida, Espera 1. Sem Madeira, sem cópias.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "Quando atingida, golpeia o inimigo em frente. Só ataca por si se não houver inimigo à sua frente.",
  "To add": "A adicionar",
- "Focus skill for this map that no main card has yet: put it on a card": "Habilidade prioritária deste mapa que nenhuma carta principal tem ainda: coloque-a numa carta"
+ "Focus skill for this map that no main card has yet: put it on a card": "Habilidade prioritária deste mapa que nenhuma carta principal tem ainda: coloque-a numa carta",
+ "Bolt": "Virote",
+ "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "Todas as habilidades de flecha contam juntas como uma. As flechas disparam à Velocidade 0, depois dos ataques.",
+ "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "Todas as habilidades de virote contam juntas como uma. Os virotes saem à Velocidade 2, com as unidades Rápidas, antes dos outros ataques.",
+ "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Nunca ataca: a cada turno, depois dos ataques, dispara uma flecha de {n} de dano no inimigo à frente ou no mais próximo.",
+ "The Shock lasts a round.": "O choque dura uma ronda.",
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "Ataca à Velocidade 2, com os Virotes: antes das Flechas e das unidades sem Rápido."
 }

@@ -4473,5 +4473,11 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "등장할 때 목재 1을 내고 공격력과 체력이 절반인 복제 {n}개를 얻는다. 대기 1. 목재가 없으면 복제도 없다.",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "맞으면 맞은편 적을 친다. 맞은편에 적이 없을 때만 스스로 공격한다.",
  "To add": "추가 예정",
- "Focus skill for this map that no main card has yet: put it on a card": "이 맵의 집중 스킬이며 메인 카드에 아직 없습니다: 카드에 넣으세요"
+ "Focus skill for this map that no main card has yet: put it on a card": "이 맵의 집중 스킬이며 메인 카드에 아직 없습니다: 카드에 넣으세요",
+ "Bolt": "볼트",
+ "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "화살 스킬은 모두 합쳐 스킬 하나로 센다. 화살은 속도 0으로, 다른 공격 다음에 쏜다.",
+ "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "볼트 스킬은 모두 합쳐 스킬 하나로 센다. 볼트는 속도 2로, 빠른 유닛과 함께, 다른 공격보다 먼저 쏜다.",
+ "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "공격하지 않음: 매 턴 다른 공격 다음에, 앞의 적(없으면 가장 가까운 적)에게 {n} 피해의 화살을 쏩니다.",
+ "The Shock lasts a round.": "감전은 한 라운드 지속된다.",
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "속도 2로 공격, 볼트와 함께: 화살과 빠른 없는 유닛보다 먼저."
 }

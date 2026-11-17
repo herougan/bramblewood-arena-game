@@ -1087,7 +1087,7 @@ const PASSIVE_DEFS = [
   // a crit, but the counters decrease by 1."): N Expose counters; each later hit is a crit and uses one. Still can't miss.
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack puts ${v||1} Expose counter${(v||1)===1 ? '' : 's'} on the target. Each later hit on it is a crit (double damage) and removes 1 counter, and attacks at an Exposed unit can't miss.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't, and it never guards the bramble. A Guardian that steps in isn't covered by another Guardian. Taunt is different: it makes the enemies facing it aim at it.`} /* EN4 (2026-10-23, owner 22:23 #9: "Guardian shouldn't intercept an intercepting guardian."): EN3's one hop reverted */ /* EN3 (2026-10-23, owner 19:27 #2): not the bramble (call EN3-1) */ /* EN2 (2026-10-23, owner 13:16 #22): it moves in to take the hit; its reach vs Taunt's */ /* 2026-10-22 (package GD2, owner GD-3): swings only, no skills */ /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
-  {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2: before Bolts (Speed 1), then other swings and Arrows (Speed 0). Speed and Haste add to it.`}, // 2026-10-17 (user: "Quick happens at Speed = 2.") // ENG27 (2026-11-06): arrows at Speed 0
+  {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2, with the Bolts: before the other swings and Arrows (Speed 0). Speed and Haste add to it.`}, // 2026-11-16 (ARROW1): Quick 2, bolts 2, arrows 0 after the swings
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
   {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round${v===1?'':'s'} before attacking again.`},
@@ -1250,12 +1250,12 @@ const PASSIVE_DEFS = [
   // The Bolts (2026-10-15, user: "We need bolts - these might be quite creature-specific. All elemental or status-y. They just
   // represents 'spits' of something at the enemy. Fire bolt, Acid bolt, Poison bolt etc."): one engine implementation with an
   // element table (BOLT_ELEMENTS in bramblewood-engine.js). Each spits every round while Ready, before melee, at the enemy opposite
-  // (the nearest enemy unit if none is opposite; the castle if the board is empty).
-  {key:'fireBolt', category:'evergreen', label:'Fire Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a glob of fire at the enemy opposite (the nearest one if none is) for ${v||2} fire damage.`},
-  {key:'acidBolt', category:'evergreen', label:'Acid Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits acid at the enemy opposite (the nearest one if none is) for ${v||2} acid damage, and 1 Corrode.`},
-  {key:'poisonBolt', category:'evergreen', label:'Poison Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits venom at the enemy opposite (the nearest one if none is): no damage, but ${v||2} Venom.`},
-  {key:'iceBolt', category:'evergreen', label:'Ice Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a shard of ice at the enemy opposite (the nearest one if none is) for ${v||2} Cold damage. A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter).`},
-  {key:'shockBolt', category:'evergreen', label:'Shock Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a crackling spark at the enemy opposite (the nearest one if none is) for ${v||2} lightning damage, and Shocks it for a round (it takes 50% more damage).`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-17: lightning damage (was physical); the Wet note in the Codex
+  // (the nearest enemy unit if none is opposite; the castle if the board is empty). ARROW1 (2026-11-16): at Speed 2, one skill as a family.
+  {key:'fireBolt', category:'evergreen', label:'Fire Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits a glob of fire at the enemy opposite (the nearest one if none is) for ${v||2} fire damage.`},
+  {key:'acidBolt', category:'evergreen', label:'Acid Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits acid at the enemy opposite (the nearest one if none is) for ${v||2} acid damage, and 1 Corrode.`},
+  {key:'poisonBolt', category:'evergreen', label:'Poison Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits venom at the enemy opposite (the nearest one if none is): no damage, but ${v||2} Venom.`},
+  {key:'iceBolt', category:'evergreen', label:'Ice Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits a shard of ice at the enemy opposite (the nearest one if none is) for ${v||2} Cold damage. A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter).`},
+  {key:'shockBolt', category:'evergreen', label:'Shock Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits a crackling spark at the enemy opposite (the nearest one if none is) for ${v||2} lightning damage, and Shocks it for a round (it takes 50% more damage).`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-17: lightning damage (was physical); the Wet note in the Codex
   {key:'kingSlayer', category:'passive', label:'King Slayer', kind:'number', min:0, desc:v=>`Deals ${v} bonus damage on every landed hit against a target with the King type.`},
   // 2026-10-14 (fifth pass). Tornado, Avalanche, Tsunami (user: "All evergreen abilities"); Dragon Lightning and Wither, the
   // Dragonic Spire's signature skills (user: "Dragonic Spire - (imagine elden ring) - Skills, Dragon Lightning (monster hunter), and Wither (Minecraft)").
@@ -1325,7 +1325,7 @@ const PASSIVE_DEFS = [
   {key:'sonar', category:'passive', label:'Echolocation', kind:'boolean', desc:()=>`Hunts by sound: Darkness, Blind, Smoke, Fog and Shadow never make it miss (flyers included), and it can't be Blinded.`},
   {key:'poisonGas', category:'evergreen', label:'Poison Gas', kind:'number', min:1, defaultValue:2, desc:v=>`When it arrives, every enemy unit gets ${numOr(v, 2)} Venom.`},
   {key:'absoluteZero', category:'evergreen', label:'Absolute Zero', kind:'boolean', desc:()=>`When it arrives, every enemy unit is Frozen for the round (units immune to cold are spared).`},
-  {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits ${numOr(v, 2)} fire at a random enemy unit (the bramble if there are none). 1 in 2 the flames catch a unit adjacent to it for 1. (Fire Bolt always aims at the enemy opposite.)`},
+  {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits ${numOr(v, 2)} fire at a random enemy unit (the bramble if there are none). 1 in 2 the flames catch a unit adjacent to it for 1. (Fire Bolt always aims at the enemy opposite.)`},
   {key:'slashBurn', category:'evergreen', label:'Slash & Burn', kind:'number', min:1, defaultValue:3, desc:v=>`When it kills a unit, the ground there burns: the next enemy card played into that slot takes ${numOr(v, 3)} fire damage.`},
   // Devilry payments (2026-10-16, user: "Devilry 2 skills: hurting your own castle on play as payment. Also, hurting a random ally on
   // play as payment. Not sure of the name. Penance?"): Penance N (your castle) and Blood Tithe N (a random ally; the castle if none).
@@ -3257,7 +3257,7 @@ const SKILL_TEXT = {
   remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
   expose: v=> `Its hits put ${numOr(v, 1)} Expose counter${numOr(v, 1)===1 ? '' : 's'} on the target. Each later hit on it crits and removes 1.`, // 2026-10-16 (user: "that hit is guaranteed a crit, but the counters decrease by 1")
   guardian: ()=> `Takes the plain attacks aimed at its adjacent allies (not the bramble).`, // EN3 (2026-10-23, owner 19:27 #2) // 2026-10-22 (package GD): + in front / behind; (GD2, GD-3): swings only
-  quick: ()=> `Swings at Speed 2: before Arrows and Bolts and units without Quick.`, // 2026-10-17
+  quick: ()=> `Swings at Speed 2, with the Bolts: before Arrows and units without Quick.`, // 2026-11-16 (ARROW1): bolts share Speed 2
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
   swift: ()=> `Always attacks first, and dodges half the attacks from units without Swift.`, // 2026-11-03 (TEXT1): the dodge is a 1-in-2 roll
   reload: v=> `After attacking, sits out ${v} round${v==1?'':'s'}.`,
@@ -8803,8 +8803,9 @@ function ui18LateSkillFlags(id, d){
 }
 // UI18_CODEX_SKILLS:END
 // 2026-10-21 (package TX, owner: "In the filter, Diurnal is the same as Diurnal {}. Same for swimmer and the rest."): one chip per skill family.
-function codexSkillChoices(){ try{ const seen = new Set(); return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:skillFamilyId(e.key), icon:SKILL_ICON[skillFamilyId(e.key)] || e.icon, name:e.name})).filter(e=>{ if(seen.has(e.key)) return false; seen.add(e.key); return true; }); }catch(e){ return []; } }
+function codexSkillChoices(){ try{ const seen = new Set(); return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:skillFamilyId(e.key), icon:SKILL_ICON[skillFamilyId(e.key)] || e.icon, name: ['arrow', 'fireBolt'].includes(skillFamilyId(e.key)) ? codexFamilyName(skillFamilyId(e.key)) : e.name})).filter(e=>{ if(seen.has(e.key)) return false; seen.add(e.key); return true; }); }catch(e){ return []; } }
 function codexSkillName(key){ const p = skillDefOf(key); return (p && p.label) || key; }
+const codexFamilyName = id=> id === 'fireBolt' ? TX('ui.skn-bolt') : codexSkillName(id); // ARROW1 (2026-11-16): the arrow family's chip reads "Arrow", the bolts' "Bolt"
 function codexSkillPanelHTML(){
   const list = codexSkillChoices(), on = new Set(codexSkillsChosen());
   return `<div class="cx-skill-head"><small>${escapeHtml(TX('ui.codex-skill-hint'))}</small><button type="button" class="btn small ghost" data-cxskillclear ${on.size ? '' : 'disabled'}>${escapeHtml(TX('ui.codex-skill-clear'))}</button></div>`
@@ -8886,11 +8887,13 @@ let skillFamMemo = null;
 function skillFamilies(){
   if(skillFamMemo) return skillFamMemo;
   const all = PASSIVE_DEFS.concat(SKILL_DEFS.filter(s=> !PASSIVE_DEFS.some(p=> p.key === s.key))), byKey = new Map(), byLabel = new Map(), fam = new Map();
+  const B = typeof BramblewoodBudget !== 'undefined' ? BramblewoodBudget : {}, shotFams = [B.ARROW_FAMILY, B.BOLT_FAMILY];
   all.forEach(p=>{ if(!p || !p.key) return;
     // a parameter row of another skill: Diurnal {…} (diurnalGrant), Bloom (Tide & Night) (bloomWhen), Arrow's count (arrowCount)
     const base = /^(.+?)(Grant|When|Count|Hp|N|Who)$/.exec(p.key), lab = skillBareLabel(p.label);
     let id = base && all.some(x=> x.key === base[1]) ? base[1] : (lab && byLabel.has(lab) ? byLabel.get(lab) : p.key);
     if(byKey.has(id)) id = byKey.get(id);
+    const shotFam = shotFams.find(f=> f && f.includes(p.key)); if(shotFam) id = shotFam[0]; // ARROW1 (2026-11-16): one chip per arrow / bolt family
     byKey.set(p.key, id); if(lab && !byLabel.has(lab)) byLabel.set(lab, id);
     if(!fam.has(id)) fam.set(id, []); fam.get(id).push(p.key); });
   skillFamMemo = {byKey, fam}; return skillFamMemo;
@@ -8942,7 +8945,7 @@ function cardMatchesSkillPick(d, pick){
   if(pick.startsWith('agg:')) return cardInSkillAggregate(d, pick.slice(4));
   return skillFamilyKeys(pick).some(k=> cardHasSkill(d, k));
 }
-function skillPickName(k){ if(k === UI18_MYSTERY) return TX('ui.codex-skill-mystery'); if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.label() : k; } return codexSkillName(skillFamilyId(k)); }
+function skillPickName(k){ if(k === UI18_MYSTERY) return TX('ui.codex-skill-mystery'); if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.label() : k; } return codexFamilyName(skillFamilyId(k)); }
 function skillPickIcon(k){ if(k === UI18_MYSTERY) return '?'; if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.icon : '✨'; } return SKILL_ICON[skillFamilyId(k)] || '✨'; }
 // The skill picker's body: the groups, then the skills you have seen (one chip per family). `on` is the Set of picks.
 function skillPickerChipsHTML(list, on){
@@ -10479,7 +10482,7 @@ const SKMAP_PAST = [ // [label, "map skills | map skills"]; a name that is on th
 // 2026-11-16 (package UX7, owner 20:24): ONE focus table, 0-3 skills a map, for the Map cards window's skill list (red chips) and this view, replacing SKMAP_PICKS (rejected for Maps 6-19).
 // DRAFT from REDESIGN1 "Skill plan (II)" (docs/design/redesign1-2026-11-16.json): the top 3 new skills of each map by II rank (1, then 2, then 3; ties in the plan's order); the owner may edit it.
 // A live `__cfg:map-focus` row (data: {focus: {"<map no>": [keys]}}) overrides a map's entry (read only here, applyCloudCfgRow).
-const MAP_FOCUS_SKILLS = {0: ['evasive', 'swarm', 'nursing'], 1: ['guardian', 'thorns', 'arrow'], 2: ['armor', 'pierce', 'poisonBarbs'], 3: ['pounce', 'swift', 'sweep'], 4: ['bloom', 'shield', 'meiosis'], 5: ['bleed', 'regen', 'twinStrike'], 6: ['ambush', 'sap', 'parasite'], 7: ['carrion', 'corrode', 'illuminate'], 8: ['darksight', 'web'], 9: ['trident', 'electricity'], 10: ['weaken'], 11: ['leader', 'twinShot'], 12: ['siege', 'keenSense', 'stealth'], 13: ['harbinger'], 14: ['mighty', 'pack'], 15: ['overwhelm'], 16: ['sturdy'], 17: ['momentum'], 18: ['trap'], 19: ['recoil'], 20: []}; // 2026-11-16 (coordinator): draft from REDESIGN2 (owner's II list of 20:43, docs/design/redesign2-2026-11-16.json MAP_FOCUS); the owner may edit
+const MAP_FOCUS_SKILLS = {0: ['evasive', 'swarm', 'nursing'], 1: ['guardian', 'thorns', 'arrow'], 2: ['armor', 'pierce', 'poisonBarbs'], 3: ['pounce', 'swift', 'sweep'], 4: ['bloom', 'shield', 'meiosis'], 5: ['bleed', 'regen', 'twinStrike'], 6: ['ambush', 'sap', 'parasite'], 7: ['carrion', 'corrode', 'illuminate'], 8: ['darksight', 'web'], 9: ['trident', 'electricity'], 10: ['weaken'], 11: ['leader', 'twinShot'], 12: ['siege', 'keenSense', 'stealth'], 13: ['harbinger'], 14: ['mighty', 'pack'], 15: ['overwhelm'], 16: ['sturdy'], 17: ['momentum'], 18: ['trap'], 19: ['recoil'], 20: ['fireArrow']}; // 2026-11-16 (coordinator): draft from REDESIGN2 (owner's II list of 20:43, docs/design/redesign2-2026-11-16.json MAP_FOCUS); the owner may edit. Map 20: Arrow (Flaming) (ARROW1, owner 11-16 23:10)
 let mapFocusCfg = null;
 function mapFocusKeys(n){ const c = mapFocusCfg && mapFocusCfg[n]; return (Array.isArray(c) ? c : MAP_FOCUS_SKILLS[n] || []).slice(0, 3); }
 // the focus skills of a map id (a main map only; a side map has none), as a Set
@@ -10641,6 +10644,10 @@ function bookGo(page){
 const SKILL_CODEX_NOTE = {smokeBomb: ()=> TX('ui.skx-smoke-bomb'), rocket: ()=> TX('ui.skx-rocket'), packLeader: ()=> TX('ui.skx-pack-leader'),
   shockBolt: ()=> TX('ui.skx-shock-bolt'), fork: ()=> TX('ui.skx-fork'), pack: ()=> TX('ui.skx-pack'), wave: ()=> TX('ui.skx-wave'), amore: ()=> TX('ui.skx-amore'),
   sleep: ()=> TX('ui.skx-sleep'), ritual: ()=> TX('ui.skx-ritual')};
+// ARROW1 (2026-11-16, owner 11-16 23:10): every arrow's and bolt's Codex entry says its family counts as one skill and when it fires.
+{ const B = typeof BramblewoodBudget !== 'undefined' ? BramblewoodBudget : {};
+  [[B.ARROW_FAMILY, 'ui.sk-arrow-family-codex'], [B.BOLT_FAMILY, 'ui.sk-bolt-family-codex']].forEach(([ks, tx])=> (ks || []).forEach(k=>{
+    const own = SKILL_CODEX_NOTE[k]; SKILL_CODEX_NOTE[k] = own ? ()=> own() + ' ' + TX(tx) : ()=> TX(tx); })); }
 // Map Codex (2026-10-13, user: "2 maps after the skill codex, add the map codex + list of field effects learned from each map").
 // 2026-11-14 (package UI54, owner 11:11: "the maps section of the codex should look like rolls of maps, each holding info about each map and each world. (Map 0-40 is
 // world 1)"): a header roll per world (World 1 = Maps 0-40; later maps fall in World 2), a scroll per reached main map (side maps inside their parent's), each one tap
@@ -35715,7 +35722,10 @@ function ui27PartTerm(p, e){
 // tests) keeps its count until the owner moves it there (UI27-4).
 const UI27_LIGHT_SKILLS = ['flying', 'tide', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind', 'purblind'];
 function ui27SkillCount(effects){
-  const B = BramblewoodBudget, e = effects || {}, a = B.abilitiesOf ? B.abilitiesOf(e) : Object.keys(e);
+  const B = BramblewoodBudget, e = effects || {};
+  // 2026-11-16 (ARROW1): the budget's count when loaded (one damage type, the arrows, the bolts each count once); the list below is the fallback
+  if(B.skillCountParts){ const parts = B.skillCountParts(e); return {n: parts.reduce((t, p)=> t + p.w, 0), parts}; }
+  const a = B.abilitiesOf ? B.abilitiesOf(e) : Object.keys(e);
   const light = k=> UI27_LIGHT_SKILLS.includes(k) && !(e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object');
   const parts = a.map(k=> ({k, w: light(k) ? 0.5 : 1})), n = parts.reduce((t, p)=> t + p.w, 0);
   return {n, parts}; }

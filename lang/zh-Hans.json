@@ -4471,5 +4471,11 @@
  "On arrival, pays 1 Lumber for {n} copies at half Attack and Health, Wait 1. No Lumber, no copies.": "登场时支付 1 木材，获得 {n} 个攻击和生命减半的复制，等待 1。没有木材就没有复制。",
  "When hit, strikes the enemy facing it. Attacks on its own only if no enemy faces it.": "被击中时，攻击对面的敌人。只有对面没有敌人时才主动攻击。",
  "To add": "待添加",
- "Focus skill for this map that no main card has yet: put it on a card": "本地图的重点技能，主卡上还没有：放到一张卡上"
+ "Focus skill for this map that no main card has yet: put it on a card": "本地图的重点技能，主卡上还没有：放到一张卡上",
+ "Bolt": "弩箭",
+ "All arrow skills together count as one skill. Arrows fire at Speed 0, after the swings.": "所有箭类技能合计只算一个技能。箭以速度 0 发射，在其他攻击之后。",
+ "All bolt skills together count as one skill. Bolts fire at Speed 2, with Quick units, before the other swings.": "所有弩箭类技能合计只算一个技能。弩箭以速度 2 发射，与敏捷单位同时，在其他攻击之前。",
+ "Never attacks: each turn, after the swings, it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "从不攻击：每回合在其他攻击之后，向正前方的敌人（没有则最近的敌人）射出造成{n}点伤害的箭。",
+ "The Shock lasts a round.": "电击持续一回合。",
+ "Swings at Speed 2, with the Bolts: before Arrows and units without Quick.": "以速度 2 出手，与弩箭同时：早于箭矢和没有敏捷的单位。"
 }
