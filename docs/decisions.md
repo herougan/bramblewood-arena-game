@@ -4,6 +4,14 @@ _Generated from `decisions.json` (2026-11-16). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**ECONSK1-1. Metallurgy: what does it do?** · Decide · Engine · asked 2026-11-16
+- Metallurgy is on the skill list as "Unknown, Metal tier only" and does nothing yet (owner 11-16 23:28). It is on no card and priced 0. Pick its effect.
+  - a) Every turn while Ready: Refining costs 1 Lumber less on your side (2 Lumber + 2 Stone becomes 1 Lumber + 2 Stone).
+  - b) Your units with a Metal cost get +1/+1 for each Metal you hold (up to 3).
+  - c) Every turn while Ready: 1 Metal becomes 4 Gold.
+  - d) Something else (tell me).
+- **Default:** a
+
 **CARDPOW1-1. Level 0 cards: Level 1 gives too little** · Decide · Balance · asked 2026-11-16
 - The 18 Level 0 cards (tutorial, Base, Baby) get a third of their 0-1 budget gain at Level 1, so Level 2 jumps: median +12 fill points (other cards dip 3). Card stats are unchanged either way.
   - a) Level 1 counts as a major level for Level 0 cards (one line in bramblewood-budget.js).
@@ -22,6 +30,19 @@ _Generated from `decisions.json` (2026-11-16). The hub has a searchable, filtera
   - a) Apply A-G.
   - b) Apply A only.
   - c) Not yet.
+- **Default:** a
+
+**ARROW1-2. Fire Bolt on the Dragon Lair: which card** · Decide · Cards · asked 2026-11-16
+- Your note: "We can do Fire Bolt on the Dragon Lair map as well." No Dragon Lair (20-B) card has Fire Bolt yet. Fire Drake Hatchling has Arrow 2 (Flaming); a drake spitting fire reads as a bolt.
+  - a) Fire Drake Hatchling: Arrow 2 (Flaming) becomes Fire Bolt 2
+  - b) Cinder Hornet gets Fire Bolt
+  - c) A new Lair card later
+- **Default:** a
+
+**ARROW1-3. Snipe, Bola, Lasso: arrows?** · Decide · Skills · asked 2026-11-16
+- Every arrow now counts as one skill: Arrow, Arrow (Flaming), Ice Arrow, Twin Shot, Volley, Archer. Snipe, Bola and Lasso already fire at the arrows' time (after the swings) but are not arrows by name, so each still counts as its own skill.
+  - a) Keep them apart (thrown or aimed, not arrows)
+  - b) Count them in the arrow family
 - **Default:** a
 
 **SKN1-1. Warcry: already permanent** · Decide · Skills · asked 2026-11-16
