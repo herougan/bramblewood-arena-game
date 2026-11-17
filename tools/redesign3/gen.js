@@ -8,12 +8,13 @@ const OBTAIN = require(L.ROOT + '/canonical/card-obtain-maps.json').maps;
 const MAPNAMES = ['Bramblewood Outskirts', 'Thistlewood', 'Pebble Beach', 'Gannet Cliffs', 'Sunken Hollow', 'Gatorback Swamp', 'Sable Swampmire', 'The Morel Hollow', 'Caves & Alcoves', 'The Kelp Mangroves', 'Coral Current', 'Eyrie Heights', 'The Briar Maze', 'The Redwood Deep', 'Savanna Reaches', 'The Long Grass', 'The Pinewood Taiga', 'Wolfsbane Tundra', 'The Glass Dunes', 'Ashen Spurn', 'The Sundered Peak'];
 const FOCUS = Object.assign({}, L.FOCUS, P.FOCUS_OVERRIDE);
 const LIGHT = new Set(['flying', 'tide', 'diurnal', 'nocturnal']);
-const KEEP = new Set(['triggers', 'onDeathSpawn', 'injured', 'purblind', 'bounty']);
+const KEEP = new Set(['triggers', 'onDeathSpawn', 'purblind', 'bounty']); // v2: Injured leaves Maps 0-20 (OWN-1117-3), so it is checked like any unranked skill
 // skills the owner named outside the focus column (Special/Faction, More ideas): allowed where named
 const NAMED = new Set([].concat(...Object.values(L.SPECIAL), ...Object.values(L.MORE)));
 const rankOf = id => { const r = RANKS[id] || RANKS[{arrowFlaming: 'arrow', darksight: 'darksight', bloomCopy: 'bloomCopy'}[id]] || null; return r ? r.ii : null; };
 // budget: new mechanics priced by a proxy until they have a price
-const PROXY = eff => { const e = Object.assign({}, eff); if (e.paralysisPowder != null) { e.sleepPowder = (Number(e.paralysisPowder) || 1) + 1; delete e.paralysisPowder; } return e; };
+const PROXY = eff => { const e = Object.assign({}, eff); if (e.paralysisPowder != null) { e.sleepPowder = (Number(e.paralysisPowder) || 1) + 1; delete e.paralysisPowder; }
+  if (e.armourer != null) { e.broodkeeper = Number(e.armourer) || 1; delete e.armourer; } return e; }; // v2: Armourer N priced as Broodkeeper N
 const r1 = v => Math.round(v * 10) / 10;
 function bud(c, eff, A, H, om) {
   const b = L.T.budget(Object.assign({}, c, {effects: PROXY(eff), attack: A, health: H, obtainMap: om}), {level: 1});
@@ -70,7 +71,7 @@ const met = c => L.metSkills(L.BYID[c.id], c.effects);
 const focus = Object.keys(FOCUS).map(Number).map(m => ({map: m, name: MAPNAMES[m], skills: FOCUS[m].map(s => {
   const carriers = cards.filter(c => c.map === m && met(c).has(s)).map(c => c.id);
   const earlier = cards.filter(c => c.map < m && met(c).has(s)).map(c => c.id + ' (Map ' + c.map + ')');
-  const built = !P.MECHANICS.some(x => x[1] === 'missing' && x[0].toLowerCase().startsWith(L.nameOf(s).toLowerCase()));
+  const built = !P.MECHANICS.some(x => /^missing|being built/.test(x[1]) && x[0].toLowerCase().startsWith(L.nameOf(s).toLowerCase()));
   return {key: s, name: L.nameOf(s), carriers, earlier, isNew: !earlier.length && carriers.length > 0, felt: carriers.length >= 2, built, ii: rankOf(s)};
 }), special: (L.SPECIAL[m] || []).map(L.nameOf), more: (L.MORE[m] || []).map(L.nameOf), field: L.FIELDS[m] || ''}));
 // --- rank rules on the final main cards
@@ -93,7 +94,7 @@ const special = Object.entries(P.SPECIAL).map(([key, s]) => ({key, name: L.nameO
   const main = BY[x.id]; const eff = main ? main.effects : (x.eff || c.effects || {}); const om = OBTAIN[x.id] != null ? OBTAIN[x.id] : 0;
   let A = main ? main.attack : c.attack, H = main ? main.health : c.health, b = main ? {fill: main.fill, ok: main.ok} : bud(c, eff, A, H, om);
   if (!main && x.eff && !b.ok) { const f = fit(c, eff, om); if (f) { A = f.A; H = f.H; b = f.b; } }
-  return {id: x.id, name: c.name, where: x.where, why: x.why, changed: !!x.eff && !main, skillsNow: label(c.effects || {}), skillsProposed: label(eff), effects: eff, before: {attack: c.attack, health: c.health}, attack: A, health: H, fill: b.fill, ok: b.ok, rarity: c.rarity};
+  return {id: x.id, name: c.name, where: x.where, add: x.add || null, why: x.why, changed: !!x.eff && !main, skillsNow: label(c.effects || {}), skillsProposed: label(eff), effects: eff, before: {attack: c.attack, health: c.health}, attack: A, health: H, fill: b.fill, ok: b.ok, rarity: c.rarity};
 })}));
 // --- per map counts and rarity mix
 const mix = (list) => { const o = {}; list.forEach(c => o[c.rarity] = (o[c.rarity] || 0) + 1); return o; };
@@ -103,10 +104,30 @@ const counts = {cards: cards.length, today: road.length, changed: cards.filter(c
   unchanged: cards.filter(c => !c.changed).length, statsMoved: cards.filter(c => c.statsMoved).length, changedOk: cards.filter(c => c.changed && c.ok).length, ownerChanged: cards.filter(c => c.changed && c.owner).length,
   specialChanged: special.reduce((n, s) => n + s.carriers.filter(x => x.changed).length, 0),
   focusSkills: focus.reduce((n, f) => n + f.skills.length, 0), focusNew: focus.reduce((n, f) => n + f.skills.filter(s => s.isNew).length, 0), focusFelt: focus.reduce((n, f) => n + f.skills.filter(s => s.isNew && s.felt).length, 0)};
+// --- v2 Fields sheet: the main fights of each map whose own rules use the field's keys
+const NODES = require('./fields.js').nodeRules();
+const fields = P.FIELDS.map(f => {
+  const main = (NODES[f.map] || []).filter(n => /^\d+-(\d+|R)$/.test(n.node));
+  const hit = main.filter(n => n.rules.some(r => f.keys.includes(r.split(':')[0].replace(/["']/g, '').trim()))).map(n => n.node);
+  const fights = [f.wide, hit.length ? hit.join(', ') : ''].filter(Boolean).join('; ') || (f.owner ? 'none today' : '');
+  return Object.assign({name: MAPNAMES[f.map], fightCount: main.length, fights}, f);
+});
+// --- v2 list changes for the fold (FOLD6): canonical/map-pools.json main lists (MAP_IDS) and submaps
+const lists = [];
+const onMain = (mid, id) => (L.POOLS[mid].cards || []).includes(id);
+Object.entries(P.MOVES).forEach(([id, m]) => {
+  const to = L.MAP_IDS[m.to];
+  L.MAP_IDS.forEach((mid, i) => { if (onMain(mid, id) && (i < m.to || i === m.from)) lists.push({op: 'remove', id, map: mid, why: 'moves to Map ' + m.to}); });
+  if (!onMain(to, id)) lists.push({op: 'add', id, map: to, why: 'moves to Map ' + m.to + (typeof m.from === 'string' ? ' (from ' + m.from + ')' : '')});
+});
+const subAdd = (id, a, why) => { if (a && !(L.POOLS[a.map].submaps[a.sub] || []).includes(id)) lists.push({op: 'add', id, map: a.map, sub: a.sub, why}); };
+Object.values(P.SPECIAL).forEach(s => s.carriers.forEach(x => subAdd(x.id, x.add, 'Special carrier')));
+P.UPGRADERS.forEach(u => subAdd(u.card, u.add, 'upgrader ' + u.name));
+const clearUnattainable = [...new Set(lists.filter(x => x.op === 'add' && L.BYID[x.id].unattainable).map(x => x.id))];
 const out = {package: 'REDESIGN3', date: '2026-11-17', status: 'proposal (owner ticks or edits; not folded)',
   source: {proposal: 'docs/design/owner-proposal-2026-11-17.xlsx, sheet Proposal (owner 11-17 23:05); ranks: its Skills sheet, column II', rules: 'OWN-1117-2 (owner 11-17 23:14): Rend and Enfeeble not featured; Sturdy and Mighty card passives only',
     cards: 'canonical/cards.json', lists: 'canonical/map-pools.json (main maps 0-20; a card counts on the first list that holds it)', budget: 'tools/skill_costs.js budget(card).ok at Level 1; obtain map = canonical/card-obtain-maps.json (0 when absent), the new map for a moved card; Paralysis Powder N priced as Sleeping Powder N+1'},
-  counts, notFeatured: P.NOT_FEATURED, focus, special, upgraders: P.UPGRADERS, mechanics: P.MECHANICS.map(([name, state, spec]) => ({name, state, spec})), maps, violations, cards};
+  counts, notFeatured: P.NOT_FEATURED, focus, fields, lists, clearUnattainable, special, upgraders: P.UPGRADERS, mechanics: P.MECHANICS.map(([name, state, spec]) => ({name, state, spec})), maps, violations, cards};
 fs.writeFileSync(process.argv[3], JSON.stringify(out, null, 1));
 console.log(JSON.stringify(counts));
 console.log('violations', violations.join(' | '));

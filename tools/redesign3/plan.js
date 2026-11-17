@@ -1,10 +1,10 @@
 // REDESIGN3 plan data (2026-11-17): the hand design on the owner's Proposal sheet (owner-proposal-2026-11-17.xlsx) and OWN-1117-2 (23:14).
 // PROPOSED: final effects of a Maps 0-20 card (main list) whose skills change, with the reason. MOVES: card -> map index (from a map index,
 // a submap id or 'none'). SPECIAL: submap / faction carriers of the Special/Faction column. Effects are whole objects (they replace the card's).
-const FOCUS_OVERRIDE = {14: ['mighty', 'pack', 'snipe', 'exploit'], 16: ['sturdy', 'helmet']};
+const FOCUS_OVERRIDE = {14: ['mighty', 'pack', 'snipe', 'exploit'], 16: ['sturdy', 'reach']}; // v2 (owner 11-17 23:36): Helmet goes to Special; Map 16's New! focus is Reach
 const NOT_FEATURED = {
   enfeeble: {map: 14, why: 'OWN-1117-2: the 0.5x halving is too strong; replaced on Map 14 by Exploit (II 3: hyenas and stoats work the wounded)'},
-  rend: {map: 16, why: 'OWN-1117-2: the 2x is too strong; replaced on Map 16 by Helmet (II 2: elk antlers and pangolin scales against the taiga archers)'},
+  rend: {map: 16, why: 'OWN-1117-2: the 2x is too strong; v2: Helmet went to Special (owner 23:36), so Map 16 gets Reach (II 3: a lynx springs at grouse flushing from the old pines). ENG50 builds the new Rend; still not featured on Maps 0-20'},
 };
 const fire = v => ({v, type: 'fire'});
 const lumberOnKill = [{on: 'onKill', do: 'gain', resource: 'lumber', amount: 1}];
@@ -13,7 +13,9 @@ const MOVES = {
   'beachcomber-sanderling': {from: 2, to: 3, why: 'sanderlings sprint after the waves: Swift, Map 3\'s focus with no carrier'},
   'beaver-lumberjack': {from: 2, to: 4, why: 'Delivery is Map 4\'s focus ("a beaver lodge"); unchanged owner card'},
   'balloon-archer': {from: 13, to: 3, why: 'a balloon archer over the cliffs (Wind): 2nd Arrow; it did not fit the Redwood'},
-  'lotus-frog': {from: 'none', to: 4, why: 'a lily-pad frog that blooms: 2nd Bloom (on no list today)'},
+  'lotus-frog': {from: 'none', to: 4, why: 'a night frog of the lily pads: Nocturnal is Map 4\'s focus (on no list today)'},
+  'chipmunk-skirmisher': {from: 1, to: 3, why: 'OWN-1117-3: Arrow is Map 3\'s focus, so the card moves there with its Arrow (3rd Arrow; unchanged owner card)'},
+  'hedgehog-scout': {from: 'muc', to: 1, why: 'a hedgehog in the thistles: 2nd Thorns on Map 1 now Chipmunk Skirmisher moves to Map 3 (also stays in The Undercroft)'},
   'nutria-reedcutter': {from: 6, to: 5, why: 'a reed cutter: 2nd Forestry'},
   'constrictor-coil': {from: 5, to: 6, why: 'Constrict is Map 6\'s focus; unchanged'},
   'adder-ambusher': {from: 6, to: 15, why: 'snakes in the grass: Ambush is Map 15\'s focus'},
@@ -33,11 +35,11 @@ const PROPOSED = {
   'bee-sentry': [{flying: true, nursing: 1}, 'Venomous is Map 5\'s focus: off; a nurse bee: 2nd Nursing'],
   // Map 1
   'cricket-drummer': [{inspiring: 1}, 'Inspiring 2 -> 1 (your 11-03 note)'],
-  'chipmunk-skirmisher': [{thorns: 1}, 'Arrow is Map 3\'s focus: off; darts through the thistles: 2nd Thorns'],
   'chipmunk-cavalry': [{guardian: true}, 'Quick (unranked) off; the cavalry screens the line: 2nd Guardian'],
   'moonlit-hare': [{evasive: true}, 'Moonborn (unranked) off; hares dodge'],
   'dormouse': [{foraging: 1}, 'Nocturnal is Map 4\'s focus: off; a nut hoarder: 2nd Foraging'],
-  'bee-knight': [{diurnal: 1}, 'bees fly by day: 2nd Diurnal'],
+  'bee-knight': [{diurnal: 1}, 'bees fly by day: 2nd Diurnal (OWN-1117-3: Map 1 needs two)'],
+  'hedgerow-shrew': [{foraging: 1}, 'Injured off (OWN-1117-3: the skill leaves the game)'],
   'robin-redbreast': [{flying: true, diurnal: 2, inspiring: 1}, 'robin song: 2nd Inspiring'],
   // Map 2
   'dolphin-knight': [{tide: 2, armor: 1, pierce: 1}, 'Sonar (unranked), Puncture (II 7, one card: Peak Condor) off; a lancer in mail: 2nd Armor and Pierce'],
@@ -50,6 +52,7 @@ const PROPOSED = {
   'peak-condor': [{flying: true, puncture: {v: 1, kind: 'breach'}}, 'Reload (unranked) off; Puncture 2 -> 1, its one card (II 7)'],
   'feral-tomcat': [{swift: true}, 'Quick -> Swift; Cleave is Map 15\'s focus: off'],
   'pika-hoarder': [{foraging: 1}, 'Scatterbrained (unranked) off; a hay hoarder'],
+  'cormorant': [{pounce: 1}, 'Reach is Map 16\'s focus now (v2): off; a diving fisher: Pounce'],
   // Map 4
   'slow-worm': [{nocturnal: 1}, 'Thanatosis (unranked) off; hunts at dusk: Nocturnal'],
   'water-shrew': [{pounce: 1, evasive: true}, 'Venomous is Map 5\'s focus: off'],
@@ -58,6 +61,7 @@ const PROPOSED = {
   'grass-snake': [{fork: true}, 'Regeneration (Map 9) and Thanatosis (unranked) off; a forked strike: Fork'],
   'river-mink': [{tide: true, nocturnal: 1}, 'Dive (unranked) off; mink hunt at night'],
   'shoal-shark': [{tide: 3, fork: true}, 'a shoal strikes two: 2nd Fork'],
+  'lotus-frog': [{nocturnal: 1, pounce: 1}, 'Bloom off (owner 23:36: a frog does not bloom); croaks at night and leaps off its pad: Nocturnal + Pounce. Its flavour line (opens like the flower) wants a new line'],
   // Map 5
   'newt-doctor': [{nursing: 1, herbalist: 1}, 'Heal is Nursing; Herbalist stays, its one card (II 4)'],
   'alley-cat': [{bleed: 1}, 'Twin Strike is Map 13\'s focus: off'],
@@ -146,11 +150,12 @@ const PROPOSED = {
   'adder-ambusher': [{ambush: 3, poison: 1}, 'the name: Ambush (moves to Map 15); Venomous 2 -> 1'],
   'grass-viper': [{ambush: 2}, 'Pierce -> Ambush (moves to Map 15)'],
   // Map 16
-  'boreal-elk': [{sweep: 2, helmet: true}, 'Riled (unranked) off; an antler crown: Helmet'],
+  'boreal-elk': [{sweep: 2, sturdy: true}, 'Riled (unranked) off; Helmet goes to Special (v2): a big bull elk: 3rd Sturdy'],
   'woodland-caribou': [{sturdy: true}, 'Mountain Climber, Frostbite (unranked) off: Sturdy'],
   'cone-cutter-squirrel': [{foraging: 1, triggers: [{on: 'onSpawn', do: 'gain', resource: 'lumber', amount: 2}]}, 'Almanac (unranked) -> Foraging'],
-  'taiga-lynx': [{evasive: true, loneWolf: [1, 1]}, 'a solitary hunter: Lone Wolf (your More idea; II 4, one card)'],
-  'pinecone-sapper': [{sturdy: true, helmet: true}, 'Explode (unranked) off; pangolin scales: Sturdy + Helmet'],
+  'taiga-lynx': [{reach: true, loneWolf: [1, 1]}, 'a lynx springs at grouse as they flush: Reach (v2 focus); a solitary hunter: Lone Wolf (your More idea; II 4, one card); Evasive off for the two-skill rule'],
+  'upside-down-bat': [{flying: true, diurnal: true, reach: true}, 'takes moths on the wing: 2nd Reach (v2 focus)'],
+  'pinecone-sapper': [{sturdy: true}, 'Explode (unranked) off; pangolin scales: Sturdy (Helmet goes to Special, v2)'],
   'owl-sentinel': [{flying: true, keenSense: true, nocturnal: 1}, 'True Sight (MAGIC) -> Keen Sense'],
   // Map 17
   'snow-ermine': [{evasive: true, momentum: 1}, 'Frost (unranked) off; grows with each kill: Momentum'],
@@ -191,28 +196,28 @@ const SPECIAL = {
   smokeBomb: {map: 6, carriers: [{id: 'willow-o-wisp', where: 'mm (Map 6 submap)', eff: {nocturnal: 1, smokeBomb: true}, why: 'marsh gas: its two triggers off'}, {id: 'smoke-raccoon', where: 'Map 19 main list', eff: null, why: 'already has it (your More idea)'}]},
   broodkeeper: {map: 7, carriers: [{id: 'wolf-spider-mother', where: 'Map 7 main list (the Mycelium Deep has no mother)', eff: null, why: 'carries her young; see the card change'}]},
   fletcher: {map: 11, carriers: [{id: 'eagle-owl-quartermaster', where: 'Map 11 main + The Aerie Vault', eff: null, why: 'already has Fletcher'}]},
-  avalanche: {map: 11, carriers: [{id: 'ibex-rockcaller', where: 'add to The Aerie Vault (Map 11 submap; on no list today)', eff: null, why: 'your More idea; already has Avalanche'}]},
+  avalanche: {map: 11, carriers: [{id: 'ibex-rockcaller', where: 'add to The Aerie Vault (Map 11 submap; on no list today)', add: {map: 'm10', sub: 'mv'}, eff: null, why: 'your More idea; already has Avalanche'}]},
   dynamite: {map: 12, carriers: [{id: 'mouse-sapper', where: 'Map 12 main list (no submap)', eff: null, why: 'see the card change'}, {id: 'dynamite-packrat', where: 'Tutorial (Map 0 submap)', eff: null, why: 'already has Dynamite'}]},
   carnage: {map: 13, carriers: [{id: 'dust-hyena', where: 'Map 14 main list (Map 13 has no submap)', eff: null, why: 'already has Carnage (your More idea)'}]},
   siege: {map: 14, carriers: [{id: 'bramblewood-macaque', where: 'Map 14 main + The Canopy (Map 14 submap)', eff: null, why: 'see the card change'}]},
+  helmet: {map: 16, carriers: [{id: 'helmeted-otter', where: 'Otter faction pool (Rivergate pack; Map 16 has no submap)', eff: null, why: 'already has Helmet (its cooking pot); owner 23:36: Helmet goes to Special, not a Map 16 card'}]},
+  armourer: {map: 19, carriers: [{id: 'anvilwhisker-otter', where: 'add to the Basalt Foundry (Map 19 submap, the forge with the old anvil; on no list today)', add: {map: 'm3', sub: 'm9'}, eff: {armourer: 1, triggers: [{on: 'perTurn', do: 'forgeWeapon', amount: 1, pay: {stone: 1}}]}, why: 'an otter smith: Armourer 1 (owner 23:36, new Special; ENG50 builds it, key as ENG50 names it); keeps its blade forge. Its source says the 19-6 boss reward: a skirmish reward is never a pack card, so FOLD6 keeps one of the two'}]},
   fortify: {map: 15, carriers: [{id: 'shellwright-apprentice', where: 'Base faction (Map 15 has no submap)', eff: {fortify: {armor: 1}}, why: 'a shellwright armours the bramble: Fortify (Armor 1); Shell unranked'}]},
 };
-// family upgraders (item 4): exist = in the engine today
+// family upgraders (item 4): exist = in the engine today. v2 (owner 23:36): upgraders live in the submaps; Venom Master and Pack Leader kept, Shellsmith and Conductor dropped
 const UPGRADERS = [
   {key: 'broodkeeper', name: 'Broodmother (today: Broodkeeper)', family: 'tokens and spawned units', exists: true, map: 7, card: 'wolf-spider-mother', spec: 'every unit spawned on your side while it lives gets +N/+N (the engine\'s Broodkeeper N); rename to Broodmother', placed: true},
   {key: 'fletcher', name: 'Fletcher', family: 'Arrow / ranged', exists: true, map: 11, card: 'eagle-owl-quartermaster', spec: 'your ranged shots deal +N', placed: true},
-  {key: 'venomMaster', name: 'Venom Master', family: 'Venomous and Bleed', exists: true, map: 5, card: 'cottonmouth-matriarch', spec: 'your units\' Venom and Bleed hits add 1 more (built; Cottonmouth Matriarch has it, out of play): add her to The Sunken Grove (Map 5 submap), where Venomous and Bleed arrive'},
-  {key: 'packLeader', name: 'Pack Leader', family: 'Pack', exists: true, map: 14, card: 'dhole-matriarch', spec: 'links all your Pack units of its type into one chain, +2/+2 (built; Dhole Matriarch has it in The Undercroft): add her to The Canopy (Map 14 submap). Check types: it links units that share a type with it (Canid), so Meerkat and Hyena need a shared tag'},
-  {key: 'conductor', name: 'Conductor (new)', family: 'Electricity', exists: false, map: 9, card: 'voltaic-eel', spec: 'your other units\' Electricity arcs deal +1 (an aura like Fletcher on the arc in electricityArc); small: key, price, text'},
-  {key: 'shellsmith', name: 'Shellsmith (new)', family: 'Armor', exists: false, map: 2, card: 'open-ocean-hermit-crab', spec: 'your other units with Armor get +1 Armor while it lives (an aura read where Armor is summed); small: key, price, text'},
+  {key: 'venomMaster', name: 'Venom Master', family: 'Venomous and Bleed', exists: true, map: 5, card: 'cottonmouth-matriarch', add: {map: 'mw', sub: 'ms'}, placed: true, spec: 'your units\' Venom and Bleed hits add 1 more (built; Cottonmouth Matriarch has it, out of play): add her to The Sunken Grove (Map 5 submap), where Venomous and Bleed arrive'},
+  {key: 'packLeader', name: 'Pack Leader', family: 'Pack', exists: true, map: 14, card: 'dhole-matriarch', add: {map: 'm5', sub: 'my'}, placed: true, spec: 'links all your Pack units of its type into one chain, +2/+2 (built; Dhole Matriarch has it in The Undercroft): add her to The Canopy (Map 14 submap). Check types: it links units that share a type with it (Canid), so Meerkat and Hyena need a shared tag'},
 ];
 // mechanics of item 5: built = in the engine today
 const MECHANICS = [
   ['Sleeping / Poison Powder', 'built (POWDER1: one family, a Speed -1 puff at the unit opposite)', null],
-  ['Paralysis Powder', 'missing', 'a third Powder: the puff gives Paralyze N rounds (the existing paralyze status: it cannot attack; a hit does not wake it). One line in POWDERS + price + text. Priced here as Sleeping Powder N+1 until it has a price'],
-  ['Enfeeble', 'not featured (OWN-1117-2)', 'Enfeeble N = the halving penalty; Feeble (deals 0.5x) stays a card passive drawback'],
-  ['Rend', 'not featured (OWN-1117-2)', 'Rend N = gives the opposing unit Vulnerable N; note today\'s engine key "rend" means "ignores Armor" (pierce), a name clash to settle before it is ever built'],
-  ['Vulnerable (card passive)', 'partly built', 'a permanent drawback "takes 2x": the Vulnerable status exists (the Shocked x1.5 status and the SK3 action on every enemy); a card passive form with 2x is missing'],
+  ['Paralysis Powder', 'being built (ENG50)', 'owner 23:36: a stun for that turn. Priced here as Sleeping Powder N+1 until it has a price'],
+  ['Enfeeble', 'not featured (OWN-1117-2); being built (ENG50)', 'Enfeeble N = the halving penalty; Feeble (deals 0.5x) stays a card passive drawback'],
+  ['Rend (the new Rend)', 'not featured (OWN-1117-2); being built (ENG50)', 'Rend N = gives the opposing unit Vulnerable N (owner 23:36: use the new Rend); note today\'s engine key "rend" means "ignores Armor" (pierce), a name clash to settle before it is ever built'],
+  ['Vulnerable / Feeble (card passives)', 'being built (ENG50)', 'a permanent drawback "takes 2x": the Vulnerable status exists (the Shocked x1.5 status and the SK3 action on every enemy); a card passive form with 2x is missing'],
   ['Fortify (+1 Armor)', 'built (ENG22 / ENG27: Fortify {armor: 1} to your bramble)', null],
   ['Broodmother (tokens +N/+N)', 'built as Broodkeeper N (spawned units +N/+N); rename only (and limit to tokens if you want)', null],
   ['Repair (structures)', 'built (sk2 Repair N: a structure within 1 column; the bramble at half)', null],
@@ -229,13 +234,41 @@ const MECHANICS = [
   ['Esprit', 'built', null],
   ['Loyal', 'built', null],
   ['Fencing', 'built', null],
-  ['Bulwark', 'built (Log Wall 0/8)', 'your note "starts at 0/5 -> 0/8 at level 10": the wall\'s level scaling is missing'],
+  ['Bulwark scaling', 'being built (ENG50)', 'Bulwark is built (Log Wall 0/8); your note "starts at 0/5 -> 0/8 at level 10": the wall\'s level scaling is missing'],
   ['Smoke Bomb', 'built', null],
   ['Offspring', 'built (ENG28; SKN1: the copies cost 1 more Lumber)', null],
-  ['Weaken (action form)', 'missing', 'Weaken N as an action (e.g. Weaken 1 on Ally Spawn): today only the on-hit passive and the generic debuffAttack action exist; add the named action'],
+  ['Weaken (action form)', 'being built (ENG50)', 'Weaken N as an action (e.g. Weaken 1 on Ally Spawn): today only the on-hit passive and the generic debuffAttack action exist; add the named action'],
   ['Exploit (action form)', 'built (action key exploit)', null],
   ['Expose (action form)', 'built (action key expose)', null],
-  ['Grant {who} {what}', 'missing', 'the action that grants a passive (Sturdy, Mighty) to a unit; today only the passive grantSkill exists'],
-  ['Conductor / Shellsmith upgraders', 'missing', 'see Upgraders'],
+  ['Grant {who} {what}', 'being built (ENG50)', 'the action that grants a passive (Sturdy, Mighty) to a unit; today only the passive grantSkill exists'],
+  ['Armourer N (new Special)', 'being built (ENG50)', '(When ready) played allied cards come with +0/+N (owner 23:36). On Anvilwhisker Otter (Map 19, the Basalt Foundry). Priced here as Broodkeeper N until it has a price'],
+  ['Bulwark', 'built (Log Wall 0/8)', null],
 ];
-module.exports = {FOCUS_OVERRIDE, NOT_FEATURED, MOVES, PROPOSED, SPECIAL, UPGRADERS, MECHANICS};
+// v2 Fields sheet (owner 11-17 23:36: "The items in the () represent field effect introductions ... Wind is a major one"). Per map 0-20:
+// owner = the major field in the owner's Proposal (); keys = rule keys searched in that map's main fight lines (arena_app.js, fields.js);
+// wide = a map-wide source (fightRules: WINDY_MAPS, DARK_MAPS, MAP_DAYNIGHT, RAPIDS_MAPS, mapField ...); today = other major fields there today;
+// propose = a new major introduction from fields the engine already has; minor = small hazards (poison-like), kept short.
+const FIELDS = [
+  {map: 0, owner: '', engine: '', keys: [], wide: '', today: 'Mist: no day or night (MISTY_MAPS m1), every fight', propose: '', minor: ''},
+  {map: 1, owner: '', engine: '', keys: [], wide: '', today: 'Day and Night: the first map with the cycle (Map 0 is misty); Diurnal arrives here', propose: '', minor: 'Undergrowth (mapField: Pounce +2, Swift dodge)'},
+  {map: 2, owner: 'Tides', engine: 'built: rules.tide (Flood, then Ebb); High Tide in the boss fight (water map)', keys: ['tide'], wide: '', today: '', propose: '', minor: 'Tide-spout (2-4, one-off)'},
+  {map: 3, owner: 'Wind', engine: 'built: rules.wind = windy (strong wind every other round)', keys: ['wind'], wide: 'every fight (WINDY_MAPS mc)', today: '', propose: '', minor: 'Windfall (+1 Lumber after a storm round)'},
+  {map: 4, owner: '', engine: '', keys: [], wide: '', today: 'River Rapids: always Flood (RAPIDS_MAPS m2), every fight', propose: 'Dusk Start (built: phase nightFirst, it starts at night) in 4-3, 4-4, 4-5: Nocturnal is Map 4\'s focus', minor: ''},
+  {map: 5, owner: '', engine: '', keys: [], wide: '', today: '', propose: 'Thick Fog (built: field fog, attacks miss 1 in 3, Flying sees over it) in the elite and boss fights 5-5, 5-6, 5-7: gators in the swamp mist', minor: 'Swamp Fever (every fight)'},
+  {map: 6, owner: '', engine: '', keys: [], wide: '', today: 'Always night (MAP_DAYNIGHT m8), every fight', propose: '', minor: 'Swamp Fever (6-5 to 6-7)'},
+  {map: 7, owner: '', engine: '', keys: [], wide: '', today: '', propose: 'Spring Rain (built: field rain, every unit heals 2 a round) in 7-5, 7-6: mushrooms come up after rain (no Maps 0-20 main fight has rain today; The Canopy and Smugglers\' Grotto do)', minor: 'Spore Cloud (mapField)'},
+  {map: 8, owner: 'Darkness', engine: 'built: rules.dark (dark / pitch)', keys: ['dark'], wide: 'every fight (DARK_MAPS m4: Darkness)', today: 'Pitch Black in 8-8', propose: '', minor: 'Landslide (mapField)'},
+  {map: 9, owner: '', engine: '', keys: [], wide: '', today: 'Tide (9-1 to 9-4; from Map 2)', propose: '', minor: 'Tangled Roots (mapField)'},
+  {map: 10, owner: 'Underwater Currents (the Awash field)', engine: 'built: rules.awash (on screen "Wave": a random unit washed 1-3 columns a round)', keys: ['awash'], wide: '', today: 'Always Flood (mapField permaTide); Thunderstorm in 10-7, 10-9', propose: 'Awash as Coral Current\'s mapField (every fight), shown as "Underwater Currents"; move the Thunderstorm of 10-7 and 10-9 to Map 11 so Storm arrives there', minor: ''},
+  {map: 11, owner: 'Strong Wind, Storm', engine: 'built: rules.wind = gale (strong wind every round); rules.thunderstorm', keys: ['wind', 'thunderstorm'], wide: 'Gale: every fight (WINDY_MAPS m10); Thunderstorm: no Map 11 main fight (The Aerie Vault has it map-wide)', today: '', propose: 'Thunderstorm in the elite and boss fights 11-5 to 11-10 (from 10-7, 10-9)', minor: 'Windfall'},
+  {map: 12, owner: '', engine: '', keys: [], wide: '', today: '', propose: '', minor: 'Grasping Briars (mapField), Rook\'s Row (12-2), Mirage (12-6)'},
+  {map: 13, owner: '', engine: '', keys: [], wide: '', today: 'High Canopy (every fight: Flying cannot dodge, Pounce +2, Swift dodges)', propose: '', minor: ''},
+  {map: 14, owner: '', engine: '', keys: [], wide: '', today: 'Scorching (heat) in 14-5, 14-7 and Wildfire in 14-6: heat arrives here', propose: '', minor: 'First Blood (every fight)'},
+  {map: 15, owner: '', engine: '', keys: [], wide: '', today: 'Tall Grass (mapField: Stealth first, Pounce x2)', propose: '', minor: 'Undergrowth'},
+  {map: 16, owner: '', engine: '', keys: [], wide: '', today: 'Frigid (mapField frozen: +1 Wait to a random card a side each round): frost arrives here; always night (MAP_DAYNIGHT mt)', propose: '', minor: 'Consternation (16-6)'},
+  {map: 17, owner: '', engine: '', keys: [], wide: '', today: 'Frigid (mapField); Freezing (units arrive frozen) in 17-5 to 17-8; Hail in 17-3', propose: '', minor: 'Frostbite (17-5 to 17-8)'},
+  {map: 18, owner: 'Storm', engine: 'built: rules.sandstorm (misses 1 in 4; blind variant), rules.glassStorm (one-off)', keys: ['sandstorm', 'glassStorm'], wide: '', today: 'Wind (WINDY_MAPS md); Scorching II in 18-7', propose: '', minor: 'Quicksand (mapField)'},
+  {map: 19, owner: '', engine: '', keys: [], wide: '', today: 'Ashy (19-6: Flying grounded, misses 1 in 5), Ash Rain (19-3, 19-5), Scorching I (mapField), Wind', propose: '', minor: ''},
+  {map: 20, owner: '', engine: '', keys: [], wide: '', today: 'The Volcano (eruptions in elite and boss fights), Scorching III (20-5 to 20-7, 20-9, 20-10), Wildfire (20-8), Wind', propose: '', minor: ''},
+];
+module.exports = {FOCUS_OVERRIDE, NOT_FEATURED, MOVES, PROPOSED, SPECIAL, UPGRADERS, MECHANICS, FIELDS};

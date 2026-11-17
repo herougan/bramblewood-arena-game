@@ -25,7 +25,7 @@ const NAMES = {swarm: 'Swarm', flying: 'Flying', nursing: 'Nursing', thorns: 'Th
   poisonBarbs: 'Poison Barbs', evasive: 'Evasive', cure: 'Cure', leader: 'Natural Leader', twinShot: 'Twin Shot', rebuild: 'Rebuild', reach: 'Reach', acid: 'Acid', pearl: 'Pearl',
   loneWolf: 'Lone Wolf', frostbite: 'Frostbite', freeze: 'Freeze', avalanche: 'Avalanche', herbalist: 'Herbalist', scare: 'Scare', taunt: 'Taunt', bludgeon: 'Bludgeon', daunt: 'Daunt',
   puncture: 'Puncture', pickpocket: 'Pickpocket', rainrunner: 'Rainrunner', lastStand: 'Last Stand', molting: 'Molting', herald: 'Herald', pitchfork: 'Pitchfork', feeble: 'Feeble',
-  stonecutter: 'Stonecutter', exploit: 'Exploit', helmet: 'Helmet', pulverise: 'Pulverise', sonar: 'Sonar', shell: 'Shell', rage: 'Rage', quick: 'Quick', enfeeble: 'Enfeeble', vulnerable: 'Vulnerable', venomMaster: 'Venom Master', packLeader: 'Pack Leader', triggers: 'trigger x action', onDeathSpawn: 'On Death: spawn', injured: 'Injured', purblind: 'Purblind', bounty: 'Bounty'};
+  stonecutter: 'Stonecutter', exploit: 'Exploit', helmet: 'Helmet', pulverise: 'Pulverise', sonar: 'Sonar', shell: 'Shell', rage: 'Rage', quick: 'Quick', enfeeble: 'Enfeeble', vulnerable: 'Vulnerable', venomMaster: 'Venom Master', armourer: 'Armourer', packLeader: 'Pack Leader', triggers: 'trigger x action', onDeathSpawn: 'On Death: spawn', injured: 'Injured', purblind: 'Purblind', bounty: 'Bounty'};
 const nameOf = id => NAMES[id] || id;
 // the owner's Proposal sheet (2026-11-17 23:05): focus = "Merged reco (red)", special = "Special/Faction", more = "More ideas" (skills only; fields in brackets dropped)
 const FOCUS = {
@@ -34,7 +34,7 @@ const FOCUS = {
   8: ['darksight', 'web', 'illuminate', 'keenSense'], 9: ['trident', 'electricity', 'regen'], 10: ['weaken', 'wave'], 11: ['paralysisPowder'], 12: ['siege', 'recoil', 'stealth', 'bulldoze'],
   13: ['harbinger', 'twinStrike', 'repair'], 14: ['mighty', 'pack', 'snipe', 'enfeeble'], 15: ['overwhelm', 'ambush', 'sweep'], 16: ['sturdy', 'rend'], 17: ['momentum', 'offspring'],
   18: ['trap', 'expose'], 19: ['arrowFlaming'], 20: ['fireBolt']};
-const SPECIAL = {1: ['esprit'], 2: ['loyal'], 3: ['fencing'], 4: ['trident', 'octolash'], 5: ['bulwark'], 6: ['smokeBomb'], 7: ['broodkeeper'], 11: ['fletcher'], 12: ['dynamite'], 13: ['carnage'], 14: ['siege'], 15: ['fortify']};
+const SPECIAL = {1: ['esprit'], 2: ['loyal'], 3: ['fencing'], 4: ['trident', 'octolash'], 5: ['bulwark'], 6: ['smokeBomb'], 7: ['broodkeeper'], 11: ['fletcher'], 12: ['dynamite'], 13: ['carnage'], 14: ['siege'], 15: ['fortify'], 16: ['helmet'], 19: ['armourer']}; // v2 (owner 23:36): Helmet to Special, new Armourer
 const MORE = {2: ['poisonBarbs'], 10: ['poisonBarbs'], 11: ['avalanche', 'frostbite'], 13: ['forestry'], 14: ['carnage'], 16: ['loneWolf'], 17: ['freeze'], 18: ['acid'], 19: ['smokeBomb']};
 const FIELDS = {2: 'Tides', 3: 'Wind', 8: 'Darkness', 10: 'Underwater Currents (move units)', 11: 'Strong Wind, Storm', 18: 'Storm'};
 // cardBaseLevel (arena_app.js): Baby 0, own baseLevel, faction 1, starter/basic/quest/base 0, else 1
