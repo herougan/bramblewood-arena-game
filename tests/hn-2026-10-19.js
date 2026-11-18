@@ -45,10 +45,10 @@ const healTrig = ev=> ev.filter(x=> x.type === 'triggerFired' && (x.action === '
 { const {e, P} = mk(); const c = put(e, P, 1, 'hn-healer'); const ev = round(e, P);
   ok(c.hp === c.maxHp && !healEvs(ev).length, 'Heal trigger on itself at full Health: no heal / stanch event');
   ok(!healTrig(ev).length, 'Heal trigger at full Health: no trigger announcement (triggerFired) either'); }
-{ const {e, P} = mk(); const c = put(e, P, 1, 'hn-once'); const ev = round(e, P);
-  ok(!healTrig(ev).length && !Object.keys(c.firedOnce || {}).length, 'a "once" Heal trigger at full Health is not used up');
+{ /* 2026-11-18 (ENG52, owner 21:06): the heal action is Nurse N, a random hurt ally, never itself: the hurt one is an ally beside it */ const {e, P} = mk(); const h = put(e, P, 1, 'hn-once'), c = put(e, P, 1, 'hn-wall', 'right'); const ev = round(e, P);
+  ok(!healTrig(ev).length && !Object.keys(h.firedOnce || {}).length, 'a "once" Heal trigger at full Health is not used up');
   c.hp = 20; const ev2 = round(e, P);
-  ok(c.hp === 24 && ev2.some(x=> x.type === 'heal' && x.targetUid === c.uid && x.amount === 4) && healTrig(ev2).length === 1, `... and heals 4 the first time it is hurt (hp ${c.hp})`); }
+  ok(c.hp === 24 && ev2.some(x=> x.type === 'heal' && x.targetUid === c.uid && x.amount === 4) && healTrig(ev2).length === 1, `... and heals 4 the first time an ally is hurt (hp ${c.hp})`); }
 { const {e, P} = mk(); put(e, P, 1, 'hn-allyheal'); const w = put(e, P, 1, 'hn-healed', 'right'); const ev = round(e, P);
   ok(!healEvs(ev).length && !healTrig(ev).length && !ev.some(x=> x.type === 'triggerFired' && x.hook === 'onHealed') && !(P[1].grace > 0), 'Heal an ally at full Health: no heal, no announcement, no On Healed'); }
 { const {e, P} = mk(); const c = put(e, P, 1, 'hn-regen'); const ev = round(e, P); ok(!healEvs(ev).length, 'Regeneration at full Health: nothing'); }
@@ -68,9 +68,9 @@ const healTrig = ev=> ev.filter(x=> x.type === 'triggerFired' && (x.action === '
 { const {e, P} = mk(); const s = put(e, P, 1, 'hn-wall', 'right'); s.poison = 3; put(e, P, 1, 'hn-curer'); const ev = round(e, P); ok(!ev.some(x=> x.kind === 'cure'), 'a Cure that takes nothing off: no event'); }
 
 // ---- 2. a partial heal is unchanged
-{ const {e, P} = mk(); const c = put(e, P, 1, 'hn-healer'); c.hp = 20; const ev = round(e, P);
+{ /* 2026-11-18 (ENG52, owner 21:06): the heal action is Nurse N, a random hurt ally, never itself: the hurt one is an ally beside it */ const {e, P} = mk(); put(e, P, 1, 'hn-healer'); const c = put(e, P, 1, 'hn-wall', 'right'); c.hp = 20; const ev = round(e, P);
   ok(c.hp === 24 && ev.some(x=> x.type === 'heal' && x.targetUid === c.uid && x.amount === 4) && healTrig(ev).length === 1, `Heal 4 on a hurt unit: heals 4, with its trigger (hp ${c.hp})`); }
-{ const {e, P} = mk(); const c = put(e, P, 1, 'hn-healer'); c.hp = 28; const ev = round(e, P);
+{ const {e, P} = mk(); put(e, P, 1, 'hn-healer'); const c = put(e, P, 1, 'hn-wall', 'right'); c.hp = 28; const ev = round(e, P); // ENG52: a hurt ally
   ok(c.hp === 30 && ev.some(x=> x.type === 'heal' && x.amount === 2), `Heal 4 two short of full: heals 2 (hp ${c.hp})`); }
 { const {e, P} = mk(); const c = put(e, P, 1, 'hn-regen'); c.hp = 10; const ev = round(e, P); ok(c.hp === 13 && ev.some(x=> x.type === 'heal' && x.targetUid === c.uid && x.amount === 3), 'Regeneration 3 on a hurt unit: +3'); }
 { const {e, P} = mk(); const a = put(e, P, 1, 'hn-leech'); a.hp = 20; put(e, P, 2, 'hn-wall'); const ev = round(e, P); ok(ev.some(x=> x.type === 'sap' && x.amount === 3), 'Leech while hurt: drains 3'); }
@@ -92,7 +92,7 @@ ok(zeroHeal([]).length === 0, '(helper)');
   ok(!ev.some(x=> x.kind === 'stanch') && !ev.some(x=> x.type === 'heal') && !(P[1].grace > 0), 'a full-Health Bleeding ally: no stanch, no heal, no On Healed'); }
 { const {e, P} = mk(); const c = put(e, P, 1, 'hn-regen'); c.bleed = 3; const ev = round(e, P);
   ok(!ev.some(x=> x.kind === 'stanch' && x.targetUid === c.uid) && !ev.some(x=> x.type === 'heal'), 'Regeneration keeps its 2026-10-14 rule: no stanch at full Health'); }
-{ const {e, P} = mk(); const c = put(e, P, 1, 'hn-healer'); c.hp = 20; c.bleed = 3; const ev = round(e, P);
+{ const {e, P} = mk(); put(e, P, 1, 'hn-healer'); const c = put(e, P, 1, 'hn-wall', 'right'); c.hp = 20; c.bleed = 3; const ev = round(e, P); // ENG52: a hurt ally
   ok(c.hp === 24 && c.bleed === 2 && !ev.some(x=> x.kind === 'stanch') && ev.some(x=> x.type === 'heal' && x.amount === 4), `hurt and Bleeding: all 4 heal Health, the Bleed stays (SK1) (hp ${c.hp})`); }
 
 // ---- 4. no 0-amount heal event anywhere in a batch of real fights

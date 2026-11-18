@@ -60,7 +60,8 @@ const kind = (ev, k)=> ev.filter(x=> x.type === 'sk2' && x.kind === k);
   ok(res(P[1]) === '2L 1S 0M' && res(P[2]) === '0L 0S 1M', 'each side pays from its own resources'); }
 
 // ---- 4. The price is a general trigger condition (t.pay), and the numbers are parameters
-{ const {e, P} = mk(); const C = put(e, P, 1, 'k2b-payheal', 0); C.hp = 100; P[1].metal = 1; round(e, P); ok(C.hp === 105 && P[1].metal === 0, 'any trigger can carry a price: On Turn Start, pay 1 Metal, heal 5');
+// 2026-11-18 (ENG52, owner 21:06): the action is Nurse N, a random hurt ally (never itself), so the healed one is a hurt ally beside it
+{ const {e, P} = mk(); put(e, P, 1, 'k2b-payheal', 0); const C = put(e, P, 1, 'k2b-wall', 1); C.hp = 100; P[1].metal = 1; round(e, P); ok(C.hp === 105 && P[1].metal === 0, 'any trigger can carry a price: On Turn Start, pay 1 Metal, nurse 5');
   round(e, P); ok(C.hp === 105, '... and with no Metal left it does nothing'); }
 { const {e, P} = mk(1, {quarryLumber:2, quarryN:3}); put(e, P, 1, 'k2b-quarry', 0); P[1].lumber = 2; round(e, P); ok(res(P[1]) === '0L 3S 0M', 'opts.sk2 quarryLumber / quarryN'); }
 { const {e, P} = mk(1, {smelterLumber:1, smelterStone:3, smelterMetal:2}); put(e, P, 1, 'k2b-smelt', 0); Object.assign(P[1], {lumber:1, stone:3}); round(e, P); ok(res(P[1]) === '0L 0S 2M', 'opts.sk2 smelterLumber / smelterStone / smelterMetal (the ratio)'); }

@@ -228,9 +228,9 @@ ok(appSrc.includes('const m = sk1MigrateSiege(liveCards[id]);'), 'saved / server
   const a = fn({id:'x', effects:{demolisher:3}}), b = fn({id:'y', effects:{siege:4, demolisher:3}}), c = fn({id:'z', effects:{armor:1}});
   ok(a.effects.siege === 3 && a.effects.demolisher == null && b.effects.siege === 4 && !('demolisher' in b.effects) && c.effects.armor === 1 && !c.effects.siege, 'alias loading: Demolisher 3 → Siege 3; Siege 4 + Demolisher 3 → Siege 4; others untouched'); }
 // ---- 14. Texts: TX keys used, terse, in the 12 packs
-const SK1_KEY = /^ui\.(skn-(sentry|expose|siege|formation|isolation|anchor|exploit|spoils|venom-pulse|punish)|sk-(sentry|expose|exploit|siege|formation|isolation|anchor|spoils|venom-pulse|punish|cure|healing)|st-exploit|ls-exploit|exploit-tip|aura-|log-(expose-rounds|exploit|poison-pulse|punish|formation|isolation|aura-off)|float-(sentry|exploit|punish)|trg-on-(enemy-enter|hit|kill-creature)|act-(exploit|poison-tick|expose-desc|heal-desc|cleanse-desc))/;
+const SK1_KEY = /^ui\.(skn-(sentry|expose|siege|formation|isolation|anchor|exploit|spoils|venom-pulse|punish)|sk-(sentry|expose|exploit|siege|formation|isolation|anchor|spoils|venom-pulse|punish|cure)|st-exploit|ls-exploit|exploit-tip|aura-|log-(expose-rounds|exploit|poison-pulse|punish|formation|isolation|aura-off)|float-(sentry|exploit|punish)|trg-on-(enemy-enter|hit|kill-creature)|act-(exploit|poison-tick|expose-desc|cleanse-desc))/; // 2026-11-18 (ENG52, owner 21:06 "Remove Heal as a skill"): ui.sk-healing and ui.act-heal-desc gone (Nursing / Nurse N: ui.sk-nursing, ui.eng52-act-nurse-desc)
 const TKEYS = Object.keys(TXT).filter(k=> SK1_KEY.test(k));
-ok(TKEYS.length === 63, `63 package SK1 TX keys (${TKEYS.length})`);
+ok(TKEYS.length === 61, `61 package SK1 TX keys (${TKEYS.length})`); // ENG52 (2026-11-18): 63 less the two Heal texts
 TKEYS.forEach(k=> ok(appSrc.includes(`TX('${k}'`) || R('bramblewood-fx-a.js').includes(`TX('${k}'`), `${k} is used`));
 TKEYS.filter(k=> !/codex|desc|^ui\.act-/.test(k)).forEach(k=> ok(words(TXT[k]) < 20, `${k} is terse (${words(TXT[k])} words)`));
 ok(/hiding/.test(TXT['ui.st-exposed']) && /hiding/.test(TXT['ui.ls-exposed']) && !/crit/.test(TXT['ui.exposed-tip']), 'the Exposed texts describe hiding, not crits');

@@ -82,7 +82,10 @@ const BAL30 = new Set(['inside-out-hedgehog', 'irradiated-axolotl']);
 // 2026-11-08 (package FIX10): the Cormorant (ENG37) is a Pack 1 card, so the game's cardObtainMap gives Map 0 (DF-1), not the Map 3 ENG37 hand-wrote;
 // at Map 0 its 3/7 Reach reads 17 > N 16.72: held for the owner (decision FIX10-1)
 const FIX10 = new Set(['cormorant']);
-const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !CONTENT12.has(c.id) && !FOLD5.has(c.id) && !SKIR3.has(c.id) && !ENG27.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !SKILL2.has(c.id) && !BAL11.has(c.id) && !BAL12.has(c.id) && !BAL14.has(c.id) && !DEC1.has(c.id) && !ENG22.has(c.id) && !ENG21.has(c.id) && !ENG25.has(c.id) && !BAL30.has(c.id) && !FIX10.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
+// 2026-11-18 (package ENG52, owner 21:04): the budget prices Level 1 with its Level 0 / 1 skills (levelSkills); these go over on paper (mostly the Babies'
+// Hatchling), no stat change: decision ENG52-1, balance-analyst's re-fit
+const ENG52 = new Set(['compost-grub', 'fox-kit', 'fire-drake-hatchling', 'otter-kit', 'chipmunk-forager', 'caiman-hatchling', 'shallows-fry', 'harp-seal-pup']);
+const over = live.filter(c=> band(c) && !ENG52.has(c.id) && !OVER_OK.has(c.id) && !CONTENT12.has(c.id) && !FOLD5.has(c.id) && !SKIR3.has(c.id) && !ENG27.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !SKILL2.has(c.id) && !BAL11.has(c.id) && !BAL12.has(c.id) && !BAL14.has(c.id) && !DEC1.has(c.id) && !ENG22.has(c.id) && !ENG21.has(c.id) && !ENG25.has(c.id) && !BAL30.has(c.id) && !FIX10.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
 ok(!over.length, '1. today\'s budget passes for every live card but the owner-call list, the post-balance queue and the held list: ' + over.slice(0, 8).join('; '));
 // the pass's own fits still hold under the costs it was made with (every applied entry back at its prevValue), or the card is queued
 const SCT = JSON.parse(read('canonical/skill-costs.json')); ['skills', 'triggers', 'actions', 'modifiers'].forEach(k=> (SCT[k] || []).forEach(e=>{ if(e.appliedAt) e.value = e.prevValue; }));

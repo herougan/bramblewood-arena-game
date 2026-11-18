@@ -7,7 +7,7 @@
   "hp": "Health beside the Attack number",
   "day": "[Attack, Health] by day",
   "night": "[Attack, Health] at night",
-  "who": "which units count: kin / any (Esprit); ally (Harbinger); any / yours / foes (Carnage); yours / theirs (Throng); weakest / random (Heal)",
+  "who": "which units count: kin / any (Esprit); ally (Harbinger); any / yours / foes (Carnage); yours / theirs (Throng)",
   "n": "amount per counted unit",
   "species": "a brood token's Swarm parameter",
   "res": "the resource delivered or gained (Delivery: res; Felling: metal = Prospector); the resource Hoard counts (lumber default, stone, metal; ENG40)",
@@ -1187,20 +1187,6 @@
    "stat": null,
    "ability": null,
    "about": "Vulnerable N (shown as Vulnerable since ENG39; key exploit). lasts lasting = Scar (+N for good). (ENG39, decision DES2-3)"
-  },
-  "healing": {
-   "params": {},
-   "kinds": {
-    "who": {
-     "weakest": "nursing",
-     "random": "bloom"
-    }
-   },
-   "default": "heals your most wounded unit 1 a round",
-   "number": 1,
-   "stat": null,
-   "ability": null,
-   "about": "Heal N. who weakest = Nursing (weakest wounded ally N); who random = the old healing Bloom (a random wounded ally; retired). (ENG39, decision DES2-3)"
   },
   "harbinger": {
    "params": {},

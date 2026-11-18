@@ -342,7 +342,7 @@ M.onEvent = function(ev, env){
     if(tgt) M.crabSnap(tgt, {from:el(ev.attUid), castle, miss:T === 'evaded', impactMs:env.hitAtMs(ev), speed:sp});
     return; }
   if(!env.fxAtLeast('med')) return;
-  if(T === 'heal' && ev.cause === 'healing' && (ev.amount || 0) > 0 && ev.attUid != null && env.once('fxh-mend' + ev.attUid)){
+  if(T === 'heal' && (ev.cause === 'healing' || ev.cause === 'nursing' || ev.cause === 'nurse' /* ENG52 (2026-11-18): Heal is Nursing / Nurse N now */) && (ev.amount || 0) > 0 && ev.attUid != null && env.once('fxh-mend' + ev.attUid)){
     const h = el(ev.attUid), t = el(ev.targetUid); if(h) M.healingMend(h, String(ev.attUid) === String(ev.targetUid) ? null : t, {speed:sp}); return; }
   if((T === 'grace' && (ev.amount || 0) > 0) || (T === 'statusFx' && ev.kind === 'prayer')){
     const defs = env.defs || {}; let i = 0;

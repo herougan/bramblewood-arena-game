@@ -2006,7 +2006,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-punish": "At the end of the round, each enemy that hit it this round takes {n}.",
   "ui.sk-punish-codex": "Being tried: off unless the Punish flag is on, and on no card yet.",
   "ui.sk-cure": "Every upkeep, cure up to {n} Poison from your most poisoned unit. Poison only.",
-  "ui.sk-healing": "Every upkeep, heal your most wounded unit for {n}. It heals Health only.",
   "ui.st-exploit": "each hit on it deals 1 more and uses 1 token.",
   "ui.ls-exploit": "{n} token{s}: each hit on it deals 1 more and uses one.",
   "ui.exploit-tip": "Exploit {n}: its next {n} hit{s} deal 1 more each.",
@@ -2037,7 +2036,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.act-pulse-desc": "The chosen target's Poison (and Deadly Poison) and Bleed tick N times now, each its whole stack; no stack wears down.",
   "ui.act-poison-tick-desc": "The chosen target's Poison ticks N times now, its whole stack each; the stack doesn't wear down.",
   "ui.act-expose-desc": "Expose a chosen target for N rounds: its hiding is stripped (Invisible, Evasive, Smoke, Shadow, Stealth).",
-  "ui.act-heal-desc": "Restore a chosen target's Health (this card by default), never above its max. Heal only heals: Cleanse takes Bleed, Cure takes Poison.",
   "ui.act-cleanse-desc": "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun.",
   "ui.ed-art-rejected": "Art rejected",
   "ui.ed-art-rejected-tip": "Admin: art rejected: {reason}",
@@ -3847,7 +3845,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.lvl10-style": "Style {s} · skill {n}%",
   "ui.maplist1-also-tip": "This card is also on this map's list. Opens that map's cards.",
   "ui.maplist1-side": "side map",
-  "ui.maplist1-special": "Special"
+  "ui.maplist1-special": "Special",
+  "ui.skn-nursing": "Nursing",
+  "ui.sk-nursing": "Every upkeep, heal a random hurt ally for {n}.",
+  "ui.sk-nursing-codex": "A hurt ally is one below its max Health. It never heals itself; with no ally hurt, nothing happens.",
+  "ui.eng52-act-nurse": "Nurse",
+  "ui.eng52-act-nurse-desc": "Nurse N: heal a random hurt ally (below its max Health, not this card) for N. With no ally hurt, nothing happens.",
+  "ui.eng52-act-nurse-text": "nurse a random hurt ally for {n}",
+  "ui.eng52-log-nurse": "{name} nursed {target} for {n} HP. 💚",
+  "ui.eng52-chip-nursing": "Nursing: heals a random hurt ally every upkeep"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

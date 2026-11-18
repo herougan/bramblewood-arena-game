@@ -138,7 +138,7 @@
   const ECON_BY_RES = {lumber: 'forestry', stone: 'quarrying', metal: 'mining', gold: 'prospecting'};
   const RETIRE = {
     quick: ()=> ({swift: true}), speed: ()=> ({swift: true}), haste: ()=> ({swift: true}),
-    healing: v=> ({nursing: sn(v, 1)}), sonar: ()=> ({keenSense: true}),
+    healing: v=> ({nursing: sn(v, 1)}), heal: v=> ({nursing: sn(v, 1)}) /* ENG52 (2026-11-18): Heal is gone, Nursing stays */, sonar: ()=> ({keenSense: true}),
     spiteful: v=> ({thorns: sn(v, 1)}), ichor: v=> ({thorns: sn(v, 1)}), punish: v=> ({thorns: sn(v, 1)}),
     prey: ()=> ({evasive: true}), canopyCover: ()=> ({evasive: true}),
     predator: v=> ({hunter: sn(v, 1), hunterVs: 'weaker'}), executioner: v=> ({hunter: sn(v, 1), hunterVs: 'wounded'}), shatter: v=> ({hunter: sn(v, 2), hunterVs: 'frozen'}),
