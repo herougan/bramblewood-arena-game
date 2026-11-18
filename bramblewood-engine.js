@@ -3782,13 +3782,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(L < base){ const r = v=> v == null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85)); return {attack: r(A0), health: r(H0)}; }
     const BB = eng36BB(); if(!BB || !BB.forgeCurve) return {attack: A0, health: H0};
     const row = BB.forgeCurve(Object.assign({}, td, {obtainMap: td.obtainMap || 0}), base, L).rows[L];
-    // ENG40 (2026-11-09, decision ENG36-3): a summon grows half as fast as the normal curve (ENG40_SUMMON_GROWTH), each stat rounded down.
+    // LVL11 (2026-11-19, owner 11-18 21:31 "Tokens should also grow in strength ... a 2/3 at level 10"): a summon with its own growth table
+    // (levelBonus: every token in canonical/cards.json, tools/lvl10/tokens_2026_11_19.js, and every card) grows by it in full: Bee Swarmling 1/1 -> 2/3 at Level 10.
+    if(row && td.levelBonus) return {attack: row.attack, health: row.health};
+    // ENG40 (2026-11-09, decision ENG36-3): a summon with no table (an engine-made token) grows half as fast as the normal curve (ENG40_SUMMON_GROWTH), each stat rounded down.
     const g = (v0, v)=> (v0 == null || v == null) ? v : v0 + Math.max(0, Math.floor((v - v0) * ENG40_SUMMON_GROWTH + 1e-9));
     return {attack: row ? g(A0, row.attack) : A0, health: row ? g(H0, row.health) : H0};
   }
   // the def id a summon of defId by src comes out as (defId itself when there is nothing to scale)
   function eng36SummonDefId(defId, src){
-    const td = CARD_DEFS[defId], L = eng36SummonLevelOf(src); if(!td || L == null || td.level != null) return defId;
+    const td = CARD_DEFS[defId], L = eng36SummonLevelOf(src); if(!td || L == null || (td.level != null && Number(td.level) !== eng36BaseLevel(td))) return defId; // LVL11 (2026-11-19): a token the app stamped with its own base level (buildCardDefs: level 1) still grows; was any level, so in the game no token grew
     const srcRoot = (CARD_DEFS[src._sk3Base || src.defId] || {}).derivedFrom || src.defId; if(defId === srcRoot || td.derivedFrom === srcRoot) return defId; // a copy of itself
     if(L === eng36BaseLevel(td)) return defId;
     const id = defId + '~lv' + L; if(CARD_DEFS[id]) return id;
@@ -5275,6 +5278,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return null; }
   function spawnBeside(players, sideOf, pid, src, defId, stats, events, kind){
     const pl = players[pid]; if(!pl || !CARD_DEFS[defId]) return null;
+    if(kind === 'sprout') defId = eng36SummonDefId(defId, src); // LVL11 (2026-11-19): a Growth Sprout at its maker's level, as every summoned token
     const nc = makeBoardCard(defId); let lane;
     const srcRow = slotMode ? reserveRowOf(pl, src) : 0; // 2026-10-19 (package RR): a middle / back-row unit's Brood, Twin or Sprout comes up beside it in its own row
     if(srcRow){ const sl = rowFreeSlotNear(pl, srcRow, src.slot, false); if(sl === null) return null; rowPut(pl, srcRow, sl, nc, src); lane = null; }

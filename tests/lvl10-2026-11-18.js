@@ -21,7 +21,7 @@ const numV = v=> v && typeof v === 'object' ? v.v : (v === true ? 1 : v);
 // ---- 1. the data
 const filled = cards.filter(GEN.eligible), live = filled.filter(c=> !c.unattainable && !c.awaitingSource);
 ok(filled.length > 800 && filled.filter(c=> c.levelBonus).length >= filled.length - 5, `1. ${filled.filter(c=> c.levelBonus).length} of ${filled.length} eligible cards carry levelBonus`);
-ok(cards.filter(c=> c.levelBonus && !GEN.eligible(c)).length === 0, '1. no token, castle, egg, spell or equipment carries levelBonus');
+ok(cards.filter(c=> c.levelBonus && !GEN.eligible(c) && !c.token).length === 0, '1. no castle, egg, spell or equipment carries levelBonus'); // 2026-11-19 (LVL11): tokens carry their own (tools/lvl10/tokens_2026_11_19.js)
 const shape = [];
 filled.forEach(c=>{ const lb = c.levelBonus || {}, b = GEN.baseLevel(c), last = {};
   Object.keys(lb).forEach(L=>{ const o = lb[L]; if(!(+L > b && +L <= 10)) shape.push(c.id + ' L' + L);
@@ -55,7 +55,7 @@ ok(!statsBad.length, '4. statsAtLevel = base stats + the deltas up to L: ' + sta
   ok(!(k in (c.effects || {})) && !(k in effectsAtLevel(c, L - 1)) && (k in effectsAtLevel(c, L)), `4. a moved skill: ${c.id}'s ${k} off at Level 1, on from Level ${L}`); }
 { const r = BB.forgeCurve(Object.assign({}, bk, {obtainMap: 0}), 1, 11).rows, o = BB.forgeCurve(Object.assign({}, bk, {obtainMap: 0, levelBonus: undefined}), 1, 11).rows;
   ok(r[11].health - r[10].health === o[11].health - o[10].health && r[11].attack - r[10].attack === o[11].attack - o[10].attack, '4. Level 11 (limit break) adds the Forge curve\'s own step on top of Level 10');
-  ok(BB.forgeCurve(Object.assign({}, bk, {token: true}), 1, 10).rows[10].health === o[10].health, '4. a token never reads levelBonus (the fallback curve)'); }
+  ok(BB.forgeCurve(Object.assign({}, bk, {token: true}), 1, 10).rows[10].health === r[10].health, '4. a token reads its levelBonus too (2026-11-19 LVL11; was: never)'); }
 ok(/BramblewoodBudget\.levelBonusAt\(b, L/.test(app) && /d\.levelBonus \? JSON\.stringify\(d\.levelBonus\)/.test(app), '4. effectsAtLevel and the curve cache read levelBonus');
 
 // ---- 5. unlocks

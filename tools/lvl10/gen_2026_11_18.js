@@ -200,4 +200,4 @@ function main(){
   if(!ONLY && res.length) fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'lvl10-2026-11-18.json'), JSON.stringify(report, null, 1) + '\n');
 }
 if(require.main === module) main();
-module.exports = {baseLevel, eligible, bumped, analyse, realize, isOwner};
+module.exports = {baseLevel, eligible, bumped, analyse, realize, isOwner, split /* LVL11 (2026-11-19): tokens_2026_11_19.js */};
