@@ -75,6 +75,7 @@ async def build(names):
             json.dump(meta, open(os.path.join(OUT, name + ".json"), "w", encoding="utf-8"), separators=(",", ":"))
             print("atlas %s: %d emoji, %dx%d, %d KB webp, %d missed" % (name, len(keys), r["w"], r["h"], len(buf.getvalue()) // 1024, len(r["miss"])))
         await b.close()
+    import offsets; offsets.run(names)  # 2026-11-18 (UI60): the centring offsets follow the sheets
 
 
 if __name__ == "__main__":

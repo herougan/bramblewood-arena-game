@@ -168,6 +168,12 @@ def emoji_atlases():
         meta = json.load(open(meta_fp, encoding="utf-8"))
         meta["url"] = asset_url("emoji/%s-atlas.webp" % name, open(img_fp, "rb").read(), "image/webp")
         meta.pop("hash", None); meta.pop("set", None)
+        try:  # 2026-11-18 (UI60): per-emoji centring offsets, tools/emoji/offsets.json (tools/emoji/offsets.py); rebuilt when the sheet is newer
+            _of = SCRATCH + "tools/emoji/offsets.json"
+            if not os.path.exists(_of) or os.path.getmtime(_of) < os.path.getmtime(img_fp) or name not in json.load(open(_of, encoding="utf-8")):
+                subprocess.run([_sys.executable, SCRATCH + "tools/emoji/offsets.py"], check=True, timeout=300)
+            meta["off"] = json.load(open(_of, encoding="utf-8")).get(name, {})
+        except Exception as e: print("emoji offsets: skipped (%s)" % e)
         out[name] = meta
     return out
 if app_src.count("__EMOJI_ATLAS__") != 1: raise SystemExit("Expected exactly 1 __EMOJI_ATLAS__ in arena_app.js")

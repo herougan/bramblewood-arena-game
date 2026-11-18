@@ -95,7 +95,7 @@ function makeCtx(opts){
     const a = ctx.EMOJI_ATLAS.fluent, size = /background-size:([\d.]+)% ([\d.]+)%/.exec(css);
     let worst = 0, missing = 0;
     a.keys.forEach((k, i)=>{
-      const m = new RegExp('\\.e-' + k + '\\{background-position:([\\d.]+)% ([\\d.]+)%\\}').exec(css); if(!m){ missing++; return; }
+      const m = new RegExp('\\.e-' + k + '\\{background-position:([\\d.]+)% ([\\d.]+)%[^}]*\\}') /* 2026-11-18 (UI60): the rule may end with ;--ox/--oy */.exec(css); if(!m){ missing++; return; }
       for(const B of [12, 18, 41]){
         const Wr = B * parseFloat(size[1]) / 100, Hr = B * parseFloat(size[2]) / 100;
         const ox = (B - Wr) * parseFloat(m[1]) / 100, oy = (B - Hr) * parseFloat(m[2]) / 100;
