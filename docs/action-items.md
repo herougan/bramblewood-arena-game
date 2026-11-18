@@ -8,6 +8,12 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-18 20:26: Owner notes -> POISON2, MAPFIT1 (queued)
+- [ ] Venom counters read "Poison"; Venomous keeps its name (owner picked one counter named Poison; OWN-1118-1) -> POISON2 (running)
+- [ ] World view fits one screen on PC: the 720 px single column (4,900 px tall, ~3 screens) laid out across the width; the single-map view's 45 px overflow removed -> MAPFIT1 (after SKWK2, same file)
+- [ ] A skull decoration on the Glass Dunes (Map 18) map, like the camp / sign / well (owner picked "Map decoration") -> MAPFIT1
+- [x] Skill status answered: SKAUD1 audit built; 32 skill calls open (SKAUD1-1..3, SKN1-1..19, SKILL9-1..10)
+
 ## 11-16 02:00: Owner notes (night) -> FX11, FX12, UX3-5, INFRA1, LAB1, BALREL2 (shipped 11-16)
 - [x] New effects: Crab Claw redo, irradiation screen tint, Healing / Worship / Gorge, Meiosis slime death; doubled effects removed (FX11, FX12)
 - [x] UI/UX audit and fixes, two rounds (UX3, UX4, UX5); report docs/ux-audit-2026-11-16.md
