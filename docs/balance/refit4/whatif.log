@@ -1,0 +1,180 @@
+17-2 target 85 (77-93) size 17 start {"arctic-tern":4,"briarback-hedgehog":1,"glacier-yak":4,"lone-grey-wolf":2,"ringed-seal":4,"snow-ermine":2} problems []
+11-5 target 75 (67-83) size 16 start {"chipmunk-hoarder":4,"mountain-hare":4,"apollo-butterfly":4,"gannet-nestweaver":1,"anvil-thrush":2,"kittiwake-flock":1} problems []
+start {"chipmunk-hoarder":4,"mountain-hare":4,"apollo-butterfly":4,"gannet-nestweaver":1,"anvil-thrush":2,"kittiwake-flock":1} 36.5
+start {"arctic-tern":4,"briarback-hedgehog":1,"glacier-yak":4,"lone-grey-wolf":2,"ringed-seal":4,"snow-ermine":2} 46
+shield 3 36.5
+shield 0 50
+hqHp 14 69
+shield 4 36.5
+hqHp 13 69
+shield 5 36.5
+hqHp 12 76
+hqHp 11 76
+shield 0 39
+hqHp 10 76
+hqHp 14 55
+hqHp 9 76
+hqHp 13 55
+hqHp 8 73.5
+hqHp 12 63
+hqHp 7 73.5
+hqHp 11 63
+hqHp 6 71.5
+hqHp 5 71.5
+RESULT 17-2 {"arctic-tern":4,"briarback-hedgehog":1,"glacier-yak":4,"lone-grey-wolf":2,"ringed-seal":4,"snow-ermine":2} 76 {"shieldOverride":0,"hqHp":12} moves:  problems: []
+hqHp 10 65
+17-3 target 80 (72-88) size 13 start {"polar-bear":2,"ringed-seal":4,"briarback-hedgehog":1,"elderhorn-monarch":1,"snow-ermine":4,"pinecone-sapper":1} problems []
+hqHp 9 65
+hqHp 8 67
+start {"polar-bear":2,"ringed-seal":4,"briarback-hedgehog":1,"elderhorn-monarch":1,"snow-ermine":4,"pinecone-sapper":1} 51.5
+shield 0 51.5
+hqHp 7 67
+hqHp 14 69.5
+hqHp 6 74.5
+hqHp 13 69.5
+hqHp 5 74.5
+RESULT 11-5 {"chipmunk-hoarder":4,"mountain-hare":4,"apollo-butterfly":4,"gannet-nestweaver":1,"anvil-thrush":2,"kittiwake-flock":1} 74.5 {"shieldOverride":0,"hqHp":6} moves:  problems: []
+hqHp 12 75.5
+11-6 target 71.3 (63.3-79.3) size 14 start {"swamp-alligator":4,"peak-condor":1,"the-gannet-queen":4,"nightshade-moth":3,"eyrie-warden":2} problems []
+hqHp 11 75.5
+hqHp 10 76
+start {"swamp-alligator":4,"peak-condor":1,"the-gannet-queen":4,"nightshade-moth":3,"eyrie-warden":2} 51
+hqHp 9 76
+hqHp 8 73.5
+shield 8 54.5
+hqHp 7 73.5
+shield 12 53.5
+hqHp 6 80.5
+RESULT 17-3 {"polar-bear":2,"ringed-seal":4,"briarback-hedgehog":1,"elderhorn-monarch":1,"snow-ermine":4,"pinecone-sapper":1} 80.5 {"hqHp":6} moves:  problems: []
+17-4 target 75 (67-83) size 19 start {"glacier-yak":4,"ice-crevasse-wolf":3,"ringed-seal":4,"snow-ermine":3,"arctic-tern":4,"warhorse-charger":1} problems []
+shield 14 52
+start {"glacier-yak":4,"ice-crevasse-wolf":3,"ringed-seal":4,"snow-ermine":3,"arctic-tern":4,"warhorse-charger":1} 39.5
+shield 0 39.5
+shield 15 51
+shield 0 64.5
+RESULT 11-6 {"swamp-alligator":4,"peak-condor":1,"the-gannet-queen":4,"nightshade-moth":3,"eyrie-warden":2} 64.5 {"shieldOverride":0} moves:  problems: []
+hqHp 14 57.5
+11-9 target 60 (52-68) size 19 start {"chamois-leaper":2,"chipmunk-hoarder":4,"mountain-hare":4,"kittiwake-flock":1,"beaver-lumberjack":1,"nightshade-moth":4,"gangrenous-leech":3} problems []
+hqHp 13 57.5
+start {"chamois-leaper":2,"chipmunk-hoarder":4,"mountain-hare":4,"kittiwake-flock":1,"beaver-lumberjack":1,"nightshade-moth":4,"gangrenous-leech":3} 18
+shield 0 18
+hqHp 14 40
+hqHp 12 67.5
+hqHp 13 40
+hqHp 12 47.5
+hqHp 11 67.5
+hqHp 11 47.5
+hqHp 10 52.5
+hqHp 10 68.5
+hqHp 9 52.5
+hqHp 8 58.5
+hqHp 9 68.5
+hqHp 7 58.5
+hqHp 6 68.5
+RESULT 11-9 {"chamois-leaper":2,"chipmunk-hoarder":4,"mountain-hare":4,"kittiwake-flock":1,"beaver-lumberjack":1,"nightshade-moth":4,"gangrenous-leech":3} 58.5 {"hqHp":8} moves:  problems: []
+11-10 target 40 (30-49) size 16 start {"anvil-thrush":1,"chipmunk-hoarder":1,"eyrie-warden":4,"gannet-nestweaver":1,"ibex-rockcaller":2,"red-billed-chough":4,"great-horned-owl":3} problems []
+hqHp 8 68.5
+start {"anvil-thrush":1,"chipmunk-hoarder":1,"eyrie-warden":4,"gannet-nestweaver":1,"ibex-rockcaller":2,"red-billed-chough":4,"great-horned-owl":3} 1.5
+hqHp 7 68.5
+hqHp 6 73
+shield 5 1.5
+hqHp 5 73
+RESULT 17-4 {"glacier-yak":4,"ice-crevasse-wolf":3,"ringed-seal":4,"snow-ermine":3,"arctic-tern":4,"warhorse-charger":1} 73 {"hqHp":6} moves:  problems: []
+shield 7 1.5
+17-6 target 65 (57-73) size 20 start {"arctic-tern":4,"glacier-yak":4,"ice-crevasse-wolf":3,"polar-bear":1,"snow-ermine":3,"elderhorn-monarch":1,"harbor-seal":4} problems []
+shield 8 1.5
+shield 9 1.5
+shield 0 2
+start {"arctic-tern":4,"glacier-yak":4,"ice-crevasse-wolf":3,"polar-bear":1,"snow-ermine":3,"elderhorn-monarch":1,"harbor-seal":4} 17.5
+shield 0 17.5
+hqHp 14 3
+hqHp 13 3
+hqHp 14 39.5
+hqHp 12 3
+hqHp 13 39.5
+hqHp 11 3
+hqHp 10 3.5
+hqHp 12 55.5
+hqHp 9 3.5
+hqHp 8 4.5
+hqHp 11 55.5
+hqHp 7 4.5
+hqHp 10 55.5
+hqHp 6 5
+hqHp 5 5
+RESULT 11-10 {"anvil-thrush":1,"chipmunk-hoarder":1,"eyrie-warden":4,"gannet-nestweaver":1,"ibex-rockcaller":2,"red-billed-chough":4,"great-horned-owl":3} 5 {"hqHp":6} moves:  problems: []
+hqHp 9 55.5
+2-2 target 80 (72-88) size 20 start {"open-ocean-hermit-crab":4,"rock-pool-starfish":4,"salvager-hermit-crab":4,"pincushion-urchin":3,"conch-crawler":4,"duck-paddler":1} problems []
+start {"open-ocean-hermit-crab":4,"rock-pool-starfish":4,"salvager-hermit-crab":4,"pincushion-urchin":3,"conch-crawler":4,"duck-paddler":1} 53
+hqHp 8 58
+shield 0 53.5
+hqHp 7 58
+hqHp 14 58.5
+hqHp 13 58.5
+hqHp 6 70
+RESULT 17-6 {"arctic-tern":4,"glacier-yak":4,"ice-crevasse-wolf":3,"polar-bear":1,"snow-ermine":3,"elderhorn-monarch":1,"harbor-seal":4} 70 {"hqHp":6} moves:  problems: []
+17-7 target 60 (52-68) size 19 start {"glacier-yak":4,"ice-crevasse-wolf":3,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"harbor-seal":4} problems []
+hqHp 12 61
+hqHp 11 61
+hqHp 10 65.5
+start {"glacier-yak":4,"ice-crevasse-wolf":3,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"harbor-seal":4} 11.5
+shield 0 11.5
+hqHp 9 65.5
+hqHp 8 68
+hqHp 14 31
+hqHp 7 68
+hqHp 6 70.5
+hqHp 5 70.5
+RESULT 2-2 {"open-ocean-hermit-crab":4,"rock-pool-starfish":4,"salvager-hermit-crab":4,"pincushion-urchin":3,"conch-crawler":4,"duck-paddler":1} 70.5 {"hqHp":6} moves:  problems: []
+hqHp 13 31
+8-7 target 60 (52-68) size 14 start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} problems []
+hqHp 12 41
+start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 22.5
+shield 0 22.5
+hqHp 11 39.5
+hqHp 11 41
+hqHp 10 39.5
+hqHp 10 41
+hqHp 9 39.5
+hqHp 8 44.5
+hqHp 9 41
+hqHp 7 44.5
+hqHp 6 50
+hqHp 8 47
+hqHp 5 50
+hqHp 7 47
+hqHp 4 59.5
+hqHp 3 59.5
+RESULT 8-7 {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 59.5 {"hqHp":4} moves:  problems: []
+hqHp 6 62.5
+RESULT 17-7 {"glacier-yak":4,"ice-crevasse-wolf":3,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"harbor-seal":4} 62.5 {"hqHp":6} moves:  problems: []
+14-4 target 75 (67-83) size 15 start {"dust-hyena":4,"grizzly-vanguard":1,"hollow-belly-rat":1,"marula-elephant":4,"river-mink":1,"tasmanian-devil":4} problems []
+17-8 target 40 (30-49) size 16 start {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"warhorse-charger":1,"elderhorn-monarch":1,"pinecone-sapper":1,"ringed-seal":4} problems []
+start {"dust-hyena":4,"grizzly-vanguard":1,"hollow-belly-rat":1,"marula-elephant":4,"river-mink":1,"tasmanian-devil":4} 33.5
+shield 0 39
+start {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"warhorse-charger":1,"elderhorn-monarch":1,"pinecone-sapper":1,"ringed-seal":4} 7
+shield 0 7
+hqHp 14 51
+hqHp 13 51
+hqHp 12 54
+hqHp 14 20
+hqHp 11 54
+hqHp 10 54.5
+hqHp 13 20
+hqHp 9 54.5
+hqHp 8 56.5
+hqHp 7 56.5
+hqHp 12 24
+hqHp 6 62.5
+hqHp 5 62.5
+RESULT 14-4 {"dust-hyena":4,"grizzly-vanguard":1,"hollow-belly-rat":1,"marula-elephant":4,"river-mink":1,"tasmanian-devil":4} 62.5 {"shieldOverride":0,"hqHp":6} moves:  problems: []
+WHATIF DONE
+hqHp 11 24
+hqHp 10 24
+hqHp 9 24
+hqHp 8 26
+hqHp 7 26
+hqHp 6 34.5
+hqHp 5 34.5
+RESULT 17-8 {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"warhorse-charger":1,"elderhorn-monarch":1,"pinecone-sapper":1,"ringed-seal":4} 34.5 {"hqHp":6} moves:  problems: []
+WHATIF DONE
