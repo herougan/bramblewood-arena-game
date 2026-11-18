@@ -4640,6 +4640,8 @@
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "命中时：撕裂 N。每次命中它消耗一个标记，射击和技能也算；毒与流血的跳伤不算。净化可移除。",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "{att} 引爆了 {name} 身上的中毒：{n} 点伤害。",
  "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} 有毒：{t} 获得 {n} 层毒。",
+ "This card is also on this map's list. Opens that map's cards.": "此卡也在这张地图的列表中。打开该地图的卡牌。",
+ "side map": "支线地图",
  "Growth by level": "逐级成长",
  "Each row adds to the level before. Skill: its new number from that level. Empty table: the default curve.": "每行在上一级基础上增加。技能：从该级起的新数值。空表：默认曲线。",
  "Skill": "技能",

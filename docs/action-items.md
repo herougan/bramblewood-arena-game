@@ -18,6 +18,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - [ ] POISON2 left English-only "Venom" strings hard-coded in arena_app.js (skill descriptions 879-3465, action label 1665, DMG labels 2549/2683 + eng33 pin, status chip 3094, 7264/7660/10026/10265/10907/11335) -> MAPFIT1
 - [ ] Owner 21:04: Level 1 skills missing at a base-Level-1 card (30 cards, budget and preview) + owner 21:06 Heal removed, Nursing in the list, action Nurse, random hurt ally -> ENG52 (running); then road re-measure
 - [ ] Owner 21:11: Level 1-10 scaling: Level 10 form from the budget, per-level stat deltas (`levelBonus`), growth styles A 0/100, B 10/90, C 25/75, D 50/50 (skill/stat, ~25% each), editable per-level table in the card editor -> LVL10 (running). Owner: "When ready push asap so I can edit the cards" -> release the batch when LVL10, ENG52 and SKWK2 are merged and tested
+- [x] Owner 21:24: the card editor lists every map a card is on (New! sits on the first) -> MAPLIST1 (done, batch)
+- [ ] Owner 21:27 / 21:29 / 21:32: trigger context pill A->B tight and centred, per-emoji centring offsets saved for all atlas emoji; card level on hover (deck, hand, battlefield; not packs); Codex packs several sections per page -> UI60 (running)
+- [ ] Owner 21:29 / 21:31: Codex level slider (stats at each level, up to the player's highest unlocked level of that card + 1); skills a card learns later show as ? with their own tooltip (it will learn more as it grows, not 'locked'); tokens grow with level (e.g. Bee Swarmling 1/1 -> about 2/3 at Level 10) -> LVL11 (after LVL10)
 - [x] Skill status answered: SKAUD1 audit built; 32 skill calls open (SKAUD1-1..3, SKN1-1..19, SKILL9-1..10)
 
 ## 11-16 02:00: Owner notes (night) -> FX11, FX12, UX3-5, INFRA1, LAB1, BALREL2 (shipped 11-16)

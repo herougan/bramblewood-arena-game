@@ -3844,7 +3844,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.lvl10-total": "Total",
   "ui.lvl10-budget": "Budget",
   "ui.lvl10-clear": "Clear all",
-  "ui.lvl10-style": "Style {s} · skill {n}%"
+  "ui.lvl10-style": "Style {s} · skill {n}%",
+  "ui.maplist1-also-tip": "This card is also on this map's list. Opens that map's cards.",
+  "ui.maplist1-side": "side map",
+  "ui.maplist1-special": "Special"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
