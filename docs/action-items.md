@@ -14,6 +14,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - [ ] Admin `MAP_FOCUS_SKILLS` (arena_app.js ~10641) is still REDESIGN2's 11-16 draft (e.g. Map 0 Evasive); set it to REDESIGN3 v2's focus (`docs/design/redesign3-2026-11-17.json` focus[]) -> MAPFIT1
 - [ ] Per-map role mix (strong / cute / resource / support / defender) on Maps 0-20 lists, owner 20:42 -> ROLE1 (running, analysis + proposals only)
 - [ ] A skull decoration on the Glass Dunes (Map 18) map, like the camp / sign / well (owner picked "Map decoration") -> MAPFIT1
+- [x] Single-map endless scroll: tap spots re-placed per scroll grew the scroll area -> MAPFIT0 (done, batch)
+- [ ] POISON2 left English-only "Venom" strings hard-coded in arena_app.js (skill descriptions 879-3465, action label 1665, DMG labels 2549/2683 + eng33 pin, status chip 3094, 7264/7660/10026/10265/10907/11335) -> MAPFIT1
+- [ ] Owner 21:04: Level 1 skills missing at a base-Level-1 card (30 cards, budget and preview) + owner 21:06 Heal removed, Nursing in the list, action Nurse, random hurt ally -> ENG52 (running); then road re-measure
 - [x] Skill status answered: SKAUD1 audit built; 32 skill calls open (SKAUD1-1..3, SKN1-1..19, SKILL9-1..10)
 
 ## 11-16 02:00: Owner notes (night) -> FX11, FX12, UX3-5, INFRA1, LAB1, BALREL2 (shipped 11-16)
