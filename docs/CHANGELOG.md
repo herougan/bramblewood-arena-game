@@ -8,6 +8,8 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-11-18 (package POISON2: one counter named Poison)
 - Players see: the ☠ counter, its chip, tooltips, logs and the damage type read "Poison" everywhere (was "Venom" / "Venomous"); Poison Spit, Poison Pulse, Poison Glands, "Arrow – poison", Cure takes "the most poisoned". Venomous N keeps its name. Wording only (owner OWN-1118-1); 68 texts in 12 languages. Hard-coded English in arena_app.js still says Venom (listed in the package report).
+## 2026-11-18 (package ROLE1: card roles on the Maps 0-20 lists, analysis only)
+- Every Maps 0-20 MAP-list card tagged Strong / Cute / Resource / Support / Ranged / Defender / focus carrier from its data; gaps flagged, 21 changes proposed (nothing applied; decision ROLE1-1). `docs/design/role1-2026-11-18.md` / `.json`, generator `tools/role1/gen.js`.
 ## 2026-11-18 (package TL4: Tagalog / Tamil / Japanese / Korean review of CONTENT13, POWDER1, DATAFIX and FXAUD2 rows)
 - Players see: 22 card names and 6 texts reworded to the words each pack already uses (Bulwark, Spitter, Mantis, Goose, Mussel, Baby, Flying); no gameplay change. Still drafts for a native read.
 ## 2026-11-18 (package REFIT6: Map 3, 9, 13-16 and 18-20 reference decks rebuilt from owned cards, their fights re-fitted)
