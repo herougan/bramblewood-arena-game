@@ -10,7 +10,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 ## 11-18 20:26: Owner notes -> POISON2, MAPFIT1 (queued)
 - [ ] Venom counters read "Poison"; Venomous keeps its name (owner picked one counter named Poison; OWN-1118-1) -> POISON2 (running)
-- [ ] World view fits one screen on PC: the 720 px single column (4,900 px tall, ~3 screens) laid out across the width; the single-map view's 45 px overflow removed -> MAPFIT1 (after SKWK2, same file)
+- [ ] Single-map view scrolls ~3 screens on PC (owner 20:40 screenshot; the World view is fine): the open fight panel (`#conquestNodePanel`: drops, deck, Ref line, "This map's cards" chips that spill below the panel box) stretches `#conquestMain`. Cap the panel to the viewport with its own scroll, keep the chips inside it, no scroll on the map behind; also its 45 px overflow with no panel open -> MAPFIT1 (after SKWK2, same file)
 - [ ] A skull decoration on the Glass Dunes (Map 18) map, like the camp / sign / well (owner picked "Map decoration") -> MAPFIT1
 - [x] Skill status answered: SKAUD1 audit built; 32 skill calls open (SKAUD1-1..3, SKN1-1..19, SKILL9-1..10)
 
