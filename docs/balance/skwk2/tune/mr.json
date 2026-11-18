@@ -1,0 +1,395 @@
+{
+ "map": "mr",
+ "generated": "2026-11-18T12:25:50.123Z",
+ "decks": [
+  {
+   "id": "13-BPRO-1",
+   "map": "mr",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "balloon-archer": 4,
+     "beaver-feller": 4,
+     "bramblewood-lynx": 3,
+     "feral-tomcat": 4,
+     "pika-hoarder": 4,
+     "pine-marten": 1
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "beaver-feller": 4,
+     "bramblewood-lynx": 3,
+     "feral-tomcat": 4,
+     "pika-hoarder": 4,
+     "pine-marten": 1,
+     "grizzly-vanguard": 4
+    },
+    "val": {
+     "v": 0.2,
+     "ref": 0.875,
+     "gap": 0.025
+    },
+    "leaders": [
+     "pine-marten"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: balloon-archer -> grizzly-vanguard",
+     "was": [
+      "balloon-archer: off the bpro pool",
+      "balloon-archer: not on the map's list (held, not listed)",
+      "balloon-archer: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.217,
+     "ref": 0.95,
+     "gap": 0.34
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 345,
+   "sec": 101
+  },
+  {
+   "id": "13-BPRO-2",
+   "map": "mr",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beaver-feller": 4,
+     "feral-tomcat": 4,
+     "pika-hoarder": 3,
+     "pine-marten": 3,
+     "redwood-woodpecker": 2,
+     "slow-worm": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.26,
+     "ref": 0.9,
+     "gap": 0.05
+    }
+   },
+   "pick": {
+    "deck": {
+     "beaver-feller": 4,
+     "feral-tomcat": 3,
+     "pika-hoarder": 4,
+     "sergeant-bramblefox": 3,
+     "grass-snake": 4,
+     "tasmanian-devil": 2
+    },
+    "val": {
+     "v": 0.23,
+     "ref": 0.975,
+     "gap": 0.125
+    },
+    "leaders": [
+     "sergeant-bramblefox"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.292,
+     "ref": 1,
+     "gap": 0.462
+    },
+    {
+     "move": "redwood-woodpecker -2 -> sergeant-bramblefox",
+     "v": 0.242,
+     "ref": 0.95,
+     "gap": 0.34,
+     "tried": 24
+    },
+    {
+     "move": "slow-worm x4 -> grass-snake",
+     "v": 0.167,
+     "ref": 0.85,
+     "gap": 0.153,
+     "tried": 24
+    },
+    {
+     "move": "pine-marten -1 -> sergeant-bramblefox",
+     "v": 0.208,
+     "ref": 0.825,
+     "gap": 0.09,
+     "tried": 24
+    },
+    {
+     "move": "pine-marten -2 -> tasmanian-devil",
+     "v": 0.242,
+     "ref": 0.8,
+     "gap": 0.04,
+     "tried": 24
+    },
+    {
+     "move": "feral-tomcat -1 -> pika-hoarder",
+     "v": 0.233,
+     "ref": 0.775,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 1338,
+   "sec": 405
+  },
+  {
+   "id": "13-BPRO-3",
+   "map": "mr",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "anhinga-spearbird": 4,
+     "badger-lumberjack": 3,
+     "balloon-archer": 2,
+     "feral-tomcat": 4,
+     "grass-snake": 3,
+     "pika-hoarder": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "anhinga-spearbird": 2,
+     "badger-lumberjack": 4,
+     "feral-tomcat": 4,
+     "grass-snake": 3,
+     "redwood-woodpecker": 4,
+     "bramblewood-lynx": 3
+    },
+    "val": {
+     "v": 0.205,
+     "ref": 0.95,
+     "gap": 0.1
+    },
+    "leaders": [
+     "bramblewood-lynx"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: balloon-archer -> redwood-woodpecker",
+     "was": [
+      "balloon-archer: off the bpro pool",
+      "balloon-archer: not on the map's list (held, not listed)",
+      "balloon-archer: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.117,
+     "ref": 0.975,
+     "gap": 0.453
+    },
+    {
+     "move": "pika-hoarder x4 -> bramblewood-lynx",
+     "v": 0.175,
+     "ref": 0.95,
+     "gap": 0.345,
+     "tried": 24
+    },
+    {
+     "move": "anhinga-spearbird -2 -> redwood-woodpecker",
+     "v": 0.183,
+     "ref": 0.925,
+     "gap": 0.29,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 913,
+   "sec": 211
+  },
+  {
+   "id": "13-BPRO-4",
+   "map": "mr",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "anhinga-spearbird": 4,
+     "badger-lumberjack": 4,
+     "beaver-feller": 4,
+     "feral-tomcat": 4,
+     "monarch-wingblade": 3,
+     "pika-hoarder": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.1,
+     "ref": 0.975,
+     "gap": 0.175
+    }
+   },
+   "pick": {
+    "deck": {
+     "anhinga-spearbird": 4,
+     "badger-lumberjack": 4,
+     "feral-tomcat": 4,
+     "monarch-wingblade": 3,
+     "pika-hoarder": 1,
+     "the-gannet-queen": 4
+    },
+    "val": {
+     "v": 0.095,
+     "ref": 0.95,
+     "gap": 0.155
+    },
+    "leaders": [
+     "monarch-wingblade"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.142,
+     "ref": 1,
+     "gap": 0.478
+    },
+    {
+     "move": "beaver-feller x4 -> the-gannet-queen",
+     "v": 0.117,
+     "ref": 0.85,
+     "gap": 0.203,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 559,
+   "sec": 141
+  },
+  {
+   "id": "13-WPRO-1",
+   "map": "mr",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "anhinga-spearbird": 4,
+     "balloon-archer": 4,
+     "feral-tomcat": 4,
+     "grass-snake": 1,
+     "grizzly-vanguard": 4,
+     "pine-marten": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "anhinga-spearbird": 4,
+     "feral-tomcat": 4,
+     "grass-snake": 1,
+     "grizzly-vanguard": 4,
+     "pine-marten": 3,
+     "amber-cicada": 4
+    },
+    "val": {
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: balloon-archer -> amber-cicada",
+     "was": [
+      "balloon-archer: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    }
+   ],
+   "readings": 14,
+   "sec": 11
+  }
+ ],
+ "drop": [
+  "13-PRO-1",
+  "13-PRO-3",
+  "13-PRO-4"
+ ]
+}

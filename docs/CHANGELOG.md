@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package SKWK2: the Maps 0-20 N-SK / N-WK practice decks rebuilt against the REFIT5 / REFIT6 references, OWN-1117-3)
+- Players see: new enemy decks in the N-SK practice fight of 32 Maps 0-20 maps and side maps and the N-WK fight of 8; most N-SK decks were far stronger than the reference ladder and are easier now (on 19 maps the ladder wins 70-85%, was 5). Admin's PRO marks follow the new read.
+- Protocol marks (pro_ease, 40 games a pairing, Maps 0-20 and side maps, 36): N-SK not TOO WEAK 24 -> 31, N-SK vs the ladder in 15-30% 5 -> 19, N-WK not TOO STRONG 33 -> 36, all three 2 -> 16. Left TOO WEAK: 7, 7-A, 13, 20, 20-A (decision SKWK2-1).
+- Under the hood: `canonical/pro-skirmishes.json`: 69 BPRO / 9 WPRO decks tuned or repaired (a local descent in each deck's 6/4 rules: `docs/balance/skwk2/skwk2_2026_11_18.js`), 16 too-easy or off-pool PRO decks dropped and 6 tuned or repaired (each map keeps 2-4), 8 BPRO and 1 WPRO dropped where the map keeps another; fields and showcase leaders re-baked (FOLD6). tests/pro 55 -> 2 failures (Maps 21 / 23 leaders), deck1 36 -> 2, skill2 15 -> 1, bal11-wk 8 -> 0. Reads: `docs/balance/pro-ease-skwk2-1-before-*.json`, `pro-ease-skwk2-2-after.json`; marks `docs/balance/skwk2/marks-*.json`.
+
 ## 2026-11-18 (package TL4: Tagalog / Tamil / Japanese / Korean review of CONTENT13, POWDER1, DATAFIX and FXAUD2 rows)
 - Players see: 22 card names and 6 texts reworded to the words each pack already uses (Bulwark, Spitter, Mantis, Goose, Mussel, Baby, Flying); no gameplay change. Still drafts for a native read.
 ## 2026-11-18 (package REFIT6: Map 3, 9, 13-16 and 18-20 reference decks rebuilt from owned cards, their fights re-fitted)

@@ -1,0 +1,225 @@
+{
+ "map": "ml",
+ "generated": "2026-11-18T12:49:19.280Z",
+ "decks": [
+  {
+   "id": "15-BPRO-1",
+   "map": "ml",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "border-collie": 4,
+     "bramblewood-lynx": 3,
+     "fawn-scout": 3,
+     "hoopoe-herald": 4,
+     "plains-zebra": 4,
+     "village-miller": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.485,
+     "ref": 0.55,
+     "gap": 0.185
+    }
+   },
+   "pick": {
+    "deck": {
+     "bramblewood-lynx": 3,
+     "hoopoe-herald": 4,
+     "plains-zebra": 4,
+     "village-miller": 3,
+     "dust-hyena": 3,
+     "fawn-scout": 3
+    },
+    "val": {
+     "v": 0.275,
+     "ref": 0.75,
+     "gap": 0
+    },
+    "leaders": [
+     "bramblewood-lynx"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.483,
+     "ref": 0.575,
+     "gap": 0.213
+    },
+    {
+     "move": "fawn-scout x3 -> dust-hyena",
+     "v": 0.383,
+     "ref": 0.55,
+     "gap": 0.113,
+     "tried": 24
+    },
+    {
+     "move": "border-collie x4 -> fawn-scout",
+     "v": 0.267,
+     "ref": 0.7,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 225
+  },
+  {
+   "id": "15-BPRO-2",
+   "map": "ml",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "dust-hyena": 4,
+     "eagle-owl-quartermaster": 3,
+     "hoopoe-herald": 4,
+     "mallard-marauder": 3,
+     "mosquito-cloud": 4,
+     "plains-zebra": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.365,
+     "ref": 0.625,
+     "gap": 0.065
+    }
+   },
+   "pick": {
+    "deck": {
+     "dust-hyena": 4,
+     "eagle-owl-quartermaster": 3,
+     "hoopoe-herald": 4,
+     "mosquito-cloud": 4,
+     "plains-zebra": 2,
+     "cataphract-destrier": 3
+    },
+    "val": {
+     "v": 0.225,
+     "ref": 0.775,
+     "gap": 0
+    },
+    "leaders": [
+     "eagle-owl-quartermaster"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.392,
+     "ref": 0.6,
+     "gap": 0.122
+    },
+    {
+     "move": "mallard-marauder x3 -> cataphract-destrier",
+     "v": 0.192,
+     "ref": 0.7,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 143
+  },
+  {
+   "id": "15-BPRO-3",
+   "map": "ml",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "border-collie": 4,
+     "cataphract-destrier": 4,
+     "fawn-scout": 2,
+     "mallard-marauder": 3,
+     "stoat-cutthroat": 3,
+     "village-miller": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.34,
+     "ref": 0.725,
+     "gap": 0.04
+    }
+   },
+   "pick": {
+    "deck": {
+     "cataphract-destrier": 4,
+     "fawn-scout": 2,
+     "mallard-marauder": 3,
+     "stoat-cutthroat": 3,
+     "village-miller": 4,
+     "pronghorn-racer": 4
+    },
+    "val": {
+     "v": 0.29,
+     "ref": 0.7,
+     "gap": 0
+    },
+    "leaders": [
+     "stoat-cutthroat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.425,
+     "ref": 0.775,
+     "gap": 0.155
+    },
+    {
+     "move": "border-collie x4 -> pronghorn-racer",
+     "v": 0.333,
+     "ref": 0.65,
+     "gap": 0.063,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 558,
+   "sec": 189
+  }
+ ],
+ "drop": []
+}

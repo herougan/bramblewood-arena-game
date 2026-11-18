@@ -1,0 +1,224 @@
+{
+ "map": "mq",
+ "generated": "2026-11-18T11:21:47.977Z",
+ "decks": [
+  {
+   "id": "1-A-BPRO-1",
+   "map": "mq",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "clover-butterfly": 4,
+     "honey-bee": 2,
+     "ladybird-guard": 2,
+     "meadow-rabbit": 4,
+     "robin-redbreast": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.66,
+     "ref": 0.1,
+     "gap": 0.36
+    }
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "clover-butterfly": 4,
+     "ladybird-guard": 2,
+     "meadow-rabbit": 4,
+     "lucky-hopper": 4,
+     "ant-scout": 2
+    },
+    "val": {
+     "v": 0.295,
+     "ref": 0.675,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.642,
+     "ref": 0.05,
+     "gap": 0.372
+    },
+    {
+     "move": "robin-redbreast x4 -> lucky-hopper",
+     "v": 0.358,
+     "ref": 0.65,
+     "gap": 0.088,
+     "tried": 24
+    },
+    {
+     "move": "honey-bee -2 -> ant-scout",
+     "v": 0.267,
+     "ref": 0.65,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 549,
+   "sec": 124
+  },
+  {
+   "id": "1-A-BPRO-2",
+   "map": "mq",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "clover-butterfly": 4,
+     "dormouse": 4,
+     "ladybird-guard": 4,
+     "robin-redbreast": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.59,
+     "ref": 0.2,
+     "gap": 0.29
+    }
+   },
+   "pick": {
+    "deck": {
+     "ant-scout": 4,
+     "clover-butterfly": 4,
+     "dormouse": 4,
+     "ladybird-guard": 4,
+     "bee-forager": 4
+    },
+    "val": {
+     "v": 0.23,
+     "ref": 0.625,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.517,
+     "ref": 0.3,
+     "gap": 0.247
+    },
+    {
+     "move": "robin-redbreast x4 -> bee-forager",
+     "v": 0.275,
+     "ref": 0.6,
+     "gap": 0.005,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 579,
+   "sec": 151
+  },
+  {
+   "id": "1-A-BPRO-3",
+   "map": "mq",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "clover-butterfly": 2,
+     "cottontail": 3,
+     "dormouse": 4,
+     "lucky-hopper": 4,
+     "robin-redbreast": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.52,
+     "ref": 0.225,
+     "gap": 0.22
+    }
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "clover-butterfly": 2,
+     "cottontail": 3,
+     "lucky-hopper": 4,
+     "jackrabbit-sprinter": 4,
+     "honey-bee": 3
+    },
+    "val": {
+     "v": 0.26,
+     "ref": 0.55,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.542,
+     "ref": 0.375,
+     "gap": 0.272
+    },
+    {
+     "move": "dormouse x4 -> jackrabbit-sprinter",
+     "v": 0.317,
+     "ref": 0.5,
+     "gap": 0.047,
+     "tried": 24
+    },
+    {
+     "move": "robin-redbreast x3 -> honey-bee",
+     "v": 0.217,
+     "ref": 0.725,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 559,
+   "sec": 107
+  }
+ ],
+ "drop": []
+}

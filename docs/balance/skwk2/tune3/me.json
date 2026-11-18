@@ -1,0 +1,74 @@
+{
+ "map": "me",
+ "generated": "2026-11-18T19:15:34.816Z",
+ "decks": [
+  {
+   "id": "20-A-PRO-1",
+   "map": "me",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "berserker-boar": 4,
+     "honey-badger-fury": 4,
+     "obsidian-scorpion": 3,
+     "stoat-cutthroat": 3,
+     "tide-spirit": 2,
+     "brimstone-hound": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.85,
+     "ref": 0.85,
+     "gap": 0
+    }
+   },
+   "pick": {
+    "deck": {
+     "honey-badger-fury": 4,
+     "obsidian-scorpion": 3,
+     "stoat-cutthroat": 3,
+     "tide-spirit": 2,
+     "brimstone-hound": 4,
+     "acorn-chipmunk": 4
+    },
+    "val": {
+     "v": 0.675,
+     "ref": 0.675,
+     "gap": 0
+    },
+    "leaders": [
+     "stoat-cutthroat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.883,
+     "ref": 0.883,
+     "gap": 0.103
+    },
+    {
+     "move": "berserker-boar x4 -> acorn-chipmunk",
+     "v": 0.6,
+     "ref": 0.6,
+     "gap": 0,
+     "tried": 30
+    }
+   ],
+   "readings": 35,
+   "sec": 172
+  }
+ ],
+ "drop": []
+}

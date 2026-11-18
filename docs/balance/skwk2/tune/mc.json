@@ -1,0 +1,264 @@
+{
+ "map": "mc",
+ "generated": "2026-11-18T11:52:13.549Z",
+ "decks": [
+  {
+   "id": "3-BPRO-1",
+   "map": "mc",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "conch-herald": 4,
+     "cormorant": 4,
+     "kittiwake-flock": 4,
+     "peregrine-stooper": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.325,
+     "ref": 0.5,
+     "gap": 0.025
+    }
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "conch-herald": 4,
+     "cormorant": 4,
+     "kittiwake-flock": 4,
+     "peregrine-stooper": 4
+    },
+    "val": {
+     "v": 0.325,
+     "ref": 0.5,
+     "gap": 0.025
+    },
+    "leaders": [
+     "conch-herald"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.275,
+     "ref": 0.55,
+     "gap": 0.005
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 58
+  },
+  {
+   "id": "3-BPRO-2",
+   "map": "mc",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "conch-herald": 4,
+     "cormorant": 4,
+     "eagle-sharpshooter": 4,
+     "peak-condor": 4,
+     "pika-hoarder": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.375,
+     "ref": 0.3,
+     "gap": 0.075
+    }
+   },
+   "pick": {
+    "deck": {
+     "conch-herald": 2,
+     "cormorant": 4,
+     "eagle-sharpshooter": 4,
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "beachcomber-sanderling": 2
+    },
+    "val": {
+     "v": 0.27,
+     "ref": 0.575,
+     "gap": 0
+    },
+    "leaders": [
+     "conch-herald"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.383,
+     "ref": 0.45,
+     "gap": 0.113
+    },
+    {
+     "move": "conch-herald -2 -> beachcomber-sanderling",
+     "v": 0.183,
+     "ref": 0.525,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 74
+  },
+  {
+   "id": "3-WPRO-1",
+   "map": "mc",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "beaver-lumberjack": 3,
+     "chipmunk-cavalry": 4,
+     "eagle-sharpshooter": 4,
+     "hawk-arrowkeeper": 4,
+     "peak-condor": 1,
+     "puffin-diver": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "eagle-sharpshooter": 4,
+     "hawk-arrowkeeper": 4,
+     "peak-condor": 1,
+     "puffin-diver": 4,
+     "balloon-archer": 3
+    },
+    "val": {
+     "v": 0.813,
+     "ref": 0.813,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: beaver-lumberjack -> balloon-archer",
+     "was": [
+      "beaver-lumberjack: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.85,
+     "ref": 0.85,
+     "gap": 0
+    }
+   ],
+   "readings": 12,
+   "sec": 10
+  },
+  {
+   "id": "3-WPRO-2",
+   "map": "mc",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "chipmunk-cavalry": 1,
+     "eagle-sharpshooter": 3,
+     "gannet-nestweaver": 4,
+     "gull-thief": 4,
+     "hawk-arrowkeeper": 4,
+     "peregrine-stooper": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.525,
+     "ref": 0.525,
+     "gap": 0
+    }
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-cavalry": 1,
+     "eagle-sharpshooter": 3,
+     "gannet-nestweaver": 4,
+     "gull-thief": 4,
+     "hawk-arrowkeeper": 4,
+     "feral-tomcat": 4
+    },
+    "val": {
+     "v": 0.8,
+     "ref": 0.8,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.467,
+     "ref": 0.467,
+     "gap": 0.133
+    },
+    {
+     "move": "peregrine-stooper x4 -> feral-tomcat",
+     "v": 0.733,
+     "ref": 0.733,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 29,
+   "sec": 30
+  }
+ ],
+ "drop": []
+}

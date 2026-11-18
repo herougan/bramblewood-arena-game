@@ -1,0 +1,150 @@
+{
+ "map": "m2",
+ "generated": "2026-11-18T11:54:43.889Z",
+ "decks": [
+  {
+   "id": "4-BPRO-1",
+   "map": "m2",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "conch-crawler": 4,
+     "drowned-matriarch": 4,
+     "kittiwake-flock": 4,
+     "shoal-shark": 4,
+     "water-shrew": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.74,
+     "ref": 0.125,
+     "gap": 0.44
+    }
+   },
+   "pick": {
+    "deck": {
+     "conch-crawler": 4,
+     "drowned-matriarch": 4,
+     "kittiwake-flock": 4,
+     "water-shrew": 4,
+     "lotus-frog": 2,
+     "pond-algae": 2
+    },
+    "val": {
+     "v": 0.29,
+     "ref": 0.3,
+     "gap": 0
+    },
+    "leaders": [
+     "drowned-matriarch"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.733,
+     "ref": 0.1,
+     "gap": 0.463
+    },
+    {
+     "move": "shoal-shark -2 -> lotus-frog",
+     "v": 0.475,
+     "ref": 0.2,
+     "gap": 0.205,
+     "tried": 24
+    },
+    {
+     "move": "shoal-shark -2 -> pond-algae",
+     "v": 0.225,
+     "ref": 0.4,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 579,
+   "sec": 117
+  },
+  {
+   "id": "4-WPRO-2",
+   "map": "m2",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "grass-snake": 4,
+     "muskrat-lodgekeeper": 4,
+     "platypus-spur": 4,
+     "river-mink": 4,
+     "water-shrew": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.4,
+     "ref": 0.4,
+     "gap": 0.1
+    }
+   },
+   "pick": {
+    "deck": {
+     "grass-snake": 4,
+     "muskrat-lodgekeeper": 4,
+     "platypus-spur": 4,
+     "river-mink": 2,
+     "water-shrew": 4,
+     "duck-paddler": 2
+    },
+    "val": {
+     "v": 0.413,
+     "ref": 0.413,
+     "gap": 0.088
+    },
+    "leaders": []
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.483,
+     "ref": 0.483,
+     "gap": 0.117
+    },
+    {
+     "move": "river-mink -2 -> duck-paddler",
+     "v": 0.583,
+     "ref": 0.583,
+     "gap": 0.017,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 57,
+   "sec": 33
+  }
+ ],
+ "drop": []
+}

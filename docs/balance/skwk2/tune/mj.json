@@ -1,0 +1,337 @@
+{
+ "map": "mj",
+ "generated": "2026-11-18T12:30:53.695Z",
+ "decks": [
+  {
+   "id": "10-A-BPRO-1",
+   "map": "mj",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "coral-polyp-colony": 4,
+     "krill-swarm": 4,
+     "reef-admiral": 2,
+     "sea-turtle-elder": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.93,
+     "ref": 0.025,
+     "gap": 0.63
+    }
+   },
+   "pick": {
+    "deck": {
+     "coral-current-eel": 3,
+     "krill-swarm": 4,
+     "reef-admiral": 2,
+     "sea-turtle-elder": 4,
+     "reef-shark": 4,
+     "kraken-spawnling": 3
+    },
+    "val": {
+     "v": 0.37,
+     "ref": 0.825,
+     "gap": 0.07
+    },
+    "leaders": [
+     "reef-admiral"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.958,
+     "ref": 0.075,
+     "gap": 0.688
+    },
+    {
+     "move": "coral-polyp-colony x4 -> reef-shark",
+     "v": 0.508,
+     "ref": 0.4,
+     "gap": 0.238,
+     "tried": 17
+    },
+    {
+     "move": "blue-ringed-octopus x3 -> kraken-spawnling",
+     "v": 0.283,
+     "ref": 0.725,
+     "gap": 0.013,
+     "tried": 20
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 622,
+   "sec": 183
+  },
+  {
+   "id": "10-A-BPRO-2",
+   "map": "mj",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "coral-polyp-colony": 4,
+     "moon-jelly": 4,
+     "reef-shark": 2,
+     "riptide-eel": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.915,
+     "ref": 0.05,
+     "gap": 0.615
+    }
+   },
+   "pick": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "reef-shark": 4,
+     "riptide-eel": 4,
+     "orca-vanguard": 4,
+     "reef-admiral": 2
+    },
+    "val": {
+     "v": 0.28,
+     "ref": 0.825,
+     "gap": 0
+    },
+    "leaders": [
+     "reef-admiral"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.958,
+     "ref": 0.075,
+     "gap": 0.688
+    },
+    {
+     "move": "coral-polyp-colony x4 -> orca-vanguard",
+     "v": 0.583,
+     "ref": 0.5,
+     "gap": 0.313,
+     "tried": 24
+    },
+    {
+     "move": "moon-jelly x4 -> mantis-shrimp",
+     "v": 0.242,
+     "ref": 0.8,
+     "gap": 0.04,
+     "tried": 24
+    },
+    {
+     "move": "mantis-shrimp x3 -> reef-admiral",
+     "v": 0.25,
+     "ref": 0.7,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 833,
+   "sec": 197
+  },
+  {
+   "id": "10-A-BPRO-3",
+   "map": "mj",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "blue-ringed-octopus": 2,
+     "coral-polyp-colony": 4,
+     "krill-swarm": 4,
+     "moon-jelly": 2,
+     "orca-vanguard": 4,
+     "reef-shark": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.9,
+     "ref": 0.125,
+     "gap": 0.6
+    }
+   },
+   "pick": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "moon-jelly": 2,
+     "reef-shark": 4,
+     "giant-clam": 4,
+     "kraken-spawnling": 4,
+     "mantis-shrimp": 3
+    },
+    "val": {
+     "v": 0.37,
+     "ref": 0.825,
+     "gap": 0.07
+    },
+    "leaders": [
+     "mantis-shrimp"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.9,
+     "ref": 0.05,
+     "gap": 0.63
+    },
+    {
+     "move": "coral-polyp-colony x4 -> giant-clam",
+     "v": 0.708,
+     "ref": 0.425,
+     "gap": 0.438,
+     "tried": 24
+    },
+    {
+     "move": "krill-swarm x4 -> kraken-spawnling",
+     "v": 0.333,
+     "ref": 0.75,
+     "gap": 0.063,
+     "tried": 24
+    },
+    {
+     "move": "orca-vanguard x4 -> mantis-shrimp",
+     "v": 0.292,
+     "ref": 0.75,
+     "gap": 0.022,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1107,
+   "sec": 271
+  },
+  {
+   "id": "10-A-BPRO-4",
+   "map": "mj",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "coral-polyp-colony": 4,
+     "giant-clam": 4,
+     "orca-vanguard": 3,
+     "reef-admiral": 2,
+     "reef-shark": 3,
+     "sea-turtle-elder": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.725,
+     "ref": 0.325,
+     "gap": 0.425
+    }
+   },
+   "pick": {
+    "deck": {
+     "giant-clam": 4,
+     "orca-vanguard": 4,
+     "reef-admiral": 2,
+     "reef-shark": 4,
+     "sea-turtle-elder": 4,
+     "mantis-shrimp": 2
+    },
+    "val": {
+     "v": 0.23,
+     "ref": 0.8,
+     "gap": 0
+    },
+    "leaders": [
+     "reef-admiral"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.8,
+     "ref": 0.25,
+     "gap": 0.53
+    },
+    {
+     "move": "coral-polyp-colony x4 -> mantis-shrimp",
+     "v": 0.208,
+     "ref": 0.825,
+     "gap": 0.09,
+     "tried": 24
+    },
+    {
+     "move": "mantis-shrimp -1 -> reef-shark",
+     "v": 0.175,
+     "ref": 0.8,
+     "gap": 0.045,
+     "tried": 21
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 21
+    }
+   ],
+   "readings": 711,
+   "sec": 256
+  }
+ ],
+ "drop": []
+}

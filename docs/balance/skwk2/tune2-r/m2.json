@@ -1,0 +1,75 @@
+{
+ "map": "m2",
+ "generated": "2026-11-18T15:00:32.861Z",
+ "decks": [
+  {
+   "id": "4-WPRO-2",
+   "map": "m2",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "grass-snake": 4,
+     "muskrat-lodgekeeper": 4,
+     "platypus-spur": 4,
+     "river-mink": 4,
+     "water-shrew": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.4,
+     "ref": 0.4,
+     "gap": 0.1
+    }
+   },
+   "pick": {
+    "deck": {
+     "grass-snake": 4,
+     "muskrat-lodgekeeper": 4,
+     "platypus-spur": 4,
+     "river-mink": 2,
+     "water-shrew": 4,
+     "duck-paddler": 2
+    },
+    "val": {
+     "v": 0.413,
+     "ref": 0.413,
+     "gap": 0.088
+    },
+    "leaders": []
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.483,
+     "ref": 0.483,
+     "gap": 0.117
+    },
+    {
+     "move": "river-mink -2 -> duck-paddler",
+     "v": 0.583,
+     "ref": 0.583,
+     "gap": 0.017,
+     "tried": 30
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 30
+    }
+   ],
+   "readings": 69,
+   "sec": 193
+  }
+ ],
+ "drop": []
+}

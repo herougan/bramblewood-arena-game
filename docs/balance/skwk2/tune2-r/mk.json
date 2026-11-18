@@ -1,0 +1,73 @@
+{
+ "map": "mk",
+ "generated": "2026-11-18T15:10:42.279Z",
+ "decks": [
+  {
+   "id": "9-BPRO-2",
+   "map": "mk",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.33,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.76,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "alligator-gar": 3,
+     "driftwood-crab": 4,
+     "giant-cave-huntsman": 3,
+     "ironclaw-fiddler": 3,
+     "mangrove-mudskipper": 4,
+     "fishing-cat": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.295,
+     "ref": 0.875,
+     "gap": 0.025
+    }
+   },
+   "pick": {
+    "deck": {
+     "alligator-gar": 3,
+     "driftwood-crab": 4,
+     "giant-cave-huntsman": 3,
+     "ironclaw-fiddler": 3,
+     "mangrove-mudskipper": 4,
+     "fishing-cat": 3
+    },
+    "val": {
+     "v": 0.295,
+     "ref": 0.875,
+     "gap": 0.025
+    },
+    "leaders": [
+     "ironclaw-fiddler"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.333,
+     "ref": 0.825,
+     "gap": 0.133
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 30
+    }
+   ],
+   "readings": 355,
+   "sec": 278
+  }
+ ],
+ "drop": []
+}

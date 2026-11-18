@@ -1,0 +1,156 @@
+{
+ "map": "mg",
+ "generated": "2026-11-18T11:38:32.856Z",
+ "decks": [
+  {
+   "id": "2-B-BPRO-1",
+   "map": "mg",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "driftwood-crab": 4,
+     "octopus-tactician": 3,
+     "pincushion-urchin": 4,
+     "raccoon-nightcrew": 4,
+     "rock-pool-starfish": 1,
+     "trash-panda-trickster": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.71,
+     "ref": 0.3,
+     "gap": 0.41
+    }
+   },
+   "pick": {
+    "deck": {
+     "driftwood-crab": 4,
+     "octopus-tactician": 3,
+     "pincushion-urchin": 2,
+     "rock-pool-starfish": 3,
+     "trash-panda-trickster": 4,
+     "old-shell": 4
+    },
+    "val": {
+     "v": 0.32,
+     "ref": 0.525,
+     "gap": 0.02
+    },
+    "leaders": [
+     "octopus-tactician"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.775,
+     "ref": 0.25,
+     "gap": 0.505
+    },
+    {
+     "move": "raccoon-nightcrew x4 -> old-shell",
+     "v": 0.325,
+     "ref": 0.475,
+     "gap": 0.055,
+     "tried": 24
+    },
+    {
+     "move": "pincushion-urchin -2 -> rock-pool-starfish",
+     "v": 0.25,
+     "ref": 0.475,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 113
+  },
+  {
+   "id": "2-B-BPRO-2",
+   "map": "mg",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "gull-thief": 4,
+     "limpet-clinger": 4,
+     "old-shell": 3,
+     "open-ocean-hermit-crab": 1,
+     "raccoon-nightcrew": 4,
+     "trash-panda-trickster": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.77,
+     "ref": 0.2,
+     "gap": 0.47
+    }
+   },
+   "pick": {
+    "deck": {
+     "gull-thief": 4,
+     "limpet-clinger": 4,
+     "old-shell": 3,
+     "open-ocean-hermit-crab": 1,
+     "trash-panda-trickster": 4,
+     "salvager-hermit-crab": 4
+    },
+    "val": {
+     "v": 0.155,
+     "ref": 0.65,
+     "gap": 0
+    },
+    "leaders": [
+     "old-shell"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.792,
+     "ref": 0.2,
+     "gap": 0.522
+    },
+    {
+     "move": "raccoon-nightcrew x4 -> salvager-hermit-crab",
+     "v": 0.175,
+     "ref": 0.5,
+     "gap": 0.005,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 127
+  }
+ ],
+ "drop": []
+}

@@ -1,0 +1,181 @@
+{
+ "map": "m7",
+ "generated": "2026-11-18T12:15:47.614Z",
+ "decks": [
+  {
+   "id": "10-BPRO-1",
+   "map": "m7",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "clownfish-scout": 4,
+     "conch-crawler": 4,
+     "crown-of-thorns-star": 2,
+     "dolphin-knight": 3,
+     "krill-swarm": 3,
+     "moon-jelly": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.98,
+     "ref": 0.2,
+     "gap": 0.68
+    }
+   },
+   "pick": {
+    "deck": {
+     "clownfish-scout": 4,
+     "orca-vanguard": 3,
+     "ironclaw-fiddler": 3,
+     "voltaic-eel": 3,
+     "sea-turtle-elder": 4,
+     "fiddler-crab-swarm": 3
+    },
+    "val": {
+     "v": 0.32,
+     "ref": 0.8,
+     "gap": 0.02
+    },
+    "leaders": [
+     "ironclaw-fiddler"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 1,
+     "ref": 0.075,
+     "gap": 0.73
+    },
+    {
+     "move": "dolphin-knight x3 -> orca-vanguard",
+     "v": 0.925,
+     "ref": 0.175,
+     "gap": 0.655,
+     "tried": 24
+    },
+    {
+     "move": "krill-swarm x3 -> ironclaw-fiddler",
+     "v": 0.8,
+     "ref": 0.325,
+     "gap": 0.53,
+     "tried": 24
+    },
+    {
+     "move": "moon-jelly x4 -> voltaic-eel",
+     "v": 0.542,
+     "ref": 0.7,
+     "gap": 0.272,
+     "tried": 24
+    },
+    {
+     "move": "conch-crawler x4 -> sea-turtle-elder",
+     "v": 0.375,
+     "ref": 0.775,
+     "gap": 0.105,
+     "tried": 24
+    },
+    {
+     "move": "crown-of-thorns-star x3 -> fiddler-crab-swarm",
+     "v": 0.283,
+     "ref": 0.575,
+     "gap": 0.013,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1654,
+   "sec": 274
+  },
+  {
+   "id": "10-BPRO-2",
+   "map": "m7",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "clownfish-scout": 4,
+     "dolphin-knight": 3,
+     "ironclaw-fiddler": 3,
+     "krill-swarm": 3,
+     "reef-shark": 4,
+     "voltaic-eel": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.725,
+     "ref": 0.575,
+     "gap": 0.425
+    }
+   },
+   "pick": {
+    "deck": {
+     "clownfish-scout": 4,
+     "ironclaw-fiddler": 3,
+     "krill-swarm": 3,
+     "reef-shark": 4,
+     "voltaic-eel": 3,
+     "kraken-spawnling": 3
+    },
+    "val": {
+     "v": 0.43,
+     "ref": 0.75,
+     "gap": 0.13
+    },
+    "leaders": [
+     "ironclaw-fiddler"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.733,
+     "ref": 0.55,
+     "gap": 0.463
+    },
+    {
+     "move": "dolphin-knight x3 -> kraken-spawnling",
+     "v": 0.45,
+     "ref": 0.725,
+     "gap": 0.18,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 96
+  }
+ ],
+ "drop": []
+}

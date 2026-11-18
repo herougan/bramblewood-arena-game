@@ -1,0 +1,219 @@
+{
+ "map": "m3",
+ "generated": "2026-11-18T14:03:42.251Z",
+ "decks": [
+  {
+   "id": "19-BPRO-1",
+   "map": "m3",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "caustic-scorpion": 3,
+     "fire-salamander": 4,
+     "horned-lizard": 4,
+     "pinecone-sapper": 4,
+     "polar-bear": 1,
+     "smoke-raccoon": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.6,
+     "ref": 0.875,
+     "gap": 0.325
+    }
+   },
+   "pick": {
+    "deck": {
+     "caustic-scorpion": 3,
+     "fire-salamander": 4,
+     "horned-lizard": 4,
+     "pinecone-sapper": 4,
+     "polar-bear": 1,
+     "smoke-raccoon": 4
+    },
+    "val": {
+     "v": 0.6,
+     "ref": 0.875,
+     "gap": 0.325
+    },
+    "leaders": [
+     "polar-bear"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.517,
+     "ref": 0.8,
+     "gap": 0.287
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 507
+  },
+  {
+   "id": "19-BPRO-2",
+   "map": "m3",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "armadillo-guard": 4,
+     "horned-lizard": 4,
+     "obsidian-scorpion": 3,
+     "pinecone-sapper": 4,
+     "quillback-elder": 4,
+     "stalactite-golem": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.66,
+     "ref": 0.825,
+     "gap": 0.36
+    }
+   },
+   "pick": {
+    "deck": {
+     "armadillo-guard": 4,
+     "horned-lizard": 4,
+     "pinecone-sapper": 4,
+     "quillback-elder": 4,
+     "stalactite-golem": 1,
+     "honey-badger-fury": 3
+    },
+    "val": {
+     "v": 0.455,
+     "ref": 0.775,
+     "gap": 0.155
+    },
+    "leaders": [
+     "horned-lizard"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.75,
+     "ref": 0.75,
+     "gap": 0.48
+    },
+    {
+     "move": "obsidian-scorpion x3 -> honey-badger-fury",
+     "v": 0.475,
+     "ref": 0.675,
+     "gap": 0.205,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 579,
+   "sec": 427
+  },
+  {
+   "id": "19-BPRO-3",
+   "map": "m3",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "glacier-yak": 4,
+     "horned-lizard": 4,
+     "pinecone-sapper": 4,
+     "polar-bear": 2,
+     "stalactite-golem": 4,
+     "walrus-icebreaker": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.475,
+     "ref": 0.95,
+     "gap": 0.275
+    }
+   },
+   "pick": {
+    "deck": {
+     "glacier-yak": 4,
+     "horned-lizard": 4,
+     "polar-bear": 2,
+     "stalactite-golem": 4,
+     "walrus-icebreaker": 2,
+     "armadillo-guard": 4
+    },
+    "val": {
+     "v": 0.355,
+     "ref": 0.9,
+     "gap": 0.105
+    },
+    "leaders": [
+     "walrus-icebreaker"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.508,
+     "ref": 0.85,
+     "gap": 0.378
+    },
+    {
+     "move": "pinecone-sapper x4 -> armadillo-guard",
+     "v": 0.417,
+     "ref": 0.825,
+     "gap": 0.237,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 538,
+   "sec": 675
+  }
+ ],
+ "drop": []
+}

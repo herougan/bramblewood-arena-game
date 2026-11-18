@@ -1,0 +1,248 @@
+{
+ "map": "mo",
+ "generated": "2026-11-18T11:09:44.488Z",
+ "decks": [
+  {
+   "id": "0-B-BPRO-1",
+   "map": "mo",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "barkplate-beetle": 4,
+     "bramble-sprout": 4,
+     "cricket-drummer": 4,
+     "ent": 2,
+     "farm-dog": 4,
+     "quill-thorn-boar": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.93,
+     "ref": 0.375,
+     "gap": 0.63
+    }
+   },
+   "pick": {
+    "deck": {
+     "bramble-sprout": 4,
+     "cricket-drummer": 4,
+     "ent": 2,
+     "quill-thorn-boar": 2,
+     "elder-willow": 4,
+     "proboscis-monkey": 4
+    },
+    "val": {
+     "v": 0.45,
+     "ref": 0.825,
+     "gap": 0.15
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.9,
+     "ref": 0.525,
+     "gap": 0.63
+    },
+    {
+     "move": "barkplate-beetle x4 -> elder-willow",
+     "v": 0.642,
+     "ref": 0.675,
+     "gap": 0.372,
+     "tried": 24
+    },
+    {
+     "move": "farm-dog x4 -> proboscis-monkey",
+     "v": 0.45,
+     "ref": 0.8,
+     "gap": 0.22,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 843,
+   "sec": 156
+  },
+  {
+   "id": "0-B-BPRO-2",
+   "map": "mo",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramblewood-lynx": 3,
+     "cricket-drummer": 4,
+     "earthworm": 4,
+     "ent": 2,
+     "farm-dog": 4,
+     "proboscis-monkey": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.82,
+     "ref": 0.35,
+     "gap": 0.52
+    }
+   },
+   "pick": {
+    "deck": {
+     "cricket-drummer": 4,
+     "earthworm": 4,
+     "farm-dog": 4,
+     "proboscis-monkey": 1,
+     "elder-willow": 4,
+     "thorn-shrike": 3
+    },
+    "val": {
+     "v": 0.31,
+     "ref": 0.725,
+     "gap": 0.01
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.8,
+     "ref": 0.475,
+     "gap": 0.53
+    },
+    {
+     "move": "ent -2 -> elder-willow",
+     "v": 0.55,
+     "ref": 0.65,
+     "gap": 0.28,
+     "tried": 24
+    },
+    {
+     "move": "proboscis-monkey -2 -> elder-willow",
+     "v": 0.417,
+     "ref": 0.75,
+     "gap": 0.147,
+     "tried": 24
+    },
+    {
+     "move": "bramblewood-lynx x3 -> thorn-shrike",
+     "v": 0.3,
+     "ref": 0.775,
+     "gap": 0.03,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1117,
+   "sec": 192
+  },
+  {
+   "id": "0-B-BPRO-3",
+   "map": "mo",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramblewood-lynx": 3,
+     "cricket-drummer": 4,
+     "ent": 3,
+     "platypus-spur": 4,
+     "strangler-vine": 3,
+     "wolf-spider-mother": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.82,
+     "ref": 0.525,
+     "gap": 0.52
+    }
+   },
+   "pick": {
+    "deck": {
+     "bramblewood-lynx": 3,
+     "cricket-drummer": 4,
+     "platypus-spur": 4,
+     "wolf-spider-mother": 3,
+     "elder-willow": 3,
+     "quill-thorn-boar": 3
+    },
+    "val": {
+     "v": 0.32,
+     "ref": 0.85,
+     "gap": 0.02
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.75,
+     "ref": 0.475,
+     "gap": 0.48
+    },
+    {
+     "move": "ent x3 -> elder-willow",
+     "v": 0.383,
+     "ref": 0.625,
+     "gap": 0.113,
+     "tried": 24
+    },
+    {
+     "move": "strangler-vine x3 -> quill-thorn-boar",
+     "v": 0.292,
+     "ref": 0.75,
+     "gap": 0.022,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 792,
+   "sec": 121
+  }
+ ],
+ "drop": []
+}

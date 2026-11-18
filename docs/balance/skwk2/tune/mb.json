@@ -1,0 +1,395 @@
+{
+ "map": "mb",
+ "generated": "2026-11-18T11:34:33.161Z",
+ "decks": [
+  {
+   "id": "2-BPRO-1",
+   "map": "mb",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beachcomber-sanderling": 1,
+     "hedgerow-shrew": 3,
+     "moonlit-hare": 4,
+     "old-shell": 4,
+     "pincushion-urchin": 4,
+     "robin-redbreast": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "hedgerow-shrew": 3,
+     "old-shell": 4,
+     "pincushion-urchin": 4,
+     "oystercatcher": 1,
+     "gull-thief": 4,
+     "conch-crawler": 4
+    },
+    "val": {
+     "v": 0.3,
+     "ref": 0.825,
+     "gap": 0
+    },
+    "leaders": [
+     "old-shell"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: beachcomber-sanderling -> oystercatcher",
+     "was": [
+      "beachcomber-sanderling: off the bpro pool",
+      "beachcomber-sanderling: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "beachcomber-sanderling: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.733,
+     "ref": 0.325,
+     "gap": 0.463
+    },
+    {
+     "move": "robin-redbreast x4 -> gull-thief",
+     "v": 0.467,
+     "ref": 0.725,
+     "gap": 0.197,
+     "tried": 24
+    },
+    {
+     "move": "moonlit-hare x4 -> conch-crawler",
+     "v": 0.367,
+     "ref": 0.775,
+     "gap": 0.097,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 893,
+   "sec": 219
+  },
+  {
+   "id": "2-BPRO-2",
+   "map": "mb",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beachcomber-sanderling": 3,
+     "driftwood-crab": 3,
+     "limpet-clinger": 4,
+     "old-shell": 2,
+     "robin-redbreast": 4,
+     "rock-pool-starfish": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "driftwood-crab": 3,
+     "limpet-clinger": 4,
+     "old-shell": 2,
+     "rock-pool-starfish": 4,
+     "salvager-hermit-crab": 3,
+     "puddle-skimmer": 4
+    },
+    "val": {
+     "v": 0.385,
+     "ref": 0.75,
+     "gap": 0.085
+    },
+    "leaders": [
+     "old-shell"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: beachcomber-sanderling -> salvager-hermit-crab",
+     "was": [
+      "beachcomber-sanderling: off the bpro pool",
+      "beachcomber-sanderling: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "beachcomber-sanderling: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.667,
+     "ref": 0.425,
+     "gap": 0.397
+    },
+    {
+     "move": "robin-redbreast x4 -> puddle-skimmer",
+     "v": 0.367,
+     "ref": 0.75,
+     "gap": 0.097,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 589,
+   "sec": 133
+  },
+  {
+   "id": "2-BPRO-3",
+   "map": "mb",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "duck-paddler": 4,
+     "limpet-clinger": 4,
+     "old-shell": 4,
+     "pincushion-urchin": 4,
+     "rock-pool-starfish": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.455,
+     "ref": 0.7,
+     "gap": 0.155
+    }
+   },
+   "pick": {
+    "deck": {
+     "duck-paddler": 4,
+     "limpet-clinger": 4,
+     "pincushion-urchin": 4,
+     "rock-pool-starfish": 2,
+     "puddle-skimmer": 2,
+     "moonlit-hare": 4
+    },
+    "val": {
+     "v": 0.29,
+     "ref": 0.825,
+     "gap": 0
+    },
+    "leaders": [
+     "puddle-skimmer"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.492,
+     "ref": 0.6,
+     "gap": 0.222
+    },
+    {
+     "move": "rock-pool-starfish -2 -> puddle-skimmer",
+     "v": 0.367,
+     "ref": 0.65,
+     "gap": 0.097,
+     "tried": 24
+    },
+    {
+     "move": "old-shell x4 -> moonlit-hare",
+     "v": 0.25,
+     "ref": 0.675,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 137
+  },
+  {
+   "id": "2-BPRO-4",
+   "map": "mb",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "driftwood-crab": 4,
+     "duck-paddler": 2,
+     "moonlit-hare": 3,
+     "open-ocean-hermit-crab": 4,
+     "robin-redbreast": 3,
+     "rock-pool-starfish": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.81,
+     "ref": 0.4,
+     "gap": 0.51
+    }
+   },
+   "pick": {
+    "deck": {
+     "duck-paddler": 2,
+     "moonlit-hare": 3,
+     "rock-pool-starfish": 4,
+     "salvager-hermit-crab": 3,
+     "conch-crawler": 4,
+     "hedgerow-shrew": 4
+    },
+    "val": {
+     "v": 0.305,
+     "ref": 0.725,
+     "gap": 0.005
+    },
+    "leaders": [
+     "moonlit-hare"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.85,
+     "ref": 0.4,
+     "gap": 0.58
+    },
+    {
+     "move": "robin-redbreast x3 -> salvager-hermit-crab",
+     "v": 0.658,
+     "ref": 0.575,
+     "gap": 0.388,
+     "tried": 24
+    },
+    {
+     "move": "open-ocean-hermit-crab x4 -> conch-crawler",
+     "v": 0.508,
+     "ref": 0.575,
+     "gap": 0.238,
+     "tried": 24
+    },
+    {
+     "move": "driftwood-crab x4 -> old-shell",
+     "v": 0.3,
+     "ref": 0.725,
+     "gap": 0.03,
+     "tried": 24
+    },
+    {
+     "move": "old-shell x4 -> hedgerow-shrew",
+     "v": 0.258,
+     "ref": 0.75,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 1107,
+   "sec": 263
+  },
+  {
+   "id": "2-WPRO-1",
+   "map": "mb",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "duck-paddler": 4,
+     "gull-thief": 2,
+     "hedgerow-shrew": 2,
+     "pincushion-urchin": 4,
+     "puddle-skimmer": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "duck-paddler": 4,
+     "gull-thief": 2,
+     "hedgerow-shrew": 2,
+     "pincushion-urchin": 4,
+     "puddle-skimmer": 4,
+     "conch-crawler": 4
+    },
+    "val": {
+     "v": 0.85,
+     "ref": 0.85,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: beaver-lumberjack -> conch-crawler",
+     "was": [
+      "beaver-lumberjack: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.7,
+     "ref": 0.7,
+     "gap": 0
+    }
+   ],
+   "readings": 13,
+   "sec": 13
+  }
+ ],
+ "drop": [
+  "2-PRO-2"
+ ]
+}

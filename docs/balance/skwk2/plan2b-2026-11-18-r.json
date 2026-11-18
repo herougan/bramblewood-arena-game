@@ -1,0 +1,95 @@
+{
+ "about": "SKWK2 pass 2, group R (aim: ladder 18-33%, Map reference 76% or under); marginal decks (31-34% vs the ladder, or the Map reference within 5 points of 85%) left out; pass 2b (stopped and narrowed): only the decks too strong vs the ladder with room under the 85% line",
+ "maps": {
+  "mo": {
+   "tune": [
+    "0-B-BPRO-1"
+   ],
+   "drop": []
+  },
+  "mb": {
+   "tune": [
+    "2-BPRO-2"
+   ],
+   "drop": []
+  },
+  "m2": {
+   "tune": [
+    "4-WPRO-2"
+   ],
+   "drop": []
+  },
+  "ms": {
+   "tune": [
+    "5-A-BPRO-4"
+   ],
+   "drop": []
+  },
+  "mn": {
+   "tune": [
+    "8-A-BPRO-3"
+   ],
+   "drop": []
+  },
+  "mk": {
+   "tune": [
+    "9-BPRO-2"
+   ],
+   "drop": []
+  },
+  "m7": {
+   "tune": [
+    "10-BPRO-2"
+   ],
+   "drop": []
+  },
+  "m10": {
+   "tune": [
+    "11-BPRO-2",
+    "11-BPRO-4"
+   ],
+   "drop": []
+  },
+  "m5": {
+   "tune": [
+    "14-BPRO-1",
+    "14-BPRO-2",
+    "14-BPRO-3"
+   ],
+   "drop": []
+  },
+  "m6": {
+   "tune": [
+    "17-BPRO-1",
+    "17-BPRO-2"
+   ],
+   "drop": []
+  },
+  "mi": {
+   "tune": [
+    "17-A-BPRO-1",
+    "17-A-BPRO-2"
+   ],
+   "drop": []
+  },
+  "md": {
+   "tune": [
+    "18-BPRO-1",
+    "18-BPRO-2"
+   ],
+   "drop": []
+  },
+  "mx": {
+   "tune": [
+    "20-B-BPRO-2"
+   ],
+   "drop": []
+  },
+  "mt": {
+   "tune": [
+    "16-BPRO-1"
+   ],
+   "drop": []
+  }
+ }
+}

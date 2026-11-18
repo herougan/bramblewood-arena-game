@@ -1,0 +1,227 @@
+{
+ "map": "mz",
+ "generated": "2026-11-18T11:44:15.926Z",
+ "decks": [
+  {
+   "id": "7-A-BPRO-1",
+   "map": "mz",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bombardier-beetle": 3,
+     "earthworm": 3,
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 2,
+     "puffball-bombardier": 4,
+     "sleepless-shrew": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.045,
+     "ref": 0.7,
+     "gap": 0.105
+    }
+   },
+   "pick": {
+    "deck": {
+     "bombardier-beetle": 3,
+     "earthworm": 4,
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 2,
+     "puffball-bombardier": 4,
+     "sleepless-shrew": 3
+    },
+    "val": {
+     "v": 0.045,
+     "ref": 0.95,
+     "gap": 0.205
+    },
+    "leaders": [
+     "bombardier-beetle"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.025,
+     "ref": 0.825,
+     "gap": 0.245
+    },
+    {
+     "move": "sleepless-shrew -1 -> earthworm",
+     "v": 0.05,
+     "ref": 0.8,
+     "gap": 0.17,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 549,
+   "sec": 154
+  },
+  {
+   "id": "7-A-BPRO-2",
+   "map": "mz",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "fungus-gnat-cloud": 4,
+     "hawthorn-shieldbug": 4,
+     "leopard-slug": 4,
+     "millipede-hauler": 4,
+     "sleepless-shrew": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.015,
+     "ref": 0.925,
+     "gap": 0.21
+    }
+   },
+   "pick": {
+    "deck": {
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 4,
+     "millipede-hauler": 4,
+     "sleepless-shrew": 4,
+     "planarian-splitter": 4
+    },
+    "val": {
+     "v": 0.055,
+     "ref": 0.825,
+     "gap": 0.095
+    },
+    "leaders": [
+     "millipede-hauler"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0,
+     "ref": 0.925,
+     "gap": 0.47
+    },
+    {
+     "move": "hawthorn-shieldbug -2 -> planarian-splitter",
+     "v": 0.025,
+     "ref": 0.825,
+     "gap": 0.245,
+     "tried": 24
+    },
+    {
+     "move": "hawthorn-shieldbug -2 -> planarian-splitter",
+     "v": 0.058,
+     "ref": 0.775,
+     "gap": 0.122,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 813,
+   "sec": 265
+  },
+  {
+   "id": "7-A-BPRO-3",
+   "map": "mz",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bombardier-beetle": 4,
+     "fungus-gnat-cloud": 3,
+     "hawthorn-shieldbug": 4,
+     "leopard-slug": 3,
+     "planarian-splitter": 4,
+     "puffball-bombardier": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.045,
+     "ref": 0.85,
+     "gap": 0.105
+    }
+   },
+   "pick": {
+    "deck": {
+     "bombardier-beetle": 4,
+     "fungus-gnat-cloud": 3,
+     "hawthorn-shieldbug": 4,
+     "leopard-slug": 3,
+     "planarian-splitter": 4,
+     "puffball-bombardier": 2
+    },
+    "val": {
+     "v": 0.045,
+     "ref": 0.85,
+     "gap": 0.105
+    },
+    "leaders": [
+     "bombardier-beetle"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.033,
+     "ref": 0.725,
+     "gap": 0.147
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 84
+  }
+ ],
+ "drop": [
+  "7-A-PRO-2",
+  "7-A-PRO-3"
+ ]
+}

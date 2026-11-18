@@ -1,0 +1,288 @@
+{
+ "map": "mp",
+ "generated": "2026-11-18T11:49:21.331Z",
+ "decks": [
+  {
+   "id": "2-A-BPRO-1",
+   "map": "mp",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beaver-lumberjack": 3,
+     "muskrat-lodgekeeper": 1,
+     "muskrat-reedgatherer": 4,
+     "raft-spider": 4,
+     "snapstick-turtle": 4,
+     "water-shrew": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.665,
+     "ref": 0,
+     "gap": 0.365
+    }
+   },
+   "pick": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "raft-spider": 4,
+     "snapstick-turtle": 4,
+     "water-shrew": 4,
+     "riverworks-bastion": 4
+    },
+    "val": {
+     "v": 0.19,
+     "ref": 0.5,
+     "gap": 0
+    },
+    "leaders": [
+     "riverworks-bastion"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.642,
+     "ref": 0.025,
+     "gap": 0.372
+    },
+    {
+     "move": "muskrat-reedgatherer x4 -> riverworks-bastion",
+     "v": 0.292,
+     "ref": 0.275,
+     "gap": 0.022,
+     "tried": 24
+    },
+    {
+     "move": "muskrat-lodgekeeper -1 -> beaver-lumberjack",
+     "v": 0.233,
+     "ref": 0.45,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 177
+  },
+  {
+   "id": "2-A-BPRO-2",
+   "map": "mp",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "duck-paddler": 4,
+     "muskrat-lodgekeeper": 4,
+     "old-shell": 4,
+     "raft-spider": 3,
+     "water-shrew": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.375,
+     "ref": 0.075,
+     "gap": 0.075
+    }
+   },
+   "pick": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "duck-paddler": 4,
+     "muskrat-lodgekeeper": 4,
+     "old-shell": 4,
+     "raft-spider": 3,
+     "pond-algae": 1
+    },
+    "val": {
+     "v": 0.36,
+     "ref": 0.15,
+     "gap": 0.06
+    },
+    "leaders": [
+     "old-shell"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.308,
+     "ref": 0.1,
+     "gap": 0.038
+    },
+    {
+     "move": "water-shrew -1 -> pond-algae",
+     "v": 0.225,
+     "ref": 0.1,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 169
+  },
+  {
+   "id": "2-A-BPRO-3",
+   "map": "mp",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "duck-paddler": 4,
+     "lodge-engineer": 4,
+     "muskrat-reedgatherer": 2,
+     "old-sturgeon": 3,
+     "snapstick-turtle": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.385,
+     "ref": 0.1,
+     "gap": 0.085
+    }
+   },
+   "pick": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "duck-paddler": 4,
+     "lodge-engineer": 4,
+     "muskrat-reedgatherer": 2,
+     "old-sturgeon": 4,
+     "snapstick-turtle": 2
+    },
+    "val": {
+     "v": 0.305,
+     "ref": 0.15,
+     "gap": 0.005
+    },
+    "leaders": [
+     "lodge-engineer"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.4,
+     "ref": 0.2,
+     "gap": 0.13
+    },
+    {
+     "move": "snapstick-turtle -1 -> old-sturgeon",
+     "v": 0.242,
+     "ref": 0.2,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 144
+  },
+  {
+   "id": "2-A-BPRO-4",
+   "map": "mp",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "lodge-engineer": 4,
+     "muskrat-reedgatherer": 4,
+     "old-shell": 4,
+     "riverworks-bastion": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.055,
+     "ref": 0.575,
+     "gap": 0.095
+    }
+   },
+   "pick": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "lodge-engineer": 2,
+     "muskrat-reedgatherer": 4,
+     "old-shell": 4,
+     "riverworks-bastion": 4,
+     "snapstick-turtle": 2
+    },
+    "val": {
+     "v": 0.245,
+     "ref": 0.35,
+     "gap": 0
+    },
+    "leaders": [
+     "lodge-engineer"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.058,
+     "ref": 0.325,
+     "gap": 0.122
+    },
+    {
+     "move": "lodge-engineer -2 -> snapstick-turtle",
+     "v": 0.233,
+     "ref": 0.25,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 158
+  }
+ ],
+ "drop": []
+}

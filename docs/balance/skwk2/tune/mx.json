@@ -1,0 +1,243 @@
+{
+ "map": "mx",
+ "generated": "2026-11-18T13:21:51.934Z",
+ "decks": [
+  {
+   "id": "20-B-BPRO-1",
+   "map": "mx",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cataphract-destrier": 4,
+     "cinder-hornet": 4,
+     "eagle-sharpshooter": 4,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.54,
+     "ref": 0.525,
+     "gap": 0.24
+    }
+   },
+   "pick": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cataphract-destrier": 4,
+     "cinder-hornet": 4,
+     "eagle-sharpshooter": 4,
+     "magma-salamander": 2,
+     "ash-moth": 3
+    },
+    "val": {
+     "v": 0.34,
+     "ref": 0.75,
+     "gap": 0.04
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.45,
+     "ref": 0.525,
+     "gap": 0.18
+    },
+    {
+     "move": "obsidian-scorpion x3 -> ash-moth",
+     "v": 0.192,
+     "ref": 0.85,
+     "gap": 0.14,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 518,
+   "sec": 122
+  },
+  {
+   "id": "20-B-BPRO-2",
+   "map": "mx",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 4,
+     "cinder-hornet": 4,
+     "deep-cave-troll": 4,
+     "fire-salamander": 3,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.615,
+     "ref": 0.55,
+     "gap": 0.315
+    }
+   },
+   "pick": {
+    "deck": {
+     "basalt-boar": 4,
+     "cinder-hornet": 4,
+     "deep-cave-troll": 4,
+     "magma-salamander": 2,
+     "vampire-roost": 3,
+     "granite-ox-golem": 3
+    },
+    "val": {
+     "v": 0.185,
+     "ref": 0.925,
+     "gap": 0.075
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.625,
+     "ref": 0.575,
+     "gap": 0.355
+    },
+    {
+     "move": "obsidian-scorpion x3 -> vampire-roost",
+     "v": 0.375,
+     "ref": 0.775,
+     "gap": 0.105,
+     "tried": 24
+    },
+    {
+     "move": "fire-salamander x3 -> granite-ox-golem",
+     "v": 0.208,
+     "ref": 0.75,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 169
+  },
+  {
+   "id": "20-B-BPRO-3",
+   "map": "mx",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 4,
+     "caldera-wyrm": 1,
+     "eagle-sharpshooter": 4,
+     "fire-salamander": 4,
+     "obsidian-scorpion": 3,
+     "stalactite-golem": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.165,
+     "ref": 0.95,
+     "gap": 0.1
+    }
+   },
+   "pick": {
+    "deck": {
+     "eagle-sharpshooter": 4,
+     "fire-salamander": 4,
+     "obsidian-scorpion": 3,
+     "stalactite-golem": 4,
+     "ur-elk": 2,
+     "frillneck-duelist": 3
+    },
+    "val": {
+     "v": 0.395,
+     "ref": 0.65,
+     "gap": 0.095
+    },
+    "leaders": [
+     "ur-elk"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.2,
+     "ref": 0.925,
+     "gap": 0.29
+    },
+    {
+     "move": "basalt-boar x4 -> ancient-sloth-titan",
+     "v": 0.208,
+     "ref": 0.9,
+     "gap": 0.24,
+     "tried": 24
+    },
+    {
+     "move": "caldera-wyrm -1 -> ur-elk",
+     "v": 0.208,
+     "ref": 0.875,
+     "gap": 0.19,
+     "tried": 24
+    },
+    {
+     "move": "ancient-sloth-titan x4 -> frillneck-duelist",
+     "v": 0.275,
+     "ref": 0.7,
+     "gap": 0.005,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1127,
+   "sec": 288
+  }
+ ],
+ "drop": []
+}

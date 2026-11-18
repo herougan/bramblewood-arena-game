@@ -1,0 +1,252 @@
+{
+ "map": "mt",
+ "generated": "2026-11-18T13:09:05.327Z",
+ "decks": [
+  {
+   "id": "16-BPRO-1",
+   "map": "mt",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cone-cutter-squirrel": 2,
+     "golden-eagle-diver": 4,
+     "mallard-marauder": 2,
+     "mountain-hare": 4,
+     "snowshoe-hare": 4,
+     "upside-down-bat": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.525,
+     "ref": 0.7,
+     "gap": 0.225
+    }
+   },
+   "pick": {
+    "deck": {
+     "cone-cutter-squirrel": 2,
+     "golden-eagle-diver": 4,
+     "mallard-marauder": 3,
+     "snowshoe-hare": 4,
+     "upside-down-bat": 3,
+     "grizzly-vanguard": 4
+    },
+    "val": {
+     "v": 0.25,
+     "ref": 0.9,
+     "gap": 0.05
+    },
+    "leaders": [
+     "mallard-marauder"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.6,
+     "ref": 0.65,
+     "gap": 0.33
+    },
+    {
+     "move": "mountain-hare x4 -> grizzly-vanguard",
+     "v": 0.317,
+     "ref": 0.875,
+     "gap": 0.237,
+     "tried": 24
+    },
+    {
+     "move": "upside-down-bat -1 -> mallard-marauder",
+     "v": 0.267,
+     "ref": 0.8,
+     "gap": 0.04,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 853,
+   "sec": 411
+  },
+  {
+   "id": "16-BPRO-2",
+   "map": "mt",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cone-cutter-squirrel": 4,
+     "farm-dog": 4,
+     "mountain-hare": 4,
+     "owl-sentinel": 4,
+     "upside-down-bat": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.57,
+     "ref": 0.75,
+     "gap": 0.27
+    }
+   },
+   "pick": {
+    "deck": {
+     "mountain-hare": 4,
+     "owl-sentinel": 4,
+     "upside-down-bat": 4,
+     "raft-spider": 4,
+     "puffin-diver": 4
+    },
+    "val": {
+     "v": 0.445,
+     "ref": 0.8,
+     "gap": 0.145
+    },
+    "leaders": [
+     "upside-down-bat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.592,
+     "ref": 0.775,
+     "gap": 0.322
+    },
+    {
+     "move": "farm-dog x4 -> raft-spider",
+     "v": 0.542,
+     "ref": 0.725,
+     "gap": 0.272,
+     "tried": 24
+    },
+    {
+     "move": "cone-cutter-squirrel x4 -> puffin-diver",
+     "v": 0.392,
+     "ref": 0.725,
+     "gap": 0.122,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 853,
+   "sec": 320
+  },
+  {
+   "id": "16-BPRO-3",
+   "map": "mt",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cone-cutter-squirrel": 4,
+     "farm-dog": 4,
+     "golden-eagle-diver": 4,
+     "mountain-hare": 2,
+     "sworn-shieldbearer": 2,
+     "woodland-caribou": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.74,
+     "ref": 0.45,
+     "gap": 0.44
+    }
+   },
+   "pick": {
+    "deck": {
+     "farm-dog": 4,
+     "golden-eagle-diver": 4,
+     "sworn-shieldbearer": 2,
+     "woodland-caribou": 4,
+     "boreal-elk": 4,
+     "raft-spider": 2
+    },
+    "val": {
+     "v": 0.155,
+     "ref": 0.85,
+     "gap": 0
+    },
+    "leaders": [
+     "sworn-shieldbearer"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.667,
+     "ref": 0.6,
+     "gap": 0.397
+    },
+    {
+     "move": "cone-cutter-squirrel x4 -> siege-rhino",
+     "v": 0.525,
+     "ref": 0.75,
+     "gap": 0.255,
+     "tried": 24
+    },
+    {
+     "move": "mountain-hare x4 -> boreal-elk",
+     "v": 0.308,
+     "ref": 0.825,
+     "gap": 0.128,
+     "tried": 24
+    },
+    {
+     "move": "siege-rhino -2 -> raft-spider",
+     "v": 0.25,
+     "ref": 0.8,
+     "gap": 0.04,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1117,
+   "sec": 454
+  }
+ ],
+ "drop": []
+}

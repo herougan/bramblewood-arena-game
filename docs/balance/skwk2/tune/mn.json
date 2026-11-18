@@ -1,0 +1,325 @@
+{
+ "map": "mn",
+ "generated": "2026-11-18T12:04:40.907Z",
+ "decks": [
+  {
+   "id": "8-A-BPRO-1",
+   "map": "mn",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "blind-cave-fish": 4,
+     "echo-matriarch": 2,
+     "fruit-bat": 4,
+     "glow-worm": 4,
+     "sulfur-cinder-moth": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.78,
+     "ref": 0.225,
+     "gap": 0.48
+    }
+   },
+   "pick": {
+    "deck": {
+     "barrow-leech-bat": 2,
+     "blind-cave-fish": 4,
+     "glow-worm": 4,
+     "sulfur-cinder-moth": 4,
+     "stalactite-golem": 4,
+     "gallery-orb-weaver": 2
+    },
+    "val": {
+     "v": 0.305,
+     "ref": 0.775,
+     "gap": 0.005
+    },
+    "leaders": [
+     "barrow-leech-bat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.817,
+     "ref": 0.425,
+     "gap": 0.547
+    },
+    {
+     "move": "fruit-bat x4 -> stalactite-golem",
+     "v": 0.442,
+     "ref": 0.8,
+     "gap": 0.212,
+     "tried": 24
+    },
+    {
+     "move": "echo-matriarch -2 -> gallery-orb-weaver",
+     "v": 0.225,
+     "ref": 0.825,
+     "gap": 0.09,
+     "tried": 24
+    },
+    {
+     "move": "barrow-leech-bat -1 -> sulfur-cinder-moth",
+     "v": 0.233,
+     "ref": 0.725,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 803,
+   "sec": 196
+  },
+  {
+   "id": "8-A-BPRO-2",
+   "map": "mn",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "blind-cave-fish": 2,
+     "echo-screecher": 3,
+     "fruit-bat": 4,
+     "giant-cave-huntsman": 3,
+     "glow-worm": 4,
+     "whip-spider": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.77,
+     "ref": 0.425,
+     "gap": 0.47
+    }
+   },
+   "pick": {
+    "deck": {
+     "blind-cave-fish": 2,
+     "echo-screecher": 3,
+     "giant-cave-huntsman": 3,
+     "stalactite-golem": 4,
+     "cave-olm": 4,
+     "quarry-mole": 4
+    },
+    "val": {
+     "v": 0.255,
+     "ref": 0.825,
+     "gap": 0
+    },
+    "leaders": [
+     "giant-cave-huntsman"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.758,
+     "ref": 0.275,
+     "gap": 0.488
+    },
+    {
+     "move": "fruit-bat x4 -> stalactite-golem",
+     "v": 0.325,
+     "ref": 0.65,
+     "gap": 0.055,
+     "tried": 24
+    },
+    {
+     "move": "glow-worm x4 -> cave-olm",
+     "v": 0.3,
+     "ref": 0.75,
+     "gap": 0.03,
+     "tried": 24
+    },
+    {
+     "move": "whip-spider x4 -> quarry-mole",
+     "v": 0.267,
+     "ref": 0.75,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 803,
+   "sec": 219
+  },
+  {
+   "id": "8-A-BPRO-3",
+   "map": "mn",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cave-olm": 4,
+     "echo-matriarch": 3,
+     "echo-screecher": 2,
+     "gallery-orb-weaver": 4,
+     "glow-worm": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.695,
+     "ref": 0.375,
+     "gap": 0.395
+    }
+   },
+   "pick": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cave-olm": 4,
+     "gallery-orb-weaver": 4,
+     "glow-worm": 4,
+     "whip-spider": 3,
+     "blind-cave-fish": 2
+    },
+    "val": {
+     "v": 0.4,
+     "ref": 0.725,
+     "gap": 0.1
+    },
+    "leaders": [
+     "barrow-leech-bat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.675,
+     "ref": 0.35,
+     "gap": 0.405
+    },
+    {
+     "move": "echo-matriarch x3 -> whip-spider",
+     "v": 0.375,
+     "ref": 0.7,
+     "gap": 0.105,
+     "tried": 24
+    },
+    {
+     "move": "echo-screecher -2 -> blind-cave-fish",
+     "v": 0.267,
+     "ref": 0.7,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 559,
+   "sec": 177
+  },
+  {
+   "id": "8-A-BPRO-4",
+   "map": "mn",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cave-olm": 4,
+     "fruit-bat": 4,
+     "giant-cave-huntsman": 3,
+     "glow-worm": 3,
+     "stalactite-golem": 2,
+     "sulfur-cinder-moth": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.635,
+     "ref": 0.525,
+     "gap": 0.335
+    }
+   },
+   "pick": {
+    "deck": {
+     "cave-olm": 4,
+     "giant-cave-huntsman": 3,
+     "stalactite-golem": 2,
+     "sulfur-cinder-moth": 4,
+     "whip-spider": 4,
+     "gallery-orb-weaver": 3
+    },
+    "val": {
+     "v": 0.245,
+     "ref": 0.85,
+     "gap": 0
+    },
+    "leaders": [
+     "giant-cave-huntsman"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.7,
+     "ref": 0.45,
+     "gap": 0.43
+    },
+    {
+     "move": "fruit-bat x4 -> whip-spider",
+     "v": 0.35,
+     "ref": 0.8,
+     "gap": 0.12,
+     "tried": 24
+    },
+    {
+     "move": "glow-worm x3 -> gallery-orb-weaver",
+     "v": 0.242,
+     "ref": 0.7,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 184
+  }
+ ],
+ "drop": []
+}

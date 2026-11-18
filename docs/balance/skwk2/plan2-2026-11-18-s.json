@@ -1,0 +1,21 @@
+{
+ "about": "SKWK2 pass 2, group S (start from docs/balance/skwk2/search)",
+ "maps": {
+  "mu": {
+   "tune": [
+    "7-BPRO-1",
+    "7-BPRO-2",
+    "7-BPRO-3"
+   ],
+   "drop": []
+  },
+  "mz": {
+   "tune": [
+    "7-A-BPRO-1",
+    "7-A-BPRO-2",
+    "7-A-BPRO-3"
+   ],
+   "drop": []
+  }
+ }
+}
