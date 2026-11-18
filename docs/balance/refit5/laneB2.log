@@ -1,0 +1,79 @@
+7-6 target 40 (30-49) size 19 start {"corpse-flower-beetle":3,"fungus-gnat-cloud":4,"planarian-splitter":3,"sleepless-shrew":4,"wolf-spider-mother":1,"puffball-bombardier":4} problems []
+start {"corpse-flower-beetle":3,"fungus-gnat-cloud":4,"planarian-splitter":3,"sleepless-shrew":4,"wolf-spider-mother":1,"puffball-bombardier":4} 69.4
+round 1: cur 62.5/69.4; 109 legal, 30 read + 6 predicted (of 18); top: -1 sleepless-shrew +1 leopard-slug 54.2/63.8 | -3 sleepless-shrew +3 leopard-slug 50/66.9 | -1 planarian-splitter +1 cypress-root-lurker 58.3/69.4
+round 2: cur 54.2/63.8; 71 legal, 23 read + 6 predicted (of 25); top: -2 sleepless-shrew +2 leopard-slug 50/66.9 | -2 sleepless-shrew -1 puffball-bombardier +3 leopard-slug 54.2/72.5 | -2 sleepless-shrew -1 planarian-splitter +2 leopard-slug +1 sleepless-shrew 54.2/73.8
+no nearer move
+RESULT 7-6 {"corpse-flower-beetle":3,"fungus-gnat-cloud":4,"planarian-splitter":3,"sleepless-shrew":3,"wolf-spider-mother":1,"puffball-bombardier":4,"leopard-slug":1} 63.8 {} moves: -1 sleepless-shrew +1 leopard-slug problems: []
+7-5 target 60 (52-68) size 18 start {"camouflage-frog":1,"corpse-flower-beetle":3,"cypress-root-lurker":1,"planarian-splitter":4,"sleepless-shrew":4,"phoenix-mushrooms":3,"amber-cicada":2} problems []
+start {"camouflage-frog":1,"corpse-flower-beetle":3,"cypress-root-lurker":1,"planarian-splitter":4,"sleepless-shrew":4,"phoenix-mushrooms":3,"amber-cicada":2} 71.9
+round 1: cur 62.5/71.9; 24 legal, 24 read + 6 predicted (of 39); top: -1 camouflage-frog +1 amber-cicada 58.3/75.6 | -1 camouflage-frog +1 hawthorn-shieldbug 58.3/78.1 | -1 corpse-flower-beetle +1 amber-cicada 58.3/80.6
+no nearer move
+RESULT 7-5 {"camouflage-frog":1,"corpse-flower-beetle":3,"cypress-root-lurker":1,"planarian-splitter":4,"sleepless-shrew":4,"phoenix-mushrooms":3,"amber-cicada":2} 71.9 {} moves:  problems: []
+7-4 target 67.5 (59.5-75.5) size 16 start {"amber-cicada":3,"earthworm":1,"fungus-gnat-cloud":4,"puffball-bombardier":4,"sleepless-shrew":4} problems []
+start {"amber-cicada":3,"earthworm":1,"fungus-gnat-cloud":4,"puffball-bombardier":4,"sleepless-shrew":4} 80.6
+round 1: cur 66.7/80.6; 37 legal, 37 read + 6 predicted (of 33); top: -3 amber-cicada -1 sleepless-shrew +3 rot-swollen-carcass +1 amber-cicada 66.7/78.8 | -2 amber-cicada +2 hawthorn-shieldbug 70.8/78.8 | -3 amber-cicada +3 rot-swollen-carcass 70.8/81.9
+round 2: cur 66.7/78.8; 31 legal, 31 read + 6 predicted (of 28); top: -1 puffball-bombardier +1 sleepless-shrew 66.7/79.4 | -1 sleepless-shrew +1 rot-swollen-carcass 66.7/79.4 | -1 amber-cicada +1 sleepless-shrew 70.8/81.9
+no nearer move
+RESULT 7-4 {"amber-cicada":1,"earthworm":1,"fungus-gnat-cloud":4,"puffball-bombardier":4,"sleepless-shrew":3,"rot-swollen-carcass":3} 78.8 {} moves: -3 amber-cicada -1 sleepless-shrew +3 rot-swollen-carcass +1 amber-cicada problems: []
+7-1 target 90 (82-98) size 12 start {"camouflage-frog":1,"hawthorn-shieldbug":1,"leopard-slug":3,"millipede-hauler":3,"planarian-splitter":2,"rot-swollen-carcass":2} problems []
+start {"camouflage-frog":1,"hawthorn-shieldbug":1,"leopard-slug":3,"millipede-hauler":3,"planarian-splitter":2,"rot-swollen-carcass":2} 100
+round 1: cur 100/100; 47 legal, 47 read + 6 predicted (of 29); top: -1 leopard-slug +1 planarian-splitter 95.8/99.4 | -2 leopard-slug +2 rot-swollen-carcass 91.7/100 | -2 leopard-slug +1 planarian-splitter +1 rot-swollen-carcass 91.7/100
+no nearer move
+RESULT 7-1 {"camouflage-frog":1,"hawthorn-shieldbug":1,"leopard-slug":3,"millipede-hauler":3,"planarian-splitter":2,"rot-swollen-carcass":2} 100 {} moves:  problems: []
+7-3 target 75 (67-83) size 15 start {"cypress-root-lurker":1,"fungus-gnat-cloud":4,"hawthorn-shieldbug":1,"leopard-slug":2,"puffball-bombardier":4,"sleepless-shrew":3} problems []
+start {"cypress-root-lurker":1,"fungus-gnat-cloud":4,"hawthorn-shieldbug":1,"leopard-slug":2,"puffball-bombardier":4,"sleepless-shrew":3} 79.4
+round 1: cur 62.5/79.4; 52 legal, 36 read + 6 predicted (of 43); top: -3 sleepless-shrew +3 amber-cicada 75/76.9 | -2 leopard-slug +2 rot-swollen-carcass 75/78.8 | -1 hawthorn-shieldbug +1 rot-swollen-carcass 75/86.3
+RESULT 7-3 {"cypress-root-lurker":1,"fungus-gnat-cloud":4,"hawthorn-shieldbug":1,"leopard-slug":2,"puffball-bombardier":4,"amber-cicada":3} 76.9 {} moves: -3 sleepless-shrew +3 amber-cicada problems: []
+2-2 target 80 (72-88) size 20 start {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"pincushion-urchin":4,"conch-crawler":4,"duck-paddler":1} problems []
+start {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"pincushion-urchin":4,"conch-crawler":4,"duck-paddler":1} 50
+round 1: cur 45.8/50; 21 legal, 21 read + 6 predicted (of 41); top: -1 salvager-hermit-crab -1 duck-paddler +1 open-ocean-hermit-crab +1 hedgerow-shrew 50/52.5 | -1 salvager-hermit-crab -4 pincushion-urchin +1 open-ocean-hermit-crab +4 limpet-clinger 50/50.6 | -1 salvager-hermit-crab +1 open-ocean-hermit-crab 50/49.4
+round 2: cur 50/52.5; 21 legal, 21 read + 6 predicted (of 39); top: -4 pincushion-urchin +4 limpet-clinger 50/52.5 | -4 conch-crawler +4 limpet-clinger 50/51.3 | -1 hedgerow-shrew +1 duck-paddler 50/49.4
+no nearer move
+RESULT 2-2 {"open-ocean-hermit-crab":4,"rock-pool-starfish":4,"salvager-hermit-crab":3,"pincushion-urchin":4,"conch-crawler":4,"hedgerow-shrew":1} 52.5 {} moves: -1 salvager-hermit-crab -1 duck-paddler +1 open-ocean-hermit-crab +1 hedgerow-shrew problems: []
+2-1 target 90 (82-98) size 20 start {"open-ocean-hermit-crab":1,"pincushion-urchin":4,"rock-pool-starfish":4,"salvager-hermit-crab":4,"limpet-clinger":4,"conch-crawler":3} problems []
+start {"open-ocean-hermit-crab":1,"pincushion-urchin":4,"rock-pool-starfish":4,"salvager-hermit-crab":4,"limpet-clinger":4,"conch-crawler":3} 66.3
+round 1: cur 79.2/66.3; 47 legal, 47 read + 6 predicted (of 43); top: -1 salvager-hermit-crab +1 conch-crawler 79.2/70.6 | -1 limpet-clinger +1 conch-crawler 79.2/68.1 | -1 limpet-clinger +1 open-ocean-hermit-crab 79.2/66.9
+round 2: cur 79.2/70.6; 47 legal, 47 read + 6 predicted (of 47); top: -1 limpet-clinger +1 salvager-hermit-crab 79.2/68.1 | -2 limpet-clinger +1 salvager-hermit-crab +1 open-ocean-hermit-crab 79.2/68.1 | -1 conch-crawler +1 salvager-hermit-crab 79.2/66.3
+no nearer move
+RESULT 2-1 {"open-ocean-hermit-crab":1,"pincushion-urchin":4,"rock-pool-starfish":4,"salvager-hermit-crab":3,"limpet-clinger":4,"conch-crawler":4} 70.6 {} moves: -1 salvager-hermit-crab +1 conch-crawler problems: []
+20-A-4 target 35.5 (26.2-44.3) size 10 side (min 10) start {"berserker-boar":2,"brimstone-hound":3,"obsidian-scorpion":3,"the-contradiction":1,"ur-elk":1} problems []
+start {"berserker-boar":2,"brimstone-hound":3,"obsidian-scorpion":3,"the-contradiction":1,"ur-elk":1} 55.6
+round 1: cur 66.7/55.6; 43 legal, 43 read + 6 predicted (of 47); top: -1 berserker-boar +1 brimstone-hound 33.3/56.9 | -1 berserker-boar +1 ur-elk 45.8/59.4 | -1 brimstone-hound +1 berserker-boar 54.2/60
+no nearer move
+RESULT 20-A-4 {"berserker-boar":2,"brimstone-hound":3,"obsidian-scorpion":3,"the-contradiction":1,"ur-elk":1} 55.6 {} moves:  problems: []
+20-A-7 target 55.4 (47.4-63.4) size 16 side (min 12) start {"berserker-boar":3,"brimstone-hound":4,"deep-cave-troll":2,"honey-badger-fury":2,"obsidian-scorpion":3,"carrion-beetle":1,"stalactite-golem":1} problems []
+start {"berserker-boar":3,"brimstone-hound":4,"deep-cave-troll":2,"honey-badger-fury":2,"obsidian-scorpion":3,"carrion-beetle":1,"stalactite-golem":1} 57.5
+RESULT 20-A-7 {"berserker-boar":3,"brimstone-hound":4,"deep-cave-troll":2,"honey-badger-fury":2,"obsidian-scorpion":3,"carrion-beetle":1,"stalactite-golem":1} 57.5 {} moves:  problems: []
+20-A-5 target 68 (60-76) size 16 side (min 12) start {"basalt-boar":3,"carrion-beetle":4,"honey-badger-fury":1,"obsidian-scorpion":3,"stalactite-golem":1,"vampire-roost":3,"ur-elk":1} problems []
+start {"basalt-boar":3,"carrion-beetle":4,"honey-badger-fury":1,"obsidian-scorpion":3,"stalactite-golem":1,"vampire-roost":3,"ur-elk":1} 76.3
+round 1: cur 75/76.3; 60 legal, 14 read + 6 predicted (of 29); top: -1 carrion-beetle +1 basalt-boar 66.7/72.5 | -1 ur-elk -1 stalactite-golem +1 honey-badger-fury +1 basalt-boar 66.7/73.8 | -1 carrion-beetle +1 honey-badger-fury 70.8/74.4
+round 2: cur 66.7/72.5; 60 legal, 48 read + 6 predicted (of 54); top: -1 carrion-beetle +1 vampire-roost 66.7/71.3 | -1 ur-elk +1 deep-cave-troll 66.7/73.8 | -1 ur-elk +1 ancient-sloth-titan 66.7/79.4
+round 3: cur 66.7/71.3; 57 legal, 43 read + 6 predicted (of 50); top: -1 basalt-boar +1 honey-badger-fury 66.7/70.6 | -1 ur-elk +1 stalactite-golem 66.7/73.1 | -1 obsidian-scorpion +1 stalactite-golem 66.7/75
+no nearer move
+RESULT 20-A-5 {"basalt-boar":4,"carrion-beetle":2,"honey-badger-fury":1,"obsidian-scorpion":3,"stalactite-golem":1,"vampire-roost":4,"ur-elk":1} 71.3 {} moves: -1 carrion-beetle +1 basalt-boar ; -1 carrion-beetle +1 vampire-roost problems: []
+1-A-5 target 40 (30-49) size 14 side (min 10) start {"lucky-hopper":4,"puddle-skimmer":2,"robin-redbreast":4,"cottontail":2,"honey-bee":2} problems []
+start {"lucky-hopper":4,"puddle-skimmer":2,"robin-redbreast":4,"cottontail":2,"honey-bee":2} 54.4
+round 1: cur 54.2/54.4; 36 legal, 36 read + 6 predicted (of 54); top: -2 lucky-hopper 45.8/49.4 | -1 honey-bee -2 lucky-hopper +3 chipmunk-cavalry 41.7/57.5 | -1 honey-bee +1 chipmunk-cavalry 45.8/60.6
+round 2: cur 45.8/49.4; 37 legal, 37 read + 6 predicted (of 50); top: -1 lucky-hopper -1 puddle-skimmer +1 chipmunk-cavalry 41.7/47.5 | -1 lucky-hopper +1 chipmunk-cavalry 45.8/50.6 | -1 lucky-hopper 50/56.9
+round 3: cur 41.7/47.5; 37 legal, 37 read + 6 predicted (of 36); top: -1 chipmunk-cavalry 37.5/45.6 | -1 chipmunk-cavalry -2 cottontail +2 ant-scout 45.8/49.4 | -1 chipmunk-cavalry +1 ant-scout 45.8/53.8
+round 4: cur 37.5/45.6; 26 legal, 26 read + 6 predicted (of 35); top: -1 cottontail +1 ant-scout 45.8/49.4 | -2 cottontail +2 ant-scout 45.8/49.4 | -2 honey-bee +2 chipmunk-cavalry 45.8/52.5
+no nearer move
+RESULT 1-A-5 {"lucky-hopper":1,"puddle-skimmer":1,"robin-redbreast":4,"cottontail":2,"honey-bee":2} 45.6 {} moves: -2 lucky-hopper ; -1 lucky-hopper -1 puddle-skimmer +1 chipmunk-cavalry ; -1 chipmunk-cavalry problems: []
+1-A-3 target 70 (62-78) size 10 side (min 10) start {"bee-forager":2,"chipmunk-cavalry":2,"cottontail":1,"dormouse":4,"meadow-rabbit":1} problems []
+start {"bee-forager":2,"chipmunk-cavalry":2,"cottontail":1,"dormouse":4,"meadow-rabbit":1} 71.9
+RESULT 1-A-3 {"bee-forager":2,"chipmunk-cavalry":2,"cottontail":1,"dormouse":4,"meadow-rabbit":1} 71.9 {} moves:  problems: []
+1-A-1 target 90 (82-98) size 10 side (min 10) start {"ant-scout":2,"cottontail":2,"meadow-rabbit":3,"dormouse":1,"bee-forager":2} problems []
+start {"ant-scout":2,"cottontail":2,"meadow-rabbit":3,"dormouse":1,"bee-forager":2} 83.1
+round 1: cur 83.3/83.1; 19 legal, 19 read + 6 predicted (of 47); top: -1 cottontail +1 dormouse 87.5/90 | -2 meadow-rabbit +2 dormouse 91.7/89.4 | -1 cottontail +1 meadow-rabbit 87.5/84.4
+RESULT 1-A-1 {"ant-scout":2,"cottontail":1,"meadow-rabbit":3,"dormouse":2,"bee-forager":2} 90 {} moves: -1 cottontail +1 dormouse problems: []
+1-4 target 80 (72-88) size 20 start {"bee-knight":4,"bramble-sprout":4,"chipmunk-cavalry":4,"cottontail":1,"dormouse":4,"hedgerow-shrew":3} problems []
+start {"bee-knight":4,"bramble-sprout":4,"chipmunk-cavalry":4,"cottontail":1,"dormouse":4,"hedgerow-shrew":3} 98.1
+round 1: cur 100/98.1; 21 legal, 21 read + 6 predicted (of 38); top: -4 bee-knight +4 terrier-pup 87.5/98.8 | -4 bee-knight -4 dormouse +4 jackrabbit-sprinter +4 terrier-pup 87.5/98.8 | -4 bee-knight +4 jackrabbit-sprinter 91.7/98.8
+no nearer move
+RESULT 1-4 {"bee-knight":4,"bramble-sprout":4,"chipmunk-cavalry":4,"cottontail":1,"dormouse":4,"hedgerow-shrew":3} 98.1 {} moves:  problems: []
+1-2 target 80 (72-88) size 20 start {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4} problems []
+start {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4} 95
+round 1: cur 100/95; 30 legal, 30 read + 6 predicted (of 37); top: -4 dormouse +4 terrier-pup 91.7/96.9 | -3 chipmunk-cavalry -1 house-cat +3 jackrabbit-sprinter +1 honey-bee 91.7/96.9 | -3 chipmunk-cavalry +3 jackrabbit-sprinter 91.7/97.5
+no nearer move
+RESULT 1-2 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4} 95 {} moves:  problems: []
+LANE DONE

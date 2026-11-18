@@ -2,11 +2,11 @@
 // 2026-11-18 (package REFIT5): the fights to re-fit and their lanes, from skirmish-pass-refit5-before-s9100.jsonl. Every Maps 0-20 curve fight
 // out of its band, biggest gap first; a map's fights stay in one lane (joint legality); two lanes balanced by fight count; then cut into
 // chunks of at most --chunk fights (each chunk one run under about 40 minutes; a map is never split across chunks of different lanes).
-//   node docs/balance/refit5/plan_2026_11_18.js [--chunk=14]   -> prints "A1: codes", "B1: codes", ...
+//   node docs/balance/refit5/plan_2026_11_18.js [measure.jsonl] [--chunk=14]   -> prints "A1: codes", "B1: codes", ...
 'use strict';
 const fs = require('fs'), path = require('path'), ROOT = path.resolve(__dirname, '..', '..', '..');
 const a = process.argv.slice(2), CH = +((a.find(x => x.startsWith('--chunk=')) || '--chunk=14').slice(8));
-const rows = fs.readFileSync(path.join(ROOT, 'docs/balance/skirmish-pass-refit5-before-s9100.jsonl'), 'utf8').trim().split('\n').map(JSON.parse);
+const rows = fs.readFileSync(path.resolve(ROOT, a.find(x => !x.startsWith('--')) || 'docs/balance/skirmish-pass-refit5-before-s9100.jsonl'), 'utf8').trim().split('\n').map(JSON.parse);
 const by = {};
 rows.forEach(r => { if (r.green === 'green' || r.curve === false || r.mapNo > 20) return;
   (by[r.map] = by[r.map] || []).push({ key: r.key, gap: Math.abs(r.win - r.target) }); });

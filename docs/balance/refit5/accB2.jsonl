@@ -1,0 +1,15 @@
+{"key":"7-6","deck":{"corpse-flower-beetle":3,"fungus-gnat-cloud":4,"planarian-splitter":3,"sleepless-shrew":3,"wolf-spider-mother":1,"puffball-bombardier":4,"leopard-slug":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":63.8,"seed2":112300,"games":160},"moves":["-1 sleepless-shrew +1 leopard-slug"]}
+{"key":"7-5","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":71.9,"seed2":112300,"games":160},"moves":[]}
+{"key":"7-4","deck":{"amber-cicada":1,"earthworm":1,"fungus-gnat-cloud":4,"puffball-bombardier":4,"sleepless-shrew":3,"rot-swollen-carcass":3},"shieldOverride":null,"hqHp":null,"tune":{"w2":78.8,"seed2":112300,"games":160},"moves":["-3 amber-cicada -1 sleepless-shrew +3 rot-swollen-carcass +1 amber-cicada"]}
+{"key":"7-1","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":100,"seed2":112300,"games":160},"moves":[]}
+{"key":"7-3","deck":{"cypress-root-lurker":1,"fungus-gnat-cloud":4,"hawthorn-shieldbug":1,"leopard-slug":2,"puffball-bombardier":4,"amber-cicada":3},"shieldOverride":null,"hqHp":null,"tune":{"w2":76.9,"seed2":112300,"games":160},"moves":["-3 sleepless-shrew +3 amber-cicada"]}
+{"key":"2-2","deck":{"open-ocean-hermit-crab":4,"rock-pool-starfish":4,"salvager-hermit-crab":3,"pincushion-urchin":4,"conch-crawler":4,"hedgerow-shrew":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":52.5,"seed2":112300,"games":160},"moves":["-1 salvager-hermit-crab -1 duck-paddler +1 open-ocean-hermit-crab +1 hedgerow-shrew"]}
+{"key":"2-1","deck":{"open-ocean-hermit-crab":1,"pincushion-urchin":4,"rock-pool-starfish":4,"salvager-hermit-crab":3,"limpet-clinger":4,"conch-crawler":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":70.6,"seed2":112300,"games":160},"moves":["-1 salvager-hermit-crab +1 conch-crawler"]}
+{"key":"20-A-4","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":55.6,"seed2":112300,"games":160},"moves":[]}
+{"key":"20-A-7","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":57.5,"seed2":112300,"games":160},"moves":[]}
+{"key":"20-A-5","deck":{"basalt-boar":4,"carrion-beetle":2,"honey-badger-fury":1,"obsidian-scorpion":3,"stalactite-golem":1,"vampire-roost":4,"ur-elk":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":71.3,"seed2":112300,"games":160},"moves":["-1 carrion-beetle +1 basalt-boar","-1 carrion-beetle +1 vampire-roost"]}
+{"key":"1-A-5","deck":{"lucky-hopper":1,"puddle-skimmer":1,"robin-redbreast":4,"cottontail":2,"honey-bee":2},"shieldOverride":null,"hqHp":null,"tune":{"w2":45.6,"seed2":112300,"games":160},"moves":["-2 lucky-hopper","-1 lucky-hopper -1 puddle-skimmer +1 chipmunk-cavalry","-1 chipmunk-cavalry"]}
+{"key":"1-A-3","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":71.9,"seed2":112300,"games":160},"moves":[]}
+{"key":"1-A-1","deck":{"ant-scout":2,"cottontail":1,"meadow-rabbit":3,"dormouse":2,"bee-forager":2},"shieldOverride":null,"hqHp":null,"tune":{"w2":90,"seed2":112300,"games":160},"moves":["-1 cottontail +1 dormouse"]}
+{"key":"1-4","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":98.1,"seed2":112300,"games":160},"moves":[]}
+{"key":"1-2","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":95,"seed2":112300,"games":160},"moves":[]}
