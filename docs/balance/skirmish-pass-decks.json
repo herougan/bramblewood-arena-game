@@ -320,118 +320,118 @@
    "generated": "2026-10-28"
   },
   "10": {
-   "pool": 72,
-   "score": 79.6,
+   "pool": 73,
+   "score": 88,
    "cards": [
     {
-     "id": "adder-ambusher",
-     "name": "Adder Ambusher",
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
      "n": 4
     },
     {
-     "id": "wolf-spider-mother",
-     "name": "Wolf Spider Mother",
-     "n": 4
-    },
-    {
-     "id": "worker-ant",
-     "name": "Worker Ant",
-     "n": 4
-    },
-    {
-     "id": "crimson-wing-recruit",
-     "name": "Crimson Recruit",
-     "n": 4
-    },
-    {
-     "id": "muskrat-lodgekeeper",
-     "name": "Muskrat Lodgekeeper",
+     "id": "phoenix-mushrooms",
+     "name": "Phoenix Mushrooms",
      "n": 2
     },
     {
-     "id": "mangrove-kingfisher",
-     "name": "Mangrove Kingfisher",
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "n": 4
+    },
+    {
+     "id": "sheep",
+     "name": "Sheep",
+     "n": 4
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
      "n": 2
+    },
+    {
+     "id": "shoal-shark",
+     "name": "Shoal Shark",
+     "n": 4
     }
    ],
    "level": 0,
-   "generated": "2026-10-28"
+   "generated": "2026-11-18"
   },
   "11": {
-   "pool": 75,
-   "score": 72.5,
+   "pool": 76,
+   "score": 90.8,
    "cards": [
     {
-     "id": "wolf-spider-mother",
-     "name": "Wolf Spider Mother",
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
      "n": 4
     },
     {
-     "id": "crimson-wing-recruit",
-     "name": "Crimson Recruit",
+     "id": "sheep",
+     "name": "Sheep",
      "n": 4
     },
     {
-     "id": "muskrat-lodgekeeper",
-     "name": "Muskrat Lodgekeeper",
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
      "n": 2
     },
     {
-     "id": "electric-ray",
-     "name": "Electric Ray",
-     "n": 4
-    },
-    {
-     "id": "echo-screecher",
-     "name": "Echo Screecher",
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
      "n": 2
     },
     {
-     "id": "burrow-rabbit",
-     "name": "Burrow Rabbit",
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
      "n": 4
     }
    ],
    "level": 3,
-   "generated": "2026-10-28"
+   "generated": "2026-11-18"
   },
   "12": {
-   "pool": 79,
+   "pool": 80,
    "score": 91.7,
    "cards": [
     {
-     "id": "burrow-rabbit",
-     "name": "Burrow Rabbit",
-     "n": 4
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "n": 3
     },
     {
-     "id": "adder-ambusher",
-     "name": "Adder Ambusher",
-     "n": 4
-    },
-    {
-     "id": "eagle-owl-quartermaster",
-     "name": "Eagle-Owl Quartermaster",
-     "n": 4
-    },
-    {
-     "id": "alpine-marmot",
-     "name": "Alpine Marmot",
-     "n": 4
-    },
-    {
-     "id": "otter-centurion",
-     "name": "Otter Centurion",
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
      "n": 1
     },
     {
-     "id": "wolf-spider-mother",
-     "name": "Wolf Spider Mother",
-     "n": 3
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "n": 4
+    },
+    {
+     "id": "river-carp",
+     "name": "River Carp",
+     "n": 4
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "name": "Meerkat Wayfarer",
+     "n": 4
+    },
+    {
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "n": 4
     }
    ],
    "level": 3,
-   "generated": "2026-10-28"
+   "generated": "2026-11-18"
   },
   "13": {
    "pool": 83,
@@ -606,23 +606,13 @@
    "generated": "2026-10-28"
   },
   "17": {
-   "pool": 94,
-   "score": 46.9,
+   "pool": 95,
+   "score": 82.3,
    "cards": [
     {
-     "id": "otter-centurion",
-     "name": "Otter Centurion",
+     "id": "rock-pool-starfish",
+     "name": "Rock Pool Starfish",
      "n": 4
-    },
-    {
-     "id": "alpine-marmot",
-     "name": "Alpine Marmot",
-     "n": 4
-    },
-    {
-     "id": "golden-eagle-diver",
-     "name": "Golden Eagle Diver",
-     "n": 1
     },
     {
      "id": "ibex-rockcaller",
@@ -630,23 +620,28 @@
      "n": 3
     },
     {
-     "id": "electric-ray",
-     "name": "Electric Ray",
-     "n": 3
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "n": 4
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
     },
     {
      "id": "hedgehog-scout",
      "name": "Hedgehog Scout",
-     "n": 4
-    },
-    {
-     "id": "taiga-lynx",
-     "name": "Taiga Lynx",
      "n": 1
     }
    ],
    "level": 3.36,
-   "generated": "2026-10-28"
+   "generated": "2026-11-18"
   },
   "18": {
    "pool": 97,

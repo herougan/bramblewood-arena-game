@@ -1,0 +1,35 @@
+{
+ "10": {
+  "adder-ambusher": 4,
+  "wolf-spider-mother": 4,
+  "worker-ant": 4,
+  "crimson-wing-recruit": 4,
+  "muskrat-lodgekeeper": 2,
+  "pincushion-urchin": 2
+ },
+ "11": {
+  "wolf-spider-mother": 4,
+  "crimson-wing-recruit": 4,
+  "muskrat-lodgekeeper": 2,
+  "electric-ray": 4,
+  "echo-screecher": 2,
+  "burrow-rabbit": 4
+ },
+ "12": {
+  "burrow-rabbit": 4,
+  "adder-ambusher": 4,
+  "eagle-owl-quartermaster": 4,
+  "alpine-marmot": 4,
+  "otter-centurion": 1,
+  "wolf-spider-mother": 3
+ },
+ "17": {
+  "otter-centurion": 4,
+  "alpine-marmot": 4,
+  "golden-eagle-diver": 1,
+  "ibex-rockcaller": 3,
+  "electric-ray": 3,
+  "taiga-lynx": 1,
+  "ringed-seal": 4
+ }
+}
