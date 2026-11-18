@@ -1046,7 +1046,7 @@ The rules as built (engine: the EN5 block, `en5HemoN`, `en5Breach`, `en5Woods`, 
 
 The rules as built (engine: `redirectToGuardian`, `en4Hemorrhage`, `en4GreaterPoison`, `GP_PER_STACK`, `applyPoisonTicks`, `en4ShoreUp`; owner
 22:23 #7, #9 and 19:27 #4 option B; follow-ups 23:45). Already in the game and not duplicated: Hunter (Bleeding) = +N damage to a Bleeding unit;
-Venom Pulse, now **Pulse** (below).
+Venom Pulse (now Poison Pulse in the text, Pulse on the card), now **Pulse** (below).
 
 - **Guardian** (#9: "Guardian shouldn't intercept an intercepting guardian."): EN3's one hop is reverted. When a plain swing is aimed at a unit,
   one adjacent Guardian (at random if several) steps in and takes it; no other Guardian covers that Guardian. A Guardian aimed at directly can
@@ -1267,7 +1267,7 @@ The rules as built (engine: `isMagicDmg` in `computeHitDamage` / `damageCardFlat
 - **Revive N** (`effects.revive` N = On Play: Revive N; the trigger action `revive {count}`): N random creature cards from the owner's graveyard come back beside the source as real cards. Events `spawn {kind:'revive'}`, `reviveGrave`.
 - **Poison Barbs N** (`effects.poisonBarbs`): every swing it takes gives the attacker N Poison (no damage); never redirected, and a Guardian doesn't step in for it. Event `statusFx poison {via:'barbs'}`.
 - **Status-only shots:** a "– poison / – bleed" Arrow, Fire Arrow, Ember Spit, Missile or Deal damage (one unit) deals 0 damage at a unit and gives its N as counters (both when it says both); at a bramble it deals its N.
-- **Armor** stops every hit but magic (magic, dark, holy) and true damage, on swings as before; **Magic Armor** stops magic only, on swings and shots. The five elemental spits are named Ember / Acid / Venom / Frost / Spark Spit (keys `fireBolt` ... unchanged).
+- **Armor** stops every hit but magic (magic, dark, holy) and true damage, on swings as before; **Magic Armor** stops magic only, on swings and shots. The five elemental spits are named Ember / Acid / Poison / Frost / Spark Spit (keys `fireBolt` ... unchanged).
 - **Guardian** (and **Rampart**) step in only while Ready and not Bound (`blockerReady`); a Guardian now takes a counter-attack too (the hit carries `guardianRedirect` / `guardedUid`).
 - **Daunt counters** (Render) fall off only on a damage action: a swing, a shot round (`fireShotsOf`), a trigger that dealt damage (`_dauntDmg`). No round-end fade.
 - **Bloom:** tests only while Ready; with no free slot (a Parasite: no host) it fails: +1/+1 on the unit, no Lumber. Event `bloom {failed:true, atk:1, hp:1}`; the board plays `SkillFX.bloomFail` (two ghost copies pull apart, blush red, fall back; the card swells).
@@ -1314,7 +1314,7 @@ The rules as built (engine: `rollStatusOnHit` and the Spore Cloud pick, `detonat
 ## 2026-10-26 additions (package ENG10): shots meet Armor, Charge recharges, On Ready at Wait 0, Grasping Briars, Hardy / Sunder / Dismantle, Gorge, the threshold skills
 
 The rules as built (engine: `damageCardFlat`'s `fo.armor` and `fireDamageAction`'s `armored`, `chargeTick`, `fireReadyFor` / `readyOnArrival`, the Grasping Briars pick in the GI field block, `eqLivesMaxOf` / `eqBreakLife` / `eqSunderHit` / `eqDismantle`, `eq2ParasiteTick(..., gorge)`, `THR_DEFAULT_N` with `EN6_STATES` and `pl.diedThisFight`; budget: `thrS`, `equipLifeMult`; app: the ENG10 block after CONTENT3's registry rows).
-- **The spits** read by their element alone: Cinder, Acid, Venom, Ice, Spark (keys `fireBolt`, `acidBolt`, `poisonBolt`, `iceBolt`, `shockBolt`). "Ember" is a Materia gem and "Frost" a state skill, so those two took the nearest clean word.
+- **The spits** read by their element alone: Cinder, Acid, Poison, Ice, Spark (keys `fireBolt`, `acidBolt`, `poisonBolt`, `iceBolt`, `shockBolt`). "Ember" is a Materia gem and "Frost" a state skill, so those two took the nearest clean word.
 - **Armor and shots:** an arrow (Arrow, Fire / Ice Arrow, Twin Shot, Volley, Snipe, an Archer's, the Arrow action) or a spit (the five, Spitfire) now loses the target's Armor (with Shell, the tide's, Prayer Ward, Shieldwall; Pierce cuts it), as a swing does. Magic and true damage pass; Missiles, Fireballs and the other damage skills still pass too. Mod `armor` on the `hit`.
 - **Armor's price:** 1.68 x N^1.43 (Armor 5 = 10x Armor 1). `tools/eng10_armor_hits_2026_10_26.js` measured the hits Armor meets (`docs/balance/eng10-armor-hits-2026-10-26.json`).
 - **Charge N – {…}** recharges again: at 0 the effect goes off and the clock winds back to N (ENG9's one-shot is undone).
@@ -1629,8 +1629,8 @@ The rules as built (engine: the ENG32 block beside `en7DiveRise` and `broodDefOf
 ## 2026-11-07 additions (package ENG33): Venom, Poisonous, Thanatosis, Log Walls, Timbered's two forms
 
 The rules as built (engine: `poisonOn`, `eng33PlayDead` / `eng33Wake`, `eng33PoisonousDeath`, `eng33Envenom` in `devour`, `bulwarkRaise`; the engine decides, this describes):
-- **Venomous N** (key `poison`): the skill once called Poison N; its counters are **Venom** (☠, the same chip), the damage type is **venomous** (key `poison`). The old Venomous (`venomous`, through Armor) is retired; an old `venomous` reads as Venomous N. Poison Bolt's label is **Venom Spit**.
-- **Poisonous N** (`poisonous`, plain 2): when an enemy unit's blow kills it, or a Devour unit eats it from the hand, that unit gets N Venom. Event `statusFx` kind `poisonous`; the board floats "🤢 +N☠". On no card.
+- **Venomous N** (key `poison`): the skill once called Poison N; its counters are **Poison** (☠, the same chip; POISON2 2026-11-18, OWN-1118-1: one counter named Poison, "Venom" is gone), the damage type reads **Poison** (key `poison`). The old Venomous (`venomous`, through Armor) is retired; an old `venomous` reads as Venomous N. Poison Bolt's label is **Poison Spit**.
+- **Poisonous N** (`poisonous`, plain 2): when an enemy unit's blow kills it, or a Devour unit eats it from the hand, that unit gets N Poison. Event `statusFx` kind `poisonous`; the board floats "🤢 +N☠". On no card.
 - **Thanatosis** (`thanatosis`, 😵): its first fall to 0 Health is no death (no death event, kill credit, On Death, Bounty, graveyard). It plays dead at 1 Health, statuses cleared: no acting (`dozing`), single-target swings, shots and skills miss it (reason `playingDead`), area skills still hit it. It gets up at the next round start. Once a fight. Board: the card tips over greyed (`.is-playing-dead`) with a 😵 chip; events `statusFx` kinds `thanatosis` / `thanatosisWake`; skip reason `playingDead`.
 - **Undead** (`undead`): unchanged comeback (once, as a token) and now also the undead status (heals hurt, cures Bleed) for any unit with the skill.
 - **Bulwark N**: N Log Walls (`bulwark-wall`, 🪵, 0/4 Structure with Guardian (owner 11-07 22:13; was 0/8)) in the free front-row slots nearest it; was two 0/4N shields. Art prompt: `docs/art-style-prompts.md` (Log Wall).
@@ -1684,7 +1684,7 @@ The engine decides; this describes.
 
 The engine decides; this describes (owner 2026-11-09 21:36 on ENG37-1: "Never have prioritised targeting, alwayes default to randomign"; `docs/project-state.md`).
 - **Reach**: with nothing opposite and a unit in both lanes beside it, a coin flip (`eng37ReachPick`; was the one with less Health). Taunt still draws it.
-- **Named rules kept, ties random** (`eng38Best` / `eng38TopN`, the fight's seeded RNG, a roll only on a real tie): Healing and the Herb Refinery (most wounded), Cure (most envenomed), Repair (most damaged structure), Berries (most hurt), Hype (most Attack), Grant (the N nearest), Rampart (the nearest), Disarm (the nearest lying weapon), a "furthest" ally, the bosses' Thistle Prick / Undertow / Root Grip / Lodge Repairs, Trident / Pitchfork with the middle line empty (one of the two side lines), Octolash's 7 nearest. Was: left first, first listed, or the newest.
+- **Named rules kept, ties random** (`eng38Best` / `eng38TopN`, the fight's seeded RNG, a roll only on a real tie): Healing and the Herb Refinery (most wounded), Cure (most poisoned), Repair (most damaged structure), Berries (most hurt), Hype (most Attack), Grant (the N nearest), Rampart (the nearest), Disarm (the nearest lying weapon), a "furthest" ally, the bosses' Thistle Prick / Undertow / Root Grip / Lodge Repairs, Trident / Pitchfork with the middle line empty (one of the two side lines), Octolash's 7 nearest. Was: left first, first listed, or the newest.
 - **No rule in the text, now random** (`eng38Pick`): Amore's mate (was the nearest), Dismantle's loose piece (was the nearest).
 - Already random before: Arrow / Bolts / Bola / Lasso "facing, else nearest" ties, Bloodlust's leap, Restless, Guardian, Spellward, Taunt ties, Nursing ties, Rocket ties, Missile, Snipe, Spitfire.
 - Not changed: the CPU's choices (where it plays, Equipment, hazards, Parasites, Devour, its Aimed Bolt) are strategy; the old row ("gravity") board's left-hand facing convention; the raid file's own picks. Call ENG38-1: whether the named rules go random too.
