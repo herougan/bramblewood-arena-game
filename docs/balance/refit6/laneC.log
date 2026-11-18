@@ -1,0 +1,15 @@
+16-6 target 60 (52-68) size 18 start {"boreal-elk":4,"cone-cutter-squirrel":2,"dhole-matriarch":2,"grizzly-vanguard":1,"upside-down-bat":4,"snowshoe-hare":4,"owl-sentinel":1} problems []
+start {"boreal-elk":4,"cone-cutter-squirrel":2,"dhole-matriarch":2,"grizzly-vanguard":1,"upside-down-bat":4,"snowshoe-hare":4,"owl-sentinel":1} 80.6
+round 1: cur 83.3/80.6; 59 legal, 26 read + 6 predicted (of 31); top: -4 boreal-elk +1 siege-rhino +3 owl-sentinel 58.3/57.5 | -3 boreal-elk +3 owl-sentinel 58.3/68.1 | -1 grizzly-vanguard +1 siege-rhino 58.3/73.1
+RESULT 16-6 {"cone-cutter-squirrel":2,"dhole-matriarch":2,"grizzly-vanguard":1,"upside-down-bat":4,"snowshoe-hare":4,"owl-sentinel":4,"siege-rhino":1} 57.5 {} moves: -4 boreal-elk +1 siege-rhino +3 owl-sentinel problems: []
+19-2 target 82.5 (74.5-90.5) size 16 start {"glacier-yak":1,"pinecone-sapper":4,"smoke-raccoon":3,"fire-salamander":4,"elderhorn-monarch":1,"quillback-elder":3} problems []
+start {"glacier-yak":1,"pinecone-sapper":4,"smoke-raccoon":3,"fire-salamander":4,"elderhorn-monarch":1,"quillback-elder":3} 91.9
+round 1: cur 91.7/91.9; 22 legal, 22 read + 6 predicted (of 29); top: -1 elderhorn-monarch +1 armadillo-guard 79.2/85 | -1 elderhorn-monarch +1 quillback-elder 79.2/88.1 | -1 glacier-yak -1 elderhorn-monarch +1 basalt-boar +1 smoke-raccoon 83.3/75
+RESULT 19-2 {"glacier-yak":1,"pinecone-sapper":4,"smoke-raccoon":3,"fire-salamander":4,"quillback-elder":3,"armadillo-guard":1} 85 {} moves: -1 elderhorn-monarch +1 armadillo-guard problems: []
+19-5 target 60 (52-68) size 20 start {"cinder-hornet":4,"elderhorn-monarch":1,"fire-salamander":3,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":3,"smoke-raccoon":4} problems []
+start {"cinder-hornet":4,"elderhorn-monarch":1,"fire-salamander":3,"glacier-yak":1,"honey-badger-fury":4,"obsidian-scorpion":3,"smoke-raccoon":4} 46.9
+round 1: cur 41.7/46.9; 24 legal, 24 read + 6 predicted (of 37); top: -4 cinder-hornet -1 honey-badger-fury +4 basalt-boar +1 fire-salamander 58.3/48.1 | -4 cinder-hornet +4 basalt-boar 58.3/45.6 | -4 cinder-hornet -1 glacier-yak +4 basalt-boar +1 fire-salamander 58.3/35
+round 2: cur 58.3/48.1; 24 legal, 24 read + 6 predicted (of 46); top: -1 fire-salamander +1 honey-badger-fury 58.3/45.6 | -1 elderhorn-monarch +1 stalactite-golem 58.3/41.3 | -1 glacier-yak +1 honey-badger-fury 58.3/35
+no nearer move
+RESULT 19-5 {"elderhorn-monarch":1,"fire-salamander":4,"glacier-yak":1,"honey-badger-fury":3,"obsidian-scorpion":3,"smoke-raccoon":4,"basalt-boar":4} 48.1 {} moves: -4 cinder-hornet -1 honey-badger-fury +4 basalt-boar +1 fire-salamander problems: []
+LANE DONE

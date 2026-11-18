@@ -1,0 +1,98 @@
+18-7 target 40 (30-49) size 12 start {"chipmunk-forager":1,"dust-devil-kestrel":2,"sand-widow":1,"worker-ant":1,"roadrunner-courier":4,"dune-jackal":2,"ice-crevasse-wolf":1} problems []
+start {"chipmunk-forager":1,"dust-devil-kestrel":2,"sand-widow":1,"worker-ant":1,"roadrunner-courier":4,"dune-jackal":2,"ice-crevasse-wolf":1} 78.1
+round 1: cur 87.5/78.1; 67 legal, 6 read + 4 predicted (of 4); top: -2 dune-jackal +2 horned-lizard 87.5/85 | -2 dune-jackal +2 sunbittern-strider 83.3/87.5 | -2 dune-jackal -4 roadrunner-courier +1 mouse-sapper +1 sand-widow +4 horned-lizard 83.3/90.6
+no nearer move
+RESULT 18-7 {"chipmunk-forager":1,"dust-devil-kestrel":2,"sand-widow":1,"worker-ant":1,"roadrunner-courier":4,"dune-jackal":2,"ice-crevasse-wolf":1} 78.1 {} moves:  problems: []
+18-4 target 62 (54-70) size 18 start {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4} problems []
+start {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4} 95.6
+round 1: cur 91.7/95.6; 33 legal, 33 read + 6 predicted (of 19); top: -5 armadillo-guard +4 caustic-scorpion +1 barrel-cactus 91.7/93.8 | -5 armadillo-guard +4 caustic-scorpion +1 sandstorm-roc 87.5/94.4 | -1 barrel-cactus -4 horned-lizard +1 sandstorm-roc +4 caustic-scorpion 87.5/98.1
+round 2: cur 91.7/93.8; 20 legal, 20 read + 6 predicted (of 37); top: -1 barrel-cactus +1 sandstorm-roc 87.5/94.4 | -4 horned-lizard +4 armadillo-guard 87.5/96.3 | -4 sandstorm-roc +4 sunbittern-strider 87.5/98.8
+no nearer move
+RESULT 18-4 {"ant-scout":1,"barrel-cactus":3,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4,"caustic-scorpion":4} 93.8 {} moves: -5 armadillo-guard +4 caustic-scorpion +1 barrel-cactus problems: []
+18-5 target 66 (58-74) size 18 start {"dust-devil-kestrel":2,"nightjar-drifter":4,"sand-widow":4,"sandstorm-roc":3,"sunbittern-strider":4,"barrel-cactus":1} problems []
+start {"dust-devil-kestrel":2,"nightjar-drifter":4,"sand-widow":4,"sandstorm-roc":3,"sunbittern-strider":4,"barrel-cactus":1} 91.3
+round 1: cur 100/91.3; 130 legal, 50 read + 6 predicted (of 23); top: -3 sandstorm-roc -1 nightjar-drifter +1 badger-lumberjack +2 barrel-cactus +1 armadillo-guard 75/84.4 | -3 sandstorm-roc +1 ice-crevasse-wolf +2 barrel-cactus 75/85 | -3 sandstorm-roc -1 nightjar-drifter +1 badger-lumberjack +2 barrel-cactus +1 sandstorm-roc 62.5/91.9
+round 2: cur 75/84.4; 64 legal, 42 read + 6 predicted (of 20); top: -3 sand-widow -1 badger-lumberjack +3 armadillo-guard +1 horned-lizard 66.7/81.9 | -1 badger-lumberjack +1 ice-crevasse-wolf 66.7/85 | -3 sand-widow +3 armadillo-guard 66.7/86.3
+round 3: cur 66.7/81.9; 93 legal, 50 read + 6 predicted (of 27); top: -3 armadillo-guard +3 horned-lizard 66.7/80.6 | -1 nightjar-drifter -1 armadillo-guard +2 horned-lizard 66.7/83.8 | -1 nightjar-drifter +1 horned-lizard 66.7/85
+round 4: cur 66.7/80.6; 93 legal, 38 read + 6 predicted (of 32); top: -1 armadillo-guard +1 antlion-pit 75/81.9 | -1 armadillo-guard +1 mouse-sapper 75/83.1 | -4 horned-lizard +4 antlion-pit 70.8/83.8
+no nearer move
+RESULT 18-5 {"dust-devil-kestrel":2,"nightjar-drifter":3,"sand-widow":1,"sunbittern-strider":4,"barrel-cactus":3,"armadillo-guard":1,"horned-lizard":4} 80.6 {} moves: -3 sandstorm-roc -1 nightjar-drifter +1 badger-lumberjack +2 barrel-cactus +1 armadillo-guard ; -3 sand-widow -1 badger-lumberjack +3 armadillo-guard +1 horned-lizard ; -3 armadillo-guard +3 horned-lizard problems: []
+18-3 target 78 (70-86) size 15 start {"armadillo-guard":4,"caustic-scorpion":2,"chipmunk-forager":1,"horned-lizard":4,"sand-widow":3,"worker-ant":1} problems []
+start {"armadillo-guard":4,"caustic-scorpion":2,"chipmunk-forager":1,"horned-lizard":4,"sand-widow":3,"worker-ant":1} 98.1
+round 1: cur 95.8/98.1; 57 legal, 14 read + 6 predicted (of 18); top: -3 sand-widow +1 mouse-sapper +2 caustic-scorpion 91.7/94.4 | -3 sand-widow +3 antlion-pit 87.5/95.6 | -3 sand-widow +3 sunbittern-strider 91.7/95.6
+round 2: cur 91.7/94.4; 44 legal, 44 read + 6 predicted (of 38); top: -1 chipmunk-forager +1 barrel-cactus 79.2/90.6 | -1 chipmunk-forager +1 antlion-pit 79.2/91.9 | -1 chipmunk-forager +1 badger-lumberjack 79.2/93.8
+round 3: cur 79.2/90.6; 52 legal, 14 read + 6 predicted (of 32); top: -1 barrel-cactus +1 gallery-orb-weaver 79.2/91.3 | -1 barrel-cactus +1 bison-bulldozer 79.2/91.9 | -1 barrel-cactus +1 badger-lumberjack 79.2/93.8
+no nearer move
+RESULT 18-3 {"armadillo-guard":4,"caustic-scorpion":4,"horned-lizard":4,"worker-ant":1,"mouse-sapper":1,"barrel-cactus":1} 90.6 {} moves: -3 sand-widow +1 mouse-sapper +2 caustic-scorpion ; -1 chipmunk-forager +1 barrel-cactus problems: []
+18-2 target 84 (76-92) size 17 start {"antlion-pit":4,"bison-bulldozer":1,"caustic-scorpion":4,"dune-jackal":4,"roadrunner-courier":4} problems []
+start {"antlion-pit":4,"bison-bulldozer":1,"caustic-scorpion":4,"dune-jackal":4,"roadrunner-courier":4} 96.3
+round 1: cur 95.8/96.3; 136 legal, 50 read + 6 predicted (of 17); top: -4 dune-jackal -1 bison-bulldozer +4 sunbittern-strider +1 mouse-sapper 83.3/95 | -4 dune-jackal -1 roadrunner-courier +4 sunbittern-strider +1 mouse-sapper 79.2/96.3 | -4 dune-jackal -1 roadrunner-courier +4 sunbittern-strider +1 badger-lumberjack 87.5/98.8
+round 2: cur 83.3/95; 136 legal, 50 read + 6 predicted (of 23); top: -1 antlion-pit +1 horned-lizard 87.5/93.8 | -2 antlion-pit +2 meerkat-sentry 87.5/95 | -2 antlion-pit -1 mouse-sapper +2 horned-lizard +1 bison-bulldozer 83.3/97.5
+round 3: cur 87.5/93.8; 83 legal, 38 read + 6 predicted (of 35); top: -1 horned-lizard +1 antlion-pit 83.3/95 | -2 roadrunner-courier +2 horned-lizard 83.3/96.3 | -1 roadrunner-courier +1 horned-lizard 83.3/96.9
+no nearer move
+RESULT 18-2 {"antlion-pit":3,"caustic-scorpion":4,"roadrunner-courier":4,"sunbittern-strider":4,"mouse-sapper":1,"horned-lizard":1} 93.8 {} moves: -4 dune-jackal -1 bison-bulldozer +4 sunbittern-strider +1 mouse-sapper ; -1 antlion-pit +1 horned-lizard problems: []
+18-1 target 90 (82-98) size 17 start {"barkplate-beetle":1,"bison-bulldozer":1,"caustic-scorpion":3,"dune-jackal":4,"roadrunner-courier":4,"sand-widow":4} problems []
+start {"barkplate-beetle":1,"bison-bulldozer":1,"caustic-scorpion":3,"dune-jackal":4,"roadrunner-courier":4,"sand-widow":4} 100
+round 1: cur 100/100; 63 legal, 26 read + 6 predicted (of 44); top: -2 sand-widow -4 dune-jackal +2 barkplate-beetle +4 armadillo-guard 95.8/98.1 | -2 sand-widow +2 barkplate-beetle 95.8/98.8 | -4 sand-widow +4 sunbittern-strider 95.8/100
+round 2: cur 95.8/98.1; 61 legal, 28 read + 6 predicted (of 36); top: -2 sand-widow +1 mouse-sapper +1 caustic-scorpion 91.7/98.8 | -4 armadillo-guard +4 dune-jackal 95.8/98.8 | -2 sand-widow -1 bison-bulldozer +1 mouse-sapper +1 caustic-scorpion +1 chipmunk-forager 91.7/99.4
+no nearer move
+RESULT 18-1 {"barkplate-beetle":3,"bison-bulldozer":1,"caustic-scorpion":3,"roadrunner-courier":4,"sand-widow":2,"armadillo-guard":4} 98.1 {} moves: -2 sand-widow -4 dune-jackal +2 barkplate-beetle +4 armadillo-guard problems: []
+18-6 target 60 (52-68) size 16 start {"antlion-pit":3,"barrel-cactus":3,"mouse-sapper":1,"ice-crevasse-wolf":1,"roadrunner-courier":3,"dune-jackal":4,"worker-ant":1} problems []
+start {"antlion-pit":3,"barrel-cactus":3,"mouse-sapper":1,"ice-crevasse-wolf":1,"roadrunner-courier":3,"dune-jackal":4,"worker-ant":1} 68.1
+round 1: cur 83.3/68.1; 64 legal, 11 read + 6 predicted (of 35); top: -1 dune-jackal +1 antlion-pit 62.5/63.1 | -1 ice-crevasse-wolf +1 chipmunk-forager 70.8/69.4 | -3 barrel-cactus +3 armadillo-guard 66.7/73.1
+round 2: cur 62.5/63.1; 64 legal, 9 read + 6 predicted (of 20); top: -1 dune-jackal +1 roadrunner-courier 62.5/66.3 | -3 dune-jackal +3 armadillo-guard 62.5/76.9 | -3 dune-jackal -1 barrel-cactus +3 armadillo-guard +1 roadrunner-courier 75/79.4
+no nearer move
+RESULT 18-6 {"antlion-pit":4,"barrel-cactus":3,"mouse-sapper":1,"ice-crevasse-wolf":1,"roadrunner-courier":3,"dune-jackal":3,"worker-ant":1} 63.1 {} moves: -1 dune-jackal +1 antlion-pit problems: []
+9-7 target 40 (30-49) size 19 start {"fishing-cat":3,"horseshoe-crab":2,"ironclaw-fiddler":3,"proboscis-monkey":4,"tide-spirit":3,"mangrove-mudskipper":4} problems []
+start {"fishing-cat":3,"horseshoe-crab":2,"ironclaw-fiddler":3,"proboscis-monkey":4,"tide-spirit":3,"mangrove-mudskipper":4} 66.9
+round 1: cur 66.7/66.9; 35 legal, 35 read + 6 predicted (of 35); top: -2 proboscis-monkey +2 horseshoe-crab 54.2/65.6 | -2 mangrove-mudskipper +2 anhinga-spearbird 54.2/66.3 | -4 mangrove-mudskipper +3 anhinga-spearbird +1 horseshoe-crab 50/69.4
+round 2: cur 54.2/65.6; 35 legal, 35 read + 6 predicted (of 45); top: -1 mangrove-mudskipper +1 nutria-reedcutter 54.2/63.1 | -1 tide-spirit -2 mangrove-mudskipper +1 proboscis-monkey +2 anhinga-spearbird 54.2/73.1 | -1 tide-spirit +1 proboscis-monkey 54.2/73.8
+round 3: cur 54.2/63.1; 24 legal, 24 read + 6 predicted (of 38); top: -1 ironclaw-fiddler -1 mangrove-mudskipper +2 proboscis-monkey 54.2/62.5 | -1 nutria-reedcutter +1 mangrove-mudskipper 54.2/65.6 | -1 ironclaw-fiddler +1 proboscis-monkey 54.2/67.5
+no nearer move
+RESULT 9-7 {"fishing-cat":3,"horseshoe-crab":4,"ironclaw-fiddler":3,"proboscis-monkey":2,"tide-spirit":3,"mangrove-mudskipper":3,"nutria-reedcutter":1} 63.1 {} moves: -2 proboscis-monkey +2 horseshoe-crab ; -1 mangrove-mudskipper +1 nutria-reedcutter problems: []
+13-8 target 40 (30-49) size 19 start {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":1,"slow-worm":1,"tasmanian-devil":4} problems []
+start {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":1,"slow-worm":1,"tasmanian-devil":4} 71.3
+round 1: cur 70.8/71.3; 59 legal, 34 read + 6 predicted (of 9); top: -1 bramblewood-lynx +1 redwood-woodpecker 58.3/72.5 | -3 monarch-wingblade +1 amber-cicada +2 redwood-woodpecker 58.3/79.4 | -3 monarch-wingblade -1 bramblewood-lynx +1 amber-cicada +3 redwood-woodpecker 58.3/79.4
+no nearer move
+RESULT 13-8 {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":1,"slow-worm":1,"tasmanian-devil":4} 71.3 {} moves:  problems: []
+13-7 target 60 (52-68) size 16 start {"beaver-feller":4,"bramblewood-lynx":3,"marsh-mallow-hare":1,"slow-worm":1,"the-gannet-queen":1,"monarch-wingblade":3,"tasmanian-devil":3} problems []
+start {"beaver-feller":4,"bramblewood-lynx":3,"marsh-mallow-hare":1,"slow-worm":1,"the-gannet-queen":1,"monarch-wingblade":3,"tasmanian-devil":3} 76.3
+round 1: cur 66.7/76.3; 34 legal, 34 read + 6 predicted (of 43); top: -1 marsh-mallow-hare +1 pika-hoarder 62.5/80.6 | -1 marsh-mallow-hare +1 tasmanian-devil 66.7/81.3 | -1 marsh-mallow-hare +1 grizzly-vanguard 62.5/86.9
+no nearer move
+RESULT 13-7 {"beaver-feller":4,"bramblewood-lynx":3,"marsh-mallow-hare":1,"slow-worm":1,"the-gannet-queen":1,"monarch-wingblade":3,"tasmanian-devil":3} 76.3 {} moves:  problems: []
+13-2 target 85 (77-93) size 16 start {"amber-cicada":1,"badger-lumberjack":4,"monarch-wingblade":3,"sergeant-bramblefox":3,"slow-worm":1,"tasmanian-devil":4} problems []
+start {"amber-cicada":1,"badger-lumberjack":4,"monarch-wingblade":3,"sergeant-bramblefox":3,"slow-worm":1,"tasmanian-devil":4} 91.3
+round 1: cur 100/91.3; 28 legal, 28 read + 6 predicted (of 21); top: -4 badger-lumberjack +4 owl-nightwatch 87.5/86.3 | -1 amber-cicada +1 marsh-mallow-hare 87.5/90 | -1 slow-worm +1 marsh-mallow-hare 87.5/92.5
+RESULT 13-2 {"amber-cicada":1,"monarch-wingblade":3,"sergeant-bramblefox":3,"slow-worm":1,"tasmanian-devil":4,"owl-nightwatch":4} 86.3 {} moves: -4 badger-lumberjack +4 owl-nightwatch problems: []
+13-6 target 65 (57-73) size 17 start {"beaver-feller":4,"feral-tomcat":1,"grizzly-vanguard":1,"pine-marten":3,"monarch-wingblade":3,"tasmanian-devil":4,"slow-worm":1} problems []
+start {"beaver-feller":4,"feral-tomcat":1,"grizzly-vanguard":1,"pine-marten":3,"monarch-wingblade":3,"tasmanian-devil":4,"slow-worm":1} 72.5
+round 1: cur 83.3/72.5; 63 legal, 13 read + 6 predicted (of 20); top: -1 feral-tomcat +1 pika-hoarder 75/74.4 | -1 feral-tomcat -3 pine-marten +1 pika-hoarder +3 badger-lumberjack 75/89.4 | -4 tasmanian-devil +1 pika-hoarder +3 grizzly-vanguard 79.2/91.9
+no nearer move
+RESULT 13-6 {"beaver-feller":4,"feral-tomcat":1,"grizzly-vanguard":1,"pine-marten":3,"monarch-wingblade":3,"tasmanian-devil":4,"slow-worm":1} 72.5 {} moves:  problems: []
+13-3 target 80 (72-88) size 17 start {"beaver-feller":4,"bramblewood-lynx":3,"tasmanian-devil":4,"anhinga-spearbird":1,"owl-nightwatch":4,"pika-hoarder":1} problems []
+start {"beaver-feller":4,"bramblewood-lynx":3,"tasmanian-devil":4,"anhinga-spearbird":1,"owl-nightwatch":4,"pika-hoarder":1} 86.9
+round 1: cur 91.7/86.9; 12 legal, 12 read + 6 predicted (of 33); top: -4 tasmanian-devil -1 anhinga-spearbird +4 badger-lumberjack +1 amber-cicada 91.7/93.1 | -4 tasmanian-devil -4 beaver-feller +4 badger-lumberjack +4 grizzly-vanguard 91.7/93.8 | -4 tasmanian-devil -1 anhinga-spearbird +4 badger-lumberjack +1 grass-snake 91.7/95.6
+no nearer move
+RESULT 13-3 {"beaver-feller":4,"bramblewood-lynx":3,"tasmanian-devil":4,"anhinga-spearbird":1,"owl-nightwatch":4,"pika-hoarder":1} 86.9 {} moves:  problems: []
+13-1 target 90 (82-98) size 19 start {"anhinga-spearbird":1,"badger-lumberjack":4,"beaver-feller":4,"berserker-boar":4,"pine-marten":3,"bramblewood-lynx":3} problems []
+start {"anhinga-spearbird":1,"badger-lumberjack":4,"beaver-feller":4,"berserker-boar":4,"pine-marten":3,"bramblewood-lynx":3} 97.5
+round 1: cur 100/97.5; 15 legal, 15 read + 6 predicted (of 34); top: -1 anhinga-spearbird -4 badger-lumberjack +1 amber-cicada +4 owl-nightwatch 91.7/95 | -3 pine-marten +3 owl-nightwatch 91.7/97.5 | -1 anhinga-spearbird +1 pika-hoarder 91.7/99.4
+round 2: cur 91.7/95; 15 legal, 15 read + 6 predicted (of 40); top: -3 pine-marten +3 badger-lumberjack 95.8/96.3 | -4 beaver-feller +4 badger-lumberjack 91.7/98.8 | -4 beaver-feller +4 grizzly-vanguard 95.8/99.4
+no nearer move
+RESULT 13-1 {"beaver-feller":4,"berserker-boar":4,"pine-marten":3,"bramblewood-lynx":3,"amber-cicada":1,"owl-nightwatch":4} 95 {} moves: -1 anhinga-spearbird -4 badger-lumberjack +1 amber-cicada +4 owl-nightwatch problems: []
+15-4 target 72 (64-80) size 17 start {"bramblewood-lynx":3,"pronghorn-racer":4,"stoat-cutthroat":3,"village-miller":3,"grass-viper":4} problems []
+start {"bramblewood-lynx":3,"pronghorn-racer":4,"stoat-cutthroat":3,"village-miller":3,"grass-viper":4} 88.1
+round 1: cur 83.3/88.1; 84 legal, 28 read + 6 predicted (of 24); top: -1 stoat-cutthroat +1 siege-rhino 70.8/82.5 | -1 stoat-cutthroat +1 mosquito-cloud 70.8/83.1 | -1 pronghorn-racer +1 warhorse-charger 70.8/85
+round 2: cur 70.8/82.5; 49 legal, 49 read + 6 predicted (of 32); top: -1 pronghorn-racer +1 siege-rhino 70.8/80 | -1 pronghorn-racer +1 village-miller 70.8/81.3 | -1 stoat-cutthroat +1 village-miller 70.8/83.8
+round 3: cur 70.8/80; 59 legal, 32 read + 6 predicted (of 21); top: -1 grass-viper +1 village-miller 70.8/78.8 | -1 siege-rhino +1 pronghorn-racer 70.8/82.5 | -2 siege-rhino +1 fawn-scout +1 pronghorn-racer 75/85.6
+round 4: cur 70.8/78.8; 57 legal, 30 read + 6 predicted (of 27); top: -1 village-miller +1 grass-viper 70.8/80 | -1 stoat-cutthroat +1 pronghorn-racer 70.8/81.9 | -1 village-miller -1 siege-rhino +1 grass-viper +1 pronghorn-racer 70.8/82.5
+no nearer move
+RESULT 15-4 {"bramblewood-lynx":3,"pronghorn-racer":3,"stoat-cutthroat":2,"village-miller":4,"grass-viper":3,"siege-rhino":2} 78.8 {} moves: -1 stoat-cutthroat +1 siege-rhino ; -1 pronghorn-racer +1 siege-rhino ; -1 grass-viper +1 village-miller problems: []
+16-6 target 60 (52-68) size 18 start {"cone-cutter-squirrel":2,"dhole-matriarch":2,"grizzly-vanguard":1,"upside-down-bat":4,"snowshoe-hare":4,"owl-sentinel":4,"siege-rhino":1} problems []
+start {"cone-cutter-squirrel":2,"dhole-matriarch":2,"grizzly-vanguard":1,"upside-down-bat":4,"snowshoe-hare":4,"owl-sentinel":4,"siege-rhino":1} 43.1
+round 1: cur 58.3/43.1; 29 legal, 29 read + 6 predicted (of 40); top: -1 siege-rhino -1 owl-sentinel +1 golden-eagle-diver +1 cone-cutter-squirrel 58.3/50.6 | -1 siege-rhino +1 pinecone-sapper 58.3/50 | -1 siege-rhino -1 owl-sentinel +1 raft-spider +1 cone-cutter-squirrel 58.3/46.3
+round 2: cur 58.3/50.6; 32 legal, 32 read + 6 predicted (of 43); top: -1 owl-sentinel +1 cone-cutter-squirrel 58.3/53.8 | -4 snowshoe-hare +4 pinecone-sapper 58.3/52.5 | -1 golden-eagle-diver +1 raft-spider 58.3/46.3
+round 3: cur 58.3/53.8; 29 legal, 29 read + 6 predicted (of 47); top: -2 cone-cutter-squirrel +2 owl-sentinel 62.5/52.5 | -1 cone-cutter-squirrel +1 owl-sentinel 58.3/50.6 | -1 grizzly-vanguard +1 raft-spider 58.3/44.4
+no nearer move
+RESULT 16-6 {"cone-cutter-squirrel":4,"dhole-matriarch":2,"grizzly-vanguard":1,"upside-down-bat":4,"snowshoe-hare":4,"owl-sentinel":2,"golden-eagle-diver":1} 53.8 {} moves: -1 siege-rhino -1 owl-sentinel +1 golden-eagle-diver +1 cone-cutter-squirrel ; -1 owl-sentinel +1 cone-cutter-squirrel problems: []
+LANE DONE

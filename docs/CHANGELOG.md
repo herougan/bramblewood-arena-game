@@ -4,6 +4,10 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-11-18 (package TL4: Tagalog / Tamil / Japanese / Korean review of CONTENT13, POWDER1, DATAFIX and FXAUD2 rows)
 - Players see: 22 card names and 6 texts reworded to the words each pack already uses (Bulwark, Spitter, Mantis, Goose, Mussel, Baby, Flying); no gameplay change. Still drafts for a native read.
+## 2026-11-18 (package REFIT6: Map 3, 9, 13-16 and 18-20 reference decks rebuilt from owned cards, their fights re-fitted)
+- Players see: new enemy decks in 62 road fights on Maps 3, 9, 13-16 and 18-20 and their side maps (5-A, 8-A, 11-A, 14-A, 18-A, 20-A, 20-B). Shield and bramble Health untouched.
+- Road (seed 9100, 400 games; other fights from REFIT5's read): main 119 -> 112 in band, 126 -> 122 within 10, 4 -> 9 beyond 20 (of 149); side 68 -> 65 / 71 -> 66 / 4 -> 6 (of 81). The rebuilt references are stronger (right after the rebuild: main 83 / 94 / 23). Left too easy with any legal deck: 18-7, 18-4, 18-A-4, 18-A-6, 18-A-7, 3-6, 9-7, 13-8 (decision REFIT6-1).
+- Under the hood: the nine `WINRATE_REF_DECKS` entries rebuilt by `skirmish_pass.js decks --keep` (every card owned on its map, checked by `docs/balance/refit6/owned_2026_11_18.js`; the old decks in `ref-decks-before-2026-11-18.json`). Then REFIT5's method: legal-only search (two passes) and the wide sampler; a deck kept only where it closes the gap by 2+ points on the mean of two fresh seed sets (51100 / 52100, 53100 / 54100, 55100 / 56100). tests/skir1 failures 17 -> 15; winrate-panel's report checks for Maps 13, 14, 19, 20 pass again. Files: `docs/balance/refit6/`.
 
 ## 2026-11-18 (package REFIT5: Map 10-12 and 17 reference decks rebuilt, the Maps 0-20 road re-fitted after DATAFIX)
 - Players see: new enemy decks in 90 road fights (Maps 0-20 and their side maps), most on Maps 11, 20, 12, 6 and 19-A. Shield and bramble Health untouched.

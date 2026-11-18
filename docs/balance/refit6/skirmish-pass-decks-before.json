@@ -1,0 +1,963 @@
+{
+ "generated": "2026-10-19",
+ "note": "Road decks (tools/skirmish_pass.js decks); the game reads them from arena_app.js WINRATE_REF_DECKS. Map 0 plays the Otter starter.",
+ "road": {
+  "1": {
+   "pool": 44,
+   "score": 100,
+   "cards": [
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "n": 4
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "n": 4
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "n": 4
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "2": {
+   "pool": 46,
+   "score": 93.3,
+   "cards": [
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "n": 4
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "n": 4
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "n": 4
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "3": {
+   "pool": 49,
+   "score": 92.9,
+   "cards": [
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
+    {
+     "id": "terrier-pup",
+     "name": "Terrier Pup",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "4": {
+   "pool": 52,
+   "score": 71.7,
+   "cards": [
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
+    {
+     "id": "worker-ant",
+     "name": "Worker Ant",
+     "n": 4
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 2
+    },
+    {
+     "id": "rabbit-kit",
+     "name": "Rabbit Kit",
+     "n": 2
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "5": {
+   "pool": 56,
+   "score": 96.4,
+   "cards": [
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
+    {
+     "id": "rabbit-kit",
+     "name": "Rabbit Kit",
+     "n": 2
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 2
+    },
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "n": 4
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "6": {
+   "pool": 59,
+   "score": 69.8,
+   "cards": [
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 2
+    },
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "n": 4
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 2
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "7": {
+   "pool": 63,
+   "score": 66.7,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    },
+    {
+     "id": "worker-ant",
+     "name": "Worker Ant",
+     "n": 4
+    },
+    {
+     "id": "greyplume-fledgling",
+     "name": "Greyplume Fledgling",
+     "n": 4
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "8": {
+   "pool": 65,
+   "score": 45.8,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
+    {
+     "id": "muskrat-lodgekeeper",
+     "name": "Muskrat Lodgekeeper",
+     "n": 4
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "9": {
+   "pool": 69,
+   "score": 54.8,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
+    {
+     "id": "phoenix-mushrooms",
+     "name": "Phoenix Mushrooms",
+     "n": 2
+    },
+    {
+     "id": "terrier-pup",
+     "name": "Terrier Pup",
+     "n": 2
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "10": {
+   "pool": 73,
+   "score": 88,
+   "cards": [
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "n": 4
+    },
+    {
+     "id": "phoenix-mushrooms",
+     "name": "Phoenix Mushrooms",
+     "n": 2
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "n": 4
+    },
+    {
+     "id": "sheep",
+     "name": "Sheep",
+     "n": 4
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "n": 2
+    },
+    {
+     "id": "shoal-shark",
+     "name": "Shoal Shark",
+     "n": 4
+    }
+   ],
+   "level": 0,
+   "generated": "2026-11-18"
+  },
+  "11": {
+   "pool": 76,
+   "score": 90.8,
+   "cards": [
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "n": 4
+    },
+    {
+     "id": "sheep",
+     "name": "Sheep",
+     "n": 4
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "n": 2
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "n": 2
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-11-18"
+  },
+  "12": {
+   "pool": 80,
+   "score": 91.7,
+   "cards": [
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "n": 3
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "n": 1
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "n": 4
+    },
+    {
+     "id": "river-carp",
+     "name": "River Carp",
+     "n": 4
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "name": "Meerkat Wayfarer",
+     "n": 4
+    },
+    {
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-11-18"
+  },
+  "13": {
+   "pool": 83,
+   "score": 65.6,
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 1
+    },
+    {
+     "id": "great-barracuda",
+     "name": "Great Barracuda",
+     "n": 4
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "n": 4
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "n": 3
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 1
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "n": 3
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-28"
+  },
+  "14": {
+   "pool": 85,
+   "score": 75,
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 1
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "n": 3
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "n": 3
+    },
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "n": 1
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "n": 4
+    },
+    {
+     "id": "shimmerwing-stag",
+     "name": "Shimmerwing Stag",
+     "n": 3
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 1
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-28"
+  },
+  "15": {
+   "pool": 88,
+   "score": 91.7,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 4
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "n": 3
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "n": 4
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "n": 4
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "n": 1
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-28"
+  },
+  "16": {
+   "pool": 91,
+   "score": 78.6,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 4
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "n": 4
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "n": 1
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "n": 3
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "n": 1
+    },
+    {
+     "id": "electric-ray",
+     "name": "Electric Ray",
+     "n": 3
+    }
+   ],
+   "level": 3.18,
+   "generated": "2026-10-28"
+  },
+  "17": {
+   "pool": 95,
+   "score": 82.3,
+   "cards": [
+    {
+     "id": "rock-pool-starfish",
+     "name": "Rock Pool Starfish",
+     "n": 4
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "n": 3
+    },
+    {
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "n": 4
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "n": 1
+    }
+   ],
+   "level": 3.36,
+   "generated": "2026-11-18"
+  },
+  "18": {
+   "pool": 97,
+   "score": 90.5,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "n": 1
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "n": 3
+    },
+    {
+     "id": "electric-ray",
+     "name": "Electric Ray",
+     "n": 3
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "n": 4
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 1
+    }
+   ],
+   "level": 3.54,
+   "generated": "2026-10-28"
+  },
+  "19": {
+   "pool": 102,
+   "score": 82,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "n": 3
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "n": 4
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 1
+    },
+    {
+     "id": "talon-archer",
+     "name": "Talon Archer",
+     "n": 3
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "n": 1
+    }
+   ],
+   "level": 3.72,
+   "generated": "2026-10-28"
+  },
+  "20": {
+   "pool": 105,
+   "score": 85,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "n": 3
+    },
+    {
+     "id": "talon-archer",
+     "name": "Talon Archer",
+     "n": 3
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "n": 1
+    },
+    {
+     "id": "echidna-quillshot",
+     "name": "Echidna Quillshot",
+     "n": 3
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "n": 1
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "n": 4
+    },
+    {
+     "id": "taiga-lynx",
+     "name": "Taiga Lynx",
+     "n": 1
+    }
+   ],
+   "level": 3.9,
+   "generated": "2026-10-28"
+  },
+  "21": {
+   "pool": 110,
+   "score": 97.2,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "n": 1
+    },
+    {
+     "id": "echidna-quillshot",
+     "name": "Echidna Quillshot",
+     "n": 3
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "n": 4
+    },
+    {
+     "id": "taiga-lynx",
+     "name": "Taiga Lynx",
+     "n": 1
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "n": 3
+    },
+    {
+     "id": "spitting-cobra",
+     "name": "Spitting Cobra",
+     "n": 1
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "n": 3
+    }
+   ],
+   "level": 4.08,
+   "generated": "2026-10-28"
+  },
+  "22": {
+   "pool": 112,
+   "score": 68.7,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "n": 1
+    },
+    {
+     "id": "echidna-quillshot",
+     "name": "Echidna Quillshot",
+     "n": 3
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "n": 4
+    },
+    {
+     "id": "taiga-lynx",
+     "name": "Taiga Lynx",
+     "n": 1
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "n": 3
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "n": 3
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 1
+    }
+   ],
+   "level": 4.26,
+   "generated": "2026-10-28"
+  },
+  "23": {
+   "pool": 115,
+   "score": 62.5,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "echidna-quillshot",
+     "name": "Echidna Quillshot",
+     "n": 3
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "n": 4
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "n": 3
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "n": 3
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 1
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "n": 1
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "n": 1
+    }
+   ],
+   "level": 4.44,
+   "generated": "2026-10-28"
+  },
+  "24": {
+   "pool": 117,
+   "score": 90.6,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "ur-elk",
+     "name": "Ür-Elk",
+     "n": 3
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 4
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "n": 2
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "n": 3
+    }
+   ],
+   "level": 4.62,
+   "generated": "2026-10-28"
+  }
+ }
+}
