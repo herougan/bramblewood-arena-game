@@ -32,7 +32,7 @@ const bee = byId['bee-knight'];
   const mb = V.maskHiddenSkills(beeL1), ml = V.maskHiddenSkills(lark), mt = V.maskHiddenSkills(thorny);
   ok(V.revealTut12(), '1. a T-1 fight is the T-1 / T-2 reveal');
 // 2026-10-30 TUT2: owner SKL0-1 "T-1/T-2 won't have swarm or flying": no Flying exception any more (TUT12_SHOWN empty), every skill "?"
-  ok(JSON.stringify(mb.effects) === '{}' && mb._hiddenSkills === 2, `1. T-1: Bee Knight's Flying and Swarm both read "?" (${JSON.stringify(mb.effects)}, ${mb._hiddenSkills})`);
+  ok(JSON.stringify(mb.effects) === '{}' && mb._hiddenSkills === Object.keys(bee.levelSkills[1]).length /* 2026-11-18 (REFIT4 merge): FOLD6 added Diurnal at Level 1 beside the owner's Swarm (Bee) and Flying */, `1. T-1: Bee Knight's Flying and Swarm both read "?" (${JSON.stringify(mb.effects)}, ${mb._hiddenSkills})`);
   ok(JSON.stringify(ml.effects) === '{}' && ml._hiddenSkills === 3, '1. T-1: Diurnal (a reveal-map skill the old tutorials showed) is "?" too, and Flying');
   ok(JSON.stringify(mt.effects) === '{}' && mt._hiddenSkills === 2, '1. T-1: a number skill and a trigger read "?"');
   ok(V.maskHiddenSkills(plain) === plain && V.maskHiddenSkills({id: 'hb', effects: {flying: true}}).effects.flying === undefined, '1. T-1: a vanilla card is as it is; a Flying-only card reads "?" (TUT2)');
@@ -56,7 +56,7 @@ ok(/if\(ev && !ev\.__t12 && revealTut12\(\)\) return tut12LogMask\(logText\(/.te
 // ---- 2. Bee Knight's levels
 // 2026-10-30 TUT2: owner SKL0-1 "T-1/T-2 won't have swarm or flying ... no skills till lvl 1": Flying arrives at Level 1 too
 // 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live Bee Knight: Swarm {Bee} + Flying sit in levelSkills 1 only (effects {})
-ok(bee && JSON.stringify(bee.effects) === '{}' && JSON.stringify(bee.levelSkills) === '{"1":{"swarm":["Bee"],"flying":true}}', '2. cards.json: Bee Knight as printed (Level 1) has Swarm + Flying; levelSkills: both arrive at Level 1 (TUT2)');
+ok(bee && JSON.stringify(bee.effects) === '{}' && (L=>L && JSON.stringify(L.swarm)==='["Bee"]' && L.flying===true)((bee.levelSkills||{})['1']) /* 2026-11-18 (REFIT4 merge): FOLD6 added Diurnal at Level 1 beside the owner's Swarm (Bee) and Flying */, '2. cards.json: Bee Knight as printed (Level 1) has Swarm + Flying; levelSkills: both arrive at Level 1 (TUT2)');
 // 2026-11-02 (ENG18, owner BASELVL-1: "Baby cards start at level 0"): a Baby card's Hatchling is its one Level 0 level skill
 ok(cards.filter(c=> c.levelSkills).every(c=> Object.keys(c.levelSkills).every(k=> +k > 0 || (c.kind === 'baby' && JSON.stringify(c.levelSkills[k]) === '{"hatchling":true}'))), '2. no levelSkills at Level 0 (but a Baby card\'s Hatchling)');
 const L = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = L.G;
