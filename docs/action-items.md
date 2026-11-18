@@ -8,6 +8,12 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-19 00:02: Release 1.0 (owner)
+- Scope (owner): "Release 1.0 is defined as Map 0-20, its submaps, the first daily dungeon, the first multiplayer dungeon, the first raid, and PVP." Make the first-release experience good from the tutorial to Map 20's end; when idle, explore visual effects and improve the UI/UX.
+- [ ] REL1: player's-eye audit of the 1.0 path (desktop + 390 px), P1/P2/P3 list and top 10 -> `docs/release/rel1-audit-2026-11-19.md` (running); its fixes become REL2+ packages, in sequence (most touch arena_app.js)
+- [ ] RAIDGATE (owner: "the Raid is unlocked somewhere between Map 21-25 though - unlocking something in the prior water maps, that unlocks the raid at the deep dark depths. I think let's make it a submap in a submap in one of the water maps."). Coordinator's default (owner asleep; recorded as OWN-1119-1 for review): a sub-submap under The Sunken Depths (Map 10's side map, `mj`) that opens once Map 21 is cleared; clearing its last fight unlocks the first raid, entered from the deep. Design + build after REFIT7 / LVL11.
+- [ ] VFX exploration (owner): after REL1, the weak / missing battle effects it lists, through the `add-effect` skill and the Effects Lab
+
 ## 11-18 20:26: Owner notes -> POISON2, MAPFIT1 (queued)
 - [ ] Venom counters read "Poison"; Venomous keeps its name (owner picked one counter named Poison; OWN-1118-1) -> POISON2 (running)
 - [ ] Single-map view scrolls ~3 screens on PC (owner 20:40 screenshot; the World view is fine): the open fight panel (`#conquestNodePanel`: drops, deck, Ref line, "This map's cards" chips that spill below the panel box) stretches `#conquestMain`. Cap the panel to the viewport with its own scroll, keep the chips inside it, no scroll on the map behind. Owner 20:41: "Even when the fight panel is off, the screen is to long, about 2.3-2.5x the screen length" (not reproduced: owner's Chrome 1710x859 overflows 45 px; headless 1288-3440 px wide up to +194 px). So: the single-map view never scrolls at any window size or browser zoom (canvas fits the available height; `#conquestMain` no vertical scroll) -> MAPFIT1 (after SKWK2, same file)
