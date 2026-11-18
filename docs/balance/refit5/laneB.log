@@ -171,3 +171,84 @@ round 2: cur 75/68.8; 91 legal, 50 read + 6 predicted (of 51); top: -1 sea-turtl
 round 3: cur 75/70; 91 legal, 50 read + 6 predicted (of 47); top: -2 crown-of-thorns-star +2 riptide-eel 70.8/73.8 | -1 coral-current-eel -1 kraken-spawnling +1 clownfish-scout +1 reef-shark 75/75.6 | -4 crown-of-thorns-star +1 fiddler-crab-swarm +3 reef-shark 75/77.5
 RESULT 10-5 {"coral-current-eel":2,"crown-of-thorns-star":2,"kraken-spawnling":4,"reef-shark":1,"riptide-eel":3} 73.8 {} moves: -3 reef-shark +3 crown-of-thorns-star ; -1 sea-turtle-elder +1 riptide-eel ; -2 crown-of-thorns-star +2 riptide-eel problems: []
 LANE DONE
+6-7 target 60 (52-68) size 12 start {"adder-ambusher":2,"crocodile-ambusher":4,"lamprey":1,"venomlord-serpent":4,"water-shrew":1} problems []
+start {"adder-ambusher":2,"crocodile-ambusher":4,"lamprey":1,"venomlord-serpent":4,"water-shrew":1} 33.8
+round 1: cur 33.3/33.8; 44 legal, 44 read + 6 predicted (of 45); top: -1 water-shrew +1 constrictor-coil 66.7/53.8 | -1 water-shrew +1 alligator-gar 54.2/42.5 | -1 adder-ambusher +1 alligator-gar 50/29.4
+round 2: cur 66.7/53.8; 44 legal, 44 read + 6 predicted (of 48); top: -1 venomlord-serpent +1 lamprey 58.3/51.9 | -2 venomlord-serpent +2 lamprey 62.5/42.5 | -1 adder-ambusher -2 crocodile-ambusher +1 lamprey +2 alligator-gar 62.5/38.1
+no nearer move
+RESULT 6-7 {"adder-ambusher":2,"crocodile-ambusher":4,"lamprey":1,"venomlord-serpent":4,"constrictor-coil":1} 53.8 {} moves: -1 water-shrew +1 constrictor-coil problems: []
+6-8 target 40 (30-49) size 19 start {"adder-ambusher":3,"alligator-gar":3,"barrow-leech-bat":3,"camouflage-frog":4,"cypress-root-lurker":1,"lamprey":4,"pond-algae":1} problems []
+start {"adder-ambusher":3,"alligator-gar":3,"barrow-leech-bat":3,"camouflage-frog":4,"cypress-root-lurker":1,"lamprey":4,"pond-algae":1} 21.9
+round 1: cur 20.8/21.9; 13 legal, 13 read + 6 predicted (of 29); top: -1 pond-algae -4 lamprey +1 water-shrew +4 venomlord-serpent 45.8/37.5 | -1 cypress-root-lurker -3 alligator-gar +1 water-shrew +3 venomlord-serpent 45.8/45 | -4 lamprey +4 venomlord-serpent 45.8/34.4
+RESULT 6-8 {"adder-ambusher":3,"alligator-gar":3,"barrow-leech-bat":3,"camouflage-frog":4,"cypress-root-lurker":1,"water-shrew":1,"venomlord-serpent":4} 37.5 {} moves: -1 pond-algae -4 lamprey +1 water-shrew +4 venomlord-serpent problems: []
+6-3 target 80 (72-88) size 18 start {"booming-bittern":4,"camouflage-frog":4,"crocodile-ambusher":4,"lamprey":4,"mosquito-cloud":1,"newt-doctor":1} problems []
+start {"booming-bittern":4,"camouflage-frog":4,"crocodile-ambusher":4,"lamprey":4,"mosquito-cloud":1,"newt-doctor":1} 59.4
+round 1: cur 62.5/59.4; 6 legal, 6 read + 3 predicted (of 3); top: -1 mosquito-cloud -1 newt-doctor +1 constrictor-coil +1 water-shrew 62.5/77.5 | -1 mosquito-cloud -1 newt-doctor +1 constrictor-coil +1 pond-algae 66.7/74.4 | -1 mosquito-cloud +1 constrictor-coil 58.3/68.1
+RESULT 6-3 {"booming-bittern":4,"camouflage-frog":4,"crocodile-ambusher":4,"lamprey":4,"constrictor-coil":1,"water-shrew":1} 77.5 {} moves: -1 mosquito-cloud -1 newt-doctor +1 constrictor-coil +1 water-shrew problems: []
+6-5 target 70 (62-78) size 14 start {"booming-bittern":4,"crocodile-ambusher":4,"lamprey":2,"newt-doctor":1,"venomlord-serpent":3} problems []
+start {"booming-bittern":4,"crocodile-ambusher":4,"lamprey":2,"newt-doctor":1,"venomlord-serpent":3} 81.3
+round 1: cur 91.7/81.3; 43 legal, 43 read + 6 predicted (of 45); top: -4 booming-bittern +3 alligator-gar +1 lamprey 70.8/74.4 | -1 crocodile-ambusher +1 water-shrew 70.8/62.5 | -1 booming-bittern +1 mosquito-cloud 70.8/61.3
+round 2: cur 70.8/74.4; 38 legal, 38 read + 6 predicted (of 55); top: -3 crocodile-ambusher +3 booming-bittern 70.8/70 | -1 crocodile-ambusher +1 lamprey 66.7/74.4 | -1 venomlord-serpent +1 lamprey 70.8/65
+RESULT 6-5 {"crocodile-ambusher":1,"lamprey":3,"newt-doctor":1,"venomlord-serpent":3,"alligator-gar":3,"booming-bittern":3} 70 {} moves: -4 booming-bittern +3 alligator-gar +1 lamprey ; -3 crocodile-ambusher +3 booming-bittern problems: []
+6-6 target 65 (57-73) size 15 start {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":1,"pond-algae":1,"venomlord-serpent":4,"water-shrew":1} problems []
+start {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":1,"pond-algae":1,"venomlord-serpent":4,"water-shrew":1} 55.6
+round 1: cur 41.7/55.6; 30 legal, 30 read + 6 predicted (of 32); top: -1 pond-algae +1 alligator-gar 62.5/53.1 | -1 booming-bittern -1 cypress-root-lurker +1 constrictor-coil +1 mosquito-cloud 58.3/46.9 | -1 cypress-root-lurker +1 mosquito-cloud 58.3/38.8
+no nearer move
+RESULT 6-6 {"booming-bittern":4,"camouflage-frog":4,"cypress-root-lurker":1,"pond-algae":1,"venomlord-serpent":4,"water-shrew":1} 55.6 {} moves:  problems: []
+4-5 target 40 (30-49) size 20 start {"beaver-lumberjack":4,"conch-crawler":1,"drowned-matriarch":4,"grass-snake":4,"muskrat-lodgekeeper":4,"river-mink":3} problems []
+start {"beaver-lumberjack":4,"conch-crawler":1,"drowned-matriarch":4,"grass-snake":4,"muskrat-lodgekeeper":4,"river-mink":3} 13.1
+round 1: cur 25/13.1; 131 legal, 50 read + 6 predicted (of 39); top: -3 river-mink +3 lotus-frog 37.5/21.9 | -3 river-mink +3 planarian-splitter 37.5/21.9 | -3 river-mink -1 beaver-lumberjack +3 lotus-frog +1 duck-paddler 37.5/20.6
+round 2: cur 37.5/21.9; 131 legal, 42 read + 6 predicted (of 38); top: -2 drowned-matriarch +2 pond-algae 41.7/27.5 | -1 beaver-lumberjack +1 duck-paddler 37.5/20.6 | -1 conch-crawler +1 duck-paddler 37.5/20.6
+round 3: cur 41.7/27.5; 67 legal, 43 read + 6 predicted (of 30); top: -2 pond-algae +1 kittiwake-flock +1 lotus-frog 41.7/28.8 | -1 muskrat-lodgekeeper +1 lotus-frog 41.7/26.9 | -4 grass-snake +4 planarian-splitter 41.7/23.8
+round 4: cur 41.7/28.8; 48 legal, 48 read + 6 predicted (of 50); top: -1 conch-crawler +1 drowned-matriarch 41.7/25.6 | -1 grass-snake +1 drowned-matriarch 41.7/25.6 | -1 beaver-lumberjack +1 drowned-matriarch 41.7/25
+no nearer move
+RESULT 4-5 {"beaver-lumberjack":4,"conch-crawler":1,"drowned-matriarch":2,"grass-snake":4,"muskrat-lodgekeeper":4,"lotus-frog":4,"kittiwake-flock":1} 28.8 {} moves: -3 river-mink +3 lotus-frog ; -2 drowned-matriarch +2 pond-algae ; -2 pond-algae +1 kittiwake-flock +1 lotus-frog problems: []
+4-3 target 70 (62-78) size 15 start {"muskrat-lodgekeeper":4,"platypus-spur":1,"river-mink":1,"pond-algae":1,"lotus-frog":4,"planarian-splitter":1,"water-shrew":3} problems []
+start {"muskrat-lodgekeeper":4,"platypus-spur":1,"river-mink":1,"pond-algae":1,"lotus-frog":4,"planarian-splitter":1,"water-shrew":3} 45
+round 1: cur 45.8/45; 89 legal, 32 read + 6 predicted (of 43); top: -1 water-shrew +1 platypus-spur 54.2/43.1 | -1 pond-algae -1 planarian-splitter +1 platypus-spur +1 grass-snake 54.2/41.9 | -1 pond-algae +1 platypus-spur 54.2/41.3
+no nearer move
+RESULT 4-3 {"muskrat-lodgekeeper":4,"platypus-spur":1,"river-mink":1,"pond-algae":1,"lotus-frog":4,"planarian-splitter":1,"water-shrew":3} 45 {} moves:  problems: []
+4-1 target 90 (82-98) size 13 start {"beaver-lumberjack":4,"slow-worm":2,"snapstick-turtle":1,"muskrat-lodgekeeper":4,"lotus-frog":2} problems []
+start {"beaver-lumberjack":4,"slow-worm":2,"snapstick-turtle":1,"muskrat-lodgekeeper":4,"lotus-frog":2} 88.1
+RESULT 4-1 {"beaver-lumberjack":4,"slow-worm":2,"snapstick-turtle":1,"muskrat-lodgekeeper":4,"lotus-frog":2} 88.1 {} moves:  problems: []
+7-A-2 target 70 (62-78) size 16 side (min 12) start {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"leopard-slug":2,"planarian-splitter":1,"puffball-bombardier":4} problems []
+start {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"leopard-slug":2,"planarian-splitter":1,"puffball-bombardier":4} 93.1
+round 1: cur 95.8/93.1; 34 legal, 34 read + 6 predicted (of 39); top: -1 planarian-splitter 91.7/88.1 | -1 planarian-splitter +1 leopard-slug 91.7/93.8 | -2 leopard-slug +2 rot-swollen-carcass 91.7/98.1
+round 2: cur 91.7/88.1; 41 legal, 41 read + 6 predicted (of 49); top: -1 bombardier-beetle +1 hawthorn-shieldbug 91.7/91.3 | -1 hawthorn-shieldbug +1 rot-swollen-carcass 91.7/91.9 | -1 leopard-slug +1 fungal-colossus 87.5/93.8
+no nearer move
+RESULT 7-A-2 {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"leopard-slug":2,"puffball-bombardier":4} 88.1 {} moves: -1 planarian-splitter problems: []
+7-A-4 target 60 (52-68) size 14 side (min 10) start {"bombardier-beetle":3,"fungus-gnat-cloud":4,"leopard-slug":1,"planarian-splitter":1,"rot-swollen-carcass":1,"sleepless-shrew":4} problems []
+start {"bombardier-beetle":3,"fungus-gnat-cloud":4,"leopard-slug":1,"planarian-splitter":1,"rot-swollen-carcass":1,"sleepless-shrew":4} 65.6
+round 1: cur 66.7/65.6; 102 legal, 22 read + 6 predicted (of 43); top: -1 rot-swollen-carcass +1 planarian-splitter 58.3/60 | -1 rot-swollen-carcass +1 puffball-bombardier 58.3/58.1 | -1 rot-swollen-carcass +1 hawthorn-shieldbug 58.3/55
+RESULT 7-A-4 {"bombardier-beetle":3,"fungus-gnat-cloud":4,"leopard-slug":1,"planarian-splitter":2,"sleepless-shrew":4} 60 {} moves: -1 rot-swollen-carcass +1 planarian-splitter problems: []
+14-2 target 85 (77-93) size 15 start {"grizzly-vanguard":1,"marula-elephant":4,"meerkat-sentry":4,"spitting-cobra":3,"stoat-cutthroat":3} problems []
+start {"grizzly-vanguard":1,"marula-elephant":4,"meerkat-sentry":4,"spitting-cobra":3,"stoat-cutthroat":3} 66.9
+round 1: cur 79.2/66.9; 98 legal, 21 read + 6 predicted (of 18); top: -1 stoat-cutthroat -3 spitting-cobra +1 crocodile-ambusher +3 acacia-giraffe 83.3/75.6 | -1 spitting-cobra -3 stoat-cutthroat +1 crocodile-ambusher +3 acacia-giraffe 83.3/70 | -1 stoat-cutthroat +1 badger-lumberjack 83.3/65.6
+round 2: cur 83.3/75.6; 57 legal, 11 read + 3 predicted (of 3); top: -1 grizzly-vanguard +1 acacia-giraffe 83.3/71.9 | -2 stoat-cutthroat +2 spitting-cobra 83.3/70 | -4 marula-elephant +3 spitting-cobra +1 acacia-giraffe 83.3/68.1
+no nearer move
+RESULT 14-2 {"grizzly-vanguard":1,"marula-elephant":4,"meerkat-sentry":4,"stoat-cutthroat":2,"crocodile-ambusher":1,"acacia-giraffe":3} 75.6 {} moves: -1 stoat-cutthroat -3 spitting-cobra +1 crocodile-ambusher +3 acacia-giraffe problems: []
+14-1 target 90 (82-98) size 16 start {"grizzly-vanguard":1,"hollow-belly-rat":1,"marula-elephant":4,"meerkat-sentry":4,"plains-zebra":2,"tasmanian-devil":4} problems []
+start {"grizzly-vanguard":1,"hollow-belly-rat":1,"marula-elephant":4,"meerkat-sentry":4,"plains-zebra":2,"tasmanian-devil":4} 71.9
+round 1: cur 87.5/71.9; 39 legal, 39 read + 6 predicted (of 37); top: -2 plains-zebra +2 acacia-giraffe 91.7/76.9 | -2 plains-zebra -4 tasmanian-devil +2 stoat-cutthroat +4 acacia-giraffe 91.7/74.4 | -2 plains-zebra +2 stoat-cutthroat 87.5/73.8
+round 2: cur 91.7/76.9; 39 legal, 39 read + 6 predicted (of 44); top: -2 meerkat-sentry +2 acacia-giraffe 91.7/75.6 | -1 meerkat-sentry +1 acacia-giraffe 91.7/75 | -4 tasmanian-devil +3 stoat-cutthroat +1 acacia-giraffe 91.7/73.8
+no nearer move
+RESULT 14-1 {"grizzly-vanguard":1,"hollow-belly-rat":1,"marula-elephant":4,"meerkat-sentry":4,"tasmanian-devil":4,"acacia-giraffe":2} 76.9 {} moves: -2 plains-zebra +2 acacia-giraffe problems: []
+14-4 target 75 (67-83) size 15 start {"grizzly-vanguard":1,"hollow-belly-rat":1,"hoopoe-herald":4,"marula-elephant":4,"river-mink":1,"tasmanian-devil":4} problems []
+start {"grizzly-vanguard":1,"hollow-belly-rat":1,"hoopoe-herald":4,"marula-elephant":4,"river-mink":1,"tasmanian-devil":4} 58.8
+round 1: cur 45.8/58.8; 23 legal, 23 read + 6 predicted (of 37); top: -4 hoopoe-herald +4 plains-zebra 75/69.4 | -4 hoopoe-herald +4 acacia-giraffe 75/66.3 | -1 grizzly-vanguard +1 crocodile-ambusher 62.5/56.9
+round 2: cur 75/69.4; 23 legal, 23 read + 6 predicted (of 40); top: -4 plains-zebra +4 acacia-giraffe 75/66.3 | -4 tasmanian-devil +4 acacia-giraffe 75/65 | -1 grizzly-vanguard +1 bramblewood-macaque 75/56.9
+no nearer move
+RESULT 14-4 {"grizzly-vanguard":1,"hollow-belly-rat":1,"marula-elephant":4,"river-mink":1,"tasmanian-devil":4,"plains-zebra":4} 69.4 {} moves: -4 hoopoe-herald +4 plains-zebra problems: []
+14-3 target 80 (72-88) size 15 start {"bramble-sprout":1,"grizzly-vanguard":1,"marula-elephant":4,"meerkat-sentry":4,"river-mink":1,"tasmanian-devil":4} problems []
+start {"bramble-sprout":1,"grizzly-vanguard":1,"marula-elephant":4,"meerkat-sentry":4,"river-mink":1,"tasmanian-devil":4} 69.4
+round 1: cur 79.2/69.4; 31 legal, 31 read + 6 predicted (of 37); top: -1 bramble-sprout +1 plains-zebra 79.2/75 | -1 bramble-sprout +1 badger-lumberjack 75/73.1 | -1 river-mink +1 spitting-cobra 79.2/67.5
+round 2: cur 79.2/75; 50 legal, 50 read + 6 predicted (of 28); top: -1 grizzly-vanguard +1 hollow-belly-rat 79.2/71.9 | -1 grizzly-vanguard +1 crocodile-ambusher 79.2/70 | -1 grizzly-vanguard +1 spitting-cobra 79.2/63.8
+no nearer move
+RESULT 14-3 {"grizzly-vanguard":1,"marula-elephant":4,"meerkat-sentry":4,"river-mink":1,"tasmanian-devil":4,"plains-zebra":1} 75 {} moves: -1 bramble-sprout +1 plains-zebra problems: []
+14-5 target 70 (62-78) size 20 start {"acacia-giraffe":4,"bramblewood-macaque":3,"marula-elephant":4,"plains-zebra":3,"grizzly-vanguard":1,"meerkat-sentry":4,"hollow-belly-rat":1} problems []
+start {"acacia-giraffe":4,"bramblewood-macaque":3,"marula-elephant":4,"plains-zebra":3,"grizzly-vanguard":1,"meerkat-sentry":4,"hollow-belly-rat":1} 73.8
+round 1: cur 75/73.8; 37 legal, 37 read + 6 predicted (of 45); top: -4 marula-elephant +3 stoat-cutthroat +1 plains-zebra 70.8/72.5 | -3 bramblewood-macaque +3 dust-hyena 70.8/73.8 | -1 grizzly-vanguard +1 bramble-sprout 70.8/75.6
+RESULT 14-5 {"acacia-giraffe":4,"bramblewood-macaque":3,"plains-zebra":4,"grizzly-vanguard":1,"meerkat-sentry":4,"hollow-belly-rat":1,"stoat-cutthroat":3} 72.5 {} moves: -4 marula-elephant +3 stoat-cutthroat +1 plains-zebra problems: []
+LANE DONE
+18-A-3 target 71.4 (63.4-79.4) size 15 side (min 11) start {"dune-jackal":4,"dust-devil-kestrel":2,"horned-lizard":1,"pale-oryx":3,"roadrunner-courier":5} problems []
+start {"dune-jackal":4,"dust-devil-kestrel":2,"horned-lizard":1,"pale-oryx":3,"roadrunner-courier":5} 55.6
