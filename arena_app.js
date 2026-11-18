@@ -12312,7 +12312,20 @@ function cardFirstMapHTML(c){
   let n = 0, f = null; try{ n = cardObtainMap(c); f = cardFirstMapList(c); }catch(e){}
   const m = mpMapById(f ? f.loc : mapIdAt(n));
   if(!f && !(n > 0) || !m) return `<span class="ui52-first-map is-none">🗺️ ${escapeHtml(TX('ui.ui52-first-map-none'))}</span>`;
-  return `<button type="button" class="btn small ghost ui52-first-map" data-ui52-map="${escapeAttr(m.id)}" title="${escapeAttr(TX('ui.ui52-first-map-tip'))}">🗺️ ${escapeHtml(TX('ui.pg-map-n', {n}))} · ${escapeHtml((m.icon ? m.icon + ' ' : '') + m.name)}</button>`;
+  if(f && f.n != null && !(n > 0)) n = f.n; // 2026-11-18 (MAPLIST1): a card nothing hands out yet (cardObtainMap 0) reads its list's map number (was "Map 0 · Gannet Cliffs"); an obtainable card keeps where it is obtained (DF-1)
+  return `<button type="button" class="btn small ghost ui52-first-map" data-ui52-map="${escapeAttr(m.id)}" title="${escapeAttr(TX('ui.ui52-first-map-tip'))}">🗺️ ${escapeHtml(TX('ui.pg-map-n', {n}))} · ${escapeHtml((m.icon ? m.icon + ' ' : '') + m.name)}</button>${cardOtherMapsHTML(c, f)}`;
+}
+// 2026-11-18 (MAPLIST1, owner 21:24: "let me see ... which maps it currently exists in. Im afraid if I take out a card from a map, it becomes a
+// "New!" card in a later map"): after the first-map button, every other map list naming the card (main list, Special, side map), in road
+// order, each a button to that map's cards; the first one is where it reads New!, so removing it there moves New! to the next one listed.
+function cardOtherMapsHTML(c, first){
+  const id = c.derivedFrom || c.id, out = [];
+  try{ Object.keys((MAP_POOLS_BASE || {}).maps || {}).concat(Object.keys(mapPoolEdits || {})).filter((t, i, a)=> a.indexOf(t) === i).forEach(top=>{
+    const e = mpEntry(top), add = (loc, kind)=>{ const n = mapUnlockNumberOf(loc); if(n != null && !(first && first.loc === loc)) out.push({loc, kind, n}); };
+    if(e.cards.includes(id)) add(top, ''); if(e.special.includes(id)) add(top, 'special'); Object.keys(e.submaps).forEach(s=>{ if(e.submaps[s].includes(id)) add(s, 'side'); }); }); }catch(e){ return ''; }
+  out.sort((a, b)=> a.n - b.n || (a.kind > b.kind ? 1 : -1));
+  return out.map(o=>{ const m = mpMapById(o.loc); if(!m) return '';
+    return `<button type="button" class="btn small ghost ui52-first-map is-also" data-ui52-map="${escapeAttr(m.id)}" title="${escapeAttr(TX('ui.maplist1-also-tip'))}">+ ${escapeHtml(TX('ui.pg-map-n', {n: o.n}))} · ${escapeHtml((m.icon ? m.icon + ' ' : '') + m.name)}${o.kind ? ' (' + escapeHtml(TX(o.kind === 'side' ? 'ui.maplist1-side' : 'ui.maplist1-special')) + ')' : ''}</button>`; }).join('');
 }
 function renderEditorInner(){
   const c = editingCard;

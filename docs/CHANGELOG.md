@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-18 (package MAPLIST1, owner 21:24: which maps a card is on, in the card editor)
+- Admin: the card editor's header now lists every map list that names the card after its first-map button, in road order: '+ Map 11 · Eyrie Heights', '+ Map 15 · The Aerie Vault (side map)', '(Special)'; each opens that map's cards. The first one is where the card reads New!, so taking it off there moves New! to the next one listed. A card nothing hands out yet now shows its list's map number on the first button (was 'Map 0 · Gannet Cliffs').
+- Under the hood: `cardOtherMapsHTML` beside `cardFirstMapHTML`; texts `ui.maplist1-*` in 12 packs (`tools/i18n_2026_11_18_maplist1.json`). ui52's page-turn check (#3) was failing before this change.
+
 ## 2026-11-18 (package MAPFIT0, owner 20:58: the map view scrolls without end)
 - Players see: a single map no longer scrolls. The tap spots on its trees, bushes, crystals and water were re-placed on every scroll, offset by the scroll, so the spots near the bottom pushed the map's scroll area down 25-73 px each time (endless). The spot layer now clips its spots; measured at 1288x634, 1710x859 and 2560x1440: no scroll, before and after scrolling 8 times.
 - Under the hood: `.map-fx-layer` `overflow:hidden` (arena_template.html); `tests/mapfx1-2026-10-31.js` pin widened.

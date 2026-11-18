@@ -4639,5 +4639,7 @@
  "Each turn, after the arrows: {n} Poison on the enemy in front or nearest. No damage.": "每回合在箭之後：對正前方（沒有則最近）的敵人施加 {n} 層中毒。不造成傷害。",
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "命中時：撕裂 N。每次命中它消耗一個標記，射擊和技能也算；毒與流血的跳傷不算。淨化可移除。",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "{att} 引爆了 {name} 身上的中毒：{n} 點傷害。",
- "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} 有毒：{t} 獲得 {n} 層毒。"
+ "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} 有毒：{t} 獲得 {n} 層毒。",
+ "This card is also on this map's list. Opens that map's cards.": "此卡也在這張地圖的列表中。開啟該地圖的卡牌。",
+ "side map": "支線地圖"
 }

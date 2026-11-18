@@ -4640,5 +4640,7 @@
  "Each turn, after the arrows: {n} Poison on the enemy in front or nearest. No damage.": "Tiap giliran, setelah panah: {n} Racun pada musuh di depan atau terdekat. Tanpa kerusakan.",
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "Saat Kena: Robek N. Tiap serangan padanya memakai satu token, termasuk tembakan dan skill; detak Racun dan Pendarahan tidak. Pembersihan menghapusnya.",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "{att} meledakkan Racun pada {name}: {n} kerusakan.",
- "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} beracun: {t} mendapat {n} Racun."
+ "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} beracun: {t} mendapat {n} Racun.",
+ "This card is also on this map's list. Opens that map's cards.": "Kartu ini juga ada di daftar peta ini. Membuka kartu peta itu.",
+ "side map": "peta samping"
 }

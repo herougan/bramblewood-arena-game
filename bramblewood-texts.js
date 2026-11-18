@@ -3837,7 +3837,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fxaud2-float-currents": "Underwater Currents",
   "ui.fxaud2-log-currents-n": "Underwater Currents {n}: the water takes {name}.",
   "ui.fxaud2-who-currents": "The Underwater Currents",
-  "ui.fxaud2-log-armourer": "⚒️ {a} fits {t} with armour: +{hp}❤."
+  "ui.fxaud2-log-armourer": "⚒️ {a} fits {t} with armour: +{hp}❤.",
+  "ui.maplist1-also-tip": "This card is also on this map's list. Opens that map's cards.",
+  "ui.maplist1-side": "side map",
+  "ui.maplist1-special": "Special"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

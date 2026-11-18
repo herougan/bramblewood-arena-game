@@ -4641,5 +4641,7 @@
  "Each turn, after the arrows: {n} Poison on the enemy in front or nearest. No damage.": "매 턴 화살 다음에: 앞(없으면 가장 가까운)의 적에게 독 {n}. 피해 없음.",
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "명중 시: 찢기 N. 그 대상에 대한 명중마다 토큰 하나를 써요(사격·스킬 포함, 독·출혈 피해는 제외). 정화로 없어져요.",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "{att}이(가) {name}의 독을 폭발시킵니다: 피해 {n}.",
- "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name}은(는) 유독했어요: {t}이(가) 독을 {n} 받아요."
+ "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name}은(는) 유독했어요: {t}이(가) 독을 {n} 받아요.",
+ "This card is also on this map's list. Opens that map's cards.": "이 카드는 이 맵의 목록에도 있습니다. 그 맵의 카드를 엽니다.",
+ "side map": "사이드 맵"
 }

@@ -4639,5 +4639,7 @@
  "Each turn, after the arrows: {n} Poison on the enemy in front or nearest. No damage.": "Bawat turn, pagkatapos ng mga palaso: {n} Lason sa kalaban sa harap o pinakamalapit. Walang pinsala.",
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "Sa Tama: Punit N. Bawat tama rito ay gumagamit ng isang token, pati palaso at skill; hindi ang tik ng Lason at Pagdurugo. Inaalis ng Linis.",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "Pinasabog ni {att} ang Lason kay {name}: {n} pinsala.",
- "☠️ {name} was poisonous: {t} gets {n} Poison.": "Nakalalason si {name}: nakakuha si {t} ng {n} Lason."
+ "☠️ {name} was poisonous: {t} gets {n} Poison.": "Nakalalason si {name}: nakakuha si {t} ng {n} Lason.",
+ "This card is also on this map's list. Opens that map's cards.": "Nasa listahan din ng mapang ito ang card na ito. Binubuksan ang mga card nito.",
+ "side map": "gilid na mapa"
 }

@@ -4640,5 +4640,7 @@
  "Each turn, after the arrows: {n} Poison on the enemy in front or nearest. No damage.": "A cada turno, depois das flechas: {n} Veneno no inimigo à frente ou no mais próximo. Sem dano.",
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "Ao golpear: Rasgo N. Cada golpe nela gasta uma ficha, também disparos e habilidades; os ticks de Veneno e Sangramento não. Purificar remove-as.",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "{att} detona o Veneno de {name}: {n} de dano.",
- "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} era tóxico: {t} recebe {n} de Veneno."
+ "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} era tóxico: {t} recebe {n} de Veneno.",
+ "This card is also on this map's list. Opens that map's cards.": "Esta carta também está na lista deste mapa. Abre as cartas dele.",
+ "side map": "mapa secundário"
 }
