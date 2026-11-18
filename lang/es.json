@@ -4638,5 +4638,12 @@
  "Each turn, after the arrows: {n} Poison on the enemy in front or nearest. No damage.": "Cada turno, tras las flechas: {n} Veneno al enemigo de enfrente o al más cercano. Sin daño.",
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "Al golpear: Desgarro N. Cada golpe sobre ella gasta una ficha, también disparos y habilidades; los ticks de Veneno y Sangrado no. Purificar las quita.",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "{att} detona el Veneno de {name}: {n} de daño.",
- "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} era ponzoñoso: {t} recibe {n} de Veneno."
+ "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} era ponzoñoso: {t} recibe {n} de Veneno.",
+ "Growth by level": "Progreso por nivel",
+ "Each row adds to the level before. Skill: its new number from that level. Empty table: the default curve.": "Cada fila se suma al nivel anterior. Habilidad: su nuevo número desde ese nivel. Tabla vacía: la curva por defecto.",
+ "Skill": "Habilidad",
+ "Total": "Total",
+ "Budget": "Presupuesto",
+ "Clear all": "Borrar todo",
+ "Style {s} · skill {n}%": "Estilo {s} · habilidad {n}%"
 }

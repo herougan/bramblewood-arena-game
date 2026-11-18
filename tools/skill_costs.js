@@ -208,7 +208,14 @@
       const sc = BB.capScores(A, H, s.S, e, B, {m}), x1 = sc.x1, x2 = sc.x2;
       return {N, S:s.S, x1, x2, N2, ok: x1 <= N && x2 <= N2, wellUnder: x1 <= N && x2 <= N2 && x1 <= N * 0.6, m, f: sc.f, parts:s.parts, missing:s.missing};
     }
-    return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetBase, budgetN, budgetMult, budgetV3N, budgetV4N, obtainMapOf, budget};
+    // 2026-11-18 (package LVL10): the card as it is at level L (`from` its base level, default levelOf): stats from its levelBonus (else the
+    // Forge curve; below its base the x0.85 hatchling), skills from bramblewood-budget.js levelEffectsAt; budgetAt prices it at N(L).
+    function formAt(d, L, from){ from = from == null ? levelOf(d) : from; let A = d.attack, H = d.health;
+      if(L > from && (A != null || H != null)){ const row = BB.forgeCurve(withMap(d), from, L).rows[L]; if(row){ A = row.attack; H = row.health; } }
+      else if(L < from){ const r = v=> v == null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85)); A = r(A); H = r(H); }
+      return Object.assign({}, d, {attack: A, health: H, effects: BB.levelEffectsAt(d, L, null, from), levelSkills: undefined, levelBonus: undefined}); }
+    function budgetAt(d, L, from){ return budget(formAt(d, L, from), {level: L}); }
+    return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetBase, budgetN, budgetMult, budgetV3N, budgetV4N, obtainMapOf, budget, formAt, budgetAt};
   }
   // Frozen copy of the 2026-10-18 model (SB_SKILLS in card_balance.js before this change; the Test Lab's SB_DEFAULT_SKILLS), for
   // comparisons only: every trigger list costs 1 in all, Bounty 0, a skill with no set cost 1 + floor(N/2).

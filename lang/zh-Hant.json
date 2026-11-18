@@ -4639,5 +4639,12 @@
  "Each turn, after the arrows: {n} Poison on the enemy in front or nearest. No damage.": "每回合在箭之後：對正前方（沒有則最近）的敵人施加 {n} 層中毒。不造成傷害。",
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "命中時：撕裂 N。每次命中它消耗一個標記，射擊和技能也算；毒與流血的跳傷不算。淨化可移除。",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "{att} 引爆了 {name} 身上的中毒：{n} 點傷害。",
- "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} 有毒：{t} 獲得 {n} 層毒。"
+ "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} 有毒：{t} 獲得 {n} 層毒。",
+ "Growth by level": "逐級成長",
+ "Each row adds to the level before. Skill: its new number from that level. Empty table: the default curve.": "每行在上一級基礎上增加。技能：從該級起的新數值。空表：預設曲線。",
+ "Skill": "技能",
+ "Total": "合計",
+ "Budget": "預算",
+ "Clear all": "全部清除",
+ "Style {s} · skill {n}%": "類型 {s} · 技能 {n}%"
 }

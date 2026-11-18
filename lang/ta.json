@@ -4641,5 +4641,12 @@
  "Each turn, after the arrows: {n} Poison on the enemy in front or nearest. No damage.": "ஒவ்வொரு முறையும், அம்புகளுக்குப் பின்: முன்னுள்ள அல்லது அருகிலுள்ள எதிரிக்கு {n} நஞ்சு. சேதம் இல்லை.",
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "தாக்கும்போது: கிழிப்பு N. அதன்மீது ஒவ்வொரு தாக்குதலும், அம்புகளும் திறன்களும், ஒரு வில்லையைச் செலவழிக்கும்; நஞ்சு, இரத்தக் கசிவு அல்ல. தூய்மை அவற்றை நீக்கும்.",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "{att} {name} மீதுள்ள விஷத்தை வெடிக்கச் செய்கிறது: {n} சேதம்.",
- "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} நச்சுத்தன்மையுடையது: {t} {n} நஞ்சு பெறுகிறது."
+ "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} நச்சுத்தன்மையுடையது: {t} {n} நஞ்சு பெறுகிறது.",
+ "Growth by level": "நிலைவாரி வளர்ச்சி",
+ "Each row adds to the level before. Skill: its new number from that level. Empty table: the default curve.": "ஒவ்வொரு வரியும் முந்தைய நிலையுடன் சேரும். திறன்: அந்த நிலையிலிருந்து அதன் புதிய எண். வெற்று அட்டவணை: இயல்பு வளைவு.",
+ "Skill": "திறன்",
+ "Total": "மொத்தம்",
+ "Budget": "வரவு",
+ "Clear all": "அனைத்தும் அழி",
+ "Style {s} · skill {n}%": "பாணி {s} · திறன் {n}%"
 }

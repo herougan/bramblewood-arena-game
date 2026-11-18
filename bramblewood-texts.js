@@ -3837,7 +3837,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fxaud2-float-currents": "Underwater Currents",
   "ui.fxaud2-log-currents-n": "Underwater Currents {n}: the water takes {name}.",
   "ui.fxaud2-who-currents": "The Underwater Currents",
-  "ui.fxaud2-log-armourer": "⚒️ {a} fits {t} with armour: +{hp}❤."
+  "ui.fxaud2-log-armourer": "⚒️ {a} fits {t} with armour: +{hp}❤.",
+  "ui.lvl10-title": "📈 Growth by level",
+  "ui.lvl10-help": "Each row adds to the level before. Skill: its new number from that level. Empty table: the default curve.",
+  "ui.lvl10-skill": "Skill",
+  "ui.lvl10-total": "Total",
+  "ui.lvl10-budget": "Budget",
+  "ui.lvl10-clear": "Clear all",
+  "ui.lvl10-style": "Style {s} · skill {n}%"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

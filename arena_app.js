@@ -4466,7 +4466,7 @@ function buildCardDefs(){
     if(base.attack==null && base.health==null) return;
     const st = statsAtLevel(base, lvl);
     out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: lvl, baseLevel: b});
-    if(base.levelSkills) out[id].effects = effectsAtLevel(base, lvl); // level skills (2026-10-13; 2026-10-30 TUT3: below their level they are off)
+    if(base.levelSkills || base.levelBonus) out[id].effects = effectsAtLevel(base, lvl); // level skills (2026-10-13; 2026-10-30 TUT3: below their level they are off; LVL10: levelBonus skills)
   });
   // Enchantments (2026-10-08): a socketed Materia adds its small bonus on top of the level.
   // 2026-10-24 (package H1): the gem sits in one COPY's socket now (myCardSockets); the card's def is its best copy, so it wears that
@@ -12038,45 +12038,62 @@ function openNodeRewardsEditor(mapId, nodeKey){
   render();
   setTimeout(()=>{ const s = document.getElementById('nrSearch'); if(s) s.focus(); }, 50);
 }
-// Stats by level (2026-10-11): base stats in the fields above, then one row per level from the card's base level + 1 to
-// its cap. A blank cell follows the default curve (shown greyed); a typed number is that level's exact stat.
+// Growth by level (2026-11-18, package LVL10, owner 21:11 "define the lvl 10 form"): one row per level above the base, up to 10, editing
+// the card's levelBonus (+Attack, +Health, a skill's new number); each row shows the running stats and the budget use at that level, the header
+// the growth style (skill share of the growth: A 0, B ~10%, C ~25%, D ~50%). An empty table falls back to the Forge curve. The Level 0 row of a
+// Level 1 card keeps its hatchling override (levelStats "0").
+function lvl10SkillOpts(c){ const P = (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.PARAMS) || [], out = new Set();
+  const add = fx=> Object.keys(fx || {}).forEach(k=>{ const v = fx[k]; if(k !== 'triggers' && !P.includes(k) && (typeof v === 'number' || v === true || (v && typeof v === 'object' && typeof v.v === 'number'))) out.add(k); });
+  add(c.effects); Object.values(c.levelSkills || {}).forEach(add); Object.values(c.levelBonus || {}).forEach(o=> add(o && o.skills)); return [...out]; }
+const lvl10Num = v=> v && typeof v === 'object' ? v.v : (v === true ? 1 : v);
 function levelStatsEditorHTML(c){
-  const {from, to} = cardLevelRange(c), ls = c.levelStats || {}, n = Object.keys(ls).length;
-  const rows = [];
-  // 2026-10-12 (23:12, user: "include a level 0 ... some cards can be babies born from nests"): a card that starts at Lv 1 also
-  // gets a Lv 0 row, its hatchling stats (default about 15% weaker).
-  if(from > 0){ const cur = curveStatsAtLevel(c, 0), ov = ls[0] || ls['0'] || {};
-    rows.push(`<tr data-lv="0" class="is-hatch"><th>Lv 0 <small class="lvs-step">hatchling</small></th>
-      <td><input type="number" min="0" class="lvs-atk" aria-label="Attack at level 0" placeholder="${cur.attack}" value="${ov.attack != null ? ov.attack : ''}"></td>
-      <td><input type="number" min="1" class="lvs-hp" aria-label="Health at level 0" placeholder="${cur.health}" value="${ov.health != null ? ov.health : ''}"></td></tr>`); }
-  for(let L = from + 1; L <= to; L++){
-    const cur = curveStatsAtLevel(c, L), ov = ls[L] || ls[String(L)] || {}, step = LEVEL_STEPS[L];
-    rows.push(`<tr data-lv="${L}"><th>Lv ${L}${step ? ` <small class="lvs-step is-${step}">${step === 'major' ? 'major' : 'minor'}</small>` : ''}</th>
-      <td><input type="number" min="0" class="lvs-atk" aria-label="Attack at level ${L}" placeholder="${cur.attack}" value="${ov.attack != null ? ov.attack : ''}"></td>
-      <td><input type="number" min="1" class="lvs-hp" aria-label="Health at level ${L}" placeholder="${cur.health}" value="${ov.health != null ? ov.health : ''}"></td></tr>`);
-  }
-  return `<details class="lvs-box" ${n ? 'open' : ''}><summary>📈 Stats by level <small>Lv ${from} is the base stats above · up to Lv ${to}${n ? ` · ${n} level${n===1?'':'s'} set by hand` : ''}</small></summary>
-    <p class="lvs-help">Leave a cell blank to follow the default curve (the grey number). Type a number to set that level exactly.${c.id === 'hero' ? ' The hero also has a skill path; that gets its own editor.' : ''}</p>
-    <div class="lvs-tools"><button type="button" class="btn small" id="lvsFill">Fill blanks from the curve</button><button type="button" class="btn small ghost" id="lvsClear">Clear all</button></div>
-    <div class="lvs-scroll"><table class="lvs-table"><thead><tr><th>Level</th><th>⚔ Attack</th><th>❤ Health</th></tr></thead><tbody>
-      ${rows.filter(r=> r.includes('is-hatch')).join('')}<tr class="is-base"><th>Lv ${from} <small>base</small></th><td>${c.attack}</td><td>${c.health}</td></tr>${rows.filter(r=> !r.includes('is-hatch')).join('')}</tbody></table></div></details>`;
+  const {from} = cardLevelRange(c), to = Math.min(10, cardMaxLevel(c)), ls = c.levelStats || {}, lb = c.levelBonus || {}, opts = lvl10SkillOpts(c), rows = [];
+  if(from > 0){ const cur = curveStatsAtLevel(Object.assign({}, c, {levelStats: undefined}), 0), ov = ls[0] || ls['0'] || {};
+    rows.push(`<tr data-lv0="1" class="is-hatch"><th>Lv 0</th><td colspan="2"><input type="number" min="0" class="lvs-atk" aria-label="Attack at level 0" placeholder="${cur.attack}" value="${ov.attack != null ? ov.attack : ''}"> <input type="number" min="1" class="lvs-hp" aria-label="Health at level 0" placeholder="${cur.health}" value="${ov.health != null ? ov.health : ''}"></td><td></td><td></td><td></td></tr>`); }
+  for(let L = from + 1; L <= to; L++){ const o = lb[L] || lb[String(L)] || {}, sk = Object.keys(o.skills || {})[0] || '', sv = sk ? lvl10Num(o.skills[sk]) : '';
+    rows.push(`<tr data-lv="${L}"><th>Lv ${L}</th>
+      <td><input type="number" min="0" class="lvb-atk" aria-label="+Attack at level ${L}" value="${o.attack || ''}" placeholder="0"></td>
+      <td><input type="number" min="0" class="lvb-hp" aria-label="+Health at level ${L}" value="${o.health || ''}" placeholder="0"></td>
+      <td class="lvb-sk"><select class="lvb-key" aria-label="${escapeAttr(TX('ui.lvl10-skill'))} ${L}"><option value=""></option>${opts.map(k=> `<option value="${escapeAttr(k)}"${k === sk ? ' selected' : ''}>${escapeHtml((skillDefOf(k) || {}).label || k)}</option>`).join('')}</select><input type="number" min="1" class="lvb-n" aria-label="${escapeAttr(TX('ui.lvl10-skill'))} ${L} N" value="${sv}"></td>
+      <td class="lvb-tot"></td><td class="lvb-fill"></td></tr>`); }
+  return `<details class="lvs-box" ${Object.keys(lb).length ? 'open' : ''}><summary>${TX('ui.lvl10-title')} <small class="lvb-style"></small></summary>
+    <p class="lvs-help">${TX('ui.lvl10-help')}</p>
+    <div class="lvs-tools"><button type="button" class="btn small ghost" id="lvsClear">${TX('ui.lvl10-clear')}</button></div>
+    <div class="lvs-scroll"><table class="lvs-table"><thead><tr><th>Lv</th><th>+⚔</th><th>+❤</th><th>${TX('ui.lvl10-skill')}</th><th>${TX('ui.lvl10-total')}</th><th>${TX('ui.lvl10-budget')}</th></tr></thead><tbody>
+      ${rows.filter(r=> r.includes('is-hatch')).join('')}<tr class="is-base"><th>Lv ${from}</th><td>${c.attack}</td><td>${c.health}</td><td></td><td class="lvb-tot">${c.attack}/${c.health}</td><td class="lvb-fill"></td></tr>${rows.filter(r=> !r.includes('is-hatch')).join('')}</tbody></table></div></details>`;
 }
+// {levelStats (the Level 0 row only), levelBonus} from the table; null when the table is not on the page
 function readLevelStatsEditor(){
-  const box = document.querySelector('#editorOverlay .lvs-box'); if(!box) return editingCard && editingCard.levelStats || null;
-  const out = {};
-  box.querySelectorAll('tr[data-lv]').forEach(tr=>{ const a = tr.querySelector('.lvs-atk').value, h = tr.querySelector('.lvs-hp').value; if(a === '' && h === '') return;
-    const o = {}; if(a !== '') o.attack = Math.max(0, Math.round(Number(a)||0)); if(h !== '') o.health = Math.max(1, Math.round(Number(h)||1)); out[tr.dataset.lv] = o; });
-  return out;
-}
+  const box = document.querySelector('#editorOverlay .lvs-box'); if(!box) return null;
+  const base = editingCard || {}, ls = {}, lb = {}, prev = Object.assign({}, base.effects || {});
+  const h0 = box.querySelector('tr[data-lv0]'); if(h0){ const a = h0.querySelector('.lvs-atk').value, h = h0.querySelector('.lvs-hp').value; if(a !== '' || h !== ''){ const o = {}; if(a !== '') o.attack = Math.max(0, Math.round(Number(a) || 0)); if(h !== '') o.health = Math.max(1, Math.round(Number(h) || 1)); ls[0] = o; } }
+  box.querySelectorAll('tr[data-lv]').forEach(tr=>{ const L = +tr.dataset.lv, a = Math.max(0, Math.round(Number(tr.querySelector('.lvb-atk').value) || 0)), h = Math.max(0, Math.round(Number(tr.querySelector('.lvb-hp').value) || 0));
+    Object.assign(prev, ((base.levelSkills || {})[L]) || {}); const k = tr.querySelector('.lvb-key').value, n = Math.round(Number(tr.querySelector('.lvb-n').value) || 0), o = {};
+    if(a) o.attack = a; if(h) o.health = h;
+    if(k && n >= 1){ const was = prev[k] !== undefined ? prev[k] : (((base.levelBonus || {})[L] || {}).skills || {})[k]; const v = was && typeof was === 'object' && !Array.isArray(was) ? Object.assign({}, was, {v: n}) : n; o.skills = {[k]: v}; prev[k] = v; }
+    if(Object.keys(o).length) lb[L] = o; });
+  return {levelStats: ls, levelBonus: lb}; }
+function applyLevelStatsEditor(c){ const r = readLevelStatsEditor(); if(!r || !c) return;
+  if(Object.keys(r.levelStats).length) c.levelStats = r.levelStats; else delete c.levelStats;
+  if(Object.keys(r.levelBonus).length) c.levelBonus = r.levelBonus; else delete c.levelBonus; }
 function wireLevelStatsEditor(){
   const box = document.querySelector('#editorOverlay .lvs-box'); if(!box) return;
-  const refresh = ()=>{ const atk = Number((document.getElementById('fAtk')||{}).value)||0, hp = Number((document.getElementById('fHp')||{}).value)||1;
-    const probe = Object.assign({}, editingCard, {attack: atk, health: hp});
-    const base = box.querySelector('tr.is-base'); if(base){ base.children[1].textContent = atk; base.children[2].textContent = hp; }
-    box.querySelectorAll('tr[data-lv]').forEach(tr=>{ const cur = curveStatsAtLevel(probe, +tr.dataset.lv); tr.querySelector('.lvs-atk').placeholder = cur.attack; tr.querySelector('.lvs-hp').placeholder = cur.health; }); };
-  ['fAtk','fHp'].forEach(id=>{ const el = document.getElementById(id); if(el) el.addEventListener('input', refresh); });
-  const fill = document.getElementById('lvsFill'); if(fill) fill.onclick = ()=>{ box.querySelectorAll('tr[data-lv] input').forEach(i=>{ if(i.value === '') i.value = i.placeholder; }); };
-  const clr = document.getElementById('lvsClear'); if(clr) clr.onclick = ()=>{ box.querySelectorAll('tr[data-lv] input').forEach(i=> i.value = ''); };
+  const T = sbCanon(), pct = v=> Math.round(v * 100) + '%';
+  const refresh = ()=>{ const atk = Number((document.getElementById('fAtk') || {}).value) || 0, hp = Number((document.getElementById('fHp') || {}).value) || 1, r = readLevelStatsEditor() || {levelBonus: {}};
+    const probe = Object.assign({}, editingCard, {attack: atk, health: hp, levelBonus: r.levelBonus, levelStats: undefined}), from = cardBaseLevel(probe);
+    try{ probe.obtainMap = cardObtainMap(editingCard); }catch(e){}
+    const base = box.querySelector('tr.is-base'); if(base){ base.children[1].textContent = atk; base.children[2].textContent = hp; base.querySelector('.lvb-tot').textContent = atk + '/' + hp; }
+    const fill = L=>{ if(!T || !T.budgetAt) return null; const b = T.budgetAt(probe, L, from); return b && b.N > 0 ? b : null; };
+    const b0 = fill(from); if(base && b0) base.querySelector('.lvb-fill').textContent = pct(b0.x1 / b0.N);
+    let top = null; box.querySelectorAll('tr[data-lv]').forEach(tr=>{ const L = +tr.dataset.lv, st = statsAtLevel(probe, L), b = fill(L); tr.querySelector('.lvb-tot').textContent = st.attack + '/' + st.health;
+      const c = tr.querySelector('.lvb-fill'); c.textContent = b ? pct(b.x1 / b.N) : ''; c.classList.toggle('is-over', !!(b && !b.ok)); if(b) top = {L, b}; });
+    // the style: the skill share of the growth from the base level to the top row (stats alone priced with the base skills)
+    const sEl = box.querySelector('.lvb-style'); if(sEl && b0 && top && T){ const st = statsAtLevel(probe, top.L), so = T.budget(Object.assign({}, probe, {attack: st.attack, health: st.health, levelBonus: undefined, levelSkills: undefined, effects: T.formAt(probe, from, from).effects}), {level: top.L});
+      const g = top.b.x1 - b0.x1, sk = Math.max(0, top.b.x1 - so.x1), sh = g > 0 ? sk / g : 0;
+      sEl.textContent = TX('ui.lvl10-style', {s: sh < 0.05 ? 'A' : sh < 0.175 ? 'B' : sh < 0.375 ? 'C' : 'D', n: Math.round(sh * 100)}); } };
+  ['fAtk', 'fHp'].forEach(id=>{ const el = document.getElementById(id); if(el) el.addEventListener('input', refresh); });
+  box.addEventListener('input', refresh); box.addEventListener('change', refresh);
+  const clr = document.getElementById('lvsClear'); if(clr) clr.onclick = ()=>{ box.querySelectorAll('input').forEach(i=> i.value = ''); box.querySelectorAll('select').forEach(s=> s.value = ''); refresh(); };
   setTimeout(refresh, 0);
 }
 // 2026-11-07 (package UI27 #17, owner 09:01: "add 'Previous' and 'Next' buttons to the card editor that move to the neighbouring card"): the
@@ -12165,7 +12182,7 @@ function renderEditor(){
   const overlay = document.getElementById('editorOverlay');
   const first = !overlay.querySelector('.modal');
   const snap = first ? null : snapshotEditorForm(overlay);
-  if(!first && editingCard){ const ls = readLevelStatsEditor(); if(ls && Object.keys(ls).length) editingCard.levelStats = ls; else delete editingCard.levelStats; }
+  if(!first && editingCard) applyLevelStatsEditor(editingCard); // LVL10 (2026-11-18): levelBonus + the Level 0 row
   const scroll = first ? 0 : ((overlay.querySelector('.modal')||{}).scrollTop || 0);
   renderEditorInner();
   if(snap) restoreEditorForm(overlay, snap);
@@ -13367,7 +13384,7 @@ function readEditorFormIntoCard(){
   c.wait = Number(document.getElementById('fWait').value)||0;
   c.attack = Number(document.getElementById('fAtk').value)||0;
   c.health = Math.max(1, Number(document.getElementById('fHp').value)||1);
-  { const ls = readLevelStatsEditor(); if(ls && Object.keys(ls).length) c.levelStats = ls; else delete c.levelStats; }
+  applyLevelStatsEditor(c); // LVL10 (2026-11-18): levelBonus + the Level 0 row
   // Element / dmgType (2026-09-18: removed from the editor as "not a thing" back then; RE-ADDED
   // 2026-09-29 now that a card's own dmgType drives the new elemental Poison/Decay conversion in
   // computeHitDamage, not just Resist/Weakness matching — see the #fDmgType field above).
@@ -15802,7 +15819,7 @@ const FORGE_CURVE_CACHE = new Map();
 function forgeCurveOf(d){
   const from = cardBaseLevel(d), top = cardMaxLevel(d) === 10 ? 11 : cardMaxLevel(d), e = (d && d.effects) || {}, BB = BramblewoodBudget;
   let om = 0; try{ om = cardObtainMap(d.derivedFrom ? Object.assign({}, d, {id: d.derivedFrom}) : d); }catch(e){} // 2026-10-19 (BF2): Base's map term
-  const key = [d.id, d.attack, d.health, d.rarity, d.wait, d.cost, from, top, BB.HALF_MISS.map(k=> e[k] ? 1 : 0).join(''), BB.ritualPts(e), om].join('|');
+  const key = [d.id, d.attack, d.health, d.rarity, d.wait, d.cost, from, top, BB.HALF_MISS.map(k=> e[k] ? 1 : 0).join(''), BB.ritualPts(e), om, d.levelBonus ? JSON.stringify(d.levelBonus) : ''].join('|'); // LVL10 (2026-11-18): + the card's own levelBonus
   let c = FORGE_CURVE_CACHE.get(key);
   if(!c){ if(FORGE_CURVE_CACHE.size > 6000) FORGE_CURVE_CACHE.clear(); c = BB.forgeCurve(Object.assign({}, d, {obtainMap: om}), from, top); FORGE_CURVE_CACHE.set(key, c); }
   return c;
@@ -15855,6 +15872,7 @@ function effectsAtLevel(b, L, fx0){
     ks.filter(k=> k > L).forEach(k=> Object.keys(ls[k] || {}).forEach(x=>{ delete fx[x]; }));
     ks.filter(k=> k <= L).forEach(k=> Object.assign(fx, ls[k])); }
   if((Number(L) || 0) < 1) ['hatchling', 'regen'].forEach(k=>{ delete fx[k]; }); // ENG25_LEVEL1_SKILLS
+  if(b && b.levelBonus && typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.levelBonusAt){ const lb = BramblewoodBudget.levelBonusAt(b, L, typeof cardBaseLevel === 'function' ? cardBaseLevel(b) : 1); if(lb) Object.assign(fx, typeof eng35Expand === 'function' ? eng35Expand(lb.skills) : lb.skills); } // 2026-11-18 (LVL10): a levelBonus skill's higher number from its level on (bramblewood-budget.js levelEffectsAt is the tools' copy)
   return fx; }
 function statsAtLevel(d, L){
   if((L|0) < cardBaseLevel(d)){ const ov0 = d.levelStats && (d.levelStats[0] || d.levelStats['0']); const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85));
@@ -16419,7 +16437,7 @@ function copyDefAt(id, L, gem){
     delete o.enchant; delete o.socketGem;
     if(want && gemValid(want) && cardHasSocket(o)) Object.assign(o, socketGemStats(o, want)); }
   if(L < cardBaseLevel(b)) o.hatchling = true; else delete o.hatchling;
-  if((b.levelSkills || L < 1) && typeof effectsAtLevel === 'function') o.effects = effectsAtLevel(b, L, b.levelSkills ? null : o.effects); // 2026-10-30 (TUT3): below their level the level skills are off (ENG25: Level 0, Hatchling / Regeneration too)
+  if((b.levelSkills || b.levelBonus || L < 1) && typeof effectsAtLevel === 'function') o.effects = effectsAtLevel(b, L, b.levelSkills ? null : o.effects); // 2026-10-30 (TUT3): below their level the level skills are off (ENG25: Level 0, Hatchling / Regeneration too)
   return o;
 }
 // Your deck for a fight: each card's copies at their own levels. The strongest copy keeps the card's id; a weaker one fights as
@@ -21875,7 +21893,7 @@ function refPartsDeck(parts, base, overlay){
     if(!b || cardBaseLevel(b) >= level || (b.attack == null && b.health == null)){ out[id] = (out[id] || 0) + k; return; } // an unknown id stays as it is: the setup reports it
     const did = id + '@p' + level;
     if(!overlay[did]){ const st = statsAtLevel(b, level), o = Object.assign({}, b, {id: did, derivedFrom: id, attack: st.attack, health: st.health, level, baseLevel: cardBaseLevel(b), locked: false});
-      if(b.levelSkills || level < 1) o.effects = effectsAtLevel(b, level, b.levelSkills ? null : o.effects); // 2026-10-30 (TUT3); ENG25: every Level 0 copy
+      if(b.levelSkills || b.levelBonus || level < 1) o.effects = effectsAtLevel(b, level, b.levelSkills ? null : o.effects); // 2026-10-30 (TUT3); ENG25: every Level 0 copy
       overlay[did] = o; }
     out[did] = (out[did] || 0) + k; });
   return out;
@@ -22224,7 +22242,7 @@ function defAtShownLevel(id, L){
   const out = Object.assign({}, b0, {art: b0.art || (CARD_DEFS_BASELINE[id] || {}).art || shown.art, level: lvl, baseLevel: base, locked: false, edShownLevel: lvl});
   if(b0.attack == null && b0.health == null) return out;
   const st = statsBeyondLevel(b0, lvl); out.attack = st.attack; out.health = st.health;
-  if(b0.levelSkills || lvl < 1) out.effects = effectsAtLevel(b0, lvl, b0.levelSkills ? null : out.effects); // 2026-10-30 (TUT3); ENG25: every Level 0 copy
+  if(b0.levelSkills || b0.levelBonus || lvl < 1) out.effects = effectsAtLevel(b0, lvl, b0.levelSkills ? null : out.effects); // 2026-10-30 (TUT3); ENG25: every Level 0 copy
   return out;
 }
 function edEnemyShownDef(node, id){ return defAtShownLevel(id, edShownLevel(node, id)); }
@@ -33782,7 +33800,7 @@ function levelledEnemyDeck(node, deck){
     const lvl = Math.max(0, Math.min((node && node.levelCap) || LIMIT_BREAK_LEVEL, Math.round(Number(L)||0))), did = id + '@lv' + lvl;
     const st = statsBeyondLevel(b, early != null ? lvl : Math.max(cardBaseLevel(b), lvl)); // = statsAtLevel up to the card's own top level (the Tower goes past it, 2026-10-16); EB: the early road goes below it (Level 0)
     matchDefsOverlay[did] = Object.assign({}, b, {id: did, derivedFrom: id, attack: st.attack, health: st.health, level: lvl, baseLevel: cardBaseLevel(b), locked: false});
-    if(b.levelSkills || lvl < 1) matchDefsOverlay[did].effects = effectsAtLevel(b, lvl, b.levelSkills ? null : matchDefsOverlay[did].effects); // 2026-10-30 (TUT3) (ENG25: every Level 0 copy): an EB Level 0 enemy copy drops the skills that arrive at Level 1
+    if(b.levelSkills || b.levelBonus || lvl < 1) matchDefsOverlay[did].effects = effectsAtLevel(b, lvl, b.levelSkills ? null : matchDefsOverlay[did].effects); // 2026-10-30 (TUT3) (ENG25: every Level 0 copy): an EB Level 0 enemy copy drops the skills that arrive at Level 1
     out[did] = (out[did]||0) + n;
   });
   invalidateCardDefs();
@@ -34042,7 +34060,7 @@ function eng23MapDef(id, defs){
   defs = defs || getCardDefs(); const d = defs[id]; if(!d) return null;
   const raw = (typeof liveCards !== 'undefined' && liveCards[id]) || CARD_DEFS_BASELINE[id]; if(!raw || raw.attack == null) return d;
   const b = cardBaseLevel(raw), hatch = b > 0 && isHatchling(id), L = hatch ? 0 : b, st = statsAtLevel(raw, L);
-  const out = Object.assign({}, d, {attack: st.attack, health: st.health, level: L, baseLevel: b, effects: (raw.levelSkills || L < 1) ? effectsAtLevel(raw, L, raw.levelSkills ? null : (raw.effects || d.effects)) : (raw.effects || d.effects)}); /* ENG25: a Level 0 copy drops Hatchling / Regeneration */
+  const out = Object.assign({}, d, {attack: st.attack, health: st.health, level: L, baseLevel: b, effects: (raw.levelSkills || raw.levelBonus || L < 1) ? effectsAtLevel(raw, L, raw.levelSkills ? null : (raw.effects || d.effects)) : (raw.effects || d.effects)}); /* ENG25: a Level 0 copy drops Hatchling / Regeneration */
   delete out.socketGem; delete out.enchant; delete out.prestigeTier; delete out.prestigeClass; delete out.prestigeIcon; delete out.prestigeLabel; return out; }
 function vis4MapCardTilesHTML(ids, defs, opts){
   defs = defs || getCardDefs(); const packs = !!(opts && opts.packs);
