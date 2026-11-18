@@ -1,0 +1,2744 @@
+{
+ "about": "LISTFIX3 road swaps (tools/listfix3/decks_2026_11_11.js swap)",
+ "rows": [
+  {
+   "code": "0-1",
+   "map": "m1",
+   "mapNo": 0,
+   "side": false,
+   "cut": [
+    "chipmunk-skirmisher x4"
+   ],
+   "to": {
+    "crossed-eyes": 1,
+    "duck-paddler": 2,
+    "earthworm": 1
+   },
+   "before": {
+    "chipmunk-skirmisher": 4,
+    "crossed-eyes": 3,
+    "duck-paddler": 2,
+    "earthworm": 3,
+    "soldier-ant": 4,
+    "honey-bee": 4
+   },
+   "after": {
+    "crossed-eyes": 4,
+    "duck-paddler": 4,
+    "earthworm": 4,
+    "honey-bee": 4,
+    "soldier-ant": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "0-4",
+   "map": "m1",
+   "mapNo": 0,
+   "side": false,
+   "cut": [
+    "terrier-pup x4"
+   ],
+   "to": {
+    "ant-scout": 2,
+    "house-cat": 2
+   },
+   "before": {
+    "ant-scout": 2,
+    "cottontail": 4,
+    "terrier-pup": 4,
+    "worker-ant": 4,
+    "honey-bee": 4,
+    "house-cat": 2
+   },
+   "after": {
+    "ant-scout": 4,
+    "cottontail": 4,
+    "honey-bee": 4,
+    "house-cat": 4,
+    "worker-ant": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "3-1",
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "cut": [
+    "razorbill x4"
+   ],
+   "to": {
+    "puffin-diver": 1,
+    "fiddler-crab-swarm": 2,
+    "peak-condor": 1
+   },
+   "before": {
+    "gannet-nestweaver": 4,
+    "limpet-clinger": 1,
+    "puffin-diver": 3,
+    "razorbill": 4,
+    "fiddler-crab-swarm": 2,
+    "peak-condor": 3
+   },
+   "after": {
+    "fiddler-crab-swarm": 4,
+    "gannet-nestweaver": 4,
+    "limpet-clinger": 1,
+    "peak-condor": 4,
+    "puffin-diver": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "3-2",
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "cut": [
+    "razorbill x4"
+   ],
+   "to": {
+    "puffin-diver": 1,
+    "peak-condor": 3
+   },
+   "before": {
+    "kittiwake-flock": 3,
+    "puffin-diver": 1,
+    "razorbill": 4,
+    "beachcomber-sanderling": 2,
+    "limpet-clinger": 1,
+    "peak-condor": 1
+   },
+   "after": {
+    "beachcomber-sanderling": 2,
+    "kittiwake-flock": 3,
+    "limpet-clinger": 1,
+    "peak-condor": 4,
+    "puffin-diver": 2
+   },
+   "problems": []
+  },
+  {
+   "code": "3-3",
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "cut": [
+    "razorbill x4",
+    "balloon-archer x1"
+   ],
+   "to": {
+    "peak-condor": 4,
+    "chipmunk-cavalry": 1
+   },
+   "before": {
+    "feral-tomcat": 4,
+    "gull-thief": 1,
+    "razorbill": 4,
+    "limpet-clinger": 1,
+    "balloon-archer": 1,
+    "hawk-arrowkeeper": 4
+   },
+   "after": {
+    "chipmunk-cavalry": 1,
+    "feral-tomcat": 4,
+    "gull-thief": 1,
+    "hawk-arrowkeeper": 4,
+    "limpet-clinger": 1,
+    "peak-condor": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "3-4",
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "cut": [
+    "eagle-sharpshooter x1"
+   ],
+   "to": {
+    "peregrine-stooper": 1
+   },
+   "before": {
+    "feral-tomcat": 4,
+    "gannet-nestweaver": 4,
+    "peregrine-stooper": 2,
+    "cormorant": 2,
+    "eagle-sharpshooter": 1,
+    "fiddler-crab-swarm": 1
+   },
+   "after": {
+    "cormorant": 2,
+    "feral-tomcat": 4,
+    "fiddler-crab-swarm": 1,
+    "gannet-nestweaver": 4,
+    "peregrine-stooper": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "3-6",
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "cut": [
+    "balloon-archer x3"
+   ],
+   "to": {
+    "hawk-arrowkeeper": 1,
+    "fiddler-crab-swarm": 2
+   },
+   "before": {
+    "cormorant": 4,
+    "hawk-arrowkeeper": 3,
+    "gannet-nestweaver": 4,
+    "gull-thief": 1,
+    "balloon-archer": 3,
+    "fiddler-crab-swarm": 1
+   },
+   "after": {
+    "cormorant": 4,
+    "fiddler-crab-swarm": 3,
+    "gannet-nestweaver": 4,
+    "gull-thief": 1,
+    "hawk-arrowkeeper": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "3-7",
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "cut": [
+    "golden-eagle-diver x1",
+    "razorbill x4"
+   ],
+   "to": {
+    "peak-condor": 3,
+    "cormorant": 2
+   },
+   "before": {
+    "gannet-nestweaver": 4,
+    "golden-eagle-diver": 1,
+    "peak-condor": 1,
+    "razorbill": 4,
+    "kittiwake-flock": 4,
+    "cormorant": 1,
+    "hawk-arrowkeeper": 4
+   },
+   "after": {
+    "cormorant": 3,
+    "gannet-nestweaver": 4,
+    "hawk-arrowkeeper": 4,
+    "kittiwake-flock": 4,
+    "peak-condor": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "4-5",
+   "map": "m2",
+   "mapNo": 4,
+   "side": false,
+   "cut": [
+    "pyrenean-desman x4"
+   ],
+   "to": {
+    "river-mink": 1,
+    "beaver-lumberjack": 3
+   },
+   "before": {
+    "conch-crawler": 1,
+    "drowned-matriarch": 4,
+    "pyrenean-desman": 4,
+    "river-mink": 2,
+    "grass-snake": 4,
+    "muskrat-lodgekeeper": 4,
+    "beaver-lumberjack": 1
+   },
+   "after": {
+    "beaver-lumberjack": 4,
+    "conch-crawler": 1,
+    "drowned-matriarch": 4,
+    "grass-snake": 4,
+    "muskrat-lodgekeeper": 4,
+    "river-mink": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "5-1",
+   "map": "mw",
+   "mapNo": 5,
+   "side": false,
+   "cut": [
+    "mudflat-godwit x2"
+   ],
+   "to": {
+    "muskrat-reedgatherer": 2
+   },
+   "before": {
+    "fire-ant-raft": 4,
+    "swamp-alligator": 4,
+    "mudflat-godwit": 2,
+    "alley-cat": 2,
+    "raft-spider": 1
+   },
+   "after": {
+    "alley-cat": 2,
+    "fire-ant-raft": 4,
+    "muskrat-reedgatherer": 2,
+    "raft-spider": 1,
+    "swamp-alligator": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "5-2",
+   "map": "mw",
+   "mapNo": 5,
+   "side": false,
+   "cut": [
+    "mudpuppy x1"
+   ],
+   "to": {
+    "marsh-mallow-hare": 1
+   },
+   "before": {
+    "fire-ant-raft": 2,
+    "swamp-alligator": 4,
+    "marsh-mallow-hare": 2,
+    "nutria-reedcutter": 4,
+    "planarian-splitter": 1,
+    "mudpuppy": 1
+   },
+   "after": {
+    "fire-ant-raft": 2,
+    "marsh-mallow-hare": 3,
+    "nutria-reedcutter": 4,
+    "planarian-splitter": 1,
+    "swamp-alligator": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "5-4",
+   "map": "mw",
+   "mapNo": 5,
+   "side": false,
+   "cut": [
+    "fen-mink x1",
+    "grass-viper x1"
+   ],
+   "to": {
+    "newt-doctor": 2
+   },
+   "before": {
+    "fen-mink": 1,
+    "fire-ant-raft": 4,
+    "grass-viper": 1,
+    "marsh-mallow-hare": 4,
+    "raft-spider": 4,
+    "swamp-alligator": 4
+   },
+   "after": {
+    "fire-ant-raft": 4,
+    "marsh-mallow-hare": 4,
+    "newt-doctor": 2,
+    "raft-spider": 4,
+    "swamp-alligator": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "5-6",
+   "map": "mw",
+   "mapNo": 5,
+   "side": false,
+   "cut": [
+    "fen-mink x1"
+   ],
+   "to": {
+    "raft-spider": 1
+   },
+   "before": {
+    "fen-mink": 1,
+    "muskrat-reedgatherer": 1,
+    "marsh-mallow-hare": 4,
+    "mosquito-cloud": 4,
+    "bog-leech": 4,
+    "raft-spider": 3
+   },
+   "after": {
+    "bog-leech": 4,
+    "marsh-mallow-hare": 4,
+    "mosquito-cloud": 4,
+    "muskrat-reedgatherer": 1,
+    "raft-spider": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "6-1",
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "cut": [
+    "poison-dart-croaker x4"
+   ],
+   "to": {},
+   "before": {
+    "crocodile-ambusher": 4,
+    "lamprey": 4,
+    "poison-dart-croaker": 4,
+    "pond-algae": 1,
+    "constrictor-coil": 4,
+    "mosquito-cloud": 1
+   },
+   "after": {
+    "constrictor-coil": 4,
+    "crocodile-ambusher": 4,
+    "lamprey": 4,
+    "mosquito-cloud": 1,
+    "pond-algae": 1
+   },
+   "problems": [
+    "no legal fill"
+   ]
+  },
+  {
+   "code": "6-3",
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "cut": [
+    "venomlord-serpent x4"
+   ],
+   "to": {
+    "crocodile-ambusher": 3,
+    "newt-doctor": 1
+   },
+   "before": {
+    "camouflage-frog": 4,
+    "crocodile-ambusher": 1,
+    "lamprey": 4,
+    "mosquito-cloud": 1,
+    "booming-bittern": 4,
+    "venomlord-serpent": 4
+   },
+   "after": {
+    "booming-bittern": 4,
+    "camouflage-frog": 4,
+    "crocodile-ambusher": 4,
+    "lamprey": 4,
+    "mosquito-cloud": 1,
+    "newt-doctor": 1
+   },
+   "problems": []
+  },
+  {
+   "code": "6-6",
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "cut": [
+    "lamprey x3",
+    "barrow-leech-bat x1"
+   ],
+   "to": {},
+   "before": {
+    "pond-algae": 1,
+    "venomlord-serpent": 4,
+    "water-shrew": 1,
+    "lamprey": 3,
+    "barrow-leech-bat": 1,
+    "constrictor-coil": 4,
+    "cypress-root-lurker": 1
+   },
+   "after": {
+    "constrictor-coil": 4,
+    "cypress-root-lurker": 1,
+    "pond-algae": 1,
+    "venomlord-serpent": 4,
+    "water-shrew": 1
+   },
+   "problems": [
+    "no legal fill"
+   ]
+  },
+  {
+   "code": "6-7",
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "cut": [
+    "barrow-leech-bat x3"
+   ],
+   "to": {
+    "venomlord-serpent": 3
+   },
+   "before": {
+    "adder-ambusher": 2,
+    "crocodile-ambusher": 4,
+    "barrow-leech-bat": 3,
+    "lamprey": 1,
+    "venomlord-serpent": 1,
+    "water-shrew": 1
+   },
+   "after": {
+    "adder-ambusher": 2,
+    "crocodile-ambusher": 4,
+    "lamprey": 1,
+    "venomlord-serpent": 4,
+    "water-shrew": 1
+   },
+   "problems": []
+  },
+  {
+   "code": "7-1",
+   "map": "mu",
+   "mapNo": 7,
+   "side": false,
+   "cut": [
+    "truffle-piglet x4"
+   ],
+   "to": {
+    "camouflage-frog": 1,
+    "millipede-hauler": 3
+   },
+   "before": {
+    "hawthorn-shieldbug": 1,
+    "leopard-slug": 3,
+    "planarian-splitter": 2,
+    "rot-swollen-carcass": 2,
+    "truffle-piglet": 4
+   },
+   "after": {
+    "camouflage-frog": 1,
+    "hawthorn-shieldbug": 1,
+    "leopard-slug": 3,
+    "millipede-hauler": 3,
+    "planarian-splitter": 2,
+    "rot-swollen-carcass": 2
+   },
+   "problems": []
+  },
+  {
+   "code": "7-5",
+   "map": "mu",
+   "mapNo": 7,
+   "side": false,
+   "cut": [
+    "lamprey x1",
+    "truffle-piglet x4"
+   ],
+   "to": {
+    "hawthorn-shieldbug": 1,
+    "corpse-flower-beetle": 1,
+    "sleepless-shrew": 1,
+    "cypress-root-lurker": 1,
+    "rot-swollen-carcass": 1
+   },
+   "before": {
+    "camouflage-frog": 1,
+    "hawthorn-shieldbug": 3,
+    "lamprey": 1,
+    "planarian-splitter": 4,
+    "truffle-piglet": 4,
+    "corpse-flower-beetle": 2,
+    "sleepless-shrew": 3
+   },
+   "after": {
+    "camouflage-frog": 1,
+    "corpse-flower-beetle": 3,
+    "cypress-root-lurker": 1,
+    "hawthorn-shieldbug": 4,
+    "planarian-splitter": 4,
+    "rot-swollen-carcass": 1,
+    "sleepless-shrew": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "7-6",
+   "map": "mu",
+   "mapNo": 7,
+   "side": false,
+   "cut": [
+    "lamprey x2"
+   ],
+   "to": {
+    "amber-cicada": 2
+   },
+   "before": {
+    "amber-cicada": 2,
+    "corpse-flower-beetle": 3,
+    "fungus-gnat-cloud": 4,
+    "lamprey": 2,
+    "sleepless-shrew": 3,
+    "wolf-spider-mother": 1,
+    "planarian-splitter": 4
+   },
+   "after": {
+    "amber-cicada": 4,
+    "corpse-flower-beetle": 3,
+    "fungus-gnat-cloud": 4,
+    "planarian-splitter": 4,
+    "sleepless-shrew": 3,
+    "wolf-spider-mother": 1
+   },
+   "problems": []
+  },
+  {
+   "code": "9-6",
+   "map": "mk",
+   "mapNo": 9,
+   "side": false,
+   "cut": [
+    "mangrove-kingfisher x3"
+   ],
+   "to": {
+    "fishing-cat": 2,
+    "voltaic-eel": 1
+   },
+   "before": {
+    "fishing-cat": 1,
+    "mangrove-kingfisher": 3,
+    "mangrove-mudskipper": 2,
+    "nutria-reedcutter": 1,
+    "reef-shark": 4,
+    "voltaic-eel": 2,
+    "mangrove-monitor": 4
+   },
+   "after": {
+    "fishing-cat": 3,
+    "mangrove-monitor": 4,
+    "mangrove-mudskipper": 2,
+    "nutria-reedcutter": 1,
+    "reef-shark": 4,
+    "voltaic-eel": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "9-7",
+   "map": "mk",
+   "mapNo": 9,
+   "side": false,
+   "cut": [
+    "mangrove-manatee x3"
+   ],
+   "to": {
+    "mangrove-monitor": 2,
+    "proboscis-monkey": 1
+   },
+   "before": {
+    "horseshoe-crab": 4,
+    "ironclaw-fiddler": 3,
+    "mangrove-manatee": 3,
+    "mangrove-monitor": 2,
+    "nutria-reedcutter": 1,
+    "fishing-cat": 3,
+    "proboscis-monkey": 3
+   },
+   "after": {
+    "fishing-cat": 3,
+    "horseshoe-crab": 4,
+    "ironclaw-fiddler": 3,
+    "mangrove-monitor": 4,
+    "nutria-reedcutter": 1,
+    "proboscis-monkey": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "10-2",
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "cut": [
+    "electric-ray x1"
+   ],
+   "to": {
+    "ironclaw-fiddler": 1
+   },
+   "before": {
+    "dolphin-knight": 1,
+    "electric-ray": 1,
+    "reef-shark": 4,
+    "sea-turtle-elder": 4,
+    "kraken-spawnling": 4
+   },
+   "after": {
+    "dolphin-knight": 1,
+    "ironclaw-fiddler": 1,
+    "kraken-spawnling": 4,
+    "reef-shark": 4,
+    "sea-turtle-elder": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "10-4",
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "cut": [
+    "voltaic-eel x1"
+   ],
+   "to": {
+    "giant-clam": 1
+   },
+   "before": {
+    "giant-clam": 3,
+    "orca-vanguard": 4,
+    "riptide-eel": 1,
+    "sea-turtle-elder": 4,
+    "voltaic-eel": 1,
+    "ironclaw-fiddler": 1
+   },
+   "after": {
+    "giant-clam": 4,
+    "ironclaw-fiddler": 1,
+    "orca-vanguard": 4,
+    "riptide-eel": 1,
+    "sea-turtle-elder": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "10-5",
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "cut": [
+    "voltaic-eel x1"
+   ],
+   "to": {
+    "sea-turtle-elder": 1
+   },
+   "before": {
+    "coral-current-eel": 2,
+    "crown-of-thorns-star": 1,
+    "reef-shark": 4,
+    "kraken-spawnling": 4,
+    "voltaic-eel": 1
+   },
+   "after": {
+    "coral-current-eel": 2,
+    "crown-of-thorns-star": 1,
+    "kraken-spawnling": 4,
+    "reef-shark": 4,
+    "sea-turtle-elder": 1
+   },
+   "problems": []
+  },
+  {
+   "code": "10-6",
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "cut": [
+    "great-barracuda x1"
+   ],
+   "to": {
+    "ironclaw-fiddler": 1
+   },
+   "before": {
+    "crown-of-thorns-star": 2,
+    "great-barracuda": 1,
+    "orca-vanguard": 2,
+    "kraken-spawnling": 4,
+    "riptide-eel": 2
+   },
+   "after": {
+    "crown-of-thorns-star": 2,
+    "ironclaw-fiddler": 1,
+    "kraken-spawnling": 4,
+    "orca-vanguard": 2,
+    "riptide-eel": 2
+   },
+   "problems": []
+  },
+  {
+   "code": "10-7",
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "cut": [
+    "voltaic-eel x1"
+   ],
+   "to": {
+    "orca-vanguard": 1
+   },
+   "before": {
+    "orca-vanguard": 3,
+    "reef-shark": 2,
+    "riptide-eel": 2,
+    "voltaic-eel": 1,
+    "crown-of-thorns-star": 1,
+    "kraken-spawnling": 4,
+    "conch-crawler": 1
+   },
+   "after": {
+    "conch-crawler": 1,
+    "crown-of-thorns-star": 1,
+    "kraken-spawnling": 4,
+    "orca-vanguard": 4,
+    "reef-shark": 2,
+    "riptide-eel": 2
+   },
+   "problems": []
+  },
+  {
+   "code": "10-8",
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "cut": [
+    "colossal-squid x1",
+    "voltaic-eel x1"
+   ],
+   "to": {
+    "orca-vanguard": 2
+   },
+   "before": {
+    "colossal-squid": 1,
+    "reef-shark": 4,
+    "riptide-eel": 4,
+    "sea-turtle-elder": 4,
+    "voltaic-eel": 1,
+    "ironclaw-fiddler": 1,
+    "orca-vanguard": 2
+   },
+   "after": {
+    "ironclaw-fiddler": 1,
+    "orca-vanguard": 4,
+    "reef-shark": 4,
+    "riptide-eel": 4,
+    "sea-turtle-elder": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "10-9",
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "cut": [
+    "colossal-squid x2"
+   ],
+   "to": {
+    "giant-clam": 2
+   },
+   "before": {
+    "clownfish-scout": 4,
+    "colossal-squid": 2,
+    "conch-crawler": 1,
+    "moon-jelly": 4,
+    "orca-vanguard": 4,
+    "kraken-spawnling": 4,
+    "ironclaw-fiddler": 1
+   },
+   "after": {
+    "clownfish-scout": 4,
+    "conch-crawler": 1,
+    "giant-clam": 2,
+    "ironclaw-fiddler": 1,
+    "kraken-spawnling": 4,
+    "moon-jelly": 4,
+    "orca-vanguard": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "11-1",
+   "map": "m10",
+   "mapNo": 11,
+   "side": false,
+   "cut": [
+    "alpine-marmot x1"
+   ],
+   "to": {
+    "mountain-hare": 1
+   },
+   "before": {
+    "alpine-marmot": 1,
+    "mountain-hare": 2,
+    "swamp-alligator": 4,
+    "the-gannet-queen": 3,
+    "nightshade-moth": 1,
+    "eyrie-warden": 1
+   },
+   "after": {
+    "eyrie-warden": 1,
+    "mountain-hare": 3,
+    "nightshade-moth": 1,
+    "swamp-alligator": 4,
+    "the-gannet-queen": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "11-8",
+   "map": "m10",
+   "mapNo": 11,
+   "side": false,
+   "cut": [
+    "eagle-sharpshooter x1"
+   ],
+   "to": {
+    "gangrenous-leech": 1
+   },
+   "before": {
+    "eagle-sharpshooter": 1,
+    "gannet-nestweaver": 4,
+    "mountain-hare": 4,
+    "gangrenous-leech": 1,
+    "chipmunk-hoarder": 3,
+    "apollo-butterfly": 1
+   },
+   "after": {
+    "apollo-butterfly": 1,
+    "chipmunk-hoarder": 3,
+    "gangrenous-leech": 2,
+    "gannet-nestweaver": 4,
+    "mountain-hare": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "12-1",
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "cut": [
+    "bramble-hoglet x2"
+   ],
+   "to": {
+    "mouse-sapper": 2
+   },
+   "before": {
+    "bison-bulldozer": 4,
+    "bramble-hoglet": 2,
+    "hollow-belly-rat": 4,
+    "mouse-sapper": 1,
+    "thorn-shrike": 3,
+    "barkplate-beetle": 3
+   },
+   "after": {
+    "barkplate-beetle": 3,
+    "bison-bulldozer": 4,
+    "hollow-belly-rat": 4,
+    "mouse-sapper": 3,
+    "thorn-shrike": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "12-2",
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "cut": [
+    "anvil-thrush x1"
+   ],
+   "to": {
+    "barkplate-beetle": 1
+   },
+   "before": {
+    "anvil-thrush": 1,
+    "barkplate-beetle": 2,
+    "bison-bulldozer": 4,
+    "cunning-vixen": 4,
+    "mouse-sapper": 4,
+    "thorn-shrike": 3
+   },
+   "after": {
+    "barkplate-beetle": 3,
+    "bison-bulldozer": 4,
+    "cunning-vixen": 4,
+    "mouse-sapper": 4,
+    "thorn-shrike": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "12-3",
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "cut": [
+    "lyrebird-mimic x2"
+   ],
+   "to": {
+    "barkplate-beetle": 1,
+    "quill-thorn-boar": 1
+   },
+   "before": {
+    "barkplate-beetle": 3,
+    "briarback-hedgehog": 5,
+    "chipmunk-hoarder": 1,
+    "lyrebird-mimic": 2,
+    "mountain-hare": 1,
+    "quill-thorn-boar": 2
+   },
+   "after": {
+    "barkplate-beetle": 4,
+    "briarback-hedgehog": 5,
+    "chipmunk-hoarder": 1,
+    "mountain-hare": 1,
+    "quill-thorn-boar": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "12-4",
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "cut": [
+    "barrow-leech-bat x1"
+   ],
+   "to": {
+    "fawn-scout": 1
+   },
+   "before": {
+    "barrow-leech-bat": 1,
+    "quill-thorn-boar": 3,
+    "quillguard": 3,
+    "hollow-belly-rat": 4,
+    "bison-bulldozer": 4,
+    "hedgerow-shrew": 1
+   },
+   "after": {
+    "bison-bulldozer": 4,
+    "fawn-scout": 1,
+    "hedgerow-shrew": 1,
+    "hollow-belly-rat": 4,
+    "quill-thorn-boar": 3,
+    "quillguard": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "12-5",
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "cut": [
+    "lyrebird-mimic x3",
+    "barrow-leech-bat x1"
+   ],
+   "to": {
+    "quillguard": 2,
+    "quill-thorn-boar": 1,
+    "bison-bulldozer": 1
+   },
+   "before": {
+    "briarback-hedgehog": 4,
+    "chipmunk-hoarder": 1,
+    "lyrebird-mimic": 3,
+    "quillguard": 1,
+    "barrow-leech-bat": 1,
+    "cunning-vixen": 4,
+    "quill-thorn-boar": 2
+   },
+   "after": {
+    "bison-bulldozer": 1,
+    "briarback-hedgehog": 4,
+    "chipmunk-hoarder": 1,
+    "cunning-vixen": 4,
+    "quill-thorn-boar": 3,
+    "quillguard": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "12-6",
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "cut": [
+    "barrow-leech-bat x1"
+   ],
+   "to": {
+    "hollow-belly-rat": 1
+   },
+   "before": {
+    "briarback-hedgehog": 4,
+    "chipmunk-hoarder": 1,
+    "cunning-vixen": 2,
+    "hollow-belly-rat": 3,
+    "mountain-hare": 1,
+    "mouse-sapper": 4,
+    "barrow-leech-bat": 1
+   },
+   "after": {
+    "briarback-hedgehog": 4,
+    "chipmunk-hoarder": 1,
+    "cunning-vixen": 2,
+    "hollow-belly-rat": 4,
+    "mountain-hare": 1,
+    "mouse-sapper": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "12-7",
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "cut": [
+    "barrow-leech-bat x1"
+   ],
+   "to": {
+    "quillguard": 1
+   },
+   "before": {
+    "quillguard": 2,
+    "mouse-sapper": 4,
+    "barkplate-beetle": 4,
+    "barrow-leech-bat": 1,
+    "briarback-hedgehog": 4,
+    "hollow-belly-rat": 4,
+    "eyrie-warden": 1
+   },
+   "after": {
+    "barkplate-beetle": 4,
+    "briarback-hedgehog": 4,
+    "eyrie-warden": 1,
+    "hollow-belly-rat": 4,
+    "mouse-sapper": 4,
+    "quillguard": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "13-1",
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "cut": [
+    "fawn-scout x3"
+   ],
+   "to": {
+    "badger-lumberjack": 3
+   },
+   "before": {
+    "anhinga-spearbird": 1,
+    "beaver-feller": 4,
+    "berserker-boar": 4,
+    "fawn-scout": 3,
+    "grizzly-vanguard": 4,
+    "pine-marten": 3
+   },
+   "after": {
+    "anhinga-spearbird": 1,
+    "badger-lumberjack": 3,
+    "beaver-feller": 4,
+    "berserker-boar": 4,
+    "grizzly-vanguard": 4,
+    "pine-marten": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "13-2",
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "cut": [
+    "redwood-woodpecker x4"
+   ],
+   "to": {
+    "badger-lumberjack": 4
+   },
+   "before": {
+    "monarch-wingblade": 3,
+    "redwood-woodpecker": 4,
+    "sergeant-bramblefox": 3,
+    "slow-worm": 1,
+    "tasmanian-devil": 4,
+    "amber-cicada": 1
+   },
+   "after": {
+    "amber-cicada": 1,
+    "badger-lumberjack": 4,
+    "monarch-wingblade": 3,
+    "sergeant-bramblefox": 3,
+    "slow-worm": 1,
+    "tasmanian-devil": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "13-3",
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "cut": [
+    "redwood-woodpecker x4"
+   ],
+   "to": {
+    "badger-lumberjack": 4
+   },
+   "before": {
+    "beaver-feller": 4,
+    "bramblewood-lynx": 3,
+    "redwood-woodpecker": 4,
+    "amber-cicada": 1,
+    "tasmanian-devil": 4,
+    "grass-snake": 1
+   },
+   "after": {
+    "amber-cicada": 1,
+    "badger-lumberjack": 4,
+    "beaver-feller": 4,
+    "bramblewood-lynx": 3,
+    "grass-snake": 1,
+    "tasmanian-devil": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "13-4",
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "cut": [
+    "redwood-woodpecker x4"
+   ],
+   "to": {},
+   "before": {
+    "beaver-feller": 3,
+    "bramblewood-lynx": 3,
+    "slow-worm": 1,
+    "anhinga-spearbird": 1,
+    "pine-marten": 2,
+    "redwood-woodpecker": 4
+   },
+   "after": {
+    "anhinga-spearbird": 1,
+    "beaver-feller": 3,
+    "bramblewood-lynx": 3,
+    "pine-marten": 2,
+    "slow-worm": 1
+   },
+   "problems": [
+    "no legal fill"
+   ]
+  },
+  {
+   "code": "13-5",
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "cut": [
+    "shimmerwing-stag x2"
+   ],
+   "to": {
+    "tasmanian-devil": 1,
+    "grass-snake": 1
+   },
+   "before": {
+    "feral-tomcat": 1,
+    "owl-nightwatch": 4,
+    "pine-marten": 3,
+    "shimmerwing-stag": 2,
+    "tasmanian-devil": 3,
+    "slow-worm": 1,
+    "monarch-wingblade": 3
+   },
+   "after": {
+    "feral-tomcat": 1,
+    "grass-snake": 1,
+    "monarch-wingblade": 3,
+    "owl-nightwatch": 4,
+    "pine-marten": 3,
+    "slow-worm": 1,
+    "tasmanian-devil": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "13-7",
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "cut": [
+    "shimmerwing-stag x1"
+   ],
+   "to": {
+    "tasmanian-devil": 1
+   },
+   "before": {
+    "beaver-feller": 4,
+    "marsh-mallow-hare": 1,
+    "shimmerwing-stag": 1,
+    "tasmanian-devil": 3,
+    "slow-worm": 1,
+    "monarch-wingblade": 3,
+    "bramblewood-lynx": 3
+   },
+   "after": {
+    "beaver-feller": 4,
+    "bramblewood-lynx": 3,
+    "marsh-mallow-hare": 1,
+    "monarch-wingblade": 3,
+    "slow-worm": 1,
+    "tasmanian-devil": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "13-8",
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "cut": [
+    "shimmerwing-stag x2"
+   ],
+   "to": {
+    "bramblewood-lynx": 2
+   },
+   "before": {
+    "beaver-feller": 4,
+    "owl-nightwatch": 4,
+    "shimmerwing-stag": 2,
+    "tasmanian-devil": 4,
+    "slow-worm": 1,
+    "monarch-wingblade": 3,
+    "amber-cicada": 1
+   },
+   "after": {
+    "amber-cicada": 1,
+    "beaver-feller": 4,
+    "bramblewood-lynx": 2,
+    "monarch-wingblade": 3,
+    "owl-nightwatch": 4,
+    "slow-worm": 1,
+    "tasmanian-devil": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "14-2",
+   "map": "m5",
+   "mapNo": 14,
+   "side": false,
+   "cut": [
+    "ant-hill x4",
+    "grave-grin-hyena x3"
+   ],
+   "to": {
+    "marula-elephant": 1,
+    "spitting-cobra": 3,
+    "stoat-cutthroat": 3
+   },
+   "before": {
+    "ant-hill": 4,
+    "grave-grin-hyena": 3,
+    "grizzly-vanguard": 1,
+    "marula-elephant": 3,
+    "meerkat-sentry": 4
+   },
+   "after": {
+    "grizzly-vanguard": 1,
+    "marula-elephant": 4,
+    "meerkat-sentry": 4,
+    "spitting-cobra": 3,
+    "stoat-cutthroat": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "14-4",
+   "map": "m5",
+   "mapNo": 14,
+   "side": false,
+   "cut": [
+    "dust-hyena x4"
+   ],
+   "to": {},
+   "before": {
+    "dust-hyena": 4,
+    "grizzly-vanguard": 1,
+    "hollow-belly-rat": 1,
+    "marula-elephant": 4,
+    "river-mink": 1,
+    "tasmanian-devil": 4
+   },
+   "after": {
+    "grizzly-vanguard": 1,
+    "hollow-belly-rat": 1,
+    "marula-elephant": 4,
+    "river-mink": 1,
+    "tasmanian-devil": 4
+   },
+   "problems": [
+    "no legal fill"
+   ]
+  },
+  {
+   "code": "14-6",
+   "map": "m5",
+   "mapNo": 14,
+   "side": false,
+   "cut": [
+    "balloon-archer x1"
+   ],
+   "to": {},
+   "before": {
+    "balloon-archer": 1,
+    "bramblewood-macaque": 3,
+    "hollow-belly-rat": 1,
+    "hoopoe-herald": 1,
+    "marula-elephant": 4,
+    "spitting-cobra": 3,
+    "tasmanian-devil": 4
+   },
+   "after": {
+    "bramblewood-macaque": 3,
+    "hollow-belly-rat": 1,
+    "hoopoe-herald": 1,
+    "marula-elephant": 4,
+    "spitting-cobra": 3,
+    "tasmanian-devil": 4
+   },
+   "problems": [
+    "no legal fill"
+   ]
+  },
+  {
+   "code": "15-3",
+   "map": "ml",
+   "mapNo": 15,
+   "side": false,
+   "cut": [
+    "dust-hyena x1"
+   ],
+   "to": {
+    "cataphract-destrier": 1
+   },
+   "before": {
+    "cataphract-destrier": 3,
+    "dust-hyena": 1,
+    "mallard-marauder": 3,
+    "stoat-cutthroat": 3,
+    "village-miller": 4,
+    "warhorse-charger": 4
+   },
+   "after": {
+    "cataphract-destrier": 4,
+    "mallard-marauder": 3,
+    "stoat-cutthroat": 3,
+    "village-miller": 4,
+    "warhorse-charger": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "15-4",
+   "map": "ml",
+   "mapNo": 15,
+   "side": false,
+   "cut": [
+    "mallard-marauder x3",
+    "talon-archer x2"
+   ],
+   "to": {},
+   "before": {
+    "bramblewood-lynx": 3,
+    "mallard-marauder": 3,
+    "stoat-cutthroat": 3,
+    "talon-archer": 2,
+    "village-miller": 2,
+    "warhorse-charger": 4
+   },
+   "after": {
+    "bramblewood-lynx": 3,
+    "stoat-cutthroat": 3,
+    "village-miller": 2,
+    "warhorse-charger": 4
+   },
+   "problems": [
+    "no legal fill"
+   ]
+  },
+  {
+   "code": "15-5",
+   "map": "ml",
+   "mapNo": 15,
+   "side": false,
+   "cut": [
+    "talon-archer x2"
+   ],
+   "to": {
+    "adder-ambusher": 2
+   },
+   "before": {
+    "elderhorn-monarch": 3,
+    "hoopoe-herald": 1,
+    "siege-rhino": 2,
+    "sworn-shieldbearer": 4,
+    "talon-archer": 2,
+    "warhorse-charger": 4,
+    "pronghorn-racer": 4
+   },
+   "after": {
+    "adder-ambusher": 2,
+    "elderhorn-monarch": 3,
+    "hoopoe-herald": 1,
+    "pronghorn-racer": 4,
+    "siege-rhino": 2,
+    "sworn-shieldbearer": 4,
+    "warhorse-charger": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "15-6",
+   "map": "ml",
+   "mapNo": 15,
+   "side": false,
+   "cut": [
+    "mallard-marauder x3",
+    "talon-archer x2"
+   ],
+   "to": {
+    "elderhorn-monarch": 2,
+    "warhorse-charger": 3
+   },
+   "before": {
+    "cataphract-destrier": 4,
+    "elderhorn-monarch": 1,
+    "mallard-marauder": 3,
+    "mosquito-cloud": 1,
+    "sworn-shieldbearer": 4,
+    "talon-archer": 2,
+    "warhorse-charger": 1
+   },
+   "after": {
+    "cataphract-destrier": 4,
+    "elderhorn-monarch": 3,
+    "mosquito-cloud": 1,
+    "sworn-shieldbearer": 4,
+    "warhorse-charger": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "15-7",
+   "map": "ml",
+   "mapNo": 15,
+   "side": false,
+   "cut": [
+    "dust-hyena x1",
+    "talon-archer x2"
+   ],
+   "to": {
+    "adder-ambusher": 3
+   },
+   "before": {
+    "border-collie": 4,
+    "dust-hyena": 1,
+    "elderhorn-monarch": 3,
+    "mosquito-cloud": 1,
+    "siege-rhino": 2,
+    "sworn-shieldbearer": 4,
+    "talon-archer": 2
+   },
+   "after": {
+    "adder-ambusher": 3,
+    "border-collie": 4,
+    "elderhorn-monarch": 3,
+    "mosquito-cloud": 1,
+    "siege-rhino": 2,
+    "sworn-shieldbearer": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "17-2",
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "cut": [
+    "lone-grey-wolf x2"
+   ],
+   "to": {
+    "snow-ermine": 2
+   },
+   "before": {
+    "arctic-tern": 4,
+    "briarback-hedgehog": 1,
+    "glacier-yak": 4,
+    "lone-grey-wolf": 2,
+    "ringed-seal": 4,
+    "snow-ermine": 2
+   },
+   "after": {
+    "arctic-tern": 4,
+    "briarback-hedgehog": 1,
+    "glacier-yak": 4,
+    "ringed-seal": 4,
+    "snow-ermine": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "18-1",
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "cut": [
+    "nightjar-drifter x3",
+    "thorny-devil x1"
+   ],
+   "to": {
+    "barkplate-beetle": 1,
+    "caustic-scorpion": 3
+   },
+   "before": {
+    "dune-jackal": 4,
+    "nightjar-drifter": 3,
+    "roadrunner-courier": 4,
+    "sand-widow": 4,
+    "thorny-devil": 1,
+    "bison-bulldozer": 1
+   },
+   "after": {
+    "barkplate-beetle": 1,
+    "bison-bulldozer": 1,
+    "caustic-scorpion": 3,
+    "dune-jackal": 4,
+    "roadrunner-courier": 4,
+    "sand-widow": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "18-2",
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "cut": [
+    "nightjar-drifter x1"
+   ],
+   "to": {
+    "dune-jackal": 1
+   },
+   "before": {
+    "antlion-pit": 4,
+    "bison-bulldozer": 1,
+    "caustic-scorpion": 4,
+    "dune-jackal": 3,
+    "nightjar-drifter": 1,
+    "roadrunner-courier": 4
+   },
+   "after": {
+    "antlion-pit": 4,
+    "bison-bulldozer": 1,
+    "caustic-scorpion": 4,
+    "dune-jackal": 4,
+    "roadrunner-courier": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "18-5",
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "cut": [
+    "fennec-fox x4"
+   ],
+   "to": {
+    "sunbittern-strider": 2,
+    "sandstorm-roc": 2
+   },
+   "before": {
+    "dust-devil-kestrel": 2,
+    "fennec-fox": 4,
+    "nightjar-drifter": 4,
+    "sand-widow": 4,
+    "sunbittern-strider": 2,
+    "sandstorm-roc": 2
+   },
+   "after": {
+    "dust-devil-kestrel": 2,
+    "nightjar-drifter": 4,
+    "sand-widow": 4,
+    "sandstorm-roc": 4,
+    "sunbittern-strider": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "19-1",
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "cut": [
+    "quillback-elder x4"
+   ],
+   "to": {
+    "obsidian-scorpion": 2,
+    "smoke-raccoon": 2
+   },
+   "before": {
+    "elderhorn-monarch": 1,
+    "glacier-yak": 1,
+    "obsidian-scorpion": 1,
+    "quillback-elder": 4,
+    "smoke-raccoon": 2,
+    "cinder-hornet": 4
+   },
+   "after": {
+    "cinder-hornet": 4,
+    "elderhorn-monarch": 1,
+    "glacier-yak": 1,
+    "obsidian-scorpion": 3,
+    "smoke-raccoon": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "19-2",
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "cut": [
+    "quill-volley x3"
+   ],
+   "to": {},
+   "before": {
+    "glacier-yak": 1,
+    "honey-badger-fury": 4,
+    "pinecone-sapper": 4,
+    "quill-volley": 3,
+    "smoke-raccoon": 3,
+    "stalactite-golem": 1
+   },
+   "after": {
+    "glacier-yak": 1,
+    "honey-badger-fury": 4,
+    "pinecone-sapper": 4,
+    "smoke-raccoon": 3,
+    "stalactite-golem": 1
+   },
+   "problems": [
+    "no legal fill"
+   ]
+  },
+  {
+   "code": "19-3",
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "cut": [
+    "quillback-elder x4"
+   ],
+   "to": {
+    "fire-salamander": 4
+   },
+   "before": {
+    "dune-jackal": 1,
+    "elderhorn-monarch": 1,
+    "obsidian-scorpion": 2,
+    "quillback-elder": 4,
+    "stalactite-golem": 1,
+    "glacier-yak": 1,
+    "cinder-hornet": 4
+   },
+   "after": {
+    "cinder-hornet": 4,
+    "dune-jackal": 1,
+    "elderhorn-monarch": 1,
+    "fire-salamander": 4,
+    "glacier-yak": 1,
+    "obsidian-scorpion": 2,
+    "stalactite-golem": 1
+   },
+   "problems": []
+  },
+  {
+   "code": "19-4",
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "cut": [
+    "quillback-elder x4"
+   ],
+   "to": {
+    "cinder-hornet": 4
+   },
+   "before": {
+    "elderhorn-monarch": 1,
+    "glacier-yak": 1,
+    "honey-badger-fury": 3,
+    "obsidian-scorpion": 1,
+    "quillback-elder": 4,
+    "smoke-raccoon": 4,
+    "horned-lizard": 1
+   },
+   "after": {
+    "cinder-hornet": 4,
+    "elderhorn-monarch": 1,
+    "glacier-yak": 1,
+    "honey-badger-fury": 3,
+    "horned-lizard": 1,
+    "obsidian-scorpion": 1,
+    "smoke-raccoon": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "19-5",
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "cut": [
+    "quillback-elder x4"
+   ],
+   "to": {
+    "cinder-hornet": 1,
+    "fire-salamander": 3
+   },
+   "before": {
+    "elderhorn-monarch": 1,
+    "glacier-yak": 1,
+    "honey-badger-fury": 4,
+    "obsidian-scorpion": 3,
+    "quillback-elder": 4,
+    "smoke-raccoon": 4,
+    "cinder-hornet": 3
+   },
+   "after": {
+    "cinder-hornet": 4,
+    "elderhorn-monarch": 1,
+    "fire-salamander": 3,
+    "glacier-yak": 1,
+    "honey-badger-fury": 4,
+    "obsidian-scorpion": 3,
+    "smoke-raccoon": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "19-6",
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "cut": [
+    "quillback-elder x1",
+    "yeti x4"
+   ],
+   "to": {},
+   "before": {
+    "horned-lizard": 1,
+    "obsidian-scorpion": 3,
+    "pinecone-sapper": 4,
+    "quillback-elder": 1,
+    "smoke-raccoon": 4,
+    "stalactite-golem": 1,
+    "yeti": 4
+   },
+   "after": {
+    "horned-lizard": 1,
+    "obsidian-scorpion": 3,
+    "pinecone-sapper": 4,
+    "smoke-raccoon": 4,
+    "stalactite-golem": 1
+   },
+   "problems": [
+    "no legal fill"
+   ]
+  },
+  {
+   "code": "20-1",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "cut": [
+    "quillback-elder x1",
+    "sulfur-vent-crab x2"
+   ],
+   "to": {
+    "honey-badger-fury": 1,
+    "pumice-beetle": 2
+   },
+   "before": {
+    "berserker-boar": 4,
+    "fumarole-ibex": 3,
+    "pack-mule": 4,
+    "quillback-elder": 1,
+    "sulfur-vent-crab": 2,
+    "vampire-roost": 2
+   },
+   "after": {
+    "berserker-boar": 4,
+    "fumarole-ibex": 3,
+    "honey-badger-fury": 1,
+    "pack-mule": 4,
+    "pumice-beetle": 2,
+    "vampire-roost": 2
+   },
+   "problems": []
+  },
+  {
+   "code": "20-2",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "cut": [
+    "frillneck-duelist x3"
+   ],
+   "to": {
+    "vampire-roost": 3
+   },
+   "before": {
+    "ancient-sloth-titan": 3,
+    "ash-cloud-condor": 3,
+    "deep-cave-troll": 3,
+    "frillneck-duelist": 3,
+    "obsidian-scorpion": 1,
+    "pack-mule": 4
+   },
+   "after": {
+    "ancient-sloth-titan": 3,
+    "ash-cloud-condor": 3,
+    "deep-cave-troll": 3,
+    "obsidian-scorpion": 1,
+    "pack-mule": 4,
+    "vampire-roost": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "20-3",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "cut": [
+    "frillneck-duelist x3"
+   ],
+   "to": {
+    "vampire-roost": 3
+   },
+   "before": {
+    "basalt-boar": 4,
+    "frillneck-duelist": 3,
+    "fumarole-ibex": 3,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 1,
+    "vampire-roost": 1
+   },
+   "after": {
+    "basalt-boar": 4,
+    "fumarole-ibex": 3,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 1,
+    "vampire-roost": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "20-4",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "cut": [
+    "sulfur-vent-crab x4"
+   ],
+   "to": {},
+   "before": {
+    "basalt-boar": 4,
+    "deep-cave-troll": 4,
+    "fumarole-ibex": 3,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 3,
+    "sulfur-vent-crab": 4
+   },
+   "after": {
+    "basalt-boar": 4,
+    "deep-cave-troll": 4,
+    "fumarole-ibex": 3,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 3
+   },
+   "problems": [
+    "no legal fill"
+   ]
+  },
+  {
+   "code": "20-5",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "cut": [
+    "eagle-sharpshooter x1",
+    "sulfur-vent-crab x2"
+   ],
+   "to": {
+    "pack-mule": 1,
+    "vampire-roost": 2
+   },
+   "before": {
+    "basalt-boar": 4,
+    "eagle-sharpshooter": 1,
+    "fumarole-ibex": 3,
+    "obsidian-scorpion": 1,
+    "pack-mule": 3,
+    "sulfur-vent-crab": 2,
+    "vampire-roost": 2
+   },
+   "after": {
+    "basalt-boar": 4,
+    "fumarole-ibex": 3,
+    "obsidian-scorpion": 1,
+    "pack-mule": 4,
+    "vampire-roost": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "20-6",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "cut": [
+    "sulfur-vent-crab x4"
+   ],
+   "to": {
+    "pumice-beetle": 4
+   },
+   "before": {
+    "basalt-boar": 4,
+    "deep-cave-troll": 4,
+    "fumarole-ibex": 3,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 1,
+    "ossuary-lammergeier": 1,
+    "sulfur-vent-crab": 4
+   },
+   "after": {
+    "basalt-boar": 4,
+    "deep-cave-troll": 4,
+    "fumarole-ibex": 3,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 1,
+    "ossuary-lammergeier": 1,
+    "pumice-beetle": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "20-7",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "cut": [
+    "magma-wraith x4"
+   ],
+   "to": {
+    "vampire-roost": 4
+   },
+   "before": {
+    "basalt-boar": 4,
+    "cataphract-destrier": 1,
+    "crocodile-ambusher": 1,
+    "magma-salamander": 2,
+    "magma-wraith": 4,
+    "ossuary-lammergeier": 1
+   },
+   "after": {
+    "basalt-boar": 4,
+    "cataphract-destrier": 1,
+    "crocodile-ambusher": 1,
+    "magma-salamander": 2,
+    "ossuary-lammergeier": 1,
+    "vampire-roost": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "20-8",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "cut": [
+    "frillneck-duelist x3",
+    "sulfur-vent-crab x4"
+   ],
+   "to": {
+    "pumice-beetle": 4,
+    "fumarole-ibex": 3
+   },
+   "before": {
+    "basalt-boar": 4,
+    "deep-cave-troll": 2,
+    "frillneck-duelist": 3,
+    "obsidian-scorpion": 1,
+    "ossuary-lammergeier": 1,
+    "stalactite-golem": 1,
+    "sulfur-vent-crab": 4
+   },
+   "after": {
+    "basalt-boar": 4,
+    "deep-cave-troll": 2,
+    "fumarole-ibex": 3,
+    "obsidian-scorpion": 1,
+    "ossuary-lammergeier": 1,
+    "pumice-beetle": 4,
+    "stalactite-golem": 1
+   },
+   "problems": []
+  },
+  {
+   "code": "20-9",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "cut": [
+    "sulfur-vent-crab x4",
+    "ash-moth x4"
+   ],
+   "to": {
+    "ancient-sloth-titan": 1,
+    "pumice-beetle": 4,
+    "ash-cloud-condor": 3
+   },
+   "before": {
+    "ancient-sloth-titan": 3,
+    "berserker-boar": 4,
+    "honey-badger-fury": 1,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 1,
+    "sulfur-vent-crab": 4,
+    "ash-moth": 4
+   },
+   "after": {
+    "ancient-sloth-titan": 4,
+    "ash-cloud-condor": 3,
+    "berserker-boar": 4,
+    "honey-badger-fury": 1,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 1,
+    "pumice-beetle": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "20-10",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "cut": [
+    "frillneck-duelist x2"
+   ],
+   "to": {
+    "vampire-roost": 2
+   },
+   "before": {
+    "basalt-boar": 4,
+    "frillneck-duelist": 2,
+    "fumarole-ibex": 3,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 1,
+    "ossuary-lammergeier": 1,
+    "vampire-roost": 1
+   },
+   "after": {
+    "basalt-boar": 4,
+    "fumarole-ibex": 3,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 1,
+    "ossuary-lammergeier": 1,
+    "vampire-roost": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "1-A-1",
+   "map": "mq",
+   "mapNo": 1,
+   "side": true,
+   "cut": [
+    "ladybird-guard x4"
+   ],
+   "to": {
+    "meadow-rabbit": 3,
+    "cottontail": 1
+   },
+   "before": {
+    "ant-scout": 2,
+    "ladybird-guard": 4,
+    "meadow-rabbit": 1,
+    "chipmunk-cavalry": 1,
+    "honey-bee": 2
+   },
+   "after": {
+    "ant-scout": 2,
+    "chipmunk-cavalry": 1,
+    "cottontail": 1,
+    "honey-bee": 2,
+    "meadow-rabbit": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "1-A-2",
+   "map": "mq",
+   "mapNo": 1,
+   "side": true,
+   "cut": [
+    "ladybird-guard x3"
+   ],
+   "to": {
+    "chipmunk-cavalry": 3
+   },
+   "before": {
+    "bee-forager": 2,
+    "ladybird-guard": 3,
+    "meadow-rabbit": 4,
+    "ant-scout": 2,
+    "dormouse": 1
+   },
+   "after": {
+    "ant-scout": 2,
+    "bee-forager": 2,
+    "chipmunk-cavalry": 3,
+    "dormouse": 1,
+    "meadow-rabbit": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "1-A-3",
+   "map": "mq",
+   "mapNo": 1,
+   "side": true,
+   "cut": [
+    "ladybird-guard x2",
+    "clover-butterfly x1"
+   ],
+   "to": {
+    "dormouse": 2,
+    "meadow-rabbit": 1
+   },
+   "before": {
+    "bee-forager": 2,
+    "cottontail": 1,
+    "dormouse": 2,
+    "ladybird-guard": 2,
+    "clover-butterfly": 1,
+    "chipmunk-cavalry": 2
+   },
+   "after": {
+    "bee-forager": 2,
+    "chipmunk-cavalry": 2,
+    "cottontail": 1,
+    "dormouse": 4,
+    "meadow-rabbit": 1
+   },
+   "problems": []
+  },
+  {
+   "code": "1-A-4",
+   "map": "mq",
+   "mapNo": 1,
+   "side": true,
+   "cut": [
+    "ladybird-guard x2",
+    "clover-butterfly x1"
+   ],
+   "to": {
+    "dormouse": 1,
+    "cottontail": 2
+   },
+   "before": {
+    "ant-scout": 1,
+    "bee-forager": 2,
+    "dormouse": 2,
+    "ladybird-guard": 2,
+    "meadow-rabbit": 4,
+    "clover-butterfly": 1
+   },
+   "after": {
+    "ant-scout": 1,
+    "bee-forager": 2,
+    "cottontail": 2,
+    "dormouse": 3,
+    "meadow-rabbit": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "19-A-3",
+   "map": "m9",
+   "mapNo": 19,
+   "side": true,
+   "cut": [
+    "grindstone-boar x2"
+   ],
+   "to": {
+    "pumice-beetle": 2
+   },
+   "before": {
+    "cinder-gecko": 1,
+    "cinder-hornet": 3,
+    "grindstone-boar": 2,
+    "magma-titan": 5,
+    "obsidian-scorpion": 2,
+    "pumice-beetle": 2
+   },
+   "after": {
+    "cinder-gecko": 1,
+    "cinder-hornet": 3,
+    "magma-titan": 5,
+    "obsidian-scorpion": 2,
+    "pumice-beetle": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "19-A-4",
+   "map": "m9",
+   "mapNo": 19,
+   "side": true,
+   "cut": [
+    "grindstone-boar x3"
+   ],
+   "to": {
+    "pumice-beetle": 3
+   },
+   "before": {
+    "cinder-hornet": 3,
+    "peak-condor": 2,
+    "smoke-raccoon": 4,
+    "stalactite-golem": 1,
+    "pumice-beetle": 1,
+    "grindstone-boar": 3
+   },
+   "after": {
+    "cinder-hornet": 3,
+    "peak-condor": 2,
+    "pumice-beetle": 4,
+    "smoke-raccoon": 4,
+    "stalactite-golem": 1
+   },
+   "problems": []
+  },
+  {
+   "code": "19-A-7",
+   "map": "m9",
+   "mapNo": 19,
+   "side": true,
+   "cut": [
+    "grindstone-boar x3"
+   ],
+   "to": {
+    "cinder-hornet": 1,
+    "obsidian-scorpion": 1,
+    "stalactite-golem": 1
+   },
+   "before": {
+    "cinder-gecko": 2,
+    "cinder-hornet": 3,
+    "granite-ox-golem": 3,
+    "grindstone-boar": 3,
+    "obsidian-scorpion": 2,
+    "stalactite-golem": 1,
+    "tide-spirit": 2
+   },
+   "after": {
+    "cinder-gecko": 2,
+    "cinder-hornet": 4,
+    "granite-ox-golem": 3,
+    "obsidian-scorpion": 3,
+    "stalactite-golem": 2,
+    "tide-spirit": 2
+   },
+   "problems": []
+  },
+  {
+   "code": "19-A-9",
+   "map": "m9",
+   "mapNo": 19,
+   "side": true,
+   "cut": [
+    "grindstone-boar x1"
+   ],
+   "to": {
+    "ashbone-ghoul": 1
+   },
+   "before": {
+    "ashbone-ghoul": 2,
+    "cinder-gecko": 1,
+    "granite-ox-golem": 2,
+    "obsidian-scorpion": 3,
+    "pumice-beetle": 1,
+    "anvilwhisker-otter": 4,
+    "grindstone-boar": 1
+   },
+   "after": {
+    "anvilwhisker-otter": 4,
+    "ashbone-ghoul": 3,
+    "cinder-gecko": 1,
+    "granite-ox-golem": 2,
+    "obsidian-scorpion": 3,
+    "pumice-beetle": 1
+   },
+   "problems": []
+  },
+  {
+   "code": "10-A-1",
+   "map": "mj",
+   "mapNo": 10,
+   "side": true,
+   "cut": [
+    "moon-jelly x1",
+    "krill-swarm x1"
+   ],
+   "to": {},
+   "before": {
+    "kraken-spawnling": 3,
+    "moon-jelly": 1,
+    "orca-vanguard": 4,
+    "sea-turtle-elder": 1,
+    "krill-swarm": 1
+   },
+   "after": {
+    "kraken-spawnling": 3,
+    "orca-vanguard": 4,
+    "sea-turtle-elder": 1
+   },
+   "problems": [
+    "no legal fill"
+   ]
+  },
+  {
+   "code": "2-B-4",
+   "map": "mg",
+   "mapNo": 2,
+   "side": true,
+   "cut": [
+    "raccoon-nightcrew x2"
+   ],
+   "to": {
+    "limpet-clinger": 2
+   },
+   "before": {
+    "gallery-orb-weaver": 2,
+    "octopus-tactician": 4,
+    "pincushion-urchin": 4,
+    "raccoon-nightcrew": 2,
+    "trash-panda-trickster": 4
+   },
+   "after": {
+    "gallery-orb-weaver": 2,
+    "limpet-clinger": 2,
+    "octopus-tactician": 4,
+    "pincushion-urchin": 4,
+    "trash-panda-trickster": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "20-A-4",
+   "map": "me",
+   "mapNo": 20,
+   "side": true,
+   "cut": [
+    "basalt-boar x1"
+   ],
+   "to": {
+    "ur-elk": 1
+   },
+   "before": {
+    "basalt-boar": 1,
+    "berserker-boar": 2,
+    "brimstone-hound": 3,
+    "obsidian-scorpion": 3,
+    "the-contradiction": 1
+   },
+   "after": {
+    "berserker-boar": 2,
+    "brimstone-hound": 3,
+    "obsidian-scorpion": 3,
+    "the-contradiction": 1,
+    "ur-elk": 1
+   },
+   "problems": []
+  },
+  {
+   "code": "20-B-4",
+   "map": "mx",
+   "mapNo": 20,
+   "side": true,
+   "cut": [
+    "barrow-leech-bat x1"
+   ],
+   "to": {
+    "obsidian-scorpion": 1
+   },
+   "before": {
+    "barrow-leech-bat": 1,
+    "deep-cave-troll": 4,
+    "fire-drake-hatchling": 1,
+    "granite-ox-golem": 3,
+    "magma-salamander": 2,
+    "magma-titan": 2,
+    "obsidian-scorpion": 1
+   },
+   "after": {
+    "deep-cave-troll": 4,
+    "fire-drake-hatchling": 1,
+    "granite-ox-golem": 3,
+    "magma-salamander": 2,
+    "magma-titan": 2,
+    "obsidian-scorpion": 2
+   },
+   "problems": []
+  },
+  {
+   "code": "5-A-2",
+   "map": "ms",
+   "mapNo": 5,
+   "side": true,
+   "cut": [
+    "mudpuppy x3"
+   ],
+   "to": {
+    "newt-doctor": 3
+   },
+   "before": {
+    "bog-leech": 2,
+    "cypress-root-lurker": 5,
+    "matamata": 2,
+    "mudpuppy": 3,
+    "muskrat-reedgatherer": 2
+   },
+   "after": {
+    "bog-leech": 2,
+    "cypress-root-lurker": 5,
+    "matamata": 2,
+    "muskrat-reedgatherer": 2,
+    "newt-doctor": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "5-A-4",
+   "map": "ms",
+   "mapNo": 5,
+   "side": true,
+   "cut": [
+    "muskrat-reedgatherer x4"
+   ],
+   "to": {
+    "cypress-root-lurker": 4
+   },
+   "before": {
+    "hedgehog-herbalist": 2,
+    "matamata": 4,
+    "muskrat-reedgatherer": 4,
+    "peat-cutter-vole": 4,
+    "swamp-alligator": 2
+   },
+   "after": {
+    "cypress-root-lurker": 4,
+    "hedgehog-herbalist": 2,
+    "matamata": 4,
+    "peat-cutter-vole": 4,
+    "swamp-alligator": 2
+   },
+   "problems": []
+  },
+  {
+   "code": "8-A-3",
+   "map": "mn",
+   "mapNo": 8,
+   "side": true,
+   "cut": [
+    "fruit-bat x2"
+   ],
+   "to": {
+    "gallery-orb-weaver": 1,
+    "sulfur-cinder-moth": 1
+   },
+   "before": {
+    "echo-screecher": 3,
+    "fruit-bat": 2,
+    "gallery-orb-weaver": 2,
+    "stalactite-golem": 2,
+    "sulfur-cinder-moth": 4,
+    "whip-spider": 2
+   },
+   "after": {
+    "echo-screecher": 3,
+    "gallery-orb-weaver": 3,
+    "stalactite-golem": 2,
+    "sulfur-cinder-moth": 5,
+    "whip-spider": 2
+   },
+   "problems": []
+  },
+  {
+   "code": "8-A-4",
+   "map": "mn",
+   "mapNo": 8,
+   "side": true,
+   "cut": [
+    "barrow-leech-bat x1"
+   ],
+   "to": {
+    "fruit-bat": 1
+   },
+   "before": {
+    "barrow-leech-bat": 1,
+    "blind-cave-fish": 1,
+    "fruit-bat": 1,
+    "gallery-orb-weaver": 1,
+    "glow-worm": 3,
+    "lantern-spark-fly": 4
+   },
+   "after": {
+    "blind-cave-fish": 1,
+    "fruit-bat": 2,
+    "gallery-orb-weaver": 1,
+    "glow-worm": 3,
+    "lantern-spark-fly": 4
+   },
+   "problems": []
+  },
+  {
+   "code": "11-A-4",
+   "map": "mv",
+   "mapNo": 11,
+   "side": true,
+   "cut": [
+    "gale-swift x4"
+   ],
+   "to": {
+    "wound-reaver": 2,
+    "anvil-thrush": 2
+   },
+   "before": {
+    "gale-swift": 4,
+    "gangrenous-leech": 4,
+    "peak-condor": 1,
+    "wound-reaver": 1,
+    "eyrie-warden": 3,
+    "the-gannet-queen": 1,
+    "anvil-thrush": 2
+   },
+   "after": {
+    "anvil-thrush": 4,
+    "eyrie-warden": 3,
+    "gangrenous-leech": 4,
+    "peak-condor": 1,
+    "the-gannet-queen": 1,
+    "wound-reaver": 3
+   },
+   "problems": []
+  },
+  {
+   "code": "17-A-1",
+   "map": "mi",
+   "mapNo": 17,
+   "side": true,
+   "cut": [
+    "beluga x3"
+   ],
+   "to": {
+    "dormouse": 1,
+    "snow-ermine": 2
+   },
+   "before": {
+    "beluga": 3,
+    "dormouse": 1,
+    "greenland-shark": 3,
+    "ice-crevasse-wolf": 3,
+    "pincushion-urchin": 2,
+    "snow-ermine": 3
+   },
+   "after": {
+    "dormouse": 2,
+    "greenland-shark": 3,
+    "ice-crevasse-wolf": 3,
+    "pincushion-urchin": 2,
+    "snow-ermine": 5
+   },
+   "problems": []
+  },
+  {
+   "code": "17-A-2",
+   "map": "mi",
+   "mapNo": 17,
+   "side": true,
+   "cut": [
+    "beluga x1",
+    "lone-grey-wolf x2"
+   ],
+   "to": {
+    "pincushion-urchin": 2,
+    "giant-clam": 1
+   },
+   "before": {
+    "beluga": 1,
+    "glacier-yak": 4,
+    "lemming-swarm": 2,
+    "lone-grey-wolf": 2,
+    "ringed-seal": 4,
+    "snow-ermine": 2
+   },
+   "after": {
+    "giant-clam": 1,
+    "glacier-yak": 4,
+    "lemming-swarm": 2,
+    "pincushion-urchin": 2,
+    "ringed-seal": 4,
+    "snow-ermine": 2
+   },
+   "problems": []
+  },
+  {
+   "code": "17-A-4",
+   "map": "mi",
+   "mapNo": 17,
+   "side": true,
+   "cut": [
+    "lone-grey-wolf x2"
+   ],
+   "to": {
+    "giant-clam": 1,
+    "ringed-seal": 1
+   },
+   "before": {
+    "giant-clam": 1,
+    "greenland-shark": 3,
+    "lemming-swarm": 4,
+    "limpet-clinger": 1,
+    "lone-grey-wolf": 2,
+    "cormorant": 2,
+    "dormouse": 1
+   },
+   "after": {
+    "cormorant": 2,
+    "dormouse": 1,
+    "giant-clam": 2,
+    "greenland-shark": 3,
+    "lemming-swarm": 4,
+    "limpet-clinger": 1,
+    "ringed-seal": 1
+   },
+   "problems": []
+  }
+ ]
+}

@@ -4568,5 +4568,6 @@
  "{a} fits {t} with armour: +{hp}❤.": "{a} équipe {t} d’une armure : +{hp}❤.",
  "Underwater Currents {n}": "Courants sous-marins {n}",
  "Underwater Currents": "Courants sous-marins",
- "Underwater Currents {n}: the water takes {name}.": "Courants sous-marins {n} : l’eau emporte {name}."
+ "Underwater Currents {n}: the water takes {name}.": "Courants sous-marins {n} : l’eau emporte {name}.",
+ "Only Baby cards carry this skill, and not yet at their map level: not really in the map": "Seules des cartes Bébé ont cette compétence, et pas encore à leur niveau de carte : pas vraiment dans la carte"
 }

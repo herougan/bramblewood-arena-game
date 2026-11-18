@@ -12,6 +12,9 @@ const a = process.argv.slice(2), CMD = a[0], arg = (k, d) => { const i = a.index
 const L = require('../skir1/lib_fight_2026_11_11.js'), G = L.G, D = L.D, M = L.M;
 const sorted = d => Object.fromEntries(Object.keys(d).sort().map(k => [k, d[k]]));
 const lineRe = code => new RegExp(`^(\\s*\\{ ?key:\\s*"${code.replace(/-/g, '\\-')}",.*)$`, 'm');
+// 2026-11-18 (DATAFIX): LF3_STAMP / LF3_OUT let a later package reuse the swap with its own dated comment and record
+const STAMP = process.env.LF3_STAMP || '2026-11-11 (LISTFIX3)';
+if (process.env.LF3_STAMP) require('../side2/holds_2026_11_13.js').patch(); // the pools the tests read (LIST1's held cards out of the side fights)
 const write = s => { fs.writeFileSync(APP + '.lf3tmp', s); fs.renameSync(APP + '.lf3tmp', APP); };
 const UT = {}; JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'unit-themes.json'), 'utf8')).units.forEach(u => { UT[u.id] = u; });
 const AT = {}; JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'animal-tags.json'), 'utf8')).cards.forEach(t => { AT[t.id] = t; });
@@ -34,24 +37,26 @@ if (CMD === 'swap') {
       const d0 = rest(), u = usage(), k = bad.reduce((t, id) => t + f.n.deck[id], 0), sc = bad.reduce((t, id) => t + score(id) * f.n.deck[id], 0) / k;
       // every fill of the k copies over the deck's cards and up to two new pool cards (inside caps, K14, the usage line, the family rule); the
       // legal one nearest the removed copies' mean stat score wins
-      const fresh = f.pool.filter(x => !d0[x] && !bad.includes(x) && (f.keep.has(x) || (u[x] || 0) + 1 <= ucap));
-      let best = null;
+      let best = null, fresh = [];
       const byGap = xs => xs.slice().sort((p, q) => Math.abs(score(p) - sc) - Math.abs(score(q) - sc));
       const tryFill = order => { const d = Object.assign({}, d0); let left = k, cost = 0;
         for (const c of order) while (left && (d[c] || 0) + 1 <= f.cap(c)) { const e = Object.assign({}, d); e[c] = (e[c] || 0) + 1; if (f.k14(e).length) break; d[c] = e[c]; left--; cost += Math.abs(score(c) - sc); }
         if (left || pairBad(f, d) || f.problems(d).length) return; if (!best || cost < best.cost) best = { d, cost }; };
       const own = Object.keys(d0); tryFill(byGap(own)); // the new cards either by stat score with the deck's own, or filled first (a challenge boon's theme card)
-      fresh.forEach((x, i) => { [[x]].concat(fresh.slice(i + 1).map(y => [x, y])).forEach(nw => { tryFill(byGap(own.concat(nw))); tryFill(byGap(nw).concat(byGap(own))); }); });
+      // 2026-11-18 (DATAFIX): with LF3_STAMP a fight no fill reaches inside the map's usage line may go one, two, then any number of fights over it (a thin side list)
+      for (const extra of process.env.LF3_STAMP ? [0, 1, 2, 99] : [0]) { if (best) break;
+        fresh = f.pool.filter(x => !d0[x] && !bad.includes(x) && (f.keep.has(x) || (u[x] || 0) + 1 <= ucap + extra));
+        fresh.forEach((x, i) => { [[x]].concat(fresh.slice(i + 1).map(y => [x, y])).forEach(nw => { tryFill(byGap(own.concat(nw))); tryFill(byGap(nw).concat(byGap(own))); }); }); }
       const d = best ? best.d : d0, adds = {}; Object.keys(d).forEach(id => { if (d[id] > (d0[id] || 0)) adds[id] = d[id] - (d0[id] || 0); });
       const probs = best ? [] : ['no legal fill'], row = { code: f.code, map: m.id, mapNo: f.mapNo, side: f.side, cut: bad.map(id => id + ' x' + f.n.deck[id]), to: adds, before: f.n.deck, after: sorted(d), problems: probs };
       rows.push(row); console.log(`${f.code.padEnd(8)} ${row.cut.join(', ')} -> ${JSON.stringify(adds)}${probs.length ? ' | PROBLEMS ' + probs.join('; ') : ''}`);
       if (probs.length) continue;
       if (a.includes('--apply')) { const mm = s.match(lineRe(f.code)); if (!mm) throw new Error('no line ' + f.code);
-        s = s.replace(mm[1], mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(row.after) + ` /* 2026-11-11 (LISTFIX3): ${bad.map(id => f.pool.includes(id) ? id + ' (now one of a two-card family)' : id + (D[id] && D[id].kind === 'baby' ? ' (a Baby card, no longer an admin add)' : ' (cut, off the list again)')).join(', ')} out, the copies to the pool's nearest by stat score ${JSON.stringify(adds)}; deck (was ${JSON.stringify(f.n.deck)}) */`)); }
+        s = s.replace(mm[1], mm[1].replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(row.after) + ` /* ${STAMP}: ${bad.map(id => f.pool.includes(id) ? id + ' (now one of a two-card family)' : id + (D[id] && D[id].kind === 'baby' ? ' (a Baby card, no longer an admin add)' : ' (cut, off the list again)')).join(', ')} out, the copies to the pool's nearest by stat score ${JSON.stringify(adds)}; deck (was ${JSON.stringify(f.n.deck)}) */`)); }
       f.n.deck = row.after; // the map's later fights read the usage this one leaves
     }
   }
-  if (a.includes('--apply')) { write(s); fs.writeFileSync(path.join(OUT, 'swaps-2026-11-11.json'), JSON.stringify({ about: 'LISTFIX3 road swaps (tools/listfix3/decks_2026_11_11.js swap)', rows }, null, 1) + '\n'); }
+  if (a.includes('--apply')) { write(s); fs.writeFileSync(path.join(OUT, process.env.LF3_OUT || 'swaps-2026-11-11.json'), JSON.stringify({ about: 'LISTFIX3 road swaps (tools/listfix3/decks_2026_11_11.js swap)', rows }, null, 1) + '\n'); }
   console.log(rows.length, 'fights', a.includes('--apply') ? 'written' : '(dry run)');
 }
 

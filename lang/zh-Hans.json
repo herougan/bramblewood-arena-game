@@ -4568,5 +4568,6 @@
  "{a} fits {t} with armour: +{hp}❤.": "{a}为{t}披上护甲：+{hp}❤。",
  "Underwater Currents {n}": "水下暗流 {n}",
  "Underwater Currents": "水下暗流",
- "Underwater Currents {n}: the water takes {name}.": "水下暗流 {n}: 水流卷走了{name}。"
+ "Underwater Currents {n}: the water takes {name}.": "水下暗流 {n}: 水流卷走了{name}。",
+ "Only Baby cards carry this skill, and not yet at their map level: not really in the map": "只有幼崽卡带有此技能，且尚未到其地图等级：实际上不在该地图中"
 }

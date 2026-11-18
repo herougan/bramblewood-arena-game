@@ -33,7 +33,7 @@ const n221Probs = ((chk.stdout || '') + (chk.stderr || '')).trim().split('\n').m
   let m = /^(m\d+): pool (\d+)$/.exec(l); if(m && +m[2] >= 12 && +m[2] <= 16) return false;
   if(m && +m[2] >= 12 && +m[2] <= 18) return false;
   if(m && /^m2[1-4]$/.test(m[1]) && +m[2] >= 19 && +m[2] <= 23) return false; // 2026-11-06 TESTFIX2: THEME6-1 (own 7 + carried 14 on Maps 21-24) // 2026-11-04 (TESTFIX1): THEME3 / THEME4's owner-approved lists (THEME1-1, applied by APPLY1 / CONTENT4) set the sizes now: m22 holds 17
-  m = /^(\S+): a pack card of (m\w+) but not in its pool/.exec(l); if(m && !t2Has(m[2], m[1])) return false;
+  m = /^(\S+): a pack card of (m\w+) but not in its pool/.exec(l); if(m && (!t2Has(m[2], m[1]) || (by[m[1]] && by[m[1]].unattainable))) return false; // 2026-11-18 (DATAFIX): a card the owner's 11-12 / 11-13 lists cut (unattainable) is not asked to be in a pool
   m = /^(\S+): (in one map pool|card-obtain-maps)/.exec(l); if(m && !t2Any(m[1])) return false;
   m = /^(\S+): homed as \w+ \(a proposal\) but has a source now/.exec(l); if(m && (LF1SRC[m[1]] || placedSince(m[1]))) return false; // 2026-10-29 LISTFIX1 (+ TESTFIX1: placed since)
   m = /^no home: (\S+)/.exec(l); if(m && (laterHome(m[1]) || (by[m[1]] && by[m[1]].unattainable))) return false; // TESTFIX1: homed by a later owner call; 2026-11-16 (TESTFIX5): or cut by the owner's 11-12 / 11-13 lists (unattainable, SKIR3 / LIST1)

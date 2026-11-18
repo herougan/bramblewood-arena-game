@@ -4570,5 +4570,6 @@
  "{a} fits {t} with armour: +{hp}❤.": "{a}이(가) {t}에게 갑옷을 입힘: +{hp}❤.",
  "Underwater Currents {n}": "수중 해류 {n}",
  "Underwater Currents": "수중 해류",
- "Underwater Currents {n}: the water takes {name}.": "수중 해류 {n}: 물이 {name}을(를) 휩쓴다."
+ "Underwater Currents {n}: the water takes {name}.": "수중 해류 {n}: 물이 {name}을(를) 휩쓴다.",
+ "Only Baby cards carry this skill, and not yet at their map level: not really in the map": "이 스킬은 베이비 카드만 가지고 있고 아직 맵 레벨에서는 없음: 사실상 맵에 없습니다"
 }

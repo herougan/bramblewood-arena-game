@@ -79,7 +79,7 @@ ok(O.parseArgs(['--ladder', '500,250']).ladder.join() === '500,250' && O.parseAr
   const ac = gm.D['alley-cat'];
   ok(!mapPool('m1').cards.includes('alley-cat') && Object.values(gm.pools).some(p => (p.cards || []).includes('alley-cat')) && G.basicPackTierOf(ac) === 1, 'the Alley Cat is off Map 0\'s list, on another map\'s list, Pack 1');
   const over = []; G.CONQUEST_MAPS.filter(x => !x.sub && !x.reserved && G.mapNumberOf(x.id) != null && G.mapNumberOf(x.id) <= 40).forEach(x => { const cap = O.mapRarityCap(gm, x);
-    (mapPool(x.id).cards || []).forEach(id => { if (gm.D[id] && step(gm.D[id].rarity) > step(cap)) over.push(x.id + ':' + id); }); });
+    (mapPool(x.id).cards || []).forEach(id => { if (gm.D[id] && step(gm.D[id].rarity) > step(cap) && !(x.id === 'mb' && id === 'dolphin-knight') /* 2026-11-18 (DATAFIX): the owner's HH6 hold (11-01: added to Pebble Beach, "limits ignored"), as bal9 JJ12 holds it */) over.push(x.id + ':' + id); }); });
   ok(!over.length, 'no main map (0-40) lists a MAP-tier card over the rarest its fights may hold: ' + over.join(', ')); }
 
 // ---- a tiny compare run (both methods, independent eval seeds)

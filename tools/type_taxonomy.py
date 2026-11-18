@@ -31,7 +31,7 @@ GROUP_PARENT = {
   'raccoon': 'Procyonid',
   'mouse': 'Rodent', 'rat': 'Rodent', 'squirrel': 'Rodent', 'beaver': 'Rodent', 'porcupine': 'Rodent', 'vole': 'Rodent', 'rodent': 'Mammal',
   'rabbit': 'Lagomorph', 'deer': 'Cervid',
-  'ox': 'Bovine', 'goat': 'Bovine', 'sheep': 'Bovine', 'antelope': 'Bovine',
+  'ox': 'Bovine', 'buffalo': 'Bovine', 'goat': 'Bovine', 'sheep': 'Bovine', 'antelope': 'Bovine',
   'boar': 'Suid', 'horse': 'Equid',
   'ape': 'Primate', 'monkey': 'Primate', 'primate': 'Mammal',
   'bat': 'Mammal', 'sloth': 'Xenarthran', 'armadillo': 'Xenarthran', 'pangolin': 'Mammal',
@@ -66,6 +66,7 @@ GROUP_PARENT = {
   # class: top-level, like the tardigrade), a hamster, the Oyster Bank
   'algae': None, 'mushroom': None, 'hamster': 'Rodent', 'oyster': 'Mollusc',
   'cactus': None, # 2026-11-13 (package FIX11): the Barrel Cactus (a plant, top-level like the algae)
+  'fig': None, # 2026-11-18 (package DATAFIX): the Strangler Fig Sapling (a plant, top-level like the cactus)
 }
 # The classes above the groups (and the game species, which are nodes too).
 CLASS_PARENT = {

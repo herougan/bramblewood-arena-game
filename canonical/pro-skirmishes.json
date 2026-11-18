@@ -1579,7 +1579,7 @@
       "fungus-gnat-cloud": 4,
       "quill-thorn-boar": 3,
       "strangler-vine": 3,
-      "truffle-piglet": 4
+      "grass-snake": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map00-mo-2026-11-11.json",
@@ -1597,7 +1597,8 @@
       "generated": "2026-11-13T04:42:15.483Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (truffle-piglet x4); not re-searched"
     },
     {
      "id": "0-B-PRO-3",
@@ -1646,10 +1647,10 @@
      "deck": {
       "bramble-sprout": 4,
       "ent": 3,
-      "lyrebird-mimic": 4,
       "platypus-spur": 4,
       "tide-spirit": 2,
-      "upside-down-bat": 3
+      "upside-down-bat": 3,
+      "proboscis-monkey": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map00-mo-2026-11-11.json",
@@ -1667,7 +1668,8 @@
       "generated": "2026-11-13T04:42:15.483Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (lyrebird-mimic x4); not re-searched"
     }
    ],
    "bpro": [
@@ -9580,9 +9582,9 @@
       "driftwood-crab": 4,
       "kittiwake-flock": 4,
       "old-shell": 1,
-      "razorbill": 4,
       "rock-pool-starfish": 4,
-      "trash-panda-trickster": 3
+      "trash-panda-trickster": 3,
+      "raccoon-nightcrew": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map02-mg-2026-11-11.json",
@@ -9614,7 +9616,8 @@
        -101,
        -32
       ]
-     }
+     },
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (razorbill x4); not re-searched"
     },
     {
      "id": "2-B-PRO-3",
@@ -12061,8 +12064,8 @@
       "duck-paddler": 4,
       "gannet-nestweaver": 2,
       "lodge-engineer": 4,
-      "pyrenean-desman": 4,
-      "snapstick-turtle": 2
+      "snapstick-turtle": 2,
+      "beaver-lumberjack": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map02-mp-2026-11-11.json",
@@ -12080,7 +12083,8 @@
       "generated": "2026-11-13T04:50:20.181Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (pyrenean-desman x4); not re-searched"
     },
     {
      "id": "2-A-PRO-2",
@@ -12136,9 +12140,9 @@
       "alley-cat": 4,
       "conch-crawler": 3,
       "lodge-engineer": 4,
-      "pyrenean-desman": 3,
       "raft-spider": 2,
-      "water-shrew": 4
+      "water-shrew": 4,
+      "beaver-lumberjack": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map02-mp-2026-11-11.json",
@@ -12156,7 +12160,8 @@
       "generated": "2026-11-13T04:50:20.181Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (pyrenean-desman x3); not re-searched"
     },
     {
      "id": "2-A-PRO-4",
@@ -18685,8 +18690,8 @@
       "driftwood-crab": 4,
       "marsh-mallow-hare": 2,
       "planarian-splitter": 4,
-      "pyrenean-desman": 4,
-      "snapstick-turtle": 4
+      "snapstick-turtle": 4,
+      "newt-doctor": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map05-mw-2026-11-11.json",
@@ -18705,7 +18710,8 @@
      },
      "h2h": null,
      "later": [],
-     "side2": "2026-11-13 (SIDE2): box-turtle x2 not allowed here once SIDE1's side lists took them off the side list that made them obtainable in time, swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched"
+     "side2": "2026-11-13 (SIDE2): box-turtle x2 not allowed here once SIDE1's side lists took them off the side list that made them obtainable in time, swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (pyrenean-desman x4); not re-searched"
     },
     {
      "id": "5-PRO-2",
@@ -18763,9 +18769,9 @@
       "alley-cat": 4,
       "marsh-mallow-hare": 1,
       "mosquito-cloud": 4,
-      "pyrenean-desman": 4,
       "river-mink": 4,
-      "shoal-shark": 3
+      "shoal-shark": 3,
+      "newt-doctor": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map05-mw-2026-11-11.json",
@@ -18784,7 +18790,8 @@
      },
      "h2h": null,
      "later": [],
-     "side2": "2026-11-13 (SIDE2): box-turtle x1 not allowed here once SIDE1's side lists took them off the side list that made them obtainable in time, swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched"
+     "side2": "2026-11-13 (SIDE2): box-turtle x1 not allowed here once SIDE1's side lists took them off the side list that made them obtainable in time, swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (pyrenean-desman x4); not re-searched"
     }
    ],
    "bpro": [
@@ -43537,11 +43544,11 @@
      ],
      "deck": {
       "golden-eagle-diver": 2,
-      "grave-grin-hyena": 4,
       "peak-condor": 4,
       "peregrine-stooper": 4,
       "stoat-cutthroat": 3,
-      "stonedrop-vulture": 3
+      "stonedrop-vulture": 3,
+      "apollo-butterfly": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks-r1/pro/bench-deck-map11-mv-2026-11-11.json",
@@ -43560,7 +43567,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (35.5%)"
+     "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (35.5%)",
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x4); not re-searched"
     },
     {
      "id": "11-A-PRO-2",
@@ -43682,10 +43690,10 @@
      "deck": {
       "eyrie-warden": 4,
       "gale-swift": 4,
-      "grave-grin-hyena": 2,
       "pika-hoarder": 3,
       "stonedrop-vulture": 3,
-      "swamp-alligator": 4
+      "swamp-alligator": 4,
+      "apollo-butterfly": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map11-mv-2026-11-11.json",
@@ -43717,7 +43725,8 @@
        -205,
        -129
       ]
-     }
+     },
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x2); not re-searched"
     }
    ],
    "bpro": [
@@ -47892,8 +47901,8 @@
       "bear-cub": 4,
       "feral-tomcat": 4,
       "fox-kit": 4,
-      "lyrebird-mimic": 3,
-      "pika-hoarder": 1
+      "pika-hoarder": 1,
+      "badger-lumberjack": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map13-mr-2026-11-11.json",
@@ -47912,7 +47921,8 @@
      },
      "h2h": null,
      "later": [],
-     "side2": "2026-11-13 (SIDE2): box-turtle x4 not allowed here once SIDE1's side lists took them off the side list that made them obtainable in time, swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched"
+     "side2": "2026-11-13 (SIDE2): box-turtle x4 not allowed here once SIDE1's side lists took them off the side list that made them obtainable in time, swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (lyrebird-mimic x3); not re-searched"
     },
     {
      "id": "13-PRO-2",
@@ -52387,11 +52397,11 @@
      ],
      "deck": {
       "fishing-cat": 3,
-      "grave-grin-hyena": 4,
-      "great-barracuda": 3,
       "hoopoe-herald": 4,
       "kinkajou-lurker": 3,
-      "stoat-cutthroat": 3
+      "stoat-cutthroat": 3,
+      "proboscis-monkey": 4,
+      "bramblewood-macaque": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map14-my-2026-11-11.json",
@@ -52409,7 +52419,8 @@
       "generated": "2026-11-13T05:18:07.301Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x4, great-barracuda x3); not re-searched"
     },
     {
      "id": "14-A-PRO-2",
@@ -52425,11 +52436,11 @@
      ],
      "deck": {
       "camouflage-frog": 4,
-      "grave-grin-hyena": 3,
       "kinkajou-lurker": 4,
       "mosquito-cloud": 4,
       "stoat-cutthroat": 3,
-      "tide-spirit": 2
+      "tide-spirit": 2,
+      "proboscis-monkey": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map14-my-2026-11-11.json",
@@ -52447,7 +52458,8 @@
       "generated": "2026-11-13T05:18:07.301Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x3); not re-searched"
     }
    ],
    "bpro": [
@@ -58679,11 +58691,11 @@
      ],
      "deck": {
       "alley-cat": 4,
-      "colossal-squid": 2,
       "cone-cutter-squirrel": 3,
       "ice-crevasse-wolf": 3,
       "mountain-hare": 4,
-      "woodland-caribou": 4
+      "woodland-caribou": 4,
+      "cataphract-destrier": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map17-m6-2026-11-11.json",
@@ -58701,7 +58713,8 @@
       "generated": "2026-11-12T13:07:04.238Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (colossal-squid x2); not re-searched"
     }
    ],
    "bpro": [
@@ -61080,11 +61093,11 @@
      ],
      "deck": {
       "arctic-tern": 4,
-      "grave-grin-hyena": 1,
       "greenland-shark": 3,
       "lemming-swarm": 4,
       "moon-jelly": 4,
-      "snow-ermine": 4
+      "snow-ermine": 4,
+      "riptide-eel": 1
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map17-mi-2026-11-11.json",
@@ -61102,7 +61115,8 @@
       "generated": "2026-11-13T05:21:43.658Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x1); not re-searched"
     },
     {
      "id": "17-A-PRO-3",
@@ -65904,8 +65918,8 @@
       "caustic-scorpion": 4,
       "dromedary": 4,
       "giant-cave-huntsman": 3,
-      "thorny-devil": 4,
-      "tide-spirit": 2
+      "tide-spirit": 2,
+      "bison-bulldozer": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map18-mpd-2026-11-11.json",
@@ -65923,7 +65937,8 @@
       "generated": "2026-11-13T05:24:37.013Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (thorny-devil x4); not re-searched"
     },
     {
      "id": "18-A-PRO-3",
@@ -65940,9 +65955,9 @@
       "barrel-cactus": 3,
       "caustic-scorpion": 4,
       "eagle-owl-quartermaster": 3,
-      "grave-grin-hyena": 4,
       "roadrunner-courier": 4,
-      "tide-spirit": 2
+      "tide-spirit": 2,
+      "pale-oryx": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map18-mpd-2026-11-11.json",
@@ -65960,7 +65975,8 @@
       "generated": "2026-11-13T05:24:37.013Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x4); not re-searched"
     },
     {
      "id": "18-A-PRO-4",
@@ -65977,10 +65993,10 @@
      "deck": {
       "caustic-scorpion": 3,
       "gallery-orb-weaver": 2,
-      "grave-grin-hyena": 4,
       "horned-lizard": 4,
       "sand-widow": 3,
-      "thorny-devil": 4
+      "pale-oryx": 4,
+      "dromedary": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map18-mpd-2026-11-11.json",
@@ -65998,7 +66014,8 @@
       "generated": "2026-11-13T05:24:37.013Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x4, thorny-devil x4); not re-searched"
     }
    ],
    "bpro": [
@@ -68483,8 +68500,8 @@
       "ibex-rockcaller": 2,
       "smoke-raccoon": 4,
       "sulfur-cinder-moth": 4,
-      "thorny-devil": 4,
-      "walrus-icebreaker": 2
+      "walrus-icebreaker": 2,
+      "horned-lizard": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map19-m3-2026-11-11.json",
@@ -68503,7 +68520,8 @@
      },
      "h2h": null,
      "later": [],
-     "side2": "2026-11-13 (SIDE2): lantern-spark-fly x4 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched"
+     "side2": "2026-11-13 (SIDE2): lantern-spark-fly x4 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (thorny-devil x4); not re-searched"
     },
     {
      "id": "19-PRO-2",
@@ -68523,7 +68541,7 @@
       "mountain-hare": 3,
       "polar-bear": 2,
       "snow-ermine": 4,
-      "thorny-devil": 3
+      "smoke-raccoon": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map19-m3-2026-11-11.json",
@@ -68541,7 +68559,8 @@
       "generated": "2026-11-12T13:16:33.389Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (thorny-devil x3); not re-searched"
     },
     {
      "id": "19-PRO-3",
@@ -68598,8 +68617,8 @@
       "pinecone-sapper": 4,
       "quillback-elder": 4,
       "stalactite-golem": 4,
-      "thorny-devil": 4,
-      "upside-down-bat": 3
+      "upside-down-bat": 3,
+      "horned-lizard": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map19-m3-2026-11-11.json",
@@ -68617,7 +68636,8 @@
       "generated": "2026-11-12T13:16:33.389Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (thorny-devil x4); not re-searched"
     }
    ],
    "bpro": [
@@ -70520,10 +70540,10 @@
      "deck": {
       "badger-berserker": 3,
       "cinder-gecko": 4,
-      "grave-grin-hyena": 4,
       "peak-condor": 4,
       "star-nosed-mole": 3,
-      "tide-spirit": 2
+      "tide-spirit": 2,
+      "pumice-beetle": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map19-m9-2026-11-11.json",
@@ -70541,7 +70561,8 @@
       "generated": "2026-11-13T05:26:36.990Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x4); not re-searched"
     },
     {
      "id": "19-A-PRO-2",
@@ -70557,10 +70578,10 @@
      "deck": {
       "cinder-gecko": 4,
       "cinder-hornet": 4,
-      "grave-grin-hyena": 4,
       "smoke-raccoon": 4,
       "stoat-cutthroat": 2,
-      "tide-spirit": 2
+      "tide-spirit": 2,
+      "pumice-beetle": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map19-m9-2026-11-11.json",
@@ -70578,7 +70599,8 @@
       "generated": "2026-11-13T05:26:36.990Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x4); not re-searched"
     },
     {
      "id": "19-A-PRO-3",
@@ -70592,12 +70614,12 @@
       "tide-spirit"
      ],
      "deck": {
-      "magma-wraith": 4,
       "peak-condor": 4,
       "rimefire-salamander": 3,
       "star-nosed-mole": 4,
       "stoat-cutthroat": 3,
-      "tide-spirit": 2
+      "tide-spirit": 2,
+      "pumice-beetle": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map19-m9-2026-11-11.json",
@@ -70615,7 +70637,8 @@
       "generated": "2026-11-13T05:26:36.990Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (magma-wraith x4); not re-searched"
     }
    ],
    "bpro": [
@@ -73132,10 +73155,10 @@
      "deck": {
       "cataphract-destrier": 4,
       "deep-cave-troll": 4,
-      "grave-grin-hyena": 4,
       "ibex-rockcaller": 2,
       "obsidian-scorpion": 2,
-      "stonedrop-vulture": 4
+      "stonedrop-vulture": 4,
+      "pumice-beetle": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map20-m11-2026-11-11.json",
@@ -73153,7 +73176,8 @@
       "generated": "2026-11-12T13:21:01.437Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x4); not re-searched"
     }
    ],
    "bpro": [
@@ -74702,11 +74726,11 @@
      ],
      "deck": {
       "berserker-boar": 4,
-      "grave-grin-hyena": 4,
       "honey-badger-fury": 4,
       "obsidian-scorpion": 3,
       "stoat-cutthroat": 3,
-      "tide-spirit": 2
+      "tide-spirit": 2,
+      "brimstone-hound": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map20-me-2026-11-11.json",
@@ -74724,7 +74748,8 @@
       "generated": "2026-11-13T05:28:55.867Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x4); not re-searched"
     },
     {
      "id": "20-A-PRO-2",
@@ -76968,9 +76993,9 @@
       "basalt-boar": 4,
       "cataphract-destrier": 4,
       "deep-cave-troll": 4,
-      "grave-grin-hyena": 4,
       "magma-salamander": 2,
-      "tide-spirit": 2
+      "tide-spirit": 2,
+      "fire-salamander": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map20-mx-2026-11-11.json",
@@ -76988,7 +77013,8 @@
       "generated": "2026-11-13T05:33:21.764Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x4); not re-searched"
     },
     {
      "id": "20-B-PRO-3",
@@ -79676,8 +79702,8 @@
       "cinder-gecko": 4,
       "ember-centipede": 4,
       "fumarole-ibex": 3,
-      "grave-grin-hyena": 3,
-      "rimefire-salamander": 3
+      "rimefire-salamander": 3,
+      "pumice-beetle": 3
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map22-m22-2026-11-05.json",
@@ -79695,7 +79721,8 @@
      },
      "h2h": null,
      "later": [],
-     "skir2": "2026-11-11 (SKIR2): stoat-cutthroat x3 not held by this map since SKIR1's lists (the map-true rule), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
+     "skir2": "2026-11-11 (SKIR2): stoat-cutthroat x3 not held by this map since SKIR1's lists (the map-true rule), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x3); not re-searched"
     },
     {
      "id": "22-PRO-2",
@@ -80297,10 +80324,10 @@
      "deck": {
       "battlement-heron": 3,
       "eagle-owl-quartermaster": 3,
-      "grave-grin-hyena": 4,
       "howdah-archers": 3,
       "land-tiller": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "alley-cat": 4
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map24-m24-2026-11-05.json",
@@ -80317,7 +80344,8 @@
       "generated": "2026-11-05T04:27:41.889Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grave-grin-hyena x4); not re-searched"
     },
     {
      "id": "24-PRO-3",

@@ -4567,5 +4567,6 @@
  "{a} fits {t} with armour: +{hp}❤.": "{a} rüstet {t} aus: +{hp}❤.",
  "Underwater Currents {n}": "Unterwasserströmungen {n}",
  "Underwater Currents": "Unterwasserströmungen",
- "Underwater Currents {n}: the water takes {name}.": "Unterwasserströmungen {n}: das Wasser packt {name}."
+ "Underwater Currents {n}: the water takes {name}.": "Unterwasserströmungen {n}: das Wasser packt {name}.",
+ "Only Baby cards carry this skill, and not yet at their map level: not really in the map": "Nur Babykarten haben diese Fähigkeit, und noch nicht auf ihrer Kartenstufe: nicht wirklich in der Karte"
 }

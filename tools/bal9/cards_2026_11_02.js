@@ -60,12 +60,15 @@ function cmdRewards(apply) {
   const used = new Set(Object.values(FP));
   const exclusive = new Set(); locsInPlay().forEach(m => (m.nodes || []).forEach(n => G.nodeRewardCardIds(m.id, n.key).forEach(id => exclusive.add(id))));
   const takenNow = new Set();
+  // 2026-11-18 (DATAFIX): a card some road fight already fields is drawn last as a reward (it would become "another fight's reward" there and break that deck)
+  const fielded = {}; maps.forEach(m => (m.nodes || []).forEach(n => Object.keys(n.deck || {}).forEach(id => { fielded[id] = (fielded[id] || 0) + (m.sub || (n.rules && n.rules.boon) ? 100 : 1); }))); // a side map's thin lists and a boon deck cannot take a swap: they weigh 100
   const pick = (loc, node, why) => { // a random new pack card of loc inside the node's cap
     const cap = L.nodeCap(loc, node), capList = L.listCap(loc);
     const cand = Object.keys(D).filter(id => { const d = D[id]; if (!d || d.token || d.test || isEquip(d)) return false; const s = srcOf(d);
       if (s.kind !== 'pack' || !newOn(id, loc) || used.has(id) || exclusive.has(id) || takenNow.has(id)) return false;
       const r = L.step(d.rarity) > L.step(capList) ? capList : d.rarity; return L.step(r) <= L.step(cap); }).sort();
-    if (!cand.length) return null; const r = L.rng('bal9:' + why + ':' + loc + ':' + node.key); const id = cand[Math.floor(r() * cand.length)]; takenNow.add(id); return id;
+    if (!cand.length) return null; const least = Math.min(...cand.map(id => fielded[id] || 0)); cand.splice(0, cand.length, ...cand.filter(id => (fielded[id] || 0) === least)); // the cards the fewest fights field first
+    const r = L.rng('bal9:' + why + ':' + loc + ':' + node.key); const id = cand[Math.floor(r() * cand.length)]; takenNow.add(id); return id;
   };
   for (const m of locsInPlay()) for (const n of (m.nodes || [])) {
     G.nodeRewardCardIds(m.id, n.key).forEach(id => { const d = D[id]; if (isLeaderCard(d)) return; if (newOn(id, m.id)) return;

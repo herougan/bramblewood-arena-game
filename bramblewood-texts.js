@@ -3744,7 +3744,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ux7-focus-add-tip": "Focus skill for this map that no main card has yet: put it on a card",
   "ui.ux8-tag-starter": "Starter",
   "ui.ux8-tip-starter": "A Starter card: it starts at Level 0",
-  "ui.ux8-late-baby-tip": "Only Baby cards carry this skill, and not yet at their map level, so it is not really in the map",
+  "ui.ux8-late-baby-tip": "Only Baby cards carry this skill, and not yet at their map level: not really in the map",
   "ui.ux8-lvl-btn": "LvL",
   "ui.e22-res-gold": "Gold",
   "ui.skn-forestry": "Forestry",

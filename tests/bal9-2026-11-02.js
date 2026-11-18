@@ -28,7 +28,7 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
   ok(/^rarity lowered: \d+;/.test(q) && low.every(id => id === 'echidna-quillshot'), `JJ12 every listed card is at or below its first list's cap (${q}; held by RAR-1: ${low.join(', ') || 'none'})`);
   ok(C['old-shell'].rarity === 'uncommon' && C['old-shell'].effects.leader === true, `JJ12 Old Shell (Map 2) is Uncommon and still leads (${C['old-shell'].rarity}, leader ${C['old-shell'].effects.leader})`);
   ok(C['dolphin-knight'].rarity === 'rare', 'JJ12 Dolphin Knight stays Rare (owner HH6: limits ignored)');
-  ok((C['hedgehog-scout'].unattainable === true || MADE_OBTAINABLE.has('hedgehog-scout')) /* 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3 clearUnattainable) brought it back on purpose */ && C['lyrebird-mimic'].source.kind === 'map' && C['lyrebird-mimic'].source.node === '12-5', 'JJ12 Hedgehog Scout (cut) is out of play; Lyrebird Mimic holds the 12-5 reward slot');
+  ok((C['hedgehog-scout'].unattainable === true || MADE_OBTAINABLE.has('hedgehog-scout')) /* 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3 clearUnattainable) brought it back on purpose */ && C['ladybird-guard'].source.kind === 'map' && C['ladybird-guard'].source.node === '12-5' /* 2026-11-18 (DATAFIX): the slot was re-filled on the new lists (Lyrebird Mimic is a pack card again) */, 'JJ12 Hedgehog Scout (cut) is out of play; Ladybird Guard holds the 12-5 reward slot (was Lyrebird Mimic)');
   const applied = J('docs/balance/bal9/applied-2026-11-02.json'); ok(applied.passes.some(p => p.step === 'rarity' && p.edits.length >= 15), 'JJ12 the rarity pass is on record'); }
 
 // ---- JJ21: the budget band -----------------------------------------------------------------------------------------------------

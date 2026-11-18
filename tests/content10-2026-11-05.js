@@ -29,7 +29,7 @@ ok(/th6Targets\(no == null \? 2 : no\)/.test(fnSrc('rv2TargetsOf')), '1. rv2Targ
 const isBaby = id=> (B.CARD_DEFS_BASELINE[id] || {}).kind === 'baby', carried = e=> /carried/i.test(e.why || '');
 const mains = G.CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved && G.mapNumberOf(m.id) >= 2 && G.mapNumberOf(m.id) <= 24);
 ok(mains.length === 23, `2. 23 main maps from 2 to 24 (${mains.length})`);
-for(const m of mains){ const n = G.mapNumberOf(m.id), t = th6(n), r = review[m.id], ch = r.chosen.filter(e=> !isBaby(e.id));
+for(const m of mains){ const n = G.mapNumberOf(m.id), t = th6(n), r = review[m.id], ch = r.chosen.filter(e=> !isBaby(e.id) && !/DATAFIX/.test(e.why || '')); // 2026-11-18 (DATAFIX): CONTENT13's own cards on Maps 22-23 have review rows now (item 2 below) and are past THEME6-1's 7 + 14
   const own = ch.filter(e=> !carried(e)).length, car = ch.filter(carried).length, p = plan.maps[m.id];
   // 2026-11-08 (FIX10): a card a later package put on the list (ENG37's Cormorant on Map 3) is recorded in the plan's map entry as later {own, carried, why}
   const lt = (p && p.later) || {own: 0, carried: 0};
@@ -53,7 +53,7 @@ ok(!pools.mb.cards.includes('sea-turtle-elder') && pools.mb.cards.includes('rock
 ok(['2-2', '2-4', '2-5'].every(k=> !deckOf('mb', k)['sea-turtle-elder']) && ['2-2', '2-5'].every(k=> deckOf('mb', k)['rock-pool-starfish'] >= 2), '3. Sea Turtle Elder is out of 2-2, 2-4, 2-5; Rock Pool Starfish holds its slots in 2-2 and 2-5');
 // 2026-11-11 (SKIR1): the owner's 2026-11-11 Yes picks for Sunken Hollow keep the Shoal Shark and leave out both the Muskrat and the Alley Cat
 ok(pools.m2.cards.includes('shoal-shark') && !pools.m2.cards.includes('muskrat-reedgatherer'), '3. Sunken Hollow: Shoal Shark back, Muskrat Reedgatherer out');
-ok(!cards['shoal-shark'].unattainable && cards['shoal-shark'].source.map === 'm2', '3. Shoal Shark is a Sunken Hollow pack card again');
+ok(!cards['shoal-shark'].unattainable && (cards['shoal-shark'].source.map === 'm2' || cards['shoal-shark'].source.id === 'm2' /* 2026-11-18 (DATAFIX): it is 4-5's reward now (bal9 JJ12 re-filled the slot) */), '3. Shoal Shark is a Sunken Hollow pack card again');
 // 2026-11-12 (TESTFIX1): the owner's 11-12 picks for The Sundered Peak leave out the Chamois Leaper; the rule that stays is that the Glacier Wolf Pack is off the list
 ok(!pools.m11.cards.includes('glacier-wolf-pack'), '3. The Sundered Peak: Glacier Wolf Pack stays off the list');
 // 2026-11-13 TESTFIX3: LIST1 made the owner's 11-13 Yes picks the lists; an archetype card he picked himself (Brimstone Hound on Map 20-A) is his call and is exempt, with the decks SIDE2 built from those lists
@@ -63,11 +63,12 @@ G.CONQUEST_MAPS.filter(m=> !m.reserved && G.mapNumberOf(m.id) >= 20).forEach(m=>
   const ids = m.sub ? ((e.submaps || {})[m.id] || []) : e.cards.concat(e.special || []);
   ok(!ids.some(id=> arch(cards[id])), `3. ${m.id} (Map ${G.mapNumberOf(m.id)}): no archetype card on its list (${ids.filter(id=> arch(cards[id])).join(', ')})`);
   (m.nodes || []).forEach(nd=> ok(!Object.keys(nd.deck || {}).some(id=> arch(cards[id])), `3. ${nd.key}: no archetype card in its deck`)); });
-const REW = [['rock-pool-starfish', 'mb', '2-1'], ['driftwood-crab', 'mb', '2-5'], ['pyrenean-desman', 'm2', '4-5'], ['magma-salamander', 'm11', '20-9'], ['razorbill', 'mc', '3-7'], ['yeti', 'm3', '19-6']];
+const REW = [['rock-pool-starfish', 'mb', '2-1'], ['driftwood-crab', 'mb', '2-5'], ['shoal-shark', 'm2', '4-5'], ['magma-salamander', 'm11', '20-9'], ['eagle-sharpshooter', 'mc', '3-7'], ['grindstone-boar', 'm3', '19-6']];
 REW.forEach(([id, mid, node])=>{ const s = cards[id].source || {}; ok(s.kind === 'map' && s.id === mid && s.node === node, `3. ${id} is ${node}'s reward`); });
-ok(cards.yeti.source.challenge === true && !(cards['yeti-chieftain'].source || {}).challenge, '3. 19-6\'s challenge card is the Yeti (LISTFIX2-2)');
+// 2026-11-18 (DATAFIX): the slots of bal9 JJ12 moved to cards new on their map (4-5, 3-7, 19-6); the challenge flag of 19-6 went with the slot (the Yeti left the lists, LISTFIX2-2)
+ok(cards['grindstone-boar'].source.challenge === true && !(cards.yeti.source || {}).challenge && !(cards['yeti-chieftain'].source || {}).challenge, '3. 19-6\'s challenge card is the Grindstone Boar (was the Yeti, LISTFIX2-2)');
 // 2026-11-11 (LISTFIX3): mw:5-1's row follows its node's firstCard (marsh-mallow-hare, which pays); cypress-root-lurker left Map 5's 11-11 list (GD-5)
-const FP = {'mb:2-3': 'open-ocean-hermit-crab', 'm2:4-2': 'water-shrew', 'mw:5-1': 'marsh-mallow-hare', 'mw:5-3': 'swamp-alligator', 'm8:6-4': 'mosquito-cloud' /* 2026-11-12 (TESTFIX1): SKIR3 (GD-5) swapped lamprey for the nearest card of the 11-12 list */, 'm5:14-3': 'marula-elephant'};
+const FP = {'mb:2-3': 'open-ocean-hermit-crab', 'm2:4-2': 'water-shrew', 'mw:5-1': 'marsh-mallow-hare', 'mw:5-3': 'swamp-alligator', 'm8:6-4': 'crocodile-ambusher' /* 2026-11-18 (DATAFIX): bal9 JJ12, mosquito-cloud is first listed on Map 5 */ /* 2026-11-12 (TESTFIX1): SKIR3 (GD-5) swapped lamprey for the nearest card of the 11-12 list */, 'm5:14-3': 'marula-elephant'};
 Object.entries(FP).forEach(([k, id])=> ok(new RegExp(`'${k}': '${id}'`).test(src), `3. ${k}'s first-clear card is ${id}`));
 const LF2 = {mb: ['fiddler-crab-swarm', 'grey-seal-bull', 'tidepool-trapper-crab'], m2: ['old-sturgeon', 'stone-turtle-warden'], mw: ['venomlord-serpent', 'snapper-hatchling'], m8: ['marsh-wisp'], m5: ['weaver-bird'], m11: ['woodland-brawler'], mc: ['the-gannet-queen'], m3: ['yeti-chieftain']};
 Object.entries(LF2).forEach(([mid, ids])=>{ const m = G.CONQUEST_MAPS.find(x=> x.id === mid);

@@ -3967,6 +3967,31 @@
      "id": "ashbone-ghoul",
      "why": "Carried from The Sundered Peak (Map 20); the map's own biome; thematic fit, active skills (remember, trig:onDeath/exileSelf); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 22)",
      "by": "claude"
+    },
+    {
+     "id": "fossa-ambusher",
+     "why": "2026-11-18 (DATAFIX): on the MAP list (CONTENT13: a Pack 4 card of this map)",
+     "by": "kept"
+    },
+    {
+     "id": "osprey-plunger",
+     "why": "2026-11-18 (DATAFIX): on the MAP list (CONTENT13: a Pack 4 card of this map)",
+     "by": "kept"
+    },
+    {
+     "id": "opossum-faker",
+     "why": "2026-11-18 (DATAFIX): on the MAP list (CONTENT13: a Pack 4 card of this map)",
+     "by": "kept"
+    },
+    {
+     "id": "praying-mantis-striker",
+     "why": "2026-11-18 (DATAFIX): on the MAP list (CONTENT13)",
+     "by": "kept"
+    },
+    {
+     "id": "spitfire-sawfly-grubs",
+     "why": "2026-11-18 (DATAFIX): on the MAP list (CONTENT13: a Pack 4 card of this map)",
+     "by": "kept"
     }
    ],
    "cut": [],
@@ -4103,6 +4128,31 @@
      "id": "raccoon-bandit",
      "why": "Carried from The Long Grass (Map 15); a kin biome; thematic fit, active skills (bounty); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
      "by": "claude"
+    },
+    {
+     "id": "tsetse-drainer",
+     "why": "2026-11-18 (DATAFIX): on the MAP list (CONTENT13: a Pack 4 card of this map)",
+     "by": "kept"
+    },
+    {
+     "id": "drongo-mocker",
+     "why": "2026-11-18 (DATAFIX): on the MAP list (CONTENT13: a Pack 4 card of this map)",
+     "by": "kept"
+    },
+    {
+     "id": "cape-buffalo-bulwark",
+     "why": "2026-11-18 (DATAFIX): on the MAP list (CONTENT13: a Pack 4 card of this map)",
+     "by": "kept"
+    },
+    {
+     "id": "secretary-bird-stomper",
+     "why": "2026-11-18 (DATAFIX): on the MAP list (CONTENT13: a Pack 4 card of this map)",
+     "by": "kept"
+    },
+    {
+     "id": "rinkhals-spitter",
+     "why": "2026-11-18 (DATAFIX): on the MAP list (CONTENT13: a Pack 4 card of this map)",
+     "by": "kept"
     }
    ],
    "cut": [],

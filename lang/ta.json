@@ -4570,5 +4570,6 @@
  "{a} fits {t} with armour: +{hp}❤.": "{a} {t} க்கு கவசம்: +{hp}❤.",
  "Underwater Currents {n}": "நீருக்கடி நீரோட்டங்கள் {n}",
  "Underwater Currents": "நீருக்கடி நீரோட்டங்கள்",
- "Underwater Currents {n}: the water takes {name}.": "நீருக்கடி நீரோட்டங்கள் {n}: நீர் {name} ஐ இழுக்கிறது."
+ "Underwater Currents {n}: the water takes {name}.": "நீருக்கடி நீரோட்டங்கள் {n}: நீர் {name} ஐ இழுக்கிறது.",
+ "Only Baby cards carry this skill, and not yet at their map level: not really in the map": "இந்த திறன் குட்டி அட்டைகளிடம் மட்டுமே உள்ளது, வரைபட நிலையில் இன்னும் இல்லை: உண்மையில் வரைபடத்தில் இல்லை"
 }

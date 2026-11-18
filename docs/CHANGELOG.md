@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-18 (package DATAFIX: the data TESTFIX's triage found against standing rules)
+- Players see: 43 reward slots hold a card new on their map (Map 0: Elder Willow, Thorn Shrike); no Stone card before Map 21 (Phoenix Mushrooms 2 Lumber, Pumice Beetle gains 2 Lumber 3/8, Caldera Wyrm 3 Lumber); a defender on Maps 5 and 10; Dust Hyena and Barrow Leech Bat lose a skill; six twin lines separated by a stat step; 5 cards at their list's rarity cap; 95 road decks swapped copies where a moved reward left a deck.
+- Under the hood: Maps 21-23 hold 23 MAP cards (overflow on SPECIAL), Constrictor Coil on Map 5's SPECIAL (REFIT4-2 a), map-review rows, taxonomy, top-up order, one shorter tip. `tools/datafix*_2026_11_18.js`; tests follow in opt2, n221, content10, card-pool, bal9. Road deck problems 17 -> 10 (K14 / boon ones REFIT4 held). Decisions DATAFIX-1, -2.
+
 ## 2026-11-18 (package REFIT4: the Maps 0-20 road re-fitted after FOLD6, SKAUD1 and CARDPOW2)
 - Players see: new enemy decks in 122 road fights (Maps 0-20 and their side maps), e.g. Map 11's ledges, Map 10, Map 13, Maps 2-3 and 5-6. Shield and bramble Health untouched.
 - Road (seed 9100, 400 games; unchanged fights from the same-day whole-road read): main 53 -> 93 in band, 66 -> 104 within 10, 45 -> 17 beyond 20 (of 149); side 34 -> 64 / 40 -> 69 / 15 -> 2 (of 77). Worst left: Map 17, Map 11 (11-5, 11-6, 11-9, 11-10 too hard with any legal deck; decision REFIT4-1), 20-9 and 7-6 too easy.

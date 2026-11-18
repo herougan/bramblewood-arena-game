@@ -99,7 +99,7 @@ pool.forEach(c=>{
 if(HELD.unplaced.length || HELD.pending.length) console.log(`  · budget: ${HELD.unplaced.length} unplaced (out of play, not checked): ${HELD.unplaced.join(', ')}; ${HELD.pending.length} pending step 3: ${HELD.pending.join(', ')}`); // 2026-10-29 LISTFIX1
 // ---- 3. out of the live game
 ok(stillPool.every(c=> !c.source && c.locked === true && !c.basic && !c.hidden), '3. no source (no pack, reward or base card), locked');
-ok(pool.filter(c=> !c.pool).every(c=> (rpMoved(cards.find(x=> x.id === c.id)) || (c.source && (c.source.kind === 'pack' ? c.poolSlot === 'pack' : c.source.kind === 'map' && c.poolSlot === 'skirmish'))) && !('poolMap' in cards.find(x=> x.id === c.id))), '3. (TH) each placed card has a source matching its slot (or package RP moved it on) and no pool fields');
+ok(pool.filter(c=> !c.pool).every(c=> (rpMoved(cards.find(x=> x.id === c.id)) || /2026-11-18 \(DATAFIX\): source /.test(cards.find(x=> x.id === c.id).creatorNote || '') /* 2026-11-18 (DATAFIX): bal9 JJ12 moved reward slots to cards new on their map (a pack card became a reward, a reward a pack card) */ || (c.source && (c.source.kind === 'pack' ? c.poolSlot === 'pack' : c.source.kind === 'map' && c.poolSlot === 'skirmish'))) && !('poolMap' in cards.find(x=> x.id === c.id))), '3. (TH) each placed card has a source matching its slot (or package RP moved it on) and no pool fields');
 const deckIds = new Set(); MAPS.forEach(m=> (m.nodes || []).forEach(nd=>{ Object.keys(nd.deck || {}).forEach(id=> deckIds.add(id)); (nd.leaders || []).forEach(id=> deckIds.add(id));
   ((nd.dungeon && nd.dungeon.waveDecks) || []).forEach(w=> w && Object.keys(w).forEach(id=> deckIds.add(id))); }));
 ok(stillPool.every(c=> !deckIds.has(c.id)), '3. in no map deck');

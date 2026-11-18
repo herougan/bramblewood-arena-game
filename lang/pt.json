@@ -4569,5 +4569,6 @@
  "{a} fits {t} with armour: +{hp}❤.": "{a} blinda {t}: +{hp}❤.",
  "Underwater Currents {n}": "Correntes submarinas {n}",
  "Underwater Currents": "Correntes submarinas",
- "Underwater Currents {n}: the water takes {name}.": "Correntes submarinas {n}: a água leva {name}."
+ "Underwater Currents {n}: the water takes {name}.": "Correntes submarinas {n}: a água leva {name}.",
+ "Only Baby cards carry this skill, and not yet at their map level: not really in the map": "Só cartas Filhote têm esta habilidade, e ainda não no nível delas no mapa: não está de fato no mapa"
 }

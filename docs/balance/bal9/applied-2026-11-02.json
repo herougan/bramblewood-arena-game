@@ -639,6 +639,871 @@
      "note": "the skirmish-exclusive reward of md:18-5 (was obsidian-scorpion: first listed on m3 (Map 19), not md); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
     }
    ]
+  },
+  {
+   "step": "rewards",
+   "at": "2026-11-18T02:44:05.672Z",
+   "edits": [
+    {
+     "id": "chipmunk-skirmisher",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m1:0-1 released (first listed on mc (Map 3), not m1); now a basic-pack card"
+    },
+    {
+     "id": "elder-willow",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m1",
+       "node": "0-1"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m1:0-1 (was chipmunk-skirmisher: first listed on mc (Map 3), not m1); a new card of that map, picked at random (seeded) inside the fight's common cap"
+    },
+    {
+     "id": "terrier-pup",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m1:0-4 released (first listed on mf (Map 1), not m1); now a basic-pack card"
+    },
+    {
+     "id": "thorn-shrike",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m1",
+       "node": "0-4"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m1:0-4 (was terrier-pup: first listed on mf (Map 1), not m1); a new card of that map, picked at random (seeded) inside the fight's common cap"
+    },
+    {
+     "id": "badger-lumberjack",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 2
+      }
+     },
+     "note": "reward slot mf:1-5 released (first listed on mr (Map 13), not mf); now a basic-pack card"
+    },
+    {
+     "id": "hedgehog-scout",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mf",
+       "node": "1-5"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mf:1-5 (was badger-lumberjack: first listed on mr (Map 13), not mf); a new card of that map, picked at random (seeded) inside the fight's uncommon cap"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 2
+      }
+     },
+     "note": "reward slot mc:3-7 released (first listed on m10 (Map 11), not mc); now a basic-pack card"
+    },
+    {
+     "id": "balloon-archer",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mc",
+       "node": "3-7"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mc:3-7 (was golden-eagle-diver: first listed on m10 (Map 11), not mc); a new card of that map, picked at random (seeded) inside the fight's uncommon cap"
+    },
+    {
+     "id": "razorbill",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mc:3-7 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "eagle-sharpshooter",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mc",
+       "node": "3-7"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mc:3-7 (was razorbill: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's uncommon cap"
+    },
+    {
+     "id": "pyrenean-desman",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m2:4-5 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "shoal-shark",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m2",
+       "node": "4-5"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m2:4-5 (was pyrenean-desman: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's uncommon cap"
+    },
+    {
+     "id": "grass-viper",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3
+      }
+     },
+     "note": "reward slot mw:5-4 released (first listed on ml (Map 15), not mw); now a basic-pack card"
+    },
+    {
+     "id": "mudflat-godwit",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mw",
+       "node": "5-4"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mw:5-4 (was grass-viper: first listed on ml (Map 15), not mw); a new card of that map, picked at random (seeded) inside the fight's uncommon cap"
+    },
+    {
+     "id": "fen-mink",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mw:5-6 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "mudpuppy",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mw",
+       "node": "5-6"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mw:5-6 (was fen-mink: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's uncommon cap"
+    },
+    {
+     "id": "alligator-gar",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mw:5-7 released (first listed on m8 (Map 6), not mw); now a basic-pack card"
+    },
+    {
+     "id": "cottonmouth-matriarch",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mw",
+       "node": "5-7"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mw:5-7 (was alligator-gar: first listed on m8 (Map 6), not mw); a new card of that map, picked at random (seeded) inside the fight's rare cap"
+    },
+    {
+     "id": "poison-dart-croaker",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m8:6-1 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "venomlord-serpent",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m8",
+       "node": "6-1"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m8:6-1 (was poison-dart-croaker: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's uncommon cap"
+    },
+    {
+     "id": "newt-doctor",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m8:6-5 released (first listed on mw (Map 5), not m8); now a basic-pack card"
+    },
+    {
+     "id": "lamprey",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m8",
+       "node": "6-5"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m8:6-5 (was newt-doctor: first listed on mw (Map 5), not m8); a new card of that map, picked at random (seeded) inside the fight's rare cap"
+    },
+    {
+     "id": "adder-ambusher",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3
+      }
+     },
+     "note": "reward slot m8:6-8 released (first listed on ml (Map 15), not m8); now a basic-pack card"
+    },
+    {
+     "id": "barrow-leech-bat",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m8",
+       "node": "6-8"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m8:6-8 (was adder-ambusher: first listed on ml (Map 15), not m8); a new card of that map, picked at random (seeded) inside the fight's rare cap"
+    },
+    {
+     "id": "truffle-piglet",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mu:7-1 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "millipede-hauler",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mu",
+       "node": "7-1"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mu:7-1 (was truffle-piglet: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's uncommon cap"
+    },
+    {
+     "id": "mangrove-kingfisher",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mk:9-6 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "voltaic-eel",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mk",
+       "node": "9-6"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mk:9-6 (was mangrove-kingfisher: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's rare cap"
+    },
+    {
+     "id": "mangrove-manatee",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mk:9-7 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "tide-spirit",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mk",
+       "node": "9-7"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mk:9-7 (was mangrove-manatee: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's rare cap"
+    },
+    {
+     "id": "electric-ray",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 2
+      }
+     },
+     "note": "reward slot m7:10-2 released (first listed on mk (Map 9), not m7); now a basic-pack card"
+    },
+    {
+     "id": "coral-polyp-colony",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m7",
+       "node": "10-2"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m7:10-2 (was electric-ray: first listed on mk (Map 9), not m7); a new card of that map, picked at random (seeded) inside the fight's rare cap"
+    },
+    {
+     "id": "great-barracuda",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m7:10-6 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "krill-swarm",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m7",
+       "node": "10-6"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m7:10-6 (was great-barracuda: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "colossal-squid",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m7:10-9 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "moon-jelly",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m7",
+       "node": "10-9"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m7:10-9 (was colossal-squid: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "alpine-marmot",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 2
+      }
+     },
+     "note": "reward slot m10:11-1 released (first listed on mh (Map 12), not m10); now a basic-pack card"
+    },
+    {
+     "id": "sparrow-chick",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m10",
+       "node": "11-1"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m10:11-1 (was alpine-marmot: first listed on mh (Map 12), not m10); a new card of that map, picked at random (seeded) inside the fight's rare cap"
+    },
+    {
+     "id": "bramble-hoglet",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mh:12-1 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "clover-butterfly",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mh",
+       "node": "12-1"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mh:12-1 (was bramble-hoglet: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's rare cap"
+    },
+    {
+     "id": "lyrebird-mimic",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mh:12-5 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "ladybird-guard",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mh",
+       "node": "12-5"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mh:12-5 (was lyrebird-mimic: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "fawn-scout",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 2
+      }
+     },
+     "note": "reward slot mr:13-1 released (first listed on mh (Map 12), not mr); now a basic-pack card"
+    },
+    {
+     "id": "bear-cub",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mr",
+       "node": "13-1"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mr:13-1 (was fawn-scout: first listed on mh (Map 12), not mr); a new card of that map, picked at random (seeded) inside the fight's rare cap"
+    },
+    {
+     "id": "shimmerwing-stag",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mr:13-8 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "redwood-woodpecker",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mr",
+       "node": "13-8"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mr:13-8 (was shimmerwing-stag: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m5:14-2 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "dust-hyena",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m5",
+       "node": "14-2"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m5:14-2 (was grave-grin-hyena: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's rare cap"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3
+      }
+     },
+     "note": "reward slot ml:15-3 released (first listed on m5 (Map 14), not ml); now a basic-pack card"
+    },
+    {
+     "id": "mallard-marauder",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "ml",
+       "node": "15-3"
+      }
+     },
+     "note": "the skirmish-exclusive reward of ml:15-3 (was stoat-cutthroat: first listed on m5 (Map 14), not ml); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "talon-archer",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot ml:15-7 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "gale-swift",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "ml",
+       "node": "15-7"
+      }
+     },
+     "note": "the skirmish-exclusive reward of ml:15-7 (was talon-archer: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "dhole-matriarch",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3
+      }
+     },
+     "note": "reward slot mt:16-7 released (first listed on my (Map 18), not mt); now a basic-pack card"
+    },
+    {
+     "id": "whip-spider",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mt",
+       "node": "16-7"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mt:16-7 (was dhole-matriarch: first listed on my (Map 18), not mt); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "lone-grey-wolf",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m6:17-2 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "beluga",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m6",
+       "node": "17-2"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m6:17-2 (was lone-grey-wolf: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "thorny-devil",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot md:18-1 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "frillneck-duelist",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "md",
+       "node": "18-1"
+      }
+     },
+     "note": "the skirmish-exclusive reward of md:18-1 (was thorny-devil: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "fennec-fox",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot md:18-5 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "nightjar-drifter",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "md",
+       "node": "18-5"
+      }
+     },
+     "note": "the skirmish-exclusive reward of md:18-5 (was fennec-fox: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "quill-volley",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m3:19-2 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "quillback-elder",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m3",
+       "node": "19-2"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m3:19-2 (was quill-volley: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "yeti",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m3:19-6 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "grindstone-boar",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m3",
+       "node": "19-6"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m3:19-6 (was yeti: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "fire-salamander",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3
+      }
+     },
+     "note": "reward slot m11:20-3 released (first listed on m3 (Map 19), not m11); now a basic-pack card"
+    },
+    {
+     "id": "ash-moth",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m11",
+       "node": "20-3"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m11:20-3 (was fire-salamander: first listed on m3 (Map 19), not m11); a new card of that map, picked at random (seeded) inside the fight's superrare cap"
+    },
+    {
+     "id": "magma-wraith",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m11:20-7 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "sulfur-vent-crab",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m11",
+       "node": "20-7"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m11:20-7 (was magma-wraith: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's superrare cap"
+    },
+    {
+     "id": "pika-hoarder",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m21:21-1 released (first listed on mc (Map 3), not m21); now a basic-pack card"
+    },
+    {
+     "id": "pearl-mussel-anchorer",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m21",
+       "node": "21-1"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m21:21-1 (was pika-hoarder: first listed on mc (Map 3), not m21); a new card of that map, picked at random (seeded) inside the fight's superrare cap"
+    },
+    {
+     "id": "snow-owl-sentinel",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot m21:21-6 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "strangler-fig-sapling",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m21",
+       "node": "21-6"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m21:21-6 (was snow-owl-sentinel: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's superrare cap"
+    },
+    {
+     "id": "ur-elk",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3
+      }
+     },
+     "note": "reward slot m22:22-6 released (first listed on m11 (Map 20), not m22); now a basic-pack card"
+    },
+    {
+     "id": "ember-jackal",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m22",
+       "node": "22-6"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m22:22-6 (was ur-elk: first listed on m11 (Map 20), not m22); a new card of that map, picked at random (seeded) inside the fight's epic cap"
+    },
+    {
+     "id": "caldera-snow-leopard",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3
+      }
+     },
+     "note": "reward slot m22:22-8 released (first listed on m3 (Map 19), not m22); now a basic-pack card"
+    },
+    {
+     "id": "praying-mantis-striker",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m22",
+       "node": "22-8"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m22:22-8 (was caldera-snow-leopard: first listed on m3 (Map 19), not m22); a new card of that map, picked at random (seeded) inside the fight's epic cap"
+    }
+   ]
+  },
+  {
+   "step": "rarity",
+   "at": "2026-11-18T02:44:08.487Z",
+   "edits": [
+    {
+     "id": "tide-spirit",
+     "set": {
+      "rarity": "rare"
+     },
+     "from": {
+      "rarity": "veryrare",
+      "stats": "5/5"
+     },
+     "note": "rarity veryrare -> rare: at most the rarest fight of mk (Map 9), first listed on mk (owner JJ12)"
+    },
+    {
+     "id": "fire-drake-hatchling",
+     "set": {
+      "rarity": "superrare"
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "6/11"
+     },
+     "note": "rarity heroic -> superrare: at most the rarest fight of m11 (Map 20), first listed on m11 (owner JJ12)"
+    },
+    {
+     "id": "the-contradiction",
+     "set": {
+      "rarity": "superrare"
+     },
+     "from": {
+      "rarity": "epic",
+      "stats": "2/16"
+     },
+     "note": "rarity epic -> superrare: at most the rarest fight of m11 (Map 20), first listed on m11 (owner JJ12)"
+    },
+    {
+     "id": "caldera-snow-leopard",
+     "set": {
+      "rarity": "veryrare"
+     },
+     "from": {
+      "rarity": "superrare",
+      "stats": "3/15"
+     },
+     "note": "rarity superrare -> veryrare: at most the rarest fight of m3 (Map 19), first listed on m3 (owner JJ12)"
+    },
+    {
+     "id": "thorn-shrike",
+     "set": {
+      "rarity": "common"
+     },
+     "from": {
+      "rarity": "rare",
+      "stats": "3/3"
+     },
+     "note": "rarity rare -> common: at most the rarest fight of m1 (Map 0), first listed on m1 (owner JJ12)"
+    }
+   ]
   }
  ]
 }
