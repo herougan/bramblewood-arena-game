@@ -1001,7 +1001,11 @@
   /* Trigger badges (2026-10-11): ⚡→action. Greyed while the trigger is off (its card is still Waiting); a short spark as it switches on. */
   .ab-trig{display:inline-flex; align-items:center; gap:0; white-space:nowrap;}
   .ab-trig .ab-bolt{font-style:normal; color:#ffd23f; text-shadow:0 0 4px rgba(255,200,60,.65);}
-  .ab-trig .ab-arrow{font-style:normal; font-size:.62em; opacity:.75; margin:0 -1px; font-weight:900;} /* 2026-11-07 (package UI24 #14, owner 11-06 23:35: "Trigger context pips: emoji and arrow closer together"): was margin 0 1px, so 4 px closer in all */
+  .ab-trig .ab-arrow{font-style:normal; font-size:.62em; opacity:.75; margin:0 -1px; font-weight:900;} /* 2026-11-18 (UI60, owner 21:27: "arrow is not centered horizontally, card emoji not centered vertically ... A->B stacked really close"): the arrow is a masked box centred on the line (the text glyph sat on the baseline), the emoji drop the baseline offset and are nudged by their measured ink centre (--ox/--oy from tools/emoji/offsets.json, via #bwEmojiAtlas) */
+  .ab-trig{line-height:1;}
+  .ab-trig .ab-arrow{display:inline-block; overflow:hidden; text-indent:200%; width:.9em; height:.9em; margin:0 -.09em; background:currentColor; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 8h12M8.5 3l5 5-5 5' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 8h12M8.5 3l5 5-5 5' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;}
+  .ab-trig img.tw-emoji{width:1.05em; height:1.05em; margin:0; vertical-align:0;}
+  .ab-trig img.emo, .abadge img.emo{translate:calc(var(--ox, 0) * 1.05em) calc(var(--oy, 0) * 1.05em);} /* 2026-11-07 (package UI24 #14, owner 11-06 23:35: "Trigger context pips: emoji and arrow closer together"): was margin 0 1px, so 4 px closer in all */
   .ab-trig.is-off .ab-bolt{color:#9a958c; text-shadow:none; filter:grayscale(1); opacity:.55;}
   /* used up for good: shine, then grey, then fade away (2026-10-12) */
   .ab-trig.is-spent{animation:trigSpent 1.6s ease forwards; display:inline-flex; overflow:hidden; max-width:4em;}
@@ -1256,6 +1260,7 @@
      full card"): the real card tile, scaled up, sitting above the existing stat/ability text —
      see fullCardHTML()'s own comment in arena_app.js. */
   #cardPop .card-pop-visual{display:flex; justify-content:center; margin:-2px 0 10px;}
+  #cardPop .card-pop-visual.has-lv{flex-direction:column; align-items:center; gap:6px;} #cardPop .cp-lv, #cardPop .card-pop-visual-tile .levelbadge{display:none;} #cardPop .card-pop-visual.has-lv .cp-lv{display:block; position:static; font-size:12px; padding:1px 9px;} /* 2026-11-18 (UI60): Lv N under the zoomed card in your deck and on the battlefield */
   #cardPop .card-pop-visual-tile{width:var(--pop-card-w, var(--card-full-w)); pointer-events:none; rotate:1deg;} /* 2026-10-30 (CS-C): the size is the Detail / Full token now; 2026-10-31 (UI11, FF3): by the window's height (and never smaller than the board card: openPopFor), tilted 1 degree clockwise */
   #cardPop{--pop-card-w:clamp(var(--card-full-w), 24vh, 360px); width:max(264px, calc(var(--pop-card-w) + 28px));}
   #cardPop .card-pop-visual-tile .ico{opacity:1;}
@@ -12349,6 +12354,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 #codexGrid.al-host .al-sleeve .cx-tile-wrap .cx-lock{top:-4px; left:-4px; font-size:12px; padding:2px 3px;}
 #codexGrid.al-host .card-tile.cx-editable{cursor:pointer;}
 .al-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px;}
+.al-head-next{margin-top:14px;} .al-page .al-grid:not(:last-of-type){flex:0 0 auto;} /* 2026-11-18 (UI60): a page can hold several sections, each with its own title and divider */
 @media (max-width:559px){ .al-album{padding:6px;} .al-page{padding:8px 6px 6px;} .al-grid{gap:5px; --al-sleeve-x:3px;}
   /* 2026-10-19 (package CX, owner 14:07: "Show 16 cards on each page"): 4 × 4 on a phone too, in thinner sleeves */
   .al-sleeve{padding:3px 3px 7px; border-radius:6px;} .al-head .al-sec{font-size:15px;} }

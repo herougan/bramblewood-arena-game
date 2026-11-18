@@ -451,7 +451,7 @@ var EmojiStyle = (function(){
   const sheetCss = a=>{
     const W = a.w, H = a.h, c = a.cell, f = v=> +v.toFixed(4);
     let css = `img.emo{background-image:url("${String(a.url).replace(/["\\\n]/g, '')}");background-size:${f(W / c * 100)}% ${f(H / c * 100)}%}`;
-    a.keys.forEach((k, i)=>{ const x = (i % a.cols) * a.pitch + a.pad, y = Math.floor(i / a.cols) * a.pitch + a.pad; css += `.e-${k}{background-position:${f(x / (W - c) * 100)}% ${H > c ? f(y / (H - c) * 100) : 0}%}`; });
+    a.keys.forEach((k, i)=>{ const x = (i % a.cols) * a.pitch + a.pad, y = Math.floor(i / a.cols) * a.pitch + a.pad; css += `.e-${k}{background-position:${f(x / (W - c) * 100)}% ${H > c ? f(y / (H - c) * 100) : 0}%${a.off && a.off[k] ? `;--ox:${a.off[k][0]};--oy:${a.off[k][1]}` : ''}}`; }); // 2026-11-18 (UI60): --ox/--oy = the centring nudge from tools/emoji/offsets.json
     return css;
   };
   const setSheet = a=>{
@@ -7574,7 +7574,9 @@ function fullCardHTML(defId, liveCard, opts){
   // owning it isn't a reason to grey out the very card you asked to look at (enemy decks, rewards, the Codex).
   // 2026-10-17: in a fight the big preview wears the hovered copy's own look (opts.lookClass: is-shiny / a skin's tile class)
   // 2026-10-30 (package CS-C, owner CS-1 "the hover popover shows the Full card plus text"): the Full card (was 150px)
-  const visualHTML = `<div class="card-pop-visual">${cardTileHTML(Object.assign({}, visualDef, {locked:false}), {size:'full', extraClass:'card-pop-visual-tile' + (opts.lookClass ? ' ' + opts.lookClass : '')})}</div>`;
+  // 2026-11-18 (UI60, owner 21:29: "on card hover shows the card's level ... primarily for your deck hover and on the battlefield"): opts.showLevel adds a "Lv N" pill under the card (not in pack reveals or the shop)
+  const popLv = opts.showLevel ? (opts.shownLevel != null && isFinite(opts.shownLevel) ? opts.shownLevel : Number.isFinite(Number(visualDef.level)) && visualDef.level > 0 ? visualDef.level : getCardLevel(defId)) : null;
+  const visualHTML = `<div class="card-pop-visual${popLv != null ? ' has-lv' : ''}">${cardTileHTML(Object.assign({}, visualDef, {locked:false}), {size:'full', extraClass:'card-pop-visual-tile' + (opts.lookClass ? ' ' + opts.lookClass : '')})}${popLv != null ? `<div class="levelbadge cp-lv" title="${escapeAttr('Level ' + popLv)}">Lv ${popLv}</div>` : ''}</div>`;
   // CSRE (2026-09-20): same zero-cost/zero-wait hiding rule as the card tile itself — no bare
   // "🪙0" or "⏱0" chip in this stat row, and any Grace/Devilry cost is folded in here too
   // (costBadgeParts) instead of only ever showing gold.
@@ -7814,7 +7816,7 @@ function castleHoverHTML(hqSide){
       // all skills as is"): a unit on the board shows its card as printed (its Attack and Health at its level, every skill it was printed with);
       // what happened to it in this fight (damage, buffs, statuses, a lost skill) stays on its tile. Only its own hit log is still added.
       const liveForLog = liveCardFromHoverEl(el);
-      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), null, {draftDef: (typeof editorPreviewDraft !== 'undefined' && editorPreviewDraft && el.closest && el.closest('#cePreview')) ? editorPreviewDraft : null /* 2026-11-07 (UI24 #2) */, logUid: liveForLog ? liveForLog.uid : null, showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
+      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), null, {draftDef: (typeof editorPreviewDraft !== 'undefined' && editorPreviewDraft && el.closest && el.closest('#cePreview')) ? editorPreviewDraft : null /* 2026-11-07 (UI24 #2) */, logUid: liveForLog ? liveForLog.uid : null, showPitchYield: isHandTile, showLevel: !!matchState || !!el.closest('#myDeckPool, #myDeckList') /* 2026-11-18 (UI60) */, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
@@ -9217,17 +9219,24 @@ function albumLayout(){
   return w >= 960 ? {pages:2, cols:4, rows:4, key:'2x16'} : {pages:1, cols:4, rows:4, key:'1x16'};
 }
 // groups [{sec, ids (sorted), all}] -> album pages [{sec, ids, all, cont}]: a section starts a page; a long one runs on (cont).
-function albumPaginate(groups, per){
-  const pages = [];
+function albumPaginate(groups, per, cols){
+  // 2026-11-18 (UI60, owner 21:32: "when you can fit multiple sections in one page, please do ... avoids every page having 1-2 cards"): a page is {parts:[{sec, ids, all, cont}], ids (all its cards), sec/all/cont of the first part}.
+  // A part costs its sleeve rows, plus half a row for its title band when it is not the first; a part that does not fit starts the next page.
+  const pages = [], rowsMax = Math.round(per / cols); let cur = null, used = 0;
+  const mk = part=> ({parts:[part], sec:part.sec, ids:part.ids.slice(), all:part.all, cont:part.cont});
   groups.forEach(g=>{
-    if(!g.ids.length){ if(!g.sec.bare) pages.push({sec:g.sec, ids:[], all:g.all, cont:false}); return; } // (an admin's empty skirmish: its page has the Edit rewards button)
-    for(let i = 0; i < g.ids.length; i += per) pages.push({sec:g.sec, ids:g.ids.slice(i, i + per), all:g.all, cont:i > 0});
+    if(!g.ids.length){ if(!g.sec.bare) pages.push(mk({sec:g.sec, ids:[], all:g.all, cont:false})); cur = null; return; } // (an admin's empty skirmish: its page has the Edit rewards button; it stands alone)
+    for(let i = 0; i < g.ids.length; i += per){
+      const part = {sec:g.sec, ids:g.ids.slice(i, i + per), all:g.all, cont:i > 0}, rows = Math.ceil(part.ids.length / cols);
+      if(cur && used + rows + .5 <= rowsMax){ cur.parts.push(part); cur.ids.push(...part.ids); used += rows + .5; }
+      else { cur = mk(part); pages.push(cur); used = rows; }
+    }
   });
   return pages;
 }
 function codexDrawAlbum(gridEl, groups, tileFor, groupIds, keepPage){
   if(gridEl._cxMore){ try{ gridEl._cxMore(); }catch(e){} gridEl._cxMore = null; } // a grid draw's chunks stop
-  const L = albumLayout(), pages = albumPaginate(groups, L.cols * L.rows);
+  const L = albumLayout(), pages = albumPaginate(groups, L.cols * L.rows, L.cols);
   // a redraw for another layout (a resize) keeps the first card in view
   const prev = codexAlbumState, firstId = keepPage && prev && prev.L.key !== L.key && prev.pages[codexPage] ? prev.pages[codexPage].ids[0] : null;
   if(!keepPage) codexPage = 0;
@@ -9243,15 +9252,20 @@ function codexDrawAlbum(gridEl, groups, tileFor, groupIds, keepPage){
 const codexSleeveAR = {};
 function albumPageHTML(p, i, side){
   if(!p) return `<section class="al-page pg-${side} is-blank" aria-hidden="true"></section>`;
-  const S = codexAlbumState, sec = p.sec, per = S.L.cols * S.L.rows;
-  const owned = p.all.filter(id=> (myCardCopies[id]||[]).length).length;
-  const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
-  const getAll = adminModeEnabled && p.all.length ? `<button type="button" class="btn small ghost cx-get-all" data-getall="${escapeAttr(sec.key)}" title="Admin: add one copy of every card in this section to your collection">🎁 Get all</button>` : '';
-  const title = sec.bare ? TX('ui.codex-album-title') : sec.label + (p.cont ? ' ' + TX('ui.codex-cont') : '');
-  const sleeves = p.ids.map(id=> `<div class="al-sleeve">${S.tileFor(id)}</div>`).join('') + '<div class="al-slot" aria-hidden="true"></div>'.repeat(Math.max(0, per - p.ids.length));
-  return `<section class="al-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S.pages.length}))}">
-    <header class="al-head"><span class="al-sec"${sec.tip ? ' title="' + escapeAttr(sec.tip) + '"' : '' /* 2026-10-19 (package CX): the detail as a tooltip */}>${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
-    <div class="al-grid" style="--al-cols:${S.L.cols}; --al-sar:${codexSleeveAR[S.L.key] || .66}">${sleeves}</div><footer class="al-foot">${i + 1}</footer></section>`;
+  const S = codexAlbumState, per = S.L.cols * S.L.rows, parts = p.parts || [p], cols = S.L.cols;
+  let rowsUsed = 0; parts.forEach((q, k)=>{ rowsUsed += Math.ceil(q.ids.length / cols) + (k ? .5 : 0); });
+  const body = parts.map((q, k)=>{
+    const sec = q.sec, owned = q.all.filter(id=> (myCardCopies[id]||[]).length).length, last = k === parts.length - 1;
+    const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
+    const getAll = adminModeEnabled && q.all.length ? `<button type="button" class="btn small ghost cx-get-all" data-getall="${escapeAttr(sec.key)}" title="Admin: add one copy of every card in this section to your collection">🎁 Get all</button>` : '';
+    const title = sec.bare ? TX('ui.codex-album-title') : sec.label + (q.cont ? ' ' + TX('ui.codex-cont') : '');
+    const rowEnd = Math.ceil(q.ids.length / cols) * cols - q.ids.length;
+    const fill = !last ? rowEnd : parts.length === 1 ? per - q.ids.length : rowEnd + Math.max(0, Math.floor(S.L.rows - rowsUsed)) * cols; // the last part pads the page to full height; the others only finish their row
+    const sleeves = q.ids.map(id=> `<div class="al-sleeve">${S.tileFor(id)}</div>`).join('') + '<div class="al-slot" aria-hidden="true"></div>'.repeat(Math.max(0, fill));
+    return `<header class="al-head${k ? ' al-head-next' : ''}"><span class="al-sec"${sec.tip ? ' title="' + escapeAttr(sec.tip) + '"' : '' /* 2026-10-19 (package CX): the detail as a tooltip */}>${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: q.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
+    <div class="al-grid" style="--al-cols:${cols}; --al-sar:${codexSleeveAR[S.L.key] || .66}">${sleeves}</div>`;
+  }).join('');
+  return `<section class="al-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S.pages.length}))}">${body}<footer class="al-foot">${i + 1}</footer></section>`;
 }
 function albumDraw(){
   const S = codexAlbumState; if(!S || !S.gridEl.isConnected) return;
@@ -9260,7 +9274,7 @@ function albumDraw(){
   if(!pages.length){ gridEl.innerHTML = `<div class="cx-view-hint">${escapeHtml(TX('ui.codex-no-cards'))}</div>`; codexTurnFn = null; return; }
   const sides = L.pages === 2 ? ['left', 'right'] : ['single'];
   // the sections, for "Go to section": each one's first page
-  const sections = []; pages.forEach((p, i)=>{ if(!p.cont && !p.sec.bare && !sections.some(s=> s.key === p.sec.key)) sections.push({key:p.sec.key, label:p.sec.label, page:i}); });
+  const sections = []; pages.forEach((p, i)=> (p.parts || [p]).forEach(q=>{ if(!q.cont && !q.sec.bare && !sections.some(s=> s.key === q.sec.key)) sections.push({key:q.sec.key, label:q.sec.label, page:i}); })); // UI60: a page can hold several sections
   // 2026-10-19 (package CX, owner 14:07: "The goto previous or next page buttons should be on the books themselves"): the page
   // count and "Go to section" sit above the album; ‹ « and › » are tabs on its outer edges (no bar below).
   gridEl.innerHTML = codexPagerNavHTML('album', codexPage, L.pages, pages.length, sections)
