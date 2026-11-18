@@ -21,6 +21,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - [x] Owner 21:24: the card editor lists every map a card is on (New! sits on the first) -> MAPLIST1 (done, batch)
 - [ ] Owner 21:27 / 21:29 / 21:32: trigger context pill A->B tight and centred, per-emoji centring offsets saved for all atlas emoji; card level on hover (deck, hand, battlefield; not packs); Codex packs several sections per page -> UI60 (running)
 - [ ] Owner 21:29 / 21:31: Codex level slider (stats at each level, up to the player's highest unlocked level of that card + 1); skills a card learns later show as ? with their own tooltip (it will learn more as it grows, not 'locked'); tokens grow with level (e.g. Bee Swarmling 1/1 -> about 2/3 at Level 10) -> LVL11 (after LVL10)
+- [x] Released 11-18 ~23:00 (main caf414fd, hub v259): the batch incl. LVL10 + FOLD7 (owner: "When ready push asap"). Road after release: main 86/99/13, side 45/56/9 (run 44333235396) -> REFIT7
+- [ ] Owner 23:55 ("Good night. please finish"): pip text centring, A->B arrow/trigger spacing, all maps as equal pills with the first stronger, + MAPFIT1 (Glass Dunes skull, Venom strings, MAP_FOCUS_SKILLS) -> UIFIN (running); Delivery + Delivery Resource fused (resource a parameter), Shield: Armor -> Armoured Shield (two stacked shields), On Healed / On Heal -> On Nursed / On Nurse, forge-curve + bl pins -> SKFIN (running)
+- [ ] Overnight order: SKWK2 (running) and SKFIN merge -> REFIT7 road re-fit (ENG52 + LVL10 moved it) -> LVL11 after UIFIN -> release once all pass smoke and package tests, then the full suite and road measure in the background
 - [x] Skill status answered: SKAUD1 audit built; 32 skill calls open (SKAUD1-1..3, SKN1-1..19, SKILL9-1..10)
 
 ## 11-16 02:00: Owner notes (night) -> FX11, FX12, UX3-5, INFRA1, LAB1, BALREL2 (shipped 11-16)
