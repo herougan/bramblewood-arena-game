@@ -188,8 +188,10 @@
     // 2026-10-21 (BF5): x the card's N multiplier (no abilities x plainBonus, only light ones x lightBonus; the parameters of other skills
     // are the table's "a parameter of another skill" entries). Fragile is fragileUse on the caps' left sides since 2026-10-22 (BF7), not on N.
     const PARAMS = [...new Set((table.skills || []).filter(s=> /parameter of/.test((s.note || '') + ' ' + (s.measuredWhy || ''))).map(s=> s.id).concat(BB.PARAMS || []))];
-    function budgetMult(d){ return BB.nMultOf ? BB.nMultOf((d && d.effects) || {}, B, PARAMS.length ? PARAMS : null) : 1; }
-    function budgetN(d, lv){ return r2(BB.nAt(budgetBase(d), lv == null ? levelOf(d) : lv, B) * budgetMult(d)); }
+    // 2026-11-19 (package SKFIN): the multiplier reads the card with its Level 0 / 1 skills laid on (BB.budgetDef, at lv, default 1), as budget()
+    // and the card editor (ceBudgetRefresh) do since ENG52: a card whose skills arrive at Level 1 is no longer "plain" (plainBonus) here only
+    function budgetMult(d, lv){ if(BB.budgetDef && d) d = BB.budgetDef(d, lv == null ? 1 : lv); return BB.nMultOf ? BB.nMultOf((d && d.effects) || {}, B, PARAMS.length ? PARAMS : null) : 1; }
+    function budgetN(d, lv){ return r2(BB.nAt(budgetBase(d), lv == null ? levelOf(d) : lv, B) * budgetMult(d, lv)); }
     // v3 / v4 comparisons use the Base they had (no map term)
     function budgetV3N(d, lv){ return r2(BB.baseOf(d, Object.assign({}, B, {perMap: 0})) + g('perLevel', 2) * (lv == null ? levelOf(d) : lv)); }
     function budgetV4N(d, lv){ return BB.nV4(BB.baseOf(d, Object.assign({}, B, {perMap: 0})), lv == null ? levelOf(d) : lv); }

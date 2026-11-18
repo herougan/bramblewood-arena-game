@@ -2667,7 +2667,6 @@
  "On a kill": "撃破時",
  "On a skill": "スキル使用時",
  "On Ally Die": "味方死亡時",
- "On Ally Healed": "味方被回復時",
  "On Ally Played": "味方プレイ時",
  "On Ally Ready": "味方準備OK時",
  "On Ally Spawn": "味方出現時",
@@ -5023,5 +5022,9 @@
  "The real name is spitfire grub. A cluster on a gum leaf rears up together and spits oil at whatever disturbs them.": "本当の名はスピットファイア・グラブ。ユーカリの葉の上の群れは一斉に身を起こし、邪魔する者に油を吐く。",
  "It spits venom at the eyes from two metres. If that fails, it falls over and plays dead. Both are on purpose.": "二メートル先から目に毒を吐く。外れたら、ひっくり返って死んだふりをする。どちらもわざとだ。",
  "It has just climbed out of its old shell and the new one is still wet paper. It hits as hard as ever and dies faster than it should.": "古い殻から出たばかりで、新しい殻はまだ濡れた紙のようだ。打撃はいつも通り強いが、死ぬのは早すぎる。",
- "{v1} weakens {v2}: −{v3} Attack for good": "{v1}が{v2}を弱らせた：攻撃−{v3}（永続）"
+ "{v1} weakens {v2}: −{v3} Attack for good": "{v1}が{v2}を弱らせた：攻撃−{v3}（永続）",
+ "On Nurse": "看護時",
+ "On Nursed": "被看護時",
+ "On Ally Nursed": "味方被看護時",
+ "Nursed": "被看護"
 }

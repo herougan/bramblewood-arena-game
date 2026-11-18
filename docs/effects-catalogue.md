@@ -1467,7 +1467,7 @@ tick; `draw`'s `openingExtra`; `AI_PLAN_*`, `aiSavePlan`, `aiLosingBadly`, `aiFr
 The rules as built (engine: `buildSizeOf`, `fortifyBramble`, `deliveryEveryTick` / `en8Trigs` Delivery, `shotRedirect`, `thrSeeDeath`, `thrRoundMark`; owner 2026-11-03 21:10 / 21:13, `docs/decisions.json`):
 - **Build { A/H Palisade }** (key `fortification`, was Fortification; SKILL-BUILD-1): on play a Palisade of that size in an empty slot beside it; true = 0/6.
 - **Fortify { X }** (key `fortify`; on no card): on play your bramble gets X for the fight (+N Health and its top, Thorns N, Regen N, Bolt N, +N Shield). Event `fortify {parts}`, log line "🏯 … fortifies its bramble". Bramble Armor (`brambleArmor`) reads Bramble Armor again (call ENG22-2).
-- **Delivery { Lumber xN }** (key `delivery`, resource `deliveryRes`): On Ready, once (Stockpile's rule); **Delivery { Lumber xN }, every turn** (`deliveryEvery`): every upkeep while Ready (onReadyGold's). Lumber events carry `cause:'delivery'` for the every-turn form. Stockpile, onReadyGold and On Ready gain triggers still play; no card carries them.
+- **Delivery { Lumber xN }** (key `delivery`, resource `deliveryRes`): On Ready, once (Stockpile's rule); **Delivery { Lumber xN }, every turn** (`deliveryEvery`): every upkeep while Ready (onReadyGold's). Lumber events carry `cause:'delivery'` for the every-turn form. Stockpile, onReadyGold and On Ready gain triggers still play; no card carries them. SKFIN (2026-11-19, owner 11-18 23:55): the resource is Delivery's parameter, picked beside its number on the editor's one Delivery row (`delivery: {v, res}`); the separate "Delivery resource" entry left "+ Add Skill" (`deliveryRes` still reads).
 - **Taunt / Guardian on shots** (DESIGN1-4): an aimed shot (Arrow, Archer, Arrow action, Fire / Ice Arrow, Twin Shot, Bola, Lasso, Snipe, Bolts, Spitfire) goes to an enemy Taunt unit around a front-row shooter, else to a Ready Guardian beside its target. The `arrow` / `bolt` event carries `taunted` or `guardianRedirect`; a pulled shot also logs `statusFx taunted {shot:true}`. Not Volley, not bramble-aimed shots.
 - **Carnage N** counts `c.carnageSeen` (enemy deaths while it is on the board); **Tally N** is the old count; **Almanac N** reads `pl.drawnAfterOpening`; **Onslaught N** `pl._siegeLast` (bramble damage dealt last round); **Riled N** `c._riledLast` (damage it took last round). The four new ones are on no card (call ENG22-1).
 - **Wetness, -1 a round** (owner 22:02): `en20WaterDrain` at each round start, before `en20TideWater`; event `statusFx en20Dry {drain:true}`.
@@ -1652,7 +1652,7 @@ The engine decides; this describes. Decision DES2-3 a (docs/design/skill-plan-ma
 | Arrow (`arrow`), one shot family (owner 23:05 on ENG35-2) | type: fire = `fireArrow`; type: ice = `iceArrow`; type + form: bolt = `fireBolt`, `iceBolt`, `acidBolt`, `poisonBolt`, `shockBolt` (Speed 1); swings: never = `archer` (its `style` part rides along). The bramble / poison / bleed riders sit beside type: `"arrow": {"v": 2, "type": "fire", "form": "bolt", "bramble": true}` (ENG35-4) |
 | Keen Sense (`keenSense`) | sees: dark = `darksight` (Darksight) |
 | Speed (`speed`) | kind: blitz = `blitz`; kind: swift = `swift` (on no card; left "+ Add Skill") |
-| Delivery (`delivery`) | kind: stockpile = `stockpile`; kind: pearl = `pearl`; every: round = `deliveryEvery` (its `res` rides along; ENG35-2) |
+| Delivery (`delivery`) | kind: stockpile = `stockpile`; kind: pearl = `pearl`; every: round = `deliveryEvery` (its `res` rides along; ENG35-2); `res` is picked on the Delivery row (SKFIN) |
 | Daunt (`daunt`) | lasts: lasting = `weaken`; lasts: washed = `stench` |
 | Strangle (`strangle`) | hold: full = `constrict`; hold: bind = `tangle` (Tangleweed) |
 | Vulnerable (`exploit`) | lasts: lasting = `scar` |
@@ -2030,3 +2030,6 @@ Owner: "new visual effects (e.g. crab claw doesn't look very nice), and also vis
 
 ## Inspiring horn (2026-11-17, package SFX2)
 ✅ live. `SoundKit.rallyHorn`: a synthesized bugle fanfare (G4, C5, E5, about 0.65 s; sawtooth, swelling low-pass, vibrato), played with the 📯 burst (`pl2InspireFx`) when Inspiring triggers. One horn per 450 ms. Shown in the Effects Lab Sound tab as "Inspiring horn (bugle)". No samples, no RNG.
+
+## Names (2026-11-19, package SKFIN, owner 11-18 23:55)
+Display only; keys, rules and prices unchanged. **Delivery { Resource xN }** is one skill: the resource (Lumber, Stone, Metal, Gold, Pearl, Uranium, Grace) is its parameter, picked on the Delivery row (`delivery: {v, res}`; `deliveryRes` still reads). **Armoured Shield** (was "Shield: Armor"; `shield.armor` / `shieldArmor`): icon 🛡️🛡️, two shields drawn overlapped (`.ico-stack`); a Shield with Armor reads "Armoured Shield N" on the card line and chip. The heal triggers read **On Nurse** (`onHeal`), **On Nursed** (`onHealed`) and **On Ally Nursed** (`onAllyHealed`); they still fire on any heal.

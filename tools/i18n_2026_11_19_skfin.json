@@ -1,0 +1,77 @@
+{
+ "tx": {
+  "ui.skn-shield-armor": {
+   "en": "Armoured Shield",
+   "fr": "Bouclier blindé",
+   "de": "Gepanzerter Schild",
+   "es": "Escudo blindado",
+   "it": "Scudo corazzato",
+   "pt": "Escudo blindado",
+   "tl": "Kalasag na may Baluti",
+   "ta": "கவச கேடயம்",
+   "id": "Perisai Berzirah",
+   "zh-Hans": "装甲护盾",
+   "zh-Hant": "裝甲護盾",
+   "ja": "装甲シールド",
+   "ko": "장갑 보호막"
+  }
+ },
+ "flavor": {
+  "On Nurse": {
+   "fr": "En soignant",
+   "de": "Beim Pflegen",
+   "es": "Al cuidar",
+   "it": "All'assistenza",
+   "pt": "Ao tratar",
+   "tl": "Sa Pag-aalaga",
+   "ta": "பராமரிக்கும்போது",
+   "id": "Saat Merawat",
+   "zh-Hans": "护理时",
+   "zh-Hant": "護理時",
+   "ja": "看護時",
+   "ko": "간호 시"
+  },
+  "On Nursed": {
+   "fr": "Quand soignée",
+   "de": "Wenn gepflegt",
+   "es": "Al ser cuidada",
+   "it": "Quando assistita",
+   "pt": "Ao ser tratada",
+   "tl": "Kapag Inalagaan",
+   "ta": "பராமரிக்கப்படும்போது",
+   "id": "Saat Dirawat",
+   "zh-Hans": "被护理时",
+   "zh-Hant": "被護理時",
+   "ja": "被看護時",
+   "ko": "간호받을 때"
+  },
+  "On Ally Nursed": {
+   "fr": "Quand un allié est soigné",
+   "de": "Wenn Verbündeter gepflegt",
+   "es": "Cuando cuidan a un aliado",
+   "it": "Quando un alleato è assistito",
+   "pt": "Quando um aliado é tratado",
+   "tl": "Kapag Inalagaan ang Kakampi",
+   "ta": "நட்பு பராமரிக்கப்படும்போது",
+   "id": "Saat Sekutu Dirawat",
+   "zh-Hans": "友方被护理时",
+   "zh-Hant": "友方被護理時",
+   "ja": "味方被看護時",
+   "ko": "아군이 간호받을 때"
+  },
+  "Nursed": {
+   "fr": "Soigné",
+   "de": "Gepflegt",
+   "es": "Cuidado",
+   "it": "Assistito",
+   "pt": "Tratado",
+   "tl": "Inalagaan",
+   "ta": "பராமரிக்கப்பட்டது",
+   "id": "Dirawat",
+   "zh-Hans": "被护理",
+   "zh-Hant": "被護理",
+   "ja": "被看護",
+   "ko": "간호받음"
+  }
+ }
+}

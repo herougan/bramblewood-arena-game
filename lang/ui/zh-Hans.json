@@ -2667,7 +2667,6 @@
  "On a kill": "击杀时",
  "On a skill": "使用技能时",
  "On Ally Die": "友方死亡时",
- "On Ally Healed": "友方被治疗时",
  "On Ally Played": "友方打出时",
  "On Ally Ready": "友方可行动时",
  "On Ally Spawn": "友方生成时",
@@ -5023,5 +5022,9 @@
  "The real name is spitfire grub. A cluster on a gum leaf rears up together and spits oil at whatever disturbs them.": "它的真名叫喷火幼虫。桉树叶上的一群同时昂起身子，朝打扰它们的东西喷油。",
  "It spits venom at the eyes from two metres. If that fails, it falls over and plays dead. Both are on purpose.": "它从两米外朝眼睛喷毒液。喷不中就翻身装死。两样都是故意的。",
  "It has just climbed out of its old shell and the new one is still wet paper. It hits as hard as ever and dies faster than it should.": "它刚爬出旧壳，新壳还像湿纸。它出手依旧很重，却死得比该有的更快。",
- "{v1} weakens {v2}: −{v3} Attack for good": "{v1} 削弱了 {v2}：永久 −{v3} 攻击"
+ "{v1} weakens {v2}: −{v3} Attack for good": "{v1} 削弱了 {v2}：永久 −{v3} 攻击",
+ "On Nurse": "护理时",
+ "On Nursed": "被护理时",
+ "On Ally Nursed": "友方被护理时",
+ "Nursed": "被护理"
 }

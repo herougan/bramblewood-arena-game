@@ -1553,9 +1553,9 @@ const TRIGGER_DEFS = [
   {key:'onEnemySpawn', label:'On Enemy Spawn', desc:"every time a card the OPPONENT controls is put into play by a card's ABILITY (the Spawn action, On Death: Spawn) — not a hand play. For a hand play, use \"On Enemy Played\" instead"},
   {key:'onColumnSpawn', label:'On Column Spawn', desc:'every time ANY card (either side) is spawned into this card\'s own lane/column'},
   {key:'onAllyDie', label:'On Ally Die', desc:"every time a DIFFERENT card this player controls dies — the flip side of On Death, which only fires for this card's own death"},
-  {key:'onHeal', label:'On Heal', desc:'every time this card heals something (including itself, e.g. via Regeneration)'},
-  {key:'onHealed', label:'On Healed', desc:'every time this card is healed, by any source'},
-  {key:'onAllyHealed', label:'On Ally Healed', desc:'every time a DIFFERENT card this player controls is healed'},
+  {key:'onHeal', label:'On Nurse' /* SKFIN (2026-11-19, owner 11-18 23:55: "On Healed / On Heal -> On Nursed / On Nurse"): key unchanged */, desc:'every time this card heals something (including itself, e.g. via Regeneration)'},
+  {key:'onHealed', label:'On Nursed' /* SKFIN */, desc:'every time this card is healed, by any source'},
+  {key:'onAllyHealed', label:'On Ally Nursed' /* SKFIN: the same rename, so the three read alike */, desc:'every time a DIFFERENT card this player controls is healed'},
   // onDiscard (2026-09-26, "add a new set of basic abilities, triggers, and actions"): the
   // mirror of On Exile for the OTHER way a card leaves the hand without ever touching the
   // board — being pitched/discarded for its resource. Handled entirely client-side inside
@@ -1590,7 +1590,7 @@ const TRIGGER_FAMILIES = [
     {key:'onAllySpawn', sub:'Spawned'},
     {key:'onAllyReady', sub:'Ready'},
     {key:'onAllyDie', sub:'Died'},
-    {key:'onAllyHealed', sub:'Healed'},
+    {key:'onAllyHealed', sub:'Nursed'}, // SKFIN (2026-11-19)
   ]},
   {familyKey:'onEnemy', label:'On Enemy', desc:'something happens to a card the OPPONENT controls', subs:[
     {key:'onEnemyPlayed', sub:'Played'},
@@ -1686,7 +1686,7 @@ const ACTION_DEFS = [
   // NOT, since this isn't damage, it's direct removal).
   {key:'exile', label:'Exile', fields:['who','sub','targets'], whoOptions:['self','ally','enemy','kin','any'], desc:'Send a target to the Removal Zone instead of the graveyard. "Self" only works paired with On Death (redirects where this card\'s own death sends it); Ally/Enemy instantly removes a live target from the board right now.'},
   {key:'swapPositions', label:'Swap', fields:[], desc:'Swaps the board positions of two random live enemy creatures. No-op with fewer than 2. (The Scurry passive uses this same action under the hood.)'},
-  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent, a Kin unit or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Bleed counters are removed first (1 per heal), then any heal left over restores HP. Venom isn't touched (only Cure removes it). Fires On Heal/On Healed/On Ally Healed."}, // 2026-10-18: no longer Poison first
+  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent, a Kin unit or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Bleed counters are removed first (1 per heal), then any heal left over restores HP. Venom isn't touched (only Cure removes it). Fires On Nurse/On Nursed/On Ally Nursed."}, // 2026-10-18: no longer Poison first
   {key:'mindControl', label:'Mind Control', fields:['sub'], subOptions:['random','adjacent','furthest'], desc:"Takes a unit from the opposing field and puts it on this side, if there's a free slot."},
   {key:'stunPlayer', label:'Player Stun', fields:['count'], desc:"The enemy player skips their turn: they can't play cards until the next round."},
   {key:'cleanse', label:'Cleanse', fields:['amount','who','sub','targets'], desc:"Cleanse N: remove up to N harmful counters from the chosen target (this card by default): a curse on its cell first, then Venom, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
@@ -1928,7 +1928,7 @@ PASSIVE_DEFS.push({key:'shieldArmor', category:'passive', label:TX('ui.skn-shiel
   {key:'shellWhen', category:'passive', label:TX('ui.skn-shell-when'), kind:'select', desc:v=> v === 'afterAttack' ? TX('ui.shell-when-after') : TX('ui.shell-when-hit'), codexNote:TX('ui.sk-shell-when-desc'),
     selectOptions:()=> [{value:'firstHit', label:TX('ui.shell-when-hit')}, {value:'afterAttack', label:TX('ui.shell-when-after')}],
     get:e=> e.shellWhen ? (e.shellWhen === 'afterAttack' ? 'afterAttack' : 'firstHit') : undefined, apply:(e, v)=>{ if(v === 'afterAttack') e.shellWhen = 'afterAttack'; else delete e.shellWhen; }});
-Object.assign(SKILL_ICON, {shieldArmor:'🛡️', shellWhen:'🐚'});
+Object.assign(SKILL_ICON, {shieldArmor:'🛡️🛡️' /* SKFIN (2026-11-19, owner 11-18 23:55: "Shield: Armor -> Armoured Shield instead. It's just 2 shield icons stacked close together."): drawn as one .ico-stack badge (iconHTML) */, shellWhen:'🐚'});
 ACTION_DEFS.push({key:'arrow', label:TX('ui.act-arrow'), fields:['amount'], desc:TX('ui.act-arrow-desc')});
 ACTION_DEFS.push({key:'revive', label:TX('ui.eng9-revive-name'), fields:['count'], desc:TX('ui.eng9-act-revive-desc')}); // ENG9 (2026-10-26, owner #20): Revive, the graveyard action
 Object.assign(SKILL_ICON, {archer:'🏹'});
@@ -2126,7 +2126,7 @@ function e22Head(k, v, e){
   if(k === 'encore') return TX('ui.eng27-encore-head', {x: eng27EncoreWhen(v)}); // ENG27
   if(k === 'brambleArmor') return TX('ui.eng24-barmor-head', {n: eng24BarmorN(v)}); // ENG24 (ENG22-2 b): Fortify { Armor 1 }, while it lives
   if(k === 'meld') return TX('ui.eng24-meld-head', {x: grantText(v && typeof v === 'object' ? v : {}) || TX('ui.cx-nothing')}); // ENG24: Meld { Quick }
-  if(k === 'delivery') return TX('ui.e22-delivery-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
+  if(k === 'delivery') return TX('ui.e22-delivery-head', {res: e22ResName(e22ResOf(e)), n: numOr(Array.isArray(v) ? v[1] : v, 1)}); // SKFIN (2026-11-19): its row's value is [resource, N]
   if(k === 'deliveryEvery') return TX('ui.e22-delivery-every-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
   if(k === 'tribeDelivery') return TX('ui.eng25-tribe-delivery-head', {tribe: eng25TribeOf(v), res: e22ResName(e22ResOf({deliveryRes: e && e.tribeDeliveryRes}))}); // ENG25 (2026-11-05): Bee Delivery { Lumber }
   return null; }
@@ -2145,9 +2145,13 @@ PASSIVE_DEFS.push(
   {key:'grantSkill', category:'passive', label:TX('ui.eng27-grant-name'), kind:'text', placeholder:'quick, 2', desc:v=> TX('ui.eng27-grant', {x: grantText((eng27GrantOf(v) || {}).skills || {}) || TX('ui.cx-nothing'), n: eng27GrantN(eng27GrantOf(v))}),
     get:e=> e.grantSkill ? grantToText(e.grantSkill.skills || {}) + ', ' + eng27GrantN(e.grantSkill) : undefined, apply:(e, v)=>{ const g = eng27GrantOf(v); if(g) e.grantSkill = g; }},
   {key:'hype', category:'passive', label:TX('ui.eng27-hype-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng27-hype', {n: numOr(v, 1)})},
-  {key:'delivery', category:'passive', label:TX('ui.e22-delivery-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
+  // SKFIN (2026-11-19, owner 11-18 23:55: "What is the difference between Delivery and Delivery Resource -> Fuse them. Delivery is sufficient. The
+  // {Resource} is a parameter."): one Delivery row, its resource picked beside its number (saved as before: delivery N + deliveryRes unless Lumber)
+  {key:'delivery', category:'passive', label:TX('ui.e22-delivery-name'), kind:'selectNumber', numberWhen:E22_RES, numberTitle:'Delivery N: how many', selectOptions:()=> E22_RES.map(r=> ({value:r, label:e22ResName(r)})),
+    desc:(v, n, e)=> TX('ui.e22-delivery', Array.isArray(v) ? {n: numOr(v[1], 1), res: e22ResName(e22ResOf({deliveryRes: v[0]}))} : {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex'),
+    get:e=> e.delivery ? [e22ResOf(e), numOr(e.delivery, 1)] : undefined, apply:(e, vals)=>{ const r = e22ResOf({deliveryRes: Array.isArray(vals) ? vals[0] : 'lumber'}), n = Math.round(Number(Array.isArray(vals) ? vals[1] : vals)) || 0; if(n > 0){ e.delivery = n; if(r !== 'lumber') e.deliveryRes = r; } }},
   {key:'deliveryEvery', category:'passive', label:TX('ui.e22-delivery-every-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery-every', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
-  {key:'deliveryRes', category:'passive', label:TX('ui.e22-delivery-res-name'), kind:'select', selectOptions:()=> E22_RES.map(r=> ({value:r, label:e22ResName(r)})), desc:v=> e22ResName(e22ResOf({deliveryRes:v}))});
+  {key:'deliveryRes', category:'passive', hidden:true /* SKFIN: on the Delivery row */, label:TX('ui.e22-delivery-res-name'), kind:'select', selectOptions:()=> E22_RES.map(r=> ({value:r, label:e22ResName(r)})), desc:v=> e22ResName(e22ResOf({deliveryRes:v}))});
 // ENG27: Encore's braces are Bloom's conditions (parseBloomCopyText); none = Kill. Grant's braces: skills and a trailing number N (default 2).
 function eng27EncoreWhen(v){ const bc = v && typeof v === 'object' ? v : parseBloomCopyText(v); return bc && bc.when && bc.when.length ? bloomCopyToText(bc) : 'Kill'; }
 function eng27GrantN(g){ return Math.max(1, Math.round(Number(g && g.n) || 2)); }
@@ -3821,6 +3825,7 @@ function describeEffects(def, liveCard, opt){
     if(EN6_BRAMBLE_APP[p.key] && e[EN6_BRAMBLE_APP[p.key].base]) return; // EN6: read on the shot's own line ("Arrow 2 – bramble")
     if(EN7_TIP_APP[p.key] && e[EN7_TIP_APP[p.key].base]) return; // EN7: read on the shot's own line ("Arrow 2 – poison")
     if((p.key === 'shieldArmor' && e.shield) || (p.key === 'shellWhen' && e.shell)) return; // ENG37 (2026-11-08): read on the Shield / Shell line
+    if(p.key === 'shield' && Number(e.shieldArmor) > 0){ lines.push(`${ic('shieldArmor')}${escapeHtml(TX('ui.skn-shield-armor'))}${valSuffix(v)} — ${skillText(p, v, e)}`); return; } // SKFIN (2026-11-19): a Shield with Armor reads as Armoured Shield N
     if(p.key==='season'){ lines.push(`${ic('season')}${escapeHtml(TX('ui.skn-season'))} (${EN6_SEASON_ICO[en6SeasonOfApp(e)]} ${escapeHtml(en6SeasonName(en6SeasonOfApp(e)))}) — ${skillText(p, v, e)}`); return; } // EN6
     { const bk = Object.keys(EN6_BRAMBLE_APP).find(k=> EN6_BRAMBLE_APP[k].base === p.key), tips = en7TipsOn(e, p.key); // EN6 (2026-10-24, owner 03:17 #2); + EN7's – poison / – bleed
       if((bk && e[bk]) || tips.length){ const br = !!(bk && e[bk]);
@@ -10325,6 +10330,7 @@ function abilityBadges(d, bopts){
   // 2026-10-31 (package UI11, FF1; owner 18:09, correcting Z6 / UI8): on a board card the Shield is this skill chip on the south edge: the 💠 and the number of Shield left
   // (vis3ShieldHTML), shown only while some is left; at 1 the number fades and the icon alone means 1; at 0 the chip is gone. No badge on the east side any more.
   if(bopts && bopts.live){ const sa = Number(bopts.live.shieldAmt) || 0; if(sa > 0) out.push(vis3ShieldHTML(null, sa)); }
+  else if(e.shield && Number(e.shieldArmor) > 0) out.push(`<span class="ab-unit-shield" title="${escapeAttr(TX('ui.skn-shield-armor') + ' ' + numOr(e.shield, 1) + ': ' + TX('ui.sk-shield-armor', {n: numOr(e.shield, 1), m: Number(e.shieldArmor)}))}">${iconHTML('shieldArmor', SKILL_ICON.shieldArmor)}${n1(numOr(e.shield, 1))}</span>`); // SKFIN (2026-11-19): Armoured Shield, the two stacked shields
   else if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
   // 2026-11-06 (package UI23 #33): the Delivery skills (Delivery, Delivery every turn, Tribe Delivery) are a context pip too: 📦 and the amount
   ['delivery', 'deliveryEvery', 'tribeDelivery'].forEach(k=>{ if(!e[k]) return; const t = e22Head(k, e[k], e) || k, n = k === 'tribeDelivery' ? '' : n1(numOr(e[k], 1));

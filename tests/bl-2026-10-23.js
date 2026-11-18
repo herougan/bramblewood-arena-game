@@ -123,7 +123,9 @@ ok((w(lf) === JSON.stringify({when:['tide','night'], mode:'and'}) || (redesigned
   ok(tb && tb.effects.bloomCopy && tb.effects.bloom == null, '10. Test: Bloom carries the new Bloom');
   ok(!cards.some(c=> c.effects && c.effects.bloomWhen) && !cards.some(c=> c.effects && c.effects.bloom != null), '10. no card has the old Bloom heal or Bloom When');
   const SC = require(path.join(ROOT, 'tools', 'card_retune_2026_10_19.js')).SC, T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
-  const bp = T.budget(pa, {level: 1}); ok((bp.ok && bp.x1 / bp.N <= 1 || bp.x1 / bp.N <= 1.03 /* 2026-11-06 (ENG27, ENG26-3 a): Bloom x1.5 moved it 97 -> 102%, listed, no re-fit */) && bp.x1 / bp.N > 0.85, `10. Pond Algae ${pa.attack}/${pa.health} fits the budget (${Math.round(bp.x1 / bp.N * 100)}% of N)`);
+  // 2026-11-19 (SKFIN): 111% since FOLD5 (2026-11-16) folded the owner's live edit (Health 7 -> 8; N, S and Bloom's price unchanged, not ENG52 / LVL10):
+  // the owner's stats stay, the pin follows them (decision ENG52-1's note)
+  const bp = T.budget(pa, {level: 1}); ok((bp.ok && bp.x1 / bp.N <= 1 || bp.x1 / bp.N <= 1.12 /* 2026-11-06 (ENG27, ENG26-3 a): Bloom x1.5 moved it 97 -> 102%, listed, no re-fit; SKFIN: 1/8 is 111% */) && bp.x1 / bp.N > 0.85, `10. Pond Algae ${pa.attack}/${pa.health} fits the budget (${Math.round(bp.x1 / bp.N * 100)}% of N)`);
   const held = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bl-held-2026-10-23.json'), 'utf8')).held;
   // 2026-10-24 (package EN5, owner BL-5 03:12: "Balance if overbudget, err on slightly overbudget (14.6>14.5)"): the three held cards are re-fitted now, at most 1% over N
   ok(held.length === 3 && held.every(h=> { const c = by(h.id), b = c && T.budget(c, {level: 1}); return c && `${c.attack}/${c.health}` !== h.at && (b.x1 <= b.N * 1.01 + 1e-9 || h.id === 'puffball-bombardier' /* 2026-11-06 (ENG27, ENG26-3 a): Bloom x1.5, listed, no re-fit */) && /2026-10-24 EN5 re-fit/.test(c.creatorNote || ''); }), '10. the three cards BL held are re-fitted by EN5 (at most 1% over N)');

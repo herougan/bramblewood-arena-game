@@ -2667,7 +2667,6 @@
  "On a kill": "Sur une victime",
  "On a skill": "Sur une compétence",
  "On Ally Die": "Quand un allié meurt",
- "On Ally Healed": "Quand un allié est soigné",
  "On Ally Played": "Quand un allié est joué",
  "On Ally Ready": "Quand un allié est prêt",
  "On Ally Spawn": "Quand un allié apparaît",
@@ -5023,5 +5022,9 @@
  "The real name is spitfire grub. A cluster on a gum leaf rears up together and spits oil at whatever disturbs them.": "Son vrai nom est larve crache-feu. Un groupe sur une feuille d'eucalyptus se dresse ensemble et crache de l'huile sur ce qui le dérange.",
  "It spits venom at the eyes from two metres. If that fails, it falls over and plays dead. Both are on purpose.": "Il crache du venin aux yeux à deux mètres. Si cela échoue, il se renverse et fait le mort. Les deux sont voulus.",
  "It has just climbed out of its old shell and the new one is still wet paper. It hits as hard as ever and dies faster than it should.": "Il vient de sortir de sa vieille carapace et la nouvelle est encore du papier mouillé. Il frappe aussi fort que jamais et meurt plus vite que de raison.",
- "{v1} weakens {v2}: −{v3} Attack for good": "{v1} affaiblit {v2} : −{v3} Attaque pour de bon"
+ "{v1} weakens {v2}: −{v3} Attack for good": "{v1} affaiblit {v2} : −{v3} Attaque pour de bon",
+ "On Nurse": "En soignant",
+ "On Nursed": "Quand soignée",
+ "On Ally Nursed": "Quand un allié est soigné",
+ "Nursed": "Soigné"
 }
