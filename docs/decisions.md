@@ -1,8 +1,107 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-11-17). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-11-18). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
+
+**LVL10-1. 36% of cards grow in stats only (asked 25%)** · Decide · Balance · asked 2026-11-18
+- 166 of 463 in-play cards have no skill whose number can grow (vanilla or flag skills like Flying, Guardian) and only one skill, so they are style A (stats only). B, C and D are 21% each. Stats-first cards (A + B + C) are 79%.
+  - a) Keep: A is every card with nothing to grow
+  - b) You pick flag-only cards to gain a second skill at Level 5-7 (they become C or D)
+- **Default:** a
+
+**ROLE1-1. Card roles on the Maps 0-20 lists: take the proposed swaps?** · Decide · Balance · asked 2026-11-18
+- Every map has strong cards and Maps 0-5 have cute ones. Gaps: no healer/buffer on Maps 4, 9, 10, 12, 16, 17, 19, 20; no resource card on 6, 7, 19; no ranged card on 4-6, 8, 16, 17; one Leech (6) and one Pack (14) carrier since DATAFIX; peaks drop on 13, 16, 18. 21 proposals (19 list swaps, 2 skill tweaks), all in budget: docs/design/role1-2026-11-18.md.
+  - a) All
+  - b) Some (name the numbers)
+  - c) None
+- **Default:** c
+
+**REFIT6-1. Eight road fights too easy against the rebuilt Map reference decks** · Decide · Balance · asked 2026-11-18
+- REFIT6 rebuilt the Map 3, 9, 13-16 and 18-20 reference decks from owned cards; they are stronger (Thorn Shrike, Shoal Shark, Giant Cave Huntsman, Eagle-Owl Quartermaster). No legal deck brings these into band (seed 9100, 400 games): 18-7 78% (target 40), 18-4 97 (62), 18-A-4 100 (77), 18-A-7 95 (64), 18-A-6 91 (69), 3-6 90 (60), 9-7 65 (40), 13-8 65 (40). Shield or Health +10 moves them 3 points at most (docs/balance/refit6/whatif-2026-11-18.jsonl).
+  - a) A card-list look: stronger cards from these maps' lists for these fights (you pick)
+  - b) Rebuild the Map 3, 9 and 18 references no stronger than the old ones
+  - c) Leave them
+- **Default:** a
+
+**REFIT5-1. Eight road fights no legal deck brings into band** · Decide · Balance · asked 2026-11-18
+- After REFIT5 (seed 9100, 400 games): too hard 8-7 25% (target 60), 19-5 37 (60), 2-2 57 (80); too easy 7-6 73 (40), 7-A-2 92 (70), 10-A-5 67 (40), 20-A-4 58 (36), 20-9 70 (50). What-ifs (200 games, docs/balance/refit5/whatif-2026-11-18.jsonl): Health 10 puts 19-5 in band (42 to 58), Shield 10 puts 10-A-5 in band (69 to 42), Health 8 lifts 8-7 to 31 and 2-2 to 64. Shield or Health up to +10 moves 7-6, 7-A-2, 20-A-4 and 20-9 by 4 points at most.
+  - a) Health 10 on 19-5, Shield 10 on 10-A-5; the other six wait for a card-list look
+  - b) a) plus Health 8 on 8-7 and 2-2
+  - c) Leave them
+- **Default:** a
+
+**REFIT4-2. 5-3 Cypress Roots has no legal deck** · Decide · Balance · asked 2026-11-18
+- Its venomGlands boon needs 9 of its 17 cards to carry it. Since FOLD6 moved Constrictor Coil off Map 5, only Swamp Alligator on Map 5's list carries it, so every legal deck turns the boon off. The deck stays as it is (one deck problem).
+  - a) Add Constrictor Coil to Map 5's SPECIAL list
+  - b) Give 5-3 another boon
+  - c) Leave it
+- **Default:** a
+
+**CARDPOW2-1. Cards the budget misreads (not changed)** · Decide · Balance · asked 2026-11-18
+- Over budget but weak by power: Nutria Reedcutter (103%), Pond Algae (111%), Raccoon Nightcrew (111%). Under budget but strong: 16, e.g. Stonedrop Vulture, Magma Salamander, Ossuary Lammergeier, Talon Archer. Granite Ox Golem (55%, power -41) would need 3/17 to 6/22. List: docs/balance/cardpow2-2026-11-18.md.
+  - a) Leave them; look at the skill prices behind them
+  - b) Trim the three to budget anyway
+  - c) Also apply Granite Ox Golem 6/22
+- **Default:** a
+
+**NAV1-1. Home shortcuts for Nest, Inventory, Wildpaths?** · Decide · UI · asked 2026-11-18
+- After the page split, Nest, Inventory and Wildpaths are reached only from the Camp bar. Keep it that way, or also add their notes on the Home board?
+  - a) Camp bar only (default, now live after release)
+  - b) Also a note on Home
+- **Default:** a
+
+**NAV1-2. Make the Forge a separate page under the hood?** · Decide · UI · asked 2026-11-18
+- Players already see the Forge as its own Camp page. Under the hood it still draws inside the Codex view. Splitting it fully means rewriting about 15 tests and gives no visible change.
+  - a) Leave as is (default)
+  - b) Split it fully
+- **Default:** a
+
+**SKAUD1-1. Exhaust: keep or cut?** · Decide · Skills · asked 2026-11-18
+- Your note: Exhaust, Exploit and Expose are similar but give tactical depth together. Exhaust N (its hits give N tokens; each makes the target's next trigger or skill fizzle) is on no card. The audit cuts skills on no card that a kept skill covers; Exhaust has no close twin.
+  - a) Keep it for Maps 21+
+  - b) Cut it
+- **Default:** a
+
+**SKAUD1-2. Pickpocket steals items only: then it is Disarm** · Decide · Skills · asked 2026-11-18
+- Your note on Pickpocket: "I think this steals items only." Today it steals a token (or the bramble's lowest resource). Disarm takes the enemy's weapon on play and on hit. Glintsnatch Magpie has both; Field Mouse has Pickpocket.
+  - a) Pickpocket steals items only and takes Disarm's place (Disarm goes)
+  - b) Keep both as they are
+  - c) Pickpocket items only, Disarm stays too
+- **Default:** a
+
+**SKAUD1-3. Thanatosis and Undead overlap** · Decide · Skills · asked 2026-11-18
+- Both come back once at 1 Health: Thanatosis plays dead (no death, no On Death), Undead dies and returns as a token. You set both on 11-07. After REDESIGN3, Thanatosis is on no card; Undead is on 2 (Cinder Skeleton, Ember Revenant).
+  - a) Keep both
+  - b) Thanatosis folds into Undead
+  - c) Undead folds into Thanatosis
+- **Default:** a
+
+**DATAFIX-1. Dormouse and Hedgerow Shrew: your live edits are not on the cards** · Decide · Cards · asked 2026-11-18
+- Your edits are in the notes but not the data: Dormouse nocturnal 2 (11-13), Hedgerow Shrew health 7 and Injured 2 (11-05). Both read as the same 2/5 Foraging line, so I made the Shrew 2/4 and left the Dormouse. Restore either edit?
+  - a) Restore both, drop my 2/4
+  - b) Restore the Dormouse only
+  - c) Leave both as they are
+- **Default:** a
+
+**DATAFIX-2. Maps 0-1 rewards: plain, or the new lists?** · Decide · Rewards · asked 2026-11-18
+- The rewards rule wants 8 plain Map 0-1 rewards with one Lumber card. The lists now give 4 slots, none of them plain. I filled them from the Map 0 and 1 lists (Elder Willow, Thorn Shrike, Cricket Drummer, Hedgehog Scout).
+  - a) Keep the lists' cards, retire the plain rule
+  - b) Make the 4 plain: strip their skills
+  - c) Add plain cards to the Map 0-1 lists
+- **Default:** a
+
+**ENG50-1. The Vulnerable passive is Fragile** · Decide · Skills · asked 2026-11-18
+- You asked for Vulnerable (takes 2x) as a card passive. Fragile already is exactly that (takes 2x, frees budget through the caps), so ENG50 built no second skill. Vulnerable is now Rend's token (2x on the next hit). Rename Fragile to Vulnerable on cards?
+  - a) Keep the name Fragile.
+  - b) Show Fragile as Vulnerable.
+- **Default:** a
+
+**ENG50-2. Exploit: +1 a hit, or + the tokens?** · Decide · Skills · asked 2026-11-18
+- Your note: "Exploit N: Exploit tokens, extra damage by tokens, then remove 1." Today each hit on it deals +1 and uses one token. Did you mean + the number of tokens it has (3 tokens: +3, then +2, +1)? ENG50 kept +1 and named the tokens Exploit again (they read Vulnerable since ENG39).
+  - a) Keep +1 a hit.
+  - b) + the tokens it has, then remove 1.
+- **Default:** a
 
 **POWDER1-1. Sleeping Powder: can it keep one unit asleep?** · Decide · Engine · asked 2026-11-17
 - Sleeping Powder N puffs every round at Speed -1. Built so it skips a unit that is already asleep (as Ice Arrow skips a Frozen one): the unit facing it sleeps N rounds, then gets 1 round awake. Stacking like Sleep N (up to N+1 tokens) would keep that unit asleep every round while the powder unit lives.
@@ -791,9 +890,42 @@ _Generated from `decisions.json` (2026-11-17). The hub has a searchable, filtera
 
 ## Decided
 
+**OWN-1118-3. Cards to Level 10: a Level 10 form, growth stored as per-level bonuses, four growth styles** · Decide · Balance · asked 2026-11-18 · decided 2026-11-18
+- Owner 11-18 21:11: "After the skill budget calculations, define the lvl 10 form. Then fill out the stats from 1-10 (save it as stat differences) ... 25% - only stat increase, 25% - 10/90 budget split, 25% - 25/75 split, 25% - 50/50 split." 21:22: extra skills unlock at later levels. Built in LVL10.
+  - Level 10 form at the card's Level 1 fill; levelBonus deltas; styles A-D; skills past the core unlock at Level 2+
+
+**REFIT4-1. Maps 11 and 17: too hard with any legal deck** · Decide · Balance · asked 2026-11-18 · decided 2026-11-18
+- After the re-fit (seed 9100): 11-9 16% (target 60), 11-10 0 (40), 11-5 33 (75), 17-6 20 (65), 17-7 19 (60), 17-8 13 (40), 17-3 51 (80), 17-4 38 (75). Shield 0 with Health down to 8 still misses for 11-9, 11-10 and 17-6 to 17-8 (whatif-hp-2026-11-18.jsonl). Shield 0 alone puts 11-6 in band (51 to 65). The Map 11 and 17 reference decks lost strength in the fold (Brood, Charge, Thunderstorm).
+  - a) Rebuild the Map 10-12 and 17 reference decks to the folded cards, then re-fit
+  - b) Shield 0 on 11-6, 11-5, 14-4, 17-2 now; Health later
+  - c) Leave them
+- **Default:** a
+
+**OWN-1117-3. First pass overnight plan** · Decide · Roadmap · asked 2026-11-17 · decided 2026-11-17
+- Owner 11-17 23:41: edit the cards to fit each map's skillset (take out Injured; move Chipmunk Skirmisher away, it has Arrow; Map 1 gets 1 more Diurnal card); rebalance by power ratings, then assume balanced; build SK and WK; assign the skirmishes. Audit every skill, also outside Maps 0-20, and remove useless, duplicate or closely overlapping ones; audit VFX and SFX; remove heavy polling. Pages: Shop and Premium their own page; Camp the main page of Forge and the other subpages; Codex its own page.
+  - As stated
+
+**OWN-1118-1. Poison counters: one counter named Poison** · Decide · Skills · asked 2026-11-18 · decided 2026-11-18
+- Owner 11-18 20:26: Venomous gives poison counters; poison gas, eating poisonous animals and poison fields give poison too. You picked one counter named Poison, fed by everything including Venomous; the word Venom goes away. Venomous N keeps its name. Wording only (POISON2).
+  - One counter named Poison; Venom goes away
+
 **OWN-1117-2. Damage-taken and damage-dealt modifiers** · Decide · Skills · asked 2026-11-17 · decided 2026-11-17
 - Owner 11-17 23:14: Rend N gives the opposing unit Vulnerable N (on hit: double damage taken, remove 1 token). Exploit N: Exploit tokens, extra damage by tokens, then remove 1. Weaken N: linear. Enfeeble N: halving. Expose: as is. Rend and Enfeeble not featured (2x / 0.5x too strong). Sturdy and Mighty only as card passives (granting them via Grant {}). Feeble and Vulnerable also as passives (drawbacks that free budget). All need action forms too, e.g. Weaken 1 on Ally Spawn.
   - As stated
+
+**REDESIGN3-2. REDESIGN3 v2: three small calls** · Decide · Skills · asked 2026-11-17 · decided 2026-11-18
+- docs/design/redesign3-2026-11-17.xlsx (v2): 1) Map 16's New! focus is Reach (Taiga Lynx, Upside-Down Bat; Cormorant drops Reach), or leave Sturdy alone? 2) Armourer on Anvilwhisker Otter: keep it as the 19-6 boss reward or put it on the Basalt Foundry list (not both)? 3) Fields sheet proposals: Dusk Start Map 4, Fog Map 5, Rain Map 7, Awash on Map 10, Thunderstorm moved from Map 10 to Map 11.
+  - a) All as proposed (Reach; Basalt Foundry list; all fields).
+  - b) As ticked in the workbook.
+  - c) Sturdy alone on Map 16; the rest as proposed.
+- **Default:** a
+
+**REDESIGN3-1. Maps 0-20 cards on your 11-17 proposal** · Decide · Skills · asked 2026-11-17 · decided 2026-11-17
+- docs/design/redesign3-2026-11-17.xlsx: 134 of 210 cards change (17 move map), all within budget; every focus skill is New! on its map. Enfeeble and Rend are out (OWN-1117-2): Map 14 gets Exploit, Map 16 Helmet. Six short questions on its Summary sheet.
+  - a) Fold it as ticked in the workbook.
+  - b) Fold all of it.
+  - c) Hold: I will redesign from it first.
+- **Default:** c
 
 **OWN-1117-1. Bolts and powders on Maps 0-20** · Decide · Skills · asked 2026-11-17 · decided 2026-11-17
 - Owner 11-17 17:32: "Bolts - only fire bolt in Map 20. The rest of the bolts e.g. Archer Fish's Water Bolt is in Map 21+. Status Powder: Start with Sleeping Powder and Poison Powder for now. Powders would be Speed -1 actions." Built as BOLT2 (bolt cards off Maps 0-19) and POWDER1 (the powder family).
