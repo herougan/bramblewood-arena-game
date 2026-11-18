@@ -16,7 +16,7 @@ const cmd = process.argv[2] || 'budget';
 
 // the curve the game uses (arena_app.js forgeCurveOf: from the card's start level to 11, or its own top)
 const topOf = d=> d.id === 'hero' ? 100 : (d.isCastle || (d.archetypes || []).includes('Castle')) ? 20 : 11;
-const curveOf = d=> BB.forgeCurve(Object.assign({}, d, {obtainMap: T.obtainMapOf(d)}), SC.levelOf(d), topOf(d)); // + Base's map term (BF2, 15:25)
+const curveOf = d=> BB.forgeCurve(Object.assign({}, d, {obtainMap: T.obtainMapOf(d), levelBonus: undefined /* LVL10 (2026-11-18): the fallback curve, the road's pace */}), SC.levelOf(d), topOf(d)); // + Base's map term (BF2, 15:25)
 
 function budgetRows(){
   return CARDS.filter(SC.measured).map(c=>{

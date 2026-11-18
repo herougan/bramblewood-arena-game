@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-18 (package LVL10, owner 21:11 / 21:22: cards to Level 10, staggered skills)
+- Players see: each card grows by its own table from Level 2 to 10 (`levelBonus`). Growth styles over in-play cards: A stats only 166, B ~10% skill 99, C ~25% 99, D ~50% 99. 89 in-play cards now unlock their second or third skill at a later level (Levels 2-5 mostly, 6 at Level 7+; out-of-play and owner-edited cards untouched); their Level 1 stats re-fit for the skill that left (e.g. Monarch Wingblade 3/3 -> 3/5, Poison from Level 5). Mean stat points against the old curve: +0.5 at Levels 2-3, -0.7 at Level 10 (skill growth instead).
+- Card editor: "Growth by level" table (+Attack, +Health, a skill's number per level, running totals, budget use per level, the style); saves `levelBonus` like every edit.
+- Under the hood: `bramblewood-budget.js` `levelBonusAt` / `levelEffectsAt`, `forgeCurve` reads `levelBonus` (Level 11 adds the old step; tokens never read it); `tools/skill_costs.js` `formAt` / `budgetAt`; builders lay `levelBonus` skills through `effectsAtLevel`. Road and enemy levels unchanged (`FORGE_MEAN_GAIN` kept: the fallback curve's). Report `docs/balance/lvl10-2026-11-18.json`; test `tests/lvl10-2026-11-18.js`; the harness takes `{id, level}` (three hand scenarios field the moved skill at its level); pins: tut3, forge-curve.
+
 ## 2026-11-18 (package MAPFIT0, owner 20:58: the map view scrolls without end)
 - Players see: a single map no longer scrolls. The tap spots on its trees, bushes, crystals and water were re-placed on every scroll, offset by the scroll, so the spots near the bottom pushed the map's scroll area down 25-73 px each time (endless). The spot layer now clips its spots; measured at 1288x634, 1710x859 and 2560x1440: no scroll, before and after scrolling 8 times.
 - Under the hood: `.map-fx-layer` `overflow:hidden` (arena_template.html); `tests/mapfx1-2026-10-31.js` pin widened.

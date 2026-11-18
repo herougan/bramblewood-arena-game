@@ -12048,19 +12048,21 @@ function lvl10SkillOpts(c){ const P = (typeof BramblewoodBudget !== 'undefined' 
 const lvl10Num = v=> v && typeof v === 'object' ? v.v : (v === true ? 1 : v);
 function levelStatsEditorHTML(c){
   const {from} = cardLevelRange(c), to = Math.min(10, cardMaxLevel(c)), ls = c.levelStats || {}, lb = c.levelBonus || {}, opts = lvl10SkillOpts(c), rows = [];
+  const P = (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.PARAMS) || [], arrive = L=> Object.keys((c.levelSkills || {})[L] || {}).filter(k=> !P.includes(k)).map(k=> ` <small class="lvb-new">+${escapeHtml((skillDefOf(k) || {}).label || k)}</small>`).join(''); // a skill that arrives here (set in the skill rows above)
   if(from > 0){ const cur = curveStatsAtLevel(Object.assign({}, c, {levelStats: undefined}), 0), ov = ls[0] || ls['0'] || {};
     rows.push(`<tr data-lv0="1" class="is-hatch"><th>Lv 0</th><td colspan="2"><input type="number" min="0" class="lvs-atk" aria-label="Attack at level 0" placeholder="${cur.attack}" value="${ov.attack != null ? ov.attack : ''}"> <input type="number" min="1" class="lvs-hp" aria-label="Health at level 0" placeholder="${cur.health}" value="${ov.health != null ? ov.health : ''}"></td><td></td><td></td><td></td></tr>`); }
   for(let L = from + 1; L <= to; L++){ const o = lb[L] || lb[String(L)] || {}, sk = Object.keys(o.skills || {})[0] || '', sv = sk ? lvl10Num(o.skills[sk]) : '';
     rows.push(`<tr data-lv="${L}"><th>Lv ${L}</th>
       <td><input type="number" min="0" class="lvb-atk" aria-label="+Attack at level ${L}" value="${o.attack || ''}" placeholder="0"></td>
       <td><input type="number" min="0" class="lvb-hp" aria-label="+Health at level ${L}" value="${o.health || ''}" placeholder="0"></td>
-      <td class="lvb-sk"><select class="lvb-key" aria-label="${escapeAttr(TX('ui.lvl10-skill'))} ${L}"><option value=""></option>${opts.map(k=> `<option value="${escapeAttr(k)}"${k === sk ? ' selected' : ''}>${escapeHtml((skillDefOf(k) || {}).label || k)}</option>`).join('')}</select><input type="number" min="1" class="lvb-n" aria-label="${escapeAttr(TX('ui.lvl10-skill'))} ${L} N" value="${sv}"></td>
-      <td class="lvb-tot"></td><td class="lvb-fill"></td></tr>`); }
+
+      <td class="lvb-tot"></td><td class="lvb-fill"></td>
+      <td class="lvb-sk"><select class="lvb-key" aria-label="${escapeAttr(TX('ui.lvl10-skill'))} ${L}"><option value=""></option>${opts.map(k=> `<option value="${escapeAttr(k)}"${k === sk ? ' selected' : ''}>${escapeHtml((skillDefOf(k) || {}).label || k)}</option>`).join('')}</select><input type="number" min="1" class="lvb-n" aria-label="${escapeAttr(TX('ui.lvl10-skill'))} ${L} N" value="${sv}">${arrive(L)}</td></tr>`); }
   return `<details class="lvs-box" ${Object.keys(lb).length ? 'open' : ''}><summary>${TX('ui.lvl10-title')} <small class="lvb-style"></small></summary>
     <p class="lvs-help">${TX('ui.lvl10-help')}</p>
     <div class="lvs-tools"><button type="button" class="btn small ghost" id="lvsClear">${TX('ui.lvl10-clear')}</button></div>
-    <div class="lvs-scroll"><table class="lvs-table"><thead><tr><th>Lv</th><th>+⚔</th><th>+❤</th><th>${TX('ui.lvl10-skill')}</th><th>${TX('ui.lvl10-total')}</th><th>${TX('ui.lvl10-budget')}</th></tr></thead><tbody>
-      ${rows.filter(r=> r.includes('is-hatch')).join('')}<tr class="is-base"><th>Lv ${from}</th><td>${c.attack}</td><td>${c.health}</td><td></td><td class="lvb-tot">${c.attack}/${c.health}</td><td class="lvb-fill"></td></tr>${rows.filter(r=> !r.includes('is-hatch')).join('')}</tbody></table></div></details>`;
+    <div class="lvs-scroll"><table class="lvs-table"><thead><tr><th>Lv</th><th>+⚔</th><th>+❤</th><th>${TX('ui.lvl10-total')}</th><th>${TX('ui.lvl10-budget')}</th><th>${TX('ui.lvl10-skill')}</th></tr></thead><tbody>
+      ${rows.filter(r=> r.includes('is-hatch')).join('')}<tr class="is-base"><th>Lv ${from}</th><td>${c.attack}</td><td>${c.health}</td><td class="lvb-tot">${c.attack}/${c.health}</td><td class="lvb-fill"></td><td></td></tr>${rows.filter(r=> !r.includes('is-hatch')).join('')}</tbody></table></div></details>`;
 }
 // {levelStats (the Level 0 row only), levelBonus} from the table; null when the table is not on the page
 function readLevelStatsEditor(){
@@ -15874,6 +15876,7 @@ function effectsAtLevel(b, L, fx0){
   if((Number(L) || 0) < 1) ['hatchling', 'regen'].forEach(k=>{ delete fx[k]; }); // ENG25_LEVEL1_SKILLS
   if(b && b.levelBonus && typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.levelBonusAt){ const lb = BramblewoodBudget.levelBonusAt(b, L, typeof cardBaseLevel === 'function' ? cardBaseLevel(b) : 1); if(lb) Object.assign(fx, typeof eng35Expand === 'function' ? eng35Expand(lb.skills) : lb.skills); } // 2026-11-18 (LVL10): a levelBonus skill's higher number from its level on (bramblewood-budget.js levelEffectsAt is the tools' copy)
   return fx; }
+// 2026-11-18 (LVL10): forgeCurveOf's rows follow the card's levelBonus (canonical/cards.json) up to Level 10; levelStats (a hand override) still wins.
 function statsAtLevel(d, L){
   if((L|0) < cardBaseLevel(d)){ const ov0 = d.levelStats && (d.levelStats[0] || d.levelStats['0']); const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85));
     return {attack: ov0 && ov0.attack != null ? ov0.attack : r(d.attack), health: ov0 && ov0.health != null ? ov0.health : r(d.health)}; } // a hatchling (Level 0); the editor can set it

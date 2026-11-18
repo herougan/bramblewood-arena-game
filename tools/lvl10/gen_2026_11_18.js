@@ -4,7 +4,7 @@
 //   levelBonus {"L": {attack, health, skills}}: stats at Level L = base-level stats + the deltas of levels k <= L; skills = new values (absolute,
 //   the stored form). levelSkills {"L": {key: value}}: a skill that arrives at L (bramblewood-budget.js levelBonusAt / levelEffectsAt read both).
 // Per card (creatures with stats that level to 10; not tokens, castles, equipment, spells, Materia, hazards, world bosses, eggs):
-//   1. Skill unlocks (base Level 1 cards, two or more priced non-light skills, no levelSkills yet, not owner-edited): the core skill stays (the
+//   1. Skill unlocks (in-play base Level 1 cards, two or more priced non-light skills, no levelSkills yet, not owner-edited): the core skill stays (the
 //      one the card's name names, else the priciest); the others leave Level 1 and arrive later, cheapest first, each at the first free
 //      level from 2 whose growth covers it. The Level 1 stats re-fit to the full card's fill (inside 85-100%) for the skills that left.
 //   2. Level 10 form: x1 = fill x N(10), fill = the full card's Level 1 fill held inside 85-100%. Growth G = that - x1(Level 1).
@@ -44,6 +44,8 @@ function eligible(d){
 const at = (d, L, lb)=> T.budgetAt(Object.assign({}, d, {levelBonus: lb}), L, baseLevel(d));
 const fillOf = (d, L, lb)=>{ const b = at(d, L, lb); return {x1: b.x1, x2: b.x2, N: b.N, N2: b.N2, fill: b.N > 0 ? b.x1 / b.N : 0}; };
 
+const l1Skills = d=> Object.assign({}, d.effects || {}, ...Object.keys(d.levelSkills || {}).filter(k=> +k <= 1).map(k=> d.levelSkills[k] || {}));
+const withSkills = (lb, skills)=>{ const o = clone(lb || {}); if(Object.keys(skills).length) o[TOP] = Object.assign({}, o[TOP] || {}, {skills: Object.assign({}, (o[TOP] || {}).skills || {}, skills)}); return o; };
 // a skill value one step up, or null: a whole number >= 1, {v: whole number >= 1}, or true on a skill priced by its number
 function bumped(k, v){
   if(k === 'triggers' || (BB.PARAMS || []).includes(k)) return null;
@@ -81,12 +83,13 @@ function analyse(d0){
   const old = BB.forgeCurve(Object.assign({}, d, {obtainMap: T.obtainMapOf(d)}), base, 11).rows;
   if(base === 0 && old[1]){ const da = (old[1].attack || 0) - d.attack, dh = (old[1].health || 0) - d.health; if(da || dh) lb[1] = Object.assign({}, da ? {attack: da} : {}, dh ? {health: dh} : {}); }
   const b1full = at(d, 1, lb), fill1 = b1full.N > 0 ? b1full.x1 / b1full.N : 1, fill = Math.min(FILL_HI, Math.max(FILL_LO, fill1));
-  const owner = isOwner(d), st = base === 1 && !d.levelSkills && !owner ? stagger(d, fill) : null, card = st ? st.card : d;
+  const owner = isOwner(d), st = base === 1 && !d.levelSkills && !owner && !d.unattainable && !d.awaitingSource ? stagger(d, fill) : null, card = st ? st.card : d;
   const b1 = at(card, 1, lb), Ns = {}; for(let L = 1; L <= TOP; L++) Ns[L] = at(card, L, lb).N;
   const G = L=> fill * Ns[L] - b1.x1, G10 = G(TOP);
-  const f10 = T.formAt(Object.assign({}, card, {levelBonus: lb}), TOP, base), x10 = at(card, TOP, lb).x1, cands = [];
-  Object.keys(card.effects || {}).forEach(k=>{ const nv = bumped(k, card.effects[k]); if(nv == null) return;
-    const step = at(Object.assign({}, card, {effects: Object.assign({}, card.effects, {[k]: nv})}), TOP, lb).x1 - x10;
+  // the skills it has at Level 1 (stored form: effects and levelSkills up to 1); a step is priced as a levelBonus skill at Level 10
+  const l1fx = l1Skills(card), x10 = at(card, TOP, lb).x1, cands = [];
+  Object.keys(l1fx).forEach(k=>{ const nv = bumped(k, l1fx[k]); if(nv == null) return;
+    const step = at(card, TOP, withSkills(lb, {[k]: nv})).x1 - x10;
     if(step >= MIN_STEP){ const part = (b1.parts || []).filter(p=> p[1] === k).reduce((t, p)=> t + (+p[2] || 0), 0); cands.push({k, step: r2(step), part}); } });
   cands.sort((a, b)=> b.part - a.part || a.step - b.step || (a.k < b.k ? -1 : 1));
   // unlock levels: cheapest first, each at the first free level from 2 whose growth covers the unlocks so far
@@ -94,8 +97,7 @@ function analyse(d0){
   (st ? st.moves : []).forEach(u=>{ cum += u.price; let L = last + 1; while(L < TOP && G(L) + 1e-9 < cum) L++; L = Math.min(TOP, L); unlocks.push({k: u.k, keys: u.keys, price: u.price, L}); last = L; });
   const oldPts = {}; let acc = 0; for(let L = 2; L <= TOP; L++){ acc += (old[L] && old[L].points) || 0; oldPts[L] = acc; }
   const score = b1full.x1 > 0 ? (b1full.f || 1) * b1full.S / b1full.x1 : 0, u = G10 > 0 ? cum / G10 : 0;
-  void f10;
-  return {d, card, base, lb, old, b1, fill1, fill, Ns, G10, cands, score, oldPts, owner, stagger: st, unlocks, unlockShare: r2(u)};
+  return {d, card, base, lb, l1fx, old, b1, fill1, fill, Ns, G10, cands, score, oldPts, owner, stagger: st, unlocks, unlockShare: r2(u)};
 }
 
 function realize(a, style){
@@ -107,12 +109,12 @@ function realize(a, style){
   // skill steps, priced at Level 10 one after another
   const bumps = []; let spent = 0;
   if(K > 0 && a.cands.length){
-    const fx = Object.assign({}, card.effects); const used = [];
-    const stepOf = k=>{ const nv = bumped(k, fx[k]); if(nv == null) return null; const p0 = at(Object.assign({}, card, {effects: fx}), TOP, lb).x1;
-      return {nv, step: at(Object.assign({}, card, {effects: Object.assign({}, fx, {[k]: nv})}), TOP, lb).x1 - p0}; };
+    const fx = Object.assign({}, a.l1fx), up = {}, used = [];
+    const stepOf = k=>{ const nv = bumped(k, fx[k]); if(nv == null) return null; const p0 = at(card, TOP, withSkills(lb, up)).x1;
+      return {nv, step: at(card, TOP, withSkills(lb, Object.assign({}, up, {[k]: nv}))).x1 - p0}; };
     for(let guard = 0; guard < 12; guard++){ let took = false;
       for(const c of a.cands){ if(used.length >= 2 && !used.includes(c.k)) continue; const st = stepOf(c.k); if(!st || st.step < MIN_STEP) continue;
-        if(spent + st.step <= K + 0.5 * st.step){ fx[c.k] = st.nv; spent += st.step; bumps.push({k: c.k, v: st.nv, step: st.step}); if(!used.includes(c.k)) used.push(c.k); took = true; break; } }
+        if(spent + st.step <= K + 0.5 * st.step){ fx[c.k] = up[c.k] = st.nv; spent += st.step; bumps.push({k: c.k, v: st.nv, step: st.step}); if(!used.includes(c.k)) used.push(c.k); took = true; break; } }
       if(!took) break; }
     if(!bumps.length && !a.unlocks.length){ const c = a.cands.slice().sort((x, y)=> x.step - y.step)[0], st = stepOf(c.k); // one step even past the share, up to 60% of the growth
       if(st && st.step <= 0.6 * G10){ spent = st.step; bumps.push({k: c.k, v: st.nv, step: st.step}); } }
@@ -129,9 +131,10 @@ function realize(a, style){
     const sp = split(pp, f1.attack, f1.health, aw, A, P); A += sp.da; P = want;
     const o = lb[L] || {}; if(sp.da) o.attack = (o.attack || 0) + sp.da; if(sp.dh) o.health = (o.health || 0) + sp.dh; lb[L] = o; }
   // both caps on every level (never worse than the card's Level 1 use): a step that breaks one moves a level later, at Level 10 it goes
-  const f1b = fillOf(card, 1, lb), cap1 = r=> Math.max(r.N, r.N * f1b.fill), cap2 = r=> Math.max(r.N2, r.N2 * (f1b.N2 > 0 ? f1b.x2 / f1b.N2 : 0));
+  const f1b = fillOf(card, 1, lb), bare = {}; for(let L = 2; L <= TOP; L++) bare[L] = fillOf(card, L, {}).x1; // an older levelSkills arrival alone past N sets its own cap
+  const cap1 = r=> Math.max(r.N, r.N * f1b.fill, bare[r.L] || 0), cap2 = r=> Math.max(r.N2, r.N2 * (f1b.N2 > 0 ? f1b.x2 / f1b.N2 : 0));
   for(let guard = 0; guard < 120; guard++){
-    let bad = null; for(let L = 2; L <= TOP; L++){ const r = fillOf(card, L, lb); if(r.x1 > cap1(r) + 1e-9 || r.x2 > cap2(r) + 1e-9){ bad = L; break; } }
+    let bad = null; for(let L = 2; L <= TOP; L++){ const r = Object.assign(fillOf(card, L, lb), {L}); if(r.x1 > cap1(r) + 1e-9 || r.x2 > cap2(r) + 1e-9){ bad = L; break; } }
     if(bad == null) break; const o = lb[bad] = lb[bad] || {};
     const move = key=>{ o[key]--; if(!o[key]) delete o[key]; if(bad < TOP){ const nx = lb[bad + 1] = lb[bad + 1] || {}; nx[key] = (nx[key] || 0) + 1; } };
     const lsAt = card.levelSkills && card.levelSkills[bad], ul = a.unlocks.find(u=> u.L === bad);

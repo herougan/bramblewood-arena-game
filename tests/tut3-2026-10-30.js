@@ -53,8 +53,8 @@ lsCards.forEach(c=>{ const b = base[c.id], keys = lvSkillKeys(c);
 // 2026-11-05 (ENG25, owner #3): every Level 0 copy goes through effectsAtLevel now (Hatchling / Regeneration are Level 1+), not only a levelSkills one
 ok(/hatchling: true\}\); out\[id\]\.effects = effectsAtLevel\(base, 0\)/.test(app), '1. getCardDefs: the Nest\'s Level 0 (hatchling) def goes through effectsAtLevel');
 ok(/if\(lvl === b\)\{[^\n]*if\(lvl < 1\) out\[id\] = Object\.assign\(\{\}, out\[id\] \|\| base, \{effects: effectsAtLevel\(base, lvl\)\}\)/.test(app), '1. getCardDefs: a card at its own Level 0 goes through effectsAtLevel');
-ok(/if\(base\.levelSkills\) out\[id\]\.effects = effectsAtLevel\(base, lvl\)/.test(app), '1. getCardDefs: a raised copy goes through effectsAtLevel');
-ok(/if\(\(b\.levelSkills \|\| L < 1\) && typeof effectsAtLevel === 'function'\) o\.effects = effectsAtLevel\(b, L, b\.levelSkills \? null : o\.effects\)/.test(fnSrc('copyDefAt')) /* ENG25 */, '1. copyDefAt goes through effectsAtLevel');
+ok(/if\(base\.levelSkills \|\| base\.levelBonus\) out\[id\]\.effects = effectsAtLevel\(base, lvl\)/.test(app) /* 2026-11-18 (LVL10): + a levelBonus skill */, '1. getCardDefs: a raised copy goes through effectsAtLevel');
+ok(/if\(\(b\.levelSkills \|\| b\.levelBonus \|\| L < 1\) && typeof effectsAtLevel === 'function'\) o\.effects = effectsAtLevel\(b, L, b\.levelSkills \? null : o\.effects\)/.test(fnSrc('copyDefAt')) /* ENG25; LVL10 (2026-11-18): + levelBonus */, '1. copyDefAt goes through effectsAtLevel');
 ok(!/Object\.assign\(fx, (b|b0|base)\.levelSkills\[/.test(app.replace(fnSrc('effectsAtLevel'), '')), '1. no builder lays levelSkills on b.effects by itself any more');
 
 // ---- 2. the tutorial decks: no skill at Level 0, either side, T-1 and T-2

@@ -52,7 +52,8 @@ const QUEUE = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balanc
 const withStats = cards.filter(c=> SC.measured(c) && !c.pool && (c.attack != null || c.health != null));
 let mono = [], majors = [], budget = [], walls = [], game = [], checked = 0;
 for(const c of withStats){
-  const from = G.cardBaseLevel(c), top = G.cardMaxLevel(c) === 10 ? 11 : G.cardMaxLevel(c), cv = BB.forgeCurve(Object.assign({}, c, {obtainMap: G.cardObtainMap(c)}), from, top), b0 = T.budget(c, {level: from}); checked++;
+  // 2026-11-18 (LVL10): the checks below are the fallback curve's (a card without levelBonus); levelBonus growth is tests/lvl10-2026-11-18.js's
+  const from = G.cardBaseLevel(c), top = G.cardMaxLevel(c) === 10 ? 11 : G.cardMaxLevel(c), cv = BB.forgeCurve(Object.assign({}, c, {obtainMap: G.cardObtainMap(c), levelBonus: undefined}), from, top), cvLive = BB.forgeCurve(Object.assign({}, c, {obtainMap: G.cardObtainMap(c)}), from, top), b0 = T.budget(c, {level: from}); checked++;
   // (BF5 10-21) each level's N is the curve's own (cv.rows[L].N: x the card's N multiplier)
   // (BF5 10-21, merge of BX) an Archer never swings: its Attack is not part of its strength (tools/skill_costs.js budget)
   const xe = require('../bramblewood-skillparams.js').expand(c.effects || {}); // ENG39 (2026-11-09): Archer is Arrow {swings: never} in cards.json
@@ -68,7 +69,7 @@ for(const c of withStats){
     const nForced = [4, 7, 10, 11].filter(k=> k > from && k <= L && cv.rows[k].points === 1).length; // (BF5 10-21) a forced point's overrun stays until the bank catches up
     const inside = b0.ok ? room1(L) >= -cv.m * nForced - 0.05 && room2(L) >= (nForced ? -cv.m * Math.max(r.attack || 0, r.health || 0) * nForced : 0) - 0.05 /* inclusive (16:22); BF5: or the forced point's A·H */ : room1(L) >= room1(from) - forced - 1e-9 /* BF2: a major's forced point can run one point ahead of a small bank */ && room2(L) >= Math.min(room2(from), room2(L - 1)) - 1e-9;
     if(!inside) budget.push(`${c.id} Lv ${L} (${aw}A+H+S ${(aw * r.attack + r.health + b0.S).toFixed(1)} / N ${r.N})`);
-    if(!c.levelStats){ const st = G.statsAtLevel(c, L); if(st.attack !== r.attack || st.health !== r.health) game.push(`${c.id} Lv ${L}`); } }
+    if(!c.levelStats){ const st = G.statsAtLevel(c, L), rl = cvLive.rows[L]; if(st.attack !== rl.attack || st.health !== rl.health || (rl.attack || 0) < (cvLive.rows[L - 1].attack || 0) || (rl.health || 0) < (cvLive.rows[L - 1].health || 0)) game.push(`${c.id} Lv ${L}`); } }
   if(c.attack === 0 && Object.values(cv.rows).some(r=> r.attack !== 0)) walls.push(c.id);
 }
 ok(checked > 600, `2. ${checked} live cards with stats checked`);
@@ -76,16 +77,17 @@ ok(!mono.length, '2. monotonic: no level loses Attack or Health: ' + mono.slice(
 ok(!majors.length, '2. the majors (Lv 4, 7, 10) always add something: ' + majors.slice(0, 6).join('; '));
 ok(!budget.length, '2. every level stays inside the budget at N(L) (a card over at its start keeps its room): ' + budget.slice(0, 6).join('; '));
 ok(!walls.length, '2. a 0-Attack wall only grows Health: ' + walls.slice(0, 6).join(', '));
-ok(!game.length, '2. the game\'s statsAtLevel is the curve (cards with no levelStats): ' + game.slice(0, 6).join('; '));
-{ const minorGives = withStats.filter(c=> G.cardBaseLevel(c) <= 1).map(c=> BB.forgeCurve(c, G.cardBaseLevel(c), 11)), mean = L=> minorGives.reduce((t, cv)=> t + cv.rows[L].points, 0) / minorGives.length;
+ok(!game.length, '2. the game\'s statsAtLevel is the curve with the card\'s levelBonus, never losing a stat (cards with no levelStats): ' + game.slice(0, 6).join('; '));
+{ const minorGives = withStats.filter(c=> G.cardBaseLevel(c) <= 1).map(c=> BB.forgeCurve(Object.assign({}, c, {levelBonus: undefined}), G.cardBaseLevel(c), 11)), mean = L=> minorGives.reduce((t, cv)=> t + cv.rows[L].points, 0) / minorGives.length;
   ok(mean(4) > mean(2) && mean(7) > mean(2) && mean(10) > mean(2) && mean(2) >= mean(3) && mean(2) >= mean(5), `2. the majors take the big chunks, the minor a smaller one (mean points: Lv 2 ${mean(2).toFixed(2)}, 3 ${mean(3).toFixed(2)}, 4 ${mean(4).toFixed(2)}, 7 ${mean(7).toFixed(2)}, 10 ${mean(10).toFixed(2)})`); }
-{ const s1 = withStats.find(c=> c.id === 'otter-centurion'), cv = BB.forgeCurve(s1, 1, 11), w = r=> 2 * r.attack + r.health;
+{ const s1 = withStats.find(c=> c.id === 'otter-centurion'), cv = BB.forgeCurve(Object.assign({}, s1, {levelBonus: undefined}), 1, 11), w = r=> 2 * r.attack + r.health;
   ok(w(cv.rows[10]) - w(cv.rows[1]) <= BB.nAt(cv.base, 10) - BB.nAt(cv.base, 1) + 1e-9, '2. the gain over Lv 1 is at most the budget gain N(10) - N(1)'); }
 ok(/const LEVEL_STEPS = \{1:null, 2:'minor', 3:null, 4:'major', 5:null, 6:null, 7:'major', 8:null, 9:null, 10:'major', 11:'major'\}/.test(src), '2. LEVEL_STEPS labels 2 minor, 4 / 7 / 10 major (the card editor\'s badges)');
 
 // ---- 3. the enemy's gain table, the Forge preview
 { const acc = {}; withStats.filter(c=> c.attack != null && c.health != null).forEach(d=>{ const w0 = 2 * (d.attack || 0) + (d.health || 0); if(w0 <= 0) return;
-    const from = SC.levelOf(d), cv = BB.forgeCurve(Object.assign({}, d, {obtainMap: T.obtainMapOf(d)}), from, d.id === 'hero' ? 100 : (d.isCastle || (d.archetypes || []).includes('Castle')) ? 20 : 11);
+    // 2026-11-18 (LVL10): the enemy's pace stays on today's curve (keep enemy / road levels), so the table is the fallback curve's mean
+    const from = SC.levelOf(d), cv = BB.forgeCurve(Object.assign({}, d, {obtainMap: T.obtainMapOf(d), levelBonus: undefined}), from, d.id === 'hero' ? 100 : (d.isCastle || (d.archetypes || []).includes('Castle')) ? 20 : 11);
     for(let L = 1; L <= 11; L++){ const r = cv.rows[Math.max(L, from)]; (acc[L] = acc[L] || []).push((2 * r.attack + r.health) / w0 - 1); } });
   const off = G.FORGE_MEAN_GAIN.filter(([g, L])=> L >= 2 && Math.abs(g - acc[L].reduce((a, b)=> a + b, 0) / acc[L].length) > 0.03).map(([g, L])=> `Lv ${L} ${g}`);
   ok(!off.length, '3. FORGE_MEAN_GAIN is the live cards\' mean gain (within 0.03; node tools/forge_curve_2026_10_19.js gain): ' + off.join(', '));

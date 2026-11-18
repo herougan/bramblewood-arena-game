@@ -35,10 +35,14 @@ const sideOf = id=> id===1 ? 'A' : 'B';
 // ---------------------------------------------------------------------------------------------
 // Board scenario: put exact cards on exact lanes (no hands, no decks, no AI choices) and run N
 // combat rounds. This isolates card-vs-card interactions from draw luck and AI play choices.
-//   spec = {seed, battleMode, rounds, hqHp:{A,B}, A:[{id, side?, hp?, attack?, wait?}], B:[...]}
+//   spec = {seed, battleMode, rounds, hqHp:{A,B}, A:[{id, side?, hp?, attack?, wait?, level?}], B:[...]}
 // ---------------------------------------------------------------------------------------------
 function runBoard(spec){
-  const defs = spec.defs || loadCardDefs();
+  let defs = spec.defs || loadCardDefs();
+  // 2026-11-18 (LVL10): {id, level} fields the card's skills at that level (a skill that arrives later, levelSkills; levelBonus numbers), as '<id>~lv<L>'
+  if([...(spec.A || []), ...(spec.B || [])].some(c=> c.level)){ const BB = require(path.join(ROOT, 'bramblewood-budget.js')); defs = Object.assign({}, defs);
+    [...(spec.A || []), ...(spec.B || [])].forEach(c=>{ if(!c.level || !defs[c.id]) return; const k = c.id + '~lv' + c.level; defs[k] = Object.assign({}, defs[c.id], {id: k, derivedFrom: c.id, effects: BB.levelEffectsAt(defs[c.id], c.level, null, 1), levelSkills: undefined, levelBonus: undefined}); }); }
+  const idOf = c=> c.level && defs[c.id + '~lv' + c.level] ? c.id + '~lv' + c.level : c.id;
   const engine = Engine.makeSimEngine(defs, seededRng(spec.seed||1), {recordEvents:true, battleMode: spec.battleMode, suddenDeathCastles: spec.suddenDeathCastles});
   const players = {1: engine.newPlayer(1, {}), 2: engine.newPlayer(2, {})};
   const hqHp = spec.hqHp || {};
@@ -46,10 +50,10 @@ function runBoard(spec){
   if(hqHp.B!=null){ players[2].hq.hp = players[2].hq.maxHp = hqHp.B; }
   const stats = {}, events = [];
   const place = (pid, list)=> (list||[]).forEach(c=>{
-    const ok = engine.debugSpawnCard(players, sideOf, pid, c.id, c.side || 'left', stats, events);
+    const ok = engine.debugSpawnCard(players, sideOf, pid, idOf(c), c.side || 'left', stats, events);
     if(!ok) throw new Error(`could not place ${c.id} for player ${pid}`);
     const all = [...players[pid].row.left, ...players[pid].row.center, ...players[pid].row.right];
-    const bc = all[all.length-1] && all.find(x=> x.defId===c.id && !x.__placed) || null;
+    const bc = all[all.length-1] && all.find(x=> x.defId===idOf(c) && !x.__placed) || null;
     if(bc){ bc.__placed = true; if(c.hp!=null) bc.hp = bc.maxHp = c.hp; if(c.attack!=null) bc.atk = bc.baseAtk = c.attack; if(c.wait!=null) bc.wait = c.wait; }
   });
   place(1, spec.A); place(2, spec.B);

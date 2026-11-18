@@ -1,0 +1,981 @@
+{
+ "generated": "2026-11-18",
+ "package": "LVL10",
+ "cards": 840,
+ "styles": {
+  "all": {
+   "A": 343,
+   "B": 164,
+   "C": 143,
+   "D": 190
+  },
+  "inPlay": {
+   "A": 166,
+   "B": 99,
+   "C": 99,
+   "D": 99
+  }
+ },
+ "realizedSkillShare": {
+  "A": 0,
+  "B": 0.15,
+  "C": 0.28,
+  "D": 0.5
+ },
+ "fillByLevel": {
+  "1": {
+   "mean": 0.88,
+   "min": 0.48,
+   "max": 1.26,
+   "over": 27
+  },
+  "2": {
+   "mean": 0.86,
+   "min": 0.46,
+   "max": 1.22,
+   "over": 18
+  },
+  "3": {
+   "mean": 0.84,
+   "min": 0.44,
+   "max": 1.23,
+   "over": 12
+  },
+  "4": {
+   "mean": 0.88,
+   "min": 0.62,
+   "max": 1.18,
+   "over": 18
+  },
+  "5": {
+   "mean": 0.86,
+   "min": 0.6,
+   "max": 1.14,
+   "over": 14
+  },
+  "6": {
+   "mean": 0.84,
+   "min": 0.58,
+   "max": 1.1,
+   "over": 9
+  },
+  "7": {
+   "mean": 0.9,
+   "min": 0.73,
+   "max": 1.13,
+   "over": 14
+  },
+  "8": {
+   "mean": 0.88,
+   "min": 0.71,
+   "max": 1.1,
+   "over": 14
+  },
+  "9": {
+   "mean": 0.86,
+   "min": 0.69,
+   "max": 1.06,
+   "over": 3
+  },
+  "10": {
+   "mean": 0.91,
+   "min": 0.82,
+   "max": 1.03,
+   "over": 13
+  }
+ },
+ "meanStatPointMoveByLevel": {
+  "2": 0.45,
+  "3": 0.46,
+  "4": 0.19,
+  "5": 0.2,
+  "6": 0.19,
+  "7": -0.29,
+  "8": -0.21,
+  "9": -0.22,
+  "10": -0.7
+ },
+ "biggestMoversL10": [
+  {
+   "id": "pink-maus",
+   "style": "B",
+   "L": 10,
+   "d": 18,
+   "was": "3/5",
+   "now": "8/8"
+  },
+  {
+   "id": "fire-drake-hatchling",
+   "style": "D",
+   "L": 10,
+   "d": -12,
+   "was": "9/16",
+   "now": "6/13"
+  },
+  {
+   "id": "granite-ox-golem",
+   "style": "A",
+   "L": 10,
+   "d": 12,
+   "was": "5/24",
+   "now": "6/33"
+  },
+  {
+   "id": "venomlord-serpent",
+   "style": "A",
+   "L": 10,
+   "d": -10,
+   "was": "10/30",
+   "now": "8/26"
+  },
+  {
+   "id": "elder-willow",
+   "style": "C",
+   "L": 10,
+   "d": -8,
+   "was": "0/51",
+   "now": "0/43"
+  },
+  {
+   "id": "caustic-scorpion",
+   "style": "D",
+   "L": 10,
+   "d": -7,
+   "was": "1/27",
+   "now": "1/20"
+  },
+  {
+   "id": "heron-hag",
+   "style": "D",
+   "L": 10,
+   "d": -7,
+   "was": "3/21",
+   "now": "2/17"
+  },
+  {
+   "id": "hedge-changeling",
+   "style": "A",
+   "L": 10,
+   "d": 7,
+   "was": "0/11",
+   "now": "0/18"
+  },
+  {
+   "id": "goliath-tentacle",
+   "style": "D",
+   "L": 10,
+   "d": -7,
+   "was": "10/12",
+   "now": "7/14"
+  },
+  {
+   "id": "tasmanian-devil",
+   "style": "D",
+   "L": 10,
+   "d": -7,
+   "was": "2/15",
+   "now": "1/11"
+  },
+  {
+   "id": "magma-titan",
+   "style": "D",
+   "L": 10,
+   "d": -6,
+   "was": "3/26",
+   "now": "2/23"
+  },
+  {
+   "id": "tobasco-drakon",
+   "style": "D",
+   "L": 10,
+   "d": -6,
+   "was": "4/15",
+   "now": "3/12"
+  },
+  {
+   "id": "crocodile-ambusher",
+   "style": "D",
+   "L": 10,
+   "d": -5,
+   "was": "4/22",
+   "now": "3/20"
+  },
+  {
+   "id": "blind-cave-fish",
+   "style": "B",
+   "L": 10,
+   "d": 5,
+   "was": "1/5",
+   "now": "2/7"
+  },
+  {
+   "id": "glacier-wolf-pack",
+   "style": "D",
+   "L": 10,
+   "d": -5,
+   "was": "2/21",
+   "now": "1/19"
+  }
+ ],
+ "unlockCards": {
+  "all": 89,
+  "inPlay": 89,
+  "byLevel": {
+   "2": 23,
+   "3": 30,
+   "4": 17,
+   "5": 17,
+   "6": 6,
+   "7": 3,
+   "9": 2,
+   "10": 1
+  }
+ },
+ "unlocks": [
+  {
+   "id": "bramblewood-macaque",
+   "style": "B",
+   "core": "siege",
+   "unlocks": "snipe@2",
+   "level1": "4/4 -> 4/5",
+   "live": true
+  },
+  {
+   "id": "monarch-wingblade",
+   "style": "C",
+   "core": "harbinger",
+   "unlocks": "poison@5",
+   "level1": "3/3 -> 3/5",
+   "live": true
+  },
+  {
+   "id": "fungal-colossus",
+   "style": "D",
+   "core": "bloomCopy",
+   "unlocks": "onDeathSpawn@5",
+   "level1": "2/14 -> 2/17",
+   "live": true
+  },
+  {
+   "id": "quillguard",
+   "style": "C",
+   "core": "thorns",
+   "unlocks": "bulldoze@5",
+   "level1": "2/16 -> 2/18",
+   "live": true
+  },
+  {
+   "id": "beetle-battering-ram",
+   "style": "C",
+   "core": "puncture",
+   "unlocks": "siege@3",
+   "level1": "3/9 -> 3/11",
+   "live": true
+  },
+  {
+   "id": "lodge-engineer",
+   "style": "B",
+   "core": "forestry",
+   "unlocks": "timbered@2",
+   "level1": "3/12 -> 3/12",
+   "live": true
+  },
+  {
+   "id": "adder-ambusher",
+   "style": "D",
+   "core": "ambush",
+   "unlocks": "poison@5",
+   "level1": "2/11 -> 2/14",
+   "live": true
+  },
+  {
+   "id": "mouse-sapper",
+   "style": "B",
+   "core": "dynamite",
+   "unlocks": "siege@3",
+   "level1": "3/10 -> 3/11",
+   "live": true
+  },
+  {
+   "id": "cataphract-destrier",
+   "style": "B",
+   "core": "pounce",
+   "unlocks": "overwhelm@2",
+   "level1": "3/28 -> 3/29",
+   "live": true
+  },
+  {
+   "id": "poison-dart-croaker",
+   "style": "B",
+   "core": "poison",
+   "unlocks": "sequestration@2",
+   "level1": "3/3 -> 3/3",
+   "live": true
+  },
+  {
+   "id": "sand-widow",
+   "style": "B",
+   "core": "poison",
+   "unlocks": "trap@2",
+   "level1": "2/17 -> 2/18",
+   "live": true
+  },
+  {
+   "id": "savanna-cheetah",
+   "style": "C",
+   "core": "speed",
+   "unlocks": "exploit@3",
+   "level1": "3/4 -> 3/5",
+   "live": true
+  },
+  {
+   "id": "dust-hyena",
+   "style": "C",
+   "core": "carnage",
+   "unlocks": "triggers@3",
+   "level1": "2/6 -> 2/7",
+   "live": true
+  },
+  {
+   "id": "ice-crevasse-wolf",
+   "style": "B",
+   "core": "bleed",
+   "unlocks": "momentum@3",
+   "level1": "1/16 -> 1/17",
+   "live": true
+  },
+  {
+   "id": "coral-polyp-colony",
+   "style": "C",
+   "core": "forestry",
+   "unlocks": "meld@3",
+   "level1": "0/9 -> 0/10",
+   "live": true
+  },
+  {
+   "id": "blind-cave-fish",
+   "style": "B",
+   "core": "keenSense",
+   "unlocks": "evasive@2",
+   "level1": "1/1 -> 2/2",
+   "live": true
+  },
+  {
+   "id": "deep-cave-troll",
+   "style": "C",
+   "core": "mighty",
+   "unlocks": "siege@4",
+   "level1": "4/13 -> 4/16",
+   "live": true
+  },
+  {
+   "id": "obsidian-scorpion",
+   "style": "D",
+   "core": "poison",
+   "unlocks": "armor@5",
+   "level1": "4/4 -> 5/4",
+   "live": true
+  },
+  {
+   "id": "taiga-lynx",
+   "style": "B",
+   "core": "loneWolf",
+   "unlocks": "reach@3",
+   "level1": "2/7 -> 2/8",
+   "live": true
+  },
+  {
+   "id": "boreal-elk",
+   "style": "C",
+   "core": "sweep",
+   "unlocks": "sturdy@5",
+   "level1": "5/3 -> 5/5",
+   "live": true
+  },
+  {
+   "id": "gangrenous-leech",
+   "style": "D",
+   "core": "poison",
+   "unlocks": "parasite@2 fester@6",
+   "level1": "3/3 -> 4/3",
+   "live": true
+  },
+  {
+   "id": "wound-reaver",
+   "style": "B",
+   "core": "bleed",
+   "unlocks": "rupture@2",
+   "level1": "1/14 -> 1/14",
+   "live": true
+  },
+  {
+   "id": "ravenous-wolverine",
+   "style": "D",
+   "core": "triggers",
+   "unlocks": "throng@9",
+   "level1": "3/2 -> 4/4",
+   "live": true
+  },
+  {
+   "id": "quillback-elder",
+   "style": "C",
+   "core": "arrow",
+   "unlocks": "armor@4",
+   "level1": "5/5 -> 6/5",
+   "live": true
+  },
+  {
+   "id": "kraken-spawnling",
+   "style": "C",
+   "core": "fork",
+   "unlocks": "gash@3",
+   "level1": "2/16 -> 2/18",
+   "live": true
+  },
+  {
+   "id": "sulfur-cinder-moth",
+   "style": "B",
+   "core": "triggers",
+   "unlocks": "illuminate@2",
+   "level1": "1/7 -> 1/8",
+   "live": true
+  },
+  {
+   "id": "glacier-yak",
+   "style": "B",
+   "core": "freeze",
+   "unlocks": "triggers@3",
+   "level1": "2/17 -> 2/18",
+   "live": true
+  },
+  {
+   "id": "rot-swollen-carcass",
+   "style": "B",
+   "core": "onDeathSpawn",
+   "unlocks": "triggers@3",
+   "level1": "4/11 -> 4/12",
+   "live": true
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "style": "D",
+   "core": "fork",
+   "unlocks": "armor@4 bleed@7",
+   "level1": "7/6 -> 9/8",
+   "live": true
+  },
+  {
+   "id": "stoat-cutthroat",
+   "style": "C",
+   "core": "exploit",
+   "unlocks": "bleed@5",
+   "level1": "3/9 -> 3/11",
+   "live": true
+  },
+  {
+   "id": "mirror-moth",
+   "style": "B",
+   "core": "evasive",
+   "unlocks": "reflect@2",
+   "level1": "2/5 -> 3/6",
+   "live": true
+  },
+  {
+   "id": "snail-mail",
+   "style": "C",
+   "core": "triggers",
+   "unlocks": "armor@4",
+   "level1": "0/8 -> 0/16",
+   "live": true
+  },
+  {
+   "id": "wrong-way-salmon",
+   "style": "B",
+   "core": "anadromous",
+   "unlocks": "backstab@2",
+   "level1": "1/10 -> 1/10",
+   "live": true
+  },
+  {
+   "id": "wolfsbane-alpha",
+   "style": "B",
+   "core": "bleed",
+   "unlocks": "carnage@3",
+   "level1": "1/17 -> 1/18",
+   "live": true
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "style": "C",
+   "core": "sweep",
+   "unlocks": "armor@4",
+   "level1": "4/9 -> 5/9",
+   "live": true
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "style": "C",
+   "core": "forestry",
+   "unlocks": "regen@3",
+   "level1": "2/21 -> 2/25",
+   "live": true
+  },
+  {
+   "id": "the-contradiction",
+   "style": "C",
+   "core": "rage",
+   "unlocks": "regen@4",
+   "level1": "2/16 -> 2/19",
+   "live": true
+  },
+  {
+   "id": "cinder-skeleton",
+   "style": "C",
+   "core": "undead",
+   "unlocks": "carnage@3",
+   "level1": "1/7 -> 2/9",
+   "live": true
+  },
+  {
+   "id": "magma-wraith",
+   "style": "C",
+   "core": "arrow",
+   "unlocks": "evasive@3",
+   "level1": "1/8 -> 1/9",
+   "live": true
+  },
+  {
+   "id": "siege-rhino",
+   "style": "C",
+   "core": "siege",
+   "unlocks": "sweep@5",
+   "level1": "5/15 -> 6/15",
+   "live": true
+  },
+  {
+   "id": "ur-elk",
+   "style": "B",
+   "core": "sturdy",
+   "unlocks": "overwhelm@2",
+   "level1": "4/11 -> 5/12",
+   "live": true
+  },
+  {
+   "id": "glass-octopus",
+   "style": "C",
+   "core": "stealth",
+   "unlocks": "corrode@6",
+   "level1": "4/7 -> 5/7",
+   "live": true
+  },
+  {
+   "id": "goliath-broodmother",
+   "style": "C",
+   "core": "inspiring",
+   "unlocks": "onDeathSpawn@4",
+   "level1": "4/24 -> 4/28",
+   "live": true
+  },
+  {
+   "id": "millipede-hauler",
+   "style": "C",
+   "core": "onDeathSpawn",
+   "unlocks": "armor@4",
+   "level1": "1/16 -> 1/18",
+   "live": true
+  },
+  {
+   "id": "rivergate-tribune",
+   "style": "C",
+   "core": "armor",
+   "unlocks": "kinship@4",
+   "level1": "4/18 -> 4/21",
+   "live": true
+  },
+  {
+   "id": "cunning-vixen",
+   "style": "C",
+   "core": "stealth",
+   "unlocks": "evasive@5",
+   "level1": "1/10 -> 1/12",
+   "live": true
+  },
+  {
+   "id": "frillneck-duelist",
+   "style": "C",
+   "core": "speed",
+   "unlocks": "scare@3",
+   "level1": "2/11 -> 2/12",
+   "live": true
+  },
+  {
+   "id": "snow-ermine",
+   "style": "C",
+   "core": "evasive",
+   "unlocks": "momentum@3",
+   "level1": "2/4 -> 2/5",
+   "live": true
+  },
+  {
+   "id": "ember-centipede",
+   "style": "D",
+   "core": "speed",
+   "unlocks": "dry@7",
+   "level1": "2/3 -> 3/3",
+   "live": true
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "style": "D",
+   "core": "kinship",
+   "unlocks": "coffee@5",
+   "level1": "1/3 -> 1/5",
+   "live": true
+  },
+  {
+   "id": "colossal-squid",
+   "style": "C",
+   "core": "fork",
+   "unlocks": "gash@3",
+   "level1": "4/23 -> 4/25",
+   "live": true
+  },
+  {
+   "id": "bison-bulldozer",
+   "style": "C",
+   "core": "bulldoze",
+   "unlocks": "onslaught@3",
+   "level1": "2/12 -> 2/13",
+   "live": true
+  },
+  {
+   "id": "rimeheart-colossus",
+   "style": "C",
+   "core": "armor",
+   "unlocks": "freeze@3",
+   "level1": "3/19 -> 3/23",
+   "live": true
+  },
+  {
+   "id": "war-elephant",
+   "style": "C",
+   "core": "arrow",
+   "unlocks": "armor@4",
+   "level1": "0/28 -> 0/32",
+   "live": true
+  },
+  {
+   "id": "marshal-tuskwell",
+   "style": "D",
+   "core": "inspiring",
+   "unlocks": "overwhelm@2 vanguard@4 armor@7",
+   "level1": "1/26 -> 1/36",
+   "live": true
+  },
+  {
+   "id": "tax-collector-teal",
+   "style": "B",
+   "core": "plunder",
+   "unlocks": "hoard@2",
+   "level1": "1/4 -> 2/6",
+   "live": true
+  },
+  {
+   "id": "battlement-heron",
+   "style": "B",
+   "core": "arrow",
+   "unlocks": "ambush@3",
+   "level1": "1/13 -> 1/14",
+   "live": true
+  },
+  {
+   "id": "gilded-swan-knight",
+   "style": "C",
+   "core": "inspiring",
+   "unlocks": "armor@4",
+   "level1": "1/20 -> 1/23",
+   "live": true
+  },
+  {
+   "id": "magnate-duck",
+   "style": "D",
+   "core": "triggers",
+   "unlocks": "hoard@2 bounty@3 armor@4 king@5",
+   "level1": "2/37 -> 2/44",
+   "live": true
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "style": "B",
+   "core": "poison",
+   "unlocks": "web@2",
+   "level1": "4/6 -> 4/6",
+   "live": true
+  },
+  {
+   "id": "cottonmouth-matriarch",
+   "style": "C",
+   "core": "venomMaster",
+   "unlocks": "poison@4",
+   "level1": "2/11 -> 2/13",
+   "live": true
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "style": "D",
+   "core": "arrow",
+   "unlocks": "fletcher@6",
+   "level1": "1/6 -> 2/8",
+   "live": true
+  },
+  {
+   "id": "fathom-leviathan",
+   "style": "D",
+   "core": "tsunami",
+   "unlocks": "wave@3 supreme@5",
+   "level1": "5/24 -> 6/28",
+   "live": true
+  },
+  {
+   "id": "amber-cicada",
+   "style": "B",
+   "core": "sleepPowder",
+   "unlocks": "triggers@3",
+   "level1": "1/21 -> 1/22",
+   "live": true
+  },
+  {
+   "id": "quicksand-queen",
+   "style": "C",
+   "core": "trap",
+   "unlocks": "strangle@3",
+   "level1": "2/19 -> 2/21",
+   "live": true
+  },
+  {
+   "id": "leopard-slug",
+   "style": "C",
+   "core": "corrode",
+   "unlocks": "carrion@3",
+   "level1": "1/10 -> 1/11",
+   "live": true
+  },
+  {
+   "id": "whip-spider",
+   "style": "B",
+   "core": "bleed",
+   "unlocks": "keenSense@2",
+   "level1": "3/7 -> 3/9",
+   "live": true
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "style": "B",
+   "core": "pounce",
+   "unlocks": "keenSense@2",
+   "level1": "3/14 -> 3/14",
+   "live": true
+  },
+  {
+   "id": "horseshoe-crab",
+   "style": "C",
+   "core": "armor",
+   "unlocks": "regen@5",
+   "level1": "2/9 -> 2/11",
+   "live": true
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "style": "C",
+   "core": "thorns",
+   "unlocks": "daunt@5",
+   "level1": "4/4 -> 4/6",
+   "live": true
+  },
+  {
+   "id": "polar-bear",
+   "style": "C",
+   "core": "offspring",
+   "unlocks": "ambush@6",
+   "level1": "2/15 -> 2/17",
+   "live": true
+  },
+  {
+   "id": "beluga",
+   "style": "B",
+   "core": "inspiring",
+   "unlocks": "keenSense@2",
+   "level1": "1/16 -> 1/18",
+   "live": true
+  },
+  {
+   "id": "lemming-swarm",
+   "style": "C",
+   "core": "swarm",
+   "unlocks": "offspring@5",
+   "level1": "1/3 -> 2/6",
+   "live": true
+  },
+  {
+   "id": "greenland-shark",
+   "style": "C",
+   "core": "carrion",
+   "unlocks": "armor@3",
+   "level1": "1/23 -> 1/25",
+   "live": true
+  },
+  {
+   "id": "exo-podas",
+   "style": "D",
+   "core": "mountainClimber",
+   "unlocks": "trident@4 armor@9",
+   "level1": "4/13 -> 4/15",
+   "live": true
+  },
+  {
+   "id": "pink-maus",
+   "style": "B",
+   "core": "sturdy",
+   "unlocks": "taunt@2",
+   "level1": "1/1 -> 6/6",
+   "live": true
+  },
+  {
+   "id": "nyoogle",
+   "style": "B",
+   "core": "invisible",
+   "unlocks": "backstab@2 illuminate@3",
+   "level1": "1/10 -> 1/16",
+   "live": true
+  },
+  {
+   "id": "tobasco-drakon",
+   "style": "D",
+   "core": "arrow",
+   "unlocks": "chilli@10",
+   "level1": "3/11 -> 3/11",
+   "live": true
+  },
+  {
+   "id": "demo-panda",
+   "style": "B",
+   "core": "nova",
+   "unlocks": "tipsy@2",
+   "level1": "3/11 -> 3/11",
+   "live": true
+  },
+  {
+   "id": "anvilwhisker-otter",
+   "style": "C",
+   "core": "triggers",
+   "unlocks": "armourer@4",
+   "level1": "2/14 -> 2/16",
+   "live": true
+  },
+  {
+   "id": "ironclaw-fiddler",
+   "style": "C",
+   "core": "bludgeon",
+   "unlocks": "regen@5",
+   "level1": "7/9 -> 7/11",
+   "live": true
+  },
+  {
+   "id": "cone-cutter-squirrel",
+   "style": "D",
+   "core": "triggers",
+   "unlocks": "foraging@6",
+   "level1": "2/5 -> 3/5",
+   "live": true
+  },
+  {
+   "id": "pumice-beetle",
+   "style": "C",
+   "core": "triggers",
+   "unlocks": "arrow@5",
+   "level1": "3/8 -> 3/10",
+   "live": true
+  },
+  {
+   "id": "beaver-feller",
+   "style": "C",
+   "core": "repair",
+   "unlocks": "triggers@3",
+   "level1": "2/8 -> 2/9",
+   "live": true
+  },
+  {
+   "id": "mist-net-otter",
+   "style": "B",
+   "core": "reach",
+   "unlocks": "web@2",
+   "level1": "2/10 -> 2/10",
+   "live": true
+  },
+  {
+   "id": "birdlime-dauber",
+   "style": "B",
+   "core": "strangle",
+   "unlocks": "reach@3",
+   "level1": "2/10 -> 2/11",
+   "live": true
+  },
+  {
+   "id": "legate-of-rivergate",
+   "style": "C",
+   "core": "inspiring",
+   "unlocks": "armor@4",
+   "level1": "2/9 -> 2/11",
+   "live": true
+  },
+  {
+   "id": "bumblebee-queen",
+   "style": "C",
+   "core": "healing",
+   "unlocks": "coppice@3",
+   "level1": "4/14 -> 4/16",
+   "live": true
+  },
+  {
+   "id": "pearl-mussel-anchorer",
+   "style": "C",
+   "core": "anchor",
+   "unlocks": "delivery@6",
+   "level1": "1/23 -> 1/26",
+   "live": true
+  }
+ ],
+ "ownerMultiSkillKept": [
+  "dolphin-knight",
+  "crocodile-ambusher",
+  "venomlord-serpent",
+  "glacial-ape-king",
+  "swamp-alligator",
+  "cypress-root-lurker",
+  "tide-pool-crab",
+  "fiddler-crab-swarm",
+  "swarm-matriarch",
+  "open-ocean-hermit-crab",
+  "tunnel-ant",
+  "the-unremembered",
+  "old-shell",
+  "drowned-matriarch",
+  "echo-matriarch",
+  "heron-hag",
+  "ford-kingfisher",
+  "hedge-changeling",
+  "badger-lumberjack",
+  "newt-doctor",
+  "old-snapjaw",
+  "puffball-bombardier",
+  "lamprey",
+  "field-vole",
+  "water-shrew",
+  "alligator-gar",
+  "fire-ant-raft",
+  "wolf-spider-mother",
+  "truffle-piglet",
+  "hawthorn-shieldbug",
+  "driftwood-crab"
+ ]
+}
