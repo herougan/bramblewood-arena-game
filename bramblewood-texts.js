@@ -3594,7 +3594,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-reach-codex": "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (a coin flip when both have one) and hits the bramble only when neither lane has one. Taunt still draws it.",
   "ui.eng37-log-reach": "{a} reaches into the next lane and strikes {t}.",
   "ui.eng37-reach-fl": "↗ Reach",
-  "ui.skn-shield-armor": "Shield: Armor",
+  "ui.skn-shield-armor": "Armoured Shield",
   "ui.sk-shield-armor": "Arrives with {n} Shield; +{m} Armor while any of it remains.",
   "ui.sk-shield-armor-desc": "+{m} Armor while any of its Shield remains; gone when the Shield breaks.",
   "ui.skn-shell-when": "Shell: when",

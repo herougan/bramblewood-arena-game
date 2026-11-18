@@ -900,7 +900,7 @@
     "res": "stone"
    },
    "ability": null,
-   "about": "v = how many; res = the resource (lumber by default; stone, metal, gold (ECONSK1), uranium, pearl, grace). ENG39: kind stockpile = Stockpile (Lumber once, its own price); kind pearl = Pearl (a Pearl once). ENG39: kind stockpile = Stockpile (Lumber once, its own price); kind pearl = Pearl (a Pearl once); every round = Delivery every round (owner 23:05 on ENG35-2; its res as before).",
+   "about": "v = how many; res = the resource (lumber by default; stone, metal, gold (ECONSK1), uranium, pearl, grace). ENG39: kind stockpile = Stockpile (Lumber once, its own price); kind pearl = Pearl (a Pearl once). ENG39: kind stockpile = Stockpile (Lumber once, its own price); kind pearl = Pearl (a Pearl once); every round = Delivery every round (owner 23:05 on ENG35-2; its res as before). SKFIN (2026-11-19, owner 11-18 23:55: \"Delivery is sufficient. The {Resource} is a parameter.\"): the card editor has one Delivery row, res picked beside N; the separate Delivery resource entry is gone from + Add Skill (deliveryRes still reads).",
    "kinds": {
     "kind": {
      "stockpile": "stockpile",
@@ -1105,7 +1105,7 @@
     "armor": 1
    },
    "ability": null,
-   "about": "ENG37 (2026-11-08, owner 11:03, Armoured Shield): v = the Shield it arrives with; armor = +M Armor while any of its Shield remains (gone when the Shield breaks). Priced in tools/skill_costs.js (shieldArmor): Armor M's price x the rounds its Shield lasts by the 4-round rule."
+   "about": "ENG37 (2026-11-08, owner 11:03, Armoured Shield): v = the Shield it arrives with; armor = +M Armor while any of its Shield remains (gone when the Shield breaks). Priced in tools/skill_costs.js (shieldArmor): Armor M's price x the rounds its Shield lasts by the 4-round rule. SKFIN (2026-11-19, owner 11-18 23:55): shown as Armoured Shield (two stacked shields), no longer Shield: Armor."
   },
   "shell": {
    "params": {
