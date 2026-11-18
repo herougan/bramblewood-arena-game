@@ -4512,7 +4512,7 @@
  "Poison Powder": "どくのこな",
  "Powder": "こな",
  "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.": "毎ターン、矢の後に：正面（いなければ最も近い）の敵に毒 {n}。ダメージなし。",
- "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "こなのスキルはすべて合わせて1つのスキルとして数える。こなはスピード-1で、矢の後にまかれる。回避は半分をかわす。飛行はかわせない。",
+ "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "こなのスキルはすべて合わせて1つとして数える。こなは速度-1で、矢の後にまかれる。回避は半分をかわし、飛行はかわせない。",
  "{name} puffs Sleeping Powder at {target}. 💤": "{name}が{target}にねむりごなをまいた。💤",
  "{name} puffs Poison Powder at {target}. ☠️": "{name}が{target}にどくのこなをまいた。☠️",
  "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "毎ターン、矢の後に：正面（いなければ最も近い）の起きている敵に睡眠 {n}。ダメージなし。",
@@ -4569,5 +4569,5 @@
  "Underwater Currents {n}": "海中の潮流 {n}",
  "Underwater Currents": "海中の潮流",
  "Underwater Currents {n}: the water takes {name}.": "海中の潮流 {n}: 水が{name}をさらう。",
- "Only Baby cards carry this skill, and not yet at their map level: not really in the map": "このスキルを持つのはベビーカードだけで、マップ上のレベルではまだ持っていない：実際にはマップにない"
+ "Only Baby cards carry this skill, and not yet at their map level: not really in the map": "このスキルを持つのは幼体カードだけで、マップのレベルではまだ持っていない：実質マップにはない"
 }

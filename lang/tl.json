@@ -4512,7 +4512,7 @@
  "Poison Powder": "Pulbos ng Kamandag",
  "Powder": "Pulbos",
  "Each turn, after the arrows: {n} Venom on the enemy in front or nearest. No damage.": "Bawat turn, pagkatapos ng mga palaso: {n} Kamandag sa kalaban sa harap o pinakamalapit. Walang pinsala.",
- "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "Iisang skill lang ang bilang ng lahat ng pulbos. Kumikilos sa Speed -1, pagkatapos ng mga palaso. Kalahati ang naiiwasan ng Evasive; hindi ng Lumilipad.",
+ "All powders together count as one skill. Powders puff at Speed -1, after the arrows. Evasive dodges half; Flying doesn't.": "Iisang skill lang ang bilang ng lahat ng pulbos. Kumikilos sa Speed -1, pagkatapos ng mga palaso. Kalahati ang naiiwasan ng Evasive; hindi ng Flying.",
  "{name} puffs Sleeping Powder at {target}. 💤": "Hinipan ni {name} ng Pulbos ng Tulog si {target}. 💤",
  "{name} puffs Poison Powder at {target}. ☠️": "Hinipan ni {name} ng Pulbos ng Kamandag si {target}. ☠️",
  "Each turn, after the arrows: Sleep {n} on the enemy in front or nearest, if awake. No damage.": "Bawat turn, pagkatapos ng mga palaso: Tulog {n} sa kalaban sa harap o pinakamalapit, kung gising. Walang pinsala.",
@@ -4569,5 +4569,5 @@
  "Underwater Currents {n}": "Agos sa Ilalim ng Tubig {n}",
  "Underwater Currents": "Agos sa Ilalim ng Tubig",
  "Underwater Currents {n}: the water takes {name}.": "Agos sa Ilalim ng Tubig {n}: dinadala ng tubig si {name}.",
- "Only Baby cards carry this skill, and not yet at their map level: not really in the map": "Mga Baby card lang ang may kasanayang ito, at wala pa sa antas nila sa mapa: hindi talaga nasa mapa"
+ "Only Baby cards carry this skill, and not yet at their map level: not really in the map": "Mga Baby card lang ang may skill na ito, at wala pa sa antas nila sa mapa: hindi talaga nasa mapa"
 }

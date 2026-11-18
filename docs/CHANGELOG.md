@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-18 (package TL4: Tagalog / Tamil / Japanese / Korean review of CONTENT13, POWDER1, DATAFIX and FXAUD2 rows)
+- Players see: 22 card names and 6 texts reworded to the words each pack already uses (Bulwark, Spitter, Mantis, Goose, Mussel, Baby, Flying); no gameplay change. Still drafts for a native read.
+
 ## 2026-11-18 (package REFIT5: Map 10-12 and 17 reference decks rebuilt, the Maps 0-20 road re-fitted after DATAFIX)
 - Players see: new enemy decks in 90 road fights (Maps 0-20 and their side maps), most on Maps 11, 20, 12, 6 and 19-A. Shield and bramble Health untouched.
 - Road (seed 9100, 400 games; unchanged fights from GitHub run 44226797832 of the DATAFIX head): main 70 -> 119 in band, 80 -> 126 within 10, 29 -> 4 beyond 20 (of 149); side 49 -> 68 / 54 -> 71 / 10 -> 4 (of 81). Left: 8-7, 2-2, 19-5 too hard; 7-6, 7-A-2, 10-A-5, 20-A-4, 20-9 too easy (decision REFIT5-1).
