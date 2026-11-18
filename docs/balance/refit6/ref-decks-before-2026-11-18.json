@@ -1,0 +1,84 @@
+{
+ "note": "2026-11-18 (package REFIT6): the Map reference decks (WINRATE_REF_DECKS.road) of Maps 3, 9, 13-16 and 18-20 before the rebuild",
+ "road": {
+  "3": {
+   "tunnel-ant": 4,
+   "cricket-drummer": 4,
+   "otter-guard": 4,
+   "terrier-pup": 4,
+   "otter-centurion": 4
+  },
+  "9": {
+   "otter-centurion": 4,
+   "soldier-ant": 4,
+   "tunnel-ant": 4,
+   "otter-guard": 4,
+   "phoenix-mushrooms": 2,
+   "terrier-pup": 2
+  },
+  "13": {
+   "alpine-marmot": 4,
+   "otter-centurion": 1,
+   "adder-ambusher": 4,
+   "ibex-rockcaller": 3,
+   "burrow-rabbit": 1,
+   "amber-cicada": 4,
+   "monarch-wingblade": 3
+  },
+  "14": {
+   "alpine-marmot": 4,
+   "otter-centurion": 1,
+   "ibex-rockcaller": 3,
+   "meadow-frog": 1,
+   "eagle-owl-quartermaster": 4,
+   "burrow-rabbit": 1,
+   "hercules-beetle": 3,
+   "tasmanian-devil": 3
+  },
+  "15": {
+   "otter-centurion": 4,
+   "fawn-scout": 4,
+   "savanna-cheetah": 3,
+   "eagle-owl-quartermaster": 4,
+   "alpine-marmot": 4,
+   "golden-eagle-diver": 1
+  },
+  "16": {
+   "otter-centurion": 4,
+   "fawn-scout": 4,
+   "alpine-marmot": 4,
+   "golden-eagle-diver": 1,
+   "ibex-rockcaller": 3,
+   "wolf-spider-mother": 1,
+   "electric-ray": 3
+  },
+  "18": {
+   "otter-centurion": 4,
+   "golden-eagle-diver": 1,
+   "ibex-rockcaller": 3,
+   "electric-ray": 3,
+   "echo-screecher": 4,
+   "adder-ambusher": 4,
+   "tunnel-ant": 1
+  },
+  "19": {
+   "otter-centurion": 4,
+   "ibex-rockcaller": 3,
+   "echo-screecher": 4,
+   "adder-ambusher": 4,
+   "tunnel-ant": 1,
+   "walrus-icebreaker": 1,
+   "obsidian-scorpion": 3
+  },
+  "20": {
+   "otter-centurion": 4,
+   "ibex-rockcaller": 3,
+   "walrus-icebreaker": 1,
+   "echidna-quillshot": 3,
+   "eagle-owl-quartermaster": 1,
+   "obsidian-scorpion": 4,
+   "taiga-lynx": 1,
+   "ash-moth": 3
+  }
+ }
+}
