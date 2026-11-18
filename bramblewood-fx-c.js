@@ -1382,7 +1382,7 @@ M.enemyCardFlip = function(el, opts){
 };
 // Played into a reserve row: it slides in under a dim and a small "behind the line" chevron settles under it.
 M.reserveIn = function(el, opts){
-  const t = tileOf(el); if(!t || !t.isConnected) return Promise.resolve();
+  const t = tileOf(el); if(!t || !t.isConnected || !t.getBoundingClientRect().width) return Promise.resolve(); // 2026-11-19 (package REL2): a tile not laid out yet drew its chip clipped at the page corner
   return run(opts, (tl, mk)=>{
     const c = centre(t), ch = mk('fxc-g', '⤵'); ch.style.fontSize = '18px'; ch.style.color = '#e8d6a8';
     tl.fromTo(t, {filter:F('brightness(1.3)')}, {filter:F('brightness(.92)'), duration:.4, clearProps:'filter'}, .1);

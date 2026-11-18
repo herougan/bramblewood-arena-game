@@ -3853,7 +3853,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng52-act-nurse-desc": "Nurse N: heal a random hurt ally (below its max Health, not this card) for N. With no ally hurt, nothing happens.",
   "ui.eng52-act-nurse-text": "nurse a random hurt ally for {n}",
   "ui.eng52-log-nurse": "{name} nursed {target} for {n} HP. 💚",
-  "ui.eng52-chip-nursing": "Nursing: heals a random hurt ally every upkeep"
+  "ui.eng52-chip-nursing": "Nursing: heals a random hurt ally every upkeep",
+  "ui.rel2-murgle-open": "Murgle Mayhem is open! Look for the 🐸 on Sable Swampmire (Map 6). Keys today: {n}.",
+  "ui.rel2-murgle-keys": "{n} keys today",
+  "ui.rel2-tap-tip": "👁️ Touch and hold a card on the board to see where it will strike.",
+  "ui.rel2-deck-help-touch": "Tap a card to add a copy; tap its − corner to take one out. Press 💾 Save deck to keep your changes.",
+  "ui.rel2-charts": "Charts",
+  "ui.rel2-gate-later": "You will learn more about this later.",
+  "ui.rel2-map0-hint": "Win 0-1 and 0-2 to open your Camp. Each fight costs ⚡ Energy.",
+  "ui.rel2-pvp-note": "Win to climb the ranks: your rating picks who you face, and each match uses one 🎟️ ticket."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

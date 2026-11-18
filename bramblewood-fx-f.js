@@ -1746,7 +1746,7 @@ H.xpGain = (n, before, after, env)=>{
   if(after > before && resultsUp()){ let waited = 0; const wait = ()=>{ if(resultsUp() && waited < 600000){ waited += 400; later(wait, 400); } else later(play, 450); }; later(wait, 400); return; }
   if(after > before) later(play, 450); else play();
 };
-H.energySpend = (cost, env)=>{ const p = energyPill(); if(p && medOK(env)) M.energySpend(p, {cost}); };
+H.energySpend = (cost, env)=>{ const p = energyPill(); if(p && medOK(env) && !document.body.classList.contains('bw-in-match')) M.energySpend(p, {cost}); }; // 2026-11-19 (package REL2): not once the board is up, the -N floater landed on the fight's speed button
 H.energyTick = (cur, max, env)=>{ const p = energyPill(); if(p && medOK(env)) later(()=> M.energyTick(energyPill() || p, {full:cur >= max}), 80); };
 H.energyRefill = (amount, which, rect, env)=>{ if(!medOK(env)) return; const from = rect && rect.width ? rect : null; // the button's rect, taken before the panel closes
   later(()=>{ const p = energyPill(); if(!p) return; if(which === 'epCapsule') M.energyCapsule(p, {amount, from:from && {x:from.left + from.width/2, y:from.top + from.height/2, w:from.width, h:from.height}}); else M.energyFree(p, {amount}); }, 60); };

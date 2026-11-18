@@ -15625,6 +15625,30 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
 .nav1-shop-tabs{display:flex; gap:6px; flex-wrap:wrap; margin:0 0 10px;}
 .nav1-shop-tabs .btn{min-height:36px;}
 @media (max-width: 600px){ #settingsPanelHud{position:fixed !important; left:8px !important; right:8px !important; top:56px !important; width:auto !important; max-height:70vh; overflow-y:auto; transform:none !important;} }
+/* 2026-11-19 (package REL2, REL1 audit): first-release fixes */
+/* NEW / GET stickers sit on the card's top corner, never on its name plate */
+.rw-new{top:-14px !important; right:-12px !important;} .rw-new.ui23-late{right:auto !important; left:-12px;}
+.po2-new{top:-14% !important;} .po2-new-tag{top:-12px !important;} .po2-new-tag.ui23-late{top:-12px !important; left:auto; right:-6px; translate:0 0;}
+/* the tutorial win: Claim Rewards stays on screen while the panel scrolls */
+@media (max-width:700px){ .winloss-card.is-tutorial .winloss-actions{position:sticky; bottom:0; z-index:5; margin:6px -6px 0; padding:14px 6px calc(10px + env(safe-area-inset-bottom, 0px)); background:linear-gradient(to top, rgba(24,16,52,.92) 72%, rgba(24,16,52,0));} }
+/* the guest sign-in strip never covers a fight */
+body.bw-in-match .signin-banner{display:none;}
+/* NPC bubbles sit under the page header and the sub-tabs, not over them */
+@media (min-width:700px){ body:not(.pg-in-match) .dialogue-dock{top:132px;} }
+@media (max-width:699px){ body:not(.pg-in-match) .dialogue-dock{top:124px;} }
+/* Murgle Mayhem: its Map 6 entrance pulses until the first visit; the floors read as places, not black holes */
+.rel2-pulse{animation:rel2Pulse 1.8s ease-in-out infinite;}
+@keyframes rel2Pulse{0%,100%{filter:drop-shadow(0 0 4px rgba(255,214,110,.6));} 50%{filter:drop-shadow(0 0 14px rgba(255,214,110,1));}}
+@media (prefers-reduced-motion: reduce){ .rel2-pulse{animation:none; filter:drop-shadow(0 0 8px rgba(255,214,110,.95));} }
+.endless-map .map-node-hidden{background:rgba(150,200,130,.34); border-color:rgba(255,255,255,.75);}
+.endless-map .map-node-ico-locked{filter:grayscale(.2) brightness(.95); opacity:1;}
+/* first-visit PvP line */
+.ar3-pvp-note{margin:8px 4px 0; padding:6px 10px; border-radius:10px; font-size:12.5px; line-height:1.35; text-align:center; color:#f4efdc; background:rgba(20,16,10,.6);}
+/* phone: charts and "this map's cards" fold; the raid Start button fades the text it floats over */
+.dt-charts-fold > summary, .vis4-map-cards > summary{cursor:pointer;}
+.dt-charts-fold > summary{display:inline-block; font:700 13px 'Baloo 2',system-ui,sans-serif; padding:4px 10px; margin:4px 0; border-radius:999px; background:color-mix(in srgb, var(--surface-2) 70%, transparent); border:1px solid var(--surface-border);}
+@media (min-width:701px){ .dt-charts-fold > summary{display:none;} }
+@media (max-width:600px){ .vs2.is-raid .vs-start{box-shadow:0 -18px 22px 10px rgba(90,43,34,.94), 0 6px 14px rgba(0,0,0,.4);} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -40185,7 +40209,7 @@ M.enemyCardFlip = function(el, opts){
 };
 // Played into a reserve row: it slides in under a dim and a small "behind the line" chevron settles under it.
 M.reserveIn = function(el, opts){
-  const t = tileOf(el); if(!t || !t.isConnected) return Promise.resolve();
+  const t = tileOf(el); if(!t || !t.isConnected || !t.getBoundingClientRect().width) return Promise.resolve(); // 2026-11-19 (package REL2): a tile not laid out yet drew its chip clipped at the page corner
   return run(opts, (tl, mk)=>{
     const c = centre(t), ch = mk('fxc-g', '⤵'); ch.style.fontSize = '18px'; ch.style.color = '#e8d6a8';
     tl.fromTo(t, {filter:F('brightness(1.3)')}, {filter:F('brightness(.92)'), duration:.4, clearProps:'filter'}, .1);
@@ -46096,7 +46120,7 @@ H.xpGain = (n, before, after, env)=>{
   if(after > before && resultsUp()){ let waited = 0; const wait = ()=>{ if(resultsUp() && waited < 600000){ waited += 400; later(wait, 400); } else later(play, 450); }; later(wait, 400); return; }
   if(after > before) later(play, 450); else play();
 };
-H.energySpend = (cost, env)=>{ const p = energyPill(); if(p && medOK(env)) M.energySpend(p, {cost}); };
+H.energySpend = (cost, env)=>{ const p = energyPill(); if(p && medOK(env) && !document.body.classList.contains('bw-in-match')) M.energySpend(p, {cost}); }; // 2026-11-19 (package REL2): not once the board is up, the -N floater landed on the fight's speed button
 H.energyTick = (cur, max, env)=>{ const p = energyPill(); if(p && medOK(env)) later(()=> M.energyTick(energyPill() || p, {full:cur >= max}), 80); };
 H.energyRefill = (amount, which, rect, env)=>{ if(!medOK(env)) return; const from = rect && rect.width ? rect : null; // the button's rect, taken before the panel closes
   later(()=>{ const p = energyPill(); if(!p) return; if(which === 'epCapsule') M.energyCapsule(p, {amount, from:from && {x:from.left + from.width/2, y:from.top + from.height/2, w:from.width, h:from.height}}); else M.energyFree(p, {amount}); }, 60); };
@@ -49223,7 +49247,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=17df5fa458", "es": "assets/lang/es.js?v=33523ef75f", "fr": "assets/lang/fr.js?v=b648e5b1ab", "id": "assets/lang/id.js?v=9233b3a7c1", "it": "assets/lang/it.js?v=5f31bded73", "ja": "assets/lang/ja.js?v=3ded3e8189", "ko": "assets/lang/ko.js?v=18689de518", "pt": "assets/lang/pt.js?v=742a7cfab9", "ta": "assets/lang/ta.js?v=3784eaa199", "tl": "assets/lang/tl.js?v=a45f1a02c3", "zh-Hans": "assets/lang/zh-Hans.js?v=87e3684d99", "zh-Hant": "assets/lang/zh-Hant.js?v=d0d43898a7"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=b099cbaa97", "es": "assets/lang/es.js?v=5579467c85", "fr": "assets/lang/fr.js?v=acdc3ff52d", "id": "assets/lang/id.js?v=0eaf900789", "it": "assets/lang/it.js?v=68d3f4f09f", "ja": "assets/lang/ja.js?v=47bf561270", "ko": "assets/lang/ko.js?v=a420755fe0", "pt": "assets/lang/pt.js?v=0c9b758889", "ta": "assets/lang/ta.js?v=c308655da8", "tl": "assets/lang/tl.js?v=2434420d6e", "zh-Hans": "assets/lang/zh-Hans.js?v=35cffca836", "zh-Hant": "assets/lang/zh-Hant.js?v=8dc344996c"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -53203,7 +53227,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng52-act-nurse-desc": "Nurse N: heal a random hurt ally (below its max Health, not this card) for N. With no ally hurt, nothing happens.",
   "ui.eng52-act-nurse-text": "nurse a random hurt ally for {n}",
   "ui.eng52-log-nurse": "{name} nursed {target} for {n} HP. 💚",
-  "ui.eng52-chip-nursing": "Nursing: heals a random hurt ally every upkeep"
+  "ui.eng52-chip-nursing": "Nursing: heals a random hurt ally every upkeep",
+  "ui.rel2-murgle-open": "Murgle Mayhem is open! Look for the 🐸 on Sable Swampmire (Map 6). Keys today: {n}.",
+  "ui.rel2-murgle-keys": "{n} keys today",
+  "ui.rel2-tap-tip": "👁️ Touch and hold a card on the board to see where it will strike.",
+  "ui.rel2-deck-help-touch": "Tap a card to add a copy; tap its − corner to take one out. Press 💾 Save deck to keep your changes.",
+  "ui.rel2-charts": "Charts",
+  "ui.rel2-gate-later": "You will learn more about this later.",
+  "ui.rel2-map0-hint": "Win 0-1 and 0-2 to open your Camp. Each fight costs ⚡ Energy.",
+  "ui.rel2-pvp-note": "Win to climb the ranks: your rating picks who you face, and each match uses one 🎟️ ticket."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -59361,7 +59393,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'e56a0bd84855', BUILD_CARD_HASH = '362fac8d7dac6a9b0754ebf01f86b0b0e291f42d0659ab5cec6fddb7f491bf1f';
+const BUILD_ID = '41f0b60b1a61', BUILD_CARD_HASH = '362fac8d7dac6a9b0754ebf01f86b0b0e291f42d0659ab5cec6fddb7f491bf1f';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -72465,7 +72497,7 @@ function deckHeroBannerHTML(){
         <span><b>${sig.avgHp}</b><small>❤ avg health</small></span>
         <span><b>${sig.avgCost}</b><small>🪵 avg cost</small></span>
       </div>
-      <div class="dt-charts">${deckMiniChartsHTML(d.counts)}</div>
+      <details class="dt-charts-fold" ${window.innerWidth > 700 ? 'open' : ''}><summary>📊 ${escapeHtml(TX('ui.rel2-charts'))}</summary><div class="dt-charts">${deckMiniChartsHTML(d.counts)}</div></details>${'' /* 2026-11-19 (REL2): on a phone the charts fold under the cards */}
       ${hero ? `<div class="dt-hero">🦸 <b>${escapeHtml(hero.name)}</b> rides with this deck · Lv ${heroLevelOf(hero).level}</div>` : ''}
     </div>
   </div>`;
@@ -73719,7 +73751,7 @@ function renderPlay(){
   document.body.classList.remove('conquest-full', 'play-full');
   if(!matchState){
     const wrap = document.getElementById('appWrap');
-    if(wrap) wrap.classList.remove('in-match'); // task #94: back to the normal-width layout outside a match
+    if(wrap) wrap.classList.remove('in-match'); document.body.classList.remove('bw-in-match'); // task #94: back to the normal-width layout outside a match // 2026-11-19 (package REL2): body flag hides the guest sign-in strip in fights
     // 2026-09-17, per explicit request ("map encompasses both tabs (shrunk)... ~99% full
     // width"): Conquest's and Raid's shared full-width treatment is applied fresh by whichever
     // of those two sub-tabs actually renders below (see renderConquestSubTab/renderRaidSubTab) —
@@ -73882,7 +73914,7 @@ function renderPlayerSubTab(body){
   body.innerHTML = `
     <div class="panel deckbuilder-panel">
       ${deckHeroBannerHTML()}
-      <h2>🃏 Your Loadout</h2><p class="panel-sub">Click a card to add a copy; <b>Shift+click</b> (or right-click, or its − corner) takes one out. Press 💾 Save deck to keep your changes.</p>
+      <h2>🃏 Your Loadout</h2><p class="panel-sub">${REL2_TOUCH ? escapeHtml(TX('ui.rel2-deck-help-touch')) : 'Click a card to add a copy; <b>Shift+click</b> (or right-click, or its − corner) takes one out. Press 💾 Save deck to keep your changes.'}</p>
       ${'' /* 2026-10-15 (user: "Remove the 'Cards' pill - it's useless."): no "🃏 Cards" heading pill over the count line */}
       <!-- 2026-09-20, per explicit request ("the 20/20 cards label and warning should be just
            above the deck preview"): this used to sit up in the panel-sub line right under the
@@ -75595,6 +75627,19 @@ function mapSkullHTML(){
   return `<span class="map-skull" style="left:31%; top:46%;" aria-hidden="true"><svg viewBox="0 0 40 28" width="40" height="28"><ellipse cx="20" cy="25" rx="16" ry="2.6" fill="rgba(70,45,20,.3)"/><path d="M9 14 C4 12 3 7 5 3 M31 14 C36 12 37 7 35 3" stroke="#efe6d0" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M9 15 C9 8 31 8 31 15 C31 20 27 22 24 22 L16 22 C13 22 9 20 9 15Z" fill="#f6efdd"/><path d="M9 15 C9 11 14 9 20 9 C14 11 12 14 13 19 C10 18 9 17 9 15Z" fill="#fffaf0" opacity=".7"/><ellipse cx="15" cy="15.5" rx="2.4" ry="2.8" fill="#5b4630"/><ellipse cx="25" cy="15.5" rx="2.4" ry="2.8" fill="#5b4630"/><path d="M20 18 L18.8 20.4 L21.2 20.4Z" fill="#5b4630"/><path d="M16.5 22 V24 M20 22 V24.4 M23.5 22 V24" stroke="#d9cdb0" stroke-width="1.2"/></svg></span>`;
 }
 let conquestSubZoom = null;
+// 2026-11-19 (package REL2, REL1 audit P1): Murgle Mayhem opens after Map 10 but its entrance is on Map 6, so say so once (toast) and point to it (Home note, pulsing node).
+function rel2MurgleOpen(){ try{ const mm = CONQUEST_MAPS.find(m=> m.id === 'mm'); return !!(mm && !dungeonHiddenFromPlayer(mm) && isMapUnlocked(mm, loadConquestProgress())); }catch(e){ return false; } }
+function rel2TellMurgle(){
+  if(matchState || !rel2MurgleOpen() || loadDialogueFlags()['rel2_murgle_told']) return;
+  setDialogueFlag('rel2_murgle_told', true); showToast(TX('ui.rel2-murgle-open', {n: dungeonTicketsLeft()}), 'ok');
+}
+// 2026-11-19 (package REL2): the first map view after Tutorial II says what to do next (once)
+function rel2FirstMapHint(){
+  try{ if(matchState || conquestSelectedMap !== 'm1' || !loadTutorial2Done() || loadDialogueFlags()['rel2_map0_hint']) return;
+    if(loadConquestProgress().completed.includes(conquestNodeId('m1', '0-1'))) return;
+    setDialogueFlag('rel2_map0_hint', true); setTimeout(()=> showToast(TX('ui.rel2-map0-hint'), 'ok'), 900);
+  }catch(e){}
+}
 function subMapEntrancesHTML(map, progress){
   return CONQUEST_MAPS.filter(m=> m.sub && m.parent===map.id && m.entry && !(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(m)) /* 2026-10-23 (TU2): a hidden daily dungeon has no entrance */).map(sm=>{
     const open = isMapUnlocked(sm, progress), after = sm.entry.after && map.nodes.find(n=> n.key===sm.entry.after);
@@ -75616,10 +75661,10 @@ function subMapEntrancesHTML(map, progress){
     // Lilypad reach should be a lotus flower. and just that!"): only the real caves keep the rock and cave mouth; every other
     // side map is just its own emblem (a lotus, a clover, a nest…), with a padlock badge while it's locked.
     if(!SUBMAP_CAVES.has(sm.id)){
-      return `<button type="button" class="map-cave map-subcave map-subemblem ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}${flairLairMap(sm) ? ' is-lair-final' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
+      return `<button type="button" class="map-cave map-subcave map-subemblem ${open ? '' : 'is-locked'}${open && !seen ? ' rel2-pulse' : ''} ${done && done===fightable.length ? 'is-done' : ''}${flairLairMap(sm) ? ' is-lair-final' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
       <span class="mse-ico" aria-hidden="true">${SUBMAP_EMBLEM_SVG[sm.id] || sm.icon}</span>${adminTag}${flairLairMap(sm) ? flairLairEntranceHTML() /* FLAIR1 (2026-10-28): the Dragon Lair's molten ring and crown */ : ''}${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
     }
-    return `<button type="button" class="map-cave map-subcave ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
+    return `<button type="button" class="map-cave map-subcave ${open ? '' : 'is-locked'}${open && !seen ? ' rel2-pulse' : ''} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
       <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span>${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
   }).join('');
 }
@@ -76793,8 +76838,8 @@ function matchFieldUnrevealed(m){ return !!(m && m.conquestNode && fieldUnreveal
 const MISTY_Q_TIP = "Something hangs in the air here. You'll learn more soon.";
 // 2026-10-18 (audit 4): a revealAfter-gated row never reveals by happening, so its "?" says what opens it (built from the gate).
 function revealGateTip(ra){ try{ if(!ra) return '';
-  if(ra.mapNum != null) return TX('ui.reveal-gate-mapnum', {n: Number(ra.mapNum)});
-  if(ra.map){ const n = mapNumberOf(ra.map); return TX('ui.reveal-gate-map', {n: n != null ? n : ra.map}); } }catch(e){} return ''; }
+  if(ra.mapNum != null) return Number(ra.mapNum) > 20 ? TX('ui.rel2-gate-later') : TX('ui.reveal-gate-mapnum', {n: Number(ra.mapNum)}); // 2026-11-19 (package REL2): no Map 41 tease in Release 1.0
+  if(ra.map){ const n = mapNumberOf(ra.map); return n != null && n > 20 ? TX('ui.rel2-gate-later') : TX('ui.reveal-gate-map', {n: n != null ? n : ra.map}); } }catch(e){} return ''; }
 function fieldRowGateTip(row){ try{ return row && fieldRowGated(row.key) ? revealGateTip(FIELD2[row.key].revealAfter) : ''; }catch(e){ return ''; } }
 function fieldRowQTip(row){ return fieldRowGateTip(row) || (row && row.qTip) || 'Shows what it does once it first happens'; }
 // Misty (2026-10-15, user: "The mist effect ? now says 'There is no day and night'"): what rules.misty really does. It turns the
@@ -79889,7 +79934,7 @@ function renderArenaSubTabInner(body, title){
         <button type="button" class="ar3-chip ar3-chip-btn" id="arenaAchvBtn" title="Achievements" aria-label="Achievements">🏆</button>
       </div>
       ${resumable ? `<button type="button" class="btn primary ar3-continue" id="continueAsyncBtn"><span aria-hidden="true">▶️</span> Continue <small>Your saved match</small></button>` : ''}
-      ${arenaPvpPairHTML()}
+      ${arenaPvpPairHTML()}${loadDialogueFlags()['rel2_pvp_seen'] ? '' : `<p class="ar3-pvp-note">${escapeHtml(TX('ui.rel2-pvp-note'))}</p>`}${'' /* 2026-11-19 (package REL2): the first-visit PvP line, until a first match */}
       <section class="ar3-panel ar3-today" aria-label="${escapeAttr(head)}">
         <div class="ar3-today-head"><h3>${escapeHtml(head)}</h3>
           <span class="ar3-today-when" title="${escapeAttr(TX('ui.ar-rules-tip'))}">⏳ ${escapeHtml(TX('ui.ar-new-in', {h: hrsLeft}))}${tomorrow ? ` <span class="ar3-next" title="${escapeAttr('Tomorrow: ' + tomorrow.effects.map(f=> f.name).join(', '))}">→ ${tomorrow.effects.map(f=> f.icon).join('')}</span>` : ''}</span></div>
@@ -84115,6 +84160,8 @@ function conquestPanTo(mapId, body, progress){
 // Rotating tips (2026-10-08, user: "this tip should change here and there, from a collection of
 // cool tips; they move and fade out"). Shuffled once per page, one every ~7 s, each sliding in,
 // holding, then drifting out. Pauses while the tab is hidden.
+// 2026-11-19 (package REL2): a touch screen has no hover, so the tips and help lines that say hover / Shift+click read as touch wording there
+const REL2_TOUCH = (()=>{ try{ return !!(window.matchMedia && window.matchMedia('(hover: none)').matches); }catch(e){ return false; } })();
 const GAME_TIPS = [
   TX('tutorial.drop-a-card-on-the-graveyard'),
   TX('tutorial.the-number-in-the-ring-is'),
@@ -84133,7 +84180,7 @@ const GAME_TIPS = [
   TX('tutorial.each-card-strikes-the-one-across'),
   TX('tutorial.battle-music-follows-your-rival-s'),
   TX('tutorial.summoned-tokens-shatter-instead-of-falling'),
-  TX('tutorial.hover-a-card-on-the-board'),
+  REL2_TOUCH ? TX('ui.rel2-tap-tip') : TX('tutorial.hover-a-card-on-the-board'), // 2026-11-19 (REL2)
   TX('tutorial.out-of-moves-many-rivals-surrender'),
   TX('tutorial.more-opens-up-as-you-cross'),
 ];
@@ -84627,8 +84674,8 @@ function renderConquestSubTab(body){
   // account"): Admin Mode used to skip this, and Reset all keeps Admin Mode, so an admin's fresh account won T-0 and was sent to the
   // Outskirts, which show nothing until Tutorial II is won, while T-1 sat on the Tutorial map it couldn't see. The start map now holds
   // for everyone; only the layout editor may look elsewhere. A save whose progress shows Tutorial II won gets its flag back first.
-  healTutorial2Flag();
-  try{ if(!matchState) resumeLastMap(); }catch(e){} // 2026-10-24 (package MAP, owner 17:01 #1): back where you left off
+  healTutorial2Flag(); rel2TellMurgle(); // 2026-11-19 (REL2)
+  try{ if(!matchState) resumeLastMap(); }catch(e){} rel2FirstMapHint(); // 2026-10-24 (package MAP, owner 17:01 #1): back where you left off
   if(!loadTutorial2Done() && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit) && conquestSelectedMap !== 'mtut') conquestSelectedMap = 'mtut';
   { const hid = CONQUEST_MAPS.find(m=> m.id === conquestSelectedMap); if(hid && dungeonHiddenFromPlayer(hid)) conquestSelectedMap = hid.parent || 'm1';
     if(!hid && c13IsAdminMap(conquestSelectedMap)) conquestSelectedMap = 'm1'; } // 2026-11-07 (CONTENT13): the Drill Grounds left open after Admin Mode went off // 2026-10-23 (TU2): a hidden daily dungeon left open in a save
@@ -87629,6 +87676,7 @@ function wireFactionShowcase(screen){
   const inner = screen.querySelector('.faction-inner'), bg = screen.querySelector('.entrance-bg'), bushes = screen.querySelector('.entrance-bushes');
   let current = null;
   const surge = (key)=>{
+    if(window.innerWidth < 700) return; // 2026-11-19 (package REL2): on a phone the first button's focus leaned the whole panel 32px off the left edge
     if(current===key) return; current = key;
     const f = key ? FACTION_SHOWCASE[key] : null, dir = f ? f.dir : 0;
     layer.querySelectorAll('.fs-panel').forEach(pn=> pn.classList.toggle('on', pn.dataset.fs===key));
@@ -89236,7 +89284,7 @@ function vis4MapCardsHTML(map, node){
     const shown = ids.filter(id=> adminModeEnabled || rarityRevealedForPlayer(defs[id].rarity, reach)), lockedN = ids.length - shown.length;
     const tiles = vis4MapCardTilesHTML(shown, defs); // 2026-10-28 (package PACK1): the tiles shared with the 🃏 Map cards overlay
     const lock = lockedN ? `<span class="vis4-mc-locked" tabindex="0" data-zoom-tip="${escapeAttr(TX('ui.vis4-map-cards-locked', {n: lockedN}))}" aria-label="${escapeAttr(TX('ui.vis4-map-cards-locked', {n: lockedN}))}">🔒 +${lockedN}</span>` : '';
-    return `<div class="vis4-map-cards"><div class="vis4-mc-h">${escapeHtml(TX('ui.vis4-map-cards'))}</div><div class="vis4-mc-row">${tiles}${lock}</div></div>`;
+    return `<details class="vis4-map-cards" ${window.innerWidth > 700 ? 'open' : ''}><summary class="vis4-mc-h">${escapeHtml(TX('ui.vis4-map-cards'))}</summary><div class="vis4-mc-row">${tiles}${lock}</div></details>`; // 2026-11-19 (package REL2): folded on a phone
   }catch(e){ return ''; }
 }
 // VIS4's tiles, by rarity then name: a card the player has never seen is the ❓ back (an admin sees every card). opts.packs: a "📦 Pack N" tag
@@ -90879,7 +90927,7 @@ let sandboxTarget = {pid:1, side:'left'};
 let sandboxSearch = '';
 function renderSandboxSubTab(body){
   const wrap = document.getElementById('appWrap');
-  if(wrap){ wrap.classList.add('wide-map'); wrap.classList.remove('in-match'); }
+  if(wrap){ wrap.classList.add('wide-map'); wrap.classList.remove('in-match'); document.body.classList.remove('bw-in-match'); } // 2026-11-19 (REL2)
   body.innerHTML = `<div class="panel">
       <h2>🧪 Sandbox Test Battle</h2>
       <p class="panel-sub">A blank battlefield with no deck, no hand, and no cost gates -- spawn any card straight onto either side and run real combat to see exactly how it behaves. Developer-Mode-only; never seen by a normal player.</p>
@@ -94122,6 +94170,8 @@ function startMatchInner(mode, opts, standardDeck){
     if(!usePvpTicket()){ if(standardDeck){ standardMatchActive = false; _stdDefsCache = null; } showToast(TX('toast.no-pvp-tickets-left-one-comes', {PVP_TICKETS_PER_DAY}), 'warn'); return; } // 2026-10-21 (package AR): a refused Standard PvP leaves the format off
     asyncStage = pvpStageForRating(myRating);
     try{ fxHook('pvpTicketUsed'); }catch(e){} // 2026-10-15 batch F: the ticket tears
+    try{ dialogueDock(); const dk = document.getElementById('dialogueDock'); if(dk && dk._setCollapsed) dk._setCollapsed(true); }catch(e){} // 2026-11-19 (package REL2): no NPC bubble over the first PvP board
+    setDialogueFlag('rel2_pvp_seen', true);
     asyncGhost = pickPvpStranger(currentMatchSeed, standardDeck || null).opponent;
     if(asyncGhost && !standardDeck) asyncGhost = pvpLevelStranger(asyncGhost, mainDeckLevel(myDeckCounts, matchLeaderId())); // ENG10 (2026-10-26, FIX3-4): levelled to your battle rating
     // 2026-10-21 (package AR): Standard PvP (the Arena's 🃏 button), every card at Level 1. Your Standard deck holds cards you may not
@@ -95053,7 +95103,7 @@ function renderMatchUI(){
   // actually on screen — see the #appWrap.in-match CSS in the template.
   const wrapEl = document.getElementById('appWrap');
   if(wrapEl){
-    wrapEl.classList.add('in-match');
+    wrapEl.classList.add('in-match'); document.body.classList.add('bw-in-match'); // 2026-11-19 (REL2)
     wrapEl.classList.toggle('mb2-raid', !!(matchState && matchState.raidFull)); // 2026-10-19 (package MB2): the raid board fills the screen (CSS + mb2FitRaidCards)
     // Bugfix (2026-09-19, found while narrowing the in-match battlefield per explicit request
     // "the battlefield could be a bit more compact... less wide"): starting a match FROM the
@@ -114270,6 +114320,7 @@ function renderHome(){
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Notices"><i class="pin" aria-hidden="true">📌</i><b>📌 Notices</b><small>${qn ? `${qn} to claim!` : 'Dailies &amp; quests'}</small></button>` : ''}
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
+        ${rel2MurgleOpen() ? `<button type="button" class="home-note note-murgle" id="homeMurgleBtn" title="Murgle Mayhem"><i class="pin" aria-hidden="true">📌</i><b>🐸 Murgle Mayhem</b><small>${escapeHtml(TX('ui.rel2-murgle-keys', {n: dungeonTicketsLeft()}))}</small></button>` : ''}
         ${featureUnlocked('tavern') ? (()=>{ try{ settleWeeklyBeer(); }catch(e){} const beer = myCurrencies.beer||0; return `<button type="button" class="home-note note-tavern" data-hometab="tavern" title="The Tavern: recruit cards, raise your max Energy"><i class="pin" aria-hidden="true">📌</i><b>🍺 The Tavern</b><small>${beer ? `${beer} Beer · Recruit` : 'Recruit · Stamina'}</small></button>`; })() : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> _t(({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t])).join(' · ') /* 2026-11-16 (package UX4): each word through the pack */}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
@@ -114282,6 +114333,8 @@ function renderHome(){
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=>{ const t = b.getAttribute('data-hometab');
     if(t === 'play' && b.dataset.fix8map && !matchState){ try{ const pm = CONQUEST_MAPS.find(x=> x.id === b.dataset.fix8map); if(pm && isMapUnlocked(pm, loadConquestProgress()) && !(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(pm))){ conquestSelectedMap = pm.id; conquestSelectedNodeKey = null; playSubTab = 'conquest'; } }catch(e){} } // 2026-11-03 (FIX8, QA2 minor 9): "Play - Next: X" opens the map X is on
     if(t === 'tavern') openTavern(); else homeGo(t); }));
+  { const mb = document.getElementById('homeMurgleBtn'); if(mb) mb.addEventListener('click', ()=>{ conquestSelectedMap = 'm8'; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); }); } // 2026-11-19 (REL2): Murgle's entrance is on Map 6
+  setTimeout(()=>{ try{ if(currentTab === 'home') rel2TellMurgle(); }catch(e){} }, 1200);
   const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ if(!resumeAbandonedMatchNow()) renderHome(); });
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
   const cb = document.getElementById('homeCommunityBtn');
@@ -120214,6 +120267,7 @@ function switchTab(tab){
   // gated on being both on the Play tab AND mid-match, not just the tab alone.
   const wrap = document.getElementById('appWrap');
   if(wrap) wrap.classList.toggle('in-match', tab==='play' && !!matchState);
+  document.body.classList.toggle('bw-in-match', tab==='play' && !!matchState); // 2026-11-19 (REL2)
   // 2026-09-20: the old always-visible tab strip is gone (see renderHome's own comment) — the
   // topbar's Home button is the one persistent way back, so it hides itself while you're
   // already there instead of doing nothing when clicked.

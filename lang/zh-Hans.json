@@ -4658,5 +4658,13 @@
  "Budget": "预算",
  "Clear all": "全部清除",
  "Style {s} · skill {n}%": "类型 {s} · 技能 {n}%",
- "Armoured Shield": "装甲护盾"
+ "Armoured Shield": "装甲护盾",
+ "Murgle Mayhem is open! Look for the 🐸 on Sable Swampmire (Map 6). Keys today: {n}.": "Murgle Mayhem 已开启！到 Sable Swampmire（地图 6）找 🐸。今日钥匙：{n}。",
+ "{n} keys today": "今日钥匙 {n}",
+ "Touch and hold a card on the board to see where it will strike.": "长按场上的卡牌，可以看到它会攻击哪里。",
+ "Tap a card to add a copy; tap its − corner to take one out. Press 💾 Save deck to keep your changes.": "点按卡牌可加入一张；点按它的 − 角可移除一张。按 💾 保存牌组以保留更改。",
+ "Charts": "图表",
+ "You will learn more about this later.": "之后你会了解更多。",
+ "Win 0-1 and 0-2 to open your Camp. Each fight costs ⚡ Energy.": "赢下 0-1 和 0-2 即可开启你的营地。每场战斗消耗 ⚡ 能量。",
+ "Win to climb the ranks: your rating picks who you face, and each match uses one 🎟️ ticket.": "获胜即可升级排名：你的评分决定对手，每场对战消耗一张 🎟️ 门票。"
 }

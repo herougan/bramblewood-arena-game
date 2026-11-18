@@ -4660,5 +4660,13 @@
  "Budget": "வரவு",
  "Clear all": "அனைத்தும் அழி",
  "Style {s} · skill {n}%": "பாணி {s} · திறன் {n}%",
- "Armoured Shield": "கவச கேடயம்"
+ "Armoured Shield": "கவச கேடயம்",
+ "Murgle Mayhem is open! Look for the 🐸 on Sable Swampmire (Map 6). Keys today: {n}.": "Murgle Mayhem திறந்துவிட்டது! Sable Swampmire (வரைபடம் 6) இல் 🐸 ஐத் தேடுங்கள். இன்றைய சாவிகள்: {n}.",
+ "{n} keys today": "இன்று {n} சாவிகள்",
+ "Touch and hold a card on the board to see where it will strike.": "பலகையில் உள்ள அட்டையை தொட்டுப் பிடித்தால் அது எங்கு தாக்கும் என்று தெரியும்.",
+ "Tap a card to add a copy; tap its − corner to take one out. Press 💾 Save deck to keep your changes.": "ஒரு நகலைச் சேர்க்க அட்டையைத் தொடுங்கள்; ஒன்றை நீக்க அதன் − மூலையைத் தொடுங்கள். மாற்றங்களை வைத்திருக்க 💾 டெக்கைச் சேமி அழுத்துங்கள்.",
+ "Charts": "விளக்கப்படங்கள்",
+ "You will learn more about this later.": "இதைப் பற்றி பிறகு மேலும் அறிவீர்கள்.",
+ "Win 0-1 and 0-2 to open your Camp. Each fight costs ⚡ Energy.": "0-1 மற்றும் 0-2 ஐ வென்றால் உங்கள் முகாம் திறக்கும். ஒவ்வொரு சண்டைக்கும் ⚡ ஆற்றல் செலவாகும்.",
+ "Win to climb the ranks: your rating picks who you face, and each match uses one 🎟️ ticket.": "ரேங்கில் உயர வெல்லுங்கள்: உங்கள் மதிப்பீடு எதிராளியைத் தீர்மானிக்கும்; ஒவ்வொரு ஆட்டமும் ஒரு 🎟️ டிக்கெட்டைப் பயன்படுத்தும்."
 }

@@ -4660,5 +4660,13 @@
  "Budget": "예산",
  "Clear all": "모두 지우기",
  "Style {s} · skill {n}%": "유형 {s} · 스킬 {n}%",
- "Armoured Shield": "장갑 보호막"
+ "Armoured Shield": "장갑 보호막",
+ "Murgle Mayhem is open! Look for the 🐸 on Sable Swampmire (Map 6). Keys today: {n}.": "Murgle Mayhem이 열렸어요! Sable Swampmire(지도 6)에서 🐸를 찾아보세요. 오늘의 열쇠: {n}.",
+ "{n} keys today": "오늘 열쇠 {n}",
+ "Touch and hold a card on the board to see where it will strike.": "판 위의 카드를 길게 누르면 어디를 공격할지 볼 수 있어요.",
+ "Tap a card to add a copy; tap its − corner to take one out. Press 💾 Save deck to keep your changes.": "카드를 누르면 한 장 추가되고, 카드의 − 모서리를 누르면 한 장 빠져요. 변경 내용을 유지하려면 💾 덱 저장을 누르세요.",
+ "Charts": "차트",
+ "You will learn more about this later.": "이건 나중에 더 알게 될 거예요.",
+ "Win 0-1 and 0-2 to open your Camp. Each fight costs ⚡ Energy.": "0-1과 0-2에서 이기면 캠프가 열려요. 전투마다 ⚡ 에너지가 들어요.",
+ "Win to climb the ranks: your rating picks who you face, and each match uses one 🎟️ ticket.": "이겨서 순위를 올리세요. 레이팅이 상대를 정하고, 한 판마다 🎟️ 티켓이 한 장 들어요."
 }

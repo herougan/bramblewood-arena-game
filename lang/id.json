@@ -4659,5 +4659,13 @@
  "Budget": "Anggaran",
  "Clear all": "Hapus semua",
  "Style {s} · skill {n}%": "Gaya {s} · skill {n}%",
- "Armoured Shield": "Perisai Berzirah"
+ "Armoured Shield": "Perisai Berzirah",
+ "Murgle Mayhem is open! Look for the 🐸 on Sable Swampmire (Map 6). Keys today: {n}.": "Murgle Mayhem sudah dibuka! Cari 🐸 di Sable Swampmire (Peta 6). Kunci hari ini: {n}.",
+ "{n} keys today": "{n} kunci hari ini",
+ "Touch and hold a card on the board to see where it will strike.": "Tekan dan tahan kartu di papan untuk melihat ke mana ia akan menyerang.",
+ "Tap a card to add a copy; tap its − corner to take one out. Press 💾 Save deck to keep your changes.": "Ketuk kartu untuk menambah satu salinan; ketuk sudut − nya untuk mengurangi satu. Tekan 💾 Simpan dek untuk menyimpan perubahan.",
+ "Charts": "Grafik",
+ "You will learn more about this later.": "Kamu akan tahu lebih banyak nanti.",
+ "Win 0-1 and 0-2 to open your Camp. Each fight costs ⚡ Energy.": "Menangkan 0-1 dan 0-2 untuk membuka Kemah-mu. Setiap pertarungan memakai ⚡ Energi.",
+ "Win to climb the ranks: your rating picks who you face, and each match uses one 🎟️ ticket.": "Menanglah untuk naik peringkat: ratingmu menentukan lawan, dan setiap pertandingan memakai satu tiket 🎟️."
 }

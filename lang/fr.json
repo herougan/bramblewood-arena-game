@@ -4658,5 +4658,13 @@
  "Budget": "Budget",
  "Clear all": "Tout effacer",
  "Style {s} · skill {n}%": "Style {s} · compétence {n}%",
- "Armoured Shield": "Bouclier blindé"
+ "Armoured Shield": "Bouclier blindé",
+ "Murgle Mayhem is open! Look for the 🐸 on Sable Swampmire (Map 6). Keys today: {n}.": "Murgle Mayhem est ouvert ! Cherche la 🐸 sur Sable Swampmire (Carte 6). Clés aujourd'hui : {n}.",
+ "{n} keys today": "{n} clés aujourd'hui",
+ "Touch and hold a card on the board to see where it will strike.": "Maintiens un doigt sur une carte du plateau pour voir où elle frappera.",
+ "Tap a card to add a copy; tap its − corner to take one out. Press 💾 Save deck to keep your changes.": "Touche une carte pour ajouter un exemplaire ; touche son coin − pour en retirer un. Appuie sur 💾 Enregistrer le deck pour garder tes changements.",
+ "Charts": "Graphiques",
+ "You will learn more about this later.": "Tu en apprendras plus plus tard.",
+ "Win 0-1 and 0-2 to open your Camp. Each fight costs ⚡ Energy.": "Gagne 0-1 et 0-2 pour ouvrir ton Camp. Chaque combat coûte de l'⚡ Énergie.",
+ "Win to climb the ranks: your rating picks who you face, and each match uses one 🎟️ ticket.": "Gagne pour grimper : ta cote choisit tes adversaires, et chaque match utilise un ticket 🎟️."
 }

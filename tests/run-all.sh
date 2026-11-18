@@ -487,3 +487,4 @@ run node tests/ui60-2026-11-18.js   # 2026-11-18 (package UI60): emoji centring 
 run node tests/uifin-2026-11-18.js   # 2026-11-18 (package UIFIN): pip centring, map pills, Glass Dunes skull, Venom -> Poison, focus skills
 run node tests/eng52-2026-11-18.js   # 2026-11-18 (package ENG52, owner 21:04 / 21:06): a Level 1 skill shows on a base Level 1 card (builders, preview, reference fights, tools, budget at Level 1); Nursing / Nurse N heal a random hurt ally, Heal gone (old keys read as Nursing)
 run node tests/skfin-2026-11-18.js   # 2026-11-19 (package SKFIN, owner 11-18 23:55): Delivery one row with its resource a parameter, Armoured Shield (two stacked shields), On Nurse / On Nursed, budgetN with the Level 1 skills
+run node tests/rel2-2026-11-19.js   # 2026-11-19 (package REL2): Release 1.0 path UI fixes (guest banner in fights, tutorial win, Murgle announcement, touch wording, folds, stickers)

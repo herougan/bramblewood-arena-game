@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package REL2, the Release 1.0 path fixes from the REL1 audit)
+- Players see: the tutorial win keeps Claim Rewards on screen on a phone; NEW / GET stickers sit on a card's corner, not its name plate; the guest "Sign in" strip is hidden during fights; Murgle Mayhem (opens after Map 10) is announced once, has a Home note, a pulsing Map 6 entrance and lighter floors; the side pick no longer shifts left on a phone; touch screens read "touch and hold", not "hover" or "Shift+click"; the deck editor folds its charts and the node panel folds "This map's cards" on a phone; the NPC bubbles sit under the sub-tabs; a first-map line after Tutorial II; a first-visit PvP line and no NPC bubble over the first PvP board; no Map 41 tease; no "Reserve" chip at the page corner or -N Energy floater over the fight HUD.
+- Not changed: when Murgle unlocks, the hidden Dungeons tab, Energy pacing, guest packs, page weight (owner calls REL1-1 to REL1-4 filed in `docs/decisions.json`).
+- Under the hood: body class `bw-in-match` beside `#appWrap.in-match`; `REL2_TOUCH`; `tests/rel2-2026-11-19.js`; texts `ui.rel2-*` (12 packs); shots in `docs/release/rel2/`.
 ## 2026-11-18 (package UIFIN, owner 23:55 screenshots + queue)
 - Players see: numbers in card pips sit on the emoji's centre line; the trigger arrow is tight to its glyph and optically centred; the card editor lists every map list a card is on as equal pills (first appearance tinted stronger, no "+"); a bleached skull lies in the Glass Dunes (Map 18); Poison counters, the Poison damage type and status chips no longer say "Venom" (the skill Venomous N keeps its name). Terrier Pup is truly on one list (Map 1 Thistlewood).
 - Under the hood: admin MAP_FOCUS_SKILLS = REDESIGN3 v2 focus keys (Maps 0-20); `tests/uifin-2026-11-18.js`.

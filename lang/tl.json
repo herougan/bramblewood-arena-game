@@ -4658,5 +4658,13 @@
  "Budget": "Badyet",
  "Clear all": "Burahin lahat",
  "Style {s} · skill {n}%": "Istilo {s} · skill {n}%",
- "Armoured Shield": "Kalasag na may Baluti"
+ "Armoured Shield": "Kalasag na may Baluti",
+ "Murgle Mayhem is open! Look for the 🐸 on Sable Swampmire (Map 6). Keys today: {n}.": "Bukas na ang Murgle Mayhem! Hanapin ang 🐸 sa Sable Swampmire (Mapa 6). Mga susi ngayon: {n}.",
+ "{n} keys today": "{n} susi ngayon",
+ "Touch and hold a card on the board to see where it will strike.": "Pindutin at hawakan ang isang card sa board para makita kung saan ito tatama.",
+ "Tap a card to add a copy; tap its − corner to take one out. Press 💾 Save deck to keep your changes.": "Pindutin ang isang card para magdagdag ng kopya; pindutin ang − na sulok nito para mag-alis ng isa. Pindutin ang 💾 I-save ang deck para itago ang mga pagbabago.",
+ "Charts": "Mga tsart",
+ "You will learn more about this later.": "Malalaman mo pa ito sa susunod.",
+ "Win 0-1 and 0-2 to open your Camp. Each fight costs ⚡ Energy.": "Talunin ang 0-1 at 0-2 para mabuksan ang iyong Kampo. Bawat laban ay may gastos na ⚡ Enerhiya.",
+ "Win to climb the ranks: your rating picks who you face, and each match uses one 🎟️ ticket.": "Manalo para umangat: ang rating mo ang pipili ng makakalaban, at bawat laban ay gumagamit ng isang 🎟️ tiket."
 }
