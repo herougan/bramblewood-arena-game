@@ -3861,7 +3861,11 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rel2-charts": "Charts",
   "ui.rel2-gate-later": "You will learn more about this later.",
   "ui.rel2-map0-hint": "Win 0-1 and 0-2 to open your Camp. Each fight costs ⚡ Energy.",
-  "ui.rel2-pvp-note": "Win to climb the ranks: your rating picks who you face, and each match uses one 🎟️ ticket."
+  "ui.rel2-pvp-note": "Win to climb the ranks: your rating picks who you face, and each match uses one 🎟️ ticket.",
+  "ui.lvl11-grows": "Will learn another skill as it grows",
+  "ui.lvl11-slider": "See it at other levels",
+  "ui.lvl11-slider-tip": "Slide to see it at another level, up to one past your best copy.",
+  "ui.lvl11-own": "Own a copy to look further ahead."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

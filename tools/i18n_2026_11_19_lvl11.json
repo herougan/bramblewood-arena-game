@@ -1,0 +1,29 @@
+{
+ "tx": {
+  "ui.lvl11-grows": {"en": "Will learn another skill as it grows",
+   "fr": "Apprendra une autre compétence en grandissant", "de": "Lernt beim Wachsen noch eine Fähigkeit", "es": "Aprenderá otra habilidad al crecer",
+   "it": "Imparerà un'altra abilità crescendo", "pt": "Vai aprender outra habilidade ao crescer", "tl": "Matututo pa ng isang kakayahan habang lumalaki",
+   "ta": "வளரும்போது இன்னொரு திறனைக் கற்கும்", "id": "Akan mempelajari kemampuan lain saat tumbuh", "zh-Hans": "成长后还会学会一项技能",
+   "zh-Hant": "成長後還會學會一項技能", "ja": "成長すると新たなスキルを覚える", "ko": "성장하면 새 스킬을 하나 더 배운다"},
+  "ui.lvl11-slider": {"en": "See it at other levels",
+   "fr": "Voir à d'autres niveaux", "de": "Auf anderen Stufen ansehen", "es": "Ver en otros niveles", "it": "Vedi ad altri livelli",
+   "pt": "Ver em outros níveis", "tl": "Tingnan sa ibang level", "ta": "மற்ற நிலைகளில் பார்க்க", "id": "Lihat di level lain",
+   "zh-Hans": "查看其他等级", "zh-Hant": "查看其他等級", "ja": "ほかのレベルで見る", "ko": "다른 레벨로 보기"},
+  "ui.lvl11-slider-tip": {"en": "Slide to see it at another level, up to one past your best copy.",
+   "fr": "Faites glisser pour la voir à un autre niveau, jusqu'à un niveau au-dessus de votre meilleur exemplaire.",
+   "de": "Schieben, um sie auf einer anderen Stufe zu sehen, bis eine Stufe über deinem besten Exemplar.",
+   "es": "Desliza para verla en otro nivel, hasta uno más que tu mejor copia.",
+   "it": "Scorri per vederla a un altro livello, fino a uno oltre la tua copia migliore.",
+   "pt": "Deslize para vê-la em outro nível, até um acima da sua melhor cópia.",
+   "tl": "I-slide para makita ito sa ibang level, hanggang isa lampas sa pinakamahusay mong kopya.",
+   "ta": "வேறு நிலையில் பார்க்க நகர்த்துங்கள், உங்கள் சிறந்த நகலை விட ஒரு நிலை வரை.",
+   "id": "Geser untuk melihatnya di level lain, hingga satu di atas salinan terbaikmu.",
+   "zh-Hans": "拖动查看其他等级，最多比你最好的那张高一级。", "zh-Hant": "拖動查看其他等級，最多比你最好的那張高一級。",
+   "ja": "スライドで別のレベルを表示。最も育てた1枚の1つ上まで。", "ko": "밀어서 다른 레벨을 보세요. 가장 높은 카드보다 한 레벨 위까지."},
+  "ui.lvl11-own": {"en": "Own a copy to look further ahead.",
+   "fr": "Possédez un exemplaire pour voir plus loin.", "de": "Besitze ein Exemplar, um weiter vorauszuschauen.", "es": "Consigue una copia para ver más allá.",
+   "it": "Possiedi una copia per guardare più avanti.", "pt": "Tenha uma cópia para ver mais adiante.", "tl": "Magkaroon ng kopya para makita pa ang susunod.",
+   "ta": "மேலும் முன்னோக்கிப் பார்க்க ஒரு நகலைப் பெறுங்கள்.", "id": "Miliki satu salinan untuk melihat lebih jauh.",
+   "zh-Hans": "拥有一张后可以看得更远。", "zh-Hant": "擁有一張後可以看得更遠。", "ja": "1枚持つと先のレベルも見られる。", "ko": "한 장을 가지면 더 앞을 볼 수 있다."}
+ }
+}

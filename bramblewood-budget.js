@@ -445,8 +445,9 @@ function capScores(A, H, S, effects, cfg, opts){ A = +A || 0; H = +H || 0; S = +
 function levelKind(L){ if(L === LIMIT) return 'limit'; if(MAJOR.includes(L) || (L > 10 && L % 3 === 1)) return 'major'; if(MINOR.includes(L)) return 'minor'; return 'other'; }
 
 // 2026-11-18 (package LVL10, owner 21:11): a card's own growth, d.levelBonus {"L": {attack, health, skills}} (tools/lvl10/gen_2026_11_18.js).
-// {attack, health, skills} summed over the levels k with from < k <= L (skills: the latest value of each); null without levelBonus. Tokens never read it.
-function levelBonusAt(d, L, from){ const lb = d && !d.token && d.levelBonus; if(!lb || typeof lb !== 'object') return null; const out = {attack: 0, health: 0, skills: {}};
+// {attack, health, skills} summed over the levels k with from < k <= L (skills: the latest value of each); null without levelBonus.
+// LVL11 (2026-11-19, owner 11-18 21:31 "Tokens should also grow in strength"): a token reads its own table too (tools/lvl10/tokens_2026_11_19.js).
+function levelBonusAt(d, L, from){ const lb = d && d.levelBonus; if(!lb || typeof lb !== 'object') return null; const out = {attack: 0, health: 0, skills: {}};
   Object.keys(lb).map(Number).filter(k=> k > (from || 0) && k <= L).sort((x, y)=> x - y).forEach(k=>{ const o = lb[k] || {}; out.attack += +o.attack || 0; out.health += +o.health || 0; if(o.skills && typeof o.skills === 'object') Object.assign(out.skills, o.skills); });
   return out; }
 // A card's skills at level L, in the flat keys (arena_app.js effectsAtLevel and the tools): fx0 (default its effects) less the levelSkills that arrive
@@ -463,7 +464,7 @@ function levelEffectsAt(d, L, fx0, from){ const fx = Object.assign({}, XP(fx0 ||
 // printed stats. Stats that are null (a spell) stay null. LVL10 (2026-11-18): a card with levelBonus takes its rows from it up to Level 10;
 // a level above 10 (the limit break) adds this curve's own step to them.
 function forgeCurve(d, from, top, cfg){
-  const c = forgeCurveBudget(d, from, top, cfg); if(!(d && !d.token && d.levelBonus) || d.attack == null || d.health == null) return c;
+  const c = forgeCurveBudget(d, from, top, cfg); if(!(d && d.levelBonus) || /* LVL11: tokens too */ d.attack == null || d.health == null) return c;
   const aw = num(cfg, 'attackWeight'), rows = c.rows, old = Object.assign({}, rows);
   for(let L = c.from + 1; L <= c.top; L++){ const kind = rows[L].kind, N = rows[L].N;
     if(L <= 10){ const b = levelBonusAt(d, L, c.from); rows[L] = {attack: d.attack + b.attack, health: d.health + b.health, kind, N}; }

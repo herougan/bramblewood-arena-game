@@ -7512,10 +7512,15 @@ function eng28HoverDef(d, liveCard){
 // ENG28 (2026-11-07, owner 11-06 22:16 #6: "A skill learnt at a higher level shows a differently coloured '?', tooltip 'Learnt at a higher level'"): each
 // skill the card only gets at a level above the one shown (levelSkills) is one gold "?" chip under its skills (the plain "?" of a skill not met yet
 // is brown, .skill-q). Admin Mode adds the skill's name and level to the tooltip.
+// LVL11 (2026-11-19, owner 11-18 21:29: "future skills showing up at ? as well. The tooltip is different - it's not that it isn't unlocked, but it says
+// the creature will learn more as it grows"): the chip reads ui.lvl11-grows (was ui.eng28-later, which the Map cards window's named tiles keep);
+// lvl11LaterRows is shared with the card face's one chip (abilityBadges) and the Codex level slider.
+function lvl11LaterRows(d){ const b = (typeof copyBaseDef === 'function' && copyBaseDef(d.derivedFrom || d.id)) || d, ls = (b && b.levelSkills) || d.levelSkills; if(!ls) return [];
+  const L = Number.isFinite(Number(d.level)) ? Number(d.level) : cardBaseLevel(b); return ui18CardSkillKeys({levelSkills: ls}).filter(x=> x.lvl > L); }
+function lvl11GrowsChipHTML(d){ try{ if(!lvl11LaterRows(d).length) return ''; const t = TX('ui.lvl11-grows'); return `<span class="skill-q eng28-later" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">?</span>`; }catch(e){ return ''; } }
 function eng28LaterSkillsHTML(d){
-  try{ const b = (typeof copyBaseDef === 'function' && copyBaseDef(d.id)) || d, ls = (b && b.levelSkills) || d.levelSkills; if(!ls) return '';
-    const L = Number.isFinite(Number(d.level)) ? Number(d.level) : cardBaseLevel(b), tip = TX('ui.eng28-later');
-    const rows = ui18CardSkillKeys({levelSkills: ls}).filter(x=> x.lvl > L); if(!rows.length) return '';
+  try{ const tip = TX('ui.lvl11-grows');
+    const rows = lvl11LaterRows(d); if(!rows.length) return '';
     return `<div class="eng28-later-row">${rows.map(x=>{ const t = adminModeEnabled ? `${tip} (${(skillDefOf(x.key) || {}).label || x.key}, ${TX('ui.codex-skill-lvl', {n: x.lvl})})` : tip;
       return `<span class="skill-q eng28-later" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">?</span>`; }).join('')}</div>`;
   }catch(e){ return ''; }
@@ -10468,6 +10473,7 @@ function abilityBadges(d, bopts){
   eng28GenericPips(e, out, bopts, n1); // ENG28 (2026-11-07, owner 23:35 #9): every other skill gets its pip by default
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
   if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL)
+  if(!(bopts && bopts.live)){ const q = lvl11GrowsChipHTML(d); if(q) out.push(q); } // LVL11 (2026-11-19): it learns another skill as it grows (not on a unit in a fight)
   if(!out.length) return '';
   // 2026-10-12 (10:57, user: "Remove the pill completely (fade) together with the contents when theres nothing left inside"):
   // when everything left in the strip is a trigger that is fading out, the strip fades with it.
@@ -11485,13 +11491,14 @@ function openCardDetail(defId, opts){
       <div class="cd-chips">${chips}</div>
       ${creatureRankText(d) ? `<div class="cd-where cd-rank"><span class="cd-where-k">Rank</span> ${escapeHtml(creatureRankText(d))}</div>` : ''}
       ${cardSocketDetailHTML(defId, d) /* 2026-10-24 (package H1): the socket */}
-      <div class="cd-abilities"><h3>Abilities</h3>${abilityHTML}</div>
+      <div class="cd-abilities"><h3>Abilities</h3>${abilityHTML}${eng28LaterSkillsHTML(d) /* LVL11 (2026-11-19): the skills it learns later, as "?" */}</div>
       ${fromCodex ? neCodexCopiesHTML(defId) : '' /* 2026-10-24 (package NE, owner 17:01 #12) */}
       ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
       ${noteHTML}
       <div class="cd-stats-block">${cardUsageStatsHTML(defId)}</div>
       ${cardRecordHTML(defId)}
       ${adminModeEnabled ? codexPlacementHTML(d) + artReviewDetailHTML(d0 || d) /* 2026-10-21 (package ED, #14): Art rejected */ : `<div class="cd-where"><span class="cd-where-k">Where to get it</span> ${escapeHtml(cardWhereToGetText(d))}</div>`}
+      ${fromCodex ? lvl11SliderHTML(defId, d) : ''}
       </div>
       ${spawnHTML}
       </div>
@@ -11516,6 +11523,7 @@ function openCardDetail(defId, opts){
   // Admin (2026-10-12, user: "a 'get this card' button in the Codex card detail view").
   { const gb = document.getElementById('cdGetBtn'); if(gb) gb.addEventListener('click', ()=>{ try{ unlockCardForPlayer(defId, 'adminGrant'); grantCardCopy && myUnlockedCardIds.has(defId); }catch(e){} invalidateCardDefs(); try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} showToast(TX('toast.is-in-your-nest', {v1: (getCardDefs()[defId]||{}).name || defId}), 'ok'); }); }
   cardDetailCtl = mountDetailView(overlay.querySelector('.cd-dc'), d, cdSt); // 2026-10-30 (package CS-C)
+  { const sl = overlay.querySelector('#lvl11Range'), rd = overlay.querySelector('#lvl11Read'); if(sl && rd) sl.addEventListener('input', ()=>{ rd.innerHTML = lvl11ReadHTML(defId, Number(sl.value)); }); } // LVL11 (2026-11-19)
   if(adminModeEnabled) wireCodexPlacement(defId);
   if(adminModeEnabled) wireArtReviewDetail(defId, ()=>{ if(cardDetailOpenId === defId && !overlay.hidden) openCardDetail(defId, opts); }); // 2026-10-21 (package ED)
   const signInBtn = document.getElementById('cdSignInStatsBtn');
@@ -11560,6 +11568,33 @@ function codexDetailLevelChipHTML(defId, d0, d){
   const label = (mode === 'base' ? '🌱 ' + escapeHtml(TX('ui.ux-level-base')) : '⭐ ' + escapeHtml(TX('ui.ux-level-best'))) + lvTxt;
   const differs = best != null && bl != null && best !== bl; // you own it above its base level: the two views differ
   return differs ? `<button type="button" class="cd-chip ux-cd-lv" id="uxCdLevel" title="${escapeAttr(TX('ui.ux-level-tip'))}" aria-pressed="${mode === 'best'}">${label} ⇄</button>` : `<span class="cd-chip ux-cd-lv">${label}</span>`;
+}
+// LVL11 (2026-11-19, owner 11-18 21:29: "In the codex, let players move a small bar at the bottom to discover the stats at different levels. They can only
+// move at most to their highest unlocked level for that card + 1."): the Codex card view's level bar, from the card's base level to (your best copy's level
+// + 1), never past Level 10 (11 once that card is limit-broken). A card you don't own stays at its base level (the next level you could reach is that one),
+// the bar shown but locked. Admin Mode: every level to 11. Below it: Attack, Health and the skills at that level (defAtShownLevel), a skill still to come as
+// the gold "?" (lvl11GrowsChipHTML's tooltip). The big card keeps the Codex level.
+function lvl11SliderRange(id){
+  const b = copyBaseDef(id); if(!b || (b.attack == null && b.health == null)) return null;
+  const lo = cardBaseLevel(b), top = cardMaxLevel(b) === 10 ? LIMIT_BREAK_LEVEL : cardMaxLevel(b);
+  if(adminModeEnabled) return {lo, hi: top};
+  if(b.token || !(ownedCopiesOf(id) > 0)) return {lo, hi: lo, unowned: true};
+  const best = getCardLevel(id), cap = best >= LIMIT_BREAK_LEVEL ? LIMIT_BREAK_LEVEL : Math.min(10, top);
+  return {lo, hi: Math.max(lo, Math.min(cap, best + 1))};
+}
+function lvl11ReadHTML(id, L){
+  const d = defAtShownLevel(id, L); if(!d) return '';
+  const lines = describeEffects(d, null, {terse:true});
+  return `<div class="lvl11-stats"><b>${escapeHtml(TX('ui.nf-copy-level', {n: L}))}</b> <span class="atk-red">⚔ ${d.attack || 0}</span> <span class="hp-max">❤ ${d.health || 0}</span></div>`
+    + (lines.length ? abilityListHTML(lines) : '') + eng28LaterSkillsHTML(d);
+}
+function lvl11SliderHTML(id, d){
+  const r = lvl11SliderRange(id); if(!r) return '';
+  const cur = Math.max(r.lo, Math.min(r.hi, Number.isFinite(Number(d && d.level)) ? Number(d.level) : r.lo)), tip = TX(r.unowned ? 'ui.lvl11-own' : 'ui.lvl11-slider-tip');
+  return `<div class="lvl11-bar${r.unowned ? ' is-locked' : ''}"><label class="lvl11-lab" for="lvl11Range" title="${escapeAttr(tip)}">${escapeHtml(TX('ui.lvl11-slider'))}
+    <input type="range" id="lvl11Range" min="${r.lo}" max="${r.hi}" step="1" value="${cur}"${r.hi <= r.lo ? ' disabled' : ''} aria-describedby="lvl11Tip"></label>
+    <span class="lvl11-ends" aria-hidden="true"><i>${r.lo}</i><i>${r.hi}</i></span><small class="lvl11-tip" id="lvl11Tip">${escapeHtml(tip)}</small>
+    <div class="lvl11-read" id="lvl11Read" aria-live="polite">${lvl11ReadHTML(id, cur)}</div></div>`;
 }
 // Card inspector (2026-10-08, user: "Cards should be displayed prominently and in large size, to
 // appreciate the card. In the codex, the player can somehow open the card in large and spin the
@@ -35869,7 +35904,7 @@ const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts 
 // 2.4 x (1 + 1) = 4.8). sbSkillCost itself is unchanged: the deck-swap suggestions (swapStrength) still score with it.
 const SKILL_COSTS_TABLE = __SKILL_COSTS__;
 let SB_SC = null, sbFbSkills = null;
-function sbCanon(){ if(SB_SC == null){ try{ SB_SC = typeof SkillCosts !== 'undefined' && SkillCosts.make ? SkillCosts.make(SKILL_COSTS_TABLE, {fallback: (k, v)=> sbSkillCost({[k]: v}, {skills: sbFbSkills || SB_DEFAULT_SKILLS})}) : false; }catch(e){ SB_SC = false; } } return SB_SC || null; }
+function sbCanon(){ if(SB_SC == null){ try{ SB_SC = typeof SkillCosts !== 'undefined' && SkillCosts.make ? SkillCosts.make(SKILL_COSTS_TABLE, {fallback: (k, v)=> sbSkillCost({[k]: v}, {skills: sbFbSkills || SB_DEFAULT_SKILLS}), tokenDef: id=> (typeof liveCards !== 'undefined' && liveCards[id]) || CARD_DEFS_BASELINE[id] /* LVL11 (2026-11-19): a summoned token's growth */}) : false; }catch(e){ SB_SC = false; } } return SB_SC || null; }
 // S of a card: {S, missing: ['skill:id' | 'trigger:id' | 'action:id' with no entry in the table]}
 function sbPriceS(d, cfg){ const T = sbCanon(), e = (d && d.effects) || {};
   if(!T) return {S: sbSkillCost(e, cfg), missing: []};

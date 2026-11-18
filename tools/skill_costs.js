@@ -81,6 +81,7 @@
         if(a.per){ const raw = t[a.per]; x = raw === 'attack' ? (card && card.attack || 0) : has(a.per) ? (+raw || 0) : (fields.some(f=> f !== a.per && has(f)) ? 0 : 1); }
         v += (+a.value || 0) * x; });
       if(t.who && t.who !== 'self' && t.sub !== 'all' && (t.targets | 0) > 1) v *= Math.min(8, t.targets | 0);
+      if(id === 'spawnCard' && t.defId) v *= tokenGrowth(t.defId, card && card.formLevel); // LVL11 (2026-11-19): the token at the card's level
       if(t.sub === 'all') v *= mod('subAll', 2);
       // EN6 (2026-10-24): – bramble on Arrow, Missile and Deal damage (one opponent): x the table's 'bramble' modifier (bramblewood-budget.js EN6_BRAMBLE_MULT)
       if(t.bramble && (BB.EN6_BRAMBLE_ACTIONS || []).includes(id) && t.sub !== 'all') v *= mod('bramble', BB.EN6_BRAMBLE_MULT || 0.9);
@@ -91,6 +92,16 @@
         if(t.withBleed && actEntries.bleed) v += tip * (+actEntries.bleed[0].value || 0) * Math.max(1, numOf(ce.bleed)); }
       return {value:v, missing:null};
     }
+    // LVL11 (2026-11-19, owner 11-18 21:31 "Tokens should also grow in strength"): a summoned token comes out at its summoner's level and grows by its
+    // own levelBonus (bramblewood-engine.js eng36StatsAt), so a Spawn / On Death Spawn at level L (formAt's formLevel) costs x the token's stat points
+    // (3A + H) at L / at its base level. Token defs: opts.tokenDef(id) (the game's card editor), else canonical/cards.json under Node; none: x1.
+    let tokDefs = null;
+    function tokenDefOf(id){ if(opts && opts.tokenDef) return opts.tokenDef(id) || null;
+      if(tokDefs == null){ tokDefs = {}; try{ if(typeof require === 'function') require('../canonical/cards.json').forEach(d=>{ if(d && d.levelBonus) tokDefs[d.id] = d; }); }catch(e){} }
+      return tokDefs[id] || null; }
+    function tokenGrowth(id, L){ const d = L > 1 && tokenDefOf(id); if(!d || !d.levelBonus || d.attack == null) return 1;
+      const b = BB.levelBonusAt(d, Math.min(10, L), d.baseLevel != null ? +d.baseLevel : 1 /* tokens start at Level 1 */), aw = g('attackWeight', 3), p0 = aw * (+d.attack || 0) + (+d.health || 0);
+      return b && p0 > 0 ? r2((p0 + aw * b.attack + b.health) / p0) : 1; }
     function triggerWeight(t){
       const e = TR[t.on]; if(!e) return {w:1, missing:'trigger:' + t.on};
       let w = +e.value || 0;
@@ -166,6 +177,7 @@
         // (every 3 Lumber / 2 Stone / 1 Metal: the table's hoard price x bramblewood-budget.js HOARD_RES_MULT)
         if(BB.zeroFree && BB.zeroFree(k, v)){ parts.push(['skill', k, 0, 'v 0: its parameters carry it (ENG40)']); return; }
         { const hs = BB.hoardS && SK.hoard ? BB.hoardS(k, v, effects, skillCost('hoard', 1)) : null; if(hs){ S += hs.S; parts.push(['skill', k, hs.S, 'x' + hs.mult + ' (' + hs.res + ', ENG40)']); return; } }
+        if(k === 'onDeathSpawn' && v && v.defId && card && card.formLevel > 1){ const gr = tokenGrowth(v.defId, card.formLevel), c0 = skillCost(k, v); if(gr !== 1 && c0 != null){ const c = r2(c0 * gr); S += c; parts.push(['skill', k, c, 'x' + gr + ' (the token at Level ' + card.formLevel + ', LVL11)']); return; } }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
         if(lm !== 1 && LHK.has(k) && (!effects.deliveryRes || effects.deliveryRes === 'lumber' || (BB.LUMBER_MAKER_KEYS || []).includes(k))){ c = r2(c * lm); S += c; parts.push(['skill', k, c, 'x' + lm + ' at home (BAL12)']); return; } // BAL12 (2026-11-02): On Ready Lumber at its lists' mean cost
         { const zm = BB.zeitDrawbackMult ? BB.zeitDrawbackMult(k, home) : 1; if(zm !== 1){ c = r2(c * zm); S += c; parts.push(['skill', k, c, 'x' + zm + ' at home (BAL11)']); return; } } // BAL11 (2026-11-02): Nightblind / Sunshy at their home share
@@ -216,7 +228,7 @@
     function formAt(d, L, from){ from = from == null ? levelOf(d) : from; let A = d.attack, H = d.health;
       if(L > from && (A != null || H != null)){ const row = BB.forgeCurve(withMap(d), from, L).rows[L]; if(row){ A = row.attack; H = row.health; } }
       else if(L < from){ const r = v=> v == null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85)); A = r(A); H = r(H); }
-      return Object.assign({}, d, {attack: A, health: H, effects: BB.levelEffectsAt(d, L, null, from), levelSkills: undefined, levelBonus: undefined}); }
+      return Object.assign({}, d, {attack: A, health: H, effects: BB.levelEffectsAt(d, L, null, from), levelSkills: undefined, levelBonus: undefined, formLevel: L /* LVL11: its tokens' level */}); }
     function budgetAt(d, L, from){ return budget(formAt(d, L, from), {level: L}); }
     return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetBase, budgetN, budgetMult, budgetV3N, budgetV4N, obtainMapOf, budget, formAt, budgetAt};
   }
