@@ -59329,7 +59329,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '4fc45eb2337c', BUILD_CARD_HASH = '1973daeb54447f05ad095180b0241427ea2cd9962ba817098bff0ed73e1ca66e';
+const BUILD_ID = '653f367d6f2f', BUILD_CARD_HASH = '1973daeb54447f05ad095180b0241427ea2cd9962ba817098bff0ed73e1ca66e';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -59542,6 +59542,7 @@ function buildCardDefs(){
   // An edit saved without art keeps the shipped art (2026-10-13, user: "Some cards don't have art yet": cloud edits of Shepherd,
   // Owl Nightwatch, Tomcat and Sergeant Bramblefox were saved before their art existed and hid it).
   Object.keys(liveCards).forEach(id=>{ const lc = liveCards[id], b = CARD_DEFS_BASELINE[id]; if(lc && b && !lc.art && b.art) lc.art = b.art; });
+  Object.keys(liveCards).forEach(id=>{ const lc = liveCards[id], b = CARD_DEFS_BASELINE[id]; if(lc && b && lc.levelBonus == null && b.levelBonus) lc.levelBonus = JSON.parse(JSON.stringify(b.levelBonus)); }); // 2026-11-18 (LVL10 release): a live edit saved before LVL10 has no levelBonus; it keeps the built card's growth (was: the whole-card row dropped it and the card fell back to the old curve)
   // 2026-10-16 (user: "All Worthy cards become Bounty."): the safety net for any way an old Worthy got into the overlay (a save, a restore).
   Object.keys(liveCards).forEach(id=>{ const m = migrateWorthyToBounty(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; });
   Object.keys(liveCards).forEach(id=>{ const m = sk1MigrateSiege(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-19 (package SK1): Demolisher is Siege now

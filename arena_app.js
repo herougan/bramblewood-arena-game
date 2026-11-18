@@ -4433,6 +4433,7 @@ function buildCardDefs(){
   // An edit saved without art keeps the shipped art (2026-10-13, user: "Some cards don't have art yet": cloud edits of Shepherd,
   // Owl Nightwatch, Tomcat and Sergeant Bramblefox were saved before their art existed and hid it).
   Object.keys(liveCards).forEach(id=>{ const lc = liveCards[id], b = CARD_DEFS_BASELINE[id]; if(lc && b && !lc.art && b.art) lc.art = b.art; });
+  Object.keys(liveCards).forEach(id=>{ const lc = liveCards[id], b = CARD_DEFS_BASELINE[id]; if(lc && b && lc.levelBonus == null && b.levelBonus) lc.levelBonus = JSON.parse(JSON.stringify(b.levelBonus)); }); // 2026-11-18 (LVL10 release): a live edit saved before LVL10 has no levelBonus; it keeps the built card's growth (was: the whole-card row dropped it and the card fell back to the old curve)
   // 2026-10-16 (user: "All Worthy cards become Bounty."): the safety net for any way an old Worthy got into the overlay (a save, a restore).
   Object.keys(liveCards).forEach(id=>{ const m = migrateWorthyToBounty(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; });
   Object.keys(liveCards).forEach(id=>{ const m = sk1MigrateSiege(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-19 (package SK1): Demolisher is Siege now
