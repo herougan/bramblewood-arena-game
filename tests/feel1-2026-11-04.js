@@ -33,12 +33,13 @@ ok(doc.includes('FEEL1-1'), 'feelings.md: names decision FEEL1-1');
 const C = JSON.parse(rd('canonical', 'cards.json')); const cards = Array.isArray(C) ? C : (C.cards || Object.values(C));
 const names = new Set(cards.map(c=> c.name));
 const mustBeCards = ['Siege Rhino', 'Cave Bear', 'Mouse Sapper', 'Polar Bear', 'Booming Bittern', 'Owl Nightwatch', 'Muskrat Lodgekeeper', 'Newt Doctor',
-  'Phoenix Fledgling', 'Golden Eagle Diver', 'Caiman Hatchling', 'Ibex Rockcaller', 'Eyrie Warden', 'Cave Warlord', 'Salamander Pyromancer', 'Starfall Owl',
+  'Phoenix Fledgling', 'Golden Eagle' /* 2026-11-18: renamed from Golden Eagle Diver on main */, 'Caiman Hatchling', 'Ibex Rockcaller', 'Eyrie Warden', 'Cave Warlord', 'Salamander Pyromancer', 'Starfall Owl',
   'Berserker Boar', 'Cinder Skeletons', 'Wolfsbane Alpha', 'Wolf Spider Mother', 'Ant Warrior', 'Woodcock Lookout', 'Dormouse', 'Ant Scout', 'Echo Screecher',
   'Gorge Wyrm', 'Fathom Leviathan', 'Elder Tortoise', 'Amber Cicada', 'Royal Guard', 'Beetle Battering-Ram', 'Sandfish', 'Raven Scout'];
 for(const n of mustBeCards){ const base = n.replace(/s$/, ''); ok(names.has(n) || names.has(base), `cards.json has "${n}"`); ok(doc.includes(n), `feelings.md names "${n}"`); }
 const rhino = cards.find(c=> c.id === 'siege-rhino');
-ok(rhino && rhino.wait === 3 && rhino.attack === 5 && rhino.health === 17 && (rhino.effects || {}).siege === 4, 'feelings.md quotes the Siege Rhino as 5/17, Wait 3, Siege 4');
+// 2026-11-18 (FEEL1 follow-up): the 11-17 redesign made it 5/15 Siege 3 + Sweep 1; the doc's quote must match the card
+ok(rhino && doc.includes(`**Siege Rhino** (${rhino.attack}/${rhino.health}, Wait ${rhino.wait}, Siege ${(rhino.effects || {}).siege}`), 'feelings.md quotes the Siege Rhino as the card stands');
 
 // The hub tab
 const hub = rd('tools', 'hub', 'build_hub.py');
