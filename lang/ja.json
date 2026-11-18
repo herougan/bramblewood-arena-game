@@ -4639,5 +4639,14 @@
  "Each turn, after the arrows: {n} Poison on the enemy in front or nearest. No damage.": "毎ターン、矢の後に：正面（いなければ最も近い）の敵に毒 {n}。ダメージなし。",
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "命中時：引き裂き N。それへの命中ごとに1個使う（射撃やスキルも）。毒と出血の継続ダメージは除く。浄化で消える。",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "{att}が{name}の毒を起爆：{n}ダメージ。",
- "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} は有毒だった：{t} は毒を {n} 受けた。"
+ "☠️ {name} was poisonous: {t} gets {n} Poison.": "{name} は有毒だった：{t} は毒を {n} 受けた。",
+ "Nursing": "看護",
+ "Every upkeep, heal a random hurt ally for {n}.": "毎アップキープ、傷ついた味方1体をランダムに{n}回復。",
+ "A hurt ally is one below its max Health. It never heals itself; with no ally hurt, nothing happens.": "傷ついた味方とは体力が最大値未満の味方。自分は回復しない。傷ついた味方がいなければ何も起きない。",
+ "Nurse": "看護",
+ "Nurse N: heal a random hurt ally (below its max Health, not this card) for N. With no ally hurt, nothing happens.": "看護N：傷ついた味方1体（体力が最大値未満、このカード以外）をランダムにN回復。傷ついた味方がいなければ何も起きない。",
+ "nurse a random hurt ally for {n}": "傷ついた味方1体をランダムに{n}看護",
+ "{name} nursed {target} for {n} HP. 💚": "{name}が{target}を{n}看護した。💚",
+ "Nursing: heals a random hurt ally every upkeep": "看護：毎アップキープ、傷ついた味方1体をランダムに回復",
+ "Nursing heals 1 more.": "看護の回復量+1。"
 }

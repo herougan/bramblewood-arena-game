@@ -75,7 +75,10 @@ const fire = (e, P, c, ev)=> e.debugFireTrigger(P, so, c.uid, 'onRoundStart', {}
 // ---- 4. Every other action that offers Kin
 const lone = (id, prep, check, label)=>{ let good = 0; for(let seed = 1; seed <= 12; seed++){ const {e, P} = mk(seed); const S = put(e, P, 1, id); const K = put(e, P, 1, 'kt-kin', 'right'); const O = put(e, P, 1, 'kt-other');
   if(prep){ prep(K); prep(O); } fire(e, P, S); if(check(K, true) && check(O, false)) good++; } ok(good === 12, `${label} (${good}/12)`); };
-lone('kt-heal', c=>{ c.hp = 10; }, (c, kin)=> kin ? c.hp === 15 : c.hp === 10, 'Heal a Kin unit');
+// 2026-11-18 (ENG52, owner 21:06: "Nurse heals a random *hurt* ally"): the heal action is Nurse N, which takes no target (Kin or not): one of the two hurt allies gets 5
+{ let good = 0; const hit = new Set(); for(let seed = 1; seed <= 12; seed++){ const {e, P} = mk(seed); const S = put(e, P, 1, 'kt-heal'); const K = put(e, P, 1, 'kt-kin', 'right'); const O = put(e, P, 1, 'kt-other');
+    K.hp = 10; O.hp = 10; fire(e, P, S); if(K.hp + O.hp === 25 && (K.hp === 15 || O.hp === 15)){ good++; hit.add(K.hp === 15 ? 'kin' : 'other'); } }
+  ok(good === 12 && hit.size === 2, `Nurse (was Heal a Kin unit): one random hurt ally, Kin or not (${good}/12, ${[...hit].join('+')})`); }
 lone('kt-debuff', c=>{ c.atk = 3; }, (c, kin)=> kin ? c.atk === 2 : c.atk === 3, 'Debuff a Kin unit');
 lone('kt-bleed', null, (c, kin)=> kin ? c.bleed === 1 : !c.bleed, 'Bleed a Kin unit');
 { let good = 0; for(let seed = 1; seed <= 12; seed++){ const {e, P} = mk(seed); const S = put(e, P, 1, 'kt-expose'); put(e, P, 1, 'kt-kin', 'right'); put(e, P, 1, 'kt-other'); const ev = []; fire(e, P, S, ev);
@@ -110,12 +113,12 @@ const objSrc = start=>{ const i = src.indexOf(start); if(i < 0) return ''; let d
   ok(/kin:'Kin'/.test(fh), 'the picker labels Kin "Kin"'); }
 ok(/\{key:'exile', label:'Exile', fields:\['who','sub','targets'\], whoOptions:\['self','ally','enemy','kin','any'\]/.test(src), 'Exile offers Kin');
 ok(/\{key:'shield', label:'Shield', fields:\['amount','who','sub','targets'\], whoOptions:\['self','ally','kin'\]/.test(src), 'Shield offers Kin (Self, Ally, Kin)');
-{ const ctx = {out:{}, TRIGGER_DEFS:[{key:'onRoundStart', label:'On Round Start'}], TRIGGER_ALWAYS_ON:new Set(['onRoundStart']), ACTION_DEFS:['buff','poison','shield','damage','heal'].map(k=> ({key:k, label:k})), dmgWord: t=> t && t !== 'physical' ? t + ' ' : '', getCardDefs: ()=> ({})};
+{ const ctx = {out:{}, TRIGGER_DEFS:[{key:'onRoundStart', label:'On Round Start'}], TRIGGER_ALWAYS_ON:new Set(['onRoundStart']), ACTION_DEFS:['buff','poison','shield','damage','heal'].map(k=> ({key:k, label:k})), dmgWord: t=> t && t !== 'physical' ? t + ' ' : '', getCardDefs: ()=> ({}), TX: (k, o)=> k === 'ui.eng52-act-nurse-text' ? `nurse a random hurt ally for ${o.n}` : k /* ENG52 (2026-11-18): Nurse N's text */};
   vm.runInNewContext(fnSrc('triggerPreviewText') + '\nout.f = triggerPreviewText;', ctx); const f = t=> ctx.out.f(Object.assign({on:'onRoundStart'}, t));
   ok(f({do:'buff', who:'kin', sub:'random', amount:2}) === 'On Round Start, give a random Kin unit +2 Attack.', `"${f({do:'buff', who:'kin', sub:'random', amount:2})}"`);
   ok(f({do:'buff', who:'kin', sub:'adjacent', amount:2}) === 'On Round Start, give an adjacent Kin unit +2 Attack.', `"${f({do:'buff', who:'kin', sub:'adjacent', amount:2})}"`);
   ok(f({do:'poison', who:'kin', sub:'all', amount:1}) === 'On Round Start, apply 1 poison to all your Kin.', `"${f({do:'poison', who:'kin', sub:'all', amount:1})}"`);
-  ok(f({do:'heal', who:'kin', sub:'furthest', amount:3, targets:2}) === 'On Round Start, heal 2 furthest Kin units for 3 (stanching Bleed first, capped at max HP).', `"${f({do:'heal', who:'kin', sub:'furthest', amount:3, targets:2})}"`);
+  ok(f({do:'heal', who:'kin', sub:'furthest', amount:3, targets:2}) === 'On Round Start, nurse a random hurt ally for 3.' /* ENG52 (2026-11-18): Nurse N takes no target */, `"${f({do:'heal', who:'kin', sub:'furthest', amount:3, targets:2})}"`);
   ok(f({do:'shield', who:'kin', sub:'all', amount:3}) === 'On Round Start, give all your Kin 3 Shield (temporary Health).', `"${f({do:'shield', who:'kin', sub:'all', amount:3})}"`); }
 { const ctx = {out:{}, ACTION_DEFS:[{key:'buff', label:'Buff'}]}; vm.runInNewContext(fnSrc('parseChargeText') + '\nout.f = parseChargeText;', ctx); const c = ctx.out.f('2, buff 3 kin random');
   ok(c && c.do.who === 'kin' && c.do.sub === 'random' && c.do.amount === 3, 'Charge text "2, buff 3 kin random" reads who:kin'); }

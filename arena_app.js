@@ -1748,7 +1748,10 @@ sk1Patch(PASSIVE_DEFS, 'expose', {category:'evergreen', label:TX('ui.skn-expose'
 sk1Patch(PASSIVE_DEFS, 'siege', {category:'passive', label:TX('ui.skn-siege'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-siege', {n: numOr(v, 2)}), codexNote:TX('ui.sk-siege-codex'), get:e=> (e.siege || e.demolisher) ? Math.max(e.siege ? numOr(e.siege, 2) : 0, e.demolisher ? numOr(e.demolisher, 2) : 0) : undefined});
 sk1Patch(PASSIVE_DEFS, 'demolisher', {hidden:true, retired:true, label:TX('ui.skn-siege'), desc:v=> TX('ui.sk-siege', {n: numOr(v, 2)})}); // an old save's key: read as Siege
 sk1Patch(PASSIVE_DEFS, 'cure', {kind:'boolean', desc:()=> TX('ui.sk-cure', {n: 1}), apply:e=>{ e.cure = 1; }}); // SKN1 (2026-11-16, owner workbook note 11-16: "Cure 1 only")
-sk1Patch(PASSIVE_DEFS, 'healing', {desc:v=> TX('ui.sk-healing', {n: numOr(v, 1)})});
+// ENG52 (2026-11-18, owner 21:06: "Remove Heal as a skill. Just leave Nursing. Nursing is not part of the list right now"): Heal is off "+ Add Skill" (an
+// old healing / heal key reads as Nursing: bramblewood-skillparams.js RETIRE, the engine); Nursing is in it (no longer a Heal kind in skill-params.json)
+sk1Patch(PASSIVE_DEFS, 'healing', {hidden:true, retired:true, label:TX('ui.skn-nursing'), desc:v=> TX('ui.sk-nursing', {n: numOr(v, 1)})});
+sk1Patch(PASSIVE_DEFS, 'nursing', {label:TX('ui.skn-nursing'), desc:v=> TX('ui.sk-nursing', {n: numOr(v, 2)}), codexNote:TX('ui.sk-nursing-codex')});
 PASSIVE_DEFS.push(
   {key:'formation', category:'passive', label:TX('ui.skn-formation'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-formation', {n: numOr(v, 1)}), codexNote:TX('ui.sk-formation-codex'), get:e=> e.formation ? numOr(e.formation, 1) : undefined},
   {key:'isolation', category:'passive', label:TX('ui.skn-isolation'), kind:'boolean', desc:()=> TX('ui.sk-isolation'), codexNote:TX('ui.sk-isolation-codex')},
@@ -1770,7 +1773,7 @@ ACTION_DEFS.push(
   {key:'pulse', label:TX('ui.act-pulse'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-pulse-desc')}, // EN4 (2026-10-23, owner 23:45): Poison and Bleed tick N times
 );
 sk1Patch(ACTION_DEFS, 'expose', {desc:TX('ui.act-expose-desc')});
-sk1Patch(ACTION_DEFS, 'heal', {desc:TX('ui.act-heal-desc')});
+sk1Patch(ACTION_DEFS, 'heal', {label:TX('ui.eng52-act-nurse'), fields:['amount'], desc:TX('ui.eng52-act-nurse-desc')}); // ENG52 (2026-11-18, owner 21:06: "The action will be called Nurse, not Heal ... Nurse heals a random *hurt* ally"): the key stays 'heal'; no target fields
 sk1Patch(ACTION_DEFS, 'cleanse', {desc:TX('ui.act-cleanse-desc')});
 Object.assign(SKILL_ICON, {formation:'🔗', isolation:'🏝️', anchor:'⚓', exploit:'🩻', spoils:'🍖', venomPulse:'💉', punish:'⚖️', demolisher:'🏰'}); // Package SK1 (2026-10-19)
 // ==== Package GD2 (2026-10-22, owner GD-3: "We have ward for dodging skills right? There can be a similar skill - but for shielding
@@ -3081,7 +3084,7 @@ const SKILL_COUNTERS = {
   stealth: ['guardian'],
   swarm: ['sweep', 'fork', 'defiance'],
   poison: ['cure'], // 2026-10-18: heals no longer remove Poison; Cure does
-  bleed: ['regen', 'bloom', 'healing'],
+  bleed: ['regen', 'bloom', 'nursing' /* ENG52 (2026-11-18): was Heal (healing) */],
   guardian: ['stealth'],
   undead: ['exileAns'], // ENG9 (2026-10-26): was revive
 };
@@ -4462,7 +4465,7 @@ function buildCardDefs(){
     const base = out[id]; if(!base || id===HERO_ID) return;
     const b = cardBaseLevel(base), hatch = b > 0 && isHatchling(id), lvl = hatch ? 0 : Math.max(b, Math.min(LIMIT_BREAK_LEVEL, myCardLevels[id]||0));
     if(hatch){ const st = statsAtLevel(base, 0); out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: 0, baseLevel: b, hatchling: true}); out[id].effects = effectsAtLevel(base, 0); return; } // 2026-10-30 (TUT3): a Level 0 copy has no skill that arrives at Level 1 (ENG25: always, for Hatchling / Regeneration)
-    if(lvl === b){ if(base.baseLevel !== b) out[id] = Object.assign({}, base, {baseLevel:b, level:b}); if(lvl < 1) out[id] = Object.assign({}, out[id] || base, {effects: effectsAtLevel(base, lvl)}); return; } /* ENG25 (2026-11-05): every Level 0 card, not only a levelSkills one */ // 2026-10-30 (TUT3): a card at Level 0 has none of its Level 1 skills
+    if(lvl === b){ if(base.baseLevel !== b) out[id] = Object.assign({}, base, {baseLevel:b, level:b}); if(lvl < 1 || base.levelSkills) out[id] = Object.assign({}, out[id] || base, {effects: effectsAtLevel(base, lvl)}); return; } /* ENG25 (2026-11-05): every Level 0 card, not only a levelSkills one */ /* ENG52 (2026-11-18, owner 21:04): a Level 1 skill of a card whose base level is 1 (levelSkills "1", not in effects) was skipped here */ // 2026-10-30 (TUT3): a card at Level 0 has none of its Level 1 skills
     if(base.attack==null && base.health==null) return;
     const st = statsAtLevel(base, lvl);
     out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: lvl, baseLevel: b});
@@ -7319,7 +7322,8 @@ Object.assign(SKILL_TEXT, {
   venomPulse: v=> numOr(v, 1) === 1 ? TX('ui.sk-venom-pulse') : TX('ui.sk-venom-pulse-n', {n: numOr(v, 1)}),
   punish: v=> TX('ui.sk-punish', {n: numOr(v, SK1_DEFAULTS.punish)}),
   cure: ()=> TX('ui.sk-cure', {n: 1}), // SKN1 (2026-11-16): Cure 1 only
-  healing: v=> TX('ui.sk-healing', {n: numOr(v, 1)}),
+  nursing: v=> TX('ui.sk-nursing', {n: numOr(v, 2)}), // ENG52 (2026-11-18): Nursing, a random hurt ally
+  healing: v=> TX('ui.sk-nursing', {n: numOr(v, 1)}), // ENG52: an old Heal reads as Nursing
 });
 // ENG27 (2026-11-06): the match log lines for the package's rules
 function eng27LogText(ev, nm){
@@ -10250,7 +10254,7 @@ function abilityBadges(d, bopts){
   if(e.darksight) out.push(`<span title="Darksight: it can see in darkness">${iconHTML('darksight', '👁️')}</span>`);
   if(e.castDarkness) out.push(`<span title="${escapeAttr(TX('ui.sk-cast-darkness'))}">${iconHTML('cast-darkness', '🌘')}</span>`); if(e.trueStrike) out.push(`<span title="${escapeAttr(TX('ui.sk-true-strike'))}">${iconHTML('true-strike', '💯')}</span>`); // 2026-10-18 (package D)
   if(e.illuminate || e.lantern) out.push(`<span title="Illuminate: lights up the dark">${iconHTML('illuminate', '🏮')}</span>`); // 2026-10-15
-  if(e.nursing) out.push(`<span title="Nursing: heals your weakest unit every upkeep">${iconHTML('nursing', '🍼')}${n1(e.nursing === true ? 2 : e.nursing)}</span>`); // 2026-10-15
+  if(e.nursing) out.push(`<span title="${escapeAttr(TX('ui.eng52-chip-nursing'))}">${iconHTML('nursing', '🍼')}${n1(e.nursing === true ? 2 : e.nursing)}</span>`); // 2026-10-15; ENG52 (2026-11-18): a random hurt ally
   if(e.landslide) out.push(`<span title="Landslide">${iconHTML('landslide', '🪨')}${n1(e.landslide)}</span>`);
   if(e.inspiring) out.push(`${iconHTML('inspiring', '📯')}${n1(e.inspiring)}`);
   if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts its adjacent allies when it attacks">${iconHTML('friction', '⚙️')}${n1(e.friction)}</span>`);
@@ -12249,7 +12253,9 @@ function mountEditorSide(modal){
   });
   const refresh = ()=>{
     if(!editingCard || !document.getElementById('cePreview')) return; // the editor closed before the delayed redraw
-    const d = editorDraftFromForm(); d.art = editingCard.art; editorPreviewDraft = d; // 2026-11-07 (UI24 #2): the hover details read this draft
+    const d0 = editorDraftFromForm(); d0.art = editingCard.art;
+    let d = d0; try{ if(d0.levelSkills || cardBaseLevel(d0) < 1) d = Object.assign({}, d0, {effects: effectsAtLevel(d0, cardBaseLevel(d0))}); }catch(e){} // ENG52 (2026-11-18, owner 21:04): the preview is the card at its base level, with that level's skills (levelSkills), as getCardDefs builds it
+    editorPreviewDraft = d; // 2026-11-07 (UI24 #2): the hover details read this draft
     // Preview (2026-10-08, user: "flashes too much... flash once only, then the 2nd flash follows the
     // mouse"): only re-draw when the markup actually changed, play the gold streak once on the first
     // draw (.ce-flashed stops it replaying on every keystroke), and afterwards the glint and the rim
@@ -12275,7 +12281,7 @@ function mountEditorSide(modal){
         }
       }
     }
-    try{ ceBudgetRefresh(d); }catch(e){}
+    try{ ceBudgetRefresh(d0); }catch(e){} // ENG52: the draft as saved; the budget lays its Level 1 skills on (BramblewoodBudget.budgetDef)
     const th = document.getElementById('ceArtThumb'); if(th) th.innerHTML = editingCard.art ? `<img src="${escapeAttr(editingCard.art)}" alt="">` : `<span>${escapeHtml(d.icon||'🌰')}</span>`;
     const note = document.getElementById('ceArtNote'); if(note) note.textContent = editingCard.art ? (String(editingCard.art).startsWith('data:') ? 'Uploaded image' : 'From a path or URL') : 'No art: the icon is shown';
   };
@@ -12849,7 +12855,10 @@ function deriveSkillRows(c){
     // Skills that arrive at a level (2026-10-13): one row each, tagged with the level.
     Object.keys(c.levelSkills || {}).map(Number).filter(L=> L >= 0 /* 2026-11-05 (EDIT1): Level 0 too: a Baby's Hatchling (levelSkills 0) had no row, so it could not be seen or edited */).sort((a, b)=> a - b).forEach(L=>{ const fx = c.levelSkills[L] || {};
       SKILL_DEFS.forEach(s=>{ const v = s.get(fx); if(v!==undefined && v!==false) rows.push({key:s.key, value:v, lv:L, n: s.numberKey ? (Number(fx[s.numberKey]) || 1) : undefined}); }); });
-    c._skillRows = rows;
+    // ENG52 (2026-11-18): a skill in effects AND in a levelSkills level is one row, the level's: effectsAtLevel never uses the effects copy (below the
+    // level it is dropped, from it the level's value is laid on), so a Save writes the level skill once, in levelSkills (the editor's one shape)
+    const lvKeys = new Set(rows.filter(r=> r.lv != null).map(r=> r.key));
+    c._skillRows = rows.filter(r=> r.lv != null || !lvKeys.has(r.key));
   }
   return c._skillRows;
 }
@@ -13218,7 +13227,7 @@ function triggerPreviewText(t){
     case 'exileSelf': doText = `exile itself instead of going to the graveyard`; break;
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
     case 'swapPositions': doText = `swap two random enemy units' positions`; break;
-    case 'heal': doText = `heal ${t.who && t.who!=='self' ? whoTarget : 'itself'} for ${amt} (stanching Bleed first, capped at max HP)`; break; // 2026-10-16; 2026-10-18 (audit 4): heals no longer touch Poison, only Bleed
+    case 'heal': doText = TX('ui.eng52-act-nurse-text', {n: amt}); break; // ENG52 (2026-11-18, owner 21:06): Nurse N, a random hurt ally (was: heal a chosen target, itself by default)
     case 'shield': doText = `give ${t.who === 'ally' && t.sub === 'all' ? 'every ally' : t.who && t.who!=='self' ? whoTarget : 'itself'} ${amt} Shield (temporary Health)`; break; // 2026-10-14
     case 'grantShield': doText = eng19GrantShieldText(t) || FILL; break; // ENG19 (2026-11-02)
     case 'mindControl': doText = `take control of a ${t.sub||'random'} enemy unit`; break;
@@ -15856,6 +15865,12 @@ function effectsAtLevel(b, L, fx0){
     ks.filter(k=> k <= L).forEach(k=> Object.assign(fx, ls[k])); }
   if((Number(L) || 0) < 1) ['hatchling', 'regen'].forEach(k=>{ delete fx[k]; }); // ENG25_LEVEL1_SKILLS
   return fx; }
+// ENG52 (2026-11-18, owner 21:04: "If I indicate a skill as L1 but the card's base level is 1, it still doesn't show up"): raw defs (canonical data +
+// live edits) as cards at their base level fight: effectsAtLevel at cardBaseLevel, as getCardDefs builds them (a base Level 1 card gets its levelSkills
+// "1"; a Level 0 card drops them, TUT3 / ENG25). For the fights built from raw defs: the reference fights (referenceFightSetup) and the tools.
+function eng52AtBaseLevel(defs){ const out = Object.assign({}, defs);
+  Object.keys(out).forEach(id=>{ const b = out[id]; if(!b) return; const L = cardBaseLevel(b); if(b.levelSkills || L < 1) out[id] = Object.assign({}, b, {effects: effectsAtLevel(b, L)}); });
+  return out; }
 function statsAtLevel(d, L){
   if((L|0) < cardBaseLevel(d)){ const ov0 = d.levelStats && (d.levelStats[0] || d.levelStats['0']); const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85));
     return {attack: ov0 && ov0.attack != null ? ov0.attack : r(d.attack), health: ov0 && ov0.health != null ? ov0.health : r(d.health)}; } // a hatchling (Level 0); the editor can set it
@@ -21249,7 +21264,7 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
 // skill, tier III +1/+2 and the signature. The volcano's signature is its eruption (fightRules, rules.eruption).
 const TERRAIN_BIOMES = {
   forest:  {name:'Old Woods',      icon:'🌲', types:['Forest','Flora','Taiga','Rainforest'], grant:{regen:1},      sig:'Regen 1'},
-  meadow:  {name:'Open Meadow',    icon:'🌼', types:['Field','Village','Flora'],             grant:{healing:1},    sig:'Heal 1'}, /* 2026-10-23 (BL): was Bloom 1, the retired heal */
+  meadow:  {name:'Open Meadow',    icon:'🌼', types:['Field','Village','Flora'],             grant:{nursing:1},    sig:'Nursing 1'}, /* 2026-10-23 (BL): was Bloom 1, the retired heal; ENG52 (2026-11-18): was Heal 1 (healing), gone */
   water:   {name:'Riverbank',      icon:'🌊', types:['River','Pond'],                        grant:{inspiring:1},  sig:'Inspiring 1'},
   beach:   {name:'Tideline',       icon:'🐚', types:['Coastal','Ocean'],                     grant:{shell:1},      sig:'Shell 1'},
   reef:    {name:'Coral Shelf',    icon:'🪸', types:['Coral Reef','Ocean'],                  grant:{thorns:1},     sig:'Thorns 1'},
@@ -21897,7 +21912,7 @@ function referenceFightSetup(mapId, node, opts){
     matchLeaderGrantMap = grantMap;
     const setup = {2: {hq: {}}}; applySkirmishSetup(setup, node); // the bramble's Shield layers and the CPU's leaders, as the game sets them
     const overlay = matchDefsOverlay, base = referenceBaseDefs(), mine = ref.parts ? refPartsDeck(ref.parts, base, overlay) : referencePlayerDeck(ref.deck, ref.level, base, overlay); // PREF: per-copy levels
-    const defs = Object.assign(base, overlay);
+    const defs = Object.assign(eng52AtBaseLevel(base), overlay); // ENG52 (2026-11-18): a card at its base level with that level's skills, as getCardDefs (was the raw def)
     const missing = [...new Set(Object.keys(enemyDeck).concat(Object.keys(mine)).filter(id=> !defs[id]))];
     if(missing.length){ const e = new Error('unknown cards: ' + missing.join(', ')); e.unknownCards = missing; throw e; }
     return {mapId, node, ref, defs, mine, enemyDeck, setup: setup[2], seed0: opts.seed0 || 9100, rules: fightRules(mapId, node), cpu: cpuAiLevelForNode(mapId, node),
@@ -35969,6 +35984,7 @@ function ceBudgetRefresh(d){
   const fa = document.getElementById('fAtk'); if(!fa) return;
   let box = document.getElementById('ceBudget');
   if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('beforeend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:0 0 4px; font-size:12.5px; line-height:1.4"></div>'); /* UI23 (2026-11-06, #4): inside the Stats row, beside the four stats */ box = document.getElementById('ceBudget'); }
+  try{ if(BramblewoodBudget.budgetDef) d = BramblewoodBudget.budgetDef(d); }catch(e){} // ENG52 (2026-11-18, owner 21:04): N is at Level 1, so the skills are too: + levelSkills "0" / "1"
   try{ box.innerHTML = ceBudgetHTML(d) + cePowerHTML(d); }catch(e){ box.textContent = ''; }
   { const sp = document.getElementById('ceSkillPts'); if(sp) try{ sp.innerHTML = ceSkillPtsHTML(d); }catch(e){ sp.textContent = ''; } } // 2026-11-07 (package UI27 #16)
   { const sw = document.getElementById('ceSkillWarn'); if(sw) try{ const h = ceSkillWarnHTML(d); sw.innerHTML = h; sw.hidden = !h; }catch(e){ sw.textContent = ''; sw.hidden = true; } } // UI27 #19
@@ -50891,7 +50907,8 @@ function logText(ev){
     // (a Devilry-chained card's chains snapping, already given its own on-card flourish/sound —
     // see playChainBreakFlourish/SoundKit.chainBreak — but never a matching log line) likewise
     // fell through to the raw type-name default.
-    case 'heal': return {cls:'heal', text:`${ev.source ? '🧪 ' + ev.source : nm(ev.attDefId)} healed ${nm(ev.targetDefId)} for ${ev.amount} HP. 💚`};
+    case 'heal': if(ev.cause === 'nurse' || ev.cause === 'nursing') return {cls:'heal', text:TX('ui.eng52-log-nurse', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})}; // ENG52 (2026-11-18): Nursing / Nurse N
+      return {cls:'heal', text:`${ev.source ? '🧪 ' + ev.source : nm(ev.attDefId)} healed ${nm(ev.targetDefId)} for ${ev.amount} HP. 💚`};
     case 'chainBreak': return {cls:'gold', text:`${nm(ev.defId)}'s chains snapped — free to act again! ⛓`};
     case 'bounty': return {cls:'gold', text:`Bounty: ${nm(ev.fromDefId)} fell, ${sideLabel(ev.side)} gains +${ev.amount} 🪵.`}; // 2026-10-15: Bounty pays the opponent on any death
     case 'suddenDeath': return {cls:'', text: ev.stage >= 2 ? `☠️ Sudden death II (round ${ev.round}): any damage to a bramble destroys it.` : `☠️ Sudden death (round ${ev.round}): any hit on a unit kills it, even one Armor would stop.`}; // 2026-10-15
@@ -59596,7 +59613,7 @@ const WILDPATH_TREES = [
     {id:'b2', x:90, y:315, icon:'🃏', name:'Keen Eye', desc:'Start with 4 cards, not 3.', req:['b1']},
     {id:'b3', x:210, y:305, icon:'⛓️', name:'Prospector', desc:'Elite first clear: +1 Iron Shard.', req:['b1']},
     {id:'b4', x:70, y:215, icon:'♻', name:'Second Pitch', desc:'Once a fight, pitch twice in a turn.', req:['b2']},
-    {id:'b5', x:190, y:215, icon:'🌸', name:'Pollen Drift', desc:'Heal heals 1 more.' /* 2026-10-23 (BL): was Bloom's; the old Bloom heal is retired */, req:['b3', 'b2'], ranks:2},
+    {id:'b5', x:190, y:215, icon:'🌸', name:'Pollen Drift', desc:'Nursing heals 1 more.' /* 2026-10-23 (BL): was Bloom's; the old Bloom heal is retired; ENG52 (2026-11-18): Heal is gone, Nursing gets it */, req:['b3', 'b2'], ranks:2},
     {id:'b6', x:130, y:125, icon:'🔁', name:'Echoing Wood', desc:'First token each fight is doubled.', req:['b4', 'b5']},
     {id:'b7', x:150, y:40, icon:'🌺', name:'Everbloom', desc:'Every 5th round: draw 1, +1 Lumber.', req:['b6'], capstone:true},
     {id:'b8', x:260, y:225, icon:'⭐', card:'bumblebee-queen', req:['b3'], get name(){ return c18SpMarkName(this); }, get desc(){ return c18SpMarkDesc(this); }}, // CONTENT18 (2026-11-08): a Starpath-only card

@@ -25,7 +25,8 @@ ok(/sig = tileEnv \+ \(owned \? 'o' : '-'\) \+ \(liveCards\[id\] \? 'e' : '-'\) 
 // ---- 2. texts
 { const m = src.match(/\{key:'cure', category:'evergreen'[^\n]*desc:v=>`([^`]*)`/); const t = m ? m[1] : '';
   ok(/most envenomed unit/.test(t) && /Venom/.test(t) /* 2026-11-07 (ENG33): Poison counters read Venom */ && !/Bleed/.test(t) && !/afflicted/.test(t), `2. Cure's skill text: Poison only, the most poisoned unit ("${t}")`); }
-ok(/case 'heal': doText = `heal [^\n]*\(stanching Bleed first, capped at max HP\)`/.test(src) && !/Poison, then Bleed first/.test(src), '2. a heal trigger says it stanches Bleed (no Poison)');
+// 2026-11-18 (ENG52, owner 21:06): the heal action is Nurse N now ("nurse a random hurt ally for N"); still no Poison in it
+ok(/case 'heal': doText = TX\('ui\.eng52-act-nurse-text'/.test(src) && !/Poison, then Bleed first/.test(src), '2. a heal trigger (Nurse N) names no Poison');
 
 // ---- 3. a gated field row's "?"
 ok(TEXT['ui.reveal-gate-mapnum'] && TEXT['ui.reveal-gate-map'], '3. the gate lines are TX keys');

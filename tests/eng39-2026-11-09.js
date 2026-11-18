@@ -31,7 +31,7 @@ const WANT = {
   darksight: W1('keenSense', 'sees', 'dark'), blitz: W1('speed', 'kind', 'blitz'), swift: W1('speed', 'kind', 'swift'),
   stockpile: W1('delivery', 'kind', 'stockpile'), pearl: W1('delivery', 'kind', 'pearl'), deliveryEvery: W1('delivery', 'every', 'round'),
   weaken: W1('daunt', 'lasts', 'lasting'), stench: W1('daunt', 'lasts', 'washed'), constrict: W1('strangle', 'hold', 'full'), tangle: W1('strangle', 'hold', 'bind'),
-  scar: W1('exploit', 'lasts', 'lasting'), nursing: W1('healing', 'who', 'weakest'), bloom: W1('healing', 'who', 'random'), berserk: W1('harbinger', 'who', 'ally'),
+  scar: W1('exploit', 'lasts', 'lasting'), /* 2026-11-18 (ENG52, owner 21:06 "Remove Heal as a skill. Just leave Nursing"): the Heal family (nursing, bloom) is gone */ berserk: W1('harbinger', 'who', 'ally'),
   doubleTime: W1('twinStrike', 'shots', true), breach: W1('puncture', 'kind', 'breach'), spoils: W1('momentum', 'stat', 'hp'),
   midas: W1('felling', 'kind', 'midas'), prospector: W1('felling', 'res', 'metal'), timber: W1('hoard', 'kind', 'timber'),
   requiem: W1('carnage', 'who', 'any'), dirge: W1('carnage', 'who', 'yours'), tally: W1('carnage', 'who', 'foes'),
@@ -42,7 +42,7 @@ const badKinds = Object.keys(WANT).filter(k=> !eq(SPL.kindOf(k), WANT[k]));
 ok(!badKinds.length, `every merged skill is a kind of its family (${Object.keys(WANT).length}; ${badKinds.map(k=> k + '=' + JSON.stringify(SPL.kindOf(k))).join(', ')})`);
 ok(Object.keys(SPL.KIND).length === Object.keys(WANT).length, `no other kinds (${Object.keys(SPL.KIND).length})`);
 const groups = new Set(Object.values(WANT).map(w=> w[0]));
-ok(groups.size === 17, '17 families hold kinds (the 15 groups, the shots fused into Arrow, Delivery every round into Delivery)');
+ok(groups.size === 16, '16 families hold kinds (the 15 groups, the shots fused into Arrow, Delivery every round into Delivery; ENG52 2026-11-18: less Heal)');
 ok(!FAM.iceBolt && !FAM.evolute && !FAM.supreme && !SPL.kindOf('evoluteAlpha') && !SPL.kindOf('evoluteOmega') && !SPL.kindOf('supremeTide'), 'Evolute / Alpha / Omega and Supreme / Supreme Tide stay apart (owner 23:05)');
 ok(Object.keys(FAM).every(k=> { const sels = Object.keys(FAM[k].kinds || {}).concat(...(FAM[k].kindSets || []).map(e=> Object.keys(e.match))); return sels.every(s=> !(s in (FAM[k].params || {})) && P.fields[s]); }), 'no selector shares a name with a parameter; every selector is described in fields');
 ok(eq(SPL.fuse({fireBolt: 2, fireBoltBramble: true}), {arrow: {v: 2, type: 'fire', form: 'bolt', bramble: true}}) && eq(SPL.expand({arrow: {v: 2, type: 'fire', form: 'bolt', bramble: true}}), {fireBolt: 2, fireBoltBramble: true}), 'Fire Bolt 2 – bramble <-> arrow {v 2, type fire, form bolt, bramble}: the bramble part sits beside the type (ENG35-4)');

@@ -4639,5 +4639,14 @@
  "Each turn, after the arrows: {n} Poison on the enemy in front or nearest. No damage.": "Bawat turn, pagkatapos ng mga palaso: {n} Lason sa kalaban sa harap o pinakamalapit. Walang pinsala.",
  "On Hit: Rend N. Each hit on it uses one token, shots and skills too; Poison and Bleed ticks don't. Cleanse removes them.": "Sa Tama: Punit N. Bawat tama rito ay gumagamit ng isang token, pati palaso at skill; hindi ang tik ng Lason at Pagdurugo. Inaalis ng Linis.",
  "🎆 {att} detonates the Poison on {name}: {n} damage.": "Pinasabog ni {att} ang Lason kay {name}: {n} pinsala.",
- "☠️ {name} was poisonous: {t} gets {n} Poison.": "Nakalalason si {name}: nakakuha si {t} ng {n} Lason."
+ "☠️ {name} was poisonous: {t} gets {n} Poison.": "Nakalalason si {name}: nakakuha si {t} ng {n} Lason.",
+ "Nursing": "Pag-aalaga",
+ "Every upkeep, heal a random hurt ally for {n}.": "Sa bawat upkeep, pagalingin ng {n} ang isang random na sugatang kakampi.",
+ "A hurt ally is one below its max Health. It never heals itself; with no ally hurt, nothing happens.": "Ang sugatang kakampi ay mas mababa sa max na Buhay nito. Hindi nito pinagagaling ang sarili; kung walang sugatang kakampi, walang mangyayari.",
+ "Nurse": "Alagaan",
+ "Nurse N: heal a random hurt ally (below its max Health, not this card) for N. With no ally hurt, nothing happens.": "Alagaan N: pagalingin ng N ang isang random na sugatang kakampi (mababa sa max na Buhay, hindi ang card na ito). Kung walang sugatan, walang mangyayari.",
+ "nurse a random hurt ally for {n}": "alagaan ng {n} ang isang random na sugatang kakampi",
+ "{name} nursed {target} for {n} HP. 💚": "Inalagaan ni {name} si {target} nang {n} HP. 💚",
+ "Nursing: heals a random hurt ally every upkeep": "Pag-aalaga: nagpapagaling ng isang random na sugatang kakampi bawat upkeep",
+ "Nursing heals 1 more.": "Nagpapagaling ang Pag-aalaga ng 1 pa."
 }

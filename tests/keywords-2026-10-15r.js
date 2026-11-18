@@ -141,7 +141,7 @@ ok(/\{key:'darksight', category:'passive', label:'Darksight', kind:'boolean', de
 // ---- 55. Nursing
 { const {e, P} = mk(); put(e, P, 1, 'kr-nurse', 0); const a = put(e, P, 1, 'kr-wall', -1), b = put(e, P, 1, 'kr-wall', 1); a.hp = 300; b.hp = 100; const ev = [];
   e.roundStart(P, 2, so, {}, []); e.resolveCombat(P, so, {}, ev, 1);
-  ok(b.hp === 103 && a.hp === 300, `55. Nursing 3 heals the weakest wounded ally (${a.hp}, ${b.hp})`); ok(ev.some(x=> x.type === 'heal' && x.cause === 'nursing'), '55. ...and says so'); }
+  ok((b.hp === 103 && a.hp === 300) || (a.hp === 303 && b.hp === 100), `55. Nursing 3 heals one wounded ally, at random (2026-11-18, ENG52, owner 21:06: "a random *hurt* ally, not lowest current health") (${a.hp}, ${b.hp})`); ok(ev.some(x=> x.type === 'heal' && x.cause === 'nursing'), '55. ...and says so'); }
 ok(/\{key:'nursing', category:'passive', label:'Nursing', kind:'number', min:1, defaultValue:2,/.test(src), '55. Nursing N in the editor (default 2)');
 { // the mastery maths, run on its own
   const pick = name=>{ const i = src.indexOf(`function ${name}(`); let d = 0, j = src.indexOf('{', i); for(; j < src.length; j++){ if(src[j] === '{') d++; else if(src[j] === '}' && --d === 0) break; } return src.slice(i, j + 1); };

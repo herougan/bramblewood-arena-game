@@ -43,7 +43,7 @@ const NAMES = [/* 2026-10-22 (package SK): the skirmish leader rule and the batt
   /* 2026-10-22 (package DV): the rarity ladder */ 'RARITY_INTRO', 'SIDE_RARITY_INTRO', 'ROAD_MAIN_FROM', 'ROAD_EPIC_HEROIC_FROM', 'ROAD_NEVER', 'roadNever', 'rarityIntroMap', 'roadRevealedCap', /* BAL2 */ 'BAL2_FIRST_RARE_MAP', 'roadSkirmishCap', 'roadStepCap', 'roadBossCap', 'roadRarityCap', 'roadRarityOk',
   /* 2026-10-19 (EE): no source gives an Easter egg */ 'EASTER_EGG_IDS', 'isEasterEgg',
   'TUTORIAL_REWARD_IDS', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'mapNumberOf', /* 2026-10-23 (RW5) */ 'mapUnlockNumberOf', 'mainConquestMaps', 'TUT_SIDE_GATE', 'nodeRewardCardIds', 'cardBaseLevel', 'LEVEL_STEPS', 'LEVEL_STEP_GAIN', 'RARITY_MAX_LEVEL',
-  'cardMaxLevel', 'statsAtLevel', /* 2026-10-30 (coordinator, DECK1 report): TUT3's level skills, the sims could not build Ice Hollow / Volcano Lair */ 'effectsAtLevel', 'statsBeyondLevel', 'LIMIT_BREAK_LEVEL', 'castleLeveled', 'DECK_SIZE', 'CPU_AI_KEYS', 'CPU_SMART_FROM_MAP', 'CPU_SMART_KINDS',
+  'cardMaxLevel', 'statsAtLevel', /* 2026-10-30 (coordinator, DECK1 report): TUT3's level skills, the sims could not build Ice Hollow / Volcano Lair */ 'effectsAtLevel', /* ENG52 */ 'eng52AtBaseLevel', 'statsBeyondLevel', 'LIMIT_BREAK_LEVEL', 'castleLeveled', 'DECK_SIZE', 'CPU_AI_KEYS', 'CPU_SMART_FROM_MAP', 'CPU_SMART_KINDS',
   'CPU_AI_MAX', 'cpuAiAutoLevel', 'cpuAiLevelForNode', 'MAP_CASTLE', /* 2026-11-09 (BAL33) */ 'CPU_BRAMBLE_PASSIVE', 'KIND_CASTLE_LEVEL', 'NODE_MAP_HINT', 'mapOfNode', /* BAL33 */ 'cpuBramblePassive', 'nodeCastleId', 'nodeCastleLevel', 'SHIELD_RULE_MULT',
   'nodeMapNumber', 'shieldRuleMult', 'shieldMapOf', 'ruleShieldOf', 'shieldOverrideOf', 'BRAMBLE_SCALE', 'brambleHp', 'brambleChar', /* BF5 */ 'BASE_BRAMBLE_HP', 'baseBrambleHp', 'ARMOUR_LAYER_MAX', 'skirmishCastle', /* 2026-10-23 (EB): your bramble's early lead */ 'EARLY_BRAMBLE_LEAD', 'earlyBrambleHp', 'earlyHomeBramble', 'prepareLeaderGrants', 'applySkirmishSetup',
   'skirmishCardScore', 'expectedPlayerDeck', 'MAP_DAYNIGHT', 'mapDayNight', 'TIDESPOUT_NODES', 'MISTY_MAPS', 'PERMATIDE_MAPS', 'RAPIDS_MAPS', 'wetMap', 'mapIdOfNode', 'fightRules',
@@ -66,7 +66,8 @@ const CHARACTER_DEFS = {}; (Array.isArray(charsRaw) ? charsRaw : Object.values(c
 const body = [
   'let matchDefsOverlay = {}, matchLeaderGrantMap = null; const liveCards = {}, liveDeletes = {}; const AI_LEVEL_MAX = E.AI_LEVEL_MAX;',
   'const makeSimEngine = E.makeSimEngine, boardSignature = E.boardSignature, noActionsLeft = E.noActionsLeft, DRAW_ROUND_CAP = E.DRAW_ROUND_CAP, SUDDEN_DEATH_ROUND = E.SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND = E.SUDDEN_DEATH_CASTLE_ROUND, STALL_DRAW_FROM_ROUND = E.STALL_DRAW_FROM_ROUND;',
-  'function invalidateCardDefs(){} function getCardDefs(){ return Object.assign({}, CARD_DEFS_BASELINE, matchDefsOverlay); }',
+  // ENG52 (2026-11-18): each card at its base level with that level's skills (eng52AtBaseLevel), as the game's getCardDefs; was the raw def
+  'let eng52Base = null; function invalidateCardDefs(){} function getCardDefs(){ if(!eng52Base) eng52Base = eng52AtBaseLevel(CARD_DEFS_BASELINE); return Object.assign({}, eng52Base, matchDefsOverlay); }',
   // 2026-10-19 (R2): the panel's chip HTML (skirmishCurveChipHTML) needs escapeAttr; its regex literal /"/ trips grab's string matching, so a copy
   // 2026-10-28 (package PACK1): the map lists and the pack extras the game inlines at build (assemble_arena.py __MAP_POOLS__, __PACK_EXTRAS__)
   'const MAP_POOLS_BASE = ' + fs.readFileSync(path.join(ROOT, 'canonical/map-pools.json'), 'utf8') + '; let mapPoolEdits = {};',

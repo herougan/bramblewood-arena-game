@@ -10,6 +10,7 @@ const fs = require('fs');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const Engine = require(path.join(ROOT, 'bramblewood-engine.js'));
+const Budget = require(path.join(ROOT, 'bramblewood-budget.js')); // ENG52 (2026-11-18): budgetDef
 
 let _defs = null;
 function loadCardDefs(){
@@ -19,6 +20,9 @@ function loadCardDefs(){
   // 2026-10-19 (package AN): pool cards ("pool": true) are candidates the owner hasn't placed; the game never sees them (assemble_arena.py
   // leaves them out of the build), so neither do the tests: the card matrix's sampled pairings and golden results stay as they were.
   cards.filter(c=> !c.pool).forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; _defs[c.id] = d; });
+  // ENG52 (2026-11-18, owner 21:04: a Level 1 skill kept in levelSkills "1" only was never fielded): each card fights with its Level 1 skills, the budget's
+  // view (bramblewood-budget.js budgetDef: effects + levelSkills "0" / "1"), so the matrix and the scenarios cover every skill a card has by Level 1
+  Object.keys(_defs).forEach(id=>{ _defs[id] = Budget.budgetDef(_defs[id]); });
   return _defs;
 }
 // Cards a player could actually field (not tokens/test cards, which only exist via other cards).

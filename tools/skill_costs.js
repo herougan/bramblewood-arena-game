@@ -197,6 +197,7 @@
     // The budget rules for a card as printed: {N, S, x1, x2, N2, ok, wellUnder, m, parts, missing}; opts.N stands in for N (v3 checks).
     function budget(d, opts){
       if(BB.SPL && d) d = BB.SPL.expandDef(d); // ENG35 (2026-11-07)
+      if(BB.budgetDef && d) d = BB.budgetDef(d, opts && opts.level != null ? opts.level : 1); // ENG52 (2026-11-18): + its Level 0 / 1 skills (levelSkills), the card at Level 1 (or the level asked for)
       const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= (BB.missMultFor ? BB.missMultFor(h, Object.assign({missMult: g('missMult', 1.5)}, B)) : g('missMult', 1.5)); }); /* 2026-10-31 (coordinator, SPEED1 finding 1): per-skill half-miss from bramblewood-budget.js MISS_MULT_BY, as the game's sbCheck does; was a flat 1.5 */
       if(BB.canopyMultOf) m *= BB.canopyMultOf(e, B); // Canopy Cover (EN5, 2026-10-24): Evasive's multiplier x its uptime under the trees
       // 2026-10-21 (package BX): an Archer never swings (Archer N: its arrow instead), so its Attack is not part of its strength

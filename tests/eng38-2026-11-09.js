@@ -55,9 +55,10 @@ const SEEDS = 40;
   ok(ins.size === 2 && [...ins].every(x=> x[0] === 'a'), `eng38TopN: the top one always in, the tie for the last place at random (${[...ins].join(' ')})`); }
 
 // ================= 3. named rules kept, their ties random =================
-// Healing N: the most wounded (named) when there is one
+// Healing N: the most wounded (named) when there is one. 2026-11-18 (ENG52, owner 21:06: "Remove Heal as a skill. Just leave Nursing ... a random
+// *hurt* ally, not lowest current health"): an old healing key reads as Nursing, a random hurt ally, so either of the two gets the 2
 { const {e, P} = mk(11); const h = put(e, P, 1, 'e38-heal', 0), a = put(e, P, 1, 'e38-x', -1), b = put(e, P, 1, 'e38-x', 1); a.hp = 10; b.hp = 15;
-  upkeep(e, P); ok(a.hp === 12 && b.hp === 15, `Healing: the most wounded unit (${a.hp}, ${b.hp})`); }
+  upkeep(e, P); ok((a.hp === 12 && b.hp === 15) || (a.hp === 10 && b.hp === 17), `Healing (now Nursing): one hurt ally, at random (${a.hp}, ${b.hp})`); }
 // ... and a tie at random (was: the left one)
 { let A = 0, B = 0; for(let s = 1; s <= SEEDS; s++){ const {e, P} = mk(2000 + s); put(e, P, 1, 'e38-heal', 0); const a = put(e, P, 1, 'e38-x', -1), b = put(e, P, 1, 'e38-x', 1); a.hp = 10; b.hp = 10;
     upkeep(e, P); if(a.hp > 10) A++; if(b.hp > 10) B++; }

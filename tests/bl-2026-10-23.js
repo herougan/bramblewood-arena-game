@@ -118,7 +118,7 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
   ok(w(pb) === JSON.stringify({when:['wet','kill'], mode:'and'}), '10. Puffball Bombardier: Bloom (Wet & Killed an enemy)');
   // 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3) made Lotus Frog a Nocturnal pouncer without Bloom; only the no-Bloom-When half still applies to it
 ok((w(lf) === JSON.stringify({when:['tide','night'], mode:'and'}) || (redesigned('lotus-frog') && !lf.effects.bloomCopy)) && !lf.effects.bloomWhen, '10. Lotus Frog: Bloom (Tide & Night) or none since the redesign, no Bloom When');
-  ok((nv.effects.healing === 1 || (nv.effects.healing && nv.effects.healing.v === 1)) /* 2026-11-18 (TESTFIX): SKAUD1 writes Healing as {v, who} */ && nv.effects.bloom == null, '10. Nectar Vintner: Healing 1, no Bloom');
+  ok(nv.effects.nursing === 1 /* 2026-11-18 (TESTFIX): SKAUD1 writes Healing as {v, who}; ENG52 (owner 21:06 "Just leave Nursing"): Nursing 1 */ && nv.effects.healing == null && nv.effects.bloom == null, '10. Nectar Vintner: Nursing 1 (was Healing), no Bloom');
   ok(pa && w(pa) === JSON.stringify({when:['wet','sunny'], mode:'and'}) && (pa.awaitingSource || /RW5, owner 22:23/.test(pa.creatorNote || '') /* 2026-10-23 (package RW5): placed in Maps 0-9 by tools/rw5_place_new_cards_2026_10_23.js */) && pa.subtype === 'plant' && cards.filter(c=> c.numericId === pa.numericId).length === 1, '10. Pond Algae: Bloom (Wet & Sunny), awaiting a source, a unique numericId');
   ok(tb && tb.effects.bloomCopy && tb.effects.bloom == null, '10. Test: Bloom carries the new Bloom');
   ok(!cards.some(c=> c.effects && c.effects.bloomWhen) && !cards.some(c=> c.effects && c.effects.bloom != null), '10. no card has the old Bloom heal or Bloom When');
@@ -135,7 +135,7 @@ ok((w(lf) === JSON.stringify({when:['tide','night'], mode:'and'}) || (redesigned
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 ok(/\{key:'bloomCopy', category:'passive', label:'Bloom', kind:'text'/.test(src), '11. PASSIVE_DEFS: Bloom (bloomCopy)');
 ok(/\{key:'bloomWhen', category:'passive', hidden:true, retired:true/.test(src) && /\{key:'bloom', category:'evergreen', hidden:true, retired:true/.test(src), '11. the old Bloom heal and Bloom When are retired (hidden)');
-ok(/grant:\{healing:1\},\s*sig:'Heal 1'/.test(src) && /desc:'Heal heals 1 more\.'/.test(src) /* 2026-11-08 (FIX10): UI35 (owner 11-08 10:52 #20) shows Healing as Heal; the key is still healing */, '11. the Open Meadow and Pollen Drift are on Healing (shown as Heal)');
+ok(/grant:\{nursing:1\},\s*sig:'Nursing 1'/.test(src) && /desc:'Nursing heals 1 more\.'/.test(src) /* 2026-11-08 (FIX10): UI35 (owner 11-08 10:52 #20) shows Healing as Heal; 2026-11-18 (ENG52, owner 21:06 "Remove Heal as a skill. Just leave Nursing"): both are on Nursing now */, '11. the Open Meadow and Pollen Drift are on Nursing (Heal is gone)');
 // 2026-11-04 (ENG23, owner 11-03 23:01: "+0/1 at night instead"): Crepuscular's default is +0/+1 at night now (four numbers; tests/eng23-2026-11-04.js)
 ['nocturnal', 'diurnal'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'passive', label:'[A-Za-z]+', kind:'twoNumber', placeholders:\\['Attack','Health'\\], defaultValue:\\[1, 0\\]`).test(src), `11. ${k}: default +1/+0`));
 { const grab = name=> { const m = src.match(new RegExp(`function ${name}\\([^)]*\\)\\{[\\s\\S]*?\\n(?=function |//|const )`)); return m ? m[0] : ''; };

@@ -8348,7 +8348,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Petrify lands after the hit. A unit that died in its own swing ('postDead') still draws, gains and hits, but nothing it gives itself.
   // Outside the swing (onAttackPhase null) every On Attack trigger goes off as before.
   let onAttackPhase = null;
-  const ON_ATTACK_SELF = ['heal', 'buff', 'buffAttack', 'buffHealth', 'shield', 'grantShield', 'cleanse', 'forage' /* ENG25 */];
+  const ON_ATTACK_SELF = [/* ENG52 (2026-11-18): 'heal' left: Nurse N heals an ally, never itself */ 'buff', 'buffAttack', 'buffHealth', 'shield', 'grantShield', 'cleanse', 'forage' /* ENG25 */];
   function onAttackGoes(t){ const pre = t.do === 'fireHit'; if(onAttackPhase === 'pre') return pre; if(pre) return false;
     if(onAttackPhase === 'postDead') return !(ON_ATTACK_SELF.includes(t.do) && (!t.who || t.who === 'self') && !t.adjacent && !t.surrounding && !t.allies);
     return true; }
@@ -8628,15 +8628,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           // own CURRENT hp (captured before the heal applies, so it isn't inflated by its own
           // result), same live-value convention as 'attack' resolving to boardCard.atk elsewhere.
           const healAmount = (t.amount==='attack') ? boardCard.atk : (t.amount==='health') ? boardCard.hp : (t.amount||0);
-          // Heal (2026-10-12, 23:12 list: "Change the Heal Self action to just Heal. The target will be its own parameter"):
-          // who/sub like every other targeted action; no who = itself, as before.
-          const who = t.who || 'self';
-          const tg = who==='self' ? {card:boardCard} : resolveGeneralTarget(players, playerId, boardCard, who, t.sub || 'random');
-          if(!tg || !tg.card) break;
-          const foe = who==='enemy';
-          const healed = applyHeal(tg.card, healAmount, foe ? sideOf(otherId(playerId)) : mySide, events);
-          if(healed>0){ if(foe){ if(recordEvents && events) events.push({type:'heal', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetDefId:tg.card.defId, targetUid:tg.card.uid, amount:healed}); }
-            else fireHealTriggers(players, sideOf, playerId, boardCard, tg.card, healed, stats, events); }
+          // Nurse N (ENG52, 2026-11-18, owner 21:06: "The action will be called Nurse, not Heal. E.g. On Ally Spawn - Nurse 1. Nurse heals a random
+          // *hurt* ally"): the key stays 'heal' (saves); it heals one random hurt ally (Health below max, not itself; nurseTargetOf), nothing when
+          // none is hurt. Was Heal (2026-10-12): who/sub/targets, itself by default; an old trigger's who/sub/targets are ignored now.
+          const tgt = nurseTargetOf(players[playerId], boardCard);
+          if(!tgt) break;
+          const healed = applyHeal(tgt, healAmount, mySide, events);
+          if(healed>0) fireHealTriggers(players, sideOf, playerId, boardCard, tgt, healed, stats, events, 'nurse');
           break;
         }
         // Poison/Bleed/Expose/Stun/Increase Wait (2026-09-30): target generalized to who/sub via
@@ -9807,18 +9805,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
         // Nursing N (2026-10-15, user: "On the battlefield: Nursing = Heal weakest ally every upkeep."): every upkeep it heals the
         // weakest wounded ally (the lowest Health right now, not itself; ties at random) for N. A stunned nurse skips it.
-        if(c.hp>0 && def.effects && def.effects.nursing && !c.stunned){
-          const n = def.effects.nursing === true ? 2 : (Number(def.effects.nursing)||0);
-          const hurt = upkeepUnitsOf(pl).filter(o=> o.hp>0 && o.uid!==c.uid && !o.gap && o.hp<o.maxHp); // 2026-10-18: Poison no longer counts; 2026-10-19 (SK1): nor Bleed
-          if(n > 0 && hurt.length){ const lo = Math.min(...hurt.map(o=> o.hp)), pool = hurt.filter(o=> o.hp === lo), tgt = pool[Math.floor(rnd()*pool.length)];
-            const h = applyHeal(tgt, n, sideOf(pl.id), events);
-            if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:tgt.uid, targetDefId:tgt.defId, amount:h, cause:'nursing'}); fireHealTriggers(players, sideOf, pl.id, c, tgt, h, stats, events); } }
-        }
-        // Healing N (Ecclesia, 2026-10-10): heals the most wounded ally (itself included) for N.
-        if(c.hp>0 && def.effects && def.effects.healing && !c.stunned){
-          const hurt = [eng38Best(upkeepUnitsOf(pl).filter(o=> o.hp>0 && o.hp<o.maxHp), (a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp))].filter(Boolean); // 2026-10-18: Poison no longer counts; 2026-10-19 (SK1): nor Bleed; ENG38 (2026-11-09): a tie at random (was: the left one)
-          if(hurt.length){ const h = applyHeal(hurt[0], (Number(def.effects.healing)||0) + ((pl.perks && pl.perks.pollen) || 0) /* Wildpath "Pollen Drift" moved here from the retired Bloom heal (BL, 2026-10-23) */, sideOf(pl.id), events); if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:hurt[0].uid, targetDefId:hurt[0].defId, amount:h, cause:'healing'}); fireHealTriggers(players, sideOf, pl.id, c, hurt[0], h, stats, events); } }
-        }
+        // ENG52 (2026-11-18, owner 21:06: "Remove Heal as a skill. Just leave Nursing ... Nurse heals a random *hurt* ally, not lowest current
+        // health."): the ally is a random hurt one (Health below max; the fight's seeded rnd, nurseTargetOf), was the lowest Health. Heal (the
+        // old Healing N: the most wounded, itself included) is gone: an old `healing` / `heal` key reads as Nursing, and Wildpath's Pollen Drift
+        // (+1) is on Nursing now. One heal event (cause 'nursing', from fireHealTriggers), was two.
+        { const nv = def.effects && (def.effects.nursing || def.effects.healing || def.effects.heal);
+          if(c.hp>0 && nv && !c.stunned){
+            const n = (nv === true ? 2 : typeof nv === 'object' ? (Number(nv.v)||1) /* an old fused Heal {v, who} */ : (Number(nv)||0)) + ((pl.perks && pl.perks.pollen) || 0);
+            const tgt = n > 0 ? nurseTargetOf(pl, c) : null;
+            if(tgt){ const h = applyHeal(tgt, n, sideOf(pl.id), events); if(h>0) fireHealTriggers(players, sideOf, pl.id, c, tgt, h, stats, events, 'nursing'); } } }
         // Cure (2026-10-16): every upkeep it cures your most poisoned unit (itself included) of 1 Poison (SKN1, 2026-11-16).
         // 2026-10-18 (user: "Cure doesn't heal bleed."): Poison only now; heals stanch Bleed. Toxin can't be cured.
         if(c.hp>0 && def.effects && def.effects.cure && !c.stunned){
@@ -9854,9 +9849,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Healed (this card was healed — the flip side of On Heal), and On Ally Healed (a DIFFERENT
   // card owned by the same player was just healed). Feeds Regeneration N and the 'heal' custom-
   // trigger action; also pushes a 'heal' replay event so the VFX layer can float a heal number.
-  function fireHealTriggers(players, sideOf, ownerId, healerCard, targetCard, amount, stats, events){
+  // ENG52 (2026-11-18): Nursing's and Nurse N's target: a random hurt ally of `self` (Health below max, not itself; the fight's seeded rnd), null when none is hurt
+  function nurseTargetOf(pl, self){ if(!pl) return null; return eng38Pick(upkeepUnitsOf(pl).filter(o=> o && !o.gap && o.hp>0 && (!self || o.uid!==self.uid) && o.hp<o.maxHp)); }
+  function fireHealTriggers(players, sideOf, ownerId, healerCard, targetCard, amount, stats, events, cause){
     if(!(amount>0)) return;
-    if(recordEvents && events) events.push({type:'heal', side:sideOf(ownerId), attDefId:healerCard.defId, attUid:healerCard.uid, targetDefId:targetCard.defId, targetUid:targetCard.uid, amount});
+    if(recordEvents && events) events.push({type:'heal', side:sideOf(ownerId), attDefId:healerCard.defId, attUid:healerCard.uid, targetDefId:targetCard.defId, targetUid:targetCard.uid, amount, cause: cause || undefined}); // ENG52: + cause ('nursing' / 'nurse')
     runCustomTriggers(players, sideOf, ownerId, healerCard, CARD_DEFS[healerCard.defId], 'onHeal', stats, events, {healedCard:targetCard, amount});
     runCustomTriggers(players, sideOf, ownerId, targetCard, CARD_DEFS[targetCard.defId], 'onHealed', stats, events, {healerCard, amount});
     const pl = players[ownerId];
