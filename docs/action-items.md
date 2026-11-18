@@ -10,7 +10,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 ## 11-18 20:26: Owner notes -> POISON2, MAPFIT1 (queued)
 - [ ] Venom counters read "Poison"; Venomous keeps its name (owner picked one counter named Poison; OWN-1118-1) -> POISON2 (running)
-- [ ] Single-map view scrolls ~3 screens on PC (owner 20:40 screenshot; the World view is fine): the open fight panel (`#conquestNodePanel`: drops, deck, Ref line, "This map's cards" chips that spill below the panel box) stretches `#conquestMain`. Cap the panel to the viewport with its own scroll, keep the chips inside it, no scroll on the map behind; also its 45 px overflow with no panel open -> MAPFIT1 (after SKWK2, same file)
+- [ ] Single-map view scrolls ~3 screens on PC (owner 20:40 screenshot; the World view is fine): the open fight panel (`#conquestNodePanel`: drops, deck, Ref line, "This map's cards" chips that spill below the panel box) stretches `#conquestMain`. Cap the panel to the viewport with its own scroll, keep the chips inside it, no scroll on the map behind. Owner 20:41: "Even when the fight panel is off, the screen is to long, about 2.3-2.5x the screen length" (not reproduced: owner's Chrome 1710x859 overflows 45 px; headless 1288-3440 px wide up to +194 px). So: the single-map view never scrolls at any window size or browser zoom (canvas fits the available height; `#conquestMain` no vertical scroll) -> MAPFIT1 (after SKWK2, same file)
+- [ ] Admin `MAP_FOCUS_SKILLS` (arena_app.js ~10641) is still REDESIGN2's 11-16 draft (e.g. Map 0 Evasive); set it to REDESIGN3 v2's focus (`docs/design/redesign3-2026-11-17.json` focus[]) -> MAPFIT1
+- [ ] Per-map role mix (strong / cute / resource / support / defender) on Maps 0-20 lists, owner 20:42 -> ROLE1 (running, analysis + proposals only)
 - [ ] A skull decoration on the Glass Dunes (Map 18) map, like the camp / sign / well (owner picked "Map decoration") -> MAPFIT1
 - [x] Skill status answered: SKAUD1 audit built; 32 skill calls open (SKAUD1-1..3, SKN1-1..19, SKILL9-1..10)
 
