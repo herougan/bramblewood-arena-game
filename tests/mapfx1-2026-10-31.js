@@ -73,7 +73,7 @@ ok(/function mfxVisual\(\)\{ try\{ return !reducedMotion\(\) && fxAtLeast\('low'
 ok(/@keyframes mfxSway\{from\{transform:rotate\(calc\(var\(--sw, \.8deg\) \* -1\)\);\} to\{transform:rotate\(var\(--sw, \.8deg\)\);\}\}/.test(css), 'the sway keyframes are one rotate');
 ok(/\.mfx-sway\{transform-origin:50% 80%; will-change:transform; animation:mfxSway/.test(css), 'the sway turns round the trunk base (bottom of the tree)');
 ok(/\(\(i \* 37\) % 5\) \/ 10; \/\/ 0\.6 to 1\.0 degrees/.test(mount) && /\(4 \+ \(\(i \* 53\) % 31\) \/ 10\)/.test(mount) && /animationDelay = '-'/.test(mount), 'amplitude 0.6-1.0 degrees, 4.0-7.0 s, a different negative delay per tree');
-ok(/\.map-fx-layer\{position:absolute; inset:0; z-index:0; pointer-events:none;\}/.test(css) && /\.mfx-hit\{[^}]*pointer-events:auto/.test(css), 'the layer takes no taps; only its spots do');
+/* 2026-11-18 (MAPFIT0): the layer also clips its spots (overflow:hidden) */ ok(/\.map-fx-layer\{position:absolute; inset:0; z-index:0; pointer-events:none;[^}]*\}/.test(css) && /\.mfx-hit\{[^}]*pointer-events:auto/.test(css), 'the layer takes no taps; only its spots do');
 ok(/\.map-sway-layer\{[^}]*pointer-events:none/.test(css) && /\.mfx-patch\{[^}]*pointer-events:none/.test(css), 'the sway layer and its copies take no taps');
 ok(/layout-editing \.map-fx-layer, \.conquest-map-canvas\.link-editing \.map-fx-layer\{display:none;\}/.test(css), 'the layer is off while an admin edits the layout or the links');
 ok(/e\.target\.closest[^;]*\.map-node, \.map-spot, \.map-curio, \[data-lkey\], button/.test(mount) && /addEventListener\('click', onClick, true\)/.test(mount), 'a fire only hears a tap that landed on nothing interactive');

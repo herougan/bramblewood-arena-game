@@ -11793,7 +11793,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 @media (prefers-reduced-motion: reduce){ .cave-fire .cf-flame, .cave-fire .cf-glow, .cave-fire .cf-spark, .cave-fire::after{animation:none !important;} }
 /* Map decor you can touch (2026-10-31, package MAPFX1, owner X7). The layer sits first in the canvas (z-index 0 = paint order is DOM order),
    so the trail, nodes, curios, pawn and every button are above it; only its own spots take a tap. */
-.map-fx-layer{position:absolute; inset:0; z-index:0; pointer-events:none;}
+.map-fx-layer{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;} /* 2026-11-18 (MAPFIT0, owner 20:58 "infinite scroll"): mountMapFx re-places the tap spots on every scroll, offset by the scroll, so unclipped spots near the bottom grew the map's scroll area 25-73 px per scroll; clipped to the map, the spots can no longer extend it */
 .conquest-map-canvas.layout-editing .map-fx-layer, .conquest-map-canvas.link-editing .map-fx-layer{display:none;}
 .map-sway-layer{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; border-radius:inherit;}
 .mfx-hit{position:absolute; transform:translate(-50%,-50%); pointer-events:auto; cursor:pointer; border-radius:50%; background:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none;}

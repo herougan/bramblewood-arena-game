@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-18 (package MAPFIT0, owner 20:58: the map view scrolls without end)
+- Players see: a single map no longer scrolls. The tap spots on its trees, bushes, crystals and water were re-placed on every scroll, offset by the scroll, so the spots near the bottom pushed the map's scroll area down 25-73 px each time (endless). The spot layer now clips its spots; measured at 1288x634, 1710x859 and 2560x1440: no scroll, before and after scrolling 8 times.
+- Under the hood: `.map-fx-layer` `overflow:hidden` (arena_template.html); `tests/mapfx1-2026-10-31.js` pin widened.
+
 ## 2026-11-18 (package POISON2: one counter named Poison)
 - Players see: the ☠ counter, its chip, tooltips, logs and the damage type read "Poison" everywhere (was "Venom" / "Venomous"); Poison Spit, Poison Pulse, Poison Glands, "Arrow – poison", Cure takes "the most poisoned". Venomous N keeps its name. Wording only (owner OWN-1118-1); 68 texts in 12 languages. Hard-coded English in arena_app.js still says Venom (listed in the package report).
 ## 2026-11-18 (package TL4: Tagalog / Tamil / Japanese / Korean review of CONTENT13, POWDER1, DATAFIX and FXAUD2 rows)
