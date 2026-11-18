@@ -112,7 +112,7 @@ ok(s('bulwark').value === 6.3 && s('bulwark').bal34Was.value === 6.65 /* 2026-11
     const miss = NEWK.concat(['ui.sk-bulwark', 'ui.e10-skn-venom', 'ui.sk-cure']).filter(k=> !pk[T[k]]); ok(!miss.length, `${code}: the ENG33 texts are translated (${miss.join(', ')})`); }
   ok(J('lang/fr.json')[T['ui.sk-cure']].includes('Poison'), 'French: Poison -> Poison' /* 2026-11-18 (POISON2): was Venin */); }
 { const app = rd('arena_app.js');
-  ok(/label:TX\('ui\.eng33-venomous-name'\)/.test(app) && /poison:'☠️ Venomous'/.test(app), 'the app: the skill label and the damage type read Venomous');
+  ok(/label:TX\('ui\.eng33-venomous-name'\)/.test(app) && /poison:'☠️ Poison'/.test(app), 'the app: the skill label reads Venomous, the damage type Poison' /* 2026-11-18 (UIFIN): the damage type was Venomous */);
   ok(/thanatosis:'😵'/.test(app) && /key:'thanatosis'/.test(app) && /key:'poisonous'/.test(app), 'the app: Thanatosis and Poisonous in the editor, with icons'); }
 
 // ---- docs
