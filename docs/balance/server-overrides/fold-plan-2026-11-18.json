@@ -1,0 +1,366 @@
+{
+ "_about": "FOLD5 (2026-11-16, CONTENT11-2 a): the live card_overrides rows of 10-29 .. 11-05 folded into canonical/cards.json (tools/fold_server_overrides_2026_11_18.js). Field rule: the owner's value unless the file changed that field after his save; effects three-way merged; source / unattainable not folded.",
+ "generated": "2026-11-16",
+ "cards": 8,
+ "alreadyFolded": [],
+ "rows": [
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "upd": "2026-11-18T13:03:01.256Z",
+   "server": [
+    3,
+    8
+   ],
+   "fileNow": [
+    2,
+    7
+   ],
+   "now": [
+    3,
+    8
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 2,
+     "to": 3
+    },
+    {
+     "field": "health",
+     "from": 7,
+     "to": 8
+    },
+    {
+     "field": "effects",
+     "from": {
+      "swarm": [
+       "Ants"
+      ]
+     },
+     "to": {}
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {},
+   "rarity": "common"
+  },
+  {
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "upd": "2026-11-18T13:04:34.813Z",
+   "server": [
+    2,
+    10
+   ],
+   "fileNow": [
+    2,
+    10
+   ],
+   "now": [
+    2,
+    10
+   ],
+   "changes": [
+    {
+     "field": "levelSkills",
+     "from": null,
+     "to": {
+      "2": {
+       "tide": true
+      }
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {},
+   "levelSkills": {
+    "2": {
+     "tide": true
+    }
+   },
+   "rarity": "starter"
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "upd": "2026-11-18T13:06:54.422Z",
+   "server": [
+    0,
+    4
+   ],
+   "fileNow": [
+    0,
+    4
+   ],
+   "now": [
+    0,
+    4
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "healing": {
+       "v": 1,
+       "who": "weakest"
+      }
+     },
+     "to": {
+      "flying": true,
+      "nursing": 1
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "nursing": 1
+   },
+   "rarity": "starter"
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "upd": "2026-11-18T13:07:20.238Z",
+   "server": [
+    1,
+    5
+   ],
+   "fileNow": [
+    1,
+    5
+   ],
+   "now": [
+    1,
+    5
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "healing": {
+       "v": 1,
+       "who": "weakest"
+      }
+     },
+     "to": {
+      "flying": true
+     }
+    },
+    {
+     "field": "levelSkills",
+     "from": null,
+     "to": {
+      "3": {
+       "poison": 1
+      }
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true
+   },
+   "levelSkills": {
+    "3": {
+     "poison": 1
+    }
+   },
+   "rarity": "starter"
+  },
+  {
+   "id": "house-cat",
+   "name": "House Cat",
+   "upd": "2026-11-18T13:18:49.176Z",
+   "server": [
+    3,
+    3
+   ],
+   "fileNow": [
+    3,
+    3
+   ],
+   "now": [
+    3,
+    3
+   ],
+   "changes": [
+    {
+     "field": "levelSkills",
+     "from": null,
+     "to": {
+      "2": {
+       "crepuscular": true
+      }
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {},
+   "levelSkills": {
+    "2": {
+     "crepuscular": true
+    }
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "upd": "2026-11-18T13:20:25.762Z",
+   "server": [
+    2,
+    5
+   ],
+   "fileNow": [
+    2,
+    4
+   ],
+   "now": [
+    2,
+    5
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 4,
+     "to": 5
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "foraging": 1
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "field-vole",
+   "name": "Field Vole",
+   "upd": "2026-11-18T13:22:10.560Z",
+   "server": [
+    1,
+    4
+   ],
+   "fileNow": [
+    1,
+    4
+   ],
+   "now": [
+    1,
+    4
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "cure": 1,
+      "foraging": 2
+     },
+     "to": {
+      "foraging": 1
+     }
+    },
+    {
+     "field": "levelSkills",
+     "from": null,
+     "to": {
+      "3": {
+       "cure": 1
+      }
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "foraging": 1
+   },
+   "levelSkills": {
+    "3": {
+     "cure": 1
+    }
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "upd": "2026-11-18T13:30:37.340Z",
+   "server": [
+    1,
+    4
+   ],
+   "fileNow": [
+    1,
+    5
+   ],
+   "now": [
+    1,
+    4
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 5,
+     "to": 4
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "triggers": [
+       {
+        "do": "spawnCard",
+        "on": "onAttacked",
+        "count": 1,
+        "defId": "bee-swarmling"
+       }
+      ]
+     },
+     "to": {
+      "flying": true,
+      "triggers": [
+       {
+        "do": "spawnCard",
+        "on": "onAttack",
+        "count": 1,
+        "defId": "bee-swarmling"
+       }
+      ]
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "do": "spawnCard",
+      "on": "onAttack",
+      "count": 1,
+      "defId": "bee-swarmling"
+     }
+    ]
+   },
+   "rarity": "uncommon"
+  }
+ ]
+}

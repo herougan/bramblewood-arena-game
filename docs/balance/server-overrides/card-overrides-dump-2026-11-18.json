@@ -1,0 +1,332 @@
+{
+ "_about": "2026-11-18 (FOLD7, owner 21:22 'consider my edits'): read-only SQL on card_overrides: card rows saved after 2026-11-14 (not deleted, not an empty patch): data minus art, speeches, creatorNote, uuid, tags, mechanicLine, splashEffect, flavor; flavor as md5 in flavorMd5. Rows before are in the 11-16 dump (folded by FOLD5).",
+ "rows": [
+  {
+   "id": "soldier-ant",
+   "data": {
+    "id": "soldier-ant",
+    "cost": 0,
+    "icon": "🐜",
+    "name": "Soldier Ant",
+    "test": false,
+    "wait": 1,
+    "animal": "ant",
+    "attack": 3,
+    "health": 8,
+    "locked": false,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {},
+    "species": [
+     "Insect"
+    ],
+    "exileCost": null,
+    "flavorMd5": "ecf4bce33af4d7ca2abaf985ebd24fa0",
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 11,
+    "stoneCost": 0,
+    "archetypes": [
+     "Insect",
+     "Ants"
+    ],
+    "devilryCost": 0
+   },
+   "updated_at": "2026-11-18T13:03:01.256+00:00"
+  },
+  {
+   "id": "duck-paddler",
+   "data": {
+    "id": "duck-paddler",
+    "cost": 0,
+    "icon": "🦆",
+    "name": "Duck Paddler",
+    "test": false,
+    "wait": 1,
+    "basic": true,
+    "animal": "duck",
+    "attack": 2,
+    "health": 10,
+    "locked": false,
+    "rarity": "starter",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {},
+    "faction": "base",
+    "species": [
+     "Bird"
+    ],
+    "basicSet": "shared",
+    "exileCost": null,
+    "flavorMd5": "5e88b82a7a62ca5cd6b2270edc9e042f",
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 259,
+    "stoneCost": 0,
+    "archetypes": [
+     "Duck"
+    ],
+    "devilryCost": 0,
+    "levelSkills": {
+     "2": {
+      "tide": true
+     }
+    }
+   },
+   "updated_at": "2026-11-18T13:04:34.813+00:00"
+  },
+  {
+   "id": "bee-forager",
+   "data": {
+    "id": "bee-forager",
+    "cost": 0,
+    "icon": "🐝",
+    "name": "Bee Forager",
+    "test": false,
+    "wait": 0,
+    "animal": "bee",
+    "attack": 0,
+    "health": 4,
+    "locked": false,
+    "rarity": "starter",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+     "flying": true,
+     "nursing": 1
+    },
+    "faction": "base",
+    "species": [
+     "Insect"
+    ],
+    "exileCost": null,
+    "flavorMd5": "76e853a541c602c61d7f067676e1084b",
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 249,
+    "stoneCost": 0,
+    "archetypes": [
+     "Bee"
+    ],
+    "devilryCost": 0
+   },
+   "updated_at": "2026-11-18T13:06:54.422+00:00"
+  },
+  {
+   "id": "bee-sentry",
+   "data": {
+    "id": "bee-sentry",
+    "cost": 0,
+    "icon": "🐝",
+    "name": "Bee Sentry",
+    "test": false,
+    "wait": 1,
+    "animal": "bee",
+    "attack": 1,
+    "health": 5,
+    "locked": false,
+    "rarity": "starter",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+     "flying": true
+    },
+    "faction": "base",
+    "species": [
+     "Insect"
+    ],
+    "exileCost": null,
+    "flavorMd5": "522a299539eda0b2fd3ca78361dd9a20",
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 250,
+    "stoneCost": 0,
+    "archetypes": [
+     "Bee"
+    ],
+    "devilryCost": 0,
+    "levelSkills": {
+     "3": {
+      "poison": 1
+     }
+    }
+   },
+   "updated_at": "2026-11-18T13:07:20.238+00:00"
+  },
+  {
+   "id": "house-cat",
+   "data": {
+    "id": "house-cat",
+    "cost": 0,
+    "icon": "🐈",
+    "name": "House Cat",
+    "test": false,
+    "wait": 0,
+    "animal": "cat",
+    "attack": 3,
+    "health": 3,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "source": {
+     "map": "m1",
+     "kind": "pack",
+     "tier": 1
+    },
+    "dmgType": "physical",
+    "effects": {},
+    "species": [
+     "Mammal"
+    ],
+    "exileCost": null,
+    "flavorMd5": "9b6afb975ad402bb2e130e10e1dfda5b",
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 503,
+    "stoneCost": 0,
+    "archetypes": [
+     "Village",
+     "Cat"
+    ],
+    "devilryCost": 0,
+    "levelSkills": {
+     "2": {
+      "crepuscular": true
+     }
+    }
+   },
+   "updated_at": "2026-11-18T13:18:49.176+00:00"
+  },
+  {
+   "id": "hedgerow-shrew",
+   "data": {
+    "id": "hedgerow-shrew",
+    "cost": 0,
+    "icon": "🐁",
+    "name": "Hedgerow Shrew",
+    "test": false,
+    "wait": 0,
+    "animal": "shrew",
+    "attack": 2,
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "source": {
+     "map": "mf",
+     "kind": "pack",
+     "tier": 1
+    },
+    "dmgType": "physical",
+    "effects": {
+     "foraging": 1
+    },
+    "species": [
+     "Mammal"
+    ],
+    "exileCost": null,
+    "flavorMd5": "b8a53b8e41e1e7318d3676d8821c852f",
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1245,
+    "stoneCost": 0,
+    "archetypes": [
+     "Field"
+    ],
+    "devilryCost": 0
+   },
+   "updated_at": "2026-11-18T13:20:25.762+00:00"
+  },
+  {
+   "id": "field-vole",
+   "data": {
+    "id": "field-vole",
+    "cost": 0,
+    "icon": "🐁",
+    "name": "Field Vole",
+    "test": false,
+    "wait": 0,
+    "animal": "vole",
+    "attack": 1,
+    "health": 4,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "source": {
+     "map": "mf",
+     "kind": "pack",
+     "tier": 1
+    },
+    "dmgType": "physical",
+    "effects": {
+     "foraging": 1
+    },
+    "species": [
+     "Rodent"
+    ],
+    "exileCost": null,
+    "flavorMd5": "622fadab0f8dad195273b19531795166",
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1247,
+    "stoneCost": 0,
+    "archetypes": [
+     "Field",
+     "Mouse"
+    ],
+    "devilryCost": 0,
+    "levelSkills": {
+     "3": {
+      "cure": 1
+     }
+    }
+   },
+   "updated_at": "2026-11-18T13:22:10.56+00:00"
+  },
+  {
+   "id": "bee-drone",
+   "data": {
+    "id": "bee-drone",
+    "cost": 0,
+    "icon": "🍯",
+    "name": "Bee Drone",
+    "test": false,
+    "wait": 0,
+    "animal": "bee",
+    "attack": 1,
+    "health": 4,
+    "locked": false,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "do": "spawnCard",
+       "on": "onAttack",
+       "count": 1,
+       "defId": "bee-swarmling"
+      }
+     ]
+    },
+    "species": [
+     "Insect"
+    ],
+    "exileCost": null,
+    "flavorMd5": "2d8394bdbbbc2bd63e2f8a0ef3de0124",
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 5,
+    "stoneCost": 0,
+    "archetypes": [
+     "Bee"
+    ],
+    "devilryCost": 0,
+    "unattainable": true
+   },
+   "updated_at": "2026-11-18T13:30:37.34+00:00"
+  }
+ ]
+}
