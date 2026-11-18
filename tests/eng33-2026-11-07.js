@@ -101,15 +101,16 @@ ok(s('bulwark').value === 6.3 && s('bulwark').bal34Was.value === 6.65 /* 2026-11
 // ---- texts: no Poison counters left in the TX table; the new texts in all 12 packs
 { global.window = global; const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT;
   const KEEP = /Poison Barbs|Poison Bolt|Poison Gas|Poison Floor|Poison Dart|Deadly Poison|Greater Poison|Poison Powder|poison bolt|poison gas/gi; // + Poison Powder (POWDER1, 2026-11-17): the owner's skill name, like Poison Bolt
-  const left = Object.keys(T).filter(k=> /\bpoison(ed|s)?\b/i.test(String(T[k]).replace(KEEP, '')));
-  ok(!left.length, `no TX text calls the counters Poison (${left.join(', ')})`);
-  ok(T['ui.eng33-venomous-name'] === 'Venomous' && /\{n\} Venom/.test(T['ui.eng33-venomous']), 'the skill reads Venomous N, its counters Venom');
-  ok(T['ui.e10-skn-venom'] === 'Venom Spit', 'Poison Bolt\'s label is Venom Spit (Venom is the counters now)');
+  /* 2026-11-18 (POISON2, OWN-1118-1): inverted: the counters read Poison now, so no TX text may say Venom or Envenomed (Venomous N, the skill, stays) */
+  const left = Object.keys(T).filter(k=> /\b(en)?venom(?!ous)\w*/i.test(String(T[k])) && !/^ui\.(skn-venom-pulse|eng33-venomous-name)$/.test(k));
+  ok(!left.length, `no TX text calls the counters Venom (${left.join(", ")})`);
+  ok(T['ui.eng33-venomous-name'] === 'Venomous' && /\{n\} Poison/.test(T['ui.eng33-venomous']), 'the skill reads Venomous N, its counters Poison' /* 2026-11-18 (POISON2, OWN-1118-1): was Venom */);
+  ok(T['ui.e10-skn-venom'] === 'Poison Spit', 'Poison Bolt\'s label is Poison Spit' /* 2026-11-18 (POISON2): was Venom Spit */);
   ok(T['ui.en-bulwark-shield'] === 'Log Wall' && /\{n\} × Log Wall/.test(T['ui.sk-bulwark']), 'Bulwark texts: Log Wall');
   const NEWK = Object.keys(T).filter(k=> /^ui\.eng33-/.test(k)); ok(NEWK.length >= 18, `the new TX keys (${NEWK.length})`);
   for(const code of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']){ const pk = J(`lang/${code}.json`);
     const miss = NEWK.concat(['ui.sk-bulwark', 'ui.e10-skn-venom', 'ui.sk-cure']).filter(k=> !pk[T[k]]); ok(!miss.length, `${code}: the ENG33 texts are translated (${miss.join(', ')})`); }
-  ok(J('lang/fr.json')[T['ui.sk-cure']].includes('Venin'), 'French: Poison -> Venin'); }
+  ok(J('lang/fr.json')[T['ui.sk-cure']].includes('Poison'), 'French: Poison -> Poison' /* 2026-11-18 (POISON2): was Venin */); }
 { const app = rd('arena_app.js');
   ok(/label:TX\('ui\.eng33-venomous-name'\)/.test(app) && /poison:'☠️ Venomous'/.test(app), 'the app: the skill label and the damage type read Venomous');
   ok(/thanatosis:'😵'/.test(app) && /key:'thanatosis'/.test(app) && /key:'poisonous'/.test(app), 'the app: Thanatosis and Poisonous in the editor, with icons'); }

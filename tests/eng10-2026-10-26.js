@@ -43,7 +43,7 @@ const cards = JSON.parse(rd('canonical/cards.json')), cid = {}; cards.forEach(c=
 const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('arena_app.js');
 
 // ---- ENG9-3 the spits ---------------------------------------------------------------------------------------------------------------
-{ const names = {cinder:'Cinder', acid:'Acid', venom:'Venom Spit' /* 2026-11-07 (ENG33): Venom is the counters' name now (decision ENG33-3) */, ice:'Ice', spark:'Spark'};
+{ const names = {cinder:'Cinder', acid:'Acid', venom:'Poison Spit' /* 2026-11-18 (POISON2): was Venom Spit; */ /* 2026-11-07 (ENG33): Venom is the counters' name now (decision ENG33-3) */, ice:'Ice', spark:'Spark'};
   Object.entries(names).forEach(([k, v])=> ok(tx['ui.e10-skn-' + k] === v, `ENG9-3 the ${k} spit reads "${v}"`));
   ok(/\['fireBolt', TX\('ui\.e10-skn-cinder'\)\]/.test(app) && !/eng9-skn-/.test(app), 'ENG9-3 the five spit labels use the new names');
   // no clash: none of the five is a skill label, a gem's name or another skill key's name (Ember is the gem, Frost a skill: hence Cinder, Ice)
