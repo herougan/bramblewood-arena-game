@@ -32589,7 +32589,7 @@
      ],
      "level": 1,
      "leaders": [
-      "echo-screecher"
+      "eagle-owl-quartermaster"
      ],
      "deck": {
       "dust-hyena": 4,
@@ -34928,6 +34928,16 @@
        "sulfur-cinder-moth": 4
       }
      }
+    },
+    {
+     "package": "SKWK2",
+     "on": "2026-11-18",
+     "leaders": {
+      "8-A-PRO-1": [
+       "echo-screecher"
+      ]
+     },
+     "why": "re-baked after FOLD6 / CARDPOW2 / REFIT5-6 (SKWK2): the showcase leaders under the re-set cards; the previous values are here"
     }
    ],
    "wpro": [
@@ -42222,7 +42232,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "eagle-owl-quartermaster"
      ],
      "deck": {
       "eagle-owl-quartermaster": 3,
@@ -44034,6 +44044,16 @@
        "swamp-alligator": 2
       }
      }
+    },
+    {
+     "package": "SKWK2",
+     "on": "2026-11-18",
+     "leaders": {
+      "11-PRO-3": [
+       "wolf-spider-mother"
+      ]
+     },
+     "why": "re-baked after FOLD6 / CARDPOW2 / REFIT5-6 (SKWK2): the showcase leaders under the re-set cards; the previous values are here"
     }
    ],
    "wpro": [
@@ -55299,7 +55319,7 @@
      ],
      "level": 1,
      "leaders": [
-      "mallard-marauder"
+      "eagle-owl-quartermaster"
      ],
      "deck": {
       "balloon-archer": 3,
@@ -57627,6 +57647,16 @@
        "village-miller": 4
       }
      }
+    },
+    {
+     "package": "SKWK2",
+     "on": "2026-11-18",
+     "leaders": {
+      "15-PRO-2": [
+       "mallard-marauder"
+      ]
+     },
+     "why": "re-baked after FOLD6 / CARDPOW2 / REFIT5-6 (SKWK2): the showcase leaders under the re-set cards; the previous values are here"
     }
    ],
    "wpro": [
