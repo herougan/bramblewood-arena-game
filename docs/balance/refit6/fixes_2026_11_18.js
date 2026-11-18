@@ -6,10 +6,11 @@
 // -> refit6-fixes.jsonl.   node docs/balance/refit6/fixes_2026_11_18.js [--candidates] [--seeds=51100,52100] [--pass=2]
 // --pass=2 (the second search pass, from the decks the first applied): only accA2 / accB2 / accW, files refit6-{candidates,fixes}-pass2.jsonl
 // (the first pass's are kept as refit6-{candidates,fixes}-pass1.jsonl), fresh seeds 53100 / 54100 by default.
+// --pass=3 (REFIT6: REFIT5's wide search on the fights the two passes left 20+ off): only accW1 / accW2, files -pass3, seeds 55100 / 56100.
 'use strict';
 const fs = require('fs'), path = require('path'), ROOT = path.resolve(__dirname, '..', '..', '..'), D = __dirname;
-const a = process.argv.slice(2), P2 = a.includes('--pass=2'), S = ((a.find(x => x.startsWith('--seeds=')) || (P2 ? '--seeds=53100,54100' : '--seeds=51100,52100')).slice(8)).split(','), CAND = a.includes('--candidates');
-const SUF = P2 ? '-pass2' : '', FILES = P2 ? ['accA2.jsonl', 'accB2.jsonl', 'accW.jsonl'] : ['accA.jsonl', 'accB.jsonl'];
+const a = process.argv.slice(2), P3 = a.includes('--pass=3'), P2 = a.includes('--pass=2'), S = ((a.find(x => x.startsWith('--seeds=')) || (P3 ? '--seeds=55100,56100' : P2 ? '--seeds=53100,54100' : '--seeds=51100,52100')).slice(8)).split(','), CAND = a.includes('--candidates');
+const SUF = P3 ? '-pass3' : P2 ? '-pass2' : '', FILES = P3 ? ['accW1.jsonl', 'accW2.jsonl'] : P2 ? ['accA2.jsonl', 'accB2.jsonl', 'accW.jsonl'] : ['accA.jsonl', 'accB.jsonl'];
 const rd = f => fs.existsSync(f) ? fs.readFileSync(f, 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse) : [];
 const X = require(path.join(ROOT, 'tools', 'legal1', 'lib_legal_2026_11_15.js'));
 const base = {}; rd(path.join(ROOT, 'docs', 'balance', 'skirmish-pass-refit6-before-s9100.jsonl')).forEach(r => { base[r.key] = r; });
