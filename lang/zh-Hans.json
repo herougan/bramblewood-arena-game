@@ -4670,5 +4670,7 @@
  "Will learn another skill as it grows": "成长后还会学会一项技能",
  "See it at other levels": "查看其他等级",
  "Slide to see it at another level, up to one past your best copy.": "拖动查看其他等级，最多比你最好的那张高一级。",
- "Own a copy to look further ahead.": "拥有一张后可以看得更远。"
+ "Own a copy to look further ahead.": "拥有一张后可以看得更远。",
+ "First raid open: {name}.": "首个突袭已开启：{name}。",
+ "First raid open": "首个突袭已开启"
 }
