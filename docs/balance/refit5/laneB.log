@@ -1,0 +1,92 @@
+5-A-2 target 65 (57-73) size 14 side (min 10) start {"bog-leech":2,"cypress-root-lurker":5,"matamata":2,"muskrat-reedgatherer":2,"newt-doctor":3} problems []
+start {"bog-leech":2,"cypress-root-lurker":5,"matamata":2,"muskrat-reedgatherer":2,"newt-doctor":3} 22.5
+round 1: cur 25/22.5; 94 legal, 50 read + 6 predicted (of 46); top: -1 newt-doctor -2 muskrat-reedgatherer +1 river-carp +2 swamp-alligator 66.7/46.3 | -1 newt-doctor -2 muskrat-reedgatherer +1 river-carp +2 crocodile-ambusher 66.7/45 | -1 newt-doctor -2 muskrat-reedgatherer +1 river-carp +2 constrictor-coil 66.7/43.1
+round 2: cur 66.7/46.3; 78 legal, 34 read + 6 predicted (of 46); top: -2 matamata +2 peat-cutter-vole 66.7/46.3 | -2 swamp-alligator +2 crocodile-ambusher 66.7/45 | -2 swamp-alligator +2 constrictor-coil 66.7/43.1
+no nearer move
+RESULT 5-A-2 {"bog-leech":2,"cypress-root-lurker":5,"matamata":2,"newt-doctor":2,"river-carp":1,"swamp-alligator":2} 46.3 {} moves: -1 newt-doctor -2 muskrat-reedgatherer +1 river-carp +2 swamp-alligator problems: []
+5-A-4 target 40 (30-49) size 16 side (min 12) start {"cypress-root-lurker":4,"hedgehog-herbalist":2,"matamata":4,"peat-cutter-vole":4,"swamp-alligator":2} problems []
+start {"cypress-root-lurker":4,"hedgehog-herbalist":2,"matamata":4,"peat-cutter-vole":4,"swamp-alligator":2} 67.5
+round 1: cur 91.7/67.5; 110 legal, 50 read + 6 predicted (of 49); top: -4 matamata +4 newt-doctor 33.3/38.8 | -4 cypress-root-lurker +4 newt-doctor 33.3/31.3 | -2 cypress-root-lurker +2 newt-doctor 41.7/51.3
+RESULT 5-A-4 {"cypress-root-lurker":4,"hedgehog-herbalist":2,"peat-cutter-vole":4,"swamp-alligator":2,"newt-doctor":4} 38.8 {} moves: -4 matamata +4 newt-doctor problems: []
+5-A-1 target 90 (82-98) size 14 side (min 10) start {"anhinga-spearbird":1,"crocodile-ambusher":4,"nutria-reedcutter":4,"peat-cutter-vole":3,"river-carp":2} problems []
+start {"anhinga-spearbird":1,"crocodile-ambusher":4,"nutria-reedcutter":4,"peat-cutter-vole":3,"river-carp":2} 83.1
+round 1: cur 75/83.1; 104 legal, 50 read + 6 predicted (of 33); top: -3 nutria-reedcutter +3 anhinga-spearbird 91.7/86.3 | -3 peat-cutter-vole +3 cypress-root-lurker 91.7/95.6 | -1 river-carp +1 anhinga-spearbird 91.7/76.3
+round 2: cur 91.7/86.3; 104 legal, 50 read + 6 predicted (of 41); top: -1 peat-cutter-vole +1 river-carp 91.7/90.6 | -3 anhinga-spearbird +3 cypress-root-lurker 91.7/92.5 | -1 nutria-reedcutter +1 cypress-root-lurker 91.7/93.8
+RESULT 5-A-1 {"anhinga-spearbird":4,"crocodile-ambusher":4,"nutria-reedcutter":1,"peat-cutter-vole":2,"river-carp":3} 90.6 {} moves: -3 nutria-reedcutter +3 anhinga-spearbird ; -1 peat-cutter-vole +1 river-carp problems: []
+5-A-3 target 60 (52-68) size 12 side (min 10) start {"bog-leech":2,"constrictor-coil":1,"mangrove-mudskipper":3,"nutria-reedcutter":1,"muskrat-reedgatherer":2,"matamata":3} problems []
+start {"bog-leech":2,"constrictor-coil":1,"mangrove-mudskipper":3,"nutria-reedcutter":1,"muskrat-reedgatherer":2,"matamata":3} 58.1
+RESULT 5-A-3 {"bog-leech":2,"constrictor-coil":1,"mangrove-mudskipper":3,"nutria-reedcutter":1,"muskrat-reedgatherer":2,"matamata":3} 58.1 {} moves:  problems: []
+10-A-5 target 40 (30-49) size 16 side (min 12) start {"blue-ringed-octopus":2,"mantis-shrimp":3,"reef-shark":4,"sea-turtle-elder":4,"coral-current-eel":2,"giant-clam":1} problems []
+start {"blue-ringed-octopus":2,"mantis-shrimp":3,"reef-shark":4,"sea-turtle-elder":4,"coral-current-eel":2,"giant-clam":1} 88.1
+round 1: cur 91.7/88.1; 32 legal, 32 read + 6 predicted (of 51); top: -3 reef-shark -1 giant-clam +3 giant-clam +1 coral-current-eel 70.8/67.5 | -3 reef-shark +3 giant-clam 75/73.8 | -1 sea-turtle-elder 75/88.1
+round 2: cur 70.8/67.5; 33 legal, 33 read + 6 predicted (of 50); top: -1 mantis-shrimp +1 blue-ringed-octopus 66.7/67.5 | -2 mantis-shrimp +1 blue-ringed-octopus +1 giant-clam 58.3/68.8 | -1 mantis-shrimp -2 coral-current-eel +1 blue-ringed-octopus 62.5/76.9
+no nearer move
+RESULT 10-A-5 {"blue-ringed-octopus":2,"mantis-shrimp":3,"reef-shark":1,"sea-turtle-elder":4,"coral-current-eel":3,"giant-clam":3} 67.5 {} moves: -3 reef-shark -1 giant-clam +3 giant-clam +1 coral-current-eel problems: []
+10-A-4 target 60 (52-68) size 11 side (min 10) start {"coral-current-eel":1,"mantis-shrimp":2,"reef-shark":3,"sea-turtle-elder":1,"orca-vanguard":4} problems []
+start {"coral-current-eel":1,"mantis-shrimp":2,"reef-shark":3,"sea-turtle-elder":1,"orca-vanguard":4} 91.9
+round 1: cur 87.5/91.9; 30 legal, 30 read + 6 predicted (of 43); top: -4 orca-vanguard +4 giant-clam 66.7/71.9 | -1 mantis-shrimp +1 giant-clam 66.7/88.8 | -1 reef-shark +1 giant-clam 70.8/90
+round 2: cur 66.7/71.9; 30 legal, 30 read + 6 predicted (of 47); top: -1 reef-shark -1 coral-current-eel +1 mantis-shrimp +1 riptide-eel 62.5/70 | -2 giant-clam +2 coral-current-eel 62.5/73.8 | -1 reef-shark +1 mantis-shrimp 62.5/75
+round 3: cur 62.5/70; 31 legal, 31 read + 6 predicted (of 32); top: -2 mantis-shrimp +2 sea-turtle-elder 62.5/67.5 | -2 mantis-shrimp +2 reef-shark 62.5/68.8 | -1 riptide-eel +1 coral-current-eel 62.5/75
+round 4: cur 62.5/67.5; 32 legal, 32 read + 6 predicted (of 30); top: -1 sea-turtle-elder +1 reef-shark 62.5/68.8 | -2 sea-turtle-elder +2 mantis-shrimp 62.5/70 | -1 reef-shark +1 sea-turtle-elder 58.3/72.5
+no nearer move
+RESULT 10-A-4 {"mantis-shrimp":1,"reef-shark":2,"sea-turtle-elder":3,"giant-clam":4,"riptide-eel":1} 67.5 {} moves: -4 orca-vanguard +4 giant-clam ; -1 reef-shark -1 coral-current-eel +1 mantis-shrimp +1 riptide-eel ; -2 mantis-shrimp +2 sea-turtle-elder problems: []
+10-A-3 target 70 (62-78) size 12 side (min 10) start {"blue-ringed-octopus":3,"mantis-shrimp":1,"orca-vanguard":2,"riptide-eel":2,"reef-shark":4} problems []
+start {"blue-ringed-octopus":3,"mantis-shrimp":1,"orca-vanguard":2,"riptide-eel":2,"reef-shark":4} 95
+round 1: cur 100/95; 34 legal, 34 read + 6 predicted (of 48); top: -2 reef-shark -1 blue-ringed-octopus +2 giant-clam +1 riptide-eel 87.5/86.9 | -2 reef-shark +2 giant-clam 87.5/91.3 | -3 reef-shark +3 giant-clam 87.5/93.8
+round 2: cur 87.5/86.9; 53 legal, 24 read + 6 predicted (of 38); top: -1 reef-shark +1 riptide-eel 83.3/90.6 | -1 reef-shark -1 blue-ringed-octopus +1 riptide-eel +1 mantis-shrimp 83.3/91.3 | -1 reef-shark +1 mantis-shrimp 87.5/91.3
+no nearer move
+RESULT 10-A-3 {"blue-ringed-octopus":2,"mantis-shrimp":1,"orca-vanguard":2,"riptide-eel":3,"reef-shark":2,"giant-clam":2} 86.9 {} moves: -2 reef-shark -1 blue-ringed-octopus +2 giant-clam +1 riptide-eel problems: []
+10-A-2 target 70 (62-78) size 12 side (min 10) start {"coral-current-eel":1,"mantis-shrimp":1,"orca-vanguard":3,"reef-shark":5,"sea-turtle-elder":2} problems []
+start {"coral-current-eel":1,"mantis-shrimp":1,"orca-vanguard":3,"reef-shark":5,"sea-turtle-elder":2} 93.8
+round 1: cur 100/93.8; 35 legal, 35 read + 6 predicted (of 38); top: -2 orca-vanguard -5 reef-shark +2 coral-current-eel +5 giant-clam 75/72.5 | -2 orca-vanguard -2 reef-shark +2 coral-current-eel +2 giant-clam 79.2/83.1 | -4 reef-shark +4 giant-clam 83.3/83.8
+RESULT 10-A-2 {"coral-current-eel":3,"mantis-shrimp":1,"orca-vanguard":1,"sea-turtle-elder":2,"giant-clam":5} 72.5 {} moves: -2 orca-vanguard -5 reef-shark +2 coral-current-eel +5 giant-clam problems: []
+10-A-1 target 90 (82-98) size 10 side (min 10) start {"coral-current-eel":1,"kraken-spawnling":3,"mantis-shrimp":1,"orca-vanguard":4,"sea-turtle-elder":1} problems []
+start {"coral-current-eel":1,"kraken-spawnling":3,"mantis-shrimp":1,"orca-vanguard":4,"sea-turtle-elder":1} 100
+round 1: cur 100/100; 24 legal, 24 read + 6 predicted (of 38); top: -2 kraken-spawnling +2 reef-shark 91.7/98.1 | -3 orca-vanguard +3 reef-shark 95.8/98.1 | -2 orca-vanguard +2 reef-shark 91.7/99.4
+round 2: cur 91.7/98.1; 33 legal, 33 read + 6 predicted (of 37); top: -1 mantis-shrimp +1 sea-turtle-elder 91.7/98.8 | -1 mantis-shrimp +1 kraken-spawnling 91.7/99.4 | -1 orca-vanguard +1 kraken-spawnling 91.7/99.4
+no nearer move
+RESULT 10-A-1 {"coral-current-eel":1,"kraken-spawnling":1,"mantis-shrimp":1,"orca-vanguard":4,"sea-turtle-elder":1,"reef-shark":2} 98.1 {} moves: -2 kraken-spawnling +2 reef-shark problems: []
+8-7 target 60 (52-68) size 14 start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} problems []
+start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 24.4
+round 1: cur 20.8/24.4; 23 legal, 23 read + 6 predicted (of 46); top: -1 blind-cave-fish +1 sulfur-cinder-moth 29.2/22.5 | -1 sulfur-cinder-moth +1 giant-cave-huntsman 25/20 | -2 blind-cave-fish +2 sulfur-cinder-moth 29.2/17.5
+no nearer move
+RESULT 8-7 {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 24.4 {} moves:  problems: []
+8-8 target 40 (30-49) size 15 start {"echo-screecher":2,"gallery-orb-weaver":4,"hawthorn-shieldbug":1,"stalactite-golem":4,"sulfur-cinder-moth":2,"cave-olm":1,"rot-swollen-carcass":1} problems []
+start {"echo-screecher":2,"gallery-orb-weaver":4,"hawthorn-shieldbug":1,"stalactite-golem":4,"sulfur-cinder-moth":2,"cave-olm":1,"rot-swollen-carcass":1} 36.3
+round 1: cur 37.5/36.3; 36 legal, 36 read + 6 predicted (of 39); top: -1 echo-screecher +1 sulfur-cinder-moth 37.5/43.1 | -1 sulfur-cinder-moth -1 rot-swollen-carcass +2 cave-olm 41.7/35 | -1 cave-olm +1 corpse-flower-beetle 41.7/46.3
+no nearer move
+RESULT 8-8 {"echo-screecher":2,"gallery-orb-weaver":4,"hawthorn-shieldbug":1,"stalactite-golem":4,"sulfur-cinder-moth":2,"cave-olm":1,"rot-swollen-carcass":1} 36.3 {} moves:  problems: []
+12-7 target 40 (30-49) size 20 start {"barkplate-beetle":4,"briarback-hedgehog":4,"eyrie-warden":1,"hollow-belly-rat":4,"mouse-sapper":4,"quillguard":3} problems []
+start {"barkplate-beetle":4,"briarback-hedgehog":4,"eyrie-warden":1,"hollow-belly-rat":4,"mouse-sapper":4,"quillguard":3} 80
+round 1: cur 83.3/80; 92 legal, 50 read + 6 predicted (of 13); top: -3 barkplate-beetle -4 hollow-belly-rat +3 quill-thorn-boar +4 alpine-marmot 62.5/60.6 | -2 hollow-belly-rat +2 alpine-marmot 70.8/68.1 | -4 mouse-sapper +3 fawn-scout +1 mountain-hare 66.7/71.9
+round 2: cur 62.5/60.6; 52 legal, 23 read + 6 predicted (of 22); top: -1 eyrie-warden +1 barkplate-beetle 58.3/56.9 | -4 briarback-hedgehog +1 anvil-thrush +3 barkplate-beetle 54.2/58.1 | -4 briarback-hedgehog +4 bison-bulldozer 58.3/61.9
+round 3: cur 58.3/56.9; 95 legal, 49 read + 6 predicted (of 17); top: -1 quill-thorn-boar -4 briarback-hedgehog +1 anvil-thrush +3 fawn-scout +1 barkplate-beetle 45.8/46.9 | -1 quill-thorn-boar +1 anvil-thrush 54.2/60.6 | -2 briarback-hedgehog +2 hollow-belly-rat 54.2/65
+round 4: cur 45.8/46.9; 36 legal, 36 read + 6 predicted (of 31); top: -1 anvil-thrush -2 quill-thorn-boar +1 mountain-hare +2 bison-bulldozer 45.8/52.5 | -1 anvil-thrush -2 quill-thorn-boar +1 mountain-hare +2 briarback-hedgehog 33.3/53.1 | -1 anvil-thrush -2 quill-thorn-boar +1 mountain-hare +2 hollow-belly-rat 33.3/53.8
+no nearer move
+RESULT 12-7 {"barkplate-beetle":3,"mouse-sapper":4,"quillguard":3,"quill-thorn-boar":2,"alpine-marmot":4,"anvil-thrush":1,"fawn-scout":3} 46.9 {} moves: -3 barkplate-beetle -4 hollow-belly-rat +3 quill-thorn-boar +4 alpine-marmot ; -1 eyrie-warden +1 barkplate-beetle ; -1 quill-thorn-boar -4 briarback-hedgehog +1 anvil-thrush +3 fawn-scout +1 barkplate-beetle problems: []
+12-3 target 68 (60-76) size 14 start {"barkplate-beetle":4,"briarback-hedgehog":5,"chipmunk-hoarder":1,"mountain-hare":1,"quill-thorn-boar":3} problems []
+start {"barkplate-beetle":4,"briarback-hedgehog":5,"chipmunk-hoarder":1,"mountain-hare":1,"quill-thorn-boar":3} 95
+round 1: cur 91.7/95; 49 legal, 49 read + 6 predicted (of 20); top: -5 briarback-hedgehog -1 quill-thorn-boar +5 mouse-sapper +1 anvil-thrush 79.2/76.9 | -4 briarback-hedgehog +4 mouse-sapper 83.3/81.9 | -5 briarback-hedgehog -3 barkplate-beetle +5 mouse-sapper +3 cunning-vixen 79.2/88.1
+round 2: cur 79.2/76.9; 20 legal, 20 read + 6 predicted (of 42); top: -4 barkplate-beetle +4 briarback-hedgehog 75/80.6 | -4 barkplate-beetle +4 bison-bulldozer 75/83.8 | -4 barkplate-beetle -1 anvil-thrush +4 bison-bulldozer +1 fawn-scout 75/85.6
+no nearer move
+RESULT 12-3 {"barkplate-beetle":4,"chipmunk-hoarder":1,"mountain-hare":1,"quill-thorn-boar":2,"mouse-sapper":5,"anvil-thrush":1} 76.9 {} moves: -5 briarback-hedgehog -1 quill-thorn-boar +5 mouse-sapper +1 anvil-thrush problems: []
+12-6 target 60 (52-68) size 16 start {"briarback-hedgehog":4,"chipmunk-hoarder":1,"cunning-vixen":2,"hollow-belly-rat":4,"mountain-hare":1,"mouse-sapper":4} problems []
+start {"briarback-hedgehog":4,"chipmunk-hoarder":1,"cunning-vixen":2,"hollow-belly-rat":4,"mountain-hare":1,"mouse-sapper":4} 86.9
+round 1: cur 95.8/86.9; 102 legal, 50 read + 6 predicted (of 18); top: -3 hollow-belly-rat -4 mouse-sapper +3 quill-thorn-boar +3 fawn-scout +1 cunning-vixen 70.8/76.9 | -2 briarback-hedgehog +2 fawn-scout 66.7/79.4 | -4 mouse-sapper +3 fawn-scout +1 cunning-vixen 66.7/82.5
+round 2: cur 70.8/76.9; 63 legal, 25 read + 6 predicted (of 29); top: -2 briarback-hedgehog +2 hollow-belly-rat 70.8/68.8 | -3 briarback-hedgehog +3 hollow-belly-rat 66.7/74.4 | -2 cunning-vixen +2 hollow-belly-rat 66.7/81.3
+round 3: cur 70.8/68.8; 68 legal, 26 read + 6 predicted (of 32); top: -2 briarback-hedgehog +1 anvil-thrush +1 cunning-vixen 62.5/60.6 | -1 briarback-hedgehog +1 hollow-belly-rat 66.7/74.4 | -2 cunning-vixen +2 briarback-hedgehog 66.7/81.3
+RESULT 12-6 {"chipmunk-hoarder":1,"cunning-vixen":4,"hollow-belly-rat":3,"mountain-hare":1,"quill-thorn-boar":3,"fawn-scout":3,"anvil-thrush":1} 60.6 {} moves: -3 hollow-belly-rat -4 mouse-sapper +3 quill-thorn-boar +3 fawn-scout +1 cunning-vixen ; -2 briarback-hedgehog +2 hollow-belly-rat ; -2 briarback-hedgehog +1 anvil-thrush +1 cunning-vixen problems: []
+12-4 target 72 (64-80) size 16 start {"bison-bulldozer":4,"fawn-scout":1,"hedgerow-shrew":1,"hollow-belly-rat":4,"quill-thorn-boar":3,"quillguard":3} problems []
+start {"bison-bulldozer":4,"fawn-scout":1,"hedgerow-shrew":1,"hollow-belly-rat":4,"quill-thorn-boar":3,"quillguard":3} 93.8
+round 1: cur 100/93.8; 32 legal, 32 read + 6 predicted (of 34); top: -4 bison-bulldozer -2 hollow-belly-rat +4 alpine-marmot +2 fawn-scout 83.3/71.3 | -4 bison-bulldozer -4 hollow-belly-rat +4 alpine-marmot +4 mouse-sapper 87.5/82.5 | -4 bison-bulldozer +4 alpine-marmot 87.5/83.8
+RESULT 12-4 {"fawn-scout":3,"hedgerow-shrew":1,"hollow-belly-rat":2,"quill-thorn-boar":3,"quillguard":3,"alpine-marmot":4} 71.3 {} moves: -4 bison-bulldozer -2 hollow-belly-rat +4 alpine-marmot +2 fawn-scout problems: []
+12-5 target 66 (58-74) size 16 start {"bison-bulldozer":1,"briarback-hedgehog":4,"chipmunk-hoarder":1,"cunning-vixen":4,"quill-thorn-boar":3,"quillguard":3} problems []
+start {"bison-bulldozer":1,"briarback-hedgehog":4,"chipmunk-hoarder":1,"cunning-vixen":4,"quill-thorn-boar":3,"quillguard":3} 86.9
+round 1: cur 91.7/86.9; 124 legal, 50 read + 6 predicted (of 41); top: -2 quill-thorn-boar +2 fawn-scout 66.7/64.4 | -2 quillguard +2 fawn-scout 66.7/73.8 | -3 briarback-hedgehog +3 fawn-scout 66.7/51.3
+RESULT 12-5 {"bison-bulldozer":1,"briarback-hedgehog":4,"chipmunk-hoarder":1,"cunning-vixen":4,"quill-thorn-boar":1,"quillguard":3,"fawn-scout":2} 64.4 {} moves: -2 quill-thorn-boar +2 fawn-scout problems: []
+15-6 target 60 (52-68) size 16 start {"cataphract-destrier":4,"elderhorn-monarch":3,"mosquito-cloud":1,"sworn-shieldbearer":4,"warhorse-charger":4} problems []
+start {"cataphract-destrier":4,"elderhorn-monarch":3,"mosquito-cloud":1,"sworn-shieldbearer":4,"warhorse-charger":4} 93.8
+round 1: cur 95.8/93.8; 63 legal, 50 read + 6 predicted (of 50); top: -4 cataphract-destrier +4 grass-viper 66.7/65 | -4 cataphract-destrier +4 village-miller 58.3/70.6 | -1 cataphract-destrier -1 elderhorn-monarch +1 grass-viper +1 hoopoe-herald 66.7/71.3
+round 2: cur 66.7/65; 63 legal, 28 read + 6 predicted (of 51); top: -1 warhorse-charger +1 village-miller 58.3/60.6 | -1 warhorse-charger +1 plains-zebra 58.3/66.3 | -4 grass-viper +4 village-miller 58.3/70.6
+RESULT 15-6 {"elderhorn-monarch":3,"mosquito-cloud":1,"sworn-shieldbearer":4,"warhorse-charger":3,"grass-viper":4,"village-miller":1} 60.6 {} moves: -4 cataphract-destrier +4 grass-viper ; -1 warhorse-charger +1 village-miller problems: []
+LANE DONE
