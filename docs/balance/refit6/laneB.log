@@ -1,0 +1,26 @@
+9-7 target 40 (30-49) size 19 start {"fishing-cat":3,"horseshoe-crab":3,"ironclaw-fiddler":3,"mangrove-monitor":4,"nutria-reedcutter":1,"proboscis-monkey":4,"tide-spirit":1} problems []
+start {"fishing-cat":3,"horseshoe-crab":3,"ironclaw-fiddler":3,"mangrove-monitor":4,"nutria-reedcutter":1,"proboscis-monkey":4,"tide-spirit":1} 86.9
+round 1: cur 79.2/86.9; 35 legal, 35 read + 6 predicted (of 26); top: -4 mangrove-monitor -1 fishing-cat +4 mangrove-mudskipper +1 tide-spirit 50/68.1 | -3 fishing-cat +1 alley-cat +2 tide-spirit 54.2/75 | -3 fishing-cat +3 electric-ray 54.2/81.9
+round 2: cur 50/68.1; 35 legal, 35 read + 6 predicted (of 33); top: -1 ironclaw-fiddler -1 horseshoe-crab +1 tide-spirit +1 fishing-cat 41.7/65.6 | -1 fishing-cat +1 tide-spirit 45.8/69.4 | -1 horseshoe-crab +1 tide-spirit 45.8/69.4
+round 3: cur 41.7/65.6; 32 legal, 32 read + 6 predicted (of 37); top: -1 nutria-reedcutter +1 horseshoe-crab 41.7/62.5 | -1 mangrove-mudskipper +1 horseshoe-crab 41.7/62.5 | -1 ironclaw-fiddler +1 horseshoe-crab 41.7/63.1
+round 4: cur 41.7/62.5; 67 legal, 17 read + 6 predicted (of 33); top: -1 horseshoe-crab +1 ironclaw-fiddler 45.8/60.6 | -1 fishing-cat +1 ironclaw-fiddler 50/60.6 | -1 fishing-cat +1 horseshoe-crab 45.8/64.4
+RESULT 9-7 {"fishing-cat":3,"horseshoe-crab":2,"ironclaw-fiddler":3,"proboscis-monkey":4,"tide-spirit":3,"mangrove-mudskipper":4} 60.6 {} moves: -4 mangrove-monitor -1 fishing-cat +4 mangrove-mudskipper +1 tide-spirit ; -1 ironclaw-fiddler -1 horseshoe-crab +1 tide-spirit +1 fishing-cat ; -1 nutria-reedcutter +1 horseshoe-crab ; -1 horseshoe-crab +1 ironclaw-fiddler problems: []
+9-6 target 60 (52-68) size 17 start {"fishing-cat":3,"mangrove-monitor":4,"mangrove-mudskipper":2,"nutria-reedcutter":1,"reef-shark":4,"voltaic-eel":3} problems []
+start {"fishing-cat":3,"mangrove-monitor":4,"mangrove-mudskipper":2,"nutria-reedcutter":1,"reef-shark":4,"voltaic-eel":3} 95
+round 1: cur 100/95; 62 legal, 45 read + 6 predicted (of 21); top: -3 reef-shark -3 fishing-cat +3 electric-ray +1 fiddler-crab-swarm +2 mangrove-mudskipper 66.7/66.3 | -3 fishing-cat -3 reef-shark +3 electric-ray +3 anhinga-spearbird 66.7/75 | -3 reef-shark +3 anhinga-spearbird 75/95.6
+round 2: cur 66.7/66.3; 37 legal, 37 read + 6 predicted (of 37); top: -1 nutria-reedcutter +1 electric-ray 58.3/66.3 | -1 mangrove-mudskipper +1 electric-ray 58.3/67.5 | -1 nutria-reedcutter +1 alley-cat 58.3/71.9
+no nearer move
+RESULT 9-6 {"mangrove-monitor":4,"mangrove-mudskipper":4,"nutria-reedcutter":1,"reef-shark":1,"voltaic-eel":3,"electric-ray":3,"fiddler-crab-swarm":1} 66.3 {} moves: -3 reef-shark -3 fishing-cat +3 electric-ray +1 fiddler-crab-swarm +2 mangrove-mudskipper problems: []
+9-5 target 66 (58-74) size 17 start {"fishing-cat":3,"horseshoe-crab":4,"ironclaw-fiddler":3,"mangrove-monitor":3,"nutria-reedcutter":1,"proboscis-monkey":3} problems []
+start {"fishing-cat":3,"horseshoe-crab":4,"ironclaw-fiddler":3,"mangrove-monitor":3,"nutria-reedcutter":1,"proboscis-monkey":3} 98.1
+round 1: cur 91.7/98.1; 64 legal, 38 read + 6 predicted (of 38); top: -1 mangrove-monitor -3 ironclaw-fiddler +4 electric-ray 66.7/77.5 | -2 proboscis-monkey -3 ironclaw-fiddler +2 mangrove-mudskipper +3 electric-ray 66.7/77.5 | -1 nutria-reedcutter -3 ironclaw-fiddler +4 electric-ray 66.7/78.1
+round 2: cur 66.7/77.5; 82 legal, 45 read + 6 predicted (of 31); top: -1 nutria-reedcutter +1 mangrove-monitor 66.7/78.1 | -3 fishing-cat +1 alligator-gar +2 mangrove-monitor 66.7/78.8 | -2 fishing-cat +2 ironclaw-fiddler 66.7/90.6
+no nearer move
+RESULT 9-5 {"fishing-cat":3,"horseshoe-crab":4,"mangrove-monitor":2,"nutria-reedcutter":1,"proboscis-monkey":3,"electric-ray":4} 77.5 {} moves: -1 mangrove-monitor -3 ironclaw-fiddler +4 electric-ray problems: []
+9-4 target 62 (54-70) size 16 start {"alley-cat":1,"fiddler-crab-swarm":1,"horseshoe-crab":4,"mangrove-monitor":3,"mangrove-mudskipper":3,"reef-shark":4} problems []
+start {"alley-cat":1,"fiddler-crab-swarm":1,"horseshoe-crab":4,"mangrove-monitor":3,"mangrove-mudskipper":3,"reef-shark":4} 92.5
+round 1: cur 91.7/92.5; 40 legal, 40 read + 6 predicted (of 41); top: -4 horseshoe-crab -2 reef-shark +4 anhinga-spearbird +2 mangrove-monitor 66.7/68.8 | -4 horseshoe-crab -1 alley-cat +4 electric-ray +1 mangrove-monitor 66.7/78.1 | -2 horseshoe-crab -1 alley-cat +2 mangrove-mudskipper +1 mangrove-monitor 66.7/84.4
+round 2: cur 66.7/68.8; 33 legal, 33 read + 6 predicted (of 45); top: -1 fiddler-crab-swarm +1 nutria-reedcutter 62.5/64.4 | -2 anhinga-spearbird +2 mangrove-mudskipper 62.5/64.4 | -1 fiddler-crab-swarm +1 mangrove-mudskipper 62.5/68.8
+RESULT 9-4 {"alley-cat":1,"mangrove-monitor":5,"mangrove-mudskipper":3,"reef-shark":2,"anhinga-spearbird":4,"nutria-reedcutter":1} 64.4 {} moves: -4 horseshoe-crab -2 reef-shark +4 anhinga-spearbird +2 mangrove-monitor ; -1 fiddler-crab-swarm +1 nutria-reedcutter problems: []
+9-3 target 78 (70-86) size 12 start {"alley-cat":1,"banded-sea-krait":2,"horseshoe-crab":4,"proboscis-monkey":4,"sunbittern-strider":1} problems []
+start {"alley-cat":1,"banded-sea-krait":2,"horseshoe-crab":4,"proboscis-monkey":4,"sunbittern-strider":1} 100
