@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-18 (package REFIT5: Map 10-12 and 17 reference decks rebuilt, the Maps 0-20 road re-fitted after DATAFIX)
+- Players see: new enemy decks in 90 road fights (Maps 0-20 and their side maps), most on Maps 11, 20, 12, 6 and 19-A. Shield and bramble Health untouched.
+- Road (seed 9100, 400 games; unchanged fights from GitHub run 44226797832 of the DATAFIX head): main 70 -> 119 in band, 80 -> 126 within 10, 29 -> 4 beyond 20 (of 149); side 49 -> 68 / 54 -> 71 / 10 -> 4 (of 81). Left: 8-7, 2-2, 19-5 too hard; 7-6, 7-A-2, 10-A-5, 20-A-4, 20-9 too easy (decision REFIT5-1).
+- Under the hood: REFIT4-1 a: the Map reference decks of Maps 10, 11, 12 and 17 rebuilt by `skirmish_pass.js decks --keep` from the cards owned there (Map 17 without Fawn Scout, a pack card the Map 16 deck it started from still holds). Then REFIT4's legal-only search (two passes) and a wide sampler; a deck kept only where it closes the gap by 2+ points on the mean of two fresh seed sets (41100 / 42100, then 43100 / 44100). Deck problems 10 -> 9, tests/skir1 failures 21 -> 17. Files: `docs/balance/refit5/`.
+
 ## 2026-11-18 (package DATAFIX: the data TESTFIX's triage found against standing rules)
 - Players see: 43 reward slots hold a card new on their map (Map 0: Elder Willow, Thorn Shrike); no Stone card before Map 21 (Phoenix Mushrooms 2 Lumber, Pumice Beetle gains 2 Lumber 3/8, Caldera Wyrm 3 Lumber); a defender on Maps 5 and 10; Dust Hyena and Barrow Leech Bat lose a skill; six twin lines separated by a stat step; 5 cards at their list's rarity cap; 95 road decks swapped copies where a moved reward left a deck.
 - Under the hood: Maps 21-23 hold 23 MAP cards (overflow on SPECIAL), Constrictor Coil on Map 5's SPECIAL (REFIT4-2 a), map-review rows, taxonomy, top-up order, one shorter tip. `tools/datafix*_2026_11_18.js`; tests follow in opt2, n221, content10, card-pool, bal9. Road deck problems 17 -> 10 (K14 / boon ones REFIT4 held). Decisions DATAFIX-1, -2.
