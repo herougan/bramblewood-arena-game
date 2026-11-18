@@ -1,0 +1,69 @@
+{
+ "map": "mn",
+ "generated": "2026-11-18T15:06:03.454Z",
+ "decks": [
+  {
+   "id": "8-A-BPRO-3",
+   "map": "mn",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.33,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.76,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cave-olm": 4,
+     "gallery-orb-weaver": 4,
+     "glow-worm": 4,
+     "whip-spider": 3,
+     "blind-cave-fish": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.4,
+     "ref": 0.725,
+     "gap": 0.1
+    }
+   },
+   "pick": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cave-olm": 4,
+     "gallery-orb-weaver": 4,
+     "glow-worm": 4,
+     "whip-spider": 3,
+     "blind-cave-fish": 2
+    },
+    "val": {
+     "v": 0.4,
+     "ref": 0.725,
+     "gap": 0.1
+    },
+    "leaders": [
+     "barrow-leech-bat"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.267,
+     "ref": 0.7,
+     "gap": 0
+    }
+   ],
+   "readings": 11,
+   "sec": 42
+  }
+ ],
+ "drop": []
+}

@@ -1,0 +1,81 @@
+{
+ "map": "mz",
+ "generated": "2026-11-18T19:16:55.979Z",
+ "decks": [
+  {
+   "id": "7-A-PRO-2",
+   "map": "mz",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 2,
+     "fungus-gnat-cloud": 3,
+     "garden-snail": 4,
+     "hawthorn-shieldbug": 4,
+     "leopard-slug": 3,
+     "mudpuppy": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 1,
+     "ref": 1,
+     "gap": 0.15
+    }
+   },
+   "pick": {
+    "deck": {
+     "fungus-gnat-cloud": 3,
+     "garden-snail": 4,
+     "hawthorn-shieldbug": 4,
+     "leopard-slug": 3,
+     "alligator-gar": 2,
+     "river-mink": 4
+    },
+    "val": {
+     "v": 0.825,
+     "ref": 0.825,
+     "gap": 0
+    },
+    "leaders": [
+     "alligator-gar"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.983,
+     "ref": 0.983,
+     "gap": 0.203
+    },
+    {
+     "move": "alley-cat -2 -> alligator-gar",
+     "v": 0.883,
+     "ref": 0.883,
+     "gap": 0.103,
+     "tried": 30
+    },
+    {
+     "move": "mudpuppy x4 -> river-mink",
+     "v": 0.75,
+     "ref": 0.75,
+     "gap": 0,
+     "tried": 30
+    }
+   ],
+   "readings": 67,
+   "sec": 324
+  }
+ ],
+ "drop": []
+}

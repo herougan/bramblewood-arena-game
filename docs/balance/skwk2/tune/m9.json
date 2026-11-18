@@ -1,0 +1,166 @@
+{
+ "map": "m9",
+ "generated": "2026-11-18T12:53:57.356Z",
+ "decks": [
+  {
+   "id": "19-A-BPRO-1",
+   "map": "m9",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "booming-bittern": 3,
+     "cinder-gecko": 4,
+     "obsidian-scorpion": 3,
+     "pumice-beetle": 2,
+     "smoke-raccoon": 4,
+     "star-nosed-mole": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.925,
+     "ref": 0.075,
+     "gap": 0.625
+    }
+   },
+   "pick": {
+    "deck": {
+     "booming-bittern": 4,
+     "obsidian-scorpion": 1,
+     "smoke-raccoon": 4,
+     "star-nosed-mole": 4,
+     "granite-ox-golem": 3,
+     "grindstone-boar": 4
+    },
+    "val": {
+     "v": 0.275,
+     "ref": 0.75,
+     "gap": 0
+    },
+    "leaders": [
+     "granite-ox-golem"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.983,
+     "ref": 0.025,
+     "gap": 0.713
+    },
+    {
+     "move": "cinder-gecko x4 -> granite-ox-golem",
+     "v": 0.608,
+     "ref": 0.475,
+     "gap": 0.338,
+     "tried": 24
+    },
+    {
+     "move": "pumice-beetle -2 -> grindstone-boar",
+     "v": 0.358,
+     "ref": 0.525,
+     "gap": 0.088,
+     "tried": 24
+    },
+    {
+     "move": "obsidian-scorpion -2 -> grindstone-boar",
+     "v": 0.225,
+     "ref": 0.775,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 843,
+   "sec": 263
+  },
+  {
+   "id": "19-A-BPRO-2",
+   "map": "m9",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cinder-gecko": 4,
+     "cinder-hornet": 4,
+     "obsidian-scorpion": 1,
+     "stalactite-golem": 4,
+     "star-nosed-mole": 4,
+     "stoat-cutthroat": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.805,
+     "ref": 0.275,
+     "gap": 0.505
+    }
+   },
+   "pick": {
+    "deck": {
+     "cinder-gecko": 4,
+     "cinder-hornet": 4,
+     "obsidian-scorpion": 2,
+     "stoat-cutthroat": 3,
+     "granite-ox-golem": 3,
+     "magma-titan": 4
+    },
+    "val": {
+     "v": 0.24,
+     "ref": 0.75,
+     "gap": 0
+    },
+    "leaders": [
+     "granite-ox-golem"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.775,
+     "ref": 0.4,
+     "gap": 0.505
+    },
+    {
+     "move": "star-nosed-mole x4 -> granite-ox-golem",
+     "v": 0.525,
+     "ref": 0.65,
+     "gap": 0.255,
+     "tried": 24
+    },
+    {
+     "move": "stalactite-golem x4 -> magma-titan",
+     "v": 0.217,
+     "ref": 0.75,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 549,
+   "sec": 199
+  }
+ ],
+ "drop": []
+}

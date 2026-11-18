@@ -1,0 +1,299 @@
+{
+ "map": "m8",
+ "generated": "2026-11-18T11:25:02.572Z",
+ "decks": [
+  {
+   "id": "6-BPRO-1",
+   "map": "m8",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "alligator-gar": 1,
+     "cypress-root-lurker": 4,
+     "grass-viper": 4,
+     "heron-hag": 3,
+     "mosquito-cloud": 4,
+     "water-shrew": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alligator-gar": 2,
+     "cypress-root-lurker": 4,
+     "heron-hag": 3,
+     "water-shrew": 4,
+     "barrow-leech-bat": 3,
+     "constrictor-coil": 4
+    },
+    "val": {
+     "v": 0.23,
+     "ref": 0.475,
+     "gap": 0
+    },
+    "leaders": [
+     "heron-hag"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: grass-viper -> barrow-leech-bat",
+     "was": [
+      "grass-viper: off the bpro pool",
+      "grass-viper: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "grass-viper: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.3,
+     "ref": 0.425,
+     "gap": 0.03
+    },
+    {
+     "move": "mosquito-cloud x4 -> constrictor-coil",
+     "v": 0.183,
+     "ref": 0.425,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 385,
+   "sec": 65
+  },
+  {
+   "id": "6-BPRO-2",
+   "map": "m8",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "adder-ambusher": 3,
+     "anhinga-spearbird": 4,
+     "cypress-root-lurker": 4,
+     "mosquito-cloud": 1,
+     "nutria-reedcutter": 4,
+     "water-shrew": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cypress-root-lurker": 4,
+     "mosquito-cloud": 4,
+     "water-shrew": 4,
+     "venomlord-serpent": 4,
+     "camouflage-frog": 4
+    },
+    "val": {
+     "v": 0.16,
+     "ref": 0.275,
+     "gap": 0
+    },
+    "leaders": [
+     "venomlord-serpent"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: adder-ambusher x3 -> venomlord-serpent",
+     "was": [
+      "adder-ambusher: off the bpro pool",
+      "anhinga-spearbird: off the bpro pool",
+      "nutria-reedcutter: off the bpro pool",
+      "adder-ambusher: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))",
+      "anhinga-spearbird: not on the map's list (first obtainable on Map 7)",
+      "nutria-reedcutter: not on the map's list (held, not listed)",
+      "anhinga-spearbird: not in the map's own pool (BPRO)",
+      "nutria-reedcutter: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "repair: anhinga-spearbird+nutria-reedcutter -> camouflage-frog",
+     "was": [
+      "anhinga-spearbird: off the bpro pool",
+      "nutria-reedcutter: off the bpro pool",
+      "anhinga-spearbird: not on the map's list (first obtainable on Map 7)",
+      "nutria-reedcutter: not on the map's list (held, not listed)",
+      "anhinga-spearbird: not in the map's own pool (BPRO)",
+      "nutria-reedcutter: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.208,
+     "ref": 0.45,
+     "gap": 0
+    }
+   ],
+   "readings": 401,
+   "sec": 64
+  },
+  {
+   "id": "6-BPRO-3",
+   "map": "m8",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cypress-root-lurker": 2,
+     "grass-viper": 4,
+     "heron-hag": 3,
+     "newt-doctor": 4,
+     "nutria-reedcutter": 4,
+     "pond-algae": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cypress-root-lurker": 2,
+     "heron-hag": 3,
+     "newt-doctor": 4,
+     "pond-algae": 4,
+     "venomlord-serpent": 4,
+     "barrow-leech-bat": 3
+    },
+    "val": {
+     "v": 0.18,
+     "ref": 0.45,
+     "gap": 0
+    },
+    "leaders": [
+     "heron-hag"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: nutria-reedcutter x4 -> venomlord-serpent",
+     "was": [
+      "grass-viper: off the bpro pool",
+      "nutria-reedcutter: off the bpro pool",
+      "grass-viper: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "nutria-reedcutter: not on the map's list (held, not listed)",
+      "grass-viper: not in the map's own pool (BPRO)",
+      "nutria-reedcutter: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "repair: grass-viper -> barrow-leech-bat",
+     "was": [
+      "grass-viper: off the bpro pool",
+      "grass-viper: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "grass-viper: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.208,
+     "ref": 0.225,
+     "gap": 0
+    }
+   ],
+   "readings": 301,
+   "sec": 61
+  },
+  {
+   "id": "6-WPRO-1",
+   "map": "m8",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "anhinga-spearbird": 4,
+     "camouflage-frog": 4,
+     "constrictor-coil": 4,
+     "crocodile-ambusher": 4,
+     "venomlord-serpent": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "camouflage-frog": 4,
+     "constrictor-coil": 4,
+     "crocodile-ambusher": 4,
+     "venomlord-serpent": 4,
+     "booming-bittern": 4
+    },
+    "val": {
+     "v": 0.975,
+     "ref": 0.975,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: anhinga-spearbird -> booming-bittern",
+     "was": [
+      "anhinga-spearbird: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.967,
+     "ref": 0.967,
+     "gap": 0
+    }
+   ],
+   "readings": 8,
+   "sec": 4
+  }
+ ],
+ "drop": [
+  "6-PRO-1",
+  "6-PRO-4"
+ ]
+}

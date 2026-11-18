@@ -1,0 +1,239 @@
+{
+ "map": "mf",
+ "generated": "2026-11-18T11:15:25.731Z",
+ "decks": [
+  {
+   "id": "1-BPRO-1",
+   "map": "mf",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramble-sprout": 4,
+     "chipmunk-cavalry": 4,
+     "chipmunk-skirmisher": 4,
+     "cricket-drummer": 2,
+     "dormouse": 2,
+     "robin-redbreast": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "bramble-sprout": 4,
+     "chipmunk-cavalry": 4,
+     "cricket-drummer": 2,
+     "dormouse": 2,
+     "puddle-skimmer": 4,
+     "jackrabbit-sprinter": 4
+    },
+    "val": {
+     "v": 0.295,
+     "ref": 0.6,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: chipmunk-skirmisher -> puddle-skimmer",
+     "was": [
+      "chipmunk-skirmisher: off the bpro pool",
+      "chipmunk-skirmisher: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "chipmunk-skirmisher: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.633,
+     "ref": 0.45,
+     "gap": 0.363
+    },
+    {
+     "move": "robin-redbreast x4 -> jackrabbit-sprinter",
+     "v": 0.275,
+     "ref": 0.725,
+     "gap": 0.005,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 618,
+   "sec": 97
+  },
+  {
+   "id": "1-BPRO-2",
+   "map": "mf",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "cricket-drummer": 4,
+     "dormouse": 4,
+     "moonlit-hare": 4,
+     "robin-redbreast": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.665,
+     "ref": 0.5,
+     "gap": 0.365
+    }
+   },
+   "pick": {
+    "deck": {
+     "ant-scout": 4,
+     "cricket-drummer": 4,
+     "dormouse": 4,
+     "moonlit-hare": 4,
+     "chipmunk-cavalry": 2,
+     "terrier-pup": 2
+    },
+    "val": {
+     "v": 0.26,
+     "ref": 0.7,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.692,
+     "ref": 0.3,
+     "gap": 0.422
+    },
+    {
+     "move": "robin-redbreast x4 -> bee-knight",
+     "v": 0.567,
+     "ref": 0.575,
+     "gap": 0.297,
+     "tried": 24
+    },
+    {
+     "move": "bee-knight x4 -> chipmunk-cavalry",
+     "v": 0.325,
+     "ref": 0.525,
+     "gap": 0.055,
+     "tried": 24
+    },
+    {
+     "move": "chipmunk-cavalry -2 -> terrier-pup",
+     "v": 0.267,
+     "ref": 0.725,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 843,
+   "sec": 152
+  },
+  {
+   "id": "1-BPRO-3",
+   "map": "mf",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramble-sprout": 3,
+     "cricket-drummer": 4,
+     "duck-paddler": 4,
+     "moonlit-hare": 1,
+     "robin-redbreast": 4,
+     "soldier-ant": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.65,
+     "ref": 0.45,
+     "gap": 0.35
+    }
+   },
+   "pick": {
+    "deck": {
+     "bramble-sprout": 3,
+     "cricket-drummer": 4,
+     "duck-paddler": 4,
+     "soldier-ant": 4,
+     "chipmunk-cavalry": 4,
+     "ant-scout": 1
+    },
+    "val": {
+     "v": 0.345,
+     "ref": 0.55,
+     "gap": 0.045
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.675,
+     "ref": 0.375,
+     "gap": 0.405
+    },
+    {
+     "move": "robin-redbreast x4 -> chipmunk-cavalry",
+     "v": 0.317,
+     "ref": 0.675,
+     "gap": 0.047,
+     "tried": 24
+    },
+    {
+     "move": "moonlit-hare -1 -> ant-scout",
+     "v": 0.267,
+     "ref": 0.55,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 559,
+   "sec": 92
+  }
+ ],
+ "drop": [
+  "1-PRO-2",
+  "1-PRO-3"
+ ]
+}

@@ -1,0 +1,162 @@
+{
+ "map": "me",
+ "generated": "2026-11-18T13:12:13.720Z",
+ "decks": [
+  {
+   "id": "20-A-BPRO-1",
+   "map": "me",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 4,
+     "berserker-boar": 4,
+     "brimstone-hound": 4,
+     "magma-salamander": 2,
+     "stalactite-golem": 4,
+     "ur-elk": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.185,
+     "ref": 0.95,
+     "gap": 0.1
+    }
+   },
+   "pick": {
+    "deck": {
+     "basalt-boar": 3,
+     "berserker-boar": 4,
+     "brimstone-hound": 4,
+     "magma-salamander": 2,
+     "ash-moth": 4,
+     "vampire-roost": 3
+    },
+    "val": {
+     "v": 0.175,
+     "ref": 0.925,
+     "gap": 0.075
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.108,
+     "ref": 0.975,
+     "gap": 0.462
+    },
+    {
+     "move": "stalactite-golem x4 -> ash-moth",
+     "v": 0.175,
+     "ref": 0.925,
+     "gap": 0.295,
+     "tried": 24
+    },
+    {
+     "move": "ur-elk -2 -> vampire-roost",
+     "v": 0.2,
+     "ref": 0.875,
+     "gap": 0.19,
+     "tried": 24
+    },
+    {
+     "move": "basalt-boar -1 -> vampire-roost",
+     "v": 0.2,
+     "ref": 0.85,
+     "gap": 0.14,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1015,
+   "sec": 342
+  },
+  {
+   "id": "20-A-BPRO-3",
+   "map": "me",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 4,
+     "berserker-boar": 4,
+     "carrion-beetle": 3,
+     "deep-cave-troll": 4,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.285,
+     "ref": 0.875,
+     "gap": 0.025
+    }
+   },
+   "pick": {
+    "deck": {
+     "basalt-boar": 4,
+     "berserker-boar": 4,
+     "carrion-beetle": 3,
+     "deep-cave-troll": 4,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3
+    },
+    "val": {
+     "v": 0.285,
+     "ref": 0.875,
+     "gap": 0.025
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.225,
+     "ref": 0.825,
+     "gap": 0.09
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 73
+  }
+ ],
+ "drop": [
+  "20-A-PRO-3"
+ ]
+}

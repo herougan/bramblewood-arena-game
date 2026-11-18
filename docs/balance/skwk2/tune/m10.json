@@ -1,0 +1,311 @@
+{
+ "map": "m10",
+ "generated": "2026-11-18T12:45:47.423Z",
+ "decks": [
+  {
+   "id": "11-BPRO-1",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "chipmunk-hoarder": 3,
+     "golden-eagle-diver": 4,
+     "kittiwake-flock": 4,
+     "peak-condor": 4,
+     "pika-hoarder": 1,
+     "stonedrop-vulture": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.525,
+     "ref": 0.6,
+     "gap": 0.225
+    }
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-hoarder": 3,
+     "kittiwake-flock": 4,
+     "peak-condor": 4,
+     "pika-hoarder": 1,
+     "stonedrop-vulture": 4,
+     "eyrie-warden": 4
+    },
+    "val": {
+     "v": 0.285,
+     "ref": 0.775,
+     "gap": 0
+    },
+    "leaders": [
+     "stonedrop-vulture"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.475,
+     "ref": 0.575,
+     "gap": 0.205
+    },
+    {
+     "move": "golden-eagle-diver x4 -> eyrie-warden",
+     "v": 0.258,
+     "ref": 0.7,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 122
+  },
+  {
+   "id": "11-BPRO-2",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "anvil-thrush": 3,
+     "gannet-nestweaver": 1,
+     "golden-eagle-diver": 4,
+     "peak-condor": 4,
+     "peregrine-stooper": 4,
+     "pika-hoarder": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.7,
+     "ref": 0.7,
+     "gap": 0.4
+    }
+   },
+   "pick": {
+    "deck": {
+     "anvil-thrush": 3,
+     "gannet-nestweaver": 2,
+     "peak-condor": 4,
+     "pika-hoarder": 3,
+     "eyrie-warden": 4,
+     "eagle-sharpshooter": 4
+    },
+    "val": {
+     "v": 0.275,
+     "ref": 0.925,
+     "gap": 0.075
+    },
+    "leaders": [
+     "eyrie-warden"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.717,
+     "ref": 0.625,
+     "gap": 0.447
+    },
+    {
+     "move": "peregrine-stooper x4 -> eyrie-warden",
+     "v": 0.542,
+     "ref": 0.725,
+     "gap": 0.272,
+     "tried": 24
+    },
+    {
+     "move": "golden-eagle-diver x4 -> eagle-sharpshooter",
+     "v": 0.225,
+     "ref": 0.9,
+     "gap": 0.24,
+     "tried": 24
+    },
+    {
+     "move": "pika-hoarder -1 -> gannet-nestweaver",
+     "v": 0.258,
+     "ref": 0.825,
+     "gap": 0.09,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1107,
+   "sec": 311
+  },
+  {
+   "id": "11-BPRO-3",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "eagle-sharpshooter": 4,
+     "gannet-nestweaver": 4,
+     "kittiwake-flock": 4,
+     "stonedrop-vulture": 4,
+     "the-gannet-queen": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.345,
+     "ref": 0.775,
+     "gap": 0.045
+    }
+   },
+   "pick": {
+    "deck": {
+     "eagle-sharpshooter": 4,
+     "gannet-nestweaver": 4,
+     "kittiwake-flock": 4,
+     "stonedrop-vulture": 3,
+     "the-gannet-queen": 4,
+     "mountain-hare": 1
+    },
+    "val": {
+     "v": 0.25,
+     "ref": 0.75,
+     "gap": 0
+    },
+    "leaders": [
+     "stonedrop-vulture"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.417,
+     "ref": 0.675,
+     "gap": 0.147
+    },
+    {
+     "move": "stonedrop-vulture -1 -> mountain-hare",
+     "v": 0.267,
+     "ref": 0.675,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 129
+  },
+  {
+   "id": "11-BPRO-4",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "gangrenous-leech": 3,
+     "mountain-hare": 3,
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "stonedrop-vulture": 4,
+     "swamp-alligator": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.69,
+     "ref": 0.65,
+     "gap": 0.39
+    }
+   },
+   "pick": {
+    "deck": {
+     "mountain-hare": 3,
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "swamp-alligator": 2,
+     "eagle-owl-quartermaster": 3,
+     "chipmunk-hoarder": 4
+    },
+    "val": {
+     "v": 0.34,
+     "ref": 0.9,
+     "gap": 0.09
+    },
+    "leaders": [
+     "eagle-owl-quartermaster"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.633,
+     "ref": 0.525,
+     "gap": 0.363
+    },
+    {
+     "move": "stonedrop-vulture x4 -> eagle-owl-quartermaster",
+     "v": 0.467,
+     "ref": 0.75,
+     "gap": 0.197,
+     "tried": 24
+    },
+    {
+     "move": "gangrenous-leech x4 -> chipmunk-hoarder",
+     "v": 0.292,
+     "ref": 0.7,
+     "gap": 0.022,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 843,
+   "sec": 331
+  }
+ ],
+ "drop": []
+}

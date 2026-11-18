@@ -1,0 +1,386 @@
+{
+ "map": "mu",
+ "generated": "2026-11-18T11:35:53.126Z",
+ "decks": [
+  {
+   "id": "7-BPRO-1",
+   "map": "mu",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "earthworm": 4,
+     "fungus-gnat-cloud": 4,
+     "lamprey": 3,
+     "leopard-slug": 2,
+     "sleepless-shrew": 4,
+     "wolf-spider-mother": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.005,
+     "ref": 1,
+     "gap": 0.295
+    }
+   },
+   "pick": {
+    "deck": {
+     "earthworm": 4,
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 2,
+     "sleepless-shrew": 4,
+     "wolf-spider-mother": 3,
+     "puffball-bombardier": 3
+    },
+    "val": {
+     "v": 0.01,
+     "ref": 0.975,
+     "gap": 0.265
+    },
+    "leaders": [
+     "wolf-spider-mother"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0,
+     "ref": 0.975,
+     "gap": 0.57
+    },
+    {
+     "move": "lamprey x3 -> puffball-bombardier",
+     "v": 0.017,
+     "ref": 0.95,
+     "gap": 0.503,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 559,
+   "sec": 114
+  },
+  {
+   "id": "7-BPRO-2",
+   "map": "mu",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "adder-ambusher": 1,
+     "cypress-root-lurker": 4,
+     "fungus-gnat-cloud": 4,
+     "hawthorn-shieldbug": 4,
+     "leopard-slug": 3,
+     "sleepless-shrew": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cypress-root-lurker": 4,
+     "fungus-gnat-cloud": 4,
+     "hawthorn-shieldbug": 2,
+     "sleepless-shrew": 3,
+     "puffball-bombardier": 4,
+     "rot-swollen-carcass": 3
+    },
+    "val": {
+     "v": 0.125,
+     "ref": 0.85,
+     "gap": 0.025
+    },
+    "leaders": [
+     "puffball-bombardier"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: adder-ambusher -> puffball-bombardier",
+     "was": [
+      "adder-ambusher: off the bpro pool",
+      "adder-ambusher: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "adder-ambusher: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.1,
+     "ref": 0.9,
+     "gap": 0.32
+    },
+    {
+     "move": "hawthorn-shieldbug -2 -> puffball-bombardier",
+     "v": 0.142,
+     "ref": 0.85,
+     "gap": 0.178,
+     "tried": 24
+    },
+    {
+     "move": "sleepless-shrew -1 -> puffball-bombardier",
+     "v": 0.183,
+     "ref": 0.85,
+     "gap": 0.14,
+     "tried": 24
+    },
+    {
+     "move": "leopard-slug x3 -> earthworm",
+     "v": 0.167,
+     "ref": 0.825,
+     "gap": 0.103,
+     "tried": 24
+    },
+    {
+     "move": "earthworm x3 -> rot-swollen-carcass",
+     "v": 0.133,
+     "ref": 0.75,
+     "gap": 0.047,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1349,
+   "sec": 294
+  },
+  {
+   "id": "7-BPRO-3",
+   "map": "mu",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "amber-cicada": 4,
+     "fungus-gnat-cloud": 4,
+     "hawthorn-shieldbug": 3,
+     "lamprey": 4,
+     "leopard-slug": 4,
+     "wolf-spider-mother": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0,
+     "ref": 1,
+     "gap": 0.3
+    }
+   },
+   "pick": {
+    "deck": {
+     "fungus-gnat-cloud": 4,
+     "lamprey": 4,
+     "leopard-slug": 4,
+     "corpse-flower-beetle": 3,
+     "puffball-bombardier": 4,
+     "camouflage-frog": 1
+    },
+    "val": {
+     "v": 0.06,
+     "ref": 0.9,
+     "gap": 0.14
+    },
+    "leaders": [
+     "corpse-flower-beetle"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0,
+     "ref": 1,
+     "gap": 0.62
+    },
+    {
+     "move": "hawthorn-shieldbug x3 -> corpse-flower-beetle",
+     "v": 0.058,
+     "ref": 0.975,
+     "gap": 0.512,
+     "tried": 24
+    },
+    {
+     "move": "amber-cicada x4 -> puffball-bombardier",
+     "v": 0.058,
+     "ref": 0.9,
+     "gap": 0.362,
+     "tried": 24
+    },
+    {
+     "move": "wolf-spider-mother -1 -> camouflage-frog",
+     "v": 0.05,
+     "ref": 0.775,
+     "gap": 0.13,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1066,
+   "sec": 228
+  },
+  {
+   "id": "7-WPRO-1",
+   "map": "mu",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "adder-ambusher": 1,
+     "amber-cicada": 4,
+     "camouflage-frog": 4,
+     "earthworm": 4,
+     "rot-swollen-carcass": 4,
+     "wolf-spider-mother": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "amber-cicada": 4,
+     "camouflage-frog": 4,
+     "earthworm": 4,
+     "rot-swollen-carcass": 4,
+     "wolf-spider-mother": 3,
+     "corpse-flower-beetle": 1
+    },
+    "val": {
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: adder-ambusher -> corpse-flower-beetle",
+     "was": [
+      "adder-ambusher: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    }
+   ],
+   "readings": 11,
+   "sec": 7
+  },
+  {
+   "id": "7-WPRO-2",
+   "map": "mu",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "adder-ambusher": 3,
+     "amber-cicada": 3,
+     "cypress-root-lurker": 4,
+     "lamprey": 3,
+     "planarian-splitter": 3,
+     "rot-swollen-carcass": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "amber-cicada": 4,
+     "cypress-root-lurker": 4,
+     "lamprey": 4,
+     "planarian-splitter": 4,
+     "rot-swollen-carcass": 4
+    },
+    "val": {
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: adder-ambusher -> amber-cicada",
+     "was": [
+      "adder-ambusher: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.983,
+     "ref": 0.983,
+     "gap": 0
+    }
+   ],
+   "readings": 12,
+   "sec": 7
+  }
+ ],
+ "drop": [
+  "7-PRO-1"
+ ]
+}

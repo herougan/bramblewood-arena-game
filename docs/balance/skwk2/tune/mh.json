@@ -1,0 +1,236 @@
+{
+ "map": "mh",
+ "generated": "2026-11-18T12:11:20.221Z",
+ "decks": [
+  {
+   "id": "12-BPRO-1",
+   "map": "mh",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "alpine-marmot": 4,
+     "anvil-thrush": 1,
+     "barkplate-beetle": 4,
+     "briarback-hedgehog": 4,
+     "fawn-scout": 3,
+     "mountain-hare": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.655,
+     "ref": 0.825,
+     "gap": 0.355
+    }
+   },
+   "pick": {
+    "deck": {
+     "alpine-marmot": 4,
+     "anvil-thrush": 1,
+     "briarback-hedgehog": 4,
+     "mountain-hare": 4,
+     "mouse-sapper": 3,
+     "eyrie-warden": 4
+    },
+    "val": {
+     "v": 0.205,
+     "ref": 0.9,
+     "gap": 0.05
+    },
+    "leaders": [
+     "eyrie-warden"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.658,
+     "ref": 0.875,
+     "gap": 0.578
+    },
+    {
+     "move": "fawn-scout x3 -> mouse-sapper",
+     "v": 0.283,
+     "ref": 0.925,
+     "gap": 0.303,
+     "tried": 24
+    },
+    {
+     "move": "barkplate-beetle x4 -> eyrie-warden",
+     "v": 0.192,
+     "ref": 0.85,
+     "gap": 0.14,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 853,
+   "sec": 210
+  },
+  {
+   "id": "12-BPRO-2",
+   "map": "mh",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "chipmunk-hoarder": 3,
+     "cunning-vixen": 3,
+     "fawn-scout": 3,
+     "mountain-hare": 4,
+     "mouse-sapper": 4,
+     "quill-thorn-boar": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.6,
+     "ref": 0.75,
+     "gap": 0.3
+    }
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-hoarder": 3,
+     "cunning-vixen": 3,
+     "fawn-scout": 3,
+     "mountain-hare": 4,
+     "mouse-sapper": 4,
+     "barrow-leech-bat": 3
+    },
+    "val": {
+     "v": 0.365,
+     "ref": 0.825,
+     "gap": 0.065
+    },
+    "leaders": [
+     "barrow-leech-bat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.625,
+     "ref": 0.775,
+     "gap": 0.355
+    },
+    {
+     "move": "quill-thorn-boar x3 -> barrow-leech-bat",
+     "v": 0.375,
+     "ref": 0.75,
+     "gap": 0.105,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 118
+  },
+  {
+   "id": "12-BPRO-3",
+   "map": "mh",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "anvil-thrush": 4,
+     "barkplate-beetle": 4,
+     "barrow-leech-bat": 2,
+     "chipmunk-hoarder": 3,
+     "eyrie-warden": 4,
+     "fawn-scout": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.395,
+     "ref": 0.8,
+     "gap": 0.095
+    }
+   },
+   "pick": {
+    "deck": {
+     "barkplate-beetle": 4,
+     "barrow-leech-bat": 2,
+     "chipmunk-hoarder": 3,
+     "eyrie-warden": 4,
+     "fawn-scout": 3,
+     "chamois-leaper": 4
+    },
+    "val": {
+     "v": 0.215,
+     "ref": 0.9,
+     "gap": 0.05
+    },
+    "leaders": [
+     "barrow-leech-bat"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.325,
+     "ref": 0.875,
+     "gap": 0.245
+    },
+    {
+     "move": "anvil-thrush x4 -> chamois-leaper",
+     "v": 0.267,
+     "ref": 0.875,
+     "gap": 0.19,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 558,
+   "sec": 128
+  }
+ ],
+ "drop": [
+  "12-PRO-2",
+  "12-PRO-3"
+ ]
+}

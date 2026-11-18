@@ -1,0 +1,93 @@
+{
+ "map": "m6",
+ "generated": "2026-11-18T16:15:22.568Z",
+ "decks": [
+  {
+   "id": "17-BPRO-1",
+   "map": "m6",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.33,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.76,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "arctic-tern": 4,
+     "border-collie": 3,
+     "briarback-hedgehog": 4,
+     "cone-cutter-squirrel": 4,
+     "taiga-lynx": 3,
+     "walrus-icebreaker": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.995,
+     "ref": 0.05,
+     "gap": 0.695
+    }
+   },
+   "pick": {
+    "deck": {
+     "border-collie": 3,
+     "briarback-hedgehog": 4,
+     "taiga-lynx": 3,
+     "harbor-seal": 4,
+     "elderhorn-monarch": 4,
+     "polar-bear": 2
+    },
+    "val": {
+     "v": 0.345,
+     "ref": 0.95,
+     "gap": 0.145
+    },
+    "leaders": [
+     "polar-bear"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.992,
+     "ref": 0.075,
+     "gap": 0.662
+    },
+    {
+     "move": "cone-cutter-squirrel x4 -> harbor-seal",
+     "v": 0.817,
+     "ref": 0.55,
+     "gap": 0.487,
+     "tried": 30
+    },
+    {
+     "move": "arctic-tern x4 -> elderhorn-monarch",
+     "v": 0.567,
+     "ref": 0.65,
+     "gap": 0.237,
+     "tried": 30
+    },
+    {
+     "move": "walrus-icebreaker -2 -> polar-bear",
+     "v": 0.308,
+     "ref": 0.85,
+     "gap": 0.18,
+     "tried": 30
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 30
+    }
+   ],
+   "readings": 1347,
+   "sec": 2079
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+{
+ "about": "SKWK2 pass 3: a dropped PRO deck back on each map left with one (tests/deck1: 2-4), tuned to the Map reference at 85% or under",
+ "maps": {
+  "mf": {
+   "tune": [
+    "1-PRO-2"
+   ],
+   "drop": []
+  },
+  "mu": {
+   "tune": [
+    "7-PRO-1"
+   ],
+   "drop": []
+  },
+  "mz": {
+   "tune": [
+    "7-A-PRO-2"
+   ],
+   "drop": []
+  },
+  "mk": {
+   "tune": [
+    "9-PRO-2"
+   ],
+   "drop": []
+  },
+  "mr": {
+   "tune": [
+    "13-PRO-2"
+   ],
+   "drop": []
+  },
+  "me": {
+   "tune": [
+    "20-A-PRO-1"
+   ],
+   "drop": []
+  }
+ }
+}

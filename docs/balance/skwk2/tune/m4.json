@@ -1,0 +1,375 @@
+{
+ "map": "m4",
+ "generated": "2026-11-18T11:51:43.871Z",
+ "decks": [
+  {
+   "id": "8-BPRO-1",
+   "map": "m4",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cave-olm": 3,
+     "driftwood-crab": 3,
+     "echo-matriarch": 3,
+     "echo-screecher": 3,
+     "star-nosed-mole": 4,
+     "sulfur-cinder-moth": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.91,
+     "ref": 0.1,
+     "gap": 0.61
+    }
+   },
+   "pick": {
+    "deck": {
+     "cave-olm": 3,
+     "driftwood-crab": 3,
+     "star-nosed-mole": 4,
+     "glow-worm": 3,
+     "gallery-orb-weaver": 3,
+     "stalactite-golem": 4
+    },
+    "val": {
+     "v": 0.245,
+     "ref": 0.75,
+     "gap": 0
+    },
+    "leaders": [
+     "gallery-orb-weaver"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.917,
+     "ref": 0.075,
+     "gap": 0.647
+    },
+    {
+     "move": "echo-matriarch x3 -> glow-worm",
+     "v": 0.7,
+     "ref": 0.175,
+     "gap": 0.43,
+     "tried": 24
+    },
+    {
+     "move": "echo-screecher x3 -> gallery-orb-weaver",
+     "v": 0.517,
+     "ref": 0.4,
+     "gap": 0.247,
+     "tried": 24
+    },
+    {
+     "move": "sulfur-cinder-moth x4 -> stalactite-golem",
+     "v": 0.208,
+     "ref": 0.625,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 833,
+   "sec": 143
+  },
+  {
+   "id": "8-BPRO-2",
+   "map": "m4",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cave-olm": 3,
+     "driftwood-crab": 4,
+     "echo-screecher": 3,
+     "giant-cave-huntsman": 3,
+     "hawthorn-shieldbug": 4,
+     "wolf-spider-mother": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.555,
+     "ref": 0.175,
+     "gap": 0.255
+    }
+   },
+   "pick": {
+    "deck": {
+     "cave-olm": 3,
+     "driftwood-crab": 4,
+     "giant-cave-huntsman": 3,
+     "hawthorn-shieldbug": 4,
+     "wolf-spider-mother": 3,
+     "corpse-flower-beetle": 3
+    },
+    "val": {
+     "v": 0.21,
+     "ref": 0.35,
+     "gap": 0
+    },
+    "leaders": [
+     "giant-cave-huntsman"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.592,
+     "ref": 0.125,
+     "gap": 0.322
+    },
+    {
+     "move": "echo-screecher x3 -> corpse-flower-beetle",
+     "v": 0.217,
+     "ref": 0.375,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 71
+  },
+  {
+   "id": "8-BPRO-3",
+   "map": "m4",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "corpse-flower-beetle": 3,
+     "echo-matriarch": 3,
+     "echo-screecher": 3,
+     "giant-cave-huntsman": 3,
+     "hawthorn-shieldbug": 4,
+     "sulfur-cinder-moth": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.77,
+     "ref": 0.05,
+     "gap": 0.47
+    }
+   },
+   "pick": {
+    "deck": {
+     "corpse-flower-beetle": 3,
+     "giant-cave-huntsman": 2,
+     "hawthorn-shieldbug": 4,
+     "sulfur-cinder-moth": 4,
+     "stalactite-golem": 4,
+     "gallery-orb-weaver": 3
+    },
+    "val": {
+     "v": 0.23,
+     "ref": 0.35,
+     "gap": 0
+    },
+    "leaders": [
+     "giant-cave-huntsman"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.733,
+     "ref": 0.2,
+     "gap": 0.463
+    },
+    {
+     "move": "echo-matriarch x3 -> stalactite-golem",
+     "v": 0.442,
+     "ref": 0.375,
+     "gap": 0.172,
+     "tried": 24
+    },
+    {
+     "move": "echo-screecher x3 -> gallery-orb-weaver",
+     "v": 0.292,
+     "ref": 0.5,
+     "gap": 0.022,
+     "tried": 24
+    },
+    {
+     "move": "giant-cave-huntsman -1 -> stalactite-golem",
+     "v": 0.233,
+     "ref": 0.425,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 823,
+   "sec": 132
+  },
+  {
+   "id": "8-BPRO-4",
+   "map": "m4",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "driftwood-crab": 3,
+     "echo-matriarch": 3,
+     "giant-cave-huntsman": 3,
+     "rot-swollen-carcass": 4,
+     "stalactite-golem": 4,
+     "star-nosed-mole": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.615,
+     "ref": 0.2,
+     "gap": 0.315
+    }
+   },
+   "pick": {
+    "deck": {
+     "driftwood-crab": 3,
+     "giant-cave-huntsman": 3,
+     "rot-swollen-carcass": 4,
+     "stalactite-golem": 4,
+     "star-nosed-mole": 3,
+     "corpse-flower-beetle": 3
+    },
+    "val": {
+     "v": 0.215,
+     "ref": 0.4,
+     "gap": 0
+    },
+    "leaders": [
+     "giant-cave-huntsman"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.633,
+     "ref": 0.15,
+     "gap": 0.363
+    },
+    {
+     "move": "echo-matriarch x3 -> corpse-flower-beetle",
+     "v": 0.275,
+     "ref": 0.35,
+     "gap": 0.005,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 97
+  },
+  {
+   "id": "8-WPRO-2",
+   "map": "m4",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "corpse-flower-beetle": 3,
+     "gallery-orb-weaver": 3,
+     "quarry-mole": 3,
+     "rot-swollen-carcass": 4,
+     "stalactite-golem": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "corpse-flower-beetle": 3,
+     "gallery-orb-weaver": 3,
+     "quarry-mole": 3,
+     "rot-swollen-carcass": 4,
+     "stalactite-golem": 4,
+     "cave-olm": 3
+    },
+    "val": {
+     "v": 0.863,
+     "ref": 0.863,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: barrow-leech-bat -> cave-olm",
+     "was": [
+      "barrow-leech-bat: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.983,
+     "ref": 0.983,
+     "gap": 0
+    }
+   ],
+   "readings": 9,
+   "sec": 6
+  }
+ ],
+ "drop": []
+}

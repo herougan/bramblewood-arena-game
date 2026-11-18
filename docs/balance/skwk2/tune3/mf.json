@@ -1,0 +1,68 @@
+{
+ "map": "mf",
+ "generated": "2026-11-18T19:07:34.292Z",
+ "decks": [
+  {
+   "id": "1-PRO-2",
+   "map": "mf",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 1,
+     "bee-forager": 4,
+     "chipmunk-skirmisher": 4,
+     "cricket-drummer": 4,
+     "robin-redbreast": 4,
+     "terrier-pup": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 1,
+     "bee-forager": 4,
+     "cricket-drummer": 4,
+     "robin-redbreast": 4,
+     "terrier-pup": 3,
+     "acorn-chipmunk": 4
+    },
+    "val": {
+     "v": 0.375,
+     "ref": 0.375,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: chipmunk-skirmisher -> acorn-chipmunk",
+     "was": [
+      "chipmunk-skirmisher: off the pro pool",
+      "chipmunk-skirmisher: not obtainable (not in the progression plan or an earlier map's cards)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.383,
+     "ref": 0.383,
+     "gap": 0
+    }
+   ],
+   "readings": 28,
+   "sec": 55
+  }
+ ],
+ "drop": []
+}

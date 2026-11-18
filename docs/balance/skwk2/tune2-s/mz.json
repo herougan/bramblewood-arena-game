@@ -1,0 +1,175 @@
+{
+ "map": "mz",
+ "generated": "2026-11-18T15:36:59.167Z",
+ "decks": [
+  {
+   "id": "7-A-BPRO-1",
+   "map": "mz",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bombardier-beetle": 3,
+     "earthworm": 3,
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 2,
+     "puffball-bombardier": 4,
+     "sleepless-shrew": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.045,
+     "ref": 0.7,
+     "gap": 0.105
+    }
+   },
+   "pick": {
+    "deck": {
+     "bombardier-beetle": 2,
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 4,
+     "rot-swollen-carcass": 4,
+     "sleepless-shrew": 2,
+     "puffball-bombardier": 4
+    },
+    "val": {
+     "v": 0.025,
+     "ref": 0.95,
+     "gap": 0.225
+    },
+    "leaders": [
+     "bombardier-beetle"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0,
+     "ref": 0.975,
+     "gap": 0.57
+    },
+    {
+     "move": "fungal-colossus x4 -> puffball-bombardier",
+     "v": 0.042,
+     "ref": 0.8,
+     "gap": 0.178,
+     "tried": 30
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 26
+    }
+   ],
+   "readings": 609,
+   "sec": 688,
+   "seeded": {
+    "deck": {
+     "bombardier-beetle": 2,
+     "fungal-colossus": 4,
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 4,
+     "rot-swollen-carcass": 4,
+     "sleepless-shrew": 2
+    },
+    "focus": "big",
+    "score": 0.2135
+   }
+  },
+  {
+   "id": "7-A-BPRO-2",
+   "map": "mz",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 4,
+     "millipede-hauler": 4,
+     "sleepless-shrew": 4,
+     "planarian-splitter": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.055,
+     "ref": 0.825,
+     "gap": 0.095
+    }
+   },
+   "pick": {
+    "deck": {
+     "bombardier-beetle": 3,
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 4,
+     "millipede-hauler": 4,
+     "rootworm-colony": 4,
+     "earthworm": 1
+    },
+    "val": {
+     "v": 0.03,
+     "ref": 0.9,
+     "gap": 0.17
+    },
+    "leaders": [
+     "millipede-hauler"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.033,
+     "ref": 0.825,
+     "gap": 0.237
+    },
+    {
+     "move": "planarian-splitter -1 -> earthworm",
+     "v": 0.05,
+     "ref": 0.75,
+     "gap": 0.13,
+     "tried": 26
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 30
+    }
+   ],
+   "readings": 609,
+   "sec": 1027,
+   "seeded": {
+    "deck": {
+     "bombardier-beetle": 3,
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 4,
+     "millipede-hauler": 4,
+     "planarian-splitter": 1,
+     "rootworm-colony": 4
+    },
+    "focus": "open",
+    "score": 0.474
+   }
+  }
+ ]
+}

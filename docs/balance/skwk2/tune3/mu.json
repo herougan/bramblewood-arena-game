@@ -1,0 +1,74 @@
+{
+ "map": "mu",
+ "generated": "2026-11-18T19:11:31.863Z",
+ "decks": [
+  {
+   "id": "7-PRO-1",
+   "map": "mu",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "corpse-flower-beetle": 2,
+     "fungus-gnat-cloud": 4,
+     "gannet-nestweaver": 4,
+     "hawthorn-shieldbug": 4,
+     "otter-centurion": 3,
+     "wolf-spider-mother": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.813,
+     "ref": 0.813,
+     "gap": 0
+    }
+   },
+   "pick": {
+    "deck": {
+     "corpse-flower-beetle": 2,
+     "fungus-gnat-cloud": 4,
+     "gannet-nestweaver": 4,
+     "hawthorn-shieldbug": 4,
+     "otter-centurion": 3,
+     "acorn-chipmunk": 3
+    },
+    "val": {
+     "v": 0.75,
+     "ref": 0.75,
+     "gap": 0
+    },
+    "leaders": [
+     "corpse-flower-beetle"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.817,
+     "ref": 0.817,
+     "gap": 0.037
+    },
+    {
+     "move": "wolf-spider-mother x3 -> acorn-chipmunk",
+     "v": 0.7,
+     "ref": 0.7,
+     "gap": 0,
+     "tried": 30
+    }
+   ],
+   "readings": 35,
+   "sec": 237
+  }
+ ],
+ "drop": []
+}

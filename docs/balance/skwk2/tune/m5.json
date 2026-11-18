@@ -1,0 +1,254 @@
+{
+ "map": "m5",
+ "generated": "2026-11-18T12:37:35.960Z",
+ "decks": [
+  {
+   "id": "14-BPRO-1",
+   "map": "m5",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramble-sprout": 4,
+     "dust-hyena": 4,
+     "hoopoe-herald": 4,
+     "pride-queen": 2,
+     "savanna-cheetah": 2,
+     "tasmanian-devil": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.95,
+     "ref": 0.175,
+     "gap": 0.65
+    }
+   },
+   "pick": {
+    "deck": {
+     "dust-hyena": 4,
+     "pride-queen": 2,
+     "savanna-cheetah": 2,
+     "tasmanian-devil": 4,
+     "badger-lumberjack": 4,
+     "grizzly-vanguard": 4
+    },
+    "val": {
+     "v": 0.44,
+     "ref": 0.875,
+     "gap": 0.165
+    },
+    "leaders": [
+     "pride-queen"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.975,
+     "ref": 0.275,
+     "gap": 0.705
+    },
+    {
+     "move": "hoopoe-herald x4 -> badger-lumberjack",
+     "v": 0.733,
+     "ref": 0.55,
+     "gap": 0.463,
+     "tried": 24
+    },
+    {
+     "move": "bramble-sprout x4 -> grizzly-vanguard",
+     "v": 0.483,
+     "ref": 0.7,
+     "gap": 0.213,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 793,
+   "sec": 225
+  },
+  {
+   "id": "14-BPRO-2",
+   "map": "m5",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "badger-lumberjack": 3,
+     "balloon-archer": 4,
+     "bramble-sprout": 4,
+     "hoopoe-herald": 4,
+     "meerkat-sentry": 3,
+     "savanna-cheetah": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.925,
+     "ref": 0.4,
+     "gap": 0.625
+    }
+   },
+   "pick": {
+    "deck": {
+     "badger-lumberjack": 4,
+     "bramble-sprout": 4,
+     "meerkat-sentry": 4,
+     "dust-hyena": 2,
+     "hollow-belly-rat": 4,
+     "pride-queen": 2
+    },
+    "val": {
+     "v": 0.475,
+     "ref": 0.675,
+     "gap": 0.175
+    },
+    "leaders": [
+     "pride-queen"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.9,
+     "ref": 0.625,
+     "gap": 0.63
+    },
+    {
+     "move": "savanna-cheetah -2 -> dust-hyena",
+     "v": 0.733,
+     "ref": 0.625,
+     "gap": 0.463,
+     "tried": 24
+    },
+    {
+     "move": "hoopoe-herald x4 -> hollow-belly-rat",
+     "v": 0.658,
+     "ref": 0.75,
+     "gap": 0.388,
+     "tried": 24
+    },
+    {
+     "move": "balloon-archer x4 -> pride-queen",
+     "v": 0.367,
+     "ref": 0.725,
+     "gap": 0.097,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1117,
+   "sec": 257
+  },
+  {
+   "id": "14-BPRO-3",
+   "map": "m5",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "badger-lumberjack": 3,
+     "dust-hyena": 4,
+     "hollow-belly-rat": 3,
+     "hoopoe-herald": 4,
+     "plains-zebra": 4,
+     "pride-queen": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.805,
+     "ref": 0.425,
+     "gap": 0.505
+    }
+   },
+   "pick": {
+    "deck": {
+     "badger-lumberjack": 3,
+     "dust-hyena": 4,
+     "hoopoe-herald": 4,
+     "plains-zebra": 4,
+     "meerkat-sentry": 2,
+     "grizzly-vanguard": 3
+    },
+    "val": {
+     "v": 0.44,
+     "ref": 0.85,
+     "gap": 0.14
+    },
+    "leaders": [
+     "badger-lumberjack"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.775,
+     "ref": 0.4,
+     "gap": 0.505
+    },
+    {
+     "move": "pride-queen -2 -> meerkat-sentry",
+     "v": 0.6,
+     "ref": 0.7,
+     "gap": 0.33,
+     "tried": 24
+    },
+    {
+     "move": "hollow-belly-rat x3 -> grizzly-vanguard",
+     "v": 0.333,
+     "ref": 0.825,
+     "gap": 0.153,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 853,
+   "sec": 224
+  }
+ ],
+ "drop": []
+}

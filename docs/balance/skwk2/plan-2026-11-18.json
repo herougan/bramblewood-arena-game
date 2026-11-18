@@ -1,0 +1,1070 @@
+{
+ "about": "SKWK2 plan (docs/balance/skwk2/skwk2_2026_11_18.js plan): per map the decks to tune (SK band 15-30% vs the ladder, Map reference <= 85% / WK >= 50%) and the PRO decks to drop",
+ "marks": "../../../../../../tmp/claude-0/-home-claude/803d58f5-74f9-50e4-ac3c-c17d5b9039a6/scratchpad/marks-before.json",
+ "maps": {
+  "mo": {
+   "tune": [
+    "0-B-BPRO-1",
+    "0-B-BPRO-2",
+    "0-B-BPRO-3"
+   ],
+   "drop": [],
+   "why": {
+    "0-B-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.9225,
+     "mapRef": 0.4
+    },
+    "0-B-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.83,
+     "mapRef": 0.35
+    },
+    "0-B-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.82,
+     "mapRef": 0.425
+    }
+   }
+  },
+  "mf": {
+   "tune": [
+    "1-BPRO-1",
+    "1-BPRO-2",
+    "1-BPRO-3"
+   ],
+   "drop": [
+    "1-PRO-2",
+    "1-PRO-3"
+   ],
+   "why": {
+    "1-BPRO-1": {
+     "illegal": [
+      "chipmunk-skirmisher: off the bpro pool",
+      "chipmunk-skirmisher: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "chipmunk-skirmisher: not in the map's own pool (BPRO)"
+     ],
+     "vsLadder": 0.695,
+     "mapRef": 0.375
+    },
+    "1-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.645,
+     "mapRef": 0.35
+    },
+    "1-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.6625,
+     "mapRef": 0.4
+    },
+    "1-PRO-2": {
+     "illegal": [
+      "chipmunk-skirmisher: off the pro pool",
+      "chipmunk-skirmisher: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "mapRef": 0.575
+    },
+    "1-PRO-3": {
+     "illegal": [
+      "chipmunk-skirmisher: off the pro pool",
+      "chipmunk-skirmisher: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "mapRef": 0.4
+    }
+   }
+  },
+  "mq": {
+   "tune": [
+    "1-A-BPRO-1",
+    "1-A-BPRO-2",
+    "1-A-BPRO-3"
+   ],
+   "drop": [],
+   "why": {
+    "1-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.655,
+     "mapRef": 0.15
+    },
+    "1-A-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.5425,
+     "mapRef": 0.225
+    },
+    "1-A-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.485,
+     "mapRef": 0.3
+    }
+   }
+  },
+  "mb": {
+   "tune": [
+    "2-BPRO-1",
+    "2-BPRO-2",
+    "2-BPRO-3",
+    "2-BPRO-4",
+    "2-WPRO-1"
+   ],
+   "drop": [
+    "2-PRO-2"
+   ],
+   "why": {
+    "2-BPRO-1": {
+     "illegal": [
+      "beachcomber-sanderling: off the bpro pool",
+      "beachcomber-sanderling: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "beachcomber-sanderling: not in the map's own pool (BPRO)"
+     ],
+     "vsLadder": 0.7575,
+     "mapRef": 0.25
+    },
+    "2-BPRO-2": {
+     "illegal": [
+      "beachcomber-sanderling: off the bpro pool",
+      "beachcomber-sanderling: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "beachcomber-sanderling: not in the map's own pool (BPRO)"
+     ],
+     "vsLadder": 0.7225,
+     "mapRef": 0.25
+    },
+    "2-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.4625,
+     "mapRef": 0.575
+    },
+    "2-BPRO-4": {
+     "illegal": [],
+     "vsLadder": 0.7675,
+     "mapRef": 0.275
+    },
+    "2-PRO-2": {
+     "illegal": [
+      "beachcomber-sanderling: off the pro pool",
+      "beachcomber-sanderling: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "mapRef": 0.55
+    },
+    "2-WPRO-1": {
+     "illegal": [
+      "beaver-lumberjack: off the wpro pool"
+     ],
+     "mapRef": 0.85
+    }
+   }
+  },
+  "mg": {
+   "tune": [
+    "2-B-BPRO-1",
+    "2-B-BPRO-2"
+   ],
+   "drop": [],
+   "why": {
+    "2-B-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.7125,
+     "mapRef": 0.225
+    },
+    "2-B-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.7775,
+     "mapRef": 0.225
+    }
+   }
+  },
+  "mp": {
+   "tune": [
+    "2-A-BPRO-1",
+    "2-A-BPRO-2",
+    "2-A-BPRO-3",
+    "2-A-BPRO-4"
+   ],
+   "drop": [],
+   "why": {
+    "2-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.61,
+     "mapRef": 0
+    },
+    "2-A-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.3825,
+     "mapRef": 0.125
+    },
+    "2-A-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.3725,
+     "mapRef": 0.125
+    },
+    "2-A-BPRO-4": {
+     "illegal": [],
+     "vsLadder": 0.0725,
+     "mapRef": 0.45
+    }
+   }
+  },
+  "mc": {
+   "tune": [
+    "3-BPRO-1",
+    "3-BPRO-2",
+    "3-WPRO-1",
+    "3-WPRO-2"
+   ],
+   "drop": [],
+   "why": {
+    "3-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.33,
+     "mapRef": 0.45
+    },
+    "3-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.37,
+     "mapRef": 0.575
+    },
+    "3-WPRO-1": {
+     "illegal": [
+      "beaver-lumberjack: off the wpro pool"
+     ],
+     "mapRef": 0.75
+    },
+    "3-WPRO-2": {
+     "illegal": [],
+     "mapRef": 0.4
+    }
+   }
+  },
+  "m2": {
+   "tune": [
+    "4-BPRO-1",
+    "4-WPRO-2"
+   ],
+   "drop": [],
+   "why": {
+    "4-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.8475,
+     "mapRef": 0.025
+    },
+    "4-WPRO-2": {
+     "illegal": [],
+     "mapRef": 0.325
+    }
+   }
+  },
+  "mw": {
+   "tune": [
+    "5-BPRO-2"
+   ],
+   "drop": [],
+   "why": {
+    "5-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.125,
+     "mapRef": 0.3
+    }
+   }
+  },
+  "ms": {
+   "tune": [
+    "5-A-BPRO-1",
+    "5-A-BPRO-2",
+    "5-A-BPRO-3",
+    "5-A-BPRO-4"
+   ],
+   "drop": [
+    "5-A-PRO-4"
+   ],
+   "why": {
+    "5-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.3925,
+     "mapRef": 0.7
+    },
+    "5-A-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.4125,
+     "mapRef": 0.65
+    },
+    "5-A-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.51,
+     "mapRef": 0.675
+    },
+    "5-A-BPRO-4": {
+     "illegal": [],
+     "vsLadder": 0.4175,
+     "mapRef": 0.825
+    },
+    "5-A-PRO-4": {
+     "illegal": [],
+     "mapRef": 0.95
+    }
+   }
+  },
+  "m8": {
+   "tune": [
+    "6-BPRO-1",
+    "6-BPRO-2",
+    "6-BPRO-3",
+    "6-WPRO-1"
+   ],
+   "drop": [
+    "6-PRO-1",
+    "6-PRO-4"
+   ],
+   "why": {
+    "6-BPRO-1": {
+     "illegal": [
+      "grass-viper: off the bpro pool",
+      "grass-viper: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "grass-viper: not in the map's own pool (BPRO)"
+     ],
+     "vsLadder": 0.5675,
+     "mapRef": 0.05
+    },
+    "6-BPRO-2": {
+     "illegal": [
+      "adder-ambusher: off the bpro pool",
+      "anhinga-spearbird: off the bpro pool",
+      "nutria-reedcutter: off the bpro pool",
+      "adder-ambusher: not on the map's list (only in a road fight's deck (not on the map's list since THEME3, not held by then))",
+      "anhinga-spearbird: not on the map's list (first obtainable on Map 7)",
+      "nutria-reedcutter: not on the map's list (held, not listed)",
+      "anhinga-spearbird: not in the map's own pool (BPRO)",
+      "nutria-reedcutter: not in the map's own pool (BPRO)"
+     ],
+     "vsLadder": 0.4175,
+     "mapRef": 0.1
+    },
+    "6-BPRO-3": {
+     "illegal": [
+      "grass-viper: off the bpro pool",
+      "nutria-reedcutter: off the bpro pool",
+      "grass-viper: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "nutria-reedcutter: not on the map's list (held, not listed)",
+      "grass-viper: not in the map's own pool (BPRO)",
+      "nutria-reedcutter: not in the map's own pool (BPRO)"
+     ],
+     "vsLadder": 0.825,
+     "mapRef": 0.075
+    },
+    "6-PRO-1": {
+     "illegal": [
+      "grass-viper: off the pro pool",
+      "grass-viper: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "mapRef": 0.025
+    },
+    "6-PRO-4": {
+     "illegal": [
+      "grass-viper: off the pro pool",
+      "grass-viper: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "mapRef": 0
+    },
+    "6-WPRO-1": {
+     "illegal": [
+      "anhinga-spearbird: off the wpro pool"
+     ],
+     "mapRef": 0.925
+    }
+   }
+  },
+  "mu": {
+   "tune": [
+    "7-BPRO-1",
+    "7-BPRO-2",
+    "7-BPRO-3",
+    "7-WPRO-1",
+    "7-WPRO-2"
+   ],
+   "drop": [
+    "7-PRO-1"
+   ],
+   "why": {
+    "7-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.0025,
+     "mapRef": 0.9
+    },
+    "7-BPRO-2": {
+     "illegal": [
+      "adder-ambusher: off the bpro pool",
+      "adder-ambusher: not on the map's list (not obtainable (not in the progression plan or an earlier map's cards))",
+      "adder-ambusher: not in the map's own pool (BPRO)"
+     ],
+     "vsLadder": 0.05,
+     "mapRef": 0.95
+    },
+    "7-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0,
+     "mapRef": 1
+    },
+    "7-PRO-1": {
+     "illegal": [],
+     "mapRef": 0.925
+    },
+    "7-WPRO-1": {
+     "illegal": [
+      "adder-ambusher: off the wpro pool"
+     ],
+     "mapRef": 1
+    },
+    "7-WPRO-2": {
+     "illegal": [
+      "adder-ambusher: off the wpro pool"
+     ],
+     "mapRef": 1
+    }
+   }
+  },
+  "mz": {
+   "tune": [
+    "7-A-BPRO-1",
+    "7-A-BPRO-2",
+    "7-A-BPRO-3"
+   ],
+   "drop": [
+    "7-A-PRO-2",
+    "7-A-PRO-3"
+   ],
+   "why": {
+    "7-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.0325,
+     "mapRef": 0.875
+    },
+    "7-A-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.0175,
+     "mapRef": 0.95
+    },
+    "7-A-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.03,
+     "mapRef": 0.725
+    },
+    "7-A-PRO-2": {
+     "illegal": [],
+     "mapRef": 1
+    },
+    "7-A-PRO-3": {
+     "illegal": [],
+     "mapRef": 0.95
+    }
+   }
+  },
+  "m4": {
+   "tune": [
+    "8-BPRO-1",
+    "8-BPRO-2",
+    "8-BPRO-3",
+    "8-BPRO-4",
+    "8-WPRO-2"
+   ],
+   "drop": [],
+   "why": {
+    "8-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.9375,
+     "mapRef": 0.15
+    },
+    "8-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.575,
+     "mapRef": 0.275
+    },
+    "8-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.7525,
+     "mapRef": 0.125
+    },
+    "8-BPRO-4": {
+     "illegal": [],
+     "vsLadder": 0.6125,
+     "mapRef": 0.25
+    },
+    "8-WPRO-2": {
+     "illegal": [
+      "barrow-leech-bat: off the wpro pool"
+     ],
+     "mapRef": 0.8
+    }
+   }
+  },
+  "mn": {
+   "tune": [
+    "8-A-BPRO-1",
+    "8-A-BPRO-2",
+    "8-A-BPRO-3",
+    "8-A-BPRO-4"
+   ],
+   "drop": [],
+   "why": {
+    "8-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.765,
+     "mapRef": 0.3
+    },
+    "8-A-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.79,
+     "mapRef": 0.325
+    },
+    "8-A-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.6975,
+     "mapRef": 0.275
+    },
+    "8-A-BPRO-4": {
+     "illegal": [],
+     "vsLadder": 0.7175,
+     "mapRef": 0.4
+    }
+   }
+  },
+  "mk": {
+   "tune": [
+    "9-BPRO-1",
+    "9-BPRO-2",
+    "9-PRO-1"
+   ],
+   "drop": [
+    "9-PRO-2",
+    "9-PRO-3",
+    "9-PRO-4"
+   ],
+   "why": {
+    "9-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.43,
+     "mapRef": 0.85
+    },
+    "9-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.3025,
+     "mapRef": 0.85
+    },
+    "9-PRO-1": {
+     "illegal": [],
+     "mapRef": 0.875
+    },
+    "9-PRO-2": {
+     "illegal": [],
+     "mapRef": 0.875
+    },
+    "9-PRO-3": {
+     "illegal": [],
+     "mapRef": 0.925
+    },
+    "9-PRO-4": {
+     "illegal": [],
+     "mapRef": 0.975
+    }
+   }
+  },
+  "m7": {
+   "tune": [
+    "10-BPRO-1",
+    "10-BPRO-2"
+   ],
+   "drop": [],
+   "why": {
+    "10-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.985,
+     "mapRef": 0.175
+    },
+    "10-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.77,
+     "mapRef": 0.525
+    }
+   }
+  },
+  "mj": {
+   "tune": [
+    "10-A-BPRO-1",
+    "10-A-BPRO-2",
+    "10-A-BPRO-3",
+    "10-A-BPRO-4"
+   ],
+   "drop": [],
+   "why": {
+    "10-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.95,
+     "mapRef": 0.05
+    },
+    "10-A-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.895,
+     "mapRef": 0.125
+    },
+    "10-A-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.8875,
+     "mapRef": 0.1
+    },
+    "10-A-BPRO-4": {
+     "illegal": [],
+     "vsLadder": 0.74,
+     "mapRef": 0.2
+    }
+   }
+  },
+  "m10": {
+   "tune": [
+    "11-BPRO-1",
+    "11-BPRO-2",
+    "11-BPRO-3",
+    "11-BPRO-4"
+   ],
+   "drop": [],
+   "why": {
+    "11-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.465,
+     "mapRef": 0.6
+    },
+    "11-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.71,
+     "mapRef": 0.625
+    },
+    "11-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.3125,
+     "mapRef": 0.625
+    },
+    "11-BPRO-4": {
+     "illegal": [],
+     "vsLadder": 0.675,
+     "mapRef": 0.4
+    }
+   }
+  },
+  "mv": {
+   "tune": [
+    "11-A-BPRO-1",
+    "11-A-BPRO-2"
+   ],
+   "drop": [],
+   "why": {
+    "11-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.885,
+     "mapRef": 0.175
+    },
+    "11-A-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.76,
+     "mapRef": 0.175
+    }
+   }
+  },
+  "mh": {
+   "tune": [
+    "12-BPRO-1",
+    "12-BPRO-2",
+    "12-BPRO-3"
+   ],
+   "drop": [
+    "12-PRO-2",
+    "12-PRO-3"
+   ],
+   "why": {
+    "12-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.6525,
+     "mapRef": 0.725
+    },
+    "12-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.605,
+     "mapRef": 0.675
+    },
+    "12-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.46,
+     "mapRef": 0.85
+    },
+    "12-PRO-2": {
+     "illegal": [],
+     "mapRef": 0.9
+    },
+    "12-PRO-3": {
+     "illegal": [],
+     "mapRef": 0.875
+    }
+   }
+  },
+  "mr": {
+   "tune": [
+    "13-BPRO-1",
+    "13-BPRO-2",
+    "13-BPRO-3",
+    "13-BPRO-4",
+    "13-WPRO-1"
+   ],
+   "drop": [
+    "13-PRO-1",
+    "13-PRO-3",
+    "13-PRO-4"
+   ],
+   "why": {
+    "13-BPRO-1": {
+     "illegal": [
+      "balloon-archer: off the bpro pool",
+      "balloon-archer: not on the map's list (held, not listed)",
+      "balloon-archer: not in the map's own pool (BPRO)"
+     ],
+     "vsLadder": 0.3125,
+     "mapRef": 0.875
+    },
+    "13-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.235,
+     "mapRef": 0.95
+    },
+    "13-BPRO-3": {
+     "illegal": [
+      "balloon-archer: off the bpro pool",
+      "balloon-archer: not on the map's list (held, not listed)",
+      "balloon-archer: not in the map's own pool (BPRO)"
+     ],
+     "vsLadder": 0.135,
+     "mapRef": 0.975
+    },
+    "13-BPRO-4": {
+     "illegal": [],
+     "vsLadder": 0.1075,
+     "mapRef": 0.975
+    },
+    "13-PRO-1": {
+     "illegal": [],
+     "mapRef": 0.925
+    },
+    "13-PRO-3": {
+     "illegal": [],
+     "mapRef": 0.95
+    },
+    "13-PRO-4": {
+     "illegal": [],
+     "mapRef": 0.9
+    },
+    "13-WPRO-1": {
+     "illegal": [
+      "balloon-archer: off the wpro pool"
+     ],
+     "mapRef": 1
+    }
+   }
+  },
+  "m5": {
+   "tune": [
+    "14-BPRO-1",
+    "14-BPRO-2",
+    "14-BPRO-3"
+   ],
+   "drop": [],
+   "why": {
+    "14-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.945,
+     "mapRef": 0.3
+    },
+    "14-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.895,
+     "mapRef": 0.575
+    },
+    "14-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.7725,
+     "mapRef": 0.525
+    }
+   }
+  },
+  "my": {
+   "tune": [
+    "14-A-BPRO-1"
+   ],
+   "drop": [],
+   "why": {
+    "14-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.4075,
+     "mapRef": 0.175
+    }
+   }
+  },
+  "ml": {
+   "tune": [
+    "15-BPRO-1",
+    "15-BPRO-2",
+    "15-BPRO-3"
+   ],
+   "drop": [],
+   "why": {
+    "15-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.4925,
+     "mapRef": 0.55
+    },
+    "15-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.395,
+     "mapRef": 0.6
+    },
+    "15-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.38,
+     "mapRef": 0.8
+    }
+   }
+  },
+  "mt": {
+   "tune": [
+    "16-BPRO-1",
+    "16-BPRO-2",
+    "16-BPRO-3"
+   ],
+   "drop": [],
+   "why": {
+    "16-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.5325,
+     "mapRef": 0.675
+    },
+    "16-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.5875,
+     "mapRef": 0.775
+    },
+    "16-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.705,
+     "mapRef": 0.6
+    }
+   }
+  },
+  "m6": {
+   "tune": [
+    "17-BPRO-1",
+    "17-BPRO-2",
+    "17-BPRO-3"
+   ],
+   "drop": [],
+   "why": {
+    "17-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.995,
+     "mapRef": 0.075
+    },
+    "17-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.9975,
+     "mapRef": 0.2
+    },
+    "17-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.805,
+     "mapRef": 0.45
+    }
+   }
+  },
+  "mi": {
+   "tune": [
+    "17-A-BPRO-1",
+    "17-A-BPRO-2",
+    "17-A-BPRO-3",
+    "17-A-BPRO-4",
+    "17-A-WPRO-2"
+   ],
+   "drop": [],
+   "why": {
+    "17-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.9425,
+     "mapRef": 0.275
+    },
+    "17-A-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.9575,
+     "mapRef": 0.2
+    },
+    "17-A-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.875,
+     "mapRef": 0.425
+    },
+    "17-A-BPRO-4": {
+     "illegal": [],
+     "vsLadder": 0.755,
+     "mapRef": 0.425
+    },
+    "17-A-WPRO-2": {
+     "illegal": [],
+     "mapRef": 0.475
+    }
+   }
+  },
+  "md": {
+   "tune": [
+    "18-BPRO-1",
+    "18-BPRO-2",
+    "18-BPRO-3"
+   ],
+   "drop": [],
+   "why": {
+    "18-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.72,
+     "mapRef": 0.675
+    },
+    "18-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.69,
+     "mapRef": 0.7
+    },
+    "18-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.255,
+     "mapRef": 0.95
+    }
+   }
+  },
+  "mpd": {
+   "tune": [],
+   "drop": [
+    "18-A-PRO-4"
+   ],
+   "why": {
+    "18-A-PRO-4": {
+     "illegal": [],
+     "mapRef": 0.875
+    }
+   }
+  },
+  "m3": {
+   "tune": [
+    "19-BPRO-1",
+    "19-BPRO-2",
+    "19-BPRO-3"
+   ],
+   "drop": [],
+   "why": {
+    "19-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.5525,
+     "mapRef": 0.725
+    },
+    "19-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.665,
+     "mapRef": 0.75
+    },
+    "19-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.455,
+     "mapRef": 0.9
+    }
+   }
+  },
+  "m9": {
+   "tune": [
+    "19-A-BPRO-1",
+    "19-A-BPRO-2"
+   ],
+   "drop": [],
+   "why": {
+    "19-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.9575,
+     "mapRef": 0.05
+    },
+    "19-A-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.795,
+     "mapRef": 0.325
+    }
+   }
+  },
+  "m11": {
+   "tune": [
+    "20-BPRO-1",
+    "20-BPRO-2"
+   ],
+   "drop": [],
+   "why": {
+    "20-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.55,
+     "mapRef": 0.9
+    },
+    "20-BPRO-2": {
+     "illegal": [
+      "fire-salamander: off the bpro pool",
+      "fire-salamander: not on the map's list (held, not listed)",
+      "fire-salamander: not in the map's own pool (BPRO)"
+     ],
+     "vsLadder": 0.49,
+     "mapRef": 0.85
+    }
+   }
+  },
+  "me": {
+   "tune": [
+    "20-A-BPRO-1",
+    "20-A-BPRO-3"
+   ],
+   "drop": [
+    "20-A-PRO-3"
+   ],
+   "why": {
+    "20-A-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.16,
+     "mapRef": 0.925
+    },
+    "20-A-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.2475,
+     "mapRef": 0.875
+    },
+    "20-A-PRO-3": {
+     "illegal": [],
+     "mapRef": 0.975
+    }
+   }
+  },
+  "mx": {
+   "tune": [
+    "20-B-BPRO-1",
+    "20-B-BPRO-2",
+    "20-B-BPRO-3"
+   ],
+   "drop": [],
+   "why": {
+    "20-B-BPRO-1": {
+     "illegal": [],
+     "vsLadder": 0.515,
+     "mapRef": 0.6
+    },
+    "20-B-BPRO-2": {
+     "illegal": [],
+     "vsLadder": 0.5875,
+     "mapRef": 0.45
+    },
+    "20-B-BPRO-3": {
+     "illegal": [],
+     "vsLadder": 0.1925,
+     "mapRef": 0.9
+    }
+   }
+  }
+ }
+}

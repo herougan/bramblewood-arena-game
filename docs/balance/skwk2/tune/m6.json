@@ -1,0 +1,271 @@
+{
+ "map": "m6",
+ "generated": "2026-11-18T13:30:35.615Z",
+ "decks": [
+  {
+   "id": "17-BPRO-1",
+   "map": "m6",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "arctic-tern": 4,
+     "border-collie": 3,
+     "briarback-hedgehog": 4,
+     "cone-cutter-squirrel": 4,
+     "taiga-lynx": 3,
+     "walrus-icebreaker": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.995,
+     "ref": 0.05,
+     "gap": 0.695
+    }
+   },
+   "pick": {
+    "deck": {
+     "border-collie": 3,
+     "briarback-hedgehog": 4,
+     "ringed-seal": 4,
+     "elderhorn-monarch": 3,
+     "harbor-seal": 4,
+     "wolfsbane-alpha": 2
+    },
+    "val": {
+     "v": 0.3,
+     "ref": 0.9,
+     "gap": 0.05
+    },
+    "leaders": [
+     "wolfsbane-alpha"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.992,
+     "ref": 0.075,
+     "gap": 0.722
+    },
+    {
+     "move": "cone-cutter-squirrel x4 -> ringed-seal",
+     "v": 0.8,
+     "ref": 0.525,
+     "gap": 0.53,
+     "tried": 24
+    },
+    {
+     "move": "taiga-lynx x3 -> elderhorn-monarch",
+     "v": 0.617,
+     "ref": 0.575,
+     "gap": 0.347,
+     "tried": 24
+    },
+    {
+     "move": "arctic-tern x4 -> harbor-seal",
+     "v": 0.433,
+     "ref": 0.8,
+     "gap": 0.203,
+     "tried": 24
+    },
+    {
+     "move": "walrus-icebreaker -2 -> wolfsbane-alpha",
+     "v": 0.275,
+     "ref": 0.825,
+     "gap": 0.095,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1351,
+   "sec": 554
+  },
+  {
+   "id": "17-BPRO-2",
+   "map": "m6",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "arctic-tern": 4,
+     "cone-cutter-squirrel": 4,
+     "snow-ermine": 4,
+     "snowshoe-hare": 4,
+     "taiga-lynx": 1,
+     "woodland-caribou": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.995,
+     "ref": 0.2,
+     "gap": 0.695
+    }
+   },
+   "pick": {
+    "deck": {
+     "arctic-tern": 4,
+     "taiga-lynx": 1,
+     "woodland-caribou": 3,
+     "warhorse-charger": 4,
+     "elderhorn-monarch": 4,
+     "cataphract-destrier": 4
+    },
+    "val": {
+     "v": 0.615,
+     "ref": 0.825,
+     "gap": 0.315
+    },
+    "leaders": [
+     "taiga-lynx"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.983,
+     "ref": 0.2,
+     "gap": 0.713
+    },
+    {
+     "move": "snowshoe-hare x4 -> warhorse-charger",
+     "v": 0.908,
+     "ref": 0.225,
+     "gap": 0.638,
+     "tried": 24
+    },
+    {
+     "move": "cone-cutter-squirrel x4 -> elderhorn-monarch",
+     "v": 0.742,
+     "ref": 0.625,
+     "gap": 0.472,
+     "tried": 24
+    },
+    {
+     "move": "snow-ermine x4 -> cataphract-destrier",
+     "v": 0.55,
+     "ref": 0.825,
+     "gap": 0.37,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1117,
+   "sec": 403
+  },
+  {
+   "id": "17-BPRO-3",
+   "map": "m6",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cataphract-destrier": 4,
+     "cone-cutter-squirrel": 4,
+     "elderhorn-monarch": 4,
+     "snowshoe-hare": 4,
+     "walrus-icebreaker": 2,
+     "wolfsbane-alpha": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.815,
+     "ref": 0.45,
+     "gap": 0.515
+    }
+   },
+   "pick": {
+    "deck": {
+     "cataphract-destrier": 4,
+     "elderhorn-monarch": 4,
+     "walrus-icebreaker": 2,
+     "wolfsbane-alpha": 2,
+     "glacier-yak": 4,
+     "ringed-seal": 4
+    },
+    "val": {
+     "v": 0.32,
+     "ref": 0.8,
+     "gap": 0.02
+    },
+    "leaders": [
+     "walrus-icebreaker"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.783,
+     "ref": 0.45,
+     "gap": 0.513
+    },
+    {
+     "move": "cone-cutter-squirrel x4 -> boreal-elk",
+     "v": 0.567,
+     "ref": 0.775,
+     "gap": 0.297,
+     "tried": 24
+    },
+    {
+     "move": "snowshoe-hare x4 -> glacier-yak",
+     "v": 0.275,
+     "ref": 0.8,
+     "gap": 0.045,
+     "tried": 24
+    },
+    {
+     "move": "boreal-elk x4 -> ringed-seal",
+     "v": 0.25,
+     "ref": 0.775,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 823,
+   "sec": 333
+  }
+ ],
+ "drop": []
+}

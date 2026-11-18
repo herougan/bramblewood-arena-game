@@ -1,0 +1,412 @@
+{
+ "map": "mi",
+ "generated": "2026-11-18T14:25:32.982Z",
+ "decks": [
+  {
+   "id": "17-A-BPRO-1",
+   "map": "mi",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cormorant": 4,
+     "lemming-swarm": 4,
+     "pincushion-urchin": 1,
+     "riptide-eel": 3,
+     "shoal-shark": 4,
+     "snow-ermine": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.955,
+     "ref": 0.275,
+     "gap": 0.655
+    }
+   },
+   "pick": {
+    "deck": {
+     "pincushion-urchin": 1,
+     "shoal-shark": 4,
+     "glacier-yak": 4,
+     "ringed-seal": 4,
+     "harbor-seal": 4,
+     "beluga": 3
+    },
+    "val": {
+     "v": 0.31,
+     "ref": 0.925,
+     "gap": 0.085
+    },
+    "leaders": [
+     "beluga"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.958,
+     "ref": 0.3,
+     "gap": 0.688
+    },
+    {
+     "move": "snow-ermine x4 -> glacier-yak",
+     "v": 0.792,
+     "ref": 0.7,
+     "gap": 0.522,
+     "tried": 24
+    },
+    {
+     "move": "cormorant x4 -> ringed-seal",
+     "v": 0.658,
+     "ref": 0.75,
+     "gap": 0.388,
+     "tried": 24
+    },
+    {
+     "move": "lemming-swarm x4 -> limpet-clinger",
+     "v": 0.542,
+     "ref": 0.8,
+     "gap": 0.312,
+     "tried": 24
+    },
+    {
+     "move": "limpet-clinger x4 -> harbor-seal",
+     "v": 0.475,
+     "ref": 0.8,
+     "gap": 0.245,
+     "tried": 24
+    },
+    {
+     "move": "riptide-eel x3 -> beluga",
+     "v": 0.392,
+     "ref": 0.825,
+     "gap": 0.212,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1634,
+   "sec": 1269
+  },
+  {
+   "id": "17-A-BPRO-2",
+   "map": "mi",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cormorant": 3,
+     "dormouse": 4,
+     "lemming-swarm": 4,
+     "moon-jelly": 3,
+     "pincushion-urchin": 4,
+     "wolfsbane-alpha": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.93,
+     "ref": 0.325,
+     "gap": 0.63
+    }
+   },
+   "pick": {
+    "deck": {
+     "cormorant": 3,
+     "dormouse": 4,
+     "pincushion-urchin": 4,
+     "ringed-seal": 4,
+     "harbor-seal": 3,
+     "snow-ermine": 2
+    },
+    "val": {
+     "v": 0.49,
+     "ref": 0.925,
+     "gap": 0.265
+    },
+    "leaders": [
+     "ringed-seal"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.967,
+     "ref": 0.125,
+     "gap": 0.697
+    },
+    {
+     "move": "lemming-swarm x4 -> ringed-seal",
+     "v": 0.8,
+     "ref": 0.6,
+     "gap": 0.53,
+     "tried": 24
+    },
+    {
+     "move": "moon-jelly x3 -> harbor-seal",
+     "v": 0.475,
+     "ref": 0.875,
+     "gap": 0.395,
+     "tried": 24
+    },
+    {
+     "move": "wolfsbane-alpha -2 -> snow-ermine",
+     "v": 0.517,
+     "ref": 0.8,
+     "gap": 0.287,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1086,
+   "sec": 897
+  },
+  {
+   "id": "17-A-BPRO-3",
+   "map": "mi",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "dormouse": 4,
+     "limpet-clinger": 4,
+     "riptide-eel": 4,
+     "rock-pool-starfish": 4,
+     "snow-ermine": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.86,
+     "ref": 0.35,
+     "gap": 0.56
+    }
+   },
+   "pick": {
+    "deck": {
+     "dormouse": 4,
+     "limpet-clinger": 4,
+     "riptide-eel": 4,
+     "rock-pool-starfish": 2,
+     "harbor-seal": 4,
+     "glacier-yak": 2
+    },
+    "val": {
+     "v": 0.535,
+     "ref": 0.65,
+     "gap": 0.235
+    },
+    "leaders": [
+     "riptide-eel"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.867,
+     "ref": 0.325,
+     "gap": 0.597
+    },
+    {
+     "move": "snow-ermine x4 -> harbor-seal",
+     "v": 0.625,
+     "ref": 0.525,
+     "gap": 0.355,
+     "tried": 24
+    },
+    {
+     "move": "rock-pool-starfish -2 -> glacier-yak",
+     "v": 0.5,
+     "ref": 0.65,
+     "gap": 0.23,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 863,
+   "sec": 584
+  },
+  {
+   "id": "17-A-BPRO-4",
+   "map": "mi",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beluga": 3,
+     "cormorant": 2,
+     "giant-clam": 4,
+     "lemming-swarm": 4,
+     "limpet-clinger": 4,
+     "shoal-shark": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.765,
+     "ref": 0.45,
+     "gap": 0.465
+    }
+   },
+   "pick": {
+    "deck": {
+     "beluga": 3,
+     "giant-clam": 4,
+     "lemming-swarm": 4,
+     "limpet-clinger": 4,
+     "shoal-shark": 3,
+     "greenland-shark": 2
+    },
+    "val": {
+     "v": 0.65,
+     "ref": 0.65,
+     "gap": 0.35
+    },
+    "leaders": [
+     "greenland-shark"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.7,
+     "ref": 0.625,
+     "gap": 0.43
+    },
+    {
+     "move": "cormorant -2 -> greenland-shark",
+     "v": 0.65,
+     "ref": 0.75,
+     "gap": 0.38,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 579,
+   "sec": 268
+  },
+  {
+   "id": "17-A-WPRO-2",
+   "map": "mi",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "glacier-yak": 4,
+     "ice-crevasse-wolf": 3,
+     "moon-jelly": 4,
+     "pincushion-urchin": 4,
+     "ringed-seal": 4,
+     "shoal-shark": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.55,
+     "ref": 0.55,
+     "gap": 0
+    }
+   },
+   "pick": {
+    "deck": {
+     "glacier-yak": 4,
+     "ice-crevasse-wolf": 3,
+     "pincushion-urchin": 4,
+     "ringed-seal": 4,
+     "shoal-shark": 1,
+     "rock-pool-starfish": 4
+    },
+    "val": {
+     "v": 0.988,
+     "ref": 0.988,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.533,
+     "ref": 0.533,
+     "gap": 0.067
+    },
+    {
+     "move": "moon-jelly x4 -> rock-pool-starfish",
+     "v": 0.967,
+     "ref": 0.967,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 29,
+   "sec": 55
+  }
+ ],
+ "drop": []
+}

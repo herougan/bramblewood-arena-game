@@ -1,0 +1,76 @@
+{
+ "map": "m7",
+ "generated": "2026-11-18T15:13:18.802Z",
+ "decks": [
+  {
+   "id": "10-BPRO-2",
+   "map": "m7",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.33,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.76,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "clownfish-scout": 4,
+     "ironclaw-fiddler": 3,
+     "krill-swarm": 3,
+     "reef-shark": 4,
+     "voltaic-eel": 3,
+     "kraken-spawnling": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.43,
+     "ref": 0.75,
+     "gap": 0.13
+    }
+   },
+   "pick": {
+    "deck": {
+     "ironclaw-fiddler": 3,
+     "krill-swarm": 4,
+     "reef-shark": 4,
+     "voltaic-eel": 3,
+     "kraken-spawnling": 3,
+     "coral-current-eel": 3
+    },
+    "val": {
+     "v": 0.305,
+     "ref": 0.875,
+     "gap": 0.03
+    },
+    "leaders": [
+     "ironclaw-fiddler"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.45,
+     "ref": 0.725,
+     "gap": 0.12
+    },
+    {
+     "move": "clownfish-scout x4 -> coral-current-eel",
+     "v": 0.325,
+     "ref": 0.725,
+     "gap": 0,
+     "tried": 30
+    }
+   ],
+   "readings": 355,
+   "sec": 156
+  }
+ ],
+ "drop": []
+}

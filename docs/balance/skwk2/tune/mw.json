@@ -1,0 +1,69 @@
+{
+ "map": "mw",
+ "generated": "2026-11-18T11:09:13.088Z",
+ "decks": [
+  {
+   "id": "5-BPRO-2",
+   "map": "mw",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 4,
+     "fire-ant-raft": 3,
+     "mosquito-cloud": 4,
+     "muskrat-reedgatherer": 4,
+     "planarian-splitter": 4,
+     "swamp-alligator": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.125,
+     "ref": 0.2,
+     "gap": 0.025
+    }
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 4,
+     "fire-ant-raft": 3,
+     "mosquito-cloud": 4,
+     "muskrat-reedgatherer": 4,
+     "planarian-splitter": 4,
+     "swamp-alligator": 1
+    },
+    "val": {
+     "v": 0.125,
+     "ref": 0.2,
+     "gap": 0.025
+    },
+    "leaders": [
+     "planarian-splitter"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.183,
+     "ref": 0.3,
+     "gap": 0
+    }
+   ],
+   "readings": 11,
+   "sec": 19
+  }
+ ],
+ "drop": []
+}

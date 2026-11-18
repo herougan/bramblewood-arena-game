@@ -1,0 +1,227 @@
+{
+ "map": "mk",
+ "generated": "2026-11-18T12:09:38.200Z",
+ "decks": [
+  {
+   "id": "9-BPRO-1",
+   "map": "mk",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 4,
+     "alligator-gar": 3,
+     "banded-sea-krait": 4,
+     "driftwood-crab": 1,
+     "fiddler-crab-swarm": 4,
+     "mangrove-mudskipper": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.43,
+     "ref": 0.85,
+     "gap": 0.13
+    }
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 4,
+     "banded-sea-krait": 4,
+     "driftwood-crab": 1,
+     "mangrove-mudskipper": 4,
+     "mangrove-monitor": 4,
+     "proboscis-monkey": 3
+    },
+    "val": {
+     "v": 0.155,
+     "ref": 0.825,
+     "gap": 0
+    },
+    "leaders": [
+     "proboscis-monkey"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.45,
+     "ref": 0.75,
+     "gap": 0.18
+    },
+    {
+     "move": "fiddler-crab-swarm x4 -> mangrove-monitor",
+     "v": 0.375,
+     "ref": 0.675,
+     "gap": 0.105,
+     "tried": 24
+    },
+    {
+     "move": "alligator-gar x3 -> proboscis-monkey",
+     "v": 0.192,
+     "ref": 0.775,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 141
+  },
+  {
+   "id": "9-BPRO-2",
+   "map": "mk",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "alligator-gar": 3,
+     "booming-bittern": 3,
+     "driftwood-crab": 4,
+     "giant-cave-huntsman": 3,
+     "ironclaw-fiddler": 3,
+     "mangrove-mudskipper": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.295,
+     "ref": 0.9,
+     "gap": 0.05
+    }
+   },
+   "pick": {
+    "deck": {
+     "alligator-gar": 3,
+     "driftwood-crab": 4,
+     "giant-cave-huntsman": 3,
+     "ironclaw-fiddler": 3,
+     "mangrove-mudskipper": 4,
+     "fishing-cat": 3
+    },
+    "val": {
+     "v": 0.295,
+     "ref": 0.875,
+     "gap": 0.025
+    },
+    "leaders": [
+     "ironclaw-fiddler"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.325,
+     "ref": 0.9,
+     "gap": 0.295
+    },
+    {
+     "move": "booming-bittern x3 -> fishing-cat",
+     "v": 0.333,
+     "ref": 0.825,
+     "gap": 0.153,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 559,
+   "sec": 129
+  },
+  {
+   "id": "9-PRO-1",
+   "map": "mk",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 4,
+     "fire-ant-raft": 2,
+     "mangrove-mudskipper": 4,
+     "mudpuppy": 4,
+     "pincushion-urchin": 3,
+     "voltaic-eel": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.838,
+     "ref": 0.838,
+     "gap": 0
+    }
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 4,
+     "fire-ant-raft": 3,
+     "mudpuppy": 4,
+     "pincushion-urchin": 3,
+     "voltaic-eel": 3,
+     "tide-spirit": 3
+    },
+    "val": {
+     "v": 0.413,
+     "ref": 0.413,
+     "gap": 0
+    },
+    "leaders": [
+     "tide-spirit"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.95,
+     "ref": 0.95,
+     "gap": 0.17
+    },
+    {
+     "move": "mangrove-mudskipper x4 -> tide-spirit",
+     "v": 0.417,
+     "ref": 0.417,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 29,
+   "sec": 28
+  }
+ ],
+ "drop": [
+  "9-PRO-2",
+  "9-PRO-3",
+  "9-PRO-4"
+ ]
+}

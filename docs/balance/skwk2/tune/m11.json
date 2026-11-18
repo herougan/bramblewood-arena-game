@@ -1,0 +1,164 @@
+{
+ "map": "m11",
+ "generated": "2026-11-18T13:05:19.348Z",
+ "decks": [
+  {
+   "id": "20-BPRO-1",
+   "map": "m11",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 3,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3,
+     "pack-mule": 4,
+     "quillback-elder": 4,
+     "stalactite-golem": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.505,
+     "ref": 0.925,
+     "gap": 0.28
+    }
+   },
+   "pick": {
+    "deck": {
+     "basalt-boar": 4,
+     "obsidian-scorpion": 3,
+     "quillback-elder": 4,
+     "stalactite-golem": 4,
+     "barrow-leech-bat": 3,
+     "berserker-boar": 2
+    },
+    "val": {
+     "v": 0.24,
+     "ref": 0.975,
+     "gap": 0.125
+    },
+    "leaders": [
+     "obsidian-scorpion"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.558,
+     "ref": 0.975,
+     "gap": 0.678
+    },
+    {
+     "move": "pack-mule x4 -> barrow-leech-bat",
+     "v": 0.225,
+     "ref": 0.975,
+     "gap": 0.39,
+     "tried": 24
+    },
+    {
+     "move": "magma-salamander -2 -> berserker-boar",
+     "v": 0.25,
+     "ref": 0.95,
+     "gap": 0.34,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 843,
+   "sec": 410
+  },
+  {
+   "id": "20-BPRO-2",
+   "map": "m11",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 4,
+     "echo-screecher": 3,
+     "fire-salamander": 4,
+     "honey-badger-fury": 4,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "basalt-boar": 4,
+     "echo-screecher": 3,
+     "honey-badger-fury": 4,
+     "obsidian-scorpion": 3,
+     "ancient-sloth-titan": 4,
+     "quillback-elder": 2
+    },
+    "val": {
+     "v": 0.31,
+     "ref": 0.875,
+     "gap": 0.035
+    },
+    "leaders": [
+     "obsidian-scorpion"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: fire-salamander -> ancient-sloth-titan",
+     "was": [
+      "fire-salamander: off the bpro pool",
+      "fire-salamander: not on the map's list (held, not listed)",
+      "fire-salamander: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.208,
+     "ref": 0.85,
+     "gap": 0.14
+    },
+    {
+     "move": "magma-salamander -2 -> quillback-elder",
+     "v": 0.242,
+     "ref": 0.825,
+     "gap": 0.09,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 679,
+   "sec": 272
+  }
+ ],
+ "drop": []
+}

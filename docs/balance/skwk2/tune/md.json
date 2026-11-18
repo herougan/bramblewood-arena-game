@@ -1,0 +1,226 @@
+{
+ "map": "md",
+ "generated": "2026-11-18T14:45:16.876Z",
+ "decks": [
+  {
+   "id": "18-BPRO-1",
+   "map": "md",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "antlion-pit": 4,
+     "armadillo-guard": 3,
+     "balloon-archer": 4,
+     "chipmunk-forager": 4,
+     "horned-lizard": 4,
+     "mouse-sapper": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.725,
+     "ref": 0.725,
+     "gap": 0.425
+    }
+   },
+   "pick": {
+    "deck": {
+     "antlion-pit": 4,
+     "balloon-archer": 4,
+     "chipmunk-forager": 4,
+     "horned-lizard": 4,
+     "mouse-sapper": 1,
+     "frillneck-duelist": 3
+    },
+    "val": {
+     "v": 0.615,
+     "ref": 0.75,
+     "gap": 0.315
+    },
+    "leaders": [
+     "frillneck-duelist"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.792,
+     "ref": 0.8,
+     "gap": 0.562
+    },
+    {
+     "move": "armadillo-guard x3 -> frillneck-duelist",
+     "v": 0.633,
+     "ref": 0.725,
+     "gap": 0.363,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 579,
+   "sec": 408
+  },
+  {
+   "id": "18-BPRO-2",
+   "map": "md",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "balloon-archer": 4,
+     "barrel-cactus": 3,
+     "gallery-orb-weaver": 4,
+     "horned-lizard": 4,
+     "mouse-sapper": 4,
+     "worker-ant": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.695,
+     "ref": 0.7,
+     "gap": 0.395
+    }
+   },
+   "pick": {
+    "deck": {
+     "barrel-cactus": 3,
+     "gallery-orb-weaver": 4,
+     "horned-lizard": 4,
+     "mouse-sapper": 4,
+     "worker-ant": 1,
+     "ant-scout": 4
+    },
+    "val": {
+     "v": 0.36,
+     "ref": 0.975,
+     "gap": 0.185
+    },
+    "leaders": [
+     "barrel-cactus"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.642,
+     "ref": 0.85,
+     "gap": 0.512
+    },
+    {
+     "move": "balloon-archer x4 -> dune-jackal",
+     "v": 0.4,
+     "ref": 0.925,
+     "gap": 0.42,
+     "tried": 24
+    },
+    {
+     "move": "dune-jackal x4 -> ant-scout",
+     "v": 0.25,
+     "ref": 0.95,
+     "gap": 0.34,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 833,
+   "sec": 613
+  },
+  {
+   "id": "18-BPRO-3",
+   "map": "md",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 1,
+     "antlion-pit": 4,
+     "armadillo-guard": 4,
+     "badger-lumberjack": 4,
+     "barkplate-beetle": 4,
+     "mouse-sapper": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.225,
+     "ref": 1,
+     "gap": 0.15
+    }
+   },
+   "pick": {
+    "deck": {
+     "ant-scout": 1,
+     "antlion-pit": 4,
+     "armadillo-guard": 4,
+     "badger-lumberjack": 4,
+     "barkplate-beetle": 4,
+     "mouse-sapper": 3
+    },
+    "val": {
+     "v": 0.225,
+     "ref": 1,
+     "gap": 0.15
+    },
+    "leaders": [
+     "barkplate-beetle"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.167,
+     "ref": 1,
+     "gap": 0.453
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 163
+  }
+ ],
+ "drop": []
+}

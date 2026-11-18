@@ -1,0 +1,306 @@
+{
+ "map": "ms",
+ "generated": "2026-11-18T11:21:49.247Z",
+ "decks": [
+  {
+   "id": "5-A-BPRO-1",
+   "map": "ms",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "matamata": 4,
+     "mudpuppy": 3,
+     "muskrat-reedgatherer": 4,
+     "nutria-reedcutter": 1,
+     "peat-cutter-vole": 4,
+     "swamp-alligator": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.43,
+     "ref": 0.75,
+     "gap": 0.13
+    }
+   },
+   "pick": {
+    "deck": {
+     "mudpuppy": 4,
+     "muskrat-reedgatherer": 3,
+     "nutria-reedcutter": 1,
+     "peat-cutter-vole": 4,
+     "swamp-alligator": 4,
+     "bog-leech": 4
+    },
+    "val": {
+     "v": 0.3,
+     "ref": 0.825,
+     "gap": 0
+    },
+    "leaders": [
+     "bog-leech"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.425,
+     "ref": 0.675,
+     "gap": 0.155
+    },
+    {
+     "move": "matamata x4 -> bog-leech",
+     "v": 0.208,
+     "ref": 0.8,
+     "gap": 0.04,
+     "tried": 24
+    },
+    {
+     "move": "muskrat-reedgatherer -1 -> mudpuppy",
+     "v": 0.208,
+     "ref": 0.775,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 549,
+   "sec": 212
+  },
+  {
+   "id": "5-A-BPRO-2",
+   "map": "ms",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bog-leech": 4,
+     "cypress-root-lurker": 4,
+     "matamata": 4,
+     "mudpuppy": 4,
+     "newt-doctor": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.455,
+     "ref": 0.75,
+     "gap": 0.155
+    }
+   },
+   "pick": {
+    "deck": {
+     "bog-leech": 2,
+     "cypress-root-lurker": 4,
+     "matamata": 4,
+     "mudpuppy": 3,
+     "newt-doctor": 4,
+     "cottonmouth-matriarch": 3
+    },
+    "val": {
+     "v": 0.295,
+     "ref": 0.775,
+     "gap": 0
+    },
+    "leaders": [
+     "cottonmouth-matriarch"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.383,
+     "ref": 0.675,
+     "gap": 0.113
+    },
+    {
+     "move": "bog-leech -2 -> cottonmouth-matriarch",
+     "v": 0.233,
+     "ref": 0.8,
+     "gap": 0.04,
+     "tried": 24
+    },
+    {
+     "move": "mudpuppy -1 -> cottonmouth-matriarch",
+     "v": 0.25,
+     "ref": 0.775,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 579,
+   "sec": 172
+  },
+  {
+   "id": "5-A-BPRO-3",
+   "map": "ms",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "crocodile-ambusher": 3,
+     "matamata": 3,
+     "mudpuppy": 2,
+     "newt-doctor": 4,
+     "nutria-reedcutter": 4,
+     "peat-cutter-vole": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.455,
+     "ref": 0.65,
+     "gap": 0.155
+    }
+   },
+   "pick": {
+    "deck": {
+     "crocodile-ambusher": 4,
+     "matamata": 3,
+     "newt-doctor": 3,
+     "nutria-reedcutter": 4,
+     "peat-cutter-vole": 4,
+     "cottonmouth-matriarch": 2
+    },
+    "val": {
+     "v": 0.33,
+     "ref": 0.825,
+     "gap": 0.03
+    },
+    "leaders": [
+     "cottonmouth-matriarch"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.467,
+     "ref": 0.725,
+     "gap": 0.197
+    },
+    {
+     "move": "mudpuppy -2 -> cottonmouth-matriarch",
+     "v": 0.375,
+     "ref": 0.75,
+     "gap": 0.105,
+     "tried": 24
+    },
+    {
+     "move": "newt-doctor -1 -> crocodile-ambusher",
+     "v": 0.267,
+     "ref": 0.8,
+     "gap": 0.04,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 863,
+   "sec": 280
+  },
+  {
+   "id": "5-A-BPRO-4",
+   "map": "ms",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cypress-root-lurker": 4,
+     "mudpuppy": 1,
+     "muskrat-reedgatherer": 4,
+     "newt-doctor": 4,
+     "old-snapjaw": 3,
+     "peat-cutter-vole": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.41,
+     "ref": 0.8,
+     "gap": 0.11
+    }
+   },
+   "pick": {
+    "deck": {
+     "cypress-root-lurker": 4,
+     "mudpuppy": 1,
+     "muskrat-reedgatherer": 4,
+     "newt-doctor": 4,
+     "old-snapjaw": 3,
+     "peat-cutter-vole": 4
+    },
+    "val": {
+     "v": 0.41,
+     "ref": 0.8,
+     "gap": 0.11
+    },
+    "leaders": [
+     "old-snapjaw"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.367,
+     "ref": 0.7,
+     "gap": 0.097
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 92
+  }
+ ],
+ "drop": [
+  "5-A-PRO-4"
+ ]
+}
