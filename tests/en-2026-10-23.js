@@ -129,7 +129,7 @@ ok(sk('spellward').value > 0 && !costs.skills.some(x=> x.id === 'spellshield' ||
 
 // ---- cards
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), byId = new Map(cards.map(c=> [c.id, c]));
-ok(cards.filter(c=> c.effects && c.effects.king).map(c=> c.id).join() === 'magnate-duck', 'TR-4: the Magnate Duck is the only King');
+ok(cards.filter(c=> require('./lib/redesign.js').skillsAt10(c).king).map(c=> c.id).join() === 'magnate-duck', 'TR-4: the Magnate Duck is the only King'); // 2026-11-19 (TESTFIX6): LVL10, King from Level 5
 ok(!byId.get('rodent-king').effects.bounty && !byId.get('glacial-ape-king').effects.bounty, 'TR-4: King off the Rodent King and the Glacial Ape-King; Bounty stays off (BF8: loot carriers only)');
 ok(byId.get('magnate-duck').health > 1, `TR-4: the Magnate Duck is not at its 1/1 floor (${byId.get('magnate-duck').attack}/${byId.get('magnate-duck').health})`);
 ok(!cards.some(c=> c.effects && (c.effects.spellshield || (c.effects.transform && c.effects.transform.name === 'enraged'))), 'no card keeps Spellshield or Enraged');

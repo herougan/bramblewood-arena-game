@@ -39,7 +39,7 @@ const grabFn = k=>{ const i = app.indexOf('\nfunction ' + k + '('); if(i < 0) re
     ok(cues.size >= 10, `1. at least 10 distinct cues (${cues.size})`);
     const bodies = [];
     cues.forEach(cue=>{
-      const m = app.match(new RegExp('^    ' + cue + '\\(\\)\\{([^\\n]*)\\},$', 'm'));
+      const m = app.match(new RegExp('^    ' + cue + '\\(\\)\\{([^\\n]*?)\\},( *\\/\\/[^\\n]*)?$', 'm')); // 2026-11-19 (TESTFIX6): FXAUD2's cues end with a // note
       ok(m, `1. SoundKit.${cue} exists`);
       if(!m) return; bodies.push(m[1]);
       ok(/SX_MARK_DELAY/.test(m[1]) && /\b(tone|sweep|fnoise)\(/.test(m[1]) && !/createOscillator|new AudioContext|\.connect\(/.test(m[1]), `1. ${cue} is built from tone / sweep / fnoise, after SX_MARK_DELAY`);
