@@ -45,7 +45,8 @@ for(const s of C2.NEW){ const c = by[s.id];
   if(s.place){ const [map, tier] = s.place;
     // 2026-11-05 (CONTENT10, LISTFIX2-1 b): the Driftwood Crab is 2-5's skirmish reward now (for the Grey Seal Bull), a reward of the same map
     const c10 = s.id === 'driftwood-crab' && c.source && c.source.kind === 'map' && c.source.id === map && c.source.node === '2-5';
-    ok(c10 || (c.source && c.source.kind === 'pack' && c.source.map === map && c.source.tier === tier && !c.awaitingSource), `${s.id}: a Pack ${tier} card of ${map}${c10 ? ' (CONTENT10: now 2-5\'s reward)' : ''}`);
+    const dfx = c.source && c.source.kind === 'map' && c.source.id === map && new RegExp('\\(DATAFIX\\): source pack ' + map + ' tier ' + tier + ' -> map ').test(c.creatorNote || ''); // 2026-11-19 (TESTFIX6): DATAFIX made it a reward of the same map
+    ok(c10 || dfx || (c.source && c.source.kind === 'pack' && c.source.map === map && c.source.tier === tier && !c.awaitingSource), `${s.id}: a Pack ${tier} card of ${map}${c10 ? ' (CONTENT10: now 2-5\'s reward)' : ''}`);
     ok(pools[map].cards.includes(s.id) === (T2[map] || []).includes(s.id), `${s.id}: its place on ${map}'s list follows THEME2`); } // 2026-10-28 APPLY1: lists follow THEME2
   else ok(c.awaitingSource && !c.source && /proposed:/.test(c.creatorNote), `${s.id}: awaiting a source, with a proposed one`); }
 const gnawed = ['bog-shrew', 'mire-rat', 'hollow-belly-rat', 'gnawed-matriarch'], tide = ['kelpborn-otter', 'conger-eel', 'selkie-wavebinder'];
@@ -67,8 +68,9 @@ const pays = (c, res)=>{ c = SP.expandDef(c); const e = c.effects || {}; return 
 const gainOf = c=> c.effects.delivery || c.effects.forestry /* 2026-11-18 (TESTFIX): ECONSK1's Forestry N */ || (c.effects.triggers || [])[0] && c.effects.triggers[0].amount; // TESTFIX1: Delivery N since ENG22
 ok(new Set(['driftwood-crab', 'nutria-reedcutter', 'cone-cutter-squirrel', 'dune-packrat'].map(id=> gainOf(by[id]))).size === 3, 'the gatherers come at different strengths (+1, +2, +3)');
 // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the card's place on its map's list is THEME2's (the Land Tiller is on Maps 23-24's lists now)
-Object.entries(C2.EXISTING).forEach(([id, [map, tier]])=> ok(pools[map].cards.includes(id) === (T2[map] || []).includes(id) && by[id].source.map === map && by[id].source.tier === tier, `${id}: its source is ${map}, its place on ${map}'s list follows THEME2`));
-ok(pays(by['gravel-mole'], 'stone') && pays(by['pumice-beetle'], 'stone'), 'two Stone gatherers');
+Object.entries(C2.EXISTING).forEach(([id, [map, tier]])=> ok(pools[map].cards.includes(id) === (T2[map] || []).includes(id) && ((by[id].source.map === map && by[id].source.tier === tier) || new RegExp('\\(DATAFIX\\): source pack ' + map + ' tier ' + tier + ' -> map ' + map + ' ').test(by[id].creatorNote || '') /* 2026-11-19 (TESTFIX6): DATAFIX made it a reward of its own map */), `${id}: its source is ${map}, its place on ${map}'s list follows THEME2`));
+// 2026-11-19 (TESTFIX6): DATAFIX made Pumice Beetle gain Lumber (SKIR1: no Stone before Map 21); Gravel Mole stays the Stone gatherer
+ok(pays(by['gravel-mole'], 'stone') && (pays(by['pumice-beetle'], 'stone') || (pays(by['pumice-beetle'], 'lumber') && /\(DATAFIX\): On Spawn gains 2 Lumber instead of 2 Stone/.test(by['pumice-beetle'].creatorNote || ''))), 'two Stone gatherers (Pumice Beetle Lumber since DATAFIX)');
 // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the Gravel Mole is off the caves' list; the Stone gatherer there is THEME2's mix pick
 // 2026-11-12 (TESTFIX1): SKIR1's rule (owner 11-11 "No stone until Map 21+") took every Stone card off the lists of Maps 0-20, so the converter and the Gravel Mole sit on no list there; the rule that stays: Quarry 1, and no list of Maps 0-20 holds either
 { const GN = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, early = id=> Object.entries(pools).filter(([k, e])=> { const no = GN.mapNumberOf(k); return no != null && no <= 20 && [].concat(e.cards, e.special || [], ...Object.values(e.submaps || {}).map(l=> Array.isArray(l) ? l : l.cards || [])).includes(id); }).map(([k])=> k);

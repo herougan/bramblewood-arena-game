@@ -40,7 +40,7 @@ Nine feelings. The first five are the owner's. **Forecast and payoff (5)** is ou
 **The moment (Map 23, The Goldfeather Siege, the owner's example):**
 - You have a 1/5 Ant Scout in the centre column and nothing on the far right.
 - The CPU holds a 3/11 Mouse Sapper. It plays the Sapper facing your Ant Scout: a kill it can make now scores highest in its slot choice (`aiSlotScorerSmartest`: a kill now is worth 3 or more; the basic and smart CPUs prefer kill-or-survive slots too).
-- With its last open blocker spent in the centre, you play the **Siege Rhino** (5/15, Wait 3, Siege 3, Sweep 1; was 5/17 Siege 4 before the 11-17 redesign) on the far right.
+- With its last open blocker spent in the centre, you play the **Siege Rhino** (6/15, Wait 3, Siege 3, Sweep 1 from Level 5; was 5/17 Siege 4 before the 11-17 redesign) on the far right.
 - For three rounds its ring counts down in plain view. The CPU keeps answering your small units. When the ring hits 0, the Rhino swings into the open column for 5 + 4 Siege on the bramble, every round, until something blocks it.
 - **The earlier version:** the **Cave Bear** (4/13, Wait 2, Rage, Siege 4) on Map 20's fights (20-8, 20-A-2, 20-A-5). The **Mouse Sapper** (Siege 1) teaches open columns on Map 12 (12-1 to 12-7).
 
