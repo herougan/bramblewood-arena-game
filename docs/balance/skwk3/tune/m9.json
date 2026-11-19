@@ -1,0 +1,72 @@
+{
+ "map": "m9",
+ "generated": "2026-11-19T11:51:21.757Z",
+ "decks": [
+  {
+   "id": "19-A-WPRO-2",
+   "map": "m9",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "grindstone-boar": 4,
+     "magma-titan": 3,
+     "peak-condor": 3,
+     "pumice-beetle": 4,
+     "smoke-raccoon": 4,
+     "stalactite-golem": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.338,
+     "ref": 0.338,
+     "gap": 0.162
+    }
+   },
+   "pick": {
+    "deck": {
+     "grindstone-boar": 4,
+     "magma-titan": 3,
+     "peak-condor": 3,
+     "smoke-raccoon": 4,
+     "stalactite-golem": 2,
+     "anvilwhisker-otter": 4
+    },
+    "val": {
+     "v": 0.813,
+     "ref": 0.813,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.317,
+     "ref": 0.317,
+     "gap": 0.283
+    },
+    {
+     "move": "pumice-beetle x4 -> anvilwhisker-otter",
+     "v": 0.867,
+     "ref": 0.867,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 29,
+   "sec": 21
+  }
+ ],
+ "drop": []
+}

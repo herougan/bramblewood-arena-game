@@ -1,0 +1,153 @@
+{
+ "map": "mx",
+ "generated": "2026-11-19T11:51:27.750Z",
+ "decks": [
+  {
+   "id": "20-B-BPRO-2",
+   "map": "mx",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 4,
+     "cinder-hornet": 4,
+     "deep-cave-troll": 4,
+     "fire-salamander": 3,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.41,
+     "ref": 0.875,
+     "gap": 0.135
+    }
+   },
+   "pick": {
+    "deck": {
+     "basalt-boar": 4,
+     "cinder-hornet": 4,
+     "deep-cave-troll": 4,
+     "fire-salamander": 3,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3
+    },
+    "val": {
+     "v": 0.41,
+     "ref": 0.875,
+     "gap": 0.135
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.458,
+     "ref": 0.625,
+     "gap": 0.188
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 70
+  },
+  {
+   "id": "20-B-BPRO-1",
+   "map": "mx",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cataphract-destrier": 4,
+     "cinder-hornet": 4,
+     "eagle-sharpshooter": 4,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.415,
+     "ref": 0.8,
+     "gap": 0.115
+    }
+   },
+   "pick": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cinder-hornet": 4,
+     "eagle-sharpshooter": 4,
+     "magma-salamander": 2,
+     "basalt-boar": 3,
+     "ancient-sloth-titan": 4
+    },
+    "val": {
+     "v": 0.305,
+     "ref": 0.7,
+     "gap": 0.005
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.425,
+     "ref": 0.75,
+     "gap": 0.155
+    },
+    {
+     "move": "obsidian-scorpion x3 -> basalt-boar",
+     "v": 0.35,
+     "ref": 0.725,
+     "gap": 0.08,
+     "tried": 24
+    },
+    {
+     "move": "cataphract-destrier x4 -> ancient-sloth-titan",
+     "v": 0.283,
+     "ref": 0.75,
+     "gap": 0.013,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 843,
+   "sec": 166
+  }
+ ],
+ "drop": []
+}

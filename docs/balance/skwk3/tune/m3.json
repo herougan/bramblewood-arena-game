@@ -1,0 +1,240 @@
+{
+ "map": "m3",
+ "generated": "2026-11-19T11:34:53.601Z",
+ "decks": [
+  {
+   "id": "19-BPRO-1",
+   "map": "m3",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "caustic-scorpion": 3,
+     "fire-salamander": 4,
+     "horned-lizard": 4,
+     "pinecone-sapper": 4,
+     "polar-bear": 1,
+     "smoke-raccoon": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.515,
+     "ref": 0.775,
+     "gap": 0.215
+    }
+   },
+   "pick": {
+    "deck": {
+     "fire-salamander": 4,
+     "pinecone-sapper": 4,
+     "polar-bear": 1,
+     "smoke-raccoon": 4,
+     "obsidian-scorpion": 3,
+     "basalt-boar": 4
+    },
+    "val": {
+     "v": 0.34,
+     "ref": 0.9,
+     "gap": 0.09
+    },
+    "leaders": [
+     "polar-bear"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.542,
+     "ref": 0.775,
+     "gap": 0.272
+    },
+    {
+     "move": "horned-lizard x4 -> obsidian-scorpion",
+     "v": 0.383,
+     "ref": 0.825,
+     "gap": 0.203,
+     "tried": 24
+    },
+    {
+     "move": "caustic-scorpion x4 -> basalt-boar",
+     "v": 0.25,
+     "ref": 0.825,
+     "gap": 0.09,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 843,
+   "sec": 316
+  },
+  {
+   "id": "19-BPRO-2",
+   "map": "m3",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "armadillo-guard": 4,
+     "horned-lizard": 4,
+     "pinecone-sapper": 4,
+     "quillback-elder": 4,
+     "stalactite-golem": 1,
+     "honey-badger-fury": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.45,
+     "ref": 0.75,
+     "gap": 0.15
+    }
+   },
+   "pick": {
+    "deck": {
+     "armadillo-guard": 4,
+     "pinecone-sapper": 4,
+     "quillback-elder": 4,
+     "stalactite-golem": 1,
+     "honey-badger-fury": 3,
+     "smoke-raccoon": 4
+    },
+    "val": {
+     "v": 0.255,
+     "ref": 0.8,
+     "gap": 0
+    },
+    "leaders": [
+     "smoke-raccoon"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.525,
+     "ref": 0.775,
+     "gap": 0.255
+    },
+    {
+     "move": "horned-lizard x4 -> smoke-raccoon",
+     "v": 0.225,
+     "ref": 0.8,
+     "gap": 0.04,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 149
+  },
+  {
+   "id": "19-BPRO-3",
+   "map": "m3",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "glacier-yak": 4,
+     "horned-lizard": 4,
+     "polar-bear": 2,
+     "stalactite-golem": 4,
+     "walrus-icebreaker": 2,
+     "armadillo-guard": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.245,
+     "ref": 0.875,
+     "gap": 0.025
+    }
+   },
+   "pick": {
+    "deck": {
+     "glacier-yak": 4,
+     "polar-bear": 2,
+     "walrus-icebreaker": 2,
+     "armadillo-guard": 4,
+     "smoke-raccoon": 4,
+     "elderhorn-monarch": 4
+    },
+    "val": {
+     "v": 0.15,
+     "ref": 1,
+     "gap": 0.15
+    },
+    "leaders": [
+     "walrus-icebreaker"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.308,
+     "ref": 0.9,
+     "gap": 0.278
+    },
+    {
+     "move": "horned-lizard x4 -> smoke-raccoon",
+     "v": 0.233,
+     "ref": 0.9,
+     "gap": 0.24,
+     "tried": 24
+    },
+    {
+     "move": "stalactite-golem x4 -> elderhorn-monarch",
+     "v": 0.175,
+     "ref": 0.825,
+     "gap": 0.095,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 813,
+   "sec": 243
+  }
+ ],
+ "drop": []
+}

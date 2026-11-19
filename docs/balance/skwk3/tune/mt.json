@@ -1,0 +1,237 @@
+{
+ "map": "mt",
+ "generated": "2026-11-19T11:40:32.186Z",
+ "decks": [
+  {
+   "id": "16-BPRO-3",
+   "map": "mt",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cone-cutter-squirrel": 4,
+     "farm-dog": 4,
+     "golden-eagle-diver": 4,
+     "mountain-hare": 2,
+     "sworn-shieldbearer": 2,
+     "woodland-caribou": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.595,
+     "ref": 0.375,
+     "gap": 0.295
+    }
+   },
+   "pick": {
+    "deck": {
+     "cone-cutter-squirrel": 4,
+     "golden-eagle-diver": 4,
+     "sworn-shieldbearer": 4,
+     "woodland-caribou": 4,
+     "grizzly-vanguard": 4
+    },
+    "val": {
+     "v": 0.355,
+     "ref": 0.775,
+     "gap": 0.055
+    },
+    "leaders": [
+     "sworn-shieldbearer"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.508,
+     "ref": 0.5,
+     "gap": 0.238
+    },
+    {
+     "move": "farm-dog x4 -> grizzly-vanguard",
+     "v": 0.333,
+     "ref": 0.725,
+     "gap": 0.063,
+     "tried": 24
+    },
+    {
+     "move": "mountain-hare -2 -> sworn-shieldbearer",
+     "v": 0.233,
+     "ref": 0.775,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 579,
+   "sec": 151
+  },
+  {
+   "id": "16-BPRO-1",
+   "map": "mt",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cone-cutter-squirrel": 2,
+     "golden-eagle-diver": 4,
+     "mallard-marauder": 2,
+     "mountain-hare": 4,
+     "snowshoe-hare": 4,
+     "upside-down-bat": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.485,
+     "ref": 0.55,
+     "gap": 0.185
+    }
+   },
+   "pick": {
+    "deck": {
+     "cone-cutter-squirrel": 2,
+     "mallard-marauder": 2,
+     "snowshoe-hare": 4,
+     "upside-down-bat": 4,
+     "boreal-elk": 4,
+     "woodland-caribou": 4
+    },
+    "val": {
+     "v": 0.305,
+     "ref": 0.725,
+     "gap": 0.005
+    },
+    "leaders": [
+     "mallard-marauder"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.383,
+     "ref": 0.75,
+     "gap": 0.113
+    },
+    {
+     "move": "golden-eagle-diver x4 -> boreal-elk",
+     "v": 0.292,
+     "ref": 0.775,
+     "gap": 0.022,
+     "tried": 24
+    },
+    {
+     "move": "mountain-hare x4 -> woodland-caribou",
+     "v": 0.225,
+     "ref": 0.7,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 137
+  },
+  {
+   "id": "16-BPRO-2",
+   "map": "mt",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cone-cutter-squirrel": 4,
+     "farm-dog": 4,
+     "mountain-hare": 4,
+     "owl-sentinel": 4,
+     "upside-down-bat": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.475,
+     "ref": 0.65,
+     "gap": 0.175
+    }
+   },
+   "pick": {
+    "deck": {
+     "cone-cutter-squirrel": 4,
+     "farm-dog": 4,
+     "mountain-hare": 4,
+     "owl-sentinel": 2,
+     "raft-spider": 2,
+     "grizzly-vanguard": 4
+    },
+    "val": {
+     "v": 0.3,
+     "ref": 0.7,
+     "gap": 0
+    },
+    "leaders": [
+     "grizzly-vanguard"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.492,
+     "ref": 0.75,
+     "gap": 0.222
+    },
+    {
+     "move": "owl-sentinel -2 -> raft-spider",
+     "v": 0.4,
+     "ref": 0.7,
+     "gap": 0.13,
+     "tried": 24
+    },
+    {
+     "move": "upside-down-bat x4 -> grizzly-vanguard",
+     "v": 0.333,
+     "ref": 0.725,
+     "gap": 0.063,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 843,
+   "sec": 200
+  }
+ ],
+ "drop": []
+}

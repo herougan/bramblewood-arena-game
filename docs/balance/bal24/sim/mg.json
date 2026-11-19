@@ -20,8 +20,9 @@
    "player": 1,
    "seed": "bal24-1",
    "counts": {
-    "greyplume-fledgling": 5,
+    "greyplume-fledgling": 4,
     "otter-centurion": 3,
+    "shoal-shark": 1,
     "soldier-ant": 5,
     "tunnel-ant": 3,
     "worker-ant": 4
@@ -29,13 +30,18 @@
    "parts": [
     [
      "greyplume-fledgling",
-     5,
+     4,
      1
     ],
     [
      "otter-centurion",
      3,
      0
+    ],
+    [
+     "shoal-shark",
+     1,
+     1
     ],
     [
      "soldier-ant",
@@ -50,49 +56,132 @@
     [
      "worker-ant",
      4,
-     1
+     0
     ]
    ],
-   "leader": "old-shell",
-   "collection": 147,
+   "leader": "drowned-matriarch",
+   "collection": 150,
    "factionCards": 27,
-   "optScore": 0.862,
+   "optScore": 0.846,
    "optBudget": 900,
    "optFile": "deckopt-map02-mg-bal24-p1.json",
    "games": 8,
    "perFight": {
     "2-B-1": 100,
     "2-B-2": 100,
-    "2-B-3": 100,
-    "2-B-4": 50
+    "2-B-3": 87.5,
+    "2-B-4": 25
    },
-   "win": 87.5
+   "win": 78.1
   },
   {
    "player": 2,
    "seed": "bal24-2",
    "counts": {
-    "greyplume-fledgling": 4,
-    "otter-centurion": 3,
-    "soldier-ant": 4,
+    "balloon-archer": 1,
+    "bee-drone": 1,
+    "chipmunk-skirmisher": 1,
+    "cobalt-talon-skirmisher": 1,
+    "cottonmouth-matriarch": 1,
+    "crimson-wing-duelist-cadet": 1,
+    "daily-post": 1,
+    "earthworm": 1,
+    "mist-net-otter": 1,
+    "mosswing-laborer": 2,
+    "old-sturgeon": 1,
+    "otter-angler": 1,
+    "planarian-splitter": 1,
+    "puffin-diver": 1,
+    "shellwright-apprentice": 1,
+    "shoal-shark": 1,
+    "soldier-ant": 1,
     "sunfeather-scout": 1,
-    "tunnel-ant": 3,
-    "worker-ant": 5
+    "terrier-pup": 1
    },
    "parts": [
     [
-     "greyplume-fledgling",
-     4,
+     "balloon-archer",
+     1,
      1
     ],
     [
-     "otter-centurion",
-     3,
+     "bee-drone",
+     1,
+     1
+    ],
+    [
+     "chipmunk-skirmisher",
+     1,
+     1
+    ],
+    [
+     "cobalt-talon-skirmisher",
+     1,
+     1
+    ],
+    [
+     "cottonmouth-matriarch",
+     1,
+     1
+    ],
+    [
+     "crimson-wing-duelist-cadet",
+     1,
+     1
+    ],
+    [
+     "daily-post",
+     1,
+     1
+    ],
+    [
+     "earthworm",
+     1,
      0
     ],
     [
+     "mist-net-otter",
+     1,
+     1
+    ],
+    [
+     "mosswing-laborer",
+     2,
+     1
+    ],
+    [
+     "old-sturgeon",
+     1,
+     1
+    ],
+    [
+     "otter-angler",
+     1,
+     1
+    ],
+    [
+     "planarian-splitter",
+     1,
+     1
+    ],
+    [
+     "puffin-diver",
+     1,
+     1
+    ],
+    [
+     "shellwright-apprentice",
+     1,
+     1
+    ],
+    [
+     "shoal-shark",
+     1,
+     1
+    ],
+    [
      "soldier-ant",
-     4,
+     1,
      1
     ],
     [
@@ -101,20 +190,15 @@
      1
     ],
     [
-     "tunnel-ant",
-     3,
-     1
-    ],
-    [
-     "worker-ant",
-     5,
+     "terrier-pup",
+     1,
      1
     ]
    ],
-   "leader": "old-shell",
-   "collection": 148,
-   "factionCards": 28,
-   "optScore": 0.806,
+   "leader": "drowned-matriarch",
+   "collection": 150,
+   "factionCards": 27,
+   "optScore": 0.729,
    "optBudget": 900,
    "optFile": "deckopt-map02-mg-bal24-p2.json",
    "games": 8,
@@ -122,34 +206,46 @@
     "2-B-1": 100,
     "2-B-2": 100,
     "2-B-3": 87.5,
-    "2-B-4": 25
+    "2-B-4": 0
    },
-   "win": 78.1
+   "win": 71.9
   },
   {
    "player": 3,
    "seed": "bal24-3",
    "counts": {
-    "greyplume-fledgling": 5,
-    "otter-centurion": 2,
-    "soldier-ant": 5,
+    "greyplume-fledgling": 4,
+    "newt-doctor": 1,
+    "otter-centurion": 3,
+    "salvager-hermit-crab": 1,
+    "soldier-ant": 4,
     "tunnel-ant": 3,
-    "worker-ant": 5
+    "worker-ant": 4
    },
    "parts": [
     [
      "greyplume-fledgling",
-     5,
+     4,
+     1
+    ],
+    [
+     "newt-doctor",
+     1,
      1
     ],
     [
      "otter-centurion",
-     2,
+     3,
      0
     ],
     [
+     "salvager-hermit-crab",
+     1,
+     1
+    ],
+    [
      "soldier-ant",
-     5,
+     4,
      1
     ],
     [
@@ -159,45 +255,69 @@
     ],
     [
      "worker-ant",
-     5,
-     1
+     4,
+     0
     ]
    ],
-   "leader": "old-shell",
-   "collection": 149,
-   "factionCards": 29,
-   "optScore": 0.864,
+   "leader": "drowned-matriarch",
+   "collection": 150,
+   "factionCards": 27,
+   "optScore": 0.795,
    "optBudget": 900,
    "optFile": "deckopt-map02-mg-bal24-p3.json",
    "games": 8,
    "perFight": {
-    "2-B-1": 100,
+    "2-B-1": 87.5,
     "2-B-2": 100,
-    "2-B-3": 100,
-    "2-B-4": 12.5
+    "2-B-3": 87.5,
+    "2-B-4": 50
    },
-   "win": 78.1
+   "win": 81.3
   },
   {
    "player": 4,
    "seed": "bal24-4",
    "counts": {
-    "chipmunk-forager": 1,
-    "greyplume-fledgling": 4,
+    "cottonmouth-matriarch": 1,
+    "crimson-wing-duelist-cadet": 1,
+    "driftwood-crab": 1,
+    "feral-tomcat": 1,
+    "greyplume-fledgling": 1,
+    "marsh-mallow-hare": 1,
     "otter-centurion": 3,
     "soldier-ant": 4,
     "tunnel-ant": 3,
-    "worker-ant": 5
+    "worker-ant": 4
    },
    "parts": [
     [
-     "chipmunk-forager",
+     "cottonmouth-matriarch",
+     1,
+     1
+    ],
+    [
+     "crimson-wing-duelist-cadet",
+     1,
+     1
+    ],
+    [
+     "driftwood-crab",
+     1,
+     1
+    ],
+    [
+     "feral-tomcat",
      1,
      1
     ],
     [
      "greyplume-fledgling",
-     4,
+     1,
+     1
+    ],
+    [
+     "marsh-mallow-hare",
+     1,
      1
     ],
     [
@@ -217,211 +337,56 @@
     ],
     [
      "worker-ant",
-     5,
-     1
+     4,
+     0
     ]
    ],
-   "leader": "old-shell",
-   "collection": 149,
-   "factionCards": 29,
-   "optScore": 0.752,
+   "leader": "drowned-matriarch",
+   "collection": 150,
+   "factionCards": 27,
+   "optScore": 0.819,
    "optBudget": 900,
    "optFile": "deckopt-map02-mg-bal24-p4.json",
    "games": 8,
    "perFight": {
-    "2-B-1": 100,
+    "2-B-1": 62.5,
     "2-B-2": 100,
     "2-B-3": 100,
-    "2-B-4": 25
+    "2-B-4": 12.5
    },
-   "win": 81.3
+   "win": 68.8
   },
   {
    "player": 5,
    "seed": "bal24-5",
    "counts": {
-    "dolphin-knight": 1,
-    "greyplume-fledgling": 4,
-    "otter-centurion": 3,
-    "peak-condor": 1,
-    "soldier-ant": 4,
-    "tunnel-ant": 3,
-    "worker-ant": 4
-   },
-   "parts": [
-    [
-     "dolphin-knight",
-     1,
-     1
-    ],
-    [
-     "greyplume-fledgling",
-     4,
-     1
-    ],
-    [
-     "otter-centurion",
-     3,
-     0
-    ],
-    [
-     "peak-condor",
-     1,
-     1
-    ],
-    [
-     "soldier-ant",
-     4,
-     1
-    ],
-    [
-     "tunnel-ant",
-     3,
-     1
-    ],
-    [
-     "worker-ant",
-     4,
-     1
-    ]
-   ],
-   "leader": "old-shell",
-   "collection": 147,
-   "factionCards": 27,
-   "optScore": 0.833,
-   "optBudget": 900,
-   "optFile": "deckopt-map02-mg-bal24-p5.json",
-   "games": 8,
-   "perFight": {
-    "2-B-1": 100,
-    "2-B-2": 100,
-    "2-B-3": 87.5,
-    "2-B-4": 25
-   },
-   "win": 78.1
-  },
-  {
-   "player": 6,
-   "seed": "bal24-6",
-   "counts": {
-    "greyplume-fledgling": 5,
-    "otter-centurion": 2,
-    "soldier-ant": 5,
-    "tunnel-ant": 3,
-    "worker-ant": 5
-   },
-   "parts": [
-    [
-     "greyplume-fledgling",
-     5,
-     1
-    ],
-    [
-     "otter-centurion",
-     2,
-     0
-    ],
-    [
-     "soldier-ant",
-     5,
-     1
-    ],
-    [
-     "tunnel-ant",
-     3,
-     1
-    ],
-    [
-     "worker-ant",
-     5,
-     1
-    ]
-   ],
-   "leader": "old-shell",
-   "collection": 145,
-   "factionCards": 25,
-   "optScore": 0.787,
-   "optBudget": 900,
-   "optFile": "deckopt-map02-mg-bal24-p6.json",
-   "games": 8,
-   "perFight": {
-    "2-B-1": 100,
-    "2-B-2": 100,
-    "2-B-3": 100,
-    "2-B-4": 12.5
-   },
-   "win": 78.1
-  },
-  {
-   "player": 7,
-   "seed": "bal24-7",
-   "counts": {
-    "beachcomber-sanderling": 1,
-    "greyplume-fledgling": 4,
-    "otter-centurion": 3,
-    "soldier-ant": 4,
-    "tunnel-ant": 3,
-    "worker-ant": 5
-   },
-   "parts": [
-    [
-     "beachcomber-sanderling",
-     1,
-     1
-    ],
-    [
-     "greyplume-fledgling",
-     4,
-     1
-    ],
-    [
-     "otter-centurion",
-     3,
-     0
-    ],
-    [
-     "soldier-ant",
-     4,
-     1
-    ],
-    [
-     "tunnel-ant",
-     3,
-     1
-    ],
-    [
-     "worker-ant",
-     5,
-     1
-    ]
-   ],
-   "leader": "old-shell",
-   "collection": 148,
-   "factionCards": 28,
-   "optScore": 0.811,
-   "optBudget": 900,
-   "optFile": "deckopt-map02-mg-bal24-p7.json",
-   "games": 8,
-   "perFight": {
-    "2-B-1": 100,
-    "2-B-2": 100,
-    "2-B-3": 100,
-    "2-B-4": 25
-   },
-   "win": 81.3
-  },
-  {
-   "player": 8,
-   "seed": "bal24-8",
-   "counts": {
+    "balloon-archer": 1,
+    "bee-knight": 1,
+    "cobalt-talon-fledgling": 1,
     "greyplume-fledgling": 4,
     "harvest-mouse": 1,
-    "otter-centurion": 3,
-    "soldier-ant": 5,
+    "muskrat-reedgatherer": 1,
+    "newt-doctor": 1,
+    "soldier-ant": 4,
     "tunnel-ant": 3,
-    "worker-ant": 4
+    "worker-ant": 3
    },
    "parts": [
+    [
+     "balloon-archer",
+     1,
+     1
+    ],
+    [
+     "bee-knight",
+     1,
+     1
+    ],
+    [
+     "cobalt-talon-fledgling",
+     1,
+     1
+    ],
     [
      "greyplume-fledgling",
      4,
@@ -433,13 +398,18 @@
      0
     ],
     [
-     "otter-centurion",
-     3,
-     0
+     "muskrat-reedgatherer",
+     1,
+     1
+    ],
+    [
+     "newt-doctor",
+     1,
+     1
     ],
     [
      "soldier-ant",
-     5,
+     4,
      1
     ],
     [
@@ -449,56 +419,373 @@
     ],
     [
      "worker-ant",
+     3,
+     0
+    ]
+   ],
+   "leader": "drowned-matriarch",
+   "collection": 152,
+   "factionCards": 29,
+   "optScore": 0.806,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p5.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 87.5,
+    "2-B-2": 100,
+    "2-B-3": 87.5,
+    "2-B-4": 25
+   },
+   "win": 75
+  },
+  {
+   "player": 6,
+   "seed": "bal24-6",
+   "counts": {
+    "camouflage-frog": 1,
+    "driftwood-crab": 1,
+    "kittiwake-flock": 1,
+    "old-sturgeon": 1,
+    "otter-ferryman": 1,
+    "oystercatcher": 1,
+    "soldier-ant": 5,
+    "terrier-pup": 2,
+    "tunnel-ant": 2,
+    "voidfeather-scout": 1,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "camouflage-frog",
+     1,
+     1
+    ],
+    [
+     "driftwood-crab",
+     1,
+     1
+    ],
+    [
+     "kittiwake-flock",
+     1,
+     1
+    ],
+    [
+     "old-sturgeon",
+     1,
+     1
+    ],
+    [
+     "otter-ferryman",
+     1,
+     1
+    ],
+    [
+     "oystercatcher",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     5,
+     1
+    ],
+    [
+     "terrier-pup",
+     2,
+     1
+    ],
+    [
+     "tunnel-ant",
+     2,
+     1
+    ],
+    [
+     "voidfeather-scout",
+     1,
+     1
+    ],
+    [
+     "worker-ant",
      4,
+     0
+    ]
+   ],
+   "leader": "drowned-matriarch",
+   "collection": 148,
+   "factionCards": 25,
+   "optScore": 0.788,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p6.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 75,
+    "2-B-2": 100,
+    "2-B-3": 87.5,
+    "2-B-4": 25
+   },
+   "win": 71.9
+  },
+  {
+   "player": 7,
+   "seed": "bal24-7",
+   "counts": {
+    "alley-cat": 1,
+    "ant-scout": 1,
+    "farm-dog": 1,
+    "greyplume-fledgling": 5,
+    "gull-thief": 1,
+    "hedgehog-scout": 1,
+    "house-cat": 1,
+    "mudflat-godwit": 1,
+    "newt-doctor": 1,
+    "nutria-reedcutter": 1,
+    "soldier-ant": 3,
+    "tunnel-ant": 3
+   },
+   "parts": [
+    [
+     "alley-cat",
+     1,
+     1
+    ],
+    [
+     "ant-scout",
+     1,
+     1
+    ],
+    [
+     "farm-dog",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     5,
+     1
+    ],
+    [
+     "gull-thief",
+     1,
+     1
+    ],
+    [
+     "hedgehog-scout",
+     1,
+     1
+    ],
+    [
+     "house-cat",
+     1,
+     1
+    ],
+    [
+     "mudflat-godwit",
+     1,
+     1
+    ],
+    [
+     "newt-doctor",
+     1,
+     1
+    ],
+    [
+     "nutria-reedcutter",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     3,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
      1
     ]
    ],
-   "leader": "old-shell",
-   "collection": 147,
+   "leader": "drowned-matriarch",
+   "collection": 151,
+   "factionCards": 28,
+   "optScore": 0.798,
+   "optBudget": 900,
+   "optFile": "deckopt-map02-mg-bal24-p7.json",
+   "games": 8,
+   "perFight": {
+    "2-B-1": 62.5,
+    "2-B-2": 100,
+    "2-B-3": 87.5,
+    "2-B-4": 0
+   },
+   "win": 62.5
+  },
+  {
+   "player": 8,
+   "seed": "bal24-8",
+   "counts": {
+    "bee-drone": 1,
+    "birdlime-dauber": 1,
+    "cottontail": 1,
+    "crimson-wing-recruit": 1,
+    "dolphin-knight": 1,
+    "greyplume-fledgling": 1,
+    "heron-hag": 1,
+    "honey-bee": 1,
+    "moonlit-hare": 1,
+    "muskrat-lodgekeeper": 1,
+    "nectar-sipper": 1,
+    "newt-doctor": 2,
+    "old-snapjaw": 1,
+    "otter-angler": 1,
+    "river-carp": 1,
+    "riverbed-diver": 1,
+    "shellwright-apprentice": 1,
+    "slow-worm": 1,
+    "venomlord-serpent": 1
+   },
+   "parts": [
+    [
+     "bee-drone",
+     1,
+     1
+    ],
+    [
+     "birdlime-dauber",
+     1,
+     1
+    ],
+    [
+     "cottontail",
+     1,
+     1
+    ],
+    [
+     "crimson-wing-recruit",
+     1,
+     1
+    ],
+    [
+     "dolphin-knight",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     1,
+     1
+    ],
+    [
+     "heron-hag",
+     1,
+     1
+    ],
+    [
+     "honey-bee",
+     1,
+     1
+    ],
+    [
+     "moonlit-hare",
+     1,
+     1
+    ],
+    [
+     "muskrat-lodgekeeper",
+     1,
+     1
+    ],
+    [
+     "nectar-sipper",
+     1,
+     1
+    ],
+    [
+     "newt-doctor",
+     2,
+     1
+    ],
+    [
+     "old-snapjaw",
+     1,
+     1
+    ],
+    [
+     "otter-angler",
+     1,
+     1
+    ],
+    [
+     "river-carp",
+     1,
+     1
+    ],
+    [
+     "riverbed-diver",
+     1,
+     1
+    ],
+    [
+     "shellwright-apprentice",
+     1,
+     1
+    ],
+    [
+     "slow-worm",
+     1,
+     1
+    ],
+    [
+     "venomlord-serpent",
+     1,
+     1
+    ]
+   ],
+   "leader": "drowned-matriarch",
+   "collection": 150,
    "factionCards": 27,
-   "optScore": 0.883,
+   "optScore": 0.796,
    "optBudget": 900,
    "optFile": "deckopt-map02-mg-bal24-p8.json",
    "games": 8,
    "perFight": {
-    "2-B-1": 100,
+    "2-B-1": 87.5,
     "2-B-2": 100,
-    "2-B-3": 100,
-    "2-B-4": 50
+    "2-B-3": 75,
+    "2-B-4": 0
    },
-   "win": 87.5
+   "win": 65.6
   },
   {
    "player": 9,
    "seed": "bal24-9",
    "counts": {
-    "greyplume-fledgling": 3,
-    "otter-centurion": 3,
-    "otter-lantern-bearer": 1,
-    "soldier-ant": 5,
+    "conch-herald": 1,
+    "greyplume-fledgling": 5,
+    "otter-centurion": 2,
+    "soldier-ant": 4,
     "tunnel-ant": 3,
-    "water-shrew": 1,
-    "worker-ant": 4
+    "worker-ant": 5
    },
    "parts": [
     [
-     "greyplume-fledgling",
-     3,
-     1
-    ],
-    [
-     "otter-centurion",
-     3,
-     0
-    ],
-    [
-     "otter-lantern-bearer",
+     "conch-herald",
      1,
      1
     ],
     [
-     "soldier-ant",
+     "greyplume-fledgling",
      5,
+     1
+    ],
+    [
+     "otter-centurion",
+     2,
+     0
+    ],
+    [
+     "soldier-ant",
+     4,
      1
     ],
     [
@@ -507,96 +794,163 @@
      1
     ],
     [
-     "water-shrew",
-     1,
-     1
-    ],
-    [
      "worker-ant",
-     4,
-     1
+     5,
+     0
     ]
    ],
-   "leader": "old-shell",
-   "collection": 150,
-   "factionCards": 30,
-   "optScore": 0.869,
+   "leader": "drowned-matriarch",
+   "collection": 154,
+   "factionCards": 31,
+   "optScore": 0.835,
    "optBudget": 900,
    "optFile": "deckopt-map02-mg-bal24-p9.json",
    "games": 8,
    "perFight": {
-    "2-B-1": 100,
+    "2-B-1": 75,
     "2-B-2": 100,
-    "2-B-3": 100,
+    "2-B-3": 87.5,
     "2-B-4": 25
    },
-   "win": 81.3
+   "win": 71.9
   },
   {
    "player": 10,
    "seed": "bal24-10",
    "counts": {
-    "greyplume-fledgling": 4,
-    "mudpuppy": 1,
-    "otter-centurion": 3,
-    "soldier-ant": 4,
-    "sunfeather-scout": 1,
-    "tunnel-ant": 3,
-    "worker-ant": 4
+    "booming-bittern": 1,
+    "crossed-eyes": 1,
+    "dolphin-knight": 1,
+    "driftwood-crab": 1,
+    "duck-paddler": 1,
+    "grass-snake": 1,
+    "gull-thief": 1,
+    "helmeted-otter": 1,
+    "heron-hag": 1,
+    "mosswing-laborer": 1,
+    "oathsworn-legionary": 1,
+    "otter-ferryman": 1,
+    "otter-flag-bearer": 1,
+    "otter-paddler": 2,
+    "otter-shieldback": 1,
+    "planarian-splitter": 1,
+    "pond-duck": 1,
+    "puffin-diver": 1,
+    "tunnel-ant": 1
    },
    "parts": [
     [
-     "greyplume-fledgling",
-     4,
-     1
-    ],
-    [
-     "mudpuppy",
+     "booming-bittern",
      1,
      1
     ],
     [
-     "otter-centurion",
-     3,
+     "crossed-eyes",
+     1,
      0
     ],
     [
-     "soldier-ant",
-     4,
+     "dolphin-knight",
+     1,
      1
     ],
     [
-     "sunfeather-scout",
+     "driftwood-crab",
+     1,
+     1
+    ],
+    [
+     "duck-paddler",
+     1,
+     1
+    ],
+    [
+     "grass-snake",
+     1,
+     1
+    ],
+    [
+     "gull-thief",
+     1,
+     1
+    ],
+    [
+     "helmeted-otter",
+     1,
+     1
+    ],
+    [
+     "heron-hag",
+     1,
+     1
+    ],
+    [
+     "mosswing-laborer",
+     1,
+     1
+    ],
+    [
+     "oathsworn-legionary",
+     1,
+     1
+    ],
+    [
+     "otter-ferryman",
+     1,
+     1
+    ],
+    [
+     "otter-flag-bearer",
+     1,
+     1
+    ],
+    [
+     "otter-paddler",
+     2,
+     1
+    ],
+    [
+     "otter-shieldback",
+     1,
+     1
+    ],
+    [
+     "planarian-splitter",
+     1,
+     1
+    ],
+    [
+     "pond-duck",
+     1,
+     1
+    ],
+    [
+     "puffin-diver",
      1,
      1
     ],
     [
      "tunnel-ant",
-     3,
-     1
-    ],
-    [
-     "worker-ant",
-     4,
+     1,
      1
     ]
    ],
-   "leader": "old-shell",
-   "collection": 150,
-   "factionCards": 30,
-   "optScore": 0.808,
+   "leader": "drowned-matriarch",
+   "collection": 152,
+   "factionCards": 29,
+   "optScore": 0.775,
    "optBudget": 900,
    "optFile": "deckopt-map02-mg-bal24-p10.json",
    "games": 8,
    "perFight": {
-    "2-B-1": 100,
-    "2-B-2": 100,
-    "2-B-3": 100,
-    "2-B-4": 25
+    "2-B-1": 75,
+    "2-B-2": 87.5,
+    "2-B-3": 62.5,
+    "2-B-4": 12.5
    },
-   "win": 81.3
+   "win": 59.4
   }
  ],
  "missing": 0,
- "measured": "2026-11-12T07:49:02.789Z"
+ "measured": "2026-11-19T10:58:15.292Z"
 }

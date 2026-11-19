@@ -1,0 +1,88 @@
+{
+ "about": "SKWK3 plan (hand-picked from docs/balance/skwk3/marks-ladder-2026-11-19.json, the Maps 10-20 marks under the rebuilt ladder): per map the decks whose change can bring the map into all three marks (N-SK mean vs the ladder 15-30%, Map reference <= 85% vs each strong deck, N-WK Map reference >= 50%); left out for time / no room: mr, mpd, m11, me (Map reference over 85% while the ladder already wins 60%+ against the decks), mi (4 decks to move)",
+ "marks": "docs/balance/skwk3/marks-ladder-2026-11-19.json",
+ "maps": {
+  "m10": {
+   "tune": [
+    "11-BPRO-4",
+    "11-BPRO-2",
+    "11-BPRO-1"
+   ],
+   "drop": []
+  },
+  "mt": {
+   "tune": [
+    "16-BPRO-3",
+    "16-BPRO-1",
+    "16-BPRO-2"
+   ],
+   "drop": []
+  },
+  "m6": {
+   "tune": [
+    "17-BPRO-1",
+    "17-BPRO-2"
+   ],
+   "drop": []
+  },
+  "mh": {
+   "tune": [
+    "12-BPRO-1"
+   ],
+   "drop": []
+  },
+  "ml": {
+   "tune": [
+    "15-BPRO-3"
+   ],
+   "drop": []
+  },
+  "m9": {
+   "tune": [
+    "19-A-WPRO-2"
+   ],
+   "drop": []
+  },
+  "m3": {
+   "tune": [
+    "19-BPRO-1",
+    "19-BPRO-2",
+    "19-BPRO-3"
+   ],
+   "drop": []
+  },
+  "m5": {
+   "tune": [
+    "14-BPRO-1",
+    "14-BPRO-2"
+   ],
+   "drop": []
+  },
+  "md": {
+   "tune": [
+    "18-BPRO-2",
+    "18-BPRO-1"
+   ],
+   "drop": []
+  },
+  "mx": {
+   "tune": [
+    "20-B-BPRO-2",
+    "20-B-BPRO-1"
+   ],
+   "drop": []
+  },
+  "mj": {
+   "tune": [
+    "10-A-BPRO-4"
+   ],
+   "drop": []
+  },
+  "mv": {
+   "tune": [
+    "11-A-BPRO-1"
+   ],
+   "drop": []
+  }
+ }
+}

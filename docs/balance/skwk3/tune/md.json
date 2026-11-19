@@ -1,0 +1,160 @@
+{
+ "map": "md",
+ "generated": "2026-11-19T11:47:32.592Z",
+ "decks": [
+  {
+   "id": "18-BPRO-2",
+   "map": "md",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "balloon-archer": 4,
+     "barrel-cactus": 3,
+     "gallery-orb-weaver": 4,
+     "horned-lizard": 4,
+     "mouse-sapper": 4,
+     "worker-ant": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.56,
+     "ref": 0.5,
+     "gap": 0.26
+    }
+   },
+   "pick": {
+    "deck": {
+     "balloon-archer": 4,
+     "barrel-cactus": 3,
+     "gallery-orb-weaver": 4,
+     "horned-lizard": 4,
+     "worker-ant": 1,
+     "sandstorm-roc": 4
+    },
+    "val": {
+     "v": 0.55,
+     "ref": 0.525,
+     "gap": 0.25
+    },
+    "leaders": [
+     "barrel-cactus"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.583,
+     "ref": 0.65,
+     "gap": 0.313
+    },
+    {
+     "move": "mouse-sapper x4 -> sandstorm-roc",
+     "v": 0.492,
+     "ref": 0.6,
+     "gap": 0.222,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 164
+  },
+  {
+   "id": "18-BPRO-1",
+   "map": "md",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "antlion-pit": 4,
+     "balloon-archer": 4,
+     "chipmunk-forager": 4,
+     "horned-lizard": 4,
+     "mouse-sapper": 1,
+     "frillneck-duelist": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.475,
+     "ref": 0.575,
+     "gap": 0.175
+    }
+   },
+   "pick": {
+    "deck": {
+     "antlion-pit": 4,
+     "balloon-archer": 4,
+     "horned-lizard": 4,
+     "mouse-sapper": 2,
+     "frillneck-duelist": 3,
+     "sunbittern-strider": 3
+    },
+    "val": {
+     "v": 0.445,
+     "ref": 0.775,
+     "gap": 0.145
+    },
+    "leaders": [
+     "frillneck-duelist"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.442,
+     "ref": 0.7,
+     "gap": 0.172
+    },
+    {
+     "move": "chipmunk-forager x4 -> sunbittern-strider",
+     "v": 0.367,
+     "ref": 0.775,
+     "gap": 0.097,
+     "tried": 24
+    },
+    {
+     "move": "sunbittern-strider -1 -> mouse-sapper",
+     "v": 0.333,
+     "ref": 0.75,
+     "gap": 0.063,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 853,
+   "sec": 239
+  }
+ ],
+ "drop": []
+}

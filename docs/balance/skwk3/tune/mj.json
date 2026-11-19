@@ -1,0 +1,76 @@
+{
+ "map": "mj",
+ "generated": "2026-11-19T11:52:28.853Z",
+ "decks": [
+  {
+   "id": "10-A-BPRO-4",
+   "map": "mj",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "giant-clam": 4,
+     "orca-vanguard": 4,
+     "reef-admiral": 2,
+     "reef-shark": 4,
+     "sea-turtle-elder": 4,
+     "mantis-shrimp": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.125,
+     "ref": 0.925,
+     "gap": 0.1
+    }
+   },
+   "pick": {
+    "deck": {
+     "giant-clam": 4,
+     "orca-vanguard": 4,
+     "reef-shark": 4,
+     "sea-turtle-elder": 4,
+     "mantis-shrimp": 2,
+     "coral-polyp-colony": 2
+    },
+    "val": {
+     "v": 0.315,
+     "ref": 0.675,
+     "gap": 0.015
+    },
+    "leaders": [
+     "mantis-shrimp"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.05,
+     "ref": 0.825,
+     "gap": 0.22
+    },
+    {
+     "move": "reef-admiral -2 -> coral-polyp-colony",
+     "v": 0.208,
+     "ref": 0.625,
+     "gap": 0,
+     "tried": 21
+    }
+   ],
+   "readings": 265,
+   "sec": 61
+  }
+ ],
+ "drop": []
+}

@@ -1,0 +1,159 @@
+{
+ "map": "m6",
+ "generated": "2026-11-19T11:47:02.240Z",
+ "decks": [
+  {
+   "id": "17-BPRO-1",
+   "map": "m6",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "arctic-tern": 4,
+     "border-collie": 3,
+     "briarback-hedgehog": 4,
+     "cone-cutter-squirrel": 4,
+     "taiga-lynx": 3,
+     "walrus-icebreaker": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.98,
+     "ref": 0.075,
+     "gap": 0.68
+    }
+   },
+   "pick": {
+    "deck": {
+     "arctic-tern": 4,
+     "border-collie": 3,
+     "briarback-hedgehog": 4,
+     "glacier-yak": 4,
+     "ringed-seal": 2,
+     "elderhorn-monarch": 3
+    },
+    "val": {
+     "v": 0.335,
+     "ref": 0.825,
+     "gap": 0.035
+    },
+    "leaders": [
+     "border-collie"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.983,
+     "ref": 0,
+     "gap": 0.713
+    },
+    {
+     "move": "cone-cutter-squirrel x4 -> glacier-yak",
+     "v": 0.808,
+     "ref": 0.1,
+     "gap": 0.538,
+     "tried": 24
+    },
+    {
+     "move": "walrus-icebreaker -2 -> ringed-seal",
+     "v": 0.492,
+     "ref": 0.625,
+     "gap": 0.222,
+     "tried": 24
+    },
+    {
+     "move": "taiga-lynx x3 -> elderhorn-monarch",
+     "v": 0.225,
+     "ref": 0.625,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 823,
+   "sec": 279
+  },
+  {
+   "id": "17-BPRO-2",
+   "map": "m6",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "arctic-tern": 4,
+     "taiga-lynx": 1,
+     "woodland-caribou": 3,
+     "warhorse-charger": 4,
+     "elderhorn-monarch": 4,
+     "cataphract-destrier": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.475,
+     "ref": 0.575,
+     "gap": 0.175
+    }
+   },
+   "pick": {
+    "deck": {
+     "arctic-tern": 4,
+     "taiga-lynx": 2,
+     "warhorse-charger": 4,
+     "elderhorn-monarch": 4,
+     "cataphract-destrier": 4,
+     "polar-bear": 2
+    },
+    "val": {
+     "v": 0.31,
+     "ref": 0.7,
+     "gap": 0.01
+    },
+    "leaders": [
+     "polar-bear"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.483,
+     "ref": 0.55,
+     "gap": 0.213
+    },
+    {
+     "move": "woodland-caribou x3 -> polar-bear",
+     "v": 0.267,
+     "ref": 0.65,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 111
+  }
+ ],
+ "drop": []
+}

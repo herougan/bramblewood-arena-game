@@ -1,0 +1,246 @@
+{
+ "map": "m10",
+ "generated": "2026-11-19T11:32:24.586Z",
+ "decks": [
+  {
+   "id": "11-BPRO-4",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "mountain-hare": 3,
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "swamp-alligator": 2,
+     "eagle-owl-quartermaster": 3,
+     "the-gannet-queen": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.52,
+     "ref": 0.55,
+     "gap": 0.22
+    }
+   },
+   "pick": {
+    "deck": {
+     "mountain-hare": 3,
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "the-gannet-queen": 4,
+     "gannet-nestweaver": 3,
+     "eagle-sharpshooter": 2
+    },
+    "val": {
+     "v": 0.265,
+     "ref": 0.9,
+     "gap": 0.05
+    },
+    "leaders": [
+     "the-gannet-queen"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.558,
+     "ref": 0.625,
+     "gap": 0.288
+    },
+    {
+     "move": "eagle-owl-quartermaster x3 -> gannet-nestweaver",
+     "v": 0.292,
+     "ref": 0.825,
+     "gap": 0.112,
+     "tried": 24
+    },
+    {
+     "move": "swamp-alligator -2 -> eagle-sharpshooter",
+     "v": 0.225,
+     "ref": 0.8,
+     "gap": 0.04,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 843,
+   "sec": 234
+  },
+  {
+   "id": "11-BPRO-2",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "anvil-thrush": 3,
+     "gannet-nestweaver": 1,
+     "golden-eagle-diver": 4,
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "eyrie-warden": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.455,
+     "ref": 0.65,
+     "gap": 0.155
+    }
+   },
+   "pick": {
+    "deck": {
+     "gannet-nestweaver": 1,
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "nightshade-moth": 4,
+     "eagle-owl-quartermaster": 3,
+     "kittiwake-flock": 4
+    },
+    "val": {
+     "v": 0.375,
+     "ref": 0.85,
+     "gap": 0.075
+    },
+    "leaders": [
+     "eagle-owl-quartermaster"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.458,
+     "ref": 0.65,
+     "gap": 0.188
+    },
+    {
+     "move": "eyrie-warden x4 -> nightshade-moth",
+     "v": 0.392,
+     "ref": 0.625,
+     "gap": 0.122,
+     "tried": 24
+    },
+    {
+     "move": "golden-eagle-diver x4 -> eagle-owl-quartermaster",
+     "v": 0.367,
+     "ref": 0.675,
+     "gap": 0.097,
+     "tried": 24
+    },
+    {
+     "move": "anvil-thrush x4 -> kittiwake-flock",
+     "v": 0.25,
+     "ref": 0.7,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 863,
+   "sec": 195
+  },
+  {
+   "id": "11-BPRO-1",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "chipmunk-hoarder": 3,
+     "kittiwake-flock": 4,
+     "peak-condor": 4,
+     "pika-hoarder": 1,
+     "stonedrop-vulture": 4,
+     "eyrie-warden": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.51,
+     "ref": 0.625,
+     "gap": 0.21
+    }
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-hoarder": 3,
+     "kittiwake-flock": 4,
+     "peak-condor": 4,
+     "eyrie-warden": 4,
+     "chamois-leaper": 4,
+     "gannet-nestweaver": 1
+    },
+    "val": {
+     "v": 0.265,
+     "ref": 0.925,
+     "gap": 0.075
+    },
+    "leaders": [
+     "chamois-leaper"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.433,
+     "ref": 0.525,
+     "gap": 0.163
+    },
+    {
+     "move": "stonedrop-vulture x4 -> chamois-leaper",
+     "v": 0.317,
+     "ref": 0.7,
+     "gap": 0.047,
+     "tried": 24
+    },
+    {
+     "move": "pika-hoarder -1 -> gannet-nestweaver",
+     "v": 0.267,
+     "ref": 0.675,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 579,
+   "sec": 130
+  }
+ ],
+ "drop": []
+}

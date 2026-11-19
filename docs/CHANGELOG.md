@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package SKWK3: the reference ladder rebuilt on today's cards, Maps 10-20 N-SK decks re-tuned, SKWK2-1 a)
+- Players see: new enemy decks in the N-SK practice fight of Maps 11, 12, 14-17, 10-A and 20-B and the N-WK fight of 19-A (15 decks).
+- Protocol marks (pro_ease, 40 games a pairing, 36 maps; before = today's cards on the old ladder): all three 10 -> 15 (Maps 10-20: 1 -> 7), N-SK vs the ladder 15-30% 14 -> 17, N-SK not TOO WEAK 29 -> 29, N-WK not TOO STRONG 33 -> 34. The ladder rebuild alone left 10.
+- Under the hood: `docs/balance/ref/ref-ladder.json` rebuilt by BAL24's tool and settings (10 players a map, deckopt prog budget 900; baked by `ref_decks.js`), `ref6/ladder-100.json` rebuilt. 14 BPRO + 1 WPRO tuned by SKWK2's descent (`docs/balance/skwk3/skwk3_2026_11_19.js`); 2 reverted after the re-read crossed 85%. Reads, marks: `docs/balance/skwk3/`.
+
 ## 2026-11-19 (package REFIT9: swap-only re-fit of the Maps 0-20 fights FOLD8's card fold moved)
 - Road decks (swaps only; leaders, first-clear cards, sizes and K14 kept), seed 9100, 400 games, before -> after (target): 3-2 32.3 -> 76 (84), 3-7 8 -> 34 (40), 5-1 64.5 -> 86 (90), 8-3 59 -> 63.8 (80), 17-7 38 -> 42.5 (60), 1-A-1 65.8 -> 77.8 (90), 7-A-2 58 -> 73.5 (70), 7-A-3 35 -> 69.3 (70), 7-A-4 28.8 -> 58.8 (60), 7-A-5 19.5 -> 43.3 (40). Main beyond 20: 10 -> 5, side 10 -> 6.
 - Each kept only on 2+ points closed on the mean of two unused seed sets (85100 / 86100; 8-3's second step 87100 / 88100). No swap held for 8-7 (8, target 60), 18-4, 18-A-4/6/7 and 10-A-5 (decisions REFIT7-1 / FOLD8-1). Files: `docs/balance/refit9/`.
