@@ -3865,7 +3865,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.lvl11-grows": "Will learn another skill as it grows",
   "ui.lvl11-slider": "See it at other levels",
   "ui.lvl11-slider-tip": "Slide to see it at another level, up to one past your best copy.",
-  "ui.lvl11-own": "Own a copy to look further ahead."
+  "ui.lvl11-own": "Own a copy to look further ahead.",
+  "ui.raidgate-open": "🐲 First raid open: {name}.",
+  "ui.raidgate-note": "First raid open"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -51,6 +51,7 @@ const MAP_SEASON = {
   mz:'deep',                    // The Mycelium Deep (Map 7)
   mn:'deep',                    // The Glimmer Depths (Map 8)
   mj:'deep',                    // The Sunken Depths, under water (Map 10)
+  mjd:'deep',                   // The Deep Dark, inside The Sunken Depths (2026-11-19, package RAIDGATE)
   mv:'spring', muc:'deep',      // The Aerie Vault ("a thousand springs" of nests), The Undercroft dungeon (Map 11)
   my:'summer',                  // The Canopy, the rainforest roof (Map 14)
   mi:'deep',                    // The Ice Hollow, a cave (Map 17)

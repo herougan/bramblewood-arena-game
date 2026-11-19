@@ -4670,5 +4670,7 @@
  "Will learn another skill as it grows": "成長すると新たなスキルを覚える",
  "See it at other levels": "ほかのレベルで見る",
  "Slide to see it at another level, up to one past your best copy.": "スライドで別のレベルを表示。最も育てた1枚の1つ上まで。",
- "Own a copy to look further ahead.": "1枚持つと先のレベルも見られる。"
+ "Own a copy to look further ahead.": "1枚持つと先のレベルも見られる。",
+ "First raid open: {name}.": "最初のレイド解放：{name}。",
+ "First raid open": "最初のレイド解放"
 }
