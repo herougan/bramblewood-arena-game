@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package FOLD8, owner 11-18 21:22 "consider my edits")
+- Data: the owner's 26 live card rows of 11-18 15:16-15:55 UTC folded into `canonical/cards.json` (24 changed: stats, skills, levelSkills; Level 10 forms regenerated). Proposed SQL to make the live rows match: `supabase/proposed/20261119_fold8_sync_overrides.sql` (not run, waits for "apply it"). Over budget, owner's numbers kept: feral-tomcat, pika-hoarder, peak-condor, slow-worm, alley-cat.
+
 ## 2026-11-19 (package LVL11, owner 11-18 21:29 / 21:31: Codex level bar, "?" for later skills, tokens grow)
 - Players see: the Codex card view has a level bar at the bottom: slide it to see Attack, Health and skills at another level, from the card's base level to your best copy's level + 1 (never past 10; 11 once limit-broken). A card you don't own stays at its base level (the bar is locked); Admin sees every level. A skill a card learns at a later level shows as a gold "?" on the card, its hover and the Codex, reading "Will learn another skill as it grows" (it never names the skill); at the bar's level an arrived skill shows normally.
 - Players see: tokens grow with their summoner. A spawned token (Spawn, On Death / On Attacked spawns, Sprout) comes out at its maker's level and grows by its own table: Bee Swarmling 1/1 -> 2/3 at Level 10 (every token about +5 stat points by Level 10, like the stats-only cards of its size). Behaviour change: in the game no token grew before (the app stamps a token with its Level 1, which ENG36 read as "already levelled"); spawned cards with a table (Worker Ant, Inkcloud Squid ...) now grow in full, ENG40's half rate stays for engine-made tokens only. The Summoned Shield keeps its +1 Health a level and the Log Wall its own curve.

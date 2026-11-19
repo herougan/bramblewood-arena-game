@@ -1,0 +1,1469 @@
+{
+ "_about": "2026-11-19 (FOLD8): read-only SQL on card_overrides (project xjctfwobcsyiztecutrb): the 26 card rows saved after 2026-11-18 14:00 UTC (173 card rows live, 0 deleted; 94 __cfg rows; 267 in all, the 5 deleted are __cfg). data minus art, speeches, creatorNote, uuid, tags, mechanicLine, splashEffect, flavor; flavor as md5 in flavorMd5. Transcribed by hand from the query result; default fields (test, resist, dmgType, exileCost, *Cost) restored. Older rows are in the 11-16 / 11-18 dumps. The FOLD8 SQL makes a full backup table for rollback.",
+ "rows": [
+  {
+   "id": "soldier-ant",
+   "updated_at": "2026-11-18T15:16:31.8+00:00",
+   "data": {
+    "id": "soldier-ant",
+    "cost": 0,
+    "icon": "🐜",
+    "name": "Soldier Ant",
+    "wait": 1,
+    "animal": "ant",
+    "attack": 3,
+    "health": 7,
+    "locked": false,
+    "rarity": "common",
+    "effects": {},
+    "species": [
+     "Insect"
+    ],
+    "flavorMd5": "ecf4bce33af4d7ca2abaf985ebd24fa0",
+    "numericId": 11,
+    "archetypes": [
+     "Insect",
+     "Ants"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 2
+     },
+     "10": {
+      "attack": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0
+   }
+  },
+  {
+   "id": "bee-forager",
+   "updated_at": "2026-11-18T15:18:25.533+00:00",
+   "data": {
+    "id": "bee-forager",
+    "cost": 0,
+    "icon": "🐝",
+    "name": "Bee Forager",
+    "wait": 0,
+    "animal": "bee",
+    "attack": 0,
+    "health": 5,
+    "locked": false,
+    "rarity": "starter",
+    "effects": {
+     "flying": true,
+     "nursing": 1
+    },
+    "species": [
+     "Insect"
+    ],
+    "flavorMd5": "76e853a541c602c61d7f067676e1084b",
+    "numericId": 249,
+    "archetypes": [
+     "Bee"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "faction": "base"
+   }
+  },
+  {
+   "id": "hedgerow-shrew",
+   "updated_at": "2026-11-18T15:21:51.65+00:00",
+   "data": {
+    "id": "hedgerow-shrew",
+    "cost": 0,
+    "icon": "🐁",
+    "name": "Hedgerow Shrew",
+    "wait": 0,
+    "animal": "shrew",
+    "attack": 2,
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "foraging": 1
+    },
+    "species": [
+     "Mammal"
+    ],
+    "flavorMd5": "b8a53b8e41e1e7318d3676d8821c852f",
+    "numericId": 1245,
+    "archetypes": [
+     "Field"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1
+     },
+     "8": {
+      "skills": {
+       "foraging": 2
+      }
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "mf",
+     "kind": "pack",
+     "tier": 1
+    },
+    "levelSkills": {
+     "3": {
+      "cure": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "field-vole",
+   "updated_at": "2026-11-18T15:22:36.066+00:00",
+   "data": {
+    "id": "field-vole",
+    "cost": 0,
+    "icon": "🐁",
+    "name": "Field Vole",
+    "wait": 0,
+    "animal": "vole",
+    "attack": 1,
+    "health": 6,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "diurnal": 1,
+     "foraging": 1
+    },
+    "species": [
+     "Rodent"
+    ],
+    "flavorMd5": "622fadab0f8dad195273b19531795166",
+    "numericId": 1247,
+    "archetypes": [
+     "Field",
+     "Mouse"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "attack": 1,
+      "skills": {
+       "foraging": 2
+      }
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "mf",
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "moonlit-hare",
+   "updated_at": "2026-11-18T15:25:17.985+00:00",
+   "data": {
+    "id": "moonlit-hare",
+    "cost": 0,
+    "icon": "🐇",
+    "name": "Moonlit Hare",
+    "wait": 1,
+    "animal": "hare",
+    "attack": 4,
+    "health": 4,
+    "locked": true,
+    "rarity": "uncommon",
+    "effects": {
+     "nocturnal": 1
+    },
+    "species": [
+     "Lagomorph"
+    ],
+    "flavorMd5": "afd93b6c4ca9a50cc4d4631968294661",
+    "numericId": 478,
+    "archetypes": [
+     "Rabbit"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1
+     },
+     "10": {
+      "health": 2
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "kind": "pack",
+     "tier": 1
+    },
+    "unattainable": true
+   }
+  },
+  {
+   "id": "meadow-rabbit",
+   "updated_at": "2026-11-18T15:27:39.719+00:00",
+   "data": {
+    "id": "meadow-rabbit",
+    "cost": 0,
+    "icon": "🐇",
+    "name": "Meadow Rabbit",
+    "wait": 0,
+    "animal": "rabbit",
+    "attack": 3,
+    "health": 3,
+    "locked": false,
+    "rarity": "starter",
+    "effects": {},
+    "species": [
+     "Lagomorph"
+    ],
+    "flavorMd5": "3c0b1c029c01b10e72cd00e71f08562e",
+    "numericId": 260,
+    "archetypes": [
+     "Rabbit"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1
+     },
+     "10": {
+      "health": 2
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "faction": "base"
+   }
+  },
+  {
+   "id": "terrier-pup",
+   "updated_at": "2026-11-18T15:29:15.41+00:00",
+   "data": {
+    "id": "terrier-pup",
+    "cost": 0,
+    "icon": "🐕",
+    "name": "Terrier Pup",
+    "wait": 0,
+    "animal": "dog",
+    "attack": 2,
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "guardian": true
+    },
+    "species": [
+     "Canid"
+    ],
+    "flavorMd5": "2ea84a982b9644c751dd02561b09bc1c",
+    "numericId": 18,
+    "archetypes": [
+     "Dog"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 2
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "gull-thief",
+   "updated_at": "2026-11-18T15:32:09.023+00:00",
+   "data": {
+    "id": "gull-thief",
+    "cost": 0,
+    "icon": "🕊️",
+    "name": "Gull Thief",
+    "wait": 0,
+    "animal": "gull",
+    "attack": 1,
+    "health": 7,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttack",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    },
+    "species": [
+     "Bird"
+    ],
+    "flavorMd5": "14ba800af169b2783effa60f9a51e0db",
+    "numericId": 174,
+    "archetypes": [
+     "Coastal"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1
+     },
+     "8": {
+      "health": 1
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "mb",
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "driftwood-crab",
+   "updated_at": "2026-11-18T15:34:16.136+00:00",
+   "data": {
+    "id": "driftwood-crab",
+    "cost": 1,
+    "icon": "🦀",
+    "name": "Driftwood Crab",
+    "wait": 1,
+    "animal": "crab",
+    "attack": 2,
+    "health": 10,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttacked",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ],
+     "crabClaws": true
+    },
+    "species": [
+     "Crustacean"
+    ],
+    "flavorMd5": "9c71f1d63029e15b9484922726af20c3",
+    "numericId": 9140,
+    "archetypes": [
+     "Coastal",
+     "Crustacean"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 2
+     },
+     "7": {
+      "health": 2
+     },
+     "10": {
+      "health": 2
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "id": "mb",
+     "kind": "map",
+     "node": "2-5"
+    }
+   }
+  },
+  {
+   "id": "limpet-clinger",
+   "updated_at": "2026-11-18T15:34:50.393+00:00",
+   "data": {
+    "id": "limpet-clinger",
+    "cost": 0,
+    "icon": "🐚",
+    "name": "Limpet Clinger",
+    "wait": 0,
+    "animal": "limpet",
+    "attack": 0,
+    "health": 10,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "tide": true,
+     "armor": 1
+    },
+    "species": [
+     "Mollusc"
+    ],
+    "flavorMd5": "b417483bc227bfd412d1bc37e8b3925e",
+    "numericId": 1253,
+    "archetypes": [
+     "Coastal"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1,
+      "skills": {
+       "shield": 4
+      }
+     },
+     "7": {
+      "health": 1
+     },
+     "8": {
+      "skills": {
+       "shield": 5
+      }
+     },
+     "10": {
+      "skills": {
+       "shield": 6
+      }
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "mk",
+     "kind": "pack",
+     "tier": 2
+    }
+   }
+  },
+  {
+   "id": "dolphin-knight",
+   "updated_at": "2026-11-18T15:35:27.092+00:00",
+   "data": {
+    "id": "dolphin-knight",
+    "cost": 0,
+    "icon": "🐬",
+    "name": "Dolphin Outrider",
+    "wait": 1,
+    "animal": "dolphin",
+    "attack": 2,
+    "health": 11,
+    "locked": true,
+    "rarity": "rare",
+    "effects": {
+     "tide": 2
+    },
+    "species": [
+     "Cetacean"
+    ],
+    "flavorMd5": "0b0c0dbf8dbd4ab438961d8e558fcba6",
+    "numericId": 3,
+    "archetypes": [
+     "Ocean",
+     "Cetacean"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 2,
+      "skills": {
+       "armor": 2
+      }
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "cricket-drummer",
+   "updated_at": "2026-11-18T15:36:28.342+00:00",
+   "data": {
+    "id": "cricket-drummer",
+    "cost": 0,
+    "icon": "🦗",
+    "name": "Cricket Drummer",
+    "wait": 0,
+    "animal": "cricket",
+    "attack": 2,
+    "health": 3,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "inspiring": 1
+    },
+    "species": [
+     "Insect"
+    ],
+    "flavorMd5": "9d346995fb00d09d310fc0cfa784c793",
+    "numericId": 31,
+    "archetypes": [
+     "Insect"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1,
+      "skills": {
+       "inspiring": 2
+      }
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "id": "mf",
+     "kind": "map",
+     "node": "1-1"
+    }
+   }
+  },
+  {
+   "id": "feral-tomcat",
+   "updated_at": "2026-11-18T15:40:07.58+00:00",
+   "data": {
+    "id": "feral-tomcat",
+    "cost": 0,
+    "icon": "🐈‍⬛",
+    "name": "Tomcat",
+    "wait": 0,
+    "animal": "cat",
+    "attack": 2,
+    "health": 4,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "swift": true
+    },
+    "species": [
+     "Felid"
+    ],
+    "flavorMd5": "537f1b8f6108c2997892338694af9e36",
+    "numericId": 216,
+    "archetypes": [
+     "Cat"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "m1",
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "updated_at": "2026-11-18T15:42:54.011+00:00",
+   "data": {
+    "id": "eagle-sharpshooter",
+    "cost": 2,
+    "icon": "🦅",
+    "name": "Eagle Sharpshooter",
+    "wait": 1,
+    "animal": "eagle",
+    "attack": 2,
+    "health": 6,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "arrow": 3,
+     "flying": true
+    },
+    "species": [
+     "Bird"
+    ],
+    "flavorMd5": "fe6840808fecf9c1360fbca68e2da6db",
+    "numericId": 118,
+    "archetypes": [
+     "Eagle"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1,
+      "skills": {
+       "arrow": 3
+      }
+     },
+     "10": {
+      "health": 1,
+      "skills": {
+       "arrow": 4
+      }
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "id": "mc",
+     "kind": "map",
+     "node": "3-7"
+    }
+   }
+  },
+  {
+   "id": "gannet-nestweaver",
+   "updated_at": "2026-11-18T15:44:54.043+00:00",
+   "data": {
+    "id": "gannet-nestweaver",
+    "cost": 0,
+    "icon": "🪶",
+    "name": "Gannet Nestweaver",
+    "wait": 1,
+    "animal": "gannet",
+    "attack": 1,
+    "health": 7,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onHealed",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    },
+    "species": [
+     "Bird"
+    ],
+    "flavorMd5": "435c62aded80e09cce07d448ffc69262",
+    "numericId": 9141,
+    "archetypes": [
+     "Bird"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 2
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "mc",
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "pika-hoarder",
+   "updated_at": "2026-11-18T15:45:56.497+00:00",
+   "data": {
+    "id": "pika-hoarder",
+    "cost": 0,
+    "icon": "🐹",
+    "name": "Pika Hoarder",
+    "wait": 0,
+    "animal": "pika",
+    "attack": 2,
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "delivery": 1,
+     "foraging": 1
+    },
+    "species": [
+     "Lagomorph"
+    ],
+    "flavorMd5": "2048ca80cfdcfedaff0a76e25848d49d",
+    "numericId": 934,
+    "archetypes": [
+     "Mountain",
+     "Rabbit"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1
+     },
+     "8": {
+      "skills": {
+       "foraging": 2
+      }
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "puffin-diver",
+   "updated_at": "2026-11-18T15:48:07.258+00:00",
+   "data": {
+    "id": "puffin-diver",
+    "cost": 1,
+    "icon": "🦜",
+    "name": "Puffin Diver",
+    "wait": 1,
+    "animal": "puffin",
+    "attack": 3,
+    "health": 10,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "tide": 2
+    },
+    "species": [
+     "Bird"
+    ],
+    "flavorMd5": "ee0a9ce63c291e80f5a6fa4a38ac33ff",
+    "numericId": 1254,
+    "archetypes": [
+     "Coastal",
+     "Bird"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1,
+      "skills": {
+       "tide": 3
+      }
+     },
+     "7": {
+      "health": 2
+     },
+     "10": {
+      "health": 2,
+      "skills": {
+       "tide": 4
+      }
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "id": "mc",
+     "kind": "map",
+     "node": "3-2"
+    }
+   }
+  },
+  {
+   "id": "peak-condor",
+   "updated_at": "2026-11-18T15:49:19.716+00:00",
+   "data": {
+    "id": "peak-condor",
+    "cost": 1,
+    "icon": "🦤",
+    "name": "Peak Condor",
+    "wait": 1,
+    "animal": "condor",
+    "attack": 2,
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "arrow": 2,
+     "flying": true,
+     "pounce": 2
+    },
+    "species": [
+     "Bird"
+    ],
+    "flavorMd5": "cec78a70948c5fecd0bafa8ffc56f9ac",
+    "numericId": 152,
+    "archetypes": [
+     "Mountain"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1,
+      "skills": {
+       "puncture": 2
+      }
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "mc",
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "cormorant",
+   "updated_at": "2026-11-18T15:50:07.14+00:00",
+   "data": {
+    "id": "cormorant",
+    "cost": 0,
+    "icon": "🐦‍⬛",
+    "name": "Cormorant",
+    "wait": 1,
+    "animal": "cormorant",
+    "attack": 2,
+    "health": 6,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "tide": true,
+     "flying": true,
+     "diurnal": 1
+    },
+    "species": [
+     "Bird"
+    ],
+    "flavorMd5": "89035d174128a437b7c0dc931e9b7a14",
+    "numericId": 9220,
+    "archetypes": [
+     "Coastal",
+     "Bird"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1,
+      "skills": {
+       "pounce": 2
+      }
+     },
+     "10": {
+      "health": 2
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "mc",
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "conch-crawler",
+   "updated_at": "2026-11-18T15:50:38.728+00:00",
+   "data": {
+    "id": "conch-crawler",
+    "cost": 0,
+    "icon": "🐚",
+    "name": "Conch Crawler",
+    "wait": 1,
+    "animal": "conch",
+    "attack": 1,
+    "health": 6,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "tide": true,
+     "armor": 2
+    },
+    "species": [
+     "Mollusc"
+    ],
+    "flavorMd5": "58fb62f367c0503d1f90688e012205be",
+    "numericId": 461,
+    "archetypes": [
+     "Coastal"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1,
+      "skills": {
+       "shield": 4
+      }
+     },
+     "7": {
+      "health": 1,
+      "skills": {
+       "shield": 5
+      }
+     },
+     "10": {
+      "health": 1,
+      "skills": {
+       "shield": 6
+      }
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "mb",
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "slow-worm",
+   "updated_at": "2026-11-18T15:52:58.532+00:00",
+   "data": {
+    "id": "slow-worm",
+    "cost": 0,
+    "icon": "🦎",
+    "name": "Slow-worm",
+    "wait": 1,
+    "animal": "slow-worm",
+    "attack": 3,
+    "health": 8,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "slow": true
+    },
+    "species": [
+     "Reptile"
+    ],
+    "flavorMd5": "fe57ecdffe3241ffe3047a7f18b287e4",
+    "numericId": 1246,
+    "archetypes": [
+     "Field",
+     "Reptile"
+    ],
+    "levelBonus": {
+     "4": {
+      "skills": {
+       "nocturnal": 3
+      }
+     },
+     "7": {
+      "health": 1
+     },
+     "10": {
+      "health": 1,
+      "skills": {
+       "nocturnal": 4
+      }
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "mf",
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  },
+  {
+   "id": "platypus-spur",
+   "updated_at": "2026-11-18T15:53:19.962+00:00",
+   "data": {
+    "id": "platypus-spur",
+    "cost": 1,
+    "icon": "🦆",
+    "name": "Platypus",
+    "wait": 1,
+    "animal": "platypus",
+    "attack": 4,
+    "health": 5,
+    "locked": true,
+    "rarity": "uncommon",
+    "effects": {},
+    "species": [
+     "Mammal"
+    ],
+    "flavorMd5": "1ed9ba4128f706a66b752643c006bccd",
+    "numericId": 987,
+    "archetypes": [
+     "Mammal",
+     "River"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 2,
+      "skills": {
+       "nocturnal": 2
+      }
+     },
+     "10": {
+      "health": 2
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "id": "m2",
+     "kind": "map",
+     "node": "4-3"
+    },
+    "levelSkills": {
+     "2": {
+      "poison": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "updated_at": "2026-11-18T15:53:32.829+00:00",
+   "data": {
+    "id": "muskrat-lodgekeeper",
+    "cost": 1,
+    "icon": "🦫",
+    "name": "Muskrat Lodgekeeper",
+    "wait": 2,
+    "animal": "muskrat",
+    "attack": 3,
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "effects": {
+     "tide": true
+    },
+    "species": [
+     "Rodent"
+    ],
+    "flavorMd5": "f29320836ef132f753e4224e827a05e5",
+    "numericId": 1261,
+    "archetypes": [
+     "River",
+     "Pond"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1,
+      "skills": {
+       "delivery": 3
+      }
+     },
+     "7": {
+      "health": 2,
+      "skills": {
+       "delivery": 4
+      }
+     },
+     "10": {
+      "health": 1,
+      "skills": {
+       "delivery": 5
+      }
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "id": "m2",
+     "kind": "map",
+     "node": "4-4"
+    },
+    "levelSkills": {
+     "2": {
+      "delivery": 2
+     }
+    }
+   }
+  },
+  {
+   "id": "river-mink",
+   "updated_at": "2026-11-18T15:53:40.145+00:00",
+   "data": {
+    "id": "river-mink",
+    "cost": 1,
+    "icon": "🦦",
+    "name": "River Mink",
+    "wait": 1,
+    "animal": "mink",
+    "attack": 4,
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "effects": {
+     "tide": true
+    },
+    "species": [
+     "Mustelid"
+    ],
+    "flavorMd5": "2af8333f5ede9374279dde67a86f7200",
+    "numericId": 1236,
+    "archetypes": [
+     "River",
+     "Forest"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 2,
+      "skills": {
+       "tide": 2
+      }
+     },
+     "7": {
+      "health": 1
+     },
+     "10": {
+      "attack": 1,
+      "skills": {
+       "tide": 3
+      }
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "m2",
+     "kind": "pack",
+     "tier": 1
+    },
+    "levelSkills": {
+     "2": {
+      "dive": 1
+     }
+    },
+    "unattainable": true
+   }
+  },
+  {
+   "id": "water-shrew",
+   "updated_at": "2026-11-18T15:54:28.212+00:00",
+   "data": {
+    "id": "water-shrew",
+    "cost": 0,
+    "icon": "🐁",
+    "name": "Water Shrew",
+    "wait": 0,
+    "animal": "shrew",
+    "attack": 1,
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "effects": {
+     "evasive": true
+    },
+    "species": [
+     "Mammal"
+    ],
+    "flavorMd5": "22d2113773f02d7f333be15d4cde3287",
+    "numericId": 1263,
+    "archetypes": [
+     "River"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1
+     },
+     "7": {
+      "health": 1,
+      "skills": {
+       "pounce": 2
+      }
+     },
+     "10": {
+      "health": 1
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "m2",
+     "kind": "pack",
+     "tier": 1
+    },
+    "levelSkills": {
+     "2": {
+      "pounce": 1
+     },
+     "3": {
+      "poison": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "alley-cat",
+   "updated_at": "2026-11-18T15:54:59.513+00:00",
+   "data": {
+    "id": "alley-cat",
+    "cost": 0,
+    "icon": "🐈",
+    "name": "Alley Cat",
+    "wait": 0,
+    "animal": "cat",
+    "attack": 1,
+    "health": 3,
+    "locked": true,
+    "rarity": "uncommon",
+    "effects": {
+     "bleed": 1,
+     "twinStrike": true
+    },
+    "species": [
+     "Felid"
+    ],
+    "flavorMd5": "9fce78659cd00c472e3bef9ab4c69d76",
+    "numericId": 21,
+    "archetypes": [
+     "Cat"
+    ],
+    "levelBonus": {
+     "4": {
+      "health": 1,
+      "skills": {
+       "bleed": 2
+      }
+     },
+     "7": {
+      "health": 1
+     },
+     "10": {
+      "health": 1,
+      "skills": {
+       "bleed": 3
+      }
+     }
+    },
+    "test": false,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "source": {
+     "map": "mw",
+     "kind": "pack",
+     "tier": 1
+    }
+   }
+  }
+ ]
+}
