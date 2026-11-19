@@ -1,0 +1,13 @@
+{"method":"P1-win","skill":"T:onAttack>drawCard","worth":4.99,"ci":4.093,"games":80,"price":0,"carrier":"worker-ant","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T22:59:51.166Z"}
+{"method":"P1-win","skill":"T:onAttack>gain","worth":5.613,"ci":3.845,"games":80,"price":0.89,"carrier":"gull-thief","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T22:59:56.770Z"}
+{"method":"P1-win","skill":"T:onAttacked>gain","worth":4.366,"ci":3.541,"games":80,"price":1.05,"carrier":"driftwood-crab","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:00:02.374Z"}
+{"method":"P1-win","skill":"T:onDeath>damage","worth":0.624,"ci":2.764,"games":80,"price":1.19,"carrier":"sulfur-cinder-moth","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:00:07.988Z"}
+{"method":"P1-win","skill":"T:onHealed>gain","worth":-0.624,"ci":3.272,"games":80,"price":1,"carrier":"gannet-nestweaver","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:00:15.343Z"}
+{"method":"P1-win","skill":"T:onReady>damage","worth":-1.871,"ci":2.09,"games":80,"price":4.48,"carrier":"great-horned-owl","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:00:21.268Z"}
+{"method":"P1-win","skill":"T:onSpawn>gain","worth":6.237,"ci":3.979,"games":80,"price":4.26,"carrier":"cone-cutter-squirrel","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:00:27.020Z"}
+{"method":"P1-win","skill":"T:onSpawn>stun","worth":0.624,"ci":2.764,"games":80,"price":1.95,"carrier":"ash-cloud-condor","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:00:32.085Z"}
+{"method":"P1-win","skill":"ambush","worth":0.624,"ci":2.138,"games":80,"price":1.9,"carrier":"adder-ambusher","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:00:44.618Z"}
+{"method":"P1-win","skill":"armor","worth":4.99,"ci":3.259,"games":80,"price":3.13,"carrier":"horseshoe-crab","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:00:50.926Z"}
+{"method":"P1-win","skill":"arrow","worth":3.119,"ci":3.176,"games":80,"price":1.893,"carrier":"chipmunk-skirmisher","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:00:57.454Z"}
+{"method":"P1-win","skill":"avalanche","worth":6.861,"ci":3.709,"games":80,"price":9.25,"carrier":"ibex-rockcaller","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:01:06.722Z"}
+{"method":"P1-win","skill":"bleed","worth":6.237,"ci":3.573,"games":80,"price":3.963,"carrier":"bog-leech","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T23:01:13.969Z"}
