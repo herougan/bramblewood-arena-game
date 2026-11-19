@@ -1,8 +1,64 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-11-18). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-11-19). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
+
+**REFIT7-1. 17 road fights no legal deck brings within 20 of target** · Decide · Balance · asked 2026-11-19
+- After REFIT7 (seed 9100, 400 games). Too hard: 8-7 23% (target 60), 17-8 14 (40), 17-6 32 (65), 17-4 45 (75), 17-7 38 (60), 4-3 45 (70), 4-5 20 (40), 2-2 56 (80). Too easy: 18-A-4 100 (77), 18-A-7 97 (64), 18-A-6 95 (69), 18-4 95 (62), 18-7 73 (40), 3-6 84 (60), 20-A-4 64 (36), 10-A-5 68 (40), 5-A-4 60 (40). Map 17 lost about 21 points with LVL10 / ENG52; its reference deck is unchanged and fully owned.
+  - a) A card-list look: stronger or weaker cards from these maps' lists for these fights (you pick)
+  - b) Shield / Health what-ifs on these fights in the next package
+  - c) List only for now
+- **Default:** c
+
+**FOLD8-1. Five of your 11-18 card edits are over budget** · Decide · Balance · asked 2026-11-19
+- Folded as you saved them: Pika Hoarder 139%, Feral Tomcat 116%, Peak Condor 116%, Alley Cat 116%, Slow-worm 102% of N(L). Their Level 10 forms cannot fit the cap. Field Vole: your last save dropped Cure at Level 3; kept it. These edits made 8 early road fights 20-35 points harder (3-2 67->32%, 3-7, 5-1, 8-3, 1-A-1, 7-A-3/4/5; REFIT8). Today: your numbers stand.
+  - a) Keep your numbers
+  - b) Trim each to 100% (Claude picks, stats first)
+  - c) You re-edit them
+- **Default:** a
+
+**OWN-1119-1. Where the first raid unlocks** · Decide · Progression · asked 2026-11-19
+- Owner 11-19 00:02: the raid unlocks between Maps 21-25 through a submap in a submap of a water map. Built as a: The Deep Dark (4 fights at Map 21 strength) inside The Sunken Depths (Map 10's side map), open after Map 21; its boss clear opens the Goliath (was: the Raid Banner on Map 13). Players who already opened the raid keep it.
+  - a) The Deep Dark inside The Sunken Depths, after Map 21 (built)
+  - b) Same, inside Lilypad Reach or Smugglers' Grotto instead
+  - c) Same place, open after Map 23 or 25 instead of 21
+- **Default:** a
+
+**SKWK2-1. Five N-SK fights stay TOO WEAK after the rebuild** · Decide · Balance · asked 2026-11-19
+- SKWK2 tuned the N-SK / N-WK decks (docs/balance/pro-ease-skwk2-2-after.json, 40 games). Still TOO WEAK: 7-SK and 7-A-SK (their lists' best decks, the strong search's included, lose 83-98% to the Map reference) and 13-SK, 20-SK, 20-A-SK. On those three the REFIT6 Map reference beats the reference ladder, so a deck the ladder beats 70-85% loses over 85% to it. The ladder (BAL24, 11-07) predates FOLD6 and CARDPOW2.
+  - a) Rebuild the reference ladder on today's cards, then re-tune; give Map 7 / 7-A's lists a stronger card (you pick)
+  - b) Accept TOO WEAK on these five
+  - c) Let the 85% line win there: SK decks beat the ladder 30-45%
+- **Default:** a
+
+**REL1-1. Energy per fight and cap on Maps 5-10** · Decide · Economy · asked 2026-11-19
+- A Map 5 fight costs 5 Energy of a 20 cap: about 4 fights per full bar, so a player runs dry inside the first session (REL1 audit). Today nothing changes.
+  - a) Keep today's cost and cap
+  - b) Lower the cost of Maps 5-10 fights (you name the number)
+  - c) Raise the cap early, e.g. the Tavern's first step free
+- **Default:** a
+
+**REL1-2. Can guests buy Pack A?** · Decide · Shop · asked 2026-11-19
+- The splash says no account is needed, but the shop asks guests to sign in before opening packs bought with currency. Free map-reward packs open without sign-in. Today guests must sign in to buy.
+  - a) Keep: sign in to buy
+  - b) Guests may buy Pack A only
+  - c) Guests may buy any pack
+- **Default:** a
+
+**REL1-3. Murgle Mayhem: open on Map 6, and is it 1.0's only daily dungeon?** · Decide · Dungeons · asked 2026-11-19
+- It opens after Map 10 but its entrance sits on Map 6 (REL2 now announces it and pulses the node). The Undercroft and Long Burrow stay hidden. Today: opens after Map 10, only one in 1.0.
+  - a) Keep: opens after Map 10, Murgle is the only one
+  - b) Open it with Map 6, Murgle is the only one
+  - c) Open on Map 6 and release a second daily dungeon
+- **Default:** a
+
+**REL1-4. Co-op dungeon entry on the Arena tab and Home?** · Decide · Dungeons · asked 2026-11-19
+- The multiplayer dungeon is entered from the Map 16 spot only. You asked on 2026-10-25 for an Arena tab entry. Today: Map 16 spot only.
+  - a) Keep: Map 16 spot only
+  - b) Add an Arena tab entry
+  - c) Arena tab entry and a Home note
+- **Default:** a
 
 **LVL10-1. 36% of cards grow in stats only (asked 25%)** · Decide · Balance · asked 2026-11-18
 - 166 of 463 in-play cards have no skill whose number can grow (vanilla or flag skills like Flying, Guardian) and only one skill, so they are style A (stats only). B, C and D are 21% each. Stats-first cards (A + B + C) are 79%.
@@ -89,6 +145,13 @@ _Generated from `decisions.json` (2026-11-18). The hub has a searchable, filtera
   - a) Keep the lists' cards, retire the plain rule
   - b) Make the 4 plain: strip their skills
   - c) Add plain cards to the Map 0-1 lists
+- **Default:** a
+
+**ENG52-1. 8 cards over budget once their Level 1 skills count** · Decide · Balance · asked 2026-11-18
+- The budget now prices Level 1 skills (OWN-1118-2). Over: Compost Grub, Fox Kit, Otter Kit, Caiman / Fire Drake Hatchling, Shallows Fry, Harp Seal Pup (Hatchling 2 each) and Chipmunk Forager (Foraging); Musk Ox Calf was over already. Fire Drake Hatchling's Level 1 arrow lost its bolt form (a Fire Arrow from Level 1).
+  - a) Re-fit their stats (balance-analyst)
+  - b) Price Hatchling lower (its +1/+2 only pays when an evolute is played onto it)
+  - c) Leave them over
 - **Default:** a
 
 **ENG50-1. The Vulnerable passive is Fragile** · Decide · Skills · asked 2026-11-18
@@ -247,13 +310,6 @@ _Generated from `decisions.json` (2026-11-18). The hub has a searchable, filtera
   - b) Shell only on shelled animals; the golems lose it
   - c) Keep Shell as is
 - **Default:** c
-
-**SKN1-16. Nursing instead of Heal; the action is Nurse** · Decide · Skills · asked 2026-11-16
-- Your note: "I think we'll use this instead of Heal. And the action of Heal will be called Nurse." Heal N (9 cards) heals your most wounded unit each round; Nursing N (on no card) heals your lowest-Health wounded unit, not itself. Merging changes who gets healed on those 9 cards.
-  - a) Heal becomes Nursing (lowest Health); the Heal action reads Nurse
-  - b) Rename only: the skill and action read Nursing / Nurse, the rule stays most wounded
-  - c) Keep both
-- **Default:** b
 
 **SKN1-17. Assault: what is "attacking first"?** · Decide · Skills · asked 2026-11-16
 - Your note: "(If it's attacking first)." Today Assault N is +N Attack on its own swings, not on counterattacks. On no card. "First" can mean three things.
@@ -890,6 +946,14 @@ _Generated from `decisions.json` (2026-11-18). The hub has a searchable, filtera
 
 ## Decided
 
+**OWN-1118-5. Codex level bar, "?" for skills learnt later, tokens grow** · Decide · Levels · asked 2026-11-18 · decided 2026-11-19
+- Owner 11-18 21:29: "In the codex, let players move a small bar at the bottom to discover the stats at different levels. They can only move at most to their highest unlocked level for that card + 1." "future skills showing up at ? as well ... it says the creature will learn more as it grows". 21:31: "Tokens should also grow in strength. E.g. the Bee Swarmling is a flying 1/1. Maybe this becomes a 2/3 at level 10." Built in LVL11.
+  - Codex bar from base to best + 1 (10, 11 if limit-broken); gold "?" reading "Will learn another skill as it grows"; tokens grow by their own table at the summoner's level, priced
+
+**OWN-1118-4. Delivery fused with its resource; Armoured Shield; On Nurse / On Nursed** · Decide · Skills · asked 2026-11-18 · decided 2026-11-18
+- Owner 11-18 23:55: "What is the difference between Delivery and Delivery Resource -> Fuse them. Delivery is sufficient. The {Resource} is a parameter." "Shield: Armor -> Armoured Shield instead. It's just 2 shield icons stacked close together." "On Healed / On Heal -> On Nursed / On Nurse." Built in SKFIN.
+  - One Delivery row with its resource as a parameter; Armoured Shield 🛡️🛡️; On Nurse / On Nursed (and On Ally Nursed)
+
 **OWN-1118-3. Cards to Level 10: a Level 10 form, growth stored as per-level bonuses, four growth styles** · Decide · Balance · asked 2026-11-18 · decided 2026-11-18
 - Owner 11-18 21:11: "After the skill budget calculations, define the lvl 10 form. Then fill out the stats from 1-10 (save it as stat differences) ... 25% - only stat increase, 25% - 10/90 budget split, 25% - 25/75 split, 25% - 50/50 split." 21:22: extra skills unlock at later levels. Built in LVL10.
   - Level 10 form at the card's Level 1 fill; levelBonus deltas; styles A-D; skills past the core unlock at Level 2+
@@ -904,6 +968,10 @@ _Generated from `decisions.json` (2026-11-18). The hub has a searchable, filtera
 **OWN-1117-3. First pass overnight plan** · Decide · Roadmap · asked 2026-11-17 · decided 2026-11-17
 - Owner 11-17 23:41: edit the cards to fit each map's skillset (take out Injured; move Chipmunk Skirmisher away, it has Arrow; Map 1 gets 1 more Diurnal card); rebalance by power ratings, then assume balanced; build SK and WK; assign the skirmishes. Audit every skill, also outside Maps 0-20, and remove useless, duplicate or closely overlapping ones; audit VFX and SFX; remove heavy polling. Pages: Shop and Premium their own page; Camp the main page of Forge and the other subpages; Codex its own page.
   - As stated
+
+**OWN-1118-2. A Level 1 skill on a base Level 1 card** · Decide · Skills · asked 2026-11-18 · decided 2026-11-18
+- Owner 11-18 21:04: "If I indicate a skill as L1 but the card's base level is 1, it still doesn't show up in the budget calculations or the card preview." A card at its base level skipped its levelSkills; the budget never read them.
+  - Fix it
 
 **OWN-1118-1. Poison counters: one counter named Poison** · Decide · Skills · asked 2026-11-18 · decided 2026-11-18
 - Owner 11-18 20:26: Venomous gives poison counters; poison gas, eating poisonous animals and poison fields give poison too. You picked one counter named Poison, fed by everything including Venomous; the word Venom goes away. Venomous N keeps its name. Wording only (POISON2).
@@ -949,6 +1017,13 @@ _Generated from `decisions.json` (2026-11-18). The hub has a searchable, filtera
   - b) Cinder Hornet gets Fire Bolt
   - c) A new Lair card later
 - **Default:** a
+
+**SKN1-16. Nursing instead of Heal; the action is Nurse** · Decide · Skills · asked 2026-11-16 · decided 2026-11-18
+- Your note: "I think we'll use this instead of Heal. And the action of Heal will be called Nurse." Heal N (9 cards) heals your most wounded unit each round; Nursing N (on no card) heals your lowest-Health wounded unit, not itself. Merging changes who gets healed on those 9 cards.
+  - a) Heal becomes Nursing (lowest Health); the Heal action reads Nurse
+  - b) Rename only: the skill and action read Nursing / Nurse, the rule stays most wounded
+  - c) Keep both
+- **Default:** b
 
 **REFIT2-1. Road re-fit after SKN1, ARROW1, ECONSK1, CARDPOW1** · Decide · Balance · asked 2026-11-17 · decided 2026-11-17
 - 17 road fights get legal enemy-deck changes (no Shield or Health change), each in band on two fresh seed sets at 400 games. The whole road with them, seed 7600: main 128/149 in band (was 121), 134 within 10 (130), 9 beyond 20 (10); side 78/81 (72). Maps 4-5 and 20-9 stay out (REFIT2-2). Fixes: docs/balance/refit2/refit2-fixes.jsonl.
