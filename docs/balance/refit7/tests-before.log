@@ -1,0 +1,66 @@
+
+✗ road-rarity-2026-10-16 (exit 1, 4.2s) — last lines:
+  ✗ 2. 20-A-4 (dungeon, Map 20) fields ashmantle-fiend (unique), cap epic
+    ✗ 2. 21-1: 1/16 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 21-2: 2/19 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 21-3: 3/16 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 22-2: 3/18 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 22-3: 2/16 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 22-4: 4/20 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 22-5: 2/15 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 24-1: 2/10 Rare or better (Maps 21-40 want a quarter)
+  road-rarity-2026-10-16: 9 failed
+
+✗ pro-2026-10-23 (exit 1, 110.8s) — last lines:
+    ✗ 1. 13-PRO-1: leaders ["lyrebird-mimic"] (the map rule: ["badger-lumberjack"])
+    ✗ 1. 13-BPRO-1: leaders ["bramblewood-lynx"] (the map rule: ["pine-marten"])
+    ✗ 1. 13-BPRO-1: every card from Map 13's own pool (balloon-archer)
+    ✗ 1. 13-BPRO-1: the bpro map rule (balloon-archer: not in the map's own pool (BPRO))
+    ✗ 1. 13-BPRO-3: every card from Map 13's own pool (balloon-archer)
+    ✗ 1. 13-BPRO-3: the bpro map rule (balloon-archer: not in the map's own pool (BPRO))
+    ✗ 1. 14-A-PRO-2: leaders ["tide-spirit"] (the map rule: ["stoat-cutthroat"])
+    ✗ 1. 15-PRO-2: leaders ["fawn-scout"] (the map rule: ["eagle-owl-quartermaster"])
+    ✗ 1. 15-BPRO-2: leaders ["mallard-marauder"] (the map rule: ["eagle-owl-quartermaster"])
+    ✗ 1. 17-PRO-3: leaders ["colossal-squid"] (the map rule: ["ice-crevasse-wolf"])
+    ✗ 1. 17-A-BPRO-1: leaders ["riptide-eel"] (the map rule: ["shoal-shark"])
+    ✗ 1. 18-A-PRO-2: leaders ["tide-spirit"] (the map rule: ["barrel-cactus"])
+    ✗ 1. 18-A-PRO-3: leaders ["tide-spirit"] (the map rule: ["barrel-cactus"])
+    ✗ 1. 18-A-PRO-4: leaders ["thorny-devil"] (the map rule: ["caustic-scorpion"])
+    ✗ 1. 19-PRO-4: leaders ["thorny-devil"] (the map rule: ["horned-lizard"])
+    ✗ 1. 19-A-PRO-1: leaders ["tide-spirit"] (the map rule: ["badger-berserker"])
+    ✗ 1. 19-A-PRO-2: leaders ["tide-spirit"] (the map rule: ["stoat-cutthroat"])
+    ✗ 1. 19-A-PRO-3: leaders ["tide-spirit"] (the map rule: ["stoat-cutthroat"])
+    ✗ 1. 20-BPRO-2: every card from Map 20's own pool (fire-salamander)
+    ✗ 1. 20-BPRO-2: the bpro map rule (fire-salamander: not in the map's own pool (BPRO))
+    ✗ 1. 20-A-PRO-1: leaders ["tide-spirit"] (the map rule: ["stoat-cutthroat"])
+    ✗ 1. 20-B-PRO-3: leaders ["tide-spirit"] (the map rule: ["giant-cave-huntsman"])
+    ✗ 1. 21-BPRO-3: leaders ["pika-hoarder"] (the map rule: ["eyrie-warden"])
+    ✗ 1. 23-PRO-1: leaders ["tide-spirit"] (the map rule: ["badger-berserker"])
+  pro: 57/2989 FAILED
+
+✗ skir1-2026-11-11 (exit 1, 18.4s) — last lines:
+  ✗ 14-1: K14 (tasmanian-devil x4)
+    ✗ 14-3: K14 (tasmanian-devil x4)
+    ✗ 14-4: K14 (tasmanian-devil x4)
+    ✗ 14-6: K14 (tasmanian-devil x4)
+    ✗ 15-1: K14 (bramblewood-lynx x3)
+    ✗ 15-4: K14 (bramblewood-lynx x3)
+    ✗ 19-2: K14 (pinecone-sapper x4)
+    ✗ m1: its decks show 0 cost1 card(s) (the pools hold 2; minimum 4)
+    ✗ m1: its decks show 3 wait1 card(s) (the pools hold 5; minimum 4)
+    ✗ m1: its decks show 1 status card(s) (the pools hold 2; minimum 2)
+    ✗ mw: its decks show 0 plain card(s) (the pools hold 2; minimum 2)
+    ✗ mh: its decks show 0 plain card(s) (the pools hold 1; minimum 2)
+    ✗ mt: its decks show 0 plain card(s) (the pools hold 1; minimum 2)
+    ✗ m11: its decks show 1 cost0 card(s) (the pools hold 2; minimum 3)
+    ✗ my: hoopoe-herald in 5 of 5 fights besides the ones that keep it (at most 4)
+  skir1: 6087 passed, 15 failed
+
+✗ winrate-panel-2026-10-19 (exit 1, 165.7s) — last lines:
+  415 fights on every map checked, slowest map mm 20040 ms, 119 s so far
+    Maps 8 and 12: Map 0's deck at Lv 0 wins 34%, m24's (Map 24 deck) at Lv 4.62 76%
+    ✗ Map 23: the report's deck is the game's deck
+  FAIL 1 of 965
+
+tests: 2 passed, 4 failed, 0 skipped (passed before on identical inputs) · 166s · slowest: winrate-panel-2026-10-19 166s, pro-2026-10-23 111s, progression-resources-2026-10-23 27s
+failing tests: tests/.last-failures.txt (4)
