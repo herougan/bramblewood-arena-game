@@ -93,7 +93,8 @@ async function browser(){
       const t = id=> (read(id).triggers || []);
       keep.whenReady = t('scraper-of-skies').some(x=> x.whenReady === true); keep.once = t('nest').some(x=> x.once === true);
       keep.exileSelf = t('marsh-wisp').some(x=> x.do === 'exileSelf') && !t('marsh-wisp').some(x=> x.do === 'arrow');
-      keep.onReadyGold = read('elder-willow').deliveryEvery === 1 /* 2026-11-04 (TESTFIX1): ENG22 migrated On Ready Lumber to Delivery {X} (deliveryEvery) */; keep.scar = read('magma-titan').scar === 2; keep.devour = !!read('hollow-belly-rat').devour;
+      // 2026-11-19 (TESTFIX6): the sample cards moved on: ECONSK1 made Elder Willow's Delivery every round Forestry 1, SKAUD1 merged Magma Titan's lasting Exploit (Scar) into Exploit 3, the redesign took Hollow-belly Rat's Devour (Pit Glutton keeps one)
+      keep.forestry = read('elder-willow').forestry === 1; keep.exploit = read('magma-titan').exploit === 3; keep.devour = !!read('pit-glutton').devour;
       return {n: Object.keys(CARD_DEFS_BASELINE).length, opened, thrown, keep}; })()`);
     ok(!rt.thrown.length && rt.opened === rt.n, `B b. the editor opens on all ${rt.n} cards (${rt.thrown.slice(0, 3).join(' | ')})`);
     Object.keys(rt.keep).forEach(k=> ok(rt.keep[k], `B b. a plain Save keeps ${k}`));

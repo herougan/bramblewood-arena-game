@@ -68,7 +68,8 @@ async function browser(){
       const nb = await pg.evaluate(`(async()=>{ adminModeEnabled = false; switchTab('home'); codexSubTab = 'skills'; switchTab('codex'); BramblewoodPlaces.skip(); await new Promise(r=> setTimeout(r, 400)); return !!document.getElementById('bkMapsBtn'); })()`);
       ok(!nb, `${t} #2 players never see the toggle`);
       // #3 the turn
-      const tn = await pg.evaluate(`(async()=>{ const book = document.getElementById('bkBook'); bookGo(0); await new Promise(r=> setTimeout(r, 1000)); bookTurn(1); const l = book.querySelector('.pg-leaf');
+      // 2026-11-19 (TESTFIX6): UI60 packs sections onto shared pages, so a fresh player's book is one spread; the turn is checked on the admin view (every entry)
+      const tn = await pg.evaluate(`(async()=>{ adminModeEnabled = true; switchTab('home'); codexSubTab = 'skills'; switchTab('codex'); BramblewoodPlaces.skip(); await new Promise(r=> setTimeout(r, 400)); const book = document.getElementById('bkBook'); bookGo(0); await new Promise(r=> setTimeout(r, 1000)); bookTurn(1); const l = book.querySelector('.pg-leaf');
         const r = {leaf: !!l, mid: !!l && l.classList.contains('pg-leaf-mid'), dur: l && getComputedStyle(l).animationDuration, faces: l ? l.querySelectorAll('.pg-face').length : 0};
         await new Promise(r=> setTimeout(r, 1000)); r.left = book.querySelectorAll('.pg-leaf').length; r.hidden = [...book.querySelectorAll('.bk-page')].filter(p=> p.style.visibility === 'hidden').length; return r; })()`);
       ok(tn.leaf && tn.dur === '0.76s' && tn.faces === 2 && tn.mid === (w < 900) && tn.left === 0 && tn.hidden === 0, `${t} #3 a 760 ms two-face turn${w < 900 ? ' about the page middle' : ' about the spine'}, nothing left after (${JSON.stringify(tn)})`);
