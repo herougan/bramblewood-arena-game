@@ -14284,6 +14284,7 @@ function showToast(message, kind){
   t.className = 'toast' + (kind ? ' toast-'+kind : '');
   t.setAttribute('role', 'status');
   t.textContent = message;
+  while(host.children.length >= 4) host.firstElementChild.remove(); // 2026-11-19 (package CONSOLE1): a burst (many levels at once) stacked 20+ toasts over the whole screen; the newest 4 stay
   host.appendChild(t);
   try{ fxHook('toast', t, message, kind); }catch(e){} // 2026-10-15 batch F: a glint, and the big moments that are still toasts get theirs
   requestAnimationFrame(()=> t.classList.add('show'));

@@ -59580,7 +59580,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'a6049a17dcc2', BUILD_CARD_HASH = 'e9bc595c0698cc8864aa55673ac3e4fb65eee208265917687f1bcbea969871ea';
+const BUILD_ID = '36f6b0aea5a4', BUILD_CARD_HASH = 'e9bc595c0698cc8864aa55673ac3e4fb65eee208265917687f1bcbea969871ea';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -69636,6 +69636,7 @@ function showToast(message, kind){
   t.className = 'toast' + (kind ? ' toast-'+kind : '');
   t.setAttribute('role', 'status');
   t.textContent = message;
+  while(host.children.length >= 4) host.firstElementChild.remove(); // 2026-11-19 (package CONSOLE1): a burst (many levels at once) stacked 20+ toasts over the whole screen; the newest 4 stay
   host.appendChild(t);
   try{ fxHook('toast', t, message, kind); }catch(e){} // 2026-10-15 batch F: a glint, and the big moments that are still toasts get theirs
   requestAnimationFrame(()=> t.classList.add('show'));
