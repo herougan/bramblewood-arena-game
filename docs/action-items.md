@@ -8,11 +8,22 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-19 08:21: Eight hours of code, UI/UX and game improvements, then release (owner)
+- Owner: "you have anohter 8 hours to make code improvements, UIUX improvements, game improvements. We want this shippable. When done, push your cards. Then push." Card push (FOLD8 SQL, `supabase/proposed/20261119_fold8_sync_overrides.sql`) waits for the owner's "apply it"; the git release goes at 15:00 SGT.
+- [x] TESTFIX6: 87 failing tests triaged; 20-3 paid two first-clear cards, Delivery / Plunder resource counted as a skill, RAIDGATE's `mjd` swept by three Maps 0-20 tools; ~50 stale pins; 38 left, each tied to an owner call or a re-measure
+- [x] CONSOLE1: console-error sweep of the 1.0 path (none real); toasts capped at 4; `tests/console1-2026-11-19.js`
+- [x] PERF6: page 18.5 -> 16.9 MB raw, card-art warm-up held cards first (rest on good connections), faster card-data hash, fonts / art cache headers. Next: split the page into hashed assets (1-1.5 days)
+- [x] UIFIN2: pack opener reads "Pack 1 of 3" + "2 more in this set, 2 after"; gated-skills set warmed at idle
+- [x] UIFIN3: toasts drop to the bottom (newest 2) while the pack opener is open
+- [x] REFIT7: 71 road decks re-carded (swaps only): main 78/94/15 -> 113/121/11, side 43/49/10 -> 64/65/6 (local, seed 9100); REFIT7-1 for the 17 left beyond 20
+- [ ] REFIT8: one more swap pass on those 17 (running, stop 14:40)
+- [ ] Next batch: SKWK3 (SKWK2-1 default), the 21 `unattainable` flags (bal7 M3), Tower pools after DATAFIX (fix6), page split (PERF6)
+
 ## 11-19 00:02: Release 1.0 (owner)
 - Scope (owner): "Release 1.0 is defined as Map 0-20, its submaps, the first daily dungeon, the first multiplayer dungeon, the first raid, and PVP." Make the first-release experience good from the tutorial to Map 20's end; when idle, explore visual effects and improve the UI/UX.
 - [x] REL1: player's-eye audit of the 1.0 path (desktop + 390 px), P1/P2/P3 list and top 10 -> `docs/release/rel1-audit-2026-11-19.md` (running); its fixes become REL2+ packages, in sequence (most touch arena_app.js) -> done: REL1 audit (3 P1 / 14 P2 / 8 P3), REL2 fixed the P1s and P2s; owner calls REL1-1..4
-- [ ] RAIDGATE (owner: "the Raid is unlocked somewhere between Map 21-25 though - unlocking something in the prior water maps, that unlocks the raid at the deep dark depths. I think let's make it a submap in a submap in one of the water maps."). Coordinator's default (owner asleep; recorded as OWN-1119-1 for review): a sub-submap under The Sunken Depths (Map 10's side map, `mj`) that opens once Map 21 is cleared; clearing its last fight unlocks the first raid, entered from the deep. Design + build after REFIT7 / LVL11.
-- [ ] VFX exploration (owner): after REL1, the weak / missing battle effects it lists, through the `add-effect` skill and the Effects Lab
+- [x] RAIDGATE (owner: "the Raid is unlocked somewhere between Map 21-25 though - unlocking something in the prior water maps, that unlocks the raid at the deep dark depths. I think let's make it a submap in a submap in one of the water maps."). Coordinator's default (owner asleep; recorded as OWN-1119-1 for review): a sub-submap under The Sunken Depths (Map 10's side map, `mj`) that opens once Map 21 is cleared; clearing its last fight unlocks the first raid, entered from the deep. Design + build after REFIT7 / LVL11. -> done (RAIDGATE merged 11-19: The Deep Dark `mjd`, 10-B-1..4 open after Map 21, boss clear opens the Goliath raid; its fights win 2-37% against the Map 10 curve, unmeasured at Map 21 strength)
+- [x] VFX exploration (owner): after REL1, the weak / missing battle effects it lists, through the `add-effect` skill and the Effects Lab -> done (VFX2: shield break, bleed, player stun, Mind Control replay fix, Exile swirl, level-up ring, Claim coins)
 - [ ] SKWK2 merged 11-19 04:10 (16 of 36 maps pass all three N-SK / N-WK checks, was 2; SKWK2-1). Next, after REFIT7: SKWK3 = SKWK2-1 default a: rebuild the reference ladder (`tools/ref6`, BAL24) on today's cards and re-tune the Maps 10-20 N-SK decks
 
 ## 11-18 20:26: Owner notes -> POISON2, MAPFIT1 (queued)
