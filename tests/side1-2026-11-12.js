@@ -26,7 +26,7 @@ ok(L.SIDES.length === 15 && L.SIDES.every(s => PR[s]), '0. a proposal for each o
 const L1 = J('docs/balance/list1/fold-2026-11-13.json').side, sameSet = (a, b) => JSON.stringify([...new Set(a)].sort()) === JSON.stringify([...new Set(b)].sort());
 L.SIDES.filter(s => L1[s]).forEach(s => { const live = (P[L.parentOf(s, P)].submaps || {})[s] || [], r = L1[s];
   ok(sameSet(live, withListMoves(Object.keys(P).find(t=> (P[t].submaps || {})[s]), s, r.ownerYes.concat(r.keptCarried), live)) /* 2026-11-18 (TESTFIX): + FOLD6's list moves */, `1. ${s}: the list is LIST1's (the owner's 11-13 Yes + kept Carried)`);
-  ok(r.ownerYes.every(id => live.includes(id)), `1. ${s}: every one of the owner's 11-13 Yes picks is listed`); });
+  ok(r.ownerYes.filter(id => withListMoves(Object.keys(P).find(t=> (P[t].submaps || {})[s]), s, [id], []).includes(id)) /* 2026-11-20 (TESTFIX8): less a pick a later list move took off (DEC19-DATA: Granite Ox Golem left m9) */.every(id => live.includes(id)), `1. ${s}: every one of the owner's 11-13 Yes picks is listed`); });
 L.SIDES.filter(s => !L1[s]).forEach(s => {
   const par = L.parentOf(s, P), list = (P[par].submaps || {})[s] || [], pr = PR[s] || { yes: [] }, idx = L.carriedIndex(L.unlockOf(s), P);
   ok(list.length === pr.yes.length && list.every(id => pr.yes.includes(id)), `1. ${s}: the list is its Yes picks`);

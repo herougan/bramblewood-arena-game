@@ -87,8 +87,13 @@ async function browser(){
     ok(defs.render === 1, `B b. Render is one skill (${defs.render})`);
     ok(defs.fortify === 'Fortify: +1 Armor' /* 2026-11-16 (SKN1) */, `B a. the editor lists the Fortify form (ENG24, call ENG22-2 b) (${defs.fortify})`);
     // every card opens in the editor, and a Save with no change keeps what the form can't show
-    const rt = await pg.evaluate(`(()=>{ adminModeEnabled = true; const thrown = []; let opened = 0;
-      for(const id of Object.keys(CARD_DEFS_BASELINE)){ try{ openCardEditor(id); opened++; readEditorFormIntoCard(); }catch(e){ thrown.push(id + ': ' + String(e).slice(0, 80)); } try{ closeCardEditor(); }catch(_){} }
+    // 2026-11-20 (TESTFIX8): in slices of 40 cards, one evaluate each. All 953 in one synchronous task never let the page collect the
+    // closed editors' DOM: the renderer grew past 4.4 GB, was OOM-killed, and the evaluate hung until the 600 s timeout (the 11-20 full run).
+    const ids = await pg.evaluate('Object.keys(CARD_DEFS_BASELINE)'), thrown0 = []; let opened0 = 0;
+    for(let s = 0; s < ids.length; s += 40){ const r = await pg.evaluate(`(()=>{ adminModeEnabled = true; const thrown = []; let opened = 0;
+      for(const id of Object.keys(CARD_DEFS_BASELINE).slice(${s}, ${s + 40})){ try{ openCardEditor(id); opened++; readEditorFormIntoCard(); }catch(e){ thrown.push(id + ': ' + String(e).slice(0, 80)); } try{ closeCardEditor(); }catch(_){} }
+      return {opened, thrown}; })()`); opened0 += r.opened; thrown0.push(...r.thrown); await pg.waitForTimeout(50); }
+    const rt = await pg.evaluate(`(()=>{ adminModeEnabled = true; const thrown = [], opened = 0; // the slices above count these
       const keep = {}; const read = id=>{ openCardEditor(id); const c = readEditorFormIntoCard(); closeCardEditor(); return c.effects; };
       const t = id=> (read(id).triggers || []);
       keep.whenReady = t('scraper-of-skies').some(x=> x.whenReady === true); keep.once = t('nest').some(x=> x.once === true);
@@ -96,6 +101,7 @@ async function browser(){
       // 2026-11-19 (TESTFIX6): the sample cards moved on: ECONSK1 made Elder Willow's Delivery every round Forestry 1, SKAUD1 merged Magma Titan's lasting Exploit (Scar) into Exploit 3, the redesign took Hollow-belly Rat's Devour (Pit Glutton keeps one)
       keep.forestry = read('elder-willow').forestry === 1; keep.exploit = read('magma-titan').exploit === 3; keep.devour = !!read('pit-glutton').devour;
       return {n: Object.keys(CARD_DEFS_BASELINE).length, opened, thrown, keep}; })()`);
+    rt.thrown = thrown0; rt.opened = opened0;
     ok(!rt.thrown.length && rt.opened === rt.n, `B b. the editor opens on all ${rt.n} cards (${rt.thrown.slice(0, 3).join(' | ')})`);
     Object.keys(rt.keep).forEach(k=> ok(rt.keep[k], `B b. a plain Save keeps ${k}`));
     // Save as a cloud admin, Supabase stubbed: the row goes to card_overrides and the card changes

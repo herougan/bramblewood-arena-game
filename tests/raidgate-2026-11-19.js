@@ -82,7 +82,7 @@ for(const code of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'z
 // 7. the decision and the docs
 const dec = (JSON.parse(rd('docs/decisions.json')).items || []).find(x=> x.id === 'OWN-1119-1');
 const words = s=> String(s || '').split(/\s+/).filter(Boolean).length;
-ok(dec && dec.status === 'YET' && dec.default === 'a' && dec.options.length === 3 && words(dec.body) < 100, '7. OWN-1119-1 filed: YET, default a, three options, under 100 words');
+ok(dec && (dec.status === 'YET' || (dec.status === 'DONE' && /^Claude's call[^]*\ba\)/.test(dec.outcome || ''))) /* 2026-11-20 (TESTFIX8): DEC19 settled it as a */ && dec.default === 'a' && dec.options.length === 3 && words(dec.body) < 100, '7. OWN-1119-1 filed (YET, or settled a by DEC19): default a, three options, under 100 words');
 ok(rd('docs/lore-bible.md').includes('The Deep Dark') && rd('docs/project-state.md').includes('OWN-1119-1'), '7. lore bible and project state');
 console.log(fail ? `raidgate: ${fail} FAILED of ${n}` : `raidgate: ${n} checks passed`);
 process.exit(fail ? 1 : 0);
