@@ -25,4 +25,7 @@ function redesigned(idOrCard, since = '2026-11-16') {
   const id = typeof idOrCard === 'string' ? idOrCard : idOrCard && idOrCard.id;
   return CHANGED.has(id) || notedSince(BY_ID[id], since);
 }
-module.exports = { redesigned, MADE_OBTAINABLE, CHANGED, LIST_ADDS, listAdded, withListMoves, card: id => BY_ID[id] };
+// 2026-11-19 (TESTFIX6): LVL10 moved skills a card learns later into levelSkills; "does this card carry X" reads its skills by Level 10
+const BB = require(path.join(ROOT, 'bramblewood-budget.js'));
+const skillsAt10 = idOrCard => { const c = typeof idOrCard === 'string' ? BY_ID[idOrCard] : idOrCard; return c ? BB.levelEffectsAt(c, 10) : {}; };
+module.exports = { redesigned, MADE_OBTAINABLE, CHANGED, LIST_ADDS, listAdded, withListMoves, card: id => BY_ID[id], skillsAt10 };

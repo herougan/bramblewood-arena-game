@@ -87,7 +87,8 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   const before = order(); const T = P[2].row.center[0]; const ev = []; e.debugAttack(P, so, byDef(P[1], 'kc-waveL').uid, {}, ev);
   const w = ev.find(x=> x.type==='wave'); ok(w && (w.blocked || (order() === before && w.crashUid != null)), `gravity rows: it crashes into its neighbour that way, nobody moves (${before} -> ${order()}; 2026-10-18 Wave N)`); }
 { const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8'));
-  const w = cards.filter(c=> c.effects && c.effects.wave).map(c=> c.id).sort(); // 2026-11-02 (QA1): which cards carry Wave is card data (canonical/cards.json decides; the card passes since moved it off the Dolphin Knight
+  const w = cards.filter(c=> require('./lib/redesign.js').skillsAt10(c).wave).map(c=> c.id).sort(); // 2026-11-19 (TESTFIX6): LVL10 gave the Leviathan Wave at Level 3 (levelSkills)
+  // 2026-11-02 (QA1): which cards carry Wave is card data (canonical/cards.json decides; the card passes since moved it off the Dolphin Knight
   // and the Tide Pool Crab and onto the Selkie Wavebinder), so the check is that Wave stays on a handful of cards, the Leviathan among them
   ok(w.length >= 3 && w.includes('fathom-leviathan'), `Wave is on sea cards, the Fathom Leviathan among them (${w})`); }
 

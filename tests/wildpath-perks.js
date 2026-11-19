@@ -31,8 +31,10 @@ const mk = ()=>{ const e = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:
 { const {e, P} = mk(); P[1].perks = {crown:true}; e.debugSpawnCard(P, so, 1, 'k-hit', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k-small', 'left', {}, []);
   const k = all(P[1])[0], a0 = k.atk; all(P[2])[0].hp = 3; e.roundStart(P, 2, so, {}, []); e.resolveCombat(P, so, {}, []);
   ok(all(P[2]).length === 0 && k.atk === a0 + 1, `Crown of Thorns: a kill gives +1 Attack (${a0} → ${k.atk})`); }
-{ const {e, P} = mk(); P[1].perks = {echo:true}; const sp = defs['fungal-colossus'].effects.onDeathSpawn;
-  e.debugSpawnCard(P, so, 1, 'fungal-colossus', 'left', {}, []); const fc = all(P[1])[0]; e.debugDamage(P, so, fc.uid, 999, {}, []);
+// 2026-11-19 (TESTFIX6): LVL10 moved the Fungal Colossus's On Death Spawn to Level 5; a test copy carries it
+{ defs['k-spawner'] = U('k-spawner', {attack:1, effects:{onDeathSpawn:{defId:'bramble-sprout', count:1}}});
+  const {e, P} = mk(); P[1].perks = {echo:true}; const sp = defs['k-spawner'].effects.onDeathSpawn;
+  e.debugSpawnCard(P, so, 1, 'k-spawner', 'left', {}, []); const fc = all(P[1])[0]; e.debugDamage(P, so, fc.uid, 999, {}, []);
   const n = all(P[1]).length, want = (sp.count||1) + 1; ok(n === want, `Echoing Wood: the first tokens come with a copy (${n} vs ${want})`); ok(P[1].perks.echo === false, 'Echoing Wood is used up'); }
 { const {e, P} = mk(); P[2].perks = {floorPct: 0.4}; e.debugSpawnCard(P, so, 2, 'k-slow', 'left', {}, []); const c = all(P[2])[0];
   ok(c.atk === 6 && c.maxHp === 28, `endless floor +40%: 4/20 → ${c.atk}/${c.maxHp}`); }

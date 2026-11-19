@@ -171,7 +171,8 @@ ok(/DROP_CHANCE_CAP/.test(fnSrc('ticketedDungeonDropChance')) && !/DROP_CHANCE_C
   ok(!nothing.length, `6. every one of the ${total} main-map skirmishes pays something on its first clear (${nothing.join(', ')})`);
   ok(!noExcl.length, `5. every main map has a skirmish-exclusive card (${noExcl.join(', ')})`);
   const plan = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'rw3-first-rewards-2026-10-23.json'), 'utf8'));
-  plan.moves.forEach(x=> ok(defs[x.id] && JSON.stringify(defs[x.id].source) === JSON.stringify(x.to), `5. ${x.id} is ${x.node}'s exclusive now (${JSON.stringify(defs[x.id] && defs[x.id].source)})`));
+  // 2026-11-19 (TESTFIX6): BAL9 (11-02) and DATAFIX (11-18) moved reward slots to cards new on their map; a card they moved says so in its note
+  plan.moves.forEach(x=> ok(defs[x.id] && (JSON.stringify(defs[x.id].source) === JSON.stringify(x.to) || /\(DATAFIX\): source map \S+ \S+ -> |BAL9 rewards: reward slot \S+ released/.test(defs[x.id].creatorNote || '')), `5. ${x.id} is ${x.node}'s exclusive now (${JSON.stringify(defs[x.id] && defs[x.id].source)})`));
   const perMap = {}; plan.moves.filter(x=> /GD2-3/.test(x.why)).forEach(x=> perMap[x.map] = (perMap[x.map] || 0) + 1);
   ok(Object.values(perMap).every(n=> n >= 1 && n <= 2), `5. 1-2 cards moved out of the packs on each map that had no exclusive (${JSON.stringify(perMap)})`);
   // 48 (RP3): the Quarry Mole

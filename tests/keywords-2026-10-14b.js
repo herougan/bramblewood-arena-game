@@ -155,7 +155,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   // 2026-10-23 (package EN, owner 01:57 note 2): Bulwark no longer softens bramble hits; it raises two 0/4N shields (here 0/12) in front instead
   const {e, P} = mk(); e.debugSpawnCard(P, so, 2, 'kb-bulwark', 'left', {}, []); const sh = e.allBoardCards(P[2]).filter(c=> (e.derivedDefs[c.defId] || {}).bulwarkShield);
   ok(sh.length === 3 && sh.every(c=> c.hp === 5), /* 2026-11-07 (ENG33, owner #10): N Log Walls; 2026-11-16 (SKN1, owner workbook note 11-16): 0/5 (was 0/4) */ `Bulwark 3 raises three 0/5 Log Walls (${sh.map(c=> c.hp).join(', ')}; castle hit through them ${castle('kb-hit')})`); }
-{ const sup = Object.keys(base).filter(id=> base[id].effects && base[id].effects.supreme).sort();
+{ const sup = Object.keys(base).filter(id=> base[id].effects && (base[id].effects.supreme || require('./lib/redesign.js').skillsAt10(id).supreme)).sort(); // 2026-11-19 (TESTFIX6): LVL10 gave the Leviathan Supreme at Level 5 (levelSkills)
   ok(sup.join() === 'black-dragon,blue-dragon,fathom-leviathan,green-dragon,red-dragon,white-dragon', `only the dragons and the Leviathan (rank 2, 2026-10-18) are Supreme (${sup})`); }
 
 // ---- 6. Twin, Sprout and Growth

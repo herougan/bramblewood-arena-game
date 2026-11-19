@@ -47,7 +47,8 @@ ok(TS.cut >= 90 && TS.rows.filter(r=> r.dropped.length).every(r=> byId[r.id] && 
 const sc = byId['ant-scout'], so = byId['soldier-ant'], tu = byId['tunnel-ant'];
 ok(sc && JSON.stringify(Object.keys(sc.effects)) === '["swarm"]' && (sc.wait || 0) === 0 && (sc.cost || 0) === 0, '3. Ant Scout: Swarm alone, cheap (Wait 0, Lumber 0)');
 // 2026-11-04 (TESTFIX1): the owner's own live edit of 2026-10-22 (folded by CONTENT3 OVR, 10-26) left it Swarm only
-ok(so && so.effects.swarm && !so.effects.formation && so.wait === 1 && (so.cost || 0) === 0, '3. Soldier Ant: Swarm, Wait 1 (Formation 1 until the owner\'s 10-22 edit)');
+// 2026-11-19 (TESTFIX6): FOLD7 folded the owner's 11-18 edit: Soldier Ant 3/8 with no skill (Swarm off)
+ok(so && !so.effects.swarm && !so.effects.formation && so.attack === 3 && so.health === 8 && so.wait === 1 && (so.cost || 0) === 0, '3. Soldier Ant: 3/8, no skill, Wait 1 (the owner\'s 11-18 edit, FOLD7)');
 ok(tu && tu.effects.swarm && tu.effects.ambush === 2 && tu.wait === 1 && tu.cost === 1, '3. Tunnel Ant: Swarm + Ambush 2, Wait 1, Lumber 1');
 // 2026-11-16 (TESTFIX5): BF6 (10-21, the halved coefficients) took its Poison ("a huntsman spider hunts"); Pounce is the skill it keeps
 ok(byId['giant-cave-huntsman'].effects.pounce != null && /BF6[^.]*took poison/.test(byId['giant-cave-huntsman'].creatorNote || ''), '3. the owner\'s scary spider keeps Pounce (BF6 took Poison)');

@@ -12005,7 +12005,7 @@ const SKIRMISH_FIRST_PACK_CARDS = {
   'md:18-3': 'roadrunner-courier',
   'md:18-4': 'armadillo-guard', // 2026-11-12 (SKIR3): was sandfish, off the map's 11-12 list (GD-5: the nearest card of the list)
   'm3:19-1': 'honey-badger-fury', // 2026-11-12 (SKIR3): was cinder-stoker, off the map's 11-12 list (GD-5: the nearest card of the list)
-  'm11:20-3': 'fumarole-ibex', // 2026-11-12 (SKIR3): was ashbone-ghoul, off the map's 11-12 list (GD-5: the nearest card of the list)
+  // 2026-11-19 (TESTFIX6): m11:20-3 left: DATAFIX made Ash Moth its exclusive reward (GD-5: one card a skirmish)
   'm11:20-4': 'vampire-roost', // 2026-11-12 (SKIR3): was cinder-skeleton, off the map's 11-12 list (GD-5: the nearest card of the list)
   'm21:21-2': 'soft-shell-crab-newmoult', // 2026-11-18 (DATAFIX, BAL9 JJ12): was glacier-yak (first listed on m6 (Map 17))
   'm21:21-3': 'snow-leopard',
