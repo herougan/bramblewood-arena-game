@@ -46,7 +46,7 @@ function main() {
     const nm = methods.filter(id => M[id][s]).length;
     return { skill: s, price: r2(price(s)), carriers: U.skills[s].carriers.length, firstMap: U.skills[s].firstMap, consensus: r2(c), rawMedian: r2(raw),
       gap: c == null ? null : r2(c - price(s)), gapPct: c == null ? null : Math.round(100 * (c - price(s)) / base(s)), spreadIQR: r2(q(vals, 0.75) - q(vals, 0.25)),
-      families: vals.length, methods: nm, higher: hi, lower: lo, flag, byFamily: fv };
+      families: vals.length, methods: nm, higher: hi, lower: lo, flag, strong: !!flag && vals.length >= 5 && Math.max(hi, lo) >= 0.75 * vals.length, byFamily: fv };
   });
   // per method: agreement with the consensus without its own family, and with today's price
   const mrows = methods.map(id => { const f = famOf(id), xs = [], ys = [], ps = [];
@@ -56,7 +56,7 @@ function main() {
       medianRelCI: r2(med(ci)), games: Object.values(M[id]).reduce((t, r) => t + (r.games || 0), 0) };
   }).sort((a, b) => (b.rhoConsensus == null ? -9 : b.rhoConsensus) - (a.rhoConsensus == null ? -9 : a.rhoConsensus));
   const famRows = Object.keys(fams).map(f => { const xs = [], ys = [], ps = []; skills.forEach(s => { const v = famVal(f, s); if (v == null) return; xs.push(v); ys.push(consensus(s, f)); ps.push(price(s)); });
-    return { family: f, methods: fams[f].length, skills: xs.length, rhoConsensus: r2(S.spearman(xs, ys)), rhoPrice: r2(S.spearman(xs, ps)) }; }).sort((a, b) => (b.rhoConsensus || -9) - (a.rhoConsensus || -9));
+    return { family: f, methods: fams[f].length, skills: xs.length, rhoConsensus: r2(S.spearman(xs, ys)), rhoPrice: r2(S.spearman(xs, ps)), scale: r2(med(fams[f].map(id => scale[id]))) }; }).sort((a, b) => (b.rhoConsensus || -9) - (a.rhoConsensus || -9));
   const simM = methods.filter(id => !/^O-/.test(id)), simGames = simM.filter(id => R.REG.find(x => x.id === id && x.primary)).reduce((t, id) => t + Object.values(M[id]).reduce((a, r) => a + (r.games || 0), 0), 0);
   const overall = med(simM.map(id => scale[id]));
   const out = { about: 'Package SKM1 (2026-11-20): skill worth by many methods vs today\'s price, Maps 0-20 skills. worth / price in budget points (cap-1 (3A + H) x m + S). Measurement only: nothing applied. tools/skm/summary.js', generated: new Date().toISOString(), fingerprint: fp,
@@ -71,14 +71,17 @@ function main() {
   const line = r => `| ${r.skill} | ${r.price} | ${r.consensus} | ${r.gapPct > 0 ? '+' : ''}${r.gapPct}% | ${r.spreadIQR} | ${r.higher}/${r.lower} of ${r.families} | ${r.flag} |`;
   const ml = m => `| ${m.id} | ${m.skills} | ${m.rhoConsensus} | ${m.rhoPrice} | ${m.scale} |`;
   const good = mrows.filter(m => !m.circular && m.rhoConsensus != null);
+  const fsc = famRows.filter(f => !/^O-|history|contribution|workbook|ladder/.test(f.family) && f.scale != null), byKind = k => med(fsc.filter(f => (k === 'eq') === /^E/.test(f.family)).map(f => f.scale));
+  const simScales = `${r2(byKind('yard'))} for the yardstick designs (gain / the gain of +1 Attack or +2 Health), ${r2(byKind('eq'))} for the stat-equivalence searches`;
   const md = [`# Skill measurement registry: summary (${date})`, '',
     `Package SKM1. ${out.counts.methodsWithResults} methods with results (${out.counts.simMethods} from ${out.counts.designsPlayed} game designs played today, ${out.counts.methodsWithResults - out.counts.simMethods} offline) out of ${out.counts.methodsRegistered} registered; ${out.counts.families} independent families vote. ${out.counts.skillsCovered} of ${out.counts.skills} Maps 0-20 skills have 3+ family estimates. ${out.counts.simGamesPlayed} games played. Tables: \`summary-${date}.json\`; per-method lines: \`results/<method>.jsonl\`; methods: \`tools/skm/registry.js\`.`, '',
-    `- **How to read it.** Worth and price are budget points. Each method is first divided by its own median worth / price (its exchange rate), so the flags are about skills priced wrong relative to the others. Across today's game designs the raw median worth / price is **${out.overallSimScale}**: the price table as a whole ${out.overallSimScale < 0.85 ? 'charges more for skills than they win' : out.overallSimScale > 1.15 ? 'charges less for skills than they win' : 'is about right overall'}.`,
+    `- **How to read it.** Worth and price are budget points. Each method is first divided by its own median worth / price (its exchange rate), so the flags are about skills priced wrong relative to the others, not about the table's overall level: that level depends on the design (median raw worth / price ${simScales}), so these runs do not settle whether skills as a whole cost too much.`,
+    `- Skills that need partners or an economy (Lumber makers, tribes, blooms, deliveries, weather) read near 0 in every combat design here; read their over-priced flags as "not measurable this way", not as a verdict.`,
     `- One vote per family (a game design, or an offline source): the estimators of one design share its games. Prices came from the pipeline canon and the designers' cards are fitted to them, so those sources are shown but do not vote.`, '',
-    `## Skills most families agree are mispriced (${flagged.length} flagged)`, '', '| Skill | Price | Consensus | Gap | Spread (IQR) | Higher / lower | Flag |', '|---|---|---|---|---|---|---|', ...top.map(line), '',
+    `## Skills most families agree are mispriced (${flagged.length} flagged by the 3-family rule; ${flagged.filter(r => r.strong).length} strong: 5+ families, 3 in 4 agreeing)`, '', '| Skill | Price | Consensus | Gap | Spread (IQR) | Higher / lower | Flag |', '|---|---|---|---|---|---|---|', ...top.map(line), '',
     '## Method agreement (Spearman with the consensus of the other families)', '', '| Method | Skills | rho consensus | rho price | Scale |', '|---|---|---|---|---|',
     ...good.slice(0, 6).map(ml), '| ... | | | | |', ...good.slice(-5).map(ml), '',
-    '| Family | Methods | Skills | rho consensus | rho price |', '|---|---|---|---|---|', ...famRows.map(f => `| ${f.family} | ${f.methods} | ${f.skills} | ${f.rhoConsensus} | ${f.rhoPrice} |`), '',
+    '| Family | Methods | Skills | rho consensus | rho price | Scale |', '|---|---|---|---|---|---|', ...famRows.map(f => `| ${f.family} | ${f.methods} | ${f.skills} | ${f.rhoConsensus} | ${f.rhoPrice} | ${f.scale} |`), '',
     '## Proposals for the owner', '', ...(P.length ? P.map((p, i) => `${i + 1}. ${p}`) : ['(none yet)']), ''];
   fs.writeFileSync(path.join(DIR, `summary-${date}.md`), md.join('\n'));
   console.log(`methods ${methods.length} (sim ${simM.length}), families ${Object.keys(fams).length}, skills covered ${out.counts.skillsCovered}/${skills.length}, flagged ${flagged.length}, overall sim scale ${out.overallSimScale}`);

@@ -1,0 +1,13 @@
+{"method":"E17-win","skill":"T:onAttack>drawCard","worth":-0.474,"ci":0.145,"games":160,"price":0,"carrier":"worker-ant","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-19T19:03:51.276Z"}
+{"method":"E17-win","skill":"T:onAttack>gain","worth":-0.172,"ci":0.253,"games":240,"price":0.89,"carrier":"gull-thief","M":80,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-19T19:04:11.038Z"}
+{"method":"E17-win","skill":"T:onAttacked>gain","worth":7.119,"ci":1.009,"games":400,"price":1.05,"carrier":"driftwood-crab","M":80,"n":5,"fp":"8b6f2a672f5f","t":"2026-11-19T19:04:57.158Z"}
+{"method":"E17-win","skill":"T:onDeath>damage","worth":0.3,"ci":1.299,"games":160,"price":1.19,"carrier":"sulfur-cinder-moth","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-19T19:05:01.596Z"}
+{"method":"E17-win","skill":"T:onHealed>gain","worth":0.145,"ci":0.261,"games":160,"price":1,"carrier":"gannet-nestweaver","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-19T19:05:08.812Z"}
+{"method":"E17-win","skill":"T:onReady>damage","worth":4.553,"ci":0.55,"games":240,"price":4.48,"carrier":"great-horned-owl","M":80,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-19T19:05:14.524Z"}
+{"method":"E17-win","skill":"T:onSpawn>gain","worth":0.176,"ci":0.868,"games":320,"price":4.26,"carrier":"cone-cutter-squirrel","M":80,"n":4,"fp":"8b6f2a672f5f","t":"2026-11-19T19:05:20.078Z"}
+{"method":"E17-win","skill":"T:onSpawn>stun","worth":3.818,"ci":0.573,"games":240,"price":1.95,"carrier":"ash-cloud-condor","M":80,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-19T19:05:23.422Z"}
+{"method":"E17-win","skill":"ambush","worth":1.412,"ci":0.354,"games":160,"price":1.9,"carrier":"adder-ambusher","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-19T19:05:28.368Z"}
+{"method":"E17-win","skill":"armor","worth":27.919,"ci":4.219,"games":400,"price":3.13,"carrier":"horseshoe-crab","M":80,"n":5,"fp":"8b6f2a672f5f","t":"2026-11-19T19:05:42.128Z"}
+{"method":"E17-win","skill":"arrow","worth":9.353,"ci":0.681,"games":240,"price":1.893,"carrier":"chipmunk-skirmisher","M":80,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-19T19:05:48.078Z"}
+{"method":"E17-win","skill":"avalanche","worth":60,"ci":null,"games":160,"price":9.25,"carrier":"ibex-rockcaller","M":40,"n":4,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"8b6f2a672f5f","t":"2026-11-19T19:05:57.402Z"}
+{"method":"E17-win","skill":"bleed","worth":9,"ci":0.674,"games":160,"price":3.963,"carrier":"bog-leech","M":40,"n":4,"fp":"8b6f2a672f5f","t":"2026-11-19T19:06:11.281Z"}

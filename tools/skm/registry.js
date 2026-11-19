@@ -71,6 +71,8 @@ const EXPS = {
   E14: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, level: 0, seed: 'skmE14' }, probeM: [40, 80], idea: 'stat-equivalence search at Level 0 (Maps 0-5)' },
   E15: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, aiMe: 1, aiFoe: 2, seed: 'skmE15' }, probeM: [40, 80], idea: 'stat-equivalence search, the skill side Smart CPU against the smartest' },
   E16: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, bramble: 45, seed: 'skmE16' }, probeM: [40, 80], idea: 'stat-equivalence search with 45-Health brambles (long games)' },
+  E17: { design: 'eq', ownBody: true, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', seed: 'skmE17' }, probeM: [40, 80], idea: 'own-body stat equivalence: 20 carriers vs 20 copies of the carrier without the skill +h Health (no body mismatch)' },
+  E18: { design: 'eq', ownBody: true, stat: 'A', cs: { kind: 'homo', foe: 'bodyV', seed: 'skmE18' }, probeM: [40, 80], idea: 'own-body stat equivalence in Attack (3 points each)' },
   // round 2 (new kinds once the first designs stabilised)
   V12: { design: 'van', body: BODY1, cs: { kind: 'homo', foe: 'random', body: BODY1, seed: 'skmV12' }, stages: [40, 60], yardM: 300,
     idea: '20 farm-dogs given the skill vs 20 plain farm-dogs, both against random Maps 0-20 decks' },
@@ -126,6 +128,7 @@ const FILTERS = {
   ranged: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, RANGED) >= 0.1, melee: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, RANGED) < 0.1, // 10%+ shooters (20% left too few fights)
   flyers: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, ['flying']) >= 0.25, grounded: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, ['flying']) < 0.25,
   even: (gm, X, i) => i % 2 === 0, odd: (gm, X, i) => i % 2 === 1, // seat split: the skill side moves first / second
+  armored: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, ['armor', 'shield']) > 0, unarmored: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, ['armor', 'shield']) === 0,
   close: (gm, X, i, c) => Math.abs(c.hm - c.hf) <= 0.3 * X.bramble, blowout: (gm, X, i, c) => Math.abs(c.hm - c.hf) > 0.3 * X.bramble, // the control fight's closeness
 };
 
@@ -224,13 +227,16 @@ async function playDesign(sim, E, s, M) {
 // halve down until p brackets 1/2, then bisect once; h* by interpolation between the bracketing probes. Deterministic given the cached games,
 // so the estimators re-walk the same probes without new games.
 async function playEq(sim, E, s, M, est) {
-  const U = S.universe(sim.gm), gm = sim.gm, c = carrierOf(U, s, 1)[0], body = E.body;
-  if (S.SK.skillsOf(gm, gm.D[body]).includes(s)) return { skip: 'the body already has this skill' };
-  const withV = Object.assign({ base: body }, S.addOf(gm, c, s)), pts = E.stat === 'A' ? AW : 1, d = gm.D[body], lo0 = E.stat === 'A' ? -(d.attack || 0) : -((d.health || 1) - 1);
+  const U = S.universe(sim.gm), gm = sim.gm, c = carrierOf(U, s, 1)[0], body = E.ownBody ? c : E.body;
+  if (!E.ownBody && S.SK.skillsOf(gm, gm.D[body]).includes(s)) return { skip: 'the body already has this skill' };
+  // ownBody (2026-11-20 03:00): the carrier itself against its own copies without the skill, the bump on those
+  const withV = E.ownBody ? { base: c } : Object.assign({ base: body }, S.addOf(gm, c, s)), foe0 = E.ownBody ? S.withoutV(c, s) : { base: body };
+  const pts = E.stat === 'A' ? AW : 1, d = gm.D[body], lo0 = E.stat === 'A' ? -(d.attack || 0) : -((d.health || 1) - 1);
   const base = E.perMap ? Object.assign({}, E.cs, { scope: 'map:' + U.skills[s].firstMap }) : E.cs, probes = new Map(); let games = 0;
-  const x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, price = x1(withV) - x1({ base: body });
+  const x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, price = x1(withV) - x1(foe0);
   async function P(h) { if (probes.has(h)) return probes.get(h);
-    const X = sim.context(Object.assign({}, base, { foeV: Object.assign({ base: body }, E.stat === 'A' ? { dA: h } : { dH: h }) })); if (!h) delete X.foeV.dH;
+    const fv = Object.assign({}, foe0); if (h) fv[E.stat === 'A' ? 'dA' : 'dH'] = h;
+    const X = sim.context(Object.assign({}, base, E.ownBody ? { body: c } : {}, { foeV: E.ownBody ? fv : Object.assign({ base: body }, E.stat === 'A' ? { dA: h } : { dH: h }) })); if (!h && !E.ownBody) delete X.foeV.dH;
     await sim.need(X, [{ v: withV }], M); games += M; const o = sim.outcomes(X, withV, body, M), r = { h, X, o, ...meanSE(o.map(x => x.s)) }; probes.set(h, r); return r; }
   let h = Math.max(lo0, Math.min(40, Math.round(price / pts))), p = await P(h), lo = null, hi = null;
   for (let k = 0; k < 6 && (lo == null || hi == null); k++) { // lo: a probe the skill side wins (p > 1/2), hi: one it loses
@@ -289,15 +295,17 @@ const OPP = [
   { k: 'vsMelee', est: { metric: 'win', filter: 'melee' }, name: 'vs melee decks', idea: 'only fights against decks with under 10% shooters (damage type: melee)' },
   { k: 'vsFlyers', est: { metric: 'win', filter: 'flyers' }, name: 'vs flyer decks', idea: 'only fights against decks with 25%+ Flying (family: flyers)' },
   { k: 'vsGround', est: { metric: 'win', filter: 'grounded' }, name: 'vs grounded decks', idea: 'only fights against decks with under 25% Flying' },
+  { k: 'vsArmor', est: { metric: 'win', filter: 'armored' }, name: 'vs armoured decks', idea: 'only fights against decks holding any Armor / Shield card (family: armoured)' },
+  { k: 'vsSoft', est: { metric: 'win', filter: 'unarmored' }, name: 'vs unarmoured decks', idea: 'only fights against decks with no Armor / Shield card' },
 ];
 // which estimators each design gets (the primary first)
 const PLAN = {
   V1: ['win', 'margin', 'dealt', 'kept', 'surv', 'logit', 'yA', 'yH', 'early', 'late', 'field', 'first', 'second', 'speed', 'strict', 'close', 'blowout', 'ps'],
-  H1: ['win', 'margin', 'dealt', 'kept', 'logit', 'yA', 'yH', 'ladder', 'early', 'late', 'field', 'vsRanged', 'vsMelee', 'vsFlyers', 'vsGround', 'surv', 'speed', 'close', 'ps'],
-  R1: ['win', 'margin', 'dealt', 'kept', 'logit', 'yA', 'yH', 'early', 'late', 'vsRanged', 'vsMelee', 'vsFlyers', 'vsGround', 'surv', 'ps'],
+  H1: ['win', 'margin', 'dealt', 'kept', 'logit', 'yA', 'yH', 'ladder', 'early', 'late', 'field', 'vsRanged', 'vsMelee', 'vsFlyers', 'vsGround', 'surv', 'speed', 'close', 'ps', 'vsArmor', 'vsSoft'],
+  R1: ['win', 'margin', 'dealt', 'kept', 'logit', 'yA', 'yH', 'early', 'late', 'vsRanged', 'vsMelee', 'vsFlyers', 'vsGround', 'surv', 'ps', 'vsArmor', 'vsSoft'],
   DK: ['margin', 'win', 'dealt', 'kept', 'logit', 'yH', 'yA', 'ps', 'early', 'late'],
   AD: ['margin', 'win', 'dealt', 'kept', 'logit', 'yH', 'yA', 'ps', 'early', 'late'],
-  V12: ['win', 'margin', 'logit', 'vsRanged', 'vsMelee', 'vsFlyers', 'vsGround', 'early', 'late'],
+  V12: ['win', 'margin', 'logit', 'vsRanged', 'vsMelee', 'vsFlyers', 'vsGround', 'early', 'late', 'vsArmor', 'vsSoft'],
   P1: ['win', 'margin', 'dealt', 'logit', 'early', 'late'],
   H2: ['win', 'margin', 'logit', 'yA', 'yH', 'early', 'late'],
   R2: ['win', 'margin', 'logit'],
@@ -437,6 +445,7 @@ function rowPrice(U, methodId, s, carrier) {
   const m = REG.find(x => x.id === methodId), gm = U.gm; if (!m || !m.exp || !carrier) return null; const E = EXPS[m.exp];
   const x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, src = carrierOf(U, s, 1)[0];
   try {
+    if (E.design === 'eq' && E.ownBody) return S.priceOn(gm, String(carrier).split('@')[0], s, 1);
     if (E.design === 'van' || E.design === 'eq') return x1(Object.assign({ base: E.body }, S.addOf(gm, src, s))) - x1({ base: E.body });
     const card = String(carrier).split('@')[0];
     if (E.design === 'deck' && E.mode === 'add') return x1(Object.assign({ base: card }, S.addOf(gm, src, s))) - x1({ base: card });
