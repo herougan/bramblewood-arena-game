@@ -28,7 +28,7 @@ async function browser(){
       window.showToast = ()=>{}; adminModeEnabled = true; const id = 'cypress-root-lurker', out = {};
       const chips = ()=> [...document.querySelectorAll('#ceMapChips .ui52-first-map')].map(x=> x.textContent.replace(/[^\\x00-\\x7f]/g, '').replace(/\\s+/g, ' ').trim());
       const wait = ()=> new Promise(r=> setTimeout(r, 50));
-      openCardEditor(id); await wait(); out.before = chips(); const form = document.querySelector('#editorOverlay .modal'); const tag = document.getElementById('fCardId');
+      openCardEditor(id); await wait(); out.before = chips(); out.imgs0 = document.querySelectorAll('#ceMapChips img.emoji').length; const form = document.querySelector('#editorOverlay .modal'); const tag = document.getElementById('fCardId');
       // take the card out of every list (a live edit of each map's list), then put it back into one
       const tops = Object.keys(MAP_POOLS_BASE.maps), saved = JSON.stringify(mapPoolEdits);
       tops.forEach(t=>{ const e = mpEntry(t); const rm = a=> a.filter(x=> x !== id); mapPoolEdits[t] = {pool: {cards: rm(e.cards), special: rm(e.special), submaps: Object.fromEntries(Object.entries(e.submaps).map(([k, v])=> [k, rm(v)]))}, localAt: 0}; });
@@ -43,7 +43,7 @@ async function browser(){
       ui37Picks.mw = {yes: [], no: [], t: {}, localAt: 0}; ceRefreshMapChips(); out.unflagged = mapIds();
       ui37SetFlag('mw', id, 'yes'); out.yes = mapIds();
       ui37SetFlag('mw', id, 'no'); out.no = mapIds();
-      if(had) ui37Picks.mw = had; else delete ui37Picks.mw; ui37Save(); ceRefreshMapChips(); out.after = chips();
+      if(had) ui37Picks.mw = had; else delete ui37Picks.mw; ui37Save(); ceRefreshMapChips(); out.after = chips(); out.imgs1 = document.querySelectorAll('#ceMapChips img.emoji').length;
       closeCardEditor(); return out; })()`);
     ok(r.before.length >= 2 && /Map 5\b/.test(r.before[0]), 'before: the lists of Map 5 and later (' + JSON.stringify(r.before) + ')');
     ok(r.none.length === 1 && /No map|no map/i.test(r.none[0]) || r.none.length === 1 && !/Map \d/.test(r.none[0]), 'removed from every list: only the no-map pill (' + JSON.stringify(r.none) + ')');
@@ -54,6 +54,7 @@ async function browser(){
     ok(!r.unflagged.includes('mw') && r.unflagged.includes('m8'), 'a map with a picks row and the card unflagged: no chip though the base list holds it (' + JSON.stringify(r.unflagged) + ')');
     ok(r.yes[0] === 'mw', 'Yes on Map 5: its chip, first (' + JSON.stringify(r.yes) + ')');
     ok(!r.no.includes('mw'), 'No on Map 5: the chip goes (' + JSON.stringify(r.no) + ')');
+    ok(r.imgs1 === r.imgs0, 'the refreshed row has the first render\'s emoji image count, at once (' + r.imgs0 + ' / ' + r.imgs1 + ')');
     ok(JSON.stringify(r.after) === JSON.stringify(r.before), 'no picks row: the base list again (' + JSON.stringify([r.after, r.before]) + ')');
     ok(JSON.stringify(r.back) === JSON.stringify(r.before), 'restoring the lists restores the chips');
   } finally { await b.close(); }

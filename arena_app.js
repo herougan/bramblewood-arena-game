@@ -12439,7 +12439,7 @@ function ceBindMapChips(box){ if(box && !box._ceBound){ box._ceBound = 1; box.ad
 function ceRefreshMapChips(kind){
   if(kind === 'status' || typeof editingCard === 'undefined' || !editingCard) return;
   const box = document.getElementById('ceMapChips'); if(!box || !box.closest('#editorOverlay')) return;
-  const t = document.createElement('template'); t.innerHTML = cardFirstMapHTML(editingCard).trim(); const nb = t.content.firstElementChild; if(!nb) return;
+  const t = document.createElement('template'); let h = cardFirstMapHTML(editingCard).trim(); try{ h = EmojiStyle.htmlBlock(h); }catch(e){} /* the same emoji images as the first render, no flash of plain emoji */ t.innerHTML = h; const nb = t.content.firstElementChild; if(!nb) return;
   box.replaceWith(nb); ceBindMapChips(nb);
 }
 // 2026-11-18 (MAPLIST1, owner 21:24: "let me see ... which maps it currently exists in. Im afraid if I take out a card from a map, it becomes a

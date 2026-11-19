@@ -59596,7 +59596,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '973d3b926d0f', BUILD_CARD_HASH = '2d1423e14cc826d2ff8b84fe8bd0bb0db9d51df7a645d42655afef90678d29ee';
+const BUILD_ID = '7edd13c67865', BUILD_CARD_HASH = '2d1423e14cc826d2ff8b84fe8bd0bb0db9d51df7a645d42655afef90678d29ee';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -67805,7 +67805,7 @@ function ceBindMapChips(box){ if(box && !box._ceBound){ box._ceBound = 1; box.ad
 function ceRefreshMapChips(kind){
   if(kind === 'status' || typeof editingCard === 'undefined' || !editingCard) return;
   const box = document.getElementById('ceMapChips'); if(!box || !box.closest('#editorOverlay')) return;
-  const t = document.createElement('template'); t.innerHTML = cardFirstMapHTML(editingCard).trim(); const nb = t.content.firstElementChild; if(!nb) return;
+  const t = document.createElement('template'); let h = cardFirstMapHTML(editingCard).trim(); try{ h = EmojiStyle.htmlBlock(h); }catch(e){} /* the same emoji images as the first render, no flash of plain emoji */ t.innerHTML = h; const nb = t.content.firstElementChild; if(!nb) return;
   box.replaceWith(nb); ceBindMapChips(nb);
 }
 // 2026-11-18 (MAPLIST1, owner 21:24: "let me see ... which maps it currently exists in. Im afraid if I take out a card from a map, it becomes a
