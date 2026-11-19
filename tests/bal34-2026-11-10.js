@@ -35,8 +35,10 @@ ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 6.3 && sk('bulwark').p
 
 // ---- 3. Hoard ----
 { const t = by('tax-collector-teal'), d = by('magnate-duck');
-  ok(t.effects.hoard === 1 && d.effects.hoard === 1, 'Tax-Collector Teal and The Magnate Duck: Hoard 1 (were 0.75 / 0.25)');
-  ok(t.attack === 1 && t.health === 4 && t.cost === 0 && d.attack === 2 && d.health === 37 && d.cost === 4, 'their stats unchanged (1/4 cost 0, 2/37 cost 4)');
+  // 2026-11-19 (TESTFIX6): LVL10 moved both Hoards to Level 2 and re-fit their Level 1 lines (dated notes)
+  const RD = require('./lib/redesign.js');
+  ok(RD.skillsAt10(t).hoard === 1 && RD.skillsAt10(d).hoard === 1, 'Tax-Collector Teal and The Magnate Duck: Hoard 1 (were 0.75 / 0.25)');
+  ok(((t.attack === 1 && t.health === 4) || RD.redesigned(t.id)) && t.cost === 0 && ((d.attack === 2 && d.health === 37) || RD.redesigned(d.id)) && d.cost === 4, 'their stats unchanged (1/4 cost 0, 2/37 cost 4)');
   [t, d].forEach(c => { const b = T.budget(c, {}); ok(b.ok && b.x1 / b.N <= 1, `${c.name}: in budget (${(100 * b.x1 / b.N).toFixed(1)}% of N)`); }); }
 
 // ---- 4. BAL25-1 b ----
