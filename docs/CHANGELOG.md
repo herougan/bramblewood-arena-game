@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package TESTFIX7: the 16 new failures of the 11-19 full run)
+- Players see: Map 19's focus skill is Arrow (Flaming) again in the Map cards list and Skills by map (UIFIN's table used the design file's key `arrowFlaming`, which no card has; the game's key is `fireArrow`). Effects Lab: Account level A/B/C and Tutorial result A/B play again (VFX2 re-registered them on the board stage); the skipped-turn clock (V2) finds the hand.
+- Tests follow UIFIN (REDESIGN3 v2 focus table, Venom -> Poison), REL2 (Map 41+ gates read "later", the start map's new calls), REL3 (no XP toast during the first-deck moment), ENG52 (a skill in effects and levelSkills saves once) and FOLD8's owner edits (Platypus learns Poison at Level 2; Slow on Slow-worm; Nocturnal off three early cards; Meadow Rabbit 3 health). ed B#9a waits for the auto-win's decision instead of a flat 150 ms; reward-screens B4-B6 end the last fight before the next (it tested `window.matchState`, which a top-level `let` never sets).
+- Left failing: card-pass and lvl10 (Pika Hoarder, Slow-worm over budget / no Level 10 form: decision FOLD8-1).
+
 - 2026-11-19 (UIFIN3): while the pack opener is open, reward toasts drop to the bottom edge (newest two only), so the "2 more in this set, 2 after" line stays readable on phone and desktop.
 ## 2026-11-19 (package REFIT8: swap-only re-fit of the 17 Maps 0-20 fights REFIT7 left 20+ off)
 - Road decks (swaps only; leaders, first-clear cards, sizes and K14 kept): 2-2 Pincushion Urchin x4 -> Limpet Clinger x4; 4-5 Grass Snake x4 -> Slow-worm x4; 17-6 Ice Crevasse Wolf x3 + Harbor Seal x4 -> Polar Bear, Snow Ermine, Warhorse Charger, Ringed Seal x4; 17-8 Pinecone Sapper, Warhorse Charger, Ringed Seal x4 -> Briarback Hedgehog, Cataphract Destrier, Harbor Seal x4. Seed 9100, 400 games: 2-2 47.8 -> 61.3 (target 80), 4-5 25.8 -> 31.8 (40, in band), 17-6 31.8 -> 48.5 (65), 17-8 13.8 -> 19 (40).

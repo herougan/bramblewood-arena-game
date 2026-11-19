@@ -24,7 +24,7 @@ ok(/sig = tileEnv \+ \(owned \? 'o' : '-'\) \+ \(liveCards\[id\] \? 'e' : '-'\) 
 
 // ---- 2. texts
 { const m = src.match(/\{key:'cure', category:'evergreen'[^\n]*desc:v=>`([^`]*)`/); const t = m ? m[1] : '';
-  ok(/most envenomed unit/.test(t) && /Venom/.test(t) /* 2026-11-07 (ENG33): Poison counters read Venom */ && !/Bleed/.test(t) && !/afflicted/.test(t), `2. Cure's skill text: Poison only, the most poisoned unit ("${t}")`); }
+  ok(/most envenomed unit/.test(t) && /Poison/.test(t) /* 2026-11-07 (ENG33): Poison counters read Venom; 2026-11-19 (TESTFIX7): UIFIN's "Venom to Poison" made them Poison again */ && !/Bleed/.test(t) && !/afflicted/.test(t), `2. Cure's skill text: Poison only, the most poisoned unit ("${t}")`); }
 // 2026-11-18 (ENG52, owner 21:06): the heal action is Nurse N now ("nurse a random hurt ally for N"); still no Poison in it
 ok(/case 'heal': doText = TX\('ui\.eng52-act-nurse-text'/.test(src) && !/Poison, then Bleed first/.test(src), '2. a heal trigger (Nurse N) names no Poison');
 
@@ -34,7 +34,7 @@ ok(TEXT['ui.reveal-gate-mapnum'] && TEXT['ui.reveal-gate-map'], '3. the gate lin
   const ctx = {TX, FIELD2, mapNumberOf: id=> ({m1:0}[id] ?? null), fieldRowGated: k=> !!(FIELD2[k] && FIELD2[k].revealAfter), Number};
   vm.createContext(ctx); vm.runInContext(['revealGateTip', 'fieldRowGateTip', 'fieldRowQTip'].map(fnSrc).join('\n') + '\n;this.R = {revealGateTip, fieldRowQTip};', ctx);
   const R = ctx.R;
-  ok(R.fieldRowQTip({key:'psychicDampener'}) === 'Win a fight on Map 41 or further on to learn this.', `3. Psychic Dampener's "?": ${R.fieldRowQTip({key:'psychicDampener'})}`);
+  ok(R.fieldRowQTip({key:'psychicDampener'}) === 'You will learn more about this later.' /* 2026-11-19 (TESTFIX7): REL2, no Map 41 tease in Release 1.0 (gates past Map 20 read "later") */,`3. Psychic Dampener's "?": ${R.fieldRowQTip({key:'psychicDampener'})}`);
   ok(R.fieldRowQTip({key:'mole'}) === 'Clear Map 0 to learn this.', `3. a {map} gate names the map: ${R.fieldRowQTip({key:'mole'})}`);
   ok(R.fieldRowQTip({key:'mist', qTip:'Mist tip'}) === 'Mist tip' && R.fieldRowQTip({key:'mist'}) === 'Shows what it does once it first happens', '3. ungated rows keep their own tip'); }
 ok(/\$\{hidden \? \(fieldRowGateTip\(row\) \? `<i>\? \$\{escapeHtml\(fieldRowGateTip\(row\)\)\}<\/i>`/.test(src), '3. the Arena rules card uses the gate line too');
