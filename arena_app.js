@@ -12416,10 +12416,19 @@ function mountEditorSide(modal){
 function cardFirstMapHTML(c){
   if(!c || !c.id) return '';
   let n = 0, f = null; try{ n = cardObtainMap(c); f = cardFirstMapList(c); }catch(e){}
-  const m = mpMapById(f ? f.loc : mapIdAt(n));
-  if(!f && !(n > 0) || !m) return `<span class="ui52-first-map is-none">🗺️ ${escapeHtml(TX('ui.ui52-first-map-none'))}</span>`;
+  const m = f ? mpMapById(f.loc) : null;
+  // 2026-11-20 (package UIQ3, owner 00:22): chips follow the lists only; a card in no list (obtain source alone) reads "no map", and the row is one wrapper that ceRefreshMapChips re-renders
+  if(!m) return `<span id="ceMapChips" class="ce-map-chips"><span class="ui52-first-map is-none">🗺️ ${escapeHtml(TX('ui.ui52-first-map-none'))}</span></span>`;
   if(f && f.n != null && !(n > 0)) n = f.n; // 2026-11-18 (MAPLIST1): a card nothing hands out yet (cardObtainMap 0) reads its list's map number (was "Map 0 · Gannet Cliffs"); an obtainable card keeps where it is obtained (DF-1)
-  return `<button type="button" class="btn small ghost ui52-first-map is-first" data-ui52-map="${escapeAttr(m.id)}" title="${escapeAttr(TX('ui.ui52-first-map-tip'))}">🗺️ ${escapeHtml(TX('ui.pg-map-n', {n}))} · ${escapeHtml((m.icon ? m.icon + ' ' : '') + m.name)}</button>${cardOtherMapsHTML(c, f)}`;
+  return `<span id="ceMapChips" class="ce-map-chips"><button type="button" class="btn small ghost ui52-first-map is-first" data-ui52-map="${escapeAttr(m.id)}" title="${escapeAttr(TX('ui.ui52-first-map-tip'))}">🗺️ ${escapeHtml(TX('ui.pg-map-n', {n}))} · ${escapeHtml((m.icon ? m.icon + ' ' : '') + m.name)}</button>${cardOtherMapsHTML(c, f)}</span>`;
+}
+// 2026-11-20 (package UIQ3): re-render only the chips row of the open card editor (a map list edit: mpChanged; a live map-pools / map-picks row), one delegated click for every chip
+function ceBindMapChips(box){ if(box && !box._ceBound){ box._ceBound = 1; box.addEventListener('click', e=>{ const b = e.target.closest('[data-ui52-map]'); if(b) pk1OpenMapCards(b.dataset.ui52Map); }); } }
+function ceRefreshMapChips(kind){
+  if(kind === 'status' || typeof editingCard === 'undefined' || !editingCard) return;
+  const box = document.getElementById('ceMapChips'); if(!box || !box.closest('#editorOverlay')) return;
+  const t = document.createElement('template'); t.innerHTML = cardFirstMapHTML(editingCard).trim(); const nb = t.content.firstElementChild; if(!nb) return;
+  box.replaceWith(nb); ceBindMapChips(nb);
 }
 // 2026-11-18 (MAPLIST1, owner 21:24: "let me see ... which maps it currently exists in. Im afraid if I take out a card from a map, it becomes a
 // "New!" card in a later map"): after the first-map button, every other map list naming the card (main list, Special, side map), in road
@@ -12732,7 +12741,7 @@ function renderEditorInner(){
     </div>
   </div>`;
   document.getElementById('btnCancel').addEventListener('click', closeCardEditor);
-  document.getElementById('editorXBtn').addEventListener('click', closeCardEditor); { const fm = overlay.querySelector('[data-ui52-map]'); if(fm) fm.addEventListener('click', ()=> pk1OpenMapCards(fm.dataset.ui52Map)); } // 2026-11-13 (package UI52)
+  document.getElementById('editorXBtn').addEventListener('click', closeCardEditor); ceBindMapChips(document.getElementById('ceMapChips')); // 2026-11-13 (package UI52); 2026-11-20 (UIQ3): every chip opens its map
   overlay.querySelectorAll('[data-ce-nav]').forEach(b=> b.addEventListener('click', ()=> ceNavGo(Number(b.getAttribute('data-ce-nav'))))); // 2026-11-07 (package UI27 #17)
   { const fk = document.getElementById('fCardKind'); if(fk) fk.addEventListener('change', ()=>{ document.getElementById('fSpellRow').hidden = fk.value !== 'spell'; document.getElementById('fEquipRow').hidden = fk.value !== 'equipment'; { const r = document.getElementById('fEquipTimeRow'); if(r) r.hidden = fk.value !== 'equipment'; } /* CONTENT3 */ }); }
   const rarityNow = ()=>{ const f = document.querySelector('#editorOverlay [data-rflag]:checked'); return rarityComposeOf(document.getElementById('fRarity').value, f ? f.getAttribute('data-rflag') : null); }; // CX2
@@ -22684,6 +22693,7 @@ try{ mapPoolEdits = JSON.parse(localStorage.getItem(MAP_POOLS_KEY) || '{}') || {
 function persistMapPools(){ try{ localStorage.setItem(MAP_POOLS_KEY, JSON.stringify(mapPoolEdits)); }catch(e){} }
 const mpListeners = new Set();
 function mpChanged(kind){ if(kind !== 'status') packIndexReset(); /* PACK1 (2026-10-28): the packs follow the map lists */ mpListeners.forEach(fn=>{ try{ fn(kind); }catch(e){} }); } // kind 'status': only the publish state changed
+mpListeners.add(ceRefreshMapChips); // 2026-11-20 (UIQ3): the open card editor's map chips follow every map list change (edit, cloud row)
 let mpStatus = null; // {ok, at}: the last publish
 function mpStatusText(){ return !mpStatus ? '' : mpStatus.ok ? '☁️ ' + TX('ui.mp-saved-cloud') : '💾 ' + TX('ui.mp-saved-local'); }
 function mpMapById(id){ return CONQUEST_MAPS.find(m=> m.id === id) || null; }
@@ -35237,7 +35247,7 @@ function applyCloudMapPicks(top, r){
   const localAt = (ui37Picks[top] && ui37Picks[top].localAt) || 0, cloudAt = Date.parse(r.updated_at || '') || 0;
   if(localAt && localAt > cloudAt){ setTimeout(()=>{ if(cloudCardAdmin) ui37Publish(top); }, 4000); return; }
   if(r.deleted || !r.data) delete ui37Picks[top]; else ui37Picks[top] = {yes: ui37Arr(r.data.yes), no: ui37Arr(r.data.no), t: (r.data.targets && typeof r.data.targets === 'object') ? r.data.targets : {}, after: typeof r.data.after === 'string' ? r.data.after : '', localAt: 0};
-  ui37Save(); ui37Notify();
+  ui37Save(); ui37Notify(); ceRefreshMapChips(); // 2026-11-20 (UIQ3)
 }
 function ui37SetFlag(top, id, flag){
   const e = ui37Ent(top); e.yes = e.yes.filter(x=> x !== id); e.no = e.no.filter(x=> x !== id);

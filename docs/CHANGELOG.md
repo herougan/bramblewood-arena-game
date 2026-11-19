@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 (package UIQ3: card editor map chips)
+- Admin: the card editor's map chips list only maps whose list holds the card (main, Special, side map); a card in no list reads "no map" (an obtain source alone no longer makes a chip). The row re-renders in the open editor when a map list changes (map card-list editor, live map-pools / map-picks row), the form untouched. Every chip now opens its map's cards (only the first did).
+
 ## 2026-11-19 DEC19-DATA
 - Honey Badger Fury attainable (TF5-3 a). Basalt Foundry (m9) takes Malachite Golem, Granite Ox Golem stays on Volcano Lair (LIST1-1 a): m9 list and the nine 19-A fights re-fitted, card-obtain-maps regenerated. Refine note and Elemental Energy card read "Every Turn".
 
