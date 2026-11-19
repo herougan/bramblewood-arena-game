@@ -8057,6 +8057,13 @@
   .tut-reward{align-items:center; background:radial-gradient(ellipse at 50% 45%, rgba(40,28,10,.66), rgba(8,6,3,.9));}
   .tut-reward .starter-modal{position:relative; overflow:hidden; isolation:isolate;}
   .tut-reward .starter-modal > *:not(.tr-rays){position:relative; z-index:1;}
+  /* 2026-11-19 (package REL3): the first-deck step's XP / Level moment: two gold chips, a pop-in; [data-up] marks a level-up (hook for a ring or coin burst) */
+  .tut-reward .tr-moment{display:flex; justify-content:center; gap:8px; flex-wrap:wrap; min-height:34px; margin:6px 0 2px;}
+  .tut-reward .tr-moment:empty{visibility:hidden;}
+  .tr-moment .trm{padding:6px 14px; border-radius:999px; font:800 15px/1.1 'Baloo 2', system-ui, sans-serif; color:#3b2a06; background:linear-gradient(#ffe69a,#f0b73c); box-shadow:0 2px 0 #b7791f, 0 0 14px rgba(255,200,70,.45); animation:trmPop .5s cubic-bezier(.2,1.6,.4,1) both;}
+  .tr-moment .trm.is-lvl{animation-delay:.25s; background:linear-gradient(#fff3c2,#ffd04a);}
+  @keyframes trmPop{from{opacity:0; transform:scale(.4) translateY(8px);} to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion:reduce){ .tr-moment .trm{animation:none;} }
   .tut-reward .tr-kicker{margin:0 0 2px; font:800 12px/1.2 'Baloo 2', system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#b7791f;}
   .tut-reward h2{margin:0 0 4px; font-family:'Baloo 2', system-ui, sans-serif;}
   .tut-reward .tr-rays{position:absolute; left:50%; top:46%; width:150%; aspect-ratio:1; translate:-50% -50%; z-index:0; pointer-events:none; opacity:.35;
@@ -15601,6 +15608,7 @@ body.bw-in-match .signin-banner{display:none;}
 /* NPC bubbles sit under the page header and the sub-tabs, not over them */
 @media (min-width:700px){ body:not(.pg-in-match) .dialogue-dock{top:132px;} }
 @media (max-width:699px){ body:not(.pg-in-match) .dialogue-dock{top:124px;} }
+@media (max-width:699px){ body.conquest-full:not(.pg-in-match) .dialogue-dock{top:300px;} } /* 2026-11-19 (package REL3): under the map name card (it ends near 257 on a phone, 285 with a 3-line blurb), never over it */
 /* Murgle Mayhem: its Map 6 entrance pulses until the first visit; the floors read as places, not black holes */
 .rel2-pulse{animation:rel2Pulse 1.8s ease-in-out infinite;}
 @keyframes rel2Pulse{0%,100%{filter:drop-shadow(0 0 4px rgba(255,214,110,.6));} 50%{filter:drop-shadow(0 0 14px rgba(255,214,110,1));}}
@@ -15613,7 +15621,7 @@ body.bw-in-match .signin-banner{display:none;}
 .dt-charts-fold > summary, .vis4-map-cards > summary{cursor:pointer;}
 .dt-charts-fold > summary{display:inline-block; font:700 13px 'Baloo 2',system-ui,sans-serif; padding:4px 10px; margin:4px 0; border-radius:999px; background:color-mix(in srgb, var(--surface-2) 70%, transparent); border:1px solid var(--surface-border);}
 @media (min-width:701px){ .dt-charts-fold > summary{display:none;} }
-@media (max-width:600px){ .vs2.is-raid .vs-start{box-shadow:0 -18px 22px 10px rgba(90,43,34,.94), 0 6px 14px rgba(0,0,0,.4);} }
+@media (max-width:600px){ body[data-tab="play"] .signin-banner{display:none;} /* 2026-11-19 (package REL3): off the map's bottom nodes on a phone */ .vs2.is-raid .vs-start{box-shadow:0 -18px 22px 10px rgba(90,43,34,.94), 0 6px 14px rgba(0,0,0,.4);} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

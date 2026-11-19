@@ -488,5 +488,6 @@ run node tests/uifin-2026-11-18.js   # 2026-11-18 (package UIFIN): pip centring,
 run node tests/eng52-2026-11-18.js   # 2026-11-18 (package ENG52, owner 21:04 / 21:06): a Level 1 skill shows on a base Level 1 card (builders, preview, reference fights, tools, budget at Level 1); Nursing / Nurse N heal a random hurt ally, Heal gone (old keys read as Nursing)
 run node tests/skfin-2026-11-18.js   # 2026-11-19 (package SKFIN, owner 11-18 23:55): Delivery one row with its resource a parameter, Armoured Shield (two stacked shields), On Nurse / On Nursed, budgetN with the Level 1 skills
 run node tests/rel2-2026-11-19.js   # 2026-11-19 (package REL2): Release 1.0 path UI fixes (guest banner in fights, tutorial win, Murgle announcement, touch wording, folds, stickers)
+run node tests/rel3-2026-11-19.js   # 2026-11-19 (package REL3): second polish pass (first-deck line + XP moment, tab-change closes, title skip, Lumber tip rings, sign-in strip, level-reward label)
 run node tests/lvl11-2026-11-19.js   # 2026-11-19 (package LVL11, owner 11-18 21:29 / 21:31): the Codex level bar, the "?" of a skill learnt later, tokens grow by their own table at the summoner's level (priced)
 run node tests/raidgate-2026-11-19.js   # 2026-11-19 (package RAIDGATE, OWN-1119-1): The Deep Dark inside The Sunken Depths opens after Map 21; its boss clear opens the first raid

@@ -1,0 +1,8 @@
+{
+ "tx": {
+  "ui.rel3-deck-line": {"en": "These {n} go with you", "fr": "Ces {n} partent avec vous", "de": "Diese {n} begleiten dich", "es": "Estas {n} van contigo", "it": "Queste {n} vengono con te", "pt": "Estas {n} vão contigo", "tl": "Itong {n} ay sasama sa iyo", "ta": "இந்த {n} உன்னுடன் வரும்", "id": "{n} kartu ini ikut denganmu", "zh-Hans": "这 {n} 张跟你走", "zh-Hant": "這 {n} 張跟你走", "ja": "この{n}枚が一緒に行く", "ko": "이 {n}장이 함께합니다"},
+  "ui.rel3-xp": {"en": "+{n} XP", "fr": "+{n} XP", "de": "+{n} XP", "es": "+{n} XP", "it": "+{n} XP", "pt": "+{n} XP", "tl": "+{n} XP", "ta": "+{n} XP", "id": "+{n} XP", "zh-Hans": "+{n} XP", "zh-Hant": "+{n} XP", "ja": "+{n} XP", "ko": "+{n} XP"},
+  "ui.rel3-level": {"en": "Level {n}!", "fr": "Niveau {n} !", "de": "Stufe {n}!", "es": "¡Nivel {n}!", "it": "Livello {n}!", "pt": "Nível {n}!", "tl": "Antas {n}!", "ta": "நிலை {n}!", "id": "Level {n}!", "zh-Hans": "{n} 级！", "zh-Hant": "{n} 級！", "ja": "レベル{n}！", "ko": "레벨 {n}!"},
+  "ui.res3-lt-pack-name": {"en": "Level {n} reward: {name}", "fr": "Récompense niveau {n} : {name}", "de": "Stufe-{n}-Belohnung: {name}", "es": "Premio nivel {n}: {name}", "it": "Premio livello {n}: {name}", "pt": "Prémio nível {n}: {name}", "tl": "Gantimpala sa Antas {n}: {name}", "ta": "நிலை {n} பரிசு: {name}", "id": "Hadiah Level {n}: {name}", "zh-Hans": "{n} 级奖励：{name}", "zh-Hant": "{n} 級獎勵：{name}", "ja": "レベル{n}の報酬：{name}", "ko": "레벨 {n} 보상: {name}"}
+ }
+}

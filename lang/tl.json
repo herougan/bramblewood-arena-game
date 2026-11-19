@@ -4672,5 +4672,7 @@
  "Slide to see it at another level, up to one past your best copy.": "I-slide para makita ito sa ibang level, hanggang isa lampas sa pinakamahusay mong kopya.",
  "Own a copy to look further ahead.": "Magkaroon ng kopya para makita pa ang susunod.",
  "First raid open: {name}.": "Bukas na ang unang raid: {name}.",
- "First raid open": "Bukas na ang unang raid"
+ "First raid open": "Bukas na ang unang raid",
+ "These {n} go with you": "Itong {n} ay sasama sa iyo",
+ "Level {n} reward: {name}": "Gantimpala sa Antas {n}: {name}"
 }
