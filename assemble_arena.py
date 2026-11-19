@@ -516,6 +516,8 @@ def _side_proposals_for_game(p):
     d = json.load(open(p, encoding="utf-8"))
     return {k: {"fits": [x for x in (m.get("fits") or []) if isinstance(x, str)], "add": [{"id": e.get("id"), "why": e.get("why", "")} for e in (m.get("add") or []) if isinstance(e, dict) and e.get("id")]} for k, m in d.items() if isinstance(m, dict)}
 app_src = sub_once(app_src, "__SIDE_PROPOSALS__", json.dumps(_side_proposals_for_game(SCRATCH + "docs/design/side-map-cards-2026-11-10.json"), ensure_ascii=False, separators=(",", ":")))
+# 2026-11-20 (package CARRY1): Claude's explicit carry picks per map ({mapId: [{id, why}]}; keys starting with _ are notes, not baked)
+app_src = sub_once(app_src, "__CARRY_PICKS__", json.dumps({k: v for k, v in json.load(open(SCRATCH + "docs/design/carry-picks-2026-11-20.json", encoding="utf-8")).items() if not k.startswith("_")}, ensure_ascii=False, separators=(",", ":")))
 # 2026-10-24 (package PRO, owner 00:28): the hidden N-PRO-k fights per map (canonical/pro-skirmishes.json, written by tools/opt/pro_skirmishes.js --apply);
 # only what the game reads is baked in (not the replaced decks, the skipped candidates or the tool's notes)
 def _pro_for_game(d):

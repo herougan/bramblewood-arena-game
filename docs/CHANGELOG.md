@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 (package CARRY1: explicit carry picks in the Map cards window)
+- Admin: a map's Carried group no longer collects every card flagged Yes on earlier maps. It shows the map's own list cards from earlier maps, the owner's flags, and Claude's explicit picks (docs/design/carry-picks-2026-11-20.json: 99 picks for Maps 1-20 and 16 side maps, 0-5 each, each with a short why in the hover). A pick shows only while it comes from an earlier map. Tutorial cards show only where listed or picked. Test: tests/carry1-2026-11-20.js; ui38 / ui44 / ui45 / list1 / e2e ui47 pins follow.
+
 ## 2026-11-19 DEC19-DATA
 - Honey Badger Fury attainable (TF5-3 a). Basalt Foundry (m9) takes Malachite Golem, Granite Ox Golem stays on Volcano Lair (LIST1-1 a): m9 list and the nine 19-A fights re-fitted, card-obtain-maps regenerated. Refine note and Elemental Energy card read "Every Turn".
 

@@ -35212,12 +35212,13 @@ function ui37Split(top, defs, ok){
   const by = (a, b)=> rank(a) - rank(b) || rs(a.id) - rs(b.id) || nm(a.id).localeCompare(nm(b.id));
   pros.forEach(p=> (idx.has(p.id) ? car : neu).push(p));
   neu.sort(by); car.sort(by);
-  const neu2 = ui41Cap(top, neu, defs), car2 = ui41Cap(top, car, defs); neu.length = 0; car.length = 0; neu.push(...neu2); car.push(...car2); // 2026-11-09 (UI41)
+  const neu2 = ui41Cap(top, neu, defs); neu.length = 0; neu.push(...neu2); // 2026-11-09 (UI41); 2026-11-20 (CARRY1): Carried is explicit, no family cap
   ui38Fill(top, defs, ok, idx, neu, car); // 2026-11-10 (UI45): Yes-only index; every other fitting card is NEW!, Carried is never topped up
   // 2026-11-13 (LIST1, owner 11:08 #12: "those cards could be used in the far future in a mainline map as 'Carried'"): a side map's own card on a main map past the one
   // that opens it is Carried (pill: that map's number), not NEW!; Carried is still not topped up with side cards
   const sx = list1SideOwnIndex(n, maps), idx2 = new Map(idx);
   for(let i = neu.length - 1; i >= 0; i--){ const p = neu[i]; if(sx.has(p.id)){ idx2.set(p.id, sx.get(p.id)); neu.splice(i, 1); car.push(p); } }
+  carry1Carried(top, neu, car, idx2, carry1Earlier(n, maps, false), defs, ok); // 2026-11-20 (CARRY1): list + flags + Claude's explicit picks
   ui47SuggestFirst(top, neu); // 2026-11-11 (UI47 #7): a Suggested card sorts first within NEW! (it never changes a flag)
   return {n, neu, car, extra: [], idx: idx2}; // idx: the "Map N" pill of every Carried card (Yes on an earlier map, a tutorial card, or a side map's own card)
 }
@@ -35273,7 +35274,7 @@ const UI37_SRC_TX = {tut: ()=> TX('tutorial.tutorial'), list: ()=> TX('ui.ui37-s
 // (ui39ConceptCardHTML); under it UI38's source pills and the Yes / No toggle. rvMap = card id -> {e, kind} of the map's review (chosen / maybe / cut).
 function ui37TileHTML(top, p, kind, defs, idx, rvMap){
   const f = ui37FlagOf(top, p.id), fs = f === 'yes' ? 'yes' : 'no' /* 2026-11-09 (UI42): unflagged = No */, c = ui38Concept(p.id), d = c || defs[p.id], from = idx.get(p.id), rv = rvMap && rvMap.get(p.id);
-  const src = [...p.src].filter(s=> (s !== 'flag' || p.src.size === 1) && s !== 'tut' && s !== 'suggest' /* 2026-11-11 (UI47): the Carried pill says Tutorial; Suggested is its own badge */).map(s=> `<b class="ui37-src is-${s}">${escapeHtml(UI37_SRC_TX[s] ? UI37_SRC_TX[s]() : s)}</b>`).join('');
+  const src = [...p.src].filter(s=> (s !== 'flag' || p.src.size === 1) && s !== 'tut' && s !== 'suggest' /* 2026-11-11 (UI47): the Carried pill says Tutorial; Suggested is its own badge */).map(s=> `<b class="ui37-src is-${s}"${s === 'earlier' && p.why ? ` title="${escapeAttr(p.why)}"` /* 2026-11-20 (CARRY1): a carry pick's why */ : ''}>${escapeHtml(UI37_SRC_TX[s] ? UI37_SRC_TX[s]() : s)}</b>`).join('');
   // 2026-11-11 (UI47 #3): the pill says where the card was Yes (Map N), or that the tutorial gives it; never just "was a prospect"
   const fromPill = kind !== 'new' && from != null ? (from === UI47_TUT ? `<b class="ui37-from is-tut" title="${escapeAttr(TX('ui.ui47-from-tut-tip'))}">${escapeHtml(TX('tutorial.tutorial'))}</b>` : `<b class="ui37-from" title="${escapeAttr(TX('ui.ui47-from-tip', {n: from}))}">${escapeHtml(TX('ui.ui37-from', {n: from}))}</b>`) : '';
   const admPill = ui47IsAdminAdded(top, p.id) ? `<b class="ui47-adm">${escapeHtml(TX('ui.ui47-admin-added'))}</b>` : '', usedChip = ui47UsedChipHTML(p.id);
@@ -35417,7 +35418,8 @@ function ui44Split(subId, defs, ok){
   // progression of this map"): a proposal (Claude's fits / adds, Maybe, Suggested, a gap pick) that is a later main map's Yes card is not shown (its own main map
   // introduces it; it is never NEW! here); a Yes from a main map up to the pick shows as Carried only if it fits this side map (LIST1_SIDE_FIT: its biome, Claude's
   // side-map fits, its own cards' animals, its keyword skill), or if the list, a flag or a proposal already brings it. The list and the owner's flags always show.
-  const full = ui37CarriedIndex(Infinity, maps), later = id=> full.has(id) && !idx.has(id), fitL = LIST1_SIDE_FIT[subId], fit = id=> !fitL || fitL.includes(id);
+  // 2026-11-20 (CARRY1): the fitting Yes cards no longer fill Carried; Claude's explicit picks do (carry1Carried; LIST1_SIDE_FIT is no longer read here)
+  const full = ui37CarriedIndex(Infinity, maps), later = id=> full.has(id) && !idx.has(id);
   const prop = (id, src, why)=>{ if(!later(id)) add(id, src, why); };
   try{ (mpEntry(top).submaps[subId] || []).forEach(id=> add(id, 'list')); }catch(e){}
   try{ const rv = rv1ReviewOf({key: 'sub:' + subId, sub: subId}, top); if(rv) (rv.maybe || []).forEach(e=> e && prop(e.id, 'maybe', e.why)); }catch(e){}
@@ -35425,13 +35427,13 @@ function ui44Split(subId, defs, ok){
   list1PicksOf(subId).forEach(e=> prop(e.id, 'list1', e.why)); // LIST1 #14: Claude's picks for the side map's NEW! gap
   const f = ui37Ent(subId); f.yes.concat(f.no).forEach(id=> add(id, 'flag'));
   ui47SuggestedOf(subId).forEach(id=> prop(id, 'suggest')); // 2026-11-12 (UI48 #4): 1-3 Suggested cards per side map (UI47_SUGGEST keyed by the submap id)
-  idx.forEach((n, id)=>{ if(all.has(id) || fit(id)) add(id, n === UI47_TUT ? 'tut' : 'earlier'); }); // Carried: a Yes on a main map up to the pick (and the tutorial's T-1 / T-2 cards) that fits
   const SRC = {list: 0, list1: 1, maybe: 1, claude: 2, newcard: 3, flag: 4}, rank = p=> Math.min(...[...p.src].map(s=> SRC[s] == null ? 9 : SRC[s]));
   const nm = id=> String(ui38Concept(id) ? ui38Concept(id).name : defs[id].name), rs = id=> ui38Concept(id) ? roadRarityStep(ui38Concept(id).rarity) : roadRarityStep(defs[id].rarity);
   const neu = [], car = []; all.forEach(p=> (idx.has(p.id) ? car : neu).push(p));
+  carry1Carried(subId, neu, car, idx, carry1Earlier((un == null ? 0 : un) + 1, maps, true), defs, ok); // 2026-11-20 (CARRY1): list + flags + Claude's explicit picks, no family cap
   neu.sort((a, b)=> rank(a) - rank(b) || rs(a.id) - rs(b.id) || nm(a.id).localeCompare(nm(b.id)));
   car.sort((a, b)=> idx.get(a.id) - idx.get(b.id) || rs(a.id) - rs(b.id) || nm(a.id).localeCompare(nm(b.id)));
-  return {n: un, afterId, neu: ui47SuggestFirst(subId, ui41Cap(subId, neu, defs)), car: ui41Cap(subId, car, defs), extra: [], idx};
+  return {n: un, afterId, neu: ui47SuggestFirst(subId, ui41Cap(subId, neu, defs)), car, extra: [], idx};
 }
 // the head: "Unlocks after" select (main maps 0-20 by number and name, plus the current one if it lies past 20), the one-line note, counters, Export, status
 // 2026-11-12 (package UI48, owner 00:38 #6): the side maps in the order of the main map each opens after (ui44After), then the list's own order
@@ -35495,8 +35497,7 @@ function ui38Fill(top, defs, ok, idx, neu, car){
   (M.fit || []).forEach(([id, sc, codes])=>{ if(cn() + concepts.length >= newMax || sc < minS || idx.has(id) || !usable(id)) return; take(neu, fn, id, 'fit', ui38WhyText(codes)); });
   // 2026-11-12 (package UI48, owner 00:38 #2: "Don't recommend cards that don't fit"): the second pass that topped NEW! up to its minimum with fits below the score floor is gone
   concepts.forEach(c=>{ have.add(c.id); neu.push({id: c.id, src: new Set(['concept']), why: c.role || ''}); }); // the map's concepts always show (sized by the generator; their families were capped there)
-  // 2026-11-10 (package UI45, owner 21:11): Carried = ONLY cards flagged Yes on an earlier main map (and, Map 1+, the tutorial cards); no top-up fill. The previous map's Yes cards first, then the older ones.
-  [...idx.keys()].filter(id=> !have.has(id) && (ui38Concept(id) || usable(id))).sort((a, b)=> idx.get(b) - idx.get(a)).forEach(id=>{ have.add(id); car.push({id, src: new Set([ui38Concept(id) ? 'concept' : 'earlier', 'earlier']), why: ''}); });
+  // 2026-11-20 (package CARRY1): the UI45 fill that put every earlier Yes card under Carried is gone; Carried is carry1Carried's (ui37Split)
 }
 // a concept's chip: the chip shape with a plain disc (no art); the hover shows the concept
 function ui38ConceptChipHTML(c){
@@ -35529,6 +35530,25 @@ function ui38Css(){
   document.head.appendChild(st);
 }
 // UI38_PROS:END
+// 2026-11-20 (package CARRY1, owner 00:26: "Make sure the recommendations were explicit by you - not just accumulation of all previous map lists"): a map's Carried
+// group = its own list's cards that came from earlier maps + the owner's flags on it + Claude's explicit picks (docs/design/carry-picks-2026-11-20.json, baked in by
+// assemble_arena.py), a pick wearing "Yes earlier" with its why in the hover. A pick shows only while it is an earlier card (carry1Earlier), so nothing comes from the future.
+const CARRY1_PICKS = __CARRY_PICKS__; // {mapId: [{id, why}]}
+// what a map at number n may carry: ui37CarriedIndex (Yes on an earlier main map; the tutorial on Maps 0-1) + earlier main maps' lists (+ a main map: side maps opened before it)
+function carry1Earlier(n, maps, side){
+  const out = ui37CarriedIndex(n, maps);
+  (maps || []).filter(m=> m && m.n != null && m.n < n).sort((a, b)=> a.n - b.n).forEach(m=> (m.list || []).forEach(id=>{ if(!out.has(id)) out.set(id, m.n); }));
+  if(!side) list1SideOwnIndex(n, maps).forEach((u, id)=>{ if(!out.has(id)) out.set(id, u); });
+  return out;
+}
+// keeps the carried cards the list or a flag brings, then adds the picks (a pick another proposal put in NEW! moves over); idx gets each pick's pill (the map it comes from)
+function carry1Carried(mapId, neu, car, idx, may, defs, ok){
+  const keep = car.filter(p=> p.src.has('list') || p.src.has('flag')); car.length = 0; car.push(...keep);
+  (CARRY1_PICKS[mapId] || []).forEach(e=>{ if(!e || !may.has(e.id) || !defs[e.id] || !ok(e.id)) return;
+    const i = neu.findIndex(x=> x.id === e.id); if(i >= 0) car.push(neu.splice(i, 1)[0]);
+    let p = car.find(x=> x.id === e.id); if(!p){ p = {id: e.id, src: new Set(), why: ''}; car.push(p); } p.src.add('earlier'); p.why = e.why || p.why; if(!idx.has(e.id)) idx.set(e.id, may.get(e.id)); });
+  return car;
+}
 // UI29_PE:START
 // 2026-11-07 (package UI29, owner 09:04 / 09:10: "I need a pack editor page - similar UI to the map editor. It also shows Starter, Base, and Factions cards!"):
 // the admin 📦 Pack editor, built from the 🃏 Map cards window's parts (the overlay and panel classes, vis4MapCardTilesHTML with UI28's power badge,

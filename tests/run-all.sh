@@ -497,3 +497,4 @@ run node tests/console1-2026-11-19.js   # 2026-11-19 (package CONSOLE1): headles
 run node tests/uifin2-2026-11-19.js   # 2026-11-19 (package UIFIN2): pack opener split count; gated-skills set warmed at idle
 run node tests/uifin3-2026-11-19.js   # 2026-11-19 (package UIFIN3): toasts clear of the pack opener
 run node tests/dec19-ui-2026-11-19.js   # 2026-11-19 (package DEC19-UI): Arena co-op entry, night tint under the top bar and dialogs, every Graveyard card arcs
+run node tests/carry1-2026-11-20.js   # 2026-11-20 (package CARRY1, owner 00:26): the Map cards window's Carried group = the list's carried cards + the owner's flags + Claude's explicit carry picks (docs/design/carry-picks-2026-11-20.json), no accumulation, no pick from a later map

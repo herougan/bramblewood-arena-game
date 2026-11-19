@@ -26,7 +26,7 @@ def serve():
 def E(body): return "(async()=>{ " + body + " })()"
 OPEN = "adminModeEnabled = true; pk1OpenMapCards(%s); await new Promise(r=> setTimeout(r, 1200));"
 SPLIT = """(()=>{ const defs = getCardDefs(), ok2 = id=> !!defs[id] && ui41Allowed(id, defs), out = {};
-  ui37MapsData().filter(m=> m.n <= 12).forEach(m=>{ const sp = ui37Split(m.id, defs, ok2); out[m.id] = {n: sp.n, neu: sp.neu.map(p=> p.id), car: sp.car.map(p=> [p.id, sp.idx.get(p.id)]), yes: m.yes}; }); return out; })()"""
+  ui37MapsData().filter(m=> m.n <= 12).forEach(m=>{ const sp = ui37Split(m.id, defs, ok2); out[m.id] = {n: sp.n, neu: sp.neu.map(p=> p.id), car: sp.car.map(p=> [p.id, sp.idx.get(p.id)]), yes: m.yes, list: m.list, picks: (CARRY1_PICKS[m.id] || []).map(e=> e.id)}; }); return out; })()"""
 
 async def new_page(b, w, h_, url):
     ctx = await b.new_context(viewport={'width': w, 'height': h_}, color_scheme='dark')
@@ -46,21 +46,24 @@ async def main():
         ok(len(S) == 13 and S['m1']['n'] == 0, 'owner picks loaded for Maps 0-12')
         # 1 Map 0 carries the tutorial cards
         c0 = {i: n for i, n in S['m1']['car']}
-        ok(all(c0.get(t) == -1 for t in tut) and len(tut) > 0, f'1. Map 0 Carried holds the tutorial cards {tut} with index -1 (Tutorial)')
+        ok(len(tut) > 0 and any(t in c0 for t in tut) and all(c0.get(t) == -1 for t in tut if t in c0), f'1. Map 0 Carried holds its listed / flagged tutorial cards with index -1 (Tutorial) (2026-11-20 CARRY1: no fill) {tut}')
         # 3 the rule on every map 0-12
-        yes_by = {k: set(v['yes']) for k, v in S.items()}; order = sorted(S, key=lambda k: S[k]['n']); bad = []
+        yes_by = {k: set(v['yes']) for k, v in S.items()}
+        order = sorted(S, key=lambda k: S[k]['n']); bad = []
         for k in order:
             n = S[k]['n']
             for cid, idx in S[k]['car']:
                 if idx == -1:
                     if cid not in tut: bad.append((k, cid, 'tutorial pill, not a tutorial card'))
+                elif cid in S[k]['picks']:  # 2026-11-20 (CARRY1): Claude's carry pick (its earlier list or side map; tests/carry1-2026-11-20.js checks where it comes from)
+                    if idx is None or idx >= n: bad.append((k, cid, idx))
                 elif not any(S[o]['n'] == idx and cid in yes_by[o] for o in order) or idx >= n: bad.append((k, cid, idx))
             carried = {cid for cid, _ in S[k]['car']}
             for o in order:
                 if S[o]['n'] < n:
                     miss = [c for c in yes_by[o] if c not in carried and c in (set(S[k]['neu']) | carried) is False]
             ok(not set(S[k]['neu']) & carried, f"Map {n}: nothing both NEW! and Carried")
-        ok(not bad, '3. every Carried card is Yes on the earlier map its pill names (or a tutorial card): ' + str(bad[:3]))
+        ok(not bad, '3. every Carried card is Yes on the earlier map its pill names (or a tutorial card, or a carry pick from an earlier map): ' + str(bad[:3]))
         c1 = {i for i, _ in S['mf']['car']}
         ok('beaver-lumberjack' not in c1, '3a. Beaver Lumberjack (not Yes on Map 0) is not Carried on Map 1')
         ok(not any('hollow-belly-rat' in [i for i, _ in S[k]['car']] for k in S), '3b. Hollow-belly Rat is Carried on no map (never Yes earlier)')

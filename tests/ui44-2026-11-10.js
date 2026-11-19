@@ -27,7 +27,7 @@ const ui37MapsData = ()=> MAPS_DATA.map(m=> Object.assign({}, m, {yes: (ui37Pick
 const mpEntry2 = id=> id === 'm1' ? {cards: [], submaps: {sq: ['d', 'e']}} : {cards: [], submaps: {}};
 const rv1ReviewOf = ()=> null, ui38Concept = ()=> null, ui38Family = (id, d)=> d[id] && d[id].animal, roadRarityStep = ()=> 0, UI38_PROS = {rules: {familyCap: 2}};
 const ui43TutorialCards = ()=> ['t1', 't2'], UI47_TUT = -1, UI47_SUGGEST = {}, UI47_ADMIN_ADD = {}; // 2026-11-11 (UI47)
-const body = ['ui37Arr', 'ui37Ent', 'ui47AdminOf', 'ui47IsAdminAdded', 'ui47YesList', 'ui47SuggestedOf', 'ui47SuggestFirst', 'ui37FlagOf', 'ui37CarriedIndex', 'ui41Cap', 'ui44IsSub', 'ui44ProsSubs', 'ui44MainByNo', 'ui44CurrentAfter', 'ui44After', 'ui44SetAfter', 'ui44UnlockPicks', 'ui44Split', 'ui37Targets', 'list1PicksOf'].map(fn).join('\n') + '\nconst LIST1_SIDE_FIT = {}, LIST1_NEW_TARGETS = {}, CLAUDE_NEW = {};\n'; // 2026-11-13 (LIST1): no fit list = every card fits
+const body = ['ui37Arr', 'ui37Ent', 'ui47AdminOf', 'ui47IsAdminAdded', 'ui47YesList', 'ui47SuggestedOf', 'ui47SuggestFirst', 'ui37FlagOf', 'ui37CarriedIndex', 'ui41Cap', 'ui44IsSub', 'ui44ProsSubs', 'ui44MainByNo', 'ui44CurrentAfter', 'ui44After', 'ui44SetAfter', 'ui44UnlockPicks', 'ui44Split', 'ui37Targets', 'list1PicksOf', 'carry1Earlier', 'carry1Carried'].map(fn).join('\n') + '\nconst LIST1_SIDE_FIT = {}, LIST1_NEW_TARGETS = {}, CLAUDE_NEW = {}, CARRY1_PICKS = {sq: [{id: \'f\', why: \'fits\'}, {id: \'h\', why: \'later\'}]};\n'; // 2026-11-20 (CARRY1): Claude's explicit picks // 2026-11-13 (LIST1): no fit list = every card fits
 const th6Targets = n=> ({own: 10, carried: 5});
 const F = new Function('CONQUEST_MAPS', 'mpMapById', 'mainConquestMaps', 'mapNumberOf', 'mpTopOf', 'mapUnlockNumberOf', 'ui37Picks', 'ui37Save', 'ui37Publish', 'UI44_SIDE', 'mpEntry', 'ui37MapsData', 'rv1ReviewOf', 'ui38Concept', 'ui38Family', 'roadRarityStep', 'UI38_PROS', 'ui43TutorialCards', 'th6Targets', 'UI47_TUT', 'UI47_SUGGEST', 'UI47_ADMIN_ADD',
   body + '; return {ui44IsSub, ui44ProsSubs, ui44CurrentAfter, ui44After, ui44SetAfter, ui44Split, ui37Targets, ui44UnlockPicks};')(CONQUEST_MAPS, mpMapById, mainConquestMaps, mapNumberOf, mpTopOf, mapUnlockNumberOf, ui37Picks, ui37Save, ui37Publish, E1, mpEntry2, ui37MapsData, rv1ReviewOf, ui38Concept, ui38Family, roadRarityStep, UI38_PROS, ui43TutorialCards, th6Targets, -1, {}, {});
@@ -40,7 +40,7 @@ ok(F.ui44CurrentAfter('sm') === 'm2', 'a side map waiting on another side map re
 let sp = F.ui44Split('sq', defs, okAll);
 const ids = l=> l.map(p=> p.id).sort().join();
 ok(sp.n === 2 && sp.afterId === 'm2', 'split reads the default unlock map');
-ok(ids(sp.car) === 'f,g,i' && !sp.car.some(p=> p.id === 'h'), 'Carried = Yes on Maps 0-2 (f, g, i) (no tutorial cards past Map 1, 2026-11-12 UI48); the Map 3 Yes (h) is not');
+ok(ids(sp.car) === 'f' && !sp.car.some(p=> p.id === 'h'), 'Carried (2026-11-20 CARRY1) = the explicit pick f; g, i (Yes on Maps 1-2, not picked) and the tutorial cards are not; the pick h (Map 3, later) is not: ' + ids(sp.car));
 ok(!sp.idx.has('t1') && sp.idx.get('f') === 1 && sp.idx.get('g') === 2, 'pill numbers: no tutorial pill (UI48), then the map that gives it');
 ok(['d', 'e'].every(i=> sp.neu.some(p=> p.id === i && p.src.has('list'))), 'NEW! has the side map\'s own list');
 ok(sp.neu.some(p=> p.id === 'a' && p.src.has('claude')) && sp.neu.some(p=> p.id === 'c' && p.why === 'meadow'), 'NEW! has Claude\'s fits and add (the why carried)');
