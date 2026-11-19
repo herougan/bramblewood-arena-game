@@ -2055,3 +2055,9 @@ Display only; keys, rules and prices unchanged. **Delivery { Resource xN }** is 
 - **Mistwalker – {…}** is the fog state skill's name (was Fog; key `fog`, one card, the Ent). The field's Fog pill stays Fog.
 - **Embrittle N** (key `brittle`, Glasswing Moth): its hits make the target **Fragile** for N rounds: x2 from every hit, as the Fragile drawback (both: still x2). The old Brittle status (Frozen for Shatter) is gone: Shatter and Cull (frozen) no longer read it. Look: `statusFx brittle` keeps its float and log line, now 🪟 Fragile; the badge is 🪟N; a hit on it shows the `fragile` mark (🦴).
 - **Illuminate** also reveals Invisible and Stealth enemies in its column and the columns beside it (front row): Invisible can be hit, a Stealth swing is blocked as anyone's. No new event; the dark-sight rule is unchanged.
+
+## The four apply-skills (2026-11-20, package FOCUS2, owner 00:39: "we need 4 skills to apply them")
+- **Enfeeble N** (key `enfeeble`, Booming Bittern, Tsetse Drainer): its hits make the target **Feeble** for N rounds (deals half; refreshed, never a quarter with the Feeble skill). Was N tokens, one used a hit. Look: `statusFx enfeeble` keeps its 🪶 float and `enfeebleTone`; the 🪶 badge counts rounds; `statusEnd feeble` clears it. `feebleHit` is no longer sent.
+- **Harden N** (new, Ladybird Guard, Sworn Shieldbearer): on play and each round start, a random ally beside it is **Sturdy** for N rounds (takes half). Look: `statusFx harden`: 🗻 Sturdy float, `shieldTone`, 🗻 badge with the rounds; `statusEnd hardened`.
+- **Embolden N** (new, Meerkat Sentry): the same with **Mighty** (deals double; none under Quiet Contemplation). Look: `statusFx embolden`: 💪 Mighty float, `rallyTone`, 💪 badge; `statusEnd emboldened`.
+- Embrittle N (Fragile, DEC20) is the fourth. Actions: Harden / Embolden {ally, itself, all} N rounds, Enfeeble N rounds.

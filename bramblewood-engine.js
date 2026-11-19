@@ -361,6 +361,7 @@ ACTION_KEYS.push('exploit', 'poisonTick', 'pulse'); // Package SK1 (2026-10-19):
 ACTION_KEYS.push('arrow');
 ACTION_KEYS.push('strangle', 'constrict'); // ENG36 (2026-11-08): Strangle / Constrict as actions
 ACTION_KEYS.push('rend', 'enfeeble', 'weaken', 'grant'); // ENG50 (2026-11-17, OWN-1117-2): Rend N, Enfeeble N, Weaken N, Grant {who} {what}
+ACTION_KEYS.push('harden', 'embolden'); // FOCUS2 (2026-11-20, owner 00:39): an ally Sturdy / Mighty for N rounds
 // ENG36 (2026-11-08): the statuses a Resist / Weakness / Immune entry can name ('status:<key>'), their kind (dot: damage over time) and
 // icon. The engine's rules are in makeSimEngine (eng36Rel ...); the card editor lists these in its "+ Statuses" pickers.
 const ENG36_STATUS = {
@@ -1026,22 +1027,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // already means "takes double damage from a matching key," which is a different, conditional
   // mechanic). A card carrying a contradictory pair (e.g. both feeble and mighty) multiplies them
   // together same as Resist+Weakness already does — nets to 1x, not specially handled.
-  function attackerDamageFactor(attDef){
-    if(!attDef || !attDef.effects) return 1;
+  // FOCUS2 (2026-11-20, owner 00:39: "we need 4 skills to apply them"): the timed forms count as the skill, never twice (x2 / half at most):
+  // Feeble from Enfeeble (card.feeble rounds, was ENG50's tokens), Mighty from Embolden (card.emboldened), Sturdy from Harden (card.hardened).
+  function attackerDamageFactor(attDef, card){
+    const e = (attDef && attDef.effects) || {};
     let f = 1;
-    if(attDef.effects.feeble) f *= 0.5;
-    if(attDef.effects.mighty && !quietOn()) f *= 2; // no Mighty ×2 under Quiet Contemplation (2026-10-19); Fragile, the target's own, stays
+    if(e.feeble || (card && card.kind !== 'hq' && card.feeble > 0)) f *= 0.5;
+    if((e.mighty || (card && card.emboldened > 0)) && !quietOn()) f *= 2; // no Mighty ×2 under Quiet Contemplation (2026-10-19); Fragile, the target's own, stays
     return f;
   }
   // DEC20-SKILLS (2026-11-19, owner SKN1-13: "Embrittle gives Fragile"): a unit Embrittle made Fragile (card.brittle > 0, N rounds) takes
-  // Fragile's x2 as if it had the skill (not x4 with both).
+  // Fragile's x2 as if it had the skill (not x4 with both). FOCUS2 (2026-11-20): Harden's Sturdy (card.hardened > 0) the same way.
   function defenderDamageFactor(defId, card){
-    const def = CARD_DEFS[defId];
-    const timed = !!(card && card.brittle > 0);
-    if(!def || !def.effects) return timed ? 2 : 1;
+    const def = CARD_DEFS[defId], e = (def && def.effects) || {};
     let f = 1;
-    if(def.effects.fragile || timed) f *= 2;
-    if(def.effects.sturdy) f *= 0.5;
+    if(e.fragile || (card && card.brittle > 0)) f *= 2;
+    if(e.sturdy || (card && card.hardened > 0)) f *= 0.5;
     return f;
   }
   // ---- Fields and the day/night cycle (2026-10-09, user: "I like the idea of day and night and other things
@@ -3492,8 +3493,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(attCard && attCard.bound > 0 && amt > 0){ amt = amt / 2; mods.push('bound'); } // ENG9 (2026-10-26, OWN-Q1): a Bound unit swings (and counters) at half damage
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
     // target's own Resist/Weakness/Fragile/Sturdy factor below.
-    const fbF = eng50FeebleUse(attCard); if(fbF !== 1) mods.push('feeble'); // ENG50 (2026-11-17): x0.5 while it has Feeble tokens (one used)
-    const atkFactor = attackerDamageFactor(attDef) * fbF;
+    if(attCard && attCard.feeble > 0) mods.push('feeble'); // ENG50 (2026-11-17); FOCUS2 (2026-11-20): Feeble for N rounds (was a token a hit)
+    const atkFactor = attackerDamageFactor(attDef, attCard);
     if(atkFactor!==1) amt = amt * atkFactor;
     // Resist (0.5x), Weakness (2x), Fragile (2x), and Sturdy (0.5x) all apply here and multiply
     // together if a card somehow has more than one for the same hit (e.g. 0.5 * 2 = 1x net — a
@@ -3601,7 +3602,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(rf === 0) mods.push('immune'); else if(rf < 1) mods.push('resist');
     if(wf > 1) mods.push('weak');
     if(e.fragile || (card && card.brittle > 0) /* DEC20-SKILLS: Embrittle's Fragile */) mods.push('fragile');
-    if(e.sturdy) mods.push('sturdy');
+    if(e.sturdy || (card && card.hardened > 0) /* FOCUS2: Harden's Sturdy */) mods.push('sturdy');
   }
   let lastHitMods = null;
   function dnModsFor(uid){ const l = lastHitMods; return l && l.uid === uid && l.mods.length ? l.mods.slice() : undefined; }
@@ -3703,7 +3704,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     amount += wetShockBonus(card, dmgType); // Wet (2026-10-17): +1 lightning damage per Wet counter, from any shock hit
     // Feeble/Mighty (2026-09-29) apply to ranged/flat hits too, same "applies everywhere"
     // precedent Expose/King Slayer just above already set for this path.
-    const atkFactor = attackerDamageFactor(attDef) * eng50FeebleUse(flatAtt); // ENG50 (2026-11-17): a shot or skill of a unit with Feeble tokens too
+    const atkFactor = attackerDamageFactor(attDef, flatAtt); // ENG50 (2026-11-17): a shot or skill of a Feeble unit too; FOCUS2 (2026-11-20): + Embolden's Mighty
     if(atkFactor!==1) amount = amount * atkFactor;
     const crush = !!(attDef && attDef.effects && attDef.effects.supreme); if(crush) dmgType = 'magic'; // Supreme (2026-10-14): its bolts are magic too, and crush shells
     const rfH = resistFactor(card.defId, dmgType, attDef), wfH = weaknessFactor(card.defId, dmgType, attDef);
@@ -6426,18 +6427,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // remove 1 token) ... Enfeeble N: halving"): two token statuses, both physical (Cleanse removes them), neither wears off with the rounds.
   //   Vulnerable (c.vulnerable)  each hit it takes (a swing, a shot, a skill's damage; not a Venom / Bleed / Burn tick) deals double and uses one
   //                              token, beside Fragile's x2 (the permanent form; the two multiply). Given by Rend N (On Hit) and the Rend action.
-  //   Feeble (c.feeble)          each hit it deals (a swing, a shot, a skill's damage) deals half and uses one token, beside the Feeble skill's
-  //                              x0.5 (the permanent form). Given by Enfeeble N (On Hit) and the Enfeeble action.
-  // Each returns the factor for this hit (1 with no token) and logs the token used (statusFx 'vulnHit' / 'feebleHit', amount: tokens left).
+  //   Feeble (c.feeble)          FOCUS2 (2026-11-20): N rounds now, not tokens (attackerDamageFactor; ticks down like Embrittle's Fragile).
+  // eng50VulnUse returns the factor for this hit (1 with no token) and logs the token used (statusFx 'vulnHit', amount: tokens left).
   function eng50TokenEv(card, kind, left){ if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card), sd = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'); shieldEvents.push({type:'statusFx', kind, side:sd, targetSide:sd, targetUid:card.uid, targetDefId:card.defId, amount:left}); } }
   function eng50VulnUse(card){ if(!card || !(card.vulnerable > 0)) return 1; card.vulnerable -= 1; eng50TokenEv(card, 'vulnHit', card.vulnerable); return 2; }
-  function eng50FeebleUse(card){ if(!card || card.kind === 'hq' || !(card.feeble > 0)) return 1; card.feeble -= 1; eng50TokenEv(card, 'feebleHit', card.feeble); return 0.5; }
   // The keyword shorthands (trigsOf appends them to a card's own triggers; memoised per effects object, like Kin Rally's).
-  // ENG50 (2026-11-17): + Rend N = On Hit: Rend N (Vulnerable N on the target), Enfeeble N = On Hit: Enfeeble N (Feeble N on it); 1 by default.
+  // ENG50 (2026-11-17): + Rend N = On Hit: Rend N (Vulnerable N on the target), Enfeeble N = On Hit: Enfeeble N (Feeble on it); 1 by default.
   const sk1TrigMemo = new WeakMap();
   function sk1Trigs(e, list){
-    if(!e || !(e.sentry || e.expose || e.exploit || e.venomPulse || e.spoils || e.rend || e.enfeeble)) return list;
-    const m = sk1TrigMemo.get(e), key = [e.sentry, e.expose, e.exploit, e.venomPulse, e.spoils, e.rend, e.enfeeble].join('|');
+    if(!e || !(e.sentry || e.expose || e.exploit || e.venomPulse || e.spoils || e.rend || e.enfeeble || e.harden || e.embolden)) return list;
+    const m = sk1TrigMemo.get(e), key = [e.sentry, e.expose, e.exploit, e.venomPulse, e.spoils, e.rend, e.enfeeble, e.harden, e.embolden].join('|');
     if(m && m.src === list && m.key === key) return m.out;
     const out = list.slice(), N = k=> numN(e[k], SK1_DEF[k]);
     if(e.sentry) out.push({on:'onEnemyEnter', do:'damage', who:'enemy', sub:'subject', amount:N('sentry'), keyword:'sentry'});
@@ -6446,7 +6445,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.venomPulse) out.push({on:'onHit', do:'pulse', who:'enemy', sub:'subject', amount:N('venomPulse'), keyword:'venomPulse'}); // Pulse N (EN4, 2026-10-23: was Venom Pulse = Poison Tick)
     if(e.spoils) out.push({on:'onKillCreature', do:'buff', who:'self', amount2:N('spoils'), keyword:'spoils'});
     if(e.rend) out.push({on:'onHit', do:'rend', who:'enemy', sub:'subject', amount:numN(e.rend, 1), keyword:'rend'}); // ENG50 (2026-11-17)
-    if(e.enfeeble) out.push({on:'onHit', do:'enfeeble', who:'enemy', sub:'subject', amount:numN(e.enfeeble, 1), keyword:'enfeeble'}); // ENG50
+    if(e.enfeeble) out.push({on:'onHit', do:'enfeeble', who:'enemy', sub:'subject', amount:numN(e.enfeeble, 1), keyword:'enfeeble'}); // ENG50; FOCUS2: Feeble N rounds
+    // FOCUS2 (2026-11-20, owner 00:39): Harden N / Embolden N = On Play and every round start (Waiting or not): an ally beside it is Sturdy /
+    // Mighty for N rounds (refreshed, never stacked; harden / embolden actions below).
+    ['harden', 'embolden'].forEach(k=>{ if(!e[k]) return; const n = numN(e[k], 1);
+      out.push({on:'onSpawn', do:k, who:'ally', sub:'adjacent', amount:n, keyword:k}, {on:'onRoundStart', do:k, who:'ally', sub:'adjacent', amount:n, keyword:k, whileWaiting:true}); });
     sk1TrigMemo.set(e, {src:list, key, out}); return out;
   }
   const sk1HasHook = (c, hook)=> !!(c && trigsOf(CARD_DEFS[c.defId]).some(t=> t.on === hook));
@@ -8690,9 +8693,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         //   Enfeeble N  N Feeble tokens on the target (each hit it deals does half and uses one); the Enfeeble N skill is On Hit: Enfeeble N
         //   Weaken N    takes N Attack from the target for good (the Weaken skill's on-hit rule, as an action; never below 0)
         // An enemy target dodges as for every status action (applyTargetedStatus); Resist / Immune Vulnerable or Feeble hold the tokens off.
-        case 'rend': case 'enfeeble': {
-          const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent'), tn = numN(t.amount, 1), fld = t.do === 'rend' ? 'vulnerable' : 'feeble';
-          applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, tn, stats, events, mySide, t.do, c=>{ c[fld] = (c[fld]||0) + tn; });
+        case 'rend': case 'enfeeble': { // FOCUS2 (2026-11-20, owner 00:39): Enfeeble N makes the target Feeble for N rounds (as Embrittle: refreshed, not stacked); was N tokens
+          const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent'), tn = numN(t.amount, 1);
+          applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, tn, stats, events, mySide, t.do, t.do === 'rend' ? (c=>{ c.vulnerable = (c.vulnerable||0) + tn; }) : (c=>{ c.feeble = Math.max(c.feeble||0, tn); c._feebleJustSet = true; }));
+          break;
+        }
+        // Harden N / Embolden N (FOCUS2, 2026-11-20, owner 00:39): the target ally (itself with who 'self', every ally with sub 'all') is Sturdy (takes
+        // half) / Mighty (deals double) for N rounds: refreshed to N, never stacked past the skill's x0.5 / x2. Never dodged (as Grant).
+        case 'harden': case 'embolden': {
+          const fld = t.do === 'harden' ? 'hardened' : 'emboldened', n = numN(t.amount, 1), who = t.who || 'ally', got = [];
+          const give = c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf || isStructureCard(c) || got.includes(c)) return; c[fld] = Math.max(c[fld]||0, n); c['_' + fld + 'JustSet'] = true; got.push(c); };
+          if(who === 'self') give(boardCard);
+          else if(t.sub === 'all') rowsUnitsOf(pl).forEach(c=>{ if(c && c !== boardCard && kinOk(boardCard, c)) give(c); });
+          else { const tg = resolveGeneralTarget(players, playerId, boardCard, 'ally', t.sub || 'adjacent'); if(tg) give(tg.card); }
+          if(recordEvents && events) got.forEach(c=> events.push({type:'statusFx', kind:t.do, side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:mySide, targetDefId:c.defId, targetUid:c.uid, amount:c[fld]}));
           break;
         }
         case 'weaken': {
@@ -9884,7 +9898,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // live unit's statuses before a step that can end them, pushStatusEnds() then logs one {type:'statusEnd', status} per status
   // that went from on to off. noteWoke() logs a sleeper woken by damage (the line that wakes it calls it). No rule changes.
   const STATUS_END_KEYS = ['poison','bleed','decay','frozen','asleep','paralyzed','stunned','staggered','blind','tipsy','confused','shocked','corrode','exposed','wither','irradiation','smoke','scar','petrified','bound','invincible','invisible','webbed','brittle','silenced','stymied','exhaust','grounded','stench']; /* + Package SK3 (2026-10-19) */ // + W2 (2026-10-16); + Webbed (2026-10-17); + Brittle (2026-10-19, GI)
-  STATUS_END_KEYS.push('exploit', 'tangled', 'pinDown' /* Bola's Pin (ENG14, 2026-10-30) */); // + Tangled (ENG9, 2026-10-26) // Exploit tokens (2026-10-19, package SK1): the board hears when the last one is used
+  STATUS_END_KEYS.push('exploit', 'tangled', 'pinDown' /* Bola's Pin (ENG14, 2026-10-30) */, 'feeble', 'hardened', 'emboldened' /* FOCUS2 (2026-11-20) */); // + Tangled (ENG9, 2026-10-26) // Exploit tokens (2026-10-19, package SK1): the board hears when the last one is used
   const statusOn = (c, k)=> k === 'daunt' ? !!(c.daunts && c.daunts.length) : (c[k] === true || c[k] > 0);
   function statusSnap(players){
     if(!recordEvents) return null;
@@ -10437,6 +10451,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.webbed>0){ if(c._webbedJustSet) c._webbedJustSet=false; else c.webbed -= 1; } // Webbed (2026-10-17), same convention
       if(c.pinDown>0){ if(c._pinDownJustSet) c._pinDownJustSet=false; else { c.pinDown = 0; c.pinFreed = turnNo; } } // Bola's Pin (ENG14, 2026-10-30): unspent, it runs out after the next round
       if(c.brittle>0){ if(c._brittleJustSet) c._brittleJustSet=false; else c.brittle -= 1; } // Embrittle's Fragile (2026-10-19, package GI; DEC20-SKILLS), same convention
+      ['feeble', 'hardened', 'emboldened'].forEach(k=>{ if(c[k] > 0){ const j = '_' + k + 'JustSet'; if(c[j]) c[j] = false; else c[k] -= 1; } }); // FOCUS2 (2026-11-20): Enfeeble / Harden / Embolden rounds, same convention
       sk1UpkeepTick(c); // Exposed N rounds (2026-10-19, package SK1), same convention
       const sk3Hold = sk3UpkeepTick(c, pl, sideOf, events); // Package SK3 (2026-10-19): Silence, Magnet's Grounded, Stymie, Petrify N, the Tide washing Stench
       if(c.invincible>0) c.invincible -= 1; // Invincible N / Invisible N (2026-10-16): one of its first N rounds is over

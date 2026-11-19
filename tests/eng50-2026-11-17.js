@@ -90,14 +90,14 @@ ok(BB.POWDER_FAMILY.includes('paralysisPowder') && BB.skillCountOf({paralysisPow
   { const NEW_REND = ['fossa-ambusher']; ok(list.filter(c=> c && c.effects && 'rend' in c.effects).every(c=> NEW_REND.includes(c.id)), 'only post-ENG50 cards carry the key rend (nothing to migrate: the old meaning is Pierce)'); }
   ok(!/ae\.rend\b/.test(rd('bramblewood-engine.js')), 'the engine reads no ae.rend alias any more'); }
 
-// ================= 3. Enfeeble N: Feeble tokens =================
+// ================= 3. Enfeeble N: Feeble (FOCUS2, 2026-11-20: N rounds, refreshed; was N tokens, a token a hit; tests/focus2-2026-11-20.js) =================
 { const {e, P} = mk(); const a = put(e, P, 1, 'e50-enf', 0), t = put(e, P, 2, 'e50-hit4', 0);
-  let ev = swing(e, P, a); ok(t.feeble === 1 && ev.some(fxOf('enfeeble', t.uid)), 'Enfeeble 1: 1 Feeble token on the unit it hits');
-  ev = swing(e, P, t); ok(a.hp === 498 && t.feeble === 0 && ev.some(x=> x.type === 'statusFx' && x.kind === 'feebleHit' && x.targetUid === t.uid), `its next hit deals half (4 -> ${500 - a.hp}) and uses the token`);
-  ev = swing(e, P, t); ok(a.hp === 494, 'then full damage again'); }
+  let ev = swing(e, P, a); ok(t.feeble === 1 && ev.some(fxOf('enfeeble', t.uid)), 'Enfeeble 1: Feeble (1 round) on the unit it hits');
+  ev = swing(e, P, t); ok(a.hp === 498 && t.feeble === 1 && !ev.some(x=> x.type === 'statusFx' && x.kind === 'feebleHit'), `its hits deal half (4 -> ${500 - a.hp}); nothing used up (FOCUS2)`);
+  ev = swing(e, P, t); ok(a.hp === 496, 'still half in its rounds (FOCUS2: rounds, not tokens)'); }
 { const {e, P} = mk(); const s = put(e, P, 1, 'e50-arrow2', 0), t = put(e, P, 2, 'e50-dummy', 0); s.feeble = 1; const ev = fight(e, P);
-  ok(s.feeble === 0 && ev.some(x=> x.type === 'statusFx' && x.kind === 'feebleHit' && x.targetUid === s.uid) && t.hp === 499, `a shot of a Feeble unit deals half (Arrow 2: 1) and uses a token too (${500 - t.hp})`); }
-{ const {e, P} = mk(); const a = put(e, P, 1, 'e50-enf', 0); a.feeble = 1; const ev = []; e.debugAttack(P, so, a.uid, {}, ev); ok(a.feeble === 1, 'no token used on a swing at the bramble (as the Feeble skill: units only)'); }
+  ok(s.feeble >= 0 && t.hp === 499, `a shot of a Feeble unit deals half (Arrow 2: 1) (${500 - t.hp})`); }
+{ const {e, P} = mk(); const a = put(e, P, 1, 'e50-enf', 0); a.feeble = 1; const ev = []; e.debugAttack(P, so, a.uid, {}, ev); ok(a.feeble === 1, 'a swing at the bramble changes nothing (as the Feeble skill: units only)'); }
 
 // ================= 4. the permanent passives =================
 { const {e, P} = mk(); const a = put(e, P, 1, 'e50-feeble', 0), t = put(e, P, 2, 'e50-dummy', 0); swing(e, P, a); ok(t.hp === 498, 'Feeble (passive): always deals half'); }
