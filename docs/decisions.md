@@ -4,60 +4,18 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**REL1-1. Energy per fight and cap on Maps 5-10** · Decide · Economy · asked 2026-11-19
-- A Map 5 fight costs 5 Energy of a 20 cap: about 4 fights per full bar, so a player runs dry inside the first session (REL1 audit). Today nothing changes.
-  - a) Keep today's cost and cap
-  - b) Lower the cost of Maps 5-10 fights (you name the number)
-  - c) Raise the cap early, e.g. the Tavern's first step free
-- **Default:** a
-
-**REL1-2. Can guests buy Pack A?** · Decide · Shop · asked 2026-11-19
-- The splash says no account is needed, but the shop asks guests to sign in before opening packs bought with currency. Free map-reward packs open without sign-in. Today guests must sign in to buy.
-  - a) Keep: sign in to buy
-  - b) Guests may buy Pack A only
-  - c) Guests may buy any pack
-- **Default:** a
-
-**DATAFIX-2. Maps 0-1 rewards: plain, or the new lists?** · Decide · Rewards · asked 2026-11-18
-- The rewards rule wants 8 plain Map 0-1 rewards with one Lumber card. The lists now give 4 slots, none of them plain. I filled them from the Map 0 and 1 lists (Elder Willow, Thorn Shrike, Cricket Drummer, Hedgehog Scout).
-  - a) Keep the lists' cards, retire the plain rule
-  - b) Make the 4 plain: strip their skills
-  - c) Add plain cards to the Map 0-1 lists
-- **Default:** a
+**DEC20-1. Glasswing Moth over budget after Embrittle** · Decide · Balance · asked 2026-11-20
+- Embrittle now makes the target Fragile (takes x2) for N rounds, so it costs 4.59 instead of 0.2. Glasswing Moth (Embrittle 2) goes from 110% to 144% of its budget. Illuminate's new reveal moves Glow-worm to 112%.
+  - a) Trim Glasswing Moth's stats to 100% (Claude picks)
+  - b) Embrittle 1 on it (1 round)
+  - c) Keep it as is
+- **Default:** b
 
 **CHEAT2-1. Apply the cheat-detection SQL ("apply it")** · Approve · Supabase · asked 2026-11-16
 - supabase/proposed/cheat2-2026-11-16.sql. A: the old market functions let two accounts create Leaves (urgent fix). B-G: a flags table, fight hand-in checks, daily reward caps, burst notes, ranked-draw rules, six functions hardened. All only flag; players see nothing. H is separate. Needs your "apply it".
   - a) Apply A-G.
   - b) Apply A only.
   - c) Not yet.
-- **Default:** a
-
-**SKN1-11. A better name for "Buff: {who} {what}"** · Decide · Skills · asked 2026-11-16
-- Your note: "If we can do a better name, I'd prefer that. Buff: {Who} {What}." The stat action (+Attack / +Health / both, on itself, an ally or every ally). Rally and Bolster are taken.
-  - a) Empower: {who} {what}
-  - b) Hearten: {who} {what}
-  - c) Boost: {who} {what}
-- **Default:** a
-
-**SKN1-12. Illuminate: what else should it do?** · Decide · Skills · asked 2026-11-16
-- Your note: "find an alternate use. Don't give diurnal units anything." SKN1 took the Diurnal day away; Illuminate now only stops dark misses (your units and the enemy facing it). Six cards carry it: Lantern Bearer, Otter Lantern Bearer, Lantern Spark-fly, Sulfur Cinder Moth, Nyoogle, Torch.
-  - a) Also reveals Invisible and Stealth units in its column and the ones beside it
-  - b) Also Blinds the enemy facing it for its first round
-  - c) Keep it as dark sight only
-- **Default:** a
-
-**SKN1-13. A new name for the skill that makes units Brittle** · Decide · Skills · asked 2026-11-16
-- Your note: Brittle should be the status's name, and the skill that causes it needs a new name (Fragile stays the generic drawback). One card: Glasswing Moth (its hits make the target Brittle for 2 rounds). Shatter is taken.
-  - a) Embrittle N
-  - b) Crack N
-  - c) Splinter N
-- **Default:** a
-
-**SKN1-19. The Fog skill's new name** · Decide · Skills · asked 2026-11-16
-- Your note: Fog should be a field tracker, not the skill name. SKN1 added a "Fog" pill on foggy fields (Thick Fog). The skill "Fog – {Evasive}" (one card, the Ent) still reads Fog; it gives its braces while the field is foggy.
-  - a) In Fog – {…}
-  - b) Mistwalker – {…}
-  - c) Foggy – {…}
 - **Default:** a
 
 **NET1-2. When to upgrade hosting plans** · Decide · Network · asked 2026-11-12
@@ -119,6 +77,22 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) Let the 85% line win there: SK decks beat the ladder 30-45%
 - **Default:** a
 - **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Rebuild the reference ladder on today's cards, then re-tune; give Map 7 / 7-A's lists a stronger card (you pick). Superseded: Built by SKWK3 (11-19: ladder rebuilt, Maps 10-20 N-SK decks re-tuned); a stronger Map 7 / 7-A card is part of REFIT7-1's card-list look.
+
+**REL1-1. Energy per fight and cap on Maps 5-10** · Decide · Economy · asked 2026-11-19 · decided 2026-11-19
+- A Map 5 fight costs 5 Energy of a 20 cap: about 4 fights per full bar, so a player runs dry inside the first session (REL1 audit). Today nothing changes.
+  - a) Keep today's cost and cap
+  - b) Lower the cost of Maps 5-10 fights (you name the number)
+  - c) Raise the cap early, e.g. the Tavern's first step free
+- **Default:** a
+- **Outcome:** Owner 23:47: "REL1-1: a" a) Keep today's cost and cap.
+
+**REL1-2. Can guests buy Pack A?** · Decide · Shop · asked 2026-11-19 · decided 2026-11-19
+- The splash says no account is needed, but the shop asks guests to sign in before opening packs bought with currency. Free map-reward packs open without sign-in. Today guests must sign in to buy.
+  - a) Keep: sign in to buy
+  - b) Guests may buy Pack A only
+  - c) Guests may buy any pack
+- **Default:** a
+- **Outcome:** Owner 23:47: "REL1-2: b" b) Guests may buy Pack A only. Build: DEC20-SHOP.
 
 **REL1-3. Murgle Mayhem: open on Map 6, and is it 1.0's only daily dungeon?** · Decide · Dungeons · asked 2026-11-19 · decided 2026-11-19
 - It opens after Map 10 but its entrance sits on Map 6 (REL2 now announces it and pulses the node). The Undercroft and Long Burrow stay hidden. Today: opens after Map 10, only one in 1.0.
@@ -246,6 +220,14 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) Leave both as they are
 - **Default:** a
 - **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: FOLD8 folded your 11-18 saves (both 2/5 Foraging 1, your numbers stand, FOLD8-1) and REDESIGN3 retired Injured; the older 11-05 / 11-13 values would overwrite newer saves.
+
+**DATAFIX-2. Maps 0-1 rewards: plain, or the new lists?** · Decide · Rewards · asked 2026-11-18 · decided 2026-11-19
+- The rewards rule wants 8 plain Map 0-1 rewards with one Lumber card. The lists now give 4 slots, none of them plain. I filled them from the Map 0 and 1 lists (Elder Willow, Thorn Shrike, Cricket Drummer, Hedgehog Scout).
+  - a) Keep the lists' cards, retire the plain rule
+  - b) Make the 4 plain: strip their skills
+  - c) Add plain cards to the Map 0-1 lists
+- **Default:** a
+- **Outcome:** Owner 23:47: "DATAFIX-2: a" a) Keep the lists' cards, retire the plain rule. Build: DEC20 (retire the plain-reward pins).
 
 **OWN-1117-3. First pass overnight plan** · Decide · Roadmap · asked 2026-11-17 · decided 2026-11-17
 - Owner 11-17 23:41: edit the cards to fit each map's skillset (take out Injured; move Chipmunk Skirmisher away, it has Arrow; Map 1 gets 1 more Diurnal card); rebalance by power ratings, then assume balanced; build SK and WK; assign the skirmishes. Audit every skill, also outside Maps 0-20, and remove useless, duplicate or closely overlapping ones; audit VFX and SFX; remove heavy polling. Pages: Shop and Premium their own page; Camp the main page of Forge and the other subpages; Codex its own page.
@@ -440,6 +422,30 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 - **Default:** a
 - **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: Voltaic Eel now has Electricity 2 (REDESIGN3 / SKAUD1), so Chain Lightning is off it and stays S (bosses); no Bioelectric needed.
 
+**SKN1-11. A better name for "Buff: {who} {what}"** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: "If we can do a better name, I'd prefer that. Buff: {Who} {What}." The stat action (+Attack / +Health / both, on itself, an ally or every ally). Rally and Bolster are taken.
+  - a) Empower: {who} {what}
+  - b) Hearten: {who} {what}
+  - c) Boost: {who} {what}
+- **Default:** a
+- **Outcome:** Owner 23:47: "SKN1-11: a" a) Empower: {who} {what}. Build: DEC20-SKILLS.
+
+**SKN1-12. Illuminate: what else should it do?** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: "find an alternate use. Don't give diurnal units anything." SKN1 took the Diurnal day away; Illuminate now only stops dark misses (your units and the enemy facing it). Six cards carry it: Lantern Bearer, Otter Lantern Bearer, Lantern Spark-fly, Sulfur Cinder Moth, Nyoogle, Torch.
+  - a) Also reveals Invisible and Stealth units in its column and the ones beside it
+  - b) Also Blinds the enemy facing it for its first round
+  - c) Keep it as dark sight only
+- **Default:** a
+- **Outcome:** Owner 23:47: "SKN1-12: a" a) Illuminate also reveals Invisible and Stealth units in its column and the ones beside it. Build: DEC20-SKILLS.
+
+**SKN1-13. A new name for the skill that makes units Brittle** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: Brittle should be the status's name, and the skill that causes it needs a new name (Fragile stays the generic drawback). One card: Glasswing Moth (its hits make the target Brittle for 2 rounds). Shatter is taken.
+  - a) Embrittle N
+  - b) Crack N
+  - c) Splinter N
+- **Default:** a
+- **Outcome:** Owner 23:47: "SKN1-13: Embrittle gives Fragile" The skill is named Embrittle N, and it gives Fragile. Build: DEC20-SKILLS.
+
 **SKN1-14. Arrow – bleed: Laceration or Laced?** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
 - Your note: "(Laceration / Laced)." Fire Arrow now reads "Arrow (Flaming)" (SKN1). The bleed form would match as "Arrow (Laced)"; or the rider becomes a skill of its own, "Laceration". On no card.
   - a) Arrow (Laced) 2
@@ -478,6 +484,14 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) Keep the names
 - **Default:** a
 - **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Rename Gain to Deliver and On Turn Start to Every Turn; Felling's 4 cards become On Kill: Deliver. Your own words; labels only (Felling's cards are On Kill lines since SKAUD1). Build: DEC19-TEXT (docs/design/dec19-builds-2026-11-19.json).
+
+**SKN1-19. The Fog skill's new name** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: Fog should be a field tracker, not the skill name. SKN1 added a "Fog" pill on foggy fields (Thick Fog). The skill "Fog – {Evasive}" (one card, the Ent) still reads Fog; it gives its braces while the field is foggy.
+  - a) In Fog – {…}
+  - b) Mistwalker – {…}
+  - c) Foggy – {…}
+- **Default:** a
+- **Outcome:** Owner 23:47: "SKN1-19: b" b) Mistwalker – {…}. Build: DEC20-SKILLS.
 
 **REFIT1-1. Road re-fit after your folded card edits** · Decide · Balance · asked 2026-11-16 · decided 2026-11-19
 - Your 11-06..11-13 edits dropped the main road from 136 to 86 of 149 fights in band. Cricket Drummer (2/7 to 1/5, Inspiring 2), in the Map 2-6 reference deck, alone makes 34 fights harder; Wolf Spider Mother's Swarm makes 22 fights on Maps 10-12 easier; then Peak Condor, Soldier Ant, Moon Jelly, Dormouse, Water Shrew. REFIT1 re-fits 54 decks to the cards as they are: 125/149 in band. If Cricket Drummer goes back, 13 of them become too easy. Table: docs/balance/refit1/attribution-2026-11-16.md.
