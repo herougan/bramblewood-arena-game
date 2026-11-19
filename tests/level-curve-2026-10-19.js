@@ -59,7 +59,7 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
   ok(/floorPct: \(ctx\.node\.floor - 1\) \* ENDLESS_FLOOR_CURVE\.floorPct/.test(B.src) && /floorPct: \(node\.floor - 1\) \* ENDLESS_FLOOR_CURVE\.floorPct/.test(B.src), '2. the game and the reference fight both use the floor curve'); }
 
 // ---- 3. overrides
-{ const MAX_SHIELD = 50 /* 2026-10-19 (BF): the retune after the Forge curve set a few more, none over 2x the rule */, MAX_HEALTH = 20, OWNER_SET = {'13-4': 'BALREL1', '2-1': 'BALREL1', '2-B-1': 'BALREL1', '18-A-5': 'PD'}; let nS = 0, nH = 0; const over = [], low = [];
+{ const MAX_SHIELD = 50 /* 2026-10-19 (BF): the retune after the Forge curve set a few more, none over 2x the rule */, MAX_HEALTH = 20, OWNER_SET = {'13-4': 'BALREL1', '2-1': 'BALREL1', '2-B-1': 'BALREL1', '18-A-5': 'PD', '4-3': 'HPCUT1', '4-5': 'HPCUT1', '5-2': 'HPCUT1', '5-4': 'HPCUT1', '5-6': 'HPCUT1' /* 2026-11-19 (TESTFIX6): owner 11-17 21:28 'a) Apply all 5 cuts' (REFIT2-2 a) */}; let nS = 0, nH = 0; const over = [], low = [];
   for(const m of G.CONQUEST_MAPS){ if(m.reserved || m.tower) continue; for(const nd of m.nodes){ if(!nd.deck || nd.kind === 'tutorial') continue; G.NODE_MAP_HINT.set(nd, m.id);
     const sc = G.skirmishCastle(nd), bare = Object.assign({}, nd); delete bare.hqHp; delete bare.shieldOverride; G.NODE_MAP_HINT.set(bare, m.id); const own = G.skirmishCastle(bare);
     // 2026-11-16 (TESTFIX5): a Shield between 0 and the rule is BAL19-1's road-retune lever (137 fights); the limit counts the overrides that raise it.

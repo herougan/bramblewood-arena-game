@@ -53,7 +53,7 @@ ok(/function sbCheck\(A, D, S, N, M, F, SH, E\)/.test(src) && /sbCheck\(A, D, S,
   const bal9 = c=> /BAL9 refit/.test(c.creatorNote || '');
   ok((st(crab) === '1/3' || bal9(crab)) && crab.effects.shield === 3 && crab.effects.armor === 1 && crab.effects.tide, `c. Tide Pool Crab 1/2 -> 1/3, its skills kept (${st(crab)})`);
   ok(st(conch) === '2/2' || bal9(conch), `c. Conch Crawler 1/1 -> 2/2 (BAL9 since) (${st(conch)})`);
-  ok(st(arm) === '3/8', `c. Armadillo Guard kept at 3/8 (${st(arm)})`);
+  ok(st(arm) === '3/8' || (st(arm) === '2/8' && /\(CARDPOW2, [^)]*\): 3\/8 -> 2\/8/.test(arm.creatorNote || '')), `c. Armadillo Guard kept at 3/8 (${st(arm)}; 2/8 since CARDPOW2)`); // 2026-11-19 (TESTFIX6)
   // 2026-10-29 RELFIX3: a card out of play (on no map list, LISTFIX1's budgetHold 'unplaced') or waiting for the owner's re-fit ('pending') is
   // skipped and reported: its map term reads Map 0 until it is placed (armadillo-guard is on no list since THEME2 / THEME3)
   const HOLD = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold, held = [];

@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package TESTFIX6: the 11-18 full-run failures triaged)
+- Players see: fight 20-3 (Map 20) pays one first-clear card, Ash Moth (it paid Ash Moth and Fumarole Ibex since DATAFIX). Card editor: a Delivery or Plunder card no longer reads one skill too many (their resource counted as a skill).
+- Under the hood: `bramblewood-budget.js` PARAMS + `deliveryRes`, `plunderRes`; `tools/skill_costs.js` prices a family's parameter with no row of its own at 0 (Jay Pilferer, Tax-Collector Teal S 2 -> 1); `ui.e22-delivery` filled from one object; Maps 0-20 tools (`tools/skir1/lib_fight`, `tools/opt/deck1` mapsUpTo20, `tools/lead` check) skip RAIDGATE's mjd (codes as Map 10, opens at Map 21).
+- Tests: `tests/lib/redesign.js` `skillsAt10` (LVL10's later-level skills) and DATAFIX's list moves (applied in order after FOLD6's); about 50 tests follow LVL10, FOLD7, DATAFIX, POISON2, FXAUD2, UX7 / UX8, CARDPOW2 and REFIT6. Card-matrix golden refreshed (0 failures; the diffs were FOLD6 to LVL11's).
+
 ## 2026-11-19 (package RAIDGATE, owner 00:02: the raid unlocks past Map 21, from a submap in a submap of a water map)
 - Players see: a locked "A light far below" spot in The Sunken Depths; after Map 21 it opens The Deep Dark (abyss art, Pitch Black), 4 fights 10-B-1 to 10-B-4 at Map 21 strength (existing deep-water cards, its own list). Winning 10-B-4 opens the first raid (the Goliath): toast, the raid conversation, a Home note until the raid page is opened; the Raid Banner stands after 10-B-4.
 - Gate: was the Raid Banner on Map 13; now The Deep Dark's boss. Saves that already opened the raid keep it; Admin unlocks unchanged. The raid cards' obtain map (OBTAIN_MAP_OF.raid, spot mapNumber) stays 13.
