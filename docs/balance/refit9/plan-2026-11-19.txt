@@ -1,0 +1,6 @@
+# 2026-11-19 (package REFIT9): targets from REFIT8's final read (seed 9100): FOLD8-moved fights first, then the other 20+ fights REFIT7/8 left unchanged
+A1: 3-2 3-7 5-1 8-3 8-7 17-7 18-4 18-A-4
+B1: 1-A-1 7-A-3 7-A-4 7-A-5 7-A-2 10-A-5 18-A-6 18-A-7
+# pass 2 (after pass 1's 9 kept decks were applied; start = live decks; search seeds 251300 / 252300; --pred 10 --top 4); fresh check 87100 / 88100
+A2: 1-A-1 3-7 8-7
+B2: 17-7 8-3

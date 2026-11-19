@@ -1,0 +1,8 @@
+
+✗ card-pass-2026-10-19 (exit 1, 10.5s) — last lines:
+  ✗ 1. today's budget passes for every live card but the owner-call list, the post-balance queue and the held list: pika-hoarder 2/5; slow-worm 3/8
+    note: the 10-19 retune changed the yardstick's filler cards (warren-scout, fawn-scout, mouse-sapper), so the card pass's records are not replayed
+  card-pass-2026-10-19: 1 of 326 failed
+
+smoke: 3 passed, 1 failed, 3 skipped (passed before on identical inputs) · 65s · slowest: i18n-ui-2026-10-18 51s, d-2026-10-19 14s, card-pass-2026-10-19 10s
+failing tests: tests/.last-failures.txt (1)

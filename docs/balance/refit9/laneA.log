@@ -1,0 +1,57 @@
+START 3-2 13:45:27
+3-2 target 84 (76-92) size 12 start {"beachcomber-sanderling":2,"kittiwake-flock":3,"limpet-clinger":1,"peak-condor":4,"puffin-diver":2} problems []
+start {"beachcomber-sanderling":2,"kittiwake-flock":3,"limpet-clinger":1,"peak-condor":4,"puffin-diver":2} 32.5
+round 1: cur 41.7/32.5; 101 legal, 43 read + 6 predicted (of 33); top: -4 peak-condor -2 kittiwake-flock +4 hawk-arrowkeeper +2 beachcomber-sanderling 75/68.8 | -4 peak-condor +4 hawk-arrowkeeper 75/68.1 | -4 peak-condor -2 kittiwake-flock +4 hawk-arrowkeeper +2 chipmunk-skirmisher 75/59.4
+round 2: cur 75/68.8; 96 legal, 29 read + 6 predicted (of 32); top: -2 beachcomber-sanderling -1 kittiwake-flock +3 gannet-nestweaver 87.5/73.8 | -3 beachcomber-sanderling +3 gannet-nestweaver 87.5/73.1 | -2 beachcomber-sanderling +2 gannet-nestweaver 87.5/68.1
+round 3: cur 87.5/73.8; 108 legal, 50 read + 6 predicted (of 33); top: -1 hawk-arrowkeeper +1 gull-thief 83.3/77.5 | -1 hawk-arrowkeeper +1 kittiwake-flock 83.3/76.9 | -1 hawk-arrowkeeper +1 feral-tomcat 83.3/71.9
+round 4: cur 83.3/77.5; 65 legal, 36 read + 6 predicted (of 37); top: -1 gull-thief +1 kittiwake-flock 83.3/76.9 | -1 gull-thief +1 feral-tomcat 83.3/71.9 | -1 limpet-clinger +1 cormorant 83.3/61.9
+no nearer move
+RESULT 3-2 {"beachcomber-sanderling":2,"limpet-clinger":1,"puffin-diver":2,"hawk-arrowkeeper":3,"gannet-nestweaver":3,"gull-thief":1} 77.5 {} moves: -4 peak-condor -2 kittiwake-flock +4 hawk-arrowkeeper +2 beachcomber-sanderling ; -2 beachcomber-sanderling -1 kittiwake-flock +3 gannet-nestweaver ; -1 hawk-arrowkeeper +1 gull-thief problems: []
+START 3-7 13:49:21
+3-7 target 40 (30-49) size 19 start {"cormorant":2,"gannet-nestweaver":4,"kittiwake-flock":4,"peak-condor":3,"puffin-diver":4,"limpet-clinger":1,"chipmunk-cavalry":1} problems []
+start {"cormorant":2,"gannet-nestweaver":4,"kittiwake-flock":4,"peak-condor":3,"puffin-diver":4,"limpet-clinger":1,"chipmunk-cavalry":1} 8.1
+round 1: cur 16.7/8.1; 59 legal, 29 read + 6 predicted (of 48); top: -4 puffin-diver +4 hawk-arrowkeeper 37.5/39.4 | -4 puffin-diver +4 eagle-sharpshooter 45.8/35.6 | -4 gannet-nestweaver -4 puffin-diver +4 eagle-sharpshooter +4 balloon-archer 41.7/30
+RESULT 3-7 {"cormorant":2,"gannet-nestweaver":4,"kittiwake-flock":4,"peak-condor":3,"limpet-clinger":1,"chipmunk-cavalry":1,"hawk-arrowkeeper":4} 39.4 {} moves: -4 puffin-diver +4 hawk-arrowkeeper problems: []
+START 5-1 13:50:11
+5-1 target 90 (82-98) size 13 start {"alley-cat":3,"fire-ant-raft":1,"swamp-alligator":4,"nutria-reedcutter":1,"constrictor-coil":4} problems []
+start {"alley-cat":3,"fire-ant-raft":1,"swamp-alligator":4,"nutria-reedcutter":1,"constrictor-coil":4} 66.9
+round 1: cur 62.5/66.9; 101 legal, 18 read + 6 predicted (of 21); top: -3 alley-cat +3 marsh-mallow-hare 95.8/86.9 | -3 alley-cat +1 raft-spider +2 marsh-mallow-hare 87.5/82.5 | -3 alley-cat +3 raft-spider 87.5/75
+round 2: cur 95.8/86.9; 101 legal, 50 read + 6 predicted (of 41); top: -1 nutria-reedcutter +1 bog-leech 91.7/86.9 | -1 marsh-mallow-hare +1 bog-leech 91.7/83.1 | -3 marsh-mallow-hare +3 mosquito-cloud 91.7/70.6
+no nearer move
+RESULT 5-1 {"fire-ant-raft":1,"swamp-alligator":4,"nutria-reedcutter":1,"constrictor-coil":4,"marsh-mallow-hare":3} 86.9 {} moves: -3 alley-cat +3 marsh-mallow-hare problems: []
+START 8-3 13:50:53
+8-3 target 80 (72-88) size 14 start {"blind-cave-fish":4,"cave-olm":4,"gallery-orb-weaver":4,"hawthorn-shieldbug":1,"rot-swollen-carcass":1} problems []
+start {"blind-cave-fish":4,"cave-olm":4,"gallery-orb-weaver":4,"hawthorn-shieldbug":1,"rot-swollen-carcass":1} 55
+round 1: cur 41.7/55; 26 legal, 26 read + 6 predicted (of 32); top: -2 cave-olm +2 sulfur-cinder-moth 62.5/66.3 | -1 blind-cave-fish +1 sulfur-cinder-moth 58.3/59.4 | -1 cave-olm +1 sulfur-cinder-moth 66.7/58.8
+round 2: cur 62.5/66.3; 21 legal, 21 read + 6 predicted (of 38); top: -1 hawthorn-shieldbug +1 sulfur-cinder-moth 62.5/61.9 | -1 sulfur-cinder-moth +1 cave-olm 66.7/58.8 | -1 gallery-orb-weaver +1 sulfur-cinder-moth 62.5/55
+no nearer move
+RESULT 8-3 {"blind-cave-fish":4,"cave-olm":2,"gallery-orb-weaver":4,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"sulfur-cinder-moth":2} 66.3 {} moves: -2 cave-olm +2 sulfur-cinder-moth problems: []
+START 8-7 13:51:28
+8-7 target 60 (52-68) size 14 start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} problems []
+start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 13.1
+round 1: cur 4.2/13.1; 23 legal, 23 read + 6 predicted (of 49); top: -1 corpse-flower-beetle +1 cave-olm 12.5/13.1 | -1 blind-cave-fish +1 sulfur-cinder-moth 12.5/6.3 | -1 blind-cave-fish -1 corpse-flower-beetle +2 sulfur-cinder-moth 12.5/5
+no nearer move
+RESULT 8-7 {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 13.1 {} moves:  problems: []
+START 17-7 13:51:58
+17-7 target 60 (52-68) size 19 start {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":3,"ringed-seal":4} problems []
+start {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":3,"ringed-seal":4} 40
+round 1: cur 50/40; 23 legal, 23 read + 6 predicted (of 47); top: -1 polar-bear +1 arctic-tern 41.7/43.8 | -1 elderhorn-monarch +1 briarback-hedgehog 41.7/37.5 | -1 glacier-yak +1 arctic-tern 45.8/31.3
+round 2: cur 41.7/43.8; 23 legal, 23 read + 6 predicted (of 46); top: -1 arctic-tern +1 polar-bear 50/40 | -1 warhorse-charger +1 cataphract-destrier 45.8/31.9 | -1 glacier-yak +1 polar-bear 45.8/31.3
+no nearer move
+RESULT 17-7 {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4} 43.8 {} moves: -1 polar-bear +1 arctic-tern problems: []
+START 18-4 13:53:32
+18-4 target 62 (54-70) size 18 start {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4} problems []
+start {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4} 96.9
+round 1: cur 95.8/96.9; 32 legal, 32 read + 6 predicted (of 17); top: -5 armadillo-guard +5 meerkat-sentry 91.7/95.6 | -5 armadillo-guard -2 barrel-cactus +5 meerkat-sentry +1 bison-bulldozer +1 sandstorm-roc 83.3/96.3 | -5 armadillo-guard -2 barrel-cactus +5 meerkat-sentry +2 caustic-scorpion 87.5/98.1
+round 2: cur 91.7/95.6; 32 legal, 32 read + 6 predicted (of 9); top: -2 barrel-cactus +1 gallery-orb-weaver +1 sandstorm-roc 87.5/94.4 | -2 barrel-cactus +1 bison-bulldozer +1 sandstorm-roc 83.3/96.3 | -2 barrel-cactus +2 caustic-scorpion 87.5/98.1
+round 3: cur 87.5/94.4; 15 legal, 15 read + 6 predicted (of 31); top: -1 gallery-orb-weaver +1 bison-bulldozer 83.3/96.3 | -4 horned-lizard +4 caustic-scorpion 91.7/96.3 | -1 gallery-orb-weaver +1 sunbittern-strider 87.5/96.9
+no nearer move
+RESULT 18-4 {"ant-scout":1,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":5,"meerkat-sentry":5,"gallery-orb-weaver":1} 94.4 {} moves: -5 armadillo-guard +5 meerkat-sentry ; -2 barrel-cactus +1 gallery-orb-weaver +1 sandstorm-roc problems: []
+START 18-A-4 13:55:53
+18-A-4 target 77.1 (69.1-85.1) size 15 side (min 11) start {"barrel-cactus":2,"caustic-scorpion":2,"dromedary":2,"dune-jackal":4,"sand-widow":4,"roadrunner-courier":1} problems []
+start {"barrel-cactus":2,"caustic-scorpion":2,"dromedary":2,"dune-jackal":4,"sand-widow":4,"roadrunner-courier":1} 100
+round 1: cur 100/100; 38 legal, 38 read + 6 predicted (of 21); top: -2 dromedary -2 barrel-cactus +2 pale-oryx +2 caustic-scorpion 91.7/96.3 | -2 dromedary -1 barrel-cactus +2 pale-oryx +1 caustic-scorpion 91.7/98.1 | -2 barrel-cactus +2 pale-oryx 95.8/98.1
+round 2: cur 91.7/96.3; 46 legal, 46 read + 6 predicted (of 40); top: -1 caustic-scorpion +1 barrel-cactus 91.7/98.1 | -1 caustic-scorpion +1 roadrunner-courier 95.8/99.4 | -3 caustic-scorpion +3 roadrunner-courier 95.8/99.4
+no nearer move
+RESULT 18-A-4 {"caustic-scorpion":4,"dune-jackal":4,"sand-widow":4,"roadrunner-courier":1,"pale-oryx":2} 96.3 {} moves: -2 dromedary -2 barrel-cactus +2 pale-oryx +2 caustic-scorpion problems: []
+LANE DONE 13:57:33

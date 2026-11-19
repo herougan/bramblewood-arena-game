@@ -1,0 +1,15 @@
+START 17-7 14:19:21
+17-7 target 60 (52-68) size 19 start {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4} problems []
+start {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4} 40
+round 1: cur 37.5/40; 23 legal, 23 read + 10 predicted (of 49); top: -4 arctic-tern +3 ice-crevasse-wolf +1 polar-bear 54.2/44.4 | -4 arctic-tern -4 ringed-seal +3 ice-crevasse-wolf +1 polar-bear +4 harbor-seal 45.8/40 | -4 arctic-tern -1 warhorse-charger +3 ice-crevasse-wolf +1 polar-bear +1 cataphract-destrier 45.8/39.4 | -1 snow-ermine +1 polar-bear 45.8/36.9
+round 2: cur 54.2/44.4; 17 legal, 17 read + 10 predicted (of 43); top: -1 warhorse-charger -4 ringed-seal +1 cataphract-destrier +4 harbor-seal 54.2/34.4 | -4 ringed-seal -1 warhorse-charger +4 harbor-seal +1 pinecone-sapper 58.3/33.8 | -4 ringed-seal -1 warhorse-charger +4 harbor-seal +1 briarback-hedgehog 58.3/30.6 | -4 ringed-seal -1 warhorse-charger +4 harbor-seal +1 cone-cutter-squirrel 58.3/25.6
+no nearer move
+RESULT 17-7 {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"ringed-seal":4,"ice-crevasse-wolf":3} 44.4 {} moves: -4 arctic-tern +3 ice-crevasse-wolf +1 polar-bear problems: []
+START 8-3 14:26:31
+8-3 target 80 (72-88) size 14 start {"blind-cave-fish":4,"cave-olm":4,"gallery-orb-weaver":4,"hawthorn-shieldbug":1,"rot-swollen-carcass":1} problems []
+start {"blind-cave-fish":4,"cave-olm":4,"gallery-orb-weaver":4,"hawthorn-shieldbug":1,"rot-swollen-carcass":1} 65.6
+round 1: cur 79.2/65.6; 26 legal, 26 read + 10 predicted (of 37); top: -1 hawthorn-shieldbug +1 sulfur-cinder-moth 66.7/66.9 | -1 rot-swollen-carcass +1 sulfur-cinder-moth 66.7/66.9 | -1 hawthorn-shieldbug -1 rot-swollen-carcass +1 glow-worm +1 sulfur-cinder-moth 62.5/61.3 | -1 hawthorn-shieldbug +1 glow-worm 66.7/50
+round 2: cur 66.7/66.9; 29 legal, 29 read + 10 predicted (of 47); top: -1 rot-swollen-carcass +1 hawthorn-shieldbug 66.7/66.9 | -1 sulfur-cinder-moth +1 hawthorn-shieldbug 79.2/65.6 | -2 cave-olm +2 sulfur-cinder-moth 62.5/59.4 | -1 sulfur-cinder-moth +1 glow-worm 66.7/50
+no nearer move
+RESULT 8-3 {"blind-cave-fish":4,"cave-olm":4,"gallery-orb-weaver":4,"rot-swollen-carcass":1,"sulfur-cinder-moth":1} 66.9 {} moves: -1 hawthorn-shieldbug +1 sulfur-cinder-moth problems: []
+LANE DONE 14:27:46

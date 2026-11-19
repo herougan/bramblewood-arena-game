@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package REFIT9: swap-only re-fit of the Maps 0-20 fights FOLD8's card fold moved)
+- Road decks (swaps only; leaders, first-clear cards, sizes and K14 kept), seed 9100, 400 games, before -> after (target): 3-2 32.3 -> 76 (84), 3-7 8 -> 34 (40), 5-1 64.5 -> 86 (90), 8-3 59 -> 63.8 (80), 17-7 38 -> 42.5 (60), 1-A-1 65.8 -> 77.8 (90), 7-A-2 58 -> 73.5 (70), 7-A-3 35 -> 69.3 (70), 7-A-4 28.8 -> 58.8 (60), 7-A-5 19.5 -> 43.3 (40). Main beyond 20: 10 -> 5, side 10 -> 6.
+- Each kept only on 2+ points closed on the mean of two unused seed sets (85100 / 86100; 8-3's second step 87100 / 88100). No swap held for 8-7 (8, target 60), 18-4, 18-A-4/6/7 and 10-A-5 (decisions REFIT7-1 / FOLD8-1). Files: `docs/balance/refit9/`.
+
 - 2026-11-19 (UIFIN3): while the pack opener is open, reward toasts drop to the bottom edge (newest two only), so the "2 more in this set, 2 after" line stays readable on phone and desktop.
 ## 2026-11-19 (package REFIT8: swap-only re-fit of the 17 Maps 0-20 fights REFIT7 left 20+ off)
 - Road decks (swaps only; leaders, first-clear cards, sizes and K14 kept): 2-2 Pincushion Urchin x4 -> Limpet Clinger x4; 4-5 Grass Snake x4 -> Slow-worm x4; 17-6 Ice Crevasse Wolf x3 + Harbor Seal x4 -> Polar Bear, Snow Ermine, Warhorse Charger, Ringed Seal x4; 17-8 Pinecone Sapper, Warhorse Charger, Ringed Seal x4 -> Briarback Hedgehog, Cataphract Destrier, Harbor Seal x4. Seed 9100, 400 games: 2-2 47.8 -> 61.3 (target 80), 4-5 25.8 -> 31.8 (40, in band), 17-6 31.8 -> 48.5 (65), 17-8 13.8 -> 19 (40).
