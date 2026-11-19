@@ -4681,5 +4681,20 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Un disparador Cada turno con precio: la Madera solo se paga si se activa. Las unidades actúan en el orden del Mantenimiento, así que una Cantera que actúa antes puede alimentar una Fundición.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Un disparador Cada turno: apagado mientras espera, está aturdida, congelada o dormida. Sin casillas libres, nada aparece.",
  "Deliver": "Entregar",
- "Every Turn": "Cada turno"
+ "Every Turn": "Cada turno",
+ "Empower": "Potenciar",
+ "Empower all allies": "Potenciar a todos los aliados",
+ "Embrittle": "Fragilizar",
+ "Its hits make the target Fragile for a round.": "Sus golpes vuelven Frágil al objetivo durante una ronda.",
+ "Its hits make the target Fragile for {n} rounds.": "Sus golpes vuelven Frágil al objetivo durante {n} rondas.",
+ "takes double damage from every hit.": "recibe el doble de daño de cada golpe.",
+ "From Embrittle, it wears off one round each upkeep, like Web.": "Si viene de Fragilizar, se desgasta una ronda en cada mantenimiento, como Telaraña.",
+ "{att} makes {name} Fragile ({n}).": "{att} vuelve Frágil a {name} ({n}).",
+ "Fragile": "Frágil",
+ "Fragile for {n}: takes double damage": "Frágil durante {n}: recibe el doble de daño",
+ "Its hits and shots deal {n} more to Frozen, Petrified or heavily armored units.": "Sus golpes y disparos hacen {n} más a unidades congeladas, petrificadas o muy acorazadas.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Fragile (Embrittle), Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun.": "Quita hasta N debilitaciones físicas de un objetivo elegido (esta carta por defecto): Sangrado, Cicatriz, Corrosión, Frágil (Fragilizar), Expuesto, Explotar, Vulnerable, Debilucha, Choque, Tambaleo, Armadura rota, Intimidación. Vacío: todas. No Veneno, Congelación ni Aturdimiento.",
+ "Mistwalker": "Caminante de niebla",
+ "Plain Mistwalker gives Evasive. Fog: Thick Fog or the Mist.": "Caminante de niebla simple da Evasivo. Niebla: Niebla espesa o la Bruma.",
+ "While it's on your board, your units don't miss in the dark, nor does the enemy facing it. Reveals Invisible and Stealth enemies in its column and the ones beside it.": "Mientras esté en tu tablero, tus unidades no fallan en la oscuridad, ni el enemigo de enfrente. Revela enemigos Invisibles y con Sigilo en su columna y las de al lado."
 }

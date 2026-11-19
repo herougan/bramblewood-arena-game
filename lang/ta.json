@@ -4684,5 +4684,20 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "விலையுடன் கூடிய ஒவ்வொரு திருப்பத் தூண்டி: அது செயல்படும்போது மட்டுமே மரம் செலுத்தப்படும். அலகுகள் பராமரிப்பு வரிசையில் செயல்படும், எனவே முதலில் செயல்படும் கல்குவாரி ஒரு உருக்காலைக்கு ஊட்டலாம்.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "ஒவ்வொரு திருப்பத் தூண்டி: காத்திருக்கும்போது, மயங்கும்போது, உறைந்தபோது, உறங்கும்போது செயல்படாது. காலியிடம் இல்லையெனில் எதுவும் பிறக்காது.",
  "Deliver": "வழங்கு",
- "Every Turn": "ஒவ்வொரு திருப்பம்"
+ "Every Turn": "ஒவ்வொரு திருப்பம்",
+ "Empower": "வலுப்படுத்து",
+ "Empower all allies": "எல்லாக் கூட்டாளிகளையும் வலுப்படுத்து",
+ "Embrittle": "நொறுக்கு",
+ "Its hits make the target Fragile for a round.": "இதன் தாக்குதல்கள் இலக்கை ஒரு சுற்றுக்கு உடையக்கூடியதாக்கும்.",
+ "Its hits make the target Fragile for {n} rounds.": "இதன் தாக்குதல்கள் இலக்கை {n} சுற்றுகளுக்கு உடையக்கூடியதாக்கும்.",
+ "takes double damage from every hit.": "ஒவ்வொரு தாக்குதலிலும் இரட்டை சேதம் பெறும்.",
+ "From Embrittle, it wears off one round each upkeep, like Web.": "நொறுக்கு மூலம் வந்தால், வலை போல ஒவ்வொரு பராமரிப்பிலும் ஒரு சுற்று குறையும்.",
+ "{att} makes {name} Fragile ({n}).": "{att} {name}-ஐ உடையக்கூடியதாக்குகிறது ({n}).",
+ "Fragile": "உடையக்கூடியது",
+ "Fragile for {n}: takes double damage": "{n}-க்கு உடையக்கூடியது: இரட்டை சேதம் பெறும்",
+ "Its hits and shots deal {n} more to Frozen, Petrified or heavily armored units.": "இதன் தாக்குதல்களும் எய்தல்களும் உறைந்த, கல்லான அல்லது கனத்த கவச அலகுகளுக்கு {n} அதிகம் தரும்.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Fragile (Embrittle), Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun.": "தேர்ந்த இலக்கிலிருந்து (இயல்பாக இந்த அட்டை) N வரை உடல் பலவீனங்களை நீக்கும்: இரத்தக் கசிவு, தழும்பு, அரிப்பு, உடையக்கூடியது (நொறுக்கு), வெளிப்பாடு, சுரண்டல், பாதிப்பு, பலவீனம், மின்னதிர்ச்சி, தடுமாற்றம், கிழிந்த கவசம், அச்சுறுத்தல். காலியெனில்: அனைத்தும். நஞ்சு, உறைவு, திகைப்பு அல்ல.",
+ "Mistwalker": "பனிநடையன்",
+ "Plain Mistwalker gives Evasive. Fog: Thick Fog or the Mist.": "வெறும் பனிநடையன் நழுவலைத் தரும். மூடுபனி: அடர் மூடுபனி அல்லது பனிமூட்டம்.",
+ "While it's on your board, your units don't miss in the dark, nor does the enemy facing it. Reveals Invisible and Stealth enemies in its column and the ones beside it.": "அது உங்கள் பலகையில் இருக்கும்வரை, உங்கள் அலகுகளும் எதிரே உள்ள எதிரியும் இருளில் தவறாது. அதன் நெடுவரிசையிலும் அருகிலும் உள்ள மறைந்த, பதுங்கும் எதிரிகளை வெளிப்படுத்தும்."
 }

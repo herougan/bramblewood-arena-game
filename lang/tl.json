@@ -4682,5 +4682,20 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Isang trigger na Bawat Turn na may presyo: binabayaran lang ang Kahoy kapag tumama ito. Kumikilos ang mga unit ayon sa ayos ng upkeep, kaya ang Tibagan na unang kumilos ay makapagpapakain sa Pandayan.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Isang trigger na Bawat Turn: patay habang Naghihintay, Stunned, Frozen o Tulog. Walang bakanteng puwesto, walang lalabas.",
  "Deliver": "Ihatid",
- "Every Turn": "Bawat Turn"
+ "Every Turn": "Bawat Turn",
+ "Empower": "Palakasin",
+ "Empower all allies": "Palakasin ang lahat ng kakampi",
+ "Embrittle": "Pamarupok",
+ "Its hits make the target Fragile for a round.": "Ginagawang Marupok ng mga tama nito ang target nang isang round.",
+ "Its hits make the target Fragile for {n} rounds.": "Ginagawang Marupok ng mga tama nito ang target nang {n} round.",
+ "takes double damage from every hit.": "dobleng pinsala ang natatanggap sa bawat tama.",
+ "From Embrittle, it wears off one round each upkeep, like Web.": "Mula sa Pamarupok, nababawasan ng isang round tuwing upkeep, gaya ng Web.",
+ "{att} makes {name} Fragile ({n}).": "Ginawang Marupok ni {att} si {name} ({n}).",
+ "Fragile": "Marupok",
+ "Fragile for {n}: takes double damage": "Marupok nang {n}: dobleng pinsala",
+ "Its hits and shots deal {n} more to Frozen, Petrified or heavily armored units.": "Ang mga tama at tira nito ay {n} na dagdag sa mga unit na Frozen, Petrified o makapal ang baluti.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Fragile (Embrittle), Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun.": "Alisin ang hanggang N pisikal na debuff ng napiling target (ang kard na ito kung wala): Pagdurugo, Peklat, Kalawang, Marupok (Pamarupok), Nalantad, Samantalahin, Bulnerable, Mahina, Kuryente, Pagsuray, punit na Baluti, Pananakot. Walang laman: lahat. Hindi Lason, Yelo o Pagkatigil.",
+ "Mistwalker": "Manlalakad sa Ulap",
+ "Plain Mistwalker gives Evasive. Fog: Thick Fog or the Mist.": "Ang simpleng Manlalakad sa Ulap ay nagbibigay ng Mailap. Ulap: Makapal na Ulap o ang Ambon.",
+ "While it's on your board, your units don't miss in the dark, nor does the enemy facing it. Reveals Invisible and Stealth enemies in its column and the ones beside it.": "Habang nasa board mo ito, hindi sasablay sa dilim ang mga unit mo, pati ang kaaway sa harap nito. Inilalantad ang mga kaawayng Invisible at Stealth sa hanay nito at sa katabi."
 }

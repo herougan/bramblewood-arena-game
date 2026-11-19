@@ -4683,5 +4683,20 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Um gatilho A cada turno com preço: a Madeira só é paga se disparar. As unidades agem na ordem da Manutenção, por isso uma Pedreira que age primeiro pode alimentar uma Fundição.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Um gatilho A cada turno: desligado enquanto espera, está atordoada, congelada ou adormecida. Sem casas livres, nada aparece.",
  "Deliver": "Entregar",
- "Every Turn": "A cada turno"
+ "Every Turn": "A cada turno",
+ "Empower": "Fortalecer",
+ "Empower all allies": "Fortalecer todos os aliados",
+ "Embrittle": "Fragilizar",
+ "Its hits make the target Fragile for a round.": "Seus golpes deixam o alvo Frágil por uma ronda.",
+ "Its hits make the target Fragile for {n} rounds.": "Seus golpes deixam o alvo Frágil por {n} rondas.",
+ "takes double damage from every hit.": "sofre o dobro de dano de cada golpe.",
+ "From Embrittle, it wears off one round each upkeep, like Web.": "Vindo de Fragilizar, desgasta uma ronda a cada manutenção, como a Teia.",
+ "{att} makes {name} Fragile ({n}).": "{att} deixa {name} Frágil ({n}).",
+ "Fragile": "Frágil",
+ "Fragile for {n}: takes double damage": "Frágil por {n}: sofre o dobro de dano",
+ "Its hits and shots deal {n} more to Frozen, Petrified or heavily armored units.": "Seus golpes e disparos causam {n} a mais em unidades congeladas, petrificadas ou muito blindadas.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Fragile (Embrittle), Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun.": "Remove até N enfraquecimentos físicos de um alvo escolhido (esta carta por defeito): Sangramento, Cicatriz, Corrosão, Frágil (Fragilizar), Exposto, Explorar, Vulnerável, Fraco, Choque, Cambaleio, Armadura rasgada, Intimidação. Vazio: todos. Não Veneno, Congelamento nem Atordoamento.",
+ "Mistwalker": "Caminhante da névoa",
+ "Plain Mistwalker gives Evasive. Fog: Thick Fog or the Mist.": "Caminhante da névoa simples dá Evasivo. Nevoeiro: Nevoeiro denso ou a Bruma.",
+ "While it's on your board, your units don't miss in the dark, nor does the enemy facing it. Reveals Invisible and Stealth enemies in its column and the ones beside it.": "Enquanto estiver no teu tabuleiro, as tuas unidades não falham no escuro, nem o inimigo em frente. Revela inimigos Invisíveis e Furtivos na sua coluna e nas do lado."
 }

@@ -1655,7 +1655,7 @@ const ACTION_DEFS = [
   // single-stat buff, same as before. The 3 canonical cards that used the old self-only actions
   // were migrated to who:'self' with the matching amount field; the 0 that used buffAlly needed
   // no migration.
-  {key:'buff', label:'Buff', fields:['who','sub','targets','amount','amount2'], desc:'Give +Attack/+Health to a target: yourself, an ally, your Kin or an enemy. Effects last for good unless they say "until end of turn".'},
+  {key:'buff', label:TX('ui.skn-empower') /* DEC20-SKILLS (2026-11-19, owner SKN1-11 a): Empower: {who} {what}; the key stays buff */, fields:['who','sub','targets','amount','amount2'], desc:'Give +Attack/+Health to a target: yourself, an ally, your Kin or an enemy. Effects last for good unless they say "until end of turn".'},
   // Debuff (2026-09-30, generalizes the old Debuff Attack the same way, now also lowering Health
   // — floored at 1, it weakens rather than kills; pair with Deal damage or Exile for an actual
   // kill) so Buff and Debuff are exact mirrors of each other. Self-targeting a debuff always lands
@@ -3124,7 +3124,7 @@ const STATUS_KEYWORDS = [
   {k:'shield', re:/\b(shield)\b/gi, cs:true, name:'Shield', c:'#3d8fd1', text:'temporary Health that soaks damage first and doesn’t come back.'},
   // 2026-10-17 (user: "Wet units just take +N damage by default, for every wet counter. Can see this in codex instead."): the general Wet
   // rule (the engine's wetCountOf / wetShockBonus). cs: the game word only, so "wet ground" in plain prose stays plain.
-  {k:'brittle', re:/\b(brittle)\b/gi, cs:true, name:TX('ui.skn-brittle'), c:'#7fa7bf', text:TX('ui.st-brittle'), codex:TX('ui.stx-brittle')}, // 2026-10-19 (package GI): Frozen for Shatter
+  {k:'brittle', re:/\b(fragile)\b/gi, cs:true, name:TX('ui.eng36-st-brittle'), c:'#7fa7bf', text:TX('ui.st-brittle'), codex:TX('ui.stx-brittle')}, // 2026-10-19 (package GI): Frozen for Shatter; DEC20-SKILLS (2026-11-19, SKN1-13): Embrittle gives Fragile (x2 taken)
   {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:TX('ui.st-wet'), codex:TX('ui.stx-wet')} /* 2026-10-18 (package D): terse; where the water counts is in the Codex */, // 2026-10-18 (owner 15:05): the Flood wets every land unit, flyers stay dry
 ];
 // Keywords everywhere (2026-10-12, user: "Highlight keywords like pitch etc. Also, if the keyword has colour, give it some
@@ -7463,7 +7463,7 @@ function ui32CounterRows(c){
   add('📿', N('prayerTokens'), prayerTokenTip(N('prayerTokens')));
   add('📯', N('inspTokens'), TX('ui.eng21-insp-tip', {n: N('inspTokens'), atk: c.inspired != null ? c.inspired : N('inspTokens')}));
   add('😨', N('dauntN'), TX('ui.en8-daunt-badge', {n: N('dauntN')}));
-  add('🫙', N('brittle'), TX('ui.brittle-tip', {n: N('brittle')}));
+  add('🪟', N('brittle'), TX('ui.brittle-tip', {n: N('brittle')})); // DEC20-SKILLS (2026-11-19): Embrittle's Fragile
   { const e = ((getCardDefs()[c.defId] || {}).effects) || {};
     add('🫐', sk2Val(c, 'sk2Berries'), TX('ui.sk2-berries-tip', {n: sk2Val(c, 'sk2Berries'), b: SK2_UI.foragingBerries}));
     add('🦝', sk2Val(c, 'sk2Scavenge'), TX('ui.sk2-scavenge-tip', {n: sk2Val(c, 'sk2Scavenge'), m: sk2ScavengeEvery(e)}));
@@ -48457,7 +48457,7 @@ function mistPillHTML(m){
 }
 function mistLines(m){ return [MISTY_TEXT].concat(mistHidesMoon(m) ? [MISTY_MOON_TEXT] : []); }
 // 2026-11-16 (SKN1, owner workbook note 11-16: "Fog should be a field tracker ... like sun and tide ... It would just write 'Fog' in a pill"): a Fog pill
-// while the fight's field is fog (Thick Fog, rules.fog); the Mist has its own pill. The Fog skills (Fog – {…}) read the same state (engine en6Fog).
+// while the fight's field is fog (Thick Fog, rules.fog); the Mist has its own pill. The Mistwalker skills (Mistwalker – {…}, key fog; named Fog until DEC20-SKILLS, SKN1-19 b) read the same state (engine en6Fog).
 function fogPillHTML(m){
   const fr = matchFieldRules(m) || {}; if(!m || m.over || fr.misty || !(fieldEffectOf(m) === 'fog' || fr.fog)) return '';
   const nm = TX('ui.skn1-fog'), line = (FIELD_TEXT.fog && FIELD_TEXT.fog.text) || '';
@@ -50909,7 +50909,7 @@ function lockShards(lock){
 function creativityTip(n){ return TX('ui.creativity-tip', {n}); }
 function prayerTokenTip(n){ return TX('ui.prayer-token-tip', {n}); } // 2026-10-19 (package E): the 📿 badge // 2026-10-18 (package U): Creativity counters, reserved
 function exposedTip(n){ return TX('ui.exposed-tip', {n, s: n === 1 ? '' : 's'}); } // 2026-10-18 (package D): terse // 2026-10-16: counters
-const STATUS_END_NAMES = {pinDown:TX('ui.e14-stn-pinned') /* ENG14 */, lassoed:TX('ui.eng15-stn-lassoed') /* ENG15 */, brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, webbed:'Web', poison:'Poison' /* ENG33 */, bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
+const STATUS_END_NAMES = {pinDown:TX('ui.e14-stn-pinned') /* ENG14 */, lassoed:TX('ui.eng15-stn-lassoed') /* ENG15 */, brittle:TX('ui.eng36-st-brittle') /* 2026-10-19 (GI); DEC20-SKILLS: Embrittle's Fragile */, webbed:'Web', poison:'Poison' /* ENG33 */, bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 // ==== Package SK3 (2026-10-19): the board's side of the new skills (rules in bramblewood-engine.js, the Package SK3 block): the replay
 // snapshot's counters, the status chips (🚫 Silenced, ⏸️ Stymied, 😫 Exhausted, 🪨 Petrified N, 🧲 Grounded, 🦨 Stench with its green
 // wavy-line look), the battle-log lines and floats. Every string is a TX key.
@@ -53218,7 +53218,7 @@ function ui14HitBonus(ev){
   const t = Object.assign({}, live || {}, rc, {uid: ev.targetUid, defId: rc.defId || ev.targetDefId});
   let n = 0, wet = false;
   if(e.hunter){ const vs = E.hunterVsOf ? E.hunterVsOf(e) : 'weak';
-    const marked = vs === 'weaker' ? false /* SKAUD1: needs the attacker's Attack; no number shown */ : vs === 'wounded' ? !!(E.sk3ExecLow && E.sk3ExecLow(t)) : vs === 'frozen' ? (t.frozen > 0 || t.brittle > 0) : vs === 'weak' ? !!(E.sk3Weak && E.sk3Weak(t)) : vs === 'bleed' ? t.bleed > 0 : vs === 'exposed' ? t.exposed > 0
+    const marked = vs === 'weaker' ? false /* SKAUD1: needs the attacker's Attack; no number shown */ : vs === 'wounded' ? !!(E.sk3ExecLow && E.sk3ExecLow(t)) : vs === 'frozen' ? (t.frozen > 0) /* DEC20-SKILLS: Brittle no longer counts */ : vs === 'weak' ? !!(E.sk3Weak && E.sk3Weak(t)) : vs === 'bleed' ? t.bleed > 0 : vs === 'exposed' ? t.exposed > 0
       : vs === 'wet' ? !!(E.wetCountOf && E.wetCountOf(live || t) > 0) : (t.poison > 0 || t.gpoison > 0);
     if(marked){ n += num(e.hunter); wet = vs === 'wet'; } }
   if(e.executioner && E.sk3ExecLow && E.sk3ExecLow(t)) n += num(e.executioner);
@@ -54985,7 +54985,7 @@ function giVfx(ev){
 // The Brittle badge, and Prayer Ward's 🧿 while its ward is up (it holds Prayer tokens).
 function giStatusBadges(c, badges){
   try{ const qn = qsSinkN(c); if(qn) badges.push(`<span class="abadge qs-pip" title="${escapeAttr(TX('ui.qs-pip-tip', {n: qn}))}">⏬</span>`); }catch(e){} // ENG16 (2026-11-02, JJ19): Quicksand will take it at the round's end
-  if(c.brittle > 0) badges.push(`<span class="abadge brittle" title="${escapeAttr(TX('ui.brittle-tip', {n: c.brittle}))}">🫙${c.brittle}</span>`);
+  if(c.brittle > 0) badges.push(`<span class="abadge brittle" title="${escapeAttr(TX('ui.brittle-tip', {n: c.brittle}))}">🪟${c.brittle}</span>`); // DEC20-SKILLS (2026-11-19): Fragile's 🪟
   const e = ((getCardDefs()[c.defId] || {}).effects) || {};
   if(e.prayerWard && (c.prayerTokens||0) > 0) badges.push(`<span class="abadge prayer-ward" title="${escapeAttr(TX('ui.prayer-ward-tip', {n: numOr(e.prayerWard, 1)}))}">🧿${numOr(e.prayerWard, 1)}</span>`);
 }

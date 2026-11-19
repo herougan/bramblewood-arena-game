@@ -4683,5 +4683,20 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Pemicu Tiap Giliran dengan harga: Kayu hanya dibayar saat pemicu berjalan. Unit bertindak sesuai urutan pemeliharaan, jadi Tambang Batu yang bertindak dulu bisa memasok Peleburan.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Pemicu Tiap Giliran: mati selama Menunggu, Pingsan, Beku, atau Tertidur. Tanpa petak kosong, tak ada yang muncul.",
  "Deliver": "Antar",
- "Every Turn": "Tiap Giliran"
+ "Every Turn": "Tiap Giliran",
+ "Empower": "Perkuat",
+ "Empower all allies": "Perkuat semua sekutu",
+ "Embrittle": "Merapuhkan",
+ "Its hits make the target Fragile for a round.": "Serangannya membuat target Rapuh selama satu ronde.",
+ "Its hits make the target Fragile for {n} rounds.": "Serangannya membuat target Rapuh selama {n} ronde.",
+ "takes double damage from every hit.": "menerima kerusakan ganda dari tiap serangan.",
+ "From Embrittle, it wears off one round each upkeep, like Web.": "Dari Merapuhkan, berkurang satu ronde tiap upkeep, seperti Jaring.",
+ "{att} makes {name} Fragile ({n}).": "{att} membuat {name} Rapuh ({n}).",
+ "Fragile": "Rapuh",
+ "Fragile for {n}: takes double damage": "Rapuh selama {n}: menerima kerusakan ganda",
+ "Its hits and shots deal {n} more to Frozen, Petrified or heavily armored units.": "Serangan dan tembakannya memberi {n} lebih ke unit Beku, Membatu, atau berzirah tebal.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Fragile (Embrittle), Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun.": "Hapus hingga N pelemahan fisik dari target pilihan (kartu ini secara bawaan): Pendarahan, Luka, Korosi, Rapuh (Merapuhkan), Terungkap, Eksploitasi, Rentan, Lemah, Sengatan, Terhuyung, Zirah koyak, Gentar. Kosong: semua. Bukan Racun, Beku, atau Pingsan.",
+ "Mistwalker": "Penjelajah Kabut",
+ "Plain Mistwalker gives Evasive. Fog: Thick Fog or the Mist.": "Penjelajah Kabut biasa memberi Mengelak. Kabut: Kabut Tebal atau Halimun.",
+ "While it's on your board, your units don't miss in the dark, nor does the enemy facing it. Reveals Invisible and Stealth enemies in its column and the ones beside it.": "Selama ia di papanmu, unitmu tidak meleset dalam gelap, begitu pula musuh di depannya. Mengungkap musuh Tak Terlihat dan Siluman di kolomnya dan di sebelahnya."
 }

@@ -4682,5 +4682,20 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "帶代價的每回合觸發：只有真正觸發時才支付木材。單位按維持階段的順序行動，所以先行動的採石可以供給冶煉。",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "每回合觸發：等待、暈眩、冰凍或睡眠時無效。沒有空格就不生成。",
  "Deliver": "送達",
- "Every Turn": "每回合"
+ "Every Turn": "每回合",
+ "Empower": "強化",
+ "Empower all allies": "強化所有友軍",
+ "Embrittle": "致脆",
+ "Its hits make the target Fragile for a round.": "它的攻擊使目標脆弱1回合。",
+ "Its hits make the target Fragile for {n} rounds.": "它的攻擊使目標脆弱{n}回合。",
+ "takes double damage from every hit.": "每次受擊承受雙倍傷害。",
+ "From Embrittle, it wears off one round each upkeep, like Web.": "來自致脆時，每次維護階段減少1回合，與蛛網相同。",
+ "{att} makes {name} Fragile ({n}).": "{att}使{name}脆弱（{n}）。",
+ "Fragile": "脆弱",
+ "Fragile for {n}: takes double damage": "脆弱{n}：受到雙倍傷害",
+ "Its hits and shots deal {n} more to Frozen, Petrified or heavily armored units.": "它的攻擊和射擊對冰凍、石化或重甲單位多造成{n}點傷害。",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Fragile (Embrittle), Exposed, Exploit, Vulnerable, Feeble, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun.": "移除所選目標（預設此卡）至多N個物理減益：流血、傷疤、腐蝕、脆弱（致脆）、暴露、破綻、易傷、孱弱、感電、踉蹌、破損護甲、威嚇。留空：全部。不含中毒、冰凍和暈眩。",
+ "Mistwalker": "霧行者",
+ "Plain Mistwalker gives Evasive. Fog: Thick Fog or the Mist.": "普通的霧行者給予閃避。霧：濃霧或薄霧。",
+ "While it's on your board, your units don't miss in the dark, nor does the enemy facing it. Reveals Invisible and Stealth enemies in its column and the ones beside it.": "它在你的場上時，你的單位和對面的敵方單位在黑暗中都不會落空。顯露它所在列及相鄰列中隱身和潛行的敵人。"
 }
