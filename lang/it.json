@@ -4683,5 +4683,7 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Un innesco Ogni turno con un prezzo: il Legno si paga solo se scatta. Le unità agiscono nell'ordine del mantenimento, quindi una Cava che agisce prima può rifornire una Fonderia.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Un innesco Ogni turno: spento mentre attende, è stordita, congelata o addormentata. Senza caselle libere, niente appare.",
  "Deliver": "Consegna",
- "Every Turn": "Ogni turno"
+ "Every Turn": "Ogni turno",
+ "Learns a skill at Level {n}": "Impara un'abilità al livello {n}",
+ "Not unlocked yet": "Non ancora sbloccato"
 }

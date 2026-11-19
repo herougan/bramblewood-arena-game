@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 UIQ1
+- Card hover panel: the "?" pip is gone from the card art; the "?" line in the description now reads "Learns a skill at Level N" (skill stays hidden) or "Not unlocked yet". The pip stays on card tiles elsewhere (Codex, deck, hand, board). Test `uiq1-2026-11-20`.
+
 ## 2026-11-19 DEC19-DATA
 - Honey Badger Fury attainable (TF5-3 a). Basalt Foundry (m9) takes Malachite Golem, Granite Ox Golem stays on Volcano Lair (LIST1-1 a): m9 list and the nine 19-A fights re-fitted, card-obtain-maps regenerated. Refine note and Elemental Energy card read "Every Turn".
 

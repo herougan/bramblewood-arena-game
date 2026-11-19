@@ -4681,5 +4681,7 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Un disparador Cada turno con precio: la Madera solo se paga si se activa. Las unidades actúan en el orden del Mantenimiento, así que una Cantera que actúa antes puede alimentar una Fundición.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Un disparador Cada turno: apagado mientras espera, está aturdida, congelada o dormida. Sin casillas libres, nada aparece.",
  "Deliver": "Entregar",
- "Every Turn": "Cada turno"
+ "Every Turn": "Cada turno",
+ "Learns a skill at Level {n}": "Aprende una habilidad en el nivel {n}",
+ "Not unlocked yet": "Aún no desbloqueado"
 }

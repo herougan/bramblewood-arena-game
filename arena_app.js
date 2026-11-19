@@ -3949,7 +3949,7 @@ function describeEffects(def, liveCard, opt){
   if(e.immune && e.immune.length) core.push(`<span class="core-line">✳️ Immune: ${e.immune.map(resistOptionLabel).join(', ')}</span>`);
   if(core.length){ const at = lines.length && /^🧬/.test(lines[0]) ? 1 : 0; lines.splice(at, 0, ...core); }
   // (The terrain's "Home ground" line went with the effect, 2026-10-14.)
-  if(def._hiddenSkills) lines.push(`<span class="skill-q-line">${skillQChipHTML()}</span>`); // 2026-10-15: one neutral "?" for the skills not met yet
+  if(def._hiddenSkills) lines.push(`<span class="skill-q-line">${skillQChipHTML()}<span class="uiq1-q-text">${escapeHtml(TX('ui.uiq1-locked'))}</span></span>`); // UIQ1 (2026-11-20): the "?" says what it is // 2026-10-15: one neutral "?" for the skills not met yet
   if(def.token) lines.push(`Token card — spawn-only, never appears in the draftable pool.`);
   if(def.test) lines.push(`🧪 Dev-only`); // 2026-10-10 (user): test cards just say Dev-only
   { const dl = darkMissLine(liveCard); if(dl) lines.push(dl); } // 2026-10-18 (package D): "misses 1/4 the time" in the dark
@@ -7523,8 +7523,9 @@ function lvl11GrowsChipHTML(d){ try{ if(!lvl11LaterRows(d).length) return ''; co
 function eng28LaterSkillsHTML(d){
   try{ const tip = TX('ui.lvl11-grows');
     const rows = lvl11LaterRows(d); if(!rows.length) return '';
-    return `<div class="eng28-later-row">${rows.map(x=>{ const t = adminModeEnabled ? `${tip} (${(skillDefOf(x.key) || {}).label || x.key}, ${TX('ui.codex-skill-lvl', {n: x.lvl})})` : tip;
-      return `<span class="skill-q eng28-later" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">?</span>`; }).join('')}</div>`;
+    // UIQ1 (2026-11-20, owner 11-20 00:01): one line, the "?" with its text: the next level it learns a skill (the skill stays hidden; Admin Mode names them in the tooltip)
+    const lv = Math.min(...rows.map(x=> x.lvl)), say = TX('ui.uiq1-learns', {n: lv}), t = adminModeEnabled ? `${tip} (${rows.map(x=> `${(skillDefOf(x.key) || {}).label || x.key}, ${TX('ui.codex-skill-lvl', {n: x.lvl})}`).join('; ')})` : tip;
+    return `<div class="eng28-later-row"><span class="skill-q eng28-later" title="${escapeAttr(t)}" aria-label="${escapeAttr(say)}">?</span><span class="uiq1-q-text">${escapeHtml(say)}</span></div>`;
   }catch(e){ return ''; }
 }
 function fullCardHTML(defId, liveCard, opts){
@@ -7593,7 +7594,7 @@ function fullCardHTML(defId, liveCard, opts){
   // 2026-10-30 (package CS-C, owner CS-1 "the hover popover shows the Full card plus text"): the Full card (was 150px)
   // 2026-11-18 (UI60, owner 21:29: "on card hover shows the card's level ... primarily for your deck hover and on the battlefield"): opts.showLevel adds a "Lv N" pill under the card (not in pack reveals or the shop)
   const popLv = opts.showLevel ? (opts.shownLevel != null && isFinite(opts.shownLevel) ? opts.shownLevel : Number.isFinite(Number(visualDef.level)) && visualDef.level > 0 ? visualDef.level : getCardLevel(defId)) : null;
-  const visualHTML = `<div class="card-pop-visual${popLv != null ? ' has-lv' : ''}">${cardTileHTML(Object.assign({}, visualDef, {locked:false}), {size:'full', extraClass:'card-pop-visual-tile' + (opts.lookClass ? ' ' + opts.lookClass : '')})}${popLv != null ? `<div class="levelbadge cp-lv" title="${escapeAttr('Level ' + popLv)}">Lv ${popLv}</div>` : ''}</div>`;
+  const visualHTML = `<div class="card-pop-visual${popLv != null ? ' has-lv' : ''}">${cardTileHTML(Object.assign({}, visualDef, {locked:false}), {size:'full', noQ:true /* UIQ1 */, extraClass:'card-pop-visual-tile' + (opts.lookClass ? ' ' + opts.lookClass : '')})}${popLv != null ? `<div class="levelbadge cp-lv" title="${escapeAttr('Level ' + popLv)}">Lv ${popLv}</div>` : ''}</div>`;
   // CSRE (2026-09-20): same zero-cost/zero-wait hiding rule as the card tile itself — no bare
   // "🪙0" or "⏱0" chip in this stat row, and any Grace/Devilry cost is folded in here too
   // (costBadgeParts) instead of only ever showing gold.
@@ -10021,7 +10022,7 @@ function cardTileHTML(d, opts){
     ${nmHTML(d.name||'', costParts, d.wait) /* UI20 */}
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp${ui23Unhealth(d)}"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
-    ${abilityBadges(d, {compact: !!(hand || inMatch), hand: !!hand /* UI5 (2026-10-30, W5) */, live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
+    ${abilityBadges(d, {noQ: !!opts.noQ, compact: !!(hand || inMatch), hand: !!hand /* UI5 (2026-10-30, W5) */, live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
 }
@@ -10497,8 +10498,9 @@ function abilityBadges(d, bopts){
     out.push(`<span class="ab-sk${zeitLitNow(k, bopts) ? ' zeit-live' : ''}" data-sk="${k}"${ui7NoNum ? ` title="${ui7Tip}" aria-label="${ui7Tip}"` : ''}>${iconHTML(k, SKILL_ICON[k] || '✦')}${!ui7NoNum && (typeof v === 'number' || /^\d+$/.test(String(v))) ? n1(v) : ''}</span>`); });
   eng28GenericPips(e, out, bopts, n1); // ENG28 (2026-11-07, owner 23:35 #9): every other skill gets its pip by default
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
-  if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL)
+  if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL) // 2026-10-15 (SKILL_REVEAL)
   if(!(bopts && bopts.live)){ const q = lvl11GrowsChipHTML(d); if(q) out.push(q); } // LVL11 (2026-11-19): it learns another skill as it grows (not on a unit in a fight)
+  if(bopts && bopts.noQ) for(let i = out.length; i--;) if(/class="skill-q/.test(out[i])) out.splice(i, 1); // UIQ1 (2026-11-20, owner 11-20 00:01): no "?" pip on the hover panel's art; its text line says it
   if(!out.length) return '';
   // 2026-10-12 (10:57, user: "Remove the pill completely (fade) together with the contents when theres nothing left inside"):
   // when everything left in the strip is a trigger that is fading out, the strip fades with it.

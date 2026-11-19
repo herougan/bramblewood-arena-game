@@ -3872,7 +3872,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rel3-xp": "+{n} XP",
   "ui.rel3-level": "Level {n}!",
   "ui.uifin2-pile-split": "{a} more in this set, {b} after",
-  "ui.dec19-coop-tip": "Team up with friends in a dungeon"
+  "ui.dec19-coop-tip": "Team up with friends in a dungeon",
+  "ui.uiq1-learns": "Learns a skill at Level {n}",
+  "ui.uiq1-locked": "Not unlocked yet"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -1,0 +1,34 @@
+{
+ "tx": {
+  "ui.uiq1-learns": {
+   "en": "Learns a skill at Level {n}",
+   "fr": "Apprend une compétence au niv. {n}",
+   "de": "Lernt auf Stufe {n} eine Fähigkeit",
+   "es": "Aprende una habilidad en el nivel {n}",
+   "it": "Impara un'abilità al livello {n}",
+   "pt": "Aprende uma habilidade no nível {n}",
+   "tl": "Matututo ng skill sa Level {n}",
+   "ta": "நிலை {n}-இல் ஒரு திறனைக் கற்கும்",
+   "id": "Mempelajari skill di Level {n}",
+   "zh-Hans": "在 {n} 级学会一项技能",
+   "zh-Hant": "在 {n} 級學會一項技能",
+   "ja": "Lv{n}でスキルを覚える",
+   "ko": "Lv {n}에 스킬을 배움"
+  },
+  "ui.uiq1-locked": {
+   "en": "Not unlocked yet",
+   "fr": "Pas encore débloqué",
+   "de": "Noch nicht freigeschaltet",
+   "es": "Aún no desbloqueado",
+   "it": "Non ancora sbloccato",
+   "pt": "Ainda não desbloqueado",
+   "tl": "Hindi pa na-unlock",
+   "ta": "இன்னும் திறக்கப்படவில்லை",
+   "id": "Belum terbuka",
+   "zh-Hans": "尚未解锁",
+   "zh-Hant": "尚未解鎖",
+   "ja": "まだ解放されていません",
+   "ko": "아직 잠금 해제 전"
+  }
+ }
+}
