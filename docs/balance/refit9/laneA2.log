@@ -1,0 +1,17 @@
+START 1-A-1 14:19:21
+1-A-1 target 90 (82-98) size 10 side (min 10) start {"ant-scout":2,"cottontail":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":3} problems []
+start {"ant-scout":2,"cottontail":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":3} 79.4
+round 1: cur 70.8/79.4; 19 legal, 19 read + 10 predicted (of 43); top: -1 chipmunk-cavalry +1 dormouse 87.5/80 | -2 chipmunk-cavalry +2 dormouse 83.3/78.8 | -1 dormouse -2 chipmunk-cavalry +1 meadow-rabbit +2 dormouse 87.5/76.3 | -2 cottontail +2 meadow-rabbit 87.5/74.4
+no nearer move
+RESULT 1-A-1 {"ant-scout":2,"cottontail":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":3} 79.4 {} moves:  problems: []
+START 3-7 14:21:57
+3-7 target 40 (30-49) size 19 start {"cormorant":2,"gannet-nestweaver":4,"kittiwake-flock":4,"peak-condor":3,"limpet-clinger":1,"chipmunk-cavalry":1,"hawk-arrowkeeper":4} problems []
+start {"cormorant":2,"gannet-nestweaver":4,"kittiwake-flock":4,"peak-condor":3,"limpet-clinger":1,"chipmunk-cavalry":1,"hawk-arrowkeeper":4} 40
+RESULT 3-7 {"cormorant":2,"gannet-nestweaver":4,"kittiwake-flock":4,"peak-condor":3,"limpet-clinger":1,"chipmunk-cavalry":1,"hawk-arrowkeeper":4} 40 {} moves:  problems: []
+START 8-7 14:22:25
+8-7 target 60 (52-68) size 14 start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} problems []
+start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 8.1
+round 1: cur 4.2/8.1; 23 legal, 23 read + 10 predicted (of 42); top: -1 corpse-flower-beetle +1 giant-cave-huntsman 16.7/8.8 | -1 blind-cave-fish +1 giant-cave-huntsman 12.5/8.8 | -1 hawthorn-shieldbug +1 cave-olm 12.5/8.1 | -1 corpse-flower-beetle -1 blind-cave-fish +2 giant-cave-huntsman 16.7/5
+no nearer move
+RESULT 8-7 {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 8.1 {} moves:  problems: []
+LANE DONE 14:24:28

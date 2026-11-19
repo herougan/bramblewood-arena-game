@@ -1,0 +1,48 @@
+START 1-A-1 13:47:41
+1-A-1 target 90 (82-98) size 10 side (min 10) start {"ant-scout":2,"cottontail":1,"meadow-rabbit":3,"dormouse":2,"bee-forager":2} problems []
+start {"ant-scout":2,"cottontail":1,"meadow-rabbit":3,"dormouse":2,"bee-forager":2} 67.5
+round 1: cur 66.7/67.5; 22 legal, 22 read + 6 predicted (of 33); top: -3 meadow-rabbit +1 dormouse +2 chipmunk-cavalry 83.3/73.8 | -2 meadow-rabbit +1 dormouse +1 cottontail 79.2/71.3 | -1 meadow-rabbit +1 dormouse 75/70
+round 2: cur 83.3/73.8; 22 legal, 22 read + 6 predicted (of 35); top: -2 dormouse -1 chipmunk-cavalry +2 chipmunk-cavalry +1 cottontail 91.7/76.9 | -2 dormouse +2 chipmunk-cavalry 83.3/72.5 | -2 dormouse +2 meadow-rabbit 83.3/62.5
+round 3: cur 91.7/76.9; 19 legal, 19 read + 6 predicted (of 43); top: -1 cottontail +1 meadow-rabbit 87.5/72.5 | -1 cottontail +1 chipmunk-cavalry 83.3/72.5 | -1 bee-forager +1 chipmunk-cavalry 87.5/62.5
+no nearer move
+RESULT 1-A-1 {"ant-scout":2,"cottontail":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":3} 76.9 {} moves: -3 meadow-rabbit +1 dormouse +2 chipmunk-cavalry ; -2 dormouse -1 chipmunk-cavalry +2 chipmunk-cavalry +1 cottontail problems: []
+START 7-A-3 13:48:55
+7-A-3 target 70 (62-78) size 16 side (min 12) start {"fungus-gnat-cloud":4,"garden-snail":2,"hawthorn-shieldbug":1,"leopard-slug":2,"sleepless-shrew":4,"bombardier-beetle":3} problems []
+start {"fungus-gnat-cloud":4,"garden-snail":2,"hawthorn-shieldbug":1,"leopard-slug":2,"sleepless-shrew":4,"bombardier-beetle":3} 38.1
+round 1: cur 37.5/38.1; 113 legal, 50 read + 6 predicted (of 34); top: -2 fungus-gnat-cloud -1 bombardier-beetle +2 hawthorn-shieldbug +1 rot-swollen-carcass 70.8/63.1 | -4 sleepless-shrew +4 rot-swollen-carcass 70.8/78.1 | -2 bombardier-beetle +2 earthworm 66.7/57.5
+round 2: cur 70.8/63.1; 92 legal, 36 read + 6 predicted (of 42); top: -1 sleepless-shrew +1 leopard-slug 70.8/71.3 | -1 hawthorn-shieldbug +1 leopard-slug 70.8/66.9 | -2 bombardier-beetle +2 leopard-slug 70.8/83.8
+RESULT 7-A-3 {"fungus-gnat-cloud":2,"garden-snail":2,"hawthorn-shieldbug":3,"leopard-slug":3,"sleepless-shrew":3,"bombardier-beetle":2,"rot-swollen-carcass":1} 71.3 {} moves: -2 fungus-gnat-cloud -1 bombardier-beetle +2 hawthorn-shieldbug +1 rot-swollen-carcass ; -1 sleepless-shrew +1 leopard-slug problems: []
+START 7-A-4 13:51:30
+7-A-4 target 60 (52-68) size 14 side (min 10) start {"bombardier-beetle":3,"fungus-gnat-cloud":4,"leopard-slug":3,"planarian-splitter":1,"rot-swollen-carcass":1,"sleepless-shrew":2} problems []
+start {"bombardier-beetle":3,"fungus-gnat-cloud":4,"leopard-slug":3,"planarian-splitter":1,"rot-swollen-carcass":1,"sleepless-shrew":2} 28.8
+round 1: cur 16.7/28.8; 97 legal, 50 read + 6 predicted (of 49); top: -2 bombardier-beetle -4 fungus-gnat-cloud +2 rot-swollen-carcass +2 earthworm +2 planarian-splitter 58.3/60.6 | -3 fungus-gnat-cloud +3 hawthorn-shieldbug 58.3/55.6 | -4 fungus-gnat-cloud +4 hawthorn-shieldbug 62.5/72.5
+RESULT 7-A-4 {"bombardier-beetle":1,"leopard-slug":3,"planarian-splitter":3,"rot-swollen-carcass":3,"sleepless-shrew":2,"earthworm":2} 60.6 {} moves: -2 bombardier-beetle -4 fungus-gnat-cloud +2 rot-swollen-carcass +2 earthworm +2 planarian-splitter problems: []
+START 7-A-5 13:52:39
+7-A-5 target 40 (30-49) size 15 side (min 11) start {"bombardier-beetle":3,"earthworm":1,"fungus-gnat-cloud":4,"puffball-bombardier":3,"rootworm-colony":1,"sleepless-shrew":2,"leopard-slug":1} problems []
+start {"bombardier-beetle":3,"earthworm":1,"fungus-gnat-cloud":4,"puffball-bombardier":3,"rootworm-colony":1,"sleepless-shrew":2,"leopard-slug":1} 18.8
+round 1: cur 16.7/18.8; 66 legal, 44 read + 6 predicted (of 37); top: -3 puffball-bombardier -4 fungus-gnat-cloud +3 rootworm-colony +4 hawthorn-shieldbug 41.7/39.4 | -4 fungus-gnat-cloud -2 puffball-bombardier +4 rot-swollen-carcass +2 rootworm-colony 41.7/39.4 | -4 fungus-gnat-cloud +4 hawthorn-shieldbug 37.5/33.1
+RESULT 7-A-5 {"bombardier-beetle":3,"earthworm":1,"rootworm-colony":4,"sleepless-shrew":2,"leopard-slug":1,"hawthorn-shieldbug":4} 39.4 {} moves: -3 puffball-bombardier -4 fungus-gnat-cloud +3 rootworm-colony +4 hawthorn-shieldbug problems: []
+START 7-A-2 13:53:33
+7-A-2 target 70 (62-78) size 16 side (min 12) start {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"leopard-slug":2,"planarian-splitter":1,"puffball-bombardier":4} problems []
+start {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"leopard-slug":2,"planarian-splitter":1,"puffball-bombardier":4} 58.8
+round 1: cur 58.3/58.8; 33 legal, 33 read + 6 predicted (of 42); top: -4 puffball-bombardier +2 earthworm +2 planarian-splitter 70.8/68.8 | -1 planarian-splitter -1 puffball-bombardier +2 fungal-colossus 70.8/71.3 | -1 puffball-bombardier +1 hawthorn-shieldbug 70.8/61.3
+RESULT 7-A-2 {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"leopard-slug":2,"planarian-splitter":3,"earthworm":2} 68.8 {} moves: -4 puffball-bombardier +2 earthworm +2 planarian-splitter problems: []
+START 10-A-5 13:54:24
+10-A-5 target 40 (30-49) size 16 side (min 12) start {"blue-ringed-octopus":3,"mantis-shrimp":2,"sea-turtle-elder":4,"coral-current-eel":3,"giant-clam":4} problems []
+start {"blue-ringed-octopus":3,"mantis-shrimp":2,"sea-turtle-elder":4,"coral-current-eel":3,"giant-clam":4} 60
+round 1: cur 50/60; 33 legal, 33 read + 6 predicted (of 44); top: -1 mantis-shrimp +1 reef-shark 54.2/61.9 | -1 sea-turtle-elder +1 reef-shark 54.2/63.1 | -2 sea-turtle-elder +2 reef-shark 50/71.3
+no nearer move
+RESULT 10-A-5 {"blue-ringed-octopus":3,"mantis-shrimp":2,"sea-turtle-elder":4,"coral-current-eel":3,"giant-clam":4} 60 {} moves:  problems: []
+START 18-A-6 13:54:58
+18-A-6 target 68.6 (60.6-76.6) size 14 side (min 10) start {"barrel-cactus":3,"dromedary":1,"horned-lizard":4,"pale-oryx":3,"sand-widow":3} problems []
+start {"barrel-cactus":3,"dromedary":1,"horned-lizard":4,"pale-oryx":3,"sand-widow":3} 93.1
+round 1: cur 95.8/93.1; 15 legal, 15 read + 6 predicted (of 34); top: -2 pale-oryx +2 dromedary 91.7/93.8 | -2 pale-oryx -1 barrel-cactus +3 dromedary 91.7/93.8 | -2 pale-oryx -1 barrel-cactus +2 dromedary +1 sand-widow 91.7/95.6
+no nearer move
+RESULT 18-A-6 {"barrel-cactus":3,"dromedary":1,"horned-lizard":4,"pale-oryx":3,"sand-widow":3} 93.1 {} moves:  problems: []
+START 18-A-7 13:55:37
+18-A-7 target 64.3 (56.3-72.3) size 15 side (min 11) start {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3} problems []
+start {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3} 95
+round 1: cur 91.7/95; 35 legal, 35 read + 6 predicted (of 39); top: -1 barrel-cactus +1 horned-lizard 87.5/94.4 | -1 barrel-cactus +1 roadrunner-courier 87.5/95.6 | -2 barrel-cactus +2 dune-jackal 87.5/97.5
+no nearer move
+RESULT 18-A-7 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3} 95 {} moves:  problems: []
+LANE DONE 13:56:26

@@ -1,0 +1,53 @@
+
+✗ lead-2026-10-23 (exit 1, 3.8s) — last lines:
+  ✗ 5-2: a tuned Map 5 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 7-2: a tuned Map 7 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 7-3: a tuned Map 7 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 7-4: a tuned Map 7 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 7-5: an explicit leaders override names cards of its deck (dung-beetle)
+    ✗ 14-2: a tuned Map 14 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 15-4: a tuned Map 15 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 18-2: a tuned Map 18 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 20-1: a tuned Map 20 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 2-A-5: an explicit leaders override names cards of its deck (marsh-harrier)
+    ✗ 17-A-3: a tuned Map 17 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 20-1 (skirmish): its showcase leader is not shown (SK)
+  lead-2026-10-23: 647/659 checks passed
+
+✗ pro-2026-10-23 (exit 1, 85.4s) — last lines:
+  ✗ 1. 21-BPRO-3: leaders ["pika-hoarder"] (the map rule: ["eyrie-warden"])
+    ✗ 1. 23-PRO-1: leaders ["tide-spirit"] (the map rule: ["badger-berserker"])
+  pro: 2/2741 FAILED
+
+✗ deck1-2026-10-30 (exit 1, 11.5s) — last lines:
+  ✗ m8: at least 10 copies from the map's list
+    ✗ m4: at least 10 copies from the map's list
+  deck1: 239/241 checks passed
+
+✗ skir1-2026-11-11 (exit 1, 14.3s) — last lines:
+  ✗ 14-1: K14 (tasmanian-devil x4)
+    ✗ 14-3: K14 (tasmanian-devil x4)
+    ✗ 14-4: K14 (tasmanian-devil x4)
+    ✗ 14-6: K14 (tasmanian-devil x4)
+    ✗ 15-1: K14 (bramblewood-lynx x3)
+    ✗ 15-4: K14 (bramblewood-lynx x3)
+    ✗ 19-2: K14 (pinecone-sapper x4)
+    ✗ m1: its decks show 0 cost1 card(s) (the pools hold 2; minimum 4)
+    ✗ m1: its decks show 3 wait1 card(s) (the pools hold 5; minimum 4)
+    ✗ m1: its decks show 1 status card(s) (the pools hold 2; minimum 2)
+    ✗ mw: its decks show 0 plain card(s) (the pools hold 2; minimum 2)
+    ✗ mh: its decks show 0 plain card(s) (the pools hold 1; minimum 2)
+    ✗ mt: its decks show 0 plain card(s) (the pools hold 1; minimum 2)
+    ✗ m11: its decks show 1 cost0 card(s) (the pools hold 2; minimum 3)
+    ✗ my: hoopoe-herald in 5 of 5 fights besides the ones that keep it (at most 4)
+  skir1: 5675 passed, 15 failed
+
+✗ winrate-panel-2026-10-19 (exit 1, 126.9s) — last lines:
+  419 fights on every map checked, slowest map mm 16626 ms, 98 s so far
+    Maps 8 and 12: Map 0's deck at Lv 0 wins 36%, m24's (Map 24 deck) at Lv 4.62 83%
+    ✗ Map 23: the report's deck is the game's deck
+  FAIL 1 of 974
+
+tests: 0 passed, 5 failed, 0 skipped (passed before on identical inputs) · 127s · slowest: winrate-panel-2026-10-19 127s, pro-2026-10-23 85s, skir1-2026-11-11 14s
+failing tests: tests/.last-failures.txt (5)
+EXIT 1
