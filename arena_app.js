@@ -15183,6 +15183,7 @@ function tutorialFullyDone(){
 }
 async function maybeRemindSignIn(){
   if(signInReminderShownThisLoad) return;
+  try{ if(sessionStorage.getItem('bw_signin_later')) return; }catch(e){} // 2026-11-19 (package REL3): "It's okay" holds for the session
   if(!tutorialFullyDone()) return;
   try{ if(cloudInitPromise) await cloudInitPromise; }catch(e){}
   if(isSignedIn() || !sbClient || !isHostedOnline()) return;
@@ -15210,7 +15211,7 @@ function showSignInBanner(){
   document.body.appendChild(bar);
   requestAnimationFrame(()=> bar.classList.add('show'));
   try{ fxHook('banner', bar); }catch(e){} // 2026-10-15 batch F
-  document.getElementById('signInBannerLater').addEventListener('click', hideSignInBanner);
+  document.getElementById('signInBannerLater').addEventListener('click', ()=>{ try{ sessionStorage.setItem('bw_signin_later', '1'); }catch(e){} hideSignInBanner(); });
   document.getElementById('signInBannerGoogle').addEventListener('click', async ()=>{
     try{ await cloudSignInWithGoogle(); }
     catch(err){ showToast((err && err.message) || TX('toast.google-sign-in-failed-try-again'), 'error'); }
@@ -19857,6 +19858,17 @@ function dialogueSpeed(){ try{ const v = localStorage.getItem(DIALOGUE_SPEED_KEY
 function setDialogueSpeed(v){ try{ localStorage.setItem(DIALOGUE_SPEED_KEY, DIALOGUE_SPEEDS[v] ? v : 'medium'); }catch(e){} }
 function dialogueSpeedMul(){ return DIALOGUE_SPEEDS[dialogueSpeed()] || 1; }
 function dialogueReadMs(text){ return Math.round(Math.min(DIALOGUE_READ_MAX_MS, Math.max(1800, 1000 + String(text||'').length * 55)) * dialogueSpeedMul()); }
+// 2026-11-19 (package REL3, items 3 + 6): leaving a tab closes its NPC lines, the castle / card speech bubbles and a deck-swap sheet. A running conversation
+// sees the epoch change and stops adding lines. The tutorial's own conversations and a teaching swap (Cancel only) stay.
+let dialogueEpoch = 0;
+function rel3CloseOnTabChange(){
+  if(loadTutorialDone() && loadTutorial2Done()){
+    dialogueEpoch++; try{ if(dialogueAdvance) dialogueAdvance(false); }catch(e){}
+    const dl = document.querySelector('#dialogueDock .dlg-lines'); if(dl) dl.replaceChildren();
+  }
+  document.querySelectorAll('.speech-bubble').forEach(b=> b.remove()); try{ bubbleFollowers.clear(); }catch(e){}
+  const sw = document.getElementById('deckSwapOverlay'); if(sw && sw.querySelector('#dsKeep')) sw.remove();
+}
 let dialogueAdvance = null; // ends the current wait early; resolves true when it was a tap
 function dialogueWait(ms){ return new Promise(res=>{ let t = 0; const done = tapped=>{ clearTimeout(t); if(dialogueAdvance === done) dialogueAdvance = null; res(!!tapped); }; t = setTimeout(()=> done(false), ms); dialogueAdvance = done; }); }
 function loadDialogueFlags(){ try{ return JSON.parse(localStorage.getItem(DIALOGUE_FLAGS_KEY)||'{}') || {}; }catch(e){ return {}; } }
@@ -20078,6 +20090,7 @@ function playDialogue(id, opts){
   if(!opts.force && dialogueLastPlayed[id] && Date.now() - dialogueLastPlayed[id] < DIALOGUE_REPEAT_MS) return Promise.resolve(null);
   dialoguesPending.add(id);
   const run0 = async ()=>{
+    const epoch0 = dialogueEpoch;
     dialogueLastPlayed[id] = Date.now();
     if(opts.once) setDialogueFlag('seen:'+id, true);
     const dock = dialogueDock();
@@ -20086,7 +20099,7 @@ function playDialogue(id, opts){
     const replies = [];
     const byLabel = {}; script.lines.forEach((l,i)=>{ if(l.label) byLabel[l.label] = i; });
     let i = 0, guard = 0;
-    while(i < script.lines.length && guard++ < 50){
+    while(i < script.lines.length && guard++ < 50 && epoch0 === dialogueEpoch){
       const line = script.lines[i];
       const sp = speakerFor(line.who);
       const b = document.createElement('div');
@@ -20152,7 +20165,7 @@ function playDialogue(id, opts){
       }
       i = next;
     }
-    await sleep(1800 * dialogueSpeedMul()); // the last line's time on screen follows the dialogue speed too (2026-10-17)
+    if(epoch0 === dialogueEpoch) await sleep(1800 * dialogueSpeedMul()); // the last line's time on screen follows the dialogue speed too (2026-10-17)
     Array.from(dock.children).forEach(el=>{ if(hasGsap()) gsap.to(el, {opacity:0, x:-30, duration:.3, onComplete:()=> el.remove()}); else el.remove(); });
     if(opts.onDone) try{ opts.onDone(replies); }catch(e){}
     return {replies};
@@ -23320,6 +23333,7 @@ function awardXp(n, reason){
   const after = levelFromXp(x.xp).level;
   // 2026-10-18 (package RW follow-up, owner 23:32: "Should the reward screen show the exp bar filling up on the top? Then we can remove the
   // toast."): while a reward screen shows the XP bar, the XP fills that bar (and its level-up bursts there); no toast, no badge moment.
+  if(rel3MomentOn()){ rel3Moment.xp += Math.round(n); if(after > before) rel3Moment.lvl = after; rel3PaintMoment(); refreshLevelBadge(); return; } // 2026-11-19 (package REL3): the first-deck window shows it
   if(rewardXpBarUp()){ try{ syncRewardXpBar(); }catch(e){} refreshLevelBadge(); return; }
   try{ fxHook('xpGain', Math.round(n), before, after); }catch(e){} // 2026-10-15 batch F: the level-up moment / XP into the badge
   if(after > before) setTimeout(()=> showToast(TX('toast.level', {after, v2: reason ? ' — ' + reason : ''}), 'ok'), 400);
@@ -23487,7 +23501,7 @@ function checkXpMilestones(){
   x.milestones = Array.from(have); saveXp(x);
   const total = fresh.reduce((t,m)=> t+m.xp, 0);
   awardXp(total, fresh.length===1 ? fresh[0].label : `${fresh.length} milestones`);
-  if(!(fresh.length === 1 && fresh[0].id === 'tutorial') && !rewardXpBarUp()) showToast(TX('toast.xp', {total, v2: fresh.length===1 ? fresh[0].label : fresh.length + ' milestones'}), 'ok'); // the tutorial's own XP: the Level 1 toast says it (2026-10-12: fewer toasts)
+  if(!(fresh.length === 1 && fresh[0].id === 'tutorial') && !rel3MomentOn() && !rewardXpBarUp()) showToast(TX('toast.xp', {total, v2: fresh.length===1 ? fresh[0].label : fresh.length + ' milestones'}), 'ok'); // the tutorial's own XP: the Level 1 toast says it (2026-10-12: fewer toasts)
 }
 function levelBadgeHTML(L){ const own = !L;
   L = L || playerLevelInfo(); if(own) ui25LastBadge = L;
@@ -33222,6 +33236,17 @@ function tutRewardClose(ov, done){
 function tutRewardCardHTML(d, i, extra){
   return `<div class="ss-card is-dealt ${extra||''}" style="--i:${i}"><span class="ss-glow" aria-hidden="true"></span>${cardTileHTML(d, {inPlay:true})}</div>`;
 }
+// 2026-11-19 (package REL3, owner: the +XP / Level 2 lines are a moment, not toasts over the window): while the tutorial's first-deck window is up or about
+// to pop (tutorialRewardPopPending), awardXp / checkXpMilestones add here instead of toasting; the window paints two chips. Hook for a level-up ring or coin
+// burst: the 'bw-moment' event on document ({kind, xp, level, up}) and [data-up] on .tr-moment.
+const rel3Moment = {xp: 0, lvl: 0};
+function rel3PaintMoment(){
+  const el = document.querySelector('.is-first-deck .tr-moment'); if(!el || !rel3Moment.xp) return;
+  el.innerHTML = `<span class="trm is-xp">✨ ${escapeHtml(TX('ui.rel3-xp', {n: rel3Moment.xp}))}</span>` + (rel3Moment.lvl ? `<span class="trm is-lvl">⭐ ${escapeHtml(TX('ui.rel3-level', {n: rel3Moment.lvl}))}</span>` : '');
+  if(rel3Moment.lvl) el.dataset.up = '1';
+  try{ document.dispatchEvent(new CustomEvent('bw-moment', {detail: {kind: 'tutorial-xp', xp: rel3Moment.xp, level: rel3Moment.lvl, up: !!rel3Moment.lvl}})); }catch(e){}
+}
+function rel3MomentOn(){ return tutorialRewardPopPending || !!document.querySelector('.is-first-deck .tr-moment'); }
 function openStarterDeckStep(pick, onDone){
   // 2026-10-15: the 8 cards you are shown (starterDeckParts.shown) + Part I's reward; the rest of the 17 goes in quietly.
   const defs = getCardDefs(), counts = Object.assign({}, starterDeckParts(pick).shown);
@@ -33235,13 +33260,14 @@ function openStarterDeckStep(pick, onDone){
     <div class="tr-rays" aria-hidden="true"></div>
     <p class="tr-kicker">Tutorial complete</p>
     <h2>🃏 Your first deck</h2>
-    <p class="panel-sub">You've earned these cards. Add them to your deck to take them onto the map.</p>
+    <p class="panel-sub">${escapeHtml(TX('ui.rel3-deck-line', {n: DECK_SIZE}))}</p>
     <div class="ss-grid">${ids.map((id, i)=> `<div class="ss-card is-dealt${rewards.includes(id) ? ' is-reward' : ''}" style="--i:${i}">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1?`<b class="dm-x">×${counts[id]}</b>`:''}${rewards.includes(id) ? '<span class="ss-gift" title="Tutorial reward">🎁</span>' : ''}</div>`).join('')}</div>
-    ${rewards.length ? `<p class="ss-bonus">🎁 Your tutorial reward${rewards.length === 1 ? '' : 's'} (${rewards.map(id=> `<b>${escapeHtml(defs[id].name)}</b>`).join(', ')}) ${rewards.length === 1 ? 'goes' : 'go'} in too.</p>` : ''}
+    <div class="tr-moment" data-moment="tutorial-xp" aria-live="polite"></div>
     <div class="ss-foot"><div class="ss-deckbox" aria-hidden="true">🌰<small>Deck</small><b class="ss-count"></b></div>
       <button type="button" class="btn primary big" id="ssAdd">➕ Add to deck</button></div>
   </div>`;
   document.body.appendChild(ov);
+  rel3PaintMoment(); // 2026-11-19 (package REL3): the XP already earned shows now, later ones as they land
   const btn = ov.querySelector('#ssAdd'), box = ov.querySelector('.ss-deckbox'), countEl = ov.querySelector('.ss-count');
   setTimeout(()=> btn.focus(), 40);
   btn.onclick = ()=>{
@@ -33250,7 +33276,7 @@ function openStarterDeckStep(pick, onDone){
     let added = 0;
     // 2026-10-12 (10:57, user: "Dont reveal the deck size when you first 'add to deck'"): the box fills, but no count yet.
     const finish = ()=>{ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
-      btn.textContent = '✓ Deck ready'; setTimeout(()=> tutRewardClose(ov, onDone), 700); }; // 2026-10-18: fades out shrinking
+      btn.textContent = '✓ Deck ready'; rel3Moment.xp = 0; rel3Moment.lvl = 0; setTimeout(()=> tutRewardClose(ov, onDone), 700); }; // 2026-10-18: fades out shrinking
     if(!hasGsap() || reducedMotion()){ finish(); return; }
     tiles.forEach((t, i)=>{
       const id = ids[i];
@@ -44115,6 +44141,10 @@ document.addEventListener('click', e=>{ const b = e.target.closest && e.target.c
 // 2026-10-10 (phone screenshots): long-press on a card opened the browser's image/selection menu. Game surfaces get no context menu.
 document.addEventListener('contextmenu', e=>{ if(e.target.closest && e.target.closest('.card-tile, .board-card, #battlefieldEl, #handStrip, .map-node, .conquest-map-canvas, .hq-tile')) e.preventDefault(); });
 document.addEventListener('keydown', e=>{ if((e.key==='Enter' || e.key===' ') && e.target.closest && e.target.closest('[data-open-exile]')){ e.preventDefault(); openExileCastPanel(); } });
+// 2026-11-19 (package REL3): on a touch screen a tap on a greyed hand card says why (the tag on the card is small)
+document.addEventListener('click', e=>{
+  if(!REL2_TOUCH || !matchState) return; const c = e.target.closest && e.target.closest('#handStrip .card-tile.unplayable[data-whynot]'); if(c) showToast(c.getAttribute('data-whynot'), 'warn');
+});
 function unplayableReason(pl, d){
   if(d.cardType==='equipment') return pl.playedThisTurn ? 'Already played this turn' : ((d.cost||0) > (pl.lumber||0) ? `Need ${(d.cost||0) - (pl.lumber||0)} more 🪵 Lumber · drag onto a unit to equip` : '⚒️ Drag onto one of your units to equip it');
   if(d.cardType==='materia') return 'Materia: for crafting only';
@@ -45454,7 +45484,7 @@ function sideResourcePillsHTML(m, p, mine){
   const out = [];
   // 2026-10-31 (package UI12, GG6, owner: "the Lumber pointer jumps to the top of the screen if Lumber is spent while it shows (the Lumber label was
   // removed). Keep the label"): while the "where to find it" step (pl-after) is up, your Lumber pill stays, at 0 too
-  const keepLumber = mine && (p.lumber||0) <= 0 && typeof coachOpen !== 'undefined' && coachOpen && coachOpen.tip && coachOpen.tip.id === 'pl-after';
+  const keepLumber = mine && (p.lumber||0) <= 0 && typeof coachOpen !== 'undefined' && coachOpen && coachOpen.tip && (coachOpen.tip.id === 'pl-after' || coachOpen.tip.id === 'pl-need'); // REL3: pl-need rings the chip too
   if((p.lumber||0) > 0 || keepLumber) out.push(pill('lumber' + (keepLumber ? ' is-zero' : ''), 'hudLumberPill', RESOURCE_TOOLTIP.lumber, `${iconHTML('lumber', '🪵')} ${p.lumber||0}`));
   if((p.stone||0) > 0) out.push(pill('stone', 'hudStonePill', RESOURCE_TOOLTIP.stone, `${iconHTML('stone', '🪨')} ${p.stone}`));
   // ECONSK1 (2026-11-16): Gold shows while the side holds Gold or a unit with a Gold skill (Prospecting, Plunder, Barter)
@@ -49097,7 +49127,9 @@ const PITCH_WAIT_TIP = {id:'pl-wait', text:TX('coach.okay-next-turn-you-ll-draw'
 const PITCH_LESSON = [
   {id:'pl-need', gate:true,
     text:TX('coach.this-card-needs-lumber-get-lumber'),
-    anchor:()=>{ const m = matchState; return m ? (pitchLessonCostly(m) || document.getElementById('dropDiscard')) : null; }},
+    // 2026-11-19 (package REL3): rings the first greyed card (and the Lumber chip, `also`), not the Graveyard
+    anchor:()=>{ const m = matchState; return m ? (document.querySelector('#handStrip .card-tile.unplayable[data-handuid]') || pitchLessonCostly(m) || document.getElementById('hudLumberPill') || document.getElementById('dropDiscard')) : null; },
+    also:()=> document.getElementById('hudLumberPill')},
   {id:'pl-do', gate:true, action:true, allow:['.coach-tip', '#handStrip', '#dropDiscard', '#quitMatchBtn'],
     text:TX('coach.drag-a-card-you-don-t'),
     anchor:()=> document.getElementById('dropDiscard'),
@@ -49295,6 +49327,7 @@ function showCoachTip(tip, anchorEl){
       outer: for(const cy of ys) for(const cx of xs) if(!hits(cx, cy)){ x = cx; below = cy > r.top; y = cy; break outer; }
     }
     b.style.left = x+'px'; b.style.top = y+'px';
+    if(tip.also){ try{ const ex = tip.also(); if(ex && ex !== anchorEl) ex.classList.add('coach-anchor', 'coach-also'); }catch(e){} } // 2026-11-19 (package REL3): a second ring
     b.classList.toggle('below', below);
     if(spot){ const pad = 8; spot.style.left = (r.left - pad)+'px'; spot.style.top = (r.top - pad)+'px'; spot.style.width = (r.width + pad*2)+'px'; spot.style.height = (r.height + pad*2)+'px'; }
     if(pointer && tip.ring){ const d = Math.max(r.width, r.height) + 10; pointer.style.left = (r.left + r.width/2)+'px'; pointer.style.top = (r.top + r.height/2)+'px'; pointer.style.setProperty('--d', d+'px'); }
@@ -49419,6 +49452,7 @@ function hideCoachTip(){
   if(coachOpen.tip && coachOpen.tip.id === 'g-combat'){ tutCombatLinesSig = ''; try{ clearFacing(); }catch(e){} } // 2026-10-18 (package T): its lines go with it
   if(coachOpen.spot) coachOpen.spot.remove(); if(coachOpen.pointer) coachOpen.pointer.remove();
   const a = coachOpen.anchorEl; if(a) a.classList.remove('coach-anchor','coach-locked');
+  document.querySelectorAll('.coach-also').forEach(e=> e.classList.remove('coach-anchor', 'coach-also')); // 2026-11-19 (package REL3)
   if(coachOpen.fadeT) clearTimeout(coachOpen.fadeT);
   coachOpen = null;
   // 2026-10-31 (package UI12, GG1): a timed tutorial tip waits a moment after the tip before it; look again once that time is up
@@ -65080,6 +65114,7 @@ function a11yPageH1(tab){
 }
 function switchTab(tab){
   tabSwitchSeq++;
+  if(tab !== (typeof currentTab !== 'undefined' ? currentTab : null)) rel3CloseOnTabChange(); // 2026-11-19 (package REL3)
   setTimeout(()=>{ try{ pl2MapViewed(); }catch(e){} }, 0); // RES3 (2026-10-26, R8): waiting XP plays on whichever screen comes up
   if(tab !== (typeof currentTab!=='undefined' ? currentTab : null)) forgeReadyUsed = false; // the Forge's one-shot "Show the N I can temper" comes back on a new visit
   if(tab !== 'play') try{ caveScreenOff(); }catch(e){}

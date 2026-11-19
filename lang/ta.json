@@ -31,7 +31,7 @@
  "+{n} Energy each": "ஒவ்வொன்றும் +{n} ஆற்றல்",
  "+{n} Hero XP — {why}": "+{n} நாயகன் XP — {why}",
  "+{n} Materia XP waiting for the next level": "+{n} மெட்டீரியா XP அடுத்த நிலைக்காகக் காத்திருக்கிறது",
- "+{n} XP": "+{n} அனுபவப் புள்ளி",
+ "+{n} XP": "+{n} XP",
  "+{n}/+{n} for each adjacent ally, up to 2.": "அடுத்துள்ள ஒவ்வொரு கூட்டாளிக்கும் +{n}/+{n}, அதிகபட்சம் 2.",
  "+{raidInk} Abyssal Ink": "+{raidInk} ஆழ்கடல் மை",
  "+{total} XP — {v2}": "+{total} XP — {v2}",
@@ -4674,5 +4674,7 @@
  "Slide to see it at another level, up to one past your best copy.": "வேறு நிலையில் பார்க்க நகர்த்துங்கள், உங்கள் சிறந்த நகலை விட ஒரு நிலை வரை.",
  "Own a copy to look further ahead.": "மேலும் முன்னோக்கிப் பார்க்க ஒரு நகலைப் பெறுங்கள்.",
  "First raid open: {name}.": "முதல் படையெடுப்பு திறந்தது: {name}.",
- "First raid open": "முதல் படையெடுப்பு திறந்தது"
+ "First raid open": "முதல் படையெடுப்பு திறந்தது",
+ "These {n} go with you": "இந்த {n} உன்னுடன் வரும்",
+ "Level {n} reward: {name}": "நிலை {n} பரிசு: {name}"
 }

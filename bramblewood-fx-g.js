@@ -551,7 +551,7 @@ M.mapTitle = function(host, opts){ opts = opts || {}; const g = G(); if(!g) retu
     if(opts.grand !== false) (opts.extra || []).concat(T.grand).forEach(n=> GRAND[n] && call(()=> GRAND[n](L, T, {ms:4400, lite:!!opts.lite, delay:n === 'dragonShadow' ? 1200 : 0})));
     const {tl} = TITLES[style](L, T, Object.assign({name:'Bramblewood'}, opts, {variant: opts.variant !== undefined ? opts.variant : T.variant}));
     // a tap anywhere on the host hurries it along (the layer itself never takes the pointer)
-    const hurry = ()=> tl.timeScale(3); try{ host && host.addEventListener && host.addEventListener('pointerdown', hurry, {once:true}); }catch(e){}
+    const hurry = ()=> tl.timeScale(14) /* 2026-11-19 (package REL3): a tap skips the card (was x3) */; try{ host && host.addEventListener && host.addEventListener('pointerdown', hurry, {once:true}); }catch(e){}
     return new Promise(res=>{ tl.eventCallback('onComplete', ()=>{ g.to(L, {opacity:0, duration:.6, onComplete:()=>{ try{ host.removeEventListener('pointerdown', hurry); }catch(e){} done(L); opts.onDone && call(opts.onDone); res(); }}); }); }); };
   return opts.delay ? wait(opts.delay).then(go) : go(); };
 // Game hook (2026-10-16): arena_app.js renderConquestSubTab → fxHook('mapTitle', layoutEl, info). Once per map per session,
@@ -562,7 +562,10 @@ M.hooks.mapTitle = (host, info, env)=>{
   if(env.match && !env.match.over) return;
   let seen = []; try{ seen = JSON.parse(sessionStorage.getItem(SEEN_KEY) || '[]'); }catch(e){}
   if(seen.includes(info.id)) return; seen.push(info.id); try{ sessionStorage.setItem(SEEN_KEY, JSON.stringify(seen)); }catch(e){}
-  M.mapTitle(host, Object.assign({lite:!env.fxAtLeast('high'), extra:info.id === 'mx' ? ['dragonShadow'] : []}, info));
+  // 2026-11-19 (package REL3): a map whose card this browser has shown before holds it about 1.3 s in all (hold .1 + the 1.2 s lift)
+  let ever = []; try{ ever = JSON.parse(localStorage.getItem(SEEN_KEY + '_ever') || '[]'); }catch(e){}
+  const again = ever.includes(info.id); if(!again){ ever.push(info.id); try{ localStorage.setItem(SEEN_KEY + '_ever', JSON.stringify(ever)); }catch(e){} }
+  M.mapTitle(host, Object.assign({lite:!env.fxAtLeast('high'), extra:info.id === 'mx' ? ['dragonShadow'] : []}, again ? {hold:.1} : {}, info));
 };
 
 // =====================================================================================================================

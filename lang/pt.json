@@ -4673,5 +4673,7 @@
  "Slide to see it at another level, up to one past your best copy.": "Deslize para vê-la em outro nível, até um acima da sua melhor cópia.",
  "Own a copy to look further ahead.": "Tenha uma cópia para ver mais adiante.",
  "First raid open: {name}.": "Primeiro raide aberto: {name}.",
- "First raid open": "Primeiro raide aberto"
+ "First raid open": "Primeiro raide aberto",
+ "These {n} go with you": "Estas {n} vão contigo",
+ "Level {n} reward: {name}": "Prémio nível {n}: {name}"
 }

@@ -31,7 +31,7 @@
  "+{n} Energy each": "1個につき+{n}エネルギー",
  "+{n} Hero XP — {why}": "ヒーローXP +{n} — {why}",
  "+{n} Materia XP waiting for the next level": "+{n} マテリアXPが次のレベルを待っています",
- "+{n} XP": "+{n} 経験値",
+ "+{n} XP": "+{n} XP",
  "+{n}/+{n} for each adjacent ally, up to 2.": "隣接する味方1体ごとに+{n}/+{n}、最大2体。",
  "+{raidInk} Abyssal Ink": "深淵のインク +{raidInk}",
  "+{total} XP — {v2}": "+{total} XP — {v2}",
@@ -4672,5 +4672,7 @@
  "Slide to see it at another level, up to one past your best copy.": "スライドで別のレベルを表示。最も育てた1枚の1つ上まで。",
  "Own a copy to look further ahead.": "1枚持つと先のレベルも見られる。",
  "First raid open: {name}.": "最初のレイド解放：{name}。",
- "First raid open": "最初のレイド解放"
+ "First raid open": "最初のレイド解放",
+ "These {n} go with you": "この{n}枚が一緒に行く",
+ "Level {n} reward: {name}": "レベル{n}の報酬：{name}"
 }
