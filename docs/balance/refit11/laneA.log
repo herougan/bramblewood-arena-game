@@ -1,0 +1,26 @@
+START 14-3 06:43:04
+14-3 target 80 (72-88) size 15 start {"grizzly-vanguard":1,"marula-elephant":3,"meerkat-sentry":4,"tasmanian-devil":4,"plains-zebra":2,"hollow-belly-rat":1} problems []
+start {"grizzly-vanguard":1,"marula-elephant":3,"meerkat-sentry":4,"tasmanian-devil":4,"plains-zebra":2,"hollow-belly-rat":1} 63.8
+round 1: cur 70.8/63.8; 53 legal, 14 read + 6 predicted (of 31); top: -4 tasmanian-devil -2 plains-zebra +4 acacia-giraffe +1 crocodile-ambusher +1 marula-elephant 79.2/73.8 | -2 plains-zebra -4 tasmanian-devil +1 river-mink +1 marula-elephant +4 acacia-giraffe 79.2/73.1 | -4 tasmanian-devil -2 plains-zebra +4 acacia-giraffe +2 bramblewood-macaque 79.2/66.3
+round 2: cur 79.2/73.8; 33 legal, 33 read + 6 predicted (of 45); top: -4 meerkat-sentry +4 tasmanian-devil 79.2/78.1 | -4 meerkat-sentry +4 plains-zebra 79.2/76.9 | -1 grizzly-vanguard +1 spitting-cobra 79.2/70.6
+RESULT 14-3 {"grizzly-vanguard":1,"marula-elephant":4,"hollow-belly-rat":1,"acacia-giraffe":4,"crocodile-ambusher":1,"tasmanian-devil":4} 78.1 {} moves: -4 tasmanian-devil -2 plains-zebra +4 acacia-giraffe +1 crocodile-ambusher +1 marula-elephant ; -4 meerkat-sentry +4 tasmanian-devil problems: []
+START 14-1 06:48:13
+14-1 target 90 (82-98) size 16 start {"grizzly-vanguard":1,"hollow-belly-rat":1,"marula-elephant":4,"meerkat-sentry":4,"plains-zebra":2,"tasmanian-devil":4} problems []
+start {"grizzly-vanguard":1,"hollow-belly-rat":1,"marula-elephant":4,"meerkat-sentry":4,"plains-zebra":2,"tasmanian-devil":4} 65
+round 1: cur 79.2/65; 39 legal, 39 read + 6 predicted (of 29); top: -4 meerkat-sentry +4 acacia-giraffe 83.3/83.1 | -4 meerkat-sentry -1 hollow-belly-rat +4 acacia-giraffe +1 crocodile-ambusher 91.7/80.6 | -4 tasmanian-devil -1 hollow-belly-rat +4 acacia-giraffe +1 crocodile-ambusher 91.7/72.5
+round 2: cur 83.3/83.1; 39 legal, 39 read + 6 predicted (of 43); top: -1 hollow-belly-rat +1 badger-lumberjack 91.7/80 | -1 grizzly-vanguard +1 badger-lumberjack 91.7/78.8 | -1 grizzly-vanguard +1 crocodile-ambusher 91.7/76.9
+no nearer move
+RESULT 14-1 {"grizzly-vanguard":1,"hollow-belly-rat":1,"marula-elephant":4,"plains-zebra":2,"tasmanian-devil":4,"acacia-giraffe":4} 83.1 {} moves: -4 meerkat-sentry +4 acacia-giraffe problems: []
+START 14-5 06:52:24
+14-5 target 70 (62-78) size 20 start {"acacia-giraffe":4,"bramblewood-macaque":3,"plains-zebra":4,"meerkat-sentry":4,"hollow-belly-rat":1,"stoat-cutthroat":3,"dust-hyena":1} problems []
+start {"acacia-giraffe":4,"bramblewood-macaque":3,"plains-zebra":4,"meerkat-sentry":4,"hollow-belly-rat":1,"stoat-cutthroat":3,"dust-hyena":1} 60
+round 1: cur 58.3/60; 65 legal, 21 read + 6 predicted (of 15); top: -1 dust-hyena +1 badger-lumberjack 66.7/65 | -4 plains-zebra +1 crocodile-ambusher +3 dust-hyena 66.7/62.5 | -4 plains-zebra +2 savanna-cheetah +2 dust-hyena 70.8/55
+round 2: cur 66.7/65; 28 legal, 28 read + 6 predicted (of 34); top: -1 badger-lumberjack +1 crocodile-ambusher 66.7/68.8 | -1 hollow-belly-rat +1 hoopoe-herald 66.7/60.6 | -1 hollow-belly-rat +1 bramble-sprout 66.7/57.5
+RESULT 14-5 {"acacia-giraffe":4,"bramblewood-macaque":3,"plains-zebra":4,"meerkat-sentry":4,"hollow-belly-rat":1,"stoat-cutthroat":3,"crocodile-ambusher":1} 68.8 {} moves: -1 dust-hyena +1 badger-lumberjack ; -1 badger-lumberjack +1 crocodile-ambusher problems: []
+START 6-3 06:56:53
+6-3 target 80 (72-88) size 18 start {"booming-bittern":4,"camouflage-frog":4,"crocodile-ambusher":4,"lamprey":4,"constrictor-coil":1,"water-shrew":1} problems []
+start {"booming-bittern":4,"camouflage-frog":4,"crocodile-ambusher":4,"lamprey":4,"constrictor-coil":1,"water-shrew":1} 70
+round 1: cur 54.2/70; 6 legal, 6 read + 3 predicted (of 3); top: -1 constrictor-coil +1 pond-algae 58.3/60.6 | -1 constrictor-coil +1 mosquito-cloud 58.3/59.4 | -1 constrictor-coil +1 newt-doctor 58.3/56.9
+no nearer move
+RESULT 6-3 {"booming-bittern":4,"camouflage-frog":4,"crocodile-ambusher":4,"lamprey":4,"constrictor-coil":1,"water-shrew":1} 70 {} moves:  problems: []
+LANE DONE 06:58:52
