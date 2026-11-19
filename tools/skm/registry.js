@@ -73,6 +73,9 @@ const EXPS = {
   E16: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, bramble: 45, seed: 'skmE16' }, probeM: [40, 80], idea: 'stat-equivalence search with 45-Health brambles (long games)' },
   E17: { design: 'eq', ownBody: true, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', seed: 'skmE17' }, probeM: [40, 80], idea: 'own-body stat equivalence: 20 carriers vs 20 copies of the carrier without the skill +h Health (no body mismatch)' },
   E18: { design: 'eq', ownBody: true, stat: 'A', cs: { kind: 'homo', foe: 'bodyV', seed: 'skmE18' }, probeM: [40, 80], idea: 'own-body stat equivalence in Attack (3 points each)' },
+  E19: { design: 'eq', ownBody: true, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', aiMe: 0, aiFoe: 0, seed: 'skmE19' }, probeM: [40, 80], idea: 'own-body stat equivalence with the basic CPU on both sides' },
+  E20: { design: 'eq', ownBody: true, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', bramble: 15, seed: 'skmE20' }, probeM: [40, 80], idea: 'own-body stat equivalence with the road brambles (15 Health)' },
+  E21: { design: 'eq', ownBody: true, stat: 'H', perMap: true, cs: { kind: 'homo', foe: 'bodyV', seed: 'skmE21' }, probeM: [40, 80], idea: 'own-body stat equivalence at the skill\'s first map\'s level and fields' },
   // round 2 (new kinds once the first designs stabilised)
   V12: { design: 'van', body: BODY1, cs: { kind: 'homo', foe: 'random', body: BODY1, seed: 'skmV12' }, stages: [40, 60], yardM: 300,
     idea: '20 farm-dogs given the skill vs 20 plain farm-dogs, both against random Maps 0-20 decks' },
