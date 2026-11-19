@@ -9458,19 +9458,39 @@ function hallOfFameTabHTML(){
 // is fetched and decoded in the background; later tiles then paint from the warm cache instead of
 // flashing their plain background the first time a card shows up.
 const warmedArt = new Set();
+// 2026-11-19 (package PERF6): this used to fetch and decode all ~900 card paintings (13 MB) 1.5 s after load, whatever the connection: on a
+// phone it fought the first seconds of the game for bandwidth and decode time. Now the cards the player holds (collection, deck) warm first,
+// as before; the other cards warm 8 s later, and only on a connection that can afford them (no data-saver, not cellular, not 2g / 3g),
+// not while the tab is hidden. A card the warm-up skipped still paints from the network the first time a tile shows it.
+function artWarmAffordsAll(){
+  // no Network Information API (Safari, Firefox): a touch-first device is taken for a phone on mobile data, a mouse-first one for a desktop
+  try{ const c = navigator.connection; if(!c) return !(window.matchMedia && matchMedia('(pointer: coarse)').matches); return !(c.saveData || c.type === 'cellular' || /(^|-)(2g|3g)$/.test(c.effectiveType || '')); }catch(e){ return true; }
+}
 function warmCardArt(){
-  const urls = [];
-  try{ Object.values(getCardDefs()).forEach(d=>{ if(d && d.art && !/^data:/.test(d.art) && !warmedArt.has(d.art)) urls.push(d.art); }); }catch(e){ return; }
-  let i = 0;
-  const step = deadline=>{
-    while(i < urls.length && (!deadline || deadline.timeRemaining() > 4)){
-      const u = urls[i++]; warmedArt.add(u);
-      const img = new Image(); img.decoding = 'async'; img.src = u; if(img.decode) img.decode().catch(()=>{});
-      if(!deadline && i % 12 === 0) break;
-    }
-    if(i < urls.length) (window.requestIdleCallback || (f=> setTimeout(()=> f(null), 60)))(step);
+  const defs = getCardDefs(), mine = [], rest = [];
+  try{
+    Object.keys(defs).forEach(id=>{
+      const d = defs[id]; if(!d || !d.art || /^data:/.test(d.art) || warmedArt.has(d.art)) return;
+      let held = false; try{ held = ownedCount(id) > 0 || !!(myDeckCounts && myDeckCounts[id]); }catch(e){}
+      (held ? mine : rest).push(d.art);
+    });
+  }catch(e){ return; }
+  const idle = (window.requestIdleCallback || (f=> setTimeout(()=> f(null), 60)));
+  const run = (urls, low)=>{
+    let i = 0;
+    const step = deadline=>{
+      if(document.hidden){ setTimeout(()=> step(null), 5000); return; }
+      while(i < urls.length && (!deadline || deadline.timeRemaining() > 4)){
+        const u = urls[i++]; warmedArt.add(u);
+        const img = new Image(); img.decoding = 'async'; if(low) img.fetchPriority = 'low'; img.src = u; if(img.decode) img.decode().catch(()=>{});
+        if(!deadline && i % 12 === 0) break;
+      }
+      if(i < urls.length) idle(step);
+    };
+    (window.requestIdleCallback || (f=> setTimeout(()=> f(null), 800)))(step);
   };
-  (window.requestIdleCallback || (f=> setTimeout(()=> f(null), 800)))(step);
+  run(mine, false);
+  if(rest.length) setTimeout(()=>{ if(artWarmAffordsAll()) run(rest, true); }, 8000);
 }
 try{ if(typeof window!=='undefined') window.addEventListener('load', ()=> setTimeout(warmCardArt, 1500)); }catch(e){}
 // Fight preload (2026-10-16, user: "Preload effects before going into a battle - those that you know will be used."): when a fight
@@ -65617,7 +65637,7 @@ setTimeout(function runLoader(){ // after this script finishes, so every module-
   // art: the splash, the map backgrounds and the first cards
   const urls = [];
   try{ const sp = splashArtURL(); if(sp && !/^data:/.test(sp)) urls.push(sp); }catch(e){}
-  try{ [...document.styleSheets].forEach(sh=>{ let rules = []; try{ rules = sh.cssRules || []; }catch(e){} [...rules].forEach(r=>{ const t = r.cssText || ''; if(t.indexOf('--map-art:') < 0) return; const mm = t.match(/--map-art:\s*url\(["']?([^"')]+)["']?\)/); if(mm && !/^data:/.test(mm[1]) && !urls.includes(mm[1])) urls.push(mm[1]); }); }); }catch(e){}
+  try{ [...document.styleSheets].forEach(sh=>{ let rules = []; try{ rules = sh.cssRules || []; }catch(e){} [...rules].forEach(r=>{ /* 2026-11-19 (package PERF6): a style rule is asked for its one property; r.cssText wrote out every rule of the page (about 280 ms at 4x CPU) */ let t; if(r.style && r.type === 1){ const pv = r.style.getPropertyValue('--map-art'); t = pv ? '--map-art:' + pv : ''; } else t = r.cssText || ''; if(t.indexOf('--map-art:') < 0) return; const mm = t.match(/--map-art:\s*url\(["']?([^"')]+)["']?\)/); if(mm && !/^data:/.test(mm[1]) && !urls.includes(mm[1])) urls.push(mm[1]); }); }); }catch(e){}
   try{ Object.values(getCardDefs()).forEach(d=>{ if(d && d.art && !/^data:/.test(d.art) && urls.length < 40) urls.push(d.art); }); }catch(e){}
   const per = urls.length ? 50/urls.length : 50;
   if(!urls.length) add(50);
