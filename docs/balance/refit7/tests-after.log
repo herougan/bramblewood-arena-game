@@ -1,10 +1,10 @@
 
-✗ pro-2026-10-23 (exit 1, 187.4s) — last lines:
+✗ pro-2026-10-23 (exit 1, 67.3s) — last lines:
   ✗ 1. 21-BPRO-3: leaders ["pika-hoarder"] (the map rule: ["eyrie-warden"])
     ✗ 1. 23-PRO-1: leaders ["tide-spirit"] (the map rule: ["badger-berserker"])
   pro: 2/2741 FAILED
 
-✗ skir1-2026-11-11 (exit 1, 36.2s) — last lines:
+✗ skir1-2026-11-11 (exit 1, 9.9s) — last lines:
   ✗ 14-1: K14 (tasmanian-devil x4)
     ✗ 14-3: K14 (tasmanian-devil x4)
     ✗ 14-4: K14 (tasmanian-devil x4)
@@ -12,7 +12,6 @@
     ✗ 15-1: K14 (bramblewood-lynx x3)
     ✗ 15-4: K14 (bramblewood-lynx x3)
     ✗ 19-2: K14 (pinecone-sapper x4)
-    ✗ 19-6: K14 (pinecone-sapper x4)
     ✗ 10-B-1: in the SKIR1 build plan
     ✗ 10-B-2: in the SKIR1 build plan
     ✗ 10-B-3: in the SKIR1 build plan
@@ -25,9 +24,9 @@
     ✗ mt: its decks show 0 plain card(s) (the pools hold 1; minimum 2)
     ✗ m11: its decks show 1 cost0 card(s) (the pools hold 2; minimum 3)
     ✗ my: hoopoe-herald in 5 of 5 fights besides the ones that keep it (at most 4)
-  skir1: 6059 passed, 20 failed
+  skir1: 6060 passed, 19 failed
 
-✗ road-rarity-2026-10-16 (exit 1, 21.9s) — last lines:
+✗ road-rarity-2026-10-16 (exit 1, 4.2s) — last lines:
   ✗ 2. 20-A-4 (dungeon, Map 20) fields ashmantle-fiend (unique), cap epic
     ✗ 2. 21-1: 1/16 Rare or better (Maps 21-40 want a quarter)
     ✗ 2. 21-2: 2/19 Rare or better (Maps 21-40 want a quarter)
@@ -39,12 +38,11 @@
     ✗ 2. 24-1: 2/10 Rare or better (Maps 21-40 want a quarter)
   road-rarity-2026-10-16: 9 failed
 
-✗ winrate-panel-2026-10-19 (exit 1, 296.6s) — last lines:
-  419 fights on every map checked, slowest map mlb 25545 ms, 226 s so far
-    Maps 8 and 12: Map 0's deck at Lv 0 wins 36%, m24's (Map 24 deck) at Lv 4.62 82%
+✗ winrate-panel-2026-10-19 (exit 1, 88.2s) — last lines:
+  419 fights on every map checked, slowest map mm 9507 ms, 66 s so far
+    Maps 8 and 12: Map 0's deck at Lv 0 wins 36%, m24's (Map 24 deck) at Lv 4.62 83%
     ✗ Map 23: the report's deck is the game's deck
-    ✗ the test ran 290 s (budget 240 s)
-  FAIL 2 of 974
+  FAIL 1 of 974
 
-tests: 1 passed, 4 failed, 1 skipped (passed before on identical inputs) · 297s · slowest: winrate-panel-2026-10-19 297s, pro-2026-10-23 187s, skir1-2026-11-11 36s
+tests: 1 passed, 4 failed, 1 skipped (passed before on identical inputs) · 88s · slowest: winrate-panel-2026-10-19 88s, pro-2026-10-23 67s, skir1-2026-11-11 10s
 failing tests: tests/.last-failures.txt (4)

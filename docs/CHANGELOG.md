@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package REFIT7: the Maps 0-20 road re-fitted after LVL10, FOLD7, ENG52 and LVL11)
+- Players see: 71 road fights on Maps 0-20 play a different enemy deck (same leaders, first-clear cards and deck sizes; no Shield, Health, card or PRO change), nearer their target win rate. Map 17 and its side map, much harder since LVL10 / ENG52, are easier again in most fights (17-5 37 -> 68%, 17-A-4 15 -> 32%, 17-A-3 33 -> 54%).
+- Road (seed 9100, 400 games; before = GitHub run 44357199306 of batch-1023e 9f281ea1): main 78 -> 113 in band, 94 -> 121 within 10, 15 -> 11 beyond 20 (of 149); side 43 -> 64 / 49 -> 65 / 10 -> 6 (of 81). Left beyond 20 with any legal deck: decision REFIT7-1. RAIDGATE's new 10-B fights (The Deep Dark, Map 21 strength) are not counted: 2-37% against the Map 10 curve.
+- Under the hood: REFIT6's method in three passes (legal-only neighbour search, then the wide sampler on the fights 20+ off, then a third neighbour pass), a deck kept only where it closes the gap by 2+ points on the mean of two fresh seed sets (61100 / 62100, 63100 / 64100, 65100 / 66100): 57 + 11 + 5 kept; 19-6's pass-1 deck re-carded K14-legal after the LVL11 merge (Pinecone Sapper x1). LVL11 itself moved no unchanged Maps 0-20 fight by more than 3 points. Whole maps moved against REFIT6 with unchanged decks (Map 17 / 17-A about -21, Maps 2-B, 3, 4, 5, 7, 9 -10 to -13, Map 19 +9); every reference deck is still fully owned, so none rebuilt. tests/skir1 failures 15 (+4 RAIDGATE 10-B rows), unchanged by REFIT7. Files: `docs/balance/refit7/`.
+
 ## 2026-11-19 (package RAIDGATE, owner 00:02: the raid unlocks past Map 21, from a submap in a submap of a water map)
 - Players see: a locked "A light far below" spot in The Sunken Depths; after Map 21 it opens The Deep Dark (abyss art, Pitch Black), 4 fights 10-B-1 to 10-B-4 at Map 21 strength (existing deep-water cards, its own list). Winning 10-B-4 opens the first raid (the Goliath): toast, the raid conversation, a Home note until the raid page is opened; the Raid Banner stands after 10-B-4.
 - Gate: was the Raid Banner on Map 13; now The Deep Dark's boss. Saves that already opened the raid keep it; Admin unlocks unchanged. The raid cards' obtain map (OBTAIN_MAP_OF.raid, spot mapNumber) stays 13.
