@@ -6895,6 +6895,8 @@
      reveal with a fanned stack, rarity tease, NEW! moment. The "meta" look (plum spotlight, paw
      prints) is deliberately apart from the rest of the game. */
   html.po2-open #starFallLayer{z-index:9600;} html.po2-open .toast-host{z-index:9700;}
+  html.po2-open .toast-host{top:auto !important; bottom:calc(6px + env(safe-area-inset-bottom, 0px)) !important; transform:translateX(-50%) scale(.86); transform-origin:bottom center;} /* 2026-11-19 (package UIFIN3): toasts sit at the bottom edge under the pack opener, clear of the pile line and the Skip row */
+  html.po2-open .toast-host .toast:nth-last-child(n+3){display:none;} /* UIFIN3: only the newest two while the opener is open */
   /* 2026-10-08 (user: the middle two cards are visible in the A v B screen; they should fade in after) */
   #appWrap.in-match .center-slot-empty{transition:opacity 1.1s ease .15s;}
   body.pg-has-vs #appWrap .center-slot-empty{opacity:0; transition:none;}
