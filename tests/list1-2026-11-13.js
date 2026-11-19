@@ -26,7 +26,7 @@ ok(dump.length >= 30 && dump.every(r => /^__cfg:map-picks:/.test(r.id) && r.data
 dump.forEach(r => ok(picks[r.data.mapId] && same(picks[r.data.mapId].yes, r.data.yes), `1. ${r.data.mapId}: the picks file is the row's Yes`));
 const parentOf = s => Object.keys(P).find(t => (P[t].submaps || {})[s]);
 Object.entries(picks).forEach(([k, e]) => {
-  if (e.sub) { const l = P[parentOf(k)].submaps[k]; ok(e.yes.filter(id => C[id]).every(id => l.includes(id)), `1. side ${k}: every Yes is on its list`); return; }
+  if (e.sub) { const l = P[parentOf(k)].submaps[k]; ok(e.yes.filter(id => C[id] && !(k === 'm9' && id === 'granite-ox-golem')).every(id => l.includes(id)) /* 2026-11-19 DEC19-DATA (LIST1-1 a): Granite Ox Golem left the Basalt Foundry for Malachite Golem */, `1. side ${k}: every Yes is on its list`); return; }
   // 2026-11-18 (TESTFIX): + BOLT2's moves (owner 11-17 17:32), then FOLD6's list moves and CONTENT13's cards (OWN-1117-3)
   const BOLT2 = { m21: ['archerfish'], m11: ['fire-salamander'] };
   const want = withListMoves(k, null, e.yes.concat(ADM[k] || []).filter(id => C[id]).concat(k === 'md' ? ['barrel-cactus'] : []).concat((BOLT2[k] || []).filter(id => P[k].cards.includes(id))), P[k].cards);
@@ -87,7 +87,7 @@ const CN = J('canonical/claude-new-cards.json').list1, listed = LP.listedIds(poo
 const skills = rd('canonical/skill-costs.json');
 R.maps.filter(r => r.gap > 0).forEach(r => { const e = CN[r.id]; ok(!!e && (e.picks || []).length + (e.concepts || []).length >= r.gap && r.newAfterPicks >= r.target, `4. ${r.id}: the gap of ${r.gap} has picks that close it`); });
 Object.entries(CN).filter(([k]) => k !== '_about').forEach(([k, e]) => {
-  (e.picks || []).forEach(p => ok(C[p.id] && !listed.has(p.id) && !C[p.id].pool && p.why, `4. ${k}: ${p.id} is an existing card on no list, with a reason`));
+  (e.picks || []).forEach(p => ok(C[p.id] && (!listed.has(p.id) || (k === 'm9' && p.id === 'malachite-golem')) /* 2026-11-19 DEC19-DATA: LIST1-1 a took the pick */ && !C[p.id].pool && p.why, `4. ${k}: ${p.id} is an existing card on no list, with a reason`));
   (e.concepts || []).forEach(c => ok(/^concept-[a-z0-9-]+$/.test(c.id) && !C[c.id] && c.name && c.animal && c.family && c.element && c.rarity && c.role && c.why && skills.includes('"' + c.skill + '"'), `4. ${k}: concept ${c.name} has its fields and an existing skill (${c.skill})`));
   ok(!dump.some(r => r.data.mapId === k && (e.picks || []).concat(e.concepts || []).some(p => r.data.yes.includes(p.id))), `4. ${k}: no pick is written as his Yes`);
 });

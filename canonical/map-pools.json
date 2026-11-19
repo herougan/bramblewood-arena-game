@@ -128,7 +128,7 @@
   "m3": {
    "cards": ["honey-badger-fury", "cinder-hornet", "quillback-elder", "basalt-boar", "smoke-raccoon", "obsidian-scorpion", "caldera-snow-leopard", "sulfur-cinder-moth", "stalactite-golem", "glacier-yak", "walrus-icebreaker", "quillguard", "caustic-scorpion", "horned-lizard", "armadillo-guard", "polar-bear", "dune-jackal", "pinecone-sapper", "elderhorn-monarch", "fire-salamander"],
    "submaps": {
-    "m9": ["ember-revenant", "granite-ox-golem", "grindstone-boar", "peak-condor", "booming-bittern", "stalactite-golem", "star-nosed-mole", "stoat-cutthroat", "obsidian-scorpion", "magma-titan", "smoke-raccoon", "pumice-beetle", "cinder-hornet", "cinder-gecko", "anvilwhisker-otter"]
+    "m9": ["ember-revenant", "malachite-golem", "grindstone-boar", "peak-condor", "booming-bittern", "stalactite-golem", "star-nosed-mole", "stoat-cutthroat", "obsidian-scorpion", "magma-titan", "smoke-raccoon", "pumice-beetle", "cinder-hornet", "cinder-gecko", "anvilwhisker-otter"]
    },
    "special": []
   },

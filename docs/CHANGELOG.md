@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 DEC19-DATA
+- Honey Badger Fury attainable (TF5-3 a). Basalt Foundry (m9) takes Malachite Golem, Granite Ox Golem stays on Volcano Lair (LIST1-1 a): m9 list and the nine 19-A fights re-fitted, card-obtain-maps regenerated. Refine note and Elemental Energy card read "Every Turn".
+
 ## 2026-11-19 (package DEC19-TEXT: Deliver, Every Turn, Warcry wording)
 - Players see: the skill action "Gain" reads "Deliver" and the trigger "On Turn Start" reads "Every Turn" (labels and codex texts, 12 languages; keys perTurn / gain unchanged, SKN1-18 a). Warcry says "for the fight" (SKN1-1 a). Tests: uifin pin follows the Arrow (Flaming) key fix; ui29 pins follow today's pack lists.
 
