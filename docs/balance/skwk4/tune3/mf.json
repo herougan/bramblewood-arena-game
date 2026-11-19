@@ -1,0 +1,71 @@
+{
+ "map": "mf",
+ "generated": "2026-11-19T13:35:16.970Z",
+ "decks": [
+  {
+   "id": "1-BPRO-3",
+   "map": "mf",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.3,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.72,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramble-sprout": 3,
+     "cricket-drummer": 4,
+     "duck-paddler": 4,
+     "soldier-ant": 4,
+     "chipmunk-cavalry": 4,
+     "ant-scout": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.47,
+     "ref": 0.35,
+     "gap": 0.17
+    }
+   },
+   "pick": {
+    "deck": {
+     "bramble-sprout": 3,
+     "cricket-drummer": 4,
+     "duck-paddler": 4,
+     "soldier-ant": 4,
+     "chipmunk-cavalry": 4,
+     "ant-scout": 1
+    },
+    "val": {
+     "v": 0.47,
+     "ref": 0.35,
+     "gap": 0.17
+    },
+    "leaders": []
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.308,
+     "ref": 0.45,
+     "gap": 0.008
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 60
+    }
+   ],
+   "readings": 655,
+   "sec": 107
+  }
+ ],
+ "drop": []
+}

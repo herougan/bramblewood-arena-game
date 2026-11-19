@@ -1,0 +1,17 @@
+// 2026-11-19 (package SKWK4): the merged after-read docs/balance/skwk4/pro-ease-skwk4-after.json, one row per deck and reference (pro_ease, 40 games,
+// pro_ease seeds). Fresh this package: after-a/b (Maps 0-3, 5, 9, 11, 16, 17: map, ref2, ladder for every PRO / BPRO / WPRO deck; after-c/d re-read 1, 5, 11; after-e Map 1's BPRO decks after pass 6), ref2-a (ref2 for
+// the unchanged Maps 4-19 PRO / BPRO decks), ref2-b (Map 20+: map and ref2). The other rows (map and ladder of the unchanged Maps 4-20 decks) come
+// from SKWK3's merged after-read (same decks, cards, engine and seeds); a fresh row wins over an old one. Also prints the determinism check (a
+// fresh row for an unchanged deck against SKWK3's row) and the PRO / BPRO coverage tests/pref check 3 needs.
+const fs = require('fs'), D = 'docs/balance/skwk4/', R = f => JSON.parse(fs.readFileSync(f, 'utf8')).rows;
+const key = r => r.id + '|' + r.ref, byKey = new Map(); // a later file wins (after-c / d re-read Maps 1, 5 and 11 after pass 4 / 5)
+['ref2-a', 'ref2-b', 'after-a', 'after-b', 'after-c', 'after-d', 'after-e'].forEach(x => R(D + 'pro-ease-skwk4-' + x + '.json').forEach(r => byKey.set(key(r), r))); const fresh = [...byKey.values()];
+const have = new Set(fresh.map(key)), old = R('docs/balance/skwk3/pro-ease-skwk3-3-after.json'), oldBy = new Map(old.map(r => [key(r), r]));
+const pro = JSON.parse(fs.readFileSync('canonical/pro-skirmishes.json', 'utf8')), prev = JSON.parse(fs.readFileSync(process.argv[2] || 'canonical/pro-skirmishes.json', 'utf8'));
+const deckOf = (p, id) => { for (const m of Object.values(p.maps)) for (const k of ['pro', 'bpro', 'wpro']) for (const e of m[k] || []) if (e.id === id) return JSON.stringify(e.deck); return null; };
+let same = 0, diff = 0; fresh.forEach(r => { const o = oldBy.get(key(r)); if (o && deckOf(pro, r.id) === deckOf(prev, r.id)) { if (o.wins === r.wins && o.losses === r.losses) same++; else diff++; } });
+const rows = fresh.concat(old.filter(r => !have.has(key(r))));
+const ids = [].concat(...Object.values(pro.maps).map(m => (m.pro || []).concat(m.bpro || []).map(e => e.id)));
+const missing = []; ids.forEach(id => ['map', 'ref2'].forEach(r => { const x = rows.find(y => y.id === id && y.ref === r); if (!x || x.games < 40) missing.push(id + '/' + r); }));
+fs.writeFileSync(D + 'pro-ease-skwk4-after.json', JSON.stringify({ about: 'Package SKWK4: merged after-read (40 games a pairing, pro_ease seeds): Map reference, Reference-2 and the 10-deck reference ladder against the PRO / BPRO / WPRO decks. Fresh: pro-ease-skwk4-after-a/b (Maps 0-3, 5, 9, 11, 16, 17, every deck and reference; Maps 1, 5 and 11 re-read after passes 4-5 in after-c/d, Map 1 BPRO decks after pass 6 in after-e; later files win), -ref2-a (ref2, unchanged Maps 4-19), -ref2-b (Map 20+, map and ref2); the map and ladder rows of the unchanged Maps 4-20 decks from docs/balance/skwk3/pro-ease-skwk3-3-after.json (same decks, cards and seeds).', tool: 'docs/balance/skwk4/merge_2026_11_19.js', generated: new Date().toISOString(), settings: { refs: ['map', 'ref2'].concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => 'ladder-' + i)), games: 40, seed: 'pro-ease', easy: 0.85, ai: 1 }, rows }) + '\n');
+console.log(rows.length, 'rows;', 'determinism (fresh vs SKWK3 row, unchanged deck): ' + same + ' same, ' + diff + ' differ;', 'PRO / BPRO decks', ids.length, 'missing map/ref2 rows:', missing.length, missing.slice(0, 8).join(' '));

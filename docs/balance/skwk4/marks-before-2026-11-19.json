@@ -1,0 +1,1471 @@
+{
+ "about": "SKWK2 protocol marks (ref = Map reference win rate vs each deck; vsLadder = the deck's win rate vs the 10 ladder decks)",
+ "files": [
+  "docs/balance/skwk3/pro-ease-skwk3-3-after.json"
+ ],
+ "totals": {
+  "maps": 36,
+  "skOk": 29,
+  "skLadOk": 17,
+  "wkMaps": 36,
+  "wkOk": 34,
+  "wkLadOk": 7,
+  "allOk": 15
+ },
+ "maps": {
+  "m1": {
+   "no": 0,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.07375,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.005,
+   "decks": {
+    "0-PRO-1": {
+     "mapRef": 0.575,
+     "vsLadder": 0.0725
+    },
+    "0-PRO-2": {
+     "mapRef": 0.775,
+     "vsLadder": 0.045
+    },
+    "0-BPRO-1": {
+     "mapRef": 0.45,
+     "vsLadder": 0.0775
+    },
+    "0-BPRO-2": {
+     "mapRef": 0.475,
+     "vsLadder": 0.07
+    },
+    "0-WPRO-1": {
+     "mapRef": 0.975,
+     "vsLadder": 0
+    },
+    "0-WPRO-2": {
+     "mapRef": 0.95,
+     "vsLadder": 0.01
+    }
+   }
+  },
+  "mo": {
+   "no": 0,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.23666666666666666,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.18875,
+   "decks": {
+    "0-B-PRO-1": {
+     "mapRef": 0.325,
+     "vsLadder": 0.6475
+    },
+    "0-B-PRO-2": {
+     "mapRef": 0.5,
+     "vsLadder": 0.45
+    },
+    "0-B-PRO-3": {
+     "mapRef": 0.2,
+     "vsLadder": 0.7575
+    },
+    "0-B-PRO-4": {
+     "mapRef": 0.175,
+     "vsLadder": 0.765
+    },
+    "0-B-BPRO-1": {
+     "mapRef": 0.675,
+     "vsLadder": 0.2075
+    },
+    "0-B-BPRO-2": {
+     "mapRef": 0.625,
+     "vsLadder": 0.305
+    },
+    "0-B-BPRO-3": {
+     "mapRef": 0.6,
+     "vsLadder": 0.1975
+    },
+    "0-B-WPRO-1": {
+     "mapRef": 0.8,
+     "vsLadder": 0.195
+    },
+    "0-B-WPRO-2": {
+     "mapRef": 0.65,
+     "vsLadder": 0.1825
+    }
+   }
+  },
+  "mf": {
+   "no": 1,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.36,
+   "wkTooStrong": [
+    "1-WPRO-2"
+   ],
+   "wkVsLadder": 0.19875,
+   "decks": {
+    "1-PRO-1": {
+     "mapRef": 0.3,
+     "vsLadder": 0.46
+    },
+    "1-PRO-2": {
+     "mapRef": 0.2,
+     "vsLadder": 0.32
+    },
+    "1-BPRO-1": {
+     "mapRef": 0.675,
+     "vsLadder": 0.235
+    },
+    "1-BPRO-2": {
+     "mapRef": 0.425,
+     "vsLadder": 0.455
+    },
+    "1-BPRO-3": {
+     "mapRef": 0.475,
+     "vsLadder": 0.39
+    },
+    "1-WPRO-1": {
+     "mapRef": 0.525,
+     "vsLadder": 0.1925
+    },
+    "1-WPRO-2": {
+     "mapRef": 0.375,
+     "vsLadder": 0.205
+    }
+   }
+  },
+  "mq": {
+   "no": 1,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.33916666666666667,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.145,
+   "decks": {
+    "1-A-PRO-1": {
+     "mapRef": 0.275,
+     "vsLadder": 0.83
+    },
+    "1-A-PRO-2": {
+     "mapRef": 0.1,
+     "vsLadder": 0.8875
+    },
+    "1-A-PRO-3": {
+     "mapRef": 0.175,
+     "vsLadder": 0.855
+    },
+    "1-A-PRO-4": {
+     "mapRef": 0.4,
+     "vsLadder": 0.6
+    },
+    "1-A-BPRO-1": {
+     "mapRef": 0.5,
+     "vsLadder": 0.38
+    },
+    "1-A-BPRO-2": {
+     "mapRef": 0.5,
+     "vsLadder": 0.3925
+    },
+    "1-A-BPRO-3": {
+     "mapRef": 0.475,
+     "vsLadder": 0.245
+    },
+    "1-A-WPRO-1": {
+     "mapRef": 0.825,
+     "vsLadder": 0.145
+    }
+   }
+  },
+  "mb": {
+   "no": 2,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.305625,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.28,
+   "decks": {
+    "2-PRO-1": {
+     "mapRef": 0.4,
+     "vsLadder": 0.4375
+    },
+    "2-PRO-2": {
+     "mapRef": 0.2,
+     "vsLadder": 0.59
+    },
+    "2-PRO-3": {
+     "mapRef": 0.2,
+     "vsLadder": 0.6625
+    },
+    "2-BPRO-1": {
+     "mapRef": 0.45,
+     "vsLadder": 0.22
+    },
+    "2-BPRO-2": {
+     "mapRef": 0.725,
+     "vsLadder": 0.135
+    },
+    "2-BPRO-3": {
+     "mapRef": 0.625,
+     "vsLadder": 0.38
+    },
+    "2-BPRO-4": {
+     "mapRef": 0.575,
+     "vsLadder": 0.4875
+    },
+    "2-WPRO-1": {
+     "mapRef": 0.825,
+     "vsLadder": 0.28
+    }
+   }
+  },
+  "mg": {
+   "no": 2,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.66,
+   "wkTooStrong": [
+    "2-B-WPRO-1"
+   ],
+   "wkVsLadder": 0.7925,
+   "decks": {
+    "2-B-PRO-1": {
+     "mapRef": 0.35,
+     "vsLadder": 0.7675
+    },
+    "2-B-PRO-2": {
+     "mapRef": 0.35,
+     "vsLadder": 0.7725
+    },
+    "2-B-PRO-3": {
+     "mapRef": 0.525,
+     "vsLadder": 0.72
+    },
+    "2-B-BPRO-1": {
+     "mapRef": 0.3,
+     "vsLadder": 0.805
+    },
+    "2-B-BPRO-2": {
+     "mapRef": 0.525,
+     "vsLadder": 0.515
+    },
+    "2-B-WPRO-1": {
+     "mapRef": 0.375,
+     "vsLadder": 0.7925
+    }
+   }
+  },
+  "mp": {
+   "no": 2,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.296875,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.04125,
+   "decks": {
+    "2-A-PRO-1": {
+     "mapRef": 0.075,
+     "vsLadder": 0.4525
+    },
+    "2-A-PRO-2": {
+     "mapRef": 0.1,
+     "vsLadder": 0.435
+    },
+    "2-A-PRO-3": {
+     "mapRef": 0.175,
+     "vsLadder": 0.305
+    },
+    "2-A-PRO-4": {
+     "mapRef": 0.225,
+     "vsLadder": 0.435
+    },
+    "2-A-BPRO-1": {
+     "mapRef": 0.225,
+     "vsLadder": 0.1725
+    },
+    "2-A-BPRO-2": {
+     "mapRef": 0.05,
+     "vsLadder": 0.4475
+    },
+    "2-A-BPRO-3": {
+     "mapRef": 0.1,
+     "vsLadder": 0.305
+    },
+    "2-A-BPRO-4": {
+     "mapRef": 0.425,
+     "vsLadder": 0.2625
+    },
+    "2-A-WPRO-1": {
+     "mapRef": 0.875,
+     "vsLadder": 0.0125
+    },
+    "2-A-WPRO-2": {
+     "mapRef": 0.65,
+     "vsLadder": 0.07
+    }
+   }
+  },
+  "mc": {
+   "no": 3,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.56875,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.24125,
+   "decks": {
+    "3-PRO-1": {
+     "mapRef": 0.45,
+     "vsLadder": 0.2625
+    },
+    "3-PRO-2": {
+     "mapRef": 0.4,
+     "vsLadder": 0.525
+    },
+    "3-PRO-3": {
+     "mapRef": 0.55,
+     "vsLadder": 0.4625
+    },
+    "3-PRO-4": {
+     "mapRef": 0.25,
+     "vsLadder": 0.3225
+    },
+    "3-BPRO-1": {
+     "mapRef": 0.35,
+     "vsLadder": 0.5625
+    },
+    "3-BPRO-2": {
+     "mapRef": 0.4,
+     "vsLadder": 0.575
+    },
+    "3-WPRO-1": {
+     "mapRef": 0.65,
+     "vsLadder": 0.3075
+    },
+    "3-WPRO-2": {
+     "mapRef": 0.625,
+     "vsLadder": 0.175
+    }
+   }
+  },
+  "m2": {
+   "no": 4,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.26,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.065,
+   "decks": {
+    "4-PRO-1": {
+     "mapRef": 0.1,
+     "vsLadder": 0.445
+    },
+    "4-PRO-2": {
+     "mapRef": 0.575,
+     "vsLadder": 0.2575
+    },
+    "4-PRO-3": {
+     "mapRef": 0.25,
+     "vsLadder": 0.1875
+    },
+    "4-BPRO-1": {
+     "mapRef": 0.175,
+     "vsLadder": 0.26
+    },
+    "4-WPRO-1": {
+     "mapRef": 0.525,
+     "vsLadder": 0.065
+    }
+   }
+  },
+  "mw": {
+   "no": 5,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.4175,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.00625,
+   "decks": {
+    "5-PRO-1": {
+     "mapRef": 0.025,
+     "vsLadder": 0.6925
+    },
+    "5-PRO-2": {
+     "mapRef": 0.05,
+     "vsLadder": 0.565
+    },
+    "5-PRO-3": {
+     "mapRef": 0.125,
+     "vsLadder": 0.6575
+    },
+    "5-BPRO-1": {
+     "mapRef": 0.15,
+     "vsLadder": 0.3675
+    },
+    "5-BPRO-2": {
+     "mapRef": 0.125,
+     "vsLadder": 0.4675
+    },
+    "5-WPRO-1": {
+     "mapRef": 0.85,
+     "vsLadder": 0.01
+    },
+    "5-WPRO-2": {
+     "mapRef": 0.95,
+     "vsLadder": 0.0025
+    }
+   }
+  },
+  "ms": {
+   "no": 5,
+   "side": true,
+   "skTooWeak": [
+    "5-A-BPRO-3"
+   ],
+   "skVsLadder": 0.18875,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.04,
+   "decks": {
+    "5-A-PRO-1": {
+     "mapRef": 0.725,
+     "vsLadder": 0.38
+    },
+    "5-A-PRO-2": {
+     "mapRef": 0.725,
+     "vsLadder": 0.3825
+    },
+    "5-A-BPRO-1": {
+     "mapRef": 0.775,
+     "vsLadder": 0.125
+    },
+    "5-A-BPRO-2": {
+     "mapRef": 0.825,
+     "vsLadder": 0.1625
+    },
+    "5-A-BPRO-3": {
+     "mapRef": 0.875,
+     "vsLadder": 0.2475
+    },
+    "5-A-BPRO-4": {
+     "mapRef": 0.85,
+     "vsLadder": 0.22
+    },
+    "5-A-WPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0
+    },
+    "5-A-WPRO-2": {
+     "mapRef": 0.925,
+     "vsLadder": 0.08
+    }
+   }
+  },
+  "m8": {
+   "no": 6,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.245,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.0175,
+   "decks": {
+    "6-PRO-1": {
+     "mapRef": 0.05,
+     "vsLadder": 0.6675
+    },
+    "6-PRO-2": {
+     "mapRef": 0.075,
+     "vsLadder": 0.875
+    },
+    "6-BPRO-1": {
+     "mapRef": 0.525,
+     "vsLadder": 0.2275
+    },
+    "6-BPRO-2": {
+     "mapRef": 0.45,
+     "vsLadder": 0.22
+    },
+    "6-BPRO-3": {
+     "mapRef": 0.5,
+     "vsLadder": 0.2875
+    },
+    "6-WPRO-1": {
+     "mapRef": 0.875,
+     "vsLadder": 0.0175
+    }
+   }
+  },
+  "mu": {
+   "no": 7,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.23,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.00125,
+   "decks": {
+    "7-PRO-1": {
+     "mapRef": 0.725,
+     "vsLadder": 0.335
+    },
+    "7-PRO-2": {
+     "mapRef": 0.65,
+     "vsLadder": 0.2825
+    },
+    "7-BPRO-1": {
+     "mapRef": 0.65,
+     "vsLadder": 0.23
+    },
+    "7-WPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0
+    },
+    "7-WPRO-2": {
+     "mapRef": 1,
+     "vsLadder": 0.0025
+    }
+   }
+  },
+  "mz": {
+   "no": 7,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.16375,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.00125,
+   "decks": {
+    "7-A-PRO-1": {
+     "mapRef": 0.15,
+     "vsLadder": 0.62
+    },
+    "7-A-PRO-2": {
+     "mapRef": 0.6,
+     "vsLadder": 0.1325
+    },
+    "7-A-BPRO-1": {
+     "mapRef": 0.35,
+     "vsLadder": 0.1025
+    },
+    "7-A-BPRO-2": {
+     "mapRef": 0.2,
+     "vsLadder": 0.225
+    },
+    "7-A-WPRO-1": {
+     "mapRef": 0.95,
+     "vsLadder": 0.0025
+    },
+    "7-A-WPRO-2": {
+     "mapRef": 0.975,
+     "vsLadder": 0
+    }
+   }
+  },
+  "m4": {
+   "no": 8,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.278125,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.04125,
+   "decks": {
+    "8-PRO-1": {
+     "mapRef": 0.05,
+     "vsLadder": 0.91
+    },
+    "8-PRO-2": {
+     "mapRef": 0.075,
+     "vsLadder": 0.5725
+    },
+    "8-PRO-3": {
+     "mapRef": 0.05,
+     "vsLadder": 0.9025
+    },
+    "8-PRO-4": {
+     "mapRef": 0.125,
+     "vsLadder": 0.245
+    },
+    "8-BPRO-1": {
+     "mapRef": 0.225,
+     "vsLadder": 0.32
+    },
+    "8-BPRO-2": {
+     "mapRef": 0.225,
+     "vsLadder": 0.2825
+    },
+    "8-BPRO-3": {
+     "mapRef": 0.35,
+     "vsLadder": 0.23
+    },
+    "8-BPRO-4": {
+     "mapRef": 0.35,
+     "vsLadder": 0.28
+    },
+    "8-WPRO-1": {
+     "mapRef": 0.7,
+     "vsLadder": 0.05
+    },
+    "8-WPRO-2": {
+     "mapRef": 0.8,
+     "vsLadder": 0.0325
+    }
+   }
+  },
+  "mn": {
+   "no": 8,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.220625,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.19125,
+   "decks": {
+    "8-A-PRO-1": {
+     "mapRef": 0.05,
+     "vsLadder": 0.895
+    },
+    "8-A-PRO-2": {
+     "mapRef": 0.125,
+     "vsLadder": 0.8825
+    },
+    "8-A-PRO-3": {
+     "mapRef": 0.3,
+     "vsLadder": 0.595
+    },
+    "8-A-BPRO-1": {
+     "mapRef": 0.825,
+     "vsLadder": 0.25
+    },
+    "8-A-BPRO-2": {
+     "mapRef": 0.725,
+     "vsLadder": 0.22
+    },
+    "8-A-BPRO-3": {
+     "mapRef": 0.575,
+     "vsLadder": 0.26
+    },
+    "8-A-BPRO-4": {
+     "mapRef": 0.675,
+     "vsLadder": 0.1525
+    },
+    "8-A-WPRO-1": {
+     "mapRef": 0.625,
+     "vsLadder": 0.2275
+    },
+    "8-A-WPRO-2": {
+     "mapRef": 0.95,
+     "vsLadder": 0.155
+    }
+   }
+  },
+  "mk": {
+   "no": 9,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.3875,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.0725,
+   "decks": {
+    "9-PRO-1": {
+     "mapRef": 0.3,
+     "vsLadder": 0.5925
+    },
+    "9-PRO-2": {
+     "mapRef": 0.6,
+     "vsLadder": 0.4475
+    },
+    "9-BPRO-1": {
+     "mapRef": 0.725,
+     "vsLadder": 0.3875
+    },
+    "9-WPRO-1": {
+     "mapRef": 0.725,
+     "vsLadder": 0.0725
+    }
+   }
+  },
+  "m7": {
+   "no": 10,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.195,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.24,
+   "decks": {
+    "10-PRO-1": {
+     "mapRef": 0.1,
+     "vsLadder": 0.8975
+    },
+    "10-PRO-2": {
+     "mapRef": 0.325,
+     "vsLadder": 0.61
+    },
+    "10-PRO-3": {
+     "mapRef": 0.3,
+     "vsLadder": 0.62
+    },
+    "10-PRO-4": {
+     "mapRef": 0.575,
+     "vsLadder": 0.4625
+    },
+    "10-BPRO-1": {
+     "mapRef": 0.725,
+     "vsLadder": 0.165
+    },
+    "10-BPRO-2": {
+     "mapRef": 0.75,
+     "vsLadder": 0.225
+    },
+    "10-WPRO-1": {
+     "mapRef": 0.8,
+     "vsLadder": 0.24
+    }
+   }
+  },
+  "mj": {
+   "no": 10,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.1775,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.0825,
+   "decks": {
+    "10-A-PRO-1": {
+     "mapRef": 0,
+     "vsLadder": 0.86
+    },
+    "10-A-PRO-2": {
+     "mapRef": 0.225,
+     "vsLadder": 0.7
+    },
+    "10-A-BPRO-1": {
+     "mapRef": 0.825,
+     "vsLadder": 0.19
+    },
+    "10-A-BPRO-2": {
+     "mapRef": 0.7,
+     "vsLadder": 0.1775
+    },
+    "10-A-BPRO-3": {
+     "mapRef": 0.75,
+     "vsLadder": 0.0975
+    },
+    "10-A-BPRO-4": {
+     "mapRef": 0.65,
+     "vsLadder": 0.245
+    },
+    "10-A-WPRO-1": {
+     "mapRef": 0.75,
+     "vsLadder": 0.0925
+    },
+    "10-A-WPRO-2": {
+     "mapRef": 0.775,
+     "vsLadder": 0.0725
+    }
+   }
+  },
+  "m10": {
+   "no": 11,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.35,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.0675,
+   "decks": {
+    "11-PRO-1": {
+     "mapRef": 0.525,
+     "vsLadder": 0.45
+    },
+    "11-PRO-2": {
+     "mapRef": 0.15,
+     "vsLadder": 0.905
+    },
+    "11-PRO-3": {
+     "mapRef": 0.725,
+     "vsLadder": 0.455
+    },
+    "11-PRO-4": {
+     "mapRef": 0.45,
+     "vsLadder": 0.6125
+    },
+    "11-BPRO-1": {
+     "mapRef": 0.775,
+     "vsLadder": 0.3225
+    },
+    "11-BPRO-2": {
+     "mapRef": 0.8,
+     "vsLadder": 0.3025
+    },
+    "11-BPRO-3": {
+     "mapRef": 0.675,
+     "vsLadder": 0.3625
+    },
+    "11-BPRO-4": {
+     "mapRef": 0.575,
+     "vsLadder": 0.4125
+    },
+    "11-WPRO-1": {
+     "mapRef": 0.95,
+     "vsLadder": 0.09
+    },
+    "11-WPRO-2": {
+     "mapRef": 0.975,
+     "vsLadder": 0.045
+    }
+   }
+  },
+  "mv": {
+   "no": 11,
+   "side": true,
+   "skTooWeak": [
+    "11-A-BPRO-1"
+   ],
+   "skVsLadder": 0.2075,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.0875,
+   "decks": {
+    "11-A-PRO-1": {
+     "mapRef": 0.15,
+     "vsLadder": 0.925
+    },
+    "11-A-PRO-2": {
+     "mapRef": 0.225,
+     "vsLadder": 0.93
+    },
+    "11-A-PRO-3": {
+     "mapRef": 0.125,
+     "vsLadder": 0.835
+    },
+    "11-A-PRO-4": {
+     "mapRef": 0.1,
+     "vsLadder": 0.9175
+    },
+    "11-A-BPRO-1": {
+     "mapRef": 0.875,
+     "vsLadder": 0.27
+    },
+    "11-A-BPRO-2": {
+     "mapRef": 0.85,
+     "vsLadder": 0.145
+    },
+    "11-A-WPRO-1": {
+     "mapRef": 0.975,
+     "vsLadder": 0.0875
+    }
+   }
+  },
+  "mh": {
+   "no": 12,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.2325,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.00375,
+   "decks": {
+    "12-PRO-1": {
+     "mapRef": 0.15,
+     "vsLadder": 0.5075
+    },
+    "12-PRO-2": {
+     "mapRef": 0.45,
+     "vsLadder": 0.2375
+    },
+    "12-BPRO-1": {
+     "mapRef": 0.8,
+     "vsLadder": 0.2725
+    },
+    "12-BPRO-2": {
+     "mapRef": 0.675,
+     "vsLadder": 0.1925
+    },
+    "12-WPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0.005
+    },
+    "12-WPRO-2": {
+     "mapRef": 0.975,
+     "vsLadder": 0.0025
+    }
+   }
+  },
+  "mr": {
+   "no": 13,
+   "side": false,
+   "skTooWeak": [
+    "13-PRO-2",
+    "13-BPRO-3"
+   ],
+   "skVsLadder": 0.369375,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.0275,
+   "decks": {
+    "13-PRO-1": {
+     "mapRef": 0.65,
+     "vsLadder": 0.625
+    },
+    "13-PRO-2": {
+     "mapRef": 0.9,
+     "vsLadder": 0.5925
+    },
+    "13-BPRO-1": {
+     "mapRef": 0.825,
+     "vsLadder": 0.41
+    },
+    "13-BPRO-2": {
+     "mapRef": 0.85,
+     "vsLadder": 0.5175
+    },
+    "13-BPRO-3": {
+     "mapRef": 0.875,
+     "vsLadder": 0.2425
+    },
+    "13-BPRO-4": {
+     "mapRef": 0.75,
+     "vsLadder": 0.3075
+    },
+    "13-WPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0.0275
+    }
+   }
+  },
+  "m5": {
+   "no": 14,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.31833333333333336,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.36,
+   "decks": {
+    "14-PRO-1": {
+     "mapRef": 0.25,
+     "vsLadder": 0.7725
+    },
+    "14-PRO-2": {
+     "mapRef": 0.45,
+     "vsLadder": 0.6775
+    },
+    "14-PRO-3": {
+     "mapRef": 0.125,
+     "vsLadder": 0.83
+    },
+    "14-PRO-4": {
+     "mapRef": 0.525,
+     "vsLadder": 0.4575
+    },
+    "14-BPRO-1": {
+     "mapRef": 0.8,
+     "vsLadder": 0.235
+    },
+    "14-BPRO-2": {
+     "mapRef": 0.8,
+     "vsLadder": 0.3675
+    },
+    "14-BPRO-3": {
+     "mapRef": 0.825,
+     "vsLadder": 0.3525
+    },
+    "14-WPRO-1": {
+     "mapRef": 0.8,
+     "vsLadder": 0.3575
+    },
+    "14-WPRO-2": {
+     "mapRef": 0.8,
+     "vsLadder": 0.3625
+    }
+   }
+  },
+  "my": {
+   "no": 14,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.16,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.0075,
+   "decks": {
+    "14-A-PRO-1": {
+     "mapRef": 0.475,
+     "vsLadder": 0.13
+    },
+    "14-A-PRO-2": {
+     "mapRef": 0.675,
+     "vsLadder": 0.1675
+    },
+    "14-A-BPRO-1": {
+     "mapRef": 0.65,
+     "vsLadder": 0.1275
+    },
+    "14-A-BPRO-2": {
+     "mapRef": 0.3,
+     "vsLadder": 0.1925
+    },
+    "14-A-WPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0
+    },
+    "14-A-WPRO-2": {
+     "mapRef": 0.575,
+     "vsLadder": 0.015
+    }
+   }
+  },
+  "ml": {
+   "no": 15,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.2683333333333333,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.07125,
+   "decks": {
+    "15-PRO-1": {
+     "mapRef": 0.45,
+     "vsLadder": 0.685
+    },
+    "15-PRO-2": {
+     "mapRef": 0.4,
+     "vsLadder": 0.5775
+    },
+    "15-PRO-3": {
+     "mapRef": 0.3,
+     "vsLadder": 0.6525
+    },
+    "15-BPRO-1": {
+     "mapRef": 0.575,
+     "vsLadder": 0.2625
+    },
+    "15-BPRO-2": {
+     "mapRef": 0.725,
+     "vsLadder": 0.2925
+    },
+    "15-BPRO-3": {
+     "mapRef": 0.725,
+     "vsLadder": 0.25
+    },
+    "15-WPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0.0275
+    },
+    "15-WPRO-2": {
+     "mapRef": 0.95,
+     "vsLadder": 0.115
+    }
+   }
+  },
+  "mt": {
+   "no": 16,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.3075,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.02,
+   "decks": {
+    "16-PRO-1": {
+     "mapRef": 0.175,
+     "vsLadder": 0.8425
+    },
+    "16-PRO-2": {
+     "mapRef": 0.125,
+     "vsLadder": 0.8
+    },
+    "16-PRO-3": {
+     "mapRef": 0.125,
+     "vsLadder": 0.765
+    },
+    "16-PRO-4": {
+     "mapRef": 0.5,
+     "vsLadder": 0.53
+    },
+    "16-BPRO-1": {
+     "mapRef": 0.8,
+     "vsLadder": 0.255
+    },
+    "16-BPRO-2": {
+     "mapRef": 0.725,
+     "vsLadder": 0.365
+    },
+    "16-BPRO-3": {
+     "mapRef": 0.675,
+     "vsLadder": 0.3025
+    },
+    "16-WPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0.0225
+    },
+    "16-WPRO-2": {
+     "mapRef": 0.975,
+     "vsLadder": 0.0175
+    }
+   }
+  },
+  "m6": {
+   "no": 17,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.2608333333333333,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.06625,
+   "decks": {
+    "17-PRO-1": {
+     "mapRef": 0.175,
+     "vsLadder": 0.865
+    },
+    "17-PRO-2": {
+     "mapRef": 0.05,
+     "vsLadder": 0.9875
+    },
+    "17-PRO-3": {
+     "mapRef": 0.075,
+     "vsLadder": 0.8525
+    },
+    "17-BPRO-1": {
+     "mapRef": 0.775,
+     "vsLadder": 0.295
+    },
+    "17-BPRO-2": {
+     "mapRef": 0.75,
+     "vsLadder": 0.305
+    },
+    "17-BPRO-3": {
+     "mapRef": 0.7,
+     "vsLadder": 0.1825
+    },
+    "17-WPRO-1": {
+     "mapRef": 0.975,
+     "vsLadder": 0.025
+    },
+    "17-WPRO-2": {
+     "mapRef": 0.85,
+     "vsLadder": 0.1075
+    }
+   }
+  },
+  "mi": {
+   "no": 17,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.71125,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.035,
+   "decks": {
+    "17-A-PRO-1": {
+     "mapRef": 0.15,
+     "vsLadder": 0.93
+    },
+    "17-A-PRO-2": {
+     "mapRef": 0.1,
+     "vsLadder": 0.9675
+    },
+    "17-A-PRO-3": {
+     "mapRef": 0.075,
+     "vsLadder": 0.9525
+    },
+    "17-A-PRO-4": {
+     "mapRef": 0.475,
+     "vsLadder": 0.6975
+    },
+    "17-A-BPRO-1": {
+     "mapRef": 0.175,
+     "vsLadder": 0.91
+    },
+    "17-A-BPRO-2": {
+     "mapRef": 0.125,
+     "vsLadder": 0.96
+    },
+    "17-A-BPRO-3": {
+     "mapRef": 0.625,
+     "vsLadder": 0.3625
+    },
+    "17-A-BPRO-4": {
+     "mapRef": 0.525,
+     "vsLadder": 0.6125
+    },
+    "17-A-WPRO-1": {
+     "mapRef": 0.9,
+     "vsLadder": 0.035
+    },
+    "17-A-WPRO-2": {
+     "mapRef": 0.95,
+     "vsLadder": 0.035
+    }
+   }
+  },
+  "md": {
+   "no": 18,
+   "side": false,
+   "skTooWeak": [],
+   "skVsLadder": 0.5325,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.1775,
+   "decks": {
+    "18-PRO-1": {
+     "mapRef": 0.1,
+     "vsLadder": 0.89
+    },
+    "18-PRO-2": {
+     "mapRef": 0.225,
+     "vsLadder": 0.855
+    },
+    "18-PRO-3": {
+     "mapRef": 0.8,
+     "vsLadder": 0.635
+    },
+    "18-PRO-4": {
+     "mapRef": 0.4,
+     "vsLadder": 0.83
+    },
+    "18-BPRO-1": {
+     "mapRef": 0.75,
+     "vsLadder": 0.4925
+    },
+    "18-BPRO-2": {
+     "mapRef": 0.425,
+     "vsLadder": 0.5725
+    },
+    "18-WPRO-1": {
+     "mapRef": 0.95,
+     "vsLadder": 0.1775
+    }
+   }
+  },
+  "mpd": {
+   "no": 18,
+   "side": true,
+   "skTooWeak": [
+    "18-A-BPRO-1",
+    "18-A-BPRO-2",
+    "18-A-BPRO-3"
+   ],
+   "skVsLadder": 0.035833333333333335,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.02625,
+   "decks": {
+    "18-A-PRO-1": {
+     "mapRef": 0.25,
+     "vsLadder": 0.555
+    },
+    "18-A-PRO-2": {
+     "mapRef": 0.625,
+     "vsLadder": 0.2075
+    },
+    "18-A-PRO-3": {
+     "mapRef": 0.775,
+     "vsLadder": 0.1525
+    },
+    "18-A-BPRO-1": {
+     "mapRef": 0.875,
+     "vsLadder": 0.0225
+    },
+    "18-A-BPRO-2": {
+     "mapRef": 0.95,
+     "vsLadder": 0.0225
+    },
+    "18-A-BPRO-3": {
+     "mapRef": 0.9,
+     "vsLadder": 0.0625
+    },
+    "18-A-WPRO-1": {
+     "mapRef": 0.875,
+     "vsLadder": 0.0475
+    },
+    "18-A-WPRO-2": {
+     "mapRef": 0.95,
+     "vsLadder": 0.005
+    }
+   }
+  },
+  "m3": {
+   "no": 19,
+   "side": false,
+   "skTooWeak": [
+    "19-BPRO-3"
+   ],
+   "skVsLadder": 0.4533333333333333,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.0525,
+   "decks": {
+    "19-PRO-1": {
+     "mapRef": 0.375,
+     "vsLadder": 0.91
+    },
+    "19-PRO-2": {
+     "mapRef": 0.725,
+     "vsLadder": 0.5275
+    },
+    "19-PRO-3": {
+     "mapRef": 0.4,
+     "vsLadder": 0.76
+    },
+    "19-BPRO-1": {
+     "mapRef": 0.725,
+     "vsLadder": 0.5525
+    },
+    "19-BPRO-2": {
+     "mapRef": 0.825,
+     "vsLadder": 0.4775
+    },
+    "19-BPRO-3": {
+     "mapRef": 0.875,
+     "vsLadder": 0.33
+    },
+    "19-WPRO-1": {
+     "mapRef": 0.95,
+     "vsLadder": 0.0675
+    },
+    "19-WPRO-2": {
+     "mapRef": 0.975,
+     "vsLadder": 0.0375
+    }
+   }
+  },
+  "m9": {
+   "no": 19,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.20375,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.025,
+   "decks": {
+    "19-A-PRO-1": {
+     "mapRef": 0.05,
+     "vsLadder": 0.935
+    },
+    "19-A-PRO-2": {
+     "mapRef": 0.05,
+     "vsLadder": 0.9525
+    },
+    "19-A-PRO-3": {
+     "mapRef": 0.1,
+     "vsLadder": 0.9
+    },
+    "19-A-BPRO-1": {
+     "mapRef": 0.725,
+     "vsLadder": 0.22
+    },
+    "19-A-BPRO-2": {
+     "mapRef": 0.8,
+     "vsLadder": 0.1875
+    },
+    "19-A-WPRO-1": {
+     "mapRef": 0.95,
+     "vsLadder": 0.025
+    },
+    "19-A-WPRO-2": {
+     "mapRef": 0.775,
+     "vsLadder": 0.025
+    }
+   }
+  },
+  "m11": {
+   "no": 20,
+   "side": false,
+   "skTooWeak": [
+    "20-BPRO-1",
+    "20-BPRO-2"
+   ],
+   "skVsLadder": 0.0825,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.00375,
+   "decks": {
+    "20-PRO-1": {
+     "mapRef": 0.775,
+     "vsLadder": 0.27
+    },
+    "20-PRO-2": {
+     "mapRef": 0.55,
+     "vsLadder": 0.5675
+    },
+    "20-PRO-3": {
+     "mapRef": 0.325,
+     "vsLadder": 0.835
+    },
+    "20-PRO-4": {
+     "mapRef": 0.75,
+     "vsLadder": 0.4625
+    },
+    "20-BPRO-1": {
+     "mapRef": 0.975,
+     "vsLadder": 0.04
+    },
+    "20-BPRO-2": {
+     "mapRef": 0.975,
+     "vsLadder": 0.125
+    },
+    "20-WPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0.0025
+    },
+    "20-WPRO-2": {
+     "mapRef": 1,
+     "vsLadder": 0.005
+    }
+   }
+  },
+  "me": {
+   "no": 20,
+   "side": true,
+   "skTooWeak": [
+    "20-A-BPRO-1"
+   ],
+   "skVsLadder": 0.025,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.0025,
+   "decks": {
+    "20-A-PRO-1": {
+     "mapRef": 0.7,
+     "vsLadder": 0.135
+    },
+    "20-A-PRO-2": {
+     "mapRef": 0.575,
+     "vsLadder": 0.3825
+    },
+    "20-A-BPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0.025
+    },
+    "20-A-WPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0.005
+    },
+    "20-A-WPRO-2": {
+     "mapRef": 1,
+     "vsLadder": 0
+    }
+   }
+  },
+  "mx": {
+   "no": 20,
+   "side": true,
+   "skTooWeak": [],
+   "skVsLadder": 0.34833333333333333,
+   "wkTooStrong": [],
+   "wkVsLadder": 0.00125,
+   "decks": {
+    "20-B-PRO-1": {
+     "mapRef": 0.525,
+     "vsLadder": 0.6675
+    },
+    "20-B-PRO-2": {
+     "mapRef": 0.7,
+     "vsLadder": 0.5625
+    },
+    "20-B-PRO-3": {
+     "mapRef": 0.8,
+     "vsLadder": 0.4175
+    },
+    "20-B-BPRO-1": {
+     "mapRef": 0.85,
+     "vsLadder": 0.2325
+    },
+    "20-B-BPRO-2": {
+     "mapRef": 0.575,
+     "vsLadder": 0.47
+    },
+    "20-B-BPRO-3": {
+     "mapRef": 0.85,
+     "vsLadder": 0.3425
+    },
+    "20-B-WPRO-1": {
+     "mapRef": 1,
+     "vsLadder": 0
+    },
+    "20-B-WPRO-2": {
+     "mapRef": 1,
+     "vsLadder": 0.0025
+    }
+   }
+  }
+ }
+}

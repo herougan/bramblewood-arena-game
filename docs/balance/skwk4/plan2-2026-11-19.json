@@ -1,0 +1,7 @@
+{
+ "about": "SKWK4 pass 2 (tune2/): 20-B-BPRO-2 moved into the band in pass 1 but over the 85% line (aim ladder 18-30%, Map reference 72% or under: --sk-hi 0.30 --ref-max 0.72); Map 18's BPRO decks found no move in pass 1 (wider screen: --sample 60 --steps 8)",
+ "maps": {
+  "mx": { "tune": ["20-B-BPRO-2"], "drop": [] },
+  "md": { "tune": ["18-BPRO-2", "18-BPRO-1"], "drop": [] }
+ }
+}

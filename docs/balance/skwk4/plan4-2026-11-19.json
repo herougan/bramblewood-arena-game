@@ -1,0 +1,11 @@
+{
+ "about": "SKWK4 pass 4 (tune4/, after passes 1 and 3 applied and the after-read pro-ease-skwk4-after.json): maps still just off the band or TOO WEAK, aim ladder 18-25% (--sk-hi 0.25 --sample 80 --steps 8); --ref-max 0.72 for Maps 0-5 (5-A-BPRO-3 at 88%), 0.78 for Map 11, 0.84 for Map 14 (its decks sit at 80-83%)",
+ "maps": {
+  "m1": { "tune": ["0-BPRO-2", "0-BPRO-1"], "drop": [] },
+  "mf": { "tune": ["1-BPRO-2", "1-BPRO-1"], "drop": [] },
+  "mw": { "tune": ["5-BPRO-2", "5-BPRO-1"], "drop": [] },
+  "ms": { "tune": ["5-A-BPRO-3"], "drop": [] },
+  "m10": { "tune": ["11-BPRO-4", "11-BPRO-1"], "drop": [] },
+  "m5": { "tune": ["14-BPRO-2"], "drop": [] }
+ }
+}

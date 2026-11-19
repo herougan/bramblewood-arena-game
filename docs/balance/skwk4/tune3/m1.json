@@ -1,0 +1,142 @@
+{
+ "map": "m1",
+ "generated": "2026-11-19T13:33:29.902Z",
+ "decks": [
+  {
+   "id": "0-BPRO-1",
+   "map": "m1",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.3,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.72,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "bee-sentry": 3,
+     "cottontail": 4,
+     "farm-dog": 1,
+     "house-cat": 4,
+     "soldier-ant": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.08,
+     "ref": 0.75,
+     "gap": 0.07
+    }
+   },
+   "pick": {
+    "deck": {
+     "ant-scout": 4,
+     "bee-sentry": 3,
+     "cottontail": 4,
+     "farm-dog": 1,
+     "house-cat": 4,
+     "soldier-ant": 4
+    },
+    "val": {
+     "v": 0.08,
+     "ref": 0.75,
+     "gap": 0.07
+    },
+    "leaders": []
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.108,
+     "ref": 0.55,
+     "gap": 0.072
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 60
+    }
+   ],
+   "readings": 655,
+   "sec": 65
+  },
+  {
+   "id": "0-BPRO-2",
+   "map": "m1",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.3,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.72,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "duck-paddler": 3,
+     "farm-dog": 4,
+     "pond-trout": 3,
+     "soldier-ant": 4,
+     "worker-ant": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.065,
+     "ref": 0.7,
+     "gap": 0.085
+    }
+   },
+   "pick": {
+    "deck": {
+     "ant-scout": 4,
+     "duck-paddler": 3,
+     "farm-dog": 4,
+     "pond-trout": 3,
+     "soldier-ant": 4,
+     "thorn-shrike": 2
+    },
+    "val": {
+     "v": 0.12,
+     "ref": 0.45,
+     "gap": 0.03
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.117,
+     "ref": 0.625,
+     "gap": 0.063
+    },
+    {
+     "move": "worker-ant -2 -> thorn-shrike",
+     "v": 0.167,
+     "ref": 0.4,
+     "gap": 0.013,
+     "tried": 60
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 60
+    }
+   ],
+   "readings": 1229,
+   "sec": 112
+  }
+ ],
+ "drop": []
+}

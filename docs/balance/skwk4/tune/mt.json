@@ -1,0 +1,76 @@
+{
+ "map": "mt",
+ "generated": "2026-11-19T13:07:13.405Z",
+ "decks": [
+  {
+   "id": "16-BPRO-2",
+   "map": "mt",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cone-cutter-squirrel": 4,
+     "farm-dog": 4,
+     "mountain-hare": 4,
+     "owl-sentinel": 2,
+     "raft-spider": 2,
+     "grizzly-vanguard": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.365,
+     "ref": 0.775,
+     "gap": 0.065
+    }
+   },
+   "pick": {
+    "deck": {
+     "farm-dog": 4,
+     "mountain-hare": 4,
+     "owl-sentinel": 2,
+     "raft-spider": 2,
+     "grizzly-vanguard": 4,
+     "upside-down-bat": 4
+    },
+    "val": {
+     "v": 0.315,
+     "ref": 0.775,
+     "gap": 0.015
+    },
+    "leaders": [
+     "upside-down-bat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.308,
+     "ref": 0.725,
+     "gap": 0.038
+    },
+    {
+     "move": "cone-cutter-squirrel x4 -> upside-down-bat",
+     "v": 0.233,
+     "ref": 0.725,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 93
+  }
+ ],
+ "drop": []
+}

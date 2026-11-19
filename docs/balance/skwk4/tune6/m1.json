@@ -1,0 +1,157 @@
+{
+ "map": "m1",
+ "generated": "2026-11-19T15:04:08.880Z",
+ "decks": [
+  {
+   "id": "0-BPRO-1",
+   "map": "m1",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "bee-sentry": 3,
+     "cottontail": 4,
+     "farm-dog": 1,
+     "house-cat": 4,
+     "soldier-ant": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.08,
+     "ref": 0.75,
+     "gap": 0.07
+    }
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-forager": 2,
+     "cottontail": 3,
+     "duck-paddler": 4,
+     "farm-dog": 3,
+     "house-cat": 4,
+     "soldier-ant": 4
+    },
+    "val": {
+     "v": 0.05,
+     "ref": 0.35,
+     "gap": 0.1
+    },
+    "leaders": []
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.067,
+     "ref": 0.275,
+     "gap": 0.113
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 60
+    }
+   ],
+   "readings": 655,
+   "sec": 212,
+   "seeded": {
+    "deck": {
+     "chipmunk-forager": 2,
+     "cottontail": 3,
+     "duck-paddler": 4,
+     "farm-dog": 3,
+     "house-cat": 4,
+     "soldier-ant": 4
+    },
+    "focus": "swarm",
+    "score": 0.9167
+   }
+  },
+  {
+   "id": "0-BPRO-2",
+   "map": "m1",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "duck-paddler": 3,
+     "farm-dog": 4,
+     "pond-trout": 3,
+     "soldier-ant": 4,
+     "thorn-shrike": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.12,
+     "ref": 0.45,
+     "gap": 0.03
+    }
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-forager": 4,
+     "farm-dog": 4,
+     "pond-trout": 4,
+     "soldier-ant": 4,
+     "thorn-shrike": 4
+    },
+    "val": {
+     "v": 0.1,
+     "ref": 0.475,
+     "gap": 0.05
+    },
+    "leaders": []
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.1,
+     "ref": 0.475,
+     "gap": 0.08
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 60
+    }
+   ],
+   "readings": 655,
+   "sec": 166,
+   "seeded": {
+    "deck": {
+     "chipmunk-forager": 4,
+     "farm-dog": 4,
+     "pond-trout": 4,
+     "soldier-ant": 4,
+     "thorn-shrike": 4
+    },
+    "focus": "open",
+    "score": 0.8611
+   }
+  }
+ ],
+ "drop": []
+}

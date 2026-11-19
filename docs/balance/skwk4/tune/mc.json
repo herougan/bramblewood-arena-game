@@ -1,0 +1,162 @@
+{
+ "map": "mc",
+ "generated": "2026-11-19T13:03:01.575Z",
+ "decks": [
+  {
+   "id": "3-BPRO-2",
+   "map": "mc",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "conch-herald": 2,
+     "cormorant": 4,
+     "eagle-sharpshooter": 4,
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "beachcomber-sanderling": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.575,
+     "ref": 0.35,
+     "gap": 0.275
+    }
+   },
+   "pick": {
+    "deck": {
+     "cormorant": 4,
+     "eagle-sharpshooter": 4,
+     "pika-hoarder": 4,
+     "beachcomber-sanderling": 2,
+     "hawk-arrowkeeper": 2,
+     "chipmunk-skirmisher": 4
+    },
+    "val": {
+     "v": 0.27,
+     "ref": 0.55,
+     "gap": 0
+    },
+    "leaders": [
+     "hawk-arrowkeeper"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.567,
+     "ref": 0.325,
+     "gap": 0.297
+    },
+    {
+     "move": "conch-herald -2 -> hawk-arrowkeeper",
+     "v": 0.4,
+     "ref": 0.2,
+     "gap": 0.13,
+     "tried": 24
+    },
+    {
+     "move": "peak-condor x4 -> chipmunk-skirmisher",
+     "v": 0.275,
+     "ref": 0.475,
+     "gap": 0.005,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 863,
+   "sec": 251
+  },
+  {
+   "id": "3-BPRO-1",
+   "map": "mc",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "conch-herald": 4,
+     "cormorant": 4,
+     "kittiwake-flock": 4,
+     "peregrine-stooper": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.515,
+     "ref": 0.3,
+     "gap": 0.215
+    }
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "cormorant": 4,
+     "kittiwake-flock": 4,
+     "peregrine-stooper": 2,
+     "chipmunk-skirmisher": 4,
+     "conch-herald": 2
+    },
+    "val": {
+     "v": 0.3,
+     "ref": 0.55,
+     "gap": 0
+    },
+    "leaders": [
+     "conch-herald"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.475,
+     "ref": 0.375,
+     "gap": 0.205
+    },
+    {
+     "move": "conch-herald x4 -> chipmunk-skirmisher",
+     "v": 0.325,
+     "ref": 0.35,
+     "gap": 0.055,
+     "tried": 24
+    },
+    {
+     "move": "peregrine-stooper -2 -> conch-herald",
+     "v": 0.25,
+     "ref": 0.475,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 138
+  }
+ ],
+ "drop": []
+}

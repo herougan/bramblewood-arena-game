@@ -1,0 +1,6 @@
+{
+ "about": "SKWK4 pass 7 (tune7/): 20-B-BPRO-2's picks reached 25-29% on the ladder three times but the Map reference crossed 85% on validation (87.5%); aim a smaller step, ladder 25-33% with the Map reference at 70% or under (--sk-lo 0.25 --sk-hi 0.33 --ref-max 0.70 --sample 60 --steps 8)",
+ "maps": {
+  "mx": { "tune": ["20-B-BPRO-2"], "drop": [] }
+ }
+}

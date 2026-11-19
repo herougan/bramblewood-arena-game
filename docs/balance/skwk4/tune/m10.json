@@ -1,0 +1,149 @@
+{
+ "map": "m10",
+ "generated": "2026-11-19T13:05:40.026Z",
+ "decks": [
+  {
+   "id": "11-BPRO-4",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "mountain-hare": 3,
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "swamp-alligator": 2,
+     "the-gannet-queen": 4,
+     "golden-eagle-diver": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.475,
+     "ref": 0.675,
+     "gap": 0.175
+    }
+   },
+   "pick": {
+    "deck": {
+     "mountain-hare": 3,
+     "pika-hoarder": 4,
+     "swamp-alligator": 2,
+     "the-gannet-queen": 4,
+     "golden-eagle-diver": 3,
+     "apollo-butterfly": 4
+    },
+    "val": {
+     "v": 0.465,
+     "ref": 0.75,
+     "gap": 0.165
+    },
+    "leaders": [
+     "the-gannet-queen"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.45,
+     "ref": 0.725,
+     "gap": 0.18
+    },
+    {
+     "move": "peak-condor x4 -> apollo-butterfly",
+     "v": 0.267,
+     "ref": 0.725,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 99
+  },
+  {
+   "id": "11-BPRO-3",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "eagle-sharpshooter": 4,
+     "gannet-nestweaver": 4,
+     "kittiwake-flock": 4,
+     "stonedrop-vulture": 3,
+     "the-gannet-queen": 4,
+     "mountain-hare": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.445,
+     "ref": 0.625,
+     "gap": 0.145
+    }
+   },
+   "pick": {
+    "deck": {
+     "eagle-sharpshooter": 4,
+     "gannet-nestweaver": 4,
+     "kittiwake-flock": 4,
+     "stonedrop-vulture": 3,
+     "mountain-hare": 1,
+     "beaver-lumberjack": 4
+    },
+    "val": {
+     "v": 0.325,
+     "ref": 0.85,
+     "gap": 0.025
+    },
+    "leaders": [
+     "stonedrop-vulture"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.433,
+     "ref": 0.6,
+     "gap": 0.163
+    },
+    {
+     "move": "the-gannet-queen x4 -> beaver-lumberjack",
+     "v": 0.358,
+     "ref": 0.675,
+     "gap": 0.088,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 164
+  }
+ ],
+ "drop": []
+}

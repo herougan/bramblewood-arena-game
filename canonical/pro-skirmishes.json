@@ -152,7 +152,7 @@
      "name": "0-BPRO-2",
      "focus": "open",
      "labels": [
-      "swarm x8"
+      "swarm (18 copies at 0 Lumber)"
      ],
      "level": 1,
      "leaders": [],
@@ -162,7 +162,7 @@
       "farm-dog": 4,
       "pond-trout": 3,
       "soldier-ant": 4,
-      "worker-ant": 2
+      "thorn-shrike": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map00-m1-2026-11-11.json",
@@ -194,7 +194,8 @@
        -60,
        8
       ]
-     }
+     },
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 6.5% -> 12%, Map reference 70% -> 45% (validation seeds); worker-ant -2 -> thorn-shrike (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ],
    "replaced": [
@@ -1426,6 +1427,21 @@
        "skir3": "2026-11-12 (SKIR3): nightjar-drifter x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched"
       }
      ]
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "0-BPRO-2": {
+       "ant-scout": 4,
+       "duck-paddler": 3,
+       "farm-dog": 4,
+       "pond-trout": 3,
+       "soldier-ant": 4,
+       "worker-ant": 2
+      }
+     }
     }
    ],
    "wpro": [
@@ -3695,10 +3711,10 @@
      "deck": {
       "bramble-sprout": 4,
       "chipmunk-cavalry": 4,
-      "cricket-drummer": 2,
       "dormouse": 2,
       "puddle-skimmer": 4,
-      "jackrabbit-sprinter": 4
+      "jackrabbit-sprinter": 4,
+      "duck-paddler": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map01-mf-2026-11-11.json",
@@ -3717,14 +3733,14 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 29.5%, Map reference - -> 60% (validation seeds); repair: chipmunk-skirmisher -> puddle-skimmer; robin-redbreast x4 -> jackrabbit-sprinter (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 29.5%, Map reference - -> 60% (validation seeds); repair: chipmunk-skirmisher -> puddle-skimmer; robin-redbreast x4 -> jackrabbit-sprinter (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 26% -> 23%, Map reference 52.5% -> 65% (validation seeds); cricket-drummer -2 -> duck-paddler (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "1-BPRO-2",
      "name": "1-BPRO-2",
      "focus": "family:night",
      "labels": [
-      "swarm (18 copies at 0 Lumber)"
+      "midrange (average 0.0 Lumber)"
      ],
      "level": 1,
      "leaders": [],
@@ -3732,9 +3748,9 @@
       "ant-scout": 4,
       "cricket-drummer": 4,
       "dormouse": 4,
-      "moonlit-hare": 4,
-      "chipmunk-cavalry": 2,
-      "terrier-pup": 2
+      "terrier-pup": 2,
+      "hedgerow-shrew": 4,
+      "bee-knight": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map01-mf-2026-11-11.json",
@@ -3753,14 +3769,14 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 66.5% -> 26%, Map reference 50% -> 70% (validation seeds); robin-redbreast x4 -> bee-knight; bee-knight x4 -> chipmunk-cavalry; chipmunk-cavalry -2 -> terrier-pup (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 66.5% -> 26%, Map reference 50% -> 70% (validation seeds); robin-redbreast x4 -> bee-knight; bee-knight x4 -> chipmunk-cavalry; chipmunk-cavalry -2 -> terrier-pup (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 46.5% -> 37.5%, Map reference 35% -> 35% (validation seeds); moonlit-hare x4 -> hedgerow-shrew (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 37.5% -> 29.5%, Map reference 35% -> 47.5% (validation seeds); chipmunk-cavalry -2 -> bee-knight (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "1-BPRO-3",
      "name": "1-BPRO-3",
      "focus": "swarm",
      "labels": [
-      "swarm (16 copies at 0 Lumber)"
+      "midrange (average 0.0 Lumber)"
      ],
      "level": 1,
      "leaders": [],
@@ -3769,8 +3785,8 @@
       "cricket-drummer": 4,
       "duck-paddler": 4,
       "soldier-ant": 4,
-      "chipmunk-cavalry": 4,
-      "ant-scout": 1
+      "ant-scout": 1,
+      "terrier-pup": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map01-mf-2026-11-11.json",
@@ -3789,7 +3805,7 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 65% -> 34.5%, Map reference 45% -> 55% (validation seeds); robin-redbreast x4 -> chipmunk-cavalry; moonlit-hare -1 -> ant-scout (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 65% -> 34.5%, Map reference 45% -> 55% (validation seeds); robin-redbreast x4 -> chipmunk-cavalry; moonlit-hare -1 -> ant-scout (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 47% -> 32%, Map reference 35% -> 60% (validation seeds); chipmunk-cavalry x4 -> terrier-pup (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ],
    "replaced": [
@@ -5240,6 +5256,66 @@
        "terrier-pup": 3
       }
      }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "1-BPRO-2": {
+       "ant-scout": 4,
+       "cricket-drummer": 4,
+       "dormouse": 4,
+       "moonlit-hare": 4,
+       "chipmunk-cavalry": 2,
+       "terrier-pup": 2
+      },
+      "1-WPRO-2": {
+       "ant-scout": 4,
+       "bee-knight": 4,
+       "cottontail": 4,
+       "house-cat": 4,
+       "meadow-rabbit": 4
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "1-BPRO-1": {
+       "bramble-sprout": 4,
+       "chipmunk-cavalry": 4,
+       "cricket-drummer": 2,
+       "dormouse": 2,
+       "puddle-skimmer": 4,
+       "jackrabbit-sprinter": 4
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "1-BPRO-3": {
+       "bramble-sprout": 3,
+       "cricket-drummer": 4,
+       "duck-paddler": 4,
+       "soldier-ant": 4,
+       "chipmunk-cavalry": 4,
+       "ant-scout": 1
+      },
+      "1-BPRO-2": {
+       "ant-scout": 4,
+       "cricket-drummer": 4,
+       "dormouse": 4,
+       "chipmunk-cavalry": 2,
+       "terrier-pup": 2,
+       "hedgerow-shrew": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -5282,16 +5358,16 @@
      "name": "1-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "swarm (20 copies at 0 Lumber)"
+      "midrange (average 0.0 Lumber)"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "ant-scout": 4,
-      "bee-knight": 4,
       "cottontail": 4,
       "house-cat": 4,
-      "meadow-rabbit": 4
+      "meadow-rabbit": 4,
+      "puddle-skimmer": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map01-mf-2026-11-11.json",
@@ -5309,7 +5385,8 @@
       "generated": "2026-11-12T13:28:22.087Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skwk2": "2026-11-19 (SKWK4): N-WK deck tuned for the Map reference at 50%+: Map reference 37.5% -> 61.3% (validation seeds); bee-knight -2 -> honey-bee; bee-knight -2 -> puddle-skimmer; ant-scout -2 -> puddle-skimmer; honey-bee -2 -> ant-scout (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ]
   },
@@ -5499,9 +5576,9 @@
       "chipmunk-cavalry": 4,
       "clover-butterfly": 4,
       "ladybird-guard": 2,
-      "meadow-rabbit": 4,
       "lucky-hopper": 4,
-      "ant-scout": 2
+      "ant-scout": 2,
+      "puddle-skimmer": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map01-mq-2026-11-11.json",
@@ -5520,7 +5597,7 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 66% -> 29.5%, Map reference 10% -> 67.5% (validation seeds); robin-redbreast x4 -> lucky-hopper; honey-bee -2 -> ant-scout (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 66% -> 29.5%, Map reference 10% -> 67.5% (validation seeds); robin-redbreast x4 -> lucky-hopper; honey-bee -2 -> ant-scout (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 42.5% -> 22.5%, Map reference 35% -> 75% (validation seeds); meadow-rabbit x4 -> puddle-skimmer (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "1-A-BPRO-2",
@@ -7300,6 +7377,21 @@
        "robin-redbreast": 3
       }
      }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "1-A-BPRO-1": {
+       "chipmunk-cavalry": 4,
+       "clover-butterfly": 4,
+       "ladybird-guard": 2,
+       "meadow-rabbit": 4,
+       "lucky-hopper": 4,
+       "ant-scout": 2
+      }
+     }
     }
    ],
    "wpro": [
@@ -7574,19 +7666,21 @@
      "name": "2-BPRO-3",
      "focus": "family:armor",
      "labels": [
-      "tide x10"
+      "swarm (18 copies at 0 Lumber)",
+      "tide x8",
+      "armor x6"
      ],
      "level": 1,
      "leaders": [
-      "moonlit-hare"
+      "old-shell"
      ],
      "deck": {
       "duck-paddler": 4,
       "limpet-clinger": 4,
       "pincushion-urchin": 4,
-      "rock-pool-starfish": 2,
       "puddle-skimmer": 2,
-      "moonlit-hare": 4
+      "moonlit-hare": 4,
+      "old-shell": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map02-mb-2026-11-11.json",
@@ -7605,26 +7699,29 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45.5% -> 29%, Map reference 70% -> 82.5% (validation seeds); rock-pool-starfish -2 -> puddle-skimmer; old-shell x4 -> moonlit-hare (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45.5% -> 29%, Map reference 70% -> 82.5% (validation seeds); rock-pool-starfish -2 -> puddle-skimmer; old-shell x4 -> moonlit-hare (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 38.5% -> 30%, Map reference 60% -> 62.5% (validation seeds); rock-pool-starfish -2 -> old-shell (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "2-BPRO-4",
      "name": "2-BPRO-4",
      "focus": "family:tide",
      "labels": [
-      "tide x8"
+      "swarm (17 copies at 0 Lumber)",
+      "economy (6 resource makers)",
+      "tide x8",
+      "armor x7"
      ],
      "level": 1,
      "leaders": [
-      "moonlit-hare"
+      "salvager-hermit-crab"
      ],
      "deck": {
       "duck-paddler": 2,
-      "moonlit-hare": 3,
       "rock-pool-starfish": 4,
       "salvager-hermit-crab": 3,
       "conch-crawler": 4,
-      "hedgerow-shrew": 4
+      "hedgerow-shrew": 4,
+      "driftwood-crab": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map02-mb-2026-11-11.json",
@@ -7643,7 +7740,7 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 81% -> 30.5%, Map reference 40% -> 72.5% (validation seeds); robin-redbreast x3 -> salvager-hermit-crab; open-ocean-hermit-crab x4 -> conch-crawler; driftwood-crab x4 -> old-shell; old-shell x4 -> hedgerow-shrew (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 81% -> 30.5%, Map reference 40% -> 72.5% (validation seeds); robin-redbreast x3 -> salvager-hermit-crab; open-ocean-hermit-crab x4 -> conch-crawler; driftwood-crab x4 -> old-shell; old-shell x4 -> hedgerow-shrew (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45% -> 22.5%, Map reference 55% -> 72.5% (validation seeds); moonlit-hare x3 -> driftwood-crab (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ],
    "replaced": [
@@ -9605,6 +9702,29 @@
       ]
      },
      "why": "re-baked after FOLD6 / CARDPOW2 / REFIT5-6 (SKWK2): the showcase leaders under the re-set cards; the previous values are here"
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "2-BPRO-4": {
+       "duck-paddler": 2,
+       "moonlit-hare": 3,
+       "rock-pool-starfish": 4,
+       "salvager-hermit-crab": 3,
+       "conch-crawler": 4,
+       "hedgerow-shrew": 4
+      },
+      "2-BPRO-3": {
+       "duck-paddler": 4,
+       "limpet-clinger": 4,
+       "pincushion-urchin": 4,
+       "rock-pool-starfish": 2,
+       "puddle-skimmer": 2,
+       "moonlit-hare": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -9824,22 +9944,22 @@
      "name": "2-B-BPRO-1",
      "focus": "economy",
      "labels": [
-      "big (11 copies at 1+ Lumber, average 0.7)",
+      "swarm (16 copies at 0 Lumber)",
       "economy (8 resource makers)",
-      "armor x8",
-      "tide x8"
+      "tide x12",
+      "armor x11"
      ],
      "level": 1,
      "leaders": [
-      "octopus-tactician"
+      "driftwood-crab"
      ],
      "deck": {
       "driftwood-crab": 4,
-      "octopus-tactician": 3,
       "pincushion-urchin": 2,
       "rock-pool-starfish": 3,
-      "trash-panda-trickster": 4,
-      "old-shell": 4
+      "limpet-clinger": 4,
+      "open-ocean-hermit-crab": 3,
+      "trash-panda-trickster": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map02-mg-2026-11-11.json",
@@ -9858,16 +9978,17 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 71% -> 32%, Map reference 30% -> 52.5% (validation seeds); raccoon-nightcrew x4 -> old-shell; pincushion-urchin -2 -> rock-pool-starfish (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 71% -> 32%, Map reference 30% -> 52.5% (validation seeds); raccoon-nightcrew x4 -> old-shell; pincushion-urchin -2 -> rock-pool-starfish (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 76.5% -> 29.5%, Map reference 15% -> 60% (validation seeds); trash-panda-trickster x4 -> limpet-clinger; octopus-tactician x3 -> open-ocean-hermit-crab; old-shell x4 -> trash-panda-trickster (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "2-B-BPRO-2",
      "name": "2-B-BPRO-2",
      "focus": "family:armor",
      "labels": [
-      "swarm (17 copies at 0 Lumber)",
+      "swarm (14 copies at 0 Lumber)",
       "economy (12 resource makers)",
-      "guard x7"
+      "armor x10",
+      "tide x6"
      ],
      "level": 1,
      "leaders": [
@@ -9876,10 +9997,10 @@
      "deck": {
       "gull-thief": 4,
       "limpet-clinger": 4,
-      "old-shell": 3,
-      "open-ocean-hermit-crab": 1,
-      "trash-panda-trickster": 4,
-      "salvager-hermit-crab": 4
+      "old-shell": 2,
+      "salvager-hermit-crab": 4,
+      "driftwood-crab": 4,
+      "pincushion-urchin": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map02-mg-2026-11-11.json",
@@ -9898,7 +10019,7 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 77% -> 15.5%, Map reference 20% -> 65% (validation seeds); raccoon-nightcrew x4 -> salvager-hermit-crab (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 77% -> 15.5%, Map reference 20% -> 65% (validation seeds); raccoon-nightcrew x4 -> salvager-hermit-crab (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 57% -> 26%, Map reference 60% -> 60% (validation seeds); trash-panda-trickster x4 -> driftwood-crab; open-ocean-hermit-crab -1 -> pincushion-urchin; salvager-hermit-crab -1 -> pincushion-urchin; old-shell -1 -> salvager-hermit-crab (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ],
    "replaced": [
@@ -12143,6 +12264,43 @@
        "trash-panda-trickster": 4
       }
      }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "2-B-BPRO-1": {
+       "driftwood-crab": 4,
+       "octopus-tactician": 3,
+       "pincushion-urchin": 2,
+       "rock-pool-starfish": 3,
+       "trash-panda-trickster": 4,
+       "old-shell": 4
+      },
+      "2-B-WPRO-1": {
+       "gull-thief": 4,
+       "limpet-clinger": 4,
+       "octopus-tactician": 4,
+       "old-shell": 4,
+       "pincushion-urchin": 4
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "2-B-BPRO-2": {
+       "gull-thief": 4,
+       "limpet-clinger": 4,
+       "old-shell": 3,
+       "open-ocean-hermit-crab": 1,
+       "trash-panda-trickster": 4,
+       "salvager-hermit-crab": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -12152,18 +12310,17 @@
      "focus": "weak low",
      "labels": [
       "big (8 copies at 1+ Lumber, average 0.6)",
-      "economy (4 resource makers)",
-      "tide x12",
+      "tide x16",
       "armor x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "gull-thief": 4,
       "limpet-clinger": 4,
       "octopus-tactician": 4,
       "old-shell": 4,
-      "pincushion-urchin": 4
+      "pincushion-urchin": 4,
+      "rock-pool-starfish": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map02-mg-2026-11-11.json",
@@ -12181,7 +12338,8 @@
       "generated": "2026-11-13T05:36:26.430Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skwk2": "2026-11-19 (SKWK4): N-WK deck tuned for the Map reference at 50%+: Map reference 26.3% -> 76.3% (validation seeds); gull-thief x4 -> rock-pool-starfish (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ]
   },
@@ -14664,9 +14822,9 @@
      "name": "3-BPRO-1",
      "focus": "open",
      "labels": [
-      "big (12 copies at 1+ Lumber, average 0.6)",
-      "strike-first x8",
-      "flying x8"
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "flying x10",
+      "guard x8"
      ],
      "level": 1,
      "leaders": [
@@ -14674,10 +14832,11 @@
      ],
      "deck": {
       "chipmunk-cavalry": 4,
-      "conch-herald": 4,
       "cormorant": 4,
       "kittiwake-flock": 4,
-      "peregrine-stooper": 4
+      "peregrine-stooper": 2,
+      "chipmunk-skirmisher": 4,
+      "conch-herald": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map03-mc-2026-11-11.json",
@@ -14695,28 +14854,29 @@
       "generated": "2026-11-12T10:56:35.329Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 51.5% -> 30%, Map reference 30% -> 55% (validation seeds); conch-herald x4 -> chipmunk-skirmisher; peregrine-stooper -2 -> conch-herald (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "3-BPRO-2",
      "name": "3-BPRO-2",
      "focus": "family:flying",
      "labels": [
-      "big (10 copies at 1+ Lumber, average 0.7)",
-      "flying x8",
-      "strike-first x6"
+      "swarm (14 copies at 0 Lumber)",
+      "flying x10",
+      "ranged x8"
      ],
      "level": 1,
      "leaders": [
-      "conch-herald"
+      "hawk-arrowkeeper"
      ],
      "deck": {
-      "conch-herald": 2,
       "cormorant": 4,
       "eagle-sharpshooter": 4,
-      "peak-condor": 4,
       "pika-hoarder": 4,
-      "beachcomber-sanderling": 2
+      "beachcomber-sanderling": 2,
+      "hawk-arrowkeeper": 2,
+      "chipmunk-skirmisher": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map03-mc-2026-11-11.json",
@@ -14735,7 +14895,7 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 37.5% -> 27%, Map reference 30% -> 57.5% (validation seeds); conch-herald -2 -> beachcomber-sanderling (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 37.5% -> 27%, Map reference 30% -> 57.5% (validation seeds); conch-herald -2 -> beachcomber-sanderling (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 57.5% -> 27%, Map reference 35% -> 55% (validation seeds); conch-herald -2 -> hawk-arrowkeeper; peak-condor x4 -> chipmunk-skirmisher (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ],
    "replaced": [
@@ -16565,6 +16725,28 @@
        "gannet-nestweaver": 4,
        "gull-thief": 4,
        "hawk-arrowkeeper": 4,
+       "peregrine-stooper": 4
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "3-BPRO-2": {
+       "conch-herald": 2,
+       "cormorant": 4,
+       "eagle-sharpshooter": 4,
+       "peak-condor": 4,
+       "pika-hoarder": 4,
+       "beachcomber-sanderling": 2
+      },
+      "3-BPRO-1": {
+       "chipmunk-cavalry": 4,
+       "conch-herald": 4,
+       "cormorant": 4,
+       "kittiwake-flock": 4,
        "peregrine-stooper": 4
       }
      }
@@ -19069,19 +19251,21 @@
      "name": "5-BPRO-1",
      "focus": "family:bleed",
      "labels": [
-      "swarm (16 copies at 0 Lumber)",
-      "bleed x8"
+      "big (9 copies at 1+ Lumber, average 0.7)",
+      "bleed x8",
+      "tide x8"
      ],
      "level": 1,
      "leaders": [
-      "bog-leech"
+      "mudflat-godwit"
      ],
      "deck": {
       "alley-cat": 4,
       "bog-leech": 4,
       "constrictor-coil": 4,
-      "mudpuppy": 4,
-      "muskrat-reedgatherer": 4
+      "mudpuppy": 3,
+      "mudflat-godwit": 1,
+      "fire-ant-raft": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map05-mw-2026-11-11.json",
@@ -19099,15 +19283,17 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (35.5%)"
+     "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (35.5%)",
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 37.5% -> 31.5%, Map reference 7.5% -> 17.5% (validation seeds); mudpuppy -1 -> mudflat-godwit (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 31.5% -> 17.5%, Map reference 17.5% -> 30% (validation seeds); muskrat-reedgatherer x4 -> fire-ant-raft (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "5-BPRO-2",
      "name": "5-BPRO-2",
      "focus": "open",
      "labels": [
-      "big (8 copies at 1+ Lumber, average 0.5)",
-      "bleed x8"
+      "big (12 copies at 1+ Lumber, average 0.7)",
+      "bleed x9",
+      "tide x7"
      ],
      "level": 1,
      "leaders": [
@@ -19117,9 +19303,9 @@
       "alley-cat": 4,
       "fire-ant-raft": 3,
       "mosquito-cloud": 4,
-      "muskrat-reedgatherer": 4,
       "planarian-splitter": 4,
-      "swamp-alligator": 1
+      "swamp-alligator": 1,
+      "snapstick-turtle": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map05-mw-2026-11-11.json",
@@ -19151,7 +19337,8 @@
        -145,
        -74
       ]
-     }
+     },
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 38.5% -> 21%, Map reference 25% -> 37.5% (validation seeds); muskrat-reedgatherer x4 -> snapstick-turtle (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ],
    "replaced": [
@@ -21049,6 +21236,43 @@
       ]
      },
      "why": "re-baked after FOLD6 / CARDPOW2 / REFIT5-6 (SKWK2): the showcase leaders under the re-set cards; the previous values are here"
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "5-BPRO-2": {
+       "alley-cat": 4,
+       "fire-ant-raft": 3,
+       "mosquito-cloud": 4,
+       "muskrat-reedgatherer": 4,
+       "planarian-splitter": 4,
+       "swamp-alligator": 1
+      },
+      "5-BPRO-1": {
+       "alley-cat": 4,
+       "bog-leech": 4,
+       "constrictor-coil": 4,
+       "mudpuppy": 4,
+       "muskrat-reedgatherer": 4
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "5-BPRO-1": {
+       "alley-cat": 4,
+       "bog-leech": 4,
+       "constrictor-coil": 4,
+       "mudpuppy": 3,
+       "muskrat-reedgatherer": 4,
+       "mudflat-godwit": 1
+      }
+     }
     }
    ],
    "wpro": [
@@ -21311,19 +21535,19 @@
      "name": "5-A-BPRO-3",
      "focus": "swarm",
      "labels": [
-      "big (9 copies at 1+ Lumber, average 0.7)"
+      "big (9 copies at 1+ Lumber, average 0.8)"
      ],
      "level": 1,
      "leaders": [
-      "cottonmouth-matriarch"
+      "old-snapjaw"
      ],
      "deck": {
       "crocodile-ambusher": 4,
       "matamata": 3,
       "newt-doctor": 3,
-      "nutria-reedcutter": 4,
       "peat-cutter-vole": 4,
-      "cottonmouth-matriarch": 2
+      "old-snapjaw": 2,
+      "mudpuppy": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map05-ms-2026-11-11.json",
@@ -21342,14 +21566,15 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45.5% -> 33%, Map reference 65% -> 82.5% (validation seeds); mudpuppy -2 -> cottonmouth-matriarch; newt-doctor -1 -> crocodile-ambusher (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45.5% -> 33%, Map reference 65% -> 82.5% (validation seeds); mudpuppy -2 -> cottonmouth-matriarch; newt-doctor -1 -> crocodile-ambusher (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 20.5% -> 20%, Map reference 77.5% -> 80% (validation seeds); cottonmouth-matriarch -2 -> old-snapjaw; nutria-reedcutter x4 -> mudpuppy (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "5-A-BPRO-4",
      "name": "5-A-BPRO-4",
      "focus": "open",
      "labels": [
-      "midrange (average 0.5 Lumber)"
+      "big (8 copies at 1+ Lumber, average 0.6)",
+      "guard x8"
      ],
      "level": 1,
      "leaders": [
@@ -21357,11 +21582,11 @@
      ],
      "deck": {
       "cypress-root-lurker": 4,
-      "mudpuppy": 1,
       "muskrat-reedgatherer": 4,
       "newt-doctor": 4,
       "old-snapjaw": 3,
-      "peat-cutter-vole": 4
+      "peat-cutter-vole": 4,
+      "hedgehog-herbalist": 1
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map05-ms-2026-11-11.json",
@@ -21379,7 +21604,8 @@
       "generated": "2026-11-13T04:23:59.087Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 19.5% -> 23%, Map reference 97.5% -> 87.5% (validation seeds); mudpuppy -1 -> bog-leech; bog-leech -1 -> hedgehog-herbalist (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ],
    "replaced": [
@@ -23497,6 +23723,36 @@
        "why": "the Map reference wins over 85% against it (N-SK TOO WEAK)"
       }
      ]
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "5-A-BPRO-4": {
+       "cypress-root-lurker": 4,
+       "mudpuppy": 1,
+       "muskrat-reedgatherer": 4,
+       "newt-doctor": 4,
+       "old-snapjaw": 3,
+       "peat-cutter-vole": 4
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "5-A-BPRO-3": {
+       "crocodile-ambusher": 4,
+       "matamata": 3,
+       "newt-doctor": 3,
+       "nutria-reedcutter": 4,
+       "peat-cutter-vole": 4,
+       "cottonmouth-matriarch": 2
+      }
+     }
     }
    ],
    "wpro": [
@@ -35165,20 +35421,20 @@
      "name": "9-BPRO-1",
      "focus": "family:tide",
      "labels": [
-      "big (12 copies at 1 Lumber, average 0.6)",
-      "tide x11"
+      "big (16 copies at 1 Lumber, average 0.8)",
+      "tide x7"
      ],
      "level": 1,
      "leaders": [
-      "proboscis-monkey"
+      "fishing-cat"
      ],
      "deck": {
       "alley-cat": 4,
       "banded-sea-krait": 4,
-      "driftwood-crab": 1,
-      "mangrove-mudskipper": 4,
+      "driftwood-crab": 2,
       "mangrove-monitor": 4,
-      "proboscis-monkey": 3
+      "proboscis-monkey": 3,
+      "fishing-cat": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map09-mk-2026-11-11.json",
@@ -35197,7 +35453,7 @@
      "h2h": null,
      "later": [],
      "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (43.5%)",
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 43% -> 15.5%, Map reference 85% -> 82.5% (validation seeds); fiddler-crab-swarm x4 -> mangrove-monitor; alligator-gar x3 -> proboscis-monkey (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 43% -> 15.5%, Map reference 85% -> 82.5% (validation seeds); fiddler-crab-swarm x4 -> mangrove-monitor; alligator-gar x3 -> proboscis-monkey (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 35% -> 24%, Map reference 77.5% -> 70% (validation seeds); mangrove-mudskipper x4 -> fishing-cat (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ],
    "replaced": [
@@ -36772,6 +37028,21 @@
        "limpet-clinger": 3,
        "newt-doctor": 3,
        "voltaic-eel": 3
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "9-BPRO-1": {
+       "alley-cat": 4,
+       "banded-sea-krait": 4,
+       "driftwood-crab": 1,
+       "mangrove-mudskipper": 4,
+       "mangrove-monitor": 4,
+       "proboscis-monkey": 3
       }
      }
     }
@@ -42351,20 +42622,20 @@
      "name": "11-BPRO-1",
      "focus": "family:ranged",
      "labels": [
-      "flying x12",
-      "ranged x8"
+      "flying x11",
+      "ranged x7"
      ],
      "level": 1,
      "leaders": [
-      "chamois-leaper"
+      "eagle-owl-quartermaster"
      ],
      "deck": {
-      "chipmunk-hoarder": 3,
+      "chipmunk-hoarder": 4,
       "kittiwake-flock": 4,
-      "peak-condor": 4,
       "pika-hoarder": 1,
       "eyrie-warden": 4,
-      "chamois-leaper": 4
+      "chamois-leaper": 4,
+      "eagle-owl-quartermaster": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map11-m10-2026-11-11.json",
@@ -42383,7 +42654,7 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 52.5% -> 28.5%, Map reference 60% -> 77.5% (validation seeds); golden-eagle-diver x4 -> eyrie-warden (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 51% -> 33.5%, Map reference 62.5% -> 77.5% (validation seeds); stonedrop-vulture x4 -> chamois-leaper (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 52.5% -> 28.5%, Map reference 60% -> 77.5% (validation seeds); golden-eagle-diver x4 -> eyrie-warden (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 51% -> 33.5%, Map reference 62.5% -> 77.5% (validation seeds); stonedrop-vulture x4 -> chamois-leaper (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 33.5% -> 20%, Map reference 75% -> 80% (validation seeds); peak-condor x4 -> eagle-owl-quartermaster (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "11-BPRO-2",
@@ -42430,9 +42701,8 @@
      "name": "11-BPRO-3",
      "focus": "big",
      "labels": [
-      "big (11 copies at 1+ Lumber, average 0.9)",
       "economy (4 resource makers)",
-      "flying x19",
+      "flying x15",
       "ranged x7"
      ],
      "level": 1,
@@ -42444,8 +42714,8 @@
       "gannet-nestweaver": 4,
       "kittiwake-flock": 4,
       "stonedrop-vulture": 3,
-      "the-gannet-queen": 4,
-      "mountain-hare": 1
+      "mountain-hare": 1,
+      "beaver-lumberjack": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map11-m10-2026-11-11.json",
@@ -42464,15 +42734,15 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 34.5% -> 25%, Map reference 77.5% -> 75% (validation seeds); stonedrop-vulture -1 -> mountain-hare (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 34.5% -> 25%, Map reference 77.5% -> 75% (validation seeds); stonedrop-vulture -1 -> mountain-hare (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 44.5% -> 32.5%, Map reference 62.5% -> 85% (validation seeds); the-gannet-queen x4 -> beaver-lumberjack (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "11-BPRO-4",
      "name": "11-BPRO-4",
      "focus": "family:flying",
      "labels": [
-      "big (13 copies at 1+ Lumber, average 0.9)",
-      "flying x11",
+      "big (9 copies at 2+ Lumber, average 1.4)",
+      "flying x14",
       "strike-first x8"
      ],
      "level": 1,
@@ -42480,12 +42750,12 @@
       "the-gannet-queen"
      ],
      "deck": {
-      "mountain-hare": 3,
       "peak-condor": 4,
       "pika-hoarder": 4,
       "swamp-alligator": 2,
       "the-gannet-queen": 4,
-      "golden-eagle-diver": 3
+      "golden-eagle-diver": 3,
+      "eyrie-warden": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map11-m10-2026-11-11.json",
@@ -42505,7 +42775,7 @@
      "h2h": null,
      "later": [],
      "side2": "2026-11-13 (SIDE2): wound-reaver x3 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 69% -> 32.5%, Map reference 65% -> 85% (validation seeds); stonedrop-vulture x4 -> eagle-owl-quartermaster; gangrenous-leech x4 -> the-gannet-queen (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 52% -> 46.5%, Map reference 55% -> 82.5% (validation seeds); eagle-owl-quartermaster x3 -> golden-eagle-diver (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 69% -> 32.5%, Map reference 65% -> 85% (validation seeds); stonedrop-vulture x4 -> eagle-owl-quartermaster; gangrenous-leech x4 -> the-gannet-queen (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 52% -> 46.5%, Map reference 55% -> 82.5% (validation seeds); eagle-owl-quartermaster x3 -> golden-eagle-diver (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 47.5% -> 36.5%, Map reference 67.5% -> 65% (validation seeds); mountain-hare x3 -> eyrie-warden (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ],
    "replaced": [
@@ -44137,6 +44407,51 @@
        "pika-hoarder": 1,
        "stonedrop-vulture": 4,
        "eyrie-warden": 4
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "11-BPRO-3": {
+       "eagle-sharpshooter": 4,
+       "gannet-nestweaver": 4,
+       "kittiwake-flock": 4,
+       "stonedrop-vulture": 3,
+       "the-gannet-queen": 4,
+       "mountain-hare": 1
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "11-BPRO-4": {
+       "mountain-hare": 3,
+       "peak-condor": 4,
+       "pika-hoarder": 4,
+       "swamp-alligator": 2,
+       "the-gannet-queen": 4,
+       "golden-eagle-diver": 3
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "11-BPRO-1": {
+       "chipmunk-hoarder": 3,
+       "kittiwake-flock": 4,
+       "peak-condor": 4,
+       "pika-hoarder": 1,
+       "eyrie-warden": 4,
+       "chamois-leaper": 4
       }
      }
     }
@@ -58135,19 +58450,19 @@
      "focus": "family:flying",
      "labels": [
       "big (8 copies at 1+ Lumber, average 0.6)",
-      "economy (4 resource makers)"
+      "flying x6"
      ],
      "level": 1,
      "leaders": [
-      "grizzly-vanguard"
+      "upside-down-bat"
      ],
      "deck": {
-      "cone-cutter-squirrel": 4,
       "farm-dog": 4,
       "mountain-hare": 4,
       "owl-sentinel": 2,
       "raft-spider": 2,
-      "grizzly-vanguard": 4
+      "grizzly-vanguard": 4,
+      "upside-down-bat": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map16-mt-2026-11-11.json",
@@ -58166,7 +58481,7 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 47.5% -> 30%, Map reference 65% -> 70% (validation seeds); owl-sentinel -2 -> raft-spider; upside-down-bat x4 -> grizzly-vanguard (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 47.5% -> 30%, Map reference 65% -> 70% (validation seeds); owl-sentinel -2 -> raft-spider; upside-down-bat x4 -> grizzly-vanguard (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 36.5% -> 31.5%, Map reference 77.5% -> 77.5% (validation seeds); cone-cutter-squirrel x4 -> upside-down-bat (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "16-BPRO-3",
@@ -59481,6 +59796,21 @@
        "mountain-hare": 4,
        "owl-sentinel": 4,
        "upside-down-bat": 4
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "16-BPRO-2": {
+       "cone-cutter-squirrel": 4,
+       "farm-dog": 4,
+       "mountain-hare": 4,
+       "owl-sentinel": 2,
+       "raft-spider": 2,
+       "grizzly-vanguard": 4
       }
      }
     }
@@ -62258,19 +62588,19 @@
      "name": "17-A-BPRO-1",
      "focus": "family:tide",
      "labels": [
-      "tide x8"
+      "tide x12"
      ],
      "level": 1,
      "leaders": [
-      "shoal-shark"
+      "greenland-shark"
      ],
      "deck": {
-      "cormorant": 4,
-      "lemming-swarm": 4,
-      "pincushion-urchin": 1,
+      "pincushion-urchin": 2,
       "riptide-eel": 3,
       "shoal-shark": 4,
-      "snow-ermine": 4
+      "snow-ermine": 4,
+      "glacier-yak": 4,
+      "greenland-shark": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map17-mi-2026-11-11.json",
@@ -62288,28 +62618,29 @@
       "generated": "2026-11-13T04:34:33.569Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 93.5% -> 32%, Map reference 15% -> 70% (validation seeds); cormorant x4 -> glacier-yak; lemming-swarm x4 -> greenland-shark (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "17-A-BPRO-2",
      "name": "17-A-BPRO-2",
      "focus": "swarm",
      "labels": [
-      "swarm (18 copies at 0 Lumber)",
-      "tide x7",
-      "night x6"
+      "big (9 copies at 1 Lumber, average 0.5)",
+      "tide x14",
+      "day x7"
      ],
      "level": 1,
      "leaders": [
       "wolfsbane-alpha"
      ],
      "deck": {
-      "cormorant": 3,
+      "cormorant": 4,
       "dormouse": 4,
-      "lemming-swarm": 4,
-      "moon-jelly": 3,
-      "pincushion-urchin": 4,
-      "wolfsbane-alpha": 2
+      "wolfsbane-alpha": 2,
+      "ringed-seal": 4,
+      "rock-pool-starfish": 3,
+      "beluga": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map17-mi-2026-11-11.json",
@@ -62327,7 +62658,8 @@
       "generated": "2026-11-13T04:34:33.569Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 94.5% -> 32.5%, Map reference 15% -> 72.5% (validation seeds); lemming-swarm x4 -> ringed-seal; moon-jelly x3 -> rock-pool-starfish; pincushion-urchin x4 -> beluga (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "17-A-BPRO-3",
@@ -62338,15 +62670,15 @@
      ],
      "level": 1,
      "leaders": [
-      "riptide-eel"
+      "ice-crevasse-wolf"
      ],
      "deck": {
-      "dormouse": 4,
       "limpet-clinger": 4,
       "riptide-eel": 4,
       "rock-pool-starfish": 2,
       "harbor-seal": 4,
-      "glacier-yak": 2
+      "glacier-yak": 4,
+      "ice-crevasse-wolf": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map17-mi-2026-11-11.json",
@@ -62365,27 +62697,27 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 86% -> 53.5%, Map reference 35% -> 65% (validation seeds); snow-ermine x4 -> harbor-seal; rock-pool-starfish -2 -> glacier-yak (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 86% -> 53.5%, Map reference 35% -> 65% (validation seeds); snow-ermine x4 -> harbor-seal; rock-pool-starfish -2 -> glacier-yak (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 38% -> 24%, Map reference 70% -> 77.5% (validation seeds); dormouse -2 -> glacier-yak; dormouse -2 -> ice-crevasse-wolf (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     },
     {
      "id": "17-A-BPRO-4",
      "name": "17-A-BPRO-4",
      "focus": "family:armor",
      "labels": [
-      "big (12 copies at 1 Lumber, average 0.6)",
-      "tide x16"
+      "big (16 copies at 1 Lumber, average 0.8)",
+      "tide x17"
      ],
      "level": 1,
      "leaders": [
-      "greenland-shark"
+      "beluga"
      ],
      "deck": {
       "beluga": 3,
       "giant-clam": 4,
-      "lemming-swarm": 4,
       "limpet-clinger": 4,
-      "shoal-shark": 3,
-      "greenland-shark": 2
+      "shoal-shark": 4,
+      "ice-crevasse-wolf": 3,
+      "ringed-seal": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map17-mi-2026-11-11.json",
@@ -62404,7 +62736,7 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 76.5% -> 65%, Map reference 45% -> 65% (validation seeds); cormorant -2 -> greenland-shark (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 76.5% -> 65%, Map reference 45% -> 65% (validation seeds); cormorant -2 -> greenland-shark (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 55% -> 23%, Map reference 62.5% -> 80% (validation seeds); lemming-swarm x4 -> ice-crevasse-wolf; greenland-shark -2 -> ringed-seal (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
     }
    ],
    "replaced": [
@@ -64868,6 +65200,45 @@
        "pincushion-urchin": 4,
        "ringed-seal": 4,
        "shoal-shark": 1
+      }
+     }
+    },
+    {
+     "package": "SKWK4",
+     "on": "2026-11-19",
+     "why": "N-SK / N-WK decks brought to the protocol marks against the rebuilt reference ladder (docs/balance/skwk4/)",
+     "decks": {
+      "17-A-BPRO-2": {
+       "cormorant": 3,
+       "dormouse": 4,
+       "lemming-swarm": 4,
+       "moon-jelly": 3,
+       "pincushion-urchin": 4,
+       "wolfsbane-alpha": 2
+      },
+      "17-A-BPRO-1": {
+       "cormorant": 4,
+       "lemming-swarm": 4,
+       "pincushion-urchin": 1,
+       "riptide-eel": 3,
+       "shoal-shark": 4,
+       "snow-ermine": 4
+      },
+      "17-A-BPRO-4": {
+       "beluga": 3,
+       "giant-clam": 4,
+       "lemming-swarm": 4,
+       "limpet-clinger": 4,
+       "shoal-shark": 3,
+       "greenland-shark": 2
+      },
+      "17-A-BPRO-3": {
+       "dormouse": 4,
+       "limpet-clinger": 4,
+       "riptide-eel": 4,
+       "rock-pool-starfish": 2,
+       "harbor-seal": 4,
+       "glacier-yak": 2
       }
      }
     }

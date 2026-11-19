@@ -1,0 +1,141 @@
+{
+ "map": "mf",
+ "generated": "2026-11-19T14:25:12.415Z",
+ "decks": [
+  {
+   "id": "1-BPRO-2",
+   "map": "mf",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.25,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.72,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "cricket-drummer": 4,
+     "dormouse": 4,
+     "chipmunk-cavalry": 2,
+     "terrier-pup": 2,
+     "hedgerow-shrew": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.375,
+     "ref": 0.35,
+     "gap": 0.075
+    }
+   },
+   "pick": {
+    "deck": {
+     "cricket-drummer": 4,
+     "dormouse": 4,
+     "chipmunk-cavalry": 2,
+     "terrier-pup": 2,
+     "hedgerow-shrew": 4,
+     "honey-bee": 4
+    },
+    "val": {
+     "v": 0.43,
+     "ref": 0.3,
+     "gap": 0.13
+    },
+    "leaders": []
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.275,
+     "ref": 0.5,
+     "gap": 0.025
+    },
+    {
+     "move": "ant-scout x4 -> honey-bee",
+     "v": 0.233,
+     "ref": 0.4,
+     "gap": 0,
+     "tried": 80
+    }
+   ],
+   "readings": 855,
+   "sec": 131
+  },
+  {
+   "id": "1-BPRO-1",
+   "map": "mf",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.25,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.72,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramble-sprout": 4,
+     "chipmunk-cavalry": 4,
+     "cricket-drummer": 2,
+     "dormouse": 2,
+     "puddle-skimmer": 4,
+     "jackrabbit-sprinter": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.26,
+     "ref": 0.525,
+     "gap": 0
+    }
+   },
+   "pick": {
+    "deck": {
+     "bramble-sprout": 4,
+     "chipmunk-cavalry": 4,
+     "dormouse": 2,
+     "puddle-skimmer": 4,
+     "jackrabbit-sprinter": 4,
+     "duck-paddler": 2
+    },
+    "val": {
+     "v": 0.23,
+     "ref": 0.65,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.317,
+     "ref": 0.5,
+     "gap": 0.067
+    },
+    {
+     "move": "cricket-drummer -2 -> duck-paddler",
+     "v": 0.183,
+     "ref": 0.625,
+     "gap": 0,
+     "tried": 80
+    }
+   ],
+   "readings": 855,
+   "sec": 135
+  }
+ ],
+ "drop": []
+}
