@@ -1,0 +1,238 @@
+{
+ "soldier-ant|effects": {
+  "commit": "ec37d4df",
+  "at": "2026-11-18T23:05:32+08:00"
+ },
+ "soldier-ant|health": {
+  "commit": "ec37d4df",
+  "at": "2026-11-18T23:05:32+08:00"
+ },
+ "bee-forager|effects": {
+  "commit": "ec37d4df",
+  "at": "2026-11-18T23:05:32+08:00"
+ },
+ "bee-forager|health": {
+  "commit": "b1cfe0b9",
+  "at": "2026-11-06T03:31:59+08:00"
+ },
+ "hedgerow-shrew|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "hedgerow-shrew|health": {
+  "commit": "ec37d4df",
+  "at": "2026-11-18T23:05:32+08:00"
+ },
+ "field-vole|effects": {
+  "commit": "ec37d4df",
+  "at": "2026-11-18T23:05:32+08:00"
+ },
+ "field-vole|health": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "moonlit-hare|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "moonlit-hare|attack": {
+  "commit": "b1cfe0b9",
+  "at": "2026-11-06T03:31:59+08:00"
+ },
+ "moonlit-hare|health": {
+  "commit": "b1cfe0b9",
+  "at": "2026-11-06T03:31:59+08:00"
+ },
+ "terrier-pup|effects": {
+  "commit": "b1cfe0b9",
+  "at": "2026-11-06T03:31:59+08:00"
+ },
+ "terrier-pup|health": {
+  "commit": "b1cfe0b9",
+  "at": "2026-11-06T03:31:59+08:00"
+ },
+ "gull-thief|effects": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "gull-thief|health": {
+  "commit": "b1cfe0b9",
+  "at": "2026-11-06T03:31:59+08:00"
+ },
+ "driftwood-crab|cost": {
+  "commit": "b1cfe0b9",
+  "at": "2026-11-06T03:31:59+08:00"
+ },
+ "driftwood-crab|effects": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "driftwood-crab|health": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "limpet-clinger|health": {
+  "commit": "b1cfe0b9",
+  "at": "2026-11-06T03:31:59+08:00"
+ },
+ "dolphin-knight|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "feral-tomcat|effects": {
+  "commit": "6b446bf2",
+  "at": "2026-11-18T07:54:04+08:00"
+ },
+ "feral-tomcat|attack": {
+  "commit": "b1cfe0b9",
+  "at": "2026-11-06T03:31:59+08:00"
+ },
+ "conch-crawler|health": {
+  "commit": "6ec7e944",
+  "at": "2026-11-18T05:40:23+08:00"
+ },
+ "alley-cat|health": {
+  "commit": "b1cfe0b9",
+  "at": "2026-11-06T03:31:59+08:00"
+ },
+ "slow-worm|effects": {
+  "commit": "6ec7e944",
+  "at": "2026-11-18T05:40:23+08:00"
+ },
+ "platypus-spur|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "water-shrew|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "muskrat-lodgekeeper|effects": {
+  "commit": "6ec7e944",
+  "at": "2026-11-18T05:40:23+08:00"
+ },
+ "cormorant|art": {
+  "commit": "3e25cb79",
+  "at": "2026-11-13T01:21:50+08:00"
+ },
+ "dolphin-knight|attack": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "dolphin-knight|health": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "cricket-drummer|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "cricket-drummer|attack": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "cricket-drummer|health": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "puffin-diver|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "puffin-diver|health": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "peak-condor|effects": {
+  "commit": "b2fb5fd5",
+  "at": "2026-11-18T03:39:45+08:00"
+ },
+ "conch-crawler|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "platypus-spur|name": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "platypus-spur|health": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "river-mink|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "river-mink|attack": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "river-mink|health": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "water-shrew|health": {
+  "commit": "f6ac301f",
+  "at": "2026-11-16T13:15:51+08:00"
+ },
+ "limpet-clinger|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "limpet-clinger|attack": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "pika-hoarder|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "pika-hoarder|health": {
+  "commit": "f3ab0a7d",
+  "at": "2026-11-18T10:52:39+08:00"
+ },
+ "peak-condor|attack": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "peak-condor|health": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "cormorant|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "cormorant|health": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "alley-cat|effects": {
+  "commit": "d5dda501",
+  "at": "2026-11-18T03:16:21+08:00"
+ },
+ "muskrat-lodgekeeper|attack": {
+  "commit": "6ec7e944",
+  "at": "2026-11-18T05:40:23+08:00"
+ },
+ "terrier-pup|source": {
+  "commit": "f3ab0a7d",
+  "at": "2026-11-18T10:52:39+08:00"
+ },
+ "eagle-sharpshooter|source": {
+  "commit": "f3ab0a7d",
+  "at": "2026-11-18T10:52:39+08:00"
+ },
+ "pika-hoarder|source": {
+  "commit": "f3ab0a7d",
+  "at": "2026-11-18T10:52:39+08:00"
+ },
+ "pika-hoarder|attack": {
+  "commit": "f3ab0a7d",
+  "at": "2026-11-18T10:52:39+08:00"
+ },
+ "soldier-ant|attack": {
+  "commit": "ec37d4df",
+  "at": "2026-11-18T23:05:32+08:00"
+ }
+}
