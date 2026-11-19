@@ -47,7 +47,7 @@ table.skills.forEach(e=> ok(planned.has('skill:' + e.id) || planned.has('param:'
 table.triggers.forEach(e=> ok(planned.has('trigger:' + e.id) || e.id === 'bounty' || e.inEngine === false, `trigger ${e.id} is planned`));
 // 2026-11-04 (TESTFIX1): since EN6-2 / EN8-5 (owner 10-23 20:44: "price by logic, the 4-round rule; measurement is optional") an entry added after
 // these runs carries its reason in a dated note (the package and the logic) instead of measuredS / measuredWhy
-const loggedLater = e=> /^2026-1[01]-\d\d/.test(e.note || '') && e.note.slice(0, 10) > '2026-10-19' && /\((package )?[A-Z]+\d*[a-z]?[\s;,)]/.test(e.note);
+const loggedLater = e=> /^2026-1[01]-\d\d/.test(e.note || '') && e.note.slice(0, 10) > '2026-10-19' && /\((package )?[A-Z]+\d*(?:-[A-Z]+\d*)?[a-z]?[\s;,)]/.test(e.note); // 2026-11-20 (TESTFIX8): + a hyphenated package id (DEC19-BUDGET priced Hatchling)
 table.actions.forEach(e=> ok(planned.has('action:' + e.id) || (typeof e.measuredWhy === 'string' && /not yet measured/.test(e.measuredWhy)) || loggedLater(e), `action ${e.id} is planned (or added after the runs, with its reason)`)); // 2026-10-19 (BF2): EE's positionBeam came after the SW runs
 ok(plan.some(r=> r.kind === 'skill' && r.id === 'swimmer' && r.ctx === 'tide') && plan.some(r=> r.id === 'darksight' && r.ctx === 'dark') && plan.some(r=> r.id === 'nocturnal' && r.ctx === 'night'), 'field-bound skills also run under their field');
 ok(plan.some(r=> r.id === 'armor' && r.n === 2) && plan.some(r=> r.id === 'armor' && r.n !== 1 && r.n !== 2), 'N-scaling skills run at 2-3 N');

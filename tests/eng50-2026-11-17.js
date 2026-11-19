@@ -151,7 +151,7 @@ ok(/"id": "ENG50-1"/.test(rd('docs/decisions.json')), 'decision ENG50-1 asks whe
 
 // ================= 9. the Awash field reads Underwater Currents =================
 { const app = rd('arena_app.js'); ok(/awash:\s+\{icon:'〰️', name:'Underwater Currents'/.test(app), 'the Awash field\'s name on screen is Underwater Currents');
-  for(const L of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']) ok(J('lang/ui/' + L + '.json')['Underwater Currents'], `${L}: Underwater Currents translated`); }
+  for(const L of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']) ok(J('lang/ui/' + L + '.json')['Underwater Currents'] || J('lang/' + L + '.json')['Underwater Currents'] /* 2026-11-20 (TESTFIX8): DEC19-TEXT dropped the lang/ui copy of rows the main pack also holds */, `${L}: Underwater Currents translated`); }
 
 // ================= 10. prices, delivery, counters, texts, editor, effect, docs =================
 { const SC = require('../tools/skill_costs.js'), T = SC.make(J('canonical/skill-costs.json')), S = e=> T.budget({id:'x', attack:1, health:3, effects:e, rarity:'common', level:1});

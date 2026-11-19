@@ -13,7 +13,9 @@ const DATAFIX_LISTS = [['mw', 'add', 'cypress-root-lurker'], ['m7', 'add', 'fidd
   ...['ur-elk', 'cinder-hornet', 'pumice-beetle'].map(id => ['m21', 'remove', id]),
   ...['glacier-yak', 'fumarole-ibex', 'obsidian-scorpion', 'ash-cloud-condor', 'ravenous-wolverine'].map(id => ['m22', 'remove', id]),
   ...['pack-mule', 'lodge-engineer'].map(id => ['m23', 'remove', id])].map(([map, op, id]) => ({ map, op, id }));
-R3.lists = R3.lists.concat(DATAFIX_LISTS);
+// 2026-11-20 (TESTFIX8): DEC19-DATA (11-19, LIST1-1 a): Malachite Golem takes Granite Ox Golem's place on Basalt Foundry (m3/m9). Applied last.
+const DEC19_LISTS = [{ map: 'm3', sub: 'm9', op: 'remove', id: 'granite-ox-golem' }, { map: 'm3', sub: 'm9', op: 'add', id: 'malachite-golem' }];
+R3.lists = R3.lists.concat(DATAFIX_LISTS, DEC19_LISTS);
 // FOLD6's list moves, and CONTENT13's new cards (on no list before it): '<map>' or '<map>/<sub>' -> ids added there
 const LIST_ADDS = {}; R3.lists.filter(l => l.op === 'add').forEach(l => { const k = l.sub ? l.map + '/' + l.sub : l.map; (LIST_ADDS[k] = LIST_ADDS[k] || new Set()).add(l.id); });
 const listAdded = (map, id, sub) => !!(LIST_ADDS[sub ? map + '/' + sub : map] && LIST_ADDS[sub ? map + '/' + sub : map].has(id)) || DIFF_ADDED.has(id);

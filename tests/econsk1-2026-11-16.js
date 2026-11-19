@@ -104,7 +104,7 @@ const strip = s=> String(s).replace(/^[^\p{L}{]+/u, '');
   const miss = TK.concat(['ui.sk2n-smelter']).filter(k=> !(TXT[k] in pack) && !(strip(TXT[k]) in pack)); ok(!miss.length, `${code}: translated (${miss.join(', ')})`); });
 const SC = JSON.parse(R('canonical/skill-costs.json')), DL = JSON.parse(R('canonical/skill-delivery.json'));
 KEYS.forEach(k=>{ const s = SC.skills.find(x=> x.id === k); ok(s && typeof s.value === 'number' && /ECONSK1/.test(s.pricedAt || '') && /estimate/.test(s.measuredWhy || ''), `${k}: priced, marked an estimate`); ok(DL.delivery[k] === 'none', `${k}: delivery none`); });
-const D = JSON.parse(R('docs/decisions.json')).items.find(x=> x.id === 'ECONSK1-1'); ok(D && D.status === 'YET' && D.body.split(/\s+/).length < 100, 'decision ECONSK1-1 (Metallurgy) filed, short');
+const D = JSON.parse(R('docs/decisions.json')).items.find(x=> x.id === 'ECONSK1-1'); ok(D && (D.status === 'YET' || D.status === 'DONE') /* 2026-11-20 (TESTFIX8): DEC19 settled it (a, parked) */ && D.body.split(/\s+/).length < 100, 'decision ECONSK1-1 (Metallurgy) filed, short');
 const PS = R('docs/project-state.md'); ok(/ECONSK1/.test(PS) && /Dragon Lair \(20-B\)/.test(PS) && /Pumice Beetle/.test(PS), 'project-state: the rules, the Maps 0-20 note and its card list');
 ok(/econsk1-2026-11-16\.js/.test(R('tests/run-all.sh')), 'in tests/run-all.sh');
 
