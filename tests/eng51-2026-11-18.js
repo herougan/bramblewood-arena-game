@@ -110,7 +110,7 @@ const boltOf = uid=> x=> x.type === 'bolt' && x.uid === uid;
   ok(/water: +\{core:'#ffffff', mid:'#7cc8ff'/.test(rd('bramblewood-skillfx.js')), 'the reduced-motion glob in blue');
   ok(/id:'atk-bolt-water'/.test(rd('tools/effects-lab/manifest/h.js')) && J('docs/effects-inventory-2026-10-15.json').some(x=> x.id === 'atk-bolt-water'), 'Effects Lab entry and its inventory row');
   ok(/package ENG51/.test(rd('docs/effects-catalogue.md')), 'the effects catalogue');
-  ok(/ENG51/.test(rd('docs/CHANGELOG.md').slice(0, 6000)) && /eng51-2026-11-18/.test(rd('tests/run-all.sh')), 'CHANGELOG entry and run-all.sh'); }
+  ok(/^## 2026-11-18 \(package ENG51\)/m.test(rd('docs/CHANGELOG.md')) /* 2026-11-19 (TESTFIX6): its own heading, wherever later entries put it */ && /eng51-2026-11-18/.test(rd('tests/run-all.sh')), 'CHANGELOG entry and run-all.sh'); }
 
 console.log(fail ? `eng51: ${fail} of ${fail + pass} checks FAILED` : `eng51: ${pass} checks passed`);
 process.exit(fail ? 1 : 0);

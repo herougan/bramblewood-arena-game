@@ -34,8 +34,10 @@ function put(e, P, pid, id, slot){ e.debugSpawnCard(P, so, pid, id, 'left', {}, 
 { const {e, P} = mk(); put(e, P, 1, 's1-cure', 0); const t = put(e, P, 1, 's1-sick', 1); t.gpoison = 4; // Greater Poison never wears down: only the Cure moves it
   e.resolveCombat(P, so, {}, [], 1);
   ok(t.gpoison === 3, `a Cure 2 card cures 1 a round (Greater Poison 4 -> ${t.gpoison})`);
-  const cards = J('canonical/cards.json'), cures = cards.filter(c=> (c.effects || {}).cure);
-  ok(cures.length >= 7 && cures.every(c=> c.effects.cure === 1), `every Cure card holds Cure 1 (${cures.map(c=> c.id + ' ' + c.effects.cure).join(', ')})`); }
+  const AT10 = require('./lib/redesign.js').skillsAt10; // 2026-11-19 (TESTFIX6): FOLD7 gave Field Vole Cure from Level 3 (levelSkills)
+  const cards = J('canonical/cards.json'), cures = cards.filter(c=> AT10(c).cure);
+  const cure0 = c=> (c.effects || {}).cure != null ? c.effects.cure : Object.keys(c.levelSkills || {}).sort((a, b)=> a - b).map(k=> c.levelSkills[k].cure).find(v=> v != null); // as printed where it arrives (levelBonus grows it later)
+  ok(cures.length >= 7 && cures.every(c=> cure0(c) === 1), `every Cure card holds Cure 1 (${cures.map(c=> c.id + ' ' + cure0(c)).join(', ')})`); }
 
 // ================= 2. Log Wall 0/5 at Level 1, 0/8 at Level 10 =================
 { const wallsOf = id=>{ const {e, P} = mk(); const h = {uid: 9500, defId:id}; P[1].hand.push(h); P[1].lumber = 5; e.placeCard(P, so, 1, h.uid, 0, {}, []);
@@ -99,7 +101,7 @@ function put(e, P, pid, id, slot){ e.debugSpawnCard(P, so, pid, id, 'left', {}, 
   ok(/tests\/skn1-2026-11-16\.js/.test(rd('tests/run-all.sh')), 'in run-all.sh');
   ok(/DONE/.test(rd('docs/design/skn1-2026-11-16.md')), 'the audit table');
   const items = J('docs/decisions.json').items, ds = items.filter(x=> /^SKN1-\d+$/.test(x.id));
-  ok(ds.length >= 15 && ds.every(d=> d.status === 'YET' && d.body.split(/\s+/).length < 100 && d.options.length >= 2 && d.default), `decisions SKN1-n: ${ds.length} asked, each under 100 words with options and a default`); }
+  ok(ds.length >= 15 && ds.every(d=> (d.status === 'YET' || d.status === 'DONE') /* 2026-11-19 (TESTFIX6): ENG52 answered SKN1-16 */ && d.body.split(/\s+/).length < 100 && d.options.length >= 2 && d.default), `decisions SKN1-n: ${ds.length} asked, each under 100 words with options and a default`); }
 
 console.log(`skn1: ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
