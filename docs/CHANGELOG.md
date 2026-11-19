@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package CONSOLE1, owner 08:21: "We want this shippable")
+- Players see: at most 4 toasts at once (newest kept). Gaining many levels in one go stacked 20+ "Level N: +100 Maple Leaves" toasts over the whole screen (`showToast`).
+- Headless sweep of the Release 1.0 path (fresh save, splash, name, side pick, Tutorial I and II with Claim Rewards and Add to deck; Maps 0 and 5, the Sunken Depths, The Deep Dark and a fight there, the raid fight, Murgle Mayhem, the group dungeon solo, a PvP ghost match; Codex with the level bar, Camp, Forge, Shop, Profile) at 1366 and 390 px, 390 also in dark mode: no page errors, no unhandled rejections, no console errors apart from the offline Supabase calls. The toast cap is the only game-code change.
+- Long tasks over 200 ms, unhandled cases and the failed requests are listed in `docs/release/console1-2026-11-19.md`.
+- New `tests/console1-2026-11-19.js` (in run-all.sh): a seeded save, the main screens and fights at 1366 and 390 dark; fails on any console error, page error or unhandled rejection except offline network noise.
 ## 2026-11-19 (package VFX2, owner 00:02 / 08:21: the first release experience, shippable)
 - Players see: a shield break shatters (VIS4's panes, then a ring, hex shards and glints) and a unit's shield soak / break now sound (`shield`, `iceShatter`); Bleed drips with bigger drops; an exiled death (Marsh Wisp Map 6, Ashbone Ghoul Map 20, a Nullify kill) is a banish swirl into a violet rift with a candle Echo, not a grey fold.
 - Players see (no 1.0 card has these yet): Mind Control's unit visibly crosses to the caster's row (tether, swirl, a flip into its new colour; in a replay it used to stay on the enemy row until round end, and two looks played); a Player Stun's skipped turn opens with a frosted clock over your hand or the enemy castle.
