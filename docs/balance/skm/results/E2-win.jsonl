@@ -1,0 +1,6 @@
+{"method":"E2-win","skill":"T:onAttack>drawCard","worth":-1.235,"ci":0.163,"games":320,"price":0,"carrier":"worker-ant","M":80,"n":4,"fp":"8b6f2a672f5f","t":"2026-11-19T18:48:45.637Z"}
+{"method":"E2-win","skill":"T:onAttack>gain","worth":0.146,"ci":0.613,"games":160,"price":0.89,"carrier":"gull-thief","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-19T18:48:51.034Z"}
+{"method":"E2-win","skill":"T:onAttacked>gain","worth":0.075,"ci":0.645,"games":160,"price":1.05,"carrier":"driftwood-crab","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-19T18:48:56.182Z"}
+{"method":"E2-win","skill":"T:onDeath>damage","worth":1.594,"ci":0.118,"games":160,"price":1.19,"carrier":"sulfur-cinder-moth","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-19T18:49:02.418Z"}
+{"method":"E2-win","skill":"T:onHealed>gain","worth":0.214,"ci":0.583,"games":160,"price":1,"carrier":"gannet-nestweaver","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-19T18:49:09.977Z"}
+{"method":"E2-win","skill":"T:onReady>damage","worth":5.478,"ci":0.69,"games":160,"price":4.48,"carrier":"great-horned-owl","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-19T18:49:15.844Z"}

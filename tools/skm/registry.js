@@ -123,7 +123,7 @@ function plainRules(r) { return !r || !Object.keys(r).some(k => !(k === 'phase' 
 const FILTERS = {
   early: (gm, X, i, c, t) => c.r <= t, late: (gm, X, i, c, t) => c.r > t,
   field: (gm, X, i) => !plainRules(X.fieldList[S.fightOf(gm, X, i).f].rules), plain: (gm, X, i) => plainRules(X.fieldList[S.fightOf(gm, X, i).f].rules),
-  ranged: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, RANGED) >= 0.2, melee: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, RANGED) < 0.2,
+  ranged: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, RANGED) >= 0.1, melee: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, RANGED) < 0.1, // 10%+ shooters (20% left too few fights)
   flyers: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, ['flying']) >= 0.25, grounded: (gm, X, i) => share(gm, S.fightOf(gm, X, i).B, ['flying']) < 0.25,
   even: (gm, X, i) => i % 2 === 0, odd: (gm, X, i) => i % 2 === 1, // seat split: the skill side moves first / second
   close: (gm, X, i, c) => Math.abs(c.hm - c.hf) <= 0.3 * X.bramble, blowout: (gm, X, i, c) => Math.abs(c.hm - c.hf) > 0.3 * X.bramble, // the control fight's closeness
@@ -252,7 +252,8 @@ function eqEstimate(R, est, bramble) {
   if (est === 'margin') { // the margin's own bracket among the probes
     const ms = all.map(p => ({ h: p.h, ...meanSE(p.o.map(f)) })); let a = null, b = null; ms.forEach(p => { if (p.m > t && (!a || p.h > a.h)) a = p; if (p.m <= t && (!b || p.h < b.h)) b = p; });
     if (!a || !b || b.h < a.h) return null; return interp(a, b, t, pts); }
-  if (!lo || !hi) return { worth: null, note: lo ? 'the skill side still wins at the largest bump' : 'the skill side loses even at the smallest bump' };
+  // censored: no bracket within the probes; the worth is at least the largest bump (or at most the smallest), reported at that bound
+  if (!lo || !hi) { const e = lo ? all[all.length - 1] : all[0]; return { worth: e.h * pts, ci: null, note: lo ? 'censored: the skill side still wins at the largest bump (at least this)' : 'censored: the skill side loses even at the smallest bump (at most this)' }; }
   return interp(lo, hi, t, pts);
 }
 function interp(a, b, t, pts) { const slope = (a.m - b.m) / (b.h - a.h || 1), fr = slope ? (a.m - t) / (a.m - b.m || 1e-9) : 0.5, hs = a.h + fr * (b.h - a.h);
@@ -284,8 +285,8 @@ const MORE = [
   { k: 'ps', est: { metric: 'margin', sign: true }, name: 'probability of superiority', idea: 'how often the skill side ends with the better bramble margin than its control (sign test) / the same for a budget point' },
 ];
 const OPP = [
-  { k: 'vsRanged', est: { metric: 'win', filter: 'ranged' }, name: 'vs ranged decks', idea: 'only fights against decks with 20%+ shooters (damage type: ranged)' },
-  { k: 'vsMelee', est: { metric: 'win', filter: 'melee' }, name: 'vs melee decks', idea: 'only fights against decks with under 20% shooters (damage type: melee)' },
+  { k: 'vsRanged', est: { metric: 'win', filter: 'ranged' }, name: 'vs ranged decks', idea: 'only fights against decks with 10%+ shooters (damage type: ranged)' },
+  { k: 'vsMelee', est: { metric: 'win', filter: 'melee' }, name: 'vs melee decks', idea: 'only fights against decks with under 10% shooters (damage type: melee)' },
   { k: 'vsFlyers', est: { metric: 'win', filter: 'flyers' }, name: 'vs flyer decks', idea: 'only fights against decks with 25%+ Flying (family: flyers)' },
   { k: 'vsGround', est: { metric: 'win', filter: 'grounded' }, name: 'vs grounded decks', idea: 'only fights against decks with under 25% Flying' },
 ];
