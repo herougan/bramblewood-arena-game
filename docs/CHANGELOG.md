@@ -2,6 +2,8 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+- 2026-11-19 (UIFIN3): while the pack opener is open, reward toasts drop to the bottom edge (newest two only), so the "2 more in this set, 2 after" line stays readable on phone and desktop.
+
 ## 2026-11-19 (package UIFIN2, pack opener count)
 - Players see: with reward packs queued, "Pack 1 of 3" no longer sits above "4 more packs to open"; the line now reads "2 more in this set, 2 after" (`ui.uifin2-pile-split`, 12 packs; Tagalog, Tamil, Japanese, Korean drafts). Without queued sets the old line stays.
 - Code: the gated-skills set (`ui27UngatedSkills`, first call ~250 ms) is warmed at idle after load, same function and memo. Test: `tests/uifin2-2026-11-19.js`.
