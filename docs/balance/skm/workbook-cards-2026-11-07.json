@@ -1,0 +1,2778 @@
+[
+{
+"id": "abyss-lantern-squid",
+"name": "Abyss Lantern Squid",
+"power": 72.9,
+"powerForBudget": 18.6,
+"basic": 76.8,
+"advanced": 69.1
+},
+{
+"id": "acacia-giraffe",
+"name": "Acacia Giraffe",
+"power": 40.2,
+"powerForBudget": -16.2,
+"basic": 37.4,
+"advanced": 43.0
+},
+{
+"id": "acorn-chipmunk",
+"name": "Acorn Chipmunk",
+"power": 31.8,
+"powerForBudget": -7.7,
+"basic": 29.3,
+"advanced": 34.3
+},
+{
+"id": "adder-ambusher",
+"name": "Adder Ambusher",
+"power": 59.6,
+"powerForBudget": 9.1,
+"basic": 58.5,
+"advanced": 60.6
+},
+{
+"id": "alley-cat",
+"name": "Alley Cat",
+"power": 67.6,
+"powerForBudget": 24.4,
+"basic": 75.3,
+"advanced": 59.9
+},
+{
+"id": "alligator-gar",
+"name": "Alligator Gar",
+"power": 64.1,
+"powerForBudget": 10.4,
+"basic": 65.6,
+"advanced": 62.6
+},
+{
+"id": "alpha-howler",
+"name": "Alpha Howler",
+"power": 39.8,
+"powerForBudget": -20.5,
+"basic": 37.6,
+"advanced": 41.9
+},
+{
+"id": "alpine-marmot",
+"name": "Alpine Marmot",
+"power": 76.6,
+"powerForBudget": 29.5,
+"basic": 81.6,
+"advanced": 71.6
+},
+{
+"id": "alpine-salamander",
+"name": "Alpine Salamander",
+"power": 46.3,
+"powerForBudget": -2.6,
+"basic": 48.8,
+"advanced": 43.9
+},
+{
+"id": "alpine-swift",
+"name": "Alpine Swift",
+"power": 27.7,
+"powerForBudget": -18.7,
+"basic": 24.0,
+"advanced": 31.4
+},
+{
+"id": "ancient-sloth-titan",
+"name": "Ancient Sloth Titan",
+"power": 46.3,
+"powerForBudget": -31.5,
+"basic": 46.9,
+"advanced": 45.7
+},
+{
+"id": "anhinga-spearbird",
+"name": "Anhinga Spearbird",
+"power": 33.0,
+"powerForBudget": -15.7,
+"basic": 31.6,
+"advanced": 34.4
+},
+{
+"id": "ant-hill",
+"name": "Ant Hill",
+"power": 63.2,
+"powerForBudget": 4.2,
+"basic": 62.1,
+"advanced": 64.3
+},
+{
+"id": "ant-scout",
+"name": "Ant Scout",
+"power": 34.0,
+"powerForBudget": -5.1,
+"basic": 31.4,
+"advanced": 36.6
+},
+{
+"id": "ant-warrior",
+"name": "Ant Warrior",
+"power": 53.0,
+"powerForBudget": 8.7,
+"basic": 53.8,
+"advanced": 52.1
+},
+{
+"id": "antlion-pit",
+"name": "Antlion Pit",
+"power": 79.8,
+"powerForBudget": 28.0,
+"basic": 86.9,
+"advanced": 72.6
+},
+{
+"id": "anvilwhisker-otter",
+"name": "Anvilwhisker Otter",
+"power": 27.9,
+"powerForBudget": -26.9,
+"basic": 23.8,
+"advanced": 32.0
+},
+{
+"id": "apollo-butterfly",
+"name": "Apollo Butterfly",
+"power": 59.1,
+"powerForBudget": 10.5,
+"basic": 60.3,
+"advanced": 57.9
+},
+{
+"id": "ash-cloud-condor",
+"name": "Ash Cloud Condor",
+"power": 68.3,
+"powerForBudget": 15.2,
+"basic": 72.0,
+"advanced": 64.6
+},
+{
+"id": "ash-moth",
+"name": "Ash Moth",
+"power": 43.7,
+"powerForBudget": -3.8,
+"basic": 42.4,
+"advanced": 45.0
+},
+{
+"id": "ashbone-ghoul",
+"name": "Ashbone Ghoul",
+"power": 25.6,
+"powerForBudget": -22.1,
+"basic": 18.5,
+"advanced": 32.6
+},
+{
+"id": "badger-lumberjack",
+"name": "Badger Lumberjack",
+"power": 48.6,
+"powerForBudget": -0.1,
+"basic": 49.5,
+"advanced": 47.6
+},
+{
+"id": "badger-stonemason",
+"name": "Badger Stonemason",
+"power": 19.6,
+"powerForBudget": -31.5,
+"basic": 15.3,
+"advanced": 23.8
+},
+{
+"id": "banded-sea-krait",
+"name": "Banded Sea Krait",
+"power": 27.6,
+"powerForBudget": -22.5,
+"basic": 19.1,
+"advanced": 36.1
+},
+{
+"id": "bark-buckler",
+"name": "Bark Buckler",
+"power": 12.5,
+"powerForBudget": -32.3,
+"basic": 8.4,
+"advanced": 16.5
+},
+{
+"id": "barnacle-bulwark",
+"name": "Barnacle Bulwark",
+"power": 58.7,
+"powerForBudget": 0.7,
+"basic": 58.0,
+"advanced": 59.3
+},
+{
+"id": "bee-forager",
+"name": "Bee Forager",
+"power": 11.3,
+"powerForBudget": -27.8,
+"basic": 9.0,
+"advanced": 13.5
+},
+{
+"id": "bee-sentry",
+"name": "Bee Sentry",
+"power": 66.1,
+"powerForBudget": 24.1,
+"basic": 65.0,
+"advanced": 67.1
+},
+{
+"id": "beluga",
+"name": "Beluga",
+"power": 51.8,
+"powerForBudget": -3.6,
+"basic": 52.8,
+"advanced": 50.7
+},
+{
+"id": "berserker-boar",
+"name": "Berserker Boar",
+"power": 52.2,
+"powerForBudget": 0.5,
+"basic": 55.8,
+"advanced": 48.6
+},
+{
+"id": "birdlime-dauber",
+"name": "Birdlime Dauber",
+"power": 68.4,
+"powerForBudget": 19.0,
+"basic": 72.3,
+"advanced": 64.5
+},
+{
+"id": "bison-bulldozer",
+"name": "Bison Bulldozer",
+"power": 83.1,
+"powerForBudget": 32.0,
+"basic": 84.6,
+"advanced": 81.5
+},
+{
+"id": "blind-cave-fish",
+"name": "Blind Cave Fish",
+"power": 11.7,
+"powerForBudget": -31.7,
+"basic": 8.8,
+"advanced": 14.5
+},
+{
+"id": "blue-ringed-octopus",
+"name": "Blue-ringed Octopus",
+"power": 81.4,
+"powerForBudget": 26.6,
+"basic": 85.3,
+"advanced": 77.6
+},
+{
+"id": "bog-leech",
+"name": "Bog Leech",
+"power": 47.6,
+"powerForBudget": 4.4,
+"basic": 49.8,
+"advanced": 45.4
+},
+{
+"id": "bombardier-beetle",
+"name": "Bombardier Beetle",
+"power": 83.9,
+"powerForBudget": 30.7,
+"basic": 88.8,
+"advanced": 79.0
+},
+{
+"id": "booming-bittern",
+"name": "Booming Bittern",
+"power": 35.8,
+"powerForBudget": -13.8,
+"basic": 29.1,
+"advanced": 42.4
+},
+{
+"id": "border-collie",
+"name": "Border Collie",
+"power": 72.0,
+"powerForBudget": 20.8,
+"basic": 76.9,
+"advanced": 67.1
+},
+{
+"id": "boreal-elk",
+"name": "Boreal Elk",
+"power": 45.8,
+"powerForBudget": -7.2,
+"basic": 46.0,
+"advanced": 45.5
+},
+{
+"id": "bramble-hoglet",
+"name": "Bramble Hoglet",
+"power": 34.5,
+"powerForBudget": -9.8,
+"basic": 31.0,
+"advanced": 37.9
+},
+{
+"id": "bramblewood-lynx",
+"name": "Bramblewood Lynx",
+"power": 68.3,
+"powerForBudget": 16.7,
+"basic": 72.3,
+"advanced": 64.3
+},
+{
+"id": "burrow-rabbit",
+"name": "Burrow Rabbit",
+"power": 48.3,
+"powerForBudget": 5.8,
+"basic": 52.9,
+"advanced": 43.6
+},
+{
+"id": "caiman-hatchling",
+"name": "Caiman Hatchling",
+"power": 37.3,
+"powerForBudget": -6.1,
+"basic": 37.3,
+"advanced": 37.4
+},
+{
+"id": "cane-toad",
+"name": "Cane Toad",
+"power": 43.3,
+"powerForBudget": -12.7,
+"basic": 43.2,
+"advanced": 43.4
+},
+{
+"id": "carrion-crow",
+"name": "Carrion Crow",
+"power": 32.4,
+"powerForBudget": -14.0,
+"basic": 33.9,
+"advanced": 30.8
+},
+{
+"id": "caustic-scorpion",
+"name": "Caustic Scorpion",
+"power": 58.7,
+"powerForBudget": 3.5,
+"basic": 58.0,
+"advanced": 59.4
+},
+{
+"id": "deep-cave-troll",
+"name": "Cave Bear",
+"power": 59.9,
+"powerForBudget": 0.3,
+"basic": 59.8,
+"advanced": 59.9
+},
+{
+"id": "cave-olm",
+"name": "Cave Olm",
+"power": 35.2,
+"powerForBudget": -11.2,
+"basic": 34.0,
+"advanced": 36.4
+},
+{
+"id": "cave-warlord",
+"name": "Cave Warlord",
+"power": 44.8,
+"powerForBudget": -31.4,
+"basic": 44.9,
+"advanced": 44.7
+},
+{
+"id": "chamois-leaper",
+"name": "Chamois Leaper",
+"power": 31.0,
+"powerForBudget": -19.5,
+"basic": 29.8,
+"advanced": 32.1
+},
+{
+"id": "chipmunk-forager",
+"name": "Chipmunk Forager",
+"power": 21.7,
+"powerForBudget": -17.8,
+"basic": 16.3,
+"advanced": 27.1
+},
+{
+"id": "chipmunk-hoarder",
+"name": "Chipmunk Hoarder",
+"power": 23.2,
+"powerForBudget": -23.2,
+"basic": 18.3,
+"advanced": 28.0
+},
+{
+"id": "cinder-skeleton",
+"name": "Cinder Skeleton",
+"power": 50.7,
+"powerForBudget": 3.5,
+"basic": 51.5,
+"advanced": 49.9
+},
+{
+"id": "cinder-stoker",
+"name": "Cinder Stoker",
+"power": 57.1,
+"powerForBudget": 12.4,
+"basic": 60.1,
+"advanced": 54.1
+},
+{
+"id": "clap-net-trapper",
+"name": "Clap-net Trapper",
+"power": 67.6,
+"powerForBudget": 21.6,
+"basic": 74.6,
+"advanced": 60.5
+},
+{
+"id": "clownfish-scout",
+"name": "Clownfish Scout",
+"power": 27.4,
+"powerForBudget": -16.0,
+"basic": 22.3,
+"advanced": 32.4
+},
+{
+"id": "cobalt-talon-fledgling",
+"name": "Cobalt Fledgling",
+"power": 21.0,
+"powerForBudget": -18.3,
+"basic": 18.0,
+"advanced": 24.0
+},
+{
+"id": "cobalt-talon-honour-guard",
+"name": "Cobalt Talon Honour-guard",
+"power": 59.6,
+"powerForBudget": 12.7,
+"basic": 67.6,
+"advanced": 51.6
+},
+{
+"id": "cobalt-talon-skirmisher",
+"name": "Cobalt Talon Skirmisher",
+"power": 45.9,
+"powerForBudget": 0.5,
+"basic": 51.0,
+"advanced": 40.8
+},
+{
+"id": "egg-bug",
+"name": "Cocoon",
+"power": 9.8,
+"powerForBudget": null,
+"basic": 7.3,
+"advanced": 12.3
+},
+{
+"id": "colossal-squid",
+"name": "Colossal Squid",
+"power": 54.3,
+"powerForBudget": -14.7,
+"basic": 55.5,
+"advanced": 53.1
+},
+{
+"id": "conch-herald",
+"name": "Conch Herald",
+"power": 64.8,
+"powerForBudget": 15.9,
+"basic": 68.8,
+"advanced": 60.8
+},
+{
+"id": "cone-cutter-squirrel",
+"name": "Cone-cutter Squirrel",
+"power": 68.6,
+"powerForBudget": 20.9,
+"basic": 73.1,
+"advanced": 64.0
+},
+{
+"id": "coral-polyp-colony",
+"name": "Coral Polyp Colony",
+"power": 16.1,
+"powerForBudget": -31.2,
+"basic": 8.8,
+"advanced": 23.4
+},
+{
+"id": "coral-reef-shark",
+"name": "Coral Reef Shark",
+"power": 49.2,
+"powerForBudget": -3.4,
+"basic": 51.4,
+"advanced": 47.0
+},
+{
+"id": "cottontail",
+"name": "Cottontail",
+"power": 20.7,
+"powerForBudget": -18.8,
+"basic": 18.5,
+"advanced": 22.8
+},
+{
+"id": "cricket-drummer",
+"name": "Cricket Drummer",
+"power": 83.2,
+"powerForBudget": 40.9,
+"basic": 89.9,
+"advanced": 76.5
+},
+{
+"id": "crimson-wing-recruit",
+"name": "Crimson Recruit",
+"power": 21.7,
+"powerForBudget": -17.6,
+"basic": 18.3,
+"advanced": 25.0
+},
+{
+"id": "crimson-wing-duelist-cadet",
+"name": "Crimson Wing Duelist Cadet",
+"power": 46.4,
+"powerForBudget": 1.0,
+"basic": 51.0,
+"advanced": 41.8
+},
+{
+"id": "crossed-eyes",
+"name": "Crossed-Eyes",
+"power": 15.6,
+"powerForBudget": -26.1,
+"basic": 12.3,
+"advanced": 18.8
+},
+{
+"id": "cunning-vixen",
+"name": "Cunning Vixen",
+"power": 43.6,
+"powerForBudget": -7.1,
+"basic": 40.8,
+"advanced": 46.4
+},
+{
+"id": "daily-post",
+"name": "Daily Post",
+"power": 19.9,
+"powerForBudget": -23.2,
+"basic": 15.5,
+"advanced": 24.3
+},
+{
+"id": "dawn-bellringer",
+"name": "Dawn Bellringer",
+"power": 55.7,
+"powerForBudget": 9.0,
+"basic": 61.0,
+"advanced": 50.4
+},
+{
+"id": "egg-beast",
+"name": "Den Bundle",
+"power": 8.4,
+"powerForBudget": null,
+"basic": 5.5,
+"advanced": 11.3
+},
+{
+"id": "dhole-matriarch",
+"name": "Dhole Matriarch",
+"power": 60.9,
+"powerForBudget": 1.4,
+"basic": 62.6,
+"advanced": 59.2
+},
+{
+"id": "dolphin-knight",
+"name": "Dolphin Outrider",
+"power": 83.3,
+"powerForBudget": 35.4,
+"basic": 88.1,
+"advanced": 78.5
+},
+{
+"id": "dragonscale-mail",
+"name": "Dragonscale Mail",
+"power": 30.8,
+"powerForBudget": -27.2,
+"basic": 28.1,
+"advanced": 33.5
+},
+{
+"id": "driftwood-crab",
+"name": "Driftwood Crab",
+"power": 63.8,
+"powerForBudget": 15.9,
+"basic": 67.8,
+"advanced": 59.8
+},
+{
+"id": "dromedary",
+"name": "Dromedary",
+"power": 36.8,
+"powerForBudget": -17.7,
+"basic": 32.1,
+"advanced": 41.5
+},
+{
+"id": "duck-paddler",
+"name": "Duck Paddler",
+"power": 49.3,
+"powerForBudget": 6.8,
+"basic": 52.9,
+"advanced": 45.6
+},
+{
+"id": "duckling",
+"name": "Duckling",
+"power": 12.9,
+"powerForBudget": -26.6,
+"basic": 9.8,
+"advanced": 16.0
+},
+{
+"id": "dune-packrat",
+"name": "Dune Packrat",
+"power": 45.0,
+"powerForBudget": -7.0,
+"basic": 44.8,
+"advanced": 45.1
+},
+{
+"id": "dung-beetle",
+"name": "Dung Beetle",
+"power": 53.2,
+"powerForBudget": 8.9,
+"basic": 49.5,
+"advanced": 56.8
+},
+{
+"id": "dust-hyena",
+"name": "Dust Hyena",
+"power": 51.0,
+"powerForBudget": 5.4,
+"basic": 56.1,
+"advanced": 45.9
+},
+{
+"id": "dust-devil-kestrel",
+"name": "Dust-devil Kestrel",
+"power": 80.3,
+"powerForBudget": 23.3,
+"basic": 87.5,
+"advanced": 73.0
+},
+{
+"id": "eagle-owl-quartermaster",
+"name": "Eagle-Owl Quartermaster",
+"power": 70.3,
+"powerForBudget": 18.9,
+"basic": 74.0,
+"advanced": 66.5
+},
+{
+"id": "earthworm",
+"name": "Earthworm",
+"power": 10.6,
+"powerForBudget": -31.1,
+"basic": 7.0,
+"advanced": 14.1
+},
+{
+"id": "echo-matriarch",
+"name": "Echo Matriarch",
+"power": 76.8,
+"powerForBudget": 22.5,
+"basic": 82.0,
+"advanced": 71.5
+},
+{
+"id": "echo-screecher",
+"name": "Echo Screecher",
+"power": 55.3,
+"powerForBudget": 4.4,
+"basic": 57.1,
+"advanced": 53.4
+},
+{
+"id": "electric-ray",
+"name": "Electric Ray",
+"power": 59.1,
+"powerForBudget": 8.8,
+"basic": 61.3,
+"advanced": 56.8
+},
+{
+"id": "ember-centipede",
+"name": "Ember Centipede",
+"power": 14.8,
+"powerForBudget": -32.9,
+"basic": 11.3,
+"advanced": 18.3
+},
+{
+"id": "ember-jackal",
+"name": "Ember Jackal",
+"power": 88.2,
+"powerForBudget": 39.2,
+"basic": 93.1,
+"advanced": 83.3
+},
+{
+"id": "eyrie-warden",
+"name": "Eyrie Warden",
+"power": 44.8,
+"powerForBudget": -17.4,
+"basic": 43.9,
+"advanced": 45.7
+},
+{
+"id": "fathom-leviathan",
+"name": "Fathom Leviathan",
+"power": 68.5,
+"powerForBudget": -10.0,
+"basic": 69.4,
+"advanced": 67.6
+},
+{
+"id": "fawn-scout",
+"name": "Fawn Scout",
+"power": 50.8,
+"powerForBudget": 4.5,
+"basic": 56.8,
+"advanced": 44.9
+},
+{
+"id": "fen-mink",
+"name": "Fen Mink",
+"power": 14.8,
+"powerForBudget": -32.1,
+"basic": 9.0,
+"advanced": 20.5
+},
+{
+"id": "fennec-fox",
+"name": "Fennec Fox",
+"power": 37.2,
+"powerForBudget": -14.6,
+"basic": 35.0,
+"advanced": 39.4
+},
+{
+"id": "ferry-toll-frog",
+"name": "Ferry Toll-Frog",
+"power": 35.3,
+"powerForBudget": -7.8,
+"basic": 33.8,
+"advanced": 36.8
+},
+{
+"id": "fire-ant-raft",
+"name": "Fire Ant Raft",
+"power": 48.1,
+"powerForBudget": -0.6,
+"basic": 50.2,
+"advanced": 45.9
+},
+{
+"id": "fire-drake-hatchling",
+"name": "Fire Drake Hatchling",
+"power": 73.7,
+"powerForBudget": 10.7,
+"basic": 77.1,
+"advanced": 70.2
+},
+{
+"id": "fire-salamander",
+"name": "Fire Salamander",
+"power": 80.9,
+"powerForBudget": 28.9,
+"basic": 87.1,
+"advanced": 74.8
+},
+{
+"id": "fleetfootd",
+"name": "Fleetfoot'd",
+"power": 28.6,
+"powerForBudget": -14.5,
+"basic": 26.5,
+"advanced": 30.6
+},
+{
+"id": "ford-kingfisher",
+"name": "Ford Kingfisher",
+"power": 61.5,
+"powerForBudget": 15.1,
+"basic": 69.4,
+"advanced": 53.6
+},
+{
+"id": "fox-kit",
+"name": "Fox Kit",
+"power": 59.1,
+"powerForBudget": 15.1,
+"basic": 60.1,
+"advanced": 58.0
+},
+{
+"id": "frost-hare-sprinter",
+"name": "Frost Hare Sprinter",
+"power": 49.2,
+"powerForBudget": 4.5,
+"basic": 55.0,
+"advanced": 43.3
+},
+{
+"id": "fumarole-ibex",
+"name": "Fumarole Ibex",
+"power": 29.9,
+"powerForBudget": -22.1,
+"basic": 27.8,
+"advanced": 31.9
+},
+{
+"id": "fungal-colossus",
+"name": "Fungal Colossus",
+"power": 39.8,
+"powerForBudget": -20.1,
+"basic": 38.4,
+"advanced": 41.2
+},
+{
+"id": "gale-swift",
+"name": "Gale Swift",
+"power": 21.8,
+"powerForBudget": -22.9,
+"basic": 18.1,
+"advanced": 25.5
+},
+{
+"id": "gallery-orb-weaver",
+"name": "Gallery Orb-Weaver",
+"power": 67.3,
+"powerForBudget": 17.5,
+"basic": 71.3,
+"advanced": 63.3
+},
+{
+"id": "gangrenous-leech",
+"name": "Gangrenous Leech",
+"power": 54.0,
+"powerForBudget": 4.2,
+"basic": 47.9,
+"advanced": 60.1
+},
+{
+"id": "garden-snail",
+"name": "Garden Snail",
+"power": 10.8,
+"powerForBudget": -30.4,
+"basic": 6.5,
+"advanced": 15.1
+},
+{
+"id": "giant-cave-huntsman",
+"name": "Giant Cave Huntsman",
+"power": 80.2,
+"powerForBudget": 25.9,
+"basic": 83.5,
+"advanced": 76.8
+},
+{
+"id": "cataphract-destrier",
+"name": "Gilded Roadwarden",
+"power": 42.7,
+"powerForBudget": -28.7,
+"basic": 42.3,
+"advanced": 43.1
+},
+{
+"id": "glacier-wolf-pack",
+"name": "Glacier Wolf Pack",
+"power": 45.1,
+"powerForBudget": -7.9,
+"basic": 44.8,
+"advanced": 45.3
+},
+{
+"id": "glass-changeling",
+"name": "Glass Changeling",
+"power": 51.5,
+"powerForBudget": -0.3,
+"basic": 54.5,
+"advanced": 48.4
+},
+{
+"id": "glass-golem",
+"name": "Glass Golem",
+"power": 56.0,
+"powerForBudget": 3.2,
+"basic": 55.9,
+"advanced": 56.1
+},
+{
+"id": "glass-octopus",
+"name": "Glass Octopus",
+"power": 18.5,
+"powerForBudget": -36.7,
+"basic": 10.6,
+"advanced": 26.4
+},
+{
+"id": "glimmer-spider",
+"name": "Glimmer Spider",
+"power": 72.9,
+"powerForBudget": 21.8,
+"basic": 77.8,
+"advanced": 67.9
+},
+{
+"id": "gold-throat-elder",
+"name": "Gold-throat Elder",
+"power": 83.8,
+"powerForBudget": 33.5,
+"basic": 89.0,
+"advanced": 78.5
+},
+{
+"id": "gold-throated-acolyte",
+"name": "Gold-throated Acolyte",
+"power": 62.8,
+"powerForBudget": 12.4,
+"basic": 65.3,
+"advanced": 60.3
+},
+{
+"id": "goliath-broodmother",
+"name": "Goliath Broodmother",
+"power": 56.5,
+"powerForBudget": -14.1,
+"basic": 57.7,
+"advanced": 55.3
+},
+{
+"id": "goliath-tentacle",
+"name": "Goliath Tentacle",
+"power": 45.9,
+"powerForBudget": -18.8,
+"basic": 45.2,
+"advanced": 46.6
+},
+{
+"id": "granite-ox-golem",
+"name": "Granite Ox Golem",
+"power": 21.2,
+"powerForBudget": -45.2,
+"basic": 13.0,
+"advanced": 29.3
+},
+{
+"id": "grass-viper",
+"name": "Grass Viper",
+"power": 37.8,
+"powerForBudget": -6.2,
+"basic": 38.5,
+"advanced": 37.1
+},
+{
+"id": "grave-grin-hyena",
+"name": "Grave-Grin Hyena",
+"power": 49.1,
+"powerForBudget": 0.5,
+"basic": 50.5,
+"advanced": 47.6
+},
+{
+"id": "great-barracuda",
+"name": "Great Barracuda",
+"power": 42.4,
+"powerForBudget": -8.8,
+"basic": 45.1,
+"advanced": 39.6
+},
+{
+"id": "grey-seal-bull",
+"name": "Grey Seal Bull",
+"power": 46.7,
+"powerForBudget": -6.5,
+"basic": 44.8,
+"advanced": 48.5
+},
+{
+"id": "greyplume-fledgling",
+"name": "Greyplume Fledgling",
+"power": 21.2,
+"powerForBudget": -18.1,
+"basic": 18.0,
+"advanced": 24.3
+},
+{
+"id": "grizzly-vanguard",
+"name": "Grizzly Vanguard",
+"power": 43.9,
+"powerForBudget": -15.1,
+"basic": 42.7,
+"advanced": 45.1
+},
+{
+"id": "grotto-lobster",
+"name": "Grotto Lobster",
+"power": 72.9,
+"powerForBudget": 17.5,
+"basic": 76.3,
+"advanced": 69.5
+},
+{
+"id": "guppy",
+"name": "Guppy",
+"power": 13.1,
+"powerForBudget": -28.6,
+"basic": 9.8,
+"advanced": 16.3
+},
+{
+"id": "harbor-seal",
+"name": "Harbor Seal",
+"power": 29.7,
+"powerForBudget": -20.4,
+"basic": 25.3,
+"advanced": 34.1
+},
+{
+"id": "harvest-mouse",
+"name": "Harvest Mouse",
+"power": 20.2,
+"powerForBudget": -21.5,
+"basic": 15.5,
+"advanced": 24.8
+},
+{
+"id": "hawthorn-shieldbug",
+"name": "Hawthorn Shieldbug",
+"power": 75.2,
+"powerForBudget": 26.3,
+"basic": 81.3,
+"advanced": 69.1
+},
+{
+"id": "hedge-changeling",
+"name": "Hedge Changeling",
+"power": 41.5,
+"powerForBudget": -5.4,
+"basic": 40.8,
+"advanced": 42.1
+},
+{
+"id": "hedge-weasel",
+"name": "Hedge Weasel",
+"power": 36.1,
+"powerForBudget": -11.2,
+"basic": 29.8,
+"advanced": 42.4
+},
+{
+"id": "hedgehog-herbalist",
+"name": "Hedgehog Herbalist",
+"power": 81.7,
+"powerForBudget": 29.9,
+"basic": 87.1,
+"advanced": 76.3
+},
+{
+"id": "helmeted-otter",
+"name": "Helmeted Otter",
+"power": 53.9,
+"powerForBudget": 7.9,
+"basic": 56.0,
+"advanced": 51.8
+},
+{
+"id": "hercules-beetle",
+"name": "Hercules Beetle",
+"power": 75.7,
+"powerForBudget": 19.6,
+"basic": 80.5,
+"advanced": 70.9
+},
+{
+"id": "honey-bee",
+"name": "Honey Bee",
+"power": 19.9,
+"powerForBudget": -19.4,
+"basic": 18.0,
+"advanced": 21.8
+},
+{
+"id": "honeyjoe-brewer",
+"name": "Honeyjoe Brewer",
+"power": 81.1,
+"powerForBudget": 37.1,
+"basic": 86.0,
+"advanced": 76.1
+},
+{
+"id": "hoopoe-herald",
+"name": "Hoopoe Herald",
+"power": 51.8,
+"powerForBudget": 6.8,
+"basic": 55.1,
+"advanced": 48.5
+},
+{
+"id": "horseshoe-crab",
+"name": "Horseshoe Crab",
+"power": 70.1,
+"powerForBudget": 21.2,
+"basic": 76.3,
+"advanced": 63.8
+},
+{
+"id": "hummingbird-needler",
+"name": "Hummingbird Needler",
+"power": 28.3,
+"powerForBudget": -15.7,
+"basic": 26.3,
+"advanced": 30.3
+},
+{
+"id": "hush-wing-spy",
+"name": "Hush-Wing Spy",
+"power": 15.4,
+"powerForBudget": -30.6,
+"basic": 10.3,
+"advanced": 20.5
+},
+{
+"id": "ibex-rockcaller",
+"name": "Ibex Rockcaller",
+"power": 94.4,
+"powerForBudget": 38.6,
+"basic": 97.1,
+"advanced": 91.8
+},
+{
+"id": "inkcloud-squid",
+"name": "Inkcloud Squid",
+"power": 42.0,
+"powerForBudget": -5.5,
+"basic": 40.0,
+"advanced": 44.0
+},
+{
+"id": "inside-out-hedgehog",
+"name": "Inside-Out Hedgehog",
+"power": 67.9,
+"powerForBudget": 22.5,
+"basic": 73.1,
+"advanced": 62.6
+},
+{
+"id": "irradiated-axolotl",
+"name": "Irradiated Axolotl",
+"power": 68.6,
+"powerForBudget": 17.7,
+"basic": 72.8,
+"advanced": 64.3
+},
+{
+"id": "irradiated-glow-wyrm",
+"name": "Irradiated Glow Wyrm",
+"power": null,
+"powerForBudget": null,
+"basic": null,
+"advanced": null
+},
+{
+"id": "jaguar-stalker",
+"name": "Jaguar Stalker",
+"power": 27.3,
+"powerForBudget": -25.4,
+"basic": 24.0,
+"advanced": 30.6
+},
+{
+"id": "kinkajou-lurker",
+"name": "Kinkajou Lurker",
+"power": 65.9,
+"powerForBudget": 13.7,
+"basic": 64.9,
+"advanced": 66.8
+},
+{
+"id": "komodo-warlord",
+"name": "Komodo Warlord",
+"power": 46.1,
+"powerForBudget": -21.7,
+"basic": 43.9,
+"advanced": 48.3
+},
+{
+"id": "kraken-spawnling",
+"name": "Kraken Spawnling",
+"power": 52.4,
+"powerForBudget": -5.9,
+"basic": 53.1,
+"advanced": 51.7
+},
+{
+"id": "lantern-bearer",
+"name": "Lantern Bearer",
+"power": 48.5,
+"powerForBudget": 1.6,
+"basic": 49.1,
+"advanced": 47.8
+},
+{
+"id": "lantern-spark-fly",
+"name": "Lantern Spark Fly",
+"power": 71.9,
+"powerForBudget": 22.9,
+"basic": 79.8,
+"advanced": 64.1
+},
+{
+"id": "lava-waders",
+"name": "Lava Waders",
+"power": 12.8,
+"powerForBudget": -35.5,
+"basic": 8.5,
+"advanced": 17.0
+},
+{
+"id": "leafcutter-gardener",
+"name": "Leafcutter Gardener",
+"power": 33.7,
+"powerForBudget": -9.7,
+"basic": 38.6,
+"advanced": 28.8
+},
+{
+"id": "egg-scaly",
+"name": "Leathery Egg",
+"power": 7.5,
+"powerForBudget": null,
+"basic": 5.0,
+"advanced": 10.0
+},
+{
+"id": "legate-of-rivergate",
+"name": "Legate of Rivergate",
+"power": 76.6,
+"powerForBudget": 26.3,
+"basic": 81.8,
+"advanced": 71.3
+},
+{
+"id": "lions-mane-jelly",
+"name": "Lion's Mane Jelly",
+"power": 51.9,
+"powerForBudget": -0.2,
+"basic": 51.1,
+"advanced": 52.6
+},
+{
+"id": "lodge-engineer",
+"name": "Lodge Engineer",
+"power": 49.0,
+"powerForBudget": -5.9,
+"basic": 50.1,
+"advanced": 47.8
+},
+{
+"id": "lone-grey-wolf",
+"name": "Lone Grey Wolf",
+"power": 41.6,
+"powerForBudget": -15.2,
+"basic": 42.5,
+"advanced": 40.6
+},
+{
+"id": "lucky-hopper",
+"name": "Lucky Hopper",
+"power": 32.1,
+"powerForBudget": -16.4,
+"basic": 29.3,
+"advanced": 34.8
+},
+{
+"id": "lunar-howler",
+"name": "Lunar Howler",
+"power": 25.4,
+"powerForBudget": -30.0,
+"basic": 19.5,
+"advanced": 31.3
+},
+{
+"id": "lyrebird-mimic",
+"name": "Lyrebird Mimic",
+"power": 57.6,
+"powerForBudget": 6.9,
+"basic": 61.1,
+"advanced": 54.0
+},
+{
+"id": "magma-titan",
+"name": "Magma Rhino",
+"power": 36.9,
+"powerForBudget": -22.7,
+"basic": 34.4,
+"advanced": 39.4
+},
+{
+"id": "magma-salamander",
+"name": "Magma Salamander",
+"power": 93.2,
+"powerForBudget": 39.2,
+"basic": 98.4,
+"advanced": 88.0
+},
+{
+"id": "magma-wraith",
+"name": "Magma Wraith",
+"power": 81.3,
+"powerForBudget": 29.2,
+"basic": 84.3,
+"advanced": 78.3
+},
+{
+"id": "malachite-golem",
+"name": "Malachite Golem",
+"power": 0.0,
+"powerForBudget": -60.8,
+"basic": 0.0,
+"advanced": 0.0
+},
+{
+"id": "mangrove-kingfisher",
+"name": "Mangrove Kingfisher",
+"power": 54.2,
+"powerForBudget": 6.1,
+"basic": 59.5,
+"advanced": 48.9
+},
+{
+"id": "mangrove-manatee",
+"name": "Mangrove Manatee",
+"power": 69.4,
+"powerForBudget": 11.0,
+"basic": 68.1,
+"advanced": 70.8
+},
+{
+"id": "mangrove-monitor",
+"name": "Mangrove Monitor",
+"power": 58.3,
+"powerForBudget": 8.6,
+"basic": 60.8,
+"advanced": 55.8
+},
+{
+"id": "mangrove-mudskipper",
+"name": "Mangrove Mudskipper",
+"power": 43.3,
+"powerForBudget": -0.1,
+"basic": 46.0,
+"advanced": 40.5
+},
+{
+"id": "marsh-harrier",
+"name": "Marsh Harrier",
+"power": 43.6,
+"powerForBudget": -5.1,
+"basic": 46.5,
+"advanced": 40.6
+},
+{
+"id": "marshal-of-rivergate",
+"name": "Marshal of Rivergate",
+"power": 75.8,
+"powerForBudget": 16.5,
+"basic": 78.3,
+"advanced": 73.2
+},
+{
+"id": "marula-elephant",
+"name": "Marula Elephant",
+"power": 48.8,
+"powerForBudget": -8.5,
+"basic": 50.3,
+"advanced": 47.3
+},
+{
+"id": "meadow-rabbit",
+"name": "Meadow Rabbit",
+"power": 23.7,
+"powerForBudget": -15.8,
+"basic": 21.5,
+"advanced": 25.8
+},
+{
+"id": "meerkat-burrower",
+"name": "Meerkat Burrower",
+"power": 34.3,
+"powerForBudget": -15.8,
+"basic": 34.8,
+"advanced": 33.9
+},
+{
+"id": "meerkat-wayfarer",
+"name": "Meerkat Wayfarer",
+"power": 41.8,
+"powerForBudget": -3.3,
+"basic": 39.0,
+"advanced": 44.6
+},
+{
+"id": "mirror-moth",
+"name": "Mirror Moth",
+"power": 50.7,
+"powerForBudget": -1.1,
+"basic": 52.0,
+"advanced": 49.4
+},
+{
+"id": "mist-net-otter",
+"name": "Mist-net Otter",
+"power": 59.8,
+"powerForBudget": 13.8,
+"basic": 67.5,
+"advanced": 52.0
+},
+{
+"id": "mosswing-laborer",
+"name": "Mosswing",
+"power": 12.6,
+"powerForBudget": -26.7,
+"basic": 8.4,
+"advanced": 16.8
+},
+{
+"id": "mountain-hare",
+"name": "Mountain Hare",
+"power": 32.5,
+"powerForBudget": -10.9,
+"basic": 30.6,
+"advanced": 34.3
+},
+{
+"id": "mouse-sapper",
+"name": "Mouse Sapper",
+"power": 67.9,
+"powerForBudget": 19.0,
+"basic": 72.5,
+"advanced": 63.3
+},
+{
+"id": "muskrat-lodgekeeper",
+"name": "Muskrat Lodgekeeper",
+"power": 29.3,
+"powerForBudget": -23.3,
+"basic": 28.5,
+"advanced": 30.1
+},
+{
+"id": "nautilus-drifter",
+"name": "Nautilus Drifter",
+"power": 67.4,
+"powerForBudget": 7.9,
+"basic": 65.8,
+"advanced": 69.0
+},
+{
+"id": "nectar-sipper",
+"name": "Nectar Sipper",
+"power": 32.5,
+"powerForBudget": -10.8,
+"basic": 32.0,
+"advanced": 33.0
+},
+{
+"id": "nectar-vintner",
+"name": "Nectar Vintner",
+"power": 30.6,
+"powerForBudget": -12.5,
+"basic": 29.3,
+"advanced": 31.9
+},
+{
+"id": "net-thrower",
+"name": "Net Thrower",
+"power": 74.3,
+"powerForBudget": 24.9,
+"basic": 81.0,
+"advanced": 67.6
+},
+{
+"id": "netmender-harpoon",
+"name": "Netmender's Harpoon",
+"power": 14.6,
+"powerForBudget": -33.7,
+"basic": 11.3,
+"advanced": 17.8
+},
+{
+"id": "newt-doctor",
+"name": "Newt Doctor",
+"power": 43.5,
+"powerForBudget": -3.6,
+"basic": 40.5,
+"advanced": 46.4
+},
+{
+"id": "nudibranch",
+"name": "Nudibranch",
+"power": 76.9,
+"powerForBudget": 27.1,
+"basic": 81.8,
+"advanced": 71.9
+},
+{
+"id": "oathsworn-legionary",
+"name": "Oathsworn Legionary",
+"power": 39.8,
+"powerForBudget": -9.6,
+"basic": 42.4,
+"advanced": 37.1
+},
+{
+"id": "obsidian-scorpion",
+"name": "Obsidian Scorpion",
+"power": 82.1,
+"powerForBudget": 30.1,
+"basic": 87.4,
+"advanced": 76.8
+},
+{
+"id": "octopus-tactician",
+"name": "Octopus Tactician",
+"power": 49.9,
+"powerForBudget": -6.1,
+"basic": 53.5,
+"advanced": 46.2
+},
+{
+"id": "old-snapjaw",
+"name": "Old Snapjaw",
+"power": 53.8,
+"powerForBudget": -6.7,
+"basic": 56.1,
+"advanced": 51.5
+},
+{
+"id": "old-sturgeon",
+"name": "Old Sturgeon",
+"power": 59.9,
+"powerForBudget": 3.9,
+"basic": 59.3,
+"advanced": 60.5
+},
+{
+"id": "old-willow-of-the-ford",
+"name": "Old Willow of the Ford",
+"power": 67.5,
+"powerForBudget": 0.1,
+"basic": 65.5,
+"advanced": 69.4
+},
+{
+"id": "optio-of-the-ford",
+"name": "Optio of the Ford",
+"power": 74.4,
+"powerForBudget": 23.2,
+"basic": 78.3,
+"advanced": 70.6
+},
+{
+"id": "orca-vanguard",
+"name": "Orca Vanguard",
+"power": 41.3,
+"powerForBudget": -20.9,
+"basic": 38.5,
+"advanced": 44.1
+},
+{
+"id": "ossuary-lammergeier",
+"name": "Ossuary Lammergeier",
+"power": 89.5,
+"powerForBudget": 34.6,
+"basic": 93.5,
+"advanced": 85.5
+},
+{
+"id": "otter-angler",
+"name": "Otter Angler",
+"power": 26.4,
+"powerForBudget": -19.6,
+"basic": 22.3,
+"advanced": 30.4
+},
+{
+"id": "otter-ferryman",
+"name": "Otter Ferryman",
+"power": 67.3,
+"powerForBudget": 21.3,
+"basic": 74.0,
+"advanced": 60.6
+},
+{
+"id": "otter-flag-bearer",
+"name": "Otter Flag Bearer",
+"power": 77.3,
+"powerForBudget": 30.4,
+"basic": 78.6,
+"advanced": 76.0
+},
+{
+"id": "otter-guard",
+"name": "Otter Guard",
+"power": 50.9,
+"powerForBudget": 2.4,
+"basic": 54.6,
+"advanced": 47.1
+},
+{
+"id": "otter-kit",
+"name": "Otter Kit",
+"power": 24.8,
+"powerForBudget": -14.7,
+"basic": 24.3,
+"advanced": 25.3
+},
+{
+"id": "otter-lantern-bearer",
+"name": "Otter Lantern Bearer",
+"power": 61.3,
+"powerForBudget": 14.4,
+"basic": 63.9,
+"advanced": 58.6
+},
+{
+"id": "otter-netmender",
+"name": "Otter Netmender",
+"power": 29.9,
+"powerForBudget": -13.2,
+"basic": 30.1,
+"advanced": 29.6
+},
+{
+"id": "otter-paddler",
+"name": "Otter Paddler",
+"power": 30.2,
+"powerForBudget": -9.3,
+"basic": 29.3,
+"advanced": 31.0
+},
+{
+"id": "otter-riverguard",
+"name": "Otter Riverguard",
+"power": 33.7,
+"powerForBudget": -17.6,
+"basic": 33.6,
+"advanced": 33.8
+},
+{
+"id": "otter-scout",
+"name": "Otter Scout",
+"power": 30.1,
+"powerForBudget": -15.4,
+"basic": 30.0,
+"advanced": 30.1
+},
+{
+"id": "otter-shieldback",
+"name": "Otter Shieldback",
+"power": 80.6,
+"powerForBudget": 26.7,
+"basic": 85.8,
+"advanced": 75.4
+},
+{
+"id": "owl-nightwatch",
+"name": "Owl Nightwatch",
+"power": 18.6,
+"powerForBudget": -30.3,
+"basic": 11.6,
+"advanced": 25.5
+},
+{
+"id": "pack-mule",
+"name": "Pack Mule",
+"power": 20.5,
+"powerForBudget": -25.3,
+"basic": 21.1,
+"advanced": 19.9
+},
+{
+"id": "pangolin-roller",
+"name": "Pangolin Roller",
+"power": 68.8,
+"powerForBudget": 16.8,
+"basic": 74.6,
+"advanced": 62.9
+},
+{
+"id": "parrotfish",
+"name": "Parrotfish",
+"power": 44.3,
+"powerForBudget": -2.1,
+"basic": 44.5,
+"advanced": 44.1
+},
+{
+"id": "pelican-diver",
+"name": "Pelican Diver",
+"power": 53.5,
+"powerForBudget": 3.7,
+"basic": 56.4,
+"advanced": 50.6
+},
+{
+"id": "peregrine-stooper",
+"name": "Peregrine Stooper",
+"power": 60.9,
+"powerForBudget": 11.9,
+"basic": 64.9,
+"advanced": 56.9
+},
+{
+"id": "petal-fletcher",
+"name": "Petal Fletcher",
+"power": 46.2,
+"powerForBudget": 3.1,
+"basic": 53.8,
+"advanced": 38.6
+},
+{
+"id": "pike-lancer",
+"name": "Pike Lancer",
+"power": 81.9,
+"powerForBudget": 34.0,
+"basic": 86.9,
+"advanced": 76.9
+},
+{
+"id": "poison-dart-croaker",
+"name": "Poison Dart Croaker",
+"power": 26.2,
+"powerForBudget": -22.5,
+"basic": 23.0,
+"advanced": 29.3
+},
+{
+"id": "polar-bear",
+"name": "Polar Bear",
+"power": 70.7,
+"powerForBudget": 13.9,
+"basic": 78.4,
+"advanced": 63.0
+},
+{
+"id": "pond-duck",
+"name": "Pond Duck",
+"power": 30.6,
+"powerForBudget": -8.9,
+"basic": 29.3,
+"advanced": 31.8
+},
+{
+"id": "pond-trout",
+"name": "Pond Trout",
+"power": 24.6,
+"powerForBudget": -14.9,
+"basic": 24.3,
+"advanced": 24.8
+},
+{
+"id": "pride-queen",
+"name": "Pride Queen",
+"power": 62.7,
+"powerForBudget": 9.8,
+"basic": 67.4,
+"advanced": 57.9
+},
+{
+"id": "proboscis-monkey",
+"name": "Proboscis Monkey",
+"power": 39.6,
+"powerForBudget": -10.2,
+"basic": 41.8,
+"advanced": 37.4
+},
+{
+"id": "pronghorn-racer",
+"name": "Pronghorn Racer",
+"power": 23.2,
+"powerForBudget": -24.0,
+"basic": 21.3,
+"advanced": 25.1
+},
+{
+"id": "prospector-mole",
+"name": "Prospector Mole",
+"power": 75.6,
+"powerForBudget": 27.9,
+"basic": 80.6,
+"advanced": 70.6
+},
+{
+"id": "puffin-diver",
+"name": "Puffin Diver",
+"power": 36.1,
+"powerForBudget": -12.0,
+"basic": 35.9,
+"advanced": 36.3
+},
+{
+"id": "pumice-beetle",
+"name": "Pumice Beetle",
+"power": 59.7,
+"powerForBudget": 8.6,
+"basic": 63.8,
+"advanced": 55.6
+},
+{
+"id": "pyrenean-desman",
+"name": "Pyrenean Desman",
+"power": 56.6,
+"powerForBudget": 9.8,
+"basic": 58.5,
+"advanced": 54.6
+},
+{
+"id": "quarry-mole",
+"name": "Quarry Mole",
+"power": 32.0,
+"powerForBudget": -17.0,
+"basic": 31.0,
+"advanced": 32.9
+},
+{
+"id": "quicksand-queen",
+"name": "Quicksand Queen",
+"power": 72.4,
+"powerForBudget": 15.2,
+"basic": 73.8,
+"advanced": 71.0
+},
+{
+"id": "quill-spear",
+"name": "Quill Spear",
+"power": 21.1,
+"powerForBudget": -27.2,
+"basic": 19.0,
+"advanced": 23.1
+},
+{
+"id": "quill-volley",
+"name": "Quill Volley",
+"power": 40.9,
+"powerForBudget": -9.0,
+"basic": 43.3,
+"advanced": 38.5
+},
+{
+"id": "quill-thorn-boar",
+"name": "Quill-Thorn Boar",
+"power": 62.1,
+"powerForBudget": 11.4,
+"basic": 64.3,
+"advanced": 59.8
+},
+{
+"id": "quillback-elder",
+"name": "Quillback Elder",
+"power": 61.2,
+"powerForBudget": 6.1,
+"basic": 65.2,
+"advanced": 57.2
+},
+{
+"id": "quillguard",
+"name": "Quillguard",
+"power": 52.5,
+"powerForBudget": -3.7,
+"basic": 55.3,
+"advanced": 49.6
+},
+{
+"id": "raccoon-bandit",
+"name": "Raccoon Bandit",
+"power": 36.0,
+"powerForBudget": -13.5,
+"basic": 41.3,
+"advanced": 30.6
+},
+{
+"id": "raven-scout",
+"name": "Raven Scout",
+"power": 89.5,
+"powerForBudget": 44.6,
+"basic": 95.0,
+"advanced": 83.9
+},
+{
+"id": "razorbill",
+"name": "Razorbill",
+"power": 41.0,
+"powerForBudget": -8.0,
+"basic": 43.5,
+"advanced": 38.5
+},
+{
+"id": "redwood-woodpecker",
+"name": "Redwood Woodpecker",
+"power": 37.7,
+"powerForBudget": -12.1,
+"basic": 39.8,
+"advanced": 35.5
+},
+{
+"id": "reef-admiral",
+"name": "Reef Admiral",
+"power": 65.7,
+"powerForBudget": 10.1,
+"basic": 67.5,
+"advanced": 63.9
+},
+{
+"id": "reef-shark",
+"name": "Reef Shark",
+"power": 51.5,
+"powerForBudget": -7.5,
+"basic": 54.8,
+"advanced": 48.2
+},
+{
+"id": "reefback-turtle",
+"name": "Reefback Turtle",
+"power": 60.2,
+"powerForBudget": 1.2,
+"basic": 64.4,
+"advanced": 56.0
+},
+{
+"id": "riptide-eel",
+"name": "Riptide Eel",
+"power": 43.2,
+"powerForBudget": -6.6,
+"basic": 47.3,
+"advanced": 39.0
+},
+{
+"id": "egg-otter",
+"name": "River Bundle",
+"power": 8.9,
+"powerForBudget": null,
+"basic": 6.3,
+"advanced": 11.5
+},
+{
+"id": "river-carp",
+"name": "River Carp",
+"power": 47.2,
+"powerForBudget": 4.7,
+"basic": 52.9,
+"advanced": 41.5
+},
+{
+"id": "river-warden",
+"name": "River Warden",
+"power": 51.9,
+"powerForBudget": -1.2,
+"basic": 54.7,
+"advanced": 49.1
+},
+{
+"id": "riverbed-diver",
+"name": "Riverbed Diver",
+"power": 46.8,
+"powerForBudget": -2.6,
+"basic": 45.7,
+"advanced": 47.8
+},
+{
+"id": "rivergate-drummer",
+"name": "Rivergate Drummer",
+"power": 29.7,
+"powerForBudget": -17.2,
+"basic": 29.8,
+"advanced": 29.5
+},
+{
+"id": "rivergate-recruit",
+"name": "Rivergate Recruit",
+"power": 60.5,
+"powerForBudget": 13.8,
+"basic": 62.9,
+"advanced": 58.0
+},
+{
+"id": "rivergate-tribune",
+"name": "Rivergate Tribune",
+"power": 56.6,
+"powerForBudget": -6.8,
+"basic": 57.7,
+"advanced": 55.4
+},
+{
+"id": "riverside-peddler",
+"name": "Riverside Peddler",
+"power": 18.4,
+"powerForBudget": -24.7,
+"basic": 17.8,
+"advanced": 19.0
+},
+{
+"id": "riverstone-slinger",
+"name": "Riverstone Slinger",
+"power": 77.2,
+"powerForBudget": 29.3,
+"basic": 85.3,
+"advanced": 69.1
+},
+{
+"id": "riverwing-envoy",
+"name": "Riverwing Envoy",
+"power": 41.6,
+"powerForBudget": -1.5,
+"basic": 43.3,
+"advanced": 39.8
+},
+{
+"id": "riverworks-bastion",
+"name": "Riverworks Bastion",
+"power": 23.2,
+"powerForBudget": -44.7,
+"basic": 18.8,
+"advanced": 27.5
+},
+{
+"id": "roadrunner-courier",
+"name": "Roadrunner Courier",
+"power": 63.8,
+"powerForBudget": 16.6,
+"basic": 68.6,
+"advanced": 58.9
+},
+{
+"id": "robin-redbreast",
+"name": "Robin Redbreast",
+"power": 80.9,
+"powerForBudget": 37.4,
+"basic": 86.3,
+"advanced": 75.6
+},
+{
+"id": "rock-pool-starfish",
+"name": "Rock Pool Starfish",
+"power": 60.7,
+"powerForBudget": 15.2,
+"basic": 66.8,
+"advanced": 54.5
+},
+{
+"id": "egg-water",
+"name": "Roe Pearl",
+"power": 9.2,
+"powerForBudget": null,
+"basic": 6.8,
+"advanced": 11.5
+},
+{
+"id": "rootworm-colony",
+"name": "Rootworm Colony",
+"power": 34.7,
+"powerForBudget": -14.3,
+"basic": 33.3,
+"advanced": 36.0
+},
+{
+"id": "otter-royal-guard",
+"name": "Royal Guard",
+"power": 81.2,
+"powerForBudget": 29.1,
+"basic": 84.0,
+"advanced": 78.3
+},
+{
+"id": "ruby-throat-duelist",
+"name": "Ruby-Throat Duelist",
+"power": 33.0,
+"powerForBudget": -14.9,
+"basic": 30.5,
+"advanced": 35.5
+},
+{
+"id": "sand-widow",
+"name": "Sand Widow",
+"power": 44.5,
+"powerForBudget": -11.9,
+"basic": 44.5,
+"advanced": 44.4
+},
+{
+"id": "sandfish",
+"name": "Sandfish",
+"power": 68.1,
+"powerForBudget": 18.0,
+"basic": 71.0,
+"advanced": 65.1
+},
+{
+"id": "savanna-cheetah",
+"name": "Savanna Cheetah",
+"power": 65.7,
+"powerForBudget": 15.8,
+"basic": 71.5,
+"advanced": 59.8
+},
+{
+"id": "sea-turtle-elder",
+"name": "Sea Turtle Elder",
+"power": 53.5,
+"powerForBudget": -5.5,
+"basic": 54.0,
+"advanced": 53.0
+},
+{
+"id": "sergeant-bramblefox",
+"name": "Sergeant Bramblefox",
+"power": 69.8,
+"powerForBudget": 20.1,
+"basic": 77.1,
+"advanced": 62.4
+},
+{
+"id": "sheep",
+"name": "Sheep",
+"power": 30.8,
+"powerForBudget": -10.4,
+"basic": 29.8,
+"advanced": 31.8
+},
+{
+"id": "shell-cracker",
+"name": "Shell-Cracker",
+"power": 50.0,
+"powerForBudget": 6.4,
+"basic": 54.6,
+"advanced": 45.3
+},
+{
+"id": "shellwright-apprentice",
+"name": "Shellwright Apprentice",
+"power": 53.7,
+"powerForBudget": 7.7,
+"basic": 57.3,
+"advanced": 50.1
+},
+{
+"id": "shepherds-bark",
+"name": "Shepherd",
+"power": 53.2,
+"powerForBudget": 3.1,
+"basic": 58.3,
+"advanced": 48.1
+},
+{
+"id": "shimmerwing-stag",
+"name": "Shimmerwing Stag",
+"power": 60.7,
+"powerForBudget": 4.6,
+"basic": 61.5,
+"advanced": 59.9
+},
+{
+"id": "shoal-shark",
+"name": "Shoal Shark",
+"power": 66.1,
+"powerForBudget": 14.0,
+"basic": 69.1,
+"advanced": 63.1
+},
+{
+"id": "siege-hammer",
+"name": "Siege Hammer",
+"power": 29.7,
+"powerForBudget": -22.5,
+"basic": 27.6,
+"advanced": 31.8
+},
+{
+"id": "silver-minnow",
+"name": "Silver Minnow",
+"power": 18.3,
+"powerForBudget": -21.2,
+"basic": 14.0,
+"advanced": 22.5
+},
+{
+"id": "skull-vulture",
+"name": "Skull Vulture",
+"power": 41.7,
+"powerForBudget": -9.4,
+"basic": 41.4,
+"advanced": 42.0
+},
+{
+"id": "sleepless-shrew",
+"name": "Sleepless Shrew",
+"power": 30.2,
+"powerForBudget": -16.2,
+"basic": 29.0,
+"advanced": 31.3
+},
+{
+"id": "snail-mail",
+"name": "Snail Mail",
+"power": 20.3,
+"powerForBudget": -31.5,
+"basic": 17.1,
+"advanced": 23.5
+},
+{
+"id": "snapper-hatchling",
+"name": "Snapper Hatchling",
+"power": 24.6,
+"powerForBudget": -18.8,
+"basic": 22.3,
+"advanced": 26.8
+},
+{
+"id": "snapstick-turtle",
+"name": "Snapstick Turtle",
+"power": 38.7,
+"powerForBudget": -9.6,
+"basic": 39.8,
+"advanced": 37.5
+},
+{
+"id": "snow-bunting-archer",
+"name": "Snow Bunting Archer",
+"power": 53.7,
+"powerForBudget": 2.6,
+"basic": 53.4,
+"advanced": 54.0
+},
+{
+"id": "snow-ermine",
+"name": "Snow Ermine",
+"power": 55.4,
+"powerForBudget": 10.7,
+"basic": 61.8,
+"advanced": 49.0
+},
+{
+"id": "snowshoe-hare",
+"name": "Snowshoe Hare",
+"power": 40.4,
+"powerForBudget": -4.3,
+"basic": 41.3,
+"advanced": 39.5
+},
+{
+"id": "sparrow-chick",
+"name": "Sparrow Chick",
+"power": 17.4,
+"powerForBudget": -24.0,
+"basic": 11.3,
+"advanced": 23.5
+},
+{
+"id": "egg-bird",
+"name": "Speckled Egg",
+"power": 6.9,
+"powerForBudget": null,
+"basic": 4.8,
+"advanced": 9.0
+},
+{
+"id": "spitting-cobra",
+"name": "Spitting Cobra",
+"power": 52.9,
+"powerForBudget": -2.5,
+"basic": 54.5,
+"advanced": 51.3
+},
+{
+"id": "spitting-spider",
+"name": "Spitting Spider",
+"power": 68.4,
+"powerForBudget": 17.3,
+"basic": 70.6,
+"advanced": 66.3
+},
+{
+"id": "springbok-pronker",
+"name": "Springbok Pronker",
+"power": 46.0,
+"powerForBudget": -1.2,
+"basic": 51.5,
+"advanced": 40.5
+},
+{
+"id": "stalactite-golem",
+"name": "Stalactite Pill Bug",
+"power": 50.5,
+"powerForBudget": -8.5,
+"basic": 52.3,
+"advanced": 48.6
+},
+{
+"id": "star-nosed-mole",
+"name": "Star-nosed Mole",
+"power": 43.0,
+"powerForBudget": -0.6,
+"basic": 43.6,
+"advanced": 42.3
+},
+{
+"id": "stoat-cutthroat",
+"name": "Stoat Cutthroat",
+"power": 90.9,
+"powerForBudget": 38.8,
+"basic": 93.8,
+"advanced": 88.1
+},
+{
+"id": "sulfur-cinder-moth",
+"name": "Sulfur Cinder Moth",
+"power": 49.8,
+"powerForBudget": 3.9,
+"basic": 54.5,
+"advanced": 45.0
+},
+{
+"id": "sunbittern-strider",
+"name": "Sunbittern Strider",
+"power": 75.0,
+"powerForBudget": 24.9,
+"basic": 81.1,
+"advanced": 68.9
+},
+{
+"id": "dominion-nestguard",
+"name": "Sunfeather Nestguard",
+"power": 40.3,
+"powerForBudget": -8.5,
+"basic": 41.3,
+"advanced": 39.4
+},
+{
+"id": "sunfeather-plume",
+"name": "Sunfeather Plume",
+"power": 27.0,
+"powerForBudget": -22.3,
+"basic": 23.2,
+"advanced": 30.8
+},
+{
+"id": "sunfeather-scout",
+"name": "Sunfeather Scout",
+"power": 17.4,
+"powerForBudget": -28.6,
+"basic": 14.8,
+"advanced": 19.9
+},
+{
+"id": "sunspire-choirmother",
+"name": "Sunspire Choirmother",
+"power": 67.7,
+"powerForBudget": 13.0,
+"basic": 66.4,
+"advanced": 69.0
+},
+{
+"id": "sunspire-envoy",
+"name": "Sunspire Envoy",
+"power": 52.4,
+"powerForBudget": 2.1,
+"basic": 53.5,
+"advanced": 51.3
+},
+{
+"id": "sunspire-sky-sovereign",
+"name": "Sunspire Sky-Sovereign",
+"power": 80.4,
+"powerForBudget": 26.4,
+"basic": 85.6,
+"advanced": 75.1
+},
+{
+"id": "sunthroat-courier",
+"name": "Sunthroat Courier",
+"power": 59.0,
+"powerForBudget": 12.7,
+"basic": 64.0,
+"advanced": 54.0
+},
+{
+"id": "supernova-jelly",
+"name": "Supernova Jelly",
+"power": 78.3,
+"powerForBudget": 27.6,
+"basic": 82.5,
+"advanced": 74.1
+},
+{
+"id": "swift-fox",
+"name": "Swift Fox",
+"power": 40.5,
+"powerForBudget": -5.4,
+"basic": 40.9,
+"advanced": 40.0
+},
+{
+"id": "swordbill-challenger",
+"name": "Swordbill Challenger",
+"power": 34.9,
+"powerForBudget": -13.0,
+"basic": 33.3,
+"advanced": 36.5
+},
+{
+"id": "taiga-lynx",
+"name": "Taiga Lynx",
+"power": 53.3,
+"powerForBudget": 3.9,
+"basic": 55.5,
+"advanced": 51.0
+},
+{
+"id": "talon-archer",
+"name": "Talon Archer",
+"power": 83.6,
+"powerForBudget": 30.5,
+"basic": 89.8,
+"advanced": 77.3
+},
+{
+"id": "talus-pika",
+"name": "Talus Pika",
+"power": 16.4,
+"powerForBudget": -28.3,
+"basic": 13.8,
+"advanced": 19.0
+},
+{
+"id": "tasmanian-devil",
+"name": "Tasmanian Devil",
+"power": 79.0,
+"powerForBudget": 29.2,
+"basic": 79.0,
+"advanced": 79.0
+},
+{
+"id": "teatime-toad",
+"name": "Teatime Toad",
+"power": 70.7,
+"powerForBudget": 22.3,
+"basic": 76.6,
+"advanced": 64.8
+},
+{
+"id": "caldera-wyrm",
+"name": "The Caldera Wyrm",
+"power": null,
+"powerForBudget": null,
+"basic": null,
+"advanced": null
+},
+{
+"id": "the-contradiction",
+"name": "The Contradiction",
+"power": 71.7,
+"powerForBudget": 12.5,
+"basic": 72.8,
+"advanced": 70.5
+},
+{
+"id": "drowned-matriarch",
+"name": "The Drowned Matriarch",
+"power": 72.1,
+"powerForBudget": 19.5,
+"basic": 78.0,
+"advanced": 66.1
+},
+{
+"id": "heron-hag",
+"name": "The Heron Hag",
+"power": 77.3,
+"powerForBudget": 23.4,
+"basic": 78.1,
+"advanced": 76.5
+},
+{
+"id": "old-shell",
+"name": "The Old Shell",
+"power": 89.1,
+"powerForBudget": 32.9,
+"basic": 90.3,
+"advanced": 87.8
+},
+{
+"id": "thorn-shrike",
+"name": "Thorn Shrike",
+"power": 43.2,
+"powerForBudget": -7.5,
+"basic": 41.5,
+"advanced": 44.8
+},
+{
+"id": "thorny-devil",
+"name": "Thorny Devil",
+"power": 92.2,
+"powerForBudget": 37.0,
+"basic": 94.8,
+"advanced": 89.5
+},
+{
+"id": "tide-pool-crab",
+"name": "Tide Pool Crab",
+"power": 24.4,
+"powerForBudget": -19.0,
+"basic": 23.8,
+"advanced": 25.0
+},
+{
+"id": "tide-spirit",
+"name": "Tide Seahorse",
+"power": 73.8,
+"powerForBudget": 23.4,
+"basic": 75.5,
+"advanced": 72.0
+},
+{
+"id": "tidepool-trapper-crab",
+"name": "Tidepool Trapper Crab",
+"power": 22.2,
+"powerForBudget": -21.2,
+"basic": 19.0,
+"advanced": 25.3
+},
+{
+"id": "tiny-cave-dweller",
+"name": "Tiny Cave Dweller",
+"power": 58.4,
+"powerForBudget": 14.6,
+"basic": 63.6,
+"advanced": 53.1
+},
+{
+"id": "torch",
+"name": "Torch",
+"power": 51.5,
+"powerForBudget": 7.9,
+"basic": 55.4,
+"advanced": 47.5
+},
+{
+"id": "trapdoor-spider",
+"name": "Trapdoor Spider",
+"power": 92.2,
+"powerForBudget": 41.8,
+"basic": 95.8,
+"advanced": 88.6
+},
+{
+"id": "trash-panda-trickster",
+"name": "Trash Panda Trickster",
+"power": 18.4,
+"powerForBudget": -25.0,
+"basic": 21.4,
+"advanced": 15.4
+},
+{
+"id": "truce-heron",
+"name": "Truce Heron",
+"power": 59.2,
+"powerForBudget": 5.5,
+"basic": 61.8,
+"advanced": 56.5
+},
+{
+"id": "truffle-piglet",
+"name": "Truffle Piglet",
+"power": 36.0,
+"powerForBudget": -13.8,
+"basic": 34.5,
+"advanced": 37.4
+},
+{
+"id": "tunnel-ant",
+"name": "Tunnel Ant",
+"power": 73.6,
+"powerForBudget": 24.2,
+"basic": 78.3,
+"advanced": 68.8
+},
+{
+"id": "two-headed-calf",
+"name": "Two-Headed Calf",
+"power": 88.5,
+"powerForBudget": 36.7,
+"basic": 94.0,
+"advanced": 83.0
+},
+{
+"id": "upside-down-bat",
+"name": "Upside-Down Bat",
+"power": 70.0,
+"powerForBudget": 24.3,
+"basic": 80.0,
+"advanced": 59.9
+},
+{
+"id": "vampire-bat",
+"name": "Vampire Bat",
+"power": 36.1,
+"powerForBudget": -13.4,
+"basic": 34.9,
+"advanced": 37.3
+},
+{
+"id": "vampire-roost",
+"name": "Vampire Roost",
+"power": 28.8,
+"powerForBudget": -31.5,
+"basic": 26.3,
+"advanced": 31.3
+},
+{
+"id": "vampire-squid",
+"name": "Vampire Squid",
+"power": 55.0,
+"powerForBudget": -3.0,
+"basic": 57.0,
+"advanced": 52.9
+},
+{
+"id": "victoria-regia",
+"name": "Victoria Regia",
+"power": 69.4,
+"powerForBudget": 17.3,
+"basic": 72.3,
+"advanced": 66.6
+},
+{
+"id": "violet-vane-fletcher",
+"name": "Violet Vane Fletcher",
+"power": 27.1,
+"powerForBudget": -15.3,
+"basic": 24.8,
+"advanced": 29.4
+},
+{
+"id": "voidfeather-scout",
+"name": "Voidfeather Scout",
+"power": 65.9,
+"powerForBudget": 18.7,
+"basic": 70.1,
+"advanced": 61.8
+},
+{
+"id": "walrus-icebreaker",
+"name": "Walrus Icebreaker",
+"power": 88.5,
+"powerForBudget": 31.7,
+"basic": 91.4,
+"advanced": 85.5
+},
+{
+"id": "weaver-bird",
+"name": "Weaver Bird",
+"power": 57.9,
+"powerForBudget": 10.7,
+"basic": 60.8,
+"advanced": 54.9
+},
+{
+"id": "whip-spider",
+"name": "Whip Spider",
+"power": 50.2,
+"powerForBudget": -0.9,
+"basic": 54.3,
+"advanced": 46.1
+},
+{
+"id": "wolf-spider-mother",
+"name": "Wolf Spider Mother",
+"power": 42.3,
+"powerForBudget": -8.4,
+"basic": 42.4,
+"advanced": 42.3
+},
+{
+"id": "wolfsbane-alpha",
+"name": "Wolfsbane Alpha",
+"power": 87.2,
+"powerForBudget": 30.4,
+"basic": 88.9,
+"advanced": 85.5
+},
+{
+"id": "woodland-caribou",
+"name": "Woodland Caribou",
+"power": 34.3,
+"powerForBudget": -17.1,
+"basic": 36.5,
+"advanced": 32.0
+},
+{
+"id": "egg-woodland",
+"name": "Woodland Egg",
+"power": 8.6,
+"powerForBudget": null,
+"basic": 6.3,
+"advanced": 10.8
+},
+{
+"id": "worker-ant",
+"name": "Worker Ant",
+"power": 22.4,
+"powerForBudget": -16.7,
+"basic": 18.8,
+"advanced": 26.0
+},
+{
+"id": "wound-reaver",
+"name": "Wound Reaver",
+"power": 76.1,
+"powerForBudget": 24.0,
+"basic": 80.3,
+"advanced": 71.8
+},
+{
+"id": "wrong-way-salmon",
+"name": "Wrong-Way Salmon",
+"power": 66.4,
+"powerForBudget": 21.0,
+"basic": 68.8,
+"advanced": 64.0
+},
+{
+"id": "yeti",
+"name": "Yeti",
+"power": 44.3,
+"powerForBudget": -29.2,
+"basic": 45.1,
+"advanced": 43.5
+}
+]
