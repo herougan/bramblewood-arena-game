@@ -65,7 +65,9 @@ const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUE
   // 2026-11-04 (TESTFIX1): SKILL2 (2026-10-31, call BUDGET2-1) re-measured Bulwark (7.2 -> 5.96); FIN2-2's 9 x 0.8 is its skill2Was
   ok(Math.abs(bul.value - 9 * sc.budget.shieldPerHealth) < 1e-9 || (/SKILL2/.test(bul.appliedAt || '') && Math.abs(bul.skill2Was.value - 9 * sc.budget.shieldPerHealth) < 1e-9), `FIN2-2 Bulwark a point = the owner's 9 x 0.8 (${bul.value}; SKILL2 since)`);
   const rf = J('docs/balance/bal7-shield-refit-2026-10-28.json'), cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, c]));
-  rf.moves.forEach(m=> ok(`${by[m.id].attack || 0}/${by[m.id].health}` === m.to, `FIN2-2 re-fit ${m.id} ${m.from} -> ${m.to}`)); }
+  // 2026-11-19 (TESTFIX6): a card re-set on purpose since (tests/lib/redesign.js: the redesign or a dated later note, e.g. CARDPOW2's Muskrat 3/7) keeps its new line
+  const { redesigned: rd7 } = require('./lib/redesign.js');
+  rf.moves.forEach(m=> ok(`${by[m.id].attack || 0}/${by[m.id].health}` === m.to || rd7(m.id, '2026-10-29'), `FIN2-2 re-fit ${m.id} ${m.from} -> ${m.to}`)); }
 
 // ---- M2: the Test Lab's Card check takes the basic-pack cards a player can hold by then -------------------------------------------------
 { const src = fsx.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), i = src.indexOf('function cardCheckPool(upTo)'), body = src.slice(i, src.indexOf('\n}', i));

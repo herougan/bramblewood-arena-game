@@ -186,7 +186,7 @@ const fx = (ev, kind)=> ev.filter(x=> x.type === 'statusFx' && x.kind === kind);
 { const {e, P} = mk(); put(e, P, 1, 'sk-demo'); const t = put(e, P, 2, 'sk-tower'); ok(hitOn(fight(e, P), t.uid) === 5, 'an old Demolisher 3 card reads as Siege 3 on a Structure'); }
 { const {e, P} = mk(); put(e, P, 1, 'sk-demo'); const h = fight(e, P).find(x=> x.type === 'hitHQ'); ok(h && h.dmg === 5, '... and on the bramble'); }
 { const cards = JSON.parse(R('canonical/cards.json')); ok(!cards.some(c=> c.effects && c.effects.demolisher != null), 'no canonical card carries the old demolisher key');
-  ['beetle-battering-ram', 'badger-sapper', 'mouse-sapper', 'siege-rhino', 'trebuchet-crew'].forEach(id=>{ const c = cards.find(x=> x.id === id); ok(c && c.effects.siege > 0, `${id}: Siege (was Demolisher)`); }); }
+  ['beetle-battering-ram', 'badger-sapper', 'mouse-sapper', 'siege-rhino', 'trebuchet-crew'].forEach(id=>{ const c = cards.find(x=> x.id === id); ok(c && require('./lib/redesign.js').skillsAt10(c).siege > 0 /* 2026-11-19 (TESTFIX6): LVL10, Siege at Level 3 on two of them */, `${id}: Siege (was Demolisher)`); }); }
 
 // ---- 11. Punish N (behind a flag)
 { const {e, P} = mk(); put(e, P, 1, 'sk-hit3'); put(e, P, 2, 'sk-punish'); const ev = fight(e, P); ok(!fx(ev, 'punish').length, 'Punish is off without the flag'); }

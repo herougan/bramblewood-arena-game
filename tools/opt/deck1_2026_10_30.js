@@ -33,6 +33,7 @@ const PRIORITY = ['stone/metal', 'economy', 'big', 'swarm']; // then the first s
 function mapsUpTo20(gm, want) {
   const G = gm.G;
   return G.CONQUEST_MAPS.filter(m => !m.reserved && !m.endless && m.id !== 'mtut' && G.mapNumberOf(m.id) != null && G.mapNumberOf(m.id) <= 20)
+    .filter(m => !m.sub || !G.mapUnlockNumberOf || !(G.mapUnlockNumberOf(m.id) > 20)) // 2026-11-19 (TESTFIX6): RAIDGATE's mjd codes as Map 10 but opens at Map 21
     .filter(m => !want || want.has(G.mapNumberOf(m.id)))
     .filter(m => !m.sub || ownSubList(gm, m)) // a side map with its own list
     .sort((a, b) => G.mapNumberOf(a.id) - G.mapNumberOf(b.id) || (a.sub ? 1 : 0) - (b.sub ? 1 : 0) || (a.id < b.id ? -1 : 1));

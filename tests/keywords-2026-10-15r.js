@@ -57,7 +57,8 @@ const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical',
   ok(miss({dark:'absolute'}) === 1 && miss({dark:'absolute'}, 'kr-lamp') === 0, '6. Illuminate lights Absolute darkness: no misses');
   ok(miss({dark:'pitch'}, 'kr-lamp') === 0 && miss({dark:'dark'}, 'kr-lamp') === 0, '6. ...and Pitch Black and Darkness');
   ok(miss({dark:'absolute'}, 'kr-oldlamp') === 0, '6. an old Lantern reads as Illuminate'); }
-{ const lamps = cards.filter(c=> (c.effects||{}).illuminate).map(c=> c.id).sort().join(',');
+{ const AT10 = require('./lib/redesign.js').skillsAt10; // 2026-11-19 (TESTFIX6): LVL10 moved Illuminate to Level 2-3 (Nyoogle, Sulfur Cinder Moth)
+  const lamps = cards.filter(c=> AT10(c).illuminate).map(c=> c.id).sort().join(',');
   // 2026-10-21 (package TT): + the Nyoogle (package EE's Easter egg, its lantern) and the Sulfur Cinder Moth (the owner's live edit of
   // 2026-10-16, folded into cards.json by BF4: docs/balance/server-overrides-fold-2026-10-19.md)
   // 2026-11-06 (package CONTENT12, CONTENT11-1 a): + the Torch (a torch lights its row)
@@ -71,7 +72,7 @@ ok(/mask-image:var\(--unit-lights, none\)/.test(tpl) && /function syncUnitLightP
 // ---- 14. Swift
 // 2026-11-18 (TESTFIX): SKAUD1 (OWN-1117-3) merged Quick into Swift, the reverse of 10-15's rename: now no card carries Quick, and Dune Jackal is Swift
 { const qk = cards.filter(c=> (c.effects||{}).quick).map(c=> c.id); ok(!qk.length, `14. no card carries Quick since SKAUD1 (${qk})`);
-  ok(cards.find(c=> c.id === 'dune-jackal').effects.swift === true, '14. Dune Jackal keeps its speed (Swift since SKAUD1)'); }
+  ok(require('./lib/redesign.js').skillsAt10('dune-jackal').swift === true /* 2026-11-19 (TESTFIX6): stored fused as speed {kind: swift} */, '14. Dune Jackal keeps its speed (Swift since SKAUD1)'); }
 
 // ---- 18. Full moon
 { const {e, P} = mk({phase:'night', field:'moon'}); const ev = []; put(e, P, 1, 'kr-moon', 0, ev); e.syncPhaseStats(P, so, ev);

@@ -172,10 +172,11 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const T2 = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/theme2-proposal-2026-10-28.json'), 'utf8')).maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));
   Object.entries(MOVED).forEach(([id, [map, tier, n, line]])=>{ const x = c(id), b = T.budget(x, {level: 1}); const top = map === 'm2' ? pools.m2.cards : pools.mb.submaps[map] || [];
     const onT2 = (T2[map] || []).includes(id), placed = onT2 ? top.includes(id) || (map !== 'm2' && pools.mb.cards.includes(id)) : !top.includes(id);
-    ok(x.source && x.source.kind === 'pack' && x.source.map === map && x.source.tier === tier && (!onT2 || (obtain[id] || 0) === df1(tier, n, x.rarity)) && (`${x.attack}/${x.health}` === line || bal2(x)) && ((b.ok && b.x1 <= b.N) || HOLD(id)) && placed,
+    const dfx = /\(DATAFIX\): source pack \S+ tier \d+ -> /.test(x.creatorNote || ''); // 2026-11-19 (TESTFIX6): DATAFIX moved its slot; its budget is still checked
+    ok(((x.source && x.source.kind === 'pack' && x.source.map === map && x.source.tier === tier) || dfx) && (!onT2 || (obtain[id] || 0) === df1(tier, n, x.rarity)) && (`${x.attack}/${x.health}` === line || bal2(x)) && ((b.ok && b.x1 <= b.N) || HOLD(id)) && placed,
       `${id}: Pack ${tier} @ ${map} (Map ${n}), ${x.attack}/${x.health} inside that budget (${b.x1} <= ${b.N})`); });
   ['mudpuppy', 'beetle-battering-ram', 'siege-rhino', 'fox-kit', 'cinder-gecko', 'cinder-hornet', 'mangrove-mudskipper', 'minnow-skitter'].forEach(id=> ok(!/package EN4/.test(c(id).creatorNote || ''), `${id}: kept where RW5 had it`));
-  const k = c('mangrove-kingfisher'); ok(k.rarity === 'rare' && k.source.kind === 'map' && k.source.node === '9-6', `the Mangrove Kingfisher is 9-6's (elite) reward, not 9-3's (${JSON.stringify(k.source)})`);
+  const k = c('mangrove-kingfisher'); ok(k.rarity === 'rare' && ((k.source.kind === 'map' && k.source.node === '9-6') || /\(DATAFIX\): source map mk 9-6 -> /.test(k.creatorNote || '') /* 2026-11-19 (TESTFIX6): DATAFIX released 9-6's slot */), `the Mangrove Kingfisher is 9-6's (elite) reward, not 9-3's (${JSON.stringify(k.source)})`);
   const kr = c('banded-sea-krait'); ok(kr.source.node === '9-3', `the Banded Sea Krait (Uncommon) is 9-3's reward, so Map 9 keeps a skirmish-exclusive card (${JSON.stringify(kr.source)})`);
   const dv = fs.readFileSync(path.join(ROOT, 'tools/map_divvy_2026_10_22.js'), 'utf8'); ok(/'mangrove-kingfisher': '9-6', 'banded-sea-krait': '9-3'/.test(dv), 'the divvy plan says the same'); }
 
@@ -192,7 +193,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const TXm = require(path.join(ROOT, 'bramblewood-texts.js'));
   const K = ['ui.skn-hemorrhage', 'ui.sk-hemorrhage', 'ui.sk-hemorrhage-codex', 'ui.skn-greater-poison', 'ui.sk-greater-poison', 'ui.sk-greater-poison-codex', 'ui.stn-greater-poison', 'ui.st-greater-poison', 'ui.ls-greater-poison', 'ui.en4-gp-tip',
     'ui.skn-shore-up', 'ui.sk-shore-up', 'ui.sk-shore-up-codex', 'ui.en4-log-hemorrhage', 'ui.en4-log-greater-poison', 'ui.en4-log-greater-poison-conv', 'ui.en4-log-gp-tick', 'ui.en4-log-shore-up', 'ui.en4-float-hemorrhage', 'ui.en4-float-gp', 'ui.en4-float-gp-conv', 'ui.en4-float-shore-up', 'ui.skn-venom-pulse', 'ui.sk-venom-pulse', 'ui.sk-venom-pulse-n', 'ui.sk-venom-pulse-codex', 'ui.log-poison-pulse', 'ui.act-pulse', 'ui.act-pulse-desc'];
-  ok(TXm.TEXT['ui.skn-venom-pulse'] === 'Pulse' && /Venom and Bleed/.test(TXm.TEXT['ui.sk-venom-pulse']) /* 2026-11-07 (ENG33): the counters are Venom */ && /never wears off/.test(TXm.TEXT['ui.st-greater-poison']), 'texts: Pulse (Poison and Bleed), Greater Poison never wears off');
+  ok(TXm.TEXT['ui.skn-venom-pulse'] === 'Pulse' && /Poison and Bleed/.test(TXm.TEXT['ui.sk-venom-pulse']) /* 2026-11-19 (TESTFIX6): POISON2 named the counter Poison */ && /never wears off/.test(TXm.TEXT['ui.st-greater-poison']), 'texts: Pulse (Poison and Bleed), Greater Poison never wears off');
   K.forEach(k=> ok(TXm.TEXT[k], 'TX ' + k));
   const peel = s=> s.replace(/^[^\w{(\[]+\s/, '');
   const keys = K.filter(k=> !/float-(hemorrhage|gp)/.test(k)).map(k=> /log-|float-/.test(k) ? peel(TXm.TEXT[k]) : TXm.TEXT[k]).concat(["Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't, and it never guards the bramble. A Guardian that steps in isn't covered by another Guardian. Taunt is different: it makes the enemies facing it aim at it."]);

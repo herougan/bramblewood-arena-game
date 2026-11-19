@@ -80,7 +80,7 @@ const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical',
   ok(ev.some(x=> x.type === 'reflectShot' && x.fireball) && ev.filter(x=> x.type === 'fireball').length === 2, 'a fireball out, a reflectShot, a fireball back'); }
 { const {e, P} = mk(); const R1 = put(e, P, 1, 's7-mirror-archer', 0); const R2 = put(e, P, 2, 's7-mirror', 0); const ev = []; e.debugAttack(P, so, R1.uid, {}, ev);
   ok(R2.hp === 500 && R1.hp === 498 && ev.filter(x=> x.type === 'reflectShot').length === 1, `a bounced shot never bounces again (the archer, a Reflect unit itself, takes it: ${R1.hp})`); }
-ok(byId['mirror-moth'].effects.reflect === true && byId['test-skill-reflect'].effects.reflect === true, 'cards: Mirror Moth and the Reflect test card are Reflect (always)');
+ok(require('./lib/redesign.js').skillsAt10('mirror-moth').reflect === true /* 2026-11-19 (TESTFIX6): LVL10, Reflect at Level 2 */ && byId['test-skill-reflect'].effects.reflect === true, 'cards: Mirror Moth and the Reflect test card are Reflect (always)');
 
 // ---- 11. Vanguard
 { const {e, P} = mk({deck1:{'s7-wall':9}}); const pl = P[1]; pl.deck = ['s7-van', 's7-wall', 's7-wall', 's7-wall', 's7-wall', 's7-wall']; const ev = [];

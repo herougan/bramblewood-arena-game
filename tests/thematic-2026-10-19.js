@@ -27,6 +27,8 @@ const RP_MOVES = (()=>{ try{ return Object.fromEntries(JSON.parse(fs.readFileSyn
 const rpMoved = c=>{ const m = c && RP_MOVES[c.id]; if(!m) return false; if(m.to === 'awaitingSource') return !c.source && c.awaitingSource === true; if(m.to === 'base') return !c.source; return JSON.stringify(c.source) === JSON.stringify(m.to); };
 // 2026-11-16 (TESTFIX5): DV (10-22) turned most skirmish rewards into pack cards, then SKIR3 / LIST1 (11-12, 11-13) rebuilt the lists from the owner's picks: a card is now placed by those lists (a pack card a list holds) or cut (unattainable); the lists' rarity caps are opt2's check
 const POOLS_TXT = Object.values(readJSON('canonical/map-pools.json').maps).map(e=> JSON.stringify(e));
+// 2026-11-19 (TESTFIX6): DATAFIX (11-18) moved reward slots to cards new on their map; such a card says so in its note
+const dataFixMoved = c=> !!c && /\(DATAFIX\): source (map|pack) /.test(c.creatorNote || '');
 const ownerListed = c=> !!c && (c.unattainable === true || (!!c.source && c.source.kind === 'pack' && POOLS_TXT.some(t=> t.includes('"' + c.id + '"'))));
 const slice = (a, b)=>{ const i = src.indexOf(a), j = src.indexOf(b, i); if(i < 0 || j < 0) throw new Error('missing ' + a); return src.slice(i, j); };
 // eslint-disable-next-line no-eval
@@ -49,6 +51,7 @@ REC.forEach(p=>{ const c = defs[p.id];
   ok(c && c.numericId === p.numericId && c.numericId > OLD_MAX && c.numericId < 9001, `1. ${p.id}: a live card number (#${c && c.numericId}), not its pool #${p.poolNo}`);
   const s = c && c.source;
   if(rpMoved(c)) ok(true, `1. ${p.id}: moved on by package RP (${JSON.stringify(RP_MOVES[p.id].to)})`);
+  else if(dataFixMoved(c)) ok(true, `1. ${p.id}: moved on by DATAFIX (${JSON.stringify(s)})`);
   else if(ownerListed(c) && !(p.poolSlot === 'pack' && s && s.kind === 'pack' && s.tier === 1)) ok(true, `1. ${p.id}: placed by the owner's lists (${JSON.stringify(s)}${c.unattainable ? ', cut' : ''})`);
   else if(p.poolSlot === 'pack') ok(s && s.kind === 'pack' && s.tier === 1, `1. ${p.id}: made for a pack, in the basic pack pool (tier 1)`);
   else { const fam = family(p.poolMap), host = s && fam.find(m=> m.id === s.id), node = host && host.nodes.find(x=> x.key === s.node);
@@ -66,7 +69,7 @@ ok(JSON.stringify(left) === JSON.stringify(['roseate-spoonbill', 'sanderling', '
 ['pincushion-urchin', 'banded-sea-krait', 'yellow-bellied-sea-snake', 'giant-cave-huntsman', 'polar-bear', 'walrus-icebreaker'].forEach(id=> ok(defs[id] && !defs[id].pool && defs[id].source, `1. the owner's examples are placed: ${id}`));
 const GI = ['fen-mink', 'tidepool-trapper-crab', 'grave-grin-hyena', 'bogfire-newt', 'plague-gnat-cloud', 'glasswing-moth', 'rivergate-drummer', 'frostmoon-howler', 'chapel-tortoise', 'weathervane-swift'];
 const GI_MAP = {'fen-mink': 'mw', 'plague-gnat-cloud': 'mw', 'tidepool-trapper-crab': 'mb', 'grave-grin-hyena': 'm5', 'bogfire-newt': 'm8', 'glasswing-moth': 'md', 'rivergate-drummer': 'mf', 'frostmoon-howler': 'm6', 'chapel-tortoise': 'm21', 'weathervane-swift': 'm22'};
-GI.forEach(id=>{ const c = defs[id]; ok(c && (rpMoved(c) || ownerListed(c) || (c.source && c.source.kind === 'map' && family(GI_MAP[id]).some(m=> m.id === c.source.id))), `1. GI example ${id} placed where its note says (${GI_MAP[id]}): ${c && c.source && c.source.node}`); });
+GI.forEach(id=>{ const c = defs[id]; ok(c && (rpMoved(c) || dataFixMoved(c) || ownerListed(c) || (c.source && c.source.kind === 'map' && family(GI_MAP[id]).some(m=> m.id === c.source.id))), `1. GI example ${id} placed where its note says (${GI_MAP[id]}): ${c && c.source && c.source.node}`); });
 
 // ---- 2. every card a fight fields or gives exists and is live
 const bad = [];

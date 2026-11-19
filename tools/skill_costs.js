@@ -178,7 +178,8 @@
         if(BB.zeroFree && BB.zeroFree(k, v)){ parts.push(['skill', k, 0, 'v 0: its parameters carry it (ENG40)']); return; }
         { const hs = BB.hoardS && SK.hoard ? BB.hoardS(k, v, effects, skillCost('hoard', 1)) : null; if(hs){ S += hs.S; parts.push(['skill', k, hs.S, 'x' + hs.mult + ' (' + hs.res + ', ENG40)']); return; } }
         if(k === 'onDeathSpawn' && v && v.defId && card && card.formLevel > 1){ const gr = tokenGrowth(v.defId, card.formLevel), c0 = skillCost(k, v); if(gr !== 1 && c0 != null){ const c = r2(c0 * gr); S += c; parts.push(['skill', k, c, 'x' + gr + ' (the token at Level ' + card.formLevel + ', LVL11)']); return; } }
-        let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
+        let c = skillCost(k, v); if(c == null && BB.SPL && BB.SPL.aliasOf && BB.SPL.aliasOf(k)) c = 0; // 2026-11-19 (TESTFIX6): a family's parameter with no row of its own (plunderRes) is priced in its skill
+        if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
         if(lm !== 1 && LHK.has(k) && (!effects.deliveryRes || effects.deliveryRes === 'lumber' || (BB.LUMBER_MAKER_KEYS || []).includes(k))){ c = r2(c * lm); S += c; parts.push(['skill', k, c, 'x' + lm + ' at home (BAL12)']); return; } // BAL12 (2026-11-02): On Ready Lumber at its lists' mean cost
         { const zm = BB.zeitDrawbackMult ? BB.zeitDrawbackMult(k, home) : 1; if(zm !== 1){ c = r2(c * zm); S += c; parts.push(['skill', k, c, 'x' + zm + ' at home (BAL11)']); return; } } // BAL11 (2026-11-02): Nightblind / Sunshy at their home share
         S += c; parts.push(['skill', k, c, '']);

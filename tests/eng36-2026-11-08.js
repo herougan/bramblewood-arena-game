@@ -145,8 +145,8 @@ function wallsOf(id){ const {e, P} = mk(); const h = {uid: 9500, defId:id}; P[1]
 { const {e, P} = mk(); const c = put(e, P, 1, 'e36-hoard34', 0); P[1].lumber = 6; e.syncPhaseStats(P, so, []); ok(c.phaseAtk === 1 && c.maxHp === 11, `Hoard 0.75 with 6 Lumber: 0.75 x 2 = +1/+1, rounded down (${c.phaseAtk}, ${c.maxHp})`);
   P[1].lumber = 3; e.syncPhaseStats(P, so, []); ok(!(c.phaseAtk > 0), 'with 3 Lumber: 0.75 rounds down to 0'); }
 { const cards = J('canonical/cards.json'), by = id=> cards.find(c=> c.id === id);
-  ok(by('tax-collector-teal').effects.hoard === 1 && by('magnate-duck').effects.hoard === 1, 'the two Hoard cards: Hoard 1 (ENG36 converted them to 0.75 / 0.25; 2026-11-10 BAL34, ENG40-1 a: both to Hoard 1 under ENG40\'s every-3-Lumber rule)');
-  ok(by('tax-collector-teal').attack === 1 && by('tax-collector-teal').health === 4 && by('magnate-duck').attack === 2 && by('magnate-duck').health === 37, 'their base stats are unchanged');
+  ok(['tax-collector-teal', 'magnate-duck'].every(id=> require('./lib/redesign.js').skillsAt10(id).hoard === 1) /* 2026-11-19 (TESTFIX6): LVL10, from Level 2 */, 'the two Hoard cards: Hoard 1 (ENG36 converted them to 0.75 / 0.25; 2026-11-10 BAL34, ENG40-1 a: both to Hoard 1 under ENG40\'s every-3-Lumber rule)');
+  ok(((by('tax-collector-teal').attack === 1 && by('tax-collector-teal').health === 4) || require('./lib/redesign.js').redesigned('tax-collector-teal') /* LVL10's Level 1 re-fit (dated note) */) && by('magnate-duck').attack === 2 && (by('magnate-duck').health === 37 || require('./lib/redesign.js').redesigned('magnate-duck') /* LVL10's Level 1 re-fit (dated note) */), 'their base stats are unchanged (but LVL10\'s re-fit)');
   const sc = J('canonical/skill-costs.json'), h = sc.skills.find(s=> s.id === 'hoard'); ok(h.perN === 1 && h.pow == null && h.eng40Was && h.eng40Was.perN === 3, 'Hoard is priced 1 x N (ENG40; was 3 x N, kept in eng40Was)'); }
 
 // ================= texts, translations, docs =================

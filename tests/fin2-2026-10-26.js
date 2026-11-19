@@ -53,7 +53,7 @@ ok(/function sbCheck\(A, D, S, N, M, F, SH, E\)/.test(src) && /sbCheck\(A, D, S,
   const bal9 = c=> /BAL9 refit/.test(c.creatorNote || '');
   ok((st(crab) === '1/3' || bal9(crab)) && crab.effects.shield === 3 && crab.effects.armor === 1 && crab.effects.tide, `c. Tide Pool Crab 1/2 -> 1/3, its skills kept (${st(crab)})`);
   ok(st(conch) === '2/2' || bal9(conch), `c. Conch Crawler 1/1 -> 2/2 (BAL9 since) (${st(conch)})`);
-  ok(st(arm) === '3/8', `c. Armadillo Guard kept at 3/8 (${st(arm)})`);
+  ok(st(arm) === '3/8' || (st(arm) === '2/8' && /\(CARDPOW2, [^)]*\): 3\/8 -> 2\/8/.test(arm.creatorNote || '')), `c. Armadillo Guard kept at 3/8 (${st(arm)}; 2/8 since CARDPOW2)`); // 2026-11-19 (TESTFIX6)
   // 2026-10-29 RELFIX3: a card out of play (on no map list, LISTFIX1's budgetHold 'unplaced') or waiting for the owner's re-fit ('pending') is
   // skipped and reported: its map term reads Map 0 until it is placed (armadillo-guard is on no list since THEME2 / THEME3)
   const HOLD = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold, held = [];
@@ -93,7 +93,8 @@ async function browser(){
       const t = id=> (read(id).triggers || []);
       keep.whenReady = t('scraper-of-skies').some(x=> x.whenReady === true); keep.once = t('nest').some(x=> x.once === true);
       keep.exileSelf = t('marsh-wisp').some(x=> x.do === 'exileSelf') && !t('marsh-wisp').some(x=> x.do === 'arrow');
-      keep.onReadyGold = read('elder-willow').deliveryEvery === 1 /* 2026-11-04 (TESTFIX1): ENG22 migrated On Ready Lumber to Delivery {X} (deliveryEvery) */; keep.scar = read('magma-titan').scar === 2; keep.devour = !!read('hollow-belly-rat').devour;
+      // 2026-11-19 (TESTFIX6): the sample cards moved on: ECONSK1 made Elder Willow's Delivery every round Forestry 1, SKAUD1 merged Magma Titan's lasting Exploit (Scar) into Exploit 3, the redesign took Hollow-belly Rat's Devour (Pit Glutton keeps one)
+      keep.forestry = read('elder-willow').forestry === 1; keep.exploit = read('magma-titan').exploit === 3; keep.devour = !!read('pit-glutton').devour;
       return {n: Object.keys(CARD_DEFS_BASELINE).length, opened, thrown, keep}; })()`);
     ok(!rt.thrown.length && rt.opened === rt.n, `B b. the editor opens on all ${rt.n} cards (${rt.thrown.slice(0, 3).join(' | ')})`);
     Object.keys(rt.keep).forEach(k=> ok(rt.keep[k], `B b. a plain Save keeps ${k}`));

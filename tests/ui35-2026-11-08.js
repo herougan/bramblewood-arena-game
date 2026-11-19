@@ -28,10 +28,11 @@ const fn = (src, name)=>{ const m = src.match(new RegExp('function ' + name + '\
 // ================= 2. one list with pills =================
 { const f = fn(app, 'ui19McSkillsHTML');
   ok(!/hd\('main'/.test(f) && !/hd\('rec'/.test(f) && !/hd\('counters'/.test(f) && /hd\('other', flaggedOther\.length\)/.test(f), 'no Main / Recommended / Counters headings; Other keeps its own');
-  ok(/\$\{flaggedMain\.map\(li\)\.join\(''\)\}\$\{ctrTiles\}\$\{kwMissing\}\$\{suggTiles\}\$\{recs\.map\(rli\)\.join\(''\)\}\$\{pickTiles\}\$\{cxTiles\}\$\{hd\('other'/.test(f), 'one <ul>: Main, Counters, keyword, Sugg. Intro, recommendations, picks, then Other');
+  // 2026-11-19 (TESTFIX6): UX8 lists a skill no carrier has yet at its level last (r.late); UX7 adds the focus-add tiles after Main
+  ok(/\$\{flaggedMain\.filter\(r=> !r\.late\)\.map\(li\)\.join\(''\)\}\$\{addTiles\}\$\{ctrTiles\}\$\{kwMissing\}\$\{suggTiles\}\$\{recs\.map\(rli\)\.join\(''\)\}\$\{pickTiles\}\$\{cxTiles\}\$\{hd\('other'/.test(f), 'one <ul>: Main, Counters, keyword, Sugg. Intro, recommendations, picks, then Other');
   ok(/r\.outside \? '' : pill\('main', 'ui\.ui35-pill-main'/.test(f), 'a Main tile wears the Main pill (Other tiles do not)');
   ok((f.match(/sugPill\(/g) || []).length >= 3, 'recommendation, keyword and pick tiles wear the Suggested pill');
-  ok(/class="ui35-newn/.test(f) && /ui35-new-count/.test(f) && /flaggedMain\.filter\(r=> r\.isNew && /.test(f), '"N new" beside the heading counts the NEW! tiles of the main list');
+  ok(/class="ui35-newn/.test(f) && /ui35-new-count/.test(f) && /const newN = flaggedMain\.filter\(r=> r\.isFocus\)\.length \+ focusAdd\.length/.test(app), '"N new" beside the heading counts the red focus chips (UX7, owner 11-16 20:24; was every NEW! tile)'); // 2026-11-19 (TESTFIX6)
   ok(/isNew: isMain && mt\.met/.test(f), 'NEW! only on the main list');
   ok(/ui35-pill is-counter/.test(fn(app, 'ui34CounterTileHTML')) && /ui34-cn/.test(fn(app, 'ui34CounterTileHTML')), 'a counter tile wears the Counter pill and keeps its count');
   // rendered
@@ -39,7 +40,7 @@ const fn = (src, name)=>{ const m = src.match(new RegExp('function ' + name + '\
   const defs = {a: {id: 'a', effects: {bloomCopy: true, armor: 1}}, b: {id: 'b', effects: {armor: 1}}, o: {id: 'o', effects: {flying: true}}};
   const TXS = {'ui.ui19-mc-new': 'NEW!', 'ui.ui35-pill-main': 'Main', 'ui.ui35-new-count': '{n} new'};
   const c = {ui18CardSkillKeys: d=> Object.keys(d.effects).map(k=> ({key: k, lvl: 0})), skillDefOf: k=> S[k], skillText: (p, v)=> p.desc(v), SKILL_ICON: {}, escapeHtml: s=> String(s), escapeAttr: s=> String(s),
-    TX: (k, v)=> (TXS[k] || k).replace(/\{(\w+)\}/g, (m, n)=> v && v[n] != null ? v[n] : m), mapNumberOf: id=> ({m0: 0, m1: 1})[id], mainConquestMaps: ()=> [{id: 'm0'}, {id: 'm1'}],
+    TX: (k, v)=> (TXS[k] || k).replace(/\{(\w+)\}/g, (m, n)=> v && v[n] != null ? v[n] : m), mapNumberOf: id=> ({m0: 0, m1: 1})[id], mapFocusSet: ()=> new Set(['bloomCopy']) /* 2026-11-19 (TESTFIX6): UX7 counts the focus skills */, mainConquestMaps: ()=> [{id: 'm0'}, {id: 'm1'}],
     mapPoolSections: id=> [{key: 'cards', ids: id === 'm0' ? ['b'] : []}, {key: 'sub:s', ids: id === 'm0' ? ['a'] : []}]};
   vm.createContext(c); vm.runInContext(['ui19McSkillRows', 'ui19McEarlierSkillKeys', 'ui19McSkillText', 'ui19McSkillsHTML'].map(n=> fn(app, n)).join('\n') + '\nthis.api = {ui19McSkillsHTML};', c);
   const html = c.api.ui19McSkillsHTML('m1', ['a', 'b'], defs, ()=> true, 'm1', ['o']);
@@ -111,12 +112,12 @@ ok(fs.existsSync(path.join(ROOT, 'tests/e2e/ui35_2026_11_08.py')) && ['mapcards-
 
 // ================= 8. owner 10:52 add-ons: minor skills, New use, Codex picks, display renames =================
 { const minor = J('canonical/minor-skills.json').skills; ok(['flying', 'diurnal', 'tide', 'salt'].every(k=> minor.includes(k)), 'canonical/minor-skills.json lists Flying, Diurnal, Tide, Salt');
-  ok(/__MINOR_SKILLS__/.test(app) && /__MINOR_SKILLS__/.test(rd('assemble_arena.py')) && /r\.isNew && !\(typeof UI35_MINOR_SKILLS/.test(app), 'the N new count skips minor skills (their tiles may still say NEW!)');
+  ok(/__MINOR_SKILLS__/.test(app) && /__MINOR_SKILLS__/.test(rd('assemble_arena.py')) && /const newN = flaggedMain\.filter\(r=> r\.isFocus\)/.test(app) && /ui19-new\$\{r\.isFocus \? '' : ' is-minor'\}/.test(app), 'the N new count skips minor skills (their tiles may still say NEW!, marked is-minor; UX7 counts focus skills only)'); // 2026-11-19 (TESTFIX6)
   const cx = J('canonical/codex-skill-suggestions.json').maps, ids = Object.keys(cx);
   ok(ids.length === 21 && cx.m1.sig.join() === 'flying,diurnal,swarm' && cx.m4.sig.includes('sonar') && cx.mk.unmatched.some(u=> u.name === 'Pressure'), 'canonical/codex-skill-suggestions.json: 21 maps, draft names matched to skill keys, new names kept text-only');
   ok(ids.every(m=> [...cx[m].sig, ...cx[m].side].every(k=> new RegExp("'" + k + "'").test(app))), 'every matched Codex skill is an existing skill key');
   ok(/pill\('cx' \+ cxo\.map\.get\(k\)/.test(app) && /ui35-codex-tile/.test(app) && /\.ui35-pill\.is-cxsig/.test(tpl) && /\.ui35-pill\.is-newuse/.test(tpl), 'Codex sig. / Codex side pills, a tile for a pick no card shows, a purple New use pill');
-  ok(/isNewUse = isMain && mt\.met && early\.has\(r\.key\)/.test(app) && /keys\.uses/.test(app) && /r\.isNew \? ` <i class="ui19-new"[^\n]*: r\.isNewUse \? pill\('newuse'/.test(app), 'New use: a known skill family with a parameter no earlier main map used (not counted)');
+  ok(/isNewUse = isMain && mt\.met && early\.has\(r\.key\)/.test(app) && /keys\.uses/.test(app) && /r\.isNew \? ` <i class="ui19-new[^\n]*: r\.isNewUse \? pill\('newuse'/ /* 2026-11-19 (TESTFIX6): UX7's is-minor class */.test(app), 'New use: a known skill family with a parameter no earlier main map used (not counted)');
   ok(/label:'Heal'/.test(app) && /label:'Regenerate'/.test(app) && /label:'Echolocate'|label:'Echolocation'/.test(app) && !/label:'Sonar'/.test(app) && /key:'sonar'/.test(app) && /key:'regen'/.test(app) && /key:'healing'/.test(app), 'display renames: Echolocation, Regenerate, Heal; internal keys unchanged');
   CODES.forEach(c=>{ ok(packs[c]['Heal'] && !packs[c]['Healing'] && packs[c]['Regenerate {n}: heals {n} Health at the start of every round.'], `lang/${c}.json carries the renamed rows`); });
 }

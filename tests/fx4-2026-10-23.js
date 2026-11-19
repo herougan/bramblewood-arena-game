@@ -97,7 +97,8 @@ const fnSrc = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0)
     ok(!p.shown['honey-bee'] && !p.shown['silver-minnow'], `EB-1. ${label}, ${pick}: the weak cards are in the hidden part`);
     ok(p.all['river-carp'] && p.all['burrow-rabbit'], `EB-1. ${label}, ${pick}: the sturdier cards stay`); }
   const C = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), sc = C.find(c=> c.id === 'sparrow-chick');
-  ok(JSON.stringify(sc.source) === JSON.stringify({kind:'pack', tier:1, map:'mc'}), 'EB-1. the Sparrow Chick is a Gannet Cliffs pack card');
+  // 2026-11-19 (TESTFIX6): DATAFIX (11-18) made it 11-1's reward (a card new on its map); EB-1's point is that it is no starter
+  ok(JSON.stringify(sc.source) === JSON.stringify({kind:'pack', tier:1, map:'mc'}) || JSON.stringify(sc.source) === JSON.stringify({kind:'map', id:'m10', node:'11-1'}), 'EB-1. the Sparrow Chick is a Gannet Cliffs pack card (11-1\'s reward since DATAFIX), not a starter');
   // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05); THEME2 leaves the Sparrow Chick off Gannet Cliffs' list (on no list: not obtainable yet)
   const t2mc = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'theme2-proposal-2026-10-28.json'), 'utf8')).maps.find(m=> m.key === 'mc');
   ok(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps.mc.cards.includes('sparrow-chick') === t2mc.proposed.includes('sparrow-chick'), 'EB-1. its place on Gannet Cliffs\' list follows THEME2');

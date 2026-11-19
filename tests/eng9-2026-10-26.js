@@ -188,7 +188,7 @@ const hits = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid);
   ['ui.eng9-undead', 'ui.eng9-revive', 'ui.eng9-poison-barbs', 'ui.eng9-stockpile', 'ui.eng9-fork', 'ui.eng9-tangled-name', 'ui.eng9-tangle'].forEach(k=> ok(tx.includes('"' + k + '"'), `text ${k}`));
   const langs = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
   const en = /"ui\.eng9-[a-z0-9-]+": "((?:[^"\\]|\\.)*)"/g; const texts = []; let m; while((m = en.exec(tx))) texts.push(JSON.parse('"' + m[1] + '"'));
-  langs.forEach(code=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8')); const miss = texts.filter(t=> !(t in pack)); ok(!miss.length, `${code}: every ENG9 text translated (${miss.length} missing: ${miss.slice(0, 2).join(' | ')})`); });
+  langs.forEach(code=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8')); const miss = texts.filter(t=> !(t in pack) && !(t.replace(/^[^\p{L}\p{N}{]+/u, '') in pack)); /* 2026-11-19 (TESTFIX6): rows are keyed with the leading emoji peeled (i18n_add.py, as the page translator) */ ok(!miss.length, `${code}: every ENG9 text translated (${miss.length} missing: ${miss.slice(0, 2).join(' | ')})`); });
 }
 console.log(`eng9-2026-10-26: ${n - fail}/${n} checks passed`);
 process.exit(fail ? 1 : 0);

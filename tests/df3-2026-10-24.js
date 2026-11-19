@@ -73,10 +73,11 @@ const mark = (s, pid)=> H.boardCards(s.players[pid]).map(c=> c.boon || null);
   ok(mark(short, 2).every(x=> !x) && short.engine.boonState(short.players).on === false, '2. Blind Fury is off when under half the deck is Cave');
   ok(scene({seed: 3, rules: {dark: 'dark', boon: 'blindFury'}, deckB: {'cave-cricket': 10}, B: [{id: 'cave-cricket'}]}).engine.boonState === undefined ? false : true, '2. the engine reports boonState'); }
 // 2026-11-06 TESTFIX2: Ant Warrior lost Swarm (it carries Rage since the owner's folded edit, CONTENT12); Soldier Ant (Swarm Ants) stands in
+// 2026-11-19 (TESTFIX6): FOLD7 took Soldier Ant's Swarm (the owner's 11-18 edit); Tunnel Ant (Swarm Ants) stands in
 // Hive Chorus: Swarm counts each ally twice
-{ const base = {deckB: {'ant-scout': 6, 'soldier-ant': 6}, B: [{id: 'soldier-ant', side: 'center'}, {id: 'ant-scout', side: 'left'}, {id: 'ant-scout', side: 'right'}]};
+{ const base = {deckB: {'ant-scout': 6, 'tunnel-ant': 6}, B: [{id: 'tunnel-ant', side: 'center'}, {id: 'ant-scout', side: 'left'}, {id: 'ant-scout', side: 'right'}]};
   const on = scene(Object.assign({}, base, {rules: {boon: 'hiveChorus'}, rounds: 0})), off = scene(Object.assign({}, base, {rules: {}, rounds: 0}));
-  const w1 = H.boardCards(on.players[2]).find(c=> /soldier-ant/.test(c.defId)), w0 = H.boardCards(off.players[2]).find(c=> /soldier-ant/.test(c.defId));
+  const w1 = H.boardCards(on.players[2]).find(c=> /tunnel-ant/.test(c.defId)), w0 = H.boardCards(off.players[2]).find(c=> /tunnel-ant/.test(c.defId));
   const s1 = on.engine.swarmBonusOf(on.players, w1), s0 = off.engine.swarmBonusOf(off.players, w0);
   ok(s0 > 0 && s1 === 2 * s0, `2. Hive Chorus: Swarm counts each ally twice (${s0} -> ${s1})`); }
 // Rising Tide: Quick while the tide is in (River Rapids: always Flood)

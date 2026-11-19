@@ -24,7 +24,7 @@ const size = d => Object.values(d).reduce((t, k) => t + k, 0);
 const keyOf = d => Object.keys(d).sort().map(id => id + d[id]).join(',');
 const unlockOf = m => { const no = G.mapNumberOf(m.id); if (!m.sub) return no; try { const u = G.mapUnlockNumberOf(m.id); return u == null ? no : u; } catch (e) { return no; } };
 // the maps: main maps 0-20 and their side maps (not the tutorial, the endless dungeons, the tower or reserved maps)
-function maps() { return G.CONQUEST_MAPS.filter(m => !m.reserved && !m.tower && !m.endless && !OUT_OF_SCOPE.has(m.id) && G.mapNumberOf(m.id) != null && G.mapNumberOf(m.id) <= 20 && (m.nodes || []).some(n => n.deck && Object.keys(n.deck).length)); }
+function maps() { return G.CONQUEST_MAPS.filter(m => !m.reserved && !m.tower && !m.endless && !OUT_OF_SCOPE.has(m.id) && G.mapNumberOf(m.id) != null && G.mapNumberOf(m.id) <= 20 && unlockOf(m) <= 20 /* 2026-11-19 (TESTFIX6): RAIDGATE's mjd codes as Map 10 but opens at Map 21 */ && (m.nodes || []).some(n => n.deck && Object.keys(n.deck).length)); }
 function fightsOf(m) { return (m.nodes || []).filter(n => n.deck && Object.keys(n.deck).length && !/tutorial|raid/.test(n.kind || 'skirmish')); }
 const isBoss = (n, all) => /boss|dungeon/.test(n.kind || '') || (n === all[all.length - 1] && (() => { try { const b = G.skirmishTargetBand(G.CONQUEST_MAPS.find(x => (x.nodes || []).includes(n)).id, n); return b && b.t <= 0.5; } catch (e) { return false; } })());
 let poolsCache = null, oldCache = null; // each fight's deck before SKIR1 (the build plan's `old`)

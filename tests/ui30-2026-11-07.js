@@ -70,7 +70,7 @@ ok(/const MAP_INTRO_SUGG = __MAP_INTRO_SUGG__;/.test(app), '#16 the placeholder'
   ok(new Set(keys).size === keys.length, '#16 no skill is suggested twice along the road');
   const kw = JSON.parse(read('canonical/map-keywords.json')).keywords; ok(Object.keys(SUG).every(m=> !SUG[m].some(e=> e.skill === kw[m])), '#16 no pick repeats the map\'s own intro keyword'); }
 { const hs = fn(app, 'ui19McSkillsHTML');
-  ok(/typeof ui30McSugg === 'function'/.test(hs) && /typeof ui30SuggTilesHTML === 'function'/.test(hs) && (hs.match(/\$\{sp\(/g) || []).length === 3, '#16 the pill on skill, keyword and recommendation tiles, and the missing-pick tiles (guarded)');
+  ok(/typeof ui30McSugg === 'function'/.test(hs) && /typeof ui30SuggTilesHTML === 'function'/.test(hs) && (hs.match(/\$\{sp\(/g) || []).length >= 3 /* 2026-11-19 (TESTFIX6): UX7's focus-add tiles carry the pill too */, '#16 the pill on skill, keyword and recommendation tiles, and the missing-pick tiles (guarded)');
   const H = new Function('MAP_INTRO_SUGG', 'mpIsSub', 'skillDefOf', 'TX', 'escapeAttr', 'escapeHtml', 'ui19McSkillText', 'SKILL_ICON', fn(app, 'ui30McSugg') + fn(app, 'ui30SuggPillHTML') + fn(app, 'ui30SuggTilesHTML') + 'return {ui30McSugg, ui30SuggPillHTML, ui30SuggTilesHTML};')(
     {m1: [{skill: 'guardian', why: 'w1'}, {skill: 'gone', why: 'x'}], m4: [{skill: 'sonar', why: 'w2'}]}, id=> id === 'mo', k=> k === 'gone' ? null : {label: k.toUpperCase()}, k=> k, s=> String(s), s=> String(s), ()=> 'text', {sonar: '📡'});
   const s1 = H.ui30McSugg('m1'); ok(s1.size === 1 && s1.get('guardian') === 'w1', '#16 a map\'s picks (a skill with no row is dropped)');

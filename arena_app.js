@@ -2148,7 +2148,7 @@ PASSIVE_DEFS.push(
   // SKFIN (2026-11-19, owner 11-18 23:55: "What is the difference between Delivery and Delivery Resource -> Fuse them. Delivery is sufficient. The
   // {Resource} is a parameter."): one Delivery row, its resource picked beside its number (saved as before: delivery N + deliveryRes unless Lumber)
   {key:'delivery', category:'passive', label:TX('ui.e22-delivery-name'), kind:'selectNumber', numberWhen:E22_RES, numberTitle:'Delivery N: how many', selectOptions:()=> E22_RES.map(r=> ({value:r, label:e22ResName(r)})),
-    desc:(v, n, e)=> TX('ui.e22-delivery', Array.isArray(v) ? {n: numOr(v[1], 1), res: e22ResName(e22ResOf({deliveryRes: v[0]}))} : {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex'),
+    desc:(v, n, e)=> TX('ui.e22-delivery', {n: numOr(Array.isArray(v) ? v[1] : v, 1), res: e22ResName(e22ResOf(Array.isArray(v) ? {deliveryRes: v[0]} : e))}), codexNote:TX('ui.e22-delivery-codex'),
     get:e=> e.delivery ? [e22ResOf(e), numOr(e.delivery, 1)] : undefined, apply:(e, vals)=>{ const r = e22ResOf({deliveryRes: Array.isArray(vals) ? vals[0] : 'lumber'}), n = Math.round(Number(Array.isArray(vals) ? vals[1] : vals)) || 0; if(n > 0){ e.delivery = n; if(r !== 'lumber') e.deliveryRes = r; } }},
   {key:'deliveryEvery', category:'passive', label:TX('ui.e22-delivery-every-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery-every', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
   {key:'deliveryRes', category:'passive', hidden:true /* SKFIN: on the Delivery row */, label:TX('ui.e22-delivery-res-name'), kind:'select', selectOptions:()=> E22_RES.map(r=> ({value:r, label:e22ResName(r)})), desc:v=> e22ResName(e22ResOf({deliveryRes:v}))});
@@ -12005,7 +12005,7 @@ const SKIRMISH_FIRST_PACK_CARDS = {
   'md:18-3': 'roadrunner-courier',
   'md:18-4': 'armadillo-guard', // 2026-11-12 (SKIR3): was sandfish, off the map's 11-12 list (GD-5: the nearest card of the list)
   'm3:19-1': 'honey-badger-fury', // 2026-11-12 (SKIR3): was cinder-stoker, off the map's 11-12 list (GD-5: the nearest card of the list)
-  'm11:20-3': 'fumarole-ibex', // 2026-11-12 (SKIR3): was ashbone-ghoul, off the map's 11-12 list (GD-5: the nearest card of the list)
+  // 2026-11-19 (TESTFIX6): m11:20-3 left: DATAFIX made Ash Moth its exclusive reward (GD-5: one card a skirmish)
   'm11:20-4': 'vampire-roost', // 2026-11-12 (SKIR3): was cinder-skeleton, off the map's 11-12 list (GD-5: the nearest card of the list)
   'm21:21-2': 'soft-shell-crab-newmoult', // 2026-11-18 (DATAFIX, BAL9 JJ12): was glacier-yak (first listed on m6 (Map 17))
   'm21:21-3': 'snow-leopard',
