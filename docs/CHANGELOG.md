@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 FOCUS2
+- Map focus: Map 5 (Gatorback Swamp) is Forestry, Leech, Venomous; Map 6 (Sable Swampmire) is Bleed, Parasite, Constrict (owner 00:39). Suggested picks for the owner: Bog Shrew, Vampire Bat (Map 5, Leech); Bog Leech, Bloodworm (Map 6, Bleed).
+- New skills: Harden N and Embolden N: when played and each round, an ally beside it is Sturdy (takes half) / Mighty (deals double) for N rounds. Enfeeble N now makes the target Feeble for N rounds (was N tokens, one used a hit). None stacks past x2 / half with the passive. Prices: Harden 2.11, Embolden 3.59, Enfeeble 2.5 (pow 0.2).
+- Carriers (skills only, under budget): Ladybird Guard and Sworn Shieldbearer (Harden), Meerkat Sentry (Embolden), Booming Bittern (Enfeeble), Glacier Wolf Pack (Embrittle 1). Fights with these five cards (and Tsetse Drainer's Enfeeble) change. Plan: docs/design/focus2-2026-11-20.md. Test `focus2-2026-11-20`; ENG50's Enfeeble pins read rounds.
 ## 2026-11-20 UIQ1
 - Card hover panel: the "?" pip is gone from the card art; the "?" line in the description now reads "Learns a skill at Level N" (skill stays hidden) or "Not unlocked yet". The pip stays on card tiles elsewhere (Codex, deck, hand, board). Test `uiq1-2026-11-20`.
 ## 2026-11-20 (package UIQ3: card editor map chips)

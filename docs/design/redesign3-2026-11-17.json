@@ -390,18 +390,18 @@
      "ii": null
     },
     {
-     "key": "bleed",
-     "name": "Bleed",
+     "key": "sap",
+     "name": "Leech",
      "carriers": [
-      "mosquito-cloud",
-      "alley-cat",
-      "swamp-alligator"
+      "bog-shrew",
+      "vampire-bat"
      ],
      "earlier": [],
      "isNew": true,
      "felt": true,
      "built": true,
-     "ii": 1
+     "ii": 1,
+     "focus2": "2026-11-20 (FOCUS2, owner 00:39 \"leech in 5\"): moved from Map 6; carriers are the Suggested picks (Lamprey and Barrow Leech stay on Map 6)"
     },
     {
      "key": "poison",
@@ -428,17 +428,19 @@
    "name": "Sable Swampmire",
    "skills": [
     {
-     "key": "sap",
-     "name": "Leech",
+     "key": "bleed",
+     "name": "Bleed",
      "carriers": [
-      "lamprey",
-      "barrow-leech-bat"
+      "alligator-gar",
+      "mosquito-cloud",
+      "crocodile-ambusher"
      ],
      "earlier": [],
      "isNew": true,
      "felt": true,
      "built": true,
-     "ii": 1
+     "ii": 1,
+     "focus2": "2026-11-20 (FOCUS2, owner 00:39 \"bleed in 6\"): moved from Map 5; carriers already on the Map 6 list"
     },
     {
      "key": "parasite",

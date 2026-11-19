@@ -10058,7 +10058,8 @@
       "Frost"
     ],
     "effects": {
-      "bleed": 2
+      "bleed": 2,
+      "brittle": 1
     },
     "flavor": "Every bite is a promise the cold will finish collecting on.",
     "dmgType": "physical",
@@ -24351,7 +24352,8 @@
         "gives": {
           "armor": 1
         }
-      }
+      },
+      "harden": 1
     },
     "wait": 1,
     "cost": 1,
@@ -27210,7 +27212,8 @@
     ],
     "animal": "meerkat",
     "effects": {
-      "pack": 1
+      "pack": 1,
+      "embolden": 1
     },
     "rarity": "common",
     "source": {
@@ -38451,7 +38454,8 @@
       "Field"
     ],
     "effects": {
-      "guardian": true
+      "guardian": true,
+      "harden": 1
     },
     "flavor": "Seven spots, one bad taste, and a promise that you will only bite once.",
     "dmgType": "physical",
@@ -40025,7 +40029,8 @@
       "Bird"
     ],
     "effects": {
-      "scare": 1
+      "scare": 1,
+      "enfeeble": 1
     },
     "flavor": "Freezes among the reeds by day. At night it booms like a drum underwater.",
     "dmgType": "physical",

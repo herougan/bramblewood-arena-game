@@ -117,6 +117,8 @@
   "exhaust": "none",
   "exploit": "none",
   "enfeeble": "none",
+  "harden": "none",
+  "embolden": "none",
   "expose": "none",
   "fastForward": "none",
   "feeble": "none",
