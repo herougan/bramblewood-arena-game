@@ -1,0 +1,152 @@
+{
+ "map": "m5",
+ "generated": "2026-11-19T12:53:58.905Z",
+ "decks": [
+  {
+   "id": "14-BPRO-2",
+   "map": "m5",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "badger-lumberjack": 4,
+     "bramble-sprout": 4,
+     "meerkat-sentry": 3,
+     "river-mink": 2,
+     "spitting-cobra": 3,
+     "cunning-vixen": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.295,
+     "ref": 0.725,
+     "gap": 0
+    }
+   },
+   "pick": {
+    "deck": {
+     "badger-lumberjack": 4,
+     "meerkat-sentry": 4,
+     "river-mink": 2,
+     "spitting-cobra": 3,
+     "cunning-vixen": 4,
+     "hollow-belly-rat": 3
+    },
+    "val": {
+     "v": 0.31,
+     "ref": 0.825,
+     "gap": 0.01
+    },
+    "leaders": [
+     "spitting-cobra"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.35,
+     "ref": 0.6,
+     "gap": 0.08
+    },
+    {
+     "move": "bramble-sprout x4 -> bramblewood-macaque",
+     "v": 0.308,
+     "ref": 0.65,
+     "gap": 0.038,
+     "tried": 24
+    },
+    {
+     "move": "bramblewood-macaque x3 -> hollow-belly-rat",
+     "v": 0.208,
+     "ref": 0.725,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 569,
+   "sec": 107
+  },
+  {
+   "id": "14-BPRO-3",
+   "map": "m5",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "badger-lumberjack": 3,
+     "dust-hyena": 4,
+     "hoopoe-herald": 4,
+     "plains-zebra": 4,
+     "meerkat-sentry": 2,
+     "grizzly-vanguard": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.345,
+     "ref": 0.85,
+     "gap": 0.045
+    }
+   },
+   "pick": {
+    "deck": {
+     "badger-lumberjack": 1,
+     "dust-hyena": 4,
+     "hoopoe-herald": 4,
+     "plains-zebra": 4,
+     "meerkat-sentry": 4,
+     "grizzly-vanguard": 3
+    },
+    "val": {
+     "v": 0.33,
+     "ref": 0.825,
+     "gap": 0.03
+    },
+    "leaders": [
+     "badger-lumberjack"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.317,
+     "ref": 0.8,
+     "gap": 0.087
+    },
+    {
+     "move": "badger-lumberjack -2 -> meerkat-sentry",
+     "v": 0.267,
+     "ref": 0.775,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 295,
+   "sec": 87
+  }
+ ],
+ "drop": []
+}

@@ -1,0 +1,21 @@
+{
+ "about": "SKWK4 plan (hand-picked from the SKWK3 after-read docs/balance/skwk3/pro-ease-skwk3-3-after.json, marks by docs/balance/skwk2/marks_2026_11_18.js): per map the decks whose change can bring the map into all three marks (N-SK mean vs the ladder 15-30%, Map reference <= 85% vs each strong deck, N-WK Map reference >= 50%). The SK decks furthest off the band move; a deck at the 85% line is left. Not chased (wait on SKWK2-1 b/c): 11-A, 13, 18-A, 19, 20, 20-A.",
+ "marks": "docs/balance/skwk3/pro-ease-skwk3-3-after.json",
+ "maps": {
+  "mi": { "tune": ["17-A-BPRO-2", "17-A-BPRO-1", "17-A-BPRO-4", "17-A-BPRO-3"], "drop": [] },
+  "md": { "tune": ["18-BPRO-2", "18-BPRO-1"], "drop": [] },
+  "m10": { "tune": ["11-BPRO-4", "11-BPRO-3"], "drop": [] },
+  "m5": { "tune": ["14-BPRO-2", "14-BPRO-3"], "drop": [] },
+  "mt": { "tune": ["16-BPRO-2"], "drop": [] },
+  "mx": { "tune": ["20-B-BPRO-2"], "drop": [] },
+  "mf": { "tune": ["1-BPRO-2", "1-BPRO-3", "1-WPRO-2", "1-WPRO-1"], "drop": [] },
+  "mc": { "tune": ["3-BPRO-2", "3-BPRO-1"], "drop": [] },
+  "mq": { "tune": ["1-A-BPRO-2", "1-A-BPRO-1"], "drop": [] },
+  "mb": { "tune": ["2-BPRO-4", "2-BPRO-3"], "drop": [] },
+  "mg": { "tune": ["2-B-BPRO-1", "2-B-BPRO-2", "2-B-WPRO-1"], "drop": [] },
+  "mw": { "tune": ["5-BPRO-2", "5-BPRO-1"], "drop": [] },
+  "mk": { "tune": ["9-BPRO-1"], "drop": [] },
+  "ms": { "tune": ["5-A-BPRO-3", "5-A-BPRO-4"], "drop": [] },
+  "m1": { "tune": ["0-BPRO-1", "0-BPRO-2"], "drop": [] }
+ }
+}

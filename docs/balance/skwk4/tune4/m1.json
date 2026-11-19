@@ -1,0 +1,135 @@
+{
+ "map": "m1",
+ "generated": "2026-11-19T14:20:45.971Z",
+ "decks": [
+  {
+   "id": "0-BPRO-2",
+   "map": "m1",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.25,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.72,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "duck-paddler": 3,
+     "farm-dog": 4,
+     "pond-trout": 3,
+     "soldier-ant": 4,
+     "thorn-shrike": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.12,
+     "ref": 0.45,
+     "gap": 0.03
+    }
+   },
+   "pick": {
+    "deck": {
+     "ant-scout": 4,
+     "duck-paddler": 3,
+     "farm-dog": 4,
+     "pond-trout": 3,
+     "soldier-ant": 4,
+     "thorn-shrike": 2
+    },
+    "val": {
+     "v": 0.12,
+     "ref": 0.45,
+     "gap": 0.03
+    },
+    "leaders": []
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.167,
+     "ref": 0.4,
+     "gap": 0.013
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 70
+    }
+   ],
+   "readings": 755,
+   "sec": 76
+  },
+  {
+   "id": "0-BPRO-1",
+   "map": "m1",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.25,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.72,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "bee-sentry": 3,
+     "cottontail": 4,
+     "farm-dog": 1,
+     "house-cat": 4,
+     "soldier-ant": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.08,
+     "ref": 0.75,
+     "gap": 0.07
+    }
+   },
+   "pick": {
+    "deck": {
+     "ant-scout": 4,
+     "bee-sentry": 3,
+     "cottontail": 4,
+     "farm-dog": 1,
+     "house-cat": 4,
+     "soldier-ant": 4
+    },
+    "val": {
+     "v": 0.08,
+     "ref": 0.75,
+     "gap": 0.07
+    },
+    "leaders": []
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.108,
+     "ref": 0.55,
+     "gap": 0.072
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 59
+    }
+   ],
+   "readings": 645,
+   "sec": 59
+  }
+ ],
+ "drop": []
+}

@@ -15,6 +15,10 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 ## 2026-11-19 (package DEC19: the easy decisions settled, owner 22:18)
 - Players see: on a slow machine, Auto-lower effects can now step down twice in a session (High -> Medium -> Low; was once), decision PERF2-1 b (`FX_AUTO_STEPS` in `arena_app.js`).
 - Decisions: 131 of 143 open decisions settled (48 superseded, 76 default, 7 another option); 12 left for the owner. Builds still to run: `docs/design/dec19-builds-2026-11-19.json`. `docs/evaluation-protocol.md` records the B5 / B6 readings (CHK1-1 a, CHK1-2 a).
+## 2026-11-19 (package SKWK4: Maps 0-20 N-SK / N-WK decks re-tuned against SKWK3's rebuilt ladder)
+- Players see: new enemy decks in the N-SK practice fight of Maps 0, 1, 1-A, 2, 2-B, 3, 5, 5-A, 9, 11, 16 and 17-A and the N-WK fight of Maps 1 and 2-B (26 decks).
+- Protocol marks (pro_ease, 40 games a pairing, 36 maps): all three 15 -> 26; N-SK vs the ladder 15-30% 17 -> 27, N-SK not TOO WEAK 29 -> 30, N-WK not TOO STRONG 34 -> 36. Still off: Map 0 (10%: the strongest searched list deck wins 5-10% against its ladder), 14 (32%), 18 (53%, no legal move lowers it), 20-B (35%: every pick crossed 85%); the six TOO WEAK maps wait on SKWK2-1 (b)/(c).
+- Under the hood: SKWK3's descent copied as `docs/balance/skwk4/skwk4_2026_11_19.js` (seed salt skwk4, `apply --skip`), 7 passes; after-read `docs/balance/skwk4/pro-ease-skwk4-after.json` (also `docs/balance/pro-ease-skwk4-after.json`: map + ref2 rows for every PRO / BPRO deck, for Admin's PRO marks and tests/pref).
 
 ## 2026-11-19 (package SKWK3: the reference ladder rebuilt on today's cards, Maps 10-20 N-SK decks re-tuned, SKWK2-1 a)
 - Players see: new enemy decks in the N-SK practice fight of Maps 11, 12, 14-17, 10-A and 20-B and the N-WK fight of 19-A (15 decks).

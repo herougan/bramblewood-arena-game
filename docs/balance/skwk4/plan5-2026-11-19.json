@@ -1,0 +1,6 @@
+{
+ "about": "SKWK4 pass 5 (tune5/): Map 5 reads 31-32% on the after-read but 21-31% on the tune's own seeds, so pass 4 saw nothing to move; aim ladder 15-21% (--sk-lo 0.15 --sk-hi 0.21 --sample 80 --steps 8)",
+ "maps": {
+  "mw": { "tune": ["5-BPRO-2", "5-BPRO-1"], "drop": [] }
+ }
+}

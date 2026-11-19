@@ -1,0 +1,12 @@
+{
+ "about": "SKWK4 pass 3 (tune3/, after pass 1 applied): the decks pass 1 / 2 left (no move found, or the pick crossed the 85% line on validation), wider screen and the pass-2 aim: --sample 60 --steps 8 --sk-hi 0.30 --ref-max 0.72 (Map 18: --sample 150)",
+ "maps": {
+  "m1": { "tune": ["0-BPRO-1", "0-BPRO-2"], "drop": [] },
+  "mf": { "tune": ["1-BPRO-3"], "drop": [] },
+  "mq": { "tune": ["1-A-BPRO-2"], "drop": [] },
+  "mg": { "tune": ["2-B-BPRO-2"], "drop": [] },
+  "mx": { "tune": ["20-B-BPRO-2"], "drop": [] },
+  "m10": { "tune": ["11-BPRO-4"], "drop": [] },
+  "md": { "tune": ["18-BPRO-2", "18-BPRO-1"], "drop": [] }
+ }
+}

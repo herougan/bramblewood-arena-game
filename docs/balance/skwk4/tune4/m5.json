@@ -1,0 +1,80 @@
+{
+ "map": "m5",
+ "generated": "2026-11-19T14:31:19.095Z",
+ "decks": [
+  {
+   "id": "14-BPRO-2",
+   "map": "m5",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.25,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.84,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "badger-lumberjack": 4,
+     "bramble-sprout": 4,
+     "meerkat-sentry": 3,
+     "river-mink": 2,
+     "spitting-cobra": 3,
+     "cunning-vixen": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.295,
+     "ref": 0.725,
+     "gap": 0
+    }
+   },
+   "pick": {
+    "deck": {
+     "badger-lumberjack": 4,
+     "bramble-sprout": 4,
+     "river-mink": 2,
+     "spitting-cobra": 3,
+     "cunning-vixen": 4,
+     "hollow-belly-rat": 3
+    },
+    "val": {
+     "v": 0.335,
+     "ref": 0.7,
+     "gap": 0.035
+    },
+    "leaders": [
+     "spitting-cobra"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.35,
+     "ref": 0.6,
+     "gap": 0.1
+    },
+    {
+     "move": "meerkat-sentry x3 -> hollow-belly-rat",
+     "v": 0.267,
+     "ref": 0.675,
+     "gap": 0.017,
+     "tried": 80
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 80
+    }
+   ],
+   "readings": 1578,
+   "sec": 240
+  }
+ ],
+ "drop": []
+}

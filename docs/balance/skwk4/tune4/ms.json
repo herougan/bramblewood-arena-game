@@ -1,0 +1,87 @@
+{
+ "map": "ms",
+ "generated": "2026-11-19T14:32:26.981Z",
+ "decks": [
+  {
+   "id": "5-A-BPRO-3",
+   "map": "ms",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.25,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.72,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "crocodile-ambusher": 4,
+     "matamata": 3,
+     "newt-doctor": 3,
+     "nutria-reedcutter": 4,
+     "peat-cutter-vole": 4,
+     "cottonmouth-matriarch": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.205,
+     "ref": 0.775,
+     "gap": 0
+    }
+   },
+   "pick": {
+    "deck": {
+     "crocodile-ambusher": 4,
+     "matamata": 3,
+     "newt-doctor": 3,
+     "peat-cutter-vole": 4,
+     "old-snapjaw": 2,
+     "mudpuppy": 4
+    },
+    "val": {
+     "v": 0.2,
+     "ref": 0.8,
+     "gap": 0
+    },
+    "leaders": [
+     "old-snapjaw"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.275,
+     "ref": 0.85,
+     "gap": 0.285
+    },
+    {
+     "move": "cottonmouth-matriarch -2 -> old-snapjaw",
+     "v": 0.275,
+     "ref": 0.75,
+     "gap": 0.085,
+     "tried": 65
+    },
+    {
+     "move": "nutria-reedcutter x4 -> mudpuppy",
+     "v": 0.217,
+     "ref": 0.75,
+     "gap": 0.06,
+     "tried": 67
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 55
+    }
+   ],
+   "readings": 1812,
+   "sec": 410
+  }
+ ],
+ "drop": []
+}

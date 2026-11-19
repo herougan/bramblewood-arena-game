@@ -1,0 +1,80 @@
+{
+ "map": "m10",
+ "generated": "2026-11-19T13:56:44.606Z",
+ "decks": [
+  {
+   "id": "11-BPRO-4",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.3,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.72,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "mountain-hare": 3,
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "swamp-alligator": 2,
+     "the-gannet-queen": 4,
+     "golden-eagle-diver": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.475,
+     "ref": 0.675,
+     "gap": 0.175
+    }
+   },
+   "pick": {
+    "deck": {
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "swamp-alligator": 2,
+     "the-gannet-queen": 4,
+     "golden-eagle-diver": 3,
+     "eyrie-warden": 3
+    },
+    "val": {
+     "v": 0.365,
+     "ref": 0.65,
+     "gap": 0.065
+    },
+    "leaders": [
+     "the-gannet-queen"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.45,
+     "ref": 0.725,
+     "gap": 0.16
+    },
+    {
+     "move": "mountain-hare x3 -> eyrie-warden",
+     "v": 0.308,
+     "ref": 0.75,
+     "gap": 0.068,
+     "tried": 60
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 60
+    }
+   ],
+   "readings": 1239,
+   "sec": 273
+  }
+ ],
+ "drop": []
+}
