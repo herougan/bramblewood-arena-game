@@ -4684,6 +4684,14 @@
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Um gatilho A cada turno: desligado enquanto espera, está atordoada, congelada ou adormecida. Sem casas livres, nada aparece.",
  "Deliver": "Entregar",
  "Every Turn": "A cada turno",
+ "Focus": "Foco",
+ "A focus skill for this map": "Uma habilidade foco deste mapa",
+ "Intro": "Intro",
+ "This map's keyword skill": "A habilidade-chave deste mapa",
+ "Red = new here": "Vermelho = novo aqui",
+ "Green = on these cards and recommended": "Verde = nestas cartas e recomendada",
+ "Blue = suggested, not on these cards": "Azul = sugerida, não está nestas cartas",
+ "Grey = carried": "Cinza = presente",
  "Learns a skill at Level {n}": "Aprende uma habilidade no nível {n}",
  "Not unlocked yet": "Ainda não desbloqueado"
 }

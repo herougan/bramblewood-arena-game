@@ -4684,6 +4684,14 @@
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Un innesco Ogni turno: spento mentre attende, è stordita, congelata o addormentata. Senza caselle libere, niente appare.",
  "Deliver": "Consegna",
  "Every Turn": "Ogni turno",
+ "Focus": "Focus",
+ "A focus skill for this map": "Un'abilità focus di questa mappa",
+ "Intro": "Intro",
+ "This map's keyword skill": "L'abilità chiave di questa mappa",
+ "Red = new here": "Rosso = nuovo qui",
+ "Green = on these cards and recommended": "Verde = su queste carte e consigliata",
+ "Blue = suggested, not on these cards": "Blu = suggerita, non su queste carte",
+ "Grey = carried": "Grigio = presente",
  "Learns a skill at Level {n}": "Impara un'abilità al livello {n}",
  "Not unlocked yet": "Non ancora sbloccato"
 }

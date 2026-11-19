@@ -4683,6 +4683,14 @@
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "每回合触发：等待、眩晕、冻结或睡眠时无效。没有空格就不生成。",
  "Deliver": "送达",
  "Every Turn": "每回合",
+ "Focus": "重点",
+ "A focus skill for this map": "本地图的重点技能",
+ "Intro": "引入",
+ "This map's keyword skill": "本地图的关键词技能",
+ "Red = new here": "红 = 此处新增",
+ "Green = on these cards and recommended": "绿 = 在这些卡上且被推荐",
+ "Blue = suggested, not on these cards": "蓝 = 建议,不在这些卡上",
+ "Grey = carried": "灰 = 已携带",
  "Learns a skill at Level {n}": "在 {n} 级学会一项技能",
  "Not unlocked yet": "尚未解锁"
 }

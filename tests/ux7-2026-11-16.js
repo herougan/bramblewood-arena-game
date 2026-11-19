@@ -10,7 +10,7 @@ const app = read('arena_app.js'), tpl = read('arena_template.html');
 ok(/const MAP_FOCUS_SKILLS = \{/.test(app) && !/SKMAP_PICKS/.test(app.replace(/\/\/.*$/gm, '')), 'one focus table; SKMAP_PICKS is gone');
 ok(/__cfg:map-focus/.test(app), 'a live __cfg:map-focus row overrides (read only)');
 ok(/mapFocusKeys\(r\.n\)/.test(app.slice(app.indexOf('function skmapHTML('), app.indexOf('function openSkillsByMap('))) && /mapFocusSet\(mapId \|\| top\)/.test(app), 'both views read the table');
-ok(/\.ui19-sk\.is-focus\{border-color:#c62828/.test(tpl) && /\.ui19-new\.is-minor/.test(tpl), 'red for focus, a muted NEW! tag');
+ok(/\.ui19-sk\.is-focus\{outline:/.test(tpl) && /\.ui19-sk\.is-new\{border-color:#c62828/.test(tpl), 'focus is an outline, red is NEW! (UIQ2 2026-11-20)');
 ok(/ux7-2026-11-16/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
 const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')();
 // 2026-11-19 (TESTFIX7): UIFIN (11-18) put REDESIGN3 v2's focus in the table: up to 5 a map, mapFocusKeys shows the first 3
@@ -36,12 +36,12 @@ async function browser(){
       const arrow = only('arrow', ['swift', 'pounce']), bleed = only('bleed', ['arrow', 'swift', 'pounce']), pounce = only('pounce', ['arrow', 'swift']);
       const html = ui19McSkillsHTML(mapId, [arrow, bleed], defs, ()=> true, mapId, [pounce]), box = document.createElement('div'); box.innerHTML = html;
       const tiles = [...box.querySelectorAll('.ui19-sk')], key = t=> t.dataset.ui19Skill || t.dataset.ui24Rec || t.dataset.ui34Counter || '';
-      out.keys = tiles.map(key); out.red = tiles.filter(t=> t.classList.contains('is-focus')).map(key);
+      out.keys = tiles.map(key); out.red = tiles.filter(t=> t.classList.contains('is-focus')).map(key); // 2026-11-20 (UIQ2): is-focus is the outline now, not red
       out.cls = tiles.map(t=> t.classList.contains('is-focus-add') ? 'add' : t.classList.contains('is-focus') ? 'red' : t.classList.contains('is-counter') ? 'counter' : t.classList.contains('is-rec') || t.classList.contains('is-sugg') || t.classList.contains('ui30-sugg-tile') ? 'sugg' : t.classList.contains('is-other') ? 'other' : 'normal');
       out.newN = box.querySelector('[data-ui35-new]').dataset.ui35New; out.swift = key(tiles.find(t=> t.classList.contains('is-focus-add') && key(t) === 'swift') || tiles[0]);
       out.pounceOther = tiles.filter(t=> t.classList.contains('is-other') && key(t) === 'pounce').length;
       // minor NEW!: a main skill new on the map but not focus wears the small tag, no red
-      const bl = tiles.find(t=> key(t) === 'bleed'); out.bleedMinor = !!bl && !!bl.querySelector('.ui19-new.is-minor') && !bl.classList.contains('is-focus');
+      const bl = tiles.find(t=> key(t) === 'bleed'); out.bleedMinor = !!bl && !!bl.querySelector('.ui19-new') && bl.classList.contains('is-new') && !bl.classList.contains('is-focus'); // UIQ2: NEW! is red, no minor tag
       // the table is overridable
       mapFocusCfg = {3: ['bleed']}; const h2 = document.createElement('div'); h2.innerHTML = ui19McSkillsHTML(mapId, [arrow, bleed], defs, ()=> true, mapId, []);
       out.cfgRed = [...h2.querySelectorAll('.ui19-sk.is-focus')].map(key); mapFocusCfg = null;

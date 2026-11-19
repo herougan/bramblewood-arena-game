@@ -4685,6 +4685,14 @@
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "ஒவ்வொரு திருப்பத் தூண்டி: காத்திருக்கும்போது, மயங்கும்போது, உறைந்தபோது, உறங்கும்போது செயல்படாது. காலியிடம் இல்லையெனில் எதுவும் பிறக்காது.",
  "Deliver": "வழங்கு",
  "Every Turn": "ஒவ்வொரு திருப்பம்",
+ "Focus": "கவனம்",
+ "A focus skill for this map": "இந்த வரைபடத்தின் கவனத் திறன்",
+ "Intro": "அறிமுகம்",
+ "This map's keyword skill": "இந்த வரைபடத்தின் முக்கிய திறன்",
+ "Red = new here": "சிவப்பு = இங்கே புதியது",
+ "Green = on these cards and recommended": "பச்சை = இந்த அட்டைகளில் உள்ளது, பரிந்துரைக்கப்பட்டது",
+ "Blue = suggested, not on these cards": "நீலம் = பரிந்துரை, இந்த அட்டைகளில் இல்லை",
+ "Grey = carried": "சாம்பல் = உள்ளது",
  "Learns a skill at Level {n}": "நிலை {n}-இல் ஒரு திறனைக் கற்கும்",
  "Not unlocked yet": "இன்னும் திறக்கப்படவில்லை"
 }

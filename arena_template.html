@@ -15379,14 +15379,23 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .pk1-mc-overlay .ui19-sk.is-grey .ui19-sk-main b{color:var(--ink-muted);}
 .ui28-sug{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; letter-spacing:.03em; padding:1px 5px; border-radius:999px; background:#4f8ee8; color:#fff; cursor:help; vertical-align:1px; white-space:nowrap;}
 /* 2026-11-16 (package UX7, owner 20:24): the Map cards skill list's colours. RED = the map's focus skills only; main-card skills normal (a new one keeps a small muted NEW!); counters BLUE; suggestions a lighter blue; special-only skills muted. */
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new{border-color:var(--surface-border); background:var(--bg);}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new.is-intro{border-color:#e0b23a; background:linear-gradient(135deg, color-mix(in srgb, #ffd36b 34%, var(--bg)), color-mix(in srgb, #ffffff 22%, var(--bg)));}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus{border-color:#c62828; background:#c62828; color:#fff;} /* 2026-11-17 (UX9, owner 22:33): a focus skill is a solid red pill (red fill and red border), on the main cards or still to add */
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui19-sk-main b, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui19-sk-main small{color:#fff;}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui35-pill, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui19-new{background:#fff; color:#c62828; box-shadow:none;}
+/* 2026-11-20 (package UIQ2, owner 00:20): one colour meaning per tile. Red = NEW! here, green = carried and recommended, blue = suggested but carried by none of these cards, grey = carried. Focus = an outline, Intro = a pill (gold is not a tile colour) */
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new{border-color:#c62828; background:#c62828; color:#fff;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui19-sk-main b, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui19-sk-main small{color:#fff;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui35-pill, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui28-sug, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui30-sugg, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui19-new{background:#fff; color:#c62828; box-shadow:none;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-have{border-color:#2e8b57; background:color-mix(in srgb, #2e9e5b 28%, var(--bg)); opacity:1;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus{outline:2px solid var(--accent-strong); outline-offset:1px;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus-add{background:transparent;}
+.ui19-sk .ui35-pill.is-focus{background:transparent; color:inherit; box-shadow:inset 0 0 0 1px currentColor;}
+.ui19-sk .ui35-pill.is-intro{background:var(--ink); color:var(--bg);}
+.ui30-sugg{background:#2f6fd0;}
+.uiq2-legend{display:flex; flex-wrap:wrap; gap:3px 5px; margin:0 0 5px; font:700 11px/1.5 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
+.uiq2-legend span{display:inline-block; padding:0 6px; border-radius:6px; border:1px solid var(--surface-border); color:var(--ink);}
+.uiq2-legend .is-new{border-color:#c62828; background:color-mix(in srgb, #c62828 28%, var(--bg));} .uiq2-legend .is-have{border-color:#2e8b57; background:color-mix(in srgb, #2e9e5b 28%, var(--bg));}
+.uiq2-legend .is-sugg{border-color:#2f6fd0; background:color-mix(in srgb, #3b7de0 24%, var(--bg));} .uiq2-legend .is-carried{background:color-mix(in srgb, #8a8f99 16%, var(--bg));}
 .pk1-mc-overlay .ui19-sk .ui19-new.is-minor{background:var(--ink-muted); color:var(--bg); box-shadow:none;}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter.is-intro{border-color:#2f6fd0; background:linear-gradient(135deg, color-mix(in srgb, #3b7de0 30%, var(--bg)), color-mix(in srgb, #3b7de0 14%, var(--bg)));}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-rec, .pk1-mc-overlay .ui19-sk-list .ui19-sk.ui30-sugg-tile, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-sugg{border-color:color-mix(in srgb, #3b7de0 45%, var(--surface-border)); border-style:solid; background:color-mix(in srgb, #3b7de0 9%, var(--bg));}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter.is-intro{border-color:#2f6fd0; background:color-mix(in srgb, #3b7de0 24%, var(--bg));}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-rec, .pk1-mc-overlay .ui19-sk-list .ui19-sk.ui30-sugg-tile, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-sugg{border-color:#2f6fd0; border-style:solid; background:color-mix(in srgb, #3b7de0 24%, var(--bg));}
 .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-other{border-color:var(--surface-border); background:transparent; color:var(--ink-muted); opacity:.8;}
 .ui35-pill.is-counter{background:#2f6fd0; color:#fff;} .ui35-pill.is-focus{background:#c62828; color:#fff;} .ui19-sk .ui34-cn{background:color-mix(in srgb, #2f6fd0 24%, transparent);}
 @media (max-width:560px){ .pk1-mc-overlay .rv2-panel{padding:6px 6px 4px; margin:6px 0 8px;} .pk1-mc-overlay .rv1-row{gap:8px 8px;} }

@@ -4685,6 +4685,14 @@
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "매 턴 트리거: 대기, 기절, 빙결, 수면 중에는 꺼져요. 빈칸이 없으면 아무것도 안 나와요.",
  "Deliver": "전달",
  "Every Turn": "매 턴",
+ "Focus": "중점",
+ "A focus skill for this map": "이 맵의 중점 스킬",
+ "Intro": "도입",
+ "This map's keyword skill": "이 맵의 키워드 스킬",
+ "Red = new here": "빨강 = 여기서 처음",
+ "Green = on these cards and recommended": "초록 = 이 카드에 있고 추천",
+ "Blue = suggested, not on these cards": "파랑 = 제안, 이 카드에 없음",
+ "Grey = carried": "회색 = 보유",
  "Learns a skill at Level {n}": "Lv {n}에 스킬을 배움",
  "Not unlocked yet": "아직 잠금 해제 전"
 }

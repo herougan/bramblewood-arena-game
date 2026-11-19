@@ -4683,6 +4683,14 @@
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "毎ターンのトリガー：待機・スタン・凍結・睡眠中は働かない。空きマスがなければ何も出ない。",
  "Deliver": "届ける",
  "Every Turn": "毎ターン",
+ "Focus": "注目",
+ "A focus skill for this map": "このマップの注目スキル",
+ "Intro": "導入",
+ "This map's keyword skill": "このマップのキーワードスキル",
+ "Red = new here": "赤 = ここで新登場",
+ "Green = on these cards and recommended": "緑 = このカードにあり推奨",
+ "Blue = suggested, not on these cards": "青 = 提案、このカードにはない",
+ "Grey = carried": "灰 = 所持",
  "Learns a skill at Level {n}": "Lv{n}でスキルを覚える",
  "Not unlocked yet": "まだ解放されていません"
 }

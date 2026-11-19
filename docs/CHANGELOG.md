@@ -6,6 +6,8 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Card hover panel: the "?" pip is gone from the card art; the "?" line in the description now reads "Learns a skill at Level N" (skill stays hidden) or "Not unlocked yet". The pip stays on card tiles elsewhere (Codex, deck, hand, board). Test `uiq1-2026-11-20`.
 ## 2026-11-20 (package UIQ3: card editor map chips)
 - Admin: the card editor's map chips list only maps whose list holds the card (main, Special, side map); a card in no list reads "no map" (an obtain source alone no longer makes a chip). The row re-renders in the open editor when a map list changes (map card-list editor, live map-pools / map-picks row), the form untouched. Every chip now opens its map's cards (only the first did).
+## 2026-11-20 UIQ2
+- Admin map card list, "Skills on these cards": one colour per meaning, with a legend line. Red = NEW! here (every NEW! skill, the header count too), green = on these cards and recommended, blue = suggested but on none of them (pills keep the reason), grey = carried. Focus is an outline plus a "Focus" pill; the map keyword is an "Intro" pill (gold is gone).
 
 ## 2026-11-19 DEC19-DATA
 - Honey Badger Fury attainable (TF5-3 a). Basalt Foundry (m9) takes Malachite Golem, Granite Ox Golem stays on Volcano Lair (LIST1-1 a): m9 list and the nine 19-A fights re-fitted, card-obtain-maps regenerated. Refine note and Elemental Energy card read "Every Turn".
