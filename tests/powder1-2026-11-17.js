@@ -137,7 +137,9 @@ ok(/powder1-2026-11-17/.test(rd('tests/run-all.sh')), 'run-all.sh lists this tes
   const SC = require('../tools/skill_costs.js'), K = SC.make(J('canonical/skill-costs.json'));
   const carriers = list.filter(c=> c && c.effects && (c.effects.sleepPowder || c.effects.poisonPowder) && !/^test-/.test(c.id));
   ok(carriers.every(c=> K.budget(c).ok), 'powder carriers are in budget (' + carriers.map(c=> c.id).join(', ') + ')'); }
-{ const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')(); ok(!Object.values(F).some(l=> l.some(k=> /Powder/.test(k))), 'MAP_FOCUS_SKILLS unchanged (no powder)'); }
+{ const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')(); // 2026-11-19 (TESTFIX6): UIFIN set the table to REDESIGN3 v2's focus skills, powders on Maps 7 and 11 among them; POWDER1 itself added none
+  const R3F = {}; (J('docs/design/redesign3-2026-11-17.json').focus || []).forEach(f=> (f.skills || []).forEach(k=> { R3F[k.key || k] = true; }));
+  ok(Object.values(F).every(l=> l.every(k=> !/Powder/.test(k) || R3F[k])), 'MAP_FOCUS_SKILLS: no powder but REDESIGN3 v2\'s (UIFIN)'); }
 
 console.log(`powder1: ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
