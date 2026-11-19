@@ -1,0 +1,12 @@
+8-7 target 60 (52-68) size 14 start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} problems []
+start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 6.9
+round 1: cur 12.5/6.9; 23 legal, 23 read + 6 predicted (of 45); top: -1 blind-cave-fish +1 sulfur-cinder-moth 25/8.8 | -1 blind-cave-fish -1 corpse-flower-beetle +2 sulfur-cinder-moth 25/7.5 | -1 blind-cave-fish -1 corpse-flower-beetle +1 sulfur-cinder-moth +1 cave-olm 20.8/6.9
+round 2: cur 25/8.8; 26 legal, 26 read + 6 predicted (of 35); top: -1 corpse-flower-beetle +1 sulfur-cinder-moth 25/7.5 | -1 corpse-flower-beetle +1 cave-olm 20.8/6.9 | -1 corpse-flower-beetle +1 glow-worm 20.8/2.5
+no nearer move
+RESULT 8-7 {"blind-cave-fish":3,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":3} 8.8 {} moves: -1 blind-cave-fish +1 sulfur-cinder-moth problems: []
+4-3 target 70 (62-78) size 15 start {"platypus-spur":1,"river-mink":1,"slow-worm":3,"water-shrew":4,"muskrat-lodgekeeper":2,"beaver-lumberjack":3,"pond-algae":1} problems []
+start {"platypus-spur":1,"river-mink":1,"slow-worm":3,"water-shrew":4,"muskrat-lodgekeeper":2,"beaver-lumberjack":3,"pond-algae":1} 56.9
+round 1: cur 41.7/56.9; 99 legal, 50 read + 6 predicted (of 34); top: -3 water-shrew +3 pond-algae 54.2/56.3 | -3 water-shrew +3 platypus-spur 54.2/54.4 | -3 water-shrew -3 beaver-lumberjack +3 pond-algae +3 platypus-spur 54.2/51.9
+no nearer move
+RESULT 4-3 {"platypus-spur":1,"river-mink":1,"slow-worm":3,"water-shrew":4,"muskrat-lodgekeeper":2,"beaver-lumberjack":3,"pond-algae":1} 56.9 {} moves:  problems: []
+LANE DONE

@@ -1,0 +1,10 @@
+2-2 target 80 (72-88) size 20 start {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4} problems []
+start {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4} 60.6
+round 1: cur 75/60.6; 21 legal, 21 read + 6 predicted (of 30); top: -4 conch-crawler +4 pincushion-urchin 79.2/58.8 | -1 duck-paddler +1 pincushion-urchin 79.2/56.9 | -1 duck-paddler +1 hedgerow-shrew 79.2/56.3
+no nearer move
+RESULT 2-2 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4} 60.6 {} moves:  problems: []
+4-5 target 40 (30-49) size 20 start {"beaver-lumberjack":4,"conch-crawler":1,"drowned-matriarch":2,"muskrat-lodgekeeper":4,"lotus-frog":4,"kittiwake-flock":1,"slow-worm":4} problems []
+start {"beaver-lumberjack":4,"conch-crawler":1,"drowned-matriarch":2,"muskrat-lodgekeeper":4,"lotus-frog":4,"kittiwake-flock":1,"slow-worm":4} 26.3
+round 1: cur 25/26.3; 42 legal, 42 read + 6 predicted (of 48); top: -1 lotus-frog +1 drowned-matriarch 29.2/21.9 | -1 slow-worm +1 drowned-matriarch 29.2/21.9 | -1 kittiwake-flock +1 drowned-matriarch 29.2/21.3
+no nearer move
+RESULT 4-5 {"beaver-lumberjack":4,"conch-crawler":1,"drowned-matriarch":2,"muskrat-lodgekeeper":4,"lotus-frog":4,"kittiwake-flock":1,"slow-worm":4} 26.3 {} moves:  problems: []

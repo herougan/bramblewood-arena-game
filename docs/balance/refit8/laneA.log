@@ -1,0 +1,46 @@
+17-8 target 40 (30-49) size 16 start {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"warhorse-charger":1,"elderhorn-monarch":1,"pinecone-sapper":1,"ringed-seal":4} problems []
+start {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"warhorse-charger":1,"elderhorn-monarch":1,"pinecone-sapper":1,"ringed-seal":4} 16.9
+round 1: cur 8.3/16.9; 18 legal, 18 read + 6 predicted (of 38); top: -1 pinecone-sapper +1 briarback-hedgehog 20.8/19.4 | -1 elderhorn-monarch +1 boreal-elk 16.7/10.6 | -1 pinecone-sapper -1 elderhorn-monarch +1 briarback-hedgehog +1 boreal-elk 20.8/9.4
+round 2: cur 20.8/19.4; 18 legal, 18 read + 6 predicted (of 49); top: -1 warhorse-charger -4 ringed-seal +1 cataphract-destrier +4 harbor-seal 25/23.1 | -1 warhorse-charger +1 cataphract-destrier 25/18.1 | -1 elderhorn-monarch +1 boreal-elk 20.8/9.4
+round 3: cur 25/23.1; 18 legal, 18 read + 6 predicted (of 48); top: -4 harbor-seal -1 cataphract-destrier +4 ringed-seal +1 warhorse-charger 20.8/19.4 | -4 harbor-seal +4 ringed-seal 25/18.1 | -1 cataphract-destrier +1 warhorse-charger 20.8/16.3
+no nearer move
+RESULT 17-8 {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"elderhorn-monarch":1,"briarback-hedgehog":1,"cataphract-destrier":1,"harbor-seal":4} 23.1 {} moves: -1 pinecone-sapper +1 briarback-hedgehog ; -1 warhorse-charger -4 ringed-seal +1 cataphract-destrier +4 harbor-seal problems: []
+17-6 target 65 (57-73) size 20 start {"arctic-tern":4,"glacier-yak":4,"ice-crevasse-wolf":3,"polar-bear":1,"snow-ermine":3,"elderhorn-monarch":1,"harbor-seal":4} problems []
+start {"arctic-tern":4,"glacier-yak":4,"ice-crevasse-wolf":3,"polar-bear":1,"snow-ermine":3,"elderhorn-monarch":1,"harbor-seal":4} 32.5
+round 1: cur 41.7/32.5; 19 legal, 19 read + 6 predicted (of 37); top: -2 ice-crevasse-wolf +1 polar-bear +1 snow-ermine 54.2/40 | -1 ice-crevasse-wolf +1 polar-bear 41.7/36.3 | -1 ice-crevasse-wolf -1 harbor-seal +1 polar-bear +1 snow-ermine 50/34.4
+round 2: cur 54.2/40; 24 legal, 24 read + 6 predicted (of 16); top: -1 ice-crevasse-wolf +1 cone-cutter-squirrel 41.7/38.1 | -1 harbor-seal +1 ice-crevasse-wolf 50/34.4 | -4 harbor-seal +4 ringed-seal 50/33.8
+no nearer move
+RESULT 17-6 {"arctic-tern":4,"glacier-yak":4,"ice-crevasse-wolf":1,"polar-bear":2,"snow-ermine":4,"elderhorn-monarch":1,"harbor-seal":4} 40 {} moves: -2 ice-crevasse-wolf +1 polar-bear +1 snow-ermine problems: []
+17-4 target 75 (67-83) size 19 start {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1} problems []
+start {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1} 48.1
+round 1: cur 29.2/48.1; 13 legal, 13 read + 6 predicted (of 32); top: -4 ringed-seal +4 harbor-seal 41.7/48.8 | -1 warhorse-charger +1 briarback-hedgehog 54.2/45.6 | -1 warhorse-charger +1 pinecone-sapper 41.7/38.1
+no nearer move
+RESULT 17-4 {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1} 48.1 {} moves:  problems: []
+17-7 target 60 (52-68) size 19 start {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":3,"ringed-seal":4} problems []
+start {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":3,"ringed-seal":4} 35.6
+round 1: cur 41.7/35.6; 23 legal, 23 read + 6 predicted (of 39); top: -1 polar-bear +1 arctic-tern 45.8/36.3 | -3 arctic-tern +3 ice-crevasse-wolf 50/35.6 | -1 ringed-seal +1 arctic-tern 50/26.3
+no nearer move
+RESULT 17-7 {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":3,"ringed-seal":4} 35.6 {} moves:  problems: []
+4-3 target 70 (62-78) size 15 start {"platypus-spur":1,"river-mink":1,"slow-worm":3,"water-shrew":4,"muskrat-lodgekeeper":2,"beaver-lumberjack":3,"pond-algae":1} problems []
+start {"platypus-spur":1,"river-mink":1,"slow-worm":3,"water-shrew":4,"muskrat-lodgekeeper":2,"beaver-lumberjack":3,"pond-algae":1} 49.4
+round 1: cur 58.3/49.4; 99 legal, 50 read + 6 predicted (of 39); top: -1 beaver-lumberjack +1 pond-algae 58.3/48.8 | -2 water-shrew +2 pond-algae 58.3/47.5 | -1 pond-algae +1 lotus-frog 58.3/46.9
+no nearer move
+RESULT 4-3 {"platypus-spur":1,"river-mink":1,"slow-worm":3,"water-shrew":4,"muskrat-lodgekeeper":2,"beaver-lumberjack":3,"pond-algae":1} 49.4 {} moves:  problems: []
+4-5 target 40 (30-49) size 20 start {"beaver-lumberjack":4,"conch-crawler":1,"drowned-matriarch":2,"grass-snake":4,"muskrat-lodgekeeper":4,"lotus-frog":4,"kittiwake-flock":1} problems []
+start {"beaver-lumberjack":4,"conch-crawler":1,"drowned-matriarch":2,"grass-snake":4,"muskrat-lodgekeeper":4,"lotus-frog":4,"kittiwake-flock":1} 24.4
+round 1: cur 12.5/24.4; 42 legal, 42 read + 6 predicted (of 39); top: -4 grass-snake +4 slow-worm 33.3/36.3 | -4 grass-snake +4 water-shrew 37.5/33.8 | -4 muskrat-lodgekeeper +4 water-shrew 33.3/28.8
+round 2: cur 33.3/36.3; 42 legal, 42 read + 6 predicted (of 46); top: -4 slow-worm +4 water-shrew 37.5/33.8 | -4 lotus-frog +4 water-shrew 37.5/32.5 | -4 lotus-frog -1 muskrat-lodgekeeper +4 water-shrew +1 drowned-matriarch 37.5/30
+no nearer move
+RESULT 4-5 {"beaver-lumberjack":4,"conch-crawler":1,"drowned-matriarch":2,"muskrat-lodgekeeper":4,"lotus-frog":4,"kittiwake-flock":1,"slow-worm":4} 36.3 {} moves: -4 grass-snake +4 slow-worm problems: []
+2-2 target 80 (72-88) size 20 start {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"pincushion-urchin":4,"conch-crawler":4,"duck-paddler":1} problems []
+start {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"pincushion-urchin":4,"conch-crawler":4,"duck-paddler":1} 46.3
+round 1: cur 62.5/46.3; 21 legal, 21 read + 6 predicted (of 35); top: -4 pincushion-urchin +4 limpet-clinger 75/58.8 | -4 pincushion-urchin -1 rock-pool-starfish +4 limpet-clinger +1 open-ocean-hermit-crab 75/58.1 | -4 conch-crawler +4 limpet-clinger 75/56.9
+round 2: cur 75/58.8; 21 legal, 21 read + 6 predicted (of 33); top: -1 rock-pool-starfish +1 open-ocean-hermit-crab 75/58.1 | -1 conch-crawler +1 open-ocean-hermit-crab 75/56.9 | -4 conch-crawler +4 pincushion-urchin 75/56.9
+no nearer move
+RESULT 2-2 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4} 58.8 {} moves: -4 pincushion-urchin +4 limpet-clinger problems: []
+8-7 target 60 (52-68) size 14 start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} problems []
+start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 10
+round 1: cur 4.2/10; 23 legal, 23 read + 6 predicted (of 40); top: -2 blind-cave-fish +2 sulfur-cinder-moth 25/4.4 | -4 stalactite-golem +4 cave-olm 8.3/4.4 | -1 corpse-flower-beetle +1 giant-cave-huntsman 8.3/3.8
+no nearer move
+RESULT 8-7 {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 10 {} moves:  problems: []
+LANE DONE

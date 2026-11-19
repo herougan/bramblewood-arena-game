@@ -1,0 +1,16 @@
+17-8 target 40 (30-49) size 16 start {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"elderhorn-monarch":1,"briarback-hedgehog":1,"cataphract-destrier":1,"harbor-seal":4} problems []
+start {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"elderhorn-monarch":1,"briarback-hedgehog":1,"cataphract-destrier":1,"harbor-seal":4} 17.5
+round 1: cur 12.5/17.5; 18 legal, 18 read + 6 predicted (of 45); top: -3 ice-crevasse-wolf +3 arctic-tern 25/16.9 | -3 ice-crevasse-wolf -1 cataphract-destrier +3 arctic-tern +1 pinecone-sapper 16.7/13.8 | -3 ice-crevasse-wolf -1 cataphract-destrier +3 arctic-tern +1 cone-cutter-squirrel 20.8/10.6
+no nearer move
+RESULT 17-8 {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"elderhorn-monarch":1,"briarback-hedgehog":1,"cataphract-destrier":1,"harbor-seal":4} 17.5 {} moves:  problems: []
+17-4 target 75 (67-83) size 19 start {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1} problems []
+start {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1} 46.9
+round 1: cur 37.5/46.9; 13 legal, 13 read + 6 predicted (of 38); top: -1 snow-ermine -1 warhorse-charger +1 ice-crevasse-wolf +1 elderhorn-monarch 58.3/43.1 | -1 ringed-seal -1 warhorse-charger +1 ice-crevasse-wolf +1 elderhorn-monarch 58.3/37.5 | -1 snow-ermine +1 ice-crevasse-wolf 54.2/37.5
+no nearer move
+RESULT 17-4 {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1} 46.9 {} moves:  problems: []
+17-7 target 60 (52-68) size 19 start {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":3,"ringed-seal":4} problems []
+start {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":3,"ringed-seal":4} 38.8
+round 1: cur 54.2/38.8; 23 legal, 23 read + 6 predicted (of 46); top: -1 warhorse-charger +1 briarback-hedgehog 50/36.3 | -1 snow-ermine +1 arctic-tern 50/35 | -1 warhorse-charger +1 cataphract-destrier 54.2/31.3
+no nearer move
+RESULT 17-7 {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":3,"ringed-seal":4} 38.8 {} moves:  problems: []
+LANE DONE
