@@ -278,7 +278,11 @@ function skillCountOf(effects, params){ return skillCountParts(effects, params).
 const CHAINED_PER_ROUND = 0.25, CHAINED_DMG_A_ROUND = 3, CHAINED_MAX_ROUNDS = 4, CHAINED_SPAWN_MULT = 1.1;
 function chainedMult(effects){ effects = XP(effects); const c = effects && effects.chained; if(!c) return 1; if(typeof c === 'object' && c.breakOn === 'enemySpawn') return CHAINED_SPAWN_MULT;
   const n = Math.max(1, Number(c && c.amount) || 1); return r2(1 + CHAINED_PER_ROUND * Math.min(CHAINED_MAX_ROUNDS, n / CHAINED_DMG_A_ROUND)); }
-function nMultOf(effects, cfg, params){ const a = abilitiesOf(effects, params || (cfg && cfg.params)); let k = 1;
+// DEC19-BUDGET (2026-11-19, decision ENG52-1 b): Hatchling has no effect of its own (DESIGN1-11; it pays only when an evolute is played onto it,
+// priced at that play rate in canonical/skill-costs.json), so it does not take a Baby card's plain / light bonus away (ENG52 / SKFIN had: Compost Grub
+// N 13.57 -> 12.92). The two-skill count still reads it (abilitiesOf).
+const NO_EFFECT_OF_ITS_OWN = ['hatchling', 'fodder'];
+function nMultOf(effects, cfg, params){ const a = abilitiesOf(effects, params || (cfg && cfg.params)).filter(x=> !NO_EFFECT_OF_ITS_OWN.includes(x)); let k = 1;
   if(!a.length) k *= num(cfg, 'plainBonus'); else if(a.every(x=> LIGHT.includes(x))) k *= num(cfg, 'lightBonus');
   k *= chainedMult(effects); // ENG9 (2026-10-26, G19)
   return k; } // BF7 (2026-10-22): Fragile is no longer an N multiplier (fragileUseOf / capScores)
@@ -325,8 +329,13 @@ function ritualPts(effects){ const r = effects && effects.ritual; return r && ty
 // levelSkills). budgetDef(d, L): d with those effects (L: the level asked for, default 1; Level 0 adds only levelSkills "0"; above 1 still only
 // "0" / "1", as Level 2+ skills never counted), the same object when nothing is added.
 function budgetDef(d, L){ const ls = d && d.levelSkills; if(!ls || typeof ls !== 'object') return d; let fx = null; const top = L == null ? 1 : Math.min(1, Number(L) || 0);
-  Object.keys(ls).map(Number).filter(k=> k <= top).sort((a, b)=> a - b).forEach(k=>{ const o = ls[k]; if(o && typeof o === 'object' && Object.keys(o).length) fx = Object.assign(fx || Object.assign({}, d.effects || {}), o); });
+  Object.keys(ls).map(Number).filter(k=> k <= top).sort((a, b)=> a - b).forEach(k=>{ const o = ls[k]; if(o && typeof o === 'object' && Object.keys(o).length) fx = lsAssign(fx || Object.assign({}, d.effects || {}), o); });
   return fx ? Object.assign({}, d, {effects: fx}) : d; }
+// 2026-11-19 (package DEC19-BUDGET): a level's skills laid over the effects as the game's effectsAtLevel does on the stored (fused) keys: a skill
+// replaces its family's key. On expanded keys (the tools expand first, ENG35) a Level 1 Fire Arrow left the Level 0 Fire Bolt beside it (both are
+// Arrow's kinds), so Fire Drake Hatchling paid for both (44.04 vs the game's one Fire Arrow). fx's keys of a family the level brings are dropped first.
+function lsAssign(fx, o){ const root = k=> (SPL && SPL.rootOf) ? SPL.rootOf(k) : k, fams = new Set(Object.keys(o || {}).map(root));
+  Object.keys(fx).forEach(k=>{ if(!(k in o) && fams.has(root(k))) delete fx[k]; }); return Object.assign(fx, o); }
 // The level-independent part of N for a card ({rarity, wait, cost, effects, obtainMap}). 2026-10-19 (BF2, owner 15:25: "note that there is
 // a Map * 0.2 number there"): + perMap (0.2) × the map number where the card becomes obtainable (d.obtainMap: a map reward its map, a
 // pack card where its pack goes on sale, a raid card where raids open; Base, tutorial and unobtainable cards 0; the game's cardObtainMap,
@@ -455,7 +464,7 @@ function levelBonusAt(d, L, from){ const lb = d && d.levelBonus; if(!lb || typeo
 function levelEffectsAt(d, L, fx0, from){ const fx = Object.assign({}, XP(fx0 || (d && d.effects) || {}) || {}), ls = d && d.levelSkills;
   if(ls && typeof ls === 'object'){ const ks = Object.keys(ls).map(Number).sort((x, y)=> x - y);
     ks.filter(k=> k > L).forEach(k=> Object.keys(XP(ls[k] || {}) || {}).forEach(x=>{ delete fx[x]; }));
-    ks.filter(k=> k <= L).forEach(k=> Object.assign(fx, XP(ls[k] || {}))); }
+    ks.filter(k=> k <= L).forEach(k=> lsAssign(fx, XP(ls[k] || {}))); } // DEC19-BUDGET (2026-11-19): a level's skill replaces its family's key
   if((Number(L) || 0) < 1) ['hatchling', 'regen'].forEach(k=>{ delete fx[k]; });
   const b = levelBonusAt(d, L, from); if(b) Object.assign(fx, XP(b.skills) || {});
   return fx; }

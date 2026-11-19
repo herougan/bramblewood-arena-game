@@ -5,6 +5,9 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 ## 2026-11-19 (package DEC19-UI: Arena co-op entry, night tint, Graveyard arcs)
 - Players see: once the co-op dungeon is open (after Map 16) the Arena's modes list has its entry, which opens the same dungeon card as the map spot (REL1-4 b). The night tint now sits under the top bar and dialogs, so menus stay clear at night; the fight board still darkens (UX4-1 a). A field card or spell you play, a Feed, and an overdrawn card now arc into the Graveyard like a pitch (FX9-1 a; reduced motion: no flight).
 - Under the hood: `ui16PitchToGrave` reused (`playCardByUid`, `eng23FeedByUid`, `animateOverdraw`); one new text `ui.dec19-coop-tip` in 12 packs; `tests/dec19-ui-2026-11-19.js`.
+## 2026-11-19 (package DEC19-BUDGET: Hatchling priced by its evolute play rate, decision ENG52-1 b)
+- Players see: the card editor's budget panel reads the Baby cards lower (no card stats change).
+- Budget: Hatchling 2 -> 0 (Stem 2 x the evolute play rate, measured 0: none of the 722 fielded decks holds a Hatchling card and an evolute); Hatchling no longer takes the plain bonus away; a Level 1 skill replaces its family's key, as the game does (Fire Drake Hatchling paid a Fire Bolt and a Fire Arrow). Compost Grub, Fox Kit, Otter Kit, Caiman / Fire Drake Hatchling, Shallows Fry, Harp Seal Pup now fit; Chipmunk Forager (108%) and Musk Ox Calf (102%) stay over. Files: `docs/balance/dec19-budget/`.
 
 ## 2026-11-19 (package DEC19: the easy decisions settled, owner 22:18)
 - Players see: on a slow machine, Auto-lower effects can now step down twice in a session (High -> Medium -> Low; was once), decision PERF2-1 b (`FX_AUTO_STEPS` in `arena_app.js`).

@@ -84,7 +84,9 @@ const BAL30 = new Set(['inside-out-hedgehog', 'irradiated-axolotl']);
 const FIX10 = new Set(['cormorant']);
 // 2026-11-18 (package ENG52, owner 21:04): the budget prices Level 1 with its Level 0 / 1 skills (levelSkills); these go over on paper (mostly the Babies'
 // Hatchling), no stat change: decision ENG52-1, balance-analyst's re-fit
-const ENG52 = new Set(['compost-grub', 'fox-kit', 'fire-drake-hatchling', 'otter-kit', 'chipmunk-forager', 'caiman-hatchling', 'shallows-fry', 'harp-seal-pup']);
+// 2026-11-19 (package DEC19-BUDGET, ENG52-1 b): Hatchling priced at its evolute play rate (0) fits the seven Hatchling cards; Chipmunk Forager (Foraging) stays over
+const ENG52 = new Set(['chipmunk-forager']);
+ok(['compost-grub', 'fox-kit', 'fire-drake-hatchling', 'otter-kit', 'caiman-hatchling', 'shallows-fry', 'harp-seal-pup'].every(id=> defs[id] && SCN.budget(defs[id], {level: 1}).ok), '1. DEC19-BUDGET: the seven Hatchling cards ENG52 put over fit at Level 1');
 // 2026-11-19 (FOLD8-1 a, owner 22:18 "Do apply it to FOLD8-1"): the owner's 11-18 numbers stand, over budget on purpose
 const FOLD8 = new Set(['pika-hoarder', 'feral-tomcat', 'peak-condor', 'alley-cat', 'slow-worm']);
 const over = live.filter(c=> band(c) && !ENG52.has(c.id) && !FOLD8.has(c.id) && !OVER_OK.has(c.id) && !CONTENT12.has(c.id) && !FOLD5.has(c.id) && !SKIR3.has(c.id) && !ENG27.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !SKILL2.has(c.id) && !BAL11.has(c.id) && !BAL12.has(c.id) && !BAL14.has(c.id) && !DEC1.has(c.id) && !ENG22.has(c.id) && !ENG21.has(c.id) && !ENG25.has(c.id) && !BAL30.has(c.id) && !FIX10.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
