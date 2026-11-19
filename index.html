@@ -59596,7 +59596,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '8ff71694400a', BUILD_CARD_HASH = '2d1423e14cc826d2ff8b84fe8bd0bb0db9d51df7a645d42655afef90678d29ee';
+const BUILD_ID = '973d3b926d0f', BUILD_CARD_HASH = '2d1423e14cc826d2ff8b84fe8bd0bb0db9d51df7a645d42655afef90678d29ee';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -67781,12 +67781,24 @@ function mountEditorSide(modal){
 // the button opens the Map cards view of the map whose list names it (cardFirstMapList), else of that main map
 function cardFirstMapHTML(c){
   if(!c || !c.id) return '';
-  let n = 0, f = null; try{ n = cardObtainMap(c); f = cardFirstMapList(c); }catch(e){}
-  const m = f ? mpMapById(f.loc) : null;
+  const all = cardMapListsOf(c), f = all[0], m = f ? mpMapById(f.loc) : null;
   // 2026-11-20 (package UIQ3, owner 00:22): chips follow the lists only; a card in no list (obtain source alone) reads "no map", and the row is one wrapper that ceRefreshMapChips re-renders
   if(!m) return `<span id="ceMapChips" class="ce-map-chips"><span class="ui52-first-map is-none">🗺️ ${escapeHtml(TX('ui.ui52-first-map-none'))}</span></span>`;
-  if(f && f.n != null && !(n > 0)) n = f.n; // 2026-11-18 (MAPLIST1): a card nothing hands out yet (cardObtainMap 0) reads its list's map number (was "Map 0 · Gannet Cliffs"); an obtainable card keeps where it is obtained (DF-1)
-  return `<span id="ceMapChips" class="ce-map-chips"><button type="button" class="btn small ghost ui52-first-map is-first" data-ui52-map="${escapeAttr(m.id)}" title="${escapeAttr(TX('ui.ui52-first-map-tip'))}">🗺️ ${escapeHtml(TX('ui.pg-map-n', {n}))} · ${escapeHtml((m.icon ? m.icon + ' ' : '') + m.name)}</button>${cardOtherMapsHTML(c, f)}</span>`;
+  let n = 0; try{ n = cardObtainMap(c); }catch(e){}
+  if(!(n > 0)) n = f.n; // 2026-11-18 (MAPLIST1): a card nothing hands out yet (cardObtainMap 0) reads its list's map number; an obtainable card keeps where it is obtained (DF-1)
+  return `<span id="ceMapChips" class="ce-map-chips"><button type="button" class="btn small ghost ui52-first-map is-first" data-ui52-map="${escapeAttr(m.id)}" title="${escapeAttr(TX('ui.ui52-first-map-tip'))}">🗺️ ${escapeHtml(TX('ui.pg-map-n', {n}))} · ${escapeHtml((m.icon ? m.icon + ' ' : '') + m.name)}${f.kind ? ' (' + escapeHtml(TX(f.kind === 'side' ? 'ui.maplist1-side' : 'ui.maplist1-special')) + ')' : ''}</button>${cardOtherMapsHTML(all.slice(1))}</span>`;
+}
+// 2026-11-20 (UIQ3, coordinator: the owner reads a map's list as his Yes picks): the lists that hold the card, in road order. A map or side map with a map-picks row
+// (ui37Picks) holds it when flagged Yes (a No excludes it); one without a row keeps the base list plus the live edits (mpEntry); Special keeps the list
+function cardMapListsOf(c){
+  const id = c.derivedFrom || c.id, out = [];
+  try{ const picked = (loc)=>{ const e = ui37Picks && ui37Picks[loc]; return e ? ui37Ent(loc) : null; };
+    const inMain = (loc, list)=>{ const p = picked(loc); return p ? p.yes.includes(id) && !p.no.includes(id) : list.includes(id); };
+    Object.keys((MAP_POOLS_BASE || {}).maps || {}).concat(Object.keys(mapPoolEdits || {})).filter((t, i, a)=> a.indexOf(t) === i).forEach(top=>{
+      const e = mpEntry(top), add = (loc, kind)=>{ if(packListSkipped(mpMapById(loc))) return; const n = mapUnlockNumberOf(loc); if(n != null) out.push({loc, kind, n}); };
+      if(inMain(top, e.cards)) add(top, ''); if(e.special.includes(id)) add(top, 'special'); Object.keys(e.submaps).forEach(sm=>{ if(inMain(sm, e.submaps[sm])) add(sm, 'side'); }); });
+  }catch(e){ return []; }
+  return out.sort((a, b)=> a.n - b.n || (a.kind > b.kind ? 1 : -1));
 }
 // 2026-11-20 (package UIQ3): re-render only the chips row of the open card editor (a map list edit: mpChanged; a live map-pools / map-picks row), one delegated click for every chip
 function ceBindMapChips(box){ if(box && !box._ceBound){ box._ceBound = 1; box.addEventListener('click', e=>{ const b = e.target.closest('[data-ui52-map]'); if(b) pk1OpenMapCards(b.dataset.ui52Map); }); } }
@@ -67800,13 +67812,8 @@ function ceRefreshMapChips(kind){
 // "New!" card in a later map"): after the first-map button, every other map list naming the card (main list, Special, side map), in road
 // order, each a button to that map's cards; the first one is where it reads New!, so removing it there moves New! to the next one listed.
 // 2026-11-18 (UIFIN, owner 23:55: "say all the maps its inside, first time or not; the first time pill slightly stronger"): equal pills, no "+"; the first (is-first) is tinted stronger
-function cardOtherMapsHTML(c, first){
-  const id = c.derivedFrom || c.id, out = [];
-  try{ Object.keys((MAP_POOLS_BASE || {}).maps || {}).concat(Object.keys(mapPoolEdits || {})).filter((t, i, a)=> a.indexOf(t) === i).forEach(top=>{
-    const e = mpEntry(top), add = (loc, kind)=>{ const n = mapUnlockNumberOf(loc); if(n != null && !(first && first.loc === loc)) out.push({loc, kind, n}); };
-    if(e.cards.includes(id)) add(top, ''); if(e.special.includes(id)) add(top, 'special'); Object.keys(e.submaps).forEach(s=>{ if(e.submaps[s].includes(id)) add(s, 'side'); }); }); }catch(e){ return ''; }
-  out.sort((a, b)=> a.n - b.n || (a.kind > b.kind ? 1 : -1));
-  return out.map(o=>{ const m = mpMapById(o.loc); if(!m) return '';
+function cardOtherMapsHTML(list){
+  return list.map(o=>{ const m = mpMapById(o.loc); if(!m) return '';
     return `<button type="button" class="btn small ghost ui52-first-map is-also" data-ui52-map="${escapeAttr(m.id)}" title="${escapeAttr(TX('ui.maplist1-also-tip'))}">${escapeHtml(TX('ui.pg-map-n', {n: o.n}))} · ${escapeHtml((m.icon ? m.icon + ' ' : '') + m.name)}${o.kind ? ' (' + escapeHtml(TX(o.kind === 'side' ? 'ui.maplist1-side' : 'ui.maplist1-special')) + ')' : ''}</button>`; }).join('');
 }
 function renderEditorInner(){
@@ -90618,7 +90625,7 @@ function applyCloudMapPicks(top, r){
 function ui37SetFlag(top, id, flag){
   const e = ui37Ent(top); e.yes = e.yes.filter(x=> x !== id); e.no = e.no.filter(x=> x !== id);
   if(flag === 'yes') e.yes.push(id); else if(flag === 'no') e.no.push(id);
-  ui37Picks[top] = {yes: e.yes, no: e.no, t: e.t, after: e.after, localAt: Date.now()}; ui37Save(); ui37Publish(top);
+  ui37Picks[top] = {yes: e.yes, no: e.no, t: e.t, after: e.after, localAt: Date.now()}; ui37Save(); ui37Publish(top); ceRefreshMapChips(); // 2026-11-20 (UIQ3)
 }
 function ui37SetTarget(top, k, v){ const e = ui37Ent(top), t = Object.assign({}, e.t); if(v === '' || v == null) delete t[k]; else t[k] = Math.max(0, Math.min(99, Math.round(Number(v) || 0)));
   ui37Picks[top] = {yes: e.yes, no: e.no, t, after: e.after, localAt: Date.now()}; ui37Save(); ui37Publish(top); }

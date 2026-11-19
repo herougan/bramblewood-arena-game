@@ -15,7 +15,7 @@ const fn = (src, name)=>{ const i = src.indexOf('function ' + name + '('); if(i 
 ok((app.match(/\nfunction forgeBaseDef\(/g) || []).length === 1 && !/Object\.assign/.test(fn(app, 'forgeBaseDef')) && /id in liveCards/.test(fn(app, 'forgeBaseDef')), '#5 forgeBaseDef is one lookup, no copy');
 ok(/!loadDialogueFlags\(\)\['seen:forge_cobble_intro'\] && r\.offsetParent !== null/.test(fn(app, 'renderForge')), '#5 the seen flag is read before offsetParent (no forced layout)');
 // #1 #2
-ok(/cardObtainMap\(c\)/.test(fn(app, 'cardFirstMapHTML')) && /cardFirstMapList\(c\)/.test(fn(app, 'cardFirstMapHTML')) && /cardFirstMapHTML\(c\)/.test(fn(app, 'renderEditorInner')) && /pk1OpenMapCards\(b\.dataset\.ui52Map\)/.test(app), '#1 the editor shows the first map and opens its Map cards');
+ok(/cardObtainMap\(c\)/.test(fn(app, 'cardFirstMapHTML')) && /cardMapListsOf\(c\)/.test(fn(app, 'cardFirstMapHTML')) && /cardFirstMapHTML\(c\)/.test(fn(app, 'renderEditorInner')) && /pk1OpenMapCards\(b\.dataset\.ui52Map\)/.test(app), '#1 the editor shows the first map and opens its Map cards');
 ok(/adminModeEnabled/.test(fn(app, 'bookFirstMapHTML')) && /cardObtainMap\(d\)/.test(fn(app, 'skillFirstMaps')) && /\.bk-maps-toggle\{position:absolute;/.test(tpl), '#2 admin skill-map toggle, overlaid (absolute)');
 // #3
 ok(/const CODEX_TURN_MS = 760/.test(app) && /pg-leaf-mid/.test(fn(app, 'codexLeafTurn')) && /--pg-turn-ms:760ms/.test(tpl) && !/pgOneFwd|pg-leaf-open/.test(tpl + fn(app, 'codexLeafTurn')), '#3 the turn is 760 ms; one page turns the two-face leaf about its middle');

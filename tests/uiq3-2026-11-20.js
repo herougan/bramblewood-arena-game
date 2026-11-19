@@ -8,7 +8,7 @@ const read = f=> fs.readFileSync(path.join(ROOT, f), 'utf8');
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  x', m); } };
 const app = read('arena_app.js');
 ok(/function ceRefreshMapChips\(/.test(app) && /mpListeners\.add\(ceRefreshMapChips\)/.test(app), 'the chips row refreshes on every map list change (mpListeners)');
-ok(/ui37Notify\(\); ceRefreshMapChips\(\);/.test(app), 'a live map-picks row refreshes the chips too');
+ok(/ui37Notify\(\); ceRefreshMapChips\(\);/.test(app) && /function cardMapListsOf\(/.test(app), 'a live map-picks row refreshes the chips too');
 ok(!/mpMapById\(f \? f\.loc : mapIdAt\(n\)\)/.test(app), 'no chip from an obtain source alone (cardObtainMap)');
 ok(/uiq3-2026-11-20/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
 
@@ -26,7 +26,7 @@ async function browser(){
     await pg.waitForFunction("typeof switchTab === 'function'", null, {timeout: 120000}); await pg.waitForTimeout(1500);
     const r = await pg.evaluate(`(async()=>{
       window.showToast = ()=>{}; adminModeEnabled = true; const id = 'cypress-root-lurker', out = {};
-      const chips = ()=> [...document.querySelectorAll('#ceMapChips .ui52-first-map')].map(x=> x.textContent.replace(/\\s+/g, ' ').trim());
+      const chips = ()=> [...document.querySelectorAll('#ceMapChips .ui52-first-map')].map(x=> x.textContent.replace(/[^\\x00-\\x7f]/g, '').replace(/\\s+/g, ' ').trim());
       const wait = ()=> new Promise(r=> setTimeout(r, 50));
       openCardEditor(id); await wait(); out.before = chips(); const form = document.querySelector('#editorOverlay .modal'); const tag = document.getElementById('fCardId');
       // take the card out of every list (a live edit of each map's list), then put it back into one
@@ -37,13 +37,24 @@ async function browser(){
       mapPoolEdits.mu.pool.special.push(id); mpChanged(); await wait(); out.two = chips();
       mapPoolEdits.m8.pool.cards = mapPoolEdits.m8.pool.cards.filter(x=> x !== id); mpChanged(); await wait(); out.three = chips();
       out.sameForm = document.querySelector('#editorOverlay .modal') === form && document.getElementById('fCardId') === tag;
-      mapPoolEdits = JSON.parse(saved); mpChanged(); await wait(); out.back = chips(); closeCardEditor(); return out; })()`);
+      mapPoolEdits = JSON.parse(saved); mpChanged(); await wait(); out.back = chips();
+      // map-picks rows (the owner's Yes / No): a map with a row holds the card only when flagged Yes
+      const mapIds = ()=> [...document.querySelectorAll('#ceMapChips [data-ui52-map]')].map(x=> x.dataset.ui52Map), had = ui37Picks.mw;
+      ui37Picks.mw = {yes: [], no: [], t: {}, localAt: 0}; ceRefreshMapChips(); out.unflagged = mapIds();
+      ui37SetFlag('mw', id, 'yes'); out.yes = mapIds();
+      ui37SetFlag('mw', id, 'no'); out.no = mapIds();
+      if(had) ui37Picks.mw = had; else delete ui37Picks.mw; ui37Save(); ceRefreshMapChips(); out.after = chips();
+      closeCardEditor(); return out; })()`);
     ok(r.before.length >= 2 && /Map 5\b/.test(r.before[0]), 'before: the lists of Map 5 and later (' + JSON.stringify(r.before) + ')');
     ok(r.none.length === 1 && /No map|no map/i.test(r.none[0]) || r.none.length === 1 && !/Map \d/.test(r.none[0]), 'removed from every list: only the no-map pill (' + JSON.stringify(r.none) + ')');
     ok(r.one.length === 1 && /Map 6\b/.test(r.one[0]), 'added to Map 6: one chip, Map 6 (' + JSON.stringify(r.one) + ')');
     ok(r.two.length === 2 && /Map 6\b/.test(r.two[0]) && /Map 7\b/.test(r.two[1]) && /Special/i.test(r.two[1]), 'added to Map 7 Special: two chips in road order (' + JSON.stringify(r.two) + ')');
     ok(r.three.length === 1 && /Map 7\b/.test(r.three[0]), 'removed from Map 6: Map 7 is first (' + JSON.stringify(r.three) + ')');
     ok(r.sameForm, 'the rest of the form is not re-rendered');
+    ok(!r.unflagged.includes('mw') && r.unflagged.includes('m8'), 'a map with a picks row and the card unflagged: no chip though the base list holds it (' + JSON.stringify(r.unflagged) + ')');
+    ok(r.yes[0] === 'mw', 'Yes on Map 5: its chip, first (' + JSON.stringify(r.yes) + ')');
+    ok(!r.no.includes('mw'), 'No on Map 5: the chip goes (' + JSON.stringify(r.no) + ')');
+    ok(JSON.stringify(r.after) === JSON.stringify(r.before), 'no picks row: the base list again (' + JSON.stringify([r.after, r.before]) + ')');
     ok(JSON.stringify(r.back) === JSON.stringify(r.before), 'restoring the lists restores the chips');
   } finally { await b.close(); }
   ok(errs.length === 0, 'no page errors ' + errs.slice(0, 2).join(' | '));
