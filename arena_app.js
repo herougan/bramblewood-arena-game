@@ -2208,7 +2208,7 @@ sk1Patch(PASSIVE_DEFS, 'enfeeble', {desc:v=> focus2Line('enfeeble', v)});
 ACTION_DEFS.push(
   {key:'harden', label:TX('ui.act-harden'), fields:['amount','who','sub'], whoOptions:['ally','self'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-harden-desc')},
   {key:'embolden', label:TX('ui.act-embolden'), fields:['amount','who','sub'], whoOptions:['ally','self'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-embolden-desc')});
-Object.assign(SKILL_ICON, {harden:'🔰', embolden:'🎺'}); // neither shared with another skill
+Object.assign(SKILL_ICON, {harden:'🗻', embolden:'💪'}); // neither shared with another skill
 // ==== ENG51 (2026-11-18, owner 11-17 17:32: "Archer Fish's Water Bolt is in Map 21+"; rule in bramblewood-engine.js BOLT_ELEMENTS, price in
 // canonical/skill-costs.json): Water Bolt N, a bolt (Speed 2, one skill with the other bolts) of N water damage; water damage leaves Wet counters.
 PASSIVE_DEFS.push({key:'waterBolt', category:'evergreen', label:TX('ui.skn-water-bolt'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-water-bolt', {n: numOr(v, 1)}), codexNote:TX('ui.sk-water-bolt-codex')});
@@ -7438,8 +7438,8 @@ function sk1StatusBadges(c, badges){
   if(c.exploit > 0) badges.push(`<span class="abadge exploit" title="${escapeAttr(TX('ui.exploit-tip', {n: c.exploit, s: c.exploit === 1 ? '' : 's'}))}">🩻${c.exploit}</span>`);
   if(c.vulnerable > 0) badges.push(`<span class="abadge exploit vulnerable" title="${escapeAttr(TX('ui.vulnerable-tip', {n: c.vulnerable, s: c.vulnerable === 1 ? '' : 's'}))}">💔${c.vulnerable}</span>`); // ENG50 (2026-11-17)
   if(c.feeble > 0) badges.push(`<span class="abadge exploit feeble" title="${escapeAttr(TX('ui.feeble-tip', {n: c.feeble, s: c.feeble === 1 ? '' : 's'}))}">🪶${c.feeble}</span>`); // ENG50; FOCUS2: rounds
-  if(c.hardened > 0) badges.push(`<span class="abadge hardened" title="${escapeAttr(TX('ui.focus2-hardened-tip', {n: c.hardened}))}">🔰${c.hardened}</span>`); // FOCUS2 (2026-11-20)
-  if(c.emboldened > 0) badges.push(`<span class="abadge emboldened" title="${escapeAttr(TX('ui.focus2-emboldened-tip', {n: c.emboldened}))}">🎺${c.emboldened}</span>`); // FOCUS2
+  if(c.hardened > 0) badges.push(`<span class="abadge hardened" title="${escapeAttr(TX('ui.focus2-hardened-tip', {n: c.hardened}))}">🗻${c.hardened}</span>`); // FOCUS2 (2026-11-20)
+  if(c.emboldened > 0) badges.push(`<span class="abadge emboldened" title="${escapeAttr(TX('ui.focus2-emboldened-tip', {n: c.emboldened}))}">💪${c.emboldened}</span>`); // FOCUS2
   const a = c.sk1Atk || 0; if(a > 0) badges.push(`<span class="abadge formation" title="${escapeAttr(TX('ui.aura-formation-tip', {n: a}))}">🔗+${a}</span>`);
   else if(a < 0) badges.push(`<span class="abadge isolation" title="${escapeAttr(TX('ui.aura-isolation-tip', {n: -a}))}">🏝️${a}</span>`);
 }
@@ -7482,7 +7482,7 @@ function ui32CounterRows(c){
   add('📯', N('inspTokens'), TX('ui.eng21-insp-tip', {n: N('inspTokens'), atk: c.inspired != null ? c.inspired : N('inspTokens')}));
   add('😨', N('dauntN'), TX('ui.en8-daunt-badge', {n: N('dauntN')}));
   add('🪟', N('brittle'), TX('ui.brittle-tip', {n: N('brittle')})); // DEC20-SKILLS (2026-11-19): Embrittle's Fragile
-  add('🔰', N('hardened'), TX('ui.focus2-hardened-tip', {n: N('hardened')})); add('🎺', N('emboldened'), TX('ui.focus2-emboldened-tip', {n: N('emboldened')})); // FOCUS2 (2026-11-20)
+  add('🗻', N('hardened'), TX('ui.focus2-hardened-tip', {n: N('hardened')})); add('💪', N('emboldened'), TX('ui.focus2-emboldened-tip', {n: N('emboldened')})); // FOCUS2 (2026-11-20)
   { const e = ((getCardDefs()[c.defId] || {}).effects) || {};
     add('🫐', sk2Val(c, 'sk2Berries'), TX('ui.sk2-berries-tip', {n: sk2Val(c, 'sk2Berries'), b: SK2_UI.foragingBerries}));
     add('🦝', sk2Val(c, 'sk2Scavenge'), TX('ui.sk2-scavenge-tip', {n: sk2Val(c, 'sk2Scavenge'), m: sk2ScavengeEvery(e)}));

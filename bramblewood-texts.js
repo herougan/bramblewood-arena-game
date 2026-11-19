@@ -3901,10 +3901,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.act-embolden-text": "make {who} Mighty for {n} rounds",
   "ui.focus2-hardened-tip": "Sturdy for {n}: takes half damage",
   "ui.focus2-emboldened-tip": "Mighty for {n}: deals double damage",
-  "ui.focus2-log-harden": "🔰 {att} makes {name} Sturdy ({n}).",
-  "ui.focus2-log-embolden": "🎺 {att} makes {name} Mighty ({n}).",
-  "ui.focus2-float-harden": "🔰 Sturdy",
-  "ui.focus2-float-embolden": "🎺 Mighty",
+  "ui.focus2-log-harden": "🗻 {att} makes {name} Sturdy ({n}).",
+  "ui.focus2-log-embolden": "💪 {att} makes {name} Mighty ({n}).",
+  "ui.focus2-float-harden": "🗻 Sturdy",
+  "ui.focus2-float-embolden": "💪 Mighty",
   "ui.focus2-st-sturdy": "Sturdy",
   "ui.focus2-st-mighty": "Mighty"
 }/*TEXT-TABLE-END*/;
